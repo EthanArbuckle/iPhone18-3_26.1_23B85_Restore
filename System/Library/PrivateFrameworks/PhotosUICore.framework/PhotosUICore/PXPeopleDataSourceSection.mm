@@ -1,10 +1,10 @@
 @interface PXPeopleDataSourceSection
-- (PXPeopleDataSourceSection)initWithPersonFetchType:(unint64_t)a3;
+- (PXPeopleDataSourceSection)initWithPersonFetchType:(unint64_t)type;
 @end
 
 @implementation PXPeopleDataSourceSection
 
-- (PXPeopleDataSourceSection)initWithPersonFetchType:(unint64_t)a3
+- (PXPeopleDataSourceSection)initWithPersonFetchType:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = PXPeopleDataSourceSection;
@@ -14,7 +14,7 @@
   {
     v4->_disclosed = 1;
     disclosedTitle = v4->_disclosedTitle;
-    v4->_personFetchType = a3;
+    v4->_personFetchType = type;
     v4->_disclosedTitle = &stru_1F1741150;
 
     unDisclosedTitle = v5->_unDisclosedTitle;

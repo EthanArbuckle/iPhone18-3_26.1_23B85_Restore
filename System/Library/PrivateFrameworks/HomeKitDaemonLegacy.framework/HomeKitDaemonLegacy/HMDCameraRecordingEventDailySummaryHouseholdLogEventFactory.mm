@@ -1,36 +1,36 @@
 @interface HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory
 - (HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory)init;
-- (HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory)initWithCameraRecordingEventObserver:(id)a3;
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4;
-- (id)logEventsFromDictionary:(id)a3;
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
-- (id)serializeLogEvents:(id)a3;
-- (void)setCameraRecordingEventObserver:(id)a3;
+- (HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory)initWithCameraRecordingEventObserver:(id)observer;
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d;
+- (id)logEventsFromDictionary:(id)dictionary;
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date;
+- (id)serializeLogEvents:(id)events;
+- (void)setCameraRecordingEventObserver:(id)observer;
 @end
 
 @implementation HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory
 
-- (void)setCameraRecordingEventObserver:(id)a3
+- (void)setCameraRecordingEventObserver:(id)observer
 {
   v4 = *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory_cameraRecordingEventObserver);
-  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory_cameraRecordingEventObserver) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory_cameraRecordingEventObserver) = observer;
+  observerCopy = observer;
 }
 
-- (HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory)initWithCameraRecordingEventObserver:(id)a3
+- (HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory)initWithCameraRecordingEventObserver:(id)observer
 {
-  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory_cameraRecordingEventObserver) = a3;
+  *(&self->super.isa + OBJC_IVAR___HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory_cameraRecordingEventObserver) = observer;
   v5.receiver = self;
   v5.super_class = HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory;
-  v3 = a3;
+  observerCopy = observer;
   return [(HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory *)&v5 init];
 }
 
-- (id)serializeLogEvents:(id)a3
+- (id)serializeLogEvents:(id)events
 {
   sub_253200644(0, &unk_27F5A31A0, 0x277D17DC0);
   v4 = sub_253CD0A58();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_253219AB8(v4);
 
   if (v6)
@@ -47,10 +47,10 @@
   return v7;
 }
 
-- (id)logEventsFromDictionary:(id)a3
+- (id)logEventsFromDictionary:(id)dictionary
 {
   v4 = sub_253CD08D8();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_253219D6C(v4);
 
   if (v6)
@@ -67,7 +67,7 @@
   return v7;
 }
 
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d
 {
   v5 = sub_253CCFF58();
   v6 = *(v5 - 8);
@@ -77,7 +77,7 @@
   sub_253200644(0, &unk_27F5A31A0, 0x277D17DC0);
   v10 = sub_253CD0A58();
   sub_253CCFF38();
-  v11 = self;
+  selfCopy = self;
   sub_253219FE0(v10, v9);
 
   (*(v6 + 8))(v9, v5);
@@ -86,7 +86,7 @@
   return v12;
 }
 
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
   v5 = sub_253CCFEE8();
   v6 = *(v5 - 8);
@@ -100,8 +100,8 @@
   v14 = &v21 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_253CCFF38();
   sub_253CCFEA8();
-  v15 = self;
-  v16 = [(HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory *)v15 cameraRecordingEventObserver];
+  selfCopy = self;
+  cameraRecordingEventObserver = [(HMDCameraRecordingEventDailySummaryHouseholdLogEventFactory *)selfCopy cameraRecordingEventObserver];
   v17 = sub_253210CE0(v14);
 
   if (v17)

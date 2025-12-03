@@ -1,48 +1,48 @@
 @interface MSPSharedTripSenderStrategyController
-+ (void)updateGroupSessionStorage:(id)a3 fromController:(id)a4;
++ (void)updateGroupSessionStorage:(id)storage fromController:(id)controller;
 - (BOOL)_enableVirtualReceivers;
-- (BOOL)addLiveParticipants:(id)a3;
-- (BOOL)addParticipants:(id)a3 forServiceName:(id)a4;
-- (BOOL)removeLiveParticipant:(id)a3;
-- (BOOL)removeParticipant:(id)a3 forServiceName:(id)a4 reason:(unint64_t)a5;
-- (BOOL)removeParticipant:(id)a3 reason:(unint64_t)a4;
-- (MSPSharedTripSenderStrategyController)initWithGroupSession:(id)a3 messageStrategyDelegate:(id)a4;
-- (id)_createMinimalSenderForServiceName:(id)a3;
-- (id)_createMinimalSenderWithMapsClass:(Class)a3 messagesClass:(Class)a4 serviceName:(id)a5;
-- (id)_currentLiveSender:(BOOL)a3;
-- (id)_currentMinimalSenderForServiceName:(id)a3 createIfNeeded:(BOOL)a4;
+- (BOOL)addLiveParticipants:(id)participants;
+- (BOOL)addParticipants:(id)participants forServiceName:(id)name;
+- (BOOL)removeLiveParticipant:(id)participant;
+- (BOOL)removeParticipant:(id)participant forServiceName:(id)name reason:(unint64_t)reason;
+- (BOOL)removeParticipant:(id)participant reason:(unint64_t)reason;
+- (MSPSharedTripSenderStrategyController)initWithGroupSession:(id)session messageStrategyDelegate:(id)delegate;
+- (id)_createMinimalSenderForServiceName:(id)name;
+- (id)_createMinimalSenderWithMapsClass:(Class)class messagesClass:(Class)messagesClass serviceName:(id)name;
+- (id)_currentLiveSender:(BOOL)sender;
+- (id)_currentMinimalSenderForServiceName:(id)name createIfNeeded:(BOOL)needed;
 - (id)_currentSendersByServiceName;
-- (void)_performBlockWithMinimalSenders:(id)a3;
-- (void)_updateGroupSessionStorage:(id)a3;
-- (void)performWithAllMinimalSenders:(id)a3;
-- (void)removeLiveParticipants:(id)a3;
-- (void)restoreFromGroupSessionStorage:(id)a3;
-- (void)setState:(id)a3 forEvent:(unint64_t)a4;
+- (void)_performBlockWithMinimalSenders:(id)senders;
+- (void)_updateGroupSessionStorage:(id)storage;
+- (void)performWithAllMinimalSenders:(id)senders;
+- (void)removeLiveParticipants:(id)participants;
+- (void)restoreFromGroupSessionStorage:(id)storage;
+- (void)setState:(id)state forEvent:(unint64_t)event;
 @end
 
 @implementation MSPSharedTripSenderStrategyController
 
-- (MSPSharedTripSenderStrategyController)initWithGroupSession:(id)a3 messageStrategyDelegate:(id)a4
+- (MSPSharedTripSenderStrategyController)initWithGroupSession:(id)session messageStrategyDelegate:(id)delegate
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = MSPSharedTripSenderStrategyController;
   v9 = [(MSPSharedTripSenderStrategyController *)&v25 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_groupSession, a3);
-    objc_storeWeak(&v10->_messageStrategyDelegate, v8);
+    objc_storeStrong(&v9->_groupSession, session);
+    objc_storeWeak(&v10->_messageStrategyDelegate, delegateCopy);
     v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:4];
     senderStrategiesByServiceName = v10->_senderStrategiesByServiceName;
     v10->_senderStrategiesByServiceName = v11;
 
-    v13 = [MEMORY[0x277D0EC70] sharedPlatform];
-    v14 = [v13 isInternalInstall];
+    mEMORY[0x277D0EC70] = [MEMORY[0x277D0EC70] sharedPlatform];
+    isInternalInstall = [mEMORY[0x277D0EC70] isInternalInstall];
 
-    if (v14)
+    if (isInternalInstall)
     {
       v15 = MSPGetSharedTripLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -70,12 +70,12 @@
   return v10;
 }
 
-- (BOOL)addParticipants:(id)a3 forServiceName:(id)a4
+- (BOOL)addParticipants:(id)participants forServiceName:(id)name
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSPSharedTripSenderStrategyController *)self _currentMinimalSenderForServiceName:v7 createIfNeeded:1];
+  participantsCopy = participants;
+  nameCopy = name;
+  v8 = [(MSPSharedTripSenderStrategyController *)self _currentMinimalSenderForServiceName:nameCopy createIfNeeded:1];
   v9 = MSPGetSharedTripLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
   if (v8)
@@ -85,32 +85,32 @@
       if (self)
       {
         v11 = MEMORY[0x277CCACA8];
-        v12 = self;
-        v13 = [v11 stringWithFormat:@"%@<%p>", objc_opt_class(), v12];
+        selfCopy = self;
+        selfCopy = [v11 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v13 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       v17 = MEMORY[0x277CCACA8];
       v18 = v8;
-      v19 = v13;
+      v19 = selfCopy;
       v20 = [v17 stringWithFormat:@"%@<%p>", objc_opt_class(), v18];
 
       *buf = 138544131;
-      v24 = v13;
+      v24 = selfCopy;
       v25 = 2113;
-      v26 = v6;
+      v26 = participantsCopy;
       v27 = 2114;
-      v28 = v7;
+      v28 = nameCopy;
       v29 = 2114;
       v30 = v20;
       _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_INFO, "[%{public}@] addParticipants %{private}@ to %{public}@/%{public}@", buf, 0x2Au);
     }
 
-    [v8 addParticipants:v6];
+    [v8 addParticipants:participantsCopy];
   }
 
   else
@@ -120,21 +120,21 @@
       if (self)
       {
         v14 = MEMORY[0x277CCACA8];
-        v15 = self;
-        v16 = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), v15];
+        selfCopy2 = self;
+        selfCopy2 = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
       }
 
       else
       {
-        v16 = @"<nil>";
+        selfCopy2 = @"<nil>";
       }
 
       *buf = 138543875;
-      v24 = v16;
+      v24 = selfCopy2;
       v25 = 2113;
-      v26 = v6;
+      v26 = participantsCopy;
       v27 = 2114;
-      v28 = v7;
+      v28 = nameCopy;
       _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_INFO, "[%{public}@] addParticipants %{private}@ no sender for %{public}@", buf, 0x20u);
     }
   }
@@ -143,29 +143,29 @@
   return v8 != 0;
 }
 
-- (BOOL)removeParticipant:(id)a3 forServiceName:(id)a4 reason:(unint64_t)a5
+- (BOOL)removeParticipant:(id)participant forServiceName:(id)name reason:(unint64_t)reason
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MSPSharedTripSenderStrategyController *)self _currentMinimalSenderForServiceName:v9 createIfNeeded:1];
+  participantCopy = participant;
+  nameCopy = name;
+  v10 = [(MSPSharedTripSenderStrategyController *)self _currentMinimalSenderForServiceName:nameCopy createIfNeeded:1];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 removeParticipant:v8 forReason:a5];
+    v12 = [v10 removeParticipant:participantCopy forReason:reason];
     v13 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       if (self)
       {
         v14 = MEMORY[0x277CCACA8];
-        v15 = self;
-        v16 = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), v15];
+        selfCopy = self;
+        selfCopy = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v16 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       if (v12)
@@ -180,17 +180,17 @@
 
       v21 = MEMORY[0x277CCACA8];
       v22 = v11;
-      v23 = v16;
+      v23 = selfCopy;
       v24 = [v21 stringWithFormat:@"%@<%p>", objc_opt_class(), v22];
 
       *buf = 138544387;
-      v28 = v16;
+      v28 = selfCopy;
       v29 = 2113;
-      v30 = v8;
+      v30 = participantCopy;
       v31 = 2080;
       v32 = v20;
       v33 = 2114;
-      v34 = v9;
+      v34 = nameCopy;
       v35 = 2114;
       v36 = v24;
       _os_log_impl(&dword_25813A000, v13, OS_LOG_TYPE_INFO, "[%{public}@] removeParticipant %{private}@ %s from %{public}@/%{public}@", buf, 0x34u);
@@ -205,19 +205,19 @@
       if (self)
       {
         v17 = MEMORY[0x277CCACA8];
-        v18 = self;
-        v19 = [v17 stringWithFormat:@"%@<%p>", objc_opt_class(), v18];
+        selfCopy2 = self;
+        selfCopy2 = [v17 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
       }
 
       else
       {
-        v19 = @"<nil>";
+        selfCopy2 = @"<nil>";
       }
 
       *buf = 138543618;
-      v28 = v19;
+      v28 = selfCopy2;
       v29 = 2114;
-      v30 = v9;
+      v30 = nameCopy;
       _os_log_impl(&dword_25813A000, v13, OS_LOG_TYPE_INFO, "[%{public}@] removeParticipant no sender for %{public}@", buf, 0x16u);
     }
 
@@ -228,9 +228,9 @@
   return v12;
 }
 
-- (BOOL)removeParticipant:(id)a3 reason:(unint64_t)a4
+- (BOOL)removeParticipant:(id)participant reason:(unint64_t)reason
 {
-  v6 = a3;
+  participantCopy = participant;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -239,16 +239,16 @@
   v9[1] = 3221225472;
   v9[2] = __66__MSPSharedTripSenderStrategyController_removeParticipant_reason___block_invoke;
   v9[3] = &unk_279868698;
-  v7 = v6;
+  v7 = participantCopy;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v12 = &v14;
-  v13 = a4;
+  reasonCopy = reason;
   [(MSPSharedTripSenderStrategyController *)self _performBlockWithMinimalSenders:v9];
-  LOBYTE(a4) = *(v15 + 24);
+  LOBYTE(reason) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
-  return a4;
+  return reason;
 }
 
 void __66__MSPSharedTripSenderStrategyController_removeParticipant_reason___block_invoke(void *a1, void *a2, void *a3)
@@ -304,12 +304,12 @@ void __66__MSPSharedTripSenderStrategyController_removeParticipant_reason___bloc
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addLiveParticipants:(id)a3
+- (BOOL)addLiveParticipants:(id)participants
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  participantsCopy = participants;
   v5 = [(MSPSharedTripSenderStrategyController *)self _currentLiveSender:1];
-  [v5 addParticipants:v4];
+  [v5 addParticipants:participantsCopy];
   v6 = MSPGetSharedTripLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
   if (v5)
@@ -319,24 +319,24 @@ void __66__MSPSharedTripSenderStrategyController_removeParticipant_reason___bloc
       if (self)
       {
         v8 = MEMORY[0x277CCACA8];
-        v9 = self;
-        v10 = [v8 stringWithFormat:@"%@<%p>", objc_opt_class(), v9];
+        selfCopy = self;
+        selfCopy = [v8 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
       }
 
       else
       {
-        v10 = @"<nil>";
+        selfCopy = @"<nil>";
       }
 
       v14 = MEMORY[0x277CCACA8];
       v15 = v5;
-      v13 = v10;
+      selfCopy2 = selfCopy;
       v16 = [v14 stringWithFormat:@"%@<%p>", objc_opt_class(), v15];
 
       *buf = 138543875;
-      v20 = v10;
+      v20 = selfCopy;
       v21 = 2113;
-      v22 = v4;
+      v22 = participantsCopy;
       v23 = 2114;
       v24 = v16;
       _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "[%{public}@] addLiveParticipants %{private}@ to %{public}@", buf, 0x20u);
@@ -350,19 +350,19 @@ LABEL_12:
     if (self)
     {
       v11 = MEMORY[0x277CCACA8];
-      v12 = self;
-      v13 = [v11 stringWithFormat:@"%@<%p>", objc_opt_class(), v12];
+      selfCopy2 = self;
+      selfCopy2 = [v11 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
     }
 
     else
     {
-      v13 = @"<nil>";
+      selfCopy2 = @"<nil>";
     }
 
     *buf = 138543619;
-    v20 = v13;
+    v20 = selfCopy2;
     v21 = 2113;
-    v22 = v4;
+    v22 = participantsCopy;
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "[%{public}@] addLiveParticipants %{private}@ no live sender", buf, 0x16u);
     goto LABEL_12;
   }
@@ -371,28 +371,28 @@ LABEL_12:
   return v5 != 0;
 }
 
-- (BOOL)removeLiveParticipant:(id)a3
+- (BOOL)removeLiveParticipant:(id)participant
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  participantCopy = participant;
   v5 = [(MSPSharedTripSenderStrategyController *)self _currentLiveSender:0];
-  v6 = [v5 removeParticipant:v4 forReason:0];
+  v6 = [v5 removeParticipant:participantCopy forReason:0];
   v7 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     if (self)
     {
       v8 = MEMORY[0x277CCACA8];
-      v9 = self;
-      v10 = [v8 stringWithFormat:@"%@<%p>", objc_opt_class(), v9];
+      selfCopy = self;
+      selfCopy = [v8 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v10 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
-    v11 = v10;
+    v11 = selfCopy;
     if (v6)
     {
       v12 = "yes";
@@ -417,7 +417,7 @@ LABEL_12:
     *buf = 138544131;
     v18 = v11;
     v19 = 2113;
-    v20 = v4;
+    v20 = participantCopy;
     v21 = 2080;
     v22 = v12;
     v23 = 2114;
@@ -429,28 +429,28 @@ LABEL_12:
   return v6;
 }
 
-- (void)removeLiveParticipants:(id)a3
+- (void)removeLiveParticipants:(id)participants
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  participantsCopy = participants;
   v5 = [(MSPSharedTripSenderStrategyController *)self _currentLiveSender:0];
-  [v5 removeParticipants:v4];
+  [v5 removeParticipants:participantsCopy];
   v6 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     if (self)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = self;
-      v9 = [v7 stringWithFormat:@"%@<%p>", objc_opt_class(), v8];
+      selfCopy = self;
+      selfCopy = [v7 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
-    v10 = v9;
+    v10 = selfCopy;
     v11 = v5;
     if (v11)
     {
@@ -465,7 +465,7 @@ LABEL_12:
     *buf = 138543875;
     v15 = v10;
     v16 = 2113;
-    v17 = v4;
+    v17 = participantsCopy;
     v18 = 2114;
     v19 = v12;
     _os_log_impl(&dword_25813A000, v6, OS_LOG_TYPE_INFO, "[%{public}@] removeLiveParticipants %{private}@ from %{public}@", buf, 0x20u);
@@ -474,84 +474,84 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setState:(id)a3 forEvent:(unint64_t)a4
+- (void)setState:(id)state forEvent:(unint64_t)event
 {
-  v6 = a3;
+  stateCopy = state;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __59__MSPSharedTripSenderStrategyController_setState_forEvent___block_invoke;
   v11 = &unk_2798686C0;
-  v12 = v6;
-  v13 = a4;
-  v7 = v6;
+  v12 = stateCopy;
+  eventCopy = event;
+  v7 = stateCopy;
   [(MSPSharedTripSenderStrategyController *)self performWithAllMinimalSenders:&v8];
-  [(MSPSenderIDSStrategy *)self->_liveSender setState:v7 forEvent:a4, v8, v9, v10, v11];
-  [(MSPSenderIDSStrategy *)self->_virtualLiveSender setState:v7 forEvent:a4];
+  [(MSPSenderIDSStrategy *)self->_liveSender setState:v7 forEvent:event, v8, v9, v10, v11];
+  [(MSPSenderIDSStrategy *)self->_virtualLiveSender setState:v7 forEvent:event];
 }
 
-+ (void)updateGroupSessionStorage:(id)a3 fromController:(id)a4
++ (void)updateGroupSessionStorage:(id)storage fromController:(id)controller
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  storageCopy = storage;
   v8 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    if (a1)
+    if (self)
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = a1;
-      v11 = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), v10];
+      selfCopy = self;
+      selfCopy = [v9 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v11 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
     v12 = "will update from controller";
-    if (!v6)
+    if (!controllerCopy)
     {
       v12 = "no strategy controller to update from";
     }
 
     *buf = 138543618;
-    v15 = v11;
+    v15 = selfCopy;
     v16 = 2080;
     v17 = v12;
     _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_INFO, "[%{public}@] updateGroupSessionStorage clearing storage, %s", buf, 0x16u);
   }
 
-  [v7 clearMinimalStrategyIdentifiers];
-  [v7 clearMessageStrategyIdentifiers];
-  [v7 clearSmsStrategyIdentifiers];
-  [v7 clearLiveStrategyIdentifiers];
-  [v6 _updateGroupSessionStorage:v7];
+  [storageCopy clearMinimalStrategyIdentifiers];
+  [storageCopy clearMessageStrategyIdentifiers];
+  [storageCopy clearSmsStrategyIdentifiers];
+  [storageCopy clearLiveStrategyIdentifiers];
+  [controllerCopy _updateGroupSessionStorage:storageCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)restoreFromGroupSessionStorage:(id)a3
+- (void)restoreFromGroupSessionStorage:(id)storage
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storageCopy = storage;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     if (self)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = self;
-      v8 = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), v7];
+      selfCopy = self;
+      selfCopy = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v8 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
     *buf = 138543362;
-    v17 = v8;
+    v17 = selfCopy;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_INFO, "[%{public}@] restoreFromGroupStorage", buf, 0xCu);
   }
 
@@ -559,14 +559,14 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = __72__MSPSharedTripSenderStrategyController_restoreFromGroupSessionStorage___block_invoke;
   v14[3] = &unk_2798685C8;
-  v9 = v4;
+  v9 = storageCopy;
   v15 = v9;
   [(MSPSharedTripSenderStrategyController *)self _performBlockWithMinimalSenders:v14];
   if ([v9 liveStrategyIdentifiersCount])
   {
     v10 = MEMORY[0x277D18778];
-    v11 = [v9 liveStrategyIdentifiers];
-    v12 = [v10 _msp_IDSIdentifiersFor:v11];
+    liveStrategyIdentifiers = [v9 liveStrategyIdentifiers];
+    v12 = [v10 _msp_IDSIdentifiersFor:liveStrategyIdentifiers];
 
     [(MSPSenderLiveStrategy *)self->_liveSender addParticipants:v12];
   }
@@ -617,27 +617,27 @@ void __72__MSPSharedTripSenderStrategyController_restoreFromGroupSessionStorage_
 LABEL_12:
 }
 
-- (void)_updateGroupSessionStorage:(id)a3
+- (void)_updateGroupSessionStorage:(id)storage
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storageCopy = storage;
   v5 = MSPGetSharedTripLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     if (self)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = self;
-      v8 = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), v7];
+      selfCopy = self;
+      selfCopy = [v6 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
     }
 
     else
     {
-      v8 = @"<nil>";
+      selfCopy = @"<nil>";
     }
 
     *buf = 138543362;
-    v17 = v8;
+    v17 = selfCopy;
     _os_log_impl(&dword_25813A000, v5, OS_LOG_TYPE_INFO, "[%{public}@] updateGroupSessionStorage", buf, 0xCu);
   }
 
@@ -645,12 +645,12 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = __68__MSPSharedTripSenderStrategyController__updateGroupSessionStorage___block_invoke;
   v14[3] = &unk_2798685C8;
-  v15 = v4;
-  v9 = v4;
+  v15 = storageCopy;
+  v9 = storageCopy;
   [(MSPSharedTripSenderStrategyController *)self _performBlockWithMinimalSenders:v14];
-  v10 = [(MSPSenderStrategy *)self->_liveSender participants];
-  v11 = [v10 allObjects];
-  v12 = [v11 mutableCopy];
+  participants = [(MSPSenderStrategy *)self->_liveSender participants];
+  allObjects = [participants allObjects];
+  v12 = [allObjects mutableCopy];
   [v9 setLiveStrategyIdentifiers:v12];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -684,28 +684,28 @@ void __68__MSPSharedTripSenderStrategyController__updateGroupSessionStorage___bl
   }
 }
 
-- (id)_currentMinimalSenderForServiceName:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_currentMinimalSenderForServiceName:(id)name createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MSPSharedTripSenderStrategyController *)self _currentSendersByServiceName];
-  v8 = [v7 objectForKeyedSubscript:v6];
-  if (!v8 && v4)
+  neededCopy = needed;
+  nameCopy = name;
+  _currentSendersByServiceName = [(MSPSharedTripSenderStrategyController *)self _currentSendersByServiceName];
+  v8 = [_currentSendersByServiceName objectForKeyedSubscript:nameCopy];
+  if (!v8 && neededCopy)
   {
-    v8 = [(MSPSharedTripSenderStrategyController *)self _createMinimalSenderForServiceName:v6];
-    [v7 setObject:v8 forKeyedSubscript:v6];
+    v8 = [(MSPSharedTripSenderStrategyController *)self _createMinimalSenderForServiceName:nameCopy];
+    [_currentSendersByServiceName setObject:v8 forKeyedSubscript:nameCopy];
   }
 
   return v8;
 }
 
-- (id)_createMinimalSenderForServiceName:(id)a3
+- (id)_createMinimalSenderForServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [(MSPSharedTripSenderStrategyController *)self _enableVirtualReceivers];
+  nameCopy = name;
+  _enableVirtualReceivers = [(MSPSharedTripSenderStrategyController *)self _enableVirtualReceivers];
   v6 = off_279865878;
-  v7 = !v5;
-  if (!v5)
+  v7 = !_enableVirtualReceivers;
+  if (!_enableVirtualReceivers)
   {
     v6 = off_279865860;
   }
@@ -723,22 +723,22 @@ void __68__MSPSharedTripSenderStrategyController__updateGroupSessionStorage___bl
 
   v10 = objc_opt_class();
   v11 = *v9;
-  v12 = [(MSPSharedTripSenderStrategyController *)self _createMinimalSenderWithMapsClass:v10 messagesClass:objc_opt_class() serviceName:v4];
+  v12 = [(MSPSharedTripSenderStrategyController *)self _createMinimalSenderWithMapsClass:v10 messagesClass:objc_opt_class() serviceName:nameCopy];
 
   return v12;
 }
 
-- (id)_createMinimalSenderWithMapsClass:(Class)a3 messagesClass:(Class)a4 serviceName:(id)a5
+- (id)_createMinimalSenderWithMapsClass:(Class)class messagesClass:(Class)messagesClass serviceName:(id)name
 {
-  v8 = a5;
-  if ([v8 isEqualToString:@"Maps"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Maps"])
   {
-    v9 = [[a3 alloc] initWithGroupSession:self->_groupSession];
+    v9 = [[class alloc] initWithGroupSession:self->_groupSession];
   }
 
   else
   {
-    if ([v8 isEqualToString:@"iMessage"])
+    if ([nameCopy isEqualToString:@"iMessage"])
     {
       v10 = 3;
     }
@@ -748,17 +748,17 @@ void __68__MSPSharedTripSenderStrategyController__updateGroupSessionStorage___bl
       v10 = 2;
     }
 
-    v11 = [a4 alloc];
+    v11 = [messagesClass alloc];
     WeakRetained = objc_loadWeakRetained(&self->_messageStrategyDelegate);
-    v9 = [v11 initWithDelegate:WeakRetained capabilityType:v10 serviceName:v8];
+    v9 = [v11 initWithDelegate:WeakRetained capabilityType:v10 serviceName:nameCopy];
   }
 
   return v9;
 }
 
-- (id)_currentLiveSender:(BOOL)a3
+- (id)_currentLiveSender:(BOOL)sender
 {
-  v3 = a3;
+  senderCopy = sender;
   if (![(MSPSharedTripSenderStrategyController *)self _enableVirtualReceivers])
   {
     p_liveSender = &self->_liveSender;
@@ -770,7 +770,7 @@ void __68__MSPSharedTripSenderStrategyController__updateGroupSessionStorage___bl
 
     else
     {
-      v8 = !v3;
+      v8 = !senderCopy;
     }
 
     if (v8)
@@ -784,7 +784,7 @@ void __68__MSPSharedTripSenderStrategyController__updateGroupSessionStorage___bl
 
   p_liveSender = &self->_virtualLiveSender;
   liveSender = self->_virtualLiveSender;
-  if (!liveSender && v3)
+  if (!liveSender && senderCopy)
   {
     v7 = off_279865868;
 LABEL_10:
@@ -800,14 +800,14 @@ LABEL_11:
   return liveSender;
 }
 
-- (void)performWithAllMinimalSenders:(id)a3
+- (void)performWithAllMinimalSenders:(id)senders
 {
-  v4 = a3;
+  sendersCopy = senders;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__MSPSharedTripSenderStrategyController_performWithAllMinimalSenders___block_invoke;
   v9[3] = &unk_2798686E8;
-  v5 = v4;
+  v5 = sendersCopy;
   v10 = v5;
   [(MSPSharedTripSenderStrategyController *)self performWithVirtualSenders:0 block:v9];
   v7[0] = MEMORY[0x277D85DD0];
@@ -819,32 +819,32 @@ LABEL_11:
   [(MSPSharedTripSenderStrategyController *)self performWithVirtualSenders:1 block:v7];
 }
 
-- (void)_performBlockWithMinimalSenders:(id)a3
+- (void)_performBlockWithMinimalSenders:(id)senders
 {
-  v4 = a3;
-  v5 = [(MSPSharedTripSenderStrategyController *)self _currentSendersByServiceName];
+  sendersCopy = senders;
+  _currentSendersByServiceName = [(MSPSharedTripSenderStrategyController *)self _currentSendersByServiceName];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__MSPSharedTripSenderStrategyController__performBlockWithMinimalSenders___block_invoke;
   v7[3] = &unk_279868710;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = sendersCopy;
+  v6 = sendersCopy;
+  [_currentSendersByServiceName enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 - (BOOL)_enableVirtualReceivers
 {
-  v2 = [(NSMutableArray *)self->_nestedVirtualReceiverEnablement lastObject];
-  v3 = [v2 BOOLValue];
+  lastObject = [(NSMutableArray *)self->_nestedVirtualReceiverEnablement lastObject];
+  bOOLValue = [lastObject BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)_currentSendersByServiceName
 {
-  v3 = [(MSPSharedTripSenderStrategyController *)self _enableVirtualReceivers];
+  _enableVirtualReceivers = [(MSPSharedTripSenderStrategyController *)self _enableVirtualReceivers];
   v4 = 24;
-  if (v3)
+  if (_enableVirtualReceivers)
   {
     v4 = 40;
   }

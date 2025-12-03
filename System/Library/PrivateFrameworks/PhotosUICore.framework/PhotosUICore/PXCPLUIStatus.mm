@@ -1,60 +1,60 @@
 @interface PXCPLUIStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXCPLUIStatus)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation PXCPLUIStatus
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXCPLUIStatus *)self stateDescription];
-  v6 = [v5 copy];
+  stateDescription = [(PXCPLUIStatus *)self stateDescription];
+  v6 = [stateDescription copy];
   v7 = v4[3];
   v4[3] = v6;
 
-  v8 = [(PXCPLUIStatus *)self failureDescription];
-  v9 = [v8 copy];
+  failureDescription = [(PXCPLUIStatus *)self failureDescription];
+  v9 = [failureDescription copy];
   v10 = v4[4];
   v4[4] = v9;
 
-  v11 = [(PXCPLUIStatus *)self internalInformationMessage];
-  v12 = [v11 copy];
+  internalInformationMessage = [(PXCPLUIStatus *)self internalInformationMessage];
+  v12 = [internalInformationMessage copy];
   v13 = v4[5];
   v4[5] = v12;
 
   *(v4 + 8) = [(PXCPLUIStatus *)self isPaused];
   [(PXCPLUIStatus *)self progress];
   *(v4 + 4) = v14;
-  v15 = [(PXCPLUIStatus *)self referencedItemsDescription];
-  v16 = [v15 copy];
+  referencedItemsDescription = [(PXCPLUIStatus *)self referencedItemsDescription];
+  v16 = [referencedItemsDescription copy];
   v17 = v4[12];
   v4[12] = v16;
 
-  v18 = [(PXCPLUIStatus *)self actionTitle];
-  v19 = [v18 copy];
+  actionTitle = [(PXCPLUIStatus *)self actionTitle];
+  v19 = [actionTitle copy];
   v20 = v4[6];
   v4[6] = v19;
 
-  v21 = [(PXCPLUIStatus *)self actionConfirmationAlertTitle];
-  v22 = [v21 copy];
+  actionConfirmationAlertTitle = [(PXCPLUIStatus *)self actionConfirmationAlertTitle];
+  v22 = [actionConfirmationAlertTitle copy];
   v23 = v4[7];
   v4[7] = v22;
 
-  v24 = [(PXCPLUIStatus *)self actionConfirmationAlertSubtitle];
-  v25 = [v24 copy];
+  actionConfirmationAlertSubtitle = [(PXCPLUIStatus *)self actionConfirmationAlertSubtitle];
+  v25 = [actionConfirmationAlertSubtitle copy];
   v26 = v4[8];
   v4[8] = v25;
 
-  v27 = [(PXCPLUIStatus *)self actionConfirmationAlertButtonTitle];
-  v28 = [v27 copy];
+  actionConfirmationAlertButtonTitle = [(PXCPLUIStatus *)self actionConfirmationAlertButtonTitle];
+  v28 = [actionConfirmationAlertButtonTitle copy];
   v29 = v4[9];
   v4[9] = v28;
 
-  v30 = [(PXCPLUIStatus *)self action];
-  v31 = [v30 copy];
+  action = [(PXCPLUIStatus *)self action];
+  v31 = [action copy];
   v32 = v4[10];
   v4[10] = v31;
 
@@ -74,11 +74,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && PXCPLUIStatusDiff(self, v4) == 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && PXCPLUIStatusDiff(self, equalCopy) == 0;
 
   return v5;
 }
@@ -125,16 +125,16 @@
   progress = self->_progress;
   if (progress == -1.0)
   {
-    v8 = @"-";
+    progress = @"-";
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", progress];
+    progress = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", progress];
   }
 
   serviceAction = self->_serviceAction;
-  v31 = v8;
+  v31 = progress;
   if (serviceAction > 0xB)
   {
     v10 = 0;

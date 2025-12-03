@@ -1,6 +1,6 @@
 @interface SleepActivityConfigurationModel
 - (_TtC13SleepHealthUI31SleepActivityConfigurationModel)init;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
 @end
 
 @implementation SleepActivityConfigurationModel
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   sub_269D9A8E0();
   v5[2] = self;
-  v4 = self;
+  selfCopy = self;
   sub_269C71EBC(sub_269C74AA4, v5);
 }
 

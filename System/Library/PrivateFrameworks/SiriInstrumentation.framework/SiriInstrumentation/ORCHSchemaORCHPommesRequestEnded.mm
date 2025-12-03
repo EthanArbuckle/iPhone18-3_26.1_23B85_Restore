@@ -1,25 +1,25 @@
 @interface ORCHSchemaORCHPommesRequestEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHPommesRequestEnded)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHPommesRequestEnded)initWithJSON:(id)a3;
+- (ORCHSchemaORCHPommesRequestEnded)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHPommesRequestEnded)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHPommesRequestEnded
 
-- (ORCHSchemaORCHPommesRequestEnded)initWithDictionary:(id)a3
+- (ORCHSchemaORCHPommesRequestEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ORCHSchemaORCHPommesRequestEnded;
   v5 = [(ORCHSchemaORCHPommesRequestEnded *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"status"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHPommesRequestEnded)initWithJSON:(id)a3
+- (ORCHSchemaORCHPommesRequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHPommesRequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHPommesRequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHPommesRequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,17 +68,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(ORCHSchemaORCHPommesRequestEnded *)self status];
+    status = [(ORCHSchemaORCHPommesRequestEnded *)self status];
     v5 = @"ORCHPOMMESRESPONSESTATUS_UNKNOWN";
-    if (v4 == 1)
+    if (status == 1)
     {
       v5 = @"ORCHPOMMESRESPONSESTATUS_SUCCESS";
     }
 
-    if (v4 == 2)
+    if (status == 2)
     {
       v6 = @"ORCHPOMMESRESPONSESTATUS_NO_RESULTS";
     }
@@ -88,12 +88,12 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"status"];
+    [dictionary setObject:v6 forKeyedSubscript:@"status"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -109,15 +109,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[12] & 1))
+    if ((*&self->_has & 1) == (equalCopy[12] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (status = self->_status, status == [v4 status]))
+      if ((*&self->_has & 1) == 0 || (status = self->_status, status == [equalCopy status]))
       {
         v6 = 1;
       }
@@ -127,7 +127,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {

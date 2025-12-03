@@ -1,39 +1,39 @@
 @interface ASCBorderedScreenshotView
-- (ASCBorderedScreenshotView)initWithCoder:(id)a3;
-- (ASCBorderedScreenshotView)initWithFrame:(CGRect)a3 screenshotDisplayConfiguration:(id)a4;
+- (ASCBorderedScreenshotView)initWithCoder:(id)coder;
+- (ASCBorderedScreenshotView)initWithFrame:(CGRect)frame screenshotDisplayConfiguration:(id)configuration;
 - (CGSize)preferredArtworkSize;
 - (void)layoutSubviews;
 @end
 
 @implementation ASCBorderedScreenshotView
 
-- (ASCBorderedScreenshotView)initWithFrame:(CGRect)a3 screenshotDisplayConfiguration:(id)a4
+- (ASCBorderedScreenshotView)initWithFrame:(CGRect)frame screenshotDisplayConfiguration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = ASCBorderedScreenshotView;
-  v10 = [(ASCBorderedScreenshotView *)&v15 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(ASCBorderedScreenshotView *)&v15 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = [ASCArtworkView alloc];
     v12 = [(ASCArtworkView *)v11 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    artworkView = v10->_artworkView;
-    v10->_artworkView = v12;
+    artworkView = height->_artworkView;
+    height->_artworkView = v12;
 
-    [(ASCArtworkView *)v10->_artworkView setDecoration:@"screenshot"];
-    [(ASCArtworkView *)v10->_artworkView setScreenshotDisplayConfiguration:v9];
-    [(ASCBorderedScreenshotView *)v10 setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-    [(ASCBorderedScreenshotView *)v10 addSubview:v10->_artworkView];
+    [(ASCArtworkView *)height->_artworkView setDecoration:@"screenshot"];
+    [(ASCArtworkView *)height->_artworkView setScreenshotDisplayConfiguration:configurationCopy];
+    [(ASCBorderedScreenshotView *)height setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
+    [(ASCBorderedScreenshotView *)height addSubview:height->_artworkView];
   }
 
-  return v10;
+  return height;
 }
 
-- (ASCBorderedScreenshotView)initWithCoder:(id)a3
+- (ASCBorderedScreenshotView)initWithCoder:(id)coder
 {
   [(ASCBorderedScreenshotView *)self doesNotRecognizeSelector:a2];
 

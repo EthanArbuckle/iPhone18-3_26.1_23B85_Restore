@@ -1,26 +1,26 @@
 @interface _TUIFeedCaptureDynamicStateProvider
-+ (id)imageResourceProviderWithURL:(id)a3;
-- (_TUIFeedCaptureDynamicStateProvider)initWithKind:(id)a3 instancesMap:(id)a4;
-- (id)dynamicStateForKind:(id)a3 instance:(id)a4 parameters:(id)a5;
++ (id)imageResourceProviderWithURL:(id)l;
+- (_TUIFeedCaptureDynamicStateProvider)initWithKind:(id)kind instancesMap:(id)map;
+- (id)dynamicStateForKind:(id)kind instance:(id)instance parameters:(id)parameters;
 @end
 
 @implementation _TUIFeedCaptureDynamicStateProvider
 
-+ (id)imageResourceProviderWithURL:(id)a3
++ (id)imageResourceProviderWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 pathExtension];
-  v6 = [v5 isEqualToString:@"json"];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  v6 = [pathExtension isEqualToString:@"json"];
 
   if (v6)
   {
-    v33 = a1;
-    v7 = [v4 URLByDeletingPathExtension];
-    v32 = [v7 lastPathComponent];
+    selfCopy = self;
+    uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
     v8 = objc_opt_class();
-    v34 = v4;
-    v9 = [NSData dataWithContentsOfURL:v4];
+    v34 = lCopy;
+    v9 = [NSData dataWithContentsOfURL:lCopy];
     v10 = [NSJSONSerialization JSONObjectWithData:v9 options:0 error:0];
     v11 = TUIDynamicCast(v8, v10);
 
@@ -72,8 +72,8 @@
       while (v16);
     }
 
-    v29 = [[v33 alloc] initWithKind:v32 instancesMap:v36];
-    v4 = v34;
+    v29 = [[selfCopy alloc] initWithKind:lastPathComponent instancesMap:v36];
+    lCopy = v34;
   }
 
   else
@@ -84,31 +84,31 @@
   return v29;
 }
 
-- (_TUIFeedCaptureDynamicStateProvider)initWithKind:(id)a3 instancesMap:(id)a4
+- (_TUIFeedCaptureDynamicStateProvider)initWithKind:(id)kind instancesMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
+  kindCopy = kind;
+  mapCopy = map;
   v12.receiver = self;
   v12.super_class = _TUIFeedCaptureDynamicStateProvider;
   v9 = [(_TUIFeedCaptureDynamicStateProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_kind, a3);
-    objc_storeStrong(&v10->_instanceMap, a4);
+    objc_storeStrong(&v9->_kind, kind);
+    objc_storeStrong(&v10->_instanceMap, map);
   }
 
   return v10;
 }
 
-- (id)dynamicStateForKind:(id)a3 instance:(id)a4 parameters:(id)a5
+- (id)dynamicStateForKind:(id)kind instance:(id)instance parameters:(id)parameters
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a3 isEqualToString:self->_kind])
+  instanceCopy = instance;
+  parametersCopy = parameters;
+  if ([kind isEqualToString:self->_kind])
   {
     instanceMap = self->_instanceMap;
-    v11 = [[_TUIFeedCaptureInstanceKey alloc] initWithInstance:v8 options:v9];
+    v11 = [[_TUIFeedCaptureInstanceKey alloc] initWithInstance:instanceCopy options:parametersCopy];
     v12 = [(NSDictionary *)instanceMap objectForKeyedSubscript:v11];
   }
 

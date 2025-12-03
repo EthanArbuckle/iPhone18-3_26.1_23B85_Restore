@@ -1,38 +1,38 @@
 @interface MessageSaveAllAttachmentsActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (id)activityTitle;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation MessageSaveAllAttachmentsActivity
 
 - (id)activityTitle
 {
-  v2 = [(MessageSaveToCameraRollActivity *)self delegate];
-  v3 = [v2 localizedTitleForSaveAllAttachmentsAction];
+  delegate = [(MessageSaveToCameraRollActivity *)self delegate];
+  localizedTitleForSaveAllAttachmentsAction = [delegate localizedTitleForSaveAllAttachmentsAction];
 
-  return v3;
+  return localizedTitleForSaveAllAttachmentsAction;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = self;
-  v4 = [(MessageSaveToCameraRollActivity *)self delegate];
-  LOBYTE(v3) = [v4 canSaveAllAttachmentsInContext:{-[MessageSaveToCameraRollActivity context](v3, "context")}];
+  selfCopy = self;
+  delegate = [(MessageSaveToCameraRollActivity *)self delegate];
+  LOBYTE(selfCopy) = [delegate canSaveAllAttachmentsInContext:{-[MessageSaveToCameraRollActivity context](selfCopy, "context")}];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
-  v4 = [(MessageSaveToCameraRollActivity *)self delegate];
-  v5 = [v4 allMediaAttachmentFutures];
+  delegate = [(MessageSaveToCameraRollActivity *)self delegate];
+  allMediaAttachmentFutures = [delegate allMediaAttachmentFutures];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  obj = v5;
+  obj = allMediaAttachmentFutures;
   v6 = [obj countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {

@@ -1,6 +1,6 @@
 @interface VKAlternateRouteInfo
-- (VKAlternateRouteInfo)initWithComposedRoute:(id)a3 etaDescription:(id)a4 divergenceRouteCoordinate:(PolylineCoordinate)a5 convergenceRouteCoordinate:(PolylineCoordinate)a6;
-- (VKAlternateRouteInfo)initWithComposedRoute:(id)a3 etaText:(id)a4 divergenceRouteCoordinate:(PolylineCoordinate)a5 convergenceRouteCoordinate:(PolylineCoordinate)a6;
+- (VKAlternateRouteInfo)initWithComposedRoute:(id)route etaDescription:(id)description divergenceRouteCoordinate:(PolylineCoordinate)coordinate convergenceRouteCoordinate:(PolylineCoordinate)routeCoordinate;
+- (VKAlternateRouteInfo)initWithComposedRoute:(id)route etaText:(id)text divergenceRouteCoordinate:(PolylineCoordinate)coordinate convergenceRouteCoordinate:(PolylineCoordinate)routeCoordinate;
 - (id).cxx_construct;
 @end
 
@@ -13,29 +13,29 @@
   return self;
 }
 
-- (VKAlternateRouteInfo)initWithComposedRoute:(id)a3 etaDescription:(id)a4 divergenceRouteCoordinate:(PolylineCoordinate)a5 convergenceRouteCoordinate:(PolylineCoordinate)a6
+- (VKAlternateRouteInfo)initWithComposedRoute:(id)route etaDescription:(id)description divergenceRouteCoordinate:(PolylineCoordinate)coordinate convergenceRouteCoordinate:(PolylineCoordinate)routeCoordinate
 {
   v12.receiver = self;
   v12.super_class = VKAlternateRouteInfo;
-  v8 = [(VKRouteInfo *)&v12 initWithComposedRoute:a3 etaDescription:a4];
+  v8 = [(VKRouteInfo *)&v12 initWithComposedRoute:route etaDescription:description];
   v9 = v8;
   if (v8)
   {
-    v8->_divergenceCoordinate = a5;
-    v8->_convergenceCoordinate = a6;
+    v8->_divergenceCoordinate = coordinate;
+    v8->_convergenceCoordinate = routeCoordinate;
     v10 = v8;
   }
 
   return v9;
 }
 
-- (VKAlternateRouteInfo)initWithComposedRoute:(id)a3 etaText:(id)a4 divergenceRouteCoordinate:(PolylineCoordinate)a5 convergenceRouteCoordinate:(PolylineCoordinate)a6
+- (VKAlternateRouteInfo)initWithComposedRoute:(id)route etaText:(id)text divergenceRouteCoordinate:(PolylineCoordinate)coordinate convergenceRouteCoordinate:(PolylineCoordinate)routeCoordinate
 {
-  v10 = a3;
-  v11 = a4;
-  if (v11)
+  routeCopy = route;
+  textCopy = text;
+  if (textCopy)
   {
-    v12 = [[VKRouteEtaDescription alloc] initWithEtaText:v11];
+    v12 = [[VKRouteEtaDescription alloc] initWithEtaText:textCopy];
   }
 
   else
@@ -43,7 +43,7 @@
     v12 = 0;
   }
 
-  v13 = [(VKAlternateRouteInfo *)self initWithComposedRoute:v10 etaDescription:v12 divergenceRouteCoordinate:a5 convergenceRouteCoordinate:a6];
+  v13 = [(VKAlternateRouteInfo *)self initWithComposedRoute:routeCopy etaDescription:v12 divergenceRouteCoordinate:coordinate convergenceRouteCoordinate:routeCoordinate];
 
   return v13;
 }

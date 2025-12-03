@@ -1,24 +1,24 @@
 @interface CNPhotoPickerEmojiProvider
-- (CNPhotoPickerEmojiProvider)initWithVisualIdentity:(id)a3;
-- (id)loadItemsForSize:(CGSize)a3 scale:(double)a4 RTL:(BOOL)a5 renderingQueue:(id)a6 callbackQueue:(id)a7 itemDelegate:(id)a8;
+- (CNPhotoPickerEmojiProvider)initWithVisualIdentity:(id)identity;
+- (id)loadItemsForSize:(CGSize)size scale:(double)scale RTL:(BOOL)l renderingQueue:(id)queue callbackQueue:(id)callbackQueue itemDelegate:(id)delegate;
 @end
 
 @implementation CNPhotoPickerEmojiProvider
 
-- (id)loadItemsForSize:(CGSize)a3 scale:(double)a4 RTL:(BOOL)a5 renderingQueue:(id)a6 callbackQueue:(id)a7 itemDelegate:(id)a8
+- (id)loadItemsForSize:(CGSize)size scale:(double)scale RTL:(BOOL)l renderingQueue:(id)queue callbackQueue:(id)callbackQueue itemDelegate:(id)delegate
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v29 = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [(CNPhotoPickerEmojiProvider *)self variantsManager];
-  v13 = [v12 defaultEmojis];
+  variantsManager = [(CNPhotoPickerEmojiProvider *)self variantsManager];
+  defaultEmojis = [variantsManager defaultEmojis];
 
-  v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v14 = [defaultEmojis countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v14)
   {
     v15 = v14;
@@ -29,41 +29,41 @@
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(defaultEmojis);
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
         v19 = [CNPhotoPickerEmojiProviderItem alloc];
-        v20 = [v18 emojiString];
-        v21 = [v18 colorVariant];
-        v22 = [(CNPhotoPickerEmojiProviderItem *)v19 initWithStringRepresentation:v20 backgroundColorVariant:v21 size:width, height];
+        emojiString = [v18 emojiString];
+        colorVariant = [v18 colorVariant];
+        height = [(CNPhotoPickerEmojiProviderItem *)v19 initWithStringRepresentation:emojiString backgroundColorVariant:colorVariant size:width, height];
 
-        [v11 addObject:v22];
+        [array addObject:height];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v15 = [defaultEmojis countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v15);
   }
 
-  return v11;
+  return array;
 }
 
-- (CNPhotoPickerEmojiProvider)initWithVisualIdentity:(id)a3
+- (CNPhotoPickerEmojiProvider)initWithVisualIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v15.receiver = self;
   v15.super_class = CNPhotoPickerEmojiProvider;
   v6 = [(CNPhotoPickerEmojiProvider *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_visualIdentity, a3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    objc_storeStrong(&v6->_visualIdentity, identity);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v7->_identifier;
-    v7->_identifier = v9;
+    v7->_identifier = uUIDString;
 
     v11 = objc_alloc_init(CNPhotoPickerVariantsManager);
     variantsManager = v7->_variantsManager;

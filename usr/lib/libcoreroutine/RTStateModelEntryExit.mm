@@ -1,10 +1,10 @@
 @interface RTStateModelEntryExit
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (RTStateModelEntryExit)init;
-- (RTStateModelEntryExit)initWithCoder:(id)a3;
-- (RTStateModelEntryExit)initWithEntry:(double)a3 exit:(double)a4;
+- (RTStateModelEntryExit)initWithCoder:(id)coder;
+- (RTStateModelEntryExit)initWithEntry:(double)entry exit:(double)exit;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStateModelEntryExit
@@ -24,7 +24,7 @@
   return v3;
 }
 
-- (RTStateModelEntryExit)initWithEntry:(double)a3 exit:(double)a4
+- (RTStateModelEntryExit)initWithEntry:(double)entry exit:(double)exit
 {
   v9.receiver = self;
   v9.super_class = RTStateModelEntryExit;
@@ -32,52 +32,52 @@
   v7 = v6;
   if (v6)
   {
-    [(RTStateModelEntryExit *)v6 setEntry_s:a3];
-    [(RTStateModelEntryExit *)v7 setExit_s:a4];
+    [(RTStateModelEntryExit *)v6 setEntry_s:entry];
+    [(RTStateModelEntryExit *)v7 setExit_s:exit];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(RTStateModelEntryExit *)self entry_s];
-  [v4 encodeDouble:@"entry_s" forKey:?];
+  [coderCopy encodeDouble:@"entry_s" forKey:?];
   [(RTStateModelEntryExit *)self exit_s];
-  [v4 encodeDouble:@"exit_s" forKey:?];
+  [coderCopy encodeDouble:@"exit_s" forKey:?];
 }
 
-- (RTStateModelEntryExit)initWithCoder:(id)a3
+- (RTStateModelEntryExit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RTStateModelEntryExit;
   v5 = [(RTStateModelEntryExit *)&v7 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"entry_s"];
+    [coderCopy decodeDoubleForKey:@"entry_s"];
     [(RTStateModelEntryExit *)v5 setEntry_s:?];
-    [v4 decodeDoubleForKey:@"exit_s"];
+    [coderCopy decodeDoubleForKey:@"exit_s"];
     [(RTStateModelEntryExit *)v5 setExit_s:?];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v12 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(RTStateModelEntryExit *)self entry_s];
       v7 = v6;
       [(RTStateModelEntryExit *)v5 entry_s];

@@ -1,12 +1,12 @@
 @interface InteractiveTitleHeaderView
-- (_TtC8AppStore26InteractiveTitleHeaderView)initWithCoder:(id)a3;
+- (_TtC8AppStore26InteractiveTitleHeaderView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation InteractiveTitleHeaderView
 
-- (_TtC8AppStore26InteractiveTitleHeaderView)initWithCoder:(id)a3
+- (_TtC8AppStore26InteractiveTitleHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore26InteractiveTitleHeaderView_titleView;
   type metadata accessor for TitleHeaderView(0);
@@ -38,14 +38,14 @@
   v6 = type metadata accessor for InteractiveTitleHeaderView();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(InteractiveTitleHeaderView *)&v11 prepareForReuse];
-  [*(&v7->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore26InteractiveTitleHeaderView_titleView) prepareForReuse];
+  [*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore26InteractiveTitleHeaderView_titleView) prepareForReuse];
   v8 = type metadata accessor for InteractiveSectionBackgroundScrollObserver.State(0);
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC8AppStore26InteractiveTitleHeaderView_currentState;
   swift_beginAccess();
-  sub_1002AE7D4(v5, v7 + v9);
+  sub_1002AE7D4(v5, selfCopy + v9);
   swift_endAccess();
 }
 

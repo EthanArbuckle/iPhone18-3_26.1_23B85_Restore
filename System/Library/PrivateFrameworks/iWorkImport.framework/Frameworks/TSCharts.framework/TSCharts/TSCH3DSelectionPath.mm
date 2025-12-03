@@ -1,42 +1,42 @@
 @interface TSCH3DSelectionPath
-+ (id)selectionPathWithClass:(Class)a3 styleIndex:(unint64_t)a4 selectionPath:(id)a5;
-+ (id)selectionPathWithClass:(Class)a3 styleIndex:(unint64_t)a4 type:(id)a5 name:(id)a6 arguments:(id)a7;
-- (TSCH3DSelectionPath)initWithClass:(Class)a3 styleIndex:(unint64_t)a4 type:(id)a5 name:(id)a6 arguments:(id)a7;
++ (id)selectionPathWithClass:(Class)class styleIndex:(unint64_t)index selectionPath:(id)path;
++ (id)selectionPathWithClass:(Class)class styleIndex:(unint64_t)index type:(id)type name:(id)name arguments:(id)arguments;
+- (TSCH3DSelectionPath)initWithClass:(Class)class styleIndex:(unint64_t)index type:(id)type name:(id)name arguments:(id)arguments;
 @end
 
 @implementation TSCH3DSelectionPath
 
-+ (id)selectionPathWithClass:(Class)a3 styleIndex:(unint64_t)a4 type:(id)a5 name:(id)a6 arguments:(id)a7
++ (id)selectionPathWithClass:(Class)class styleIndex:(unint64_t)index type:(id)type name:(id)name arguments:(id)arguments
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [a1 alloc];
-  v20 = objc_msgSend_initWithClass_styleIndex_type_name_arguments_(v15, v16, v17, v18, v19, a3, a4, v12, v13, v14);
+  typeCopy = type;
+  nameCopy = name;
+  argumentsCopy = arguments;
+  v15 = [self alloc];
+  v20 = objc_msgSend_initWithClass_styleIndex_type_name_arguments_(v15, v16, v17, v18, v19, class, index, typeCopy, nameCopy, argumentsCopy);
 
   return v20;
 }
 
-+ (id)selectionPathWithClass:(Class)a3 styleIndex:(unint64_t)a4 selectionPath:(id)a5
++ (id)selectionPathWithClass:(Class)class styleIndex:(unint64_t)index selectionPath:(id)path
 {
-  v8 = a5;
-  v9 = [a1 alloc];
-  v14 = objc_msgSend_type(v8, v10, v11, v12, v13);
-  v19 = objc_msgSend_name(v8, v15, v16, v17, v18);
-  v24 = objc_msgSend_initWithClass_styleIndex_type_name_arguments_(v9, v20, v21, v22, v23, a3, a4, v14, v19, v8[2]);
+  pathCopy = path;
+  v9 = [self alloc];
+  v14 = objc_msgSend_type(pathCopy, v10, v11, v12, v13);
+  v19 = objc_msgSend_name(pathCopy, v15, v16, v17, v18);
+  v24 = objc_msgSend_initWithClass_styleIndex_type_name_arguments_(v9, v20, v21, v22, v23, class, index, v14, v19, pathCopy[2]);
 
   return v24;
 }
 
-- (TSCH3DSelectionPath)initWithClass:(Class)a3 styleIndex:(unint64_t)a4 type:(id)a5 name:(id)a6 arguments:(id)a7
+- (TSCH3DSelectionPath)initWithClass:(Class)class styleIndex:(unint64_t)index type:(id)type name:(id)name arguments:(id)arguments
 {
   v10.receiver = self;
   v10.super_class = TSCH3DSelectionPath;
-  result = [(TSCHSelectionPath *)&v10 initWithType:a5 name:a6 arguments:a7];
+  result = [(TSCHSelectionPath *)&v10 initWithType:type name:name arguments:arguments];
   if (result)
   {
-    result->_sceneObjectClass = a3;
-    result->_styleIndex = a4;
+    result->_sceneObjectClass = class;
+    result->_styleIndex = index;
   }
 
   return result;

@@ -1,5 +1,5 @@
 @interface PLBackgroundJobCriteria
-+ (PLBackgroundJobCriteria)criteriaWithKnownShortCode:(id)a3;
++ (PLBackgroundJobCriteria)criteriaWithKnownShortCode:(id)code;
 + (id)allKnownCriteria;
 + (id)allKnownShortCodes;
 + (id)criteriaForAssetResourceUploadExtensionRunnerWorker;
@@ -17,8 +17,8 @@
 + (id)criteriaForLowPriorityChargerSearchWorker;
 + (id)criteriaForStableHashWorker;
 + (id)criteriaForUrgentResourceWorker;
-- (BOOL)isEqual:(id)a3;
-- (PLBackgroundJobCriteria)initWithName:(id)a3 shortCode:(id)a4 taskPriority:(unint64_t)a5 requiresExternalPower:(BOOL)a6 trySchedulingBefore:(int64_t)a7 scheduleAfter:(int64_t)a8 requiresUserInactivity:(BOOL)a9 cpuIntensive:(BOOL)a10 memoryIntensive:(BOOL)a11 requiresInexpensiveNetworkConnectivity:(BOOL)a12 overrideRateLimiting:(BOOL)a13 expectedDuration:(double)a14 involvedProcesses:(id)a15;
+- (BOOL)isEqual:(id)equal;
+- (PLBackgroundJobCriteria)initWithName:(id)name shortCode:(id)code taskPriority:(unint64_t)priority requiresExternalPower:(BOOL)power trySchedulingBefore:(int64_t)before scheduleAfter:(int64_t)after requiresUserInactivity:(BOOL)inactivity cpuIntensive:(BOOL)self0 memoryIntensive:(BOOL)self1 requiresInexpensiveNetworkConnectivity:(BOOL)self2 overrideRateLimiting:(BOOL)self3 expectedDuration:(double)self4 involvedProcesses:(id)self5;
 - (id)description;
 - (id)taskRequest;
 - (unint64_t)hash;
@@ -64,8 +64,8 @@
 
 + (id)allKnownShortCodes
 {
-  v2 = [a1 allKnownCriteria];
-  v3 = [v2 _pl_map:&__block_literal_global_50612];
+  allKnownCriteria = [self allKnownCriteria];
+  v3 = [allKnownCriteria _pl_map:&__block_literal_global_50612];
 
   return v3;
 }
@@ -78,12 +78,12 @@
   return v4 ^ [(NSArray *)self->_involvedProcesses hash]^ expectedDuration;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (PLObjectIsEqual() && PLObjectIsEqual() && self->_bgstTaskPriority == *(v5 + 4) && self->_requiresExternalPower == *(v5 + 57) && self->_trySchedulingBefore == *(v5 + 5) && self->_scheduleAfter == *(v5 + 6) && self->_requiresUserInactivity == *(v5 + 56) && self->_cpuIntensive == *(v5 + 58) && self->_memoryIntensive == *(v5 + 59) && self->_requiresInexpensiveNetworkConnectivity == *(v5 + 60) && self->_overrideRateLimiting == *(v5 + 61) && self->_expectedDuration == v5[8])
     {
       involvedProcesses = self->_involvedProcesses;
@@ -180,35 +180,35 @@ LABEL_10:
   return v3;
 }
 
-- (PLBackgroundJobCriteria)initWithName:(id)a3 shortCode:(id)a4 taskPriority:(unint64_t)a5 requiresExternalPower:(BOOL)a6 trySchedulingBefore:(int64_t)a7 scheduleAfter:(int64_t)a8 requiresUserInactivity:(BOOL)a9 cpuIntensive:(BOOL)a10 memoryIntensive:(BOOL)a11 requiresInexpensiveNetworkConnectivity:(BOOL)a12 overrideRateLimiting:(BOOL)a13 expectedDuration:(double)a14 involvedProcesses:(id)a15
+- (PLBackgroundJobCriteria)initWithName:(id)name shortCode:(id)code taskPriority:(unint64_t)priority requiresExternalPower:(BOOL)power trySchedulingBefore:(int64_t)before scheduleAfter:(int64_t)after requiresUserInactivity:(BOOL)inactivity cpuIntensive:(BOOL)self0 memoryIntensive:(BOOL)self1 requiresInexpensiveNetworkConnectivity:(BOOL)self2 overrideRateLimiting:(BOOL)self3 expectedDuration:(double)self4 involvedProcesses:(id)self5
 {
-  v22 = a3;
-  v23 = a4;
-  v24 = a15;
+  nameCopy = name;
+  codeCopy = code;
+  processesCopy = processes;
   v36.receiver = self;
   v36.super_class = PLBackgroundJobCriteria;
   v25 = [(PLBackgroundJobCriteria *)&v36 init];
   if (v25)
   {
-    v26 = [v22 copy];
+    v26 = [nameCopy copy];
     name = v25->_name;
     v25->_name = v26;
 
-    v28 = [v23 copy];
+    v28 = [codeCopy copy];
     shortCode = v25->_shortCode;
     v25->_shortCode = v28;
 
-    v25->_requiresExternalPower = a6;
-    v25->_bgstTaskPriority = a5;
-    v25->_trySchedulingBefore = a7;
-    v25->_scheduleAfter = a8;
-    v25->_requiresUserInactivity = a9;
-    v25->_cpuIntensive = a10;
-    v25->_memoryIntensive = a11;
-    v25->_requiresInexpensiveNetworkConnectivity = a12;
-    v25->_overrideRateLimiting = a13;
-    v25->_expectedDuration = a14;
-    v30 = [v24 copy];
+    v25->_requiresExternalPower = power;
+    v25->_bgstTaskPriority = priority;
+    v25->_trySchedulingBefore = before;
+    v25->_scheduleAfter = after;
+    v25->_requiresUserInactivity = inactivity;
+    v25->_cpuIntensive = intensive;
+    v25->_memoryIntensive = memoryIntensive;
+    v25->_requiresInexpensiveNetworkConnectivity = connectivity;
+    v25->_overrideRateLimiting = limiting;
+    v25->_expectedDuration = duration;
+    v30 = [processesCopy copy];
     involvedProcesses = v25->_involvedProcesses;
     v25->_involvedProcesses = v30;
 
@@ -221,16 +221,16 @@ LABEL_10:
   return v25;
 }
 
-+ (PLBackgroundJobCriteria)criteriaWithKnownShortCode:(id)a3
++ (PLBackgroundJobCriteria)criteriaWithKnownShortCode:(id)code
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  codeCopy = code;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 allKnownCriteria];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKnownCriteria = [self allKnownCriteria];
+  v6 = [allKnownCriteria countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -240,12 +240,12 @@ LABEL_10:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKnownCriteria);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 shortCode];
-        v11 = [v10 isEqualToString:v4];
+        shortCode = [v9 shortCode];
+        v11 = [shortCode isEqualToString:codeCopy];
 
         if (v11)
         {
@@ -254,7 +254,7 @@ LABEL_10:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allKnownCriteria countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -275,7 +275,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __43__PLBackgroundJobCriteria_allKnownCriteria__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allKnownCriteria_onceToken != -1)
   {
     dispatch_once(&allKnownCriteria_onceToken, block);

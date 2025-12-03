@@ -1,18 +1,18 @@
 @interface CKSyncEngineFailedZoneSave
-- (CKSyncEngineFailedZoneSave)initWithZone:(id)a3 error:(id)a4;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (CKSyncEngineFailedZoneSave)initWithZone:(id)zone error:(id)error;
+- (void)CKDescribePropertiesUsing:(id)using;
 @end
 
 @implementation CKSyncEngineFailedZoneSave
 
-- (CKSyncEngineFailedZoneSave)initWithZone:(id)a3 error:(id)a4
+- (CKSyncEngineFailedZoneSave)initWithZone:(id)zone error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  zoneCopy = zone;
+  errorCopy = error;
   v28 = 0;
-  v9 = _CKCheckArgument("zone", v7, 0, 0, 0, &v28);
+  v9 = _CKCheckArgument("zone", zoneCopy, 0, 0, 0, &v28);
   v10 = v28;
-  if ((v9 & 1) == 0 || (v10, v27 = 0, v11 = _CKCheckArgument("error", v8, 0, 0, 0, &v27), v10 = v27, (v11 & 1) == 0))
+  if ((v9 & 1) == 0 || (v10, v27 = 0, v11 = _CKCheckArgument("error", errorCopy, 0, 0, 0, &v27), v10 = v27, (v11 & 1) == 0))
   {
     v15 = v10;
     v16 = [CKException alloc];
@@ -30,21 +30,21 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_recordZone, a3);
-    objc_storeStrong(&v13->_error, a4);
+    objc_storeStrong(&v12->_recordZone, zone);
+    objc_storeStrong(&v13->_error, error);
   }
 
   return v13;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_recordZone(self, v5, v6);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"zone", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"zone", v7, 0);
 
   v12 = objc_msgSend_error(self, v9, v10);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v11, @"error", v12, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v11, @"error", v12, 0);
 }
 
 @end

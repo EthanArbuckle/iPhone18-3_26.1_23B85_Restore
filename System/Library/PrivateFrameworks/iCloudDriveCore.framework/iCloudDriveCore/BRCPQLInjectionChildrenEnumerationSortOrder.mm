@@ -1,18 +1,18 @@
 @interface BRCPQLInjectionChildrenEnumerationSortOrder
-+ (id)_createInjectionSortOrder:(unsigned __int8)a3;
++ (id)_createInjectionSortOrder:(unsigned __int8)order;
 @end
 
 @implementation BRCPQLInjectionChildrenEnumerationSortOrder
 
-+ (id)_createInjectionSortOrder:(unsigned __int8)a3
++ (id)_createInjectionSortOrder:(unsigned __int8)order
 {
-  if (a3 == 1)
+  if (order == 1)
   {
     v3 = " ORDER BY version_mtime DESC";
     v4 = 28;
   }
 
-  else if (a3)
+  else if (order)
   {
     v3 = "";
     v4 = 0;

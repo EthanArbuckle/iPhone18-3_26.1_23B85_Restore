@@ -1,18 +1,18 @@
 @interface SSVGratisApplication
 - (NSDictionary)dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SSVGratisApplication
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   bundleIdentifier = self->_bundleIdentifier;
   if (bundleIdentifier)
   {
-    [v3 setObject:bundleIdentifier forKey:@"bid"];
+    [dictionary setObject:bundleIdentifier forKey:@"bid"];
   }
 
   bundleVersion = self->_bundleVersion;
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setBundleIdentifier:self->_bundleIdentifier];
   [v4 setBundleVersion:self->_bundleVersion];
   [v4 setExternalVersionIdentifier:self->_externalVersionIdentifier];

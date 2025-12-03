@@ -1,8 +1,8 @@
 @interface FCParsecArticleSearchOperation
 - (BOOL)validateOperation;
-- (FCParsecArticleSearchOperation)initWithMoreResults:(id)a3 parsecQueryID:(unint64_t)a4;
-- (id)_rankingFeedbackWithSection:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCParsecArticleSearchOperation)initWithMoreResults:(id)results parsecQueryID:(unint64_t)d;
+- (id)_rankingFeedbackWithSection:(id)section;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,9 +11,9 @@
 - (BOOL)validateOperation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(FCParsecArticleSearchOperation *)self query];
+  query = [(FCParsecArticleSearchOperation *)self query];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!query && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"article search operation requires a query"];
     v10 = 136315906;
@@ -27,9 +27,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
   }
 
-  v4 = [(FCParsecArticleSearchOperation *)self articleSearchCompletionHandler];
+  articleSearchCompletionHandler = [(FCParsecArticleSearchOperation *)self articleSearchCompletionHandler];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!articleSearchCompletionHandler && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"article search operation requires a completion"];
     v10 = 136315906;
@@ -43,9 +43,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
   }
 
-  if (v3)
+  if (query)
   {
-    v5 = v4 == 0;
+    v5 = articleSearchCompletionHandler == 0;
   }
 
   else
@@ -58,17 +58,17 @@
   return result;
 }
 
-- (FCParsecArticleSearchOperation)initWithMoreResults:(id)a3 parsecQueryID:(unint64_t)a4
+- (FCParsecArticleSearchOperation)initWithMoreResults:(id)results parsecQueryID:(unint64_t)d
 {
-  v7 = a3;
+  resultsCopy = results;
   v11.receiver = self;
   v11.super_class = FCParsecArticleSearchOperation;
   v8 = [(FCOperation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_moreResults, a3);
-    v9->_parsecQueryID = a4;
+    objc_storeStrong(&v8->_moreResults, results);
+    v9->_parsecQueryID = d;
   }
 
   return v9;
@@ -77,16 +77,16 @@
 - (void)performOperation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(FCParsecArticleSearchOperation *)self previousRankingFeedback];
-  if (v3)
+  previousRankingFeedback = [(FCParsecArticleSearchOperation *)self previousRankingFeedback];
+  if (previousRankingFeedback)
   {
   }
 
   else
   {
-    v4 = [(FCParsecArticleSearchOperation *)self moreResults];
+    moreResults = [(FCParsecArticleSearchOperation *)self moreResults];
 
-    if (v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (moreResults && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"must have previous ranking feedback when fetching more results"];
       *buf = 136315906;
@@ -101,28 +101,28 @@
     }
   }
 
-  v5 = [(FCParsecArticleSearchOperation *)self moreResults];
+  moreResults2 = [(FCParsecArticleSearchOperation *)self moreResults];
 
-  if (v5)
+  if (moreResults2)
   {
-    v6 = [(FCParsecArticleSearchOperation *)self moreResults];
+    moreResults3 = [(FCParsecArticleSearchOperation *)self moreResults];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __50__FCParsecArticleSearchOperation_performOperation__block_invoke;
     v15[3] = &unk_1E7C37750;
     v15[4] = self;
-    [v6 loadSearchResultsWithCompletionAndErrorHandler:v15];
+    [moreResults3 loadSearchResultsWithCompletionAndErrorHandler:v15];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E6998670] fc_sharedParsecSession];
+    moreResults3 = [MEMORY[0x1E6998670] fc_sharedParsecSession];
     v7 = MEMORY[0x1E6998648];
-    v8 = [(FCParsecArticleSearchOperation *)self query];
-    v9 = [v7 searchRequestWithString:v8 triggerEvent:1 queryId:{-[FCParsecArticleSearchOperation parsecQueryID](self, "parsecQueryID")}];
+    query = [(FCParsecArticleSearchOperation *)self query];
+    v9 = [v7 searchRequestWithString:query triggerEvent:1 queryId:{-[FCParsecArticleSearchOperation parsecQueryID](self, "parsecQueryID")}];
 
-    v10 = [(FCParsecArticleSearchOperation *)self keyboardInputMode];
-    [v9 setKeyboardInputMode:v10];
+    keyboardInputMode = [(FCParsecArticleSearchOperation *)self keyboardInputMode];
+    [v9 setKeyboardInputMode:keyboardInputMode];
 
     [(FCParsecArticleSearchOperation *)self scale];
     [v9 setScale:?];
@@ -131,7 +131,7 @@
     v14[2] = __50__FCParsecArticleSearchOperation_performOperation__block_invoke_3;
     v14[3] = &unk_1E7C3ED78;
     v14[4] = self;
-    v11 = [v6 taskWithRequest:v9 completion:v14];
+    v11 = [moreResults3 taskWithRequest:v9 completion:v14];
     [v11 resume];
   }
 
@@ -265,12 +265,12 @@ void __50__FCParsecArticleSearchOperation_performOperation__block_invoke_3(uint6
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCParsecArticleSearchOperation *)self rankingFeedback];
-  v6 = v4 | v5;
+  errorCopy = error;
+  rankingFeedback = [(FCParsecArticleSearchOperation *)self rankingFeedback];
+  v6 = errorCopy | rankingFeedback;
 
   if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -286,46 +286,46 @@ void __50__FCParsecArticleSearchOperation_performOperation__block_invoke_3(uint6
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v16, 0x26u);
   }
 
-  v7 = [(FCParsecArticleSearchOperation *)self rankingFeedback];
+  rankingFeedback2 = [(FCParsecArticleSearchOperation *)self rankingFeedback];
 
-  if (!v7)
+  if (!rankingFeedback2)
   {
-    v8 = [(FCParsecArticleSearchOperation *)self previousRankingFeedback];
-    [(FCParsecArticleSearchOperation *)self setRankingFeedback:v8];
+    previousRankingFeedback = [(FCParsecArticleSearchOperation *)self previousRankingFeedback];
+    [(FCParsecArticleSearchOperation *)self setRankingFeedback:previousRankingFeedback];
   }
 
-  v9 = [(FCParsecArticleSearchOperation *)self articleSearchCompletionHandler];
+  articleSearchCompletionHandler = [(FCParsecArticleSearchOperation *)self articleSearchCompletionHandler];
 
-  if (v9)
+  if (articleSearchCompletionHandler)
   {
-    v10 = [(FCParsecArticleSearchOperation *)self articleSearchCompletionHandler];
-    v11 = [(FCParsecArticleSearchOperation *)self results];
-    v12 = [(FCParsecArticleSearchOperation *)self moreResults];
-    v13 = [(FCParsecArticleSearchOperation *)self rankingFeedback];
-    (v10)[2](v10, v11, v12, v13, v4);
+    articleSearchCompletionHandler2 = [(FCParsecArticleSearchOperation *)self articleSearchCompletionHandler];
+    results = [(FCParsecArticleSearchOperation *)self results];
+    moreResults = [(FCParsecArticleSearchOperation *)self moreResults];
+    rankingFeedback3 = [(FCParsecArticleSearchOperation *)self rankingFeedback];
+    (articleSearchCompletionHandler2)[2](articleSearchCompletionHandler2, results, moreResults, rankingFeedback3, errorCopy);
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_rankingFeedbackWithSection:(id)a3
+- (id)_rankingFeedbackWithSection:(id)section
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (section)
   {
-    v4 = [a3 copy];
-    v5 = [(FCParsecArticleSearchOperation *)self results];
-    [v4 setResults:v5];
+    v4 = [section copy];
+    results = [(FCParsecArticleSearchOperation *)self results];
+    [v4 setResults:results];
 
-    v6 = [(FCParsecArticleSearchOperation *)self previousRankingFeedback];
-    v7 = [v6 sections];
-    v8 = [v7 firstObject];
-    v9 = [v8 results];
-    v10 = [v9 fc_arrayByTransformingWithBlock:&__block_literal_global_51];
+    previousRankingFeedback = [(FCParsecArticleSearchOperation *)self previousRankingFeedback];
+    sections = [previousRankingFeedback sections];
+    firstObject = [sections firstObject];
+    results2 = [firstObject results];
+    v10 = [results2 fc_arrayByTransformingWithBlock:&__block_literal_global_51];
 
     v11 = MEMORY[0x1E695DEC8];
-    v12 = [(FCParsecArticleSearchOperation *)self results];
-    v13 = [v11 fc_arrayByAddingObjectsFromArray:v12 toArray:v10];
+    results3 = [(FCParsecArticleSearchOperation *)self results];
+    v13 = [v11 fc_arrayByAddingObjectsFromArray:results3 toArray:v10];
 
     v14 = [v13 fc_arrayByTransformingWithBlock:&__block_literal_global_21_0];
     v15 = [objc_alloc(MEMORY[0x1E69CA418]) initWithResults:v14 section:v4 localSectionPosition:0 personalizationScore:0.0];

@@ -5,7 +5,7 @@
 - (BOOL)isPad;
 - (BOOL)roadsWithSimpleLineMeshesAvailable;
 - (VKPlatform)init;
-- (unint64_t)tileMaximumLimit:(unint64_t)a3;
+- (unint64_t)tileMaximumLimit:(unint64_t)limit;
 - (unsigned)explicitDefaultRefreshRate;
 - (unsigned)preferredFrequencyUpdate;
 - (unsigned)processingQueueWidth;
@@ -177,7 +177,7 @@ void __22__VKPlatform_isIphone__block_invoke()
   return v2;
 }
 
-- (unint64_t)tileMaximumLimit:(unint64_t)a3
+- (unint64_t)tileMaximumLimit:(unint64_t)limit
 {
   memSize = self->_memSize;
   if (self->_isMac)
@@ -196,17 +196,17 @@ void __22__VKPlatform_isIphone__block_invoke()
     v5 = memSize + memSize;
   }
 
-  if (a3 <= 1)
+  if (limit <= 1)
   {
-    v6 = 1;
+    limitCopy = 1;
   }
 
   else
   {
-    v6 = a3;
+    limitCopy = limit;
   }
 
-  return (v5 / v6);
+  return (v5 / limitCopy);
 }
 
 - (BOOL)roadsWithSimpleLineMeshesAvailable

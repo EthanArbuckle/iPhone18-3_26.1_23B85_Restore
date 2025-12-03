@@ -1,19 +1,19 @@
 @interface SPCompanionNotificationHandler
 + (id)sharedInstance;
 - (SPCompanionNotificationHandler)init;
-- (void)injectBulletinWithSectionID:(id)a3 gizmoAppIdentifier:(id)a4 bulletinID:(id)a5 remoteNotificationContext:(id)a6 forceStatic:(BOOL)a7 completion:(id)a8;
+- (void)injectBulletinWithSectionID:(id)d gizmoAppIdentifier:(id)identifier bulletinID:(id)iD remoteNotificationContext:(id)context forceStatic:(BOOL)static completion:(id)completion;
 @end
 
 @implementation SPCompanionNotificationHandler
 
-- (void)injectBulletinWithSectionID:(id)a3 gizmoAppIdentifier:(id)a4 bulletinID:(id)a5 remoteNotificationContext:(id)a6 forceStatic:(BOOL)a7 completion:(id)a8
+- (void)injectBulletinWithSectionID:(id)d gizmoAppIdentifier:(id)identifier bulletinID:(id)iD remoteNotificationContext:(id)context forceStatic:(BOOL)static completion:(id)completion
 {
-  v54 = a7;
-  v59 = a3;
-  v58 = a4;
-  v60 = a5;
-  v61 = a6;
-  v52 = a8;
+  staticCopy = static;
+  dCopy = d;
+  identifierCopy = identifier;
+  iDCopy = iD;
+  contextCopy = context;
+  completionCopy = completion;
   v13 = wk_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,13 +22,13 @@
     *&buf[12] = 1024;
     *&buf[14] = 65;
     *&buf[18] = 2114;
-    *&buf[20] = v59;
+    *&buf[20] = dCopy;
     *&buf[28] = 2114;
-    *&buf[30] = v58;
+    *&buf[30] = identifierCopy;
     *&buf[38] = 2114;
-    v72 = v60;
+    v72 = iDCopy;
     v73 = 2114;
-    v74 = v61;
+    v74 = contextCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: injecting bulletin with sectionID:%{public}@, gizmoAppIdentifier:%{public}@, bulletinID:%{public}@, remoteNotificationContext:%{public}@", buf, 0x3Au);
   }
 
@@ -69,7 +69,7 @@
 
   v18 = v17;
   _Block_object_dispose(&v67, 8);
-  v19 = [v17 requestWithIdentifier:v60 pushPayload:v61 bundleIdentifier:v59];
+  v19 = [v17 requestWithIdentifier:iDCopy pushPayload:contextCopy bundleIdentifier:dCopy];
   v67 = 0;
   v68 = &v67;
   v69 = 0x2050000000;
@@ -88,8 +88,8 @@
 
   v21 = v20;
   _Block_object_dispose(&v67, 8);
-  v22 = [v16 date];
-  v57 = [v20 notificationWithRequest:v19 date:v22];
+  date = [v16 date];
+  v57 = [v20 notificationWithRequest:v19 date:date];
 
   v66 = 0;
   v23 = [NSKeyedArchiver archivedDataWithRootObject:v57 requiringSecureCoding:1 error:&v66];
@@ -130,34 +130,34 @@
   }
 
   [v16 setContextValue:v23 forKey:*v25];
-  v28 = [v19 content];
-  v29 = [v28 title];
+  content = [v19 content];
+  title = [content title];
 
-  v30 = [v19 content];
-  v31 = [v30 subtitle];
+  content2 = [v19 content];
+  subtitle = [content2 subtitle];
 
-  v32 = [v19 content];
-  v56 = [v32 body];
+  content3 = [v19 content];
+  body = [content3 body];
 
-  [v16 setBulletinID:v60];
-  if (v29)
+  [v16 setBulletinID:iDCopy];
+  if (title)
   {
-    [v16 setTitle:v29];
+    [v16 setTitle:title];
   }
 
-  if (v31)
+  if (subtitle)
   {
-    [v16 setSubtitle:v31];
+    [v16 setSubtitle:subtitle];
   }
 
-  [v16 setMessage:{v56, v52}];
-  [v16 setSectionID:v59];
+  [v16 setMessage:{body, completionCopy}];
+  [v16 setSectionID:dCopy];
   v33 = +[NSUUID UUID];
-  v34 = [v33 UUIDString];
-  [v16 setPublisherBulletinID:v34];
+  uUIDString = [v33 UUIDString];
+  [v16 setPublisherBulletinID:uUIDString];
 
-  v35 = [v16 publisherBulletinID];
-  [v16 setRecordID:v35];
+  publisherBulletinID = [v16 publisherBulletinID];
+  [v16 setRecordID:publisherBulletinID];
 
   v36 = +[NSDate date];
   [v16 setDate:v36];
@@ -165,26 +165,26 @@
   v37 = [[BBSound alloc] initWithToneAlert:17];
   [v16 setSound:v37];
 
-  v38 = [v61 mutableCopy];
+  v38 = [contextCopy mutableCopy];
   [v38 removeObjectForKey:@"WatchKit Simulator Actions"];
-  if (v54)
+  if (staticCopy)
   {
     [v38 setObject:&__kCFBooleanTrue forKeyedSubscript:@"NFS"];
   }
 
   [v38 setObject:&__kCFBooleanTrue forKeyedSubscript:@"_WK_SFX"];
   [v16 setContextValue:v38 forKey:@"remoteNotification"];
-  v39 = [v19 content];
-  v40 = [v39 categoryIdentifier];
-  [v16 setContextValue:v40 forKey:@"category"];
+  content4 = [v19 content];
+  categoryIdentifier = [content4 categoryIdentifier];
+  [v16 setContextValue:categoryIdentifier forKey:@"category"];
 
-  v41 = [v19 content];
-  v42 = [v41 threadIdentifier];
-  [v16 setThreadID:v42];
+  content5 = [v19 content];
+  threadIdentifier = [content5 threadIdentifier];
+  [v16 setThreadID:threadIdentifier];
 
   [v16 setContextValue:@"AppNotificationRemote" forKey:@"notificationType"];
-  [v16 setContextValue:v58 forKey:@"BLTSockPuppetAppIdentifierKey"];
-  v43 = [v61 objectForKeyedSubscript:@"WatchKit Simulator Actions"];
+  [v16 setContextValue:identifierCopy forKey:@"BLTSockPuppetAppIdentifierKey"];
+  v43 = [contextCopy objectForKeyedSubscript:@"WatchKit Simulator Actions"];
   if ([v43 count])
   {
     +[NSMutableArray array];
@@ -230,9 +230,9 @@
     *&buf[12] = 1024;
     *&buf[14] = 145;
     *&buf[18] = 2114;
-    *&buf[20] = v59;
+    *&buf[20] = dCopy;
     *&buf[28] = 2114;
-    *&buf[30] = v60;
+    *&buf[30] = iDCopy;
     _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: calling [BLTTestService addBulletin:::::] with sectionID %{public}@, bulletinID %{public}@", buf, 0x26u);
   }
 

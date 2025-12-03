@@ -1,16 +1,16 @@
 @interface ADNewCapService
-- (ADNewCapService)initWithStorageType:(int64_t)a3;
+- (ADNewCapService)initWithStorageType:(int64_t)type;
 - (id)_storageTypeString;
 - (id)clickCountByLine;
 - (id)impressionCountByLine;
 - (void)cleanDownloadData;
-- (void)updateCapData:(id)a3 forType:(int64_t)a4 completionHandler:(id)a5;
-- (void)updateDownloadData:(id)a3 forType:(int64_t)a4 completionHandler:(id)a5;
+- (void)updateCapData:(id)data forType:(int64_t)type completionHandler:(id)handler;
+- (void)updateDownloadData:(id)data forType:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation ADNewCapService
 
-- (ADNewCapService)initWithStorageType:(int64_t)a3
+- (ADNewCapService)initWithStorageType:(int64_t)type
 {
   v54 = *MEMORY[0x277D85DE8];
   v51.receiver = self;
@@ -24,7 +24,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v4->_storageType = a3;
+  v4->_storageType = type;
   v10 = objc_msgSend_sharedInstance(ADSearchAdsSettings, v5, v6, v7, v8);
   v15 = v10;
   storageType = v9->_storageType;
@@ -96,7 +96,7 @@ LABEL_15:
   if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v53 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_264E42000, v50, OS_LOG_TYPE_ERROR, "Unknown Cap storage type: %ld", buf, 0xCu);
   }
 
@@ -107,11 +107,11 @@ LABEL_20:
   return v47;
 }
 
-- (void)updateCapData:(id)a3 forType:(int64_t)a4 completionHandler:(id)a5
+- (void)updateCapData:(id)data forType:(int64_t)type completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = APLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -127,11 +127,11 @@ LABEL_20:
   v22[2] = sub_264E442FC;
   v22[3] = &unk_279B88840;
   objc_copyWeak(v25, buf);
-  v16 = v9;
+  v16 = handlerCopy;
   v24 = v16;
-  v17 = v8;
+  v17 = dataCopy;
   v23 = v17;
-  v25[1] = a4;
+  v25[1] = type;
   objc_msgSend_addOperationWithBlock_(v15, v18, v22, v19, v20);
 
   objc_destroyWeak(v25);
@@ -140,11 +140,11 @@ LABEL_20:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDownloadData:(id)a3 forType:(int64_t)a4 completionHandler:(id)a5
+- (void)updateDownloadData:(id)data forType:(int64_t)type completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = APLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -160,10 +160,10 @@ LABEL_20:
   v22[2] = sub_264E446B4;
   v22[3] = &unk_279B88840;
   objc_copyWeak(v25, buf);
-  v25[1] = a4;
-  v16 = v9;
+  v25[1] = type;
+  v16 = handlerCopy;
   v24 = v16;
-  v17 = v8;
+  v17 = dataCopy;
   v23 = v17;
   objc_msgSend_addOperationWithBlock_(v15, v18, v22, v19, v20);
 

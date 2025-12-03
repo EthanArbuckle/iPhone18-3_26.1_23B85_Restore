@@ -1,34 +1,34 @@
 @interface TVRCDeviceState
-+ (id)arrayOfStatesFromDevices:(id)a3;
-+ (id)deviceStateFromDevice:(id)a3;
-+ (id)setOfStatesFromDevices:(id)a3;
-- (TVRCDeviceState)initWithCoder:(id)a3;
-- (TVRCDeviceState)initWithDevice:(id)a3;
++ (id)arrayOfStatesFromDevices:(id)devices;
++ (id)deviceStateFromDevice:(id)device;
++ (id)setOfStatesFromDevices:(id)devices;
+- (TVRCDeviceState)initWithCoder:(id)coder;
+- (TVRCDeviceState)initWithDevice:(id)device;
 - (id)description;
 - (id)detailedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TVRCDeviceState
 
-+ (id)deviceStateFromDevice:(id)a3
++ (id)deviceStateFromDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[TVRCDeviceState alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[TVRCDeviceState alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
 
-+ (id)setOfStatesFromDevices:(id)a3
++ (id)setOfStatesFromDevices:(id)devices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = devicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -59,16 +59,16 @@
   return v11;
 }
 
-+ (id)arrayOfStatesFromDevices:(id)a3
++ (id)arrayOfStatesFromDevices:(id)devices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = devicesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -99,118 +99,118 @@
   return v11;
 }
 
-- (TVRCDeviceState)initWithDevice:(id)a3
+- (TVRCDeviceState)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v34.receiver = self;
   v34.super_class = TVRCDeviceState;
   v5 = [(TVRCDeviceState *)&v34 init];
   if (v5)
   {
-    v6 = [v4 name];
-    v7 = [v6 copy];
+    name = [deviceCopy name];
+    v7 = [name copy];
     name = v5->_name;
     v5->_name = v7;
 
-    v9 = [v4 identifier];
-    v10 = [v9 copy];
+    identifier = [deviceCopy identifier];
+    v10 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 idsIdentifier];
-    v13 = [v12 copy];
+    idsIdentifier = [deviceCopy idsIdentifier];
+    v13 = [idsIdentifier copy];
     idsIdentifier = v5->_idsIdentifier;
     v5->_idsIdentifier = v13;
 
-    v15 = [v4 alternateIdentifiers];
-    v16 = [v15 copy];
+    alternateIdentifiers = [deviceCopy alternateIdentifiers];
+    v16 = [alternateIdentifiers copy];
     alternateIdentifiers = v5->_alternateIdentifiers;
     v5->_alternateIdentifiers = v16;
 
-    v18 = [v4 model];
-    v19 = [v18 copy];
+    model = [deviceCopy model];
+    v19 = [model copy];
     model = v5->_model;
     v5->_model = v19;
 
-    v21 = [v4 supportedButtons];
-    v22 = [v21 copy];
+    supportedButtons = [deviceCopy supportedButtons];
+    v22 = [supportedButtons copy];
     supportedButtons = v5->_supportedButtons;
     v5->_supportedButtons = v22;
 
-    v5->_connectionState = [v4 connectionState];
-    v24 = [TVRCKeyboardState keyboardStateFromDevice:v4];
+    v5->_connectionState = [deviceCopy connectionState];
+    v24 = [TVRCKeyboardState keyboardStateFromDevice:deviceCopy];
     keyboardState = v5->_keyboardState;
     v5->_keyboardState = v24;
 
-    v5->_pairingCapability = [v4 pairingCapability];
-    v5->_supportsDirectCaptionQueries = [v4 supportsDirectCaptionQueries];
-    v5->_supportsFindMyRemote = [v4 supportsFindMyRemote];
-    v5->_supportsTouchEvents = [v4 supportsTouchEvents];
-    v5->_paired = [v4 paired];
+    v5->_pairingCapability = [deviceCopy pairingCapability];
+    v5->_supportsDirectCaptionQueries = [deviceCopy supportsDirectCaptionQueries];
+    v5->_supportsFindMyRemote = [deviceCopy supportsFindMyRemote];
+    v5->_supportsTouchEvents = [deviceCopy supportsTouchEvents];
+    v5->_paired = [deviceCopy paired];
     disconnectError = v5->_disconnectError;
     v5->_disconnectReason = 5;
     v5->_disconnectError = 0;
 
-    v5->_connectionType = [v4 connectionType];
-    v27 = [v4 pairedRemoteInfo];
-    v28 = [v27 copy];
+    v5->_connectionType = [deviceCopy connectionType];
+    pairedRemoteInfo = [deviceCopy pairedRemoteInfo];
+    v28 = [pairedRemoteInfo copy];
     pairedRemoteInfo = v5->_pairedRemoteInfo;
     v5->_pairedRemoteInfo = v28;
 
-    v30 = [v4 nowPlayingInfo];
-    v31 = [v30 copy];
+    nowPlayingInfo = [deviceCopy nowPlayingInfo];
+    v31 = [nowPlayingInfo copy];
     nowPlayingInfo = v5->_nowPlayingInfo;
     v5->_nowPlayingInfo = v31;
 
-    v5->_classification = [v4 classification];
-    v5->_siriRemoteFindingState = [v4 siriRemoteFindingState];
-    v5->_attentionState = [v4 attentionState];
-    v5->_linkType = [v4 linkType];
+    v5->_classification = [deviceCopy classification];
+    v5->_siriRemoteFindingState = [deviceCopy siriRemoteFindingState];
+    v5->_attentionState = [deviceCopy attentionState];
+    v5->_linkType = [deviceCopy linkType];
   }
 
   return v5;
 }
 
-- (TVRCDeviceState)initWithCoder:(id)a3
+- (TVRCDeviceState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = TVRCDeviceState;
   v5 = [(TVRCDeviceState *)&v37 init];
   if (v5)
   {
-    v5->_connectionState = [v4 decodeIntegerForKey:@"connectionState"];
-    v5->_connectionType = [v4 decodeIntegerForKey:@"connectionType"];
-    v5->_pairingCapability = [v4 decodeIntegerForKey:@"pairingCapability"];
-    v5->_paired = [v4 decodeBoolForKey:@"paired"];
-    v5->_supportsTouchEvents = [v4 decodeBoolForKey:@"supportsTouchEvents"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v5->_connectionState = [coderCopy decodeIntegerForKey:@"connectionState"];
+    v5->_connectionType = [coderCopy decodeIntegerForKey:@"connectionType"];
+    v5->_pairingCapability = [coderCopy decodeIntegerForKey:@"pairingCapability"];
+    v5->_paired = [coderCopy decodeBoolForKey:@"paired"];
+    v5->_supportsTouchEvents = [coderCopy decodeBoolForKey:@"supportsTouchEvents"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsIdentifier"];
     idsIdentifier = v5->_idsIdentifier;
     v5->_idsIdentifier = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"alternateIdentifiers"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"alternateIdentifiers"];
     alternateIdentifiers = v5->_alternateIdentifiers;
     v5->_alternateIdentifiers = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     model = v5->_model;
     v5->_model = v17;
 
     v19 = MEMORY[0x277CBEB98];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"supportedButtons"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"supportedButtons"];
     supportedButtons = v5->_supportedButtons;
     v5->_supportedButtons = v22;
 
@@ -218,60 +218,60 @@
     v25 = objc_opt_class();
     v26 = objc_opt_class();
     v27 = [v24 setWithObjects:{v25, v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"keyboardState"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"keyboardState"];
     keyboardState = v5->_keyboardState;
     v5->_keyboardState = v28;
 
-    v5->_disconnectReason = [v4 decodeIntegerForKey:@"disconnectReason"];
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disconnectError"];
+    v5->_disconnectReason = [coderCopy decodeIntegerForKey:@"disconnectReason"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disconnectError"];
     disconnectError = v5->_disconnectError;
     v5->_disconnectError = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairedRemoteInfo"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairedRemoteInfo"];
     pairedRemoteInfo = v5->_pairedRemoteInfo;
     v5->_pairedRemoteInfo = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nowPlayingInfo"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nowPlayingInfo"];
     nowPlayingInfo = v5->_nowPlayingInfo;
     v5->_nowPlayingInfo = v34;
 
-    v5->_classification = [v4 decodeIntegerForKey:@"classification"];
-    v5->_siriRemoteFindingState = [v4 decodeIntegerForKey:@"siriRemoteFindingState"];
-    v5->_supportsFindMyRemote = [v4 decodeBoolForKey:@"supportsFindMyRemote"];
-    v5->_attentionState = [v4 decodeIntegerForKey:@"attentionState"];
-    v5->_supportsDirectCaptionQueries = [v4 decodeBoolForKey:@"supportsDirectCaptionQueries"];
-    v5->_linkType = [v4 decodeIntegerForKey:@"linkType"];
+    v5->_classification = [coderCopy decodeIntegerForKey:@"classification"];
+    v5->_siriRemoteFindingState = [coderCopy decodeIntegerForKey:@"siriRemoteFindingState"];
+    v5->_supportsFindMyRemote = [coderCopy decodeBoolForKey:@"supportsFindMyRemote"];
+    v5->_attentionState = [coderCopy decodeIntegerForKey:@"attentionState"];
+    v5->_supportsDirectCaptionQueries = [coderCopy decodeBoolForKey:@"supportsDirectCaptionQueries"];
+    v5->_linkType = [coderCopy decodeIntegerForKey:@"linkType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   connectionState = self->_connectionState;
-  v5 = a3;
-  [v5 encodeInteger:connectionState forKey:@"connectionState"];
-  [v5 encodeInteger:self->_connectionType forKey:@"connectionType"];
-  [v5 encodeInteger:self->_pairingCapability forKey:@"pairingCapability"];
-  [v5 encodeBool:self->_paired forKey:@"paired"];
-  [v5 encodeBool:self->_supportsTouchEvents forKey:@"supportsTouchEvents"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_idsIdentifier forKey:@"idsIdentifier"];
-  [v5 encodeObject:self->_alternateIdentifiers forKey:@"alternateIdentifiers"];
-  [v5 encodeObject:self->_model forKey:@"model"];
-  [v5 encodeObject:self->_supportedButtons forKey:@"supportedButtons"];
-  [v5 encodeObject:self->_keyboardState forKey:@"keyboardState"];
-  [v5 encodeInteger:self->_disconnectReason forKey:@"disconnectReason"];
-  [v5 encodeObject:self->_disconnectError forKey:@"disconnectError"];
-  [v5 encodeObject:self->_pairedRemoteInfo forKey:@"pairedRemoteInfo"];
-  [v5 encodeObject:self->_nowPlayingInfo forKey:@"nowPlayingInfo"];
-  [v5 encodeInteger:self->_classification forKey:@"classification"];
-  [v5 encodeInteger:self->_siriRemoteFindingState forKey:@"siriRemoteFindingState"];
-  [v5 encodeBool:self->_supportsFindMyRemote forKey:@"supportsFindMyRemote"];
-  [v5 encodeInteger:self->_attentionState forKey:@"attentionState"];
-  [v5 encodeBool:self->_supportsDirectCaptionQueries forKey:@"supportsDirectCaptionQueries"];
-  [v5 encodeInteger:self->_linkType forKey:@"linkType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:connectionState forKey:@"connectionState"];
+  [coderCopy encodeInteger:self->_connectionType forKey:@"connectionType"];
+  [coderCopy encodeInteger:self->_pairingCapability forKey:@"pairingCapability"];
+  [coderCopy encodeBool:self->_paired forKey:@"paired"];
+  [coderCopy encodeBool:self->_supportsTouchEvents forKey:@"supportsTouchEvents"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_idsIdentifier forKey:@"idsIdentifier"];
+  [coderCopy encodeObject:self->_alternateIdentifiers forKey:@"alternateIdentifiers"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeObject:self->_supportedButtons forKey:@"supportedButtons"];
+  [coderCopy encodeObject:self->_keyboardState forKey:@"keyboardState"];
+  [coderCopy encodeInteger:self->_disconnectReason forKey:@"disconnectReason"];
+  [coderCopy encodeObject:self->_disconnectError forKey:@"disconnectError"];
+  [coderCopy encodeObject:self->_pairedRemoteInfo forKey:@"pairedRemoteInfo"];
+  [coderCopy encodeObject:self->_nowPlayingInfo forKey:@"nowPlayingInfo"];
+  [coderCopy encodeInteger:self->_classification forKey:@"classification"];
+  [coderCopy encodeInteger:self->_siriRemoteFindingState forKey:@"siriRemoteFindingState"];
+  [coderCopy encodeBool:self->_supportsFindMyRemote forKey:@"supportsFindMyRemote"];
+  [coderCopy encodeInteger:self->_attentionState forKey:@"attentionState"];
+  [coderCopy encodeBool:self->_supportsDirectCaptionQueries forKey:@"supportsDirectCaptionQueries"];
+  [coderCopy encodeInteger:self->_linkType forKey:@"linkType"];
 }
 
 - (id)description
@@ -314,9 +314,9 @@
   v19 = TVRCDeviceLinkTypeDescription(self->_linkType);
   [v3 appendString:v19 withName:@"linkType"];
 
-  v20 = [v3 build];
+  build = [v3 build];
 
-  return v20;
+  return build;
 }
 
 - (id)detailedDescription
@@ -360,9 +360,9 @@
 
   v19 = [v3 appendObject:self->_supportedButtons withName:@"supportedButtons"];
   v20 = [v3 appendBool:self->_supportsDirectCaptionQueries withName:@"supportsDirectCaptionQueries"];
-  v21 = [v3 build];
+  build = [v3 build];
 
-  return v21;
+  return build;
 }
 
 @end

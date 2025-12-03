@@ -1,11 +1,11 @@
 @interface _ICLLPlayNowQueueItemsCommand
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addItems:(uint64_t)a1;
+- (uint64_t)addItems:(uint64_t)items;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLPlayNowQueueItemsCommand
@@ -40,23 +40,23 @@ LABEL_6:
   return v7 ^ [(_ICLLRadioSource *)self->_radioSource hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_revision != *(v4 + 12))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_revision != *(equalCopy + 12))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
 LABEL_20:
     v9 = 0;
@@ -65,25 +65,25 @@ LABEL_20:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_position != *(v4 + 4))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_position != *(equalCopy + 4))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_20;
   }
 
   items = self->_items;
-  if (items | *(v4 + 1) && ![(NSMutableArray *)items isEqual:?])
+  if (items | *(equalCopy + 1) && ![(NSMutableArray *)items isEqual:?])
   {
     goto LABEL_20;
   }
 
   preferredPlayItemId = self->_preferredPlayItemId;
-  if (preferredPlayItemId | *(v4 + 3))
+  if (preferredPlayItemId | *(equalCopy + 3))
   {
     if (![(NSString *)preferredPlayItemId isEqual:?])
     {
@@ -92,7 +92,7 @@ LABEL_20:
   }
 
   queueContext = self->_queueContext;
-  if (queueContext | *(v4 + 4))
+  if (queueContext | *(equalCopy + 4))
   {
     if (![(NSString *)queueContext isEqual:?])
     {
@@ -101,7 +101,7 @@ LABEL_20:
   }
 
   radioSource = self->_radioSource;
-  if (radioSource | *(v4 + 5))
+  if (radioSource | *(equalCopy + 5))
   {
     v9 = [(_ICLLRadioSource *)radioSource isEqual:?];
   }
@@ -116,10 +116,10 @@ LABEL_21:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -154,7 +154,7 @@ LABEL_21:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{a3, v21}];
+        v13 = [*(*(&v21 + 1) + 8 * i) copyWithZone:{zone, v21}];
         [(_ICLLPlayNowQueueItemsCommand *)v6 addItems:v13];
       }
 
@@ -164,36 +164,36 @@ LABEL_21:
     while (v10);
   }
 
-  v14 = [(NSString *)self->_preferredPlayItemId copyWithZone:a3];
+  v14 = [(NSString *)self->_preferredPlayItemId copyWithZone:zone];
   v15 = v6[3];
   v6[3] = v14;
 
-  v16 = [(NSString *)self->_queueContext copyWithZone:a3];
+  v16 = [(NSString *)self->_queueContext copyWithZone:zone];
   v17 = v6[4];
   v6[4] = v16;
 
-  v18 = [(_ICLLRadioSource *)self->_radioSource copyWithZone:a3];
+  v18 = [(_ICLLRadioSource *)self->_radioSource copyWithZone:zone];
   v19 = v6[5];
   v6[5] = v18;
 
   return v6;
 }
 
-- (uint64_t)addItems:(uint64_t)a1
+- (uint64_t)addItems:(uint64_t)items
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (items)
   {
-    v5 = *(a1 + 8);
+    v5 = *(items + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(items + 8);
+      *(items + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(items + 8);
     }
 
     v3 = [v5 addObject:v9];
@@ -203,10 +203,10 @@ LABEL_21:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -266,12 +266,12 @@ LABEL_21:
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:self->_revision];
-    [v3 setObject:v5 forKey:@"revision"];
+    [dictionary setObject:v5 forKey:@"revision"];
 
     has = self->_has;
   }
@@ -279,7 +279,7 @@ LABEL_21:
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_position];
-    [v3 setObject:v6 forKey:@"position"];
+    [dictionary setObject:v6 forKey:@"position"];
   }
 
   if ([(NSMutableArray *)self->_items count])
@@ -304,8 +304,8 @@ LABEL_21:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -314,29 +314,29 @@ LABEL_21:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"items"];
+    [dictionary setObject:v7 forKey:@"items"];
   }
 
   preferredPlayItemId = self->_preferredPlayItemId;
   if (preferredPlayItemId)
   {
-    [v3 setObject:preferredPlayItemId forKey:@"preferredPlayItemId"];
+    [dictionary setObject:preferredPlayItemId forKey:@"preferredPlayItemId"];
   }
 
   queueContext = self->_queueContext;
   if (queueContext)
   {
-    [v3 setObject:queueContext forKey:@"queueContext"];
+    [dictionary setObject:queueContext forKey:@"queueContext"];
   }
 
   radioSource = self->_radioSource;
   if (radioSource)
   {
-    v17 = [(_ICLLRadioSource *)radioSource dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"radioSource"];
+    dictionaryRepresentation2 = [(_ICLLRadioSource *)radioSource dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"radioSource"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -345,8 +345,8 @@ LABEL_21:
   v8.receiver = self;
   v8.super_class = _ICLLPlayNowQueueItemsCommand;
   v4 = [(_ICLLPlayNowQueueItemsCommand *)&v8 description];
-  v5 = [(_ICLLPlayNowQueueItemsCommand *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLPlayNowQueueItemsCommand *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

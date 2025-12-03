@@ -1,10 +1,10 @@
 @interface CAMFocusCommand
-- (CAMFocusCommand)initWithCoder:(id)a3;
-- (CAMFocusCommand)initWithFocusMode:(int64_t)a3 atPointOfInterest:(CGPoint)a4 rectSize:(int64_t)a5 smooth:(BOOL)a6 configureSecondaryDevice:(BOOL)a7;
+- (CAMFocusCommand)initWithCoder:(id)coder;
+- (CAMFocusCommand)initWithFocusMode:(int64_t)mode atPointOfInterest:(CGPoint)interest rectSize:(int64_t)size smooth:(BOOL)smooth configureSecondaryDevice:(BOOL)device;
 - (CGPoint)_focusPointOfInterest;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMFocusCommand
@@ -18,48 +18,48 @@
   return result;
 }
 
-- (CAMFocusCommand)initWithFocusMode:(int64_t)a3 atPointOfInterest:(CGPoint)a4 rectSize:(int64_t)a5 smooth:(BOOL)a6 configureSecondaryDevice:(BOOL)a7
+- (CAMFocusCommand)initWithFocusMode:(int64_t)mode atPointOfInterest:(CGPoint)interest rectSize:(int64_t)size smooth:(BOOL)smooth configureSecondaryDevice:(BOOL)device
 {
-  y = a4.y;
-  x = a4.x;
+  y = interest.y;
+  x = interest.x;
   v17.receiver = self;
   v17.super_class = CAMFocusCommand;
   v13 = [(CAMCaptureCommand *)&v17 initWithSubcommands:0];
   v14 = v13;
   if (v13)
   {
-    v13->__focusMode = a3;
-    v13->__rectSize = a5;
+    v13->__focusMode = mode;
+    v13->__rectSize = size;
     v13->__focusPointOfInterest.x = x;
     v13->__focusPointOfInterest.y = y;
-    v13->__shouldUseSmoothFocus = a6;
-    v13->__configureSecondaryDevice = a7;
+    v13->__shouldUseSmoothFocus = smooth;
+    v13->__configureSecondaryDevice = device;
     v15 = v13;
   }
 
   return v14;
 }
 
-- (CAMFocusCommand)initWithCoder:(id)a3
+- (CAMFocusCommand)initWithCoder:(id)coder
 {
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = CAMFocusCommand;
-  [(CAMCaptureCommand *)&v3 encodeWithCoder:a3];
+  [(CAMCaptureCommand *)&v3 encodeWithCoder:coder];
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"NSCoding not implemented"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CAMFocusCommand;
-  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v8 copyWithZone:zone];
   v4[4] = [(CAMFocusCommand *)self _focusMode];
   v4[5] = [(CAMFocusCommand *)self _rectSize];
   [(CAMFocusCommand *)self _focusPointOfInterest];
@@ -70,23 +70,23 @@
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
   if ([(CAMFocusCommand *)self _configureSecondaryDevice])
   {
-    v6 = [v4 currentSecondaryVideoDevice];
+    currentSecondaryVideoDevice = [contextCopy currentSecondaryVideoDevice];
 
-    v5 = v6;
+    currentVideoDevice = currentSecondaryVideoDevice;
   }
 
-  v7 = +[CAMCaptureConversions captureFocusModeForFocusMode:isPerformingContrastBasedFocus:](CAMCaptureConversions, "captureFocusModeForFocusMode:isPerformingContrastBasedFocus:", -[CAMFocusCommand _focusMode](self, "_focusMode"), [v5 isAdjustingFocus]);
+  v7 = +[CAMCaptureConversions captureFocusModeForFocusMode:isPerformingContrastBasedFocus:](CAMCaptureConversions, "captureFocusModeForFocusMode:isPerformingContrastBasedFocus:", -[CAMFocusCommand _focusMode](self, "_focusMode"), [currentVideoDevice isAdjustingFocus]);
   [(CAMFocusCommand *)self _focusPointOfInterest];
   v9 = v8;
   v11 = v10;
-  v12 = [(CAMFocusCommand *)self _shouldUseSmoothFocus];
+  _shouldUseSmoothFocus = [(CAMFocusCommand *)self _shouldUseSmoothFocus];
   v13 = os_log_create("com.apple.camera", "CaptureCommand");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -102,33 +102,33 @@
 
   if (v9 <= 1.0 && v9 >= 0.0 && v11 <= 1.0 && v11 >= 0.0)
   {
-    v14 = [(CAMFocusCommand *)self _rectSize];
-    if (v14 == 1)
+    _rectSize = [(CAMFocusCommand *)self _rectSize];
+    if (_rectSize == 1)
     {
-      if ([v5 isFocusRectOfInterestSupported])
+      if ([currentVideoDevice isFocusRectOfInterestSupported])
       {
-        [v5 defaultRectForFocusPointOfInterest:{v9, v11}];
+        [currentVideoDevice defaultRectForFocusPointOfInterest:{v9, v11}];
         v16 = v15;
         v18 = v17;
-        [v5 minFocusRectOfInterestSize];
-        [v5 setFocusRectOfInterest:{v9 - fmax(v16 * 0.4, v19) * 0.5, v11 - fmax(v18 * 0.4, v20) * 0.5}];
+        [currentVideoDevice minFocusRectOfInterestSize];
+        [currentVideoDevice setFocusRectOfInterest:{v9 - fmax(v16 * 0.4, v19) * 0.5, v11 - fmax(v18 * 0.4, v20) * 0.5}];
         goto LABEL_20;
       }
 
       v21 = os_log_create("com.apple.camera", "CaptureCommand");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        [(CAMFocusCommand *)v5 executeWithContext:v21];
+        [(CAMFocusCommand *)currentVideoDevice executeWithContext:v21];
       }
 
       goto LABEL_19;
     }
 
-    if (!v14)
+    if (!_rectSize)
     {
-      if ([v5 isFocusPointOfInterestSupported])
+      if ([currentVideoDevice isFocusPointOfInterestSupported])
       {
-        [v5 setFocusPointOfInterest:{v9, v11}];
+        [currentVideoDevice setFocusPointOfInterest:{v9, v11}];
         goto LABEL_20;
       }
 
@@ -141,7 +141,7 @@
         v27 = 138543618;
         v28 = v22;
         v29 = 2114;
-        v30 = v5;
+        v30 = currentVideoDevice;
         _os_log_debug_impl(&dword_1A3640000, v21, OS_LOG_TYPE_DEBUG, "Failed to set focus point of interest (%{public}@), as it is not supported by %{public}@", &v27, 0x16u);
       }
 
@@ -150,22 +150,22 @@ LABEL_19:
   }
 
 LABEL_20:
-  v23 = [v4 currentMovieFileOutput];
+  currentMovieFileOutput = [contextCopy currentMovieFileOutput];
 
-  if (v23 && [v5 isSmoothAutoFocusSupported])
+  if (currentMovieFileOutput && [currentVideoDevice isSmoothAutoFocusSupported])
   {
     v24 = os_log_create("com.apple.camera", "CaptureCommand");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      [(CAMFocusCommand *)v5 executeWithContext:v12, v24];
+      [(CAMFocusCommand *)currentVideoDevice executeWithContext:_shouldUseSmoothFocus, v24];
     }
 
-    [v5 setSmoothAutoFocusEnabled:v12];
+    [currentVideoDevice setSmoothAutoFocusEnabled:_shouldUseSmoothFocus];
   }
 
-  if ([v5 isFocusModeSupported:v7])
+  if ([currentVideoDevice isFocusModeSupported:v7])
   {
-    [v5 setFocusMode:v7];
+    [currentVideoDevice setFocusMode:v7];
   }
 
   else
@@ -173,7 +173,7 @@ LABEL_20:
     v25 = os_log_create("com.apple.camera", "CaptureCommand");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      [(CAMFocusCommand *)v5 executeWithContext:v7, v25];
+      [(CAMFocusCommand *)currentVideoDevice executeWithContext:v7, v25];
     }
   }
 }

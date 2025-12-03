@@ -1,12 +1,12 @@
 @interface SSRSpeakerProfileEmbeddingServiceClient
-- (SSRSpeakerProfileEmbeddingServiceClient)initWithDelegate:(id)a3;
+- (SSRSpeakerProfileEmbeddingServiceClient)initWithDelegate:(id)delegate;
 - (SSRSpeakerProfileEmbeddingServiceDelegate)delegate;
-- (id)_remoteServiceProxyObjectWithErrorHandler:(id)a3;
+- (id)_remoteServiceProxyObjectWithErrorHandler:(id)handler;
 - (void)_createClientConnection;
 - (void)connectToServiceIfNeeded;
 - (void)dealloc;
 - (void)invalidate;
-- (void)refreshEmbeddingsforLanguageCode:(id)a3 withCompletion:(id)a4;
+- (void)refreshEmbeddingsforLanguageCode:(id)code withCompletion:(id)completion;
 @end
 
 @implementation SSRSpeakerProfileEmbeddingServiceClient
@@ -153,10 +153,10 @@ uint64_t __66__SSRSpeakerProfileEmbeddingServiceClient__createClientConnection__
   return [v3 setXpcConnection:0];
 }
 
-- (id)_remoteServiceProxyObjectWithErrorHandler:(id)a3
+- (id)_remoteServiceProxyObjectWithErrorHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x277D01970];
   v6 = *MEMORY[0x277D01970];
   if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -173,7 +173,7 @@ uint64_t __66__SSRSpeakerProfileEmbeddingServiceClient__createClientConnection__
     v12[1] = 3221225472;
     v12[2] = __85__SSRSpeakerProfileEmbeddingServiceClient__remoteServiceProxyObjectWithErrorHandler___block_invoke;
     v12[3] = &unk_278579690;
-    v13 = v4;
+    v13 = handlerCopy;
     v8 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v12];
   }
 
@@ -206,20 +206,20 @@ uint64_t __85__SSRSpeakerProfileEmbeddingServiceClient__remoteServiceProxyObject
   return result;
 }
 
-- (void)refreshEmbeddingsforLanguageCode:(id)a3 withCompletion:(id)a4
+- (void)refreshEmbeddingsforLanguageCode:(id)code withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__SSRSpeakerProfileEmbeddingServiceClient_refreshEmbeddingsforLanguageCode_withCompletion___block_invoke;
   block[3] = &unk_278579218;
-  v12 = v6;
-  v13 = v7;
+  v12 = codeCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = codeCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -392,10 +392,10 @@ void __53__SSRSpeakerProfileEmbeddingServiceClient_invalidate__block_invoke(uint
   dispatch_async(queue, block);
 }
 
-- (SSRSpeakerProfileEmbeddingServiceClient)initWithDelegate:(id)a3
+- (SSRSpeakerProfileEmbeddingServiceClient)initWithDelegate:(id)delegate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = SSRSpeakerProfileEmbeddingServiceClient;
   v5 = [(SSRSpeakerProfileEmbeddingServiceClient *)&v11 init];
@@ -406,7 +406,7 @@ void __53__SSRSpeakerProfileEmbeddingServiceClient_invalidate__block_invoke(uint
     queue = v5->_queue;
     v5->_queue = v6;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v8 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
     {

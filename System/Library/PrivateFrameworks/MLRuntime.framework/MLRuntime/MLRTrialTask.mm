@@ -1,16 +1,16 @@
 @interface MLRTrialTask
-- (MLRTrialTask)initWithTriClient:(id)a3;
+- (MLRTrialTask)initWithTriClient:(id)client;
 - (id)description;
 @end
 
 @implementation MLRTrialTask
 
-- (MLRTrialTask)initWithTriClient:(id)a3
+- (MLRTrialTask)initWithTriClient:(id)client
 {
-  v4 = [MEMORY[0x277D05600] coreChannel];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+  coreChannel = [MEMORY[0x277D05600] coreChannel];
+  if (os_log_type_enabled(coreChannel, OS_LOG_TYPE_ERROR))
   {
-    [MLRTrialTask initWithTriClient:v4];
+    [MLRTrialTask initWithTriClient:coreChannel];
   }
 
   return 0;

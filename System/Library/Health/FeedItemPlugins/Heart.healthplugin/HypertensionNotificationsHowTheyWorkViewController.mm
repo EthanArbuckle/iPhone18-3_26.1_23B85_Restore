@@ -1,6 +1,6 @@
 @interface HypertensionNotificationsHowTheyWorkViewController
-- (_TtC5Heart50HypertensionNotificationsHowTheyWorkViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC5Heart50HypertensionNotificationsHowTheyWorkViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC5Heart50HypertensionNotificationsHowTheyWorkViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC5Heart50HypertensionNotificationsHowTheyWorkViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)hxui_cancelButtonTapped;
 - (void)hxui_primaryFooterButtonTapped;
 - (void)viewDidLoad;
@@ -10,7 +10,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D7090E4();
 }
 
@@ -20,8 +20,8 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
-    sub_29D8FD2C0(v5, v4);
+    selfCopy = self;
+    sub_29D8FD2C0(selfCopy, v4);
     sub_29D936978();
   }
 }
@@ -32,20 +32,20 @@
   if (Strong)
   {
     v4 = Strong;
-    v5 = self;
+    selfCopy = self;
     sub_29D8528E0(v4);
     sub_29D936978();
   }
 }
 
-- (_TtC5Heart50HypertensionNotificationsHowTheyWorkViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Heart50HypertensionNotificationsHowTheyWorkViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5Heart50HypertensionNotificationsHowTheyWorkViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC5Heart50HypertensionNotificationsHowTheyWorkViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

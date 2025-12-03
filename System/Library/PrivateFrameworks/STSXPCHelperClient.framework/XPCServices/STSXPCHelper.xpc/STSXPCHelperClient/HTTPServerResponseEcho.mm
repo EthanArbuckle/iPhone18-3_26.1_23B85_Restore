@@ -1,23 +1,23 @@
 @interface HTTPServerResponseEcho
-- (id)responseForRequest:(id)a3;
+- (id)responseForRequest:(id)request;
 @end
 
 @implementation HTTPServerResponseEcho
 
-- (id)responseForRequest:(id)a3
+- (id)responseForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[NSMutableString string];
-  v5 = [v3 HTTPMethod];
-  v6 = [v3 URL];
-  [v4 appendFormat:@"%@ %@\n", v5, v6];
+  hTTPMethod = [requestCopy HTTPMethod];
+  v6 = [requestCopy URL];
+  [v4 appendFormat:@"%@ %@\n", hTTPMethod, v6];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [v3 allHTTPHeaderFields];
-  v8 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+  v8 = [allHTTPHeaderFields countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v8)
   {
     v9 = v8;
@@ -28,35 +28,35 @@
       {
         if (*v31 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allHTTPHeaderFields);
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
-        v13 = [v3 allHTTPHeaderFields];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        allHTTPHeaderFields2 = [requestCopy allHTTPHeaderFields];
+        v14 = [allHTTPHeaderFields2 objectForKeyedSubscript:v12];
 
         [v4 appendFormat:@"%@: %@\n", v12, v14];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v9 = [allHTTPHeaderFields countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [v3 HTTPBody];
+  hTTPBody = [requestCopy HTTPBody];
 
-  if (v15)
+  if (hTTPBody)
   {
-    v16 = [v3 HTTPBody];
-    [v4 appendFormat:@"Body: %lu bytes\n", objc_msgSend(v16, "length")];
+    hTTPBody2 = [requestCopy HTTPBody];
+    [v4 appendFormat:@"Body: %lu bytes\n", objc_msgSend(hTTPBody2, "length")];
   }
 
   else
   {
-    v17 = [v3 HTTPBodyStream];
+    hTTPBodyStream = [requestCopy HTTPBodyStream];
 
-    if (v17)
+    if (hTTPBodyStream)
     {
       v18 = @"Body: stream\n";
     }
@@ -74,11 +74,11 @@
   [v20 setObject:@"CFNetworkPPTServer-ResponseEcho" forKeyedSubscript:@"Server"];
   [v20 setObject:@"keep-alive" forKeyedSubscript:@"Connection"];
   v21 = [NSNumber numberWithUnsignedInteger:v19];
-  v22 = [v21 stringValue];
-  [v20 setObject:v22 forKeyedSubscript:@"Content-Length"];
+  stringValue = [v21 stringValue];
+  [v20 setObject:stringValue forKeyedSubscript:@"Content-Length"];
 
   v23 = [NSHTTPURLResponse alloc];
-  v24 = [v3 URL];
+  v24 = [requestCopy URL];
   v25 = [v23 initWithURL:v24 statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:v20];
 
   v26 = [HTTPServerResponse alloc];

@@ -1,32 +1,32 @@
 @interface NLRouterSchemaNLRouterSubComponentHandleStarted
-- (BOOL)isEqual:(id)a3;
-- (NLRouterSchemaNLRouterSubComponentHandleStarted)initWithDictionary:(id)a3;
-- (NLRouterSchemaNLRouterSubComponentHandleStarted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLRouterSchemaNLRouterSubComponentHandleStarted)initWithDictionary:(id)dictionary;
+- (NLRouterSchemaNLRouterSubComponentHandleStarted)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLRouterSchemaNLRouterSubComponentHandleStarted
 
-- (NLRouterSchemaNLRouterSubComponentHandleStarted)initWithDictionary:(id)a3
+- (NLRouterSchemaNLRouterSubComponentHandleStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = NLRouterSchemaNLRouterSubComponentHandleStarted;
   v5 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"nlRouterSubComponent"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"nlRouterSubComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NLRouterSchemaNLRouterSubComponentHandleStarted setNlRouterSubComponent:](v5, "setNlRouterSubComponent:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"assetVersion"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"assetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (NLRouterSchemaNLRouterSubComponentHandleStarted)initWithJSON:(id)a3
+- (NLRouterSchemaNLRouterSubComponentHandleStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_assetVersion)
   {
-    v4 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetVersion"];
+    assetVersion = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
+    v5 = [assetVersion copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetVersion"];
   }
 
   if (*&self->_has)
@@ -97,12 +97,12 @@
       v7 = off_1E78DB720[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"nlRouterSubComponent"];
+    [dictionary setObject:v7 forKeyedSubscript:@"nlRouterSubComponent"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -120,22 +120,22 @@
   return [(NSString *)self->_assetVersion hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (nlRouterSubComponent = self->_nlRouterSubComponent, nlRouterSubComponent == [v4 nlRouterSubComponent]))
+      if ((*&self->_has & 1) == 0 || (nlRouterSubComponent = self->_nlRouterSubComponent, nlRouterSubComponent == [equalCopy nlRouterSubComponent]))
       {
-        v6 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
-        v7 = [v4 assetVersion];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        assetVersion = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
+        assetVersion2 = [equalCopy assetVersion];
+        v8 = assetVersion2;
+        if ((assetVersion != 0) != (assetVersion2 == 0))
         {
-          v9 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
-          if (!v9)
+          assetVersion3 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
+          if (!assetVersion3)
           {
 
 LABEL_13:
@@ -143,10 +143,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
-          v12 = [v4 assetVersion];
-          v13 = [v11 isEqual:v12];
+          v10 = assetVersion3;
+          assetVersion4 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
+          assetVersion5 = [equalCopy assetVersion];
+          v13 = [assetVersion4 isEqual:assetVersion5];
 
           if (v13)
           {
@@ -167,21 +167,21 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
+  assetVersion = [(NLRouterSchemaNLRouterSubComponentHandleStarted *)self assetVersion];
 
-  v5 = v6;
-  if (v4)
+  v5 = toCopy;
+  if (assetVersion)
   {
     PBDataWriterWriteStringField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 

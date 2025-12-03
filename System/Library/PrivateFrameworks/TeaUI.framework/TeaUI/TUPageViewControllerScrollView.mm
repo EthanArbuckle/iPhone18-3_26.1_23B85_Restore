@@ -1,23 +1,23 @@
 @interface TUPageViewControllerScrollView
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (TUPageViewControllerScrollViewAccessibilityDelegate)accessibilityDelegate;
 @end
 
 @implementation TUPageViewControllerScrollView
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 2)
+  if (scroll == 2)
   {
-    v4 = [(TUPageViewControllerScrollView *)self accessibilityDelegate];
-    [v4 accessibilityHandleRequestToGoForewardForPageViewControllerScrollView:self];
+    accessibilityDelegate = [(TUPageViewControllerScrollView *)self accessibilityDelegate];
+    [accessibilityDelegate accessibilityHandleRequestToGoForewardForPageViewControllerScrollView:self];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (scroll == 1)
   {
-    v4 = [(TUPageViewControllerScrollView *)self accessibilityDelegate];
-    [v4 accessibilityHandleRequestToGoBackForPageViewControllerScrollView:self];
+    accessibilityDelegate = [(TUPageViewControllerScrollView *)self accessibilityDelegate];
+    [accessibilityDelegate accessibilityHandleRequestToGoBackForPageViewControllerScrollView:self];
 LABEL_5:
 
     return 1;

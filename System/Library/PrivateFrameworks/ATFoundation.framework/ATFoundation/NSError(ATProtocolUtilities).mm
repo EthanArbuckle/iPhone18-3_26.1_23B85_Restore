@@ -8,12 +8,12 @@
 - (id)ATPError
 {
   v2 = objc_opt_new();
-  [v2 setCode:{objc_msgSend(a1, "code")}];
-  v3 = [a1 domain];
-  [v2 setDomain:v3];
+  [v2 setCode:{objc_msgSend(self, "code")}];
+  domain = [self domain];
+  [v2 setDomain:domain];
 
-  v4 = [a1 localizedDescription];
-  [v2 setErrorDescription:v4];
+  localizedDescription = [self localizedDescription];
+  [v2 setErrorDescription:localizedDescription];
 
   return v2;
 }
@@ -22,26 +22,26 @@
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [v4 errorDescription];
+  errorDescription = [v4 errorDescription];
 
-  v6 = [v4 domain];
-  v7 = [v4 code];
-  v8 = v7;
-  if (v5)
+  domain = [v4 domain];
+  code = [v4 code];
+  v8 = code;
+  if (errorDescription)
   {
-    v9 = v7;
+    v9 = code;
     v15 = *MEMORY[0x277CCA450];
-    v10 = [v4 errorDescription];
+    errorDescription2 = [v4 errorDescription];
 
-    v16[0] = v10;
+    v16[0] = errorDescription2;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    v12 = [a1 initWithDomain:v6 code:v9 userInfo:v11];
+    v12 = [self initWithDomain:domain code:v9 userInfo:v11];
   }
 
   else
   {
 
-    v12 = [a1 initWithDomain:v6 code:v8 userInfo:0];
+    v12 = [self initWithDomain:domain code:v8 userInfo:0];
   }
 
   v13 = *MEMORY[0x277D85DE8];

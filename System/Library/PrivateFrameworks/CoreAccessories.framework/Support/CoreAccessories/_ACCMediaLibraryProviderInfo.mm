@@ -57,12 +57,12 @@
 
 - (id)description
 {
-  v3 = [(_ACCMediaLibraryProviderInfo *)self connection];
-  v4 = [(_ACCMediaLibraryProviderInfo *)self remoteObject];
-  v5 = [(_ACCMediaLibraryProviderInfo *)self serverRemote];
-  v6 = [(_ACCMediaLibraryProviderInfo *)self providerUID];
-  v7 = [(_ACCMediaLibraryProviderInfo *)self mediaLibraryList];
-  v8 = [NSString stringWithFormat:@"<_ACCMediaLibraryProviderInfo>[\n    _connection=%@\n    _remoteObject=%@\n    _serverRemote=%@\n    _providerUID=%@\n    _mediaLibraryList=%@]", v3, v4, v5, v6, v7];
+  connection = [(_ACCMediaLibraryProviderInfo *)self connection];
+  remoteObject = [(_ACCMediaLibraryProviderInfo *)self remoteObject];
+  serverRemote = [(_ACCMediaLibraryProviderInfo *)self serverRemote];
+  providerUID = [(_ACCMediaLibraryProviderInfo *)self providerUID];
+  mediaLibraryList = [(_ACCMediaLibraryProviderInfo *)self mediaLibraryList];
+  v8 = [NSString stringWithFormat:@"<_ACCMediaLibraryProviderInfo>[\n    _connection=%@\n    _remoteObject=%@\n    _serverRemote=%@\n    _providerUID=%@\n    _mediaLibraryList=%@]", connection, remoteObject, serverRemote, providerUID, mediaLibraryList];
 
   return v8;
 }

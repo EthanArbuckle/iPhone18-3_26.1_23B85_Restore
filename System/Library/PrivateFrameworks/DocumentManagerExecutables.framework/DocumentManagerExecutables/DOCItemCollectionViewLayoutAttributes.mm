@@ -1,15 +1,15 @@
 @interface DOCItemCollectionViewLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC26DocumentManagerExecutables37DOCItemCollectionViewLayoutAttributes)init;
 @end
 
 @implementation DOCItemCollectionViewLayoutAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -18,7 +18,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = DOCItemCollectionViewLayoutAttributes.isEqual(_:)(v8);

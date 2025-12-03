@@ -1,24 +1,24 @@
 @interface HUPresenceUserCell
-- (HUPresenceUserCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUPresenceUserCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupConstraints;
 - (void)_updateCustomSeparatorInset;
 - (void)_updateDescriptionText;
 - (void)prepareForReuse;
-- (void)setChecked:(BOOL)a3;
-- (void)setDeviceName:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setUserHandle:(id)a3;
-- (void)setUserName:(id)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setDeviceName:(id)name;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setUserHandle:(id)handle;
+- (void)setUserName:(id)name;
 @end
 
 @implementation HUPresenceUserCell
 
-- (HUPresenceUserCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUPresenceUserCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v45.receiver = self;
   v45.super_class = HUPresenceUserCell;
-  v7 = [(HUPresenceUserCell *)&v45 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(HUPresenceUserCell *)&v45 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = objc_alloc_init(HUTitleDescriptionContentView);
@@ -26,13 +26,13 @@
     v7->_titleDescriptionView = v8;
 
     [(HUTitleDescriptionContentView *)v7->_titleDescriptionView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(HUPresenceUserCell *)v7 contentView];
-    [v10 addSubview:v7->_titleDescriptionView];
+    contentView = [(HUPresenceUserCell *)v7 contentView];
+    [contentView addSubview:v7->_titleDescriptionView];
 
     v11 = MEMORY[0x277CBDBF8];
-    v12 = [MEMORY[0x277D145B0] defaultStore];
-    v13 = [v12 backingStore];
-    v14 = [v11 settingsWithContactStore:v13 threeDTouchEnabled:0];
+    defaultStore = [MEMORY[0x277D145B0] defaultStore];
+    backingStore = [defaultStore backingStore];
+    v14 = [v11 settingsWithContactStore:backingStore threeDTouchEnabled:0];
 
     v15 = [objc_alloc(MEMORY[0x277CBDBF0]) initWithSettings:v14];
     avatarViewController = v7->_avatarViewController;
@@ -40,20 +40,20 @@
 
     objc_initWeak(&location, v7);
     v17 = [HULayoutContainerView alloc];
-    v18 = [(HUPresenceUserCell *)v7 avatarViewController];
-    v19 = [v18 view];
+    avatarViewController = [(HUPresenceUserCell *)v7 avatarViewController];
+    view = [avatarViewController view];
     v39 = MEMORY[0x277D85DD0];
     v40 = 3221225472;
     v41 = __52__HUPresenceUserCell_initWithStyle_reuseIdentifier___block_invoke;
     v42 = &unk_277DBF330;
     objc_copyWeak(&v43, &location);
-    v20 = [(HULayoutContainerView *)v17 initWithContentView:v19 layoutBlock:&v39];
+    v20 = [(HULayoutContainerView *)v17 initWithContentView:view layoutBlock:&v39];
     avatarContainerView = v7->_avatarContainerView;
     v7->_avatarContainerView = v20;
 
     [(HULayoutContainerView *)v7->_avatarContainerView setTranslatesAutoresizingMaskIntoConstraints:0, v39, v40, v41, v42];
-    v22 = [(HUPresenceUserCell *)v7 contentView];
-    [v22 addSubview:v7->_avatarContainerView];
+    contentView2 = [(HUPresenceUserCell *)v7 contentView];
+    [contentView2 addSubview:v7->_avatarContainerView];
 
     v23 = objc_opt_new();
     [(HUPresenceUserCell *)v7 setBackgroundView:v23];
@@ -63,22 +63,22 @@
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    v32 = [(HUPresenceUserCell *)v7 backgroundView];
-    [v32 setFrame:{v25, v27, v29, v31}];
+    backgroundView = [(HUPresenceUserCell *)v7 backgroundView];
+    [backgroundView setFrame:{v25, v27, v29, v31}];
 
-    v33 = [(HUPresenceUserCell *)v7 backgroundView];
-    [v33 setAutoresizingMask:18];
+    backgroundView2 = [(HUPresenceUserCell *)v7 backgroundView];
+    [backgroundView2 setAutoresizingMask:18];
 
     v34 = objc_alloc_init(MEMORY[0x277D755E8]);
     checkmarkImageView = v7->_checkmarkImageView;
     v7->_checkmarkImageView = v34;
 
     [(UIImageView *)v7->_checkmarkImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v36 = [(HUPresenceUserCell *)v7 contentView];
-    [v36 addSubview:v7->_checkmarkImageView];
+    contentView3 = [(HUPresenceUserCell *)v7 contentView];
+    [contentView3 addSubview:v7->_checkmarkImageView];
 
-    v37 = [(HUPresenceUserCell *)v7 checkmarkImageView];
-    [(UITableViewCell *)v7 hu_configureCheckmarkForImageView:v37 checked:0];
+    checkmarkImageView = [(HUPresenceUserCell *)v7 checkmarkImageView];
+    [(UITableViewCell *)v7 hu_configureCheckmarkForImageView:checkmarkImageView checked:0];
 
     [(HUPresenceUserCell *)v7 _setupConstraints];
     [(HUPresenceUserCell *)v7 _updateCustomSeparatorInset];
@@ -108,54 +108,54 @@ void __52__HUPresenceUserCell_initWithStyle_reuseIdentifier___block_invoke(uint6
   [(HUPresenceUserCell *)self setLocationUnavailable:0];
 }
 
-- (void)setUserName:(id)a3
+- (void)setUserName:(id)name
 {
-  objc_storeStrong(&self->_userName, a3);
-  v5 = a3;
-  v6 = [(HUPresenceUserCell *)self titleDescriptionView];
-  [v6 setTitleText:v5];
+  objc_storeStrong(&self->_userName, name);
+  nameCopy = name;
+  titleDescriptionView = [(HUPresenceUserCell *)self titleDescriptionView];
+  [titleDescriptionView setTitleText:nameCopy];
 }
 
-- (void)setDeviceName:(id)a3
+- (void)setDeviceName:(id)name
 {
-  objc_storeStrong(&self->_deviceName, a3);
+  objc_storeStrong(&self->_deviceName, name);
 
   [(HUPresenceUserCell *)self _updateDescriptionText];
 }
 
-- (void)setUserHandle:(id)a3
+- (void)setUserHandle:(id)handle
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_userHandle, a3);
-  if (v5)
+  handleCopy = handle;
+  objc_storeStrong(&self->_userHandle, handle);
+  if (handleCopy)
   {
-    v6 = [MEMORY[0x277D145B0] defaultStore];
-    v7 = [(HUPresenceUserCell *)self avatarViewController];
-    v8 = [v7 descriptorForRequiredKeys];
-    v15[0] = v8;
+    defaultStore = [MEMORY[0x277D145B0] defaultStore];
+    avatarViewController = [(HUPresenceUserCell *)self avatarViewController];
+    descriptorForRequiredKeys = [avatarViewController descriptorForRequiredKeys];
+    v15[0] = descriptorForRequiredKeys;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-    v10 = [v6 contactForUserHandle:v5 withKeys:v9];
+    v10 = [defaultStore contactForUserHandle:handleCopy withKeys:v9];
 
     v14 = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
-    v12 = [(HUPresenceUserCell *)self avatarViewController];
-    [v12 setContacts:v11];
+    avatarViewController2 = [(HUPresenceUserCell *)self avatarViewController];
+    [avatarViewController2 setContacts:v11];
   }
 
   else
   {
-    v13 = [(HUPresenceUserCell *)self avatarViewController];
-    [v13 setContacts:MEMORY[0x277CBEBF8]];
+    avatarViewController3 = [(HUPresenceUserCell *)self avatarViewController];
+    [avatarViewController3 setContacts:MEMORY[0x277CBEBF8]];
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  self->_disabled = a3;
-  v4 = [(HUPresenceUserCell *)self titleDescriptionView];
-  [v4 setDisabled:v3];
+  disabledCopy = disabled;
+  self->_disabled = disabled;
+  titleDescriptionView = [(HUPresenceUserCell *)self titleDescriptionView];
+  [titleDescriptionView setDisabled:disabledCopy];
 }
 
 - (void)_updateDescriptionText
@@ -170,97 +170,97 @@ void __52__HUPresenceUserCell_initWithStyle_reuseIdentifier___block_invoke(uint6
     [(HUPresenceUserCell *)self deviceName];
   }
   v4 = ;
-  v3 = [(HUPresenceUserCell *)self titleDescriptionView];
-  [v3 setDescriptionText:v4];
+  titleDescriptionView = [(HUPresenceUserCell *)self titleDescriptionView];
+  [titleDescriptionView setDescriptionText:v4];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if (self->_checked != a3)
+  if (self->_checked != checked)
   {
-    v4 = a3;
-    self->_checked = a3;
-    v6 = [(HUPresenceUserCell *)self checkmarkImageView];
-    [(UITableViewCell *)self hu_configureCheckmarkForImageView:v6 checked:v4];
+    checkedCopy = checked;
+    self->_checked = checked;
+    checkmarkImageView = [(HUPresenceUserCell *)self checkmarkImageView];
+    [(UITableViewCell *)self hu_configureCheckmarkForImageView:checkmarkImageView checked:checkedCopy];
   }
 }
 
 - (void)_setupConstraints
 {
   v64[12] = *MEMORY[0x277D85DE8];
-  v3 = [(HUPresenceUserCell *)self contentView];
-  v4 = [v3 heightAnchor];
-  v5 = [v4 constraintGreaterThanOrEqualToConstant:60.0];
+  contentView = [(HUPresenceUserCell *)self contentView];
+  heightAnchor = [contentView heightAnchor];
+  v5 = [heightAnchor constraintGreaterThanOrEqualToConstant:60.0];
 
   LODWORD(v6) = 1148829696;
   v63 = v5;
   [v5 setPriority:v6];
   v39 = MEMORY[0x277CCAAD0];
   v64[0] = v5;
-  v62 = [(HUPresenceUserCell *)self checkmarkImageView];
-  v60 = [v62 leadingAnchor];
-  v61 = [(HUPresenceUserCell *)self contentView];
-  v59 = [v61 layoutMarginsGuide];
-  v58 = [v59 leadingAnchor];
-  v57 = [v60 constraintEqualToAnchor:v58 constant:28.0];
+  checkmarkImageView = [(HUPresenceUserCell *)self checkmarkImageView];
+  leadingAnchor = [checkmarkImageView leadingAnchor];
+  contentView2 = [(HUPresenceUserCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:28.0];
   v64[1] = v57;
-  v56 = [(HUPresenceUserCell *)self checkmarkImageView];
-  v54 = [v56 centerYAnchor];
-  v55 = [(HUPresenceUserCell *)self contentView];
-  v53 = [v55 layoutMarginsGuide];
-  v52 = [v53 centerYAnchor];
-  v51 = [v54 constraintEqualToAnchor:v52];
+  checkmarkImageView2 = [(HUPresenceUserCell *)self checkmarkImageView];
+  centerYAnchor = [checkmarkImageView2 centerYAnchor];
+  contentView3 = [(HUPresenceUserCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  centerYAnchor2 = [layoutMarginsGuide2 centerYAnchor];
+  v51 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v64[2] = v51;
-  v50 = [(HUPresenceUserCell *)self checkmarkImageView];
-  v48 = [v50 heightAnchor];
-  v49 = [(HUPresenceUserCell *)self contentView];
-  v47 = [v49 heightAnchor];
-  v46 = [v48 constraintLessThanOrEqualToAnchor:v47];
+  checkmarkImageView3 = [(HUPresenceUserCell *)self checkmarkImageView];
+  heightAnchor2 = [checkmarkImageView3 heightAnchor];
+  contentView4 = [(HUPresenceUserCell *)self contentView];
+  heightAnchor3 = [contentView4 heightAnchor];
+  v46 = [heightAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3];
   v64[3] = v46;
-  v45 = [(HUPresenceUserCell *)self avatarContainerView];
-  v43 = [v45 leadingAnchor];
-  v44 = [(HUPresenceUserCell *)self checkmarkImageView];
-  v42 = [v44 trailingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 constant:15.0];
+  avatarContainerView = [(HUPresenceUserCell *)self avatarContainerView];
+  leadingAnchor3 = [avatarContainerView leadingAnchor];
+  checkmarkImageView4 = [(HUPresenceUserCell *)self checkmarkImageView];
+  trailingAnchor = [checkmarkImageView4 trailingAnchor];
+  v41 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:15.0];
   v64[4] = v41;
-  v40 = [(HUPresenceUserCell *)self avatarContainerView];
-  v37 = [v40 centerYAnchor];
-  v38 = [(HUPresenceUserCell *)self contentView];
-  v36 = [v38 centerYAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  avatarContainerView2 = [(HUPresenceUserCell *)self avatarContainerView];
+  centerYAnchor3 = [avatarContainerView2 centerYAnchor];
+  contentView5 = [(HUPresenceUserCell *)self contentView];
+  centerYAnchor4 = [contentView5 centerYAnchor];
+  v35 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v64[5] = v35;
-  v34 = [(HUPresenceUserCell *)self avatarContainerView];
-  v33 = [v34 heightAnchor];
-  v32 = [v33 constraintEqualToConstant:37.0];
+  avatarContainerView3 = [(HUPresenceUserCell *)self avatarContainerView];
+  heightAnchor4 = [avatarContainerView3 heightAnchor];
+  v32 = [heightAnchor4 constraintEqualToConstant:37.0];
   v64[6] = v32;
-  v31 = [(HUPresenceUserCell *)self avatarContainerView];
-  v30 = [v31 widthAnchor];
-  v29 = [v30 constraintEqualToConstant:37.0];
+  avatarContainerView4 = [(HUPresenceUserCell *)self avatarContainerView];
+  widthAnchor = [avatarContainerView4 widthAnchor];
+  v29 = [widthAnchor constraintEqualToConstant:37.0];
   v64[7] = v29;
-  v28 = [(HUPresenceUserCell *)self titleDescriptionView];
-  v26 = [v28 leadingAnchor];
-  v27 = [(HUPresenceUserCell *)self avatarContainerView];
-  v25 = [v27 trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:12.0];
+  titleDescriptionView = [(HUPresenceUserCell *)self titleDescriptionView];
+  leadingAnchor4 = [titleDescriptionView leadingAnchor];
+  avatarContainerView5 = [(HUPresenceUserCell *)self avatarContainerView];
+  trailingAnchor2 = [avatarContainerView5 trailingAnchor];
+  v24 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:12.0];
   v64[8] = v24;
-  v23 = [(HUPresenceUserCell *)self titleDescriptionView];
-  v21 = [v23 topAnchor];
-  v22 = [(HUPresenceUserCell *)self contentView];
-  v20 = [v22 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  titleDescriptionView2 = [(HUPresenceUserCell *)self titleDescriptionView];
+  topAnchor = [titleDescriptionView2 topAnchor];
+  contentView6 = [(HUPresenceUserCell *)self contentView];
+  topAnchor2 = [contentView6 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v64[9] = v19;
-  v18 = [(HUPresenceUserCell *)self titleDescriptionView];
-  v17 = [v18 bottomAnchor];
-  v7 = [(HUPresenceUserCell *)self contentView];
-  v8 = [v7 bottomAnchor];
-  v9 = [v17 constraintEqualToAnchor:v8];
+  titleDescriptionView3 = [(HUPresenceUserCell *)self titleDescriptionView];
+  bottomAnchor = [titleDescriptionView3 bottomAnchor];
+  contentView7 = [(HUPresenceUserCell *)self contentView];
+  bottomAnchor2 = [contentView7 bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v64[10] = v9;
-  v10 = [(HUPresenceUserCell *)self titleDescriptionView];
-  v11 = [v10 trailingAnchor];
-  v12 = [(HUPresenceUserCell *)self contentView];
-  v13 = [v12 readableContentGuide];
-  v14 = [v13 trailingAnchor];
-  v15 = [v11 constraintEqualToAnchor:v14];
+  titleDescriptionView4 = [(HUPresenceUserCell *)self titleDescriptionView];
+  trailingAnchor3 = [titleDescriptionView4 trailingAnchor];
+  contentView8 = [(HUPresenceUserCell *)self contentView];
+  readableContentGuide = [contentView8 readableContentGuide];
+  trailingAnchor4 = [readableContentGuide trailingAnchor];
+  v15 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v64[11] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:12];
   [v39 activateConstraints:v16];
@@ -268,8 +268,8 @@ void __52__HUPresenceUserCell_initWithStyle_reuseIdentifier___block_invoke(uint6
 
 - (void)_updateCustomSeparatorInset
 {
-  v4 = [(HUPresenceUserCell *)self avatarContainerView];
-  [v4 frame];
+  avatarContainerView = [(HUPresenceUserCell *)self avatarContainerView];
+  [avatarContainerView frame];
   [(HUPresenceUserCell *)self setSeparatorInset:0.0, v3, 0.0, 0.0];
 }
 

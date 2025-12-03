@@ -1,11 +1,11 @@
 @interface SUConcernItem
-- (SUConcernItem)initWithDictionary:(id)a3;
+- (SUConcernItem)initWithDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation SUConcernItem
 
-- (SUConcernItem)initWithDictionary:(id)a3
+- (SUConcernItem)initWithDictionary:(id)dictionary
 {
   v4 = [(SUConcernItem *)self init];
   if (v4)
@@ -13,19 +13,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 objectForKey:@"default"];
+      v5 = [dictionary objectForKey:@"default"];
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v5 BOOLValue];
+        bOOLValue = [v5 BOOLValue];
       }
 
       else
       {
-        v6 = 0;
+        bOOLValue = 0;
       }
 
-      [(SUConcernItem *)v4 setDefaultConcern:v6];
-      v7 = [a3 objectForKey:@"problem-id"];
+      [(SUConcernItem *)v4 setDefaultConcern:bOOLValue];
+      v7 = [dictionary objectForKey:@"problem-id"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -38,7 +38,7 @@
       }
 
       [(SUConcernItem *)v4 setIdentifier:v8];
-      v9 = [a3 objectForKey:@"title"];
+      v9 = [dictionary objectForKey:@"title"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {

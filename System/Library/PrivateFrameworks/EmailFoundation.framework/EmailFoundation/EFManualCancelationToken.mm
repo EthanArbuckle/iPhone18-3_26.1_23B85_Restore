@@ -1,39 +1,39 @@
 @interface EFManualCancelationToken
-+ (EFManualCancelationToken)tokenWithCancelationBlock:(id)a3;
-+ (EFManualCancelationToken)tokenWithLabel:(id)a3 cancelationBlock:(id)a4;
-- (void)addCancelable:(id)a3;
++ (EFManualCancelationToken)tokenWithCancelationBlock:(id)block;
++ (EFManualCancelationToken)tokenWithLabel:(id)label cancelationBlock:(id)block;
+- (void)addCancelable:(id)cancelable;
 @end
 
 @implementation EFManualCancelationToken
 
-+ (EFManualCancelationToken)tokenWithLabel:(id)a3 cancelationBlock:(id)a4
++ (EFManualCancelationToken)tokenWithLabel:(id)label cancelationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initWithLabel:v6];
-  [v8 addCancelationBlock:v7];
+  labelCopy = label;
+  blockCopy = block;
+  v8 = [[self alloc] initWithLabel:labelCopy];
+  [v8 addCancelationBlock:blockCopy];
 
   return v8;
 }
 
-+ (EFManualCancelationToken)tokenWithCancelationBlock:(id)a3
++ (EFManualCancelationToken)tokenWithCancelationBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 addCancelationBlock:v4];
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  [v5 addCancelationBlock:blockCopy];
 
   return v5;
 }
 
-- (void)addCancelable:(id)a3
+- (void)addCancelable:(id)cancelable
 {
-  v4 = a3;
+  cancelableCopy = cancelable;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__EFManualCancelationToken_addCancelable___block_invoke;
   v6[3] = &unk_1E8248580;
-  v7 = v4;
-  v5 = v4;
+  v7 = cancelableCopy;
+  v5 = cancelableCopy;
   [(EFManualCancelationToken *)self addCancelationBlock:v6];
 }
 

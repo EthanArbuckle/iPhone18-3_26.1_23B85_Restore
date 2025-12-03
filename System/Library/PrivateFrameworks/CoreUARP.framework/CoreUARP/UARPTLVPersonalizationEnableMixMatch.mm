@@ -1,12 +1,12 @@
 @interface UARPTLVPersonalizationEnableMixMatch
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationEnableMixMatch)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setEnableMixMatch:(unsigned __int8)a3;
+- (void)setEnableMixMatch:(unsigned __int8)match;
 @end
 
 @implementation UARPTLVPersonalizationEnableMixMatch
@@ -18,11 +18,11 @@
   return [(UARPMetaDataTLV8 *)&v3 init];
 }
 
-- (void)setEnableMixMatch:(unsigned __int8)a3
+- (void)setEnableMixMatch:(unsigned __int8)match
 {
   obj = self;
   objc_sync_enter(obj);
-  *(&obj->super.super._tlvLength + 4) = a3;
+  *(&obj->super.super._tlvLength + 4) = match;
   objc_sync_exit(obj);
 }
 
@@ -83,17 +83,17 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     v5 = objc_opt_new();
-    v6 = [v4 unsignedCharValue];
+    unsignedCharValue = [v4 unsignedCharValue];
 
-    [v5 setEnableMixMatch:v6];
+    [v5 setEnableMixMatch:unsignedCharValue];
   }
 
   else
@@ -104,12 +104,12 @@
   return v5;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 1)
+  if (length == 1)
   {
     v5 = objc_opt_new();
-    [v5 setEnableMixMatch:*a4];
+    [v5 setEnableMixMatch:*value];
   }
 
   else

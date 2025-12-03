@@ -1,66 +1,66 @@
 @interface SharingBTLEAdvertisementPayload
-+ (id)dateEpochStart:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualHashedPayloadBytes:(id)a3;
-- (BOOL)matchesItem:(id)a3;
++ (id)dateEpochStart:(id)start;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualHashedPayloadBytes:(id)bytes;
+- (BOOL)matchesItem:(id)item;
 - (NSDate)currentUntil;
 - (NSDate)epochEnd;
 - (NSDate)time;
 - (NSDate)validUntil;
-- (SharingBTLEAdvertisementPayload)initWithAdvertisedBytes:(id)a3 options:(id)a4;
-- (SharingBTLEAdvertisementPayload)initWithItem:(id)a3 isCurrent:(BOOL)a4 when:(id)a5 versionFlags:(unsigned __int8)a6;
-- (SharingBTLEAdvertisementPayload)initWithSFActivityAdvertisement:(id)a3;
-- (SharingBTLEAdvertisementPayload)initWithType:(unint64_t)a3 string:(id)a4 dynamicType:(id)a5 teamID:(id)a6 webpageURL:(id)a7 options:(id)a8 isCurrent:(BOOL)a9 when:(id)a10;
-- (SharingBTLEAdvertisementPayload)initWithType:(unint64_t)a3 string:(id)a4 dynamicType:(id)a5 teamID:(id)a6 webpageURL:(id)a7 options:(id)a8 isCurrent:(BOOL)a9 when:(id)a10 versionFlags:(unsigned __int8)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SharingBTLEAdvertisementPayload)initWithAdvertisedBytes:(id)bytes options:(id)options;
+- (SharingBTLEAdvertisementPayload)initWithItem:(id)item isCurrent:(BOOL)current when:(id)when versionFlags:(unsigned __int8)flags;
+- (SharingBTLEAdvertisementPayload)initWithSFActivityAdvertisement:(id)advertisement;
+- (SharingBTLEAdvertisementPayload)initWithType:(unint64_t)type string:(id)string dynamicType:(id)dynamicType teamID:(id)d webpageURL:(id)l options:(id)options isCurrent:(BOOL)current when:(id)self0;
+- (SharingBTLEAdvertisementPayload)initWithType:(unint64_t)type string:(id)string dynamicType:(id)dynamicType teamID:(id)d webpageURL:(id)l options:(id)options isCurrent:(BOOL)current when:(id)self0 versionFlags:(unsigned __int8)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)now;
 - (int)advertisementKind;
-- (void)setCurrent:(BOOL)a3;
-- (void)setPayloadBytes:(id)a3;
+- (void)setCurrent:(BOOL)current;
+- (void)setPayloadBytes:(id)bytes;
 @end
 
 @implementation SharingBTLEAdvertisementPayload
 
-- (SharingBTLEAdvertisementPayload)initWithItem:(id)a3 isCurrent:(BOOL)a4 when:(id)a5 versionFlags:(unsigned __int8)a6
+- (SharingBTLEAdvertisementPayload)initWithItem:(id)item isCurrent:(BOOL)current when:(id)when versionFlags:(unsigned __int8)flags
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 type];
-  v12 = [v9 activityType];
-  v13 = [v9 dynamicActivityType];
-  v14 = [v9 teamIdentifier];
-  v15 = [v9 webpageURL];
-  v16 = [v9 options];
-  LOBYTE(v20) = a6;
-  LOBYTE(v19) = a4;
-  v17 = [(SharingBTLEAdvertisementPayload *)self initWithType:v11 string:v12 dynamicType:v13 teamID:v14 webpageURL:v15 options:v16 isCurrent:v19 when:v10 versionFlags:v20];
+  itemCopy = item;
+  whenCopy = when;
+  type = [itemCopy type];
+  activityType = [itemCopy activityType];
+  dynamicActivityType = [itemCopy dynamicActivityType];
+  teamIdentifier = [itemCopy teamIdentifier];
+  webpageURL = [itemCopy webpageURL];
+  options = [itemCopy options];
+  LOBYTE(v20) = flags;
+  LOBYTE(v19) = current;
+  v17 = [(SharingBTLEAdvertisementPayload *)self initWithType:type string:activityType dynamicType:dynamicActivityType teamID:teamIdentifier webpageURL:webpageURL options:options isCurrent:v19 when:whenCopy versionFlags:v20];
 
   return v17;
 }
 
-- (SharingBTLEAdvertisementPayload)initWithType:(unint64_t)a3 string:(id)a4 dynamicType:(id)a5 teamID:(id)a6 webpageURL:(id)a7 options:(id)a8 isCurrent:(BOOL)a9 when:(id)a10 versionFlags:(unsigned __int8)a11
+- (SharingBTLEAdvertisementPayload)initWithType:(unint64_t)type string:(id)string dynamicType:(id)dynamicType teamID:(id)d webpageURL:(id)l options:(id)options isCurrent:(BOOL)current when:(id)self0 versionFlags:(unsigned __int8)self1
 {
-  v69 = a4;
-  v70 = a5;
-  v71 = a6;
-  v72 = a7;
-  v17 = a8;
-  v73 = a10;
+  stringCopy = string;
+  dynamicTypeCopy = dynamicType;
+  dCopy = d;
+  lCopy = l;
+  optionsCopy = options;
+  whenCopy = when;
   v74.receiver = self;
   v74.super_class = SharingBTLEAdvertisementPayload;
   v18 = [(SharingBTLEAdvertisementPayload *)&v74 init];
   if (v18)
   {
-    v19 = v69;
-    v68 = v70;
-    v20 = v71;
-    v21 = v72;
+    v19 = stringCopy;
+    v68 = dynamicTypeCopy;
+    v20 = dCopy;
+    v21 = lCopy;
     v22 = 0;
     v23 = 1;
-    if (a3 > 2)
+    if (type > 2)
     {
-      switch(a3)
+      switch(type)
       {
         case 3uLL:
           v22 = v19;
@@ -118,16 +118,16 @@ LABEL_22:
       }
 
       v33 = v31;
-      v34 = [v31 bytes];
-      v35 = *v34;
-      *(v18 + 11) = *(v34 + 3);
+      bytes = [v31 bytes];
+      v35 = *bytes;
+      *(v18 + 11) = *(bytes + 3);
       *(v18 + 2) = v35;
       v18[15] = 0;
       if (v21)
       {
         v36 = v21;
-        v37 = [v36 scheme];
-        v38 = v37 == 0;
+        scheme = [v36 scheme];
+        v38 = scheme == 0;
 
         if (v38)
         {
@@ -135,8 +135,8 @@ LABEL_22:
 
         else
         {
-          v39 = [v36 scheme];
-          if ([v39 compare:@"http" options:1])
+          scheme2 = [v36 scheme];
+          if ([scheme2 compare:@"http" options:1])
           {
 
 LABEL_32:
@@ -144,8 +144,8 @@ LABEL_32:
             goto LABEL_33;
           }
 
-          v40 = [v36 scheme];
-          v41 = [v40 compare:@"https" options:1] == 0;
+          scheme3 = [v36 scheme];
+          v41 = [scheme3 compare:@"https" options:1] == 0;
 
           if (!v41)
           {
@@ -155,82 +155,82 @@ LABEL_32:
       }
 
 LABEL_33:
-      if (v17)
+      if (optionsCopy)
       {
-        v42 = [v17 objectForKeyedSubscript:_LSUserActivityContainsFileProviderURLKey];
-        v43 = [v42 BOOLValue];
+        v42 = [optionsCopy objectForKeyedSubscript:_LSUserActivityContainsFileProviderURLKey];
+        bOOLValue = [v42 BOOLValue];
 
-        if (v43)
+        if (bOOLValue)
         {
           v18[15] |= 2u;
         }
 
-        v44 = [v17 objectForKeyedSubscript:_UAUserActivityContainsCloudDocsKey];
-        v45 = [v44 BOOLValue];
+        v44 = [optionsCopy objectForKeyedSubscript:_UAUserActivityContainsCloudDocsKey];
+        bOOLValue2 = [v44 BOOLValue];
 
-        if (v45)
+        if (bOOLValue2)
         {
           v18[15] |= 4u;
         }
 
-        v46 = [v17 objectForKeyedSubscript:@"UAPasteboardAvailable"];
-        v47 = [v46 BOOLValue];
+        v46 = [optionsCopy objectForKeyedSubscript:@"UAPasteboardAvailable"];
+        bOOLValue3 = [v46 BOOLValue];
 
-        if (v47)
+        if (bOOLValue3)
         {
           v18[15] |= 8u;
-          v48 = [v17 objectForKeyedSubscript:@"UAPasteboardVersionBit"];
-          v49 = [v48 BOOLValue];
+          v48 = [optionsCopy objectForKeyedSubscript:@"UAPasteboardVersionBit"];
+          bOOLValue4 = [v48 BOOLValue];
 
-          if (v49)
+          if (bOOLValue4)
           {
             v18[15] |= 0x10u;
           }
         }
 
-        v50 = [v17 objectForKeyedSubscript:UAUserActivityAutoPullActivitiesListKey];
-        v51 = [v50 BOOLValue];
+        v50 = [optionsCopy objectForKeyedSubscript:UAUserActivityAutoPullActivitiesListKey];
+        bOOLValue5 = [v50 BOOLValue];
 
-        if (v51)
+        if (bOOLValue5)
         {
           v18[15] |= 0x20u;
         }
 
-        v52 = [v17 objectForKeyedSubscript:@"UAUserActivityAdvertiserHasMoreActivities"];
-        v53 = [v52 BOOLValue];
+        v52 = [optionsCopy objectForKeyedSubscript:@"UAUserActivityAdvertiserHasMoreActivities"];
+        bOOLValue6 = [v52 BOOLValue];
 
-        if (v53)
+        if (bOOLValue6)
         {
           v18[15] |= 0x40u;
         }
 
-        v54 = [v17 objectForKeyedSubscript:@"UAUserActivityItemIsNotActiveKey"];
-        v55 = [v54 BOOLValue];
+        v54 = [optionsCopy objectForKeyedSubscript:@"UAUserActivityItemIsNotActiveKey"];
+        bOOLValue7 = [v54 BOOLValue];
 
-        if (v55)
+        if (bOOLValue7)
         {
           v18[15] |= 0x80u;
         }
 
-        v56 = [v17 copy];
+        v56 = [optionsCopy copy];
         v57 = *(v18 + 5);
         *(v18 + 5) = v56;
       }
 
-      v58 = v73;
-      if (!v73)
+      v58 = whenCopy;
+      if (!whenCopy)
       {
         v58 = +[NSDate date];
       }
 
       [v18 setWhen:v58];
-      if (!v73)
+      if (!whenCopy)
       {
       }
 
-      v59 = [v18 when];
-      v60 = [SharingBTLEAdvertisementPayload dateEpochStart:v59];
-      [v59 timeIntervalSinceDate:v60];
+      when = [v18 when];
+      v60 = [SharingBTLEAdvertisementPayload dateEpochStart:when];
+      [when timeIntervalSinceDate:v60];
       v62 = fmax(trunc(v61) * 0.25, 0.0);
       v63 = v62;
       if (v62 > 124.0)
@@ -238,7 +238,7 @@ LABEL_33:
         LOBYTE(v63) = -1;
       }
 
-      if (a9)
+      if (current)
       {
         v64 = v63 | 0x80;
       }
@@ -249,17 +249,17 @@ LABEL_33:
       }
 
       v18[16] = v64;
-      v65 = [v18 when];
-      v66 = [SharingBTLEAdvertisementPayload dateEpochStart:v65];
+      when2 = [v18 when];
+      v66 = [SharingBTLEAdvertisementPayload dateEpochStart:when2];
       [v18 setEpochStart:v66];
 
 LABEL_58:
       goto LABEL_59;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         v25 = _LSCopyAdvertisementStringForTeamIdentifierAndActivityType();
         v22 = [NSString stringWithFormat:@"%@#%@", @"NOTIFICATION", v25];
@@ -272,7 +272,7 @@ LABEL_58:
 
     if ([v19 isEqual:@"NSUserActivityTypeBrowsingWeb"])
     {
-      v27 = [v21 host];
+      host = [v21 host];
       v23 = 2;
     }
 
@@ -287,11 +287,11 @@ LABEL_58:
         goto LABEL_21;
       }
 
-      v27 = _LSCopyAdvertisementStringForTeamIdentifierAndActivityType();
+      host = _LSCopyAdvertisementStringForTeamIdentifierAndActivityType();
       v23 = 1;
     }
 
-    v22 = v27;
+    v22 = host;
     goto LABEL_21;
   }
 
@@ -300,16 +300,16 @@ LABEL_59:
   return v18;
 }
 
-- (SharingBTLEAdvertisementPayload)initWithType:(unint64_t)a3 string:(id)a4 dynamicType:(id)a5 teamID:(id)a6 webpageURL:(id)a7 options:(id)a8 isCurrent:(BOOL)a9 when:(id)a10
+- (SharingBTLEAdvertisementPayload)initWithType:(unint64_t)type string:(id)string dynamicType:(id)dynamicType teamID:(id)d webpageURL:(id)l options:(id)options isCurrent:(BOOL)current when:(id)self0
 {
   LOBYTE(v12) = 0;
-  LOBYTE(v11) = a9;
-  return [(SharingBTLEAdvertisementPayload *)self initWithType:a3 string:a4 dynamicType:a5 teamID:a6 webpageURL:a7 options:a8 isCurrent:v11 when:a10 versionFlags:v12];
+  LOBYTE(v11) = current;
+  return [(SharingBTLEAdvertisementPayload *)self initWithType:type string:string dynamicType:dynamicType teamID:d webpageURL:l options:options isCurrent:v11 when:when versionFlags:v12];
 }
 
-- (SharingBTLEAdvertisementPayload)initWithSFActivityAdvertisement:(id)a3
+- (SharingBTLEAdvertisementPayload)initWithSFActivityAdvertisement:(id)advertisement
 {
-  v4 = a3;
+  advertisementCopy = advertisement;
   v28.receiver = self;
   v28.super_class = SharingBTLEAdvertisementPayload;
   v5 = [(SharingBTLEAdvertisementPayload *)&v28 init];
@@ -319,27 +319,27 @@ LABEL_59:
     activityUUID = v5->_activityUUID;
     v5->_activityUUID = 0;
 
-    v8 = [v4 advertisementPayload];
-    if (v8)
+    advertisementPayload = [advertisementCopy advertisementPayload];
+    if (advertisementPayload)
     {
-      v9 = [v4 advertisementPayload];
-      v10 = [v9 length];
+      advertisementPayload2 = [advertisementCopy advertisementPayload];
+      v10 = [advertisementPayload2 length];
 
       if (v10 == 9)
       {
-        v11 = [v4 advertisementPayload];
-        v12 = [v11 bytes];
-        v13 = *v12;
-        v6->_bytes.timeOffset = v12[8];
+        advertisementPayload3 = [advertisementCopy advertisementPayload];
+        bytes = [advertisementPayload3 bytes];
+        v13 = *bytes;
+        v6->_bytes.timeOffset = bytes[8];
         *v6->_bytes.hashedAdvertisementBytes = v13;
       }
     }
 
-    v14 = [v4 options];
-    if (v14)
+    options = [advertisementCopy options];
+    if (options)
     {
-      v15 = [v4 options];
-      v16 = [NSMutableDictionary dictionaryWithDictionary:v15];
+      options2 = [advertisementCopy options];
+      v16 = [NSMutableDictionary dictionaryWithDictionary:options2];
     }
 
     else
@@ -347,18 +347,18 @@ LABEL_59:
       v16 = +[NSMutableDictionary dictionary];
     }
 
-    v17 = [v4 options];
+    options3 = [advertisementCopy options];
     options = v6->_options;
-    v6->_options = v17;
+    v6->_options = options3;
 
     v19 = +[NSDate date];
     v20 = [SharingBTLEAdvertisementPayload dateEpochStart:v19];
     epochStart = v6->_epochStart;
     v6->_epochStart = v20;
 
-    v22 = [(SharingBTLEAdvertisementPayload *)v6 time];
+    time = [(SharingBTLEAdvertisementPayload *)v6 time];
     when = v6->_when;
-    v6->_when = v22;
+    v6->_when = time;
 
     optionBits = v6->_bytes.optionBits;
     if (optionBits)
@@ -415,10 +415,10 @@ LABEL_59:
   return v6;
 }
 
-- (SharingBTLEAdvertisementPayload)initWithAdvertisedBytes:(id)a3 options:(id)a4
+- (SharingBTLEAdvertisementPayload)initWithAdvertisedBytes:(id)bytes options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  bytesCopy = bytes;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = SharingBTLEAdvertisementPayload;
   v8 = [(SharingBTLEAdvertisementPayload *)&v18 init];
@@ -428,9 +428,9 @@ LABEL_59:
     activityUUID = v8->_activityUUID;
     v8->_activityUUID = 0;
 
-    if (v7)
+    if (optionsCopy)
     {
-      v11 = [v7 copy];
+      v11 = [optionsCopy copy];
     }
 
     else
@@ -441,22 +441,22 @@ LABEL_59:
     options = v9->_options;
     v9->_options = v11;
 
-    if (v6)
+    if (bytesCopy)
     {
-      if ([v6 length] == 9)
+      if ([bytesCopy length] == 9)
       {
-        v13 = [v6 bytes];
-        v14 = *v13;
-        v9->_bytes.timeOffset = v13[8];
+        bytes = [bytesCopy bytes];
+        v14 = *bytes;
+        v9->_bytes.timeOffset = bytes[8];
         *v9->_bytes.hashedAdvertisementBytes = v14;
         goto LABEL_11;
       }
 
-      if ([v6 length] == 7)
+      if ([bytesCopy length] == 7)
       {
-        v15 = [v6 bytes];
-        v16 = *v15;
-        *&v9->_bytes.hashedAdvertisementBytes[3] = *(v15 + 3);
+        bytes2 = [bytesCopy bytes];
+        v16 = *bytes2;
+        *&v9->_bytes.hashedAdvertisementBytes[3] = *(bytes2 + 3);
         *v9->_bytes.hashedAdvertisementBytes = v16;
         *&v9->_bytes.optionBits = 0;
         goto LABEL_11;
@@ -472,7 +472,7 @@ LABEL_11:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SharingBTLEAdvertisementPayload alloc];
   v5 = [NSData dataWithBytes:&self->_bytes length:9];
@@ -480,21 +480,21 @@ LABEL_11:
 
   if (v6)
   {
-    v7 = [(SharingBTLEAdvertisementPayload *)self epochStart];
+    epochStart = [(SharingBTLEAdvertisementPayload *)self epochStart];
     epochStart = v6->_epochStart;
-    v6->_epochStart = v7;
+    v6->_epochStart = epochStart;
   }
 
   return v6;
 }
 
-- (void)setPayloadBytes:(id)a3
+- (void)setPayloadBytes:(id)bytes
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  bytesCopy = bytes;
+  v5 = bytesCopy;
+  if (bytesCopy)
   {
-    if ([v4 length] != 8)
+    if ([bytesCopy length] != 8)
     {
       __assert_rtn("[SharingBTLEAdvertisementPayload setPayloadBytes:]", "SharingAdvertisementPayload.mm", 376, "[payloadBytes length] == sizeof( sizeof( _bytes.hashedAdvertisementBytes))");
     }
@@ -509,9 +509,9 @@ LABEL_11:
   }
 }
 
-- (void)setCurrent:(BOOL)a3
+- (void)setCurrent:(BOOL)current
 {
-  if (a3)
+  if (current)
   {
     v3 = 0x80;
   }
@@ -541,22 +541,22 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(SharingBTLEAdvertisementPayload *)self optionBits];
-    if (v5 == [(SharingBTLEAdvertisementPayload *)v4 optionBits]&& ((v6 = [(SharingBTLEAdvertisementPayload *)self isCurrent], v6 == [(SharingBTLEAdvertisementPayload *)v4 isCurrent]) || (v7 = [(SharingBTLEAdvertisementPayload *)self timeOffset], v7 == [(SharingBTLEAdvertisementPayload *)v4 timeOffset])))
+    optionBits = [(SharingBTLEAdvertisementPayload *)self optionBits];
+    if (optionBits == [(SharingBTLEAdvertisementPayload *)equalCopy optionBits]&& ((v6 = [(SharingBTLEAdvertisementPayload *)self isCurrent], v6 == [(SharingBTLEAdvertisementPayload *)equalCopy isCurrent]) || (v7 = [(SharingBTLEAdvertisementPayload *)self timeOffset], v7 == [(SharingBTLEAdvertisementPayload *)equalCopy timeOffset])))
     {
-      v8 = [(SharingBTLEAdvertisementPayload *)self payloadBytes];
-      v9 = [(SharingBTLEAdvertisementPayload *)v4 payloadBytes];
-      v10 = [v8 isEqual:v9];
+      payloadBytes = [(SharingBTLEAdvertisementPayload *)self payloadBytes];
+      payloadBytes2 = [(SharingBTLEAdvertisementPayload *)equalCopy payloadBytes];
+      v10 = [payloadBytes isEqual:payloadBytes2];
     }
 
     else
@@ -568,33 +568,33 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)isEqualHashedPayloadBytes:(id)a3
+- (BOOL)isEqualHashedPayloadBytes:(id)bytes
 {
-  if (!a3)
+  if (!bytes)
   {
     return 0;
   }
 
-  return *self->_bytes.hashedAdvertisementBytes == *(a3 + 2) && *&self->_bytes.hashedAdvertisementBytes[3] == *(a3 + 11);
+  return *self->_bytes.hashedAdvertisementBytes == *(bytes + 2) && *&self->_bytes.hashedAdvertisementBytes[3] == *(bytes + 11);
 }
 
-- (BOOL)matchesItem:(id)a3
+- (BOOL)matchesItem:(id)item
 {
-  v4 = a3;
-  v5 = [[SharingBTLEAdvertisementPayload alloc] initWithItem:v4 isCurrent:0 when:0];
-  v6 = [(SharingBTLEAdvertisementPayload *)self payloadBytes];
-  v7 = [v6 bytes];
-  v8 = [(SharingBTLEAdvertisementPayload *)v5 payloadBytes];
-  v9 = [v8 bytes];
-  v11 = *v7 == *v9 && *(v7 + 3) == *(v9 + 3);
+  itemCopy = item;
+  v5 = [[SharingBTLEAdvertisementPayload alloc] initWithItem:itemCopy isCurrent:0 when:0];
+  payloadBytes = [(SharingBTLEAdvertisementPayload *)self payloadBytes];
+  bytes = [payloadBytes bytes];
+  payloadBytes2 = [(SharingBTLEAdvertisementPayload *)v5 payloadBytes];
+  bytes2 = [payloadBytes2 bytes];
+  v11 = *bytes == *bytes2 && *(bytes + 3) == *(bytes2 + 3);
 
   return v11;
 }
 
 - (id)description
 {
-  v3 = [(SharingBTLEAdvertisementPayload *)self payloadBytes];
-  v4 = sub_100006EF4(v3);
+  payloadBytes = [(SharingBTLEAdvertisementPayload *)self payloadBytes];
+  v4 = sub_100006EF4(payloadBytes);
   v5 = &stru_1000C67D0;
   if ([(SharingBTLEAdvertisementPayload *)self isCurrent])
   {
@@ -606,7 +606,7 @@ LABEL_11:
     v6 = &stru_1000C67D0;
   }
 
-  v7 = [(SharingBTLEAdvertisementPayload *)self timeOffset];
+  timeOffset = [(SharingBTLEAdvertisementPayload *)self timeOffset];
   if (([(SharingBTLEAdvertisementPayload *)self optionBits]& 1) != 0)
   {
     v8 = @" u";
@@ -646,25 +646,25 @@ LABEL_11:
     }
   }
 
-  v11 = [(SharingBTLEAdvertisementPayload *)self optionBits];
+  optionBits = [(SharingBTLEAdvertisementPayload *)self optionBits];
   v12 = " ap";
-  if ((v11 & 0x20) == 0)
+  if ((optionBits & 0x20) == 0)
   {
     v12 = "";
   }
 
-  v13 = [NSString stringWithFormat:@"$%@/%@%d%@%@%s%s%s", v4, v6, v7, v8, v5, v9, v10, v12];
+  v13 = [NSString stringWithFormat:@"$%@/%@%d%@%@%s%s%s", v4, v6, timeOffset, v8, v5, v9, v10, v12];
 
   return v13;
 }
 
-+ (id)dateEpochStart:(id)a3
++ (id)dateEpochStart:(id)start
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  startCopy = start;
+  v4 = startCopy;
+  if (startCopy)
   {
-    [v3 timeIntervalSinceReferenceDate];
+    [startCopy timeIntervalSinceReferenceDate];
     v6 = [NSDate dateWithTimeIntervalSinceReferenceDate:trunc(v5 / 496.0) * 496.0];
   }
 
@@ -678,7 +678,7 @@ LABEL_11:
 
 - (NSDate)time
 {
-  v2 = [(SharingBTLEAdvertisementPayload *)self timeOffset];
+  timeOffset = [(SharingBTLEAdvertisementPayload *)self timeOffset];
   v3 = +[NSDate date];
   v4 = [SharingBTLEAdvertisementPayload dateEpochStart:v3];
   [v3 timeIntervalSinceReferenceDate];
@@ -692,7 +692,7 @@ LABEL_11:
     v10 = v8;
   }
 
-  if (v2 == 255)
+  if (timeOffset == 255)
   {
     v20 = sub_100001A30(0);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -707,7 +707,7 @@ LABEL_11:
   else
   {
     v11 = v10 >> 2;
-    v12 = (v2 & 0x7F);
+    v12 = (timeOffset & 0x7F);
     v13 = 4 * ((v10 >> 2) - v12);
     v14 = -496 - v13;
     if (v13 + 496 > 247)
@@ -815,8 +815,8 @@ LABEL_11:
 {
   if ([(SharingBTLEAdvertisementPayload *)self isCurrent])
   {
-    v3 = [(SharingBTLEAdvertisementPayload *)self when];
-    if (v3)
+    when = [(SharingBTLEAdvertisementPayload *)self when];
+    if (when)
     {
       [(SharingBTLEAdvertisementPayload *)self when];
     }
@@ -841,16 +841,16 @@ LABEL_11:
 {
   if ([(SharingBTLEAdvertisementPayload *)self isCurrent])
   {
-    v3 = [(SharingBTLEAdvertisementPayload *)self currentUntil];
+    currentUntil = [(SharingBTLEAdvertisementPayload *)self currentUntil];
   }
 
   else
   {
-    v4 = [(SharingBTLEAdvertisementPayload *)self time];
-    v3 = [NSDate dateWithTimeInterval:v4 sinceDate:256.0];
+    time = [(SharingBTLEAdvertisementPayload *)self time];
+    currentUntil = [NSDate dateWithTimeInterval:time sinceDate:256.0];
   }
 
-  return v3;
+  return currentUntil;
 }
 
 - (id)now
@@ -865,11 +865,11 @@ LABEL_11:
 
 - (NSDate)epochEnd
 {
-  v2 = [(SharingBTLEAdvertisementPayload *)self when];
-  v3 = v2;
-  if (v2)
+  when = [(SharingBTLEAdvertisementPayload *)self when];
+  v3 = when;
+  if (when)
   {
-    [v2 timeIntervalSinceReferenceDate];
+    [when timeIntervalSinceReferenceDate];
     v5 = [NSDate dateWithTimeIntervalSinceReferenceDate:trunc(v4 / 496.0) * 496.0 + 496.0];
   }
 

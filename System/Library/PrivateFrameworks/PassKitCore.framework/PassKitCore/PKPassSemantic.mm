@@ -1,112 +1,112 @@
 @interface PKPassSemantic
-+ (BOOL)isSupportedDictionaryKeyType:(id)a3;
-+ (BOOL)isSupportedDictionaryValueType:(id)a3;
++ (BOOL)isSupportedDictionaryKeyType:(id)type;
++ (BOOL)isSupportedDictionaryValueType:(id)type;
 + (id)_supportedDictionaryValueTypes;
-- (BOOL)isEqual:(id)a3;
-- (PKPassSemantic)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPassSemantic)initWithCoder:(id)coder;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassSemantic
 
-- (PKPassSemantic)initWithCoder:(id)a3
+- (PKPassSemantic)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = PKPassSemantic;
   v5 = [(PKPassSemantic *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"semanticKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"semanticKey"];
     [(PKPassSemantic *)v5 setSemanticKey:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fieldKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fieldKey"];
     [(PKPassSemantic *)v5 setFieldKey:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
     [(PKPassSemantic *)v5 setStringValue:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateValue"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateValue"];
     [(PKPassSemantic *)v5 setDateValue:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZoneValue"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZoneValue"];
     [(PKPassSemantic *)v5 setTimeZoneValue:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eventDateInfoValue"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eventDateInfoValue"];
     [(PKPassSemantic *)v5 setEventDateInfoValue:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberValue"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberValue"];
     [(PKPassSemantic *)v5 setNumberValue:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationValue"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationValue"];
     [(PKPassSemantic *)v5 setLocationValue:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmountValue"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyAmountValue"];
     [(PKPassSemantic *)v5 setCurrencyAmountValue:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personNameComponentsValue"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personNameComponentsValue"];
     [(PKPassSemantic *)v5 setPersonNameComponentsValue:v15];
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"stringsValue"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"stringsValue"];
     [(PKPassSemantic *)v5 setStringsValue:v19];
 
     v20 = objc_alloc(MEMORY[0x1E695DFA8]);
     v21 = objc_opt_class();
     v22 = [v20 initWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [objc_opt_class() _supportedDictionaryValueTypes];
-    [v22 addObjectsFromArray:v23];
+    _supportedDictionaryValueTypes = [objc_opt_class() _supportedDictionaryValueTypes];
+    [v22 addObjectsFromArray:_supportedDictionaryValueTypes];
 
-    v24 = [v4 decodeObjectOfClasses:v22 forKey:@"dictionariesValue"];
+    v24 = [coderCopy decodeObjectOfClasses:v22 forKey:@"dictionariesValue"];
     [(PKPassSemantic *)v5 setDictionariesValue:v24];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKPassSemantic *)self semanticKey];
-  [v4 encodeObject:v5 forKey:@"semanticKey"];
+  coderCopy = coder;
+  semanticKey = [(PKPassSemantic *)self semanticKey];
+  [coderCopy encodeObject:semanticKey forKey:@"semanticKey"];
 
-  v6 = [(PKPassSemantic *)self fieldKey];
-  [v4 encodeObject:v6 forKey:@"fieldKey"];
+  fieldKey = [(PKPassSemantic *)self fieldKey];
+  [coderCopy encodeObject:fieldKey forKey:@"fieldKey"];
 
-  v7 = [(PKPassSemantic *)self stringValue];
-  [v4 encodeObject:v7 forKey:@"stringValue"];
+  stringValue = [(PKPassSemantic *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"stringValue"];
 
-  v8 = [(PKPassSemantic *)self dateValue];
-  [v4 encodeObject:v8 forKey:@"dateValue"];
+  dateValue = [(PKPassSemantic *)self dateValue];
+  [coderCopy encodeObject:dateValue forKey:@"dateValue"];
 
-  v9 = [(PKPassSemantic *)self timeZoneValue];
-  [v4 encodeObject:v9 forKey:@"timeZoneValue"];
+  timeZoneValue = [(PKPassSemantic *)self timeZoneValue];
+  [coderCopy encodeObject:timeZoneValue forKey:@"timeZoneValue"];
 
-  v10 = [(PKPassSemantic *)self eventDateInfoValue];
-  [v4 encodeObject:v10 forKey:@"eventDateInfoValue"];
+  eventDateInfoValue = [(PKPassSemantic *)self eventDateInfoValue];
+  [coderCopy encodeObject:eventDateInfoValue forKey:@"eventDateInfoValue"];
 
-  v11 = [(PKPassSemantic *)self numberValue];
-  [v4 encodeObject:v11 forKey:@"numberValue"];
+  numberValue = [(PKPassSemantic *)self numberValue];
+  [coderCopy encodeObject:numberValue forKey:@"numberValue"];
 
-  v12 = [(PKPassSemantic *)self locationValue];
-  [v4 encodeObject:v12 forKey:@"locationValue"];
+  locationValue = [(PKPassSemantic *)self locationValue];
+  [coderCopy encodeObject:locationValue forKey:@"locationValue"];
 
-  v13 = [(PKPassSemantic *)self currencyAmountValue];
-  [v4 encodeObject:v13 forKey:@"currencyAmountValue"];
+  currencyAmountValue = [(PKPassSemantic *)self currencyAmountValue];
+  [coderCopy encodeObject:currencyAmountValue forKey:@"currencyAmountValue"];
 
-  v14 = [(PKPassSemantic *)self personNameComponentsValue];
-  [v4 encodeObject:v14 forKey:@"personNameComponentsValue"];
+  personNameComponentsValue = [(PKPassSemantic *)self personNameComponentsValue];
+  [coderCopy encodeObject:personNameComponentsValue forKey:@"personNameComponentsValue"];
 
-  v15 = [(PKPassSemantic *)self stringsValue];
-  [v4 encodeObject:v15 forKey:@"stringsValue"];
+  stringsValue = [(PKPassSemantic *)self stringsValue];
+  [coderCopy encodeObject:stringsValue forKey:@"stringsValue"];
 
-  v16 = [(PKPassSemantic *)self dictionariesValue];
-  [v4 encodeObject:v16 forKey:@"dictionariesValue"];
+  dictionariesValue = [(PKPassSemantic *)self dictionariesValue];
+  [coderCopy encodeObject:dictionariesValue forKey:@"dictionariesValue"];
 }
 
 - (id)description
@@ -177,13 +177,13 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -196,57 +196,57 @@
   if (v6)
   {
     fieldKey = self->_fieldKey;
-    v9 = [v6 fieldKey];
-    v10 = v9;
-    if (fieldKey && v9)
+    fieldKey = [v6 fieldKey];
+    v10 = fieldKey;
+    if (fieldKey && fieldKey)
     {
-      if (([(NSString *)fieldKey isEqual:v9]& 1) != 0)
+      if (([(NSString *)fieldKey isEqual:fieldKey]& 1) != 0)
       {
 LABEL_8:
         dateValue = self->_dateValue;
-        v12 = [v7 dateValue];
-        v13 = v12;
-        if (dateValue && v12)
+        dateValue = [v7 dateValue];
+        v13 = dateValue;
+        if (dateValue && dateValue)
         {
-          if (([(NSDate *)dateValue isEqual:v12]& 1) != 0)
+          if (([(NSDate *)dateValue isEqual:dateValue]& 1) != 0)
           {
 LABEL_11:
             timeZoneValue = self->_timeZoneValue;
-            v15 = [v7 timeZoneValue];
-            v16 = v15;
-            if (timeZoneValue && v15)
+            timeZoneValue = [v7 timeZoneValue];
+            v16 = timeZoneValue;
+            if (timeZoneValue && timeZoneValue)
             {
-              if (([(NSTimeZone *)timeZoneValue isEqual:v15]& 1) != 0)
+              if (([(NSTimeZone *)timeZoneValue isEqual:timeZoneValue]& 1) != 0)
               {
 LABEL_14:
                 eventDateInfoValue = self->_eventDateInfoValue;
-                v18 = [v7 eventDateInfoValue];
-                v19 = v18;
-                if (eventDateInfoValue && v18)
+                eventDateInfoValue = [v7 eventDateInfoValue];
+                v19 = eventDateInfoValue;
+                if (eventDateInfoValue && eventDateInfoValue)
                 {
-                  if (([(PKEventDateInfo *)eventDateInfoValue isEqual:v18]& 1) != 0)
+                  if (([(PKEventDateInfo *)eventDateInfoValue isEqual:eventDateInfoValue]& 1) != 0)
                   {
 LABEL_17:
                     numberValue = self->_numberValue;
-                    v21 = [v7 numberValue];
-                    v22 = v21;
-                    if (numberValue && v21)
+                    numberValue = [v7 numberValue];
+                    v22 = numberValue;
+                    if (numberValue && numberValue)
                     {
-                      if (([(NSNumber *)numberValue isEqual:v21]& 1) != 0)
+                      if (([(NSNumber *)numberValue isEqual:numberValue]& 1) != 0)
                       {
 LABEL_20:
                         semanticKey = self->_semanticKey;
-                        v24 = [v7 semanticKey];
-                        v25 = v24;
-                        if (semanticKey && v24)
+                        semanticKey = [v7 semanticKey];
+                        v25 = semanticKey;
+                        if (semanticKey && semanticKey)
                         {
-                          if (([(NSString *)semanticKey isEqual:v24]& 1) != 0)
+                          if (([(NSString *)semanticKey isEqual:semanticKey]& 1) != 0)
                           {
 LABEL_23:
                             stringValue = self->_stringValue;
-                            v27 = [v7 stringValue];
-                            v28 = v27;
-                            if (stringValue && v27)
+                            stringValue = [v7 stringValue];
+                            v28 = stringValue;
+                            if (stringValue && stringValue)
                             {
                               v29 = stringValue;
                               v30 = v28;
@@ -257,9 +257,9 @@ LABEL_23:
 LABEL_26:
                                 v53 = v28;
                                 stringsValue = self->_stringsValue;
-                                v33 = [v7 stringsValue];
-                                v34 = v33;
-                                if (stringsValue && v33)
+                                stringsValue = [v7 stringsValue];
+                                v34 = stringsValue;
+                                if (stringsValue && stringsValue)
                                 {
                                   v35 = stringsValue;
                                   v36 = v34;
@@ -270,46 +270,46 @@ LABEL_26:
 LABEL_29:
                                     v52 = v34;
                                     locationValue = self->_locationValue;
-                                    v39 = [v7 locationValue];
-                                    v51 = v39;
-                                    if (locationValue && v39)
+                                    locationValue = [v7 locationValue];
+                                    v51 = locationValue;
+                                    if (locationValue && locationValue)
                                     {
-                                      if ([(PKLocation *)locationValue isEqual:v39])
+                                      if ([(PKLocation *)locationValue isEqual:locationValue])
                                       {
 LABEL_32:
                                         dictionariesValue = self->_dictionariesValue;
-                                        v41 = [v7 dictionariesValue];
-                                        v50 = v41;
-                                        if (dictionariesValue && v41)
+                                        dictionariesValue = [v7 dictionariesValue];
+                                        v50 = dictionariesValue;
+                                        if (dictionariesValue && dictionariesValue)
                                         {
-                                          if (([(NSArray *)dictionariesValue isEqual:v41]& 1) != 0)
+                                          if (([(NSArray *)dictionariesValue isEqual:dictionariesValue]& 1) != 0)
                                           {
 LABEL_35:
                                             currencyAmountValue = self->_currencyAmountValue;
-                                            v43 = [v7 currencyAmountValue];
-                                            v49 = v43;
-                                            if (currencyAmountValue && v43)
+                                            currencyAmountValue = [v7 currencyAmountValue];
+                                            v49 = currencyAmountValue;
+                                            if (currencyAmountValue && currencyAmountValue)
                                             {
-                                              if ([(PKCurrencyAmount *)currencyAmountValue isEqual:v43])
+                                              if ([(PKCurrencyAmount *)currencyAmountValue isEqual:currencyAmountValue])
                                               {
                                                 goto LABEL_38;
                                               }
                                             }
 
-                                            else if (currencyAmountValue == v43)
+                                            else if (currencyAmountValue == currencyAmountValue)
                                             {
 LABEL_38:
                                               personNameComponentsValue = self->_personNameComponentsValue;
-                                              v45 = [v7 personNameComponentsValue];
-                                              v46 = v45;
-                                              if (personNameComponentsValue && v45)
+                                              personNameComponentsValue = [v7 personNameComponentsValue];
+                                              v46 = personNameComponentsValue;
+                                              if (personNameComponentsValue && personNameComponentsValue)
                                               {
-                                                v47 = [(NSPersonNameComponents *)personNameComponentsValue isEqual:v45];
+                                                v47 = [(NSPersonNameComponents *)personNameComponentsValue isEqual:personNameComponentsValue];
                                               }
 
                                               else
                                               {
-                                                v47 = personNameComponentsValue == v45;
+                                                v47 = personNameComponentsValue == personNameComponentsValue;
                                               }
 
                                               goto LABEL_66;
@@ -322,7 +322,7 @@ LABEL_66:
                                           }
                                         }
 
-                                        else if (dictionariesValue == v41)
+                                        else if (dictionariesValue == dictionariesValue)
                                         {
                                           goto LABEL_35;
                                         }
@@ -334,7 +334,7 @@ LABEL_67:
                                       }
                                     }
 
-                                    else if (locationValue == v39)
+                                    else if (locationValue == locationValue)
                                     {
                                       goto LABEL_32;
                                     }
@@ -347,7 +347,7 @@ LABEL_68:
                                   }
                                 }
 
-                                else if (stringsValue == v33)
+                                else if (stringsValue == stringsValue)
                                 {
                                   goto LABEL_29;
                                 }
@@ -360,7 +360,7 @@ LABEL_69:
                               }
                             }
 
-                            else if (stringValue == v27)
+                            else if (stringValue == stringValue)
                             {
                               goto LABEL_26;
                             }
@@ -372,7 +372,7 @@ LABEL_70:
                           }
                         }
 
-                        else if (semanticKey == v24)
+                        else if (semanticKey == semanticKey)
                         {
                           goto LABEL_23;
                         }
@@ -384,7 +384,7 @@ LABEL_71:
                       }
                     }
 
-                    else if (numberValue == v21)
+                    else if (numberValue == numberValue)
                     {
                       goto LABEL_20;
                     }
@@ -396,7 +396,7 @@ LABEL_72:
                   }
                 }
 
-                else if (eventDateInfoValue == v18)
+                else if (eventDateInfoValue == eventDateInfoValue)
                 {
                   goto LABEL_17;
                 }
@@ -408,7 +408,7 @@ LABEL_73:
               }
             }
 
-            else if (timeZoneValue == v15)
+            else if (timeZoneValue == timeZoneValue)
             {
               goto LABEL_14;
             }
@@ -420,7 +420,7 @@ LABEL_74:
           }
         }
 
-        else if (dateValue == v12)
+        else if (dateValue == dateValue)
         {
           goto LABEL_11;
         }
@@ -432,7 +432,7 @@ LABEL_75:
       }
     }
 
-    else if (fieldKey == v9)
+    else if (fieldKey == fieldKey)
     {
       goto LABEL_8;
     }
@@ -449,14 +449,14 @@ LABEL_77:
   return v47;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [v4 stringValue];
+  compareCopy = compare;
+  stringValue = [compareCopy stringValue];
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    v7 = v5 == 0;
+    v7 = stringValue == 0;
   }
 
   else
@@ -466,22 +466,22 @@ LABEL_77:
 
   if (v7)
   {
-    v8 = [v4 dateValue];
+    dateValue = [compareCopy dateValue];
     dateValue = self->_dateValue;
-    if (dateValue && v8)
+    if (dateValue && dateValue)
     {
-      v10 = [(NSDate *)dateValue compare:v8];
+      v10 = [(NSDate *)dateValue compare:dateValue];
 LABEL_68:
 
       goto LABEL_69;
     }
 
-    v11 = [v4 timeZoneValue];
+    timeZoneValue = [compareCopy timeZoneValue];
     timeZoneValue = self->_timeZoneValue;
-    if (timeZoneValue && v11)
+    if (timeZoneValue && timeZoneValue)
     {
-      v13 = [(NSTimeZone *)timeZoneValue secondsFromGMT];
-      if (v13 > [v11 secondsFromGMT])
+      secondsFromGMT = [(NSTimeZone *)timeZoneValue secondsFromGMT];
+      if (secondsFromGMT > [timeZoneValue secondsFromGMT])
       {
         v10 = -1;
       }
@@ -494,25 +494,25 @@ LABEL_68:
       goto LABEL_67;
     }
 
-    v14 = [v4 eventDateInfoValue];
+    eventDateInfoValue = [compareCopy eventDateInfoValue];
     eventDateInfoValue = self->_eventDateInfoValue;
-    if (eventDateInfoValue && v14)
+    if (eventDateInfoValue && eventDateInfoValue)
     {
-      v16 = [(PKEventDateInfo *)eventDateInfoValue date];
-      v17 = [v14 date];
-      v18 = v17;
-      if (v16)
+      date = [(PKEventDateInfo *)eventDateInfoValue date];
+      date2 = [eventDateInfoValue date];
+      locationValue = date2;
+      if (date)
       {
-        if (v17)
+        if (date2)
         {
-          v10 = [v16 compare:v17];
+          v10 = [date compare:date2];
           if (!v10)
           {
-            v62 = [(PKEventDateInfo *)self->_eventDateInfoValue timeZone];
-            v57 = [v62 name];
-            v19 = [v14 timeZone];
-            v20 = [v19 name];
-            v10 = __26__PKPassSemantic_compare___block_invoke(v20, v57, v20);
+            timeZone = [(PKEventDateInfo *)self->_eventDateInfoValue timeZone];
+            name = [timeZone name];
+            timeZone2 = [eventDateInfoValue timeZone];
+            name2 = [timeZone2 name];
+            v10 = __26__PKPassSemantic_compare___block_invoke(name2, name, name2);
           }
         }
 
@@ -530,28 +530,28 @@ LABEL_68:
       goto LABEL_65;
     }
 
-    v16 = [v4 numberValue];
+    date = [compareCopy numberValue];
     numberValue = self->_numberValue;
-    if (numberValue && v16)
+    if (numberValue && date)
     {
-      v10 = [(NSNumber *)numberValue compare:v16];
+      v10 = [(NSNumber *)numberValue compare:date];
 LABEL_66:
 
 LABEL_67:
       goto LABEL_68;
     }
 
-    v18 = [v4 locationValue];
+    locationValue = [compareCopy locationValue];
     locationValue = self->_locationValue;
-    if (locationValue && v18)
+    if (locationValue && locationValue)
     {
       [(PKLocation *)locationValue coordinate];
       v24 = v23;
-      [v18 coordinate];
+      [locationValue coordinate];
       v26 = v25;
       [(PKLocation *)self->_locationValue coordinate];
       v28 = v27;
-      [v18 coordinate];
+      [locationValue coordinate];
       if (v24 == v26 && v28 == v29)
       {
         v10 = 0;
@@ -559,47 +559,47 @@ LABEL_67:
 
       else
       {
-        v44 = [(PKLocation *)self->_locationValue name];
-        [v18 name];
-        v45 = v64 = v18;
-        v10 = __26__PKPassSemantic_compare___block_invoke(v45, v44, v45);
+        name3 = [(PKLocation *)self->_locationValue name];
+        [locationValue name];
+        v45 = v64 = locationValue;
+        v10 = __26__PKPassSemantic_compare___block_invoke(v45, name3, v45);
 
-        v18 = v64;
+        locationValue = v64;
         if (!v10)
         {
-          v46 = [(PKLocation *)self->_locationValue relevantText];
-          v47 = [v64 relevantText];
-          v10 = __26__PKPassSemantic_compare___block_invoke(v47, v46, v47);
+          relevantText = [(PKLocation *)self->_locationValue relevantText];
+          relevantText2 = [v64 relevantText];
+          v10 = __26__PKPassSemantic_compare___block_invoke(relevantText2, relevantText, relevantText2);
 
-          v18 = v64;
+          locationValue = v64;
         }
       }
 
       goto LABEL_65;
     }
 
-    v30 = [v4 currencyAmountValue];
+    currencyAmountValue = [compareCopy currencyAmountValue];
     currencyAmountValue = self->_currencyAmountValue;
-    v63 = v18;
-    if (currencyAmountValue && v30)
+    v63 = locationValue;
+    if (currencyAmountValue && currencyAmountValue)
     {
-      v32 = [(PKCurrencyAmount *)currencyAmountValue currency];
-      [v30 currency];
-      v33 = v58 = v30;
-      v10 = __26__PKPassSemantic_compare___block_invoke(v33, v32, v33);
+      currency = [(PKCurrencyAmount *)currencyAmountValue currency];
+      [currencyAmountValue currency];
+      v33 = v58 = currencyAmountValue;
+      v10 = __26__PKPassSemantic_compare___block_invoke(v33, currency, v33);
 
-      v30 = v58;
-      v18 = v63;
+      currencyAmountValue = v58;
+      locationValue = v63;
       if (!v10)
       {
-        v34 = [(PKCurrencyAmount *)self->_currencyAmountValue amount];
-        v35 = [v58 amount];
-        v36 = v35;
-        if (v34)
+        amount = [(PKCurrencyAmount *)self->_currencyAmountValue amount];
+        amount2 = [v58 amount];
+        v36 = amount2;
+        if (amount)
         {
-          if (v35)
+          if (amount2)
           {
-            v10 = [v34 compare:v35];
+            v10 = [amount compare:amount2];
           }
 
           else
@@ -613,20 +613,20 @@ LABEL_67:
           v10 = -1;
         }
 
-        v30 = v58;
+        currencyAmountValue = v58;
       }
 
       goto LABEL_64;
     }
 
-    v37 = [v4 personNameComponentsValue];
-    v56 = v37;
+    personNameComponentsValue = [compareCopy personNameComponentsValue];
+    v56 = personNameComponentsValue;
     if (self->_personNameComponentsValue)
     {
-      v38 = v37;
-      if (v37)
+      v38 = personNameComponentsValue;
+      if (personNameComponentsValue)
       {
-        v59 = v30;
+        v59 = currencyAmountValue;
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __26__PKPassSemantic_compare___block_invoke_2;
@@ -636,15 +636,15 @@ LABEL_67:
         v10 = v39[2](v39, self->_personNameComponentsValue, v38);
         if (!v10)
         {
-          v40 = [(NSPersonNameComponents *)self->_personNameComponentsValue phoneticRepresentation];
-          v41 = [v56 phoneticRepresentation];
-          v42 = v41;
-          if (v40)
+          phoneticRepresentation = [(NSPersonNameComponents *)self->_personNameComponentsValue phoneticRepresentation];
+          phoneticRepresentation2 = [v56 phoneticRepresentation];
+          v42 = phoneticRepresentation2;
+          if (phoneticRepresentation)
           {
-            v43 = v40;
-            if (v41)
+            v43 = phoneticRepresentation;
+            if (phoneticRepresentation2)
             {
-              v10 = v39[2](v39, v40, v41);
+              v10 = v39[2](v39, phoneticRepresentation, phoneticRepresentation2);
             }
 
             else
@@ -660,27 +660,27 @@ LABEL_67:
           }
         }
 
-        v30 = v59;
-        v18 = v63;
+        currencyAmountValue = v59;
+        locationValue = v63;
         goto LABEL_63;
       }
     }
 
-    v48 = [v4 stringsValue];
+    stringsValue = [compareCopy stringsValue];
     v60 = [(NSArray *)self->_stringsValue count];
-    v55 = v48;
-    if (v60 <= [v48 count])
+    v55 = stringsValue;
+    if (v60 <= [stringsValue count])
     {
       v49 = [(NSArray *)self->_stringsValue count];
       if (v49 >= [v55 count])
       {
-        v61 = v30;
-        v51 = [v4 dictionariesValue];
+        v61 = currencyAmountValue;
+        dictionariesValue = [compareCopy dictionariesValue];
         v52 = [(NSArray *)self->_dictionariesValue count];
-        if (v52 <= [v51 count])
+        if (v52 <= [dictionariesValue count])
         {
           v53 = [(NSArray *)self->_dictionariesValue count];
-          if (v53 < [v51 count])
+          if (v53 < [dictionariesValue count])
           {
             v10 = -1;
           }
@@ -696,10 +696,10 @@ LABEL_67:
           v10 = 1;
         }
 
-        v18 = v63;
+        locationValue = v63;
         v50 = v55;
 
-        v30 = v61;
+        currencyAmountValue = v61;
         goto LABEL_59;
       }
 
@@ -711,7 +711,7 @@ LABEL_67:
       v10 = 1;
     }
 
-    v18 = v63;
+    locationValue = v63;
     v50 = v55;
 LABEL_59:
 
@@ -722,7 +722,7 @@ LABEL_65:
     goto LABEL_66;
   }
 
-  v10 = [(NSString *)stringValue compare:v5];
+  v10 = [(NSString *)stringValue compare:stringValue];
 LABEL_69:
 
   return v10;
@@ -808,44 +808,44 @@ uint64_t __26__PKPassSemantic_compare___block_invoke_2(uint64_t a1, void *a2, vo
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_fieldKey];
-  [v3 safelyAddObject:self->_dateValue];
-  [v3 safelyAddObject:self->_eventDateInfoValue];
-  [v3 safelyAddObject:self->_numberValue];
-  [v3 safelyAddObject:self->_semanticKey];
-  [v3 safelyAddObject:self->_stringValue];
-  [v3 safelyAddObject:self->_stringsValue];
-  [v3 safelyAddObject:self->_locationValue];
-  [v3 safelyAddObject:self->_dictionariesValue];
-  [v3 safelyAddObject:self->_currencyAmountValue];
-  [v3 safelyAddObject:self->_personNameComponentsValue];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_fieldKey];
+  [array safelyAddObject:self->_dateValue];
+  [array safelyAddObject:self->_eventDateInfoValue];
+  [array safelyAddObject:self->_numberValue];
+  [array safelyAddObject:self->_semanticKey];
+  [array safelyAddObject:self->_stringValue];
+  [array safelyAddObject:self->_stringsValue];
+  [array safelyAddObject:self->_locationValue];
+  [array safelyAddObject:self->_dictionariesValue];
+  [array safelyAddObject:self->_currencyAmountValue];
+  [array safelyAddObject:self->_personNameComponentsValue];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-+ (BOOL)isSupportedDictionaryValueType:(id)a3
++ (BOOL)isSupportedDictionaryValueType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v4 = [objc_opt_class() _supportedDictionaryValueTypes];
+  _supportedDictionaryValueTypes = [objc_opt_class() _supportedDictionaryValueTypes];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PKPassSemantic_isSupportedDictionaryValueType___block_invoke;
   v7[3] = &unk_1E79D4508;
-  v5 = v3;
+  v5 = typeCopy;
   v8 = v5;
   v9 = &v10;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [_supportedDictionaryValueTypes enumerateObjectsUsingBlock:v7];
 
-  LOBYTE(v4) = *(v11 + 24);
+  LOBYTE(_supportedDictionaryValueTypes) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return v4;
+  return _supportedDictionaryValueTypes;
 }
 
 uint64_t __49__PKPassSemantic_isSupportedDictionaryValueType___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -860,9 +860,9 @@ uint64_t __49__PKPassSemantic_isSupportedDictionaryValueType___block_invoke(uint
   return result;
 }
 
-+ (BOOL)isSupportedDictionaryKeyType:(id)a3
++ (BOOL)isSupportedDictionaryKeyType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

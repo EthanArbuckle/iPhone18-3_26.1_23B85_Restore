@@ -1,38 +1,38 @@
 @interface MCUISpecifierProvider
-- (BOOL)isSectionPopulated:(id)a3 outIsPlural:(BOOL *)a4;
-- (MCUISpecifierProvider)initWithDelegate:(id)a3;
+- (BOOL)isSectionPopulated:(id)populated outIsPlural:(BOOL *)plural;
+- (MCUISpecifierProvider)initWithDelegate:(id)delegate;
 - (MCUISpecifierProviderDelegate)delegate;
-- (id)specifierWithName:(id)a3 detail:(Class)a4;
-- (id)specifiersForInstalledProfiles:(id)a3;
-- (id)specifiersForMDMProfiles:(id)a3;
-- (id)specifiersForUninstalledProfiles:(id)a3;
-- (void)registerCustomCellClassesInTableView:(id)a3;
+- (id)specifierWithName:(id)name detail:(Class)detail;
+- (id)specifiersForInstalledProfiles:(id)profiles;
+- (id)specifiersForMDMProfiles:(id)profiles;
+- (id)specifiersForUninstalledProfiles:(id)profiles;
+- (void)registerCustomCellClassesInTableView:(id)view;
 @end
 
 @implementation MCUISpecifierProvider
 
-- (MCUISpecifierProvider)initWithDelegate:(id)a3
+- (MCUISpecifierProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MCUISpecifierProvider;
   v5 = [(MCUISpecifierProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (BOOL)isSectionPopulated:(id)a3 outIsPlural:(BOOL *)a4
+- (BOOL)isSectionPopulated:(id)populated outIsPlural:(BOOL *)plural
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  populatedCopy = populated;
+  v6 = populatedCopy;
+  if (populatedCopy && [populatedCopy count])
   {
-    *a4 = [v6 count] > 1;
+    *plural = [v6 count] > 1;
     v7 = 1;
   }
 
@@ -44,48 +44,48 @@
   return v7;
 }
 
-- (id)specifierWithName:(id)a3 detail:(Class)a4
+- (id)specifierWithName:(id)name detail:(Class)detail
 {
-  v4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:a3 target:self set:0 get:0 detail:a4 cell:1 edit:0];
+  v4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:name target:self set:0 get:0 detail:detail cell:1 edit:0];
   [v4 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
   [MEMORY[0x277D03250] setGearIconForSpecifier:v4];
 
   return v4;
 }
 
-- (void)registerCustomCellClassesInTableView:(id)a3
+- (void)registerCustomCellClassesInTableView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_opt_class();
   v5 = +[(PSTableCell *)MCUISpecifierCell];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [viewCopy registerClass:v4 forCellReuseIdentifier:v5];
 }
 
-- (id)specifiersForMDMProfiles:(id)a3
+- (id)specifiersForMDMProfiles:(id)profiles
 {
-  v4 = a3;
+  profilesCopy = profiles;
   v5 = MCUILocalizedString(@"MOBILE_DEVICE_MANAGEMENT");
   v6 = MCUILocalizedString(@"MOBILE_DEVICE_MANAGEMENT");
-  v7 = [(MCUISpecifierProvider *)self _specifiersForProfiles:v4 singularHeader:v5 pluralHeaader:v6 profilesInstalled:1];
+  v7 = [(MCUISpecifierProvider *)self _specifiersForProfiles:profilesCopy singularHeader:v5 pluralHeaader:v6 profilesInstalled:1];
 
   return v7;
 }
 
-- (id)specifiersForUninstalledProfiles:(id)a3
+- (id)specifiersForUninstalledProfiles:(id)profiles
 {
-  v4 = a3;
+  profilesCopy = profiles;
   v5 = MCUILocalizedString(@"UNINSTALLED_PROFILE");
   v6 = MCUILocalizedString(@"UNINSTALLED_PROFILE_PLURAL");
-  v7 = [(MCUISpecifierProvider *)self _specifiersForProfiles:v4 singularHeader:v5 pluralHeaader:v6 profilesInstalled:0];
+  v7 = [(MCUISpecifierProvider *)self _specifiersForProfiles:profilesCopy singularHeader:v5 pluralHeaader:v6 profilesInstalled:0];
 
   return v7;
 }
 
-- (id)specifiersForInstalledProfiles:(id)a3
+- (id)specifiersForInstalledProfiles:(id)profiles
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  profilesCopy = profiles;
+  v5 = profilesCopy;
+  if (profilesCopy && [profilesCopy count])
   {
     v6 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_5];
     v7 = [v5 filteredArrayUsingPredicate:v6];

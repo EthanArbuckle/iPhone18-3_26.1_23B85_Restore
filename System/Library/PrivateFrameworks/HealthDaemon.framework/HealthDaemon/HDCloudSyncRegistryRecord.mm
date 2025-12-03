@@ -1,11 +1,11 @@
 @interface HDCloudSyncRegistryRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isRegistryRecord:(id)a3;
-+ (BOOL)isRegistryRecordID:(id)a3;
-+ (id)recordIDWithZoneID:(id)a3;
-+ (id)sharedProfileIdentifierForOwnerProfileIdentifier:(id)a3;
-- (HDCloudSyncCodableProfileIdentifier)_codableProfileIdentifierWithProfileIdentifier:(uint64_t)a1;
-- (HDCloudSyncRegistryRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isRegistryRecord:(id)record;
++ (BOOL)isRegistryRecordID:(id)d;
++ (id)recordIDWithZoneID:(id)d;
++ (id)sharedProfileIdentifierForOwnerProfileIdentifier:(id)identifier;
+- (HDCloudSyncCodableProfileIdentifier)_codableProfileIdentifierWithProfileIdentifier:(uint64_t)identifier;
+- (HDCloudSyncRegistryRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (HKProfileIdentifier)ownerProfileIdentifier;
 - (HKProfileIdentifier)sharedProfileIdentifier;
 - (NSArray)childHeaderRecordIDs;
@@ -14,69 +14,69 @@
 - (NSSet)disabledSyncIdentities;
 - (NSSet)ownerIdentifiers;
 - (NSSet)syncIdentities;
-- (id)_profileIdentifierWithCodableProfileIdentifier:(uint64_t)a1;
-- (id)initInZone:(id)a3 ownerProfileIdentifier:(id)a4;
-- (id)initInZone:(id)a3 ownerProfileIdentifier:(id)a4 sharedProfileIdentifier:(id)a5;
-- (id)storeIdentifiersForOwnerIdentifier:(id)a3;
-- (id)storeIdentifiersForSyncIdentity:(id)a3;
-- (void)addStoreIdentifier:(id)a3 ownerIdentifier:(id)a4 syncIdentity:(id)a5;
-- (void)removeStoreIdentifier:(id)a3 ownerIdentifier:(id)a4 syncIdentity:(id)a5;
-- (void)setDisabledOwnerIdentifiers:(id)a3;
-- (void)setDisabledSyncIdentities:(id)a3;
-- (void)setDisplayNameModificationDate:(id)a3;
-- (void)setOwnerProfileIdentifier:(id)a3;
-- (void)setSharedProfileIdentifier:(id)a3;
+- (id)_profileIdentifierWithCodableProfileIdentifier:(uint64_t)identifier;
+- (id)initInZone:(id)zone ownerProfileIdentifier:(id)identifier;
+- (id)initInZone:(id)zone ownerProfileIdentifier:(id)identifier sharedProfileIdentifier:(id)profileIdentifier;
+- (id)storeIdentifiersForOwnerIdentifier:(id)identifier;
+- (id)storeIdentifiersForSyncIdentity:(id)identity;
+- (void)addStoreIdentifier:(id)identifier ownerIdentifier:(id)ownerIdentifier syncIdentity:(id)identity;
+- (void)removeStoreIdentifier:(id)identifier ownerIdentifier:(id)ownerIdentifier syncIdentity:(id)identity;
+- (void)setDisabledOwnerIdentifiers:(id)identifiers;
+- (void)setDisabledSyncIdentities:(id)identities;
+- (void)setDisplayNameModificationDate:(id)date;
+- (void)setOwnerProfileIdentifier:(id)identifier;
+- (void)setSharedProfileIdentifier:(id)identifier;
 @end
 
 @implementation HDCloudSyncRegistryRecord
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 
   return v5;
 }
 
-+ (id)recordIDWithZoneID:(id)a3
++ (id)recordIDWithZoneID:(id)d
 {
   v3 = MEMORY[0x277CBC5D0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithRecordName:@"CloudSyncRegistry" zoneID:v4];
+  dCopy = d;
+  v5 = [[v3 alloc] initWithRecordName:@"CloudSyncRegistry" zoneID:dCopy];
 
   return v5;
 }
 
-+ (BOOL)isRegistryRecord:(id)a3
++ (BOOL)isRegistryRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncRegistryRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncRegistryRecord"];
 
   return v4;
 }
 
-+ (BOOL)isRegistryRecordID:(id)a3
++ (BOOL)isRegistryRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 isEqualToString:@"CloudSyncRegistry"];
+  recordName = [d recordName];
+  v4 = [recordName isEqualToString:@"CloudSyncRegistry"];
 
   return v4;
 }
 
-+ (id)sharedProfileIdentifierForOwnerProfileIdentifier:(id)a3
++ (id)sharedProfileIdentifierForOwnerProfileIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 <= 2)
+  identifierCopy = identifier;
+  type = [identifierCopy type];
+  if (type <= 2)
   {
-    if (v5 == 1)
+    if (type == 1)
     {
       goto LABEL_10;
     }
 
-    if (v5 != 2)
+    if (type != 2)
     {
       goto LABEL_11;
     }
@@ -87,7 +87,7 @@ LABEL_8:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_FAULT))
     {
       v11 = v6;
-      [v4 type];
+      [identifierCopy type];
       v12 = HKStringFromProfileType();
       v13 = 138412290;
       v14 = v12;
@@ -97,18 +97,18 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 3:
-      v3 = v4;
+      v3 = identifierCopy;
       break;
     case 4:
       goto LABEL_8;
     case 100:
 LABEL_10:
       v7 = MEMORY[0x277CCD7C8];
-      v8 = [MEMORY[0x277CCAD78] UUID];
-      v3 = [v7 _profileWithUUID:v8 type:3];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      v3 = [v7 _profileWithUUID:uUID type:3];
 
       break;
   }
@@ -120,48 +120,48 @@ LABEL_11:
   return v3;
 }
 
-- (id)initInZone:(id)a3 ownerProfileIdentifier:(id)a4
+- (id)initInZone:(id)zone ownerProfileIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() sharedProfileIdentifierForOwnerProfileIdentifier:v6];
-  v9 = [(HDCloudSyncRegistryRecord *)self initInZone:v7 ownerProfileIdentifier:v6 sharedProfileIdentifier:v8];
+  identifierCopy = identifier;
+  zoneCopy = zone;
+  v8 = [objc_opt_class() sharedProfileIdentifierForOwnerProfileIdentifier:identifierCopy];
+  v9 = [(HDCloudSyncRegistryRecord *)self initInZone:zoneCopy ownerProfileIdentifier:identifierCopy sharedProfileIdentifier:v8];
 
   return v9;
 }
 
-- (id)initInZone:(id)a3 ownerProfileIdentifier:(id)a4 sharedProfileIdentifier:(id)a5
+- (id)initInZone:(id)zone ownerProfileIdentifier:(id)identifier sharedProfileIdentifier:(id)profileIdentifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [objc_opt_class() recordIDWithZoneID:v10];
+  identifierCopy = identifier;
+  profileIdentifierCopy = profileIdentifier;
+  zoneCopy = zone;
+  v11 = [objc_opt_class() recordIDWithZoneID:zoneCopy];
 
   v12 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncRegistryRecord" recordID:v11];
   v13 = [(HDCloudSyncRegistryRecord *)self initWithCKRecord:v12 schemaVersion:1];
   v14 = v13;
   if (v13)
   {
-    [(HDCloudSyncRegistryRecord *)v13 setOwnerProfileIdentifier:v8];
-    [(HDCloudSyncRegistryRecord *)v14 setSharedProfileIdentifier:v9];
+    [(HDCloudSyncRegistryRecord *)v13 setOwnerProfileIdentifier:identifierCopy];
+    [(HDCloudSyncRegistryRecord *)v14 setSharedProfileIdentifier:profileIdentifierCopy];
   }
 
   return v14;
 }
 
-- (HDCloudSyncRegistryRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncRegistryRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v15.receiver = self;
   v15.super_class = HDCloudSyncRegistryRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableRegistry);
     underlyingRegistry = v5->_underlyingRegistry;
@@ -170,7 +170,7 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableRegistry alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableRegistry alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingRegistry;
   v5->_underlyingRegistry = v7;
 
@@ -214,11 +214,11 @@ LABEL_10:
   return v4;
 }
 
-- (void)setDisplayNameModificationDate:(id)a3
+- (void)setDisplayNameModificationDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     underlyingRegistry = self->_underlyingRegistry;
 
     [(HDCloudSyncCodableRegistry *)underlyingRegistry setDisplayNameModificationDate:?];
@@ -232,20 +232,20 @@ LABEL_10:
   }
 }
 
-- (id)_profileIdentifierWithCodableProfileIdentifier:(uint64_t)a1
+- (id)_profileIdentifierWithCodableProfileIdentifier:(uint64_t)identifier
 {
   v2 = 0;
-  if (a1 && a2)
+  if (identifier && a2)
   {
     v3 = MEMORY[0x277CCAD78];
     v4 = a2;
-    v5 = [v4 identifier];
-    v6 = [v3 hk_UUIDWithData:v5];
+    identifier = [v4 identifier];
+    v6 = [v3 hk_UUIDWithData:identifier];
 
-    v7 = [v4 type];
-    if (v6 && [MEMORY[0x277CCD7C8] isValidProfileType:v7])
+    type = [v4 type];
+    if (v6 && [MEMORY[0x277CCD7C8] isValidProfileType:type])
     {
-      v2 = [MEMORY[0x277CCD7C8] _profileWithUUID:v6 type:v7];
+      v2 = [MEMORY[0x277CCD7C8] _profileWithUUID:v6 type:type];
     }
 
     else
@@ -257,17 +257,17 @@ LABEL_10:
   return v2;
 }
 
-- (HDCloudSyncCodableProfileIdentifier)_codableProfileIdentifierWithProfileIdentifier:(uint64_t)a1
+- (HDCloudSyncCodableProfileIdentifier)_codableProfileIdentifierWithProfileIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
     v2 = a2;
     v3 = objc_alloc_init(HDCloudSyncCodableProfileIdentifier);
     -[HDCloudSyncCodableProfileIdentifier setType:](v3, "setType:", [v2 type]);
-    v4 = [v2 identifier];
+    identifier = [v2 identifier];
 
-    v5 = [v4 hk_dataForUUIDBytes];
-    [(HDCloudSyncCodableProfileIdentifier *)v3 setIdentifier:v5];
+    hk_dataForUUIDBytes = [identifier hk_dataForUUIDBytes];
+    [(HDCloudSyncCodableProfileIdentifier *)v3 setIdentifier:hk_dataForUUIDBytes];
   }
 
   else
@@ -280,57 +280,57 @@ LABEL_10:
 
 - (HKProfileIdentifier)ownerProfileIdentifier
 {
-  v3 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry ownerProfileIdentifier];
-  v4 = [(HDCloudSyncRegistryRecord *)self _profileIdentifierWithCodableProfileIdentifier:v3];
+  ownerProfileIdentifier = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry ownerProfileIdentifier];
+  v4 = [(HDCloudSyncRegistryRecord *)self _profileIdentifierWithCodableProfileIdentifier:ownerProfileIdentifier];
 
   return v4;
 }
 
-- (void)setOwnerProfileIdentifier:(id)a3
+- (void)setOwnerProfileIdentifier:(id)identifier
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (!identifierCopy)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncRegistryRecord.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"profileIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncRegistryRecord.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"profileIdentifier != nil"}];
 
-    v5 = 0;
+    identifierCopy = 0;
   }
 
-  v6 = [(HDCloudSyncRegistryRecord *)self _codableProfileIdentifierWithProfileIdentifier:v5];
+  v6 = [(HDCloudSyncRegistryRecord *)self _codableProfileIdentifierWithProfileIdentifier:identifierCopy];
   [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry setOwnerProfileIdentifier:v6];
 }
 
 - (HKProfileIdentifier)sharedProfileIdentifier
 {
-  v3 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry sharedProfileIdentifier];
-  v4 = [(HDCloudSyncRegistryRecord *)self _profileIdentifierWithCodableProfileIdentifier:v3];
+  sharedProfileIdentifier = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry sharedProfileIdentifier];
+  v4 = [(HDCloudSyncRegistryRecord *)self _profileIdentifierWithCodableProfileIdentifier:sharedProfileIdentifier];
 
   return v4;
 }
 
-- (void)setSharedProfileIdentifier:(id)a3
+- (void)setSharedProfileIdentifier:(id)identifier
 {
-  v5 = a3;
-  v8 = v5;
-  if (!v5)
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (!identifierCopy)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncRegistryRecord.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"profileIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncRegistryRecord.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"profileIdentifier != nil"}];
 
-    v5 = 0;
+    identifierCopy = 0;
   }
 
-  v6 = [(HDCloudSyncRegistryRecord *)self _codableProfileIdentifierWithProfileIdentifier:v5];
+  v6 = [(HDCloudSyncRegistryRecord *)self _codableProfileIdentifierWithProfileIdentifier:identifierCopy];
   [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry setSharedProfileIdentifier:v6];
 }
 
 - (NSSet)disabledOwnerIdentifiers
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry disabledOwnerIdentifiers];
-  v4 = [v2 setWithArray:v3];
+  disabledOwnerIdentifiers = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry disabledOwnerIdentifiers];
+  v4 = [v2 setWithArray:disabledOwnerIdentifiers];
   v5 = v4;
   if (v4)
   {
@@ -347,22 +347,22 @@ LABEL_10:
   return v7;
 }
 
-- (void)setDisabledOwnerIdentifiers:(id)a3
+- (void)setDisabledOwnerIdentifiers:(id)identifiers
 {
-  v5 = [a3 allObjects];
-  v4 = [v5 mutableCopy];
+  allObjects = [identifiers allObjects];
+  v4 = [allObjects mutableCopy];
   [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry setDisabledOwnerIdentifiers:v4];
 }
 
 - (NSSet)disabledSyncIdentities
 {
-  v3 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry disabledSyncIdentities];
-  v4 = [v3 count];
+  disabledSyncIdentities = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry disabledSyncIdentities];
+  v4 = [disabledSyncIdentities count];
 
   if (v4)
   {
-    v5 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry disabledSyncIdentities];
-    v6 = [v5 hk_mapToSet:&__block_literal_global_223];
+    disabledSyncIdentities2 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry disabledSyncIdentities];
+    v6 = [disabledSyncIdentities2 hk_mapToSet:&__block_literal_global_223];
   }
 
   else
@@ -401,22 +401,22 @@ id __51__HDCloudSyncRegistryRecord_disabledSyncIdentities__block_invoke(uint64_t
   return v2;
 }
 
-- (void)setDisabledSyncIdentities:(id)a3
+- (void)setDisabledSyncIdentities:(id)identities
 {
-  v6 = [a3 allObjects];
-  v4 = [v6 hk_map:&__block_literal_global_319_1];
+  allObjects = [identities allObjects];
+  v4 = [allObjects hk_map:&__block_literal_global_319_1];
   v5 = [v4 mutableCopy];
   [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry setDisabledSyncIdentities:v5];
 }
 
 - (NSSet)ownerIdentifiers
 {
-  v3 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+  stores = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
 
-  if (v3)
+  if (stores)
   {
-    v4 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
-    v5 = [v4 hk_mapToSet:&__block_literal_global_322_3];
+    stores2 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+    v5 = [stores2 hk_mapToSet:&__block_literal_global_322_3];
   }
 
   else
@@ -429,12 +429,12 @@ id __51__HDCloudSyncRegistryRecord_disabledSyncIdentities__block_invoke(uint64_t
 
 - (NSSet)syncIdentities
 {
-  v3 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+  stores = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
 
-  if (v3)
+  if (stores)
   {
-    v4 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
-    v5 = [v4 hk_mapToSet:&__block_literal_global_324_5];
+    stores2 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+    v5 = [stores2 hk_mapToSet:&__block_literal_global_324_5];
   }
 
   else
@@ -502,22 +502,22 @@ id __43__HDCloudSyncRegistryRecord_syncIdentities__block_invoke(uint64_t a1, voi
         }
 
         v3 = *(*(&v25 + 1) + 8 * i);
-        v4 = [v3 ownerIdentifier];
+        ownerIdentifier = [v3 ownerIdentifier];
         v5 = objc_alloc(MEMORY[0x277CCAD78]);
-        v6 = [v3 storeIdentifier];
-        v7 = [v5 initWithUUIDString:v6];
-        v8 = [(HDCloudSyncRecord *)self recordID];
-        v9 = [v8 zoneID];
-        v10 = [HDCloudSyncStoreRecord recordIDForOwnerIdentifier:v4 storeIdentifier:v7 zoneID:v9];
+        storeIdentifier = [v3 storeIdentifier];
+        v7 = [v5 initWithUUIDString:storeIdentifier];
+        recordID = [(HDCloudSyncRecord *)self recordID];
+        zoneID = [recordID zoneID];
+        v10 = [HDCloudSyncStoreRecord recordIDForOwnerIdentifier:ownerIdentifier storeIdentifier:v7 zoneID:zoneID];
         [v23 addObject:v10];
 
-        v11 = [v3 ownerIdentifier];
+        ownerIdentifier2 = [v3 ownerIdentifier];
         v12 = objc_alloc(MEMORY[0x277CCAD78]);
-        v13 = [v3 storeIdentifier];
-        v14 = [v12 initWithUUIDString:v13];
-        v15 = [(HDCloudSyncRecord *)self recordID];
-        v16 = [v15 zoneID];
-        v17 = [HDCloudSyncSequenceRecord recordIDsForOwnerIdentifier:v11 storeIdentifier:v14 zoneID:v16];
+        storeIdentifier2 = [v3 storeIdentifier];
+        v14 = [v12 initWithUUIDString:storeIdentifier2];
+        recordID2 = [(HDCloudSyncRecord *)self recordID];
+        zoneID2 = [recordID2 zoneID];
+        v17 = [HDCloudSyncSequenceRecord recordIDsForOwnerIdentifier:ownerIdentifier2 storeIdentifier:v14 zoneID:zoneID2];
         [v23 addObjectsFromArray:v17];
       }
 
@@ -532,20 +532,20 @@ id __43__HDCloudSyncRegistryRecord_syncIdentities__block_invoke(uint64_t a1, voi
   return v23;
 }
 
-- (id)storeIdentifiersForOwnerIdentifier:(id)a3
+- (id)storeIdentifiersForOwnerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+  identifierCopy = identifier;
+  stores = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
 
-  if (v5)
+  if (stores)
   {
-    v6 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+    stores2 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __64__HDCloudSyncRegistryRecord_storeIdentifiersForOwnerIdentifier___block_invoke;
     v9[3] = &unk_27862CD58;
-    v10 = v4;
-    v7 = [v6 hk_mapToSet:v9];
+    v10 = identifierCopy;
+    v7 = [stores2 hk_mapToSet:v9];
   }
 
   else
@@ -577,20 +577,20 @@ id __64__HDCloudSyncRegistryRecord_storeIdentifiersForOwnerIdentifier___block_in
   return v7;
 }
 
-- (id)storeIdentifiersForSyncIdentity:(id)a3
+- (id)storeIdentifiersForSyncIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+  identityCopy = identity;
+  stores = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
 
-  if (v5)
+  if (stores)
   {
-    v6 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+    stores2 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __61__HDCloudSyncRegistryRecord_storeIdentifiersForSyncIdentity___block_invoke;
     v9[3] = &unk_27862CD58;
-    v10 = v4;
-    v7 = [v6 hk_mapToSet:v9];
+    v10 = identityCopy;
+    v7 = [stores2 hk_mapToSet:v9];
   }
 
   else
@@ -623,40 +623,40 @@ id __61__HDCloudSyncRegistryRecord_storeIdentifiersForSyncIdentity___block_invok
   return v9;
 }
 
-- (void)addStoreIdentifier:(id)a3 ownerIdentifier:(id)a4 syncIdentity:(id)a5
+- (void)addStoreIdentifier:(id)identifier ownerIdentifier:(id)ownerIdentifier syncIdentity:(id)identity
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identityCopy = identity;
+  ownerIdentifierCopy = ownerIdentifier;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(HDCloudSyncCodableRegisteredStore);
-  [(HDCloudSyncCodableRegisteredStore *)v13 setOwnerIdentifier:v9];
+  [(HDCloudSyncCodableRegisteredStore *)v13 setOwnerIdentifier:ownerIdentifierCopy];
 
-  v11 = [v10 UUIDString];
+  uUIDString = [identifierCopy UUIDString];
 
-  [(HDCloudSyncCodableRegisteredStore *)v13 setStoreIdentifier:v11];
-  v12 = [v8 codableSyncIdentity];
+  [(HDCloudSyncCodableRegisteredStore *)v13 setStoreIdentifier:uUIDString];
+  codableSyncIdentity = [identityCopy codableSyncIdentity];
 
-  [(HDCloudSyncCodableRegisteredStore *)v13 setSyncIdentity:v12];
+  [(HDCloudSyncCodableRegisteredStore *)v13 setSyncIdentity:codableSyncIdentity];
   [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry addStores:v13];
 }
 
-- (void)removeStoreIdentifier:(id)a3 ownerIdentifier:(id)a4 syncIdentity:(id)a5
+- (void)removeStoreIdentifier:(id)identifier ownerIdentifier:(id)ownerIdentifier syncIdentity:(id)identity
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 UUIDString];
-  v11 = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
+  ownerIdentifierCopy = ownerIdentifier;
+  identityCopy = identity;
+  uUIDString = [identifier UUIDString];
+  stores = [(HDCloudSyncCodableRegistry *)self->_underlyingRegistry stores];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__HDCloudSyncRegistryRecord_removeStoreIdentifier_ownerIdentifier_syncIdentity___block_invoke;
   v15[3] = &unk_27862CD80;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  [v11 hk_removeObjectsPassingTest:v15];
+  v16 = identityCopy;
+  v17 = uUIDString;
+  v18 = ownerIdentifierCopy;
+  v12 = ownerIdentifierCopy;
+  v13 = uUIDString;
+  v14 = identityCopy;
+  [stores hk_removeObjectsPassingTest:v15];
 }
 
 uint64_t __80__HDCloudSyncRegistryRecord_removeStoreIdentifier_ownerIdentifier_syncIdentity___block_invoke(uint64_t a1, void *a2)

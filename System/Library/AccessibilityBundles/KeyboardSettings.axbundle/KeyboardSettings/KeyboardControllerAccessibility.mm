@@ -1,15 +1,15 @@
 @interface KeyboardControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)specifiers;
 @end
 
 @implementation KeyboardControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"KeyboardController"];
-  [v3 validateClass:@"KeyboardController" hasInstanceMethod:@"specifiers" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"KeyboardController"];
+  [validationsCopy validateClass:@"KeyboardController" hasInstanceMethod:@"specifiers" withFullSignature:{"@", 0}];
 }
 
 - (id)specifiers

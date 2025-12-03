@@ -1,14 +1,14 @@
 @interface PVHGBitmapImageBufferImpl
 - (CGImage)cgImage;
 - (CGSize)size;
-- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)a3;
-- (PVHGBitmapImageBufferImpl)initWithHGBitmap:(HGRef<HGBitmap>)a3;
+- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)space;
+- (PVHGBitmapImageBufferImpl)initWithHGBitmap:(HGRef<HGBitmap>)bitmap;
 - (void)dealloc;
 @end
 
 @implementation PVHGBitmapImageBufferImpl
 
-- (PVHGBitmapImageBufferImpl)initWithHGBitmap:(HGRef<HGBitmap>)a3
+- (PVHGBitmapImageBufferImpl)initWithHGBitmap:(HGRef<HGBitmap>)bitmap
 {
   v9.receiver = self;
   v9.super_class = PVHGBitmapImageBufferImpl;
@@ -17,13 +17,13 @@
   if (v4)
   {
     m_Obj = v4->_bitmap.m_Obj;
-    v7 = *a3.m_Obj;
-    if (m_Obj != *a3.m_Obj)
+    v7 = *bitmap.m_Obj;
+    if (m_Obj != *bitmap.m_Obj)
     {
       if (m_Obj)
       {
         (*(*m_Obj + 24))(v5->_bitmap.m_Obj);
-        v7 = *a3.m_Obj;
+        v7 = *bitmap.m_Obj;
       }
 
       v5->_bitmap.m_Obj = v7;
@@ -96,7 +96,7 @@
   return generatedCGImage;
 }
 
-- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)a3
+- (HGRef<HGBitmap>)hgBitmapWithColorSpace:(id)space
 {
   m_Obj = self->_bitmap.m_Obj;
   *v3 = m_Obj;

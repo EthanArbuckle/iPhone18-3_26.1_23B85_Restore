@@ -1,6 +1,6 @@
 @interface CUIMutableNamedIconLayerGroup
 - (void)dealloc;
-- (void)setAppearance:(id)a3;
+- (void)setAppearance:(id)appearance;
 @end
 
 @implementation CUIMutableNamedIconLayerGroup
@@ -12,13 +12,13 @@
   [(CUINamedIconLayerGroup *)&v3 dealloc];
 }
 
-- (void)setAppearance:(id)a3
+- (void)setAppearance:(id)appearance
 {
   appearance = self->_appearance;
-  if (appearance != a3)
+  if (appearance != appearance)
   {
 
-    self->_appearance = a3;
+    self->_appearance = appearance;
   }
 }
 

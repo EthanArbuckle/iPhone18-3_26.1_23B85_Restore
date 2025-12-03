@@ -1,35 +1,35 @@
 @interface USBudgetRegistration
 + (USBudgetRegistration)sharedRegistration;
-- (BOOL)_fetchAllBudgetedApplications:(id *)a3 webDomains:(id *)a4 error:(id *)a5;
-- (BOOL)addBudgetForActivity:(id)a3 withSchedule:(id)a4 events:(id)a5 forClient:(id)a6 withExtension:(id)a7 isPrivateClient:(BOOL)a8 error:(id *)a9;
-- (BOOL)removeBudgetsForActivities:(id)a3 withClient:(id)a4 error:(id *)a5;
+- (BOOL)_fetchAllBudgetedApplications:(id *)applications webDomains:(id *)domains error:(id *)error;
+- (BOOL)addBudgetForActivity:(id)activity withSchedule:(id)schedule events:(id)events forClient:(id)client withExtension:(id)extension isPrivateClient:(BOOL)privateClient error:(id *)error;
+- (BOOL)removeBudgetsForActivities:(id)activities withClient:(id)client error:(id *)error;
 - (USBudgetRegistration)init;
-- (USBudgetRegistration)initWithPersistentContainer:(id)a3;
-- (id)_areCategoriesBudgetedWithPredicate:(id)a3 error:(id *)a4;
-- (id)_getDeviceActivityContextForClientIdentifier:(id)a3;
-- (id)fetchActivitiesForClient:(id)a3 error:(id *)a4;
-- (id)fetchAllBudgetedApplicationsAndReturnError:(id *)a3;
-- (id)fetchAllBudgetedWebDomainsAndReturnError:(id *)a3;
-- (id)fetchEventsForActivity:(id)a3 withClient:(id)a4 error:(id *)a5;
-- (id)fetchScheduleForActivity:(id)a3 withClient:(id)a4 error:(id *)a5;
-- (id)isCategoryBudgeted:(id)a3 error:(id *)a4;
-- (void)_fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:(id)a3 completionHandler:(id)a4;
-- (void)_fetchBudgetsWithPredicate:(id)a3 completionHandler:(id)a4;
-- (void)_removeBudgetsWithPredicate:(id)a3 completionHandler:(id)a4;
-- (void)addBudgets:(id)a3 darwinNotificationName:(id)a4 notificationTimes:(id)a5 clientIdentifier:(id)a6 completionHandler:(id)a7;
-- (void)clearPostedNotificationTimesWithCalendarIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)fetchAllDeviceActivityBudgetsWithCompletionHandler:(id)a3;
-- (void)fetchBudgetForDeviceActivityWithURI:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)fetchBudgetForDeviceActivityWithURI:(id)a3 completionHandler:(id)a4;
-- (void)fetchBudgetsAndEventsForApplications:(id)a3 completionHandler:(id)a4;
-- (void)fetchBudgetsAndEventsForCategories:(id)a3 completionHandler:(id)a4;
-- (void)fetchBudgetsAndEventsForWebDomains:(id)a3 completionHandler:(id)a4;
-- (void)fetchBudgetsAndEventsWithPostedNotificationsWithCompletionHandler:(id)a3;
-- (void)fetchBudgetsWithIdentifier:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)fetchBudgetsWithIdentifiers:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)fetchBudgetsWithIdentifiers:(id)a3 clientIdentifiers:(id)a4 completionHandler:(id)a5;
-- (void)removeBudgets:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)removeDeviceActivityBudgetsNotMatchingClients:(id)a3 completionHandler:(id)a4;
+- (USBudgetRegistration)initWithPersistentContainer:(id)container;
+- (id)_areCategoriesBudgetedWithPredicate:(id)predicate error:(id *)error;
+- (id)_getDeviceActivityContextForClientIdentifier:(id)identifier;
+- (id)fetchActivitiesForClient:(id)client error:(id *)error;
+- (id)fetchAllBudgetedApplicationsAndReturnError:(id *)error;
+- (id)fetchAllBudgetedWebDomainsAndReturnError:(id *)error;
+- (id)fetchEventsForActivity:(id)activity withClient:(id)client error:(id *)error;
+- (id)fetchScheduleForActivity:(id)activity withClient:(id)client error:(id *)error;
+- (id)isCategoryBudgeted:(id)budgeted error:(id *)error;
+- (void)_fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:(id)predicate completionHandler:(id)handler;
+- (void)_fetchBudgetsWithPredicate:(id)predicate completionHandler:(id)handler;
+- (void)_removeBudgetsWithPredicate:(id)predicate completionHandler:(id)handler;
+- (void)addBudgets:(id)budgets darwinNotificationName:(id)name notificationTimes:(id)times clientIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)clearPostedNotificationTimesWithCalendarIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchAllDeviceActivityBudgetsWithCompletionHandler:(id)handler;
+- (void)fetchBudgetForDeviceActivityWithURI:(id)i clientIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchBudgetForDeviceActivityWithURI:(id)i completionHandler:(id)handler;
+- (void)fetchBudgetsAndEventsForApplications:(id)applications completionHandler:(id)handler;
+- (void)fetchBudgetsAndEventsForCategories:(id)categories completionHandler:(id)handler;
+- (void)fetchBudgetsAndEventsForWebDomains:(id)domains completionHandler:(id)handler;
+- (void)fetchBudgetsAndEventsWithPostedNotificationsWithCompletionHandler:(id)handler;
+- (void)fetchBudgetsWithIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier completionHandler:(id)handler;
+- (void)fetchBudgetsWithIdentifiers:(id)identifiers clientIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchBudgetsWithIdentifiers:(id)identifiers clientIdentifiers:(id)clientIdentifiers completionHandler:(id)handler;
+- (void)removeBudgets:(id)budgets clientIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)removeDeviceActivityBudgetsNotMatchingClients:(id)clients completionHandler:(id)handler;
 @end
 
 @implementation USBudgetRegistration
@@ -46,15 +46,15 @@
   return v3;
 }
 
-- (USBudgetRegistration)initWithPersistentContainer:(id)a3
+- (USBudgetRegistration)initWithPersistentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = USBudgetRegistration;
   v5 = [(USBudgetRegistration *)&v13 init];
   container = v5->_container;
-  v5->_container = v4;
-  v7 = v4;
+  v5->_container = containerCopy;
+  v7 = containerCopy;
 
   v8 = objc_opt_new();
   notificationPostingQueue = v5->_notificationPostingQueue;
@@ -111,20 +111,20 @@
   return v20;
 }
 
-- (void)addBudgets:(id)a3 darwinNotificationName:(id)a4 notificationTimes:(id)a5 clientIdentifier:(id)a6 completionHandler:(id)a7
+- (void)addBudgets:(id)budgets darwinNotificationName:(id)name notificationTimes:(id)times clientIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v15)
+  budgetsCopy = budgets;
+  nameCopy = name;
+  timesCopy = times;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v17 = handlerCopy;
+  if (identifierCopy)
   {
-    v38 = v16;
-    v18 = v14;
-    v19 = v12;
-    v20 = v15;
+    v38 = handlerCopy;
+    v18 = timesCopy;
+    v19 = budgetsCopy;
+    v20 = identifierCopy;
     v37 = 0;
   }
 
@@ -156,20 +156,20 @@
 
     v37 = v28;
     v38 = v17;
-    v18 = v14;
-    v19 = v12;
+    v18 = timesCopy;
+    v19 = budgetsCopy;
   }
 
   v30 = +[NSXPCConnection currentConnection];
   v31 = self->_addContextsByXPCConnection;
   objc_sync_enter(v31);
-  v32 = [(NSMapTable *)self->_addContextsByXPCConnection objectForKey:v30];
-  if (!v32)
+  newBackgroundContext = [(NSMapTable *)self->_addContextsByXPCConnection objectForKey:v30];
+  if (!newBackgroundContext)
   {
-    v33 = [(USBudgetRegistration *)self container];
-    v32 = [v33 newBackgroundContext];
+    container = [(USBudgetRegistration *)self container];
+    newBackgroundContext = [container newBackgroundContext];
 
-    [(NSMapTable *)self->_addContextsByXPCConnection setObject:v32 forKey:v30];
+    [(NSMapTable *)self->_addContextsByXPCConnection setObject:newBackgroundContext forKey:v30];
   }
 
   objc_sync_exit(v31);
@@ -180,14 +180,14 @@
   v39[3] = &unk_100085D28;
   v40 = v19;
   v41 = v20;
-  v42 = v13;
+  v42 = nameCopy;
   v43 = v18;
-  v44 = v32;
-  v45 = self;
+  v44 = newBackgroundContext;
+  selfCopy = self;
   v46 = v38;
-  v34 = v32;
-  v12 = v19;
-  v14 = v18;
+  v34 = newBackgroundContext;
+  budgetsCopy = v19;
+  timesCopy = v18;
   v17 = v38;
   v35 = v34;
   v36 = v20;
@@ -197,14 +197,14 @@
 LABEL_11:
 }
 
-- (BOOL)addBudgetForActivity:(id)a3 withSchedule:(id)a4 events:(id)a5 forClient:(id)a6 withExtension:(id)a7 isPrivateClient:(BOOL)a8 error:(id *)a9
+- (BOOL)addBudgetForActivity:(id)activity withSchedule:(id)schedule events:(id)events forClient:(id)client withExtension:(id)extension isPrivateClient:(BOOL)privateClient error:(id *)error
 {
-  v44 = a3;
-  v45 = a4;
-  v46 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v15)
+  activityCopy = activity;
+  scheduleCopy = schedule;
+  eventsCopy = events;
+  clientCopy = client;
+  extensionCopy = extension;
+  if (clientCopy)
   {
     goto LABEL_27;
   }
@@ -242,18 +242,18 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v19 containingBundleRecord];
-    v22 = [v21 applicationIdentifier];
-    v23 = [v21 bundleIdentifier];
+    containingBundleRecord = [v19 containingBundleRecord];
+    applicationIdentifier = [containingBundleRecord applicationIdentifier];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
   }
 
   else
   {
-    v22 = [v19 applicationIdentifier];
-    v23 = [v19 bundleIdentifier];
+    applicationIdentifier = [v19 applicationIdentifier];
+    bundleIdentifier = [v19 bundleIdentifier];
   }
 
-  v24 = v23;
+  v24 = bundleIdentifier;
   if (v24)
   {
     v25 = [_TtC18UsageTrackingAgent29USDeviceActivityAuthorization isAuthorized:v24];
@@ -261,11 +261,11 @@ LABEL_11:
     if (v25)
     {
 
-      if (v22)
+      if (applicationIdentifier)
       {
 LABEL_25:
-        v22 = v22;
-        v15 = v22;
+        applicationIdentifier = applicationIdentifier;
+        clientCopy = applicationIdentifier;
         goto LABEL_26;
       }
 
@@ -278,21 +278,21 @@ LABEL_14:
       }
 
       v26 = +[NSXPCConnection currentConnection];
-      v22 = [v26 valueForEntitlement:@"application-identifier"];
+      applicationIdentifier = [v26 valueForEntitlement:@"application-identifier"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 
-        if (a9)
+        if (error)
         {
           sub_100004648(1, @"NoApplicationIdentifierError", 0, v27, v28, v29, v30, v31, @"application-identifier");
-          *a9 = v22 = 0;
+          *error = applicationIdentifier = 0;
         }
 
         else
         {
-          v22 = 0;
+          applicationIdentifier = 0;
         }
       }
 
@@ -305,15 +305,15 @@ LABEL_14:
     sub_100063AD8();
   }
 
-  if (a9)
+  if (error)
   {
-    *a9 = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v32, v33, v34, v35, v36, v43);
+    *error = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v32, v33, v34, v35, v36, v43);
   }
 
-  v15 = 0;
+  clientCopy = 0;
 LABEL_26:
 
-  if (!v15)
+  if (!clientCopy)
   {
     v41 = 0;
     goto LABEL_33;
@@ -336,20 +336,20 @@ LABEL_27:
   *(&v67 + 1) = sub_100004DC0;
   v68 = sub_100004DD0;
   v69 = 0;
-  v37 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:v15];
+  v37 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:clientCopy];
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_100004DD8;
   v47[3] = &unk_100085D78;
-  v38 = v15;
+  v38 = clientCopy;
   v48 = v38;
   v54 = &v58;
-  v57 = a8;
-  v49 = v44;
+  privateClientCopy = privateClient;
+  v49 = activityCopy;
   v55 = &v62;
-  v50 = v45;
-  v51 = v46;
-  v52 = v16;
+  v50 = scheduleCopy;
+  v51 = eventsCopy;
+  v52 = extensionCopy;
   v39 = v37;
   v53 = v39;
   v56 = buf;
@@ -361,9 +361,9 @@ LABEL_27:
   }
 
   v41 = *(v63 + 24);
-  if (a9 && (v63[3] & 1) == 0)
+  if (error && (v63[3] & 1) == 0)
   {
-    *a9 = *(*(&v58 + 1) + 40);
+    *error = *(*(&v58 + 1) + 40);
     v41 = *(v63 + 24);
   }
 
@@ -376,31 +376,31 @@ LABEL_33:
   return v41 & 1;
 }
 
-- (id)_getDeviceActivityContextForClientIdentifier:(id)a3
+- (id)_getDeviceActivityContextForClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(USBudgetRegistration *)self container];
-  v6 = [v5 newBackgroundContext];
+  identifierCopy = identifier;
+  container = [(USBudgetRegistration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
-  [v6 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-  [v6 setTransactionAuthor:v4];
+  [newBackgroundContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+  [newBackgroundContext setTransactionAuthor:identifierCopy];
 
-  return v6;
+  return newBackgroundContext;
 }
 
-- (void)removeBudgets:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5
+- (void)removeBudgets:(id)budgets clientIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  budgetsCopy = budgets;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v10 = v8;
+    v10 = identifierCopy;
     v11 = 0;
 LABEL_7:
-    if (v22)
+    if (budgetsCopy)
     {
-      [NSPredicate predicateWithFormat:@"(%K == %@) && (%K IN %@)", @"clientIdentifier", v10, @"identifier", v22];
+      [NSPredicate predicateWithFormat:@"(%K == %@) && (%K IN %@)", @"clientIdentifier", v10, @"identifier", budgetsCopy];
     }
 
     else
@@ -408,7 +408,7 @@ LABEL_7:
       [NSPredicate predicateWithFormat:@"%K == %@", @"clientIdentifier", v10, v20, v21];
     }
     v19 = ;
-    [(USBudgetRegistration *)self _removeBudgetsWithPredicate:v19 completionHandler:v9];
+    [(USBudgetRegistration *)self _removeBudgetsWithPredicate:v19 completionHandler:handlerCopy];
 
     goto LABEL_11;
   }
@@ -435,15 +435,15 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9[2](v9, v11);
+  handlerCopy[2](handlerCopy, v11);
 LABEL_11:
 }
 
-- (BOOL)removeBudgetsForActivities:(id)a3 withClient:(id)a4 error:(id *)a5
+- (BOOL)removeBudgetsForActivities:(id)activities withClient:(id)client error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  activitiesCopy = activities;
+  clientCopy = client;
+  if (clientCopy)
   {
     goto LABEL_27;
   }
@@ -481,18 +481,18 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v12 containingBundleRecord];
-    v15 = [v14 applicationIdentifier];
-    v16 = [v14 bundleIdentifier];
+    containingBundleRecord = [v12 containingBundleRecord];
+    applicationIdentifier = [containingBundleRecord applicationIdentifier];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
   }
 
   else
   {
-    v15 = [v12 applicationIdentifier];
-    v16 = [v12 bundleIdentifier];
+    applicationIdentifier = [v12 applicationIdentifier];
+    bundleIdentifier = [v12 bundleIdentifier];
   }
 
-  v17 = v16;
+  v17 = bundleIdentifier;
   if (v17)
   {
     v18 = [_TtC18UsageTrackingAgent29USDeviceActivityAuthorization isAuthorized:v17];
@@ -500,11 +500,11 @@ LABEL_11:
     if (v18)
     {
 
-      if (v15)
+      if (applicationIdentifier)
       {
 LABEL_25:
-        v15 = v15;
-        v9 = v15;
+        applicationIdentifier = applicationIdentifier;
+        clientCopy = applicationIdentifier;
         goto LABEL_26;
       }
 
@@ -517,21 +517,21 @@ LABEL_14:
       }
 
       v19 = +[NSXPCConnection currentConnection];
-      v15 = [v19 valueForEntitlement:@"application-identifier"];
+      applicationIdentifier = [v19 valueForEntitlement:@"application-identifier"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 
-        if (a5)
+        if (error)
         {
           sub_100004648(1, @"NoApplicationIdentifierError", 0, v20, v21, v22, v23, v24, @"application-identifier");
-          *a5 = v15 = 0;
+          *error = applicationIdentifier = 0;
         }
 
         else
         {
-          v15 = 0;
+          applicationIdentifier = 0;
         }
       }
 
@@ -544,15 +544,15 @@ LABEL_14:
     sub_100063AD8();
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v25, v26, v27, v28, v29, v36);
+    *error = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v25, v26, v27, v28, v29, v36);
   }
 
-  v9 = 0;
+  clientCopy = 0;
 LABEL_26:
 
-  if (!v9)
+  if (!clientCopy)
   {
     v34 = 0;
     goto LABEL_33;
@@ -575,13 +575,13 @@ LABEL_27:
   *(&v53 + 1) = sub_100004DC0;
   v54 = sub_100004DD0;
   v55 = 0;
-  v30 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:v9];
+  v30 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:clientCopy];
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100006B3C;
   v37[3] = &unk_100085DA0;
-  v38 = v8;
-  v31 = v9;
+  v38 = activitiesCopy;
+  v31 = clientCopy;
   v39 = v31;
   v41 = &v44;
   v32 = v30;
@@ -596,9 +596,9 @@ LABEL_27:
   }
 
   v34 = *(v49 + 24);
-  if (a5 && (v49[3] & 1) == 0)
+  if (error && (v49[3] & 1) == 0)
   {
-    *a5 = *(*(&v44 + 1) + 40);
+    *error = *(*(&v44 + 1) + 40);
     v34 = *(v49 + 24);
   }
 
@@ -611,55 +611,55 @@ LABEL_33:
   return v34 & 1;
 }
 
-- (void)_removeBudgetsWithPredicate:(id)a3 completionHandler:(id)a4
+- (void)_removeBudgetsWithPredicate:(id)predicate completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(USBudgetRegistration *)self container];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  container = [(USBudgetRegistration *)self container];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100007010;
   v11[3] = &unk_100085DC8;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBackgroundTask:v11];
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = predicateCopy;
+  v9 = handlerCopy;
+  v10 = predicateCopy;
+  [container performBackgroundTask:v11];
 }
 
-- (void)fetchBudgetsWithIdentifier:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5
+- (void)fetchBudgetsWithIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(USBudgetRegistration *)self container];
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  handlerCopy = handler;
+  container = [(USBudgetRegistration *)self container];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100007438;
   v15[3] = &unk_100085DF0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [v11 performBackgroundTask:v15];
+  v16 = identifierCopy;
+  v17 = clientIdentifierCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = clientIdentifierCopy;
+  v14 = identifierCopy;
+  [container performBackgroundTask:v15];
 }
 
-- (void)fetchBudgetsWithIdentifiers:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5
+- (void)fetchBudgetsWithIdentifiers:(id)identifiers clientIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v10 = v8;
+    v10 = identifierCopy;
     v11 = 0;
 LABEL_7:
-    if (v22)
+    if (identifiersCopy)
     {
-      [NSPredicate predicateWithFormat:@"(%K == %@) && (%K IN %@)", @"clientIdentifier", v10, @"identifier", v22];
+      [NSPredicate predicateWithFormat:@"(%K == %@) && (%K IN %@)", @"clientIdentifier", v10, @"identifier", identifiersCopy];
     }
 
     else
@@ -667,7 +667,7 @@ LABEL_7:
       [NSPredicate predicateWithFormat:@"%K == %@", @"clientIdentifier", v10, v20, v21];
     }
     v19 = ;
-    [(USBudgetRegistration *)self _fetchBudgetsWithPredicate:v19 completionHandler:v9];
+    [(USBudgetRegistration *)self _fetchBudgetsWithPredicate:v19 completionHandler:handlerCopy];
 
     goto LABEL_11;
   }
@@ -694,63 +694,63 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v9[2](v9, 0, v11);
+  handlerCopy[2](handlerCopy, 0, v11);
 LABEL_11:
 }
 
-- (void)fetchBudgetsWithIdentifiers:(id)a3 clientIdentifiers:(id)a4 completionHandler:(id)a5
+- (void)fetchBudgetsWithIdentifiers:(id)identifiers clientIdentifiers:(id)clientIdentifiers completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  clientIdentifiersCopy = clientIdentifiers;
+  handlerCopy = handler;
+  identifiersCopy = identifiers;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100008034;
   v18 = &unk_100085E18;
-  v19 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
-  v20 = v8;
-  v11 = v8;
+  v19 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
+  v20 = clientIdentifiersCopy;
+  v11 = clientIdentifiersCopy;
   v12 = v19;
-  [v10 enumerateObjectsUsingBlock:&v15];
+  [identifiersCopy enumerateObjectsUsingBlock:&v15];
 
   v13 = [NSCompoundPredicate alloc];
   v14 = [v13 initWithType:2 subpredicates:{v12, v15, v16, v17, v18}];
-  [(USBudgetRegistration *)self _fetchBudgetsWithPredicate:v14 completionHandler:v9];
+  [(USBudgetRegistration *)self _fetchBudgetsWithPredicate:v14 completionHandler:handlerCopy];
 }
 
-- (void)_fetchBudgetsWithPredicate:(id)a3 completionHandler:(id)a4
+- (void)_fetchBudgetsWithPredicate:(id)predicate completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(USBudgetRegistration *)self container];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  container = [(USBudgetRegistration *)self container];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000081C0;
   v11[3] = &unk_100085E40;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBackgroundTask:v11];
+  v12 = predicateCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predicateCopy;
+  [container performBackgroundTask:v11];
 }
 
-- (void)clearPostedNotificationTimesWithCalendarIdentifier:(id)a3 completionHandler:(id)a4
+- (void)clearPostedNotificationTimesWithCalendarIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(USBudgetRegistration *)self container];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  container = [(USBudgetRegistration *)self container];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000083E4;
   v11[3] = &unk_100085E40;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBackgroundTask:v11];
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
+  [container performBackgroundTask:v11];
 }
 
-- (id)fetchAllBudgetedApplicationsAndReturnError:(id *)a3
+- (id)fetchAllBudgetedApplicationsAndReturnError:(id *)error
 {
   v40 = 0;
   v41 = &v40;
@@ -760,7 +760,7 @@ LABEL_11:
   v45 = 0;
   v38 = 0;
   obj = 0;
-  v4 = [(USBudgetRegistration *)self _fetchAllBudgetedApplications:&obj webDomains:&v38 error:a3];
+  v4 = [(USBudgetRegistration *)self _fetchAllBudgetedApplications:&obj webDomains:&v38 error:error];
   objc_storeStrong(&v45, obj);
   v5 = v38;
   if (v4)
@@ -799,7 +799,7 @@ LABEL_11:
         sub_100063F28(v47, [v41[5] count]);
       }
 
-      v13 = [v41[5] array];
+      array = [v41[5] array];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_100008AA0;
@@ -807,7 +807,7 @@ LABEL_11:
       v29 = v10;
       v30 = &v40;
       v31 = &v32;
-      [v11 categoriesForBundleIDs:v13 completionHandler:v28];
+      [v11 categoriesForBundleIDs:array completionHandler:v28];
     }
 
     if (v5)
@@ -818,7 +818,7 @@ LABEL_11:
         sub_100063F68(v46, [v5 count]);
       }
 
-      v15 = [v5 array];
+      array2 = [v5 array];
       v21 = _NSConcreteStackBlock;
       v22 = 3221225472;
       v23 = sub_100008C2C;
@@ -826,7 +826,7 @@ LABEL_11:
       v25 = v10;
       v26 = &v40;
       v27 = &v32;
-      [v11 categoriesForDomainNames:v15 completionHandler:&v21];
+      [v11 categoriesForDomainNames:array2 completionHandler:&v21];
     }
 
     [v10 lockWhenCondition:{0, v21, v22, v23, v24}];
@@ -851,9 +851,9 @@ LABEL_11:
       goto LABEL_20;
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = v16;
+      *error = v16;
     }
 
     _Block_object_dispose(&v32, 8);
@@ -867,14 +867,14 @@ LABEL_20:
   return v17;
 }
 
-- (void)fetchBudgetsAndEventsForApplications:(id)a3 completionHandler:(id)a4
+- (void)fetchBudgetsAndEventsForApplications:(id)applications completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  applicationsCopy = applications;
+  handlerCopy = handler;
   v8 = [[NSConditionLock alloc] initWithCondition:0];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    sub_100063FA8(v6);
+    sub_100063FA8(applicationsCopy);
   }
 
   v48 = 0;
@@ -908,7 +908,7 @@ LABEL_20:
   v22 = &unk_100085EE0;
   v25 = &v48;
   v26 = &v42;
-  v10 = v6;
+  v10 = applicationsCopy;
   v23 = v10;
   v27 = &v36;
   v28 = &v30;
@@ -921,7 +921,7 @@ LABEL_20:
   [v11 unlock];
   if (v31[5])
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -962,7 +962,7 @@ LABEL_20:
       v13 = v18;
     }
 
-    [(USBudgetRegistration *)self _fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:v13 completionHandler:v7];
+    [(USBudgetRegistration *)self _fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:v13 completionHandler:handlerCopy];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -972,7 +972,7 @@ LABEL_20:
   _Block_object_dispose(&v48, 8);
 }
 
-- (id)fetchAllBudgetedWebDomainsAndReturnError:(id *)a3
+- (id)fetchAllBudgetedWebDomainsAndReturnError:(id *)error
 {
   v44 = 0;
   v45 = &v44;
@@ -982,7 +982,7 @@ LABEL_20:
   v49 = 0;
   v42 = 0;
   v43 = 0;
-  v4 = [(USBudgetRegistration *)self _fetchAllBudgetedApplications:&v43 webDomains:&v42 error:a3];
+  v4 = [(USBudgetRegistration *)self _fetchAllBudgetedApplications:&v43 webDomains:&v42 error:error];
   v5 = v43;
   objc_storeStrong(&v49, v42);
   if (v4)
@@ -1027,7 +1027,7 @@ LABEL_20:
         sub_100064020(v51, [v45[5] count]);
       }
 
-      v13 = [v45[5] array];
+      array = [v45[5] array];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_100009AA4;
@@ -1036,7 +1036,7 @@ LABEL_20:
       v31 = v40;
       v32 = &v44;
       v33 = &v34;
-      [v11 categoriesForDomainNames:v13 completionHandler:v29];
+      [v11 categoriesForDomainNames:array completionHandler:v29];
     }
 
     if (v5)
@@ -1047,7 +1047,7 @@ LABEL_20:
         sub_100064060(v50, [v5 count]);
       }
 
-      v15 = [v5 array];
+      array2 = [v5 array];
       v21 = _NSConcreteStackBlock;
       v22 = 3221225472;
       v23 = sub_100009D44;
@@ -1056,7 +1056,7 @@ LABEL_20:
       v26 = v40;
       v27 = &v44;
       v28 = &v34;
-      [v11 categoriesForBundleIDs:v15 completionHandler:&v21];
+      [v11 categoriesForBundleIDs:array2 completionHandler:&v21];
     }
 
     [v10 lockWhenCondition:{0, v21, v22, v23, v24}];
@@ -1082,9 +1082,9 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = v16;
+      *error = v16;
     }
 
     _Block_object_dispose(&v34, 8);
@@ -1099,14 +1099,14 @@ LABEL_20:
   return v17;
 }
 
-- (void)fetchBudgetsAndEventsForWebDomains:(id)a3 completionHandler:(id)a4
+- (void)fetchBudgetsAndEventsForWebDomains:(id)domains completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  handlerCopy = handler;
   v8 = [[NSConditionLock alloc] initWithCondition:0];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000640A0(v6);
+    sub_1000640A0(domainsCopy);
   }
 
   v48 = 0;
@@ -1141,7 +1141,7 @@ LABEL_20:
   v25 = &v48;
   v26 = &v42;
   v27 = &v36;
-  v10 = v6;
+  v10 = domainsCopy;
   v23 = v10;
   v28 = &v30;
   v11 = v8;
@@ -1153,7 +1153,7 @@ LABEL_20:
   [v11 unlock];
   if (v31[5])
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
@@ -1194,7 +1194,7 @@ LABEL_20:
       v13 = v18;
     }
 
-    [(USBudgetRegistration *)self _fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:v13 completionHandler:v7];
+    [(USBudgetRegistration *)self _fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:v13 completionHandler:handlerCopy];
   }
 
   _Block_object_dispose(&v30, 8);
@@ -1204,24 +1204,24 @@ LABEL_20:
   _Block_object_dispose(&v48, 8);
 }
 
-- (id)isCategoryBudgeted:(id)a3 error:(id *)a4
+- (id)isCategoryBudgeted:(id)budgeted error:(id *)error
 {
-  v6 = [NSPredicate predicateWithFormat:@"%K == %@", @"categoryIdentifier", a3];
-  v7 = [(USBudgetRegistration *)self _areCategoriesBudgetedWithPredicate:v6 error:a4];
+  budgeted = [NSPredicate predicateWithFormat:@"%K == %@", @"categoryIdentifier", budgeted];
+  v7 = [(USBudgetRegistration *)self _areCategoriesBudgetedWithPredicate:budgeted error:error];
 
   return v7;
 }
 
-- (void)fetchBudgetsAndEventsForCategories:(id)a3 completionHandler:(id)a4
+- (void)fetchBudgetsAndEventsForCategories:(id)categories completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [NSPredicate predicateWithFormat:@"ANY %K.%K IN %@", @"budgetedCategories", @"categoryIdentifier", a3];
-  [(USBudgetRegistration *)self _fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:v7 completionHandler:v6];
+  handlerCopy = handler;
+  categories = [NSPredicate predicateWithFormat:@"ANY %K.%K IN %@", @"budgetedCategories", @"categoryIdentifier", categories];
+  [(USBudgetRegistration *)self _fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:categories completionHandler:handlerCopy];
 }
 
-- (id)_areCategoriesBudgetedWithPredicate:(id)a3 error:(id *)a4
+- (id)_areCategoriesBudgetedWithPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1234,22 +1234,22 @@ LABEL_20:
   v20 = sub_100004DC0;
   v21 = sub_100004DD0;
   v22 = 0;
-  v7 = [(USBudgetRegistration *)self container];
-  v8 = [v7 newBackgroundContext];
+  container = [(USBudgetRegistration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000AB64;
   v13[3] = &unk_100085FA8;
-  v9 = v6;
+  v9 = predicateCopy;
   v14 = v9;
   v15 = &v17;
   v16 = &v23;
-  [v8 performBlockAndWait:v13];
+  [newBackgroundContext performBlockAndWait:v13];
 
   v10 = v24[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v18[5];
+    *error = v18[5];
     v10 = v24[5];
   }
 
@@ -1261,7 +1261,7 @@ LABEL_20:
   return v11;
 }
 
-- (BOOL)_fetchAllBudgetedApplications:(id *)a3 webDomains:(id *)a4 error:(id *)a5
+- (BOOL)_fetchAllBudgetedApplications:(id *)applications webDomains:(id *)domains error:(id *)error
 {
   v26 = 0;
   v27 = &v26;
@@ -1285,8 +1285,8 @@ LABEL_20:
   v15[2] = sub_100004DC0;
   v15[3] = sub_100004DD0;
   v16 = 0;
-  v8 = [(USBudgetRegistration *)self container];
-  v9 = [v8 newBackgroundContext];
+  container = [(USBudgetRegistration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000B06C;
@@ -1295,21 +1295,21 @@ LABEL_20:
   v13[5] = &v26;
   v13[6] = &v20;
   v13[7] = &v17;
-  [v9 performBlockAndWait:v13];
+  [newBackgroundContext performBlockAndWait:v13];
 
   if (*(v27 + 24) == 1)
   {
     v10 = v18;
-    *a3 = v21[5];
+    *applications = v21[5];
 LABEL_5:
-    *a4 = *(*v10 + 40);
+    *domains = *(*v10 + 40);
     goto LABEL_6;
   }
 
-  if (a5)
+  if (error)
   {
     v10 = v15;
-    a4 = a5;
+    domains = error;
     goto LABEL_5;
   }
 
@@ -1324,47 +1324,47 @@ LABEL_6:
   return v11;
 }
 
-- (void)fetchBudgetsAndEventsWithPostedNotificationsWithCompletionHandler:(id)a3
+- (void)fetchBudgetsAndEventsWithPostedNotificationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(USBudgetRegistration *)self container];
-  v6 = [v5 newBackgroundContext];
+  handlerCopy = handler;
+  container = [(USBudgetRegistration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000B4D8;
   v9[3] = &unk_100085FF8;
-  v10 = v6;
-  v11 = v4;
-  v7 = v6;
-  v8 = v4;
+  v10 = newBackgroundContext;
+  v11 = handlerCopy;
+  v7 = newBackgroundContext;
+  v8 = handlerCopy;
   [v7 performBlockAndWait:v9];
 }
 
-- (void)_fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:(id)a3 completionHandler:(id)a4
+- (void)_fetchBudgetsAndEventsMatchingBudgetedUsagePredicate:(id)predicate completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(USBudgetRegistration *)self container];
-  v9 = [v8 newBackgroundContext];
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  container = [(USBudgetRegistration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000B8A8;
   v13[3] = &unk_100086020;
-  v15 = v9;
-  v16 = v7;
-  v14 = v6;
-  v10 = v9;
-  v11 = v7;
-  v12 = v6;
+  v15 = newBackgroundContext;
+  v16 = handlerCopy;
+  v14 = predicateCopy;
+  v10 = newBackgroundContext;
+  v11 = handlerCopy;
+  v12 = predicateCopy;
   [v10 performBlockAndWait:v13];
 }
 
-- (id)fetchActivitiesForClient:(id)a3 error:(id *)a4
+- (id)fetchActivitiesForClient:(id)client error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  clientCopy = client;
+  if (clientCopy)
   {
     goto LABEL_27;
   }
@@ -1402,18 +1402,18 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v9 containingBundleRecord];
-    v12 = [v11 applicationIdentifier];
-    v13 = [v11 bundleIdentifier];
+    containingBundleRecord = [v9 containingBundleRecord];
+    applicationIdentifier = [containingBundleRecord applicationIdentifier];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
   }
 
   else
   {
-    v12 = [v9 applicationIdentifier];
-    v13 = [v9 bundleIdentifier];
+    applicationIdentifier = [v9 applicationIdentifier];
+    bundleIdentifier = [v9 bundleIdentifier];
   }
 
-  v14 = v13;
+  v14 = bundleIdentifier;
   if (v14)
   {
     v15 = [_TtC18UsageTrackingAgent29USDeviceActivityAuthorization isAuthorized:v14];
@@ -1421,11 +1421,11 @@ LABEL_6:
     if (v15)
     {
 
-      if (v12)
+      if (applicationIdentifier)
       {
 LABEL_25:
-        v12 = v12;
-        v6 = v12;
+        applicationIdentifier = applicationIdentifier;
+        clientCopy = applicationIdentifier;
         goto LABEL_26;
       }
 
@@ -1438,21 +1438,21 @@ LABEL_14:
       }
 
       v16 = +[NSXPCConnection currentConnection];
-      v12 = [v16 valueForEntitlement:@"application-identifier"];
+      applicationIdentifier = [v16 valueForEntitlement:@"application-identifier"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 
-        if (a4)
+        if (error)
         {
           sub_100004648(1, @"NoApplicationIdentifierError", 0, v17, v18, v19, v20, v21, @"application-identifier");
-          *a4 = v12 = 0;
+          *error = applicationIdentifier = 0;
         }
 
         else
         {
-          v12 = 0;
+          applicationIdentifier = 0;
         }
       }
 
@@ -1465,15 +1465,15 @@ LABEL_14:
     sub_100063AD8();
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v22, v23, v24, v25, v26, v32);
+    *error = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v22, v23, v24, v25, v26, v32);
   }
 
-  v6 = 0;
+  clientCopy = 0;
 LABEL_26:
 
-  if (!v6)
+  if (!clientCopy)
   {
     v30 = 0;
     goto LABEL_31;
@@ -1492,20 +1492,20 @@ LABEL_27:
   *(&v43 + 1) = sub_100004DC0;
   v44 = sub_100004DD0;
   v45 = 0;
-  v27 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:v6];
+  v27 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:clientCopy];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_10000C0AC;
   v33[3] = &unk_100085FA8;
-  v28 = v6;
+  v28 = clientCopy;
   v34 = v28;
   v35 = buf;
   v36 = &v37;
   [v27 performBlockAndWait:v33];
   v29 = *(*(&v37 + 1) + 40);
-  if (a4 && !v29)
+  if (error && !v29)
   {
-    *a4 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
     v29 = *(*(&v37 + 1) + 40);
   }
 
@@ -1519,11 +1519,11 @@ LABEL_31:
   return v30;
 }
 
-- (id)fetchScheduleForActivity:(id)a3 withClient:(id)a4 error:(id *)a5
+- (id)fetchScheduleForActivity:(id)activity withClient:(id)client error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  activityCopy = activity;
+  clientCopy = client;
+  if (clientCopy)
   {
     goto LABEL_27;
   }
@@ -1561,18 +1561,18 @@ LABEL_31:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v12 containingBundleRecord];
-    v15 = [v14 applicationIdentifier];
-    v16 = [v14 bundleIdentifier];
+    containingBundleRecord = [v12 containingBundleRecord];
+    applicationIdentifier = [containingBundleRecord applicationIdentifier];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
   }
 
   else
   {
-    v15 = [v12 applicationIdentifier];
-    v16 = [v12 bundleIdentifier];
+    applicationIdentifier = [v12 applicationIdentifier];
+    bundleIdentifier = [v12 bundleIdentifier];
   }
 
-  v17 = v16;
+  v17 = bundleIdentifier;
   if (v17)
   {
     v18 = [_TtC18UsageTrackingAgent29USDeviceActivityAuthorization isAuthorized:v17];
@@ -1580,11 +1580,11 @@ LABEL_31:
     if (v18)
     {
 
-      if (v15)
+      if (applicationIdentifier)
       {
 LABEL_25:
-        v15 = v15;
-        v9 = v15;
+        applicationIdentifier = applicationIdentifier;
+        clientCopy = applicationIdentifier;
         goto LABEL_26;
       }
 
@@ -1597,21 +1597,21 @@ LABEL_14:
       }
 
       v19 = +[NSXPCConnection currentConnection];
-      v15 = [v19 valueForEntitlement:@"application-identifier"];
+      applicationIdentifier = [v19 valueForEntitlement:@"application-identifier"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 
-        if (a5)
+        if (error)
         {
           sub_100004648(1, @"NoApplicationIdentifierError", 0, v20, v21, v22, v23, v24, @"application-identifier");
-          *a5 = v15 = 0;
+          *error = applicationIdentifier = 0;
         }
 
         else
         {
-          v15 = 0;
+          applicationIdentifier = 0;
         }
       }
 
@@ -1624,15 +1624,15 @@ LABEL_14:
     sub_100063AD8();
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v25, v26, v27, v28, v29, v35);
+    *error = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v25, v26, v27, v28, v29, v35);
   }
 
-  v9 = 0;
+  clientCopy = 0;
 LABEL_26:
 
-  if (!v9)
+  if (!clientCopy)
   {
     v33 = 0;
     goto LABEL_31;
@@ -1651,21 +1651,21 @@ LABEL_27:
   *(&v47 + 1) = sub_100004DC0;
   v48 = sub_100004DD0;
   v49 = 0;
-  v30 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:v9];
+  v30 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:clientCopy];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10000C690;
   v36[3] = &unk_100086048;
-  v31 = v9;
+  v31 = clientCopy;
   v37 = v31;
-  v38 = v8;
+  v38 = activityCopy;
   v39 = buf;
   v40 = &v41;
   [v30 performBlockAndWait:v36];
   v32 = *(*(&v41 + 1) + 40);
-  if (a5 && !v32)
+  if (error && !v32)
   {
-    *a5 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
     v32 = *(*(&v41 + 1) + 40);
   }
 
@@ -1679,11 +1679,11 @@ LABEL_31:
   return v33;
 }
 
-- (id)fetchEventsForActivity:(id)a3 withClient:(id)a4 error:(id *)a5
+- (id)fetchEventsForActivity:(id)activity withClient:(id)client error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  activityCopy = activity;
+  clientCopy = client;
+  if (clientCopy)
   {
     goto LABEL_27;
   }
@@ -1721,18 +1721,18 @@ LABEL_31:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [v12 containingBundleRecord];
-    v15 = [v14 applicationIdentifier];
-    v16 = [v14 bundleIdentifier];
+    containingBundleRecord = [v12 containingBundleRecord];
+    applicationIdentifier = [containingBundleRecord applicationIdentifier];
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
   }
 
   else
   {
-    v15 = [v12 applicationIdentifier];
-    v16 = [v12 bundleIdentifier];
+    applicationIdentifier = [v12 applicationIdentifier];
+    bundleIdentifier = [v12 bundleIdentifier];
   }
 
-  v17 = v16;
+  v17 = bundleIdentifier;
   if (v17)
   {
     v18 = [_TtC18UsageTrackingAgent29USDeviceActivityAuthorization isAuthorized:v17];
@@ -1740,11 +1740,11 @@ LABEL_31:
     if (v18)
     {
 
-      if (v15)
+      if (applicationIdentifier)
       {
 LABEL_25:
-        v15 = v15;
-        v9 = v15;
+        applicationIdentifier = applicationIdentifier;
+        clientCopy = applicationIdentifier;
         goto LABEL_26;
       }
 
@@ -1757,21 +1757,21 @@ LABEL_14:
       }
 
       v19 = +[NSXPCConnection currentConnection];
-      v15 = [v19 valueForEntitlement:@"application-identifier"];
+      applicationIdentifier = [v19 valueForEntitlement:@"application-identifier"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 
-        if (a5)
+        if (error)
         {
           sub_100004648(1, @"NoApplicationIdentifierError", 0, v20, v21, v22, v23, v24, @"application-identifier");
-          *a5 = v15 = 0;
+          *error = applicationIdentifier = 0;
         }
 
         else
         {
-          v15 = 0;
+          applicationIdentifier = 0;
         }
       }
 
@@ -1784,15 +1784,15 @@ LABEL_14:
     sub_100063AD8();
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v25, v26, v27, v28, v29, v35);
+    *error = sub_100004648(2, @"NotAuthorizedError", @"SeeFamilyControls", v25, v26, v27, v28, v29, v35);
   }
 
-  v9 = 0;
+  clientCopy = 0;
 LABEL_26:
 
-  if (!v9)
+  if (!clientCopy)
   {
     v33 = 0;
     goto LABEL_31;
@@ -1811,21 +1811,21 @@ LABEL_27:
   *(&v47 + 1) = sub_100004DC0;
   v48 = sub_100004DD0;
   v49 = 0;
-  v30 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:v9];
+  v30 = [(USBudgetRegistration *)self _getDeviceActivityContextForClientIdentifier:clientCopy];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10000CD18;
   v36[3] = &unk_100086048;
-  v31 = v9;
+  v31 = clientCopy;
   v37 = v31;
-  v38 = v8;
+  v38 = activityCopy;
   v39 = buf;
   v40 = &v41;
   [v30 performBlockAndWait:v36];
   v32 = *(*(&v41 + 1) + 40);
-  if (a5 && !v32)
+  if (error && !v32)
   {
-    *a5 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
     v32 = *(*(&v41 + 1) + 40);
   }
 
@@ -1839,44 +1839,44 @@ LABEL_31:
   return v33;
 }
 
-- (void)fetchBudgetForDeviceActivityWithURI:(id)a3 completionHandler:(id)a4
+- (void)fetchBudgetForDeviceActivityWithURI:(id)i completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  handlerCopy = handler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = sub_100004DC0;
   v25 = sub_100004DD0;
   v26 = 0;
-  v8 = [(USBudgetRegistration *)self container];
-  v9 = [v8 newBackgroundContext];
+  container = [(USBudgetRegistration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_10000D958;
   v16 = &unk_100086070;
-  v10 = v8;
+  v10 = container;
   v17 = v10;
-  v11 = v6;
+  v11 = iCopy;
   v18 = v11;
-  v12 = v9;
+  v12 = newBackgroundContext;
   v19 = v12;
   v20 = &v21;
   [v12 performBlockAndWait:&v13];
-  [(USBudgetRegistration *)self fetchBudgetForDeviceActivityWithURI:v11 clientIdentifier:v22[5] completionHandler:v7, v13, v14, v15, v16];
+  [(USBudgetRegistration *)self fetchBudgetForDeviceActivityWithURI:v11 clientIdentifier:v22[5] completionHandler:handlerCopy, v13, v14, v15, v16];
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)fetchBudgetForDeviceActivityWithURI:(id)a3 clientIdentifier:(id)a4 completionHandler:(id)a5
+- (void)fetchBudgetForDeviceActivityWithURI:(id)i clientIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(USBudgetRegistration *)self container];
-  if (v10)
+  iCopy = i;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  container = [(USBudgetRegistration *)self container];
+  if (identifierCopy)
   {
-    v12 = v10;
+    v12 = identifierCopy;
   }
 
   else
@@ -1890,53 +1890,53 @@ LABEL_31:
   v18[1] = 3221225472;
   v18[2] = sub_10000DB60;
   v18[3] = &unk_100086098;
-  v19 = v11;
-  v20 = v8;
+  v19 = container;
+  v20 = iCopy;
   v21 = v13;
-  v22 = v9;
-  v14 = v9;
+  v22 = handlerCopy;
+  v14 = handlerCopy;
   v15 = v13;
-  v16 = v8;
-  v17 = v11;
+  v16 = iCopy;
+  v17 = container;
   [v15 performBlockAndWait:v18];
 }
 
-- (void)fetchAllDeviceActivityBudgetsWithCompletionHandler:(id)a3
+- (void)fetchAllDeviceActivityBudgetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(USBudgetRegistration *)self container];
-  v6 = [v5 newBackgroundContext];
+  handlerCopy = handler;
+  container = [(USBudgetRegistration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000DD60;
   v9[3] = &unk_100085FF8;
-  v10 = v6;
-  v11 = v4;
-  v7 = v6;
-  v8 = v4;
+  v10 = newBackgroundContext;
+  v11 = handlerCopy;
+  v7 = newBackgroundContext;
+  v8 = handlerCopy;
   [v7 performBlockAndWait:v9];
 }
 
-- (void)removeDeviceActivityBudgetsNotMatchingClients:(id)a3 completionHandler:(id)a4
+- (void)removeDeviceActivityBudgetsNotMatchingClients:(id)clients completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(USBudgetRegistration *)self container];
-  v9 = [v8 newBackgroundContext];
+  clientsCopy = clients;
+  handlerCopy = handler;
+  container = [(USBudgetRegistration *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
-  [v9 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+  [newBackgroundContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000DFD0;
   v13[3] = &unk_1000860E8;
-  v14 = v6;
-  v15 = v9;
-  v16 = self;
-  v17 = v7;
-  v10 = v7;
-  v11 = v9;
-  v12 = v6;
+  v14 = clientsCopy;
+  v15 = newBackgroundContext;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = newBackgroundContext;
+  v12 = clientsCopy;
   [v11 performBlock:v13];
 }
 

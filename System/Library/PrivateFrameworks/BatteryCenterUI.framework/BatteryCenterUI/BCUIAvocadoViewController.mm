@@ -1,15 +1,15 @@
 @interface BCUIAvocadoViewController
-+ (id)avocadoViewControllerForWidgetFamily:(int64_t)a3;
++ (id)avocadoViewControllerForWidgetFamily:(int64_t)family;
 + (void)initialize;
 - (id)_newBatteryDeviceView;
 - (id)_synthesizedDebugIdentifier;
 - (unint64_t)_maximumNumberOfBatteryDeviceViews;
-- (void)_configureBatteryDeviceView:(id)a3 withBatteryDevice:(id)a4 transitionCoordinator:(id)a5;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_configureBatteryDeviceView:(id)view withBatteryDevice:(id)device transitionCoordinator:(id)coordinator;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_validateBatteryDeviceViewsIfNecessary;
 - (void)invalidateBatteryDeviceState;
-- (void)setBatteryDevices:(id)a3;
-- (void)setScaleFactor:(double)a3;
+- (void)setBatteryDevices:(id)devices;
+- (void)setScaleFactor:(double)factor;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -18,25 +18,25 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     MEMORY[0x1EEDF0450]();
   }
 }
 
-+ (id)avocadoViewControllerForWidgetFamily:(int64_t)a3
++ (id)avocadoViewControllerForWidgetFamily:(int64_t)family
 {
-  if (a3 == 3 || a3 == 2 || a3 == 1)
+  if (family == 3 || family == 2 || family == 1)
   {
     v3 = objc_opt_class();
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = NSStringFromWidgetFamily();
-    [v6 handleFailureInMethod:a2 object:a1 file:@"BCUIAvocadoViewController.m" lineNumber:61 description:{@"Unsupported size: %@", v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BCUIAvocadoViewController.m" lineNumber:61 description:{@"Unsupported size: %@", v7}];
 
     v3 = 0;
   }
@@ -46,41 +46,41 @@
   return v8;
 }
 
-- (void)setBatteryDevices:(id)a3
+- (void)setBatteryDevices:(id)devices
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  devicesCopy = devices;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if ((BSEqualObjects() & 1) == 0)
   {
     v6 = *MEMORY[0x1E698E830];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(BCUIAvocadoViewController *)v5 _synthesizedDebugIdentifier];
+      _synthesizedDebugIdentifier = [(BCUIAvocadoViewController *)selfCopy _synthesizedDebugIdentifier];
       v10 = 138543618;
-      v11 = v7;
+      v11 = _synthesizedDebugIdentifier;
       v12 = 2114;
-      v13 = v4;
+      v13 = devicesCopy;
       _os_log_impl(&dword_1C1C4A000, v6, OS_LOG_TYPE_DEFAULT, "(%{public}@) Updating battery devices : %{public}@", &v10, 0x16u);
     }
 
-    v8 = [v4 copy];
-    batteryDevices = v5->_batteryDevices;
-    v5->_batteryDevices = v8;
+    v8 = [devicesCopy copy];
+    batteryDevices = selfCopy->_batteryDevices;
+    selfCopy->_batteryDevices = v8;
 
-    [(BCUIAvocadoViewController *)v5 invalidateBatteryDeviceState];
+    [(BCUIAvocadoViewController *)selfCopy invalidateBatteryDeviceState];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setScaleFactor:(double)a3
+- (void)setScaleFactor:(double)factor
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_scaleFactor != a3)
+  if (self->_scaleFactor != factor)
   {
-    self->_scaleFactor = a3;
+    self->_scaleFactor = factor;
     if (self->_batteryDeviceViewsValid)
     {
       v12 = 0u;
@@ -113,8 +113,8 @@
         while (v6);
       }
 
-      v9 = [(BCUIAvocadoViewController *)self viewIfLoaded];
-      [v9 setNeedsLayout];
+      viewIfLoaded = [(BCUIAvocadoViewController *)self viewIfLoaded];
+      [viewIfLoaded setNeedsLayout];
     }
   }
 }
@@ -122,8 +122,8 @@
 - (void)invalidateBatteryDeviceState
 {
   self->_batteryDeviceViewsValid = 0;
-  v2 = [(BCUIAvocadoViewController *)self view];
-  [v2 setNeedsLayout];
+  view = [(BCUIAvocadoViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)viewDidLoad
@@ -168,9 +168,9 @@ void __40__BCUIAvocadoViewController_viewDidLoad__block_invoke(uint64_t a1)
     if (os_log_type_enabled(*MEMORY[0x1E698E830], OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(BCUIAvocadoViewController *)self _synthesizedDebugIdentifier];
+      _synthesizedDebugIdentifier = [(BCUIAvocadoViewController *)self _synthesizedDebugIdentifier];
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = _synthesizedDebugIdentifier;
       _os_log_impl(&dword_1C1C4A000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@) Validating device views", &buf, 0xCu);
     }
 
@@ -410,27 +410,27 @@ uint64_t __67__BCUIAvocadoViewController__validateBatteryDeviceViewsIfNecessary_
 
 - (unint64_t)_maximumNumberOfBatteryDeviceViews
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BCUIAvocadoViewController.m" lineNumber:195 description:@"ABSTRACT"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BCUIAvocadoViewController.m" lineNumber:195 description:@"ABSTRACT"];
 
   return 0;
 }
 
 - (id)_newBatteryDeviceView
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BCUIAvocadoViewController.m" lineNumber:204 description:@"ABSTRACT"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BCUIAvocadoViewController.m" lineNumber:204 description:@"ABSTRACT"];
 
   return 0;
 }
 
-- (void)_configureBatteryDeviceView:(id)a3 withBatteryDevice:(id)a4 transitionCoordinator:(id)a5
+- (void)_configureBatteryDeviceView:(id)view withBatteryDevice:(id)device transitionCoordinator:(id)coordinator
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  viewCopy = view;
+  deviceCopy = device;
+  coordinatorCopy = coordinator;
+  if (!viewCopy)
   {
     [BCUIAvocadoViewController(SubclassOverrides) _configureBatteryDeviceView:a2 withBatteryDevice:self transitionCoordinator:?];
   }
@@ -439,59 +439,59 @@ uint64_t __67__BCUIAvocadoViewController__validateBatteryDeviceViewsIfNecessary_
   if (os_log_type_enabled(*MEMORY[0x1E698E830], OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [(BCUIAvocadoViewController *)self _synthesizedDebugIdentifier];
+    _synthesizedDebugIdentifier = [(BCUIAvocadoViewController *)self _synthesizedDebugIdentifier];
     v18 = 138543874;
-    v19 = v14;
+    v19 = _synthesizedDebugIdentifier;
     v20 = 2114;
-    v21 = v9;
+    v21 = viewCopy;
     v22 = 2114;
-    v23 = v10;
+    v23 = deviceCopy;
     _os_log_impl(&dword_1C1C4A000, v13, OS_LOG_TYPE_DEFAULT, "(%{public}@) Configuring battery device view '%{public}@' with battery device: %{public}@", &v18, 0x20u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v9 setTransitionCoordinator:v11];
+    [viewCopy setTransitionCoordinator:coordinatorCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v9 setEmpty:v10 == 0];
+    [viewCopy setEmpty:deviceCopy == 0];
   }
 
-  if (v10)
+  if (deviceCopy)
   {
-    [v9 setPercentCharge:{objc_msgSend(v10, "percentCharge")}];
-    [v9 setLowCharge:{objc_msgSend(v10, "isLowBattery")}];
-    [v9 setCharging:{objc_msgSend(v10, "isCharging")}];
-    v15 = [v10 isLowPowerModeActive];
+    [viewCopy setPercentCharge:{objc_msgSend(deviceCopy, "percentCharge")}];
+    [viewCopy setLowCharge:{objc_msgSend(deviceCopy, "isLowBattery")}];
+    [viewCopy setCharging:{objc_msgSend(deviceCopy, "isCharging")}];
+    isLowPowerModeActive = [deviceCopy isLowPowerModeActive];
   }
 
   else
   {
-    [v9 setPercentCharge:0];
-    [v9 setLowCharge:0];
-    [v9 setCharging:0];
-    v15 = 0;
+    [viewCopy setPercentCharge:0];
+    [viewCopy setLowCharge:0];
+    [viewCopy setCharging:0];
+    isLowPowerModeActive = 0;
   }
 
-  [v9 setLowPowerModeEnabled:v15];
-  v16 = [v10 batteryWidgetGlyph];
-  [v9 setGlyph:v16];
+  [viewCopy setLowPowerModeEnabled:isLowPowerModeActive];
+  batteryWidgetGlyph = [deviceCopy batteryWidgetGlyph];
+  [viewCopy setGlyph:batteryWidgetGlyph];
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v10 name];
-    [v9 setName:v17];
+    name = [deviceCopy name];
+    [viewCopy setName:name];
   }
 
-  [v9 setScaleFactor:self->_scaleFactor];
+  [viewCopy setScaleFactor:self->_scaleFactor];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v3 = [(BCUIAvocadoViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(BCUIAvocadoViewController *)self view];
+  [view setNeedsLayout];
 }
 
 void __67__BCUIAvocadoViewController__validateBatteryDeviceViewsIfNecessary__block_invoke_cold_1(void *a1, void *a2)

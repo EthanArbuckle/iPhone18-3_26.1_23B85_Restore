@@ -1,47 +1,47 @@
 @interface UINavigationController
-- (BOOL)navigateTo:(id)a3 from:(id)a4 animated:(BOOL)a5;
-- (id)drop:(id)a3 animated:(BOOL)a4;
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3;
-- (id)removeViewController:(id)a3 animated:(BOOL)a4;
+- (BOOL)navigateTo:(id)to from:(id)from animated:(BOOL)animated;
+- (id)drop:(id)drop animated:(BOOL)animated;
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller;
+- (id)removeViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation UINavigationController
 
-- (BOOL)navigateTo:(id)a3 from:(id)a4 animated:(BOOL)a5
+- (BOOL)navigateTo:(id)to from:(id)from animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_72A60(v8, a4, a5);
+  toCopy = to;
+  fromCopy = from;
+  selfCopy = self;
+  sub_72A60(toCopy, from, animated);
 
   return 1;
 }
 
-- (id)drop:(id)a3 animated:(BOOL)a4
+- (id)drop:(id)drop animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_72D20(v5);
+  dropCopy = drop;
+  selfCopy = self;
+  v7 = sub_72D20(dropCopy);
 
   return v7;
 }
 
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  UINavigationController.playActivityFeatureNames(sourceChildViewController:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  UINavigationController.playActivityFeatureNames(sourceChildViewController:)(controller);
 
   v7.super.isa = sub_AB9740().super.isa;
 
   return v7.super.isa;
 }
 
-- (id)removeViewController:(id)a3 animated:(BOOL)a4
+- (id)removeViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  v8 = UINavigationController.removeViewController(_:animated:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = UINavigationController.removeViewController(_:animated:)(controllerCopy, animated);
 
   return v8;
 }

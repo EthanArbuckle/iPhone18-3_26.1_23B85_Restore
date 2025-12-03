@@ -1,20 +1,20 @@
 @interface VCPHomeKitSessionExportedObject
 - (VCPHomeKitAnalysisSession)weakSession;
-- (void)processResults:(id)a3 withReply:(id)a4;
+- (void)processResults:(id)results withReply:(id)reply;
 @end
 
 @implementation VCPHomeKitSessionExportedObject
 
-- (void)processResults:(id)a3 withReply:(id)a4
+- (void)processResults:(id)results withReply:(id)reply
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VCPHomeKitSessionExportedObject *)self weakSession];
-  v9 = v8;
-  if (v8)
+  resultsCopy = results;
+  replyCopy = reply;
+  weakSession = [(VCPHomeKitSessionExportedObject *)self weakSession];
+  v9 = weakSession;
+  if (weakSession)
   {
-    [v8 processResults:v6 withReply:v7];
+    [weakSession processResults:resultsCopy withReply:replyCopy];
   }
 
   else
@@ -25,7 +25,7 @@
     v15[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v13 = [v10 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v12];
-    v7[2](v7, v13);
+    replyCopy[2](replyCopy, v13);
   }
 }
 

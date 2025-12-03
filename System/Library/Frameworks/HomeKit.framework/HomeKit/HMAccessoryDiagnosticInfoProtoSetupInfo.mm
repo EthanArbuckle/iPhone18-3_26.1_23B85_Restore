@@ -1,14 +1,14 @@
 @interface HMAccessoryDiagnosticInfoProtoSetupInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsICloudAvailableINT:(id)a3;
-- (int)StringAsIDSAvailableINT:(id)a3;
-- (int)StringAsLastKnownControllerHH2Mode:(id)a3;
-- (int)StringAsLastKnownControllerSentinelZoneExistence:(id)a3;
-- (int)StringAsManateeAvailableINT:(id)a3;
-- (int)StringAsNetworkAvailableINT:(id)a3;
+- (int)StringAsICloudAvailableINT:(id)t;
+- (int)StringAsIDSAvailableINT:(id)t;
+- (int)StringAsLastKnownControllerHH2Mode:(id)mode;
+- (int)StringAsLastKnownControllerSentinelZoneExistence:(id)existence;
+- (int)StringAsManateeAvailableINT:(id)t;
+- (int)StringAsNetworkAvailableINT:(id)t;
 - (int)iCloudAvailableINT;
 - (int)iDSAvailableINT;
 - (int)lastKnownControllerHH2Mode;
@@ -16,65 +16,65 @@
 - (int)manateeAvailableINT;
 - (int)networkAvailableINT;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAccountSettleWaitMSHH2:(BOOL)a3;
-- (void)setHasControllerKeyExchangeMSHH1:(BOOL)a3;
-- (void)setHasCurrentDeviceConfirmedPrimaryResidentINT:(BOOL)a3;
-- (void)setHasCurrentDeviceIDSWaitMSHH2:(BOOL)a3;
-- (void)setHasEventRouterFirstEventPushMSHH2:(BOOL)a3;
-- (void)setHasEventRouterServerConnectionMSHH2:(BOOL)a3;
-- (void)setHasFirstCoreDataContainerSetupDurationMSHH2:(BOOL)a3;
-- (void)setHasFirstCoreDataContainerSetupErrorCodeHH2:(BOOL)a3;
-- (void)setHasFirstCoreDataContainerSetupUnderlyingErrorCodeHH2:(BOOL)a3;
-- (void)setHasFirstCoreDataImportMSHH2:(BOOL)a3;
-- (void)setHasHomeManagerReadyMSHH2:(BOOL)a3;
-- (void)setHasICloudAvailableINT:(BOOL)a3;
-- (void)setHasIDSAvailableINT:(BOOL)a3;
-- (void)setHasLastKnownControllerHH2Mode:(BOOL)a3;
-- (void)setHasLastKnownControllerSentinelZoneExistence:(BOOL)a3;
-- (void)setHasLastKnownStageErrorCode:(BOOL)a3;
-- (void)setHasLastKnownStageUnderlyingErrorCode:(BOOL)a3;
-- (void)setHasLastPrimaryClientConnectMessageFailErrorCodeHH2:(BOOL)a3;
-- (void)setHasLastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2:(BOOL)a3;
-- (void)setHasLastPrimaryClientConnectedTimeHH2:(BOOL)a3;
-- (void)setHasManateeAvailableINT:(BOOL)a3;
-- (void)setHasNetworkAvailableINT:(BOOL)a3;
-- (void)setHasNewAccessoryTransferMSHH1:(BOOL)a3;
-- (void)setHasNumberOfTimesPrimaryClientConnectMessageFailedHH2:(BOOL)a3;
-- (void)setHasNumberOfTimesPrimaryClientConnectedHH2:(BOOL)a3;
-- (void)setHasNumberOfTimesPrimaryClientDisconnectedHH2:(BOOL)a3;
-- (void)setHasNumberOfTimesPrimaryResidentChangedHH2:(BOOL)a3;
-- (void)setHasPairingIdentityCreationMSHH2:(BOOL)a3;
-- (void)setHasPrimaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2:(BOOL)a3;
-- (void)setHasPrimaryResidentElectionJoinMeshMSHH2:(BOOL)a3;
-- (void)setHasPrimaryResidentElectionMSHH2:(BOOL)a3;
-- (void)setHasPrimaryResidentElectionModernTransportStartedFutureResolvedMSHH2:(BOOL)a3;
-- (void)setHasPrimaryResidentElectionPeerDeviceFutureResolvedMSHH2:(BOOL)a3;
-- (void)setHasPrimaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2:(BOOL)a3;
-- (void)setHasSavedEventState:(BOOL)a3;
-- (void)setHasSentinelZoneFetchMSHH1:(BOOL)a3;
-- (void)setHasSessionSetupCloseMSHH1:(BOOL)a3;
-- (void)setHasSessionSetupOpenMSHH1:(BOOL)a3;
-- (void)setHasSettingsCreationMSHH2:(BOOL)a3;
-- (void)setHasSiriReadyMSHH2:(BOOL)a3;
-- (void)setHasTotalDurationMSHH1:(BOOL)a3;
-- (void)setHasTotalDurationMSHH2:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAccountSettleWaitMSHH2:(BOOL)h2;
+- (void)setHasControllerKeyExchangeMSHH1:(BOOL)h1;
+- (void)setHasCurrentDeviceConfirmedPrimaryResidentINT:(BOOL)t;
+- (void)setHasCurrentDeviceIDSWaitMSHH2:(BOOL)h2;
+- (void)setHasEventRouterFirstEventPushMSHH2:(BOOL)h2;
+- (void)setHasEventRouterServerConnectionMSHH2:(BOOL)h2;
+- (void)setHasFirstCoreDataContainerSetupDurationMSHH2:(BOOL)h2;
+- (void)setHasFirstCoreDataContainerSetupErrorCodeHH2:(BOOL)h2;
+- (void)setHasFirstCoreDataContainerSetupUnderlyingErrorCodeHH2:(BOOL)h2;
+- (void)setHasFirstCoreDataImportMSHH2:(BOOL)h2;
+- (void)setHasHomeManagerReadyMSHH2:(BOOL)h2;
+- (void)setHasICloudAvailableINT:(BOOL)t;
+- (void)setHasIDSAvailableINT:(BOOL)t;
+- (void)setHasLastKnownControllerHH2Mode:(BOOL)mode;
+- (void)setHasLastKnownControllerSentinelZoneExistence:(BOOL)existence;
+- (void)setHasLastKnownStageErrorCode:(BOOL)code;
+- (void)setHasLastKnownStageUnderlyingErrorCode:(BOOL)code;
+- (void)setHasLastPrimaryClientConnectMessageFailErrorCodeHH2:(BOOL)h2;
+- (void)setHasLastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2:(BOOL)h2;
+- (void)setHasLastPrimaryClientConnectedTimeHH2:(BOOL)h2;
+- (void)setHasManateeAvailableINT:(BOOL)t;
+- (void)setHasNetworkAvailableINT:(BOOL)t;
+- (void)setHasNewAccessoryTransferMSHH1:(BOOL)h1;
+- (void)setHasNumberOfTimesPrimaryClientConnectMessageFailedHH2:(BOOL)h2;
+- (void)setHasNumberOfTimesPrimaryClientConnectedHH2:(BOOL)h2;
+- (void)setHasNumberOfTimesPrimaryClientDisconnectedHH2:(BOOL)h2;
+- (void)setHasNumberOfTimesPrimaryResidentChangedHH2:(BOOL)h2;
+- (void)setHasPairingIdentityCreationMSHH2:(BOOL)h2;
+- (void)setHasPrimaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2:(BOOL)h2;
+- (void)setHasPrimaryResidentElectionJoinMeshMSHH2:(BOOL)h2;
+- (void)setHasPrimaryResidentElectionMSHH2:(BOOL)h2;
+- (void)setHasPrimaryResidentElectionModernTransportStartedFutureResolvedMSHH2:(BOOL)h2;
+- (void)setHasPrimaryResidentElectionPeerDeviceFutureResolvedMSHH2:(BOOL)h2;
+- (void)setHasPrimaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2:(BOOL)h2;
+- (void)setHasSavedEventState:(BOOL)state;
+- (void)setHasSentinelZoneFetchMSHH1:(BOOL)h1;
+- (void)setHasSessionSetupCloseMSHH1:(BOOL)h1;
+- (void)setHasSessionSetupOpenMSHH1:(BOOL)h1;
+- (void)setHasSettingsCreationMSHH2:(BOOL)h2;
+- (void)setHasSiriReadyMSHH2:(BOOL)h2;
+- (void)setHasTotalDurationMSHH1:(BOOL)h1;
+- (void)setHasTotalDurationMSHH2:(BOOL)h2;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryDiagnosticInfoProtoSetupInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x100000000) != 0)
   {
-    self->_version = *(v4 + 33);
+    self->_version = *(fromCopy + 33);
     *&self->_has |= 0x100000000uLL;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 0x8000000) == 0)
     {
 LABEL_3:
@@ -92,9 +92,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_sessionSetupOpenMSHH1 = *(v4 + 28);
+  self->_sessionSetupOpenMSHH1 = *(fromCopy + 28);
   *&self->_has |= 0x8000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -107,9 +107,9 @@ LABEL_4:
   }
 
 LABEL_73:
-  self->_controllerKeyExchangeMSHH1 = *(v4 + 3);
+  self->_controllerKeyExchangeMSHH1 = *(fromCopy + 3);
   *&self->_has |= 4uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_5:
@@ -122,9 +122,9 @@ LABEL_5:
   }
 
 LABEL_74:
-  self->_newAccessoryTransferMSHH1 = *(v4 + 17);
+  self->_newAccessoryTransferMSHH1 = *(fromCopy + 17);
   *&self->_has |= 0x10000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_6:
@@ -137,9 +137,9 @@ LABEL_6:
   }
 
 LABEL_75:
-  self->_sessionSetupCloseMSHH1 = *(v4 + 27);
+  self->_sessionSetupCloseMSHH1 = *(fromCopy + 27);
   *&self->_has |= 0x4000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_7:
@@ -152,9 +152,9 @@ LABEL_7:
   }
 
 LABEL_76:
-  self->_sentinelZoneFetchMSHH1 = *(v4 + 26);
+  self->_sentinelZoneFetchMSHH1 = *(fromCopy + 26);
   *&self->_has |= 0x2000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_8:
@@ -167,9 +167,9 @@ LABEL_8:
   }
 
 LABEL_77:
-  self->_totalDurationMSHH1 = *(v4 + 31);
+  self->_totalDurationMSHH1 = *(fromCopy + 31);
   *&self->_has |= 0x40000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -182,9 +182,9 @@ LABEL_9:
   }
 
 LABEL_78:
-  self->_accountSettleWaitMSHH2 = *(v4 + 2);
+  self->_accountSettleWaitMSHH2 = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 8) == 0)
   {
 LABEL_10:
@@ -197,9 +197,9 @@ LABEL_10:
   }
 
 LABEL_79:
-  self->_currentDeviceIDSWaitMSHH2 = *(v4 + 4);
+  self->_currentDeviceIDSWaitMSHH2 = *(fromCopy + 4);
   *&self->_has |= 8uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x400) == 0)
   {
 LABEL_11:
@@ -212,9 +212,9 @@ LABEL_11:
   }
 
 LABEL_80:
-  self->_homeManagerReadyMSHH2 = *(v4 + 11);
+  self->_homeManagerReadyMSHH2 = *(fromCopy + 11);
   *&self->_has |= 0x400uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x200) == 0)
   {
 LABEL_12:
@@ -227,9 +227,9 @@ LABEL_12:
   }
 
 LABEL_81:
-  self->_firstCoreDataImportMSHH2 = *(v4 + 10);
+  self->_firstCoreDataImportMSHH2 = *(fromCopy + 10);
   *&self->_has |= 0x200uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 1) == 0)
   {
 LABEL_13:
@@ -242,9 +242,9 @@ LABEL_13:
   }
 
 LABEL_82:
-  self->_accessoryAddMSHH2 = *(v4 + 1);
+  self->_accessoryAddMSHH2 = *(fromCopy + 1);
   *&self->_has |= 1uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_14:
@@ -257,9 +257,9 @@ LABEL_14:
   }
 
 LABEL_83:
-  self->_settingsCreationMSHH2 = *(v4 + 29);
+  self->_settingsCreationMSHH2 = *(fromCopy + 29);
   *&self->_has |= 0x10000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_15:
@@ -272,9 +272,9 @@ LABEL_15:
   }
 
 LABEL_84:
-  self->_pairingIdentityCreationMSHH2 = *(v4 + 18);
+  self->_pairingIdentityCreationMSHH2 = *(fromCopy + 18);
   *&self->_has |= 0x20000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x20000000) == 0)
   {
 LABEL_16:
@@ -287,9 +287,9 @@ LABEL_16:
   }
 
 LABEL_85:
-  self->_siriReadyMSHH2 = *(v4 + 30);
+  self->_siriReadyMSHH2 = *(fromCopy + 30);
   *&self->_has |= 0x20000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x20) == 0)
   {
 LABEL_17:
@@ -302,9 +302,9 @@ LABEL_17:
   }
 
 LABEL_86:
-  self->_eventRouterServerConnectionMSHH2 = *(v4 + 6);
+  self->_eventRouterServerConnectionMSHH2 = *(fromCopy + 6);
   *&self->_has |= 0x20uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_18:
@@ -317,9 +317,9 @@ LABEL_18:
   }
 
 LABEL_87:
-  self->_primaryResidentElectionMSHH2 = *(v4 + 21);
+  self->_primaryResidentElectionMSHH2 = *(fromCopy + 21);
   *&self->_has |= 0x100000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x10) == 0)
   {
 LABEL_19:
@@ -332,9 +332,9 @@ LABEL_19:
   }
 
 LABEL_88:
-  self->_eventRouterFirstEventPushMSHH2 = *(v4 + 5);
+  self->_eventRouterFirstEventPushMSHH2 = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x80000000) == 0)
   {
 LABEL_20:
@@ -347,9 +347,9 @@ LABEL_20:
   }
 
 LABEL_89:
-  self->_totalDurationMSHH2 = *(v4 + 32);
+  self->_totalDurationMSHH2 = *(fromCopy + 32);
   *&self->_has |= 0x80000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x400000000) == 0)
   {
 LABEL_21:
@@ -362,9 +362,9 @@ LABEL_21:
   }
 
 LABEL_90:
-  self->_iCloudAvailableINT = *(v4 + 76);
+  self->_iCloudAvailableINT = *(fromCopy + 76);
   *&self->_has |= 0x400000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x800000000) == 0)
   {
 LABEL_22:
@@ -377,9 +377,9 @@ LABEL_22:
   }
 
 LABEL_91:
-  self->_iDSAvailableINT = *(v4 + 77);
+  self->_iDSAvailableINT = *(fromCopy + 77);
   *&self->_has |= 0x800000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x4000000000) == 0)
   {
 LABEL_23:
@@ -392,9 +392,9 @@ LABEL_23:
   }
 
 LABEL_92:
-  self->_manateeAvailableINT = *(v4 + 90);
+  self->_manateeAvailableINT = *(fromCopy + 90);
   *&self->_has |= 0x4000000000uLL;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x8000000000) == 0)
   {
 LABEL_24:
@@ -407,47 +407,47 @@ LABEL_24:
   }
 
 LABEL_93:
-  self->_networkAvailableINT = *(v4 + 91);
+  self->_networkAvailableINT = *(fromCopy + 91);
   *&self->_has |= 0x8000000000uLL;
-  if ((*(v4 + 48) & 0x800) != 0)
+  if ((*(fromCopy + 48) & 0x800) != 0)
   {
 LABEL_25:
-    self->_lastKnownStageErrorCode = *(v4 + 12);
+    self->_lastKnownStageErrorCode = *(fromCopy + 12);
     *&self->_has |= 0x800uLL;
   }
 
 LABEL_26:
-  v9 = v4;
-  if (*(v4 + 40))
+  v9 = fromCopy;
+  if (*(fromCopy + 40))
   {
     [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self setLastKnownStageErrorDomain:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 41))
+  if (*(fromCopy + 41))
   {
     [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self setLastKnownStageErrorString:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if ((*(v4 + 385) & 0x10) != 0)
+  if ((*(fromCopy + 385) & 0x10) != 0)
   {
-    self->_lastKnownStageUnderlyingErrorCode = *(v4 + 13);
+    self->_lastKnownStageUnderlyingErrorCode = *(fromCopy + 13);
     *&self->_has |= 0x1000uLL;
   }
 
-  if (*(v4 + 42))
+  if (*(fromCopy + 42))
   {
     [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self setLastKnownStageUnderlyingErrorDomain:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(fromCopy + 48);
   if ((v6 & 0x1000000) != 0)
   {
-    self->_savedEventState = *(v4 + 25);
+    self->_savedEventState = *(fromCopy + 25);
     *&self->_has |= 0x1000000uLL;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
     if ((v6 & 0x1000000000) == 0)
     {
 LABEL_36:
@@ -465,28 +465,28 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  self->_lastKnownControllerHH2Mode = *(v4 + 78);
+  self->_lastKnownControllerHH2Mode = *(fromCopy + 78);
   *&self->_has |= 0x1000000000uLL;
-  if ((*(v4 + 48) & 0x2000000000) != 0)
+  if ((*(fromCopy + 48) & 0x2000000000) != 0)
   {
 LABEL_37:
-    self->_lastKnownControllerSentinelZoneExistence = *(v4 + 79);
+    self->_lastKnownControllerSentinelZoneExistence = *(fromCopy + 79);
     *&self->_has |= 0x2000000000uLL;
   }
 
 LABEL_38:
-  if (*(v4 + 34))
+  if (*(fromCopy + 34))
   {
     [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self setControllerSetupSessionIdentifier:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 0x80000000000) != 0)
   {
-    self->_numberOfTimesPrimaryResidentChangedHH2 = *(v4 + 95);
+    self->_numberOfTimesPrimaryResidentChangedHH2 = *(fromCopy + 95);
     *&self->_has |= 0x80000000000uLL;
-    v7 = *(v4 + 48);
+    v7 = *(fromCopy + 48);
     if ((v7 & 0x8000) == 0)
     {
 LABEL_42:
@@ -504,9 +504,9 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  self->_lastPrimaryClientConnectedTimeHH2 = *(v4 + 16);
+  self->_lastPrimaryClientConnectedTimeHH2 = *(fromCopy + 16);
   *&self->_has |= 0x8000uLL;
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 0x20000000000) == 0)
   {
 LABEL_43:
@@ -519,9 +519,9 @@ LABEL_43:
   }
 
 LABEL_100:
-  self->_numberOfTimesPrimaryClientConnectedHH2 = *(v4 + 93);
+  self->_numberOfTimesPrimaryClientConnectedHH2 = *(fromCopy + 93);
   *&self->_has |= 0x20000000000uLL;
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 0x40000000000) == 0)
   {
 LABEL_44:
@@ -534,9 +534,9 @@ LABEL_44:
   }
 
 LABEL_101:
-  self->_numberOfTimesPrimaryClientDisconnectedHH2 = *(v4 + 94);
+  self->_numberOfTimesPrimaryClientDisconnectedHH2 = *(fromCopy + 94);
   *&self->_has |= 0x40000000000uLL;
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 0x10000000000) == 0)
   {
 LABEL_45:
@@ -549,9 +549,9 @@ LABEL_45:
   }
 
 LABEL_102:
-  self->_numberOfTimesPrimaryClientConnectMessageFailedHH2 = *(v4 + 92);
+  self->_numberOfTimesPrimaryClientConnectMessageFailedHH2 = *(fromCopy + 92);
   *&self->_has |= 0x10000000000uLL;
-  v7 = *(v4 + 48);
+  v7 = *(fromCopy + 48);
   if ((v7 & 0x200000000) == 0)
   {
 LABEL_46:
@@ -564,40 +564,40 @@ LABEL_46:
   }
 
 LABEL_103:
-  self->_currentDeviceConfirmedPrimaryResidentINT = *(v4 + 70);
+  self->_currentDeviceConfirmedPrimaryResidentINT = *(fromCopy + 70);
   *&self->_has |= 0x200000000uLL;
-  if ((*(v4 + 48) & 0x2000) != 0)
+  if ((*(fromCopy + 48) & 0x2000) != 0)
   {
 LABEL_47:
-    self->_lastPrimaryClientConnectMessageFailErrorCodeHH2 = *(v4 + 14);
+    self->_lastPrimaryClientConnectMessageFailErrorCodeHH2 = *(fromCopy + 14);
     *&self->_has |= 0x2000uLL;
   }
 
 LABEL_48:
-  if (*(v4 + 43))
+  if (*(fromCopy + 43))
   {
     [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self setLastPrimaryClientConnectMessageFailErrorDomainHH2:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if ((*(v4 + 385) & 0x40) != 0)
+  if ((*(fromCopy + 385) & 0x40) != 0)
   {
-    self->_lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2 = *(v4 + 15);
+    self->_lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2 = *(fromCopy + 15);
     *&self->_has |= 0x4000uLL;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
     [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self setLastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(fromCopy + 48);
   if ((v8 & 0x800000) != 0)
   {
-    self->_primaryResidentElectionPeerDeviceFutureResolvedMSHH2 = *(v4 + 24);
+    self->_primaryResidentElectionPeerDeviceFutureResolvedMSHH2 = *(fromCopy + 24);
     *&self->_has |= 0x800000uLL;
-    v8 = *(v4 + 48);
+    v8 = *(fromCopy + 48);
     if ((v8 & 0x40000) == 0)
     {
 LABEL_56:
@@ -615,9 +615,9 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  self->_primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2 = *(v4 + 19);
+  self->_primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2 = *(fromCopy + 19);
   *&self->_has |= 0x40000uLL;
-  v8 = *(v4 + 48);
+  v8 = *(fromCopy + 48);
   if ((v8 & 0x200000) == 0)
   {
 LABEL_57:
@@ -630,9 +630,9 @@ LABEL_57:
   }
 
 LABEL_107:
-  self->_primaryResidentElectionModernTransportStartedFutureResolvedMSHH2 = *(v4 + 22);
+  self->_primaryResidentElectionModernTransportStartedFutureResolvedMSHH2 = *(fromCopy + 22);
   *&self->_has |= 0x200000uLL;
-  v8 = *(v4 + 48);
+  v8 = *(fromCopy + 48);
   if ((v8 & 0x400000) == 0)
   {
 LABEL_58:
@@ -645,9 +645,9 @@ LABEL_58:
   }
 
 LABEL_108:
-  self->_primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2 = *(v4 + 23);
+  self->_primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2 = *(fromCopy + 23);
   *&self->_has |= 0x400000uLL;
-  v8 = *(v4 + 48);
+  v8 = *(fromCopy + 48);
   if ((v8 & 0x80000) == 0)
   {
 LABEL_59:
@@ -660,9 +660,9 @@ LABEL_59:
   }
 
 LABEL_109:
-  self->_primaryResidentElectionJoinMeshMSHH2 = *(v4 + 20);
+  self->_primaryResidentElectionJoinMeshMSHH2 = *(fromCopy + 20);
   *&self->_has |= 0x80000uLL;
-  v8 = *(v4 + 48);
+  v8 = *(fromCopy + 48);
   if ((v8 & 0x40) == 0)
   {
 LABEL_60:
@@ -675,32 +675,32 @@ LABEL_60:
   }
 
 LABEL_110:
-  self->_firstCoreDataContainerSetupDurationMSHH2 = *(v4 + 7);
+  self->_firstCoreDataContainerSetupDurationMSHH2 = *(fromCopy + 7);
   *&self->_has |= 0x40uLL;
-  if ((*(v4 + 48) & 0x80) != 0)
+  if ((*(fromCopy + 48) & 0x80) != 0)
   {
 LABEL_61:
-    self->_firstCoreDataContainerSetupErrorCodeHH2 = *(v4 + 8);
+    self->_firstCoreDataContainerSetupErrorCodeHH2 = *(fromCopy + 8);
     *&self->_has |= 0x80uLL;
   }
 
 LABEL_62:
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
     [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self setFirstCoreDataContainerSetupErrorDomainHH2:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  if (*(v4 + 385))
+  if (*(fromCopy + 385))
   {
-    self->_firstCoreDataContainerSetupUnderlyingErrorCodeHH2 = *(v4 + 9);
+    self->_firstCoreDataContainerSetupUnderlyingErrorCodeHH2 = *(fromCopy + 9);
     *&self->_has |= 0x100uLL;
   }
 
-  if (*(v4 + 37))
+  if (*(fromCopy + 37))
   {
     [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self setFirstCoreDataContainerSetupUnderlyingErrorDomainHH2:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 }
 
@@ -1300,19 +1300,19 @@ LABEL_93:
   return v57 ^ v58 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ [(NSString *)self->_firstCoreDataContainerSetupUnderlyingErrorDomainHH2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_243;
   }
 
   has = self->_has;
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((*&has & 0x100000000) != 0)
   {
-    if ((v6 & 0x100000000) == 0 || self->_version != *(v4 + 33))
+    if ((v6 & 0x100000000) == 0 || self->_version != *(equalCopy + 33))
     {
       goto LABEL_243;
     }
@@ -1325,7 +1325,7 @@ LABEL_93:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v6 & 0x8000000) == 0 || self->_sessionSetupOpenMSHH1 != *(v4 + 28))
+    if ((v6 & 0x8000000) == 0 || self->_sessionSetupOpenMSHH1 != *(equalCopy + 28))
     {
       goto LABEL_243;
     }
@@ -1338,7 +1338,7 @@ LABEL_93:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_controllerKeyExchangeMSHH1 != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_controllerKeyExchangeMSHH1 != *(equalCopy + 3))
     {
       goto LABEL_243;
     }
@@ -1351,7 +1351,7 @@ LABEL_93:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_newAccessoryTransferMSHH1 != *(v4 + 17))
+    if ((v6 & 0x10000) == 0 || self->_newAccessoryTransferMSHH1 != *(equalCopy + 17))
     {
       goto LABEL_243;
     }
@@ -1364,7 +1364,7 @@ LABEL_93:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_sessionSetupCloseMSHH1 != *(v4 + 27))
+    if ((v6 & 0x4000000) == 0 || self->_sessionSetupCloseMSHH1 != *(equalCopy + 27))
     {
       goto LABEL_243;
     }
@@ -1377,7 +1377,7 @@ LABEL_93:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_sentinelZoneFetchMSHH1 != *(v4 + 26))
+    if ((v6 & 0x2000000) == 0 || self->_sentinelZoneFetchMSHH1 != *(equalCopy + 26))
     {
       goto LABEL_243;
     }
@@ -1390,7 +1390,7 @@ LABEL_93:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v6 & 0x40000000) == 0 || self->_totalDurationMSHH1 != *(v4 + 31))
+    if ((v6 & 0x40000000) == 0 || self->_totalDurationMSHH1 != *(equalCopy + 31))
     {
       goto LABEL_243;
     }
@@ -1403,7 +1403,7 @@ LABEL_93:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_accountSettleWaitMSHH2 != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_accountSettleWaitMSHH2 != *(equalCopy + 2))
     {
       goto LABEL_243;
     }
@@ -1416,7 +1416,7 @@ LABEL_93:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_currentDeviceIDSWaitMSHH2 != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_currentDeviceIDSWaitMSHH2 != *(equalCopy + 4))
     {
       goto LABEL_243;
     }
@@ -1429,7 +1429,7 @@ LABEL_93:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_homeManagerReadyMSHH2 != *(v4 + 11))
+    if ((v6 & 0x400) == 0 || self->_homeManagerReadyMSHH2 != *(equalCopy + 11))
     {
       goto LABEL_243;
     }
@@ -1442,7 +1442,7 @@ LABEL_93:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_firstCoreDataImportMSHH2 != *(v4 + 10))
+    if ((v6 & 0x200) == 0 || self->_firstCoreDataImportMSHH2 != *(equalCopy + 10))
     {
       goto LABEL_243;
     }
@@ -1455,7 +1455,7 @@ LABEL_93:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_accessoryAddMSHH2 != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_accessoryAddMSHH2 != *(equalCopy + 1))
     {
       goto LABEL_243;
     }
@@ -1468,7 +1468,7 @@ LABEL_93:
 
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v6 & 0x10000000) == 0 || self->_settingsCreationMSHH2 != *(v4 + 29))
+    if ((v6 & 0x10000000) == 0 || self->_settingsCreationMSHH2 != *(equalCopy + 29))
     {
       goto LABEL_243;
     }
@@ -1481,7 +1481,7 @@ LABEL_93:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_pairingIdentityCreationMSHH2 != *(v4 + 18))
+    if ((v6 & 0x20000) == 0 || self->_pairingIdentityCreationMSHH2 != *(equalCopy + 18))
     {
       goto LABEL_243;
     }
@@ -1494,7 +1494,7 @@ LABEL_93:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v6 & 0x20000000) == 0 || self->_siriReadyMSHH2 != *(v4 + 30))
+    if ((v6 & 0x20000000) == 0 || self->_siriReadyMSHH2 != *(equalCopy + 30))
     {
       goto LABEL_243;
     }
@@ -1507,7 +1507,7 @@ LABEL_93:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_eventRouterServerConnectionMSHH2 != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_eventRouterServerConnectionMSHH2 != *(equalCopy + 6))
     {
       goto LABEL_243;
     }
@@ -1520,7 +1520,7 @@ LABEL_93:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_primaryResidentElectionMSHH2 != *(v4 + 21))
+    if ((v6 & 0x100000) == 0 || self->_primaryResidentElectionMSHH2 != *(equalCopy + 21))
     {
       goto LABEL_243;
     }
@@ -1533,7 +1533,7 @@ LABEL_93:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_eventRouterFirstEventPushMSHH2 != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_eventRouterFirstEventPushMSHH2 != *(equalCopy + 5))
     {
       goto LABEL_243;
     }
@@ -1546,7 +1546,7 @@ LABEL_93:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v6 & 0x80000000) == 0 || self->_totalDurationMSHH2 != *(v4 + 32))
+    if ((v6 & 0x80000000) == 0 || self->_totalDurationMSHH2 != *(equalCopy + 32))
     {
       goto LABEL_243;
     }
@@ -1559,7 +1559,7 @@ LABEL_93:
 
   if ((*&has & 0x400000000) != 0)
   {
-    if ((v6 & 0x400000000) == 0 || self->_iCloudAvailableINT != *(v4 + 76))
+    if ((v6 & 0x400000000) == 0 || self->_iCloudAvailableINT != *(equalCopy + 76))
     {
       goto LABEL_243;
     }
@@ -1572,7 +1572,7 @@ LABEL_93:
 
   if ((*&has & 0x800000000) != 0)
   {
-    if ((v6 & 0x800000000) == 0 || self->_iDSAvailableINT != *(v4 + 77))
+    if ((v6 & 0x800000000) == 0 || self->_iDSAvailableINT != *(equalCopy + 77))
     {
       goto LABEL_243;
     }
@@ -1585,7 +1585,7 @@ LABEL_93:
 
   if ((*&has & 0x4000000000) != 0)
   {
-    if ((v6 & 0x4000000000) == 0 || self->_manateeAvailableINT != *(v4 + 90))
+    if ((v6 & 0x4000000000) == 0 || self->_manateeAvailableINT != *(equalCopy + 90))
     {
       goto LABEL_243;
     }
@@ -1598,7 +1598,7 @@ LABEL_93:
 
   if ((*&has & 0x8000000000) != 0)
   {
-    if ((v6 & 0x8000000000) == 0 || self->_networkAvailableINT != *(v4 + 91))
+    if ((v6 & 0x8000000000) == 0 || self->_networkAvailableINT != *(equalCopy + 91))
     {
       goto LABEL_243;
     }
@@ -1611,7 +1611,7 @@ LABEL_93:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_lastKnownStageErrorCode != *(v4 + 12))
+    if ((v6 & 0x800) == 0 || self->_lastKnownStageErrorCode != *(equalCopy + 12))
     {
       goto LABEL_243;
     }
@@ -1623,13 +1623,13 @@ LABEL_93:
   }
 
   lastKnownStageErrorDomain = self->_lastKnownStageErrorDomain;
-  if (lastKnownStageErrorDomain | *(v4 + 40) && ![(NSString *)lastKnownStageErrorDomain isEqual:?])
+  if (lastKnownStageErrorDomain | *(equalCopy + 40) && ![(NSString *)lastKnownStageErrorDomain isEqual:?])
   {
     goto LABEL_243;
   }
 
   lastKnownStageErrorString = self->_lastKnownStageErrorString;
-  if (lastKnownStageErrorString | *(v4 + 41))
+  if (lastKnownStageErrorString | *(equalCopy + 41))
   {
     if (![(NSString *)lastKnownStageErrorString isEqual:?])
     {
@@ -1638,10 +1638,10 @@ LABEL_93:
   }
 
   v9 = self->_has;
-  v10 = *(v4 + 48);
+  v10 = *(equalCopy + 48);
   if ((*&v9 & 0x1000) != 0)
   {
-    if ((v10 & 0x1000) == 0 || self->_lastKnownStageUnderlyingErrorCode != *(v4 + 13))
+    if ((v10 & 0x1000) == 0 || self->_lastKnownStageUnderlyingErrorCode != *(equalCopy + 13))
     {
       goto LABEL_243;
     }
@@ -1653,7 +1653,7 @@ LABEL_93:
   }
 
   lastKnownStageUnderlyingErrorDomain = self->_lastKnownStageUnderlyingErrorDomain;
-  if (lastKnownStageUnderlyingErrorDomain | *(v4 + 42))
+  if (lastKnownStageUnderlyingErrorDomain | *(equalCopy + 42))
   {
     if (![(NSString *)lastKnownStageUnderlyingErrorDomain isEqual:?])
     {
@@ -1661,12 +1661,12 @@ LABEL_93:
     }
 
     v9 = self->_has;
-    v10 = *(v4 + 48);
+    v10 = *(equalCopy + 48);
   }
 
   if ((*&v9 & 0x1000000) != 0)
   {
-    if ((v10 & 0x1000000) == 0 || self->_savedEventState != *(v4 + 25))
+    if ((v10 & 0x1000000) == 0 || self->_savedEventState != *(equalCopy + 25))
     {
       goto LABEL_243;
     }
@@ -1679,7 +1679,7 @@ LABEL_93:
 
   if ((*&v9 & 0x1000000000) != 0)
   {
-    if ((v10 & 0x1000000000) == 0 || self->_lastKnownControllerHH2Mode != *(v4 + 78))
+    if ((v10 & 0x1000000000) == 0 || self->_lastKnownControllerHH2Mode != *(equalCopy + 78))
     {
       goto LABEL_243;
     }
@@ -1692,7 +1692,7 @@ LABEL_93:
 
   if ((*&v9 & 0x2000000000) != 0)
   {
-    if ((v10 & 0x2000000000) == 0 || self->_lastKnownControllerSentinelZoneExistence != *(v4 + 79))
+    if ((v10 & 0x2000000000) == 0 || self->_lastKnownControllerSentinelZoneExistence != *(equalCopy + 79))
     {
       goto LABEL_243;
     }
@@ -1704,7 +1704,7 @@ LABEL_93:
   }
 
   controllerSetupSessionIdentifier = self->_controllerSetupSessionIdentifier;
-  if (controllerSetupSessionIdentifier | *(v4 + 34))
+  if (controllerSetupSessionIdentifier | *(equalCopy + 34))
   {
     if (![(NSString *)controllerSetupSessionIdentifier isEqual:?])
     {
@@ -1712,12 +1712,12 @@ LABEL_93:
     }
 
     v9 = self->_has;
-    v10 = *(v4 + 48);
+    v10 = *(equalCopy + 48);
   }
 
   if ((*&v9 & 0x80000000000) != 0)
   {
-    if ((v10 & 0x80000000000) == 0 || self->_numberOfTimesPrimaryResidentChangedHH2 != *(v4 + 95))
+    if ((v10 & 0x80000000000) == 0 || self->_numberOfTimesPrimaryResidentChangedHH2 != *(equalCopy + 95))
     {
       goto LABEL_243;
     }
@@ -1730,7 +1730,7 @@ LABEL_93:
 
   if ((*&v9 & 0x8000) != 0)
   {
-    if ((v10 & 0x8000) == 0 || self->_lastPrimaryClientConnectedTimeHH2 != *(v4 + 16))
+    if ((v10 & 0x8000) == 0 || self->_lastPrimaryClientConnectedTimeHH2 != *(equalCopy + 16))
     {
       goto LABEL_243;
     }
@@ -1743,7 +1743,7 @@ LABEL_93:
 
   if ((*&v9 & 0x20000000000) != 0)
   {
-    if ((v10 & 0x20000000000) == 0 || self->_numberOfTimesPrimaryClientConnectedHH2 != *(v4 + 93))
+    if ((v10 & 0x20000000000) == 0 || self->_numberOfTimesPrimaryClientConnectedHH2 != *(equalCopy + 93))
     {
       goto LABEL_243;
     }
@@ -1756,7 +1756,7 @@ LABEL_93:
 
   if ((*&v9 & 0x40000000000) != 0)
   {
-    if ((v10 & 0x40000000000) == 0 || self->_numberOfTimesPrimaryClientDisconnectedHH2 != *(v4 + 94))
+    if ((v10 & 0x40000000000) == 0 || self->_numberOfTimesPrimaryClientDisconnectedHH2 != *(equalCopy + 94))
     {
       goto LABEL_243;
     }
@@ -1769,7 +1769,7 @@ LABEL_93:
 
   if ((*&v9 & 0x10000000000) != 0)
   {
-    if ((v10 & 0x10000000000) == 0 || self->_numberOfTimesPrimaryClientConnectMessageFailedHH2 != *(v4 + 92))
+    if ((v10 & 0x10000000000) == 0 || self->_numberOfTimesPrimaryClientConnectMessageFailedHH2 != *(equalCopy + 92))
     {
       goto LABEL_243;
     }
@@ -1782,7 +1782,7 @@ LABEL_93:
 
   if ((*&v9 & 0x200000000) != 0)
   {
-    if ((v10 & 0x200000000) == 0 || self->_currentDeviceConfirmedPrimaryResidentINT != *(v4 + 70))
+    if ((v10 & 0x200000000) == 0 || self->_currentDeviceConfirmedPrimaryResidentINT != *(equalCopy + 70))
     {
       goto LABEL_243;
     }
@@ -1795,7 +1795,7 @@ LABEL_93:
 
   if ((*&v9 & 0x2000) != 0)
   {
-    if ((v10 & 0x2000) == 0 || self->_lastPrimaryClientConnectMessageFailErrorCodeHH2 != *(v4 + 14))
+    if ((v10 & 0x2000) == 0 || self->_lastPrimaryClientConnectMessageFailErrorCodeHH2 != *(equalCopy + 14))
     {
       goto LABEL_243;
     }
@@ -1807,7 +1807,7 @@ LABEL_93:
   }
 
   lastPrimaryClientConnectMessageFailErrorDomainHH2 = self->_lastPrimaryClientConnectMessageFailErrorDomainHH2;
-  if (lastPrimaryClientConnectMessageFailErrorDomainHH2 | *(v4 + 43))
+  if (lastPrimaryClientConnectMessageFailErrorDomainHH2 | *(equalCopy + 43))
   {
     if (![(NSString *)lastPrimaryClientConnectMessageFailErrorDomainHH2 isEqual:?])
     {
@@ -1815,12 +1815,12 @@ LABEL_93:
     }
 
     v9 = self->_has;
-    v10 = *(v4 + 48);
+    v10 = *(equalCopy + 48);
   }
 
   if ((*&v9 & 0x4000) != 0)
   {
-    if ((v10 & 0x4000) == 0 || self->_lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2 != *(v4 + 15))
+    if ((v10 & 0x4000) == 0 || self->_lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2 != *(equalCopy + 15))
     {
       goto LABEL_243;
     }
@@ -1832,7 +1832,7 @@ LABEL_93:
   }
 
   lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 = self->_lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2;
-  if (lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 | *(v4 + 44))
+  if (lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 | *(equalCopy + 44))
   {
     if (![(NSString *)lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 isEqual:?])
     {
@@ -1840,12 +1840,12 @@ LABEL_93:
     }
 
     v9 = self->_has;
-    v10 = *(v4 + 48);
+    v10 = *(equalCopy + 48);
   }
 
   if ((*&v9 & 0x800000) != 0)
   {
-    if ((v10 & 0x800000) == 0 || self->_primaryResidentElectionPeerDeviceFutureResolvedMSHH2 != *(v4 + 24))
+    if ((v10 & 0x800000) == 0 || self->_primaryResidentElectionPeerDeviceFutureResolvedMSHH2 != *(equalCopy + 24))
     {
       goto LABEL_243;
     }
@@ -1858,7 +1858,7 @@ LABEL_93:
 
   if ((*&v9 & 0x40000) != 0)
   {
-    if ((v10 & 0x40000) == 0 || self->_primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2 != *(v4 + 19))
+    if ((v10 & 0x40000) == 0 || self->_primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2 != *(equalCopy + 19))
     {
       goto LABEL_243;
     }
@@ -1871,7 +1871,7 @@ LABEL_93:
 
   if ((*&v9 & 0x200000) != 0)
   {
-    if ((v10 & 0x200000) == 0 || self->_primaryResidentElectionModernTransportStartedFutureResolvedMSHH2 != *(v4 + 22))
+    if ((v10 & 0x200000) == 0 || self->_primaryResidentElectionModernTransportStartedFutureResolvedMSHH2 != *(equalCopy + 22))
     {
       goto LABEL_243;
     }
@@ -1884,7 +1884,7 @@ LABEL_93:
 
   if ((*&v9 & 0x400000) != 0)
   {
-    if ((v10 & 0x400000) == 0 || self->_primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2 != *(v4 + 23))
+    if ((v10 & 0x400000) == 0 || self->_primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2 != *(equalCopy + 23))
     {
       goto LABEL_243;
     }
@@ -1897,7 +1897,7 @@ LABEL_93:
 
   if ((*&v9 & 0x80000) != 0)
   {
-    if ((v10 & 0x80000) == 0 || self->_primaryResidentElectionJoinMeshMSHH2 != *(v4 + 20))
+    if ((v10 & 0x80000) == 0 || self->_primaryResidentElectionJoinMeshMSHH2 != *(equalCopy + 20))
     {
       goto LABEL_243;
     }
@@ -1910,7 +1910,7 @@ LABEL_93:
 
   if ((*&v9 & 0x40) != 0)
   {
-    if ((v10 & 0x40) == 0 || self->_firstCoreDataContainerSetupDurationMSHH2 != *(v4 + 7))
+    if ((v10 & 0x40) == 0 || self->_firstCoreDataContainerSetupDurationMSHH2 != *(equalCopy + 7))
     {
       goto LABEL_243;
     }
@@ -1923,7 +1923,7 @@ LABEL_93:
 
   if ((*&v9 & 0x80) != 0)
   {
-    if ((v10 & 0x80) == 0 || self->_firstCoreDataContainerSetupErrorCodeHH2 != *(v4 + 8))
+    if ((v10 & 0x80) == 0 || self->_firstCoreDataContainerSetupErrorCodeHH2 != *(equalCopy + 8))
     {
       goto LABEL_243;
     }
@@ -1935,12 +1935,12 @@ LABEL_93:
   }
 
   firstCoreDataContainerSetupErrorDomainHH2 = self->_firstCoreDataContainerSetupErrorDomainHH2;
-  if (firstCoreDataContainerSetupErrorDomainHH2 | *(v4 + 36))
+  if (firstCoreDataContainerSetupErrorDomainHH2 | *(equalCopy + 36))
   {
     if ([(NSString *)firstCoreDataContainerSetupErrorDomainHH2 isEqual:?])
     {
       v9 = self->_has;
-      v10 = *(v4 + 48);
+      v10 = *(equalCopy + 48);
       goto LABEL_236;
     }
 
@@ -1952,7 +1952,7 @@ LABEL_243:
 LABEL_236:
   if ((*&v9 & 0x100) != 0)
   {
-    if ((v10 & 0x100) == 0 || self->_firstCoreDataContainerSetupUnderlyingErrorCodeHH2 != *(v4 + 9))
+    if ((v10 & 0x100) == 0 || self->_firstCoreDataContainerSetupUnderlyingErrorCodeHH2 != *(equalCopy + 9))
     {
       goto LABEL_243;
     }
@@ -1964,7 +1964,7 @@ LABEL_236:
   }
 
   firstCoreDataContainerSetupUnderlyingErrorDomainHH2 = self->_firstCoreDataContainerSetupUnderlyingErrorDomainHH2;
-  if (firstCoreDataContainerSetupUnderlyingErrorDomainHH2 | *(v4 + 37))
+  if (firstCoreDataContainerSetupUnderlyingErrorDomainHH2 | *(equalCopy + 37))
   {
     v17 = [(NSString *)firstCoreDataContainerSetupUnderlyingErrorDomainHH2 isEqual:?];
   }
@@ -1979,9 +1979,9 @@ LABEL_244:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x100000000) != 0)
@@ -2331,11 +2331,11 @@ LABEL_25:
   }
 
 LABEL_26:
-  v8 = [(NSString *)self->_lastKnownStageErrorDomain copyWithZone:a3];
+  v8 = [(NSString *)self->_lastKnownStageErrorDomain copyWithZone:zone];
   v9 = *(v6 + 320);
   *(v6 + 320) = v8;
 
-  v10 = [(NSString *)self->_lastKnownStageErrorString copyWithZone:a3];
+  v10 = [(NSString *)self->_lastKnownStageErrorString copyWithZone:zone];
   v11 = *(v6 + 328);
   *(v6 + 328) = v10;
 
@@ -2345,7 +2345,7 @@ LABEL_26:
     *(v6 + 384) |= 0x1000uLL;
   }
 
-  v12 = [(NSString *)self->_lastKnownStageUnderlyingErrorDomain copyWithZone:a3];
+  v12 = [(NSString *)self->_lastKnownStageUnderlyingErrorDomain copyWithZone:zone];
   v13 = *(v6 + 336);
   *(v6 + 336) = v12;
 
@@ -2382,7 +2382,7 @@ LABEL_31:
   }
 
 LABEL_32:
-  v15 = [(NSString *)self->_controllerSetupSessionIdentifier copyWithZone:a3];
+  v15 = [(NSString *)self->_controllerSetupSessionIdentifier copyWithZone:zone];
   v16 = *(v6 + 272);
   *(v6 + 272) = v15;
 
@@ -2479,7 +2479,7 @@ LABEL_39:
   }
 
 LABEL_40:
-  v18 = [(NSString *)self->_lastPrimaryClientConnectMessageFailErrorDomainHH2 copyWithZone:a3];
+  v18 = [(NSString *)self->_lastPrimaryClientConnectMessageFailErrorDomainHH2 copyWithZone:zone];
   v19 = *(v6 + 344);
   *(v6 + 344) = v18;
 
@@ -2489,7 +2489,7 @@ LABEL_40:
     *(v6 + 384) |= 0x4000uLL;
   }
 
-  v20 = [(NSString *)self->_lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 copyWithZone:a3];
+  v20 = [(NSString *)self->_lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 copyWithZone:zone];
   v21 = *(v6 + 352);
   *(v6 + 352) = v20;
 
@@ -2586,7 +2586,7 @@ LABEL_49:
   }
 
 LABEL_50:
-  v23 = [(NSString *)self->_firstCoreDataContainerSetupErrorDomainHH2 copyWithZone:a3];
+  v23 = [(NSString *)self->_firstCoreDataContainerSetupErrorDomainHH2 copyWithZone:zone];
   v24 = *(v6 + 288);
   *(v6 + 288) = v23;
 
@@ -2596,7 +2596,7 @@ LABEL_50:
     *(v6 + 384) |= 0x100uLL;
   }
 
-  v25 = [(NSString *)self->_firstCoreDataContainerSetupUnderlyingErrorDomainHH2 copyWithZone:a3];
+  v25 = [(NSString *)self->_firstCoreDataContainerSetupUnderlyingErrorDomainHH2 copyWithZone:zone];
   v26 = *(v6 + 296);
   *(v6 + 296) = v25;
 
@@ -2604,14 +2604,14 @@ LABEL_50:
   return v27;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x100000000) != 0)
   {
-    v4[33] = self->_version;
-    v4[48] |= 0x100000000uLL;
+    toCopy[33] = self->_version;
+    toCopy[48] |= 0x100000000uLL;
     has = self->_has;
     if ((*&has & 0x8000000) == 0)
     {
@@ -2630,8 +2630,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[28] = self->_sessionSetupOpenMSHH1;
-  v4[48] |= 0x8000000uLL;
+  toCopy[28] = self->_sessionSetupOpenMSHH1;
+  toCopy[48] |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -2645,8 +2645,8 @@ LABEL_4:
   }
 
 LABEL_73:
-  v4[3] = self->_controllerKeyExchangeMSHH1;
-  v4[48] |= 4uLL;
+  toCopy[3] = self->_controllerKeyExchangeMSHH1;
+  toCopy[48] |= 4uLL;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -2660,8 +2660,8 @@ LABEL_5:
   }
 
 LABEL_74:
-  v4[17] = self->_newAccessoryTransferMSHH1;
-  v4[48] |= 0x10000uLL;
+  toCopy[17] = self->_newAccessoryTransferMSHH1;
+  toCopy[48] |= 0x10000uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -2675,8 +2675,8 @@ LABEL_6:
   }
 
 LABEL_75:
-  v4[27] = self->_sessionSetupCloseMSHH1;
-  v4[48] |= 0x4000000uLL;
+  toCopy[27] = self->_sessionSetupCloseMSHH1;
+  toCopy[48] |= 0x4000000uLL;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -2690,8 +2690,8 @@ LABEL_7:
   }
 
 LABEL_76:
-  v4[26] = self->_sentinelZoneFetchMSHH1;
-  v4[48] |= 0x2000000uLL;
+  toCopy[26] = self->_sentinelZoneFetchMSHH1;
+  toCopy[48] |= 0x2000000uLL;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -2705,8 +2705,8 @@ LABEL_8:
   }
 
 LABEL_77:
-  v4[31] = self->_totalDurationMSHH1;
-  v4[48] |= 0x40000000uLL;
+  toCopy[31] = self->_totalDurationMSHH1;
+  toCopy[48] |= 0x40000000uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -2720,8 +2720,8 @@ LABEL_9:
   }
 
 LABEL_78:
-  v4[2] = self->_accountSettleWaitMSHH2;
-  v4[48] |= 2uLL;
+  toCopy[2] = self->_accountSettleWaitMSHH2;
+  toCopy[48] |= 2uLL;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -2735,8 +2735,8 @@ LABEL_10:
   }
 
 LABEL_79:
-  v4[4] = self->_currentDeviceIDSWaitMSHH2;
-  v4[48] |= 8uLL;
+  toCopy[4] = self->_currentDeviceIDSWaitMSHH2;
+  toCopy[48] |= 8uLL;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -2750,8 +2750,8 @@ LABEL_11:
   }
 
 LABEL_80:
-  v4[11] = self->_homeManagerReadyMSHH2;
-  v4[48] |= 0x400uLL;
+  toCopy[11] = self->_homeManagerReadyMSHH2;
+  toCopy[48] |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -2765,8 +2765,8 @@ LABEL_12:
   }
 
 LABEL_81:
-  v4[10] = self->_firstCoreDataImportMSHH2;
-  v4[48] |= 0x200uLL;
+  toCopy[10] = self->_firstCoreDataImportMSHH2;
+  toCopy[48] |= 0x200uLL;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -2780,8 +2780,8 @@ LABEL_13:
   }
 
 LABEL_82:
-  v4[1] = self->_accessoryAddMSHH2;
-  v4[48] |= 1uLL;
+  toCopy[1] = self->_accessoryAddMSHH2;
+  toCopy[48] |= 1uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -2795,8 +2795,8 @@ LABEL_14:
   }
 
 LABEL_83:
-  v4[29] = self->_settingsCreationMSHH2;
-  v4[48] |= 0x10000000uLL;
+  toCopy[29] = self->_settingsCreationMSHH2;
+  toCopy[48] |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -2810,8 +2810,8 @@ LABEL_15:
   }
 
 LABEL_84:
-  v4[18] = self->_pairingIdentityCreationMSHH2;
-  v4[48] |= 0x20000uLL;
+  toCopy[18] = self->_pairingIdentityCreationMSHH2;
+  toCopy[48] |= 0x20000uLL;
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
   {
@@ -2825,8 +2825,8 @@ LABEL_16:
   }
 
 LABEL_85:
-  v4[30] = self->_siriReadyMSHH2;
-  v4[48] |= 0x20000000uLL;
+  toCopy[30] = self->_siriReadyMSHH2;
+  toCopy[48] |= 0x20000000uLL;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -2840,8 +2840,8 @@ LABEL_17:
   }
 
 LABEL_86:
-  v4[6] = self->_eventRouterServerConnectionMSHH2;
-  v4[48] |= 0x20uLL;
+  toCopy[6] = self->_eventRouterServerConnectionMSHH2;
+  toCopy[48] |= 0x20uLL;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -2855,8 +2855,8 @@ LABEL_18:
   }
 
 LABEL_87:
-  v4[21] = self->_primaryResidentElectionMSHH2;
-  v4[48] |= 0x100000uLL;
+  toCopy[21] = self->_primaryResidentElectionMSHH2;
+  toCopy[48] |= 0x100000uLL;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -2870,8 +2870,8 @@ LABEL_19:
   }
 
 LABEL_88:
-  v4[5] = self->_eventRouterFirstEventPushMSHH2;
-  v4[48] |= 0x10uLL;
+  toCopy[5] = self->_eventRouterFirstEventPushMSHH2;
+  toCopy[48] |= 0x10uLL;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -2885,8 +2885,8 @@ LABEL_20:
   }
 
 LABEL_89:
-  v4[32] = self->_totalDurationMSHH2;
-  v4[48] |= 0x80000000uLL;
+  toCopy[32] = self->_totalDurationMSHH2;
+  toCopy[48] |= 0x80000000uLL;
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
   {
@@ -2900,8 +2900,8 @@ LABEL_21:
   }
 
 LABEL_90:
-  *(v4 + 76) = self->_iCloudAvailableINT;
-  v4[48] |= 0x400000000uLL;
+  *(toCopy + 76) = self->_iCloudAvailableINT;
+  toCopy[48] |= 0x400000000uLL;
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
   {
@@ -2915,8 +2915,8 @@ LABEL_22:
   }
 
 LABEL_91:
-  *(v4 + 77) = self->_iDSAvailableINT;
-  v4[48] |= 0x800000000uLL;
+  *(toCopy + 77) = self->_iDSAvailableINT;
+  toCopy[48] |= 0x800000000uLL;
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
   {
@@ -2930,8 +2930,8 @@ LABEL_23:
   }
 
 LABEL_92:
-  *(v4 + 90) = self->_manateeAvailableINT;
-  v4[48] |= 0x4000000000uLL;
+  *(toCopy + 90) = self->_manateeAvailableINT;
+  toCopy[48] |= 0x4000000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
   {
@@ -2945,46 +2945,46 @@ LABEL_24:
   }
 
 LABEL_93:
-  *(v4 + 91) = self->_networkAvailableINT;
-  v4[48] |= 0x8000000000uLL;
+  *(toCopy + 91) = self->_networkAvailableINT;
+  toCopy[48] |= 0x8000000000uLL;
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_25:
-    v4[12] = self->_lastKnownStageErrorCode;
-    v4[48] |= 0x800uLL;
+    toCopy[12] = self->_lastKnownStageErrorCode;
+    toCopy[48] |= 0x800uLL;
   }
 
 LABEL_26:
-  v9 = v4;
+  v9 = toCopy;
   if (self->_lastKnownStageErrorDomain)
   {
-    [v4 setLastKnownStageErrorDomain:?];
-    v4 = v9;
+    [toCopy setLastKnownStageErrorDomain:?];
+    toCopy = v9;
   }
 
   if (self->_lastKnownStageErrorString)
   {
     [v9 setLastKnownStageErrorString:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*(&self->_has + 1) & 0x10) != 0)
   {
-    v4[13] = self->_lastKnownStageUnderlyingErrorCode;
-    v4[48] |= 0x1000uLL;
+    toCopy[13] = self->_lastKnownStageUnderlyingErrorCode;
+    toCopy[48] |= 0x1000uLL;
   }
 
   if (self->_lastKnownStageUnderlyingErrorDomain)
   {
     [v9 setLastKnownStageUnderlyingErrorDomain:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x1000000) != 0)
   {
-    v4[25] = self->_savedEventState;
-    v4[48] |= 0x1000000uLL;
+    toCopy[25] = self->_savedEventState;
+    toCopy[48] |= 0x1000000uLL;
     v6 = self->_has;
     if ((*&v6 & 0x1000000000) == 0)
     {
@@ -3003,27 +3003,27 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  *(v4 + 78) = self->_lastKnownControllerHH2Mode;
-  v4[48] |= 0x1000000000uLL;
+  *(toCopy + 78) = self->_lastKnownControllerHH2Mode;
+  toCopy[48] |= 0x1000000000uLL;
   if ((*&self->_has & 0x2000000000) != 0)
   {
 LABEL_37:
-    *(v4 + 79) = self->_lastKnownControllerSentinelZoneExistence;
-    v4[48] |= 0x2000000000uLL;
+    *(toCopy + 79) = self->_lastKnownControllerSentinelZoneExistence;
+    toCopy[48] |= 0x2000000000uLL;
   }
 
 LABEL_38:
   if (self->_controllerSetupSessionIdentifier)
   {
     [v9 setControllerSetupSessionIdentifier:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x80000000000) != 0)
   {
-    *(v4 + 95) = self->_numberOfTimesPrimaryResidentChangedHH2;
-    v4[48] |= 0x80000000000uLL;
+    *(toCopy + 95) = self->_numberOfTimesPrimaryResidentChangedHH2;
+    toCopy[48] |= 0x80000000000uLL;
     v7 = self->_has;
     if ((*&v7 & 0x8000) == 0)
     {
@@ -3042,8 +3042,8 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  v4[16] = self->_lastPrimaryClientConnectedTimeHH2;
-  v4[48] |= 0x8000uLL;
+  toCopy[16] = self->_lastPrimaryClientConnectedTimeHH2;
+  toCopy[48] |= 0x8000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x20000000000) == 0)
   {
@@ -3057,8 +3057,8 @@ LABEL_43:
   }
 
 LABEL_100:
-  *(v4 + 93) = self->_numberOfTimesPrimaryClientConnectedHH2;
-  v4[48] |= 0x20000000000uLL;
+  *(toCopy + 93) = self->_numberOfTimesPrimaryClientConnectedHH2;
+  toCopy[48] |= 0x20000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x40000000000) == 0)
   {
@@ -3072,8 +3072,8 @@ LABEL_44:
   }
 
 LABEL_101:
-  *(v4 + 94) = self->_numberOfTimesPrimaryClientDisconnectedHH2;
-  v4[48] |= 0x40000000000uLL;
+  *(toCopy + 94) = self->_numberOfTimesPrimaryClientDisconnectedHH2;
+  toCopy[48] |= 0x40000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x10000000000) == 0)
   {
@@ -3087,8 +3087,8 @@ LABEL_45:
   }
 
 LABEL_102:
-  *(v4 + 92) = self->_numberOfTimesPrimaryClientConnectMessageFailedHH2;
-  v4[48] |= 0x10000000000uLL;
+  *(toCopy + 92) = self->_numberOfTimesPrimaryClientConnectMessageFailedHH2;
+  toCopy[48] |= 0x10000000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x200000000) == 0)
   {
@@ -3102,39 +3102,39 @@ LABEL_46:
   }
 
 LABEL_103:
-  *(v4 + 70) = self->_currentDeviceConfirmedPrimaryResidentINT;
-  v4[48] |= 0x200000000uLL;
+  *(toCopy + 70) = self->_currentDeviceConfirmedPrimaryResidentINT;
+  toCopy[48] |= 0x200000000uLL;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_47:
-    v4[14] = self->_lastPrimaryClientConnectMessageFailErrorCodeHH2;
-    v4[48] |= 0x2000uLL;
+    toCopy[14] = self->_lastPrimaryClientConnectMessageFailErrorCodeHH2;
+    toCopy[48] |= 0x2000uLL;
   }
 
 LABEL_48:
   if (self->_lastPrimaryClientConnectMessageFailErrorDomainHH2)
   {
     [v9 setLastPrimaryClientConnectMessageFailErrorDomainHH2:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*(&self->_has + 1) & 0x40) != 0)
   {
-    v4[15] = self->_lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2;
-    v4[48] |= 0x4000uLL;
+    toCopy[15] = self->_lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2;
+    toCopy[48] |= 0x4000uLL;
   }
 
   if (self->_lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2)
   {
     [v9 setLastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   v8 = self->_has;
   if ((*&v8 & 0x800000) != 0)
   {
-    v4[24] = self->_primaryResidentElectionPeerDeviceFutureResolvedMSHH2;
-    v4[48] |= 0x800000uLL;
+    toCopy[24] = self->_primaryResidentElectionPeerDeviceFutureResolvedMSHH2;
+    toCopy[48] |= 0x800000uLL;
     v8 = self->_has;
     if ((*&v8 & 0x40000) == 0)
     {
@@ -3153,8 +3153,8 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  v4[19] = self->_primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2;
-  v4[48] |= 0x40000uLL;
+  toCopy[19] = self->_primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2;
+  toCopy[48] |= 0x40000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x200000) == 0)
   {
@@ -3168,8 +3168,8 @@ LABEL_57:
   }
 
 LABEL_107:
-  v4[22] = self->_primaryResidentElectionModernTransportStartedFutureResolvedMSHH2;
-  v4[48] |= 0x200000uLL;
+  toCopy[22] = self->_primaryResidentElectionModernTransportStartedFutureResolvedMSHH2;
+  toCopy[48] |= 0x200000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x400000) == 0)
   {
@@ -3183,8 +3183,8 @@ LABEL_58:
   }
 
 LABEL_108:
-  v4[23] = self->_primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2;
-  v4[48] |= 0x400000uLL;
+  toCopy[23] = self->_primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2;
+  toCopy[48] |= 0x400000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x80000) == 0)
   {
@@ -3198,8 +3198,8 @@ LABEL_59:
   }
 
 LABEL_109:
-  v4[20] = self->_primaryResidentElectionJoinMeshMSHH2;
-  v4[48] |= 0x80000uLL;
+  toCopy[20] = self->_primaryResidentElectionJoinMeshMSHH2;
+  toCopy[48] |= 0x80000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x40) == 0)
   {
@@ -3213,38 +3213,38 @@ LABEL_60:
   }
 
 LABEL_110:
-  v4[7] = self->_firstCoreDataContainerSetupDurationMSHH2;
-  v4[48] |= 0x40uLL;
+  toCopy[7] = self->_firstCoreDataContainerSetupDurationMSHH2;
+  toCopy[48] |= 0x40uLL;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_61:
-    v4[8] = self->_firstCoreDataContainerSetupErrorCodeHH2;
-    v4[48] |= 0x80uLL;
+    toCopy[8] = self->_firstCoreDataContainerSetupErrorCodeHH2;
+    toCopy[48] |= 0x80uLL;
   }
 
 LABEL_62:
   if (self->_firstCoreDataContainerSetupErrorDomainHH2)
   {
     [v9 setFirstCoreDataContainerSetupErrorDomainHH2:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*(&self->_has + 1))
   {
-    v4[9] = self->_firstCoreDataContainerSetupUnderlyingErrorCodeHH2;
-    v4[48] |= 0x100uLL;
+    toCopy[9] = self->_firstCoreDataContainerSetupUnderlyingErrorCodeHH2;
+    toCopy[48] |= 0x100uLL;
   }
 
   if (self->_firstCoreDataContainerSetupUnderlyingErrorDomainHH2)
   {
     [v9 setFirstCoreDataContainerSetupUnderlyingErrorDomainHH2:?];
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v52 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x100000000) != 0)
   {
@@ -3864,12 +3864,12 @@ LABEL_61:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((*&has & 0x100000000) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_version];
-    [v3 setObject:v11 forKey:@"version"];
+    [dictionary setObject:v11 forKey:@"version"];
 
     has = self->_has;
     if ((*&has & 0x8000000) == 0)
@@ -3890,7 +3890,7 @@ LABEL_3:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sessionSetupOpenMSHH1];
-  [v3 setObject:v12 forKey:@"sessionSetupOpenMS_HH1"];
+  [dictionary setObject:v12 forKey:@"sessionSetupOpenMS_HH1"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -3906,7 +3906,7 @@ LABEL_4:
 
 LABEL_40:
   v13 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_controllerKeyExchangeMSHH1];
-  [v3 setObject:v13 forKey:@"controllerKeyExchangeMS_HH1"];
+  [dictionary setObject:v13 forKey:@"controllerKeyExchangeMS_HH1"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -3922,7 +3922,7 @@ LABEL_5:
 
 LABEL_41:
   v14 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_newAccessoryTransferMSHH1];
-  [v3 setObject:v14 forKey:@"newAccessoryTransferMS_HH1"];
+  [dictionary setObject:v14 forKey:@"newAccessoryTransferMS_HH1"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -3938,7 +3938,7 @@ LABEL_6:
 
 LABEL_42:
   v15 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sessionSetupCloseMSHH1];
-  [v3 setObject:v15 forKey:@"sessionSetupCloseMS_HH1"];
+  [dictionary setObject:v15 forKey:@"sessionSetupCloseMS_HH1"];
 
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
@@ -3954,7 +3954,7 @@ LABEL_7:
 
 LABEL_43:
   v16 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sentinelZoneFetchMSHH1];
-  [v3 setObject:v16 forKey:@"sentinelZoneFetchMS_HH1"];
+  [dictionary setObject:v16 forKey:@"sentinelZoneFetchMS_HH1"];
 
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
@@ -3970,7 +3970,7 @@ LABEL_8:
 
 LABEL_44:
   v17 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_totalDurationMSHH1];
-  [v3 setObject:v17 forKey:@"totalDurationMS_HH1"];
+  [dictionary setObject:v17 forKey:@"totalDurationMS_HH1"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -3986,7 +3986,7 @@ LABEL_9:
 
 LABEL_45:
   v18 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_accountSettleWaitMSHH2];
-  [v3 setObject:v18 forKey:@"accountSettleWaitMS_HH2"];
+  [dictionary setObject:v18 forKey:@"accountSettleWaitMS_HH2"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -4002,7 +4002,7 @@ LABEL_10:
 
 LABEL_46:
   v19 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_currentDeviceIDSWaitMSHH2];
-  [v3 setObject:v19 forKey:@"currentDeviceIDSWaitMS_HH2"];
+  [dictionary setObject:v19 forKey:@"currentDeviceIDSWaitMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -4018,7 +4018,7 @@ LABEL_11:
 
 LABEL_47:
   v20 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_homeManagerReadyMSHH2];
-  [v3 setObject:v20 forKey:@"homeManagerReadyMS_HH2"];
+  [dictionary setObject:v20 forKey:@"homeManagerReadyMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -4034,7 +4034,7 @@ LABEL_12:
 
 LABEL_48:
   v21 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_firstCoreDataImportMSHH2];
-  [v3 setObject:v21 forKey:@"firstCoreDataImportMS_HH2"];
+  [dictionary setObject:v21 forKey:@"firstCoreDataImportMS_HH2"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -4050,7 +4050,7 @@ LABEL_13:
 
 LABEL_49:
   v22 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_accessoryAddMSHH2];
-  [v3 setObject:v22 forKey:@"accessoryAddMS_HH2"];
+  [dictionary setObject:v22 forKey:@"accessoryAddMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
@@ -4066,7 +4066,7 @@ LABEL_14:
 
 LABEL_50:
   v23 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_settingsCreationMSHH2];
-  [v3 setObject:v23 forKey:@"settingsCreationMS_HH2"];
+  [dictionary setObject:v23 forKey:@"settingsCreationMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -4082,7 +4082,7 @@ LABEL_15:
 
 LABEL_51:
   v24 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_pairingIdentityCreationMSHH2];
-  [v3 setObject:v24 forKey:@"pairingIdentityCreationMS_HH2"];
+  [dictionary setObject:v24 forKey:@"pairingIdentityCreationMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x20000000) == 0)
@@ -4098,7 +4098,7 @@ LABEL_16:
 
 LABEL_52:
   v25 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_siriReadyMSHH2];
-  [v3 setObject:v25 forKey:@"siriReadyMS_HH2"];
+  [dictionary setObject:v25 forKey:@"siriReadyMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -4114,7 +4114,7 @@ LABEL_17:
 
 LABEL_53:
   v26 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_eventRouterServerConnectionMSHH2];
-  [v3 setObject:v26 forKey:@"eventRouterServerConnectionMS_HH2"];
+  [dictionary setObject:v26 forKey:@"eventRouterServerConnectionMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -4130,7 +4130,7 @@ LABEL_18:
 
 LABEL_54:
   v27 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_primaryResidentElectionMSHH2];
-  [v3 setObject:v27 forKey:@"primaryResidentElectionMS_HH2"];
+  [dictionary setObject:v27 forKey:@"primaryResidentElectionMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -4146,7 +4146,7 @@ LABEL_19:
 
 LABEL_55:
   v28 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_eventRouterFirstEventPushMSHH2];
-  [v3 setObject:v28 forKey:@"eventRouterFirstEventPushMS_HH2"];
+  [dictionary setObject:v28 forKey:@"eventRouterFirstEventPushMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
@@ -4162,7 +4162,7 @@ LABEL_20:
 
 LABEL_56:
   v29 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_totalDurationMSHH2];
-  [v3 setObject:v29 forKey:@"totalDurationMS_HH2"];
+  [dictionary setObject:v29 forKey:@"totalDurationMS_HH2"];
 
   has = self->_has;
   if ((*&has & 0x400000000) == 0)
@@ -4196,7 +4196,7 @@ LABEL_57:
     v31 = @"Unknown";
   }
 
-  [v3 setObject:v31 forKey:@"iCloudAvailable_INT"];
+  [dictionary setObject:v31 forKey:@"iCloudAvailable_INT"];
 
   has = self->_has;
   if ((*&has & 0x800000000) == 0)
@@ -4230,7 +4230,7 @@ LABEL_72:
     v38 = @"Unknown";
   }
 
-  [v3 setObject:v38 forKey:@"IDSAvailable_INT"];
+  [dictionary setObject:v38 forKey:@"IDSAvailable_INT"];
 
   has = self->_has;
   if ((*&has & 0x4000000000) == 0)
@@ -4264,7 +4264,7 @@ LABEL_125:
     v65 = @"Unknown";
   }
 
-  [v3 setObject:v65 forKey:@"manateeAvailable_INT"];
+  [dictionary setObject:v65 forKey:@"manateeAvailable_INT"];
 
   has = self->_has;
   if ((*&has & 0x8000000000) == 0)
@@ -4298,45 +4298,45 @@ LABEL_131:
     v67 = @"Unknown";
   }
 
-  [v3 setObject:v67 forKey:@"networkAvailable_INT"];
+  [dictionary setObject:v67 forKey:@"networkAvailable_INT"];
 
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_25:
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_lastKnownStageErrorCode];
-    [v3 setObject:v5 forKey:@"lastKnownStageErrorCode"];
+    [dictionary setObject:v5 forKey:@"lastKnownStageErrorCode"];
   }
 
 LABEL_26:
   lastKnownStageErrorDomain = self->_lastKnownStageErrorDomain;
   if (lastKnownStageErrorDomain)
   {
-    [v3 setObject:lastKnownStageErrorDomain forKey:@"lastKnownStageErrorDomain"];
+    [dictionary setObject:lastKnownStageErrorDomain forKey:@"lastKnownStageErrorDomain"];
   }
 
   lastKnownStageErrorString = self->_lastKnownStageErrorString;
   if (lastKnownStageErrorString)
   {
-    [v3 setObject:lastKnownStageErrorString forKey:@"lastKnownStageErrorString"];
+    [dictionary setObject:lastKnownStageErrorString forKey:@"lastKnownStageErrorString"];
   }
 
   if ((*(&self->_has + 1) & 0x10) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_lastKnownStageUnderlyingErrorCode];
-    [v3 setObject:v8 forKey:@"lastKnownStageUnderlyingErrorCode"];
+    [dictionary setObject:v8 forKey:@"lastKnownStageUnderlyingErrorCode"];
   }
 
   lastKnownStageUnderlyingErrorDomain = self->_lastKnownStageUnderlyingErrorDomain;
   if (lastKnownStageUnderlyingErrorDomain)
   {
-    [v3 setObject:lastKnownStageUnderlyingErrorDomain forKey:@"lastKnownStageUnderlyingErrorDomain"];
+    [dictionary setObject:lastKnownStageUnderlyingErrorDomain forKey:@"lastKnownStageUnderlyingErrorDomain"];
   }
 
   v10 = self->_has;
   if ((*&v10 & 0x1000000) != 0)
   {
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_savedEventState];
-    [v3 setObject:v32 forKey:@"savedEventState"];
+    [dictionary setObject:v32 forKey:@"savedEventState"];
 
     v10 = self->_has;
     if ((*&v10 & 0x1000000000) == 0)
@@ -4367,7 +4367,7 @@ LABEL_36:
     v34 = off_1E75469A0[lastKnownControllerHH2Mode];
   }
 
-  [v3 setObject:v34 forKey:@"lastKnownControllerHH2Mode"];
+  [dictionary setObject:v34 forKey:@"lastKnownControllerHH2Mode"];
 
   if ((*&self->_has & 0x2000000000) != 0)
   {
@@ -4391,21 +4391,21 @@ LABEL_65:
       v36 = @"Unknown";
     }
 
-    [v3 setObject:v36 forKey:@"lastKnownControllerSentinelZoneExistence"];
+    [dictionary setObject:v36 forKey:@"lastKnownControllerSentinelZoneExistence"];
   }
 
 LABEL_78:
   controllerSetupSessionIdentifier = self->_controllerSetupSessionIdentifier;
   if (controllerSetupSessionIdentifier)
   {
-    [v3 setObject:controllerSetupSessionIdentifier forKey:@"controllerSetupSessionIdentifier"];
+    [dictionary setObject:controllerSetupSessionIdentifier forKey:@"controllerSetupSessionIdentifier"];
   }
 
   v40 = self->_has;
   if ((*&v40 & 0x80000000000) != 0)
   {
     v52 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numberOfTimesPrimaryResidentChangedHH2];
-    [v3 setObject:v52 forKey:@"numberOfTimesPrimaryResidentChanged_HH2"];
+    [dictionary setObject:v52 forKey:@"numberOfTimesPrimaryResidentChanged_HH2"];
 
     v40 = self->_has;
     if ((*&v40 & 0x8000) == 0)
@@ -4426,7 +4426,7 @@ LABEL_82:
   }
 
   v53 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_lastPrimaryClientConnectedTimeHH2];
-  [v3 setObject:v53 forKey:@"lastPrimaryClientConnectedTime_HH2"];
+  [dictionary setObject:v53 forKey:@"lastPrimaryClientConnectedTime_HH2"];
 
   v40 = self->_has;
   if ((*&v40 & 0x20000000000) == 0)
@@ -4442,7 +4442,7 @@ LABEL_83:
 
 LABEL_111:
   v54 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numberOfTimesPrimaryClientConnectedHH2];
-  [v3 setObject:v54 forKey:@"numberOfTimesPrimaryClientConnected_HH2"];
+  [dictionary setObject:v54 forKey:@"numberOfTimesPrimaryClientConnected_HH2"];
 
   v40 = self->_has;
   if ((*&v40 & 0x40000000000) == 0)
@@ -4458,7 +4458,7 @@ LABEL_84:
 
 LABEL_112:
   v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numberOfTimesPrimaryClientDisconnectedHH2];
-  [v3 setObject:v55 forKey:@"numberOfTimesPrimaryClientDisconnected_HH2"];
+  [dictionary setObject:v55 forKey:@"numberOfTimesPrimaryClientDisconnected_HH2"];
 
   v40 = self->_has;
   if ((*&v40 & 0x10000000000) == 0)
@@ -4474,7 +4474,7 @@ LABEL_85:
 
 LABEL_113:
   v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_numberOfTimesPrimaryClientConnectMessageFailedHH2];
-  [v3 setObject:v56 forKey:@"numberOfTimesPrimaryClientConnectMessageFailed_HH2"];
+  [dictionary setObject:v56 forKey:@"numberOfTimesPrimaryClientConnectMessageFailed_HH2"];
 
   v40 = self->_has;
   if ((*&v40 & 0x200000000) == 0)
@@ -4490,39 +4490,39 @@ LABEL_86:
 
 LABEL_114:
   v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_currentDeviceConfirmedPrimaryResidentINT];
-  [v3 setObject:v57 forKey:@"currentDeviceConfirmedPrimaryResident_INT"];
+  [dictionary setObject:v57 forKey:@"currentDeviceConfirmedPrimaryResident_INT"];
 
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_87:
     v41 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_lastPrimaryClientConnectMessageFailErrorCodeHH2];
-    [v3 setObject:v41 forKey:@"lastPrimaryClientConnectMessageFailErrorCode_HH2"];
+    [dictionary setObject:v41 forKey:@"lastPrimaryClientConnectMessageFailErrorCode_HH2"];
   }
 
 LABEL_88:
   lastPrimaryClientConnectMessageFailErrorDomainHH2 = self->_lastPrimaryClientConnectMessageFailErrorDomainHH2;
   if (lastPrimaryClientConnectMessageFailErrorDomainHH2)
   {
-    [v3 setObject:lastPrimaryClientConnectMessageFailErrorDomainHH2 forKey:@"lastPrimaryClientConnectMessageFailErrorDomain_HH2"];
+    [dictionary setObject:lastPrimaryClientConnectMessageFailErrorDomainHH2 forKey:@"lastPrimaryClientConnectMessageFailErrorDomain_HH2"];
   }
 
   if ((*(&self->_has + 1) & 0x40) != 0)
   {
     v43 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2];
-    [v3 setObject:v43 forKey:@"lastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2"];
+    [dictionary setObject:v43 forKey:@"lastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2"];
   }
 
   lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 = self->_lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2;
   if (lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2)
   {
-    [v3 setObject:lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 forKey:@"lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2"];
+    [dictionary setObject:lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 forKey:@"lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2"];
   }
 
   v45 = self->_has;
   if ((*&v45 & 0x800000) != 0)
   {
     v58 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_primaryResidentElectionPeerDeviceFutureResolvedMSHH2];
-    [v3 setObject:v58 forKey:@"primaryResidentElectionPeerDeviceFutureResolvedMS_HH2"];
+    [dictionary setObject:v58 forKey:@"primaryResidentElectionPeerDeviceFutureResolvedMS_HH2"];
 
     v45 = self->_has;
     if ((*&v45 & 0x40000) == 0)
@@ -4543,7 +4543,7 @@ LABEL_96:
   }
 
   v59 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2];
-  [v3 setObject:v59 forKey:@"primaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2"];
+  [dictionary setObject:v59 forKey:@"primaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2"];
 
   v45 = self->_has;
   if ((*&v45 & 0x200000) == 0)
@@ -4559,7 +4559,7 @@ LABEL_97:
 
 LABEL_118:
   v60 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_primaryResidentElectionModernTransportStartedFutureResolvedMSHH2];
-  [v3 setObject:v60 forKey:@"primaryResidentElectionModernTransportStartedFutureResolvedMS_HH2"];
+  [dictionary setObject:v60 forKey:@"primaryResidentElectionModernTransportStartedFutureResolvedMS_HH2"];
 
   v45 = self->_has;
   if ((*&v45 & 0x400000) == 0)
@@ -4575,7 +4575,7 @@ LABEL_98:
 
 LABEL_119:
   v61 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2];
-  [v3 setObject:v61 forKey:@"primaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2"];
+  [dictionary setObject:v61 forKey:@"primaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2"];
 
   v45 = self->_has;
   if ((*&v45 & 0x80000) == 0)
@@ -4591,7 +4591,7 @@ LABEL_99:
 
 LABEL_120:
   v62 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_primaryResidentElectionJoinMeshMSHH2];
-  [v3 setObject:v62 forKey:@"primaryResidentElectionJoinMeshMS_HH2"];
+  [dictionary setObject:v62 forKey:@"primaryResidentElectionJoinMeshMS_HH2"];
 
   v45 = self->_has;
   if ((*&v45 & 0x40) == 0)
@@ -4607,37 +4607,37 @@ LABEL_100:
 
 LABEL_121:
   v63 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_firstCoreDataContainerSetupDurationMSHH2];
-  [v3 setObject:v63 forKey:@"firstCoreDataContainerSetupDurationMS_HH2"];
+  [dictionary setObject:v63 forKey:@"firstCoreDataContainerSetupDurationMS_HH2"];
 
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_101:
     v46 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_firstCoreDataContainerSetupErrorCodeHH2];
-    [v3 setObject:v46 forKey:@"firstCoreDataContainerSetupErrorCode_HH2"];
+    [dictionary setObject:v46 forKey:@"firstCoreDataContainerSetupErrorCode_HH2"];
   }
 
 LABEL_102:
   firstCoreDataContainerSetupErrorDomainHH2 = self->_firstCoreDataContainerSetupErrorDomainHH2;
   if (firstCoreDataContainerSetupErrorDomainHH2)
   {
-    [v3 setObject:firstCoreDataContainerSetupErrorDomainHH2 forKey:@"firstCoreDataContainerSetupErrorDomain_HH2"];
+    [dictionary setObject:firstCoreDataContainerSetupErrorDomainHH2 forKey:@"firstCoreDataContainerSetupErrorDomain_HH2"];
   }
 
   if (*(&self->_has + 1))
   {
     v48 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_firstCoreDataContainerSetupUnderlyingErrorCodeHH2];
-    [v3 setObject:v48 forKey:@"firstCoreDataContainerSetupUnderlyingErrorCode_HH2"];
+    [dictionary setObject:v48 forKey:@"firstCoreDataContainerSetupUnderlyingErrorCode_HH2"];
   }
 
   firstCoreDataContainerSetupUnderlyingErrorDomainHH2 = self->_firstCoreDataContainerSetupUnderlyingErrorDomainHH2;
   if (firstCoreDataContainerSetupUnderlyingErrorDomainHH2)
   {
-    [v3 setObject:firstCoreDataContainerSetupUnderlyingErrorDomainHH2 forKey:@"firstCoreDataContainerSetupUnderlyingErrorDomain_HH2"];
+    [dictionary setObject:firstCoreDataContainerSetupUnderlyingErrorDomainHH2 forKey:@"firstCoreDataContainerSetupUnderlyingErrorDomain_HH2"];
   }
 
-  v50 = v3;
+  v50 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -4646,16 +4646,16 @@ LABEL_102:
   v8.receiver = self;
   v8.super_class = HMAccessoryDiagnosticInfoProtoSetupInfo;
   v4 = [(HMAccessoryDiagnosticInfoProtoSetupInfo *)&v8 description];
-  v5 = [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryDiagnosticInfoProtoSetupInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasFirstCoreDataContainerSetupUnderlyingErrorCodeHH2:(BOOL)a3
+- (void)setHasFirstCoreDataContainerSetupUnderlyingErrorCodeHH2:(BOOL)h2
 {
   v3 = 256;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4663,10 +4663,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasFirstCoreDataContainerSetupErrorCodeHH2:(BOOL)a3
+- (void)setHasFirstCoreDataContainerSetupErrorCodeHH2:(BOOL)h2
 {
   v3 = 128;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4674,10 +4674,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasFirstCoreDataContainerSetupDurationMSHH2:(BOOL)a3
+- (void)setHasFirstCoreDataContainerSetupDurationMSHH2:(BOOL)h2
 {
   v3 = 64;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4685,10 +4685,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasPrimaryResidentElectionJoinMeshMSHH2:(BOOL)a3
+- (void)setHasPrimaryResidentElectionJoinMeshMSHH2:(BOOL)h2
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4696,10 +4696,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasPrimaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2:(BOOL)a3
+- (void)setHasPrimaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2:(BOOL)h2
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4707,10 +4707,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasPrimaryResidentElectionModernTransportStartedFutureResolvedMSHH2:(BOOL)a3
+- (void)setHasPrimaryResidentElectionModernTransportStartedFutureResolvedMSHH2:(BOOL)h2
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4718,10 +4718,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasPrimaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2:(BOOL)a3
+- (void)setHasPrimaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2:(BOOL)h2
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4729,10 +4729,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasPrimaryResidentElectionPeerDeviceFutureResolvedMSHH2:(BOOL)a3
+- (void)setHasPrimaryResidentElectionPeerDeviceFutureResolvedMSHH2:(BOOL)h2
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4740,10 +4740,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasLastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2:(BOOL)a3
+- (void)setHasLastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2:(BOOL)h2
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4751,10 +4751,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasLastPrimaryClientConnectMessageFailErrorCodeHH2:(BOOL)a3
+- (void)setHasLastPrimaryClientConnectMessageFailErrorCodeHH2:(BOOL)h2
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4762,10 +4762,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasCurrentDeviceConfirmedPrimaryResidentINT:(BOOL)a3
+- (void)setHasCurrentDeviceConfirmedPrimaryResidentINT:(BOOL)t
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -4773,10 +4773,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasNumberOfTimesPrimaryClientConnectMessageFailedHH2:(BOOL)a3
+- (void)setHasNumberOfTimesPrimaryClientConnectMessageFailedHH2:(BOOL)h2
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4784,10 +4784,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasNumberOfTimesPrimaryClientDisconnectedHH2:(BOOL)a3
+- (void)setHasNumberOfTimesPrimaryClientDisconnectedHH2:(BOOL)h2
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4795,10 +4795,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasNumberOfTimesPrimaryClientConnectedHH2:(BOOL)a3
+- (void)setHasNumberOfTimesPrimaryClientConnectedHH2:(BOOL)h2
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4806,10 +4806,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasLastPrimaryClientConnectedTimeHH2:(BOOL)a3
+- (void)setHasLastPrimaryClientConnectedTimeHH2:(BOOL)h2
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4817,10 +4817,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasNumberOfTimesPrimaryResidentChangedHH2:(BOOL)a3
+- (void)setHasNumberOfTimesPrimaryResidentChangedHH2:(BOOL)h2
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -4828,26 +4828,26 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (int)StringAsLastKnownControllerSentinelZoneExistence:(id)a3
+- (int)StringAsLastKnownControllerSentinelZoneExistence:(id)existence
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  existenceCopy = existence;
+  if ([existenceCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Good"];
+    v4 = [existenceCopy isEqualToString:@"Good"];
   }
 
   return v4;
 }
 
-- (void)setHasLastKnownControllerSentinelZoneExistence:(BOOL)a3
+- (void)setHasLastKnownControllerSentinelZoneExistence:(BOOL)existence
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!existence)
   {
     v3 = 0;
   }
@@ -4868,20 +4868,20 @@ LABEL_102:
   }
 }
 
-- (int)StringAsLastKnownControllerHH2Mode:(id)a3
+- (int)StringAsLastKnownControllerHH2Mode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HH1State"])
+  else if ([modeCopy isEqualToString:@"HH1State"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HH2State"])
+  else if ([modeCopy isEqualToString:@"HH2State"])
   {
     v4 = 2;
   }
@@ -4894,10 +4894,10 @@ LABEL_102:
   return v4;
 }
 
-- (void)setHasLastKnownControllerHH2Mode:(BOOL)a3
+- (void)setHasLastKnownControllerHH2Mode:(BOOL)mode
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!mode)
   {
     v3 = 0;
   }
@@ -4918,10 +4918,10 @@ LABEL_102:
   }
 }
 
-- (void)setHasSavedEventState:(BOOL)a3
+- (void)setHasSavedEventState:(BOOL)state
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -4929,10 +4929,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasLastKnownStageUnderlyingErrorCode:(BOOL)a3
+- (void)setHasLastKnownStageUnderlyingErrorCode:(BOOL)code
 {
   v3 = 4096;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -4940,10 +4940,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasLastKnownStageErrorCode:(BOOL)a3
+- (void)setHasLastKnownStageErrorCode:(BOOL)code
 {
   v3 = 2048;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -4951,26 +4951,26 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (int)StringAsNetworkAvailableINT:(id)a3
+- (int)StringAsNetworkAvailableINT:(id)t
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  tCopy = t;
+  if ([tCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Good"];
+    v4 = [tCopy isEqualToString:@"Good"];
   }
 
   return v4;
 }
 
-- (void)setHasNetworkAvailableINT:(BOOL)a3
+- (void)setHasNetworkAvailableINT:(BOOL)t
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -4991,26 +4991,26 @@ LABEL_102:
   }
 }
 
-- (int)StringAsManateeAvailableINT:(id)a3
+- (int)StringAsManateeAvailableINT:(id)t
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  tCopy = t;
+  if ([tCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Good"];
+    v4 = [tCopy isEqualToString:@"Good"];
   }
 
   return v4;
 }
 
-- (void)setHasManateeAvailableINT:(BOOL)a3
+- (void)setHasManateeAvailableINT:(BOOL)t
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -5031,26 +5031,26 @@ LABEL_102:
   }
 }
 
-- (int)StringAsIDSAvailableINT:(id)a3
+- (int)StringAsIDSAvailableINT:(id)t
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  tCopy = t;
+  if ([tCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Good"];
+    v4 = [tCopy isEqualToString:@"Good"];
   }
 
   return v4;
 }
 
-- (void)setHasIDSAvailableINT:(BOOL)a3
+- (void)setHasIDSAvailableINT:(BOOL)t
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -5071,26 +5071,26 @@ LABEL_102:
   }
 }
 
-- (int)StringAsICloudAvailableINT:(id)a3
+- (int)StringAsICloudAvailableINT:(id)t
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  tCopy = t;
+  if ([tCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Good"];
+    v4 = [tCopy isEqualToString:@"Good"];
   }
 
   return v4;
 }
 
-- (void)setHasICloudAvailableINT:(BOOL)a3
+- (void)setHasICloudAvailableINT:(BOOL)t
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!t)
   {
     v3 = 0;
   }
@@ -5111,10 +5111,10 @@ LABEL_102:
   }
 }
 
-- (void)setHasTotalDurationMSHH2:(BOOL)a3
+- (void)setHasTotalDurationMSHH2:(BOOL)h2
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5122,10 +5122,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasEventRouterFirstEventPushMSHH2:(BOOL)a3
+- (void)setHasEventRouterFirstEventPushMSHH2:(BOOL)h2
 {
   v3 = 16;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5133,10 +5133,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasPrimaryResidentElectionMSHH2:(BOOL)a3
+- (void)setHasPrimaryResidentElectionMSHH2:(BOOL)h2
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5144,10 +5144,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasEventRouterServerConnectionMSHH2:(BOOL)a3
+- (void)setHasEventRouterServerConnectionMSHH2:(BOOL)h2
 {
   v3 = 32;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5155,10 +5155,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasSiriReadyMSHH2:(BOOL)a3
+- (void)setHasSiriReadyMSHH2:(BOOL)h2
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5166,10 +5166,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasPairingIdentityCreationMSHH2:(BOOL)a3
+- (void)setHasPairingIdentityCreationMSHH2:(BOOL)h2
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5177,10 +5177,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasSettingsCreationMSHH2:(BOOL)a3
+- (void)setHasSettingsCreationMSHH2:(BOOL)h2
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5188,10 +5188,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasFirstCoreDataImportMSHH2:(BOOL)a3
+- (void)setHasFirstCoreDataImportMSHH2:(BOOL)h2
 {
   v3 = 512;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5199,10 +5199,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasHomeManagerReadyMSHH2:(BOOL)a3
+- (void)setHasHomeManagerReadyMSHH2:(BOOL)h2
 {
   v3 = 1024;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5210,10 +5210,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasCurrentDeviceIDSWaitMSHH2:(BOOL)a3
+- (void)setHasCurrentDeviceIDSWaitMSHH2:(BOOL)h2
 {
   v3 = 8;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5221,10 +5221,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasAccountSettleWaitMSHH2:(BOOL)a3
+- (void)setHasAccountSettleWaitMSHH2:(BOOL)h2
 {
   v3 = 2;
-  if (!a3)
+  if (!h2)
   {
     v3 = 0;
   }
@@ -5232,10 +5232,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasTotalDurationMSHH1:(BOOL)a3
+- (void)setHasTotalDurationMSHH1:(BOOL)h1
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!h1)
   {
     v3 = 0;
   }
@@ -5243,10 +5243,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasSentinelZoneFetchMSHH1:(BOOL)a3
+- (void)setHasSentinelZoneFetchMSHH1:(BOOL)h1
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!h1)
   {
     v3 = 0;
   }
@@ -5254,10 +5254,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasSessionSetupCloseMSHH1:(BOOL)a3
+- (void)setHasSessionSetupCloseMSHH1:(BOOL)h1
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!h1)
   {
     v3 = 0;
   }
@@ -5265,10 +5265,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasNewAccessoryTransferMSHH1:(BOOL)a3
+- (void)setHasNewAccessoryTransferMSHH1:(BOOL)h1
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!h1)
   {
     v3 = 0;
   }
@@ -5276,10 +5276,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasControllerKeyExchangeMSHH1:(BOOL)a3
+- (void)setHasControllerKeyExchangeMSHH1:(BOOL)h1
 {
   v3 = 4;
-  if (!a3)
+  if (!h1)
   {
     v3 = 0;
   }
@@ -5287,10 +5287,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasSessionSetupOpenMSHH1:(BOOL)a3
+- (void)setHasSessionSetupOpenMSHH1:(BOOL)h1
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!h1)
   {
     v3 = 0;
   }
@@ -5298,10 +5298,10 @@ LABEL_102:
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!version)
   {
     v3 = 0;
   }

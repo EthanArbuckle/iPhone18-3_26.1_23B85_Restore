@@ -1,22 +1,22 @@
 @interface MPSGraphPruningDescriptor
-+ (id)descriptorWithPruningMetric:(int64_t)a3 sparsityFormat:(int64_t)a4 sparsity:(float)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptorWithPruningMetric:(int64_t)metric sparsityFormat:(int64_t)format sparsity:(float)sparsity;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphPruningDescriptor
 
-+ (id)descriptorWithPruningMetric:(int64_t)a3 sparsityFormat:(int64_t)a4 sparsity:(float)a5
++ (id)descriptorWithPruningMetric:(int64_t)metric sparsityFormat:(int64_t)format sparsity:(float)sparsity
 {
   v8 = objc_alloc_init(MPSGraphPruningDescriptor);
-  [(MPSGraphPruningDescriptor *)v8 setPruningMetric:a3];
-  [(MPSGraphPruningDescriptor *)v8 setPruningStructure:a4];
-  *&v9 = a5;
+  [(MPSGraphPruningDescriptor *)v8 setPruningMetric:metric];
+  [(MPSGraphPruningDescriptor *)v8 setPruningStructure:format];
+  *&v9 = sparsity;
   [(MPSGraphPruningDescriptor *)v8 setSparsity:v9];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MPSGraphPruningDescriptor);
   [(MPSGraphPruningDescriptor *)v4 setPruningMetric:self->_pruningMetric];

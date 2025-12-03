@@ -1,21 +1,21 @@
 @interface JavaUtilCollections_SynchronizedSortedMap
-- (JavaUtilCollections_SynchronizedSortedMap)initWithJavaUtilSortedMap:(id)a3;
+- (JavaUtilCollections_SynchronizedSortedMap)initWithJavaUtilSortedMap:(id)map;
 - (id)comparator;
 - (id)firstKey;
-- (id)headMapWithId:(id)a3;
+- (id)headMapWithId:(id)id;
 - (id)lastKey;
-- (id)subMapWithId:(id)a3 withId:(id)a4;
-- (id)tailMapWithId:(id)a3;
+- (id)subMapWithId:(id)id withId:(id)withId;
+- (id)tailMapWithId:(id)id;
 - (void)dealloc;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilCollections_SynchronizedSortedMap
 
-- (JavaUtilCollections_SynchronizedSortedMap)initWithJavaUtilSortedMap:(id)a3
+- (JavaUtilCollections_SynchronizedSortedMap)initWithJavaUtilSortedMap:(id)map
 {
-  JavaUtilCollections_SynchronizedMap_initWithJavaUtilMap_(self, a3);
-  JreStrongAssign(&self->sm_, a3);
+  JavaUtilCollections_SynchronizedMap_initWithJavaUtilMap_(self, map);
+  JreStrongAssign(&self->sm_, map);
   return self;
 }
 
@@ -29,9 +29,9 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilSortedMap *)sm comparator];
+  comparator = [(JavaUtilSortedMap *)sm comparator];
   objc_sync_exit(mutex);
-  return v5;
+  return comparator;
 }
 
 - (id)firstKey
@@ -44,12 +44,12 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilSortedMap *)sm firstKey];
+  firstKey = [(JavaUtilSortedMap *)sm firstKey];
   objc_sync_exit(mutex);
-  return v5;
+  return firstKey;
 }
 
-- (id)headMapWithId:(id)a3
+- (id)headMapWithId:(id)id
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
@@ -59,7 +59,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilSortedMap *)sm headMapWithId:a3];
+  v7 = [(JavaUtilSortedMap *)sm headMapWithId:id];
   v8 = self->super.mutex_;
   v9 = [JavaUtilCollections_SynchronizedSortedMap alloc];
   JavaUtilCollections_SynchronizedSortedMap_initWithJavaUtilSortedMap_withId_(&v9->super.super.isa, v7, v8);
@@ -78,12 +78,12 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilSortedMap *)sm lastKey];
+  lastKey = [(JavaUtilSortedMap *)sm lastKey];
   objc_sync_exit(mutex);
-  return v5;
+  return lastKey;
 }
 
-- (id)subMapWithId:(id)a3 withId:(id)a4
+- (id)subMapWithId:(id)id withId:(id)withId
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
@@ -93,7 +93,7 @@
     JreThrowNullPointerException();
   }
 
-  v9 = [(JavaUtilSortedMap *)sm subMapWithId:a3 withId:a4];
+  v9 = [(JavaUtilSortedMap *)sm subMapWithId:id withId:withId];
   v10 = self->super.mutex_;
   v11 = [JavaUtilCollections_SynchronizedSortedMap alloc];
   JavaUtilCollections_SynchronizedSortedMap_initWithJavaUtilSortedMap_withId_(&v11->super.super.isa, v9, v10);
@@ -102,7 +102,7 @@
   return v12;
 }
 
-- (id)tailMapWithId:(id)a3
+- (id)tailMapWithId:(id)id
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
@@ -112,7 +112,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilSortedMap *)sm tailMapWithId:a3];
+  v7 = [(JavaUtilSortedMap *)sm tailMapWithId:id];
   v8 = self->super.mutex_;
   v9 = [JavaUtilCollections_SynchronizedSortedMap alloc];
   JavaUtilCollections_SynchronizedSortedMap_initWithJavaUtilSortedMap_withId_(&v9->super.super.isa, v7, v8);
@@ -121,16 +121,16 @@
   return v10;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 
   objc_sync_exit(mutex);
 }

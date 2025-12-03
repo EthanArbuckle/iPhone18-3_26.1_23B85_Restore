@@ -1,7 +1,7 @@
 @interface _ANEDeviceInfo
 + (BOOL)hasANE;
-+ (BOOL)isBoolBootArgSetTrue:(id)a3;
-+ (BOOL)isBootArgPresent:(id)a3;
++ (BOOL)isBoolBootArgSetTrue:(id)true;
++ (BOOL)isBootArgPresent:(id)present;
 + (BOOL)isInternalBuild;
 + (BOOL)isVirtualMachine;
 + (BOOL)precompiledModelChecksDisabled;
@@ -66,11 +66,11 @@
   v19[3] = &__block_descriptor_40_e8_v16__0q8l;
   v19[4] = a2;
   v3 = MEMORY[0x1B26F37D0](v19);
-  v4 = [a1 aneBoardType];
+  aneBoardType = [self aneBoardType];
   v5 = +[_ANELog framework];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(_ANEDeviceInfo *)v4 aneSubType:v5];
+    [(_ANEDeviceInfo *)aneBoardType aneSubType:v5];
   }
 
   v12 = +[_ANEVirtualClient sharedConnection];
@@ -82,7 +82,7 @@
     block[2] = __28___ANEDeviceInfo_aneSubType__block_invoke_56;
     block[3] = &unk_1E79BA108;
     v17 = v3;
-    v18 = v4;
+    v18 = aneBoardType;
     if (+[_ANEDeviceInfo aneSubType]::onceTokenSubType != -1)
     {
       dispatch_once(&+[_ANEDeviceInfo aneSubType]::onceTokenSubType, block);
@@ -91,7 +91,7 @@
 
   else
   {
-    v3[2](v3, v4);
+    v3[2](v3, aneBoardType);
   }
 
   v13 = +[_ANEDeviceInfo aneSubType]::aneSubtypeStr;
@@ -128,11 +128,11 @@
 
 + (id)aneSubTypeVariant
 {
-  v2 = [a1 aneBoardType];
+  aneBoardType = [self aneBoardType];
   v3 = +[_ANELog framework];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    [(_ANEDeviceInfo *)v2 aneSubType:v3];
+    [(_ANEDeviceInfo *)aneBoardType aneSubType:v3];
   }
 
   v10 = +[_ANEVirtualClient sharedConnection];
@@ -144,7 +144,7 @@
     v14[2] = __35___ANEDeviceInfo_aneSubTypeVariant__block_invoke_65;
     v14[3] = &unk_1E79BA108;
     v15 = &__block_literal_global_58;
-    v16 = v2;
+    v16 = aneBoardType;
     if (+[_ANEDeviceInfo aneSubTypeVariant]::onceTokenSubVariantType != -1)
     {
       dispatch_once(&+[_ANEDeviceInfo aneSubTypeVariant]::onceTokenSubVariantType, v14);
@@ -153,7 +153,7 @@
 
   else
   {
-    __35___ANEDeviceInfo_aneSubTypeVariant__block_invoke(v11, v2);
+    __35___ANEDeviceInfo_aneSubTypeVariant__block_invoke(v11, aneBoardType);
   }
 
   v12 = +[_ANEDeviceInfo aneSubTypeVariant]::aneSubTypeVariantStr;
@@ -163,11 +163,11 @@
 
 + (id)aneSubTypeProductVariant
 {
-  v2 = [a1 aneBoardType];
+  aneBoardType = [self aneBoardType];
   v3 = +[_ANELog framework];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    [(_ANEDeviceInfo *)v2 aneSubType:v3];
+    [(_ANEDeviceInfo *)aneBoardType aneSubType:v3];
   }
 
   v10 = +[_ANEVirtualClient sharedConnection];
@@ -179,7 +179,7 @@
     v14[2] = __42___ANEDeviceInfo_aneSubTypeProductVariant__block_invoke_68;
     v14[3] = &unk_1E79BA108;
     v15 = &__block_literal_global_67;
-    v16 = v2;
+    v16 = aneBoardType;
     if (+[_ANEDeviceInfo aneSubTypeProductVariant]::onceToken != -1)
     {
       dispatch_once(&+[_ANEDeviceInfo aneSubTypeProductVariant]::onceToken, v14);
@@ -216,9 +216,9 @@
   if (v2)
   {
     v3 = +[_ANEVirtualClient sharedConnection];
-    v4 = [v3 aneArchitectureTypeStr];
+    aneArchitectureTypeStr = [v3 aneArchitectureTypeStr];
     v5 = +[_ANEDeviceInfo aneArchitectureType]::aneArchitectureTypeStr;
-    +[_ANEDeviceInfo aneArchitectureType]::aneArchitectureTypeStr = v4;
+    +[_ANEDeviceInfo aneArchitectureType]::aneArchitectureTypeStr = aneArchitectureTypeStr;
   }
 
   else
@@ -285,23 +285,23 @@ LABEL_8:
   return v3;
 }
 
-+ (BOOL)isBootArgPresent:(id)a3
++ (BOOL)isBootArgPresent:(id)present
 {
-  v3 = a3;
+  presentCopy = present;
   v4 = +[_ANEDeviceInfo bootArgs];
-  v5 = [v4 rangeOfString:v3] != 0x7FFFFFFFFFFFFFFFLL;
+  v5 = [v4 rangeOfString:presentCopy] != 0x7FFFFFFFFFFFFFFFLL;
 
   return v5;
 }
 
-+ (BOOL)isBoolBootArgSetTrue:(id)a3
++ (BOOL)isBoolBootArgSetTrue:(id)true
 {
-  v3 = a3;
-  if ([_ANEDeviceInfo isBootArgPresent:v3])
+  trueCopy = true;
+  if ([_ANEDeviceInfo isBootArgPresent:trueCopy])
   {
     v4 = +[_ANEDeviceInfo bootArgs];
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=0", v3];
-    v6 = [v4 rangeOfString:v5] == 0x7FFFFFFFFFFFFFFFLL;
+    trueCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@=0", trueCopy];
+    v6 = [v4 rangeOfString:trueCopy] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -314,8 +314,8 @@ LABEL_8:
 
 + (BOOL)precompiledModelChecksDisabled
 {
-  v3 = [a1 bootArgs];
-  v4 = [v3 containsString:@"enforceModelSignatureChecks=0"];
+  bootArgs = [self bootArgs];
+  v4 = [bootArgs containsString:@"enforceModelSignatureChecks=0"];
   if (v4)
   {
     v5 = NSStringFromSelector(a2);

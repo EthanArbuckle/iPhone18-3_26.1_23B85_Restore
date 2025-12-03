@@ -1,18 +1,18 @@
 @interface VCPFaceProcessingChangeBatch
-+ (id)batchForPhotoLibrary:(id)a3 context:(id)a4;
-- (BOOL)publishWithError:(id *)a3;
-- (VCPFaceProcessingChangeBatch)initWithPhotoLibrary:(id)a3 context:(id)a4;
-- (int)updateAsset:(id)a3 withAnalysis:(id)a4;
++ (id)batchForPhotoLibrary:(id)library context:(id)context;
+- (BOOL)publishWithError:(id *)error;
+- (VCPFaceProcessingChangeBatch)initWithPhotoLibrary:(id)library context:(id)context;
+- (int)updateAsset:(id)asset withAnalysis:(id)analysis;
 - (void)_publishPendingChanges;
 @end
 
 @implementation VCPFaceProcessingChangeBatch
 
-- (VCPFaceProcessingChangeBatch)initWithPhotoLibrary:(id)a3 context:(id)a4
+- (VCPFaceProcessingChangeBatch)initWithPhotoLibrary:(id)library context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  libraryCopy = library;
+  contextCopy = context;
+  if (libraryCopy)
   {
     v17.receiver = self;
     v17.super_class = VCPFaceProcessingChangeBatch;
@@ -20,8 +20,8 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_photoLibrary, a3);
-      objc_storeStrong(&v10->_context, a4);
+      objc_storeStrong(&v9->_photoLibrary, library);
+      objc_storeStrong(&v10->_context, context);
       v11 = +[NSMutableArray array];
       pendingChanges = v10->_pendingChanges;
       v10->_pendingChanges = v11;
@@ -32,39 +32,39 @@
     }
 
     self = v10;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-+ (id)batchForPhotoLibrary:(id)a3 context:(id)a4
++ (id)batchForPhotoLibrary:(id)library context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v5 context:v6];
+  libraryCopy = library;
+  contextCopy = context;
+  v7 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy context:contextCopy];
 
   return v7;
 }
 
-- (int)updateAsset:(id)a3 withAnalysis:(id)a4
+- (int)updateAsset:(id)asset withAnalysis:(id)analysis
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 vcp_version];
-  v9 = [v6 photoLibrary];
-  v10 = [v9 mad_faceProcessingInternalVersion];
+  assetCopy = asset;
+  analysisCopy = analysis;
+  vcp_version = [analysisCopy vcp_version];
+  photoLibrary = [assetCopy photoLibrary];
+  mad_faceProcessingInternalVersion = [photoLibrary mad_faceProcessingInternalVersion];
 
-  if (v8 == v10 && ([v7 vcp_types] & 4) != 0)
+  if (vcp_version == mad_faceProcessingInternalVersion && ([analysisCopy vcp_types] & 4) != 0)
   {
     pendingChanges = self->_pendingChanges;
-    v12 = [v7 vcp_results];
-    v13 = [VCPFaceProcessingChangeEntry entryWithAsset:v6 andAnalysis:v12];
+    vcp_results = [analysisCopy vcp_results];
+    v13 = [VCPFaceProcessingChangeEntry entryWithAsset:assetCopy andAnalysis:vcp_results];
     [(NSMutableArray *)pendingChanges addObject:v13];
   }
 
@@ -107,7 +107,7 @@
   }
 }
 
-- (BOOL)publishWithError:(id *)a3
+- (BOOL)publishWithError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -132,7 +132,7 @@
   block[3] = &unk_100286008;
   block[4] = self;
   block[5] = &v11;
-  block[6] = a3;
+  block[6] = error;
   dispatch_sync(publishQueue, block);
   v8 = *(v12 + 24);
   _Block_object_dispose(&v11, 8);

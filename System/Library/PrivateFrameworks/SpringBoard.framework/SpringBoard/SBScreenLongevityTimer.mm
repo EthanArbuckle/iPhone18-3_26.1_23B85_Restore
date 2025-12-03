@@ -1,5 +1,5 @@
 @interface SBScreenLongevityTimer
-- (BOOL)_isValidCurrentTimer:(id)a3;
+- (BOOL)_isValidCurrentTimer:(id)timer;
 - (SBScreenLongevityTimer)init;
 - (SBScreenLongevityTimerDelegate)delegate;
 - (double)elapsedTime;
@@ -52,7 +52,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Dimming timer invalidate %{public}@", &v5, 0xCu);
     }
 
@@ -64,9 +64,9 @@
 
 - (double)elapsedTime
 {
-  v3 = [(NSTimer *)self->_timer isValid];
+  isValid = [(NSTimer *)self->_timer isValid];
   result = 0.0;
-  if (v3)
+  if (isValid)
   {
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     return v5 - self->_startTime;
@@ -82,7 +82,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Dimming timer start %{public}@", buf, 0xCu);
   }
 
@@ -197,7 +197,7 @@ void __31__SBScreenLongevityTimer_start__block_invoke_4(uint64_t a1, void *a2)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "Dimming timer start face detection %{public}@", &v4, 0xCu);
   }
 
@@ -272,11 +272,11 @@ void __47__SBScreenLongevityTimer_scheduleFaceDetection__block_invoke_2(uint64_t
   }
 }
 
-- (BOOL)_isValidCurrentTimer:(id)a3
+- (BOOL)_isValidCurrentTimer:(id)timer
 {
-  if (self->_timer == a3)
+  if (self->_timer == timer)
   {
-    return [a3 isValid];
+    return [timer isValid];
   }
 
   else

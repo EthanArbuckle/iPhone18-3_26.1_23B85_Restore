@@ -1,7 +1,7 @@
 @interface WFShortcutSigningCertificate
 - (NSString)commonName;
-- (WFShortcutSigningCertificate)initWithCertificate:(__SecCertificate *)a3;
-- (WFShortcutSigningCertificate)initWithCertificateData:(id)a3;
+- (WFShortcutSigningCertificate)initWithCertificate:(__SecCertificate *)certificate;
+- (WFShortcutSigningCertificate)initWithCertificateData:(id)data;
 - (__SecKey)copyPublicKey;
 - (id)generateAuthData;
 - (void)dealloc;
@@ -17,31 +17,31 @@
   [(WFShortcutSigningCertificate *)&v3 dealloc];
 }
 
-- (WFShortcutSigningCertificate)initWithCertificateData:(id)a3
+- (WFShortcutSigningCertificate)initWithCertificateData:(id)data
 {
-  v4 = SecCertificateCreateWithData(0, a3);
+  v4 = SecCertificateCreateWithData(0, data);
   if (v4)
   {
     self = [(WFShortcutSigningCertificate *)self initWithCertificate:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (WFShortcutSigningCertificate)initWithCertificate:(__SecCertificate *)a3
+- (WFShortcutSigningCertificate)initWithCertificate:(__SecCertificate *)certificate
 {
   v7.receiver = self;
   v7.super_class = WFShortcutSigningCertificate;
   v4 = [(WFShortcutSigningCertificate *)&v7 init];
   if (v4)
   {
-    v4->_certificate = CFRetain(a3);
+    v4->_certificate = CFRetain(certificate);
     v5 = v4;
   }
 
@@ -57,9 +57,9 @@
 
 - (__SecKey)copyPublicKey
 {
-  v2 = [(WFShortcutSigningCertificate *)self certificate];
+  certificate = [(WFShortcutSigningCertificate *)self certificate];
 
-  return SecCertificateCopyKey(v2);
+  return SecCertificateCopyKey(certificate);
 }
 
 - (NSString)commonName

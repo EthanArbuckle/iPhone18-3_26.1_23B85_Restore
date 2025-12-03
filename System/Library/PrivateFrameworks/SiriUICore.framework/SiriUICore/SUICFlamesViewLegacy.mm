@@ -1,62 +1,62 @@
 @interface SUICFlamesViewLegacy
 + (BOOL)_supportsAdaptiveFramerate;
 + (id)_indexCache;
-+ (void)prewarmShadersForScreen:(id)a3 activeFrame:(CGRect)a4 fidelity:(int64_t)a5;
-+ (void)prewarmShadersForScreen:(id)a3 initialFrame:(CGRect)a4 activeFrame:(CGRect)a5 fidelity:(int64_t)a6 prewarmInBackground:(BOOL)a7;
-+ (void)prewarmShadersForScreen:(id)a3 size:(CGSize)a4 fidelity:(int64_t)a5 prewarmInBackground:(BOOL)a6;
-+ (void)setIndexCacheSize:(unint64_t)a3;
-- (BOOL)_deviceNeeds2xFlamesWithCurrentScale:(double)a3;
-- (BOOL)_initGLAndSetupDisplayLink:(BOOL)a3;
-- (BOOL)_resizeFromLayer:(id)a3;
++ (void)prewarmShadersForScreen:(id)screen activeFrame:(CGRect)frame fidelity:(int64_t)fidelity;
++ (void)prewarmShadersForScreen:(id)screen initialFrame:(CGRect)frame activeFrame:(CGRect)activeFrame fidelity:(int64_t)fidelity prewarmInBackground:(BOOL)background;
++ (void)prewarmShadersForScreen:(id)screen size:(CGSize)size fidelity:(int64_t)fidelity prewarmInBackground:(BOOL)background;
++ (void)setIndexCacheSize:(unint64_t)size;
+- (BOOL)_deviceNeeds2xFlamesWithCurrentScale:(double)scale;
+- (BOOL)_initGLAndSetupDisplayLink:(BOOL)link;
+- (BOOL)_resizeFromLayer:(id)layer;
 - (BOOL)_setCurrentContext;
 - (BOOL)_setupFramebuffer;
 - (BOOL)_setupShaders;
 - (BOOL)_setupVertexBuffer;
 - (CGRect)activeFrame;
-- (SUICFlamesViewLegacy)initWithFrame:(CGRect)a3 screen:(id)a4 fidelity:(int64_t)a5;
-- (SUICFlamesViewLegacy)initWithFrame:(CGRect)a3 screenScale:(double)a4 fidelity:(int64_t)a5;
+- (SUICFlamesViewLegacy)initWithFrame:(CGRect)frame screen:(id)screen fidelity:(int64_t)fidelity;
+- (SUICFlamesViewLegacy)initWithFrame:(CGRect)frame screenScale:(double)scale fidelity:(int64_t)fidelity;
 - (SUICFlamesViewProvidingDelegate)flamesDelegate;
 - (double)_currentDisplayScale;
 - (float)_currentMicPowerLevel;
-- (float32x2_t)_predeterminedVertexPositionForAuraWithPolarVertex:(uint64_t)a1;
-- (int)_generateIndicesForNumCircleShapes:(int)a3 withMaxSubdivisionLevel:(float)a4 startingWithNumSubdivisionLevel:(float)a5 forIndices:(unsigned int *)a6 atStartIndex:(int)a7 withFill:(BOOL)a8 withCullingForAura:(BOOL)a9 forVertices:(id *)a10;
+- (float32x2_t)_predeterminedVertexPositionForAuraWithPolarVertex:(uint64_t)vertex;
+- (int)_generateIndicesForNumCircleShapes:(int)shapes withMaxSubdivisionLevel:(float)level startingWithNumSubdivisionLevel:(float)subdivisionLevel forIndices:(unsigned int *)indices atStartIndex:(int)index withFill:(BOOL)fill withCullingForAura:(BOOL)aura forVertices:(id *)self0;
 - (void)_cleanupGL;
 - (void)_prewarmShaders;
-- (void)_reduceMotionStatusChanged:(id)a3;
+- (void)_reduceMotionStatusChanged:(id)changed;
 - (void)_restoreCurrentContext;
 - (void)_setPreferredFramesPerSecond;
-- (void)_setValuesForFidelity:(int64_t)a3;
+- (void)_setValuesForFidelity:(int64_t)fidelity;
 - (void)_setupDisplayLink;
 - (void)_setupVertexBuffer;
 - (void)_tearDownDisplayLink;
-- (void)_updateCurveLayer:(id)a3;
+- (void)_updateCurveLayer:(id)layer;
 - (void)_updateDisplayLinkPausedState;
 - (void)_updateOrthoProjection;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)fadeOutCurrentAura;
 - (void)layoutSubviews;
-- (void)resetAndReinitialize:(BOOL)a3;
-- (void)setActiveFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setDictationColor:(id)a3;
-- (void)setFlamesDelegate:(id)a3;
-- (void)setFlamesPaused:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHorizontalScaleFactor:(double)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setOverlayImage:(id)a3;
-- (void)setRenderInBackground:(BOOL)a3;
-- (void)setRenderingEnabled:(BOOL)a3 forReason:(id)a4;
-- (void)setState:(int64_t)a3;
+- (void)resetAndReinitialize:(BOOL)reinitialize;
+- (void)setActiveFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDictationColor:(id)color;
+- (void)setFlamesDelegate:(id)delegate;
+- (void)setFlamesPaused:(BOOL)paused;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHorizontalScaleFactor:(double)factor;
+- (void)setMode:(int64_t)mode;
+- (void)setOverlayImage:(id)image;
+- (void)setRenderInBackground:(BOOL)background;
+- (void)setRenderingEnabled:(BOOL)enabled forReason:(id)reason;
+- (void)setState:(int64_t)state;
 - (void)stopRenderingAndCleanupGL;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SUICFlamesViewLegacy
 
-- (void)_setValuesForFidelity:(int64_t)a3
+- (void)_setValuesForFidelity:(int64_t)fidelity
 {
   if (self->_mode == 1)
   {
@@ -75,7 +75,7 @@
 
   else
   {
-    if (a3 == 2)
+    if (fidelity == 2)
     {
       maxVertexCircles = 18;
       self->_maxVertexCircles = 18;
@@ -85,7 +85,7 @@
 
     else
     {
-      if (a3 == 1)
+      if (fidelity == 1)
       {
         maxVertexCircles = 12;
         self->_maxVertexCircles = 12;
@@ -94,7 +94,7 @@
 
       else
       {
-        if (a3)
+        if (fidelity)
         {
           return;
         }
@@ -116,30 +116,30 @@
   self->_auraMaxSubdivisionLevel = v10;
 }
 
-- (SUICFlamesViewLegacy)initWithFrame:(CGRect)a3 screen:(id)a4 fidelity:(int64_t)a5
+- (SUICFlamesViewLegacy)initWithFrame:(CGRect)frame screen:(id)screen fidelity:(int64_t)fidelity
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  screenCopy = screen;
   v40.receiver = self;
   v40.super_class = SUICFlamesViewLegacy;
-  v13 = [(SUICFlamesViewLegacy *)&v40 initWithFrame:x, y, width, height];
-  if (v13)
+  height = [(SUICFlamesViewLegacy *)&v40 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v13->_reduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v13 selector:sel__reduceMotionStatusChanged_ name:*MEMORY[0x1E69DD918] object:0];
+    height->_reduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:height selector:sel__reduceMotionStatusChanged_ name:*MEMORY[0x1E69DD918] object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v13 selector:sel__applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:height selector:sel__applicationWillResignActive_ name:*MEMORY[0x1E69DDBC8] object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v13 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:height selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v13 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:height selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
 
     v18 = [SUICAudioLevelSmoother alloc];
     LODWORD(v19) = -1032847360;
@@ -147,74 +147,74 @@
     LODWORD(v21) = 1063675494;
     LODWORD(v22) = -10.0;
     v23 = [(SUICAudioLevelSmoother *)v18 initWithMinimumPower:5 maximumPower:v19 historyLength:v22 attackSpeed:v20 decaySpeed:v21];
-    levelSmoother = v13->_levelSmoother;
-    v13->_levelSmoother = v23;
+    levelSmoother = height->_levelSmoother;
+    height->_levelSmoother = v23;
 
-    objc_storeStrong(&v13->_screen, a4);
-    v13->_showAura = 1;
-    [(SUICFlamesViewLegacy *)v13 setMode:0];
-    v13->_fidelity = a5;
-    [(SUICFlamesViewLegacy *)v13 _setValuesForFidelity:a5];
-    [(SUICFlamesViewLegacy *)v13 bounds];
-    v13->_activeFrame.origin.x = v25;
-    v13->_activeFrame.origin.y = v26;
-    v13->_currentContextCount = 0;
-    v13->_activeFrame.size.width = v27;
-    v13->_activeFrame.size.height = v28;
-    v13->_horizontalScaleFactor = 1.0;
-    v13->_frameRateScalingFactor = 1.0;
+    objc_storeStrong(&height->_screen, screen);
+    height->_showAura = 1;
+    [(SUICFlamesViewLegacy *)height setMode:0];
+    height->_fidelity = fidelity;
+    [(SUICFlamesViewLegacy *)height _setValuesForFidelity:fidelity];
+    [(SUICFlamesViewLegacy *)height bounds];
+    height->_activeFrame.origin.x = v25;
+    height->_activeFrame.origin.y = v26;
+    height->_currentContextCount = 0;
+    height->_activeFrame.size.width = v27;
+    height->_activeFrame.size.height = v28;
+    height->_horizontalScaleFactor = 1.0;
+    height->_frameRateScalingFactor = 1.0;
     v29 = [objc_alloc(MEMORY[0x1E6977FE8]) initWithAPI:2];
-    eaglContext = v13->_eaglContext;
-    v13->_eaglContext = v29;
+    eaglContext = height->_eaglContext;
+    height->_eaglContext = v29;
 
-    if (!v13->_eaglContext || (v31 = [(SUICFlamesViewLegacy *)v13 _setCurrentContext], [(SUICFlamesViewLegacy *)v13 _restoreCurrentContext], !v31))
+    if (!height->_eaglContext || (v31 = [(SUICFlamesViewLegacy *)height _setCurrentContext], [(SUICFlamesViewLegacy *)height _restoreCurrentContext], !v31))
     {
       v38 = 0;
       goto LABEL_7;
     }
 
-    v13->_state = 0;
-    v13->_dictationRedColor = 1.0;
-    v13->_dictationGreenColor = 1.0;
-    v13->_dictationBlueColor = 1.0;
+    height->_state = 0;
+    height->_dictationRedColor = 1.0;
+    height->_dictationGreenColor = 1.0;
+    height->_dictationBlueColor = 1.0;
     v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    flameGroups = v13->_flameGroups;
-    v13->_flameGroups = v32;
+    flameGroups = height->_flameGroups;
+    height->_flameGroups = v32;
 
     v34 = objc_alloc_init(SUICFlameGroup);
-    currentFlameGroup = v13->_currentFlameGroup;
-    v13->_currentFlameGroup = v34;
+    currentFlameGroup = height->_currentFlameGroup;
+    height->_currentFlameGroup = v34;
 
-    [(NSMutableArray *)v13->_flameGroups addObject:v13->_currentFlameGroup];
+    [(NSMutableArray *)height->_flameGroups addObject:height->_currentFlameGroup];
     v36 = [MEMORY[0x1E695DFA8] set];
-    renderingDisabledReasons = v13->_renderingDisabledReasons;
-    v13->_renderingDisabledReasons = v36;
+    renderingDisabledReasons = height->_renderingDisabledReasons;
+    height->_renderingDisabledReasons = v36;
   }
 
-  v38 = v13;
+  v38 = height;
 LABEL_7:
 
   return v38;
 }
 
-- (SUICFlamesViewLegacy)initWithFrame:(CGRect)a3 screenScale:(double)a4 fidelity:(int64_t)a5
+- (SUICFlamesViewLegacy)initWithFrame:(CGRect)frame screenScale:(double)scale fidelity:(int64_t)fidelity
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v12 = [(SUICFlamesViewLegacy *)self initWithFrame:v11 screen:a5 fidelity:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  height = [(SUICFlamesViewLegacy *)self initWithFrame:mainScreen screen:fidelity fidelity:x, y, width, height];
 
-  return v12;
+  return height;
 }
 
 - (void)dealloc
 {
   [(SUICFlamesViewLegacy *)self _tearDownDisplayLink];
   [(SUICFlamesViewLegacy *)self _cleanupGL];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SUICFlamesViewLegacy *)self _restoreCurrentContext];
   eaglContext = self->_eaglContext;
@@ -227,13 +227,13 @@ LABEL_7:
 
 - (void)didMoveToSuperview
 {
-  v3 = [(SUICFlamesViewLegacy *)self superview];
+  superview = [(SUICFlamesViewLegacy *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(SUICFlamesViewLegacy *)self _setupDisplayLink];
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(SUICFlamesViewLegacy *)self setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SUICFlamesViewLegacy *)self setBackgroundColor:clearColor];
 
     [(SUICFlamesViewLegacy *)self setUserInteractionEnabled:0];
   }
@@ -245,26 +245,26 @@ LABEL_7:
   }
 }
 
-- (void)setFlamesDelegate:(id)a3
+- (void)setFlamesDelegate:(id)delegate
 {
-  v4 = a3;
-  obj = v4;
-  if (!v4 && self->_displayLink)
+  delegateCopy = delegate;
+  obj = delegateCopy;
+  if (!delegateCopy && self->_displayLink)
   {
     [(SUICFlamesViewLegacy *)self _tearDownDisplayLink];
-    v4 = 0;
+    delegateCopy = 0;
   }
 
-  objc_storeWeak(&self->_flamesDelegate, v4);
+  objc_storeWeak(&self->_flamesDelegate, delegateCopy);
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     self->_transitionFinished = 0;
-    self->_state = a3;
+    self->_state = state;
     v5 = 0.0;
     if (self->_accelerateTransitions)
     {
@@ -273,7 +273,7 @@ LABEL_7:
 
     [(SUICFlameGroup *)self->_currentFlameGroup setTransitionPhase:v5];
     [(SUICFlameGroup *)self->_currentFlameGroup setStateTime:0.0];
-    if (a3 == 3)
+    if (state == 3)
     {
       if (self->_showAura)
       {
@@ -407,9 +407,9 @@ uint64_t __50__SUICFlamesViewLegacy__supportsAdaptiveFramerate__block_invoke()
   mode = self->_mode;
   if (!mode && self->_state == 2 && self->_reduceThinkingFramerate)
   {
-    v6 = [(UIScreen *)self->_screen maximumFramesPerSecond];
-    v7 = (v6 / 20);
-    if (v6 < 20)
+    maximumFramesPerSecond = [(UIScreen *)self->_screen maximumFramesPerSecond];
+    v7 = (maximumFramesPerSecond / 20);
+    if (maximumFramesPerSecond < 20)
     {
       v7 = 1.0;
     }
@@ -488,13 +488,13 @@ LABEL_3:
   [(CADisplayLink *)displayLink setPaused:flamesPaused];
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
     self->_shadersAreCompiled = 0;
-    self->_mode = a3;
-    if (a3 == 1)
+    self->_mode = mode;
+    if (mode == 1)
     {
       [(SUICFlamesViewLegacy *)self _setValuesForFidelity:0];
     }
@@ -507,13 +507,13 @@ LABEL_3:
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = SUICFlamesViewLegacy;
   [(SUICFlamesViewLegacy *)&v5 setHidden:?];
-  if (v3)
+  if (hiddenCopy)
   {
     [(SUICFlamesViewLegacy *)self _tearDownDisplayLink];
   }
@@ -524,23 +524,23 @@ LABEL_3:
   }
 }
 
-- (void)setDictationColor:(id)a3
+- (void)setDictationColor:(id)color
 {
-  v5 = a3;
-  if (self->_dictationColor != v5)
+  colorCopy = color;
+  if (self->_dictationColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_dictationColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_dictationColor, color);
     [(UIColor *)self->_dictationColor getRed:&self->_dictationRedColor green:&self->_dictationGreenColor blue:&self->_dictationBlueColor alpha:0];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUICFlamesViewLegacy;
-  [(SUICFlamesViewLegacy *)&v9 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUICFlamesViewLegacy *)&v9 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!self->_hasCustomActiveFrame)
   {
     [(SUICFlamesViewLegacy *)self bounds];
@@ -564,11 +564,11 @@ LABEL_3:
   [(UIImageView *)overlayImageView setFrame:?];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v8.receiver = self;
   v8.super_class = SUICFlamesViewLegacy;
-  [(SUICFlamesViewLegacy *)&v8 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SUICFlamesViewLegacy *)&v8 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (!self->_hasCustomActiveFrame)
   {
     [(SUICFlamesViewLegacy *)self bounds];
@@ -579,10 +579,10 @@ LABEL_3:
   }
 }
 
-- (void)setActiveFrame:(CGRect)a3
+- (void)setActiveFrame:(CGRect)frame
 {
   self->_hasCustomActiveFrame = 1;
-  self->_activeFrame = a3;
+  self->_activeFrame = frame;
   if (self->_mode == 1)
   {
     [(SUICFlamesViewLegacy *)self _setValuesForFidelity:0];
@@ -594,13 +594,13 @@ LABEL_3:
   }
 }
 
-- (void)setOverlayImage:(id)a3
+- (void)setOverlayImage:(id)image
 {
-  v9 = a3;
-  objc_storeStrong(&self->_overlayImage, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_overlayImage, image);
   if (self->_overlayImage)
   {
-    v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
+    v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     overlayImageView = self->_overlayImageView;
     self->_overlayImageView = v5;
 
@@ -618,65 +618,65 @@ LABEL_3:
   }
 }
 
-- (void)setRenderInBackground:(BOOL)a3
+- (void)setRenderInBackground:(BOOL)background
 {
-  self->_renderInBackground = a3;
-  v3 = a3;
-  [(EAGLContext *)self->_eaglContext setParameter:321 to:&v3];
+  self->_renderInBackground = background;
+  backgroundCopy = background;
+  [(EAGLContext *)self->_eaglContext setParameter:321 to:&backgroundCopy];
 }
 
-- (void)setFlamesPaused:(BOOL)a3
+- (void)setFlamesPaused:(BOOL)paused
 {
-  self->_flamesPaused = a3;
+  self->_flamesPaused = paused;
   [(SUICFlamesViewLegacy *)self _setPreferredFramesPerSecond];
 
   [(SUICFlamesViewLegacy *)self _updateDisplayLinkPausedState];
 }
 
-+ (void)prewarmShadersForScreen:(id)a3 size:(CGSize)a4 fidelity:(int64_t)a5 prewarmInBackground:(BOOL)a6
++ (void)prewarmShadersForScreen:(id)screen size:(CGSize)size fidelity:(int64_t)fidelity prewarmInBackground:(BOOL)background
 {
-  v6 = a6;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  [v13 bounds];
-  [a1 prewarmShadersForScreen:v13 initialFrame:a5 activeFrame:v6 fidelity:v11 prewarmInBackground:{v12, width, height, v11, v12, width, height}];
+  backgroundCopy = background;
+  height = size.height;
+  width = size.width;
+  screenCopy = screen;
+  [screenCopy bounds];
+  [self prewarmShadersForScreen:screenCopy initialFrame:fidelity activeFrame:backgroundCopy fidelity:v11 prewarmInBackground:{v12, width, height, v11, v12, width, height}];
 }
 
-+ (void)prewarmShadersForScreen:(id)a3 activeFrame:(CGRect)a4 fidelity:(int64_t)a5
++ (void)prewarmShadersForScreen:(id)screen activeFrame:(CGRect)frame fidelity:(int64_t)fidelity
 {
-  v7 = a3;
-  [v7 bounds];
-  [a1 prewarmShadersForScreen:v7 initialFrame:a5 activeFrame:0 fidelity:? prewarmInBackground:?];
+  screenCopy = screen;
+  [screenCopy bounds];
+  [self prewarmShadersForScreen:screenCopy initialFrame:fidelity activeFrame:0 fidelity:? prewarmInBackground:?];
 }
 
-+ (void)prewarmShadersForScreen:(id)a3 initialFrame:(CGRect)a4 activeFrame:(CGRect)a5 fidelity:(int64_t)a6 prewarmInBackground:(BOOL)a7
++ (void)prewarmShadersForScreen:(id)screen initialFrame:(CGRect)frame activeFrame:(CGRect)activeFrame fidelity:(int64_t)fidelity prewarmInBackground:(BOOL)background
 {
-  v7 = a7;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a4.size.height;
-  v14 = a4.size.width;
-  v15 = a4.origin.y;
-  v16 = a4.origin.x;
-  v17 = a3;
-  v18 = [[SUICFlamesViewLegacy alloc] initWithFrame:v17 screen:a6 fidelity:v16, v15, v14, v13];
+  backgroundCopy = background;
+  height = activeFrame.size.height;
+  width = activeFrame.size.width;
+  y = activeFrame.origin.y;
+  x = activeFrame.origin.x;
+  v13 = frame.size.height;
+  v14 = frame.size.width;
+  v15 = frame.origin.y;
+  v16 = frame.origin.x;
+  screenCopy = screen;
+  v18 = [[SUICFlamesViewLegacy alloc] initWithFrame:screenCopy screen:fidelity fidelity:v16, v15, v14, v13];
 
-  [(SUICFlamesViewLegacy *)v18 setRenderInBackground:v7];
+  [(SUICFlamesViewLegacy *)v18 setRenderInBackground:backgroundCopy];
   [(SUICFlamesViewLegacy *)v18 setActiveFrame:x, y, width, height];
   [(SUICFlamesViewLegacy *)v18 _prewarmShaders];
 }
 
-- (void)setHorizontalScaleFactor:(double)a3
+- (void)setHorizontalScaleFactor:(double)factor
 {
-  self->_horizontalScaleFactor = a3;
-  if (a3 != 0.0)
+  self->_horizontalScaleFactor = factor;
+  if (factor != 0.0)
   {
-    v4 = [(SUICFlamesViewLegacy *)self layer];
+    layer = [(SUICFlamesViewLegacy *)self layer];
     CGAffineTransformMakeScale(&v5, 1.0 / self->_horizontalScaleFactor, 1.0);
-    [v4 setAffineTransform:&v5];
+    [layer setAffineTransform:&v5];
 
     [(SUICFlamesViewLegacy *)self _setValuesForFidelity:self->_fidelity];
   }
@@ -690,10 +690,10 @@ LABEL_3:
   [(SUICFlamesViewLegacy *)self _updateCurveLayer:displayLink];
 }
 
-- (void)resetAndReinitialize:(BOOL)a3
+- (void)resetAndReinitialize:(BOOL)reinitialize
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (reinitialize)
   {
     [(SUICFlamesViewLegacy *)self _initGLAndSetupDisplayLink:1];
   }
@@ -738,20 +738,20 @@ LABEL_3:
   [(SUICFlamesViewLegacy *)self _updateCurveLayer:self->_displayLink];
 }
 
-- (void)setRenderingEnabled:(BOOL)a3 forReason:(id)a4
+- (void)setRenderingEnabled:(BOOL)enabled forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  reasonCopy = reason;
   renderingDisabledReasons = self->_renderingDisabledReasons;
-  v8 = v6;
-  if (v4)
+  v8 = reasonCopy;
+  if (enabledCopy)
   {
-    [(NSMutableSet *)renderingDisabledReasons removeObject:v6];
+    [(NSMutableSet *)renderingDisabledReasons removeObject:reasonCopy];
   }
 
   else
   {
-    [(NSMutableSet *)renderingDisabledReasons addObject:v6];
+    [(NSMutableSet *)renderingDisabledReasons addObject:reasonCopy];
     if (!self->_renderInBackground)
     {
       glFinish();
@@ -766,12 +766,12 @@ LABEL_3:
 
 - (BOOL)_setCurrentContext
 {
-  v3 = [MEMORY[0x1E6977FE8] currentContext];
-  v4 = v3;
+  currentContext = [MEMORY[0x1E6977FE8] currentContext];
+  v4 = currentContext;
   currentContextCount = self->_currentContextCount;
-  if (currentContextCount <= 0 && v3 != self->_eaglContext)
+  if (currentContextCount <= 0 && currentContext != self->_eaglContext)
   {
-    objc_storeStrong(&self->_previousContext, v3);
+    objc_storeStrong(&self->_previousContext, currentContext);
     currentContextCount = self->_currentContextCount;
   }
 
@@ -801,7 +801,7 @@ LABEL_3:
   }
 }
 
-- (void)_reduceMotionStatusChanged:(id)a3
+- (void)_reduceMotionStatusChanged:(id)changed
 {
   self->_reduceMotionEnabled = UIAccessibilityIsReduceMotionEnabled();
   if (!self->_mode)
@@ -821,8 +821,8 @@ LABEL_3:
     self->_displayLink = v3;
 
     v5 = self->_displayLink;
-    v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v5 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(SUICFlamesViewLegacy *)self _setPreferredFramesPerSecond];
 
@@ -1244,13 +1244,13 @@ LABEL_81:
   return v2;
 }
 
-- (float32x2_t)_predeterminedVertexPositionForAuraWithPolarVertex:(uint64_t)a1
+- (float32x2_t)_predeterminedVertexPositionForAuraWithPolarVertex:(uint64_t)vertex
 {
-  v2.f64[0] = *(a1 + 704) * *(a1 + 656);
-  v2.f64[1] = *(a1 + 712);
-  v3.f32[0] = *(a1 + 536);
-  v3.f32[1] = *(a1 + 540);
-  v4 = vdiv_f32(vmla_f32(vcvt_f32_f64(*(a1 + 688)), 0x3F0000003F000000, vcvt_f32_f64(v2)), v3);
+  v2.f64[0] = *(vertex + 704) * *(vertex + 656);
+  v2.f64[1] = *(vertex + 712);
+  v3.f32[0] = *(vertex + 536);
+  v3.f32[1] = *(vertex + 540);
+  v4 = vdiv_f32(vmla_f32(vcvt_f32_f64(*(vertex + 688)), 0x3F0000003F000000, vcvt_f32_f64(v2)), v3);
   __asm { FMOV            V3.2S, #-1.0 }
 
   v10 = vmla_f32(_D3, 0x4000000040000000, v4);
@@ -1261,24 +1261,24 @@ LABEL_81:
   return vmla_n_f32(v11, __PAIR64__(LODWORD(v13.__sinval), LODWORD(v13.__cosval)), v15);
 }
 
-- (int)_generateIndicesForNumCircleShapes:(int)a3 withMaxSubdivisionLevel:(float)a4 startingWithNumSubdivisionLevel:(float)a5 forIndices:(unsigned int *)a6 atStartIndex:(int)a7 withFill:(BOOL)a8 withCullingForAura:(BOOL)a9 forVertices:(id *)a10
+- (int)_generateIndicesForNumCircleShapes:(int)shapes withMaxSubdivisionLevel:(float)level startingWithNumSubdivisionLevel:(float)subdivisionLevel forIndices:(unsigned int *)indices atStartIndex:(int)index withFill:(BOOL)fill withCullingForAura:(BOOL)aura forVertices:(id *)self0
 {
-  v88 = a9;
-  v10 = a8;
-  v11 = *&a7;
-  v15 = [(SUICFlamesViewLegacy *)self _numVerticesPerCircle];
-  v16 = *a6;
-  v80 = a6;
-  if (v10)
+  auraCopy = aura;
+  fillCopy = fill;
+  v11 = *&index;
+  _numVerticesPerCircle = [(SUICFlamesViewLegacy *)self _numVerticesPerCircle];
+  v16 = *indices;
+  indicesCopy = indices;
+  if (fillCopy)
   {
-    v17 = *a6;
-    v18 = vcvtas_u32_f32(exp2f(a5) * 3.0);
-    v19 = a3 == 1 ? (self->_maxVertexCircles - 1) * v15 : 0;
+    v17 = *indices;
+    v18 = vcvtas_u32_f32(exp2f(subdivisionLevel) * 3.0);
+    v19 = shapes == 1 ? (self->_maxVertexCircles - 1) * _numVerticesPerCircle : 0;
     v20 = (v18 >> 1) - 1;
     v16 = v17;
     if (v18 >> 1 != 1)
     {
-      v21 = (v15 / v18);
+      v21 = (_numVerticesPerCircle / v18);
       v22 = 4 * v11 + 12;
       v23 = v19 + v21 * (v18 - 1);
       v24 = v19 + v21 * (v18 - 2);
@@ -1304,37 +1304,37 @@ LABEL_81:
     }
   }
 
-  v26 = a3 - 2;
-  if (a3 >= 2)
+  v26 = shapes - 2;
+  if (shapes >= 2)
   {
     v27 = 0;
-    v84 = a3;
-    v28 = v15;
+    shapesCopy = shapes;
+    v28 = _numVerticesPerCircle;
     v29 = vdup_n_s32(0x3F8CCCCDu);
     __asm { FMOV            V15.2S, #1.0 }
 
-    v35 = v88;
-    v82 = a5;
-    v81 = a3 - 2;
+    v35 = auraCopy;
+    subdivisionLevelCopy = subdivisionLevel;
+    v81 = shapes - 2;
     while (1)
     {
       maxVertexCircles = self->_maxVertexCircles;
       v37 = maxVertexCircles;
       v38 = v16;
-      v39 = v27 == v26 ? maxVertexCircles - 1 : (((v27 + 1) / v84) * v37);
+      v39 = v27 == v26 ? maxVertexCircles - 1 : (((v27 + 1) / shapesCopy) * v37);
       v85 = v27;
       v40 = v27;
-      v41 = v27 + a5;
-      v42 = v41 >= a4 ? a4 : v27 + a5;
+      v41 = v27 + subdivisionLevel;
+      v42 = v41 >= level ? level : v27 + subdivisionLevel;
       v43 = exp2f(v42) * 3.0;
       v44 = llroundf(v43);
-      v45 = v41 + 1.0;
-      if ((v41 + 1.0) >= a4)
+      levelCopy = v41 + 1.0;
+      if ((v41 + 1.0) >= level)
       {
-        v45 = a4;
+        levelCopy = level;
       }
 
-      v46 = exp2f(v45);
+      v46 = exp2f(levelCopy);
       v92 = v44;
       if (v44 >= 1)
       {
@@ -1345,7 +1345,7 @@ LABEL_81:
 LABEL_39:
       v26 = v81;
       v27 = v85 + 1;
-      a5 = v82;
+      subdivisionLevel = subdivisionLevelCopy;
       if (v85 == v81)
       {
         goto LABEL_40;
@@ -1353,38 +1353,38 @@ LABEL_39:
     }
 
     v47 = 0;
-    v48 = ((v40 / v84) * v37);
+    v48 = ((v40 / shapesCopy) * v37);
     v49 = roundf(v43);
     v50 = v49 / roundf(v46 * 3.0);
-    v90 = v39 * v15;
-    v91 = v15 * v48;
+    v90 = v39 * _numVerticesPerCircle;
+    v91 = _numVerticesPerCircle * v48;
     v16 = v38;
     while (1)
     {
       v51 = v11;
       v52 = v47;
-      v53 = ((v47 / v49) * v28) % v15;
+      v53 = ((v47 / v49) * v28) % _numVerticesPerCircle;
       v54 = v53 + v91;
       ++v47;
       v55 = v53 + v90;
-      v56 = (((v50 + v52) / v49) * v28) % v15 + v90;
-      v57 = ((((v49 + v52) - v50) / v49) * v28) % v15 + v90;
+      v56 = (((v50 + v52) / v49) * v28) % _numVerticesPerCircle + v90;
+      v57 = ((((v49 + v52) - v50) / v49) * v28) % _numVerticesPerCircle + v90;
       v94 = v56;
       if (v35)
       {
         v89 = v16;
-        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(a10 + 2 * v54)];
+        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(vertices + 2 * v54)];
         v59 = vabs_f32(v58);
-        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(a10 + 2 * (((v28 * v47) / v49) % v15 + v91))];
+        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(vertices + 2 * (((v28 * v47) / v49) % _numVerticesPerCircle + v91))];
         v93 = vabs_f32(v60);
-        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(a10 + 2 * v55)];
+        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(vertices + 2 * v55)];
         v62 = vabs_f32(v61);
-        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(a10 + 2 * v56)];
+        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(vertices + 2 * v56)];
         v64 = vabs_f32(v63);
-        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(a10 + 2 * v57)];
+        [(SUICFlamesViewLegacy *)self _predeterminedVertexPositionForAuraWithPolarVertex:*(vertices + 2 * v57)];
         if (v50 == 1.0)
         {
-          v35 = v88;
+          v35 = auraCopy;
           v11 = v51;
           v16 = v89;
 LABEL_28:
@@ -1400,7 +1400,7 @@ LABEL_28:
 
         v66 = vbic_s8(_D15, vcgt_f32(v29, v59));
         v67 = vbic_s8(_D15, vcgt_f32(v29, vabs_f32(v65)));
-        v35 = v88;
+        v35 = auraCopy;
         v11 = v51;
         v16 = v89;
         if ((sqrtf(vaddv_f32(vbic_s8(_D15, vcgt_f32(v29, v62)))) + vaddv_f32(vsqrt_f32(vadd_f32(vzip1_s32(v66, v67), vzip2_s32(v66, v67))))) >= 3.0)
@@ -1429,8 +1429,8 @@ LABEL_28:
       v68[1] = v57;
       v68[2] = v55;
       v11 = (v11 + 3);
-      v35 = v88;
-      if (v88)
+      v35 = auraCopy;
+      if (auraCopy)
       {
         goto LABEL_28;
       }
@@ -1447,14 +1447,14 @@ LABEL_31:
       if (!v35)
       {
         v77 = v11;
-        v76 = ((v28 * v47) / v49) % v15 + v91;
+        v76 = ((v28 * v47) / v49) % _numVerticesPerCircle + v91;
         goto LABEL_35;
       }
 
 LABEL_32:
       v74 = vbic_s8(_D15, vcgt_f32(v29, v59));
       v75 = vbic_s8(_D15, vcgt_f32(v29, v64));
-      v76 = ((v28 * v47) / v49) % v15 + v91;
+      v76 = ((v28 * v47) / v49) % _numVerticesPerCircle + v91;
       if ((sqrtf(vaddv_f32(vbic_s8(_D15, vcgt_f32(v29, v93)))) + vaddv_f32(vsqrt_f32(vadd_f32(vzip1_s32(v75, v74), vzip2_s32(v75, v74))))) < 3.0)
       {
         v77 = v11;
@@ -1476,7 +1476,7 @@ LABEL_35:
   }
 
 LABEL_40:
-  *v80 = v16;
+  *indicesCopy = v16;
   return v11;
 }
 
@@ -1539,8 +1539,8 @@ LABEL_40:
 
   v39[0] = 0;
   v23 = SUICGetIndexCacheEntryKey(self->_fidelity, self->_mode, self->_viewWidth, self->_viewHeight, self->_activeFrame.origin.x, self->_activeFrame.origin.y, self->_activeFrame.size.width, self->_activeFrame.size.height, self->_horizontalScaleFactor);
-  v24 = [objc_opt_class() _indexCache];
-  v25 = [v24 objectForKey:v23];
+  _indexCache = [objc_opt_class() _indexCache];
+  v25 = [_indexCache objectForKey:v23];
 
   v26 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEBUG))
@@ -1571,8 +1571,8 @@ LABEL_14:
     [(SUICGLIndexCacheEntry *)v25 setNumAuraIndicesCulled:self->_numAuraIndicesCulled];
     [(SUICGLIndexCacheEntry *)v25 setNumWaveIndices:self->_numWaveIndices];
     [(SUICGLIndexCacheEntry *)v25 setGl_indices:v39[0]];
-    v36 = [objc_opt_class() _indexCache];
-    [v36 setObject:v25 forKey:v23];
+    _indexCache2 = [objc_opt_class() _indexCache];
+    [_indexCache2 setObject:v25 forKey:v23];
 
     goto LABEL_15;
   }
@@ -1603,20 +1603,20 @@ LABEL_15:
   return v37;
 }
 
-- (BOOL)_initGLAndSetupDisplayLink:(BOOL)a3
+- (BOOL)_initGLAndSetupDisplayLink:(BOOL)link
 {
-  v3 = a3;
+  linkCopy = link;
   [(SUICFlamesViewLegacy *)self _cleanupGL];
-  v5 = [(SUICFlamesViewLegacy *)self layer];
-  [v5 setOpaque:0];
+  layer = [(SUICFlamesViewLegacy *)self layer];
+  [layer setOpaque:0];
   [(SUICFlamesViewLegacy *)self _currentDisplayScale];
-  [v5 setContentsScale:?];
+  [layer setContentsScale:?];
   [(SUICFlamesViewLegacy *)self _setCurrentContext];
   if ([(SUICFlamesViewLegacy *)self _setupFramebuffer]&& [(SUICFlamesViewLegacy *)self _setupVertexBuffer])
   {
-    v6 = [(SUICFlamesViewLegacy *)self _setupShaders];
+    _setupShaders = [(SUICFlamesViewLegacy *)self _setupShaders];
     glClearColor(0.0, 0.0, 0.0, 0.0);
-    if (v6 && v3)
+    if (_setupShaders && linkCopy)
     {
       [(SUICFlamesViewLegacy *)self _setupDisplayLink];
     }
@@ -1625,12 +1625,12 @@ LABEL_15:
   else
   {
     glClearColor(0.0, 0.0, 0.0, 0.0);
-    LOBYTE(v6) = 0;
+    LOBYTE(_setupShaders) = 0;
   }
 
   [(SUICFlamesViewLegacy *)self _restoreCurrentContext];
 
-  return v6;
+  return _setupShaders;
 }
 
 - (void)_cleanupGL
@@ -1688,13 +1688,13 @@ LABEL_15:
   }
 }
 
-- (BOOL)_resizeFromLayer:(id)a3
+- (BOOL)_resizeFromLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   if ([(SUICFlamesViewLegacy *)self isRenderingEnabled])
   {
     glBindRenderbuffer(0x8D41u, self->_renderbufferHandle);
-    v5 = !glGetError() && [(EAGLContext *)self->_eaglContext renderbufferStorage:36161 fromDrawable:v4]&& (glGetRenderbufferParameteriv(0x8D41u, 0x8D42u, &self->_viewWidth), !glGetError()) && (glGetRenderbufferParameteriv(0x8D41u, 0x8D43u, &self->_viewHeight), !glGetError()) && glCheckFramebufferStatus(0x8D40u) == 36053;
+    v5 = !glGetError() && [(EAGLContext *)self->_eaglContext renderbufferStorage:36161 fromDrawable:layerCopy]&& (glGetRenderbufferParameteriv(0x8D41u, 0x8D42u, &self->_viewWidth), !glGetError()) && (glGetRenderbufferParameteriv(0x8D41u, 0x8D43u, &self->_viewHeight), !glGetError()) && glCheckFramebufferStatus(0x8D40u) == 36053;
     glBindRenderbuffer(0x8D41u, self->_renderbufferHandle);
   }
 
@@ -1722,8 +1722,8 @@ LABEL_15:
   [(SUICFlamesViewLegacy *)self _setCurrentContext];
   if (self->_isInitialized)
   {
-    v3 = [(SUICFlamesViewLegacy *)self layer];
-    [(SUICFlamesViewLegacy *)self _resizeFromLayer:v3];
+    layer = [(SUICFlamesViewLegacy *)self layer];
+    [(SUICFlamesViewLegacy *)self _resizeFromLayer:layer];
   }
 
   else
@@ -1738,8 +1738,8 @@ LABEL_15:
 
 - (double)_currentDisplayScale
 {
-  v3 = [(SUICFlamesViewLegacy *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(SUICFlamesViewLegacy *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   if (v5 < 1.0)
@@ -1758,14 +1758,14 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)_deviceNeeds2xFlamesWithCurrentScale:(double)a3
+- (BOOL)_deviceNeeds2xFlamesWithCurrentScale:(double)scale
 {
   if (_deviceNeeds2xFlamesWithCurrentScale__onceToken != -1)
   {
     [SUICFlamesViewLegacy _deviceNeeds2xFlamesWithCurrentScale:];
   }
 
-  return (a3 == 3.0) & _deviceNeeds2xFlamesWithCurrentScale__needsLowerQualityFlames;
+  return (scale == 3.0) & _deviceNeeds2xFlamesWithCurrentScale__needsLowerQualityFlames;
 }
 
 uint64_t __61__SUICFlamesViewLegacy__deviceNeeds2xFlamesWithCurrentScale___block_invoke()
@@ -1790,27 +1790,27 @@ uint64_t __61__SUICFlamesViewLegacy__deviceNeeds2xFlamesWithCurrentScale___block
   [(SUICFlamesViewLegacy *)self _cleanupGL];
 }
 
-- (void)_updateCurveLayer:(id)a3
+- (void)_updateCurveLayer:(id)layer
 {
   v92 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layerCopy = layer;
   if (!self->_currentFlameGroup || !self->_isInitialized || ![(SUICFlamesViewLegacy *)self isRenderingEnabled])
   {
     goto LABEL_74;
   }
 
-  v5 = [(SUICFlamesViewLegacy *)self layer];
-  if (![v5 isDrawableAvailable])
+  layer = [(SUICFlamesViewLegacy *)self layer];
+  if (![layer isDrawableAvailable])
   {
     goto LABEL_73;
   }
 
-  v6 = [(SUICFlameGroup *)self->_currentFlameGroup transitionPhasePtr];
-  v7 = [(SUICFlameGroup *)self->_currentFlameGroup stateModifiersPtr];
-  v8.f32[0] = *v6;
+  transitionPhasePtr = [(SUICFlameGroup *)self->_currentFlameGroup transitionPhasePtr];
+  stateModifiersPtr = [(SUICFlameGroup *)self->_currentFlameGroup stateModifiersPtr];
+  v8.f32[0] = *transitionPhasePtr;
   LODWORD(v9) = 1.0;
-  v80 = *v6;
-  if (*v6 >= 1.0)
+  v80 = *transitionPhasePtr;
+  if (*transitionPhasePtr >= 1.0)
   {
     goto LABEL_17;
   }
@@ -1824,9 +1824,9 @@ uint64_t __61__SUICFlamesViewLegacy__deviceNeeds2xFlamesWithCurrentScale___block
       v9 = v9 + self->_frameRateScalingFactor * 0.02;
       *&v9 = v9;
       *&v9 = fminf(*&v9, 1.0);
-      *v6 = *&v9;
-      v8 = vmlaq_n_f32(*v7, vsubq_f32(xmmword_1C435BBB0, *v7), *&v9);
-      *v7 = v8;
+      *transitionPhasePtr = *&v9;
+      v8 = vmlaq_n_f32(*stateModifiersPtr, vsubq_f32(xmmword_1C435BBB0, *stateModifiersPtr), *&v9);
+      *stateModifiersPtr = v8;
     }
 
     else if (state == 4)
@@ -1836,10 +1836,10 @@ uint64_t __61__SUICFlamesViewLegacy__deviceNeeds2xFlamesWithCurrentScale___block
       *&v9 = v9;
       v8.i32[0] = 1.0;
       *&v9 = fminf(*&v9, 1.0);
-      *v6 = *&v9;
-      *v7 = vmlaq_n_f32(*v7, vsubq_f32(0, *v7), *&v9);
-      *&v9 = *v6;
-      if (*v6 == 1.0)
+      *transitionPhasePtr = *&v9;
+      *stateModifiersPtr = vmlaq_n_f32(*stateModifiersPtr, vsubq_f32(0, *stateModifiersPtr), *&v9);
+      *&v9 = *transitionPhasePtr;
+      if (*transitionPhasePtr == 1.0)
       {
         [(SUICFlamesViewLegacy *)self setHidden:1, v9];
       }
@@ -1853,8 +1853,8 @@ uint64_t __61__SUICFlamesViewLegacy__deviceNeeds2xFlamesWithCurrentScale___block
     v12 = v9 + self->_frameRateScalingFactor * 0.03;
     *&v12 = v12;
     *&v12 = fminf(*&v12, 1.0);
-    *v6 = *&v12;
-    *v7 = vmlaq_n_f32(*v7, vsubq_f32(xmmword_1C435BBD0, *v7), *&v12);
+    *transitionPhasePtr = *&v12;
+    *stateModifiersPtr = vmlaq_n_f32(*stateModifiersPtr, vsubq_f32(xmmword_1C435BBD0, *stateModifiersPtr), *&v12);
     levelSmoother = self->_levelSmoother;
     LODWORD(v12) = 1064514355;
     goto LABEL_15;
@@ -1865,8 +1865,8 @@ uint64_t __61__SUICFlamesViewLegacy__deviceNeeds2xFlamesWithCurrentScale___block
     v12 = v9 + self->_frameRateScalingFactor * 0.03;
     *&v12 = v12;
     *&v12 = fminf(*&v12, 1.0);
-    *v6 = *&v12;
-    *v7 = vmlaq_n_f32(*v7, vsubq_f32(xmmword_1C435BBC0, *v7), *&v12);
+    *transitionPhasePtr = *&v12;
+    *stateModifiersPtr = vmlaq_n_f32(*stateModifiersPtr, vsubq_f32(xmmword_1C435BBC0, *stateModifiersPtr), *&v12);
     levelSmoother = self->_levelSmoother;
     LODWORD(v12) = 1063675494;
 LABEL_15:
@@ -1905,7 +1905,7 @@ LABEL_17:
     glVertexAttrib3f(5u, dictationRedColor, dictationGreenColor, dictationBlueColor);
   }
 
-  v81 = v4;
+  v81 = layerCopy;
   v85 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v87 = 0u;
   v88 = 0u;
@@ -1939,7 +1939,7 @@ LABEL_17:
       }
 
       v35 = *(*(&v87 + 1) + 8 * v34);
-      v36 = [v35 stateModifiersPtr];
+      stateModifiersPtr2 = [v35 stateModifiersPtr];
       if (!self->_freezesAura || ([v35 isAura] & 1) == 0)
       {
         reduceMotionEnabled = self->_reduceMotionEnabled;
@@ -1971,9 +1971,9 @@ LABEL_17:
         v44 = v40 + v41 * frameRateScalingFactor;
         *&v44 = v44;
         [v35 setStateTime:v44];
-        v45 = v42 * COERCE_FLOAT(*&v36[1]) + v43 * vaddv_f32(*v36);
+        v45 = v42 * COERCE_FLOAT(*&stateModifiersPtr2[1]) + v43 * vaddv_f32(*stateModifiersPtr2);
         v33 = 1.0;
-        v46 = v45 + COERCE_FLOAT(HIDWORD(*v36->f32)) * 0.05;
+        v46 = v45 + COERCE_FLOAT(HIDWORD(*stateModifiersPtr2->f32)) * 0.05;
         [v35 zTime];
         v48 = v47 + v32 * v46;
         *&v48 = v48;
@@ -1994,8 +1994,8 @@ LABEL_17:
 
       if ([v35 isAura] && !self->_mode)
       {
-        v66 = [v35 transitionPhasePtr];
-        if (*v66 >= v33)
+        transitionPhasePtr2 = [v35 transitionPhasePtr];
+        if (*transitionPhasePtr2 >= v33)
         {
           numAuraIndicesCulled = self->_numAuraIndicesCulled;
           v50 = (4 * self->_numAuraIndices);
@@ -2011,11 +2011,11 @@ LABEL_17:
             v67 = 0.001;
           }
 
-          v68 = *v66 + v67 * self->_frameRateScalingFactor;
+          v68 = *transitionPhasePtr2 + v67 * self->_frameRateScalingFactor;
           v69 = fminf(v68, v33);
-          *v66 = v69;
-          v70 = vmlaq_n_f32(*v36->f32, vsubq_f32(xmmword_1C435BBE0, *v36->f32), v69);
-          *v36->f32 = v70;
+          *transitionPhasePtr2 = v69;
+          v70 = vmlaq_n_f32(*stateModifiersPtr2->f32, vsubq_f32(xmmword_1C435BBE0, *stateModifiersPtr2->f32), v69);
+          *stateModifiersPtr2->f32 = v70;
           numAuraIndicesCulled = self->_numAuraIndices;
           if (*v70.i32 <= 2.2204e-16)
           {
@@ -2024,13 +2024,13 @@ LABEL_17:
             {
               if (*&v70.i32[3] + 2.22044605e-16 >= 1.0)
               {
-                v72 = [(SUICFlamesViewLegacy *)self flamesDelegate];
+                flamesDelegate = [(SUICFlamesViewLegacy *)self flamesDelegate];
                 v73 = objc_opt_respondsToSelector();
 
                 if (v73)
                 {
-                  v74 = [(SUICFlamesViewLegacy *)self flamesDelegate];
-                  [v74 flamesViewAuraDidDisplay:self];
+                  flamesDelegate2 = [(SUICFlamesViewLegacy *)self flamesDelegate];
+                  [flamesDelegate2 flamesViewAuraDidDisplay:self];
                 }
               }
 
@@ -2046,7 +2046,7 @@ LABEL_17:
         numAuraIndicesCulled = 0;
       }
 
-      v52 = v36[1].f32[1];
+      v52 = stateModifiersPtr2[1].f32[1];
       if (self->_reduceMotionEnabled)
       {
         if (v52 <= 0.5)
@@ -2060,7 +2060,7 @@ LABEL_17:
 LABEL_44:
         numWaveIndices = self->_numWaveIndices;
         v54 = self->_numAuraIndicesCulled + self->_numAuraIndices;
-        glVertexAttrib4f(4u, COERCE_GLFLOAT(*v36->f32), COERCE_GLFLOAT(HIDWORD(*v36)), COERCE_GLFLOAT(*&v36[1]), COERCE_GLFLOAT(HIDWORD(*v36->f32)));
+        glVertexAttrib4f(4u, COERCE_GLFLOAT(*stateModifiersPtr2->f32), COERCE_GLFLOAT(HIDWORD(*stateModifiersPtr2)), COERCE_GLFLOAT(*&stateModifiersPtr2[1]), COERCE_GLFLOAT(HIDWORD(*stateModifiersPtr2->f32)));
         [v35 stateTime];
         v56 = v55;
         [v35 zTime];
@@ -2072,7 +2072,7 @@ LABEL_44:
       }
 
       glUseProgram(self->_auraProgramHandle);
-      glVertexAttrib4f(4u, COERCE_GLFLOAT(*v36->f32), COERCE_GLFLOAT(HIDWORD(*v36)), COERCE_GLFLOAT(*&v36[1]), COERCE_GLFLOAT(HIDWORD(*v36->f32)));
+      glVertexAttrib4f(4u, COERCE_GLFLOAT(*stateModifiersPtr2->f32), COERCE_GLFLOAT(HIDWORD(*stateModifiersPtr2)), COERCE_GLFLOAT(*&stateModifiersPtr2[1]), COERCE_GLFLOAT(HIDWORD(*stateModifiersPtr2->f32)));
       [v35 stateTime];
       v61 = v60;
       [v35 zTime];
@@ -2107,7 +2107,7 @@ LABEL_65:
   glBindRenderbuffer(0x8D41u, self->_renderbufferHandle);
   [(EAGLContext *)self->_eaglContext presentRenderbuffer:36161];
   [(SUICFlamesViewLegacy *)self _restoreCurrentContext];
-  v4 = v81;
+  layerCopy = v81;
   if (!self->_transitionFinished)
   {
     LODWORD(v76) = 1.0;
@@ -2153,17 +2153,17 @@ uint64_t __35__SUICFlamesViewLegacy__indexCache__block_invoke()
   return [v2 setCountLimit:v3];
 }
 
-+ (void)setIndexCacheSize:(unint64_t)a3
++ (void)setIndexCacheSize:(unint64_t)size
 {
-  sIndexCacheSize = a3;
-  v3 = [a1 _indexCache];
-  [v3 setCountLimit:sIndexCacheSize];
+  sIndexCacheSize = size;
+  _indexCache = [self _indexCache];
+  [_indexCache setCountLimit:sIndexCacheSize];
 }
 
 - (float)_currentMicPowerLevel
 {
-  v3 = [(SUICFlamesViewLegacy *)self flamesDelegate];
-  [v3 audioLevelForFlamesView:self];
+  flamesDelegate = [(SUICFlamesViewLegacy *)self flamesDelegate];
+  [flamesDelegate audioLevelForFlamesView:self];
   v5 = v4;
 
   LODWORD(v6) = v5;
@@ -2171,18 +2171,18 @@ uint64_t __35__SUICFlamesViewLegacy__indexCache__block_invoke()
   return v7 * 0.95 + 0.05;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SUICFlamesViewLegacy;
-  [(SUICFlamesViewLegacy *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(SUICFlamesViewLegacy *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(SUICFlamesViewLegacy *)self traitCollection];
-    [v5 displayScale];
+    traitCollection = [(SUICFlamesViewLegacy *)self traitCollection];
+    [traitCollection displayScale];
     v7 = v6;
-    [v4 displayScale];
+    [changeCopy displayScale];
     if (v7 != v8)
     {
       [(SUICFlamesViewLegacy *)self resetAndReinitialize:1];
@@ -2218,7 +2218,7 @@ uint64_t __35__SUICFlamesViewLegacy__indexCache__block_invoke()
   v2 = 136315394;
   v3 = "[SUICFlamesViewLegacy _setupVertexBuffer]";
   v4 = 1024;
-  v5 = a1 != 0;
+  v5 = self != 0;
   _os_log_debug_impl(&dword_1C432B000, a2, OS_LOG_TYPE_DEBUG, "%s Vertex buffer data cached: %d", &v2, 0x12u);
 }
 

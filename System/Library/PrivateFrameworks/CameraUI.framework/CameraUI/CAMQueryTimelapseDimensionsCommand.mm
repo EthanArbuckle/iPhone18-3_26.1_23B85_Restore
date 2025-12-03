@@ -1,38 +1,38 @@
 @interface CAMQueryTimelapseDimensionsCommand
-- (CAMQueryTimelapseDimensionsCommand)initWithCoder:(id)a3;
-- (CAMQueryTimelapseDimensionsCommand)initWithCompletionBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMQueryTimelapseDimensionsCommand)initWithCoder:(id)coder;
+- (CAMQueryTimelapseDimensionsCommand)initWithCompletionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMQueryTimelapseDimensionsCommand
 
-- (CAMQueryTimelapseDimensionsCommand)initWithCompletionBlock:(id)a3
+- (CAMQueryTimelapseDimensionsCommand)initWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = CAMQueryTimelapseDimensionsCommand;
   v5 = [(CAMCaptureCommand *)&v9 initWithSubcommands:0];
   v6 = v5;
   if (v5)
   {
-    [(CAMQueryTimelapseDimensionsCommand *)v5 _setCompletionBlock:v4];
+    [(CAMQueryTimelapseDimensionsCommand *)v5 _setCompletionBlock:blockCopy];
     v7 = v6;
   }
 
   return v6;
 }
 
-- (CAMQueryTimelapseDimensionsCommand)initWithCoder:(id)a3
+- (CAMQueryTimelapseDimensionsCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CAMQueryTimelapseDimensionsCommand;
-  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 decodeBoolForKey:@"CAMQueryTimelapseDimensionsCommandUnserializedCompletionBlock"])
+    if ([coderCopy decodeBoolForKey:@"CAMQueryTimelapseDimensionsCommandUnserializedCompletionBlock"])
     {
       [(CAMQueryTimelapseDimensionsCommand *)v5 _setCompletionBlock:&__block_literal_global_48];
     }
@@ -53,48 +53,48 @@ void __52__CAMQueryTimelapseDimensionsCommand_initWithCoder___block_invoke()
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = CAMQueryTimelapseDimensionsCommand;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
   if (self->__completionBlock)
   {
-    [v4 encodeBool:1 forKey:@"CAMQueryTimelapseDimensionsCommandUnserializedCompletionBlock"];
+    [coderCopy encodeBool:1 forKey:@"CAMQueryTimelapseDimensionsCommandUnserializedCompletionBlock"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CAMQueryTimelapseDimensionsCommand;
-  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:a3];
-  v5 = [(CAMQueryTimelapseDimensionsCommand *)self _completionBlock];
-  [v4 _setCompletionBlock:v5];
+  v4 = [(CAMCaptureCommand *)&v7 copyWithZone:zone];
+  _completionBlock = [(CAMQueryTimelapseDimensionsCommand *)self _completionBlock];
+  [v4 _setCompletionBlock:_completionBlock];
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentVideoDevice];
-  v6 = [v5 activeFormat];
-  v7 = [v4 currentStillImageOutput];
+  contextCopy = context;
+  currentVideoDevice = [contextCopy currentVideoDevice];
+  activeFormat = [currentVideoDevice activeFormat];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
 
-  v8 = [v6 formatDescription];
-  if (v8)
+  formatDescription = [activeFormat formatDescription];
+  if (formatDescription)
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(v8);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
     v10 = Dimensions;
     v11 = Dimensions >> 32;
-    if ([v7 isImageOptimizationForOfflineVideoStabilizationSupported])
+    if ([currentStillImageOutput isImageOptimizationForOfflineVideoStabilizationSupported])
     {
-      v12 = [v7 optimizedImageDimensionsForOfflineStabilization];
-      v13 = v12;
-      v14 = v12 >> 32;
+      optimizedImageDimensionsForOfflineStabilization = [currentStillImageOutput optimizedImageDimensionsForOfflineStabilization];
+      v13 = optimizedImageDimensionsForOfflineStabilization;
+      v14 = optimizedImageDimensionsForOfflineStabilization >> 32;
       v15 = os_log_create("com.apple.camera", "Camera");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {

@@ -1,6 +1,6 @@
 @interface _UIGestureRecognizerTransformAnalyzer
 - (_UIGestureRecognizerTransformAnalyzer)init;
-- (void)analyzeTouches:(id)a3;
+- (void)analyzeTouches:(id)touches;
 - (void)reset;
 @end
 
@@ -29,18 +29,18 @@
   self->_lowPassRotationDelta = 0.0;
 }
 
-- (void)analyzeTouches:(id)a3
+- (void)analyzeTouches:(id)touches
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = [a3 count];
+  v5 = [touches count];
   v6 = v5;
   if (v5 == 1)
   {
-    v7 = [a3 anyObject];
-    [v7 _locationInSceneReferenceSpace];
+    anyObject = [touches anyObject];
+    [anyObject _locationInSceneReferenceSpace];
     v9 = v8;
     v11 = v10;
-    [v7 _previousLocationInSceneReferenceSpace];
+    [anyObject _previousLocationInSceneReferenceSpace];
     v13 = v9 - v12;
     v15 = v11 - v14;
 
@@ -57,14 +57,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v16 = _CentroidOfTouches(a3, 0);
+  v16 = _CentroidOfTouches(touches, 0);
   v18 = v17;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v19 = a3;
-  v20 = [v19 countByEnumeratingWithState:&v54 objects:v58 count:16];
+  touchesCopy = touches;
+  v20 = [touchesCopy countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v20)
   {
     v21 = v20;
@@ -77,7 +77,7 @@ LABEL_12:
       {
         if (*v55 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(touchesCopy);
         }
 
         v26 = *(*(&v54 + 1) + 8 * i);
@@ -97,7 +97,7 @@ LABEL_12:
         v23 = v23 + v32 * v38 - v34 * v37;
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v54 objects:v58 count:16];
+      v21 = [touchesCopy countByEnumeratingWithState:&v54 objects:v58 count:16];
     }
 
     while (v21);

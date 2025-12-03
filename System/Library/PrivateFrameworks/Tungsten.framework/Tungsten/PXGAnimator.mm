@@ -1,16 +1,16 @@
 @interface PXGAnimator
 - (BOOL)hasCriticalAnimations;
 - (PXGAnimator)init;
-- (id)_animationByAnimationIndexForAnimations:(id)a3;
+- (id)_animationByAnimationIndexForAnimations:(id)animations;
 - (id)_dequeueSpriteDataStore;
 - (unsigned)highFrameRateReason;
-- (void)_returnForReuseSpriteDataStore:(id)a3;
+- (void)_returnForReuseSpriteDataStore:(id)store;
 - (void)_stopAllAnimations;
-- (void)computeAnimationStateForTime:(double)a3 inputSpriteDataStore:(id)a4 inputChangeDetails:(id)a5 inputLayout:(id)a6 viewportShift:(CGPoint)a7 animationPresentationSpriteDataStore:(id)a8 animationTargetSpriteDataStore:(id)a9 animationChangeDetails:(id *)a10 animationLayout:(id *)a11;
+- (void)computeAnimationStateForTime:(double)time inputSpriteDataStore:(id)store inputChangeDetails:(id)details inputLayout:(id)layout viewportShift:(CGPoint)shift animationPresentationSpriteDataStore:(id)dataStore animationTargetSpriteDataStore:(id)spriteDataStore animationChangeDetails:(id *)self0 animationLayout:(id *)self1;
 - (void)dealloc;
-- (void)retargetAnimationsAfterStartTime:(double)a3 newStartTime:(double)a4;
-- (void)setPreviousLayoutSnapshot:(id)a3;
-- (void)setSpeed:(double)a3;
+- (void)retargetAnimationsAfterStartTime:(double)time newStartTime:(double)startTime;
+- (void)setPreviousLayoutSnapshot:(id)snapshot;
+- (void)setSpeed:(double)speed;
 @end
 
 @implementation PXGAnimator
@@ -45,113 +45,113 @@
 
 - (BOOL)hasCriticalAnimations
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
+  activeGroupIndexes = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __36__PXGAnimator_hasCriticalAnimations__block_invoke;
   v5[3] = &unk_2782AB740;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 enumerateIndexesUsingBlock:v5];
+  [activeGroupIndexes enumerateIndexesUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (unsigned)highFrameRateReason
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
+  activeGroupIndexes = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __34__PXGAnimator_highFrameRateReason__block_invoke;
   v5[3] = &unk_2782AB740;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 enumerateIndexesUsingBlock:v5];
+  [activeGroupIndexes enumerateIndexesUsingBlock:v5];
 
-  LODWORD(v2) = *(v7 + 6);
+  LODWORD(selfCopy) = *(v7 + 6);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (id)_dequeueSpriteDataStore
 {
-  v2 = [(NSMutableArray *)self->_reusableSnapshotSpriteDataStores px_popFirst];
-  if (!v2)
+  px_popFirst = [(NSMutableArray *)self->_reusableSnapshotSpriteDataStores px_popFirst];
+  if (!px_popFirst)
   {
-    v2 = +[PXGSpriteDataStore newSpriteDataStore];
+    px_popFirst = +[PXGSpriteDataStore newSpriteDataStore];
   }
 
-  return v2;
+  return px_popFirst;
 }
 
-- (void)setPreviousLayoutSnapshot:(id)a3
+- (void)setPreviousLayoutSnapshot:(id)snapshot
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   previousLayoutSnapshot = self->_previousLayoutSnapshot;
-  if (previousLayoutSnapshot != v5)
+  if (previousLayoutSnapshot != snapshotCopy)
   {
-    v8 = v5;
+    v8 = snapshotCopy;
     if (previousLayoutSnapshot)
     {
-      v7 = [(PXGLayoutSnapshot *)previousLayoutSnapshot spriteDataStore];
-      [(PXGAnimator *)self _returnForReuseSpriteDataStore:v7];
+      spriteDataStore = [(PXGLayoutSnapshot *)previousLayoutSnapshot spriteDataStore];
+      [(PXGAnimator *)self _returnForReuseSpriteDataStore:spriteDataStore];
 
       [(PXGLayoutSnapshot *)self->_previousLayoutSnapshot releaseSpriteDataStore];
     }
 
-    objc_storeStrong(&self->_previousLayoutSnapshot, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_previousLayoutSnapshot, snapshot);
+    snapshotCopy = v8;
   }
 }
 
-- (void)_returnForReuseSpriteDataStore:(id)a3
+- (void)_returnForReuseSpriteDataStore:(id)store
 {
-  v6 = a3;
+  storeCopy = store;
   if ([(NSMutableArray *)self->_reusableSnapshotSpriteDataStores containsObject:?])
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXGAnimator.m" lineNumber:1066 description:{@"Invalid parameter not satisfying: %@", @"![_reusableSnapshotSpriteDataStores containsObject:spriteDataStore]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAnimator.m" lineNumber:1066 description:{@"Invalid parameter not satisfying: %@", @"![_reusableSnapshotSpriteDataStores containsObject:spriteDataStore]"}];
   }
 
-  [(NSMutableArray *)self->_reusableSnapshotSpriteDataStores addObject:v6];
+  [(NSMutableArray *)self->_reusableSnapshotSpriteDataStores addObject:storeCopy];
 }
 
-- (void)setSpeed:(double)a3
+- (void)setSpeed:(double)speed
 {
-  if (a3 <= 0.0)
+  if (speed <= 0.0)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGAnimator setSpeed:]"];
-    [v5 handleFailureInFunction:v6 file:@"PXGAnimator.m" lineNumber:1049 description:{@"Invalid parameter not satisfying: %@", @"speed > 0"}];
+    [currentHandler handleFailureInFunction:v6 file:@"PXGAnimator.m" lineNumber:1049 description:{@"Invalid parameter not satisfying: %@", @"speed > 0"}];
   }
 
   if ((PXFloatApproximatelyEqualToFloat() & 1) == 0)
   {
-    self->_speed = a3;
+    self->_speed = speed;
   }
 }
 
 - (void)_stopAllAnimations
 {
-  v3 = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
+  activeGroupIndexes = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __33__PXGAnimator__stopAllAnimations__block_invoke;
   v4[3] = &unk_2782ABC08;
   v4[4] = self;
-  [v3 enumerateIndexesUsingBlock:v4];
+  [activeGroupIndexes enumerateIndexesUsingBlock:v4];
 }
 
 uint64_t __33__PXGAnimator__stopAllAnimations__block_invoke(uint64_t a1, uint64_t a2)
@@ -184,18 +184,18 @@ void __36__PXGAnimator_hasCriticalAnimations__block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)retargetAnimationsAfterStartTime:(double)a3 newStartTime:(double)a4
+- (void)retargetAnimationsAfterStartTime:(double)time newStartTime:(double)startTime
 {
-  v6 = a3 + -0.0001;
-  v7 = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
+  v6 = time + -0.0001;
+  activeGroupIndexes = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_invoke;
   v8[3] = &unk_2782AB718;
   v8[4] = self;
   *&v8[5] = v6;
-  *&v8[6] = a4;
-  [v7 enumerateIndexesUsingBlock:v8];
+  *&v8[6] = startTime;
+  [activeGroupIndexes enumerateIndexesUsingBlock:v8];
 }
 
 double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_invoke(uint64_t a1, uint64_t a2)
@@ -211,34 +211,34 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
   return result;
 }
 
-- (void)computeAnimationStateForTime:(double)a3 inputSpriteDataStore:(id)a4 inputChangeDetails:(id)a5 inputLayout:(id)a6 viewportShift:(CGPoint)a7 animationPresentationSpriteDataStore:(id)a8 animationTargetSpriteDataStore:(id)a9 animationChangeDetails:(id *)a10 animationLayout:(id *)a11
+- (void)computeAnimationStateForTime:(double)time inputSpriteDataStore:(id)store inputChangeDetails:(id)details inputLayout:(id)layout viewportShift:(CGPoint)shift animationPresentationSpriteDataStore:(id)dataStore animationTargetSpriteDataStore:(id)spriteDataStore animationChangeDetails:(id *)self0 animationLayout:(id *)self1
 {
-  y = a7.y;
-  x = a7.x;
+  y = shift.y;
+  x = shift.x;
   v389 = *MEMORY[0x277D85DE8];
-  v284 = a4;
-  v281 = a5;
-  v17 = a6;
-  v286 = a8;
-  v287 = a9;
-  v285 = self;
+  storeCopy = store;
+  detailsCopy = details;
+  layoutCopy = layout;
+  dataStoreCopy = dataStore;
+  spriteDataStoreCopy = spriteDataStore;
+  selfCopy = self;
   ++self->_computeCount;
-  v294 = v17;
+  v294 = layoutCopy;
   v295 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [v17 animations];
+  animations = [layoutCopy animations];
 
-  if (v18)
+  if (animations)
   {
-    v19 = [v17 animations];
-    [v295 addObjectsFromArray:v19];
+    animations2 = [layoutCopy animations];
+    [v295 addObjectsFromArray:animations2];
   }
 
   v384 = 0u;
   v383 = 0u;
   v382 = 0u;
   v381 = 0u;
-  v20 = [v17 transitions];
-  v21 = [v20 countByEnumeratingWithState:&v381 objects:v388 count:16];
+  transitions = [layoutCopy transitions];
+  v21 = [transitions countByEnumeratingWithState:&v381 objects:v388 count:16];
   if (v21)
   {
     v22 = *v382;
@@ -248,26 +248,26 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
       {
         if (*v382 != v22)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(transitions);
         }
 
-        v24 = [*(*(&v381 + 1) + 8 * i) animations];
-        v25 = [v24 allObjects];
-        [v295 addObjectsFromArray:v25];
+        animations3 = [*(*(&v381 + 1) + 8 * i) animations];
+        allObjects = [animations3 allObjects];
+        [v295 addObjectsFromArray:allObjects];
       }
 
-      v21 = [v20 countByEnumeratingWithState:&v381 objects:v388 count:16];
+      v21 = [transitions countByEnumeratingWithState:&v381 objects:v388 count:16];
     }
 
     while (v21);
   }
 
-  v293 = [(PXGAnimator *)v285 _animationByAnimationIndexForAnimations:v295];
+  v293 = [(PXGAnimator *)selfCopy _animationByAnimationIndexForAnimations:v295];
   v283 = [v293 count];
-  v282 = [(PXGAnimator *)v285 _dequeueSpriteDataStore];
-  if (v284)
+  _dequeueSpriteDataStore = [(PXGAnimator *)selfCopy _dequeueSpriteDataStore];
+  if (storeCopy)
   {
-    [v284 sprites];
+    [storeCopy sprites];
   }
 
   else
@@ -280,10 +280,10 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
   v361 = v378;
   v362 = v379;
   v363 = v380;
-  [v282 setSprites:&v361];
-  v26 = v285->_previousLayoutSnapshot;
+  [_dequeueSpriteDataStore setSprites:&v361];
+  v26 = selfCopy->_previousLayoutSnapshot;
   [(PXGLayoutSnapshot *)v26 applyViewportShift:x, y];
-  v27 = [[PXGLayoutSnapshot alloc] initWithLayout:v294 spriteDataStore:v282];
+  v27 = [[PXGLayoutSnapshot alloc] initWithLayout:v294 spriteDataStore:_dequeueSpriteDataStore];
   v375[0] = MEMORY[0x277D85DD0];
   v375[1] = 3221225472;
   v375[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke;
@@ -293,20 +293,20 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
   v275 = v27;
   v377 = v275;
   [v295 enumerateObjectsUsingBlock:v375];
-  isSkippingAnimations = v285->_isSkippingAnimations;
-  v29 = (v283 == 0) & ~[(PXGAnimator *)v285 isAnimating];
-  v285->_isSkippingAnimations = v29;
+  isSkippingAnimations = selfCopy->_isSkippingAnimations;
+  v29 = (v283 == 0) & ~[(PXGAnimator *)selfCopy isAnimating];
+  selfCopy->_isSkippingAnimations = v29;
   if (v29 == 1)
   {
     kdebug_trace();
-    if (v284)
+    if (storeCopy)
     {
-      [v284 sprites];
+      [storeCopy sprites];
       v361 = v372;
       v362 = v373;
       v363 = v374;
-      [v286 setSprites:&v361];
-      [v284 sprites];
+      [dataStoreCopy setSprites:&v361];
+      [storeCopy sprites];
     }
 
     else
@@ -317,7 +317,7 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
       v363 = 0;
       v362 = 0u;
       v361 = 0u;
-      [v286 setSprites:&v361];
+      [dataStoreCopy setSprites:&v361];
       v369 = 0u;
       v370 = 0u;
       v371 = 0;
@@ -326,137 +326,137 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
     v361 = v369;
     v362 = v370;
     v363 = v371;
-    [v287 setSprites:&v361];
+    [spriteDataStoreCopy setSprites:&v361];
     kdebug_trace();
-    v34 = v281;
-    *a10 = v281;
+    v34 = detailsCopy;
+    *changeDetails = detailsCopy;
     v35 = v294;
-    *a11 = v294;
+    *animationLayout = v294;
     goto LABEL_176;
   }
 
   if (isSkippingAnimations)
   {
-    v30 = v285;
+    v30 = selfCopy;
     kdebug_trace();
 
-    v31 = [v286 count];
-    v32 = [v30[1] spriteCount];
+    v31 = [dataStoreCopy count];
+    spriteCount = [v30[1] spriteCount];
     v33 = objc_alloc_init(PXGChangeDetails);
-    if (v31 >= v32)
+    if (v31 >= spriteCount)
     {
-      [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, v31 - v32}];
+      [MEMORY[0x277D3CCC8] changeDetailsWithInsertedIndexRange:{0, v31 - spriteCount}];
     }
 
     else
     {
-      [MEMORY[0x277D3CCC8] changeDetailsWithRemovedIndexRange:{0, v32 - v31}];
+      [MEMORY[0x277D3CCC8] changeDetailsWithRemovedIndexRange:{0, spriteCount - v31}];
     }
     v36 = ;
 
     v387[0] = v36;
-    v37 = [MEMORY[0x277D3CCC8] changeDetailsWithNoIncrementalChanges];
-    v387[1] = v37;
+    changeDetailsWithNoIncrementalChanges = [MEMORY[0x277D3CCC8] changeDetailsWithNoIncrementalChanges];
+    v387[1] = changeDetailsWithNoIncrementalChanges;
     v38 = [MEMORY[0x277CBEA60] arrayWithObjects:v387 count:2];
     [(PXGChangeDetails *)v33 configureWithNumberOfSpritesAfterChange:v31 changeDetails:v38];
 
     [v30[1] applySpriteChangeDetails:v33];
-    v39 = v286;
-    v40 = [v286 geometries];
-    v41 = v286;
-    v42 = [v286 styles];
+    v39 = dataStoreCopy;
+    geometries = [dataStoreCopy geometries];
+    v41 = dataStoreCopy;
+    styles = [dataStoreCopy styles];
     for (j = [v30[1] spriteInfos]; v31; LODWORD(v31) = v31 - 1)
     {
-      v44 = *v40;
-      *j = *v40;
+      v44 = *geometries;
+      *j = *geometries;
       *(j + 8) = v44 - v44;
       *(j + 16) = 0;
-      v45 = *(v40 + 8);
+      v45 = *(geometries + 8);
       *(j + 20) = v45;
       *(j + 28) = v45 - v45;
       *(j + 36) = 0;
-      *&v45 = *(v40 + 16);
+      *&v45 = *(geometries + 16);
       *(j + 40) = LODWORD(v45);
       *(j + 44) = *&v45 - *&v45;
       *(j + 48) = 0;
-      *(j + 52) = vzip1_s32(*(v40 + 24), vsub_f32(*(v40 + 24), *(v40 + 24)));
+      *(j + 52) = vzip1_s32(*(geometries + 24), vsub_f32(*(geometries + 24), *(geometries + 24)));
       *(j + 60) = 0;
-      LODWORD(v45) = *(v40 + 28);
+      LODWORD(v45) = *(geometries + 28);
       *(j + 64) = LODWORD(v45);
       *(j + 68) = *&v45 - *&v45;
       *(j + 72) = 0;
-      LODWORD(v45) = *v42;
-      *(j + 76) = *v42;
+      LODWORD(v45) = *styles;
+      *(j + 76) = *styles;
       *(j + 80) = *&v45 - *&v45;
       *(j + 84) = 0;
-      LODWORD(v45) = *(v42 + 56);
+      LODWORD(v45) = *(styles + 56);
       *(j + 88) = LODWORD(v45);
       *(j + 92) = *&v45 - *&v45;
       *(j + 96) = 0;
-      LODWORD(v45) = *(v42 + 60);
+      LODWORD(v45) = *(styles + 60);
       *(j + 100) = LODWORD(v45);
       *(j + 104) = *&v45 - *&v45;
       *(j + 108) = 0;
-      LODWORD(v45) = *(v42 + 64);
+      LODWORD(v45) = *(styles + 64);
       *(j + 112) = LODWORD(v45);
       *(j + 116) = *&v45 - *&v45;
       *(j + 120) = 0;
-      *(j + 124) = vzip1_s32(*(v42 + 72), vsub_f32(*(v42 + 72), *(v42 + 72)));
+      *(j + 124) = vzip1_s32(*(styles + 72), vsub_f32(*(styles + 72), *(styles + 72)));
       *(j + 132) = 0;
-      LODWORD(v45) = *(v42 + 76);
+      LODWORD(v45) = *(styles + 76);
       *(j + 136) = LODWORD(v45);
       *(j + 140) = *&v45 - *&v45;
       *(j + 144) = 0;
-      *(j + 148) = vzip1_s32(*(v42 + 4), vsub_f32(*(v42 + 4), *(v42 + 4)));
+      *(j + 148) = vzip1_s32(*(styles + 4), vsub_f32(*(styles + 4), *(styles + 4)));
       *(j + 156) = 0;
-      LODWORD(v45) = *(v42 + 8);
+      LODWORD(v45) = *(styles + 8);
       *(j + 160) = LODWORD(v45);
       *(j + 164) = *&v45 - *&v45;
       *(j + 168) = 0;
-      LODWORD(v45) = *(v42 + 12);
+      LODWORD(v45) = *(styles + 12);
       *(j + 172) = LODWORD(v45);
       *(j + 176) = *&v45 - *&v45;
       *(j + 180) = 0;
-      LODWORD(v45) = *(v42 + 16);
+      LODWORD(v45) = *(styles + 16);
       *(j + 184) = LODWORD(v45);
       *(j + 188) = *&v45 - *&v45;
       *(j + 192) = 0;
-      *(j + 196) = vzip1_s32(*(v42 + 20), vsub_f32(*(v42 + 20), *(v42 + 20)));
+      *(j + 196) = vzip1_s32(*(styles + 20), vsub_f32(*(styles + 20), *(styles + 20)));
       *(j + 204) = 0;
-      LODWORD(v45) = *(v42 + 24);
+      LODWORD(v45) = *(styles + 24);
       *(j + 208) = LODWORD(v45);
       *(j + 212) = *&v45 - *&v45;
       *(j + 216) = 0;
-      LODWORD(v45) = *(v42 + 28);
+      LODWORD(v45) = *(styles + 28);
       *(j + 220) = LODWORD(v45);
       *(j + 224) = *&v45 - *&v45;
       *(j + 228) = 0;
-      LODWORD(v45) = *(v42 + 32);
+      LODWORD(v45) = *(styles + 32);
       *(j + 232) = LODWORD(v45);
       *(j + 236) = *&v45 - *&v45;
       *(j + 240) = 0;
-      LODWORD(v45) = *(v42 + 36);
+      LODWORD(v45) = *(styles + 36);
       *(j + 244) = LODWORD(v45);
       *(j + 248) = *&v45 - *&v45;
       *(j + 252) = 0;
-      LODWORD(v45) = *(v42 + 40);
+      LODWORD(v45) = *(styles + 40);
       *(j + 256) = LODWORD(v45);
       *(j + 260) = *&v45 - *&v45;
       *(j + 264) = 0;
-      LODWORD(v45) = *(v42 + 44);
+      LODWORD(v45) = *(styles + 44);
       *(j + 268) = LODWORD(v45);
       *(j + 272) = *&v45 - *&v45;
       *(j + 276) = 0;
-      LODWORD(v45) = *(v42 + 48);
+      LODWORD(v45) = *(styles + 48);
       *(j + 280) = LODWORD(v45);
       *(j + 284) = *&v45 - *&v45;
       *(j + 288) = 0;
-      LODWORD(v45) = *(v42 + 80);
+      LODWORD(v45) = *(styles + 80);
       *(j + 292) = LODWORD(v45);
       *(j + 296) = *&v45 - *&v45;
       *(j + 300) = 0;
-      v40 += 32;
-      v42 += 160;
+      geometries += 32;
+      styles += 160;
       j += 307;
     }
 
@@ -464,24 +464,24 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
     kdebug_trace();
   }
 
-  lastUpdateTime = v285->_lastUpdateTime;
-  if (lastUpdateTime > a3)
+  lastUpdateTime = selfCopy->_lastUpdateTime;
+  if (lastUpdateTime > time)
   {
-    if (lastUpdateTime + -0.1 <= a3)
+    if (lastUpdateTime + -0.1 <= time)
     {
-      if (lastUpdateTime >= a3)
+      if (lastUpdateTime >= time)
       {
-        a3 = v285->_lastUpdateTime;
+        time = selfCopy->_lastUpdateTime;
       }
     }
 
     else
     {
-      [(PXGAnimator *)v285 _stopAllAnimations];
+      [(PXGAnimator *)selfCopy _stopAllAnimations];
     }
   }
 
-  v288 = v285;
+  v288 = selfCopy;
   kdebug_trace();
 
   [v294 removeAllAnimations];
@@ -490,9 +490,9 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
   {
     [(PXGAnimationDataStore *)v288->_animationDataStore setMappedSpriteCount:0];
     -[PXGAnimationDataStore increaseMappedSpriteCountBy:usingAnimationIndex:](v288->_animationDataStore, "increaseMappedSpriteCountBy:usingAnimationIndex:", [v294 numberOfSprites], 0);
-    v48 = [(PXGAnimationDataStore *)v288->_animationDataStore animationIndexBySpriteIndex];
-    v49 = [v293 allKeys];
-    v50 = [v49 sortedArrayUsingComparator:&__block_literal_global_17074];
+    animationIndexBySpriteIndex = [(PXGAnimationDataStore *)v288->_animationDataStore animationIndexBySpriteIndex];
+    allKeys = [v293 allKeys];
+    v50 = [allKeys sortedArrayUsingComparator:&__block_literal_global_17074];
 
     v368 = 0u;
     v367 = 0u;
@@ -503,7 +503,7 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
     if (v52)
     {
       v53 = *v366;
-      v54 = v48 + 8;
+      v54 = animationIndexBySpriteIndex + 8;
       while (2)
       {
         for (k = 0; k != v52; ++k)
@@ -515,25 +515,25 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
 
           v56 = *(*(&v365 + 1) + 8 * k);
           v57 = [v293 objectForKeyedSubscript:v56];
-          v58 = [v57 layout];
-          if (!v58)
+          layout = [v57 layout];
+          if (!layout)
           {
 
             goto LABEL_59;
           }
 
-          v59 = [v56 integerValue];
+          integerValue = [v56 integerValue];
           if ([v57 scope] == 2)
           {
-            v60 = [v58 localNumberOfSprites];
+            localNumberOfSprites = [layout localNumberOfSprites];
           }
 
           else
           {
-            v60 = [v58 numberOfSprites];
+            localNumberOfSprites = [layout numberOfSprites];
           }
 
-          v61 = [v294 convertSpriteIndexRange:v60 << 32 fromDescendantLayout:v58];
+          v61 = [v294 convertSpriteIndexRange:localNumberOfSprites << 32 fromDescendantLayout:layout];
           v62 = (HIDWORD(v61) + v61);
           if (v62 > v61)
           {
@@ -548,35 +548,35 @@ double __61__PXGAnimator_retargetAnimationsAfterStartTime_newStartTime___block_i
               v69 = vmovn_s64(vcgeq_u64(v66, vorrq_s8(v68, xmmword_21AE2D360)));
               if (vuzp1_s8(vuzp1_s16(v69, *v66.i8), *v66.i8).u8[0])
               {
-                *(v67 - 4) = v59;
+                *(v67 - 4) = integerValue;
               }
 
               if (vuzp1_s8(vuzp1_s16(v69, *&v66), *&v66).i8[1])
               {
-                *(v67 - 3) = v59;
+                *(v67 - 3) = integerValue;
               }
 
               if (vuzp1_s8(vuzp1_s16(*&v66, vmovn_s64(vcgeq_u64(v66, vorrq_s8(v68, xmmword_21AE2D350)))), *&v66).i8[2])
               {
-                *(v67 - 2) = v59;
-                *(v67 - 1) = v59;
+                *(v67 - 2) = integerValue;
+                *(v67 - 1) = integerValue;
               }
 
               v70 = vmovn_s64(vcgeq_u64(v66, vorrq_s8(v68, xmmword_21AE2D340)));
               if (vuzp1_s8(*&v66, vuzp1_s16(v70, *&v66)).i32[1])
               {
-                *v67 = v59;
+                *v67 = integerValue;
               }
 
               if (vuzp1_s8(*&v66, vuzp1_s16(v70, *&v66)).i8[5])
               {
-                v67[1] = v59;
+                v67[1] = integerValue;
               }
 
               if (vuzp1_s8(*&v66, vuzp1_s16(*&v66, vmovn_s64(vcgeq_u64(v66, vorrq_s8(v68, xmmword_21AE2D330))))).i8[6])
               {
-                v67[2] = v59;
-                v67[3] = v59;
+                v67[2] = integerValue;
+                v67[3] = integerValue;
               }
 
               v63 += 8;
@@ -605,7 +605,7 @@ LABEL_59:
   *&v362 = 0x3032000000;
   *(&v362 + 1) = __Block_byref_object_copy__17075;
   v363 = __Block_byref_object_dispose__17076;
-  v364 = v281;
+  v364 = detailsCopy;
   v358[0] = MEMORY[0x277D85DD0];
   v358[1] = 3221225472;
   v358[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_14;
@@ -615,16 +615,16 @@ LABEL_59:
   v271 = MEMORY[0x21CEE40A0](v358);
   if (v283)
   {
-    v301 = [*(*(&v361 + 1) + 40) removedSpriteIndexes];
-    v299 = [*(*(&v361 + 1) + 40) insertedSpriteIndexes];
-    if ([v301 count] && objc_msgSend(v299, "count"))
+    removedSpriteIndexes = [*(*(&v361 + 1) + 40) removedSpriteIndexes];
+    insertedSpriteIndexes = [*(*(&v361 + 1) + 40) insertedSpriteIndexes];
+    if ([removedSpriteIndexes count] && objc_msgSend(insertedSpriteIndexes, "count"))
     {
-      v71 = [v293 allValues];
+      allValues = [v293 allValues];
       v268 = PXFilter();
 
       if ([v268 count])
       {
-        v72 = [v301 count];
+        v72 = [removedSpriteIndexes count];
         v73 = malloc_type_realloc(0, 4 * v72, 0x42760281uLL);
         v74 = v73;
         if (v72)
@@ -633,8 +633,8 @@ LABEL_59:
         }
 
         v296 = v74;
-        v75 = v286;
-        v76 = v284;
+        v75 = dataStoreCopy;
+        v76 = storeCopy;
         v354 = 0u;
         v355 = 0u;
         v356 = 0u;
@@ -655,19 +655,19 @@ LABEL_59:
               }
 
               v79 = *(*(&v354 + 1) + 8 * m);
-              v80 = [v79 delegate];
+              delegate = [v79 delegate];
               v81 = v75;
-              v82 = [v75 geometries];
+              geometries2 = [v75 geometries];
               v83 = v75;
-              v84 = [v75 styles];
+              styles2 = [v75 styles];
               v85 = v75;
-              v86 = [v75 infos];
+              infos = [v75 infos];
               v87 = v76;
-              v88 = [v76 geometries];
+              geometries3 = [v76 geometries];
               v89 = v76;
-              v90 = [v76 styles];
+              styles3 = [v76 styles];
               v91 = v76;
-              [v80 animation:v79 updateSpriteTransferMap:v296 forSpritesRemovedFromIndexes:v301 presentedGeometries:v82 styles:v84 infos:v86 spritesInsertedToIndexes:v299 targetGeometries:v88 styles:v90 infos:objc_msgSend(v76 rootLayout:{"infos"), v294}];
+              [delegate animation:v79 updateSpriteTransferMap:v296 forSpritesRemovedFromIndexes:removedSpriteIndexes presentedGeometries:geometries2 styles:styles2 infos:infos spritesInsertedToIndexes:insertedSpriteIndexes targetGeometries:geometries3 styles:styles3 infos:objc_msgSend(v76 rootLayout:{"infos"), v294}];
             }
 
             v77 = [obj countByEnumeratingWithState:&v354 objects:v385 count:16];
@@ -701,7 +701,7 @@ LABEL_59:
   {
     v300[2]();
     [v349[5] increaseNumberOfSpritesBy:v288->_numberOfProlongatedSprites];
-    v93 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteIndexesExpiringAtTime:a3];
+    v93 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteIndexesExpiringAtTime:time];
     if ([v93 count])
     {
       [v349[5] removeSpritesAtIndexes:v93];
@@ -718,19 +718,19 @@ LABEL_59:
   }
 
   [(PXGAnimationDataStore *)v92->_animationDataStore increaseMappedSpriteCountBy:numberOfProlongatedSprites usingAnimationIndex:0];
-  v95 = [(PXGAnimationDataStore *)v92->_animationDataStore animationIndexBySpriteIndex];
+  animationIndexBySpriteIndex2 = [(PXGAnimationDataStore *)v92->_animationDataStore animationIndexBySpriteIndex];
   if (v283)
   {
-    v96 = [*(*(&v361 + 1) + 40) removedSpriteIndexes];
-    if ([v96 count])
+    removedSpriteIndexes2 = [*(*(&v361 + 1) + 40) removedSpriteIndexes];
+    if ([removedSpriteIndexes2 count])
     {
       v300[2]();
-      v97 = [v349[5] replaceRemovalsWithMovesToEndForIndexes:v96];
+      v97 = [v349[5] replaceRemovalsWithMovesToEndForIndexes:removedSpriteIndexes2];
       v98 = HIDWORD(v97);
-      if ([v96 count] != HIDWORD(v97))
+      if ([removedSpriteIndexes2 count] != HIDWORD(v97))
       {
-        v261 = [MEMORY[0x277CCA890] currentHandler];
-        [v261 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:325 description:@"unexpected number of prolongated sprites"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:325 description:@"unexpected number of prolongated sprites"];
       }
 
       v99 = v288;
@@ -745,23 +745,23 @@ LABEL_59:
     }
 
     [(PXGAnimationDataStore *)v99->_animationDataStore increaseMappedSpriteCountBy:v98 usingAnimationIndex:0];
-    v304 = [(PXGAnimationDataStore *)v288->_animationDataStore animationIndexBySpriteIndex];
+    animationIndexBySpriteIndex3 = [(PXGAnimationDataStore *)v288->_animationDataStore animationIndexBySpriteIndex];
     v341 = 0;
     v342 = &v341;
     v343 = 0x3032000000;
     v344 = __Block_byref_object_copy__17075;
     v345 = __Block_byref_object_dispose__17076;
     v346 = 0;
-    v100 = [*(*(&v361 + 1) + 40) modifiedSpriteIndexes];
+    modifiedSpriteIndexes = [*(*(&v361 + 1) + 40) modifiedSpriteIndexes];
     v333[0] = MEMORY[0x277D85DD0];
     v333[1] = 3221225472;
     v333[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_4;
     v333[3] = &unk_2782AB570;
-    v101 = v100;
-    v340 = v304;
+    v101 = modifiedSpriteIndexes;
+    v340 = animationIndexBySpriteIndex3;
     v334 = v101;
     v335 = v288;
-    v336 = v286;
+    v336 = dataStoreCopy;
     v338 = &v348;
     v337 = v294;
     v339 = &v341;
@@ -772,16 +772,16 @@ LABEL_59:
     {
       v300[2]();
       v102 = [v349[5] splitIndexesIntoMovesToEndAndReinsertions:v342[5]];
-      v103 = HIDWORD(v102);
+      currentHandler3 = HIDWORD(v102);
       if ([v342[5] count] != HIDWORD(v102))
       {
-        v262 = [MEMORY[0x277CCA890] currentHandler];
-        [v262 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:415 description:@"unexpected number of prolongated sprites"];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:415 description:@"unexpected number of prolongated sprites"];
 
-        v103 = HIDWORD(v102);
+        currentHandler3 = HIDWORD(v102);
       }
 
-      v288->_numberOfProlongatedSprites += v103;
+      v288->_numberOfProlongatedSprites += currentHandler3;
       if (v97 == -1)
       {
         LODWORD(v97) = v102;
@@ -791,34 +791,34 @@ LABEL_59:
       {
         if (v97 + v98 != v102)
         {
-          v263 = v103;
-          v103 = [MEMORY[0x277CCA890] currentHandler];
+          v263 = currentHandler3;
+          currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
           v264 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%li, %li}", v97, v98];
-          v265 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%li, %li}", v102, v263];
-          [v103 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:420 description:{@"prolongated sprite ranges are disjoint %@ %@", v264, v265}];
+          v263 = [MEMORY[0x277CCACA8] stringWithFormat:@"{%li, %li}", v102, v263];
+          [currentHandler3 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:420 description:{@"prolongated sprite ranges are disjoint %@ %@", v264, v263}];
 
-          LODWORD(v103) = v263;
+          LODWORD(currentHandler3) = v263;
         }
 
-        LODWORD(v103) = v98 + v103;
+        LODWORD(currentHandler3) = v98 + currentHandler3;
       }
 
       v331[0] = 0;
       v331[1] = v331;
       v331[2] = 0x2020000000;
-      v332 = [(PXGAnimationDataStore *)v288->_animationDataStore mappedSpriteCount];
-      [(PXGAnimationDataStore *)v288->_animationDataStore setMappedSpriteCount:(v97 + v103)];
-      v104 = [(PXGAnimationDataStore *)v288->_animationDataStore animationIndexBySpriteIndex];
+      mappedSpriteCount = [(PXGAnimationDataStore *)v288->_animationDataStore mappedSpriteCount];
+      [(PXGAnimationDataStore *)v288->_animationDataStore setMappedSpriteCount:(v97 + currentHandler3)];
+      animationIndexBySpriteIndex4 = [(PXGAnimationDataStore *)v288->_animationDataStore animationIndexBySpriteIndex];
       v105 = v342[5];
       v330[0] = MEMORY[0x277D85DD0];
       v330[1] = 3221225472;
       v330[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_6;
       v330[3] = &unk_2782AB598;
-      v330[5] = v104;
+      v330[5] = animationIndexBySpriteIndex4;
       v330[4] = v331;
       [v105 enumerateIndexesUsingBlock:v330];
-      v292 = v103;
-      v304 = v104;
+      v292 = currentHandler3;
+      animationIndexBySpriteIndex3 = animationIndexBySpriteIndex4;
       _Block_object_dispose(v331, 8);
     }
 
@@ -832,32 +832,32 @@ LABEL_59:
 
   else
   {
-    v304 = v95;
+    animationIndexBySpriteIndex3 = animationIndexBySpriteIndex2;
     v292 = 0;
     LODWORD(v97) = -1;
   }
 
-  *a10 = v349[5];
+  *changeDetails = v349[5];
   [(PXGAnimationDataStore *)v288->_animationDataStore applySpriteChangeDetails:v349[5]];
-  [v286 applyChangeDetails:v349[5]];
-  [v287 applyChangeDetails:v349[5]];
-  v106 = [v286 count];
-  if ([v287 count] != v106)
+  [dataStoreCopy applyChangeDetails:v349[5]];
+  [spriteDataStoreCopy applyChangeDetails:v349[5]];
+  v106 = [dataStoreCopy count];
+  if ([spriteDataStoreCopy count] != v106)
   {
-    v256 = [MEMORY[0x277CCA890] currentHandler];
-    [v256 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:441 description:{@"unexpected animation target sprite data store count %li (expected: %li)", objc_msgSend(v287, "count"), v106}];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:441 description:{@"unexpected animation target sprite data store count %li (expected: %li)", objc_msgSend(spriteDataStoreCopy, "count"), v106}];
   }
 
   if ([(PXGAnimationDataStore *)v288->_animationDataStore spriteCount]!= v106)
   {
-    v257 = [MEMORY[0x277CCA890] currentHandler];
-    [v257 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:442 description:{@"unexpected animation data store sprite count %li (expected: %li)", -[PXGAnimationDataStore spriteCount](v288->_animationDataStore, "spriteCount"), v106}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:442 description:{@"unexpected animation data store sprite count %li (expected: %li)", -[PXGAnimationDataStore spriteCount](v288->_animationDataStore, "spriteCount"), v106}];
   }
 
   if (v283 && [(PXGAnimationDataStore *)v288->_animationDataStore mappedSpriteCount]!= v106)
   {
-    v258 = [MEMORY[0x277CCA890] currentHandler];
-    [v258 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:444 description:{@"unexpected animation data store mapped sprite count %li (expected: %li)", -[PXGAnimationDataStore mappedSpriteCount](v288->_animationDataStore, "mappedSpriteCount"), v106}];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:v288 file:@"PXGAnimator.m" lineNumber:444 description:{@"unexpected animation data store mapped sprite count %li (expected: %li)", -[PXGAnimationDataStore mappedSpriteCount](v288->_animationDataStore, "mappedSpriteCount"), v106}];
   }
 
   v107 = v288;
@@ -867,11 +867,11 @@ LABEL_59:
   v329[1] = 3221225472;
   v329[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_7;
   v329[3] = &unk_2782AB5C0;
-  *&v329[5] = a3;
+  *&v329[5] = time;
   v329[4] = v107;
   v108 = MEMORY[0x21CEE40A0](v329);
   v109 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v110 = [(PXGAnimationDataStore *)v288->_animationDataStore activeGroupIndexes];
+  activeGroupIndexes = [(PXGAnimationDataStore *)v288->_animationDataStore activeGroupIndexes];
   v326[0] = MEMORY[0x277D85DD0];
   v326[1] = 3221225472;
   v326[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_8;
@@ -881,39 +881,39 @@ LABEL_59:
   v328 = v111;
   v302 = v109;
   v327 = v302;
-  [v110 enumerateIndexesUsingBlock:v326];
+  [activeGroupIndexes enumerateIndexesUsingBlock:v326];
 
   if (x != *MEMORY[0x277CBF348] || y != *(MEMORY[0x277CBF348] + 8))
   {
     v112 = v107;
     kdebug_trace();
 
-    v113 = v286;
-    v114 = [v286 geometries];
-    v115 = v286;
-    v116 = [v286 styles];
-    v117 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos];
+    v113 = dataStoreCopy;
+    geometries4 = [dataStoreCopy geometries];
+    v115 = dataStoreCopy;
+    styles4 = [dataStoreCopy styles];
+    spriteInfos = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos];
     v118.f64[0] = x;
     v118.f64[1] = y;
     v119 = vcvt_f32_f64(v118);
     if (v106)
     {
       v120 = vcvtq_f64_f32(v119);
-      v121 = (v116 + 20);
+      v121 = (styles4 + 20);
       v122 = v106;
       do
       {
-        *v114 = vaddq_f64(*v114, v120);
-        v114 += 2;
+        *geometries4 = vaddq_f64(*geometries4, v120);
+        geometries4 += 2;
         *&v123 = vadd_f32(*v121, v119);
         *(&v123 + 1) = vextq_s8(*v121->f32, *v121->f32, 8uLL).u64[0];
         *v121->f32 = v123;
         v121 += 20;
-        *v117 = *v117 + v120.f64[0];
-        *(v117 + 20) = *(v117 + 20) + v120.f64[1];
-        *(v117 + 196) = *(v117 + 196) + v119.f32[0];
-        *(v117 + 208) = *(v117 + 208) + v119.f32[1];
-        v117 += 307;
+        *spriteInfos = *spriteInfos + v120.f64[0];
+        *(spriteInfos + 20) = *(spriteInfos + 20) + v120.f64[1];
+        *(spriteInfos + 196) = *(spriteInfos + 196) + v119.f32[0];
+        *(spriteInfos + 208) = *(spriteInfos + 208) + v119.f32[1];
+        spriteInfos += 307;
         --v122;
       }
 
@@ -922,16 +922,16 @@ LABEL_59:
 
     v297 = v119;
     v124 = v288->_numberOfProlongatedSprites;
-    v125 = v287;
-    v126 = [v287 geometries];
-    v127 = v287;
-    v128 = [v287 styles];
+    v125 = spriteDataStoreCopy;
+    geometries5 = [spriteDataStoreCopy geometries];
+    v127 = spriteDataStoreCopy;
+    styles5 = [spriteDataStoreCopy styles];
     if (v124)
     {
       v129 = v106 - v124;
-      v130 = (v126 + 32 * v129);
+      v130 = (geometries5 + 32 * v129);
       v131 = vcvtq_f64_f32(v297);
-      v132 = (v128 + 160 * v129 + 20);
+      v132 = (styles5 + 160 * v129 + 20);
       do
       {
         *v130 = vaddq_f64(*v130, v131);
@@ -953,24 +953,24 @@ LABEL_59:
   v135 = v107;
   kdebug_trace();
 
-  v136 = [v284 count];
-  v137 = v287;
-  v138 = [v287 entities];
-  v139 = v284;
-  memcpy(v138, [v284 entities], 4 * v136);
-  v140 = v287;
-  v141 = [v287 geometries];
-  v142 = v284;
+  v136 = [storeCopy count];
+  v137 = spriteDataStoreCopy;
+  entities = [spriteDataStoreCopy entities];
+  v139 = storeCopy;
+  memcpy(entities, [storeCopy entities], 4 * v136);
+  v140 = spriteDataStoreCopy;
+  geometries6 = [spriteDataStoreCopy geometries];
+  v142 = storeCopy;
   v143 = v136;
-  memcpy(v141, [v284 geometries], 32 * v136);
-  v144 = v287;
-  v145 = [v287 styles];
-  v146 = v284;
-  memcpy(v145, [v284 styles], 160 * v143);
-  v147 = v287;
-  v148 = [v287 infos];
-  v149 = v284;
-  memcpy(v148, [v284 infos], 40 * v143);
+  memcpy(geometries6, [storeCopy geometries], 32 * v136);
+  v144 = spriteDataStoreCopy;
+  styles6 = [spriteDataStoreCopy styles];
+  v146 = storeCopy;
+  memcpy(styles6, [storeCopy styles], 160 * v143);
+  v147 = spriteDataStoreCopy;
+  infos2 = [spriteDataStoreCopy infos];
+  v149 = storeCopy;
+  memcpy(infos2, [storeCopy infos], 40 * v143);
   v150 = v135;
   kdebug_trace();
 
@@ -979,7 +979,7 @@ LABEL_59:
 
   [(PXGAnimationDataStore *)v288->_animationDataStore setMappedAnimationCount:0];
   [(PXGAnimationDataStore *)v288->_animationDataStore setMappedAnimationCount:2 * (v283 & 0x7FFF)];
-  v152 = [(PXGAnimationDataStore *)v288->_animationDataStore groupIndexByAnimationIndex];
+  groupIndexByAnimationIndex = [(PXGAnimationDataStore *)v288->_animationDataStore groupIndexByAnimationIndex];
   [v151 speed];
   v154 = v153;
   UIAnimationDragCoefficient();
@@ -990,93 +990,93 @@ LABEL_59:
   v321 = x;
   v322 = y;
   v323 = v154 * v155;
-  v324 = a3;
+  timeCopy = time;
   obja = v294;
   v318 = obja;
   v319 = v151;
   v280 = v111;
   v320 = v280;
-  v325 = v152;
+  v325 = groupIndexByAnimationIndex;
   [v293 enumerateKeysAndObjectsUsingBlock:v317];
-  v156 = [(PXGAnimationDataStore *)v288->_animationDataStore activeGroupIndexes];
-  if ([v156 count])
+  activeGroupIndexes2 = [(PXGAnimationDataStore *)v288->_animationDataStore activeGroupIndexes];
+  if ([activeGroupIndexes2 count])
   {
-    [v151[5] setCount:{objc_msgSend(v156, "lastIndex") + 1}];
+    [v151[5] setCount:{objc_msgSend(activeGroupIndexes2, "lastIndex") + 1}];
   }
 
   v157 = v151;
   kdebug_trace();
-  v298 = v156;
+  v298 = activeGroupIndexes2;
 
-  v158 = [(PXGAnimationDataStore *)v288->_animationDataStore groupInfos];
+  groupInfos = [(PXGAnimationDataStore *)v288->_animationDataStore groupInfos];
   v159 = v157;
   kdebug_trace();
 
   if (v283)
   {
     [v159[5] removeAllIndexes];
-    v277 = [v159[5] indexSetReferences];
-    v160 = v287;
-    v161 = [v287 entities];
-    v162 = v287;
-    v274 = [v287 geometries];
-    v163 = v287;
-    v269 = [v287 styles];
-    v164 = v287;
-    v267 = [v287 infos];
-    v165 = v286;
-    v266 = [v286 entities];
-    v166 = v286;
-    v167 = [v286 geometries];
-    v168 = v286;
-    v169 = [v286 styles];
-    v170 = v286;
-    v171 = [v286 infos];
-    v172 = [v349[5] insertedSpriteIndexes];
+    indexSetReferences = [v159[5] indexSetReferences];
+    v160 = spriteDataStoreCopy;
+    entities2 = [spriteDataStoreCopy entities];
+    v162 = spriteDataStoreCopy;
+    geometries7 = [spriteDataStoreCopy geometries];
+    v163 = spriteDataStoreCopy;
+    styles7 = [spriteDataStoreCopy styles];
+    v164 = spriteDataStoreCopy;
+    infos3 = [spriteDataStoreCopy infos];
+    v165 = dataStoreCopy;
+    entities3 = [dataStoreCopy entities];
+    v166 = dataStoreCopy;
+    geometries8 = [dataStoreCopy geometries];
+    v168 = dataStoreCopy;
+    styles8 = [dataStoreCopy styles];
+    v170 = dataStoreCopy;
+    infos4 = [dataStoreCopy infos];
+    insertedSpriteIndexes2 = [v349[5] insertedSpriteIndexes];
     v312[0] = MEMORY[0x277D85DD0];
     v312[1] = 3221225472;
     v312[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_11;
     v312[3] = &__block_descriptor_120_e24_v32__0__NSRange_QQ_8_B24l;
-    v312[4] = v266;
-    v312[5] = v161;
-    v312[6] = v167;
-    v312[7] = v274;
-    v312[8] = v169;
-    v312[9] = v269;
-    v312[10] = v171;
-    v312[11] = v267;
-    v312[12] = v152;
-    v312[13] = v304;
-    v312[14] = v277;
-    [v172 enumerateRangesUsingBlock:v312];
+    v312[4] = entities3;
+    v312[5] = entities2;
+    v312[6] = geometries8;
+    v312[7] = geometries7;
+    v312[8] = styles8;
+    v312[9] = styles7;
+    v312[10] = infos4;
+    v312[11] = infos3;
+    v312[12] = groupIndexByAnimationIndex;
+    v312[13] = animationIndexBySpriteIndex3;
+    v312[14] = indexSetReferences;
+    [insertedSpriteIndexes2 enumerateRangesUsingBlock:v312];
 
     v311[0] = MEMORY[0x277D85DD0];
     v311[1] = 3221225472;
     v311[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_12;
     v311[3] = &unk_2782AB680;
-    v311[6] = v277;
-    v311[7] = v167;
-    v311[8] = v169;
-    v311[9] = v171;
-    v311[10] = v274;
-    v311[11] = v269;
-    v311[12] = v267;
+    v311[6] = indexSetReferences;
+    v311[7] = geometries8;
+    v311[8] = styles8;
+    v311[9] = infos4;
+    v311[10] = geometries7;
+    v311[11] = styles7;
+    v311[12] = infos3;
     v311[4] = v159;
-    v311[5] = v158;
+    v311[5] = groupInfos;
     [v298 enumerateIndexesUsingBlock:v311];
   }
 
   else
   {
-    v173 = [v349[5] insertedSpriteIndexes];
+    insertedSpriteIndexes3 = [v349[5] insertedSpriteIndexes];
     v313[0] = MEMORY[0x277D85DD0];
     v313[1] = 3221225472;
     v313[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_10;
     v313[3] = &unk_2782AB638;
-    v314 = v287;
-    v315 = v286;
+    v314 = spriteDataStoreCopy;
+    v315 = dataStoreCopy;
     v316 = v159;
-    [v173 enumerateRangesUsingBlock:v313];
+    [insertedSpriteIndexes3 enumerateRangesUsingBlock:v313];
   }
 
   v174 = v159;
@@ -1088,37 +1088,37 @@ LABEL_59:
     kdebug_trace();
 
     [v175[5] removeAllIndexes];
-    v176 = [v175[5] indexSetReferences];
-    v177 = [v349[5] spriteIndexAfterChangeBySpriteIndexBeforeChange];
-    v178 = [v349[5] inverse];
-    v179 = v178;
-    v180 = [v178 spriteIndexAfterChangeBySpriteIndexBeforeChange];
+    indexSetReferences2 = [v175[5] indexSetReferences];
+    spriteIndexAfterChangeBySpriteIndexBeforeChange = [v349[5] spriteIndexAfterChangeBySpriteIndexBeforeChange];
+    inverse = [v349[5] inverse];
+    v179 = inverse;
+    spriteIndexAfterChangeBySpriteIndexBeforeChange2 = [inverse spriteIndexAfterChangeBySpriteIndexBeforeChange];
 
-    if (!v177)
+    if (!spriteIndexAfterChangeBySpriteIndexBeforeChange)
     {
-      v259 = [MEMORY[0x277CCA890] currentHandler];
-      [v259 handleFailureInMethod:a2 object:v175 file:@"PXGAnimator.m" lineNumber:823 description:@"missing forward sprite index map"];
+      currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler7 handleFailureInMethod:a2 object:v175 file:@"PXGAnimator.m" lineNumber:823 description:@"missing forward sprite index map"];
     }
 
-    if (!v180)
+    if (!spriteIndexAfterChangeBySpriteIndexBeforeChange2)
     {
-      v260 = [MEMORY[0x277CCA890] currentHandler];
-      [v260 handleFailureInMethod:a2 object:v175 file:@"PXGAnimator.m" lineNumber:824 description:@"missing reverse sprite index map"];
+      currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler8 handleFailureInMethod:a2 object:v175 file:@"PXGAnimator.m" lineNumber:824 description:@"missing reverse sprite index map"];
     }
 
     v278 = v174;
-    v181 = v177;
+    v181 = spriteIndexAfterChangeBySpriteIndexBeforeChange;
     v182 = v292;
     v183 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos]+ 307 * v97 + 306;
-    v184 = v304;
+    v184 = animationIndexBySpriteIndex3;
     do
     {
       *v183 |= 1u;
-      [*(v176 + 8 * *(v152 + 2 * *(v184 + 2 * v97))) addIndex:*(v180 + 4 * v97)];
+      [*(indexSetReferences2 + 8 * *(groupIndexByAnimationIndex + 2 * *(v184 + 2 * v97))) addIndex:*(spriteIndexAfterChangeBySpriteIndexBeforeChange2 + 4 * v97)];
       LODWORD(v97) = v97 + 1;
       v183 += 307;
       --v182;
-      v184 = v304;
+      v184 = animationIndexBySpriteIndex3;
     }
 
     while (v182);
@@ -1126,10 +1126,10 @@ LABEL_59:
     v306[1] = 3221225472;
     v306[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_14;
     v306[3] = &unk_2782AB6D0;
-    v308 = v158;
-    v309 = v176;
+    v308 = groupInfos;
+    v309 = indexSetReferences2;
     v310 = v181;
-    v307 = v287;
+    v307 = spriteDataStoreCopy;
     [v298 enumerateIndexesUsingBlock:v306];
     v185 = v175;
     kdebug_trace();
@@ -1142,39 +1142,39 @@ LABEL_59:
     v186 = v174;
     kdebug_trace();
 
-    v187 = v286;
-    v188 = [v286 geometries];
-    v189 = v286;
-    v190 = [v286 styles];
-    v191 = v287;
-    v192 = [v287 geometries];
-    v193 = v287;
-    v194 = [v287 styles];
-    v195 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos];
-    v196 = v304;
+    v187 = dataStoreCopy;
+    geometries9 = [dataStoreCopy geometries];
+    v189 = dataStoreCopy;
+    styles9 = [dataStoreCopy styles];
+    v191 = spriteDataStoreCopy;
+    geometries10 = [spriteDataStoreCopy geometries];
+    v193 = spriteDataStoreCopy;
+    styles10 = [spriteDataStoreCopy styles];
+    spriteInfos2 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos];
+    v196 = animationIndexBySpriteIndex3;
     if (v106)
     {
       v197 = 0;
       do
       {
-        if (*v192 == *v195)
+        if (*geometries10 == *spriteInfos2)
         {
-          v198 = *(v195 + 20);
-          if (*(v192 + 8) == v198 && *(v192 + 16) == *(v195 + 40))
+          v198 = *(spriteInfos2 + 20);
+          if (*(geometries10 + 8) == v198 && *(geometries10 + 16) == *(spriteInfos2 + 40))
           {
-            v199 = *(v192 + 24);
-            if (*&v199 == *(v195 + 52) && *(&v199 + 1) == *(v195 + 64) && *v194 == *(v195 + 76) && *(v194 + 56) == *(v195 + 88) && *(v194 + 60) == *(v195 + 100) && *(v194 + 64) == *(v195 + 112))
+            v199 = *(geometries10 + 24);
+            if (*&v199 == *(spriteInfos2 + 52) && *(&v199 + 1) == *(spriteInfos2 + 64) && *styles10 == *(spriteInfos2 + 76) && *(styles10 + 56) == *(spriteInfos2 + 88) && *(styles10 + 60) == *(spriteInfos2 + 100) && *(styles10 + 64) == *(spriteInfos2 + 112))
             {
-              v200 = *(v194 + 72);
-              if (*&v200 == *(v195 + 124) && *(&v200 + 1) == *(v195 + 136))
+              v200 = *(styles10 + 72);
+              if (*&v200 == *(spriteInfos2 + 124) && *(&v200 + 1) == *(spriteInfos2 + 136))
               {
-                v201 = *(v194 + 4);
-                if (*&v201 == *(v195 + 148))
+                v201 = *(styles10 + 4);
+                if (*&v201 == *(spriteInfos2 + 148))
                 {
-                  if (*(&v201 + 1) == *(v195 + 160) && *(&v201 + 2) == *(v195 + 172) && *(&v201 + 3) == *(v195 + 184) && (v202 = *(v194 + 20), *&v202 == *(v195 + 196)) && *(&v202 + 1) == *(v195 + 208) && *(&v202 + 2) == *(v195 + 220) && *(&v202 + 3) == *(v195 + 232) && *(v194 + 36) == *(v195 + 244) && *(v194 + 40) == *(v195 + 256) && *(v194 + 44) == *(v195 + 268) && *(v194 + 48) == *(v195 + 280))
+                  if (*(&v201 + 1) == *(spriteInfos2 + 160) && *(&v201 + 2) == *(spriteInfos2 + 172) && *(&v201 + 3) == *(spriteInfos2 + 184) && (v202 = *(styles10 + 20), *&v202 == *(spriteInfos2 + 196)) && *(&v202 + 1) == *(spriteInfos2 + 208) && *(&v202 + 2) == *(spriteInfos2 + 220) && *(&v202 + 3) == *(spriteInfos2 + 232) && *(styles10 + 36) == *(spriteInfos2 + 244) && *(styles10 + 40) == *(spriteInfos2 + 256) && *(styles10 + 44) == *(spriteInfos2 + 268) && *(styles10 + 48) == *(spriteInfos2 + 280))
                   {
-                    v196 = v304;
-                    if (*(v194 + 80) == *(v195 + 292))
+                    v196 = animationIndexBySpriteIndex3;
+                    if (*(styles10 + 80) == *(spriteInfos2 + 292))
                     {
                       goto LABEL_157;
                     }
@@ -1182,7 +1182,7 @@ LABEL_59:
 
                   else
                   {
-                    v196 = v304;
+                    v196 = animationIndexBySpriteIndex3;
                   }
                 }
               }
@@ -1192,179 +1192,179 @@ LABEL_59:
 
         else
         {
-          v198 = *(v195 + 20);
+          v198 = *(spriteInfos2 + 20);
         }
 
-        v203 = (v158 + 76 * *(v195 + 304));
+        v203 = (groupInfos + 76 * *(spriteInfos2 + 304));
         v204 = v203[6];
         v205 = v203[9];
         v206 = v203[10];
-        *v188 = *v195 + v205 * *(v195 + 8) + (v206 * *(v195 + 16)) + v204 * *(v195 + 8);
-        *(v188 + 8) = v198 + v205 * *(v195 + 28) + (v206 * *(v195 + 36)) + v204 * *(v195 + 28);
-        *(v188 + 16) = (((*(v195 + 40) + (v205 * *(v195 + 44))) + (v206 * *(v195 + 48))) + (v204 * *(v195 + 44)));
-        *&v207 = ((*(v195 + 52) + (v205 * *(v195 + 56))) + (v206 * *(v195 + 60))) + (v204 * *(v195 + 56));
-        *(v188 + 24) = v207;
-        *(&v207 + 1) = ((*(v195 + 64) + (v203[9] * *(v195 + 68))) + (v203[10] * *(v195 + 72))) + (v204 * *(v195 + 68));
-        *(v188 + 24) = v207;
+        *geometries9 = *spriteInfos2 + v205 * *(spriteInfos2 + 8) + (v206 * *(spriteInfos2 + 16)) + v204 * *(spriteInfos2 + 8);
+        *(geometries9 + 8) = v198 + v205 * *(spriteInfos2 + 28) + (v206 * *(spriteInfos2 + 36)) + v204 * *(spriteInfos2 + 28);
+        *(geometries9 + 16) = (((*(spriteInfos2 + 40) + (v205 * *(spriteInfos2 + 44))) + (v206 * *(spriteInfos2 + 48))) + (v204 * *(spriteInfos2 + 44)));
+        *&v207 = ((*(spriteInfos2 + 52) + (v205 * *(spriteInfos2 + 56))) + (v206 * *(spriteInfos2 + 60))) + (v204 * *(spriteInfos2 + 56));
+        *(geometries9 + 24) = v207;
+        *(&v207 + 1) = ((*(spriteInfos2 + 64) + (v203[9] * *(spriteInfos2 + 68))) + (v203[10] * *(spriteInfos2 + 72))) + (v204 * *(spriteInfos2 + 68));
+        *(geometries9 + 24) = v207;
         v208 = v203[9];
         v209 = v203[10];
-        *v190 = ((*(v195 + 76) + (v208 * *(v195 + 80))) + (v209 * *(v195 + 84))) + (v204 * *(v195 + 80));
-        *(v190 + 56) = ((*(v195 + 88) + (v208 * *(v195 + 92))) + (v209 * *(v195 + 96))) + (v204 * *(v195 + 92));
-        *(v190 + 60) = ((*(v195 + 100) + (v208 * *(v195 + 104))) + (v209 * *(v195 + 108))) + (v204 * *(v195 + 104));
-        *(v190 + 64) = ((*(v195 + 112) + (v208 * *(v195 + 116))) + (v209 * *(v195 + 120))) + (v204 * *(v195 + 116));
-        *&v207 = ((*(v195 + 124) + (v208 * *(v195 + 128))) + (v209 * *(v195 + 132))) + (v204 * *(v195 + 128));
-        *(v190 + 72) = v207;
-        *(&v207 + 1) = ((*(v195 + 136) + (v203[9] * *(v195 + 140))) + (v203[10] * *(v195 + 144))) + (v204 * *(v195 + 140));
-        *(v190 + 72) = v207;
-        v210 = *(v190 + 4);
-        *&v210 = ((*(v195 + 148) + (v203[9] * *(v195 + 152))) + (v203[10] * *(v195 + 156))) + (v204 * *(v195 + 152));
-        *(v190 + 4) = v210;
-        *(&v210 + 1) = ((*(v195 + 160) + (v203[9] * *(v195 + 164))) + (v203[10] * *(v195 + 168))) + (v204 * *(v195 + 164));
-        *(v190 + 4) = v210;
-        *(&v210 + 2) = ((*(v195 + 172) + (v203[9] * *(v195 + 176))) + (v203[10] * *(v195 + 180))) + (v204 * *(v195 + 176));
-        *(v190 + 4) = v210;
-        *(&v210 + 3) = ((*(v195 + 184) + (v203[9] * *(v195 + 188))) + (v203[10] * *(v195 + 192))) + (v204 * *(v195 + 188));
-        *(v190 + 4) = v210;
-        v211 = *(v190 + 20);
-        *&v211 = ((*(v195 + 196) + (v203[9] * *(v195 + 200))) + (v203[10] * *(v195 + 204))) + (v204 * *(v195 + 200));
-        *(v190 + 20) = v211;
-        *(&v211 + 1) = ((*(v195 + 208) + (v203[9] * *(v195 + 212))) + (v203[10] * *(v195 + 216))) + (v204 * *(v195 + 212));
-        *(v190 + 20) = v211;
-        *(&v211 + 2) = ((*(v195 + 220) + (v203[9] * *(v195 + 224))) + (v203[10] * *(v195 + 228))) + (v204 * *(v195 + 224));
-        *(v190 + 20) = v211;
-        *(&v211 + 3) = ((*(v195 + 232) + (v203[9] * *(v195 + 236))) + (v203[10] * *(v195 + 240))) + (v204 * *(v195 + 236));
-        *(v190 + 20) = v211;
-        *(v190 + 36) = ((*(v195 + 244) + (v203[9] * *(v195 + 248))) + (v203[10] * *(v195 + 252))) + (v204 * *(v195 + 248));
-        *(v190 + 40) = ((*(v195 + 256) + (v203[9] * *(v195 + 260))) + (v203[10] * *(v195 + 264))) + (v204 * *(v195 + 260));
-        *(v190 + 44) = ((*(v195 + 268) + (v203[9] * *(v195 + 272))) + (v203[10] * *(v195 + 276))) + (v204 * *(v195 + 272));
-        *(v190 + 48) = ((*(v195 + 280) + (v203[9] * *(v195 + 284))) + (v203[10] * *(v195 + 288))) + (v204 * *(v195 + 284));
-        *(v190 + 80) = ((*(v195 + 292) + (v203[9] * *(v195 + 296))) + (v203[10] * *(v195 + 300))) + (v204 * *(v195 + 296));
-        v212 = *v188 - *v192;
-        *v195 = *v192;
-        *(v195 + 8) = v212;
-        *(v195 + 16) = 0;
-        v213 = *(v188 + 8);
-        v214 = *(v192 + 8);
-        *(v195 + 20) = v214;
-        *(v195 + 28) = v213 - v214;
-        *(v195 + 36) = 0;
-        *&v213 = *(v188 + 16);
-        *&v214 = *(v192 + 16);
-        *(v195 + 40) = LODWORD(v214);
-        *(v195 + 44) = *&v213 - *&v214;
-        *(v195 + 48) = 0;
-        v215 = *(v192 + 24);
-        *&v213 = COERCE_FLOAT(*(v188 + 24)) - *&v215;
-        *(v195 + 52) = v215;
-        *(v195 + 56) = LODWORD(v213);
-        *(v195 + 60) = 0;
-        LODWORD(v215) = *(v192 + 28);
-        *&v213 = *(v188 + 28) - *&v215;
-        *(v195 + 64) = v215;
-        *(v195 + 68) = LODWORD(v213);
-        *(v195 + 72) = 0;
-        *&v213 = *v190 - *v194;
-        *(v195 + 76) = *v194;
-        *(v195 + 80) = LODWORD(v213);
-        *(v195 + 84) = 0;
-        LODWORD(v215) = *(v194 + 56);
-        *&v213 = *(v190 + 56) - *&v215;
-        *(v195 + 88) = v215;
-        *(v195 + 92) = LODWORD(v213);
-        *(v195 + 96) = 0;
-        LODWORD(v215) = *(v194 + 60);
-        *&v213 = *(v190 + 60) - *&v215;
-        *(v195 + 100) = v215;
-        *(v195 + 104) = LODWORD(v213);
-        *(v195 + 108) = 0;
-        LODWORD(v215) = *(v194 + 64);
-        *&v213 = *(v190 + 64) - *&v215;
-        *(v195 + 112) = v215;
-        *(v195 + 116) = LODWORD(v213);
-        *(v195 + 120) = 0;
-        LODWORD(v213) = *(v194 + 4);
-        *&v215 = *(v190 + 4) - *&v213;
-        *(v195 + 148) = LODWORD(v213);
-        *(v195 + 152) = v215;
-        *(v195 + 156) = 0;
-        v216 = *(v190 + 72);
-        v217 = *(v194 + 72);
-        *(v195 + 124) = v217;
-        *(v195 + 128) = *&v216 - *&v217;
-        *(v195 + 132) = 0;
-        LODWORD(v217) = *(v194 + 76);
-        *&v216 = *(v190 + 76) - *&v217;
-        *(v195 + 136) = v217;
-        *(v195 + 140) = v216;
-        *(v195 + 144) = 0;
-        LODWORD(v217) = *(v194 + 8);
-        *&v216 = *(v190 + 8) - *&v217;
-        *(v195 + 160) = v217;
-        *(v195 + 164) = v216;
-        *(v195 + 168) = 0;
-        LODWORD(v217) = *(v194 + 12);
-        *&v216 = *(v190 + 12) - *&v217;
-        *(v195 + 172) = v217;
-        *(v195 + 176) = v216;
-        *(v195 + 180) = 0;
-        LODWORD(v217) = *(v194 + 16);
-        *&v216 = *(v190 + 16) - *&v217;
-        *(v195 + 184) = v217;
-        *(v195 + 188) = v216;
-        *(v195 + 192) = 0;
-        LODWORD(v216) = *(v194 + 20);
-        *&v217 = *(v190 + 20) - *&v216;
-        *(v195 + 196) = v216;
-        *(v195 + 200) = v217;
-        *(v195 + 204) = 0;
-        LODWORD(v217) = *(v194 + 24);
-        *&v216 = *(v190 + 24) - *&v217;
-        *(v195 + 208) = v217;
-        *(v195 + 212) = v216;
-        *(v195 + 216) = 0;
-        LODWORD(v217) = *(v194 + 28);
-        *&v216 = *(v190 + 28) - *&v217;
-        *(v195 + 220) = v217;
-        *(v195 + 224) = v216;
-        *(v195 + 228) = 0;
-        LODWORD(v217) = *(v194 + 32);
-        *&v216 = *(v190 + 32) - *&v217;
-        *(v195 + 232) = v217;
-        *(v195 + 236) = v216;
-        *(v195 + 240) = 0;
-        LODWORD(v217) = *(v194 + 36);
-        *&v216 = *(v190 + 36) - *&v217;
-        *(v195 + 244) = v217;
-        *(v195 + 248) = v216;
-        *(v195 + 252) = 0;
-        LODWORD(v216) = *(v190 + 40);
-        LODWORD(v217) = *(v194 + 40);
-        *(v195 + 256) = v217;
-        *(v195 + 260) = *&v216 - *&v217;
-        *(v195 + 264) = 0;
-        LODWORD(v216) = *(v190 + 44);
-        LODWORD(v217) = *(v194 + 44);
-        *(v195 + 268) = v217;
-        *(v195 + 272) = *&v216 - *&v217;
-        *(v195 + 276) = 0;
-        LODWORD(v216) = *(v190 + 48);
-        LODWORD(v217) = *(v194 + 48);
-        *(v195 + 280) = v217;
-        *(v195 + 284) = *&v216 - *&v217;
-        *(v195 + 288) = 0;
-        LODWORD(v216) = *(v190 + 80);
-        LODWORD(v217) = *(v194 + 80);
-        *(v195 + 292) = v217;
-        *(v195 + 296) = *&v216 - *&v217;
-        *(v195 + 300) = 0;
-        *(v195 + 304) = *(v152 + 2 * *(v196 + 2 * v197));
+        *styles9 = ((*(spriteInfos2 + 76) + (v208 * *(spriteInfos2 + 80))) + (v209 * *(spriteInfos2 + 84))) + (v204 * *(spriteInfos2 + 80));
+        *(styles9 + 56) = ((*(spriteInfos2 + 88) + (v208 * *(spriteInfos2 + 92))) + (v209 * *(spriteInfos2 + 96))) + (v204 * *(spriteInfos2 + 92));
+        *(styles9 + 60) = ((*(spriteInfos2 + 100) + (v208 * *(spriteInfos2 + 104))) + (v209 * *(spriteInfos2 + 108))) + (v204 * *(spriteInfos2 + 104));
+        *(styles9 + 64) = ((*(spriteInfos2 + 112) + (v208 * *(spriteInfos2 + 116))) + (v209 * *(spriteInfos2 + 120))) + (v204 * *(spriteInfos2 + 116));
+        *&v207 = ((*(spriteInfos2 + 124) + (v208 * *(spriteInfos2 + 128))) + (v209 * *(spriteInfos2 + 132))) + (v204 * *(spriteInfos2 + 128));
+        *(styles9 + 72) = v207;
+        *(&v207 + 1) = ((*(spriteInfos2 + 136) + (v203[9] * *(spriteInfos2 + 140))) + (v203[10] * *(spriteInfos2 + 144))) + (v204 * *(spriteInfos2 + 140));
+        *(styles9 + 72) = v207;
+        v210 = *(styles9 + 4);
+        *&v210 = ((*(spriteInfos2 + 148) + (v203[9] * *(spriteInfos2 + 152))) + (v203[10] * *(spriteInfos2 + 156))) + (v204 * *(spriteInfos2 + 152));
+        *(styles9 + 4) = v210;
+        *(&v210 + 1) = ((*(spriteInfos2 + 160) + (v203[9] * *(spriteInfos2 + 164))) + (v203[10] * *(spriteInfos2 + 168))) + (v204 * *(spriteInfos2 + 164));
+        *(styles9 + 4) = v210;
+        *(&v210 + 2) = ((*(spriteInfos2 + 172) + (v203[9] * *(spriteInfos2 + 176))) + (v203[10] * *(spriteInfos2 + 180))) + (v204 * *(spriteInfos2 + 176));
+        *(styles9 + 4) = v210;
+        *(&v210 + 3) = ((*(spriteInfos2 + 184) + (v203[9] * *(spriteInfos2 + 188))) + (v203[10] * *(spriteInfos2 + 192))) + (v204 * *(spriteInfos2 + 188));
+        *(styles9 + 4) = v210;
+        v211 = *(styles9 + 20);
+        *&v211 = ((*(spriteInfos2 + 196) + (v203[9] * *(spriteInfos2 + 200))) + (v203[10] * *(spriteInfos2 + 204))) + (v204 * *(spriteInfos2 + 200));
+        *(styles9 + 20) = v211;
+        *(&v211 + 1) = ((*(spriteInfos2 + 208) + (v203[9] * *(spriteInfos2 + 212))) + (v203[10] * *(spriteInfos2 + 216))) + (v204 * *(spriteInfos2 + 212));
+        *(styles9 + 20) = v211;
+        *(&v211 + 2) = ((*(spriteInfos2 + 220) + (v203[9] * *(spriteInfos2 + 224))) + (v203[10] * *(spriteInfos2 + 228))) + (v204 * *(spriteInfos2 + 224));
+        *(styles9 + 20) = v211;
+        *(&v211 + 3) = ((*(spriteInfos2 + 232) + (v203[9] * *(spriteInfos2 + 236))) + (v203[10] * *(spriteInfos2 + 240))) + (v204 * *(spriteInfos2 + 236));
+        *(styles9 + 20) = v211;
+        *(styles9 + 36) = ((*(spriteInfos2 + 244) + (v203[9] * *(spriteInfos2 + 248))) + (v203[10] * *(spriteInfos2 + 252))) + (v204 * *(spriteInfos2 + 248));
+        *(styles9 + 40) = ((*(spriteInfos2 + 256) + (v203[9] * *(spriteInfos2 + 260))) + (v203[10] * *(spriteInfos2 + 264))) + (v204 * *(spriteInfos2 + 260));
+        *(styles9 + 44) = ((*(spriteInfos2 + 268) + (v203[9] * *(spriteInfos2 + 272))) + (v203[10] * *(spriteInfos2 + 276))) + (v204 * *(spriteInfos2 + 272));
+        *(styles9 + 48) = ((*(spriteInfos2 + 280) + (v203[9] * *(spriteInfos2 + 284))) + (v203[10] * *(spriteInfos2 + 288))) + (v204 * *(spriteInfos2 + 284));
+        *(styles9 + 80) = ((*(spriteInfos2 + 292) + (v203[9] * *(spriteInfos2 + 296))) + (v203[10] * *(spriteInfos2 + 300))) + (v204 * *(spriteInfos2 + 296));
+        v212 = *geometries9 - *geometries10;
+        *spriteInfos2 = *geometries10;
+        *(spriteInfos2 + 8) = v212;
+        *(spriteInfos2 + 16) = 0;
+        v213 = *(geometries9 + 8);
+        v214 = *(geometries10 + 8);
+        *(spriteInfos2 + 20) = v214;
+        *(spriteInfos2 + 28) = v213 - v214;
+        *(spriteInfos2 + 36) = 0;
+        *&v213 = *(geometries9 + 16);
+        *&v214 = *(geometries10 + 16);
+        *(spriteInfos2 + 40) = LODWORD(v214);
+        *(spriteInfos2 + 44) = *&v213 - *&v214;
+        *(spriteInfos2 + 48) = 0;
+        v215 = *(geometries10 + 24);
+        *&v213 = COERCE_FLOAT(*(geometries9 + 24)) - *&v215;
+        *(spriteInfos2 + 52) = v215;
+        *(spriteInfos2 + 56) = LODWORD(v213);
+        *(spriteInfos2 + 60) = 0;
+        LODWORD(v215) = *(geometries10 + 28);
+        *&v213 = *(geometries9 + 28) - *&v215;
+        *(spriteInfos2 + 64) = v215;
+        *(spriteInfos2 + 68) = LODWORD(v213);
+        *(spriteInfos2 + 72) = 0;
+        *&v213 = *styles9 - *styles10;
+        *(spriteInfos2 + 76) = *styles10;
+        *(spriteInfos2 + 80) = LODWORD(v213);
+        *(spriteInfos2 + 84) = 0;
+        LODWORD(v215) = *(styles10 + 56);
+        *&v213 = *(styles9 + 56) - *&v215;
+        *(spriteInfos2 + 88) = v215;
+        *(spriteInfos2 + 92) = LODWORD(v213);
+        *(spriteInfos2 + 96) = 0;
+        LODWORD(v215) = *(styles10 + 60);
+        *&v213 = *(styles9 + 60) - *&v215;
+        *(spriteInfos2 + 100) = v215;
+        *(spriteInfos2 + 104) = LODWORD(v213);
+        *(spriteInfos2 + 108) = 0;
+        LODWORD(v215) = *(styles10 + 64);
+        *&v213 = *(styles9 + 64) - *&v215;
+        *(spriteInfos2 + 112) = v215;
+        *(spriteInfos2 + 116) = LODWORD(v213);
+        *(spriteInfos2 + 120) = 0;
+        LODWORD(v213) = *(styles10 + 4);
+        *&v215 = *(styles9 + 4) - *&v213;
+        *(spriteInfos2 + 148) = LODWORD(v213);
+        *(spriteInfos2 + 152) = v215;
+        *(spriteInfos2 + 156) = 0;
+        v216 = *(styles9 + 72);
+        v217 = *(styles10 + 72);
+        *(spriteInfos2 + 124) = v217;
+        *(spriteInfos2 + 128) = *&v216 - *&v217;
+        *(spriteInfos2 + 132) = 0;
+        LODWORD(v217) = *(styles10 + 76);
+        *&v216 = *(styles9 + 76) - *&v217;
+        *(spriteInfos2 + 136) = v217;
+        *(spriteInfos2 + 140) = v216;
+        *(spriteInfos2 + 144) = 0;
+        LODWORD(v217) = *(styles10 + 8);
+        *&v216 = *(styles9 + 8) - *&v217;
+        *(spriteInfos2 + 160) = v217;
+        *(spriteInfos2 + 164) = v216;
+        *(spriteInfos2 + 168) = 0;
+        LODWORD(v217) = *(styles10 + 12);
+        *&v216 = *(styles9 + 12) - *&v217;
+        *(spriteInfos2 + 172) = v217;
+        *(spriteInfos2 + 176) = v216;
+        *(spriteInfos2 + 180) = 0;
+        LODWORD(v217) = *(styles10 + 16);
+        *&v216 = *(styles9 + 16) - *&v217;
+        *(spriteInfos2 + 184) = v217;
+        *(spriteInfos2 + 188) = v216;
+        *(spriteInfos2 + 192) = 0;
+        LODWORD(v216) = *(styles10 + 20);
+        *&v217 = *(styles9 + 20) - *&v216;
+        *(spriteInfos2 + 196) = v216;
+        *(spriteInfos2 + 200) = v217;
+        *(spriteInfos2 + 204) = 0;
+        LODWORD(v217) = *(styles10 + 24);
+        *&v216 = *(styles9 + 24) - *&v217;
+        *(spriteInfos2 + 208) = v217;
+        *(spriteInfos2 + 212) = v216;
+        *(spriteInfos2 + 216) = 0;
+        LODWORD(v217) = *(styles10 + 28);
+        *&v216 = *(styles9 + 28) - *&v217;
+        *(spriteInfos2 + 220) = v217;
+        *(spriteInfos2 + 224) = v216;
+        *(spriteInfos2 + 228) = 0;
+        LODWORD(v217) = *(styles10 + 32);
+        *&v216 = *(styles9 + 32) - *&v217;
+        *(spriteInfos2 + 232) = v217;
+        *(spriteInfos2 + 236) = v216;
+        *(spriteInfos2 + 240) = 0;
+        LODWORD(v217) = *(styles10 + 36);
+        *&v216 = *(styles9 + 36) - *&v217;
+        *(spriteInfos2 + 244) = v217;
+        *(spriteInfos2 + 248) = v216;
+        *(spriteInfos2 + 252) = 0;
+        LODWORD(v216) = *(styles9 + 40);
+        LODWORD(v217) = *(styles10 + 40);
+        *(spriteInfos2 + 256) = v217;
+        *(spriteInfos2 + 260) = *&v216 - *&v217;
+        *(spriteInfos2 + 264) = 0;
+        LODWORD(v216) = *(styles9 + 44);
+        LODWORD(v217) = *(styles10 + 44);
+        *(spriteInfos2 + 268) = v217;
+        *(spriteInfos2 + 272) = *&v216 - *&v217;
+        *(spriteInfos2 + 276) = 0;
+        LODWORD(v216) = *(styles9 + 48);
+        LODWORD(v217) = *(styles10 + 48);
+        *(spriteInfos2 + 280) = v217;
+        *(spriteInfos2 + 284) = *&v216 - *&v217;
+        *(spriteInfos2 + 288) = 0;
+        LODWORD(v216) = *(styles9 + 80);
+        LODWORD(v217) = *(styles10 + 80);
+        *(spriteInfos2 + 292) = v217;
+        *(spriteInfos2 + 296) = *&v216 - *&v217;
+        *(spriteInfos2 + 300) = 0;
+        *(spriteInfos2 + 304) = *(groupIndexByAnimationIndex + 2 * *(v196 + 2 * v197));
 LABEL_157:
         ++v197;
-        v188 += 32;
-        v190 += 160;
-        v192 += 32;
-        v194 += 160;
-        v195 += 307;
+        geometries9 += 32;
+        styles9 += 160;
+        geometries10 += 32;
+        styles10 += 160;
+        spriteInfos2 += 307;
       }
 
       while (v197 != v106);
@@ -1377,130 +1377,130 @@ LABEL_157:
   v219 = v174;
   kdebug_trace();
 
-  v220 = v286;
-  v221 = [v286 geometries];
-  v222 = v286;
-  v223 = [v286 styles];
-  v224 = v287;
-  v225 = [v287 geometries];
-  v226 = v287;
-  v227 = [v287 styles];
-  v228 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos];
+  v220 = dataStoreCopy;
+  geometries11 = [dataStoreCopy geometries];
+  v222 = dataStoreCopy;
+  styles11 = [dataStoreCopy styles];
+  v224 = spriteDataStoreCopy;
+  geometries12 = [spriteDataStoreCopy geometries];
+  v226 = spriteDataStoreCopy;
+  styles12 = [spriteDataStoreCopy styles];
+  spriteInfos3 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos];
   if (v106)
   {
     v229 = v106;
     do
     {
-      v230 = *v225;
-      *v228 = *v225;
-      v231 = *(v225 + 8);
-      *(v228 + 20) = v231;
-      v232 = *(v225 + 16);
-      *(v228 + 40) = v232;
-      v233 = *(v225 + 24);
-      *(v228 + 52) = v233;
-      *(v228 + 64) = *(v225 + 28);
-      *(v228 + 76) = *v227;
-      *(v228 + 88) = *(v227 + 56);
-      *(v228 + 100) = *(v227 + 60);
-      *(v228 + 112) = *(v227 + 64);
-      *(v228 + 124) = *(v227 + 72);
-      *(v228 + 136) = *(v227 + 76);
-      *(v228 + 148) = *(v227 + 4);
-      *(v228 + 160) = *(v227 + 8);
-      *(v228 + 172) = *(v227 + 12);
-      *(v228 + 184) = *(v227 + 16);
-      *(v228 + 196) = *(v227 + 20);
-      *(v228 + 208) = *(v227 + 24);
-      *(v228 + 220) = *(v227 + 28);
-      *(v228 + 232) = *(v227 + 32);
-      *(v228 + 244) = *(v227 + 36);
-      *(v228 + 256) = *(v227 + 40);
-      *(v228 + 268) = *(v227 + 44);
-      *(v228 + 280) = *(v227 + 48);
-      *(v228 + 292) = *(v227 + 80);
-      v234 = v158 + 76 * *(v228 + 304);
+      v230 = *geometries12;
+      *spriteInfos3 = *geometries12;
+      v231 = *(geometries12 + 8);
+      *(spriteInfos3 + 20) = v231;
+      v232 = *(geometries12 + 16);
+      *(spriteInfos3 + 40) = v232;
+      v233 = *(geometries12 + 24);
+      *(spriteInfos3 + 52) = v233;
+      *(spriteInfos3 + 64) = *(geometries12 + 28);
+      *(spriteInfos3 + 76) = *styles12;
+      *(spriteInfos3 + 88) = *(styles12 + 56);
+      *(spriteInfos3 + 100) = *(styles12 + 60);
+      *(spriteInfos3 + 112) = *(styles12 + 64);
+      *(spriteInfos3 + 124) = *(styles12 + 72);
+      *(spriteInfos3 + 136) = *(styles12 + 76);
+      *(spriteInfos3 + 148) = *(styles12 + 4);
+      *(spriteInfos3 + 160) = *(styles12 + 8);
+      *(spriteInfos3 + 172) = *(styles12 + 12);
+      *(spriteInfos3 + 184) = *(styles12 + 16);
+      *(spriteInfos3 + 196) = *(styles12 + 20);
+      *(spriteInfos3 + 208) = *(styles12 + 24);
+      *(spriteInfos3 + 220) = *(styles12 + 28);
+      *(spriteInfos3 + 232) = *(styles12 + 32);
+      *(spriteInfos3 + 244) = *(styles12 + 36);
+      *(spriteInfos3 + 256) = *(styles12 + 40);
+      *(spriteInfos3 + 268) = *(styles12 + 44);
+      *(spriteInfos3 + 280) = *(styles12 + 48);
+      *(spriteInfos3 + 292) = *(styles12 + 80);
+      v234 = groupInfos + 76 * *(spriteInfos3 + 304);
       v235 = *(v234 + 36);
       v236 = *(v234 + 40);
-      v237 = *(v228 + 8);
+      v237 = *(spriteInfos3 + 8);
       v238 = v230 + v235 * v237;
       LODWORD(v230) = *(v234 + 24);
-      *v221 = v238 + (v236 * *(v228 + 16)) + *&v230 * v237;
-      *(v221 + 8) = v231 + v235 * *(v228 + 28) + (v236 * *(v228 + 36)) + *&v230 * *(v228 + 28);
-      *(v221 + 16) = (((v232 + (v235 * *(v228 + 44))) + (v236 * *(v228 + 48))) + (*&v230 * *(v228 + 44)));
-      *&v233 = ((*&v233 + (v235 * *(v228 + 56))) + (v236 * *(v228 + 60))) + (*&v230 * *(v228 + 56));
-      *(v221 + 24) = v233;
-      *(&v233 + 1) = ((*(v228 + 64) + (*(v234 + 36) * *(v228 + 68))) + (*(v234 + 40) * *(v228 + 72))) + (*&v230 * *(v228 + 68));
-      *(v221 + 24) = v233;
+      *geometries11 = v238 + (v236 * *(spriteInfos3 + 16)) + *&v230 * v237;
+      *(geometries11 + 8) = v231 + v235 * *(spriteInfos3 + 28) + (v236 * *(spriteInfos3 + 36)) + *&v230 * *(spriteInfos3 + 28);
+      *(geometries11 + 16) = (((v232 + (v235 * *(spriteInfos3 + 44))) + (v236 * *(spriteInfos3 + 48))) + (*&v230 * *(spriteInfos3 + 44)));
+      *&v233 = ((*&v233 + (v235 * *(spriteInfos3 + 56))) + (v236 * *(spriteInfos3 + 60))) + (*&v230 * *(spriteInfos3 + 56));
+      *(geometries11 + 24) = v233;
+      *(&v233 + 1) = ((*(spriteInfos3 + 64) + (*(v234 + 36) * *(spriteInfos3 + 68))) + (*(v234 + 40) * *(spriteInfos3 + 72))) + (*&v230 * *(spriteInfos3 + 68));
+      *(geometries11 + 24) = v233;
       LODWORD(v231) = *(v234 + 36);
       v239 = *(v234 + 40);
-      *v223 = ((*(v228 + 76) + (*&v231 * *(v228 + 80))) + (v239 * *(v228 + 84))) + (*&v230 * *(v228 + 80));
-      *(v223 + 56) = ((*(v228 + 88) + (*&v231 * *(v228 + 92))) + (v239 * *(v228 + 96))) + (*&v230 * *(v228 + 92));
-      *(v223 + 60) = ((*(v228 + 100) + (*&v231 * *(v228 + 104))) + (v239 * *(v228 + 108))) + (*&v230 * *(v228 + 104));
-      *(v223 + 64) = ((*(v228 + 112) + (*&v231 * *(v228 + 116))) + (v239 * *(v228 + 120))) + (*&v230 * *(v228 + 116));
-      *&v233 = ((*(v228 + 124) + (*&v231 * *(v228 + 128))) + (v239 * *(v228 + 132))) + (*&v230 * *(v228 + 128));
-      *(v223 + 72) = v233;
-      *(&v233 + 1) = ((*(v228 + 136) + (*(v234 + 36) * *(v228 + 140))) + (*(v234 + 40) * *(v228 + 144))) + (*&v230 * *(v228 + 140));
-      *(v223 + 72) = v233;
-      v240 = *(v223 + 4);
-      *&v240 = ((*(v228 + 148) + (*(v234 + 36) * *(v228 + 152))) + (*(v234 + 40) * *(v228 + 156))) + (*&v230 * *(v228 + 152));
-      *(v223 + 4) = v240;
-      *(&v240 + 1) = ((*(v228 + 160) + (*(v234 + 36) * *(v228 + 164))) + (*(v234 + 40) * *(v228 + 168))) + (*&v230 * *(v228 + 164));
-      *(v223 + 4) = v240;
-      *(&v240 + 2) = ((*(v228 + 172) + (*(v234 + 36) * *(v228 + 176))) + (*(v234 + 40) * *(v228 + 180))) + (*&v230 * *(v228 + 176));
-      *(v223 + 4) = v240;
-      *(&v240 + 3) = ((*(v228 + 184) + (*(v234 + 36) * *(v228 + 188))) + (*(v234 + 40) * *(v228 + 192))) + (*&v230 * *(v228 + 188));
-      *(v223 + 4) = v240;
-      v241 = *(v223 + 20);
-      *&v241 = ((*(v228 + 196) + (*(v234 + 36) * *(v228 + 200))) + (*(v234 + 40) * *(v228 + 204))) + (*&v230 * *(v228 + 200));
-      *(v223 + 20) = v241;
-      *(&v241 + 1) = ((*(v228 + 208) + (*(v234 + 36) * *(v228 + 212))) + (*(v234 + 40) * *(v228 + 216))) + (*&v230 * *(v228 + 212));
-      *(v223 + 20) = v241;
-      *(&v241 + 2) = ((*(v228 + 220) + (*(v234 + 36) * *(v228 + 224))) + (*(v234 + 40) * *(v228 + 228))) + (*&v230 * *(v228 + 224));
-      *(v223 + 20) = v241;
-      *(&v241 + 3) = ((*(v228 + 232) + (*(v234 + 36) * *(v228 + 236))) + (*(v234 + 40) * *(v228 + 240))) + (*&v230 * *(v228 + 236));
-      *(v223 + 20) = v241;
-      *(v223 + 36) = ((*(v228 + 244) + (*(v234 + 36) * *(v228 + 248))) + (*(v234 + 40) * *(v228 + 252))) + (*&v230 * *(v228 + 248));
-      *(v223 + 40) = ((*(v228 + 256) + (*(v234 + 36) * *(v228 + 260))) + (*(v234 + 40) * *(v228 + 264))) + (*&v230 * *(v228 + 260));
-      *(v223 + 44) = ((*(v228 + 268) + (*(v234 + 36) * *(v228 + 272))) + (*(v234 + 40) * *(v228 + 276))) + (*&v230 * *(v228 + 272));
-      *(v223 + 48) = ((*(v228 + 280) + (*(v234 + 36) * *(v228 + 284))) + (*(v234 + 40) * *(v228 + 288))) + (*&v230 * *(v228 + 284));
-      *(v223 + 80) = ((*(v228 + 292) + (*(v234 + 36) * *(v228 + 296))) + (*(v234 + 40) * *(v228 + 300))) + (*&v230 * *(v228 + 296));
-      *(v223 + 52) = *(v227 + 52);
-      v242 = *(v227 + 96);
-      v243 = *(v227 + 112);
-      v244 = *(v227 + 144);
-      *(v223 + 128) = *(v227 + 128);
-      *(v223 + 144) = v244;
-      *(v223 + 96) = v242;
-      *(v223 + 112) = v243;
-      *(v223 + 68) = *(v227 + 68);
-      LOBYTE(v234) = *(v227 + 70);
-      v225 += 32;
-      v227 += 160;
-      *(v223 + 70) = v234;
-      v228 += 307;
-      v221 += 32;
-      v223 += 160;
+      *styles11 = ((*(spriteInfos3 + 76) + (*&v231 * *(spriteInfos3 + 80))) + (v239 * *(spriteInfos3 + 84))) + (*&v230 * *(spriteInfos3 + 80));
+      *(styles11 + 56) = ((*(spriteInfos3 + 88) + (*&v231 * *(spriteInfos3 + 92))) + (v239 * *(spriteInfos3 + 96))) + (*&v230 * *(spriteInfos3 + 92));
+      *(styles11 + 60) = ((*(spriteInfos3 + 100) + (*&v231 * *(spriteInfos3 + 104))) + (v239 * *(spriteInfos3 + 108))) + (*&v230 * *(spriteInfos3 + 104));
+      *(styles11 + 64) = ((*(spriteInfos3 + 112) + (*&v231 * *(spriteInfos3 + 116))) + (v239 * *(spriteInfos3 + 120))) + (*&v230 * *(spriteInfos3 + 116));
+      *&v233 = ((*(spriteInfos3 + 124) + (*&v231 * *(spriteInfos3 + 128))) + (v239 * *(spriteInfos3 + 132))) + (*&v230 * *(spriteInfos3 + 128));
+      *(styles11 + 72) = v233;
+      *(&v233 + 1) = ((*(spriteInfos3 + 136) + (*(v234 + 36) * *(spriteInfos3 + 140))) + (*(v234 + 40) * *(spriteInfos3 + 144))) + (*&v230 * *(spriteInfos3 + 140));
+      *(styles11 + 72) = v233;
+      v240 = *(styles11 + 4);
+      *&v240 = ((*(spriteInfos3 + 148) + (*(v234 + 36) * *(spriteInfos3 + 152))) + (*(v234 + 40) * *(spriteInfos3 + 156))) + (*&v230 * *(spriteInfos3 + 152));
+      *(styles11 + 4) = v240;
+      *(&v240 + 1) = ((*(spriteInfos3 + 160) + (*(v234 + 36) * *(spriteInfos3 + 164))) + (*(v234 + 40) * *(spriteInfos3 + 168))) + (*&v230 * *(spriteInfos3 + 164));
+      *(styles11 + 4) = v240;
+      *(&v240 + 2) = ((*(spriteInfos3 + 172) + (*(v234 + 36) * *(spriteInfos3 + 176))) + (*(v234 + 40) * *(spriteInfos3 + 180))) + (*&v230 * *(spriteInfos3 + 176));
+      *(styles11 + 4) = v240;
+      *(&v240 + 3) = ((*(spriteInfos3 + 184) + (*(v234 + 36) * *(spriteInfos3 + 188))) + (*(v234 + 40) * *(spriteInfos3 + 192))) + (*&v230 * *(spriteInfos3 + 188));
+      *(styles11 + 4) = v240;
+      v241 = *(styles11 + 20);
+      *&v241 = ((*(spriteInfos3 + 196) + (*(v234 + 36) * *(spriteInfos3 + 200))) + (*(v234 + 40) * *(spriteInfos3 + 204))) + (*&v230 * *(spriteInfos3 + 200));
+      *(styles11 + 20) = v241;
+      *(&v241 + 1) = ((*(spriteInfos3 + 208) + (*(v234 + 36) * *(spriteInfos3 + 212))) + (*(v234 + 40) * *(spriteInfos3 + 216))) + (*&v230 * *(spriteInfos3 + 212));
+      *(styles11 + 20) = v241;
+      *(&v241 + 2) = ((*(spriteInfos3 + 220) + (*(v234 + 36) * *(spriteInfos3 + 224))) + (*(v234 + 40) * *(spriteInfos3 + 228))) + (*&v230 * *(spriteInfos3 + 224));
+      *(styles11 + 20) = v241;
+      *(&v241 + 3) = ((*(spriteInfos3 + 232) + (*(v234 + 36) * *(spriteInfos3 + 236))) + (*(v234 + 40) * *(spriteInfos3 + 240))) + (*&v230 * *(spriteInfos3 + 236));
+      *(styles11 + 20) = v241;
+      *(styles11 + 36) = ((*(spriteInfos3 + 244) + (*(v234 + 36) * *(spriteInfos3 + 248))) + (*(v234 + 40) * *(spriteInfos3 + 252))) + (*&v230 * *(spriteInfos3 + 248));
+      *(styles11 + 40) = ((*(spriteInfos3 + 256) + (*(v234 + 36) * *(spriteInfos3 + 260))) + (*(v234 + 40) * *(spriteInfos3 + 264))) + (*&v230 * *(spriteInfos3 + 260));
+      *(styles11 + 44) = ((*(spriteInfos3 + 268) + (*(v234 + 36) * *(spriteInfos3 + 272))) + (*(v234 + 40) * *(spriteInfos3 + 276))) + (*&v230 * *(spriteInfos3 + 272));
+      *(styles11 + 48) = ((*(spriteInfos3 + 280) + (*(v234 + 36) * *(spriteInfos3 + 284))) + (*(v234 + 40) * *(spriteInfos3 + 288))) + (*&v230 * *(spriteInfos3 + 284));
+      *(styles11 + 80) = ((*(spriteInfos3 + 292) + (*(v234 + 36) * *(spriteInfos3 + 296))) + (*(v234 + 40) * *(spriteInfos3 + 300))) + (*&v230 * *(spriteInfos3 + 296));
+      *(styles11 + 52) = *(styles12 + 52);
+      v242 = *(styles12 + 96);
+      v243 = *(styles12 + 112);
+      v244 = *(styles12 + 144);
+      *(styles11 + 128) = *(styles12 + 128);
+      *(styles11 + 144) = v244;
+      *(styles11 + 96) = v242;
+      *(styles11 + 112) = v243;
+      *(styles11 + 68) = *(styles12 + 68);
+      LOBYTE(v234) = *(styles12 + 70);
+      geometries12 += 32;
+      styles12 += 160;
+      *(styles11 + 70) = v234;
+      spriteInfos3 += 307;
+      geometries11 += 32;
+      styles11 += 160;
       --v229;
     }
 
     while (v229);
   }
 
-  v245 = v286;
-  v246 = [v286 entities];
-  v247 = v287;
-  memcpy(v246, [v287 entities], 4 * v106);
-  v248 = v286;
-  v249 = [v286 infos];
-  v250 = v287;
-  memcpy(v249, [v287 infos], 40 * v106);
+  v245 = dataStoreCopy;
+  entities4 = [dataStoreCopy entities];
+  v247 = spriteDataStoreCopy;
+  memcpy(entities4, [spriteDataStoreCopy entities], 4 * v106);
+  v248 = dataStoreCopy;
+  infos5 = [dataStoreCopy infos];
+  v250 = spriteDataStoreCopy;
+  memcpy(infos5, [spriteDataStoreCopy infos], 40 * v106);
   v251 = v219;
   kdebug_trace();
 
   if ([v302 count])
   {
-    v252 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos];
+    spriteInfos4 = [(PXGAnimationDataStore *)v288->_animationDataStore spriteInfos];
     v305[0] = MEMORY[0x277D85DD0];
     v305[1] = 3221225472;
     v305[2] = __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke_16;
@@ -1509,7 +1509,7 @@ LABEL_157:
     [v302 enumerateIndexesUsingBlock:v305];
     if (v106)
     {
-      v253 = (v252 + 304);
+      v253 = (spriteInfos4 + 304);
       do
       {
         if ([v302 containsIndex:*v253])
@@ -1527,8 +1527,8 @@ LABEL_157:
     [(PXGAnimationDataStore *)v288->_animationDataStore checkInGroupAtIndexes:v302];
   }
 
-  v254 = [(PXGAnimationDataStore *)v288->_animationDataStore activeGroupIndexes];
-  if ([v254 count])
+  activeGroupIndexes3 = [(PXGAnimationDataStore *)v288->_animationDataStore activeGroupIndexes];
+  if ([activeGroupIndexes3 count])
   {
     v255 = 1;
   }
@@ -1541,15 +1541,15 @@ LABEL_157:
   [v251 setAnimating:v255];
 
   [v251[2] setInputLayout:obja];
-  *a11 = v251[2];
+  *animationLayout = v251[2];
 
   _Block_object_dispose(&v348, 8);
   _Block_object_dispose(&v361, 8);
 
 LABEL_176:
   [v295 enumerateObjectsUsingBlock:&__block_literal_global_52];
-  [(PXGAnimator *)v285 setPreviousLayoutSnapshot:v275];
-  v285->_lastUpdateTime = a3;
+  [(PXGAnimator *)selfCopy setPreviousLayoutSnapshot:v275];
+  selfCopy->_lastUpdateTime = time;
 }
 
 void __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_inputChangeDetails_inputLayout_viewportShift_animationPresentationSpriteDataStore_animationTargetSpriteDataStore_animationChangeDetails_animationLayout___block_invoke(uint64_t a1, void *a2)
@@ -2447,10 +2447,10 @@ float __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_input
   return result;
 }
 
-- (id)_animationByAnimationIndexForAnimations:(id)a3
+- (id)_animationByAnimationIndexForAnimations:(id)animations
 {
-  v3 = a3;
-  v4 = [v3 count];
+  animationsCopy = animations;
+  v4 = [animationsCopy count];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
@@ -2459,7 +2459,7 @@ float __217__PXGAnimator_computeAnimationStateForTime_inputSpriteDataStore_input
   v13 = v5;
   v14 = v4;
   v6 = v5;
-  [v3 enumerateObjectsUsingBlock:&v9];
+  [animationsCopy enumerateObjectsUsingBlock:&v9];
 
   v7 = [v6 copy];
 
@@ -2481,13 +2481,13 @@ void __55__PXGAnimator__animationByAnimationIndexForAnimations___block_invoke(ui
 
 - (void)dealloc
 {
-  v3 = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
+  activeGroupIndexes = [(PXGAnimationDataStore *)self->_animationDataStore activeGroupIndexes];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __22__PXGAnimator_dealloc__block_invoke;
   v5[3] = &unk_2782ABC08;
   v5[4] = self;
-  [v3 enumerateIndexesUsingBlock:v5];
+  [activeGroupIndexes enumerateIndexesUsingBlock:v5];
 
   [(PXGSpriteDataStore *)self->_doubleSidedSpriteDataStore recycle];
   [(PXGSpriteDataStore *)self->_oldAnimationPresentationSpriteDataStore recycle];

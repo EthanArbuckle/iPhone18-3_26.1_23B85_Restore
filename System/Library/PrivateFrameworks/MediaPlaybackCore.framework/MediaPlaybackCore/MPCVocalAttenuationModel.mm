@@ -1,6 +1,6 @@
 @interface MPCVocalAttenuationModel
-+ (id)_filePathsForModelAtURL:(id)a3;
-+ (id)_plistForModelAtURL:(id)a3 error:(id *)a4;
++ (id)_filePathsForModelAtURL:(id)l;
++ (id)_plistForModelAtURL:(id)l error:(id *)error;
 - (id)description;
 @end
 
@@ -31,8 +31,8 @@
     batchSize = 0;
   }
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BatchSize: %lu", batchSize];
-  [v3 addObject:v7];
+  batchSize = [MEMORY[0x1E696AEC0] stringWithFormat:@"BatchSize: %lu", batchSize];
+  [v3 addObject:batchSize];
 
   if (self)
   {
@@ -69,8 +69,8 @@
     basePath = 0;
   }
 
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"BasePath: %@", basePath];
-  [v3 addObject:v14];
+  basePath = [MEMORY[0x1E696AEC0] stringWithFormat:@"BasePath: %@", basePath];
+  [v3 addObject:basePath];
 
   if (self)
   {
@@ -82,32 +82,32 @@
     plistPath = 0;
   }
 
-  v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Plist: %@", plistPath];
-  [v3 addObject:v16];
+  plistPath = [MEMORY[0x1E696AEC0] stringWithFormat:@"Plist: %@", plistPath];
+  [v3 addObject:plistPath];
 
   v17 = MEMORY[0x1E696AEC0];
   v18 = objc_opt_class();
-  v19 = [v3 msv_compactDescription];
-  v20 = [v17 stringWithFormat:@"<%p - %@> - %@", self, v18, v19];
+  msv_compactDescription = [v3 msv_compactDescription];
+  v20 = [v17 stringWithFormat:@"<%p - %@> - %@", self, v18, msv_compactDescription];
 
   return v20;
 }
 
-+ (id)_filePathsForModelAtURL:(id)a3
++ (id)_filePathsForModelAtURL:(id)l
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = *MEMORY[0x1E695DC30];
   v6 = *MEMORY[0x1E695DB78];
   v29[0] = *MEMORY[0x1E695DC30];
   v29[1] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
-  v19 = v4;
-  v20 = v3;
-  v8 = [v4 enumeratorAtURL:v3 includingPropertiesForKeys:v7 options:4 errorHandler:0];
+  v19 = defaultManager;
+  v20 = lCopy;
+  v8 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v7 options:4 errorHandler:0];
 
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -143,7 +143,7 @@
 
           else
           {
-            [v21 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -154,19 +154,19 @@
     while (v11);
   }
 
-  v17 = [v21 copy];
+  v17 = [array copy];
 
   return v17;
 }
 
-+ (id)_plistForModelAtURL:(id)a3 error:(id *)a4
++ (id)_plistForModelAtURL:(id)l error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 path];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [lCopy path];
   v21 = 0;
-  v8 = [v6 contentsOfDirectoryAtPath:v7 error:&v21];
+  v8 = [defaultManager contentsOfDirectoryAtPath:path error:&v21];
   v9 = v21;
 
   if (!v9)
@@ -177,8 +177,8 @@
     {
       if ([v13 count] < 2)
       {
-        v19 = [v13 firstObject];
-        v12 = [MEMORY[0x1E695DFF8] URLWithString:v19 relativeToURL:v5];
+        firstObject = [v13 firstObject];
+        v12 = [MEMORY[0x1E695DFF8] URLWithString:firstObject relativeToURL:lCopy];
 
         goto LABEL_14;
       }
@@ -190,7 +190,7 @@
         *buf = 134218242;
         v23 = v15;
         v24 = 2114;
-        v25 = v5;
+        v25 = lCopy;
         v16 = "[AP] - MPCVAModel - More than one [%ld] plist found at %{public}@";
         v17 = v14;
         v18 = 22;
@@ -205,7 +205,7 @@ LABEL_11:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v23 = v5;
+        v23 = lCopy;
         v16 = "[AP] - MPCVAModel - No plist found at %{public}@";
         v17 = v14;
         v18 = 12;
@@ -223,7 +223,7 @@ LABEL_14:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543618;
-    v23 = v5;
+    v23 = lCopy;
     v24 = 2114;
     v25 = v9;
     _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_ERROR, "[AP] - MPCVAModel - Unable to retrieve content at %{public}@: %{public}@", buf, 0x16u);
@@ -231,7 +231,7 @@ LABEL_14:
 
   v11 = v9;
   v12 = 0;
-  *a4 = v9;
+  *error = v9;
 LABEL_15:
 
   return v12;

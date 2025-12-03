@@ -1,28 +1,28 @@
 @interface ICCreateContainerRequest
-- (id)_bodyDataForDatabaseRevision:(unsigned int)a3 playlistProperties:(id)a4 trackList:(id)a5;
-- (id)canonicalResponseForResponse:(id)a3;
+- (id)_bodyDataForDatabaseRevision:(unsigned int)revision playlistProperties:(id)properties trackList:(id)list;
+- (id)canonicalResponseForResponse:(id)response;
 @end
 
 @implementation ICCreateContainerRequest
 
-- (id)_bodyDataForDatabaseRevision:(unsigned int)a3 playlistProperties:(id)a4 trackList:(id)a5
+- (id)_bodyDataForDatabaseRevision:(unsigned int)revision playlistProperties:(id)properties trackList:(id)list
 {
-  v10 = a4;
-  v11 = a5;
-  v6 = v11;
-  v7 = v10;
+  propertiesCopy = properties;
+  listCopy = list;
+  v6 = listCopy;
+  v7 = propertiesCopy;
   v8 = ICDAAPUtilitiesCreateDataForItemKindContainer();
 
   return v8;
 }
 
-- (id)canonicalResponseForResponse:(id)a3
+- (id)canonicalResponseForResponse:(id)response
 {
-  v3 = [(ICDResponse *)ICCreateContainerResponse responseWithResponse:a3];
-  v4 = [v3 responseData];
-  if ([v4 length])
+  v3 = [(ICDResponse *)ICCreateContainerResponse responseWithResponse:response];
+  responseData = [v3 responseData];
+  if ([responseData length])
   {
-    v5 = [NSInputStream inputStreamWithData:v4];
+    v5 = [NSInputStream inputStreamWithData:responseData];
     v6 = [[DKDAAPParser alloc] initWithStream:v5];
     v7 = objc_alloc_init(CreateContainerResponseParserDelegate);
     [v6 setDelegate:v7];

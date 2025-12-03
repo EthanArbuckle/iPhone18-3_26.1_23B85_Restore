@@ -1,6 +1,6 @@
 @interface APSConnectionOffloadInfo
 - (APSConnectionOffloadInfo)init;
-- (APSConnectionOffloadInfo)initWithTlsCipher:(unsigned __int16)a3 ticketLifeTime:(unint64_t)a4 ticketAgeAdd:(unsigned int)a5 ticketCreationTime:(unint64_t)a6 preShareKey:(id)a7 preShareKeyID:(id)a8;
+- (APSConnectionOffloadInfo)initWithTlsCipher:(unsigned __int16)cipher ticketLifeTime:(unint64_t)time ticketAgeAdd:(unsigned int)add ticketCreationTime:(unint64_t)creationTime preShareKey:(id)key preShareKeyID:(id)d;
 - (BOOL)isExpired;
 - (OS_dispatch_data)preShareKey;
 - (OS_dispatch_data)preShareKeyID;
@@ -8,12 +8,12 @@
 - (unint64_t)ticketLifeTime;
 - (unsigned)ticketAgeAdd;
 - (unsigned)tlsCipher;
-- (void)setPreShareKey:(id)a3;
-- (void)setPreShareKeyID:(id)a3;
-- (void)setTicketAgeAdd:(unsigned int)a3;
-- (void)setTicketCreationTime:(unint64_t)a3;
-- (void)setTicketLifeTime:(unint64_t)a3;
-- (void)setTlsCipher:(unsigned __int16)a3;
+- (void)setPreShareKey:(id)key;
+- (void)setPreShareKeyID:(id)d;
+- (void)setTicketAgeAdd:(unsigned int)add;
+- (void)setTicketCreationTime:(unint64_t)time;
+- (void)setTicketLifeTime:(unint64_t)time;
+- (void)setTlsCipher:(unsigned __int16)cipher;
 @end
 
 @implementation APSConnectionOffloadInfo
@@ -25,11 +25,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTlsCipher:(unsigned __int16)a3
+- (void)setTlsCipher:(unsigned __int16)cipher
 {
   v5 = OBJC_IVAR___APSConnectionOffloadInfo_tlsCipher;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = cipher;
 }
 
 - (unint64_t)ticketLifeTime
@@ -39,11 +39,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTicketLifeTime:(unint64_t)a3
+- (void)setTicketLifeTime:(unint64_t)time
 {
   v5 = OBJC_IVAR___APSConnectionOffloadInfo_ticketLifeTime;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = time;
 }
 
 - (unsigned)ticketAgeAdd
@@ -53,11 +53,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTicketAgeAdd:(unsigned int)a3
+- (void)setTicketAgeAdd:(unsigned int)add
 {
   v5 = OBJC_IVAR___APSConnectionOffloadInfo_ticketAgeAdd;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = add;
 }
 
 - (unint64_t)ticketCreationTime
@@ -67,11 +67,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTicketCreationTime:(unint64_t)a3
+- (void)setTicketCreationTime:(unint64_t)time
 {
   v5 = OBJC_IVAR___APSConnectionOffloadInfo_ticketCreationTime;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = time;
 }
 
 - (OS_dispatch_data)preShareKey
@@ -81,13 +81,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPreShareKey:(id)a3
+- (void)setPreShareKey:(id)key
 {
   v5 = OBJC_IVAR___APSConnectionOffloadInfo_preShareKey;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = key;
+  keyCopy = key;
 }
 
 - (OS_dispatch_data)preShareKeyID
@@ -97,34 +97,34 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPreShareKeyID:(id)a3
+- (void)setPreShareKeyID:(id)d
 {
   v5 = OBJC_IVAR___APSConnectionOffloadInfo_preShareKeyID;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = d;
+  dCopy = d;
 }
 
 - (BOOL)isExpired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000E3390();
 
   return v3;
 }
 
-- (APSConnectionOffloadInfo)initWithTlsCipher:(unsigned __int16)a3 ticketLifeTime:(unint64_t)a4 ticketAgeAdd:(unsigned int)a5 ticketCreationTime:(unint64_t)a6 preShareKey:(id)a7 preShareKeyID:(id)a8
+- (APSConnectionOffloadInfo)initWithTlsCipher:(unsigned __int16)cipher ticketLifeTime:(unint64_t)time ticketAgeAdd:(unsigned int)add ticketCreationTime:(unint64_t)creationTime preShareKey:(id)key preShareKeyID:(id)d
 {
-  v14 = a7;
-  v15 = a8;
+  keyCopy = key;
+  dCopy = d;
   sub_1000D19F8(1);
-  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_tlsCipher) = a3;
-  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_ticketLifeTime) = a4;
-  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_ticketAgeAdd) = a5;
-  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_ticketCreationTime) = a6;
-  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_preShareKey) = v14;
-  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_preShareKeyID) = v15;
+  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_tlsCipher) = cipher;
+  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_ticketLifeTime) = time;
+  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_ticketAgeAdd) = add;
+  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_ticketCreationTime) = creationTime;
+  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_preShareKey) = keyCopy;
+  *(&self->super.isa + OBJC_IVAR___APSConnectionOffloadInfo_preShareKeyID) = dCopy;
   v17.receiver = self;
   v17.super_class = type metadata accessor for ConnectionOffloadInfo();
   return [(APSConnectionOffloadInfo *)&v17 init];

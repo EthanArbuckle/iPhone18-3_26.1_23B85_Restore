@@ -1,12 +1,12 @@
 @interface INRelevanceProvider
 - (INRelevanceProvider)init;
-- (INRelevanceProvider)initWithCoder:(id)a3;
+- (INRelevanceProvider)initWithCoder:(id)coder;
 - (id)_init;
 @end
 
 @implementation INRelevanceProvider
 
-- (INRelevanceProvider)initWithCoder:(id)a3
+- (INRelevanceProvider)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INRelevanceProvider;

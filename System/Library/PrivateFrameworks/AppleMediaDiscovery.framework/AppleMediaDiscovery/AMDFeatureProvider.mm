@@ -1,21 +1,21 @@
 @interface AMDFeatureProvider
-+ (id)getProviderForSource:(id)a3 WithDomain:(id)a4;
-- (id)fetchOutputRemapDictForUsecase:(id)a3;
-- (id)getFeatureWithName:(id)a3 withColumn:(id)a4 error:(id *)a5;
-- (void)storeFeatureData:(id)a3 error:(id *)a4;
-- (void)storeOutputRemapData:(id)a3 error:(id *)a4;
++ (id)getProviderForSource:(id)source WithDomain:(id)domain;
+- (id)fetchOutputRemapDictForUsecase:(id)usecase;
+- (id)getFeatureWithName:(id)name withColumn:(id)column error:(id *)error;
+- (void)storeFeatureData:(id)data error:(id *)error;
+- (void)storeOutputRemapData:(id)data error:(id *)error;
 @end
 
 @implementation AMDFeatureProvider
 
-+ (id)getProviderForSource:(id)a3 WithDomain:(id)a4
++ (id)getProviderForSource:(id)source WithDomain:(id)domain
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
+  objc_storeStrong(&v8, domain);
   if (location[0] && (([location[0] isEqualToString:@"request"] & 1) != 0 || (objc_msgSend(location[0], "isEqualToString:", @"model") & 1) != 0))
   {
     v10 = +[AMDMemoryBasedProvider sharedProvider];
@@ -34,15 +34,15 @@
   return v5;
 }
 
-- (id)getFeatureWithName:(id)a3 withColumn:(id)a4 error:(id *)a5
+- (id)getFeatureWithName:(id)name withColumn:(id)column error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12[1] = a5;
+  objc_storeStrong(&v13, column);
+  v12[1] = error;
   v12[0] = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v11 = 16;
   if (os_log_type_enabled(v12[0], OS_LOG_TYPE_ERROR))
@@ -59,24 +59,24 @@
   return 0;
 }
 
-- (void)storeFeatureData:(id)a3 error:(id *)a4
+- (void)storeFeatureData:(id)data error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v6 = [AMDError allocError:29 withMessage:@"Store operation in base class AMDFeatureProvider not supported"];
   v4 = v6;
-  *a4 = v6;
+  *error = v6;
   objc_storeStrong(location, 0);
 }
 
-- (id)fetchOutputRemapDictForUsecase:(id)a3
+- (id)fetchOutputRemapDictForUsecase:(id)usecase
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, usecase);
   v8 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v7 = 16;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -92,13 +92,13 @@
   return 0;
 }
 
-- (void)storeOutputRemapData:(id)a3 error:(id *)a4
+- (void)storeOutputRemapData:(id)data error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9[1] = a4;
+  objc_storeStrong(location, data);
+  v9[1] = error;
   v9[0] = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v8 = 16;
   if (os_log_type_enabled(v9[0], OS_LOG_TYPE_ERROR))

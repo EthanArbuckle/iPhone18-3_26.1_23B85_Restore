@@ -1,28 +1,28 @@
 @interface TSPDatabase
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)documentVersion:(id *)a3 closedCleanlyToken:(int64_t *)a4 error:(id *)a5;
-- (BOOL)documentVersion:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)insertDataStateWithSize:(int)a3 identifier:(int64_t *)a4 error:(id *)a5;
-- (BOOL)insertObjectWithIdentifier:(int64_t)a3 stateIdentifier:(const ObjectStateIdentifier *)a4 classType:(int)a5 error:(id *)a6;
-- (BOOL)insertRelationshipWithSourceIdentifier:(int64_t)a3 targetIdentifier:(int64_t)a4 error:(id *)a5;
-- (BOOL)lastObjectIdentifier:(int64_t *)a3 error:(id *)a4;
-- (BOOL)numberOfDatabaseObjects:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)parseArchive:(Message *)a3 forObject:(id)a4 error:(id *)a5;
-- (BOOL)setClosedCleanlyToken:(int64_t)a3 error:(id *)a4;
-- (BOOL)setDocumentVersion:(id)a3 error:(id *)a4;
-- (BOOL)updateDataStateWithIdentifier:(int64_t)a3 size:(int)a4 error:(id *)a5;
-- (BOOL)upgradeFromSchemaVersion:(int)a3 error:(id *)a4;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)documentVersion:(id *)version closedCleanlyToken:(int64_t *)token error:(id *)error;
+- (BOOL)documentVersion:(unint64_t *)version error:(id *)error;
+- (BOOL)insertDataStateWithSize:(int)size identifier:(int64_t *)identifier error:(id *)error;
+- (BOOL)insertObjectWithIdentifier:(int64_t)identifier stateIdentifier:(const ObjectStateIdentifier *)stateIdentifier classType:(int)type error:(id *)error;
+- (BOOL)insertRelationshipWithSourceIdentifier:(int64_t)identifier targetIdentifier:(int64_t)targetIdentifier error:(id *)error;
+- (BOOL)lastObjectIdentifier:(int64_t *)identifier error:(id *)error;
+- (BOOL)numberOfDatabaseObjects:(unint64_t *)objects error:(id *)error;
+- (BOOL)parseArchive:(Message *)archive forObject:(id)object error:(id *)error;
+- (BOOL)setClosedCleanlyToken:(int64_t)token error:(id *)error;
+- (BOOL)setDocumentVersion:(id)version error:(id *)error;
+- (BOOL)updateDataStateWithIdentifier:(int64_t)identifier size:(int)size error:(id *)error;
+- (BOOL)upgradeFromSchemaVersion:(int)version error:(id *)error;
 - (TSPDatabase)init;
-- (TSPDatabase)initWithPath:(id)a3 error:(id *)a4;
-- (id)initReadonlyWithPath:(id)a3 error:(id *)a4;
-- (id)objectFromStatement:(sqlite3_stmt *)a3;
-- (id)queryFirstObjectWithStatement:(sqlite3_stmt *)a3 error:(id *)a4;
-- (id)queryObjectWithIdentifier:(int64_t)a3 error:(id *)a4;
-- (id)queryObjectsWithMessageTypes:(const int *)a3 messageTypesCount:(int)a4 error:(id *)a5;
-- (sqlite3_blob)openBlobForObject:(id)a3 error:(id *)a4;
-- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)a3 error:(id *)a4;
-- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)a3 willWrite:(BOOL)a4 error:(id *)a5;
-- (void)filterIdentifiers:(const void *)a3 error:(id *)a4;
+- (TSPDatabase)initWithPath:(id)path error:(id *)error;
+- (id)initReadonlyWithPath:(id)path error:(id *)error;
+- (id)objectFromStatement:(sqlite3_stmt *)statement;
+- (id)queryFirstObjectWithStatement:(sqlite3_stmt *)statement error:(id *)error;
+- (id)queryObjectWithIdentifier:(int64_t)identifier error:(id *)error;
+- (id)queryObjectsWithMessageTypes:(const int *)types messageTypesCount:(int)count error:(id *)error;
+- (sqlite3_blob)openBlobForObject:(id)object error:(id *)error;
+- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)identifier error:(id *)error;
+- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)identifier willWrite:(BOOL)write error:(id *)error;
+- (void)filterIdentifiers:(const void *)identifiers error:(id *)error;
 @end
 
 @implementation TSPDatabase
@@ -43,18 +43,18 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDatabase)initWithPath:(id)a3 error:(id *)a4
+- (TSPDatabase)initWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v8 = objc_msgSend_stringByAppendingPathComponent_(v6, v7, @"index.db");
+  pathCopy = path;
+  v8 = objc_msgSend_stringByAppendingPathComponent_(pathCopy, v7, @"index.db");
   v17.receiver = self;
   v17.super_class = TSPDatabase;
-  v9 = [(TSUDatabase *)&v17 initWithPath:v8 error:a4];
+  v9 = [(TSUDatabase *)&v17 initWithPath:v8 error:error];
 
   if (v9)
   {
     v12 = objc_alloc(MEMORY[0x277CBEBC0]);
-    inited = objc_msgSend_initFileURLWithPath_(v12, v13, v6);
+    inited = objc_msgSend_initFileURLWithPath_(v12, v13, pathCopy);
     packageURL = v9->_packageURL;
     v9->_packageURL = inited;
 
@@ -63,24 +63,24 @@
 
   else
   {
-    sub_276A59230(a4, v10, v11);
+    sub_276A59230(error, v10, v11);
   }
 
   return v9;
 }
 
-- (id)initReadonlyWithPath:(id)a3 error:(id *)a4
+- (id)initReadonlyWithPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v8 = objc_msgSend_stringByAppendingPathComponent_(v6, v7, @"index.db");
+  pathCopy = path;
+  v8 = objc_msgSend_stringByAppendingPathComponent_(pathCopy, v7, @"index.db");
   v17.receiver = self;
   v17.super_class = TSPDatabase;
-  v9 = [(TSUDatabase *)&v17 initReadonlyWithPath:v8 error:a4];
+  v9 = [(TSUDatabase *)&v17 initReadonlyWithPath:v8 error:error];
 
   if (v9)
   {
     v12 = objc_alloc(MEMORY[0x277CBEBC0]);
-    inited = objc_msgSend_initFileURLWithPath_(v12, v13, v6);
+    inited = objc_msgSend_initFileURLWithPath_(v12, v13, pathCopy);
     v15 = v9[6];
     v9[6] = inited;
 
@@ -89,28 +89,28 @@
 
   else
   {
-    sub_276A59230(a4, v10, v11);
+    sub_276A59230(error, v10, v11);
   }
 
   return v9;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   v8.receiver = self;
   v8.super_class = TSPDatabase;
   v6 = [(TSUDatabase *)&v8 closeWithError:?];
   if (!v6)
   {
-    sub_276A59230(a3, v4, v5);
+    sub_276A59230(error, v4, v5);
   }
 
   return v6;
 }
 
-- (BOOL)documentVersion:(unint64_t *)a3 error:(id *)a4
+- (BOOL)documentVersion:(unint64_t *)version error:(id *)error
 {
-  if (!a3)
+  if (!version)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDatabase documentVersion:error:]");
@@ -121,31 +121,31 @@
   }
 
   v19 = 0;
-  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v19, "select version from document", a4))
+  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v19, "select version from document", error))
   {
-    if (objc_msgSend_startSingleResultQuery_error_(self, v14, v19, a4))
+    if (objc_msgSend_startSingleResultQuery_error_(self, v14, v19, error))
     {
-      *a3 = sqlite3_column_int64(v19, 0);
+      *version = sqlite3_column_int64(v19, 0);
       v16 = 1;
-      if (objc_msgSend_endSingleResultQuery_shouldFinalize_error_(self, v17, v19, 1, a4))
+      if (objc_msgSend_endSingleResultQuery_shouldFinalize_error_(self, v17, v19, 1, error))
       {
         return v16;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = objc_msgSend_tsp_errorWithCode_(MEMORY[0x277CCA9B8], v14, 6);
+      *error = objc_msgSend_tsp_errorWithCode_(MEMORY[0x277CCA9B8], v14, 6);
     }
   }
 
-  sub_276A59230(a4, v14, v15);
+  sub_276A59230(error, v14, v15);
   return 0;
 }
 
-- (BOOL)lastObjectIdentifier:(int64_t *)a3 error:(id *)a4
+- (BOOL)lastObjectIdentifier:(int64_t *)identifier error:(id *)error
 {
-  if (!a3)
+  if (!identifier)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDatabase lastObjectIdentifier:error:]");
@@ -156,13 +156,13 @@
   }
 
   v20 = 0;
-  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v20, "select max(identifier) from objects", a4) && objc_msgSend_startSingleResultQuery_error_(self, v14, v20, a4))
+  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v20, "select max(identifier) from objects", error) && objc_msgSend_startSingleResultQuery_error_(self, v14, v20, error))
   {
     v16 = sqlite3_column_int64(v20, 0);
-    shouldFinalize_error = objc_msgSend_endSingleResultQuery_shouldFinalize_error_(self, v17, v20, 1, a4);
-    if (a3 && shouldFinalize_error)
+    shouldFinalize_error = objc_msgSend_endSingleResultQuery_shouldFinalize_error_(self, v17, v20, 1, error);
+    if (identifier && shouldFinalize_error)
     {
-      *a3 = v16;
+      *identifier = v16;
       return 1;
     }
 
@@ -172,13 +172,13 @@
     }
   }
 
-  sub_276A59230(a4, v14, v15);
+  sub_276A59230(error, v14, v15);
   return 0;
 }
 
-- (BOOL)numberOfDatabaseObjects:(unint64_t *)a3 error:(id *)a4
+- (BOOL)numberOfDatabaseObjects:(unint64_t *)objects error:(id *)error
 {
-  if (!a3)
+  if (!objects)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDatabase numberOfDatabaseObjects:error:]");
@@ -189,13 +189,13 @@
   }
 
   v20 = 0;
-  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v20, "select count(*) from objects", a4) && objc_msgSend_startSingleResultQuery_error_(self, v14, v20, a4))
+  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v20, "select count(*) from objects", error) && objc_msgSend_startSingleResultQuery_error_(self, v14, v20, error))
   {
     v16 = sqlite3_column_int(v20, 0);
-    shouldFinalize_error = objc_msgSend_endSingleResultQuery_shouldFinalize_error_(self, v17, v20, 1, a4);
-    if (a3 && shouldFinalize_error)
+    shouldFinalize_error = objc_msgSend_endSingleResultQuery_shouldFinalize_error_(self, v17, v20, 1, error);
+    if (objects && shouldFinalize_error)
     {
-      *a3 = v16;
+      *objects = v16;
       return 1;
     }
 
@@ -205,21 +205,21 @@
     }
   }
 
-  sub_276A59230(a4, v14, v15);
+  sub_276A59230(error, v14, v15);
   return 0;
 }
 
-- (void)filterIdentifiers:(const void *)a3 error:(id *)a4
+- (void)filterIdentifiers:(const void *)identifiers error:(id *)error
 {
-  v4 = a3 + 8;
-  if (*a3 == a3 + 8)
+  v4 = identifiers + 8;
+  if (*identifiers == identifiers + 8)
   {
     operator new();
   }
 
   v10 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v11 = *a3;
-  if (*a3 != v4)
+  v11 = *identifiers;
+  if (*identifiers != v4)
   {
     do
     {
@@ -265,26 +265,26 @@
   pStmt = 0;
   v22 = v21;
   v24 = objc_msgSend_cStringUsingEncoding_(v22, v23, 4);
-  if (objc_msgSend_prepareStatement_sql_error_(self, v25, &pStmt, v24, a4))
+  if (objc_msgSend_prepareStatement_sql_error_(self, v25, &pStmt, v24, error))
   {
     operator new();
   }
 
   sqlite3_finalize(pStmt);
   TSUHandleSqlite();
-  sub_276A59230(a4, v26, v27);
+  sub_276A59230(error, v26, v27);
 
   return 0;
 }
 
-- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)a3 error:(id *)a4
+- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)identifier error:(id *)error
 {
   ppBlob = 0;
-  sqlite3_blob_open(*(&self->super.super.isa + *MEMORY[0x277D81390]), "main", "dataStates", "state", a3, 0, &ppBlob);
+  sqlite3_blob_open(*(&self->super.super.isa + *MEMORY[0x277D81390]), "main", "dataStates", "state", identifier, 0, &ppBlob);
   v7 = TSUHandleSqlite();
   if ((v7 & 1) == 0)
   {
-    sub_276A59230(a4, v5, v6);
+    sub_276A59230(error, v5, v6);
   }
 
   if (v7)
@@ -298,13 +298,13 @@
   }
 }
 
-- (sqlite3_blob)openBlobForObject:(id)a3 error:(id *)a4
+- (sqlite3_blob)openBlobForObject:(id)object error:(id *)error
 {
-  v6 = a3;
-  if (objc_msgSend_hasDataState(v6, v7, v8))
+  objectCopy = object;
+  if (objc_msgSend_hasDataState(objectCopy, v7, v8))
   {
-    v11 = objc_msgSend_dataState(v6, v9, v10);
-    v13 = objc_msgSend_openDataStateBlobWithIdentifier_error_(self, v12, v11, a4);
+    v11 = objc_msgSend_dataState(objectCopy, v9, v10);
+    v13 = objc_msgSend_openDataStateBlobWithIdentifier_error_(self, v12, v11, error);
   }
 
   else
@@ -314,7 +314,7 @@
       sub_276BD4E10();
     }
 
-    if (*a4)
+    if (*error)
     {
       v13 = 0;
     }
@@ -322,19 +322,19 @@
     else
     {
       objc_msgSend_tsu_errorWithCode_userInfo_(MEMORY[0x277CCA9B8], v9, 1, 0);
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
   }
 
   return v13;
 }
 
-- (id)queryObjectWithIdentifier:(int64_t)a3 error:(id *)a4
+- (id)queryObjectWithIdentifier:(int64_t)identifier error:(id *)error
 {
   pStmt = 0;
-  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &pStmt, "select identifier, class, stateType, state from objects where identifier = ?", a4) && (sqlite3_bind_int64(pStmt, 1, a3), TSUHandleSqlite()))
+  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &pStmt, "select identifier, class, stateType, state from objects where identifier = ?", error) && (sqlite3_bind_int64(pStmt, 1, identifier), TSUHandleSqlite()))
   {
-    v8 = objc_msgSend_queryFirstObjectWithStatement_error_(self, v7, pStmt, a4);
+    v8 = objc_msgSend_queryFirstObjectWithStatement_error_(self, v7, pStmt, error);
     v9 = v8 != 0;
     v10 = v8;
   }
@@ -361,12 +361,12 @@
   return v12;
 }
 
-- (id)queryObjectsWithMessageTypes:(const int *)a3 messageTypesCount:(int)a4 error:(id *)a5
+- (id)queryObjectsWithMessageTypes:(const int *)types messageTypesCount:(int)count error:(id *)error
 {
-  v9 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, a3);
+  v9 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, types);
   pStmt = 0;
   v12 = objc_msgSend_stringWithString_(MEMORY[0x277CCAB68], v10, @"(");
-  if (a4 >= 1)
+  if (count >= 1)
   {
     v13 = 0;
     do
@@ -380,7 +380,7 @@
       ++v13;
     }
 
-    while (a4 != v13);
+    while (count != v13);
   }
 
   objc_msgSend_appendString_(v12, v11, @""));
@@ -388,17 +388,17 @@
   v16 = v15;
   v19 = objc_msgSend_UTF8String(v16, v17, v18);
 
-  v21 = objc_msgSend_prepareStatement_sql_error_(self, v20, &pStmt, v19, a5);
-  if (a4 >= 1)
+  v21 = objc_msgSend_prepareStatement_sql_error_(self, v20, &pStmt, v19, error);
+  if (count >= 1)
   {
     v22 = 0;
-    v23 = a4;
+    countCopy = count;
     do
     {
       if (v21)
       {
         v24 = v22 + 1;
-        sqlite3_bind_int64(pStmt, v22 + 1, a3[v22]);
+        sqlite3_bind_int64(pStmt, v22 + 1, types[v22]);
         v21 = TSUHandleSqlite();
         v22 = v24;
       }
@@ -410,7 +410,7 @@
       }
     }
 
-    while (v22 != v23);
+    while (v22 != countCopy);
   }
 
   v26 = sqlite3_step(pStmt);
@@ -442,18 +442,18 @@
   return v31;
 }
 
-- (id)queryFirstObjectWithStatement:(sqlite3_stmt *)a3 error:(id *)a4
+- (id)queryFirstObjectWithStatement:(sqlite3_stmt *)statement error:(id *)error
 {
-  v6 = sqlite3_step(a3);
+  v6 = sqlite3_step(statement);
   if (v6 != 101)
   {
     if (v6 == 100)
     {
-      v8 = objc_msgSend_objectFromStatement_(self, v7, a3);
+      v8 = objc_msgSend_objectFromStatement_(self, v7, statement);
       goto LABEL_6;
     }
 
-    sqlite3_sql(a3);
+    sqlite3_sql(statement);
     TSUHandleSqlite();
   }
 
@@ -463,13 +463,13 @@ LABEL_6:
   return v8;
 }
 
-- (id)objectFromStatement:(sqlite3_stmt *)a3
+- (id)objectFromStatement:(sqlite3_stmt *)statement
 {
-  v5 = sqlite3_column_int64(a3, 0);
-  v6 = sqlite3_column_int(a3, 1);
-  if (sqlite3_column_int(a3, 2))
+  v5 = sqlite3_column_int64(statement, 0);
+  v6 = sqlite3_column_int(statement, 1);
+  if (sqlite3_column_int(statement, 2))
   {
-    v7 = sqlite3_column_text(a3, 3);
+    v7 = sqlite3_column_text(statement, 3);
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
     v10 = objc_msgSend_initWithCString_encoding_(v8, v9, v7, 4);
     v12 = objc_msgSend_databaseObjectWithIdentifier_classType_fileState_packageURL_(TSPDatabaseObject, v11, v5, v6, v10, self->_packageURL);
@@ -477,21 +477,21 @@ LABEL_6:
 
   else
   {
-    v13 = sqlite3_column_int64(a3, 3);
+    v13 = sqlite3_column_int64(statement, 3);
     v12 = objc_msgSend_databaseObjectWithIdentifier_classType_dataState_(TSPDatabaseObject, v14, v5, v6, v13);
   }
 
   return v12;
 }
 
-- (BOOL)upgradeFromSchemaVersion:(int)a3 error:(id *)a4
+- (BOOL)upgradeFromSchemaVersion:(int)version error:(id *)error
 {
   if (self->_incrementalVacuum)
   {
     v25 = 0;
-    if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v25, "pragma auto_vacuum", a4) && objc_msgSend_startSingleResultQuery_error_(self, a2, v25, a4) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "pragma auto_vacuum = 2", a4))
+    if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v25, "pragma auto_vacuum", error) && objc_msgSend_startSingleResultQuery_error_(self, a2, v25, error) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "pragma auto_vacuum = 2", error))
     {
-      v7 = objc_msgSend_executeUpdateWithSql_error_(self, a2, "vacuum", a4);
+      v7 = objc_msgSend_executeUpdateWithSql_error_(self, a2, "vacuum", error);
     }
 
     else
@@ -505,7 +505,7 @@ LABEL_6:
     v7 = 1;
   }
 
-  if (a3 >= 6)
+  if (version >= 6)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDatabase upgradeFromSchemaVersion:error:]");
@@ -516,14 +516,14 @@ LABEL_6:
     if (v7)
     {
 LABEL_11:
-      shouldFinalize_error = objc_msgSend_beginTransactionWithError_(self, a2, a4);
+      shouldFinalize_error = objc_msgSend_beginTransactionWithError_(self, a2, error);
       goto LABEL_14;
     }
   }
 
   else
   {
-    if (a3 == 5)
+    if (version == 5)
     {
       return 1;
     }
@@ -536,30 +536,30 @@ LABEL_11:
 
   shouldFinalize_error = 0;
 LABEL_14:
-  if (a3 == 1)
+  if (version == 1)
   {
-    if (shouldFinalize_error && objc_msgSend_executeUpdateWithSql_error_(self, a2, "alter table objects rename to temp_migration_objects", a4) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table objects (identifier integer primary key, class integer, stateType integer, state)", a4) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "insert into objects (identifier, class, stateType, state) select identifier, class, stateType, state from temp_migration_objects", a4) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "drop table temp_migration_objects", a4) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "alter table relationships rename to temp_migration_relationships", a4))
+    if (shouldFinalize_error && objc_msgSend_executeUpdateWithSql_error_(self, a2, "alter table objects rename to temp_migration_objects", error) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table objects (identifier integer primary key, class integer, stateType integer, state)", error) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "insert into objects (identifier, class, stateType, state) select identifier, class, stateType, state from temp_migration_objects", error) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "drop table temp_migration_objects", error) && objc_msgSend_executeUpdateWithSql_error_(self, a2, "alter table relationships rename to temp_migration_relationships", error))
     {
-      shouldFinalize_error = objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table relationships (sourceObject integer, targetObject integer, primary key(sourceObject, targetObject))", a4);
+      shouldFinalize_error = objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table relationships (sourceObject integer, targetObject integer, primary key(sourceObject, targetObject))", error);
       v25 = 0;
       if (!shouldFinalize_error)
       {
 LABEL_34:
-        a3 = 2;
+        version = 2;
         goto LABEL_35;
       }
 
-      if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v25, "insert into relationships (sourceObject, targetObject) select sourceObject, targetObject from temp_migration_relationships where updateType != ?", a4))
+      if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v25, "insert into relationships (sourceObject, targetObject) select sourceObject, targetObject from temp_migration_relationships where updateType != ?", error))
       {
         sqlite3_bind_int(v25, 1, 0);
         shouldFinalize_error = TSUHandleSqlite();
         if (shouldFinalize_error)
         {
-          shouldFinalize_error = objc_msgSend_executeUpdate_shouldFinalize_error_(self, a2, v25, 1, a4);
+          shouldFinalize_error = objc_msgSend_executeUpdate_shouldFinalize_error_(self, a2, v25, 1, error);
           v25 = 0;
           if (shouldFinalize_error)
           {
-            shouldFinalize_error = objc_msgSend_executeUpdateWithSql_error_(self, a2, "drop table temp_migration_relationships", a4);
+            shouldFinalize_error = objc_msgSend_executeUpdateWithSql_error_(self, a2, "drop table temp_migration_relationships", error);
           }
         }
 
@@ -571,28 +571,28 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (!a3)
+  if (!version)
   {
-    if (!shouldFinalize_error || !objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table document (version integer, compatibleVersion integer, closedCleanly integer)", a4) || !objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table objects (identifier integer primary key, class integer, stateType integer, state)", a4) || !objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table relationships (sourceObject integer, targetObject integer, primary key(sourceObject, targetObject))", a4) || (objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table dataStates (identifier integer primary key, state blob)", a4) & 1) == 0)
+    if (!shouldFinalize_error || !objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table document (version integer, compatibleVersion integer, closedCleanly integer)", error) || !objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table objects (identifier integer primary key, class integer, stateType integer, state)", error) || !objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table relationships (sourceObject integer, targetObject integer, primary key(sourceObject, targetObject))", error) || (objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table dataStates (identifier integer primary key, state blob)", error) & 1) == 0)
     {
       goto LABEL_60;
     }
 
-    v16 = objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table cullingState (identifier integer primary key, change integer)", a4);
+    v16 = objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table cullingState (identifier integer primary key, change integer)", error);
     goto LABEL_50;
   }
 
 LABEL_35:
-  if (a3 == 2 && shouldFinalize_error)
+  if (version == 2 && shouldFinalize_error)
   {
-    if (objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table cullingState (identifier integer primary key, change integer)", a4))
+    if (objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table cullingState (identifier integer primary key, change integer)", error))
     {
 LABEL_38:
-      v17 = objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table document (version integer, compatibleVersion integer, closedCleanly integer)", a4);
+      v17 = objc_msgSend_executeUpdateWithSql_error_(self, a2, "create table document (version integer, compatibleVersion integer, closedCleanly integer)", error);
       v25 = 0;
       if (v17)
       {
-        if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v25, "insert into document (version, compatibleVersion) values (?, ?)", a4))
+        if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v25, "insert into document (version, compatibleVersion) values (?, ?)", error))
         {
           sqlite3_bind_int64(v25, 1, 0x2CBCC7AB8);
           v17 = TSUHandleSqlite();
@@ -602,7 +602,7 @@ LABEL_38:
             v17 = TSUHandleSqlite();
             if (v17)
             {
-              v17 = objc_msgSend_executeUpdate_shouldFinalize_error_(self, a2, v25, 1, a4);
+              v17 = objc_msgSend_executeUpdate_shouldFinalize_error_(self, a2, v25, 1, error);
             }
           }
         }
@@ -619,8 +619,8 @@ LABEL_38:
 
   else
   {
-    v17 = (a3 != 2) & shouldFinalize_error;
-    if ((a3 - 4) < 0xFFFFFFFE)
+    v17 = (version != 2) & shouldFinalize_error;
+    if ((version - 4) < 0xFFFFFFFE)
     {
       goto LABEL_47;
     }
@@ -634,59 +634,59 @@ LABEL_38:
   v17 = 0;
   v25 = 0;
 LABEL_46:
-  a3 = 4;
+  version = 4;
 LABEL_47:
-  if (a3 != 4 || !v17)
+  if (version != 4 || !v17)
   {
-    if (a3 == 4)
+    if (version == 4)
     {
-      v20 = 5;
+      versionCopy = 5;
     }
 
     else
     {
-      v20 = a3;
+      versionCopy = version;
     }
 
-    if (((a3 != 4) & v17) != 0)
+    if (((version != 4) & v17) != 0)
     {
-      v18 = objc_msgSend_setSchemaVersion_error_(self, a2, v20, a4);
+      v18 = objc_msgSend_setSchemaVersion_error_(self, a2, versionCopy, error);
       goto LABEL_57;
     }
 
 LABEL_60:
-    objc_msgSend_commitTransactionWithError_(self, a2, a4);
+    objc_msgSend_commitTransactionWithError_(self, a2, error);
     goto LABEL_61;
   }
 
-  v16 = objc_msgSend_executeUpdateWithSql_error_(self, a2, "alter table document add column closedCleanly integer", a4);
+  v16 = objc_msgSend_executeUpdateWithSql_error_(self, a2, "alter table document add column closedCleanly integer", error);
 LABEL_50:
   if ((v16 & 1) == 0)
   {
     goto LABEL_60;
   }
 
-  v18 = objc_msgSend_setSchemaVersion_error_(self, a2, 5, a4);
+  v18 = objc_msgSend_setSchemaVersion_error_(self, a2, 5, error);
 LABEL_57:
   v21 = v18;
-  if (objc_msgSend_commitTransactionWithError_(self, v19, a4) && (v21 & 1) != 0)
+  if (objc_msgSend_commitTransactionWithError_(self, v19, error) && (v21 & 1) != 0)
   {
     return 1;
   }
 
 LABEL_61:
-  sub_276A59230(a4, v22, v23);
+  sub_276A59230(error, v22, v23);
   return 0;
 }
 
-- (BOOL)setDocumentVersion:(id)a3 error:(id *)a4
+- (BOOL)setDocumentVersion:(id)version error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = version.var1;
+  var0 = version.var0;
   v22 = 0;
   if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v22, "update document set version=?, compatibleVersion=? where 1=1") && (sqlite3_bind_int64(v22, 1, var0), TSUHandleSqlite()) && (sqlite3_bind_int64(v22, 2, var1), TSUHandleSqlite()))
   {
-    shouldFinalize_error = objc_msgSend_executeUpdate_shouldFinalize_error_(self, v8, v22, 1, a4);
+    shouldFinalize_error = objc_msgSend_executeUpdate_shouldFinalize_error_(self, v8, v22, 1, error);
   }
 
   else
@@ -702,7 +702,7 @@ LABEL_61:
       if ((shouldFinalize_error & 1) == 0)
       {
 LABEL_18:
-        sub_276A59230(a4, v11, v12);
+        sub_276A59230(error, v11, v12);
         return 0;
       }
     }
@@ -732,7 +732,7 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    if (!objc_msgSend_prepareStatement_sql_error_(self, v11, &v22, "insert into document (version, compatibleVersion) values (?, ?)", a4))
+    if (!objc_msgSend_prepareStatement_sql_error_(self, v11, &v22, "insert into document (version, compatibleVersion) values (?, ?)", error))
     {
       goto LABEL_18;
     }
@@ -750,7 +750,7 @@ LABEL_18:
     }
 
     v20 = 1;
-    if ((objc_msgSend_executeUpdate_shouldFinalize_error_(self, v11, v22, 1, a4) & 1) == 0)
+    if ((objc_msgSend_executeUpdate_shouldFinalize_error_(self, v11, v22, 1, error) & 1) == 0)
     {
       goto LABEL_18;
     }
@@ -759,12 +759,12 @@ LABEL_18:
   return v20;
 }
 
-- (BOOL)setClosedCleanlyToken:(int64_t)a3 error:(id *)a4
+- (BOOL)setClosedCleanlyToken:(int64_t)token error:(id *)error
 {
   v21 = 0;
-  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v21, "update document set closedCleanly=? where 1=1", a4) && (sqlite3_bind_int64(v21, 1, a3), TSUHandleSqlite()))
+  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v21, "update document set closedCleanly=? where 1=1", error) && (sqlite3_bind_int64(v21, 1, token), TSUHandleSqlite()))
   {
-    shouldFinalize_error = objc_msgSend_executeUpdate_shouldFinalize_error_(self, v7, v21, 1, a4);
+    shouldFinalize_error = objc_msgSend_executeUpdate_shouldFinalize_error_(self, v7, v21, 1, error);
   }
 
   else
@@ -780,7 +780,7 @@ LABEL_18:
       if ((shouldFinalize_error & 1) == 0)
       {
 LABEL_16:
-        sub_276A59230(a4, v10, v11);
+        sub_276A59230(error, v10, v11);
         return 0;
       }
     }
@@ -810,19 +810,19 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    if (!objc_msgSend_prepareStatement_sql_error_(self, v10, &v21, "insert into document (closedCleanly) values (?)", a4))
+    if (!objc_msgSend_prepareStatement_sql_error_(self, v10, &v21, "insert into document (closedCleanly) values (?)", error))
     {
       goto LABEL_16;
     }
 
-    sqlite3_bind_int64(v21, 1, a3);
+    sqlite3_bind_int64(v21, 1, token);
     if (!TSUHandleSqlite())
     {
       goto LABEL_16;
     }
 
     v19 = 1;
-    if ((objc_msgSend_executeUpdate_shouldFinalize_error_(self, v10, v21, 1, a4) & 1) == 0)
+    if ((objc_msgSend_executeUpdate_shouldFinalize_error_(self, v10, v21, 1, error) & 1) == 0)
     {
       goto LABEL_16;
     }
@@ -831,11 +831,11 @@ LABEL_16:
   return v19;
 }
 
-- (BOOL)documentVersion:(id *)a3 closedCleanlyToken:(int64_t *)a4 error:(id *)a5
+- (BOOL)documentVersion:(id *)version closedCleanlyToken:(int64_t *)token error:(id *)error
 {
-  if (a3)
+  if (version)
   {
-    if (a4)
+    if (token)
     {
       goto LABEL_6;
     }
@@ -849,7 +849,7 @@ LABEL_16:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v9, v13, v10, v12, 479, 0, "invalid nil value for '%{public}s'", "version");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
-    if (a4)
+    if (token)
     {
       goto LABEL_6;
     }
@@ -863,41 +863,41 @@ LABEL_16:
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22);
 LABEL_6:
   v28 = 0;
-  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v28, "select version, compatibleVersion, closedCleanly from document", a5))
+  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &v28, "select version, compatibleVersion, closedCleanly from document", error))
   {
-    if (objc_msgSend_startSingleResultQuery_error_(self, v23, v28, a5))
+    if (objc_msgSend_startSingleResultQuery_error_(self, v23, v28, error))
     {
-      a3->var0 = sqlite3_column_int64(v28, 0);
+      version->var0 = sqlite3_column_int64(v28, 0);
       v25 = 1;
-      a3->var1 = sqlite3_column_int64(v28, 1);
-      *a4 = sqlite3_column_int64(v28, 2);
-      if (objc_msgSend_endSingleResultQuery_shouldFinalize_error_(self, v26, v28, 1, a5))
+      version->var1 = sqlite3_column_int64(v28, 1);
+      *token = sqlite3_column_int64(v28, 2);
+      if (objc_msgSend_endSingleResultQuery_shouldFinalize_error_(self, v26, v28, 1, error))
       {
         return v25;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = objc_msgSend_tsp_errorWithCode_(MEMORY[0x277CCA9B8], v23, 6);
+      *error = objc_msgSend_tsp_errorWithCode_(MEMORY[0x277CCA9B8], v23, 6);
     }
   }
 
-  sub_276A59230(a5, v23, v24);
+  sub_276A59230(error, v23, v24);
   return 0;
 }
 
-- (BOOL)insertObjectWithIdentifier:(int64_t)a3 stateIdentifier:(const ObjectStateIdentifier *)a4 classType:(int)a5 error:(id *)a6
+- (BOOL)insertObjectWithIdentifier:(int64_t)identifier stateIdentifier:(const ObjectStateIdentifier *)stateIdentifier classType:(int)type error:(id *)error
 {
-  v11 = sub_276AE3C74(a4);
-  v13 = objc_msgSend_prepareStatement_sql_error_(self, v12, &self->_insertObjectStatement, "insert into objects (identifier, class, stateType, state) values (?, ?, ?, ?)", a6);
+  v11 = sub_276AE3C74(stateIdentifier);
+  v13 = objc_msgSend_prepareStatement_sql_error_(self, v12, &self->_insertObjectStatement, "insert into objects (identifier, class, stateType, state) values (?, ?, ?, ?)", error);
   if (v13)
   {
-    sqlite3_bind_int64(self->_insertObjectStatement, 1, a3);
+    sqlite3_bind_int64(self->_insertObjectStatement, 1, identifier);
     v13 = TSUHandleSqlite();
     if (v13)
     {
-      sqlite3_bind_int(self->_insertObjectStatement, 2, a5);
+      sqlite3_bind_int(self->_insertObjectStatement, 2, type);
       v13 = TSUHandleSqlite();
       if (v13)
       {
@@ -915,7 +915,7 @@ LABEL_6:
     }
 
     insertObjectStatement = self->_insertObjectStatement;
-    v17 = sub_276AE3C7C(a4, v14);
+    v17 = sub_276AE3C7C(stateIdentifier, v14);
     sqlite3_bind_int64(insertObjectStatement, 4, v17);
     if (!TSUHandleSqlite())
     {
@@ -930,7 +930,7 @@ LABEL_6:
       goto LABEL_13;
     }
 
-    v18 = sub_276AE3D54(a4, v14);
+    v18 = sub_276AE3D54(stateIdentifier, v14);
     v20 = objc_msgSend_maximumLengthOfBytesUsingEncoding_(v18, v19, 4);
     v21 = malloc_type_malloc(v20, 0x100004077774924uLL);
     objc_msgSend_getCString_maxLength_encoding_(v18, v22, v21, v20, 4);
@@ -943,19 +943,19 @@ LABEL_6:
     }
   }
 
-  if (objc_msgSend_executeUpdate_shouldFinalize_error_(self, v14, self->_insertObjectStatement, 0, a6))
+  if (objc_msgSend_executeUpdate_shouldFinalize_error_(self, v14, self->_insertObjectStatement, 0, error))
   {
     return 1;
   }
 
 LABEL_13:
-  sub_276A59230(a6, v14, v15);
+  sub_276A59230(error, v14, v15);
   return 0;
 }
 
-- (BOOL)insertDataStateWithSize:(int)a3 identifier:(int64_t *)a4 error:(id *)a5
+- (BOOL)insertDataStateWithSize:(int)size identifier:(int64_t *)identifier error:(id *)error
 {
-  if (!a4)
+  if (!identifier)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDatabase insertDataStateWithSize:identifier:error:]");
@@ -965,30 +965,30 @@ LABEL_13:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &self->_insertDataStateStatement, "insert into dataStates (state) values (?)", a5) && (sqlite3_bind_zeroblob(self->_insertDataStateStatement, 1, a3), TSUHandleSqlite()) && objc_msgSend_executeUpdate_shouldFinalize_error_(self, v16, self->_insertDataStateStatement, 0, a5))
+  if (objc_msgSend_prepareStatement_sql_error_(self, a2, &self->_insertDataStateStatement, "insert into dataStates (state) values (?)", error) && (sqlite3_bind_zeroblob(self->_insertDataStateStatement, 1, size), TSUHandleSqlite()) && objc_msgSend_executeUpdate_shouldFinalize_error_(self, v16, self->_insertDataStateStatement, 0, error))
   {
-    *a4 = sqlite3_last_insert_rowid(*(&self->super.super.isa + *MEMORY[0x277D81390]));
+    *identifier = sqlite3_last_insert_rowid(*(&self->super.super.isa + *MEMORY[0x277D81390]));
     return 1;
   }
 
   else
   {
-    sub_276A59230(a5, v16, v17);
+    sub_276A59230(error, v16, v17);
     return 0;
   }
 }
 
-- (BOOL)updateDataStateWithIdentifier:(int64_t)a3 size:(int)a4 error:(id *)a5
+- (BOOL)updateDataStateWithIdentifier:(int64_t)identifier size:(int)size error:(id *)error
 {
   if (objc_msgSend_prepareStatement_sql_error_(self, a2, &self->_updateDataStateStatement, "update dataStates set state = ? where identifier = ?"))
   {
-    sqlite3_bind_zeroblob(self->_updateDataStateStatement, 1, a4);
+    sqlite3_bind_zeroblob(self->_updateDataStateStatement, 1, size);
     if (TSUHandleSqlite())
     {
-      sqlite3_bind_int64(self->_updateDataStateStatement, 2, a3);
+      sqlite3_bind_int64(self->_updateDataStateStatement, 2, identifier);
       if (TSUHandleSqlite())
       {
-        if (objc_msgSend_executeUpdate_shouldFinalize_error_(self, v9, self->_updateDataStateStatement, 0, a5))
+        if (objc_msgSend_executeUpdate_shouldFinalize_error_(self, v9, self->_updateDataStateStatement, 0, error))
         {
           return 1;
         }
@@ -996,18 +996,18 @@ LABEL_13:
     }
   }
 
-  sub_276A59230(a5, v9, v10);
+  sub_276A59230(error, v9, v10);
   return 0;
 }
 
-- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)a3 willWrite:(BOOL)a4 error:(id *)a5
+- (sqlite3_blob)openDataStateBlobWithIdentifier:(int64_t)identifier willWrite:(BOOL)write error:(id *)error
 {
   ppBlob = 0;
-  sqlite3_blob_open(*(&self->super.super.isa + *MEMORY[0x277D81390]), "main", "dataStates", "state", a3, a4, &ppBlob);
+  sqlite3_blob_open(*(&self->super.super.isa + *MEMORY[0x277D81390]), "main", "dataStates", "state", identifier, write, &ppBlob);
   v8 = TSUHandleSqlite();
   if ((v8 & 1) == 0)
   {
-    sub_276A59230(a5, v6, v7);
+    sub_276A59230(error, v6, v7);
   }
 
   if (v8)
@@ -1021,17 +1021,17 @@ LABEL_13:
   }
 }
 
-- (BOOL)insertRelationshipWithSourceIdentifier:(int64_t)a3 targetIdentifier:(int64_t)a4 error:(id *)a5
+- (BOOL)insertRelationshipWithSourceIdentifier:(int64_t)identifier targetIdentifier:(int64_t)targetIdentifier error:(id *)error
 {
   if (objc_msgSend_prepareStatement_sql_error_(self, a2, &self->_insertRelationshipStatement, "insert into relationships (sourceObject, targetObject) values (?, ?)"))
   {
-    sqlite3_bind_int64(self->_insertRelationshipStatement, 1, a3);
+    sqlite3_bind_int64(self->_insertRelationshipStatement, 1, identifier);
     if (TSUHandleSqlite())
     {
-      sqlite3_bind_int64(self->_insertRelationshipStatement, 2, a4);
+      sqlite3_bind_int64(self->_insertRelationshipStatement, 2, targetIdentifier);
       if (TSUHandleSqlite())
       {
-        if (objc_msgSend_executeUpdate_shouldFinalize_error_(self, v9, self->_insertRelationshipStatement, 0, a5))
+        if (objc_msgSend_executeUpdate_shouldFinalize_error_(self, v9, self->_insertRelationshipStatement, 0, error))
         {
           return 1;
         }
@@ -1039,33 +1039,33 @@ LABEL_13:
     }
   }
 
-  sub_276A59230(a5, v9, v10);
+  sub_276A59230(error, v9, v10);
   return 0;
 }
 
-- (BOOL)parseArchive:(Message *)a3 forObject:(id)a4 error:(id *)a5
+- (BOOL)parseArchive:(Message *)archive forObject:(id)object error:(id *)error
 {
-  v8 = a4;
+  objectCopy = object;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
   v37 = 0;
-  if (objc_msgSend_hasDataState(v8, v9, v10))
+  if (objc_msgSend_hasDataState(objectCopy, v9, v10))
   {
-    v12 = objc_msgSend_openBlobForObject_error_(self, v11, v8, a5);
+    v12 = objc_msgSend_openBlobForObject_error_(self, v11, objectCopy, error);
     *(v35 + 24) = v12 != 0;
     if (v12)
     {
       sub_276A5C7F4(&v31, v12);
-      google::protobuf::MessageLite::ParseFromZeroCopyStream(a3, &v31);
+      google::protobuf::MessageLite::ParseFromZeroCopyStream(archive, &v31);
     }
   }
 
   else
   {
     v13 = objc_alloc(MEMORY[0x277D811D0]);
-    v16 = objc_msgSend_fileURL(v8, v14, v15);
-    v18 = objc_msgSend_initForReadingURL_error_(v13, v17, v16, a5);
+    v16 = objc_msgSend_fileURL(objectCopy, v14, v15);
+    v18 = objc_msgSend_initForReadingURL_error_(v13, v17, v16, error);
 
     *(v35 + 24) = v18 != 0;
     if (v18)
@@ -1089,12 +1089,12 @@ LABEL_13:
 
       if (*(v35 + 24) == 1)
       {
-        google::protobuf::MessageLite::ParseFromZeroCopyStream(a3, &v31);
+        google::protobuf::MessageLite::ParseFromZeroCopyStream(archive, &v31);
       }
 
-      if (a5)
+      if (error)
       {
-        *a5 = v26[5];
+        *error = v26[5];
       }
 
       _Block_object_dispose(&v25, 8);

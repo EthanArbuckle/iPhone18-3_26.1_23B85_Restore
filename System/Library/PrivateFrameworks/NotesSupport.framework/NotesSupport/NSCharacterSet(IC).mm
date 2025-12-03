@@ -22,8 +22,8 @@
 + (id)ic_attachmentCharacterSet
 {
   v0 = MEMORY[0x1E696AB08];
-  v1 = [MEMORY[0x1E696AEC0] ic_attachmentCharacterString];
-  v2 = [v0 characterSetWithCharactersInString:v1];
+  ic_attachmentCharacterString = [MEMORY[0x1E696AEC0] ic_attachmentCharacterString];
+  v2 = [v0 characterSetWithCharactersInString:ic_attachmentCharacterString];
 
   return v2;
 }
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __51__NSCharacterSet_IC__ic_hashtagAllowedCharacterSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (ic_hashtagAllowedCharacterSet_token != -1)
   {
     dispatch_once(&ic_hashtagAllowedCharacterSet_token, block);

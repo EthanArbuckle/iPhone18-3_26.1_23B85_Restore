@@ -1,17 +1,17 @@
 @interface MIPluginDataContainer
-+ (id)pluginDataContainerWithIdentifier:(id)a3 forPersona:(id)a4 createIfNeeded:(BOOL)a5 created:(BOOL *)a6 error:(id *)a7;
++ (id)pluginDataContainerWithIdentifier:(id)identifier forPersona:(id)persona createIfNeeded:(BOOL)needed created:(BOOL *)created error:(id *)error;
 - (NSString)parentBundleID;
-- (void)setParentBundleID:(id)a3;
+- (void)setParentBundleID:(id)d;
 @end
 
 @implementation MIPluginDataContainer
 
-+ (id)pluginDataContainerWithIdentifier:(id)a3 forPersona:(id)a4 createIfNeeded:(BOOL)a5 created:(BOOL *)a6 error:(id *)a7
++ (id)pluginDataContainerWithIdentifier:(id)identifier forPersona:(id)persona createIfNeeded:(BOOL)needed created:(BOOL *)created error:(id *)error
 {
-  v9 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_opt_class() containerWithIdentifier:v12 forPersona:v11 ofContentClass:4 createIfNeeded:v9 created:a6 error:a7];
+  neededCopy = needed;
+  personaCopy = persona;
+  identifierCopy = identifier;
+  v13 = [objc_opt_class() containerWithIdentifier:identifierCopy forPersona:personaCopy ofContentClass:4 createIfNeeded:neededCopy created:created error:error];
 
   return v13;
 }
@@ -48,7 +48,7 @@ LABEL_6:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v11 = [(MIContainer *)self identifier];
+    identifier = [(MIContainer *)self identifier];
     MOLogWrite();
   }
 
@@ -58,15 +58,15 @@ LABEL_7:
   return v9;
 }
 
-- (void)setParentBundleID:(id)a3
+- (void)setParentBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0;
-  v5 = [(MIContainer *)self setInfoValue:v4 forKey:@"com.apple.MobileInstallation.ParentBundleID" error:&v10];
+  v5 = [(MIContainer *)self setInfoValue:dCopy forKey:@"com.apple.MobileInstallation.ParentBundleID" error:&v10];
   v6 = v10;
   if (v5)
   {
-    v7 = v4;
+    v7 = dCopy;
     parentBundleID = self->_parentBundleID;
     self->_parentBundleID = v7;
   }
@@ -75,7 +75,7 @@ LABEL_7:
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v9 = [(MIContainer *)self identifier];
+      identifier = [(MIContainer *)self identifier];
       MOLogWrite();
     }
 

@@ -1,26 +1,26 @@
 @interface PFCloudKitStoreComparisonCache
-- (BOOL)populate:(id *)a3;
-- (PFCloudKitStoreComparisonCache)initWithStore:(id)a3 otherStore:(id)a4;
-- (id)identifiersForStore:(id)a3;
-- (id)identityRecordNameForStoreWithIdentifier:(id)a3;
-- (id)metadataForObjectWithID:(id)a3;
-- (id)metadataForRecordID:(id)a3 inStore:(id)a4;
-- (id)mirroredRelationshipForObject:(id)a3 relatedToObject:(id)a4 byRelationship:(id)a5;
-- (id)mtmKeysForRecordZone:(id)a3 inStore:(id)a4;
-- (id)mtmKeysForStore:(id)a3;
-- (id)objectIDForIdentifier:(id)a3 inStore:(id)a4;
-- (id)objectIDForRecordID:(id)a3 inStore:(id)a4;
-- (id)recordIDForObjectID:(id)a3;
-- (id)recordIDsRelatedToRecordID:(id)a3 byRelationshipNamed:(id)a4 inStore:(id)a5;
-- (id)recordIdsForStore:(id)a3;
-- (id)sharedZoneIDsForStore:(id)a3;
-- (int64_t)databaseScopeForStoreWithIdentifier:(id)a3;
+- (BOOL)populate:(id *)populate;
+- (PFCloudKitStoreComparisonCache)initWithStore:(id)store otherStore:(id)otherStore;
+- (id)identifiersForStore:(id)store;
+- (id)identityRecordNameForStoreWithIdentifier:(id)identifier;
+- (id)metadataForObjectWithID:(id)d;
+- (id)metadataForRecordID:(id)d inStore:(id)store;
+- (id)mirroredRelationshipForObject:(id)object relatedToObject:(id)toObject byRelationship:(id)relationship;
+- (id)mtmKeysForRecordZone:(id)zone inStore:(id)store;
+- (id)mtmKeysForStore:(id)store;
+- (id)objectIDForIdentifier:(id)identifier inStore:(id)store;
+- (id)objectIDForRecordID:(id)d inStore:(id)store;
+- (id)recordIDForObjectID:(id)d;
+- (id)recordIDsRelatedToRecordID:(id)d byRelationshipNamed:(id)named inStore:(id)store;
+- (id)recordIdsForStore:(id)store;
+- (id)sharedZoneIDsForStore:(id)store;
+- (int64_t)databaseScopeForStoreWithIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitStoreComparisonCache
 
-- (PFCloudKitStoreComparisonCache)initWithStore:(id)a3 otherStore:(id)a4
+- (PFCloudKitStoreComparisonCache)initWithStore:(id)store otherStore:(id)otherStore
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -28,13 +28,13 @@
   v6 = [(PFCloudKitStoreComparisonCache *)&v15 init];
   if (v6)
   {
-    v6->_store = a3;
-    v6->_otherStore = a4;
+    v6->_store = store;
+    v6->_otherStore = otherStore;
     v6->_storeMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-    -[NSManagedObjectContext setPersistentStoreCoordinator:](v6->_storeMoc, "setPersistentStoreCoordinator:", [a3 persistentStoreCoordinator]);
+    -[NSManagedObjectContext setPersistentStoreCoordinator:](v6->_storeMoc, "setPersistentStoreCoordinator:", [store persistentStoreCoordinator]);
     [(NSManagedObjectContext *)v6->_storeMoc _setAllowAncillaryEntities:1];
     storeMoc = v6->_storeMoc;
-    v17[0] = [a3 identifier];
+    v17[0] = [store identifier];
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     if (storeMoc)
     {
@@ -44,11 +44,11 @@
     }
 
     v6->_otherStoreMoc = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-    -[NSManagedObjectContext setPersistentStoreCoordinator:](v6->_otherStoreMoc, "setPersistentStoreCoordinator:", [a4 persistentStoreCoordinator]);
+    -[NSManagedObjectContext setPersistentStoreCoordinator:](v6->_otherStoreMoc, "setPersistentStoreCoordinator:", [otherStore persistentStoreCoordinator]);
     [(NSManagedObjectContext *)v6->_otherStoreMoc _setAllowAncillaryEntities:1];
     otherStoreMoc = v6->_otherStoreMoc;
-    v16 = [a4 identifier];
-    v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
+    identifier = [otherStore identifier];
+    v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&identifier count:1];
     if (otherStoreMoc)
     {
       v12 = [v11 copy];
@@ -72,7 +72,7 @@
   [(PFCloudKitStoreComparisonCache *)&v3 dealloc];
 }
 
-- (BOOL)populate:(id *)a3
+- (BOOL)populate:(id *)populate
 {
   v52[1] = *MEMORY[0x1E69E9840];
   v41 = 0;
@@ -190,9 +190,9 @@
   {
     if (v15)
     {
-      if (a3)
+      if (populate)
       {
-        *a3 = v15;
+        *populate = v15;
       }
     }
 
@@ -259,10 +259,10 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   dispatch_group_leave(v3);
 }
 
-- (id)mirroredRelationshipForObject:(id)a3 relatedToObject:(id)a4 byRelationship:(id)a5
+- (id)mirroredRelationshipForObject:(id)object relatedToObject:(id)toObject byRelationship:(id)relationship
 {
-  v7 = +[PFCloudKitSerializer mtmKeyForObjectWithRecordName:relatedToObjectWithRecordName:byRelationship:withInverse:](PFCloudKitSerializer, [-[PFCloudKitStoreComparisonCache recordIDForObjectID:](self recordIDForObjectID:{objc_msgSend(a3, "objectID")), "recordName"}], objc_msgSend(-[PFCloudKitStoreComparisonCache recordIDForObjectID:](self, "recordIDForObjectID:", objc_msgSend(a4, "objectID")), "recordName"), a5, objc_msgSend(a5, "inverseRelationship"));
-  v8 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [objc_msgSend(objc_msgSend(a3 "objectID")]);
+  v7 = +[PFCloudKitSerializer mtmKeyForObjectWithRecordName:relatedToObjectWithRecordName:byRelationship:withInverse:](PFCloudKitSerializer, [-[PFCloudKitStoreComparisonCache recordIDForObjectID:](self recordIDForObjectID:{objc_msgSend(object, "objectID")), "recordName"}], objc_msgSend(-[PFCloudKitStoreComparisonCache recordIDForObjectID:](self, "recordIDForObjectID:", objc_msgSend(toObject, "objectID")), "recordName"), relationship, objc_msgSend(relationship, "inverseRelationship"));
+  v8 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [objc_msgSend(objc_msgSend(object "objectID")]);
   if (v8)
   {
     v8 = v8[3];
@@ -271,9 +271,9 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   return [v8 objectForKey:v7];
 }
 
-- (id)mtmKeysForStore:(id)a3
+- (id)mtmKeysForStore:(id)store
 {
-  v3 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a3 identifier]);
+  v3 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (v3)
   {
     v4 = *(v3 + 32);
@@ -295,15 +295,15 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   }
 }
 
-- (id)recordIDsRelatedToRecordID:(id)a3 byRelationshipNamed:(id)a4 inStore:(id)a5
+- (id)recordIDsRelatedToRecordID:(id)d byRelationshipNamed:(id)named inStore:(id)store
 {
-  v7 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a5 identifier]);
+  v7 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (v7)
   {
     v7 = v7[6];
   }
 
-  result = [objc_msgSend(v7 objectForKey:{a3), "objectForKey:", a4}];
+  result = [objc_msgSend(v7 objectForKey:{d), "objectForKey:", named}];
   if (!result)
   {
     return NSSet_EmptySet;
@@ -312,20 +312,20 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   return result;
 }
 
-- (id)metadataForObjectWithID:(id)a3
+- (id)metadataForObjectWithID:(id)d
 {
-  v4 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [objc_msgSend(a3 "persistentStore")]);
+  v4 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [objc_msgSend(d "persistentStore")]);
   if (v4)
   {
     v4 = v4[8];
   }
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:d];
 }
 
-- (id)recordIdsForStore:(id)a3
+- (id)recordIdsForStore:(id)store
 {
-  v3 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a3 identifier]);
+  v3 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (v3)
   {
     v4 = *(v3 + 72);
@@ -347,31 +347,31 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   }
 }
 
-- (id)objectIDForRecordID:(id)a3 inStore:(id)a4
+- (id)objectIDForRecordID:(id)d inStore:(id)store
 {
-  v5 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a4 identifier]);
+  v5 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (v5)
   {
     v5 = v5[10];
   }
 
-  return [v5 objectForKey:a3];
+  return [v5 objectForKey:d];
 }
 
-- (id)recordIDForObjectID:(id)a3
+- (id)recordIDForObjectID:(id)d
 {
-  v4 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [objc_msgSend(a3 "persistentStore")]);
+  v4 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [objc_msgSend(d "persistentStore")]);
   if (v4)
   {
     v4 = v4[11];
   }
 
-  return [v4 objectForKey:a3];
+  return [v4 objectForKey:d];
 }
 
-- (id)identityRecordNameForStoreWithIdentifier:(id)a3
+- (id)identityRecordNameForStoreWithIdentifier:(id)identifier
 {
-  result = [(NSMutableDictionary *)self->_storeUUIDToStoreCache objectForKey:a3];
+  result = [(NSMutableDictionary *)self->_storeUUIDToStoreCache objectForKey:identifier];
   if (result)
   {
     return *(result + 16);
@@ -380,9 +380,9 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   return result;
 }
 
-- (int64_t)databaseScopeForStoreWithIdentifier:(id)a3
+- (int64_t)databaseScopeForStoreWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_storeUUIDToStoreCache objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_storeUUIDToStoreCache objectForKey:identifier];
   if (v3)
   {
     v3 = v3[17];
@@ -391,9 +391,9 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   return [v3 unsignedIntegerValue];
 }
 
-- (id)sharedZoneIDsForStore:(id)a3
+- (id)sharedZoneIDsForStore:(id)store
 {
-  result = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a3 identifier]);
+  result = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (result)
   {
     return *(result + 13);
@@ -402,15 +402,15 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   return result;
 }
 
-- (id)mtmKeysForRecordZone:(id)a3 inStore:(id)a4
+- (id)mtmKeysForRecordZone:(id)zone inStore:(id)store
 {
-  v5 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a4 identifier]);
+  v5 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (v5)
   {
     v5 = v5[5];
   }
 
-  result = [v5 objectForKey:a3];
+  result = [v5 objectForKey:zone];
   if (!result)
   {
     return NSSet_EmptySet;
@@ -419,20 +419,20 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   return result;
 }
 
-- (id)objectIDForIdentifier:(id)a3 inStore:(id)a4
+- (id)objectIDForIdentifier:(id)identifier inStore:(id)store
 {
-  v5 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a4 identifier]);
+  v5 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (v5)
   {
     v5 = v5[2];
   }
 
-  return [v5 objectForKey:a3];
+  return [v5 objectForKey:identifier];
 }
 
-- (id)identifiersForStore:(id)a3
+- (id)identifiersForStore:(id)store
 {
-  v3 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a3 identifier]);
+  v3 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (v3)
   {
     v4 = *(v3 + 8);
@@ -454,15 +454,15 @@ void __43__PFCloudKitStoreComparisonCache_populate___block_invoke_2(uint64_t *a1
   }
 }
 
-- (id)metadataForRecordID:(id)a3 inStore:(id)a4
+- (id)metadataForRecordID:(id)d inStore:(id)store
 {
-  v5 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [a4 identifier]);
+  v5 = -[NSMutableDictionary objectForKey:](self->_storeUUIDToStoreCache, "objectForKey:", [store identifier]);
   if (v5)
   {
     v5 = v5[7];
   }
 
-  return [v5 objectForKeyedSubscript:a3];
+  return [v5 objectForKeyedSubscript:d];
 }
 
 @end

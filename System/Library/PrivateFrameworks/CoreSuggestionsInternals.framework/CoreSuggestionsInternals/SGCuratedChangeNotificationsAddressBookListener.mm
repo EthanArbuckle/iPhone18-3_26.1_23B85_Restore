@@ -7,8 +7,8 @@
 
 - (void)stopListening
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_notificationCenterToken];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_notificationCenterToken];
 }
 
 - (void)startListening
@@ -16,20 +16,20 @@
   objc_initWeak(&location, self);
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v4 UTF8String];
+  uTF8String = [v4 UTF8String];
   v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-  v7 = dispatch_queue_create(v5, v6);
+  v7 = dispatch_queue_create(uTF8String, v6);
   notificationQueue = self->_notificationQueue;
   self->_notificationQueue = v7;
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = *MEMORY[0x277CBD140];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__SGCuratedChangeNotificationsAddressBookListener_startListening__block_invoke;
   v13[3] = &unk_27894EB18;
   objc_copyWeak(&v14, &location);
-  v11 = [v9 addObserverForName:v10 object:0 queue:0 usingBlock:v13];
+  v11 = [defaultCenter addObserverForName:v10 object:0 queue:0 usingBlock:v13];
   notificationCenterToken = self->_notificationCenterToken;
   self->_notificationCenterToken = v11;
 

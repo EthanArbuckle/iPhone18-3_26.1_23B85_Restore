@@ -1,11 +1,11 @@
 @interface SUCoreDescriptor
-+ (BOOL)isEmergencyUpdate:(id)a3;
-+ (id)cleanProductVersion:(id)a3;
-+ (id)nameForDescriptorAudienceType:(int64_t)a3;
-+ (id)nameForDescriptorPreferredUpdateType:(int64_t)a3;
-+ (id)nameForDescriptorType:(int64_t)a3;
++ (BOOL)isEmergencyUpdate:(id)update;
++ (id)cleanProductVersion:(id)version;
++ (id)nameForDescriptorAudienceType:(int64_t)type;
++ (id)nameForDescriptorPreferredUpdateType:(int64_t)type;
++ (id)nameForDescriptorType:(int64_t)type;
 - (BOOL)fullReplacement;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)notificationEnabled;
 - (BOOL)recommendedUpdateApplicable;
 - (BOOL)recommendedUpdateEnabled;
@@ -30,13 +30,13 @@
 - (NSString)securityAdvisoryNotificationBodyString;
 - (NSString)securityAdvisoryNotificationTitleString;
 - (NSURL)safariUpdateContentBundleURL;
-- (SUCoreDescriptor)initWithCoder:(id)a3;
-- (SUCoreDescriptor)initWithSUAsset:(id)a3 releaseDate:(id)a4 prepareSize:(id)a5 snapshotPrepareSize:(id)a6 applySize:(id)a7 snapshotApplySize:(id)a8 defaultValues:(id)a9;
-- (SUCoreDescriptor)initWithUpdateBrainPath:(id)a3 updateBundlePath:(id)a4 bundleAttributes:(id)a5 descriptorType:(int64_t)a6;
+- (SUCoreDescriptor)initWithCoder:(id)coder;
+- (SUCoreDescriptor)initWithSUAsset:(id)asset releaseDate:(id)date prepareSize:(id)size snapshotPrepareSize:(id)prepareSize applySize:(id)applySize snapshotApplySize:(id)snapshotApplySize defaultValues:(id)values;
+- (SUCoreDescriptor)initWithUpdateBrainPath:(id)path updateBundlePath:(id)bundlePath bundleAttributes:(id)attributes descriptorType:(int64_t)type;
 - (id)criticalOverrideCellularPolicy;
 - (id)description;
 - (id)initSemiSplatDescriptor;
-- (id)overviewWithMaxValueLength:(unint64_t)a3 providingSubstitutionMap:(id)a4;
+- (id)overviewWithMaxValueLength:(unint64_t)length providingSubstitutionMap:(id)map;
 - (id)summary;
 - (id)updateTypeName;
 - (unint64_t)downloadSize;
@@ -45,35 +45,35 @@
 - (unint64_t)refreshInstallationSize;
 - (unint64_t)refreshPrepareSize;
 - (unint64_t)refreshTotalRequiredFreeSpace;
-- (unint64_t)totalRequiredFreeSpaceHelper:(BOOL)a3;
+- (unint64_t)totalRequiredFreeSpaceHelper:(BOOL)helper;
 - (unint64_t)unarchivedSize;
-- (void)assignDescriptorAudienceType:(int64_t)a3 descriptorPreferredUpdateType:(int64_t)a4 assetAudienceUUID:(id)a5;
-- (void)assignDocumentationFromAsset:(id)a3 extendingBundleProperties:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)transferNonAssetPropertiesFromDescriptor:(id)a3;
+- (void)assignDescriptorAudienceType:(int64_t)type descriptorPreferredUpdateType:(int64_t)updateType assetAudienceUUID:(id)d;
+- (void)assignDocumentationFromAsset:(id)asset extendingBundleProperties:(BOOL)properties;
+- (void)encodeWithCoder:(id)coder;
+- (void)transferNonAssetPropertiesFromDescriptor:(id)descriptor;
 @end
 
 @implementation SUCoreDescriptor
 
-- (SUCoreDescriptor)initWithSUAsset:(id)a3 releaseDate:(id)a4 prepareSize:(id)a5 snapshotPrepareSize:(id)a6 applySize:(id)a7 snapshotApplySize:(id)a8 defaultValues:(id)a9
+- (SUCoreDescriptor)initWithSUAsset:(id)asset releaseDate:(id)date prepareSize:(id)size snapshotPrepareSize:(id)prepareSize applySize:(id)applySize snapshotApplySize:(id)snapshotApplySize defaultValues:(id)values
 {
   v168 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v164 = a6;
-  v19 = a7;
-  v163 = a8;
-  v20 = a9;
-  if (v16)
+  assetCopy = asset;
+  dateCopy = date;
+  sizeCopy = size;
+  prepareSizeCopy = prepareSize;
+  applySizeCopy = applySize;
+  snapshotApplySizeCopy = snapshotApplySize;
+  valuesCopy = values;
+  if (assetCopy)
   {
-    v21 = [v16 SUCoreBorder_attributes];
-    v22 = v21;
-    if (v21)
+    sUCoreBorder_attributes = [assetCopy SUCoreBorder_attributes];
+    v22 = sUCoreBorder_attributes;
+    if (sUCoreBorder_attributes)
     {
-      if ([v21 count])
+      if ([sUCoreBorder_attributes count])
       {
-        v162 = v18;
+        v162 = sizeCopy;
         v165.receiver = self;
         v165.super_class = SUCoreDescriptor;
         v23 = [(SUCoreDescriptor *)&v165 init];
@@ -82,14 +82,14 @@
         {
 LABEL_60:
           self = v24;
-          v68 = self;
-          v18 = v162;
+          selfCopy = self;
+          sizeCopy = v162;
           goto LABEL_61;
         }
 
         v23->_descriptorType = 1;
-        v25 = [v16 assetType];
-        v26 = [v25 isEqualToString:@"com.apple.MobileAsset.SFRSoftwareUpdate"];
+        assetType = [assetCopy assetType];
+        v26 = [assetType isEqualToString:@"com.apple.MobileAsset.SFRSoftwareUpdate"];
 
         if (v26)
         {
@@ -98,25 +98,25 @@ LABEL_60:
 
         v24->_descriptorAudienceType = 0;
         v24->_preferredUpdateType = 0;
-        v27 = [v16 assetId];
+        assetId = [assetCopy assetId];
         assetID = v24->_assetID;
-        v24->_assetID = v27;
+        v24->_assetID = assetId;
 
         objc_storeStrong(&v24->_bundleAttributes, v22);
-        v29 = [v16 assetType];
+        assetType2 = [assetCopy assetType];
         softwareUpdateAssetType = v24->_softwareUpdateAssetType;
-        v24->_softwareUpdateAssetType = v29;
+        v24->_softwareUpdateAssetType = assetType2;
 
         documentationAssetType = v24->_documentationAssetType;
         v24->_documentationAssetType = 0;
 
-        v32 = [v16 absoluteAssetId];
+        absoluteAssetId = [assetCopy absoluteAssetId];
         softwareUpdateAssetAbsoluteID = v24->_softwareUpdateAssetAbsoluteID;
-        v24->_softwareUpdateAssetAbsoluteID = v32;
+        v24->_softwareUpdateAssetAbsoluteID = absoluteAssetId;
 
-        v34 = [v16 purpose];
+        purpose = [assetCopy purpose];
         softwareUpdateAssetPurpose = v24->_softwareUpdateAssetPurpose;
-        v24->_softwareUpdateAssetPurpose = v34;
+        v24->_softwareUpdateAssetPurpose = purpose;
 
         documentationAssetAbsoluteID = v24->_documentationAssetAbsoluteID;
         v24->_documentationAssetAbsoluteID = 0;
@@ -179,14 +179,14 @@ LABEL_60:
         releaseDate = v24->_releaseDate;
         v24->_releaseDate = 0;
 
-        v160 = v17;
-        v161 = v19;
-        if (v17)
+        v160 = dateCopy;
+        v161 = applySizeCopy;
+        if (dateCopy)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v65 = v17;
+            v65 = dateCopy;
             v66 = *p_releaseDate;
             *p_releaseDate = v65;
           }
@@ -203,7 +203,7 @@ LABEL_60:
             [v66 setDateFormat:@"yyyy-MM-dd"];
             v72 = [objc_alloc(MEMORY[0x277CBEAF8]) initWithLocaleIdentifier:@"en_US_POSIX"];
             [v66 setLocale:v72];
-            v73 = [v66 dateFromString:v17];
+            v73 = [v66 dateFromString:dateCopy];
             if (v73)
             {
               objc_opt_class();
@@ -228,47 +228,47 @@ LABEL_20:
         supportedDevices = v24->_supportedDevices;
         v24->_supportedDevices = v78;
 
-        v24->_suDownloadSize = [v22 safeULLForKey:*MEMORY[0x277D28908] defaultValue:{objc_msgSend(v20, "safeULLForKey:", *MEMORY[0x277D28908])}];
-        v24->_unarchivedSize = [v22 safeULLForKey:*MEMORY[0x277D28920] defaultValue:{objc_msgSend(v20, "safeULLForKey:", *MEMORY[0x277D28920])}];
-        v24->_minimumSystemPartitionSize = [v22 safeULLForKey:@"ActualMinimumSystemPartition" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"ActualMinimumSystemPartition"}] << 20;
-        v24->_streamingZipCapable = [v22 safeBooleanForKey:*MEMORY[0x277D28910] defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", *MEMORY[0x277D28910])}];
+        v24->_suDownloadSize = [v22 safeULLForKey:*MEMORY[0x277D28908] defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", *MEMORY[0x277D28908])}];
+        v24->_unarchivedSize = [v22 safeULLForKey:*MEMORY[0x277D28920] defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", *MEMORY[0x277D28920])}];
+        v24->_minimumSystemPartitionSize = [v22 safeULLForKey:@"ActualMinimumSystemPartition" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"ActualMinimumSystemPartition"}] << 20;
+        v24->_streamingZipCapable = [v22 safeBooleanForKey:*MEMORY[0x277D28910] defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", *MEMORY[0x277D28910])}];
         v80 = [v22 safeDictionaryForKey:@"SystemPartitionPadding" fromBase:@"updateAsset attributes" withKeyDescription:@"system partition padding"];
         systemPartitionPadding = v24->_systemPartitionPadding;
         v24->_systemPartitionPadding = v80;
 
         v24->_preSUStagingRequiredSize = 0;
         v24->_preSUStagingOptionalSize = 0;
-        v24->_disableReserveSpace = [v22 safeBooleanForKey:@"SUDisableReserveSpace" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"SUDisableReserveSpace"}];
-        v24->_centeralizedPurgeableFactor = [v22 safeULForKey:@"SUCenteralizedPurgeableFactor" defaultValue:{objc_msgSend(v20, "safeULForKey:", @"SUCenteralizedPurgeableFactor"}];
-        v24->_pluginPurgeableFactor = [v22 safeULForKey:@"SUPluginPurgeableFactor" defaultValue:{objc_msgSend(v20, "safeULForKey:", @"SUPluginPurgeableFactor"}];
-        v24->_minReserveSpace = [v22 safeULLForKey:@"SUMinReserveSpace" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"SUMinReserveSpace"}];
-        v24->_maxReserveSpace = [v22 safeULLForKey:@"SUMaxReserveSpace" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"SUMaxReserveSpace"}];
-        v24->_unentitledReserveAmount = [v22 safeULLForKey:@"SUUnentitledReserveAmount" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"SUUnentitledReserveAmount"}];
-        v24->_autoDownloadAllowableOverCellular = [v22 safeBooleanForKey:@"AutomaticDownloadOver3G" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"AutomaticDownloadOver3G"}];
-        v24->_downloadAllowableOverCellular = [v22 safeBooleanForKey:@"AllowableOverCellular" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"AllowableOverCellular"}];
-        v24->_downloadable = [v22 safeBooleanForKey:@"AllowableOTA" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"AllowableOTA"}];
-        v24->_disableSiriVoiceDeletion = [v22 safeBooleanForKey:@"SUDisableSiriVoiceDeletion" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"SUDisableSiriVoiceDeletion"}];
-        v24->_disableCDLevel4 = [v22 safeBooleanForKey:@"SUDisableCDLevel4" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"SUDisableCDLevel4"}];
-        v24->_disableAppDemotion = [v22 safeBooleanForKey:@"SUDisableAppDemotion" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"SUDisableAppDemotion"}];
-        v24->_disableMASuspension = [v22 safeBooleanForKey:@"SUDisableMASuspension" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"SUDisableMASuspension"}];
-        v24->_disableInstallTonight = [v22 safeBooleanForKey:@"SUInstallTonightEnabled" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"SUInstallTonightEnabled"}] ^ 1;
-        v24->_forcePasscodeRequired = [v22 safeBooleanForKey:@"ForcePasscodeRequired" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"ForcePasscodeRequired"}];
-        v24->_rampEnabled = [v22 safeBooleanForKey:@"Ramp" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"Ramp"}];
-        v24->_granularlyRamped = [v22 safeBooleanForKey:@"GranularlyRamped" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"GranularlyRamped"}];
-        v24->_mdmDelayInterval = [v22 safeULLForKey:@"MDMDelayInterval" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"MDMDelayInterval"}];
-        v24->_autoUpdateEnabled = [v22 safeBooleanForKey:@"AutoUpdate" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"AutoUpdate"}];
-        v24->_hideInstallAlert = [v22 safeTriStateForKey:@"__HideInstallAlert" defaultValue:{objc_msgSend(v20, "safeTriStateForKey:", @"__HideInstallAlert"}];
-        v24->_containsSFRContent = [v22 safeBooleanForKey:@"ContainsSFRContent" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"ContainsSFRContent"}];
-        v24->_installAlertInterval = [v22 safeULLForKey:@"InstallAlertInterval" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"InstallAlertInterval"}];
-        v24->_allowAutoDownloadOnBattery = [v22 safeBooleanForKey:@"AllowAutoDownloadOnBattery" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"AllowAutoDownloadOnBattery"}];
-        v24->_autoDownloadOnBatteryDelay = [v22 safeULLForKey:@"AllowAutoDownloadOnBatteryDelay" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"AllowAutoDownloadOnBatteryDelay"}];
-        v24->_autoDownloadOnBatteryMinBattery = [v22 safeULLForKey:@"AutoDownloadOnBatteryMinBattery" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"AutoDownloadOnBatteryMinBattery"}];
+        v24->_disableReserveSpace = [v22 safeBooleanForKey:@"SUDisableReserveSpace" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"SUDisableReserveSpace"}];
+        v24->_centeralizedPurgeableFactor = [v22 safeULForKey:@"SUCenteralizedPurgeableFactor" defaultValue:{objc_msgSend(valuesCopy, "safeULForKey:", @"SUCenteralizedPurgeableFactor"}];
+        v24->_pluginPurgeableFactor = [v22 safeULForKey:@"SUPluginPurgeableFactor" defaultValue:{objc_msgSend(valuesCopy, "safeULForKey:", @"SUPluginPurgeableFactor"}];
+        v24->_minReserveSpace = [v22 safeULLForKey:@"SUMinReserveSpace" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"SUMinReserveSpace"}];
+        v24->_maxReserveSpace = [v22 safeULLForKey:@"SUMaxReserveSpace" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"SUMaxReserveSpace"}];
+        v24->_unentitledReserveAmount = [v22 safeULLForKey:@"SUUnentitledReserveAmount" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"SUUnentitledReserveAmount"}];
+        v24->_autoDownloadAllowableOverCellular = [v22 safeBooleanForKey:@"AutomaticDownloadOver3G" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"AutomaticDownloadOver3G"}];
+        v24->_downloadAllowableOverCellular = [v22 safeBooleanForKey:@"AllowableOverCellular" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"AllowableOverCellular"}];
+        v24->_downloadable = [v22 safeBooleanForKey:@"AllowableOTA" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"AllowableOTA"}];
+        v24->_disableSiriVoiceDeletion = [v22 safeBooleanForKey:@"SUDisableSiriVoiceDeletion" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"SUDisableSiriVoiceDeletion"}];
+        v24->_disableCDLevel4 = [v22 safeBooleanForKey:@"SUDisableCDLevel4" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"SUDisableCDLevel4"}];
+        v24->_disableAppDemotion = [v22 safeBooleanForKey:@"SUDisableAppDemotion" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"SUDisableAppDemotion"}];
+        v24->_disableMASuspension = [v22 safeBooleanForKey:@"SUDisableMASuspension" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"SUDisableMASuspension"}];
+        v24->_disableInstallTonight = [v22 safeBooleanForKey:@"SUInstallTonightEnabled" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"SUInstallTonightEnabled"}] ^ 1;
+        v24->_forcePasscodeRequired = [v22 safeBooleanForKey:@"ForcePasscodeRequired" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"ForcePasscodeRequired"}];
+        v24->_rampEnabled = [v22 safeBooleanForKey:@"Ramp" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"Ramp"}];
+        v24->_granularlyRamped = [v22 safeBooleanForKey:@"GranularlyRamped" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"GranularlyRamped"}];
+        v24->_mdmDelayInterval = [v22 safeULLForKey:@"MDMDelayInterval" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"MDMDelayInterval"}];
+        v24->_autoUpdateEnabled = [v22 safeBooleanForKey:@"AutoUpdate" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"AutoUpdate"}];
+        v24->_hideInstallAlert = [v22 safeTriStateForKey:@"__HideInstallAlert" defaultValue:{objc_msgSend(valuesCopy, "safeTriStateForKey:", @"__HideInstallAlert"}];
+        v24->_containsSFRContent = [v22 safeBooleanForKey:@"ContainsSFRContent" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"ContainsSFRContent"}];
+        v24->_installAlertInterval = [v22 safeULLForKey:@"InstallAlertInterval" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"InstallAlertInterval"}];
+        v24->_allowAutoDownloadOnBattery = [v22 safeBooleanForKey:@"AllowAutoDownloadOnBattery" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"AllowAutoDownloadOnBattery"}];
+        v24->_autoDownloadOnBatteryDelay = [v22 safeULLForKey:@"AllowAutoDownloadOnBatteryDelay" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"AllowAutoDownloadOnBatteryDelay"}];
+        v24->_autoDownloadOnBatteryMinBattery = [v22 safeULLForKey:@"AutoDownloadOnBatteryMinBattery" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"AutoDownloadOnBatteryMinBattery"}];
         v82 = [v22 safeStringForKey:@"SetupCritical"];
         setupCritical = v24->_setupCritical;
         v24->_setupCritical = v82;
 
-        v24->_criticalCellularOverride = [v22 safeBooleanForKey:@"SetupCriticalCellularOverride" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"SetupCriticalCellularOverride"}];
-        v24->_criticalOutOfBoxOnly = [v22 safeBooleanForKey:@"SetupCriticalUpdateOutOfBoxOnly" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"SetupCriticalUpdateOutOfBoxOnly"}];
+        v24->_criticalCellularOverride = [v22 safeBooleanForKey:@"SetupCriticalCellularOverride" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"SetupCriticalCellularOverride"}];
+        v24->_criticalOutOfBoxOnly = [v22 safeBooleanForKey:@"SetupCriticalUpdateOutOfBoxOnly" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"SetupCriticalUpdateOutOfBoxOnly"}];
         v84 = [v22 safeStringForKey:@"LastEmergencyBuild"];
         lastEmergencyBuild = v24->_lastEmergencyBuild;
         v24->_lastEmergencyBuild = v84;
@@ -308,20 +308,20 @@ LABEL_20:
           v24->_mandatoryUpdateOptional = 0;
         }
 
-        v17 = v160;
+        dateCopy = v160;
         v24->_mandatoryUpdateRestrictedToOutOfTheBox = v94;
         v24->_oneShotBuddyDisabled = [v22 safeBooleanForKey:@"DisableOneShotBuddy"];
         v97 = [v22 safeObjectForKey:@"DisableOneShotBuddyBuilds" ofClass:objc_opt_class()];
         oneShotBuddyDisabledBuilds = v24->_oneShotBuddyDisabledBuilds;
         v24->_oneShotBuddyDisabledBuilds = v97;
 
-        v24->_criticalUpdate = [v22 safeBooleanForKey:@"CriticalUpdate" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"CriticalUpdate"}];
+        v24->_criticalUpdate = [v22 safeBooleanForKey:@"CriticalUpdate" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"CriticalUpdate"}];
         v99 = [v22 safeStringForKey:@"ProductType"];
         productType = v24->_productType;
         v24->_productType = v99;
 
-        v24->_autoInstallDelay = [v22 safeULLForKey:@"AutoInstallDelay" defaultValue:{objc_msgSend(v20, "safeULLForKey:", @"AutoInstallDelay"}];
-        v24->_notifyAfter = [v22 safeBooleanForKey:@"NotifyAfter" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:", @"NotifyAfter"}];
+        v24->_autoInstallDelay = [v22 safeULLForKey:@"AutoInstallDelay" defaultValue:{objc_msgSend(valuesCopy, "safeULLForKey:", @"AutoInstallDelay"}];
+        v24->_notifyAfter = [v22 safeBooleanForKey:@"NotifyAfter" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:", @"NotifyAfter"}];
         v101 = [v22 safeStringForKey:@"TargetUpdateBridgeVersion"];
         minimumBridgeVersion = v24->_minimumBridgeVersion;
         v24->_minimumBridgeVersion = v101;
@@ -363,9 +363,9 @@ LABEL_20:
             v117 = objc_alloc(MEMORY[0x277CCACA8]);
             v118 = [v22 safeStringForKey:@"__BaseURL"];
             v119 = [v22 safeStringForKey:@"__RelativePath"];
-            v120 = [v117 initWithFormat:@"%@%@", v118, v119, v159];
+            v159 = [v117 initWithFormat:@"%@%@", v118, v119, v159];
             v121 = v24->_softwareUpdateURL;
-            v24->_softwareUpdateURL = v120;
+            v24->_softwareUpdateURL = v159;
           }
         }
 
@@ -379,64 +379,64 @@ LABEL_20:
 
         if (v162)
         {
-          v126 = [MEMORY[0x277D64460] sharedLogger];
-          v127 = [v126 oslog];
+          mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+          oslog = [mEMORY[0x277D64460] oslog];
 
-          v19 = v161;
-          if (os_log_type_enabled(v127, OS_LOG_TYPE_DEFAULT))
+          applySizeCopy = v161;
+          if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
             v167 = v162;
-            _os_log_impl(&dword_23193C000, v127, OS_LOG_TYPE_DEFAULT, "Override descriptor attribute msuPrepareSize with %{public}@", buf, 0xCu);
+            _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Override descriptor attribute msuPrepareSize with %{public}@", buf, 0xCu);
           }
 
           v24->_msuPrepareSize = [v162 longLongValue];
-          if (v164)
+          if (prepareSizeCopy)
           {
-            v128 = [MEMORY[0x277D64460] sharedLogger];
-            v129 = [v128 oslog];
+            mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+            oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-            if (os_log_type_enabled(v129, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              v167 = v164;
-              _os_log_impl(&dword_23193C000, v129, OS_LOG_TYPE_DEFAULT, "Override descriptor attribute msuSnapshotPrepareSize with %{public}@", buf, 0xCu);
+              v167 = prepareSizeCopy;
+              _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "Override descriptor attribute msuSnapshotPrepareSize with %{public}@", buf, 0xCu);
             }
 
             v130 = 0;
-            v24->_msuSnapshotPrepareSize = [v164 longLongValue];
+            v24->_msuSnapshotPrepareSize = [prepareSizeCopy longLongValue];
             if (!v161)
             {
               goto LABEL_45;
             }
 
 LABEL_38:
-            v132 = [MEMORY[0x277D64460] sharedLogger];
-            v133 = [v132 oslog];
+            mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+            oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-            v19 = v161;
-            if (os_log_type_enabled(v133, OS_LOG_TYPE_DEFAULT))
+            applySizeCopy = v161;
+            if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
               v167 = v161;
-              _os_log_impl(&dword_23193C000, v133, OS_LOG_TYPE_DEFAULT, "Override descriptor attribute installationSize with %{public}@", buf, 0xCu);
+              _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "Override descriptor attribute installationSize with %{public}@", buf, 0xCu);
             }
 
             v24->_installationSize = [v161 longLongValue];
-            if (v163)
+            if (snapshotApplySizeCopy)
             {
-              v134 = [MEMORY[0x277D64460] sharedLogger];
-              v135 = [v134 oslog];
+              mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+              oslog4 = [mEMORY[0x277D64460]4 oslog];
 
-              if (os_log_type_enabled(v135, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v167 = v163;
-                _os_log_impl(&dword_23193C000, v135, OS_LOG_TYPE_DEFAULT, "Override descriptor attribute installationSnapshotSize with %{public}@", buf, 0xCu);
+                v167 = snapshotApplySizeCopy;
+                _os_log_impl(&dword_23193C000, oslog4, OS_LOG_TYPE_DEFAULT, "Override descriptor attribute installationSnapshotSize with %{public}@", buf, 0xCu);
               }
 
-              v24->_installationSnapshotSize = [v163 longLongValue];
-              v19 = v161;
+              v24->_installationSnapshotSize = [snapshotApplySizeCopy longLongValue];
+              applySizeCopy = v161;
             }
 
             goto LABEL_48;
@@ -452,13 +452,13 @@ LABEL_38:
         else
         {
           v130 = SUCoreBorder_MSUAssetCalculatePrepareSize(v22);
-          v19 = v161;
+          applySizeCopy = v161;
           if (v130)
           {
             v24->_msuPrepareSize = 0;
             v24->_msuSnapshotPrepareSize = 0;
-            v131 = [MEMORY[0x277D64428] sharedDiag];
-            [v131 trackAnomaly:@"[DESCRIPTOR]" forReason:@"unable to determine prepare size for installation" withResult:8100 withError:v130];
+            mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+            [mEMORY[0x277D64428] trackAnomaly:@"[DESCRIPTOR]" forReason:@"unable to determine prepare size for installation" withResult:8100 withError:v130];
 
             if (v161)
             {
@@ -484,8 +484,8 @@ LABEL_45:
         {
           v24->_installationSize = 0;
           v24->_installationSnapshotSize = 0;
-          v137 = [MEMORY[0x277D64428] sharedDiag];
-          [v137 trackAnomaly:@"[DESCRIPTOR]" forReason:@"unable to determine apply size for installation" withResult:8100 withError:v136];
+          mEMORY[0x277D64428]2 = [MEMORY[0x277D64428] sharedDiag];
+          [mEMORY[0x277D64428]2 trackAnomaly:@"[DESCRIPTOR]" forReason:@"unable to determine apply size for installation" withResult:8100 withError:v136];
 
           v130 = v136;
         }
@@ -514,7 +514,7 @@ LABEL_48:
         }
 
         v24->_updateType = v138;
-        objc_storeStrong(&v24->_softwareUpdateAsset, a3);
+        objc_storeStrong(&v24->_softwareUpdateAsset, asset);
         documentationAsset = v24->_documentationAsset;
         v24->_documentationAsset = 0;
 
@@ -554,8 +554,8 @@ LABEL_48:
         associatedSplatDescriptor = v24->_associatedSplatDescriptor;
         v24->_associatedSplatDescriptor = 0;
 
-        v24->_disableSplatCombo = [v22 safeBooleanForKey:@"DisableSplombo" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:defaultValue:", @"DisableSplombo", 0)}];
-        v152 = [v22 safeBooleanForKey:@"DisablePreSoftwareUpdateAssetStaging" defaultValue:{objc_msgSend(v20, "safeBooleanForKey:defaultValue:", @"DisablePreSoftwareUpdateAssetStaging", 0)}];
+        v24->_disableSplatCombo = [v22 safeBooleanForKey:@"DisableSplombo" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:defaultValue:", @"DisableSplombo", 0)}];
+        v152 = [v22 safeBooleanForKey:@"DisablePreSoftwareUpdateAssetStaging" defaultValue:{objc_msgSend(valuesCopy, "safeBooleanForKey:defaultValue:", @"DisablePreSoftwareUpdateAssetStaging", 0)}];
         v24->_enablePreSUStaging = v152 ^ 1;
         if (v152)
         {
@@ -564,9 +564,9 @@ LABEL_48:
 
         else
         {
-          if (v20)
+          if (valuesCopy)
           {
-            v153 = [v20 safeBooleanForKey:@"EnablePSUSForOptionalAssets" defaultValue:1];
+            v153 = [valuesCopy safeBooleanForKey:@"EnablePSUSForOptionalAssets" defaultValue:1];
             v154 = v22;
           }
 
@@ -590,66 +590,66 @@ LABEL_48:
         goto LABEL_60;
       }
 
-      v69 = [MEMORY[0x277D64428] sharedDiag];
-      v70 = v69;
+      mEMORY[0x277D64428]3 = [MEMORY[0x277D64428] sharedDiag];
+      v70 = mEMORY[0x277D64428]3;
       v71 = @"unable to create SU descriptor: update asset without attributes";
     }
 
     else
     {
-      v69 = [MEMORY[0x277D64428] sharedDiag];
-      v70 = v69;
+      mEMORY[0x277D64428]3 = [MEMORY[0x277D64428] sharedDiag];
+      v70 = mEMORY[0x277D64428]3;
       v71 = @"unable to create SU descriptor: unable to create attributes dictionary";
     }
 
-    [v69 trackError:@"[DESCRIPTOR]" forReason:v71 withResult:8100 withError:0];
+    [mEMORY[0x277D64428]3 trackError:@"[DESCRIPTOR]" forReason:v71 withResult:8100 withError:0];
 
-    v68 = 0;
+    selfCopy = 0;
 LABEL_61:
 
     goto LABEL_62;
   }
 
-  v67 = [MEMORY[0x277D64428] sharedDiag];
-  [v67 trackError:@"[DESCRIPTOR]" forReason:@"unable to create SU descriptor: nil update asset" withResult:8100 withError:0];
+  mEMORY[0x277D64428]4 = [MEMORY[0x277D64428] sharedDiag];
+  [mEMORY[0x277D64428]4 trackError:@"[DESCRIPTOR]" forReason:@"unable to create SU descriptor: nil update asset" withResult:8100 withError:0];
 
-  v68 = 0;
+  selfCopy = 0;
 LABEL_62:
 
   v157 = *MEMORY[0x277D85DE8];
-  return v68;
+  return selfCopy;
 }
 
-- (SUCoreDescriptor)initWithUpdateBrainPath:(id)a3 updateBundlePath:(id)a4 bundleAttributes:(id)a5 descriptorType:(int64_t)a6
+- (SUCoreDescriptor)initWithUpdateBrainPath:(id)path updateBundlePath:(id)bundlePath bundleAttributes:(id)attributes descriptorType:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (!v11)
+  pathCopy = path;
+  bundlePathCopy = bundlePath;
+  attributesCopy = attributes;
+  v14 = attributesCopy;
+  if (!pathCopy)
   {
-    v90 = [MEMORY[0x277D64428] sharedDiag];
-    v91 = v90;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    v91 = mEMORY[0x277D64428];
     v92 = @"no update brain path was provided on descriptor initialization";
 LABEL_14:
-    [v90 trackError:@"[DESCRIPTOR]" forReason:v92 withResult:8100 withError:0];
+    [mEMORY[0x277D64428] trackError:@"[DESCRIPTOR]" forReason:v92 withResult:8100 withError:0];
 
-    v89 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  if (!v12)
+  if (!bundlePathCopy)
   {
-    v90 = [MEMORY[0x277D64428] sharedDiag];
-    v91 = v90;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    v91 = mEMORY[0x277D64428];
     v92 = @"no update bundle path was provided on descriptor initialization";
     goto LABEL_14;
   }
 
-  if (!v13)
+  if (!attributesCopy)
   {
-    v90 = [MEMORY[0x277D64428] sharedDiag];
-    v91 = v90;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    v91 = mEMORY[0x277D64428];
     v92 = @"no update bundle attributes were provided on descriptor initialization";
     goto LABEL_14;
   }
@@ -662,10 +662,10 @@ LABEL_14:
   {
     v15->_descriptorAudienceType = 0;
     v15->_preferredUpdateType = 0;
-    v15->_descriptorType = a6;
-    objc_storeStrong(&v15->_updateBrainPath, a3);
-    objc_storeStrong(&v16->_updateBundlePath, a4);
-    objc_storeStrong(&v16->_bundleAttributes, a5);
+    v15->_descriptorType = type;
+    objc_storeStrong(&v15->_updateBrainPath, path);
+    objc_storeStrong(&v16->_updateBundlePath, bundlePath);
+    objc_storeStrong(&v16->_bundleAttributes, attributes);
     assetID = v16->_assetID;
     v16->_assetID = 0;
 
@@ -897,10 +897,10 @@ LABEL_14:
   }
 
   self = v16;
-  v89 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v89;
+  return selfCopy;
 }
 
 - (id)initSemiSplatDescriptor
@@ -938,22 +938,22 @@ LABEL_15:
     publisher = v3->_publisher;
     v3->_publisher = 0;
 
-    v12 = [MEMORY[0x277D64418] sharedDevice];
-    v13 = [v12 splatCryptex1ProductVersion];
+    mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ProductVersion = [mEMORY[0x277D64418] splatCryptex1ProductVersion];
     rawProductVersion = v3->_rawProductVersion;
-    v3->_rawProductVersion = v13;
+    v3->_rawProductVersion = splatCryptex1ProductVersion;
 
-    v15 = [MEMORY[0x277D64418] sharedDevice];
-    v16 = [v15 splatCryptex1ProductVersion];
+    mEMORY[0x277D64418]2 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ProductVersion2 = [mEMORY[0x277D64418]2 splatCryptex1ProductVersion];
     productVersion = v3->_productVersion;
-    v3->_productVersion = v16;
+    v3->_productVersion = splatCryptex1ProductVersion2;
 
-    v18 = [MEMORY[0x277D64418] sharedDevice];
-    v19 = [v18 splatCryptex1BuildVersionOverride];
-    v20 = v19;
-    if (v19)
+    mEMORY[0x277D64418]3 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1BuildVersionOverride = [mEMORY[0x277D64418]3 splatCryptex1BuildVersionOverride];
+    v20 = splatCryptex1BuildVersionOverride;
+    if (splatCryptex1BuildVersionOverride)
     {
-      v21 = v19;
+      v21 = splatCryptex1BuildVersionOverride;
       productBuildVersion = v3->_productBuildVersion;
       v3->_productBuildVersion = v21;
     }
@@ -961,28 +961,28 @@ LABEL_15:
     else
     {
       productBuildVersion = [MEMORY[0x277D64418] sharedDevice];
-      v23 = [productBuildVersion splatCryptex1BuildVersion];
+      splatCryptex1BuildVersion = [productBuildVersion splatCryptex1BuildVersion];
       v24 = v3->_productBuildVersion;
-      v3->_productBuildVersion = v23;
+      v3->_productBuildVersion = splatCryptex1BuildVersion;
     }
 
-    v25 = [MEMORY[0x277D64418] sharedDevice];
-    v26 = [v25 splatCryptex1ProductVersionExtra];
+    mEMORY[0x277D64418]4 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ProductVersionExtra = [mEMORY[0x277D64418]4 splatCryptex1ProductVersionExtra];
     productVersionExtra = v3->_productVersionExtra;
-    v3->_productVersionExtra = v26;
+    v3->_productVersionExtra = splatCryptex1ProductVersionExtra;
 
     productSystemName = v3->_productSystemName;
     v3->_productSystemName = @"Security Response";
 
-    v29 = [MEMORY[0x277D64418] sharedDevice];
-    v30 = [v29 splatCryptex1ReleaseType];
+    mEMORY[0x277D64418]5 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1ReleaseType = [mEMORY[0x277D64418]5 splatCryptex1ReleaseType];
     releaseType = v3->_releaseType;
-    v3->_releaseType = v30;
+    v3->_releaseType = splatCryptex1ReleaseType;
 
-    v32 = [MEMORY[0x277D64418] sharedDevice];
-    v33 = [v32 splatCryptex1RestoreVersion];
+    mEMORY[0x277D64418]6 = [MEMORY[0x277D64418] sharedDevice];
+    splatCryptex1RestoreVersion = [mEMORY[0x277D64418]6 splatCryptex1RestoreVersion];
     restoreVersion = v3->_restoreVersion;
-    v3->_restoreVersion = v33;
+    v3->_restoreVersion = splatCryptex1RestoreVersion;
 
     targetUpdateBridgeVersion = v3->_targetUpdateBridgeVersion;
     v3->_targetUpdateBridgeVersion = 0;
@@ -1148,111 +1148,111 @@ LABEL_15:
   return v3;
 }
 
-- (void)assignDocumentationFromAsset:(id)a3 extendingBundleProperties:(BOOL)a4
+- (void)assignDocumentationFromAsset:(id)asset extendingBundleProperties:(BOOL)properties
 {
-  v4 = a4;
-  v6 = a3;
-  [(SUCoreDescriptor *)self setDocumentationAsset:v6];
-  v7 = [v6 assetType];
-  [(SUCoreDescriptor *)self setDocumentationAssetType:v7];
+  propertiesCopy = properties;
+  assetCopy = asset;
+  [(SUCoreDescriptor *)self setDocumentationAsset:assetCopy];
+  assetType = [assetCopy assetType];
+  [(SUCoreDescriptor *)self setDocumentationAssetType:assetType];
 
-  v8 = [v6 absoluteAssetId];
-  [(SUCoreDescriptor *)self setDocumentationAssetAbsoluteID:v8];
+  absoluteAssetId = [assetCopy absoluteAssetId];
+  [(SUCoreDescriptor *)self setDocumentationAssetAbsoluteID:absoluteAssetId];
 
-  v9 = [v6 purpose];
-  [(SUCoreDescriptor *)self setDocumentationAssetPurpose:v9];
+  purpose = [assetCopy purpose];
+  [(SUCoreDescriptor *)self setDocumentationAssetPurpose:purpose];
 
-  v10 = [[SUCoreDocumentation alloc] initWithDocumentationAsset:v6];
+  v10 = [[SUCoreDocumentation alloc] initWithDocumentationAsset:assetCopy];
   [(SUCoreDescriptor *)self setDocumentation:v10];
 
   v11 = objc_alloc(MEMORY[0x277D64470]);
-  v12 = [(SUCoreDescriptor *)self documentation];
-  v13 = [v12 serverAssetMeasurement];
-  v14 = [(SUCoreDescriptor *)self documentation];
-  v15 = [v14 serverAssetAlgorithm];
-  v16 = [v11 initWithProductVersion:0 productBuildVersion:0 releaseType:0 measurement:v13 measurementAlgorithm:v15];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  serverAssetMeasurement = [documentation serverAssetMeasurement];
+  documentation2 = [(SUCoreDescriptor *)self documentation];
+  serverAssetAlgorithm = [documentation2 serverAssetAlgorithm];
+  v16 = [v11 initWithProductVersion:0 productBuildVersion:0 releaseType:0 measurement:serverAssetMeasurement measurementAlgorithm:serverAssetAlgorithm];
   [(SUCoreDescriptor *)self setDocumentationAssetIdentifier:v16];
 
-  if (v4)
+  if (propertiesCopy)
   {
-    v18 = [(SUCoreDescriptor *)self documentation];
-    v17 = [v18 extendDocumentationProperties];
+    documentation3 = [(SUCoreDescriptor *)self documentation];
+    extendDocumentationProperties = [documentation3 extendDocumentationProperties];
   }
 }
 
-- (void)assignDescriptorAudienceType:(int64_t)a3 descriptorPreferredUpdateType:(int64_t)a4 assetAudienceUUID:(id)a5
+- (void)assignDescriptorAudienceType:(int64_t)type descriptorPreferredUpdateType:(int64_t)updateType assetAudienceUUID:(id)d
 {
-  v9 = a5;
-  [(SUCoreDescriptor *)self setDescriptorAudienceType:a3];
-  [(SUCoreDescriptor *)self setPreferredUpdateType:a4];
-  v8 = v9;
-  if (v9)
+  dCopy = d;
+  [(SUCoreDescriptor *)self setDescriptorAudienceType:type];
+  [(SUCoreDescriptor *)self setPreferredUpdateType:updateType];
+  v8 = dCopy;
+  if (dCopy)
   {
-    [(SUCoreDescriptor *)self setAssetAudienceUUID:v9];
-    v8 = v9;
+    [(SUCoreDescriptor *)self setAssetAudienceUUID:dCopy];
+    v8 = dCopy;
   }
 }
 
 - (NSString)humanReadableUpdateName
 {
-  v3 = [(SUCoreDescriptor *)self documentation];
-  v4 = [v3 humanReadableUpdateName];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  humanReadableUpdateName = [documentation humanReadableUpdateName];
 
-  if (!v4)
+  if (!humanReadableUpdateName)
   {
-    v5 = [(SUCoreDescriptor *)self productSystemName];
-    if (v5 && (v6 = v5, [(SUCoreDescriptor *)self productVersion], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+    productSystemName = [(SUCoreDescriptor *)self productSystemName];
+    if (productSystemName && (v6 = productSystemName, [(SUCoreDescriptor *)self productVersion], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
     {
       v8 = objc_alloc(MEMORY[0x277CCACA8]);
-      v9 = [(SUCoreDescriptor *)self productSystemName];
-      v10 = [(SUCoreDescriptor *)self productVersion];
-      v4 = [v8 initWithFormat:@"%@ %@", v9, v10];
+      productSystemName2 = [(SUCoreDescriptor *)self productSystemName];
+      productVersion = [(SUCoreDescriptor *)self productVersion];
+      humanReadableUpdateName = [v8 initWithFormat:@"%@ %@", productSystemName2, productVersion];
     }
 
     else
     {
-      v4 = @"Software Update";
+      humanReadableUpdateName = @"Software Update";
     }
   }
 
   if ([(SUCoreDescriptor *)self splatOnly])
   {
-    v11 = [(SUCoreDescriptor *)self productVersionExtra];
+    productVersionExtra = [(SUCoreDescriptor *)self productVersionExtra];
 
-    if (v11)
+    if (productVersionExtra)
     {
       v12 = objc_alloc(MEMORY[0x277CCACA8]);
-      v13 = [(SUCoreDescriptor *)self productVersionExtra];
-      v14 = [v12 initWithFormat:@"%@ %@", v4, v13];
+      productVersionExtra2 = [(SUCoreDescriptor *)self productVersionExtra];
+      v14 = [v12 initWithFormat:@"%@ %@", humanReadableUpdateName, productVersionExtra2];
 LABEL_11:
 
-      v4 = v14;
+      humanReadableUpdateName = v14;
       goto LABEL_12;
     }
   }
 
-  v15 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-  v16 = [v15 productVersionExtra];
+  associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+  productVersionExtra3 = [associatedSplatDescriptor productVersionExtra];
 
-  if (v16)
+  if (productVersionExtra3)
   {
     v17 = objc_alloc(MEMORY[0x277CCACA8]);
-    v13 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-    v18 = [v13 productVersionExtra];
-    v14 = [v17 initWithFormat:@"%@ %@", v4, v18];
+    productVersionExtra2 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+    v13ProductVersionExtra = [productVersionExtra2 productVersionExtra];
+    v14 = [v17 initWithFormat:@"%@ %@", humanReadableUpdateName, v13ProductVersionExtra];
 
-    v4 = v18;
+    humanReadableUpdateName = v13ProductVersionExtra;
     goto LABEL_11;
   }
 
 LABEL_12:
-  v19 = [MEMORY[0x277D64418] sharedDevice];
-  if ([v19 isBootedOSSecureInternal])
+  mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+  if ([mEMORY[0x277D64418] isBootedOSSecureInternal])
   {
-    v20 = [(SUCoreDescriptor *)self productBuildVersion];
-    if (v20)
+    productBuildVersion = [(SUCoreDescriptor *)self productBuildVersion];
+    if (productBuildVersion)
     {
-      v21 = v20;
+      v21 = productBuildVersion;
       v22 = objc_alloc(MEMORY[0x277D64408]);
       v23 = [v22 initWithProjectName:*MEMORY[0x277D64540]];
       v24 = [v23 getBoolConfigForKey:*MEMORY[0x277D644F0]];
@@ -1263,55 +1263,55 @@ LABEL_12:
       }
 
       v25 = objc_alloc(MEMORY[0x277CCACA8]);
-      v19 = [(SUCoreDescriptor *)self productBuildVersion];
-      v26 = [v25 initWithFormat:@"%@ (%@)", v4, v19];
+      mEMORY[0x277D64418] = [(SUCoreDescriptor *)self productBuildVersion];
+      v26 = [v25 initWithFormat:@"%@ (%@)", humanReadableUpdateName, mEMORY[0x277D64418]];
 
-      v4 = v26;
+      humanReadableUpdateName = v26;
     }
   }
 
 LABEL_17:
 
-  return v4;
+  return humanReadableUpdateName;
 }
 
 - (NSString)humanReadableUpdateTitle
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 humanReadableUpdateTitle];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  humanReadableUpdateTitle = [documentation humanReadableUpdateTitle];
 
-  return v3;
+  return humanReadableUpdateTitle;
 }
 
 - (NSString)humanReadableUpdateVersion
 {
-  v3 = [(SUCoreDescriptor *)self documentation];
-  v4 = [v3 humanReadableUpdateVersion];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  humanReadableUpdateVersion = [documentation humanReadableUpdateVersion];
 
   if ([(SUCoreDescriptor *)self splatOnly])
   {
-    v5 = [(SUCoreDescriptor *)self productVersion];
-    if (v5)
+    productVersion = [(SUCoreDescriptor *)self productVersion];
+    if (productVersion)
     {
-      v6 = v5;
-      v7 = [(SUCoreDescriptor *)self productVersionExtra];
+      v6 = productVersion;
+      productVersionExtra = [(SUCoreDescriptor *)self productVersionExtra];
 
-      if (v7)
+      if (productVersionExtra)
       {
         v8 = objc_alloc(MEMORY[0x277CCACA8]);
-        v9 = [(SUCoreDescriptor *)self productVersion];
-        v10 = [(SUCoreDescriptor *)self productVersionExtra];
-        v11 = [v8 initWithFormat:@"%@ %@", v9, v10];
+        productVersion2 = [(SUCoreDescriptor *)self productVersion];
+        productVersionExtra2 = [(SUCoreDescriptor *)self productVersionExtra];
+        v11 = [v8 initWithFormat:@"%@ %@", productVersion2, productVersionExtra2];
 
-        v4 = v11;
+        humanReadableUpdateVersion = v11;
       }
     }
   }
 
-  v12 = [MEMORY[0x277D64418] sharedDevice];
-  if ([v12 isBootedOSSecureInternal])
+  mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+  if ([mEMORY[0x277D64418] isBootedOSSecureInternal])
   {
-    v13 = v4 == 0;
+    v13 = humanReadableUpdateVersion == 0;
   }
 
   else
@@ -1321,10 +1321,10 @@ LABEL_17:
 
   if (!v13)
   {
-    v14 = [(SUCoreDescriptor *)self productBuildVersion];
-    if (v14)
+    productBuildVersion = [(SUCoreDescriptor *)self productBuildVersion];
+    if (productBuildVersion)
     {
-      v15 = v14;
+      v15 = productBuildVersion;
       v16 = objc_alloc(MEMORY[0x277D64408]);
       v17 = [v16 initWithProjectName:*MEMORY[0x277D64540]];
       v18 = [v17 getBoolConfigForKey:*MEMORY[0x277D644F0]];
@@ -1335,152 +1335,152 @@ LABEL_17:
       }
 
       v19 = objc_alloc(MEMORY[0x277CCACA8]);
-      v12 = [(SUCoreDescriptor *)self productBuildVersion];
-      v20 = [v19 initWithFormat:@"%@ (%@)", v4, v12];
+      mEMORY[0x277D64418] = [(SUCoreDescriptor *)self productBuildVersion];
+      v20 = [v19 initWithFormat:@"%@ (%@)", humanReadableUpdateVersion, mEMORY[0x277D64418]];
 
-      v4 = v20;
+      humanReadableUpdateVersion = v20;
     }
   }
 
 LABEL_13:
 
-  return v4;
+  return humanReadableUpdateVersion;
 }
 
 - (NSString)humanReadableMoreInfoLink
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 humanReadableMoreInfoLink];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  humanReadableMoreInfoLink = [documentation humanReadableMoreInfoLink];
 
-  return v3;
+  return humanReadableMoreInfoLink;
 }
 
 - (BOOL)notificationEnabled
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 notificationEnabled];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  notificationEnabled = [documentation notificationEnabled];
 
-  return v3;
+  return notificationEnabled;
 }
 
 - (NSString)notificationTitleString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 notificationTitleString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  notificationTitleString = [documentation notificationTitleString];
 
-  return v3;
+  return notificationTitleString;
 }
 
 - (NSString)notificationBodyString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 notificationBodyString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  notificationBodyString = [documentation notificationBodyString];
 
-  return v3;
+  return notificationBodyString;
 }
 
 - (BOOL)recommendedUpdateEnabled
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 recommendedUpdateEnabled];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  recommendedUpdateEnabled = [documentation recommendedUpdateEnabled];
 
-  return v3;
+  return recommendedUpdateEnabled;
 }
 
 - (BOOL)recommendedUpdateApplicable
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 recommendedUpdateApplicable];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  recommendedUpdateApplicable = [documentation recommendedUpdateApplicable];
 
-  return v3;
+  return recommendedUpdateApplicable;
 }
 
 - (NSNumber)recommendedUpdateNotificationFrequencyDays
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 recommendedUpdateNotificationFrequencyDays];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  recommendedUpdateNotificationFrequencyDays = [documentation recommendedUpdateNotificationFrequencyDays];
 
-  return v3;
+  return recommendedUpdateNotificationFrequencyDays;
 }
 
 - (NSString)recommendedUpdateMinOSVersion
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 recommendedUpdateMinOSVersion];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  recommendedUpdateMinOSVersion = [documentation recommendedUpdateMinOSVersion];
 
-  return v3;
+  return recommendedUpdateMinOSVersion;
 }
 
 - (NSString)recommendedUpdateMaxOSVersion
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 recommendedUpdateMaxOSVersion];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  recommendedUpdateMaxOSVersion = [documentation recommendedUpdateMaxOSVersion];
 
-  return v3;
+  return recommendedUpdateMaxOSVersion;
 }
 
 - (NSString)recommendedUpdateTitleString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 recommendedUpdateTitleString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  recommendedUpdateTitleString = [documentation recommendedUpdateTitleString];
 
-  return v3;
+  return recommendedUpdateTitleString;
 }
 
 - (NSString)recommendedUpdateAlertBodyString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 recommendedUpdateAlertBodyString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  recommendedUpdateAlertBodyString = [documentation recommendedUpdateAlertBodyString];
 
-  return v3;
+  return recommendedUpdateAlertBodyString;
 }
 
 - (NSString)mandatoryUpdateBodyString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 mandatoryUpdateBodyString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  mandatoryUpdateBodyString = [documentation mandatoryUpdateBodyString];
 
-  return v3;
+  return mandatoryUpdateBodyString;
 }
 
 - (NSString)securityAdvisoryNotificationTitleString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 securityAdvisoryNotificationTitleString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  securityAdvisoryNotificationTitleString = [documentation securityAdvisoryNotificationTitleString];
 
-  return v3;
+  return securityAdvisoryNotificationTitleString;
 }
 
 - (NSString)securityAdvisoryNotificationBodyString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 securityAdvisoryNotificationBodyString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  securityAdvisoryNotificationBodyString = [documentation securityAdvisoryNotificationBodyString];
 
-  return v3;
+  return securityAdvisoryNotificationBodyString;
 }
 
 - (NSString)deviceCompatibilityNotificationTitleString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 deviceCompatibilityNotificationTitleString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  deviceCompatibilityNotificationTitleString = [documentation deviceCompatibilityNotificationTitleString];
 
-  return v3;
+  return deviceCompatibilityNotificationTitleString;
 }
 
 - (NSString)deviceCompatibilityNotificationBodyString
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 deviceCompatibilityNotificationBodyString];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  deviceCompatibilityNotificationBodyString = [documentation deviceCompatibilityNotificationBodyString];
 
-  return v3;
+  return deviceCompatibilityNotificationBodyString;
 }
 
 - (NSURL)safariUpdateContentBundleURL
 {
-  v2 = [(SUCoreDescriptor *)self documentation];
-  v3 = [v2 safariUpdateContentBundleURL];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  safariUpdateContentBundleURL = [documentation safariUpdateContentBundleURL];
 
-  return v3;
+  return safariUpdateContentBundleURL;
 }
 
 - (NSString)publisher
@@ -1507,23 +1507,23 @@ LABEL_13:
 
   else
   {
-    v4 = [MEMORY[0x277D64418] sharedDevice];
-    v5 = [v4 marketingProductName];
+    mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+    marketingProductName = [mEMORY[0x277D64418] marketingProductName];
 
-    v6 = [MEMORY[0x277D64460] sharedLogger];
-    v7 = [v6 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    v8 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+    if (marketingProductName)
     {
       if (v8)
       {
         v12 = 138543362;
-        v13 = v5;
-        _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "Falling back to marketingProductName:%{public}@", &v12, 0xCu);
+        v13 = marketingProductName;
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Falling back to marketingProductName:%{public}@", &v12, 0xCu);
       }
 
-      v3 = [MEMORY[0x277CCACA8] stringWithString:v5];
+      v3 = [MEMORY[0x277CCACA8] stringWithString:marketingProductName];
     }
 
     else
@@ -1532,11 +1532,11 @@ LABEL_13:
       {
         v12 = 138543362;
         v13 = @"OS";
-        _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "Falling back to kSUProductSystemNameDefault:%{public}@", &v12, 0xCu);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Falling back to kSUProductSystemNameDefault:%{public}@", &v12, 0xCu);
       }
 
-      v9 = [MEMORY[0x277D64428] sharedDiag];
-      [v9 trackAnomaly:@"SUCoreDescriptor" forReason:@"Falling back to kSUProductSystemNameDefault due to no SUCoreDevice marketingProductName" withResult:8116 withError:0];
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+      [mEMORY[0x277D64428] trackAnomaly:@"SUCoreDescriptor" forReason:@"Falling back to kSUProductSystemNameDefault due to no SUCoreDevice marketingProductName" withResult:8116 withError:0];
 
       v3 = @"OS";
     }
@@ -1549,16 +1549,16 @@ LABEL_13:
 
 - (BOOL)fullReplacement
 {
-  v3 = [(SUCoreDescriptor *)self prerequisiteBuild];
-  if (v3)
+  prerequisiteBuild = [(SUCoreDescriptor *)self prerequisiteBuild];
+  if (prerequisiteBuild)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(SUCoreDescriptor *)self prerequisiteOSVersion];
-    v4 = v5 == 0;
+    prerequisiteOSVersion = [(SUCoreDescriptor *)self prerequisiteOSVersion];
+    v4 = prerequisiteOSVersion == 0;
   }
 
   return v4;
@@ -1567,12 +1567,12 @@ LABEL_13:
 - (unint64_t)unarchivedSize
 {
   unarchivedSize = self->_unarchivedSize;
-  v4 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+  associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
 
-  if (v4)
+  if (associatedSplatDescriptor)
   {
-    v5 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-    unarchivedSize += [v5 unarchivedSize];
+    associatedSplatDescriptor2 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+    unarchivedSize += [associatedSplatDescriptor2 unarchivedSize];
   }
 
   return unarchivedSize;
@@ -1581,9 +1581,9 @@ LABEL_13:
 - (unint64_t)installationSize
 {
   installationSize = self->_installationSize;
-  v3 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+  associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
 
-  if (v3)
+  if (associatedSplatDescriptor)
   {
     return installationSize + 32000000;
   }
@@ -1597,9 +1597,9 @@ LABEL_13:
 - (unint64_t)installationSnapshotSize
 {
   installationSnapshotSize = self->_installationSnapshotSize;
-  v3 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+  associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
 
-  if (v3)
+  if (associatedSplatDescriptor)
   {
     return installationSnapshotSize + 32000000;
   }
@@ -1612,13 +1612,13 @@ LABEL_13:
 
 - (unint64_t)refreshPrepareSize
 {
-  v3 = [(SUCoreDescriptor *)self bundleAttributes];
-  v4 = SUCoreBorder_MSUAssetCalculatePrepareSize(v3);
+  bundleAttributes = [(SUCoreDescriptor *)self bundleAttributes];
+  v4 = SUCoreBorder_MSUAssetCalculatePrepareSize(bundleAttributes);
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D64428] sharedDiag];
-    [v5 trackAnomaly:@"[DESCRIPTOR]" forReason:@"unable to determine refreshed prepare size withResult:using preexisting value" withError:{8100, v4}];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"[DESCRIPTOR]" forReason:@"unable to determine refreshed prepare size withResult:using preexisting value" withError:{8100, v4}];
   }
 
   else
@@ -1627,20 +1627,20 @@ LABEL_13:
     self->_msuSnapshotPrepareSize = 0;
   }
 
-  v6 = [(SUCoreDescriptor *)self msuPrepareSize];
+  msuPrepareSize = [(SUCoreDescriptor *)self msuPrepareSize];
 
-  return v6;
+  return msuPrepareSize;
 }
 
 - (unint64_t)refreshInstallationSize
 {
-  v3 = [(SUCoreDescriptor *)self bundleAttributes];
-  v4 = SUCoreBorder_MSUAssetCalculateApplySize(v3);
+  bundleAttributes = [(SUCoreDescriptor *)self bundleAttributes];
+  v4 = SUCoreBorder_MSUAssetCalculateApplySize(bundleAttributes);
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D64428] sharedDiag];
-    [v5 trackAnomaly:@"[DESCRIPTOR]" forReason:@"unable to determine refreshed apply size for installation withResult:using preexisting value" withError:{8100, v4}];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"[DESCRIPTOR]" forReason:@"unable to determine refreshed apply size for installation withResult:using preexisting value" withError:{8100, v4}];
   }
 
   else
@@ -1649,9 +1649,9 @@ LABEL_13:
     self->_installationSnapshotSize = 0;
   }
 
-  v6 = [(SUCoreDescriptor *)self installationSize];
+  installationSize = [(SUCoreDescriptor *)self installationSize];
 
-  return v6;
+  return installationSize;
 }
 
 - (unint64_t)refreshTotalRequiredFreeSpace
@@ -1662,37 +1662,37 @@ LABEL_13:
   return [(SUCoreDescriptor *)self totalRequiredFreeSpace];
 }
 
-- (unint64_t)totalRequiredFreeSpaceHelper:(BOOL)a3
+- (unint64_t)totalRequiredFreeSpaceHelper:(BOOL)helper
 {
-  if (a3)
+  if (helper)
   {
-    v4 = [(SUCoreDescriptor *)self snapshotPreparationSize];
-    v5 = [(SUCoreDescriptor *)self installationSnapshotSize];
+    snapshotPreparationSize = [(SUCoreDescriptor *)self snapshotPreparationSize];
+    installationSnapshotSize = [(SUCoreDescriptor *)self installationSnapshotSize];
   }
 
   else
   {
-    v4 = [(SUCoreDescriptor *)self preparationSize];
-    v5 = [(SUCoreDescriptor *)self installationSize];
+    snapshotPreparationSize = [(SUCoreDescriptor *)self preparationSize];
+    installationSnapshotSize = [(SUCoreDescriptor *)self installationSize];
   }
 
-  v6 = v5 + v4;
+  v6 = installationSnapshotSize + snapshotPreparationSize;
   if (![(SUCoreDescriptor *)self streamingZipCapable])
   {
     v6 += [(SUCoreDescriptor *)self suDownloadSize];
   }
 
-  v7 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-  if (v7)
+  associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+  if (associatedSplatDescriptor)
   {
-    v8 = v7;
-    v9 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-    v10 = [v9 streamingZipCapable];
+    v8 = associatedSplatDescriptor;
+    associatedSplatDescriptor2 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+    streamingZipCapable = [associatedSplatDescriptor2 streamingZipCapable];
 
-    if ((v10 & 1) == 0)
+    if ((streamingZipCapable & 1) == 0)
     {
-      v11 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-      v6 += [v11 suDownloadSize];
+      associatedSplatDescriptor3 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+      v6 += [associatedSplatDescriptor3 suDownloadSize];
     }
   }
 
@@ -1706,21 +1706,21 @@ LABEL_13:
 
 - (unint64_t)downloadSize
 {
-  v3 = [(SUCoreDescriptor *)self suDownloadSize];
-  v4 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+  suDownloadSize = [(SUCoreDescriptor *)self suDownloadSize];
+  associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
 
-  if (v4)
+  if (associatedSplatDescriptor)
   {
-    v5 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-    v3 += [v5 suDownloadSize];
+    associatedSplatDescriptor2 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+    suDownloadSize += [associatedSplatDescriptor2 suDownloadSize];
   }
 
   if ([(SUCoreDescriptor *)self enablePreSUStaging])
   {
-    v3 += [(SUCoreDescriptor *)self preSUStagingRequiredSize];
+    suDownloadSize += [(SUCoreDescriptor *)self preSUStagingRequiredSize];
   }
 
-  return v3;
+  return suDownloadSize;
 }
 
 - (id)criticalOverrideCellularPolicy
@@ -1740,79 +1740,79 @@ LABEL_13:
 
 - (id)updateTypeName
 {
-  v2 = [(SUCoreDescriptor *)self updateType];
-  if (v2 > 5)
+  updateType = [(SUCoreDescriptor *)self updateType];
+  if (updateType > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_27892DCF8[v2];
+    return off_27892DCF8[updateType];
   }
 }
 
-+ (BOOL)isEmergencyUpdate:(id)a3
++ (BOOL)isEmergencyUpdate:(id)update
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  updateCopy = update;
+  if (updateCopy)
   {
-    v4 = [MEMORY[0x277D64418] sharedDevice];
-    v5 = [v4 buildVersion];
+    mEMORY[0x277D64418] = [MEMORY[0x277D64418] sharedDevice];
+    buildVersion = [mEMORY[0x277D64418] buildVersion];
 
-    if (!v5)
+    if (!buildVersion)
     {
-      v17 = [MEMORY[0x277D64460] sharedLogger];
-      v7 = [v17 oslog];
+      mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+      oslog = [mEMORY[0x277D64460] oslog];
 
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v27) = 0;
-        _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "isEmergencyUpdate returns NO because currentBuild is nil", &v27, 2u);
+        _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "isEmergencyUpdate returns NO because currentBuild is nil", &v27, 2u);
       }
 
       v15 = 0;
       goto LABEL_34;
     }
 
-    v6 = [MEMORY[0x277D64418] sharedDevice];
-    v7 = [v6 productVersion];
+    mEMORY[0x277D64418]2 = [MEMORY[0x277D64418] sharedDevice];
+    oslog = [mEMORY[0x277D64418]2 productVersion];
 
-    if (!v7)
+    if (!oslog)
     {
-      v18 = [MEMORY[0x277D64460] sharedLogger];
-      v8 = [v18 oslog];
+      mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+      oslog2 = [mEMORY[0x277D64460]2 oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v27) = 0;
-        _os_log_impl(&dword_23193C000, v8, OS_LOG_TYPE_DEFAULT, "isEmergencyUpdate returns NO because currentOSVersion is nil", &v27, 2u);
+        _os_log_impl(&dword_23193C000, oslog2, OS_LOG_TYPE_DEFAULT, "isEmergencyUpdate returns NO because currentOSVersion is nil", &v27, 2u);
       }
 
       v15 = 0;
       goto LABEL_33;
     }
 
-    v8 = [v3 safeObjectForKey:@"LastEmergencyBuild" ofClass:objc_opt_class()];
-    v9 = [v3 safeObjectForKey:@"LastEmergencyOSVersion" ofClass:objc_opt_class()];
+    oslog2 = [updateCopy safeObjectForKey:@"LastEmergencyBuild" ofClass:objc_opt_class()];
+    v9 = [updateCopy safeObjectForKey:@"LastEmergencyOSVersion" ofClass:objc_opt_class()];
     v10 = v9;
-    if (v8 && v9)
+    if (oslog2 && v9)
     {
-      if ([v9 compare:v7 options:64] == -1)
+      if ([v9 compare:oslog options:64] == -1)
       {
-        v24 = [MEMORY[0x277D64460] sharedLogger];
-        v13 = [v24 oslog];
+        mEMORY[0x277D64460]3 = [MEMORY[0x277D64460] sharedLogger];
+        oslog3 = [mEMORY[0x277D64460]3 oslog];
 
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
         {
           v27 = 138543618;
           v28 = v10;
           v29 = 2114;
-          v30 = v7;
+          v30 = oslog;
           v21 = "isEmergencyUpdate returns NO because lastEmergencyOSVersion:%{public}@ is less than currentOSVersion:%{public}@";
 LABEL_29:
-          v22 = v13;
+          v22 = oslog3;
           v23 = 22;
 LABEL_30:
           _os_log_impl(&dword_23193C000, v22, OS_LOG_TYPE_DEFAULT, v21, &v27, v23);
@@ -1821,17 +1821,17 @@ LABEL_30:
 
       else
       {
-        v11 = [v8 compare:v5 options:64];
-        v12 = [MEMORY[0x277D64460] sharedLogger];
-        v13 = [v12 oslog];
+        v11 = [oslog2 compare:buildVersion options:64];
+        mEMORY[0x277D64460]4 = [MEMORY[0x277D64460] sharedLogger];
+        oslog3 = [mEMORY[0x277D64460]4 oslog];
 
-        v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
+        v14 = os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT);
         if (v11 != -1)
         {
           if (v14)
           {
             LOWORD(v27) = 0;
-            _os_log_impl(&dword_23193C000, v13, OS_LOG_TYPE_DEFAULT, "isEmergencyUpdate: YES", &v27, 2u);
+            _os_log_impl(&dword_23193C000, oslog3, OS_LOG_TYPE_DEFAULT, "isEmergencyUpdate: YES", &v27, 2u);
           }
 
           v15 = 1;
@@ -1841,9 +1841,9 @@ LABEL_30:
         if (v14)
         {
           v27 = 138543618;
-          v28 = v8;
+          v28 = oslog2;
           v29 = 2114;
-          v30 = v5;
+          v30 = buildVersion;
           v21 = "isEmergencyUpdate returns NO because lastEmergencyBuild:%{public}@ is less than currentBuild:%{public}@";
           goto LABEL_29;
         }
@@ -1852,12 +1852,12 @@ LABEL_30:
 
     else
     {
-      v19 = [MEMORY[0x277D64460] sharedLogger];
-      v13 = [v19 oslog];
+      mEMORY[0x277D64460]5 = [MEMORY[0x277D64460] sharedLogger];
+      oslog3 = [mEMORY[0x277D64460]5 oslog];
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
-        if (v8)
+        if (oslog2)
         {
           v20 = @"LastEmergencyOSVersion";
         }
@@ -1870,7 +1870,7 @@ LABEL_30:
         v27 = 138543362;
         v28 = v20;
         v21 = "isEmergencyUpdate returns NO because asset attributes does no contain %{public}@";
-        v22 = v13;
+        v22 = oslog3;
         v23 = 12;
         goto LABEL_30;
       }
@@ -1885,13 +1885,13 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v16 = [MEMORY[0x277D64460] sharedLogger];
-  v5 = [v16 oslog];
+  mEMORY[0x277D64460]6 = [MEMORY[0x277D64460] sharedLogger];
+  buildVersion = [mEMORY[0x277D64460]6 oslog];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(buildVersion, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v27) = 0;
-    _os_log_impl(&dword_23193C000, v5, OS_LOG_TYPE_DEFAULT, "isEmergencyUpdate returns NO because assetAttributes is nil", &v27, 2u);
+    _os_log_impl(&dword_23193C000, buildVersion, OS_LOG_TYPE_DEFAULT, "isEmergencyUpdate returns NO because assetAttributes is nil", &v27, 2u);
   }
 
   v15 = 0;
@@ -1901,65 +1901,65 @@ LABEL_35:
   return v15;
 }
 
-+ (id)nameForDescriptorType:(int64_t)a3
++ (id)nameForDescriptorType:(int64_t)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27892DD28[a3];
+    return off_27892DD28[type];
   }
 }
 
-+ (id)nameForDescriptorAudienceType:(int64_t)a3
++ (id)nameForDescriptorAudienceType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"AudienceTypeUnknown";
   }
 
   else
   {
-    return off_27892DD60[a3];
+    return off_27892DD60[type];
   }
 }
 
-+ (id)nameForDescriptorPreferredUpdateType:(int64_t)a3
++ (id)nameForDescriptorPreferredUpdateType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"PreferredUpdateTypeUnknown";
   }
 
   else
   {
-    return off_27892DD78[a3];
+    return off_27892DD78[type];
   }
 }
 
-+ (id)cleanProductVersion:(id)a3
++ (id)cleanProductVersion:(id)version
 {
-  v3 = a3;
-  if ([v3 length] >= 4 && objc_msgSend(v3, "rangeOfString:options:range:", @"9.9.", 0, 0, 4) != 0x7FFFFFFFFFFFFFFFLL)
+  versionCopy = version;
+  if ([versionCopy length] >= 4 && objc_msgSend(versionCopy, "rangeOfString:options:range:", @"9.9.", 0, 0, 4) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v3 stringByReplacingCharactersInRange:0 withString:{4, &stru_28469CC48}];
+    v4 = [versionCopy stringByReplacingCharactersInRange:0 withString:{4, &stru_28469CC48}];
 
-    v3 = v4;
+    versionCopy = v4;
   }
 
-  return v3;
+  return versionCopy;
 }
 
 - (BOOL)requiresSoftwareUpdateAssetReload
 {
-  v3 = [(SUCoreDescriptor *)self softwareUpdateAssetAbsoluteID];
-  if (v3)
+  softwareUpdateAssetAbsoluteID = [(SUCoreDescriptor *)self softwareUpdateAssetAbsoluteID];
+  if (softwareUpdateAssetAbsoluteID)
   {
-    v4 = [(SUCoreDescriptor *)self softwareUpdateAsset];
-    v5 = v4 == 0;
+    softwareUpdateAsset = [(SUCoreDescriptor *)self softwareUpdateAsset];
+    v5 = softwareUpdateAsset == 0;
   }
 
   else
@@ -1972,11 +1972,11 @@ LABEL_35:
 
 - (BOOL)requiresDocumentationReload
 {
-  v3 = [(SUCoreDescriptor *)self documentationAssetAbsoluteID];
-  if (v3)
+  documentationAssetAbsoluteID = [(SUCoreDescriptor *)self documentationAssetAbsoluteID];
+  if (documentationAssetAbsoluteID)
   {
-    v4 = [(SUCoreDescriptor *)self documentationAsset];
-    v5 = v4 == 0;
+    documentationAsset = [(SUCoreDescriptor *)self documentationAsset];
+    v5 = documentationAsset == 0;
   }
 
   else
@@ -1987,176 +1987,176 @@ LABEL_35:
   return v5;
 }
 
-- (void)transferNonAssetPropertiesFromDescriptor:(id)a3
+- (void)transferNonAssetPropertiesFromDescriptor:(id)descriptor
 {
   v4 = MEMORY[0x277D64460];
-  v5 = a3;
-  v6 = [v4 sharedLogger];
-  v7 = [v6 oslog];
+  descriptorCopy = descriptor;
+  sharedLogger = [v4 sharedLogger];
+  oslog = [sharedLogger oslog];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *v15 = 0;
-    _os_log_impl(&dword_23193C000, v7, OS_LOG_TYPE_DEFAULT, "Transferring non-asset attribute properties from other descriptor", v15, 2u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Transferring non-asset attribute properties from other descriptor", v15, 2u);
   }
 
-  -[SUCoreDescriptor setDescriptorAudienceType:](self, "setDescriptorAudienceType:", [v5 descriptorAudienceType]);
-  -[SUCoreDescriptor setPreferredUpdateType:](self, "setPreferredUpdateType:", [v5 preferredUpdateType]);
-  v8 = [v5 assetAudienceUUID];
-  [(SUCoreDescriptor *)self setAssetAudienceUUID:v8];
+  -[SUCoreDescriptor setDescriptorAudienceType:](self, "setDescriptorAudienceType:", [descriptorCopy descriptorAudienceType]);
+  -[SUCoreDescriptor setPreferredUpdateType:](self, "setPreferredUpdateType:", [descriptorCopy preferredUpdateType]);
+  assetAudienceUUID = [descriptorCopy assetAudienceUUID];
+  [(SUCoreDescriptor *)self setAssetAudienceUUID:assetAudienceUUID];
 
-  -[SUCoreDescriptor setPreSUStagingRequiredSize:](self, "setPreSUStagingRequiredSize:", [v5 preSUStagingRequiredSize]);
-  -[SUCoreDescriptor setPreSUStagingOptionalSize:](self, "setPreSUStagingOptionalSize:", [v5 preSUStagingOptionalSize]);
-  v9 = [v5 documentation];
-  [(SUCoreDescriptor *)self setDocumentation:v9];
+  -[SUCoreDescriptor setPreSUStagingRequiredSize:](self, "setPreSUStagingRequiredSize:", [descriptorCopy preSUStagingRequiredSize]);
+  -[SUCoreDescriptor setPreSUStagingOptionalSize:](self, "setPreSUStagingOptionalSize:", [descriptorCopy preSUStagingOptionalSize]);
+  documentation = [descriptorCopy documentation];
+  [(SUCoreDescriptor *)self setDocumentation:documentation];
 
-  v10 = [v5 documentationAsset];
-  [(SUCoreDescriptor *)self setDocumentationAsset:v10];
+  documentationAsset = [descriptorCopy documentationAsset];
+  [(SUCoreDescriptor *)self setDocumentationAsset:documentationAsset];
 
-  v11 = [v5 documentationAssetType];
-  [(SUCoreDescriptor *)self setDocumentationAssetType:v11];
+  documentationAssetType = [descriptorCopy documentationAssetType];
+  [(SUCoreDescriptor *)self setDocumentationAssetType:documentationAssetType];
 
-  v12 = [v5 documentationAssetIdentifier];
-  [(SUCoreDescriptor *)self setDocumentationAssetIdentifier:v12];
+  documentationAssetIdentifier = [descriptorCopy documentationAssetIdentifier];
+  [(SUCoreDescriptor *)self setDocumentationAssetIdentifier:documentationAssetIdentifier];
 
-  v13 = [v5 documentationAssetAbsoluteID];
-  [(SUCoreDescriptor *)self setDocumentationAssetAbsoluteID:v13];
+  documentationAssetAbsoluteID = [descriptorCopy documentationAssetAbsoluteID];
+  [(SUCoreDescriptor *)self setDocumentationAssetAbsoluteID:documentationAssetAbsoluteID];
 
-  v14 = [v5 documentationAssetPurpose];
+  documentationAssetPurpose = [descriptorCopy documentationAssetPurpose];
 
-  [(SUCoreDescriptor *)self setDocumentationAssetPurpose:v14];
+  [(SUCoreDescriptor *)self setDocumentationAssetPurpose:documentationAssetPurpose];
 }
 
-- (SUCoreDescriptor)initWithCoder:(id)a3
+- (SUCoreDescriptor)initWithCoder:(id)coder
 {
   v155[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v154.receiver = self;
   v154.super_class = SUCoreDescriptor;
   v5 = [(SUCoreDescriptor *)&v154 init];
   if (v5)
   {
-    v5->_descriptorType = [v4 decodeIntForKey:@"DescriptorType"];
-    v5->_descriptorAudienceType = [v4 decodeIntForKey:@"DescriptorAudienceType"];
-    v5->_preferredUpdateType = [v4 decodeIntForKey:@"PreferredUpdateType"];
-    v5->_updateType = [v4 decodeIntForKey:@"UpdateType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AssetID"];
+    v5->_descriptorType = [coderCopy decodeIntForKey:@"DescriptorType"];
+    v5->_descriptorAudienceType = [coderCopy decodeIntForKey:@"DescriptorAudienceType"];
+    v5->_preferredUpdateType = [coderCopy decodeIntForKey:@"PreferredUpdateType"];
+    v5->_updateType = [coderCopy decodeIntForKey:@"UpdateType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AssetID"];
     assetID = v5->_assetID;
     v5->_assetID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateAssetType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateAssetType"];
     softwareUpdateAssetType = v5->_softwareUpdateAssetType;
     v5->_softwareUpdateAssetType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationAssetType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationAssetType"];
     documentationAssetType = v5->_documentationAssetType;
     v5->_documentationAssetType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateAssetAbsoluteID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateAssetAbsoluteID"];
     softwareUpdateAssetAbsoluteID = v5->_softwareUpdateAssetAbsoluteID;
     v5->_softwareUpdateAssetAbsoluteID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationAssetAbsoluteID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationAssetAbsoluteID"];
     documentationAssetAbsoluteID = v5->_documentationAssetAbsoluteID;
     v5->_documentationAssetAbsoluteID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateAssetPurpose"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateAssetPurpose"];
     softwareUpdateAssetPurpose = v5->_softwareUpdateAssetPurpose;
     v5->_softwareUpdateAssetPurpose = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationAssetPurpose"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationAssetPurpose"];
     documentationAssetPurpose = v5->_documentationAssetPurpose;
     v5->_documentationAssetPurpose = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UniqueBuildID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UniqueBuildID"];
     uniqueBuildID = v5->_uniqueBuildID;
     v5->_uniqueBuildID = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SplatInstallDate"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SplatInstallDate"];
     splatInstallDate = v5->_splatInstallDate;
     v5->_splatInstallDate = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductVersion"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductVersion"];
     productVersion = v5->_productVersion;
     v5->_productVersion = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductBuildVersion"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductBuildVersion"];
     productBuildVersion = v5->_productBuildVersion;
     v5->_productBuildVersion = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductVersionExtra"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductVersionExtra"];
     productVersionExtra = v5->_productVersionExtra;
     v5->_productVersionExtra = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductSystemName"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductSystemName"];
     productSystemName = v5->_productSystemName;
     v5->_productSystemName = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReleaseType"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReleaseType"];
     releaseType = v5->_releaseType;
     v5->_releaseType = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Publisher"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Publisher"];
     publisher = v5->_publisher;
     v5->_publisher = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReleaseDate"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReleaseDate"];
     releaseDate = v5->_releaseDate;
     v5->_releaseDate = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RestoreVersion"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RestoreVersion"];
     restoreVersion = v5->_restoreVersion;
     v5->_restoreVersion = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TargetUpdateBridgeVersion"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TargetUpdateBridgeVersion"];
     targetUpdateBridgeVersion = v5->_targetUpdateBridgeVersion;
     v5->_targetUpdateBridgeVersion = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TargetUpdateSFRVersion"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TargetUpdateSFRVersion"];
     targetUpdateSFRVersion = v5->_targetUpdateSFRVersion;
     v5->_targetUpdateSFRVersion = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TrainName"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TrainName"];
     trainName = v5->_trainName;
     v5->_trainName = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteBuild"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteBuild"];
     prerequisiteBuild = v5->_prerequisiteBuild;
     v5->_prerequisiteBuild = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteOSVersion"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrerequisiteOSVersion"];
     prerequisiteOSVersion = v5->_prerequisiteOSVersion;
     v5->_prerequisiteOSVersion = v48;
 
     v50 = MEMORY[0x277CBEB98];
     v51 = objc_opt_class();
     v52 = [v50 setWithObjects:{v51, objc_opt_class(), 0}];
-    v53 = [v4 decodeObjectOfClasses:v52 forKey:@"SupportedDevices"];
+    v53 = [coderCopy decodeObjectOfClasses:v52 forKey:@"SupportedDevices"];
     supportedDevices = v5->_supportedDevices;
     v5->_supportedDevices = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUDownloadSize"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUDownloadSize"];
     v5->_suDownloadSize = [v55 unsignedLongLongValue];
 
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnarchiveSize"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnarchiveSize"];
     v5->_unarchivedSize = [v56 unsignedLongLongValue];
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSUPrepareSize"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSUPrepareSize"];
     v5->_msuPrepareSize = [v57 unsignedLongLongValue];
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MSUSnapshotPrepareSize"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MSUSnapshotPrepareSize"];
     v5->_msuSnapshotPrepareSize = [v58 unsignedLongLongValue];
 
-    v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InstallationSize"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InstallationSize"];
     v5->_installationSize = [v59 unsignedLongLongValue];
 
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InstallationSnapshotSize"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InstallationSnapshotSize"];
     v5->_installationSnapshotSize = [v60 unsignedLongLongValue];
 
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MinimumSystemPartitionSize"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MinimumSystemPartitionSize"];
     v5->_minimumSystemPartitionSize = [v61 unsignedLongLongValue];
 
-    v5->_streamingZipCapable = [v4 decodeBoolForKey:@"StreamingZipCapable"];
+    v5->_streamingZipCapable = [coderCopy decodeBoolForKey:@"StreamingZipCapable"];
     v62 = MEMORY[0x277CBEB98];
     v155[0] = objc_opt_class();
     v155[1] = objc_opt_class();
@@ -2164,183 +2164,183 @@ LABEL_35:
     v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v155 count:3];
     v153 = [v62 setWithArray:v63];
 
-    v64 = [v4 decodeObjectOfClasses:v153 forKey:@"SystemPartitionPadding"];
+    v64 = [coderCopy decodeObjectOfClasses:v153 forKey:@"SystemPartitionPadding"];
     systemPartitionPadding = v5->_systemPartitionPadding;
     v5->_systemPartitionPadding = v64;
 
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PSUSRequiredSize"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PSUSRequiredSize"];
     v5->_preSUStagingRequiredSize = [v66 unsignedLongLongValue];
 
-    v67 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PSUSOptionalSize"];
+    v67 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PSUSOptionalSize"];
     v5->_preSUStagingOptionalSize = [v67 unsignedLongLongValue];
 
-    v5->_disableReserveSpace = [v4 decodeBoolForKey:@"DisableReserveSpace"];
-    v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CenteralizedPurgeableFactor"];
+    v5->_disableReserveSpace = [coderCopy decodeBoolForKey:@"DisableReserveSpace"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CenteralizedPurgeableFactor"];
     v5->_centeralizedPurgeableFactor = [v68 unsignedLongValue];
 
-    v69 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PluginPurgeableFactor"];
+    v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PluginPurgeableFactor"];
     v5->_pluginPurgeableFactor = [v69 unsignedLongValue];
 
-    v70 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MinReserveSpace"];
+    v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MinReserveSpace"];
     v5->_minReserveSpace = [v70 unsignedLongLongValue];
 
-    v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MaxReserveSpace"];
+    v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MaxReserveSpace"];
     v5->_maxReserveSpace = [v71 unsignedLongLongValue];
 
-    v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UnentitledReserveAmount"];
+    v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UnentitledReserveAmount"];
     v5->_unentitledReserveAmount = [v72 unsignedLongLongValue];
 
-    v5->_autoDownloadAllowableOverCellular = [v4 decodeBoolForKey:@"AutoDownloadAllowableOverCellular"];
-    v5->_downloadAllowableOverCellular = [v4 decodeBoolForKey:@"DownloadAllowableOverCellular"];
-    v5->_downloadable = [v4 decodeBoolForKey:@"Downloadable"];
-    v5->_disableSiriVoiceDeletion = [v4 decodeBoolForKey:@"DisableSiriVoiceDeletion"];
-    v5->_disableCDLevel4 = [v4 decodeBoolForKey:@"DisableCDLevel4"];
-    v5->_disableAppDemotion = [v4 decodeBoolForKey:@"DisableAppDemotion"];
-    v5->_disableMASuspension = [v4 decodeBoolForKey:@"DisableMASuspension"];
-    v5->_disableInstallTonight = [v4 decodeBoolForKey:@"DisableInstallTonight"];
-    v5->_forcePasscodeRequired = [v4 decodeBoolForKey:@"ForcePasscodeRequired"];
-    v5->_rampEnabled = [v4 decodeBoolForKey:@"RampEnabled"];
-    v5->_granularlyRamped = [v4 decodeBoolForKey:@"GranularlyRamped"];
-    v73 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MDMDelayInterval"];
+    v5->_autoDownloadAllowableOverCellular = [coderCopy decodeBoolForKey:@"AutoDownloadAllowableOverCellular"];
+    v5->_downloadAllowableOverCellular = [coderCopy decodeBoolForKey:@"DownloadAllowableOverCellular"];
+    v5->_downloadable = [coderCopy decodeBoolForKey:@"Downloadable"];
+    v5->_disableSiriVoiceDeletion = [coderCopy decodeBoolForKey:@"DisableSiriVoiceDeletion"];
+    v5->_disableCDLevel4 = [coderCopy decodeBoolForKey:@"DisableCDLevel4"];
+    v5->_disableAppDemotion = [coderCopy decodeBoolForKey:@"DisableAppDemotion"];
+    v5->_disableMASuspension = [coderCopy decodeBoolForKey:@"DisableMASuspension"];
+    v5->_disableInstallTonight = [coderCopy decodeBoolForKey:@"DisableInstallTonight"];
+    v5->_forcePasscodeRequired = [coderCopy decodeBoolForKey:@"ForcePasscodeRequired"];
+    v5->_rampEnabled = [coderCopy decodeBoolForKey:@"RampEnabled"];
+    v5->_granularlyRamped = [coderCopy decodeBoolForKey:@"GranularlyRamped"];
+    v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MDMDelayInterval"];
     v5->_mdmDelayInterval = [v73 unsignedLongLongValue];
 
-    v5->_autoUpdateEnabled = [v4 decodeBoolForKey:@"AutoUpdateEnabled"];
-    v5->_hideInstallAlert = [v4 decodeIntegerForKey:@"HideInstallAlert"];
-    v5->_containsSFRContent = [v4 decodeBoolForKey:@"ContainsSFRContent"];
-    v74 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"InstallAlertInterval"];
+    v5->_autoUpdateEnabled = [coderCopy decodeBoolForKey:@"AutoUpdateEnabled"];
+    v5->_hideInstallAlert = [coderCopy decodeIntegerForKey:@"HideInstallAlert"];
+    v5->_containsSFRContent = [coderCopy decodeBoolForKey:@"ContainsSFRContent"];
+    v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"InstallAlertInterval"];
     v5->_installAlertInterval = [v74 unsignedLongLongValue];
 
-    v5->_allowAutoDownloadOnBattery = [v4 decodeBoolForKey:@"AllowAutoDownloadOnBattery"];
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AutoDownloadOnBatteryDelay"];
+    v5->_allowAutoDownloadOnBattery = [coderCopy decodeBoolForKey:@"AllowAutoDownloadOnBattery"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AutoDownloadOnBatteryDelay"];
     v5->_autoDownloadOnBatteryDelay = [v75 unsignedLongLongValue];
 
-    v76 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AutoDownloadOnBatteryMinBattery"];
+    v76 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AutoDownloadOnBatteryMinBattery"];
     v5->_autoDownloadOnBatteryMinBattery = [v76 unsignedLongLongValue];
 
-    v77 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SetupCritical"];
+    v77 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SetupCritical"];
     setupCritical = v5->_setupCritical;
     v5->_setupCritical = v77;
 
-    v5->_criticalCellularOverride = [v4 decodeBoolForKey:@"CriticalCellularOverride"];
-    v5->_criticalOutOfBoxOnly = [v4 decodeBoolForKey:@"CriticalOutOfBoxOnly"];
-    v79 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastEmergencyBuild"];
+    v5->_criticalCellularOverride = [coderCopy decodeBoolForKey:@"CriticalCellularOverride"];
+    v5->_criticalOutOfBoxOnly = [coderCopy decodeBoolForKey:@"CriticalOutOfBoxOnly"];
+    v79 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastEmergencyBuild"];
     lastEmergencyBuild = v5->_lastEmergencyBuild;
     v5->_lastEmergencyBuild = v79;
 
-    v81 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastEmergencyOSVersion"];
+    v81 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastEmergencyOSVersion"];
     lastEmergencyOSVersion = v5->_lastEmergencyOSVersion;
     v5->_lastEmergencyOSVersion = v81;
 
-    v5->_mandatoryUpdateEligible = [v4 decodeBoolForKey:@"MandatoryUpdateEligible"];
-    v83 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MandatoryUpdateVersionMin"];
+    v5->_mandatoryUpdateEligible = [coderCopy decodeBoolForKey:@"MandatoryUpdateEligible"];
+    v83 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MandatoryUpdateVersionMin"];
     mandatoryUpdateVersionMin = v5->_mandatoryUpdateVersionMin;
     v5->_mandatoryUpdateVersionMin = v83;
 
-    v85 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MandatoryUpdateVersionMax"];
+    v85 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MandatoryUpdateVersionMax"];
     mandatoryUpdateVersionMax = v5->_mandatoryUpdateVersionMax;
     v5->_mandatoryUpdateVersionMax = v85;
 
-    v5->_mandatoryUpdateOptional = [v4 decodeBoolForKey:@"MandatoryUpdateOptional"];
-    v5->_mandatoryUpdateRestrictedToOutOfTheBox = [v4 decodeBoolForKey:@"MandatoryUpdateRestrictedToOutOfTheBox"];
-    v5->_oneShotBuddyDisabled = [v4 decodeBoolForKey:@"OneShotBuddyDisabled"];
+    v5->_mandatoryUpdateOptional = [coderCopy decodeBoolForKey:@"MandatoryUpdateOptional"];
+    v5->_mandatoryUpdateRestrictedToOutOfTheBox = [coderCopy decodeBoolForKey:@"MandatoryUpdateRestrictedToOutOfTheBox"];
+    v5->_oneShotBuddyDisabled = [coderCopy decodeBoolForKey:@"OneShotBuddyDisabled"];
     v87 = MEMORY[0x277CBEB98];
     v88 = objc_opt_class();
     v89 = [v87 setWithObjects:{v88, objc_opt_class(), 0}];
-    v90 = [v4 decodeObjectOfClasses:v89 forKey:@"OneShotBuddyDisabledBuilds"];
+    v90 = [coderCopy decodeObjectOfClasses:v89 forKey:@"OneShotBuddyDisabledBuilds"];
     oneShotBuddyDisabledBuilds = v5->_oneShotBuddyDisabledBuilds;
     v5->_oneShotBuddyDisabledBuilds = v90;
 
-    v5->_criticalUpdate = [v4 decodeBoolForKey:@"CriticalUpdate"];
-    v92 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductType"];
+    v5->_criticalUpdate = [coderCopy decodeBoolForKey:@"CriticalUpdate"];
+    v92 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductType"];
     productType = v5->_productType;
     v5->_productType = v92;
 
-    v94 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AutoInstallDelay"];
+    v94 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AutoInstallDelay"];
     v5->_autoInstallDelay = [v94 unsignedLongLongValue];
 
-    v5->_notifyAfter = [v4 decodeBoolForKey:@"NotifyAfter"];
-    v95 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MinimumBridgeVersion"];
+    v5->_notifyAfter = [coderCopy decodeBoolForKey:@"NotifyAfter"];
+    v95 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MinimumBridgeVersion"];
     minimumBridgeVersion = v5->_minimumBridgeVersion;
     v5->_minimumBridgeVersion = v95;
 
-    v5->_disableRosettaUpdates = [v4 decodeBoolForKey:@"DisableRosettaUpdates"];
-    v5->_disableRecoveryOSUpdates = [v4 decodeBoolForKey:@"DisableRecoveryOSUpdates"];
-    v5->_requireInstallAssistantUpdate = [v4 decodeBoolForKey:@"RequireInstallAssistantUpdate"];
-    v97 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SEPDigest"];
+    v5->_disableRosettaUpdates = [coderCopy decodeBoolForKey:@"DisableRosettaUpdates"];
+    v5->_disableRecoveryOSUpdates = [coderCopy decodeBoolForKey:@"DisableRecoveryOSUpdates"];
+    v5->_requireInstallAssistantUpdate = [coderCopy decodeBoolForKey:@"RequireInstallAssistantUpdate"];
+    v97 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SEPDigest"];
     sepDigest = v5->_sepDigest;
     v5->_sepDigest = v97;
 
-    v99 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SEPTBMDigests"];
+    v99 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SEPTBMDigests"];
     sepTBMDigests = v5->_sepTBMDigests;
     v5->_sepTBMDigests = v99;
 
-    v101 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RSEPDigest"];
+    v101 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RSEPDigest"];
     rsepDigest = v5->_rsepDigest;
     v5->_rsepDigest = v101;
 
-    v103 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RSEPTBMDigests"];
+    v103 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RSEPTBMDigests"];
     rsepTBMDigests = v5->_rsepTBMDigests;
     v5->_rsepTBMDigests = v103;
 
-    v105 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationID"];
+    v105 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationID"];
     documentationID = v5->_documentationID;
     v5->_documentationID = v105;
 
-    v107 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Documentation"];
+    v107 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Documentation"];
     documentation = v5->_documentation;
     v5->_documentation = v107;
 
-    v109 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateURL"];
+    v109 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateURL"];
     softwareUpdateURL = v5->_softwareUpdateURL;
     v5->_softwareUpdateURL = v109;
 
-    v111 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Measurement"];
+    v111 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Measurement"];
     measurement = v5->_measurement;
     v5->_measurement = v111;
 
-    v113 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MeasurementAlgorithm"];
+    v113 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MeasurementAlgorithm"];
     measurementAlgorithm = v5->_measurementAlgorithm;
     v5->_measurementAlgorithm = v113;
 
-    v115 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateAssetIdentifier"];
+    v115 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SoftwareUpdateAssetIdentifier"];
     softwareUpdateAssetIdentifier = v5->_softwareUpdateAssetIdentifier;
     v5->_softwareUpdateAssetIdentifier = v115;
 
-    v117 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationAssetIdentifier"];
+    v117 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DocumentationAssetIdentifier"];
     documentationAssetIdentifier = v5->_documentationAssetIdentifier;
     v5->_documentationAssetIdentifier = v117;
 
-    v5->_promoteAlternateUpdate = [v4 decodeBoolForKey:@"PromoteAlternateUpdate"];
-    v5->_enableAlternateAssetAudience = [v4 decodeBoolForKey:@"EnableAlternateAssetAudienceUUID"];
-    v119 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AlternateAssetAudienceUUID"];
+    v5->_promoteAlternateUpdate = [coderCopy decodeBoolForKey:@"PromoteAlternateUpdate"];
+    v5->_enableAlternateAssetAudience = [coderCopy decodeBoolForKey:@"EnableAlternateAssetAudienceUUID"];
+    v119 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AlternateAssetAudienceUUID"];
     alternateAssetAudienceUUID = v5->_alternateAssetAudienceUUID;
     v5->_alternateAssetAudienceUUID = v119;
 
-    v121 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AssetAudienceUUID"];
+    v121 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AssetAudienceUUID"];
     assetAudienceUUID = v5->_assetAudienceUUID;
     v5->_assetAudienceUUID = v121;
 
-    v123 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UpdateBrainPath"];
+    v123 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UpdateBrainPath"];
     updateBrainPath = v5->_updateBrainPath;
     v5->_updateBrainPath = v123;
 
-    v125 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UpdateBundlePath"];
+    v125 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UpdateBundlePath"];
     updateBundlePath = v5->_updateBundlePath;
     v5->_updateBundlePath = v125;
 
-    v5->_splatOnly = [v4 decodeBoolForKey:@"SplatOnly"];
-    v5->_semiSplatEnabled = [v4 decodeBoolForKey:@"SemiSplatEnabled"];
+    v5->_splatOnly = [coderCopy decodeBoolForKey:@"SplatOnly"];
+    v5->_semiSplatEnabled = [coderCopy decodeBoolForKey:@"SemiSplatEnabled"];
     v127 = MEMORY[0x277CBEB98];
     v128 = objc_opt_class();
     v129 = [v127 setWithObjects:{v128, objc_opt_class(), 0}];
-    v130 = [v4 decodeObjectOfClasses:v129 forKey:@"SemiSplatMustQuitApps"];
+    v130 = [coderCopy decodeObjectOfClasses:v129 forKey:@"SemiSplatMustQuitApps"];
     semiSplatMustQuitApps = v5->_semiSplatMustQuitApps;
     v5->_semiSplatMustQuitApps = v130;
 
-    v5->_revoked = [v4 decodeBoolForKey:@"Revoked"];
-    v5->_semiSplatRestartNow = [v4 decodeBoolForKey:@"SemiSplatRestartNow"];
-    v5->_disableSplatCombo = [v4 decodeBoolForKey:@"DisableSplombo"];
-    v132 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AssociatedSplatDescriptor"];
+    v5->_revoked = [coderCopy decodeBoolForKey:@"Revoked"];
+    v5->_semiSplatRestartNow = [coderCopy decodeBoolForKey:@"SemiSplatRestartNow"];
+    v5->_disableSplatCombo = [coderCopy decodeBoolForKey:@"DisableSplombo"];
+    v132 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AssociatedSplatDescriptor"];
     associatedSplatDescriptor = v5->_associatedSplatDescriptor;
     v5->_associatedSplatDescriptor = v132;
 
@@ -2353,7 +2353,7 @@ LABEL_35:
     v140 = objc_opt_class();
     v141 = objc_opt_class();
     v142 = [v134 setWithObjects:{v135, v136, v137, v138, v139, v140, v141, objc_opt_class(), 0}];
-    v143 = [v4 decodeObjectOfClasses:v142 forKey:@"BundleAttributes"];
+    v143 = [coderCopy decodeObjectOfClasses:v142 forKey:@"BundleAttributes"];
     bundleAttributes = v5->_bundleAttributes;
     v5->_bundleAttributes = v143;
 
@@ -2363,17 +2363,17 @@ LABEL_35:
     documentationAsset = v5->_documentationAsset;
     v5->_documentationAsset = 0;
 
-    v5->_enablePreSUStaging = [v4 decodeBoolForKey:@"EnablePSUS"];
-    v5->_enablePreSUStagingForOptionalAssets = [v4 decodeBoolForKey:@"EnablePSUSForOptionalAssets"];
-    v147 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PSUSMaxSize"];
+    v5->_enablePreSUStaging = [coderCopy decodeBoolForKey:@"EnablePSUS"];
+    v5->_enablePreSUStagingForOptionalAssets = [coderCopy decodeBoolForKey:@"EnablePSUSForOptionalAssets"];
+    v147 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PSUSMaxSize"];
     v5->_preSUStagingMaxSize = [v147 unsignedLongLongValue];
 
-    v148 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MinFreeSpacePostStageOptionalAssets"];
+    v148 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MinFreeSpacePostStageOptionalAssets"];
     v5->_minFreeSpacePostStageOptionalAssets = [v148 unsignedLongLongValue];
 
-    v5->_disableSecurityAdvisoryNotification = [v4 decodeBoolForKey:@"DisableSecurityAdvisoryNotification"];
-    v5->_disableDeviceCompatibilityNotification = [v4 decodeBoolForKey:@"DisableDeviceCompatibilityNotification"];
-    v149 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AlignediOSMajorVersion"];
+    v5->_disableSecurityAdvisoryNotification = [coderCopy decodeBoolForKey:@"DisableSecurityAdvisoryNotification"];
+    v5->_disableDeviceCompatibilityNotification = [coderCopy decodeBoolForKey:@"DisableDeviceCompatibilityNotification"];
+    v149 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AlignediOSMajorVersion"];
     alignediOSMajorVersion = v5->_alignediOSMajorVersion;
     v5->_alignediOSMajorVersion = v149;
   }
@@ -2382,273 +2382,273 @@ LABEL_35:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[SUCoreDescriptor descriptorType](self forKey:{"descriptorType"), @"DescriptorType"}];
-  [v4 encodeInt:-[SUCoreDescriptor descriptorAudienceType](self forKey:{"descriptorAudienceType"), @"DescriptorAudienceType"}];
-  [v4 encodeInt:-[SUCoreDescriptor preferredUpdateType](self forKey:{"preferredUpdateType"), @"PreferredUpdateType"}];
-  [v4 encodeInt:-[SUCoreDescriptor updateType](self forKey:{"updateType"), @"UpdateType"}];
-  v5 = [(SUCoreDescriptor *)self assetID];
-  [v4 encodeObject:v5 forKey:@"AssetID"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[SUCoreDescriptor descriptorType](self forKey:{"descriptorType"), @"DescriptorType"}];
+  [coderCopy encodeInt:-[SUCoreDescriptor descriptorAudienceType](self forKey:{"descriptorAudienceType"), @"DescriptorAudienceType"}];
+  [coderCopy encodeInt:-[SUCoreDescriptor preferredUpdateType](self forKey:{"preferredUpdateType"), @"PreferredUpdateType"}];
+  [coderCopy encodeInt:-[SUCoreDescriptor updateType](self forKey:{"updateType"), @"UpdateType"}];
+  assetID = [(SUCoreDescriptor *)self assetID];
+  [coderCopy encodeObject:assetID forKey:@"AssetID"];
 
-  v6 = [(SUCoreDescriptor *)self softwareUpdateAssetType];
-  [v4 encodeObject:v6 forKey:@"SoftwareUpdateAssetType"];
+  softwareUpdateAssetType = [(SUCoreDescriptor *)self softwareUpdateAssetType];
+  [coderCopy encodeObject:softwareUpdateAssetType forKey:@"SoftwareUpdateAssetType"];
 
-  v7 = [(SUCoreDescriptor *)self documentationAssetType];
-  [v4 encodeObject:v7 forKey:@"DocumentationAssetType"];
+  documentationAssetType = [(SUCoreDescriptor *)self documentationAssetType];
+  [coderCopy encodeObject:documentationAssetType forKey:@"DocumentationAssetType"];
 
-  v8 = [(SUCoreDescriptor *)self softwareUpdateAssetAbsoluteID];
-  [v4 encodeObject:v8 forKey:@"SoftwareUpdateAssetAbsoluteID"];
+  softwareUpdateAssetAbsoluteID = [(SUCoreDescriptor *)self softwareUpdateAssetAbsoluteID];
+  [coderCopy encodeObject:softwareUpdateAssetAbsoluteID forKey:@"SoftwareUpdateAssetAbsoluteID"];
 
-  v9 = [(SUCoreDescriptor *)self documentationAssetAbsoluteID];
-  [v4 encodeObject:v9 forKey:@"DocumentationAssetAbsoluteID"];
+  documentationAssetAbsoluteID = [(SUCoreDescriptor *)self documentationAssetAbsoluteID];
+  [coderCopy encodeObject:documentationAssetAbsoluteID forKey:@"DocumentationAssetAbsoluteID"];
 
-  v10 = [(SUCoreDescriptor *)self softwareUpdateAssetPurpose];
-  [v4 encodeObject:v10 forKey:@"SoftwareUpdateAssetPurpose"];
+  softwareUpdateAssetPurpose = [(SUCoreDescriptor *)self softwareUpdateAssetPurpose];
+  [coderCopy encodeObject:softwareUpdateAssetPurpose forKey:@"SoftwareUpdateAssetPurpose"];
 
-  v11 = [(SUCoreDescriptor *)self documentationAssetPurpose];
-  [v4 encodeObject:v11 forKey:@"DocumentationAssetPurpose"];
+  documentationAssetPurpose = [(SUCoreDescriptor *)self documentationAssetPurpose];
+  [coderCopy encodeObject:documentationAssetPurpose forKey:@"DocumentationAssetPurpose"];
 
-  v12 = [(SUCoreDescriptor *)self uniqueBuildID];
-  [v4 encodeObject:v12 forKey:@"UniqueBuildID"];
+  uniqueBuildID = [(SUCoreDescriptor *)self uniqueBuildID];
+  [coderCopy encodeObject:uniqueBuildID forKey:@"UniqueBuildID"];
 
-  v13 = [(SUCoreDescriptor *)self splatInstallDate];
-  [v4 encodeObject:v13 forKey:@"SplatInstallDate"];
+  splatInstallDate = [(SUCoreDescriptor *)self splatInstallDate];
+  [coderCopy encodeObject:splatInstallDate forKey:@"SplatInstallDate"];
 
-  v14 = [(SUCoreDescriptor *)self productVersion];
-  [v4 encodeObject:v14 forKey:@"ProductVersion"];
+  productVersion = [(SUCoreDescriptor *)self productVersion];
+  [coderCopy encodeObject:productVersion forKey:@"ProductVersion"];
 
-  v15 = [(SUCoreDescriptor *)self productBuildVersion];
-  [v4 encodeObject:v15 forKey:@"ProductBuildVersion"];
+  productBuildVersion = [(SUCoreDescriptor *)self productBuildVersion];
+  [coderCopy encodeObject:productBuildVersion forKey:@"ProductBuildVersion"];
 
-  v16 = [(SUCoreDescriptor *)self productVersionExtra];
-  [v4 encodeObject:v16 forKey:@"ProductVersionExtra"];
+  productVersionExtra = [(SUCoreDescriptor *)self productVersionExtra];
+  [coderCopy encodeObject:productVersionExtra forKey:@"ProductVersionExtra"];
 
-  v17 = [(SUCoreDescriptor *)self productSystemName];
-  [v4 encodeObject:v17 forKey:@"ProductSystemName"];
+  productSystemName = [(SUCoreDescriptor *)self productSystemName];
+  [coderCopy encodeObject:productSystemName forKey:@"ProductSystemName"];
 
-  v18 = [(SUCoreDescriptor *)self releaseType];
-  [v4 encodeObject:v18 forKey:@"ReleaseType"];
+  releaseType = [(SUCoreDescriptor *)self releaseType];
+  [coderCopy encodeObject:releaseType forKey:@"ReleaseType"];
 
-  v19 = [(SUCoreDescriptor *)self publisher];
-  [v4 encodeObject:v19 forKey:@"Publisher"];
+  publisher = [(SUCoreDescriptor *)self publisher];
+  [coderCopy encodeObject:publisher forKey:@"Publisher"];
 
-  v20 = [(SUCoreDescriptor *)self releaseDate];
-  [v4 encodeObject:v20 forKey:@"ReleaseDate"];
+  releaseDate = [(SUCoreDescriptor *)self releaseDate];
+  [coderCopy encodeObject:releaseDate forKey:@"ReleaseDate"];
 
-  v21 = [(SUCoreDescriptor *)self restoreVersion];
-  [v4 encodeObject:v21 forKey:@"RestoreVersion"];
+  restoreVersion = [(SUCoreDescriptor *)self restoreVersion];
+  [coderCopy encodeObject:restoreVersion forKey:@"RestoreVersion"];
 
-  v22 = [(SUCoreDescriptor *)self targetUpdateBridgeVersion];
-  [v4 encodeObject:v22 forKey:@"TargetUpdateBridgeVersion"];
+  targetUpdateBridgeVersion = [(SUCoreDescriptor *)self targetUpdateBridgeVersion];
+  [coderCopy encodeObject:targetUpdateBridgeVersion forKey:@"TargetUpdateBridgeVersion"];
 
-  v23 = [(SUCoreDescriptor *)self targetUpdateSFRVersion];
-  [v4 encodeObject:v23 forKey:@"TargetUpdateSFRVersion"];
+  targetUpdateSFRVersion = [(SUCoreDescriptor *)self targetUpdateSFRVersion];
+  [coderCopy encodeObject:targetUpdateSFRVersion forKey:@"TargetUpdateSFRVersion"];
 
-  v24 = [(SUCoreDescriptor *)self trainName];
-  [v4 encodeObject:v24 forKey:@"TrainName"];
+  trainName = [(SUCoreDescriptor *)self trainName];
+  [coderCopy encodeObject:trainName forKey:@"TrainName"];
 
-  v25 = [(SUCoreDescriptor *)self prerequisiteBuild];
-  [v4 encodeObject:v25 forKey:@"PrerequisiteBuild"];
+  prerequisiteBuild = [(SUCoreDescriptor *)self prerequisiteBuild];
+  [coderCopy encodeObject:prerequisiteBuild forKey:@"PrerequisiteBuild"];
 
-  v26 = [(SUCoreDescriptor *)self prerequisiteOSVersion];
-  [v4 encodeObject:v26 forKey:@"PrerequisiteOSVersion"];
+  prerequisiteOSVersion = [(SUCoreDescriptor *)self prerequisiteOSVersion];
+  [coderCopy encodeObject:prerequisiteOSVersion forKey:@"PrerequisiteOSVersion"];
 
-  v27 = [(SUCoreDescriptor *)self supportedDevices];
-  [v4 encodeObject:v27 forKey:@"SupportedDevices"];
+  supportedDevices = [(SUCoreDescriptor *)self supportedDevices];
+  [coderCopy encodeObject:supportedDevices forKey:@"SupportedDevices"];
 
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor suDownloadSize](self, "suDownloadSize")}];
-  [v4 encodeObject:v28 forKey:@"SUDownloadSize"];
+  [coderCopy encodeObject:v28 forKey:@"SUDownloadSize"];
 
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_unarchivedSize];
-  [v4 encodeObject:v29 forKey:@"UnarchiveSize"];
+  [coderCopy encodeObject:v29 forKey:@"UnarchiveSize"];
 
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor msuPrepareSize](self, "msuPrepareSize")}];
-  [v4 encodeObject:v30 forKey:@"MSUPrepareSize"];
+  [coderCopy encodeObject:v30 forKey:@"MSUPrepareSize"];
 
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor msuSnapshotPrepareSize](self, "msuSnapshotPrepareSize")}];
-  [v4 encodeObject:v31 forKey:@"MSUSnapshotPrepareSize"];
+  [coderCopy encodeObject:v31 forKey:@"MSUSnapshotPrepareSize"];
 
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_installationSize];
-  [v4 encodeObject:v32 forKey:@"InstallationSize"];
+  [coderCopy encodeObject:v32 forKey:@"InstallationSize"];
 
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_installationSnapshotSize];
-  [v4 encodeObject:v33 forKey:@"InstallationSnapshotSize"];
+  [coderCopy encodeObject:v33 forKey:@"InstallationSnapshotSize"];
 
   v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor minimumSystemPartitionSize](self, "minimumSystemPartitionSize")}];
-  [v4 encodeObject:v34 forKey:@"MinimumSystemPartitionSize"];
+  [coderCopy encodeObject:v34 forKey:@"MinimumSystemPartitionSize"];
 
-  [v4 encodeBool:-[SUCoreDescriptor streamingZipCapable](self forKey:{"streamingZipCapable"), @"StreamingZipCapable"}];
-  v35 = [(SUCoreDescriptor *)self systemPartitionPadding];
-  [v4 encodeObject:v35 forKey:@"SystemPartitionPadding"];
+  [coderCopy encodeBool:-[SUCoreDescriptor streamingZipCapable](self forKey:{"streamingZipCapable"), @"StreamingZipCapable"}];
+  systemPartitionPadding = [(SUCoreDescriptor *)self systemPartitionPadding];
+  [coderCopy encodeObject:systemPartitionPadding forKey:@"SystemPartitionPadding"];
 
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor preSUStagingRequiredSize](self, "preSUStagingRequiredSize")}];
-  [v4 encodeObject:v36 forKey:@"PSUSRequiredSize"];
+  [coderCopy encodeObject:v36 forKey:@"PSUSRequiredSize"];
 
   v37 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor preSUStagingOptionalSize](self, "preSUStagingOptionalSize")}];
-  [v4 encodeObject:v37 forKey:@"PSUSOptionalSize"];
+  [coderCopy encodeObject:v37 forKey:@"PSUSOptionalSize"];
 
-  [v4 encodeBool:-[SUCoreDescriptor disableReserveSpace](self forKey:{"disableReserveSpace"), @"DisableReserveSpace"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableReserveSpace](self forKey:{"disableReserveSpace"), @"DisableReserveSpace"}];
   v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[SUCoreDescriptor centeralizedPurgeableFactor](self, "centeralizedPurgeableFactor")}];
-  [v4 encodeObject:v38 forKey:@"CenteralizedPurgeableFactor"];
+  [coderCopy encodeObject:v38 forKey:@"CenteralizedPurgeableFactor"];
 
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{-[SUCoreDescriptor pluginPurgeableFactor](self, "pluginPurgeableFactor")}];
-  [v4 encodeObject:v39 forKey:@"PluginPurgeableFactor"];
+  [coderCopy encodeObject:v39 forKey:@"PluginPurgeableFactor"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor minReserveSpace](self, "minReserveSpace")}];
-  [v4 encodeObject:v40 forKey:@"MinReserveSpace"];
+  [coderCopy encodeObject:v40 forKey:@"MinReserveSpace"];
 
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor maxReserveSpace](self, "maxReserveSpace")}];
-  [v4 encodeObject:v41 forKey:@"MaxReserveSpace"];
+  [coderCopy encodeObject:v41 forKey:@"MaxReserveSpace"];
 
   v42 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor unentitledReserveAmount](self, "unentitledReserveAmount")}];
-  [v4 encodeObject:v42 forKey:@"UnentitledReserveAmount"];
+  [coderCopy encodeObject:v42 forKey:@"UnentitledReserveAmount"];
 
-  [v4 encodeBool:-[SUCoreDescriptor autoDownloadAllowableOverCellular](self forKey:{"autoDownloadAllowableOverCellular"), @"AutoDownloadAllowableOverCellular"}];
-  [v4 encodeBool:-[SUCoreDescriptor downloadAllowableOverCellular](self forKey:{"downloadAllowableOverCellular"), @"DownloadAllowableOverCellular"}];
-  [v4 encodeBool:-[SUCoreDescriptor downloadable](self forKey:{"downloadable"), @"Downloadable"}];
-  [v4 encodeBool:-[SUCoreDescriptor disableSiriVoiceDeletion](self forKey:{"disableSiriVoiceDeletion"), @"DisableSiriVoiceDeletion"}];
-  [v4 encodeBool:-[SUCoreDescriptor disableCDLevel4](self forKey:{"disableCDLevel4"), @"DisableCDLevel4"}];
-  [v4 encodeBool:-[SUCoreDescriptor disableAppDemotion](self forKey:{"disableAppDemotion"), @"DisableAppDemotion"}];
-  [v4 encodeBool:-[SUCoreDescriptor disableMASuspension](self forKey:{"disableMASuspension"), @"DisableMASuspension"}];
-  [v4 encodeBool:-[SUCoreDescriptor disableInstallTonight](self forKey:{"disableInstallTonight"), @"DisableInstallTonight"}];
-  [v4 encodeBool:-[SUCoreDescriptor forcePasscodeRequired](self forKey:{"forcePasscodeRequired"), @"ForcePasscodeRequired"}];
-  [v4 encodeBool:-[SUCoreDescriptor rampEnabled](self forKey:{"rampEnabled"), @"RampEnabled"}];
-  [v4 encodeBool:-[SUCoreDescriptor granularlyRamped](self forKey:{"granularlyRamped"), @"GranularlyRamped"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor autoDownloadAllowableOverCellular](self forKey:{"autoDownloadAllowableOverCellular"), @"AutoDownloadAllowableOverCellular"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor downloadAllowableOverCellular](self forKey:{"downloadAllowableOverCellular"), @"DownloadAllowableOverCellular"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor downloadable](self forKey:{"downloadable"), @"Downloadable"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableSiriVoiceDeletion](self forKey:{"disableSiriVoiceDeletion"), @"DisableSiriVoiceDeletion"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableCDLevel4](self forKey:{"disableCDLevel4"), @"DisableCDLevel4"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableAppDemotion](self forKey:{"disableAppDemotion"), @"DisableAppDemotion"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableMASuspension](self forKey:{"disableMASuspension"), @"DisableMASuspension"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableInstallTonight](self forKey:{"disableInstallTonight"), @"DisableInstallTonight"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor forcePasscodeRequired](self forKey:{"forcePasscodeRequired"), @"ForcePasscodeRequired"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor rampEnabled](self forKey:{"rampEnabled"), @"RampEnabled"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor granularlyRamped](self forKey:{"granularlyRamped"), @"GranularlyRamped"}];
   v43 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor mdmDelayInterval](self, "mdmDelayInterval")}];
-  [v4 encodeObject:v43 forKey:@"MDMDelayInterval"];
+  [coderCopy encodeObject:v43 forKey:@"MDMDelayInterval"];
 
-  [v4 encodeBool:-[SUCoreDescriptor autoUpdateEnabled](self forKey:{"autoUpdateEnabled"), @"AutoUpdateEnabled"}];
-  [v4 encodeInteger:-[SUCoreDescriptor hideInstallAlert](self forKey:{"hideInstallAlert"), @"HideInstallAlert"}];
-  [v4 encodeBool:-[SUCoreDescriptor containsSFRContent](self forKey:{"containsSFRContent"), @"ContainsSFRContent"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor autoUpdateEnabled](self forKey:{"autoUpdateEnabled"), @"AutoUpdateEnabled"}];
+  [coderCopy encodeInteger:-[SUCoreDescriptor hideInstallAlert](self forKey:{"hideInstallAlert"), @"HideInstallAlert"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor containsSFRContent](self forKey:{"containsSFRContent"), @"ContainsSFRContent"}];
   v44 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor installAlertInterval](self, "installAlertInterval")}];
-  [v4 encodeObject:v44 forKey:@"InstallAlertInterval"];
+  [coderCopy encodeObject:v44 forKey:@"InstallAlertInterval"];
 
-  [v4 encodeBool:-[SUCoreDescriptor allowAutoDownloadOnBattery](self forKey:{"allowAutoDownloadOnBattery"), @"AllowAutoDownloadOnBattery"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor allowAutoDownloadOnBattery](self forKey:{"allowAutoDownloadOnBattery"), @"AllowAutoDownloadOnBattery"}];
   v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor autoDownloadOnBatteryDelay](self, "autoDownloadOnBatteryDelay")}];
-  [v4 encodeObject:v45 forKey:@"AutoDownloadOnBatteryDelay"];
+  [coderCopy encodeObject:v45 forKey:@"AutoDownloadOnBatteryDelay"];
 
   v46 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor autoDownloadOnBatteryMinBattery](self, "autoDownloadOnBatteryMinBattery")}];
-  [v4 encodeObject:v46 forKey:@"AutoDownloadOnBatteryMinBattery"];
+  [coderCopy encodeObject:v46 forKey:@"AutoDownloadOnBatteryMinBattery"];
 
-  v47 = [(SUCoreDescriptor *)self setupCritical];
-  [v4 encodeObject:v47 forKey:@"SetupCritical"];
+  setupCritical = [(SUCoreDescriptor *)self setupCritical];
+  [coderCopy encodeObject:setupCritical forKey:@"SetupCritical"];
 
-  [v4 encodeBool:-[SUCoreDescriptor criticalCellularOverride](self forKey:{"criticalCellularOverride"), @"CriticalCellularOverride"}];
-  [v4 encodeBool:-[SUCoreDescriptor criticalOutOfBoxOnly](self forKey:{"criticalOutOfBoxOnly"), @"CriticalOutOfBoxOnly"}];
-  v48 = [(SUCoreDescriptor *)self lastEmergencyBuild];
-  [v4 encodeObject:v48 forKey:@"LastEmergencyBuild"];
+  [coderCopy encodeBool:-[SUCoreDescriptor criticalCellularOverride](self forKey:{"criticalCellularOverride"), @"CriticalCellularOverride"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor criticalOutOfBoxOnly](self forKey:{"criticalOutOfBoxOnly"), @"CriticalOutOfBoxOnly"}];
+  lastEmergencyBuild = [(SUCoreDescriptor *)self lastEmergencyBuild];
+  [coderCopy encodeObject:lastEmergencyBuild forKey:@"LastEmergencyBuild"];
 
-  v49 = [(SUCoreDescriptor *)self lastEmergencyOSVersion];
-  [v4 encodeObject:v49 forKey:@"LastEmergencyOSVersion"];
+  lastEmergencyOSVersion = [(SUCoreDescriptor *)self lastEmergencyOSVersion];
+  [coderCopy encodeObject:lastEmergencyOSVersion forKey:@"LastEmergencyOSVersion"];
 
-  [v4 encodeBool:-[SUCoreDescriptor mandatoryUpdateEligible](self forKey:{"mandatoryUpdateEligible"), @"MandatoryUpdateEligible"}];
-  v50 = [(SUCoreDescriptor *)self mandatoryUpdateVersionMin];
-  [v4 encodeObject:v50 forKey:@"MandatoryUpdateVersionMin"];
+  [coderCopy encodeBool:-[SUCoreDescriptor mandatoryUpdateEligible](self forKey:{"mandatoryUpdateEligible"), @"MandatoryUpdateEligible"}];
+  mandatoryUpdateVersionMin = [(SUCoreDescriptor *)self mandatoryUpdateVersionMin];
+  [coderCopy encodeObject:mandatoryUpdateVersionMin forKey:@"MandatoryUpdateVersionMin"];
 
-  v51 = [(SUCoreDescriptor *)self mandatoryUpdateVersionMax];
-  [v4 encodeObject:v51 forKey:@"MandatoryUpdateVersionMax"];
+  mandatoryUpdateVersionMax = [(SUCoreDescriptor *)self mandatoryUpdateVersionMax];
+  [coderCopy encodeObject:mandatoryUpdateVersionMax forKey:@"MandatoryUpdateVersionMax"];
 
-  [v4 encodeBool:-[SUCoreDescriptor mandatoryUpdateOptional](self forKey:{"mandatoryUpdateOptional"), @"MandatoryUpdateOptional"}];
-  [v4 encodeBool:-[SUCoreDescriptor mandatoryUpdateRestrictedToOutOfTheBox](self forKey:{"mandatoryUpdateRestrictedToOutOfTheBox"), @"MandatoryUpdateRestrictedToOutOfTheBox"}];
-  [v4 encodeBool:-[SUCoreDescriptor oneShotBuddyDisabled](self forKey:{"oneShotBuddyDisabled"), @"OneShotBuddyDisabled"}];
-  v52 = [(SUCoreDescriptor *)self oneShotBuddyDisabledBuilds];
-  [v4 encodeObject:v52 forKey:@"OneShotBuddyDisabledBuilds"];
+  [coderCopy encodeBool:-[SUCoreDescriptor mandatoryUpdateOptional](self forKey:{"mandatoryUpdateOptional"), @"MandatoryUpdateOptional"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor mandatoryUpdateRestrictedToOutOfTheBox](self forKey:{"mandatoryUpdateRestrictedToOutOfTheBox"), @"MandatoryUpdateRestrictedToOutOfTheBox"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor oneShotBuddyDisabled](self forKey:{"oneShotBuddyDisabled"), @"OneShotBuddyDisabled"}];
+  oneShotBuddyDisabledBuilds = [(SUCoreDescriptor *)self oneShotBuddyDisabledBuilds];
+  [coderCopy encodeObject:oneShotBuddyDisabledBuilds forKey:@"OneShotBuddyDisabledBuilds"];
 
-  [v4 encodeBool:-[SUCoreDescriptor criticalUpdate](self forKey:{"criticalUpdate"), @"CriticalUpdate"}];
-  v53 = [(SUCoreDescriptor *)self productType];
-  [v4 encodeObject:v53 forKey:@"ProductType"];
+  [coderCopy encodeBool:-[SUCoreDescriptor criticalUpdate](self forKey:{"criticalUpdate"), @"CriticalUpdate"}];
+  productType = [(SUCoreDescriptor *)self productType];
+  [coderCopy encodeObject:productType forKey:@"ProductType"];
 
   v54 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor autoInstallDelay](self, "autoInstallDelay")}];
-  [v4 encodeObject:v54 forKey:@"AutoInstallDelay"];
+  [coderCopy encodeObject:v54 forKey:@"AutoInstallDelay"];
 
-  [v4 encodeBool:-[SUCoreDescriptor notifyAfter](self forKey:{"notifyAfter"), @"NotifyAfter"}];
-  v55 = [(SUCoreDescriptor *)self minimumBridgeVersion];
-  [v4 encodeObject:v55 forKey:@"MinimumBridgeVersion"];
+  [coderCopy encodeBool:-[SUCoreDescriptor notifyAfter](self forKey:{"notifyAfter"), @"NotifyAfter"}];
+  minimumBridgeVersion = [(SUCoreDescriptor *)self minimumBridgeVersion];
+  [coderCopy encodeObject:minimumBridgeVersion forKey:@"MinimumBridgeVersion"];
 
-  [v4 encodeBool:-[SUCoreDescriptor disableRosettaUpdates](self forKey:{"disableRosettaUpdates"), @"DisableRosettaUpdates"}];
-  [v4 encodeBool:-[SUCoreDescriptor disableRecoveryOSUpdates](self forKey:{"disableRecoveryOSUpdates"), @"DisableRecoveryOSUpdates"}];
-  [v4 encodeBool:-[SUCoreDescriptor requireInstallAssistantUpdate](self forKey:{"requireInstallAssistantUpdate"), @"RequireInstallAssistantUpdate"}];
-  v56 = [(SUCoreDescriptor *)self sepDigest];
-  [v4 encodeObject:v56 forKey:@"SEPDigest"];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableRosettaUpdates](self forKey:{"disableRosettaUpdates"), @"DisableRosettaUpdates"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableRecoveryOSUpdates](self forKey:{"disableRecoveryOSUpdates"), @"DisableRecoveryOSUpdates"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor requireInstallAssistantUpdate](self forKey:{"requireInstallAssistantUpdate"), @"RequireInstallAssistantUpdate"}];
+  sepDigest = [(SUCoreDescriptor *)self sepDigest];
+  [coderCopy encodeObject:sepDigest forKey:@"SEPDigest"];
 
-  v57 = [(SUCoreDescriptor *)self sepTBMDigests];
-  [v4 encodeObject:v57 forKey:@"SEPTBMDigests"];
+  sepTBMDigests = [(SUCoreDescriptor *)self sepTBMDigests];
+  [coderCopy encodeObject:sepTBMDigests forKey:@"SEPTBMDigests"];
 
-  v58 = [(SUCoreDescriptor *)self rsepDigest];
-  [v4 encodeObject:v58 forKey:@"RSEPDigest"];
+  rsepDigest = [(SUCoreDescriptor *)self rsepDigest];
+  [coderCopy encodeObject:rsepDigest forKey:@"RSEPDigest"];
 
-  v59 = [(SUCoreDescriptor *)self rsepTBMDigests];
-  [v4 encodeObject:v59 forKey:@"RSEPTBMDigests"];
+  rsepTBMDigests = [(SUCoreDescriptor *)self rsepTBMDigests];
+  [coderCopy encodeObject:rsepTBMDigests forKey:@"RSEPTBMDigests"];
 
-  v60 = [(SUCoreDescriptor *)self documentationID];
-  [v4 encodeObject:v60 forKey:@"DocumentationID"];
+  documentationID = [(SUCoreDescriptor *)self documentationID];
+  [coderCopy encodeObject:documentationID forKey:@"DocumentationID"];
 
-  v61 = [(SUCoreDescriptor *)self documentation];
-  [v4 encodeObject:v61 forKey:@"Documentation"];
+  documentation = [(SUCoreDescriptor *)self documentation];
+  [coderCopy encodeObject:documentation forKey:@"Documentation"];
 
-  v62 = [(SUCoreDescriptor *)self softwareUpdateURL];
-  [v4 encodeObject:v62 forKey:@"SoftwareUpdateURL"];
+  softwareUpdateURL = [(SUCoreDescriptor *)self softwareUpdateURL];
+  [coderCopy encodeObject:softwareUpdateURL forKey:@"SoftwareUpdateURL"];
 
-  v63 = [(SUCoreDescriptor *)self measurement];
-  [v4 encodeObject:v63 forKey:@"Measurement"];
+  measurement = [(SUCoreDescriptor *)self measurement];
+  [coderCopy encodeObject:measurement forKey:@"Measurement"];
 
-  v64 = [(SUCoreDescriptor *)self measurementAlgorithm];
-  [v4 encodeObject:v64 forKey:@"MeasurementAlgorithm"];
+  measurementAlgorithm = [(SUCoreDescriptor *)self measurementAlgorithm];
+  [coderCopy encodeObject:measurementAlgorithm forKey:@"MeasurementAlgorithm"];
 
-  v65 = [(SUCoreDescriptor *)self softwareUpdateAssetIdentifier];
-  [v4 encodeObject:v65 forKey:@"SoftwareUpdateAssetIdentifier"];
+  softwareUpdateAssetIdentifier = [(SUCoreDescriptor *)self softwareUpdateAssetIdentifier];
+  [coderCopy encodeObject:softwareUpdateAssetIdentifier forKey:@"SoftwareUpdateAssetIdentifier"];
 
-  v66 = [(SUCoreDescriptor *)self documentationAssetIdentifier];
-  [v4 encodeObject:v66 forKey:@"DocumentationAssetIdentifier"];
+  documentationAssetIdentifier = [(SUCoreDescriptor *)self documentationAssetIdentifier];
+  [coderCopy encodeObject:documentationAssetIdentifier forKey:@"DocumentationAssetIdentifier"];
 
-  [v4 encodeBool:-[SUCoreDescriptor promoteAlternateUpdate](self forKey:{"promoteAlternateUpdate"), @"PromoteAlternateUpdate"}];
-  [v4 encodeBool:-[SUCoreDescriptor enableAlternateAssetAudience](self forKey:{"enableAlternateAssetAudience"), @"EnableAlternateAssetAudienceUUID"}];
-  v67 = [(SUCoreDescriptor *)self alternateAssetAudienceUUID];
-  [v4 encodeObject:v67 forKey:@"AlternateAssetAudienceUUID"];
+  [coderCopy encodeBool:-[SUCoreDescriptor promoteAlternateUpdate](self forKey:{"promoteAlternateUpdate"), @"PromoteAlternateUpdate"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor enableAlternateAssetAudience](self forKey:{"enableAlternateAssetAudience"), @"EnableAlternateAssetAudienceUUID"}];
+  alternateAssetAudienceUUID = [(SUCoreDescriptor *)self alternateAssetAudienceUUID];
+  [coderCopy encodeObject:alternateAssetAudienceUUID forKey:@"AlternateAssetAudienceUUID"];
 
-  v68 = [(SUCoreDescriptor *)self assetAudienceUUID];
-  [v4 encodeObject:v68 forKey:@"AssetAudienceUUID"];
+  assetAudienceUUID = [(SUCoreDescriptor *)self assetAudienceUUID];
+  [coderCopy encodeObject:assetAudienceUUID forKey:@"AssetAudienceUUID"];
 
-  v69 = [(SUCoreDescriptor *)self updateBrainPath];
-  [v4 encodeObject:v69 forKey:@"UpdateBrainPath"];
+  updateBrainPath = [(SUCoreDescriptor *)self updateBrainPath];
+  [coderCopy encodeObject:updateBrainPath forKey:@"UpdateBrainPath"];
 
-  v70 = [(SUCoreDescriptor *)self updateBundlePath];
-  [v4 encodeObject:v70 forKey:@"UpdateBundlePath"];
+  updateBundlePath = [(SUCoreDescriptor *)self updateBundlePath];
+  [coderCopy encodeObject:updateBundlePath forKey:@"UpdateBundlePath"];
 
-  v71 = [(SUCoreDescriptor *)self bundleAttributes];
-  [v4 encodeObject:v71 forKey:@"BundleAttributes"];
+  bundleAttributes = [(SUCoreDescriptor *)self bundleAttributes];
+  [coderCopy encodeObject:bundleAttributes forKey:@"BundleAttributes"];
 
-  [v4 encodeBool:-[SUCoreDescriptor splatOnly](self forKey:{"splatOnly"), @"SplatOnly"}];
-  [v4 encodeBool:-[SUCoreDescriptor semiSplatEnabled](self forKey:{"semiSplatEnabled"), @"SemiSplatEnabled"}];
-  v72 = [(SUCoreDescriptor *)self semiSplatMustQuitApps];
-  [v4 encodeObject:v72 forKey:@"SemiSplatMustQuitApps"];
+  [coderCopy encodeBool:-[SUCoreDescriptor splatOnly](self forKey:{"splatOnly"), @"SplatOnly"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor semiSplatEnabled](self forKey:{"semiSplatEnabled"), @"SemiSplatEnabled"}];
+  semiSplatMustQuitApps = [(SUCoreDescriptor *)self semiSplatMustQuitApps];
+  [coderCopy encodeObject:semiSplatMustQuitApps forKey:@"SemiSplatMustQuitApps"];
 
-  [v4 encodeBool:-[SUCoreDescriptor revoked](self forKey:{"revoked"), @"Revoked"}];
-  [v4 encodeBool:-[SUCoreDescriptor semiSplatRestartNow](self forKey:{"semiSplatRestartNow"), @"SemiSplatRestartNow"}];
-  [v4 encodeBool:-[SUCoreDescriptor disableSplatCombo](self forKey:{"disableSplatCombo"), @"DisableSplombo"}];
-  v73 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-  [v4 encodeObject:v73 forKey:@"AssociatedSplatDescriptor"];
+  [coderCopy encodeBool:-[SUCoreDescriptor revoked](self forKey:{"revoked"), @"Revoked"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor semiSplatRestartNow](self forKey:{"semiSplatRestartNow"), @"SemiSplatRestartNow"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableSplatCombo](self forKey:{"disableSplatCombo"), @"DisableSplombo"}];
+  associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+  [coderCopy encodeObject:associatedSplatDescriptor forKey:@"AssociatedSplatDescriptor"];
 
-  [v4 encodeBool:-[SUCoreDescriptor enablePreSUStaging](self forKey:{"enablePreSUStaging"), @"EnablePSUS"}];
-  [v4 encodeBool:-[SUCoreDescriptor enablePreSUStagingForOptionalAssets](self forKey:{"enablePreSUStagingForOptionalAssets"), @"EnablePSUSForOptionalAssets"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor enablePreSUStaging](self forKey:{"enablePreSUStaging"), @"EnablePSUS"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor enablePreSUStagingForOptionalAssets](self forKey:{"enablePreSUStagingForOptionalAssets"), @"EnablePSUSForOptionalAssets"}];
   v74 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor preSUStagingMaxSize](self, "preSUStagingMaxSize")}];
-  [v4 encodeObject:v74 forKey:@"PSUSMaxSize"];
+  [coderCopy encodeObject:v74 forKey:@"PSUSMaxSize"];
 
   v75 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[SUCoreDescriptor minFreeSpacePostStageOptionalAssets](self, "minFreeSpacePostStageOptionalAssets")}];
-  [v4 encodeObject:v75 forKey:@"MinFreeSpacePostStageOptionalAssets"];
+  [coderCopy encodeObject:v75 forKey:@"MinFreeSpacePostStageOptionalAssets"];
 
-  [v4 encodeBool:-[SUCoreDescriptor disableSecurityAdvisoryNotification](self forKey:{"disableSecurityAdvisoryNotification"), @"DisableSecurityAdvisoryNotification"}];
-  [v4 encodeBool:-[SUCoreDescriptor disableDeviceCompatibilityNotification](self forKey:{"disableDeviceCompatibilityNotification"), @"DisableDeviceCompatibilityNotification"}];
-  v76 = [(SUCoreDescriptor *)self alignediOSMajorVersion];
-  [v4 encodeObject:v76 forKey:@"AlignediOSMajorVersion"];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableSecurityAdvisoryNotification](self forKey:{"disableSecurityAdvisoryNotification"), @"DisableSecurityAdvisoryNotification"}];
+  [coderCopy encodeBool:-[SUCoreDescriptor disableDeviceCompatibilityNotification](self forKey:{"disableDeviceCompatibilityNotification"), @"DisableDeviceCompatibilityNotification"}];
+  alignediOSMajorVersion = [(SUCoreDescriptor *)self alignediOSMajorVersion];
+  [coderCopy encodeObject:alignediOSMajorVersion forKey:@"AlignediOSMajorVersion"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -2658,17 +2658,17 @@ LABEL_35:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUCoreDescriptor *)self descriptorType];
-      if (v6 == [(SUCoreDescriptor *)v5 descriptorType])
+      v5 = equalCopy;
+      descriptorType = [(SUCoreDescriptor *)self descriptorType];
+      if (descriptorType == [(SUCoreDescriptor *)v5 descriptorType])
       {
-        v7 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+        associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
 
-        if (v7)
+        if (associatedSplatDescriptor)
         {
-          v8 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-          v9 = [(SUCoreDescriptor *)v5 associatedSplatDescriptor];
-          v10 = [v8 isEqual:v9];
+          associatedSplatDescriptor2 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+          associatedSplatDescriptor3 = [(SUCoreDescriptor *)v5 associatedSplatDescriptor];
+          v10 = [associatedSplatDescriptor2 isEqual:associatedSplatDescriptor3];
 
           if (v10)
           {
@@ -2676,14 +2676,14 @@ LABEL_6:
             if ([(SUCoreDescriptor *)self descriptorType]== 2 || [(SUCoreDescriptor *)self descriptorType]== 4)
             {
               v11 = MEMORY[0x277D643F8];
-              v12 = [(SUCoreDescriptor *)self updateBrainPath];
-              v13 = [(SUCoreDescriptor *)v5 updateBrainPath];
-              if ([v11 stringIsEqual:v12 to:v13])
+              updateBrainPath = [(SUCoreDescriptor *)self updateBrainPath];
+              updateBrainPath2 = [(SUCoreDescriptor *)v5 updateBrainPath];
+              if ([v11 stringIsEqual:updateBrainPath to:updateBrainPath2])
               {
                 v14 = MEMORY[0x277D643F8];
-                v15 = [(SUCoreDescriptor *)self updateBundlePath];
-                v16 = [(SUCoreDescriptor *)v5 updateBundlePath];
-                v17 = [v14 stringIsEqual:v15 to:v16];
+                updateBundlePath = [(SUCoreDescriptor *)self updateBundlePath];
+                updateBundlePath2 = [(SUCoreDescriptor *)v5 updateBundlePath];
+                v17 = [v14 stringIsEqual:updateBundlePath to:updateBundlePath2];
 
 LABEL_25:
                 goto LABEL_26;
@@ -2698,53 +2698,53 @@ LABEL_25:
               if (v20)
               {
                 v21 = MEMORY[0x277D643F8];
-                v12 = [(SUCoreDescriptor *)self productVersion];
-                v13 = [(SUCoreDescriptor *)v5 productVersion];
-                if ([v21 stringIsEqual:v12 to:v13])
+                updateBrainPath = [(SUCoreDescriptor *)self productVersion];
+                updateBrainPath2 = [(SUCoreDescriptor *)v5 productVersion];
+                if ([v21 stringIsEqual:updateBrainPath to:updateBrainPath2])
                 {
                   v22 = MEMORY[0x277D643F8];
-                  v23 = [(SUCoreDescriptor *)self productBuildVersion];
-                  v24 = [(SUCoreDescriptor *)v5 productBuildVersion];
-                  if ([v22 stringIsEqual:v23 to:v24])
+                  productBuildVersion = [(SUCoreDescriptor *)self productBuildVersion];
+                  productBuildVersion2 = [(SUCoreDescriptor *)v5 productBuildVersion];
+                  if ([v22 stringIsEqual:productBuildVersion to:productBuildVersion2])
                   {
                     v25 = MEMORY[0x277D643F8];
-                    v26 = [(SUCoreDescriptor *)self productVersionExtra];
-                    v53 = [(SUCoreDescriptor *)v5 productVersionExtra];
-                    v54 = v26;
-                    if ([v25 stringIsEqual:v26 to:v53])
+                    productVersionExtra = [(SUCoreDescriptor *)self productVersionExtra];
+                    productVersionExtra2 = [(SUCoreDescriptor *)v5 productVersionExtra];
+                    v54 = productVersionExtra;
+                    if ([v25 stringIsEqual:productVersionExtra to:productVersionExtra2])
                     {
                       v27 = MEMORY[0x277D643F8];
-                      v28 = [(SUCoreDescriptor *)self releaseType];
-                      v51 = [(SUCoreDescriptor *)v5 releaseType];
-                      v52 = v28;
-                      if ([v27 stringIsEqual:v28 to:v51])
+                      releaseType = [(SUCoreDescriptor *)self releaseType];
+                      releaseType2 = [(SUCoreDescriptor *)v5 releaseType];
+                      v52 = releaseType;
+                      if ([v27 stringIsEqual:releaseType to:releaseType2])
                       {
                         v29 = MEMORY[0x277D643F8];
-                        v30 = [(SUCoreDescriptor *)self restoreVersion];
-                        v49 = [(SUCoreDescriptor *)v5 restoreVersion];
-                        v50 = v30;
-                        if ([v29 stringIsEqual:v30 to:v49])
+                        restoreVersion = [(SUCoreDescriptor *)self restoreVersion];
+                        restoreVersion2 = [(SUCoreDescriptor *)v5 restoreVersion];
+                        v50 = restoreVersion;
+                        if ([v29 stringIsEqual:restoreVersion to:restoreVersion2])
                         {
                           v31 = MEMORY[0x277D643F8];
-                          v32 = [(SUCoreDescriptor *)self targetUpdateBridgeVersion];
-                          v33 = [(SUCoreDescriptor *)v5 targetUpdateBridgeVersion];
-                          v48 = v32;
-                          v34 = v32;
-                          v35 = v33;
-                          if ([v31 stringIsEqual:v34 to:v33])
+                          targetUpdateBridgeVersion = [(SUCoreDescriptor *)self targetUpdateBridgeVersion];
+                          targetUpdateBridgeVersion2 = [(SUCoreDescriptor *)v5 targetUpdateBridgeVersion];
+                          v48 = targetUpdateBridgeVersion;
+                          v34 = targetUpdateBridgeVersion;
+                          v35 = targetUpdateBridgeVersion2;
+                          if ([v31 stringIsEqual:v34 to:targetUpdateBridgeVersion2])
                           {
                             v46 = MEMORY[0x277D643F8];
-                            v36 = [(SUCoreDescriptor *)self targetUpdateSFRVersion];
-                            v37 = [(SUCoreDescriptor *)v5 targetUpdateSFRVersion];
+                            targetUpdateSFRVersion = [(SUCoreDescriptor *)self targetUpdateSFRVersion];
+                            targetUpdateSFRVersion2 = [(SUCoreDescriptor *)v5 targetUpdateSFRVersion];
                             v38 = v46;
-                            v45 = v37;
-                            v47 = v36;
-                            if ([v38 stringIsEqual:v36 to:?])
+                            v45 = targetUpdateSFRVersion2;
+                            v47 = targetUpdateSFRVersion;
+                            if ([v38 stringIsEqual:targetUpdateSFRVersion to:?])
                             {
                               v44 = MEMORY[0x277D643F8];
-                              v39 = [(SUCoreDescriptor *)self trainName];
-                              v40 = [(SUCoreDescriptor *)v5 trainName];
-                              v17 = [v44 stringIsEqual:v39 to:v40];
+                              trainName = [(SUCoreDescriptor *)self trainName];
+                              trainName2 = [(SUCoreDescriptor *)v5 trainName];
+                              v17 = [v44 stringIsEqual:trainName to:trainName2];
                             }
 
                             else
@@ -2790,10 +2790,10 @@ LABEL_25:
               {
                 v41 = objc_alloc(MEMORY[0x277CCACA8]);
                 v42 = [SUCoreDescriptor nameForDescriptorType:[(SUCoreDescriptor *)self descriptorType]];
-                v12 = [v41 initWithFormat:@"Unexpected descriptor type %@", v42];
+                updateBrainPath = [v41 initWithFormat:@"Unexpected descriptor type %@", v42];
 
-                v13 = [MEMORY[0x277D64428] sharedDiag];
-                [v13 trackAnomaly:@"DescriptorIsEqual" forReason:v12 withResult:8116 withError:0];
+                updateBrainPath2 = [MEMORY[0x277D64428] sharedDiag];
+                [updateBrainPath2 trackAnomaly:@"DescriptorIsEqual" forReason:updateBrainPath withResult:8116 withError:0];
               }
             }
 
@@ -2804,9 +2804,9 @@ LABEL_25:
 
         else
         {
-          v18 = [(SUCoreDescriptor *)v5 associatedSplatDescriptor];
+          associatedSplatDescriptor4 = [(SUCoreDescriptor *)v5 associatedSplatDescriptor];
 
-          if (!v18)
+          if (!associatedSplatDescriptor4)
           {
             goto LABEL_6;
           }
@@ -2833,10 +2833,10 @@ LABEL_27:
   {
     v3 = objc_alloc(MEMORY[0x277CCACA8]);
     v4 = [SUCoreDescriptor nameForDescriptorType:[(SUCoreDescriptor *)self descriptorType]];
-    v5 = [(SUCoreDescriptor *)self updateBrainPath];
-    v6 = [(SUCoreDescriptor *)self updateBundlePath];
-    v7 = [(SUCoreDescriptor *)self bundleAttributes];
-    v8 = [v3 initWithFormat:@"\n[>>>\n    descriptorType: %@\n   updateBrainPath: %@\n  updateBundlePath: %@\n  bundleAttributes: %@\n<<<]", v4, v5, v6, v7];
+    updateBrainPath = [(SUCoreDescriptor *)self updateBrainPath];
+    updateBundlePath = [(SUCoreDescriptor *)self updateBundlePath];
+    bundleAttributes = [(SUCoreDescriptor *)self bundleAttributes];
+    v8 = [v3 initWithFormat:@"\n[>>>\n    descriptorType: %@\n   updateBrainPath: %@\n  updateBundlePath: %@\n  bundleAttributes: %@\n<<<]", v4, updateBrainPath, updateBundlePath, bundleAttributes];
   }
 
   else
@@ -2850,10 +2850,10 @@ LABEL_27:
       v179 = [SUCoreDescriptor nameForDescriptorType:[(SUCoreDescriptor *)self descriptorType]];
       v167 = [SUCoreDescriptor nameForDescriptorAudienceType:[(SUCoreDescriptor *)self descriptorAudienceType]];
       v175 = [SUCoreDescriptor nameForDescriptorPreferredUpdateType:[(SUCoreDescriptor *)self preferredUpdateType]];
-      v159 = [(SUCoreDescriptor *)self humanReadableUpdateName];
-      v151 = [(SUCoreDescriptor *)self humanReadableUpdateTitle];
-      v171 = [(SUCoreDescriptor *)self humanReadableUpdateVersion];
-      v163 = [(SUCoreDescriptor *)self humanReadableMoreInfoLink];
+      humanReadableUpdateName = [(SUCoreDescriptor *)self humanReadableUpdateName];
+      humanReadableUpdateTitle = [(SUCoreDescriptor *)self humanReadableUpdateTitle];
+      humanReadableUpdateVersion = [(SUCoreDescriptor *)self humanReadableUpdateVersion];
+      humanReadableMoreInfoLink = [(SUCoreDescriptor *)self humanReadableMoreInfoLink];
       if ([(SUCoreDescriptor *)self notificationEnabled])
       {
         v12 = @"YES";
@@ -2865,8 +2865,8 @@ LABEL_27:
       }
 
       v119 = v12;
-      v139 = [(SUCoreDescriptor *)self notificationTitleString];
-      v155 = [(SUCoreDescriptor *)self notificationBodyString];
+      notificationTitleString = [(SUCoreDescriptor *)self notificationTitleString];
+      notificationBodyString = [(SUCoreDescriptor *)self notificationBodyString];
       if ([(SUCoreDescriptor *)self recommendedUpdateEnabled])
       {
         v13 = @"YES";
@@ -2889,33 +2889,33 @@ LABEL_27:
       }
 
       v103 = v14;
-      v147 = [(SUCoreDescriptor *)self recommendedUpdateNotificationFrequencyDays];
-      v131 = [(SUCoreDescriptor *)self recommendedUpdateMinOSVersion];
-      v107 = [(SUCoreDescriptor *)self recommendedUpdateMaxOSVersion];
-      v143 = [(SUCoreDescriptor *)self recommendedUpdateTitleString];
-      v99 = [(SUCoreDescriptor *)self recommendedUpdateAlertBodyString];
-      v135 = [(SUCoreDescriptor *)self mandatoryUpdateBodyString];
-      v127 = [(SUCoreDescriptor *)self securityAdvisoryNotificationTitleString];
-      v95 = [(SUCoreDescriptor *)self securityAdvisoryNotificationBodyString];
-      v123 = [(SUCoreDescriptor *)self deviceCompatibilityNotificationTitleString];
-      v15 = [(SUCoreDescriptor *)self deviceCompatibilityNotificationBodyString];
-      v111 = [(SUCoreDescriptor *)self safariUpdateContentBundleURL];
+      recommendedUpdateNotificationFrequencyDays = [(SUCoreDescriptor *)self recommendedUpdateNotificationFrequencyDays];
+      recommendedUpdateMinOSVersion = [(SUCoreDescriptor *)self recommendedUpdateMinOSVersion];
+      recommendedUpdateMaxOSVersion = [(SUCoreDescriptor *)self recommendedUpdateMaxOSVersion];
+      recommendedUpdateTitleString = [(SUCoreDescriptor *)self recommendedUpdateTitleString];
+      recommendedUpdateAlertBodyString = [(SUCoreDescriptor *)self recommendedUpdateAlertBodyString];
+      mandatoryUpdateBodyString = [(SUCoreDescriptor *)self mandatoryUpdateBodyString];
+      securityAdvisoryNotificationTitleString = [(SUCoreDescriptor *)self securityAdvisoryNotificationTitleString];
+      securityAdvisoryNotificationBodyString = [(SUCoreDescriptor *)self securityAdvisoryNotificationBodyString];
+      deviceCompatibilityNotificationTitleString = [(SUCoreDescriptor *)self deviceCompatibilityNotificationTitleString];
+      deviceCompatibilityNotificationBodyString = [(SUCoreDescriptor *)self deviceCompatibilityNotificationBodyString];
+      safariUpdateContentBundleURL = [(SUCoreDescriptor *)self safariUpdateContentBundleURL];
       v16 = @"EXISTS";
-      if (!v111)
+      if (!safariUpdateContentBundleURL)
       {
         v16 = @"NA";
       }
 
       v84 = v16;
-      v90 = [(SUCoreDescriptor *)self updateTypeName];
-      v87 = [(SUCoreDescriptor *)self assetID];
-      v17 = [(SUCoreDescriptor *)self softwareUpdateAssetType];
-      v18 = [(SUCoreDescriptor *)self documentationAssetType];
-      v19 = [(SUCoreDescriptor *)self softwareUpdateAssetAbsoluteID];
-      v20 = [(SUCoreDescriptor *)self documentationAssetAbsoluteID];
-      v21 = [(SUCoreDescriptor *)self softwareUpdateAssetPurpose];
-      v22 = [(SUCoreDescriptor *)self documentationAssetPurpose];
-      [v183 appendFormat:@"\n [>>>\n                         descriptorType: %@\n                 descriptorAudienceType: %@\n                    preferredUpdateType: %@\n                humanReadableUpdateName: %@\n               humanReadableUpdateTitle: %@\n             humanReadableUpdateVersion: %@\n              humanReadableMoreInfoLink: %@\n                    notificationEnabled: %@\n                notificationTitleString: %@\n                 notificationBodyString: %@\n               recommendedUpdateEnabled: %@\n            recommendedUpdateApplicable: %@\n        updateNotificationFrequencyDays: %@\n          recommendedUpdateMinOSVersion: %@\n          recommendedUpdateMaxOSVersion: %@\n           recommendedUpdateTitleString: %@\n       recommendedUpdateAlertBodyString: %@\n              mandatoryUpdateBodyString: %@\n      securityAdvisoryNotificationTitle: %@\n       securityAdvisoryNotificationBody: %@\n   deviceCompatibilityNotificationTitle: %@\n    deviceCompatibilityNotificationBody: %@\n           safariUpdateContentBundleURL: %@\n                             updateType: %@\n                                assetID: %@\n                softwareUpdateAssetType: %@\n                 documentationAssetType: %@\n          softwareUpdateAssetAbsoluteID: %@\n           documentationAssetAbsoluteID: %@\n             softwareUpdateAssetPurpose: %@\n              documentationAssetPurpose: %@\n", v179, v167, v175, v159, v151, v171, v163, v119, v139, v155, v115, v103, v147, v131, v107, v143, v99, v135, v127, v95, v123, v15, v84, v90, v87, v17, v18, v19, v20, v21, v22];
+      updateTypeName = [(SUCoreDescriptor *)self updateTypeName];
+      assetID = [(SUCoreDescriptor *)self assetID];
+      softwareUpdateAssetType = [(SUCoreDescriptor *)self softwareUpdateAssetType];
+      documentationAssetType = [(SUCoreDescriptor *)self documentationAssetType];
+      softwareUpdateAssetAbsoluteID = [(SUCoreDescriptor *)self softwareUpdateAssetAbsoluteID];
+      documentationAssetAbsoluteID = [(SUCoreDescriptor *)self documentationAssetAbsoluteID];
+      softwareUpdateAssetPurpose = [(SUCoreDescriptor *)self softwareUpdateAssetPurpose];
+      documentationAssetPurpose = [(SUCoreDescriptor *)self documentationAssetPurpose];
+      [v183 appendFormat:@"\n [>>>\n                         descriptorType: %@\n                 descriptorAudienceType: %@\n                    preferredUpdateType: %@\n                humanReadableUpdateName: %@\n               humanReadableUpdateTitle: %@\n             humanReadableUpdateVersion: %@\n              humanReadableMoreInfoLink: %@\n                    notificationEnabled: %@\n                notificationTitleString: %@\n                 notificationBodyString: %@\n               recommendedUpdateEnabled: %@\n            recommendedUpdateApplicable: %@\n        updateNotificationFrequencyDays: %@\n          recommendedUpdateMinOSVersion: %@\n          recommendedUpdateMaxOSVersion: %@\n           recommendedUpdateTitleString: %@\n       recommendedUpdateAlertBodyString: %@\n              mandatoryUpdateBodyString: %@\n      securityAdvisoryNotificationTitle: %@\n       securityAdvisoryNotificationBody: %@\n   deviceCompatibilityNotificationTitle: %@\n    deviceCompatibilityNotificationBody: %@\n           safariUpdateContentBundleURL: %@\n                             updateType: %@\n                                assetID: %@\n                softwareUpdateAssetType: %@\n                 documentationAssetType: %@\n          softwareUpdateAssetAbsoluteID: %@\n           documentationAssetAbsoluteID: %@\n             softwareUpdateAssetPurpose: %@\n              documentationAssetPurpose: %@\n", v179, v167, v175, humanReadableUpdateName, humanReadableUpdateTitle, humanReadableUpdateVersion, humanReadableMoreInfoLink, v119, notificationTitleString, notificationBodyString, v115, v103, recommendedUpdateNotificationFrequencyDays, recommendedUpdateMinOSVersion, recommendedUpdateMaxOSVersion, recommendedUpdateTitleString, recommendedUpdateAlertBodyString, mandatoryUpdateBodyString, securityAdvisoryNotificationTitleString, securityAdvisoryNotificationBodyString, deviceCompatibilityNotificationTitleString, deviceCompatibilityNotificationBodyString, v84, updateTypeName, assetID, softwareUpdateAssetType, documentationAssetType, softwareUpdateAssetAbsoluteID, documentationAssetAbsoluteID, softwareUpdateAssetPurpose, documentationAssetPurpose];
 
       v23 = @"NO";
       if ([(SUCoreDescriptor *)self promoteAlternateUpdate])
@@ -2940,24 +2940,24 @@ LABEL_27:
       }
 
       v136 = v25;
-      v180 = [(SUCoreDescriptor *)self alternateAssetAudienceUUID];
-      v176 = [(SUCoreDescriptor *)self assetAudienceUUID];
-      v168 = [(SUCoreDescriptor *)self uniqueBuildID];
-      v164 = [(SUCoreDescriptor *)self splatInstallDate];
-      v172 = [(SUCoreDescriptor *)self trainName];
-      v160 = [(SUCoreDescriptor *)self productVersion];
-      v156 = [(SUCoreDescriptor *)self productBuildVersion];
-      v152 = [(SUCoreDescriptor *)self productVersionExtra];
-      v144 = [(SUCoreDescriptor *)self productSystemName];
-      v132 = [(SUCoreDescriptor *)self releaseType];
-      v128 = [(SUCoreDescriptor *)self publisher];
-      v124 = [(SUCoreDescriptor *)self restoreVersion];
-      v120 = [(SUCoreDescriptor *)self targetUpdateBridgeVersion];
-      v148 = [(SUCoreDescriptor *)self targetUpdateSFRVersion];
-      v116 = [(SUCoreDescriptor *)self releaseDate];
-      v112 = [(SUCoreDescriptor *)self prerequisiteBuild];
-      v93 = [(SUCoreDescriptor *)self prerequisiteOSVersion];
-      v108 = [(SUCoreDescriptor *)self supportedDevices];
+      alternateAssetAudienceUUID = [(SUCoreDescriptor *)self alternateAssetAudienceUUID];
+      assetAudienceUUID = [(SUCoreDescriptor *)self assetAudienceUUID];
+      uniqueBuildID = [(SUCoreDescriptor *)self uniqueBuildID];
+      splatInstallDate = [(SUCoreDescriptor *)self splatInstallDate];
+      trainName = [(SUCoreDescriptor *)self trainName];
+      productVersion = [(SUCoreDescriptor *)self productVersion];
+      productBuildVersion = [(SUCoreDescriptor *)self productBuildVersion];
+      productVersionExtra = [(SUCoreDescriptor *)self productVersionExtra];
+      productSystemName = [(SUCoreDescriptor *)self productSystemName];
+      releaseType = [(SUCoreDescriptor *)self releaseType];
+      publisher = [(SUCoreDescriptor *)self publisher];
+      restoreVersion = [(SUCoreDescriptor *)self restoreVersion];
+      targetUpdateBridgeVersion = [(SUCoreDescriptor *)self targetUpdateBridgeVersion];
+      targetUpdateSFRVersion = [(SUCoreDescriptor *)self targetUpdateSFRVersion];
+      releaseDate = [(SUCoreDescriptor *)self releaseDate];
+      prerequisiteBuild = [(SUCoreDescriptor *)self prerequisiteBuild];
+      prerequisiteOSVersion = [(SUCoreDescriptor *)self prerequisiteOSVersion];
+      supportedDevices = [(SUCoreDescriptor *)self supportedDevices];
       if ([(SUCoreDescriptor *)self fullReplacement])
       {
         v26 = @"YES";
@@ -2969,14 +2969,14 @@ LABEL_27:
       }
 
       v104 = v26;
-      v100 = [(SUCoreDescriptor *)self downloadSize];
-      v96 = [(SUCoreDescriptor *)self unarchivedSize];
-      v91 = [(SUCoreDescriptor *)self msuPrepareSize];
-      v88 = [(SUCoreDescriptor *)self msuSnapshotPrepareSize];
-      v85 = [(SUCoreDescriptor *)self preparationSize];
-      v27 = [(SUCoreDescriptor *)self installationSize];
-      v28 = [(SUCoreDescriptor *)self minimumSystemPartitionSize];
-      v29 = [(SUCoreDescriptor *)self totalRequiredFreeSpace];
+      downloadSize = [(SUCoreDescriptor *)self downloadSize];
+      unarchivedSize = [(SUCoreDescriptor *)self unarchivedSize];
+      msuPrepareSize = [(SUCoreDescriptor *)self msuPrepareSize];
+      msuSnapshotPrepareSize = [(SUCoreDescriptor *)self msuSnapshotPrepareSize];
+      preparationSize = [(SUCoreDescriptor *)self preparationSize];
+      installationSize = [(SUCoreDescriptor *)self installationSize];
+      minimumSystemPartitionSize = [(SUCoreDescriptor *)self minimumSystemPartitionSize];
+      totalRequiredFreeSpace = [(SUCoreDescriptor *)self totalRequiredFreeSpace];
       if ([(SUCoreDescriptor *)self streamingZipCapable])
       {
         v30 = @"YES";
@@ -2987,15 +2987,15 @@ LABEL_27:
         v30 = @"NO";
       }
 
-      v31 = [(SUCoreDescriptor *)self systemPartitionPadding];
-      v32 = [(SUCoreDescriptor *)self preSUStagingRequiredSize];
-      v33 = [(SUCoreDescriptor *)self preSUStagingOptionalSize];
+      systemPartitionPadding = [(SUCoreDescriptor *)self systemPartitionPadding];
+      preSUStagingRequiredSize = [(SUCoreDescriptor *)self preSUStagingRequiredSize];
+      preSUStagingOptionalSize = [(SUCoreDescriptor *)self preSUStagingOptionalSize];
       if ([(SUCoreDescriptor *)self disableReserveSpace])
       {
         v23 = @"YES";
       }
 
-      [v183 appendFormat:@"                 promoteAlternateUpdate: %@\n           enableAlternateAssetAudience: %@\n             alternateAssetAudienceUUID: %@\n                      assetAudienceUUID: %@\n                          uniqueBuildID: %@\n                       splatInstallDate:%@\n                              trainName: %@\n                         productVersion: %@\n                    productBuildVersion: %@\n                    productVersionExtra: %@\n                      productSystemName: %@\n                            releaseType: %@\n                              publisher: %@\n                         restoreVersion: %@\n              targetUpdateBridgeVersion: %@\n                 targetUpdateSFRVersion: %@\n                            releaseDate: %@\n                      prerequisiteBuild: %@\n                  prerequisiteOSVersion: %@\n                       supportedDevices: %@\n                        fullReplacement: %@\n                           downloadSize: %llu\n                         unarchivedSize: %llu\n                         msuPrepareSize: %llu\n                 msuSnapshotPrepareSize: %llu\n                        preparationSize: %llu\n                       installationSize: %llu\n             minimumSystemPartitionSize: %llu\n                 totalRequiredFreeSpace: %llu\n                    streamingZipCapable: %@\n                 systemPartitionPadding: %@\n                 psusRequiredAssetsSize: %llu\n                 psusOptionalAssetsSize: %llu\n                    disableReserveSpace: %@\n                         suDownloadSize: %llu\n", v140, v136, v180, v176, v168, v164, v172, v160, v156, v152, v144, v132, v128, v124, v120, v148, v116, v112, v93, v108, v104, v100, v96, v91, v88, v85, v27, v28, v29, v30, v31, v32, v33, v23, -[SUCoreDescriptor suDownloadSize](self, "suDownloadSize")];
+      [v183 appendFormat:@"                 promoteAlternateUpdate: %@\n           enableAlternateAssetAudience: %@\n             alternateAssetAudienceUUID: %@\n                      assetAudienceUUID: %@\n                          uniqueBuildID: %@\n                       splatInstallDate:%@\n                              trainName: %@\n                         productVersion: %@\n                    productBuildVersion: %@\n                    productVersionExtra: %@\n                      productSystemName: %@\n                            releaseType: %@\n                              publisher: %@\n                         restoreVersion: %@\n              targetUpdateBridgeVersion: %@\n                 targetUpdateSFRVersion: %@\n                            releaseDate: %@\n                      prerequisiteBuild: %@\n                  prerequisiteOSVersion: %@\n                       supportedDevices: %@\n                        fullReplacement: %@\n                           downloadSize: %llu\n                         unarchivedSize: %llu\n                         msuPrepareSize: %llu\n                 msuSnapshotPrepareSize: %llu\n                        preparationSize: %llu\n                       installationSize: %llu\n             minimumSystemPartitionSize: %llu\n                 totalRequiredFreeSpace: %llu\n                    streamingZipCapable: %@\n                 systemPartitionPadding: %@\n                 psusRequiredAssetsSize: %llu\n                 psusOptionalAssetsSize: %llu\n                    disableReserveSpace: %@\n                         suDownloadSize: %llu\n", v140, v136, alternateAssetAudienceUUID, assetAudienceUUID, uniqueBuildID, splatInstallDate, trainName, productVersion, productBuildVersion, productVersionExtra, productSystemName, releaseType, publisher, restoreVersion, targetUpdateBridgeVersion, targetUpdateSFRVersion, releaseDate, prerequisiteBuild, prerequisiteOSVersion, supportedDevices, v104, downloadSize, unarchivedSize, msuPrepareSize, msuSnapshotPrepareSize, preparationSize, installationSize, minimumSystemPartitionSize, totalRequiredFreeSpace, v30, systemPartitionPadding, preSUStagingRequiredSize, preSUStagingOptionalSize, v23, -[SUCoreDescriptor suDownloadSize](self, "suDownloadSize")];
 
       v34 = @"YES";
       if ([(SUCoreDescriptor *)self enablePreSUStaging])
@@ -3020,7 +3020,7 @@ LABEL_27:
       }
 
       v177 = v36;
-      v173 = [(SUCoreDescriptor *)self minFreeSpacePostStageOptionalAssets];
+      minFreeSpacePostStageOptionalAssets = [(SUCoreDescriptor *)self minFreeSpacePostStageOptionalAssets];
       if ([(SUCoreDescriptor *)self autoDownloadAllowableOverCellular])
       {
         v37 = @"YES";
@@ -3142,7 +3142,7 @@ LABEL_27:
       }
 
       v129 = v47;
-      v121 = [(SUCoreDescriptor *)self mdmDelayInterval];
+      mdmDelayInterval = [(SUCoreDescriptor *)self mdmDelayInterval];
       if ([(SUCoreDescriptor *)self autoUpdateEnabled])
       {
         v48 = @"YES";
@@ -3166,7 +3166,7 @@ LABEL_27:
       }
 
       v117 = v49;
-      v109 = [(SUCoreDescriptor *)self installAlertInterval];
+      installAlertInterval = [(SUCoreDescriptor *)self installAlertInterval];
       if ([(SUCoreDescriptor *)self allowAutoDownloadOnBattery])
       {
         v50 = @"YES";
@@ -3178,8 +3178,8 @@ LABEL_27:
       }
 
       v105 = v50;
-      v97 = [(SUCoreDescriptor *)self autoDownloadOnBatteryDelay];
-      v94 = [(SUCoreDescriptor *)self autoDownloadOnBatteryMinBattery];
+      autoDownloadOnBatteryDelay = [(SUCoreDescriptor *)self autoDownloadOnBatteryDelay];
+      autoDownloadOnBatteryMinBattery = [(SUCoreDescriptor *)self autoDownloadOnBatteryMinBattery];
       if ([(SUCoreDescriptor *)self disableSplatCombo])
       {
         v51 = @"YES";
@@ -3191,7 +3191,7 @@ LABEL_27:
       }
 
       v89 = v51;
-      v101 = [(SUCoreDescriptor *)self setupCritical];
+      setupCritical = [(SUCoreDescriptor *)self setupCritical];
       if ([(SUCoreDescriptor *)self criticalCellularOverride])
       {
         v52 = @"YES";
@@ -3214,8 +3214,8 @@ LABEL_27:
       }
 
       v82 = v53;
-      v92 = [(SUCoreDescriptor *)self lastEmergencyBuild];
-      v86 = [(SUCoreDescriptor *)self lastEmergencyOSVersion];
+      lastEmergencyBuild = [(SUCoreDescriptor *)self lastEmergencyBuild];
+      lastEmergencyOSVersion = [(SUCoreDescriptor *)self lastEmergencyOSVersion];
       if ([(SUCoreDescriptor *)self mandatoryUpdateEligible])
       {
         v54 = @"YES";
@@ -3226,8 +3226,8 @@ LABEL_27:
         v54 = @"NO";
       }
 
-      v55 = [(SUCoreDescriptor *)self mandatoryUpdateVersionMin];
-      v56 = [(SUCoreDescriptor *)self mandatoryUpdateVersionMax];
+      mandatoryUpdateVersionMin = [(SUCoreDescriptor *)self mandatoryUpdateVersionMin];
+      mandatoryUpdateVersionMax = [(SUCoreDescriptor *)self mandatoryUpdateVersionMax];
       if ([(SUCoreDescriptor *)self mandatoryUpdateOptional])
       {
         v57 = @"YES";
@@ -3258,8 +3258,8 @@ LABEL_27:
         v59 = @"NO";
       }
 
-      v60 = [(SUCoreDescriptor *)self oneShotBuddyDisabledBuilds];
-      [v183 appendFormat:@"                             enablePSUS: %@\n            enablePSUSForOptionalAssets: %@\n    minFreeSpacePostStageOptionalAssets: %llu\n      autoDownloadAllowableOverCellular: %@\n          downloadAllowableOverCellular: %@\n                           downloadable: %@\n               disableSiriVoiceDeletion: %@\n                        disableCDLevel4: %@\n                     disableAppDemotion: %@\n                    disableMASuspension: %@\n                  disableInstallTonight: %@\n                  forcePasscodeRequired: %@\n                            rampEnabled: %@\n                       granularlyRamped: %@\n                       mdmDelayInterval: %llu\n                      autoUpdateEnabled: %@\n                       hideInstallAlert: %@\n                     containsSFRContent: %@\n                   installAlertInterval: %llu\n             allowAutoDownloadOnBattery: %@\n             autoDownloadOnBatteryDelay: %llu\n        autoDownloadOnBatteryMinBattery: %llu\n                         disableSplombo: %@\n                          setupCritical: %@\n               criticalCellularOverride: %@\n                   criticalOutOfBoxOnly: %@\n                     lastEmergencyBuild: %@\n                 lastEmergencyOSVersion: %@\n                mandatoryUpdateEligible: %@\n              mandatoryUpdateVersionMin: %@\n              mandatoryUpdateVersionMax: %@\n                mandatoryUpdateOptional: %@\n mandatoryUpdateRestrictedToOutOfTheBox: %@\n                   oneShotBuddyDisabled: %@\n             oneShotBuddyDisabledBuilds: %@\n", v181, v177, v173, v169, v165, v161, v157, v153, v149, v145, v141, v137, v133, v129, v121, v113, v125, v117, v109, v105, v97, v94, v89, v101, v83, v82, v92, v86, v54, v55, v56, v57, v58, v59, v60];
+      oneShotBuddyDisabledBuilds = [(SUCoreDescriptor *)self oneShotBuddyDisabledBuilds];
+      [v183 appendFormat:@"                             enablePSUS: %@\n            enablePSUSForOptionalAssets: %@\n    minFreeSpacePostStageOptionalAssets: %llu\n      autoDownloadAllowableOverCellular: %@\n          downloadAllowableOverCellular: %@\n                           downloadable: %@\n               disableSiriVoiceDeletion: %@\n                        disableCDLevel4: %@\n                     disableAppDemotion: %@\n                    disableMASuspension: %@\n                  disableInstallTonight: %@\n                  forcePasscodeRequired: %@\n                            rampEnabled: %@\n                       granularlyRamped: %@\n                       mdmDelayInterval: %llu\n                      autoUpdateEnabled: %@\n                       hideInstallAlert: %@\n                     containsSFRContent: %@\n                   installAlertInterval: %llu\n             allowAutoDownloadOnBattery: %@\n             autoDownloadOnBatteryDelay: %llu\n        autoDownloadOnBatteryMinBattery: %llu\n                         disableSplombo: %@\n                          setupCritical: %@\n               criticalCellularOverride: %@\n                   criticalOutOfBoxOnly: %@\n                     lastEmergencyBuild: %@\n                 lastEmergencyOSVersion: %@\n                mandatoryUpdateEligible: %@\n              mandatoryUpdateVersionMin: %@\n              mandatoryUpdateVersionMax: %@\n                mandatoryUpdateOptional: %@\n mandatoryUpdateRestrictedToOutOfTheBox: %@\n                   oneShotBuddyDisabled: %@\n             oneShotBuddyDisabledBuilds: %@\n", v181, v177, minFreeSpacePostStageOptionalAssets, v169, v165, v161, v157, v153, v149, v145, v141, v137, v133, v129, mdmDelayInterval, v113, v125, v117, installAlertInterval, v105, autoDownloadOnBatteryDelay, autoDownloadOnBatteryMinBattery, v89, setupCritical, v83, v82, lastEmergencyBuild, lastEmergencyOSVersion, v54, mandatoryUpdateVersionMin, mandatoryUpdateVersionMax, v57, v58, v59, oneShotBuddyDisabledBuilds];
 
       if ([(SUCoreDescriptor *)self criticalUpdate])
       {
@@ -3272,8 +3272,8 @@ LABEL_27:
       }
 
       v178 = v61;
-      v174 = [(SUCoreDescriptor *)self productType];
-      v166 = [(SUCoreDescriptor *)self autoInstallDelay];
+      productType = [(SUCoreDescriptor *)self productType];
+      autoInstallDelay = [(SUCoreDescriptor *)self autoInstallDelay];
       if ([(SUCoreDescriptor *)self notifyAfter])
       {
         v62 = @"YES";
@@ -3285,7 +3285,7 @@ LABEL_27:
       }
 
       v158 = v62;
-      v154 = [(SUCoreDescriptor *)self minimumBridgeVersion];
+      minimumBridgeVersion = [(SUCoreDescriptor *)self minimumBridgeVersion];
       if ([(SUCoreDescriptor *)self disableRosettaUpdates])
       {
         v63 = @"YES";
@@ -3319,8 +3319,8 @@ LABEL_27:
       }
 
       v138 = v65;
-      v182 = [(SUCoreDescriptor *)self sepDigest];
-      if (v182)
+      sepDigest = [(SUCoreDescriptor *)self sepDigest];
+      if (sepDigest)
       {
         v66 = @"present";
       }
@@ -3331,8 +3331,8 @@ LABEL_27:
       }
 
       v134 = v66;
-      v170 = [(SUCoreDescriptor *)self sepTBMDigests];
-      if (v170)
+      sepTBMDigests = [(SUCoreDescriptor *)self sepTBMDigests];
+      if (sepTBMDigests)
       {
         v67 = @"present";
       }
@@ -3343,8 +3343,8 @@ LABEL_27:
       }
 
       v130 = v67;
-      v162 = [(SUCoreDescriptor *)self rsepDigest];
-      if (v162)
+      rsepDigest = [(SUCoreDescriptor *)self rsepDigest];
+      if (rsepDigest)
       {
         v68 = @"present";
       }
@@ -3355,8 +3355,8 @@ LABEL_27:
       }
 
       v126 = v68;
-      v150 = [(SUCoreDescriptor *)self rsepTBMDigests];
-      if (v150)
+      rsepTBMDigests = [(SUCoreDescriptor *)self rsepTBMDigests];
+      if (rsepTBMDigests)
       {
         v69 = @"present";
       }
@@ -3367,12 +3367,12 @@ LABEL_27:
       }
 
       v122 = v69;
-      v118 = [(SUCoreDescriptor *)self documentationID];
-      v114 = [(SUCoreDescriptor *)self documentation];
-      v110 = [(SUCoreDescriptor *)self softwareUpdateURL];
-      v106 = [(SUCoreDescriptor *)self measurement];
-      v102 = [(SUCoreDescriptor *)self measurementAlgorithm];
-      v70 = [(SUCoreDescriptor *)self bundleAttributes];
+      documentationID = [(SUCoreDescriptor *)self documentationID];
+      documentation = [(SUCoreDescriptor *)self documentation];
+      softwareUpdateURL = [(SUCoreDescriptor *)self softwareUpdateURL];
+      measurement = [(SUCoreDescriptor *)self measurement];
+      measurementAlgorithm = [(SUCoreDescriptor *)self measurementAlgorithm];
+      bundleAttributes2 = [(SUCoreDescriptor *)self bundleAttributes];
       if ([(SUCoreDescriptor *)self splatOnly])
       {
         v71 = @"YES";
@@ -3394,7 +3394,7 @@ LABEL_27:
         v72 = @"NO";
       }
 
-      v73 = [(SUCoreDescriptor *)self semiSplatMustQuitApps];
+      semiSplatMustQuitApps = [(SUCoreDescriptor *)self semiSplatMustQuitApps];
       if ([(SUCoreDescriptor *)self revoked])
       {
         v74 = @"YES";
@@ -3415,7 +3415,7 @@ LABEL_27:
         v75 = @"NO";
       }
 
-      v76 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+      associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
       if ([(SUCoreDescriptor *)self disableSecurityAdvisoryNotification])
       {
         v77 = @"YES";
@@ -3431,8 +3431,8 @@ LABEL_27:
         v34 = @"NO";
       }
 
-      v78 = [(SUCoreDescriptor *)self alignediOSMajorVersion];
-      [v183 appendFormat:@"                         criticalUpdate: %@\n                            productType: %@\n                       autoInstallDelay: %llu\n                            notifyAfter: %@\n                   minimumBridgeVersion: %@\n                  disableRosettaUpdates: %@\n               disableRecoveryOSUpdates: %@\n          requireInstallAssistantUpdate: %@\n                              sepDigest: %@\n                          sepTBMDigests: %@\n                             rsepDigest: %@\n                         rsepTBMDigests: %@\n                        documentationID: %@\n                          documentation: %@\n                      softwareUpdateURL: %@\n                            measurement: %@\n                   measurementAlgorithm: %@\n                       bundleAttributes: %@\n                              splatOnly: %@\n                       semiSplatEnabled: %@\n                  semiSplatMustQuitApps: %@\n                                revoked: %@\n                    semiSplatRestartNow: %@\n              associatedSplatDescriptor: %@\n    disableSecurityAdvisoryNotification: %@\n disableDeviceCompatibilityNotification: %@\n                 alignediOSMajorVersion: %@\n", v178, v174, v166, v158, v154, v146, v142, v138, v134, v130, v126, v122, v118, v114, v110, v106, v102, v70, v98, v72, v73, v74, v75, v76, v77, v34, v78];
+      alignediOSMajorVersion = [(SUCoreDescriptor *)self alignediOSMajorVersion];
+      [v183 appendFormat:@"                         criticalUpdate: %@\n                            productType: %@\n                       autoInstallDelay: %llu\n                            notifyAfter: %@\n                   minimumBridgeVersion: %@\n                  disableRosettaUpdates: %@\n               disableRecoveryOSUpdates: %@\n          requireInstallAssistantUpdate: %@\n                              sepDigest: %@\n                          sepTBMDigests: %@\n                             rsepDigest: %@\n                         rsepTBMDigests: %@\n                        documentationID: %@\n                          documentation: %@\n                      softwareUpdateURL: %@\n                            measurement: %@\n                   measurementAlgorithm: %@\n                       bundleAttributes: %@\n                              splatOnly: %@\n                       semiSplatEnabled: %@\n                  semiSplatMustQuitApps: %@\n                                revoked: %@\n                    semiSplatRestartNow: %@\n              associatedSplatDescriptor: %@\n    disableSecurityAdvisoryNotification: %@\n disableDeviceCompatibilityNotification: %@\n                 alignediOSMajorVersion: %@\n", v178, productType, autoInstallDelay, v158, minimumBridgeVersion, v146, v142, v138, v134, v130, v126, v122, documentationID, documentation, softwareUpdateURL, measurement, measurementAlgorithm, bundleAttributes2, v98, v72, semiSplatMustQuitApps, v74, v75, associatedSplatDescriptor, v77, v34, alignediOSMajorVersion];
 
       v8 = v183;
       [v183 appendFormat:@"            centeralizedPurgeableFactor: %lu\n                  pluginPurgeableFactor: %lu\n                        minReserveSpace: %llu\n                        maxReserveSpace: %llu\n                unentitledReserveAmount: %llu\n               installationSnapshotSize: %llu\n<<<]", -[SUCoreDescriptor centeralizedPurgeableFactor](self, "centeralizedPurgeableFactor"), -[SUCoreDescriptor pluginPurgeableFactor](self, "pluginPurgeableFactor"), -[SUCoreDescriptor minReserveSpace](self, "minReserveSpace"), -[SUCoreDescriptor maxReserveSpace](self, "maxReserveSpace"), -[SUCoreDescriptor unentitledReserveAmount](self, "unentitledReserveAmount"), -[SUCoreDescriptor installationSnapshotSize](self, "installationSnapshotSize")];
@@ -3444,28 +3444,28 @@ LABEL_27:
       v80 = [SUCoreDescriptor nameForDescriptorType:[(SUCoreDescriptor *)self descriptorType]];
       v8 = [v79 initWithFormat:@"Unexpected descriptor type %@", v80];
 
-      v81 = [MEMORY[0x277D64428] sharedDiag];
-      [v81 trackAnomaly:@"DescriptorDescription" forReason:v8 withResult:8116 withError:0];
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+      [mEMORY[0x277D64428] trackAnomaly:@"DescriptorDescription" forReason:v8 withResult:8116 withError:0];
     }
   }
 
   return v8;
 }
 
-- (id)overviewWithMaxValueLength:(unint64_t)a3 providingSubstitutionMap:(id)a4
+- (id)overviewWithMaxValueLength:(unint64_t)length providingSubstitutionMap:(id)map
 {
-  v6 = a4;
+  mapCopy = map;
   if ([(SUCoreDescriptor *)self descriptorType]== 2 || [(SUCoreDescriptor *)self descriptorType]== 4)
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = [SUCoreDescriptor nameForDescriptorType:[(SUCoreDescriptor *)self descriptorType]];
+    mEMORY[0x277D64428] = [SUCoreDescriptor nameForDescriptorType:[(SUCoreDescriptor *)self descriptorType]];
     v9 = MEMORY[0x277D643F8];
-    v10 = [(SUCoreDescriptor *)self updateBrainPath];
-    v11 = [v9 limitString:v10 toMaxLength:a3 providingSubstitutionMap:v6];
+    updateBrainPath = [(SUCoreDescriptor *)self updateBrainPath];
+    v11 = [v9 limitString:updateBrainPath toMaxLength:length providingSubstitutionMap:mapCopy];
     v12 = MEMORY[0x277D643F8];
-    v13 = [(SUCoreDescriptor *)self updateBundlePath];
-    v14 = [v12 limitString:v13 toMaxLength:a3 providingSubstitutionMap:v6];
-    v15 = [v7 initWithFormat:@"\n[>>>\n    descriptorType: %@\n   updateBrainPath: %@\n  updateBundlePath: %@\n<<<]", v8, v11, v14];
+    updateBundlePath = [(SUCoreDescriptor *)self updateBundlePath];
+    v14 = [v12 limitString:updateBundlePath toMaxLength:length providingSubstitutionMap:mapCopy];
+    v15 = [v7 initWithFormat:@"\n[>>>\n    descriptorType: %@\n   updateBrainPath: %@\n  updateBundlePath: %@\n<<<]", mEMORY[0x277D64428], v11, v14];
   }
 
   else
@@ -3475,62 +3475,62 @@ LABEL_27:
 
     v19 = objc_alloc(MEMORY[0x277CCACA8]);
     v20 = [SUCoreDescriptor nameForDescriptorType:[(SUCoreDescriptor *)self descriptorType]];
-    v8 = v20;
+    mEMORY[0x277D64428] = v20;
     if (v18)
     {
       v113 = [SUCoreDescriptor nameForDescriptorAudienceType:[(SUCoreDescriptor *)self descriptorAudienceType]];
       v112 = [SUCoreDescriptor nameForDescriptorPreferredUpdateType:[(SUCoreDescriptor *)self preferredUpdateType]];
       v21 = MEMORY[0x277D643F8];
-      v96 = [(SUCoreDescriptor *)self humanReadableUpdateName];
-      v111 = [v21 limitString:v96 toMaxLength:a3 providingSubstitutionMap:v6];
+      humanReadableUpdateName = [(SUCoreDescriptor *)self humanReadableUpdateName];
+      v111 = [v21 limitString:humanReadableUpdateName toMaxLength:length providingSubstitutionMap:mapCopy];
       v22 = MEMORY[0x277D643F8];
-      v95 = [(SUCoreDescriptor *)self humanReadableUpdateTitle];
-      v110 = [v22 limitString:v95 toMaxLength:a3 providingSubstitutionMap:v6];
+      humanReadableUpdateTitle = [(SUCoreDescriptor *)self humanReadableUpdateTitle];
+      v110 = [v22 limitString:humanReadableUpdateTitle toMaxLength:length providingSubstitutionMap:mapCopy];
       v23 = MEMORY[0x277D643F8];
-      v94 = [(SUCoreDescriptor *)self humanReadableUpdateVersion];
-      v109 = [v23 limitString:v94 toMaxLength:a3 providingSubstitutionMap:v6];
+      humanReadableUpdateVersion = [(SUCoreDescriptor *)self humanReadableUpdateVersion];
+      v109 = [v23 limitString:humanReadableUpdateVersion toMaxLength:length providingSubstitutionMap:mapCopy];
       v24 = MEMORY[0x277D643F8];
-      v93 = [(SUCoreDescriptor *)self humanReadableMoreInfoLink];
-      v108 = [v24 limitString:v93 toMaxLength:a3 providingSubstitutionMap:v6];
+      humanReadableMoreInfoLink = [(SUCoreDescriptor *)self humanReadableMoreInfoLink];
+      v108 = [v24 limitString:humanReadableMoreInfoLink toMaxLength:length providingSubstitutionMap:mapCopy];
       v25 = MEMORY[0x277D643F8];
-      v92 = [(SUCoreDescriptor *)self updateTypeName];
-      v107 = [v25 limitString:v92 toMaxLength:a3 providingSubstitutionMap:v6];
+      updateTypeName = [(SUCoreDescriptor *)self updateTypeName];
+      v107 = [v25 limitString:updateTypeName toMaxLength:length providingSubstitutionMap:mapCopy];
       v26 = MEMORY[0x277D643F8];
-      v91 = [(SUCoreDescriptor *)self productVersion];
-      v106 = [v26 limitString:v91 toMaxLength:a3 providingSubstitutionMap:v6];
+      productVersion = [(SUCoreDescriptor *)self productVersion];
+      v106 = [v26 limitString:productVersion toMaxLength:length providingSubstitutionMap:mapCopy];
       v27 = MEMORY[0x277D643F8];
-      v90 = [(SUCoreDescriptor *)self productBuildVersion];
-      v105 = [v27 limitString:v90 toMaxLength:a3 providingSubstitutionMap:v6];
+      productBuildVersion = [(SUCoreDescriptor *)self productBuildVersion];
+      v105 = [v27 limitString:productBuildVersion toMaxLength:length providingSubstitutionMap:mapCopy];
       v28 = MEMORY[0x277D643F8];
-      v89 = [(SUCoreDescriptor *)self restoreVersion];
-      v104 = [v28 limitString:v89 toMaxLength:a3 providingSubstitutionMap:v6];
+      restoreVersion = [(SUCoreDescriptor *)self restoreVersion];
+      v104 = [v28 limitString:restoreVersion toMaxLength:length providingSubstitutionMap:mapCopy];
       v29 = MEMORY[0x277D643F8];
-      v88 = [(SUCoreDescriptor *)self targetUpdateBridgeVersion];
-      v103 = [v29 limitString:v88 toMaxLength:a3 providingSubstitutionMap:v6];
+      targetUpdateBridgeVersion = [(SUCoreDescriptor *)self targetUpdateBridgeVersion];
+      v103 = [v29 limitString:targetUpdateBridgeVersion toMaxLength:length providingSubstitutionMap:mapCopy];
       v30 = MEMORY[0x277D643F8];
-      v87 = [(SUCoreDescriptor *)self targetUpdateSFRVersion];
-      v102 = [v30 limitString:v87 toMaxLength:a3 providingSubstitutionMap:v6];
+      targetUpdateSFRVersion = [(SUCoreDescriptor *)self targetUpdateSFRVersion];
+      v102 = [v30 limitString:targetUpdateSFRVersion toMaxLength:length providingSubstitutionMap:mapCopy];
       v31 = MEMORY[0x277D643F8];
-      v86 = [(SUCoreDescriptor *)self releaseType];
-      v101 = [v31 limitString:v86 toMaxLength:a3 providingSubstitutionMap:v6];
+      releaseType = [(SUCoreDescriptor *)self releaseType];
+      v101 = [v31 limitString:releaseType toMaxLength:length providingSubstitutionMap:mapCopy];
       v32 = MEMORY[0x277D643F8];
-      v85 = [(SUCoreDescriptor *)self releaseDate];
-      v84 = [v85 description];
-      v100 = [v32 limitString:v84 toMaxLength:a3 providingSubstitutionMap:v6];
+      releaseDate = [(SUCoreDescriptor *)self releaseDate];
+      v84 = [releaseDate description];
+      v100 = [v32 limitString:v84 toMaxLength:length providingSubstitutionMap:mapCopy];
       v33 = MEMORY[0x277D643F8];
-      v83 = [(SUCoreDescriptor *)self prerequisiteBuild];
-      v99 = [v33 limitString:v83 toMaxLength:a3 providingSubstitutionMap:v6];
+      prerequisiteBuild = [(SUCoreDescriptor *)self prerequisiteBuild];
+      v99 = [v33 limitString:prerequisiteBuild toMaxLength:length providingSubstitutionMap:mapCopy];
       v34 = MEMORY[0x277D643F8];
-      v82 = [(SUCoreDescriptor *)self prerequisiteOSVersion];
-      v98 = [v34 limitString:v82 toMaxLength:a3 providingSubstitutionMap:v6];
-      v81 = [(SUCoreDescriptor *)self downloadSize];
-      v80 = [(SUCoreDescriptor *)self preSUStagingRequiredSize];
-      v78 = [(SUCoreDescriptor *)self preSUStagingOptionalSize];
-      v77 = [(SUCoreDescriptor *)self suDownloadSize];
-      v75 = [(SUCoreDescriptor *)self unarchivedSize];
-      v74 = [(SUCoreDescriptor *)self preparationSize];
-      v73 = [(SUCoreDescriptor *)self installationSize];
-      v72 = [(SUCoreDescriptor *)self totalRequiredFreeSpace];
+      prerequisiteOSVersion = [(SUCoreDescriptor *)self prerequisiteOSVersion];
+      v98 = [v34 limitString:prerequisiteOSVersion toMaxLength:length providingSubstitutionMap:mapCopy];
+      downloadSize = [(SUCoreDescriptor *)self downloadSize];
+      preSUStagingRequiredSize = [(SUCoreDescriptor *)self preSUStagingRequiredSize];
+      preSUStagingOptionalSize = [(SUCoreDescriptor *)self preSUStagingOptionalSize];
+      suDownloadSize = [(SUCoreDescriptor *)self suDownloadSize];
+      unarchivedSize = [(SUCoreDescriptor *)self unarchivedSize];
+      preparationSize = [(SUCoreDescriptor *)self preparationSize];
+      installationSize = [(SUCoreDescriptor *)self installationSize];
+      totalRequiredFreeSpace = [(SUCoreDescriptor *)self totalRequiredFreeSpace];
       v79 = v19;
       v35 = @"NO";
       if ([(SUCoreDescriptor *)self rampEnabled])
@@ -3555,7 +3555,7 @@ LABEL_27:
       }
 
       v69 = v37;
-      v67 = [(SUCoreDescriptor *)self mdmDelayInterval];
+      mdmDelayInterval = [(SUCoreDescriptor *)self mdmDelayInterval];
       if ([(SUCoreDescriptor *)self autoUpdateEnabled])
       {
         v38 = @"YES";
@@ -3579,7 +3579,7 @@ LABEL_27:
       }
 
       v64 = v39;
-      v62 = [(SUCoreDescriptor *)self installAlertInterval];
+      installAlertInterval = [(SUCoreDescriptor *)self installAlertInterval];
       if ([(SUCoreDescriptor *)self allowAutoDownloadOnBattery])
       {
         v40 = @"YES";
@@ -3603,21 +3603,21 @@ LABEL_27:
 
       v59 = v41;
       v42 = MEMORY[0x277D643F8];
-      v76 = [(SUCoreDescriptor *)self setupCritical];
-      v61 = [v42 limitString:v76 toMaxLength:a3 providingSubstitutionMap:v6];
+      setupCritical = [(SUCoreDescriptor *)self setupCritical];
+      v61 = [v42 limitString:setupCritical toMaxLength:length providingSubstitutionMap:mapCopy];
       v43 = MEMORY[0x277D643F8];
-      v71 = [(SUCoreDescriptor *)self documentationID];
-      v57 = [v43 limitString:v71 toMaxLength:a3 providingSubstitutionMap:v6];
+      documentationID = [(SUCoreDescriptor *)self documentationID];
+      v57 = [v43 limitString:documentationID toMaxLength:length providingSubstitutionMap:mapCopy];
       v44 = MEMORY[0x277D643F8];
-      v68 = [(SUCoreDescriptor *)self softwareUpdateURL];
-      v56 = [v44 limitString:v68 toMaxLength:a3 providingSubstitutionMap:v6];
+      softwareUpdateURL = [(SUCoreDescriptor *)self softwareUpdateURL];
+      v56 = [v44 limitString:softwareUpdateURL toMaxLength:length providingSubstitutionMap:mapCopy];
       v45 = MEMORY[0x277D643F8];
-      v65 = [(SUCoreDescriptor *)self measurement];
-      v63 = [v65 description];
-      v55 = [v45 limitString:v63 toMaxLength:a3 providingSubstitutionMap:v6];
+      measurement = [(SUCoreDescriptor *)self measurement];
+      v63 = [measurement description];
+      v55 = [v45 limitString:v63 toMaxLength:length providingSubstitutionMap:mapCopy];
       v46 = MEMORY[0x277D643F8];
-      v58 = [(SUCoreDescriptor *)self measurementAlgorithm];
-      v53 = [v46 limitString:v58 toMaxLength:a3 providingSubstitutionMap:v6];
+      measurementAlgorithm = [(SUCoreDescriptor *)self measurementAlgorithm];
+      v53 = [v46 limitString:measurementAlgorithm toMaxLength:length providingSubstitutionMap:mapCopy];
       if ([(SUCoreDescriptor *)self splatOnly])
       {
         v47 = @"YES";
@@ -3645,18 +3645,18 @@ LABEL_27:
       }
 
       v49 = MEMORY[0x277D643F8];
-      v54 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
-      v50 = [v54 humanReadableUpdateName];
-      v51 = [v49 limitString:v50 toMaxLength:a3 providingSubstitutionMap:v6];
-      v15 = [v79 initWithFormat:@"\n[>>>\n             descriptorType: %@\n     descriptorAudienceType: %@\n        preferredUpdateType: %@\n    humanReadableUpdateName: %@\n   humanReadableUpdateTitle: %@\n humanReadableUpdateVersion: %@\n  humanReadableMoreInfoLink: %@\n                 updateType: %@\n             productVersion: %@\n        productBuildVersion: %@\n             restoreVersion: %@\n  targetUpdateBridgeVersion: %@\n     targetUpdateSFRVersion: %@\n                releaseType: %@\n                releaseDate: %@\n          prerequisiteBuild: %@\n      prerequisiteOSVersion: %@\n               downloadSize: %llu\n     psusRequiredAssetsSize: %llu\n     psusOptionalAssetsSize: %llu\n             suDownloadSize: %llu\n             unarchivedSize: %llu\n            preparationSize: %llu\n           installationSize: %llu\n     totalRequiredFreeSpace: %llu\n                rampEnabled: %@\n           granularlyRamped: %@\n           mdmDelayInterval: %llu\n          autoUpdateEnabled: %@\n           hideInstallAlert: %@\n         containsSFRContent: %@\n       installAlertInterval: %llu\n allowAutoDownloadOnBattery: %@\n             disableSplombo: %@\n              setupCritical: %@\n            documentationID: %@\n          softwareUpdateURL: %@\n                measurement: %@\n       measurementAlgorithm: %@\n                  splatOnly: %@\n           semiSplatEnabled: %@\n                    revoked: %@\n  associatedSplatDescriptor: %@\n<<<]", v8, v113, v112, v111, v110, v109, v108, v107, v106, v105, v104, v103, v102, v101, v100, v99, v98, v81, v80, v78, v77, v75, v74, v73, v72, v70, v69, v67, v66, v97, v64, v62, v60, v59, v61, v57, v56, v55, v53, v52, v48, v35, v51];
+      associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+      humanReadableUpdateName2 = [associatedSplatDescriptor humanReadableUpdateName];
+      v51 = [v49 limitString:humanReadableUpdateName2 toMaxLength:length providingSubstitutionMap:mapCopy];
+      v15 = [v79 initWithFormat:@"\n[>>>\n             descriptorType: %@\n     descriptorAudienceType: %@\n        preferredUpdateType: %@\n    humanReadableUpdateName: %@\n   humanReadableUpdateTitle: %@\n humanReadableUpdateVersion: %@\n  humanReadableMoreInfoLink: %@\n                 updateType: %@\n             productVersion: %@\n        productBuildVersion: %@\n             restoreVersion: %@\n  targetUpdateBridgeVersion: %@\n     targetUpdateSFRVersion: %@\n                releaseType: %@\n                releaseDate: %@\n          prerequisiteBuild: %@\n      prerequisiteOSVersion: %@\n               downloadSize: %llu\n     psusRequiredAssetsSize: %llu\n     psusOptionalAssetsSize: %llu\n             suDownloadSize: %llu\n             unarchivedSize: %llu\n            preparationSize: %llu\n           installationSize: %llu\n     totalRequiredFreeSpace: %llu\n                rampEnabled: %@\n           granularlyRamped: %@\n           mdmDelayInterval: %llu\n          autoUpdateEnabled: %@\n           hideInstallAlert: %@\n         containsSFRContent: %@\n       installAlertInterval: %llu\n allowAutoDownloadOnBattery: %@\n             disableSplombo: %@\n              setupCritical: %@\n            documentationID: %@\n          softwareUpdateURL: %@\n                measurement: %@\n       measurementAlgorithm: %@\n                  splatOnly: %@\n           semiSplatEnabled: %@\n                    revoked: %@\n  associatedSplatDescriptor: %@\n<<<]", mEMORY[0x277D64428], v113, v112, v111, v110, v109, v108, v107, v106, v105, v104, v103, v102, v101, v100, v99, v98, downloadSize, preSUStagingRequiredSize, preSUStagingOptionalSize, suDownloadSize, unarchivedSize, preparationSize, installationSize, totalRequiredFreeSpace, v70, v69, mdmDelayInterval, v66, v97, v64, installAlertInterval, v60, v59, v61, v57, v56, v55, v53, v52, v48, v35, v51];
     }
 
     else
     {
       v15 = [v19 initWithFormat:@"Unexpected descriptor type %@", v20];
 
-      v8 = [MEMORY[0x277D64428] sharedDiag];
-      [v8 trackAnomaly:@"DescriptorOverview" forReason:v15 withResult:8116 withError:0];
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+      [mEMORY[0x277D64428] trackAnomaly:@"DescriptorOverview" forReason:v15 withResult:8116 withError:0];
     }
   }
 
@@ -3665,46 +3665,46 @@ LABEL_27:
 
 - (id)summary
 {
-  v3 = [(SUCoreDescriptor *)self softwareUpdateAssetType];
-  if ([v3 isEqualToString:@"com.apple.MobileAsset.MobileSoftwareUpdate.UpdateBrain"])
+  softwareUpdateAssetType = [(SUCoreDescriptor *)self softwareUpdateAssetType];
+  if ([softwareUpdateAssetType isEqualToString:@"com.apple.MobileAsset.MobileSoftwareUpdate.UpdateBrain"])
   {
 
 LABEL_4:
     v6 = objc_alloc(MEMORY[0x277CCACA8]);
-    v7 = [(SUCoreDescriptor *)self productBuildVersion];
-    v8 = [v6 initWithFormat:@"%@", v7];
+    productBuildVersion = [(SUCoreDescriptor *)self productBuildVersion];
+    v8 = [v6 initWithFormat:@"%@", productBuildVersion];
     goto LABEL_11;
   }
 
-  v4 = [(SUCoreDescriptor *)self softwareUpdateAssetType];
-  v5 = [v4 isEqualToString:@"com.apple.MobileAsset.MobileSoftwareUpdate.MacUpdateBrain"];
+  softwareUpdateAssetType2 = [(SUCoreDescriptor *)self softwareUpdateAssetType];
+  v5 = [softwareUpdateAssetType2 isEqualToString:@"com.apple.MobileAsset.MobileSoftwareUpdate.MacUpdateBrain"];
 
   if (v5)
   {
     goto LABEL_4;
   }
 
-  v9 = [(SUCoreDescriptor *)self associatedSplatDescriptor];
+  associatedSplatDescriptor = [(SUCoreDescriptor *)self associatedSplatDescriptor];
 
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [(SUCoreDescriptor *)self humanReadableUpdateName];
-  v11 = [(SUCoreDescriptor *)self productBuildVersion];
-  v12 = [(SUCoreDescriptor *)self releaseType];
-  v13 = v12;
+  productBuildVersion = [(SUCoreDescriptor *)self humanReadableUpdateName];
+  productBuildVersion2 = [(SUCoreDescriptor *)self productBuildVersion];
+  releaseType = [(SUCoreDescriptor *)self releaseType];
+  v13 = releaseType;
   v14 = @"Customer";
-  if (v12)
+  if (releaseType)
   {
-    v14 = v12;
+    v14 = releaseType;
   }
 
-  if (v9)
+  if (associatedSplatDescriptor)
   {
-    v15 = [v10 initWithFormat:@"%@ %@ (SplatCombo) (%@)", v7, v11, v14];
+    v15 = [v10 initWithFormat:@"%@ %@ (SplatCombo) (%@)", productBuildVersion, productBuildVersion2, v14];
   }
 
   else
   {
-    v15 = [v10 initWithFormat:@"%@ %@ (%@)", v7, v11, v14];
+    v15 = [v10 initWithFormat:@"%@ %@ (%@)", productBuildVersion, productBuildVersion2, v14];
   }
 
   v8 = v15;

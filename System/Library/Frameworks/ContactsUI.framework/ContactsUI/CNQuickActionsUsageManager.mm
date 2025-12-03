@@ -1,29 +1,29 @@
 @interface CNQuickActionsUsageManager
 + (BOOL)sortUsingCoreDuetAvailable;
-+ (id)managerForContact:(id)a3;
++ (id)managerForContact:(id)contact;
 - (CNQuickActionsUsageManager)init;
 - (NSCountedSet)actionsUsageSet;
 - (NSMutableSet)enabledActionIdentifiers;
-- (double)scoreForAction:(id)a3;
-- (id)sortedActions:(id)a3;
+- (double)scoreForAction:(id)action;
+- (id)sortedActions:(id)actions;
 - (void)_updateDuetInteractionsIfNeeded;
-- (void)actionPerformed:(id)a3;
-- (void)cacheEnabledStateForAction:(id)a3;
-- (void)updateCachedEnabledStateForAction:(id)a3;
+- (void)actionPerformed:(id)performed;
+- (void)cacheEnabledStateForAction:(id)action;
+- (void)updateCachedEnabledStateForAction:(id)action;
 @end
 
 @implementation CNQuickActionsUsageManager
 
-- (id)sortedActions:(id)a3
+- (id)sortedActions:(id)actions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  actionsCopy = actions;
+  v5 = [actionsCopy mutableCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = actionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -98,9 +98,9 @@ uint64_t __44__CNQuickActionsUsageManager_sortedActions___block_invoke(uint64_t 
 - (void)_updateDuetInteractionsIfNeeded
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(CNQuickActionsUsageManager *)self cachedInteractions];
-  if (!v4 || (-[CNQuickActionsUsageManager cachedInteractionsDate](self, "cachedInteractionsDate"), v5 = objc_claimAutoreleasedReturnValue(), [v3 timeIntervalSinceDate:v5], v7 = v6, v5, v4, v7 >= 5.0))
+  date = [MEMORY[0x1E695DF00] date];
+  cachedInteractions = [(CNQuickActionsUsageManager *)self cachedInteractions];
+  if (!cachedInteractions || (-[CNQuickActionsUsageManager cachedInteractionsDate](self, "cachedInteractionsDate"), v5 = objc_claimAutoreleasedReturnValue(), [date timeIntervalSinceDate:v5], v7 = v6, v5, cachedInteractions, v7 >= 5.0))
   {
     if (_updateDuetInteractionsIfNeeded_cn_once_token_1 != -1)
     {
@@ -126,25 +126,25 @@ uint64_t __44__CNQuickActionsUsageManager_sortedActions___block_invoke(uint64_t 
 
     v10 = v9;
     _Block_object_dispose(&v23, 8);
-    v11 = [v9 interactionAdvisorSettingsDefault];
+    interactionAdvisorSettingsDefault = [v9 interactionAdvisorSettingsDefault];
     v12 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F0D4BA60];
-    [v11 setConstrainPersonIdType:v12];
+    [interactionAdvisorSettingsDefault setConstrainPersonIdType:v12];
 
     v13 = MEMORY[0x1E695DFD8];
-    v14 = [(CNQuickActionsUsageManager *)self contact];
-    v15 = [v14 identifier];
-    v27[0] = v15;
+    contact = [(CNQuickActionsUsageManager *)self contact];
+    identifier = [contact identifier];
+    v27[0] = identifier;
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [(CNQuickActionsUsageManager *)self contact];
-    v18 = [v16 stringWithFormat:@"%d", objc_msgSend(v17, "iOSLegacyIdentifier")];
+    contact2 = [(CNQuickActionsUsageManager *)self contact];
+    v18 = [v16 stringWithFormat:@"%d", objc_msgSend(contact2, "iOSLegacyIdentifier")];
     v27[1] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
     v20 = [v13 setWithArray:v19];
-    [v11 setConstrainPersonIds:v20];
+    [interactionAdvisorSettingsDefault setConstrainPersonIds:v20];
 
-    v21 = [v8 adviseInteractionsUsingSettings:v11];
+    v21 = [v8 adviseInteractionsUsingSettings:interactionAdvisorSettingsDefault];
     [(CNQuickActionsUsageManager *)self setCachedInteractions:v21];
-    [(CNQuickActionsUsageManager *)self setCachedInteractionsDate:v3];
+    [(CNQuickActionsUsageManager *)self setCachedInteractionsDate:date];
   }
 }
 
@@ -173,45 +173,45 @@ void __61__CNQuickActionsUsageManager__updateDuetInteractionsIfNeeded__block_inv
   _updateDuetInteractionsIfNeeded_cn_once_object_1 = v2;
 }
 
-- (void)updateCachedEnabledStateForAction:(id)a3
+- (void)updateCachedEnabledStateForAction:(id)action
 {
-  v4 = a3;
-  [v4 setCached:1];
-  v6 = [(CNQuickActionsUsageManager *)self enabledActionIdentifiers];
-  v5 = [v4 globalIdentifier];
-  [v4 setEnabled:{objc_msgSend(v6, "containsObject:", v5)}];
+  actionCopy = action;
+  [actionCopy setCached:1];
+  enabledActionIdentifiers = [(CNQuickActionsUsageManager *)self enabledActionIdentifiers];
+  globalIdentifier = [actionCopy globalIdentifier];
+  [actionCopy setEnabled:{objc_msgSend(enabledActionIdentifiers, "containsObject:", globalIdentifier)}];
 }
 
-- (void)cacheEnabledStateForAction:(id)a3
+- (void)cacheEnabledStateForAction:(id)action
 {
-  v4 = a3;
-  v5 = [v4 enabled];
-  v7 = [(CNQuickActionsUsageManager *)self enabledActionIdentifiers];
-  v6 = [v4 globalIdentifier];
+  actionCopy = action;
+  enabled = [actionCopy enabled];
+  enabledActionIdentifiers = [(CNQuickActionsUsageManager *)self enabledActionIdentifiers];
+  globalIdentifier = [actionCopy globalIdentifier];
 
-  if (v5)
+  if (enabled)
   {
-    [v7 addObject:v6];
+    [enabledActionIdentifiers addObject:globalIdentifier];
   }
 
   else
   {
-    [v7 removeObject:v6];
+    [enabledActionIdentifiers removeObject:globalIdentifier];
   }
 }
 
-- (double)scoreForAction:(id)a3
+- (double)scoreForAction:(id)action
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   if ([(CNQuickActionsUsageManager *)self sortsWithDuet])
   {
-    v5 = [(CNQuickActionsUsageManager *)self cachedInteractions];
+    cachedInteractions = [(CNQuickActionsUsageManager *)self cachedInteractions];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [cachedInteractions countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -223,18 +223,18 @@ void __61__CNQuickActionsUsageManager__updateDuetInteractionsIfNeeded__block_inv
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(cachedInteractions);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          if ([v4 matchesDuetInteraction:v11])
+          if ([actionCopy matchesDuetInteraction:v11])
           {
             [v11 score];
             v9 = v9 + v12;
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [cachedInteractions countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -248,21 +248,21 @@ void __61__CNQuickActionsUsageManager__updateDuetInteractionsIfNeeded__block_inv
 
   else
   {
-    v5 = [(CNQuickActionsUsageManager *)self actionsUsageSet];
-    v13 = [v4 globalIdentifier];
-    v9 = [v5 countForObject:v13];
+    cachedInteractions = [(CNQuickActionsUsageManager *)self actionsUsageSet];
+    globalIdentifier = [actionCopy globalIdentifier];
+    v9 = [cachedInteractions countForObject:globalIdentifier];
   }
 
   return v9;
 }
 
-- (void)actionPerformed:(id)a3
+- (void)actionPerformed:(id)performed
 {
-  v4 = a3;
-  v6 = [(CNQuickActionsUsageManager *)self actionsUsageSet];
-  v5 = [v4 globalIdentifier];
+  performedCopy = performed;
+  actionsUsageSet = [(CNQuickActionsUsageManager *)self actionsUsageSet];
+  globalIdentifier = [performedCopy globalIdentifier];
 
-  [v6 addObject:v5];
+  [actionsUsageSet addObject:globalIdentifier];
   [(CNQuickActionsUsageManager *)self setCachedInteractions:0];
 }
 
@@ -343,21 +343,21 @@ void __56__CNQuickActionsUsageManager_sortUsingCoreDuetAvailable__block_invoke()
   }
 }
 
-+ (id)managerForContact:(id)a3
++ (id)managerForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   if (managerForContact__onceToken != -1)
   {
     dispatch_once(&managerForContact__onceToken, &__block_literal_global_57636);
   }
 
-  v4 = [v3 identifier];
-  v5 = [managerForContact__mapTable objectForKey:v4];
+  identifier = [contactCopy identifier];
+  v5 = [managerForContact__mapTable objectForKey:identifier];
   if (!v5)
   {
     v5 = objc_alloc_init(CNQuickActionsUsageManager);
-    [(CNQuickActionsUsageManager *)v5 setContact:v3];
-    [managerForContact__mapTable setObject:v5 forKey:v4];
+    [(CNQuickActionsUsageManager *)v5 setContact:contactCopy];
+    [managerForContact__mapTable setObject:v5 forKey:identifier];
   }
 
   return v5;

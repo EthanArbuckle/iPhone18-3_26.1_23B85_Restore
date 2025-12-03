@@ -15,20 +15,20 @@
   v130 = v4;
   v5 = [CAPackage packageWithContentsOfURL:v4 type:kCAPackageTypeCAMLBundle options:0 error:0];
   v6 = [NSNumber numberWithInteger:[(CKConfettiEffectView *)self zIndex]];
-  v7 = [v6 stringValue];
+  stringValue = [v6 stringValue];
 
-  v128 = v7;
+  v128 = stringValue;
   v129 = v5;
-  v8 = [v5 publishedObjectWithName:v7];
-  v121 = self;
+  v8 = [v5 publishedObjectWithName:stringValue];
+  selfCopy = self;
   [(CKConfettiEffectView *)self bounds];
   v10 = v9;
   v12 = v11;
   CATransform3DMakeScale(&v136, 0.5, -0.5, 1.0);
   v135 = v136;
   [v8 setTransform:&v135];
-  v13 = [(CKConfettiEffectView *)self layer];
-  [v13 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(CKConfettiEffectView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   [v8 setBeginTime:?];
 
   [v8 setSeed:arc4random()];
@@ -175,8 +175,8 @@
   [v65 setTimingFunctions:v83];
   [v65 setDuration:6.0];
   [v65 setBeginTimeMode:v15];
-  v84 = [(CKConfettiEffectView *)v121 zIndex];
-  if (v84 == &dword_0 + 3)
+  zIndex = [(CKConfettiEffectView *)selfCopy zIndex];
+  if (zIndex == &dword_0 + 3)
   {
     v93 = [NSNumber numberWithFloat:0.0];
     [v8 setValue:v93 forKeyPath:@"cullRect.origin.x"];
@@ -193,7 +193,7 @@
 
   v87 = v125;
   v86 = v126;
-  if (!v84)
+  if (!zIndex)
   {
     LODWORD(v85) = -1022623744;
     v88 = [NSNumber numberWithFloat:v85];
@@ -238,7 +238,7 @@ LABEL_5:
     [v8 setValue:v105 forKeyPath:@"emitterBehaviors.attractor.position.y"];
   }
 
-  v106 = [(CKConfettiEffectView *)v121 layer];
+  layer2 = [(CKConfettiEffectView *)selfCopy layer];
   v107 = *&CATransform3DIdentity.m23;
   *&v135.m21 = *&CATransform3DIdentity.m21;
   *&v135.m23 = v107;
@@ -251,17 +251,17 @@ LABEL_5:
   v109 = *&CATransform3DIdentity.m43;
   *&v135.m41 = *&CATransform3DIdentity.m41;
   *&v135.m43 = v109;
-  [v106 setSublayerTransform:&v135];
+  [layer2 setSublayerTransform:&v135];
 
   [v8 position];
   v111 = v110 * 0.5;
   [v8 position];
   [v8 setPosition:{v111, v112 * 0.5}];
   [v8 addAnimation:v127 forKey:@"fall"];
-  v113 = [(CKConfettiEffectView *)v121 layer];
-  [v113 addSublayer:v8];
+  layer3 = [(CKConfettiEffectView *)selfCopy layer];
+  [layer3 addSublayer:v8];
 
-  objc_storeStrong(&v121->_confettiLayer, v8);
+  objc_storeStrong(&selfCopy->_confettiLayer, v8);
   v114 = dispatch_time(0, 6000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

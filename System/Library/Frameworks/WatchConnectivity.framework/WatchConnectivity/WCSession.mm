@@ -1,12 +1,12 @@
 @interface WCSession
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (WCSession)defaultSession;
-- (BOOL)didPairingIDChange:(id)a3;
-- (BOOL)didWatchURLChange:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)didPairingIDChange:(id)change;
+- (BOOL)didWatchURLChange:(id)change;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)logAndTestIfUnactivatedOrMissingDelegate;
 - (BOOL)updateApplicationContext:(NSDictionary *)applicationContext error:(NSError *)error;
-- (BOOL)verifySessionFile:(id)a3;
+- (BOOL)verifySessionFile:(id)file;
 - (NSArray)outstandingFileTransfers;
 - (NSArray)outstandingUserInfoTransfers;
 - (NSDictionary)applicationContext;
@@ -18,76 +18,76 @@
 - (WCSessionUserInfoTransfer)transferCurrentComplicationUserInfo:(NSDictionary *)userInfo;
 - (WCSessionUserInfoTransfer)transferUserInfo:(NSDictionary *)userInfo;
 - (id)_init;
-- (id)createAndStartTimerOnWorkQueueWithHandler:(id)a3;
+- (id)createAndStartTimerOnWorkQueueWithHandler:(id)handler;
 - (id)delegate;
 - (id)errorIfNotReachable;
 - (id)errorIfPreconditionsNotSatisfied;
-- (id)fileSizeFromURL:(id)a3;
-- (id)onqueue_addOutstandingUserInfoTransfer:(id)a3;
+- (id)fileSizeFromURL:(id)l;
+- (id)onqueue_addOutstandingUserInfoTransfer:(id)transfer;
 - (unint64_t)hash;
-- (unint64_t)roundValue:(unint64_t)a3 toSignificantFigures:(int)a4;
-- (void)_onqueue_notifyOfMessageError:(id)a3 messageID:(id)a4 withErrorHandler:(id)a5;
+- (unint64_t)roundValue:(unint64_t)value toSignificantFigures:(int)figures;
+- (void)_onqueue_notifyOfMessageError:(id)error messageID:(id)d withErrorHandler:(id)handler;
 - (void)activateSession;
-- (void)cancelFileTransfer:(id)a3;
-- (void)cancelUserInfo:(id)a3;
+- (void)cancelFileTransfer:(id)transfer;
+- (void)cancelUserInfo:(id)info;
 - (void)dealloc;
-- (void)didSessionStateChange:(id)a3 withChangeHandler:(id)a4;
+- (void)didSessionStateChange:(id)change withChangeHandler:(id)handler;
 - (void)handleActiveDeviceSwitchStarted;
-- (void)handleApplicationContextWithPairingID:(id)a3;
-- (void)handleFileResultWithPairingID:(id)a3;
-- (void)handleIncomingFileWithPairingID:(id)a3;
-- (void)handleIncomingUserInfoWithPairingID:(id)a3;
+- (void)handleApplicationContextWithPairingID:(id)d;
+- (void)handleFileResultWithPairingID:(id)d;
+- (void)handleIncomingFileWithPairingID:(id)d;
+- (void)handleIncomingUserInfoWithPairingID:(id)d;
 - (void)handleMessageSendingAllowed;
-- (void)handleRequest:(id)a3;
-- (void)handleResponse:(id)a3;
-- (void)handleSentMessageWithIdentifier:(id)a3 error:(id)a4;
-- (void)handleSessionStateChanged:(id)a3;
-- (void)handleUserInfoResultWithPairingID:(id)a3;
-- (void)notifyOfFileError:(id)a3 withFileTransfer:(id)a4;
-- (void)notifyOfUserInfoError:(id)a3 withUserInfoTransfer:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)onDelegateQueueIfTriggeringKVO_updateSessionState:(id)a3 triggerKVO:(BOOL)a4;
-- (void)onqueue_addOutstandingFileTransfer:(id)a3;
-- (void)onqueue_cancelFileTransfer:(id)a3;
+- (void)handleRequest:(id)request;
+- (void)handleResponse:(id)response;
+- (void)handleSentMessageWithIdentifier:(id)identifier error:(id)error;
+- (void)handleSessionStateChanged:(id)changed;
+- (void)handleUserInfoResultWithPairingID:(id)d;
+- (void)notifyOfFileError:(id)error withFileTransfer:(id)transfer;
+- (void)notifyOfUserInfoError:(id)error withUserInfoTransfer:(id)transfer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)onDelegateQueueIfTriggeringKVO_updateSessionState:(id)state triggerKVO:(BOOL)o;
+- (void)onqueue_addOutstandingFileTransfer:(id)transfer;
+- (void)onqueue_cancelFileTransfer:(id)transfer;
 - (void)onqueue_cancelMessagesIfAppropriate;
-- (void)onqueue_cancelUserInfo:(id)a3;
-- (void)onqueue_completeSwitchTask:(id)a3 withSessionState:(id)a4;
-- (void)onqueue_createProgressForFileTransfer:(id)a3;
+- (void)onqueue_cancelUserInfo:(id)info;
+- (void)onqueue_completeSwitchTask:(id)task withSessionState:(id)state;
+- (void)onqueue_createProgressForFileTransfer:(id)transfer;
 - (void)onqueue_dequeueContent;
-- (void)onqueue_handleDataMessageRequest:(id)a3 withPairingID:(id)a4;
-- (void)onqueue_handleDictionaryMessageRequest:(id)a3 withPairingID:(id)a4;
-- (void)onqueue_handleMessageCompletionWithError:(id)a3 withMessageID:(id)a4;
-- (void)onqueue_handleProgressFinishedForFileTransfer:(id)a3;
-- (void)onqueue_handleResponseData:(id)a3 record:(id)a4 withPairingID:(id)a5;
-- (void)onqueue_handleResponseDictionary:(id)a3 record:(id)a4 withPairingID:(id)a5;
-- (void)onqueue_handleUpdateSessionState:(id)a3;
+- (void)onqueue_handleDataMessageRequest:(id)request withPairingID:(id)d;
+- (void)onqueue_handleDictionaryMessageRequest:(id)request withPairingID:(id)d;
+- (void)onqueue_handleMessageCompletionWithError:(id)error withMessageID:(id)d;
+- (void)onqueue_handleProgressFinishedForFileTransfer:(id)transfer;
+- (void)onqueue_handleResponseData:(id)data record:(id)record withPairingID:(id)d;
+- (void)onqueue_handleResponseDictionary:(id)dictionary record:(id)record withPairingID:(id)d;
+- (void)onqueue_handleUpdateSessionState:(id)state;
 - (void)onqueue_loadAppContexts;
 - (void)onqueue_loadFileTransferProgress;
 - (void)onqueue_loadOutstandingFileTransfers;
 - (void)onqueue_loadOutstandingUserInfoTransfers;
 - (void)onqueue_loadPersistedContent;
-- (void)onqueue_notifyOfFileError:(id)a3 withFileTransfer:(id)a4;
-- (void)onqueue_notifyOfUserInfoError:(id)a3 withUserInfoTransfer:(id)a4;
-- (void)onqueue_removeOutstandingFileTransfer:(id)a3;
-- (void)onqueue_removeOutstandingUserInfoTransfer:(id)a3;
-- (void)onqueue_removeProgressForFileTransfer:(id)a3;
-- (void)onqueue_sendResponseDictionary:(id)a3 identifier:(id)a4;
-- (void)onqueue_setCurrentComplicationUserInfoTransfer:(id)a3;
+- (void)onqueue_notifyOfFileError:(id)error withFileTransfer:(id)transfer;
+- (void)onqueue_notifyOfUserInfoError:(id)error withUserInfoTransfer:(id)transfer;
+- (void)onqueue_removeOutstandingFileTransfer:(id)transfer;
+- (void)onqueue_removeOutstandingUserInfoTransfer:(id)transfer;
+- (void)onqueue_removeProgressForFileTransfer:(id)transfer;
+- (void)onqueue_sendResponseDictionary:(id)dictionary identifier:(id)identifier;
+- (void)onqueue_setCurrentComplicationUserInfoTransfer:(id)transfer;
 - (void)onqueue_startNextDeviceSwitch;
-- (void)onqueue_transferUserInfo:(id)a3 withUserInfo:(id)a4;
-- (void)onqueue_updateClientProgressForFileTransfer:(id)a3;
-- (void)onqueue_updateProgressForFileTransfer:(id)a3 progress:(id)a4;
-- (void)reportFileTransfer:(id)a3;
+- (void)onqueue_transferUserInfo:(id)info withUserInfo:(id)userInfo;
+- (void)onqueue_updateClientProgressForFileTransfer:(id)transfer;
+- (void)onqueue_updateProgressForFileTransfer:(id)transfer progress:(id)progress;
+- (void)reportFileTransfer:(id)transfer;
 - (void)sendMessage:(NSDictionary *)message replyHandler:(void *)replyHandler errorHandler:(void *)errorHandler;
 - (void)sendMessageData:(NSData *)data replyHandler:(void *)replyHandler errorHandler:(void *)errorHandler;
 - (void)setDelegate:(id)delegate;
-- (void)setInternalOutstandingFileTransfers:(id)a3;
-- (void)setInternalOutstandingUserInfoTransfers:(id)a3;
-- (void)storeAppContext:(id)a3 withAppContextData:(id)a4;
-- (void)storeReceivedAppContext:(id)a3 withAppContextData:(id)a4;
-- (void)updatePairingID:(id)a3;
+- (void)setInternalOutstandingFileTransfers:(id)transfers;
+- (void)setInternalOutstandingUserInfoTransfers:(id)transfers;
+- (void)storeAppContext:(id)context withAppContextData:(id)data;
+- (void)storeReceivedAppContext:(id)context withAppContextData:(id)data;
+- (void)updatePairingID:(id)d;
 - (void)xpcConnectionInterrupted;
-- (void)xpcConnectionRestoredWithState:(id)a3;
+- (void)xpcConnectionRestoredWithState:(id)state;
 @end
 
 @implementation WCSession
@@ -98,7 +98,7 @@
   block[1] = 3221225472;
   block[2] = __27__WCSession_defaultSession__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultSession_onceToken != -1)
   {
     dispatch_once(&defaultSession_onceToken, block);
@@ -358,15 +358,15 @@ void __28__WCSession_activateSession__block_invoke_20(uint64_t a1, void *a2)
   if ((v6 & 1) == 0)
   {
     objc_storeWeak(&self->_delegate, v4);
-    v7 = [(WCSession *)self delegate];
+    delegate = [(WCSession *)self delegate];
     [(WCSession *)self setDelegateSupportsAsyncActivate:objc_opt_respondsToSelector() & 1];
 
     if ([(WCSession *)self delegateSupportsAsyncActivate])
     {
-      v8 = [(WCSession *)self delegate];
+      delegate2 = [(WCSession *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [(WCSession *)self delegate];
+        delegate3 = [(WCSession *)self delegate];
         [(WCSession *)self setDelegateSupportsActiveDeviceSwitch:objc_opt_respondsToSelector() & 1];
       }
 
@@ -439,8 +439,8 @@ void __28__WCSession_activateSession__block_invoke_20(uint64_t a1, void *a2)
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WCSession *)self delegate];
-  if (v6)
+  delegate = [(WCSession *)self delegate];
+  if (delegate)
   {
     v7 = "YES";
   }
@@ -455,11 +455,11 @@ void __28__WCSession_activateSession__block_invoke_20(uint64_t a1, void *a2)
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = WCSession;
-  return [(WCSession *)&v4 isEqual:a3];
+  return [(WCSession *)&v4 isEqual:equal];
 }
 
 - (unint64_t)hash
@@ -469,69 +469,69 @@ void __28__WCSession_activateSession__block_invoke_20(uint64_t a1, void *a2)
   return [(WCSession *)&v3 hash];
 }
 
-- (void)onDelegateQueueIfTriggeringKVO_updateSessionState:(id)a3 triggerKVO:(BOOL)a4
+- (void)onDelegateQueueIfTriggeringKVO_updateSessionState:(id)state triggerKVO:(BOOL)o
 {
-  v4 = a4;
+  oCopy = o;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   v7 = wc_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "NO";
     *&v17[4] = "[WCSession onDelegateQueueIfTriggeringKVO_updateSessionState:triggerKVO:]";
     *v17 = 136446722;
-    if (v4)
+    if (oCopy)
     {
       v8 = "YES";
     }
 
     *&v17[12] = 2114;
-    *&v17[14] = v6;
+    *&v17[14] = stateCopy;
     v18 = 2080;
     v19 = v8;
     _os_log_impl(&dword_23B2FA000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@, triggerKVO: %s", v17, 0x20u);
   }
 
-  v9 = [v6 isReachable];
-  if (v4)
+  isReachable = [stateCopy isReachable];
+  if (oCopy)
   {
-    [(WCSession *)self setReachable:v9];
+    [(WCSession *)self setReachable:isReachable];
   }
 
   else
   {
-    self->_reachable = v9;
+    self->_reachable = isReachable;
   }
 
   v10 = +[WCFileStorage sharedInstance];
-  v11 = [v6 watchDirectoryURL];
-  [v10 createWatchDirectoryIfNeeded:v11];
+  watchDirectoryURL = [stateCopy watchDirectoryURL];
+  [v10 createWatchDirectoryIfNeeded:watchDirectoryURL];
 
-  v12 = [v6 watchDirectoryURL];
-  v13 = v12;
-  if (v4)
+  watchDirectoryURL2 = [stateCopy watchDirectoryURL];
+  v13 = watchDirectoryURL2;
+  if (oCopy)
   {
-    [(WCSession *)self setWatchDirectoryURL:v12];
+    [(WCSession *)self setWatchDirectoryURL:watchDirectoryURL2];
 
-    -[WCSession setPaired:](self, "setPaired:", [v6 isPaired]);
-    -[WCSession setWatchAppInstalled:](self, "setWatchAppInstalled:", [v6 isAppInstalled]);
-    -[WCSession setComplicationEnabled:](self, "setComplicationEnabled:", [v6 isComplicationEnabled]);
-    -[WCSession setRemainingComplicationUserInfoTransfers:](self, "setRemainingComplicationUserInfoTransfers:", [v6 remainingComplicationUserInfoTransfers]);
+    -[WCSession setPaired:](self, "setPaired:", [stateCopy isPaired]);
+    -[WCSession setWatchAppInstalled:](self, "setWatchAppInstalled:", [stateCopy isAppInstalled]);
+    -[WCSession setComplicationEnabled:](self, "setComplicationEnabled:", [stateCopy isComplicationEnabled]);
+    -[WCSession setRemainingComplicationUserInfoTransfers:](self, "setRemainingComplicationUserInfoTransfers:", [stateCopy remainingComplicationUserInfoTransfers]);
   }
 
   else
   {
     watchDirectoryURL = self->_watchDirectoryURL;
-    self->_watchDirectoryURL = v12;
+    self->_watchDirectoryURL = watchDirectoryURL2;
 
-    self->_paired = [v6 isPaired];
-    self->_watchAppInstalled = [v6 isAppInstalled];
-    self->_complicationEnabled = [v6 isComplicationEnabled];
-    self->_remainingComplicationUserInfoTransfers = [v6 remainingComplicationUserInfoTransfers];
+    self->_paired = [stateCopy isPaired];
+    self->_watchAppInstalled = [stateCopy isAppInstalled];
+    self->_complicationEnabled = [stateCopy isComplicationEnabled];
+    self->_remainingComplicationUserInfoTransfers = [stateCopy remainingComplicationUserInfoTransfers];
   }
 
-  v15 = [v6 pairingID];
-  [(WCSession *)self updatePairingID:v15];
+  pairingID = [stateCopy pairingID];
+  [(WCSession *)self updatePairingID:pairingID];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -567,20 +567,20 @@ void __28__WCSession_activateSession__block_invoke_20(uint64_t a1, void *a2)
 
   if (v3)
   {
-    v6 = [(WCSession *)self queueManager];
-    [v6 cancelQueuedMessages];
+    queueManager = [(WCSession *)self queueManager];
+    [queueManager cancelQueuedMessages];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePairingID:(id)a3
+- (void)updatePairingID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isEqual:self->_pairingID] & 1) == 0)
+  dCopy = d;
+  if (([dCopy isEqual:self->_pairingID] & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [dCopy copy];
     pairingID = self->_pairingID;
     self->_pairingID = v5;
 
@@ -613,10 +613,10 @@ void __28__WCSession_activateSession__block_invoke_20(uint64_t a1, void *a2)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)didPairingIDChange:(id)a3
+- (BOOL)didPairingIDChange:(id)change
 {
   pairingID = self->_pairingID;
-  if (a3 | pairingID)
+  if (change | pairingID)
   {
     return [(NSString *)pairingID isEqual:v3, v4]^ 1;
   }
@@ -629,9 +629,9 @@ void __28__WCSession_activateSession__block_invoke_20(uint64_t a1, void *a2)
 
 - (NSURL)watchDirectoryURL
 {
-  v3 = [(WCSession *)self errorIfPreconditionsNotSatisfied];
+  errorIfPreconditionsNotSatisfied = [(WCSession *)self errorIfPreconditionsNotSatisfied];
 
-  if (v3)
+  if (errorIfPreconditionsNotSatisfied)
   {
     v4 = 0;
   }
@@ -644,13 +644,13 @@ void __28__WCSession_activateSession__block_invoke_20(uint64_t a1, void *a2)
   return v4;
 }
 
-- (BOOL)didWatchURLChange:(id)a3
+- (BOOL)didWatchURLChange:(id)change
 {
-  v5 = a3;
-  if (!v5)
+  changeCopy = change;
+  if (!changeCopy)
   {
-    v3 = [(WCSession *)self watchDirectoryURL];
-    if (!v3)
+    watchDirectoryURL = [(WCSession *)self watchDirectoryURL];
+    if (!watchDirectoryURL)
     {
       LOBYTE(v7) = 0;
 LABEL_6:
@@ -659,10 +659,10 @@ LABEL_6:
     }
   }
 
-  v6 = [(WCSession *)self watchDirectoryURL];
-  v7 = [v5 isEqual:v6] ^ 1;
+  watchDirectoryURL2 = [(WCSession *)self watchDirectoryURL];
+  v7 = [changeCopy isEqual:watchDirectoryURL2] ^ 1;
 
-  if (!v5)
+  if (!changeCopy)
   {
     goto LABEL_6;
   }
@@ -712,12 +712,12 @@ uint64_t __41__WCSession_outstandingUserInfoTransfers__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)onqueue_setCurrentComplicationUserInfoTransfer:(id)a3
+- (void)onqueue_setCurrentComplicationUserInfoTransfer:(id)transfer
 {
-  v4 = a3;
+  transferCopy = transfer;
   [(WCSessionUserInfoTransfer *)self->_currentComplicationUserInfoTransfer setCurrentComplicationInfo:0];
   currentComplicationUserInfoTransfer = self->_currentComplicationUserInfoTransfer;
-  self->_currentComplicationUserInfoTransfer = v4;
+  self->_currentComplicationUserInfoTransfer = transferCopy;
 }
 
 - (void)onqueue_loadOutstandingUserInfoTransfers
@@ -732,19 +732,19 @@ uint64_t __41__WCSession_outstandingUserInfoTransfers__block_invoke(uint64_t a1)
   self->_currentComplicationUserInfoTransfer = v5;
 }
 
-- (id)onqueue_addOutstandingUserInfoTransfer:(id)a3
+- (id)onqueue_addOutstandingUserInfoTransfer:(id)transfer
 {
-  if (a3)
+  if (transfer)
   {
-    v4 = a3;
+    transferCopy = transfer;
     [(WCSession *)self willChangeValueForKey:@"outstandingUserInfoTransfers"];
     internalOutstandingUserInfoTransfers = self->_internalOutstandingUserInfoTransfers;
-    v6 = [v4 transferIdentifier];
-    [(NSMutableDictionary *)internalOutstandingUserInfoTransfers setObject:v4 forKeyedSubscript:v6];
+    transferIdentifier = [transferCopy transferIdentifier];
+    [(NSMutableDictionary *)internalOutstandingUserInfoTransfers setObject:transferCopy forKeyedSubscript:transferIdentifier];
 
     [(WCSession *)self didChangeValueForKey:@"outstandingUserInfoTransfers"];
     v7 = +[WCFileStorage sharedInstance];
-    v8 = [v7 persistOutgoingUserInfoTransfer:v4];
+    v8 = [v7 persistOutgoingUserInfoTransfer:transferCopy];
   }
 
   else
@@ -755,25 +755,25 @@ uint64_t __41__WCSession_outstandingUserInfoTransfers__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)onqueue_removeOutstandingUserInfoTransfer:(id)a3
+- (void)onqueue_removeOutstandingUserInfoTransfer:(id)transfer
 {
-  v4 = a3;
-  if (v4)
+  transferCopy = transfer;
+  if (transferCopy)
   {
-    v5 = [(WCSession *)self pairingID];
+    pairingID = [(WCSession *)self pairingID];
 
-    if (v5)
+    if (pairingID)
     {
-      v6 = [(WCSession *)self internalOutstandingFileTransfers];
-      v7 = [v4 transferIdentifier];
-      v8 = [v6 objectForKeyedSubscript:v7];
+      internalOutstandingFileTransfers = [(WCSession *)self internalOutstandingFileTransfers];
+      transferIdentifier = [transferCopy transferIdentifier];
+      v8 = [internalOutstandingFileTransfers objectForKeyedSubscript:transferIdentifier];
 
       if (v8)
       {
         [(WCSession *)self willChangeValueForKey:@"outstandingUserInfoTransfers"];
         internalOutstandingUserInfoTransfers = self->_internalOutstandingUserInfoTransfers;
-        v10 = [v4 transferIdentifier];
-        [(NSMutableDictionary *)internalOutstandingUserInfoTransfers removeObjectForKey:v10];
+        transferIdentifier2 = [transferCopy transferIdentifier];
+        [(NSMutableDictionary *)internalOutstandingUserInfoTransfers removeObjectForKey:transferIdentifier2];
 
         [(WCSession *)self didChangeValueForKey:@"outstandingUserInfoTransfers"];
       }
@@ -781,12 +781,12 @@ uint64_t __41__WCSession_outstandingUserInfoTransfers__block_invoke(uint64_t a1)
       else
       {
         v12 = self->_internalOutstandingUserInfoTransfers;
-        v13 = [v4 transferIdentifier];
-        [(NSMutableDictionary *)v12 removeObjectForKey:v13];
+        transferIdentifier3 = [transferCopy transferIdentifier];
+        [(NSMutableDictionary *)v12 removeObjectForKey:transferIdentifier3];
       }
 
       v11 = +[WCFileStorage sharedInstance];
-      [v11 deleteOutstandingUserInfoTransfer:v4];
+      [v11 deleteOutstandingUserInfoTransfer:transferCopy];
     }
 
     else
@@ -843,47 +843,47 @@ uint64_t __37__WCSession_outstandingFileTransfers__block_invoke(uint64_t a1)
 - (void)onqueue_loadOutstandingFileTransfers
 {
   v3 = +[WCFileStorage sharedInstance];
-  v4 = [v3 loadOutstandingFileTransfers];
-  [(WCSession *)self setInternalOutstandingFileTransfers:v4];
+  loadOutstandingFileTransfers = [v3 loadOutstandingFileTransfers];
+  [(WCSession *)self setInternalOutstandingFileTransfers:loadOutstandingFileTransfers];
 
   [(WCSession *)self onqueue_loadFileTransferProgress];
 }
 
-- (void)onqueue_addOutstandingFileTransfer:(id)a3
+- (void)onqueue_addOutstandingFileTransfer:(id)transfer
 {
-  if (a3)
+  if (transfer)
   {
-    v4 = a3;
+    transferCopy = transfer;
     [(WCSession *)self willChangeValueForKey:@"outstandingFileTransfers"];
     internalOutstandingFileTransfers = self->_internalOutstandingFileTransfers;
-    v6 = [v4 transferIdentifier];
-    [(NSMutableDictionary *)internalOutstandingFileTransfers setObject:v4 forKeyedSubscript:v6];
+    transferIdentifier = [transferCopy transferIdentifier];
+    [(NSMutableDictionary *)internalOutstandingFileTransfers setObject:transferCopy forKeyedSubscript:transferIdentifier];
 
     [(WCSession *)self didChangeValueForKey:@"outstandingFileTransfers"];
     v7 = +[WCFileStorage sharedInstance];
-    [v7 persistOutgoingFileTransfer:v4];
+    [v7 persistOutgoingFileTransfer:transferCopy];
   }
 }
 
-- (void)onqueue_removeOutstandingFileTransfer:(id)a3
+- (void)onqueue_removeOutstandingFileTransfer:(id)transfer
 {
-  v4 = a3;
-  if (v4)
+  transferCopy = transfer;
+  if (transferCopy)
   {
-    v5 = [(WCSession *)self pairingID];
+    pairingID = [(WCSession *)self pairingID];
 
-    if (v5)
+    if (pairingID)
     {
-      v6 = [(WCSession *)self internalOutstandingFileTransfers];
-      v7 = [v4 transferIdentifier];
-      v8 = [v6 objectForKeyedSubscript:v7];
+      internalOutstandingFileTransfers = [(WCSession *)self internalOutstandingFileTransfers];
+      transferIdentifier = [transferCopy transferIdentifier];
+      v8 = [internalOutstandingFileTransfers objectForKeyedSubscript:transferIdentifier];
 
       if (v8)
       {
         [(WCSession *)self willChangeValueForKey:@"outstandingFileTransfers"];
         internalOutstandingFileTransfers = self->_internalOutstandingFileTransfers;
-        v10 = [v4 transferIdentifier];
-        [(NSMutableDictionary *)internalOutstandingFileTransfers removeObjectForKey:v10];
+        transferIdentifier2 = [transferCopy transferIdentifier];
+        [(NSMutableDictionary *)internalOutstandingFileTransfers removeObjectForKey:transferIdentifier2];
 
         [(WCSession *)self didChangeValueForKey:@"outstandingFileTransfers"];
       }
@@ -891,12 +891,12 @@ uint64_t __37__WCSession_outstandingFileTransfers__block_invoke(uint64_t a1)
       else
       {
         v12 = self->_internalOutstandingFileTransfers;
-        v13 = [v4 transferIdentifier];
-        [(NSMutableDictionary *)v12 removeObjectForKey:v13];
+        transferIdentifier3 = [transferCopy transferIdentifier];
+        [(NSMutableDictionary *)v12 removeObjectForKey:transferIdentifier3];
       }
 
       v11 = +[WCFileStorage sharedInstance];
-      [v11 deleteOutstandingFileTransfer:v4];
+      [v11 deleteOutstandingFileTransfer:transferCopy];
     }
 
     else
@@ -916,11 +916,11 @@ uint64_t __37__WCSession_outstandingFileTransfers__block_invoke(uint64_t a1)
   v3 = wc_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(WCSession *)self internalOutstandingFileTransfers];
+    internalOutstandingFileTransfers = [(WCSession *)self internalOutstandingFileTransfers];
     *buf = 136446466;
     v18 = "[WCSession onqueue_loadFileTransferProgress]";
     v19 = 2050;
-    v20 = [v4 count];
+    v20 = [internalOutstandingFileTransfers count];
     _os_log_impl(&dword_23B2FA000, v3, OS_LOG_TYPE_DEFAULT, "%{public}s for number of file transfers %{public}ld", buf, 0x16u);
   }
 
@@ -928,10 +928,10 @@ uint64_t __37__WCSession_outstandingFileTransfers__block_invoke(uint64_t a1)
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(WCSession *)self internalOutstandingFileTransfers];
-  v6 = [v5 allValues];
+  internalOutstandingFileTransfers2 = [(WCSession *)self internalOutstandingFileTransfers];
+  allValues = [internalOutstandingFileTransfers2 allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -943,14 +943,14 @@ uint64_t __37__WCSession_outstandingFileTransfers__block_invoke(uint64_t a1)
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         [(WCSession *)self onqueue_createProgressForFileTransfer:*(*(&v12 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -959,23 +959,23 @@ uint64_t __37__WCSession_outstandingFileTransfers__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_createProgressForFileTransfer:(id)a3
+- (void)onqueue_createProgressForFileTransfer:(id)transfer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transferCopy = transfer;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277CCAC48];
-  v6 = [v4 file];
-  v7 = [v6 fileURL];
+  file = [transferCopy file];
+  fileURL = [file fileURL];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __51__WCSession_onqueue_createProgressForFileTransfer___block_invoke;
   v15 = &unk_278B7C040;
-  v8 = v4;
+  v8 = transferCopy;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   objc_copyWeak(&v18, &location);
-  v9 = [v5 _addSubscriberForFileURL:v7 withPublishingHandler:&v12];
+  v9 = [v5 _addSubscriberForFileURL:fileURL withPublishingHandler:&v12];
 
   [v8 setProgressToken:{v9, v12, v13, v14, v15}];
   v10 = wc_log();
@@ -1079,37 +1079,37 @@ void __51__WCSession_onqueue_createProgressForFileTransfer___block_invoke_47(uin
   [WeakRetained onqueue_removeProgressForFileTransfer:*(a1 + 32)];
 }
 
-- (void)onqueue_updateProgressForFileTransfer:(id)a3 progress:(id)a4
+- (void)onqueue_updateProgressForFileTransfer:(id)transfer progress:(id)progress
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  transferCopy = transfer;
+  progressCopy = progress;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 transferIdentifier];
+    transferIdentifier = [transferCopy transferIdentifier];
     v14 = 136446466;
     v15 = "[WCSession onqueue_updateProgressForFileTransfer:progress:]";
     v16 = 2114;
-    v17 = v9;
+    v17 = transferIdentifier;
     _os_log_impl(&dword_23B2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s Updating progress for %{public}@", &v14, 0x16u);
   }
 
-  if (v6)
+  if (transferCopy)
   {
-    [v6 setInternalProgress:v7];
-    [v6 addObserver:self forKeyPath:@"internalProgress.userInfo.NSProgressByteCompletedCountKey" options:1 context:0];
-    [v6 addObserver:self forKeyPath:@"internalProgress.finished" options:1 context:0];
-    [v6 addObserver:self forKeyPath:@"internalProgress.cancelled" options:1 context:0];
-    [(WCSession *)self onqueue_updateClientProgressForFileTransfer:v6];
+    [transferCopy setInternalProgress:progressCopy];
+    [transferCopy addObserver:self forKeyPath:@"internalProgress.userInfo.NSProgressByteCompletedCountKey" options:1 context:0];
+    [transferCopy addObserver:self forKeyPath:@"internalProgress.finished" options:1 context:0];
+    [transferCopy addObserver:self forKeyPath:@"internalProgress.cancelled" options:1 context:0];
+    [(WCSession *)self onqueue_updateClientProgressForFileTransfer:transferCopy];
     v10 = wc_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 internalProgress];
+      internalProgress = [transferCopy internalProgress];
       v14 = 136446466;
       v15 = "[WCSession onqueue_updateProgressForFileTransfer:progress:]";
       v16 = 2112;
-      v17 = v11;
+      v17 = internalProgress;
       v12 = "%{public}s Added observer for progress %@";
 LABEL_8:
       _os_log_impl(&dword_23B2FA000, v10, OS_LOG_TYPE_DEFAULT, v12, &v14, 0x16u);
@@ -1121,11 +1121,11 @@ LABEL_8:
     v10 = wc_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [0 transferIdentifier];
+      internalProgress = [0 transferIdentifier];
       v14 = 136446466;
       v15 = "[WCSession onqueue_updateProgressForFileTransfer:progress:]";
       v16 = 2114;
-      v17 = v11;
+      v17 = internalProgress;
       v12 = "%{public}s Missing item for publish callback (identifier: %{public}@)";
       goto LABEL_8;
     }
@@ -1134,33 +1134,33 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_removeProgressForFileTransfer:(id)a3
+- (void)onqueue_removeProgressForFileTransfer:(id)transfer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 progress];
-  v6 = [v5 isFinished];
+  transferCopy = transfer;
+  progress = [transferCopy progress];
+  isFinished = [progress isFinished];
 
-  if (v6)
+  if (isFinished)
   {
-    v7 = [v4 progressToken];
+    progressToken = [transferCopy progressToken];
 
     v8 = wc_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (progressToken)
     {
       if (v9)
       {
         v15 = 136446466;
         v16 = "[WCSession onqueue_removeProgressForFileTransfer:]";
         v17 = 2114;
-        v18 = v4;
+        v18 = transferCopy;
         _os_log_impl(&dword_23B2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s Removing progress for transfer %{public}@", &v15, 0x16u);
       }
 
-      v10 = [v4 internalProgress];
+      internalProgress = [transferCopy internalProgress];
 
-      if (v10)
+      if (internalProgress)
       {
         v11 = wc_log();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1170,16 +1170,16 @@ LABEL_8:
           _os_log_impl(&dword_23B2FA000, v11, OS_LOG_TYPE_DEFAULT, "%{public}s Removing progress observers", &v15, 0xCu);
         }
 
-        [v4 removeObserver:self forKeyPath:@"internalProgress.userInfo.NSProgressByteCompletedCountKey"];
-        [v4 removeObserver:self forKeyPath:@"internalProgress.finished"];
-        [v4 removeObserver:self forKeyPath:@"internalProgress.cancelled"];
+        [transferCopy removeObserver:self forKeyPath:@"internalProgress.userInfo.NSProgressByteCompletedCountKey"];
+        [transferCopy removeObserver:self forKeyPath:@"internalProgress.finished"];
+        [transferCopy removeObserver:self forKeyPath:@"internalProgress.cancelled"];
       }
 
       v12 = MEMORY[0x277CCAC48];
-      v13 = [v4 progressToken];
-      [v12 _removeSubscriber:v13];
+      progressToken2 = [transferCopy progressToken];
+      [v12 _removeSubscriber:progressToken2];
 
-      [v4 setProgressToken:0];
+      [transferCopy setProgressToken:0];
     }
 
     else
@@ -1189,7 +1189,7 @@ LABEL_8:
         v15 = 136446466;
         v16 = "[WCSession onqueue_removeProgressForFileTransfer:]";
         v17 = 2114;
-        v18 = v4;
+        v18 = transferCopy;
         _os_log_impl(&dword_23B2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s Missing item to remove (identifier: %{public}@)", &v15, 0x16u);
       }
     }
@@ -1198,20 +1198,20 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  objectCopy = object;
   workOperationQueue = self->_workOperationQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__WCSession_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v13[3] = &unk_278B7C068;
-  v14 = v9;
-  v15 = v8;
-  v16 = self;
-  v11 = v8;
-  v12 = v9;
+  v14 = objectCopy;
+  v15 = pathCopy;
+  selfCopy = self;
+  v11 = pathCopy;
+  v12 = objectCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v13];
 }
 
@@ -1269,61 +1269,61 @@ void __60__WCSession_observeValueForKeyPath_ofObject_change_context___block_invo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_updateClientProgressForFileTransfer:(id)a3
+- (void)onqueue_updateClientProgressForFileTransfer:(id)transfer
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WCSession *)self internalOutstandingFileTransfers];
-  v6 = [v4 transferIdentifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  transferCopy = transfer;
+  internalOutstandingFileTransfers = [(WCSession *)self internalOutstandingFileTransfers];
+  transferIdentifier = [transferCopy transferIdentifier];
+  v7 = [internalOutstandingFileTransfers objectForKeyedSubscript:transferIdentifier];
 
   if (v7)
   {
-    v8 = [v4 internalProgress];
-    v9 = [v8 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA608]];
+    internalProgress = [transferCopy internalProgress];
+    userInfo = [internalProgress userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA608]];
 
-    v11 = [v4 internalProgress];
-    v12 = [v11 byteCompletedCount];
+    internalProgress2 = [transferCopy internalProgress];
+    byteCompletedCount = [internalProgress2 byteCompletedCount];
 
     v13 = wc_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v4 internalProgress];
-      v15 = [v14 userInfo];
-      v16 = [v4 internalProgress];
+      internalProgress3 = [transferCopy internalProgress];
+      userInfo2 = [internalProgress3 userInfo];
+      internalProgress4 = [transferCopy internalProgress];
       v25 = 138413058;
       v26 = v10;
       v27 = 2112;
-      v28 = v12;
+      v28 = byteCompletedCount;
       v29 = 2112;
-      v30 = v15;
+      v30 = userInfo2;
       v31 = 2112;
-      v32 = v16;
+      v32 = internalProgress4;
       _os_log_impl(&dword_23B2FA000, v13, OS_LOG_TYPE_DEFAULT, "Got totalBytes: %@, completedBytes: %@, userInfo: %@, progress: %@", &v25, 0x2Au);
     }
 
-    v17 = [v4 progress];
-    [v12 doubleValue];
+    progress = [transferCopy progress];
+    [byteCompletedCount doubleValue];
     v19 = v18;
     [v10 doubleValue];
-    v21 = (v19 / v20 * [v17 totalUnitCount]);
-    if ([v17 totalUnitCount] < v21)
+    totalUnitCount = (v19 / v20 * [progress totalUnitCount]);
+    if ([progress totalUnitCount] < totalUnitCount)
     {
-      v21 = [v17 totalUnitCount];
+      totalUnitCount = [progress totalUnitCount];
     }
 
-    [v17 setCompletedUnitCount:v21];
+    [progress setCompletedUnitCount:totalUnitCount];
     v22 = wc_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v4 transferIdentifier];
+      transferIdentifier2 = [transferCopy transferIdentifier];
       v25 = 136446722;
       v26 = "[WCSession onqueue_updateClientProgressForFileTransfer:]";
       v27 = 2114;
-      v28 = v23;
+      v28 = transferIdentifier2;
       v29 = 2114;
-      v30 = v17;
+      v30 = progress;
       _os_log_impl(&dword_23B2FA000, v22, OS_LOG_TYPE_DEFAULT, "%{public}s Updated progress for identifier: %{public}@, to %{public}@", &v25, 0x20u);
     }
 
@@ -1333,11 +1333,11 @@ void __60__WCSession_observeValueForKeyPath_ofObject_change_context___block_invo
   v10 = wc_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v4 transferIdentifier];
+    byteCompletedCount = [transferCopy transferIdentifier];
     v25 = 136446466;
     v26 = "[WCSession onqueue_updateClientProgressForFileTransfer:]";
     v27 = 2114;
-    v28 = v12;
+    v28 = byteCompletedCount;
     _os_log_impl(&dword_23B2FA000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s Received progress for identifier: %{public}@, without outstanding tranfer", &v25, 0x16u);
 LABEL_11:
   }
@@ -1345,24 +1345,24 @@ LABEL_11:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_handleProgressFinishedForFileTransfer:(id)a3
+- (void)onqueue_handleProgressFinishedForFileTransfer:(id)transfer
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 transferIdentifier];
+  transferCopy = transfer;
+  transferIdentifier = [transferCopy transferIdentifier];
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136446466;
     v10 = "[WCSession onqueue_handleProgressFinishedForFileTransfer:]";
     v11 = 2114;
-    v12 = v4;
+    v12 = transferIdentifier;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s Progress finished for identifier %{public}@", &v9, 0x16u);
   }
 
-  v6 = [v3 progress];
+  progress = [transferCopy progress];
 
-  if (v6 && ([v6 isFinished] & 1) == 0 && (objc_msgSend(v6, "isCancelled") & 1) == 0)
+  if (progress && ([progress isFinished] & 1) == 0 && (objc_msgSend(progress, "isCancelled") & 1) == 0)
   {
     v7 = wc_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1370,11 +1370,11 @@ LABEL_11:
       v9 = 136446466;
       v10 = "[WCSession onqueue_handleProgressFinishedForFileTransfer:]";
       v11 = 2114;
-      v12 = v4;
+      v12 = transferIdentifier;
       _os_log_impl(&dword_23B2FA000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s Forcing progress to finished for %{public}@", &v9, 0x16u);
     }
 
-    [v6 setCompletedUnitCount:{objc_msgSend(v6, "totalUnitCount")}];
+    [progress setCompletedUnitCount:{objc_msgSend(progress, "totalUnitCount")}];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -2016,23 +2016,23 @@ void __35__WCSession_transferFile_metadata___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)cancelFileTransfer:(id)a3
+- (void)cancelFileTransfer:(id)transfer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transferCopy = transfer;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v12 = "[WCSession cancelFileTransfer:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = transferCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  v6 = [(WCSession *)self errorIfPreconditionsNotSatisfied];
+  errorIfPreconditionsNotSatisfied = [(WCSession *)self errorIfPreconditionsNotSatisfied];
 
-  if (!v6)
+  if (!errorIfPreconditionsNotSatisfied)
   {
     workOperationQueue = self->_workOperationQueue;
     v9[0] = MEMORY[0x277D85DD0];
@@ -2040,7 +2040,7 @@ void __35__WCSession_transferFile_metadata___block_invoke_2(uint64_t a1)
     v9[2] = __32__WCSession_cancelFileTransfer___block_invoke;
     v9[3] = &unk_278B7C1C8;
     v9[4] = self;
-    v10 = v4;
+    v10 = transferCopy;
     [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v9];
   }
 
@@ -2062,26 +2062,26 @@ void __32__WCSession_cancelFileTransfer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)onqueue_cancelFileTransfer:(id)a3
+- (void)onqueue_cancelFileTransfer:(id)transfer
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setTransferring:0];
-  [(WCSession *)self onqueue_removeOutstandingFileTransfer:v4];
+  transferCopy = transfer;
+  [transferCopy setTransferring:0];
+  [(WCSession *)self onqueue_removeOutstandingFileTransfer:transferCopy];
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 transferIdentifier];
+    transferIdentifier = [transferCopy transferIdentifier];
     v10 = 136446466;
     v11 = "[WCSession onqueue_cancelFileTransfer:]";
     v12 = 2114;
-    v13 = v6;
+    v13 = transferIdentifier;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s transferIdentifier: %{public}@", &v10, 0x16u);
   }
 
   v7 = +[WCXPCManager sharedManager];
-  v8 = [v4 transferIdentifier];
-  [v7 cancelSendWithIdentifier:v8];
+  transferIdentifier2 = [transferCopy transferIdentifier];
+  [v7 cancelSendWithIdentifier:transferIdentifier2];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -2237,23 +2237,23 @@ uint64_t __49__WCSession_transferCurrentComplicationUserInfo___block_invoke_90(u
   return [v4 onqueue_transferUserInfo:v3 withUserInfo:v2];
 }
 
-- (void)cancelUserInfo:(id)a3
+- (void)cancelUserInfo:(id)info
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v12 = "[WCSession cancelUserInfo:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = infoCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  v6 = [(WCSession *)self errorIfPreconditionsNotSatisfied];
+  errorIfPreconditionsNotSatisfied = [(WCSession *)self errorIfPreconditionsNotSatisfied];
 
-  if (!v6)
+  if (!errorIfPreconditionsNotSatisfied)
   {
     workOperationQueue = self->_workOperationQueue;
     v9[0] = MEMORY[0x277D85DD0];
@@ -2261,7 +2261,7 @@ uint64_t __49__WCSession_transferCurrentComplicationUserInfo___block_invoke_90(u
     v9[2] = __28__WCSession_cancelUserInfo___block_invoke;
     v9[3] = &unk_278B7C1C8;
     v9[4] = self;
-    v10 = v4;
+    v10 = infoCopy;
     [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v9];
   }
 
@@ -2283,52 +2283,52 @@ void __28__WCSession_cancelUserInfo___block_invoke(uint64_t a1)
   }
 }
 
-- (void)onqueue_cancelUserInfo:(id)a3
+- (void)onqueue_cancelUserInfo:(id)info
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(WCSession *)self onqueue_removeOutstandingUserInfoTransfer:v4];
-  if ([v4 isCurrentComplicationInfo])
+  infoCopy = info;
+  [(WCSession *)self onqueue_removeOutstandingUserInfoTransfer:infoCopy];
+  if ([infoCopy isCurrentComplicationInfo])
   {
     v5 = wc_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 complicationTransferIdentifier];
+      complicationTransferIdentifier = [infoCopy complicationTransferIdentifier];
       v14 = 136446466;
       v15 = "[WCSession onqueue_cancelUserInfo:]";
       v16 = 2114;
-      v17 = v6;
+      v17 = complicationTransferIdentifier;
       _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s complicationTransferIdentifier: %{public}@", &v14, 0x16u);
     }
 
     v7 = +[WCXPCManager sharedManager];
-    v8 = [v4 complicationTransferIdentifier];
-    [v7 cancelSendWithIdentifier:v8];
+    complicationTransferIdentifier2 = [infoCopy complicationTransferIdentifier];
+    [v7 cancelSendWithIdentifier:complicationTransferIdentifier2];
   }
 
   v9 = wc_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 transferIdentifier];
+    transferIdentifier = [infoCopy transferIdentifier];
     v14 = 136446466;
     v15 = "[WCSession onqueue_cancelUserInfo:]";
     v16 = 2114;
-    v17 = v10;
+    v17 = transferIdentifier;
     _os_log_impl(&dword_23B2FA000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s transferIdentifier: %{public}@", &v14, 0x16u);
   }
 
   v11 = +[WCXPCManager sharedManager];
-  v12 = [v4 transferIdentifier];
-  [v11 cancelSendWithIdentifier:v12];
+  transferIdentifier2 = [infoCopy transferIdentifier];
+  [v11 cancelSendWithIdentifier:transferIdentifier2];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_transferUserInfo:(id)a3 withUserInfo:(id)a4
+- (void)onqueue_transferUserInfo:(id)info withUserInfo:(id)userInfo
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  userInfoCopy = userInfo;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2337,49 +2337,49 @@ void __28__WCSession_cancelUserInfo___block_invoke(uint64_t a1)
     _os_log_impl(&dword_23B2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s ", buf, 0xCu);
   }
 
-  v9 = [(WCSession *)self errorIfPreconditionsNotSatisfied];
-  if (v9 || (v21 = 0, v10 = [v6 updateUserInfo:v7 error:&v21], v9 = v21, !v10))
+  errorIfPreconditionsNotSatisfied = [(WCSession *)self errorIfPreconditionsNotSatisfied];
+  if (errorIfPreconditionsNotSatisfied || (v21 = 0, v10 = [infoCopy updateUserInfo:userInfoCopy error:&v21], errorIfPreconditionsNotSatisfied = v21, !v10))
   {
-    [(WCSession *)self onqueue_notifyOfUserInfoError:v9 withUserInfoTransfer:v6];
+    [(WCSession *)self onqueue_notifyOfUserInfoError:errorIfPreconditionsNotSatisfied withUserInfoTransfer:infoCopy];
   }
 
   else
   {
-    v11 = [(WCSession *)self onqueue_addOutstandingUserInfoTransfer:v6];
+    v11 = [(WCSession *)self onqueue_addOutstandingUserInfoTransfer:infoCopy];
     if (v11)
     {
       v12 = [(WCSession *)self fileSizeFromURL:v11];
       v13 = wc_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v11 path];
-        v15 = [v12 integerValue];
+        path = [v11 path];
+        integerValue = [v12 integerValue];
         *buf = 136446978;
         v23 = "[WCSession onqueue_transferUserInfo:withUserInfo:]";
         v24 = 2114;
-        v25 = v6;
+        v25 = infoCopy;
         v26 = 2114;
-        v27 = v14;
+        v27 = path;
         v28 = 2048;
-        v29 = v15;
+        v29 = integerValue;
         _os_log_impl(&dword_23B2FA000, v13, OS_LOG_TYPE_DEFAULT, "%{public}s transferUserInfo: %{public}@, withURL: %{public}@ fileSize: %ld", buf, 0x2Au);
       }
 
       v16 = +[WCXPCManager sharedManager];
-      v17 = [(WCSession *)self pairingID];
+      pairingID = [(WCSession *)self pairingID];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __51__WCSession_onqueue_transferUserInfo_withUserInfo___block_invoke;
       v19[3] = &unk_278B7BF50;
       v19[4] = self;
-      v20 = v6;
-      [v16 transferUserInfo:v20 withURL:v11 clientPairingID:v17 errorHandler:v19];
+      v20 = infoCopy;
+      [v16 transferUserInfo:v20 withURL:v11 clientPairingID:pairingID errorHandler:v19];
     }
 
     else
     {
       v12 = [MEMORY[0x277CCA9B8] wcErrorWithCode:7001];
-      [(WCSession *)self onqueue_notifyOfUserInfoError:v12 withUserInfoTransfer:v6];
+      [(WCSession *)self onqueue_notifyOfUserInfoError:v12 withUserInfoTransfer:infoCopy];
     }
   }
 
@@ -2419,11 +2419,11 @@ void __51__WCSession_onqueue_transferUserInfo_withUserInfo___block_invoke_2(uint
   }
 }
 
-- (void)onqueue_sendResponseDictionary:(id)a3 identifier:(id)a4
+- (void)onqueue_sendResponseDictionary:(id)dictionary identifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2433,17 +2433,17 @@ void __51__WCSession_onqueue_transferUserInfo_withUserInfo___block_invoke_2(uint
   }
 
   v12 = 0;
-  v9 = WCSerializePayloadDictionary(v7, &v12);
+  v9 = WCSerializePayloadDictionary(dictionaryCopy, &v12);
 
   if (v9)
   {
-    [(WCSession *)self onqueue_sendResponseData:v9 identifier:v6 dictionaryMessage:1];
+    [(WCSession *)self onqueue_sendResponseData:v9 identifier:identifierCopy dictionaryMessage:1];
   }
 
   else
   {
     v10 = [MEMORY[0x277CCA9B8] wcErrorWithCode:7010];
-    [(WCSession *)self _onqueue_sendResponseError:v10 identifier:v6 dictionaryMessage:1];
+    [(WCSession *)self _onqueue_sendResponseError:v10 identifier:identifierCopy dictionaryMessage:1];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -2503,11 +2503,11 @@ void __69__WCSession__onqueue_sendResponseError_identifier_dictionaryMessage___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)storeAppContext:(id)a3 withAppContextData:(id)a4
+- (void)storeAppContext:(id)context withAppContextData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  dataCopy = data;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2522,10 +2522,10 @@ void __69__WCSession__onqueue_sendResponseError_identifier_dictionaryMessage___b
   v13[2] = __48__WCSession_storeAppContext_withAppContextData___block_invoke;
   v13[3] = &unk_278B7C068;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = contextCopy;
+  v15 = dataCopy;
+  v10 = dataCopy;
+  v11 = contextCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -2541,11 +2541,11 @@ void __48__WCSession_storeAppContext_withAppContextData___block_invoke(uint64_t 
   }
 }
 
-- (void)storeReceivedAppContext:(id)a3 withAppContextData:(id)a4
+- (void)storeReceivedAppContext:(id)context withAppContextData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  dataCopy = data;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2560,10 +2560,10 @@ void __48__WCSession_storeAppContext_withAppContextData___block_invoke(uint64_t 
   v13[2] = __56__WCSession_storeReceivedAppContext_withAppContextData___block_invoke;
   v13[3] = &unk_278B7C068;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = contextCopy;
+  v15 = dataCopy;
+  v10 = dataCopy;
+  v11 = contextCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -2661,8 +2661,8 @@ void __56__WCSession_storeReceivedAppContext_withAppContextData___block_invoke(u
     _os_log_impl(&dword_23B2FA000, v3, OS_LOG_TYPE_DEFAULT, "%{public}s ", &v6, 0xCu);
   }
 
-  v4 = [(WCSession *)self queueManager];
-  [v4 allowMessageSending];
+  queueManager = [(WCSession *)self queueManager];
+  [queueManager allowMessageSending];
 
   [(WCSession *)self setConnectionWasInterrupted:1];
   v5 = *MEMORY[0x277D85DE8];
@@ -2700,17 +2700,17 @@ void __44__WCSession_handleActiveDeviceSwitchStarted__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSessionStateChanged:(id)a3
+- (void)handleSessionStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   workOperationQueue = self->_workOperationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__WCSession_handleSessionStateChanged___block_invoke;
   v7[3] = &unk_278B7C1C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v7];
 }
 
@@ -2765,17 +2765,17 @@ void __39__WCSession_handleSessionStateChanged___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)xpcConnectionRestoredWithState:(id)a3
+- (void)xpcConnectionRestoredWithState:(id)state
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v16 = "[WCSession xpcConnectionRestoredWithState:]";
     v17 = 2114;
-    v18 = v4;
+    v18 = stateCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
@@ -2786,9 +2786,9 @@ void __39__WCSession_handleSessionStateChanged___block_invoke(uint64_t a1)
   v11[2] = __44__WCSession_xpcConnectionRestoredWithState___block_invoke;
   v11[3] = &unk_278B7BFC8;
   objc_copyWeak(&v14, buf);
-  v7 = v4;
+  v7 = stateCopy;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   [v6 addExecutionBlock:v11];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -2796,8 +2796,8 @@ void __39__WCSession_handleSessionStateChanged___block_invoke(uint64_t a1)
   v10[3] = &unk_278B7BF78;
   v10[4] = self;
   [v6 setCompletionBlock:v10];
-  v8 = [(WCSession *)self delegateOperationQueue];
-  [v8 addOperation:v6];
+  delegateOperationQueue = [(WCSession *)self delegateOperationQueue];
+  [delegateOperationQueue addOperation:v6];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
@@ -2878,21 +2878,21 @@ void __44__WCSession_xpcConnectionRestoredWithState___block_invoke_2(uint64_t a1
 
 - (void)handleMessageSendingAllowed
 {
-  v2 = [(WCSession *)self queueManager];
-  [v2 allowMessageSending];
+  queueManager = [(WCSession *)self queueManager];
+  [queueManager allowMessageSending];
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   workOperationQueue = self->_workOperationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__WCSession_handleRequest___block_invoke;
   v7[3] = &unk_278B7C1C8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v7];
 }
 
@@ -2931,22 +2931,22 @@ void __27__WCSession_handleRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (void)onqueue_handleDictionaryMessageRequest:(id)a3 withPairingID:(id)a4
+- (void)onqueue_handleDictionaryMessageRequest:(id)request withPairingID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  dCopy = d;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v27 = "[WCSession onqueue_handleDictionaryMessageRequest:withPairingID:]";
     v28 = 2114;
-    v29 = v6;
+    v29 = requestCopy;
     _os_log_impl(&dword_23B2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  if (!v7)
+  if (!dCopy)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: %s cannot be nil.", "-[WCSession onqueue_handleDictionaryMessageRequest:withPairingID:]", "pairingID"];
     v10 = wc_log();
@@ -2958,35 +2958,35 @@ void __27__WCSession_handleRequest___block_invoke(uint64_t a1)
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@", v9}];
   }
 
-  v11 = [v6 identifier];
-  v12 = [v6 data];
+  identifier = [requestCopy identifier];
+  data = [requestCopy data];
   v25 = 0;
-  v13 = WCDeserializePayloadData(v12, &v25);
+  v13 = WCDeserializePayloadData(data, &v25);
   v14 = v25;
 
   if (v14)
   {
-    v15 = [v6 identifier];
-    [(WCSession *)self _onqueue_sendResponseError:v14 identifier:v15 dictionaryMessage:1];
+    identifier2 = [requestCopy identifier];
+    [(WCSession *)self _onqueue_sendResponseError:v14 identifier:identifier2 dictionaryMessage:1];
   }
 
   else
   {
-    v15 = objc_opt_new();
-    objc_initWeak(buf, v15);
+    identifier2 = objc_opt_new();
+    objc_initWeak(buf, identifier2);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __66__WCSession_onqueue_handleDictionaryMessageRequest_withPairingID___block_invoke;
     v18[3] = &unk_278B7C2B8;
     objc_copyWeak(&v24, buf);
-    v19 = v7;
-    v20 = self;
-    v21 = v6;
-    v22 = v11;
+    v19 = dCopy;
+    selfCopy = self;
+    v21 = requestCopy;
+    v22 = identifier;
     v23 = v13;
-    [v15 addExecutionBlock:v18];
-    v16 = [(WCSession *)self delegateOperationQueue];
-    [v16 addOperation:v15];
+    [identifier2 addExecutionBlock:v18];
+    delegateOperationQueue = [(WCSession *)self delegateOperationQueue];
+    [delegateOperationQueue addOperation:identifier2];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -3149,22 +3149,22 @@ void __66__WCSession_onqueue_handleDictionaryMessageRequest_withPairingID___bloc
   }
 }
 
-- (void)onqueue_handleDataMessageRequest:(id)a3 withPairingID:(id)a4
+- (void)onqueue_handleDataMessageRequest:(id)request withPairingID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  dCopy = d;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v25 = "[WCSession onqueue_handleDataMessageRequest:withPairingID:]";
     v26 = 2114;
-    v27 = v6;
+    v27 = requestCopy;
     _os_log_impl(&dword_23B2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  if (!v7)
+  if (!dCopy)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: %s cannot be nil.", "-[WCSession onqueue_handleDataMessageRequest:withPairingID:]", "pairingID"];
     v10 = wc_log();
@@ -3176,7 +3176,7 @@ void __66__WCSession_onqueue_handleDictionaryMessageRequest_withPairingID___bloc
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@", v9}];
   }
 
-  v11 = [v6 identifier];
+  identifier = [requestCopy identifier];
   v12 = objc_opt_new();
   objc_initWeak(buf, v12);
   v18[0] = MEMORY[0x277D85DD0];
@@ -3184,16 +3184,16 @@ void __66__WCSession_onqueue_handleDictionaryMessageRequest_withPairingID___bloc
   v18[2] = __60__WCSession_onqueue_handleDataMessageRequest_withPairingID___block_invoke;
   v18[3] = &unk_278B7C268;
   objc_copyWeak(&v23, buf);
-  v13 = v7;
+  v13 = dCopy;
   v19 = v13;
-  v20 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = requestCopy;
   v21 = v14;
-  v15 = v11;
+  v15 = identifier;
   v22 = v15;
   [v12 addExecutionBlock:v18];
-  v16 = [(WCSession *)self delegateOperationQueue];
-  [v16 addOperation:v12];
+  delegateOperationQueue = [(WCSession *)self delegateOperationQueue];
+  [delegateOperationQueue addOperation:v12];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -3370,17 +3370,17 @@ void __60__WCSession_onqueue_handleDataMessageRequest_withPairingID___block_invo
   [v1 onqueue_sendResponseData:v2 identifier:v3 dictionaryMessage:0];
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v13 = "[WCSession handleResponse:]";
     v14 = 2114;
-    v15 = v4;
+    v15 = responseCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
@@ -3389,9 +3389,9 @@ void __60__WCSession_onqueue_handleDataMessageRequest_withPairingID___block_invo
   v9[1] = 3221225472;
   v9[2] = __28__WCSession_handleResponse___block_invoke;
   v9[3] = &unk_278B7C1C8;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
+  v10 = responseCopy;
+  selfCopy = self;
+  v7 = responseCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -3439,25 +3439,25 @@ void __28__WCSession_handleResponse___block_invoke(uint64_t a1)
   }
 }
 
-- (void)onqueue_handleResponseDictionary:(id)a3 record:(id)a4 withPairingID:(id)a5
+- (void)onqueue_handleResponseDictionary:(id)dictionary record:(id)record withPairingID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 responseHandler];
-  if (v11)
+  dictionaryCopy = dictionary;
+  recordCopy = record;
+  dCopy = d;
+  responseHandler = [recordCopy responseHandler];
+  if (responseHandler)
   {
-    v12 = v11;
-    v13 = [v8 data];
+    v12 = responseHandler;
+    data = [dictionaryCopy data];
 
-    if (v13)
+    if (data)
     {
-      v14 = [v9 timeoutTimer];
-      dispatch_source_cancel(v14);
+      timeoutTimer = [recordCopy timeoutTimer];
+      dispatch_source_cancel(timeoutTimer);
 
-      v15 = [v8 data];
+      data2 = [dictionaryCopy data];
       v33 = 0;
-      v16 = WCDeserializePayloadData(v15, &v33);
+      v16 = WCDeserializePayloadData(data2, &v33);
       v17 = v33;
 
       if (v16)
@@ -3469,13 +3469,13 @@ void __28__WCSession_handleResponse___block_invoke(uint64_t a1)
         v26[2] = __67__WCSession_onqueue_handleResponseDictionary_record_withPairingID___block_invoke;
         v26[3] = &unk_278B7C268;
         objc_copyWeak(&v31, &location);
-        v27 = v10;
-        v28 = self;
-        v29 = v9;
+        v27 = dCopy;
+        selfCopy = self;
+        v29 = recordCopy;
         v30 = v16;
         [v18 addExecutionBlock:v26];
-        v19 = [(WCSession *)self delegateOperationQueue];
-        [v19 addOperation:v18];
+        delegateOperationQueue = [(WCSession *)self delegateOperationQueue];
+        [delegateOperationQueue addOperation:v18];
 
         objc_destroyWeak(&v31);
         objc_destroyWeak(&location);
@@ -3484,21 +3484,21 @@ void __28__WCSession_handleResponse___block_invoke(uint64_t a1)
       else
       {
         v18 = [MEMORY[0x277CCA9B8] wcErrorWithCode:7010];
-        v20 = [v9 identifier];
-        v21 = [v9 errorHandler];
-        [(WCSession *)self _onqueue_notifyOfMessageError:v18 messageID:v20 withErrorHandler:v21];
+        identifier = [recordCopy identifier];
+        errorHandler = [recordCopy errorHandler];
+        [(WCSession *)self _onqueue_notifyOfMessageError:v18 messageID:identifier withErrorHandler:errorHandler];
       }
     }
   }
 
-  v22 = [v8 error];
+  error = [dictionaryCopy error];
 
-  if (v22)
+  if (error)
   {
-    v23 = [v8 error];
-    v24 = [v8 identifier];
-    v25 = [v9 errorHandler];
-    [(WCSession *)self _onqueue_notifyOfMessageError:v23 messageID:v24 withErrorHandler:v25];
+    error2 = [dictionaryCopy error];
+    identifier2 = [dictionaryCopy identifier];
+    errorHandler2 = [recordCopy errorHandler];
+    [(WCSession *)self _onqueue_notifyOfMessageError:error2 messageID:identifier2 withErrorHandler:errorHandler2];
   }
 }
 
@@ -3527,21 +3527,21 @@ void __67__WCSession_onqueue_handleResponseDictionary_record_withPairingID___blo
   }
 }
 
-- (void)onqueue_handleResponseData:(id)a3 record:(id)a4 withPairingID:(id)a5
+- (void)onqueue_handleResponseData:(id)data record:(id)record withPairingID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 responseHandler];
-  if (v11)
+  dataCopy = data;
+  recordCopy = record;
+  dCopy = d;
+  responseHandler = [recordCopy responseHandler];
+  if (responseHandler)
   {
-    v12 = v11;
-    v13 = [v8 data];
+    v12 = responseHandler;
+    data = [dataCopy data];
 
-    if (v13)
+    if (data)
     {
-      v14 = [v9 timeoutTimer];
-      dispatch_source_cancel(v14);
+      timeoutTimer = [recordCopy timeoutTimer];
+      dispatch_source_cancel(timeoutTimer);
 
       v15 = objc_opt_new();
       objc_initWeak(&location, v15);
@@ -3550,10 +3550,10 @@ void __67__WCSession_onqueue_handleResponseDictionary_record_withPairingID___blo
       v23 = __61__WCSession_onqueue_handleResponseData_record_withPairingID___block_invoke;
       v24 = &unk_278B7C268;
       objc_copyWeak(&v29, &location);
-      v25 = v10;
-      v26 = self;
-      v27 = v9;
-      v28 = v8;
+      v25 = dCopy;
+      selfCopy = self;
+      v27 = recordCopy;
+      v28 = dataCopy;
       [v15 addExecutionBlock:&v21];
       v16 = [(WCSession *)self delegateOperationQueue:v21];
       [v16 addOperation:v15];
@@ -3563,14 +3563,14 @@ void __67__WCSession_onqueue_handleResponseDictionary_record_withPairingID___blo
     }
   }
 
-  v17 = [v8 error];
+  error = [dataCopy error];
 
-  if (v17)
+  if (error)
   {
-    v18 = [v8 error];
-    v19 = [v8 identifier];
-    v20 = [v9 errorHandler];
-    [(WCSession *)self _onqueue_notifyOfMessageError:v18 messageID:v19 withErrorHandler:v20];
+    error2 = [dataCopy error];
+    identifier = [dataCopy identifier];
+    errorHandler = [recordCopy errorHandler];
+    [(WCSession *)self _onqueue_notifyOfMessageError:error2 messageID:identifier withErrorHandler:errorHandler];
   }
 }
 
@@ -3600,29 +3600,29 @@ void __61__WCSession_onqueue_handleResponseData_record_withPairingID___block_inv
   }
 }
 
-- (void)handleSentMessageWithIdentifier:(id)a3 error:(id)a4
+- (void)handleSentMessageWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WCSession *)self queueManager];
-  [v8 handleSentMessageWithIdentifier:v7 error:v6];
+  errorCopy = error;
+  identifierCopy = identifier;
+  queueManager = [(WCSession *)self queueManager];
+  [queueManager handleSentMessageWithIdentifier:identifierCopy error:errorCopy];
 }
 
-- (void)handleApplicationContextWithPairingID:(id)a3
+- (void)handleApplicationContextWithPairingID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v15 = "[WCSession handleApplicationContextWithPairingID:]";
     v16 = 2114;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: %s cannot be nil.", "-[WCSession handleApplicationContextWithPairingID:]", "pairingID"];
     v7 = wc_log();
@@ -3639,9 +3639,9 @@ void __61__WCSession_onqueue_handleResponseData_record_withPairingID___block_inv
   v11[1] = 3221225472;
   v11[2] = __51__WCSession_handleApplicationContextWithPairingID___block_invoke;
   v11[3] = &unk_278B7C1C8;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
+  v12 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -3764,21 +3764,21 @@ void __51__WCSession_handleApplicationContextWithPairingID___block_invoke_2(uint
   }
 }
 
-- (void)handleIncomingFileWithPairingID:(id)a3
+- (void)handleIncomingFileWithPairingID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v15 = "[WCSession handleIncomingFileWithPairingID:]";
     v16 = 2114;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: %s cannot be nil.", "-[WCSession handleIncomingFileWithPairingID:]", "pairingID"];
     v7 = wc_log();
@@ -3795,9 +3795,9 @@ void __51__WCSession_handleApplicationContextWithPairingID___block_invoke_2(uint
   v11[1] = 3221225472;
   v11[2] = __45__WCSession_handleIncomingFileWithPairingID___block_invoke;
   v11[3] = &unk_278B7C1C8;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
+  v12 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -3978,21 +3978,21 @@ LABEL_22:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFileResultWithPairingID:(id)a3
+- (void)handleFileResultWithPairingID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v15 = "[WCSession handleFileResultWithPairingID:]";
     v16 = 2114;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: %s cannot be nil.", "-[WCSession handleFileResultWithPairingID:]", "pairingID"];
     v7 = wc_log();
@@ -4009,9 +4009,9 @@ LABEL_22:
   v11[1] = 3221225472;
   v11[2] = __43__WCSession_handleFileResultWithPairingID___block_invoke;
   v11[3] = &unk_278B7C1C8;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
+  v12 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4326,21 +4326,21 @@ uint64_t __43__WCSession_handleFileResultWithPairingID___block_invoke_123(uint64
   return [v3 onqueue_removeOutstandingFileTransfer:v4];
 }
 
-- (void)handleIncomingUserInfoWithPairingID:(id)a3
+- (void)handleIncomingUserInfoWithPairingID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v15 = "[WCSession handleIncomingUserInfoWithPairingID:]";
     v16 = 2114;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: %s cannot be nil.", "-[WCSession handleIncomingUserInfoWithPairingID:]", "pairingID"];
     v7 = wc_log();
@@ -4357,9 +4357,9 @@ uint64_t __43__WCSession_handleFileResultWithPairingID___block_invoke_123(uint64
   v11[1] = 3221225472;
   v11[2] = __49__WCSession_handleIncomingUserInfoWithPairingID___block_invoke;
   v11[3] = &unk_278B7C1C8;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
+  v12 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4523,21 +4523,21 @@ void __49__WCSession_handleIncomingUserInfoWithPairingID___block_invoke_127(uint
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUserInfoResultWithPairingID:(id)a3
+- (void)handleUserInfoResultWithPairingID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v15 = "[WCSession handleUserInfoResultWithPairingID:]";
     v16 = 2114;
-    v17 = v4;
+    v17 = dCopy;
     _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  if (!v4)
+  if (!dCopy)
   {
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s: %s cannot be nil.", "-[WCSession handleUserInfoResultWithPairingID:]", "pairingID"];
     v7 = wc_log();
@@ -4554,9 +4554,9 @@ void __49__WCSession_handleIncomingUserInfoWithPairingID___block_invoke_127(uint
   v11[1] = 3221225472;
   v11[2] = __47__WCSession_handleUserInfoResultWithPairingID___block_invoke;
   v11[3] = &unk_278B7C1C8;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
+  v12 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4822,26 +4822,26 @@ void __47__WCSession_handleUserInfoResultWithPairingID___block_invoke_132(uint64
   *(v3 + 40) = v2;
 }
 
-- (void)onqueue_completeSwitchTask:(id)a3 withSessionState:(id)a4
+- (void)onqueue_completeSwitchTask:(id)task withSessionState:(id)state
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  stateCopy = state;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
     v32 = "[WCSession onqueue_completeSwitchTask:withSessionState:]";
     v33 = 2114;
-    v34 = v6;
+    v34 = taskCopy;
     _os_log_impl(&dword_23B2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
   }
 
-  if ([v6 clientReadyForSessionState])
+  if ([taskCopy clientReadyForSessionState])
   {
-    if ([v7 isStandaloneApp])
+    if ([stateCopy isStandaloneApp])
     {
-      [v6 setTaskState:888];
+      [taskCopy setTaskState:888];
       [(WCSession *)self setActivationState:1];
       v9 = wc_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -4856,8 +4856,8 @@ void __47__WCSession_handleUserInfoResultWithPairingID___block_invoke_132(uint64
       v30[3] = &unk_278B7BF78;
       v30[4] = self;
       [v10 addExecutionBlock:v30];
-      v11 = [(WCSession *)self delegateOperationQueue];
-      [v11 addOperation:v10];
+      delegateOperationQueue = [(WCSession *)self delegateOperationQueue];
+      [delegateOperationQueue addOperation:v10];
 
       v12 = +[WCXPCManager sharedManager];
       [v12 invalidateConnection];
@@ -4865,11 +4865,11 @@ void __47__WCSession_handleUserInfoResultWithPairingID___block_invoke_132(uint64
 
     else
     {
-      [v6 setTaskState:4];
-      [(WCSession *)self onDelegateQueueIfTriggeringKVO_updateSessionState:v7 triggerKVO:0];
+      [taskCopy setTaskState:4];
+      [(WCSession *)self onDelegateQueueIfTriggeringKVO_updateSessionState:stateCopy triggerKVO:0];
       [(WCSession *)self setActivationState:2];
-      v13 = [(WCSession *)self delegateOperationQueue];
-      [v13 setSuspended:0];
+      delegateOperationQueue2 = [(WCSession *)self delegateOperationQueue];
+      [delegateOperationQueue2 setSuspended:0];
 
       [(WCSession *)self onqueue_cancelTransfersIfAppropriate];
       v10 = objc_opt_new();
@@ -4887,8 +4887,8 @@ void __47__WCSession_handleUserInfoResultWithPairingID___block_invoke_132(uint64
       v27[3] = &unk_278B7BF78;
       v27[4] = self;
       [v10 setCompletionBlock:v27];
-      v14 = [(WCSession *)self delegateOperationQueue];
-      [v14 addOperation:v10];
+      delegateOperationQueue3 = [(WCSession *)self delegateOperationQueue];
+      [delegateOperationQueue3 addOperation:v10];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(buf);
@@ -4897,8 +4897,8 @@ void __47__WCSession_handleUserInfoResultWithPairingID___block_invoke_132(uint64
     if (![(WCSession *)self hasCompletedInitialActivation])
     {
       [(WCSession *)self setHasCompletedInitialActivation:1];
-      v15 = [v7 pairingID];
-      if (v15)
+      pairingID = [stateCopy pairingID];
+      if (pairingID)
       {
 
 LABEL_13:
@@ -4909,7 +4909,7 @@ LABEL_13:
         v23 = __57__WCSession_onqueue_completeSwitchTask_withSessionState___block_invoke_4;
         v24 = &unk_278B7BFF0;
         objc_copyWeak(&v26, buf);
-        v25 = v7;
+        v25 = stateCopy;
         [v18 addExecutionBlock:&v21];
         v19 = [(WCSession *)self backgroundWorkOperationQueue:v21];
         [v19 addOperation:v18];
@@ -4920,8 +4920,8 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v16 = [v7 pairedDevicesPairingIDs];
-      v17 = v16 == 0;
+      pairedDevicesPairingIDs = [stateCopy pairedDevicesPairingIDs];
+      v17 = pairedDevicesPairingIDs == 0;
 
       if (!v17)
       {
@@ -5044,9 +5044,9 @@ void __57__WCSession_onqueue_completeSwitchTask_withSessionState___block_invoke_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_handleUpdateSessionState:(id)a3
+- (void)onqueue_handleUpdateSessionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_opt_new();
   objc_initWeak(&location, v5);
   v8 = MEMORY[0x277D85DD0];
@@ -5054,9 +5054,9 @@ void __57__WCSession_onqueue_completeSwitchTask_withSessionState___block_invoke_
   v10 = __46__WCSession_onqueue_handleUpdateSessionState___block_invoke;
   v11 = &unk_278B7BFC8;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = stateCopy;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   [v5 addExecutionBlock:&v8];
   v7 = [(WCSession *)self delegateOperationQueue:v8];
   [v7 addOperation:v5];
@@ -5222,21 +5222,21 @@ uint64_t __46__WCSession_onqueue_handleUpdateSessionState___block_invoke_141(uin
   return [v2 onqueue_cancelTransfersIfAppropriate];
 }
 
-- (void)didSessionStateChange:(id)a3 withChangeHandler:(id)a4
+- (void)didSessionStateChange:(id)change withChangeHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isReachable];
-  v9 = v8 ^ [(WCSession *)self isReachable];
-  v10 = [v6 pairingID];
-  v11 = [(WCSession *)self didPairingIDChange:v10];
+  changeCopy = change;
+  handlerCopy = handler;
+  isReachable = [changeCopy isReachable];
+  v9 = isReachable ^ [(WCSession *)self isReachable];
+  pairingID = [changeCopy pairingID];
+  v11 = [(WCSession *)self didPairingIDChange:pairingID];
 
-  LODWORD(v10) = [v6 isPaired];
-  if (v10 == -[WCSession isPaired](self, "isPaired") && (v12 = [v6 isAppInstalled], v12 == -[WCSession isWatchAppInstalled](self, "isWatchAppInstalled")) && (v13 = objc_msgSend(v6, "isComplicationEnabled"), v13 == -[WCSession isComplicationEnabled](self, "isComplicationEnabled")))
+  LODWORD(pairingID) = [changeCopy isPaired];
+  if (pairingID == -[WCSession isPaired](self, "isPaired") && (v12 = [changeCopy isAppInstalled], v12 == -[WCSession isWatchAppInstalled](self, "isWatchAppInstalled")) && (v13 = objc_msgSend(changeCopy, "isComplicationEnabled"), v13 == -[WCSession isComplicationEnabled](self, "isComplicationEnabled")))
   {
-    v19 = [v6 watchDirectoryURL];
-    v14 = [(WCSession *)self didWatchURLChange:v19];
+    watchDirectoryURL = [changeCopy watchDirectoryURL];
+    v14 = [(WCSession *)self didWatchURLChange:watchDirectoryURL];
   }
 
   else
@@ -5244,11 +5244,11 @@ uint64_t __46__WCSession_onqueue_handleUpdateSessionState___block_invoke_141(uin
     v14 = 1;
   }
 
-  v15 = [(WCSession *)self remainingComplicationUserInfoTransfers];
-  v16 = [v6 remainingComplicationUserInfoTransfers];
-  if (v9 | v14 || v11 || v15 != v16)
+  remainingComplicationUserInfoTransfers = [(WCSession *)self remainingComplicationUserInfoTransfers];
+  remainingComplicationUserInfoTransfers2 = [changeCopy remainingComplicationUserInfoTransfers];
+  if (v9 | v14 || v11 || remainingComplicationUserInfoTransfers != remainingComplicationUserInfoTransfers2)
   {
-    v7[2](v7, v9, v14, v11, 0);
+    handlerCopy[2](handlerCopy, v9, v14, v11, 0);
   }
 
   else
@@ -5268,13 +5268,13 @@ uint64_t __46__WCSession_onqueue_handleUpdateSessionState___block_invoke_141(uin
 - (void)onqueue_startNextDeviceSwitch
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(WCSession *)self switchTasksQueue];
-  v4 = [v3 firstObject];
+  switchTasksQueue = [(WCSession *)self switchTasksQueue];
+  firstObject = [switchTasksQueue firstObject];
 
-  if ([v4 taskState]!= 4)
+  if ([firstObject taskState]!= 4)
   {
-    v10 = wc_log();
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    firstObject2 = wc_log();
+    if (!os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_15;
     }
@@ -5282,20 +5282,20 @@ uint64_t __46__WCSession_onqueue_handleUpdateSessionState___block_invoke_141(uin
     *buf = 136446466;
     v30 = "[WCSession onqueue_startNextDeviceSwitch]";
     v31 = 2114;
-    v32 = v4;
+    v32 = firstObject;
     v16 = "%{public}s current task %{public}@ isn't completed";
 LABEL_11:
-    _os_log_impl(&dword_23B2FA000, v10, OS_LOG_TYPE_DEFAULT, v16, buf, 0x16u);
+    _os_log_impl(&dword_23B2FA000, firstObject2, OS_LOG_TYPE_DEFAULT, v16, buf, 0x16u);
     goto LABEL_15;
   }
 
-  v5 = [(WCSession *)self switchTasksQueue];
-  v6 = [v5 count];
+  switchTasksQueue2 = [(WCSession *)self switchTasksQueue];
+  v6 = [switchTasksQueue2 count];
 
   if (v6 < 2)
   {
-    v10 = wc_log();
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    firstObject2 = wc_log();
+    if (!os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_15;
     }
@@ -5303,21 +5303,21 @@ LABEL_11:
     *buf = 136446466;
     v30 = "[WCSession onqueue_startNextDeviceSwitch]";
     v31 = 2114;
-    v32 = v4;
+    v32 = firstObject;
     v16 = "%{public}s no tasks queued after %{public}@";
     goto LABEL_11;
   }
 
-  v7 = [(WCSession *)self backgroundWorkOperationQueue];
-  [v7 cancelAllOperations];
+  backgroundWorkOperationQueue = [(WCSession *)self backgroundWorkOperationQueue];
+  [backgroundWorkOperationQueue cancelAllOperations];
 
-  v8 = [(WCSession *)self switchTasksQueue];
-  [v8 removeObject:v4];
+  switchTasksQueue3 = [(WCSession *)self switchTasksQueue];
+  [switchTasksQueue3 removeObject:firstObject];
 
-  v9 = [(WCSession *)self switchTasksQueue];
-  v10 = [v9 firstObject];
+  switchTasksQueue4 = [(WCSession *)self switchTasksQueue];
+  firstObject2 = [switchTasksQueue4 firstObject];
 
-  [v10 setTaskState:1];
+  [firstObject2 setTaskState:1];
   [(WCSession *)self setActivationState:1];
   v11 = wc_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -5325,7 +5325,7 @@ LABEL_11:
     *buf = 136446466;
     v30 = "[WCSession onqueue_startNextDeviceSwitch]";
     v31 = 2114;
-    v32 = v10;
+    v32 = firstObject2;
     _os_log_impl(&dword_23B2FA000, v11, OS_LOG_TYPE_DEFAULT, "%{public}s starting new switch task: %{public}@", buf, 0x16u);
   }
 
@@ -5341,8 +5341,8 @@ LABEL_11:
     v27[4] = self;
     [v12 addExecutionBlock:v27];
     [v12 setQueuePriority:8];
-    v13 = [(WCSession *)self delegateOperationQueue];
-    [v13 addOperation:v12];
+    delegateOperationQueue = [(WCSession *)self delegateOperationQueue];
+    [delegateOperationQueue addOperation:v12];
 
     v14 = objc_opt_new();
     objc_initWeak(&location, v14);
@@ -5351,9 +5351,9 @@ LABEL_11:
     v21 = __42__WCSession_onqueue_startNextDeviceSwitch__block_invoke_145;
     v22 = &unk_278B7BFC8;
     objc_copyWeak(&v25, &location);
-    v23 = self;
-    v10 = v10;
-    v24 = v10;
+    selfCopy = self;
+    firstObject2 = firstObject2;
+    v24 = firstObject2;
     [v14 addExecutionBlock:&v19];
     v15 = [(WCSession *)self delegateOperationQueue:v19];
     [v15 addOperation:v14];
@@ -5375,7 +5375,7 @@ LABEL_11:
       _os_log_impl(&dword_23B2FA000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s client delegate does not support Quick Watch Switch. Halting session until process exits.", buf, 0xCu);
     }
 
-    [v10 setTaskState:999];
+    [firstObject2 setTaskState:999];
   }
 
 LABEL_15:
@@ -5454,20 +5454,20 @@ void __42__WCSession_onqueue_startNextDeviceSwitch__block_invoke_145(id *a1)
 
 - (void)onqueue_dequeueContent
 {
-  v3 = [(WCSession *)self pairingID];
-  [(WCSession *)self handleApplicationContextWithPairingID:v3];
+  pairingID = [(WCSession *)self pairingID];
+  [(WCSession *)self handleApplicationContextWithPairingID:pairingID];
 
-  v4 = [(WCSession *)self pairingID];
-  [(WCSession *)self handleFileResultWithPairingID:v4];
+  pairingID2 = [(WCSession *)self pairingID];
+  [(WCSession *)self handleFileResultWithPairingID:pairingID2];
 
-  v5 = [(WCSession *)self pairingID];
-  [(WCSession *)self handleIncomingFileWithPairingID:v5];
+  pairingID3 = [(WCSession *)self pairingID];
+  [(WCSession *)self handleIncomingFileWithPairingID:pairingID3];
 
-  v6 = [(WCSession *)self pairingID];
-  [(WCSession *)self handleUserInfoResultWithPairingID:v6];
+  pairingID4 = [(WCSession *)self pairingID];
+  [(WCSession *)self handleUserInfoResultWithPairingID:pairingID4];
 
-  v7 = [(WCSession *)self pairingID];
-  [(WCSession *)self handleIncomingUserInfoWithPairingID:v7];
+  pairingID5 = [(WCSession *)self pairingID];
+  [(WCSession *)self handleIncomingUserInfoWithPairingID:pairingID5];
 
   workOperationQueue = self->_workOperationQueue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -5513,34 +5513,34 @@ void __35__WCSession_onqueue_dequeueContent__block_invoke_2(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_handleMessageCompletionWithError:(id)a3 withMessageID:(id)a4
+- (void)onqueue_handleMessageCompletionWithError:(id)error withMessageID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_currentMessages objectForKeyedSubscript:v7];
-  v9 = [v8 timeoutTimer];
-  if (v9)
+  errorCopy = error;
+  dCopy = d;
+  v8 = [(NSMutableDictionary *)self->_currentMessages objectForKeyedSubscript:dCopy];
+  timeoutTimer = [v8 timeoutTimer];
+  if (timeoutTimer)
   {
-    v10 = v9;
-    if (v6)
+    v10 = timeoutTimer;
+    if (errorCopy)
     {
     }
 
     else
     {
-      v11 = [v8 expectsResponse];
+      expectsResponse = [v8 expectsResponse];
 
-      if (v11)
+      if (expectsResponse)
       {
         goto LABEL_10;
       }
     }
 
-    v12 = [v8 timeoutTimer];
-    dispatch_source_cancel(v12);
+    timeoutTimer2 = [v8 timeoutTimer];
+    dispatch_source_cancel(timeoutTimer2);
   }
 
-  if (v6)
+  if (errorCopy)
   {
     v13 = wc_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -5548,8 +5548,8 @@ void __35__WCSession_onqueue_dequeueContent__block_invoke_2(uint64_t a1)
       [WCSession onqueue_handleMessageCompletionWithError:withMessageID:];
     }
 
-    v14 = [v8 errorHandler];
-    [(WCSession *)self _onqueue_notifyOfMessageError:v6 messageID:v7 withErrorHandler:v14];
+    errorHandler = [v8 errorHandler];
+    [(WCSession *)self _onqueue_notifyOfMessageError:errorCopy messageID:dCopy withErrorHandler:errorHandler];
 
     goto LABEL_11;
   }
@@ -5558,20 +5558,20 @@ LABEL_10:
   if (([v8 expectsResponse] & 1) == 0)
   {
 LABEL_11:
-    [(NSMutableDictionary *)self->_currentMessages removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_currentMessages removeObjectForKey:dCopy];
   }
 }
 
-- (void)_onqueue_notifyOfMessageError:(id)a3 messageID:(id)a4 withErrorHandler:(id)a5
+- (void)_onqueue_notifyOfMessageError:(id)error messageID:(id)d withErrorHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = wc_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    if (v10)
+    if (handlerCopy)
     {
       v17 = "YES";
     }
@@ -5585,7 +5585,7 @@ LABEL_11:
     *location = 136446978;
     *&location[4] = "[WCSession _onqueue_notifyOfMessageError:messageID:withErrorHandler:]";
     v26 = 2114;
-    v27 = v9;
+    v27 = dCopy;
     v28 = 2080;
     v29 = v17;
     v30 = 2114;
@@ -5593,9 +5593,9 @@ LABEL_11:
     _os_log_error_impl(&dword_23B2FA000, v11, OS_LOG_TYPE_ERROR, "%{public}s %{public}@ errorHandler: %s with %{public}@", location, 0x2Au);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v12 = [(WCSession *)self pairingID];
+    pairingID = [(WCSession *)self pairingID];
     v13 = objc_opt_new();
     objc_initWeak(location, v13);
     v19[0] = MEMORY[0x277D85DD0];
@@ -5603,14 +5603,14 @@ LABEL_11:
     v19[2] = __70__WCSession__onqueue_notifyOfMessageError_messageID_withErrorHandler___block_invoke;
     v19[3] = &unk_278B7C3D0;
     objc_copyWeak(&v24, location);
-    v14 = v12;
+    v14 = pairingID;
     v20 = v14;
-    v21 = self;
-    v23 = v10;
-    v22 = v8;
+    selfCopy = self;
+    v23 = handlerCopy;
+    v22 = errorCopy;
     [v13 addExecutionBlock:v19];
-    v15 = [(WCSession *)self delegateOperationQueue];
-    [v15 addOperation:v13];
+    delegateOperationQueue = [(WCSession *)self delegateOperationQueue];
+    [delegateOperationQueue addOperation:v13];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(location);
@@ -5644,10 +5644,10 @@ void __70__WCSession__onqueue_notifyOfMessageError_messageID_withErrorHandler___
   }
 }
 
-- (void)notifyOfFileError:(id)a3 withFileTransfer:(id)a4
+- (void)notifyOfFileError:(id)error withFileTransfer:(id)transfer
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  transferCopy = transfer;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -5660,18 +5660,18 @@ void __70__WCSession__onqueue_notifyOfMessageError_messageID_withErrorHandler___
   v12[2] = __48__WCSession_notifyOfFileError_withFileTransfer___block_invoke;
   v12[3] = &unk_278B7C068;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = errorCopy;
+  v14 = transferCopy;
+  v10 = transferCopy;
+  v11 = errorCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v12];
 }
 
-- (void)onqueue_notifyOfFileError:(id)a3 withFileTransfer:(id)a4
+- (void)onqueue_notifyOfFileError:(id)error withFileTransfer:(id)transfer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WCSession *)self pairingID];
+  errorCopy = error;
+  transferCopy = transfer;
+  pairingID = [(WCSession *)self pairingID];
   v9 = objc_opt_new();
   objc_initWeak(&location, v9);
   v14 = MEMORY[0x277D85DD0];
@@ -5679,12 +5679,12 @@ void __70__WCSession__onqueue_notifyOfMessageError_messageID_withErrorHandler___
   v16 = __56__WCSession_onqueue_notifyOfFileError_withFileTransfer___block_invoke;
   v17 = &unk_278B7C268;
   objc_copyWeak(&v22, &location);
-  v10 = v8;
+  v10 = pairingID;
   v18 = v10;
-  v19 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = transferCopy;
   v20 = v11;
-  v12 = v6;
+  v12 = errorCopy;
   v21 = v12;
   [v9 addExecutionBlock:&v14];
   v13 = [(WCSession *)self delegateOperationQueue:v14];
@@ -5758,10 +5758,10 @@ void __56__WCSession_onqueue_notifyOfFileError_withFileTransfer___block_invoke(u
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyOfUserInfoError:(id)a3 withUserInfoTransfer:(id)a4
+- (void)notifyOfUserInfoError:(id)error withUserInfoTransfer:(id)transfer
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  transferCopy = transfer;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -5774,18 +5774,18 @@ void __56__WCSession_onqueue_notifyOfFileError_withFileTransfer___block_invoke(u
   v12[2] = __56__WCSession_notifyOfUserInfoError_withUserInfoTransfer___block_invoke;
   v12[3] = &unk_278B7C068;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = errorCopy;
+  v14 = transferCopy;
+  v10 = transferCopy;
+  v11 = errorCopy;
   [(NSOperationQueue *)workOperationQueue addOperationWithBlock:v12];
 }
 
-- (void)onqueue_notifyOfUserInfoError:(id)a3 withUserInfoTransfer:(id)a4
+- (void)onqueue_notifyOfUserInfoError:(id)error withUserInfoTransfer:(id)transfer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WCSession *)self pairingID];
+  errorCopy = error;
+  transferCopy = transfer;
+  pairingID = [(WCSession *)self pairingID];
   v9 = objc_opt_new();
   objc_initWeak(&location, v9);
   v14 = MEMORY[0x277D85DD0];
@@ -5793,12 +5793,12 @@ void __56__WCSession_onqueue_notifyOfFileError_withFileTransfer___block_invoke(u
   v16 = __64__WCSession_onqueue_notifyOfUserInfoError_withUserInfoTransfer___block_invoke;
   v17 = &unk_278B7C268;
   objc_copyWeak(&v22, &location);
-  v10 = v8;
+  v10 = pairingID;
   v18 = v10;
-  v19 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = transferCopy;
   v20 = v11;
-  v12 = v6;
+  v12 = errorCopy;
   v21 = v12;
   [v9 addExecutionBlock:&v14];
   v13 = [(WCSession *)self delegateOperationQueue:v14];
@@ -5875,16 +5875,16 @@ void __64__WCSession_onqueue_notifyOfUserInfoError_withUserInfoTransfer___block_
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createAndStartTimerOnWorkQueueWithHandler:(id)a3
+- (id)createAndStartTimerOnWorkQueueWithHandler:(id)handler
 {
   workOperationQueue = self->_workOperationQueue;
-  v4 = a3;
-  v5 = [(NSOperationQueue *)workOperationQueue underlyingQueue];
-  v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v5);
+  handlerCopy = handler;
+  underlyingQueue = [(NSOperationQueue *)workOperationQueue underlyingQueue];
+  v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, underlyingQueue);
 
   v7 = dispatch_time(0, 300000000000);
   dispatch_source_set_timer(v6, v7, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
-  dispatch_source_set_event_handler(v6, v4);
+  dispatch_source_set_event_handler(v6, handlerCopy);
 
   dispatch_resume(v6);
 
@@ -5895,9 +5895,9 @@ void __64__WCSession_onqueue_notifyOfUserInfoError_withUserInfoTransfer___block_
 {
   if ([(WCSession *)self activationState])
   {
-    v3 = [(WCSession *)self delegate];
+    delegate = [(WCSession *)self delegate];
 
-    if (v3)
+    if (delegate)
     {
       return 1;
     }
@@ -5955,9 +5955,9 @@ void __64__WCSession_onqueue_notifyOfUserInfoError_withUserInfoTransfer___block_
     goto LABEL_16;
   }
 
-  v3 = [(WCSession *)self delegate];
+  delegate = [(WCSession *)self delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v4 = [MEMORY[0x277CCA9B8] wcErrorWithCode:7003];
     v5 = wc_log();
@@ -6007,9 +6007,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v7 = [(WCSession *)self pairingID];
+  pairingID = [(WCSession *)self pairingID];
 
-  if (!v7)
+  if (!pairingID)
   {
     v4 = [MEMORY[0x277CCA9B8] wcErrorWithCode:7001];
     v5 = wc_log();
@@ -6027,82 +6027,82 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)verifySessionFile:(id)a3
+- (BOOL)verifySessionFile:(id)file
 {
-  v3 = a3;
-  v4 = [v3 fileURL];
-  v5 = [v4 checkResourceIsReachableAndReturnError:0];
+  fileCopy = file;
+  fileURL = [fileCopy fileURL];
+  v5 = [fileURL checkResourceIsReachableAndReturnError:0];
 
-  LOBYTE(v4) = [v3 verifyMetadata];
-  return v5 & v4;
+  LOBYTE(fileURL) = [fileCopy verifyMetadata];
+  return v5 & fileURL;
 }
 
-- (id)fileSizeFromURL:(id)a3
+- (id)fileSizeFromURL:(id)l
 {
   v5 = 0;
-  [a3 getResourceValue:&v5 forKey:*MEMORY[0x277CBE838] error:0];
+  [l getResourceValue:&v5 forKey:*MEMORY[0x277CBE838] error:0];
   v3 = v5;
 
   return v3;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqual:@"outstandingFileTransfers"] & 1) != 0 || (objc_msgSend(v4, "isEqual:", @"outstandingFileTransfers"))
+  keyCopy = key;
+  if ([keyCopy isEqual:@"outstandingFileTransfers"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqual:", @"outstandingFileTransfers"))
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WCSession;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
 }
 
-- (void)setInternalOutstandingFileTransfers:(id)a3
+- (void)setInternalOutstandingFileTransfers:(id)transfers
 {
-  v7 = a3;
-  v5 = [(WCSession *)self internalOutstandingFileTransfers];
-  v6 = [v5 isEqual:v7];
+  transfersCopy = transfers;
+  internalOutstandingFileTransfers = [(WCSession *)self internalOutstandingFileTransfers];
+  v6 = [internalOutstandingFileTransfers isEqual:transfersCopy];
 
   if ((v6 & 1) == 0)
   {
     [(WCSession *)self willChangeValueForKey:@"outstandingFileTransfers"];
-    objc_storeStrong(&self->_internalOutstandingFileTransfers, a3);
+    objc_storeStrong(&self->_internalOutstandingFileTransfers, transfers);
     [(WCSession *)self didChangeValueForKey:@"outstandingFileTransfers"];
   }
 }
 
-- (void)setInternalOutstandingUserInfoTransfers:(id)a3
+- (void)setInternalOutstandingUserInfoTransfers:(id)transfers
 {
-  v7 = a3;
-  v5 = [(WCSession *)self internalOutstandingUserInfoTransfers];
-  v6 = [v5 isEqual:v7];
+  transfersCopy = transfers;
+  internalOutstandingUserInfoTransfers = [(WCSession *)self internalOutstandingUserInfoTransfers];
+  v6 = [internalOutstandingUserInfoTransfers isEqual:transfersCopy];
 
   if ((v6 & 1) == 0)
   {
     [(WCSession *)self willChangeValueForKey:@"outstandingUserInfoTransfers"];
-    objc_storeStrong(&self->_internalOutstandingUserInfoTransfers, a3);
+    objc_storeStrong(&self->_internalOutstandingUserInfoTransfers, transfers);
     [(WCSession *)self didChangeValueForKey:@"outstandingUserInfoTransfers"];
   }
 }
 
-- (void)reportFileTransfer:(id)a3
+- (void)reportFileTransfer:(id)transfer
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 transferDate];
-  if (v5)
+  transferCopy = transfer;
+  transferDate = [transferCopy transferDate];
+  if (transferDate)
   {
-    v6 = v5;
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v4 transferDate];
-    [v7 timeIntervalSinceDate:v8];
+    v6 = transferDate;
+    date = [MEMORY[0x277CBEAA8] date];
+    transferDate2 = [transferCopy transferDate];
+    [date timeIntervalSinceDate:transferDate2];
     v10 = v9;
 
     if (v10 >= 31)
@@ -6121,13 +6121,13 @@ LABEL_17:
     v11 = -1;
   }
 
-  v12 = [v4 file];
-  v13 = [v12 fileSize];
-  if (v13)
+  file = [transferCopy file];
+  fileSize = [file fileSize];
+  if (fileSize)
   {
-    v14 = [v4 file];
-    v15 = [v14 fileSize];
-    v16 = -[WCSession roundValue:toSignificantFigures:](self, "roundValue:toSignificantFigures:", [v15 integerValue], 2);
+    file2 = [transferCopy file];
+    fileSize2 = [file2 fileSize];
+    v16 = -[WCSession roundValue:toSignificantFigures:](self, "roundValue:toSignificantFigures:", [fileSize2 integerValue], 2);
   }
 
   else
@@ -6135,13 +6135,13 @@ LABEL_17:
     v16 = -1;
   }
 
-  v17 = [v4 file];
-  v18 = [v17 userInfoData];
-  if ([v18 length])
+  file3 = [transferCopy file];
+  userInfoData = [file3 userInfoData];
+  if ([userInfoData length])
   {
-    v19 = [v4 file];
-    v20 = [v19 userInfoData];
-    v21 = -[WCSession roundValue:toSignificantFigures:](self, "roundValue:toSignificantFigures:", [v20 length], 2);
+    file4 = [transferCopy file];
+    userInfoData2 = [file4 userInfoData];
+    v21 = -[WCSession roundValue:toSignificantFigures:](self, "roundValue:toSignificantFigures:", [userInfoData2 length], 2);
   }
 
   else
@@ -6153,12 +6153,12 @@ LABEL_17:
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
   [v22 setObject:v23 forKeyedSubscript:@"durationSec"];
 
-  v24 = [v4 transferError];
-  if ([v24 code])
+  transferError = [transferCopy transferError];
+  if ([transferError code])
   {
     v25 = MEMORY[0x277CCABB0];
-    v26 = [v4 transferError];
-    v27 = [v25 numberWithInteger:{objc_msgSend(v26, "code")}];
+    transferError2 = [transferCopy transferError];
+    v27 = [v25 numberWithInteger:{objc_msgSend(transferError2, "code")}];
     [v22 setObject:v27 forKeyedSubscript:@"errorCode"];
   }
 
@@ -6167,12 +6167,12 @@ LABEL_17:
     [v22 setObject:&unk_284DFDA70 forKeyedSubscript:@"errorCode"];
   }
 
-  v28 = [v4 transferError];
-  v29 = [v28 domain];
-  v30 = v29;
-  if (v29)
+  transferError3 = [transferCopy transferError];
+  domain = [transferError3 domain];
+  v30 = domain;
+  if (domain)
   {
-    v31 = v29;
+    v31 = domain;
   }
 
   else
@@ -6185,11 +6185,11 @@ LABEL_17:
   v32 = [MEMORY[0x277CCABB0] numberWithInteger:v16];
   [v22 setObject:v32 forKeyedSubscript:@"fileSizeBytes"];
 
-  v33 = [v4 file];
-  v34 = [v33 userInfoData];
+  file5 = [transferCopy file];
+  userInfoData3 = [file5 userInfoData];
   v35 = MEMORY[0x277CBEC38];
   v36 = MEMORY[0x277CBEC28];
-  if (v34)
+  if (userInfoData3)
   {
     v37 = MEMORY[0x277CBEC38];
   }
@@ -6204,8 +6204,8 @@ LABEL_17:
   v38 = [MEMORY[0x277CCABB0] numberWithInteger:v21];
   [v22 setObject:v38 forKeyedSubscript:@"metadataSizeBytes"];
 
-  v39 = [v4 transferError];
-  if (v39)
+  transferError4 = [transferCopy transferError];
+  if (transferError4)
   {
     v40 = v36;
   }
@@ -6244,17 +6244,17 @@ LABEL_17:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)roundValue:(unint64_t)a3 toSignificantFigures:(int)a4
+- (unint64_t)roundValue:(unint64_t)value toSignificantFigures:(int)figures
 {
-  if (!a3)
+  if (!value)
   {
     return 0;
   }
 
-  v5 = a3;
-  v6 = log10(a3);
-  v7 = __exp10((a4 - vcvtpd_s64_f64(v6)));
-  result = (round(v7 * v5) / v7);
+  valueCopy = value;
+  v6 = log10(value);
+  v7 = __exp10((figures - vcvtpd_s64_f64(v6)));
+  result = (round(v7 * valueCopy) / v7);
   if (result % 0xA == 9)
   {
     ++result;

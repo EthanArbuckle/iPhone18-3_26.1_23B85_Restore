@@ -1,9 +1,9 @@
 @interface _UTTaggedType
 + (void)initialize;
-- (BOOL)conformsToType:(id)a3;
-- (id)_localizedDescriptionWithPreferredLocalizations:(id)a3;
+- (BOOL)conformsToType:(id)type;
+- (id)_localizedDescriptionWithPreferredLocalizations:(id)localizations;
 - (id)_parentTypes;
-- (id)_preferredTagOfClass:(id)a3;
+- (id)_preferredTagOfClass:(id)class;
 - (id)identifier;
 - (id)supertypes;
 - (id)tags;
@@ -43,12 +43,12 @@
   return DynamicIdentifierForTaggedPointerObject;
 }
 
-- (id)_localizedDescriptionWithPreferredLocalizations:(id)a3
+- (id)_localizedDescriptionWithPreferredLocalizations:(id)localizations
 {
-  if (!a3)
+  if (!localizations)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"UTTaggedType.mm" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"preferredLocalizations != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTTaggedType.mm" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"preferredLocalizations != nil"}];
   }
 
   return 0;
@@ -79,9 +79,9 @@
   return v6;
 }
 
-- (id)_preferredTagOfClass:(id)a3
+- (id)_preferredTagOfClass:(id)class
 {
-  if ([a3 isEqual:@"public.filename-extension"])
+  if ([class isEqual:@"public.filename-extension"])
   {
     v4 = *MEMORY[0x1E69E5910];
     if ((~self & 0xC000000000000007) == 0)
@@ -110,24 +110,24 @@
   return v7;
 }
 
-- (BOOL)conformsToType:(id)a3
+- (BOOL)conformsToType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UTTaggedType.mm" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTTaggedType.mm" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"type != nil"}];
   }
 
-  if (a3 == self)
+  if (type == self)
   {
     return 1;
   }
 
-  if ([a3 isDynamic])
+  if ([type isDynamic])
   {
-    v5 = [a3 identifier];
-    v6 = [(_UTTaggedType *)self identifier];
-    v7 = _UTIdentifiersAreEqual(v5, v6);
+    identifier = [type identifier];
+    identifier2 = [(_UTTaggedType *)self identifier];
+    v7 = _UTIdentifiersAreEqual(identifier, identifier2);
 
     return v7;
   }
@@ -141,7 +141,7 @@
   if (((v9 ^ self) & 0x8000000000000) != 0)
   {
     v7 = 1;
-    if (a3 == &UniformTypeIdentifiers::CoreTypes::constants || a3 == &off_1ED40D260 || a3 == &off_1ED40C660)
+    if (type == &UniformTypeIdentifiers::CoreTypes::constants || type == &off_1ED40D260 || type == &off_1ED40C660)
     {
       return v7;
     }
@@ -152,7 +152,7 @@
   else
   {
     v7 = 1;
-    if (a3 == &off_1ED40C640 || a3 == &UniformTypeIdentifiers::CoreTypes::constants)
+    if (type == &off_1ED40C640 || type == &UniformTypeIdentifiers::CoreTypes::constants)
     {
       return v7;
     }
@@ -160,7 +160,7 @@
     v10 = &off_1ED40C640;
   }
 
-  return [v10 conformsToType:a3];
+  return [v10 conformsToType:type];
 }
 
 - (id)supertypes
@@ -204,8 +204,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8 = @"public.filename-extension";
-  v2 = [(UTType *)self preferredFilenameExtension];
-  v7 = v2;
+  preferredFilenameExtension = [(UTType *)self preferredFilenameExtension];
+  v7 = preferredFilenameExtension;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v7 count:1];
   v9[0] = v3;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];

@@ -1,10 +1,10 @@
 @interface MXSessionIndependentInputAudioResource
 + (void)initialize;
-- (MXSessionIndependentInputAudioResource)initWithOptions:(id)a3;
-- (int)_beginInterruptionWithSecTask:(__SecTask *)a3 andFlags:(unint64_t)a4;
-- (int)_endInterruptionWithSecTask:(__SecTask *)a3 andStatus:(id)a4;
-- (int)copyPropertyForKeyInternal:(id)a3 valueOut:(id *)a4;
-- (int)setPropertyForKeyInternal:(id)a3 value:(id)a4 fromPropertiesBatch:(id)a5;
+- (MXSessionIndependentInputAudioResource)initWithOptions:(id)options;
+- (int)_beginInterruptionWithSecTask:(__SecTask *)task andFlags:(unint64_t)flags;
+- (int)_endInterruptionWithSecTask:(__SecTask *)task andStatus:(id)status;
+- (int)copyPropertyForKeyInternal:(id)internal valueOut:(id *)out;
+- (int)setPropertyForKeyInternal:(id)internal value:(id)value fromPropertiesBatch:(id)batch;
 - (void)dealloc;
 - (void)dumpDebugInfo;
 - (void)resetIsPlayingStates;
@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sNonSerializedCopyProperties = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"AudioBehaviour", @"AudioCategory", @"AudioMode", @"AudioToolboxIsPlaying", @"EnableBluetoothRecording", @"ClientName", @"ClientPID", @"ClientPriority", @"AudioSessionID", @"CoreSessionID", @"HasExternalMuteNotificationContext", @"MXSessionID", @"InterruptionStyle", @"IsActive", @"IsPlaying", @"IsRecording", @"IsRecordingMuted", @"PrefersEchoCancelledInput", @"PreferredRouteControlFeatures", @"ReporterIDs", @"ShadowingAudioSessionOptions", 0}];
     sNonSerializedSetProperties = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{@"ClientName", @"AudioSessionID", @"HasExternalMuteNotificationContext", @"ReporterIDs", @"InterruptionStyle", @"PrefersSuppressingRecordingState", 0}];
@@ -23,7 +23,7 @@
   }
 }
 
-- (MXSessionIndependentInputAudioResource)initWithOptions:(id)a3
+- (MXSessionIndependentInputAudioResource)initWithOptions:(id)options
 {
   location[16] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -31,7 +31,7 @@
   v4 = [(MXSessionIndependentAudioResource *)&v9 init];
   if (v4)
   {
-    if (a3 && (v5 = [[MXCoreSessionIndependentInputAudioResource alloc] initWithOptions:a3]) != 0)
+    if (options && (v5 = [[MXCoreSessionIndependentInputAudioResource alloc] initWithOptions:options]) != 0)
     {
       [(MXSessionBase *)v4 setParentCoreSession:v5];
 
@@ -63,9 +63,9 @@
   [(MXSessionIndependentAudioResource *)&v3 dealloc];
 }
 
-- (int)copyPropertyForKeyInternal:(id)a3 valueOut:(id *)a4
+- (int)copyPropertyForKeyInternal:(id)internal valueOut:(id *)out
 {
-  if (!a3)
+  if (!internal)
   {
     [MXSessionIndependentInputAudioResource copyPropertyForKeyInternal:? valueOut:?];
     return v15;
@@ -78,53 +78,53 @@
     return v13;
   }
 
-  if (!a4)
+  if (!out)
   {
     [MXSessionIndependentInputAudioResource copyPropertyForKeyInternal:? valueOut:?];
     return v14;
   }
 
-  if ([a3 isEqualToString:@"AudioToolboxIsPlaying"])
+  if ([internal isEqualToString:@"AudioToolboxIsPlaying"])
   {
     v7 = objc_alloc(MEMORY[0x1E696AD98]);
-    v8 = [(MXSessionIndependentAudioResource *)self audioToolboxIsPlaying];
+    audioToolboxIsPlaying = [(MXSessionIndependentAudioResource *)self audioToolboxIsPlaying];
 LABEL_6:
-    v9 = [v7 initWithBool:v8];
+    v9 = [v7 initWithBool:audioToolboxIsPlaying];
 LABEL_9:
     v10 = v9;
     result = 0;
-    *a4 = v10;
+    *out = v10;
     return result;
   }
 
-  if ([a3 isEqualToString:@"MXSessionID"])
+  if ([internal isEqualToString:@"MXSessionID"])
   {
     v9 = [(MXSessionBase *)self ID];
     goto LABEL_9;
   }
 
-  if ([a3 isEqualToString:@"IsPlaying"])
+  if ([internal isEqualToString:@"IsPlaying"])
   {
     v7 = objc_alloc(MEMORY[0x1E696AD98]);
-    v8 = [(MXSessionIndependentAudioResource *)self clientIsPlaying];
+    audioToolboxIsPlaying = [(MXSessionIndependentAudioResource *)self clientIsPlaying];
     goto LABEL_6;
   }
 
-  if ([a3 isEqualToString:@"IsRecording"])
+  if ([internal isEqualToString:@"IsRecording"])
   {
     v7 = objc_alloc(MEMORY[0x1E696AD98]);
-    v8 = [(MXSessionIndependentAudioResource *)self isRecording];
+    audioToolboxIsPlaying = [(MXSessionIndependentAudioResource *)self isRecording];
     goto LABEL_6;
   }
 
-  v12 = [(MXSessionBase *)self parentCoreSession];
+  parentCoreSession = [(MXSessionBase *)self parentCoreSession];
 
-  return [(MXCoreSessionBase *)v12 copyPropertyForKey:a3 valueOut:a4];
+  return [(MXCoreSessionBase *)parentCoreSession copyPropertyForKey:internal valueOut:out];
 }
 
-- (int)setPropertyForKeyInternal:(id)a3 value:(id)a4 fromPropertiesBatch:(id)a5
+- (int)setPropertyForKeyInternal:(id)internal value:(id)value fromPropertiesBatch:(id)batch
 {
-  if (!a3)
+  if (!internal)
   {
     [MXSessionIndependentInputAudioResource setPropertyForKeyInternal:? value:? fromPropertiesBatch:?];
     return v14;
@@ -137,20 +137,20 @@ LABEL_9:
     return v14;
   }
 
-  if ([a3 isEqualToString:@"AudioToolboxIsPlaying"])
+  if ([internal isEqualToString:@"AudioToolboxIsPlaying"])
   {
-    if (a4)
+    if (value)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [a4 BOOLValue];
-        if (v8 != [(MXSessionIndependentAudioResource *)self audioToolboxIsPlaying])
+        bOOLValue = [value BOOLValue];
+        if (bOOLValue != [(MXSessionIndependentAudioResource *)self audioToolboxIsPlaying])
         {
-          [(MXSessionIndependentAudioResource *)self setAudioToolboxIsPlaying:v8];
+          [(MXSessionIndependentAudioResource *)self setAudioToolboxIsPlaying:bOOLValue];
 LABEL_13:
-          v10 = [(MXSessionIndependentAudioResource *)self clientIsPlaying]|| [(MXSessionIndependentAudioResource *)self audioToolboxIsPlaying];
-          [(MXSessionIndependentAudioResource *)self setIsPlaying:v10];
+          audioToolboxIsPlaying = [(MXSessionIndependentAudioResource *)self clientIsPlaying]|| [(MXSessionIndependentAudioResource *)self audioToolboxIsPlaying];
+          [(MXSessionIndependentAudioResource *)self setIsPlaying:audioToolboxIsPlaying];
           [(MXCoreSessionBase *)[(MXSessionBase *)self parentCoreSession] updateIsPlaying:[(MXSessionIndependentAudioResource *)self isPlaying]];
           goto LABEL_22;
         }
@@ -163,22 +163,22 @@ LABEL_13:
     return v14;
   }
 
-  if (![a3 isEqualToString:@"IsPlaying"])
+  if (![internal isEqualToString:@"IsPlaying"])
   {
-    if (![a3 isEqualToString:@"IsRecording"])
+    if (![internal isEqualToString:@"IsRecording"])
     {
       goto LABEL_22;
     }
 
-    if (a4)
+    if (value)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [a4 BOOLValue];
-        if (v11 != [(MXSessionIndependentAudioResource *)self isRecording])
+        bOOLValue2 = [value BOOLValue];
+        if (bOOLValue2 != [(MXSessionIndependentAudioResource *)self isRecording])
         {
-          [(MXSessionIndependentAudioResource *)self setIsRecording:v11];
+          [(MXSessionIndependentAudioResource *)self setIsRecording:bOOLValue2];
           [(MXCoreSessionBase *)[(MXSessionBase *)self parentCoreSession] updateIsRecording:[(MXSessionIndependentAudioResource *)self isRecording]];
         }
 
@@ -190,23 +190,23 @@ LABEL_13:
     return v14;
   }
 
-  if (!a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!value || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [MXSessionIndependentInputAudioResource setPropertyForKeyInternal:? value:? fromPropertiesBatch:?];
     return v14;
   }
 
-  v9 = [a4 BOOLValue];
-  if (v9 != [(MXSessionIndependentAudioResource *)self clientIsPlaying])
+  bOOLValue3 = [value BOOLValue];
+  if (bOOLValue3 != [(MXSessionIndependentAudioResource *)self clientIsPlaying])
   {
-    [(MXSessionIndependentAudioResource *)self setClientIsPlaying:v9];
+    [(MXSessionIndependentAudioResource *)self setClientIsPlaying:bOOLValue3];
     goto LABEL_13;
   }
 
 LABEL_22:
-  v12 = [(MXSessionBase *)self parentCoreSession];
+  parentCoreSession = [(MXSessionBase *)self parentCoreSession];
 
-  return [(MXCoreSessionBase *)v12 setPropertyForKey:a3 value:a4];
+  return [(MXCoreSessionBase *)parentCoreSession setPropertyForKey:internal value:value];
 }
 
 - (void)dumpDebugInfo
@@ -240,18 +240,18 @@ LABEL_22:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (int)_beginInterruptionWithSecTask:(__SecTask *)a3 andFlags:(unint64_t)a4
+- (int)_beginInterruptionWithSecTask:(__SecTask *)task andFlags:(unint64_t)flags
 {
-  v6 = [(MXSessionBase *)self parentCoreSession];
+  parentCoreSession = [(MXSessionBase *)self parentCoreSession];
 
-  return [(MXCoreSessionBase *)v6 _beginInterruptionWithSecTask:a3 andFlags:a4];
+  return [(MXCoreSessionBase *)parentCoreSession _beginInterruptionWithSecTask:task andFlags:flags];
 }
 
-- (int)_endInterruptionWithSecTask:(__SecTask *)a3 andStatus:(id)a4
+- (int)_endInterruptionWithSecTask:(__SecTask *)task andStatus:(id)status
 {
-  v6 = [(MXSessionBase *)self parentCoreSession];
+  parentCoreSession = [(MXSessionBase *)self parentCoreSession];
 
-  return [(MXCoreSessionBase *)v6 _endInterruptionWithSecTask:a3 andStatus:a4];
+  return [(MXCoreSessionBase *)parentCoreSession _endInterruptionWithSecTask:task andStatus:status];
 }
 
 - (void)resetIsPlayingStates

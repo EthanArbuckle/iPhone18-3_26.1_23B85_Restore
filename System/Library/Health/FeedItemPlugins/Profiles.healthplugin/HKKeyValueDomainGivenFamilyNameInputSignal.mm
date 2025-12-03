@@ -1,14 +1,14 @@
 @interface HKKeyValueDomainGivenFamilyNameInputSignal
-- (void)didUpdateKeyValueDomain:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
 @end
 
 @implementation HKKeyValueDomainGivenFamilyNameInputSignal
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
 
-  sub_29E4AB8DC(v4, self);
+  sub_29E4AB8DC(domainCopy, self);
 }
 
 @end

@@ -8,7 +8,7 @@
 {
   v3 = a3;
   v4 = dispatch_group_create();
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = objc_alloc_init(MEMORY[0x1E699C070]);
   dispatch_group_enter(v4);
   v14[0] = MEMORY[0x1E69E9820];
@@ -16,7 +16,7 @@
   v14[2] = __120__KCSharingGroupManager_AuthenticationServicesExtras__as_getKCSharingParticipantsForFamilyMembersWithCompletionHandler___block_invoke;
   v14[3] = &unk_1E7AF8028;
   v15 = v4;
-  v7 = v5;
+  v7 = array;
   v16 = v7;
   v8 = v4;
   [v6 startRequestWithCompletionHandler:v14];

@@ -7,19 +7,19 @@
 - (id)px_debugDictionary
 {
   v19[7] = *MEMORY[0x1E69E9840];
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = &off_1F1B12698;
   v2 = objc_msgSendSuper2(&v17, sel_px_debugDictionary);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 cloudAlbumSubtype];
+  cloudAlbumSubtype = [self cloudAlbumSubtype];
   v5 = @"Family";
-  if (v4 != 1)
+  if (cloudAlbumSubtype != 1)
   {
     v5 = 0;
   }
 
-  if (v4)
+  if (cloudAlbumSubtype)
   {
     v6 = v5;
   }
@@ -30,7 +30,7 @@
   }
 
   v18[0] = @"isOwned";
-  if ([a1 isOwned])
+  if ([self isOwned])
   {
     v7 = @"YES";
   }
@@ -43,7 +43,7 @@
   v8 = v7;
   v19[0] = v8;
   v18[1] = @"isCloudMultipleContributorsEnabled";
-  if ([a1 isCloudMultipleContributorsEnabled])
+  if ([self isCloudMultipleContributorsEnabled])
   {
     v9 = @"YES";
   }
@@ -58,17 +58,17 @@
   v19[2] = v6;
   v18[2] = @"cloudAlbumSubtype";
   v18[3] = @"cloudOwnerFirstName";
-  v11 = [a1 cloudOwnerFirstName];
-  v19[3] = v11;
+  cloudOwnerFirstName = [self cloudOwnerFirstName];
+  v19[3] = cloudOwnerFirstName;
   v18[4] = @"cloudOwnerLastName";
-  v12 = [a1 cloudOwnerLastName];
-  v19[4] = v12;
+  cloudOwnerLastName = [self cloudOwnerLastName];
+  v19[4] = cloudOwnerLastName;
   v18[5] = @"cloudOwnerFullName";
-  v13 = [a1 cloudOwnerFullName];
-  v19[5] = v13;
+  cloudOwnerFullName = [self cloudOwnerFullName];
+  v19[5] = cloudOwnerFullName;
   v18[6] = @"cloudOwnerEmailKey";
-  v14 = [a1 cloudOwnerEmailKey];
-  v19[6] = v14;
+  cloudOwnerEmailKey = [self cloudOwnerEmailKey];
+  v19[6] = cloudOwnerEmailKey;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:7];
 
   [v3 addEntriesFromDictionary:v15];

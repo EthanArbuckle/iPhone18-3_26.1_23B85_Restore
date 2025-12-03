@@ -1,10 +1,10 @@
 @interface BSWallclockTimer
-- (BSWallclockTimer)initWithIdentifier:(id)a3;
+- (BSWallclockTimer)initWithIdentifier:(id)identifier;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)identifier;
 - (void)dealloc;
-- (void)scheduleForDate:(id)a3 leewayInterval:(double)a4 queue:(id)a5 handler:(id)a6;
+- (void)scheduleForDate:(id)date leewayInterval:(double)interval queue:(id)queue handler:(id)handler;
 @end
 
 @implementation BSWallclockTimer
@@ -35,7 +35,7 @@
       v15 = 2114;
       v16 = v10;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"BSWallclockTimer.m";
       v21 = 1024;
@@ -56,15 +56,15 @@
   [(BSWallclockTimer *)&v12 dealloc];
 }
 
-- (BSWallclockTimer)initWithIdentifier:(id)a3
+- (BSWallclockTimer)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BSWallclockTimer;
   v5 = [(BSWallclockTimer *)&v9 init];
   if (v5)
   {
-    v6 = [BSDispatchTimer timerWithIdentifier:v4];
+    v6 = [BSDispatchTimer timerWithIdentifier:identifierCopy];
     timer = v5->_timer;
     v5->_timer = v6;
   }
@@ -90,38 +90,38 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [(BSDispatchTimer *)self->_timer appendDescriptionToBuilder:v3 forDebugging:0];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (NSString)debugDescription
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [(BSDispatchTimer *)self->_timer appendDescriptionToBuilder:v3 forDebugging:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)scheduleForDate:(id)a3 leewayInterval:(double)a4 queue:(id)a5 handler:(id)a6
+- (void)scheduleForDate:(id)date leewayInterval:(double)interval queue:(id)queue handler:(id)handler
 {
   v48 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  v15 = (*&a4 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v16 = a4 < 0.0 && ((*&a4 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a4 >= 0.0)
+  dateCopy = date;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  v15 = (*&interval & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v16 = interval < 0.0 && ((*&interval & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (interval >= 0.0)
   {
     v15 = 0;
   }
 
-  v17 = (*&a4 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v15;
+  v17 = (*&interval & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v15;
   if ((v17 | v16) == 1)
   {
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid leeway %f", *&a4];
+    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid leeway %f", *&interval];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v24 = NSStringFromSelector(a2);
@@ -132,7 +132,7 @@
       *&when[12] = 2114;
       *&when[14] = v26;
       v40 = 2048;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2114;
       v43 = @"BSWallclockTimer.m";
       v44 = 1024;
@@ -148,7 +148,7 @@
     JUMPOUT(0x18FF4429CLL);
   }
 
-  if (!v12)
+  if (!queueCopy)
   {
     v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"queue != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -161,7 +161,7 @@
       *&when[12] = 2114;
       *&when[14] = v31;
       v40 = 2048;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2114;
       v43 = @"BSWallclockTimer.m";
       v44 = 1024;
@@ -177,7 +177,7 @@
     JUMPOUT(0x18FF443A4);
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
     v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"handler != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -190,7 +190,7 @@
       *&when[12] = 2114;
       *&when[14] = v36;
       v40 = 2048;
-      v41 = self;
+      selfCopy3 = self;
       v42 = 2114;
       v43 = @"BSWallclockTimer.m";
       v44 = 1024;
@@ -207,23 +207,23 @@
   }
 
   __y = 0.0;
-  [v11 timeIntervalSince1970];
+  [dateCopy timeIntervalSince1970];
   v19 = modf(v18, &__y);
   v20.f64[0] = __y;
   v20.f64[1] = v19 * 1000000000.0;
   *when = vcvtq_s64_f64(vminnmq_f64(vmaxnmq_f64(v20, vdupq_n_s64(0xC3E0000000000000)), vdupq_n_s64(0x43E0000000000000uLL)));
   v21 = dispatch_walltime(when, 0);
-  if (a4 >= 9223372040.0)
+  if (interval >= 9223372040.0)
   {
     v22 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v22 = (a4 * 1000000000.0);
+    v22 = (interval * 1000000000.0);
   }
 
-  [(BSDispatchTimer *)self->_timer scheduleWithFireTime:v21 repeatNanoseconds:-1 leewayNanoseconds:v22 queue:v12 weakContext:self handler:v14];
+  [(BSDispatchTimer *)self->_timer scheduleWithFireTime:v21 repeatNanoseconds:-1 leewayNanoseconds:v22 queue:queueCopy weakContext:self handler:v14];
 }
 
 @end

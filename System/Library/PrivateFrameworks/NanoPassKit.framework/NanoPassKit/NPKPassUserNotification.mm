@@ -1,20 +1,20 @@
 @interface NPKPassUserNotification
-- (NPKPassUserNotification)initWithPass:(id)a3;
+- (NPKPassUserNotification)initWithPass:(id)pass;
 - (NSArray)identifierHashComponents;
 @end
 
 @implementation NPKPassUserNotification
 
-- (NPKPassUserNotification)initWithPass:(id)a3
+- (NPKPassUserNotification)initWithPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v9.receiver = self;
   v9.super_class = NPKPassUserNotification;
   v6 = [(NPKPassUserNotification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
   }
 
   return v7;
@@ -24,12 +24,12 @@
 {
   v8.receiver = self;
   v8.super_class = NPKPassUserNotification;
-  v3 = [(NPKUserNotification *)&v8 identifierHashComponents];
-  v4 = [v3 mutableCopy];
+  identifierHashComponents = [(NPKUserNotification *)&v8 identifierHashComponents];
+  v4 = [identifierHashComponents mutableCopy];
 
-  v5 = [(NPKPassUserNotification *)self pass];
-  v6 = [v5 uniqueID];
-  [v4 safelyAddObject:v6];
+  pass = [(NPKPassUserNotification *)self pass];
+  uniqueID = [pass uniqueID];
+  [v4 safelyAddObject:uniqueID];
 
   return v4;
 }

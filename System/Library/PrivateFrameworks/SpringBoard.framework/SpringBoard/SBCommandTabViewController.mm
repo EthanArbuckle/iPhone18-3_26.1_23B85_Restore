@@ -1,40 +1,40 @@
 @interface SBCommandTabViewController
-+ (BOOL)canActivateWithRecentDisplayItems:(id)a3;
-- (BOOL)iconViewDisplaysAccessories:(id)a3;
-- (SBCommandTabViewController)initWithRecentDisplayItems:(id)a3 iconController:(id)a4;
++ (BOOL)canActivateWithRecentDisplayItems:(id)items;
+- (BOOL)iconViewDisplaysAccessories:(id)accessories;
+- (SBCommandTabViewController)initWithRecentDisplayItems:(id)items iconController:(id)controller;
 - (SBCommandTabViewControllerDelegate)delegate;
 - (id)selectedApplicationDisplayItem;
-- (void)_configureGridLayoutConfiguration:(id)a3;
-- (void)_handleTapDismissGesture:(id)a3;
-- (void)_handleUIGesture:(id)a3;
-- (void)_moveSelectionSquareToIconAtIndex:(unint64_t)a3;
+- (void)_configureGridLayoutConfiguration:(id)configuration;
+- (void)_handleTapDismissGesture:(id)gesture;
+- (void)_handleUIGesture:(id)gesture;
+- (void)_moveSelectionSquareToIconAtIndex:(unint64_t)index;
 - (void)_updateForUserInterfaceStyle;
 - (void)_updateIconSelectionPositionAndLabelText;
 - (void)dealloc;
-- (void)icon:(id)a3 touchEnded:(BOOL)a4;
-- (void)iconModelDidChange:(id)a3;
-- (void)iconTapped:(id)a3;
-- (void)iconTouchBegan:(id)a3;
+- (void)icon:(id)icon touchEnded:(BOOL)ended;
+- (void)iconModelDidChange:(id)change;
+- (void)iconTapped:(id)tapped;
+- (void)iconTouchBegan:(id)began;
 - (void)next;
 - (void)previous;
-- (void)removeDisplayItem:(id)a3;
+- (void)removeDisplayItem:(id)item;
 - (void)showCommandTabBar;
 - (void)viewDidLoad;
 @end
 
 @implementation SBCommandTabViewController
 
-+ (BOOL)canActivateWithRecentDisplayItems:(id)a3
++ (BOOL)canActivateWithRecentDisplayItems:(id)items
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  itemsCopy = items;
+  if ([itemsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 bundleIdentifier];
+    firstObject = [itemsCopy firstObject];
+    bundleIdentifier = [firstObject bundleIdentifier];
     v6 = FBSystemAppBundleID();
-    v7 = [v5 isEqualToString:v6];
+    v7 = [bundleIdentifier isEqualToString:v6];
 
-    v8 = [v3 count];
+    v8 = [itemsCopy count];
     IsActive = v8 == 0;
     if (v8 && v7)
     {
@@ -44,36 +44,36 @@
 
   else
   {
-    IsActive = [v3 count] == 0;
+    IsActive = [itemsCopy count] == 0;
   }
 
   return IsActive ^ 1;
 }
 
-- (SBCommandTabViewController)initWithRecentDisplayItems:(id)a3 iconController:(id)a4
+- (SBCommandTabViewController)initWithRecentDisplayItems:(id)items iconController:(id)controller
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  controllerCopy = controller;
   v36.receiver = self;
   v36.super_class = SBCommandTabViewController;
   v9 = [(SBCommandTabViewController *)&v36 init];
   if (v9)
   {
-    v10 = [v7 mutableCopy];
+    v10 = [itemsCopy mutableCopy];
     recentDisplayItems = v9->_recentDisplayItems;
     v9->_recentDisplayItems = v10;
 
     v9->_selectedIndex = 0;
-    objc_storeStrong(&v9->_iconController, a4);
-    v12 = [(SBIconController *)v9->_iconController iconModel];
+    objc_storeStrong(&v9->_iconController, controller);
+    iconModel = [(SBIconController *)v9->_iconController iconModel];
     iconModel = v9->_iconModel;
-    v9->_iconModel = v12;
+    v9->_iconModel = iconModel;
 
-    v14 = ([SBApp activeInterfaceOrientation] - 1);
+    currentDevice = ([SBApp activeInterfaceOrientation] - 1);
     v15 = __sb__runningInSpringBoard();
     v16 = v15;
-    if (v14 <= 1)
+    if (currentDevice <= 1)
     {
       if (v15)
       {
@@ -90,8 +90,8 @@ LABEL_29:
 
           v9->_isTouchDown = 0;
           v9->_isIconSelected = 1;
-          v31 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v31 addObserver:v9 selector:sel_iconModelDidChange_ name:SBIconControllerIconModelDidChangeNotification object:v9->_iconController];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter addObserver:v9 selector:sel_iconModelDidChange_ name:SBIconControllerIconModelDidChangeNotification object:v9->_iconController];
 
           v32 = objc_opt_self();
           v37[0] = v32;
@@ -104,8 +104,8 @@ LABEL_29:
         goto LABEL_11;
       }
 
-      v14 = [MEMORY[0x277D75418] currentDevice];
-      if ([v14 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
 LABEL_11:
         v19 = __sb__runningInSpringBoard();
@@ -117,8 +117,8 @@ LABEL_11:
 
         else
         {
-          v4 = [MEMORY[0x277D759A0] mainScreen];
-          [v4 _referenceBounds];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -149,8 +149,8 @@ LABEL_28:
 
     else
     {
-      v14 = [MEMORY[0x277D75418] currentDevice];
-      if ([v14 userInterfaceIdiom] != 1)
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice userInterfaceIdiom] != 1)
       {
         v22 = &SBLogSceneResize_onceToken;
         v23 = 8;
@@ -167,8 +167,8 @@ LABEL_28:
 
     else
     {
-      v4 = [MEMORY[0x277D759A0] mainScreen];
-      [v4 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -201,8 +201,8 @@ LABEL_30:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:SBIconControllerIconModelDidChangeNotification object:self->_iconController];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:SBIconControllerIconModelDidChangeNotification object:self->_iconController];
 
   v4.receiver = self;
   v4.super_class = SBCommandTabViewController;
@@ -215,22 +215,22 @@ LABEL_30:
   v143.receiver = self;
   v143.super_class = SBCommandTabViewController;
   [(SBCommandTabViewController *)&v143 viewDidLoad];
-  v5 = [(SBCommandTabViewController *)self view];
-  v6 = [v5 layer];
-  [v6 setHitTestsAsOpaque:1];
+  view = [(SBCommandTabViewController *)self view];
+  layer = [view layer];
+  [layer setHitTestsAsOpaque:1];
 
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
   v8 = MEMORY[0x277D75C80];
-  v9 = [(SBCommandTabViewController *)self traitCollection];
-  v10 = [v8 sbh_dockGlassUserInterfaceStyleFromTraitCollection:v9];
+  traitCollection = [(SBCommandTabViewController *)self traitCollection];
+  v10 = [v8 sbh_dockGlassUserInterfaceStyleFromTraitCollection:traitCollection];
 
   [(SBCommandTabViewController *)self setOverrideUserInterfaceStyle:v10];
   v11 = objc_alloc_init(MEMORY[0x277D763B8]);
-  [v5 _setBackground:v11];
+  [view _setBackground:v11];
 
-  [v5 setAlpha:0.0];
+  [view setAlpha:0.0];
   v12 = objc_alloc_init(MEMORY[0x277D75D18]);
   blurredBackgroundView = self->_blurredBackgroundView;
   self->_blurredBackgroundView = v12;
@@ -239,7 +239,7 @@ LABEL_30:
   v14 = [objc_alloc(MEMORY[0x277D763B0]) initWithVariant:2];
   [v14 setExcludingShadow:1];
   [(UIView *)self->_blurredBackgroundView _setBackground:v14];
-  [v5 addSubview:self->_blurredBackgroundView];
+  [view addSubview:self->_blurredBackgroundView];
   v15 = objc_alloc_init(MEMORY[0x277D663B0]);
   [(SBCommandTabViewController *)self _configureGridLayoutConfiguration:v15];
   v16 = [objc_alloc(MEMORY[0x277D663A8]) initWithLayoutConfiguration:v15];
@@ -247,8 +247,8 @@ LABEL_30:
   v144 = @"SBIconLocationCommandTab";
   v145[0] = v16;
   v136 = v16;
-  v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v145 forKeys:&v144 count:1];
-  v140 = [v17 initWithListLayouts:v18];
+  currentDevice = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v145 forKeys:&v144 count:1];
+  v140 = [v17 initWithListLayouts:currentDevice];
 
   v137 = v15;
   [v15 iconImageInfo];
@@ -266,8 +266,8 @@ LABEL_30:
 
   else
   {
-    v18 = [MEMORY[0x277D75418] currentDevice];
-    if ([v18 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       v24 = v21 * 71.0;
 LABEL_14:
@@ -285,8 +285,8 @@ LABEL_14:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -308,14 +308,14 @@ LABEL_14:
 
 LABEL_15:
   [(UIView *)self->_blurredBackgroundView _setContinuousCornerRadius:37.0];
-  v29 = [(UIView *)self->_blurredBackgroundView layer];
-  [v29 setAllowsGroupBlending:0];
+  layer2 = [(UIView *)self->_blurredBackgroundView layer];
+  [layer2 setAllowsGroupBlending:0];
 
-  v30 = [(UIView *)self->_blurredBackgroundView layer];
-  [v30 setBorderWidth:0.3];
+  layer3 = [(UIView *)self->_blurredBackgroundView layer];
+  [layer3 setBorderWidth:0.3];
 
   v31 = objc_alloc_init(MEMORY[0x277D75A68]);
-  v32 = 1088;
+  currentDevice2 = 1088;
   stackView = self->_stackView;
   self->_stackView = v31;
 
@@ -334,8 +334,8 @@ LABEL_15:
 
   else
   {
-    v32 = [MEMORY[0x277D75418] currentDevice];
-    if ([v32 userInterfaceIdiom] != 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 1)
     {
       [(UIStackView *)v34 setSpacing:16.5];
 LABEL_28:
@@ -353,8 +353,8 @@ LABEL_28:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -377,15 +377,15 @@ LABEL_28:
 LABEL_29:
   [(UIStackView *)self->_stackView setOverrideUserInterfaceStyle:0];
   [(UIView *)self->_blurredBackgroundView addSubview:self->_stackView];
-  v41 = [(UIStackView *)self->_stackView centerXAnchor];
-  v42 = [(UIView *)self->_blurredBackgroundView centerXAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  centerXAnchor = [(UIStackView *)self->_stackView centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_blurredBackgroundView centerXAnchor];
+  v43 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v43 setActive:1];
 
-  v44 = [(UIStackView *)self->_stackView centerYAnchor];
-  v45 = [(UIView *)self->_blurredBackgroundView centerYAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45];
-  [v46 setActive:1];
+  centerYAnchor = [(UIStackView *)self->_stackView centerYAnchor];
+  centerYAnchor2 = [(UIView *)self->_blurredBackgroundView centerYAnchor];
+  currentDevice3 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+  [currentDevice3 setActive:1];
 
   v47 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__handleUIGesture_];
   panGestureRecognizer = self->_panGestureRecognizer;
@@ -401,11 +401,11 @@ LABEL_29:
   tapDismissGestureRecognizer = self->_tapDismissGestureRecognizer;
   self->_tapDismissGestureRecognizer = v51;
 
-  [v5 addGestureRecognizer:self->_tapDismissGestureRecognizer];
-  v53 = [(UIView *)self->_blurredBackgroundView heightAnchor];
-  v54 = __sb__runningInSpringBoard();
+  [view addGestureRecognizer:self->_tapDismissGestureRecognizer];
+  heightAnchor = [(UIView *)self->_blurredBackgroundView heightAnchor];
+  mainScreen3 = __sb__runningInSpringBoard();
   v138 = v14;
-  if (v54)
+  if (mainScreen3)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -418,8 +418,8 @@ LABEL_29:
 
   else
   {
-    v46 = [MEMORY[0x277D75418] currentDevice];
-    if ([v46 userInterfaceIdiom] != 1)
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom] != 1)
     {
       v55 = 0;
       v56 = 1;
@@ -428,7 +428,7 @@ LABEL_29:
     }
   }
 
-  v56 = v54 ^ 1;
+  v56 = mainScreen3 ^ 1;
   v58 = __sb__runningInSpringBoard();
   if (v58)
   {
@@ -437,16 +437,16 @@ LABEL_29:
 
   else
   {
-    v54 = [MEMORY[0x277D759A0] mainScreen];
-    [v54 _referenceBounds];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 _referenceBounds];
   }
 
   v55 = v58 ^ 1;
   BSSizeRoundForScale();
   v57 = dbl_21F8A8320[v59 >= *(MEMORY[0x277D66E30] + 280)];
 LABEL_38:
-  v60 = [v53 constraintEqualToConstant:v57];
-  [v60 setActive:1];
+  currentDevice4 = [heightAnchor constraintEqualToConstant:v57];
+  [currentDevice4 setActive:1];
 
   if (v55)
   {
@@ -456,16 +456,16 @@ LABEL_38:
   {
   }
 
-  v61 = [(UIView *)self->_blurredBackgroundView centerYAnchor];
-  v62 = [v5 centerYAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62];
+  centerYAnchor3 = [(UIView *)self->_blurredBackgroundView centerYAnchor];
+  centerYAnchor4 = [view centerYAnchor];
+  v63 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v63 setActive:1];
 
-  v64 = [(UIView *)self->_blurredBackgroundView leadingAnchor];
-  v65 = [(UIStackView *)self->_stackView leadingAnchor];
-  v66 = __sb__runningInSpringBoard();
-  v139 = v5;
-  if (v66)
+  leadingAnchor = [(UIView *)self->_blurredBackgroundView leadingAnchor];
+  leadingAnchor2 = [(UIStackView *)self->_stackView leadingAnchor];
+  mainScreen4 = __sb__runningInSpringBoard();
+  v139 = view;
+  if (mainScreen4)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -478,8 +478,8 @@ LABEL_38:
 
   else
   {
-    v60 = [MEMORY[0x277D75418] currentDevice];
-    if ([v60 userInterfaceIdiom] != 1)
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom] != 1)
     {
       v68 = 0;
       v69 = -27.0;
@@ -488,7 +488,7 @@ LABEL_38:
     }
   }
 
-  v67 = v66 ^ 1;
+  v67 = mainScreen4 ^ 1;
   v70 = __sb__runningInSpringBoard();
   if (v70)
   {
@@ -497,8 +497,8 @@ LABEL_38:
 
   else
   {
-    v66 = [MEMORY[0x277D759A0] mainScreen];
-    [v66 _referenceBounds];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 _referenceBounds];
   }
 
   v68 = v70 ^ 1;
@@ -510,7 +510,7 @@ LABEL_38:
   }
 
 LABEL_52:
-  v72 = [v64 constraintEqualToAnchor:v65 constant:v69];
+  v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v69];
   [v72 setActive:1];
 
   if (v68)
@@ -521,13 +521,13 @@ LABEL_52:
   {
   }
 
-  v73 = [(UIView *)self->_blurredBackgroundView trailingAnchor];
-  v74 = [(UIStackView *)self->_stackView trailingAnchor];
-  v75 = __sb__runningInSpringBoard();
-  if (!v75)
+  trailingAnchor = [(UIView *)self->_blurredBackgroundView trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_stackView trailingAnchor];
+  mainScreen5 = __sb__runningInSpringBoard();
+  if (!mainScreen5)
   {
-    v60 = [MEMORY[0x277D75418] currentDevice];
-    if ([v60 userInterfaceIdiom] != 1)
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom] != 1)
     {
       v77 = 0;
       v78 = 27.0;
@@ -536,7 +536,7 @@ LABEL_52:
     }
 
 LABEL_60:
-    v76 = v75 ^ 1;
+    v76 = mainScreen5 ^ 1;
     v79 = __sb__runningInSpringBoard();
     if (v79)
     {
@@ -545,8 +545,8 @@ LABEL_60:
 
     else
     {
-      v75 = [MEMORY[0x277D759A0] mainScreen];
-      [v75 _referenceBounds];
+      mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen5 _referenceBounds];
     }
 
     v77 = v79 ^ 1;
@@ -569,7 +569,7 @@ LABEL_60:
   v77 = 0;
   v78 = 27.0;
 LABEL_66:
-  v81 = [v73 constraintEqualToAnchor:v74 constant:v78];
+  v81 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v78];
   [v81 setActive:1];
 
   if (v77)
@@ -580,9 +580,9 @@ LABEL_66:
   {
   }
 
-  v82 = [(UIView *)self->_blurredBackgroundView centerXAnchor];
-  v83 = [v139 centerXAnchor];
-  v84 = [v82 constraintEqualToAnchor:v83];
+  centerXAnchor3 = [(UIView *)self->_blurredBackgroundView centerXAnchor];
+  centerXAnchor4 = [v139 centerXAnchor];
+  v84 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v84 setActive:1];
 
   v85 = objc_opt_new();
@@ -626,8 +626,8 @@ LABEL_66:
     }
   }
 
-  v135 = [(SBIconController *)self->_iconController iconManager];
-  v141 = [v135 iconImageCache];
+  iconManager = [(SBIconController *)self->_iconController iconManager];
+  iconImageCache = [iconManager iconImageCache];
   if (!v89)
   {
     goto LABEL_97;
@@ -638,9 +638,9 @@ LABEL_66:
   do
   {
     v94 = [(NSMutableOrderedSet *)self->_recentDisplayItems objectAtIndex:v93];
-    v95 = [v94 bundleIdentifier];
+    bundleIdentifier = [v94 bundleIdentifier];
     v96 = FBSystemAppBundleID();
-    v97 = [v95 isEqualToString:v96];
+    v97 = [bundleIdentifier isEqualToString:v96];
 
     if (v97)
     {
@@ -649,12 +649,12 @@ LABEL_66:
 
     else
     {
-      v99 = [v94 type];
+      type = [v94 type];
       iconModel = self->_iconModel;
-      if (v99 == 5)
+      if (type == 5)
       {
-        v101 = [v94 webClipIdentifier];
-        v102 = [(SBIconModel *)iconModel bookmarkIconForWebClipIdentifier:v101];
+        webClipIdentifier = [v94 webClipIdentifier];
+        v102 = [(SBIconModel *)iconModel bookmarkIconForWebClipIdentifier:webClipIdentifier];
 
         v91 = v140;
         if (v102)
@@ -665,7 +665,7 @@ LABEL_66:
         goto LABEL_85;
       }
 
-      v98 = [(SBIconModel *)self->_iconModel applicationIconForBundleIdentifier:v95];
+      v98 = [(SBIconModel *)self->_iconModel applicationIconForBundleIdentifier:bundleIdentifier];
     }
 
     v102 = v98;
@@ -675,7 +675,7 @@ LABEL_90:
       v104 = [[SBCommandTabIconView alloc] initWithConfigurationOptions:2];
       [(SBCommandTabIconView *)v104 setLocation:@"SBIconLocationCommandTab"];
       [(SBCommandTabIconView *)v104 setDelegate:self];
-      [(SBCommandTabIconView *)v104 setIconImageCache:v141];
+      [(SBCommandTabIconView *)v104 setIconImageCache:iconImageCache];
       [(SBCommandTabIconView *)v104 setListLayoutProvider:v91];
       [(SBCommandTabIconView *)v104 setIcon:v102];
       [(SBCommandTabIconView *)v104 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -722,8 +722,8 @@ LABEL_97:
 
 LABEL_98:
   v107 = MEMORY[0x277D75C80];
-  v108 = [(SBCommandTabViewController *)self traitCollection];
-  v109 = [v108 preferredContentSizeCategory];
+  traitCollection2 = [(SBCommandTabViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
   v110 = UIContentSizeCategoryClip();
   WeakRetained = [v107 traitCollectionWithPreferredContentSizeCategory:v110];
 
@@ -738,14 +738,14 @@ LABEL_98:
 
   [(UILabel *)self->_selectedIconLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIStackView *)self->_stackView addSubview:self->_selectedIconLabel];
-  v116 = [(UIView *)self->_selectionSquareView centerYAnchor];
-  v117 = [(UIStackView *)self->_stackView centerYAnchor];
-  v118 = [v116 constraintEqualToAnchor:v117];
-  [v118 setActive:1];
+  centerYAnchor5 = [(UIView *)self->_selectionSquareView centerYAnchor];
+  centerYAnchor6 = [(UIStackView *)self->_stackView centerYAnchor];
+  currentDevice5 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
+  [currentDevice5 setActive:1];
 
-  v119 = [(UIView *)self->_selectionSquareView heightAnchor];
-  v120 = __sb__runningInSpringBoard();
-  if (v120)
+  heightAnchor2 = [(UIView *)self->_selectionSquareView heightAnchor];
+  mainScreen6 = __sb__runningInSpringBoard();
+  if (mainScreen6)
   {
     v106 = v138;
     if (SBFEffectiveDeviceClass() != 2)
@@ -757,7 +757,7 @@ LABEL_98:
     }
 
 LABEL_102:
-    v121 = v120 ^ 1;
+    v121 = mainScreen6 ^ 1;
     v124 = __sb__runningInSpringBoard();
     if (v124)
     {
@@ -766,8 +766,8 @@ LABEL_102:
 
     else
     {
-      v120 = [MEMORY[0x277D759A0] mainScreen];
-      [v120 _referenceBounds];
+      mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen6 _referenceBounds];
     }
 
     v122 = v124 ^ 1;
@@ -781,9 +781,9 @@ LABEL_102:
 
   else
   {
-    v118 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
     v106 = v138;
-    if ([v118 userInterfaceIdiom] == 1)
+    if ([currentDevice5 userInterfaceIdiom] == 1)
     {
       goto LABEL_102;
     }
@@ -794,7 +794,7 @@ LABEL_102:
   }
 
 LABEL_108:
-  v126 = [v119 constraintEqualToConstant:v123];
+  v126 = [heightAnchor2 constraintEqualToConstant:v123];
   [v126 setActive:1];
 
   if (v122)
@@ -805,12 +805,12 @@ LABEL_108:
   {
   }
 
-  v127 = [(UIView *)self->_selectionSquareView widthAnchor];
-  v128 = __sb__runningInSpringBoard();
-  if (!v128)
+  widthAnchor = [(UIView *)self->_selectionSquareView widthAnchor];
+  mainScreen7 = __sb__runningInSpringBoard();
+  if (!mainScreen7)
   {
-    v118 = [MEMORY[0x277D75418] currentDevice];
-    if ([v118 userInterfaceIdiom] != 1)
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom] != 1)
     {
       v130 = 0;
       v129 = 1;
@@ -819,7 +819,7 @@ LABEL_108:
     }
 
 LABEL_116:
-    v129 = v128 ^ 1;
+    v129 = mainScreen7 ^ 1;
     v132 = __sb__runningInSpringBoard();
     if (v132)
     {
@@ -828,8 +828,8 @@ LABEL_116:
 
     else
     {
-      v128 = [MEMORY[0x277D759A0] mainScreen];
-      [v128 _referenceBounds];
+      mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen7 _referenceBounds];
     }
 
     v130 = v132 ^ 1;
@@ -852,7 +852,7 @@ LABEL_116:
   v130 = 0;
   v131 = 71.0;
 LABEL_122:
-  v134 = [v127 constraintEqualToConstant:v131];
+  v134 = [widthAnchor constraintEqualToConstant:v131];
   [v134 setActive:1];
 
   if (v130)
@@ -886,8 +886,8 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
 
 - (void)showCommandTabBar
 {
-  v2 = [(SBCommandTabViewController *)self view];
-  [v2 setAlpha:1.0];
+  view = [(SBCommandTabViewController *)self view];
+  [view setAlpha:1.0];
 }
 
 - (void)next
@@ -940,14 +940,14 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
   return v4;
 }
 
-- (void)removeDisplayItem:(id)a3
+- (void)removeDisplayItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v11 = v4;
-    v5 = [(SBCommandTabViewController *)self indexOfDisplayItem:v4];
-    v4 = v11;
+    v11 = itemCopy;
+    v5 = [(SBCommandTabViewController *)self indexOfDisplayItem:itemCopy];
+    itemCopy = v11;
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = [(NSMutableArray *)self->_iconViews objectAtIndex:v5];
@@ -974,28 +974,28 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
         [WeakRetained viewControllerWantsDismissal:self];
       }
 
-      v4 = v11;
+      itemCopy = v11;
     }
   }
 }
 
-- (void)iconModelDidChange:(id)a3
+- (void)iconModelDidChange:(id)change
 {
-  v4 = [(SBIconController *)self->_iconController iconModel];
+  iconModel = [(SBIconController *)self->_iconController iconModel];
   iconModel = self->_iconModel;
-  self->_iconModel = v4;
+  self->_iconModel = iconModel;
 }
 
-- (void)iconTouchBegan:(id)a3
+- (void)iconTouchBegan:(id)began
 {
-  v6 = a3;
+  beganCopy = began;
   if ([(NSMutableArray *)self->_iconViews count])
   {
     v4 = 0;
     do
     {
       v5 = [(NSMutableArray *)self->_iconViews objectAtIndex:v4];
-      if ([v5 isEqual:v6])
+      if ([v5 isEqual:beganCopy])
       {
         self->_selectedIndex = v4;
         [(SBCommandTabViewController *)self _moveSelectionSquareToIconAtIndex:v4];
@@ -1008,32 +1008,32 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
   }
 }
 
-- (void)icon:(id)a3 touchEnded:(BOOL)a4
+- (void)icon:(id)icon touchEnded:(BOOL)ended
 {
-  if (!a4)
+  if (!ended)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [(SBCommandTabViewController *)self selectedApplicationDisplayItem];
-    [WeakRetained viewController:self selectedApplicationWithDisplayItem:v6];
+    selectedApplicationDisplayItem = [(SBCommandTabViewController *)self selectedApplicationDisplayItem];
+    [WeakRetained viewController:self selectedApplicationWithDisplayItem:selectedApplicationDisplayItem];
   }
 }
 
-- (void)iconTapped:(id)a3
+- (void)iconTapped:(id)tapped
 {
-  v8 = a3;
+  tappedCopy = tapped;
   if ([(NSMutableArray *)self->_iconViews count])
   {
     v4 = 0;
     do
     {
       v5 = [(NSMutableArray *)self->_iconViews objectAtIndex:v4];
-      if ([v5 isEqual:v8])
+      if ([v5 isEqual:tappedCopy])
       {
         self->_selectedIndex = v4;
         [(SBCommandTabViewController *)self _moveSelectionSquareToIconAtIndex:v4];
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        v7 = [(SBCommandTabViewController *)self selectedApplicationDisplayItem];
-        [WeakRetained viewController:self selectedApplicationWithDisplayItem:v7];
+        selectedApplicationDisplayItem = [(SBCommandTabViewController *)self selectedApplicationDisplayItem];
+        [WeakRetained viewController:self selectedApplicationWithDisplayItem:selectedApplicationDisplayItem];
       }
 
       ++v4;
@@ -1043,20 +1043,20 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)iconViewDisplaysAccessories:(id)a3
+- (BOOL)iconViewDisplaysAccessories:(id)accessories
 {
   iconController = self->_iconController;
-  v4 = [a3 icon];
-  LOBYTE(iconController) = [(SBIconController *)iconController allowsBadgingForIcon:v4];
+  icon = [accessories icon];
+  LOBYTE(iconController) = [(SBIconController *)iconController allowsBadgingForIcon:icon];
 
   return iconController;
 }
 
-- (void)_moveSelectionSquareToIconAtIndex:(unint64_t)a3
+- (void)_moveSelectionSquareToIconAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_iconViews count]> a3)
+  if ([(NSMutableArray *)self->_iconViews count]> index)
   {
-    v5 = [(NSMutableArray *)self->_iconViews objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_iconViews objectAtIndex:index];
     selectedIconView = self->_selectedIconView;
     self->_selectedIconView = v5;
 
@@ -1064,8 +1064,8 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
     [(UILabel *)self->_selectedIconLabel setAlpha:1.0];
     self->_isIconSelected = 1;
     [(SBCommandTabViewController *)self _updateIconSelectionPositionAndLabelText];
-    v7 = [(SBCommandTabViewController *)self view];
-    [v7 setNeedsDisplay];
+    view = [(SBCommandTabViewController *)self view];
+    [view setNeedsDisplay];
   }
 }
 
@@ -1078,9 +1078,9 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
 
   [(UIStackView *)self->_stackView addConstraint:self->_selectionXLayoutConstraint];
   selectedIconLabel = self->_selectedIconLabel;
-  v6 = [(SBIconView *)self->_selectedIconView icon];
-  v7 = [v6 displayName];
-  [(UILabel *)selectedIconLabel setText:v7];
+  icon = [(SBIconView *)self->_selectedIconView icon];
+  displayName = [icon displayName];
+  [(UILabel *)selectedIconLabel setText:displayName];
 
   [(UILabel *)self->_selectedIconLabel sizeToFit];
   [(UIStackView *)self->_stackView removeConstraint:self->_selectedLabelXConstraint];
@@ -1100,16 +1100,16 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
   [(UIView *)blurredBackgroundView addConstraint:v13];
 }
 
-- (void)_handleUIGesture:(id)a3
+- (void)_handleUIGesture:(id)gesture
 {
-  v18 = a3;
+  gestureCopy = gesture;
   self->_isTouchDown = 1;
-  v4 = [(UIStackView *)self->_stackView superview];
-  [(UIHoverGestureRecognizer *)v18 locationInView:v4];
+  superview = [(UIStackView *)self->_stackView superview];
+  [(UIHoverGestureRecognizer *)gestureCopy locationInView:superview];
   v6 = v5;
   v8 = v7;
 
-  if (self->_hoverGestureRecognizer == v18)
+  if (self->_hoverGestureRecognizer == gestureCopy)
   {
     if (v6 == self->_lastHoverLocation.x && v8 == self->_lastHoverLocation.y)
     {
@@ -1130,7 +1130,7 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
       v10 = 0;
       while (1)
       {
-        [(UIHoverGestureRecognizer *)v18 locationInView:self->_stackView];
+        [(UIHoverGestureRecognizer *)gestureCopy locationInView:self->_stackView];
         v12 = v11;
         v14 = v13;
         v15 = [(NSMutableArray *)self->_iconViews objectAtIndex:v10];
@@ -1161,37 +1161,37 @@ uint64_t __41__SBCommandTabViewController_viewDidLoad__block_invoke(uint64_t a1,
   }
 
 LABEL_15:
-  if ([(UIHoverGestureRecognizer *)v18 state]== 3)
+  if ([(UIHoverGestureRecognizer *)gestureCopy state]== 3)
   {
     self->_isTouchDown = 0;
-    v16 = [(SBCommandTabViewController *)self delegate];
+    delegate = [(SBCommandTabViewController *)self delegate];
     [(UIStackView *)self->_stackView frame];
     v22.x = v6;
     v22.y = v8;
     if (CGRectContainsPoint(v25, v22) && self->_isIconSelected)
     {
-      v17 = [(SBCommandTabViewController *)self selectedApplicationDisplayItem];
-      [v16 viewController:self selectedApplicationWithDisplayItem:v17];
+      selectedApplicationDisplayItem = [(SBCommandTabViewController *)self selectedApplicationDisplayItem];
+      [delegate viewController:self selectedApplicationWithDisplayItem:selectedApplicationDisplayItem];
     }
   }
 }
 
-- (void)_handleTapDismissGesture:(id)a3
+- (void)_handleTapDismissGesture:(id)gesture
 {
-  if ([a3 state] == 3)
+  if ([gesture state] == 3)
   {
-    v4 = [(SBCommandTabViewController *)self delegate];
-    [v4 viewControllerWantsDismissal:self];
+    delegate = [(SBCommandTabViewController *)self delegate];
+    [delegate viewControllerWantsDismissal:self];
   }
 }
 
 - (void)_updateForUserInterfaceStyle
 {
-  v14 = [(SBCommandTabViewController *)self traitCollection];
-  v3 = [v14 userInterfaceStyle];
-  v4 = [(UIView *)self->_blurredBackgroundView layer];
+  traitCollection = [(SBCommandTabViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  layer = [(UIView *)self->_blurredBackgroundView layer];
   v5 = 0.0;
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = 1.0;
     v6 = 2;
@@ -1203,29 +1203,29 @@ LABEL_15:
   }
 
   v7 = [MEMORY[0x277D75348] colorWithWhite:v5 alpha:0.08];
-  [v4 setBorderColor:{objc_msgSend(v7, "CGColor")}];
+  [layer setBorderColor:{objc_msgSend(v7, "CGColor")}];
 
   selectionSquareView = self->_selectionSquareView;
-  v9 = [MEMORY[0x277D75348] systemFillColor];
-  v10 = [v9 resolvedColorWithTraitCollection:v14];
+  systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+  v10 = [systemFillColor resolvedColorWithTraitCollection:traitCollection];
   [(UIView *)selectionSquareView setBackgroundColor:v10];
 
   [(UIView *)self->_selectionSquareView _setDrawsAsBackdropOverlayWithBlendMode:v6];
   selectedIconLabel = self->_selectedIconLabel;
-  v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v13 = [v12 resolvedColorWithTraitCollection:v14];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v13 = [secondaryLabelColor resolvedColorWithTraitCollection:traitCollection];
   [(UILabel *)selectedIconLabel setTextColor:v13];
 
   [(UILabel *)self->_selectedIconLabel _setDrawsAsBackdropOverlayWithBlendMode:v6];
 }
 
-- (void)_configureGridLayoutConfiguration:(id)a3
+- (void)_configureGridLayoutConfiguration:(id)configuration
 {
-  v4 = a3;
-  v12 = [v4 iconAccessoryVisualConfiguration];
-  v5 = [MEMORY[0x277D66160] currentDeviceScreenType];
+  configurationCopy = configuration;
+  iconAccessoryVisualConfiguration = [configurationCopy iconAccessoryVisualConfiguration];
+  currentDeviceScreenType = [MEMORY[0x277D66160] currentDeviceScreenType];
   v6 = 16.0;
-  if ((v5 - 100) > 0x12)
+  if ((currentDeviceScreenType - 100) > 0x12)
   {
     v8 = 11.0;
     v9 = 26.0;
@@ -1233,7 +1233,7 @@ LABEL_15:
     v7 = 11.0;
   }
 
-  else if (((1 << (v5 - 100)) & 0x2D7EF) != 0)
+  else if (((1 << (currentDeviceScreenType - 100)) & 0x2D7EF) != 0)
   {
     v7 = 9.0;
     v8 = 10.0;
@@ -1250,15 +1250,15 @@ LABEL_15:
     v7 = 12.0;
   }
 
-  [v12 setFontSize:v6];
-  [v12 setSize:{v9, v9}];
-  [v12 setOffset:{v8, v7}];
-  v11 = [(SBCommandTabViewController *)self traitCollection];
-  [v11 displayScale];
+  [iconAccessoryVisualConfiguration setFontSize:v6];
+  [iconAccessoryVisualConfiguration setSize:{v9, v9}];
+  [iconAccessoryVisualConfiguration setOffset:{v8, v7}];
+  traitCollection = [(SBCommandTabViewController *)self traitCollection];
+  [traitCollection displayScale];
 
   MEMORY[0x223D6D370](v10);
   SBIconImageInfoMake();
-  [v4 setIconImageInfo:?];
+  [configurationCopy setIconImageInfo:?];
 }
 
 - (SBCommandTabViewControllerDelegate)delegate

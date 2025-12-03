@@ -13,9 +13,9 @@
   v2 = [(BLTLightsAndSirensReplyInfo *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creation = v2->_creation;
-    v2->_creation = v3;
+    v2->_creation = date;
 
     v2->_didPlayLightsAndSirens = 0;
   }
@@ -25,9 +25,9 @@
 
 - (BOOL)hasExpired
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(BLTLightsAndSirensReplyInfo *)self creation];
-  [v3 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  creation = [(BLTLightsAndSirensReplyInfo *)self creation];
+  [date timeIntervalSinceDate:creation];
   v6 = v5 >= 7200.0;
 
   return v6;

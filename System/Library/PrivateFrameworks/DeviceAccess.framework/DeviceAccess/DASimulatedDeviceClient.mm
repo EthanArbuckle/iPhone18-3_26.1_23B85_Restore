@@ -1,6 +1,6 @@
 @interface DASimulatedDeviceClient
 - (DASimulatedDeviceClient)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_invalidated;
 - (void)activate;
 - (void)invalidate;
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   objc_opt_class();
   deviceBonjourServiceType = self->_deviceBonjourServiceType;

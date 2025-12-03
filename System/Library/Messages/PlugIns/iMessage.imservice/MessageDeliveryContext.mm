@@ -1,23 +1,23 @@
 @interface MessageDeliveryContext
-- (MessageDeliveryContext)initWithDisplayIDs:(id)a3 didSucceed:(BOOL)a4 error:(unsigned int)a5 isFromMeToMe:(BOOL)a6 shouldDeactivate:(BOOL)a7 isBackwardsCompatibleMessage:(BOOL)a8;
+- (MessageDeliveryContext)initWithDisplayIDs:(id)ds didSucceed:(BOOL)succeed error:(unsigned int)error isFromMeToMe:(BOOL)me shouldDeactivate:(BOOL)deactivate isBackwardsCompatibleMessage:(BOOL)message;
 @end
 
 @implementation MessageDeliveryContext
 
-- (MessageDeliveryContext)initWithDisplayIDs:(id)a3 didSucceed:(BOOL)a4 error:(unsigned int)a5 isFromMeToMe:(BOOL)a6 shouldDeactivate:(BOOL)a7 isBackwardsCompatibleMessage:(BOOL)a8
+- (MessageDeliveryContext)initWithDisplayIDs:(id)ds didSucceed:(BOOL)succeed error:(unsigned int)error isFromMeToMe:(BOOL)me shouldDeactivate:(BOOL)deactivate isBackwardsCompatibleMessage:(BOOL)message
 {
-  v14 = a3;
+  dsCopy = ds;
   v18.receiver = self;
   v18.super_class = MessageDeliveryContext;
   v15 = [(MessageDeliveryContext *)&v18 init];
   displayIDs = v15->_displayIDs;
-  v15->_displayIDs = v14;
+  v15->_displayIDs = dsCopy;
 
-  v15->_success = a4;
-  v15->_error = a5;
-  v15->_fromMeToMe = a6;
-  v15->_shouldDeactivate = a7;
-  v15->_isBackwardsCompatibleMessage = a8;
+  v15->_success = succeed;
+  v15->_error = error;
+  v15->_fromMeToMe = me;
+  v15->_shouldDeactivate = deactivate;
+  v15->_isBackwardsCompatibleMessage = message;
   return v15;
 }
 

@@ -1,35 +1,35 @@
 @interface NPKProtoPassSyncStateChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)npkDescription;
-- (int)StringAsChangeType:(id)a3;
+- (int)StringAsChangeType:(id)type;
 - (unint64_t)hash;
-- (void)addRemoteAssetsForPartialUpdate:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPassSegmentIndex:(BOOL)a3;
-- (void)setHasPassSegmentTotal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRemoteAssetsForPartialUpdate:(id)update;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPassSegmentIndex:(BOOL)index;
+- (void)setHasPassSegmentTotal:(BOOL)total;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPassSyncStateChange
 
-- (int)StringAsChangeType:(id)a3
+- (int)StringAsChangeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Add"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Add"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Update"])
+  else if ([typeCopy isEqualToString:@"Update"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Remove"])
+  else if ([typeCopy isEqualToString:@"Remove"])
   {
     v4 = 2;
   }
@@ -42,9 +42,9 @@
   return v4;
 }
 
-- (void)setHasPassSegmentIndex:(BOOL)a3
+- (void)setHasPassSegmentIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -57,9 +57,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPassSegmentTotal:(BOOL)a3
+- (void)setHasPassSegmentTotal:(BOOL)total
 {
-  if (a3)
+  if (total)
   {
     v3 = 4;
   }
@@ -72,22 +72,22 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addRemoteAssetsForPartialUpdate:(id)a3
+- (void)addRemoteAssetsForPartialUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   remoteAssetsForPartialUpdates = self->_remoteAssetsForPartialUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!remoteAssetsForPartialUpdates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_remoteAssetsForPartialUpdates;
     self->_remoteAssetsForPartialUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     remoteAssetsForPartialUpdates = self->_remoteAssetsForPartialUpdates;
   }
 
-  [(NSMutableArray *)remoteAssetsForPartialUpdates addObject:v4];
+  [(NSMutableArray *)remoteAssetsForPartialUpdates addObject:updateCopy];
 }
 
 - (id)description
@@ -96,8 +96,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPassSyncStateChange;
   v4 = [(NPKProtoPassSyncStateChange *)&v8 description];
-  v5 = [(NPKProtoPassSyncStateChange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPassSyncStateChange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -105,12 +105,12 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   changeUUID = self->_changeUUID;
   if (changeUUID)
   {
-    [v3 setObject:changeUUID forKey:@"changeUUID"];
+    [dictionary setObject:changeUUID forKey:@"changeUUID"];
   }
 
   lastKnownReconciledPassSyncStateHash = self->_lastKnownReconciledPassSyncStateHash;
@@ -141,8 +141,8 @@
   syncStateItem = self->_syncStateItem;
   if (syncStateItem)
   {
-    v11 = [(NPKProtoPassSyncStateItem *)syncStateItem dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"syncStateItem"];
+    dictionaryRepresentation = [(NPKProtoPassSyncStateItem *)syncStateItem dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"syncStateItem"];
   }
 
   passData = self->_passData;
@@ -169,8 +169,8 @@
   companionCatalog = self->_companionCatalog;
   if (companionCatalog)
   {
-    v17 = [(NPKProtoCatalog *)companionCatalog dictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"companionCatalog"];
+    dictionaryRepresentation2 = [(NPKProtoCatalog *)companionCatalog dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"companionCatalog"];
   }
 
   baseManifestHashForPartialUpdate = self->_baseManifestHashForPartialUpdate;
@@ -201,8 +201,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -217,8 +217,8 @@
   watchCatalog = self->_watchCatalog;
   if (watchCatalog)
   {
-    v27 = [(NPKProtoCatalog *)watchCatalog dictionaryRepresentation];
-    [v4 setObject:v27 forKey:@"watchCatalog"];
+    dictionaryRepresentation4 = [(NPKProtoCatalog *)watchCatalog dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"watchCatalog"];
   }
 
   if (*&self->_has)
@@ -232,16 +232,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_changeUUID)
   {
     [NPKProtoPassSyncStateChange writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteDataField();
   if (self->_lastKnownReconciledPassSyncStateHash)
   {
@@ -333,100 +333,100 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
-  [v9 setChangeUUID:self->_changeUUID];
+  toCopy = to;
+  [toCopy setChangeUUID:self->_changeUUID];
   if (self->_lastKnownReconciledPassSyncStateHash)
   {
-    [v9 setLastKnownReconciledPassSyncStateHash:?];
+    [toCopy setLastKnownReconciledPassSyncStateHash:?];
   }
 
-  *(v9 + 4) = self->_changeType;
-  [v9 setUniqueID:self->_uniqueID];
+  *(toCopy + 4) = self->_changeType;
+  [toCopy setUniqueID:self->_uniqueID];
   if (self->_syncStateItem)
   {
-    [v9 setSyncStateItem:?];
+    [toCopy setSyncStateItem:?];
   }
 
   if (self->_passData)
   {
-    [v9 setPassData:?];
+    [toCopy setPassData:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v9 + 16) = self->_passSegmentIndex;
-    *(v9 + 104) |= 2u;
+    *(toCopy + 16) = self->_passSegmentIndex;
+    *(toCopy + 104) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v9 + 17) = self->_passSegmentTotal;
-    *(v9 + 104) |= 4u;
+    *(toCopy + 17) = self->_passSegmentTotal;
+    *(toCopy + 104) |= 4u;
   }
 
   if (self->_companionCatalog)
   {
-    [v9 setCompanionCatalog:?];
+    [toCopy setCompanionCatalog:?];
   }
 
   if (self->_baseManifestHashForPartialUpdate)
   {
-    [v9 setBaseManifestHashForPartialUpdate:?];
+    [toCopy setBaseManifestHashForPartialUpdate:?];
   }
 
   if ([(NPKProtoPassSyncStateChange *)self remoteAssetsForPartialUpdatesCount])
   {
-    [v9 clearRemoteAssetsForPartialUpdates];
-    v5 = [(NPKProtoPassSyncStateChange *)self remoteAssetsForPartialUpdatesCount];
-    if (v5)
+    [toCopy clearRemoteAssetsForPartialUpdates];
+    remoteAssetsForPartialUpdatesCount = [(NPKProtoPassSyncStateChange *)self remoteAssetsForPartialUpdatesCount];
+    if (remoteAssetsForPartialUpdatesCount)
     {
-      v6 = v5;
+      v6 = remoteAssetsForPartialUpdatesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NPKProtoPassSyncStateChange *)self remoteAssetsForPartialUpdateAtIndex:i];
-        [v9 addRemoteAssetsForPartialUpdate:v8];
+        [toCopy addRemoteAssetsForPartialUpdate:v8];
       }
     }
   }
 
   if (self->_watchCatalog)
   {
-    [v9 setWatchCatalog:?];
+    [toCopy setWatchCatalog:?];
   }
 
   if (*&self->_has)
   {
-    *(v9 + 12) = self->_lastKnownReconciledPassSyncStateHashVersion;
-    *(v9 + 104) |= 1u;
+    *(toCopy + 12) = self->_lastKnownReconciledPassSyncStateHashVersion;
+    *(toCopy + 104) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_changeUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_changeUUID copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSData *)self->_lastKnownReconciledPassSyncStateHash copyWithZone:a3];
+  v8 = [(NSData *)self->_lastKnownReconciledPassSyncStateHash copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
   *(v5 + 16) = self->_changeType;
-  v10 = [(NSString *)self->_uniqueID copyWithZone:a3];
+  v10 = [(NSString *)self->_uniqueID copyWithZone:zone];
   v11 = *(v5 + 88);
   *(v5 + 88) = v10;
 
-  v12 = [(NPKProtoPassSyncStateItem *)self->_syncStateItem copyWithZone:a3];
+  v12 = [(NPKProtoPassSyncStateItem *)self->_syncStateItem copyWithZone:zone];
   v13 = *(v5 + 80);
   *(v5 + 80) = v12;
 
-  v14 = [(NSData *)self->_passData copyWithZone:a3];
+  v14 = [(NSData *)self->_passData copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
@@ -444,11 +444,11 @@
     *(v5 + 104) |= 4u;
   }
 
-  v17 = [(NPKProtoCatalog *)self->_companionCatalog copyWithZone:a3];
+  v17 = [(NPKProtoCatalog *)self->_companionCatalog copyWithZone:zone];
   v18 = *(v5 + 32);
   *(v5 + 32) = v17;
 
-  v19 = [(NSData *)self->_baseManifestHashForPartialUpdate copyWithZone:a3];
+  v19 = [(NSData *)self->_baseManifestHashForPartialUpdate copyWithZone:zone];
   v20 = *(v5 + 8);
   *(v5 + 8) = v19;
 
@@ -471,7 +471,7 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v31 + 1) + 8 * i) copyWithZone:{a3, v31}];
+        v26 = [*(*(&v31 + 1) + 8 * i) copyWithZone:{zone, v31}];
         [v5 addRemoteAssetsForPartialUpdate:v26];
       }
 
@@ -481,7 +481,7 @@
     while (v23);
   }
 
-  v27 = [(NPKProtoCatalog *)self->_watchCatalog copyWithZone:a3];
+  v27 = [(NPKProtoCatalog *)self->_watchCatalog copyWithZone:zone];
   v28 = *(v5 + 96);
   *(v5 + 96) = v27;
 
@@ -495,16 +495,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   changeUUID = self->_changeUUID;
-  if (changeUUID | *(v4 + 3))
+  if (changeUUID | *(equalCopy + 3))
   {
     if (![(NSData *)changeUUID isEqual:?])
     {
@@ -513,7 +513,7 @@
   }
 
   lastKnownReconciledPassSyncStateHash = self->_lastKnownReconciledPassSyncStateHash;
-  if (lastKnownReconciledPassSyncStateHash | *(v4 + 5))
+  if (lastKnownReconciledPassSyncStateHash | *(equalCopy + 5))
   {
     if (![(NSData *)lastKnownReconciledPassSyncStateHash isEqual:?])
     {
@@ -521,13 +521,13 @@
     }
   }
 
-  if (self->_changeType != *(v4 + 4))
+  if (self->_changeType != *(equalCopy + 4))
   {
     goto LABEL_35;
   }
 
   uniqueID = self->_uniqueID;
-  if (uniqueID | *(v4 + 11))
+  if (uniqueID | *(equalCopy + 11))
   {
     if (![(NSString *)uniqueID isEqual:?])
     {
@@ -536,7 +536,7 @@
   }
 
   syncStateItem = self->_syncStateItem;
-  if (syncStateItem | *(v4 + 10))
+  if (syncStateItem | *(equalCopy + 10))
   {
     if (![(NPKProtoPassSyncStateItem *)syncStateItem isEqual:?])
     {
@@ -545,7 +545,7 @@
   }
 
   passData = self->_passData;
-  if (passData | *(v4 + 7))
+  if (passData | *(equalCopy + 7))
   {
     if (![(NSData *)passData isEqual:?])
     {
@@ -553,16 +553,16 @@
     }
   }
 
-  v10 = *(v4 + 104);
+  v10 = *(equalCopy + 104);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 104) & 2) == 0 || self->_passSegmentIndex != *(v4 + 16))
+    if ((*(equalCopy + 104) & 2) == 0 || self->_passSegmentIndex != *(equalCopy + 16))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 104) & 2) != 0)
+  else if ((*(equalCopy + 104) & 2) != 0)
   {
 LABEL_35:
     v15 = 0;
@@ -571,25 +571,25 @@ LABEL_35:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 104) & 4) == 0 || self->_passSegmentTotal != *(v4 + 17))
+    if ((*(equalCopy + 104) & 4) == 0 || self->_passSegmentTotal != *(equalCopy + 17))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 104) & 4) != 0)
+  else if ((*(equalCopy + 104) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   companionCatalog = self->_companionCatalog;
-  if (companionCatalog | *(v4 + 4) && ![(NPKProtoCatalog *)companionCatalog isEqual:?])
+  if (companionCatalog | *(equalCopy + 4) && ![(NPKProtoCatalog *)companionCatalog isEqual:?])
   {
     goto LABEL_35;
   }
 
   baseManifestHashForPartialUpdate = self->_baseManifestHashForPartialUpdate;
-  if (baseManifestHashForPartialUpdate | *(v4 + 1))
+  if (baseManifestHashForPartialUpdate | *(equalCopy + 1))
   {
     if (![(NSData *)baseManifestHashForPartialUpdate isEqual:?])
     {
@@ -598,7 +598,7 @@ LABEL_35:
   }
 
   remoteAssetsForPartialUpdates = self->_remoteAssetsForPartialUpdates;
-  if (remoteAssetsForPartialUpdates | *(v4 + 9))
+  if (remoteAssetsForPartialUpdates | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)remoteAssetsForPartialUpdates isEqual:?])
     {
@@ -607,7 +607,7 @@ LABEL_35:
   }
 
   watchCatalog = self->_watchCatalog;
-  if (watchCatalog | *(v4 + 12))
+  if (watchCatalog | *(equalCopy + 12))
   {
     if (![(NPKProtoCatalog *)watchCatalog isEqual:?])
     {
@@ -615,10 +615,10 @@ LABEL_35:
     }
   }
 
-  v15 = (*(v4 + 104) & 1) == 0;
+  v15 = (*(equalCopy + 104) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_lastKnownReconciledPassSyncStateHashVersion != *(v4 + 12))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_lastKnownReconciledPassSyncStateHashVersion != *(equalCopy + 12))
     {
       goto LABEL_35;
     }
@@ -679,28 +679,28 @@ LABEL_6:
   return v16 ^ v17 ^ v4 ^ v5 ^ v6 ^ (2654435761 * changeType) ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(NPKProtoPassSyncStateChange *)self setChangeUUID:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NPKProtoPassSyncStateChange *)self setLastKnownReconciledPassSyncStateHash:?];
   }
 
-  self->_changeType = *(v4 + 4);
-  if (*(v4 + 11))
+  self->_changeType = *(fromCopy + 4);
+  if (*(fromCopy + 11))
   {
     [(NPKProtoPassSyncStateChange *)self setUniqueID:?];
   }
 
   syncStateItem = self->_syncStateItem;
-  v6 = *(v4 + 10);
+  v6 = *(fromCopy + 10);
   if (syncStateItem)
   {
     if (v6)
@@ -714,27 +714,27 @@ LABEL_6:
     [(NPKProtoPassSyncStateChange *)self setSyncStateItem:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NPKProtoPassSyncStateChange *)self setPassData:?];
   }
 
-  v7 = *(v4 + 104);
+  v7 = *(fromCopy + 104);
   if ((v7 & 2) != 0)
   {
-    self->_passSegmentIndex = *(v4 + 16);
+    self->_passSegmentIndex = *(fromCopy + 16);
     *&self->_has |= 2u;
-    v7 = *(v4 + 104);
+    v7 = *(fromCopy + 104);
   }
 
   if ((v7 & 4) != 0)
   {
-    self->_passSegmentTotal = *(v4 + 17);
+    self->_passSegmentTotal = *(fromCopy + 17);
     *&self->_has |= 4u;
   }
 
   companionCatalog = self->_companionCatalog;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   if (companionCatalog)
   {
     if (v9)
@@ -748,7 +748,7 @@ LABEL_6:
     [(NPKProtoPassSyncStateChange *)self setCompanionCatalog:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoPassSyncStateChange *)self setBaseManifestHashForPartialUpdate:?];
   }
@@ -757,7 +757,7 @@ LABEL_6:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = *(v4 + 9);
+  v10 = *(fromCopy + 9);
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -782,7 +782,7 @@ LABEL_6:
   }
 
   watchCatalog = self->_watchCatalog;
-  v16 = *(v4 + 12);
+  v16 = *(fromCopy + 12);
   if (watchCatalog)
   {
     if (v16)
@@ -796,9 +796,9 @@ LABEL_6:
     [(NPKProtoPassSyncStateChange *)self setWatchCatalog:?];
   }
 
-  if (*(v4 + 104))
+  if (*(fromCopy + 104))
   {
-    self->_lastKnownReconciledPassSyncStateHashVersion = *(v4 + 12);
+    self->_lastKnownReconciledPassSyncStateHashVersion = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
@@ -807,15 +807,15 @@ LABEL_6:
 
 - (id)npkDescription
 {
-  v3 = [(NPKProtoPassSyncStateChange *)self dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(NPKProtoPassSyncStateChange *)self dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(NPKProtoPassSyncStateChange *)self passData];
-  v6 = v5;
-  if (v5)
+  passData = [(NPKProtoPassSyncStateChange *)self passData];
+  v6 = passData;
+  if (passData)
   {
-    v7 = [v5 npkDescription];
-    [v4 setObject:v7 forKey:@"passData"];
+    npkDescription = [passData npkDescription];
+    [v4 setObject:npkDescription forKey:@"passData"];
   }
 
   v8 = MEMORY[0x277CCACA8];

@@ -1,13 +1,13 @@
 @interface CUINamedLayerImage
-- (BOOL)_updateFromCatalog:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6;
+- (BOOL)_updateFromCatalog:(id)catalog displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)name;
 - (CGColor)color;
 - (CGRect)frame;
 - (CUINamedGradient)gradient;
-- (CUINamedLayerImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedLayerImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (double)opacity;
-- (id)sdfTextureWithBufferAllocator:(id)a3;
+- (id)sdfTextureWithBufferAllocator:(id)allocator;
 - (int)blendMode;
-- (void)_setGradientOrColorName:(id)a3;
+- (void)_setGradientOrColorName:(id)name;
 - (void)dealloc;
 @end
 
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (BOOL)_updateFromCatalog:(id)a3 displayGamut:(int64_t)a4 deviceIdiom:(int64_t)a5 appearanceName:(id)a6
+- (BOOL)_updateFromCatalog:(id)catalog displayGamut:(int64_t)gamut deviceIdiom:(int64_t)idiom appearanceName:(id)name
 {
   v21.receiver = self;
   v21.super_class = CUINamedLayerImage;
@@ -47,29 +47,29 @@ LABEL_6:
       return v11;
     }
 
-    v12 = [a3 _appearancefallback_gradientWithName:-[CUINamedLayerImage gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:a4 appearanceName:{a5, a6}];
-    if (v12 || (v12 = [a3 _appearancefallback_colorWithName:-[CUINamedLayerImage gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:a4 appearanceName:{a5, a6}]) != 0)
+    v12 = [catalog _appearancefallback_gradientWithName:-[CUINamedLayerImage gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:gamut appearanceName:{idiom, name}];
+    if (v12 || (v12 = [catalog _appearancefallback_colorWithName:-[CUINamedLayerImage gradientOrColorName](self displayGamut:"gradientOrColorName") deviceIdiom:gamut appearanceName:{idiom, name}]) != 0)
     {
       [(CUINamedLayerImage *)self _setGradientOrColor:v12];
       goto LABEL_6;
     }
 
-    v13 = [(CUINamedLayerImage *)self gradientOrColorName];
+    gradientOrColorName = [(CUINamedLayerImage *)self gradientOrColorName];
     [(CUINamedLookup *)self name];
-    _CUILog(4, "CoreUI: Couldn't find gradient/colorname '%@' for icon layer stack %@", v14, v15, v16, v17, v18, v19, v13);
+    _CUILog(4, "CoreUI: Couldn't find gradient/colorname '%@' for icon layer stack %@", v14, v15, v16, v17, v18, v19, gradientOrColorName);
     LOBYTE(v11) = 0;
   }
 
   return v11;
 }
 
-- (id)sdfTextureWithBufferAllocator:(id)a3
+- (id)sdfTextureWithBufferAllocator:(id)allocator
 {
   AssociatedObject = objc_getAssociatedObject(self, "com.apple.coreui.iconstack.sdf");
   if (!AssociatedObject)
   {
-    v6 = [(CUINamedLookup *)self storageRef];
-    v8 = _LookupStructuredThemeProvider(v6, v7);
+    storageRef = [(CUINamedLookup *)self storageRef];
+    v8 = _LookupStructuredThemeProvider(storageRef, v7);
     v9 = CUIRenditionKeyValueForAttribute([v8 renditionKeyForName:{-[CUINamedLookup name](self, "name")}], 17);
     v10 = [(CUIRenditionKey *)[(CUINamedLookup *)self renditionKey] copy];
     [v10 setThemeElement:41];
@@ -85,22 +85,22 @@ LABEL_6:
 
     else
     {
-      v11 = [(CUINamedLookup *)self name];
-      _CUILog(4, "CoreUI: unable to locate sdf '%@' key:%@ releasing", v12, v13, v14, v15, v16, v17, v11);
+      name = [(CUINamedLookup *)self name];
+      _CUILog(4, "CoreUI: unable to locate sdf '%@' key:%@ releasing", v12, v13, v14, v15, v16, v17, name);
       AssociatedObject = 0;
     }
 
     objc_setAssociatedObject(self, "com.apple.coreui.iconstack.sdf", AssociatedObject, 0x301);
   }
 
-  return [(CUINamedTexture *)AssociatedObject textureWithBufferAllocator:a3];
+  return [(CUINamedTexture *)AssociatedObject textureWithBufferAllocator:allocator];
 }
 
-- (CUINamedLayerImage)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedLayerImage)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v6.receiver = self;
   v6.super_class = CUINamedLayerImage;
-  result = [(CUINamedImage *)&v6 initWithName:a3 usingRenditionKey:a4 fromTheme:a5];
+  result = [(CUINamedImage *)&v6 initWithName:name usingRenditionKey:key fromTheme:theme];
   if (result)
   {
     result->_opacity = 1.0;
@@ -131,35 +131,35 @@ LABEL_6:
   return result;
 }
 
-- (void)_setGradientOrColorName:(id)a3
+- (void)_setGradientOrColorName:(id)name
 {
   gradientOrColorName = self->_gradientOrColorName;
-  if (gradientOrColorName != a3)
+  if (gradientOrColorName != name)
   {
 
-    self->_gradientOrColorName = [a3 copy];
+    self->_gradientOrColorName = [name copy];
   }
 }
 
 - (CGColor)color
 {
-  v2 = [(CUINamedLayerImage *)self _gradientOrColor];
+  _gradientOrColor = [(CUINamedLayerImage *)self _gradientOrColor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     return 0;
   }
 
-  return [v2 cgColor];
+  return [_gradientOrColor cgColor];
 }
 
 - (CUINamedGradient)gradient
 {
-  v2 = [(CUINamedLayerImage *)self _gradientOrColor];
+  _gradientOrColor = [(CUINamedLayerImage *)self _gradientOrColor];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return _gradientOrColor;
   }
 
   else

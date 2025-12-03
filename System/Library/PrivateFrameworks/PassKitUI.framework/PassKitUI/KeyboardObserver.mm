@@ -1,13 +1,13 @@
 @interface KeyboardObserver
-- (void)keyboardDidHideWithNotification:(id)a3;
-- (void)keyboardWillChangeFrameWithNotification:(id)a3;
-- (void)keyboardWillHideWithNotification:(id)a3;
-- (void)keyboardWillShowWithNotification:(id)a3;
+- (void)keyboardDidHideWithNotification:(id)notification;
+- (void)keyboardWillChangeFrameWithNotification:(id)notification;
+- (void)keyboardWillHideWithNotification:(id)notification;
+- (void)keyboardWillShowWithNotification:(id)notification;
 @end
 
 @implementation KeyboardObserver
 
-- (void)keyboardWillShowWithNotification:(id)a3
+- (void)keyboardWillShowWithNotification:(id)notification
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD48068);
   MEMORY[0x1EEE9AC00](v3 - 8, v4);
@@ -30,7 +30,7 @@
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)keyboardWillHideWithNotification:(id)a3
+- (void)keyboardWillHideWithNotification:(id)notification
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD48068);
   MEMORY[0x1EEE9AC00](v3 - 8, v4);
@@ -48,7 +48,7 @@
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)keyboardDidHideWithNotification:(id)a3
+- (void)keyboardDidHideWithNotification:(id)notification
 {
   v3 = sub_1BE04A2E4();
   v4 = *(v3 - 8);
@@ -63,7 +63,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)keyboardWillChangeFrameWithNotification:(id)a3
+- (void)keyboardWillChangeFrameWithNotification:(id)notification
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBD48068);
   MEMORY[0x1EEE9AC00](v3 - 8, v4);

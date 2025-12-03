@@ -1,13 +1,13 @@
 @interface PUDoubleTapZoomController
-- (BOOL)shouldDoubleTapBeginAtLocationFromProvider:(id)a3;
+- (BOOL)shouldDoubleTapBeginAtLocationFromProvider:(id)provider;
 - (PUDoubleTapZoomController)init;
 - (PUDoubleTapZoomControllerDelegate)delegate;
 - (UITapGestureRecognizer)doubleTapGestureRecognizer;
-- (id)_userTransformViewAtLocationFromProvider:(id)a3;
-- (void)_handleDoubleTapGestureRecognizer:(id)a3;
+- (id)_userTransformViewAtLocationFromProvider:(id)provider;
+- (void)_handleDoubleTapGestureRecognizer:(id)recognizer;
 - (void)_updateGestureRecognizersIfNeeded;
 - (void)invalidateViewHostingGestureRecognizers;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation PUDoubleTapZoomController
@@ -19,9 +19,9 @@
   return WeakRetained;
 }
 
-- (id)_userTransformViewAtLocationFromProvider:(id)a3
+- (id)_userTransformViewAtLocationFromProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -30,12 +30,12 @@
   v17 = 0;
   if (self->_delegateFlags.respondsToTilingView)
   {
-    v5 = [(PUDoubleTapZoomController *)self delegate];
-    v6 = [v5 doubleTapZoomControllerTilingView:self];
+    delegate = [(PUDoubleTapZoomController *)self delegate];
+    v6 = [delegate doubleTapZoomControllerTilingView:self];
 
     if (v6)
     {
-      [v4 locationInView:v6];
+      [providerCopy locationInView:v6];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __70__PUDoubleTapZoomController__userTransformViewAtLocationFromProvider___block_invoke;
@@ -72,12 +72,12 @@ void __70__PUDoubleTapZoomController__userTransformViewAtLocationFromProvider___
   }
 }
 
-- (void)_handleDoubleTapGestureRecognizer:(id)a3
+- (void)_handleDoubleTapGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  if ([v5 state] == 3)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 3)
   {
-    v4 = [(PUDoubleTapZoomController *)self _userTransformViewAtLocationFromProvider:v5];
+    v4 = [(PUDoubleTapZoomController *)self _userTransformViewAtLocationFromProvider:recognizerCopy];
     if ([v4 hasUserZoomedIn])
     {
       [v4 zoomOut:1];
@@ -85,7 +85,7 @@ void __70__PUDoubleTapZoomController__userTransformViewAtLocationFromProvider___
 
     else
     {
-      [v4 zoomInOnLocationFromProvider:v5];
+      [v4 zoomInOnLocationFromProvider:recognizerCopy];
     }
   }
 }
@@ -97,8 +97,8 @@ void __70__PUDoubleTapZoomController__userTransformViewAtLocationFromProvider___
     [(PUDoubleTapZoomController *)self _setNeedsUpdateGestureRecognizers:0];
     if (self->_delegateFlags.respondsToViewHostingGestureRecognizers)
     {
-      v3 = [(PUDoubleTapZoomController *)self delegate];
-      v10 = [v3 doubleTapZoomControllerViewHostingGestureRecognizers:self];
+      delegate = [(PUDoubleTapZoomController *)self delegate];
+      v10 = [delegate doubleTapZoomControllerViewHostingGestureRecognizers:self];
     }
 
     else
@@ -106,59 +106,59 @@ void __70__PUDoubleTapZoomController__userTransformViewAtLocationFromProvider___
       v10 = 0;
     }
 
-    v4 = [(PUDoubleTapZoomController *)self _doubleTapGestureRecognizer];
+    _doubleTapGestureRecognizer = [(PUDoubleTapZoomController *)self _doubleTapGestureRecognizer];
     if (v10)
     {
-      if (!v4)
+      if (!_doubleTapGestureRecognizer)
       {
-        v4 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleDoubleTapGestureRecognizer_];
-        [v4 setNumberOfTapsRequired:2];
-        [(PUDoubleTapZoomController *)self _setDoubleTapGestureRecognizer:v4];
-        if (!self->_delegateFlags.respondsToDelegateForGestureRecognizer || (-[PUDoubleTapZoomController delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 doubleTapZoomController:self delegateForGestureRecognizer:v4], v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+        _doubleTapGestureRecognizer = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleDoubleTapGestureRecognizer_];
+        [_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
+        [(PUDoubleTapZoomController *)self _setDoubleTapGestureRecognizer:_doubleTapGestureRecognizer];
+        if (!self->_delegateFlags.respondsToDelegateForGestureRecognizer || (-[PUDoubleTapZoomController delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 doubleTapZoomController:self delegateForGestureRecognizer:_doubleTapGestureRecognizer], selfCopy = objc_claimAutoreleasedReturnValue(), v5, !selfCopy))
         {
-          v6 = self;
+          selfCopy = self;
         }
 
-        [v4 setDelegate:v6];
+        [_doubleTapGestureRecognizer setDelegate:selfCopy];
       }
 
-      v7 = [v4 view];
+      view = [_doubleTapGestureRecognizer view];
 
-      if (v10 != v7)
+      if (v10 != view)
       {
-        v8 = [v4 view];
-        [v8 removeGestureRecognizer:v4];
+        view2 = [_doubleTapGestureRecognizer view];
+        [view2 removeGestureRecognizer:_doubleTapGestureRecognizer];
 
-        [v10 addGestureRecognizer:v4];
+        [v10 addGestureRecognizer:_doubleTapGestureRecognizer];
       }
     }
 
-    else if (v4)
+    else if (_doubleTapGestureRecognizer)
     {
-      v9 = [v4 view];
-      [v9 removeGestureRecognizer:v4];
+      view3 = [_doubleTapGestureRecognizer view];
+      [view3 removeGestureRecognizer:_doubleTapGestureRecognizer];
 
       [(PUDoubleTapZoomController *)self _setDoubleTapGestureRecognizer:0];
     }
   }
 }
 
-- (BOOL)shouldDoubleTapBeginAtLocationFromProvider:(id)a3
+- (BOOL)shouldDoubleTapBeginAtLocationFromProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = +[PUOneUpSettings sharedInstance];
-  v6 = [v5 allowDoubleTapZoom];
+  allowDoubleTapZoom = [v5 allowDoubleTapZoom];
 
   v7 = +[PUOneUpSettings sharedInstance];
-  if (v6 && (!self->_delegateFlags.respondsToCanDoubleTapBeginAtLocationFromProvider || (-[PUDoubleTapZoomController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 doubleTapZoomController:self canDoubleTapBeginAtLocationFromProvider:v4], v8, v9)))
+  if (allowDoubleTapZoom && (!self->_delegateFlags.respondsToCanDoubleTapBeginAtLocationFromProvider || (-[PUDoubleTapZoomController delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 doubleTapZoomController:self canDoubleTapBeginAtLocationFromProvider:providerCopy], v8, v9)))
   {
     if ([v7 doubleTapZoomAreaExcludesBackground])
     {
-      v10 = [(PUDoubleTapZoomController *)self _userTransformViewAtLocationFromProvider:v4];
+      v10 = [(PUDoubleTapZoomController *)self _userTransformViewAtLocationFromProvider:providerCopy];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 contentContainsLocationFromProvider:v4];
+        v12 = [v10 contentContainsLocationFromProvider:providerCopy];
       }
 
       else
@@ -195,9 +195,9 @@ void __70__PUDoubleTapZoomController__userTransformViewAtLocationFromProvider___
   [(PUDoubleTapZoomController *)self _updateGestureRecognizersIfNeeded];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

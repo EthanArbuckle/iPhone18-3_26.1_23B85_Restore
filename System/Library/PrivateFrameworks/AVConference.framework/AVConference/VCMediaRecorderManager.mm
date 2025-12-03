@@ -1,22 +1,22 @@
 @interface VCMediaRecorderManager
-+ (id)prepareURL:(id)a3 forXPCWithSandboxing:(BOOL)a4;
++ (id)prepareURL:(id)l forXPCWithSandboxing:(BOOL)sandboxing;
 + (id)sharedInstance;
-- (BOOL)dispatchedRegisterMediaRecorder:(id)a3 withStreamToken:(int64_t)a4 andError:(id *)a5;
+- (BOOL)dispatchedRegisterMediaRecorder:(id)recorder withStreamToken:(int64_t)token andError:(id *)error;
 - (VCMediaRecorderManager)init;
-- (id)mediaRecorderFromClientContext:(id)a3;
-- (id)newClientContextWithStreamToken:(int64_t)a3 error:(id *)a4;
-- (id)newRequestWithArguments:(id)a3 state:(unsigned __int8)a4;
+- (id)mediaRecorderFromClientContext:(id)context;
+- (id)newClientContextWithStreamToken:(int64_t)token error:(id *)error;
+- (id)newRequestWithArguments:(id)arguments state:(unsigned __int8)state;
 - (void)dealloc;
 - (void)deregisterBlocksFromService;
-- (void)notifyClientsWithStreamToken:(int64_t)a3 service:(char *)a4 arguments:(id)a5;
+- (void)notifyClientsWithStreamToken:(int64_t)token service:(char *)service arguments:(id)arguments;
 - (void)registerBlocksForService;
-- (void)registerMediaRecorder:(id)a3 withStreamToken:(int64_t)a4;
-- (void)saveImage:(id)a3 movie:(id)a4;
-- (void)streamToken:(int64_t)a3 didEndProcessingRequest:(id)a4 urlContext:(const tagVCMediaRecorderDelegateURLContext *)a5 error:(id)a6;
-- (void)streamToken:(int64_t)a3 didFinishRequest:(id)a4 didSucceed:(BOOL)a5;
-- (void)streamToken:(int64_t)a3 didStartProcessingRequest:(id)a4 error:(id)a5;
-- (void)streamToken:(int64_t)a3 didUpdateCapabilities:(unsigned int)a4;
-- (void)streamTokenDidCleanupAllRequests:(int64_t)a3;
+- (void)registerMediaRecorder:(id)recorder withStreamToken:(int64_t)token;
+- (void)saveImage:(id)image movie:(id)movie;
+- (void)streamToken:(int64_t)token didEndProcessingRequest:(id)request urlContext:(const tagVCMediaRecorderDelegateURLContext *)context error:(id)error;
+- (void)streamToken:(int64_t)token didFinishRequest:(id)request didSucceed:(BOOL)succeed;
+- (void)streamToken:(int64_t)token didStartProcessingRequest:(id)request error:(id)error;
+- (void)streamToken:(int64_t)token didUpdateCapabilities:(unsigned int)capabilities;
+- (void)streamTokenDidCleanupAllRequests:(int64_t)requests;
 @end
 
 @implementation VCMediaRecorderManager
@@ -66,7 +66,7 @@ VCMediaRecorderManager *__40__VCMediaRecorderManager_sharedInstance__block_invok
   [(VCMediaRecorderManager *)&v3 dealloc];
 }
 
-- (void)registerMediaRecorder:(id)a3 withStreamToken:(int64_t)a4
+- (void)registerMediaRecorder:(id)recorder withStreamToken:(int64_t)token
 {
   v5[7] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -75,16 +75,16 @@ VCMediaRecorderManager *__40__VCMediaRecorderManager_sharedInstance__block_invok
   v5[2] = __64__VCMediaRecorderManager_registerMediaRecorder_withStreamToken___block_invoke;
   v5[3] = &unk_1E85F50D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = recorder;
+  v5[6] = token;
   dispatch_async(xpcCommandQueue, v5);
 }
 
-- (BOOL)dispatchedRegisterMediaRecorder:(id)a3 withStreamToken:(int64_t)a4 andError:(id *)a5
+- (BOOL)dispatchedRegisterMediaRecorder:(id)recorder withStreamToken:(int64_t)token andError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_xpcCommandQueue);
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:token];
   if ([(NSMutableDictionary *)self->_streamTokenList objectForKeyedSubscript:v9])
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCMediaRecorderManager" code:-9 userInfo:0];
@@ -105,19 +105,19 @@ VCMediaRecorderManager *__40__VCMediaRecorderManager_sharedInstance__block_invok
       v22 = 1024;
       v23 = 170;
       v24 = 1024;
-      v25 = a4;
+      tokenCopy = token;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Context already exists for stream token=%u", &v18, 0x22u);
     }
   }
 
   else
   {
-    v14 = [[VCMediaRecorderManagerStreamTokenClientList alloc] initWithStreamToken:a4 mediaRecorder:a3];
+    v14 = [[VCMediaRecorderManagerStreamTokenClientList alloc] initWithStreamToken:token mediaRecorder:recorder];
     if (v14)
     {
       v15 = v14;
       [(NSMutableDictionary *)self->_streamTokenList setObject:v14 forKeyedSubscript:v9];
-      [a3 setMediaRecorderDelegate:self];
+      [recorder setMediaRecorderDelegate:self];
 
       v10 = 0;
       LOBYTE(v13) = 1;
@@ -140,40 +140,40 @@ VCMediaRecorderManager *__40__VCMediaRecorderManager_sharedInstance__block_invok
 
   LOBYTE(v13) = 0;
 LABEL_11:
-  if (a5)
+  if (error)
   {
-    *a5 = v10;
+    *error = v10;
   }
 
   return v13;
 }
 
-- (id)mediaRecorderFromClientContext:(id)a3
+- (id)mediaRecorderFromClientContext:(id)context
 {
   if (![VCMediaRecorderManagerStreamTokenClientList isValidContext:?])
   {
     return 0;
   }
 
-  v5 = [VCMediaRecorderManagerStreamTokenClientList streamTokenFromClientContext:a3];
+  v5 = [VCMediaRecorderManagerStreamTokenClientList streamTokenFromClientContext:context];
   v6 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:v5]);
 
   return [v6 mediaRecorder];
 }
 
-- (id)newClientContextWithStreamToken:(int64_t)a3 error:(id *)a4
+- (id)newClientContextWithStreamToken:(int64_t)token error:(id *)error
 {
   dispatch_assert_queue_V2(self->_xpcCommandQueue);
-  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_streamTokenList, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:token]);
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v12 = -2;
 LABEL_8:
       v10 = 0;
-      *a4 = [v11 errorWithDomain:@"VCMediaRecorderManager" code:v12 userInfo:0];
+      *error = [v11 errorWithDomain:@"VCMediaRecorderManager" code:v12 userInfo:0];
       return v10;
     }
 
@@ -181,10 +181,10 @@ LABEL_8:
   }
 
   v8 = v7;
-  v9 = [v7 newContext];
-  if (!v9)
+  newContext = [v7 newContext];
+  if (!newContext)
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v12 = -3;
@@ -194,7 +194,7 @@ LABEL_8:
     return 0;
   }
 
-  v10 = v9;
+  v10 = newContext;
   [objc_msgSend(v8 "mediaRecorder")];
   return v10;
 }
@@ -578,7 +578,7 @@ uint64_t __50__VCMediaRecorderManager_registerBlocksForService__block_invoke_79(
   [v2 deregisterFromService:"vcMediaRecorderRejectRequest"];
 }
 
-- (void)notifyClientsWithStreamToken:(int64_t)a3 service:(char *)a4 arguments:(id)a5
+- (void)notifyClientsWithStreamToken:(int64_t)token service:(char *)service arguments:(id)arguments
 {
   block[8] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -586,10 +586,10 @@ uint64_t __50__VCMediaRecorderManager_registerBlocksForService__block_invoke_79(
   block[1] = 3221225472;
   block[2] = __73__VCMediaRecorderManager_notifyClientsWithStreamToken_service_arguments___block_invoke;
   block[3] = &unk_1E85F5128;
-  block[6] = a3;
-  block[7] = a4;
+  block[6] = token;
+  block[7] = service;
   block[4] = self;
-  block[5] = a5;
+  block[5] = arguments;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -702,33 +702,33 @@ void __73__VCMediaRecorderManager_notifyClientsWithStreamToken_service_arguments
   }
 }
 
-- (void)streamToken:(int64_t)a3 didStartProcessingRequest:(id)a4 error:(id)a5
+- (void)streamToken:(int64_t)token didStartProcessingRequest:(id)request error:(id)error
 {
-  v8 = [a4 mutableCopy];
-  if (a5)
+  v8 = [request mutableCopy];
+  if (error)
   {
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696ACC8] forKeyedSubscript:{"archivedDataWithRootObject:requiringSecureCoding:error:", a5, 1, 0), @"vcMomentsError"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696ACC8] forKeyedSubscript:{"archivedDataWithRootObject:requiringSecureCoding:error:", error, 1, 0), @"vcMomentsError"}];
   }
 
-  [(VCMediaRecorderManager *)self notifyClientsWithStreamToken:a3 service:"vcMediaRecorderDidStartProcessingRequest" arguments:v8];
+  [(VCMediaRecorderManager *)self notifyClientsWithStreamToken:token service:"vcMediaRecorderDidStartProcessingRequest" arguments:v8];
 }
 
-+ (id)prepareURL:(id)a3 forXPCWithSandboxing:(BOOL)a4
++ (id)prepareURL:(id)l forXPCWithSandboxing:(BOOL)sandboxing
 {
-  v4 = a3;
+  lCopy = l;
   v8[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (sandboxing)
   {
-    v5 = [[VCSandboxedURL alloc] initWithURL:a3 accessType:2];
+    v5 = [[VCSandboxedURL alloc] initWithURL:l accessType:2];
     v6 = v5;
     if (v5)
     {
-      v4 = [(VCSandboxedURL *)v5 serialize];
-      if (v4)
+      lCopy = [(VCSandboxedURL *)v5 serialize];
+      if (lCopy)
       {
 LABEL_4:
 
-        return v4;
+        return lCopy;
       }
 
       [VCMediaRecorderManager prepareURL:v6 forXPCWithSandboxing:v8];
@@ -736,22 +736,22 @@ LABEL_4:
 
     else
     {
-      [VCMediaRecorderManager prepareURL:v4 forXPCWithSandboxing:v8];
+      [VCMediaRecorderManager prepareURL:lCopy forXPCWithSandboxing:v8];
     }
 
-    v4 = v8[0];
+    lCopy = v8[0];
     goto LABEL_4;
   }
 
-  return v4;
+  return lCopy;
 }
 
-- (void)streamToken:(int64_t)a3 didEndProcessingRequest:(id)a4 urlContext:(const tagVCMediaRecorderDelegateURLContext *)a5 error:(id)a6
+- (void)streamToken:(int64_t)token didEndProcessingRequest:(id)request urlContext:(const tagVCMediaRecorderDelegateURLContext *)context error:(id)error
 {
-  v13 = [a4 mutableCopy];
-  var0 = a5->var0;
-  var1 = a5->var1;
-  var2 = a5->var2;
+  v13 = [request mutableCopy];
+  var0 = context->var0;
+  var1 = context->var1;
+  var2 = context->var2;
   [(VCMediaRecorderManager *)self saveImage:var0 movie:var1];
   if (var0)
   {
@@ -763,22 +763,22 @@ LABEL_4:
     [v13 setObject:+[VCMediaRecorderManager prepareURL:forXPCWithSandboxing:](VCMediaRecorderManager forKeyedSubscript:{"prepareURL:forXPCWithSandboxing:", var1, var2), @"vcMomentsMovieURL"}];
   }
 
-  if (a6)
+  if (error)
   {
-    [v13 setObject:objc_msgSend(MEMORY[0x1E696ACC8] forKeyedSubscript:{"archivedDataWithRootObject:requiringSecureCoding:error:", a6, 1, 0), @"vcMomentsError"}];
+    [v13 setObject:objc_msgSend(MEMORY[0x1E696ACC8] forKeyedSubscript:{"archivedDataWithRootObject:requiringSecureCoding:error:", error, 1, 0), @"vcMomentsError"}];
   }
 
-  [(VCMediaRecorderManager *)self notifyClientsWithStreamToken:a3 service:"vcMediaRecorderDidEndProcessingRequest" arguments:v13];
+  [(VCMediaRecorderManager *)self notifyClientsWithStreamToken:token service:"vcMediaRecorderDidEndProcessingRequest" arguments:v13];
 }
 
-- (void)saveImage:(id)a3 movie:(id)a4
+- (void)saveImage:(id)image movie:(id)movie
 {
   v20 = *MEMORY[0x1E69E9840];
   if (VCDefaults_GetBoolValueForKey(@"FaceTimePhotosSaveImagesForDebug", 0))
   {
-    if (a3)
+    if (image)
     {
-      v6 = [objc_msgSend(a3 URLByAppendingPathExtension:{@"debug", "URLByAppendingPathExtension:", objc_msgSend(a3, "pathExtension")}];
+      v6 = [objc_msgSend(image URLByAppendingPathExtension:{@"debug", "URLByAppendingPathExtension:", objc_msgSend(image, "pathExtension")}];
       [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -799,9 +799,9 @@ LABEL_4:
       }
     }
 
-    if (a4)
+    if (movie)
     {
-      v9 = [objc_msgSend(a4 URLByAppendingPathExtension:{@"debug", "URLByAppendingPathExtension:", objc_msgSend(a4, "pathExtension")}];
+      v9 = [objc_msgSend(movie URLByAppendingPathExtension:{@"debug", "URLByAppendingPathExtension:", objc_msgSend(movie, "pathExtension")}];
       [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -824,23 +824,23 @@ LABEL_4:
   }
 }
 
-- (void)streamToken:(int64_t)a3 didFinishRequest:(id)a4 didSucceed:(BOOL)a5
+- (void)streamToken:(int64_t)token didFinishRequest:(id)request didSucceed:(BOOL)succeed
 {
-  v5 = a5;
-  v8 = [a4 mutableCopy];
-  [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v5), @"vcMomentsRequestDidSucceed"}];
-  [(VCMediaRecorderManager *)self notifyClientsWithStreamToken:a3 service:"vcMediaRecorderDidFinishRequest" arguments:v8];
+  succeedCopy = succeed;
+  v8 = [request mutableCopy];
+  [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", succeedCopy), @"vcMomentsRequestDidSucceed"}];
+  [(VCMediaRecorderManager *)self notifyClientsWithStreamToken:token service:"vcMediaRecorderDidFinishRequest" arguments:v8];
 }
 
-- (void)streamToken:(int64_t)a3 didUpdateCapabilities:(unsigned int)a4
+- (void)streamToken:(int64_t)token didUpdateCapabilities:(unsigned int)capabilities
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"vcMomentsCapabilities";
-  v7[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
-  -[VCMediaRecorderManager notifyClientsWithStreamToken:service:arguments:](self, "notifyClientsWithStreamToken:service:arguments:", a3, "vcMediaRecorderCapabilitiesDidChange", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
+  v7[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&capabilities];
+  -[VCMediaRecorderManager notifyClientsWithStreamToken:service:arguments:](self, "notifyClientsWithStreamToken:service:arguments:", token, "vcMediaRecorderCapabilitiesDidChange", [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1]);
 }
 
-- (void)streamTokenDidCleanupAllRequests:(int64_t)a3
+- (void)streamTokenDidCleanupAllRequests:(int64_t)requests
 {
   block[6] = *MEMORY[0x1E69E9840];
   xpcCommandQueue = self->_xpcCommandQueue;
@@ -849,7 +849,7 @@ LABEL_4:
   block[2] = __59__VCMediaRecorderManager_streamTokenDidCleanupAllRequests___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = requests;
   dispatch_async(xpcCommandQueue, block);
 }
 
@@ -941,18 +941,18 @@ LABEL_15:
   }
 }
 
-- (id)newRequestWithArguments:(id)a3 state:(unsigned __int8)a4
+- (id)newRequestWithArguments:(id)arguments state:(unsigned __int8)state
 {
-  v4 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsMediaType", @"vcMomentsMediaType"}];
-  [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsRequesterID", @"vcMomentsRequesterID"}];
-  [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsRequesteeID", @"vcMomentsRequesteeID"}];
-  [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsTransactionID", @"vcMomentsTransactionID"}];
-  [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", v4), @"vcMomentsRequestState"}];
-  [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsRequestMode", @"vcMomentsRequestMode"}];
-  [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMediaRecorderDirectoryURL", @"vcMediaRecorderDirectoryURL"}];
-  [v6 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMediaRecorderMovieFragmentInterval", @"vcMediaRecorderMovieFragmentInterval"}];
+  [v6 setObject:objc_msgSend(arguments forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsMediaType", @"vcMomentsMediaType"}];
+  [v6 setObject:objc_msgSend(arguments forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsRequesterID", @"vcMomentsRequesterID"}];
+  [v6 setObject:objc_msgSend(arguments forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsRequesteeID", @"vcMomentsRequesteeID"}];
+  [v6 setObject:objc_msgSend(arguments forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsTransactionID", @"vcMomentsTransactionID"}];
+  [v6 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedChar:", stateCopy), @"vcMomentsRequestState"}];
+  [v6 setObject:objc_msgSend(arguments forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMomentsRequestMode", @"vcMomentsRequestMode"}];
+  [v6 setObject:objc_msgSend(arguments forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMediaRecorderDirectoryURL", @"vcMediaRecorderDirectoryURL"}];
+  [v6 setObject:objc_msgSend(arguments forKeyedSubscript:{"objectForKeyedSubscript:", @"vcMediaRecorderMovieFragmentInterval", @"vcMediaRecorderMovieFragmentInterval"}];
   return v6;
 }
 

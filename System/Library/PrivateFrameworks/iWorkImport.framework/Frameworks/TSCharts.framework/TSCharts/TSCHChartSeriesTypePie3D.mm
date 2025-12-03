@@ -2,16 +2,16 @@
 - (id)g_genericToSpecificPropertyMap3DPie;
 - (id)genericToSpecificPropertyMap;
 - (id)userInterfaceName;
-- (id)valueAxisForSeries:(id)a3;
+- (id)valueAxisForSeries:(id)series;
 @end
 
 @implementation TSCHChartSeriesTypePie3D
 
-- (id)valueAxisForSeries:(id)a3
+- (id)valueAxisForSeries:(id)series
 {
-  v3 = a3;
-  v8 = objc_msgSend_axisIDForAxisType_(v3, v4, v5, v6, v7, 3);
-  v13 = objc_msgSend_model(v3, v9, v10, v11, v12);
+  seriesCopy = series;
+  v8 = objc_msgSend_axisIDForAxisType_(seriesCopy, v4, v5, v6, v7, 3);
+  v13 = objc_msgSend_model(seriesCopy, v9, v10, v11, v12);
   v18 = objc_msgSend_axisForID_(v13, v14, v15, v16, v17, v8);
 
   return v18;

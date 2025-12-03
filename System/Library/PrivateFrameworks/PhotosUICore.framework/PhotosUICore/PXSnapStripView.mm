@@ -1,10 +1,10 @@
 @interface PXSnapStripView
-- (PXSnapStripView)initWithFrame:(CGRect)a3;
+- (PXSnapStripView)initWithFrame:(CGRect)frame;
 - (id)cubeGlyph;
 - (void)_updateSnapStripImage;
-- (void)_updateStripView:(BOOL)a3;
+- (void)_updateStripView:(BOOL)view;
 - (void)layoutSubviews;
-- (void)setIndicatorInfos:(id)a3 animated:(BOOL)a4;
+- (void)setIndicatorInfos:(id)infos animated:(BOOL)animated;
 @end
 
 @implementation PXSnapStripView
@@ -63,14 +63,14 @@ void __28__PXSnapStripView_cubeGlyph__block_invoke()
     CGContextScaleCTM(v12, v8, -v8);
     CGContextGetCTM(&v42, v12);
     CGContextSetBaseCTM();
-    v13 = [(PXSnapStripView *)self indicatorInfos];
+    indicatorInfos = [(PXSnapStripView *)self indicatorInfos];
     [(PXSnapStripView *)self bounds];
     Height = CGRectGetHeight(v46);
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v15 = v13;
+    v15 = indicatorInfos;
     v16 = [v15 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v16)
     {
@@ -89,31 +89,31 @@ void __28__PXSnapStripView_cubeGlyph__block_invoke()
           v21 = *(*(&v38 + 1) + 8 * i);
           [v21 offset];
           v23 = v22;
-          v24 = [v21 color];
-          v25 = [(PXSnapStripView *)self traitCollection];
-          v26 = [v24 resolvedColorWithTraitCollection:v25];
+          color = [v21 color];
+          traitCollection = [(PXSnapStripView *)self traitCollection];
+          v26 = [color resolvedColorWithTraitCollection:traitCollection];
 
-          v27 = [v26 CGColor];
-          v28 = [v21 style];
-          if (v28)
+          cGColor = [v26 CGColor];
+          style = [v21 style];
+          if (style)
           {
-            if (v28 == 2)
+            if (style == 2)
             {
-              v29 = [(PXSnapStripView *)self cubeGlyph];
-              [v29 size];
+              cubeGlyph = [(PXSnapStripView *)self cubeGlyph];
+              [cubeGlyph size];
               v31 = v30;
               v33 = v32;
               v34 = v23 + v30 * -0.5;
               UIGraphicsPushContext(v12);
-              v35 = [v29 imageWithTintColor:v26];
+              v35 = [cubeGlyph imageWithTintColor:v26];
 
               [v35 drawInRect:{v34, 0.0, v31, v33}];
               UIGraphicsPopContext();
             }
 
-            else if (v28 == 1)
+            else if (style == 1)
             {
-              CGContextSetStrokeColorWithColor(v12, v27);
+              CGContextSetStrokeColorWithColor(v12, cGColor);
               v47.size.width = 2.0;
               v47.size.height = 6.0;
               v47.origin.x = v23 + -1.0;
@@ -124,7 +124,7 @@ void __28__PXSnapStripView_cubeGlyph__block_invoke()
 
           else
           {
-            CGContextSetFillColorWithColor(v12, v27);
+            CGContextSetFillColorWithColor(v12, cGColor);
             v48.size.width = 6.0;
             v48.size.height = 6.0;
             v48.origin.x = v23 + -3.0;
@@ -157,7 +157,7 @@ void __28__PXSnapStripView_cubeGlyph__block_invoke()
   }
 }
 
-- (void)_updateStripView:(BOOL)a3
+- (void)_updateStripView:(BOOL)view
 {
   if (self->_stripImageView)
   {
@@ -167,7 +167,7 @@ void __28__PXSnapStripView_cubeGlyph__block_invoke()
 
   else
   {
-    v4 = a3;
+    viewCopy = view;
     v5 = objc_alloc(MEMORY[0x1E69DCAE0]);
     [(PXSnapStripView *)self bounds];
     v6 = [v5 initWithFrame:?];
@@ -177,19 +177,19 @@ void __28__PXSnapStripView_cubeGlyph__block_invoke()
     [(UIImageView *)self->_stripImageView setAlpha:0.0];
     [(UIImageView *)self->_stripImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PXSnapStripView *)self addSubview:self->_stripImageView];
-    v8 = [(UIImageView *)self->_stripImageView leftAnchor];
-    v9 = [(PXSnapStripView *)self leftAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    leftAnchor = [(UIImageView *)self->_stripImageView leftAnchor];
+    leftAnchor2 = [(PXSnapStripView *)self leftAnchor];
+    v10 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v10 setActive:1];
 
-    v11 = [(UIImageView *)self->_stripImageView topAnchor];
-    v12 = [(PXSnapStripView *)self topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [(UIImageView *)self->_stripImageView topAnchor];
+    topAnchor2 = [(PXSnapStripView *)self topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v13 setActive:1];
 
-    v14 = [(UIImageView *)self->_stripImageView bottomAnchor];
-    v15 = [(PXSnapStripView *)self bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [(UIImageView *)self->_stripImageView bottomAnchor];
+    bottomAnchor2 = [(PXSnapStripView *)self bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v16 setActive:1];
 
     [(PXSnapStripView *)self _updateSnapStripImage];
@@ -206,7 +206,7 @@ void __28__PXSnapStripView_cubeGlyph__block_invoke()
     v19[3] = &unk_1E774B308;
     v20 = 0;
     v18 = _Block_copy(v19);
-    if (v4)
+    if (viewCopy)
     {
       [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:0 animations:v17 completion:v18];
     }
@@ -227,15 +227,15 @@ uint64_t __36__PXSnapStripView__updateStripView___block_invoke(uint64_t a1)
   return [v2 setAlpha:0.0];
 }
 
-- (void)setIndicatorInfos:(id)a3 animated:(BOOL)a4
+- (void)setIndicatorInfos:(id)infos animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (self->_indicatorInfos != v6)
+  animatedCopy = animated;
+  infosCopy = infos;
+  v7 = infosCopy;
+  if (self->_indicatorInfos != infosCopy)
   {
-    v11 = v6;
-    v8 = [(NSArray *)v6 isEqualToArray:?];
+    v11 = infosCopy;
+    v8 = [(NSArray *)infosCopy isEqualToArray:?];
     v7 = v11;
     if (!v8)
     {
@@ -243,7 +243,7 @@ uint64_t __36__PXSnapStripView__updateStripView___block_invoke(uint64_t a1)
       indicatorInfos = self->_indicatorInfos;
       self->_indicatorInfos = v9;
 
-      [(PXSnapStripView *)self _updateStripView:v4];
+      [(PXSnapStripView *)self _updateStripView:animatedCopy];
       v7 = v11;
     }
   }
@@ -257,11 +257,11 @@ uint64_t __36__PXSnapStripView__updateStripView___block_invoke(uint64_t a1)
   [(PXSnapStripView *)self _updateSnapStripImage];
 }
 
-- (PXSnapStripView)initWithFrame:(CGRect)a3
+- (PXSnapStripView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PXSnapStripView;
-  v3 = [(PXSnapStripView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXSnapStripView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

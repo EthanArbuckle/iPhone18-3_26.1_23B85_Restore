@@ -1,8 +1,8 @@
 @interface UARPMetaDataDevicePayloadHashAlgorithm
 - (UARPMetaDataDevicePayloadHashAlgorithm)init;
-- (UARPMetaDataDevicePayloadHashAlgorithm)initWithHashAlgorithm:(int64_t)a3;
-- (UARPMetaDataDevicePayloadHashAlgorithm)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataDevicePayloadHashAlgorithm)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataDevicePayloadHashAlgorithm)initWithHashAlgorithm:(int64_t)algorithm;
+- (UARPMetaDataDevicePayloadHashAlgorithm)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataDevicePayloadHashAlgorithm)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (UARPMetaDataDevicePayloadHashAlgorithm)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataDevicePayloadHashAlgorithm)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataDevicePayloadHashAlgorithm *)self init];
   v7 = v6;
   if (!v6)
@@ -38,7 +38,7 @@
 
   v11.receiver = v6;
   v11.super_class = UARPMetaDataDevicePayloadHashAlgorithm;
-  v8 = [(UARPMetaData *)&v11 numberFromPlistValue:v5];
+  v8 = [(UARPMetaData *)&v11 numberFromPlistValue:valueCopy];
   v9 = v8;
   if (v8)
   {
@@ -51,7 +51,7 @@ LABEL_4:
   return v9;
 }
 
-- (UARPMetaDataDevicePayloadHashAlgorithm)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataDevicePayloadHashAlgorithm)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataDevicePayloadHashAlgorithm *)self init];
   v7 = v6;
@@ -62,7 +62,7 @@ LABEL_4:
 
   v11.receiver = v6;
   v11.super_class = UARPMetaDataDevicePayloadHashAlgorithm;
-  v8 = [(UARPMetaData *)&v11 numberWithLength:a3 value:a4];
+  v8 = [(UARPMetaData *)&v11 numberWithLength:length value:value];
   v9 = v8;
   if (v8)
   {
@@ -75,13 +75,13 @@ LABEL_4:
   return v9;
 }
 
-- (UARPMetaDataDevicePayloadHashAlgorithm)initWithHashAlgorithm:(int64_t)a3
+- (UARPMetaDataDevicePayloadHashAlgorithm)initWithHashAlgorithm:(int64_t)algorithm
 {
-  v3 = a3;
+  algorithmCopy = algorithm;
   result = [(UARPMetaDataDevicePayloadHashAlgorithm *)self init];
   if (result)
   {
-    result->_hashAlgorithm = v3;
+    result->_hashAlgorithm = algorithmCopy;
   }
 
   return result;
@@ -98,8 +98,8 @@ LABEL_4:
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [NSString stringWithFormat:@"<%@: %u>", v3, [(UARPMetaDataDevicePayloadHashAlgorithm *)self hashAlgorithm]];
+  tlvName = [(UARPMetaData *)self tlvName];
+  v4 = [NSString stringWithFormat:@"<%@: %u>", tlvName, [(UARPMetaDataDevicePayloadHashAlgorithm *)self hashAlgorithm]];
 
   return v4;
 }

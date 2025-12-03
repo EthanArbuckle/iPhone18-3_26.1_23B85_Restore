@@ -1,5 +1,5 @@
 @interface BCSShardResolutionMetric
-+ (id)metricForShardIdentifier:(id)a3 postProcessingMetricHandlers:(id)a4;
++ (id)metricForShardIdentifier:(id)identifier postProcessingMetricHandlers:(id)handlers;
 - (BCSShardItemIdentifying)shardItemIdentifier;
 - (NSDictionary)coreAnalyticsPayload;
 @end
@@ -11,18 +11,18 @@
   v18[4] = *MEMORY[0x277D85DE8];
   v17[0] = @"type";
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(BCSShardResolutionMetric *)self shardItemIdentifier];
-  v5 = [v3 numberWithInteger:{objc_msgSend(v4, "type")}];
+  shardItemIdentifier = [(BCSShardResolutionMetric *)self shardItemIdentifier];
+  v5 = [v3 numberWithInteger:{objc_msgSend(shardItemIdentifier, "type")}];
   v18[0] = v5;
   v17[1] = @"cacheHit";
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(BCSShardResolutionMetric *)self cacheHitMeasurement];
-  v8 = [v6 numberWithBool:{objc_msgSend(v7, "flag")}];
+  cacheHitMeasurement = [(BCSShardResolutionMetric *)self cacheHitMeasurement];
+  v8 = [v6 numberWithBool:{objc_msgSend(cacheHitMeasurement, "flag")}];
   v18[1] = v8;
   v17[2] = @"duration";
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(BCSShardResolutionMetric *)self timingMeasurement];
-  [v10 duration];
+  timingMeasurement = [(BCSShardResolutionMetric *)self timingMeasurement];
+  [timingMeasurement duration];
   v12 = [v9 numberWithInteger:(v11 * 1000.0)];
   v18[2] = v12;
   v17[3] = @"errorCode";
@@ -35,11 +35,11 @@
   return v14;
 }
 
-+ (id)metricForShardIdentifier:(id)a3 postProcessingMetricHandlers:(id)a4
++ (id)metricForShardIdentifier:(id)identifier postProcessingMetricHandlers:(id)handlers
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(BCSMetric *)[BCSShardResolutionMetric alloc] _initWithType:v6 context:v5 postProcessingMetricHandlers:?];
+  handlersCopy = handlers;
+  identifierCopy = identifier;
+  v7 = [(BCSMetric *)[BCSShardResolutionMetric alloc] _initWithType:identifierCopy context:handlersCopy postProcessingMetricHandlers:?];
 
   return v7;
 }

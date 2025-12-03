@@ -1,30 +1,30 @@
 @interface MapsSuggestionsRealAppProtectionConnector
 - (MapsSuggestionsAppProtectionStatusMonitoring)delegate;
-- (void)addMonitor:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)addMonitor:(id)monitor;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 @end
 
 @implementation MapsSuggestionsRealAppProtectionConnector
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  changedCopy = changed;
+  subscriptionCopy = subscription;
+  v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(changedCopy, "count")}];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__MapsSuggestionsRealAppProtectionConnector_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v12[3] = &unk_1E81F7D08;
   v9 = v8;
   v13 = v9;
-  [v6 enumerateObjectsUsingBlock:v12];
-  v10 = [(MapsSuggestionsRealAppProtectionConnector *)self delegate];
-  if (v10)
+  [changedCopy enumerateObjectsUsingBlock:v12];
+  delegate = [(MapsSuggestionsRealAppProtectionConnector *)self delegate];
+  if (delegate)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v10 appProtectionStatusChanged:v9];
+      [delegate appProtectionStatusChanged:v9];
     }
   }
 
@@ -56,10 +56,10 @@ void __90__MapsSuggestionsRealAppProtectionConnector_appProtectionSubjectsChange
   }
 }
 
-- (void)addMonitor:(id)a3
+- (void)addMonitor:(id)monitor
 {
-  v5 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-  v4 = [v5 addMonitor:self];
+  subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+  v4 = [subjectMonitorRegistry addMonitor:self];
 }
 
 - (MapsSuggestionsAppProtectionStatusMonitoring)delegate

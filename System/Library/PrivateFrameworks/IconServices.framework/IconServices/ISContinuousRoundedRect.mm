@@ -1,7 +1,7 @@
 @interface ISContinuousRoundedRect
 - (ISContinuousRoundedRect)init;
-- (double)_cornerRadiusForSize:(CGSize)a3;
-- (id)imageForSize:(CGSize)a3 scale:(double)a4;
+- (double)_cornerRadiusForSize:(CGSize)size;
+- (id)imageForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISContinuousRoundedRect
@@ -13,33 +13,33 @@
   return [(ISShapeCompositorResource *)&v3 _init];
 }
 
-- (double)_cornerRadiusForSize:(CGSize)a3
+- (double)_cornerRadiusForSize:(CGSize)size
 {
-  if (a3.width >= a3.height)
+  if (size.width >= size.height)
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
-  return a3.width * 0.225;
+  return size.width * 0.225;
 }
 
-- (id)imageForSize:(CGSize)a3 scale:(double)a4
+- (id)imageForSize:(CGSize)size scale:(double)scale
 {
-  v5 = ceil(a3.width);
-  v6 = ceil(a3.height);
-  v7 = [MEMORY[0x1E69A8978] bitmapContextWithSize:0 scale:v5 preset:{v6, a4}];
+  v5 = ceil(size.width);
+  v6 = ceil(size.height);
+  v7 = [MEMORY[0x1E69A8978] bitmapContextWithSize:0 scale:v5 preset:{v6, scale}];
   [v7 clear];
-  v8 = [(ISShapeCompositorResource *)self fillColor];
-  [v7 setFillColor:v8];
+  fillColor = [(ISShapeCompositorResource *)self fillColor];
+  [v7 setFillColor:fillColor];
 
-  v9 = [(ISShapeCompositorResource *)self lineColor];
-  [v7 setStrokeColor:v9];
+  lineColor = [(ISShapeCompositorResource *)self lineColor];
+  [v7 setStrokeColor:lineColor];
 
   [(ISShapeCompositorResource *)self lineWidth];
   [v7 setLineWidth:?];
-  v10 = [(ISShapeCompositorResource *)self lineColor];
+  lineColor2 = [(ISShapeCompositorResource *)self lineColor];
 
-  if (!v10)
+  if (!lineColor2)
   {
     goto LABEL_12;
   }
@@ -68,9 +68,9 @@
   {
     [v7 pushState];
     CGContextAddPath([v7 cgContext], Mutable);
-    v24 = [v7 cgContext];
-    v25 = [(ISShapeCompositorResource *)self lineColor];
-    CGContextSetFillColorWithColor(v24, [v25 cgColor]);
+    cgContext = [v7 cgContext];
+    lineColor3 = [(ISShapeCompositorResource *)self lineColor];
+    CGContextSetFillColorWithColor(cgContext, [lineColor3 cgColor]);
 
     CGContextEOFillPath([v7 cgContext]);
     [v7 popState];
@@ -96,9 +96,9 @@ LABEL_8:
   }
 
 LABEL_12:
-  v26 = [(ISShapeCompositorResource *)self fillColor];
+  fillColor2 = [(ISShapeCompositorResource *)self fillColor];
 
-  if (v26)
+  if (fillColor2)
   {
     [(ISContinuousRoundedRect *)self _cornerRadiusForSize:v5, v6];
     v28 = _CGPathCreateContinuousRoundedRectCornerRadius(0.0, 0.0, v5, v6, v27);
@@ -110,9 +110,9 @@ LABEL_12:
     }
   }
 
-  v30 = [v7 image];
+  image = [v7 image];
 
-  return v30;
+  return image;
 }
 
 @end

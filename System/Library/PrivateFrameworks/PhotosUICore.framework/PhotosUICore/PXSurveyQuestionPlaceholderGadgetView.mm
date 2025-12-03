@@ -1,10 +1,10 @@
 @interface PXSurveyQuestionPlaceholderGadgetView
-- (PXSurveyQuestionPlaceholderGadgetView)initWithFrame:(CGRect)a3;
+- (PXSurveyQuestionPlaceholderGadgetView)initWithFrame:(CGRect)frame;
 - (PXSurveyQuestionPlaceholderGadgetViewDelegate)delegate;
 - (void)_performContentUnavailableButtonAction;
 - (void)_restorePlaceholderContentUnavailableConfiguration;
-- (void)setPlaceholderContentUnavailableConfiguration:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setPlaceholderContentUnavailableConfiguration:(id)configuration;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXSurveyQuestionPlaceholderGadgetView
@@ -16,48 +16,48 @@
   return WeakRetained;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = PXSurveyQuestionPlaceholderGadgetView;
-  v4 = a3;
-  [(PXSurveyQuestionPlaceholderGadgetView *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXSurveyQuestionPlaceholderGadgetView *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(PXSurveyQuestionPlaceholderGadgetView *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
-    v8 = [(PXSurveyQuestionPlaceholderGadgetView *)self delegate];
-    if (!v8)
+    delegate = [(PXSurveyQuestionPlaceholderGadgetView *)self delegate];
+    if (!delegate)
     {
       PXAssertGetLog();
     }
 
-    [v8 placeholderGadgetViewSizeThatFitsDidChange:self];
+    [delegate placeholderGadgetViewSizeThatFitsDidChange:self];
   }
 }
 
 - (void)_restorePlaceholderContentUnavailableConfiguration
 {
-  v3 = [(PXSurveyQuestionPlaceholderGadgetView *)self placeholderContentUnavailableConfiguration];
-  [(UIContentUnavailableView *)self->_contentUnavailableView setConfiguration:v3];
+  placeholderContentUnavailableConfiguration = [(PXSurveyQuestionPlaceholderGadgetView *)self placeholderContentUnavailableConfiguration];
+  [(UIContentUnavailableView *)self->_contentUnavailableView setConfiguration:placeholderContentUnavailableConfiguration];
 }
 
 - (void)_performContentUnavailableButtonAction
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PXSurveyQuestionPlaceholderGadgetView *)self delegate];
-  if (!v3)
+  delegate = [(PXSurveyQuestionPlaceholderGadgetView *)self delegate];
+  if (!delegate)
   {
     PXAssertGetLog();
   }
 
-  v4 = [(PXSurveyQuestionPlaceholderGadgetView *)self loadingContentUnavailableConfiguration];
-  if (v4)
+  loadingContentUnavailableConfiguration = [(PXSurveyQuestionPlaceholderGadgetView *)self loadingContentUnavailableConfiguration];
+  if (loadingContentUnavailableConfiguration)
   {
-    [(UIContentUnavailableView *)self->_contentUnavailableView setConfiguration:v4];
+    [(UIContentUnavailableView *)self->_contentUnavailableView setConfiguration:loadingContentUnavailableConfiguration];
   }
 
   objc_initWeak(location, self);
@@ -65,10 +65,10 @@
   v6[1] = 3221225472;
   v6[2] = __79__PXSurveyQuestionPlaceholderGadgetView__performContentUnavailableButtonAction__block_invoke;
   v6[3] = &unk_1E774B2A0;
-  v5 = v4;
+  v5 = loadingContentUnavailableConfiguration;
   v7 = v5;
   objc_copyWeak(&v8, location);
-  [v3 placeholderGadgetView:self invokeActionWithCompletionHandler:v6];
+  [delegate placeholderGadgetView:self invokeActionWithCompletionHandler:v6];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(location);
@@ -95,27 +95,27 @@ void __79__PXSurveyQuestionPlaceholderGadgetView__performContentUnavailableButto
   [WeakRetained _restorePlaceholderContentUnavailableConfiguration];
 }
 
-- (void)setPlaceholderContentUnavailableConfiguration:(id)a3
+- (void)setPlaceholderContentUnavailableConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (!v5)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadgetView.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"placeholderContentUnavailableConfiguration"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSurveyQuestionPlaceholderGadgetView.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"placeholderContentUnavailableConfiguration"}];
   }
 
   placeholderContentUnavailableConfiguration = self->_placeholderContentUnavailableConfiguration;
-  if (placeholderContentUnavailableConfiguration != v5 && ([(UIContentUnavailableConfiguration *)placeholderContentUnavailableConfiguration isEqual:v5]& 1) == 0)
+  if (placeholderContentUnavailableConfiguration != configurationCopy && ([(UIContentUnavailableConfiguration *)placeholderContentUnavailableConfiguration isEqual:configurationCopy]& 1) == 0)
   {
-    v7 = [(UIContentUnavailableConfiguration *)v5 copy];
+    v7 = [(UIContentUnavailableConfiguration *)configurationCopy copy];
     v8 = self->_placeholderContentUnavailableConfiguration;
     self->_placeholderContentUnavailableConfiguration = v7;
 
-    v9 = [(UIContentUnavailableConfiguration *)self->_placeholderContentUnavailableConfiguration buttonProperties];
-    v10 = [v9 configuration];
-    v11 = [v10 title];
+    buttonProperties = [(UIContentUnavailableConfiguration *)self->_placeholderContentUnavailableConfiguration buttonProperties];
+    configuration = [buttonProperties configuration];
+    title = [configuration title];
 
-    if (v11)
+    if (title)
     {
       objc_initWeak(&location, self);
       v12 = MEMORY[0x1E69DC628];
@@ -125,7 +125,7 @@ void __79__PXSurveyQuestionPlaceholderGadgetView__performContentUnavailableButto
       v15[3] = &unk_1E774BB08;
       objc_copyWeak(&v16, &location);
       v13 = [v12 actionWithHandler:v15];
-      [v9 setPrimaryAction:v13];
+      [buttonProperties setPrimaryAction:v13];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
@@ -141,27 +141,27 @@ void __87__PXSurveyQuestionPlaceholderGadgetView_setPlaceholderContentUnavailabl
   [WeakRetained _performContentUnavailableButtonAction];
 }
 
-- (PXSurveyQuestionPlaceholderGadgetView)initWithFrame:(CGRect)a3
+- (PXSurveyQuestionPlaceholderGadgetView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PXSurveyQuestionPlaceholderGadgetView;
-  v3 = [(PXSurveyQuestionPlaceholderGadgetView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXSurveyQuestionPlaceholderGadgetView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(PXSurveyQuestionPlaceholderGadgetView *)v3 setBackgroundColor:v4];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(PXSurveyQuestionPlaceholderGadgetView *)v3 setBackgroundColor:secondarySystemBackgroundColor];
 
     [(PXSurveyQuestionPlaceholderGadgetView *)v3 _setCornerRadius:10.0];
-    v5 = [MEMORY[0x1E69DC8C8] px_containerized_defaultConfiguration];
-    v6 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:v5];
+    px_containerized_defaultConfiguration = [MEMORY[0x1E69DC8C8] px_containerized_defaultConfiguration];
+    v6 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:px_containerized_defaultConfiguration];
     contentUnavailableView = v3->_contentUnavailableView;
     v3->_contentUnavailableView = v6;
 
-    v8 = [(PXSurveyQuestionPlaceholderGadgetView *)v3 contentView];
-    [v8 bounds];
+    contentView = [(PXSurveyQuestionPlaceholderGadgetView *)v3 contentView];
+    [contentView bounds];
     [(UIContentUnavailableView *)v3->_contentUnavailableView setFrame:?];
     [(UIContentUnavailableView *)v3->_contentUnavailableView setAutoresizingMask:18];
-    [v8 addSubview:v3->_contentUnavailableView];
+    [contentView addSubview:v3->_contentUnavailableView];
   }
 
   return v3;

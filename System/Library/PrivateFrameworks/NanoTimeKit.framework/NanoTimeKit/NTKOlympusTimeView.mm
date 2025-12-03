@@ -1,58 +1,58 @@
 @interface NTKOlympusTimeView
-- (BOOL)_maskingPathStartsFromHourHandForDate:(id)a3;
+- (BOOL)_maskingPathStartsFromHourHandForDate:(id)date;
 - (CGSize)maskingSize;
-- (NTKOlympusTimeView)initWithDevice:(id)a3 dial:(unint64_t)a4 style:(unint64_t)a5 colorPalette:(id)a6 date:(id)a7 useSmallFont:(BOOL)a8 circularLogoImage:(id)a9;
+- (NTKOlympusTimeView)initWithDevice:(id)device dial:(unint64_t)dial style:(unint64_t)style colorPalette:(id)palette date:(id)date useSmallFont:(BOOL)font circularLogoImage:(id)image;
 - (NTKOlympusViewDelegate)delegate;
-- (double)_calculateDeviationBetweenHourAngle:(double)a3 minuteAngle:(double)a4;
-- (double)shortestPathBetweenStartAngle:(double)a3 targetAngle:(double)a4;
+- (double)_calculateDeviationBetweenHourAngle:(double)angle minuteAngle:(double)minuteAngle;
+- (double)shortestPathBetweenStartAngle:(double)angle targetAngle:(double)targetAngle;
 - (void)_createContentViewIfNeeded;
 - (void)_createOverlayViewIfNeeded;
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 animateElements:(BOOL)a6;
-- (void)applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)applyWindrunnerMaskStartAngle:(double)a3 endAngle:(double)a4;
-- (void)applyWindrunnerMaskWithDate:(id)a3 force:(BOOL)a4;
-- (void)applyWindrunnerMaskWithHourAngle:(double)a3 minuteAngle:(double)a4;
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette animateElements:(BOOL)elements;
+- (void)applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)applyWindrunnerMaskStartAngle:(double)angle endAngle:(double)endAngle;
+- (void)applyWindrunnerMaskWithDate:(id)date force:(BOOL)force;
+- (void)applyWindrunnerMaskWithHourAngle:(double)angle minuteAngle:(double)minuteAngle;
 - (void)cleanupAfterEditing;
 - (void)configureViewsForEditing;
 - (void)createAndRemoveViewsForCurrentStateIfNeeded;
 - (void)layoutSubviews;
-- (void)olympusContentView:(id)a3 didHandleLogoTouchUpInsideFromRect:(CGRect)a4;
-- (void)olympusContentViewDidHandleLogoHighlighted:(id)a3;
-- (void)olympusContentViewDidHandleLogoResetHighlight:(id)a3;
-- (void)openVictoryAppFromRect:(CGRect)a3;
+- (void)olympusContentView:(id)view didHandleLogoTouchUpInsideFromRect:(CGRect)rect;
+- (void)olympusContentViewDidHandleLogoHighlighted:(id)highlighted;
+- (void)olympusContentViewDidHandleLogoResetHighlight:(id)highlight;
+- (void)openVictoryAppFromRect:(CGRect)rect;
 - (void)prepareForEditing;
-- (void)setCurrentColorPalette:(id)a3;
-- (void)setCurrentDial:(unint64_t)a3;
-- (void)setCurrentStyle:(unint64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
-- (void)setupViewsForCurrentState:(BOOL)a3;
-- (void)updateMaskingPathStartPointWithNewHourAngle:(double)a3 newMinuteAngle:(double)a4;
+- (void)setCurrentColorPalette:(id)palette;
+- (void)setCurrentDial:(unint64_t)dial;
+- (void)setCurrentStyle:(unint64_t)style;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
+- (void)setupViewsForCurrentState:(BOOL)state;
+- (void)updateMaskingPathStartPointWithNewHourAngle:(double)angle newMinuteAngle:(double)minuteAngle;
 @end
 
 @implementation NTKOlympusTimeView
 
-- (NTKOlympusTimeView)initWithDevice:(id)a3 dial:(unint64_t)a4 style:(unint64_t)a5 colorPalette:(id)a6 date:(id)a7 useSmallFont:(BOOL)a8 circularLogoImage:(id)a9
+- (NTKOlympusTimeView)initWithDevice:(id)device dial:(unint64_t)dial style:(unint64_t)style colorPalette:(id)palette date:(id)date useSmallFont:(BOOL)font circularLogoImage:(id)image
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
+  deviceCopy = device;
+  paletteCopy = palette;
+  dateCopy = date;
+  imageCopy = image;
   v23.receiver = self;
   v23.super_class = NTKOlympusTimeView;
   v19 = [(NTKOlympusTimeView *)&v23 init];
   v20 = v19;
   if (v19)
   {
-    v19->_maskingPathStartsFromHourHand = [(NTKOlympusTimeView *)v19 _maskingPathStartsFromHourHandForDate:v17];
-    objc_storeStrong(&v20->_device, a3);
-    v20->_currentStyle = a5;
-    v20->_currentDial = a4;
-    v20->_currentColorPalette = v16;
-    objc_storeStrong(&v20->_date, a7);
-    v20->_useSmallFont = a8;
-    objc_storeStrong(&v20->_circularLogoImage, a9);
+    v19->_maskingPathStartsFromHourHand = [(NTKOlympusTimeView *)v19 _maskingPathStartsFromHourHandForDate:dateCopy];
+    objc_storeStrong(&v20->_device, device);
+    v20->_currentStyle = style;
+    v20->_currentDial = dial;
+    v20->_currentColorPalette = paletteCopy;
+    objc_storeStrong(&v20->_date, date);
+    v20->_useSmallFont = font;
+    objc_storeStrong(&v20->_circularLogoImage, image);
     [(NTKOlympusTimeView *)v20 createAndRemoveViewsForCurrentStateIfNeeded];
   }
 
@@ -67,8 +67,8 @@
   contentView = self->_contentView;
   [(NTKOlympusTimeView *)self bounds];
   [(UIView *)contentView ntk_setBoundsAndPositionFromFrame:?];
-  v4 = [(NTKOlympusTimeView *)self device];
-  [v4 screenScale];
+  device = [(NTKOlympusTimeView *)self device];
+  [device screenScale];
   v6 = -1.0 / v5;
 
   overlayContentView = self->_overlayContentView;
@@ -100,35 +100,35 @@
   }
 }
 
-- (void)setCurrentDial:(unint64_t)a3
+- (void)setCurrentDial:(unint64_t)dial
 {
-  self->_currentDial = a3;
-  v5 = [(NTKOlympusTimeView *)self contentView];
-  [v5 setDial:a3];
+  self->_currentDial = dial;
+  contentView = [(NTKOlympusTimeView *)self contentView];
+  [contentView setDial:dial];
 
-  v6 = [(NTKOlympusTimeView *)self overlayContentView];
-  [v6 setDial:a3];
+  overlayContentView = [(NTKOlympusTimeView *)self overlayContentView];
+  [overlayContentView setDial:dial];
 }
 
-- (void)setCurrentColorPalette:(id)a3
+- (void)setCurrentColorPalette:(id)palette
 {
-  self->_currentColorPalette = a3;
-  v4 = a3;
-  v5 = [(NTKOlympusTimeView *)self contentView];
-  [v5 setColorPalette:v4];
+  self->_currentColorPalette = palette;
+  paletteCopy = palette;
+  contentView = [(NTKOlympusTimeView *)self contentView];
+  [contentView setColorPalette:paletteCopy];
 
-  v6 = [(NTKOlympusTimeView *)self overlayContentView];
-  [v6 setColorPalette:v4];
+  overlayContentView = [(NTKOlympusTimeView *)self overlayContentView];
+  [overlayContentView setColorPalette:paletteCopy];
 }
 
-- (void)setCurrentStyle:(unint64_t)a3
+- (void)setCurrentStyle:(unint64_t)style
 {
-  self->_currentStyle = a3;
-  v5 = [(NTKOlympusTimeView *)self contentView];
-  [v5 setStyle:a3];
+  self->_currentStyle = style;
+  contentView = [(NTKOlympusTimeView *)self contentView];
+  [contentView setStyle:style];
 
-  v6 = [(NTKOlympusTimeView *)self overlayContentView];
-  [v6 setStyle:a3];
+  overlayContentView = [(NTKOlympusTimeView *)self overlayContentView];
+  [overlayContentView setStyle:style];
 }
 
 - (void)configureViewsForEditing
@@ -144,8 +144,8 @@
   if (!contentView)
   {
     v4 = [NTKOlympusTimeContentView alloc];
-    v5 = [(NTKOlympusTimeView *)self device];
-    v6 = [(NTKOlympusTimeContentView *)v4 initWithDevice:v5 dial:self->_currentDial style:self->_currentStyle colorPalette:self->_currentColorPalette useSmallFont:self->_useSmallFont circularLogoImage:self->_circularLogoImage];
+    device = [(NTKOlympusTimeView *)self device];
+    v6 = [(NTKOlympusTimeContentView *)v4 initWithDevice:device dial:self->_currentDial style:self->_currentStyle colorPalette:self->_currentColorPalette useSmallFont:self->_useSmallFont circularLogoImage:self->_circularLogoImage];
     v7 = self->_contentView;
     self->_contentView = v6;
 
@@ -157,9 +157,9 @@
     contentView = self->_contentView;
   }
 
-  v8 = [(NTKOlympusTimeContentView *)contentView superview];
+  superview = [(NTKOlympusTimeContentView *)contentView superview];
 
-  if (v8 != self)
+  if (superview != self)
   {
     v9 = self->_contentView;
     if (self->_overlayContentView)
@@ -182,16 +182,16 @@
   if (!overlayContentView)
   {
     v4 = [NTKOlympusTimeContentView alloc];
-    v5 = [(NTKOlympusTimeView *)self device];
-    v6 = [(NTKOlympusTimeContentView *)v4 initWithDevice:v5 dial:self->_currentDial style:self->_currentStyle colorPalette:self->_currentColorPalette useSmallFont:self->_useSmallFont circularLogoImage:self->_circularLogoImage];
+    device = [(NTKOlympusTimeView *)self device];
+    v6 = [(NTKOlympusTimeContentView *)v4 initWithDevice:device dial:self->_currentDial style:self->_currentStyle colorPalette:self->_currentColorPalette useSmallFont:self->_useSmallFont circularLogoImage:self->_circularLogoImage];
     v7 = self->_overlayContentView;
     self->_overlayContentView = v6;
 
     [(NTKOlympusTimeView *)self bounds];
     [(NTKOlympusTimeContentView *)self->_overlayContentView setFrame:?];
     [(NTKOlympusTimeContentView *)self->_overlayContentView setInvertedColors:1];
-    v8 = [(NTKOlympusTimeContentView *)self->_overlayContentView layer];
-    [v8 setMasksToBounds:1];
+    layer = [(NTKOlympusTimeContentView *)self->_overlayContentView layer];
+    [layer setMasksToBounds:1];
 
     [(NTKOlympusTimeContentView *)self->_overlayContentView clipsToBounds];
     [(NTKOlympusTimeContentView *)self->_overlayContentView setOverrideDate:self->_date duration:0.0];
@@ -200,9 +200,9 @@
     overlayContentView = self->_overlayContentView;
   }
 
-  v9 = [(NTKOlympusTimeContentView *)overlayContentView superview];
+  superview = [(NTKOlympusTimeContentView *)overlayContentView superview];
 
-  if (v9 != self)
+  if (superview != self)
   {
     v10 = self->_overlayContentView;
     if (self->_contentView)
@@ -235,9 +235,9 @@
   [(NTKOlympusTimeContentView *)overlayContentView cleanupAfterEditing];
 }
 
-- (void)setupViewsForCurrentState:(BOOL)a3
+- (void)setupViewsForCurrentState:(BOOL)state
 {
-  if (!a3)
+  if (!state)
   {
     [(NTKOlympusTimeView *)self createAndRemoveViewsForCurrentStateIfNeeded];
   }
@@ -248,7 +248,7 @@
     [(NTKOlympusTimeContentView *)contentView setDial:self->_currentDial];
     [(NTKOlympusTimeContentView *)self->_contentView setColorPalette:self->_currentColorPalette];
     [(NTKOlympusTimeContentView *)self->_contentView setStyle:self->_currentStyle];
-    if (!a3)
+    if (!state)
     {
       [(NTKOlympusTimeContentView *)self->_contentView cleanupAfterEditing];
     }
@@ -260,7 +260,7 @@
     [(NTKOlympusTimeContentView *)overlayContentView setDial:self->_currentDial];
     [(NTKOlympusTimeContentView *)self->_overlayContentView setColorPalette:self->_currentColorPalette];
     [(NTKOlympusTimeContentView *)self->_overlayContentView setStyle:self->_currentStyle];
-    if (!a3)
+    if (!state)
     {
       [(NTKOlympusTimeContentView *)self->_overlayContentView cleanupAfterEditing];
     }
@@ -268,32 +268,32 @@
 
   if (![(NTKOlympusTimeView *)self _hasWindrunnerWedge])
   {
-    v7 = [(NTKOlympusTimeContentView *)self->_overlayContentView layer];
-    [v7 setMask:0];
+    layer = [(NTKOlympusTimeContentView *)self->_overlayContentView layer];
+    [layer setMask:0];
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
-  v9 = [(NTKOlympusTimeContentView *)self->_overlayContentView layer];
-  v10 = [v9 mask];
-  if (v10)
+  layer = [(NTKOlympusTimeContentView *)self->_overlayContentView layer];
+  mask = [layer mask];
+  if (mask)
   {
   }
 
   else
   {
 
-    if (a4 - 1 < 2 || a5 - 1 <= 1)
+    if (style - 1 < 2 || toStyle - 1 <= 1)
     {
       [(NTKOlympusTimeView *)self applyWindrunnerMaskWithDate:self->_date force:1];
     }
   }
 
-  [(NTKOlympusTimeContentView *)self->_overlayContentView applyTransitionFraction:a4 fromStyle:a5 toStyle:a3];
-  [(NTKOlympusTimeContentView *)self->_contentView applyTransitionFraction:a4 fromStyle:a5 toStyle:a3];
+  [(NTKOlympusTimeContentView *)self->_overlayContentView applyTransitionFraction:style fromStyle:toStyle toStyle:fraction];
+  [(NTKOlympusTimeContentView *)self->_contentView applyTransitionFraction:style fromStyle:toStyle toStyle:fraction];
   v11 = 0.0;
-  if (a4)
+  if (style)
   {
     v12 = 1.0;
   }
@@ -303,13 +303,13 @@
     v12 = 0.0;
   }
 
-  v13 = 1.0 - a3;
-  if (a5)
+  v13 = 1.0 - fraction;
+  if (toStyle)
   {
     v13 = v12;
   }
 
-  if (a5 | a4)
+  if (toStyle | style)
   {
     v11 = v13;
   }
@@ -319,27 +319,27 @@
   [(NTKOlympusTimeContentView *)overlayContentView setAlpha:v11];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 animateElements:(BOOL)a6
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette animateElements:(BOOL)elements
 {
-  v6 = a6;
+  elementsCopy = elements;
   contentView = self->_contentView;
-  v11 = a5;
-  v12 = a4;
-  [(NTKOlympusTimeContentView *)contentView applyTransitionFraction:v12 fromColorPalette:v11 toColorPalette:v6 animateElements:a3];
-  [(NTKOlympusTimeContentView *)self->_overlayContentView applyTransitionFraction:v12 fromColorPalette:v11 toColorPalette:v6 animateElements:a3];
+  colorPaletteCopy = colorPalette;
+  paletteCopy = palette;
+  [(NTKOlympusTimeContentView *)contentView applyTransitionFraction:paletteCopy fromColorPalette:colorPaletteCopy toColorPalette:elementsCopy animateElements:fraction];
+  [(NTKOlympusTimeContentView *)self->_overlayContentView applyTransitionFraction:paletteCopy fromColorPalette:colorPaletteCopy toColorPalette:elementsCopy animateElements:fraction];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromDial:(unint64_t)a4 toDial:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromDial:(unint64_t)dial toDial:(unint64_t)toDial
 {
   [NTKOlympusTimeContentView applyTransitionFraction:"applyTransitionFraction:fromDial:toDial:" fromDial:? toDial:?];
   overlayContentView = self->_overlayContentView;
 
-  [(NTKOlympusTimeContentView *)overlayContentView applyTransitionFraction:a4 fromDial:a5 toDial:a3];
+  [(NTKOlympusTimeContentView *)overlayContentView applyTransitionFraction:dial fromDial:toDial toDial:fraction];
 }
 
-- (double)shortestPathBetweenStartAngle:(double)a3 targetAngle:(double)a4
+- (double)shortestPathBetweenStartAngle:(double)angle targetAngle:(double)targetAngle
 {
-  result = a4 - a3;
+  result = targetAngle - angle;
   v5 = -result;
   if (result >= 0.0)
   {
@@ -363,20 +363,20 @@
   return result;
 }
 
-- (void)applyWindrunnerMaskWithDate:(id)a3 force:(BOOL)a4
+- (void)applyWindrunnerMaskWithDate:(id)date force:(BOOL)force
 {
-  v4 = a4;
-  v14 = a3;
-  if ([(NTKOlympusTimeView *)self canUpdateWindrunnerMask]|| v4)
+  forceCopy = force;
+  dateCopy = date;
+  if ([(NTKOlympusTimeView *)self canUpdateWindrunnerMask]|| forceCopy)
   {
-    v6 = NTKDateHourIn12HourTime(v14);
-    v7 = [MEMORY[0x277CBEA80] currentCalendar];
-    v8 = [v7 component:64 fromDate:v14];
+    v6 = NTKDateHourIn12HourTime(dateCopy);
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v8 = [currentCalendar component:64 fromDate:dateCopy];
 
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
-    v10 = [v9 component:128 fromDate:v14];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    v10 = [currentCalendar2 component:128 fromDate:dateCopy];
 
-    self->_maskingPathStartsFromHourHand = [(NTKOlympusTimeView *)self _maskingPathStartsFromHourHandForDate:v14];
+    self->_maskingPathStartsFromHourHand = [(NTKOlympusTimeView *)self _maskingPathStartsFromHourHandForDate:dateCopy];
     [NTKOlympusMask angleForHour:v6 minutes:v8];
     v12 = v11;
     [NTKOlympusMask angleForMinute:v8 seconds:v10];
@@ -384,28 +384,28 @@
   }
 }
 
-- (void)updateMaskingPathStartPointWithNewHourAngle:(double)a3 newMinuteAngle:(double)a4
+- (void)updateMaskingPathStartPointWithNewHourAngle:(double)angle newMinuteAngle:(double)minuteAngle
 {
   [(NTKOlympusTimeView *)self _calculateDeviationBetweenHourAngle:self->_hourHandAngle minuteAngle:self->_minuteHandAngle];
   v8 = v7 < 180.0;
-  [(NTKOlympusTimeView *)self _calculateDeviationBetweenHourAngle:a3 minuteAngle:a4];
+  [(NTKOlympusTimeView *)self _calculateDeviationBetweenHourAngle:angle minuteAngle:minuteAngle];
   if (((v8 ^ (v9 >= 180.0)) & 1) == 0 && (v9 < 100.0 || v9 > 260.0))
   {
     self->_maskingPathStartsFromHourHand ^= 1u;
   }
 }
 
-- (void)applyWindrunnerMaskWithHourAngle:(double)a3 minuteAngle:(double)a4
+- (void)applyWindrunnerMaskWithHourAngle:(double)angle minuteAngle:(double)minuteAngle
 {
-  v7 = [(NTKOlympusTimeView *)self overlayContentView];
-  [v7 bounds];
+  overlayContentView = [(NTKOlympusTimeView *)self overlayContentView];
+  [overlayContentView bounds];
   v9 = v8;
   v11 = v10;
 
-  if (self->_hourHandAngle != a3 || self->_minuteHandAngle != a4 || (v9 == self->_maskingSize.width ? (v12 = v11 == self->_maskingSize.height) : (v12 = 0), !v12 || (-[NTKOlympusTimeView overlayContentView](self, "overlayContentView"), v13 = objc_claimAutoreleasedReturnValue(), [v13 layer], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "mask"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, !v15)))
+  if (self->_hourHandAngle != angle || self->_minuteHandAngle != minuteAngle || (v9 == self->_maskingSize.width ? (v12 = v11 == self->_maskingSize.height) : (v12 = 0), !v12 || (-[NTKOlympusTimeView overlayContentView](self, "overlayContentView"), v13 = objc_claimAutoreleasedReturnValue(), [v13 layer], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "mask"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, !v15)))
   {
-    self->_hourHandAngle = a3;
-    self->_minuteHandAngle = a4;
+    self->_hourHandAngle = angle;
+    self->_minuteHandAngle = minuteAngle;
     self->_maskingSize.width = v9;
     self->_maskingSize.height = v11;
     hourHandAngle = self->_hourHandAngle;
@@ -428,10 +428,10 @@
   }
 }
 
-- (void)applyWindrunnerMaskStartAngle:(double)a3 endAngle:(double)a4
+- (void)applyWindrunnerMaskStartAngle:(double)angle endAngle:(double)endAngle
 {
-  v5 = [(NTKOlympusTimeView *)self overlayContentView];
-  [v5 bounds];
+  overlayContentView = [(NTKOlympusTimeView *)self overlayContentView];
+  [overlayContentView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -449,19 +449,19 @@
   CGRectGetHeight(v21);
   MEMORY[0x2318D8E70](v7, v9, v11, v13);
   v18 = [NTKOlympusMask clippingPathFromCenterPoint:"clippingPathFromCenterPoint:startAngle:endAngle:radius:" startAngle:? endAngle:? radius:?];
-  v14 = [MEMORY[0x277CD9F90] layer];
+  layer = [MEMORY[0x277CD9F90] layer];
   v15 = v18;
-  [v14 setPath:{objc_msgSend(v18, "CGPath")}];
-  v16 = [(NTKOlympusTimeView *)self overlayContentView];
-  v17 = [v16 layer];
-  [v17 setMask:v14];
+  [layer setPath:{objc_msgSend(v18, "CGPath")}];
+  overlayContentView2 = [(NTKOlympusTimeView *)self overlayContentView];
+  layer2 = [overlayContentView2 layer];
+  [layer2 setMask:layer];
 }
 
-- (double)_calculateDeviationBetweenHourAngle:(double)a3 minuteAngle:(double)a4
+- (double)_calculateDeviationBetweenHourAngle:(double)angle minuteAngle:(double)minuteAngle
 {
-  [NTKOlympusMask normalizeAngle:a3];
+  [NTKOlympusMask normalizeAngle:angle];
   v6 = v5;
-  [NTKOlympusMask normalizeAngle:a4];
+  [NTKOlympusMask normalizeAngle:minuteAngle];
   v8 = v7 - v6;
   if (v8 < 0.0)
   {
@@ -472,30 +472,30 @@
   return floorf(v9);
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  objc_storeStrong(&self->_date, a3);
-  v7 = a3;
-  v8 = [(NTKOlympusTimeView *)self contentView];
-  [v8 setOverrideDate:v7 duration:a4];
+  objc_storeStrong(&self->_date, date);
+  dateCopy = date;
+  contentView = [(NTKOlympusTimeView *)self contentView];
+  [contentView setOverrideDate:dateCopy duration:duration];
 
-  v9 = [(NTKOlympusTimeView *)self overlayContentView];
-  [v9 setOverrideDate:v7 duration:a4];
+  overlayContentView = [(NTKOlympusTimeView *)self overlayContentView];
+  [overlayContentView setOverrideDate:dateCopy duration:duration];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
-  v5 = [(NTKOlympusTimeView *)self contentView];
-  [v5 setTimeOffset:a3];
+  contentView = [(NTKOlympusTimeView *)self contentView];
+  [contentView setTimeOffset:offset];
 
-  v6 = [(NTKOlympusTimeView *)self overlayContentView];
-  [v6 setTimeOffset:a3];
+  overlayContentView = [(NTKOlympusTimeView *)self overlayContentView];
+  [overlayContentView setTimeOffset:offset];
 }
 
-- (void)olympusContentViewDidHandleLogoHighlighted:(id)a3
+- (void)olympusContentViewDidHandleLogoHighlighted:(id)highlighted
 {
   overlayContentView = self->_overlayContentView;
-  if (overlayContentView == a3)
+  if (overlayContentView == highlighted)
   {
     overlayContentView = self->_contentView;
   }
@@ -503,10 +503,10 @@
   [(NTKOlympusTimeContentView *)overlayContentView setLogoButtonHighlighted:1];
 }
 
-- (void)olympusContentViewDidHandleLogoResetHighlight:(id)a3
+- (void)olympusContentViewDidHandleLogoResetHighlight:(id)highlight
 {
   overlayContentView = self->_overlayContentView;
-  if (overlayContentView == a3)
+  if (overlayContentView == highlight)
   {
     overlayContentView = self->_contentView;
   }
@@ -514,14 +514,14 @@
   [(NTKOlympusTimeContentView *)overlayContentView setLogoButtonHighlighted:0];
 }
 
-- (void)olympusContentView:(id)a3 didHandleLogoTouchUpInsideFromRect:(CGRect)a4
+- (void)olympusContentView:(id)view didHandleLogoTouchUpInsideFromRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   overlayContentView = self->_overlayContentView;
-  if (overlayContentView == a3)
+  if (overlayContentView == view)
   {
     overlayContentView = self->_contentView;
   }
@@ -531,24 +531,24 @@
   [(NTKOlympusTimeView *)self openVictoryAppFromRect:x, y, width, height];
 }
 
-- (void)openVictoryAppFromRect:(CGRect)a3
+- (void)openVictoryAppFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(NTKOlympusTimeView *)self delegate];
-  [v8 olympusView:self didTapAppLogoFromRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegate = [(NTKOlympusTimeView *)self delegate];
+  [delegate olympusView:self didTapAppLogoFromRect:{x, y, width, height}];
 }
 
-- (BOOL)_maskingPathStartsFromHourHandForDate:(id)a3
+- (BOOL)_maskingPathStartsFromHourHandForDate:(id)date
 {
-  v3 = a3;
-  v4 = NTKStartOfDayForDate(v3);
+  dateCopy = date;
+  v4 = NTKStartOfDayForDate(dateCopy);
   [v4 timeIntervalSinceReferenceDate];
   v6 = v5;
 
-  [v3 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v8 = -1;
   do
   {

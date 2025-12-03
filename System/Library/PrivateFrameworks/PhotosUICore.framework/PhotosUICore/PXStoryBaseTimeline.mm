@@ -1,27 +1,27 @@
 @interface PXStoryBaseTimeline
-- ($26774211E5BDBF3D92665BB0B9FD0ED0)infoForSegmentWithIdentifier:(SEL)a3;
+- ($26774211E5BDBF3D92665BB0B9FD0ED0)infoForSegmentWithIdentifier:(SEL)identifier;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRangeForSegmentWithIdentifier:(SEL)a3;
-- (BOOL)containsAllSegmentsWithIdentifiers:(id)a3;
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRangeForSegmentWithIdentifier:(SEL)identifier;
+- (BOOL)containsAllSegmentsWithIdentifiers:(id)identifiers;
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier;
 - (CGSize)size;
 - (NSString)diagnosticDescription;
-- (id)clipWithIdentifier:(int64_t)a3;
-- (id)clipWithResourceKind:(int64_t)a3 afterClipIdentifier:(int64_t)a4;
-- (id)identifiersOfSegmentsMatchingSegmentWithIdentifier:(int64_t)a3 inTimeline:(id)a4;
-- (id)segmentIdentifiersInTimeRange:(id *)a3 rect:(CGRect)a4;
+- (id)clipWithIdentifier:(int64_t)identifier;
+- (id)clipWithResourceKind:(int64_t)kind afterClipIdentifier:(int64_t)identifier;
+- (id)identifiersOfSegmentsMatchingSegmentWithIdentifier:(int64_t)identifier inTimeline:(id)timeline;
+- (id)segmentIdentifiersInTimeRange:(id *)range rect:(CGRect)rect;
 - (int64_t)firstSegmentIdentifier;
-- (int64_t)identifierForSegmentAtIndex:(int64_t)a3;
-- (int64_t)identifierForSegmentWithOffset:(id *)a3 fromEndOfSegmentWithIdentifier:(int64_t)a4 timeIntoSegment:(id *)a5;
-- (int64_t)identifierOfFirstSegmentContainingAsset:(id)a3;
-- (int64_t)identifierOfSegmentClosestToSegmentWithIdentifier:(int64_t)a3 inTimeline:(id)a4;
-- (int64_t)indexOfSegmentWithIdentifier:(int64_t)a3;
+- (int64_t)identifierForSegmentAtIndex:(int64_t)index;
+- (int64_t)identifierForSegmentWithOffset:(id *)offset fromEndOfSegmentWithIdentifier:(int64_t)identifier timeIntoSegment:(id *)segment;
+- (int64_t)identifierOfFirstSegmentContainingAsset:(id)asset;
+- (int64_t)identifierOfSegmentClosestToSegmentWithIdentifier:(int64_t)identifier inTimeline:(id)timeline;
+- (int64_t)indexOfSegmentWithIdentifier:(int64_t)identifier;
 - (int64_t)lastSegmentIdentifier;
-- (int64_t)numberOfClipsWithResourceKind:(int64_t)a3;
+- (int64_t)numberOfClipsWithResourceKind:(int64_t)kind;
 - (int64_t)numberOfSegments;
-- (void)_findSegmentMatchingIdentifier:(int64_t)a3 timeRange:(id *)a4 info:(id *)a5;
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
-- (void)enumerateSegmentsInTimeRange:(id *)a3 usingBlock:(id)a4;
+- (void)_findSegmentMatchingIdentifier:(int64_t)identifier timeRange:(id *)range info:(id *)info;
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateSegmentsInTimeRange:(id *)range usingBlock:(id)block;
 @end
 
 @implementation PXStoryBaseTimeline
@@ -214,12 +214,12 @@ void __44__PXStoryBaseTimeline_diagnosticDescription__block_invoke_3(uint64_t a1
   }
 }
 
-- (id)segmentIdentifiersInTimeRange:(id *)a3 rect:(CGRect)a4
+- (id)segmentIdentifiersInTimeRange:(id *)range rect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
@@ -229,12 +229,12 @@ void __44__PXStoryBaseTimeline_diagnosticDescription__block_invoke_3(uint64_t a1
   v25 = y;
   v26 = width;
   v27 = height;
-  v22 = self;
+  selfCopy = self;
   v23 = v10;
-  v11 = *&a3->var0.var3;
-  v15 = *&a3->var0.var0;
+  v11 = *&range->var0.var3;
+  v15 = *&range->var0.var0;
   v16 = v11;
-  v17 = *&a3->var1.var1;
+  v17 = *&range->var1.var1;
   v12 = v10;
   [(PXStoryBaseTimeline *)self enumerateSegmentsInTimeRange:&v15 usingBlock:&v18];
   v13 = [v12 copy];
@@ -279,23 +279,23 @@ uint64_t __58__PXStoryBaseTimeline_segmentIdentifiersInTimeRange_rect___block_in
   return result;
 }
 
-- (CGRect)frameForSegmentWithIdentifier:(int64_t)a3
+- (CGRect)frameForSegmentWithIdentifier:(int64_t)identifier
 {
   [(PXStoryBaseTimeline *)self size];
 
   PXRectWithOriginAndSize();
 }
 
-- (id)identifiersOfSegmentsMatchingSegmentWithIdentifier:(int64_t)a3 inTimeline:(id)a4
+- (id)identifiersOfSegmentsMatchingSegmentWithIdentifier:(int64_t)identifier inTimeline:(id)timeline
 {
-  if (a4)
+  if (timeline)
   {
-    v5 = AnchorableResourceIdentifiersInTimelineSegment(a4, a3);
+    v5 = AnchorableResourceIdentifiersInTimelineSegment(timeline, identifier);
     v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
-    v7 = [(PXStoryBaseTimeline *)self numberOfSegments];
-    if (v7 >= 1)
+    numberOfSegments = [(PXStoryBaseTimeline *)self numberOfSegments];
+    if (numberOfSegments >= 1)
     {
-      v8 = v7;
+      v8 = numberOfSegments;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(PXStoryBaseTimeline *)self identifierForSegmentAtIndex:i];
@@ -318,20 +318,20 @@ uint64_t __58__PXStoryBaseTimeline_segmentIdentifiersInTimeRange_rect___block_in
   return v12;
 }
 
-- (int64_t)identifierOfSegmentClosestToSegmentWithIdentifier:(int64_t)a3 inTimeline:(id)a4
+- (int64_t)identifierOfSegmentClosestToSegmentWithIdentifier:(int64_t)identifier inTimeline:(id)timeline
 {
-  if (a4 && a3)
+  if (timeline && identifier)
   {
-    v5 = AnchorableResourceIdentifiersInTimelineSegment(a4, a3);
-    v6 = [(PXStoryBaseTimeline *)self numberOfSegments];
-    if (v6 < 1)
+    v5 = AnchorableResourceIdentifiersInTimelineSegment(timeline, identifier);
+    numberOfSegments = [(PXStoryBaseTimeline *)self numberOfSegments];
+    if (numberOfSegments < 1)
     {
       v9 = 0;
     }
 
     else
     {
-      v7 = v6;
+      v7 = numberOfSegments;
       v8 = 0;
       v9 = 0;
       v10 = 0x8000000000000001;
@@ -362,7 +362,7 @@ uint64_t __58__PXStoryBaseTimeline_segmentIdentifiersInTimeRange_rect___block_in
   }
 }
 
-- (void)_findSegmentMatchingIdentifier:(int64_t)a3 timeRange:(id *)a4 info:(id *)a5
+- (void)_findSegmentMatchingIdentifier:(int64_t)identifier timeRange:(id *)range info:(id *)info
 {
   v40 = 0;
   v41 = &v40;
@@ -394,43 +394,43 @@ uint64_t __58__PXStoryBaseTimeline_segmentIdentifiersInTimeRange_rect___block_in
   v21[2] = __69__PXStoryBaseTimeline__findSegmentMatchingIdentifier_timeRange_info___block_invoke;
   v21[3] = &unk_1E77355D8;
   v21[5] = &v23;
-  v21[6] = a3;
+  v21[6] = identifier;
   v21[4] = &v40;
   [(PXStoryBaseTimeline *)self enumerateSegmentsInTimeRange:v22 usingBlock:v21];
-  if (a4)
+  if (range)
   {
     v10 = *(v41 + 3);
     v9 = *(v41 + 4);
-    *&a4->var0.var0 = *(v41 + 2);
-    *&a4->var0.var3 = v10;
-    *&a4->var1.var1 = v9;
+    *&range->var0.var0 = *(v41 + 2);
+    *&range->var0.var3 = v10;
+    *&range->var1.var1 = v9;
   }
 
-  if (a5)
+  if (info)
   {
     v11 = v24;
-    *&a5->var0 = *(v24 + 2);
+    *&info->var0 = *(v24 + 2);
     v12 = *(v11 + 6);
     v14 = *(v11 + 3);
     v13 = *(v11 + 4);
-    *&a5->var2.var0 = *(v11 + 5);
-    *&a5->var2.var2.var1 = v12;
-    *&a5->var1.var1 = v14;
-    *&a5->var1.var3 = v13;
+    *&info->var2.var0 = *(v11 + 5);
+    *&info->var2.var2.var1 = v12;
+    *&info->var1.var1 = v14;
+    *&info->var1.var3 = v13;
     v15 = *(v11 + 10);
     v17 = *(v11 + 7);
     v16 = *(v11 + 8);
-    *&a5->var3.var0.var3 = *(v11 + 9);
-    *&a5->var3.var1.var1 = v15;
-    *&a5->var2.var3 = v17;
-    *&a5->var3.var0.var0 = v16;
+    *&info->var3.var0.var3 = *(v11 + 9);
+    *&info->var3.var1.var1 = v15;
+    *&info->var2.var3 = v17;
+    *&info->var3.var0.var0 = v16;
     v19 = *(v11 + 12);
     v18 = *(v11 + 13);
     v20 = *(v11 + 11);
-    a5->var3.var3.var1 = v11[28];
-    *&a5->var3.var2.var3 = v19;
-    *&a5->var3.var3.var0.var1 = v18;
-    *&a5->var3.var2.var0 = v20;
+    info->var3.var3.var1 = v11[28];
+    *&info->var3.var2.var3 = v19;
+    *&info->var3.var3.var0.var1 = v18;
+    *&info->var3.var2.var0 = v20;
   }
 
   _Block_object_dispose(&v23, 8);
@@ -489,7 +489,7 @@ __n128 __69__PXStoryBaseTimeline__findSegmentMatchingIdentifier_timeRange_info__
   return result;
 }
 
-- ($26774211E5BDBF3D92665BB0B9FD0ED0)infoForSegmentWithIdentifier:(SEL)a3
+- ($26774211E5BDBF3D92665BB0B9FD0ED0)infoForSegmentWithIdentifier:(SEL)identifier
 {
   retstr->var3.var3.var1 = 0;
   *&retstr->var3.var2.var3 = 0u;
@@ -507,7 +507,7 @@ __n128 __69__PXStoryBaseTimeline__findSegmentMatchingIdentifier_timeRange_info__
   return [(PXStoryBaseTimeline *)self _findSegmentMatchingIdentifier:a4 timeRange:0 info:retstr];
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRangeForSegmentWithIdentifier:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRangeForSegmentWithIdentifier:(SEL)identifier
 {
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
@@ -515,10 +515,10 @@ __n128 __69__PXStoryBaseTimeline__findSegmentMatchingIdentifier_timeRange_info__
   return [(PXStoryBaseTimeline *)self _findSegmentMatchingIdentifier:a4 timeRange:retstr info:0];
 }
 
-- (BOOL)containsAllSegmentsWithIdentifiers:(id)a3
+- (BOOL)containsAllSegmentsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v8 = 0;
     v9 = &v8;
@@ -530,7 +530,7 @@ __n128 __69__PXStoryBaseTimeline__findSegmentMatchingIdentifier_timeRange_info__
     v7[3] = &unk_1E773BA28;
     v7[4] = self;
     v7[5] = &v8;
-    [v4 enumerateIndexesUsingBlock:v7];
+    [identifiersCopy enumerateIndexesUsingBlock:v7];
     v5 = *(v9 + 24);
     _Block_object_dispose(&v8, 8);
   }
@@ -555,9 +555,9 @@ uint64_t __58__PXStoryBaseTimeline_containsAllSegmentsWithIdentifiers___block_in
   return result;
 }
 
-- (int64_t)identifierOfFirstSegmentContainingAsset:(id)a3
+- (int64_t)identifierOfFirstSegmentContainingAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v6[0] = 0;
   v6[1] = v6;
   v6[2] = 0x2020000000;
@@ -657,25 +657,25 @@ LABEL_6:
   *(*(*(a1 + 48) + 8) + 24) = *(*(a1 + 64) + 200 * *(a1 + 72));
 }
 
-- (int64_t)identifierForSegmentWithOffset:(id *)a3 fromEndOfSegmentWithIdentifier:(int64_t)a4 timeIntoSegment:(id *)a5
+- (int64_t)identifierForSegmentWithOffset:(id *)offset fromEndOfSegmentWithIdentifier:(int64_t)identifier timeIntoSegment:(id *)segment
 {
-  v6 = a4;
-  v9 = [(PXStoryBaseTimeline *)self indexOfSegmentWithIdentifier:a4];
-  v19 = *a3;
+  identifierCopy = identifier;
+  v9 = [(PXStoryBaseTimeline *)self indexOfSegmentWithIdentifier:identifier];
+  v19 = *offset;
   if (v9 >= [(PXStoryBaseTimeline *)self numberOfSegments]- 1)
   {
-    [(PXStoryBaseTimeline *)self timeRangeForSegmentWithIdentifier:v6];
+    [(PXStoryBaseTimeline *)self timeRangeForSegmentWithIdentifier:identifierCopy];
     v19 = v13;
   }
 
   else
   {
     v10 = [(PXStoryBaseTimeline *)self identifierForSegmentAtIndex:v9 + 1];
-    v11 = [(PXStoryBaseTimeline *)self indexOfSegmentWithIdentifier:v6]+ 1;
+    v11 = [(PXStoryBaseTimeline *)self indexOfSegmentWithIdentifier:identifierCopy]+ 1;
     [(PXStoryBaseTimeline *)self timeRangeForSegmentWithIdentifier:v10];
     *&v18.value = v16;
     v18.epoch = v17;
-    v6 = v10;
+    identifierCopy = v10;
     while (1)
     {
       time1 = v19;
@@ -690,8 +690,8 @@ LABEL_6:
         time1 = v19;
         time2 = v18;
         CMTimeSubtract(&v19, &time1, &time2);
-        v6 = [(PXStoryBaseTimeline *)self identifierForSegmentAtIndex:++v11];
-        [(PXStoryBaseTimeline *)self timeRangeForSegmentWithIdentifier:v6];
+        identifierCopy = [(PXStoryBaseTimeline *)self identifierForSegmentAtIndex:++v11];
+        [(PXStoryBaseTimeline *)self timeRangeForSegmentWithIdentifier:identifierCopy];
         *&v18.value = v14;
         v18.epoch = v15;
       }
@@ -703,11 +703,11 @@ LABEL_6:
     }
   }
 
-  *a5 = v19;
-  return v6;
+  *segment = v19;
+  return identifierCopy;
 }
 
-- (int64_t)indexOfSegmentWithIdentifier:(int64_t)a3
+- (int64_t)indexOfSegmentWithIdentifier:(int64_t)identifier
 {
   v10 = 0;
   v11 = &v10;
@@ -723,7 +723,7 @@ LABEL_6:
   v7[2] = __52__PXStoryBaseTimeline_indexOfSegmentWithIdentifier___block_invoke;
   v7[3] = &unk_1E77355D8;
   v7[5] = v9;
-  v7[6] = a3;
+  v7[6] = identifier;
   v7[4] = &v10;
   [(PXStoryBaseTimeline *)self enumerateSegmentsInTimeRange:v8 usingBlock:v7];
   v5 = v11[3];
@@ -761,7 +761,7 @@ void *__52__PXStoryBaseTimeline_indexOfSegmentWithIdentifier___block_invoke(void
   return result;
 }
 
-- (int64_t)identifierForSegmentAtIndex:(int64_t)a3
+- (int64_t)identifierForSegmentAtIndex:(int64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -777,7 +777,7 @@ void *__52__PXStoryBaseTimeline_indexOfSegmentWithIdentifier___block_invoke(void
   v7[2] = __51__PXStoryBaseTimeline_identifierForSegmentAtIndex___block_invoke;
   v7[3] = &unk_1E77355D8;
   v7[5] = &v10;
-  v7[6] = a3;
+  v7[6] = index;
   v7[4] = v9;
   [(PXStoryBaseTimeline *)self enumerateSegmentsInTimeRange:v8 usingBlock:v7];
   v5 = v11[3];
@@ -836,38 +836,38 @@ void *__51__PXStoryBaseTimeline_identifierForSegmentAtIndex___block_invoke(void 
   return [(PXStoryBaseTimeline *)self identifierForSegmentAtIndex:0];
 }
 
-- (void)enumerateSegmentsInTimeRange:(id *)a3 usingBlock:(id)a4
+- (void)enumerateSegmentsInTimeRange:(id *)range usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  blockCopy = block;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:117 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline enumerateSegmentsInTimeRange:usingBlock:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:117 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline enumerateSegmentsInTimeRange:usingBlock:]", v9}];
 
   abort();
 }
 
 - (int64_t)numberOfSegments
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:113 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline numberOfSegments]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:113 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline numberOfSegments]", v6}];
 
   abort();
 }
 
-- (id)clipWithIdentifier:(int64_t)a3
+- (id)clipWithIdentifier:(int64_t)identifier
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:109 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline clipWithIdentifier:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:109 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline clipWithIdentifier:]", v7}];
 
   abort();
 }
 
-- (id)clipWithResourceKind:(int64_t)a3 afterClipIdentifier:(int64_t)a4
+- (id)clipWithResourceKind:(int64_t)kind afterClipIdentifier:(int64_t)identifier
 {
   v8[0] = 0;
   v8[1] = v8;
@@ -878,7 +878,7 @@ void *__51__PXStoryBaseTimeline_identifierForSegmentAtIndex___block_invoke(void 
   v6[0] = 0;
   v6[1] = v6;
   v6[2] = 0x2020000000;
-  v7 = a4 == 0;
+  v7 = identifier == 0;
   [(PXStoryBaseTimeline *)self timeRange];
   [(PXStoryBaseTimeline *)self size];
   PXRectWithOriginAndSize();
@@ -917,18 +917,18 @@ void __64__PXStoryBaseTimeline_clipWithResourceKind_afterClipIdentifier___block_
   }
 }
 
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  v7 = a5;
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  blockCopy = block;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v8 handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:87 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline enumerateClipsInTimeRange:rect:usingBlock:]", v10}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:87 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline enumerateClipsInTimeRange:rect:usingBlock:]", v10}];
 
   abort();
 }
 
-- (int64_t)numberOfClipsWithResourceKind:(int64_t)a3
+- (int64_t)numberOfClipsWithResourceKind:(int64_t)kind
 {
   v5[0] = 0;
   v5[1] = v5;
@@ -963,20 +963,20 @@ uint64_t __53__PXStoryBaseTimeline_numberOfClipsWithResourceKind___block_invoke(
 
 - (CGSize)size
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:71 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline size]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryBaseTimeline.m" lineNumber:71 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline size]", v6}];
 
   abort();
 }
 
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a3 object:self file:@"PXStoryBaseTimeline.m" lineNumber:67 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline timeRange]", v7}];
+  [currentHandler handleFailureInMethod:a3 object:self file:@"PXStoryBaseTimeline.m" lineNumber:67 description:{@"Method %s is a responsibility of subclass %@", "-[PXStoryBaseTimeline timeRange]", v7}];
 
   abort();
 }

@@ -1,16 +1,16 @@
 @interface SFMagicHeadCircleView
-- (SFMagicHeadCircleView)initWithFrame:(CGRect)a3;
+- (SFMagicHeadCircleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)update;
 @end
 
 @implementation SFMagicHeadCircleView
 
-- (SFMagicHeadCircleView)initWithFrame:(CGRect)a3
+- (SFMagicHeadCircleView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SFMagicHeadCircleView;
-  v3 = [(SFMagicHeadCircleView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFMagicHeadCircleView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,17 +30,17 @@
 
 - (void)update
 {
-  v6 = [(SFMagicHeadCircleView *)self layer];
+  layer = [(SFMagicHeadCircleView *)self layer];
   [(SFMagicHeadCircleView *)self frame];
-  [v6 setCornerRadius:CGRectGetWidth(v8) * 0.5];
+  [layer setCornerRadius:CGRectGetWidth(v8) * 0.5];
   v3 = MEMORY[0x1E69DC728];
   [(SFMagicHeadCircleView *)self bounds];
   v4 = [v3 bezierPathWithOvalInRect:?];
-  [v6 setPath:{objc_msgSend(v4, "CGPath")}];
+  [layer setPath:{objc_msgSend(v4, "CGPath")}];
 
-  [v6 setMasksToBounds:1];
-  v5 = [MEMORY[0x1E69DC888] whiteColor];
-  [v6 setFillColor:{objc_msgSend(v5, "CGColor")}];
+  [layer setMasksToBounds:1];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [layer setFillColor:{objc_msgSend(whiteColor, "CGColor")}];
 }
 
 @end

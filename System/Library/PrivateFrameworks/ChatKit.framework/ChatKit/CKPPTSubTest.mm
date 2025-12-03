@@ -1,34 +1,34 @@
 @interface CKPPTSubTest
-+ (void)start:(id)a3;
-+ (void)stop:(id)a3;
++ (void)start:(id)start;
++ (void)stop:(id)stop;
 @end
 
 @implementation CKPPTSubTest
 
-+ (void)start:(id)a3
++ (void)start:(id)start
 {
-  v5 = a3;
+  startCopy = start;
   if (!kApplicationReference && CKIsRunningInMessages())
   {
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v4 = kApplicationReference;
-    kApplicationReference = v3;
+    kApplicationReference = mEMORY[0x1E69DC668];
   }
 
-  [kApplicationReference startPPTSubtestForCurrentTest:v5];
+  [kApplicationReference startPPTSubtestForCurrentTest:startCopy];
 }
 
-+ (void)stop:(id)a3
++ (void)stop:(id)stop
 {
-  v5 = a3;
+  stopCopy = stop;
   if (!kApplicationReference && CKIsRunningInMessages())
   {
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v4 = kApplicationReference;
-    kApplicationReference = v3;
+    kApplicationReference = mEMORY[0x1E69DC668];
   }
 
-  [kApplicationReference stopPPTSubtestForCurrentTest:v5];
+  [kApplicationReference stopPPTSubtestForCurrentTest:stopCopy];
 }
 
 @end

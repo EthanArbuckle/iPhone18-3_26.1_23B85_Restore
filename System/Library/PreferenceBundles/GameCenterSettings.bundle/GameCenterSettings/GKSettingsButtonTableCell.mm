@@ -1,15 +1,15 @@
 @interface GKSettingsButtonTableCell
-- (GKSettingsButtonTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)setTitle:(id)a3;
+- (GKSettingsButtonTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)setTitle:(id)title;
 @end
 
 @implementation GKSettingsButtonTableCell
 
-- (GKSettingsButtonTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (GKSettingsButtonTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = GKSettingsButtonTableCell;
-  v5 = [(GKSettingsButtonTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(GKSettingsButtonTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -19,18 +19,18 @@
   return v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v10 = objc_alloc_init(GKTextStylePhone);
   v5 = +[GKTextStyle textStyle];
-  v6 = [v5 settingsButton];
+  settingsButton = [v5 settingsButton];
 
-  v7 = [v4 _gkAttributedStringByApplyingStyle:v6];
+  v7 = [titleCopy _gkAttributedStringByApplyingStyle:settingsButton];
 
   v8 = [GKTextStyle attributedString:v7 byReplayingFromBaseStyle:v10 systemContentSizeDidChange:0];
-  v9 = [(GKSettingsButtonTableCell *)self textLabel];
-  [v9 setAttributedText:v8];
+  textLabel = [(GKSettingsButtonTableCell *)self textLabel];
+  [textLabel setAttributedText:v8];
 }
 
 @end

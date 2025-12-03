@@ -1,23 +1,23 @@
 @interface UIColor
-+ (UIColor)colorWithHexValue:(id)a3 error:(id *)a4;
++ (UIColor)colorWithHexValue:(id)value error:(id *)error;
 @end
 
 @implementation UIColor
 
-+ (UIColor)colorWithHexValue:(id)a3 error:(id *)a4
++ (UIColor)colorWithHexValue:(id)value error:(id *)error
 {
-  v5 = a3;
-  if ([v5 hasPrefix:@"#"] && objc_msgSend(v5, "length") >= 2)
+  valueCopy = value;
+  if ([valueCopy hasPrefix:@"#"] && objc_msgSend(valueCopy, "length") >= 2)
   {
-    v6 = [v5 substringFromIndex:1];
+    v6 = [valueCopy substringFromIndex:1];
 
-    v5 = v6;
+    valueCopy = v6;
   }
 
-  v7 = [v5 length];
+  v7 = [valueCopy length];
   if (v7 == &dword_0 + 3)
   {
-    v19 = a4;
+    errorCopy2 = error;
     v8 = 1;
 LABEL_8:
     v9 = 0;
@@ -25,7 +25,7 @@ LABEL_8:
     v11 = 1;
     do
     {
-      v12 = [v5 substringWithRange:{v9, v8, v19}];
+      v12 = [valueCopy substringWithRange:{v9, v8, errorCopy2}];
       v13 = v12;
       if (v7 == &dword_0 + 3)
       {
@@ -51,8 +51,8 @@ LABEL_8:
       goto LABEL_18;
     }
 
-    a4 = v19;
-    if (v19)
+    error = errorCopy2;
+    if (errorCopy2)
     {
       goto LABEL_15;
     }
@@ -60,18 +60,18 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if ([v5 length] == &dword_4 + 2)
+  if ([valueCopy length] == &dword_4 + 2)
   {
-    v19 = a4;
+    errorCopy2 = error;
     v8 = 2;
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_15:
     [NSError errorWithDomain:@"com.apple.diagnostics.invalidHexValue" code:-1 userInfo:0];
-    *a4 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_18;
   }
 

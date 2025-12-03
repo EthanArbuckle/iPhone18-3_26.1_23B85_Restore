@@ -1,19 +1,19 @@
 @interface CUNANEndpoint
-- (CUNANEndpoint)initWithEndpointID:(const char *)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (unsigned)updateWithDiscoveryResult:(id)a3;
+- (CUNANEndpoint)initWithEndpointID:(const char *)d error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (unsigned)updateWithDiscoveryResult:(id)result;
 @end
 
 @implementation CUNANEndpoint
 
-- (unsigned)updateWithDiscoveryResult:(id)a3
+- (unsigned)updateWithDiscoveryResult:(id)result
 {
-  v5 = a3;
-  objc_storeStrong(&self->_discoveryResult, a3);
-  v6 = [v5 serviceSpecificInfo];
-  v7 = [v6 blob];
+  resultCopy = result;
+  objc_storeStrong(&self->_discoveryResult, result);
+  serviceSpecificInfo = [resultCopy serviceSpecificInfo];
+  blob = [serviceSpecificInfo blob];
   customData = self->_customData;
-  v9 = v7;
+  v9 = blob;
   v10 = customData;
   v11 = v10;
   if (v9 == v10)
@@ -48,10 +48,10 @@ LABEL_7:
 LABEL_9:
   if (!self->_identifier)
   {
-    v16 = [v5 publisherAddress];
-    v17 = [v16 data];
-    [v5 publishID];
-    v18 = _WiFiAwareCreateEndpointIdentifier(v17);
+    publisherAddress = [resultCopy publisherAddress];
+    data = [publisherAddress data];
+    [resultCopy publishID];
+    v18 = _WiFiAwareCreateEndpointIdentifier(data);
     identifier = self->_identifier;
     self->_identifier = v18;
 
@@ -61,12 +61,12 @@ LABEL_9:
     }
   }
 
-  v20 = [v6 instanceName];
-  v21 = v20;
-  if (v20)
+  instanceName = [serviceSpecificInfo instanceName];
+  v21 = instanceName;
+  if (instanceName)
   {
     name = self->_name;
-    v23 = v20;
+    v23 = instanceName;
     v24 = name;
     v25 = v24;
     if (v23 == v24)
@@ -94,17 +94,17 @@ LABEL_9:
   }
 
 LABEL_20:
-  v27 = [v5 rssi];
-  v47 = v6;
-  if (v27 != self->_rssi)
+  rssi = [resultCopy rssi];
+  v47 = serviceSpecificInfo;
+  if (rssi != self->_rssi)
   {
-    self->_rssi = v27;
+    self->_rssi = rssi;
     v13 |= 0x10u;
   }
 
-  v28 = [v5 serviceName];
+  serviceName = [resultCopy serviceName];
   serviceType = self->_serviceType;
-  v30 = v28;
+  v30 = serviceName;
   v31 = serviceType;
   v32 = v31;
   if (v30 == v31)
@@ -124,17 +124,17 @@ LABEL_20:
   if ((v33 & 1) == 0)
   {
 LABEL_28:
-    objc_storeStrong(&self->_serviceType, v28);
+    objc_storeStrong(&self->_serviceType, serviceName);
     v13 |= 1u;
   }
 
 LABEL_29:
   v34 = v47;
-  v35 = [v47 txtRecordData];
-  v37 = v35;
-  if (v35)
+  txtRecordData = [v47 txtRecordData];
+  v37 = txtRecordData;
+  if (txtRecordData)
   {
-    v38 = CUTXTDictionaryCreateWithTXTData(v35, v36, 0);
+    v38 = CUTXTDictionaryCreateWithTXTData(txtRecordData, v36, 0);
     v39 = v38;
     if (!v38)
     {
@@ -182,10 +182,10 @@ LABEL_40:
   return v13;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v84 = 0;
-  NSAppendPrintF_safe(&v84, "CUNANEndpoint ", *&a3, v3, v4, v5, v6, v7, v70);
+  NSAppendPrintF_safe(&v84, "CUNANEndpoint ", *&level, v3, v4, v5, v6, v7, v70);
   v10 = v84;
   v17 = v10;
   identifier = self->_identifier;
@@ -260,11 +260,11 @@ LABEL_40:
   if (discoveryResult)
   {
     v76 = v21;
-    v37 = [(WiFiAwareDiscoveryResult *)discoveryResult datapathSupported];
+    datapathSupported = [(WiFiAwareDiscoveryResult *)discoveryResult datapathSupported];
     [(WiFiAwareDiscoveryResult *)self->_discoveryResult datapathSecurityRequired];
     [(WiFiAwareDiscoveryResult *)self->_discoveryResult furtherServiceDiscoveryRequired];
     v44 = 100;
-    if (v37)
+    if (datapathSupported)
     {
       v44 = 68;
     }
@@ -284,7 +284,7 @@ LABEL_40:
   NSAppendPrintF_safe(&v74, ", TI %@", v55, v56, v57, v58, v59, v60, v54);
   v61 = v74;
 
-  if (a3 <= 20)
+  if (level <= 20)
   {
     v73 = v61;
     NSAppendPrintF_safe(&v73, "\n", v62, v63, v64, v65, v66, v67, v72);
@@ -296,7 +296,7 @@ LABEL_40:
   return v61;
 }
 
-- (CUNANEndpoint)initWithEndpointID:(const char *)a3 error:(id *)a4
+- (CUNANEndpoint)initWithEndpointID:(const char *)d error:(id *)error
 {
   v6 = [(CUNANEndpoint *)self init];
   if (!v6)
@@ -307,12 +307,12 @@ LABEL_40:
   v19 = 0;
   v18 = 0;
   v17 = 0;
-  if (sscanf(a3, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx-%hhu", &v18, &v18 + 1, &v18 + 2, &v18 + 3, &v19, &v19 + 1, &v17) != 7)
+  if (sscanf(d, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx-%hhu", &v18, &v18 + 1, &v18 + 2, &v18 + 3, &v19, &v19 + 1, &v17) != 7)
   {
-    if (a4)
+    if (error)
     {
-      NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "Bad peer ID: '%s'", v7, v8, v9, v10, v11, a3);
-      *a4 = v15 = 0;
+      NSErrorF_safe(*MEMORY[0x1E696A768], 4294960591, "Bad peer ID: '%s'", v7, v8, v9, v10, v11, d);
+      *error = v15 = 0;
       goto LABEL_7;
     }
 

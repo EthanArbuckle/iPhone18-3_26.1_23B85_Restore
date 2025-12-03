@@ -1,27 +1,27 @@
 @interface ATXPBProactiveSuggestionGroupedUIFeedbackResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsComplete:(BOOL)a3;
-- (void)setHasNumAbandonedSuggestions:(BOOL)a3;
-- (void)setHasNumEngagedSuggestions:(BOOL)a3;
-- (void)setHasNumRejectedSuggestions:(BOOL)a3;
-- (void)setHasNumSessionsWithAbandonedSuggestions:(BOOL)a3;
-- (void)setHasNumSessionsWithEngagedSuggestions:(BOOL)a3;
-- (void)setHasNumSessionsWithRejectedSuggestions:(BOOL)a3;
-- (void)setHasStartDateOfFirstSessionInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsComplete:(BOOL)complete;
+- (void)setHasNumAbandonedSuggestions:(BOOL)suggestions;
+- (void)setHasNumEngagedSuggestions:(BOOL)suggestions;
+- (void)setHasNumRejectedSuggestions:(BOOL)suggestions;
+- (void)setHasNumSessionsWithAbandonedSuggestions:(BOOL)suggestions;
+- (void)setHasNumSessionsWithEngagedSuggestions:(BOOL)suggestions;
+- (void)setHasNumSessionsWithRejectedSuggestions:(BOOL)suggestions;
+- (void)setHasStartDateOfFirstSessionInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBProactiveSuggestionGroupedUIFeedbackResult
 
-- (void)setHasNumSessionsWithEngagedSuggestions:(BOOL)a3
+- (void)setHasNumSessionsWithEngagedSuggestions:(BOOL)suggestions
 {
-  if (a3)
+  if (suggestions)
   {
     v3 = 32;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumSessionsWithRejectedSuggestions:(BOOL)a3
+- (void)setHasNumSessionsWithRejectedSuggestions:(BOOL)suggestions
 {
-  if (a3)
+  if (suggestions)
   {
     v3 = 64;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumSessionsWithAbandonedSuggestions:(BOOL)a3
+- (void)setHasNumSessionsWithAbandonedSuggestions:(BOOL)suggestions
 {
-  if (a3)
+  if (suggestions)
   {
     v3 = 16;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumEngagedSuggestions:(BOOL)a3
+- (void)setHasNumEngagedSuggestions:(BOOL)suggestions
 {
-  if (a3)
+  if (suggestions)
   {
     v3 = 4;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumRejectedSuggestions:(BOOL)a3
+- (void)setHasNumRejectedSuggestions:(BOOL)suggestions
 {
-  if (a3)
+  if (suggestions)
   {
     v3 = 8;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumAbandonedSuggestions:(BOOL)a3
+- (void)setHasNumAbandonedSuggestions:(BOOL)suggestions
 {
-  if (a3)
+  if (suggestions)
   {
     v3 = 2;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasIsComplete:(BOOL)a3
+- (void)setHasIsComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 256;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasStartDateOfFirstSessionInSeconds:(BOOL)a3
+- (void)setHasStartDateOfFirstSessionInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 128;
   }
@@ -145,20 +145,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBProactiveSuggestionGroupedUIFeedbackResult;
   v4 = [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)&v8 description];
-  v5 = [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBProactiveSuggestionGroupedUIFeedbackResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numSessionsWithEngagedSuggestions];
-    [v3 setObject:v7 forKey:@"numSessionsWithEngagedSuggestions"];
+    [dictionary setObject:v7 forKey:@"numSessionsWithEngagedSuggestions"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -179,7 +179,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numSessionsWithRejectedSuggestions];
-  [v3 setObject:v8 forKey:@"numSessionsWithRejectedSuggestions"];
+  [dictionary setObject:v8 forKey:@"numSessionsWithRejectedSuggestions"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -195,7 +195,7 @@ LABEL_4:
 
 LABEL_16:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numSessionsWithAbandonedSuggestions];
-  [v3 setObject:v9 forKey:@"numSessionsWithAbandonedSuggestions"];
+  [dictionary setObject:v9 forKey:@"numSessionsWithAbandonedSuggestions"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -211,7 +211,7 @@ LABEL_5:
 
 LABEL_17:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numEngagedSuggestions];
-  [v3 setObject:v10 forKey:@"numEngagedSuggestions"];
+  [dictionary setObject:v10 forKey:@"numEngagedSuggestions"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -227,7 +227,7 @@ LABEL_6:
 
 LABEL_18:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numRejectedSuggestions];
-  [v3 setObject:v11 forKey:@"numRejectedSuggestions"];
+  [dictionary setObject:v11 forKey:@"numRejectedSuggestions"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -243,7 +243,7 @@ LABEL_7:
 
 LABEL_19:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numAbandonedSuggestions];
-  [v3 setObject:v12 forKey:@"numAbandonedSuggestions"];
+  [dictionary setObject:v12 forKey:@"numAbandonedSuggestions"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -259,7 +259,7 @@ LABEL_8:
 
 LABEL_20:
   v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_isComplete];
-  [v3 setObject:v13 forKey:@"isComplete"];
+  [dictionary setObject:v13 forKey:@"isComplete"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -275,23 +275,23 @@ LABEL_9:
 
 LABEL_21:
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startDateOfFirstSessionInSeconds];
-  [v3 setObject:v14 forKey:@"startDateOfFirstSessionInSeconds"];
+  [dictionary setObject:v14 forKey:@"startDateOfFirstSessionInSeconds"];
 
   if (*&self->_has)
   {
 LABEL_10:
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endDateOfLastSessionInSeconds];
-    [v3 setObject:v5 forKey:@"endDateOfLastSessionInSeconds"];
+    [dictionary setObject:v5 forKey:@"endDateOfLastSessionInSeconds"];
   }
 
 LABEL_11:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -417,14 +417,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[6] = self->_numSessionsWithEngagedSuggestions;
-    *(v4 + 38) |= 0x20u;
+    toCopy[6] = self->_numSessionsWithEngagedSuggestions;
+    *(toCopy + 38) |= 0x20u;
     has = self->_has;
     if ((has & 0x40) == 0)
     {
@@ -443,8 +443,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[7] = self->_numSessionsWithRejectedSuggestions;
-  *(v4 + 38) |= 0x40u;
+  toCopy[7] = self->_numSessionsWithRejectedSuggestions;
+  *(toCopy + 38) |= 0x40u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -458,8 +458,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  v4[5] = self->_numSessionsWithAbandonedSuggestions;
-  *(v4 + 38) |= 0x10u;
+  toCopy[5] = self->_numSessionsWithAbandonedSuggestions;
+  *(toCopy + 38) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -473,8 +473,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  v4[3] = self->_numEngagedSuggestions;
-  *(v4 + 38) |= 4u;
+  toCopy[3] = self->_numEngagedSuggestions;
+  *(toCopy + 38) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -488,8 +488,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  v4[4] = self->_numRejectedSuggestions;
-  *(v4 + 38) |= 8u;
+  toCopy[4] = self->_numRejectedSuggestions;
+  *(toCopy + 38) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -503,8 +503,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  v4[2] = self->_numAbandonedSuggestions;
-  *(v4 + 38) |= 2u;
+  toCopy[2] = self->_numAbandonedSuggestions;
+  *(toCopy + 38) |= 2u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -518,8 +518,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  *(v4 + 72) = self->_isComplete;
-  *(v4 + 38) |= 0x100u;
+  *(toCopy + 72) = self->_isComplete;
+  *(toCopy + 38) |= 0x100u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -533,21 +533,21 @@ LABEL_9:
   }
 
 LABEL_21:
-  v4[8] = *&self->_startDateOfFirstSessionInSeconds;
-  *(v4 + 38) |= 0x80u;
+  toCopy[8] = *&self->_startDateOfFirstSessionInSeconds;
+  *(toCopy + 38) |= 0x80u;
   if (*&self->_has)
   {
 LABEL_10:
-    v4[1] = *&self->_endDateOfLastSessionInSeconds;
-    *(v4 + 38) |= 1u;
+    toCopy[1] = *&self->_endDateOfLastSessionInSeconds;
+    *(toCopy + 38) |= 1u;
   }
 
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -674,19 +674,19 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   has = self->_has;
-  v6 = *(v4 + 38);
+  v6 = *(equalCopy + 38);
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_numSessionsWithEngagedSuggestions != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_numSessionsWithEngagedSuggestions != *(equalCopy + 6))
     {
       goto LABEL_48;
     }
@@ -699,7 +699,7 @@ LABEL_10:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_numSessionsWithRejectedSuggestions != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_numSessionsWithRejectedSuggestions != *(equalCopy + 7))
     {
       goto LABEL_48;
     }
@@ -712,7 +712,7 @@ LABEL_10:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_numSessionsWithAbandonedSuggestions != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_numSessionsWithAbandonedSuggestions != *(equalCopy + 5))
     {
       goto LABEL_48;
     }
@@ -725,7 +725,7 @@ LABEL_10:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_numEngagedSuggestions != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_numEngagedSuggestions != *(equalCopy + 3))
     {
       goto LABEL_48;
     }
@@ -738,7 +738,7 @@ LABEL_10:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_numRejectedSuggestions != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_numRejectedSuggestions != *(equalCopy + 4))
     {
       goto LABEL_48;
     }
@@ -751,7 +751,7 @@ LABEL_10:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_numAbandonedSuggestions != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_numAbandonedSuggestions != *(equalCopy + 2))
     {
       goto LABEL_48;
     }
@@ -764,7 +764,7 @@ LABEL_10:
 
   if ((*&self->_has & 0x100) == 0)
   {
-    if ((*(v4 + 38) & 0x100) == 0)
+    if ((*(equalCopy + 38) & 0x100) == 0)
     {
       goto LABEL_34;
     }
@@ -774,21 +774,21 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if ((*(v4 + 38) & 0x100) == 0)
+  if ((*(equalCopy + 38) & 0x100) == 0)
   {
     goto LABEL_48;
   }
 
-  v7 = *(v4 + 72);
+  v7 = *(equalCopy + 72);
   if (self->_isComplete)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_48;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_48;
   }
@@ -796,7 +796,7 @@ LABEL_48:
 LABEL_34:
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_startDateOfFirstSessionInSeconds != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_startDateOfFirstSessionInSeconds != *(equalCopy + 8))
     {
       goto LABEL_48;
     }
@@ -810,7 +810,7 @@ LABEL_34:
   v8 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_endDateOfLastSessionInSeconds != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_endDateOfLastSessionInSeconds != *(equalCopy + 1))
     {
       goto LABEL_48;
     }
@@ -993,15 +993,15 @@ LABEL_21:
   return v6 ^ v5 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 38);
+  fromCopy = from;
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x20) != 0)
   {
-    self->_numSessionsWithEngagedSuggestions = *(v4 + 6);
+    self->_numSessionsWithEngagedSuggestions = *(fromCopy + 6);
     *&self->_has |= 0x20u;
-    v5 = *(v4 + 38);
+    v5 = *(fromCopy + 38);
     if ((v5 & 0x40) == 0)
     {
 LABEL_3:
@@ -1019,9 +1019,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_numSessionsWithRejectedSuggestions = *(v4 + 7);
+  self->_numSessionsWithRejectedSuggestions = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -1034,9 +1034,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_numSessionsWithAbandonedSuggestions = *(v4 + 5);
+  self->_numSessionsWithAbandonedSuggestions = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -1049,9 +1049,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_numEngagedSuggestions = *(v4 + 3);
+  self->_numEngagedSuggestions = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -1064,9 +1064,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_numRejectedSuggestions = *(v4 + 4);
+  self->_numRejectedSuggestions = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 2) == 0)
   {
 LABEL_7:
@@ -1079,9 +1079,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_numAbandonedSuggestions = *(v4 + 2);
+  self->_numAbandonedSuggestions = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x100) == 0)
   {
 LABEL_8:
@@ -1094,9 +1094,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_isComplete = *(v4 + 72);
+  self->_isComplete = *(fromCopy + 72);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 38);
+  v5 = *(fromCopy + 38);
   if ((v5 & 0x80) == 0)
   {
 LABEL_9:
@@ -1109,12 +1109,12 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_startDateOfFirstSessionInSeconds = *(v4 + 8);
+  self->_startDateOfFirstSessionInSeconds = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  if (*(v4 + 38))
+  if (*(fromCopy + 38))
   {
 LABEL_10:
-    self->_endDateOfLastSessionInSeconds = *(v4 + 1);
+    self->_endDateOfLastSessionInSeconds = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

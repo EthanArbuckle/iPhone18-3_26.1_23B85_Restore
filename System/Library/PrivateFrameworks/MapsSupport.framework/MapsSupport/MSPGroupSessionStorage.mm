@@ -1,41 +1,41 @@
 @interface MSPGroupSessionStorage
-+ (id)groupStorageWithIdentifier:(id)a3 originator:(id)a4 receivingHandle:(id)a5 receivingAccountIdentifier:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)groupStorageWithIdentifier:(id)identifier originator:(id)originator receivingHandle:(id)handle receivingAccountIdentifier:(id)accountIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLiveStrategyIdentifier:(id)a3;
-- (void)addMessageStrategyIdentifier:(id)a3;
-- (void)addMinimalStrategyIdentifier:(id)a3;
-- (void)addSmsStrategyIdentifier:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)updateWithState:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLiveStrategyIdentifier:(id)identifier;
+- (void)addMessageStrategyIdentifier:(id)identifier;
+- (void)addMinimalStrategyIdentifier:(id)identifier;
+- (void)addSmsStrategyIdentifier:(id)identifier;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)updateWithState:(id)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPGroupSessionStorage
 
-+ (id)groupStorageWithIdentifier:(id)a3 originator:(id)a4 receivingHandle:(id)a5 receivingAccountIdentifier:(id)a6
++ (id)groupStorageWithIdentifier:(id)identifier originator:(id)originator receivingHandle:(id)handle receivingAccountIdentifier:(id)accountIdentifier
 {
   v6 = 0;
-  if (a3 && a4)
+  if (identifier && originator)
   {
-    v10 = a6;
-    v11 = a5;
-    v12 = a4;
-    v13 = a3;
-    v14 = [v12 componentsSeparatedByString:@":"];
-    v15 = [v14 lastObject];
+    accountIdentifierCopy = accountIdentifier;
+    handleCopy = handle;
+    originatorCopy = originator;
+    identifierCopy = identifier;
+    v14 = [originatorCopy componentsSeparatedByString:@":"];
+    lastObject = [v14 lastObject];
     v6 = objc_alloc_init(MSPGroupSessionStorage);
-    [(MSPGroupSessionStorage *)v6 setOriginatorIdentifier:v15];
-    [(MSPGroupSessionStorage *)v6 setFromID:v12];
+    [(MSPGroupSessionStorage *)v6 setOriginatorIdentifier:lastObject];
+    [(MSPGroupSessionStorage *)v6 setFromID:originatorCopy];
 
-    [(MSPGroupSessionStorage *)v6 setReceivingHandle:v11];
-    [(MSPGroupSessionStorage *)v6 setReceivingAccountIdentifier:v10];
+    [(MSPGroupSessionStorage *)v6 setReceivingHandle:handleCopy];
+    [(MSPGroupSessionStorage *)v6 setReceivingAccountIdentifier:accountIdentifierCopy];
 
-    [(MSPGroupSessionStorage *)v6 setGroupIdentifier:v13];
+    [(MSPGroupSessionStorage *)v6 setGroupIdentifier:identifierCopy];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     [(MSPGroupSessionStorage *)v6 setLastUpdateTimestamp:?];
     v16 = objc_alloc_init(MEMORY[0x277D0ED30]);
@@ -45,94 +45,94 @@
   return v6;
 }
 
-- (void)updateWithState:(id)a3
+- (void)updateWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   if ([(MSPGroupSessionStorage *)self hasState])
   {
-    v4 = [(MSPGroupSessionStorage *)self state];
-    [v4 merge:v5];
+    state = [(MSPGroupSessionStorage *)self state];
+    [state merge:stateCopy];
   }
 
   else
   {
-    [(MSPGroupSessionStorage *)self setState:v5];
+    [(MSPGroupSessionStorage *)self setState:stateCopy];
   }
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   [(MSPGroupSessionStorage *)self setLastUpdateTimestamp:?];
 }
 
-- (void)addMinimalStrategyIdentifier:(id)a3
+- (void)addMinimalStrategyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   minimalStrategyIdentifiers = self->_minimalStrategyIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!minimalStrategyIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_minimalStrategyIdentifiers;
     self->_minimalStrategyIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     minimalStrategyIdentifiers = self->_minimalStrategyIdentifiers;
   }
 
-  [(NSMutableArray *)minimalStrategyIdentifiers addObject:v4];
+  [(NSMutableArray *)minimalStrategyIdentifiers addObject:identifierCopy];
 }
 
-- (void)addLiveStrategyIdentifier:(id)a3
+- (void)addLiveStrategyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   liveStrategyIdentifiers = self->_liveStrategyIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!liveStrategyIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_liveStrategyIdentifiers;
     self->_liveStrategyIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     liveStrategyIdentifiers = self->_liveStrategyIdentifiers;
   }
 
-  [(NSMutableArray *)liveStrategyIdentifiers addObject:v4];
+  [(NSMutableArray *)liveStrategyIdentifiers addObject:identifierCopy];
 }
 
-- (void)addMessageStrategyIdentifier:(id)a3
+- (void)addMessageStrategyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   messageStrategyIdentifiers = self->_messageStrategyIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!messageStrategyIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_messageStrategyIdentifiers;
     self->_messageStrategyIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     messageStrategyIdentifiers = self->_messageStrategyIdentifiers;
   }
 
-  [(NSMutableArray *)messageStrategyIdentifiers addObject:v4];
+  [(NSMutableArray *)messageStrategyIdentifiers addObject:identifierCopy];
 }
 
-- (void)addSmsStrategyIdentifier:(id)a3
+- (void)addSmsStrategyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   smsStrategyIdentifiers = self->_smsStrategyIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!smsStrategyIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_smsStrategyIdentifiers;
     self->_smsStrategyIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     smsStrategyIdentifiers = self->_smsStrategyIdentifiers;
   }
 
-  [(NSMutableArray *)smsStrategyIdentifiers addObject:v4];
+  [(NSMutableArray *)smsStrategyIdentifiers addObject:identifierCopy];
 }
 
 - (id)description
@@ -141,20 +141,20 @@
   v8.receiver = self;
   v8.super_class = MSPGroupSessionStorage;
   v4 = [(MSPGroupSessionStorage *)&v8 description];
-  v5 = [(MSPGroupSessionStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPGroupSessionStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   groupIdentifier = self->_groupIdentifier;
   if (groupIdentifier)
   {
-    [v3 setObject:groupIdentifier forKey:@"groupIdentifier"];
+    [dictionary setObject:groupIdentifier forKey:@"groupIdentifier"];
   }
 
   originatorIdentifier = self->_originatorIdentifier;
@@ -166,8 +166,8 @@
   state = self->_state;
   if (state)
   {
-    v8 = [(GEOSharedNavState *)state dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"state"];
+    dictionaryRepresentation = [(GEOSharedNavState *)state dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"state"];
   }
 
   if (*&self->_has)
@@ -221,17 +221,17 @@
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v18 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"Unknown Fields"];
+    dictionaryRepresentation2 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"Unknown Fields"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_groupIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -396,36 +396,36 @@
     while (v26);
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4, v31];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy, v31];
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v21 = v4;
+  toCopy = to;
+  v21 = toCopy;
   if (self->_groupIdentifier)
   {
-    [v4 setGroupIdentifier:?];
-    v4 = v21;
+    [toCopy setGroupIdentifier:?];
+    toCopy = v21;
   }
 
   if (self->_originatorIdentifier)
   {
     [v21 setOriginatorIdentifier:?];
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (self->_state)
   {
     [v21 setState:?];
-    v4 = v21;
+    toCopy = v21;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = *&self->_lastUpdateTimestamp;
-    *(v4 + 104) |= 1u;
+    *(toCopy + 2) = *&self->_lastUpdateTimestamp;
+    *(toCopy + 104) |= 1u;
   }
 
   if (self->_fromID)
@@ -436,10 +436,10 @@
   if ([(MSPGroupSessionStorage *)self minimalStrategyIdentifiersCount])
   {
     [v21 clearMinimalStrategyIdentifiers];
-    v5 = [(MSPGroupSessionStorage *)self minimalStrategyIdentifiersCount];
-    if (v5)
+    minimalStrategyIdentifiersCount = [(MSPGroupSessionStorage *)self minimalStrategyIdentifiersCount];
+    if (minimalStrategyIdentifiersCount)
     {
-      v6 = v5;
+      v6 = minimalStrategyIdentifiersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(MSPGroupSessionStorage *)self minimalStrategyIdentifierAtIndex:i];
@@ -451,10 +451,10 @@
   if ([(MSPGroupSessionStorage *)self liveStrategyIdentifiersCount])
   {
     [v21 clearLiveStrategyIdentifiers];
-    v9 = [(MSPGroupSessionStorage *)self liveStrategyIdentifiersCount];
-    if (v9)
+    liveStrategyIdentifiersCount = [(MSPGroupSessionStorage *)self liveStrategyIdentifiersCount];
+    if (liveStrategyIdentifiersCount)
     {
-      v10 = v9;
+      v10 = liveStrategyIdentifiersCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(MSPGroupSessionStorage *)self liveStrategyIdentifierAtIndex:j];
@@ -466,10 +466,10 @@
   if ([(MSPGroupSessionStorage *)self messageStrategyIdentifiersCount])
   {
     [v21 clearMessageStrategyIdentifiers];
-    v13 = [(MSPGroupSessionStorage *)self messageStrategyIdentifiersCount];
-    if (v13)
+    messageStrategyIdentifiersCount = [(MSPGroupSessionStorage *)self messageStrategyIdentifiersCount];
+    if (messageStrategyIdentifiersCount)
     {
-      v14 = v13;
+      v14 = messageStrategyIdentifiersCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(MSPGroupSessionStorage *)self messageStrategyIdentifierAtIndex:k];
@@ -491,10 +491,10 @@
   if ([(MSPGroupSessionStorage *)self smsStrategyIdentifiersCount])
   {
     [v21 clearSmsStrategyIdentifiers];
-    v17 = [(MSPGroupSessionStorage *)self smsStrategyIdentifiersCount];
-    if (v17)
+    smsStrategyIdentifiersCount = [(MSPGroupSessionStorage *)self smsStrategyIdentifiersCount];
+    if (smsStrategyIdentifiersCount)
     {
-      v18 = v17;
+      v18 = smsStrategyIdentifiersCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(MSPGroupSessionStorage *)self smsStrategyIdentifierAtIndex:m];
@@ -504,19 +504,19 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v64 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_groupIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_groupIdentifier copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_originatorIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_originatorIdentifier copyWithZone:zone];
   v9 = *(v5 + 64);
   *(v5 + 64) = v8;
 
-  v10 = [(GEOSharedNavState *)self->_state copyWithZone:a3];
+  v10 = [(GEOSharedNavState *)self->_state copyWithZone:zone];
   v11 = *(v5 + 96);
   *(v5 + 96) = v10;
 
@@ -526,7 +526,7 @@
     *(v5 + 104) |= 1u;
   }
 
-  v12 = [(NSString *)self->_fromID copyWithZone:a3];
+  v12 = [(NSString *)self->_fromID copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
@@ -550,7 +550,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v56 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v56 + 1) + 8 * v18) copyWithZone:zone];
         [v5 addMinimalStrategyIdentifier:v19];
 
         ++v18;
@@ -583,7 +583,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v52 + 1) + 8 * v24) copyWithZone:a3];
+        v25 = [*(*(&v52 + 1) + 8 * v24) copyWithZone:zone];
         [v5 addLiveStrategyIdentifier:v25];
 
         ++v24;
@@ -616,7 +616,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v48 + 1) + 8 * v30) copyWithZone:a3];
+        v31 = [*(*(&v48 + 1) + 8 * v30) copyWithZone:zone];
         [v5 addMessageStrategyIdentifier:v31];
 
         ++v30;
@@ -629,11 +629,11 @@
     while (v28);
   }
 
-  v32 = [(NSString *)self->_receivingHandle copyWithZone:a3];
+  v32 = [(NSString *)self->_receivingHandle copyWithZone:zone];
   v33 = *(v5 + 80);
   *(v5 + 80) = v32;
 
-  v34 = [(NSString *)self->_receivingAccountIdentifier copyWithZone:a3];
+  v34 = [(NSString *)self->_receivingAccountIdentifier copyWithZone:zone];
   v35 = *(v5 + 72);
   *(v5 + 72) = v34;
 
@@ -657,7 +657,7 @@
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v44 + 1) + 8 * v40) copyWithZone:{a3, v44}];
+        v41 = [*(*(&v44 + 1) + 8 * v40) copyWithZone:{zone, v44}];
         [v5 addSmsStrategyIdentifier:v41];
 
         ++v40;
@@ -675,16 +675,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   groupIdentifier = self->_groupIdentifier;
-  if (groupIdentifier | *(v4 + 4))
+  if (groupIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)groupIdentifier isEqual:?])
     {
@@ -693,7 +693,7 @@
   }
 
   originatorIdentifier = self->_originatorIdentifier;
-  if (originatorIdentifier | *(v4 + 8))
+  if (originatorIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)originatorIdentifier isEqual:?])
     {
@@ -702,7 +702,7 @@
   }
 
   state = self->_state;
-  if (state | *(v4 + 12))
+  if (state | *(equalCopy + 12))
   {
     if (![(GEOSharedNavState *)state isEqual:?])
     {
@@ -710,16 +710,16 @@
     }
   }
 
-  v8 = *(v4 + 104);
+  v8 = *(equalCopy + 104);
   if (*&self->_has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_lastUpdateTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_lastUpdateTimestamp != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
 LABEL_27:
     v16 = 0;
@@ -727,13 +727,13 @@ LABEL_27:
   }
 
   fromID = self->_fromID;
-  if (fromID | *(v4 + 3) && ![(NSString *)fromID isEqual:?])
+  if (fromID | *(equalCopy + 3) && ![(NSString *)fromID isEqual:?])
   {
     goto LABEL_27;
   }
 
   minimalStrategyIdentifiers = self->_minimalStrategyIdentifiers;
-  if (minimalStrategyIdentifiers | *(v4 + 7))
+  if (minimalStrategyIdentifiers | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)minimalStrategyIdentifiers isEqual:?])
     {
@@ -742,7 +742,7 @@ LABEL_27:
   }
 
   liveStrategyIdentifiers = self->_liveStrategyIdentifiers;
-  if (liveStrategyIdentifiers | *(v4 + 5))
+  if (liveStrategyIdentifiers | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)liveStrategyIdentifiers isEqual:?])
     {
@@ -751,7 +751,7 @@ LABEL_27:
   }
 
   messageStrategyIdentifiers = self->_messageStrategyIdentifiers;
-  if (messageStrategyIdentifiers | *(v4 + 6))
+  if (messageStrategyIdentifiers | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)messageStrategyIdentifiers isEqual:?])
     {
@@ -760,7 +760,7 @@ LABEL_27:
   }
 
   receivingHandle = self->_receivingHandle;
-  if (receivingHandle | *(v4 + 10))
+  if (receivingHandle | *(equalCopy + 10))
   {
     if (![(NSString *)receivingHandle isEqual:?])
     {
@@ -769,7 +769,7 @@ LABEL_27:
   }
 
   receivingAccountIdentifier = self->_receivingAccountIdentifier;
-  if (receivingAccountIdentifier | *(v4 + 9))
+  if (receivingAccountIdentifier | *(equalCopy + 9))
   {
     if (![(NSString *)receivingAccountIdentifier isEqual:?])
     {
@@ -778,7 +778,7 @@ LABEL_27:
   }
 
   smsStrategyIdentifiers = self->_smsStrategyIdentifiers;
-  if (smsStrategyIdentifiers | *(v4 + 11))
+  if (smsStrategyIdentifiers | *(equalCopy + 11))
   {
     v16 = [(NSMutableArray *)smsStrategyIdentifiers isEqual:?];
   }
@@ -841,22 +841,22 @@ LABEL_28:
   return v15 ^ v18 ^ [(NSMutableArray *)self->_smsStrategyIdentifiers hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(MSPGroupSessionStorage *)self setGroupIdentifier:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(MSPGroupSessionStorage *)self setOriginatorIdentifier:?];
   }
 
   state = self->_state;
-  v6 = *(v4 + 12);
+  v6 = *(fromCopy + 12);
   if (state)
   {
     if (v6)
@@ -870,13 +870,13 @@ LABEL_28:
     [(MSPGroupSessionStorage *)self setState:?];
   }
 
-  if (*(v4 + 104))
+  if (*(fromCopy + 104))
   {
-    self->_lastUpdateTimestamp = *(v4 + 2);
+    self->_lastUpdateTimestamp = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(MSPGroupSessionStorage *)self setFromID:?];
   }
@@ -885,7 +885,7 @@ LABEL_28:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = *(v4 + 7);
+  v7 = *(fromCopy + 7);
   v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v8)
   {
@@ -913,7 +913,7 @@ LABEL_28:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v13)
   {
@@ -941,7 +941,7 @@ LABEL_28:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v17 = *(v4 + 6);
+  v17 = *(fromCopy + 6);
   v18 = [v17 countByEnumeratingWithState:&v32 objects:v45 count:16];
   if (v18)
   {
@@ -965,12 +965,12 @@ LABEL_28:
     while (v19);
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(MSPGroupSessionStorage *)self setReceivingHandle:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(MSPGroupSessionStorage *)self setReceivingAccountIdentifier:?];
   }
@@ -979,7 +979,7 @@ LABEL_28:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v22 = *(v4 + 11);
+  v22 = *(fromCopy + 11);
   v23 = [v22 countByEnumeratingWithState:&v28 objects:v44 count:16];
   if (v23)
   {

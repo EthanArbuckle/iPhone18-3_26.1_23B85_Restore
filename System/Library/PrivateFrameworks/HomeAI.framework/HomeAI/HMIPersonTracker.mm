@@ -1,7 +1,7 @@
 @interface HMIPersonTracker
 - (HMIPersonTracker)init;
-- (id)getBlobIDAtIndex:(unint64_t)a3;
-- (void)trackNewPersons:(id)a3 knownPersons:(id)a4 regionOfInterest:(CGRect)a5 timeStamp:(id *)a6;
+- (id)getBlobIDAtIndex:(unint64_t)index;
+- (void)trackNewPersons:(id)persons knownPersons:(id)knownPersons regionOfInterest:(CGRect)interest timeStamp:(id *)stamp;
 @end
 
 @implementation HMIPersonTracker
@@ -13,29 +13,29 @@
   v2 = [(HMIPersonTracker *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     previousPersons = v2->_previousPersons;
-    v2->_previousPersons = v3;
+    v2->_previousPersons = array;
   }
 
   return v2;
 }
 
-- (void)trackNewPersons:(id)a3 knownPersons:(id)a4 regionOfInterest:(CGRect)a5 timeStamp:(id *)a6
+- (void)trackNewPersons:(id)persons knownPersons:(id)knownPersons regionOfInterest:(CGRect)interest timeStamp:(id *)stamp
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v83[0] = MEMORY[0x277D85DD0];
   v83[1] = 3221225472;
   v83[2] = __76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeStamp___block_invoke;
   v83[3] = &__block_descriptor_56_e52___HMIPersonBlob_16__0__HMIVideoAnalyzerEventPerson_8l;
-  v84 = *a6;
-  v13 = a4;
-  v14 = a3;
-  v50 = [v13 na_map:v83];
-  v15 = [MEMORY[0x277CBEB98] setWithArray:v13];
+  v84 = *stamp;
+  knownPersonsCopy = knownPersons;
+  personsCopy = persons;
+  v50 = [knownPersonsCopy na_map:v83];
+  v15 = [MEMORY[0x277CBEB98] setWithArray:knownPersonsCopy];
 
   v16 = [v15 na_map:&__block_literal_global_12];
 
@@ -43,51 +43,51 @@
   v81[1] = 3221225472;
   v81[2] = __76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeStamp___block_invoke_3;
   v81[3] = &__block_descriptor_56_e52___HMIPersonBlob_16__0__HMIVideoAnalyzerEventPerson_8l;
-  v82 = *a6;
-  v17 = [v14 na_map:v81];
+  v82 = *stamp;
+  v17 = [personsCopy na_map:v81];
 
-  v18 = [(HMIPersonTracker *)self previousPersons];
+  previousPersons = [(HMIPersonTracker *)self previousPersons];
   v77[0] = MEMORY[0x277D85DD0];
   v77[1] = 3221225472;
   v77[2] = __76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeStamp___block_invoke_4;
   v77[3] = &unk_278753440;
-  v79 = *&a6->var0;
-  var3 = a6->var3;
+  v79 = *&stamp->var0;
+  var3 = stamp->var3;
   v78 = v16;
   v80 = var3;
   v51 = v16;
-  v20 = [v18 na_map:v77];
+  v20 = [previousPersons na_map:v77];
 
-  v21 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v74[0] = MEMORY[0x277D85DD0];
   v74[1] = 3221225472;
   v74[2] = __76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeStamp___block_invoke_5;
   v74[3] = &unk_278753490;
   v22 = v17;
   v75 = v22;
-  v76 = v21;
-  v48 = v21;
+  v76 = array;
+  v48 = array;
   [v20 enumerateObjectsUsingBlock:v74];
   v23 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v20, "count")}];
   v24 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v22, "count")}];
-  v25 = [MEMORY[0x277CBEB38] dictionary];
-  v26 = [MEMORY[0x277CBEB38] dictionary];
-  v27 = [MEMORY[0x277CCAB58] indexSet];
-  v28 = [MEMORY[0x277CCAB58] indexSet];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeStamp___block_invoke_7;
   v67[3] = &unk_2787534B8;
   v68 = v23;
   v69 = v24;
-  v29 = v27;
+  v29 = indexSet;
   v70 = v29;
-  v30 = v28;
+  v30 = indexSet2;
   v71 = v30;
-  v72 = v25;
-  v73 = v26;
-  v31 = v26;
-  v32 = v25;
+  v72 = dictionary;
+  v73 = dictionary2;
+  v31 = dictionary2;
+  v32 = dictionary;
   v47 = v24;
   v33 = v23;
   [v48 na_each:v67];
@@ -113,7 +113,7 @@
   v37 = v30;
   v38 = v34;
   [v31 na_each:v59];
-  v39 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeStamp___block_invoke_10;
@@ -123,21 +123,21 @@
   v57 = width;
   v58 = height;
   v53 = v36;
-  v54 = v39;
-  v40 = v39;
+  v54 = array2;
+  v40 = array2;
   v41 = v36;
   [v33 enumerateIndexesUsingBlock:v52];
-  v42 = [(HMIPersonTracker *)self previousPersons];
-  [v42 removeAllObjects];
+  previousPersons2 = [(HMIPersonTracker *)self previousPersons];
+  [previousPersons2 removeAllObjects];
 
-  v43 = [(HMIPersonTracker *)self previousPersons];
-  [v43 addObjectsFromArray:v38];
+  previousPersons3 = [(HMIPersonTracker *)self previousPersons];
+  [previousPersons3 addObjectsFromArray:v38];
 
-  v44 = [(HMIPersonTracker *)self previousPersons];
-  [v44 addObjectsFromArray:v50];
+  previousPersons4 = [(HMIPersonTracker *)self previousPersons];
+  [previousPersons4 addObjectsFromArray:v50];
 
-  v45 = [(HMIPersonTracker *)self previousPersons];
-  [v45 addObjectsFromArray:v40];
+  previousPersons5 = [(HMIPersonTracker *)self previousPersons];
+  [previousPersons5 addObjectsFromArray:v40];
 }
 
 HMIPersonBlob *__76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeStamp___block_invoke(uint64_t a1, void *a2)
@@ -334,30 +334,30 @@ void __76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeSt
   }
 }
 
-- (id)getBlobIDAtIndex:(unint64_t)a3
+- (id)getBlobIDAtIndex:(unint64_t)index
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [(HMIPersonTracker *)self previousPersons];
-  v6 = [v5 count];
+  previousPersons = [(HMIPersonTracker *)self previousPersons];
+  v6 = [previousPersons count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMIPersonTracker *)v11 previousPersons];
+      previousPersons2 = [(HMIPersonTracker *)selfCopy previousPersons];
       v16 = 138544130;
       v17 = v13;
       v18 = 2112;
-      v19 = v9;
+      v19 = uUID;
       v20 = 2048;
-      v21 = a3;
+      indexCopy = index;
       v22 = 2048;
-      v23 = [v14 count];
+      v23 = [previousPersons2 count];
       _os_log_impl(&dword_22D12F000, v12, OS_LOG_TYPE_ERROR, "%{public}@HMIPersonTracker: unable to get %@ at index %lu / %lu", &v16, 0x2Au);
     }
 
@@ -366,12 +366,12 @@ void __76__HMIPersonTracker_trackNewPersons_knownPersons_regionOfInterest_timeSt
 
   else
   {
-    v7 = [(HMIPersonTracker *)self previousPersons];
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [v8 blobID];
+    previousPersons3 = [(HMIPersonTracker *)self previousPersons];
+    v8 = [previousPersons3 objectAtIndexedSubscript:index];
+    uUID = [v8 blobID];
   }
 
-  return v9;
+  return uUID;
 }
 
 @end

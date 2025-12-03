@@ -28,11 +28,11 @@
   self->_promptSuggestionRefetchCooldown = 5.0;
   self->_showFreeformMemoryCreationCellInMemoryShelf = 1;
   self->_memoryCreationCellPositionInMemoryShelf = 0;
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 0;
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
     v5 = MEMORY[0x1A590D320]() ^ 1;
   }
@@ -137,9 +137,9 @@ uint64_t __45__PXGenerativeStorySettings__isAppleInternal__block_invoke()
 + (BOOL)isMemoryCreationEnabled
 {
   v2 = +[PXGenerativeStorySettings sharedInstance];
-  v3 = [v2 internal_isMemoryCreationEnabled];
+  internal_isMemoryCreationEnabled = [v2 internal_isMemoryCreationEnabled];
 
-  return v3;
+  return internal_isMemoryCreationEnabled;
 }
 
 + (id)sharedInstance
@@ -165,8 +165,8 @@ void __43__PXGenerativeStorySettings_sharedInstance__block_invoke()
 + (id)internal_deleteGenerativeMemories
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+  librarySpecificFetchOptions = [px_systemPhotoLibrary librarySpecificFetchOptions];
   v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"category", 32];
   v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d", @"creationType", 1];
   v6 = MEMORY[0x1E696AB28];
@@ -181,10 +181,10 @@ void __43__PXGenerativeStorySettings_sharedInstance__block_invoke()
   v23[1] = v9;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v12 = [v10 andPredicateWithSubpredicates:v11];
-  [v3 setPredicate:v12];
+  [librarySpecificFetchOptions setPredicate:v12];
 
-  [v3 setIncludeStoryMemories:1];
-  v13 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v3];
+  [librarySpecificFetchOptions setIncludeStoryMemories:1];
+  v13 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __62__PXGenerativeStorySettings_internal_deleteGenerativeMemories__block_invoke;
@@ -192,7 +192,7 @@ void __43__PXGenerativeStorySettings_sharedInstance__block_invoke()
   v14 = v13;
   v22 = v14;
   v20 = 0;
-  v15 = [v2 performChangesAndWait:v21 error:&v20];
+  v15 = [px_systemPhotoLibrary performChangesAndWait:v21 error:&v20];
   v16 = v20;
   v17 = v16;
   if (v15)
@@ -215,9 +215,9 @@ void __43__PXGenerativeStorySettings_sharedInstance__block_invoke()
   if (v2)
   {
     v3 = +[PXGenerativeStorySettings sharedInstance];
-    v4 = [v3 internal_isMemoryCreationButtonInWatchNextEnabled];
+    internal_isMemoryCreationButtonInWatchNextEnabled = [v3 internal_isMemoryCreationButtonInWatchNextEnabled];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = internal_isMemoryCreationButtonInWatchNextEnabled;
   }
 
   return v2;
@@ -229,9 +229,9 @@ void __43__PXGenerativeStorySettings_sharedInstance__block_invoke()
   if (v2)
   {
     v3 = +[PXGenerativeStorySettings sharedInstance];
-    v4 = [v3 internal_isMemoryCreationCardInWatchNextEnabled];
+    internal_isMemoryCreationCardInWatchNextEnabled = [v3 internal_isMemoryCreationCardInWatchNextEnabled];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = internal_isMemoryCreationCardInWatchNextEnabled;
   }
 
   return v2;
@@ -239,26 +239,26 @@ void __43__PXGenerativeStorySettings_sharedInstance__block_invoke()
 
 + (BOOL)isMemoryCreationLocationAutocompleteEnabled
 {
-  v2 = [a1 isMemoryCreationEnabled];
-  if (v2)
+  isMemoryCreationEnabled = [self isMemoryCreationEnabled];
+  if (isMemoryCreationEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(isMemoryCreationEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return isMemoryCreationEnabled;
 }
 
 + (BOOL)isMemoryCreationTimeEventDisambiguationEnabled
 {
-  v2 = [a1 isMemoryCreationEnabled];
-  if (v2)
+  isMemoryCreationEnabled = [self isMemoryCreationEnabled];
+  if (isMemoryCreationEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(isMemoryCreationEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return isMemoryCreationEnabled;
 }
 
 @end

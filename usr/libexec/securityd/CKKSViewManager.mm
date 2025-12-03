@@ -1,43 +1,43 @@
 @interface CKKSViewManager
 + (id)manager;
-+ (void)callSyncCallbackWithErrorNoAccount:(id)a3;
-- (BOOL)allowClientRPC:(id *)a3;
-- (BOOL)peekCallbackForUUID:(id)a3;
++ (void)callSyncCallbackWithErrorNoAccount:(id)account;
+- (BOOL)allowClientRPC:(id *)c;
+- (BOOL)peekCallbackForUUID:(id)d;
 - (BOOL)waitForTrustReady;
-- (CKKSViewManager)initWithContainer:(id)a3 sosAdapter:(id)a4 accountStateTracker:(id)a5 lockStateTracker:(id)a6 reachabilityTracker:(id)a7 personaAdapter:(id)a8 cloudKitClassDependencies:(id)a9 accountsAdapter:(id)a10;
-- (id)ckksAccountSyncForContainer:(id)a3 contextID:(id)a4;
-- (id)claimCallbackForUUID:(id)a3;
-- (id)currentTLKsFilteredByPolicy:(BOOL)a3 error:(id *)a4;
+- (CKKSViewManager)initWithContainer:(id)container sosAdapter:(id)adapter accountStateTracker:(id)tracker lockStateTracker:(id)stateTracker reachabilityTracker:(id)reachabilityTracker personaAdapter:(id)personaAdapter cloudKitClassDependencies:(id)dependencies accountsAdapter:(id)self0;
+- (id)ckksAccountSyncForContainer:(id)container contextID:(id)d;
+- (id)claimCallbackForUUID:(id)d;
+- (id)currentTLKsFilteredByPolicy:(BOOL)policy error:(id *)error;
 - (id)defaultViewError;
 - (id)getGlobalRateLimiter;
 - (id)pendingCallbackUUIDs;
-- (id)restartCKKSAccountSync:(id)a3;
-- (id)restartCKKSAccountSyncWithoutSettingPolicy:(id)a3;
-- (id)sanitizeErrorDomain:(id)a3;
-- (void)cloudkitAccountStateChange:(id)a3 to:(id)a4;
-- (void)deleteSEView:(id)a3 reply:(id)a4;
+- (id)restartCKKSAccountSync:(id)sync;
+- (id)restartCKKSAccountSyncWithoutSettingPolicy:(id)policy;
+- (id)sanitizeErrorDomain:(id)domain;
+- (void)cloudkitAccountStateChange:(id)change to:(id)to;
+- (void)deleteSEView:(id)view reply:(id)reply;
 - (void)dropAllActors;
 - (void)haltAll;
-- (void)handleKeychainEventDbConnection:(__OpaqueSecDbConnection *)a3 source:(unint64_t)a4 added:(SecDbItem *)a5 deleted:(SecDbItem *)a6;
-- (void)initialSyncStatus:(id)a3 reply:(id)a4;
-- (void)lockStateChangeNotification:(BOOL)a3;
-- (void)modifyTLKSharesForSEView:(id)a3 adding:(id)a4 deleting:(id)a5 reply:(id)a6;
+- (void)handleKeychainEventDbConnection:(__OpaqueSecDbConnection *)connection source:(unint64_t)source added:(SecDbItem *)added deleted:(SecDbItem *)deleted;
+- (void)initialSyncStatus:(id)status reply:(id)reply;
+- (void)lockStateChangeNotification:(BOOL)notification;
+- (void)modifyTLKSharesForSEView:(id)view adding:(id)adding deleting:(id)deleting reply:(id)reply;
 - (void)notifyNewTLKsInKeychain;
-- (void)pcsMirrorKeysForServices:(id)a3 reply:(id)a4;
-- (void)proposeTLKForSEView:(id)a3 proposedTLK:(id)a4 wrappedOldTLK:(id)a5 tlkShares:(id)a6 reply:(id)a7;
-- (void)registerSyncStatusCallback:(id)a3 callback:(id)a4;
-- (void)rpcCKMetric:(id)a3 attributes:(id)a4 reply:(id)a5;
-- (void)rpcGetCKDeviceIDWithReply:(id)a3;
-- (void)rpcPushOutgoingChanges:(id)a3 reply:(id)a4;
-- (void)rpcResetCloudKit:(id)a3 reason:(id)a4 reply:(id)a5;
-- (void)rpcResetLocal:(id)a3 reply:(id)a4;
-- (void)rpcResync:(id)a3 reply:(id)a4;
-- (void)rpcResyncLocal:(id)a3 reply:(id)a4;
-- (void)setCurrentItemForAccessGroup:(id)a3 hash:(id)a4 accessGroup:(id)a5 identifier:(id)a6 viewHint:(id)a7 replacing:(id)a8 hash:(id)a9 complete:(id)a10;
+- (void)pcsMirrorKeysForServices:(id)services reply:(id)reply;
+- (void)proposeTLKForSEView:(id)view proposedTLK:(id)k wrappedOldTLK:(id)lK tlkShares:(id)shares reply:(id)reply;
+- (void)registerSyncStatusCallback:(id)callback callback:(id)a4;
+- (void)rpcCKMetric:(id)metric attributes:(id)attributes reply:(id)reply;
+- (void)rpcGetCKDeviceIDWithReply:(id)reply;
+- (void)rpcPushOutgoingChanges:(id)changes reply:(id)reply;
+- (void)rpcResetCloudKit:(id)kit reason:(id)reason reply:(id)reply;
+- (void)rpcResetLocal:(id)local reply:(id)reply;
+- (void)rpcResync:(id)resync reply:(id)reply;
+- (void)rpcResyncLocal:(id)local reply:(id)reply;
+- (void)setCurrentItemForAccessGroup:(id)group hash:(id)hash accessGroup:(id)accessGroup identifier:(id)identifier viewHint:(id)hint replacing:(id)replacing hash:(id)a9 complete:(id)self0;
 - (void)setupAnalytics;
 - (void)syncBackupAndNotifyAboutSync;
-- (void)toggleHavoc:(id)a3;
-- (void)unsetCurrentItemsForAccessGroup:(id)a3 identifiers:(id)a4 viewHint:(id)a5 complete:(id)a6;
+- (void)toggleHavoc:(id)havoc;
+- (void)unsetCurrentItemsForAccessGroup:(id)group identifiers:(id)identifiers viewHint:(id)hint complete:(id)complete;
 - (void)xpc24HrNotification;
 @end
 
@@ -46,9 +46,9 @@
 + (id)manager
 {
   v2 = +[OTManager manager];
-  v3 = [v2 viewManager];
+  viewManager = [v2 viewManager];
 
-  return v3;
+  return viewManager;
 }
 
 - (void)dropAllActors
@@ -88,10 +88,10 @@
   [v5 xpc24HrNotification];
 }
 
-- (void)initialSyncStatus:(id)a3 reply:(id)a4
+- (void)initialSyncStatus:(id)status reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  replyCopy = reply;
   v8 = +[OTManager manager];
   v9 = objc_alloc_init(OTControlArguments);
   v15 = 0;
@@ -110,7 +110,7 @@
 
   if (v12)
   {
-    [v10 initialSyncStatus:v6 reply:v7];
+    [v10 initialSyncStatus:statusCopy reply:replyCopy];
   }
 
   else
@@ -129,21 +129,21 @@
 
     if (v11)
     {
-      v7[2](v7, 0, v11);
+      replyCopy[2](replyCopy, 0, v11);
     }
 
     else
     {
-      v14 = [(CKKSViewManager *)self defaultViewError];
-      v7[2](v7, 0, v14);
+      defaultViewError = [(CKKSViewManager *)self defaultViewError];
+      replyCopy[2](replyCopy, 0, defaultViewError);
     }
   }
 }
 
-- (void)pcsMirrorKeysForServices:(id)a3 reply:(id)a4
+- (void)pcsMirrorKeysForServices:(id)services reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  replyCopy = reply;
   v8 = +[OTManager manager];
   v9 = objc_alloc_init(OTControlArguments);
   v15 = 0;
@@ -162,7 +162,7 @@
 
   if (v12)
   {
-    [v10 pcsMirrorKeysForServices:v6 reply:v7];
+    [v10 pcsMirrorKeysForServices:servicesCopy reply:replyCopy];
   }
 
   else
@@ -181,20 +181,20 @@
 
     if (v11)
     {
-      v7[2](v7, 0, v11);
+      replyCopy[2](replyCopy, 0, v11);
     }
 
     else
     {
-      v14 = [(CKKSViewManager *)self defaultViewError];
-      v7[2](v7, 0, v14);
+      defaultViewError = [(CKKSViewManager *)self defaultViewError];
+      replyCopy[2](replyCopy, 0, defaultViewError);
     }
   }
 }
 
-- (void)toggleHavoc:(id)a3
+- (void)toggleHavoc:(id)havoc
 {
-  v4 = a3;
+  havocCopy = havoc;
   v15 = 0;
   v5 = [(CKKSViewManager *)self allowClientRPC:&v15];
   v6 = v15;
@@ -222,19 +222,19 @@
 
       if (v10)
       {
-        v4[2](v4, 0, v10);
+        havocCopy[2](havocCopy, 0, v10);
       }
 
       else
       {
-        v13 = [(CKKSViewManager *)self defaultViewError];
-        v4[2](v4, 0, v13);
+        defaultViewError = [(CKKSViewManager *)self defaultViewError];
+        havocCopy[2](havocCopy, 0, defaultViewError);
       }
     }
 
     else
     {
-      [v9 toggleHavoc:v4];
+      [v9 toggleHavoc:havocCopy];
     }
   }
 
@@ -248,14 +248,14 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Rejecting a toggleHavoc RPC: %@", buf, 0xCu);
     }
 
-    v4[2](v4, 0, v6);
+    havocCopy[2](havocCopy, 0, v6);
   }
 }
 
-- (void)deleteSEView:(id)a3 reply:(id)a4
+- (void)deleteSEView:(id)view reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  replyCopy = reply;
   v22 = 0;
   v8 = [(CKKSViewManager *)self allowClientRPC:&v22];
   v9 = v22;
@@ -283,7 +283,7 @@
 
       if (v13)
       {
-        v7[2](v7, v13);
+        replyCopy[2](replyCopy, v13);
       }
 
       else
@@ -293,7 +293,7 @@
         v24 = v16;
         v17 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
         v18 = [NSError errorWithDomain:@"CKKSErrorDomain" code:11 userInfo:v17];
-        v7[2](v7, v18);
+        replyCopy[2](replyCopy, v18);
       }
     }
 
@@ -304,8 +304,8 @@
       v19[2] = sub_1001581C8;
       v19[3] = &unk_1003386E8;
       v19[4] = self;
-      v20 = v7;
-      [v12 resetExternallyManagedCloudKitView:v6 reply:v19];
+      v20 = replyCopy;
+      [v12 resetExternallyManagedCloudKitView:viewCopy reply:v19];
     }
   }
 
@@ -319,16 +319,16 @@
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Rejecting a deleteSEView RPC: %@", buf, 0xCu);
     }
 
-    v7[2](v7, v9);
+    replyCopy[2](replyCopy, v9);
   }
 }
 
-- (void)modifyTLKSharesForSEView:(id)a3 adding:(id)a4 deleting:(id)a5 reply:(id)a6
+- (void)modifyTLKSharesForSEView:(id)view adding:(id)adding deleting:(id)deleting reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  viewCopy = view;
+  addingCopy = adding;
+  deletingCopy = deleting;
+  replyCopy = reply;
   v29 = 0;
   v14 = [(CKKSViewManager *)self allowClientRPC:&v29];
   v15 = v29;
@@ -356,7 +356,7 @@
 
       if (v19)
       {
-        v13[2](v13, v19);
+        replyCopy[2](replyCopy, v19);
 LABEL_14:
 
         goto LABEL_15;
@@ -367,7 +367,7 @@ LABEL_14:
       v31 = v25;
       v23 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       v24 = [NSError errorWithDomain:@"CKKSErrorDomain" code:11 userInfo:v23];
-      v13[2](v13, v24);
+      replyCopy[2](replyCopy, v24);
 
       v20 = v25;
     }
@@ -379,8 +379,8 @@ LABEL_14:
       v26[2] = sub_100158590;
       v26[3] = &unk_1003386E8;
       v26[4] = self;
-      v27 = v13;
-      [v18 modifyTLKSharesForExternallyManagedView:v10 adding:v11 deleting:v12 reply:v26];
+      v27 = replyCopy;
+      [v18 modifyTLKSharesForExternallyManagedView:viewCopy adding:addingCopy deleting:deletingCopy reply:v26];
       v20 = v27;
     }
 
@@ -395,23 +395,23 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Rejecting a modifyTLKShares RPC: %@", buf, 0xCu);
   }
 
-  v13[2](v13, v15);
+  replyCopy[2](replyCopy, v15);
 LABEL_15:
 }
 
-- (void)proposeTLKForSEView:(id)a3 proposedTLK:(id)a4 wrappedOldTLK:(id)a5 tlkShares:(id)a6 reply:(id)a7
+- (void)proposeTLKForSEView:(id)view proposedTLK:(id)k wrappedOldTLK:(id)lK tlkShares:(id)shares reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  viewCopy = view;
+  kCopy = k;
+  lKCopy = lK;
+  sharesCopy = shares;
+  replyCopy = reply;
   v33 = 0;
   v17 = [(CKKSViewManager *)self allowClientRPC:&v33];
   v18 = v33;
   if (v17)
   {
-    v29 = v12;
+    v29 = viewCopy;
     v19 = +[OTManager manager];
     v20 = objc_alloc_init(OTControlArguments);
     v32 = 0;
@@ -421,7 +421,7 @@ LABEL_15:
     if (!v21 || v22)
     {
       v25 = sub_100019104(@"ckks", 0);
-      v12 = v29;
+      viewCopy = v29;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
@@ -435,7 +435,7 @@ LABEL_15:
 
       if (v22)
       {
-        v16[2](v16, v22);
+        replyCopy[2](replyCopy, v22);
 LABEL_14:
 
         goto LABEL_15;
@@ -446,9 +446,9 @@ LABEL_14:
       v35 = v28;
       v26 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v27 = [NSError errorWithDomain:@"CKKSErrorDomain" code:11 userInfo:v26];
-      v16[2](v16, v27);
+      replyCopy[2](replyCopy, v27);
 
-      v12 = v29;
+      viewCopy = v29;
       v23 = v28;
     }
 
@@ -459,9 +459,9 @@ LABEL_14:
       v30[2] = sub_100158D98;
       v30[3] = &unk_1003386E8;
       v30[4] = self;
-      v31 = v16;
-      v12 = v29;
-      [v21 proposeTLKForExternallyManagedView:v29 proposedTLK:v13 wrappedOldTLK:v14 tlkShares:v15 reply:v30];
+      v31 = replyCopy;
+      viewCopy = v29;
+      [v21 proposeTLKForExternallyManagedView:v29 proposedTLK:kCopy wrappedOldTLK:lKCopy tlkShares:sharesCopy reply:v30];
       v23 = v31;
     }
 
@@ -476,24 +476,24 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Rejecting a proposeTLK RPC: %@", buf, 0xCu);
   }
 
-  v16[2](v16, v18);
+  replyCopy[2](replyCopy, v18);
 LABEL_15:
 }
 
-- (id)sanitizeErrorDomain:(id)a3
+- (id)sanitizeErrorDomain:(id)domain
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  domainCopy = domain;
+  v4 = domainCopy;
+  if (domainCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:@"securityd"];
+    domain = [domainCopy domain];
+    v6 = [domain isEqualToString:@"securityd"];
 
     if (v6)
     {
-      v7 = [v4 code];
-      v8 = [v4 userInfo];
-      v9 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v7 userInfo:v8];
+      code = [v4 code];
+      userInfo = [v4 userInfo];
+      v9 = [NSError errorWithDomain:NSOSStatusErrorDomain code:code userInfo:userInfo];
       v10 = CKXPCSuitableError();
     }
 
@@ -511,35 +511,35 @@ LABEL_15:
   return v10;
 }
 
-- (void)rpcCKMetric:(id)a3 attributes:(id)a4 reply:(id)a5
+- (void)rpcCKMetric:(id)metric attributes:(id)attributes reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metricCopy = metric;
+  attributesCopy = attributes;
+  replyCopy = reply;
   v21 = 0;
   v11 = [(CKKSViewManager *)self allowClientRPC:&v21];
   v12 = v21;
   if (v11)
   {
-    if (v8)
+    if (metricCopy)
     {
       v16 = _NSConcreteStackBlock;
       v17 = 3221225472;
       v18 = sub_100159108;
       v19 = &unk_1003386C0;
-      v20 = [[SecEventMetric alloc] initWithEventName:v8];
+      v20 = [[SecEventMetric alloc] initWithEventName:metricCopy];
       v13 = v20;
-      [v9 enumerateKeysAndObjectsUsingBlock:&v16];
+      [attributesCopy enumerateKeysAndObjectsUsingBlock:&v16];
       v14 = [SecMetrics managerObject:v16];
       [v14 submitEvent:v13];
 
-      v10[2](v10, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
     else
     {
       v13 = [NSError errorWithDomain:@"CKKSErrorDomain" code:51 description:@"No metric name"];
-      (v10)[2](v10, v13);
+      (replyCopy)[2](replyCopy, v13);
     }
   }
 
@@ -553,23 +553,23 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Rejecting a ckmetric RPC: %@", buf, 0xCu);
     }
 
-    (v10)[2](v10, v12);
+    (replyCopy)[2](replyCopy, v12);
   }
 }
 
-- (void)rpcGetCKDeviceIDWithReply:(id)a3
+- (void)rpcGetCKDeviceIDWithReply:(id)reply
 {
   v10 = 0;
-  v4 = a3;
+  replyCopy = reply;
   v5 = [(CKKSViewManager *)self allowClientRPC:&v10];
   v6 = v10;
   if (v5)
   {
-    v7 = [(CKKSViewManager *)self accountTracker];
-    v8 = [v7 ckdeviceID];
-    v4[2](v4, v8);
+    accountTracker = [(CKKSViewManager *)self accountTracker];
+    ckdeviceID = [accountTracker ckdeviceID];
+    replyCopy[2](replyCopy, ckdeviceID);
 
-    v4 = v7;
+    replyCopy = accountTracker;
   }
 
   else
@@ -582,14 +582,14 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Rejecting a push RPC: %@", buf, 0xCu);
     }
 
-    v4[2](v4, @"error");
+    replyCopy[2](replyCopy, @"error");
   }
 }
 
-- (void)rpcPushOutgoingChanges:(id)a3 reply:(id)a4
+- (void)rpcPushOutgoingChanges:(id)changes reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  changesCopy = changes;
+  replyCopy = reply;
   v34 = 0;
   v8 = [(CKKSViewManager *)self allowClientRPC:&v34];
   v9 = v34;
@@ -617,13 +617,13 @@ LABEL_15:
 
       if (v13)
       {
-        v7[2](v7, v13);
+        replyCopy[2](replyCopy, v13);
       }
 
       else
       {
-        v20 = [(CKKSViewManager *)self defaultViewError];
-        v7[2](v7, v20);
+        defaultViewError = [(CKKSViewManager *)self defaultViewError];
+        replyCopy[2](replyCopy, defaultViewError);
       }
     }
 
@@ -637,10 +637,10 @@ LABEL_15:
       v28 = sub_1001596C8;
       v29 = &unk_1003445C0;
       objc_copyWeak(&v31, &location);
-      v30 = v7;
+      v30 = replyCopy;
       [(CKKSResultOperation *)v14 setCompletionBlock:&v26];
-      v15 = [(__CFString *)v12 zoneName];
-      v16 = sub_100019104(@"ckks-rpc", v15);
+      zoneName = [(__CFString *)v12 zoneName];
+      v16 = sub_100019104(@"ckks-rpc", zoneName);
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -649,9 +649,9 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Beginning push for %@", buf, 0xCu);
       }
 
-      if (v6)
+      if (changesCopy)
       {
-        v17 = [NSSet setWithObject:v6];
+        v17 = [NSSet setWithObject:changesCopy];
       }
 
       else
@@ -662,14 +662,14 @@ LABEL_15:
       v21 = [CKOperationGroup CKKSGroupWithName:@"rpc-push", v13, v26, v27, v28, v29];
       v22 = [(__CFString *)v12 rpcProcessOutgoingQueue:v17 operationGroup:v21];
 
-      if (v6)
+      if (changesCopy)
       {
       }
 
       [(CKKSResultOperation *)v14 addSuccessDependency:v22];
-      v23 = [(CKKSViewManager *)self operationQueue];
+      operationQueue = [(CKKSViewManager *)self operationQueue];
       v24 = [(CKKSResultOperation *)v14 timeout:300000000000];
-      [v23 addOperation:v24];
+      [operationQueue addOperation:v24];
 
       v13 = v25;
       objc_destroyWeak(&v31);
@@ -687,14 +687,14 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Rejecting a push RPC: %@", buf, 0xCu);
     }
 
-    v7[2](v7, v9);
+    replyCopy[2](replyCopy, v9);
   }
 }
 
-- (void)rpcResyncLocal:(id)a3 reply:(id)a4
+- (void)rpcResyncLocal:(id)local reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  localCopy = local;
+  replyCopy = reply;
   v27 = 0;
   v8 = [(CKKSViewManager *)self allowClientRPC:&v27];
   v9 = v27;
@@ -722,13 +722,13 @@ LABEL_15:
 
       if (v13)
       {
-        v7[2](v7, v13);
+        replyCopy[2](replyCopy, v13);
       }
 
       else
       {
-        v21 = [(CKKSViewManager *)self defaultViewError];
-        v7[2](v7, v21);
+        defaultViewError = [(CKKSViewManager *)self defaultViewError];
+        replyCopy[2](replyCopy, defaultViewError);
       }
     }
 
@@ -742,10 +742,10 @@ LABEL_15:
       v22[2] = sub_10015A3CC;
       v22[3] = &unk_1003445C0;
       objc_copyWeak(&v24, &location);
-      v23 = v7;
+      v23 = replyCopy;
       [(CKKSResultOperation *)v14 setCompletionBlock:v22];
-      v15 = [(__CFString *)v12 zoneName];
-      v16 = sub_100019104(@"ckksresync", v15);
+      zoneName = [(__CFString *)v12 zoneName];
+      v16 = sub_100019104(@"ckksresync", zoneName);
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -754,8 +754,8 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Beginning resync (local) for %@", buf, 0xCu);
       }
 
-      v17 = [(__CFString *)v12 resyncLocal];
-      [(CKKSResultOperation *)v14 addSuccessDependency:v17];
+      resyncLocal = [(__CFString *)v12 resyncLocal];
+      [(CKKSResultOperation *)v14 addSuccessDependency:resyncLocal];
       v18 = [(CKKSResultOperation *)v14 timeout:240000000000];
 
       objc_destroyWeak(&v24);
@@ -773,14 +773,14 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Rejecting a resync-local RPC: %@", buf, 0xCu);
     }
 
-    v7[2](v7, v9);
+    replyCopy[2](replyCopy, v9);
   }
 }
 
-- (void)rpcResync:(id)a3 reply:(id)a4
+- (void)rpcResync:(id)resync reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  resyncCopy = resync;
+  replyCopy = reply;
   v28 = 0;
   v8 = [(CKKSViewManager *)self allowClientRPC:&v28];
   v9 = v28;
@@ -808,13 +808,13 @@ LABEL_15:
 
       if (v13)
       {
-        v7[2](v7, v13);
+        replyCopy[2](replyCopy, v13);
       }
 
       else
       {
-        v22 = [(CKKSViewManager *)self defaultViewError];
-        v7[2](v7, v22);
+        defaultViewError = [(CKKSViewManager *)self defaultViewError];
+        replyCopy[2](replyCopy, defaultViewError);
       }
     }
 
@@ -828,10 +828,10 @@ LABEL_15:
       v23[2] = sub_10015A8E4;
       v23[3] = &unk_1003445C0;
       objc_copyWeak(&v25, &location);
-      v24 = v7;
+      v24 = replyCopy;
       [(CKKSResultOperation *)v14 setCompletionBlock:v23];
-      v15 = [(__CFString *)v12 zoneName];
-      v16 = sub_100019104(@"ckksresync", v15);
+      zoneName = [(__CFString *)v12 zoneName];
+      v16 = sub_100019104(@"ckksresync", zoneName);
 
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -840,11 +840,11 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Beginning resync (CloudKit) for %@", buf, 0xCu);
       }
 
-      v17 = [(__CFString *)v12 resyncWithCloud];
-      [(CKKSResultOperation *)v14 addSuccessDependency:v17];
+      resyncWithCloud = [(__CFString *)v12 resyncWithCloud];
+      [(CKKSResultOperation *)v14 addSuccessDependency:resyncWithCloud];
       v18 = [(CKKSResultOperation *)v14 timeout:240000000000];
-      v19 = [(CKKSViewManager *)self operationQueue];
-      [v19 addOperation:v14];
+      operationQueue = [(CKKSViewManager *)self operationQueue];
+      [operationQueue addOperation:v14];
 
       objc_destroyWeak(&v25);
       objc_destroyWeak(&location);
@@ -861,14 +861,14 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Rejecting a resync RPC: %@", buf, 0xCu);
     }
 
-    v7[2](v7, v9);
+    replyCopy[2](replyCopy, v9);
   }
 }
 
-- (void)rpcResetCloudKit:(id)a3 reason:(id)a4 reply:(id)a5
+- (void)rpcResetCloudKit:(id)kit reason:(id)reason reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  kitCopy = kit;
+  replyCopy = reply;
   v20 = 0;
   v9 = [(CKKSViewManager *)self allowClientRPC:&v20];
   v10 = v20;
@@ -896,29 +896,29 @@ LABEL_15:
 
       if (v14)
       {
-        v8[2](v8, v14);
+        replyCopy[2](replyCopy, v14);
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v15 = [(CKKSViewManager *)self defaultViewError];
-      v8[2](v8, v15);
+      defaultViewError = [(CKKSViewManager *)self defaultViewError];
+      replyCopy[2](replyCopy, defaultViewError);
     }
 
     else
     {
-      if (v7)
+      if (kitCopy)
       {
-        v15 = [NSSet setWithObject:v7];
+        defaultViewError = [NSSet setWithObject:kitCopy];
       }
 
       else
       {
-        v15 = 0;
+        defaultViewError = 0;
       }
 
-      v18 = [v13 rpcResetCloudKit:v15 reply:v8];
+      v18 = [v13 rpcResetCloudKit:defaultViewError reply:replyCopy];
     }
 
     goto LABEL_17;
@@ -932,14 +932,14 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Rejecting a resetCloudKit RPC: %@", buf, 0xCu);
   }
 
-  v8[2](v8, v10);
+  replyCopy[2](replyCopy, v10);
 LABEL_18:
 }
 
-- (void)rpcResetLocal:(id)a3 reply:(id)a4
+- (void)rpcResetLocal:(id)local reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  localCopy = local;
+  replyCopy = reply;
   v19 = 0;
   v8 = [(CKKSViewManager *)self allowClientRPC:&v19];
   v9 = v19;
@@ -967,29 +967,29 @@ LABEL_18:
 
       if (v13)
       {
-        v7[2](v7, v13);
+        replyCopy[2](replyCopy, v13);
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v14 = [(CKKSViewManager *)self defaultViewError];
-      v7[2](v7, v14);
+      defaultViewError = [(CKKSViewManager *)self defaultViewError];
+      replyCopy[2](replyCopy, defaultViewError);
     }
 
     else
     {
-      if (v6)
+      if (localCopy)
       {
-        v14 = [NSSet setWithObject:v6];
+        defaultViewError = [NSSet setWithObject:localCopy];
       }
 
       else
       {
-        v14 = 0;
+        defaultViewError = 0;
       }
 
-      v17 = [v12 rpcResetLocal:v14 reply:v7];
+      v17 = [v12 rpcResetLocal:defaultViewError reply:replyCopy];
     }
 
     goto LABEL_17;
@@ -1003,13 +1003,13 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Rejecting a resetLocal RPC: %@", buf, 0xCu);
   }
 
-  v7[2](v7, v9);
+  replyCopy[2](replyCopy, v9);
 LABEL_18:
 }
 
-- (id)currentTLKsFilteredByPolicy:(BOOL)a3 error:(id *)a4
+- (id)currentTLKsFilteredByPolicy:(BOOL)policy error:(id *)error
 {
-  v5 = a3;
+  policyCopy = policy;
   v7 = +[OTManager manager];
   v8 = objc_alloc_init(OTControlArguments);
   v51 = 0;
@@ -1040,19 +1040,19 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No CKKS view for %@, %@, error: %@", buf, 0x20u);
     }
 
-    if (a4)
+    if (error)
     {
       if (v10)
       {
         v13 = v10;
         v42 = 0;
-        *a4 = v10;
+        *error = v10;
       }
 
       else
       {
         [(CKKSViewManager *)self defaultViewError];
-        *a4 = v42 = 0;
+        *error = v42 = 0;
       }
     }
 
@@ -1067,11 +1067,11 @@ LABEL_18:
   v14 = [v9 findKeySets:0];
   v15 = [v14 timeout:10000000000];
   [v14 waitUntilFinished];
-  v16 = [v14 error];
+  error = [v14 error];
 
-  if (!v16)
+  if (!error)
   {
-    v43 = a4;
+    errorCopy = error;
     v41 = v10;
     v44 = v9;
     v42 = +[NSMutableArray array];
@@ -1098,21 +1098,21 @@ LABEL_18:
         }
 
         v23 = *(*(&v47 + 1) + 8 * i);
-        if (!v5)
+        if (!policyCopy)
         {
           goto LABEL_23;
         }
 
-        v24 = [v44 syncingPolicy];
-        v25 = [v24 viewsToPiggybackTLKs];
-        v26 = [v23 zoneName];
-        v27 = [v25 containsObject:v26];
+        syncingPolicy = [v44 syncingPolicy];
+        viewsToPiggybackTLKs = [syncingPolicy viewsToPiggybackTLKs];
+        zoneName = [v23 zoneName];
+        v27 = [viewsToPiggybackTLKs containsObject:zoneName];
 
         if (v27)
         {
 LABEL_23:
-          v28 = [v14 keysets];
-          v29 = [v28 objectForKeyedSubscript:v23];
+          keysets = [v14 keysets];
+          v29 = [keysets objectForKeyedSubscript:v23];
 
           if (v29)
           {
@@ -1151,10 +1151,10 @@ LABEL_23:
                   _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Error loading key: %@", buf, 0xCu);
                 }
 
-                if (v43)
+                if (errorCopy)
                 {
                   v36 = v33;
-                  *v43 = v33;
+                  *errorCopy = v33;
                 }
               }
 
@@ -1207,16 +1207,16 @@ LABEL_43:
   v17 = sub_100019104(@"ckks", 0);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    v18 = [v14 error];
+    error2 = [v14 error];
     *buf = 138412290;
-    v54 = v18;
+    v54 = error2;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Error getting keyset: %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     [v14 error];
-    *a4 = v42 = 0;
+    *error = v42 = 0;
   }
 
   else
@@ -1263,12 +1263,12 @@ LABEL_47:
   [(CKKSViewManager *)self syncBackupAndNotifyAboutSync];
 }
 
-- (void)unsetCurrentItemsForAccessGroup:(id)a3 identifiers:(id)a4 viewHint:(id)a5 complete:(id)a6
+- (void)unsetCurrentItemsForAccessGroup:(id)group identifiers:(id)identifiers viewHint:(id)hint complete:(id)complete
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  groupCopy = group;
+  identifiersCopy = identifiers;
+  hintCopy = hint;
+  completeCopy = complete;
   v14 = +[OTManager manager];
   v15 = objc_alloc_init(OTControlArguments);
   v21 = 0;
@@ -1287,7 +1287,7 @@ LABEL_47:
 
   if (v18)
   {
-    [v16 unsetCurrentItemsForAccessGroup:v10 identifiers:v11 viewHint:v12 complete:v13];
+    [v16 unsetCurrentItemsForAccessGroup:groupCopy identifiers:identifiersCopy viewHint:hintCopy complete:completeCopy];
   }
 
   else
@@ -1306,27 +1306,27 @@ LABEL_47:
 
     if (v17)
     {
-      v13[2](v13, v17);
+      completeCopy[2](completeCopy, v17);
     }
 
     else
     {
-      v20 = [(CKKSViewManager *)self defaultViewError];
-      v13[2](v13, v20);
+      defaultViewError = [(CKKSViewManager *)self defaultViewError];
+      completeCopy[2](completeCopy, defaultViewError);
     }
   }
 }
 
-- (void)setCurrentItemForAccessGroup:(id)a3 hash:(id)a4 accessGroup:(id)a5 identifier:(id)a6 viewHint:(id)a7 replacing:(id)a8 hash:(id)a9 complete:(id)a10
+- (void)setCurrentItemForAccessGroup:(id)group hash:(id)hash accessGroup:(id)accessGroup identifier:(id)identifier viewHint:(id)hint replacing:(id)replacing hash:(id)a9 complete:(id)self0
 {
-  v31 = a3;
-  v30 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  groupCopy = group;
+  hashCopy = hash;
+  accessGroupCopy = accessGroup;
+  identifierCopy = identifier;
+  hintCopy = hint;
+  replacingCopy = replacing;
   v19 = a9;
-  v20 = a10;
+  completeCopy = complete;
   v21 = +[OTManager manager];
   v22 = objc_alloc_init(OTControlArguments);
   v32 = 0;
@@ -1349,24 +1349,24 @@ LABEL_47:
 
     if (v24)
     {
-      v20[2](v20, v24);
+      completeCopy[2](completeCopy, v24);
     }
 
     else
     {
-      v28 = [(CKKSViewManager *)self defaultViewError];
-      v20[2](v20, v28);
+      defaultViewError = [(CKKSViewManager *)self defaultViewError];
+      completeCopy[2](completeCopy, defaultViewError);
     }
 
-    v26 = v30;
-    v25 = v31;
+    v26 = hashCopy;
+    v25 = groupCopy;
   }
 
   else
   {
-    v26 = v30;
-    v25 = v31;
-    [v23 setCurrentItemForAccessGroup:v31 hash:v30 accessGroup:v15 identifier:v16 viewHint:v17 replacing:v18 hash:v19 complete:v20];
+    v26 = hashCopy;
+    v25 = groupCopy;
+    [v23 setCurrentItemForAccessGroup:groupCopy hash:hashCopy accessGroup:accessGroupCopy identifier:identifierCopy viewHint:hintCopy replacing:replacingCopy hash:v19 complete:completeCopy];
   }
 }
 
@@ -1381,18 +1381,18 @@ LABEL_47:
   return v4;
 }
 
-- (void)handleKeychainEventDbConnection:(__OpaqueSecDbConnection *)a3 source:(unint64_t)a4 added:(SecDbItem *)a5 deleted:(SecDbItem *)a6
+- (void)handleKeychainEventDbConnection:(__OpaqueSecDbConnection *)connection source:(unint64_t)source added:(SecDbItem *)added deleted:(SecDbItem *)deleted
 {
-  if (a5 | a6)
+  if (added | deleted)
   {
-    if (!a5)
+    if (!added)
     {
       v13 = 0;
       v12 = 0;
       goto LABEL_15;
     }
 
-    v11 = sub_100015BFC(a5, &off_100342650, 0);
+    v11 = sub_100015BFC(added, &off_100342650, 0);
     if ([v11 length])
     {
       if (v11)
@@ -1402,7 +1402,7 @@ LABEL_47:
 LABEL_14:
 
 LABEL_15:
-        if (!a6)
+        if (!deleted)
         {
           v17 = 0;
           v20 = 0;
@@ -1415,10 +1415,10 @@ LABEL_15:
           goto LABEL_32;
         }
 
-        v53 = a3;
-        v14 = a4;
-        v15 = self;
-        v16 = sub_100015BFC(a6, &off_100342650, 0);
+        connectionCopy = connection;
+        sourceCopy = source;
+        selfCopy = self;
+        v16 = sub_100015BFC(deleted, &off_100342650, 0);
         if ([v16 length])
         {
           if (v16)
@@ -1430,9 +1430,9 @@ LABEL_15:
             v20 = v17 != 0;
             if (v12 && v17)
             {
-              v21 = [v12 UUIDString];
-              v22 = [v17 UUIDString];
-              v23 = [v21 isEqualToString:v22];
+              uUIDString = [v12 UUIDString];
+              uUIDString2 = [v17 UUIDString];
+              v23 = [uUIDString isEqualToString:uUIDString2];
 
               if ((v23 & 1) == 0)
               {
@@ -1461,11 +1461,11 @@ LABEL_68:
             }
 
 LABEL_29:
-            self = v15;
-            if (!a5 || v18 == v13)
+            self = selfCopy;
+            if (!added || v18 == v13)
             {
-              a4 = v14;
-              a3 = v53;
+              source = sourceCopy;
+              connection = connectionCopy;
               if (v19)
               {
                 goto LABEL_34;
@@ -1474,7 +1474,7 @@ LABEL_29:
 LABEL_32:
               if (!v20)
               {
-                v24 = 0;
+                uUIDString3 = 0;
                 goto LABEL_38;
               }
 
@@ -1489,8 +1489,8 @@ LABEL_34:
                 v25 = v17;
               }
 
-              v24 = [v25 UUIDString];
-              if (((v24 != 0) & ~v13) != 0)
+              uUIDString3 = [v25 UUIDString];
+              if (((uUIDString3 != 0) & ~v13) != 0)
               {
                 if (qword_10039E108 != -1)
                 {
@@ -1500,12 +1500,12 @@ LABEL_34:
                 if (byte_10039E100 == 1)
                 {
                   v52 = v12;
-                  v54 = a3;
-                  v50 = a4;
+                  connectionCopy2 = connection;
+                  sourceCopy2 = source;
                   v51 = v17;
-                  v49 = self;
-                  v29 = [(CKKSViewManager *)self accountsAdapter];
-                  v30 = [v29 inflateAllTPSpecificUsers:@"com.apple.security.keychain" octagonContextID:@"defaultContext"];
+                  selfCopy2 = self;
+                  accountsAdapter = [(CKKSViewManager *)self accountsAdapter];
+                  v30 = [accountsAdapter inflateAllTPSpecificUsers:@"com.apple.security.keychain" octagonContextID:@"defaultContext"];
 
                   v57 = 0u;
                   v58 = 0u;
@@ -1542,8 +1542,8 @@ LABEL_45:
                     }
 
                     v35 = *(*(&v55 + 1) + 8 * v34);
-                    v36 = [v35 personaUniqueString];
-                    v37 = [v36 isEqualToString:v24];
+                    personaUniqueString = [v35 personaUniqueString];
+                    v37 = [personaUniqueString isEqualToString:uUIDString3];
 
                     if (v37)
                     {
@@ -1579,15 +1579,15 @@ LABEL_45:
                   }
 
                   v44 = +[OTManager manager];
-                  v45 = [v42 cloudkitContainerName];
-                  v46 = [v42 octagonContextID];
-                  v47 = [v44 ckksAccountSyncForContainer:v45 contextID:v46 possibleAccount:v42];
+                  cloudkitContainerName = [v42 cloudkitContainerName];
+                  octagonContextID = [v42 octagonContextID];
+                  v47 = [v44 ckksAccountSyncForContainer:cloudkitContainerName contextID:octagonContextID possibleAccount:v42];
 
                   v27 = v47;
                   v12 = v52;
-                  a3 = v54;
-                  self = v49;
-                  a4 = v50;
+                  connection = connectionCopy2;
+                  self = selfCopy2;
+                  source = sourceCopy2;
                   if (v27)
                   {
                     goto LABEL_39;
@@ -1604,8 +1604,8 @@ LABEL_38:
               if (v27)
               {
 LABEL_39:
-                v28 = [(CKKSViewManager *)self globalRateLimiter];
-                [v27 handleKeychainEventDbConnection:a3 source:a4 added:a5 deleted:a6 rateLimiter:v28];
+                globalRateLimiter = [(CKKSViewManager *)self globalRateLimiter];
+                [v27 handleKeychainEventDbConnection:connection source:source added:added deleted:deleted rateLimiter:globalRateLimiter];
 
 LABEL_67:
                 goto LABEL_68;
@@ -1686,16 +1686,16 @@ LABEL_56:
 LABEL_69:
 }
 
-- (void)cloudkitAccountStateChange:(id)a3 to:(id)a4
+- (void)cloudkitAccountStateChange:(id)change to:(id)to
 {
-  v19 = a3;
-  v6 = a4;
-  if ([v6 accountStatus] != 1 || (objc_msgSend(v6, "hasValidCredentials", v19) & 1) == 0)
+  changeCopy = change;
+  toCopy = to;
+  if ([toCopy accountStatus] != 1 || (objc_msgSend(toCopy, "hasValidCredentials", changeCopy) & 1) == 0)
   {
     obj = [(CKKSViewManager *)self pendingSyncCallbacks];
     objc_sync_enter(obj);
-    v7 = [(CKKSViewManager *)self pendingSyncCallbacks];
-    v8 = [v7 count];
+    pendingSyncCallbacks = [(CKKSViewManager *)self pendingSyncCallbacks];
+    v8 = [pendingSyncCallbacks count];
 
     if (v8)
     {
@@ -1710,10 +1710,10 @@ LABEL_69:
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = [(CKKSViewManager *)self pendingSyncCallbacks];
-      v11 = [v10 allKeys];
+      pendingSyncCallbacks2 = [(CKKSViewManager *)self pendingSyncCallbacks];
+      allKeys = [pendingSyncCallbacks2 allKeys];
 
-      v12 = [v11 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v12)
       {
         v13 = *v22;
@@ -1724,26 +1724,26 @@ LABEL_69:
           {
             if (*v22 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allKeys);
             }
 
             v15 = *(*(&v21 + 1) + 8 * v14);
-            v16 = [(CKKSViewManager *)self pendingSyncCallbacks];
-            v17 = [v16 objectForKeyedSubscript:v15];
+            pendingSyncCallbacks3 = [(CKKSViewManager *)self pendingSyncCallbacks];
+            v17 = [pendingSyncCallbacks3 objectForKeyedSubscript:v15];
             [CKKSViewManager callSyncCallbackWithErrorNoAccount:v17];
 
             v14 = v14 + 1;
           }
 
           while (v12 != v14);
-          v12 = [v11 countByEnumeratingWithState:&v21 objects:v26 count:16];
+          v12 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
         }
 
         while (v12);
       }
 
-      v18 = [(CKKSViewManager *)self pendingSyncCallbacks];
-      [v18 removeAllObjects];
+      pendingSyncCallbacks4 = [(CKKSViewManager *)self pendingSyncCallbacks];
+      [pendingSyncCallbacks4 removeAllObjects];
     }
 
     objc_sync_exit(obj);
@@ -1752,29 +1752,29 @@ LABEL_69:
 
 - (id)pendingCallbackUUIDs
 {
-  v3 = [(CKKSViewManager *)self pendingSyncCallbacks];
-  objc_sync_enter(v3);
-  v4 = [(CKKSViewManager *)self pendingSyncCallbacks];
-  v5 = [v4 allKeys];
-  v6 = [v5 copy];
+  pendingSyncCallbacks = [(CKKSViewManager *)self pendingSyncCallbacks];
+  objc_sync_enter(pendingSyncCallbacks);
+  pendingSyncCallbacks2 = [(CKKSViewManager *)self pendingSyncCallbacks];
+  allKeys = [pendingSyncCallbacks2 allKeys];
+  v6 = [allKeys copy];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(pendingSyncCallbacks);
 
   return v6;
 }
 
-- (BOOL)peekCallbackForUUID:(id)a3
+- (BOOL)peekCallbackForUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(CKKSViewManager *)self pendingSyncCallbacks];
-    objc_sync_enter(v5);
-    v6 = [(CKKSViewManager *)self pendingSyncCallbacks];
-    v7 = [v6 allKeys];
-    v8 = [v7 containsObject:v4];
+    pendingSyncCallbacks = [(CKKSViewManager *)self pendingSyncCallbacks];
+    objc_sync_enter(pendingSyncCallbacks);
+    pendingSyncCallbacks2 = [(CKKSViewManager *)self pendingSyncCallbacks];
+    allKeys = [pendingSyncCallbacks2 allKeys];
+    v8 = [allKeys containsObject:dCopy];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(pendingSyncCallbacks);
   }
 
   else
@@ -1785,15 +1785,15 @@ LABEL_69:
   return v8;
 }
 
-- (id)claimCallbackForUUID:(id)a3
+- (id)claimCallbackForUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(CKKSViewManager *)self pendingSyncCallbacks];
-    objc_sync_enter(v5);
-    v6 = [(CKKSViewManager *)self pendingSyncCallbacks];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    pendingSyncCallbacks = [(CKKSViewManager *)self pendingSyncCallbacks];
+    objc_sync_enter(pendingSyncCallbacks);
+    pendingSyncCallbacks2 = [(CKKSViewManager *)self pendingSyncCallbacks];
+    v7 = [pendingSyncCallbacks2 objectForKeyedSubscript:dCopy];
 
     if (v7)
     {
@@ -1801,16 +1801,16 @@ LABEL_69:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = dCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "fetched UUID: %@", &v12, 0xCu);
       }
     }
 
-    v9 = [(CKKSViewManager *)self pendingSyncCallbacks];
-    [v9 setObject:0 forKeyedSubscript:v4];
+    pendingSyncCallbacks3 = [(CKKSViewManager *)self pendingSyncCallbacks];
+    [pendingSyncCallbacks3 setObject:0 forKeyedSubscript:dCopy];
 
     v10 = objc_retainBlock(v7);
-    objc_sync_exit(v5);
+    objc_sync_exit(pendingSyncCallbacks);
   }
 
   else
@@ -1821,42 +1821,42 @@ LABEL_69:
   return v10;
 }
 
-- (void)registerSyncStatusCallback:(id)a3 callback:(id)a4
+- (void)registerSyncStatusCallback:(id)callback callback:(id)a4
 {
-  v6 = a3;
+  callbackCopy = callback;
   v7 = a4;
-  v8 = [(CKKSViewManager *)self pendingSyncCallbacks];
-  objc_sync_enter(v8);
+  pendingSyncCallbacks = [(CKKSViewManager *)self pendingSyncCallbacks];
+  objc_sync_enter(pendingSyncCallbacks);
   v9 = sub_100019104(@"ckkscallback", 0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = callbackCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "registered callback for UUID: %@", &v12, 0xCu);
   }
 
   v10 = objc_retainBlock(v7);
-  v11 = [(CKKSViewManager *)self pendingSyncCallbacks];
-  [v11 setObject:v10 forKeyedSubscript:v6];
+  pendingSyncCallbacks2 = [(CKKSViewManager *)self pendingSyncCallbacks];
+  [pendingSyncCallbacks2 setObject:v10 forKeyedSubscript:callbackCopy];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(pendingSyncCallbacks);
 }
 
-- (id)restartCKKSAccountSyncWithoutSettingPolicy:(id)a3
+- (id)restartCKKSAccountSyncWithoutSettingPolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = +[OTManager manager];
-  v5 = [v4 restartCKKSAccountSyncWithoutSettingPolicy:v3];
+  v5 = [v4 restartCKKSAccountSyncWithoutSettingPolicy:policyCopy];
 
   return v5;
 }
 
-- (id)ckksAccountSyncForContainer:(id)a3 contextID:(id)a4
+- (id)ckksAccountSyncForContainer:(id)container contextID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  containerCopy = container;
   v7 = +[OTManager manager];
-  v8 = [v7 ckksAccountSyncForContainer:v6 contextID:v5 possibleAccount:0];
+  v8 = [v7 ckksAccountSyncForContainer:containerCopy contextID:dCopy possibleAccount:0];
 
   if (!v8)
   {
@@ -1871,20 +1871,20 @@ LABEL_69:
   return v8;
 }
 
-- (id)restartCKKSAccountSync:(id)a3
+- (id)restartCKKSAccountSync:(id)sync
 {
-  v4 = a3;
-  v5 = [v4 syncingPolicy];
-  v6 = [(CKKSViewManager *)self restartCKKSAccountSyncWithoutSettingPolicy:v4];
+  syncCopy = sync;
+  syncingPolicy = [syncCopy syncingPolicy];
+  v6 = [(CKKSViewManager *)self restartCKKSAccountSyncWithoutSettingPolicy:syncCopy];
 
-  [v6 setCurrentSyncingPolicy:v5 policyIsFresh:0];
+  [v6 setCurrentSyncingPolicy:syncingPolicy policyIsFresh:0];
 
   return v6;
 }
 
-- (void)lockStateChangeNotification:(BOOL)a3
+- (void)lockStateChangeNotification:(BOOL)notification
 {
-  if (a3)
+  if (notification)
   {
     v4 = +[CKKSAnalytics logger];
     v3 = +[NSDate date];
@@ -1949,8 +1949,8 @@ LABEL_69:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [v6 viewList];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v27 count:16];
+    viewList = [v6 viewList];
+    v9 = [viewList countByEnumeratingWithState:&v20 objects:v27 count:16];
     if (v9)
     {
       v10 = *v21;
@@ -1961,7 +1961,7 @@ LABEL_69:
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(viewList);
           }
 
           v12 = *(*(&v20 + 1) + 8 * v11);
@@ -1981,7 +1981,7 @@ LABEL_69:
         }
 
         while (v9 != v11);
-        v9 = [v8 countByEnumeratingWithState:&v20 objects:v27 count:16];
+        v9 = [viewList countByEnumeratingWithState:&v20 objects:v27 count:16];
       }
 
       while (v9);
@@ -2013,7 +2013,7 @@ LABEL_69:
   return v2;
 }
 
-- (BOOL)allowClientRPC:(id *)a3
+- (BOOL)allowClientRPC:(id *)c
 {
   if (qword_10039E108 != -1)
   {
@@ -2025,10 +2025,10 @@ LABEL_69:
     return 1;
   }
 
-  v5 = [(CKKSViewManager *)self personaAdapter];
-  v6 = [v5 currentThreadIsForPrimaryiCloudAccount];
+  personaAdapter = [(CKKSViewManager *)self personaAdapter];
+  currentThreadIsForPrimaryiCloudAccount = [personaAdapter currentThreadIsForPrimaryiCloudAccount];
 
-  if (v6)
+  if (currentThreadIsForPrimaryiCloudAccount)
   {
     return 1;
   }
@@ -2040,7 +2040,7 @@ LABEL_69:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Rejecting client RPC for non-primary persona", v11, 2u);
   }
 
-  if (!a3)
+  if (!c)
   {
     return 0;
   }
@@ -2048,39 +2048,39 @@ LABEL_69:
   v9 = [NSError errorWithDomain:@"CKKSErrorDomain" code:65 description:@"CKKS APIs do not support non-primary users"];
   v10 = v9;
   result = 0;
-  *a3 = v9;
+  *c = v9;
   return result;
 }
 
-- (CKKSViewManager)initWithContainer:(id)a3 sosAdapter:(id)a4 accountStateTracker:(id)a5 lockStateTracker:(id)a6 reachabilityTracker:(id)a7 personaAdapter:(id)a8 cloudKitClassDependencies:(id)a9 accountsAdapter:(id)a10
+- (CKKSViewManager)initWithContainer:(id)container sosAdapter:(id)adapter accountStateTracker:(id)tracker lockStateTracker:(id)stateTracker reachabilityTracker:(id)reachabilityTracker personaAdapter:(id)personaAdapter cloudKitClassDependencies:(id)dependencies accountsAdapter:(id)self0
 {
-  v38 = a3;
-  v37 = a4;
-  v36 = a5;
-  v35 = a6;
-  v34 = a7;
-  v33 = a8;
-  v17 = a9;
-  v32 = a10;
+  containerCopy = container;
+  adapterCopy = adapter;
+  trackerCopy = tracker;
+  stateTrackerCopy = stateTracker;
+  reachabilityTrackerCopy = reachabilityTracker;
+  personaAdapterCopy = personaAdapter;
+  dependenciesCopy = dependencies;
+  accountsAdapterCopy = accountsAdapter;
   v39.receiver = self;
   v39.super_class = CKKSViewManager;
   v18 = [(CKKSViewManager *)&v39 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_cloudKitClassDependencies, a9);
-    objc_storeStrong(&v19->_sosPeerAdapter, a4);
+    objc_storeStrong(&v18->_cloudKitClassDependencies, dependencies);
+    objc_storeStrong(&v19->_sosPeerAdapter, adapter);
     viewAllowList = v19->_viewAllowList;
     v19->_viewAllowList = 0;
 
-    objc_storeStrong(&v19->_container, a3);
-    objc_storeStrong(&v19->_accountTracker, a5);
-    objc_storeStrong(&v19->_lockStateTracker, a6);
+    objc_storeStrong(&v19->_container, container);
+    objc_storeStrong(&v19->_accountTracker, tracker);
+    objc_storeStrong(&v19->_lockStateTracker, stateTracker);
     [(CKKSLockStateTracker *)v19->_lockStateTracker addLockStateObserver:v19];
-    objc_storeStrong(&v19->_reachabilityTracker, a7);
-    objc_storeStrong(&v19->_personaAdapter, a8);
-    objc_storeStrong(&v19->_accountsAdapter, a10);
-    v21 = +[OctagonAPSReceiver receiverForNamedDelegatePort:apsConnectionClass:](OctagonAPSReceiver, "receiverForNamedDelegatePort:apsConnectionClass:", @"com.apple.securityd.aps", [v17 apsConnectionClass]);
+    objc_storeStrong(&v19->_reachabilityTracker, reachabilityTracker);
+    objc_storeStrong(&v19->_personaAdapter, personaAdapter);
+    objc_storeStrong(&v19->_accountsAdapter, accountsAdapter);
+    v21 = +[OctagonAPSReceiver receiverForNamedDelegatePort:apsConnectionClass:](OctagonAPSReceiver, "receiverForNamedDelegatePort:apsConnectionClass:", @"com.apple.securityd.aps", [dependenciesCopy apsConnectionClass]);
     v22 = objc_alloc_init(NSOperationQueue);
     operationQueue = v19->_operationQueue;
     v19->_operationQueue = v22;
@@ -2105,11 +2105,11 @@ LABEL_69:
   return v19;
 }
 
-+ (void)callSyncCallbackWithErrorNoAccount:(id)a3
++ (void)callSyncCallbackWithErrorNoAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = [NSError errorWithDomain:@"securityd" code:-67729 description:@"No iCloud account available item is not expected to sync"];;
-  (*(a3 + 2))(v4, 0, v5);
+  (*(account + 2))(accountCopy, 0, v5);
 }
 
 @end

@@ -3,11 +3,11 @@
 - (STStorageUsagePlugin)init;
 - (id)tips;
 - (id)tvUsageBundleApp;
-- (int64_t)hlsSize:(id *)a3;
+- (int64_t)hlsSize:(id *)size;
 - (void)dealloc;
-- (void)enableOptionForTip:(id)a3;
-- (void)setAutoDemoteEnabled:(BOOL)a3;
-- (void)updateOtherDataSize:(id)a3;
+- (void)enableOptionForTip:(id)tip;
+- (void)setAutoDemoteEnabled:(BOOL)enabled;
+- (void)updateOtherDataSize:(id)size;
 @end
 
 @implementation STStorageUsagePlugin
@@ -36,10 +36,10 @@
   [(STStorageUsagePlugin *)&v4 dealloc];
 }
 
-- (void)setAutoDemoteEnabled:(BOOL)a3
+- (void)setAutoDemoteEnabled:(BOOL)enabled
 {
   v3 = &kCFBooleanTrue;
-  if (!a3)
+  if (!enabled)
   {
     v3 = &kCFBooleanFalse;
   }
@@ -50,9 +50,9 @@
 - (BOOL)isAutoDemoteEnabled
 {
   v2 = CFPreferencesCopyValue(@"OffloadUnusedApps", @"com.apple.appstored", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)tvUsageBundleApp
@@ -71,12 +71,12 @@
       v7 = self->_tvReporter;
       if (v7)
       {
-        v8 = [(PSStorageReporting *)v7 usageBundleApps];
+        usageBundleApps = [(PSStorageReporting *)v7 usageBundleApps];
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [usageBundleApps countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v9)
         {
           v10 = v9;
@@ -88,7 +88,7 @@
             {
               if (*v18 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(usageBundleApps);
               }
 
               [*(*(&v17 + 1) + 8 * v12) setUsageBundleStorageReporter:self->_tvReporter];
@@ -96,15 +96,15 @@
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+            v10 = [usageBundleApps countByEnumeratingWithState:&v17 objects:v21 count:16];
           }
 
           while (v10);
         }
 
-        v13 = [v8 firstObject];
+        firstObject = [usageBundleApps firstObject];
         tvUsageBundleApp = self->_tvUsageBundleApp;
-        self->_tvUsageBundleApp = v13;
+        self->_tvUsageBundleApp = firstObject;
       }
     }
   }
@@ -114,7 +114,7 @@
   return v15;
 }
 
-- (int64_t)hlsSize:(id *)a3
+- (int64_t)hlsSize:(id *)size
 {
   v35 = 0;
   v36 = &v35;
@@ -165,8 +165,8 @@
           v10 = *(*(&v20 + 1) + 8 * v9);
           v11 = objc_alloc_init(STStorageActionTipItem);
           [v11 setSize:{objc_msgSend(v10, "size", v20)}];
-          v12 = [v10 consumedDate];
-          [v11 setLastUsedDate:v12];
+          consumedDate = [v10 consumedDate];
+          [v11 setLastUsedDate:consumedDate];
 
           [v5 addObject:v11];
           v9 = v9 + 1;
@@ -181,7 +181,7 @@
   }
 
   v13 = v5;
-  *a3 = v5;
+  *size = v5;
   v14 = v36[3];
   v15 = v32[3];
   v16 = v14 <= v15;
@@ -209,10 +209,10 @@
     sub_2A78();
   }
 
-  v4 = [qword_C7A0 ams_activeiTunesAccount];
-  v5 = [v4 isActive];
+  ams_activeiTunesAccount = [qword_C7A0 ams_activeiTunesAccount];
+  isActive = [ams_activeiTunesAccount isActive];
 
-  if (v5 && ![(STStorageUsagePlugin *)self isAutoDemoteEnabled])
+  if (isActive && ![(STStorageUsagePlugin *)self isAutoDemoteEnabled])
   {
     v6 = objc_alloc_init(STStorageOptionTip);
     offloadAppsTip = self->_offloadAppsTip;
@@ -271,8 +271,8 @@
     [v3 addObject:self->_hlsReviewTip];
   }
 
-  v21 = [(STStorageUsagePlugin *)self tvUsageBundleApp];
-  [v21 totalSize];
+  tvUsageBundleApp = [(STStorageUsagePlugin *)self tvUsageBundleApp];
+  [tvUsageBundleApp totalSize];
   v23 = v22;
   if (v22)
   {
@@ -319,9 +319,9 @@
     [(STStorageActionTip *)self->_tvReviewTip setDetailControllerClass:v32];
     [(STStorageActionTip *)self->_tvReviewTip setRepresentedApp:@"com.apple.tv"];
     [(STStorageActionTip *)self->_tvReviewTip setSize:v23];
-    v34 = [(STStorageActionTip *)self->_tvReviewTip specifier];
-    [v34 setProperty:@"com.apple.VideoUsage" forKey:PSIDKey];
-    [v34 setProperty:self->_tvUsageBundleApp forKey:@"USAGE_BUNDLE_APP"];
+    specifier = [(STStorageActionTip *)self->_tvReviewTip specifier];
+    [specifier setProperty:@"com.apple.VideoUsage" forKey:PSIDKey];
+    [specifier setProperty:self->_tvUsageBundleApp forKey:@"USAGE_BUNDLE_APP"];
     [v3 addObject:self->_tvReviewTip];
   }
 
@@ -334,9 +334,9 @@
 
   if ([(NSNumber *)self->_othersDataSize longLongValue]<= 0xEFFFFFFFFLL)
   {
-    v37 = [(NSNumber *)self->_othersDataSize longLongValue];
+    longLongValue = [(NSNumber *)self->_othersDataSize longLongValue];
 
-    if (v37 >= 10485761)
+    if (longLongValue >= 10485761)
     {
       goto LABEL_26;
     }
@@ -351,9 +351,9 @@
   self->_ttrActionTip = v38;
 
   [(STStorageOptionTip *)self->_ttrActionTip setIdentifier:@"_LARGE_SYSTEM_DATA_"];
-  v40 = [(NSNumber *)self->_othersDataSize longLongValue];
+  longLongValue2 = [(NSNumber *)self->_othersDataSize longLongValue];
   v41 = @"Large";
-  if (v40 < 10485761)
+  if (longLongValue2 < 10485761)
   {
     v41 = @"Low";
   }
@@ -361,9 +361,9 @@
   v42 = [NSString stringWithFormat:@"%@ System Data", v41];
   [(STStorageOptionTip *)self->_ttrActionTip setTitle:v42];
 
-  v43 = [(NSNumber *)self->_othersDataSize longLongValue];
+  longLongValue3 = [(NSNumber *)self->_othersDataSize longLongValue];
   v44 = @"larger";
-  if (v43 < 10485761)
+  if (longLongValue3 < 10485761)
   {
     v44 = @"lower";
   }
@@ -388,24 +388,24 @@ LABEL_26:
   return v3;
 }
 
-- (void)enableOptionForTip:(id)a3
+- (void)enableOptionForTip:(id)tip
 {
-  v4 = a3;
+  tipCopy = tip;
   v5 = STSharedSerialQueue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_23C8;
   v7[3] = &unk_8390;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = tipCopy;
+  selfCopy = self;
+  v6 = tipCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)updateOtherDataSize:(id)a3
+- (void)updateOtherDataSize:(id)size
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:STStorageOtherDataSizeKey];
+  userInfo = [size userInfo];
+  v5 = [userInfo objectForKeyedSubscript:STStorageOtherDataSizeKey];
   othersDataSize = self->_othersDataSize;
   self->_othersDataSize = v5;
 

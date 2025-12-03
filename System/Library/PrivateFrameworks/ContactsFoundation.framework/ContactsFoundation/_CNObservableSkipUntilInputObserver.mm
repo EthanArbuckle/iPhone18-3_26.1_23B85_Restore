@@ -1,26 +1,26 @@
 @interface _CNObservableSkipUntilInputObserver
 - (NSString)description;
-- (_CNObservableSkipUntilInputObserver)initWithObserver:(id)a3 delegate:(id)a4;
+- (_CNObservableSkipUntilInputObserver)initWithObserver:(id)observer delegate:(id)delegate;
 - (_CNObservableSkipUntilInputObserverDelegate)delegate;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation _CNObservableSkipUntilInputObserver
 
-- (_CNObservableSkipUntilInputObserver)initWithObserver:(id)a3 delegate:(id)a4
+- (_CNObservableSkipUntilInputObserver)initWithObserver:(id)observer delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  observerCopy = observer;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = _CNObservableSkipUntilInputObserver;
   v9 = [(_CNObservableSkipUntilInputObserver *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_observer, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_observer, observer);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = v10;
   }
 
@@ -30,64 +30,64 @@
 - (NSString)description
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
-  v4 = [(_CNObservableSkipUntilInputObserver *)self observer];
-  v5 = [v3 appendName:@"observer" object:v4];
+  observer = [(_CNObservableSkipUntilInputObserver *)self observer];
+  v5 = [v3 appendName:@"observer" object:observer];
 
-  v6 = [(_CNObservableSkipUntilInputObserver *)self delegate];
-  v7 = [v3 appendName:@"delegate" object:v6];
+  delegate = [(_CNObservableSkipUntilInputObserver *)self delegate];
+  v7 = [v3 appendName:@"delegate" object:delegate];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
-  v7 = a3;
-  v4 = [(_CNObservableSkipUntilInputObserver *)self delegate];
-  v5 = [v4 shouldMirrorEvents];
+  resultCopy = result;
+  delegate = [(_CNObservableSkipUntilInputObserver *)self delegate];
+  shouldMirrorEvents = [delegate shouldMirrorEvents];
 
-  if (v5)
+  if (shouldMirrorEvents)
   {
-    v6 = [(_CNObservableSkipUntilInputObserver *)self observer];
-    [v6 observerDidReceiveResult:v7];
+    observer = [(_CNObservableSkipUntilInputObserver *)self observer];
+    [observer observerDidReceiveResult:resultCopy];
   }
 }
 
 - (void)observerDidComplete
 {
-  v3 = [(_CNObservableSkipUntilInputObserver *)self delegate];
-  v4 = [v3 shouldMirrorEvents];
+  delegate = [(_CNObservableSkipUntilInputObserver *)self delegate];
+  shouldMirrorEvents = [delegate shouldMirrorEvents];
 
-  if (v4)
+  if (shouldMirrorEvents)
   {
-    v5 = [(_CNObservableSkipUntilInputObserver *)self observer];
-    [v5 observerDidComplete];
+    observer = [(_CNObservableSkipUntilInputObserver *)self observer];
+    [observer observerDidComplete];
   }
 
   else
   {
-    v5 = [(_CNObservableSkipUntilInputObserver *)self delegate];
-    [v5 inputDidTerminate];
+    observer = [(_CNObservableSkipUntilInputObserver *)self delegate];
+    [observer inputDidTerminate];
   }
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(_CNObservableSkipUntilInputObserver *)self delegate];
-  v5 = [v4 shouldMirrorEvents];
+  errorCopy = error;
+  delegate = [(_CNObservableSkipUntilInputObserver *)self delegate];
+  shouldMirrorEvents = [delegate shouldMirrorEvents];
 
-  if (v5)
+  if (shouldMirrorEvents)
   {
-    v6 = [(_CNObservableSkipUntilInputObserver *)self observer];
-    [v6 observerDidFailWithError:v7];
+    observer = [(_CNObservableSkipUntilInputObserver *)self observer];
+    [observer observerDidFailWithError:errorCopy];
   }
 
   else
   {
-    v6 = [(_CNObservableSkipUntilInputObserver *)self delegate];
-    [v6 inputDidTerminate];
+    observer = [(_CNObservableSkipUntilInputObserver *)self delegate];
+    [observer inputDidTerminate];
   }
 }
 

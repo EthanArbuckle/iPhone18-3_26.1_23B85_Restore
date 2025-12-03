@@ -1,5 +1,5 @@
 @interface _ADRapportProximityObservationMutation
-- (_ADRapportProximityObservationMutation)initWithBase:(id)a3;
+- (_ADRapportProximityObservationMutation)initWithBase:(id)base;
 - (id)getDeviceIDPair;
 - (id)getObservationDate;
 - (int)getProximity;
@@ -11,15 +11,15 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_observationDate;
+    observationDate = self->_observationDate;
   }
 
   else
   {
-    v2 = [(ADRapportProximityObservation *)self->_base observationDate];
+    observationDate = [(ADRapportProximityObservation *)self->_base observationDate];
   }
 
-  return v2;
+  return observationDate;
 }
 
 - (int)getProximity
@@ -39,27 +39,27 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_deviceIDPair;
+    deviceIDPair = self->_deviceIDPair;
   }
 
   else
   {
-    v2 = [(ADRapportProximityObservation *)self->_base deviceIDPair];
+    deviceIDPair = [(ADRapportProximityObservation *)self->_base deviceIDPair];
   }
 
-  return v2;
+  return deviceIDPair;
 }
 
-- (_ADRapportProximityObservationMutation)initWithBase:(id)a3
+- (_ADRapportProximityObservationMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADRapportProximityObservationMutation;
   v6 = [(_ADRapportProximityObservationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

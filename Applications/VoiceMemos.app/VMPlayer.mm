@@ -1,5 +1,5 @@
 @interface VMPlayer
-- (BOOL)activateAudioSessionForPlaybackAndReturnError:(id *)a3;
+- (BOOL)activateAudioSessionForPlaybackAndReturnError:(id *)error;
 - (BOOL)playing;
 - (BOOL)processingEnabled;
 - (BOOL)silenceRemoverEnabled;
@@ -7,14 +7,14 @@
 - (_TtP10VoiceMemos16VMPlayerDelegate_)delegate;
 - (float)targetRate;
 - (id)audioEngineOutputNodeAccessQueue;
-- (void)audioPlayerError:(id)a3;
-- (void)audioPlayerIsPlayingChanged:(BOOL)a3;
+- (void)audioPlayerError:(id)error;
+- (void)audioPlayerIsPlayingChanged:(BOOL)changed;
 - (void)pause;
 - (void)play;
-- (void)prepareItem:(id)a3 withCompletionHandler:(id)a4;
-- (void)setProcessingEnabled:(BOOL)a3;
-- (void)setSilenceRemoverEnabled:(BOOL)a3;
-- (void)setTargetRate:(float)a3;
+- (void)prepareItem:(id)item withCompletionHandler:(id)handler;
+- (void)setProcessingEnabled:(BOOL)enabled;
+- (void)setSilenceRemoverEnabled:(BOOL)enabled;
+- (void)setTargetRate:(float)rate;
 @end
 
 @implementation VMPlayer
@@ -34,7 +34,7 @@
 - (BOOL)playing
 {
   v2 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v3 = self;
+  selfCopy = self;
   if (v2)
   {
     sub_100116F94();
@@ -64,7 +64,7 @@
 - (float)targetRate
 {
   v2 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v3 = self;
+  selfCopy = self;
   if (v2)
   {
     sub_100116F94();
@@ -84,10 +84,10 @@
   return v5;
 }
 
-- (void)setTargetRate:(float)a3
+- (void)setTargetRate:(float)rate
 {
   v4 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v6 = self;
+  selfCopy = self;
   if (v4)
   {
     sub_100116F94();
@@ -101,14 +101,14 @@
   }
 
   swift_getObjectType();
-  (v5[10])(a3);
+  (v5[10])(rate);
   swift_unknownObjectRelease();
 }
 
 - (void)play
 {
   v2 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v4 = self;
+  selfCopy = self;
   if (v2)
   {
     sub_100116F94();
@@ -129,7 +129,7 @@
 - (void)pause
 {
   v2 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v4 = self;
+  selfCopy = self;
   if (v2)
   {
     sub_100116F94();
@@ -147,20 +147,20 @@
   swift_unknownObjectRelease();
 }
 
-- (void)prepareItem:(id)a3 withCompletionHandler:(id)a4
+- (void)prepareItem:(id)item withCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
-  v8[2] = a3;
+  v8[2] = item;
   v8[3] = self;
   v8[4] = sub_1000FE07C;
   v8[5] = v7;
-  v9 = a3;
-  v10 = self;
-  v11 = v9;
-  v12 = v10;
+  itemCopy = item;
+  selfCopy = self;
+  v11 = itemCopy;
+  v12 = selfCopy;
 
   sub_100117A38(v11, sub_100119A08, v8);
 }
@@ -168,7 +168,7 @@
 - (BOOL)processingEnabled
 {
   v2 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v3 = self;
+  selfCopy = self;
   if (v2)
   {
     sub_100116F94();
@@ -188,11 +188,11 @@
   return v5 & 1;
 }
 
-- (void)setProcessingEnabled:(BOOL)a3
+- (void)setProcessingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v6 = self;
+  selfCopy = self;
   if (v4)
   {
     sub_100116F94();
@@ -206,14 +206,14 @@
   }
 
   swift_getObjectType();
-  (v5[6])(v3);
+  (v5[6])(enabledCopy);
   swift_unknownObjectRelease();
 }
 
 - (BOOL)silenceRemoverEnabled
 {
   v2 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v3 = self;
+  selfCopy = self;
   if (v2)
   {
     sub_100116F94();
@@ -233,11 +233,11 @@
   return v5 & 1;
 }
 
-- (void)setSilenceRemoverEnabled:(BOOL)a3
+- (void)setSilenceRemoverEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = *(self + OBJC_IVAR____TtC10VoiceMemos8VMPlayer_playerType);
-  v6 = self;
+  selfCopy = self;
   if (v4)
   {
     sub_100116F94();
@@ -251,7 +251,7 @@
   }
 
   swift_getObjectType();
-  (v5[3])(v3);
+  (v5[3])(enabledCopy);
   swift_unknownObjectRelease();
 }
 
@@ -260,34 +260,34 @@
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v3 = [Strong audioEngineOutputNodeAccessQueue];
+    audioEngineOutputNodeAccessQueue = [Strong audioEngineOutputNodeAccessQueue];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v3 = 0;
+    audioEngineOutputNodeAccessQueue = 0;
   }
 
-  return v3;
+  return audioEngineOutputNodeAccessQueue;
 }
 
-- (BOOL)activateAudioSessionForPlaybackAndReturnError:(id *)a3
+- (BOOL)activateAudioSessionForPlaybackAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_1001183C0();
 
   return 1;
 }
 
-- (void)audioPlayerError:(id)a3
+- (void)audioPlayerError:(id)error
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v9 = self;
+    errorCopy = error;
+    selfCopy = self;
     v8 = _convertErrorToNSError(_:)();
     [v6 vmPlayerError:v8];
 
@@ -295,13 +295,13 @@
   }
 }
 
-- (void)audioPlayerIsPlayingChanged:(BOOL)a3
+- (void)audioPlayerIsPlayingChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    [Strong isPlayingDidChange:v3];
+    [Strong isPlayingDidChange:changedCopy];
 
     swift_unknownObjectRelease();
   }

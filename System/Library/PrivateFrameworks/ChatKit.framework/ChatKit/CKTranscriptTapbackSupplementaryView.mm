@@ -1,18 +1,18 @@
 @interface CKTranscriptTapbackSupplementaryView
-- (CKTranscriptTapbackSupplementaryView)initWithFrame:(CGRect)a3;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (CKTranscriptTapbackSupplementaryView)initWithFrame:(CGRect)frame;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBalloonView:(id)a3;
+- (void)setBalloonView:(id)view;
 @end
 
 @implementation CKTranscriptTapbackSupplementaryView
 
-- (CKTranscriptTapbackSupplementaryView)initWithFrame:(CGRect)a3
+- (CKTranscriptTapbackSupplementaryView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = CKTranscriptTapbackSupplementaryView;
-  return [(CKTranscriptTapbackSupplementaryView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(CKTranscriptTapbackSupplementaryView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (void)layoutSubviews
@@ -25,8 +25,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKTranscriptTapbackSupplementaryView *)self balloonView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  balloonView = [(CKTranscriptTapbackSupplementaryView *)self balloonView];
+  [balloonView setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)prepareForReuse
@@ -37,39 +37,39 @@
   [(CKTranscriptTapbackSupplementaryView *)self setBalloonView:0];
 }
 
-- (void)setBalloonView:(id)a3
+- (void)setBalloonView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   balloonView = self->_balloonView;
-  if (balloonView != v5)
+  if (balloonView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(CKAcknowledgmentBalloonView *)balloonView removeFromSuperview];
     CKBalloonViewReuse(self->_balloonView);
-    objc_storeStrong(&self->_balloonView, a3);
+    objc_storeStrong(&self->_balloonView, view);
     [(CKTranscriptTapbackSupplementaryView *)self addSubview:self->_balloonView];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  itemCopy = item;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = CKTranscriptTapbackSupplementaryView;
-  [(CKTranscriptCollectionSupplementaryView *)&v27 configureForChatItem:v12 context:v13 animated:v9 animationDuration:a7 animationCurve:a6];
+  [(CKTranscriptCollectionSupplementaryView *)&v27 configureForChatItem:itemCopy context:contextCopy animated:animatedCopy animationDuration:curve animationCurve:duration];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v12 visibleAssociatedMessageChatItems];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  visibleAssociatedMessageChatItems = [itemCopy visibleAssociatedMessageChatItems];
+  v15 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (!v15)
   {
-    v17 = v14;
+    v17 = visibleAssociatedMessageChatItems;
     goto LABEL_13;
   }
 
@@ -82,7 +82,7 @@
     {
       if (*v24 != v18)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(visibleAssociatedMessageChatItems);
       }
 
       v20 = *(*(&v23 + 1) + 8 * i);
@@ -95,7 +95,7 @@
       }
     }
 
-    v16 = [v14 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v16 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v23 objects:v28 count:16];
   }
 
   while (v16);

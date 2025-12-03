@@ -1,35 +1,35 @@
 @interface _DPDediscoPayload
 - (_DPDediscoPayload)init;
-- (_DPDediscoPayload)initWithCollectionId:(id)a3 algorithm:(id)a4 algorithmParameters:(id)a5 fsEncryptedShare:(id)a6 dsEncryptedShare:(id)a7 fsPublicKey:(id)a8 dsPublicKey:(id)a9 versionHash:(id)a10 report:(id)a11;
+- (_DPDediscoPayload)initWithCollectionId:(id)id algorithm:(id)algorithm algorithmParameters:(id)parameters fsEncryptedShare:(id)share dsEncryptedShare:(id)encryptedShare fsPublicKey:(id)key dsPublicKey:(id)publicKey versionHash:(id)self0 report:(id)self1;
 - (id)getCollectionId;
 - (id)getReport;
-- (id)serializeAndReturnError:(id *)a3;
+- (id)serializeAndReturnError:(id *)error;
 @end
 
 @implementation _DPDediscoPayload
 
-- (_DPDediscoPayload)initWithCollectionId:(id)a3 algorithm:(id)a4 algorithmParameters:(id)a5 fsEncryptedShare:(id)a6 dsEncryptedShare:(id)a7 fsPublicKey:(id)a8 dsPublicKey:(id)a9 versionHash:(id)a10 report:(id)a11
+- (_DPDediscoPayload)initWithCollectionId:(id)id algorithm:(id)algorithm algorithmParameters:(id)parameters fsEncryptedShare:(id)share dsEncryptedShare:(id)encryptedShare fsPublicKey:(id)key dsPublicKey:(id)publicKey versionHash:(id)self0 report:(id)self1
 {
   v54 = sub_100050760();
   v53 = v15;
   v16 = sub_100050760();
   v51 = v17;
   v52 = v16;
-  if (a6)
+  if (share)
   {
-    v18 = a5;
-    v19 = a7;
-    v20 = a8;
-    v21 = a9;
-    v22 = a10;
-    v23 = a11;
-    v24 = a6;
+    parametersCopy = parameters;
+    encryptedShareCopy = encryptedShare;
+    keyCopy = key;
+    publicKeyCopy = publicKey;
+    hashCopy = hash;
+    reportCopy = report;
+    shareCopy = share;
     v25 = sub_100050300();
     v49 = v26;
     v50 = v25;
 
-    v55 = a5;
-    if (a7)
+    parametersCopy4 = parameters;
+    if (encryptedShare)
     {
 LABEL_3:
       v48 = sub_100050300();
@@ -41,16 +41,16 @@ LABEL_3:
 
   else
   {
-    v29 = a5;
-    v30 = a7;
-    v31 = a8;
-    v32 = a9;
-    v33 = a10;
-    v34 = a11;
+    parametersCopy3 = parameters;
+    encryptedShareCopy2 = encryptedShare;
+    keyCopy2 = key;
+    publicKeyCopy2 = publicKey;
+    hashCopy2 = hash;
+    reportCopy2 = report;
     v49 = 0xF000000000000000;
     v50 = 0;
-    v55 = a5;
-    if (a7)
+    parametersCopy4 = parameters;
+    if (encryptedShare)
     {
       goto LABEL_3;
     }
@@ -68,7 +68,7 @@ LABEL_6:
   v41 = sub_100050760();
   v43 = v42;
 
-  if (a11)
+  if (report)
   {
     v44 = sub_100050300();
     v46 = v45;
@@ -80,18 +80,18 @@ LABEL_6:
     v46 = 0xF000000000000000;
   }
 
-  return _DPDediscoPayload.init(collectionId:algorithm:algorithmParameters:fsEncryptedShare:dsEncryptedShare:fsPublicKey:dsPublicKey:versionHash:report:)(v54, v53, v52, v51, v55, v50, v49, v48, v28, v35, v37, v38, v40, v41, v43, v44, v46);
+  return _DPDediscoPayload.init(collectionId:algorithm:algorithmParameters:fsEncryptedShare:dsEncryptedShare:fsPublicKey:dsPublicKey:versionHash:report:)(v54, v53, v52, v51, parametersCopy4, v50, v49, v48, v28, v35, v37, v38, v40, v41, v43, v44, v46);
 }
 
-- (id)serializeAndReturnError:(id *)a3
+- (id)serializeAndReturnError:(id *)error
 {
   v4 = type metadata accessor for DediscoDonation(0);
   v5 = *(*(v4 - 8) + 64);
   __chkstk_darwin(v4);
   v7 = &v14[-((v6 + 15) & 0xFFFFFFFFFFFFFFF0)];
-  v15 = self;
+  selfCopy = self;
   sub_1000326FC(&qword_10007D5E0, type metadata accessor for DediscoDonation);
-  v8 = self;
+  selfCopy2 = self;
   sub_1000504E0();
   v9 = sub_1000504B0();
   v11 = v10;

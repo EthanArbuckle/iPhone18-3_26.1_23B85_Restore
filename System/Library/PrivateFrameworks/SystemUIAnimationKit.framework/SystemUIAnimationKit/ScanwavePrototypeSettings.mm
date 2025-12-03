@@ -1,133 +1,133 @@
 @interface ScanwavePrototypeSettings
 + (id)settingsControllerModule;
-- (void)setCircleMaskFinalRadialMask:(id)a3;
-- (void)setCircleMaskInitialRadialMask:(id)a3;
-- (void)setCircleMaskIntensityAnimationSettings:(id)a3;
-- (void)setCircleMaskPositionAnimationSettings:(id)a3;
-- (void)setCircleMaskScaleAnimationSettings:(id)a3;
+- (void)setCircleMaskFinalRadialMask:(id)mask;
+- (void)setCircleMaskInitialRadialMask:(id)mask;
+- (void)setCircleMaskIntensityAnimationSettings:(id)settings;
+- (void)setCircleMaskPositionAnimationSettings:(id)settings;
+- (void)setCircleMaskScaleAnimationSettings:(id)settings;
 - (void)setDefaultValues;
-- (void)setDepthDistanceFieldOffsetAnimationSettings:(id)a3;
-- (void)setInverseBlurRadiusIntroAnimationSettings:(id)a3;
-- (void)setInverseBlurRadiusOutroAnimationSettings:(id)a3;
-- (void)setMeshTransformMeshIntroAnimationSettings:(id)a3;
-- (void)setMeshTransformMeshOutroAnimationSettings:(id)a3;
-- (void)setMeshTransformPositionAnimationSettings:(id)a3;
-- (void)setSourceImageColorBrightnessIntroAnimationSettings:(id)a3;
-- (void)setSourceImageColorBrightnessOutroAnimationSettings:(id)a3;
-- (void)setSourceImageScaleIntroAnimationSettings:(id)a3;
-- (void)setSourceImageScaleOutroAnimationSettings:(id)a3;
+- (void)setDepthDistanceFieldOffsetAnimationSettings:(id)settings;
+- (void)setInverseBlurRadiusIntroAnimationSettings:(id)settings;
+- (void)setInverseBlurRadiusOutroAnimationSettings:(id)settings;
+- (void)setMeshTransformMeshIntroAnimationSettings:(id)settings;
+- (void)setMeshTransformMeshOutroAnimationSettings:(id)settings;
+- (void)setMeshTransformPositionAnimationSettings:(id)settings;
+- (void)setSourceImageColorBrightnessIntroAnimationSettings:(id)settings;
+- (void)setSourceImageColorBrightnessOutroAnimationSettings:(id)settings;
+- (void)setSourceImageScaleIntroAnimationSettings:(id)settings;
+- (void)setSourceImageScaleOutroAnimationSettings:(id)settings;
 @end
 
 @implementation ScanwavePrototypeSettings
 
-- (void)setCircleMaskInitialRadialMask:(id)a3
+- (void)setCircleMaskInitialRadialMask:(id)mask
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskInitialRadialMask);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskInitialRadialMask) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskInitialRadialMask) = mask;
+  maskCopy = mask;
 }
 
-- (void)setCircleMaskFinalRadialMask:(id)a3
+- (void)setCircleMaskFinalRadialMask:(id)mask
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskFinalRadialMask);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskFinalRadialMask) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskFinalRadialMask) = mask;
+  maskCopy = mask;
 }
 
-- (void)setCircleMaskPositionAnimationSettings:(id)a3
+- (void)setCircleMaskPositionAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskPositionAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskPositionAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskPositionAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setCircleMaskScaleAnimationSettings:(id)a3
+- (void)setCircleMaskScaleAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskScaleAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskScaleAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskScaleAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setCircleMaskIntensityAnimationSettings:(id)a3
+- (void)setCircleMaskIntensityAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskIntensityAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskIntensityAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_circleMaskIntensityAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setSourceImageScaleIntroAnimationSettings:(id)a3
+- (void)setSourceImageScaleIntroAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageScaleIntroAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageScaleIntroAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageScaleIntroAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setSourceImageScaleOutroAnimationSettings:(id)a3
+- (void)setSourceImageScaleOutroAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageScaleOutroAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageScaleOutroAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageScaleOutroAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setSourceImageColorBrightnessIntroAnimationSettings:(id)a3
+- (void)setSourceImageColorBrightnessIntroAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageColorBrightnessIntroAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageColorBrightnessIntroAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageColorBrightnessIntroAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setSourceImageColorBrightnessOutroAnimationSettings:(id)a3
+- (void)setSourceImageColorBrightnessOutroAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageColorBrightnessOutroAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageColorBrightnessOutroAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_sourceImageColorBrightnessOutroAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setDepthDistanceFieldOffsetAnimationSettings:(id)a3
+- (void)setDepthDistanceFieldOffsetAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_depthDistanceFieldOffsetAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_depthDistanceFieldOffsetAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_depthDistanceFieldOffsetAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setInverseBlurRadiusIntroAnimationSettings:(id)a3
+- (void)setInverseBlurRadiusIntroAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_inverseBlurRadiusIntroAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_inverseBlurRadiusIntroAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_inverseBlurRadiusIntroAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setInverseBlurRadiusOutroAnimationSettings:(id)a3
+- (void)setInverseBlurRadiusOutroAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_inverseBlurRadiusOutroAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_inverseBlurRadiusOutroAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_inverseBlurRadiusOutroAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setMeshTransformMeshIntroAnimationSettings:(id)a3
+- (void)setMeshTransformMeshIntroAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformMeshIntroAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformMeshIntroAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformMeshIntroAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setMeshTransformMeshOutroAnimationSettings:(id)a3
+- (void)setMeshTransformMeshOutroAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformMeshOutroAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformMeshOutroAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformMeshOutroAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
-- (void)setMeshTransformPositionAnimationSettings:(id)a3
+- (void)setMeshTransformPositionAnimationSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformPositionAnimationSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformPositionAnimationSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC20SystemUIAnimationKit25ScanwavePrototypeSettings_meshTransformPositionAnimationSettings) = settings;
+  settingsCopy = settings;
 }
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_26C5E7D6C();
 }
 

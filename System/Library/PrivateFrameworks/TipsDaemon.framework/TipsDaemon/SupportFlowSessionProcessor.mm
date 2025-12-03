@@ -7,7 +7,7 @@
 
 - (void)processAnalytics
 {
-  v2 = self;
+  selfCopy = self;
   SupportFlowSessionProcessor.processAnalytics()();
 }
 

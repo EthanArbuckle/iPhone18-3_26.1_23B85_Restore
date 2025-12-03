@@ -1,20 +1,20 @@
 @interface AWDPowerBBCallMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMetrics:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addMetrics:(id)metrics;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBBAndDataPowerMicroWatt:(BOOL)a3;
-- (void)setHasBBPowerMicroWatt:(BOOL)a3;
-- (void)setHasBBTotalAndDataDuration:(BOOL)a3;
-- (void)setHasBBTotalCallDuration:(BOOL)a3;
-- (void)setHasConnectedSleepDuration:(BOOL)a3;
-- (void)setHasConnectedSleepDurationData:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasBBAndDataPowerMicroWatt:(BOOL)watt;
+- (void)setHasBBPowerMicroWatt:(BOOL)watt;
+- (void)setHasBBTotalAndDataDuration:(BOOL)duration;
+- (void)setHasBBTotalCallDuration:(BOOL)duration;
+- (void)setHasConnectedSleepDuration:(BOOL)duration;
+- (void)setHasConnectedSleepDurationData:(BOOL)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerBBCallMetrics
@@ -27,7 +27,7 @@
   [(AWDPowerBBCallMetrics *)&v3 dealloc];
 }
 
-- (void)addMetrics:(id)a3
+- (void)addMetrics:(id)metrics
 {
   metrics = self->_metrics;
   if (!metrics)
@@ -36,12 +36,12 @@
     self->_metrics = metrics;
   }
 
-  [(NSMutableArray *)metrics addObject:a3];
+  [(NSMutableArray *)metrics addObject:metrics];
 }
 
-- (void)setHasBBTotalCallDuration:(BOOL)a3
+- (void)setHasBBTotalCallDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 16;
   }
@@ -54,9 +54,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasBBPowerMicroWatt:(BOOL)a3
+- (void)setHasBBPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 4;
   }
@@ -69,9 +69,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasBBTotalAndDataDuration:(BOOL)a3
+- (void)setHasBBTotalAndDataDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -84,9 +84,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasBBAndDataPowerMicroWatt:(BOOL)a3
+- (void)setHasBBAndDataPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 2;
   }
@@ -99,9 +99,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasConnectedSleepDuration:(BOOL)a3
+- (void)setHasConnectedSleepDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 32;
   }
@@ -114,9 +114,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasConnectedSleepDurationData:(BOOL)a3
+- (void)setHasConnectedSleepDurationData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 64;
   }
@@ -139,10 +139,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   if ([(NSMutableArray *)self->_metrics count])
@@ -176,13 +176,13 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"metrics"];
+    [dictionary setObject:v4 forKey:@"metrics"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bBTotalCallDuration), @"BBTotalCallDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bBTotalCallDuration), @"BBTotalCallDuration"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -201,7 +201,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bBPowerMicroWatt), @"BBPowerMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bBPowerMicroWatt), @"BBPowerMicroWatt"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -215,7 +215,7 @@ LABEL_15:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bBTotalAndDataDuration), @"BBTotalAndDataDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bBTotalAndDataDuration), @"BBTotalAndDataDuration"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -226,7 +226,7 @@ LABEL_16:
     }
 
 LABEL_24:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectedSleepDuration), @"connectedSleepDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectedSleepDuration), @"connectedSleepDuration"}];
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_19;
@@ -236,7 +236,7 @@ LABEL_24:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bBAndDataPowerMicroWatt), @"BBAndDataPowerMicroWatt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bBAndDataPowerMicroWatt), @"BBAndDataPowerMicroWatt"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -247,15 +247,15 @@ LABEL_17:
   if ((has & 0x40) != 0)
   {
 LABEL_18:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectedSleepDurationData), @"connectedSleepDurationData"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_connectedSleepDurationData), @"connectedSleepDurationData"}];
   }
 
 LABEL_19:
   v11 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x29EDCA608];
   has = self->_has;
@@ -383,13 +383,13 @@ LABEL_9:
   v12 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 48) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 48) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -408,8 +408,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 7) = self->_bBTotalCallDuration;
-  *(a3 + 48) |= 0x10u;
+  *(to + 7) = self->_bBTotalCallDuration;
+  *(to + 48) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -423,8 +423,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  *(a3 + 5) = self->_bBPowerMicroWatt;
-  *(a3 + 48) |= 4u;
+  *(to + 5) = self->_bBPowerMicroWatt;
+  *(to + 48) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -438,8 +438,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  *(a3 + 6) = self->_bBTotalAndDataDuration;
-  *(a3 + 48) |= 8u;
+  *(to + 6) = self->_bBTotalAndDataDuration;
+  *(to + 48) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -450,8 +450,8 @@ LABEL_6:
     }
 
 LABEL_19:
-    *(a3 + 8) = self->_connectedSleepDuration;
-    *(a3 + 48) |= 0x20u;
+    *(to + 8) = self->_connectedSleepDuration;
+    *(to + 48) |= 0x20u;
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_9;
@@ -461,8 +461,8 @@ LABEL_19:
   }
 
 LABEL_18:
-  *(a3 + 4) = self->_bBAndDataPowerMicroWatt;
-  *(a3 + 48) |= 2u;
+  *(to + 4) = self->_bBAndDataPowerMicroWatt;
+  *(to + 48) |= 2u;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -473,30 +473,30 @@ LABEL_7:
   if ((has & 0x40) != 0)
   {
 LABEL_8:
-    *(a3 + 9) = self->_connectedSleepDurationData;
-    *(a3 + 48) |= 0x40u;
+    *(to + 9) = self->_connectedSleepDurationData;
+    *(to + 48) |= 0x40u;
   }
 
 LABEL_9:
   if ([(AWDPowerBBCallMetrics *)self metricsCount])
   {
-    [a3 clearMetrics];
-    v6 = [(AWDPowerBBCallMetrics *)self metricsCount];
-    if (v6)
+    [to clearMetrics];
+    metricsCount = [(AWDPowerBBCallMetrics *)self metricsCount];
+    if (metricsCount)
     {
-      v7 = v6;
+      v7 = metricsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addMetrics:{-[AWDPowerBBCallMetrics metricsAtIndex:](self, "metricsAtIndex:", i)}];
+        [to addMetrics:{-[AWDPowerBBCallMetrics metricsAtIndex:](self, "metricsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -610,7 +610,7 @@ LABEL_9:
           objc_enumerationMutation(metrics);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v16 + 1) + 8 * i) copyWithZone:zone];
         [v6 addMetrics:v13];
       }
 
@@ -624,21 +624,21 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 48);
+    v6 = *(equal + 48);
     if (*&self->_has)
     {
-      if ((*(a3 + 48) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 48) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(a3 + 48))
+    else if (*(equal + 48))
     {
 LABEL_39:
       LOBYTE(v5) = 0;
@@ -647,84 +647,84 @@ LABEL_39:
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 48) & 0x10) == 0 || self->_bBTotalCallDuration != *(a3 + 7))
+      if ((*(equal + 48) & 0x10) == 0 || self->_bBTotalCallDuration != *(equal + 7))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 0x10) != 0)
+    else if ((*(equal + 48) & 0x10) != 0)
     {
       goto LABEL_39;
     }
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 48) & 4) == 0 || self->_bBPowerMicroWatt != *(a3 + 5))
+      if ((*(equal + 48) & 4) == 0 || self->_bBPowerMicroWatt != *(equal + 5))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 4) != 0)
+    else if ((*(equal + 48) & 4) != 0)
     {
       goto LABEL_39;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 48) & 8) == 0 || self->_bBTotalAndDataDuration != *(a3 + 6))
+      if ((*(equal + 48) & 8) == 0 || self->_bBTotalAndDataDuration != *(equal + 6))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 8) != 0)
+    else if ((*(equal + 48) & 8) != 0)
     {
       goto LABEL_39;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 48) & 2) == 0 || self->_bBAndDataPowerMicroWatt != *(a3 + 4))
+      if ((*(equal + 48) & 2) == 0 || self->_bBAndDataPowerMicroWatt != *(equal + 4))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 2) != 0)
+    else if ((*(equal + 48) & 2) != 0)
     {
       goto LABEL_39;
     }
 
     if ((*&self->_has & 0x20) != 0)
     {
-      if ((*(a3 + 48) & 0x20) == 0 || self->_connectedSleepDuration != *(a3 + 8))
+      if ((*(equal + 48) & 0x20) == 0 || self->_connectedSleepDuration != *(equal + 8))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 0x20) != 0)
+    else if ((*(equal + 48) & 0x20) != 0)
     {
       goto LABEL_39;
     }
 
     if ((*&self->_has & 0x40) != 0)
     {
-      if ((*(a3 + 48) & 0x40) == 0 || self->_connectedSleepDurationData != *(a3 + 9))
+      if ((*(equal + 48) & 0x40) == 0 || self->_connectedSleepDurationData != *(equal + 9))
       {
         goto LABEL_39;
       }
     }
 
-    else if ((*(a3 + 48) & 0x40) != 0)
+    else if ((*(equal + 48) & 0x40) != 0)
     {
       goto LABEL_39;
     }
 
     metrics = self->_metrics;
-    if (metrics | *(a3 + 5))
+    if (metrics | *(equal + 5))
     {
 
       LOBYTE(v5) = [(NSMutableArray *)metrics isEqual:?];
@@ -835,15 +835,15 @@ LABEL_8:
   return v7 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ [(NSMutableArray *)self->_metrics hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x29EDCA608];
-  v4 = *(a3 + 48);
+  v4 = *(from + 48);
   if (v4)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v4 = *(a3 + 48);
+    v4 = *(from + 48);
     if ((v4 & 0x10) == 0)
     {
 LABEL_3:
@@ -856,14 +856,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 48) & 0x10) == 0)
+  else if ((*(from + 48) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_bBTotalCallDuration = *(a3 + 7);
+  self->_bBTotalCallDuration = *(from + 7);
   *&self->_has |= 0x10u;
-  v4 = *(a3 + 48);
+  v4 = *(from + 48);
   if ((v4 & 4) == 0)
   {
 LABEL_4:
@@ -876,9 +876,9 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_bBPowerMicroWatt = *(a3 + 5);
+  self->_bBPowerMicroWatt = *(from + 5);
   *&self->_has |= 4u;
-  v4 = *(a3 + 48);
+  v4 = *(from + 48);
   if ((v4 & 8) == 0)
   {
 LABEL_5:
@@ -891,9 +891,9 @@ LABEL_5:
   }
 
 LABEL_20:
-  self->_bBTotalAndDataDuration = *(a3 + 6);
+  self->_bBTotalAndDataDuration = *(from + 6);
   *&self->_has |= 8u;
-  v4 = *(a3 + 48);
+  v4 = *(from + 48);
   if ((v4 & 2) == 0)
   {
 LABEL_6:
@@ -906,9 +906,9 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_bBAndDataPowerMicroWatt = *(a3 + 4);
+  self->_bBAndDataPowerMicroWatt = *(from + 4);
   *&self->_has |= 2u;
-  v4 = *(a3 + 48);
+  v4 = *(from + 48);
   if ((v4 & 0x20) == 0)
   {
 LABEL_7:
@@ -921,12 +921,12 @@ LABEL_7:
   }
 
 LABEL_22:
-  self->_connectedSleepDuration = *(a3 + 8);
+  self->_connectedSleepDuration = *(from + 8);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 48) & 0x40) != 0)
+  if ((*(from + 48) & 0x40) != 0)
   {
 LABEL_8:
-    self->_connectedSleepDurationData = *(a3 + 9);
+    self->_connectedSleepDurationData = *(from + 9);
     *&self->_has |= 0x40u;
   }
 
@@ -935,7 +935,7 @@ LABEL_9:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(a3 + 5);
+  v5 = *(from + 5);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

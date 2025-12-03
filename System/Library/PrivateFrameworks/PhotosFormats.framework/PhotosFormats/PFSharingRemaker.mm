@@ -1,29 +1,29 @@
 @interface PFSharingRemaker
-+ (id)remakerWithOperations:(id)a3 options:(id)a4;
++ (id)remakerWithOperations:(id)operations options:(id)options;
 - (PFSharingRemaker)init;
 - (double)_computeProgress;
-- (void)_abortWithUnderlyingOperationError:(id)a3;
-- (void)_callProgressBlockWithProgress:(double)a3;
-- (void)_completeOperationWithUUID:(id)a3;
-- (void)_configurePhotoOperation:(id)a3 withUUID:(id)a4 dispatchGroup:(id)a5;
-- (void)_configureVideoOperation:(id)a3 withUUID:(id)a4 dispatchGroup:(id)a5;
-- (void)_endSessionWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_abortWithUnderlyingOperationError:(id)error;
+- (void)_callProgressBlockWithProgress:(double)progress;
+- (void)_completeOperationWithUUID:(id)d;
+- (void)_configurePhotoOperation:(id)operation withUUID:(id)d dispatchGroup:(id)group;
+- (void)_configureVideoOperation:(id)operation withUUID:(id)d dispatchGroup:(id)group;
+- (void)_endSessionWithSuccess:(BOOL)success error:(id)error;
 - (void)_updateProgress;
 - (void)cancelRemaking;
-- (void)remakeWithProgressHandler:(id)a3 completionHandler:(id)a4;
+- (void)remakeWithProgressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation PFSharingRemaker
 
-- (void)_abortWithUnderlyingOperationError:(id)a3
+- (void)_abortWithUnderlyingOperationError:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (!self->_abortedRemaker)
   {
     *&self->_remakerSuccess = 256;
     v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-    [v5 setObject:v4 forKeyedSubscript:*MEMORY[0x1E696AA08]];
+    [v5 setObject:errorCopy forKeyedSubscript:*MEMORY[0x1E696AA08]];
     [v5 setObject:@"Underlying operation encountered an error" forKeyedSubscript:*MEMORY[0x1E696A578]];
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFSharingRemakerErrorDomain" code:2 userInfo:v5];
     remakerError = self->_remakerError;
@@ -32,7 +32,7 @@
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = errorCopy;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PFSharingRemaker] Aborted with underlying operation error: %{public}@", &v8, 0xCu);
     }
 
@@ -40,17 +40,17 @@
   }
 }
 
-- (void)_completeOperationWithUUID:(id)a3
+- (void)_completeOperationWithUUID:(id)d
 {
-  v10 = [(NSMutableDictionary *)self->_inProgressOperationByUUID objectForKey:a3];
-  v4 = [v10 _videoOperation];
-  v5 = [v10 _imageOperation];
-  if (v4 && [v4 isFinished] && (objc_msgSend(v4, "success") & 1) == 0 && !objc_msgSend(v4, "isCancelled"))
+  v10 = [(NSMutableDictionary *)self->_inProgressOperationByUUID objectForKey:d];
+  _videoOperation = [v10 _videoOperation];
+  _imageOperation = [v10 _imageOperation];
+  if (_videoOperation && [_videoOperation isFinished] && (objc_msgSend(_videoOperation, "success") & 1) == 0 && !objc_msgSend(_videoOperation, "isCancelled"))
   {
-    v9 = [v4 operationError];
-    [(PFSharingRemaker *)self _abortWithUnderlyingOperationError:v9];
+    operationError = [_videoOperation operationError];
+    [(PFSharingRemaker *)self _abortWithUnderlyingOperationError:operationError];
 
-    if (!v5)
+    if (!_imageOperation)
     {
       goto LABEL_22;
     }
@@ -60,7 +60,7 @@
 
   else
   {
-    if (!v5)
+    if (!_imageOperation)
     {
       goto LABEL_14;
     }
@@ -68,10 +68,10 @@
     v6 = 0;
   }
 
-  if ([v5 isFinished] && (objc_msgSend(v5, "success") & 1) == 0 && (objc_msgSend(v5, "isCancelled") & 1) == 0)
+  if ([_imageOperation isFinished] && (objc_msgSend(_imageOperation, "success") & 1) == 0 && (objc_msgSend(_imageOperation, "isCancelled") & 1) == 0)
   {
-    v8 = [v5 operationError];
-    [(PFSharingRemaker *)self _abortWithUnderlyingOperationError:v8];
+    operationError2 = [_imageOperation operationError];
+    [(PFSharingRemaker *)self _abortWithUnderlyingOperationError:operationError2];
     goto LABEL_21;
   }
 
@@ -80,70 +80,70 @@
     goto LABEL_22;
   }
 
-  if ([v5 isFinished] && objc_msgSend(v5, "success"))
+  if ([_imageOperation isFinished] && objc_msgSend(_imageOperation, "success"))
   {
-    v7 = [v5 resultingFileURL];
-    [v10 _setImageOutputURL:v7];
+    resultingFileURL = [_imageOperation resultingFileURL];
+    [v10 _setImageOutputURL:resultingFileURL];
   }
 
 LABEL_14:
-  if (v4 && [v4 isFinished] && objc_msgSend(v4, "success"))
+  if (_videoOperation && [_videoOperation isFinished] && objc_msgSend(_videoOperation, "success"))
   {
-    v8 = [v4 resultingFileURL];
-    [v10 _setVideoOutputURL:v8];
+    operationError2 = [_videoOperation resultingFileURL];
+    [v10 _setVideoOutputURL:operationError2];
 LABEL_21:
   }
 
 LABEL_22:
 }
 
-- (void)_configurePhotoOperation:(id)a3 withUUID:(id)a4 dispatchGroup:(id)a5
+- (void)_configurePhotoOperation:(id)operation withUUID:(id)d dispatchGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v31 = a5;
-  v10 = [(PFSharingRemaker *)self _options];
-  v30 = [v10 shouldStripAllMetadata];
-  v29 = [v10 shouldStripLocation];
-  v28 = [v10 shouldStripCaption];
-  v11 = [v10 shouldStripAccessibilityDescription];
-  v12 = [v10 shouldConvertToSRGB];
-  v13 = [v10 outputDirectoryURL];
-  v14 = [v8 imageURL];
-  v15 = [v14 absoluteString];
-  v16 = [v15 pathExtension];
+  operationCopy = operation;
+  dCopy = d;
+  groupCopy = group;
+  _options = [(PFSharingRemaker *)self _options];
+  shouldStripAllMetadata = [_options shouldStripAllMetadata];
+  shouldStripLocation = [_options shouldStripLocation];
+  shouldStripCaption = [_options shouldStripCaption];
+  shouldStripAccessibilityDescription = [_options shouldStripAccessibilityDescription];
+  shouldConvertToSRGB = [_options shouldConvertToSRGB];
+  outputDirectoryURL = [_options outputDirectoryURL];
+  imageURL = [operationCopy imageURL];
+  absoluteString = [imageURL absoluteString];
+  pathExtension = [absoluteString pathExtension];
 
-  v17 = [v10 outputFilename];
-  v18 = v17;
-  v26 = v16;
-  v27 = v9;
-  if (v17)
+  outputFilename = [_options outputFilename];
+  v18 = outputFilename;
+  v26 = pathExtension;
+  v27 = dCopy;
+  if (outputFilename)
   {
-    v19 = v17;
+    v19 = outputFilename;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v9, v16];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", dCopy, pathExtension];
   }
 
   v32 = v19;
 
-  v20 = [v10 customLocation];
-  v21 = [v10 customDate];
-  v22 = [v10 customCaption];
-  v23 = [v10 customAccessibilityLabel];
-  [v8 setShouldStripMetadata:v30];
-  [v8 setShouldStripLocation:v29];
-  [v8 setShouldStripCaption:v28];
-  [v8 setShouldStripAccessibilityDescription:v11];
-  [v8 setShouldConvertToSRGB:v12];
-  [v8 setOutputDirectoryURL:v13];
-  [v8 setOutputFilename:v32];
-  [v8 setCustomLocation:v20];
-  [v8 setCustomDate:v21];
-  [v8 setCustomCaption:v22];
-  [v8 setCustomAccessibilityLabel:v23];
+  customLocation = [_options customLocation];
+  customDate = [_options customDate];
+  customCaption = [_options customCaption];
+  customAccessibilityLabel = [_options customAccessibilityLabel];
+  [operationCopy setShouldStripMetadata:shouldStripAllMetadata];
+  [operationCopy setShouldStripLocation:shouldStripLocation];
+  [operationCopy setShouldStripCaption:shouldStripCaption];
+  [operationCopy setShouldStripAccessibilityDescription:shouldStripAccessibilityDescription];
+  [operationCopy setShouldConvertToSRGB:shouldConvertToSRGB];
+  [operationCopy setOutputDirectoryURL:outputDirectoryURL];
+  [operationCopy setOutputFilename:v32];
+  [operationCopy setCustomLocation:customLocation];
+  [operationCopy setCustomDate:customDate];
+  [operationCopy setCustomCaption:customCaption];
+  [operationCopy setCustomAccessibilityLabel:customAccessibilityLabel];
   objc_initWeak(&location, self);
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
@@ -153,9 +153,9 @@ LABEL_22:
   objc_copyWeak(&v36, &location);
   v24 = v27;
   v34 = v24;
-  v25 = v31;
+  v25 = groupCopy;
   v35 = v25;
-  [v8 setCompletionBlock:v33];
+  [operationCopy setCompletionBlock:v33];
 
   objc_destroyWeak(&v36);
   objc_destroyWeak(&location);
@@ -186,55 +186,55 @@ void __68__PFSharingRemaker__configurePhotoOperation_withUUID_dispatchGroup___bl
   dispatch_group_leave(v3);
 }
 
-- (void)_configureVideoOperation:(id)a3 withUUID:(id)a4 dispatchGroup:(id)a5
+- (void)_configureVideoOperation:(id)operation withUUID:(id)d dispatchGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
+  operationCopy = operation;
+  dCopy = d;
   val = self;
-  v34 = a5;
-  v10 = [(PFSharingRemaker *)self _options];
-  v30 = [v10 shouldStripAllMetadata];
-  v29 = [v10 shouldStripLocation];
-  v27 = [v10 shouldStripCaption];
-  v26 = [v10 shouldStripAccessibilityDescription];
-  v11 = [v10 outputDirectoryURL];
-  v12 = [v10 outputFilename];
-  v13 = v12;
-  v32 = v9;
-  if (v12)
+  groupCopy = group;
+  _options = [(PFSharingRemaker *)self _options];
+  shouldStripAllMetadata = [_options shouldStripAllMetadata];
+  shouldStripLocation = [_options shouldStripLocation];
+  shouldStripCaption = [_options shouldStripCaption];
+  shouldStripAccessibilityDescription = [_options shouldStripAccessibilityDescription];
+  outputDirectoryURL = [_options outputDirectoryURL];
+  outputFilename = [_options outputFilename];
+  v13 = outputFilename;
+  v32 = dCopy;
+  if (outputFilename)
   {
-    v14 = v12;
+    dCopy = outputFilename;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.mov", v9];
+    dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.mov", dCopy];
   }
 
-  v15 = v14;
+  v15 = dCopy;
 
-  v16 = [v10 customLocation];
-  v17 = [v10 customDate];
-  v18 = [v10 customCaption];
-  v19 = [v10 customAccessibilityLabel];
-  v20 = [v10 exportPreset];
-  v21 = [v10 exportFileType];
-  [v8 setShouldStripMetadata:v30];
-  [v8 setShouldStripLocation:v29];
-  [v8 setShouldStripCaption:v27];
-  [v8 setShouldStripAccessibilityDescription:v26];
-  [v8 setOutputDirectoryURL:v11];
-  [v8 setOutputFilename:v15];
-  [v8 setCustomLocation:v16];
-  v31 = v17;
-  [v8 setCustomDate:v17];
-  [v8 setCustomCaption:v18];
-  v28 = v19;
-  v22 = v19;
-  v23 = v20;
-  [v8 setCustomAccessibilityLabel:v22];
-  [v8 setExportPreset:v20];
-  [v8 setExportFileType:v21];
+  customLocation = [_options customLocation];
+  customDate = [_options customDate];
+  customCaption = [_options customCaption];
+  customAccessibilityLabel = [_options customAccessibilityLabel];
+  exportPreset = [_options exportPreset];
+  exportFileType = [_options exportFileType];
+  [operationCopy setShouldStripMetadata:shouldStripAllMetadata];
+  [operationCopy setShouldStripLocation:shouldStripLocation];
+  [operationCopy setShouldStripCaption:shouldStripCaption];
+  [operationCopy setShouldStripAccessibilityDescription:shouldStripAccessibilityDescription];
+  [operationCopy setOutputDirectoryURL:outputDirectoryURL];
+  [operationCopy setOutputFilename:v15];
+  [operationCopy setCustomLocation:customLocation];
+  v31 = customDate;
+  [operationCopy setCustomDate:customDate];
+  [operationCopy setCustomCaption:customCaption];
+  v28 = customAccessibilityLabel;
+  v22 = customAccessibilityLabel;
+  v23 = exportPreset;
+  [operationCopy setCustomAccessibilityLabel:v22];
+  [operationCopy setExportPreset:exportPreset];
+  [operationCopy setExportFileType:exportFileType];
   objc_initWeak(&location, val);
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -244,9 +244,9 @@ void __68__PFSharingRemaker__configurePhotoOperation_withUUID_dispatchGroup___bl
   objc_copyWeak(&v38, &location);
   v24 = v32;
   v36 = v24;
-  v25 = v34;
+  v25 = groupCopy;
   v37 = v25;
-  [v8 setCompletionBlock:v35];
+  [operationCopy setCompletionBlock:v35];
 
   objc_destroyWeak(&v38);
   objc_destroyWeak(&location);
@@ -277,12 +277,12 @@ void __68__PFSharingRemaker__configureVideoOperation_withUUID_dispatchGroup___bl
   dispatch_group_leave(v3);
 }
 
-- (void)_endSessionWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_endSessionWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
+  successCopy = success;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PFSharingRemaker *)self _completionHandler];
+  errorCopy = error;
+  _completionHandler = [(PFSharingRemaker *)self _completionHandler];
   [(PFSharingRemaker *)self _setCompletionHandler:0];
   [(PFSharingRemaker *)self _setProgressHandler:0];
   dispatch_source_cancel(self->_progressTimer);
@@ -293,7 +293,7 @@ void __68__PFSharingRemaker__configureVideoOperation_withUUID_dispatchGroup___bl
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v9 = @"NO";
-    if (v4)
+    if (successCopy)
     {
       v9 = @"YES";
     }
@@ -301,13 +301,13 @@ void __68__PFSharingRemaker__configureVideoOperation_withUUID_dispatchGroup___bl
     v10 = 138412546;
     v11 = v9;
     v12 = 2114;
-    v13 = v6;
+    v13 = errorCopy;
     _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFSharingRemaker] Ended session with success %@, error: %{public}@", &v10, 0x16u);
   }
 
-  if (v7)
+  if (_completionHandler)
   {
-    (v7)[2](v7, v4, v6);
+    (_completionHandler)[2](_completionHandler, successCopy, errorCopy);
   }
 }
 
@@ -355,14 +355,14 @@ void __34__PFSharingRemaker_cancelRemaking__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_callProgressBlockWithProgress:(double)a3
+- (void)_callProgressBlockWithProgress:(double)progress
 {
-  v4 = [(PFSharingRemaker *)self _progressHandler];
-  if (v4)
+  _progressHandler = [(PFSharingRemaker *)self _progressHandler];
+  if (_progressHandler)
   {
-    v5 = v4;
-    v4[2](a3);
-    v4 = v5;
+    v5 = _progressHandler;
+    _progressHandler[2](progress);
+    _progressHandler = v5;
   }
 }
 
@@ -443,20 +443,20 @@ void __35__PFSharingRemaker__updateProgress__block_invoke(uint64_t a1)
   [WeakRetained _updateProgress];
 }
 
-- (void)remakeWithProgressHandler:(id)a3 completionHandler:(id)a4
+- (void)remakeWithProgressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   remakerQueue = self->_remakerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__PFSharingRemaker_remakeWithProgressHandler_completionHandler___block_invoke;
   block[3] = &unk_1E7B654A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = handlerCopy;
+  v13 = completionHandlerCopy;
+  v9 = completionHandlerCopy;
+  v10 = handlerCopy;
   dispatch_async(remakerQueue, block);
 }
 
@@ -667,23 +667,23 @@ void __64__PFSharingRemaker_remakeWithProgressHandler_completionHandler___block_
   return v2;
 }
 
-+ (id)remakerWithOperations:(id)a3 options:(id)a4
++ (id)remakerWithOperations:(id)operations options:(id)options
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = objc_alloc_init(a1);
+  operationsCopy = operations;
+  optionsCopy = options;
+  v8 = objc_alloc_init(self);
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = operationsCopy;
     _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFSharingRemaker] initialized with remake operations: %@", &v11, 0xCu);
   }
 
-  v9 = [v7 copy];
+  v9 = [optionsCopy copy];
 
   [v8 _setOptions:v9];
-  [v8 _setOperations:v6];
+  [v8 _setOperations:operationsCopy];
 
   return v8;
 }

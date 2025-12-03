@@ -2,7 +2,7 @@
 - (CGSize)resolution;
 - (CGSize)resolutionInPixels;
 - (PXStoryExportVideoOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXStoryExportVideoOptions
@@ -23,7 +23,7 @@
   PXSizeScale();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   *(v4 + 5) = self->_frameRate;

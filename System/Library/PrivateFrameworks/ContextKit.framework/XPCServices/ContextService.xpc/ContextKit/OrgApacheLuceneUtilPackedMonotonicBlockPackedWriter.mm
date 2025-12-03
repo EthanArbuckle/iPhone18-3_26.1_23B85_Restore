@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneUtilPackedMonotonicBlockPackedWriter
-- (void)addWithLong:(int64_t)a3;
+- (void)addWithLong:(int64_t)long;
 - (void)flush;
 @end
 
 @implementation OrgApacheLuceneUtilPackedMonotonicBlockPackedWriter
 
-- (void)addWithLong:(int64_t)a3
+- (void)addWithLong:(int64_t)long
 {
   v3.receiver = self;
   v3.super_class = OrgApacheLuceneUtilPackedMonotonicBlockPackedWriter;
-  [(OrgApacheLuceneUtilPackedAbstractBlockPackedWriter *)&v3 addWithLong:a3];
+  [(OrgApacheLuceneUtilPackedAbstractBlockPackedWriter *)&v3 addWithLong:long];
 }
 
 - (void)flush

@@ -8,10 +8,10 @@
 - (BOOL)_accessibilityHasNativeFocus
 {
   v16 = *MEMORY[0x29EDCA608];
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x29EDC9748](v13->_associatedViews);
+  obj = MEMORY[0x29EDC9748](selfCopy->_associatedViews);
   v8 = [obj countByEnumeratingWithState:__b objects:v15 count:16];
   if (v8)
   {
@@ -65,10 +65,10 @@ LABEL_9:
 
 - (BOOL)accessibilityActivate
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = UIAccessibilityBackButtonElement;
   return [(UIAccessibilityBackButtonElement *)&v3 accessibilityActivate];
 }

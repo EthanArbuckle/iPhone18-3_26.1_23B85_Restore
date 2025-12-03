@@ -1,10 +1,10 @@
 @interface APSPushHistory
-- (APSPushHistory)initWithEnvironment:(id)a3;
-- (BOOL)hasPayload:(id)a3 forTopic:(id)a4 tokens:(id)a5;
-- (id)_keyForTopic:(id)a3 token:(id)a4;
-- (id)timestampForTopic:(id)a3 token:(id)a4;
+- (APSPushHistory)initWithEnvironment:(id)environment;
+- (BOOL)hasPayload:(id)payload forTopic:(id)topic tokens:(id)tokens;
+- (id)_keyForTopic:(id)topic token:(id)token;
+- (id)timestampForTopic:(id)topic token:(id)token;
 - (void)_pruneHistory;
-- (void)receivedPushWithTopic:(id)a3 token:(id)a4 payload:(id)a5 timestamp:(id)a6;
+- (void)receivedPushWithTopic:(id)topic token:(id)token payload:(id)payload timestamp:(id)timestamp;
 @end
 
 @implementation APSPushHistory
@@ -75,36 +75,36 @@ LABEL_12:
   }
 }
 
-- (APSPushHistory)initWithEnvironment:(id)a3
+- (APSPushHistory)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = APSPushHistory;
   v6 = [(APSPushHistory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environment, a3);
+    objc_storeStrong(&v6->_environment, environment);
   }
 
   return v7;
 }
 
-- (id)_keyForTopic:(id)a3 token:(id)a4
+- (id)_keyForTopic:(id)topic token:(id)token
 {
-  v5 = a3;
-  v6 = sub_10000560C(a4);
-  v7 = [NSString stringWithFormat:@"%@, %@", v5, v6];
+  topicCopy = topic;
+  v6 = sub_10000560C(token);
+  v7 = [NSString stringWithFormat:@"%@, %@", topicCopy, v6];
 
   return v7;
 }
 
-- (void)receivedPushWithTopic:(id)a3 token:(id)a4 payload:(id)a5 timestamp:(id)a6
+- (void)receivedPushWithTopic:(id)topic token:(id)token payload:(id)payload timestamp:(id)timestamp
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  topicCopy = topic;
+  tokenCopy = token;
+  payloadCopy = payload;
+  timestampCopy = timestamp;
   v14 = +[APSLog shouldReduceLogging];
   v15 = +[APSLog pushHistory];
   v16 = v15;
@@ -113,15 +113,15 @@ LABEL_12:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       v25 = 138413314;
-      v26 = self;
+      selfCopy2 = self;
       v27 = 2112;
-      v28 = v10;
+      v28 = topicCopy;
       v29 = 2112;
-      v30 = v11;
+      v30 = tokenCopy;
       v31 = 2112;
-      v32 = v12;
+      v32 = payloadCopy;
       v33 = 2112;
-      v34 = v13;
+      v34 = timestampCopy;
       v17 = v16;
       v18 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -132,30 +132,30 @@ LABEL_6:
   else if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138413314;
-    v26 = self;
+    selfCopy2 = self;
     v27 = 2112;
-    v28 = v10;
+    v28 = topicCopy;
     v29 = 2112;
-    v30 = v11;
+    v30 = tokenCopy;
     v31 = 2112;
-    v32 = v12;
+    v32 = payloadCopy;
     v33 = 2112;
-    v34 = v13;
+    v34 = timestampCopy;
     v17 = v16;
     v18 = OS_LOG_TYPE_DEFAULT;
     goto LABEL_6;
   }
 
-  if ([v10 length])
+  if ([topicCopy length])
   {
-    if ([v11 length])
+    if ([tokenCopy length])
     {
-      v19 = [v12 length];
-      if (v13)
+      v19 = [payloadCopy length];
+      if (timestampCopy)
       {
         if (v19)
         {
-          v20 = [(APSPushHistory *)self _keyForTopic:v10 token:v11];
+          v20 = [(APSPushHistory *)self _keyForTopic:topicCopy token:tokenCopy];
           if (!self->_history)
           {
             v21 = [[NSMutableDictionary alloc] initWithCapacity:1];
@@ -163,8 +163,8 @@ LABEL_6:
             self->_history = v21;
           }
 
-          v23 = sub_100005710(v12);
-          v24 = [[APSPushRecord alloc] initWithToken:v11 timestamp:v13 payloadHash:v23];
+          v23 = sub_100005710(payloadCopy);
+          v24 = [[APSPushRecord alloc] initWithToken:tokenCopy timestamp:timestampCopy payloadHash:v23];
           [(NSMutableDictionary *)self->_history setObject:v24 forKey:v20];
           [(APSPushHistory *)self _pruneHistory];
         }
@@ -173,46 +173,46 @@ LABEL_6:
   }
 }
 
-- (id)timestampForTopic:(id)a3 token:(id)a4
+- (id)timestampForTopic:(id)topic token:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  topicCopy = topic;
+  tokenCopy = token;
+  if ([topicCopy length] && objc_msgSend(tokenCopy, "length"))
   {
-    v8 = [(APSPushHistory *)self _keyForTopic:v6 token:v7];
+    v8 = [(APSPushHistory *)self _keyForTopic:topicCopy token:tokenCopy];
     v9 = [(NSMutableDictionary *)self->_history objectForKey:v8];
-    v10 = [v9 timestamp];
+    timestamp = [v9 timestamp];
   }
 
   else
   {
-    v10 = 0;
+    timestamp = 0;
   }
 
-  return v10;
+  return timestamp;
 }
 
-- (BOOL)hasPayload:(id)a3 forTopic:(id)a4 tokens:(id)a5
+- (BOOL)hasPayload:(id)payload forTopic:(id)topic tokens:(id)tokens
 {
-  v28 = a3;
-  v29 = a4;
-  v8 = a5;
+  payloadCopy = payload;
+  topicCopy = topic;
+  tokensCopy = tokens;
   v9 = +[APSLog shouldReduceLogging];
   v10 = +[APSLog pushHistory];
   v11 = v10;
   if (v9)
   {
-    v12 = v28;
+    v12 = payloadCopy;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2112;
-      v38 = v28;
+      v38 = payloadCopy;
       v39 = 2112;
-      v40 = v29;
+      v40 = topicCopy;
       v41 = 2112;
-      v42 = v8;
+      v42 = tokensCopy;
       v13 = v11;
       v14 = OS_LOG_TYPE_DEBUG;
 LABEL_6:
@@ -222,31 +222,31 @@ LABEL_6:
 
   else
   {
-    v12 = v28;
+    v12 = payloadCopy;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v36 = self;
+      selfCopy2 = self;
       v37 = 2112;
-      v38 = v28;
+      v38 = payloadCopy;
       v39 = 2112;
-      v40 = v29;
+      v40 = topicCopy;
       v41 = 2112;
-      v42 = v8;
+      v42 = tokensCopy;
       v13 = v11;
       v14 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_6;
     }
   }
 
-  if ([v12 length] && objc_msgSend(v29, "length") && objc_msgSend(v8, "count"))
+  if ([v12 length] && objc_msgSend(topicCopy, "length") && objc_msgSend(tokensCopy, "count"))
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v27 = v8;
-    v15 = v8;
+    v27 = tokensCopy;
+    v15 = tokensCopy;
     v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v16)
     {
@@ -262,11 +262,11 @@ LABEL_6:
             objc_enumerationMutation(v15);
           }
 
-          v21 = [(APSPushHistory *)self _keyForTopic:v29 token:*(*(&v30 + 1) + 8 * i)];
+          v21 = [(APSPushHistory *)self _keyForTopic:topicCopy token:*(*(&v30 + 1) + 8 * i)];
           v22 = [(NSMutableDictionary *)self->_history objectForKey:v21];
-          v23 = [v22 payloadHash];
+          payloadHash = [v22 payloadHash];
 
-          if (v23)
+          if (payloadHash)
           {
             v24 = sub_100005710(v12);
             if (v18)
@@ -276,10 +276,10 @@ LABEL_6:
 
             else
             {
-              v25 = [v22 payloadHash];
-              v18 = [v24 isEqualToData:v25];
+              payloadHash2 = [v22 payloadHash];
+              v18 = [v24 isEqualToData:payloadHash2];
 
-              v12 = v28;
+              v12 = payloadCopy;
             }
           }
         }
@@ -295,7 +295,7 @@ LABEL_6:
       v18 = 0;
     }
 
-    v8 = v27;
+    tokensCopy = v27;
   }
 
   else

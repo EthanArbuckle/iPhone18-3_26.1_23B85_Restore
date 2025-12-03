@@ -1,13 +1,13 @@
 @interface CRLMediaRep
 + (id)CRLSpatialLabelColor;
-- (BOOL)i_shouldRenderStroke:(id)a3;
+- (BOOL)i_shouldRenderStroke:(id)stroke;
 - (BOOL)shouldDisplayAsSpatial;
 - (CRLMediaLayout)mediaLayout;
 - (id)additionalRenderablesOverRenderable;
 - (id)p_spatialGlyphRenderable;
 - (int64_t)supportedMediaTypes;
 - (void)documentModeDidChange;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)updateSpatialLabel;
 @end
 
@@ -16,18 +16,18 @@
 - (CRLMediaLayout)mediaLayout
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self layout];
-  v5 = sub_100014370(v3, v4);
+  layout = [(CRLCanvasRep *)self layout];
+  v5 = sub_100014370(v3, layout);
 
   return v5;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v5.receiver = self;
   v5.super_class = CRLMediaRep;
   [(CRLStyledRep *)&v5 processChangedProperty:?];
-  if (a3 == 20)
+  if (property == 20)
   {
     [(CRLCanvasRep *)self invalidateKnobs];
   }
@@ -35,8 +35,8 @@
 
 - (int64_t)supportedMediaTypes
 {
-  v2 = [(CRLCanvasRep *)self layout];
-  if ([v2 isInGroup])
+  layout = [(CRLCanvasRep *)self layout];
+  if ([layout isInGroup])
   {
     v3 = 3;
   }
@@ -76,11 +76,11 @@
 
 - (BOOL)shouldDisplayAsSpatial
 {
-  v2 = [(CRLMediaRep *)self mediaLayout];
-  v3 = [v2 mediaItem];
-  v4 = [v3 isSpatial];
+  mediaLayout = [(CRLMediaRep *)self mediaLayout];
+  mediaItem = [mediaLayout mediaItem];
+  isSpatial = [mediaItem isSpatial];
 
-  return v4;
+  return isSpatial;
 }
 
 - (void)updateSpatialLabel
@@ -89,8 +89,8 @@
   {
     if (self->mGlyphRenderable)
     {
-      v36 = [(CRLMediaRep *)self p_spatialGlyphRenderable];
-      [v36 setOpacity:0.0];
+      p_spatialGlyphRenderable = [(CRLMediaRep *)self p_spatialGlyphRenderable];
+      [p_spatialGlyphRenderable setOpacity:0.0];
     }
   }
 
@@ -98,24 +98,24 @@
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    v3 = [(CRLCanvasRep *)self canvas];
-    [v3 viewScale];
+    canvas = [(CRLCanvasRep *)self canvas];
+    [canvas viewScale];
     v5 = v4;
 
-    v6 = [(CRLCanvasRep *)self canvas];
+    canvas2 = [(CRLCanvasRep *)self canvas];
     [(CRLCanvasRep *)self naturalBounds];
-    [v6 convertUnscaledToBoundsRect:?];
+    [canvas2 convertUnscaledToBoundsRect:?];
     v8 = v7;
 
-    v9 = [(CRLMediaRep *)self p_spatialGlyphRenderable];
-    v10 = v9;
+    p_spatialGlyphRenderable2 = [(CRLMediaRep *)self p_spatialGlyphRenderable];
+    v10 = p_spatialGlyphRenderable2;
     *&v11 = COERCE_UNSIGNED_INT(1.0) | 0x4055400000000000;
     if (v8 < 85.0)
     {
       *&v11 = 0.0;
     }
 
-    [v9 setOpacity:v11];
+    [p_spatialGlyphRenderable2 setOpacity:v11];
     [v10 setBounds:{0.0, 0.0, 25.0, 25.0}];
     v12 = 8.0;
     if (v8 >= 140.0)
@@ -157,23 +157,23 @@
       v24 = v24 + -25.0;
     }
 
-    v27 = [(CRLCanvasRep *)self parentRep];
+    parentRep = [(CRLCanvasRep *)self parentRep];
 
-    if (v27)
+    if (parentRep)
     {
-      v28 = [(CRLCanvasRep *)self parentRep];
-      [v28 layerFrameInScaledCanvas];
+      parentRep2 = [(CRLCanvasRep *)self parentRep];
+      [parentRep2 layerFrameInScaledCanvas];
       v24 = sub_10011F31C(v24, v26, v29);
       v26 = v30;
     }
 
     [v10 setPosition:{v24, v26}];
-    v31 = [(CRLCanvasRep *)self layout];
-    v32 = [v31 geometryInRoot];
-    v33 = v32;
-    if (v32)
+    layout = [(CRLCanvasRep *)self layout];
+    geometryInRoot = [layout geometryInRoot];
+    v33 = geometryInRoot;
+    if (geometryInRoot)
     {
-      [v32 transform];
+      [geometryInRoot transform];
     }
 
     else
@@ -184,9 +184,9 @@
     v34 = sub_1001399C0(&v38.a);
 
     CGAffineTransformMakeRotation(&v37, v34);
-    v35 = [v10 layer];
+    layer = [v10 layer];
     v38 = v37;
-    [v35 setAffineTransform:&v38];
+    [layer setAffineTransform:&v38];
 
     +[CATransaction commit];
   }
@@ -196,17 +196,17 @@
 {
   v10.receiver = self;
   v10.super_class = CRLMediaRep;
-  v3 = [(CRLCanvasRep *)&v10 additionalRenderablesOverRenderable];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  additionalRenderablesOverRenderable = [(CRLCanvasRep *)&v10 additionalRenderablesOverRenderable];
+  v4 = [NSMutableArray arrayWithArray:additionalRenderablesOverRenderable];
 
-  v5 = [(CRLMediaRep *)self mediaLayout];
-  v6 = [v5 mediaItem];
-  v7 = [v6 isSpatial];
+  mediaLayout = [(CRLMediaRep *)self mediaLayout];
+  mediaItem = [mediaLayout mediaItem];
+  isSpatial = [mediaItem isSpatial];
 
-  if (v7)
+  if (isSpatial)
   {
-    v8 = [(CRLMediaRep *)self p_spatialGlyphRenderable];
-    [v4 addObject:v8];
+    p_spatialGlyphRenderable = [(CRLMediaRep *)self p_spatialGlyphRenderable];
+    [v4 addObject:p_spatialGlyphRenderable];
   }
 
   return v4;
@@ -242,17 +242,17 @@
   [(CRLCanvasRep *)self invalidateKnobs];
 }
 
-- (BOOL)i_shouldRenderStroke:(id)a3
+- (BOOL)i_shouldRenderStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v4 = +[NSNull null];
-  v5 = 0;
-  if (v3 && v4 != v3)
+  shouldRender = 0;
+  if (strokeCopy && v4 != strokeCopy)
   {
-    v5 = [(NSNull *)v3 shouldRender];
+    shouldRender = [(NSNull *)strokeCopy shouldRender];
   }
 
-  return v5;
+  return shouldRender;
 }
 
 @end

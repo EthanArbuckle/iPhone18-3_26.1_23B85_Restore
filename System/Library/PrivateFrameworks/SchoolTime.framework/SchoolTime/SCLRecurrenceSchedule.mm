@@ -1,26 +1,26 @@
 @interface SCLRecurrenceSchedule
-+ (void)performBlockWithSharedFormatter:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SCLRecurrenceSchedule)initWithCoder:(id)a3;
-- (SCLRecurrenceSchedule)initWithRecurrences:(id)a3;
-- (SCLRecurrenceSchedule)initWithTimeIntervals:(id)a3 repeatSchedule:(int64_t)a4;
++ (void)performBlockWithSharedFormatter:(id)formatter;
+- (BOOL)isEqual:(id)equal;
+- (SCLRecurrenceSchedule)initWithCoder:(id)coder;
+- (SCLRecurrenceSchedule)initWithRecurrences:(id)recurrences;
+- (SCLRecurrenceSchedule)initWithTimeIntervals:(id)intervals repeatSchedule:(int64_t)schedule;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SCLRecurrenceSchedule
 
-+ (void)performBlockWithSharedFormatter:(id)a3
++ (void)performBlockWithSharedFormatter:(id)formatter
 {
   v3 = performBlockWithSharedFormatter__onceToken;
-  v4 = a3;
+  formatterCopy = formatter;
   if (v3 != -1)
   {
     +[SCLRecurrenceSchedule performBlockWithSharedFormatter:];
   }
 
   os_unfair_lock_lock(&performBlockWithSharedFormatter____sharedFormatterLock);
-  v4[2](v4, performBlockWithSharedFormatter____sharedFormatter);
+  formatterCopy[2](formatterCopy, performBlockWithSharedFormatter____sharedFormatter);
 
   os_unfair_lock_unlock(&performBlockWithSharedFormatter____sharedFormatterLock);
 }
@@ -34,16 +34,16 @@ void __57__SCLRecurrenceSchedule_performBlockWithSharedFormatter___block_invoke(
   performBlockWithSharedFormatter____sharedFormatterLock = 0;
 }
 
-- (SCLRecurrenceSchedule)initWithRecurrences:(id)a3
+- (SCLRecurrenceSchedule)initWithRecurrences:(id)recurrences
 {
-  v4 = a3;
+  recurrencesCopy = recurrences;
   v10.receiver = self;
   v10.super_class = SCLRecurrenceSchedule;
   v5 = [(SCLRecurrenceSchedule *)&v10 init];
   if (v5)
   {
     v6 = +[SCLScheduleRecurrence dayOfWeekAndStartTimeComparator];
-    v7 = [v4 sortedArrayUsingComparator:v6];
+    v7 = [recurrencesCopy sortedArrayUsingComparator:v6];
     recurrences = v5->_recurrences;
     v5->_recurrences = v7;
   }
@@ -53,16 +53,16 @@ void __57__SCLRecurrenceSchedule_performBlockWithSharedFormatter___block_invoke(
 
 - (unint64_t)hash
 {
-  v2 = [(SCLRecurrenceSchedule *)self recurrences];
-  v3 = [v2 hash];
+  recurrences = [(SCLRecurrenceSchedule *)self recurrences];
+  v3 = [recurrences hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -72,9 +72,9 @@ void __57__SCLRecurrenceSchedule_performBlockWithSharedFormatter___block_invoke(
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SCLRecurrenceSchedule *)self recurrences];
-      v6 = [(SCLRecurrenceSchedule *)v4 recurrences];
-      v7 = [v5 isEqual:v6];
+      recurrences = [(SCLRecurrenceSchedule *)self recurrences];
+      recurrences2 = [(SCLRecurrenceSchedule *)equalCopy recurrences];
+      v7 = [recurrences isEqual:recurrences2];
     }
 
     else
@@ -122,9 +122,9 @@ uint64_t __36__SCLRecurrenceSchedule_description__block_invoke(uint64_t a1, void
   return MEMORY[0x2821F96F8]();
 }
 
-- (SCLRecurrenceSchedule)initWithCoder:(id)a3
+- (SCLRecurrenceSchedule)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SCLRecurrenceSchedule;
   v5 = [(SCLRecurrenceSchedule *)&v12 init];
@@ -133,7 +133,7 @@ uint64_t __36__SCLRecurrenceSchedule_description__block_invoke(uint64_t a1, void
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"recurrences"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"recurrences"];
     recurrences = v5->_recurrences;
     v5->_recurrences = v9;
   }
@@ -141,16 +141,16 @@ uint64_t __36__SCLRecurrenceSchedule_description__block_invoke(uint64_t a1, void
   return v5;
 }
 
-- (SCLRecurrenceSchedule)initWithTimeIntervals:(id)a3 repeatSchedule:(int64_t)a4
+- (SCLRecurrenceSchedule)initWithTimeIntervals:(id)intervals repeatSchedule:(int64_t)schedule
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  intervalsCopy = intervals;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = intervalsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -173,7 +173,7 @@ uint64_t __36__SCLRecurrenceSchedule_description__block_invoke(uint64_t a1, void
         v17[3] = &unk_279B6C200;
         v18 = v6;
         v19 = v12;
-        SCLEnumerateDaysInRepeatSchedule(a4, v17);
+        SCLEnumerateDaysInRepeatSchedule(schedule, v17);
 
         ++v11;
       }

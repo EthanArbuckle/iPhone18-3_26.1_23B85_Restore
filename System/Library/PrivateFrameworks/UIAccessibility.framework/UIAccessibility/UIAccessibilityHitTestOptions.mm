@@ -7,7 +7,7 @@
 
 + (id)defaultOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setLeafNodePredicate:&__block_literal_global_17];
   [v2 setFallbackPredicate:&__block_literal_global_282_0];
   [v2 setIsEligibleElement:&__block_literal_global_284_0];
@@ -33,7 +33,7 @@ uint64_t __47__UIAccessibilityHitTestOptions_defaultOptions__block_invoke_3(uint
 
 + (id)dwellControlElementHighlightOptions
 {
-  v3 = objc_alloc_init(a1);
+  v3 = objc_alloc_init(self);
   [v3 setShouldHitTestUserTestingChildren:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -46,7 +46,7 @@ uint64_t __47__UIAccessibilityHitTestOptions_defaultOptions__block_invoke_3(uint
   v7[2] = __68__UIAccessibilityHitTestOptions_dwellControlElementHighlightOptions__block_invoke_4;
   v7[3] = &unk_1E78ABA98;
   v8 = &__block_literal_global_286_0;
-  v9 = a1;
+  selfCopy = self;
   [v3 setFallbackPredicate:v7];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;

@@ -1,33 +1,33 @@
 @interface PUVolumeGlyphView
 + (id)classSubstitions;
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4;
-- (PUVolumeGlyphView)initWithFrame:(CGRect)a3;
-- (void)_handleGlyphLayerDidLoad:(id)a3;
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name;
+- (PUVolumeGlyphView)initWithFrame:(CGRect)frame;
+- (void)_handleGlyphLayerDidLoad:(id)load;
 - (void)layoutSubviews;
-- (void)setStateName:(id)a3;
+- (void)setStateName:(id)name;
 @end
 
 @implementation PUVolumeGlyphView
 
-- (Class)CAMLParser:(id)a3 didFailToFindClassWithName:(id)a4
+- (Class)CAMLParser:(id)parser didFailToFindClassWithName:(id)name
 {
-  v4 = a4;
-  v5 = [objc_opt_class() classSubstitions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  classSubstitions = [objc_opt_class() classSubstitions];
+  v6 = [classSubstitions objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (void)setStateName:(id)a3
+- (void)setStateName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_stateName != v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (self->_stateName != nameCopy)
   {
-    v10 = v4;
-    v4 = [v4 isEqual:?];
+    v10 = nameCopy;
+    nameCopy = [nameCopy isEqual:?];
     v5 = v10;
-    if ((v4 & 1) == 0)
+    if ((nameCopy & 1) == 0)
     {
       v6 = [v10 copy];
       stateName = self->_stateName;
@@ -41,7 +41,7 @@
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](nameCopy, v5);
 }
 
 - (void)layoutSubviews
@@ -54,28 +54,28 @@
   [(CALayer *)self->_glyphLayer setPosition:?];
 }
 
-- (void)_handleGlyphLayerDidLoad:(id)a3
+- (void)_handleGlyphLayerDidLoad:(id)load
 {
-  objc_storeStrong(&self->_glyphLayer, a3);
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E69794D0]) initWithLayer:v5];
+  objc_storeStrong(&self->_glyphLayer, load);
+  loadCopy = load;
+  v6 = [objc_alloc(MEMORY[0x1E69794D0]) initWithLayer:loadCopy];
   stateController = self->_stateController;
   self->_stateController = v6;
 
-  v8 = [(PUVolumeGlyphView *)self layer];
-  [v8 addSublayer:v5];
+  layer = [(PUVolumeGlyphView *)self layer];
+  [layer addSublayer:loadCopy];
 
   [(PUVolumeGlyphView *)self setNeedsLayout];
-  v10 = [(PUVolumeGlyphView *)self stateName];
-  v9 = [(CALayer *)self->_glyphLayer stateWithName:v10];
+  stateName = [(PUVolumeGlyphView *)self stateName];
+  v9 = [(CALayer *)self->_glyphLayer stateWithName:stateName];
   [(CAStateController *)self->_stateController setState:v9 ofLayer:self->_glyphLayer];
 }
 
-- (PUVolumeGlyphView)initWithFrame:(CGRect)a3
+- (PUVolumeGlyphView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = PUVolumeGlyphView;
-  v3 = [(PUVolumeGlyphView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUVolumeGlyphView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.PUVolumeGlyphView", 0);

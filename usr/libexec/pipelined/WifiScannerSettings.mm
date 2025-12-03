@@ -1,43 +1,43 @@
 @interface WifiScannerSettings
-- (WifiScannerSettings)initWithChannels:(id)a3 dwell:(duration<long)long scanType:()std:(1000>>)a4 :(int)a5 ratio<1 includingOffChannelResults:(BOOL)a6 atDutyCycle:(float)a7 asLowPriority:(BOOL)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WifiScannerSettings)initWithChannels:(id)channels dwell:(duration<long)long scanType:()std:(1000>>)std :(int)a5 ratio<1 includingOffChannelResults:(BOOL)results atDutyCycle:(float)cycle asLowPriority:(BOOL)priority;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)updateFrom:(id)a3;
+- (void)updateFrom:(id)from;
 @end
 
 @implementation WifiScannerSettings
 
-- (WifiScannerSettings)initWithChannels:(id)a3 dwell:(duration<long)long scanType:()std:(1000>>)a4 :(int)a5 ratio<1 includingOffChannelResults:(BOOL)a6 atDutyCycle:(float)a7 asLowPriority:(BOOL)a8
+- (WifiScannerSettings)initWithChannels:(id)channels dwell:(duration<long)long scanType:()std:(1000>>)std :(int)a5 ratio<1 includingOffChannelResults:(BOOL)results atDutyCycle:(float)cycle asLowPriority:(BOOL)priority
 {
-  v14 = a3;
+  channelsCopy = channels;
   v20.receiver = self;
   v20.super_class = WifiScannerSettings;
   v15 = [(WifiScannerSettings *)&v20 init];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [channelsCopy copy];
     channels = v15->_channels;
     v15->_channels = v16;
 
-    v15->_dwell = a4;
+    v15->_dwell = std;
     v15->_scanType = a5;
-    v15->_includeOffChannelResults = a6;
-    v15->_dutyCycle = a7;
-    v15->_lowPriorityScan = a8;
+    v15->_includeOffChannelResults = results;
+    v15->_dutyCycle = cycle;
+    v15->_lowPriorityScan = priority;
     v18 = v15;
   }
 
   return v15;
 }
 
-- (void)updateFrom:(id)a3
+- (void)updateFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy)
   {
-    v6 = [v4 channels];
-    v7 = [v6 copy];
+    channels = [fromCopy channels];
+    v7 = [channels copy];
     channels = self->_channels;
     self->_channels = v7;
 
@@ -75,9 +75,9 @@ LABEL_3:
   _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Invalid settings to update from - cannot be nil", v11, 2u);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [WifiScannerSettings allocWithZone:a3];
+  v4 = [WifiScannerSettings allocWithZone:zone];
   channels = self->_channels;
   rep = self->_dwell.__rep_;
   scanType = self->_scanType;

@@ -1,23 +1,23 @@
 @interface HFOutgoingHomeInvitationItemProvider
 - (HFOutgoingHomeInvitationItemProvider)init;
-- (HFOutgoingHomeInvitationItemProvider)initWithHome:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (HFOutgoingHomeInvitationItemProvider)initWithHome:(id)home;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFOutgoingHomeInvitationItemProvider
 
-- (HFOutgoingHomeInvitationItemProvider)initWithHome:(id)a3
+- (HFOutgoingHomeInvitationItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFOutgoingHomeInvitationItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     outgoingInvites = v7->_outgoingInvites;
     v7->_outgoingInvites = v8;
@@ -28,30 +28,30 @@
 
 - (HFOutgoingHomeInvitationItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFOutgoingHomeInvitationItemProvider.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HFOutgoingHomeInvitationItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFOutgoingHomeInvitationItemProvider.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HFOutgoingHomeInvitationItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFOutgoingHomeInvitationItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFOutgoingHomeInvitationItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
 
 - (id)reloadItems
 {
-  v3 = [(HFOutgoingHomeInvitationItemProvider *)self home];
-  v4 = [v3 outgoingInvitations];
+  home = [(HFOutgoingHomeInvitationItemProvider *)self home];
+  outgoingInvitations = [home outgoingInvitations];
 
   objc_initWeak(&location, self);
-  v5 = [(HFOutgoingHomeInvitationItemProvider *)self filter];
-  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:v4 filter:v5 itemMap:&__block_literal_global_56];
+  filter = [(HFOutgoingHomeInvitationItemProvider *)self filter];
+  v6 = [(HFItemProvider *)self reloadItemsWithHomeKitObjects:outgoingInvitations filter:filter itemMap:&__block_literal_global_56];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__HFOutgoingHomeInvitationItemProvider_reloadItems__block_invoke_2;
@@ -108,8 +108,8 @@ id __51__HFOutgoingHomeInvitationItemProvider_reloadItems__block_invoke_2(uint64
 {
   v5.receiver = self;
   v5.super_class = HFOutgoingHomeInvitationItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"outgoinginvitations"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"outgoinginvitations"];
 
   return v3;
 }

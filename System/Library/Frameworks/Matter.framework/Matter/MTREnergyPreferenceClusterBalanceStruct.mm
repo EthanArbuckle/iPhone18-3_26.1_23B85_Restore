@@ -1,6 +1,6 @@
 @interface MTREnergyPreferenceClusterBalanceStruct
 - (MTREnergyPreferenceClusterBalanceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyPreferenceClusterBalanceStruct);
-  v5 = [(MTREnergyPreferenceClusterBalanceStruct *)self step];
-  [(MTREnergyPreferenceClusterBalanceStruct *)v4 setStep:v5];
+  step = [(MTREnergyPreferenceClusterBalanceStruct *)self step];
+  [(MTREnergyPreferenceClusterBalanceStruct *)v4 setStep:step];
 
-  v6 = [(MTREnergyPreferenceClusterBalanceStruct *)self label];
-  [(MTREnergyPreferenceClusterBalanceStruct *)v4 setLabel:v6];
+  label = [(MTREnergyPreferenceClusterBalanceStruct *)self label];
+  [(MTREnergyPreferenceClusterBalanceStruct *)v4 setLabel:label];
 
   return v4;
 }

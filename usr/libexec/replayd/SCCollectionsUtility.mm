@@ -1,14 +1,14 @@
 @interface SCCollectionsUtility
-+ (id)getDifferenceBetween:(id)a3 andArray:(id)a4;
++ (id)getDifferenceBetween:(id)between andArray:(id)array;
 @end
 
 @implementation SCCollectionsUtility
 
-+ (id)getDifferenceBetween:(id)a3 andArray:(id)a4
++ (id)getDifferenceBetween:(id)between andArray:(id)array
 {
-  v5 = a4;
-  v6 = [NSMutableSet setWithArray:a3];
-  v7 = [NSSet setWithArray:v5];
+  arrayCopy = array;
+  v6 = [NSMutableSet setWithArray:between];
+  v7 = [NSSet setWithArray:arrayCopy];
 
   [v6 minusSet:v7];
 

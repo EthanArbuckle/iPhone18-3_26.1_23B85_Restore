@@ -1,33 +1,33 @@
 @interface TRFetchAnisetteDataResponse
-- (TRFetchAnisetteDataResponse)initWithCoder:(id)a3;
+- (TRFetchAnisetteDataResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRFetchAnisetteDataResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TRFetchAnisetteDataResponse;
-  [(TRMessage *)&v6 encodeWithCoder:v4];
+  [(TRMessage *)&v6 encodeWithCoder:coderCopy];
   anisetteData = self->_anisetteData;
   if (anisetteData)
   {
-    [v4 encodeObject:anisetteData forKey:@"TRAnisetteDataMessages_aD"];
+    [coderCopy encodeObject:anisetteData forKey:@"TRAnisetteDataMessages_aD"];
   }
 }
 
-- (TRFetchAnisetteDataResponse)initWithCoder:(id)a3
+- (TRFetchAnisetteDataResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRFetchAnisetteDataResponse;
-  v5 = [(TRMessage *)&v9 initWithCoder:v4];
+  v5 = [(TRMessage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TRAnisetteDataMessages_aD"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TRAnisetteDataMessages_aD"];
     anisetteData = v5->_anisetteData;
     v5->_anisetteData = v6;
   }

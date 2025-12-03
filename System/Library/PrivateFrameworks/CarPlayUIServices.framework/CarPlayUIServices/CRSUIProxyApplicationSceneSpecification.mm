@@ -12,8 +12,8 @@
 
   v8.receiver = self;
   v8.super_class = CRSUIProxyApplicationSceneSpecification;
-  v5 = [(UIApplicationSceneSpecification *)&v8 initialActionHandlers];
-  [v3 addObjectsFromArray:v5];
+  initialActionHandlers = [(UIApplicationSceneSpecification *)&v8 initialActionHandlers];
+  [v3 addObjectsFromArray:initialActionHandlers];
 
   v6 = [v3 copy];
 

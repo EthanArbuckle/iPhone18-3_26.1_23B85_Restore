@@ -1,17 +1,17 @@
 @interface ICQUsageMediaCell
-- (ICQUsageMediaCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (ICQUsageMediaCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)blankIcon;
 - (id)getLazyIcon;
 @end
 
 @implementation ICQUsageMediaCell
 
-- (ICQUsageMediaCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ICQUsageMediaCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v16.receiver = self;
   v16.super_class = ICQUsageMediaCell;
-  v9 = [(PSTableCell *)&v16 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v16 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
@@ -22,14 +22,14 @@
     }
 
     [(ICQUsageMediaCell *)v10 setLayoutManager:initWithStyle_reuseIdentifier_specifier__layoutManager];
-    v11 = [v8 propertyForKey:@"ICON_LOADER"];
+    v11 = [specifierCopy propertyForKey:@"ICON_LOADER"];
     artworkCatalog = v10->_artworkCatalog;
     v10->_artworkCatalog = v11;
 
     [(MPArtworkCatalog *)v10->_artworkCatalog setFittingSize:44.0, 44.0];
     v13 = v10->_artworkCatalog;
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     [(MPArtworkCatalog *)v13 setDestinationScale:?];
   }
 

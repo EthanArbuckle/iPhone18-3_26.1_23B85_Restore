@@ -1,21 +1,21 @@
 @interface PAELightRays
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAELightRays)initWithAPIManager:(id)a3;
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAELightRays)initWithAPIManager:(id)manager;
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAELightRays
 
-- (PAELightRays)initWithAPIManager:(id)a3
+- (PAELightRays)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAELightRays;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -35,12 +35,12 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"PositionIndependent", v4, @"MayRemapTime", v5, @"SupportsLargeRenderScale", v6, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 1), @"InputSizeLimit", 0}];
 }
 
-- (id)dynamicPropertiesAtTime:(id)a3 withError:(id *)a4
+- (id)dynamicPropertiesAtTime:(id)time withError:(id *)error
 {
-  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:a4];
+  v7 = [(PAEFilterDefaultBase *)self getParamAPIWithError:error];
   v16 = 0.0;
   v15 = 0;
-  if ([v7 getFloatValue:&v16 fromParm:1 atFxTime:a3.var1] && (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v15, 5, a3.var1) & 1) != 0)
+  if ([v7 getFloatValue:&v16 fromParm:1 atFxTime:time.var1] && (objc_msgSend(v7, "getBoolValue:fromParm:atFxTime:", &v15, 5, time.var1) & 1) != 0)
   {
     if (v16 == 0.0)
     {
@@ -67,12 +67,12 @@
     return [v10 dictionaryWithObjectsAndKeys:{v11, @"PixelTransformSupport", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", v9), @"AutoColorProcessingSupport", 0}];
   }
 
-  else if (a4)
+  else if (error)
   {
     v13 = objc_opt_class();
     v14 = [(PAEFilterDefaultBase *)self getParamErrorFor:NSStringFromClass(v13)];
     result = 0;
-    *a4 = v14;
+    *error = v14;
   }
 
   else
@@ -104,34 +104,34 @@
   return 1;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B780];
   v11 = v10;
   if (v10)
   {
     v17 = 0.0;
-    [v10 getFloatValue:&v17 fromParm:1 atFxTime:a6->var0.var1];
+    [v10 getFloatValue:&v17 fromParm:1 atFxTime:info->var0.var1];
     v16 = 0.0;
-    [v11 getFloatValue:&v16 fromParm:4 atFxTime:a6->var0.var1];
-    var1 = a5->var1;
+    [v11 getFloatValue:&v16 fromParm:4 atFxTime:info->var0.var1];
+    var1 = input->var1;
     v13 = v17 * v16;
     v14 = (2 * vcvtps_s32_f32(v13));
-    if (a3)
+    if (width)
     {
-      *a3 = a5->var0 + v14;
+      *width = input->var0 + v14;
     }
 
-    if (a4)
+    if (height)
     {
-      *a4 = var1 + v14;
+      *height = var1 + v14;
     }
   }
 
   return v11 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v6 = MEMORY[0x28223BE20](self);
   v8 = v7;
@@ -183,8 +183,8 @@
         v38 = 0;
       }
 
-      v14 = [v34 width];
-      v15 = [v34 height];
+      width = [v34 width];
+      height = [v34 height];
       v45[0] = 0;
       v45[1] = 0;
       v16 = HGObject::operator new(0x1D0uLL);
@@ -192,8 +192,8 @@
       HGTextureWrap::SetTextureWrapMode(v16, 0, v17);
       HGTextureWrap::SetTextureBorderColor(v16, v45);
       (*(*v16 + 120))(v16, 0, v38);
-      v18 = v14 * 0.5;
-      v19 = vcvtd_n_f64_u64(v15, 1uLL);
+      v18 = width * 0.5;
+      v19 = vcvtd_n_f64_u64(height, 1uLL);
       *&v44[0].var0 = HGRectMake4f(v20, -v18, -v19, v18, v19);
       *&v44[0].var2 = v21;
       HGTextureWrap::SetCropRect(v16, v44);
@@ -201,7 +201,7 @@
       {
         [v10 width];
         [v10 width];
-        v5 = [v10 height];
+        height2 = [v10 height];
         [v10 height];
       }
 
@@ -212,24 +212,24 @@
         v22 = v37;
       }
 
-      LODWORD(v5) = vcvtpd_s64_f64(v22 * v43[0] * 0.5);
-      if (v5 >= 1)
+      LODWORD(height2) = vcvtpd_s64_f64(v22 * v43[0] * 0.5);
+      if (height2 >= 1)
       {
         v23 = 0;
         v24 = 0.00390625 / v22;
         v25 = 0.0;
         do
         {
-          v26 = 1.0 - (v23 / v5);
+          v26 = 1.0 - (v23 / height2);
           *(&v44[0].var0 + v23) = v26;
           v25 = v25 + v26;
           *(&v43[1] + v23) = 1.0 - (v24 * v23);
           ++v23;
         }
 
-        while (v5 != v23);
+        while (height2 != v23);
         v27 = v44;
-        v28 = v5;
+        v28 = height2;
         v29 = 1.0 / v25;
         do
         {
@@ -242,7 +242,7 @@
       }
 
       v35 = 0;
-      if (v5)
+      if (height2)
       {
         v30 = HGObject::operator new(0x1A0uLL);
         HGNode::HGNode(v30);
@@ -251,7 +251,7 @@
           v35 = v30;
         }
 
-        if (v5 >= 1)
+        if (height2 >= 1)
         {
           v31 = HGObject::operator new(0x1B0uLL);
           HgcConvolvePass8tapPoint::HgcConvolvePass8tapPoint(v31);
@@ -282,15 +282,15 @@
   return v13 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

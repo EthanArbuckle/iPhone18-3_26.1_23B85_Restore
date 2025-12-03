@@ -7,8 +7,8 @@
 
 - (NSString)description
 {
-  v2 = self;
-  sub_27222F020(v2, v3);
+  selfCopy = self;
+  sub_27222F020(selfCopy, v3);
 
   v4 = sub_2723777FC();
 

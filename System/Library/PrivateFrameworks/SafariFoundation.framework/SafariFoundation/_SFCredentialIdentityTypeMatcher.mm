@@ -1,6 +1,6 @@
 @interface _SFCredentialIdentityTypeMatcher
 + (id)allTypes;
-+ (id)singleType:(int64_t)a3;
++ (id)singleType:(int64_t)type;
 @end
 
 @implementation _SFCredentialIdentityTypeMatcher
@@ -14,11 +14,11 @@
   return v2;
 }
 
-+ (id)singleType:(int64_t)a3
++ (id)singleType:(int64_t)type
 {
   v4 = objc_alloc_init(_SFCredentialIdentityTypeMatcher);
   v4->_matchAllTypes = 0;
-  v4->_typeToMatch = a3;
+  v4->_typeToMatch = type;
 
   return v4;
 }

@@ -2,17 +2,17 @@
 + (id)dictionary;
 - (NSDictionary)animationDictionaryForBuildEngine;
 - (TSCHMultiDataChartRepAnimationDictionary)init;
-- (id)entryForLayer:(id)a3;
-- (id)nonretainedValueForObject:(id)a3;
-- (void)addAnimation:(id)a3 animationInfo:(id)a4 forLayer:(id)a5;
-- (void)addEntriesFromAnimationDictionary:(id)a3 beginTime:(double)a4 duration:(double)a5 interpolations:(id)a6;
+- (id)entryForLayer:(id)layer;
+- (id)nonretainedValueForObject:(id)object;
+- (void)addAnimation:(id)animation animationInfo:(id)info forLayer:(id)layer;
+- (void)addEntriesFromAnimationDictionary:(id)dictionary beginTime:(double)time duration:(double)duration interpolations:(id)interpolations;
 @end
 
 @implementation TSCHMultiDataChartRepAnimationDictionary
 
 + (id)dictionary
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -32,33 +32,33 @@
   return v2;
 }
 
-- (id)entryForLayer:(id)a3
+- (id)entryForLayer:(id)layer
 {
-  v4 = a3;
-  v10 = objc_msgSend_objectForKeyedSubscript_(self->_entries, v5, v6, v7, v8, v4);
+  layerCopy = layer;
+  v10 = objc_msgSend_objectForKeyedSubscript_(self->_entries, v5, v6, v7, v8, layerCopy);
   if (!v10)
   {
     v10 = objc_msgSend_entry(TSCHMultiDataChartRepAnimationDictionaryEntry, v9, v11, v12, v13);
-    objc_msgSend_setObject_forKeyedSubscript_(self->_entries, v14, v15, v16, v17, v10, v4);
+    objc_msgSend_setObject_forKeyedSubscript_(self->_entries, v14, v15, v16, v17, v10, layerCopy);
   }
 
   return v10;
 }
 
-- (void)addAnimation:(id)a3 animationInfo:(id)a4 forLayer:(id)a5
+- (void)addAnimation:(id)animation animationInfo:(id)info forLayer:(id)layer
 {
-  v8 = a4;
-  v9 = a3;
-  v18 = objc_msgSend_entryForLayer_(self, v10, v11, v12, v13, a5);
-  objc_msgSend_addAnimation_animationInfo_(v18, v14, v15, v16, v17, v9, v8);
+  infoCopy = info;
+  animationCopy = animation;
+  v18 = objc_msgSend_entryForLayer_(self, v10, v11, v12, v13, layer);
+  objc_msgSend_addAnimation_animationInfo_(v18, v14, v15, v16, v17, animationCopy, infoCopy);
 }
 
-- (id)nonretainedValueForObject:(id)a3
+- (id)nonretainedValueForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9 = MEMORY[0x277CCAE60];
 
-  return objc_msgSend_valueWithNonretainedObject_(v9, v5, v6, v7, v8, a3);
+  return objc_msgSend_valueWithNonretainedObject_(v9, v5, v6, v7, v8, object);
 }
 
 - (NSDictionary)animationDictionaryForBuildEngine
@@ -102,17 +102,17 @@
   return v6;
 }
 
-- (void)addEntriesFromAnimationDictionary:(id)a3 beginTime:(double)a4 duration:(double)a5 interpolations:(id)a6
+- (void)addEntriesFromAnimationDictionary:(id)dictionary beginTime:(double)time duration:(double)duration interpolations:(id)interpolations
 {
   v109 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  dictionaryCopy = dictionary;
+  interpolationsCopy = interpolations;
   v16 = objc_msgSend_animationInfo(TSCHMultiDataLayerAnimationInfo, v12, v13, v14, v15);
-  v21 = objc_msgSend_overall(v11, v17, v18, v19, v20);
+  v21 = objc_msgSend_overall(interpolationsCopy, v17, v18, v19, v20);
   objc_msgSend_setTimingFunction_(v16, v22, v23, v24, v25, v21);
 
-  objc_msgSend_setDuration_(v16, v26, a5, v27, v28);
-  if (!v10)
+  objc_msgSend_setDuration_(v16, v26, duration, v27, v28);
+  if (!dictionaryCopy)
   {
     v33 = MEMORY[0x277D81150];
     v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, v30, v31, v32, "[TSCHMultiDataChartRepAnimationDictionary addEntriesFromAnimationDictionary:beginTime:duration:interpolations:]");
@@ -126,7 +126,7 @@
   v107 = 0u;
   v104 = 0u;
   v105 = 0u;
-  obj = v10[1];
+  obj = dictionaryCopy[1];
   v103 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v48, v49, v50, v51, &v104, v108, 16);
   if (v103)
   {
@@ -143,20 +143,20 @@
         }
 
         v58 = *(*(&v104 + 1) + 8 * i);
-        v59 = objc_msgSend_entryForLayer_(v10, v52, v53, v54, v55, v58);
+        v59 = objc_msgSend_entryForLayer_(dictionaryCopy, v52, v53, v54, v55, v58);
         v65 = objc_msgSend_animation(v59, v60, v61, v62, v63);
         if (!v65)
         {
-          v69 = v11;
-          v70 = self;
-          v71 = v10;
+          v69 = interpolationsCopy;
+          selfCopy = self;
+          v71 = dictionaryCopy;
           v72 = MEMORY[0x277D81150];
           v73 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v64, v66, v67, v68, "[TSCHMultiDataChartRepAnimationDictionary addEntriesFromAnimationDictionary:beginTime:duration:interpolations:]");
           v78 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v74, v75, v76, v77, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHMultiDataChartRepAnimationDictionary.m");
           v79 = v72;
-          v10 = v71;
-          self = v70;
-          v11 = v69;
+          dictionaryCopy = v71;
+          self = selfCopy;
+          interpolationsCopy = v69;
           v16 = v101;
           objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v79, v80, v81, v82, v83, v73, v78, 118, 0, "invalid nil value for '%{public}s'", "animation");
 
@@ -164,10 +164,10 @@
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v84, v85, v86, v87);
         }
 
-        v88 = objc_msgSend_individual(v11, v64, v66, v67, v68);
+        v88 = objc_msgSend_individual(interpolationsCopy, v64, v66, v67, v68);
         objc_msgSend_setTimingFunction_(v65, v89, v90, v91, v92, v88);
 
-        objc_msgSend_setBeginTime_(v65, v93, a4, v94, v95);
+        objc_msgSend_setBeginTime_(v65, v93, time, v94, v95);
         objc_msgSend_addAnimation_animationInfo_forLayer_(self, v96, v97, v98, v99, v65, v16, v58);
       }
 

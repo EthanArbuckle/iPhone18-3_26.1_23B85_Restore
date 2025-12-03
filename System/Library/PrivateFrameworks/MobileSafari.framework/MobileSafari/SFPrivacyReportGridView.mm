@@ -1,17 +1,17 @@
 @interface SFPrivacyReportGridView
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)intrinsicContentSize;
 - (SFPrivacyReportGridView)init;
-- (SFPrivacyReportGridView)initWithFrame:(CGRect)a3;
+- (SFPrivacyReportGridView)initWithFrame:(CGRect)frame;
 - (SFPrivacyReportGridViewDelegate)delegate;
 - (double)interItemSpacing;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)_gridPositionForItemAtIndexPath:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)_gridPositionForItemAtIndexPath:(id)path;
 - (void)_preferredContentSizeCategoryDidChange;
 - (void)_rebuildRowLayoutInfoIfNeeded;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
 - (void)invalidateIntrinsicContentSize;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
@@ -22,24 +22,24 @@
 
 - (SFPrivacyReportGridView)init
 {
-  v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = [(SFPrivacyReportGridView *)self initWithFrame:?];
 
   return v4;
 }
 
-- (SFPrivacyReportGridView)initWithFrame:(CGRect)a3
+- (SFPrivacyReportGridView)initWithFrame:(CGRect)frame
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = SFPrivacyReportGridView;
-  v3 = [(SFPrivacyReportGridView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPrivacyReportGridView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     cachedRowInfo = v3->_cachedRowInfo;
-    v3->_cachedRowInfo = v4;
+    v3->_cachedRowInfo = array;
 
     v6 = objc_alloc_init(MEMORY[0x1E69DC840]);
     collectionViewLayout = v3->_collectionViewLayout;
@@ -55,17 +55,17 @@
     [(UICollectionView *)v3->_collectionView setScrollEnabled:0];
     [(SFPrivacyReportGridView *)v3 updateInterItemSpacing];
     [(SFPrivacyReportGridView *)v3 addSubview:v3->_collectionView];
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v3->_collectionView setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v3->_collectionView setBackgroundColor:clearColor];
 
     [(UICollectionView *)v3->_collectionView setDelegate:v3];
     [(UICollectionView *)v3->_collectionView setDataSource:v3];
     [(UICollectionView *)v3->_collectionView frame];
     v3->_previousCollectionViewWidth = CGRectGetWidth(v20);
     [(UICollectionView *)v3->_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"reportGridItemCell"];
-    v12 = [(SFPrivacyReportGridView *)v3 traitCollection];
-    v13 = [v12 preferredContentSizeCategory];
-    v3->_isAccessibilitySize = UIContentSizeCategoryIsAccessibilityCategory(v13);
+    traitCollection = [(SFPrivacyReportGridView *)v3 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v3->_isAccessibilitySize = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v19[0] = objc_opt_class();
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -120,9 +120,9 @@
 
 - (void)_preferredContentSizeCategoryDidChange
 {
-  v3 = [(SFPrivacyReportGridView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  self->_isAccessibilitySize = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(SFPrivacyReportGridView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  self->_isAccessibilitySize = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   [(SFPrivacyReportGridView *)self updateInterItemSpacing];
 }
@@ -146,9 +146,9 @@
   v37 = *MEMORY[0x1E69E9840];
   if (![(NSMutableArray *)self->_cachedRowInfo count])
   {
-    v3 = [(SFPrivacyReportGridView *)self traitCollection];
-    v4 = [v3 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+    traitCollection = [(SFPrivacyReportGridView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if ([(NSArray *)self->_itemViews count]>= 1)
     {
@@ -260,8 +260,8 @@ LABEL_29:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v24 = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
-    v25 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    indexPathsForVisibleItems = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
+    v25 = [indexPathsForVisibleItems countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v25)
     {
       v26 = v25;
@@ -272,7 +272,7 @@ LABEL_29:
         {
           if (*v33 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(indexPathsForVisibleItems);
           }
 
           v29 = *(*(&v32 + 1) + 8 * i);
@@ -280,7 +280,7 @@ LABEL_29:
           [v30 setGridPosition:{-[SFPrivacyReportGridView _gridPositionForItemAtIndexPath:](self, "_gridPositionForItemAtIndexPath:", v29)}];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v26 = [indexPathsForVisibleItems countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v26);
@@ -298,8 +298,8 @@ LABEL_29:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(UICollectionView *)self->_collectionView visibleCells];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
+  v4 = [visibleCells countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -311,7 +311,7 @@ LABEL_29:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(visibleCells);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -321,7 +321,7 @@ LABEL_29:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
@@ -332,8 +332,8 @@ LABEL_29:
 
 - (double)interItemSpacing
 {
-  v3 = [(SFPrivacyReportGridView *)self traitCollection];
-  if ([v3 horizontalSizeClass] != 2 || (v4 = 20.0, objc_msgSend(v3, "verticalSizeClass") != 2))
+  traitCollection = [(SFPrivacyReportGridView *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] != 2 || (v4 = 20.0, objc_msgSend(traitCollection, "verticalSizeClass") != 2))
   {
     if (self->_isAccessibilitySize)
     {
@@ -349,15 +349,15 @@ LABEL_29:
   return v4;
 }
 
-- (unint64_t)_gridPositionForItemAtIndexPath:(id)a3
+- (unint64_t)_gridPositionForItemAtIndexPath:(id)path
 {
   cachedRowInfo = self->_cachedRowInfo;
-  v5 = a3;
-  v6 = -[NSMutableArray objectAtIndexedSubscript:](cachedRowInfo, "objectAtIndexedSubscript:", [v5 item]);
+  pathCopy = path;
+  v6 = -[NSMutableArray objectAtIndexedSubscript:](cachedRowInfo, "objectAtIndexedSubscript:", [pathCopy item]);
   v7 = [v6 row];
   v8 = [v6 row];
-  v9 = [(NSMutableArray *)self->_cachedRowInfo lastObject];
-  v10 = [v9 row];
+  lastObject = [(NSMutableArray *)self->_cachedRowInfo lastObject];
+  v10 = [lastObject row];
 
   v11 = 2;
   if (!v7)
@@ -375,17 +375,17 @@ LABEL_29:
     v12 = v7 == 0;
   }
 
-  v13 = [v5 item];
-  if (v13 == [v6 itemRange])
+  item = [pathCopy item];
+  if (item == [v6 itemRange])
   {
     v12 |= 4uLL;
   }
 
-  v14 = [v5 item];
+  item2 = [pathCopy item];
 
-  v15 = [v6 itemRange];
+  itemRange = [v6 itemRange];
   [v6 itemRange];
-  if (v14 == v15 + v16 - 1)
+  if (item2 == itemRange + v16 - 1)
   {
     v17 = v12 | 8;
   }
@@ -398,16 +398,16 @@ LABEL_29:
   return v17;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [(SFPrivacyReportGridView *)self _rebuildRowLayoutInfoIfNeeded];
-  v8 = [v7 dequeueReusableCellWithReuseIdentifier:@"reportGridItemCell" forIndexPath:v6];
+  v8 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"reportGridItemCell" forIndexPath:pathCopy];
 
-  v9 = -[NSArray objectAtIndexedSubscript:](self->_itemViews, "objectAtIndexedSubscript:", [v6 item]);
+  v9 = -[NSArray objectAtIndexedSubscript:](self->_itemViews, "objectAtIndexedSubscript:", [pathCopy item]);
   [v9 setDelegate:self];
-  v10 = [(SFPrivacyReportGridView *)self _gridPositionForItemAtIndexPath:v6];
+  v10 = [(SFPrivacyReportGridView *)self _gridPositionForItemAtIndexPath:pathCopy];
 
   [v9 setGridPosition:v10];
   [(SFPrivacyReportGridView *)self layoutMargins];
@@ -415,34 +415,34 @@ LABEL_29:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v8 contentView];
-  [v19 setLayoutMargins:{v12, v14, v16, v18}];
+  contentView = [v8 contentView];
+  [contentView setLayoutMargins:{v12, v14, v16, v18}];
 
-  v20 = [v8 defaultBackgroundConfiguration];
-  v21 = [v9 cellBackgroundColor];
+  defaultBackgroundConfiguration = [v8 defaultBackgroundConfiguration];
+  cellBackgroundColor = [v9 cellBackgroundColor];
 
-  if (v21)
+  if (cellBackgroundColor)
   {
-    v22 = [v9 cellBackgroundColor];
-    [v20 setBackgroundColor:v22];
+    cellBackgroundColor2 = [v9 cellBackgroundColor];
+    [defaultBackgroundConfiguration setBackgroundColor:cellBackgroundColor2];
   }
 
   [v9 cellBackgroundCornerRadius];
   if (v23 != 9.22337204e18)
   {
     [v9 cellBackgroundCornerRadius];
-    [v20 setCornerRadius:?];
+    [defaultBackgroundConfiguration setCornerRadius:?];
   }
 
-  [v8 setBackgroundConfiguration:v20];
+  [v8 setBackgroundConfiguration:defaultBackgroundConfiguration];
   [v8 setReportView:v9];
 
   return v8;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -453,13 +453,13 @@ LABEL_29:
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  layoutCopy = layout;
+  pathCopy = path;
   [(SFPrivacyReportGridView *)self _rebuildRowLayoutInfoIfNeeded];
-  v11 = -[NSMutableArray objectAtIndexedSubscript:](self->_cachedRowInfo, "objectAtIndexedSubscript:", [v10 item]);
+  v11 = -[NSMutableArray objectAtIndexedSubscript:](self->_cachedRowInfo, "objectAtIndexedSubscript:", [pathCopy item]);
   [(UICollectionView *)self->_collectionView frame];
   Width = CGRectGetWidth(v36);
   [(UICollectionViewFlowLayout *)self->_collectionViewLayout minimumInteritemSpacing];
@@ -478,8 +478,8 @@ LABEL_29:
   if (v22 == 0.0)
   {
     v23 = MEMORY[0x1E696AC90];
-    v24 = [v11 itemRange];
-    v26 = [v23 indexSetWithIndexesInRange:{v24, v25}];
+    itemRange = [v11 itemRange];
+    v26 = [v23 indexSetWithIndexesInRange:{itemRange, v25}];
     itemViews = self->_itemViews;
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -513,20 +513,20 @@ double __72__SFPrivacyReportGridView_collectionView_layout_sizeForItemAtIndexPat
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v4 = -[NSArray objectAtIndexedSubscript:](self->_itemViews, "objectAtIndexedSubscript:", [a4 item]);
-  v5 = [v4 action];
-  v6 = v5 != 0;
+  v4 = -[NSArray objectAtIndexedSubscript:](self->_itemViews, "objectAtIndexedSubscript:", [path item]);
+  action = [v4 action];
+  v6 = action != 0;
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
-  v5 = -[NSArray objectAtIndexedSubscript:](self->_itemViews, "objectAtIndexedSubscript:", [a4 item]);
-  v4 = [v5 action];
-  v4[2]();
+  v5 = -[NSArray objectAtIndexedSubscript:](self->_itemViews, "objectAtIndexedSubscript:", [path item]);
+  action = [v5 action];
+  action[2]();
 }
 
 - (SFPrivacyReportGridViewDelegate)delegate

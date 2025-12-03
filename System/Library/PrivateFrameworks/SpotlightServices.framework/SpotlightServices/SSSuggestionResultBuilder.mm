@@ -1,66 +1,66 @@
 @interface SSSuggestionResultBuilder
-+ (id)buildResultWithResult:(id)a3 queryContext:(id)a4;
-+ (id)buildResultWithSpotlightSuggestion:(id)a3 queryContext:(id)a4;
-+ (id)buildResultWithSuggestion:(id)a3 queryContext:(id)a4;
-+ (id)buildResultsWithCompletionsData:(id)a3 queryContext:(id)a4;
-+ (id)buildResultsWithSuggestionsData:(id)a3 queryContext:(id)a4;
-- (SSSuggestionResultBuilder)initWithResult:(id)a3 queryContext:(id)a4;
-- (SSSuggestionResultBuilder)initWithSpotlightSuggestion:(id)a3 queryContext:(id)a4;
-- (SSSuggestionResultBuilder)initWithSuggestion:(id)a3 queryContext:(id)a4;
++ (id)buildResultWithResult:(id)result queryContext:(id)context;
++ (id)buildResultWithSpotlightSuggestion:(id)suggestion queryContext:(id)context;
++ (id)buildResultWithSuggestion:(id)suggestion queryContext:(id)context;
++ (id)buildResultsWithCompletionsData:(id)data queryContext:(id)context;
++ (id)buildResultsWithSuggestionsData:(id)data queryContext:(id)context;
+- (SSSuggestionResultBuilder)initWithResult:(id)result queryContext:(id)context;
+- (SSSuggestionResultBuilder)initWithSpotlightSuggestion:(id)suggestion queryContext:(id)context;
+- (SSSuggestionResultBuilder)initWithSuggestion:(id)suggestion queryContext:(id)context;
 - (id)buildCommand;
 - (id)buildHighlightedTextForSuggestion;
 - (id)buildInlineCardSections;
-- (id)buildPhotoTextAndGlyphForSuggestion:(id)a3;
+- (id)buildPhotoTextAndGlyphForSuggestion:(id)suggestion;
 - (id)buildResult;
 - (id)buildSymbolImage;
 @end
 
 @implementation SSSuggestionResultBuilder
 
-+ (id)buildResultWithResult:(id)a3 queryContext:(id)a4
++ (id)buildResultWithResult:(id)result queryContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SSSuggestionResultBuilder alloc] initWithResult:v6 queryContext:v5];
+  contextCopy = context;
+  resultCopy = result;
+  v7 = [[SSSuggestionResultBuilder alloc] initWithResult:resultCopy queryContext:contextCopy];
 
-  v8 = [(SSSuggestionResultBuilder *)v7 buildResult];
-  [v8 clearBackendData];
+  buildResult = [(SSSuggestionResultBuilder *)v7 buildResult];
+  [buildResult clearBackendData];
 
-  return v8;
+  return buildResult;
 }
 
-- (SSSuggestionResultBuilder)initWithResult:(id)a3 queryContext:(id)a4
+- (SSSuggestionResultBuilder)initWithResult:(id)result queryContext:(id)context
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = SSSuggestionResultBuilder;
   v8 = [(SSSuggestionResultBuilder *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    [(SSResultBuilder *)v8 setQueryContext:v7];
-    v10 = [v7 searchString];
-    v11 = +[SPSearchSuggestionResult searchSuggestionRankingResultWithResult:query:sectionBundleIdentifier:queryId:](SPSearchSuggestionResult, "searchSuggestionRankingResultWithResult:query:sectionBundleIdentifier:queryId:", v6, v10, @"com.apple.searchd.suggestions", [v7 queryIdent]);
+    [(SSResultBuilder *)v8 setQueryContext:contextCopy];
+    searchString = [contextCopy searchString];
+    v11 = +[SPSearchSuggestionResult searchSuggestionRankingResultWithResult:query:sectionBundleIdentifier:queryId:](SPSearchSuggestionResult, "searchSuggestionRankingResultWithResult:query:sectionBundleIdentifier:queryId:", resultCopy, searchString, @"com.apple.searchd.suggestions", [contextCopy queryIdent]);
     [(SSResultBuilder *)v9 setResult:v11];
 
-    v12 = [(SSResultBuilder *)v9 result];
-    v13 = [v12 searchEntities];
-    v14 = [v13 lastObject];
-    [(SSSuggestionResultBuilder *)v9 setEntity:v14];
+    result = [(SSResultBuilder *)v9 result];
+    searchEntities = [result searchEntities];
+    lastObject = [searchEntities lastObject];
+    [(SSSuggestionResultBuilder *)v9 setEntity:lastObject];
 
-    v15 = [(SSResultBuilder *)v9 result];
-    v16 = [v15 completion];
+    result2 = [(SSResultBuilder *)v9 result];
+    completion = [result2 completion];
 
-    if (v16)
+    if (completion)
     {
-      v17 = [(SSResultBuilder *)v9 result];
-      v18 = [v17 completion];
-      [(SSSuggestionResultBuilder *)v9 setSuggestionString:v18];
+      result3 = [(SSResultBuilder *)v9 result];
+      completion2 = [result3 completion];
+      [(SSSuggestionResultBuilder *)v9 setSuggestionString:completion2];
 
-      v19 = [(SSSuggestionResultBuilder *)v9 suggestionString];
-      v24[0] = v19;
+      suggestionString = [(SSSuggestionResultBuilder *)v9 suggestionString];
+      v24[0] = suggestionString;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
       [(SSResultBuilder *)v9 setMatchedStrings:v20];
     }
@@ -70,63 +70,63 @@
   return v9;
 }
 
-+ (id)buildResultWithSuggestion:(id)a3 queryContext:(id)a4
++ (id)buildResultWithSuggestion:(id)suggestion queryContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SSSuggestionResultBuilder alloc] initWithSuggestion:v6 queryContext:v5];
+  contextCopy = context;
+  suggestionCopy = suggestion;
+  v7 = [[SSSuggestionResultBuilder alloc] initWithSuggestion:suggestionCopy queryContext:contextCopy];
 
-  v8 = [(SSSuggestionResultBuilder *)v7 buildResult];
-  [v8 clearBackendData];
+  buildResult = [(SSSuggestionResultBuilder *)v7 buildResult];
+  [buildResult clearBackendData];
 
-  return v8;
+  return buildResult;
 }
 
-- (SSSuggestionResultBuilder)initWithSuggestion:(id)a3 queryContext:(id)a4
+- (SSSuggestionResultBuilder)initWithSuggestion:(id)suggestion queryContext:(id)context
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = SSSuggestionResultBuilder;
   v8 = [(SSSuggestionResultBuilder *)&v24 init];
   v9 = v8;
   if (v8)
   {
-    [(SSResultBuilder *)v8 setQueryContext:v7];
-    v10 = [v6 suggestion];
-    if (v10)
+    [(SSResultBuilder *)v8 setQueryContext:contextCopy];
+    suggestion = [suggestionCopy suggestion];
+    if (suggestion)
     {
-      [(SSSuggestionResultBuilder *)v9 setSuggestionString:v10];
+      [(SSSuggestionResultBuilder *)v9 setSuggestionString:suggestion];
     }
 
     else
     {
-      v11 = [v7 searchString];
-      [(SSSuggestionResultBuilder *)v9 setSuggestionString:v11];
+      searchString = [contextCopy searchString];
+      [(SSSuggestionResultBuilder *)v9 setSuggestionString:searchString];
     }
 
-    v12 = [v7 searchString];
-    v13 = +[SPSearchSuggestionResult searchSuggestionRankingResultWithSuggestion:query:sectionBundleIdentifier:queryId:](SPSearchSuggestionResult, "searchSuggestionRankingResultWithSuggestion:query:sectionBundleIdentifier:queryId:", v6, v12, @"com.apple.searchd.suggestions", [v7 queryIdent]);
+    searchString2 = [contextCopy searchString];
+    v13 = +[SPSearchSuggestionResult searchSuggestionRankingResultWithSuggestion:query:sectionBundleIdentifier:queryId:](SPSearchSuggestionResult, "searchSuggestionRankingResultWithSuggestion:query:sectionBundleIdentifier:queryId:", suggestionCopy, searchString2, @"com.apple.searchd.suggestions", [contextCopy queryIdent]);
     [(SSResultBuilder *)v9 setResult:v13];
 
-    v14 = [(SSResultBuilder *)v9 result];
-    v15 = [v14 searchEntities];
-    v16 = [v15 lastObject];
-    [(SSSuggestionResultBuilder *)v9 setEntity:v16];
+    result = [(SSResultBuilder *)v9 result];
+    searchEntities = [result searchEntities];
+    lastObject = [searchEntities lastObject];
+    [(SSSuggestionResultBuilder *)v9 setEntity:lastObject];
 
-    v17 = [(SSSuggestionResultBuilder *)v9 entity];
+    entity = [(SSSuggestionResultBuilder *)v9 entity];
 
-    if (!v17)
+    if (!entity)
     {
-      v18 = [v6 suggestion];
-      v19 = [SPSearchEntity searchEntityWithSearchString:v18 spotlightQueryString:0 preferredBundleIDs:0];
+      suggestion2 = [suggestionCopy suggestion];
+      v19 = [SPSearchEntity searchEntityWithSearchString:suggestion2 spotlightQueryString:0 preferredBundleIDs:0];
       [(SSSuggestionResultBuilder *)v9 setEntity:v19];
     }
 
-    [(SSSuggestionResultBuilder *)v9 setSuggestion:v6];
-    v20 = [(SSSuggestionResultBuilder *)v9 suggestionString];
-    v25[0] = v20;
+    [(SSSuggestionResultBuilder *)v9 setSuggestion:suggestionCopy];
+    suggestionString = [(SSSuggestionResultBuilder *)v9 suggestionString];
+    v25[0] = suggestionString;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
     [(SSResultBuilder *)v9 setMatchedStrings:v21];
   }
@@ -135,30 +135,30 @@
   return v9;
 }
 
-+ (id)buildResultWithSpotlightSuggestion:(id)a3 queryContext:(id)a4
++ (id)buildResultWithSpotlightSuggestion:(id)suggestion queryContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 suggestionKind] == 2)
+  suggestionCopy = suggestion;
+  contextCopy = context;
+  if ([suggestionCopy suggestionKind] == 2)
   {
-    v7 = [[SSSuggestionResultBuilder alloc] initWithSpotlightSuggestion:v5 queryContext:v6];
-    v8 = [(SSSuggestionResultBuilder *)v7 buildResult];
+    v7 = [[SSSuggestionResultBuilder alloc] initWithSpotlightSuggestion:suggestionCopy queryContext:contextCopy];
+    buildResult = [(SSSuggestionResultBuilder *)v7 buildResult];
   }
 
   else
   {
-    v8 = 0;
+    buildResult = 0;
   }
 
-  return v8;
+  return buildResult;
 }
 
-+ (id)buildResultsWithCompletionsData:(id)a3 queryContext:(id)a4
++ (id)buildResultsWithCompletionsData:(id)data queryContext:(id)context
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dataCopy = data;
+  contextCopy = context;
+  if (dataCopy)
   {
     if (isMacOS())
     {
@@ -171,19 +171,19 @@
     }
 
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v9 = [MEMORY[0x1E6964EA8] emptySuggestion];
+    emptySuggestion = [MEMORY[0x1E6964EA8] emptySuggestion];
     v10 = MEMORY[0x1E6964EA8];
-    v11 = [v6 searchString];
-    v12 = [v10 updatedSuggestionWithCurrentSuggestion:v9 userString:v11 tokens:MEMORY[0x1E695E0F0]];
+    searchString = [contextCopy searchString];
+    v12 = [v10 updatedSuggestionWithCurrentSuggestion:emptySuggestion userString:searchString tokens:MEMORY[0x1E695E0F0]];
 
     v13 = MEMORY[0x1E6964EA8];
-    v14 = [v6 searchString];
+    searchString2 = [contextCopy searchString];
     v34 = @"photosBundleIDs";
     v35[0] = v7;
     v28 = v7;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
     v27 = v12;
-    v16 = [v13 suggestionsWithCurrentSuggestion:v12 userQueryString:v14 completionData:v5 options:v15];
+    v16 = [v13 suggestionsWithCurrentSuggestion:v12 userQueryString:searchString2 completionData:dataCopy options:v15];
 
     v31 = 0u;
     v32 = 0u;
@@ -207,11 +207,11 @@
           v22 = *(*(&v29 + 1) + 8 * i);
           if ([v22 suggestionKind] == 2)
           {
-            v23 = [[SSSuggestionResultBuilder alloc] initWithSpotlightSuggestion:v22 queryContext:v6];
-            v24 = [(SSSuggestionResultBuilder *)v23 buildResult];
-            if (v24)
+            v23 = [[SSSuggestionResultBuilder alloc] initWithSpotlightSuggestion:v22 queryContext:contextCopy];
+            buildResult = [(SSSuggestionResultBuilder *)v23 buildResult];
+            if (buildResult)
             {
-              [v8 addObject:v24];
+              [v8 addObject:buildResult];
             }
           }
         }
@@ -233,23 +233,23 @@
   return v8;
 }
 
-+ (id)buildResultsWithSuggestionsData:(id)a3 queryContext:(id)a4
++ (id)buildResultsWithSuggestionsData:(id)data queryContext:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dataCopy = data;
+  contextCopy = context;
+  if ([dataCopy count])
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = MEMORY[0x1E6964EA8];
-    v9 = [MEMORY[0x1E6964EA8] emptySuggestion];
-    v10 = [v6 searchString];
-    v11 = [v8 updatedSuggestionWithCurrentSuggestion:v9 userString:v10 tokens:MEMORY[0x1E695E0F0]];
+    emptySuggestion = [MEMORY[0x1E6964EA8] emptySuggestion];
+    searchString = [contextCopy searchString];
+    v11 = [v8 updatedSuggestionWithCurrentSuggestion:emptySuggestion userString:searchString tokens:MEMORY[0x1E695E0F0]];
 
     v12 = MEMORY[0x1E6964EA8];
-    v13 = [v6 searchString];
+    searchString2 = [contextCopy searchString];
     v25 = v11;
-    v14 = [v12 suggestionsWithCurrentSuggestion:v11 userQueryString:v13 suggestionData:v5 options:MEMORY[0x1E695E0F8]];
+    v14 = [v12 suggestionsWithCurrentSuggestion:v11 userQueryString:searchString2 suggestionData:dataCopy options:MEMORY[0x1E695E0F8]];
 
     v28 = 0u;
     v29 = 0u;
@@ -273,11 +273,11 @@
           v20 = *(*(&v26 + 1) + 8 * i);
           if ([v20 suggestionKind] == 2)
           {
-            v21 = [[SSSuggestionResultBuilder alloc] initWithSpotlightSuggestion:v20 queryContext:v6];
-            v22 = [(SSSuggestionResultBuilder *)v21 buildResult];
-            if (v22)
+            v21 = [[SSSuggestionResultBuilder alloc] initWithSpotlightSuggestion:v20 queryContext:contextCopy];
+            buildResult = [(SSSuggestionResultBuilder *)v21 buildResult];
+            if (buildResult)
             {
-              [v7 addObject:v22];
+              [v7 addObject:buildResult];
             }
           }
         }
@@ -299,34 +299,34 @@
   return v7;
 }
 
-- (SSSuggestionResultBuilder)initWithSpotlightSuggestion:(id)a3 queryContext:(id)a4
+- (SSSuggestionResultBuilder)initWithSpotlightSuggestion:(id)suggestion queryContext:(id)context
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  suggestionCopy = suggestion;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = SSSuggestionResultBuilder;
   v8 = [(SSSuggestionResultBuilder *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    [(SSResultBuilder *)v8 setQueryContext:v7];
-    v10 = [v7 searchString];
-    [(SSSuggestionResultBuilder *)v9 setSuggestionString:v10];
+    [(SSResultBuilder *)v8 setQueryContext:contextCopy];
+    searchString = [contextCopy searchString];
+    [(SSSuggestionResultBuilder *)v9 setSuggestionString:searchString];
 
-    v11 = [v7 searchString];
-    v12 = +[SPSearchSuggestionResult searchSuggestionRankingResultWithSpotlightSuggestion:query:sectionBundleIdentifier:queryId:](SPSearchSuggestionResult, "searchSuggestionRankingResultWithSpotlightSuggestion:query:sectionBundleIdentifier:queryId:", v6, v11, @"com.apple.searchd.suggestions", [v7 queryIdent]);
+    searchString2 = [contextCopy searchString];
+    v12 = +[SPSearchSuggestionResult searchSuggestionRankingResultWithSpotlightSuggestion:query:sectionBundleIdentifier:queryId:](SPSearchSuggestionResult, "searchSuggestionRankingResultWithSpotlightSuggestion:query:sectionBundleIdentifier:queryId:", suggestionCopy, searchString2, @"com.apple.searchd.suggestions", [contextCopy queryIdent]);
     [(SSResultBuilder *)v9 setResult:v12];
 
-    v13 = [(SSResultBuilder *)v9 result];
-    v14 = [v13 searchEntities];
-    v15 = [v14 lastObject];
-    [(SSSuggestionResultBuilder *)v9 setEntity:v15];
+    result = [(SSResultBuilder *)v9 result];
+    searchEntities = [result searchEntities];
+    lastObject = [searchEntities lastObject];
+    [(SSSuggestionResultBuilder *)v9 setEntity:lastObject];
 
-    [(SSSuggestionResultBuilder *)v9 setSpotlightSuggestion:v6];
-    v16 = [(SSResultBuilder *)v9 result];
-    v17 = [v16 completion];
-    v22[0] = v17;
+    [(SSSuggestionResultBuilder *)v9 setSpotlightSuggestion:suggestionCopy];
+    result2 = [(SSResultBuilder *)v9 result];
+    completion = [result2 completion];
+    v22[0] = completion;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
     [(SSResultBuilder *)v9 setMatchedStrings:v18];
   }
@@ -337,25 +337,25 @@
 
 - (id)buildResult
 {
-  v5 = [(SSSuggestionResultBuilder *)self suggestion];
-  if (v5)
+  suggestion = [(SSSuggestionResultBuilder *)self suggestion];
+  if (suggestion)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(SSSuggestionResultBuilder *)self spotlightSuggestion];
-    if (v7)
+    spotlightSuggestion = [(SSSuggestionResultBuilder *)self spotlightSuggestion];
+    if (spotlightSuggestion)
     {
-      v2 = v7;
+      v2 = spotlightSuggestion;
       v6 = 0;
     }
 
     else
     {
-      v3 = [(SSResultBuilder *)self result];
-      if (SSResultTypeIsServer([v3 type]))
+      result = [(SSResultBuilder *)self result];
+      if (SSResultTypeIsServer([result type]))
       {
 
         goto LABEL_10;
@@ -366,50 +366,50 @@
     }
   }
 
-  v8 = [(SSResultBuilder *)self result];
-  v9 = [v8 inlineCard];
+  result2 = [(SSResultBuilder *)self result];
+  inlineCard = [result2 inlineCard];
 
   if (v6)
   {
   }
 
-  if (!v5)
+  if (!suggestion)
   {
   }
 
-  if (!v9)
+  if (!inlineCard)
   {
-    v18 = [(SSResultBuilder *)self buildCompactCard];
-    v19 = [(SSResultBuilder *)self result];
-    [v19 setCompactCard:v18];
+    buildCompactCard = [(SSResultBuilder *)self buildCompactCard];
+    result3 = [(SSResultBuilder *)self result];
+    [result3 setCompactCard:buildCompactCard];
 
-    v20 = [(SSResultBuilder *)self buildInlineCard];
-    v21 = [(SSResultBuilder *)self result];
-    [v21 setInlineCard:v20];
+    buildInlineCard = [(SSResultBuilder *)self buildInlineCard];
+    result4 = [(SSResultBuilder *)self result];
+    [result4 setInlineCard:buildInlineCard];
 
-    v22 = [(SSResultBuilder *)self buildPreviewButtonItems];
-    v23 = [(SSResultBuilder *)self result];
-    v24 = [v23 inlineCard];
-    v25 = [v24 cardSections];
-    v26 = [v25 firstObject];
-    [v26 setPreviewButtonItems:v22];
+    buildPreviewButtonItems = [(SSResultBuilder *)self buildPreviewButtonItems];
+    result5 = [(SSResultBuilder *)self result];
+    inlineCard2 = [result5 inlineCard];
+    cardSections = [inlineCard2 cardSections];
+    firstObject = [cardSections firstObject];
+    [firstObject setPreviewButtonItems:buildPreviewButtonItems];
 
     goto LABEL_16;
   }
 
 LABEL_10:
-  v10 = [(SSResultBuilder *)self result];
-  v11 = [v10 inlineCard];
-  if (v11)
+  result6 = [(SSResultBuilder *)self result];
+  inlineCard3 = [result6 inlineCard];
+  if (inlineCard3)
   {
-    v12 = v11;
-    v13 = [(SSResultBuilder *)self result];
-    v14 = [v13 inlineCard];
-    v15 = [v14 cardSections];
-    v16 = [v15 firstObject];
-    v17 = [v16 command];
+    v12 = inlineCard3;
+    result7 = [(SSResultBuilder *)self result];
+    inlineCard4 = [result7 inlineCard];
+    cardSections2 = [inlineCard4 cardSections];
+    firstObject2 = [cardSections2 firstObject];
+    command = [firstObject2 command];
 
-    if (v17)
+    if (command)
     {
       goto LABEL_17;
     }
@@ -419,9 +419,9 @@ LABEL_10:
   {
   }
 
-  v22 = [(SSResultBuilder *)self buildInlineCard];
-  v23 = [(SSResultBuilder *)self result];
-  [v23 setInlineCard:v22];
+  buildPreviewButtonItems = [(SSResultBuilder *)self buildInlineCard];
+  result5 = [(SSResultBuilder *)self result];
+  [result5 setInlineCard:buildPreviewButtonItems];
 LABEL_16:
 
 LABEL_17:
@@ -432,32 +432,32 @@ LABEL_17:
 - (id)buildInlineCardSections
 {
   v67[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSResultBuilder *)self result];
-  if ([v3 type] == 32)
+  result = [(SSResultBuilder *)self result];
+  if ([result type] == 32)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SSResultBuilder *)self result];
-    v4 = [v5 type] == 38;
+    result2 = [(SSResultBuilder *)self result];
+    v4 = [result2 type] == 38;
   }
 
-  v6 = [(SSSuggestionResultBuilder *)self spotlightSuggestion];
+  spotlightSuggestion = [(SSSuggestionResultBuilder *)self spotlightSuggestion];
 
-  if (!v6)
+  if (!spotlightSuggestion)
   {
-    v16 = [(SSSuggestionResultBuilder *)self suggestion];
+    suggestion = [(SSSuggestionResultBuilder *)self suggestion];
 
-    if (v16)
+    if (suggestion)
     {
-      v7 = [(SSSuggestionResultBuilder *)self suggestion];
-      v17 = [v7 type];
-      v18 = [(SSSuggestionResultBuilder *)self entity];
-      v19 = [v18 isContactEntitySearch];
+      suggestion2 = [(SSSuggestionResultBuilder *)self suggestion];
+      type = [suggestion2 type];
+      entity = [(SSSuggestionResultBuilder *)self entity];
+      isContactEntitySearch = [entity isContactEntitySearch];
 
-      if ((v17 & 0xFFFFFFFD) == 0xC)
+      if ((type & 0xFFFFFFFD) == 0xC)
       {
         v20 = 4;
       }
@@ -467,112 +467,112 @@ LABEL_17:
         v20 = 3;
       }
 
-      if (v17 > 0xE || ((1 << v17) & 0x5800) == 0)
+      if (type > 0xE || ((1 << type) & 0x5800) == 0)
       {
-        v21 = [(SSSuggestionResultBuilder *)self entity];
-        v22 = [v21 isAppEntitySearch];
+        entity2 = [(SSSuggestionResultBuilder *)self entity];
+        isAppEntitySearch = [entity2 isAppEntitySearch];
 
-        if (v22)
+        if (isAppEntitySearch)
         {
           v20 = 2;
         }
 
         else
         {
-          v20 = v19;
+          v20 = isContactEntitySearch;
         }
       }
 
-      v9 = objc_opt_new();
-      v23 = [v7 bundleIdentifier];
-      [v9 setBundleIdentifier:v23];
+      result8 = objc_opt_new();
+      bundleIdentifier = [suggestion2 bundleIdentifier];
+      [result8 setBundleIdentifier:bundleIdentifier];
 
-      v24 = objc_opt_new();
-      v25 = [(SSSuggestionResultBuilder *)self buildHighlightedTextForSuggestion];
-      [(SSContactResultBuilder *)v24 setSuggestionText:v25];
+      inlineCard2 = objc_opt_new();
+      buildHighlightedTextForSuggestion = [(SSSuggestionResultBuilder *)self buildHighlightedTextForSuggestion];
+      [(SSContactResultBuilder *)inlineCard2 setSuggestionText:buildHighlightedTextForSuggestion];
 
-      v26 = [(SSContactResultBuilder *)v24 suggestionText];
-      [v26 setMaxLines:1];
+      suggestionText = [(SSContactResultBuilder *)inlineCard2 suggestionText];
+      [suggestionText setMaxLines:1];
 
-      [(SSContactResultBuilder *)v24 setSuggestionType:v20];
+      [(SSContactResultBuilder *)inlineCard2 setSuggestionType:v20];
       v27 = MEMORY[0x1E69CA3A0];
-      v28 = [v7 detailText];
-      v29 = [v27 textWithString:v28];
-      [(SSContactResultBuilder *)v24 setDetailText:v29];
+      detailText = [suggestion2 detailText];
+      v29 = [v27 textWithString:detailText];
+      [(SSContactResultBuilder *)inlineCard2 setDetailText:v29];
 
-      v66 = v9;
+      v66 = result8;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
-      [(SSContactResultBuilder *)v24 setPunchoutOptions:v30];
+      [(SSContactResultBuilder *)inlineCard2 setPunchoutOptions:v30];
 
-      v31 = [(SSSuggestionResultBuilder *)self buildSymbolImage];
-      [(SSContactResultBuilder *)v24 setThumbnail:v31];
+      buildSymbolImage = [(SSSuggestionResultBuilder *)self buildSymbolImage];
+      [(SSContactResultBuilder *)inlineCard2 setThumbnail:buildSymbolImage];
 
-      v32 = [(SSSuggestionResultBuilder *)self buildCommand];
-      [(SSContactResultBuilder *)v24 setCommand:v32];
+      buildCommand = [(SSSuggestionResultBuilder *)self buildCommand];
+      [(SSContactResultBuilder *)inlineCard2 setCommand:buildCommand];
 
-      v65 = v24;
-      v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
+      v65 = inlineCard2;
+      cardSections2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
       goto LABEL_18;
     }
 
     if (v4)
     {
-      v34 = [(SSSuggestionResultBuilder *)self entity];
-      v35 = [v34 isContactEntitySearch];
+      entity3 = [(SSSuggestionResultBuilder *)self entity];
+      isContactEntitySearch2 = [entity3 isContactEntitySearch];
 
-      if (v35)
+      if (isContactEntitySearch2)
       {
-        v7 = [(SSSuggestionResultBuilder *)self entity];
+        suggestion2 = [(SSSuggestionResultBuilder *)self entity];
       }
 
       else
       {
-        v7 = 0;
+        suggestion2 = 0;
       }
 
-      v9 = objc_opt_new();
-      v55 = [(SSResultBuilder *)self result];
-      v56 = [v55 resultBundleId];
-      [v9 setBundleIdentifier:v56];
+      result8 = objc_opt_new();
+      result3 = [(SSResultBuilder *)self result];
+      resultBundleId = [result3 resultBundleId];
+      [result8 setBundleIdentifier:resultBundleId];
 
       v57 = [SSContactResultBuilder alloc];
-      v58 = [(SSResultBuilder *)self result];
-      v59 = [v7 contact];
-      v24 = [(SSContactResultBuilder *)v57 initWithResult:v58 contactEntity:v7 contact:v59];
+      result4 = [(SSResultBuilder *)self result];
+      contact = [suggestion2 contact];
+      inlineCard2 = [(SSContactResultBuilder *)v57 initWithResult:result4 contactEntity:suggestion2 contact:contact];
 
-      v48 = [(SSResultBuilder *)v24 buildCompactCardSection];
-      v64 = v48;
+      buildCompactCardSection = [(SSResultBuilder *)inlineCard2 buildCompactCardSection];
+      v64 = buildCompactCardSection;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
 LABEL_31:
 
       goto LABEL_32;
     }
 
-    v36 = [(SSResultBuilder *)self result];
-    v37 = [v36 inlineCard];
-    v38 = [v37 cardSections];
-    v7 = [v38 firstObject];
+    result5 = [(SSResultBuilder *)self result];
+    inlineCard = [result5 inlineCard];
+    cardSections = [inlineCard cardSections];
+    suggestion2 = [cardSections firstObject];
 
-    if (v7 && ([v7 command], v39 = objc_claimAutoreleasedReturnValue(), v39, !v39))
+    if (suggestion2 && ([suggestion2 command], v39 = objc_claimAutoreleasedReturnValue(), v39, !v39))
     {
-      v62 = [(SSSuggestionResultBuilder *)self buildCommand];
-      [v7 setCommand:v62];
+      buildCommand2 = [(SSSuggestionResultBuilder *)self buildCommand];
+      [suggestion2 setCommand:buildCommand2];
     }
 
     else
     {
-      v40 = [(SSResultBuilder *)self result];
-      IsServer = SSResultTypeIsServer([v40 type]);
+      result6 = [(SSResultBuilder *)self result];
+      IsServer = SSResultTypeIsServer([result6 type]);
 
       if ((IsServer & 1) == 0)
       {
-        v9 = objc_opt_new();
-        v42 = [(SSSuggestionResultBuilder *)self entity];
-        v43 = [v42 symbolName];
-        v44 = v43;
-        if (v43)
+        result8 = objc_opt_new();
+        entity4 = [(SSSuggestionResultBuilder *)self entity];
+        symbolName = [entity4 symbolName];
+        v44 = symbolName;
+        if (symbolName)
         {
-          v45 = v43;
+          v45 = symbolName;
         }
 
         else
@@ -580,72 +580,72 @@ LABEL_31:
           v45 = @"magnifyingglass";
         }
 
-        [v9 setSymbolName:v45];
+        [result8 setSymbolName:v45];
 
-        [v9 setIsTemplate:1];
-        v24 = objc_opt_new();
-        v46 = [(SSResultBuilder *)self result];
-        v47 = [v46 resultBundleId];
-        [(SSContactResultBuilder *)v24 setBundleIdentifier:v47];
+        [result8 setIsTemplate:1];
+        inlineCard2 = objc_opt_new();
+        result7 = [(SSResultBuilder *)self result];
+        resultBundleId2 = [result7 resultBundleId];
+        [(SSContactResultBuilder *)inlineCard2 setBundleIdentifier:resultBundleId2];
 
-        v48 = objc_opt_new();
-        [v48 setThumbnail:v9];
-        [v48 setShouldUseCompactDisplay:1];
+        buildCompactCardSection = objc_opt_new();
+        [buildCompactCardSection setThumbnail:result8];
+        [buildCompactCardSection setShouldUseCompactDisplay:1];
         v49 = MEMORY[0x1E69CA3A0];
-        v50 = [(SSSuggestionResultBuilder *)self suggestionString];
-        v51 = [v49 textWithString:v50];
-        [v48 setTitle:v51];
+        suggestionString = [(SSSuggestionResultBuilder *)self suggestionString];
+        v51 = [v49 textWithString:suggestionString];
+        [buildCompactCardSection setTitle:v51];
 
-        v52 = [v48 title];
-        [v52 setMaxLines:1];
+        title = [buildCompactCardSection title];
+        [title setMaxLines:1];
 
         v53 = objc_opt_new();
-        v54 = [(SSSuggestionResultBuilder *)self suggestionString];
-        [v53 setSearchString:v54];
+        suggestionString2 = [(SSSuggestionResultBuilder *)self suggestionString];
+        [v53 setSearchString:suggestionString2];
 
         [v53 setQuerySource:1];
-        [v48 setCommand:v53];
-        v63 = v48;
+        [buildCompactCardSection setCommand:v53];
+        v63 = buildCompactCardSection;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v63 count:1];
 
         goto LABEL_31;
       }
     }
 
-    v9 = [(SSResultBuilder *)self result];
-    v24 = [v9 inlineCard];
-    v33 = [(SSContactResultBuilder *)v24 cardSections];
+    result8 = [(SSResultBuilder *)self result];
+    inlineCard2 = [result8 inlineCard];
+    cardSections2 = [(SSContactResultBuilder *)inlineCard2 cardSections];
 LABEL_18:
-    v15 = v33;
+    v15 = cardSections2;
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v7 = objc_opt_new();
-  v8 = [(SSSuggestionResultBuilder *)self buildSymbolImage];
-  [v7 setThumbnail:v8];
+  suggestion2 = objc_opt_new();
+  buildSymbolImage2 = [(SSSuggestionResultBuilder *)self buildSymbolImage];
+  [suggestion2 setThumbnail:buildSymbolImage2];
 
-  [v7 setShouldUseCompactDisplay:1];
-  v9 = [(SSSuggestionResultBuilder *)self buildHighlightedTextForSuggestion];
-  v10 = [(SSSuggestionResultBuilder *)self entity];
-  v11 = [v10 isPhotosEntitySearch];
+  [suggestion2 setShouldUseCompactDisplay:1];
+  result8 = [(SSSuggestionResultBuilder *)self buildHighlightedTextForSuggestion];
+  entity5 = [(SSSuggestionResultBuilder *)self entity];
+  isPhotosEntitySearch = [entity5 isPhotosEntitySearch];
 
-  if (v11)
+  if (isPhotosEntitySearch)
   {
-    v12 = [(SSSuggestionResultBuilder *)self buildPhotoTextAndGlyphForSuggestion:v9];
+    v12 = [(SSSuggestionResultBuilder *)self buildPhotoTextAndGlyphForSuggestion:result8];
 
-    v9 = v12;
+    result8 = v12;
   }
 
-  [v7 setTitle:v9];
-  v13 = [v7 title];
-  [v13 setMaxLines:1];
+  [suggestion2 setTitle:result8];
+  title2 = [suggestion2 title];
+  [title2 setMaxLines:1];
 
-  v14 = [(SSSuggestionResultBuilder *)self buildCommand];
-  [v7 setCommand:v14];
+  buildCommand3 = [(SSSuggestionResultBuilder *)self buildCommand];
+  [suggestion2 setCommand:buildCommand3];
 
-  v67[0] = v7;
+  v67[0] = suggestion2;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:1];
 LABEL_33:
 
@@ -656,36 +656,36 @@ LABEL_33:
 
 - (id)buildSymbolImage
 {
-  v3 = [(SSSuggestionResultBuilder *)self entity];
-  v4 = v3;
-  if (!v3)
+  entity = [(SSSuggestionResultBuilder *)self entity];
+  v4 = entity;
+  if (!entity)
   {
-    v6 = [(SSSuggestionResultBuilder *)self suggestion];
-    if (!v6)
+    suggestion = [(SSSuggestionResultBuilder *)self suggestion];
+    if (!suggestion)
     {
       goto LABEL_8;
     }
 
-    v7 = v6;
-    v8 = [(SSResultBuilder *)self result];
-    IsLocalSuggestion = SSResultTypeIsLocalSuggestion([v8 type]);
+    v7 = suggestion;
+    result = [(SSResultBuilder *)self result];
+    IsLocalSuggestion = SSResultTypeIsLocalSuggestion([result type]);
 
     if ((IsLocalSuggestion & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    v5 = @"magnifyingglass";
+    symbolName = @"magnifyingglass";
 LABEL_7:
     v10 = objc_opt_new();
-    [v10 setSymbolName:v5];
+    [v10 setSymbolName:symbolName];
     [v10 setIsTemplate:1];
 
     goto LABEL_9;
   }
 
-  v5 = [v3 symbolName];
-  if (v5)
+  symbolName = [entity symbolName];
+  if (symbolName)
   {
     goto LABEL_7;
   }
@@ -699,156 +699,156 @@ LABEL_9:
 
 - (id)buildCommand
 {
-  v3 = [(SSSuggestionResultBuilder *)self spotlightSuggestion];
-  if (v3)
+  spotlightSuggestion = [(SSSuggestionResultBuilder *)self spotlightSuggestion];
+  if (spotlightSuggestion)
   {
-    v4 = v3;
-    v5 = [(SSSuggestionResultBuilder *)self entity];
+    v4 = spotlightSuggestion;
+    entity = [(SSSuggestionResultBuilder *)self entity];
 
-    if (v5)
+    if (entity)
     {
-      v6 = [(SSSuggestionResultBuilder *)self entity];
-      v7 = [v6 command];
+      entity2 = [(SSSuggestionResultBuilder *)self entity];
+      command = [entity2 command];
 
       goto LABEL_25;
     }
   }
 
-  v8 = [(SSSuggestionResultBuilder *)self suggestion];
+  suggestion = [(SSSuggestionResultBuilder *)self suggestion];
 
-  if (v8)
+  if (suggestion)
   {
-    v9 = [(SSSuggestionResultBuilder *)self suggestion];
-    if ([v9 type] != 12 && objc_msgSend(v9, "type") != 14)
+    suggestion2 = [(SSSuggestionResultBuilder *)self suggestion];
+    if ([suggestion2 type] != 12 && objc_msgSend(suggestion2, "type") != 14)
     {
-      v32 = [(SSResultBuilder *)self result];
-      IsLocalSuggestion = SSResultTypeIsLocalSuggestion([v32 type]);
+      result = [(SSResultBuilder *)self result];
+      IsLocalSuggestion = SSResultTypeIsLocalSuggestion([result type]);
 
       if (IsLocalSuggestion)
       {
-        v7 = objc_opt_new();
-        v34 = [(SSSuggestionResultBuilder *)self entity];
-        v35 = [v34 searchString];
-        [v7 setSearchString:v35];
+        command = objc_opt_new();
+        entity3 = [(SSSuggestionResultBuilder *)self entity];
+        searchString = [entity3 searchString];
+        [command setSearchString:searchString];
 
-        [v7 setQuerySource:1];
+        [command setQuerySource:1];
       }
 
       else
       {
-        v7 = 0;
+        command = 0;
       }
 
       goto LABEL_24;
     }
 
-    v7 = objc_opt_new();
-    v10 = [(SSResultBuilder *)self result];
-    v11 = [(__CFString *)v10 title];
-    v12 = [v11 text];
-    if (v12)
+    command = objc_opt_new();
+    result2 = [(SSResultBuilder *)self result];
+    title = [(__CFString *)result2 title];
+    text = [title text];
+    if (text)
     {
-      [v7 setSearchString:v12];
+      [command setSearchString:text];
     }
 
     else
     {
-      v30 = [(SSSuggestionResultBuilder *)self suggestionString];
-      [v7 setSearchString:v30];
+      suggestionString = [(SSSuggestionResultBuilder *)self suggestionString];
+      [command setSearchString:suggestionString];
     }
   }
 
   else
   {
-    v13 = [(SSSuggestionResultBuilder *)self entity];
-    v14 = [v13 isContactEntitySearch];
+    entity4 = [(SSSuggestionResultBuilder *)self entity];
+    isContactEntitySearch = [entity4 isContactEntitySearch];
 
-    if (v14)
+    if (isContactEntitySearch)
     {
-      v9 = [(SSSuggestionResultBuilder *)self entity];
-      v7 = objc_opt_new();
-      v15 = [v9 tokenText];
-      [v7 setTokenString:v15];
+      suggestion2 = [(SSSuggestionResultBuilder *)self entity];
+      command = objc_opt_new();
+      tokenText = [suggestion2 tokenText];
+      [command setTokenString:tokenText];
 
-      v16 = [v9 personQueryIdentifier];
-      v17 = v16;
+      personQueryIdentifier = [suggestion2 personQueryIdentifier];
+      v17 = personQueryIdentifier;
       v18 = &stru_1F556FE60;
-      if (v16)
+      if (personQueryIdentifier)
       {
-        v18 = v16;
+        v18 = personQueryIdentifier;
       }
 
-      v10 = v18;
+      result2 = v18;
 
-      v19 = [v9 contactIdentifier];
+      contactIdentifier = [suggestion2 contactIdentifier];
 
-      if (v19)
+      if (contactIdentifier)
       {
-        v20 = [v9 contactIdentifier];
-        v21 = [SPSearchContactEntity updatePersonQueryIdentifier:v10 withContactIdentifier:v20];
+        contactIdentifier2 = [suggestion2 contactIdentifier];
+        v21 = [SPSearchContactEntity updatePersonQueryIdentifier:result2 withContactIdentifier:contactIdentifier2];
 
-        v10 = v21;
+        result2 = v21;
       }
 
-      v22 = [v9 personIdentifier];
+      personIdentifier = [suggestion2 personIdentifier];
 
-      if (v22)
+      if (personIdentifier)
       {
-        v23 = [v9 personIdentifier];
-        v24 = [SPSearchContactEntity updatePersonQueryIdentifier:v10 withPersonIdentifier:v23];
+        personIdentifier2 = [suggestion2 personIdentifier];
+        v24 = [SPSearchContactEntity updatePersonQueryIdentifier:result2 withPersonIdentifier:personIdentifier2];
 
-        v10 = v24;
+        result2 = v24;
       }
 
-      [v7 setEntityIdentifier:v10];
-      [v7 setEntityType:2];
-      v25 = [(SSSuggestionResultBuilder *)self buildSymbolImage];
-      [v7 setSymbolImage:v25];
+      [command setEntityIdentifier:result2];
+      [command setEntityType:2];
+      buildSymbolImage = [(SSSuggestionResultBuilder *)self buildSymbolImage];
+      [command setSymbolImage:buildSymbolImage];
 
-      v26 = [v7 symbolImage];
-      [v7 setTokenImage:v26];
+      symbolImage = [command symbolImage];
+      [command setTokenImage:symbolImage];
 
       goto LABEL_23;
     }
 
-    v27 = [(SSResultBuilder *)self result];
-    v28 = [v27 resultBundleId];
-    v29 = [v28 isEqual:@"com.apple.spotlight.related_search_as_typed.web"];
+    result3 = [(SSResultBuilder *)self result];
+    resultBundleId = [result3 resultBundleId];
+    v29 = [resultBundleId isEqual:@"com.apple.spotlight.related_search_as_typed.web"];
 
     if (!v29)
     {
-      v7 = objc_opt_new();
-      v36 = [(SSResultBuilder *)self result];
-      v37 = [v36 title];
-      v38 = [v37 text];
-      if (v38)
+      command = objc_opt_new();
+      result4 = [(SSResultBuilder *)self result];
+      title2 = [result4 title];
+      text2 = [title2 text];
+      if (text2)
       {
-        [v7 setSearchString:v38];
+        [command setSearchString:text2];
       }
 
       else
       {
-        v40 = [(SSSuggestionResultBuilder *)self suggestionString];
-        [v7 setSearchString:v40];
+        suggestionString2 = [(SSSuggestionResultBuilder *)self suggestionString];
+        [command setSearchString:suggestionString2];
       }
 
-      [v7 setQuerySource:2];
+      [command setQuerySource:2];
       goto LABEL_25;
     }
 
-    v7 = objc_opt_new();
-    v9 = [(SSResultBuilder *)self result];
-    v10 = [v9 title];
-    v11 = [(__CFString *)v10 text];
-    if (v11)
+    command = objc_opt_new();
+    suggestion2 = [(SSResultBuilder *)self result];
+    result2 = [suggestion2 title];
+    title = [(__CFString *)result2 text];
+    if (title)
     {
-      [v7 setSearchString:v11];
+      [command setSearchString:title];
     }
 
     else
     {
-      v39 = [(SSSuggestionResultBuilder *)self suggestionString];
-      [v7 setSearchString:v39];
+      suggestionString3 = [(SSSuggestionResultBuilder *)self suggestionString];
+      [command setSearchString:suggestionString3];
     }
   }
 
@@ -857,40 +857,40 @@ LABEL_24:
 
 LABEL_25:
 
-  return v7;
+  return command;
 }
 
 - (id)buildHighlightedTextForSuggestion
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSResultBuilder *)self matchedStrings];
-  v4 = [v3 firstObject];
+  matchedStrings = [(SSResultBuilder *)self matchedStrings];
+  firstObject = [matchedStrings firstObject];
 
-  v5 = [(SSResultBuilder *)self queryContext];
-  v6 = [v5 searchEntities];
-  v7 = [v6 count];
-  v8 = [(SSResultBuilder *)self queryContext];
-  v9 = v8;
+  queryContext = [(SSResultBuilder *)self queryContext];
+  searchEntities = [queryContext searchEntities];
+  v7 = [searchEntities count];
+  queryContext2 = [(SSResultBuilder *)self queryContext];
+  v9 = queryContext2;
   if (v7)
   {
-    v10 = [v8 searchEntities];
-    v11 = [v10 firstObject];
-    v12 = [v11 displayString];
+    searchEntities2 = [queryContext2 searchEntities];
+    firstObject2 = [searchEntities2 firstObject];
+    displayString = [firstObject2 displayString];
   }
 
   else
   {
-    v12 = [v8 searchString];
+    displayString = [queryContext2 searchString];
   }
 
   v13 = objc_opt_new();
-  [v13 setText:v4];
+  [v13 setText:firstObject];
   [v13 setIsEmphasized:1];
   v33[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
   v15 = objc_opt_new();
   [v15 setFormattedTextPieces:v14];
-  if (([v4 isEqual:v12] & 1) == 0)
+  if (([firstObject isEqual:displayString] & 1) == 0)
   {
     v16 = [(SSResultBuilder *)self buildHighlightedMatchedTextWithTitle:0 headTruncation:0];
     v17 = v16;
@@ -911,34 +911,34 @@ LABEL_25:
 
   if (SSDefaultsGetState(6uLL))
   {
-    v20 = [(SSSuggestionResultBuilder *)self spotlightSuggestion];
+    spotlightSuggestion = [(SSSuggestionResultBuilder *)self spotlightSuggestion];
 
-    if (v20)
+    if (spotlightSuggestion)
     {
-      v21 = [(SSResultBuilder *)self result];
-      v22 = [v21 type];
+      result = [(SSResultBuilder *)self result];
+      type = [result type];
 
-      if (v22 == 31)
+      if (type == 31)
       {
         v23 = @" L";
       }
 
       else
       {
-        v24 = [(SSResultBuilder *)self result];
-        v25 = [v24 type];
+        result2 = [(SSResultBuilder *)self result];
+        type2 = [result2 type];
 
-        if (v25 == 34)
+        if (type2 == 34)
         {
           v23 = @" N";
         }
 
         else
         {
-          v26 = [(SSResultBuilder *)self result];
-          v27 = [v26 type];
+          result3 = [(SSResultBuilder *)self result];
+          type3 = [result3 type];
 
-          if (v27 != 39)
+          if (type3 != 39)
           {
             goto LABEL_18;
           }
@@ -950,8 +950,8 @@ LABEL_25:
       v28 = objc_opt_new();
       [v28 setText:v23];
       [v28 setTextColor:3];
-      v29 = [v15 formattedTextPieces];
-      v30 = [v29 arrayByAddingObject:v28];
+      formattedTextPieces = [v15 formattedTextPieces];
+      v30 = [formattedTextPieces arrayByAddingObject:v28];
       [v15 setFormattedTextPieces:v30];
     }
   }
@@ -963,10 +963,10 @@ LABEL_18:
   return v15;
 }
 
-- (id)buildPhotoTextAndGlyphForSuggestion:(id)a3
+- (id)buildPhotoTextAndGlyphForSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v38 = [v3 formattedTextPieces];
+  suggestionCopy = suggestion;
+  formattedTextPieces = [suggestionCopy formattedTextPieces];
   v4 = objc_opt_new();
   [v4 setSymbolName:@"photo.on.rectangle"];
   [v4 setIsTemplate:1];
@@ -996,7 +996,7 @@ LABEL_18:
 
       if (v11 < [v9 count] - 1)
       {
-        [v10 addObjectsFromArray:v38];
+        [v10 addObjectsFromArray:formattedTextPieces];
       }
 
       ++v11;
@@ -1005,7 +1005,7 @@ LABEL_18:
     while (v11 < [v9 count]);
   }
 
-  v37 = v3;
+  v37 = suggestionCopy;
   if ([v10 count])
   {
     v15 = 0;

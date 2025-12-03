@@ -1,37 +1,37 @@
 @interface BRCPipeline
-- (BOOL)_buildJobPlanForJob:(id)a3 error:(id *)a4;
-- (BRCPipeline)initWithName:(id)a3 stageHandlers:(id)a4;
-- (id)_generateProgressForJob:(id)a3;
-- (id)addJob:(id)a3 moreComing:(BOOL)a4;
+- (BOOL)_buildJobPlanForJob:(id)job error:(id *)error;
+- (BRCPipeline)initWithName:(id)name stageHandlers:(id)handlers;
+- (id)_generateProgressForJob:(id)job;
+- (id)addJob:(id)job moreComing:(BOOL)coming;
 - (void)_armResumeTimer;
-- (void)_completedJob:(id)a3 forStage:(unint64_t)a4 recoveryStage:(unint64_t)a5 error:(id)a6;
+- (void)_completedJob:(id)job forStage:(unint64_t)stage recoveryStage:(unint64_t)recoveryStage error:(id)error;
 - (void)_computeStageStringifier;
 - (void)_pauseStageHandlerScheduling;
 - (void)_resumeStageHandlerScheduling;
-- (void)_sendJob:(id)a3 toStageHandlerWithStageID:(unint64_t)a4;
+- (void)_sendJob:(id)job toStageHandlerWithStageID:(unint64_t)d;
 - (void)_setStageJobCompletionHandlers;
 - (void)_validateStageHandlers;
-- (void)dumpToContext:(id)a3;
+- (void)dumpToContext:(id)context;
 @end
 
 @implementation BRCPipeline
 
-- (BRCPipeline)initWithName:(id)a3 stageHandlers:(id)a4
+- (BRCPipeline)initWithName:(id)name stageHandlers:(id)handlers
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  handlersCopy = handlers;
   v22.receiver = self;
   v22.super_class = BRCPipeline;
   v9 = [(BRCPipeline *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    v11 = [v7 stringByAppendingString:@".queue"];
-    v12 = [v11 UTF8String];
+    objc_storeStrong(&v9->_name, name);
+    v11 = [nameCopy stringByAppendingString:@".queue"];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(v13, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v12, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
 
     queue = v10->_queue;
     v10->_queue = v15;
@@ -40,7 +40,7 @@
     cancelledJobs = v10->_cancelledJobs;
     v10->_cancelledJobs = v17;
 
-    v19 = [v8 copy];
+    v19 = [handlersCopy copy];
     stageHandlers = v10->_stageHandlers;
     v10->_stageHandlers = v19;
 
@@ -52,13 +52,13 @@
   return v10;
 }
 
-- (void)_completedJob:(id)a3 forStage:(unint64_t)a4 recoveryStage:(unint64_t)a5 error:(id)a6
+- (void)_completedJob:(id)job forStage:(unint64_t)stage recoveryStage:(unint64_t)recoveryStage error:(id)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  jobCopy = job;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v10 activeStageID] != a4)
+  if ([jobCopy activeStageID] != stage)
   {
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
@@ -66,7 +66,7 @@
     {
       v28 = (*(self->_stageStringifier + 2))();
       v29 = 138412802;
-      v30 = v10;
+      v30 = jobCopy;
       v31 = 2112;
       v32 = v28;
       v33 = 2112;
@@ -78,46 +78,46 @@
   }
 
   v12 = [(NSMutableSet *)self->_cancelledJobs count];
-  [(NSMutableSet *)self->_cancelledJobs removeObject:v10];
+  [(NSMutableSet *)self->_cancelledJobs removeObject:jobCopy];
   v13 = [(NSMutableSet *)self->_cancelledJobs count];
-  if (!v11 && v12 != v13)
+  if (!errorCopy && v12 != v13)
   {
-    v11 = [MEMORY[0x277CCA9B8] brc_errorOperationCancelled];
+    errorCopy = [MEMORY[0x277CCA9B8] brc_errorOperationCancelled];
   }
 
-  if (v11)
+  if (errorCopy)
   {
-    [v10 completeWithError:v11];
+    [jobCopy completeWithError:errorCopy];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+  if (recoveryStage == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [v10 advanceJobToNextStage];
-    if (v17 == 0x7FFFFFFFFFFFFFFFLL)
+    advanceJobToNextStage = [jobCopy advanceJobToNextStage];
+    if (advanceJobToNextStage == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v10 completeWithError:0];
+      [jobCopy completeWithError:0];
       goto LABEL_11;
     }
 
-    v24 = v17;
-    v22 = self;
-    v23 = v10;
+    recoveryStageCopy = advanceJobToNextStage;
+    selfCopy2 = self;
+    v23 = jobCopy;
 LABEL_20:
-    [(BRCPipeline *)v22 _sendJob:v23 toStageHandlerWithStageID:v24];
+    [(BRCPipeline *)selfCopy2 _sendJob:v23 toStageHandlerWithStageID:recoveryStageCopy];
     goto LABEL_11;
   }
 
-  if ([(NSArray *)self->_stageHandlers count]> a5)
+  if ([(NSArray *)self->_stageHandlers count]> recoveryStage)
   {
     v18 = brc_bread_crumbs();
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(NSArray *)self->_stageHandlers objectAtIndexedSubscript:a5];
-      v21 = [(NSArray *)self->_stageHandlers objectAtIndexedSubscript:a4];
+      v20 = [(NSArray *)self->_stageHandlers objectAtIndexedSubscript:recoveryStage];
+      v21 = [(NSArray *)self->_stageHandlers objectAtIndexedSubscript:stage];
       v29 = 138412802;
       v30 = v20;
       v31 = 2112;
@@ -127,10 +127,10 @@ LABEL_20:
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_DEFAULT, "[WARNING] Found recovery stage %@ after executing %@%@", &v29, 0x20u);
     }
 
-    [v10 advanceToRecoveryStage:a5];
-    v22 = self;
-    v23 = v10;
-    v24 = a5;
+    [jobCopy advanceToRecoveryStage:recoveryStage];
+    selfCopy2 = self;
+    v23 = jobCopy;
+    recoveryStageCopy = recoveryStage;
     goto LABEL_20;
   }
 
@@ -142,7 +142,7 @@ LABEL_20:
   }
 
   v27 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:@"unreachable: Recovery stage handler is out of index"];
-  [v10 completeWithError:v27];
+  [jobCopy completeWithError:v27];
 
 LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
@@ -171,13 +171,13 @@ LABEL_11:
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 stageID];
+        stageID = [v7 stageID];
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __45__BRCPipeline__setStageJobCompletionHandlers__block_invoke;
         v10[3] = &unk_278506468;
         objc_copyWeak(v11, &location);
-        v11[1] = v8;
+        v11[1] = stageID;
         [v7 setupWithInternalPipelineJobCompletionHandler:v10];
         objc_destroyWeak(v11);
       }
@@ -320,10 +320,10 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
   return v9;
 }
 
-- (BOOL)_buildJobPlanForJob:(id)a3 error:(id *)a4
+- (BOOL)_buildJobPlanForJob:(id)job error:(id *)error
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  jobCopy = job;
   v7 = objc_opt_new();
   v66 = 0u;
   v67 = 0u;
@@ -334,9 +334,9 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
   if (v9)
   {
     v10 = v9;
-    v54 = a4;
+    errorCopy = error;
     v55 = v8;
-    v59 = v6;
+    v59 = jobCopy;
     v60 = 0;
     v11 = *v67;
     v12 = &selRef_removeDeliveredNotificationsMatchingPredicate_;
@@ -360,7 +360,7 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
           goto LABEL_26;
         }
 
-        if (![v14 needsToHandleJob:v6])
+        if (![v14 needsToHandleJob:jobCopy])
         {
           goto LABEL_26;
         }
@@ -371,12 +371,12 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
           goto LABEL_26;
         }
 
-        v15 = [v14 requestedAdditionalStages];
+        requestedAdditionalStages = [v14 requestedAdditionalStages];
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v16 = v15;
+        v16 = requestedAdditionalStages;
         v17 = [v16 countByEnumeratingWithState:&v62 objects:v78 count:16];
         if (!v17)
         {
@@ -397,10 +397,10 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
             }
 
             v21 = *(*(&v62 + 1) + 8 * i);
-            v22 = [v21 unsignedIntegerValue];
-            if (([v7 containsIndex:v22] & 1) == 0)
+            unsignedIntegerValue = [v21 unsignedIntegerValue];
+            if (([v7 containsIndex:unsignedIntegerValue] & 1) == 0)
             {
-              if (v22 >= [(NSArray *)self->_stageHandlers count])
+              if (unsignedIntegerValue >= [(NSArray *)self->_stageHandlers count])
               {
                 v31 = brc_bread_crumbs();
                 v32 = brc_default_log();
@@ -409,7 +409,7 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
                   [BRCPipeline _buildJobPlanForJob:error:];
                 }
 
-                [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Invalid additional index %lu", v22}];
+                [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Invalid additional index %lu", unsignedIntegerValue}];
                 v34 = v33 = v55;
                 if (v34)
                 {
@@ -421,7 +421,7 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
                     *buf = 136315906;
                     v71 = "[BRCPipeline _buildJobPlanForJob:error:]";
                     v72 = 2080;
-                    if (!v54)
+                    if (!errorCopy)
                     {
                       v50 = "(ignored by caller)";
                     }
@@ -437,10 +437,10 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
                   v7 = v56;
                 }
 
-                if (v54)
+                if (errorCopy)
                 {
                   v37 = v34;
-                  *v54 = v34;
+                  *errorCopy = v34;
                 }
 
                 goto LABEL_53;
@@ -448,8 +448,8 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
 
               v23 = v7;
               v24 = v18;
-              v25 = self;
-              v26 = [(NSArray *)self->_stageHandlers objectAtIndexedSubscript:v22];
+              selfCopy = self;
+              v26 = [(NSArray *)self->_stageHandlers objectAtIndexedSubscript:unsignedIntegerValue];
               if (!v26)
               {
                 v34 = 0;
@@ -461,8 +461,8 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
                   [BRCPipeline _buildJobPlanForJob:error:];
                 }
 
-                v40 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: No additional stage handler found %lu", v22}];
-                v41 = v54;
+                v40 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: No additional stage handler found %lu", unsignedIntegerValue}];
+                v41 = errorCopy;
                 v33 = v55;
                 if (v40)
                 {
@@ -477,7 +477,7 @@ __CFString *__39__BRCPipeline__computeStageStringifier__block_invoke(uint64_t a1
                   *buf = 136315906;
                   v71 = "[BRCPipeline _buildJobPlanForJob:error:]";
                   v72 = 2080;
-                  if (!v54)
+                  if (!errorCopy)
                   {
                     v44 = "(ignored by caller)";
                   }
@@ -493,7 +493,7 @@ LABEL_50:
                 }
 
 LABEL_53:
-                v6 = v59;
+                jobCopy = v59;
 
                 v30 = 0;
                 v29 = v60;
@@ -510,8 +510,8 @@ LABEL_53:
                   [BRCPipeline _buildJobPlanForJob:error:];
                 }
 
-                v40 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Invalid additional stage handler %lu", v22}];
-                v41 = v54;
+                v40 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Invalid additional stage handler %lu", unsignedIntegerValue}];
+                v41 = errorCopy;
                 v33 = v55;
                 v7 = v23;
                 if (v40)
@@ -527,7 +527,7 @@ LABEL_53:
                   *buf = 136315906;
                   v71 = "[BRCPipeline _buildJobPlanForJob:error:]";
                   v72 = 2080;
-                  if (!v54)
+                  if (!errorCopy)
                   {
                     v44 = "(ignored by caller)";
                   }
@@ -561,12 +561,12 @@ LABEL_49:
                 [v27 setObject:v28 forKeyedSubscript:v21];
 
                 v23 = v56;
-                [v56 addIndex:v22];
+                [v56 addIndex:unsignedIntegerValue];
                 v16 = v57;
                 v26 = v58;
               }
 
-              self = v25;
+              self = selfCopy;
               v18 = v24;
               v7 = v23;
             }
@@ -586,7 +586,7 @@ LABEL_25:
         v8 = v55;
         v11 = v51;
         v10 = v53;
-        v6 = v59;
+        jobCopy = v59;
 LABEL_26:
         ++v13;
       }
@@ -605,7 +605,7 @@ LABEL_26:
 LABEL_30:
 
   v29 = v60;
-  [v6 setJobPlan:v7 additionalToRequestingStageMap:v60];
+  [jobCopy setJobPlan:v7 additionalToRequestingStageMap:v60];
   v30 = 1;
 LABEL_54:
 
@@ -613,14 +613,14 @@ LABEL_54:
   return v30;
 }
 
-- (void)_sendJob:(id)a3 toStageHandlerWithStageID:(unint64_t)a4
+- (void)_sendJob:(id)job toStageHandlerWithStageID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = [(NSArray *)self->_stageHandlers objectAtIndexedSubscript:a4];
+  jobCopy = job;
+  v7 = [(NSArray *)self->_stageHandlers objectAtIndexedSubscript:d];
   v8 = v7;
   if (v7)
   {
-    [v7 addJob:v6];
+    [v7 addJob:jobCopy];
   }
 
   else
@@ -632,8 +632,8 @@ LABEL_54:
       [BRCPipeline _sendJob:toStageHandlerWithStageID:];
     }
 
-    v11 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Invalid stage plan -- no stage handler for %lu", a4}];
-    [v6 completeWithError:v11];
+    v11 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Invalid stage plan -- no stage handler for %lu", d}];
+    [jobCopy completeWithError:v11];
   }
 }
 
@@ -672,8 +672,8 @@ LABEL_54:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(NSArray *)self->_stageHandlers objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    objectEnumerator = [(NSArray *)self->_stageHandlers objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -685,14 +685,14 @@ LABEL_54:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v9 + 1) + 8 * v7++) disableScheduling];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
@@ -717,8 +717,8 @@ LABEL_54:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(NSArray *)self->_stageHandlers objectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    objectEnumerator = [(NSArray *)self->_stageHandlers objectEnumerator];
+    v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -730,14 +730,14 @@ LABEL_54:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v11 + 1) + 8 * v9++) enableScheduling];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -747,9 +747,9 @@ LABEL_54:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_generateProgressForJob:(id)a3
+- (id)_generateProgressForJob:(id)job
 {
-  v4 = a3;
+  jobCopy = job;
   v5 = objc_alloc_init(MEMORY[0x277CCAC48]);
   [v5 setCancellable:1];
   objc_initWeak(&location, self);
@@ -758,7 +758,7 @@ LABEL_54:
   v8[2] = __39__BRCPipeline__generateProgressForJob___block_invoke;
   v8[3] = &unk_2784FFDF8;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = jobCopy;
   v9 = v6;
   [v5 setCancellationHandler:v8];
 
@@ -841,18 +841,18 @@ void __39__BRCPipeline__generateProgressForJob___block_invoke_42(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addJob:(id)a3 moreComing:(BOOL)a4
+- (id)addJob:(id)job moreComing:(BOOL)coming
 {
-  v6 = a3;
+  jobCopy = job;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__BRCPipeline_addJob_moreComing___block_invoke;
   block[3] = &unk_278502F30;
-  v13 = a4;
+  comingCopy = coming;
   block[4] = self;
-  v12 = v6;
-  v8 = v6;
+  v12 = jobCopy;
+  v8 = jobCopy;
   dispatch_sync(queue, block);
   v9 = [(BRCPipeline *)self _generateProgressForJob:v8];
 
@@ -908,14 +908,14 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = [(BRCPipeline *)self description];
-  [v4 writeLineWithFormat:@"%@", v5];
+  [contextCopy writeLineWithFormat:@"%@", v5];
 
-  [v4 pushIndentation];
+  [contextCopy pushIndentation];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -936,7 +936,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) dumpToContext:v4];
+        [*(*(&v12 + 1) + 8 * v10++) dumpToContext:contextCopy];
       }
 
       while (v8 != v10);
@@ -946,7 +946,7 @@ LABEL_12:
     while (v8);
   }
 
-  [v4 popIndentation];
+  [contextCopy popIndentation];
   v11 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,22 +1,22 @@
 @interface AXInvertColors_BatteryWidget
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_BatteryWidget
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BCBatteryWidgetRowView" hasInstanceVariable:@"_glyphImageView" withType:"UIImageView"];
-  [v3 validateClass:@"BCBatteryView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BCBatteryWidgetRowView" hasInstanceVariable:@"_glyphImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"BCBatteryView"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"BCBatteryWidgetRowViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"BCBatteryViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"BCBatteryWidgetRowViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"BCBatteryViewInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

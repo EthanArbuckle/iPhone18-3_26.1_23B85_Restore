@@ -2,10 +2,10 @@
 - (NSArray)topicNames;
 - (NSString)topicIdentifier;
 - (_TtC21DocumentUnderstanding26DUGlobalTopicSetIdentifier)topicSet;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTopicIdentifier:(id)a3;
-- (void)setTopicNames:(id)a3;
-- (void)setTopicSet:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTopicIdentifier:(id)identifier;
+- (void)setTopicNames:(id)names;
+- (void)setTopicSet:(id)set;
 @end
 
 @implementation DUTopicResult
@@ -17,11 +17,11 @@
   return v2;
 }
 
-- (void)setTopicSet:(id)a3
+- (void)setTopicSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  sub_232C12A9C(v4);
+  setCopy = set;
+  selfCopy = self;
+  sub_232C12A9C(setCopy);
 }
 
 - (NSString)topicIdentifier
@@ -32,11 +32,11 @@
   return v2;
 }
 
-- (void)setTopicIdentifier:(id)a3
+- (void)setTopicIdentifier:(id)identifier
 {
   v4 = sub_232CE9D50();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_232C12C68(v4, v6);
 }
 
@@ -48,18 +48,18 @@
   return v2;
 }
 
-- (void)setTopicNames:(id)a3
+- (void)setTopicNames:(id)names
 {
   v4 = sub_232CE9FE0();
-  v5 = self;
+  selfCopy = self;
   sub_232C12F50(v4);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232C1343C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232C1343C(coderCopy);
 }
 
 @end

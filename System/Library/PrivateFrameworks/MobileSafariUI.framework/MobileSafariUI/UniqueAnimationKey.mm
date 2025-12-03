@@ -1,13 +1,13 @@
 @interface UniqueAnimationKey
-- (BOOL)getBytes:(void *)a3 maxLength:(unint64_t)a4 usedLength:(unint64_t *)a5 encoding:(unint64_t)a6 options:(unint64_t)a7 range:(_NSRange)a8 remainingRange:(_NSRange *)a9;
-- (UniqueAnimationKey)initWithKey:(unint64_t)a3;
+- (BOOL)getBytes:(void *)bytes maxLength:(unint64_t)length usedLength:(unint64_t *)usedLength encoding:(unint64_t)encoding options:(unint64_t)options range:(_NSRange)range remainingRange:(_NSRange *)remainingRange;
+- (UniqueAnimationKey)initWithKey:(unint64_t)key;
 - (unint64_t)length;
-- (unsigned)characterAtIndex:(unint64_t)a3;
+- (unsigned)characterAtIndex:(unint64_t)index;
 @end
 
 @implementation UniqueAnimationKey
 
-- (UniqueAnimationKey)initWithKey:(unint64_t)a3
+- (UniqueAnimationKey)initWithKey:(unint64_t)key
 {
   v8.receiver = self;
   v8.super_class = UniqueAnimationKey;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_key = a3;
+    v4->_key = key;
     v6 = v4;
   }
 
@@ -41,16 +41,16 @@
   return result;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
-  if (a3 <= 0xA)
+  if (index <= 0xA)
   {
-    return kUniqueAnimationKeyPrefix[a3];
+    return kUniqueAnimationKeyPrefix[index];
   }
 
   key = self->_key;
-  v5 = a3 - 11;
-  if (a3 != 11)
+  v5 = index - 11;
+  if (index != 11)
   {
     do
     {
@@ -64,24 +64,24 @@
   return (key & 0xF) + 97;
 }
 
-- (BOOL)getBytes:(void *)a3 maxLength:(unint64_t)a4 usedLength:(unint64_t *)a5 encoding:(unint64_t)a6 options:(unint64_t)a7 range:(_NSRange)a8 remainingRange:(_NSRange *)a9
+- (BOOL)getBytes:(void *)bytes maxLength:(unint64_t)length usedLength:(unint64_t *)usedLength encoding:(unint64_t)encoding options:(unint64_t)options range:(_NSRange)range remainingRange:(_NSRange *)remainingRange
 {
-  length = a8.length;
-  if (a9)
+  length = range.length;
+  if (remainingRange)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = a6 == 30;
+    v10 = encoding == 30;
   }
 
-  if (v10 && a8.location == 0)
+  if (v10 && range.location == 0)
   {
-    if (a8.length >= a4)
+    if (range.length >= length)
     {
-      length = a4;
+      length = length;
     }
 
     if (length < 0xB)
@@ -91,8 +91,8 @@
 
     else
     {
-      *(a3 + 7) = 762930539;
-      *a3 = *"unique-key-";
+      *(bytes + 7) = 762930539;
+      *bytes = *"unique-key-";
       key = self->_key;
       if (length == 11 || key == 0)
       {
@@ -106,7 +106,7 @@
         do
         {
           v17 = v15 + v16;
-          *(a3 + v16++) = (key & 0xF) + 97;
+          *(bytes + v16++) = (key & 0xF) + 97;
           if (v17 == 11)
           {
             break;
@@ -119,7 +119,7 @@
         while (v18);
       }
 
-      *a5 = v16;
+      *usedLength = v16;
       return 1;
     }
   }
@@ -128,7 +128,7 @@
   {
     v19.receiver = self;
     v19.super_class = UniqueAnimationKey;
-    return [(UniqueAnimationKey *)&v19 getBytes:a3 maxLength:a4 usedLength:a5 encoding:a6 options:a7 range:a8.location remainingRange:a8.length, a9];
+    return [(UniqueAnimationKey *)&v19 getBytes:bytes maxLength:length usedLength:usedLength encoding:encoding options:options range:range.location remainingRange:range.length, remainingRange];
   }
 }
 

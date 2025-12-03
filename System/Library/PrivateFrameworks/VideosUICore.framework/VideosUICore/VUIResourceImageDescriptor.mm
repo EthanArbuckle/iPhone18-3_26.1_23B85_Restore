@@ -1,36 +1,36 @@
 @interface VUIResourceImageDescriptor
 - (CGSize)containerSize;
 - (CGSize)size;
-- (VUIResourceImageDescriptor)initWithResource:(id)a3 size:(CGSize)a4;
-- (VUIResourceImageDescriptor)initWithResource:(id)a3 size:(CGSize)a4 containerSize:(CGSize)a5;
-- (VUIResourceImageDescriptor)initWithResourceSymbol:(id)a3 size:(CGSize)a4 symbolConfiguration:(id)a5;
-- (VUIResourceImageDescriptor)initWithSymbol:(id)a3 size:(CGSize)a4 symbolConfiguration:(id)a5;
+- (VUIResourceImageDescriptor)initWithResource:(id)resource size:(CGSize)size;
+- (VUIResourceImageDescriptor)initWithResource:(id)resource size:(CGSize)size containerSize:(CGSize)containerSize;
+- (VUIResourceImageDescriptor)initWithResourceSymbol:(id)symbol size:(CGSize)size symbolConfiguration:(id)configuration;
+- (VUIResourceImageDescriptor)initWithSymbol:(id)symbol size:(CGSize)size symbolConfiguration:(id)configuration;
 - (_VUICornerRadii)borderRadii;
 @end
 
 @implementation VUIResourceImageDescriptor
 
-- (VUIResourceImageDescriptor)initWithSymbol:(id)a3 size:(CGSize)a4 symbolConfiguration:(id)a5
+- (VUIResourceImageDescriptor)initWithSymbol:(id)symbol size:(CGSize)size symbolConfiguration:(id)configuration
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  symbolCopy = symbol;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = VUIResourceImageDescriptor;
   v12 = [(VUIResourceImageDescriptor *)&v16 init];
   if (v12)
   {
-    if ([v10 length])
+    if ([symbolCopy length])
     {
-      objc_storeStrong(&v12->_name, a3);
+      objc_storeStrong(&v12->_name, symbol);
       v12->_size.width = width;
       v12->_size.height = height;
       v12->_containerSize.width = width;
       v12->_containerSize.height = height;
       v12->_type = 0;
       v12->_scaleMode = 1;
-      v13 = v11;
+      v13 = configurationCopy;
       symbolConfiguration = v12->_symbolConfiguration;
       v12->_symbolConfiguration = v13;
     }
@@ -50,17 +50,17 @@
   return v12;
 }
 
-- (VUIResourceImageDescriptor)initWithResource:(id)a3 size:(CGSize)a4
+- (VUIResourceImageDescriptor)initWithResource:(id)resource size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  resourceCopy = resource;
   v11.receiver = self;
   v11.super_class = VUIResourceImageDescriptor;
   v9 = [(VUIResourceImageDescriptor *)&v11 init];
-  if (v9 && [v8 length])
+  if (v9 && [resourceCopy length])
   {
-    objc_storeStrong(&v9->_name, a3);
+    objc_storeStrong(&v9->_name, resource);
     v9->_size.width = width;
     v9->_size.height = height;
     v9->_containerSize.width = width;
@@ -78,11 +78,11 @@
   return v9;
 }
 
-- (VUIResourceImageDescriptor)initWithResource:(id)a3 size:(CGSize)a4 containerSize:(CGSize)a5
+- (VUIResourceImageDescriptor)initWithResource:(id)resource size:(CGSize)size containerSize:(CGSize)containerSize
 {
-  height = a5.height;
-  width = a5.width;
-  result = [(VUIResourceImageDescriptor *)self initWithResource:a3 size:a4.width, a4.height];
+  height = containerSize.height;
+  width = containerSize.width;
+  result = [(VUIResourceImageDescriptor *)self initWithResource:resource size:size.width, size.height];
   if (result)
   {
     result->_containerSize.width = width;
@@ -92,27 +92,27 @@
   return result;
 }
 
-- (VUIResourceImageDescriptor)initWithResourceSymbol:(id)a3 size:(CGSize)a4 symbolConfiguration:(id)a5
+- (VUIResourceImageDescriptor)initWithResourceSymbol:(id)symbol size:(CGSize)size symbolConfiguration:(id)configuration
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  symbolCopy = symbol;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = VUIResourceImageDescriptor;
   v12 = [(VUIResourceImageDescriptor *)&v16 init];
   if (v12)
   {
-    if ([v10 length])
+    if ([symbolCopy length])
     {
-      objc_storeStrong(&v12->_name, a3);
+      objc_storeStrong(&v12->_name, symbol);
       v12->_size.width = width;
       v12->_size.height = height;
       v12->_containerSize.width = width;
       v12->_containerSize.height = height;
       v12->_type = 2;
       v12->_scaleMode = 1;
-      v13 = v11;
+      v13 = configurationCopy;
       symbolConfiguration = v12->_symbolConfiguration;
       v12->_symbolConfiguration = v13;
     }

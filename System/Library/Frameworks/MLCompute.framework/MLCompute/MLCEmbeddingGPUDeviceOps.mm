@@ -1,22 +1,22 @@
 @interface MLCEmbeddingGPUDeviceOps
 + (id)deviceOps;
-- (MLCEmbeddingGPUDeviceOps)initWithForwardKernel:(id)a3 gradientKernel:(id)a4;
+- (MLCEmbeddingGPUDeviceOps)initWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel;
 @end
 
 @implementation MLCEmbeddingGPUDeviceOps
 
 + (id)deviceOps
 {
-  v2 = [[a1 alloc] initWithForwardKernel:0 gradientKernel:0];
+  v2 = [[self alloc] initWithForwardKernel:0 gradientKernel:0];
 
   return v2;
 }
 
-- (MLCEmbeddingGPUDeviceOps)initWithForwardKernel:(id)a3 gradientKernel:(id)a4
+- (MLCEmbeddingGPUDeviceOps)initWithForwardKernel:(id)kernel gradientKernel:(id)gradientKernel
 {
   v10.receiver = self;
   v10.super_class = MLCEmbeddingGPUDeviceOps;
-  v4 = [(MLCGPUDeviceOps *)&v10 initWithForwardKernel:a3 gradientKernel:a4 secondaryGradientKernel:0 forwardStatistics:0 gradientStatistics:0];
+  v4 = [(MLCGPUDeviceOps *)&v10 initWithForwardKernel:kernel gradientKernel:gradientKernel secondaryGradientKernel:0 forwardStatistics:0 gradientStatistics:0];
   v5 = v4;
   if (v4)
   {

@@ -1,14 +1,14 @@
 @interface NGMKeyRollingTicket
 - (id)identityData;
-- (id)initTicketWithSigningKey:(id)a3 error:(id *)a4;
+- (id)initTicketWithSigningKey:(id)key error:(id *)error;
 - (id)prekeyData;
 @end
 
 @implementation NGMKeyRollingTicket
 
-- (id)initTicketWithSigningKey:(id)a3 error:(id *)a4
+- (id)initTicketWithSigningKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v19.receiver = self;
   v19.super_class = NGMKeyRollingTicket;
   v7 = [(NGMKeyRollingTicket *)&v19 init];
@@ -17,7 +17,7 @@
     goto LABEL_4;
   }
 
-  v8 = [[NGMFullPrekey alloc] initWithPrekeySignedBy:v6 error:a4];
+  v8 = [[NGMFullPrekey alloc] initWithPrekeySignedBy:keyCopy error:error];
   prekey = v7->_prekey;
   v7->_prekey = v8;
 
@@ -33,16 +33,16 @@
   }
 
   v10 = [NGMPublicDeviceIdentity alloc];
-  v11 = [(NGMFullPrekey *)v7->_prekey publicPrekey];
-  v12 = [(NGMFullPrekey *)v7->_prekey tetraRegistration];
-  v13 = [v6 publicKey];
-  v14 = [(NGMPublicDeviceIdentity *)v10 initWithEchnidaRegistration:v11 tetraRegistration:v12 signingKey:v13];
+  publicPrekey = [(NGMFullPrekey *)v7->_prekey publicPrekey];
+  tetraRegistration = [(NGMFullPrekey *)v7->_prekey tetraRegistration];
+  publicKey = [keyCopy publicKey];
+  v14 = [(NGMPublicDeviceIdentity *)v10 initWithEchnidaRegistration:publicPrekey tetraRegistration:tetraRegistration signingKey:publicKey];
   registrationInfo = v7->_registrationInfo;
   v7->_registrationInfo = v14;
 
   if (!v7->_registrationInfo)
   {
-    MPLogAndAssignError(700, a4, @"Failed to initialize the public identity.");
+    MPLogAndAssignError(700, error, @"Failed to initialize the public identity.");
 LABEL_9:
     v16 = 0;
     goto LABEL_10;
@@ -57,18 +57,18 @@ LABEL_10:
 
 - (id)identityData
 {
-  v2 = [(NGMKeyRollingTicket *)self registrationInfo];
-  v3 = [v2 identityData];
+  registrationInfo = [(NGMKeyRollingTicket *)self registrationInfo];
+  identityData = [registrationInfo identityData];
 
-  return v3;
+  return identityData;
 }
 
 - (id)prekeyData
 {
-  v2 = [(NGMKeyRollingTicket *)self registrationInfo];
-  v3 = [v2 prekeyData];
+  registrationInfo = [(NGMKeyRollingTicket *)self registrationInfo];
+  prekeyData = [registrationInfo prekeyData];
 
-  return v3;
+  return prekeyData;
 }
 
 @end

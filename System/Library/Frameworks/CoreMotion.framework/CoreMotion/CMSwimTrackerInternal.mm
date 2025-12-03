@@ -1,10 +1,10 @@
 @interface CMSwimTrackerInternal
 - (CMSwimTrackerInternal)init;
-- (void)_handleUpdates:(id)a3;
-- (void)_querySWOLFSummaryWithSessionID:(id)a3 handler:(id)a4;
-- (void)_querySwimUpdatesFromRecord:(id)a3 handler:(id)a4;
+- (void)_handleUpdates:(id)updates;
+- (void)_querySWOLFSummaryWithSessionID:(id)d handler:(id)handler;
+- (void)_querySwimUpdatesFromRecord:(id)record handler:(id)handler;
 - (void)_resetOffsets;
-- (void)_startUpdatesFromRecord:(id)a3 handler:(id)a4;
+- (void)_startUpdatesFromRecord:(id)record handler:(id)handler;
 - (void)_stopUpdates;
 - (void)_teardown;
 - (void)dealloc;
@@ -46,15 +46,15 @@
   self->fLocationdConnection = 0;
 }
 
-- (void)_startUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)_startUpdatesFromRecord:(id)record handler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B776E90;
   block[3] = &unk_1E7532C80;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = record;
+  block[6] = handler;
   block[4] = self;
   dispatch_async(fInternalQueue, block);
 }
@@ -70,20 +70,20 @@
   dispatch_sync(fInternalQueue, block);
 }
 
-- (void)_querySwimUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)_querySwimUpdatesFromRecord:(id)record handler:(id)handler
 {
   fInternalQueue = self->fInternalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_19B777828;
   block[3] = &unk_1E7532C08;
-  block[4] = a3;
+  block[4] = record;
   block[5] = self;
-  block[6] = a4;
+  block[6] = handler;
   dispatch_async(fInternalQueue, block);
 }
 
-- (void)_querySWOLFSummaryWithSessionID:(id)a3 handler:(id)a4
+- (void)_querySWOLFSummaryWithSessionID:(id)d handler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE2978 != -1)
@@ -95,7 +95,7 @@
   if (os_log_type_enabled(qword_1EAFE2980, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = objc_msgSend_UUIDString(a3, v8, v9);
+    v20 = objc_msgSend_UUIDString(d, v8, v9);
     _os_log_impl(&dword_19B41C000, v7, OS_LOG_TYPE_DEFAULT, "SWOLF query for session: %@", buf, 0xCu);
   }
 
@@ -109,7 +109,7 @@
     }
 
     v17 = 138412290;
-    v18 = objc_msgSend_UUIDString(a3, v11, v12);
+    v18 = objc_msgSend_UUIDString(d, v11, v12);
     v13 = _os_log_send_and_compose_impl();
     sub_19B6BB7CC("Generic", 1, 0, 2, "[CMSwimTrackerInternal _querySWOLFSummaryWithSessionID:handler:]", "CoreLocation: %s\n", v13);
     if (v13 != buf)
@@ -124,18 +124,18 @@
   block[2] = sub_19B778154;
   block[3] = &unk_1E7532C80;
   block[5] = self;
-  block[6] = a4;
-  block[4] = a3;
+  block[6] = handler;
+  block[4] = d;
   dispatch_async(fInternalQueue, block);
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleUpdates:(id)a3
+- (void)_handleUpdates:(id)updates
 {
   v161[202] = *MEMORY[0x1E69E9840];
-  v5 = objc_msgSend_copy(self->fHandler, a2, a3);
-  v7 = objc_msgSend_objectForKeyedSubscript_(a3, v6, @"CMErrorMessage");
-  v9 = objc_msgSend_objectForKeyedSubscript_(a3, v8, @"CMSwimKeyDataArray");
+  v5 = objc_msgSend_copy(self->fHandler, a2, updates);
+  v7 = objc_msgSend_objectForKeyedSubscript_(updates, v6, @"CMErrorMessage");
+  v9 = objc_msgSend_objectForKeyedSubscript_(updates, v8, @"CMSwimKeyDataArray");
   if (v7)
   {
     self->fStartedUpdates = 0;
@@ -164,7 +164,7 @@ LABEL_3:
     if (os_log_type_enabled(qword_1EAFE2980, OS_LOG_TYPE_FAULT))
     {
       *buf = 134217984;
-      v157 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_19B41C000, v128, OS_LOG_TYPE_FAULT, "Unable to parse update message, %p", buf, 0xCu);
     }
 
@@ -178,7 +178,7 @@ LABEL_3:
       }
 
       v150 = 134217984;
-      v151 = self;
+      selfCopy4 = self;
       v130 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 0, "[CMSwimTrackerInternal _handleUpdates:]", "CoreLocation: %s\n", v130);
       if (v130 != buf)
@@ -217,7 +217,7 @@ LABEL_3:
       {
         v29 = getpid();
         *buf = 138413058;
-        v157 = Object;
+        selfCopy3 = Object;
         v158 = 2112;
         ExecutablePathFromPid = objc_msgSend_getExecutablePathFromPid_(CMMotionUtils, v30, v29);
         v160 = 1024;
@@ -238,7 +238,7 @@ LABEL_3:
 
         v32 = getpid();
         v150 = 138413058;
-        v151 = Object;
+        selfCopy4 = Object;
         v152 = 2112;
         v153 = objc_msgSend_getExecutablePathFromPid_(CMMotionUtils, v33, v32);
         v154 = 1024;
@@ -334,7 +334,7 @@ LABEL_3:
               {
                 v52 = self->fDistanceOffset;
                 *buf = 134218498;
-                v157 = *&v52;
+                selfCopy3 = *&v52;
                 v158 = 2112;
                 ExecutablePathFromPid = v41;
                 v160 = 2048;
@@ -353,7 +353,7 @@ LABEL_3:
 
                 v54 = self->fDistanceOffset;
                 v150 = 134218498;
-                v151 = *&v54;
+                selfCopy4 = *&v54;
                 v152 = 2112;
                 v153 = v41;
                 v154 = 2048;
@@ -377,7 +377,7 @@ LABEL_3:
             {
               v47 = self->fDistanceOffset;
               *buf = 134218498;
-              v157 = *&v47;
+              selfCopy3 = *&v47;
               v158 = 2112;
               ExecutablePathFromPid = v41;
               v160 = 2048;
@@ -396,7 +396,7 @@ LABEL_3:
 
               v49 = self->fDistanceOffset;
               v150 = 134218498;
-              v151 = *&v49;
+              selfCopy4 = *&v49;
               v152 = 2112;
               v153 = v41;
               v154 = 2048;
@@ -444,7 +444,7 @@ LABEL_48:
         v117 = objc_msgSend_getExecutablePathFromPid_(CMMotionUtils, v116, v115);
         v118 = getpid();
         *buf = 138413058;
-        v157 = v114;
+        selfCopy3 = v114;
         v158 = 2112;
         ExecutablePathFromPid = v117;
         v160 = 1024;
@@ -468,7 +468,7 @@ LABEL_48:
         v125 = objc_msgSend_getExecutablePathFromPid_(CMMotionUtils, v124, v123);
         v126 = getpid();
         v150 = 138413058;
-        v151 = v122;
+        selfCopy4 = v122;
         v152 = 2112;
         v153 = v125;
         v154 = 1024;
@@ -496,7 +496,7 @@ LABEL_48:
     if (os_log_type_enabled(qword_1EAFE2980, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v157 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_19B41C000, v131, OS_LOG_TYPE_DEFAULT, "#Warning Empty swim update, %p", buf, 0xCu);
     }
 
@@ -510,7 +510,7 @@ LABEL_48:
       }
 
       v150 = 134217984;
-      v151 = self;
+      selfCopy4 = self;
       v133 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "[CMSwimTrackerInternal _handleUpdates:]", "CoreLocation: %s\n", v133);
       if (v133 != buf)

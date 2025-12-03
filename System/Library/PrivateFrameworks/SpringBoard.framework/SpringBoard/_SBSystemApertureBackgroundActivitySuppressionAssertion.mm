@@ -1,16 +1,16 @@
 @interface _SBSystemApertureBackgroundActivitySuppressionAssertion
-- (_SBSystemApertureBackgroundActivitySuppressionAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 backgroundActivitiesToSuppress:(id)a5 invalidationBlock:(id)a6;
+- (_SBSystemApertureBackgroundActivitySuppressionAssertion)initWithIdentifier:(id)identifier forReason:(id)reason backgroundActivitiesToSuppress:(id)suppress invalidationBlock:(id)block;
 @end
 
 @implementation _SBSystemApertureBackgroundActivitySuppressionAssertion
 
-- (_SBSystemApertureBackgroundActivitySuppressionAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 backgroundActivitiesToSuppress:(id)a5 invalidationBlock:(id)a6
+- (_SBSystemApertureBackgroundActivitySuppressionAssertion)initWithIdentifier:(id)identifier forReason:(id)reason backgroundActivitiesToSuppress:(id)suppress invalidationBlock:(id)block
 {
-  v10 = a5;
-  v11 = [(BSSimpleAssertion *)self initWithIdentifier:a3 forReason:a4 invalidationBlock:a6];
+  suppressCopy = suppress;
+  v11 = [(BSSimpleAssertion *)self initWithIdentifier:identifier forReason:reason invalidationBlock:block];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [suppressCopy copy];
     backgroundActivitiesToSuppress = v11->_backgroundActivitiesToSuppress;
     v11->_backgroundActivitiesToSuppress = v12;
   }

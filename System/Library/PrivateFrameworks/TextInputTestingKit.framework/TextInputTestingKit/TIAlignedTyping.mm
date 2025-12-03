@@ -7,8 +7,8 @@
 
 - (BOOL)isRevisedAutocompleteEntry
 {
-  v3 = [(TIAlignedTyping *)self touched];
-  if ([v3 containsObject:@"<Autocorrect>"])
+  touched = [(TIAlignedTyping *)self touched];
+  if ([touched containsObject:@"<Autocorrect>"])
   {
     v4 = ![(TIAlignedTyping *)self isAutocompleteTriggerForPreviousEntry];
   }
@@ -23,9 +23,9 @@
 
 - (BOOL)isAutocompleteTriggerForPreviousEntry
 {
-  v2 = [(TIAlignedTyping *)self touched];
-  v3 = [v2 lastObject];
-  v4 = [v3 isEqualToString:@"<Autocorrect>"];
+  touched = [(TIAlignedTyping *)self touched];
+  lastObject = [touched lastObject];
+  v4 = [lastObject isEqualToString:@"<Autocorrect>"];
 
   return v4;
 }

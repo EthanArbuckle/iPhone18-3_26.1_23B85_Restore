@@ -1,88 +1,88 @@
 @interface ContinuitySingShieldUIBaseSceneDelegate
-- (id)createWindowForScene:(id)a3;
+- (id)createWindowForScene:(id)scene;
 - (void)_holdBacklightAssertion;
 - (void)_releaseBacklightAssertion;
 - (void)_startObservingMicrophoneState;
 - (void)_stopObservingMicrophoneState;
 - (void)_updateBacklightAssertion;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation ContinuitySingShieldUIBaseSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = sub_100005368();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 description];
+    v12 = [sceneCopy description];
     *buf = 136315906;
     v27 = "[ContinuitySingShieldUIBaseSceneDelegate scene:willConnectToSession:options:]";
     v28 = 2112;
     v29 = v12;
     v30 = 2112;
-    v31 = v9;
+    v31 = sessionCopy;
     v32 = 2112;
-    v33 = v10;
+    v33 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s: %@, %@, %@", buf, 0x2Au);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v8;
+    v13 = sceneCopy;
     v14 = [(ContinuitySingShieldUIBaseSceneDelegate *)self createWindowForScene:v13];
     [v13 _setBackgroundStyle:4];
     [(ContinuitySingShieldUIBaseSceneDelegate *)self setWindow:v14];
     v15 = [ContinuitySingShieldUIViewController alloc];
-    v16 = [(ContinuitySingShieldUIBaseSceneDelegate *)self window];
-    v17 = [v16 windowScene];
-    v18 = [v17 session];
-    [v18 role];
-    v19 = v25 = v9;
+    window = [(ContinuitySingShieldUIBaseSceneDelegate *)self window];
+    windowScene = [window windowScene];
+    session = [windowScene session];
+    [session role];
+    v19 = v25 = sessionCopy;
     v20 = [(ContinuityCaptureShieldUIBaseViewController *)v15 initWithSceneSessionRole:v19];
     viewController = self->_viewController;
     self->_viewController = v20;
 
     v22 = self->_viewController;
-    v23 = [(ContinuitySingShieldUIBaseSceneDelegate *)self window];
-    [v23 setRootViewController:v22];
+    window2 = [(ContinuitySingShieldUIBaseSceneDelegate *)self window];
+    [window2 setRootViewController:v22];
 
-    v24 = [v10 URLContexts];
-    [(ContinuitySingShieldUIBaseSceneDelegate *)self scene:v13 openURLContexts:v24];
+    uRLContexts = [optionsCopy URLContexts];
+    [(ContinuitySingShieldUIBaseSceneDelegate *)self scene:v13 openURLContexts:uRLContexts];
 
-    v9 = v25;
+    sessionCopy = v25;
     [v14 makeKeyAndVisible];
     [(ContinuitySingShieldUIBaseSceneDelegate *)self _startObservingMicrophoneState];
     [(ContinuitySingShieldUIBaseSceneDelegate *)self _updateBacklightAssertion];
   }
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v5 = [a4 allObjects];
-  v6 = [v5 firstObject];
+  allObjects = [contexts allObjects];
+  firstObject = [allObjects firstObject];
 
-  v7 = [v6 URL];
+  v7 = [firstObject URL];
   if (!v7)
   {
     goto LABEL_49;
   }
 
   v8 = +[UIDevice currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-  v10 = [v6 options];
-  v11 = [v10 annotation];
+  options = [firstObject options];
+  annotation = [options annotation];
   v12 = objc_opt_class();
-  v13 = v11;
+  v13 = annotation;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -105,7 +105,7 @@
 
   v16 = [v15 objectForKey:@"kContinuityCaptureLaunchUIConfigurationKey"];
 
-  if (v9 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v17 = sub_100005368();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -139,9 +139,9 @@ LABEL_46:
         v42 = 136315906;
         v43 = "[ContinuitySingShieldUIBaseSceneDelegate scene:openURLContexts:]";
         v44 = 2048;
-        v45 = self;
+        selfCopy5 = self;
         v46 = 2112;
-        v47 = v6;
+        v47 = firstObject;
         v48 = 2112;
         v49 = v17;
         _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s: <%p> Launching ShieldUI via URL without a valid URL payload for the launchUIConfiguration: %@ error: %@", &v42, 0x2Au);
@@ -155,7 +155,7 @@ LABEL_46:
       v42 = 136315650;
       v43 = "[ContinuitySingShieldUIBaseSceneDelegate scene:openURLContexts:]";
       v44 = 2048;
-      v45 = self;
+      selfCopy5 = self;
       v46 = 2112;
       v47 = v18;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s: <%p> Launching ShieldUI with launchUIConfiguration: %@", &v42, 0x20u);
@@ -165,32 +165,32 @@ LABEL_46:
     [v21 setUIConfiguration:v18];
 
     v22 = +[CSShieldConnectionManager sharedManager];
-    v23 = [v22 singURL];
-    if (v23)
+    singURL = [v22 singURL];
+    if (singURL)
     {
-      v24 = v23;
+      remoteDisplayIdentifier2 = singURL;
     }
 
     else
     {
-      v30 = [v18 remoteDisplayIdentifier];
+      remoteDisplayIdentifier = [v18 remoteDisplayIdentifier];
 
-      if (!v30)
+      if (!remoteDisplayIdentifier)
       {
         goto LABEL_18;
       }
 
       v31 = _os_feature_enabled_impl();
       v22 = +[CSShieldConnectionManager sharedManager];
-      v24 = [v18 remoteDisplayIdentifier];
+      remoteDisplayIdentifier2 = [v18 remoteDisplayIdentifier];
       if (v31)
       {
-        [v22 bootstrapFromRemoteDisplayConnection:v24];
+        [v22 bootstrapFromRemoteDisplayConnection:remoteDisplayIdentifier2];
       }
 
       else
       {
-        [v22 requestGroupSessionURL:v24];
+        [v22 requestGroupSessionURL:remoteDisplayIdentifier2];
       }
     }
 
@@ -200,11 +200,11 @@ LABEL_18:
 
   if (_os_feature_enabled_impl())
   {
-    v25 = [v7 scheme];
-    if ([v25 isEqualToString:SingQRCodeURLScheme])
+    scheme = [v7 scheme];
+    if ([scheme isEqualToString:SingQRCodeURLScheme])
     {
-      v26 = [v7 lastPathComponent];
-      v27 = [v26 isEqualToString:CSShieldOpenMusicPrivacyURLPath];
+      lastPathComponent = [v7 lastPathComponent];
+      v27 = [lastPathComponent isEqualToString:CSShieldOpenMusicPrivacyURLPath];
 
       if (v27)
       {
@@ -214,14 +214,14 @@ LABEL_18:
           v42 = 136315650;
           v43 = "[ContinuitySingShieldUIBaseSceneDelegate scene:openURLContexts:]";
           v44 = 2048;
-          v45 = self;
+          selfCopy5 = self;
           v46 = 2112;
           v47 = v7;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%s: <%p> Reloading privacy info %@", &v42, 0x20u);
         }
 
-        v29 = +[CSShieldConnectionManager sharedManager];
-        [v29 refreshPrivacyAcknowledgement];
+        embeddedViewController = +[CSShieldConnectionManager sharedManager];
+        [embeddedViewController refreshPrivacyAcknowledgement];
         goto LABEL_43;
       }
     }
@@ -233,8 +233,8 @@ LABEL_18:
 
   if (_os_feature_enabled_impl())
   {
-    v32 = [v7 scheme];
-    v33 = [v32 isEqualToString:SingQRCodeURLScheme];
+    scheme2 = [v7 scheme];
+    v33 = [scheme2 isEqualToString:SingQRCodeURLScheme];
 
     if (v33)
     {
@@ -244,14 +244,14 @@ LABEL_18:
         v42 = 136315650;
         v43 = "[ContinuitySingShieldUIBaseSceneDelegate scene:openURLContexts:]";
         v44 = 2048;
-        v45 = self;
+        selfCopy5 = self;
         v46 = 2112;
         v47 = v7;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%s: <%p> Launching ShieldUI with continuity sing url: %@", &v42, 0x20u);
       }
 
-      v29 = +[CSShieldConnectionManager sharedManager];
-      [v29 bootstrapFromSingQRCodeURL:v7];
+      embeddedViewController = +[CSShieldConnectionManager sharedManager];
+      [embeddedViewController bootstrapFromSingQRCodeURL:v7];
       goto LABEL_43;
     }
   }
@@ -273,32 +273,32 @@ LABEL_18:
     v42 = 136315650;
     v43 = "[ContinuitySingShieldUIBaseSceneDelegate scene:openURLContexts:]";
     v44 = 2048;
-    v45 = self;
+    selfCopy5 = self;
     v46 = 2112;
     v47 = v7;
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "%s: <%p> Opening picker url %@", &v42, 0x20u);
   }
 
-  v38 = [(UIWindow *)self->_window windowScene];
-  v39 = [v38 session];
-  v40 = [v39 role];
+  windowScene = [(UIWindow *)self->_window windowScene];
+  session = [windowScene session];
+  role = [session role];
 
-  if (v40 == UIWindowSceneSessionRoleApplication)
+  if (role == UIWindowSceneSessionRoleApplication)
   {
-    v29 = [(ContinuitySingShieldUIViewController *)self->_viewController embeddedViewController];
-    [v29 presentMusicPicker];
+    embeddedViewController = [(ContinuitySingShieldUIViewController *)self->_viewController embeddedViewController];
+    [embeddedViewController presentMusicPicker];
 LABEL_43:
   }
 
 LABEL_49:
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     viewController = self->_viewController;
 
@@ -312,18 +312,18 @@ LABEL_49:
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100005368();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315650;
     v8 = "[ContinuitySingShieldUIBaseSceneDelegate sceneDidDisconnect:]";
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v4;
+    v12 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: <%p> Called %@", &v7, 0x20u);
   }
 
@@ -335,12 +335,12 @@ LABEL_49:
   [(ContinuitySingShieldUIBaseSceneDelegate *)self _updateBacklightAssertion];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:CMContinuityCaptureUIStateTrackerActiveConfigurationKVOKey])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:CMContinuityCaptureUIStateTrackerActiveConfigurationKVOKey])
   {
     [(ContinuitySingShieldUIBaseSceneDelegate *)self _updateBacklightAssertion];
   }
@@ -349,14 +349,14 @@ LABEL_49:
   {
     v13.receiver = self;
     v13.super_class = ContinuitySingShieldUIBaseSceneDelegate;
-    [(ContinuitySingShieldUIBaseSceneDelegate *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ContinuitySingShieldUIBaseSceneDelegate *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)createWindowForScene:(id)a3
+- (id)createWindowForScene:(id)scene
 {
-  v3 = a3;
-  v4 = [[UIWindow alloc] initWithWindowScene:v3];
+  sceneCopy = scene;
+  v4 = [[UIWindow alloc] initWithWindowScene:sceneCopy];
 
   return v4;
 }
@@ -378,7 +378,7 @@ LABEL_49:
       v8 = 136315650;
       v9 = "[ContinuitySingShieldUIBaseSceneDelegate _holdBacklightAssertion]";
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v5;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: <%p> Created backlight assertion to keep screen on with error: %@", &v8, 0x20u);
@@ -401,7 +401,7 @@ LABEL_49:
       v6 = 136315394;
       v7 = "[ContinuitySingShieldUIBaseSceneDelegate _releaseBacklightAssertion]";
       v8 = 2048;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: <%p> Released backlight assertion for screen management", &v6, 0x16u);
     }
   }

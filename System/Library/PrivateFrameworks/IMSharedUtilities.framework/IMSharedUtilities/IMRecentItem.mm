@@ -1,6 +1,6 @@
 @interface IMRecentItem
-- (BOOL)isEqual:(id)a3;
-- (IMRecentItem)initWithGUID:(id)a3 data:(id)a4 messageItemInfo:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (IMRecentItem)initWithGUID:(id)d data:(id)data messageItemInfo:(id)info;
 - (id)asJSONObject;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -15,36 +15,36 @@
   [(IMRecentItem *)&v3 dealloc];
 }
 
-- (IMRecentItem)initWithGUID:(id)a3 data:(id)a4 messageItemInfo:(id)a5
+- (IMRecentItem)initWithGUID:(id)d data:(id)data messageItemInfo:(id)info
 {
   v12.receiver = self;
   v12.super_class = IMRecentItem;
   v8 = [(IMRecentItem *)&v12 init];
   if (v8)
   {
-    v8->_payloadData = [a4 copy];
-    v8->_messageItemInfo = [a5 copy];
+    v8->_payloadData = [data copy];
+    v8->_messageItemInfo = [info copy];
     [objc_msgSend(MEMORY[0x1E695DF00] "date")];
     v8->_timestamp = [MEMORY[0x1E696AD98] numberWithInt:v9];
-    if (a3)
+    if (d)
     {
-      v10 = a3;
+      dCopy = d;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringGUID];
+      dCopy = [MEMORY[0x1E696AEC0] stringGUID];
     }
 
-    v8->_GUID = [v10 copy];
+    v8->_GUID = [dCopy copy];
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -55,17 +55,17 @@
     return 0;
   }
 
-  v5 = [(IMRecentItem *)self GUID];
-  v6 = [a3 GUID];
+  gUID = [(IMRecentItem *)self GUID];
+  gUID2 = [equal GUID];
 
-  return [(NSString *)v5 isEqualToString:v6];
+  return [(NSString *)gUID isEqualToString:gUID2];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(IMRecentItem *)self GUID];
+  gUID = [(IMRecentItem *)self GUID];
 
-  return [(NSString *)v2 hash];
+  return [(NSString *)gUID hash];
 }
 
 - (id)asJSONObject

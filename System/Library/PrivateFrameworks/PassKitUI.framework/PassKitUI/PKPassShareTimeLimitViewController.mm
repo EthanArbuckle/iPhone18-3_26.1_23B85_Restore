@@ -1,29 +1,29 @@
 @interface PKPassShareTimeLimitViewController
-- (PKPassShareTimeLimitViewController)initWithMode:(unint64_t)a3 entitlementComposer:(id)a4 entitlementEntry:(id)a5 delegate:(id)a6;
+- (PKPassShareTimeLimitViewController)initWithMode:(unint64_t)mode entitlementComposer:(id)composer entitlementEntry:(id)entry delegate:(id)delegate;
 - (void)_configureSections;
-- (void)_showTimeLimitEditForStartDate:(BOOL)a3 expirationDate:(BOOL)a4;
-- (void)timeConfigurationDidChange:(id)a3;
-- (void)toggle:(id)a3 valueDidChange:(BOOL)a4;
+- (void)_showTimeLimitEditForStartDate:(BOOL)date expirationDate:(BOOL)expirationDate;
+- (void)timeConfigurationDidChange:(id)change;
+- (void)toggle:(id)toggle valueDidChange:(BOOL)change;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPassShareTimeLimitViewController
 
-- (PKPassShareTimeLimitViewController)initWithMode:(unint64_t)a3 entitlementComposer:(id)a4 entitlementEntry:(id)a5 delegate:(id)a6
+- (PKPassShareTimeLimitViewController)initWithMode:(unint64_t)mode entitlementComposer:(id)composer entitlementEntry:(id)entry delegate:(id)delegate
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  composerCopy = composer;
+  entryCopy = entry;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PKPassShareTimeLimitViewController;
   v14 = [(PKPaymentSetupOptionsViewController *)&v17 initWithContext:0];
   v15 = v14;
   if (v14)
   {
-    v14->_mode = a3;
-    objc_storeStrong(&v14->_entitlementComposer, a4);
-    objc_storeStrong(&v15->_entitlementEntry, a5);
-    objc_storeStrong(&v15->_delegate, a6);
+    v14->_mode = mode;
+    objc_storeStrong(&v14->_entitlementComposer, composer);
+    objc_storeStrong(&v15->_entitlementEntry, entry);
+    objc_storeStrong(&v15->_delegate, delegate);
     [(PKDynamicCollectionViewController *)v15 setUseItemIdentityWhenUpdating:1];
     [(PKPaymentSetupOptionsViewController *)v15 setHeaderMode:2];
     [(PKPassShareTimeLimitViewController *)v15 _configureSections];
@@ -39,34 +39,34 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    globalView = v3;
   }
 
   else
   {
-    v5 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+    globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
   }
 
-  v6 = v5;
+  v6 = globalView;
 
-  v7 = [v6 possibleTimeConfiguration];
-  v8 = [v6 timeConfiguration];
-  v9 = v8;
-  if (v8)
+  possibleTimeConfiguration = [v6 possibleTimeConfiguration];
+  timeConfiguration = [v6 timeConfiguration];
+  v9 = timeConfiguration;
+  if (timeConfiguration)
   {
-    v10 = v8;
+    v10 = timeConfiguration;
   }
 
   else
   {
-    v10 = [v7 copy];
+    v10 = [possibleTimeConfiguration copy];
   }
 
   v41 = v10;
 
   entitlementEntry = self->_entitlementEntry;
-  v12 = [v6 isManagingTimeConfiguration];
-  v13 = v12 ^ 1u;
+  isManagingTimeConfiguration = [v6 isManagingTimeConfiguration];
+  v13 = isManagingTimeConfiguration ^ 1u;
   if (entitlementEntry)
   {
     v14 = 0;
@@ -77,11 +77,11 @@
     v14 = v13;
   }
 
-  v15 = [v7 support];
-  v40 = [(PKPassEntitlementsComposer *)self->_entitlementComposer editable];
+  support = [possibleTimeConfiguration support];
+  editable = [(PKPassEntitlementsComposer *)self->_entitlementComposer editable];
   if (!entitlementEntry)
   {
-    v16 = 0;
+    enabled = 0;
 LABEL_14:
     scheduleSectionController = self->_scheduleSectionController;
     if (scheduleSectionController)
@@ -92,7 +92,7 @@ LABEL_14:
 
     else
     {
-      v18 = [[PKPassShareScheduleSectionController alloc] initWithConfiguration:v41 possibleTimeConfiguration:v7 isEditable:v40 isDisabled:v13 delegate:self];
+      v18 = [[PKPassShareScheduleSectionController alloc] initWithConfiguration:v41 possibleTimeConfiguration:possibleTimeConfiguration isEditable:editable isDisabled:v13 delegate:self];
       v19 = self->_scheduleSectionController;
       self->_scheduleSectionController = v18;
     }
@@ -106,8 +106,8 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  v16 = [v6 enabled];
-  if (v12)
+  enabled = [v6 enabled];
+  if (isManagingTimeConfiguration)
   {
     goto LABEL_14;
   }
@@ -118,7 +118,7 @@ LABEL_18:
   {
     v21 = [PKPassShareToggleSectionController alloc];
     v22 = PKLocalizedShareableCredentialString(&cfstr_ShareableEntit.isa);
-    v23 = [(PKPassShareToggleSectionController *)v21 initWithIdentifier:@"EntitlementAccessToggle" title:v22 toggleValue:v16 isEditable:v40 delegate:self];
+    v23 = [(PKPassShareToggleSectionController *)v21 initWithIdentifier:@"EntitlementAccessToggle" title:v22 toggleValue:enabled isEditable:editable delegate:self];
     v24 = self->_entitlementAccessSectionController;
     self->_entitlementAccessSectionController = v23;
 
@@ -131,12 +131,12 @@ LABEL_18:
     capabilitySectionController = self->_capabilitySectionController;
     if (capabilitySectionController)
     {
-      [(PKPassEntitlementCapabilitySectionController *)capabilitySectionController setIsDisabled:v16 ^ 1];
+      [(PKPassEntitlementCapabilitySectionController *)capabilitySectionController setIsDisabled:enabled ^ 1];
     }
 
     else
     {
-      v26 = [[PKPassEntitlementCapabilitySectionController alloc] initWithMode:self->_mode entitlementComposer:self->_entitlementComposer composerView:v6 isDisabled:v16 ^ 1 delegate:self];
+      v26 = [[PKPassEntitlementCapabilitySectionController alloc] initWithMode:self->_mode entitlementComposer:self->_entitlementComposer composerView:v6 isDisabled:enabled ^ 1 delegate:self];
       v27 = self->_capabilitySectionController;
       self->_capabilitySectionController = v26;
     }
@@ -151,7 +151,7 @@ LABEL_18:
   }
 
 LABEL_26:
-  if (v15 > 2)
+  if (support > 2)
   {
     v28 = 1;
   }
@@ -161,14 +161,14 @@ LABEL_26:
     v28 = v14;
   }
 
-  if (!v16 && v28)
+  if (!enabled && v28)
   {
     advancedScheduleSectionController = self->_advancedScheduleSectionController;
     if (!advancedScheduleSectionController)
     {
       v30 = [PKPassShareToggleSectionController alloc];
       v31 = PKLocalizedShareableCredentialString(&cfstr_ShareScheduleA.isa);
-      v32 = [(PKPassShareToggleSectionController *)v30 initWithIdentifier:@"AdvancedScheduleToggle" title:v31 toggleValue:v14 isEditable:v40 delegate:self];
+      v32 = [(PKPassShareToggleSectionController *)v30 initWithIdentifier:@"AdvancedScheduleToggle" title:v31 toggleValue:v14 isEditable:editable delegate:self];
       v33 = self->_advancedScheduleSectionController;
       self->_advancedScheduleSectionController = v32;
 
@@ -186,7 +186,7 @@ LABEL_26:
     [v42 addObject:advancedScheduleSectionController];
   }
 
-  v38 = [(PKDynamicCollectionViewController *)self sections];
+  sections = [(PKDynamicCollectionViewController *)self sections];
   v39 = PKEqualObjects();
 
   if ((v39 & 1) == 0)
@@ -203,40 +203,40 @@ LABEL_26:
   entitlementEntry = self->_entitlementEntry;
   if (entitlementEntry)
   {
-    v4 = [(PKPassEntitlementsComposerEntry *)entitlementEntry displayableEntitlement];
-    v5 = [v4 localizedTitle];
-    [(PKPassShareTimeLimitViewController *)self setTitle:v5];
+    displayableEntitlement = [(PKPassEntitlementsComposerEntry *)entitlementEntry displayableEntitlement];
+    localizedTitle = [displayableEntitlement localizedTitle];
+    [(PKPassShareTimeLimitViewController *)self setTitle:localizedTitle];
   }
 
   else
   {
-    v4 = PKLocalizedShareableCredentialString(&cfstr_ShareSchedules_3.isa);
-    [(PKPassShareTimeLimitViewController *)self setTitle:v4];
+    displayableEntitlement = PKLocalizedShareableCredentialString(&cfstr_ShareSchedules_3.isa);
+    [(PKPassShareTimeLimitViewController *)self setTitle:displayableEntitlement];
   }
 }
 
-- (void)toggle:(id)a3 valueDidChange:(BOOL)a4
+- (void)toggle:(id)toggle valueDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  v15 = v6;
-  if (v6 == @"AdvancedScheduleToggle")
+  changeCopy = change;
+  toggleCopy = toggle;
+  v15 = toggleCopy;
+  if (toggleCopy == @"AdvancedScheduleToggle")
   {
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!toggleCopy)
   {
     goto LABEL_6;
   }
 
-  v7 = [(__CFString *)v6 isEqualToString:@"AdvancedScheduleToggle"];
+  v7 = [(__CFString *)toggleCopy isEqualToString:@"AdvancedScheduleToggle"];
 
   if (v7)
   {
 LABEL_4:
-    v8 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-    [v8 setIsManagingTimeConfiguration:v4 ^ 1];
+    globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+    [globalView setIsManagingTimeConfiguration:changeCopy ^ 1];
 LABEL_5:
 
     goto LABEL_6;
@@ -245,20 +245,20 @@ LABEL_5:
   v9 = v15;
   if (v9 == @"EntitlementAccessToggle" || (v10 = v9, v11 = [(__CFString *)v9 isEqualToString:@"EntitlementAccessToggle"], v10, v11))
   {
-    if (v4)
+    if (changeCopy)
     {
-      v12 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-      v13 = [v12 maxSelectionCount];
+      globalView2 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+      maxSelectionCount = [globalView2 maxSelectionCount];
 
-      if (v13 == 1)
+      if (maxSelectionCount == 1)
       {
-        v14 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
-        [v14 setEnabled:0];
+        globalView3 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+        [globalView3 setEnabled:0];
       }
     }
 
-    v8 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:self->_entitlementEntry];
-    [v8 setEnabled:v4];
+    globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:self->_entitlementEntry];
+    [globalView setEnabled:changeCopy];
     goto LABEL_5;
   }
 
@@ -267,89 +267,89 @@ LABEL_6:
   [(PKDynamicCollectionViewController *)self reloadDataForSection:self->_scheduleSectionController animated:1];
 }
 
-- (void)timeConfigurationDidChange:(id)a3
+- (void)timeConfigurationDidChange:(id)change
 {
   entitlementComposer = self->_entitlementComposer;
   entitlementEntry = self->_entitlementEntry;
-  v6 = a3;
+  changeCopy = change;
   v7 = [(PKPassEntitlementsComposer *)entitlementComposer viewFor:entitlementEntry];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    globalView = v7;
   }
 
   else
   {
-    v9 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+    globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
   }
 
-  v10 = v9;
+  v10 = globalView;
 
-  [v10 setTimeConfiguration:v6];
-  [(PKPassShareScheduleSectionController *)self->_scheduleSectionController setConfiguration:v6];
+  [v10 setTimeConfiguration:changeCopy];
+  [(PKPassShareScheduleSectionController *)self->_scheduleSectionController setConfiguration:changeCopy];
 }
 
-- (void)_showTimeLimitEditForStartDate:(BOOL)a3 expirationDate:(BOOL)a4
+- (void)_showTimeLimitEditForStartDate:(BOOL)date expirationDate:(BOOL)expirationDate
 {
-  v4 = a3;
-  v6 = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:self->_entitlementEntry, a4];
-  v7 = v6;
-  if (v6)
+  dateCopy = date;
+  expirationDate = [(PKPassEntitlementsComposer *)self->_entitlementComposer viewFor:self->_entitlementEntry, expirationDate];
+  v7 = expirationDate;
+  if (expirationDate)
   {
-    v8 = v6;
+    globalView = expirationDate;
   }
 
   else
   {
-    v8 = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
+    globalView = [(PKPassEntitlementsComposer *)self->_entitlementComposer globalView];
   }
 
-  v9 = v8;
+  v9 = globalView;
 
-  v10 = [v9 possibleTimeConfiguration];
+  possibleTimeConfiguration = [v9 possibleTimeConfiguration];
   v11 = [MEMORY[0x1E695DF00] now];
-  v12 = [v9 timeConfiguration];
-  v13 = v12;
-  v32 = v4;
-  if (v4)
+  timeConfiguration = [v9 timeConfiguration];
+  v13 = timeConfiguration;
+  v32 = dateCopy;
+  if (dateCopy)
   {
-    v14 = [v12 startDate];
-    if (v14)
+    startDate = [timeConfiguration startDate];
+    if (startDate)
     {
-      v15 = v14;
+      v15 = startDate;
       v16 = @"SHARE_SCHEDULES_EDIT_START_DATE_TITLE";
 LABEL_9:
-      v18 = v15;
+      startDate2 = v15;
       goto LABEL_12;
     }
 
-    v18 = [v10 startDate];
+    startDate2 = [possibleTimeConfiguration startDate];
     v15 = 0;
     v16 = @"SHARE_SCHEDULES_EDIT_START_DATE_TITLE";
   }
 
   else
   {
-    v17 = [v12 expirationDate];
-    if (v17)
+    expirationDate2 = [timeConfiguration expirationDate];
+    if (expirationDate2)
     {
-      v15 = v17;
+      v15 = expirationDate2;
       v16 = @"SHARE_SCHEDULES_EDIT_EXPIRATION_DATE_TITLE";
       goto LABEL_9;
     }
 
-    v18 = [v10 expirationDate];
+    startDate2 = [possibleTimeConfiguration expirationDate];
     v15 = 0;
     v16 = @"SHARE_SCHEDULES_EDIT_EXPIRATION_DATE_TITLE";
   }
 
 LABEL_12:
 
-  v19 = [v18 laterDate:v11];
+  v19 = [startDate2 laterDate:v11];
 
-  v20 = [v10 startDate];
-  v21 = [v20 laterDate:v11];
+  startDate3 = [possibleTimeConfiguration startDate];
+  v21 = [startDate3 laterDate:v11];
   v22 = v21;
   if (v21)
   {
@@ -363,8 +363,8 @@ LABEL_12:
 
   v24 = v23;
 
-  v25 = [v10 expirationDate];
-  v26 = [v25 laterDate:v11];
+  expirationDate3 = [possibleTimeConfiguration expirationDate];
+  v26 = [expirationDate3 laterDate:v11];
 
   v27 = PKLocalizedShareableCredentialString(&v16->isa);
   v28 = [[PKPassShareSelectDateViewController alloc] initWithDate:v19 minimumDate:v24 maximumDate:v26 title:v27];
@@ -376,19 +376,19 @@ LABEL_12:
   objc_copyWeak(&v36, &location);
   v29 = v9;
   v34 = v29;
-  v30 = v10;
+  v30 = possibleTimeConfiguration;
   v35 = v30;
   v37 = v32;
   [(PKPassShareSelectDateViewController *)v28 setDateChangeHandler:v33];
-  v31 = [(PKPassShareTimeLimitViewController *)self navigationController];
-  if ([v31 pk_settings_useStateDrivenNavigation])
+  navigationController = [(PKPassShareTimeLimitViewController *)self navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v31 pk_settings_pushViewController:v28];
+    [navigationController pk_settings_pushViewController:v28];
   }
 
   else
   {
-    [v31 pushViewController:v28 animated:1];
+    [navigationController pushViewController:v28 animated:1];
   }
 
   objc_destroyWeak(&v36);

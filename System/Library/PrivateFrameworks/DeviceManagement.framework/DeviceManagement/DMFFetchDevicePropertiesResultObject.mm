@@ -1,28 +1,28 @@
 @interface DMFFetchDevicePropertiesResultObject
 - (DMFDevice)device;
-- (DMFFetchDevicePropertiesResultObject)initWithCoder:(id)a3;
-- (DMFFetchDevicePropertiesResultObject)initWithValuesByPropertyKey:(id)a3 errorsByPropertyKey:(id)a4;
+- (DMFFetchDevicePropertiesResultObject)initWithCoder:(id)coder;
+- (DMFFetchDevicePropertiesResultObject)initWithValuesByPropertyKey:(id)key errorsByPropertyKey:(id)propertyKey;
 - (id)description;
-- (id)valueForPropertyKey:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)valueForPropertyKey:(id)key error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchDevicePropertiesResultObject
 
-- (DMFFetchDevicePropertiesResultObject)initWithValuesByPropertyKey:(id)a3 errorsByPropertyKey:(id)a4
+- (DMFFetchDevicePropertiesResultObject)initWithValuesByPropertyKey:(id)key errorsByPropertyKey:(id)propertyKey
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  propertyKeyCopy = propertyKey;
   v14.receiver = self;
   v14.super_class = DMFFetchDevicePropertiesResultObject;
   v8 = [(CATTaskResultObject *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     valuesByPropertyKey = v8->_valuesByPropertyKey;
     v8->_valuesByPropertyKey = v9;
 
-    v11 = [v7 copy];
+    v11 = [propertyKeyCopy copy];
     errorsByPropertyKey = v8->_errorsByPropertyKey;
     v8->_errorsByPropertyKey = v11;
   }
@@ -30,41 +30,41 @@
   return v8;
 }
 
-- (id)valueForPropertyKey:(id)a3 error:(id *)a4
+- (id)valueForPropertyKey:(id)key error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  keyCopy = key;
+  if (error)
   {
-    v7 = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    errorsByPropertyKey = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
+    v8 = [errorsByPropertyKey objectForKeyedSubscript:keyCopy];
     if (v8)
     {
     }
 
     else
     {
-      v9 = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
-      v10 = [v9 objectForKeyedSubscript:v6];
+      valuesByPropertyKey = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
+      v10 = [valuesByPropertyKey objectForKeyedSubscript:keyCopy];
 
       if (!v10)
       {
         v17 = @"propertyKey";
-        v18[0] = v6;
-        v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-        v12 = DMFErrorWithCodeAndUserInfo(111, v11);
+        v18[0] = keyCopy;
+        errorsByPropertyKey2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
+        v12 = DMFErrorWithCodeAndUserInfo(111, errorsByPropertyKey2);
         goto LABEL_6;
       }
     }
 
-    v11 = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
-    v12 = [v11 valueForKey:v6];
+    errorsByPropertyKey2 = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
+    v12 = [errorsByPropertyKey2 valueForKey:keyCopy];
 LABEL_6:
-    *a4 = v12;
+    *error = v12;
   }
 
-  v13 = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
-  v14 = [v13 valueForKey:v6];
+  valuesByPropertyKey2 = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
+  v14 = [valuesByPropertyKey2 valueForKey:keyCopy];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -73,22 +73,22 @@ LABEL_6:
 
 - (DMFDevice)device
 {
-  v3 = [[DMFDevice alloc] initPrivate];
-  v4 = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
-  [v3 setValuesForKeysWithDictionary:v4];
+  initPrivate = [[DMFDevice alloc] initPrivate];
+  valuesByPropertyKey = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
+  [initPrivate setValuesForKeysWithDictionary:valuesByPropertyKey];
 
-  v5 = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
-  [v3 setErrorsForKeys:v5];
+  errorsByPropertyKey = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
+  [initPrivate setErrorsForKeys:errorsByPropertyKey];
 
-  return v3;
+  return initPrivate;
 }
 
-- (DMFFetchDevicePropertiesResultObject)initWithCoder:(id)a3
+- (DMFFetchDevicePropertiesResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = DMFFetchDevicePropertiesResultObject;
-  v5 = [(CATTaskResultObject *)&v35 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v35 initWithCoder:coderCopy];
   if (v5)
   {
     v33 = MEMORY[0x1E695DFD8];
@@ -103,7 +103,7 @@ LABEL_6:
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v33 setWithObjects:{v31, v29, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"valuesByPropertyKey"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"valuesByPropertyKey"];
     valuesByPropertyKey = v5->_valuesByPropertyKey;
     v5->_valuesByPropertyKey = v15;
 
@@ -119,7 +119,7 @@ LABEL_6:
     v23 = objc_opt_class();
     v24 = objc_opt_class();
     v25 = [v34 setWithObjects:{v32, v30, v17, v18, v19, v20, v21, v22, v23, v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"errorsByPropertyKey"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"errorsByPropertyKey"];
     errorsByPropertyKey = v5->_errorsByPropertyKey;
     v5->_errorsByPropertyKey = v26;
   }
@@ -127,27 +127,27 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DMFFetchDevicePropertiesResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v7 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"valuesByPropertyKey"];
+  [coderCopy encodeObject:v5 forKey:@"valuesByPropertyKey"];
 
-  v6 = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
-  [v4 encodeObject:v6 forKey:@"errorsByPropertyKey"];
+  errorsByPropertyKey = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
+  [coderCopy encodeObject:errorsByPropertyKey forKey:@"errorsByPropertyKey"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  errorsByPropertyKey = [(DMFFetchDevicePropertiesResultObject *)self errorsByPropertyKey];
+  v5 = [v3 dictionaryWithDictionary:errorsByPropertyKey];
 
-  v6 = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
-  [v5 addEntriesFromDictionary:v6];
+  valuesByPropertyKey = [(DMFFetchDevicePropertiesResultObject *)self valuesByPropertyKey];
+  [v5 addEntriesFromDictionary:valuesByPropertyKey];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p %@>", objc_opt_class(), self, v5];
 

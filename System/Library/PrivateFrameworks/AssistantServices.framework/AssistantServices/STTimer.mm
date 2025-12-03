@@ -1,36 +1,36 @@
 @interface STTimer
-- (STTimer)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STTimer)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STTimer
 
-- (STTimer)initWithCoder:(id)a3
+- (STTimer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = STTimer;
-  v5 = [(STSiriModelObject *)&v17 initWithCoder:v4];
+  v5 = [(STSiriModelObject *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TimerId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TimerId"];
     timerId = v5->_timerId;
     v5->_timerId = v6;
 
-    v5->_state = [v4 decodeIntegerForKey:@"State"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"State"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
     value = v5->_value;
     v5->_value = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FireDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FireDate"];
     fireDate = v5->_fireDate;
     v5->_fireDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Duration"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Duration"];
     duration = v5->_duration;
     v5->_duration = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
     label = v5->_label;
     v5->_label = v14;
   }
@@ -38,18 +38,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STTimer;
-  v4 = a3;
-  [(STSiriModelObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_timerId forKey:{@"TimerId", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_state forKey:@"State"];
-  [v4 encodeObject:self->_value forKey:@"Value"];
-  [v4 encodeObject:self->_fireDate forKey:@"FireDate"];
-  [v4 encodeObject:self->_duration forKey:@"Duration"];
-  [v4 encodeObject:self->_label forKey:@"Label"];
+  coderCopy = coder;
+  [(STSiriModelObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_timerId forKey:{@"TimerId", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_state forKey:@"State"];
+  [coderCopy encodeObject:self->_value forKey:@"Value"];
+  [coderCopy encodeObject:self->_fireDate forKey:@"FireDate"];
+  [coderCopy encodeObject:self->_duration forKey:@"Duration"];
+  [coderCopy encodeObject:self->_label forKey:@"Label"];
 }
 
 @end

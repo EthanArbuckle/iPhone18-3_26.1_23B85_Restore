@@ -1,28 +1,28 @@
 @interface _DPMLRuntimeTelemetry
-+ (void)reportPluginForTrialClient:(id)a3 withError:(id)a4;
++ (void)reportPluginForTrialClient:(id)client withError:(id)error;
 @end
 
 @implementation _DPMLRuntimeTelemetry
 
-+ (void)reportPluginForTrialClient:(id)a3 withError:(id)a4
++ (void)reportPluginForTrialClient:(id)client withError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
+  errorCopy = error;
+  clientCopy = client;
   v7 = +[LBFEventManager sharedInstance];
   v8 = [LBFTrialIdentifiers alloc];
-  v9 = [v6 experimentIdentifier];
-  v10 = [v6 deploymentIdentifier];
-  v11 = [v10 intValue];
-  v12 = [v6 treatmentIdentifier];
+  experimentIdentifier = [clientCopy experimentIdentifier];
+  deploymentIdentifier = [clientCopy deploymentIdentifier];
+  intValue = [deploymentIdentifier intValue];
+  treatmentIdentifier = [clientCopy treatmentIdentifier];
 
-  v13 = [v8 initWithExperimentID:v9 deploymentID:v11 treatmentID:v12];
-  v14 = [[LBFLighthouseEvent alloc] initWithPerformTrialTaskStatus:v5 == 0 error:v5 usePrivateUpload:1];
+  v13 = [v8 initWithExperimentID:experimentIdentifier deploymentID:intValue treatmentID:treatmentIdentifier];
+  v14 = [[LBFLighthouseEvent alloc] initWithPerformTrialTaskStatus:errorCopy == 0 error:errorCopy usePrivateUpload:1];
 
   v18 = 0;
-  LODWORD(v9) = [v7 addLighthousePluginEvent:v14 identifiers:v13 error:&v18];
+  LODWORD(experimentIdentifier) = [v7 addLighthousePluginEvent:v14 identifiers:v13 error:&v18];
   v15 = v18;
   v16 = v15;
-  if (v9 && v15)
+  if (experimentIdentifier && v15)
   {
     v17 = +[_PFLLog extension];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))

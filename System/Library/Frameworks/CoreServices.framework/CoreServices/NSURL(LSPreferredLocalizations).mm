@@ -10,7 +10,7 @@
   if ([__LSDefaultsGetSharedInstance() isServer])
   {
     v4 = 0;
-    [a1 getResourceValue:&v4 forKey:@"com.apple.launchservices.preferredLocalizations" error:0];
+    [self getResourceValue:&v4 forKey:@"com.apple.launchservices.preferredLocalizations" error:0];
     v2 = v4;
   }
 
@@ -27,7 +27,7 @@
   v4 = a3;
   if ([__LSDefaultsGetSharedInstance() isServer])
   {
-    [a1 setTemporaryResourceValue:v4 forKey:@"com.apple.launchservices.preferredLocalizations"];
+    [self setTemporaryResourceValue:v4 forKey:@"com.apple.launchservices.preferredLocalizations"];
   }
 }
 

@@ -1,10 +1,10 @@
 @interface NSSQLSelectIntermediate
-- (NSSQLSelectIntermediate)initWithEntity:(id)a3 alias:(id)a4 fetchColumns:(id)a5 inScope:(id)a6;
-- (id)generateSQLStringInContext:(id)a3;
-- (id)initForCorrelationTarget:(id)a3 alias:(id)a4 fetchColumns:(id)a5 inScope:(id)a6;
+- (NSSQLSelectIntermediate)initWithEntity:(id)entity alias:(id)alias fetchColumns:(id)columns inScope:(id)scope;
+- (id)generateSQLStringInContext:(id)context;
+- (id)initForCorrelationTarget:(id)target alias:(id)alias fetchColumns:(id)columns inScope:(id)scope;
 - (void)dealloc;
-- (void)setColumnAlias:(uint64_t)a1;
-- (void)setFetchColumns:(uint64_t)a1;
+- (void)setColumnAlias:(uint64_t)alias;
+- (void)setFetchColumns:(uint64_t)columns;
 @end
 
 @implementation NSSQLSelectIntermediate
@@ -16,16 +16,16 @@
   [(NSSQLSelectIntermediate *)&v3 dealloc];
 }
 
-- (NSSQLSelectIntermediate)initWithEntity:(id)a3 alias:(id)a4 fetchColumns:(id)a5 inScope:(id)a6
+- (NSSQLSelectIntermediate)initWithEntity:(id)entity alias:(id)alias fetchColumns:(id)columns inScope:(id)scope
 {
-  v9 = [(NSSQLIntermediate *)self initWithScope:a6];
+  v9 = [(NSSQLIntermediate *)self initWithScope:scope];
   v10 = v9;
   if (v9)
   {
-    v9->_entity = a3;
-    v9->_entityAlias = [a4 copy];
-    v10->_columnAlias = [a4 copy];
-    v10->_fetchColumns = a5;
+    v9->_entity = entity;
+    v9->_entityAlias = [alias copy];
+    v10->_columnAlias = [alias copy];
+    v10->_fetchColumns = columns;
     v10->_useDistinct = 0;
     v10->_isCount = 0;
   }
@@ -33,14 +33,14 @@
   return v10;
 }
 
-- (id)initForCorrelationTarget:(id)a3 alias:(id)a4 fetchColumns:(id)a5 inScope:(id)a6
+- (id)initForCorrelationTarget:(id)target alias:(id)alias fetchColumns:(id)columns inScope:(id)scope
 {
-  v9 = [(NSSQLIntermediate *)self initWithScope:a6];
+  v9 = [(NSSQLIntermediate *)self initWithScope:scope];
   if (v9)
   {
-    v9->_correlationTarget = [a3 copy];
-    v9->_columnAlias = [a4 copy];
-    v9->_fetchColumns = a5;
+    v9->_correlationTarget = [target copy];
+    v9->_columnAlias = [alias copy];
+    v9->_fetchColumns = columns;
     v9->_useDistinct = 0;
     v9->_isCount = 0;
   }
@@ -48,35 +48,35 @@
   return v9;
 }
 
-- (void)setColumnAlias:(uint64_t)a1
+- (void)setColumnAlias:(uint64_t)alias
 {
-  if (a1)
+  if (alias)
   {
-    if (*(a1 + 56) != a2)
+    if (*(alias + 56) != a2)
     {
       v4 = a2;
 
-      *(a1 + 56) = a2;
+      *(alias + 56) = a2;
     }
   }
 }
 
-- (void)setFetchColumns:(uint64_t)a1
+- (void)setFetchColumns:(uint64_t)columns
 {
-  if (a1)
+  if (columns)
   {
-    if (*(a1 + 40) != a2)
+    if (*(columns + 40) != a2)
     {
       v4 = a2;
 
-      *(a1 + 40) = a2;
+      *(columns + 40) = a2;
     }
   }
 }
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     return 0;
   }

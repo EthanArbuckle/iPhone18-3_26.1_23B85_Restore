@@ -1,36 +1,36 @@
 @interface FMCoreRoutineController
-- (FMCoreRoutineController)initWithDelegate:(id)a3;
+- (FMCoreRoutineController)initWithDelegate:(id)delegate;
 - (FMCoreRoutineControllerDelegate)delegate;
 - (void)dealloc;
 @end
 
 @implementation FMCoreRoutineController
 
-- (FMCoreRoutineController)initWithDelegate:(id)a3
+- (FMCoreRoutineController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = FMCoreRoutineController;
   v5 = [(FMCoreRoutineController *)&v17 init];
-  [(FMCoreRoutineController *)v5 setDelegate:v4];
+  [(FMCoreRoutineController *)v5 setDelegate:delegateCopy];
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   [(FMCoreRoutineController *)v5 setQueue:dispatch_queue_create("com.apple.wirelessinsightsd.FederatedMobility.CoreRoutineController", v6)];
   if ([(FMCoreRoutineController *)v5 queue])
   {
     out_token = -1;
     objc_initWeak(&location, v5);
-    v7 = [RTLocationsOfInterestDidClearNotification UTF8String];
-    v8 = [(FMCoreRoutineController *)v5 queue];
+    uTF8String = [RTLocationsOfInterestDidClearNotification UTF8String];
+    queue = [(FMCoreRoutineController *)v5 queue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000ECB3C;
     handler[3] = &unk_1002AB2D8;
     objc_copyWeak(&v14, &location);
-    notify_register_dispatch(v7, &out_token, v8, handler);
+    notify_register_dispatch(uTF8String, &out_token, queue, handler);
     [(FMCoreRoutineController *)v5 setNotificationToken:out_token];
-    v9 = [(FMCoreRoutineController *)v5 notificationToken];
+    notificationToken = [(FMCoreRoutineController *)v5 notificationToken];
     v10 = *(qword_1002DBE98 + 136);
-    if (v9 == -1)
+    if (notificationToken == -1)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
       {

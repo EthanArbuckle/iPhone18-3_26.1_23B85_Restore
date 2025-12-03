@@ -1,5 +1,5 @@
 @interface CKBrowserCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
@@ -11,14 +11,14 @@
 
 @implementation CKBrowserCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKBrowserCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"CKBrowserCell" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKBrowserCell" hasInstanceMethod:@"browserLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKBrowserCell" hasInstanceMethod:@"shinyStatus" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CKBrowserCell" hasInstanceMethod:@"shinyStatusView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKBrowserCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"CKBrowserCell" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKBrowserCell" hasInstanceMethod:@"browserLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKBrowserCell" hasInstanceMethod:@"shinyStatus" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CKBrowserCell" hasInstanceMethod:@"shinyStatusView" withFullSignature:{"@", 0}];
 }
 
 - (CGRect)accessibilityFrame
@@ -84,8 +84,8 @@
 - (id)accessibilityLabel
 {
   v3 = [(CKBrowserCellAccessibility *)self safeValueForKey:@"browserLabel"];
-  v4 = [v3 accessibilityLabel];
-  v7 = [(CKBrowserCellAccessibility *)self _axShinyStatusLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
+  _axShinyStatusLabel = [(CKBrowserCellAccessibility *)self _axShinyStatusLabel];
   v5 = __UIAXStringForVariables();
 
   return v5;
@@ -121,11 +121,11 @@ LABEL_9:
 LABEL_10:
     v13.receiver = self;
     v13.super_class = CKBrowserCellAccessibility;
-    v11 = [(CKBrowserCellAccessibility *)&v13 accessibilityActivate];
+    accessibilityActivate = [(CKBrowserCellAccessibility *)&v13 accessibilityActivate];
     goto LABEL_11;
   }
 
-  v8 = [v5 delegate];
+  delegate = [v5 delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
@@ -136,17 +136,17 @@ LABEL_10:
   v15 = 3221225472;
   v16 = __51__CKBrowserCellAccessibility_accessibilityActivate__block_invoke;
   v17 = &unk_29F2B0BB8;
-  v18 = v8;
+  v18 = delegate;
   v19 = v5;
   v20 = v7;
   v9 = v7;
-  v10 = v8;
+  v10 = delegate;
   AXPerformSafeBlock();
 
-  v11 = 1;
+  accessibilityActivate = 1;
 LABEL_11:
 
-  return v11;
+  return accessibilityActivate;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -166,7 +166,7 @@ LABEL_11:
 - (id)accessibilityUserInputLabels
 {
   v2 = [(CKBrowserCellAccessibility *)self safeValueForKey:@"browserLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
   v4 = MEMORY[0x29C2D0360]();
 
   return v4;
@@ -182,15 +182,15 @@ LABEL_11:
 - (id)_axShinyStatusLabel
 {
   v2 = [(CKBrowserCellAccessibility *)self safeValueForKey:@"shinyStatus"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (v3 == 1)
+  if (integerValue == 1)
   {
     v4 = @"app.status.new";
     goto LABEL_5;
   }
 
-  if (v3 == 2)
+  if (integerValue == 2)
   {
     v4 = @"app.status.new.from.test.flight";
 LABEL_5:

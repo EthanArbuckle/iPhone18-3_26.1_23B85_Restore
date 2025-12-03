@@ -1,23 +1,23 @@
 @interface MTLToolsTensor
-- (BOOL)isTensorViewableWithReshapedDescriptor:(id)a3;
+- (BOOL)isTensorViewableWithReshapedDescriptor:(id)descriptor;
 - (MTLResourceID)gpuResourceID;
 - (MTLTensorExtents)dimensions;
 - (MTLTensorExtents)strides;
-- (MTLToolsTensor)initWithBaseObject:(id)a3 buffer:(id)a4;
-- (MTLToolsTensor)initWithBaseObject:(id)a3 parentTensor:(id)a4;
-- (id)newTensorViewWithReshapedDescriptor:(id)a3 error:(id *)a4;
-- (id)newTensorViewWithSlice:(MTLTensorSlice)a3 error:(id *)a4;
-- (id)wrapChildTensor:(id)a3;
+- (MTLToolsTensor)initWithBaseObject:(id)object buffer:(id)buffer;
+- (MTLToolsTensor)initWithBaseObject:(id)object parentTensor:(id)tensor;
+- (id)newTensorViewWithReshapedDescriptor:(id)descriptor error:(id *)error;
+- (id)newTensorViewWithSlice:(MTLTensorSlice)slice error:(id *)error;
+- (id)wrapChildTensor:(id)tensor;
 - (int64_t)dataType;
 - (unint64_t)bufferOffset;
 - (unint64_t)offset;
 - (unint64_t)resourceIndex;
 - (unint64_t)usage;
 - (void)dealloc;
-- (void)getBytes:(void *)a3 strides:(id)a4 fromSlice:(MTLTensorSlice)a5;
-- (void)getBytes:(void *)a3 strides:(id)a4 fromSliceOrigin:(id)a5 sliceDimensions:(id)a6;
-- (void)replaceSlice:(MTLTensorSlice)a3 withBytes:(const void *)a4 strides:(id)a5;
-- (void)replaceSliceOrigin:(id)a3 sliceDimensions:(id)a4 withBytes:(const void *)a5 strides:(id)a6;
+- (void)getBytes:(void *)bytes strides:(id)strides fromSlice:(MTLTensorSlice)slice;
+- (void)getBytes:(void *)bytes strides:(id)strides fromSliceOrigin:(id)origin sliceDimensions:(id)dimensions;
+- (void)replaceSlice:(MTLTensorSlice)slice withBytes:(const void *)bytes strides:(id)strides;
+- (void)replaceSliceOrigin:(id)origin sliceDimensions:(id)dimensions withBytes:(const void *)bytes strides:(id)strides;
 @end
 
 @implementation MTLToolsTensor
@@ -29,31 +29,31 @@
   [(MTLToolsResource *)&v3 dealloc];
 }
 
-- (MTLToolsTensor)initWithBaseObject:(id)a3 parentTensor:(id)a4
+- (MTLToolsTensor)initWithBaseObject:(id)object parentTensor:(id)tensor
 {
   v7.receiver = self;
   v7.super_class = MTLToolsTensor;
-  v5 = [(MTLToolsResource *)&v7 initWithBaseObject:a3 parent:?];
+  v5 = [(MTLToolsResource *)&v7 initWithBaseObject:object parent:?];
   if (v5)
   {
-    v5->_parentTensor = a4;
-    if ([a4 buffer])
+    v5->_parentTensor = tensor;
+    if ([tensor buffer])
     {
-      v5->_buffer = [a4 buffer];
+      v5->_buffer = [tensor buffer];
     }
   }
 
   return v5;
 }
 
-- (MTLToolsTensor)initWithBaseObject:(id)a3 buffer:(id)a4
+- (MTLToolsTensor)initWithBaseObject:(id)object buffer:(id)buffer
 {
   v7.receiver = self;
   v7.super_class = MTLToolsTensor;
-  v5 = [(MTLToolsResource *)&v7 initWithBaseObject:a3 parent:?];
+  v5 = [(MTLToolsResource *)&v7 initWithBaseObject:object parent:?];
   if (v5)
   {
-    v5->_buffer = a4;
+    v5->_buffer = buffer;
   }
 
   return v5;
@@ -61,123 +61,123 @@
 
 - (unint64_t)bufferOffset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bufferOffset];
+  return [baseObject bufferOffset];
 }
 
 - (MTLResourceID)gpuResourceID
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 gpuResourceID];
+  return [baseObject gpuResourceID];
 }
 
 - (MTLTensorExtents)dimensions
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 dimensions];
+  return [baseObject dimensions];
 }
 
 - (int64_t)dataType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 dataType];
+  return [baseObject dataType];
 }
 
 - (unint64_t)usage
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 usage];
+  return [baseObject usage];
 }
 
 - (unint64_t)offset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 offset];
+  return [baseObject offset];
 }
 
 - (MTLTensorExtents)strides
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 strides];
+  return [baseObject strides];
 }
 
 - (unint64_t)resourceIndex
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 resourceIndex];
+  return [baseObject resourceIndex];
 }
 
-- (id)wrapChildTensor:(id)a3
+- (id)wrapChildTensor:(id)tensor
 {
-  if (!a3)
+  if (!tensor)
   {
     return 0;
   }
 
-  v4 = [[MTLToolsTensor alloc] initWithBaseObject:a3 parentTensor:self];
+  v4 = [[MTLToolsTensor alloc] initWithBaseObject:tensor parentTensor:self];
 
   return v4;
 }
 
-- (id)newTensorViewWithSlice:(MTLTensorSlice)a3 error:(id *)a4
+- (id)newTensorViewWithSlice:(MTLTensorSlice)slice error:(id *)error
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
   return [(MTLToolsTensor *)self wrapChildTensor:v5];
 }
 
-- (BOOL)isTensorViewableWithReshapedDescriptor:(id)a3
+- (BOOL)isTensorViewableWithReshapedDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 isTensorViewableWithReshapedDescriptor:a3];
+  return [baseObject isTensorViewableWithReshapedDescriptor:descriptor];
 }
 
-- (id)newTensorViewWithReshapedDescriptor:(id)a3 error:(id *)a4
+- (id)newTensorViewWithReshapedDescriptor:(id)descriptor error:(id *)error
 {
   v5 = [-[MTLToolsObject baseObject](self "baseObject")];
 
   return [(MTLToolsTensor *)self wrapChildTensor:v5];
 }
 
-- (void)replaceSlice:(MTLTensorSlice)a3 withBytes:(const void *)a4 strides:(id)a5
+- (void)replaceSlice:(MTLTensorSlice)slice withBytes:(const void *)bytes strides:(id)strides
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = [(MTLToolsObject *)self baseObject];
+  var1 = slice.var1;
+  var0 = slice.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v9 replaceSlice:var0 withBytes:var1 strides:{a4, a5}];
+  [baseObject replaceSlice:var0 withBytes:var1 strides:{bytes, strides}];
 }
 
-- (void)getBytes:(void *)a3 strides:(id)a4 fromSlice:(MTLTensorSlice)a5
+- (void)getBytes:(void *)bytes strides:(id)strides fromSlice:(MTLTensorSlice)slice
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v9 = [(MTLToolsObject *)self baseObject];
+  var1 = slice.var1;
+  var0 = slice.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v9 getBytes:a3 strides:a4 fromSlice:{var0, var1}];
+  [baseObject getBytes:bytes strides:strides fromSlice:{var0, var1}];
 }
 
-- (void)getBytes:(void *)a3 strides:(id)a4 fromSliceOrigin:(id)a5 sliceDimensions:(id)a6
+- (void)getBytes:(void *)bytes strides:(id)strides fromSliceOrigin:(id)origin sliceDimensions:(id)dimensions
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v10 getBytes:a3 strides:a4 fromSliceOrigin:a5 sliceDimensions:a6];
+  [baseObject getBytes:bytes strides:strides fromSliceOrigin:origin sliceDimensions:dimensions];
 }
 
-- (void)replaceSliceOrigin:(id)a3 sliceDimensions:(id)a4 withBytes:(const void *)a5 strides:(id)a6
+- (void)replaceSliceOrigin:(id)origin sliceDimensions:(id)dimensions withBytes:(const void *)bytes strides:(id)strides
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v10 replaceSliceOrigin:a3 sliceDimensions:a4 withBytes:a5 strides:a6];
+  [baseObject replaceSliceOrigin:origin sliceDimensions:dimensions withBytes:bytes strides:strides];
 }
 
 @end

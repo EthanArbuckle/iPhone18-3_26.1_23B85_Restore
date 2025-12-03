@@ -1,5 +1,5 @@
 @interface HMDUserCloudShareRepairRequest
-- (HMDUserCloudShareRepairRequest)initWithStartDate:(id)a3 containerID:(id)a4 home:(id)a5 repairInfo:(id)a6;
+- (HMDUserCloudShareRepairRequest)initWithStartDate:(id)date containerID:(id)d home:(id)home repairInfo:(id)info;
 - (id)description;
 @end
 
@@ -8,24 +8,24 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDUserCloudShareRequest *)self identifier];
-  v5 = [(HMDUserCloudShareRequest *)self containerID];
-  v6 = [(HMDUserCloudShareRequest *)self startDate];
-  v7 = [v3 stringWithFormat:@"<HMDUserCloudShareRepairRequest id = %@, container = %@, startDate = %@>", v4, v5, v6];
+  identifier = [(HMDUserCloudShareRequest *)self identifier];
+  containerID = [(HMDUserCloudShareRequest *)self containerID];
+  startDate = [(HMDUserCloudShareRequest *)self startDate];
+  v7 = [v3 stringWithFormat:@"<HMDUserCloudShareRepairRequest id = %@, container = %@, startDate = %@>", identifier, containerID, startDate];
 
   return v7;
 }
 
-- (HMDUserCloudShareRepairRequest)initWithStartDate:(id)a3 containerID:(id)a4 home:(id)a5 repairInfo:(id)a6
+- (HMDUserCloudShareRepairRequest)initWithStartDate:(id)date containerID:(id)d home:(id)home repairInfo:(id)info
 {
-  v11 = a6;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = HMDUserCloudShareRepairRequest;
-  v12 = [(HMDUserCloudShareRequest *)&v15 initWithStartDate:a3 containerID:a4 home:a5];
+  v12 = [(HMDUserCloudShareRequest *)&v15 initWithStartDate:date containerID:d home:home];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_repairInfo, a6);
+    objc_storeStrong(&v12->_repairInfo, info);
   }
 
   return v13;

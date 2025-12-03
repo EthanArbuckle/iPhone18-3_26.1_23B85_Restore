@@ -1,22 +1,22 @@
 @interface PNPAirplaneModeViewController
 - (CGSize)preferredContentSize;
 - (PNPAirplaneModeBluetoothDelegate)delegate;
-- (PNPAirplaneModeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PNPAirplaneModeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PNPPlatterViewControllerPlatterDelegate)platterDelegate;
 - (PNPViewControllerAppearanceDelegate)appearanceDelegate;
 - (void)didTapOnBluetoothButton;
 - (void)dismissPill;
 - (void)loadView;
-- (void)setDeviceState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setDeviceState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PNPAirplaneModeViewController
 
-- (PNPAirplaneModeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PNPAirplaneModeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = PNPAirplaneModeViewController;
@@ -33,11 +33,11 @@
   return v4;
 }
 
-- (void)setDeviceState:(id)a3
+- (void)setDeviceState:(id)state
 {
-  [(PNPAirplaneModeView *)self->_airplaneModeView setDeviceState:a3];
-  v4 = [(PNPAirplaneModeViewController *)self _platterContainerView];
-  [v4 setEdge:{-[PNPAirplaneModeViewController preferredEdge](self, "preferredEdge")}];
+  [(PNPAirplaneModeView *)self->_airplaneModeView setDeviceState:state];
+  _platterContainerView = [(PNPAirplaneModeViewController *)self _platterContainerView];
+  [_platterContainerView setEdge:{-[PNPAirplaneModeViewController preferredEdge](self, "preferredEdge")}];
 }
 
 - (void)loadView
@@ -56,26 +56,26 @@
   self->_airplaneModeView = v3;
 
   [(PNPAirplaneModeView *)self->_airplaneModeView setBluetoothDelegate:self];
-  v5 = [(PNPAirplaneModeViewController *)self _platterContainerView];
-  [v5 setContentView:self->_airplaneModeView];
+  _platterContainerView = [(PNPAirplaneModeViewController *)self _platterContainerView];
+  [_platterContainerView setContentView:self->_airplaneModeView];
 
-  v6 = [(PNPAirplaneModeViewController *)self _platterContainerView];
-  [v6 setEdge:{-[PNPAirplaneModeViewController preferredEdge](self, "preferredEdge")}];
+  _platterContainerView2 = [(PNPAirplaneModeViewController *)self _platterContainerView];
+  [_platterContainerView2 setEdge:{-[PNPAirplaneModeViewController preferredEdge](self, "preferredEdge")}];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = PNPAirplaneModeViewController;
   [(PNPAirplaneModeViewController *)&v7 viewDidAppear:?];
-  v5 = [(PNPAirplaneModeViewController *)self _platterContainerView];
+  _platterContainerView = [(PNPAirplaneModeViewController *)self _platterContainerView];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__PNPAirplaneModeViewController_viewDidAppear___block_invoke;
   v6[3] = &unk_279A0A060;
   v6[4] = self;
-  PNPPlatterPresentPlatterContainerView(v5, v3, v6);
+  PNPPlatterPresentPlatterContainerView(_platterContainerView, appearCopy, v6);
 }
 
 void __47__PNPAirplaneModeViewController_viewDidAppear___block_invoke(uint64_t a1)
@@ -85,21 +85,21 @@ void __47__PNPAirplaneModeViewController_viewDidAppear___block_invoke(uint64_t a
   PNPChargingStatusConfigureAutoDismissWithTime(v1, v2, 4.0);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __84__PNPAirplaneModeViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_279A0A088;
-  v10 = a3;
+  sizeCopy = size;
   v9[4] = self;
-  v7 = a4;
-  [v7 animateAlongsideTransition:v9 completion:&__block_literal_global_8];
+  coordinatorCopy = coordinator;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:&__block_literal_global_8];
   v8.receiver = self;
   v8.super_class = PNPAirplaneModeViewController;
-  [(PNPAirplaneModeViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PNPAirplaneModeViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __84__PNPAirplaneModeViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -115,13 +115,13 @@ void __84__PNPAirplaneModeViewController_viewWillTransitionToSize_withTransition
   [v7 layoutIfNeeded];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PNPAirplaneModeViewController;
-  [(PNPAirplaneModeViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(PNPAirplaneModeViewController *)self appearanceDelegate];
-  [v4 viewControllerDidDismiss:self];
+  [(PNPAirplaneModeViewController *)&v5 viewDidDisappear:disappear];
+  appearanceDelegate = [(PNPAirplaneModeViewController *)self appearanceDelegate];
+  [appearanceDelegate viewControllerDidDismiss:self];
 }
 
 - (CGSize)preferredContentSize
@@ -145,13 +145,13 @@ void __84__PNPAirplaneModeViewController_viewWillTransitionToSize_withTransition
 
 - (void)dismissPill
 {
-  v3 = [(PNPAirplaneModeViewController *)self _platterContainerView];
+  _platterContainerView = [(PNPAirplaneModeViewController *)self _platterContainerView];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__PNPAirplaneModeViewController_dismissPill__block_invoke;
   v4[3] = &unk_279A0A060;
   v4[4] = self;
-  PNPPlatterPresentPlatterContainerView(v3, 1, v4);
+  PNPPlatterPresentPlatterContainerView(_platterContainerView, 1, v4);
 }
 
 void __44__PNPAirplaneModeViewController_dismissPill__block_invoke(uint64_t a1)

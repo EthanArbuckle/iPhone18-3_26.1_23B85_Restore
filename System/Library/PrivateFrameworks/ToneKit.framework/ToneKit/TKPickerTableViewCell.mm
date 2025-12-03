@@ -1,29 +1,29 @@
 @interface TKPickerTableViewCell
 - (void)_updateTextLabelColor;
-- (void)setShouldTintTextLabel:(BOOL)a3;
-- (void)setTextLabelColor:(id)a3;
+- (void)setShouldTintTextLabel:(BOOL)label;
+- (void)setTextLabelColor:(id)color;
 - (void)tintColorDidChange;
 @end
 
 @implementation TKPickerTableViewCell
 
-- (void)setTextLabelColor:(id)a3
+- (void)setTextLabelColor:(id)color
 {
-  v5 = a3;
-  if (self->_textLabelColor != v5)
+  colorCopy = color;
+  if (self->_textLabelColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textLabelColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textLabelColor, color);
     [(TKPickerTableViewCell *)self _updateTextLabelColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setShouldTintTextLabel:(BOOL)a3
+- (void)setShouldTintTextLabel:(BOOL)label
 {
-  if (self->_shouldTintTextLabel != a3)
+  if (self->_shouldTintTextLabel != label)
   {
-    self->_shouldTintTextLabel = a3;
+    self->_shouldTintTextLabel = label;
     if (!self->_textLabelColor)
     {
       [(TKPickerTableViewCell *)self _updateTextLabelColor];
@@ -54,8 +54,8 @@
   }
 
   v5 = v3;
-  v4 = [(TKPickerTableViewCell *)self textLabel];
-  [v4 setTextColor:v5];
+  textLabel = [(TKPickerTableViewCell *)self textLabel];
+  [textLabel setTextColor:v5];
 }
 
 @end

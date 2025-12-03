@@ -1,14 +1,14 @@
 @interface ReportingOperations
-+ (void)postReportOperations:(id)a3 wasSaved:(BOOL)a4;
++ (void)postReportOperations:(id)operations wasSaved:(BOOL)saved;
 - (_TtC11ReportCrash19ReportingOperations)init;
 @end
 
 @implementation ReportingOperations
 
-+ (void)postReportOperations:(id)a3 wasSaved:(BOOL)a4
++ (void)postReportOperations:(id)operations wasSaved:(BOOL)saved
 {
-  v5 = a3;
-  sub_10000D1D4(v5, a4);
+  operationsCopy = operations;
+  sub_10000D1D4(operationsCopy, saved);
 }
 
 - (_TtC11ReportCrash19ReportingOperations)init

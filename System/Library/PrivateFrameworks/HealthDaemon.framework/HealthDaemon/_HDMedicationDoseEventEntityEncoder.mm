@@ -1,22 +1,22 @@
 @interface _HDMedicationDoseEventEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (_HDMedicationDoseEventEntityEncoder)initWithHealthEntityClass:(Class)a3 profile:(id)a4 transaction:(id)a5 purpose:(int64_t)a6 encodingOptions:(id)a7 authorizationFilter:(id)a8;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (_HDMedicationDoseEventEntityEncoder)initWithHealthEntityClass:(Class)class profile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
 @implementation _HDMedicationDoseEventEntityEncoder
 
-- (_HDMedicationDoseEventEntityEncoder)initWithHealthEntityClass:(Class)a3 profile:(id)a4 transaction:(id)a5 purpose:(int64_t)a6 encodingOptions:(id)a7 authorizationFilter:(id)a8
+- (_HDMedicationDoseEventEntityEncoder)initWithHealthEntityClass:(Class)class profile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v14 = a7;
+  optionsCopy = options;
   v18.receiver = self;
   v18.super_class = _HDMedicationDoseEventEntityEncoder;
-  v15 = [(HDEntityEncoder *)&v18 initWithHealthEntityClass:a3 profile:a4 transaction:a5 purpose:a6 encodingOptions:v14 authorizationFilter:a8];
+  v15 = [(HDEntityEncoder *)&v18 initWithHealthEntityClass:class profile:profile transaction:transaction purpose:purpose encodingOptions:optionsCopy authorizationFilter:filter];
   if (v15)
   {
-    v16 = [v14 objectForKeyedSubscript:@"HDMedicationDoseEventEntityEncodingOptionExcludePrivateMedicationInfo"];
+    v16 = [optionsCopy objectForKeyedSubscript:@"HDMedicationDoseEventEntityEncodingOptionExcludePrivateMedicationInfo"];
     v15->_includeMedicationAndScheduledItemDetails = [v16 BOOLValue] ^ 1;
   }
 
@@ -45,19 +45,19 @@
     v3 = v5;
   }
 
-  v6 = [(HDEntityEncoder *)self superclassEncoder];
-  v7 = [v6 orderedProperties];
-  v8 = [v3 arrayByAddingObjectsFromArray:v7];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v8 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -72,8 +72,8 @@
     }
 
     v12 = HDSQLiteColumnWithNameAsUUID();
-    v13 = [v12 hk_dataForUUIDBytes];
-    [(HDCodableMedicationDoseEvent *)v10 setMedicationUuid:v13];
+    hk_dataForUUIDBytes = [v12 hk_dataForUUIDBytes];
+    [(HDCodableMedicationDoseEvent *)v10 setMedicationUuid:hk_dataForUUIDBytes];
 
     v14 = HDSQLiteColumnWithNameAsString();
     [(HDCodableMedicationDoseEvent *)v10 setMedicationIdentifier:v14];
@@ -111,85 +111,85 @@
   return v10;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD650]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD650]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  LODWORD(a6) = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  LODWORD(error) = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
-  if (a6)
+  if (error)
   {
-    [v10 _setLogOrigin:HDSQLiteColumnWithNameAsInt64()];
-    [v10 _setLogStatus:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setLogOrigin:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy _setLogStatus:HDSQLiteColumnWithNameAsInt64()];
     v12 = HDSQLiteColumnWithNameAsUUID();
-    [v10 _setMedicationUUID:v12];
+    [objectCopy _setMedicationUUID:v12];
 
     if (self->_includeMedicationAndScheduledItemDetails)
     {
       if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
       {
         v13 = HDSQLiteColumnWithNameAsString();
-        [v10 _setScheduleItemIdentifier:v13];
+        [objectCopy _setScheduleItemIdentifier:v13];
       }
 
       v14 = HDSQLiteColumnWithNameAsString();
-      [v10 _setMedicationIdentifier:v14];
+      [objectCopy _setMedicationIdentifier:v14];
     }
 
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       v15 = HDSQLiteColumnWithNameAsNumber();
-      [v10 _setScheduledDoseQuantity:v15];
+      [objectCopy _setScheduledDoseQuantity:v15];
     }
 
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       v16 = HDSQLiteColumnWithNameAsNumber();
-      [v10 _setDoseQuantity:v16];
+      [objectCopy _setDoseQuantity:v16];
     }
 
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       v17 = HDSQLiteColumnWithNameAsDate();
-      [v10 _setScheduledDate:v17];
+      [objectCopy _setScheduledDate:v17];
     }
 
     v18 = HDSQLiteColumnWithNameAsString();
     v19 = objc_alloc(MEMORY[0x277CCD4B0]);
     v20 = [v19 initWithDomain:*MEMORY[0x277CCC190] underlyingIdentifier:v18];
-    [v10 _setMedicationConceptIdentifier:v20];
+    [objectCopy _setMedicationConceptIdentifier:v20];
     v21 = HDSQLiteColumnWithNameAsString();
-    [v10 _setDoseUnitString:v21];
+    [objectCopy _setDoseUnitString:v21];
 
-    v22 = [v10 medicationIdentifier];
+    medicationIdentifier = [objectCopy medicationIdentifier];
 
-    if (v22)
+    if (medicationIdentifier)
     {
-      v23 = v10;
+      v23 = objectCopy;
     }
 
     else
     {
-      v23 = [v10 copy];
+      v23 = [objectCopy copy];
       v25 = HDSQLiteColumnWithNameAsString();
       [v23 _setMedicationIdentifier:v25];
     }
 
     v32[0] = v23;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-    v27 = [(HDEntityEncoder *)self authorizationFilter];
-    v28 = v27;
-    if (v27)
+    authorizationFilter = [(HDEntityEncoder *)self authorizationFilter];
+    v28 = authorizationFilter;
+    if (authorizationFilter)
     {
-      v29 = (*(v27 + 16))(v27, v26);
+      v29 = (*(authorizationFilter + 16))(authorizationFilter, v26);
 
       v26 = v29;
     }

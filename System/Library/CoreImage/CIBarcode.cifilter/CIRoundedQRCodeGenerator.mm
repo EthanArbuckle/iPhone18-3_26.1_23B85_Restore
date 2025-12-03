@@ -102,11 +102,11 @@
   v3 = [CIFilter filterWithName:@"CIQRCodeGenerator"];
   [v3 setValue:self->super.super.inputMessage forKey:@"inputMessage"];
   [v3 setValue:self->super.inputCorrectionLevel forKey:@"inputCorrectionLevel"];
-  v4 = [v3 outputImage];
-  v5 = v4;
-  if (v4)
+  outputImage = [v3 outputImage];
+  v5 = outputImage;
+  if (outputImage)
   {
-    [v4 extent];
+    [outputImage extent];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -127,8 +127,8 @@
 
     [(NSNumber *)self->inputScale floatValue];
     v20 = fminf(fmaxf(v19, 0.0), v17);
-    v21 = [(NSNumber *)self->inputRoundedMarkers intValue];
-    v22 = [(NSNumber *)self->inputRoundedData BOOLValue];
+    intValue = [(NSNumber *)self->inputRoundedMarkers intValue];
+    bOOLValue = [(NSNumber *)self->inputRoundedData BOOLValue];
     v23 = [CIKernel cachedKernelWithString:@"float rrect (vec2 lo, vec2 hi, float radius, vec2 dc) \n { \n float side = min(hi.x-lo.x, hi.y-lo.y) \n radius = min(radius, side/3.0); \n vec2 v = max(min(dc - (lo + radius), 0.0), dc - (hi - radius)); \n return clamp((radius - length(v) + 0.5), 0.0, 1.0); \n } \n float k_Finder (float k, float scale, vec2 p, vec2 dc, vec2 o) \n { \n if (p.x < o.x || p.y < o.y || p.x > o.x + 9.0 || p.y > o.y + 9.0) \n return k; \n k = 1.0; \n vec2 lo = (o+vec2(1, 1)) * scale + 1.0; \n vec2 hi = (o+vec2(8, 8)) * scale - 1.0; \n k -= rrect(lo, hi, 1.5 * scale, dc); \n lo = (o+vec2(2, 2)) * scale + 1.0; \n hi = (o+vec2(7, 7)) * scale - 1.0; \n k += rrect(lo, hi, 0.75 * scale, dc); \n lo = (o+vec2(3, 3)) * scale + 1.0; \n hi = (o+vec2(6, 6)) * scale - 1.0; \n k -= rrect(lo, hi, 0.5 * scale, dc); \n return k; \n } \n float k_Align (float k, float scale, vec2 p, vec2 dc, vec2 o) \n { \n if (p.x < o.x || p.y < o.y || p.x > o.x + 5.0 || p.y > o.y + 5.0) \n return k; \n k = 1.0; \n vec2 lo = (o+vec2(0, 0)) * scale + 1.0 + 0.2*scale; \n vec2 hi = (o+vec2(5, 5)) * scale - 1.0 - 0.2*scale; \n k -= rrect(lo, hi, 1.25 * scale, dc); \n lo = (o+vec2(1, 1)) * scale + 1.0; \n hi = (o+vec2(4, 4)) * scale - 1.0; \n k += rrect(lo, hi, 0.5 * scale, dc); \n lo = (o+vec2(2, 2)) * scale; \n hi = (o+vec2(3, 3)) * scale; \n k -= rrect(lo, hi, 0.25 * scale, dc); \n return k; \n } \n kernel vec4 qrScaler (sampler image, float scale, float centerArea, float roundData, float roundMarker, __color c0, __color c1) { \n vec2 dc = destCoord(); \n vec2 dcSnapped = (floor(dc/scale)+0.5)*scale; \n vec2 ssize = samplerSize(image); \n vec2 p = floor(dc/scale)+0.5; \n vec4 c = sample(image, samplerTransform(image, p)); \n float k = c.r; \n if (roundData > 0.5) \n { \n float dist = length(dc-dcSnapped); \n float mixer = clamp(dist+1.0-scale*0.5, 0.0, 1.0); \n k = mix(k, 1.0, mixer); \n } \n if (roundMarker > 0.5) \n { \n k = k_Finder(k, scale, p, dc, vec2(0, 0)); \n k = k_Finder(k, scale, p, dc, vec2(0, ssize.y-9.0)); \n k = k_Finder(k, scale, p, dc, vec2(ssize.x-9.0, ssize.y-9.0)); \n } \n if (roundMarker > 1.5 && ssize.x>=46.0 && ssize.x<=73.0) \n { \n float Min = 5.0; \n float Max = (ssize.x-10.0); \n float Mid = (Min + Max) * 0.5; \n k = k_Align(k, scale, p, dc, vec2(Min, Mid)); \n k = k_Align(k, scale, p, dc, vec2(Mid, Min)); \n k = k_Align(k, scale, p, dc, vec2(Mid, Mid)); \n k = k_Align(k, scale, p, dc, vec2(Mid, Max)); \n k = k_Align(k, scale, p, dc, vec2(Max, Min)); \n k = k_Align(k, scale, p, dc, vec2(Max, Mid)); \n } \n if (centerArea > 0.0) \n { \n vec2 lo = floor(ssize*(0.5 - 0.5*centerArea)); \n vec2 hi = ceil(ssize*(0.5 + 0.5*centerArea)); \n if (hi.x - lo.x >= 7.0) \n { \n lo *= scale; \n hi *= scale; k = max(k, rrect(lo, hi, 0.5 * scale, dc)); \n lo += scale; \n hi -= scale; \n k -= rrect(lo, hi, 1.5 * scale, dc); \n } \n } \n if (roundMarker > 1.5 && ssize.x>=25.0 && ssize.x<=45.0) \n { \n float Min = 5.0; \n float Max = (ssize.x-10.0); \n k = k_Align(k, scale, p, dc, vec2(Max, Min)); \n } \n return mix(c1, c0, k) * c.a; \n } \n"];;
     v24 = v15;
     v40[0] = _NSConcreteStackBlock;
@@ -145,9 +145,9 @@
     *&v25 = v20;
     v38 = [NSNumber numberWithFloat:v25];
     v41[2] = v38;
-    v37 = [NSNumber numberWithBool:v22];
+    v37 = [NSNumber numberWithBool:bOOLValue];
     v41[3] = v37;
-    v26 = [NSNumber numberWithInt:v21];
+    v26 = [NSNumber numberWithInt:intValue];
     v41[4] = v26;
     inputColor0 = self->inputColor0;
     v28 = inputColor0;

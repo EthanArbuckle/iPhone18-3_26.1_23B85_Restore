@@ -1,14 +1,14 @@
 @interface PKPeerPaymentBankAccountInformation
 - (PKPeerPaymentBankAccountInformation)init;
 - (id)_bankAccountInformationInKeychain;
-- (id)_wrapperWithType:(unint64_t)a3;
+- (id)_wrapperWithType:(unint64_t)type;
 - (void)_writeBankAccountInformationToKeychain;
 - (void)deleteAllBankInformation;
 - (void)deleteAllLocalBankInformation;
-- (void)setAccountNumber:(id)a3;
-- (void)setBankName:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setRoutingNumber:(id)a3;
+- (void)setAccountNumber:(id)number;
+- (void)setBankName:(id)name;
+- (void)setIdentifier:(id)identifier;
+- (void)setRoutingNumber:(id)number;
 - (void)updateToLatestKeychainData;
 @end
 
@@ -48,31 +48,31 @@
 
 - (void)updateToLatestKeychainData
 {
-  v3 = [(PKPeerPaymentBankAccountInformation *)self _bankAccountInformationInKeychain];
-  v4 = [v3 bankName];
+  _bankAccountInformationInKeychain = [(PKPeerPaymentBankAccountInformation *)self _bankAccountInformationInKeychain];
+  bankName = [_bankAccountInformationInKeychain bankName];
   v11.receiver = self;
   v11.super_class = PKPeerPaymentBankAccountInformation;
-  [(PKBankAccountInformation *)&v11 setBankName:v4];
+  [(PKBankAccountInformation *)&v11 setBankName:bankName];
 
-  v5 = [v3 accountNumber];
+  accountNumber = [_bankAccountInformationInKeychain accountNumber];
   v10.receiver = self;
   v10.super_class = PKPeerPaymentBankAccountInformation;
-  [(PKBankAccountInformation *)&v10 setAccountNumber:v5];
+  [(PKBankAccountInformation *)&v10 setAccountNumber:accountNumber];
 
-  v6 = [v3 routingNumber];
+  routingNumber = [_bankAccountInformationInKeychain routingNumber];
   v9.receiver = self;
   v9.super_class = PKPeerPaymentBankAccountInformation;
-  [(PKBankAccountInformation *)&v9 setRoutingNumber:v6];
+  [(PKBankAccountInformation *)&v9 setRoutingNumber:routingNumber];
 
-  v7 = [v3 identifier];
+  identifier = [_bankAccountInformationInKeychain identifier];
   v8.receiver = self;
   v8.super_class = PKPeerPaymentBankAccountInformation;
-  [(PKBankAccountInformation *)&v8 setIdentifier:v7];
+  [(PKBankAccountInformation *)&v8 setIdentifier:identifier];
 }
 
-- (id)_wrapperWithType:(unint64_t)a3
+- (id)_wrapperWithType:(unint64_t)type
 {
-  v3 = [[PKKeychainItemWrapper alloc] initWithIdentifier:@"PKPeerPaymentUnitedStatesBankAccountInformationKeychainKey" accessGroup:@"com.apple.Passbook.PeerPayment" serviceName:@"com.apple.passkit" type:a3 invisible:0];
+  v3 = [[PKKeychainItemWrapper alloc] initWithIdentifier:@"PKPeerPaymentUnitedStatesBankAccountInformationKeychainKey" accessGroup:@"com.apple.Passbook.PeerPayment" serviceName:@"com.apple.passkit" type:type invisible:0];
   [(PKKeychainItemWrapper *)v3 setLabel:@"com.apple.passkit"];
 
   return v3;
@@ -139,62 +139,62 @@ LABEL_11:
   return v7;
 }
 
-- (void)setBankName:(id)a3
+- (void)setBankName:(id)name
 {
-  v4 = a3;
-  v5 = [(PKBankAccountInformation *)self bankName];
-  v6 = [v4 isEqualToString:v5];
+  nameCopy = name;
+  bankName = [(PKBankAccountInformation *)self bankName];
+  v6 = [nameCopy isEqualToString:bankName];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = PKPeerPaymentBankAccountInformation;
-    [(PKBankAccountInformation *)&v7 setBankName:v4];
+    [(PKBankAccountInformation *)&v7 setBankName:nameCopy];
     [(PKPeerPaymentBankAccountInformation *)self _writeBankAccountInformationToKeychain];
   }
 }
 
-- (void)setAccountNumber:(id)a3
+- (void)setAccountNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(PKBankAccountInformation *)self accountNumber];
-  v6 = [v4 isEqualToString:v5];
+  numberCopy = number;
+  accountNumber = [(PKBankAccountInformation *)self accountNumber];
+  v6 = [numberCopy isEqualToString:accountNumber];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = PKPeerPaymentBankAccountInformation;
-    [(PKBankAccountInformation *)&v7 setAccountNumber:v4];
+    [(PKBankAccountInformation *)&v7 setAccountNumber:numberCopy];
     [(PKPeerPaymentBankAccountInformation *)self _writeBankAccountInformationToKeychain];
   }
 }
 
-- (void)setRoutingNumber:(id)a3
+- (void)setRoutingNumber:(id)number
 {
-  v4 = a3;
-  v5 = [(PKBankAccountInformation *)self routingNumber];
-  v6 = [v4 isEqualToString:v5];
+  numberCopy = number;
+  routingNumber = [(PKBankAccountInformation *)self routingNumber];
+  v6 = [numberCopy isEqualToString:routingNumber];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = PKPeerPaymentBankAccountInformation;
-    [(PKBankAccountInformation *)&v7 setRoutingNumber:v4];
+    [(PKBankAccountInformation *)&v7 setRoutingNumber:numberCopy];
     [(PKPeerPaymentBankAccountInformation *)self _writeBankAccountInformationToKeychain];
   }
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PKBankAccountInformation *)self identifier];
-  v6 = [v4 isEqualToString:v5];
+  identifierCopy = identifier;
+  identifier = [(PKBankAccountInformation *)self identifier];
+  v6 = [identifierCopy isEqualToString:identifier];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = PKPeerPaymentBankAccountInformation;
-    [(PKBankAccountInformation *)&v7 setIdentifier:v4];
+    [(PKBankAccountInformation *)&v7 setIdentifier:identifierCopy];
     [(PKPeerPaymentBankAccountInformation *)self _writeBankAccountInformationToKeychain];
   }
 }

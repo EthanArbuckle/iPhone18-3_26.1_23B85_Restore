@@ -1,28 +1,28 @@
 @interface PKDataDetectorView
-- (PKDataDetectorView)initWithDataDetectorItem:(id)a3 allItems:(id)a4;
+- (PKDataDetectorView)initWithDataDetectorItem:(id)item allItems:(id)items;
 - (double)_underlineThickness;
 - (id)accessibilityValue;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)tapHandler:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)tapHandler:(id)handler;
 @end
 
 @implementation PKDataDetectorView
 
-- (PKDataDetectorView)initWithDataDetectorItem:(id)a3 allItems:(id)a4
+- (PKDataDetectorView)initWithDataDetectorItem:(id)item allItems:(id)items
 {
-  v6 = a3;
+  itemCopy = item;
   v14.receiver = self;
   v14.super_class = PKDataDetectorView;
-  v7 = a4;
+  itemsCopy = items;
   v8 = [(PKDetectionView *)&v14 init];
   dataDetectorItem = v8->_dataDetectorItem;
-  v8->_dataDetectorItem = v6;
-  v10 = v6;
+  v8->_dataDetectorItem = itemCopy;
+  v10 = itemCopy;
 
   [(PKDataDetectorItem *)v8->_dataDetectorItem setDelegate:v8, v14.receiver, v14.super_class];
-  v11 = [v7 copy];
+  v11 = [itemsCopy copy];
 
   allItems = v8->_allItems;
   v8->_allItems = v11;
@@ -32,9 +32,9 @@
 
 - (double)_underlineThickness
 {
-  v3 = [(PKDataDetectorView *)self item];
-  v4 = [v3 strokeColor];
-  if (v4)
+  item = [(PKDataDetectorView *)self item];
+  strokeColor = [item strokeColor];
+  if (strokeColor)
   {
     v8.receiver = self;
     v8.super_class = PKDataDetectorView;
@@ -52,47 +52,47 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(PKDataDetectorItem *)self->_dataDetectorItem scannerResult];
-  v3 = [v2 value];
+  scannerResult = [(PKDataDetectorItem *)self->_dataDetectorItem scannerResult];
+  value = [scannerResult value];
 
-  return v3;
+  return value;
 }
 
-- (void)tapHandler:(id)a3
+- (void)tapHandler:(id)handler
 {
-  [a3 locationInView:self];
+  [handler locationInView:self];
   v5 = v4;
   v7 = v6;
   if ([(PKDetectionView *)self hitTest:?])
   {
     v8 = +[PKStatisticsManager sharedStatisticsManager];
-    v9 = [(PKDataDetectorView *)self dataDetectorItem];
-    [(PKStatisticsManager *)v8 recordDataDetectorItemDefaultAction:v9];
+    dataDetectorItem = [(PKDataDetectorView *)self dataDetectorItem];
+    [(PKStatisticsManager *)v8 recordDataDetectorItemDefaultAction:dataDetectorItem];
 
-    v10 = [(PKDataDetectorView *)self item];
-    v11 = [(PKDetectionView *)self menuInteraction];
+    item = [(PKDataDetectorView *)self item];
+    menuInteraction = [(PKDetectionView *)self menuInteraction];
     [(PKDetectionView *)self drawingTransform];
     v12 = *(MEMORY[0x1E695EFD0] + 16);
     v13[0] = *MEMORY[0x1E695EFD0];
     v13[1] = v12;
     v13[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v10 handleTapForMenuForInteraction:v11 location:self view:v13 viewTransform:v14 drawingTransform:{v5, v7}];
+    [item handleTapForMenuForInteraction:menuInteraction location:self view:v13 viewTransform:v14 drawingTransform:{v5, v7}];
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   if ([(PKDetectionView *)self hitTest:x, y])
   {
     v8 = +[PKStatisticsManager sharedStatisticsManager];
     [(PKStatisticsManager *)v8 recordDataDetectorItemMenuAction:?];
 
-    v9 = [(PKDataDetectorView *)self dataDetectorItem];
-    v10 = [(PKDetectionItem *)self->_dataDetectorItem identifier];
-    v11 = [v9 contextMenuInteraction:v7 configurationForMenuAtLocation:self view:v10 identifier:{x, y}];
+    dataDetectorItem = [(PKDataDetectorView *)self dataDetectorItem];
+    identifier = [(PKDetectionItem *)self->_dataDetectorItem identifier];
+    v11 = [dataDetectorItem contextMenuInteraction:interactionCopy configurationForMenuAtLocation:self view:identifier identifier:{x, y}];
   }
 
   else
@@ -103,25 +103,25 @@
   return v11;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(PKDataDetectorView *)self dataDetectorItem];
-  v10 = [(PKDataDetectorView *)self superview];
+  configurationCopy = configuration;
+  interactionCopy = interaction;
+  dataDetectorItem = [(PKDataDetectorView *)self dataDetectorItem];
+  superview = [(PKDataDetectorView *)self superview];
   [(PKDataDetectorView *)self frame];
-  v11 = [v9 contextMenuInteraction:v8 configuration:v7 highlightPreviewInContainerView:v10 frame:?];
+  v11 = [dataDetectorItem contextMenuInteraction:interactionCopy configuration:configurationCopy highlightPreviewInContainerView:superview frame:?];
 
   return v11;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKDataDetectorView *)self dataDetectorItem];
-  [v11 contextMenuInteraction:v10 willPerformPreviewActionForMenuWithConfiguration:v9 animator:v8];
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  interactionCopy = interaction;
+  dataDetectorItem = [(PKDataDetectorView *)self dataDetectorItem];
+  [dataDetectorItem contextMenuInteraction:interactionCopy willPerformPreviewActionForMenuWithConfiguration:configurationCopy animator:animatorCopy];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface WeightPickerItem
 - (_TtC16HealthMobilityUI16WeightPickerItem)init;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation WeightPickerItem
@@ -14,14 +14,14 @@
   return result;
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  if (a4)
+  if (component)
   {
     return 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_25199965C();
   v7 = v6;
   sub_251999674();
@@ -44,11 +44,11 @@ LABEL_7:
   return result;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v8 = a3;
-  v9 = self;
-  sub_25199A310(a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_25199A310(row, component);
   v11 = v10;
 
   if (v11)
@@ -64,11 +64,11 @@ LABEL_7:
   return v12;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
-  v7 = a3;
-  v8 = self;
-  sub_25199A408(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_25199A408(row);
 }
 
 @end

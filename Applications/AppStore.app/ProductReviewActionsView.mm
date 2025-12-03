@@ -1,12 +1,12 @@
 @interface ProductReviewActionsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore24ProductReviewActionsView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore24ProductReviewActionsView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ProductReviewActionsView
 
-- (_TtC8AppStore24ProductReviewActionsView)initWithCoder:(id)a3
+- (_TtC8AppStore24ProductReviewActionsView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore24ProductReviewActionsView_writeReviewAction;
   v5 = sub_10002849C(&unk_10097B3D0);
@@ -27,17 +27,17 @@
   sub_1001C5EA4(v4);
   sub_10002A400(v4, v4[3]);
   [v2 bounds];
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1001C609C(width, height);
   v8 = v7;
 

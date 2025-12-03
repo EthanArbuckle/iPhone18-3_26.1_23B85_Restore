@@ -1,5 +1,5 @@
 @interface ConnectionAssistantEarthViewController
-- (_TtC8SOSBuddy38ConnectionAssistantEarthViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8SOSBuddy38ConnectionAssistantEarthViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -8,7 +8,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004B4C8();
 }
 
@@ -19,11 +19,11 @@
   v2 = v14.receiver;
   [(ConnectionAssistantEarthViewController *)&v14 viewWillLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8SOSBuddy38ConnectionAssistantEarthViewController__metalView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -38,7 +38,7 @@
   }
 }
 
-- (_TtC8SOSBuddy38ConnectionAssistantEarthViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8SOSBuddy38ConnectionAssistantEarthViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

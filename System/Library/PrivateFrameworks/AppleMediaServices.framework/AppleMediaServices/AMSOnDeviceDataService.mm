@@ -1,25 +1,25 @@
 @interface AMSOnDeviceDataService
-+ (id)recordSyncRequest:(id)a3;
++ (id)recordSyncRequest:(id)request;
 @end
 
 @implementation AMSOnDeviceDataService
 
-+ (id)recordSyncRequest:(id)a3
++ (id)recordSyncRequest:(id)request
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(AMSMutablePromise);
   v6 = +[AMSLogConfig sharedTSDataSyncConfig];
   v7 = v6;
-  if (v4)
+  if (requestCopy)
   {
     if (!v6)
     {
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
       v10 = AMSLogKey();
@@ -28,8 +28,8 @@
       *&buf[12] = 2114;
       *&buf[14] = v10;
       *&buf[22] = 2114;
-      v23 = v4;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Recording on-device data sync request: %{public}@", buf, 0x20u);
+      v23 = requestCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] Recording on-device data sync request: %{public}@", buf, 0x20u);
     }
 
     *buf = 0;
@@ -38,16 +38,16 @@
     v23 = __Block_byref_object_copy__51;
     v24 = __Block_byref_object_dispose__51;
     v25 = objc_alloc_init(AMSDaemonConnection);
-    v11 = [*(*&buf[8] + 40) onDeviceDataServiceProxy];
+    onDeviceDataServiceProxy = [*(*&buf[8] + 40) onDeviceDataServiceProxy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __44__AMSOnDeviceDataService_recordSyncRequest___block_invoke;
     v17[3] = &unk_1E73BA5F8;
-    v21 = a1;
+    selfCopy = self;
     v18 = v5;
     v20 = buf;
-    v19 = v4;
-    [v11 addFinishBlock:v17];
+    v19 = requestCopy;
+    [onDeviceDataServiceProxy addFinishBlock:v17];
 
     _Block_object_dispose(buf, 8);
   }
@@ -59,8 +59,8 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v7 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -68,7 +68,7 @@
       *&buf[4] = v13;
       *&buf[12] = 2114;
       *&buf[14] = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] No on-device data sync request", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@ [%{public}@] No on-device data sync request", buf, 0x16u);
     }
 
     v15 = AMSError(2, @"Missing on-device data sync request", &stru_1F071BA78, 0);

@@ -1,47 +1,47 @@
 @interface MPUTransportButton
-+ (id)_stringForDisplayedSkipInterval:(double)a3;
++ (id)_stringForDisplayedSkipInterval:(double)interval;
 + (id)defaultDisabledColor;
-+ (id)skipIntervalImageForInterval:(double)a3 baseImage:(id)a4 font:(id)a5 scale:(double)a6;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (id)skipIntervalImageForInterval:(double)interval baseImage:(id)image font:(id)font scale:(double)scale;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isEnabled;
 - (BOOL)shouldTrack;
-- (MPUTransportButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (MPUTransportButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)transportButtonImageViewContentMode;
 - (void)_updateDisabledTransportButtonImage;
 - (void)_updateHighlightedTransportButtonImage;
 - (void)_updateRegularTransportButtonImage;
 - (void)_updateSelectedTransportButtonImage;
-- (void)applyTransportButtonLayoutAttributes:(id *)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)applyTransportButtonLayoutAttributes:(id *)attributes;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setDisabledColor:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlightedColor:(id)a3;
-- (void)setRegularColor:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelectedColor:(id)a3;
-- (void)setShouldInferColorsFromTintColor:(BOOL)a3;
-- (void)setTransportButtonImage:(id)a3;
-- (void)setTransportButtonImageViewContentMode:(int64_t)a3;
+- (void)setDisabledColor:(id)color;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlightedColor:(id)color;
+- (void)setRegularColor:(id)color;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelectedColor:(id)color;
+- (void)setShouldInferColorsFromTintColor:(BOOL)color;
+- (void)setTransportButtonImage:(id)image;
+- (void)setTransportButtonImageViewContentMode:(int64_t)mode;
 @end
 
 @implementation MPUTransportButton
 
 + (id)defaultDisabledColor
 {
-  v2 = [a1 defaultRegularColor];
-  v3 = [v2 colorWithAlphaComponent:0.4];
+  defaultRegularColor = [self defaultRegularColor];
+  v3 = [defaultRegularColor colorWithAlphaComponent:0.4];
 
   return v3;
 }
 
-- (MPUTransportButton)initWithFrame:(CGRect)a3
+- (MPUTransportButton)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = MPUTransportButton;
-  v3 = [(MPUTransportButton *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPUTransportButton *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MPUTransportButtonEventHandler);
@@ -49,31 +49,31 @@
     v3->_transportButtonEventHandler = v4;
 
     [(MPUTransportButtonEventHandler *)v3->_transportButtonEventHandler setButton:v3];
-    v6 = [objc_opt_class() defaultHighlightedColor];
+    defaultHighlightedColor = [objc_opt_class() defaultHighlightedColor];
     highlightedColor = v3->_highlightedColor;
-    v3->_highlightedColor = v6;
+    v3->_highlightedColor = defaultHighlightedColor;
 
-    v8 = [objc_opt_class() defaultDisabledColor];
+    defaultDisabledColor = [objc_opt_class() defaultDisabledColor];
     disabledColor = v3->_disabledColor;
-    v3->_disabledColor = v8;
+    v3->_disabledColor = defaultDisabledColor;
 
-    v10 = [objc_opt_class() defaultRegularColor];
+    defaultRegularColor = [objc_opt_class() defaultRegularColor];
     regularColor = v3->_regularColor;
-    v3->_regularColor = v10;
+    v3->_regularColor = defaultRegularColor;
 
-    v12 = [objc_opt_class() defaultSelectedColor];
+    defaultSelectedColor = [objc_opt_class() defaultSelectedColor];
     selectedColor = v3->_selectedColor;
-    v3->_selectedColor = v12;
+    v3->_selectedColor = defaultSelectedColor;
   }
 
   return v3;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   transportButtonEventHandler = self->_transportButtonEventHandler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -81,9 +81,9 @@
   v12[3] = &unk_27984C450;
   v15 = x;
   v16 = y;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
+  v13 = eventCopy;
+  selfCopy = self;
+  v9 = eventCopy;
   v10 = [(MPUTransportButtonEventHandler *)transportButtonEventHandler performHitTestingBlock:v12];
 
   return v10;
@@ -120,16 +120,16 @@ id __40__MPUTransportButton_hitTest_withEvent___block_invoke(uint64_t a1)
   return [(MPUTransportButton *)&v4 isEnabled]|| [(MPUTransportButtonEventHandler *)self->_transportButtonEventHandler shouldFakeEnabled];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = MPUTransportButton;
   [(MPUTransportButton *)&v6 setEnabled:?];
   if ([(MPUTransportButton *)self isSelected]&& [(MPUTransportButton *)self shouldShowBackgroundForSelectedState])
   {
     LODWORD(v5) = 1053609165;
-    if (v3)
+    if (enabledCopy)
     {
       *&v5 = 1.0;
     }
@@ -138,71 +138,71 @@ id __40__MPUTransportButton_hitTest_withEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = self;
+  selfCopy = self;
   transportButtonEventHandler = self->_transportButtonEventHandler;
-  v7 = a4;
-  v8 = a3;
-  [(MPUTransportButtonEventHandler *)transportButtonEventHandler beginTrackingWithTouch:v8 withEvent:v7];
-  v10.receiver = v5;
+  eventCopy = event;
+  touchCopy = touch;
+  [(MPUTransportButtonEventHandler *)transportButtonEventHandler beginTrackingWithTouch:touchCopy withEvent:eventCopy];
+  v10.receiver = selfCopy;
   v10.super_class = MPUTransportButton;
-  LOBYTE(v5) = [(MPUTransportButton *)&v10 beginTrackingWithTouch:v8 withEvent:v7];
+  LOBYTE(selfCopy) = [(MPUTransportButton *)&v10 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   transportButtonEventHandler = self->_transportButtonEventHandler;
-  v5 = a3;
-  [(MPUTransportButtonEventHandler *)transportButtonEventHandler cancelTrackingWithEvent:v5];
+  eventCopy = event;
+  [(MPUTransportButtonEventHandler *)transportButtonEventHandler cancelTrackingWithEvent:eventCopy];
   v6.receiver = self;
   v6.super_class = MPUTransportButton;
-  [(MPUTransportButton *)&v6 cancelTrackingWithEvent:v5];
+  [(MPUTransportButton *)&v6 cancelTrackingWithEvent:eventCopy];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   transportButtonEventHandler = self->_transportButtonEventHandler;
-  v7 = a4;
-  v8 = a3;
-  [(MPUTransportButtonEventHandler *)transportButtonEventHandler endTrackingWithTouch:v8 withEvent:v7];
+  eventCopy = event;
+  touchCopy = touch;
+  [(MPUTransportButtonEventHandler *)transportButtonEventHandler endTrackingWithTouch:touchCopy withEvent:eventCopy];
   v9.receiver = self;
   v9.super_class = MPUTransportButton;
-  [(MPUTransportButton *)&v9 endTrackingWithTouch:v8 withEvent:v7];
+  [(MPUTransportButton *)&v9 endTrackingWithTouch:touchCopy withEvent:eventCopy];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v12.receiver = self;
   v12.super_class = MPUTransportButton;
   [(MPUTransportButton *)&v12 setSelected:?];
   if ([(MPUTransportButton *)self shouldShowBackgroundForSelectedState])
   {
     selectionIndicatorLayer = self->_selectionIndicatorLayer;
-    if (v3)
+    if (selectedCopy)
     {
       if (!selectionIndicatorLayer)
       {
-        v6 = [MEMORY[0x277CD9ED0] layer];
+        layer = [MEMORY[0x277CD9ED0] layer];
         v7 = self->_selectionIndicatorLayer;
-        self->_selectionIndicatorLayer = v6;
+        self->_selectionIndicatorLayer = layer;
 
         v8 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.12];
         -[CALayer setBackgroundColor:](self->_selectionIndicatorLayer, "setBackgroundColor:", [v8 CGColor]);
 
         [(CALayer *)self->_selectionIndicatorLayer setCornerRadius:3.0];
         [(CALayer *)self->_selectionIndicatorLayer setOpacity:0.0];
-        v9 = [(MPUTransportButton *)self layer];
-        [v9 insertSublayer:self->_selectionIndicatorLayer atIndex:0];
+        layer2 = [(MPUTransportButton *)self layer];
+        [layer2 insertSublayer:self->_selectionIndicatorLayer atIndex:0];
       }
 
       [(MPUTransportButton *)self setNeedsLayout];
-      v10 = [(MPUTransportButton *)self isEnabled];
+      isEnabled = [(MPUTransportButton *)self isEnabled];
       selectionIndicatorLayer = self->_selectionIndicatorLayer;
-      if (v10)
+      if (isEnabled)
       {
         LODWORD(v11) = 1.0;
       }
@@ -229,101 +229,101 @@ id __40__MPUTransportButton_hitTest_withEvent___block_invoke(uint64_t a1)
   return [(MPUTransportButton *)&v4 shouldTrack]|| [(MPUTransportButtonEventHandler *)self->_transportButtonEventHandler shouldForceTrackingEnabled];
 }
 
-- (void)applyTransportButtonLayoutAttributes:(id *)a3
+- (void)applyTransportButtonLayoutAttributes:(id *)attributes
 {
-  x = a3->var1.origin.x;
-  y = a3->var1.origin.y;
-  width = a3->var1.size.width;
-  height = a3->var1.size.height;
-  [(MPUTransportButton *)self setImageEdgeInsets:MPUEdgeInsetsRectInsets(x, y, width, height, a3->var0.origin.x, a3->var0.origin.y, a3->var0.size.width, a3->var0.size.height)];
+  x = attributes->var1.origin.x;
+  y = attributes->var1.origin.y;
+  width = attributes->var1.size.width;
+  height = attributes->var1.size.height;
+  [(MPUTransportButton *)self setImageEdgeInsets:MPUEdgeInsetsRectInsets(x, y, width, height, attributes->var0.origin.x, attributes->var0.origin.y, attributes->var0.size.width, attributes->var0.size.height)];
 
   [(MPUTransportButton *)self setFrame:x, y, width, height];
 }
 
 - (int64_t)transportButtonImageViewContentMode
 {
-  v2 = [(MPUTransportButton *)self imageView];
-  v3 = [v2 contentMode];
+  imageView = [(MPUTransportButton *)self imageView];
+  contentMode = [imageView contentMode];
 
-  return v3;
+  return contentMode;
 }
 
-- (void)setTransportButtonImageViewContentMode:(int64_t)a3
+- (void)setTransportButtonImageViewContentMode:(int64_t)mode
 {
-  v4 = [(MPUTransportButton *)self imageView];
-  [v4 setContentMode:a3];
+  imageView = [(MPUTransportButton *)self imageView];
+  [imageView setContentMode:mode];
 }
 
-- (void)setDisabledColor:(id)a3
+- (void)setDisabledColor:(id)color
 {
-  v5 = a3;
-  if (self->_disabledColor != v5)
+  colorCopy = color;
+  if (self->_disabledColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_disabledColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_disabledColor, color);
+    colorCopy = v6;
     if (!self->_shouldInferColorsFromTintColor)
     {
       [(MPUTransportButton *)self _updateDisabledTransportButtonImage];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
 
-- (void)setHighlightedColor:(id)a3
+- (void)setHighlightedColor:(id)color
 {
-  v5 = a3;
-  if (self->_highlightedColor != v5)
+  colorCopy = color;
+  if (self->_highlightedColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_highlightedColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_highlightedColor, color);
+    colorCopy = v6;
     if (!self->_shouldInferColorsFromTintColor)
     {
       [(MPUTransportButton *)self _updateHighlightedTransportButtonImage];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
 
-- (void)setRegularColor:(id)a3
+- (void)setRegularColor:(id)color
 {
-  v5 = a3;
-  if (self->_regularColor != v5)
+  colorCopy = color;
+  if (self->_regularColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_regularColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_regularColor, color);
+    colorCopy = v6;
     if (!self->_shouldInferColorsFromTintColor)
     {
       [(MPUTransportButton *)self _updateRegularTransportButtonImage];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
-  v5 = a3;
-  if (self->_selectedColor != v5)
+  colorCopy = color;
+  if (self->_selectedColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedColor, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_selectedColor, color);
+    colorCopy = v6;
     if (!self->_shouldInferColorsFromTintColor)
     {
       [(MPUTransportButton *)self _updateSelectedTransportButtonImage];
-      v5 = v6;
+      colorCopy = v6;
     }
   }
 }
 
-- (void)setShouldInferColorsFromTintColor:(BOOL)a3
+- (void)setShouldInferColorsFromTintColor:(BOOL)color
 {
-  if (self->_shouldInferColorsFromTintColor != a3)
+  if (self->_shouldInferColorsFromTintColor != color)
   {
-    self->_shouldInferColorsFromTintColor = a3;
-    if (a3)
+    self->_shouldInferColorsFromTintColor = color;
+    if (color)
     {
       [(MPUTransportButton *)self setImage:0 forState:1];
       [(MPUTransportButton *)self setImage:0 forState:4];
@@ -342,13 +342,13 @@ id __40__MPUTransportButton_hitTest_withEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTransportButtonImage:(id)a3
+- (void)setTransportButtonImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   transportButtonImage = self->_transportButtonImage;
-  if (transportButtonImage != v5 && ([(UIImage *)transportButtonImage isEqual:v5]& 1) == 0)
+  if (transportButtonImage != imageCopy && ([(UIImage *)transportButtonImage isEqual:imageCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_transportButtonImage, a3);
+    objc_storeStrong(&self->_transportButtonImage, image);
     if (self->_shouldInferColorsFromTintColor)
     {
       v7 = [(UIImage *)self->_transportButtonImage imageWithRenderingMode:2];
@@ -391,22 +391,22 @@ id __40__MPUTransportButton_hitTest_withEvent___block_invoke(uint64_t a1)
   [(MPUTransportButton *)self setImage:v3 forState:4];
 }
 
-+ (id)skipIntervalImageForInterval:(double)a3 baseImage:(id)a4 font:(id)a5 scale:(double)a6
++ (id)skipIntervalImageForInterval:(double)interval baseImage:(id)image font:(id)font scale:(double)scale
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a4;
-  [v11 size];
-  UIGraphicsBeginImageContextWithOptions(v30, 0, a6);
-  [v11 drawAtPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  fontCopy = font;
+  imageCopy = image;
+  [imageCopy size];
+  UIGraphicsBeginImageContextWithOptions(v30, 0, scale);
+  [imageCopy drawAtPoint:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
-  v12 = [a1 _stringForDisplayedSkipInterval:fabs(a3)];
+  v12 = [self _stringForDisplayedSkipInterval:fabs(interval)];
   v13 = *MEMORY[0x277D740C0];
   v27[0] = *MEMORY[0x277D740A8];
   v27[1] = v13;
-  v28[0] = v10;
-  v14 = [MEMORY[0x277D75348] blackColor];
-  v28[1] = v14;
+  v28[0] = fontCopy;
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v28[1] = blackColor;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
 
   [v12 sizeWithAttributes:v15];
@@ -414,18 +414,18 @@ id __40__MPUTransportButton_hitTest_withEvent___block_invoke(uint64_t a1)
   v19 = v18;
   UIRectGetCenter();
   v21 = v20;
-  v23 = MPUFloatRoundForScale(v22 - v17 * 0.5, a6);
-  [v12 drawAtPoint:v15 withAttributes:{v23, MPUFloatRoundForScale(v21 - v19 * 0.5, a6)}];
+  v23 = MPUFloatRoundForScale(v22 - v17 * 0.5, scale);
+  [v12 drawAtPoint:v15 withAttributes:{v23, MPUFloatRoundForScale(v21 - v19 * 0.5, scale)}];
   v24 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v25 = [v24 _imageThatSuppressesAccessibilityHairlineThickening];
+  _imageThatSuppressesAccessibilityHairlineThickening = [v24 _imageThatSuppressesAccessibilityHairlineThickening];
 
-  return v25;
+  return _imageThatSuppressesAccessibilityHairlineThickening;
 }
 
-+ (id)_stringForDisplayedSkipInterval:(double)a3
++ (id)_stringForDisplayedSkipInterval:(double)interval
 {
-  v3 = llround(a3);
+  v3 = llround(interval);
   v4 = MEMORY[0x277CCACA8];
   if (v3 > 99)
   {

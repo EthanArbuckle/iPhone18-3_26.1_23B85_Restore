@@ -2,38 +2,38 @@
 + (id)sharedInstance;
 - (BOOL)manateeZoneUpgraded;
 - (CloudXPCService)init;
-- (id)bundleIdentifierForConnection:(id)a3;
-- (id)readUserPreference:(id)a3;
+- (id)bundleIdentifierForConnection:(id)connection;
+- (id)readUserPreference:(id)preference;
 - (void)_sigTermReceived;
-- (void)accountStatusAvailable:(BOOL)a3 force:(BOOL)a4;
-- (void)accountStatusUpdateWithAvailable:(BOOL)a3 forced:(BOOL)a4;
+- (void)accountStatusAvailable:(BOOL)available force:(BOOL)force;
+- (void)accountStatusUpdateWithAvailable:(BOOL)available forced:(BOOL)forced;
 - (void)activate;
-- (void)allDeviceSupportInformationRecordsRemovedWithRecords:(id)a3;
-- (void)allDevicesRemovedWithRecords:(id)a3;
-- (void)allLegacyMagicPairingRecordsWithRecordsData:(id)a3;
-- (void)allMagicPairingRecordsRemovedWithRecords:(id)a3;
+- (void)allDeviceSupportInformationRecordsRemovedWithRecords:(id)records;
+- (void)allDevicesRemovedWithRecords:(id)records;
+- (void)allLegacyMagicPairingRecordsWithRecordsData:(id)data;
+- (void)allMagicPairingRecordsRemovedWithRecords:(id)records;
 - (void)axHeadTrackingSettingChanged;
-- (void)beginTransaction:(id)a3;
+- (void)beginTransaction:(id)transaction;
 - (void)dealloc;
-- (void)deviceSupportInformationRecordsRemovedWithRecords:(id)a3;
-- (void)deviceSupportInformationRecordsUpdatedWithRecords:(id)a3;
-- (void)devicesRemovedWithRecords:(id)a3;
-- (void)devicesUpdatedWithRecords:(id)a3;
-- (void)endTransaction:(id)a3;
-- (void)establishBluetoothdXPCWithCompletion:(id)a3;
-- (void)handleConnection:(id)a3;
-- (void)handleConnection:(id)a3 XPCMessage:(id)a4 userID:(unsigned int)a5 processID:(int)a6;
-- (void)handleEvent:(id)a3;
-- (void)hmDeviceCloudRecordsRemovedWithRecords:(id)a3;
-- (void)hmDeviceCloudRecordsUpdatedWithRecords:(id)a3;
-- (void)magicPairingRecordsRemovedWithRecords:(id)a3;
-- (void)magicPairingRecordsUpdatedWithRecords:(id)a3;
-- (void)removeConnection:(id)a3;
-- (void)sendCloudKitMsg:(id)a3 args:(id)a4;
-- (void)sendCloudKitMsg:(id)a3 args:(id)a4 withReply:(id)a5;
-- (void)sendCloudKitMsg:(id)a3 argsObject:(id)a4;
-- (void)sendCloudKitMsgSync:(id)a3 args:(id)a4 withReply:(id)a5;
-- (void)sendMsg:(id)a3 args:(id)a4;
+- (void)deviceSupportInformationRecordsRemovedWithRecords:(id)records;
+- (void)deviceSupportInformationRecordsUpdatedWithRecords:(id)records;
+- (void)devicesRemovedWithRecords:(id)records;
+- (void)devicesUpdatedWithRecords:(id)records;
+- (void)endTransaction:(id)transaction;
+- (void)establishBluetoothdXPCWithCompletion:(id)completion;
+- (void)handleConnection:(id)connection;
+- (void)handleConnection:(id)connection XPCMessage:(id)message userID:(unsigned int)d processID:(int)iD;
+- (void)handleEvent:(id)event;
+- (void)hmDeviceCloudRecordsRemovedWithRecords:(id)records;
+- (void)hmDeviceCloudRecordsUpdatedWithRecords:(id)records;
+- (void)magicPairingRecordsRemovedWithRecords:(id)records;
+- (void)magicPairingRecordsUpdatedWithRecords:(id)records;
+- (void)removeConnection:(id)connection;
+- (void)sendCloudKitMsg:(id)msg args:(id)args;
+- (void)sendCloudKitMsg:(id)msg args:(id)args withReply:(id)reply;
+- (void)sendCloudKitMsg:(id)msg argsObject:(id)object;
+- (void)sendCloudKitMsgSync:(id)sync args:(id)args withReply:(id)reply;
+- (void)sendMsg:(id)msg args:(id)args;
 @end
 
 @implementation CloudXPCService
@@ -61,8 +61,8 @@
   }
 
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 environment];
-  v5 = [v4 objectForKey:@"XPC_SERVICE_NAME"];
+  environment = [v3 environment];
+  v5 = [environment objectForKey:@"XPC_SERVICE_NAME"];
 
   v6 = sub_100005C14("XPC");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -149,8 +149,8 @@ LABEL_7:
     v5 = +[_TtC15audioaccessoryd13DeviceManager singleton];
     [(CloudXPCService *)self setDeviceManager:v5];
 
-    v6 = [(CloudXPCService *)self deviceManager];
-    [v6 subscribeToUpdates:self];
+    deviceManager = [(CloudXPCService *)self deviceManager];
+    [deviceManager subscribeToUpdates:self];
 
     v7 = +[MPCloudKit sharedInstance];
     v8 = +[MPCloudKit_Manatee sharedInstance];
@@ -159,14 +159,14 @@ LABEL_7:
   }
 
   v9 = +[CBIDSManager sharedInstance];
-  v10 = [kAXSAirPodSpatialAudioLockToDeviceChangedNotification UTF8String];
-  v11 = [(CloudXPCService *)self xpcQueue];
+  uTF8String = [kAXSAirPodSpatialAudioLockToDeviceChangedNotification UTF8String];
+  xpcQueue = [(CloudXPCService *)self xpcQueue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1000ADAC4;
   handler[3] = &unk_1002BA608;
   objc_copyWeak(&v24, &location);
-  notify_register_dispatch(v10, &self->_axHeadTrackingChangedNotifyToken, v11, handler);
+  notify_register_dispatch(uTF8String, &self->_axHeadTrackingChangedNotifyToken, xpcQueue, handler);
 
   [(CloudXPCService *)self axHeadTrackingSettingChanged];
   v12 = sub_100005C14("XPC");
@@ -176,8 +176,8 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Create the XPC server", buf, 2u);
   }
 
-  v13 = [(CloudXPCService *)self xpcQueue];
-  mach_service = xpc_connection_create_mach_service("com.apple.BTServer.cloudpairing", v13, 1uLL);
+  xpcQueue2 = [(CloudXPCService *)self xpcQueue];
+  mach_service = xpc_connection_create_mach_service("com.apple.BTServer.cloudpairing", xpcQueue2, 1uLL);
   xpcServer = self->_xpcServer;
   self->_xpcServer = mach_service;
 
@@ -192,13 +192,13 @@ LABEL_7:
   v17 = objc_alloc_init(BTNetworkMonitor);
   [(CloudXPCService *)self setNetworkMonitor:v17];
 
-  v18 = [(CloudXPCService *)self networkMonitor];
+  networkMonitor = [(CloudXPCService *)self networkMonitor];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000ADB60;
   v19[3] = &unk_1002BA658;
   objc_copyWeak(&v20, &location);
-  [v18 startMonitoringWithCallback:v19];
+  [networkMonitor startMonitoringWithCallback:v19];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v22);
@@ -215,29 +215,29 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "SIGTERM received", buf, 2u);
   }
 
-  v4 = [(CloudXPCService *)self transactionQueue];
+  transactionQueue = [(CloudXPCService *)self transactionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ADD0C;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(transactionQueue, block);
 
   xpc_transaction_exit_clean();
 }
 
 - (void)axHeadTrackingSettingChanged
 {
-  v3 = [(CloudXPCService *)self xpcQueue];
+  xpcQueue = [(CloudXPCService *)self xpcQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ADDD8;
   block[3] = &unk_1002B6880;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(xpcQueue, block);
 }
 
-- (id)bundleIdentifierForConnection:(id)a3
+- (id)bundleIdentifierForConnection:(id)connection
 {
   v12 = 0u;
   v13 = 0u;
@@ -314,15 +314,15 @@ LABEL_16:
     self->_xpcServer = 0;
   }
 
-  v5 = [(CloudXPCService *)self serverConnection];
+  serverConnection = [(CloudXPCService *)self serverConnection];
 
-  if (v5)
+  if (serverConnection)
   {
     [(CloudXPCService *)self setServerConnection:0];
   }
 
-  v6 = [(CloudXPCService *)self networkMonitor];
-  [v6 stopMonitoring];
+  networkMonitor = [(CloudXPCService *)self networkMonitor];
+  [networkMonitor stopMonitoring];
 
   axHeadTrackingChangedNotifyToken = self->_axHeadTrackingChangedNotifyToken;
   if (axHeadTrackingChangedNotifyToken != -1)
@@ -332,24 +332,24 @@ LABEL_16:
   }
 
   [(CloudXPCService *)self setNetworkMonitor:0];
-  v8 = [(CloudXPCService *)self deviceManager];
-  [v8 unsubscribeFromUpdates:self];
+  deviceManager = [(CloudXPCService *)self deviceManager];
+  [deviceManager unsubscribeFromUpdates:self];
 
   v9.receiver = self;
   v9.super_class = CloudXPCService;
   [(CloudXPCService *)&v9 dealloc];
 }
 
-- (void)sendMsg:(id)a3 args:(id)a4
+- (void)sendMsg:(id)msg args:(id)args
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CloudXPCService *)self serverConnection];
+  msgCopy = msg;
+  argsCopy = args;
+  serverConnection = [(CloudXPCService *)self serverConnection];
 
-  if (v8)
+  if (serverConnection)
   {
-    v9 = [(CloudXPCService *)self serverConnection];
-    [v9 sendMsg:v6 args:v7];
+    serverConnection2 = [(CloudXPCService *)self serverConnection];
+    [serverConnection2 sendMsg:msgCopy args:argsCopy];
 
     sigTermSource = self->_sigTermSource;
     if (sigTermSource)
@@ -367,39 +367,39 @@ LABEL_16:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v6;
+      v15 = msgCopy;
       v16 = 2112;
-      v17 = v7;
+      v17 = argsCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Failed to Send message: %@, args: %@", &v14, 0x16u);
     }
   }
 }
 
-- (void)establishBluetoothdXPCWithCompletion:(id)a3
+- (void)establishBluetoothdXPCWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000AE398;
   v4[3] = &unk_1002B6948;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  completionCopy = completion;
+  v3 = completionCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)sendCloudKitMsg:(id)a3 argsObject:(id)a4
+- (void)sendCloudKitMsg:(id)msg argsObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  msgCopy = msg;
+  objectCopy = object;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000AE700;
   v10[3] = &unk_1002BA6C0;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = msgCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = objectCopy;
   v12 = v9;
   [(CloudXPCService *)self establishBluetoothdXPCWithCompletion:v10];
 
@@ -407,43 +407,43 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)sendCloudKitMsg:(id)a3 args:(id)a4
+- (void)sendCloudKitMsg:(id)msg args:(id)args
 {
-  v6 = a3;
-  v7 = a4;
+  msgCopy = msg;
+  argsCopy = args;
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000AE9A0;
   v10[3] = &unk_1002BA6E8;
   objc_copyWeak(&v14, &location);
-  v8 = v6;
+  v8 = msgCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = argsCopy;
   v12 = v9;
-  v13 = self;
+  selfCopy = self;
   [(CloudXPCService *)self establishBluetoothdXPCWithCompletion:v10];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)sendCloudKitMsg:(id)a3 args:(id)a4 withReply:(id)a5
+- (void)sendCloudKitMsg:(id)msg args:(id)args withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  msgCopy = msg;
+  argsCopy = args;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000AED18;
   v14[3] = &unk_1002BA738;
   objc_copyWeak(&v18, &location);
-  v11 = v8;
+  v11 = msgCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = argsCopy;
   v16 = v12;
-  v13 = v10;
+  v13 = replyCopy;
   v17 = v13;
   [(CloudXPCService *)self establishBluetoothdXPCWithCompletion:v14];
 
@@ -451,22 +451,22 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)sendCloudKitMsgSync:(id)a3 args:(id)a4 withReply:(id)a5
+- (void)sendCloudKitMsgSync:(id)sync args:(id)args withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  syncCopy = sync;
+  argsCopy = args;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000AF3DC;
   v14[3] = &unk_1002BA738;
   objc_copyWeak(&v18, &location);
-  v11 = v8;
+  v11 = syncCopy;
   v15 = v11;
-  v12 = v9;
+  v12 = argsCopy;
   v16 = v12;
-  v13 = v10;
+  v13 = replyCopy;
   v17 = v13;
   [(CloudXPCService *)self establishBluetoothdXPCWithCompletion:v14];
 
@@ -474,13 +474,13 @@ LABEL_16:
   objc_destroyWeak(&location);
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = a3;
-  type = xpc_get_type(v4);
+  eventCopy = event;
+  type = xpc_get_type(eventCopy);
   if (type == &_xpc_type_connection)
   {
-    [(CloudXPCService *)self handleConnection:v4];
+    [(CloudXPCService *)self handleConnection:eventCopy];
   }
 
   else
@@ -503,10 +503,10 @@ LABEL_16:
   }
 }
 
-- (void)handleConnection:(id)a3
+- (void)handleConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[BTXPCConnection alloc] initWithConnection:v4];
+  connectionCopy = connection;
+  v5 = [[BTXPCConnection alloc] initWithConnection:connectionCopy];
   v6 = xpc_connection_copy_entitlement_value();
   v7 = xpc_connection_copy_entitlement_value();
 
@@ -537,229 +537,229 @@ LABEL_16:
 
   else
   {
-    v10 = [(CloudXPCService *)self serverConnection];
+    serverConnection = [(CloudXPCService *)self serverConnection];
 
-    if (v10)
+    if (serverConnection)
     {
       v11 = sub_100005C14("XPC");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(CloudXPCService *)self serverConnection];
+        serverConnection2 = [(CloudXPCService *)self serverConnection];
         v15 = 138412290;
-        v16 = v12;
+        v16 = serverConnection2;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Already connected to bluetoothd: %@", &v15, 0xCu);
       }
     }
   }
 
-  v13 = [(CloudXPCService *)self clients];
-  [v13 addObject:v5];
+  clients = [(CloudXPCService *)self clients];
+  [clients addObject:v5];
 }
 
-- (void)devicesRemovedWithRecords:(id)a3
+- (void)devicesRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AFC84;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)devicesUpdatedWithRecords:(id)a3
+- (void)devicesUpdatedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000AFEA0;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)allDevicesRemovedWithRecords:(id)a3
+- (void)allDevicesRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B00BC;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)accountStatusUpdateWithAvailable:(BOOL)a3 forced:(BOOL)a4
+- (void)accountStatusUpdateWithAvailable:(BOOL)available forced:(BOOL)forced
 {
   xpcQueue = self->_xpcQueue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000B02BC;
   v5[3] = &unk_1002BA760;
-  v6 = a4;
-  v7 = a3;
+  forcedCopy = forced;
+  availableCopy = available;
   v5[4] = self;
   dispatch_async(xpcQueue, v5);
 }
 
-- (void)allDeviceSupportInformationRecordsRemovedWithRecords:(id)a3
+- (void)allDeviceSupportInformationRecordsRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B0424;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)allMagicPairingRecordsRemovedWithRecords:(id)a3
+- (void)allMagicPairingRecordsRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B05F4;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)deviceSupportInformationRecordsRemovedWithRecords:(id)a3
+- (void)deviceSupportInformationRecordsRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B07C4;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)deviceSupportInformationRecordsUpdatedWithRecords:(id)a3
+- (void)deviceSupportInformationRecordsUpdatedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B0994;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)magicPairingRecordsRemovedWithRecords:(id)a3
+- (void)magicPairingRecordsRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B0B64;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)magicPairingRecordsUpdatedWithRecords:(id)a3
+- (void)magicPairingRecordsUpdatedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B0D34;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordsCopy;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, v7);
 }
 
-- (void)allLegacyMagicPairingRecordsWithRecordsData:(id)a3
+- (void)allLegacyMagicPairingRecordsWithRecordsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   xpcQueue = self->_xpcQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B13C8;
   block[3] = &unk_1002B6880;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(xpcQueue, block);
 }
 
-- (void)accountStatusAvailable:(BOOL)a3 force:(BOOL)a4
+- (void)accountStatusAvailable:(BOOL)available force:(BOOL)force
 {
   xpcQueue = self->_xpcQueue;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000B1550;
   v5[3] = &unk_1002BA760;
-  v6 = a3;
-  v7 = a4;
+  availableCopy = available;
+  forceCopy = force;
   v5[4] = self;
   dispatch_async(xpcQueue, v5);
 }
 
-- (void)hmDeviceCloudRecordsRemovedWithRecords:(id)a3
+- (void)hmDeviceCloudRecordsRemovedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B19D4;
   block[3] = &unk_1002B6880;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordsCopy;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, block);
 }
 
-- (void)hmDeviceCloudRecordsUpdatedWithRecords:(id)a3
+- (void)hmDeviceCloudRecordsUpdatedWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   xpcQueue = self->_xpcQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000B1C0C;
   block[3] = &unk_1002B6880;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordsCopy;
+  v6 = recordsCopy;
   dispatch_async(xpcQueue, block);
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = sub_100005C14("XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Remove connection: %@", &v7, 0xCu);
   }
 
-  v6 = [(CloudXPCService *)self clients];
-  [v6 removeObject:v4];
+  clients = [(CloudXPCService *)self clients];
+  [clients removeObject:connectionCopy];
 }
 
 - (BOOL)manateeZoneUpgraded
@@ -779,18 +779,18 @@ LABEL_16:
   return v2 != 0;
 }
 
-- (id)readUserPreference:(id)a3
+- (id)readUserPreference:(id)preference
 {
-  v3 = CFPreferencesCopyValue(a3, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  v3 = CFPreferencesCopyValue(preference, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 
   return v3;
 }
 
-- (void)handleConnection:(id)a3 XPCMessage:(id)a4 userID:(unsigned int)a5 processID:(int)a6
+- (void)handleConnection:(id)connection XPCMessage:(id)message userID:(unsigned int)d processID:(int)iD
 {
-  v8 = a3;
-  v9 = a4;
-  type = xpc_get_type(v9);
+  connectionCopy = connection;
+  messageCopy = message;
+  type = xpc_get_type(messageCopy);
   v11 = sub_100005C14("XPC");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -800,7 +800,7 @@ LABEL_16:
 
   if (type == &_xpc_type_dictionary)
   {
-    string = xpc_dictionary_get_string(v9, "kMsgId");
+    string = xpc_dictionary_get_string(messageCopy, "kMsgId");
     v13 = sub_100005C14("XPC");
     v14 = v13;
     if (!string)
@@ -820,7 +820,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "received msg: %s", buf, 0xCu);
     }
 
-    v15 = xpc_dictionary_get_value(v9, "kMsgArgs");
+    v15 = xpc_dictionary_get_value(messageCopy, "kMsgArgs");
     v14 = v15;
     if (v15)
     {
@@ -851,8 +851,8 @@ LABEL_16:
         v29 = MPCloudKit;
       }
 
-      v30 = [(__objc2_class *)v29 sharedInstance];
-      [v30 getAccountStatus];
+      sharedInstance = [(__objc2_class *)v29 sharedInstance];
+      [sharedInstance getAccountStatus];
       goto LABEL_49;
     }
 
@@ -867,7 +867,7 @@ LABEL_16:
       if ([(CloudXPCService *)self manateeZoneUpgraded])
       {
         v31 = +[MPCloudKit_Manatee sharedInstance];
-        v32 = v31;
+        deviceManager = v31;
         v126[0] = _NSConcreteStackBlock;
         v126[1] = 3221225472;
         v126[2] = sub_1000B39F4;
@@ -879,7 +879,7 @@ LABEL_16:
       else
       {
         v31 = +[MPCloudKit sharedInstance];
-        v32 = v31;
+        deviceManager = v31;
         v127[0] = _NSConcreteStackBlock;
         v127[1] = 3221225472;
         v127[2] = sub_1000B3950;
@@ -894,13 +894,13 @@ LABEL_16:
 
     if (!strcmp(string, "getMasterKey"))
     {
-      v32 = [(CloudXPCService *)self deviceManager];
+      deviceManager = [(CloudXPCService *)self deviceManager];
       v125[0] = _NSConcreteStackBlock;
       v125[1] = 3221225472;
       v125[2] = sub_1000B3AB0;
       v125[3] = &unk_1002BA7F0;
       v125[4] = self;
-      [v32 fetchAccountMagicKeysBlobWithCompletion:v125];
+      [deviceManager fetchAccountMagicKeysBlobWithCompletion:v125];
 LABEL_55:
 
       goto LABEL_56;
@@ -908,10 +908,10 @@ LABEL_55:
 
     if (!strcmp(string, "getAccessoryKey"))
     {
-      v34 = [(CloudXPCService *)self manateeZoneUpgraded];
+      manateeZoneUpgraded = [(CloudXPCService *)self manateeZoneUpgraded];
       v35 = sub_100005C14("XPC");
       v36 = os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT);
-      if (v34)
+      if (manateeZoneUpgraded)
       {
         if (v36)
         {
@@ -933,20 +933,20 @@ LABEL_55:
         v37 = off_1002B5598;
       }
 
-      v42 = [(__objc2_class *)*v37 sharedInstance];
-      [v42 fetchAccessoryKeyBlob:0];
+      sharedInstance2 = [(__objc2_class *)*v37 sharedInstance];
+      [sharedInstance2 fetchAccessoryKeyBlob:0];
 
-      v30 = [(CloudXPCService *)self deviceManager];
-      [v30 fetchCached];
+      sharedInstance = [(CloudXPCService *)self deviceManager];
+      [sharedInstance fetchCached];
       goto LABEL_49;
     }
 
     if (!strcmp(string, "getSignInStatus"))
     {
-      v38 = [(CloudXPCService *)self manateeZoneUpgraded];
+      manateeZoneUpgraded2 = [(CloudXPCService *)self manateeZoneUpgraded];
       v39 = sub_100005C14("XPC");
       v40 = os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT);
-      if (v38)
+      if (manateeZoneUpgraded2)
       {
         if (v40)
         {
@@ -968,8 +968,8 @@ LABEL_55:
         v41 = MPCloudKit;
       }
 
-      v30 = [(__objc2_class *)v41 sharedInstance];
-      [v30 forceAccountStatus];
+      sharedInstance = [(__objc2_class *)v41 sharedInstance];
+      [sharedInstance forceAccountStatus];
       goto LABEL_49;
     }
 
@@ -986,10 +986,10 @@ LABEL_56:
       {
         if (!strcmp(string, "deleteAllAccessories"))
         {
-          v56 = [(CloudXPCService *)self manateeZoneUpgraded];
+          manateeZoneUpgraded3 = [(CloudXPCService *)self manateeZoneUpgraded];
           v57 = sub_100005C14("XPC");
           v58 = os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT);
-          if (v56)
+          if (manateeZoneUpgraded3)
           {
             if (v58)
             {
@@ -1011,8 +1011,8 @@ LABEL_56:
             v59 = MPCloudKit;
           }
 
-          v30 = [(__objc2_class *)v59 sharedInstance];
-          [v30 updateCloudKitAccessoryZone:0 delete:1];
+          sharedInstance = [(__objc2_class *)v59 sharedInstance];
+          [sharedInstance updateCloudKitAccessoryZone:0 delete:1];
           goto LABEL_49;
         }
 
@@ -1023,14 +1023,14 @@ LABEL_56:
             goto LABEL_56;
           }
 
-          v30 = _CFXPCCreateCFObjectFromXPCMessage();
-          v45 = [v30 objectForKey:@"kCheckInVersion"];
-          v61 = sub_100005C14("XPC");
-          if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+          sharedInstance = _CFXPCCreateCFObjectFromXPCMessage();
+          v45 = [sharedInstance objectForKey:@"kCheckInVersion"];
+          sharedInstance4 = sub_100005C14("XPC");
+          if (os_log_type_enabled(sharedInstance4, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             *&buf[4] = v45;
-            _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "received checkIn message version: %@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, sharedInstance4, OS_LOG_TYPE_DEFAULT, "received checkIn message version: %@", buf, 0xCu);
           }
         }
 
@@ -1038,29 +1038,29 @@ LABEL_56:
         {
           if (!strcmp(string, "manateeZoneAvailabe"))
           {
-            v30 = +[MPCloudKit_Manatee sharedInstance];
-            [v30 manateeZoneAvailable];
+            sharedInstance = +[MPCloudKit_Manatee sharedInstance];
+            [sharedInstance manateeZoneAvailable];
             goto LABEL_49;
           }
 
           if (!strcmp(string, "deleteOldContainer"))
           {
-            v30 = +[MPCloudKit sharedInstance];
-            [v30 markLegacyNonManateeContainerMigrated];
+            sharedInstance = +[MPCloudKit sharedInstance];
+            [sharedInstance markLegacyNonManateeContainerMigrated];
             goto LABEL_49;
           }
 
           if (!strcmp(string, "nukeOldContainer") && IsAppleInternalBuild() || !strcmp(string, "resetOldContainer"))
           {
-            v30 = +[MPCloudKit sharedInstance];
-            [v30 resetOldZones];
+            sharedInstance = +[MPCloudKit sharedInstance];
+            [sharedInstance resetOldZones];
             goto LABEL_49;
           }
 
           if (!strcmp(string, "upgradeToManatee"))
           {
-            v30 = +[MPCloudKit sharedInstance];
-            [v30 upgradeLegacyNonManateeContainerToManatee];
+            sharedInstance = +[MPCloudKit sharedInstance];
+            [sharedInstance upgradeLegacyNonManateeContainerToManatee];
             goto LABEL_49;
           }
 
@@ -1107,11 +1107,11 @@ LABEL_56:
               if (!strcmp(string, "printDebug"))
               {
                 v71 = +[CloudXPCService sharedInstance];
-                v72 = [v71 deviceManager];
-                v73 = [v72 printDebug];
+                deviceManager2 = [v71 deviceManager];
+                printDebug = [deviceManager2 printDebug];
                 v74 = +[CBIDSManager sharedInstance];
-                v75 = [v74 statedumpAndRecordDailyMetric];
-                v112 = [NSString stringWithFormat:@"%@\n%@", v73, v75];
+                statedumpAndRecordDailyMetric = [v74 statedumpAndRecordDailyMetric];
+                v112 = [NSString stringWithFormat:@"%@\n%@", printDebug, statedumpAndRecordDailyMetric];
 
                 v76 = sub_100005C14("XPC");
                 if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
@@ -1126,12 +1126,12 @@ LABEL_56:
                   v128 = @"printDebug";
                   v129 = v112;
                   v77 = [NSDictionary dictionaryWithObjects:&v129 forKeys:&v128 count:1];
-                  sub_1000B3CA0(v9, v77);
+                  sub_1000B3CA0(messageCopy, v77);
                 }
 
                 else
                 {
-                  sub_1000B3CA0(v9, &off_1002CBEA0);
+                  sub_1000B3CA0(messageCopy, &off_1002CBEA0);
                 }
 
                 v86 = v112;
@@ -1147,11 +1147,11 @@ LABEL_56:
                   _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "nuking cloud", buf, 2u);
                 }
 
-                v32 = _CFXPCCreateCFObjectFromXPCObject();
+                deviceManager = _CFXPCCreateCFObjectFromXPCObject();
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v79 = [v32 objectForKeyedSubscript:@"nuke"];
+                  v79 = [deviceManager objectForKeyedSubscript:@"nuke"];
                   v80 = [v79 isEqualToString:@"nukeMe"];
 
                   if (v80)
@@ -1159,13 +1159,13 @@ LABEL_56:
                     v81 = +[MPCloudKit sharedInstance];
                     [v81 resetOldZones];
 
-                    v82 = [(CloudXPCService *)self deviceManager];
+                    deviceManager3 = [(CloudXPCService *)self deviceManager];
                     v123[0] = _NSConcreteStackBlock;
                     v123[1] = 3221225472;
                     v123[2] = sub_1000B3D50;
                     v123[3] = &unk_1002B6A38;
-                    v124 = v9;
-                    [v82 resetCloudDataWithCompletion:v123];
+                    v124 = messageCopy;
+                    [deviceManager3 resetCloudDataWithCompletion:v123];
                   }
                 }
 
@@ -1178,14 +1178,14 @@ LABEL_56:
               if (!v17)
               {
                 v84 = +[CloudXPCService sharedInstance];
-                v85 = [v84 deviceManager];
+                deviceManager4 = [v84 deviceManager];
                 v121[0] = _NSConcreteStackBlock;
                 v121[1] = 3221225472;
                 v121[2] = sub_1000B3E5C;
                 v121[3] = &unk_1002BA818;
                 v121[4] = self;
-                v122 = v9;
-                [v85 fetchDeviceRecordsWithCompletion:v121];
+                v122 = messageCopy;
+                [deviceManager4 fetchDeviceRecordsWithCompletion:v121];
 
                 v86 = v122;
                 goto LABEL_155;
@@ -1218,7 +1218,7 @@ LABEL_56:
 
                       else
                       {
-                        v26 = xpc_copy_description(v9);
+                        v26 = xpc_copy_description(messageCopy);
                         v27 = sub_100005C14("XPC");
                         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                         {
@@ -1233,26 +1233,26 @@ LABEL_56:
                       goto LABEL_56;
                     }
 
-                    v32 = _CFXPCCreateCFObjectFromXPCObject();
-                    if (v32)
+                    deviceManager = _CFXPCCreateCFObjectFromXPCObject();
+                    if (deviceManager)
                     {
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
                         v101 = +[_TtC15audioaccessoryd12XPCArguments CloudDeviceAddress];
-                        v102 = [v32 objectForKeyedSubscript:v101];
+                        v102 = [deviceManager objectForKeyedSubscript:v101];
                         if (v102)
                         {
                           v103 = v102;
                           v112 = +[_TtC15audioaccessoryd12XPCArguments CloudDeviceAddress];
-                          v104 = [v32 objectForKeyedSubscript:v112];
+                          v104 = [deviceManager objectForKeyedSubscript:v112];
                           objc_opt_class();
                           HIDWORD(v111) = objc_opt_isKindOfClass();
 
                           if ((v111 & 0x100000000) != 0)
                           {
                             v105 = +[_TtC15audioaccessoryd12XPCArguments CloudDeviceAddress];
-                            v88 = [v32 objectForKeyedSubscript:v105];
+                            v88 = [deviceManager objectForKeyedSubscript:v105];
 
                             v106 = sub_100005C14("XPC");
                             if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
@@ -1263,14 +1263,14 @@ LABEL_56:
                             }
 
                             v107 = +[CloudXPCService sharedInstance];
-                            v108 = [v107 deviceManager];
+                            deviceManager5 = [v107 deviceManager];
                             v113[0] = _NSConcreteStackBlock;
                             v113[1] = 3221225472;
                             v113[2] = sub_1000B44A8;
                             v113[3] = &unk_1002BA840;
                             v113[4] = self;
-                            v114 = v9;
-                            [v108 fetchDeviceWithAddress:v88 completion:v113];
+                            v114 = messageCopy;
+                            [deviceManager5 fetchDeviceWithAddress:v88 completion:v113];
 
                             goto LABEL_198;
                           }
@@ -1290,7 +1290,7 @@ LABEL_56:
 
                     v94 = &__NSDictionary0__struct;
 LABEL_203:
-                    sub_1000B3CA0(v9, v94);
+                    sub_1000B3CA0(messageCopy, v94);
                     goto LABEL_55;
                   }
 
@@ -1302,14 +1302,14 @@ LABEL_203:
                   }
 
                   v99 = +[CloudXPCService sharedInstance];
-                  v100 = [v99 deviceManager];
+                  deviceManager6 = [v99 deviceManager];
                   v115[0] = _NSConcreteStackBlock;
                   v115[1] = 3221225472;
                   v115[2] = sub_1000B431C;
                   v115[3] = &unk_1002B68A8;
                   v115[4] = self;
-                  v116 = v9;
-                  [v100 resetCachedDataWithCompletion:v115];
+                  v116 = messageCopy;
+                  [deviceManager6 resetCachedDataWithCompletion:v115];
 
                   v86 = v116;
 LABEL_155:
@@ -1317,16 +1317,16 @@ LABEL_155:
                   goto LABEL_56;
                 }
 
-                v32 = _CFXPCCreateCFObjectFromXPCObject();
+                deviceManager = _CFXPCCreateCFObjectFromXPCObject();
                 v95 = sub_100005C14("XPC");
                 if (os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138477827;
-                  *&buf[4] = v32;
+                  *&buf[4] = deviceManager;
                   _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_DEFAULT, "Remove nickname device incoming XPC message: %{private}@", buf, 0xCu);
                 }
 
-                if (![(CloudXPCService *)self accountAvailable]|| !v32 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+                if (![(CloudXPCService *)self accountAvailable]|| !deviceManager || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                 {
                   v97 = sub_100005C14("XPC");
                   if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
@@ -1338,8 +1338,8 @@ LABEL_155:
                   goto LABEL_203;
                 }
 
-                v88 = [v32 objectForKey:@"bluetoothAddress"];
-                v89 = [v32 objectForKey:@"nickname"];
+                v88 = [deviceManager objectForKey:@"bluetoothAddress"];
+                v89 = [deviceManager objectForKey:@"nickname"];
                 if (v88)
                 {
                   objc_opt_class();
@@ -1353,14 +1353,14 @@ LABEL_155:
                         v90 = [[BTCloudDevice alloc] initWithBluetoothAddress:v88];
                         [v90 setNickname:v89];
                         v112 = +[CloudXPCService sharedInstance];
-                        v96 = [v112 deviceManager];
+                        deviceManager7 = [v112 deviceManager];
                         v117[0] = _NSConcreteStackBlock;
                         v117[1] = 3221225472;
                         v117[2] = sub_1000B4190;
                         v117[3] = &unk_1002B68A8;
                         v117[4] = self;
-                        v118 = v9;
-                        [v96 removeDeviceWithRecord:v90 completion:v117];
+                        v118 = messageCopy;
+                        [deviceManager7 removeDeviceWithRecord:v90 completion:v117];
 
                         v92 = v118;
                         goto LABEL_179;
@@ -1374,16 +1374,16 @@ LABEL_155:
 
               else
               {
-                v32 = _CFXPCCreateCFObjectFromXPCObject();
+                deviceManager = _CFXPCCreateCFObjectFromXPCObject();
                 v87 = sub_100005C14("XPC");
                 if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138477827;
-                  *&buf[4] = v32;
+                  *&buf[4] = deviceManager;
                   _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEFAULT, "Nickname device incoming XPC message: %{private}@", buf, 0xCu);
                 }
 
-                if (![(CloudXPCService *)self accountAvailable]|| !v32 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+                if (![(CloudXPCService *)self accountAvailable]|| !deviceManager || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                 {
                   v93 = sub_100005C14("XPC");
                   if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
@@ -1395,8 +1395,8 @@ LABEL_155:
                   goto LABEL_203;
                 }
 
-                v88 = [v32 objectForKey:@"bluetoothAddress"];
-                v89 = [v32 objectForKey:@"nickname"];
+                v88 = [deviceManager objectForKey:@"bluetoothAddress"];
+                v89 = [deviceManager objectForKey:@"nickname"];
                 if (v88)
                 {
                   objc_opt_class();
@@ -1410,14 +1410,14 @@ LABEL_155:
                         v90 = [[BTCloudDevice alloc] initWithBluetoothAddress:v88];
                         [v90 setNickname:v89];
                         v112 = +[CloudXPCService sharedInstance];
-                        v91 = [v112 deviceManager];
+                        deviceManager8 = [v112 deviceManager];
                         v119[0] = _NSConcreteStackBlock;
                         v119[1] = 3221225472;
                         v119[2] = sub_1000B4004;
                         v119[3] = &unk_1002B68A8;
                         v119[4] = self;
-                        v120 = v9;
-                        [v91 addDeviceWithRecord:v90 completion:v119];
+                        v120 = messageCopy;
+                        [deviceManager8 addDeviceWithRecord:v90 completion:v119];
 
                         v92 = v120;
 LABEL_179:
@@ -1434,12 +1434,12 @@ LABEL_198:
                 v109 = &off_1002CBF68;
               }
 
-              sub_1000B3CA0(v9, v109);
+              sub_1000B3CA0(messageCopy, v109);
               goto LABEL_197;
             }
 
-            v30 = +[CBIDSManager sharedInstance];
-            [v30 sendCloudKitPush];
+            sharedInstance = +[CBIDSManager sharedInstance];
+            [sharedInstance sendCloudKitPush];
             goto LABEL_49;
           }
 
@@ -1455,13 +1455,13 @@ LABEL_198:
           if (v69)
           {
             v70 = v69;
-            v30 = [NSString stringWithUTF8String:v69];
+            sharedInstance = [NSString stringWithUTF8String:v69];
             free(v70);
           }
 
           else
           {
-            v30 = 0;
+            sharedInstance = 0;
           }
 
           v45 = _CFXPCCreateCFObjectFromXPCObject();
@@ -1469,7 +1469,7 @@ LABEL_198:
           if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
           {
             *v130 = 138412546;
-            v131 = v30;
+            v131 = sharedInstance;
             v132 = 2112;
             v133 = v45;
             _os_log_impl(&_mh_execute_header, v83, OS_LOG_TYPE_DEFAULT, "cloudpairingRetry incoming (%@) XPC message: %@", v130, 0x16u);
@@ -1477,14 +1477,14 @@ LABEL_198:
 
           if (v45 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            v61 = +[CBIDSManager sharedInstance];
-            [v61 sendRePairRequest:v45 forBundleID:v30];
+            sharedInstance4 = +[CBIDSManager sharedInstance];
+            [sharedInstance4 sendRePairRequest:v45 forBundleID:sharedInstance];
           }
 
           else
           {
-            v61 = sub_100005C14("XPC");
-            if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
+            sharedInstance4 = sub_100005C14("XPC");
+            if (os_log_type_enabled(sharedInstance4, OS_LOG_TYPE_ERROR))
             {
               sub_1001F5644();
             }
@@ -1499,21 +1499,21 @@ LABEL_198:
         goto LABEL_56;
       }
 
-      v48 = [(CloudXPCService *)self manateeZoneUpgraded];
-      v30 = xpc_dictionary_get_value(v14, "kDeviceInfoBlob");
-      xpc_data_get_length(v30);
+      manateeZoneUpgraded4 = [(CloudXPCService *)self manateeZoneUpgraded];
+      sharedInstance = xpc_dictionary_get_value(v14, "kDeviceInfoBlob");
+      xpc_data_get_length(sharedInstance);
       __chkstk_darwin();
       v50 = &v111 - v49;
-      length = xpc_data_get_length(v30);
-      bytes = xpc_data_get_bytes(v30, v50, 0, length);
-      if (v48)
+      length = xpc_data_get_length(sharedInstance);
+      bytes = xpc_data_get_bytes(sharedInstance, v50, 0, length);
+      if (manateeZoneUpgraded4)
       {
         if (!bytes)
         {
           goto LABEL_49;
         }
 
-        v53 = [NSData dataWithBytes:v50 length:xpc_data_get_length(v30)];
+        v53 = [NSData dataWithBytes:v50 length:xpc_data_get_length(sharedInstance)];
         v54 = sub_100005C14("XPC");
         if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
         {
@@ -1526,8 +1526,8 @@ LABEL_198:
         {
           v55 = MPCloudKit_Manatee;
 LABEL_108:
-          v63 = [(__objc2_class *)v55 sharedInstance];
-          [v63 updateCloudKitAccessoryZone:v53 delete:0];
+          sharedInstance3 = [(__objc2_class *)v55 sharedInstance];
+          [sharedInstance3 updateCloudKitAccessoryZone:v53 delete:0];
         }
       }
 
@@ -1538,7 +1538,7 @@ LABEL_108:
           goto LABEL_49;
         }
 
-        v53 = [NSData dataWithBytes:v50 length:xpc_data_get_length(v30)];
+        v53 = [NSData dataWithBytes:v50 length:xpc_data_get_length(sharedInstance)];
         v62 = sub_100005C14("XPC");
         if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
         {
@@ -1562,14 +1562,14 @@ LABEL_108:
       goto LABEL_56;
     }
 
-    v43 = [(CloudXPCService *)self manateeZoneUpgraded];
+    manateeZoneUpgraded5 = [(CloudXPCService *)self manateeZoneUpgraded];
     v44 = xpc_dictionary_get_value(v14, "kMasterKeyBlob");
-    v30 = v44;
-    if (v43)
+    sharedInstance = v44;
+    if (manateeZoneUpgraded5)
     {
       if (xpc_data_get_bytes(v44, buf, 0, 0x21uLL))
       {
-        v45 = [NSData dataWithBytes:buf length:xpc_data_get_length(v30)];
+        v45 = [NSData dataWithBytes:buf length:xpc_data_get_length(sharedInstance)];
         v46 = sub_100005C14("XPC");
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
@@ -1590,7 +1590,7 @@ LABEL_108:
 
     else if (xpc_data_get_bytes(v44, buf, 0, 0x21uLL))
     {
-      v45 = [NSData dataWithBytes:buf length:xpc_data_get_length(v30)];
+      v45 = [NSData dataWithBytes:buf length:xpc_data_get_length(sharedInstance)];
       v60 = sub_100005C14("XPC");
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
@@ -1606,8 +1606,8 @@ LABEL_108:
 
       v47 = MPCloudKit;
 LABEL_97:
-      v61 = [(__objc2_class *)v47 sharedInstance];
-      [v61 updateCloudKitBlobZone:v45];
+      sharedInstance4 = [(__objc2_class *)v47 sharedInstance];
+      [sharedInstance4 updateCloudKitBlobZone:v45];
 LABEL_101:
 
 LABEL_102:
@@ -1621,32 +1621,32 @@ LABEL_49:
 LABEL_57:
 }
 
-- (void)beginTransaction:(id)a3
+- (void)beginTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(CloudXPCService *)self transactionQueue];
+  transactionCopy = transaction;
+  transactionQueue = [(CloudXPCService *)self transactionQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B4820;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = transactionCopy;
+  v6 = transactionCopy;
+  dispatch_sync(transactionQueue, v7);
 }
 
-- (void)endTransaction:(id)a3
+- (void)endTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(CloudXPCService *)self transactionQueue];
+  transactionCopy = transaction;
+  transactionQueue = [(CloudXPCService *)self transactionQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000B4AB0;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = transactionCopy;
+  v6 = transactionCopy;
+  dispatch_sync(transactionQueue, v7);
 }
 
 @end

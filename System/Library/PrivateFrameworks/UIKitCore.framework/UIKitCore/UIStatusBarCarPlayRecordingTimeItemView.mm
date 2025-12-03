@@ -1,21 +1,21 @@
 @interface UIStatusBarCarPlayRecordingTimeItemView
 - (CGRect)_pillFrame;
-- (UIStatusBarCarPlayRecordingTimeItemView)initWithFrame:(CGRect)a3;
+- (UIStatusBarCarPlayRecordingTimeItemView)initWithFrame:(CGRect)frame;
 - (void)_updatePillFrame;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)movedToSuperview:(id)a3;
+- (void)movedToSuperview:(id)superview;
 - (void)removeFromSuperview;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation UIStatusBarCarPlayRecordingTimeItemView
 
-- (UIStatusBarCarPlayRecordingTimeItemView)initWithFrame:(CGRect)a3
+- (UIStatusBarCarPlayRecordingTimeItemView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = UIStatusBarCarPlayRecordingTimeItemView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [_UIStatusBarRoundedCornerView alloc];
@@ -31,11 +31,11 @@
   return v3;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = UIStatusBarCarPlayRecordingTimeItemView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIStatusBarCarPlayRecordingTimeItemView *)self _updatePillFrame];
 }
 
@@ -47,9 +47,9 @@
   [(UIStatusBarCarPlayRecordingTimeItemView *)self _updatePillFrame];
 }
 
-- (void)movedToSuperview:(id)a3
+- (void)movedToSuperview:(id)superview
 {
-  [a3 insertSubview:self->_pillView below:self];
+  [superview insertSubview:self->_pillView below:self];
   pillView = self->_pillView;
   [(UIStatusBarCarPlayRecordingTimeItemView *)self _pillFrame];
 
@@ -64,16 +64,16 @@
   [(UIView *)&v3 removeFromSuperview];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v11.receiver = self;
   v11.super_class = UIStatusBarCarPlayRecordingTimeItemView;
-  v6 = a3;
-  [(UIStatusBarButtonActionItemView *)&v11 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
+  contextCopy = context;
+  [(UIStatusBarButtonActionItemView *)&v11 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
   pillView = self->_pillView;
-  if (v7 == self)
+  if (nextFocusedItem == self)
   {
     v9 = +[UIColor externalSystemTealColor];
   }

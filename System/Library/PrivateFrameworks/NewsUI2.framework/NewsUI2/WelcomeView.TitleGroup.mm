@@ -6,7 +6,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_218A50D48();
   v4 = v3;
 

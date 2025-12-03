@@ -1,8 +1,8 @@
 @interface QLThumbnailGenerationQueue
 + (id)sharedInstance;
 - (QLThumbnailGenerationQueue)init;
-- (void)enqueueThumbnailGenerationIfNeededForDocumentAtURL:(id)a3 atBackgroundPriority:(BOOL)a4 completionHandler:(id)a5;
-- (void)noteThumbnailGenerationQueuedExternallyForDocumentAtURL:(id)a3;
+- (void)enqueueThumbnailGenerationIfNeededForDocumentAtURL:(id)l atBackgroundPriority:(BOOL)priority completionHandler:(id)handler;
+- (void)noteThumbnailGenerationQueuedExternallyForDocumentAtURL:(id)l;
 @end
 
 @implementation QLThumbnailGenerationQueue
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __44__QLThumbnailGenerationQueue_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_0[0] != -1)
   {
     dispatch_once(sharedInstance_once_0, block);
@@ -53,11 +53,11 @@ uint64_t __44__QLThumbnailGenerationQueue_sharedInstance__block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)enqueueThumbnailGenerationIfNeededForDocumentAtURL:(id)a3 atBackgroundPriority:(BOOL)a4 completionHandler:(id)a5
+- (void)enqueueThumbnailGenerationIfNeededForDocumentAtURL:(id)l atBackgroundPriority:(BOOL)priority completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  priorityCopy = priority;
+  lCopy = l;
+  handlerCopy = handler;
   v10 = qltLogHandles[0];
   if (!qltLogHandles[0])
   {
@@ -67,7 +67,7 @@ uint64_t __44__QLThumbnailGenerationQueue_sharedInstance__block_invoke(uint64_t 
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [QLThumbnailGenerationQueue enqueueThumbnailGenerationIfNeededForDocumentAtURL:v8 atBackgroundPriority:v10 completionHandler:v9];
+    [QLThumbnailGenerationQueue enqueueThumbnailGenerationIfNeededForDocumentAtURL:lCopy atBackgroundPriority:v10 completionHandler:handlerCopy];
   }
 
   v11 = MEMORY[0x1E696AAE0];
@@ -75,15 +75,15 @@ uint64_t __44__QLThumbnailGenerationQueue_sharedInstance__block_invoke(uint64_t 
   v18 = 3221225472;
   v19 = __120__QLThumbnailGenerationQueue_enqueueThumbnailGenerationIfNeededForDocumentAtURL_atBackgroundPriority_completionHandler___block_invoke;
   v20 = &unk_1E836A940;
-  v21 = self;
-  v22 = v8;
-  v24 = v6;
-  v23 = v9;
-  v12 = v9;
-  v13 = v8;
+  selfCopy = self;
+  v22 = lCopy;
+  v24 = priorityCopy;
+  v23 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = lCopy;
   v14 = [v11 blockOperationWithBlock:&v17];
   v15 = v14;
-  if (v6)
+  if (priorityCopy)
   {
     v16 = 9;
   }
@@ -93,7 +93,7 @@ uint64_t __44__QLThumbnailGenerationQueue_sharedInstance__block_invoke(uint64_t 
     v16 = 25;
   }
 
-  [v14 setQualityOfService:{v16, v17, v18, v19, v20, v21}];
+  [v14 setQualityOfService:{v16, v17, v18, v19, v20, selfCopy}];
   [(NSOperationQueue *)self->_queue addOperation:v15];
 }
 
@@ -275,17 +275,17 @@ void __120__QLThumbnailGenerationQueue_enqueueThumbnailGenerationIfNeededForDocu
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)noteThumbnailGenerationQueuedExternallyForDocumentAtURL:(id)a3
+- (void)noteThumbnailGenerationQueuedExternallyForDocumentAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __86__QLThumbnailGenerationQueue_noteThumbnailGenerationQueuedExternallyForDocumentAtURL___block_invoke;
   v7[3] = &unk_1E8369BD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   [(NSOperationQueue *)queue addOperationWithBlock:v7];
 }
 

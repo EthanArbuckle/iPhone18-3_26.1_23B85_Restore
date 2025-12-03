@@ -1,23 +1,23 @@
 @interface CPLHelpCommand
-- (BOOL)parseCommandOptionsWithArgc:(int)a3 argv:(char *)a4;
+- (BOOL)parseCommandOptionsWithArgc:(int)argc argv:(char *)argv;
 - (int)execute;
-- (void)_printUsageWithFirstLine:(id)a3 mainCommandName:(id)a4 secondLine:(id)a5;
-- (void)executeWithCommandClass:(Class)a3 mainCommandName:(id)a4;
-- (void)executeWithCommandClasses:(id)a3 mainCommandName:(id)a4;
+- (void)_printUsageWithFirstLine:(id)line mainCommandName:(id)name secondLine:(id)secondLine;
+- (void)executeWithCommandClass:(Class)class mainCommandName:(id)name;
+- (void)executeWithCommandClasses:(id)classes mainCommandName:(id)name;
 @end
 
 @implementation CPLHelpCommand
 
-- (BOOL)parseCommandOptionsWithArgc:(int)a3 argv:(char *)a4
+- (BOOL)parseCommandOptionsWithArgc:(int)argc argv:(char *)argv
 {
-  if (a3 == 1)
+  if (argc == 1)
   {
     return 1;
   }
 
-  if (a3 == 2)
+  if (argc == 2)
   {
-    v5 = [NSString stringWithUTF8String:a4[1]];
+    v5 = [NSString stringWithUTF8String:argv[1]];
     helpCommandName = self->_helpCommandName;
     self->_helpCommandName = v5;
     v7 = 1;
@@ -33,64 +33,64 @@
   return v7;
 }
 
-- (void)_printUsageWithFirstLine:(id)a3 mainCommandName:(id)a4 secondLine:(id)a5
+- (void)_printUsageWithFirstLine:(id)line mainCommandName:(id)name secondLine:(id)secondLine
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_opt_class() toolName];
-  if (v8)
+  lineCopy = line;
+  nameCopy = name;
+  secondLineCopy = secondLine;
+  toolName = [objc_opt_class() toolName];
+  if (nameCopy)
   {
-    [(CPLCTLCommand *)self printFormat:@"Usage: %@ %@ %@", v10, v8, v12];
+    [(CPLCTLCommand *)self printFormat:@"Usage: %@ %@ %@", toolName, nameCopy, lineCopy];
   }
 
   else
   {
-    [(CPLCTLCommand *)self printFormat:@"Usage: %@ %@", v10, v12, v11];
+    [(CPLCTLCommand *)self printFormat:@"Usage: %@ %@", toolName, lineCopy, v11];
   }
 
-  if (v9)
+  if (secondLineCopy)
   {
-    [(CPLCTLCommand *)self printFormat:@"\n%@", v9];
+    [(CPLCTLCommand *)self printFormat:@"\n%@", secondLineCopy];
   }
 }
 
-- (void)executeWithCommandClass:(Class)a3 mainCommandName:(id)a4
+- (void)executeWithCommandClass:(Class)class mainCommandName:(id)name
 {
-  v20 = a4;
-  v6 = [(objc_class *)a3 parameters];
-  v7 = [(objc_class *)a3 shortDescription];
+  nameCopy = name;
+  parameters = [(objc_class *)class parameters];
+  shortDescription = [(objc_class *)class shortDescription];
   standaloneTool = self->_standaloneTool;
   v9 = [NSString alloc];
   if (standaloneTool)
   {
-    if (!v6)
+    if (!parameters)
     {
-      v10 = [v9 initWithFormat:@"\n\t%@", v7, v17, v19];
+      v10 = [v9 initWithFormat:@"\n\t%@", shortDescription, v17, v19];
       goto LABEL_9;
     }
 
-    helpCommandName = v6;
-    v18 = v7;
+    helpCommandName = parameters;
+    v18 = shortDescription;
   }
 
   else
   {
-    if (v6)
+    if (parameters)
     {
-      v10 = [v9 initWithFormat:@"%@ %@\n\t%@", self->_helpCommandName, v6, v7];
+      v10 = [v9 initWithFormat:@"%@ %@\n\t%@", self->_helpCommandName, parameters, shortDescription];
       goto LABEL_9;
     }
 
     helpCommandName = self->_helpCommandName;
-    v18 = v7;
+    v18 = shortDescription;
   }
 
   v10 = [v9 initWithFormat:@"%@\n\t%@", helpCommandName, v18, v19];
 LABEL_9:
   v11 = v10;
-  v12 = [(objc_class *)a3 help];
-  v13 = [v12 componentsSeparatedByString:@"\n"];
+  help = [(objc_class *)class help];
+  v13 = [help componentsSeparatedByString:@"\n"];
 
   if (v13)
   {
@@ -103,16 +103,16 @@ LABEL_9:
     v15 = 0;
   }
 
-  [(CPLHelpCommand *)self _printUsageWithFirstLine:v11 mainCommandName:v20 secondLine:v15];
+  [(CPLHelpCommand *)self _printUsageWithFirstLine:v11 mainCommandName:nameCopy secondLine:v15];
 }
 
-- (void)executeWithCommandClasses:(id)a3 mainCommandName:(id)a4
+- (void)executeWithCommandClasses:(id)classes mainCommandName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  classesCopy = classes;
+  nameCopy = name;
   v7 = @"<subcommand> [subcommand-options and arguments]";
-  v30 = v6;
-  if (!v6)
+  v30 = nameCopy;
+  if (!nameCopy)
   {
     v7 = @"<command> [command-options and arguments]";
   }
@@ -123,7 +123,7 @@ LABEL_9:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v5;
+  obj = classesCopy;
   v8 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v8)
   {
@@ -140,12 +140,12 @@ LABEL_9:
 
         v12 = *(*(&v33 + 1) + 8 * i);
         v13 = [NSString alloc];
-        v14 = [v12 commandName];
-        v15 = [v12 parameters];
-        v16 = v15;
-        if (v15)
+        commandName = [v12 commandName];
+        parameters = [v12 parameters];
+        v16 = parameters;
+        if (parameters)
         {
-          v17 = v15;
+          v17 = parameters;
         }
 
         else
@@ -153,8 +153,8 @@ LABEL_9:
           v17 = &stru_100035A18;
         }
 
-        v18 = [v12 shortDescription];
-        v19 = [v13 initWithFormat:@"\t%@ %@\n\t\t%@", v14, v17, v18];
+        shortDescription = [v12 shortDescription];
+        v19 = [v13 initWithFormat:@"\t%@ %@\n\t\t%@", commandName, v17, shortDescription];
 
         [v32 addObject:v19];
       }
@@ -180,17 +180,17 @@ LABEL_9:
   v23 = [v20 initWithFormat:@"Available %s:\n%@", v21, v22];
 
   [(CPLHelpCommand *)self _printUsageWithFirstLine:v28 mainCommandName:v30 secondLine:v23];
-  v24 = [objc_opt_class() toolName];
-  v25 = [objc_opt_class() commandName];
-  v26 = v25;
+  toolName = [objc_opt_class() toolName];
+  commandName2 = [objc_opt_class() commandName];
+  v26 = commandName2;
   if (v30)
   {
-    [(CPLCTLCommand *)self printFormat:@"\nTry %@ %@ %@ <subcommand> to get help on a specific subcommand.", v24, v30, v25];
+    [(CPLCTLCommand *)self printFormat:@"\nTry %@ %@ %@ <subcommand> to get help on a specific subcommand.", toolName, v30, commandName2];
   }
 
   else
   {
-    [(CPLCTLCommand *)self printFormat:@"\nTry %@ %@ <command> to get help on a specific command.", v24, v25, v27];
+    [(CPLCTLCommand *)self printFormat:@"\nTry %@ %@ <command> to get help on a specific command.", toolName, commandName2, v27];
   }
 }
 
@@ -200,13 +200,13 @@ LABEL_9:
   v4 = objc_opt_class();
   if (!helpCommandName)
   {
-    v6 = [v4 allCommandNames];
-    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+    allCommandNames = [v4 allCommandNames];
+    v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(allCommandNames, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v6;
+    v8 = allCommandNames;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {

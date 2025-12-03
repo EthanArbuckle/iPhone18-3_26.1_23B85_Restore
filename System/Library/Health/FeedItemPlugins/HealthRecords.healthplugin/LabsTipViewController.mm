@@ -1,7 +1,7 @@
 @interface LabsTipViewController
-- (_TtC13HealthRecords21LabsTipViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC13HealthRecords21LabsTipViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation LabsTipViewController
@@ -12,10 +12,10 @@
   v8.super_class = type metadata accessor for LabsTipViewController();
   v2 = v8.receiver;
   [(LabsTipViewController *)&v8 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
+    v4 = view;
     v5 = sub_29D4A7A50();
     [v4 addSubview_];
 
@@ -33,27 +33,27 @@
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5 = sub_29D5B374C();
   MEMORY[0x2A1C7C4A8](v5);
   v6 = sub_29D5B2C2C();
   MEMORY[0x2A1C7C4A8](v6);
   (*(v8 + 104))(&v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0), *MEMORY[0x29EDC1D60]);
-  v9 = self;
+  selfCopy = self;
   sub_29D5B436C();
   sub_29D5B373C();
   sub_29D5B437C();
   v10 = type metadata accessor for LabsTipViewController();
-  v11.receiver = v9;
+  v11.receiver = selfCopy;
   v11.super_class = v10;
-  [(LabsTipViewController *)&v11 viewIsAppearing:v3];
+  [(LabsTipViewController *)&v11 viewIsAppearing:appearingCopy];
 }
 
-- (_TtC13HealthRecords21LabsTipViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13HealthRecords21LabsTipViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_29D5B3E5C();
     v7 = v6;
@@ -65,8 +65,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29D4A85F0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29D4A85F0(v5, v7, bundle);
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface SBExternalDisplayServiceConnectionListenerFactory
-- (id)newExternalDisplayServiceListenerForDelegate:(id)a3 serviceQueue:(id)a4;
+- (id)newExternalDisplayServiceListenerForDelegate:(id)delegate serviceQueue:(id)queue;
 @end
 
 @implementation SBExternalDisplayServiceConnectionListenerFactory
 
-- (id)newExternalDisplayServiceListenerForDelegate:(id)a3 serviceQueue:(id)a4
+- (id)newExternalDisplayServiceListenerForDelegate:(id)delegate serviceQueue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_SBExternalDisplayServiceConnectionListener alloc] initWithServiceQueue:v5];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v7 = [[_SBExternalDisplayServiceConnectionListener alloc] initWithServiceQueue:queueCopy];
 
-  [(_SBExternalDisplayServiceConnectionListener *)v7 setDelegate:v6];
+  [(_SBExternalDisplayServiceConnectionListener *)v7 setDelegate:delegateCopy];
   return v7;
 }
 

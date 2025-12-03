@@ -4,8 +4,8 @@
 - (BOOL)isProgressHostReady;
 - (id)_cwfInterface;
 - (id)lockdownModeManager;
-- (int)sem_createOwnerReadableWithName:(const char *)a3 value:(int)a4 errorString:(id *)a5;
-- (int)sem_openWithName:(const char *)a3 errorString:(id *)a4;
+- (int)sem_createOwnerReadableWithName:(const char *)name value:(int)value errorString:(id *)string;
+- (int)sem_openWithName:(const char *)name errorString:(id *)string;
 - (void)setProgressHostIsReady;
 @end
 
@@ -13,8 +13,8 @@
 
 - (id)lockdownModeManager
 {
-  v2 = sub_10000BDEC();
-  if (v2)
+  shared = sub_10000BDEC();
+  if (shared)
   {
     v7 = 0;
     v8 = &v7;
@@ -34,10 +34,10 @@
 
     v4 = v3;
     _Block_object_dispose(&v7, 8);
-    v2 = [v3 shared];
+    shared = [v3 shared];
   }
 
-  return v2;
+  return shared;
 }
 
 - (id)_cwfInterface
@@ -54,12 +54,12 @@
     return 0;
   }
 
-  v4 = [(DMEnvironment *)self _cwfInterface];
-  [v4 activate];
-  v5 = [v4 networkName];
-  v6 = [v5 isEqualToString:@"Apple Store"];
+  _cwfInterface = [(DMEnvironment *)self _cwfInterface];
+  [_cwfInterface activate];
+  networkName = [_cwfInterface networkName];
+  v6 = [networkName isEqualToString:@"Apple Store"];
 
-  [v4 invalidate];
+  [_cwfInterface invalidate];
   return v6;
 }
 
@@ -71,27 +71,27 @@
   return v3;
 }
 
-- (int)sem_openWithName:(const char *)a3 errorString:(id *)a4
+- (int)sem_openWithName:(const char *)name errorString:(id *)string
 {
-  v5 = sem_open(a3, 0);
+  v5 = sem_open(name, 0);
   v6 = v5;
-  if (a4 && v5 == -1)
+  if (string && v5 == -1)
   {
     v7 = __error();
-    *a4 = [NSString stringWithFormat:@"%s", strerror(*v7)];
+    *string = [NSString stringWithFormat:@"%s", strerror(*v7)];
   }
 
   return v6;
 }
 
-- (int)sem_createOwnerReadableWithName:(const char *)a3 value:(int)a4 errorString:(id *)a5
+- (int)sem_createOwnerReadableWithName:(const char *)name value:(int)value errorString:(id *)string
 {
-  v6 = sem_open(a3, 512, 256, a4);
+  v6 = sem_open(name, 512, 256, value);
   v7 = v6;
-  if (a5 && v6 == -1)
+  if (string && v6 == -1)
   {
     v8 = __error();
-    *a5 = [NSString stringWithFormat:@"%s", strerror(*v8)];
+    *string = [NSString stringWithFormat:@"%s", strerror(*v8)];
   }
 
   return v7;

@@ -1,7 +1,7 @@
 @interface LNSuggestedEntitiesQueryRequestType
 + (id)queryRequest;
 - (LNSuggestedEntitiesQueryRequestType)init;
-- (LNSuggestedEntitiesQueryRequestType)initWithCoder:(id)a3;
+- (LNSuggestedEntitiesQueryRequestType)initWithCoder:(id)coder;
 - (unint64_t)hash;
 @end
 
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (LNSuggestedEntitiesQueryRequestType)initWithCoder:(id)a3
+- (LNSuggestedEntitiesQueryRequestType)initWithCoder:(id)coder
 {
-  v4 = [objc_opt_class() queryRequest];
+  queryRequest = [objc_opt_class() queryRequest];
 
-  return v4;
+  return queryRequest;
 }
 
 - (LNSuggestedEntitiesQueryRequestType)init
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __51__LNSuggestedEntitiesQueryRequestType_queryRequest__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (queryRequest_onceToken_216 != -1)
   {
     dispatch_once(&queryRequest_onceToken_216, block);

@@ -24,15 +24,15 @@
   v3 = *(MEMORY[0x1E695F058] + 16);
   self->_currentContentBounds.origin = *MEMORY[0x1E695F058];
   self->_currentContentBounds.size = v3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   itemLayoutAttributes = self->_itemLayoutAttributes;
-  self->_itemLayoutAttributes = v4;
+  self->_itemLayoutAttributes = array;
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   itemLayoutAttributesByIndexPath = self->_itemLayoutAttributesByIndexPath;
-  self->_itemLayoutAttributesByIndexPath = v6;
+  self->_itemLayoutAttributesByIndexPath = dictionary;
 
-  MEMORY[0x1EEE66BB8](v6, itemLayoutAttributesByIndexPath);
+  MEMORY[0x1EEE66BB8](dictionary, itemLayoutAttributesByIndexPath);
 }
 
 - (PUCollectionViewData)init
@@ -44,13 +44,13 @@
   if (v2)
   {
     v2->_cachedPageCount = 2;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     itemLayoutAttributes = v3->_itemLayoutAttributes;
-    v3->_itemLayoutAttributes = v4;
+    v3->_itemLayoutAttributes = array;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     itemLayoutAttributesByIndexPath = v3->_itemLayoutAttributesByIndexPath;
-    v3->_itemLayoutAttributesByIndexPath = v6;
+    v3->_itemLayoutAttributesByIndexPath = dictionary;
   }
 
   return v3;

@@ -3,9 +3,9 @@
 - (NSString)braille;
 - (NSString)text;
 - (void)reset;
-- (void)writeBraille:(id)a3;
-- (void)writeText:(id)a3;
-- (void)writeText:(id)a3 withBraille:(id)a4;
+- (void)writeBraille:(id)braille;
+- (void)writeText:(id)text;
+- (void)writeText:(id)text withBraille:(id)braille;
 @end
 
 @implementation SCROBrailleUIPasteBoard
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __38__SCROBrailleUIPasteBoard_sharedBoard__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedBoard_onceToken != -1)
   {
     dispatch_once(&sharedBoard_onceToken, block);
@@ -34,58 +34,58 @@ uint64_t __38__SCROBrailleUIPasteBoard_sharedBoard__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)writeText:(id)a3
+- (void)writeText:(id)text
 {
-  v6 = a3;
-  v4 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
-  v5 = [v4 isEqualToString:v6];
+  textCopy = text;
+  textRepresentation = [(SCROBrailleUIPasteBoard *)self textRepresentation];
+  v5 = [textRepresentation isEqualToString:textCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(SCROBrailleUIPasteBoard *)self setTextRepresentation:v6];
+    [(SCROBrailleUIPasteBoard *)self setTextRepresentation:textCopy];
     [(SCROBrailleUIPasteBoard *)self setBrailleRepresentation:0];
   }
 }
 
-- (void)writeBraille:(id)a3
+- (void)writeBraille:(id)braille
 {
-  v6 = a3;
-  v4 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
-  v5 = [v4 isEqualToString:v6];
+  brailleCopy = braille;
+  brailleRepresentation = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
+  v5 = [brailleRepresentation isEqualToString:brailleCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(SCROBrailleUIPasteBoard *)self setBrailleRepresentation:v6];
+    [(SCROBrailleUIPasteBoard *)self setBrailleRepresentation:brailleCopy];
     [(SCROBrailleUIPasteBoard *)self setTextRepresentation:0];
   }
 }
 
-- (void)writeText:(id)a3 withBraille:(id)a4
+- (void)writeText:(id)text withBraille:(id)braille
 {
-  v6 = a4;
-  [(SCROBrailleUIPasteBoard *)self setTextRepresentation:a3];
-  [(SCROBrailleUIPasteBoard *)self setBrailleRepresentation:v6];
+  brailleCopy = braille;
+  [(SCROBrailleUIPasteBoard *)self setTextRepresentation:text];
+  [(SCROBrailleUIPasteBoard *)self setBrailleRepresentation:brailleCopy];
 }
 
 - (NSString)text
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
+  textRepresentation = [(SCROBrailleUIPasteBoard *)self textRepresentation];
 
-  if (v3)
+  if (textRepresentation)
   {
-    v4 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
+    textRepresentation2 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
   }
 
   else
   {
-    v5 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
+    brailleRepresentation = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
 
-    if (v5)
+    if (brailleRepresentation)
     {
-      v6 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
-      v7 = [MEMORY[0x277CCA900] newlineCharacterSet];
-      v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+      brailleRepresentation2 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+      v8 = [brailleRepresentation2 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
       v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v21 = 0u;
@@ -126,39 +126,39 @@ uint64_t __38__SCROBrailleUIPasteBoard_sharedBoard__block_invoke(uint64_t a1)
       v18 = [v9 componentsJoinedByString:@"\n"];
       [(SCROBrailleUIPasteBoard *)self setTextRepresentation:v18];
 
-      v4 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
+      textRepresentation2 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
     }
 
     else
     {
-      v4 = 0;
+      textRepresentation2 = 0;
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return textRepresentation2;
 }
 
 - (NSString)braille
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
+  brailleRepresentation = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
 
-  if (v3)
+  if (brailleRepresentation)
   {
-    v4 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
+    brailleRepresentation2 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
   }
 
   else
   {
-    v5 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
+    textRepresentation = [(SCROBrailleUIPasteBoard *)self textRepresentation];
 
-    if (v5)
+    if (textRepresentation)
     {
-      v6 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
-      v7 = [MEMORY[0x277CCA900] newlineCharacterSet];
-      v8 = [v6 componentsSeparatedByCharactersInSet:v7];
+      textRepresentation2 = [(SCROBrailleUIPasteBoard *)self textRepresentation];
+      newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+      v8 = [textRepresentation2 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
       v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v21 = 0u;
@@ -195,18 +195,18 @@ uint64_t __38__SCROBrailleUIPasteBoard_sharedBoard__block_invoke(uint64_t a1)
       v18 = [v9 componentsJoinedByString:@"\n"];
       [(SCROBrailleUIPasteBoard *)self setBrailleRepresentation:v18];
 
-      v4 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
+      brailleRepresentation2 = [(SCROBrailleUIPasteBoard *)self brailleRepresentation];
     }
 
     else
     {
-      v4 = 0;
+      brailleRepresentation2 = 0;
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return brailleRepresentation2;
 }
 
 - (void)reset

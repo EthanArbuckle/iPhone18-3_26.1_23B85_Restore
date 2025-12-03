@@ -1,73 +1,73 @@
 @interface ODDSiriSchemaODDAppleIntelligenceProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAppleIntelligenceProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAppleIntelligenceProperties)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDAppleIntelligenceProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAppleIntelligenceProperties)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)genAIAgentsEnabledAtIndex:(unint64_t)a3;
+- (int)genAIAgentsEnabledAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addGenAIAgentsEnabled:(int)a3;
-- (void)setHasChatGPTAccountType:(BOOL)a3;
-- (void)setHasGenAIAccountType:(BOOL)a3;
-- (void)setHasIsAppleIntelligenceAvailable:(BOOL)a3;
-- (void)setHasIsAppleIntelligenceHardwareCapable:(BOOL)a3;
-- (void)setHasIsChatGPTConfirmationAlwaysRequired:(BOOL)a3;
-- (void)setHasIsChatGPTEnabled:(BOOL)a3;
-- (void)setHasIsChatGPTSetUpPrompts:(BOOL)a3;
-- (void)setHasIsGenAIConfirmationAlwaysRequired:(BOOL)a3;
-- (void)setHasIsGenAISetUpPrompts:(BOOL)a3;
-- (void)setHasIsRecordAppleIntelligenceActivity:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addGenAIAgentsEnabled:(int)enabled;
+- (void)setHasChatGPTAccountType:(BOOL)type;
+- (void)setHasGenAIAccountType:(BOOL)type;
+- (void)setHasIsAppleIntelligenceAvailable:(BOOL)available;
+- (void)setHasIsAppleIntelligenceHardwareCapable:(BOOL)capable;
+- (void)setHasIsChatGPTConfirmationAlwaysRequired:(BOOL)required;
+- (void)setHasIsChatGPTEnabled:(BOOL)enabled;
+- (void)setHasIsChatGPTSetUpPrompts:(BOOL)prompts;
+- (void)setHasIsGenAIConfirmationAlwaysRequired:(BOOL)required;
+- (void)setHasIsGenAISetUpPrompts:(BOOL)prompts;
+- (void)setHasIsRecordAppleIntelligenceActivity:(BOOL)activity;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAppleIntelligenceProperties
 
-- (ODDSiriSchemaODDAppleIntelligenceProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAppleIntelligenceProperties)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = ODDSiriSchemaODDAppleIntelligenceProperties;
   v5 = [(ODDSiriSchemaODDAppleIntelligenceProperties *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isAppleIntelligenceEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isAppleIntelligenceEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAppleIntelligenceProperties setIsAppleIntelligenceEnabled:](v5, "setIsAppleIntelligenceEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isRecordAppleIntelligenceActivity"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isRecordAppleIntelligenceActivity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAppleIntelligenceProperties setIsRecordAppleIntelligenceActivity:](v5, "setIsRecordAppleIntelligenceActivity:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isAppleIntelligenceHardwareCapable"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isAppleIntelligenceHardwareCapable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAppleIntelligenceProperties setIsAppleIntelligenceHardwareCapable:](v5, "setIsAppleIntelligenceHardwareCapable:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isAppleIntelligenceAvailable"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isAppleIntelligenceAvailable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAppleIntelligenceProperties setIsAppleIntelligenceAvailable:](v5, "setIsAppleIntelligenceAvailable:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isChatGPTEnabled"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isChatGPTEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAppleIntelligenceProperties setIsChatGPTEnabled:](v5, "setIsChatGPTEnabled:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isChatGPTConfirmationAlwaysRequired"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isChatGPTConfirmationAlwaysRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
     }
 
     v29 = v11;
-    v12 = [v4 objectForKeyedSubscript:@"chatGPTAccountType"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"chatGPTAccountType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
     v28 = v12;
     v31 = v9;
     v32 = v8;
-    v13 = [v4 objectForKeyedSubscript:@"isChatGPTSetUpPrompts"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isChatGPTSetUpPrompts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
     }
 
     v30 = v10;
-    v14 = [v4 objectForKeyedSubscript:@"genAIAgentsEnabled"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"genAIAgentsEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,21 +140,21 @@
       v6 = v27;
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isGenAIConfirmationAlwaysRequired"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isGenAIConfirmationAlwaysRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAppleIntelligenceProperties setIsGenAIConfirmationAlwaysRequired:](v5, "setIsGenAIConfirmationAlwaysRequired:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"genAIAccountType"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"genAIAccountType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAppleIntelligenceProperties setGenAIAccountType:](v5, "setGenAIAccountType:", [v22 intValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"isGenAISetUpPrompts"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isGenAISetUpPrompts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -167,30 +167,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAppleIntelligenceProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAppleIntelligenceProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -203,7 +203,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isGenAISetUpPrompts + 1);
   if ((v4 & 0x40) != 0)
   {
@@ -218,7 +218,7 @@
       v6 = off_1E78DC950[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"chatGPTAccountType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"chatGPTAccountType"];
     v4 = *(&self->_isGenAISetUpPrompts + 1);
   }
 
@@ -235,21 +235,21 @@
       v8 = off_1E78DC950[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"genAIAccountType"];
+    [dictionary setObject:v8 forKeyedSubscript:@"genAIAccountType"];
   }
 
   if ([(NSArray *)self->_genAIAgentsEnableds count])
   {
-    v9 = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self genAIAgentsEnableds];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"genAIAgentsEnabled"];
+    genAIAgentsEnableds = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self genAIAgentsEnableds];
+    v10 = [genAIAgentsEnableds copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"genAIAgentsEnabled"];
   }
 
   v11 = *(&self->_isGenAISetUpPrompts + 1);
   if ((v11 & 8) != 0)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isAppleIntelligenceAvailable](self, "isAppleIntelligenceAvailable")}];
-    [v3 setObject:v14 forKeyedSubscript:@"isAppleIntelligenceAvailable"];
+    [dictionary setObject:v14 forKeyedSubscript:@"isAppleIntelligenceAvailable"];
 
     v11 = *(&self->_isGenAISetUpPrompts + 1);
     if ((v11 & 1) == 0)
@@ -270,7 +270,7 @@ LABEL_15:
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isAppleIntelligenceEnabled](self, "isAppleIntelligenceEnabled")}];
-  [v3 setObject:v15 forKeyedSubscript:@"isAppleIntelligenceEnabled"];
+  [dictionary setObject:v15 forKeyedSubscript:@"isAppleIntelligenceEnabled"];
 
   v11 = *(&self->_isGenAISetUpPrompts + 1);
   if ((v11 & 4) == 0)
@@ -286,7 +286,7 @@ LABEL_16:
 
 LABEL_28:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isAppleIntelligenceHardwareCapable](self, "isAppleIntelligenceHardwareCapable")}];
-  [v3 setObject:v16 forKeyedSubscript:@"isAppleIntelligenceHardwareCapable"];
+  [dictionary setObject:v16 forKeyedSubscript:@"isAppleIntelligenceHardwareCapable"];
 
   v11 = *(&self->_isGenAISetUpPrompts + 1);
   if ((v11 & 0x20) == 0)
@@ -302,7 +302,7 @@ LABEL_17:
 
 LABEL_29:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isChatGPTConfirmationAlwaysRequired](self, "isChatGPTConfirmationAlwaysRequired")}];
-  [v3 setObject:v17 forKeyedSubscript:@"isChatGPTConfirmationAlwaysRequired"];
+  [dictionary setObject:v17 forKeyedSubscript:@"isChatGPTConfirmationAlwaysRequired"];
 
   v11 = *(&self->_isGenAISetUpPrompts + 1);
   if ((v11 & 0x10) == 0)
@@ -318,7 +318,7 @@ LABEL_18:
 
 LABEL_30:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isChatGPTEnabled](self, "isChatGPTEnabled")}];
-  [v3 setObject:v18 forKeyedSubscript:@"isChatGPTEnabled"];
+  [dictionary setObject:v18 forKeyedSubscript:@"isChatGPTEnabled"];
 
   v11 = *(&self->_isGenAISetUpPrompts + 1);
   if ((v11 & 0x80) == 0)
@@ -334,7 +334,7 @@ LABEL_19:
 
 LABEL_31:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isChatGPTSetUpPrompts](self, "isChatGPTSetUpPrompts")}];
-  [v3 setObject:v19 forKeyedSubscript:@"isChatGPTSetUpPrompts"];
+  [dictionary setObject:v19 forKeyedSubscript:@"isChatGPTSetUpPrompts"];
 
   v11 = *(&self->_isGenAISetUpPrompts + 1);
   if ((v11 & 0x100) == 0)
@@ -350,7 +350,7 @@ LABEL_20:
 
 LABEL_32:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isGenAIConfirmationAlwaysRequired](self, "isGenAIConfirmationAlwaysRequired")}];
-  [v3 setObject:v20 forKeyedSubscript:@"isGenAIConfirmationAlwaysRequired"];
+  [dictionary setObject:v20 forKeyedSubscript:@"isGenAIConfirmationAlwaysRequired"];
 
   v11 = *(&self->_isGenAISetUpPrompts + 1);
   if ((v11 & 0x400) == 0)
@@ -366,19 +366,19 @@ LABEL_21:
 
 LABEL_33:
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isGenAISetUpPrompts](self, "isGenAISetUpPrompts")}];
-  [v3 setObject:v21 forKeyedSubscript:@"isGenAISetUpPrompts"];
+  [dictionary setObject:v21 forKeyedSubscript:@"isGenAISetUpPrompts"];
 
   if ((*(&self->_isGenAISetUpPrompts + 1) & 2) != 0)
   {
 LABEL_22:
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAppleIntelligenceProperties isRecordAppleIntelligenceActivity](self, "isRecordAppleIntelligenceActivity")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isRecordAppleIntelligenceActivity"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isRecordAppleIntelligenceActivity"];
   }
 
 LABEL_23:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -529,16 +529,16 @@ LABEL_21:
   return v4 ^ v16 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v13 ^ v14 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_51;
   }
 
   v5 = *(&self->_isGenAISetUpPrompts + 1);
-  v6 = *(v4 + 41);
+  v6 = *(equalCopy + 41);
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_51;
@@ -547,13 +547,13 @@ LABEL_21:
   if (v5)
   {
     isAppleIntelligenceEnabled = self->_isAppleIntelligenceEnabled;
-    if (isAppleIntelligenceEnabled != [v4 isAppleIntelligenceEnabled])
+    if (isAppleIntelligenceEnabled != [equalCopy isAppleIntelligenceEnabled])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isGenAISetUpPrompts + 1);
-    v6 = *(v4 + 41);
+    v6 = *(equalCopy + 41);
   }
 
   v8 = (v5 >> 1) & 1;
@@ -565,13 +565,13 @@ LABEL_21:
   if (v8)
   {
     isRecordAppleIntelligenceActivity = self->_isRecordAppleIntelligenceActivity;
-    if (isRecordAppleIntelligenceActivity != [v4 isRecordAppleIntelligenceActivity])
+    if (isRecordAppleIntelligenceActivity != [equalCopy isRecordAppleIntelligenceActivity])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isGenAISetUpPrompts + 1);
-    v6 = *(v4 + 41);
+    v6 = *(equalCopy + 41);
   }
 
   v10 = (v5 >> 2) & 1;
@@ -583,13 +583,13 @@ LABEL_21:
   if (v10)
   {
     isAppleIntelligenceHardwareCapable = self->_isAppleIntelligenceHardwareCapable;
-    if (isAppleIntelligenceHardwareCapable != [v4 isAppleIntelligenceHardwareCapable])
+    if (isAppleIntelligenceHardwareCapable != [equalCopy isAppleIntelligenceHardwareCapable])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isGenAISetUpPrompts + 1);
-    v6 = *(v4 + 41);
+    v6 = *(equalCopy + 41);
   }
 
   v12 = (v5 >> 3) & 1;
@@ -601,13 +601,13 @@ LABEL_21:
   if (v12)
   {
     isAppleIntelligenceAvailable = self->_isAppleIntelligenceAvailable;
-    if (isAppleIntelligenceAvailable != [v4 isAppleIntelligenceAvailable])
+    if (isAppleIntelligenceAvailable != [equalCopy isAppleIntelligenceAvailable])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isGenAISetUpPrompts + 1);
-    v6 = *(v4 + 41);
+    v6 = *(equalCopy + 41);
   }
 
   v14 = (v5 >> 4) & 1;
@@ -619,13 +619,13 @@ LABEL_21:
   if (v14)
   {
     isChatGPTEnabled = self->_isChatGPTEnabled;
-    if (isChatGPTEnabled != [v4 isChatGPTEnabled])
+    if (isChatGPTEnabled != [equalCopy isChatGPTEnabled])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isGenAISetUpPrompts + 1);
-    v6 = *(v4 + 41);
+    v6 = *(equalCopy + 41);
   }
 
   v16 = (v5 >> 5) & 1;
@@ -637,13 +637,13 @@ LABEL_21:
   if (v16)
   {
     isChatGPTConfirmationAlwaysRequired = self->_isChatGPTConfirmationAlwaysRequired;
-    if (isChatGPTConfirmationAlwaysRequired != [v4 isChatGPTConfirmationAlwaysRequired])
+    if (isChatGPTConfirmationAlwaysRequired != [equalCopy isChatGPTConfirmationAlwaysRequired])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isGenAISetUpPrompts + 1);
-    v6 = *(v4 + 41);
+    v6 = *(equalCopy + 41);
   }
 
   v18 = (v5 >> 6) & 1;
@@ -655,13 +655,13 @@ LABEL_21:
   if (v18)
   {
     chatGPTAccountType = self->_chatGPTAccountType;
-    if (chatGPTAccountType != [v4 chatGPTAccountType])
+    if (chatGPTAccountType != [equalCopy chatGPTAccountType])
     {
       goto LABEL_51;
     }
 
     v5 = *(&self->_isGenAISetUpPrompts + 1);
-    v6 = *(v4 + 41);
+    v6 = *(equalCopy + 41);
   }
 
   v20 = (v5 >> 7) & 1;
@@ -673,28 +673,28 @@ LABEL_21:
   if (v20)
   {
     isChatGPTSetUpPrompts = self->_isChatGPTSetUpPrompts;
-    if (isChatGPTSetUpPrompts != [v4 isChatGPTSetUpPrompts])
+    if (isChatGPTSetUpPrompts != [equalCopy isChatGPTSetUpPrompts])
     {
       goto LABEL_51;
     }
   }
 
-  v22 = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self genAIAgentsEnableds];
-  v23 = [v4 genAIAgentsEnableds];
-  if ((v22 != 0) == (v23 == 0))
+  genAIAgentsEnableds = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self genAIAgentsEnableds];
+  genAIAgentsEnableds2 = [equalCopy genAIAgentsEnableds];
+  if ((genAIAgentsEnableds != 0) == (genAIAgentsEnableds2 == 0))
   {
 
     goto LABEL_51;
   }
 
-  v24 = v23;
-  v25 = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self genAIAgentsEnableds];
-  if (v25)
+  v24 = genAIAgentsEnableds2;
+  genAIAgentsEnableds3 = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self genAIAgentsEnableds];
+  if (genAIAgentsEnableds3)
   {
-    v26 = v25;
-    v27 = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self genAIAgentsEnableds];
-    v28 = [v4 genAIAgentsEnableds];
-    v29 = [v27 isEqual:v28];
+    v26 = genAIAgentsEnableds3;
+    genAIAgentsEnableds4 = [(ODDSiriSchemaODDAppleIntelligenceProperties *)self genAIAgentsEnableds];
+    genAIAgentsEnableds5 = [equalCopy genAIAgentsEnableds];
+    v29 = [genAIAgentsEnableds4 isEqual:genAIAgentsEnableds5];
 
     if (!v29)
     {
@@ -708,7 +708,7 @@ LABEL_21:
 
   v30 = *(&self->_isGenAISetUpPrompts + 1);
   v31 = (v30 >> 8) & 1;
-  v32 = *(v4 + 41);
+  v32 = *(equalCopy + 41);
   if (v31 != ((v32 >> 8) & 1))
   {
 LABEL_51:
@@ -719,13 +719,13 @@ LABEL_51:
   if (v31)
   {
     isGenAIConfirmationAlwaysRequired = self->_isGenAIConfirmationAlwaysRequired;
-    if (isGenAIConfirmationAlwaysRequired != [v4 isGenAIConfirmationAlwaysRequired])
+    if (isGenAIConfirmationAlwaysRequired != [equalCopy isGenAIConfirmationAlwaysRequired])
     {
       goto LABEL_51;
     }
 
     v30 = *(&self->_isGenAISetUpPrompts + 1);
-    v32 = *(v4 + 41);
+    v32 = *(equalCopy + 41);
   }
 
   v34 = (v30 >> 9) & 1;
@@ -737,10 +737,10 @@ LABEL_51:
   if (v34)
   {
     genAIAccountType = self->_genAIAccountType;
-    if (genAIAccountType == [v4 genAIAccountType])
+    if (genAIAccountType == [equalCopy genAIAccountType])
     {
       v30 = *(&self->_isGenAISetUpPrompts + 1);
-      v32 = *(v4 + 41);
+      v32 = *(equalCopy + 41);
       goto LABEL_47;
     }
 
@@ -757,7 +757,7 @@ LABEL_47:
   if (v36)
   {
     isGenAISetUpPrompts = self->_isGenAISetUpPrompts;
-    if (isGenAISetUpPrompts != [v4 isGenAISetUpPrompts])
+    if (isGenAISetUpPrompts != [equalCopy isGenAISetUpPrompts])
     {
       goto LABEL_51;
     }
@@ -769,10 +769,10 @@ LABEL_52:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isGenAISetUpPrompts + 1);
   if (v5)
   {
@@ -937,9 +937,9 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)setHasIsGenAISetUpPrompts:(BOOL)a3
+- (void)setHasIsGenAISetUpPrompts:(BOOL)prompts
 {
-  if (a3)
+  if (prompts)
   {
     v3 = 1024;
   }
@@ -952,9 +952,9 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFBFF | v3;
 }
 
-- (void)setHasGenAIAccountType:(BOOL)a3
+- (void)setHasGenAIAccountType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 512;
   }
@@ -967,9 +967,9 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFDFF | v3;
 }
 
-- (void)setHasIsGenAIConfirmationAlwaysRequired:(BOOL)a3
+- (void)setHasIsGenAIConfirmationAlwaysRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 256;
   }
@@ -982,23 +982,23 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFEFF | v3;
 }
 
-- (int)genAIAgentsEnabledAtIndex:(unint64_t)a3
+- (int)genAIAgentsEnabledAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_genAIAgentsEnableds objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_genAIAgentsEnableds objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addGenAIAgentsEnabled:(int)a3
+- (void)addGenAIAgentsEnabled:(int)enabled
 {
-  v3 = *&a3;
+  v3 = *&enabled;
   genAIAgentsEnableds = self->_genAIAgentsEnableds;
   if (!genAIAgentsEnableds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_genAIAgentsEnableds;
-    self->_genAIAgentsEnableds = v6;
+    self->_genAIAgentsEnableds = array;
 
     genAIAgentsEnableds = self->_genAIAgentsEnableds;
   }
@@ -1007,9 +1007,9 @@ LABEL_21:
   [(NSArray *)genAIAgentsEnableds addObject:v8];
 }
 
-- (void)setHasIsChatGPTSetUpPrompts:(BOOL)a3
+- (void)setHasIsChatGPTSetUpPrompts:(BOOL)prompts
 {
-  if (a3)
+  if (prompts)
   {
     v3 = 128;
   }
@@ -1022,9 +1022,9 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFF7F | v3;
 }
 
-- (void)setHasChatGPTAccountType:(BOOL)a3
+- (void)setHasChatGPTAccountType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -1037,9 +1037,9 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFFBF | v3;
 }
 
-- (void)setHasIsChatGPTConfirmationAlwaysRequired:(BOOL)a3
+- (void)setHasIsChatGPTConfirmationAlwaysRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 32;
   }
@@ -1052,9 +1052,9 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasIsChatGPTEnabled:(BOOL)a3
+- (void)setHasIsChatGPTEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -1067,9 +1067,9 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFFEF | v3;
 }
 
-- (void)setHasIsAppleIntelligenceAvailable:(BOOL)a3
+- (void)setHasIsAppleIntelligenceAvailable:(BOOL)available
 {
-  if (a3)
+  if (available)
   {
     v3 = 8;
   }
@@ -1082,9 +1082,9 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasIsAppleIntelligenceHardwareCapable:(BOOL)a3
+- (void)setHasIsAppleIntelligenceHardwareCapable:(BOOL)capable
 {
-  if (a3)
+  if (capable)
   {
     v3 = 4;
   }
@@ -1097,9 +1097,9 @@ LABEL_21:
   *(&self->_isGenAISetUpPrompts + 1) = *(&self->_isGenAISetUpPrompts + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasIsRecordAppleIntelligenceActivity:(BOOL)a3
+- (void)setHasIsRecordAppleIntelligenceActivity:(BOOL)activity
 {
-  if (a3)
+  if (activity)
   {
     v3 = 2;
   }

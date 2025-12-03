@@ -1,40 +1,40 @@
 @interface PKTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (id)_checkmarkImage:(BOOL)a3;
-- (id)_disclosureChevronImage:(BOOL)a3;
-- (void)pk_applyAppearance:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (id)_checkmarkImage:(BOOL)image;
+- (id)_disclosureChevronImage:(BOOL)image;
+- (void)pk_applyAppearance:(id)appearance;
 - (void)prepareForReuse;
-- (void)setHighlightColor:(id)a3;
-- (void)setShowsActionSpinner:(BOOL)a3;
+- (void)setHighlightColor:(id)color;
+- (void)setShowsActionSpinner:(BOOL)spinner;
 @end
 
 @implementation PKTableViewCell
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
   v8.receiver = self;
   v8.super_class = PKTableViewCell;
-  v4 = a3;
-  [(UITableViewCell *)&v8 pk_applyAppearance:v4];
-  v5 = [v4 tableViewCellHighlightColor];
-  [(PKTableViewCell *)self setHighlightColor:v5];
+  appearanceCopy = appearance;
+  [(UITableViewCell *)&v8 pk_applyAppearance:appearanceCopy];
+  tableViewCellHighlightColor = [appearanceCopy tableViewCellHighlightColor];
+  [(PKTableViewCell *)self setHighlightColor:tableViewCellHighlightColor];
 
-  v6 = [v4 tintColor];
-  [(PKTableViewCell *)self setCheckmarkAccessoryColor:v6];
+  tintColor = [appearanceCopy tintColor];
+  [(PKTableViewCell *)self setCheckmarkAccessoryColor:tintColor];
 
-  v7 = [v4 tableViewCellAccessoryColor];
+  tableViewCellAccessoryColor = [appearanceCopy tableViewCellAccessoryColor];
 
-  [(PKTableViewCell *)self setCustomAccessoryColor:v7];
+  [(PKTableViewCell *)self setCustomAccessoryColor:tableViewCellAccessoryColor];
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v4 = a3;
-  if (self->_highlightColor != v4)
+  colorCopy = color;
+  if (self->_highlightColor != colorCopy)
   {
-    v8 = v4;
-    v5 = [(UIColor *)v4 copy];
+    v8 = colorCopy;
+    v5 = [(UIColor *)colorCopy copy];
     highlightColor = self->_highlightColor;
     self->_highlightColor = v5;
 
@@ -50,51 +50,51 @@
       [(PKTableViewCell *)self setSelectedBackgroundView:0];
     }
 
-    v4 = v8;
+    colorCopy = v8;
   }
 }
 
-- (id)_checkmarkImage:(BOOL)a3
+- (id)_checkmarkImage:(BOOL)image
 {
   if (self->_checkmarkAccessoryColor)
   {
     v9.receiver = self;
     v9.super_class = PKTableViewCell;
-    v4 = [(PKTableViewCell *)&v9 _checkmarkImage:a3];
-    v5 = [(PKTableViewCell *)self checkmarkAccessoryColor];
-    v6 = [v4 _flatImageWithColor:v5];
+    v4 = [(PKTableViewCell *)&v9 _checkmarkImage:image];
+    checkmarkAccessoryColor = [(PKTableViewCell *)self checkmarkAccessoryColor];
+    v6 = [v4 _flatImageWithColor:checkmarkAccessoryColor];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PKTableViewCell;
-    v6 = [(PKTableViewCell *)&v8 _checkmarkImage:a3];
+    v6 = [(PKTableViewCell *)&v8 _checkmarkImage:image];
   }
 
   return v6;
 }
 
-- (id)_disclosureChevronImage:(BOOL)a3
+- (id)_disclosureChevronImage:(BOOL)image
 {
   if (self->_customAccessoryColor)
   {
     v9.receiver = self;
     v9.super_class = PKTableViewCell;
-    v4 = [(PKTableViewCell *)&v9 _disclosureChevronImage:a3];
+    v4 = [(PKTableViewCell *)&v9 _disclosureChevronImage:image];
     v5 = [v4 _flatImageWithColor:self->_customAccessoryColor];
-    v6 = [v5 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v5 imageFlippedForRightToLeftLayoutDirection];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PKTableViewCell;
-    v4 = [(PKTableViewCell *)&v8 _disclosureChevronImage:a3];
-    v6 = [v4 imageFlippedForRightToLeftLayoutDirection];
+    v4 = [(PKTableViewCell *)&v8 _disclosureChevronImage:image];
+    imageFlippedForRightToLeftLayoutDirection = [v4 imageFlippedForRightToLeftLayoutDirection];
   }
 
-  return v6;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (void)prepareForReuse
@@ -105,12 +105,12 @@
   [(PKTableViewCell *)self setShowsActionSpinner:0];
 }
 
-- (void)setShowsActionSpinner:(BOOL)a3
+- (void)setShowsActionSpinner:(BOOL)spinner
 {
-  if (self->_showsActionSpinner != a3)
+  if (self->_showsActionSpinner != spinner)
   {
-    self->_showsActionSpinner = a3;
-    if (a3)
+    self->_showsActionSpinner = spinner;
+    if (spinner)
     {
       v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
       [v5 startAnimating];
@@ -129,11 +129,11 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v6.receiver = self;
   v6.super_class = PKTableViewCell;
-  [(PKTableViewCell *)&v6 sizeThatFits:a3.width, a3.height];
+  [(PKTableViewCell *)&v6 sizeThatFits:fits.width, fits.height];
   if (self->_minimumHeight > minimumHeight)
   {
     minimumHeight = self->_minimumHeight;
@@ -144,11 +144,11 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
   v8.receiver = self;
   v8.super_class = PKTableViewCell;
-  [(PKTableViewCell *)&v8 systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(PKTableViewCell *)&v8 systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   if (self->_minimumHeight > minimumHeight)
   {
     minimumHeight = self->_minimumHeight;

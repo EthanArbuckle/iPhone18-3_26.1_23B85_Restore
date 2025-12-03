@@ -1,22 +1,22 @@
 @interface HUAvailableTriggerItemActivationRequest
-- (BOOL)isSameAsRequest:(id)a3;
+- (BOOL)isSameAsRequest:(id)request;
 - (HUAvailableTriggerItem)item;
-- (HUAvailableTriggerItemActivationRequest)initWithItem:(id)a3 active:(BOOL)a4;
+- (HUAvailableTriggerItemActivationRequest)initWithItem:(id)item active:(BOOL)active;
 @end
 
 @implementation HUAvailableTriggerItemActivationRequest
 
-- (HUAvailableTriggerItemActivationRequest)initWithItem:(id)a3 active:(BOOL)a4
+- (HUAvailableTriggerItemActivationRequest)initWithItem:(id)item active:(BOOL)active
 {
-  v6 = a3;
+  itemCopy = item;
   v12.receiver = self;
   v12.super_class = HUAvailableTriggerItemActivationRequest;
   v7 = [(HUAvailableTriggerItemActivationRequest *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_item, v6);
-    v8->_active = a4;
+    objc_storeWeak(&v7->_item, itemCopy);
+    v8->_active = active;
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     completionFuture = v8->_completionFuture;
     v8->_completionFuture = v9;
@@ -25,15 +25,15 @@
   return v8;
 }
 
-- (BOOL)isSameAsRequest:(id)a3
+- (BOOL)isSameAsRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [(HUAvailableTriggerItemActivationRequest *)self item];
-  if ([v5 isEqual:v6])
+  requestCopy = request;
+  item = [requestCopy item];
+  item2 = [(HUAvailableTriggerItemActivationRequest *)self item];
+  if ([item isEqual:item2])
   {
-    v7 = [v4 active];
-    v8 = v7 ^ [(HUAvailableTriggerItemActivationRequest *)self active]^ 1;
+    active = [requestCopy active];
+    v8 = active ^ [(HUAvailableTriggerItemActivationRequest *)self active]^ 1;
   }
 
   else

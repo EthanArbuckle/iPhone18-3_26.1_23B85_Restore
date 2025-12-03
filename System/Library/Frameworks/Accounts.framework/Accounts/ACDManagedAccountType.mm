@@ -1,5 +1,5 @@
 @interface ACDManagedAccountType
-- (id)_dataclassStringsFromManaged:(id)a3;
+- (id)_dataclassStringsFromManaged:(id)managed;
 - (id)description;
 - (id)supportedDataclassStrings;
 - (id)syncableDataclassStrings;
@@ -10,40 +10,40 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ACDManagedAccountType *)self identifier];
-  v4 = [v2 stringWithFormat:@"<ACDManagedAccountType:%@>", v3];
+  identifier = [(ACDManagedAccountType *)self identifier];
+  v4 = [v2 stringWithFormat:@"<ACDManagedAccountType:%@>", identifier];
 
   return v4;
 }
 
 - (id)supportedDataclassStrings
 {
-  v3 = [(ACDManagedAccountType *)self supportedDataclasses];
-  v4 = [(ACDManagedAccountType *)self _dataclassStringsFromManaged:v3];
+  supportedDataclasses = [(ACDManagedAccountType *)self supportedDataclasses];
+  v4 = [(ACDManagedAccountType *)self _dataclassStringsFromManaged:supportedDataclasses];
 
   return v4;
 }
 
 - (id)syncableDataclassStrings
 {
-  v3 = [(ACDManagedAccountType *)self syncableDataclasses];
-  v4 = [(ACDManagedAccountType *)self _dataclassStringsFromManaged:v3];
+  syncableDataclasses = [(ACDManagedAccountType *)self syncableDataclasses];
+  v4 = [(ACDManagedAccountType *)self _dataclassStringsFromManaged:syncableDataclasses];
 
   return v4;
 }
 
-- (id)_dataclassStringsFromManaged:(id)a3
+- (id)_dataclassStringsFromManaged:(id)managed
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  managedCopy = managed;
+  if ([managedCopy count])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = managedCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -58,8 +58,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) name];
-          [v4 addObject:v10];
+          name = [*(*(&v13 + 1) + 8 * i) name];
+          [v4 addObject:name];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];

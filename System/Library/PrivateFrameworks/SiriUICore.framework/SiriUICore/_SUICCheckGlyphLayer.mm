@@ -1,21 +1,21 @@
 @interface _SUICCheckGlyphLayer
-- (_SUICCheckGlyphLayer)initWithFrame:(CGRect)a3;
-- (double)_pointScaleToMatchBoundsSize:(CGSize)a3;
-- (double)_updateCovered:(BOOL)a3 completion:(id)a4;
-- (double)setCovered:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (_SUICCheckGlyphLayer)initWithFrame:(CGRect)frame;
+- (double)_pointScaleToMatchBoundsSize:(CGSize)size;
+- (double)_updateCovered:(BOOL)covered completion:(id)completion;
+- (double)setCovered:(BOOL)covered animated:(BOOL)animated completion:(id)completion;
 - (void)_createMask;
 - (void)layoutSublayers;
-- (void)setPrimaryColor:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)setPrimaryColor:(id)color animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation _SUICCheckGlyphLayer
 
-- (_SUICCheckGlyphLayer)initWithFrame:(CGRect)a3
+- (_SUICCheckGlyphLayer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = MEMORY[0x1E6979400];
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v10 = [v9 URLForResource:@"glyph_check" withExtension:@"caar"];
@@ -24,8 +24,8 @@
   v12 = [v8 packageWithContentsOfURL:v10 type:v11 options:0 error:&v28];
   v13 = v28;
 
-  v14 = [v12 rootLayer];
-  if (v14)
+  rootLayer = [v12 rootLayer];
+  if (rootLayer)
   {
     v27.receiver = self;
     v27.super_class = _SUICCheckGlyphLayer;
@@ -36,7 +36,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v14;
+        v16 = rootLayer;
       }
 
       else
@@ -78,15 +78,15 @@
     }
 
     self = v15;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 - (void)layoutSublayers
@@ -115,10 +115,10 @@
   [(CAShapeLayer *)self->_checkPackageLayer setPosition:MidX, CGRectGetMidY(v17)];
 }
 
-- (double)_pointScaleToMatchBoundsSize:(CGSize)a3
+- (double)_pointScaleToMatchBoundsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CAShapeLayer *)self->_checkPackageLayer bounds];
   v7 = width / v6;
   v8 = 0.0;
@@ -139,19 +139,19 @@
 - (void)_createMask
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  v4 = [v3 CGColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  cGColor = [whiteColor CGColor];
 
   v5 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.0];
-  v6 = [v5 CGColor];
+  cGColor2 = [v5 CGColor];
 
   v7 = objc_alloc_init(MEMORY[0x1E6979380]);
   maskLayer = self->_maskLayer;
   self->_maskLayer = v7;
 
   v9 = self->_maskLayer;
-  v40[0] = v6;
-  v40[1] = v4;
+  v40[0] = cGColor2;
+  v40[1] = cGColor;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
   [(CAGradientLayer *)v9 setColors:v10];
 
@@ -224,45 +224,45 @@
   *&self->_checkPackageLayer = v37;
 }
 
-- (void)setPrimaryColor:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPrimaryColor:(id)color animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  colorCopy = color;
+  completionCopy = completion;
   primaryColor = self->_primaryColor;
-  if (v8 && primaryColor)
+  if (colorCopy && primaryColor)
   {
-    if (![(UIColor *)primaryColor isEqual:v8])
+    if (![(UIColor *)primaryColor isEqual:colorCopy])
     {
 LABEL_6:
-      v11 = [(UIColor *)v8 copy];
+      v11 = [(UIColor *)colorCopy copy];
       v12 = self->_primaryColor;
       self->_primaryColor = v11;
 
-      v13 = [(UIColor *)self->_primaryColor CGColor];
-      if (v6)
+      cGColor = [(UIColor *)self->_primaryColor CGColor];
+      if (animatedCopy)
       {
-        v14 = [(CAShapeLayer *)self->_checkPackageLayer presentationLayer];
-        v15 = [v14 strokeColor];
+        presentationLayer = [(CAShapeLayer *)self->_checkPackageLayer presentationLayer];
+        strokeColor = [presentationLayer strokeColor];
         v16 = [_SUICCheckGlyphSpringAnimationFactory springAnimationWithKeyPath:@"strokeColor"];
         [v16 setAdditive:0];
-        [v16 setFromValue:v15];
-        [v16 setToValue:v13];
-        v17 = [v14 fillColor];
+        [v16 setFromValue:strokeColor];
+        [v16 setToValue:cGColor];
+        fillColor = [presentationLayer fillColor];
         v18 = [_SUICCheckGlyphSpringAnimationFactory springAnimationWithKeyPath:@"fillColor"];
 
         [v18 setAdditive:0];
-        [v18 setFromValue:v17];
-        [v18 setToValue:v13];
+        [v18 setFromValue:fillColor];
+        [v18 setToValue:cGColor];
         [MEMORY[0x1E6979518] begin];
-        if (v9)
+        if (completionCopy)
         {
           v19 = MEMORY[0x1E6979518];
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __60___SUICCheckGlyphLayer_setPrimaryColor_animated_completion___block_invoke;
           v20[3] = &unk_1E81E7B10;
-          v21 = v9;
+          v21 = completionCopy;
           [v19 setCompletionBlock:v20];
         }
 
@@ -273,43 +273,43 @@ LABEL_6:
         [MEMORY[0x1E6979518] commit];
       }
 
-      [(CAShapeLayer *)self->_checkPackageLayer setStrokeColor:v13];
-      [(CAShapeLayer *)self->_checkPackageLayer setFillColor:v13];
+      [(CAShapeLayer *)self->_checkPackageLayer setStrokeColor:cGColor];
+      [(CAShapeLayer *)self->_checkPackageLayer setFillColor:cGColor];
       goto LABEL_11;
     }
 
     primaryColor = self->_primaryColor;
   }
 
-  if (primaryColor != v8)
+  if (primaryColor != colorCopy)
   {
     goto LABEL_6;
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_11:
 }
 
-- (double)setCovered:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (double)setCovered:(BOOL)covered animated:(BOOL)animated completion:(id)completion
 {
-  if (self->_covered == a3)
+  if (self->_covered == covered)
   {
     return 0.0;
   }
 
-  self->_covered = a3;
-  [(_SUICCheckGlyphLayer *)self _updateCovered:a4 completion:a5];
+  self->_covered = covered;
+  [(_SUICCheckGlyphLayer *)self _updateCovered:animated completion:completion];
   return result;
 }
 
-- (double)_updateCovered:(BOOL)a3 completion:(id)a4
+- (double)_updateCovered:(BOOL)covered completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  coveredCopy = covered;
+  completionCopy = completion;
   if (self->_covered)
   {
     v7 = &OBJC_IVAR____SUICCheckGlyphLayer__coveredTransform;
@@ -344,18 +344,18 @@ LABEL_11:
   b = v26;
   if (!CATransform3DEqualToTransform(&a, &b))
   {
-    if (v4)
+    if (coveredCopy)
     {
       v14 = [_SUICCheckGlyphSpringAnimationFactory springAnimationWithKeyPath:@"transform"];
       [MEMORY[0x1E6979518] begin];
-      if (v6)
+      if (completionCopy)
       {
         v15 = MEMORY[0x1E6979518];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __50___SUICCheckGlyphLayer__updateCovered_completion___block_invoke;
         v22[3] = &unk_1E81E7B10;
-        v23 = v6;
+        v23 = completionCopy;
         [v15 setCompletionBlock:v22];
       }
 
@@ -379,9 +379,9 @@ LABEL_11:
   }
 
   v19 = 0.0;
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_14:

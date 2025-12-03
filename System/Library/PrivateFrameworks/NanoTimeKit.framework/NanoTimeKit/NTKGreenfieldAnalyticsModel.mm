@@ -9,18 +9,18 @@
   error = self->_error;
   if (error)
   {
-    v4 = [(NSError *)error domain];
-    v5 = [v4 isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
+    domain = [(NSError *)error domain];
+    v5 = [domain isEqualToString:@"com.apple.nanotimekit.NTKGreenfieldAddWatchFaceManager"];
 
     if (v5)
     {
-      v6 = [(NSError *)self->_error code];
-      if (v6 > 0x10)
+      code = [(NSError *)self->_error code];
+      if (code > 0x10)
       {
         goto LABEL_7;
       }
 
-      v7 = off_27877EDB0[v6];
+      v7 = off_27877EDB0[code];
     }
 
     else

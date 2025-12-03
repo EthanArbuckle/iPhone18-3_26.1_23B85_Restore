@@ -1,14 +1,14 @@
 @interface ANSTVideoFeatureExtractor
-- (ANSTVideoFeatureExtractor)initWithConfig:(id)a3 error:(id *)a4;
-- (ANSTVideoFeatureExtractor)initWithConfiguration:(id)a3;
+- (ANSTVideoFeatureExtractor)initWithConfig:(id)config error:(id *)error;
+- (ANSTVideoFeatureExtractor)initWithConfiguration:(id)configuration;
 - (ANSTVideoFeatureExtractorDelegate)delegate;
-- (BOOL)bindAudioInput:(id)a3 error:(id *)a4;
-- (BOOL)bindVideoInput:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)commitInputBindingWithError:(id *)a3;
-- (BOOL)digestFrame:(__CVBuffer *)a3 error:(id *)a4;
-- (BOOL)executeInferenceWithError:(id *)a3;
-- (id)_initWithConfig:(id)a3 error:(id *)a4;
-- (id)getCurrentVideoFeatureWithOutError:(id *)a3;
+- (BOOL)bindAudioInput:(id)input error:(id *)error;
+- (BOOL)bindVideoInput:(__CVBuffer *)input error:(id *)error;
+- (BOOL)commitInputBindingWithError:(id *)error;
+- (BOOL)digestFrame:(__CVBuffer *)frame error:(id *)error;
+- (BOOL)executeInferenceWithError:(id *)error;
+- (id)_initWithConfig:(id)config error:(id *)error;
+- (id)getCurrentVideoFeatureWithOutError:(id *)error;
 - (int64_t)windowSize;
 - (void)dealloc;
 - (void)releaseResourceSafely;
@@ -31,23 +31,23 @@
   }
 }
 
-- (ANSTVideoFeatureExtractor)initWithConfiguration:(id)a3
+- (ANSTVideoFeatureExtractor)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = _ANSTLoggingGetOSLogForCategoryANSTKit();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     sub_22E65CB98(v5);
   }
 
-  v7 = objc_msgSend__initWithConfig_error_(self, v6, v4, 0);
+  v7 = objc_msgSend__initWithConfig_error_(self, v6, configurationCopy, 0);
   return v7;
 }
 
-- (ANSTVideoFeatureExtractor)initWithConfig:(id)a3 error:(id *)a4
+- (ANSTVideoFeatureExtractor)initWithConfig:(id)config error:(id *)error
 {
   v13 = 0;
-  v5 = objc_msgSend__initWithConfig_error_(self, a2, a3, &v13);
+  v5 = objc_msgSend__initWithConfig_error_(self, a2, config, &v13);
   v6 = v13;
   if (v5[105])
   {
@@ -63,11 +63,11 @@
     }
 
     objc_msgSend_releaseResourceSafely(v5, v9, v10);
-    if (a4)
+    if (error)
     {
       v11 = v6;
       v7 = 0;
-      *a4 = v6;
+      *error = v6;
     }
 
     else
@@ -79,10 +79,10 @@
   return v7;
 }
 
-- (id)_initWithConfig:(id)a3 error:(id *)a4
+- (id)_initWithConfig:(id)config error:(id *)error
 {
   v78[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  configCopy = config;
   v74.receiver = self;
   v74.super_class = ANSTVideoFeatureExtractor;
   v8 = [(ANSTVideoFeatureExtractor *)&v74 init];
@@ -92,16 +92,16 @@
     goto LABEL_18;
   }
 
-  objc_storeStrong(&v8->_configuration, a3);
+  objc_storeStrong(&v8->_configuration, config);
   v10 = [ANSTVideoFoundationModelConfiguration alloc];
-  v13 = objc_msgSend_foundationModelVersion(v7, v11, v12);
+  v13 = objc_msgSend_foundationModelVersion(configCopy, v11, v12);
   v15 = objc_msgSend_initWithVersion_(v10, v14, v13);
   v16 = [ANSTVideoFoundationModel alloc];
   v18 = objc_msgSend_initWithConfiguration_(v16, v17, v15);
   model = v9->_model;
   v9->_model = v18;
 
-  if (!objc_msgSend_prepareWithError_(v9->_model, v20, a4))
+  if (!objc_msgSend_prepareWithError_(v9->_model, v20, error))
   {
     goto LABEL_13;
   }
@@ -127,7 +127,7 @@
   v9->_normalizedMeanFeature = malloc_type_calloc(1uLL, v26, 0x6FB29CD2uLL);
   v35 = [ANSTTensorData alloc];
   v38 = objc_msgSend_outputFeatureDescriptor(v9->_model, v36, v37);
-  v40 = objc_msgSend_initWithDescriptor_dataPointer_length_deallocator_error_(v35, v39, v38, v9->_normalizedMeanFeature, v26, 0, a4);
+  v40 = objc_msgSend_initWithDescriptor_dataPointer_length_deallocator_error_(v35, v39, v38, v9->_normalizedMeanFeature, v26, 0, error);
   currentVideoFeatureData = v9->_currentVideoFeatureData;
   v9->_currentVideoFeatureData = v40;
 
@@ -153,7 +153,7 @@
 
     if (PixelBufferWithPixelFormat_width_height_handle)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -173,14 +173,14 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (a4)
+  if (error)
   {
     v48 = MEMORY[0x277CCA9B8];
     v77 = *MEMORY[0x277CCA068];
     v78[0] = @"Failed to prepare VTPixelTransferSession.";
     objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v46, v78, &v77, 1);
     v49 = LABEL_12:;
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v48, v50, @"ANSTErrorDomain", 3, v49);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v48, v50, @"ANSTErrorDomain", 3, v49);
   }
 
 LABEL_13:
@@ -253,25 +253,25 @@ LABEL_19:
   [(ANSTVideoFeatureExtractor *)&v4 dealloc];
 }
 
-- (BOOL)digestFrame:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)digestFrame:(__CVBuffer *)frame error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
   if (!self->_initSucceeded)
   {
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
       v16 = *MEMORY[0x277CCA068];
       v17[0] = @"Initialization was not successful. Please check error log.";
       v13 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], a2, v17, &v16, 1);
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v12, v14, @"ANSTErrorDomain", 3, v13);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v12, v14, @"ANSTErrorDomain", 3, v13);
     }
 
     goto LABEL_9;
   }
 
-  objc_msgSend_resetInputBinding(self, a2, a3);
-  if (!objc_msgSend_bindVideoInput_error_(self, v7, a3, a4) || !objc_msgSend_commitInputBindingWithError_(self, v8, a4))
+  objc_msgSend_resetInputBinding(self, a2, frame);
+  if (!objc_msgSend_bindVideoInput_error_(self, v7, frame, error) || !objc_msgSend_commitInputBindingWithError_(self, v8, error))
   {
 LABEL_9:
     v15 = *MEMORY[0x277D85DE8];
@@ -280,15 +280,15 @@ LABEL_9:
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return objc_msgSend_executeInferenceWithError_(self, v9, a4);
+  return objc_msgSend_executeInferenceWithError_(self, v9, error);
 }
 
-- (BOOL)bindVideoInput:(__CVBuffer *)a3 error:(id *)a4
+- (BOOL)bindVideoInput:(__CVBuffer *)input error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   if (!self->_initSucceeded)
   {
-    if (a4)
+    if (error)
     {
       v6 = MEMORY[0x277CCA9B8];
       v25 = *MEMORY[0x277CCA068];
@@ -304,14 +304,14 @@ LABEL_8:
 
   if (self->_inputBindingCommitted)
   {
-    if (a4)
+    if (error)
     {
       v6 = MEMORY[0x277CCA9B8];
       v23 = *MEMORY[0x277CCA450];
       v24 = @"Input binding ready comitted. In order to binding new input, please run [ANSTVideoFeatureExtractor resetInputBinding] first.";
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], a2, &v24, &v23, 1);
       v7 = LABEL_7:;
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v6, v8, @"ANSTErrorDomain", 3, v7);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v6, v8, @"ANSTErrorDomain", 3, v7);
 
       goto LABEL_8;
     }
@@ -321,11 +321,11 @@ LABEL_8:
 
   p_rawInputImage = &self->_rawInputImage;
   rawInputImage = self->_rawInputImage;
-  if (rawInputImage != a3)
+  if (rawInputImage != input)
   {
     CVPixelBufferRelease(rawInputImage);
-    *p_rawInputImage = a3;
-    CVPixelBufferRetain(a3);
+    *p_rawInputImage = input;
+    CVPixelBufferRetain(input);
     rawInputImage = *p_rawInputImage;
   }
 
@@ -344,7 +344,7 @@ LABEL_8:
 
   v20 = *p_preprocessedInputImage;
   self->_needsPreprocessing = v19;
-  v9 = objc_msgSend_bindInputFrameBuffer_error_(self->_model, v16, v20, a4);
+  v9 = objc_msgSend_bindInputFrameBuffer_error_(self->_model, v16, v20, error);
   if (v9)
   {
     objc_msgSend_addObject_(self->_modalityStatus, v21, @"Video");
@@ -356,24 +356,24 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)bindAudioInput:(id)a3 error:(id *)a4
+- (BOOL)bindAudioInput:(id)input error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  inputCopy = input;
   if (self->_initSucceeded)
   {
-    if (a4)
+    if (error)
     {
       v8 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277CCA450];
       v14 = @"Audio input is not supported yet.";
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v6, &v14, &v13, 1);
       v9 = LABEL_6:;
-      *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v8, v10, @"ANSTErrorDomain", 3, v9);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v8, v10, @"ANSTErrorDomain", 3, v9);
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v8 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277CCA068];
@@ -386,13 +386,13 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)executeInferenceWithError:(id *)a3
+- (BOOL)executeInferenceWithError:(id *)error
 {
-  normalizedMeanFeature = a3;
+  normalizedMeanFeature = error;
   v51[1] = *MEMORY[0x277D85DE8];
   if (!self->_initSucceeded)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -408,7 +408,7 @@ LABEL_9:
 
   if (!self->_inputBindingCommitted)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -502,19 +502,19 @@ LABEL_16:
   return normalizedMeanFeature;
 }
 
-- (BOOL)commitInputBindingWithError:(id *)a3
+- (BOOL)commitInputBindingWithError:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
   if (!self->_initSucceeded)
   {
-    if (a3)
+    if (error)
     {
       v7 = MEMORY[0x277CCA9B8];
       v13 = *MEMORY[0x277CCA068];
       v14[0] = @"Initialization was not successful. Please check error log.";
       objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], a2, v14, &v13, 1);
       v8 = LABEL_8:;
-      *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v7, v9, @"ANSTErrorDomain", 3, v8);
+      *error = objc_msgSend_errorWithDomain_code_userInfo_(v7, v9, @"ANSTErrorDomain", 3, v8);
     }
 
 LABEL_9:
@@ -522,9 +522,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!objc_msgSend_count(self->_modalityStatus, a2, a3))
+  if (!objc_msgSend_count(self->_modalityStatus, a2, error))
   {
-    if (a3)
+    if (error)
     {
       v7 = MEMORY[0x277CCA9B8];
       v11 = *MEMORY[0x277CCA450];
@@ -569,7 +569,7 @@ LABEL_10:
   }
 }
 
-- (id)getCurrentVideoFeatureWithOutError:(id *)a3
+- (id)getCurrentVideoFeatureWithOutError:(id *)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
   if (self->_initSucceeded)
@@ -581,13 +581,13 @@ LABEL_10:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v5 = MEMORY[0x277CCA9B8];
     v10 = *MEMORY[0x277CCA068];
     v11[0] = @"Initialization was not successful. Please check error log.";
     v6 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], a2, v11, &v10, 1);
-    *a3 = objc_msgSend_errorWithDomain_code_userInfo_(v5, v7, @"ANSTErrorDomain", 3, v6);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v5, v7, @"ANSTErrorDomain", 3, v6);
   }
 
   v3 = 0;

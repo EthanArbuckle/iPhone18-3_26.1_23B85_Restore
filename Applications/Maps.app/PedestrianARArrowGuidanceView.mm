@@ -1,5 +1,5 @@
 @interface PedestrianARArrowGuidanceView
-- (PedestrianARArrowGuidanceView)initWithMapViewDelegate:(id)a3 route:(id)a4 activity:(id)a5;
+- (PedestrianARArrowGuidanceView)initWithMapViewDelegate:(id)delegate route:(id)route activity:(id)activity;
 - (PedestrianARVKMapViewMapDelegate)mapViewDelegate;
 - (void)_resetState;
 - (void)_setupViews;
@@ -13,9 +13,9 @@
 - (void)_updateFont;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)mapLayer:(id)a3 activeARWalkingFeatureDidUpdate:(id)a4;
+- (void)mapLayer:(id)layer activeARWalkingFeatureDidUpdate:(id)update;
 - (void)stop;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PedestrianARArrowGuidanceView
@@ -114,8 +114,8 @@
 - (void)_updateDynamicArrow
 {
   [(UIImageView *)self->_dynamicArrowImageView setHidden:0];
-  v3 = [(PedestrianARArrowGuidanceView *)self _isFirstArrowPosition];
-  if (v3)
+  _isFirstArrowPosition = [(PedestrianARArrowGuidanceView *)self _isFirstArrowPosition];
+  if (_isFirstArrowPosition)
   {
     dynamicArrowAngle = self->_dynamicArrowAngle;
   }
@@ -161,7 +161,7 @@
       x = v18 + v15;
 LABEL_8:
       y = v16;
-      if (!v3)
+      if (!_isFirstArrowPosition)
       {
         goto LABEL_10;
       }
@@ -191,7 +191,7 @@ LABEL_8:
       x = v15;
     }
 
-    if (!v3)
+    if (!_isFirstArrowPosition)
     {
       goto LABEL_10;
     }
@@ -209,7 +209,7 @@ LABEL_9:
 
   y = v16 - v24;
   x = v15;
-  if (v3)
+  if (_isFirstArrowPosition)
   {
     goto LABEL_9;
   }
@@ -238,10 +238,10 @@ LABEL_10:
   }
 }
 
-- (void)mapLayer:(id)a3 activeARWalkingFeatureDidUpdate:(id)a4
+- (void)mapLayer:(id)layer activeARWalkingFeatureDidUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  updateCopy = update;
   v15.opaque[0] = 0;
   v15.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &v15);
@@ -257,14 +257,14 @@ LABEL_10:
     goto LABEL_4;
   }
 
-  if ([v7 isVisible])
+  if ([updateCopy isVisible])
   {
     v9 = sub_100799F08();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v7 feature];
+      feature = [updateCopy feature];
       *buf = 138477827;
-      v17 = v10;
+      v17 = feature;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Feature '%{private}@' should be visible. Hiding directional arrows", buf, 0xCu);
     }
 
@@ -274,8 +274,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v11 = [v7 feature];
-  v12 = v11 == 0;
+  feature2 = [updateCopy feature];
+  v12 = feature2 == 0;
 
   if (v12)
   {
@@ -289,9 +289,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (![v7 isDirectlyBehind] || -[PedestrianARArrowGuidanceView _isFirstArrowPosition](self, "_isFirstArrowPosition"))
+  if (![updateCopy isDirectlyBehind] || -[PedestrianARArrowGuidanceView _isFirstArrowPosition](self, "_isFirstArrowPosition"))
   {
-    [v7 screenHeading];
+    [updateCopy screenHeading];
     self->_dynamicArrowAngle = v13;
     [(PedestrianARArrowGuidanceView *)self _updateDynamicArrow];
     goto LABEL_15;
@@ -300,9 +300,9 @@ LABEL_14:
   v8 = sub_100799F08();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v14 = [v7 feature];
+    feature3 = [updateCopy feature];
     *buf = 138477827;
-    v17 = v14;
+    v17 = feature3;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Feature '%{private}@' is directly behind user.", buf, 0xCu);
   }
 
@@ -314,8 +314,8 @@ LABEL_15:
 
 - (void)_updateFont
 {
-  v3 = [(PedestrianARArrowGuidanceView *)self traitCollection];
-  v5 = [v3 _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityMedium];
+  traitCollection = [(PedestrianARArrowGuidanceView *)self traitCollection];
+  v5 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityMedium];
 
   v4 = [UIFont _maps_fontWithTextStyle:UIFontTextStyleTitle2 weight:v5 compatibleWithTraitCollection:UIFontWeightBold];
   [(UILabel *)self->_instructionLabel setFont:v4];
@@ -331,13 +331,13 @@ LABEL_15:
   [(UILabel *)self->_instructionLabel setNeedsUpdateConstraints];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = PedestrianARArrowGuidanceView;
-  [(PedestrianARArrowGuidanceView *)&v9 traitCollectionDidChange:v4];
-  if (!v4 || (-[PedestrianARArrowGuidanceView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), [v5 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v5, v8))
+  [(PedestrianARArrowGuidanceView *)&v9 traitCollectionDidChange:changeCopy];
+  if (!changeCopy || (-[PedestrianARArrowGuidanceView traitCollection](self, "traitCollection"), v5 = objc_claimAutoreleasedReturnValue(), [v5 preferredContentSizeCategory], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(changeCopy, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), v8 = UIContentSizeCategoryCompareToCategory(v6, v7), v7, v6, v5, v8))
   {
     [(PedestrianARArrowGuidanceView *)self _updateFont];
   }
@@ -353,20 +353,20 @@ LABEL_15:
 
   [(UIImageView *)self->_dynamicArrowImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_dynamicArrowImageView setContentMode:1];
-  v7 = [(UIImageView *)self->_dynamicArrowImageView layer];
-  [v7 setShadowOffset:{0.0, 0.0}];
+  layer = [(UIImageView *)self->_dynamicArrowImageView layer];
+  [layer setShadowOffset:{0.0, 0.0}];
 
   v8 = +[UIColor systemBlackColor];
-  v9 = [v8 CGColor];
-  v10 = [(UIImageView *)self->_dynamicArrowImageView layer];
-  [v10 setShadowColor:v9];
+  cGColor = [v8 CGColor];
+  layer2 = [(UIImageView *)self->_dynamicArrowImageView layer];
+  [layer2 setShadowColor:cGColor];
 
-  v11 = [(UIImageView *)self->_dynamicArrowImageView layer];
+  layer3 = [(UIImageView *)self->_dynamicArrowImageView layer];
   LODWORD(v12) = 1053609165;
-  [v11 setShadowOpacity:v12];
+  [layer3 setShadowOpacity:v12];
 
-  v13 = [(UIImageView *)self->_dynamicArrowImageView layer];
-  [v13 setShadowRadius:26.0];
+  layer4 = [(UIImageView *)self->_dynamicArrowImageView layer];
+  [layer4 setShadowRadius:26.0];
 
   [(PedestrianARArrowGuidanceView *)self addSubview:self->_dynamicArrowImageView];
   v14 = objc_alloc_init(UILabel);
@@ -374,20 +374,20 @@ LABEL_15:
   self->_instructionLabel = v14;
 
   [(UILabel *)self->_instructionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [(UILabel *)self->_instructionLabel layer];
-  [v16 setShadowOffset:{0.0, 0.0}];
+  layer5 = [(UILabel *)self->_instructionLabel layer];
+  [layer5 setShadowOffset:{0.0, 0.0}];
 
   v17 = +[UIColor systemBlackColor];
-  v18 = [v17 CGColor];
-  v19 = [(UILabel *)self->_instructionLabel layer];
-  [v19 setShadowColor:v18];
+  cGColor2 = [v17 CGColor];
+  layer6 = [(UILabel *)self->_instructionLabel layer];
+  [layer6 setShadowColor:cGColor2];
 
-  v20 = [(UILabel *)self->_instructionLabel layer];
+  layer7 = [(UILabel *)self->_instructionLabel layer];
   LODWORD(v21) = 1061997773;
-  [v20 setShadowOpacity:v21];
+  [layer7 setShadowOpacity:v21];
 
-  v22 = [(UILabel *)self->_instructionLabel layer];
-  [v22 setShadowRadius:26.0];
+  layer8 = [(UILabel *)self->_instructionLabel layer];
+  [layer8 setShadowRadius:26.0];
 
   [(UILabel *)self->_instructionLabel setNumberOfLines:2];
   v23 = +[UIColor systemWhiteColor];
@@ -398,17 +398,17 @@ LABEL_15:
   [(UILabel *)self->_instructionLabel setText:v25];
 
   [(PedestrianARArrowGuidanceView *)self addSubview:self->_instructionLabel];
-  v26 = [(UILabel *)self->_instructionLabel widthAnchor];
+  widthAnchor = [(UILabel *)self->_instructionLabel widthAnchor];
   v27 = +[UIScreen mainScreen];
   [v27 bounds];
-  v29 = [v26 constraintLessThanOrEqualToConstant:v28 * 0.699999988];
+  v29 = [widthAnchor constraintLessThanOrEqualToConstant:v28 * 0.699999988];
   instructionWidthConstraint = self->_instructionWidthConstraint;
   self->_instructionWidthConstraint = v29;
 
-  v31 = [(UIImageView *)self->_dynamicArrowImageView heightAnchor];
-  v32 = [v31 constraintEqualToConstant:57.0];
-  v33 = [(UIImageView *)self->_dynamicArrowImageView widthAnchor];
-  v34 = [v33 constraintEqualToConstant:57.0];
+  heightAnchor = [(UIImageView *)self->_dynamicArrowImageView heightAnchor];
+  v32 = [heightAnchor constraintEqualToConstant:57.0];
+  widthAnchor2 = [(UIImageView *)self->_dynamicArrowImageView widthAnchor];
+  v34 = [widthAnchor2 constraintEqualToConstant:57.0];
   v35 = self->_instructionWidthConstraint;
   v37[1] = v34;
   v37[2] = v35;
@@ -441,12 +441,12 @@ LABEL_15:
   [(PedestrianARArrowGuidanceView *)&v4 dealloc];
 }
 
-- (PedestrianARArrowGuidanceView)initWithMapViewDelegate:(id)a3 route:(id)a4 activity:(id)a5
+- (PedestrianARArrowGuidanceView)initWithMapViewDelegate:(id)delegate route:(id)route activity:(id)activity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  delegateCopy = delegate;
+  routeCopy = route;
+  activityCopy = activity;
+  if (!delegateCopy)
   {
     v18 = sub_10006D178();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -481,12 +481,12 @@ LABEL_15:
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_mapViewDelegate, v8);
-    objc_storeStrong(&v12->_activity, a5);
+    objc_storeWeak(&v11->_mapViewDelegate, delegateCopy);
+    objc_storeStrong(&v12->_activity, activity);
     v13 = +[PedestrianARSessionUsageTracker sharedInstance];
-    v14 = [v9 uniqueRouteID];
-    v15 = [v14 UUIDString];
-    v12->_isFirstArrowOfRoute = [v13 hasAREverLocalizedForRoute:v15] ^ 1;
+    uniqueRouteID = [routeCopy uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
+    v12->_isFirstArrowOfRoute = [v13 hasAREverLocalizedForRoute:uUIDString] ^ 1;
 
     [(PedestrianARArrowGuidanceView *)v12 _setupViews];
     [(PedestrianARArrowGuidanceView *)v12 _resetState];

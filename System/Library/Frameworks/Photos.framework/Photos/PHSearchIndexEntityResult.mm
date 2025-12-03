@@ -1,15 +1,15 @@
 @interface PHSearchIndexEntityResult
-+ (id)fetchAssetUUIDsForDateComponents:(id)a3 toLibrary:(id)a4 error:(id *)a5;
-+ (id)fetchAssetUUIDsForIndexEntities:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-+ (id)fetchAssetUUIDsFromStartDateComponents:(id)a3 endDateComponents:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
-+ (id)indexEntitiesMatchingText:(id)a3 options:(id)a4 error:(id *)a5;
-+ (void)enumerateIndexEntitiesMatchingTexts:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIgnoringMatchType:(id)a3;
++ (id)fetchAssetUUIDsForDateComponents:(id)components toLibrary:(id)library error:(id *)error;
++ (id)fetchAssetUUIDsForIndexEntities:(id)entities photoLibrary:(id)library error:(id *)error;
++ (id)fetchAssetUUIDsFromStartDateComponents:(id)components endDateComponents:(id)dateComponents photoLibrary:(id)library error:(id *)error;
++ (id)indexEntitiesMatchingText:(id)text options:(id)options error:(id *)error;
++ (void)enumerateIndexEntitiesMatchingTexts:(id)texts options:(id)options resultHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIgnoringMatchType:(id)type;
 - (id)description;
-- (id)initFromPSIGroup:(id)a3 matchType:(unint64_t)a4;
+- (id)initFromPSIGroup:(id)group matchType:(unint64_t)type;
 - (id)jsonDictionary;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation PHSearchIndexEntityResult
@@ -48,31 +48,31 @@
   v21[5] = v8;
   v20[6] = @"text";
   text = self->_text;
-  v10 = text;
+  null = text;
   if (!text)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[6] = v10;
+  v21[6] = null;
   v20[7] = @"normalizedText";
   normalizedText = self->_normalizedText;
-  v12 = normalizedText;
+  null2 = normalizedText;
   if (!normalizedText)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[7] = v12;
+  v21[7] = null2;
   v20[8] = @"lookupIdentifier";
   lookupIdentifier = self->_lookupIdentifier;
-  v14 = lookupIdentifier;
+  null3 = lookupIdentifier;
   if (!lookupIdentifier)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21[8] = v14;
+  v21[8] = null3;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:9];
   v16 = [v3 initWithDictionary:v15];
 
@@ -127,24 +127,24 @@ LABEL_13:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"identifier: %@, category: %tu, text: %@, normalizedText: %@, matchType: %@, score: %f, lookupIdentifier: %@", self->_identifier, self->_category, self->_text, self->_normalizedText, v3, *&self->_score, self->_lookupIdentifier];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PHSearchIndexEntityResult.m" lineNumber:95 description:{@"Unexpected class type: %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchIndexEntityResult.m" lineNumber:95 description:{@"Unexpected class type: %@", objc_opt_class()}];
   }
 
-  v6 = [(PHSearchIndexEntityResult *)self matchType];
-  if (v6 < [v5 matchType])
+  matchType = [(PHSearchIndexEntityResult *)self matchType];
+  if (matchType < [compareCopy matchType])
   {
     goto LABEL_4;
   }
 
-  v8 = [(PHSearchIndexEntityResult *)self matchType];
-  if (v8 > [v5 matchType])
+  matchType2 = [(PHSearchIndexEntityResult *)self matchType];
+  if (matchType2 > [compareCopy matchType])
   {
 LABEL_6:
     v7 = 1;
@@ -153,17 +153,17 @@ LABEL_6:
 
   [(PHSearchIndexEntityResult *)self score];
   v11 = v10;
-  [v5 score];
+  [compareCopy score];
   if (v11 >= v12)
   {
     [(PHSearchIndexEntityResult *)self score];
     v14 = v13;
-    [v5 score];
+    [compareCopy score];
     if (v14 <= v15)
     {
-      v16 = [(PHSearchIndexEntityResult *)self normalizedText];
-      v17 = [v5 normalizedText];
-      v7 = [v16 compare:v17];
+      normalizedText = [(PHSearchIndexEntityResult *)self normalizedText];
+      normalizedText2 = [compareCopy normalizedText];
+      v7 = [normalizedText compare:normalizedText2];
 
       goto LABEL_7;
     }
@@ -178,10 +178,10 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isEqualIgnoringMatchType:(id)a3
+- (BOOL)isEqualIgnoringMatchType:(id)type
 {
-  v4 = a3;
-  if (self == v4)
+  typeCopy = type;
+  if (self == typeCopy)
   {
     v7 = 1;
   }
@@ -192,8 +192,8 @@ LABEL_7:
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = [(PHSearchIndexEntityResult *)v4 identifier];
-      v7 = [(NSString *)identifier isEqualToString:v6];
+      identifier = [(PHSearchIndexEntityResult *)typeCopy identifier];
+      v7 = [(NSString *)identifier isEqualToString:identifier];
     }
 
     else
@@ -205,10 +205,10 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -218,9 +218,9 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PHSearchIndexEntityResult *)self isEqualIgnoringMatchType:v4];
+      v5 = [(PHSearchIndexEntityResult *)self isEqualIgnoringMatchType:equalCopy];
       matchType = self->_matchType;
-      v7 = matchType == [(PHSearchIndexEntityResult *)v4 matchType]&& v5;
+      v7 = matchType == [(PHSearchIndexEntityResult *)equalCopy matchType]&& v5;
     }
 
     else
@@ -232,56 +232,56 @@ LABEL_7:
   return v7;
 }
 
-- (id)initFromPSIGroup:(id)a3 matchType:(unint64_t)a4
+- (id)initFromPSIGroup:(id)group matchType:(unint64_t)type
 {
-  v6 = a3;
+  groupCopy = group;
   v21.receiver = self;
   v21.super_class = PHSearchIndexEntityResult;
   v7 = [(PHSearchIndexEntityResult *)&v21 init];
   if (v7)
   {
-    v7->_groupId = [v6 groupId];
-    v7->_owningGroupId = [v6 owningGroupId];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", objc_msgSend(v6, "groupId")];
+    v7->_groupId = [groupCopy groupId];
+    v7->_owningGroupId = [groupCopy owningGroupId];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", objc_msgSend(groupCopy, "groupId")];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v10 = [v6 contentString];
-    v11 = [v10 copy];
+    contentString = [groupCopy contentString];
+    v11 = [contentString copy];
     text = v7->_text;
     v7->_text = v11;
 
-    v13 = [v6 normalizedString];
-    v14 = [v13 copy];
+    normalizedString = [groupCopy normalizedString];
+    v14 = [normalizedString copy];
     normalizedText = v7->_normalizedText;
     v7->_normalizedText = v14;
 
-    v16 = [v6 lookupIdentifier];
-    v17 = [v16 copy];
+    lookupIdentifier = [groupCopy lookupIdentifier];
+    v17 = [lookupIdentifier copy];
     lookupIdentifier = v7->_lookupIdentifier;
     v7->_lookupIdentifier = v17;
 
-    v7->_category = [v6 category];
-    [v6 score];
+    v7->_category = [groupCopy category];
+    [groupCopy score];
     v7->_score = v19;
-    v7->_matchType = a4;
+    v7->_matchType = type;
   }
 
   return v7;
 }
 
-+ (id)fetchAssetUUIDsFromStartDateComponents:(id)a3 endDateComponents:(id)a4 photoLibrary:(id)a5 error:(id *)a6
++ (id)fetchAssetUUIDsFromStartDateComponents:(id)components endDateComponents:(id)dateComponents photoLibrary:(id)library error:(id *)error
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = v11;
-  v42 = v12;
-  v41 = a5;
-  if (!v41)
+  componentsCopy = components;
+  dateComponentsCopy = dateComponents;
+  v13 = componentsCopy;
+  v42 = dateComponentsCopy;
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:a1 file:@"PHSearchIndexEntityResult.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchIndexEntityResult.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v14 = PLPhotosSearchGetLog();
@@ -295,35 +295,35 @@ LABEL_7:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v17, OS_SIGNPOST_INTERVAL_BEGIN, v15, "PLSearchBackendFetchAssetUUIDsForDateComponents", byte_19CB567AE, buf, 2u);
   }
 
-  v18 = [v41 searchIndex];
-  v19 = [v18 unverifiedPsiSearchIndex];
+  searchIndex = [libraryCopy searchIndex];
+  unverifiedPsiSearchIndex = [searchIndex unverifiedPsiSearchIndex];
 
-  if (v19)
+  if (unverifiedPsiSearchIndex)
   {
     if (v13)
     {
-      v20 = [objc_alloc(MEMORY[0x1E69BE8A8]) initWithDateComponents:v13];
+      distantPast = [objc_alloc(MEMORY[0x1E69BE8A8]) initWithDateComponents:v13];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E69BE8A8] distantPast];
+      distantPast = [MEMORY[0x1E69BE8A8] distantPast];
     }
 
-    v23 = v20;
+    v23 = distantPast;
     if (v42)
     {
-      v25 = [objc_alloc(MEMORY[0x1E69BE8A8]) initWithDateComponents:v42];
+      distantFuture = [objc_alloc(MEMORY[0x1E69BE8A8]) initWithDateComponents:v42];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E69BE8A8] distantFuture];
+      distantFuture = [MEMORY[0x1E69BE8A8] distantFuture];
     }
 
-    v26 = v25;
-    v27 = [objc_alloc(MEMORY[0x1E69BE8B0]) initWithStartDate:v23 endDate:v25];
-    v24 = [v19 assetUUIDsForAssetIdsArray:{objc_msgSend(v19, "assetIdsWithDateFilter:", v27)}];
+    v26 = distantFuture;
+    v27 = [objc_alloc(MEMORY[0x1E69BE8B0]) initWithStartDate:v23 endDate:distantFuture];
+    v24 = [unverifiedPsiSearchIndex assetUUIDsForAssetIdsArray:{objc_msgSend(unverifiedPsiSearchIndex, "assetIdsWithDateFilter:", v27)}];
     v28 = v17;
     v29 = v28;
     if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
@@ -344,10 +344,10 @@ LABEL_7:
       v39 = v13;
       v40 = v17;
       v32 = [v24 count];
-      v33 = [v23 int64RepresentationMask];
-      v34 = [v23 int64Representation];
-      v35 = [v26 int64RepresentationMask];
-      v36 = [v26 int64Representation];
+      int64RepresentationMask = [v23 int64RepresentationMask];
+      int64Representation = [v23 int64Representation];
+      int64RepresentationMask2 = [v26 int64RepresentationMask];
+      int64Representation2 = [v26 int64Representation];
       *buf = 134219522;
       v44 = v32;
       v45 = 2112;
@@ -355,14 +355,14 @@ LABEL_7:
       v47 = 2112;
       v48 = v42;
       v49 = 2048;
-      v50 = v33;
+      v50 = int64RepresentationMask;
       v51 = 2048;
-      v52 = v34;
+      v52 = int64Representation;
       v53 = 2048;
-      v54 = v35;
+      v54 = int64RepresentationMask2;
       v13 = v39;
       v55 = 2048;
-      v56 = v36;
+      v56 = int64Representation2;
       _os_log_impl(&dword_19C86F000, v31, OS_LOG_TYPE_DEFAULT, "Fetched %tu asset UUIDs for startDate: %@, endDate: %@.\nPSI: creationDate & %lld >= %lld AND creationDate & %lld <= %lld", buf, 0x48u);
       v17 = v40;
     }
@@ -374,17 +374,17 @@ LABEL_7:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v44 = v41;
+    v44 = libraryCopy;
     _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_ERROR, "Unable to access PSIDatabase for PhotoLibrary: %@. Unable to fetch index entities.", buf, 0xCu);
   }
 
-  if (a6)
+  if (error)
   {
     v22 = objc_alloc(MEMORY[0x1E696ABC0]);
     v57 = *MEMORY[0x1E696A278];
     v58[0] = @"Failed to open PSIDatabase.";
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:&v57 count:1];
-    *a6 = [v22 initWithDomain:*MEMORY[0x1E69BFF48] code:6101 userInfo:v23];
+    *error = [v22 initWithDomain:*MEMORY[0x1E69BFF48] code:6101 userInfo:v23];
     v24 = MEMORY[0x1E695E0F0];
 LABEL_23:
 
@@ -397,14 +397,14 @@ LABEL_24:
   return v24;
 }
 
-+ (id)fetchAssetUUIDsForDateComponents:(id)a3 toLibrary:(id)a4 error:(id *)a5
++ (id)fetchAssetUUIDsForDateComponents:(id)components toLibrary:(id)library error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  componentsCopy = components;
+  libraryCopy = library;
+  v11 = libraryCopy;
+  if (componentsCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -412,8 +412,8 @@ LABEL_24:
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PHSearchIndexEntityResult.m" lineNumber:304 description:{@"Invalid parameter not satisfying: %@", @"dateComponents"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchIndexEntityResult.m" lineNumber:304 description:{@"Invalid parameter not satisfying: %@", @"dateComponents"}];
 
     if (v11)
     {
@@ -421,24 +421,24 @@ LABEL_24:
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"PHSearchIndexEntityResult.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchIndexEntityResult.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
-  v12 = [a1 fetchAssetUUIDsFromStartDateComponents:v9 endDateComponents:v9 photoLibrary:v11 error:a5];
+  v12 = [self fetchAssetUUIDsFromStartDateComponents:componentsCopy endDateComponents:componentsCopy photoLibrary:v11 error:error];
 
   return v12;
 }
 
-+ (id)fetchAssetUUIDsForIndexEntities:(id)a3 photoLibrary:(id)a4 error:(id *)a5
++ (id)fetchAssetUUIDsForIndexEntities:(id)entities photoLibrary:(id)library error:(id *)error
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  entitiesCopy = entities;
+  libraryCopy = library;
+  v11 = libraryCopy;
+  if (entitiesCopy)
   {
-    if (v10)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -446,8 +446,8 @@ LABEL_3:
 
   else
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"PHSearchIndexEntityResult.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"indexEntities"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchIndexEntityResult.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"indexEntities"}];
 
     if (v11)
     {
@@ -455,11 +455,11 @@ LABEL_3:
     }
   }
 
-  v36 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v36 handleFailureInMethod:a2 object:a1 file:@"PHSearchIndexEntityResult.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchIndexEntityResult.m" lineNumber:267 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
 LABEL_3:
-  if (![v9 count])
+  if (![entitiesCopy count])
   {
     v24 = MEMORY[0x1E695E0F0];
     goto LABEL_29;
@@ -478,17 +478,17 @@ LABEL_3:
 
   v37 = v15;
 
-  v16 = [v11 searchIndex];
-  v38 = [v16 unverifiedPsiSearchIndex];
+  searchIndex = [v11 searchIndex];
+  unverifiedPsiSearchIndex = [searchIndex unverifiedPsiSearchIndex];
 
-  if (v38)
+  if (unverifiedPsiSearchIndex)
   {
     Mutable = CFSetCreateMutable(*MEMORY[0x1E695E480], 0, 0);
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v18 = v9;
+    v18 = entitiesCopy;
     v19 = [v18 countByEnumeratingWithState:&v39 objects:v49 count:16];
     if (v19)
     {
@@ -503,13 +503,13 @@ LABEL_3:
           }
 
           v22 = *(*(&v39 + 1) + 8 * i);
-          v23 = [v22 owningGroupId];
-          if (!v23)
+          owningGroupId = [v22 owningGroupId];
+          if (!owningGroupId)
           {
-            v23 = [v22 groupId];
+            owningGroupId = [v22 groupId];
           }
 
-          CFSetAddValue(Mutable, v23);
+          CFSetAddValue(Mutable, owningGroupId);
         }
 
         v19 = [v18 countByEnumeratingWithState:&v39 objects:v49 count:16];
@@ -518,7 +518,7 @@ LABEL_3:
       while (v19);
     }
 
-    v24 = [v38 assetUUIDsForGroupIDs:Mutable];
+    v24 = [unverifiedPsiSearchIndex assetUUIDsForGroupIDs:Mutable];
     CFRelease(Mutable);
     v25 = v37;
     v26 = v25;
@@ -558,7 +558,7 @@ LABEL_3:
       _os_log_impl(&dword_19C86F000, v32, OS_LOG_TYPE_ERROR, "Unable to access PSIDatabase for PhotoLibrary: %@. Unable to fetch index entities.", buf, 0xCu);
     }
 
-    if (!a5)
+    if (!error)
     {
       v24 = MEMORY[0x1E695E0F0];
       goto LABEL_28;
@@ -568,7 +568,7 @@ LABEL_3:
     v50 = *MEMORY[0x1E696A278];
     v51[0] = @"Failed to open PSIDatabase.";
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v51 forKeys:&v50 count:1];
-    *a5 = [v33 initWithDomain:*MEMORY[0x1E69BFF48] code:6101 userInfo:v29];
+    *error = [v33 initWithDomain:*MEMORY[0x1E69BFF48] code:6101 userInfo:v29];
     v24 = MEMORY[0x1E695E0F0];
   }
 
@@ -578,11 +578,11 @@ LABEL_29:
   return v24;
 }
 
-+ (id)indexEntitiesMatchingText:(id)a3 options:(id)a4 error:(id *)a5
++ (id)indexEntitiesMatchingText:(id)text options:(id)options error:(id *)error
 {
   v87[1] = *MEMORY[0x1E69E9840];
-  v68 = a3;
-  v7 = a4;
+  textCopy = text;
+  optionsCopy = options;
   v8 = PLPhotosSearchGetLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -598,34 +598,34 @@ LABEL_29:
 
   v67 = v11;
 
-  if ([v68 length])
+  if ([textCopy length])
   {
-    if ([v7 matchOptions])
+    if ([optionsCopy matchOptions])
     {
-      v66 = [v7 psiDatabase];
-      if (v66)
+      psiDatabase = [optionsCopy psiDatabase];
+      if (psiDatabase)
       {
         v12 = PLSearchBackendIndexEntityResultGetLog();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v78 = v68;
+          v78 = textCopy;
           v79 = 2112;
-          v80 = v7;
+          v80 = optionsCopy;
           _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_DEFAULT, "Fetching index entities matching text: %@, options: %@", buf, 0x16u);
         }
 
-        v13 = [v7 matchOptions];
-        v71 = [MEMORY[0x1E69BE8D8] normalizeString:v68];
-        v14 = v66;
-        v15 = (v13 >> 4) & 1;
-        if ([v7 matchOptions])
+        matchOptions = [optionsCopy matchOptions];
+        v71 = [MEMORY[0x1E69BE8D8] normalizeString:textCopy];
+        v14 = psiDatabase;
+        v15 = (matchOptions >> 4) & 1;
+        if ([optionsCopy matchOptions])
         {
-          v24 = [MEMORY[0x1E69BE8D8] fts5StringFromString:v71 useWildcard:1 leadingAnchored:(v13 >> 4) & 1 orderInsensitive:0];
-          v25 = [v7 categories];
-          v16 = [v66 groupIdsMatchingFTSString:v24 categories:v25 textIsSearchable:1];
+          v24 = [MEMORY[0x1E69BE8D8] fts5StringFromString:v71 useWildcard:1 leadingAnchored:(matchOptions >> 4) & 1 orderInsensitive:0];
+          categories = [optionsCopy categories];
+          v16 = [psiDatabase groupIdsMatchingFTSString:v24 categories:categories textIsSearchable:1];
 
-          v14 = v66;
+          v14 = psiDatabase;
         }
 
         else
@@ -633,14 +633,14 @@ LABEL_29:
           v16 = 0;
         }
 
-        if (([v7 matchOptions] & 8) != 0)
+        if (([optionsCopy matchOptions] & 8) != 0)
         {
-          v26 = [v7 matchOptions];
-          v27 = [MEMORY[0x1E69BE8D8] fts5StringFromString:v71 useWildcard:v26 & 1 leadingAnchored:v15 orderInsensitive:1];
-          v28 = [v7 categories];
-          theSet = [v14 groupIdsMatchingFTSString:v27 categories:v28 textIsSearchable:1];
+          matchOptions2 = [optionsCopy matchOptions];
+          v27 = [MEMORY[0x1E69BE8D8] fts5StringFromString:v71 useWildcard:matchOptions2 & 1 leadingAnchored:v15 orderInsensitive:1];
+          categories2 = [optionsCopy categories];
+          theSet = [v14 groupIdsMatchingFTSString:v27 categories:categories2 textIsSearchable:1];
 
-          v14 = v66;
+          v14 = psiDatabase;
         }
 
         else
@@ -648,13 +648,13 @@ LABEL_29:
           theSet = 0;
         }
 
-        if (([v7 matchOptions] & 6) != 0)
+        if (([optionsCopy matchOptions] & 6) != 0)
         {
           v29 = [MEMORY[0x1E69BE8D8] fts5StringFromString:v71 useWildcard:0 leadingAnchored:v15 orderInsensitive:0];
-          v30 = [v7 categories];
-          v70 = [v14 groupIdsMatchingFTSString:v29 categories:v30 textIsSearchable:1];
+          categories3 = [optionsCopy categories];
+          v70 = [v14 groupIdsMatchingFTSString:v29 categories:categories3 textIsSearchable:1];
 
-          v14 = v66;
+          v14 = psiDatabase;
           if (v16)
           {
             goto LABEL_27;
@@ -703,10 +703,10 @@ LABEL_47:
                         }
 
                         v50 = *(*(&v73 + 1) + 8 * i);
-                        if (([v7 matchOptions] & 4) != 0)
+                        if (([optionsCopy matchOptions] & 4) != 0)
                         {
-                          v51 = [v50 normalizedString];
-                          v52 = [v51 length];
+                          normalizedString = [v50 normalizedString];
+                          v52 = [normalizedString length];
                           LOBYTE(v52) = v52 == [v71 length];
 
                           if (v52)
@@ -719,7 +719,7 @@ LABEL_71:
                           }
                         }
 
-                        if (([v7 matchOptions] & 2) != 0)
+                        if (([optionsCopy matchOptions] & 2) != 0)
                         {
                           v54 = v47;
                         }
@@ -735,7 +735,7 @@ LABEL_71:
                           goto LABEL_71;
                         }
 
-                        if (([v7 matchOptions] & 8) != 0)
+                        if (([optionsCopy matchOptions] & 8) != 0)
                         {
                           v55 = v48;
                         }
@@ -751,7 +751,7 @@ LABEL_71:
                           goto LABEL_71;
                         }
 
-                        if ([v7 matchOptions])
+                        if ([optionsCopy matchOptions])
                         {
                           v53 = 1;
                           goto LABEL_71;
@@ -782,7 +782,7 @@ LABEL_72:
                     *buf = 134218242;
                     v78 = v59;
                     v79 = 2112;
-                    v80 = v68;
+                    v80 = textCopy;
                     _os_signpost_emit_with_name_impl(&dword_19C86F000, v58, OS_SIGNPOST_INTERVAL_END, spid, "PLSearchBackendIndexEntitiesMatchingText", "%tu index entities. Text: %@", buf, 0x16u);
                   }
 
@@ -793,9 +793,9 @@ LABEL_72:
                     *buf = 134218498;
                     v78 = v61;
                     v79 = 2112;
-                    v80 = v68;
+                    v80 = textCopy;
                     v81 = 2112;
-                    v82 = v7;
+                    v82 = optionsCopy;
                     _os_log_impl(&dword_19C86F000, v60, OS_LOG_TYPE_DEFAULT, "Found %tu index entities matching text: %@, options: %@", buf, 0x20u);
                   }
 
@@ -808,9 +808,9 @@ LABEL_80:
                 if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  v78 = v68;
+                  v78 = textCopy;
                   v79 = 2112;
-                  v80 = v7;
+                  v80 = optionsCopy;
                   _os_log_impl(&dword_19C86F000, v62, OS_LOG_TYPE_DEFAULT, "Found 0 index entities matching text: %@, options: %@", buf, 0x16u);
                 }
 
@@ -879,23 +879,23 @@ LABEL_32:
       v20 = PLSearchBackendIndexEntityResultGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v7 photoLibrary];
+        photoLibrary = [optionsCopy photoLibrary];
         *buf = 138412290;
-        v78 = v21;
+        v78 = photoLibrary;
         _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_ERROR, "Unable to access PSIDatabase for PhotoLibrary: %@. Unable to fetch index entities.", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v22 = objc_alloc(MEMORY[0x1E696ABC0]);
         v84 = *MEMORY[0x1E696A278];
         v85 = @"Failed to open PSIDatabase.";
         v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
-        *a5 = [v22 initWithDomain:*MEMORY[0x1E69BFF48] code:6101 userInfo:v71];
+        *error = [v22 initWithDomain:*MEMORY[0x1E69BFF48] code:6101 userInfo:v71];
         v23 = MEMORY[0x1E695E0F0];
 LABEL_84:
 
-        v17 = v66;
+        v17 = psiDatabase;
         goto LABEL_85;
       }
 
@@ -911,7 +911,7 @@ LABEL_84:
         _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_ERROR, "No match options set. Unable to fetch index entities.", buf, 2u);
       }
 
-      if (!a5)
+      if (!error)
       {
         v23 = MEMORY[0x1E695E0F0];
         goto LABEL_86;
@@ -921,7 +921,7 @@ LABEL_84:
       v86 = *MEMORY[0x1E696A278];
       v87[0] = @"No match options set.";
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v87 forKeys:&v86 count:1];
-      *a5 = [v19 initWithDomain:*MEMORY[0x1E69BFF48] code:3126 userInfo:v17];
+      *error = [v19 initWithDomain:*MEMORY[0x1E69BFF48] code:3126 userInfo:v17];
     }
   }
 
@@ -943,25 +943,25 @@ LABEL_86:
   return v23;
 }
 
-+ (void)enumerateIndexEntitiesMatchingTexts:(id)a3 options:(id)a4 resultHandler:(id)a5
++ (void)enumerateIndexEntitiesMatchingTexts:(id)texts options:(id)options resultHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  textsCopy = texts;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PHSearchIndexEntityResult.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchIndexEntityResult.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"resultHandler"}];
   }
 
   v12 = PLSearchBackendIndexEntityResultGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v21 = v9;
+    v21 = textsCopy;
     v22 = 2112;
-    v23 = v10;
+    v23 = optionsCopy;
     _os_log_impl(&dword_19C86F000, v12, OS_LOG_TYPE_INFO, "enumerateIndexEntities matchingTexts: %@, options: %@", buf, 0x16u);
   }
 
@@ -969,12 +969,12 @@ LABEL_86:
   v16[1] = 3221225472;
   v16[2] = __87__PHSearchIndexEntityResult_enumerateIndexEntitiesMatchingTexts_options_resultHandler___block_invoke;
   v16[3] = &unk_1E75A77E8;
-  v18 = v11;
-  v19 = a1;
-  v17 = v10;
-  v13 = v11;
-  v14 = v10;
-  [v9 enumerateObjectsUsingBlock:v16];
+  v18 = handlerCopy;
+  selfCopy = self;
+  v17 = optionsCopy;
+  v13 = handlerCopy;
+  v14 = optionsCopy;
+  [textsCopy enumerateObjectsUsingBlock:v16];
 }
 
 void __87__PHSearchIndexEntityResult_enumerateIndexEntitiesMatchingTexts_options_resultHandler___block_invoke(void *a1, void *a2)

@@ -1,26 +1,26 @@
 @interface PSResourceHeap
 - (PSResourceHeap)init;
-- (id)getResourceWrapper:(id)a3;
-- (void)addResource:(id)a3 bytes:(void *)a4 size:(unint64_t)a5 timestamp:(unint64_t)a6;
-- (void)addResource:(id)a3 bytes:(void *)a4 size:(unint64_t)a5 timestamp:(unint64_t)a6 withDeallocator:(id)a7;
-- (void)addResource:(id)a3 dataBuffer:(__CVBuffer *)a4 timestamp:(unint64_t)a5;
-- (void)addResource:(id)a3 mtlBuffer:(id)a4 timestamp:(unint64_t)a5;
-- (void)addResource:(id)a3 mtlTexture:(id)a4 timestamp:(unint64_t)a5;
-- (void)addResource:(id)a3 object:(id)a4 timestamp:(unint64_t)a5;
-- (void)addResource:(id)a3 object:(id)a4 timestamp:(unint64_t)a5 deallocator:(id)a6;
-- (void)addResource:(id)a3 opaquePointer:(void *)a4 timestamp:(unint64_t)a5 deallocator:(void *)a6;
-- (void)addResource:(id)a3 pixelBuffer:(__CVBuffer *)a4 timestamp:(unint64_t)a5;
-- (void)addResource:(id)a3 surface:(__IOSurface *)a4 timestamp:(unint64_t)a5;
-- (void)createAndAddResource:(id)a3 timestamp:(unint64_t)a4;
+- (id)getResourceWrapper:(id)wrapper;
+- (void)addResource:(id)resource bytes:(void *)bytes size:(unint64_t)size timestamp:(unint64_t)timestamp;
+- (void)addResource:(id)resource bytes:(void *)bytes size:(unint64_t)size timestamp:(unint64_t)timestamp withDeallocator:(id)deallocator;
+- (void)addResource:(id)resource dataBuffer:(__CVBuffer *)buffer timestamp:(unint64_t)timestamp;
+- (void)addResource:(id)resource mtlBuffer:(id)buffer timestamp:(unint64_t)timestamp;
+- (void)addResource:(id)resource mtlTexture:(id)texture timestamp:(unint64_t)timestamp;
+- (void)addResource:(id)resource object:(id)object timestamp:(unint64_t)timestamp;
+- (void)addResource:(id)resource object:(id)object timestamp:(unint64_t)timestamp deallocator:(id)deallocator;
+- (void)addResource:(id)resource opaquePointer:(void *)pointer timestamp:(unint64_t)timestamp deallocator:(void *)deallocator;
+- (void)addResource:(id)resource pixelBuffer:(__CVBuffer *)buffer timestamp:(unint64_t)timestamp;
+- (void)addResource:(id)resource surface:(__IOSurface *)surface timestamp:(unint64_t)timestamp;
+- (void)createAndAddResource:(id)resource timestamp:(unint64_t)timestamp;
 - (void)dealloc;
-- (void)getResource:(id)a3;
-- (void)removeResourceKey:(id)a3;
-- (void)replaceResource:(id)a3 bytes:(void *)a4 size:(unint64_t)a5 timestamp:(unint64_t)a6 withDeallocator:(id)a7;
-- (void)replaceResource:(id)a3 dataBuffer:(__CVBuffer *)a4 timestamp:(unint64_t)a5;
-- (void)replaceResource:(id)a3 object:(id)a4 timestamp:(unint64_t)a5 deallocator:(id)a6;
-- (void)replaceResource:(id)a3 opaquePointer:(void *)a4 timestamp:(unint64_t)a5 deallocator:(void *)a6;
-- (void)replaceResource:(id)a3 pixelBuffer:(__CVBuffer *)a4 timestamp:(unint64_t)a5;
-- (void)replaceResource:(id)a3 surface:(__IOSurface *)a4 timestamp:(unint64_t)a5;
+- (void)getResource:(id)resource;
+- (void)removeResourceKey:(id)key;
+- (void)replaceResource:(id)resource bytes:(void *)bytes size:(unint64_t)size timestamp:(unint64_t)timestamp withDeallocator:(id)deallocator;
+- (void)replaceResource:(id)resource dataBuffer:(__CVBuffer *)buffer timestamp:(unint64_t)timestamp;
+- (void)replaceResource:(id)resource object:(id)object timestamp:(unint64_t)timestamp deallocator:(id)deallocator;
+- (void)replaceResource:(id)resource opaquePointer:(void *)pointer timestamp:(unint64_t)timestamp deallocator:(void *)deallocator;
+- (void)replaceResource:(id)resource pixelBuffer:(__CVBuffer *)buffer timestamp:(unint64_t)timestamp;
+- (void)replaceResource:(id)resource surface:(__IOSurface *)surface timestamp:(unint64_t)timestamp;
 @end
 
 @implementation PSResourceHeap
@@ -36,21 +36,21 @@
     mtlDevice = v2->_mtlDevice;
     v2->_mtlDevice = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     resources = v2->_resources;
-    v2->_resources = v5;
+    v2->_resources = dictionary;
   }
 
   return v2;
 }
 
-- (void)removeResourceKey:(id)a3
+- (void)removeResourceKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v4 = [(NSMutableDictionary *)self->_resources objectForKey:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_resources removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_resources removeObjectForKey:keyCopy];
   }
 }
 
@@ -74,407 +74,407 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addResource:(id)a3 bytes:(void *)a4 size:(unint64_t)a5 timestamp:(unint64_t)a6 withDeallocator:(id)a7
+- (void)addResource:(id)resource bytes:(void *)bytes size:(unint64_t)size timestamp:(unint64_t)timestamp withDeallocator:(id)deallocator
 {
-  v12 = a3;
-  v20[0] = a4;
-  v13 = a7;
-  if (v13)
+  resourceCopy = resource;
+  v20[0] = bytes;
+  deallocatorCopy = deallocator;
+  if (deallocatorCopy)
   {
-    v14 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v12];
+    v14 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
     if (!v14)
     {
       v14 = objc_alloc_init(PSResourceWrapper);
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
 
-    v15 = MEMORY[0x25F8CC5B0](v13);
+    v15 = MEMORY[0x25F8CC5B0](deallocatorCopy);
     v20[2] = v20;
     v16 = std::__hash_table<std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,void({block_pointer} {__strong})(void *)>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>([(PSResourceWrapper *)v14 data_deallocator_map], v20);
     v17 = v16[3];
     v16[3] = v15;
 
-    a4 = v20[0];
+    bytes = v20[0];
   }
 
-  v18 = [(PSResourceHeap *)self addResource:v12 bytes:a4 size:a5 timestamp:a6];
+  v18 = [(PSResourceHeap *)self addResource:resourceCopy bytes:bytes size:size timestamp:timestamp];
 
   return v18;
 }
 
-- (void)addResource:(id)a3 bytes:(void *)a4 size:(unint64_t)a5 timestamp:(unint64_t)a6
+- (void)addResource:(id)resource bytes:(void *)bytes size:(unint64_t)size timestamp:(unint64_t)timestamp
 {
-  v10 = a3;
-  v11 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v10];
+  resourceCopy = resource;
+  v11 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
   if (!v11)
   {
     v11 = objc_alloc_init(PSResourceWrapper);
-    [(NSMutableDictionary *)self->_resources setObject:v11 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_resources setObject:v11 forKeyedSubscript:resourceCopy];
   }
 
-  v12 = [(PSResourceWrapper *)v11 resource];
-  ps_resource::set_valid(v12, 1);
-  count = ps_resource::get_count(v12);
+  resource = [(PSResourceWrapper *)v11 resource];
+  ps_resource::set_valid(resource, 1);
+  count = ps_resource::get_count(resource);
   if (!count)
   {
-    ps_resource::set_key(v12, [v10 UTF8String]);
-    ps_resource::set_class(v12, 1);
+    ps_resource::set_key(resource, [resourceCopy UTF8String]);
+    ps_resource::set_class(resource, 1);
   }
 
-  ps_resource::resize(v12, count + 1);
-  ps_resource::set_timestamp(v12, count, a6);
-  ps_resource::set_data(v12, count, a4, a5);
+  ps_resource::resize(resource, count + 1);
+  ps_resource::set_timestamp(resource, count, timestamp);
+  ps_resource::set_data(resource, count, bytes, size);
 
-  return v12;
+  return resource;
 }
 
-- (void)replaceResource:(id)a3 bytes:(void *)a4 size:(unint64_t)a5 timestamp:(unint64_t)a6 withDeallocator:(id)a7
+- (void)replaceResource:(id)resource bytes:(void *)bytes size:(unint64_t)size timestamp:(unint64_t)timestamp withDeallocator:(id)deallocator
 {
-  v12 = a3;
-  v13 = a7;
-  [(PSResourceHeap *)self removeResourceKey:v12];
-  v14 = [(PSResourceHeap *)self addResource:v12 bytes:a4 size:a5 timestamp:a6 withDeallocator:v13];
+  resourceCopy = resource;
+  deallocatorCopy = deallocator;
+  [(PSResourceHeap *)self removeResourceKey:resourceCopy];
+  v14 = [(PSResourceHeap *)self addResource:resourceCopy bytes:bytes size:size timestamp:timestamp withDeallocator:deallocatorCopy];
 
   return v14;
 }
 
-- (void)addResource:(id)a3 object:(id)a4 timestamp:(unint64_t)a5 deallocator:(id)a6
+- (void)addResource:(id)resource object:(id)object timestamp:(unint64_t)timestamp deallocator:(id)deallocator
 {
-  v10 = a3;
-  v11 = a4;
-  v19[0] = v11;
-  v12 = a6;
-  if (v12)
+  resourceCopy = resource;
+  objectCopy = object;
+  v19[0] = objectCopy;
+  deallocatorCopy = deallocator;
+  if (deallocatorCopy)
   {
-    v13 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v10];
+    v13 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
     if (!v13)
     {
       v13 = objc_alloc_init(PSResourceWrapper);
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     }
 
-    v14 = MEMORY[0x25F8CC5B0](v12);
+    v14 = MEMORY[0x25F8CC5B0](deallocatorCopy);
     v19[2] = v19;
     v15 = std::__hash_table<std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::__unordered_map_hasher<objc_object * {__strong},std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::hash<objc_object * {__strong}>,std::equal_to<objc_object * {__strong}>,true>,std::__unordered_map_equal<objc_object * {__strong},std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>,std::equal_to<objc_object * {__strong}>,std::hash<objc_object * {__strong}>,true>,std::allocator<std::__hash_value_type<objc_object * {__strong},void({block_pointer} {__strong})(objc_object *)>>>::__emplace_unique_key_args<objc_object * {__strong},std::piecewise_construct_t const&,std::tuple<objc_object * const {__strong}&>,std::tuple<>>([(PSResourceWrapper *)v13 object_deallocator_map], v19);
     v16 = v15[3];
     v15[3] = v14;
 
-    v11 = v19[0];
+    objectCopy = v19[0];
   }
 
-  v17 = [(PSResourceHeap *)self addResource:v10 object:v11 timestamp:a5];
+  v17 = [(PSResourceHeap *)self addResource:resourceCopy object:objectCopy timestamp:timestamp];
 
   return v17;
 }
 
-- (void)addResource:(id)a3 object:(id)a4 timestamp:(unint64_t)a5
+- (void)addResource:(id)resource object:(id)object timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v8];
+  resourceCopy = resource;
+  objectCopy = object;
+  v10 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(PSResourceWrapper);
-    [(NSMutableDictionary *)self->_resources setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_resources setObject:v10 forKeyedSubscript:resourceCopy];
   }
 
-  v11 = [(PSResourceWrapper *)v10 resource];
-  ps_resource::set_valid(v11, 1);
-  count = ps_resource::get_count(v11);
+  resource = [(PSResourceWrapper *)v10 resource];
+  ps_resource::set_valid(resource, 1);
+  count = ps_resource::get_count(resource);
   if (!count)
   {
-    ps_resource::set_key(v11, [v8 UTF8String]);
-    ps_resource::set_class(v11, 2);
+    ps_resource::set_key(resource, [resourceCopy UTF8String]);
+    ps_resource::set_class(resource, 2);
   }
 
-  ps_resource::resize(v11, count + 1);
-  ps_resource::set_timestamp(v11, count, a5);
-  v13 = v9;
-  ps_resource::set_object(v11, count, v13);
+  ps_resource::resize(resource, count + 1);
+  ps_resource::set_timestamp(resource, count, timestamp);
+  v13 = objectCopy;
+  ps_resource::set_object(resource, count, v13);
 
-  return v11;
+  return resource;
 }
 
-- (void)replaceResource:(id)a3 object:(id)a4 timestamp:(unint64_t)a5 deallocator:(id)a6
+- (void)replaceResource:(id)resource object:(id)object timestamp:(unint64_t)timestamp deallocator:(id)deallocator
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [(PSResourceHeap *)self removeResourceKey:v10];
-  v13 = [(PSResourceHeap *)self addResource:v10 object:v11 timestamp:a5 deallocator:v12];
+  resourceCopy = resource;
+  objectCopy = object;
+  deallocatorCopy = deallocator;
+  [(PSResourceHeap *)self removeResourceKey:resourceCopy];
+  v13 = [(PSResourceHeap *)self addResource:resourceCopy object:objectCopy timestamp:timestamp deallocator:deallocatorCopy];
 
   return v13;
 }
 
-- (void)addResource:(id)a3 opaquePointer:(void *)a4 timestamp:(unint64_t)a5 deallocator:(void *)a6
+- (void)addResource:(id)resource opaquePointer:(void *)pointer timestamp:(unint64_t)timestamp deallocator:(void *)deallocator
 {
-  v10 = a3;
-  v15[0] = a4;
-  v11 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v10];
+  resourceCopy = resource;
+  v15[0] = pointer;
+  v11 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
   if (!v11)
   {
     v11 = objc_alloc_init(PSResourceWrapper);
-    [(NSMutableDictionary *)self->_resources setObject:v11 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_resources setObject:v11 forKeyedSubscript:resourceCopy];
   }
 
-  v12 = [(PSResourceWrapper *)v11 resource];
-  ps_resource::set_valid(v12, 1);
-  count = ps_resource::get_count(v12);
+  resource = [(PSResourceWrapper *)v11 resource];
+  ps_resource::set_valid(resource, 1);
+  count = ps_resource::get_count(resource);
   if (!count)
   {
-    ps_resource::set_key(v12, [v10 UTF8String]);
-    ps_resource::set_class(v12, 3);
+    ps_resource::set_key(resource, [resourceCopy UTF8String]);
+    ps_resource::set_class(resource, 3);
   }
 
-  ps_resource::resize(v12, count + 1);
-  ps_resource::set_timestamp(v12, count, a5);
-  ps_resource::set_object(v12, count, a4);
+  ps_resource::resize(resource, count + 1);
+  ps_resource::set_timestamp(resource, count, timestamp);
+  ps_resource::set_object(resource, count, pointer);
   v15[2] = v15;
-  std::__hash_table<std::__hash_value_type<void *,void (*)(void *)>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,void (*)(void *)>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,void (*)(void *)>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,void (*)(void *)>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>([(PSResourceWrapper *)v11 opaque_deallocator_map], v15)[3] = a6;
+  std::__hash_table<std::__hash_value_type<void *,void (*)(void *)>,std::__unordered_map_hasher<void *,std::__hash_value_type<void *,void (*)(void *)>,std::hash<void *>,std::equal_to<void *>,true>,std::__unordered_map_equal<void *,std::__hash_value_type<void *,void (*)(void *)>,std::equal_to<void *>,std::hash<void *>,true>,std::allocator<std::__hash_value_type<void *,void (*)(void *)>>>::__emplace_unique_key_args<void *,std::piecewise_construct_t const&,std::tuple<void * const&>,std::tuple<>>([(PSResourceWrapper *)v11 opaque_deallocator_map], v15)[3] = deallocator;
 
-  return v12;
+  return resource;
 }
 
-- (void)replaceResource:(id)a3 opaquePointer:(void *)a4 timestamp:(unint64_t)a5 deallocator:(void *)a6
+- (void)replaceResource:(id)resource opaquePointer:(void *)pointer timestamp:(unint64_t)timestamp deallocator:(void *)deallocator
 {
-  v10 = a3;
-  [(PSResourceHeap *)self removeResourceKey:v10];
-  v11 = [(PSResourceHeap *)self addResource:v10 opaquePointer:a4 timestamp:a5 deallocator:a6];
+  resourceCopy = resource;
+  [(PSResourceHeap *)self removeResourceKey:resourceCopy];
+  v11 = [(PSResourceHeap *)self addResource:resourceCopy opaquePointer:pointer timestamp:timestamp deallocator:deallocator];
 
   return v11;
 }
 
-- (void)addResource:(id)a3 dataBuffer:(__CVBuffer *)a4 timestamp:(unint64_t)a5
+- (void)addResource:(id)resource dataBuffer:(__CVBuffer *)buffer timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v8];
+  resourceCopy = resource;
+  v9 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
   if (!v9)
   {
     v9 = objc_alloc_init(PSResourceWrapper);
-    [(NSMutableDictionary *)self->_resources setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_resources setObject:v9 forKeyedSubscript:resourceCopy];
   }
 
-  v10 = [(PSResourceWrapper *)v9 resource];
-  ps_resource::set_valid(v10, 1);
-  count = ps_resource::get_count(v10);
+  resource = [(PSResourceWrapper *)v9 resource];
+  ps_resource::set_valid(resource, 1);
+  count = ps_resource::get_count(resource);
   if (!count)
   {
-    ps_resource::set_key(v10, [v8 UTF8String]);
-    ps_resource::set_class(v10, 8);
+    ps_resource::set_key(resource, [resourceCopy UTF8String]);
+    ps_resource::set_class(resource, 8);
   }
 
-  ps_resource::resize(v10, count + 1);
-  ps_resource::set_timestamp(v10, count, a5);
-  v12 = CFRetain(a4);
-  ps_resource::set_databuffer(v10, count, v12, 0);
+  ps_resource::resize(resource, count + 1);
+  ps_resource::set_timestamp(resource, count, timestamp);
+  v12 = CFRetain(buffer);
+  ps_resource::set_databuffer(resource, count, v12, 0);
 
-  return v10;
+  return resource;
 }
 
-- (void)replaceResource:(id)a3 dataBuffer:(__CVBuffer *)a4 timestamp:(unint64_t)a5
+- (void)replaceResource:(id)resource dataBuffer:(__CVBuffer *)buffer timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  [(PSResourceHeap *)self removeResourceKey:v8];
-  v9 = [(PSResourceHeap *)self addResource:v8 dataBuffer:a4 timestamp:a5];
+  resourceCopy = resource;
+  [(PSResourceHeap *)self removeResourceKey:resourceCopy];
+  v9 = [(PSResourceHeap *)self addResource:resourceCopy dataBuffer:buffer timestamp:timestamp];
 
   return v9;
 }
 
-- (void)addResource:(id)a3 surface:(__IOSurface *)a4 timestamp:(unint64_t)a5
+- (void)addResource:(id)resource surface:(__IOSurface *)surface timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v8];
+  resourceCopy = resource;
+  v9 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
   if (!v9)
   {
     v9 = objc_alloc_init(PSResourceWrapper);
-    [(NSMutableDictionary *)self->_resources setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_resources setObject:v9 forKeyedSubscript:resourceCopy];
   }
 
-  v10 = [(PSResourceWrapper *)v9 resource];
-  ps_resource::set_valid(v10, 1);
-  count = ps_resource::get_count(v10);
+  resource = [(PSResourceWrapper *)v9 resource];
+  ps_resource::set_valid(resource, 1);
+  count = ps_resource::get_count(resource);
   if (!count)
   {
-    ps_resource::set_key(v10, [v8 UTF8String]);
-    ps_resource::set_class(v10, 4);
+    ps_resource::set_key(resource, [resourceCopy UTF8String]);
+    ps_resource::set_class(resource, 4);
   }
 
-  ps_resource::resize(v10, count + 1);
-  ps_resource::set_timestamp(v10, count, a5);
-  v12 = CFRetain(a4);
-  ps_resource::set_object(v10, count, v12);
+  ps_resource::resize(resource, count + 1);
+  ps_resource::set_timestamp(resource, count, timestamp);
+  v12 = CFRetain(surface);
+  ps_resource::set_object(resource, count, v12);
 
-  return v10;
+  return resource;
 }
 
-- (void)replaceResource:(id)a3 surface:(__IOSurface *)a4 timestamp:(unint64_t)a5
+- (void)replaceResource:(id)resource surface:(__IOSurface *)surface timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  [(PSResourceHeap *)self removeResourceKey:v8];
-  v9 = [(PSResourceHeap *)self addResource:v8 surface:a4 timestamp:a5];
+  resourceCopy = resource;
+  [(PSResourceHeap *)self removeResourceKey:resourceCopy];
+  v9 = [(PSResourceHeap *)self addResource:resourceCopy surface:surface timestamp:timestamp];
 
   return v9;
 }
 
-- (void)addResource:(id)a3 pixelBuffer:(__CVBuffer *)a4 timestamp:(unint64_t)a5
+- (void)addResource:(id)resource pixelBuffer:(__CVBuffer *)buffer timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v8];
+  resourceCopy = resource;
+  v9 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
   if (!v9)
   {
     v9 = objc_alloc_init(PSResourceWrapper);
-    [(NSMutableDictionary *)self->_resources setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_resources setObject:v9 forKeyedSubscript:resourceCopy];
   }
 
-  v10 = [(PSResourceWrapper *)v9 resource];
-  ps_resource::set_valid(v10, 1);
-  count = ps_resource::get_count(v10);
+  resource = [(PSResourceWrapper *)v9 resource];
+  ps_resource::set_valid(resource, 1);
+  count = ps_resource::get_count(resource);
   if (!count)
   {
-    ps_resource::set_key(v10, [v8 UTF8String]);
-    ps_resource::set_class(v10, 7);
+    ps_resource::set_key(resource, [resourceCopy UTF8String]);
+    ps_resource::set_class(resource, 7);
   }
 
-  ps_resource::resize(v10, count + 1);
-  ps_resource::set_timestamp(v10, count, a5);
-  v12 = CVPixelBufferRetain(a4);
-  ps_resource::set_pixelbuffer(v10, count, v12, 0);
+  ps_resource::resize(resource, count + 1);
+  ps_resource::set_timestamp(resource, count, timestamp);
+  v12 = CVPixelBufferRetain(buffer);
+  ps_resource::set_pixelbuffer(resource, count, v12, 0);
 
-  return v10;
+  return resource;
 }
 
-- (void)replaceResource:(id)a3 pixelBuffer:(__CVBuffer *)a4 timestamp:(unint64_t)a5
+- (void)replaceResource:(id)resource pixelBuffer:(__CVBuffer *)buffer timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  [(PSResourceHeap *)self removeResourceKey:v8];
-  v9 = [(PSResourceHeap *)self addResource:v8 pixelBuffer:a4 timestamp:a5];
+  resourceCopy = resource;
+  [(PSResourceHeap *)self removeResourceKey:resourceCopy];
+  v9 = [(PSResourceHeap *)self addResource:resourceCopy pixelBuffer:buffer timestamp:timestamp];
 
   return v9;
 }
 
-- (void)addResource:(id)a3 mtlBuffer:(id)a4 timestamp:(unint64_t)a5
+- (void)addResource:(id)resource mtlBuffer:(id)buffer timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v8];
+  resourceCopy = resource;
+  bufferCopy = buffer;
+  v10 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(PSResourceWrapper);
-    [(NSMutableDictionary *)self->_resources setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_resources setObject:v10 forKeyedSubscript:resourceCopy];
   }
 
-  v11 = [(PSResourceWrapper *)v10 resource];
-  ps_resource::set_valid(v11, 1);
-  count = ps_resource::get_count(v11);
+  resource = [(PSResourceWrapper *)v10 resource];
+  ps_resource::set_valid(resource, 1);
+  count = ps_resource::get_count(resource);
   if (!count)
   {
-    ps_resource::set_key(v11, [v8 UTF8String]);
-    ps_resource::set_class(v11, 5);
+    ps_resource::set_key(resource, [resourceCopy UTF8String]);
+    ps_resource::set_class(resource, 5);
   }
 
-  ps_resource::resize(v11, count + 1);
-  ps_resource::set_timestamp(v11, count, a5);
-  v13 = v9;
-  ps_resource::set_object(v11, count, v13);
+  ps_resource::resize(resource, count + 1);
+  ps_resource::set_timestamp(resource, count, timestamp);
+  v13 = bufferCopy;
+  ps_resource::set_object(resource, count, v13);
 
-  return v11;
+  return resource;
 }
 
-- (void)addResource:(id)a3 mtlTexture:(id)a4 timestamp:(unint64_t)a5
+- (void)addResource:(id)resource mtlTexture:(id)texture timestamp:(unint64_t)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:v8];
+  resourceCopy = resource;
+  textureCopy = texture;
+  v10 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resourceCopy];
   if (!v10)
   {
     v10 = objc_alloc_init(PSResourceWrapper);
-    [(NSMutableDictionary *)self->_resources setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_resources setObject:v10 forKeyedSubscript:resourceCopy];
   }
 
-  v11 = [(PSResourceWrapper *)v10 resource];
-  ps_resource::set_valid(v11, 1);
-  count = ps_resource::get_count(v11);
+  resource = [(PSResourceWrapper *)v10 resource];
+  ps_resource::set_valid(resource, 1);
+  count = ps_resource::get_count(resource);
   if (!count)
   {
-    ps_resource::set_key(v11, [v8 UTF8String]);
-    ps_resource::set_class(v11, 6);
+    ps_resource::set_key(resource, [resourceCopy UTF8String]);
+    ps_resource::set_class(resource, 6);
   }
 
-  ps_resource::resize(v11, count + 1);
-  ps_resource::set_timestamp(v11, count, a5);
-  v13 = v9;
-  ps_resource::set_object(v11, count, v13);
+  ps_resource::resize(resource, count + 1);
+  ps_resource::set_timestamp(resource, count, timestamp);
+  v13 = textureCopy;
+  ps_resource::set_object(resource, count, v13);
 
-  return v11;
+  return resource;
 }
 
-- (void)getResource:(id)a3
+- (void)getResource:(id)resource
 {
-  v3 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:resource];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 resource];
+    resource = [v3 resource];
   }
 
   else
   {
-    v5 = 0;
+    resource = 0;
   }
 
-  return v5;
+  return resource;
 }
 
-- (id)getResourceWrapper:(id)a3
+- (id)getResourceWrapper:(id)wrapper
 {
-  v3 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_resources objectForKeyedSubscript:wrapper];
 
   return v3;
 }
 
-- (void)createAndAddResource:(id)a3 timestamp:(unint64_t)a4
+- (void)createAndAddResource:(id)resource timestamp:(unint64_t)timestamp
 {
   v60[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 resourceClass];
-  if (v7 <= 4)
+  resourceCopy = resource;
+  resourceClass = [resourceCopy resourceClass];
+  if (resourceClass <= 4)
   {
-    if (v7 <= 2)
+    if (resourceClass <= 2)
     {
-      if (v7 == 1)
+      if (resourceClass == 1)
       {
-        v15 = v6;
+        v15 = resourceCopy;
         v16 = [v15 key];
-        v21 = -[PSResourceHeap addResource:bytes:size:timestamp:withDeallocator:](self, "addResource:bytes:size:timestamp:withDeallocator:", v16, malloc_type_calloc(1uLL, [v15 length], 0xF8391D15uLL), objc_msgSend(v15, "length"), a4, &__block_literal_global_4);
+        v21 = -[PSResourceHeap addResource:bytes:size:timestamp:withDeallocator:](self, "addResource:bytes:size:timestamp:withDeallocator:", v16, malloc_type_calloc(1uLL, [v15 length], 0xF8391D15uLL), objc_msgSend(v15, "length"), timestamp, &__block_literal_global_4);
 LABEL_24:
 
         goto LABEL_25;
       }
 
-      if (v7 != 2)
+      if (resourceClass != 2)
       {
         goto LABEL_41;
       }
 
-      v15 = v6;
+      v15 = resourceCopy;
       v16 = [v15 key];
-      v17 = [v15 retainableAllocator];
-      v18 = (v17)[2](v17, v15, 1);
+      retainableAllocator = [v15 retainableAllocator];
+      v18 = (retainableAllocator)[2](retainableAllocator, v15, 1);
       v19 = [v18 objectAtIndexedSubscript:0];
-      v20 = [v15 retainableDeallocator];
-      v21 = [(PSResourceHeap *)self addResource:v16 object:v19 timestamp:a4 deallocator:v20];
+      retainableDeallocator = [v15 retainableDeallocator];
+      v21 = [(PSResourceHeap *)self addResource:v16 object:v19 timestamp:timestamp deallocator:retainableDeallocator];
 
 LABEL_23:
       goto LABEL_24;
     }
 
-    if (v7 != 3)
+    if (resourceClass != 3)
     {
-      v22 = v6;
-      v23 = [v22 ioSurfaceProperties];
-      if (v23)
+      v22 = resourceCopy;
+      ioSurfaceProperties = [v22 ioSurfaceProperties];
+      if (ioSurfaceProperties)
       {
-        v24 = [v22 ioSurfaceProperties];
+        ioSurfaceProperties2 = [v22 ioSurfaceProperties];
       }
 
       else
@@ -488,70 +488,70 @@ LABEL_23:
         v59[2] = *MEMORY[0x277CD2A70];
         v45 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v22, "pixelFormat")}];
         v60[2] = v45;
-        v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:3];
+        ioSurfaceProperties2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:3];
       }
 
-      v46 = IOSurfaceCreate(v24);
+      v46 = IOSurfaceCreate(ioSurfaceProperties2);
       if (!v46)
       {
         __assert_rtn("[PSResourceHeap createAndAddResource:timestamp:]", "PSTestEngine.mm", 677, "surface != NULL");
       }
 
       v47 = [v22 key];
-      v21 = [(PSResourceHeap *)self addResource:v47 surface:v46 timestamp:a4];
+      v21 = [(PSResourceHeap *)self addResource:v47 surface:v46 timestamp:timestamp];
 
       CFRelease(v46);
       goto LABEL_25;
     }
 
-    v15 = v6;
+    v15 = resourceCopy;
     v16 = [v15 key];
-    v17 = ([v15 allocator])(v15, 1);
-    v27 = -[PSResourceHeap addResource:opaquePointer:timestamp:deallocator:](self, "addResource:opaquePointer:timestamp:deallocator:", v16, [v17 pointerAtIndex:0], a4, objc_msgSend(v15, "deallocator"));
+    retainableAllocator = ([v15 allocator])(v15, 1);
+    v27 = -[PSResourceHeap addResource:opaquePointer:timestamp:deallocator:](self, "addResource:opaquePointer:timestamp:deallocator:", v16, [retainableAllocator pointerAtIndex:0], timestamp, objc_msgSend(v15, "deallocator"));
 LABEL_22:
     v21 = v27;
     goto LABEL_23;
   }
 
-  if (v7 <= 6)
+  if (resourceClass <= 6)
   {
-    if (v7 == 5)
+    if (resourceClass == 5)
     {
-      v15 = v6;
+      v15 = resourceCopy;
       v16 = -[MTLDevice newBufferWithLength:options:](self->_mtlDevice, "newBufferWithLength:options:", [v15 length], objc_msgSend(0, "resourceOptions"));
       if (!v16)
       {
         __assert_rtn("[PSResourceHeap createAndAddResource:timestamp:]", "PSTestEngine.mm", 687, "mtlBuffer != NULL");
       }
 
-      v17 = [v15 key];
-      v27 = [(PSResourceHeap *)self addResource:v17 mtlBuffer:v16 timestamp:a4];
+      retainableAllocator = [v15 key];
+      v27 = [(PSResourceHeap *)self addResource:retainableAllocator mtlBuffer:v16 timestamp:timestamp];
     }
 
     else
     {
-      v15 = v6;
+      v15 = resourceCopy;
       mtlDevice = self->_mtlDevice;
-      v26 = [v15 mtlTextureDescriptor];
-      v16 = [(MTLDevice *)mtlDevice newTextureWithDescriptor:v26];
+      mtlTextureDescriptor = [v15 mtlTextureDescriptor];
+      v16 = [(MTLDevice *)mtlDevice newTextureWithDescriptor:mtlTextureDescriptor];
 
       if (!v16)
       {
         __assert_rtn("[PSResourceHeap createAndAddResource:timestamp:]", "PSTestEngine.mm", 696, "mtlTexture != NULL");
       }
 
-      v17 = [v15 key];
-      v27 = [(PSResourceHeap *)self addResource:v17 mtlTexture:v16 timestamp:a4];
+      retainableAllocator = [v15 key];
+      v27 = [(PSResourceHeap *)self addResource:retainableAllocator mtlTexture:v16 timestamp:timestamp];
     }
 
     goto LABEL_22;
   }
 
-  if (v7 != 7)
+  if (resourceClass != 7)
   {
-    if (v7 == 8)
+    if (resourceClass == 8)
     {
-      v36 = v6;
+      v36 = resourceCopy;
       cf = 0;
       v55[0] = *MEMORY[0x277CD2B88];
       v37 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v36, "width")}];
@@ -583,9 +583,9 @@ LABEL_22:
       __assert_rtn("[PSResourceHeap createAndAddResource:timestamp:]", "PSTestEngine.mm", v49, v48);
     }
 
-    if (v7 == 9)
+    if (resourceClass == 9)
     {
-      v8 = v6;
+      v8 = resourceCopy;
       cf = 0;
       v53[0] = *MEMORY[0x277CD2B88];
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "width")}];
@@ -621,21 +621,21 @@ LABEL_41:
     __assert_rtn("[PSResourceHeap createAndAddResource:timestamp:]", "PSTestEngine.mm", 749, "false && Missing/unsupported resource class");
   }
 
-  v30 = v6;
+  v30 = resourceCopy;
   cf = 0;
-  v31 = [v30 width];
-  v32 = [v30 height];
-  v33 = [v30 pixelFormat];
+  width = [v30 width];
+  height = [v30 height];
+  pixelFormat = [v30 pixelFormat];
   v57 = *MEMORY[0x277CC4DE8];
   v58 = MEMORY[0x277CBEC10];
   v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], v31, v32, v33, v34, &cf))
+  if (CVPixelBufferCreate(*MEMORY[0x277CBECE8], width, height, pixelFormat, v34, &cf))
   {
     __assert_rtn("[PSResourceHeap createAndAddResource:timestamp:]", "PSTestEngine.mm", 707, "success == kCVReturnSuccess");
   }
 
   v35 = [v30 key];
-  v21 = [(PSResourceHeap *)self addResource:v35 pixelBuffer:cf timestamp:a4];
+  v21 = [(PSResourceHeap *)self addResource:v35 pixelBuffer:cf timestamp:timestamp];
 
   CVPixelBufferRelease(cf);
 LABEL_25:

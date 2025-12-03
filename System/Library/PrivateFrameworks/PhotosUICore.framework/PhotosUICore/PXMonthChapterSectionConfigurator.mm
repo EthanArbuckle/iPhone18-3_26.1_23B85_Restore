@@ -1,16 +1,16 @@
 @interface PXMonthChapterSectionConfigurator
-- (PXMonthChapterSectionConfigurator)initWithExtendedTraitCollection:(id)a3 assetsSectionLayoutSpec:(id)a4;
-- (id)updatedHeaderLayout:(id)a3 withHeaderStyle:(int64_t)a4 forAssetSectionLayout:(id)a5;
-- (void)configureAssetSectionLayout:(id)a3;
+- (PXMonthChapterSectionConfigurator)initWithExtendedTraitCollection:(id)collection assetsSectionLayoutSpec:(id)spec;
+- (id)updatedHeaderLayout:(id)layout withHeaderStyle:(int64_t)style forAssetSectionLayout:(id)sectionLayout;
+- (void)configureAssetSectionLayout:(id)layout;
 @end
 
 @implementation PXMonthChapterSectionConfigurator
 
-- (id)updatedHeaderLayout:(id)a3 withHeaderStyle:(int64_t)a4 forAssetSectionLayout:(id)a5
+- (id)updatedHeaderLayout:(id)layout withHeaderStyle:(int64_t)style forAssetSectionLayout:(id)sectionLayout
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  layoutCopy = layout;
+  sectionLayoutCopy = sectionLayout;
+  v9 = layoutCopy;
   objc_opt_class();
   v10 = v9;
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -18,12 +18,12 @@
     v10 = objc_alloc_init(PXCuratedLibraryChapterHeaderLayout);
   }
 
-  v11 = [v8 assetCollectionReference];
-  [(PXCuratedLibraryChapterHeaderLayout *)v10 setAssetCollectionReference:v11];
+  assetCollectionReference = [sectionLayoutCopy assetCollectionReference];
+  [(PXCuratedLibraryChapterHeaderLayout *)v10 setAssetCollectionReference:assetCollectionReference];
 
-  if (v8)
+  if (sectionLayoutCopy)
   {
-    [v8 sectionIndexPath];
+    [sectionLayoutCopy sectionIndexPath];
   }
 
   else
@@ -35,46 +35,46 @@
   v15[0] = v16;
   v15[1] = v17;
   [(PXCuratedLibraryChapterHeaderLayout *)v10 setSectionIndexPath:v15];
-  v12 = [(PXMonthChapterSectionConfigurator *)self cardBodySpec];
-  [v12 padding];
+  cardBodySpec = [(PXMonthChapterSectionConfigurator *)self cardBodySpec];
+  [cardBodySpec padding];
   [(PXCuratedLibraryChapterHeaderLayout *)v10 setPadding:?];
 
-  v13 = [(PXMonthChapterSectionConfigurator *)self chapterHeaderSpec];
-  [(PXCuratedLibraryChapterHeaderLayout *)v10 setSpec:v13];
+  chapterHeaderSpec = [(PXMonthChapterSectionConfigurator *)self chapterHeaderSpec];
+  [(PXCuratedLibraryChapterHeaderLayout *)v10 setSpec:chapterHeaderSpec];
 
   return v10;
 }
 
-- (void)configureAssetSectionLayout:(id)a3
+- (void)configureAssetSectionLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [v4 headerLayout];
-  v7 = [(PXMonthChapterSectionConfigurator *)self updatedHeaderLayout:v5 withHeaderStyle:2 forAssetSectionLayout:v4];
+  layoutCopy = layout;
+  headerLayout = [layoutCopy headerLayout];
+  v7 = [(PXMonthChapterSectionConfigurator *)self updatedHeaderLayout:headerLayout withHeaderStyle:2 forAssetSectionLayout:layoutCopy];
 
-  [v4 setPadding:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
-  [v4 setMode:0];
-  [v4 setWantsShadow:0];
-  [v4 setHeaderLayoutGuide:0];
-  v6 = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec];
-  [v4 setSpec:v6];
+  [layoutCopy setPadding:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
+  [layoutCopy setMode:0];
+  [layoutCopy setWantsShadow:0];
+  [layoutCopy setHeaderLayoutGuide:0];
+  assetsSectionLayoutSpec = [(PXAssetsSectionConfigurator *)self assetsSectionLayoutSpec];
+  [layoutCopy setSpec:assetsSectionLayoutSpec];
 
-  [v4 setHeaderLayout:v7];
-  [v4 setBodyContentLayout:0 wantsDecoration:0];
+  [layoutCopy setHeaderLayout:v7];
+  [layoutCopy setBodyContentLayout:0 wantsDecoration:0];
 }
 
-- (PXMonthChapterSectionConfigurator)initWithExtendedTraitCollection:(id)a3 assetsSectionLayoutSpec:(id)a4
+- (PXMonthChapterSectionConfigurator)initWithExtendedTraitCollection:(id)collection assetsSectionLayoutSpec:(id)spec
 {
-  v6 = a3;
+  collectionCopy = collection;
   v13.receiver = self;
   v13.super_class = PXMonthChapterSectionConfigurator;
-  v7 = [(PXAssetsSectionConfigurator *)&v13 initWithExtendedTraitCollection:v6 assetsSectionLayoutSpec:a4];
+  v7 = [(PXAssetsSectionConfigurator *)&v13 initWithExtendedTraitCollection:collectionCopy assetsSectionLayoutSpec:spec];
   if (v7)
   {
-    v8 = [[PXCuratedLibraryChapterHeaderLayoutSpec alloc] initWithExtendedTraitCollection:v6];
+    v8 = [[PXCuratedLibraryChapterHeaderLayoutSpec alloc] initWithExtendedTraitCollection:collectionCopy];
     chapterHeaderSpec = v7->_chapterHeaderSpec;
     v7->_chapterHeaderSpec = v8;
 
-    v10 = [[PXMonthCardSectionBodyLayoutSpec alloc] initWithExtendedTraitCollection:v6];
+    v10 = [[PXMonthCardSectionBodyLayoutSpec alloc] initWithExtendedTraitCollection:collectionCopy];
     cardBodySpec = v7->_cardBodySpec;
     v7->_cardBodySpec = v10;
   }

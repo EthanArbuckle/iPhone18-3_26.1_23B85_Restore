@@ -1,13 +1,13 @@
 @interface CSScenarioManager
 + (CSScenarioManager)sharedInstance;
 - (id)_init;
-- (id)restrictionsForScenario:(id)a3;
-- (void)_addContextStoreObserverForIdentifier:(id)a3;
-- (void)evaluateScenarios:(id)a3;
+- (id)restrictionsForScenario:(id)scenario;
+- (void)_addContextStoreObserverForIdentifier:(id)identifier;
+- (void)evaluateScenarios:(id)scenarios;
 - (void)evaluateScenariosPostInit;
-- (void)notifyObserversOfActiveScenarios:(id)a3 previousScenarios:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerScenario:(id)a3;
+- (void)notifyObserversOfActiveScenarios:(id)scenarios previousScenarios:(id)previousScenarios;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerScenario:(id)scenario;
 @end
 
 @implementation CSScenarioManager
@@ -42,9 +42,9 @@ uint64_t __35__CSScenarioManager_sharedInstance__block_invoke()
     logger = v2->_logger;
     v2->_logger = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     allScenariosByIdentifier = v2->_allScenariosByIdentifier;
-    v2->_allScenariosByIdentifier = v5;
+    v2->_allScenariosByIdentifier = dictionary;
 
     v7 = [MEMORY[0x277CBEB58] set];
     activeScenarios = v2->_activeScenarios;
@@ -58,9 +58,9 @@ uint64_t __35__CSScenarioManager_sharedInstance__block_invoke()
     activeScenariosLastPublished = v2->_activeScenariosLastPublished;
     v2->_activeScenariosLastPublished = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     affectedScenarioByContextIdentifier = v2->_affectedScenarioByContextIdentifier;
-    v2->_affectedScenarioByContextIdentifier = v13;
+    v2->_affectedScenarioByContextIdentifier = dictionary2;
 
     v15 = [MEMORY[0x277CBEB58] set];
     observers = v2->_observers;
@@ -72,38 +72,38 @@ uint64_t __35__CSScenarioManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)registerScenario:(id)a3
+- (void)registerScenario:(id)scenario
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scenarioCopy = scenario;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
-    [(CSScenarioManager *)logger registerScenario:v4];
+    [(CSScenarioManager *)logger registerScenario:scenarioCopy];
   }
 
-  v6 = [v4 identifier];
-  v7 = [(NSMutableDictionary *)self->_allScenariosByIdentifier objectForKey:v6];
+  identifier = [scenarioCopy identifier];
+  v7 = [(NSMutableDictionary *)self->_allScenariosByIdentifier objectForKey:identifier];
 
   if (v7)
   {
     v8 = self->_logger;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CSScenarioManager *)v8 registerScenario:v4];
+      [(CSScenarioManager *)v8 registerScenario:scenarioCopy];
     }
   }
 
-  [(NSMutableDictionary *)self->_allScenariosByIdentifier setObject:v4 forKeyedSubscript:v6];
-  v24 = v4;
-  v9 = [v4 scenarioCriteria];
-  v10 = [v9 allKeys];
+  [(NSMutableDictionary *)self->_allScenariosByIdentifier setObject:scenarioCopy forKeyedSubscript:identifier];
+  v24 = scenarioCopy;
+  scenarioCriteria = [scenarioCopy scenarioCriteria];
+  allKeys = [scenarioCriteria allKeys];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v10;
+  v11 = allKeys;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
@@ -119,21 +119,21 @@ uint64_t __35__CSScenarioManager_sharedInstance__block_invoke()
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        v17 = [(CSScenarioManager *)self affectedScenarioByContextIdentifier];
-        v18 = [v17 objectForKey:v16];
+        affectedScenarioByContextIdentifier = [(CSScenarioManager *)self affectedScenarioByContextIdentifier];
+        v18 = [affectedScenarioByContextIdentifier objectForKey:v16];
 
         if (!v18)
         {
-          v19 = [(CSScenarioManager *)self affectedScenarioByContextIdentifier];
+          affectedScenarioByContextIdentifier2 = [(CSScenarioManager *)self affectedScenarioByContextIdentifier];
           v20 = [MEMORY[0x277CBEB58] set];
-          [v19 setObject:v20 forKey:v16];
+          [affectedScenarioByContextIdentifier2 setObject:v20 forKey:v16];
 
           [(CSScenarioManager *)self _addContextStoreObserverForIdentifier:v16];
         }
 
-        v21 = [(CSScenarioManager *)self affectedScenarioByContextIdentifier];
-        v22 = [v21 objectForKeyedSubscript:v16];
-        [v22 addObject:v6];
+        affectedScenarioByContextIdentifier3 = [(CSScenarioManager *)self affectedScenarioByContextIdentifier];
+        v22 = [affectedScenarioByContextIdentifier3 objectForKeyedSubscript:v16];
+        [v22 addObject:identifier];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -173,19 +173,19 @@ void __46__CSScenarioManager_evaluateScenariosPostInit__block_invoke(uint64_t a1
   [v3 evaluateScenarios:v7];
 }
 
-- (void)_addContextStoreObserverForIdentifier:(id)a3
+- (void)_addContextStoreObserverForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[CSContextStore sharedInstance];
-  [v5 addObserver:self forContextIdentifier:v4];
+  [v5 addObserver:self forContextIdentifier:identifierCopy];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v12 = pathCopy;
   if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_DEBUG))
   {
     [CSScenarioManager observeValueForKeyPath:ofObject:change:context:];
@@ -218,16 +218,16 @@ void __68__CSScenarioManager_observeValueForKeyPath_ofObject_change_context___bl
   [WeakRetained evaluateScenarios:*(a1 + 32)];
 }
 
-- (void)evaluateScenarios:(id)a3
+- (void)evaluateScenarios:(id)scenarios
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scenariosCopy = scenarios;
   v5 = [(NSMutableSet *)self->_activeScenarios copy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = scenariosCopy;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v6)
   {
@@ -302,11 +302,11 @@ void __68__CSScenarioManager_observeValueForKeyPath_ofObject_change_context___bl
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversOfActiveScenarios:(id)a3 previousScenarios:(id)a4
+- (void)notifyObserversOfActiveScenarios:(id)scenarios previousScenarios:(id)previousScenarios
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  scenariosCopy = scenarios;
+  previousScenariosCopy = previousScenarios;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -327,7 +327,7 @@ void __68__CSScenarioManager_observeValueForKeyPath_ofObject_change_context___bl
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v14 + 1) + 8 * v12++) currentActiveScenarios:v6 previousActiveScenarios:{v7, v14}];
+        [*(*(&v14 + 1) + 8 * v12++) currentActiveScenarios:scenariosCopy previousActiveScenarios:{previousScenariosCopy, v14}];
       }
 
       while (v10 != v12);
@@ -340,12 +340,12 @@ void __68__CSScenarioManager_observeValueForKeyPath_ofObject_change_context___bl
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)restrictionsForScenario:(id)a3
+- (id)restrictionsForScenario:(id)scenario
 {
-  v3 = [(CSScenarioManager *)self scenarioForIdentifier:a3];
-  v4 = [v3 restrictionsByProcess];
+  v3 = [(CSScenarioManager *)self scenarioForIdentifier:scenario];
+  restrictionsByProcess = [v3 restrictionsByProcess];
 
-  return v4;
+  return restrictionsByProcess;
 }
 
 - (void)registerScenario:(void *)a1 .cold.1(void *a1, void *a2)

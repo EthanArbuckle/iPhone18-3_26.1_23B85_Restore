@@ -1,20 +1,20 @@
 @interface PKPaymentBrowseableBankAppsResponse
-- (PKPaymentBrowseableBankAppsResponse)initWithData:(id)a3;
+- (PKPaymentBrowseableBankAppsResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentBrowseableBankAppsResponse
 
-- (PKPaymentBrowseableBankAppsResponse)initWithData:(id)a3
+- (PKPaymentBrowseableBankAppsResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKPaymentBrowseableBankAppsResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
-    v6 = [v5 PKArrayForKey:@"availablePartners"];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
+    v6 = [jSONObject PKArrayForKey:@"availablePartners"];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {

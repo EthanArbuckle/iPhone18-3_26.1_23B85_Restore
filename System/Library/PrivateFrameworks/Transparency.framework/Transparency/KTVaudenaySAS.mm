@@ -1,22 +1,22 @@
 @interface KTVaudenaySAS
-+ (id)randomValueOfLength:(unint64_t)a3;
-- (BOOL)setInitiatorUndisclosedRandom:(id)a3;
-- (BOOL)setPeerRandom:(id)a3;
-- (id)initAcceptorWithPublic:(id)a3 configuration:(id)a4;
-- (id)initInitiatorWithPublic:(id)a3 configuration:(id)a4;
++ (id)randomValueOfLength:(unint64_t)length;
+- (BOOL)setInitiatorUndisclosedRandom:(id)random;
+- (BOOL)setPeerRandom:(id)random;
+- (id)initAcceptorWithPublic:(id)public configuration:(id)configuration;
+- (id)initInitiatorWithPublic:(id)public configuration:(id)configuration;
 - (id)selfRandom;
 - (id)shortAuthenticationString;
 - (id)undisclosedInitiatorRandom;
-- (id)undisclosedInitiatorValue:(id)a3;
-- (void)setPeerPublic:(id)a3;
+- (id)undisclosedInitiatorValue:(id)value;
+- (void)setPeerPublic:(id)public;
 @end
 
 @implementation KTVaudenaySAS
 
-+ (id)randomValueOfLength:(unint64_t)a3
++ (id)randomValueOfLength:(unint64_t)length
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:a3];
-  if (SecRandomCopyBytes(0, a3, [v4 mutableBytes]))
+  v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:length];
+  if (SecRandomCopyBytes(0, length, [v4 mutableBytes]))
   {
     abort();
   }
@@ -24,10 +24,10 @@
   return v4;
 }
 
-- (id)initInitiatorWithPublic:(id)a3 configuration:(id)a4
+- (id)initInitiatorWithPublic:(id)public configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  publicCopy = public;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = KTVaudenaySAS;
   v8 = [(KTVaudenaySAS *)&v13 init];
@@ -35,8 +35,8 @@
   if (v8)
   {
     [(KTVaudenaySAS *)v8 setInitiator:1];
-    [(KTVaudenaySAS *)v9 setInitiatorInfo:v6];
-    [(KTVaudenaySAS *)v9 setConfig:v7];
+    [(KTVaudenaySAS *)v9 setInitiatorInfo:publicCopy];
+    [(KTVaudenaySAS *)v9 setConfig:configurationCopy];
     v10 = [KTVaudenaySAS randomValueOfLength:16];
     [(KTVaudenaySAS *)v9 setInitiatorRandom:v10];
 
@@ -46,10 +46,10 @@
   return v9;
 }
 
-- (id)initAcceptorWithPublic:(id)a3 configuration:(id)a4
+- (id)initAcceptorWithPublic:(id)public configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  publicCopy = public;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = KTVaudenaySAS;
   v8 = [(KTVaudenaySAS *)&v13 init];
@@ -57,8 +57,8 @@
   if (v8)
   {
     [(KTVaudenaySAS *)v8 setInitiator:0];
-    [(KTVaudenaySAS *)v9 setAcceptorInfo:v6];
-    [(KTVaudenaySAS *)v9 setConfig:v7];
+    [(KTVaudenaySAS *)v9 setAcceptorInfo:publicCopy];
+    [(KTVaudenaySAS *)v9 setConfig:configurationCopy];
     v10 = [KTVaudenaySAS randomValueOfLength:16];
     [(KTVaudenaySAS *)v9 setAcceptorRandom:v10];
 
@@ -68,32 +68,32 @@
   return v9;
 }
 
-- (void)setPeerPublic:(id)a3
+- (void)setPeerPublic:(id)public
 {
-  v4 = a3;
+  publicCopy = public;
   if ([(KTVaudenaySAS *)self initiator])
   {
-    [(KTVaudenaySAS *)self setAcceptorInfo:v4];
+    [(KTVaudenaySAS *)self setAcceptorInfo:publicCopy];
   }
 
   else
   {
-    [(KTVaudenaySAS *)self setInitiatorInfo:v4];
+    [(KTVaudenaySAS *)self setInitiatorInfo:publicCopy];
   }
 }
 
-- (id)undisclosedInitiatorValue:(id)a3
+- (id)undisclosedInitiatorValue:(id)value
 {
   v4 = MEMORY[0x1E695DF88];
-  v5 = a3;
+  valueCopy = value;
   v6 = [v4 alloc];
-  v7 = [(KTVaudenaySAS *)self config];
-  v8 = [v6 initWithLength:{*objc_msgSend(v7, "di")}];
+  config = [(KTVaudenaySAS *)self config];
+  v8 = [v6 initWithLength:{*objc_msgSend(config, "di")}];
 
-  v9 = [(KTVaudenaySAS *)self config];
-  [v9 di];
-  [v5 length];
-  [v5 bytes];
+  config2 = [(KTVaudenaySAS *)self config];
+  [config2 di];
+  [valueCopy length];
+  [valueCopy bytes];
 
   [v8 mutableBytes];
   ccdigest();
@@ -103,29 +103,29 @@
 
 - (id)undisclosedInitiatorRandom
 {
-  v3 = [(KTVaudenaySAS *)self initiatorRandom];
-  v4 = [(KTVaudenaySAS *)self undisclosedInitiatorValue:v3];
+  initiatorRandom = [(KTVaudenaySAS *)self initiatorRandom];
+  v4 = [(KTVaudenaySAS *)self undisclosedInitiatorValue:initiatorRandom];
 
   return v4;
 }
 
-- (BOOL)setInitiatorUndisclosedRandom:(id)a3
+- (BOOL)setInitiatorUndisclosedRandom:(id)random
 {
-  v4 = a3;
+  randomCopy = random;
   if ([(KTVaudenaySAS *)self initiator])
   {
     goto LABEL_5;
   }
 
-  v5 = [(KTVaudenaySAS *)self sentUndisclosedRandom];
-  if (!v5)
+  sentUndisclosedRandom = [(KTVaudenaySAS *)self sentUndisclosedRandom];
+  if (!sentUndisclosedRandom)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  v7 = [(KTVaudenaySAS *)self sentUndisclosedRandom];
-  v8 = [v7 isEqual:v4];
+  v6 = sentUndisclosedRandom;
+  sentUndisclosedRandom2 = [(KTVaudenaySAS *)self sentUndisclosedRandom];
+  v8 = [sentUndisclosedRandom2 isEqual:randomCopy];
 
   if (!v8)
   {
@@ -136,7 +136,7 @@ LABEL_5:
   else
   {
 LABEL_4:
-    v9 = [MEMORY[0x1E695DEF0] dataWithData:v4];
+    v9 = [MEMORY[0x1E695DEF0] dataWithData:randomCopy];
     [(KTVaudenaySAS *)self setSentUndisclosedRandom:v9];
 
     v10 = 1;
@@ -145,27 +145,27 @@ LABEL_4:
   return v10;
 }
 
-- (BOOL)setPeerRandom:(id)a3
+- (BOOL)setPeerRandom:(id)random
 {
-  v4 = a3;
-  if ([v4 length] != 16)
+  randomCopy = random;
+  if ([randomCopy length] != 16)
   {
     goto LABEL_8;
   }
 
   if (![(KTVaudenaySAS *)self initiator])
   {
-    v7 = [(KTVaudenaySAS *)self sentUndisclosedRandom];
+    sentUndisclosedRandom = [(KTVaudenaySAS *)self sentUndisclosedRandom];
 
-    if (v7)
+    if (sentUndisclosedRandom)
     {
-      v5 = [(KTVaudenaySAS *)self undisclosedInitiatorValue:v4];
-      v8 = [(KTVaudenaySAS *)self sentUndisclosedRandom];
-      v6 = [v5 isEqual:v8];
+      v5 = [(KTVaudenaySAS *)self undisclosedInitiatorValue:randomCopy];
+      sentUndisclosedRandom2 = [(KTVaudenaySAS *)self sentUndisclosedRandom];
+      v6 = [v5 isEqual:sentUndisclosedRandom2];
 
       if (v6)
       {
-        v9 = [MEMORY[0x1E695DEF0] dataWithData:v4];
+        v9 = [MEMORY[0x1E695DEF0] dataWithData:randomCopy];
         [(KTVaudenaySAS *)self setInitiatorRandom:v9];
       }
 
@@ -177,7 +177,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [MEMORY[0x1E695DEF0] dataWithData:v4];
+  v5 = [MEMORY[0x1E695DEF0] dataWithData:randomCopy];
   [(KTVaudenaySAS *)self setAcceptorRandom:v5];
   LOBYTE(v6) = 1;
 LABEL_7:
@@ -188,157 +188,157 @@ LABEL_9:
 
 - (id)selfRandom
 {
-  v3 = [(KTVaudenaySAS *)self initiator];
-  v4 = [(KTVaudenaySAS *)self acceptorRandom];
-  v5 = v4;
-  if (v3)
+  initiator = [(KTVaudenaySAS *)self initiator];
+  acceptorRandom = [(KTVaudenaySAS *)self acceptorRandom];
+  initiatorRandom = acceptorRandom;
+  if (initiator)
   {
 
-    if (v5)
+    if (initiatorRandom)
     {
-      v5 = [(KTVaudenaySAS *)self initiatorRandom];
+      initiatorRandom = [(KTVaudenaySAS *)self initiatorRandom];
     }
   }
 
-  return v5;
+  return initiatorRandom;
 }
 
 - (id)shortAuthenticationString
 {
   v63 = *MEMORY[0x1E69E9840];
-  v3 = [(KTVaudenaySAS *)self initiatorInfo];
-  if (!v3)
+  initiatorInfo = [(KTVaudenaySAS *)self initiatorInfo];
+  if (!initiatorInfo)
   {
     goto LABEL_11;
   }
 
-  v4 = v3;
-  v5 = [(KTVaudenaySAS *)self initiatorRandom];
-  if (!v5)
+  v4 = initiatorInfo;
+  initiatorRandom = [(KTVaudenaySAS *)self initiatorRandom];
+  if (!initiatorRandom)
   {
     goto LABEL_10;
   }
 
-  v6 = v5;
-  v7 = [(KTVaudenaySAS *)self acceptorInfo];
-  if (!v7)
+  v6 = initiatorRandom;
+  acceptorInfo = [(KTVaudenaySAS *)self acceptorInfo];
+  if (!acceptorInfo)
   {
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v8 = v7;
-  v9 = [(KTVaudenaySAS *)self acceptorRandom];
+  v8 = acceptorInfo;
+  acceptorRandom = [(KTVaudenaySAS *)self acceptorRandom];
 
-  if (!v9)
+  if (!acceptorRandom)
   {
 LABEL_11:
     v51 = 0;
     goto LABEL_12;
   }
 
-  v60 = [(KTVaudenaySAS *)self config];
-  v10 = *([v60 di] + 8);
-  v11 = [(KTVaudenaySAS *)self config];
-  v12 = v10 + *([v11 di] + 16) + 19;
-  v13 = [(KTVaudenaySAS *)self config];
-  v14 = [v13 di];
+  config = [(KTVaudenaySAS *)self config];
+  v10 = *([config di] + 8);
+  config2 = [(KTVaudenaySAS *)self config];
+  v12 = v10 + *([config2 di] + 16) + 19;
+  config3 = [(KTVaudenaySAS *)self config];
+  v14 = [config3 di];
   v59 = &v59;
   v15 = ((v12 | 7) + *(v14 + 8)) & 0xFFFFFFFFFFFFFFF8;
   MEMORY[0x1EEE9AC00](v14);
   bzero(&v59 - v16, v17);
-  v18 = [MEMORY[0x1E695DF88] data];
-  v19 = [(KTVaudenaySAS *)self config];
-  v20 = [v19 digestPrefix];
+  data = [MEMORY[0x1E695DF88] data];
+  config4 = [(KTVaudenaySAS *)self config];
+  digestPrefix = [config4 digestPrefix];
 
-  if (v20)
+  if (digestPrefix)
   {
-    v21 = [(KTVaudenaySAS *)self config];
-    v22 = [v21 digestPrefix];
-    [v18 appendData:v22];
+    config5 = [(KTVaudenaySAS *)self config];
+    digestPrefix2 = [config5 digestPrefix];
+    [data appendData:digestPrefix2];
   }
 
-  v23 = [(KTVaudenaySAS *)self initiatorRandom];
-  [v18 appendData:v23];
+  initiatorRandom2 = [(KTVaudenaySAS *)self initiatorRandom];
+  [data appendData:initiatorRandom2];
 
-  v24 = [(KTVaudenaySAS *)self acceptorRandom];
-  [v18 appendData:v24];
+  acceptorRandom2 = [(KTVaudenaySAS *)self acceptorRandom];
+  [data appendData:acceptorRandom2];
 
-  v25 = [(KTVaudenaySAS *)self config];
-  [v25 di];
-  [v18 length];
-  [v18 mutableBytes];
+  config6 = [(KTVaudenaySAS *)self config];
+  [config6 di];
+  [data length];
+  [data mutableBytes];
   cchmac_init();
 
-  [v18 length];
-  [v18 mutableBytes];
+  [data length];
+  [data mutableBytes];
   cc_clear();
-  v26 = [(KTVaudenaySAS *)self initiatorInfo];
-  v62 = bswap32([v26 length]);
+  initiatorInfo2 = [(KTVaudenaySAS *)self initiatorInfo];
+  v62 = bswap32([initiatorInfo2 length]);
 
-  v27 = [(KTVaudenaySAS *)self acceptorInfo];
-  v61 = bswap32([v27 length]);
+  acceptorInfo2 = [(KTVaudenaySAS *)self acceptorInfo];
+  v61 = bswap32([acceptorInfo2 length]);
 
-  v28 = [(KTVaudenaySAS *)self config];
-  [v28 di];
+  config7 = [(KTVaudenaySAS *)self config];
+  [config7 di];
   cchmac_update();
 
-  v29 = [(KTVaudenaySAS *)self config];
-  [v29 di];
-  v30 = [(KTVaudenaySAS *)self initiatorInfo];
-  [v30 length];
-  v31 = [(KTVaudenaySAS *)self initiatorInfo];
-  [v31 bytes];
+  config8 = [(KTVaudenaySAS *)self config];
+  [config8 di];
+  initiatorInfo3 = [(KTVaudenaySAS *)self initiatorInfo];
+  [initiatorInfo3 length];
+  initiatorInfo4 = [(KTVaudenaySAS *)self initiatorInfo];
+  [initiatorInfo4 bytes];
   cchmac_update();
 
-  v32 = [(KTVaudenaySAS *)self config];
-  [v32 di];
+  config9 = [(KTVaudenaySAS *)self config];
+  [config9 di];
   cchmac_update();
 
-  v33 = [(KTVaudenaySAS *)self config];
-  [v33 di];
-  v34 = [(KTVaudenaySAS *)self acceptorInfo];
-  [v34 length];
-  v35 = [(KTVaudenaySAS *)self acceptorInfo];
-  [v35 bytes];
+  config10 = [(KTVaudenaySAS *)self config];
+  [config10 di];
+  acceptorInfo3 = [(KTVaudenaySAS *)self acceptorInfo];
+  [acceptorInfo3 length];
+  acceptorInfo4 = [(KTVaudenaySAS *)self acceptorInfo];
+  [acceptorInfo4 bytes];
   cchmac_update();
 
   v36 = objc_alloc(MEMORY[0x1E695DF88]);
-  v37 = [(KTVaudenaySAS *)self config];
-  v38 = [v36 initWithLength:{*objc_msgSend(v37, "di")}];
+  config11 = [(KTVaudenaySAS *)self config];
+  v38 = [v36 initWithLength:{*objc_msgSend(config11, "di")}];
 
-  v39 = [(KTVaudenaySAS *)self config];
-  v40 = [v39 di];
+  config12 = [(KTVaudenaySAS *)self config];
+  v40 = [config12 di];
   if (v38)
   {
     [v38 mutableBytes];
     cchmac_final();
 
-    v41 = [(KTVaudenaySAS *)self config];
-    v42 = *([v41 di] + 8);
-    v43 = [(KTVaudenaySAS *)self config];
-    v44 = v42 + *([v43 di] + 16) + 19;
-    v45 = [(KTVaudenaySAS *)self config];
-    v46 = *([v45 di] + 8);
+    config13 = [(KTVaudenaySAS *)self config];
+    v42 = *([config13 di] + 8);
+    config14 = [(KTVaudenaySAS *)self config];
+    v44 = v42 + *([config14 di] + 16) + 19;
+    config15 = [(KTVaudenaySAS *)self config];
+    v46 = *([config15 di] + 8);
     cc_clear();
 
     v47 = bswap64(*[v38 bytes]);
-    v48 = [(KTVaudenaySAS *)self config];
-    v49 = v47 % [v48 shortCodeMod10];
+    config16 = [(KTVaudenaySAS *)self config];
+    v49 = v47 % [config16 shortCodeMod10];
 
     v50 = MEMORY[0x1E696AEC0];
-    v39 = [(KTVaudenaySAS *)self config];
-    v51 = [v50 stringWithFormat:@"%0.*llu", objc_msgSend(v39, "shortCodeLength"), v49];
+    config12 = [(KTVaudenaySAS *)self config];
+    v51 = [v50 stringWithFormat:@"%0.*llu", objc_msgSend(config12, "shortCodeLength"), v49];
   }
 
   else
   {
     v54 = *(v40 + 8);
-    v55 = [(KTVaudenaySAS *)self config];
-    v56 = v54 + *([v55 di] + 16) + 19;
-    v57 = [(KTVaudenaySAS *)self config];
-    v58 = *([v57 di] + 8);
+    config17 = [(KTVaudenaySAS *)self config];
+    v56 = v54 + *([config17 di] + 16) + 19;
+    config18 = [(KTVaudenaySAS *)self config];
+    v58 = *([config18 di] + 8);
     cc_clear();
 
     v51 = 0;

@@ -29,8 +29,8 @@
         v15 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v26 = v15;
         v27 = 2114;
@@ -41,8 +41,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v14;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -55,7 +55,7 @@
   v24[1] = 3221225472;
   v24[2] = __47__NSObject_NUUtilities__nu_implementsProtocol___block_invoke;
   v24[3] = &__block_descriptor_40_e42_B24__0__objc_method_description____8B16B20l;
-  v24[4] = a1;
+  v24[4] = self;
   v5 = v4;
   if (NUProtocolEnumerateMethods(v5, 1, 0, v24) && NUProtocolEnumerateMethods(v5, 1, 1, v24) && NUProtocolEnumerateMethods(v5, 0, 0, v24))
   {

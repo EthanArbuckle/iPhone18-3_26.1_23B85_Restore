@@ -6,13 +6,13 @@
 
 - (id)mk_theme
 {
-  v2 = [a1 traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3)
+  if (userInterfaceStyle)
   {
-    v4 = [a1 traitCollection];
-    if ([v4 userInterfaceStyle] == 1)
+    traitCollection2 = [self traitCollection];
+    if ([traitCollection2 userInterfaceStyle] == 1)
     {
       v5 = 1;
     }

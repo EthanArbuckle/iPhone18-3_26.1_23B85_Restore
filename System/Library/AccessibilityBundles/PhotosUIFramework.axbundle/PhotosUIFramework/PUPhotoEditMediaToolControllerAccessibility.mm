@@ -1,24 +1,24 @@
 @interface PUPhotoEditMediaToolControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateTrimControlAndToolbarButtons;
 @end
 
 @implementation PUPhotoEditMediaToolControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_muteButton" withType:"PUPhotoEditToolbarButton"];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_livePhotoButton" withType:"PUPhotoEditToolActivationButton"];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_portraitVideoButton" withType:"PUPhotoEditToolActivationButton"];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_autoFocusButton" withType:"PUPhotoEditToolbarButton"];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_rateButton" withType:"PUPhotoEditToolbarButton"];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"_updateTrimControlAndToolbarButtons" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"reloadToolbarButtons:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"_updateLivePhotoButtonAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"_updateMuteButtonAnimated:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_muteButton" withType:"PUPhotoEditToolbarButton"];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_livePhotoButton" withType:"PUPhotoEditToolActivationButton"];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_portraitVideoButton" withType:"PUPhotoEditToolActivationButton"];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_autoFocusButton" withType:"PUPhotoEditToolbarButton"];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceVariable:@"_rateButton" withType:"PUPhotoEditToolbarButton"];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"_updateTrimControlAndToolbarButtons" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"reloadToolbarButtons:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"_updateLivePhotoButtonAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"PUPhotoEditMediaToolController" hasInstanceMethod:@"_updateMuteButtonAnimated:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -41,13 +41,13 @@
   v32[3] = &unk_29F2E8158;
   objc_copyWeak(&v33, &location);
   [v4 _setAccessibilityValueBlock:v32];
-  v6 = [v4 accessibilityTraits];
+  accessibilityTraits = [v4 accessibilityTraits];
   v30[0] = MEMORY[0x29EDCA5F8];
   v30[1] = 3221225472;
   v30[2] = __89__PUPhotoEditMediaToolControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_3;
   v30[3] = &unk_29F2E8408;
   objc_copyWeak(v31, &location);
-  v31[1] = v6;
+  v31[1] = accessibilityTraits;
   [v4 _setAccessibilityTraitsBlock:v30];
   LOBYTE(from) = 0;
   objc_opt_class();
@@ -63,13 +63,13 @@
   v27[3] = &unk_29F2E8158;
   objc_copyWeak(&v28, &from);
   [v8 _setAccessibilityValueBlock:v27];
-  v9 = [v8 accessibilityTraits];
+  accessibilityTraits2 = [v8 accessibilityTraits];
   v25[0] = MEMORY[0x29EDCA5F8];
   v25[1] = 3221225472;
   v25[2] = __89__PUPhotoEditMediaToolControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_6;
   v25[3] = &unk_29F2E8408;
   objc_copyWeak(v26, &from);
-  v26[1] = v9;
+  v26[1] = accessibilityTraits2;
   [v8 _setAccessibilityTraitsBlock:v25];
   LOBYTE(v24) = 0;
   objc_opt_class();
@@ -85,13 +85,13 @@
   v22[3] = &unk_29F2E8158;
   objc_copyWeak(&v23, &v24);
   [v11 _setAccessibilityValueBlock:v22];
-  v12 = [v11 accessibilityTraits];
+  accessibilityTraits3 = [v11 accessibilityTraits];
   v20[0] = MEMORY[0x29EDCA5F8];
   v20[1] = 3221225472;
   v20[2] = __89__PUPhotoEditMediaToolControllerAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_9;
   v20[3] = &unk_29F2E8408;
   objc_copyWeak(v21, &v24);
-  v21[1] = v12;
+  v21[1] = accessibilityTraits3;
   [v11 _setAccessibilityTraitsBlock:v20];
   objc_opt_class();
   v13 = [(PUPhotoEditMediaToolControllerAccessibility *)self safeValueForKey:@"_rateButton"];

@@ -1,16 +1,16 @@
 @interface HKSleepSomnogramBar
 - (CGRect)barRect;
-- (HKSleepSomnogramBar)initWithBarRect:(CGRect)a3;
+- (HKSleepSomnogramBar)initWithBarRect:(CGRect)rect;
 @end
 
 @implementation HKSleepSomnogramBar
 
-- (HKSleepSomnogramBar)initWithBarRect:(CGRect)a3
+- (HKSleepSomnogramBar)initWithBarRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = HKSleepSomnogramBar;
   result = [(HKSleepSomnogramBar *)&v8 init];

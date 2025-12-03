@@ -1,26 +1,26 @@
 @interface _EXHostViewControllerSessionConfiguration
 - (CGRect)initialFrame;
-- (_EXHostViewControllerSessionConfiguration)initWithSceneIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_EXHostViewControllerSessionConfiguration)initWithSceneIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _EXHostViewControllerSessionConfiguration
 
-- (_EXHostViewControllerSessionConfiguration)initWithSceneIdentifier:(id)a3
+- (_EXHostViewControllerSessionConfiguration)initWithSceneIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = _EXHostViewControllerSessionConfiguration;
   v6 = [(_EXHostViewControllerSessionConfiguration *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sceneIdentifier, a3);
+    objc_storeStrong(&v6->_sceneIdentifier, identifier);
     initializationParameters = v7->_initializationParameters;
     v7->_initializationParameters = 0;
 
-    v9 = [MEMORY[0x1E6966CA0] sharedInstance];
-    v7->_beginHostingImmediately = [v9 startUIHostingSessionImmediately];
+    mEMORY[0x1E6966CA0] = [MEMORY[0x1E6966CA0] sharedInstance];
+    v7->_beginHostingImmediately = [mEMORY[0x1E6966CA0] startUIHostingSessionImmediately];
 
     v7->_sizeBridgingOptions = -1;
     v7->__shouldHostRemoteTextEffectsWindow = 1;
@@ -29,7 +29,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();

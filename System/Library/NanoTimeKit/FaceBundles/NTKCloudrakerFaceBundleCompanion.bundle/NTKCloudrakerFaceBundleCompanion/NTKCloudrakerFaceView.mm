@@ -1,38 +1,38 @@
 @interface NTKCloudrakerFaceView
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (NSArray)digitalTimeLabelFontScaleFactorForNumberSystemOverrides;
-- (NTKCloudrakerFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationsContainerViewAlphaForEditMode:(int64_t)a3;
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3;
+- (NTKCloudrakerFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationsContainerViewAlphaForEditMode:(int64_t)mode;
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot;
 - (id)_digitalTimeLabelFont;
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3;
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromNumeral:(unint64_t)a4 toNumeral:(unint64_t)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot;
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette;
+- (void)_applyTransitionFraction:(double)fraction fromNumeral:(unint64_t)numeral toNumeral:(unint64_t)toNumeral;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_handleLocaleDidChange;
 - (void)_loadLayoutRules;
-- (void)_setNumerals:(unint64_t)a3;
+- (void)_setNumerals:(unint64_t)numerals;
 - (void)invalidateDigitalTimeLabelStyle;
 @end
 
 @implementation NTKCloudrakerFaceView
 
-- (NTKCloudrakerFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKCloudrakerFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = NTKCloudrakerFaceView;
-  result = [(NTKCloudrakerFaceView *)&v6 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  result = [(NTKCloudrakerFaceView *)&v6 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (result)
   {
     result->_numberSystem = -1;
@@ -67,29 +67,29 @@
   v4.receiver = self;
   v4.super_class = NTKCloudrakerFaceView;
   [(NTKCloudrakerFaceView *)&v4 invalidateDigitalTimeLabelStyle];
-  v3 = [(NTKCloudrakerFaceView *)self timeView];
-  [v3 setForcedNumberSystem:self->_numberSystem];
+  timeView = [(NTKCloudrakerFaceView *)self timeView];
+  [timeView setForcedNumberSystem:self->_numberSystem];
 }
 
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v21 = 0;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(NTKCloudrakerFaceView *)self device:a3];
+  v9 = [(NTKCloudrakerFaceView *)self device:mode];
   sub_41EC(v9, &v18);
 
-  v10 = [(NTKCloudrakerFaceView *)self _digitalTimeLabelFont];
+  _digitalTimeLabelFont = [(NTKCloudrakerFaceView *)self _digitalTimeLabelFont];
   v11 = *&v20;
-  [v10 capHeight];
+  [_digitalTimeLabelFont capHeight];
   v13 = v11 + v12 * 0.5;
   v14 = *(&v19 + 1);
-  v15 = [(NTKCloudrakerFaceView *)self device];
-  v16 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:v10 applyAdvanceFudge:v15 withBaselineY:x withFont:y forDevice:width, height, v14, v13];
+  device = [(NTKCloudrakerFaceView *)self device];
+  v16 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:_digitalTimeLabelFont applyAdvanceFudge:device withBaselineY:x withFont:y forDevice:width, height, v14, v13];
 
   [v16 setTracking:&off_8E30];
 
@@ -109,7 +109,7 @@
   }
 
   v6 = *v5;
-  v7 = [(NTKCloudrakerFaceView *)self device];
+  device = [(NTKCloudrakerFaceView *)self device];
   v8 = NTKShowIndicScriptNumerals();
 
   if ((v8 & 1) == 0)
@@ -122,11 +122,11 @@ LABEL_9:
 
   if (self->_numberSystem != -1)
   {
-    v9 = [(NTKCloudrakerFaceView *)self digitalTimeLabelFontScaleFactorForNumberSystemOverrides];
-    v10 = [v9 objectAtIndexedSubscript:self->_numberSystem];
+    digitalTimeLabelFontScaleFactorForNumberSystemOverrides = [(NTKCloudrakerFaceView *)self digitalTimeLabelFontScaleFactorForNumberSystemOverrides];
+    v10 = [digitalTimeLabelFontScaleFactorForNumberSystemOverrides objectAtIndexedSubscript:self->_numberSystem];
     [v10 doubleValue];
 
-    v11 = [(NTKCloudrakerFaceView *)self device];
+    device2 = [(NTKCloudrakerFaceView *)self device];
     CLKRoundForDevice();
     v6 = v12;
   }
@@ -143,20 +143,20 @@ LABEL_10:
   return v14;
 }
 
-- (void)_setNumerals:(unint64_t)a3
+- (void)_setNumerals:(unint64_t)numerals
 {
   v4 = CLKLocaleNumberSystemFromNumeralOption();
   if (self->_numberSystem != v4)
   {
     v5 = v4;
     self->_numberSystem = v4;
-    v6 = [(NTKCloudrakerFaceView *)self device];
+    device = [(NTKCloudrakerFaceView *)self device];
     v7 = NTKShowIndicScriptNumerals();
 
     if (v7)
     {
-      v8 = [(NTKCloudrakerFaceView *)self timeView];
-      [v8 setForcedNumberSystem:v5];
+      timeView = [(NTKCloudrakerFaceView *)self timeView];
+      [timeView setForcedNumberSystem:v5];
 
       [(NTKCloudrakerFaceView *)self invalidateDigitalTimeLabelStyle];
 
@@ -165,76 +165,76 @@ LABEL_10:
   }
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v11 = a3;
-  v8 = a5;
-  if (a4 == 19)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 19)
   {
-    -[NTKCloudrakerFaceView _setNumerals:](self, "_setNumerals:", [v11 numeralOption]);
+    -[NTKCloudrakerFaceView _setNumerals:](self, "_setNumerals:", [optionCopy numeralOption]);
   }
 
-  else if (a4 == 10)
+  else if (mode == 10)
   {
-    v9 = [(NTKCloudrakerFaceView *)self faceColorPalette];
-    v10 = [(NTKCloudrakerFaceView *)self faceColorPalette];
-    [(NTKCloudrakerFaceView *)self _applyTransitionFraction:v9 fromColorPalette:v10 toColorPalette:0.0];
+    faceColorPalette = [(NTKCloudrakerFaceView *)self faceColorPalette];
+    faceColorPalette2 = [(NTKCloudrakerFaceView *)self faceColorPalette];
+    [(NTKCloudrakerFaceView *)self _applyTransitionFraction:faceColorPalette fromColorPalette:faceColorPalette2 toColorPalette:0.0];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v18 = a4;
-  v12 = a5;
-  v13 = a7;
-  if (a6 == 19)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 19)
   {
-    -[NTKCloudrakerFaceView _applyTransitionFraction:fromNumeral:toNumeral:](self, "_applyTransitionFraction:fromNumeral:toNumeral:", [v18 numeralOption], objc_msgSend(v12, "numeralOption"), a3);
+    -[NTKCloudrakerFaceView _applyTransitionFraction:fromNumeral:toNumeral:](self, "_applyTransitionFraction:fromNumeral:toNumeral:", [optionCopy numeralOption], objc_msgSend(toOptionCopy, "numeralOption"), fraction);
   }
 
-  else if (a6 == 10)
+  else if (mode == 10)
   {
-    v14 = [(NTKCloudrakerFaceView *)self interpolatedColorPalette];
-    v15 = [v14 fromPalette];
-    v16 = [(NTKCloudrakerFaceView *)self interpolatedColorPalette];
-    v17 = [v16 toPalette];
-    [(NTKCloudrakerFaceView *)self _applyTransitionFraction:v15 fromColorPalette:v17 toColorPalette:a3];
+    interpolatedColorPalette = [(NTKCloudrakerFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    interpolatedColorPalette2 = [(NTKCloudrakerFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
+    [(NTKCloudrakerFaceView *)self _applyTransitionFraction:fromPalette fromColorPalette:toPalette toColorPalette:fraction];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromNumeral:(unint64_t)a4 toNumeral:(unint64_t)a5
+- (void)_applyTransitionFraction:(double)fraction fromNumeral:(unint64_t)numeral toNumeral:(unint64_t)toNumeral
 {
-  if (a3 >= 0.5)
+  if (fraction >= 0.5)
   {
-    v7 = a3 + -0.5 + a3 + -0.5;
-    v6 = a5;
+    v7 = fraction + -0.5 + fraction + -0.5;
+    numeralCopy = toNumeral;
   }
 
   else
   {
-    v6 = a4;
-    v7 = 1.0 - (a3 + a3);
+    numeralCopy = numeral;
+    v7 = 1.0 - (fraction + fraction);
   }
 
-  v8 = [(NTKCloudrakerFaceView *)self timeView:a4];
+  v8 = [(NTKCloudrakerFaceView *)self timeView:numeral];
   [v8 setAlpha:v7];
 
-  [(NTKCloudrakerFaceView *)self _setNumerals:v6];
+  [(NTKCloudrakerFaceView *)self _setNumerals:numeralCopy];
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5
+- (void)_applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 primaryColor];
-  v11 = [v9 primaryColor];
+  paletteCopy = palette;
+  colorPaletteCopy = colorPalette;
+  primaryColor = [paletteCopy primaryColor];
+  primaryColor2 = [colorPaletteCopy primaryColor];
   v12 = NTKInterpolateBetweenColors();
   [(NTKCloudrakerFaceView *)self setInterpolatedComplicationColor:v12];
-  if (([v8 isMulticolor] & 1) != 0 || objc_msgSend(v9, "isMulticolor"))
+  if (([paletteCopy isMulticolor] & 1) != 0 || objc_msgSend(colorPaletteCopy, "isMulticolor"))
   {
-    if ([v9 isMulticolor] && !objc_msgSend(v8, "isMulticolor"))
+    if ([colorPaletteCopy isMulticolor] && !objc_msgSend(paletteCopy, "isMulticolor"))
     {
-      a3 = 1.0 - a3;
+      fraction = 1.0 - fraction;
     }
 
     v13 = 1;
@@ -245,14 +245,14 @@ LABEL_10:
     v13 = 0;
   }
 
-  if ([v9 isMulticolor])
+  if ([colorPaletteCopy isMulticolor])
   {
-    v14 = v10;
+    v14 = primaryColor;
   }
 
   else
   {
-    v14 = v11;
+    v14 = primaryColor2;
   }
 
   [(NTKCloudrakerFaceView *)self setComplicationColor:v14];
@@ -262,13 +262,13 @@ LABEL_10:
   v15[3] = &unk_8388;
   v15[4] = self;
   v16 = v13;
-  *&v15[5] = a3;
+  *&v15[5] = fraction;
   [(NTKCloudrakerFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v15];
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 19)
+  if (mode == 19)
   {
     NTKKeylineCornerRadiusLarge();
     v4 = NTKKeylineViewWithContinuousCurveCornerRadius();
@@ -278,22 +278,22 @@ LABEL_10:
   {
     v6.receiver = self;
     v6.super_class = NTKCloudrakerFaceView;
-    v4 = [(NTKCloudrakerFaceView *)&v6 _keylineViewForCustomEditMode:a3 slot:a4];
+    v4 = [(NTKCloudrakerFaceView *)&v6 _keylineViewForCustomEditMode:mode slot:slot];
   }
 
   return v4;
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 19)
+  if (mode == 19)
   {
     v5 = [(NTKCloudrakerFaceView *)self timeView:19];
     [v5 frame];
     v7 = v6;
 
-    v8 = [(NTKCloudrakerFaceView *)self timeView];
-    [v8 center];
+    timeView = [(NTKCloudrakerFaceView *)self timeView];
+    [timeView center];
     v10 = v9;
 
     v11 = v10 + v7 * -0.5;
@@ -305,7 +305,7 @@ LABEL_10:
   {
     v18.receiver = self;
     v18.super_class = NTKCloudrakerFaceView;
-    [(NTKCloudrakerFaceView *)&v18 _relativeKeylineFrameForCustomEditMode:a3 slot:a4];
+    [(NTKCloudrakerFaceView *)&v18 _relativeKeylineFrameForCustomEditMode:mode slot:slot];
     v11 = v14;
     v7 = v15;
   }
@@ -319,9 +319,9 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 19)
+  if (mode == 19)
   {
     return 164;
   }
@@ -330,43 +330,43 @@ LABEL_10:
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKCloudrakerFaceView;
-  return [(NTKCloudrakerFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:a3 slot:a4];
+  return [(NTKCloudrakerFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:mode slot:slot];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   [(NTKCloudrakerFaceView *)self _complicationsContainerViewAlphaForEditMode:?];
   v6 = v5;
-  v7 = [(NTKCloudrakerFaceView *)self complicationContainerView];
-  [v7 setAlpha:v6];
+  complicationContainerView = [(NTKCloudrakerFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v6];
 
-  [(NTKCloudrakerFaceView *)self _timeViewAlphaForEditMode:a3];
+  [(NTKCloudrakerFaceView *)self _timeViewAlphaForEditMode:mode];
   v9 = v8;
-  v10 = [(NTKCloudrakerFaceView *)self timeView];
-  [v10 setAlpha:v9];
+  timeView = [(NTKCloudrakerFaceView *)self timeView];
+  [timeView setAlpha:v9];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [(NTKCloudrakerFaceView *)self _timeViewAlphaForEditMode:?];
-  [(NTKCloudrakerFaceView *)self _timeViewAlphaForEditMode:a5];
+  [(NTKCloudrakerFaceView *)self _timeViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  [(NTKCloudrakerFaceView *)self _complicationsContainerViewAlphaForEditMode:a4];
-  [(NTKCloudrakerFaceView *)self _complicationsContainerViewAlphaForEditMode:a5];
+  [(NTKCloudrakerFaceView *)self _complicationsContainerViewAlphaForEditMode:mode];
+  [(NTKCloudrakerFaceView *)self _complicationsContainerViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v11 = v10;
-  v12 = [(NTKCloudrakerFaceView *)self complicationContainerView];
-  [v12 setAlpha:v11];
+  complicationContainerView = [(NTKCloudrakerFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v11];
 
-  v13 = [(NTKCloudrakerFaceView *)self timeView];
-  [v13 setAlpha:v9];
+  timeView = [(NTKCloudrakerFaceView *)self timeView];
+  [timeView setAlpha:v9];
 }
 
-- (double)_complicationsContainerViewAlphaForEditMode:(int64_t)a3
+- (double)_complicationsContainerViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 19)
+  if (mode != 19)
   {
     return 1.0;
   }
@@ -374,25 +374,25 @@ LABEL_10:
   return result;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   NTKLargeElementScaleForBreathingFraction();
   memset(&v9, 0, sizeof(v9));
   CGAffineTransformMakeScale(&v9, v7, v7);
-  if (a4 == 10)
+  if (mode == 10)
   {
     v8 = v9;
     [(NTKCloudrakerFaceView *)self setTransform:&v8];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   NTKScaleForRubberBandingFraction();
   memset(&v11, 0, sizeof(v11));
   CGAffineTransformMakeScale(&v11, v7, v7);
   NTKAlphaForRubberBandingFraction();
-  if (a4 == 10)
+  if (mode == 10)
   {
     v9 = v8;
     v10 = v11;
@@ -403,10 +403,10 @@ LABEL_10:
 
 - (void)_loadLayoutRules
 {
-  v3 = [(NTKCloudrakerFaceView *)self device];
+  device = [(NTKCloudrakerFaceView *)self device];
   v16 = 0;
   memset(v15, 0, sizeof(v15));
-  sub_41EC(v3, v15);
+  sub_41EC(device, v15);
   [(NTKCloudrakerFaceView *)self bounds];
   v5 = v4;
   v7 = v6;
@@ -422,16 +422,16 @@ LABEL_10:
   v17.size.width = v9;
   v17.size.height = v11;
   CGRectGetWidth(v17);
-  v13 = v3;
-  v12 = v3;
+  v13 = device;
+  v12 = device;
   NTKEnumerateComplicationStates();
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   v6 = NTKComplicationSlotTopLeft;
-  v7 = a3;
-  v8 = [a5 isEqualToString:v6];
+  complicationCopy = complication;
+  v8 = [slot isEqualToString:v6];
   v9 = NTKRichComplicationCircularBaseView_ptr;
   if (!v8)
   {
@@ -439,33 +439,33 @@ LABEL_10:
   }
 
   v10 = *v9;
-  v11 = [v7 complicationType];
+  complicationType = [complicationCopy complicationType];
 
-  [v10 viewWithLegacyComplicationType:v11];
+  [v10 viewWithLegacyComplicationType:complicationType];
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v7 = a3;
-  v5 = [(NTKCloudrakerFaceView *)self faceColorPalette];
-  v6 = [v5 isMulticolor];
+  viewCopy = view;
+  faceColorPalette = [(NTKCloudrakerFaceView *)self faceColorPalette];
+  isMulticolor = [faceColorPalette isMulticolor];
 
-  if (v6)
+  if (isMulticolor)
   {
-    [v7 transitionToMonochromeWithFraction:0.0];
+    [viewCopy transitionToMonochromeWithFraction:0.0];
   }
 
   else
   {
-    [v7 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 }
 
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotTopLeft])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotTopLeft])
   {
     v5 = &dword_0 + 1;
   }
@@ -474,19 +474,19 @@ LABEL_10:
   {
     v7.receiver = self;
     v7.super_class = NTKCloudrakerFaceView;
-    v5 = [(NTKCloudrakerFaceView *)&v7 _keylineStyleForComplicationSlot:v4];
+    v5 = [(NTKCloudrakerFaceView *)&v7 _keylineStyleForComplicationSlot:slotCopy];
   }
 
   return v5;
 }
 
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  if (([v4 isEqualToString:NTKComplicationSlotCenter] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", NTKComplicationSlotBottom))
+  slotCopy = slot;
+  if (([slotCopy isEqualToString:NTKComplicationSlotCenter] & 1) != 0 || objc_msgSend(slotCopy, "isEqualToString:", NTKComplicationSlotBottom))
   {
-    v5 = [(NTKCloudrakerFaceView *)self device];
-    [NTKModuleView cornerRadiusForComplicationFamily:1 forDevice:v5];
+    device = [(NTKCloudrakerFaceView *)self device];
+    [NTKModuleView cornerRadiusForComplicationFamily:1 forDevice:device];
     v7 = v6;
   }
 
@@ -494,28 +494,28 @@ LABEL_10:
   {
     v10.receiver = self;
     v10.super_class = NTKCloudrakerFaceView;
-    [(NTKCloudrakerFaceView *)&v10 _keylineCornerRadiusForComplicationSlot:v4];
+    [(NTKCloudrakerFaceView *)&v10 _keylineCornerRadiusForComplicationSlot:slotCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  if (a4 == 19)
+  optionCopy = option;
+  if (mode == 19)
   {
-    v9 = [(NTKCloudrakerFaceView *)self _digitalTimeLabelFont];
-    v10 = [(NTKCloudrakerFaceView *)self device];
-    v11 = [v8 swatchImageWithFont:v9 device:v10 baseline:0.0];
+    _digitalTimeLabelFont = [(NTKCloudrakerFaceView *)self _digitalTimeLabelFont];
+    device = [(NTKCloudrakerFaceView *)self device];
+    v11 = [optionCopy swatchImageWithFont:_digitalTimeLabelFont device:device baseline:0.0];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = NTKCloudrakerFaceView;
-    v11 = [(NTKCloudrakerFaceView *)&v13 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:a5];
+    v11 = [(NTKCloudrakerFaceView *)&v13 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:options];
   }
 
   return v11;

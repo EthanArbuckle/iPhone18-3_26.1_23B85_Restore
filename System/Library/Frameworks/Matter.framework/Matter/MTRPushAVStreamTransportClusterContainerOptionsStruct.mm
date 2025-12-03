@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterContainerOptionsStruct
 - (MTRPushAVStreamTransportClusterContainerOptionsStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterContainerOptionsStruct);
-  v5 = [(MTRPushAVStreamTransportClusterContainerOptionsStruct *)self containerType];
-  [(MTRPushAVStreamTransportClusterContainerOptionsStruct *)v4 setContainerType:v5];
+  containerType = [(MTRPushAVStreamTransportClusterContainerOptionsStruct *)self containerType];
+  [(MTRPushAVStreamTransportClusterContainerOptionsStruct *)v4 setContainerType:containerType];
 
-  v6 = [(MTRPushAVStreamTransportClusterContainerOptionsStruct *)self cmafContainerOptions];
-  [(MTRPushAVStreamTransportClusterContainerOptionsStruct *)v4 setCmafContainerOptions:v6];
+  cmafContainerOptions = [(MTRPushAVStreamTransportClusterContainerOptionsStruct *)self cmafContainerOptions];
+  [(MTRPushAVStreamTransportClusterContainerOptionsStruct *)v4 setCmafContainerOptions:cmafContainerOptions];
 
   return v4;
 }

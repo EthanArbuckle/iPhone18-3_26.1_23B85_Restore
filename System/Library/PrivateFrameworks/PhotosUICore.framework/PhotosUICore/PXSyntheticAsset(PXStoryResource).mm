@@ -7,9 +7,9 @@
 - (double)px_storyResourceFetchBestPlaybackRange
 {
   result = 0.0;
-  a1[1] = 0u;
-  a1[2] = 0u;
-  *a1 = 0u;
+  self[1] = 0u;
+  self[2] = 0u;
+  *self = 0u;
   return result;
 }
 

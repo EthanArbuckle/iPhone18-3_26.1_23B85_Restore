@@ -4,31 +4,31 @@
 - (NSData)playActivityForwardedRecommendationData;
 - (NSString)combinedPlayActivityFeatureName;
 - (UIViewController)playActivityFeatureNameSourceViewController;
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3;
-- (void)setPlayActivityFeatureNameSourceViewController:(id)a3;
-- (void)setPlayActivityForwardedRecommendationData:(id)a3;
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller;
+- (void)setPlayActivityFeatureNameSourceViewController:(id)controller;
+- (void)setPlayActivityForwardedRecommendationData:(id)data;
 @end
 
 @implementation UIViewController
 
 - (UIViewController)playActivityFeatureNameSourceViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIViewController.playActivityFeatureNameSourceViewController.getter();
 
   return v3;
 }
 
-- (void)setPlayActivityFeatureNameSourceViewController:(id)a3
+- (void)setPlayActivityFeatureNameSourceViewController:(id)controller
 {
-  v6 = a3;
-  v5 = self;
-  specialized UIViewController.playActivityFeatureNameSourceViewController.setter(a3, &one-time initialization token for playActivityFeatureNameSourceViewController, &static AssociatedKeys.playActivityFeatureNameSourceViewController);
+  controllerCopy = controller;
+  selfCopy = self;
+  specialized UIViewController.playActivityFeatureNameSourceViewController.setter(controller, &one-time initialization token for playActivityFeatureNameSourceViewController, &static AssociatedKeys.playActivityFeatureNameSourceViewController);
 }
 
 - (NSData)playActivityForwardedRecommendationData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIViewController.playActivityForwardedRecommendationData.getter();
   v5 = v4;
 
@@ -47,20 +47,20 @@
   return v6;
 }
 
-- (void)setPlayActivityForwardedRecommendationData:(id)a3
+- (void)setPlayActivityForwardedRecommendationData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
+    selfCopy = self;
+    v6 = dataCopy;
+    dataCopy = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -77,23 +77,23 @@
 
   else
   {
-    outlined copy of Data._Representation(v3, v8);
+    outlined copy of Data._Representation(dataCopy, v8);
     isa = Data._bridgeToObjectiveC()().super.isa;
-    outlined consume of Data?(v3, v8);
+    outlined consume of Data?(dataCopy, v8);
   }
 
   objc_setAssociatedObject(self, v10, isa, 3);
 
-  outlined consume of Data?(v3, v8);
+  outlined consume of Data?(dataCopy, v8);
 }
 
-- (id)playActivityFeatureNamesWithSourceChildViewController:(id)a3
+- (id)playActivityFeatureNamesWithSourceChildViewController:(id)controller
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCySSGMd);
   v4 = swift_allocObject();
   *(v4 + 16) = xmmword_1004F2400;
-  v5 = self;
-  v6 = [(UIViewController *)v5 playActivityFeatureName];
+  selfCopy = self;
+  playActivityFeatureName = [(UIViewController *)selfCopy playActivityFeatureName];
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
 
@@ -107,7 +107,7 @@
 
 - (NSArray)completePlayActivityFeatureNames
 {
-  v2 = self;
+  selfCopy = self;
   UIViewController.completePlayActivityFeatureNames.getter();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -117,8 +117,8 @@
 
 - (NSString)combinedPlayActivityFeatureName
 {
-  v2 = self;
-  v3 = [(UIViewController *)v2 completePlayActivityFeatureNames];
+  selfCopy = self;
+  completePlayActivityFeatureNames = [(UIViewController *)selfCopy completePlayActivityFeatureNames];
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSaySSGMd);
@@ -133,9 +133,9 @@
 
 - (BOOL)canPresentViewControllers
 {
-  v2 = [(UIViewController *)self popoverPresentationController];
-  v3 = v2;
-  if (v2)
+  popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+  v3 = popoverPresentationController;
+  if (popoverPresentationController)
   {
   }
 

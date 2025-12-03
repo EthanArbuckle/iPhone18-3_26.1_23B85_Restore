@@ -4,27 +4,27 @@
 - (CGPoint)topLeft;
 - (CGPoint)topRight;
 - (CGRect)normalizedBoundingBox;
-- (MADVIMachineReadableCodeDetectionResultItem)initWithCoder:(id)a3;
-- (MADVIMachineReadableCodeDetectionResultItem)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomLeft:(CGPoint)a5 bottomRight:(CGPoint)a6 symbology:(id)a7 payload:(id)a8 andDescriptor:(id)a9;
+- (MADVIMachineReadableCodeDetectionResultItem)initWithCoder:(id)coder;
+- (MADVIMachineReadableCodeDetectionResultItem)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight symbology:(id)symbology payload:(id)payload andDescriptor:(id)descriptor;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVIMachineReadableCodeDetectionResultItem
 
-- (MADVIMachineReadableCodeDetectionResultItem)initWithTopLeft:(CGPoint)a3 topRight:(CGPoint)a4 bottomLeft:(CGPoint)a5 bottomRight:(CGPoint)a6 symbology:(id)a7 payload:(id)a8 andDescriptor:(id)a9
+- (MADVIMachineReadableCodeDetectionResultItem)initWithTopLeft:(CGPoint)left topRight:(CGPoint)right bottomLeft:(CGPoint)bottomLeft bottomRight:(CGPoint)bottomRight symbology:(id)symbology payload:(id)payload andDescriptor:(id)descriptor
 {
-  y = a6.y;
-  x = a6.x;
-  v14 = a5.y;
-  v15 = a5.x;
-  v16 = a4.y;
-  v17 = a4.x;
-  v18 = a3.y;
-  v19 = a3.x;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
+  y = bottomRight.y;
+  x = bottomRight.x;
+  v14 = bottomLeft.y;
+  v15 = bottomLeft.x;
+  v16 = right.y;
+  v17 = right.x;
+  v18 = left.y;
+  v19 = left.x;
+  symbologyCopy = symbology;
+  payloadCopy = payload;
+  descriptorCopy = descriptor;
   v27.receiver = self;
   v27.super_class = MADVIMachineReadableCodeDetectionResultItem;
   v24 = [(MADVIMachineReadableCodeDetectionResultItem *)&v27 init];
@@ -39,39 +39,39 @@
     v24->_bottomLeft.y = v14;
     v24->_bottomRight.x = x;
     v24->_bottomRight.y = y;
-    objc_storeStrong(&v24->_symbology, a7);
-    objc_storeStrong(&v25->_payload, a8);
-    objc_storeStrong(&v25->_descriptor, a9);
+    objc_storeStrong(&v24->_symbology, symbology);
+    objc_storeStrong(&v25->_payload, payload);
+    objc_storeStrong(&v25->_descriptor, descriptor);
   }
 
   return v25;
 }
 
-- (MADVIMachineReadableCodeDetectionResultItem)initWithCoder:(id)a3
+- (MADVIMachineReadableCodeDetectionResultItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MADVIMachineReadableCodeDetectionResultItem;
   v5 = [(MADVIMachineReadableCodeDetectionResultItem *)&v23 init];
   if (v5)
   {
-    [v4 decodePointForKey:@"TopLeft"];
+    [coderCopy decodePointForKey:@"TopLeft"];
     v5->_topLeft.x = v6;
     v5->_topLeft.y = v7;
-    [v4 decodePointForKey:@"TopRight"];
+    [coderCopy decodePointForKey:@"TopRight"];
     v5->_topRight.x = v8;
     v5->_topRight.y = v9;
-    [v4 decodePointForKey:@"BottomLeft"];
+    [coderCopy decodePointForKey:@"BottomLeft"];
     v5->_bottomLeft.x = v10;
     v5->_bottomLeft.y = v11;
-    [v4 decodePointForKey:@"BottomRight"];
+    [coderCopy decodePointForKey:@"BottomRight"];
     v5->_bottomRight.x = v12;
     v5->_bottomRight.y = v13;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Symbology"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Symbology"];
     symbology = v5->_symbology;
     v5->_symbology = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Payload"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Payload"];
     payload = v5->_payload;
     v5->_payload = v16;
 
@@ -93,7 +93,7 @@
 
     v19 = v18;
     _Block_object_dispose(&v25, 8);
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Descriptor"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Descriptor"];
     descriptor = v5->_descriptor;
     v5->_descriptor = v20;
   }
@@ -101,36 +101,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   x = self->_topLeft.x;
   y = self->_topLeft.y;
-  v6 = a3;
-  [v6 encodePoint:@"TopLeft" forKey:{x, y}];
-  [v6 encodePoint:@"TopRight" forKey:{self->_topRight.x, self->_topRight.y}];
-  [v6 encodePoint:@"BottomLeft" forKey:{self->_bottomLeft.x, self->_bottomLeft.y}];
-  [v6 encodePoint:@"BottomRight" forKey:{self->_bottomRight.x, self->_bottomRight.y}];
-  [v6 encodeObject:self->_symbology forKey:@"Symbology"];
-  [v6 encodeObject:self->_payload forKey:@"Payload"];
-  [v6 encodeObject:self->_descriptor forKey:@"Descriptor"];
+  coderCopy = coder;
+  [coderCopy encodePoint:@"TopLeft" forKey:{x, y}];
+  [coderCopy encodePoint:@"TopRight" forKey:{self->_topRight.x, self->_topRight.y}];
+  [coderCopy encodePoint:@"BottomLeft" forKey:{self->_bottomLeft.x, self->_bottomLeft.y}];
+  [coderCopy encodePoint:@"BottomRight" forKey:{self->_bottomRight.x, self->_bottomRight.y}];
+  [coderCopy encodeObject:self->_symbology forKey:@"Symbology"];
+  [coderCopy encodeObject:self->_payload forKey:@"Payload"];
+  [coderCopy encodeObject:self->_descriptor forKey:@"Descriptor"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"topLeft: (%0.2f, %0.2f), ", *&self->_topLeft.x, *&self->_topLeft.y];
-  [v3 appendFormat:@"topRight: (%0.2f, %0.2f), ", *&self->_topRight.x, *&self->_topRight.y];
-  [v3 appendFormat:@"bottomLeft: (%0.2f, %0.2f), ", *&self->_bottomLeft.x, *&self->_bottomLeft.y];
-  [v3 appendFormat:@"bottomRight: (%0.2f, %0.2f), ", *&self->_bottomRight.x, *&self->_bottomRight.y];
-  [v3 appendFormat:@"symbology: '%@', ", self->_symbology];
-  [v3 appendFormat:@"payload: %@, ", self->_payload];
-  [v3 appendFormat:@"descriptor: %@>", self->_descriptor];
+  [string appendFormat:@"topLeft: (%0.2f, %0.2f), ", *&self->_topLeft.x, *&self->_topLeft.y];
+  [string appendFormat:@"topRight: (%0.2f, %0.2f), ", *&self->_topRight.x, *&self->_topRight.y];
+  [string appendFormat:@"bottomLeft: (%0.2f, %0.2f), ", *&self->_bottomLeft.x, *&self->_bottomLeft.y];
+  [string appendFormat:@"bottomRight: (%0.2f, %0.2f), ", *&self->_bottomRight.x, *&self->_bottomRight.y];
+  [string appendFormat:@"symbology: '%@', ", self->_symbology];
+  [string appendFormat:@"payload: %@, ", self->_payload];
+  [string appendFormat:@"descriptor: %@>", self->_descriptor];
 
-  return v3;
+  return string;
 }
 
 - (CGRect)normalizedBoundingBox

@@ -4,10 +4,10 @@
 - (unsigned)powerPressureLevel;
 - (void)_endBackgroundTaskIfNeeded;
 - (void)_startBackgroundTaskIfNeeded;
-- (void)addAssertionForIndentifier:(unsigned int)a3 withReason:(unsigned int)a4;
+- (void)addAssertionForIndentifier:(unsigned int)indentifier withReason:(unsigned int)reason;
 - (void)dealloc;
 - (void)init;
-- (void)removeAssertionForIdentifier:(unsigned int)a3 withReason:(unsigned int)a4;
+- (void)removeAssertionForIdentifier:(unsigned int)identifier withReason:(unsigned int)reason;
 @end
 
 @implementation CAMPowerController
@@ -91,17 +91,17 @@ void __26__CAMPowerController_init__block_invoke(uint64_t a1, int a2)
 - (void)_startBackgroundTaskIfNeeded
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMPowerController *)self _assertionsByIdentifier];
-  if ([v3 count] && self->__backgroundTaskIdentifier == *MEMORY[0x1E69DDBE8])
+  _assertionsByIdentifier = [(CAMPowerController *)self _assertionsByIdentifier];
+  if ([_assertionsByIdentifier count] && self->__backgroundTaskIdentifier == *MEMORY[0x1E69DDBE8])
   {
     v4 = [objc_opt_class() description];
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __50__CAMPowerController__startBackgroundTaskIfNeeded__block_invoke;
     v8[3] = &unk_1E76F77B0;
-    v9 = v3;
-    self->__backgroundTaskIdentifier = [v5 beginBackgroundTaskWithName:v4 expirationHandler:v8];
+    v9 = _assertionsByIdentifier;
+    self->__backgroundTaskIdentifier = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:v4 expirationHandler:v8];
 
     v6 = os_log_create("com.apple.camera", "PowerController");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -117,8 +117,8 @@ void __26__CAMPowerController_init__block_invoke(uint64_t a1, int a2)
 - (void)_endBackgroundTaskIfNeeded
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMPowerController *)self _assertionsByIdentifier];
-  if (![v3 count])
+  _assertionsByIdentifier = [(CAMPowerController *)self _assertionsByIdentifier];
+  if (![_assertionsByIdentifier count])
   {
     v4 = *MEMORY[0x1E69DDBE8];
     if (self->__backgroundTaskIdentifier != *MEMORY[0x1E69DDBE8])
@@ -132,8 +132,8 @@ void __26__CAMPowerController_init__block_invoke(uint64_t a1, int a2)
         _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "PowerController: Ending background task: %ld", &v8, 0xCu);
       }
 
-      v7 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v7 endBackgroundTask:self->__backgroundTaskIdentifier];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] endBackgroundTask:self->__backgroundTaskIdentifier];
 
       self->__backgroundTaskIdentifier = v4;
     }
@@ -142,10 +142,10 @@ void __26__CAMPowerController_init__block_invoke(uint64_t a1, int a2)
 
 - (void)dealloc
 {
-  v3 = [(CAMPowerController *)self _powerPressureNotificationToken];
-  if ((v3 & 0x80000000) == 0)
+  _powerPressureNotificationToken = [(CAMPowerController *)self _powerPressureNotificationToken];
+  if ((_powerPressureNotificationToken & 0x80000000) == 0)
   {
-    notify_cancel(v3);
+    notify_cancel(_powerPressureNotificationToken);
   }
 
   v4.receiver = self;
@@ -156,13 +156,13 @@ void __26__CAMPowerController_init__block_invoke(uint64_t a1, int a2)
 - (id)description
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMPowerController *)self _assertionsByIdentifier];
+  _assertionsByIdentifier = [(CAMPowerController *)self _assertionsByIdentifier];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = _assertionsByIdentifier;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -179,9 +179,9 @@ void __26__CAMPowerController_init__block_invoke(uint64_t a1, int a2)
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [v5 objectForKeyedSubscript:v10];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
-        v13 = NSStringFromCAMPowerAssertionReasonBitfield(v12);
+        v13 = NSStringFromCAMPowerAssertionReasonBitfield(intValue);
         [v4 setObject:v13 forKeyedSubscript:v10];
       }
 
@@ -205,9 +205,9 @@ void __50__CAMPowerController__startBackgroundTaskIfNeeded__block_invoke(uint64_
   }
 }
 
-- (void)addAssertionForIndentifier:(unsigned int)a3 withReason:(unsigned int)a4
+- (void)addAssertionForIndentifier:(unsigned int)indentifier withReason:(unsigned int)reason
 {
-  v4 = [(CAMPowerController *)self _powerControllerQueue];
+  _powerControllerQueue = [(CAMPowerController *)self _powerControllerQueue];
   pl_dispatch_async();
 }
 
@@ -239,9 +239,9 @@ void __60__CAMPowerController_addAssertionForIndentifier_withReason___block_invo
   }
 }
 
-- (void)removeAssertionForIdentifier:(unsigned int)a3 withReason:(unsigned int)a4
+- (void)removeAssertionForIdentifier:(unsigned int)identifier withReason:(unsigned int)reason
 {
-  v4 = [(CAMPowerController *)self _powerControllerQueue];
+  _powerControllerQueue = [(CAMPowerController *)self _powerControllerQueue];
   pl_dispatch_async();
 }
 
@@ -321,15 +321,15 @@ LABEL_9:
   v9 = 0x2020000000;
   v10 = 0;
   objc_initWeak(&location, self);
-  v3 = [(CAMPowerController *)self _powerControllerQueue];
+  _powerControllerQueue = [(CAMPowerController *)self _powerControllerQueue];
   objc_copyWeak(&v5, &location);
   pl_dispatch_sync();
 
-  LODWORD(v3) = *(v8 + 6);
+  LODWORD(_powerControllerQueue) = *(v8 + 6);
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return _powerControllerQueue;
 }
 
 void __40__CAMPowerController_powerPressureLevel__block_invoke(uint64_t a1)
@@ -342,7 +342,7 @@ void __40__CAMPowerController_powerPressureLevel__block_invoke(uint64_t a1)
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_1A3640000, a2, OS_LOG_TYPE_ERROR, "PowerController: Unable to register for power pressure notification: %d", v2, 8u);
 }
 

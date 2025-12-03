@@ -1,157 +1,157 @@
 @interface HKMaximumSizeView
 - (CGSize)maximumSize;
-- (HKMaximumSizeView)initWithView:(id)a3 maximumSize:(CGSize)a4;
-- (void)_buildConstraintsForView:(id)a3;
-- (void)_setConstraints:(id)a3 active:(BOOL)a4;
-- (void)setMaximumSize:(CGSize)a3;
+- (HKMaximumSizeView)initWithView:(id)view maximumSize:(CGSize)size;
+- (void)_buildConstraintsForView:(id)view;
+- (void)_setConstraints:(id)constraints active:(BOOL)active;
+- (void)setMaximumSize:(CGSize)size;
 @end
 
 @implementation HKMaximumSizeView
 
-- (HKMaximumSizeView)initWithView:(id)a3 maximumSize:(CGSize)a4
+- (HKMaximumSizeView)initWithView:(id)view maximumSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = HKMaximumSizeView;
   v8 = [(HKMaximumSizeView *)&v11 initWithFrame:0.0, 0.0, 1.0, 1.0];
   v9 = v8;
   if (v8)
   {
-    [(HKMaximumSizeView *)v8 addSubview:v7];
-    [(HKMaximumSizeView *)v9 _buildConstraintsForView:v7];
+    [(HKMaximumSizeView *)v8 addSubview:viewCopy];
+    [(HKMaximumSizeView *)v9 _buildConstraintsForView:viewCopy];
     [(HKMaximumSizeView *)v9 setMaximumSize:width, height];
   }
 
   return v9;
 }
 
-- (void)_buildConstraintsForView:(id)a3
+- (void)_buildConstraintsForView:(id)view
 {
   v52[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [v4 widthAnchor];
-  v6 = [v5 constraintLessThanOrEqualToConstant:10.0];
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  widthAnchor = [viewCopy widthAnchor];
+  v6 = [widthAnchor constraintLessThanOrEqualToConstant:10.0];
   maximumWidthConstraint = self->_maximumWidthConstraint;
   self->_maximumWidthConstraint = v6;
 
-  v8 = [v4 heightAnchor];
-  v9 = [v8 constraintLessThanOrEqualToConstant:10.0];
+  heightAnchor = [viewCopy heightAnchor];
+  v9 = [heightAnchor constraintLessThanOrEqualToConstant:10.0];
   maximumHeightConstraint = self->_maximumHeightConstraint;
   self->_maximumHeightConstraint = v9;
 
-  v11 = [v4 leadingAnchor];
-  v12 = [(HKMaximumSizeView *)self leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [(HKMaximumSizeView *)self leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v52[0] = v13;
-  v14 = [v4 trailingAnchor];
-  v15 = [(HKMaximumSizeView *)self trailingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [(HKMaximumSizeView *)self trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v52[1] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:2];
   hardHorizontalConstraints = self->_hardHorizontalConstraints;
   self->_hardHorizontalConstraints = v17;
 
-  v19 = [v4 topAnchor];
-  v20 = [(HKMaximumSizeView *)self topAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [(HKMaximumSizeView *)self topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v51[0] = v21;
-  v22 = [v4 bottomAnchor];
-  v23 = [(HKMaximumSizeView *)self bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  bottomAnchor = [viewCopy bottomAnchor];
+  bottomAnchor2 = [(HKMaximumSizeView *)self bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v51[1] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:2];
   hardVerticalConstraints = self->_hardVerticalConstraints;
   self->_hardVerticalConstraints = v25;
 
-  v48 = [v4 leadingAnchor];
-  v27 = [(HKMaximumSizeView *)self leadingAnchor];
-  v28 = [v48 constraintGreaterThanOrEqualToAnchor:v27];
+  leadingAnchor3 = [viewCopy leadingAnchor];
+  leadingAnchor4 = [(HKMaximumSizeView *)self leadingAnchor];
+  v28 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
   v50[0] = v28;
-  v29 = [v4 trailingAnchor];
-  v30 = [(HKMaximumSizeView *)self trailingAnchor];
-  v31 = [v29 constraintLessThanOrEqualToAnchor:v30];
+  trailingAnchor3 = [viewCopy trailingAnchor];
+  trailingAnchor4 = [(HKMaximumSizeView *)self trailingAnchor];
+  v31 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
   v50[1] = v31;
-  v32 = [v4 centerXAnchor];
-  v33 = [(HKMaximumSizeView *)self centerXAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  centerXAnchor = [viewCopy centerXAnchor];
+  centerXAnchor2 = [(HKMaximumSizeView *)self centerXAnchor];
+  v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v50[2] = v34;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:3];
   softHorizontalConstraints = self->_softHorizontalConstraints;
   self->_softHorizontalConstraints = v35;
 
-  v37 = [v4 topAnchor];
-  v38 = [(HKMaximumSizeView *)self topAnchor];
-  v39 = [v37 constraintGreaterThanOrEqualToAnchor:v38];
+  topAnchor3 = [viewCopy topAnchor];
+  topAnchor4 = [(HKMaximumSizeView *)self topAnchor];
+  v39 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v49[0] = v39;
-  v40 = [v4 bottomAnchor];
-  v41 = [(HKMaximumSizeView *)self bottomAnchor];
-  v42 = [v40 constraintLessThanOrEqualToAnchor:v41];
+  bottomAnchor3 = [viewCopy bottomAnchor];
+  bottomAnchor4 = [(HKMaximumSizeView *)self bottomAnchor];
+  v42 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
   v49[1] = v42;
-  v43 = [v4 centerYAnchor];
+  centerYAnchor = [viewCopy centerYAnchor];
 
-  v44 = [(HKMaximumSizeView *)self centerYAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  centerYAnchor2 = [(HKMaximumSizeView *)self centerYAnchor];
+  v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v49[2] = v45;
   v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:3];
   softVerticalConstraints = self->_softVerticalConstraints;
   self->_softVerticalConstraints = v46;
 }
 
-- (void)setMaximumSize:(CGSize)a3
+- (void)setMaximumSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(HKMaximumSizeView *)self maximumWidthConstraint];
-  v7 = v6;
+  height = size.height;
+  width = size.width;
+  maximumWidthConstraint = [(HKMaximumSizeView *)self maximumWidthConstraint];
+  v7 = maximumWidthConstraint;
   if (width <= 0.0)
   {
-    [v6 setActive:0];
+    [maximumWidthConstraint setActive:0];
 
-    v10 = [(HKMaximumSizeView *)self softHorizontalConstraints];
-    [(HKMaximumSizeView *)self _setConstraints:v10 active:0];
+    softHorizontalConstraints = [(HKMaximumSizeView *)self softHorizontalConstraints];
+    [(HKMaximumSizeView *)self _setConstraints:softHorizontalConstraints active:0];
 
     [(HKMaximumSizeView *)self hardHorizontalConstraints];
   }
 
   else
   {
-    [v6 setConstant:width];
+    [maximumWidthConstraint setConstant:width];
 
-    v8 = [(HKMaximumSizeView *)self maximumWidthConstraint];
-    [v8 setActive:1];
+    maximumWidthConstraint2 = [(HKMaximumSizeView *)self maximumWidthConstraint];
+    [maximumWidthConstraint2 setActive:1];
 
-    v9 = [(HKMaximumSizeView *)self hardHorizontalConstraints];
-    [(HKMaximumSizeView *)self _setConstraints:v9 active:0];
+    hardHorizontalConstraints = [(HKMaximumSizeView *)self hardHorizontalConstraints];
+    [(HKMaximumSizeView *)self _setConstraints:hardHorizontalConstraints active:0];
 
     [(HKMaximumSizeView *)self softHorizontalConstraints];
   }
   v11 = ;
   [(HKMaximumSizeView *)self _setConstraints:v11 active:1];
 
-  v12 = [(HKMaximumSizeView *)self maximumHeightConstraint];
-  v13 = v12;
+  maximumHeightConstraint = [(HKMaximumSizeView *)self maximumHeightConstraint];
+  v13 = maximumHeightConstraint;
   if (height <= 0.0)
   {
-    [v12 setActive:0];
+    [maximumHeightConstraint setActive:0];
 
-    v16 = [(HKMaximumSizeView *)self softVerticalConstraints];
-    [(HKMaximumSizeView *)self _setConstraints:v16 active:0];
+    softVerticalConstraints = [(HKMaximumSizeView *)self softVerticalConstraints];
+    [(HKMaximumSizeView *)self _setConstraints:softVerticalConstraints active:0];
 
     [(HKMaximumSizeView *)self hardVerticalConstraints];
   }
 
   else
   {
-    [v12 setConstant:height];
+    [maximumHeightConstraint setConstant:height];
 
-    v14 = [(HKMaximumSizeView *)self maximumHeightConstraint];
-    [v14 setActive:1];
+    maximumHeightConstraint2 = [(HKMaximumSizeView *)self maximumHeightConstraint];
+    [maximumHeightConstraint2 setActive:1];
 
-    v15 = [(HKMaximumSizeView *)self hardVerticalConstraints];
-    [(HKMaximumSizeView *)self _setConstraints:v15 active:0];
+    hardVerticalConstraints = [(HKMaximumSizeView *)self hardVerticalConstraints];
+    [(HKMaximumSizeView *)self _setConstraints:hardVerticalConstraints active:0];
 
     [(HKMaximumSizeView *)self softVerticalConstraints];
   }
@@ -161,16 +161,16 @@
   [(HKMaximumSizeView *)self setNeedsLayout];
 }
 
-- (void)_setConstraints:(id)a3 active:(BOOL)a4
+- (void)_setConstraints:(id)constraints active:(BOOL)active
 {
-  v4 = a4;
+  activeCopy = active;
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  constraintsCopy = constraints;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [constraintsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -182,14 +182,14 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(constraintsCopy);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setActive:v4];
+        [*(*(&v10 + 1) + 8 * v9++) setActive:activeCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [constraintsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

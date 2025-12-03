@@ -1,41 +1,41 @@
 @interface HVHarvestEligibility
-+ (BOOL)searchableItemIsEligibleForDeferredHarvesting:(id)a3;
-+ (BOOL)searchableItemIsEligibleForDissectorPipeline:(id)a3 targetPluginsCustomAttributeName:(id)a4;
-+ (BOOL)searchableItemIsEligibleForHarvesting:(id)a3 eligibleExceptForAge:(BOOL *)a4;
-+ (BOOL)searchableItemIsEligibleForHarvestingWithGetterBlock:(id)a3 bundleIdentifier:(id)a4 eligibleExceptForAge:(BOOL *)a5;
++ (BOOL)searchableItemIsEligibleForDeferredHarvesting:(id)harvesting;
++ (BOOL)searchableItemIsEligibleForDissectorPipeline:(id)pipeline targetPluginsCustomAttributeName:(id)name;
++ (BOOL)searchableItemIsEligibleForHarvesting:(id)harvesting eligibleExceptForAge:(BOOL *)age;
++ (BOOL)searchableItemIsEligibleForHarvestingWithGetterBlock:(id)block bundleIdentifier:(id)identifier eligibleExceptForAge:(BOOL *)age;
 @end
 
 @implementation HVHarvestEligibility
 
-+ (BOOL)searchableItemIsEligibleForHarvestingWithGetterBlock:(id)a3 bundleIdentifier:(id)a4 eligibleExceptForAge:(BOOL *)a5
++ (BOOL)searchableItemIsEligibleForHarvestingWithGetterBlock:(id)block bundleIdentifier:(id)identifier eligibleExceptForAge:(BOOL *)age
 {
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  blockCopy = block;
+  identifierCopy = identifier;
+  if (age)
   {
-    *a5 = 0;
+    *age = 0;
   }
 
-  if (([a1 searchableItemIsStoredEncryptedWithGetterBlock:v9 bundleIdentifier:v10] & 1) == 0)
+  if (([self searchableItemIsStoredEncryptedWithGetterBlock:blockCopy bundleIdentifier:identifierCopy] & 1) == 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __115__HVHarvestEligibility_searchableItemIsEligibleForHarvestingWithGetterBlock_bundleIdentifier_eligibleExceptForAge___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (searchableItemIsEligibleForHarvestingWithGetterBlock_bundleIdentifier_eligibleExceptForAge___pasOnceToken5 != -1)
     {
       dispatch_once(&searchableItemIsEligibleForHarvestingWithGetterBlock_bundleIdentifier_eligibleExceptForAge___pasOnceToken5, block);
     }
 
     v12 = searchableItemIsEligibleForHarvestingWithGetterBlock_bundleIdentifier_eligibleExceptForAge___pasExprOnceResult;
-    if (v10 && [v10 length])
+    if (identifierCopy && [identifierCopy length])
     {
-      v13 = [v12 objectForKeyedSubscript:v10];
+      v13 = [v12 objectForKeyedSubscript:identifierCopy];
       if (!v13)
       {
         v14 = [v12 objectForKeyedSubscript:@"_thirdpartyonly_"];
-        v15 = (v14)[2](v14, v9, v10);
+        v15 = (v14)[2](v14, blockCopy, identifierCopy);
 
         v16 = 0;
         goto LABEL_13;
@@ -48,15 +48,15 @@
     }
 
     v16 = v13;
-    v15 = (*(v13 + 16))(v13, v9, v10);
+    v15 = (*(v13 + 16))(v13, blockCopy, identifierCopy);
 LABEL_13:
 
     if (v15)
     {
-      if (!a5)
+      if (!age)
       {
 LABEL_16:
-        v11 = [v15 isEligible];
+        isEligible = [v15 isEligible];
 
         goto LABEL_17;
       }
@@ -64,23 +64,23 @@ LABEL_16:
 
     else
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:a1 file:@"HVHarvestEligibility.m" lineNumber:136 description:@"result unexpectedly nil"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HVHarvestEligibility.m" lineNumber:136 description:@"result unexpectedly nil"];
 
-      if (!a5)
+      if (!age)
       {
         goto LABEL_16;
       }
     }
 
-    *a5 = [v15 isEligibleExceptForAge];
+    *age = [v15 isEligibleExceptForAge];
     goto LABEL_16;
   }
 
-  v11 = 0;
+  isEligible = 0;
 LABEL_17:
 
-  return v11;
+  return isEligible;
 }
 
 void __115__HVHarvestEligibility_searchableItemIsEligibleForHarvestingWithGetterBlock_bundleIdentifier_eligibleExceptForAge___block_invoke(uint64_t a1)
@@ -359,33 +359,33 @@ LABEL_18:
   return v4;
 }
 
-+ (BOOL)searchableItemIsEligibleForHarvesting:(id)a3 eligibleExceptForAge:(BOOL *)a4
++ (BOOL)searchableItemIsEligibleForHarvesting:(id)harvesting eligibleExceptForAge:(BOOL *)age
 {
-  v6 = a3;
+  harvestingCopy = harvesting;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__HVHarvestEligibility_searchableItemIsEligibleForHarvesting_eligibleExceptForAge___block_invoke;
   v10[3] = &unk_2789699B0;
-  v11 = v6;
-  v7 = v6;
-  v8 = [v7 bundleID];
-  LOBYTE(a4) = [a1 searchableItemIsEligibleForHarvestingWithGetterBlock:v10 bundleIdentifier:v8 eligibleExceptForAge:a4];
+  v11 = harvestingCopy;
+  v7 = harvestingCopy;
+  bundleID = [v7 bundleID];
+  LOBYTE(age) = [self searchableItemIsEligibleForHarvestingWithGetterBlock:v10 bundleIdentifier:bundleID eligibleExceptForAge:age];
 
-  return a4;
+  return age;
 }
 
-+ (BOOL)searchableItemIsEligibleForDissectorPipeline:(id)a3 targetPluginsCustomAttributeName:(id)a4
++ (BOOL)searchableItemIsEligibleForDissectorPipeline:(id)pipeline targetPluginsCustomAttributeName:(id)name
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 bundleID];
-  v10 = [v9 isEqualToString:@"com.apple.mobilemail"];
+  pipelineCopy = pipeline;
+  nameCopy = name;
+  bundleID = [pipelineCopy bundleID];
+  v10 = [bundleID isEqualToString:@"com.apple.mobilemail"];
 
   if ((v10 & 1) == 0)
   {
-    v12 = [v7 bundleID];
-    v13 = [v12 isEqualToString:@"com.apple.MobileSMS"];
+    bundleID2 = [pipelineCopy bundleID];
+    v13 = [bundleID2 isEqualToString:@"com.apple.MobileSMS"];
 
     if (!v13)
     {
@@ -393,21 +393,21 @@ LABEL_18:
       goto LABEL_12;
     }
 
-    v14 = [objc_alloc(MEMORY[0x277CC33B0]) initWithKeyName:v8];
+    v14 = [objc_alloc(MEMORY[0x277CC33B0]) initWithKeyName:nameCopy];
     if (!v14)
     {
-      v23 = [MEMORY[0x277CCA890] currentHandler];
-      [v23 handleFailureInMethod:a2 object:a1 file:@"HVHarvestEligibility.m" lineNumber:67 description:{@"initWithKeyName failed for expected valid key: %@", v8}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HVHarvestEligibility.m" lineNumber:67 description:{@"initWithKeyName failed for expected valid key: %@", nameCopy}];
     }
 
-    v15 = [v7 attributeSet];
-    v16 = [v15 valueForCustomKey:v14];
+    attributeSet = [pipelineCopy attributeSet];
+    v16 = [attributeSet valueForCustomKey:v14];
 
     if (![v16 count])
     {
-      v17 = [v7 domainIdentifier];
+      domainIdentifier = [pipelineCopy domainIdentifier];
 
-      if (v17)
+      if (domainIdentifier)
       {
         v11 = 1;
         goto LABEL_11;
@@ -416,12 +416,12 @@ LABEL_18:
       v20 = hv_default_log_handle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
       {
-        v21 = [v7 bundleID];
-        v22 = [v7 uniqueIdentifier];
+        bundleID3 = [pipelineCopy bundleID];
+        uniqueIdentifier = [pipelineCopy uniqueIdentifier];
         *buf = 138412546;
-        v25 = v21;
+        v25 = bundleID3;
         v26 = 2112;
-        v27 = v22;
+        v27 = uniqueIdentifier;
         _os_log_fault_impl(&dword_2321EC000, v20, OS_LOG_TYPE_FAULT, "Got a Message with a nil domainIdentifier (bundleID=%@, uniqueIdentifier=%@)", buf, 0x16u);
       }
     }
@@ -439,24 +439,24 @@ LABEL_12:
   return v11;
 }
 
-+ (BOOL)searchableItemIsEligibleForDeferredHarvesting:(id)a3
++ (BOOL)searchableItemIsEligibleForDeferredHarvesting:(id)harvesting
 {
-  v3 = a3;
+  harvestingCopy = harvesting;
   if (searchableItemIsEligibleForDeferredHarvesting__onceToken != -1)
   {
     dispatch_once(&searchableItemIsEligibleForDeferredHarvesting__onceToken, &__block_literal_global_1642);
   }
 
-  v4 = [v3 bundleID];
+  bundleID = [harvestingCopy bundleID];
 
-  if (v4)
+  if (bundleID)
   {
-    v4 = searchableItemIsEligibleForDeferredHarvesting__bundleIds;
-    v5 = [v3 bundleID];
-    LOBYTE(v4) = [v4 containsObject:v5];
+    bundleID = searchableItemIsEligibleForDeferredHarvesting__bundleIds;
+    bundleID2 = [harvestingCopy bundleID];
+    LOBYTE(bundleID) = [bundleID containsObject:bundleID2];
   }
 
-  return v4;
+  return bundleID;
 }
 
 void __70__HVHarvestEligibility_searchableItemIsEligibleForDeferredHarvesting___block_invoke()

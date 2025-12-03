@@ -1,8 +1,8 @@
 @interface _TXHtmlParser
 - (NSString)textContent;
-- (_TXHtmlParser)initWithData:(id)a3 encoding:(unint64_t)a4;
-- (_TXHtmlParser)initWithString:(id)a3;
-- (_TXHtmlParser)initWithUTF8DataEnumerator:(id)a3;
+- (_TXHtmlParser)initWithData:(id)data encoding:(unint64_t)encoding;
+- (_TXHtmlParser)initWithString:(id)string;
+- (_TXHtmlParser)initWithUTF8DataEnumerator:(id)enumerator;
 - (void)dealloc;
 @end
 
@@ -31,9 +31,9 @@
   [(_TXHtmlParser *)&v3 dealloc];
 }
 
-- (_TXHtmlParser)initWithUTF8DataEnumerator:(id)a3
+- (_TXHtmlParser)initWithUTF8DataEnumerator:(id)enumerator
 {
-  v4 = a3;
+  enumeratorCopy = enumerator;
   v60.receiver = self;
   v60.super_class = _TXHtmlParser;
   v5 = [(_TXHtmlParser *)&v60 init];
@@ -103,7 +103,7 @@
     v6->_hyperlinkRanges = Mutable;
 
     sub_26EF98ECC(v6);
-    v35 = v4;
+    v35 = enumeratorCopy;
     v36 = 0;
     v37 = 0;
     v73 = 0;
@@ -117,10 +117,10 @@
     while (1)
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = [v35 nextObject];
+      nextObject = [v35 nextObject];
       objc_autoreleasePoolPop(v38);
 
-      if (!v39)
+      if (!nextObject)
       {
         break;
       }
@@ -133,9 +133,9 @@
       v66 = &v73;
       v67 = &v69;
       v68 = v36;
-      [v39 enumerateByteRangesUsingBlock:&v61];
-      v36 += [v39 length];
-      v37 = v39;
+      [nextObject enumerateByteRangesUsingBlock:&v61];
+      v36 += [nextObject length];
+      v37 = nextObject;
     }
 
     if (v70[3] < v36)
@@ -223,24 +223,24 @@
   return v6;
 }
 
-- (_TXHtmlParser)initWithData:(id)a3 encoding:(unint64_t)a4
+- (_TXHtmlParser)initWithData:(id)data encoding:(unint64_t)encoding
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 == 4 || a4 == 1)
+  dataCopy = data;
+  if (encoding == 4 || encoding == 1)
   {
     v7 = objc_autoreleasePoolPush();
-    v14[0] = v6;
+    v14[0] = dataCopy;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-    v9 = [v8 objectEnumerator];
+    objectEnumerator = [v8 objectEnumerator];
 
     objc_autoreleasePoolPop(v7);
-    v10 = [(_TXHtmlParser *)self initWithUTF8DataEnumerator:v9];
+    v10 = [(_TXHtmlParser *)self initWithUTF8DataEnumerator:objectEnumerator];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCACA8] _pas_stringWithDataNoCopy:v6 encoding:a4 nullTerminated:0];
+    v11 = [MEMORY[0x277CCACA8] _pas_stringWithDataNoCopy:dataCopy encoding:encoding nullTerminated:0];
     v10 = [(_TXHtmlParser *)self initWithString:v11];
   }
 
@@ -248,24 +248,24 @@
   return v10;
 }
 
-- (_TXHtmlParser)initWithString:(id)a3
+- (_TXHtmlParser)initWithString:(id)string
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!string)
   {
-    v13 = 0;
+    objectEnumerator = 0;
     goto LABEL_16;
   }
 
-  v5 = [a3 length];
+  v5 = [string length];
   v6 = objc_autoreleasePoolPush();
   if (!v5)
   {
-    v13 = [MEMORY[0x277CBEBF8] objectEnumerator];
+    objectEnumerator = [MEMORY[0x277CBEBF8] objectEnumerator];
     goto LABEL_15;
   }
 
-  CStringPtr = CFStringGetCStringPtr(a3, 0x600u);
+  CStringPtr = CFStringGetCStringPtr(string, 0x600u);
   if (CStringPtr)
   {
     v8 = CStringPtr;
@@ -275,11 +275,11 @@
     v27 = 3221225472;
     v28 = sub_26EF9A7E4;
     v29 = &unk_279DBB808;
-    v30 = a3;
+    stringCopy = string;
     v11 = [v10 initWithBytesNoCopy:v8 length:v5 deallocator:&v26];
     v35[0] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-    v13 = [v12 objectEnumerator];
+    objectEnumerator = [v12 objectEnumerator];
 
     objc_autoreleasePoolPop(v9);
 LABEL_15:
@@ -287,10 +287,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([a3 fastestEncoding] == 4)
+  if ([string fastestEncoding] == 4)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = [a3 dataUsingEncoding:4];
+    v15 = [string dataUsingEncoding:4];
     objc_autoreleasePoolPop(v14);
     v16 = [v15 length];
     if (v16)
@@ -318,24 +318,24 @@ LABEL_15:
       v33 = v20;
       v34 = v17;
       v22 = v21;
-      v30 = v22;
+      stringCopy = v22;
       v31 = v15;
       [v31 enumerateByteRangesUsingBlock:&v26];
-      v13 = [v22 objectEnumerator];
+      objectEnumerator = [v22 objectEnumerator];
     }
 
     else
     {
-      v13 = [MEMORY[0x277CBEBF8] objectEnumerator];
+      objectEnumerator = [MEMORY[0x277CBEBF8] objectEnumerator];
     }
 
     goto LABEL_15;
   }
 
   objc_autoreleasePoolPop(v6);
-  v13 = [[__TXNSStringEncodingEnumerator alloc] initWithString:a3 encoding:4 nullTerminated:0];
+  objectEnumerator = [[__TXNSStringEncodingEnumerator alloc] initWithString:string encoding:4 nullTerminated:0];
 LABEL_16:
-  v23 = [(_TXHtmlParser *)self initWithUTF8DataEnumerator:v13];
+  v23 = [(_TXHtmlParser *)self initWithUTF8DataEnumerator:objectEnumerator];
 
   v24 = *MEMORY[0x277D85DE8];
   return v23;

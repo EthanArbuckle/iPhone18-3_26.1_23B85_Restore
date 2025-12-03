@@ -1,12 +1,12 @@
 @interface OverrideSettingsExtension
-- (void)askToOverrideUnremovabilityOfApplication:(id)a3 teamIdentifier:(id)a4 replyHandler:(id)a5;
+- (void)askToOverrideUnremovabilityOfApplication:(id)application teamIdentifier:(id)identifier replyHandler:(id)handler;
 @end
 
 @implementation OverrideSettingsExtension
 
-- (void)askToOverrideUnremovabilityOfApplication:(id)a3 teamIdentifier:(id)a4 replyHandler:(id)a5
+- (void)askToOverrideUnremovabilityOfApplication:(id)application teamIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   v10 = static String._unconditionallyBridgeFromObjectiveC(_:)();

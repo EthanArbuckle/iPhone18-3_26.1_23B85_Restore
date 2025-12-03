@@ -1,31 +1,31 @@
 @interface PXGFocusRectDiagnosticsProvider
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4;
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block;
 @end
 
 @implementation PXGFocusRectDiagnosticsProvider
 
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  layoutCopy = layout;
+  blockCopy = block;
   v7 = +[PXTungstenSettings sharedInstance];
-  v8 = [v7 enableFocusRectDiagnostics];
+  enableFocusRectDiagnostics = [v7 enableFocusRectDiagnostics];
 
-  if (v8)
+  if (enableFocusRectDiagnostics)
   {
     v9 = MEMORY[0x277D75518];
-    v10 = [v5 axGroup];
-    v11 = [v9 focusSystemForEnvironment:v10];
+    axGroup = [layoutCopy axGroup];
+    v11 = [v9 focusSystemForEnvironment:axGroup];
 
-    v12 = [v11 focusedItem];
+    focusedItem = [v11 focusedItem];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __80__PXGFocusRectDiagnosticsProvider_enumerateRectDiagnosticsForLayout_usingBlock___block_invoke;
     v14[3] = &unk_2782AAB28;
-    v15 = v12;
-    v16 = v6;
-    v13 = v12;
-    [v5 enumerateDescendantsLayoutsUsingBlock:v14];
+    v15 = focusedItem;
+    v16 = blockCopy;
+    v13 = focusedItem;
+    [layoutCopy enumerateDescendantsLayoutsUsingBlock:v14];
   }
 }
 

@@ -1,29 +1,29 @@
 @interface UserMovementTracker
-- (id)init:(id)a3 noMovementAttitudeChangeMinThreshold:(double)a4 noMovementMinTimeSeconds:(double)a5 startMovementTrackingNow:(BOOL)a6;
+- (id)init:(id)init noMovementAttitudeChangeMinThreshold:(double)threshold noMovementMinTimeSeconds:(double)seconds startMovementTrackingNow:(BOOL)now;
 - (void)dealloc;
-- (void)handleNoUserMovement:(double)a3;
+- (void)handleNoUserMovement:(double)movement;
 - (void)handleUserMovement;
-- (void)initMembers:(id)a3 noMovementAttitudeChangeMinThreshold:(double)a4 noMovementMinTimeSeconds:(double)a5;
-- (void)processAttitudeChange:(id)a3 timestamp:(double)a4;
-- (void)processDeviceMotionUpdate:(id)a3 error:(id)a4;
+- (void)initMembers:(id)members noMovementAttitudeChangeMinThreshold:(double)threshold noMovementMinTimeSeconds:(double)seconds;
+- (void)processAttitudeChange:(id)change timestamp:(double)timestamp;
+- (void)processDeviceMotionUpdate:(id)update error:(id)error;
 - (void)startUserMotionTracking;
 - (void)stopDeviceMotionTracking;
 @end
 
 @implementation UserMovementTracker
 
-- (id)init:(id)a3 noMovementAttitudeChangeMinThreshold:(double)a4 noMovementMinTimeSeconds:(double)a5 startMovementTrackingNow:(BOOL)a6
+- (id)init:(id)init noMovementAttitudeChangeMinThreshold:(double)threshold noMovementMinTimeSeconds:(double)seconds startMovementTrackingNow:(BOOL)now
 {
-  v6 = a6;
-  v10 = a3;
+  nowCopy = now;
+  initCopy = init;
   v15.receiver = self;
   v15.super_class = UserMovementTracker;
   v11 = [(UserMovementTracker *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(UserMovementTracker *)v11 initMembers:v10 noMovementAttitudeChangeMinThreshold:a4 noMovementMinTimeSeconds:a5];
-    if (v6)
+    [(UserMovementTracker *)v11 initMembers:initCopy noMovementAttitudeChangeMinThreshold:threshold noMovementMinTimeSeconds:seconds];
+    if (nowCopy)
     {
       [(UserMovementTracker *)v12 startUserMotionTracking];
     }
@@ -42,13 +42,13 @@
   [(UserMovementTracker *)&v3 dealloc];
 }
 
-- (void)initMembers:(id)a3 noMovementAttitudeChangeMinThreshold:(double)a4 noMovementMinTimeSeconds:(double)a5
+- (void)initMembers:(id)members noMovementAttitudeChangeMinThreshold:(double)threshold noMovementMinTimeSeconds:(double)seconds
 {
-  v8 = a3;
-  v13 = v8;
-  if (v8)
+  membersCopy = members;
+  v13 = membersCopy;
+  if (membersCopy)
   {
-    v9 = v8;
+    v9 = membersCopy;
   }
 
   else
@@ -60,8 +60,8 @@
   self->m_cmMotionManager = v9;
 
   [(UserMovementTracker *)self setMovementState:0];
-  self->m_noMovementAttitudeChangeMinThreshold = a4;
-  self->m_noMovementMinTimeSeconds = a5;
+  self->m_noMovementAttitudeChangeMinThreshold = threshold;
+  self->m_noMovementMinTimeSeconds = seconds;
   self->m_isNoMovementPhase = 0;
   v11 = objc_opt_new();
   m_operationQueue = self->m_operationQueue;
@@ -100,27 +100,27 @@
   }
 }
 
-- (void)processDeviceMotionUpdate:(id)a3 error:(id)a4
+- (void)processDeviceMotionUpdate:(id)update error:(id)error
 {
-  v6 = a3;
-  v8 = v6;
-  if (a4)
+  updateCopy = update;
+  v8 = updateCopy;
+  if (error)
   {
     [(UserMovementTracker *)self setMovementState:3];
   }
 
   else
   {
-    v7 = [v6 attitude];
+    attitude = [updateCopy attitude];
     [v8 timestamp];
-    [(UserMovementTracker *)self processAttitudeChange:v7 timestamp:?];
+    [(UserMovementTracker *)self processAttitudeChange:attitude timestamp:?];
   }
 }
 
-- (void)processAttitudeChange:(id)a3 timestamp:(double)a4
+- (void)processAttitudeChange:(id)change timestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = [[AttitudeInformation alloc] init:v6];
+  changeCopy = change;
+  v7 = [[AttitudeInformation alloc] init:changeCopy];
 
   if (self->m_lastAttitude)
   {
@@ -133,7 +133,7 @@
 
     else
     {
-      [(UserMovementTracker *)self handleNoUserMovement:a4];
+      [(UserMovementTracker *)self handleNoUserMovement:timestamp];
     }
   }
 
@@ -141,14 +141,14 @@
   self->m_lastAttitude = v7;
 }
 
-- (void)handleNoUserMovement:(double)a3
+- (void)handleNoUserMovement:(double)movement
 {
   if (!self->m_isNoMovementPhase)
   {
-    [(UserMovementTracker *)self initializeNoMovementPhase:a3];
+    [(UserMovementTracker *)self initializeNoMovementPhase:movement];
   }
 
-  if ([(UserMovementTracker *)self movementState]!= 1 && a3 - self->m_noMovementStartTimestamp > self->m_noMovementMinTimeSeconds)
+  if ([(UserMovementTracker *)self movementState]!= 1 && movement - self->m_noMovementStartTimestamp > self->m_noMovementMinTimeSeconds)
   {
 
     [(UserMovementTracker *)self setMovementState:1];

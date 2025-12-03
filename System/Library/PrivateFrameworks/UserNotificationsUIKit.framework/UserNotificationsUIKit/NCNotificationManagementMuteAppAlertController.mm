@@ -6,17 +6,17 @@
 
 - (void)_configureView
 {
-  v3 = [(NCNotificationManagementAlertController *)self request];
-  v4 = [v3 topLevelSectionIdentifier];
+  request = [(NCNotificationManagementAlertController *)self request];
+  topLevelSectionIdentifier = [request topLevelSectionIdentifier];
 
-  v5 = [(NCNotificationManagementAlertController *)self settingsDelegate];
-  v6 = [v5 notificationManagementController:self sectionSettingsForSectionIdentifier:v4];
+  settingsDelegate = [(NCNotificationManagementAlertController *)self settingsDelegate];
+  v6 = [settingsDelegate notificationManagementController:self sectionSettingsForSectionIdentifier:topLevelSectionIdentifier];
 
   v7 = MEMORY[0x277CCACA8];
   v8 = NCUserNotificationsUIKitFrameworkBundle();
   v9 = [v8 localizedStringForKey:@"NOTIFICATION_REMOTE_MANAGEMENT_MENU_APP_TITLE" value:&stru_282FE84F8 table:0];
-  v10 = [v6 displayName];
-  v11 = [v7 stringWithFormat:v9, v10];
+  displayName = [v6 displayName];
+  v11 = [v7 stringWithFormat:v9, displayName];
   [(NCNotificationManagementMuteAppAlertController *)self setTitle:v11];
 
   v12 = MEMORY[0x277D750F8];

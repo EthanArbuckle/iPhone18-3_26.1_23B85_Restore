@@ -2,8 +2,8 @@
 + (id)_extensionAuxiliaryVendorProtocol;
 - (RPBroadcastHostViewController)hostViewController;
 - (id)extensionObjectProxy;
-- (void)completeSetupWithBroadcastURL:(id)a3;
-- (void)updateBroadcastHandlerListenerEndpoint:(id)a3;
+- (void)completeSetupWithBroadcastURL:(id)l;
+- (void)updateBroadcastHandlerListenerEndpoint:(id)endpoint;
 @end
 
 @implementation RPBroadcastExtensionHostContext
@@ -19,8 +19,8 @@
 
 - (id)extensionObjectProxy
 {
-  v2 = [(RPBroadcastExtensionHostContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
+  _auxiliaryConnection = [(RPBroadcastExtensionHostContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
 
   return v3;
 }
@@ -33,18 +33,18 @@ void __55__RPBroadcastExtensionHostContext_extensionObjectProxy__block_invoke(ui
   }
 }
 
-- (void)completeSetupWithBroadcastURL:(id)a3
+- (void)completeSetupWithBroadcastURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  [WeakRetained completeSetupWithBroadcastURL:v4];
+  [WeakRetained completeSetupWithBroadcastURL:lCopy];
 }
 
-- (void)updateBroadcastHandlerListenerEndpoint:(id)a3
+- (void)updateBroadcastHandlerListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(RPBroadcastExtensionHostContext *)self extensionObjectProxy];
-  [v5 updateBroadcastHandlerListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  extensionObjectProxy = [(RPBroadcastExtensionHostContext *)self extensionObjectProxy];
+  [extensionObjectProxy updateBroadcastHandlerListenerEndpoint:endpointCopy];
 }
 
 - (RPBroadcastHostViewController)hostViewController

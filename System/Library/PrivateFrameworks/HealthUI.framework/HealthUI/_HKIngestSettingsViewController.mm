@@ -1,35 +1,35 @@
 @interface _HKIngestSettingsViewController
-- (id)_initWithHealthStore:(id)a3 displayTypeController:(id)a4 useInsetStyling:(BOOL)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_displayGuestModeAlertWithCompletion:(id)a3;
+- (id)_initWithHealthStore:(id)store displayTypeController:(id)controller useInsetStyling:(BOOL)styling;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_displayGuestModeAlertWithCompletion:(id)completion;
 - (void)fetchEnabledStatusForPeripheral;
-- (void)reloadData:(id)a3;
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4;
+- (void)reloadData:(id)data;
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value;
 - (void)viewDidLoad;
 @end
 
 @implementation _HKIngestSettingsViewController
 
-- (id)_initWithHealthStore:(id)a3 displayTypeController:(id)a4 useInsetStyling:(BOOL)a5
+- (id)_initWithHealthStore:(id)store displayTypeController:(id)controller useInsetStyling:(BOOL)styling
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [(HKTableViewController *)self initWithUsingInsetStyling:v5];
+  stylingCopy = styling;
+  storeCopy = store;
+  controllerCopy = controller;
+  v11 = [(HKTableViewController *)self initWithUsingInsetStyling:stylingCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_healthStore, a3);
-    v13 = [objc_alloc(MEMORY[0x1E696C1B8]) initWithHealthStore:v9];
+    objc_storeStrong(&v11->_healthStore, store);
+    v13 = [objc_alloc(MEMORY[0x1E696C1B8]) initWithHealthStore:storeCopy];
     healthServicesManager = v12->_healthServicesManager;
     v12->_healthServicesManager = v13;
 
-    objc_storeStrong(&v12->_displayTypeController, a4);
-    v15 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v12->_displayTypeController, controller);
+    array = [MEMORY[0x1E695DF70] array];
     dataTypeNames = v12->_dataTypeNames;
-    v12->_dataTypeNames = v15;
+    v12->_dataTypeNames = array;
 
     v12->_deviceFound = 1;
   }
@@ -42,8 +42,8 @@
   v4.receiver = self;
   v4.super_class = _HKIngestSettingsViewController;
   [(HKTableViewController *)&v4 viewDidLoad];
-  v3 = [(_HKIngestSettingsViewController *)self tableView];
-  [v3 setEstimatedRowHeight:52.0];
+  tableView = [(_HKIngestSettingsViewController *)self tableView];
+  [tableView setEstimatedRowHeight:52.0];
 
   [(_HKIngestSettingsViewController *)self fetchEnabledStatusForPeripheral];
 }
@@ -60,18 +60,18 @@
   [(HKHealthServicesManager *)healthServicesManager getEnabledStatusForPeripheral:deviceIdentifier withCompletion:v4];
 }
 
-- (void)reloadData:(id)a3
+- (void)reloadData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if (self->_deviceIdentifier)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v6 = [dataCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -86,12 +86,12 @@
           }
 
           v10 = [(HKDisplayTypeController *)self->_displayTypeController displayTypeForObjectTypeUnifyingBloodPressureTypes:*(*(&v14 + 1) + 8 * i)];
-          v11 = [v10 localization];
-          v12 = [v11 displayName];
+          localization = [v10 localization];
+          displayName = [localization displayName];
 
-          if (([(NSMutableArray *)self->_dataTypeNames containsObject:v12]& 1) == 0)
+          if (([(NSMutableArray *)self->_dataTypeNames containsObject:displayName]& 1) == 0)
           {
-            [(NSMutableArray *)self->_dataTypeNames addObject:v12];
+            [(NSMutableArray *)self->_dataTypeNames addObject:displayName];
           }
         }
 
@@ -110,10 +110,10 @@
   }
 }
 
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value
 {
-  v5 = a3;
-  v6 = [v5 isOn];
+  changedCopy = changed;
+  isOn = [changedCopy isOn];
   objc_initWeak(&location, self);
   healthServicesManager = self->_healthServicesManager;
   deviceIdentifier = self->_deviceIdentifier;
@@ -122,15 +122,15 @@
   v9[2] = __64___HKIngestSettingsViewController_switchCellValueChanged_value___block_invoke;
   v9[3] = &unk_1E81B8418;
   objc_copyWeak(&v10, &location);
-  v11 = v6;
-  [(HKHealthServicesManager *)healthServicesManager setEnabledStatus:v6 forPeripheral:deviceIdentifier withCompletion:v9];
+  v11 = isOn;
+  [(HKHealthServicesManager *)healthServicesManager setEnabledStatus:isOn forPeripheral:deviceIdentifier withCompletion:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_displayGuestModeAlertWithCompletion:(id)a3
+- (void)_displayGuestModeAlertWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = MEMORY[0x1E69DC650];
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v6 = [v5 localizedStringForKey:@"GUEST_MODE_CHANGE_AUTHORIZATION_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -145,36 +145,36 @@
   v16[1] = 3221225472;
   v16[2] = __72___HKIngestSettingsViewController__displayGuestModeAlertWithCompletion___block_invoke;
   v16[3] = &unk_1E81B8440;
-  v17 = v3;
-  v13 = v3;
+  v17 = completionCopy;
+  v13 = completionCopy;
   v14 = [v10 actionWithTitle:v12 style:0 handler:v16];
 
   [v9 addAction:v14];
   [(_HKIngestSettingsViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     return [(NSMutableArray *)self->_dataTypeNames count];
   }
 
   else
   {
-    return a4 == 0;
+    return section == 0;
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [(_HKIngestSettingsViewController *)self tableView];
-  v8 = v7;
-  if (v6)
+  pathCopy = path;
+  section = [pathCopy section];
+  tableView = [(_HKIngestSettingsViewController *)self tableView];
+  v8 = tableView;
+  if (section)
   {
-    v9 = [v7 dequeueReusableCellWithIdentifier:@"DeviceSourceDatatype"];
+    v9 = [tableView dequeueReusableCellWithIdentifier:@"DeviceSourceDatatype"];
 
     if (!v9)
     {
@@ -182,14 +182,14 @@
       [(HKSwitchTableViewCell *)v9 setSelectionStyle:0];
     }
 
-    v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_dataTypeNames, "objectAtIndexedSubscript:", [v5 row]);
-    v11 = [(HKSwitchTableViewCell *)v9 textLabel];
-    [v11 setText:v10];
+    v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_dataTypeNames, "objectAtIndexedSubscript:", [pathCopy row]);
+    textLabel = [(HKSwitchTableViewCell *)v9 textLabel];
+    [textLabel setText:v10];
   }
 
   else
   {
-    v9 = [v7 dequeueReusableCellWithIdentifier:@"DeviceSourceKillSwitch"];
+    v9 = [tableView dequeueReusableCellWithIdentifier:@"DeviceSourceKillSwitch"];
 
     if (!v9)
     {
@@ -208,15 +208,15 @@
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([MEMORY[0x1E696C608] isAppleInternalInstall] && objc_msgSend(v6, "numberOfSections") - 1 == a4)
+  viewCopy = view;
+  if ([MEMORY[0x1E696C608] isAppleInternalInstall] && objc_msgSend(viewCopy, "numberOfSections") - 1 == section)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"INTERNAL ONLY: %@, Legacy Bluetooth device with identifier:%@", self, self->_deviceIdentifier];
   }
 
-  else if (a4)
+  else if (section)
   {
     v7 = 0;
   }
@@ -228,8 +228,8 @@
       v8 = MEMORY[0x1E696AEC0];
       v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v10 = [v9 localizedStringForKey:@"ALLOW_DEVICE_DATA_UPDATES" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      v11 = [(_HKIngestSettingsViewController *)self title];
-      v7 = [v8 stringWithFormat:v10, v11];
+      title = [(_HKIngestSettingsViewController *)self title];
+      v7 = [v8 stringWithFormat:v10, title];
     }
 
     else

@@ -1,68 +1,68 @@
 @interface INQuotaCleanupPushHandler
-- (BOOL)_isValidPush:(id)a3;
-- (INQuotaCleanupPushHandler)initWithAccountStore:(id)a3;
-- (void)clearClientCacheWithCacheTypes:(id)a3;
-- (void)handleIncomingPushNotification:(id)a3;
+- (BOOL)_isValidPush:(id)push;
+- (INQuotaCleanupPushHandler)initWithAccountStore:(id)store;
+- (void)clearClientCacheWithCacheTypes:(id)types;
+- (void)handleIncomingPushNotification:(id)notification;
 @end
 
 @implementation INQuotaCleanupPushHandler
 
-- (INQuotaCleanupPushHandler)initWithAccountStore:(id)a3
+- (INQuotaCleanupPushHandler)initWithAccountStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = INQuotaCleanupPushHandler;
   v6 = [(INQuotaCleanupPushHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountStore, a3);
+    objc_storeStrong(&v6->_accountStore, store);
   }
 
   return v7;
 }
 
-- (void)handleIncomingPushNotification:(id)a3
+- (void)handleIncomingPushNotification:(id)notification
 {
-  v6 = a3;
+  notificationCopy = notification;
   if ([(INQuotaCleanupPushHandler *)self _isValidPush:?])
   {
-    v4 = [v6 userInfo];
-    v5 = [v4 objectForKeyedSubscript:@"cacheTypes"];
+    userInfo = [notificationCopy userInfo];
+    v5 = [userInfo objectForKeyedSubscript:@"cacheTypes"];
     [(INQuotaCleanupPushHandler *)self clearClientCacheWithCacheTypes:v5];
   }
 }
 
-- (BOOL)_isValidPush:(id)a3
+- (BOOL)_isValidPush:(id)push
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"event"];
+  pushCopy = push;
+  userInfo = [pushCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"event"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"dsId"];
+    userInfo2 = [pushCopy userInfo];
+    v8 = [userInfo2 objectForKeyedSubscript:@"dsId"];
 
     if (v8)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = v8;
+        stringValue = v8;
         goto LABEL_12;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v8 stringValue];
+        stringValue = [v8 stringValue];
 LABEL_12:
-        v10 = v9;
+        v10 = stringValue;
         accountStore = self->_accountStore;
         p_accountStore = &self->_accountStore;
-        v12 = [(ACAccountStore *)accountStore aa_appleAccountWithPersonID:v9];
+        v12 = [(ACAccountStore *)accountStore aa_appleAccountWithPersonID:stringValue];
         v11 = [v12 aa_isAccountClass:AAAccountClassPrimary];
         if ((v11 & 1) == 0)
         {
@@ -117,13 +117,13 @@ LABEL_22:
   return v11;
 }
 
-- (void)clearClientCacheWithCacheTypes:(id)a3
+- (void)clearClientCacheWithCacheTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 enumerateObjectsUsingBlock:&stru_100055470];
+    [typesCopy enumerateObjectsUsingBlock:&stru_100055470];
   }
 
   else

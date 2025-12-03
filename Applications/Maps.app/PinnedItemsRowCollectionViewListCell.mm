@@ -1,6 +1,6 @@
 @interface PinnedItemsRowCollectionViewListCell
-- (_TtC4Maps36PinnedItemsRowCollectionViewListCell)initWithCoder:(id)a3;
-- (_TtC4Maps36PinnedItemsRowCollectionViewListCell)initWithFrame:(CGRect)a3;
+- (_TtC4Maps36PinnedItemsRowCollectionViewListCell)initWithCoder:(id)coder;
+- (_TtC4Maps36PinnedItemsRowCollectionViewListCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,16 +8,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100385A5C();
 }
 
-- (_TtC4Maps36PinnedItemsRowCollectionViewListCell)initWithFrame:(CGRect)a3
+- (_TtC4Maps36PinnedItemsRowCollectionViewListCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC4Maps36PinnedItemsRowCollectionViewListCell_currentContainerSize;
   v10 = enum case for MapsDesignConstants.ColumnViews.ContainerSize.regular(_:);
@@ -29,7 +29,7 @@
   return [(PinnedItemsRowCollectionViewListCell *)&v13 initWithFrame:x, y, width, height];
 }
 
-- (_TtC4Maps36PinnedItemsRowCollectionViewListCell)initWithCoder:(id)a3
+- (_TtC4Maps36PinnedItemsRowCollectionViewListCell)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC4Maps36PinnedItemsRowCollectionViewListCell_currentContainerSize;
@@ -39,8 +39,8 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps36PinnedItemsRowCollectionViewListCell_viewModel) = 0;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v9 = a3;
-  v10 = [(PinnedItemsRowCollectionViewListCell *)&v12 initWithCoder:v9];
+  coderCopy = coder;
+  v10 = [(PinnedItemsRowCollectionViewListCell *)&v12 initWithCoder:coderCopy];
 
   if (v10)
   {

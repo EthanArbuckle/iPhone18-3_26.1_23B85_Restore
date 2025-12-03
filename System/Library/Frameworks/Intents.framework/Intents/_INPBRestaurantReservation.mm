@@ -1,35 +1,35 @@
 @interface _INPBRestaurantReservation
-- (BOOL)isEqual:(id)a3;
-- (_INPBRestaurantReservation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRestaurantReservation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRestaurantReservation
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRestaurantReservation *)self partySize];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"partySize"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  partySize = [(_INPBRestaurantReservation *)self partySize];
+  dictionaryRepresentation = [partySize dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"partySize"];
 
-  v6 = [(_INPBRestaurantReservation *)self reservation];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"reservation"];
+  reservation = [(_INPBRestaurantReservation *)self reservation];
+  dictionaryRepresentation2 = [reservation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"reservation"];
 
-  v8 = [(_INPBRestaurantReservation *)self reservationDuration];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"reservationDuration"];
+  reservationDuration = [(_INPBRestaurantReservation *)self reservationDuration];
+  dictionaryRepresentation3 = [reservationDuration dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"reservationDuration"];
 
-  v10 = [(_INPBRestaurantReservation *)self restaurantLocation];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"restaurantLocation"];
+  restaurantLocation = [(_INPBRestaurantReservation *)self restaurantLocation];
+  dictionaryRepresentation4 = [restaurantLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"restaurantLocation"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -40,28 +40,28 @@
   return v4 ^ v5 ^ [(_INPBLocation *)self->_restaurantLocation hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBRestaurantReservation *)self partySize];
-  v6 = [v4 partySize];
-  if ((v5 != 0) == (v6 == 0))
+  partySize = [(_INPBRestaurantReservation *)self partySize];
+  partySize2 = [equalCopy partySize];
+  if ((partySize != 0) == (partySize2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBRestaurantReservation *)self partySize];
-  if (v7)
+  partySize3 = [(_INPBRestaurantReservation *)self partySize];
+  if (partySize3)
   {
-    v8 = v7;
-    v9 = [(_INPBRestaurantReservation *)self partySize];
-    v10 = [v4 partySize];
-    v11 = [v9 isEqual:v10];
+    v8 = partySize3;
+    partySize4 = [(_INPBRestaurantReservation *)self partySize];
+    partySize5 = [equalCopy partySize];
+    v11 = [partySize4 isEqual:partySize5];
 
     if (!v11)
     {
@@ -73,20 +73,20 @@
   {
   }
 
-  v5 = [(_INPBRestaurantReservation *)self reservation];
-  v6 = [v4 reservation];
-  if ((v5 != 0) == (v6 == 0))
+  partySize = [(_INPBRestaurantReservation *)self reservation];
+  partySize2 = [equalCopy reservation];
+  if ((partySize != 0) == (partySize2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBRestaurantReservation *)self reservation];
-  if (v12)
+  reservation = [(_INPBRestaurantReservation *)self reservation];
+  if (reservation)
   {
-    v13 = v12;
-    v14 = [(_INPBRestaurantReservation *)self reservation];
-    v15 = [v4 reservation];
-    v16 = [v14 isEqual:v15];
+    v13 = reservation;
+    reservation2 = [(_INPBRestaurantReservation *)self reservation];
+    reservation3 = [equalCopy reservation];
+    v16 = [reservation2 isEqual:reservation3];
 
     if (!v16)
     {
@@ -98,20 +98,20 @@
   {
   }
 
-  v5 = [(_INPBRestaurantReservation *)self reservationDuration];
-  v6 = [v4 reservationDuration];
-  if ((v5 != 0) == (v6 == 0))
+  partySize = [(_INPBRestaurantReservation *)self reservationDuration];
+  partySize2 = [equalCopy reservationDuration];
+  if ((partySize != 0) == (partySize2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBRestaurantReservation *)self reservationDuration];
-  if (v17)
+  reservationDuration = [(_INPBRestaurantReservation *)self reservationDuration];
+  if (reservationDuration)
   {
-    v18 = v17;
-    v19 = [(_INPBRestaurantReservation *)self reservationDuration];
-    v20 = [v4 reservationDuration];
-    v21 = [v19 isEqual:v20];
+    v18 = reservationDuration;
+    reservationDuration2 = [(_INPBRestaurantReservation *)self reservationDuration];
+    reservationDuration3 = [equalCopy reservationDuration];
+    v21 = [reservationDuration2 isEqual:reservationDuration3];
 
     if (!v21)
     {
@@ -123,12 +123,12 @@
   {
   }
 
-  v5 = [(_INPBRestaurantReservation *)self restaurantLocation];
-  v6 = [v4 restaurantLocation];
-  if ((v5 != 0) != (v6 == 0))
+  partySize = [(_INPBRestaurantReservation *)self restaurantLocation];
+  partySize2 = [equalCopy restaurantLocation];
+  if ((partySize != 0) != (partySize2 == 0))
   {
-    v22 = [(_INPBRestaurantReservation *)self restaurantLocation];
-    if (!v22)
+    restaurantLocation = [(_INPBRestaurantReservation *)self restaurantLocation];
+    if (!restaurantLocation)
     {
 
 LABEL_25:
@@ -136,10 +136,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBRestaurantReservation *)self restaurantLocation];
-    v25 = [v4 restaurantLocation];
-    v26 = [v24 isEqual:v25];
+    v23 = restaurantLocation;
+    restaurantLocation2 = [(_INPBRestaurantReservation *)self restaurantLocation];
+    restaurantLocation3 = [equalCopy restaurantLocation];
+    v26 = [restaurantLocation2 isEqual:restaurantLocation3];
 
     if (v26)
     {
@@ -159,84 +159,84 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRestaurantReservation allocWithZone:](_INPBRestaurantReservation init];
-  v6 = [(_INPBInteger *)self->_partySize copyWithZone:a3];
+  v6 = [(_INPBInteger *)self->_partySize copyWithZone:zone];
   [(_INPBRestaurantReservation *)v5 setPartySize:v6];
 
-  v7 = [(_INPBReservation *)self->_reservation copyWithZone:a3];
+  v7 = [(_INPBReservation *)self->_reservation copyWithZone:zone];
   [(_INPBRestaurantReservation *)v5 setReservation:v7];
 
-  v8 = [(_INPBDateTimeRange *)self->_reservationDuration copyWithZone:a3];
+  v8 = [(_INPBDateTimeRange *)self->_reservationDuration copyWithZone:zone];
   [(_INPBRestaurantReservation *)v5 setReservationDuration:v8];
 
-  v9 = [(_INPBLocation *)self->_restaurantLocation copyWithZone:a3];
+  v9 = [(_INPBLocation *)self->_restaurantLocation copyWithZone:zone];
   [(_INPBRestaurantReservation *)v5 setRestaurantLocation:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRestaurantReservation *)self data];
+  coderCopy = coder;
+  data = [(_INPBRestaurantReservation *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRestaurantReservation)initWithCoder:(id)a3
+- (_INPBRestaurantReservation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRestaurantReservation *)self initWithData:v6];
+    self = [(_INPBRestaurantReservation *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(_INPBRestaurantReservation *)self partySize];
+  toCopy = to;
+  partySize = [(_INPBRestaurantReservation *)self partySize];
 
-  if (v4)
+  if (partySize)
   {
-    v5 = [(_INPBRestaurantReservation *)self partySize];
+    partySize2 = [(_INPBRestaurantReservation *)self partySize];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRestaurantReservation *)self reservation];
+  reservation = [(_INPBRestaurantReservation *)self reservation];
 
-  if (v6)
+  if (reservation)
   {
-    v7 = [(_INPBRestaurantReservation *)self reservation];
+    reservation2 = [(_INPBRestaurantReservation *)self reservation];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBRestaurantReservation *)self reservationDuration];
+  reservationDuration = [(_INPBRestaurantReservation *)self reservationDuration];
 
-  if (v8)
+  if (reservationDuration)
   {
-    v9 = [(_INPBRestaurantReservation *)self reservationDuration];
+    reservationDuration2 = [(_INPBRestaurantReservation *)self reservationDuration];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBRestaurantReservation *)self restaurantLocation];
+  restaurantLocation = [(_INPBRestaurantReservation *)self restaurantLocation];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (restaurantLocation)
   {
-    v12 = [(_INPBRestaurantReservation *)self restaurantLocation];
+    restaurantLocation2 = [(_INPBRestaurantReservation *)self restaurantLocation];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 

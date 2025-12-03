@@ -1,42 +1,42 @@
 @interface _SFSettingsAlertButton
 - (NSArray)componentsArrangement;
 - (UIView)trailingView;
-- (_SFSettingsAlertButton)initWithFrame:(CGRect)a3;
+- (_SFSettingsAlertButton)initWithFrame:(CGRect)frame;
 - (id)_arrangedSubviews;
 - (id)attributedDetailText;
 - (id)attributedText;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)text;
 - (void)_didChangeContents;
-- (void)_hover:(id)a3;
+- (void)_hover:(id)_hover;
 - (void)_updateHasDetailText;
 - (void)_updateTintColor;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)setAccessoryView:(id)a3;
-- (void)setAttributedDetailText:(id)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setComponentsArrangement:(id)a3;
-- (void)setDetailText:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setLimitToSingleLine:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowsIndicatorDot:(BOOL)a3;
-- (void)setStatusImageView:(id)a3;
-- (void)setText:(id)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)setAccessoryView:(id)view;
+- (void)setAttributedDetailText:(id)text;
+- (void)setAttributedText:(id)text;
+- (void)setComponentsArrangement:(id)arrangement;
+- (void)setDetailText:(id)text;
+- (void)setImage:(id)image;
+- (void)setLimitToSingleLine:(BOOL)line;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowsIndicatorDot:(BOOL)dot;
+- (void)setStatusImageView:(id)view;
+- (void)setText:(id)text;
 - (void)updateConstraints;
 @end
 
 @implementation _SFSettingsAlertButton
 
-- (_SFSettingsAlertButton)initWithFrame:(CGRect)a3
+- (_SFSettingsAlertButton)initWithFrame:(CGRect)frame
 {
   v37[4] = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = _SFSettingsAlertButton;
-  v3 = [(_SFSettingsAlertControl *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFSettingsAlertControl *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC20]);
@@ -69,28 +69,28 @@
     dotView = v3->_dotView;
     v3->_dotView = v14;
 
-    v16 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIView *)v3->_dotView setBackgroundColor:v16];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIView *)v3->_dotView setBackgroundColor:systemBlueColor];
 
     [(UIView *)v3->_dotView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v3->_dotView _setContinuousCornerRadius:2.0];
-    v17 = [(_SFSettingsAlertButton *)v3 heightAnchor];
-    v18 = [v17 constraintEqualToConstant:44.0];
+    heightAnchor = [(_SFSettingsAlertButton *)v3 heightAnchor];
+    v18 = [heightAnchor constraintEqualToConstant:44.0];
 
     LODWORD(v19) = 1111752704;
     [v18 setPriority:v19];
     v20 = MEMORY[0x1E696ACD8];
-    v21 = [(_SFSettingsAlertButton *)v3 heightAnchor];
-    v22 = [v21 constraintGreaterThanOrEqualToConstant:44.0];
+    heightAnchor2 = [(_SFSettingsAlertButton *)v3 heightAnchor];
+    v22 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:44.0];
     v37[0] = v22;
     v37[1] = v18;
     v34 = v18;
-    v23 = [(UIView *)v3->_dotView heightAnchor];
-    v24 = [v23 constraintEqualToConstant:4.0];
+    heightAnchor3 = [(UIView *)v3->_dotView heightAnchor];
+    v24 = [heightAnchor3 constraintEqualToConstant:4.0];
     v37[2] = v24;
-    v25 = [(UIView *)v3->_dotView widthAnchor];
-    v26 = [(UIView *)v3->_dotView heightAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    widthAnchor = [(UIView *)v3->_dotView widthAnchor];
+    heightAnchor4 = [(UIView *)v3->_dotView heightAnchor];
+    v27 = [widthAnchor constraintEqualToAnchor:heightAnchor4];
     v37[3] = v27;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
     [v20 activateConstraints:v28];
@@ -112,15 +112,15 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   text = self->_text;
-  if (text != v4)
+  if (text != textCopy)
   {
-    v11 = v4;
-    v6 = [(NSString *)text isEqualToString:v4];
-    v4 = v11;
+    v11 = textCopy;
+    v6 = [(NSString *)text isEqualToString:textCopy];
+    textCopy = v11;
     if (!v6)
     {
       v7 = [(NSString *)v11 copy];
@@ -130,23 +130,23 @@
       [(UILabel *)self->_textLabel setText:v11];
       [(UILabel *)self->_textLabel _setTextColorFollowsTintColor:1];
       v9 = [(NSString *)self->_text length];
-      v10 = [(UILabel *)self->_textLabel superview];
+      superview = [(UILabel *)self->_textLabel superview];
 
       if (v9)
       {
-        if (!v10)
+        if (!superview)
         {
           [(_SFSettingsAlertButton *)self addSubview:self->_textLabel];
         }
       }
 
-      else if (v10)
+      else if (superview)
       {
         [(UILabel *)self->_textLabel removeFromSuperview];
       }
 
       [(_SFSettingsAlertButton *)self _didChangeContents];
-      v4 = v11;
+      textCopy = v11;
     }
   }
 }
@@ -156,26 +156,26 @@
   text = self->_text;
   if (text)
   {
-    v3 = text;
+    string = text;
   }
 
   else
   {
-    v3 = [(NSAttributedString *)self->_attributedText string];
+    string = [(NSAttributedString *)self->_attributedText string];
   }
 
-  return v3;
+  return string;
 }
 
-- (void)setDetailText:(id)a3
+- (void)setDetailText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   detailText = self->_detailText;
-  if (detailText != v4)
+  if (detailText != textCopy)
   {
-    v10 = v4;
-    v6 = [(NSString *)detailText isEqualToString:v4];
-    v4 = v10;
+    v10 = textCopy;
+    v6 = [(NSString *)detailText isEqualToString:textCopy];
+    textCopy = v10;
     if (!v6)
     {
       v7 = [(NSString *)v10 copy];
@@ -188,7 +188,7 @@
       [(_SFSettingsAlertButton *)self _updateHasDetailText];
       [(UILabel *)self->_detailTextLabel setText:self->_detailText];
       [(_SFSettingsAlertButton *)self _didChangeContents];
-      v4 = v10;
+      textCopy = v10;
     }
   }
 }
@@ -196,11 +196,11 @@
 - (void)_updateHasDetailText
 {
   v3 = [(NSString *)self->_detailText length];
-  v4 = [(UILabel *)self->_detailTextLabel superview];
+  superview = [(UILabel *)self->_detailTextLabel superview];
 
   if (v3)
   {
-    if (!v4)
+    if (!superview)
     {
       detailTextLabel = self->_detailTextLabel;
       if (!detailTextLabel)
@@ -214,8 +214,8 @@
         [(UILabel *)self->_detailTextLabel setFont:v8];
 
         [(UILabel *)self->_detailTextLabel setAdjustsFontForContentSizeCategory:1];
-        v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [(UILabel *)self->_detailTextLabel setTextColor:v9];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [(UILabel *)self->_detailTextLabel setTextColor:secondaryLabelColor];
 
         [(UILabel *)self->_detailTextLabel setNumberOfLines:self->_limitToSingleLine];
         detailTextLabel = self->_detailTextLabel;
@@ -225,7 +225,7 @@
     }
   }
 
-  else if (v4)
+  else if (superview)
   {
     [(UILabel *)self->_detailTextLabel removeFromSuperview];
     v10 = self->_detailTextLabel;
@@ -238,10 +238,10 @@
   v9.receiver = self;
   v9.super_class = _SFSettingsAlertButton;
   [(_SFSettingsAlertButton *)&v9 layoutSubviews];
-  v3 = [(_SFSettingsAlertButton *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(_SFSettingsAlertButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   v5 = 9.0;
-  if (UIContentSizeCategoryIsAccessibilityCategory(v4))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v6 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDCF8]];
     [v6 scaledValueForValue:11.0];
@@ -262,19 +262,19 @@
 - (void)_didChangeContents
 {
   [(_SFSettingsAlertButton *)self setNeedsUpdateConstraints];
-  v3 = [(_SFSettingsAlertControl *)self delegate];
-  [v3 alertItemViewContentSizeDidChange:self];
+  delegate = [(_SFSettingsAlertControl *)self delegate];
+  [delegate alertItemViewContentSizeDidChange:self];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   attributedText = self->_attributedText;
-  if (attributedText != v4)
+  if (attributedText != textCopy)
   {
-    v11 = v4;
-    v6 = [(NSAttributedString *)attributedText isEqualToAttributedString:v4];
-    v4 = v11;
+    v11 = textCopy;
+    v6 = [(NSAttributedString *)attributedText isEqualToAttributedString:textCopy];
+    textCopy = v11;
     if (!v6)
     {
       v7 = [(NSAttributedString *)v11 copy];
@@ -284,23 +284,23 @@
       [(UILabel *)self->_textLabel setAttributedText:v11];
       [(UILabel *)self->_textLabel _setTextColorFollowsTintColor:0];
       v9 = [(NSAttributedString *)self->_attributedText length];
-      v10 = [(UILabel *)self->_textLabel superview];
+      superview = [(UILabel *)self->_textLabel superview];
 
       if (v9)
       {
-        if (!v10)
+        if (!superview)
         {
           [(_SFSettingsAlertButton *)self addSubview:self->_textLabel];
         }
       }
 
-      else if (v10)
+      else if (superview)
       {
         [(UILabel *)self->_textLabel removeFromSuperview];
       }
 
       [(_SFSettingsAlertButton *)self _didChangeContents];
-      v4 = v11;
+      textCopy = v11;
     }
   }
 }
@@ -321,18 +321,18 @@
   return v3;
 }
 
-- (void)setAttributedDetailText:(id)a3
+- (void)setAttributedDetailText:(id)text
 {
-  v8 = a3;
+  textCopy = text;
   if ((WBSIsEqual() & 1) == 0)
   {
-    v4 = [v8 copy];
+    v4 = [textCopy copy];
     attributedDetailText = self->_attributedDetailText;
     self->_attributedDetailText = v4;
 
-    v6 = [v8 string];
+    string = [textCopy string];
     detailText = self->_detailText;
-    self->_detailText = v6;
+    self->_detailText = string;
 
     [(_SFSettingsAlertButton *)self _updateHasDetailText];
     [(UILabel *)self->_detailTextLabel setAttributedText:self->_attributedDetailText];
@@ -361,21 +361,21 @@
   return v3;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   image = self->_image;
-  if (image != v5)
+  if (image != imageCopy)
   {
-    v10 = v5;
-    v7 = [(UIImage *)image isEqual:v5];
-    v5 = v10;
+    v10 = imageCopy;
+    v7 = [(UIImage *)image isEqual:imageCopy];
+    imageCopy = v10;
     if ((v7 & 1) == 0)
     {
       v8 = self->_image;
-      objc_storeStrong(&self->_image, a3);
+      objc_storeStrong(&self->_image, image);
       [(UIImageView *)self->_imageView setImage:self->_image];
-      v5 = v10;
+      imageCopy = v10;
       v9 = self->_image;
       if ((v8 == 0) == (v9 != 0))
       {
@@ -390,17 +390,17 @@
         }
 
         [(_SFSettingsAlertButton *)self _didChangeContents];
-        v5 = v10;
+        imageCopy = v10;
       }
     }
   }
 }
 
-- (void)setShowsIndicatorDot:(BOOL)a3
+- (void)setShowsIndicatorDot:(BOOL)dot
 {
-  if (self->_showsIndicatorDot != a3)
+  if (self->_showsIndicatorDot != dot)
   {
-    if (a3 && self->_image)
+    if (dot && self->_image)
     {
       [(_SFSettingsAlertButton *)self addSubview:self->_dotView];
     }
@@ -412,15 +412,15 @@
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   accessoryView = self->_accessoryView;
-  if (accessoryView != v5)
+  if (accessoryView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)accessoryView removeFromSuperview];
-    objc_storeStrong(&self->_accessoryView, a3);
+    objc_storeStrong(&self->_accessoryView, view);
     v7 = self->_accessoryView;
     if (v7)
     {
@@ -429,37 +429,37 @@
     }
 
     [(_SFSettingsAlertButton *)self _didChangeContents];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
-- (void)setStatusImageView:(id)a3
+- (void)setStatusImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   statusImageView = self->_statusImageView;
-  if (statusImageView != v5)
+  if (statusImageView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIImageView *)statusImageView removeFromSuperview];
-    objc_storeStrong(&self->_statusImageView, a3);
+    objc_storeStrong(&self->_statusImageView, view);
     if (self->_statusImageView)
     {
       [(_SFSettingsAlertButton *)self addSubview:?];
     }
 
     [(_SFSettingsAlertButton *)self _didChangeContents];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setComponentsArrangement:(id)a3
+- (void)setComponentsArrangement:(id)arrangement
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_componentsArrangement != v4)
+  arrangementCopy = arrangement;
+  v5 = arrangementCopy;
+  if (self->_componentsArrangement != arrangementCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = arrangementCopy;
+    v6 = [(NSArray *)arrangementCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -491,28 +491,28 @@
 
 - (UIView)trailingView
 {
-  v2 = [(_SFSettingsAlertButton *)self _arrangedSubviews];
-  if ([v2 count] == 1)
+  _arrangedSubviews = [(_SFSettingsAlertButton *)self _arrangedSubviews];
+  if ([_arrangedSubviews count] == 1)
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
   else
   {
-    v3 = [v2 lastObject];
+    lastObject = [_arrangedSubviews lastObject];
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setLimitToSingleLine:(BOOL)a3
+- (void)setLimitToSingleLine:(BOOL)line
 {
-  if (self->_limitToSingleLine != a3)
+  if (self->_limitToSingleLine != line)
   {
-    self->_limitToSingleLine = a3;
-    v5 = a3;
-    [(UILabel *)self->_textLabel setNumberOfLines:a3];
-    [(UILabel *)self->_detailTextLabel setNumberOfLines:v5];
+    self->_limitToSingleLine = line;
+    lineCopy = line;
+    [(UILabel *)self->_textLabel setNumberOfLines:line];
+    [(UILabel *)self->_detailTextLabel setNumberOfLines:lineCopy];
 
     [(_SFSettingsAlertButton *)self _didChangeContents];
   }
@@ -530,30 +530,30 @@
     self->_contentConstraints = 0;
   }
 
-  v4 = [(_SFSettingsAlertButton *)self _arrangedSubviews];
-  if ([v4 count])
+  _arrangedSubviews = [(_SFSettingsAlertButton *)self _arrangedSubviews];
+  if ([_arrangedSubviews count])
   {
-    v5 = [(_SFSettingsAlertButton *)self layoutMarginsGuide];
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [v4 count];
+    layoutMarginsGuide = [(_SFSettingsAlertButton *)self layoutMarginsGuide];
+    array = [MEMORY[0x1E695DF70] array];
+    v7 = [_arrangedSubviews count];
     v65[0] = MEMORY[0x1E69E9820];
     v65[1] = 3221225472;
     v65[2] = __43___SFSettingsAlertButton_updateConstraints__block_invoke;
     v65[3] = &unk_1E8494360;
-    v8 = v6;
+    v8 = array;
     v66 = v8;
-    v64 = v5;
+    v64 = layoutMarginsGuide;
     v67 = v64;
-    v9 = v4;
+    v9 = _arrangedSubviews;
     v68 = v9;
-    v69 = self;
+    selfCopy = self;
     v70 = v7;
     [v9 enumerateObjectsUsingBlock:v65];
     if ([(UIImage *)self->_image hasBaseline]&& ([(UILabel *)self->_textLabel superview], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
-      v11 = [(UIImageView *)self->_imageView firstBaselineAnchor];
-      v12 = [(UILabel *)self->_textLabel firstBaselineAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      firstBaselineAnchor = [(UIImageView *)self->_imageView firstBaselineAnchor];
+      firstBaselineAnchor2 = [(UILabel *)self->_textLabel firstBaselineAnchor];
+      v13 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
       [(NSArray *)v8 addObject:v13];
 
       v14 = 1;
@@ -565,79 +565,79 @@
     }
 
     p_detailTextLabel = &self->_detailTextLabel;
-    v16 = [(UILabel *)self->_detailTextLabel superview];
-    if (v16)
+    superview = [(UILabel *)self->_detailTextLabel superview];
+    if (superview)
     {
-      v17 = v16;
+      v17 = superview;
       v18 = [v9 containsObject:*p_detailTextLabel];
 
       if ((v18 & 1) == 0)
       {
-        v19 = [(UILabel *)*p_detailTextLabel leadingAnchor];
-        v20 = [(UILabel *)self->_textLabel leadingAnchor];
-        v21 = [v19 constraintEqualToAnchor:v20];
+        leadingAnchor = [(UILabel *)*p_detailTextLabel leadingAnchor];
+        leadingAnchor2 = [(UILabel *)self->_textLabel leadingAnchor];
+        v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         [(NSArray *)v8 addObject:v21];
 
         if (v14 && (v22 = [v9 indexOfObject:self->_imageView], v22 == objc_msgSend(v9, "indexOfObject:", self->_textLabel) + 1))
         {
-          v23 = [(UILabel *)*p_detailTextLabel trailingAnchor];
-          v24 = [(UIImageView *)self->_imageView trailingAnchor];
-          v25 = [v23 constraintLessThanOrEqualToAnchor:v24];
+          trailingAnchor = [(UILabel *)*p_detailTextLabel trailingAnchor];
+          trailingAnchor2 = [(UIImageView *)self->_imageView trailingAnchor];
+          v25 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
         }
 
         else
         {
-          v23 = [(UILabel *)*p_detailTextLabel trailingAnchor];
-          v24 = [(UILabel *)self->_textLabel trailingAnchor];
-          v25 = [v23 constraintEqualToAnchor:v24];
+          trailingAnchor = [(UILabel *)*p_detailTextLabel trailingAnchor];
+          trailingAnchor2 = [(UILabel *)self->_textLabel trailingAnchor];
+          v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         }
 
         v26 = v25;
         [(NSArray *)v8 addObject:v25];
 
-        v27 = [(UILabel *)*p_detailTextLabel topAnchor];
-        v28 = [(UILabel *)self->_textLabel bottomAnchor];
-        v29 = [v27 constraintEqualToAnchor:v28];
+        topAnchor = [(UILabel *)*p_detailTextLabel topAnchor];
+        bottomAnchor = [(UILabel *)self->_textLabel bottomAnchor];
+        v29 = [topAnchor constraintEqualToAnchor:bottomAnchor];
         [(NSArray *)v8 addObject:v29];
 
-        v30 = [(UILabel *)*p_detailTextLabel bottomAnchor];
-        v31 = [v64 bottomAnchor];
-        v32 = [v30 constraintLessThanOrEqualToAnchor:v31];
+        bottomAnchor2 = [(UILabel *)*p_detailTextLabel bottomAnchor];
+        bottomAnchor3 = [v64 bottomAnchor];
+        v32 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
         [(NSArray *)v8 addObject:v32];
       }
     }
 
     p_textLabel = &self->_textLabel;
-    v34 = [(UILabel *)self->_textLabel superview];
+    superview2 = [(UILabel *)self->_textLabel superview];
 
-    if (v34)
+    if (superview2)
     {
-      v35 = [(UILabel *)*p_textLabel widthAnchor];
-      v36 = [v64 widthAnchor];
-      v37 = [v35 constraintEqualToAnchor:v36 multiplier:1.0];
+      widthAnchor = [(UILabel *)*p_textLabel widthAnchor];
+      widthAnchor2 = [v64 widthAnchor];
+      v37 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
 
       LODWORD(v38) = 1132068864;
       [v37 setPriority:v38];
       [(NSArray *)v8 addObject:v37];
     }
 
-    v39 = [(UILabel *)*p_textLabel superview];
-    if (v39)
+    superview3 = [(UILabel *)*p_textLabel superview];
+    if (superview3)
     {
     }
 
     else
     {
-      v40 = [(UILabel *)*p_detailTextLabel superview];
+      superview4 = [(UILabel *)*p_detailTextLabel superview];
 
-      if (!v40)
+      if (!superview4)
       {
         goto LABEL_27;
       }
     }
 
-    v41 = [(UILabel *)*p_textLabel superview];
-    if (v41)
+    superview5 = [(UILabel *)*p_textLabel superview];
+    if (superview5)
     {
       v42 = &self->_textLabel;
     }
@@ -649,8 +649,8 @@
 
     v43 = *v42;
 
-    v44 = [(UILabel *)*p_detailTextLabel superview];
-    if (v44)
+    superview6 = [(UILabel *)*p_detailTextLabel superview];
+    if (superview6)
     {
       v45 = &self->_detailTextLabel;
     }
@@ -662,33 +662,33 @@
 
     v46 = *v45;
 
-    v47 = [(UILayoutGuide *)self->_textGuide topAnchor];
-    v48 = [(UILabel *)v43 topAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48];
+    topAnchor2 = [(UILayoutGuide *)self->_textGuide topAnchor];
+    topAnchor3 = [(UILabel *)v43 topAnchor];
+    v49 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     [(NSArray *)v8 addObject:v49];
 
-    v50 = [(UILayoutGuide *)self->_textGuide bottomAnchor];
-    v51 = [(UILabel *)v46 bottomAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    bottomAnchor4 = [(UILayoutGuide *)self->_textGuide bottomAnchor];
+    bottomAnchor5 = [(UILabel *)v46 bottomAnchor];
+    v52 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     [(NSArray *)v8 addObject:v52];
 
 LABEL_27:
-    v53 = [(UIView *)self->_dotView superview];
-    if (v53)
+    superview7 = [(UIView *)self->_dotView superview];
+    if (superview7)
     {
-      v54 = v53;
-      v55 = [(UIImageView *)self->_imageView superview];
+      v54 = superview7;
+      superview8 = [(UIImageView *)self->_imageView superview];
 
-      if (v55)
+      if (superview8)
       {
-        v56 = [(UIView *)self->_dotView leadingAnchor];
-        v57 = [(UIImageView *)self->_imageView trailingAnchor];
-        v58 = [v56 constraintEqualToAnchor:v57 constant:-1.0];
+        leadingAnchor3 = [(UIView *)self->_dotView leadingAnchor];
+        trailingAnchor3 = [(UIImageView *)self->_imageView trailingAnchor];
+        v58 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:-1.0];
         [(NSArray *)v8 addObject:v58];
 
-        v59 = [(UIView *)self->_dotView topAnchor];
-        v60 = [(UIImageView *)self->_imageView topAnchor];
-        v61 = [v59 constraintEqualToAnchor:v60];
+        topAnchor4 = [(UIView *)self->_dotView topAnchor];
+        topAnchor5 = [(UIImageView *)self->_imageView topAnchor];
+        v61 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
         [(NSArray *)v8 addObject:v61];
       }
     }
@@ -709,37 +709,37 @@ LABEL_27:
   aBlock[3] = &unk_1E8494388;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(_SFSettingsAlertButton *)self componentsArrangement];
+  componentsArrangement = [(_SFSettingsAlertButton *)self componentsArrangement];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __43___SFSettingsAlertButton__arrangedSubviews__block_invoke_2;
   v8[3] = &unk_1E84943B0;
   v9 = v3;
   v5 = v3;
-  v6 = [v4 safari_mapAndFilterObjectsUsingBlock:v8];
+  v6 = [componentsArrangement safari_mapAndFilterObjectsUsingBlock:v8];
 
   return v6;
 }
 
-- (void)_hover:(id)a3
+- (void)_hover:(id)_hover
 {
-  v4 = ([a3 state] - 1) < 2;
+  v4 = ([_hover state] - 1) < 2;
 
   [(_SFSettingsAlertControl *)self setHighlighted:v4];
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v19.receiver = self;
   v19.super_class = _SFSettingsAlertButton;
-  v6 = a3;
-  [(_SFSettingsAlertButton *)&v19 endTrackingWithTouch:v6 withEvent:a4];
+  touchCopy = touch;
+  [(_SFSettingsAlertButton *)&v19 endTrackingWithTouch:touchCopy withEvent:event];
   [(_SFSettingsAlertButton *)self bounds:v19.receiver];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 locationInView:self];
+  [touchCopy locationInView:self];
   v16 = v15;
   v18 = v17;
 
@@ -755,17 +755,17 @@ LABEL_27:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  self->_selected = a3;
-  v5 = [(_SFSettingsAlertControl *)self item];
-  v6 = [v5 type];
+  selectedCopy = selected;
+  self->_selected = selected;
+  item = [(_SFSettingsAlertControl *)self item];
+  type = [item type];
 
-  if (v6 == 4)
+  if (type == 4)
   {
-    v7 = [(_SFSettingsAlertButton *)self imageView];
-    [v7 setAlpha:v3];
+    imageView = [(_SFSettingsAlertButton *)self imageView];
+    [imageView setAlpha:selectedCopy];
   }
 }
 
@@ -788,24 +788,24 @@ LABEL_27:
   [(UIImageView *)self->_imageView setTintColor:v5];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(UIView *)self->_accessoryView convertPoint:self fromView:x, y];
   v9 = v8;
   v11 = v10;
-  if ([(UIView *)self->_accessoryView isUserInteractionEnabled]&& [(UIView *)self->_accessoryView pointInside:v7 withEvent:v9, v11])
+  if ([(UIView *)self->_accessoryView isUserInteractionEnabled]&& [(UIView *)self->_accessoryView pointInside:eventCopy withEvent:v9, v11])
   {
-    v12 = [(UIView *)self->_accessoryView hitTest:v7 withEvent:v9, v11];
+    v12 = [(UIView *)self->_accessoryView hitTest:eventCopy withEvent:v9, v11];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = _SFSettingsAlertButton;
-    v12 = [(_SFSettingsAlertButton *)&v15 hitTest:v7 withEvent:x, y];
+    v12 = [(_SFSettingsAlertButton *)&v15 hitTest:eventCopy withEvent:x, y];
   }
 
   v13 = v12;
@@ -813,20 +813,20 @@ LABEL_27:
   return v13;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v5 = [v8 previouslyFocusedView];
-  v6 = v5;
-  if (v5 == self)
+  contextCopy = context;
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v6 = previouslyFocusedView;
+  if (previouslyFocusedView == self)
   {
   }
 
   else
   {
-    v7 = [v8 nextFocusedView];
+    nextFocusedView = [contextCopy nextFocusedView];
 
-    if (v7 != self)
+    if (nextFocusedView != self)
     {
       goto LABEL_6;
     }
@@ -836,10 +836,10 @@ LABEL_27:
 LABEL_6:
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (SFShouldHandleSelectionForPresses())
   {
     [(_SFSettingsAlertButton *)self sendActionsForControlEvents:0x2000];
@@ -849,7 +849,7 @@ LABEL_6:
   {
     v8.receiver = self;
     v8.super_class = _SFSettingsAlertButton;
-    [(_SFSettingsAlertButton *)&v8 pressesBegan:v6 withEvent:v7];
+    [(_SFSettingsAlertButton *)&v8 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 

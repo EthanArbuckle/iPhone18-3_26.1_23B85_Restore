@@ -1,44 +1,44 @@
 @interface SiriIntentsTemplateModelEnumMapper
-+ (id)stringFromComponentLabelStyle:(unint64_t)a3;
-+ (id)stringFromImageStyle:(unint64_t)a3;
-+ (id)stringFromMapSize:(unint64_t)a3;
-+ (id)stringFromTemplateAlignment:(unint64_t)a3;
-+ (unint64_t)componentLabelStyleFromString:(id)a3;
-+ (unint64_t)mapSizeFromString:(id)a3;
-+ (unint64_t)templateAlignmentFromString:(id)a3;
++ (id)stringFromComponentLabelStyle:(unint64_t)style;
++ (id)stringFromImageStyle:(unint64_t)style;
++ (id)stringFromMapSize:(unint64_t)size;
++ (id)stringFromTemplateAlignment:(unint64_t)alignment;
++ (unint64_t)componentLabelStyleFromString:(id)string;
++ (unint64_t)mapSizeFromString:(id)string;
++ (unint64_t)templateAlignmentFromString:(id)string;
 @end
 
 @implementation SiriIntentsTemplateModelEnumMapper
 
-+ (unint64_t)componentLabelStyleFromString:(id)a3
++ (unint64_t)componentLabelStyleFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAIntentGroupLabelTemplateComponentStyleHeadingValue])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:SAIntentGroupLabelTemplateComponentStyleHeadingValue])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:SAIntentGroupLabelTemplateComponentStyleBodyValue])
+  else if ([stringCopy isEqualToString:SAIntentGroupLabelTemplateComponentStyleBodyValue])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:SAIntentGroupLabelTemplateComponentStyleSubheadingValue])
+  else if ([stringCopy isEqualToString:SAIntentGroupLabelTemplateComponentStyleSubheadingValue])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:SAIntentGroupLabelTemplateComponentStyleFootnoteValue])
+  else if ([stringCopy isEqualToString:SAIntentGroupLabelTemplateComponentStyleFootnoteValue])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:SAIntentGroupLabelTemplateComponentStyleCaptionValue])
+  else if ([stringCopy isEqualToString:SAIntentGroupLabelTemplateComponentStyleCaptionValue])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:SAIntentGroupLabelTemplateComponentStyleLargeValue])
+  else if ([stringCopy isEqualToString:SAIntentGroupLabelTemplateComponentStyleLargeValue])
   {
     v4 = 5;
   }
@@ -51,25 +51,25 @@
   return v4;
 }
 
-+ (id)stringFromComponentLabelStyle:(unint64_t)a3
++ (id)stringFromComponentLabelStyle:(unint64_t)style
 {
-  if (a3 <= 5)
+  if (style <= 5)
   {
-    a1 = **(&off_C370 + a3);
+    self = **(&off_C370 + style);
   }
 
-  return a1;
+  return self;
 }
 
-+ (unint64_t)templateAlignmentFromString:(id)a3
++ (unint64_t)templateAlignmentFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAIntentGroupAlignmentCenterValue])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:SAIntentGroupAlignmentCenterValue])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:SAIntentGroupAlignmentRightValue])
+  else if ([stringCopy isEqualToString:SAIntentGroupAlignmentRightValue])
   {
     v4 = 2;
   }
@@ -82,21 +82,21 @@
   return v4;
 }
 
-+ (id)stringFromTemplateAlignment:(unint64_t)a3
++ (id)stringFromTemplateAlignment:(unint64_t)alignment
 {
-  if (a3 <= 2)
+  if (alignment <= 2)
   {
-    a1 = **(&off_C3A0 + a3);
+    self = **(&off_C3A0 + alignment);
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)stringFromImageStyle:(unint64_t)a3
++ (id)stringFromImageStyle:(unint64_t)style
 {
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_6;
     }
@@ -109,33 +109,33 @@
     v4 = &SAIntentGroupImageStyleSmallValue;
   }
 
-  a1 = *v4;
+  self = *v4;
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
-+ (unint64_t)mapSizeFromString:(id)a3
++ (unint64_t)mapSizeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SAIntentGroupMapSnippetTemplateMapSizeMiniValue])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:SAIntentGroupMapSnippetTemplateMapSizeMiniValue])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:SAIntentGroupMapSnippetTemplateMapSizeFullValue];
+    v4 = [stringCopy isEqualToString:SAIntentGroupMapSnippetTemplateMapSizeFullValue];
   }
 
   return v4;
 }
 
-+ (id)stringFromMapSize:(unint64_t)a3
++ (id)stringFromMapSize:(unint64_t)size
 {
-  if (a3)
+  if (size)
   {
-    if (a3 != 1)
+    if (size != 1)
     {
       goto LABEL_6;
     }
@@ -148,10 +148,10 @@ LABEL_6:
     v4 = &SAIntentGroupMapSnippetTemplateMapSizeMiniValue;
   }
 
-  a1 = *v4;
+  self = *v4;
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
 @end

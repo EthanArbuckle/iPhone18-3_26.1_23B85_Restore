@@ -1,43 +1,43 @@
 @interface CarDataClient
-+ (int64_t)osStatusFromCarDataError:(unint64_t)a3;
-- (CarDataClient)initWithPluginID:(id)a3;
++ (int64_t)osStatusFromCarDataError:(unint64_t)error;
+- (CarDataClient)initWithPluginID:(id)d;
 - (CarDataClientDelegate)clientDelegate;
-- (id)cachedValueForInstanceID:(id)a3;
-- (id)parseValues:(id)a3 errors:(id)a4;
-- (int64_t)handleCommand:(id)a3 transactionID:(id)a4 values:(id)a5 errors:(id)a6 priority:(unint64_t)a7;
-- (void)addRegistrationFromCache:(id)a3 priority:(id)a4 withResponse:(id)a5;
-- (void)cacheValues:(id)a3;
-- (void)notifyInstanceID:(id)a3 value:(id)a4 priority:(id)a5;
-- (void)readFromCache:(id)a3 priority:(id)a4 withResponse:(id)a5;
-- (void)readInstanceIDs:(id)a3 priority:(id)a4 withResponse:(id)a5;
-- (void)receiveData:(id)a3 priority:(unint64_t)a4;
-- (void)registerAllWithPriority:(id)a3 withResponse:(id)a4;
-- (void)registerInstanceIDs:(id)a3 priority:(id)a4 withResponse:(id)a5;
-- (void)removeRegistrationFromCache:(id)a3 priority:(id)a4 withResponse:(id)a5;
-- (void)requestConfigurationWithPriority:(id)a3 withResponse:(id)a4;
-- (void)requestInstanceID:(id)a3 value:(id)a4 priority:(id)a5 withResponse:(id)a6;
-- (void)responseInstanceID:(id)a3 error:(id)a4 transactionID:(id)a5 priority:(id)a6;
-- (void)responseInstanceID:(id)a3 value:(id)a4 transactionID:(id)a5 priority:(id)a6;
-- (void)responseTransactionID:(id)a3 error:(id)a4 priority:(id)a5;
-- (void)sendCommand:(id)a3 values:(id)a4 errors:(id)a5 error:(id)a6 transactionID:(id)a7 priority:(id)a8 withResponse:(id)a9;
-- (void)sendCommand:(id)a3 values:(id)a4 priority:(id)a5 withResponse:(id)a6;
-- (void)unregisterAllWithPriority:(id)a3 withResponse:(id)a4;
-- (void)unregisterInstanceIDs:(id)a3 priority:(id)a4 withResponse:(id)a5;
-- (void)writeValues:(id)a3 priority:(id)a4 withResponse:(id)a5;
+- (id)cachedValueForInstanceID:(id)d;
+- (id)parseValues:(id)values errors:(id)errors;
+- (int64_t)handleCommand:(id)command transactionID:(id)d values:(id)values errors:(id)errors priority:(unint64_t)priority;
+- (void)addRegistrationFromCache:(id)cache priority:(id)priority withResponse:(id)response;
+- (void)cacheValues:(id)values;
+- (void)notifyInstanceID:(id)d value:(id)value priority:(id)priority;
+- (void)readFromCache:(id)cache priority:(id)priority withResponse:(id)response;
+- (void)readInstanceIDs:(id)ds priority:(id)priority withResponse:(id)response;
+- (void)receiveData:(id)data priority:(unint64_t)priority;
+- (void)registerAllWithPriority:(id)priority withResponse:(id)response;
+- (void)registerInstanceIDs:(id)ds priority:(id)priority withResponse:(id)response;
+- (void)removeRegistrationFromCache:(id)cache priority:(id)priority withResponse:(id)response;
+- (void)requestConfigurationWithPriority:(id)priority withResponse:(id)response;
+- (void)requestInstanceID:(id)d value:(id)value priority:(id)priority withResponse:(id)response;
+- (void)responseInstanceID:(id)d error:(id)error transactionID:(id)iD priority:(id)priority;
+- (void)responseInstanceID:(id)d value:(id)value transactionID:(id)iD priority:(id)priority;
+- (void)responseTransactionID:(id)d error:(id)error priority:(id)priority;
+- (void)sendCommand:(id)command values:(id)values errors:(id)errors error:(id)error transactionID:(id)d priority:(id)priority withResponse:(id)response;
+- (void)sendCommand:(id)command values:(id)values priority:(id)priority withResponse:(id)response;
+- (void)unregisterAllWithPriority:(id)priority withResponse:(id)response;
+- (void)unregisterInstanceIDs:(id)ds priority:(id)priority withResponse:(id)response;
+- (void)writeValues:(id)values priority:(id)priority withResponse:(id)response;
 @end
 
 @implementation CarDataClient
 
-- (CarDataClient)initWithPluginID:(id)a3
+- (CarDataClient)initWithPluginID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = CarDataClient;
   v6 = [(CarDataClient *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pluginID, a3);
+    objc_storeStrong(&v6->_pluginID, d);
     v8 = objc_alloc_init(NSMutableDictionary);
     transactions = v7->_transactions;
     v7->_transactions = v8;
@@ -57,12 +57,12 @@
   return v7;
 }
 
-- (void)sendCommand:(id)a3 values:(id)a4 priority:(id)a5 withResponse:(id)a6
+- (void)sendCommand:(id)command values:(id)values priority:(id)priority withResponse:(id)response
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  commandCopy = command;
+  valuesCopy = values;
+  priorityCopy = priority;
+  responseCopy = response;
   if (RandomBytes())
   {
     v14 = CAFDClientLogging();
@@ -75,40 +75,40 @@
   else
   {
     v14 = [NSNumber numberWithLongLong:0];
-    [(CarDataClient *)self sendCommand:v10 values:v11 errors:0 error:0 transactionID:v14 priority:v12 withResponse:v13];
+    [(CarDataClient *)self sendCommand:commandCopy values:valuesCopy errors:0 error:0 transactionID:v14 priority:priorityCopy withResponse:responseCopy];
   }
 }
 
-- (void)sendCommand:(id)a3 values:(id)a4 errors:(id)a5 error:(id)a6 transactionID:(id)a7 priority:(id)a8 withResponse:(id)a9
+- (void)sendCommand:(id)command values:(id)values errors:(id)errors error:(id)error transactionID:(id)d priority:(id)priority withResponse:(id)response
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [(CarDataClient *)self processingQueue];
+  commandCopy = command;
+  valuesCopy = values;
+  errorsCopy = errors;
+  errorCopy = error;
+  dCopy = d;
+  priorityCopy = priority;
+  responseCopy = response;
+  processingQueue = [(CarDataClient *)self processingQueue];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = __85__CarDataClient_sendCommand_values_errors_error_transactionID_priority_withResponse___block_invoke;
   v30[3] = &unk_100055688;
-  v31 = v15;
-  v32 = v19;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v36 = self;
-  v37 = v20;
-  v38 = v21;
-  v23 = v21;
-  v24 = v20;
-  v25 = v18;
-  v26 = v17;
-  v27 = v16;
-  v28 = v19;
-  v29 = v15;
-  dispatch_async(v22, v30);
+  v31 = commandCopy;
+  v32 = dCopy;
+  v33 = valuesCopy;
+  v34 = errorsCopy;
+  v35 = errorCopy;
+  selfCopy = self;
+  v37 = priorityCopy;
+  v38 = responseCopy;
+  v23 = responseCopy;
+  v24 = priorityCopy;
+  v25 = errorCopy;
+  v26 = errorsCopy;
+  v27 = valuesCopy;
+  v28 = dCopy;
+  v29 = commandCopy;
+  dispatch_async(processingQueue, v30);
 }
 
 void __85__CarDataClient_sendCommand_values_errors_error_transactionID_priority_withResponse___block_invoke(uint64_t a1)
@@ -427,10 +427,10 @@ void __85__CarDataClient_sendCommand_values_errors_error_transactionID_priority_
   }
 }
 
-- (id)parseValues:(id)a3 errors:(id)a4
+- (id)parseValues:(id)values errors:(id)errors
 {
-  v6 = a4;
-  v7 = a3;
+  errorsCopy = errors;
+  valuesCopy = values;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __36__CarDataClient_parseValues_errors___block_invoke;
@@ -438,7 +438,7 @@ void __85__CarDataClient_sendCommand_values_errors_error_transactionID_priority_
   v15[4] = self;
   v8 = objc_alloc_init(NSMutableDictionary);
   v16 = v8;
-  [v7 enumerateKeysAndObjectsUsingBlock:v15];
+  [valuesCopy enumerateKeysAndObjectsUsingBlock:v15];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -447,7 +447,7 @@ void __85__CarDataClient_sendCommand_values_errors_error_transactionID_priority_
   v13[4] = self;
   v9 = v8;
   v14 = v9;
-  [v6 enumerateKeysAndObjectsUsingBlock:v13];
+  [errorsCopy enumerateKeysAndObjectsUsingBlock:v13];
 
   v10 = v14;
   v11 = v9;
@@ -566,7 +566,7 @@ void __36__CarDataClient_parseValues_errors___block_invoke_38(uint64_t a1, void 
   }
 }
 
-- (void)cacheValues:(id)a3
+- (void)cacheValues:(id)values
 {
   if (self->_cachedValues)
   {
@@ -575,7 +575,7 @@ void __36__CarDataClient_parseValues_errors___block_invoke_38(uint64_t a1, void 
     v3[2] = __29__CarDataClient_cacheValues___block_invoke;
     v3[3] = &unk_1000556D8;
     v3[4] = self;
-    [a3 enumerateKeysAndObjectsUsingBlock:v3];
+    [values enumerateKeysAndObjectsUsingBlock:v3];
   }
 }
 
@@ -597,24 +597,24 @@ void __29__CarDataClient_cacheValues___block_invoke(uint64_t a1, void *a2, void 
   }
 }
 
-- (void)addRegistrationFromCache:(id)a3 priority:(id)a4 withResponse:(id)a5
+- (void)addRegistrationFromCache:(id)cache priority:(id)priority withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CarDataClient *)self processingQueue];
+  cacheCopy = cache;
+  priorityCopy = priority;
+  responseCopy = response;
+  processingQueue = [(CarDataClient *)self processingQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __64__CarDataClient_addRegistrationFromCache_priority_withResponse___block_invoke;
   v15[3] = &unk_1000555D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = cacheCopy;
+  v17 = priorityCopy;
+  v18 = responseCopy;
+  v12 = responseCopy;
+  v13 = priorityCopy;
+  v14 = cacheCopy;
+  dispatch_async(processingQueue, v15);
 }
 
 void __64__CarDataClient_addRegistrationFromCache_priority_withResponse___block_invoke(uint64_t a1)
@@ -714,24 +714,24 @@ void __64__CarDataClient_addRegistrationFromCache_priority_withResponse___block_
   [*(a1 + v5) addObject:v9];
 }
 
-- (void)removeRegistrationFromCache:(id)a3 priority:(id)a4 withResponse:(id)a5
+- (void)removeRegistrationFromCache:(id)cache priority:(id)priority withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CarDataClient *)self processingQueue];
+  cacheCopy = cache;
+  priorityCopy = priority;
+  responseCopy = response;
+  processingQueue = [(CarDataClient *)self processingQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __67__CarDataClient_removeRegistrationFromCache_priority_withResponse___block_invoke;
   v15[3] = &unk_1000555D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = cacheCopy;
+  v17 = priorityCopy;
+  v18 = responseCopy;
+  v12 = responseCopy;
+  v13 = priorityCopy;
+  v14 = cacheCopy;
+  dispatch_async(processingQueue, v15);
 }
 
 void __67__CarDataClient_removeRegistrationFromCache_priority_withResponse___block_invoke(uint64_t a1)
@@ -793,24 +793,24 @@ void __67__CarDataClient_removeRegistrationFromCache_priority_withResponse___blo
   }
 }
 
-- (void)readFromCache:(id)a3 priority:(id)a4 withResponse:(id)a5
+- (void)readFromCache:(id)cache priority:(id)priority withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CarDataClient *)self processingQueue];
+  cacheCopy = cache;
+  priorityCopy = priority;
+  responseCopy = response;
+  processingQueue = [(CarDataClient *)self processingQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __53__CarDataClient_readFromCache_priority_withResponse___block_invoke;
   v15[3] = &unk_1000555D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = cacheCopy;
+  v17 = priorityCopy;
+  v18 = responseCopy;
+  v12 = responseCopy;
+  v13 = priorityCopy;
+  v14 = cacheCopy;
+  dispatch_async(processingQueue, v15);
 }
 
 void __53__CarDataClient_readFromCache_priority_withResponse___block_invoke(uint64_t a1)
@@ -905,31 +905,31 @@ void __53__CarDataClient_readFromCache_priority_withResponse___block_invoke_2(id
   }
 }
 
-- (int64_t)handleCommand:(id)a3 transactionID:(id)a4 values:(id)a5 errors:(id)a6 priority:(unint64_t)a7
+- (int64_t)handleCommand:(id)command transactionID:(id)d values:(id)values errors:(id)errors priority:(unint64_t)priority
 {
   v12 = 0xEEEEB0B5B2B2EEEELL;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  commandCopy = command;
+  dCopy = d;
+  valuesCopy = values;
+  errorsCopy = errors;
   v17 = CARSignpostLogForCategory();
   v18 = 0xEEEEB0B5B2B2EEEELL;
   if (!self || (CARSignpostLogForCategory(), v19 = objc_claimAutoreleasedReturnValue(), v18 = os_signpost_id_make_with_pointer(v19, self), v19, v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL))
   {
     if (os_signpost_enabled(v17))
     {
-      v20 = [(CarDataClient *)self pluginID];
+      pluginID = [(CarDataClient *)self pluginID];
       *buf = 138543874;
-      v124 = v13;
+      v124 = commandCopy;
       v125 = 2114;
-      v126 = v20;
+      v126 = pluginID;
       v127 = 2114;
-      v128 = v14;
+      v128 = dCopy;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_EVENT, v18, "CAFd-RecieveCommand", "%{public}@ plugin: %{public}@ transactionID: %{public}@", buf, 0x20u);
     }
   }
 
-  if ([v13 isEqualToString:kCarDataProtocolCmdKeyUpdateNotify])
+  if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyUpdateNotify])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -939,14 +939,14 @@ void __53__CarDataClient_readFromCache_priority_withResponse___block_invoke_2(id
     {
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v66 = [(CarDataClient *)self pluginID];
-        v67 = [v15 count];
-        v68 = [v15 allKeys];
-        v69 = [v68 componentsJoinedByString:{@", "}];
+        pluginID2 = [(CarDataClient *)self pluginID];
+        v67 = [valuesCopy count];
+        allKeys = [valuesCopy allKeys];
+        v69 = [allKeys componentsJoinedByString:{@", "}];
         *buf = 138544130;
-        v124 = v66;
+        v124 = pluginID2;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2048;
         v128 = v67;
         v129 = 2114;
@@ -954,11 +954,11 @@ void __53__CarDataClient_readFromCache_priority_withResponse___block_invoke_2(id
         _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "Received pluginID: %{public}@ transactionID: %{public}@ update values count: %lu [%{public}@]", buf, 0x2Au);
       }
 
-      v24 = self;
-      v25 = v15;
+      selfCopy2 = self;
+      v25 = valuesCopy;
       v26 = 0;
 LABEL_18:
-      v28 = [(CarDataClient *)v24 parseValues:v25 errors:v26];
+      v28 = [(CarDataClient *)selfCopy2 parseValues:v25 errors:v26];
       [(CarDataClient *)self cacheValues:v28];
       WeakRetained = objc_loadWeakRetained(&self->clientDelegate);
 
@@ -972,8 +972,8 @@ LABEL_22:
       }
 
       v30 = objc_loadWeakRetained(&self->clientDelegate);
-      v31 = [(CarDataClient *)self pluginID];
-      [v30 didReceiveUpdateFromPluginID:v31 values:v28];
+      pluginID3 = [(CarDataClient *)self pluginID];
+      [v30 didReceiveUpdateFromPluginID:pluginID3 values:v28];
 
 LABEL_20:
       goto LABEL_21;
@@ -981,12 +981,12 @@ LABEL_20:
 
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v33 = [(CarDataClient *)self pluginID];
+      pluginID4 = [(CarDataClient *)self pluginID];
       v34 = objc_opt_class();
       *buf = 138543874;
-      v124 = v33;
+      v124 = pluginID4;
       v125 = 2114;
-      v126 = v14;
+      v126 = dCopy;
       v127 = 2114;
       v128 = v34;
       v35 = v34;
@@ -1000,19 +1000,19 @@ LABEL_60:
     goto LABEL_141;
   }
 
-  if ([v13 isEqualToString:kCarDataProtocolCmdKeyRegisterResponse])
+  if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyRegisterResponse])
   {
-    if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+    if (valuesCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v23 = CAFDClientLogging();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v33 = [(CarDataClient *)self pluginID];
+        pluginID4 = [(CarDataClient *)self pluginID];
         v45 = objc_opt_class();
         *buf = 138543874;
-        v124 = v33;
+        v124 = pluginID4;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2114;
         v128 = v45;
         v35 = v45;
@@ -1023,20 +1023,20 @@ LABEL_60:
 
     else
     {
-      if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (!errorsCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v27 = CAFDClientLogging();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
-          v77 = [(CarDataClient *)self pluginID];
-          v117 = [v15 count];
-          v78 = [v16 count];
-          v79 = [v15 allKeys];
-          v80 = [v79 componentsJoinedByString:{@", "}];
+          pluginID5 = [(CarDataClient *)self pluginID];
+          v117 = [valuesCopy count];
+          v78 = [errorsCopy count];
+          allKeys2 = [valuesCopy allKeys];
+          v80 = [allKeys2 componentsJoinedByString:{@", "}];
           *buf = 138544386;
-          v124 = v77;
+          v124 = pluginID5;
           v125 = 2114;
-          v126 = v14;
+          v126 = dCopy;
           v127 = 2048;
           v128 = v117;
           v129 = 2048;
@@ -1046,21 +1046,21 @@ LABEL_60:
           _os_log_debug_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEBUG, "Received pluginID: %{public}@ transactionID: %{public}@ register response values count: %ld errors count: %ld [%{public}@]", buf, 0x34u);
         }
 
-        v24 = self;
-        v25 = v15;
-        v26 = v16;
+        selfCopy2 = self;
+        v25 = valuesCopy;
+        v26 = errorsCopy;
         goto LABEL_18;
       }
 
       v23 = CAFDClientLogging();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v33 = [(CarDataClient *)self pluginID];
+        pluginID4 = [(CarDataClient *)self pluginID];
         v52 = objc_opt_class();
         *buf = 138543874;
-        v124 = v33;
+        v124 = pluginID4;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2114;
         v128 = v52;
         v35 = v52;
@@ -1075,7 +1075,7 @@ LABEL_141:
     goto LABEL_142;
   }
 
-  if ([v13 isEqualToString:kCarDataProtocolCmdKeyUnregisterResponse])
+  if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyUnregisterResponse])
   {
     v37 = CAFDClientLogging();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -1086,11 +1086,11 @@ LABEL_141:
     goto LABEL_28;
   }
 
-  if ([v13 isEqualToString:kCarDataProtocolCmdKeyReadResponse])
+  if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyReadResponse])
   {
-    if (v14)
+    if (dCopy)
     {
-      if (v15)
+      if (valuesCopy)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1101,12 +1101,12 @@ LABEL_141:
             goto LABEL_141;
           }
 
-          v33 = [(CarDataClient *)self pluginID];
+          pluginID4 = [(CarDataClient *)self pluginID];
           v70 = objc_opt_class();
           *buf = 138543874;
-          v124 = v33;
+          v124 = pluginID4;
           v125 = 2114;
-          v126 = v14;
+          v126 = dCopy;
           v127 = 2114;
           v128 = v70;
           v35 = v70;
@@ -1115,7 +1115,7 @@ LABEL_141:
         }
       }
 
-      if (v16)
+      if (errorsCopy)
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1126,12 +1126,12 @@ LABEL_141:
             goto LABEL_141;
           }
 
-          v33 = [(CarDataClient *)self pluginID];
+          pluginID4 = [(CarDataClient *)self pluginID];
           v72 = objc_opt_class();
           *buf = 138543874;
-          v124 = v33;
+          v124 = pluginID4;
           v125 = 2114;
-          v126 = v14;
+          v126 = dCopy;
           v127 = 2114;
           v128 = v72;
           v35 = v72;
@@ -1145,11 +1145,11 @@ LABEL_141:
       {
         if (os_signpost_enabled(v41))
         {
-          v43 = [(CarDataClient *)self pluginID];
+          pluginID6 = [(CarDataClient *)self pluginID];
           *buf = 138543618;
-          v124 = v43;
+          v124 = pluginID6;
           v125 = 2114;
-          v126 = v14;
+          v126 = dCopy;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v41, OS_SIGNPOST_EVENT, v12, "Get", "Receive plugin read response pluginID: %{public}@ transactionID: %{public}@", buf, 0x16u);
         }
       }
@@ -1157,17 +1157,17 @@ LABEL_141:
       v44 = CAFDClientLogging();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
       {
-        v93 = [(CarDataClient *)self pluginID];
-        v116 = [v15 count];
-        v118 = [v15 allKeys];
-        v94 = [v118 componentsJoinedByString:{@", "}];
-        v115 = [v16 count];
-        v95 = [v16 allKeys];
-        v96 = [v95 componentsJoinedByString:{@", "}];
+        pluginID7 = [(CarDataClient *)self pluginID];
+        v116 = [valuesCopy count];
+        allKeys3 = [valuesCopy allKeys];
+        v94 = [allKeys3 componentsJoinedByString:{@", "}];
+        v115 = [errorsCopy count];
+        allKeys4 = [errorsCopy allKeys];
+        v96 = [allKeys4 componentsJoinedByString:{@", "}];
         *buf = 138544642;
-        v124 = v93;
+        v124 = pluginID7;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2048;
         v128 = v116;
         v129 = 2114;
@@ -1179,7 +1179,7 @@ LABEL_141:
         _os_log_debug_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEBUG, "Received pluginID: %{public}@ transactionID: %{public}@ read response values count: %ld [%{public}@] errors count: %ld [%{public}@]", buf, 0x3Eu);
       }
 
-      v28 = [(CarDataClient *)self parseValues:v15 errors:v16];
+      v28 = [(CarDataClient *)self parseValues:valuesCopy errors:errorsCopy];
       [(CarDataClient *)self cacheValues:v28];
       goto LABEL_75;
     }
@@ -1196,9 +1196,9 @@ LABEL_121:
     goto LABEL_142;
   }
 
-  if ([v13 isEqualToString:kCarDataProtocolCmdKeyWriteResponse])
+  if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyWriteResponse])
   {
-    if (!v14)
+    if (!dCopy)
     {
       v60 = CAFDClientLogging();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
@@ -1218,12 +1218,12 @@ LABEL_121:
         goto LABEL_141;
       }
 
-      v33 = [(CarDataClient *)self pluginID];
+      pluginID4 = [(CarDataClient *)self pluginID];
       v71 = objc_opt_class();
       *buf = 138543874;
-      v124 = v33;
+      v124 = pluginID4;
       v125 = 2114;
-      v126 = v14;
+      v126 = dCopy;
       v127 = 2114;
       v128 = v71;
       v35 = v71;
@@ -1236,11 +1236,11 @@ LABEL_121:
     {
       if (os_signpost_enabled(v46))
       {
-        v48 = [(CarDataClient *)self pluginID];
+        pluginID8 = [(CarDataClient *)self pluginID];
         *buf = 138543618;
-        v124 = v48;
+        v124 = pluginID8;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v46, OS_SIGNPOST_EVENT, v12, "Set", "Receive plugin write response pluginID: %{public}@ transactionID: %{public}@", buf, 0x16u);
       }
     }
@@ -1248,14 +1248,14 @@ LABEL_121:
     v49 = CAFDClientLogging();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
     {
-      v99 = [(CarDataClient *)self pluginID];
-      v100 = [v16 count];
-      v101 = [v16 allKeys];
-      v102 = [v101 componentsJoinedByString:{@", "}];
+      pluginID9 = [(CarDataClient *)self pluginID];
+      v100 = [errorsCopy count];
+      allKeys5 = [errorsCopy allKeys];
+      v102 = [allKeys5 componentsJoinedByString:{@", "}];
       *buf = 138544130;
-      v124 = v99;
+      v124 = pluginID9;
       v125 = 2114;
-      v126 = v14;
+      v126 = dCopy;
       v127 = 2048;
       v128 = v100;
       v129 = 2114;
@@ -1263,26 +1263,26 @@ LABEL_121:
       _os_log_debug_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEBUG, "Received pluginID: %{public}@ transactionID: %{public}@ write response result count: %ld [%{public}@]", buf, 0x2Au);
     }
 
-    v50 = self;
+    selfCopy4 = self;
     v51 = 0;
 LABEL_74:
-    v28 = [(CarDataClient *)v50 parseValues:v51 errors:v16];
+    v28 = [(CarDataClient *)selfCopy4 parseValues:v51 errors:errorsCopy];
 LABEL_75:
-    v57 = [(CarDataClient *)self transactions];
-    v58 = [v57 objectForKeyedSubscript:v14];
+    transactions = [(CarDataClient *)self transactions];
+    pluginID19 = [transactions objectForKeyedSubscript:dCopy];
 
-    if (v58)
+    if (pluginID19)
     {
       v59 = [[CAFResponse alloc] initWithValues:v28];
-      (v58)[2](v58, v59);
+      (pluginID19)[2](pluginID19, v59);
     }
 
     goto LABEL_77;
   }
 
-  if ([v13 isEqualToString:kCarDataProtocolCmdKeyControlResponse])
+  if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyControlResponse])
   {
-    if (!v14)
+    if (!dCopy)
     {
       v60 = CAFDClientLogging();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
@@ -1293,7 +1293,7 @@ LABEL_75:
       goto LABEL_121;
     }
 
-    if (v16)
+    if (errorsCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1304,12 +1304,12 @@ LABEL_75:
           goto LABEL_141;
         }
 
-        v33 = [(CarDataClient *)self pluginID];
+        pluginID4 = [(CarDataClient *)self pluginID];
         v85 = objc_opt_class();
         *buf = 138543874;
-        v124 = v33;
+        v124 = pluginID4;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2114;
         v128 = v85;
         v35 = v85;
@@ -1318,7 +1318,7 @@ LABEL_75:
       }
     }
 
-    if (v15)
+    if (valuesCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1329,12 +1329,12 @@ LABEL_75:
           goto LABEL_141;
         }
 
-        v33 = [(CarDataClient *)self pluginID];
+        pluginID4 = [(CarDataClient *)self pluginID];
         v89 = objc_opt_class();
         *buf = 138543874;
-        v124 = v33;
+        v124 = pluginID4;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2114;
         v128 = v89;
         v35 = v89;
@@ -1348,11 +1348,11 @@ LABEL_75:
     {
       if (os_signpost_enabled(v53))
       {
-        v55 = [(CarDataClient *)self pluginID];
+        pluginID10 = [(CarDataClient *)self pluginID];
         *buf = 138543618;
-        v124 = v55;
+        v124 = pluginID10;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v53, OS_SIGNPOST_EVENT, v12, "Control", "Receive plugin control response pluginID: %{public}@ transactionID: %{public}@", buf, 0x16u);
       }
     }
@@ -1360,13 +1360,13 @@ LABEL_75:
     v56 = CAFDClientLogging();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
     {
-      v104 = [(CarDataClient *)self pluginID];
-      v105 = [v15 count];
-      v106 = [v16 count];
+      pluginID11 = [(CarDataClient *)self pluginID];
+      v105 = [valuesCopy count];
+      v106 = [errorsCopy count];
       *buf = 138544130;
-      v124 = v104;
+      v124 = pluginID11;
       v125 = 2114;
-      v126 = v14;
+      v126 = dCopy;
       v127 = 2048;
       v128 = v105;
       v129 = 2048;
@@ -1374,14 +1374,14 @@ LABEL_75:
       _os_log_debug_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEBUG, "Received pluginID: %{public}@ transactionID: %{public}@ control response values count: %ld errors count: %ld", buf, 0x2Au);
     }
 
-    v50 = self;
-    v51 = v15;
+    selfCopy4 = self;
+    v51 = valuesCopy;
     goto LABEL_74;
   }
 
-  if ([v13 isEqualToString:kCarDataProtocolCmdKeyControlRequest])
+  if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyControlRequest])
   {
-    if (!v14)
+    if (!dCopy)
     {
       v60 = CAFDClientLogging();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
@@ -1400,11 +1400,11 @@ LABEL_75:
       {
         if (os_signpost_enabled(v61))
         {
-          v63 = [(CarDataClient *)self pluginID];
+          pluginID12 = [(CarDataClient *)self pluginID];
           *buf = 138543618;
-          v124 = v63;
+          v124 = pluginID12;
           v125 = 2114;
-          v126 = v14;
+          v126 = dCopy;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v61, OS_SIGNPOST_EVENT, v12, "Control", "Receive plugin control request pluginID: %{public}@ transactionID: %{public}@", buf, 0x16u);
         }
       }
@@ -1412,12 +1412,12 @@ LABEL_75:
       v64 = CAFDClientLogging();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
       {
-        v107 = [(CarDataClient *)self pluginID];
-        v108 = [v15 count];
+        pluginID13 = [(CarDataClient *)self pluginID];
+        v108 = [valuesCopy count];
         *buf = 138543874;
-        v124 = v107;
+        v124 = pluginID13;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2048;
         v128 = v108;
         _os_log_debug_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEBUG, "Received pluginID: %{public}@ transactionID: %{public}@ control request values count: %ld", buf, 0x20u);
@@ -1431,28 +1431,28 @@ LABEL_75:
         v120[2] = __68__CarDataClient_handleCommand_transactionID_values_errors_priority___block_invoke;
         v120[3] = &unk_100055778;
         v120[4] = self;
-        v121 = v14;
-        v122 = a7;
-        [v15 enumerateKeysAndObjectsUsingBlock:v120];
+        v121 = dCopy;
+        priorityCopy = priority;
+        [valuesCopy enumerateKeysAndObjectsUsingBlock:v120];
 
         goto LABEL_22;
       }
 
       v28 = [NSError errorWithDomain:@"com.apple.caraccessoryframework.cardata" code:10 userInfo:0];
-      v30 = [NSNumber numberWithUnsignedInteger:a7];
-      [(CarDataClient *)self responseTransactionID:v14 error:v28 priority:v30];
+      v30 = [NSNumber numberWithUnsignedInteger:priority];
+      [(CarDataClient *)self responseTransactionID:dCopy error:v28 priority:v30];
       goto LABEL_20;
     }
 
     v86 = CAFDClientLogging();
     if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
     {
-      v109 = [(CarDataClient *)self pluginID];
+      pluginID14 = [(CarDataClient *)self pluginID];
       v110 = objc_opt_class();
       *buf = 138543874;
-      v124 = v109;
+      v124 = pluginID14;
       v125 = 2114;
-      v126 = v14;
+      v126 = dCopy;
       v127 = 2114;
       v128 = v110;
       v111 = v110;
@@ -1461,11 +1461,11 @@ LABEL_75:
 
     v32 = 8;
     v87 = [NSError errorWithDomain:@"com.apple.caraccessoryframework.cardata" code:8 userInfo:0];
-    v88 = [NSNumber numberWithUnsignedInteger:a7];
-    [(CarDataClient *)self responseTransactionID:v14 error:v87 priority:v88];
+    v88 = [NSNumber numberWithUnsignedInteger:priority];
+    [(CarDataClient *)self responseTransactionID:dCopy error:v87 priority:v88];
   }
 
-  else if ([v13 isEqualToString:kCarDataProtocolCmdKeyControlNotify])
+  else if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyControlNotify])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1476,12 +1476,12 @@ LABEL_75:
         goto LABEL_141;
       }
 
-      v33 = [(CarDataClient *)self pluginID];
+      pluginID4 = [(CarDataClient *)self pluginID];
       v90 = objc_opt_class();
       *buf = 138543874;
-      v124 = v33;
+      v124 = pluginID4;
       v125 = 2114;
-      v126 = v14;
+      v126 = dCopy;
       v127 = 2114;
       v128 = v90;
       v35 = v90;
@@ -1494,9 +1494,9 @@ LABEL_75:
     {
       if (os_signpost_enabled(v73))
       {
-        v75 = [(CarDataClient *)self pluginID];
+        pluginID15 = [(CarDataClient *)self pluginID];
         *buf = 138543362;
-        v124 = v75;
+        v124 = pluginID15;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v73, OS_SIGNPOST_EVENT, v12, "Control", "Receive plugin control notify pluginID: %{public}@", buf, 0xCu);
       }
     }
@@ -1504,12 +1504,12 @@ LABEL_75:
     v76 = CAFDClientLogging();
     if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
     {
-      v112 = [(CarDataClient *)self pluginID];
-      v113 = [v15 count];
+      pluginID16 = [(CarDataClient *)self pluginID];
+      v113 = [valuesCopy count];
       *buf = 138543874;
-      v124 = v112;
+      v124 = pluginID16;
       v125 = 2114;
-      v126 = v14;
+      v126 = dCopy;
       v127 = 2048;
       v128 = v113;
       _os_log_debug_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEBUG, "Received pluginID: %{public}@ transactionID: %{public}@ control notify values count: %lu", buf, 0x20u);
@@ -1523,14 +1523,14 @@ LABEL_75:
       v119[2] = __68__CarDataClient_handleCommand_transactionID_values_errors_priority___block_invoke_44;
       v119[3] = &unk_1000557A0;
       v119[4] = self;
-      [v15 enumerateKeysAndObjectsUsingBlock:v119];
+      [valuesCopy enumerateKeysAndObjectsUsingBlock:v119];
       goto LABEL_22;
     }
   }
 
   else
   {
-    if ([v13 isEqualToString:kCarDataProtocolCmdKeyConfigResponse])
+    if ([commandCopy isEqualToString:kCarDataProtocolCmdKeyConfigResponse])
     {
       objc_opt_class();
       v81 = objc_opt_isKindOfClass();
@@ -1543,12 +1543,12 @@ LABEL_75:
           goto LABEL_141;
         }
 
-        v33 = [(CarDataClient *)self pluginID];
+        pluginID4 = [(CarDataClient *)self pluginID];
         v97 = objc_opt_class();
         *buf = 138543874;
-        v124 = v33;
+        v124 = pluginID4;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2114;
         v128 = v97;
         v35 = v97;
@@ -1565,10 +1565,10 @@ LABEL_75:
       if (!v83)
       {
 LABEL_29:
-        if (v14)
+        if (dCopy)
         {
-          v38 = [(CarDataClient *)self transactions];
-          v39 = [v38 objectForKeyedSubscript:v14];
+          transactions2 = [(CarDataClient *)self transactions];
+          v39 = [transactions2 objectForKeyedSubscript:dCopy];
 
           if (v39)
           {
@@ -1581,25 +1581,25 @@ LABEL_29:
       }
 
       v37 = objc_loadWeakRetained(&self->clientDelegate);
-      v84 = [(CarDataClient *)self pluginID];
-      [v37 didReceiveConfigFromPluginID:v84 config:v15];
+      pluginID17 = [(CarDataClient *)self pluginID];
+      [v37 didReceiveConfigFromPluginID:pluginID17 config:valuesCopy];
 
 LABEL_28:
       goto LABEL_29;
     }
 
-    if (![v13 isEqualToString:kCarDataProtocolCmdKeyConfigNotify])
+    if (![commandCopy isEqualToString:kCarDataProtocolCmdKeyConfigNotify])
     {
       v23 = CAFDClientLogging();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v98 = [(CarDataClient *)self pluginID];
+        pluginID18 = [(CarDataClient *)self pluginID];
         *buf = 138543874;
-        v124 = v98;
+        v124 = pluginID18;
         v125 = 2114;
-        v126 = v14;
+        v126 = dCopy;
         v127 = 2114;
-        v128 = v13;
+        v128 = commandCopy;
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Error pluginID: %{public}@ transactionID: %{public}@ unknown command %{public}@", buf, 0x20u);
       }
 
@@ -1617,12 +1617,12 @@ LABEL_28:
         goto LABEL_141;
       }
 
-      v33 = [(CarDataClient *)self pluginID];
+      pluginID4 = [(CarDataClient *)self pluginID];
       v114 = objc_opt_class();
       *buf = 138543874;
-      v124 = v33;
+      v124 = pluginID4;
       v125 = 2114;
-      v126 = v14;
+      v126 = dCopy;
       v127 = 2114;
       v128 = v114;
       v35 = v114;
@@ -1639,8 +1639,8 @@ LABEL_28:
     if (v32)
     {
       v28 = objc_loadWeakRetained(&self->clientDelegate);
-      v58 = [(CarDataClient *)self pluginID];
-      [v28 didReceiveConfigFromPluginID:v58 config:v15];
+      pluginID19 = [(CarDataClient *)self pluginID];
+      [v28 didReceiveConfigFromPluginID:pluginID19 config:valuesCopy];
 LABEL_77:
 
       goto LABEL_21;
@@ -1815,19 +1815,19 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)receiveData:(id)a3 priority:(unint64_t)a4
+- (void)receiveData:(id)data priority:(unint64_t)priority
 {
-  v6 = a3;
-  v7 = [(CarDataClient *)self processingQueue];
+  dataCopy = data;
+  processingQueue = [(CarDataClient *)self processingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __38__CarDataClient_receiveData_priority___block_invoke;
   block[3] = &unk_1000557C8;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = dataCopy;
+  selfCopy = self;
+  priorityCopy = priority;
+  v8 = dataCopy;
+  dispatch_async(processingQueue, block);
 }
 
 void __38__CarDataClient_receiveData_priority___block_invoke(uint64_t a1)
@@ -1985,210 +1985,210 @@ LABEL_29:
 LABEL_40:
 }
 
-- (void)requestConfigurationWithPriority:(id)a3 withResponse:(id)a4
+- (void)requestConfigurationWithPriority:(id)priority withResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  priorityCopy = priority;
+  responseCopy = response;
   v8 = CAFDClientLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [CarDataClient requestConfigurationWithPriority:withResponse:];
   }
 
-  [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyConfigRequest values:0 priority:v6 withResponse:v7];
+  [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyConfigRequest values:0 priority:priorityCopy withResponse:responseCopy];
 }
 
-- (void)registerAllWithPriority:(id)a3 withResponse:(id)a4
+- (void)registerAllWithPriority:(id)priority withResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  priorityCopy = priority;
+  responseCopy = response;
   v8 = CAFDClientLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [CarDataClient registerAllWithPriority:withResponse:];
   }
 
-  [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyRegisterRequest values:kCarDataProtocolValueWildcard priority:v6 withResponse:v7];
+  [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyRegisterRequest values:kCarDataProtocolValueWildcard priority:priorityCopy withResponse:responseCopy];
 }
 
-- (void)unregisterAllWithPriority:(id)a3 withResponse:(id)a4
+- (void)unregisterAllWithPriority:(id)priority withResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  priorityCopy = priority;
+  responseCopy = response;
   v8 = CAFDClientLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [CarDataClient unregisterAllWithPriority:withResponse:];
   }
 
-  [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyUnregisterRequest values:kCarDataProtocolValueWildcard priority:v6 withResponse:v7];
+  [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyUnregisterRequest values:kCarDataProtocolValueWildcard priority:priorityCopy withResponse:responseCopy];
 }
 
-- (void)registerInstanceIDs:(id)a3 priority:(id)a4 withResponse:(id)a5
+- (void)registerInstanceIDs:(id)ds priority:(id)priority withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  priorityCopy = priority;
+  responseCopy = response;
   v11 = CAFDClientLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     v14 = 138543874;
-    v15 = v13;
+    v15 = pluginID;
     v16 = 2048;
-    v17 = [v8 count];
+    v17 = [dsCopy count];
     v18 = 2114;
-    v19 = v9;
+    v19 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Request pluginID: %{public}@ add registration for instanceIDs count: %ld with priority: %{public}@", &v14, 0x20u);
   }
 
-  if (v8 && [v8 count])
+  if (dsCopy && [dsCopy count])
   {
-    [(CarDataClient *)self addRegistrationFromCache:v8 priority:v9 withResponse:v10];
+    [(CarDataClient *)self addRegistrationFromCache:dsCopy priority:priorityCopy withResponse:responseCopy];
   }
 
-  else if (v10)
+  else if (responseCopy)
   {
     v12 = [[CAFResponse alloc] initWithValues:&__NSDictionary0__struct];
-    v10[2](v10, v12);
+    responseCopy[2](responseCopy, v12);
   }
 }
 
-- (void)unregisterInstanceIDs:(id)a3 priority:(id)a4 withResponse:(id)a5
+- (void)unregisterInstanceIDs:(id)ds priority:(id)priority withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  priorityCopy = priority;
+  responseCopy = response;
   v11 = CAFDClientLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     v14 = 138543874;
-    v15 = v13;
+    v15 = pluginID;
     v16 = 2048;
-    v17 = [v8 count];
+    v17 = [dsCopy count];
     v18 = 2114;
-    v19 = v9;
+    v19 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Request pluginID: %{public}@ remove registration for instanceIDs count: %ld with priority: %{public}@", &v14, 0x20u);
   }
 
-  if (v8 && [v8 count])
+  if (dsCopy && [dsCopy count])
   {
-    [(CarDataClient *)self removeRegistrationFromCache:v8 priority:v9 withResponse:v10];
+    [(CarDataClient *)self removeRegistrationFromCache:dsCopy priority:priorityCopy withResponse:responseCopy];
   }
 
-  else if (v10)
+  else if (responseCopy)
   {
     v12 = [[CAFResponse alloc] initWithValuesAndError:0 error:0];
-    v10[2](v10, v12);
+    responseCopy[2](responseCopy, v12);
   }
 }
 
-- (void)readInstanceIDs:(id)a3 priority:(id)a4 withResponse:(id)a5
+- (void)readInstanceIDs:(id)ds priority:(id)priority withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  priorityCopy = priority;
+  responseCopy = response;
   v11 = CAFDClientLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     v14 = 138543874;
-    v15 = v13;
+    v15 = pluginID;
     v16 = 2048;
-    v17 = [v8 count];
+    v17 = [dsCopy count];
     v18 = 2114;
-    v19 = v9;
+    v19 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Request pluginID: %{public}@ read for instanceIDs count: %ld with priority: %{public}@", &v14, 0x20u);
   }
 
-  if (v8 && [v8 count])
+  if (dsCopy && [dsCopy count])
   {
-    [(CarDataClient *)self readFromCache:v8 priority:v9 withResponse:v10];
+    [(CarDataClient *)self readFromCache:dsCopy priority:priorityCopy withResponse:responseCopy];
   }
 
-  else if (v10)
+  else if (responseCopy)
   {
     v12 = [[CAFResponse alloc] initWithValues:&__NSDictionary0__struct];
-    v10[2](v10, v12);
+    responseCopy[2](responseCopy, v12);
   }
 }
 
-- (void)writeValues:(id)a3 priority:(id)a4 withResponse:(id)a5
+- (void)writeValues:(id)values priority:(id)priority withResponse:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valuesCopy = values;
+  priorityCopy = priority;
+  responseCopy = response;
   v11 = CAFDClientLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     v17 = 138543874;
-    v18 = v14;
+    v18 = pluginID;
     v19 = 2048;
-    v20 = [v8 count];
+    v20 = [valuesCopy count];
     v21 = 2114;
-    v22 = v9;
+    v22 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Request pluginID: %{public}@ write for values count: %ld with priority: %{public}@", &v17, 0x20u);
   }
 
-  if (v8 && [v8 count])
+  if (valuesCopy && [valuesCopy count])
   {
     v12 = CAFDClientLogging();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v15 = [(CarDataClient *)self pluginID];
-      v16 = [v8 count];
+      pluginID2 = [(CarDataClient *)self pluginID];
+      v16 = [valuesCopy count];
       v17 = 138543874;
-      v18 = v15;
+      v18 = pluginID2;
       v19 = 2048;
       v20 = v16;
       v21 = 2114;
-      v22 = v9;
+      v22 = priorityCopy;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Write values pluginID: %{public}@ instanceID count: %ld with priority: %{public}@", &v17, 0x20u);
     }
 
-    [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyWriteRequest values:v8 priority:v9 withResponse:v10];
+    [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyWriteRequest values:valuesCopy priority:priorityCopy withResponse:responseCopy];
   }
 
-  else if (v10)
+  else if (responseCopy)
   {
     v13 = [[CAFResponse alloc] initWithValues:&__NSDictionary0__struct];
-    v10[2](v10, v13);
+    responseCopy[2](responseCopy, v13);
   }
 }
 
-- (void)requestInstanceID:(id)a3 value:(id)a4 priority:(id)a5 withResponse:(id)a6
+- (void)requestInstanceID:(id)d value:(id)value priority:(id)priority withResponse:(id)response
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  valueCopy = value;
+  priorityCopy = priority;
+  responseCopy = response;
   v14 = CAFDClientLogging();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v21 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     v22 = @"YES";
     *buf = 138544130;
-    v31 = v21;
-    if (!v11)
+    v31 = pluginID;
+    if (!valueCopy)
     {
       v22 = @"NO";
     }
 
     v32 = 2114;
-    v33 = v10;
+    v33 = dCopy;
     v34 = 2114;
     v35 = v22;
     v36 = 2114;
-    v37 = v12;
+    v37 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Request pluginID: %{public}@ instanceID: %{public}@ with value: %{public}@ and priority: %{public}@", buf, 0x2Au);
   }
 
   v15 = kCarDataProtocolCmdKeyControlRequest;
-  v28 = v10;
-  v16 = v11;
-  if (!v11)
+  v28 = dCopy;
+  v16 = valueCopy;
+  if (!valueCopy)
   {
     v16 = +[NSNull null];
   }
@@ -2199,16 +2199,16 @@ LABEL_40:
   v23[1] = 3221225472;
   v23[2] = __63__CarDataClient_requestInstanceID_value_priority_withResponse___block_invoke;
   v23[3] = &unk_1000557F0;
-  v24 = v10;
-  v25 = self;
-  v26 = v12;
-  v27 = v13;
-  v18 = v12;
-  v19 = v10;
-  v20 = v13;
+  v24 = dCopy;
+  selfCopy = self;
+  v26 = priorityCopy;
+  v27 = responseCopy;
+  v18 = priorityCopy;
+  v19 = dCopy;
+  v20 = responseCopy;
   [(CarDataClient *)self sendCommand:v15 values:v17 priority:v18 withResponse:v23];
 
-  if (!v11)
+  if (!valueCopy)
   {
   }
 }
@@ -2285,169 +2285,169 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)notifyInstanceID:(id)a3 value:(id)a4 priority:(id)a5
+- (void)notifyInstanceID:(id)d value:(id)value priority:(id)priority
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  valueCopy = value;
+  priorityCopy = priority;
   v11 = CAFDClientLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     v16 = @"YES";
     *buf = 138544130;
-    v20 = v15;
-    if (!v9)
+    v20 = pluginID;
+    if (!valueCopy)
     {
       v16 = @"NO";
     }
 
     v21 = 2114;
-    v22 = v8;
+    v22 = dCopy;
     v23 = 2114;
     v24 = v16;
     v25 = 2114;
-    v26 = v10;
+    v26 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Notify pluginID: %{public}@ instanceID: %{public}@ with value: %{public}@ and priority: %{public}@", buf, 0x2Au);
   }
 
   v12 = kCarDataProtocolCmdKeyControlNotify;
-  v17 = v8;
-  v13 = v9;
-  if (!v9)
+  v17 = dCopy;
+  v13 = valueCopy;
+  if (!valueCopy)
   {
     v13 = +[NSNull null];
   }
 
   v18 = v13;
   v14 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  [(CarDataClient *)self sendCommand:v12 values:v14 priority:v10 withResponse:0];
+  [(CarDataClient *)self sendCommand:v12 values:v14 priority:priorityCopy withResponse:0];
 
-  if (!v9)
+  if (!valueCopy)
   {
   }
 }
 
-- (void)responseInstanceID:(id)a3 value:(id)a4 transactionID:(id)a5 priority:(id)a6
+- (void)responseInstanceID:(id)d value:(id)value transactionID:(id)iD priority:(id)priority
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  valueCopy = value;
+  iDCopy = iD;
+  priorityCopy = priority;
   v14 = CAFDClientLogging();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     *buf = 138544386;
     v19 = @"YES";
-    v23 = v18;
-    if (!v11)
+    v23 = pluginID;
+    if (!valueCopy)
     {
       v19 = @"NO";
     }
 
     v24 = 2114;
-    v25 = v10;
+    v25 = dCopy;
     v26 = 2114;
-    v27 = v12;
+    v27 = iDCopy;
     v28 = 2114;
     v29 = v19;
     v30 = 2114;
-    v31 = v13;
+    v31 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Response pluginID: %{public}@ instanceID: %{public}@ transactionID: %{public}@ with value: %{public}@ and priority: %{public}@", buf, 0x34u);
   }
 
   v15 = kCarDataProtocolCmdKeyControlResponse;
-  v20 = v10;
-  v16 = v11;
-  if (!v11)
+  v20 = dCopy;
+  v16 = valueCopy;
+  if (!valueCopy)
   {
     v16 = +[NSNull null];
   }
 
   v21 = v16;
   v17 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-  [(CarDataClient *)self sendCommand:v15 values:v17 transactionID:v12 priority:v13];
+  [(CarDataClient *)self sendCommand:v15 values:v17 transactionID:iDCopy priority:priorityCopy];
 
-  if (!v11)
+  if (!valueCopy)
   {
   }
 }
 
-- (void)responseInstanceID:(id)a3 error:(id)a4 transactionID:(id)a5 priority:(id)a6
+- (void)responseInstanceID:(id)d error:(id)error transactionID:(id)iD priority:(id)priority
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  errorCopy = error;
+  iDCopy = iD;
+  priorityCopy = priority;
   v14 = CAFDClientLogging();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     *buf = 138544386;
-    v23 = v19;
+    v23 = pluginID;
     v24 = 2114;
-    v25 = v10;
+    v25 = dCopy;
     v26 = 2114;
-    v27 = v12;
+    v27 = iDCopy;
     v28 = 2114;
-    v29 = v11;
+    v29 = errorCopy;
     v30 = 2114;
-    v31 = v13;
+    v31 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Response pluginID: %{public}@ instanceID: %{public}@ transactionID: %{public}@ with error: %{public}@ and priority: %{public}@", buf, 0x34u);
   }
 
-  v15 = +[CarDataClient osStatusFromCarDataError:](CarDataClient, "osStatusFromCarDataError:", [v11 code]);
+  v15 = +[CarDataClient osStatusFromCarDataError:](CarDataClient, "osStatusFromCarDataError:", [errorCopy code]);
   v16 = kCarDataProtocolCmdKeyControlResponse;
-  v17 = [NSNumber numberWithInteger:v15, v10];
-  v21 = v17;
+  dCopy = [NSNumber numberWithInteger:v15, dCopy];
+  v21 = dCopy;
   v18 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-  [(CarDataClient *)self sendCommand:v16 errors:v18 transactionID:v12 priority:v13];
+  [(CarDataClient *)self sendCommand:v16 errors:v18 transactionID:iDCopy priority:priorityCopy];
 }
 
-- (void)responseTransactionID:(id)a3 error:(id)a4 priority:(id)a5
+- (void)responseTransactionID:(id)d error:(id)error priority:(id)priority
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  errorCopy = error;
+  priorityCopy = priority;
   v11 = CAFDClientLogging();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(CarDataClient *)self pluginID];
+    pluginID = [(CarDataClient *)self pluginID];
     v14 = 138544130;
-    v15 = v13;
+    v15 = pluginID;
     v16 = 2114;
-    v17 = v8;
+    v17 = dCopy;
     v18 = 2114;
-    v19 = v9;
+    v19 = errorCopy;
     v20 = 2114;
-    v21 = v10;
+    v21 = priorityCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Response pluginID: %{public}@ transactionID: %{public}@ with error: %{public}@ and priority: %{public}@", &v14, 0x2Au);
   }
 
-  v12 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", NSOSStatusErrorDomain, +[CarDataClient osStatusFromCarDataError:](CarDataClient, "osStatusFromCarDataError:", [v9 code]), 0);
-  [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyControlResponse error:v12 transactionID:v8 priority:v10];
+  v12 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", NSOSStatusErrorDomain, +[CarDataClient osStatusFromCarDataError:](CarDataClient, "osStatusFromCarDataError:", [errorCopy code]), 0);
+  [(CarDataClient *)self sendCommand:kCarDataProtocolCmdKeyControlResponse error:v12 transactionID:dCopy priority:priorityCopy];
 }
 
-- (id)cachedValueForInstanceID:(id)a3
+- (id)cachedValueForInstanceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v5 = [(CarDataClient *)self processingQueue];
+  processingQueue = [(CarDataClient *)self processingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __42__CarDataClient_cachedValueForInstanceID___block_invoke;
   block[3] = &unk_100055818;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(processingQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -2465,16 +2465,16 @@ void __42__CarDataClient_cachedValueForInstanceID___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-+ (int64_t)osStatusFromCarDataError:(unint64_t)a3
++ (int64_t)osStatusFromCarDataError:(unint64_t)error
 {
-  if (a3 > 0xA)
+  if (error > 0xA)
   {
     return -6700;
   }
 
   else
   {
-    return qword_1000427E8[a3];
+    return qword_1000427E8[error];
   }
 }
 

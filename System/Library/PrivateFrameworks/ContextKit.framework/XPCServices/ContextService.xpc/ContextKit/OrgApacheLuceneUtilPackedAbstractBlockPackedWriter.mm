@@ -1,22 +1,22 @@
 @interface OrgApacheLuceneUtilPackedAbstractBlockPackedWriter
 - (void)addBlockOfZeros;
-- (void)addWithLong:(int64_t)a3;
+- (void)addWithLong:(int64_t)long;
 - (void)dealloc;
 - (void)finish;
-- (void)resetWithOrgApacheLuceneStoreDataOutput:(id)a3;
+- (void)resetWithOrgApacheLuceneStoreDataOutput:(id)output;
 @end
 
 @implementation OrgApacheLuceneUtilPackedAbstractBlockPackedWriter
 
-- (void)resetWithOrgApacheLuceneStoreDataOutput:(id)a3
+- (void)resetWithOrgApacheLuceneStoreDataOutput:(id)output
 {
-  JreStrongAssign(&self->out_, a3);
+  JreStrongAssign(&self->out_, output);
   self->off_ = 0;
   self->ord_ = 0;
   self->finished_ = 0;
 }
 
-- (void)addWithLong:(int64_t)a3
+- (void)addWithLong:(int64_t)long
 {
   sub_10000D034(self);
   values = self->values_;
@@ -40,7 +40,7 @@
     IOSArray_throwOutOfBoundsWithMsg(size, off);
   }
 
-  values->buffer_[off] = a3;
+  values->buffer_[off] = long;
   ++self->ord_;
 }
 

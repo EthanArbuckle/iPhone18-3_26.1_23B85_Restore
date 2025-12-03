@@ -1,27 +1,27 @@
 @interface HFTimerTriggerSignificantTimeEventAdapter
-- (id)createTriggerWithName:(id)a3 timeZone:(id)a4 recurrences:(id)a5;
-- (id)updateTrigger:(id)a3;
-- (void)updateTriggerBuilder:(id)a3 recurrences:(id)a4 inHome:(id)a5;
+- (id)createTriggerWithName:(id)name timeZone:(id)zone recurrences:(id)recurrences;
+- (id)updateTrigger:(id)trigger;
+- (void)updateTriggerBuilder:(id)builder recurrences:(id)recurrences inHome:(id)home;
 @end
 
 @implementation HFTimerTriggerSignificantTimeEventAdapter
 
-- (id)createTriggerWithName:(id)a3 timeZone:(id)a4 recurrences:(id)a5
+- (id)createTriggerWithName:(id)name timeZone:(id)zone recurrences:(id)recurrences
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
-  v10 = [v9 performValidation];
+  nameCopy = name;
+  recurrencesCopy = recurrences;
+  eventBuilder = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
+  performValidation = [eventBuilder performValidation];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __88__HFTimerTriggerSignificantTimeEventAdapter_createTriggerWithName_timeZone_recurrences___block_invoke;
   v29[3] = &unk_277DF9400;
-  v11 = v7;
+  v11 = nameCopy;
   v30 = v11;
-  v31 = self;
-  v12 = v8;
+  selfCopy = self;
+  v12 = recurrencesCopy;
   v32 = v12;
-  v13 = [v10 flatMap:v29];
+  v13 = [performValidation flatMap:v29];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -29,7 +29,7 @@
   v25[3] = &unk_277DF7010;
   v14 = v11;
   v26 = v14;
-  v27 = self;
+  selfCopy2 = self;
   v15 = v12;
   v28 = v15;
   v16 = [v13 addSuccessBlock:v25];
@@ -38,7 +38,7 @@
   v21[2] = __88__HFTimerTriggerSignificantTimeEventAdapter_createTriggerWithName_timeZone_recurrences___block_invoke_36;
   v21[3] = &unk_277DF6FE8;
   v22 = v14;
-  v23 = self;
+  selfCopy3 = self;
   v24 = v15;
   v17 = v15;
   v18 = v14;
@@ -109,32 +109,32 @@ void __88__HFTimerTriggerSignificantTimeEventAdapter_createTriggerWithName_timeZ
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTriggerBuilder:(id)a3 recurrences:(id)a4 inHome:(id)a5
+- (void)updateTriggerBuilder:(id)builder recurrences:(id)recurrences inHome:(id)home
 {
-  v7 = a4;
-  v12 = a3;
-  v8 = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
-  v9 = [v8 significantEvent];
-  [v12 setSignificantEvent:v9];
+  recurrencesCopy = recurrences;
+  builderCopy = builder;
+  eventBuilder = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
+  significantEvent = [eventBuilder significantEvent];
+  [builderCopy setSignificantEvent:significantEvent];
 
-  v10 = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
-  v11 = [v10 significantEventOffset];
-  [v12 setSignificantEventOffset:v11];
+  eventBuilder2 = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
+  significantEventOffset = [eventBuilder2 significantEventOffset];
+  [builderCopy setSignificantEventOffset:significantEventOffset];
 
-  [v12 setRecurrences:v7];
+  [builderCopy setRecurrences:recurrencesCopy];
 }
 
-- (id)updateTrigger:(id)a3
+- (id)updateTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = MEMORY[0x277D2C900];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __59__HFTimerTriggerSignificantTimeEventAdapter_updateTrigger___block_invoke;
   v22[3] = &unk_277DF4150;
-  v6 = v4;
+  v6 = triggerCopy;
   v23 = v6;
-  v24 = self;
+  selfCopy = self;
   v7 = [v5 futureWithErrorOnlyHandlerAdapterBlock:v22];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -142,7 +142,7 @@ void __88__HFTimerTriggerSignificantTimeEventAdapter_createTriggerWithName_timeZ
   v19[3] = &unk_277DFA5C0;
   v8 = v6;
   v20 = v8;
-  v21 = self;
+  selfCopy2 = self;
   v9 = [v7 flatMap:v19];
 
   v17[0] = MEMORY[0x277D85DD0];

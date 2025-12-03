@@ -1,6 +1,6 @@
 @interface WFWeatherStoreServiceConfiguration
 + (id)defaultConfiguration;
-+ (id)defaultConfigurationWithSourceBundleIdentifier:(id)a3;
++ (id)defaultConfigurationWithSourceBundleIdentifier:(id)identifier;
 + (id)generateUserAgent;
 - (BOOL)isServiceAvailableSync;
 - (BOOL)isValid;
@@ -8,46 +8,46 @@
 - (NSURL)serviceConnectivityEvaluationURL;
 - (WFWeatherStoreServiceConfiguration)init;
 - (id)apiConfiguration;
-- (id)apiConfigurationForAPIVersion:(id)a3;
-- (id)aqiScaleRequestForScaleNamed:(id)a3 language:(id)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)forecastRequestForTypes:(unint64_t)a3 location:(id)a4 date:(id)a5 error:(id *)a6;
-- (id)forecastRequestForTypes:(unint64_t)a3 location:(id)a4 units:(int)a5 date:(id)a6 apiVersion:(id)a7 error:(id *)a8 requestOptions:(id)a9;
-- (id)parseAQIScaleNamed:(id)a3 data:(id)a4 apiVersion:(id)a5 error:(id *)a6;
-- (id)parseForecast:(unint64_t)a3 data:(id)a4 location:(id)a5 units:(int)a6 locale:(id)a7 date:(id)a8 apiVersion:(id)a9 error:(id *)a10;
-- (id)parseForecast:(unint64_t)a3 data:(id)a4 location:(id)a5 units:(int)a6 locale:(id)a7 date:(id)a8 error:(id *)a9;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
+- (id)apiConfigurationForAPIVersion:(id)version;
+- (id)aqiScaleRequestForScaleNamed:(id)named language:(id)language error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)forecastRequestForTypes:(unint64_t)types location:(id)location date:(id)date error:(id *)error;
+- (id)forecastRequestForTypes:(unint64_t)types location:(id)location units:(int)units date:(id)date apiVersion:(id)version error:(id *)error requestOptions:(id)options;
+- (id)parseAQIScaleNamed:(id)named data:(id)data apiVersion:(id)version error:(id *)error;
+- (id)parseForecast:(unint64_t)forecast data:(id)data location:(id)location units:(int)units locale:(id)locale date:(id)date apiVersion:(id)version error:(id *)self0;
+- (id)parseForecast:(unint64_t)forecast data:(id)data location:(id)location units:(int)units locale:(id)locale date:(id)date error:(id *)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
 - (void)invalidate;
-- (void)setServiceConnectivityEvaluationURL:(id)a3;
+- (void)setServiceConnectivityEvaluationURL:(id)l;
 @end
 
 @implementation WFWeatherStoreServiceConfiguration
 
-+ (id)defaultConfigurationWithSourceBundleIdentifier:(id)a3
++ (id)defaultConfigurationWithSourceBundleIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v5 setHTTPShouldUsePipelining:1];
-  [v5 setTimeoutIntervalForRequest:30.0];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration setHTTPShouldUsePipelining:1];
+  [defaultSessionConfiguration setTimeoutIntervalForRequest:30.0];
   v12 = @"User-Agent";
   v6 = +[WFWeatherStoreServiceConfiguration generateUserAgent];
   v13[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  [v5 setHTTPAdditionalHeaders:v7];
+  [defaultSessionConfiguration setHTTPAdditionalHeaders:v7];
 
-  if (v3)
+  if (identifierCopy)
   {
-    [v5 set_sourceApplicationBundleIdentifier:v3];
+    [defaultSessionConfiguration set_sourceApplicationBundleIdentifier:identifierCopy];
   }
 
-  v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v5 delegate:v4 delegateQueue:0];
+  v8 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration delegate:v4 delegateQueue:0];
   [v4 setSession:v8];
 
-  v9 = [MEMORY[0x277CBEBC0] wf_inMemoryAddress];
-  [v4 setCacheURL:v9];
+  wf_inMemoryAddress = [MEMORY[0x277CBEBC0] wf_inMemoryAddress];
+  [v4 setCacheURL:wf_inMemoryAddress];
 
   v10 = +[WFSettingsManager sharedInstance];
   [v4 setSettingsManager:v10];
@@ -79,18 +79,18 @@
 
 - (void)invalidate
 {
-  v2 = [(WFWeatherStoreServiceConfiguration *)self session];
-  [v2 invalidateAndCancel];
+  session = [(WFWeatherStoreServiceConfiguration *)self session];
+  [session invalidateAndCancel];
 }
 
 - (NSString)apiVersion
 {
-  v2 = [(WFWeatherStoreServiceConfiguration *)self settingsManager];
-  v3 = [v2 APIVersion];
-  v4 = v3;
-  if (v3)
+  settingsManager = [(WFWeatherStoreServiceConfiguration *)self settingsManager];
+  aPIVersion = [settingsManager APIVersion];
+  v4 = aPIVersion;
+  if (aPIVersion)
   {
-    v5 = v3;
+    v5 = aPIVersion;
   }
 
   else
@@ -105,25 +105,25 @@
 
 - (id)apiConfiguration
 {
-  v3 = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
-  v4 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:v3];
+  apiVersion = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
+  v4 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:apiVersion];
 
   return v4;
 }
 
-- (id)apiConfigurationForAPIVersion:(id)a3
+- (id)apiConfigurationForAPIVersion:(id)version
 {
-  v4 = [WFAPIConfigurationFactory configurationForAPIVersion:a3];
+  v4 = [WFAPIConfigurationFactory configurationForAPIVersion:version];
   if (v4)
   {
-    v5 = [(WFWeatherStoreServiceConfiguration *)self serviceConnectivityEvaluationURL];
-    v6 = [v4 hostUrl];
-    v7 = [v5 isEqual:v6];
+    serviceConnectivityEvaluationURL = [(WFWeatherStoreServiceConfiguration *)self serviceConnectivityEvaluationURL];
+    hostUrl = [v4 hostUrl];
+    v7 = [serviceConnectivityEvaluationURL isEqual:hostUrl];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [v4 hostUrl];
-      [(WFWeatherStoreServiceConfiguration *)self setServiceConnectivityEvaluationURL:v8];
+      hostUrl2 = [v4 hostUrl];
+      [(WFWeatherStoreServiceConfiguration *)self setServiceConnectivityEvaluationURL:hostUrl2];
     }
   }
 
@@ -132,11 +132,11 @@
 
 - (BOOL)isValid
 {
-  v3 = [(WFWeatherStoreServiceConfiguration *)self apiConfiguration];
-  if ([v3 isValid] && -[WFWeatherStoreServiceConfiguration cacheClass](self, "cacheClass"))
+  apiConfiguration = [(WFWeatherStoreServiceConfiguration *)self apiConfiguration];
+  if ([apiConfiguration isValid] && -[WFWeatherStoreServiceConfiguration cacheClass](self, "cacheClass"))
   {
-    v4 = [(WFWeatherStoreServiceConfiguration *)self session];
-    v5 = v4 != 0;
+    session = [(WFWeatherStoreServiceConfiguration *)self session];
+    v5 = session != 0;
   }
 
   else
@@ -147,31 +147,31 @@
   return v5;
 }
 
-- (id)forecastRequestForTypes:(unint64_t)a3 location:(id)a4 date:(id)a5 error:(id *)a6
+- (id)forecastRequestForTypes:(unint64_t)types location:(id)location date:(id)date error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
-  v13 = [(WFWeatherStoreServiceConfiguration *)self forecastRequestForTypes:a3 location:v11 date:v10 apiVersion:v12 error:a6];
+  dateCopy = date;
+  locationCopy = location;
+  apiVersion = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
+  v13 = [(WFWeatherStoreServiceConfiguration *)self forecastRequestForTypes:types location:locationCopy date:dateCopy apiVersion:apiVersion error:error];
 
   return v13;
 }
 
-- (id)forecastRequestForTypes:(unint64_t)a3 location:(id)a4 units:(int)a5 date:(id)a6 apiVersion:(id)a7 error:(id *)a8 requestOptions:(id)a9
+- (id)forecastRequestForTypes:(unint64_t)types location:(id)location units:(int)units date:(id)date apiVersion:(id)version error:(id *)error requestOptions:(id)options
 {
-  v12 = *&a5;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  v19 = WFForecastTypesUnknownTypes(a3);
+  v12 = *&units;
+  locationCopy = location;
+  dateCopy = date;
+  versionCopy = version;
+  optionsCopy = options;
+  v19 = WFForecastTypesUnknownTypes(types);
   if (v19)
   {
-    if (a8)
+    if (error)
     {
 LABEL_3:
       [MEMORY[0x277CCA9B8] wf_errorWithCode:5];
-      *a8 = v20 = 0;
+      *error = v20 = 0;
       goto LABEL_10;
     }
 
@@ -179,31 +179,31 @@ LABEL_3:
     v31 = WFLogForCategory(0);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      [WFWeatherStoreServiceConfiguration forecastRequestForTypes:a3 location:v30 units:v31 date:? apiVersion:? error:? requestOptions:?];
+      [WFWeatherStoreServiceConfiguration forecastRequestForTypes:types location:v30 units:v31 date:? apiVersion:? error:? requestOptions:?];
     }
   }
 
   else
   {
-    v21 = [v15 geoLocation];
+    geoLocation = [locationCopy geoLocation];
 
-    if (v21)
+    if (geoLocation)
     {
       v22 = [WFRequestFormattingRules alloc];
       [(WFWeatherStoreServiceConfiguration *)self settingsManager];
-      v34 = v15;
-      v23 = v18;
-      v24 = v17;
-      v26 = v25 = v16;
-      v27 = [v26 settings];
-      v28 = [(WFRequestFormattingRules *)v22 initWithSettings:v27];
+      v34 = locationCopy;
+      v23 = optionsCopy;
+      v24 = versionCopy;
+      v26 = v25 = dateCopy;
+      settings = [v26 settings];
+      v28 = [(WFRequestFormattingRules *)v22 initWithSettings:settings];
 
-      v16 = v25;
-      v17 = v24;
-      v18 = v23;
-      v15 = v34;
-      v29 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:v17];
-      v20 = [v29 forecastRequestForTypes:a3 location:v34 units:v12 date:v16 error:a8 rules:v28 options:v18];
+      dateCopy = v25;
+      versionCopy = v24;
+      optionsCopy = v23;
+      locationCopy = v34;
+      v29 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:versionCopy];
+      v20 = [v29 forecastRequestForTypes:types location:v34 units:v12 date:dateCopy error:error rules:v28 options:optionsCopy];
 
       goto LABEL_10;
     }
@@ -211,10 +211,10 @@ LABEL_3:
     v33 = WFLogForCategory(2uLL);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      [WFWeatherStoreServiceConfiguration forecastRequestForTypes:v15 location:v33 units:? date:? apiVersion:? error:? requestOptions:?];
+      [WFWeatherStoreServiceConfiguration forecastRequestForTypes:locationCopy location:v33 units:? date:? apiVersion:? error:? requestOptions:?];
     }
 
-    if (a8)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -226,100 +226,100 @@ LABEL_10:
   return v20;
 }
 
-- (id)parseForecast:(unint64_t)a3 data:(id)a4 location:(id)a5 units:(int)a6 locale:(id)a7 date:(id)a8 error:(id *)a9
+- (id)parseForecast:(unint64_t)forecast data:(id)data location:(id)location units:(int)units locale:(id)locale date:(id)date error:(id *)error
 {
-  v10 = *&a6;
-  v15 = a8;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
-  v20 = [(WFWeatherStoreServiceConfiguration *)self parseForecast:a3 data:v18 location:v17 units:v10 locale:v16 date:v15 apiVersion:v19 error:a9];
+  v10 = *&units;
+  dateCopy = date;
+  localeCopy = locale;
+  locationCopy = location;
+  dataCopy = data;
+  apiVersion = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
+  v20 = [(WFWeatherStoreServiceConfiguration *)self parseForecast:forecast data:dataCopy location:locationCopy units:v10 locale:localeCopy date:dateCopy apiVersion:apiVersion error:error];
 
   return v20;
 }
 
-- (id)parseForecast:(unint64_t)a3 data:(id)a4 location:(id)a5 units:(int)a6 locale:(id)a7 date:(id)a8 apiVersion:(id)a9 error:(id *)a10
+- (id)parseForecast:(unint64_t)forecast data:(id)data location:(id)location units:(int)units locale:(id)locale date:(id)date apiVersion:(id)version error:(id *)self0
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a5;
-  v19 = a4;
+  versionCopy = version;
+  dateCopy = date;
+  localeCopy = locale;
+  locationCopy = location;
+  dataCopy = data;
   v20 = [WFResponseParsingRules alloc];
-  v21 = [(WFWeatherStoreServiceConfiguration *)self settingsManager];
-  v22 = [v21 settings];
-  v23 = [(WFResponseParsingRules *)v20 initWithSettings:v22];
+  settingsManager = [(WFWeatherStoreServiceConfiguration *)self settingsManager];
+  settings = [settingsManager settings];
+  v23 = [(WFResponseParsingRules *)v20 initWithSettings:settings];
 
-  v24 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:v15];
+  v24 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:versionCopy];
 
-  v25 = [v24 parseForecast:a3 data:v19 location:v18 units:a6 locale:v17 date:v16 error:a10 rules:v23];
+  v25 = [v24 parseForecast:forecast data:dataCopy location:locationCopy units:units locale:localeCopy date:dateCopy error:error rules:v23];
 
   return v25;
 }
 
-- (id)aqiScaleRequestForScaleNamed:(id)a3 language:(id)a4 error:(id *)a5
+- (id)aqiScaleRequestForScaleNamed:(id)named language:(id)language error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
-  v10 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:v9];
+  languageCopy = language;
+  namedCopy = named;
+  apiVersion = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
+  v10 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:apiVersion];
 
-  v11 = [v10 aqiRequestForScaleNamed:v8 language:v7];
+  v11 = [v10 aqiRequestForScaleNamed:namedCopy language:languageCopy];
 
   return v11;
 }
 
-- (id)parseAQIScaleNamed:(id)a3 data:(id)a4 apiVersion:(id)a5 error:(id *)a6
+- (id)parseAQIScaleNamed:(id)named data:(id)data apiVersion:(id)version error:(id *)error
 {
-  v9 = a4;
-  v10 = a3;
-  v11 = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
-  v12 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:v11];
+  dataCopy = data;
+  namedCopy = named;
+  apiVersion = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
+  v12 = [(WFWeatherStoreServiceConfiguration *)self apiConfigurationForAPIVersion:apiVersion];
 
-  v13 = [v12 parseAQIScaleNamed:v10 data:v9 error:a6];
+  v13 = [v12 parseAQIScaleNamed:namedCopy data:dataCopy error:error];
 
   return v13;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = a4;
-  v8 = [v6 transactionMetrics];
-  v9 = [v8 firstObject];
+  metricsCopy = metrics;
+  taskCopy = task;
+  transactionMetrics = [metricsCopy transactionMetrics];
+  firstObject = [transactionMetrics firstObject];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [v7 response];
-  v12 = [v11 URL];
-  v13 = [v12 host];
-  v14 = [v7 response];
+  response = [taskCopy response];
+  v12 = [response URL];
+  host = [v12 host];
+  response2 = [taskCopy response];
 
-  v15 = [v14 URL];
-  v16 = [v15 path];
-  v17 = [v10 stringWithFormat:@"%@%@", v13, v16];
+  v15 = [response2 URL];
+  path = [v15 path];
+  v17 = [v10 stringWithFormat:@"%@%@", host, path];
 
-  v18 = [v6 taskInterval];
+  taskInterval = [metricsCopy taskInterval];
 
-  v19 = [v9 requestEndDate];
-  v20 = [v9 requestStartDate];
-  [v19 timeIntervalSinceDate:v20];
+  requestEndDate = [firstObject requestEndDate];
+  requestStartDate = [firstObject requestStartDate];
+  [requestEndDate timeIntervalSinceDate:requestStartDate];
   v22 = v21;
 
-  v23 = [v9 responseEndDate];
-  v24 = [v9 responseStartDate];
-  [v23 timeIntervalSinceDate:v24];
+  responseEndDate = [firstObject responseEndDate];
+  responseStartDate = [firstObject responseStartDate];
+  [responseEndDate timeIntervalSinceDate:responseStartDate];
   v26 = v25;
 
-  v27 = [v9 secureConnectionEndDate];
-  v28 = [v9 secureConnectionStartDate];
-  [v27 timeIntervalSinceDate:v28];
+  secureConnectionEndDate = [firstObject secureConnectionEndDate];
+  secureConnectionStartDate = [firstObject secureConnectionStartDate];
+  [secureConnectionEndDate timeIntervalSinceDate:secureConnectionStartDate];
   v30 = v29;
 
-  v31 = [v9 domainLookupEndDate];
-  v32 = [v9 domainLookupStartDate];
-  [v31 timeIntervalSinceDate:v32];
+  domainLookupEndDate = [firstObject domainLookupEndDate];
+  domainLookupStartDate = [firstObject domainLookupStartDate];
+  [domainLookupEndDate timeIntervalSinceDate:domainLookupStartDate];
   v34 = v33;
 
   v35 = WFLogForCategory(8uLL);
@@ -328,7 +328,7 @@ LABEL_10:
     *buf = 138479107;
     v43 = v17;
     v44 = 2114;
-    v45 = v18;
+    v45 = taskInterval;
     v46 = 2048;
     v47 = v22;
     v48 = 2048;
@@ -340,35 +340,35 @@ LABEL_10:
     _os_log_impl(&dword_272B94000, v35, OS_LOG_TYPE_INFO, "Data fetched from: %{private}@, total time: %{public}@, request time: %f, response time: %f, TLS time:  %f, DNS time: %f", buf, 0x3Eu);
   }
 
-  v36 = [v9 response];
+  response3 = [firstObject response];
 
-  if (v36)
+  if (response3)
   {
     v37 = [WFNetworkEvent alloc];
-    v38 = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
-    v39 = [(WFNetworkEvent *)v37 initWithEventType:WFNetworkEventTypeFromAPIVersion(v38) metrics:v9];
+    apiVersion = [(WFWeatherStoreServiceConfiguration *)self apiVersion];
+    v39 = [(WFNetworkEvent *)v37 initWithEventType:WFNetworkEventTypeFromAPIVersion(apiVersion) metrics:firstObject];
 
     v40 = +[WFNetworkBehaviorMonitor sharedInstance];
     [v40 logNetworkEvent:v39];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(WFWeatherStoreServiceConfiguration *)self settingsManager];
-  [v4 setSettingsManager:v5];
+  settingsManager = [(WFWeatherStoreServiceConfiguration *)self settingsManager];
+  [v4 setSettingsManager:settingsManager];
 
-  v6 = [(WFWeatherStoreServiceConfiguration *)self session];
-  [v4 setSession:v6];
+  session = [(WFWeatherStoreServiceConfiguration *)self session];
+  [v4 setSession:session];
 
-  v7 = [(WFWeatherStoreServiceConfiguration *)self cacheURL];
-  [v4 setCacheURL:v7];
+  cacheURL = [(WFWeatherStoreServiceConfiguration *)self cacheURL];
+  [v4 setCacheURL:cacheURL];
 
-  v8 = [(WFWeatherStoreServiceConfiguration *)self serviceConnectivityEvaluationURL];
+  serviceConnectivityEvaluationURL = [(WFWeatherStoreServiceConfiguration *)self serviceConnectivityEvaluationURL];
   v9 = v4[3];
-  v4[3] = v8;
+  v4[3] = serviceConnectivityEvaluationURL;
 
   return v4;
 }
@@ -382,11 +382,11 @@ LABEL_10:
   return v3;
 }
 
-- (void)setServiceConnectivityEvaluationURL:(id)a3
+- (void)setServiceConnectivityEvaluationURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 copy];
+  v5 = [lCopy copy];
 
   serviceConnectivityEvaluationURL = self->_serviceConnectivityEvaluationURL;
   self->_serviceConnectivityEvaluationURL = v5;
@@ -396,16 +396,16 @@ LABEL_10:
 
 + (id)generateUserAgent
 {
-  v2 = [MEMORY[0x277CCAC38] processInfo];
-  v3 = [v2 processName];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
   v4 = _CFCopySystemVersionDictionary();
   v5 = [MEMORY[0x277CCACA8] stringWithString:{CFDictionaryGetValue(v4, *MEMORY[0x277CBEC70])}];
   CFRelease(v4);
   v6 = MEMORY[0x277CCACA8];
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:560.0];
-  v8 = [v6 stringWithFormat:@"%@_WeatherFoundation[%@]_%@", v3, v7, v5];
-  v9 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v10 = [v8 stringByTrimmingCharactersInSet:v9];
+  v8 = [v6 stringWithFormat:@"%@_WeatherFoundation[%@]_%@", processName, v7, v5];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v10 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v10;
 }
@@ -416,10 +416,10 @@ LABEL_10:
   serviceConnectivityEvaluator = self->_serviceConnectivityEvaluator;
   if (serviceConnectivityEvaluator || (v4 = MEMORY[0x277CD9200], -[WFWeatherStoreServiceConfiguration serviceConnectivityEvaluationURL](self, "serviceConnectivityEvaluationURL"), v5 = objc_claimAutoreleasedReturnValue(), [v4 wf_pathEvaluatorForURL:v5], v6 = objc_claimAutoreleasedReturnValue(), v7 = self->_serviceConnectivityEvaluator, self->_serviceConnectivityEvaluator = v6, v7, v5, (serviceConnectivityEvaluator = self->_serviceConnectivityEvaluator) != 0))
   {
-    v8 = [(NWPathEvaluator *)serviceConnectivityEvaluator path];
-    v9 = [v8 status];
+    path = [(NWPathEvaluator *)serviceConnectivityEvaluator path];
+    status = [path status];
 
-    v10 = (v9 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+    v10 = (status & 0xFFFFFFFFFFFFFFFDLL) == 1;
   }
 
   else

@@ -1,18 +1,18 @@
 @interface BTServicesXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
+- (BOOL)_entitledAndReturnError:(id *)error;
 - (void)_diagnosticControlShareAudioBanner;
-- (void)audioRoutingRequest:(id)a3 responseHandler:(id)a4;
-- (void)audioSessionActivate:(id)a3 completion:(id)a4;
-- (void)diagnosticControl:(id)a3 completion:(id)a4;
-- (void)diagnosticShow:(id)a3 completion:(id)a4;
-- (void)shareAudioSessionActivate:(id)a3 completion:(id)a4;
-- (void)showHIDConnectedBannerAperture:(id)a3 completion:(id)a4;
+- (void)audioRoutingRequest:(id)request responseHandler:(id)handler;
+- (void)audioSessionActivate:(id)activate completion:(id)completion;
+- (void)diagnosticControl:(id)control completion:(id)completion;
+- (void)diagnosticShow:(id)show completion:(id)completion;
+- (void)shareAudioSessionActivate:(id)activate completion:(id)completion;
+- (void)showHIDConnectedBannerAperture:(id)aperture completion:(id)completion;
 - (void)xpcConnectionInvalidated;
 @end
 
 @implementation BTServicesXPCConnection
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -33,19 +33,19 @@
   if (dword_1002F76E0 <= 90 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FDAC8(p_xpcCnx);
-    if (a3)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_9:
     v9 = BTErrorF();
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
@@ -91,10 +91,10 @@ LABEL_9:
   _objc_release_x1(v5, v6);
 }
 
-- (void)audioRoutingRequest:(id)a3 responseHandler:(id)a4
+- (void)audioRoutingRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FDB58();
@@ -114,7 +114,7 @@ LABEL_9:
       v12 = NSErrorF();
       [v11 setError:v12];
 
-      v7[2](v7, v11);
+      handlerCopy[2](handlerCopy, v11);
       smartRoutingSession = self->_smartRoutingSession;
     }
   }
@@ -123,15 +123,15 @@ LABEL_9:
   v14[1] = 3221225472;
   v14[2] = sub_1000E3C30;
   v14[3] = &unk_1002BB7B8;
-  v15 = v7;
-  v13 = v7;
-  [(BTSmartRoutingDaemon *)smartRoutingSession smartRoutingAudioRoutingRequest:v6 withResponseHandler:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [(BTSmartRoutingDaemon *)smartRoutingSession smartRoutingAudioRoutingRequest:requestCopy withResponseHandler:v14];
 }
 
-- (void)audioSessionActivate:(id)a3 completion:(id)a4
+- (void)audioSessionActivate:(id)activate completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
     sub_1001FDB98();
@@ -147,12 +147,12 @@ LABEL_9:
   }
 
   v9 = NSErrorF();
-  v6[2](v6, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)diagnosticControl:(id)a3 completion:(id)a4
+- (void)diagnosticControl:(id)control completion:(id)completion
 {
-  v6 = a3;
+  controlCopy = control;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -164,12 +164,12 @@ LABEL_9:
   v21[2] = sub_1000E40C4;
   v21[3] = &unk_1002B74D0;
   v23 = &v24;
-  v7 = a4;
-  v22 = v7;
+  completionCopy = completion;
+  v22 = completionCopy;
   v8 = objc_retainBlock(v21);
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
-    v19 = v6;
+    v19 = controlCopy;
     LogPrintF();
   }
 
@@ -198,7 +198,7 @@ LABEL_9:
           {
             [(BTServicesXPCConnection *)self _diagnosticControlShareAudioBanner];
 LABEL_20:
-            (*(v7 + 2))(v7, &__NSDictionary0__struct, 0);
+            (*(completionCopy + 2))(completionCopy, &__NSDictionary0__struct, 0);
 LABEL_21:
 
             goto LABEL_22;
@@ -207,7 +207,7 @@ LABEL_21:
           if ([v12 caseInsensitiveCompare:@"HIDIntervalUpdated"])
           {
             v13 = +[BTIdentityDaemon sharedBTIdentityDaemon];
-            v14 = [v13 diagnosticControl:v6 completion:v7];
+            v14 = [v13 diagnosticControl:controlCopy completion:completionCopy];
 
             if ((v14 & 1) == 0)
             {
@@ -220,7 +220,7 @@ LABEL_21:
           }
 
           v17 = +[BTServicesDaemon sharedBTServicesDaemon];
-          [v17 _showHIDIntervalBannerIfEnabled:v6];
+          [v17 _showHIDIntervalBannerIfEnabled:controlCopy];
         }
 
         else
@@ -233,14 +233,14 @@ LABEL_21:
       else
       {
         v17 = +[BTServicesDaemon sharedBTServicesDaemon];
-        [v17 _showHIDLagBannerIfEnabled:v6];
+        [v17 _showHIDLagBannerIfEnabled:controlCopy];
       }
     }
 
     else
     {
       v17 = +[BTServicesDaemon sharedBTServicesDaemon];
-      [v17 showCrashBannerIfNeeded:v6];
+      [v17 showCrashBannerIfNeeded:controlCopy];
     }
 
     goto LABEL_20;
@@ -282,9 +282,9 @@ LABEL_22:
   [v3 activate];
 }
 
-- (void)diagnosticShow:(id)a3 completion:(id)a4
+- (void)diagnosticShow:(id)show completion:(id)completion
 {
-  v6 = a3;
+  showCopy = show;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -296,12 +296,12 @@ LABEL_22:
   v18[2] = sub_1000E46C8;
   v18[3] = &unk_1002B74D0;
   v20 = &v21;
-  v7 = a4;
-  v19 = v7;
+  completionCopy = completion;
+  v19 = completionCopy;
   v8 = objc_retainBlock(v18);
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
-    v15 = v6;
+    v15 = showCopy;
     LogPrintF();
   }
 
@@ -329,7 +329,7 @@ LABEL_22:
     v27 = @"_output";
     v28 = v13;
     v14 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1, v16];
-    (*(v7 + 2))(v7, v14, 0);
+    (*(completionCopy + 2))(completionCopy, v14, 0);
   }
 
   (v8[2])(v8);
@@ -337,9 +337,9 @@ LABEL_22:
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)showHIDConnectedBannerAperture:(id)a3 completion:(id)a4
+- (void)showHIDConnectedBannerAperture:(id)aperture completion:(id)completion
 {
-  v6 = a3;
+  apertureCopy = aperture;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -351,12 +351,12 @@ LABEL_22:
   v14[2] = sub_1000E499C;
   v14[3] = &unk_1002B74D0;
   v16 = &v17;
-  v7 = a4;
-  v15 = v7;
+  completionCopy = completion;
+  v15 = completionCopy;
   v8 = objc_retainBlock(v14);
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))
   {
-    v12 = v6;
+    v12 = apertureCopy;
     LogPrintF();
   }
 
@@ -367,9 +367,9 @@ LABEL_22:
   if (v10)
   {
     v11 = +[BTServicesDaemon sharedBTServicesDaemon];
-    [v11 _showHIDConnected:v6];
+    [v11 _showHIDConnected:apertureCopy];
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   (v8[2])(v8);
@@ -377,10 +377,10 @@ LABEL_22:
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)shareAudioSessionActivate:(id)a3 completion:(id)a4
+- (void)shareAudioSessionActivate:(id)activate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  activateCopy = activate;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -392,9 +392,9 @@ LABEL_22:
   v20[2] = sub_1000E4D78;
   v20[3] = &unk_1002B7120;
   v23 = &v24;
-  v8 = v6;
+  v8 = activateCopy;
   v21 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v22 = v9;
   v10 = objc_retainBlock(v20);
   if (dword_1002F76E0 <= 30 && (dword_1002F76E0 != -1 || _LogCategory_Initialize()))

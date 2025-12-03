@@ -1,45 +1,45 @@
 @interface SBNotchedStatusBarProximityBacklightPolicy
-- (SBNotchedStatusBarProximityBacklightPolicy)initWithConfiguration:(id)a3;
-- (SBNotchedStatusBarProximityBacklightPolicy)initWithConfiguration:(id)a3 touchHandlingController:(id)a4;
-- (double)_debounceDurationForNumberOfTouchesReceivedWithObjectInProximity:(BOOL)a3;
+- (SBNotchedStatusBarProximityBacklightPolicy)initWithConfiguration:(id)configuration;
+- (SBNotchedStatusBarProximityBacklightPolicy)initWithConfiguration:(id)configuration touchHandlingController:(id)controller;
+- (double)_debounceDurationForNumberOfTouchesReceivedWithObjectInProximity:(BOOL)proximity;
 - (id)_createNewEnablementCondition;
 - (void)_absorbTouchesBelowStatusBarHeight;
 - (void)_absorbTouchesFullScreen;
-- (void)_scheduleBacklightFactorToZeroAfterDebounceDuration:(double)a3;
-- (void)condition:(id)a3 enablementDidChange:(BOOL)a4;
+- (void)_scheduleBacklightFactorToZeroAfterDebounceDuration:(double)duration;
+- (void)condition:(id)condition enablementDidChange:(BOOL)change;
 - (void)dealloc;
-- (void)didHitAllowedRegion:(CGPoint)a3;
-- (void)proximitySensorManager:(id)a3 objectWithinProximityDidChange:(BOOL)a4;
-- (void)windowSceneDidConnect:(id)a3;
+- (void)didHitAllowedRegion:(CGPoint)region;
+- (void)proximitySensorManager:(id)manager objectWithinProximityDidChange:(BOOL)change;
+- (void)windowSceneDidConnect:(id)connect;
 @end
 
 @implementation SBNotchedStatusBarProximityBacklightPolicy
 
-- (SBNotchedStatusBarProximityBacklightPolicy)initWithConfiguration:(id)a3
+- (SBNotchedStatusBarProximityBacklightPolicy)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [SBProximityTouchHandlingController alloc];
-  v6 = [v4 proximitySettings];
-  v7 = [(SBProximityTouchHandlingController *)v5 initWithSettings:v6 touchHandlingDelegate:self];
+  proximitySettings = [configurationCopy proximitySettings];
+  v7 = [(SBProximityTouchHandlingController *)v5 initWithSettings:proximitySettings touchHandlingDelegate:self];
 
-  v8 = [(SBNotchedStatusBarProximityBacklightPolicy *)self initWithConfiguration:v4 touchHandlingController:v7];
+  v8 = [(SBNotchedStatusBarProximityBacklightPolicy *)self initWithConfiguration:configurationCopy touchHandlingController:v7];
   return v8;
 }
 
-- (SBNotchedStatusBarProximityBacklightPolicy)initWithConfiguration:(id)a3 touchHandlingController:(id)a4
+- (SBNotchedStatusBarProximityBacklightPolicy)initWithConfiguration:(id)configuration touchHandlingController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SBNotchedStatusBarProximityBacklightPolicy;
-  v8 = [(SBDefaultProximityBacklightPolicy *)&v12 initWithConfiguration:v6];
+  v8 = [(SBDefaultProximityBacklightPolicy *)&v12 initWithConfiguration:configurationCopy];
   if (v8)
   {
-    v9 = [v6 proximitySettings];
+    proximitySettings = [configurationCopy proximitySettings];
     proximitySettings = v8->_proximitySettings;
-    v8->_proximitySettings = v9;
+    v8->_proximitySettings = proximitySettings;
 
-    objc_storeStrong(&v8->_proxTouchHandlingController, a4);
+    objc_storeStrong(&v8->_proxTouchHandlingController, controller);
   }
 
   return v8;
@@ -54,13 +54,13 @@
   [(SBDefaultProximityBacklightPolicy *)&v3 dealloc];
 }
 
-- (void)_scheduleBacklightFactorToZeroAfterDebounceDuration:(double)a3
+- (void)_scheduleBacklightFactorToZeroAfterDebounceDuration:(double)duration
 {
   if (BSFloatGreaterThanFloat())
   {
     v5.receiver = self;
     v5.super_class = SBNotchedStatusBarProximityBacklightPolicy;
-    [(SBDefaultProximityBacklightPolicy *)&v5 _scheduleBacklightFactorToZeroAfterDebounceDuration:a3];
+    [(SBDefaultProximityBacklightPolicy *)&v5 _scheduleBacklightFactorToZeroAfterDebounceDuration:duration];
   }
 }
 
@@ -71,15 +71,15 @@
   return v2;
 }
 
-- (void)proximitySensorManager:(id)a3 objectWithinProximityDidChange:(BOOL)a4
+- (void)proximitySensorManager:(id)manager objectWithinProximityDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  if (self->_objectInProximity != v4)
+  changeCopy = change;
+  managerCopy = manager;
+  if (self->_objectInProximity != changeCopy)
   {
-    v10 = v6;
-    self->_objectInProximity = v4;
-    if (v4)
+    v10 = managerCopy;
+    self->_objectInProximity = changeCopy;
+    if (changeCopy)
     {
       if (self->_touchesReceivedWithObjectInProximity)
       {
@@ -91,9 +91,9 @@
         [SBNotchedStatusBarProximityBacklightPolicy proximitySensorManager:objectWithinProximityDidChange:];
       }
 
-      v7 = [(SBNotchedStatusBarProximityBacklightPolicy *)self _createNewEnablementCondition];
+      _createNewEnablementCondition = [(SBNotchedStatusBarProximityBacklightPolicy *)self _createNewEnablementCondition];
       enablementCondition = self->_enablementCondition;
-      self->_enablementCondition = v7;
+      self->_enablementCondition = _createNewEnablementCondition;
 
       [(SBNotchedStatusBarProximityBacklightPolicyEnablementCondition *)self->_enablementCondition setDelegate:self];
       if ([(SBNotchedStatusBarProximityBacklightPolicyEnablementCondition *)self->_enablementCondition isEnabled])
@@ -122,23 +122,23 @@
       [(SBDefaultProximityBacklightPolicy *)self _restoreBacklightFactor];
     }
 
-    v6 = v10;
+    managerCopy = v10;
   }
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
   v5.receiver = self;
   v5.super_class = SBNotchedStatusBarProximityBacklightPolicy;
-  v4 = a3;
-  [(SBDefaultProximityBacklightPolicy *)&v5 windowSceneDidConnect:v4];
-  [(SBProximityTouchHandlingController *)self->_proxTouchHandlingController windowSceneDidConnect:v4, v5.receiver, v5.super_class];
+  connectCopy = connect;
+  [(SBDefaultProximityBacklightPolicy *)&v5 windowSceneDidConnect:connectCopy];
+  [(SBProximityTouchHandlingController *)self->_proxTouchHandlingController windowSceneDidConnect:connectCopy, v5.receiver, v5.super_class];
 }
 
-- (void)didHitAllowedRegion:(CGPoint)a3
+- (void)didHitAllowedRegion:(CGPoint)region
 {
-  y = a3.y;
-  x = a3.x;
+  y = region.y;
+  x = region.x;
   v13 = *MEMORY[0x277D85DE8];
   if (!self->_objectInProximity)
   {
@@ -179,13 +179,13 @@
   }
 }
 
-- (void)condition:(id)a3 enablementDidChange:(BOOL)a4
+- (void)condition:(id)condition enablementDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
+  changeCopy = change;
+  conditionCopy = condition;
   if (self->_objectInProximity)
   {
-    if (!v4)
+    if (!changeCopy)
     {
       goto LABEL_11;
     }
@@ -194,7 +194,7 @@
   else
   {
     [SBNotchedStatusBarProximityBacklightPolicy condition:enablementDidChange:];
-    if (!v4)
+    if (!changeCopy)
     {
       goto LABEL_11;
     }
@@ -247,13 +247,13 @@ LABEL_11:
   [(SBProximityTouchHandlingController *)proxTouchHandlingController setAbsorbTouchesBelowStatusBar:1];
 }
 
-- (double)_debounceDurationForNumberOfTouchesReceivedWithObjectInProximity:(BOOL)a3
+- (double)_debounceDurationForNumberOfTouchesReceivedWithObjectInProximity:(BOOL)proximity
 {
   touchesReceivedWithObjectInProximity = self->_touchesReceivedWithObjectInProximity;
-  if (a3 && !touchesReceivedWithObjectInProximity)
+  if (proximity && !touchesReceivedWithObjectInProximity)
   {
-    v4 = [(SBNotchedStatusBarProximityBacklightPolicy *)self _proximitySettings];
-    [v4 initialBacklightDebounceDuration];
+    _proximitySettings = [(SBNotchedStatusBarProximityBacklightPolicy *)self _proximitySettings];
+    [_proximitySettings initialBacklightDebounceDuration];
 LABEL_6:
     v6 = v5;
 
@@ -263,8 +263,8 @@ LABEL_6:
   v6 = 0.0;
   if (touchesReceivedWithObjectInProximity <= 2)
   {
-    v4 = [(SBNotchedStatusBarProximityBacklightPolicy *)self _proximitySettings];
-    [v4 subsequentBacklightDebounceDuration];
+    _proximitySettings = [(SBNotchedStatusBarProximityBacklightPolicy *)self _proximitySettings];
+    [_proximitySettings subsequentBacklightDebounceDuration];
     goto LABEL_6;
   }
 

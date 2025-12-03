@@ -13,7 +13,7 @@
   v5[3] = &unk_1E7379E68;
   v3 = v2;
   v6 = v3;
-  [a1 hk_enumerateUUIDsWithError:0 block:v5];
+  [self hk_enumerateUUIDsWithError:0 block:v5];
 
   return v3;
 }

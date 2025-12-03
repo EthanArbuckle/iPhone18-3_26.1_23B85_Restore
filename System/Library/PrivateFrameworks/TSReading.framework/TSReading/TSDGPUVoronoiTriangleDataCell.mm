@@ -1,31 +1,31 @@
 @interface TSDGPUVoronoiTriangleDataCell
 - ($94F468A8D4C62B317260615823C2B210)centerPoint;
 - (CGRect)bounds;
-- (TSDGPUVoronoiTriangleDataCell)initWithEdges:()vector<boost:(std::allocator<boost::polygon::segment_data<double>>> *)a3 :polygon::segment_data<double>;
-- (TSDGPUVoronoiTriangleDataCell)initWithTrianglePoints:(id *)a3;
+- (TSDGPUVoronoiTriangleDataCell)initWithEdges:()vector<boost:(std::allocator<boost::polygon::segment_data<double>>> *)boost :polygon::segment_data<double>;
+- (TSDGPUVoronoiTriangleDataCell)initWithTrianglePoints:(id *)points;
 - (id)cellsBySplittingCellIntoTriangles;
 - (void)dealloc;
-- (void)p_setupTriangleDataWithEdges:()vector<boost:(std::allocator<boost::polygon::segment_data<double>>> *)a3 :polygon::segment_data<double>;
+- (void)p_setupTriangleDataWithEdges:()vector<boost:(std::allocator<boost::polygon::segment_data<double>>> *)boost :polygon::segment_data<double>;
 @end
 
 @implementation TSDGPUVoronoiTriangleDataCell
 
-- (void)p_setupTriangleDataWithEdges:()vector<boost:(std::allocator<boost::polygon::segment_data<double>>> *)a3 :polygon::segment_data<double>
+- (void)p_setupTriangleDataWithEdges:()vector<boost:(std::allocator<boost::polygon::segment_data<double>>> *)boost :polygon::segment_data<double>
 {
-  v5 = (a3->var1 - a3->var0) >> 5;
+  v5 = (boost->var1 - boost->var0) >> 5;
   v6 = v5 - 2;
   if (v5 <= 2)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUVoronoiTriangleDataCell p_setupTriangleDataWithEdges:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 351, @"Less than 3 edges in this cell!"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 351, @"Less than 3 edges in this cell!"}];
   }
 
   v9 = malloc_type_calloc(8uLL, v5, 0x100004000313F17uLL);
   v10 = v9;
-  var0 = a3->var0;
-  var1 = a3->var1;
-  if (a3->var0 == var1)
+  var0 = boost->var0;
+  var1 = boost->var1;
+  if (boost->var0 == var1)
   {
     v19 = 1.79769313e308;
     v39 = 2.22507386e-308;
@@ -153,7 +153,7 @@
   return v3;
 }
 
-- (TSDGPUVoronoiTriangleDataCell)initWithEdges:()vector<boost:(std::allocator<boost::polygon::segment_data<double>>> *)a3 :polygon::segment_data<double>
+- (TSDGPUVoronoiTriangleDataCell)initWithEdges:()vector<boost:(std::allocator<boost::polygon::segment_data<double>>> *)boost :polygon::segment_data<double>
 {
   v9.receiver = self;
   v9.super_class = TSDGPUVoronoiTriangleDataCell;
@@ -163,7 +163,7 @@
     __p = 0;
     v7 = 0;
     v8 = 0;
-    std::vector<boost::polygon::segment_data<double>>::__init_with_size[abi:ne200100]<boost::polygon::segment_data<double>*,boost::polygon::segment_data<double>*>(&__p, a3->var0, a3->var1, (a3->var1 - a3->var0) >> 5);
+    std::vector<boost::polygon::segment_data<double>>::__init_with_size[abi:ne200100]<boost::polygon::segment_data<double>*,boost::polygon::segment_data<double>*>(&__p, boost->var0, boost->var1, (boost->var1 - boost->var0) >> 5);
     [(TSDGPUVoronoiTriangleDataCell *)v4 p_setupTriangleDataWithEdges:&__p];
     if (__p)
     {
@@ -175,13 +175,13 @@
   return v4;
 }
 
-- (TSDGPUVoronoiTriangleDataCell)initWithTrianglePoints:(id *)a3
+- (TSDGPUVoronoiTriangleDataCell)initWithTrianglePoints:(id *)points
 {
-  if (!a3)
+  if (!points)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGPUVoronoiTriangleDataCell initWithTrianglePoints:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 459, @"points is NULL!"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGPUVoronoiTriangleData.mm"), 459, @"points is NULL!"}];
   }
 
   v24.receiver = self;
@@ -197,7 +197,7 @@
       v9 = 0;
       do
       {
-        *(*(v8 + 3) + 8 * v9) = a3[v9];
+        *(*(v8 + 3) + 8 * v9) = points[v9];
         ++v9;
         v10 = *(v8 + 2);
       }

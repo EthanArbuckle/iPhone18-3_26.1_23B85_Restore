@@ -1,63 +1,63 @@
 @interface RPNearFieldTapEvent
-- (RPNearFieldTapEvent)initWithCoder:(id)a3;
-- (RPNearFieldTapEvent)initWithIdentifier:(id)a3 applicationLabel:(id)a4 pkData:(id)a5 bonjourListenerUUID:(id)a6 isSameAccount:(BOOL)a7 contactID:(id)a8 accountID:(id)a9 forceSingleBandAWDLMode:(BOOL)a10 knownIdentity:(BOOL)a11 isUnsupportedApplicationLabel:(BOOL)a12 flags:(unsigned int)a13;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RPNearFieldTapEvent)initWithCoder:(id)coder;
+- (RPNearFieldTapEvent)initWithIdentifier:(id)identifier applicationLabel:(id)label pkData:(id)data bonjourListenerUUID:(id)d isSameAccount:(BOOL)account contactID:(id)iD accountID:(id)accountID forceSingleBandAWDLMode:(BOOL)self0 knownIdentity:(BOOL)self1 isUnsupportedApplicationLabel:(BOOL)self2 flags:(unsigned int)self3;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RPNearFieldTapEvent
 
-- (RPNearFieldTapEvent)initWithIdentifier:(id)a3 applicationLabel:(id)a4 pkData:(id)a5 bonjourListenerUUID:(id)a6 isSameAccount:(BOOL)a7 contactID:(id)a8 accountID:(id)a9 forceSingleBandAWDLMode:(BOOL)a10 knownIdentity:(BOOL)a11 isUnsupportedApplicationLabel:(BOOL)a12 flags:(unsigned int)a13
+- (RPNearFieldTapEvent)initWithIdentifier:(id)identifier applicationLabel:(id)label pkData:(id)data bonjourListenerUUID:(id)d isSameAccount:(BOOL)account contactID:(id)iD accountID:(id)accountID forceSingleBandAWDLMode:(BOOL)self0 knownIdentity:(BOOL)self1 isUnsupportedApplicationLabel:(BOOL)self2 flags:(unsigned int)self3
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a8;
-  v24 = a9;
+  identifierCopy = identifier;
+  labelCopy = label;
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
+  accountIDCopy = accountID;
   v39.receiver = self;
   v39.super_class = RPNearFieldTapEvent;
   v25 = [(RPNearFieldTapEvent *)&v39 init];
   if (v25)
   {
-    v26 = [v19 copy];
+    v26 = [identifierCopy copy];
     identifier = v25->_identifier;
     v25->_identifier = v26;
 
-    v28 = [v20 copy];
+    v28 = [labelCopy copy];
     applicationLabel = v25->_applicationLabel;
     v25->_applicationLabel = v28;
 
-    v30 = [v21 copy];
+    v30 = [dataCopy copy];
     pkData = v25->_pkData;
     v25->_pkData = v30;
 
-    objc_storeStrong(&v25->_bonjourListenerUUID, a6);
-    v25->_isSameAccount = a7;
-    v32 = [v23 copy];
+    objc_storeStrong(&v25->_bonjourListenerUUID, d);
+    v25->_isSameAccount = account;
+    v32 = [iDCopy copy];
     contactID = v25->_contactID;
     v25->_contactID = v32;
 
-    v34 = [v24 copy];
+    v34 = [accountIDCopy copy];
     accountID = v25->_accountID;
     v25->_accountID = v34;
 
-    v25->_shouldForceSingleBandAWDLMode = a10;
+    v25->_shouldForceSingleBandAWDLMode = mode;
     v36 = +[NSDate now];
     date = v25->_date;
     v25->_date = v36;
 
-    v25->_isKnownIdentity = a11;
-    v25->_isUnsupportedApplicationLabel = a12;
-    v25->_flags = a13;
+    v25->_isKnownIdentity = identity;
+    v25->_isUnsupportedApplicationLabel = applicationLabel;
+    v25->_flags = flags;
   }
 
   return v25;
 }
 
-- (RPNearFieldTapEvent)initWithCoder:(id)a3
+- (RPNearFieldTapEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = RPNearFieldTapEvent;
   v5 = [(RPNearFieldTapEvent *)&v22 init];
@@ -66,7 +66,7 @@
     goto LABEL_17;
   }
 
-  v6 = v4;
+  v6 = coderCopy;
   objc_opt_class();
   NSDecodeObjectIfPresent();
 
@@ -148,106 +148,106 @@ LABEL_18:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   identifier = self->_identifier;
-  v15 = v4;
+  v15 = coderCopy;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"identifier"];
-    v4 = v15;
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
+    coderCopy = v15;
   }
 
   applicationLabel = self->_applicationLabel;
   if (applicationLabel)
   {
     [v15 encodeObject:applicationLabel forKey:@"appLabel"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   pkData = self->_pkData;
   if (pkData)
   {
     [v15 encodeObject:pkData forKey:@"pkDataKey"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   date = self->_date;
   if (date)
   {
     [v15 encodeObject:date forKey:@"date"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   if (self->_isSameAccount)
   {
     [v15 encodeBool:1 forKey:@"isSameAccount"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   deviceName = self->_deviceName;
   if (deviceName)
   {
     [v15 encodeObject:deviceName forKey:@"deviceName"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   deviceModel = self->_deviceModel;
   if (deviceModel)
   {
     [v15 encodeObject:deviceModel forKey:@"deviceModel"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   accountID = self->_accountID;
   if (accountID)
   {
     [v15 encodeObject:accountID forKey:@"accountID"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   contactID = self->_contactID;
   if (contactID)
   {
     [v15 encodeObject:contactID forKey:@"contactID"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   bonjourListenerUUID = self->_bonjourListenerUUID;
   if (bonjourListenerUUID)
   {
     [v15 encodeObject:bonjourListenerUUID forKey:@"bonjourListenerUUIDKey"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   if (self->_shouldForceSingleBandAWDLMode)
   {
     [v15 encodeBool:1 forKey:@"forceSingleBand"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   if (self->_isKnownIdentity)
   {
     [v15 encodeBool:1 forKey:@"knownIdentity"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   if (self->_isUnsupportedApplicationLabel)
   {
     [v15 encodeBool:1 forKey:@"isUnsupportedApplicationLabel"];
-    v4 = v15;
+    coderCopy = v15;
   }
 
   flags = self->_flags;
   if (flags)
   {
     [v15 encodeInt64:flags forKey:@"flags"];
-    v4 = v15;
+    coderCopy = v15;
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   isSameAccount = self->_isSameAccount;
   contactID = self->_contactID;

@@ -1,17 +1,17 @@
 @interface SBUITextEffectsRemoteViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation SBUITextEffectsRemoteViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBTodayViewController"];
-  [v3 validateClass:@"_WGWidgetRemoteViewController"];
-  [v3 validateClass:@"_UITextEffectsRemoteView" isKindOfClass:@"_UIRemoteView"];
-  [v3 validateClass:@"_UIRemoteView" hasInstanceMethod:@"remoteViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBTodayViewController"];
+  [validationsCopy validateClass:@"_WGWidgetRemoteViewController"];
+  [validationsCopy validateClass:@"_UITextEffectsRemoteView" isKindOfClass:@"_UIRemoteView"];
+  [validationsCopy validateClass:@"_UIRemoteView" hasInstanceMethod:@"remoteViewController" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
@@ -21,22 +21,22 @@
   v3 = [(SBUITextEffectsRemoteViewAccessibility *)self safeValueForKey:@"remoteViewController"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 view];
-  v6 = [v5 _accessibilityFindAncestor:&__block_literal_global_17 startWithSelf:1];
+  view = [v4 view];
+  v6 = [view _accessibilityFindAncestor:&__block_literal_global_17 startWithSelf:1];
 
   if (v6)
   {
-    v7 = 0;
+    accessibilityElements = 0;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SBUITextEffectsRemoteViewAccessibility;
-    v7 = [(SBUITextEffectsRemoteViewAccessibility *)&v9 accessibilityElements];
+    accessibilityElements = [(SBUITextEffectsRemoteViewAccessibility *)&v9 accessibilityElements];
   }
 
-  return v7;
+  return accessibilityElements;
 }
 
 uint64_t __63__SBUITextEffectsRemoteViewAccessibility_accessibilityElements__block_invoke(uint64_t a1, void *a2)

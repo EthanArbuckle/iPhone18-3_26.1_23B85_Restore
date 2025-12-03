@@ -1,14 +1,14 @@
 @interface RBSProcessExitEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSProcessExitEvent)initWithRBSXPCCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSProcessExitEvent)initWithRBSXPCCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessExitEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RBSProcessExitEvent);
   [(RBSProcessExitEvent *)v4 setProcess:self->_process];
@@ -16,10 +16,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_12;
   }
@@ -33,7 +33,7 @@ LABEL_3:
   }
 
   process = self->_process;
-  v8 = v4->_process;
+  v8 = equalCopy->_process;
   if (process != v8)
   {
     v6 = 0;
@@ -49,7 +49,7 @@ LABEL_3:
   }
 
   context = self->_context;
-  v10 = v4->_context;
+  v10 = equalCopy->_context;
   if (context == v10)
   {
 LABEL_12:
@@ -77,27 +77,27 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   process = self->_process;
-  v5 = a3;
-  [v5 encodeObject:process forKey:@"_process"];
-  [v5 encodeObject:self->_context forKey:@"_context"];
+  coderCopy = coder;
+  [coderCopy encodeObject:process forKey:@"_process"];
+  [coderCopy encodeObject:self->_context forKey:@"_context"];
 }
 
-- (RBSProcessExitEvent)initWithRBSXPCCoder:(id)a3
+- (RBSProcessExitEvent)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RBSProcessExitEvent;
   v5 = [(RBSProcessExitEvent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_process"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_process"];
     process = v5->_process;
     v5->_process = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_context"];
     context = v5->_context;
     v5->_context = v8;
   }

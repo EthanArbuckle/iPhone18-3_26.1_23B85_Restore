@@ -1,5 +1,5 @@
 @interface TPHeaderFooterFragmentEnumerator
-- (TPHeaderFooterFragmentEnumerator)initWithSectionTemplatePage:(id)a3;
+- (TPHeaderFooterFragmentEnumerator)initWithSectionTemplatePage:(id)page;
 - (id)nextObject;
 - (void)p_incrementFragmentIndex;
 - (void)p_incrementHeaderFooterType;
@@ -7,16 +7,16 @@
 
 @implementation TPHeaderFooterFragmentEnumerator
 
-- (TPHeaderFooterFragmentEnumerator)initWithSectionTemplatePage:(id)a3
+- (TPHeaderFooterFragmentEnumerator)initWithSectionTemplatePage:(id)page
 {
-  v5 = a3;
+  pageCopy = page;
   v9.receiver = self;
   v9.super_class = TPHeaderFooterFragmentEnumerator;
   v6 = [(TPHeaderFooterFragmentEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sectionTemplatePage, a3);
+    objc_storeStrong(&v6->_sectionTemplatePage, page);
     v7->_fragmentIndex = -1;
     v7->_headerFooterType = 0;
   }
@@ -56,13 +56,13 @@
   {
     if (v7 == 1)
     {
-      v13 = self;
+      selfCopy4 = self;
       goto LABEL_13;
     }
 
     if (v7 == 2)
     {
-      v13 = self;
+      selfCopy4 = self;
       goto LABEL_13;
     }
   }
@@ -71,16 +71,16 @@
   {
     if (v7 == -1)
     {
-      v13 = self;
+      selfCopy4 = self;
       goto LABEL_13;
     }
 
     if (!v7)
     {
-      v13 = self;
+      selfCopy4 = self;
 LABEL_13:
 
-      MEMORY[0x2821F9670](v13, sel_setFragmentIndex_, v9, v10, v11, v12);
+      MEMORY[0x2821F9670](selfCopy4, sel_setFragmentIndex_, v9, v10, v11, v12);
       return;
     }
   }

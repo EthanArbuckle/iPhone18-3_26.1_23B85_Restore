@@ -1,14 +1,14 @@
 @interface HKMedicalIDTelephoneUtilities
-+ (id)dialRequest:(id)a3;
-+ (id)emergencyContactURL:(id)a3;
-+ (void)callEmergencyContact:(id)a3;
++ (id)dialRequest:(id)request;
++ (id)emergencyContactURL:(id)l;
++ (void)callEmergencyContact:(id)contact;
 @end
 
 @implementation HKMedicalIDTelephoneUtilities
 
-+ (id)dialRequest:(id)a3
++ (id)dialRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -28,7 +28,7 @@
   v5 = v4;
   _Block_object_dispose(&v21, 8);
   v6 = objc_alloc_init(v4);
-  v7 = [v6 defaultProvider];
+  defaultProvider = [v6 defaultProvider];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -47,7 +47,7 @@
 
   v9 = v8;
   _Block_object_dispose(&v21, 8);
-  v10 = [[v8 alloc] initWithProvider:v7];
+  v10 = [[v8 alloc] initWithProvider:defaultProvider];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2050000000;
@@ -66,7 +66,7 @@
 
   v12 = v11;
   _Block_object_dispose(&v21, 8);
-  v13 = [[v11 alloc] initWithType:2 value:v3];
+  v13 = [[v11 alloc] initWithType:2 value:requestCopy];
   [v10 setHandle:v13];
   [v10 setShowUIPrompt:0];
   [v10 setPreferDefaultApp:0];
@@ -83,23 +83,23 @@
   return v14;
 }
 
-+ (void)callEmergencyContact:(id)a3
++ (void)callEmergencyContact:(id)contact
 {
-  v3 = [a1 dialRequest:a3];
+  v3 = [self dialRequest:contact];
   if (v3)
   {
     v6 = v3;
-    v4 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v5 = [v6 URL];
-    [v4 openURL:v5 configuration:0 completionHandler:0];
+    [defaultWorkspace openURL:v5 configuration:0 completionHandler:0];
 
     v3 = v6;
   }
 }
 
-+ (id)emergencyContactURL:(id)a3
++ (id)emergencyContactURL:(id)l
 {
-  v3 = [a1 dialRequest:a3];
+  v3 = [self dialRequest:l];
   v4 = [v3 URL];
 
   return v4;

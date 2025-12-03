@@ -1,42 +1,42 @@
 @interface HDMedicationsDeviceScopedStorageManager
-- (BOOL)updateLocalDeviceValuesNowWithError:(id *)a3;
-- (HDMedicationsDeviceScopedStorageManager)initWithProfile:(id)a3;
-- (id)_updateLocalDeviceValuesNowWithError:(uint64_t)a1;
-- (id)accountDevicesInfoTriggeringUpdate:(BOOL)a3 error:(id *)a4;
-- (void)profileDidBecomeReady:(id)a3;
+- (BOOL)updateLocalDeviceValuesNowWithError:(id *)error;
+- (HDMedicationsDeviceScopedStorageManager)initWithProfile:(id)profile;
+- (id)_updateLocalDeviceValuesNowWithError:(uint64_t)error;
+- (id)accountDevicesInfoTriggeringUpdate:(BOOL)update error:(id *)error;
+- (void)profileDidBecomeReady:(id)ready;
 @end
 
 @implementation HDMedicationsDeviceScopedStorageManager
 
-- (HDMedicationsDeviceScopedStorageManager)initWithProfile:(id)a3
+- (HDMedicationsDeviceScopedStorageManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDMedicationsDeviceScopedStorageManager;
   v5 = [(HDMedicationsDeviceScopedStorageManager *)&v10 init];
   if (v5)
   {
-    v6 = [v4 deviceKeyValueStoreManager];
-    objc_storeWeak(&v5->_keyValueStore, v6);
+    deviceKeyValueStoreManager = [profileCopy deviceKeyValueStoreManager];
+    objc_storeWeak(&v5->_keyValueStore, deviceKeyValueStoreManager);
 
-    v7 = [v4 syncIdentityManager];
+    syncIdentityManager = [profileCopy syncIdentityManager];
     syncIdentityManager = v5->_syncIdentityManager;
-    v5->_syncIdentityManager = v7;
+    v5->_syncIdentityManager = syncIdentityManager;
 
-    [v4 registerProfileReadyObserver:v5 queue:0];
+    [profileCopy registerProfileReadyObserver:v5 queue:0];
   }
 
   return v5;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__HDMedicationsDeviceScopedStorageManager_profileDidBecomeReady___block_invoke;
   v13[3] = &unk_2796CD998;
   v13[4] = self;
-  v4 = a3;
+  readyCopy = ready;
   v5 = MEMORY[0x253084B70](v13);
   v6 = MEMORY[0x277D10748];
   v11[0] = MEMORY[0x277D85DD0];
@@ -47,10 +47,10 @@
   v12 = v5;
   v7 = v5;
   v8 = [v6 maintenanceOperationWithName:@"HDMedicationsDeviceScopedStorageManger" asynchronousBlock:v11];
-  v9 = [v4 daemon];
+  daemon = [readyCopy daemon];
 
-  v10 = [v9 maintenanceWorkCoordinator];
-  [v10 enqueueMaintenanceOperation:v8];
+  maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+  [maintenanceWorkCoordinator enqueueMaintenanceOperation:v8];
 }
 
 void __65__HDMedicationsDeviceScopedStorageManager_profileDidBecomeReady___block_invoke(uint64_t a1)
@@ -93,30 +93,30 @@ void __65__HDMedicationsDeviceScopedStorageManager_profileDidBecomeReady___block
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateLocalDeviceValuesNowWithError:(id *)a3
+- (BOOL)updateLocalDeviceValuesNowWithError:(id *)error
 {
-  v3 = [(HDMedicationsDeviceScopedStorageManager *)self _updateLocalDeviceValuesNowWithError:a3];
+  v3 = [(HDMedicationsDeviceScopedStorageManager *)self _updateLocalDeviceValuesNowWithError:error];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)_updateLocalDeviceValuesNowWithError:(uint64_t)a1
+- (id)_updateLocalDeviceValuesNowWithError:(uint64_t)error
 {
   v28[4] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
-    v4 = [MEMORY[0x277D115E0] localDeviceInfo];
+    localDeviceInfo = [MEMORY[0x277D115E0] localDeviceInfo];
     v27[0] = @"_Name";
-    v5 = [v4 name];
-    v28[0] = v5;
+    name = [localDeviceInfo name];
+    v28[0] = name;
     v27[1] = @"_Model";
-    v6 = [v4 model];
-    v28[1] = v6;
+    model = [localDeviceInfo model];
+    v28[1] = model;
     v27[2] = @"_OperatingSystemVersion";
-    if (v4)
+    if (localDeviceInfo)
     {
-      [v4 operatingSystemVersion];
+      [localDeviceInfo operatingSystemVersion];
     }
 
     else
@@ -129,7 +129,7 @@ void __65__HDMedicationsDeviceScopedStorageManager_profileDidBecomeReady___block
     v7 = HKNSOperatingSystemVersionString();
     v28[2] = v7;
     v27[3] = @"_ScheduleCompatibilityVersion";
-    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "scheduleCompatibilityVersion")}];
+    v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(localDeviceInfo, "scheduleCompatibilityVersion")}];
     v28[3] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:4];
 
@@ -147,13 +147,13 @@ void __65__HDMedicationsDeviceScopedStorageManager_profileDidBecomeReady___block
     v16[1] = 3221225472;
     v16[2] = __80__HDMedicationsDeviceScopedStorageManager__updateLocalDeviceValuesNowWithError___block_invoke;
     v16[3] = &unk_2796CECC0;
-    v16[4] = a1;
+    v16[4] = error;
     v16[5] = &v23;
     v16[6] = &v17;
     [v9 enumerateKeysAndObjectsUsingBlock:v16];
     if (v24[3])
     {
-      v10 = v4;
+      v10 = localDeviceInfo;
     }
 
     else
@@ -232,23 +232,23 @@ void __80__HDMedicationsDeviceScopedStorageManager__updateLocalDeviceValuesNowWi
 LABEL_8:
 }
 
-- (id)accountDevicesInfoTriggeringUpdate:(BOOL)a3 error:(id *)a4
+- (id)accountDevicesInfoTriggeringUpdate:(BOOL)update error:(id *)error
 {
-  if (a3)
+  if (update)
   {
     v25 = 0;
-    v6 = [(HDMedicationsDeviceScopedStorageManager *)self _updateLocalDeviceValuesNowWithError:?];
+    localDeviceInfo = [(HDMedicationsDeviceScopedStorageManager *)self _updateLocalDeviceValuesNowWithError:?];
     v7 = v25;
     v8 = v7;
-    if (!v6)
+    if (!localDeviceInfo)
     {
       v9 = v7;
       if (v9)
       {
-        if (a4)
+        if (error)
         {
           v10 = v9;
-          *a4 = v9;
+          *error = v9;
         }
 
         else
@@ -258,8 +258,8 @@ LABEL_8:
       }
 
       _HKInitializeLogging();
-      v6 = HKLogMedication();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      localDeviceInfo = HKLogMedication();
+      if (os_log_type_enabled(localDeviceInfo, OS_LOG_TYPE_ERROR))
       {
         [HDMedicationsDeviceScopedStorageManager accountDevicesInfoTriggeringUpdate:error:];
       }
@@ -271,7 +271,7 @@ LABEL_8:
 
   else
   {
-    v6 = [MEMORY[0x277D115E0] localDeviceInfo];
+    localDeviceInfo = [MEMORY[0x277D115E0] localDeviceInfo];
     v8 = 0;
   }
 
@@ -288,10 +288,10 @@ LABEL_8:
     v23[3] = &unk_2796CECE8;
     v23[4] = self;
     v13 = [v12 hk_map:v23];
-    v14 = [(HDSyncIdentityManager *)self->_syncIdentityManager currentSyncIdentity];
-    v15 = [v14 identity];
-    v16 = [v15 hardwareIdentifier];
-    [v6 _setHardwareIdentifier:v16];
+    currentSyncIdentity = [(HDSyncIdentityManager *)self->_syncIdentityManager currentSyncIdentity];
+    identity = [currentSyncIdentity identity];
+    hardwareIdentifier = [identity hardwareIdentifier];
+    [localDeviceInfo _setHardwareIdentifier:hardwareIdentifier];
 
     unitTest_accountDevicesInfo = self->_unitTest_accountDevicesInfo;
     if (unitTest_accountDevicesInfo)
@@ -301,7 +301,7 @@ LABEL_8:
 
     else
     {
-      v18 = [objc_alloc(MEMORY[0x277D115C8]) initWithMedicationFeatureDevicesInfo:v13 localDeviceInfo:v6];
+      v18 = [objc_alloc(MEMORY[0x277D115C8]) initWithMedicationFeatureDevicesInfo:v13 localDeviceInfo:localDeviceInfo];
     }
 
     v21 = v18;
@@ -312,10 +312,10 @@ LABEL_8:
     v19 = v9;
     if (v19)
     {
-      if (a4)
+      if (error)
       {
         v20 = v19;
-        *a4 = v19;
+        *error = v19;
       }
 
       else

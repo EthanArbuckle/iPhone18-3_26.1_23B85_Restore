@@ -6,9 +6,9 @@
 
 - (id)createPeripheral
 {
-  if ([a1 isAssistedDateType])
+  if ([self isAssistedDateType])
   {
-    v2 = [UIWebFormDateTimePeripheral createPeripheralWithDOMHTMLInputElement:a1];
+    v2 = [UIWebFormDateTimePeripheral createPeripheralWithDOMHTMLInputElement:self];
   }
 
   else

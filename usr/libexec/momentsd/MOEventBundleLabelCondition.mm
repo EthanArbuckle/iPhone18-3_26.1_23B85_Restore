@@ -1,22 +1,22 @@
 @interface MOEventBundleLabelCondition
-+ (id)stringFromTemplateOperator:(unint64_t)a3;
-+ (id)stringFromValueType:(unint64_t)a3;
-+ (unint64_t)templateOperatorFromString:(id)a3;
-+ (unint64_t)valueTypeFromString:(id)a3;
-- (BOOL)isNumeric:(id)a3;
-- (BOOL)yieldConditionForMetaData:(id)a3;
-- (BOOL)yieldConditionForValueData:(id)a3;
-- (BOOL)yieldPresenceCheckForValueData:(id)a3;
-- (MOEventBundleLabelCondition)initWithKeyword:(id)a3;
++ (id)stringFromTemplateOperator:(unint64_t)operator;
++ (id)stringFromValueType:(unint64_t)type;
++ (unint64_t)templateOperatorFromString:(id)string;
++ (unint64_t)valueTypeFromString:(id)string;
+- (BOOL)isNumeric:(id)numeric;
+- (BOOL)yieldConditionForMetaData:(id)data;
+- (BOOL)yieldConditionForValueData:(id)data;
+- (BOOL)yieldPresenceCheckForValueData:(id)data;
+- (MOEventBundleLabelCondition)initWithKeyword:(id)keyword;
 - (id)description;
 @end
 
 @implementation MOEventBundleLabelCondition
 
-- (MOEventBundleLabelCondition)initWithKeyword:(id)a3
+- (MOEventBundleLabelCondition)initWithKeyword:(id)keyword
 {
-  v6 = a3;
-  if (v6)
+  keywordCopy = keyword;
+  if (keywordCopy)
   {
     v15.receiver = self;
     v15.super_class = MOEventBundleLabelCondition;
@@ -24,7 +24,7 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_keyword, a3);
+      objc_storeStrong(&v7->_keyword, keyword);
       value = v8->_value;
       v8->_templateOperator = 0;
       v8->_value = 0;
@@ -37,7 +37,7 @@
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -51,25 +51,25 @@
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"MOEventBundleLabelCondition.m" lineNumber:23 description:@"Invalid parameter not satisfying: keyword"];
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (BOOL)isNumeric:(id)a3
+- (BOOL)isNumeric:(id)numeric
 {
-  v3 = a3;
+  numericCopy = numeric;
   v4 = objc_alloc_init(NSNumberFormatter);
-  v5 = [v4 numberFromString:v3];
+  v5 = [v4 numberFromString:numericCopy];
 
   return v5 != 0;
 }
 
-- (BOOL)yieldPresenceCheckForValueData:(id)a3
+- (BOOL)yieldPresenceCheckForValueData:(id)data
 {
-  v3 = a3;
-  if (!v3)
+  dataCopy = data;
+  if (!dataCopy)
   {
     goto LABEL_9;
   }
@@ -77,7 +77,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dataCopy;
     if ([v4 length])
     {
       v5 = [v4 isEqualToString:@"NO"];
@@ -99,7 +99,7 @@ LABEL_9:
 
 LABEL_5:
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![v3 BOOLValue])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![dataCopy BOOLValue])
   {
     goto LABEL_9;
   }
@@ -110,11 +110,11 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)yieldConditionForMetaData:(id)a3
+- (BOOL)yieldConditionForMetaData:(id)data
 {
-  v4 = a3;
-  v5 = [(MOEventBundleLabelCondition *)self keyword];
-  v6 = [v4 objectForKey:v5];
+  dataCopy = data;
+  keyword = [(MOEventBundleLabelCondition *)self keyword];
+  v6 = [dataCopy objectForKey:keyword];
 
   if ([(MOEventBundleLabelCondition *)self templateOperator]!= 9)
   {
@@ -129,15 +129,15 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [(MOEventBundleLabelCondition *)self value];
-  if (!v7 || (v8 = v7, -[MOEventBundleLabelCondition value](self, "value"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqualToString:@"_ANY_"], v9, v8, (v10 & 1) == 0))
+  value = [(MOEventBundleLabelCondition *)self value];
+  if (!value || (v8 = value, -[MOEventBundleLabelCondition value](self, "value"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqualToString:@"_ANY_"], v9, v8, (v10 & 1) == 0))
   {
-    v12 = [(MOEventBundleLabelCondition *)self values];
-    v13 = [v12 containsObject:v6];
+    values = [(MOEventBundleLabelCondition *)self values];
+    v13 = [values containsObject:v6];
 
     if (v13)
     {
-      v14 = [v4 objectForKey:v6];
+      v14 = [dataCopy objectForKey:v6];
       v11 = v14 != 0;
 
       goto LABEL_10;
@@ -152,19 +152,19 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)yieldConditionForValueData:(id)a3
+- (BOOL)yieldConditionForValueData:(id)data
 {
-  v4 = a3;
-  v5 = [(MOEventBundleLabelCondition *)self value];
+  dataCopy = data;
+  value = [(MOEventBundleLabelCondition *)self value];
 
-  if (v5)
+  if (value)
   {
-    if (v4)
+    if (dataCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v4;
+        v6 = dataCopy;
         if (![v6 length])
         {
 LABEL_9:
@@ -176,8 +176,8 @@ LABEL_57:
 
         if ([(MOEventBundleLabelCondition *)self templateOperator]== 1 && ![(MOEventBundleLabelCondition *)self valueType])
         {
-          v9 = [(MOEventBundleLabelCondition *)self value];
-          LOBYTE(self) = [v9 isEqualToString:v6];
+          value2 = [(MOEventBundleLabelCondition *)self value];
+          LOBYTE(self) = [value2 isEqualToString:v6];
         }
 
         else
@@ -187,8 +187,8 @@ LABEL_57:
             goto LABEL_9;
           }
 
-          v9 = [(MOEventBundleLabelCondition *)self value];
-          LODWORD(self) = [v9 isEqualToString:v6] ^ 1;
+          value2 = [(MOEventBundleLabelCondition *)self value];
+          LODWORD(self) = [value2 isEqualToString:v6] ^ 1;
         }
 
 LABEL_56:
@@ -203,48 +203,48 @@ LABEL_56:
       }
 
       v6 = objc_opt_new();
-      v8 = [(MOEventBundleLabelCondition *)self value];
-      v9 = [v6 numberFromString:v8];
+      value3 = [(MOEventBundleLabelCondition *)self value];
+      value2 = [v6 numberFromString:value3];
 
-      v10 = v4;
+      v10 = dataCopy;
       if ([(MOEventBundleLabelCondition *)self valueType]== 1)
       {
-        v11 = [(MOEventBundleLabelCondition *)self templateOperator];
+        templateOperator = [(MOEventBundleLabelCondition *)self templateOperator];
         LOBYTE(self) = 0;
-        if (v11 <= 3)
+        if (templateOperator <= 3)
         {
-          switch(v11)
+          switch(templateOperator)
           {
             case 1:
               self = [v10 integerValue];
-              LOBYTE(self) = self == [v9 integerValue];
+              LOBYTE(self) = self == [value2 integerValue];
               break;
             case 2:
               self = [v10 integerValue];
-              LOBYTE(self) = self != [v9 integerValue];
+              LOBYTE(self) = self != [value2 integerValue];
               break;
             case 3:
               self = [v10 integerValue];
-              LOBYTE(self) = self < [v9 integerValue];
+              LOBYTE(self) = self < [value2 integerValue];
               break;
           }
 
           goto LABEL_55;
         }
 
-        if (v11 == 4)
+        if (templateOperator == 4)
         {
           self = [v10 integerValue];
-          LOBYTE(self) = self <= [v9 integerValue];
+          LOBYTE(self) = self <= [value2 integerValue];
           goto LABEL_55;
         }
 
-        if (v11 != 5)
+        if (templateOperator != 5)
         {
-          if (v11 == 6)
+          if (templateOperator == 6)
           {
-            v17 = [v10 integerValue];
-            v18 = v17 < [v9 integerValue];
+            integerValue = [v10 integerValue];
+            v18 = integerValue < [value2 integerValue];
             goto LABEL_48;
           }
 
@@ -253,8 +253,8 @@ LABEL_55:
           goto LABEL_56;
         }
 
-        v22 = [v10 integerValue];
-        v23 = v22 <= [v9 integerValue];
+        integerValue2 = [v10 integerValue];
+        v23 = integerValue2 <= [value2 integerValue];
 LABEL_52:
         LOBYTE(self) = !v23;
         goto LABEL_55;
@@ -268,60 +268,60 @@ LABEL_22:
         goto LABEL_58;
       }
 
-      v12 = [(MOEventBundleLabelCondition *)self templateOperator];
+      templateOperator2 = [(MOEventBundleLabelCondition *)self templateOperator];
       LOBYTE(self) = 0;
-      if (v12 > 3)
+      if (templateOperator2 > 3)
       {
-        if (v12 == 4)
+        if (templateOperator2 == 4)
         {
           [v10 doubleValue];
           v28 = v27;
-          [v9 doubleValue];
+          [value2 doubleValue];
           LOBYTE(self) = v28 <= v29;
           goto LABEL_55;
         }
 
-        if (v12 == 5)
+        if (templateOperator2 == 5)
         {
           [v10 doubleValue];
           v34 = v33;
-          [v9 doubleValue];
+          [value2 doubleValue];
           v23 = v34 <= v35;
           goto LABEL_52;
         }
 
-        if (v12 != 6)
+        if (templateOperator2 != 6)
         {
           goto LABEL_55;
         }
 
         [v10 doubleValue];
         v20 = v19;
-        [v9 doubleValue];
+        [value2 doubleValue];
         v18 = v20 < v21;
       }
 
       else
       {
-        if (v12 == 1)
+        if (templateOperator2 == 1)
         {
           [v10 doubleValue];
           v25 = v24;
-          [v9 doubleValue];
+          [value2 doubleValue];
           v16 = vabdd_f64(v25, v26) < 0.0001;
           goto LABEL_43;
         }
 
-        if (v12 != 2)
+        if (templateOperator2 != 2)
         {
-          if (v12 != 3)
+          if (templateOperator2 != 3)
           {
             goto LABEL_55;
           }
 
           [v10 doubleValue];
           v14 = v13;
-          [v9 doubleValue];
+          [value2 doubleValue];
           v16 = v14 < v15;
 LABEL_43:
           LOBYTE(self) = v16;
@@ -330,7 +330,7 @@ LABEL_43:
 
         [v10 doubleValue];
         v31 = v30;
-        [v9 doubleValue];
+        [value2 doubleValue];
         v18 = vabdd_f64(v31, v32) < 0.0001;
       }
 
@@ -344,7 +344,7 @@ LABEL_48:
 
   else
   {
-    v7 = [(MOEventBundleLabelCondition *)self yieldPresenceCheckForValueData:v4];
+    v7 = [(MOEventBundleLabelCondition *)self yieldPresenceCheckForValueData:dataCopy];
     LOBYTE(self) = v7 ^ ([(MOEventBundleLabelCondition *)self templateOperator]== 8);
   }
 
@@ -355,54 +355,54 @@ LABEL_58:
 
 - (id)description
 {
-  v3 = [(MOEventBundleLabelCondition *)self keyword];
+  keyword = [(MOEventBundleLabelCondition *)self keyword];
   v4 = [MOEventBundleLabelCondition stringFromTemplateOperator:[(MOEventBundleLabelCondition *)self templateOperator]];
-  v5 = [(MOEventBundleLabelCondition *)self value];
+  value = [(MOEventBundleLabelCondition *)self value];
   v6 = [MOEventBundleLabelCondition stringFromValueType:[(MOEventBundleLabelCondition *)self valueType]];
-  v7 = [NSString stringWithFormat:@"keyword, %@, operator, %@, value, %@, value type, %@", v3, v4, v5, v6];
+  v7 = [NSString stringWithFormat:@"keyword, %@, operator, %@, value, %@, value type, %@", keyword, v4, value, v6];
 
   return v7;
 }
 
-+ (unint64_t)templateOperatorFromString:(id)a3
++ (unint64_t)templateOperatorFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"="] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"=="))
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"="] & 1) != 0 || (objc_msgSend(stringCopy, "isEqualToString:", @"=="))
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"!="])
+  else if ([stringCopy isEqualToString:@"!="])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"<"])
+  else if ([stringCopy isEqualToString:@"<"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"<="])
+  else if ([stringCopy isEqualToString:@"<="])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@">"])
+  else if ([stringCopy isEqualToString:@">"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@">="])
+  else if ([stringCopy isEqualToString:@">="])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"!"])
+  else if ([stringCopy isEqualToString:@"!"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@":"])
+  else if ([stringCopy isEqualToString:@":"])
   {
     v4 = 9;
   }
@@ -415,33 +415,33 @@ LABEL_58:
   return v4;
 }
 
-+ (id)stringFromTemplateOperator:(unint64_t)a3
++ (id)stringFromTemplateOperator:(unint64_t)operator
 {
-  if (a3 > 9)
+  if (operator > 9)
   {
     return @"invalid";
   }
 
   else
   {
-    return *(&off_100338ED0 + a3);
+    return *(&off_100338ED0 + operator);
   }
 }
 
-+ (unint64_t)valueTypeFromString:(id)a3
++ (unint64_t)valueTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"s"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"s"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"d"])
+  else if ([stringCopy isEqualToString:@"d"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"f"])
+  else if ([stringCopy isEqualToString:@"f"])
   {
     v4 = 2;
   }
@@ -454,16 +454,16 @@ LABEL_58:
   return v4;
 }
 
-+ (id)stringFromValueType:(unint64_t)a3
++ (id)stringFromValueType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"invalid";
   }
 
   else
   {
-    return *(&off_100338F20 + a3);
+    return *(&off_100338F20 + type);
   }
 }
 

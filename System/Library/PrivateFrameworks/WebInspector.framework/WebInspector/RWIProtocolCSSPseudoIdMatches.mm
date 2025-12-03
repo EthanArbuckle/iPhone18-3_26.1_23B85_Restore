@@ -1,34 +1,34 @@
 @interface RWIProtocolCSSPseudoIdMatches
 - (NSArray)matches;
-- (RWIProtocolCSSPseudoIdMatches)initWithPseudoId:(int64_t)a3 matches:(id)a4;
+- (RWIProtocolCSSPseudoIdMatches)initWithPseudoId:(int64_t)id matches:(id)matches;
 - (id)matches;
 - (int64_t)pseudoId;
-- (void)setMatches:(id)a3;
-- (void)setPseudoId:(int64_t)a3;
+- (void)setMatches:(id)matches;
+- (void)setPseudoId:(int64_t)id;
 @end
 
 @implementation RWIProtocolCSSPseudoIdMatches
 
-- (RWIProtocolCSSPseudoIdMatches)initWithPseudoId:(int64_t)a3 matches:(id)a4
+- (RWIProtocolCSSPseudoIdMatches)initWithPseudoId:(int64_t)id matches:(id)matches
 {
   v27 = *MEMORY[0x277D85DE8];
-  v19 = a4;
+  matchesCopy = matches;
   v25.receiver = self;
   v25.super_class = RWIProtocolCSSPseudoIdMatches;
   v20 = [(RWIProtocolJSONObject *)&v25 init];
   if (v20)
   {
-    if (!v19)
+    if (!matchesCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"matches"}];
     }
 
-    v18 = a3;
+    idCopy = id;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v19;
+    v6 = matchesCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v7)
     {
@@ -64,7 +64,7 @@
       while (v7);
     }
 
-    [(RWIProtocolCSSPseudoIdMatches *)v20 setPseudoId:v18];
+    [(RWIProtocolCSSPseudoIdMatches *)v20 setPseudoId:idCopy];
     [(RWIProtocolCSSPseudoIdMatches *)v20 setMatches:v6];
     v15 = v20;
   }
@@ -73,7 +73,7 @@
   return v20;
 }
 
-- (void)setPseudoId:(int64_t)a3
+- (void)setPseudoId:(int64_t)id
 {
   Inspector::toProtocolString();
   if (v6)
@@ -157,14 +157,14 @@ LABEL_12:
   return v7;
 }
 
-- (void)setMatches:(id)a3
+- (void)setMatches:(id)matches
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = matches;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -247,7 +247,7 @@ LABEL_12:
 
 - (id)matches
 {
-  v3 = OUTLINED_FUNCTION_0_6(a1, a2);
+  v3 = OUTLINED_FUNCTION_0_6(self, a2);
   if (v3)
   {
     if (*v3 == 1)

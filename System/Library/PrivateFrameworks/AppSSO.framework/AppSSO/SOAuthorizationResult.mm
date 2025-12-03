@@ -1,7 +1,7 @@
 @interface SOAuthorizationResult
 - (SOAuthorizationResult)init;
-- (SOAuthorizationResult)initWithHTTPAuthorizationHeaders:(id)a3;
-- (SOAuthorizationResult)initWithHTTPResponse:(id)a3 httpBody:(id)a4;
+- (SOAuthorizationResult)initWithHTTPAuthorizationHeaders:(id)headers;
+- (SOAuthorizationResult)initWithHTTPResponse:(id)response httpBody:(id)body;
 @end
 
 @implementation SOAuthorizationResult
@@ -21,15 +21,15 @@
   return v2;
 }
 
-- (SOAuthorizationResult)initWithHTTPAuthorizationHeaders:(id)a3
+- (SOAuthorizationResult)initWithHTTPAuthorizationHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   v9.receiver = self;
   v9.super_class = SOAuthorizationResult;
   v5 = [(SOAuthorizationResult *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(getSOAuthorizationResultCoreClass()) initWithHTTPAuthorizationHeaders:v4];
+    v6 = [objc_alloc(getSOAuthorizationResultCoreClass()) initWithHTTPAuthorizationHeaders:headersCopy];
     authorizationResultCore = v5->_authorizationResultCore;
     v5->_authorizationResultCore = v6;
   }
@@ -37,16 +37,16 @@
   return v5;
 }
 
-- (SOAuthorizationResult)initWithHTTPResponse:(id)a3 httpBody:(id)a4
+- (SOAuthorizationResult)initWithHTTPResponse:(id)response httpBody:(id)body
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  bodyCopy = body;
   v12.receiver = self;
   v12.super_class = SOAuthorizationResult;
   v8 = [(SOAuthorizationResult *)&v12 init];
   if (v8)
   {
-    v9 = [objc_alloc(getSOAuthorizationResultCoreClass()) initWithHTTPResponse:v6 httpBody:v7];
+    v9 = [objc_alloc(getSOAuthorizationResultCoreClass()) initWithHTTPResponse:responseCopy httpBody:bodyCopy];
     authorizationResultCore = v8->_authorizationResultCore;
     v8->_authorizationResultCore = v9;
   }

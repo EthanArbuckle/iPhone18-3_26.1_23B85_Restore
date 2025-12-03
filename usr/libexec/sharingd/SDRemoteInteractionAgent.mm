@@ -2,44 +2,44 @@
 + (id)sharedAgent;
 - (BOOL)_clientShouldStart;
 - (SDRemoteInteractionAgent)init;
-- (id)_rpCompanionLinkDeviceForSFDevice:(id)a3;
+- (id)_rpCompanionLinkDeviceForSFDevice:(id)device;
 - (id)description;
-- (int)sessionStart:(id)a3;
-- (void)_clientClinkDeviceChanged:(id)a3;
-- (void)_clientClinkDeviceFound:(id)a3;
-- (void)_clientClinkDeviceLost:(id)a3;
-- (void)_clientDeviceFound:(id)a3;
+- (int)sessionStart:(id)start;
+- (void)_clientClinkDeviceChanged:(id)changed;
+- (void)_clientClinkDeviceFound:(id)found;
+- (void)_clientClinkDeviceLost:(id)lost;
+- (void)_clientDeviceFound:(id)found;
 - (void)_clientDeviceLockStatusChanged;
-- (void)_clientDeviceLost:(id)a3;
+- (void)_clientDeviceLost:(id)lost;
 - (void)_clientEnsureStarted;
 - (void)_clientEnsureStopped;
-- (void)_clientUpdateCoalesceTimerForDevice:(id)a3 identifier:(id)a4;
+- (void)_clientUpdateCoalesceTimerForDevice:(id)device identifier:(id)identifier;
 - (void)_commonEnsureStarted;
 - (void)_commonEnsureStopped;
-- (void)_commonIDSChanged:(id)a3;
-- (void)_commonRapportChanged:(id)a3;
-- (void)_legacy_serverHandleEvent:(id)a3;
-- (void)_legacy_serverHandleRequest:(id)a3;
-- (void)_legacy_serverRespondInfo:(id)a3;
-- (void)_sendRTIPayload:(id)a3;
+- (void)_commonIDSChanged:(id)changed;
+- (void)_commonRapportChanged:(id)changed;
+- (void)_legacy_serverHandleEvent:(id)event;
+- (void)_legacy_serverHandleRequest:(id)request;
+- (void)_legacy_serverRespondInfo:(id)info;
+- (void)_sendRTIPayload:(id)payload;
 - (void)_serverEnsureStarted;
 - (void)_serverEnsureStopped;
 - (void)_update;
 - (void)activate;
 - (void)advertisingTimerFired;
 - (void)advertisingTimerStart;
-- (void)clientNotificationPostIfNeededForDevice:(id)a3;
-- (void)clientNotificationRemoveForDevice:(id)a3;
-- (void)clientNotificationUpdateForDevice:(id)a3 info:(id)a4;
-- (void)clientNotificationUpdateForDevice:(id)a3 rtiData:(id)a4;
-- (void)clientUserDidTapNotification:(id)a3;
-- (void)handleEventWithData:(id)a3;
+- (void)clientNotificationPostIfNeededForDevice:(id)device;
+- (void)clientNotificationRemoveForDevice:(id)device;
+- (void)clientNotificationUpdateForDevice:(id)device info:(id)info;
+- (void)clientNotificationUpdateForDevice:(id)device rtiData:(id)data;
+- (void)clientUserDidTapNotification:(id)notification;
+- (void)handleEventWithData:(id)data;
 - (void)invalidate;
-- (void)nearby:(id)a3 didDisconnectFromPeer:(id)a4 error:(id)a5;
+- (void)nearby:(id)nearby didDisconnectFromPeer:(id)peer error:(id)error;
 - (void)prefsChanged;
-- (void)sessionStop:(id)a3;
-- (void)setPreventNotifications:(BOOL)a3;
-- (void)testKeyboardPost:(id)a3;
+- (void)sessionStop:(id)stop;
+- (void)setPreventNotifications:(BOOL)notifications;
+- (void)testKeyboardPost:(id)post;
 - (void)testKeyboardPostThenUpdate;
 - (void)testKeyboardRemove;
 - (void)testKeyboardUpdate;
@@ -240,7 +240,7 @@ LABEL_21:
   [(SDRemoteInteractionAgent *)self _update:v9];
 }
 
-- (void)setPreventNotifications:(BOOL)a3
+- (void)setPreventNotifications:(BOOL)notifications
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -248,7 +248,7 @@ LABEL_21:
   v4[2] = sub_100139E54;
   v4[3] = &unk_1008CF798;
   v4[4] = self;
-  v5 = a3;
+  notificationsCopy = notifications;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -323,9 +323,9 @@ LABEL_21:
   }
 }
 
-- (void)_commonIDSChanged:(id)a3
+- (void)_commonIDSChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (dword_100971478 <= 30 && (dword_100971478 != -1 || _LogCategory_Initialize()))
   {
     sub_10013DCB4();
@@ -340,9 +340,9 @@ LABEL_21:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_commonRapportChanged:(id)a3
+- (void)_commonRapportChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (dword_100971478 <= 30 && (dword_100971478 != -1 || _LogCategory_Initialize()))
   {
     sub_10013DCD0();
@@ -443,41 +443,41 @@ LABEL_21:
   [v14 removeDelegate:self];
 }
 
-- (void)nearby:(id)a3 didDisconnectFromPeer:(id)a4 error:(id)a5
+- (void)nearby:(id)nearby didDisconnectFromPeer:(id)peer error:(id)error
 {
-  v6 = a4;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if ([(NSMutableSet *)self->_legacy_sessionDeviceIDs containsObject:v6])
+  if ([(NSMutableSet *)self->_legacy_sessionDeviceIDs containsObject:peerCopy])
   {
     if (dword_100971478 <= 30 && (dword_100971478 != -1 || _LogCategory_Initialize()))
     {
       sub_10013DD64();
     }
 
-    [(NSMutableSet *)self->_legacy_sessionDeviceIDs removeObject:v6];
+    [(NSMutableSet *)self->_legacy_sessionDeviceIDs removeObject:peerCopy];
   }
 }
 
-- (void)_legacy_serverHandleEvent:(id)a3
+- (void)_legacy_serverHandleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 peerDevice];
-  v6 = [v5 identifier];
+  eventCopy = event;
+  peerDevice = [eventCopy peerDevice];
+  identifier = [peerDevice identifier];
   v20 = 0;
-  if (v6)
+  if (identifier)
   {
     v7 = +[SDNearbyAgent sharedNearbyAgent];
-    v8 = [v7 idsBluetoothDeviceIDsForSharing];
-    v9 = [v8 containsObject:v6];
+    idsBluetoothDeviceIDsForSharing = [v7 idsBluetoothDeviceIDsForSharing];
+    v9 = [idsBluetoothDeviceIDsForSharing containsObject:identifier];
 
-    if ((v9 & 1) == 0 && (self->_cloudPairedOnly || [v5 systemPairState] <= 0x13))
+    if ((v9 & 1) == 0 && (self->_cloudPairedOnly || [peerDevice systemPairState] <= 0x13))
     {
       sub_10013DDA4(&v20);
     }
 
     else
     {
-      v10 = [v4 headerFields];
+      headerFields = [eventCopy headerFields];
       CFDictionaryGetTypeID();
       v11 = CFDictionaryGetTypedValue();
 
@@ -494,7 +494,7 @@ LABEL_21:
 
       else
       {
-        v13 = [v4 headerFields];
+        headerFields2 = [eventCopy headerFields];
         Int64Ranged = CFDictionaryGetInt64Ranged();
 
         if (Int64Ranged == 10)
@@ -502,7 +502,7 @@ LABEL_21:
           if (dword_100971478 <= 30 && (dword_100971478 != -1 || _LogCategory_Initialize()))
           {
             currentSessionID = self->_currentSessionID;
-            v19 = v6;
+            v19 = identifier;
             LogPrintF();
           }
 
@@ -518,8 +518,8 @@ LABEL_21:
               legacy_sessionDeviceIDs = self->_legacy_sessionDeviceIDs;
             }
 
-            [(NSMutableSet *)legacy_sessionDeviceIDs addObject:v6, currentSessionID, v19];
-            [(SDRemoteInteractionAgent *)self _serverSendTextSessionDidBegin:v6];
+            [(NSMutableSet *)legacy_sessionDeviceIDs addObject:identifier, currentSessionID, v19];
+            [(SDRemoteInteractionAgent *)self _serverSendTextSessionDidBegin:identifier];
           }
         }
 
@@ -537,29 +537,29 @@ LABEL_21:
   }
 }
 
-- (void)_legacy_serverHandleRequest:(id)a3
+- (void)_legacy_serverHandleRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 peerDevice];
-  v6 = [v5 identifier];
+  requestCopy = request;
+  peerDevice = [requestCopy peerDevice];
+  identifier = [peerDevice identifier];
   v12 = 0;
   v7 = +[SDNearbyAgent sharedNearbyAgent];
-  v8 = [v7 idsBluetoothDeviceIDsForSharing];
-  v9 = [v8 containsObject:v6];
+  idsBluetoothDeviceIDsForSharing = [v7 idsBluetoothDeviceIDsForSharing];
+  v9 = [idsBluetoothDeviceIDsForSharing containsObject:identifier];
 
-  if ((v9 & 1) == 0 && (self->_cloudPairedOnly || [v5 systemPairState] <= 0x13))
+  if ((v9 & 1) == 0 && (self->_cloudPairedOnly || [peerDevice systemPairState] <= 0x13))
   {
     sub_10013DF74();
   }
 
   else
   {
-    v10 = [v4 headerFields];
+    headerFields = [requestCopy headerFields];
     Int64Ranged = CFDictionaryGetInt64Ranged();
 
     if (Int64Ranged == 1)
     {
-      [(SDRemoteInteractionAgent *)self _legacy_serverRespondInfo:v4];
+      [(SDRemoteInteractionAgent *)self _legacy_serverRespondInfo:requestCopy];
     }
 
     else if (dword_100971478 <= 40 && (dword_100971478 != -1 || _LogCategory_Initialize()))
@@ -569,9 +569,9 @@ LABEL_21:
   }
 }
 
-- (void)_legacy_serverRespondInfo:(id)a3
+- (void)_legacy_serverRespondInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v9 = objc_alloc_init(NSMutableDictionary);
   v5 = MGCopyAnswer();
   v6 = v5;
@@ -586,24 +586,24 @@ LABEL_21:
   }
 
   [v9 setObject:v7 forKeyedSubscript:@"name"];
-  v8 = [[SFResponseMessage alloc] initWithRequestMessage:v4];
+  v8 = [[SFResponseMessage alloc] initWithRequestMessage:infoCopy];
 
   [v8 setHeaderFields:v9];
   [(SFService *)self->_controlService sendResponse:v8];
 }
 
-- (void)_sendRTIPayload:(id)a3
+- (void)_sendRTIPayload:(id)payload
 {
-  v16 = a3;
+  payloadCopy = payload;
   v4 = objc_alloc_init(NSMutableDictionary);
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (v16)
+  if (payloadCopy)
   {
     v5 = SFRTIDataPayloadForData();
     if (v5)
     {
       v6 = v5;
-      [v4 setObject:v16 forKeyedSubscript:@"rp"];
+      [v4 setObject:payloadCopy forKeyedSubscript:@"rp"];
       v7 = SFFullTextFromRTIDataPayload();
       v8 = v7;
       if (v7)
@@ -621,13 +621,13 @@ LABEL_21:
       objc_storeStrong(&self->_currentText, v9);
       [v4 setObject:&off_10090BCE8 forKeyedSubscript:@"o"];
       [v4 setObject:v10 forKeyedSubscript:@"t"];
-      [v4 setObject:v16 forKeyedSubscript:@"rp"];
+      [v4 setObject:payloadCopy forKeyedSubscript:@"rp"];
       v11 = [[SFRemoteTextSessionInfo alloc] initWithRTIPayload:v6];
       v12 = v11;
       if (v11)
       {
-        v13 = [v11 dictionaryRepresentation];
-        [v4 setObject:v13 forKeyedSubscript:@"tsi"];
+        dictionaryRepresentation = [v11 dictionaryRepresentation];
+        [v4 setObject:dictionaryRepresentation forKeyedSubscript:@"tsi"];
       }
 
       if (dword_100971478 <= 30 && (dword_100971478 != -1 || _LogCategory_Initialize()))
@@ -656,20 +656,20 @@ LABEL_21:
   }
 }
 
-- (void)handleEventWithData:(id)a3
+- (void)handleEventWithData:(id)data
 {
-  v4 = a3;
-  v6 = v4;
+  dataCopy = data;
+  v6 = dataCopy;
   if (dword_100971478 <= 30)
   {
-    if (dword_100971478 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_100971478 != -1 || (v5 = _LogCategory_Initialize(), dataCopy = v6, v5))
     {
       sub_10013E1C0();
-      v4 = v6;
+      dataCopy = v6;
     }
   }
 
-  [(SDRemoteInteractionAgent *)self _sendRTIPayload:v4];
+  [(SDRemoteInteractionAgent *)self _sendRTIPayload:dataCopy];
 }
 
 - (void)advertisingTimerFired
@@ -726,9 +726,9 @@ LABEL_21:
   dispatch_resume(self->_rtiTimer);
 }
 
-- (int)sessionStart:(id)a3
+- (int)sessionStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -741,19 +741,19 @@ LABEL_21:
     LogPrintF();
   }
 
-  v5 = [v4 peerDevice];
+  peerDevice = [startCopy peerDevice];
 
-  if (v5)
+  if (peerDevice)
   {
-    [v4 setDispatchQueue:self->_dispatchQueue];
-    [v4 setAgent:self];
-    v6 = [v4 remoteTextEventHandler];
+    [startCopy setDispatchQueue:self->_dispatchQueue];
+    [startCopy setAgent:self];
+    remoteTextEventHandler = [startCopy remoteTextEventHandler];
 
-    if (v6)
+    if (remoteTextEventHandler)
     {
-      v7 = [v4 remoteTextEventHandler];
+      remoteTextEventHandler2 = [startCopy remoteTextEventHandler];
       v8 = v20[5];
-      v20[5] = v7;
+      v20[5] = remoteTextEventHandler2;
     }
 
     v15[0] = _NSConcreteStackBlock;
@@ -761,9 +761,9 @@ LABEL_21:
     v15[2] = sub_10013B368;
     v15[3] = &unk_1008D13D0;
     v18 = &v19;
-    v9 = v4;
+    v9 = startCopy;
     v16 = v9;
-    v17 = self;
+    selfCopy = self;
     [v9 setRemoteTextEventHandler:v15];
 
     sessions = self->_sessions;
@@ -792,16 +792,16 @@ LABEL_21:
   return v13;
 }
 
-- (void)sessionStop:(id)a3
+- (void)sessionStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_100971478 <= 30 && (dword_100971478 != -1 || _LogCategory_Initialize()))
   {
     sub_10013E270();
   }
 
-  [(NSMutableSet *)self->_sessions removeObject:v4];
+  [(NSMutableSet *)self->_sessions removeObject:stopCopy];
   [(SDRemoteInteractionAgent *)self _update];
 }
 
@@ -812,26 +812,26 @@ LABEL_21:
     if (self->_cloudPairedOnly)
     {
       v3 = +[SDNearbyAgent sharedNearbyAgent];
-      v4 = [v3 idsBluetoothDeviceIDsForSharing];
+      idsBluetoothDeviceIDsForSharing = [v3 idsBluetoothDeviceIDsForSharing];
     }
 
     else
     {
-      v4 = 0;
+      idsBluetoothDeviceIDsForSharing = 0;
     }
 
-    v11 = [(SFDeviceDiscovery *)self->_deviceDiscovery deviceFilter];
-    v12 = v4;
+    deviceFilter = [(SFDeviceDiscovery *)self->_deviceDiscovery deviceFilter];
+    v12 = idsBluetoothDeviceIDsForSharing;
     v13 = v12;
-    if (v11 == v12)
+    if (deviceFilter == v12)
     {
     }
 
     else
     {
-      if ((v12 == 0) != (v11 != 0))
+      if ((v12 == 0) != (deviceFilter != 0))
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [deviceFilter isEqual:v12];
 
         if (v14)
         {
@@ -867,17 +867,17 @@ LABEL_17:
   v9 = v8;
   if (cloudPairedOnly)
   {
-    v10 = [v8 idsBluetoothDeviceIDsForSharing];
+    idsBluetoothDeviceIDsForSharing2 = [v8 idsBluetoothDeviceIDsForSharing];
 
-    [(SFDeviceDiscovery *)self->_deviceDiscovery setDeviceFilter:v10];
+    [(SFDeviceDiscovery *)self->_deviceDiscovery setDeviceFilter:idsBluetoothDeviceIDsForSharing2];
   }
 
   else
   {
-    v10 = [v8 idsDeviceIDsForRIServers];
+    idsBluetoothDeviceIDsForSharing2 = [v8 idsDeviceIDsForRIServers];
   }
 
-  -[SFDeviceDiscovery setOverrideScreenOff:](self->_deviceDiscovery, "setOverrideScreenOff:", [v10 count] != 0);
+  -[SFDeviceDiscovery setOverrideScreenOff:](self->_deviceDiscovery, "setOverrideScreenOff:", [idsBluetoothDeviceIDsForSharing2 count] != 0);
 
   [(SFDeviceDiscovery *)self->_deviceDiscovery setDiscoveryFlags:64];
   [(SFDeviceDiscovery *)self->_deviceDiscovery setPurpose:@"RIA"];
@@ -1013,13 +1013,13 @@ LABEL_20:
   }
 }
 
-- (void)_clientClinkDeviceFound:(id)a3
+- (void)_clientClinkDeviceFound:(id)found
 {
-  v3 = a3;
-  v4 = v3;
+  foundCopy = found;
+  v4 = foundCopy;
   if (dword_100971478 <= 30)
   {
-    v6 = v3;
+    v6 = foundCopy;
     if (dword_100971478 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       sub_10013E4B8();
@@ -1028,13 +1028,13 @@ LABEL_20:
   }
 }
 
-- (void)_clientClinkDeviceLost:(id)a3
+- (void)_clientClinkDeviceLost:(id)lost
 {
-  v3 = a3;
-  v4 = v3;
+  lostCopy = lost;
+  v4 = lostCopy;
   if (dword_100971478 <= 30)
   {
-    v6 = v3;
+    v6 = lostCopy;
     if (dword_100971478 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       sub_10013E4F8();
@@ -1043,13 +1043,13 @@ LABEL_20:
   }
 }
 
-- (void)_clientClinkDeviceChanged:(id)a3
+- (void)_clientClinkDeviceChanged:(id)changed
 {
-  v3 = a3;
-  v4 = v3;
+  changedCopy = changed;
+  v4 = changedCopy;
   if (dword_100971478 <= 30)
   {
-    v6 = v3;
+    v6 = changedCopy;
     if (dword_100971478 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       sub_10013E538();
@@ -1075,11 +1075,11 @@ LABEL_20:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 idsDeviceIDsForRIServers];
-    v6 = [v5 count];
+    idsDeviceIDsForRIServers = [v3 idsDeviceIDsForRIServers];
+    v6 = [idsDeviceIDsForRIServers count];
 
-    v7 = [v4 idsBluetoothDeviceIDsForWatches];
-    v8 = [v7 count];
+    idsBluetoothDeviceIDsForWatches = [v4 idsBluetoothDeviceIDsForWatches];
+    v8 = [idsBluetoothDeviceIDsForWatches count];
 
     v9 = self->_clientEnabled || [(NSMutableSet *)self->_sessions count]!= 0;
     if (v6 | v8)
@@ -1106,13 +1106,13 @@ LABEL_20:
   return v10;
 }
 
-- (id)_rpCompanionLinkDeviceForSFDevice:(id)a3
+- (id)_rpCompanionLinkDeviceForSFDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v23 = [v4 model];
-  v6 = [v4 idsIdentifier];
-  v7 = [v4 mediaRouteID];
+  deviceCopy = device;
+  name = [deviceCopy name];
+  model = [deviceCopy model];
+  idsIdentifier = [deviceCopy idsIdentifier];
+  mediaRouteID = [deviceCopy mediaRouteID];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -1123,7 +1123,7 @@ LABEL_20:
   {
     v9 = v8;
     v10 = *v26;
-    v22 = v4;
+    v22 = deviceCopy;
     while (2)
     {
       for (i = 0; i != v9; i = i + 1)
@@ -1134,27 +1134,27 @@ LABEL_20:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 idsDeviceIdentifier];
-        v14 = [v13 isEqualToString:v6];
+        idsDeviceIdentifier = [v12 idsDeviceIdentifier];
+        v14 = [idsDeviceIdentifier isEqualToString:idsIdentifier];
 
         if (v14)
         {
           goto LABEL_20;
         }
 
-        v15 = [v12 mediaRouteIdentifier];
-        v16 = [v15 isEqualToString:v7];
+        mediaRouteIdentifier = [v12 mediaRouteIdentifier];
+        v16 = [mediaRouteIdentifier isEqualToString:mediaRouteID];
 
         if (v16)
         {
           goto LABEL_20;
         }
 
-        v17 = [v12 name];
-        if ([v17 isEqualToString:v5])
+        name2 = [v12 name];
+        if ([name2 isEqualToString:name])
         {
-          v18 = [v12 model];
-          v19 = [v18 isEqualToString:v23];
+          model2 = [v12 model];
+          v19 = [model2 isEqualToString:model];
 
           if (v19)
           {
@@ -1165,7 +1165,7 @@ LABEL_20:
 
 LABEL_20:
             v20 = v12;
-            v4 = v22;
+            deviceCopy = v22;
             goto LABEL_21;
           }
         }
@@ -1177,7 +1177,7 @@ LABEL_20:
 
       v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
       v20 = 0;
-      v4 = v22;
+      deviceCopy = v22;
       if (v9)
       {
         continue;
@@ -1197,16 +1197,16 @@ LABEL_21:
   return v20;
 }
 
-- (void)clientNotificationPostIfNeededForDevice:(id)a3
+- (void)clientNotificationPostIfNeededForDevice:(id)device
 {
-  v21 = a3;
-  v4 = [v21 model];
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  model = [deviceCopy model];
+  v5 = model;
+  if (model)
   {
-    if ([v4 hasPrefix:@"AppleTV"])
+    if ([model hasPrefix:@"AppleTV"])
     {
-      if ([v21 deviceActionType] == 19)
+      if ([deviceCopy deviceActionType] == 19)
       {
         if (dword_100971478 <= 90 && (dword_100971478 != -1 || _LogCategory_Initialize()))
         {
@@ -1216,22 +1216,22 @@ LABEL_21:
         goto LABEL_35;
       }
 
-      v11 = [(RPCompanionLinkClient *)self->_clinkClient activeDevices];
+      activeDevices = [(RPCompanionLinkClient *)self->_clinkClient activeDevices];
       v12 = SFDeviceToRPCompanionLinkDevice();
 
       if (!v12)
       {
-        v13 = [(SDRemoteInteractionAgent *)self _rpCompanionLinkDeviceForSFDevice:v21];
+        v13 = [(SDRemoteInteractionAgent *)self _rpCompanionLinkDeviceForSFDevice:deviceCopy];
         if (!v13)
         {
-          v14 = [v21 identifier];
+          identifier = [deviceCopy identifier];
           v18 = +[SDNearbyAgent sharedNearbyAgent];
-          v19 = [v18 idsBluetoothDeviceIDsForSharing];
-          v20 = [v19 containsObject:v14];
+          idsBluetoothDeviceIDsForSharing = [v18 idsBluetoothDeviceIDsForSharing];
+          v20 = [idsBluetoothDeviceIDsForSharing containsObject:identifier];
 
           if (v20)
           {
-            [(SDNotificationManager *)self->_notificationManager riServerPostIfNeeded:v21 backgroundAction:0];
+            [(SDNotificationManager *)self->_notificationManager riServerPostIfNeeded:deviceCopy backgroundAction:0];
           }
 
           v12 = 0;
@@ -1248,13 +1248,13 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v14 = [v12 activeUserAltDSID];
+      identifier = [v12 activeUserAltDSID];
       v15 = objc_alloc_init(off_1009714E8[0]());
-      v16 = [v15 aa_primaryAppleAccount];
-      v17 = [v16 aa_altDSID];
-      if ([v17 isEqualToString:v14])
+      aa_primaryAppleAccount = [v15 aa_primaryAppleAccount];
+      aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+      if ([aa_altDSID isEqualToString:identifier])
       {
-        [(SDNotificationManager *)self->_notificationManager riServerPostIfNeeded:v21 backgroundAction:1];
+        [(SDNotificationManager *)self->_notificationManager riServerPostIfNeeded:deviceCopy backgroundAction:1];
       }
 
       else if (dword_100971478 <= 30 && (dword_100971478 != -1 || _LogCategory_Initialize()))
@@ -1271,16 +1271,16 @@ LABEL_33:
 
     if (v7)
     {
-      v8 = [(RPCompanionLinkClient *)self->_clinkClient activeDevices];
+      activeDevices2 = [(RPCompanionLinkClient *)self->_clinkClient activeDevices];
       v9 = SFDeviceToRPCompanionLinkDevice();
       v10 = v9 != 0;
 
-      [(SDNotificationManager *)self->_notificationManager riServerPostIfNeeded:v21 backgroundAction:v10];
+      [(SDNotificationManager *)self->_notificationManager riServerPostIfNeeded:deviceCopy backgroundAction:v10];
     }
 
     else if ([v5 hasPrefix:@"Watch"])
     {
-      [(SDNotificationManager *)self->_notificationManager watchKeyboardPostIfNeeded:v21];
+      [(SDNotificationManager *)self->_notificationManager watchKeyboardPostIfNeeded:deviceCopy];
     }
 
     else if (dword_100971478 <= 60 && (dword_100971478 != -1 || _LogCategory_Initialize()))
@@ -1297,21 +1297,21 @@ LABEL_33:
 LABEL_35:
 }
 
-- (void)clientNotificationRemoveForDevice:(id)a3
+- (void)clientNotificationRemoveForDevice:(id)device
 {
-  v8 = a3;
-  v4 = [v8 model];
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  model = [deviceCopy model];
+  v5 = model;
+  if (model)
   {
-    if (([v4 hasPrefix:@"AppleTV"] & 1) != 0 || (+[SDNearbyAgent sharedNearbyAgent](SDNearbyAgent, "sharedNearbyAgent"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isDeviceValidRIServer:", v5), v6, v7))
+    if (([model hasPrefix:@"AppleTV"] & 1) != 0 || (+[SDNearbyAgent sharedNearbyAgent](SDNearbyAgent, "sharedNearbyAgent"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isDeviceValidRIServer:", v5), v6, v7))
     {
-      [(SDNotificationManager *)self->_notificationManager riServerRemove:v8];
+      [(SDNotificationManager *)self->_notificationManager riServerRemove:deviceCopy];
     }
 
     else if ([v5 hasPrefix:@"Watch"])
     {
-      [(SDNotificationManager *)self->_notificationManager watchKeyboardRemove:v8];
+      [(SDNotificationManager *)self->_notificationManager watchKeyboardRemove:deviceCopy];
     }
 
     else if (dword_100971478 <= 60 && (dword_100971478 != -1 || _LogCategory_Initialize()))
@@ -1326,22 +1326,22 @@ LABEL_35:
   }
 }
 
-- (void)clientNotificationUpdateForDevice:(id)a3 rtiData:(id)a4
+- (void)clientNotificationUpdateForDevice:(id)device rtiData:(id)data
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 model];
-  v8 = v7;
-  if (v7)
+  deviceCopy = device;
+  dataCopy = data;
+  model = [deviceCopy model];
+  v8 = model;
+  if (model)
   {
-    if (([v7 hasPrefix:@"AppleTV"] & 1) != 0 || (+[SDNearbyAgent sharedNearbyAgent](SDNearbyAgent, "sharedNearbyAgent"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isDeviceValidRIServer:", v8), v9, v10))
+    if (([model hasPrefix:@"AppleTV"] & 1) != 0 || (+[SDNearbyAgent sharedNearbyAgent](SDNearbyAgent, "sharedNearbyAgent"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isDeviceValidRIServer:", v8), v9, v10))
     {
-      [(SDNotificationManager *)self->_notificationManager riServerUpdate:v11 rtiData:v6];
+      [(SDNotificationManager *)self->_notificationManager riServerUpdate:deviceCopy rtiData:dataCopy];
     }
 
     else if ([v8 hasPrefix:@"Watch"])
     {
-      [(SDNotificationManager *)self->_notificationManager watchKeyboardUpdate:v11 rtiData:v6];
+      [(SDNotificationManager *)self->_notificationManager watchKeyboardUpdate:deviceCopy rtiData:dataCopy];
     }
 
     else if (dword_100971478 <= 60 && (dword_100971478 != -1 || _LogCategory_Initialize()))
@@ -1356,22 +1356,22 @@ LABEL_35:
   }
 }
 
-- (void)clientNotificationUpdateForDevice:(id)a3 info:(id)a4
+- (void)clientNotificationUpdateForDevice:(id)device info:(id)info
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 model];
-  v8 = v7;
-  if (v7)
+  deviceCopy = device;
+  infoCopy = info;
+  model = [deviceCopy model];
+  v8 = model;
+  if (model)
   {
-    if (([v7 hasPrefix:@"AppleTV"] & 1) != 0 || (+[SDNearbyAgent sharedNearbyAgent](SDNearbyAgent, "sharedNearbyAgent"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isDeviceValidRIServer:", v8), v9, v10))
+    if (([model hasPrefix:@"AppleTV"] & 1) != 0 || (+[SDNearbyAgent sharedNearbyAgent](SDNearbyAgent, "sharedNearbyAgent"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isDeviceValidRIServer:", v8), v9, v10))
     {
-      [(SDNotificationManager *)self->_notificationManager riServerUpdate:v11 info:v6];
+      [(SDNotificationManager *)self->_notificationManager riServerUpdate:deviceCopy info:infoCopy];
     }
 
     else if ([v8 hasPrefix:@"Watch"])
     {
-      [(SDNotificationManager *)self->_notificationManager watchKeyboardUpdate:v11 info:v6];
+      [(SDNotificationManager *)self->_notificationManager watchKeyboardUpdate:deviceCopy info:infoCopy];
     }
 
     else if (dword_100971478 <= 60 && (dword_100971478 != -1 || _LogCategory_Initialize()))
@@ -1386,22 +1386,22 @@ LABEL_35:
   }
 }
 
-- (void)_clientUpdateCoalesceTimerForDevice:(id)a3 identifier:(id)a4
+- (void)_clientUpdateCoalesceTimerForDevice:(id)device identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_notificationTimers objectForKeyedSubscript:v7];
-  if ([v6 needsKeyboardOnly])
+  deviceCopy = device;
+  identifierCopy = identifier;
+  v8 = [(NSMutableDictionary *)self->_notificationTimers objectForKeyedSubscript:identifierCopy];
+  if ([deviceCopy needsKeyboardOnly])
   {
     if (v8)
     {
       if (dword_100971478 <= 50 && (dword_100971478 != -1 || _LogCategory_Initialize()))
       {
-        sub_10013E848(v6);
+        sub_10013E848(deviceCopy);
       }
 
       dispatch_source_cancel(v8);
-      [(NSMutableDictionary *)self->_notificationTimers removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_notificationTimers removeObjectForKey:identifierCopy];
     }
   }
 
@@ -1409,7 +1409,7 @@ LABEL_35:
   {
     if (dword_100971478 <= 50 && (dword_100971478 != -1 || _LogCategory_Initialize()))
     {
-      sub_10013E7EC(v6);
+      sub_10013E7EC(deviceCopy);
     }
 
     v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);
@@ -1418,11 +1418,11 @@ LABEL_35:
     v15 = 3221225472;
     v16 = sub_10013CD68;
     v17 = &unk_1008CE158;
-    v18 = v6;
+    v18 = deviceCopy;
     v8 = v9;
     v19 = v8;
-    v20 = self;
-    v10 = v7;
+    selfCopy = self;
+    v10 = identifierCopy;
     v21 = v10;
     dispatch_source_set_event_handler(v8, &v14);
     notificationTimers = self->_notificationTimers;
@@ -1440,40 +1440,40 @@ LABEL_35:
   }
 }
 
-- (void)clientUserDidTapNotification:(id)a3
+- (void)clientUserDidTapNotification:(id)notification
 {
-  v4 = a3;
-  v14 = v4;
+  notificationCopy = notification;
+  v14 = notificationCopy;
   if (dword_100971478 <= 30)
   {
-    if (dword_100971478 != -1 || (v5 = _LogCategory_Initialize(), v4 = v14, v5))
+    if (dword_100971478 != -1 || (v5 = _LogCategory_Initialize(), notificationCopy = v14, v5))
     {
       sub_10013E904();
-      v4 = v14;
+      notificationCopy = v14;
     }
   }
 
-  v6 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:notificationCopy];
   if (v6)
   {
-    v7 = [(RPCompanionLinkClient *)self->_clinkClient activeDevices];
+    activeDevices = [(RPCompanionLinkClient *)self->_clinkClient activeDevices];
     v8 = SFDeviceToRPCompanionLinkDevice();
 
     if (v8)
     {
 LABEL_8:
-      v10 = [v8 identifier];
-      if (v10)
+      identifier = [v8 identifier];
+      if (identifier)
       {
         v11 = objc_alloc(off_1009714F0[0]());
-        v12 = [v11 initWithDeviceIdentifier:v10 identifierType:off_1009714F8[0]() deviceType:1 launchContext:10];
-        v13 = [(objc_class *)off_100971500() sharedInstance];
+        v12 = [v11 initWithDeviceIdentifier:identifier identifierType:off_1009714F8[0]() deviceType:1 launchContext:10];
+        sharedInstance = [(objc_class *)off_100971500() sharedInstance];
         if (dword_100971478 <= 30 && (dword_100971478 != -1 || _LogCategory_Initialize()))
         {
           sub_10013E944();
         }
 
-        [v13 presentWithContext:v12];
+        [sharedInstance presentWithContext:v12];
       }
 
       else if (dword_100971478 <= 90 && (dword_100971478 != -1 || _LogCategory_Initialize()))
@@ -1505,9 +1505,9 @@ LABEL_8:
 LABEL_21:
 }
 
-- (void)testKeyboardPost:(id)a3
+- (void)testKeyboardPost:(id)post
 {
-  v6 = a3;
+  postCopy = post;
   if (dword_100971478 <= 50 && (dword_100971478 != -1 || _LogCategory_Initialize()))
   {
     sub_10013EA44();
@@ -1517,7 +1517,7 @@ LABEL_21:
   v5 = [[NSUUID alloc] initWithUUIDString:@"00000000-0000-0000-0000-000000000000"];
   [v4 setIdentifier:v5];
 
-  if ([v6 isEqual:@"-autofill"])
+  if ([postCopy isEqual:@"-autofill"])
   {
     [v4 setDeviceActionType:19];
   }
@@ -1570,14 +1570,14 @@ LABEL_21:
   [(SDNotificationManager *)self->_notificationManager riServerUpdate:v5 info:v4];
 }
 
-- (void)_clientDeviceFound:(id)a3
+- (void)_clientDeviceFound:(id)found
 {
-  v21 = a3;
-  v4 = [v21 bleDevice];
-  v5 = [v21 identifier];
-  v6 = [v21 idsIdentifier];
-  v7 = v6;
-  if (!self->_deviceDiscovery || !v5)
+  foundCopy = found;
+  bleDevice = [foundCopy bleDevice];
+  identifier = [foundCopy identifier];
+  idsIdentifier = [foundCopy idsIdentifier];
+  v7 = idsIdentifier;
+  if (!self->_deviceDiscovery || !identifier)
   {
     goto LABEL_30;
   }
@@ -1585,20 +1585,20 @@ LABEL_21:
   if (self->_cloudPairedOnly)
   {
     v8 = +[SDNearbyAgent sharedNearbyAgent];
-    v9 = [v8 idsBluetoothDeviceIDsForSharing];
-    v10 = v9;
-    v11 = v5;
+    idsBluetoothDeviceIDsForSharing = [v8 idsBluetoothDeviceIDsForSharing];
+    v10 = idsBluetoothDeviceIDsForSharing;
+    v11 = identifier;
     goto LABEL_7;
   }
 
-  if (v6)
+  if (idsIdentifier)
   {
     v8 = +[SDNearbyAgent sharedNearbyAgent];
-    v9 = [v8 idsDeviceIDsForRIServers];
-    v10 = v9;
+    idsBluetoothDeviceIDsForSharing = [v8 idsDeviceIDsForRIServers];
+    v10 = idsBluetoothDeviceIDsForSharing;
     v11 = v7;
 LABEL_7:
-    v12 = [v9 containsObject:v11];
+    v12 = [idsBluetoothDeviceIDsForSharing containsObject:v11];
 
     if (v12)
     {
@@ -1606,7 +1606,7 @@ LABEL_7:
     }
   }
 
-  if (self->_cloudPairedOnly || [v21 systemPairState] <= 0x13)
+  if (self->_cloudPairedOnly || [foundCopy systemPairState] <= 0x13)
   {
     if (dword_100971478 > 9 || dword_100971478 == -1 && !_LogCategory_Initialize())
     {
@@ -1617,33 +1617,33 @@ LABEL_7:
   }
 
 LABEL_13:
-  v13 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v5];
+  v13 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
   if (v13)
   {
     v14 = v13;
-    [(SDRemoteInteractionAgent *)self _clientUpdateCoalesceTimerForDevice:v21 identifier:v5];
+    [(SDRemoteInteractionAgent *)self _clientUpdateCoalesceTimerForDevice:foundCopy identifier:identifier];
 
     goto LABEL_30;
   }
 
-  if (!self->_preventNotifications && [v21 needsKeyboardOnly])
+  if (!self->_preventNotifications && [foundCopy needsKeyboardOnly])
   {
-    v15 = [v4 smoothedRSSI];
-    if (v15 <= 0x8000000000000000)
+    smoothedRSSI = [bleDevice smoothedRSSI];
+    if (smoothedRSSI <= 0x8000000000000000)
     {
       v16 = 0x8000000000000000;
     }
 
     else
     {
-      v16 = v15;
+      v16 = smoothedRSSI;
     }
 
     if (v16 >= self->_rssiThreshold)
     {
       if (dword_100971478 <= 50 && (dword_100971478 != -1 || _LogCategory_Initialize()))
       {
-        v20 = v4;
+        v20 = bleDevice;
         LogPrintF();
       }
 
@@ -1657,8 +1657,8 @@ LABEL_13:
         devices = self->_devices;
       }
 
-      [(NSMutableDictionary *)devices setObject:v21 forKeyedSubscript:v5, v20];
-      [(SDRemoteInteractionAgent *)self clientNotificationPostIfNeededForDevice:v21];
+      [(NSMutableDictionary *)devices setObject:foundCopy forKeyedSubscript:identifier, v20];
+      [(SDRemoteInteractionAgent *)self clientNotificationPostIfNeededForDevice:foundCopy];
       goto LABEL_30;
     }
 
@@ -1674,22 +1674,22 @@ LABEL_11:
 LABEL_30:
 }
 
-- (void)_clientDeviceLost:(id)a3
+- (void)_clientDeviceLost:(id)lost
 {
-  v10 = a3;
-  v4 = [v10 identifier];
-  v5 = v4;
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  v5 = identifier;
   if (self->_deviceDiscovery)
   {
-    if (v4)
+    if (identifier)
     {
-      v6 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+      v6 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
 
       if (v6)
       {
         if (dword_100971478 <= 50 && (dword_100971478 != -1 || _LogCategory_Initialize()))
         {
-          v9 = v10;
+          v9 = lostCopy;
           LogPrintF();
         }
 
@@ -1702,7 +1702,7 @@ LABEL_30:
         }
 
         [(NSMutableDictionary *)self->_devices removeObjectForKey:v5];
-        [(SDRemoteInteractionAgent *)self clientNotificationRemoveForDevice:v10];
+        [(SDRemoteInteractionAgent *)self clientNotificationRemoveForDevice:lostCopy];
       }
     }
   }

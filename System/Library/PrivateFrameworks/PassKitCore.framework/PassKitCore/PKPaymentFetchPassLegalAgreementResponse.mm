@@ -1,23 +1,23 @@
 @interface PKPaymentFetchPassLegalAgreementResponse
-- (PKPaymentFetchPassLegalAgreementResponse)initWithData:(id)a3;
+- (PKPaymentFetchPassLegalAgreementResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentFetchPassLegalAgreementResponse
 
-- (PKPaymentFetchPassLegalAgreementResponse)initWithData:(id)a3
+- (PKPaymentFetchPassLegalAgreementResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKPaymentFetchPassLegalAgreementResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKURLForKey:@"agreementUrl"];
+      v6 = [jSONObject PKURLForKey:@"agreementUrl"];
       agreementUrl = v4->_agreementUrl;
       v4->_agreementUrl = v6;
 

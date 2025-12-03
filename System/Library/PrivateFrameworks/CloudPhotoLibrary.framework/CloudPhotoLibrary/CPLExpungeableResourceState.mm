@@ -1,20 +1,20 @@
 @interface CPLExpungeableResourceState
-+ (id)normalizedExpungeableResourceStatesFromExpungeableResourceStates:(id)a3;
-- (CPLExpungeableResourceState)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)normalizedExpungeableResourceStatesFromExpungeableResourceStates:(id)states;
+- (CPLExpungeableResourceState)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation CPLExpungeableResourceState
 
-+ (id)normalizedExpungeableResourceStatesFromExpungeableResourceStates:(id)a3
++ (id)normalizedExpungeableResourceStatesFromExpungeableResourceStates:(id)states
 {
   v32[16] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  statesCopy = states;
+  v4 = statesCopy;
+  if (statesCopy)
   {
-    if ([v3 count])
+    if ([statesCopy count])
     {
       v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v28 = 0u;
@@ -109,30 +109,30 @@ void __96__CPLExpungeableResourceState_normalizedExpungeableResourceStatesFromEx
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = [CPLResource shortDescriptionForResourceType:[(CPLExpungeableResourceState *)self resourceType]];
-  v6 = [(CPLExpungeableResourceState *)self expungedState];
-  v7 = [(CPLExpungeableResourceState *)self expungedDate];
-  v8 = [v3 stringWithFormat:@"[%@ %@ expungedState: %lu expungedDate: %@]", v4, v5, v6, v7];
+  expungedState = [(CPLExpungeableResourceState *)self expungedState];
+  expungedDate = [(CPLExpungeableResourceState *)self expungedDate];
+  v8 = [v3 stringWithFormat:@"[%@ %@ expungedState: %lu expungedDate: %@]", v4, v5, expungedState, expungedDate];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 cplCopyPropertiesFromObject:self withCopyBlock:0];
   return v4;
 }
 
-- (CPLExpungeableResourceState)initWithCoder:(id)a3
+- (CPLExpungeableResourceState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CPLExpungeableResourceState;
   v5 = [(CPLExpungeableResourceState *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [v5 cplDecodePropertiesFromCoder:v4];
+    [v5 cplDecodePropertiesFromCoder:coderCopy];
   }
 
   return v6;

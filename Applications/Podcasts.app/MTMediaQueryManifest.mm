@@ -1,17 +1,17 @@
 @interface MTMediaQueryManifest
-- (MTMediaQueryManifest)initWithMediaQuery:(id)a3 initialItem:(id)a4;
-- (void)_processResults:(id)a3;
+- (MTMediaQueryManifest)initWithMediaQuery:(id)query initialItem:(id)item;
+- (void)_processResults:(id)results;
 - (void)_updateSortOrder;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
 @end
 
 @implementation MTMediaQueryManifest
 
-- (MTMediaQueryManifest)initWithMediaQuery:(id)a3 initialItem:(id)a4
+- (MTMediaQueryManifest)initWithMediaQuery:(id)query initialItem:(id)item
 {
-  v25 = a3;
-  v23 = a4;
+  queryCopy = query;
+  itemCopy = item;
   v5 = [MTMLMediaItem itemWithMPMediaItem:?];
   v35 = 0;
   v36 = &v35;
@@ -20,25 +20,25 @@
   v39 = sub_10003B4BC;
   v40 = 0;
   v6 = +[MTDB sharedInstance];
-  v7 = [v6 mainOrPrivateContext];
+  mainOrPrivateContext = [v6 mainOrPrivateContext];
 
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1000987DC;
   v31[3] = &unk_1004D87E8;
-  v8 = v7;
+  v8 = mainOrPrivateContext;
   v32 = v8;
   v9 = v5;
   v33 = v9;
   v34 = &v35;
   [v8 performBlockAndWait:v31];
-  v10 = [v25 items];
-  v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
+  items = [queryCopy items];
+  v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(items, "count")}];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = v10;
+  v12 = items;
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v41 count:16];
   if (v13)
   {
@@ -54,8 +54,8 @@
         }
 
         v16 = [MTMLMediaItem itemWithMPMediaItem:*(*(&v27 + 1) + 8 * v15)];
-        v17 = [v16 persistentId];
-        [v11 addObject:v17];
+        persistentId = [v16 persistentId];
+        [v11 addObject:persistentId];
 
         v15 = v15 + 1;
       }
@@ -75,7 +75,7 @@
   v21 = v20;
   if (v20)
   {
-    [(MTMediaQueryManifest *)v20 setQuery:v25];
+    [(MTMediaQueryManifest *)v20 setQuery:queryCopy];
     [(MTMediaQueryManifest *)v21 setPersistentIds:v11];
   }
 
@@ -83,9 +83,9 @@
   return v21;
 }
 
-- (void)_processResults:(id)a3
+- (void)_processResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_alloc_init(NSMutableDictionary);
   [(MTMediaQueryManifest *)self setPidToUuidMapping:v5];
 
@@ -93,7 +93,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -110,10 +110,10 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(MTMediaQueryManifest *)self pidToUuidMapping];
-        v13 = [v11 uuid];
+        pidToUuidMapping = [(MTMediaQueryManifest *)self pidToUuidMapping];
+        uuid = [v11 uuid];
         v14 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v11 persistentID]);
-        [v12 setObject:v13 forKey:v14];
+        [pidToUuidMapping setObject:uuid forKey:v14];
 
         v10 = v10 + 1;
       }
@@ -131,15 +131,15 @@
 - (void)_updateSortOrder
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(MTMediaQueryManifest *)self persistentIds];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  persistentIds = [(MTMediaQueryManifest *)self persistentIds];
+  v5 = [v3 initWithCapacity:{objc_msgSend(persistentIds, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(MTMediaQueryManifest *)self persistentIds];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  persistentIds2 = [(MTMediaQueryManifest *)self persistentIds];
+  v7 = [persistentIds2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -151,12 +151,12 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(persistentIds2);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(MTMediaQueryManifest *)self pidToUuidMapping];
-        v13 = [v12 objectForKey:v11];
+        pidToUuidMapping = [(MTMediaQueryManifest *)self pidToUuidMapping];
+        v13 = [pidToUuidMapping objectForKey:v11];
 
         if (v13)
         {
@@ -167,7 +167,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [persistentIds2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -176,43 +176,43 @@
   [(MTPredicateManifest *)self setExplicitSortOrder:v5];
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 == 2)
+  controllerCopy = controller;
+  objectCopy = object;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if (type == 2)
   {
-    v15 = [(MTMediaQueryManifest *)self pidToUuidMapping];
-    v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 persistentID]);
-    [v15 removeObjectForKey:v16];
+    pidToUuidMapping = [(MTMediaQueryManifest *)self pidToUuidMapping];
+    uuid = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [objectCopy persistentID]);
+    [pidToUuidMapping removeObjectForKey:uuid];
   }
 
   else
   {
-    if (a6 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
 
-    v15 = [(MTMediaQueryManifest *)self pidToUuidMapping];
-    v16 = [v12 uuid];
-    v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v12 persistentID]);
-    v18 = [v17 stringValue];
-    [v15 setValue:v16 forKey:v18];
+    pidToUuidMapping = [(MTMediaQueryManifest *)self pidToUuidMapping];
+    uuid = [objectCopy uuid];
+    v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [objectCopy persistentID]);
+    stringValue = [v17 stringValue];
+    [pidToUuidMapping setValue:uuid forKey:stringValue];
   }
 
 LABEL_6:
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   [(MTMediaQueryManifest *)self _updateSortOrder];
   v5.receiver = self;
   v5.super_class = MTMediaQueryManifest;
-  [(MTPredicateManifest *)&v5 controllerDidChangeContent:v4];
+  [(MTPredicateManifest *)&v5 controllerDidChangeContent:contentCopy];
 }
 
 @end

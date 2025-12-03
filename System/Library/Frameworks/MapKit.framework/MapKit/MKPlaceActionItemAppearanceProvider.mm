@@ -1,24 +1,24 @@
 @interface MKPlaceActionItemAppearanceProvider
-- (BOOL)isDestructiveForDisplayStyle:(unint64_t)a3;
-- (MKPlaceActionItemAppearanceProvider)initWithActionType:(unint64_t)a3 dataProvider:(id)a4;
+- (BOOL)isDestructiveForDisplayStyle:(unint64_t)style;
+- (MKPlaceActionItemAppearanceProvider)initWithActionType:(unint64_t)type dataProvider:(id)provider;
 - (id)_compactTitle;
 - (id)_longTitle;
 - (id)_menuSymbol;
 - (id)_tableCellSymbol;
-- (id)bestSymbolNameForDisplayStyle:(unint64_t)a3;
-- (id)bestTitleForDisplayStyle:(unint64_t)a3;
+- (id)bestSymbolNameForDisplayStyle:(unint64_t)style;
+- (id)bestTitleForDisplayStyle:(unint64_t)style;
 @end
 
 @implementation MKPlaceActionItemAppearanceProvider
 
-- (BOOL)isDestructiveForDisplayStyle:(unint64_t)a3
+- (BOOL)isDestructiveForDisplayStyle:(unint64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     return [(MKPlaceActionItemAppearanceProvider *)self _isDestructiveForMenu];
   }
 
-  if (a3)
+  if (style)
   {
     return 0;
   }
@@ -333,27 +333,27 @@ LABEL_25:
   return result;
 }
 
-- (id)bestSymbolNameForDisplayStyle:(unint64_t)a3
+- (id)bestSymbolNameForDisplayStyle:(unint64_t)style
 {
-  if (a3)
+  if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
-      v3 = [(MKPlaceActionItemAppearanceProvider *)self _menuSymbol];
+      _menuSymbol = [(MKPlaceActionItemAppearanceProvider *)self _menuSymbol];
     }
 
     else
     {
-      v3 = 0;
+      _menuSymbol = 0;
     }
   }
 
   else
   {
-    v3 = [(MKPlaceActionItemAppearanceProvider *)self _tableCellSymbol];
+    _menuSymbol = [(MKPlaceActionItemAppearanceProvider *)self _tableCellSymbol];
   }
 
-  return v3;
+  return _menuSymbol;
 }
 
 - (id)_longTitle
@@ -500,51 +500,51 @@ LABEL_39:
   return v2;
 }
 
-- (id)bestTitleForDisplayStyle:(unint64_t)a3
+- (id)bestTitleForDisplayStyle:(unint64_t)style
 {
-  if (a3)
+  if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
-      v4 = [(MKPlaceActionItemAppearanceProvider *)self _compactTitle];
-      if ([v4 length])
+      _compactTitle = [(MKPlaceActionItemAppearanceProvider *)self _compactTitle];
+      if ([_compactTitle length])
       {
-        v5 = v4;
+        _longTitle = _compactTitle;
       }
 
       else
       {
-        v5 = [(MKPlaceActionItemAppearanceProvider *)self _longTitle];
+        _longTitle = [(MKPlaceActionItemAppearanceProvider *)self _longTitle];
       }
 
-      v6 = v5;
+      _longTitle2 = _longTitle;
     }
 
     else
     {
-      v6 = 0;
+      _longTitle2 = 0;
     }
   }
 
   else
   {
-    v6 = [(MKPlaceActionItemAppearanceProvider *)self _longTitle];
+    _longTitle2 = [(MKPlaceActionItemAppearanceProvider *)self _longTitle];
   }
 
-  return v6;
+  return _longTitle2;
 }
 
-- (MKPlaceActionItemAppearanceProvider)initWithActionType:(unint64_t)a3 dataProvider:(id)a4
+- (MKPlaceActionItemAppearanceProvider)initWithActionType:(unint64_t)type dataProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = MKPlaceActionItemAppearanceProvider;
   v7 = [(MKPlaceActionItemAppearanceProvider *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_actionType = a3;
-    objc_storeWeak(&v7->_dataProvider, v6);
+    v7->_actionType = type;
+    objc_storeWeak(&v7->_dataProvider, providerCopy);
   }
 
   return v8;

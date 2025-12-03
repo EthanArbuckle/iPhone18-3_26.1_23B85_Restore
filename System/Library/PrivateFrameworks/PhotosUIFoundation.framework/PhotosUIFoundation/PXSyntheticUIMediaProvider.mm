@@ -1,34 +1,34 @@
 @interface PXSyntheticUIMediaProvider
 - (PXSyntheticUIMediaProvider)init;
-- (id)_imageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 outInfo:(id *)a7;
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
+- (id)_imageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options outInfo:(id *)info;
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
 @end
 
 @implementation PXSyntheticUIMediaProvider
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  if ([v14 isSynchronous])
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([optionsCopy isSynchronous])
   {
     v32 = 0;
-    v16 = [(PXSyntheticUIMediaProvider *)self _imageForAsset:v13 targetSize:a5 contentMode:v14 options:&v32 outInfo:width, height];
-    v15[2](v15, v16, v32);
+    height = [(PXSyntheticUIMediaProvider *)self _imageForAsset:assetCopy targetSize:mode contentMode:optionsCopy options:&v32 outInfo:width, height];
+    handlerCopy[2](handlerCopy, height, v32);
     v17 = 0;
   }
 
   else
   {
-    v18 = [v14 resultHandlerQueue];
-    v19 = v18;
-    if (v18)
+    resultHandlerQueue = [optionsCopy resultHandlerQueue];
+    v19 = resultHandlerQueue;
+    if (resultHandlerQueue)
     {
-      v20 = v18;
+      v20 = resultHandlerQueue;
     }
 
     else
@@ -37,21 +37,21 @@
       v21 = MEMORY[0x1E69E96A0];
     }
 
-    v22 = [(PXSyntheticUIMediaProvider *)self queue];
+    queue = [(PXSyntheticUIMediaProvider *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __96__PXSyntheticUIMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
     block[3] = &unk_1E7BB7668;
     block[4] = self;
-    v25 = v13;
+    v25 = assetCopy;
     v29 = width;
     v30 = height;
-    v31 = a5;
-    v26 = v14;
+    modeCopy = mode;
+    v26 = optionsCopy;
     v27 = v20;
-    v28 = v15;
-    v16 = v20;
-    dispatch_async(v22, block);
+    v28 = handlerCopy;
+    height = v20;
+    dispatch_async(queue, block);
 
     v17 = 1;
   }
@@ -82,47 +82,47 @@ void __96__PXSyntheticUIMediaProvider_requestImageForAsset_targetSize_contentMod
   dispatch_async(v8, v12);
 }
 
-- (int64_t)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v6 = MEMORY[0x1E695DEF0];
-  v7 = a5;
-  v8 = [v6 data];
-  (*(a5 + 2))(v7, v8, @"dummy", 0, 0);
+  handlerCopy = handler;
+  data = [v6 data];
+  (*(handler + 2))(handlerCopy, data, @"dummy", 0, 0);
 
   return 0;
 }
 
-- (id)_imageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 outInfo:(id *)a7
+- (id)_imageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options outInfo:(id *)info
 {
-  v10 = a3;
-  v11 = a6;
+  assetCopy = asset;
+  optionsCopy = options;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v13 = [v10 uuid];
-  v14 = [(PXSyntheticUIMediaProvider *)self imageCache];
-  v15 = [v14 objectForKey:v13];
+  uuid = [assetCopy uuid];
+  imageCache = [(PXSyntheticUIMediaProvider *)self imageCache];
+  v15 = [imageCache objectForKey:uuid];
 
   if (!v15)
   {
-    [v10 size];
+    [assetCopy size];
     v17 = v16;
     v19 = v18;
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __84__PXSyntheticUIMediaProvider__imageForAsset_targetSize_contentMode_options_outInfo___block_invoke;
     v43[3] = &unk_1E7BB7630;
-    v44 = v10;
+    v44 = assetCopy;
     v20 = PXCreateCGImageWithDrawBlock(0, 0, v43, v17, v19);
     v15 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v20];
     CGImageRelease(v20);
-    v21 = [(PXSyntheticUIMediaProvider *)self imageCache];
-    [v21 setObject:v15 forKey:v13];
+    imageCache2 = [(PXSyntheticUIMediaProvider *)self imageCache];
+    [imageCache2 setObject:v15 forKey:uuid];
   }
 
-  v22 = [v11 loadingMode];
-  if (a7 && v22 == 0x10000)
+  loadingMode = [optionsCopy loadingMode];
+  if (info && loadingMode == 0x10000)
   {
-    v23 = [(PXSyntheticUIMediaProvider *)self urlCache];
-    v24 = [v23 objectForKey:v13];
+    urlCache = [(PXSyntheticUIMediaProvider *)self urlCache];
+    v24 = [urlCache objectForKey:uuid];
 
     if (v24 && ([v24 checkResourceIsReachableAndReturnError:0] & 1) != 0)
     {
@@ -133,11 +133,11 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v40 = v11;
-    v41 = a7;
+    v40 = optionsCopy;
+    infoCopy = info;
     v26 = MEMORY[0x1E696AEC0];
-    v27 = [v10 uuid];
-    v28 = [v26 stringWithFormat:@"%@.jpg", v27];
+    uuid2 = [assetCopy uuid];
+    v28 = [v26 stringWithFormat:@"%@.jpg", uuid2];
 
     v29 = MEMORY[0x1E695DFF8];
     v30 = NSTemporaryDirectory();
@@ -154,10 +154,10 @@ LABEL_14:
       v35 = v42;
       if (v34)
       {
-        v36 = [(PXSyntheticUIMediaProvider *)self urlCache];
-        [v36 setObject:v25 forKey:v13];
-        v11 = v40;
-        a7 = v41;
+        urlCache2 = [(PXSyntheticUIMediaProvider *)self urlCache];
+        [urlCache2 setObject:v25 forKey:uuid];
+        optionsCopy = v40;
+        info = infoCopy;
 LABEL_13:
 
         goto LABEL_14;
@@ -169,10 +169,10 @@ LABEL_13:
       v35 = 0;
     }
 
-    v11 = v40;
-    v36 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXErrorDomain" code:-1 underlyingError:v35 debugDescription:@"Failed to get a URL for a synthetic image"];
-    [v12 setObject:v36 forKeyedSubscript:@"PHImageErrorKey"];
-    a7 = v41;
+    optionsCopy = v40;
+    urlCache2 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXErrorDomain" code:-1 underlyingError:v35 debugDescription:@"Failed to get a URL for a synthetic image"];
+    [v12 setObject:urlCache2 forKeyedSubscript:@"PHImageErrorKey"];
+    info = infoCopy;
     goto LABEL_13;
   }
 
@@ -182,10 +182,10 @@ LABEL_15:
     [v12 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"PHImageResultIsDegradedKey"];
   }
 
-  if (a7)
+  if (info)
   {
     v37 = v12;
-    *a7 = v12;
+    *info = v12;
   }
 
   return v15;
@@ -340,10 +340,10 @@ void __84__PXSyntheticUIMediaProvider__imageForAsset_targetSize_contentMode_opti
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_attr_make_with_qos_class(v6, QOS_CLASS_USER_INITIATED, 0);
-    v8 = dispatch_queue_create(v5, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     queue = v2->_queue;
     v2->_queue = v8;
 

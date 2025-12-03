@@ -1,22 +1,22 @@
 @interface CameraCAFManager
 - (_TtC9CarCamera16CameraCAFManager)init;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
 @end
 
 @implementation CameraCAFManager
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002363C(v4);
+  connectCopy = connect;
+  selfCopy = self;
+  sub_10002363C(connectCopy);
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_1000240D0();
 }
 

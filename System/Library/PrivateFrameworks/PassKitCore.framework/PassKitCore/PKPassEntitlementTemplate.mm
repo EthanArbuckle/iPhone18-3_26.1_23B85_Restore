@@ -3,35 +3,35 @@
 - (NSString)localizedDescription;
 - (NSString)localizedGroup;
 - (NSString)localizedTitle;
-- (PKPassEntitlementTemplate)initWithDictionary:(id)a3 bundle:(id)a4;
-- (id)_stringReplacingPlaceholdersInString:(id)a3 withInserts:(id)a4;
+- (PKPassEntitlementTemplate)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (id)_stringReplacingPlaceholdersInString:(id)string withInserts:(id)inserts;
 - (int64_t)groupRenderingPriority;
 - (unint64_t)displayStyle;
-- (void)setFieldInserts:(id)a3;
+- (void)setFieldInserts:(id)inserts;
 @end
 
 @implementation PKPassEntitlementTemplate
 
-- (PKPassEntitlementTemplate)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKPassEntitlementTemplate)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v12.receiver = self;
   v12.super_class = PKPassEntitlementTemplate;
   v9 = [(PKPassEntitlementTemplate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rawDictionary, a3);
-    objc_storeStrong(&v10->_bundle, a4);
+    objc_storeStrong(&v9->_rawDictionary, dictionary);
+    objc_storeStrong(&v10->_bundle, bundle);
   }
 
   return v10;
 }
 
-- (void)setFieldInserts:(id)a3
+- (void)setFieldInserts:(id)inserts
 {
-  v4 = [a3 copy];
+  v4 = [inserts copy];
   fieldInserts = self->_fieldInserts;
   self->_fieldInserts = v4;
 }
@@ -66,17 +66,17 @@
 - (int64_t)groupRenderingPriority
 {
   v2 = [(NSDictionary *)self->_rawDictionary PKNumberForKey:@"groupRenderingPriority"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)clearGroupWhenSelected
 {
   v2 = [(NSDictionary *)self->_rawDictionary objectForKeyedSubscript:@"clearGroupWhenSelected"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)displayStyle
@@ -87,15 +87,15 @@
   return v3;
 }
 
-- (id)_stringReplacingPlaceholdersInString:(id)a3 withInserts:(id)a4
+- (id)_stringReplacingPlaceholdersInString:(id)string withInserts:(id)inserts
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stringCopy = string;
+  insertsCopy = inserts;
+  if (stringCopy)
   {
-    v40 = v7;
-    v8 = PKLocalizedStringInMobileAssetsStringsBundle(v6, self->_bundle, 0);
+    v40 = insertsCopy;
+    v8 = PKLocalizedStringInMobileAssetsStringsBundle(stringCopy, self->_bundle, 0);
 
     v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v47 = 0;
@@ -131,12 +131,12 @@
               objc_enumerationMutation(obj);
             }
 
-            v20 = [*(*(&v43 + 1) + 8 * v19) range];
-            if (v20 != 0x7FFFFFFFFFFFFFFFLL)
+            range = [*(*(&v43 + 1) + 8 * v19) range];
+            if (range != 0x7FFFFFFFFFFFFFFFLL)
             {
-              v22 = v20;
+              v22 = range;
               v23 = v21;
-              v24 = [v8 substringWithRange:{v17, v20}];
+              v24 = [v8 substringWithRange:{v17, range}];
               v25 = v9;
               [v9 appendString:v24];
 
@@ -194,7 +194,7 @@
 
     v34 = v14;
 
-    v7 = v40;
+    insertsCopy = v40;
   }
 
   else

@@ -1,7 +1,7 @@
 @interface IDSBlastDoorInterface
 - (IDSBlastDoorInterface)init;
-- (void)unpackClientMessage:(id)a3 context:(id)a4 resultHandler:(id)a5;
-- (void)unpackPayloadDictionary:(id)a3 resultHandler:(id)a4;
+- (void)unpackClientMessage:(id)message context:(id)context resultHandler:(id)handler;
+- (void)unpackPayloadDictionary:(id)dictionary resultHandler:(id)handler;
 @end
 
 @implementation IDSBlastDoorInterface
@@ -23,21 +23,21 @@
   return v2;
 }
 
-- (void)unpackPayloadDictionary:(id)a3 resultHandler:(id)a4
+- (void)unpackPayloadDictionary:(id)dictionary resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IDSBlastDoorInterface *)self interface];
-  [v8 unpackPayloadDictionary:v7 resultHandler:v6];
+  handlerCopy = handler;
+  dictionaryCopy = dictionary;
+  interface = [(IDSBlastDoorInterface *)self interface];
+  [interface unpackPayloadDictionary:dictionaryCopy resultHandler:handlerCopy];
 }
 
-- (void)unpackClientMessage:(id)a3 context:(id)a4 resultHandler:(id)a5
+- (void)unpackClientMessage:(id)message context:(id)context resultHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IDSBlastDoorInterface *)self interface];
-  [v11 unpackClientMessage:v10 context:v9 resultHandler:v8];
+  handlerCopy = handler;
+  contextCopy = context;
+  messageCopy = message;
+  interface = [(IDSBlastDoorInterface *)self interface];
+  [interface unpackClientMessage:messageCopy context:contextCopy resultHandler:handlerCopy];
 }
 
 @end

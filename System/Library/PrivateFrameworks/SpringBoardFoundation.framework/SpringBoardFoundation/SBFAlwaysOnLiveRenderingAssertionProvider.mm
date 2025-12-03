@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (BLSBacklightStateObservable)backlight;
 - (SBFAlwaysOnLiveRenderingAssertionProvider)init;
-- (id)_acquireLiveRenderingAssertionForScene:(id)a3 identifier:(id)a4 reason:(id)a5 attributes:(id)a6;
-- (id)acquireLiveRenderingAssertionForFBSScene:(id)a3 reason:(id)a4;
-- (id)acquireLiveRenderingAssertionForUIScene:(id)a3 reason:(id)a4;
+- (id)_acquireLiveRenderingAssertionForScene:(id)scene identifier:(id)identifier reason:(id)reason attributes:(id)attributes;
+- (id)acquireLiveRenderingAssertionForFBSScene:(id)scene reason:(id)reason;
+- (id)acquireLiveRenderingAssertionForUIScene:(id)scene reason:(id)reason;
 - (id)description;
 - (void)invalidateAllAssertions;
 @end
@@ -54,46 +54,46 @@ uint64_t __59__SBFAlwaysOnLiveRenderingAssertionProvider_sharedInstance__block_i
   backlight = self->_backlight;
   if (backlight)
   {
-    v3 = backlight;
+    mEMORY[0x1E698E520] = backlight;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E698E520] sharedBacklight];
+    mEMORY[0x1E698E520] = [MEMORY[0x1E698E520] sharedBacklight];
   }
 
-  return v3;
+  return mEMORY[0x1E698E520];
 }
 
-- (id)acquireLiveRenderingAssertionForUIScene:(id)a3 reason:(id)a4
+- (id)acquireLiveRenderingAssertionForUIScene:(id)scene reason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 _sceneIdentifier];
-  v9 = [[SBFAlwaysOnLiveRenderingBLSAttributesProvider alloc] initWithUIScene:v7];
-  v10 = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self _acquireLiveRenderingAssertionForScene:v7 identifier:v8 reason:v6 attributes:v9];
+  reasonCopy = reason;
+  sceneCopy = scene;
+  _sceneIdentifier = [sceneCopy _sceneIdentifier];
+  v9 = [[SBFAlwaysOnLiveRenderingBLSAttributesProvider alloc] initWithUIScene:sceneCopy];
+  v10 = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self _acquireLiveRenderingAssertionForScene:sceneCopy identifier:_sceneIdentifier reason:reasonCopy attributes:v9];
 
   return v10;
 }
 
-- (id)acquireLiveRenderingAssertionForFBSScene:(id)a3 reason:(id)a4
+- (id)acquireLiveRenderingAssertionForFBSScene:(id)scene reason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identifier];
-  v9 = [[SBFAlwaysOnLiveRenderingBLSAttributesProvider alloc] initWithFBSScene:v7];
-  v10 = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self _acquireLiveRenderingAssertionForScene:v7 identifier:v8 reason:v6 attributes:v9];
+  reasonCopy = reason;
+  sceneCopy = scene;
+  identifier = [sceneCopy identifier];
+  v9 = [[SBFAlwaysOnLiveRenderingBLSAttributesProvider alloc] initWithFBSScene:sceneCopy];
+  v10 = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self _acquireLiveRenderingAssertionForScene:sceneCopy identifier:identifier reason:reasonCopy attributes:v9];
 
   return v10;
 }
 
-- (id)_acquireLiveRenderingAssertionForScene:(id)a3 identifier:(id)a4 reason:(id)a5 attributes:(id)a6
+- (id)_acquireLiveRenderingAssertionForScene:(id)scene identifier:(id)identifier reason:(id)reason attributes:(id)attributes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self _assertionManagerForScene:v10];
+  sceneCopy = scene;
+  identifierCopy = identifier;
+  attributesCopy = attributes;
+  reasonCopy = reason;
+  v14 = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self _assertionManagerForScene:sceneCopy];
   if (v14)
   {
     v15 = v14;
@@ -107,9 +107,9 @@ uint64_t __59__SBFAlwaysOnLiveRenderingAssertionProvider_sharedInstance__block_i
   else
   {
     v17 = [SBFAlwaysOnLiveRenderingAssertionManager alloc];
-    v18 = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self backlight];
-    v19 = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self assertionProvider];
-    v15 = [(SBFAlwaysOnLiveRenderingAssertionManager *)v17 initWithBacklight:v18 assertionProvider:v19 attributesProvider:v12];
+    backlight = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self backlight];
+    assertionProvider = [(SBFAlwaysOnLiveRenderingAssertionProvider *)self assertionProvider];
+    v15 = [(SBFAlwaysOnLiveRenderingAssertionManager *)v17 initWithBacklight:backlight assertionProvider:assertionProvider attributesProvider:attributesCopy];
 
     v20 = SBLogLiveRendering();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -117,10 +117,10 @@ uint64_t __59__SBFAlwaysOnLiveRenderingAssertionProvider_sharedInstance__block_i
       [SBFAlwaysOnLiveRenderingAssertionProvider _acquireLiveRenderingAssertionForScene:identifier:reason:attributes:];
     }
 
-    [(SBFAlwaysOnLiveRenderingAssertionProvider *)self _setAssertionManager:v15 forScene:v10];
+    [(SBFAlwaysOnLiveRenderingAssertionProvider *)self _setAssertionManager:v15 forScene:sceneCopy];
   }
 
-  v21 = [(SBFAlwaysOnLiveRenderingAssertionManager *)v15 acquireLiveRenderingAssertionWithReason:v13];
+  v21 = [(SBFAlwaysOnLiveRenderingAssertionManager *)v15 acquireLiveRenderingAssertionWithReason:reasonCopy];
 
   [(SBFAlwaysOnLiveRenderingAssertionWeakCollection *)self->_assertions addAssertion:v21];
 

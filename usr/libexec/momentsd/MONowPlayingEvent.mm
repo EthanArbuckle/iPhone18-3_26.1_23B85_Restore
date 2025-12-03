@@ -1,66 +1,66 @@
 @interface MONowPlayingEvent
-- (MONowPlayingEvent)initWithNowPlayingEvent:(id)a3 name:(id)a4 isRemote:(BOOL)a5 deviceSource:(id)a6 timestamp:(double)a7;
+- (MONowPlayingEvent)initWithNowPlayingEvent:(id)event name:(id)name isRemote:(BOOL)remote deviceSource:(id)source timestamp:(double)timestamp;
 @end
 
 @implementation MONowPlayingEvent
 
-- (MONowPlayingEvent)initWithNowPlayingEvent:(id)a3 name:(id)a4 isRemote:(BOOL)a5 deviceSource:(id)a6 timestamp:(double)a7
+- (MONowPlayingEvent)initWithNowPlayingEvent:(id)event name:(id)name isRemote:(BOOL)remote deviceSource:(id)source timestamp:(double)timestamp
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  eventCopy = event;
+  nameCopy = name;
+  sourceCopy = source;
   v34.receiver = self;
   v34.super_class = MONowPlayingEvent;
   v15 = [(MONowPlayingEvent *)&v34 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a4);
-    v16->_isRemote = a5;
-    objc_storeStrong(&v16->_deviceSource, a6);
-    v16->_timestamp = a7;
-    v17 = [v12 bundleID];
-    v18 = [v17 isEqualToString:@"com.apple.NanoMusic"];
+    objc_storeStrong(&v15->_name, name);
+    v16->_isRemote = remote;
+    objc_storeStrong(&v16->_deviceSource, source);
+    v16->_timestamp = timestamp;
+    bundleID = [eventCopy bundleID];
+    v18 = [bundleID isEqualToString:@"com.apple.NanoMusic"];
 
     if (v18)
     {
-      v19 = @"com.apple.Music";
+      bundleID2 = @"com.apple.Music";
     }
 
     else
     {
-      v19 = [v12 bundleID];
+      bundleID2 = [eventCopy bundleID];
     }
 
     bundleID = v16->_bundleID;
-    v16->_bundleID = &v19->isa;
+    v16->_bundleID = &bundleID2->isa;
 
-    v21 = [v12 album];
+    album = [eventCopy album];
     album = v16->_album;
-    v16->_album = v21;
+    v16->_album = album;
 
-    v23 = [v12 artist];
+    artist = [eventCopy artist];
     artist = v16->_artist;
-    v16->_artist = v23;
+    v16->_artist = artist;
 
-    v16->_duration = [v12 duration];
-    v25 = [v12 genre];
+    v16->_duration = [eventCopy duration];
+    genre = [eventCopy genre];
     genre = v16->_genre;
-    v16->_genre = v25;
+    v16->_genre = genre;
 
-    v27 = [v12 title];
+    title = [eventCopy title];
     title = v16->_title;
-    v16->_title = v27;
+    v16->_title = title;
 
-    v29 = [v12 mediaType];
+    mediaType = [eventCopy mediaType];
     mediaType = v16->_mediaType;
-    v16->_mediaType = v29;
+    v16->_mediaType = mediaType;
 
-    v31 = [v12 iTunesStoreIdentifier];
+    iTunesStoreIdentifier = [eventCopy iTunesStoreIdentifier];
     iTunesStoreIdentifier = v16->_iTunesStoreIdentifier;
-    v16->_iTunesStoreIdentifier = v31;
+    v16->_iTunesStoreIdentifier = iTunesStoreIdentifier;
 
-    v16->_playbackState = [v12 playbackState];
+    v16->_playbackState = [eventCopy playbackState];
   }
 
   return v16;

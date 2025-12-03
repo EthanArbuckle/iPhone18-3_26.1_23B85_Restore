@@ -1,13 +1,13 @@
 @interface MPAssistantDislikesMediaEntity
-- (void)_performWithCompletion:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantDislikesMediaEntity
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   requestAceHash = self->_requestAceHash;
   userIdentity = self->_userIdentity;
   v8[0] = MEMORY[0x277D85DD0];
@@ -15,19 +15,19 @@
   v8[2] = sub_2334E72B8;
   v8[3] = &unk_2789DB2D8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   sub_233505CB8(@"Dislikes Media Entity", requestAceHash, 22, userIdentity, v8);
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (![(NSString *)self->_requestAceHash length])
   {
-    v5 = [(MPAssistantDislikesMediaEntity *)self aceId];
-    v6 = sub_233505670(@"Dislikes Media Entity", v5);
+    aceId = [(MPAssistantDislikesMediaEntity *)self aceId];
+    v6 = sub_233505670(@"Dislikes Media Entity", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v6;
   }
@@ -42,16 +42,16 @@
   }
 
   v10 = self->_requestAceHash;
-  v11 = [(SAMPDislikesMediaEntity *)self influencedUserSharedUserId];
-  v12 = [(SAMPDislikesMediaEntity *)self influencedUserSharedUserId];
+  influencedUserSharedUserId = [(SAMPDislikesMediaEntity *)self influencedUserSharedUserId];
+  influencedUserSharedUserId2 = [(SAMPDislikesMediaEntity *)self influencedUserSharedUserId];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_2334E7594;
   v15[3] = &unk_2789DB648;
   v15[4] = self;
-  v16 = v4;
-  v13 = v4;
-  sub_233506A24(@"Dislikes Media Entity", v10, v11, v12, v15);
+  v16 = completionCopy;
+  v13 = completionCopy;
+  sub_233506A24(@"Dislikes Media Entity", v10, influencedUserSharedUserId, influencedUserSharedUserId2, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }

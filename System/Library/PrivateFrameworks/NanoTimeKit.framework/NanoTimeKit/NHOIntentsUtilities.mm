@@ -1,24 +1,24 @@
 @interface NHOIntentsUtilities
-+ (id)pickableAccessoryIntentsWithHome:(id)a3 room:(id)a4;
-+ (id)pickableActionSetIntentsWithHome:(id)a3;
-+ (void)pickableElectricityRatesIntentsWithHome:(HMHome *)a3 completionHandler:(id)a4;
-+ (void)pickableElectricityUsageIntentsWithHome:(HMHome *)a3 completionHandler:(id)a4;
-+ (void)pickableEnergyForecastIntentsWithHome:(HMHome *)a3 completionHandler:(id)a4;
++ (id)pickableAccessoryIntentsWithHome:(id)home room:(id)room;
++ (id)pickableActionSetIntentsWithHome:(id)home;
++ (void)pickableElectricityRatesIntentsWithHome:(HMHome *)home completionHandler:(id)handler;
++ (void)pickableElectricityUsageIntentsWithHome:(HMHome *)home completionHandler:(id)handler;
++ (void)pickableEnergyForecastIntentsWithHome:(HMHome *)home completionHandler:(id)handler;
 - (NHOIntentsUtilities)init;
 @end
 
 @implementation NHOIntentsUtilities
 
-+ (void)pickableEnergyForecastIntentsWithHome:(HMHome *)a3 completionHandler:(id)a4
++ (void)pickableEnergyForecastIntentsWithHome:(HMHome *)home completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA2D440);
   MEMORY[0x28223BE20](v7 - 8, v8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = home;
   v13[3] = v12;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = sub_22DCB62BC();
   (*(*(v14 - 8) + 56))(v11, 1, 1, v14);
   v15 = swift_allocObject();
@@ -31,20 +31,20 @@
   v16[3] = 0;
   v16[4] = &unk_22DCEC6A8;
   v16[5] = v15;
-  v17 = a3;
+  homeCopy = home;
   sub_22DC9E89C(0, 0, v11, &unk_22DCEC6B0, v16);
 }
 
-+ (void)pickableElectricityUsageIntentsWithHome:(HMHome *)a3 completionHandler:(id)a4
++ (void)pickableElectricityUsageIntentsWithHome:(HMHome *)home completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA2D440);
   MEMORY[0x28223BE20](v7 - 8, v8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = home;
   v13[3] = v12;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = sub_22DCB62BC();
   (*(*(v14 - 8) + 56))(v11, 1, 1, v14);
   v15 = swift_allocObject();
@@ -57,20 +57,20 @@
   v16[3] = 0;
   v16[4] = &unk_22DCEC688;
   v16[5] = v15;
-  v17 = a3;
+  homeCopy = home;
   sub_22DC9E89C(0, 0, v11, &unk_22DCEC690, v16);
 }
 
-+ (void)pickableElectricityRatesIntentsWithHome:(HMHome *)a3 completionHandler:(id)a4
++ (void)pickableElectricityRatesIntentsWithHome:(HMHome *)home completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA2D440);
   MEMORY[0x28223BE20](v7 - 8, v8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = home;
   v13[3] = v12;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = sub_22DCB62BC();
   (*(*(v14 - 8) + 56))(v11, 1, 1, v14);
   v15 = swift_allocObject();
@@ -83,13 +83,13 @@
   v16[3] = 0;
   v16[4] = &unk_22DCEA300;
   v16[5] = v15;
-  v17 = a3;
+  homeCopy = home;
   sub_22DC9E89C(0, 0, v11, &unk_22DCEC670, v16);
 }
 
-+ (id)pickableActionSetIntentsWithHome:(id)a3
++ (id)pickableActionSetIntentsWithHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   sub_22DCB643C();
 
   sub_22DCB5BBC();
@@ -98,10 +98,10 @@
   return v4;
 }
 
-+ (id)pickableAccessoryIntentsWithHome:(id)a3 room:(id)a4
++ (id)pickableAccessoryIntentsWithHome:(id)home room:(id)room
 {
-  v5 = a3;
-  v6 = a4;
+  homeCopy = home;
+  roomCopy = room;
   sub_22DCB642C();
 
   sub_22DCB5B9C();

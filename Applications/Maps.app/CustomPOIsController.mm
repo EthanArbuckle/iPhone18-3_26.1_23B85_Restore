@@ -1,24 +1,24 @@
 @interface CustomPOIsController
 - (CustomPOIsController)init;
 - (MKMapView)mapView;
-- (id)_injectPersonalizedItem:(id)a3;
+- (id)_injectPersonalizedItem:(id)item;
 - (id)activeInjectedAnnotation;
-- (id)injectPersonalizedItemIfNeeded:(id)a3;
-- (id)injectSearchResult:(id)a3;
-- (id)injectSearchResultIfNeeded:(id)a3;
-- (int64_t)_preferredDisplayedSearchResultTypeWithItems:(id)a3;
-- (void)_addAfterUpdateBlock:(id)a3;
-- (void)_createPOIsForItems:(id)a3;
+- (id)injectPersonalizedItemIfNeeded:(id)needed;
+- (id)injectSearchResult:(id)result;
+- (id)injectSearchResultIfNeeded:(id)needed;
+- (int64_t)_preferredDisplayedSearchResultTypeWithItems:(id)items;
+- (void)_addAfterUpdateBlock:(id)block;
+- (void)_createPOIsForItems:(id)items;
 - (void)clearSearchResultStyle;
-- (void)customFeatureForKey:(id)a3 completion:(id)a4;
-- (void)customFeatureForKeys:(id)a3 completion:(id)a4;
-- (void)customFeatureStore:(id)a3 annotationTextForClusterFeatureCount:(unint64_t)a4 text:(id *)a5 locale:(id *)a6;
+- (void)customFeatureForKey:(id)key completion:(id)completion;
+- (void)customFeatureForKeys:(id)keys completion:(id)completion;
+- (void)customFeatureStore:(id)store annotationTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale;
 - (void)dealloc;
-- (void)personalizedItemManager:(id)a3 didChangeItems:(id)a4 itemGroups:(id)a5;
-- (void)personalizedItemManagerWillChangeItems:(id)a3;
-- (void)setActiveInjectedAnnotation:(id)a3;
-- (void)setMapView:(id)a3;
-- (void)userDefaultsDidChange:(id)a3;
+- (void)personalizedItemManager:(id)manager didChangeItems:(id)items itemGroups:(id)groups;
+- (void)personalizedItemManagerWillChangeItems:(id)items;
+- (void)setActiveInjectedAnnotation:(id)annotation;
+- (void)setMapView:(id)view;
+- (void)userDefaultsDidChange:(id)change;
 @end
 
 @implementation CustomPOIsController
@@ -73,12 +73,12 @@ LABEL_8:
   v2->_clusteringFeaturesStore = v12;
 
   v14 = +[NSLocale currentLocale];
-  v15 = [v14 localeIdentifier];
-  v16 = [v15 componentsSeparatedByString:@"_"];
-  v17 = [v16 firstObject];
-  v18 = [v17 lowercaseString];
+  localeIdentifier = [v14 localeIdentifier];
+  v16 = [localeIdentifier componentsSeparatedByString:@"_"];
+  firstObject = [v16 firstObject];
+  lowercaseString = [firstObject lowercaseString];
   annotationLocale = v2->_annotationLocale;
-  v2->_annotationLocale = v18;
+  v2->_annotationLocale = lowercaseString;
 
   if (![(NSString *)v2->_annotationLocale length])
   {
@@ -142,14 +142,14 @@ LABEL_8:
   return WeakRetained;
 }
 
-- (int64_t)_preferredDisplayedSearchResultTypeWithItems:(id)a3
+- (int64_t)_preferredDisplayedSearchResultTypeWithItems:(id)items
 {
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  itemsCopy = items;
+  v4 = [itemsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -160,7 +160,7 @@ LABEL_8:
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v8 = *(*(&v21 + 1) + 8 * i);
@@ -168,8 +168,8 @@ LABEL_8:
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = [v8 items];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        items = [v8 items];
+        v10 = [items countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -180,19 +180,19 @@ LABEL_8:
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(items);
               }
 
               v14 = *(*(&v17 + 1) + 8 * j);
               if ((objc_opt_respondsToSelector() & 1) != 0 && [v14 preferredDisplayedSearchResultType])
               {
-                v15 = [v14 preferredDisplayedSearchResultType];
+                preferredDisplayedSearchResultType = [v14 preferredDisplayedSearchResultType];
 
                 goto LABEL_20;
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [items countByEnumeratingWithState:&v17 objects:v25 count:16];
             if (v11)
             {
               continue;
@@ -203,8 +203,8 @@ LABEL_8:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
-      v15 = 0;
+      v5 = [itemsCopy countByEnumeratingWithState:&v21 objects:v26 count:16];
+      preferredDisplayedSearchResultType = 0;
     }
 
     while (v5);
@@ -212,20 +212,20 @@ LABEL_8:
 
   else
   {
-    v15 = 0;
+    preferredDisplayedSearchResultType = 0;
   }
 
 LABEL_20:
 
-  return v15;
+  return preferredDisplayedSearchResultType;
 }
 
 - (void)clearSearchResultStyle
 {
-  v3 = [(_MKCustomFeatureStore *)self->_clusteringFeaturesStore allAnnotations];
-  v4 = [v3 count];
-  v5 = sub_1000177D0();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
+  allAnnotations = [(_MKCustomFeatureStore *)self->_clusteringFeaturesStore allAnnotations];
+  v4 = [allAnnotations count];
+  firstObject = sub_1000177D0();
+  v6 = os_log_type_enabled(firstObject, OS_LOG_TYPE_INFO);
   if (v4 != 1)
   {
     if (!v6)
@@ -233,27 +233,27 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v14 = self;
+    selfCopy = self;
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(CustomPOIsController *)v14 performSelector:"accessibilityIdentifier"];
+      v17 = [(CustomPOIsController *)selfCopy performSelector:"accessibilityIdentifier"];
       v18 = v17;
       if (v17 && ![v17 isEqualToString:v16])
       {
-        v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy, v18];
 
         goto LABEL_17;
       }
     }
 
-    v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy];
 LABEL_17:
 
     *buf = 138543362;
-    v21 = v19;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Not clearing search result style, no clustered annotations", buf, 0xCu);
+    v21 = selfCopy;
+    _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_INFO, "[%{public}@] Not clearing search result style, no clustered annotations", buf, 0xCu);
 
     goto LABEL_18;
   }
@@ -263,31 +263,31 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  v7 = self;
+  selfCopy2 = self;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(CustomPOIsController *)v7 performSelector:"accessibilityIdentifier"];
+    v10 = [(CustomPOIsController *)selfCopy2 performSelector:"accessibilityIdentifier"];
     v11 = v10;
     if (v10 && ![v10 isEqualToString:v9])
     {
-      v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy2, v11];
 
       goto LABEL_8;
     }
   }
 
-  v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+  selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy2];
 LABEL_8:
 
   *buf = 138543362;
-  v21 = v12;
-  _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}@] Clearing search result style", buf, 0xCu);
+  v21 = selfCopy2;
+  _os_log_impl(&_mh_execute_header, firstObject, OS_LOG_TYPE_INFO, "[%{public}@] Clearing search result style", buf, 0xCu);
 
 LABEL_9:
-  v5 = [v3 firstObject];
-  if ([v5 isLabelPOI])
+  firstObject = [allAnnotations firstObject];
+  if ([firstObject isLabelPOI])
   {
     self->_regionSearchResultCleared = 1;
     WeakRetained = objc_loadWeakRetained(&self->_mapView);
@@ -297,10 +297,10 @@ LABEL_9:
 LABEL_18:
 }
 
-- (void)setActiveInjectedAnnotation:(id)a3
+- (void)setActiveInjectedAnnotation:(id)annotation
 {
-  v4 = a3;
-  v3 = v4;
+  annotationCopy = annotation;
+  v3 = annotationCopy;
   geo_isolate_sync();
 }
 
@@ -319,11 +319,11 @@ LABEL_18:
   return v2;
 }
 
-- (id)_injectPersonalizedItem:(id)a3
+- (id)_injectPersonalizedItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [PersonalizedCompoundItem alloc];
-  v24 = v4;
+  v24 = itemCopy;
   v6 = [NSArray arrayWithObjects:&v24 count:1];
   v7 = [(PersonalizedCompoundItem *)v5 initWithItems:v6];
 
@@ -332,26 +332,26 @@ LABEL_18:
   v9 = sub_1000177D0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = self;
+    selfCopy = self;
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(CustomPOIsController *)v10 performSelector:"accessibilityIdentifier"];
+      v13 = [(CustomPOIsController *)selfCopy performSelector:"accessibilityIdentifier"];
       v14 = v13;
       if (v13 && ![v13 isEqualToString:v12])
       {
-        v15 = [NSString stringWithFormat:@"%@<%p, %@>", v12, v10, v14];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v12, selfCopy, v14];
 
         goto LABEL_7;
       }
     }
 
-    v15 = [NSString stringWithFormat:@"%@<%p>", v12, v10];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v12, selfCopy];
 LABEL_7:
 
     *buf = 138543618;
-    v21 = v15;
+    v21 = selfCopy;
     v22 = 2080;
     v23 = "[CustomPOIsController _injectPersonalizedItem:]";
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}@] %s: Adding new annotation", buf, 0x16u);
@@ -365,20 +365,20 @@ LABEL_7:
   return v8;
 }
 
-- (id)injectSearchResult:(id)a3
+- (id)injectSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [(SearchResultMapItemBase *)[SearchResultMapItem alloc] initWithSearchResult:v4];
+  resultCopy = result;
+  v5 = [(SearchResultMapItemBase *)[SearchResultMapItem alloc] initWithSearchResult:resultCopy];
 
   v6 = [(CustomPOIsController *)self _injectPersonalizedItem:v5];
 
   return v6;
 }
 
-- (id)injectSearchResultIfNeeded:(id)a3
+- (id)injectSearchResultIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(SearchResultMapItemBase *)[SearchResultMapItem alloc] initWithSearchResult:v4];
+  neededCopy = needed;
+  v5 = [(SearchResultMapItemBase *)[SearchResultMapItem alloc] initWithSearchResult:neededCopy];
 
   if (v5)
   {
@@ -389,10 +389,10 @@ LABEL_7:
   v7 = sub_1000177D0();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    v8 = self;
-    if (!v8)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v13 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_12;
     }
 
@@ -400,22 +400,22 @@ LABEL_7:
     v10 = NSStringFromClass(v9);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(CustomPOIsController *)v8 performSelector:"accessibilityIdentifier"];
+      v11 = [(CustomPOIsController *)selfCopy performSelector:"accessibilityIdentifier"];
       v12 = v11;
       if (v11 && ![v11 isEqualToString:v10])
       {
-        v13 = [NSString stringWithFormat:@"%@<%p, %@>", v10, v8, v12];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v10, selfCopy, v12];
 
         goto LABEL_10;
       }
     }
 
-    v13 = [NSString stringWithFormat:@"%@<%p>", v10, v8];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v10, selfCopy];
 LABEL_10:
 
 LABEL_12:
     *buf = 138543618;
-    v16 = v13;
+    v16 = selfCopy;
     v17 = 2080;
     v18 = "[CustomPOIsController injectSearchResultIfNeeded:]";
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "[%{public}@] %s: Failed to create PersonalizedItem item", buf, 0x16u);
@@ -427,11 +427,11 @@ LABEL_14:
   return v6;
 }
 
-- (id)injectPersonalizedItemIfNeeded:(id)a3
+- (id)injectPersonalizedItemIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  neededCopy = needed;
+  v5 = neededCopy;
+  if (!neededCopy)
   {
     v20 = sub_1000177D0();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -442,10 +442,10 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v21 = self;
-    if (!v21)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v26 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_28;
     }
 
@@ -453,22 +453,22 @@ LABEL_29:
     v23 = NSStringFromClass(v22);
     if (objc_opt_respondsToSelector())
     {
-      v24 = [(CustomPOIsController *)v21 performSelector:"accessibilityIdentifier"];
+      v24 = [(CustomPOIsController *)selfCopy performSelector:"accessibilityIdentifier"];
       v25 = v24;
       if (v24 && ![v24 isEqualToString:v23])
       {
-        v26 = [NSString stringWithFormat:@"%@<%p, %@>", v23, v21, v25];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v23, selfCopy, v25];
 
         goto LABEL_26;
       }
     }
 
-    v26 = [NSString stringWithFormat:@"%@<%p>", v23, v21];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v23, selfCopy];
 LABEL_26:
 
 LABEL_28:
     *buf = 138543618;
-    v34 = v26;
+    v34 = selfCopy;
     v35 = 2080;
     v36 = "[CustomPOIsController injectPersonalizedItemIfNeeded:]";
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "[%{public}@] %s: item provided to inject in nil", buf, 0x16u);
@@ -480,8 +480,8 @@ LABEL_28:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [v4 keys];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  keys = [neededCopy keys];
+  v7 = [keys countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v7)
   {
     goto LABEL_10;
@@ -495,7 +495,7 @@ LABEL_28:
     {
       if (*v29 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(keys);
       }
 
       v11 = [(NSDictionary *)self->_customPOIs objectForKeyedSubscript:*(*(&v28 + 1) + 8 * i)];
@@ -510,26 +510,26 @@ LABEL_18:
           goto LABEL_30;
         }
 
-        v14 = self;
+        selfCopy2 = self;
         v15 = objc_opt_class();
         v16 = NSStringFromClass(v15);
         if (objc_opt_respondsToSelector())
         {
-          v17 = [(CustomPOIsController *)v14 performSelector:"accessibilityIdentifier"];
+          v17 = [(CustomPOIsController *)selfCopy2 performSelector:"accessibilityIdentifier"];
           v18 = v17;
           if (v17 && ![v17 isEqualToString:v16])
           {
-            v19 = [NSString stringWithFormat:@"%@<%p, %@>", v16, v14, v18];
+            selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v16, selfCopy2, v18];
 
             goto LABEL_17;
           }
         }
 
-        v19 = [NSString stringWithFormat:@"%@<%p>", v16, v14];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v16, selfCopy2];
 LABEL_17:
 
         *buf = 138543618;
-        v34 = v19;
+        v34 = selfCopy2;
         v35 = 2080;
         v36 = "[CustomPOIsController injectPersonalizedItemIfNeeded:]";
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%{public}@] %s: Using cached annotation", buf, 0x16u);
@@ -538,7 +538,7 @@ LABEL_17:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v8 = [keys countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v8)
     {
       continue;
@@ -555,9 +555,9 @@ LABEL_30:
   return v12;
 }
 
-- (void)_createPOIsForItems:(id)a3
+- (void)_createPOIsForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
 
   if (!WeakRetained)
@@ -570,10 +570,10 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v24 = self;
-    if (!v24)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v29 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_22;
     }
 
@@ -581,22 +581,22 @@ LABEL_23:
     v26 = NSStringFromClass(v25);
     if (objc_opt_respondsToSelector())
     {
-      v27 = [(CustomPOIsController *)v24 performSelector:"accessibilityIdentifier"];
+      v27 = [(CustomPOIsController *)selfCopy performSelector:"accessibilityIdentifier"];
       v28 = v27;
       if (v27 && ![v27 isEqualToString:v26])
       {
-        v29 = [NSString stringWithFormat:@"%@<%p, %@>", v26, v24, v28];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v26, selfCopy, v28];
 
         goto LABEL_20;
       }
     }
 
-    v29 = [NSString stringWithFormat:@"%@<%p>", v26, v24];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v26, selfCopy];
 LABEL_20:
 
 LABEL_22:
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v29;
+    *(&buf + 4) = selfCopy;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "[%{public}@] Cannot create POIs, no map view", &buf, 0xCu);
 
     goto LABEL_23;
@@ -640,36 +640,36 @@ LABEL_22:
     goto LABEL_12;
   }
 
-  v11 = self;
+  selfCopy2 = self;
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(CustomPOIsController *)v11 performSelector:"accessibilityIdentifier"];
+    v14 = [(CustomPOIsController *)selfCopy2 performSelector:"accessibilityIdentifier"];
     v15 = v14;
     if (v14 && ([v14 isEqualToString:v13] & 1) == 0)
     {
-      v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+      selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy2, v15];
 
       goto LABEL_11;
     }
   }
 
-  v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+  selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy2];
 LABEL_11:
 
   v17 = *(v40 + 6);
   *v43 = 138543874;
-  v44 = v16;
+  v44 = selfCopy2;
   v45 = 2112;
-  v46 = v4;
+  v46 = itemsCopy;
   v47 = 1024;
   v48 = v17;
   _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] Creating POIs for items: %@ with counter: %d", v43, 0x1Cu);
 
 LABEL_12:
   v18 = objc_loadWeakRetained(&self->_mapView);
-  v19 = [v18 _calloutShowAnimationGroup];
+  _calloutShowAnimationGroup = [v18 _calloutShowAnimationGroup];
 
   objc_initWeak(v43, self);
   calculationQueue = self->_calculationQueue;
@@ -680,11 +680,11 @@ LABEL_12:
   objc_copyWeak(&v37, v43);
   v31 = v6;
   p_buf = &buf;
-  v32 = v4;
-  v33 = v19;
+  v32 = itemsCopy;
+  v33 = _calloutShowAnimationGroup;
   v36 = &v39;
-  v34 = self;
-  v21 = v19;
+  selfCopy3 = self;
+  v21 = _calloutShowAnimationGroup;
   v22 = v6;
   dispatch_async(calculationQueue, v30);
 
@@ -696,19 +696,19 @@ LABEL_12:
 LABEL_24:
 }
 
-- (void)personalizedItemManager:(id)a3 didChangeItems:(id)a4 itemGroups:(id)a5
+- (void)personalizedItemManager:(id)manager didChangeItems:(id)items itemGroups:(id)groups
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100F4C094;
   v6[3] = &unk_101661A90;
   v6[4] = self;
-  v7 = a4;
-  v5 = v7;
+  itemsCopy = items;
+  v5 = itemsCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)personalizedItemManagerWillChangeItems:(id)a3
+- (void)personalizedItemManagerWillChangeItems:(id)items
 {
   lock = self->_lock;
   block[0] = _NSConcreteStackBlock;
@@ -719,18 +719,18 @@ LABEL_24:
   dispatch_sync(lock, block);
 }
 
-- (void)customFeatureStore:(id)a3 annotationTextForClusterFeatureCount:(unint64_t)a4 text:(id *)a5 locale:(id *)a6
+- (void)customFeatureStore:(id)store annotationTextForClusterFeatureCount:(unint64_t)count text:(id *)text locale:(id *)locale
 {
-  if (self->_clusteringFeaturesStore == a3)
+  if (self->_clusteringFeaturesStore == store)
   {
     v10 = +[NSUserDefaults standardUserDefaults];
     v11 = [v10 BOOLForKey:@"__personalizedMapsShowClusterCountInSubtitle"];
 
-    if (a5 && v11)
+    if (text && v11)
     {
-      if (a4)
+      if (count)
       {
-        v12 = (a4 - 1);
+        v12 = (count - 1);
       }
 
       else
@@ -742,27 +742,27 @@ LABEL_24:
       v14 = [v13 localizedStringForKey:@"Search result cluster subtitle" value:@"localized string not found" table:0];
 
       v15 = [NSString localizedStringWithFormat:v14, v12];
-      *a5 = v15;
+      *text = v15;
     }
 
-    if (a6)
+    if (locale)
     {
-      *a6 = self->_annotationLocale;
+      *locale = self->_annotationLocale;
     }
   }
 }
 
-- (void)_addAfterUpdateBlock:(id)a3
+- (void)_addAfterUpdateBlock:(id)block
 {
   afterUpdateBlocks = self->_afterUpdateBlocks;
-  v4 = [a3 copy];
+  v4 = [block copy];
   [(NSMutableArray *)afterUpdateBlocks addObject:v4];
 }
 
-- (void)customFeatureForKeys:(id)a3 completion:(id)a4
+- (void)customFeatureForKeys:(id)keys completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v17 = 0;
   v18 = &v17;
@@ -774,9 +774,9 @@ LABEL_24:
   v13[2] = sub_100F4C4DC;
   v13[3] = &unk_10165DEA0;
   objc_copyWeak(&v16, &location);
-  v8 = v6;
+  v8 = keysCopy;
   v14 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v15 = v9;
   v22 = objc_retainBlock(v13);
   lock = self->_lock;
@@ -799,10 +799,10 @@ LABEL_24:
   objc_destroyWeak(&location);
 }
 
-- (void)customFeatureForKey:(id)a3 completion:(id)a4
+- (void)customFeatureForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
-  v7 = [NSSet setWithObject:a3];
+  completionCopy = completion;
+  v7 = [NSSet setWithObject:key];
   v8 = v7;
   if (v7)
   {
@@ -816,10 +816,10 @@ LABEL_24:
 
   v10 = v9;
 
-  [(CustomPOIsController *)self customFeatureForKeys:v10 completion:v6];
+  [(CustomPOIsController *)self customFeatureForKeys:v10 completion:completionCopy];
 }
 
-- (void)userDefaultsDidChange:(id)a3
+- (void)userDefaultsDidChange:(id)change
 {
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 BOOLForKey:@"__personalizedMapsInjectedPOIsLookLikeAirports"];
@@ -856,12 +856,12 @@ LABEL_24:
   }
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
     v6 = sub_1000177D0();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -874,8 +874,8 @@ LABEL_12:
       v14 = objc_loadWeakRetained(&self->_mapView);
       [v14 _removeCustomFeatureDataSource:self->_clusteringFeaturesStore];
 
-      v15 = objc_storeWeak(&self->_mapView, v4);
-      [v4 _addCustomFeatureDataSource:self->_customFeaturesStore];
+      v15 = objc_storeWeak(&self->_mapView, viewCopy);
+      [viewCopy _addCustomFeatureDataSource:self->_customFeaturesStore];
 
       v16 = objc_loadWeakRetained(&self->_mapView);
       [v16 _addCustomFeatureDataSource:self->_clusteringFeaturesStore];
@@ -883,10 +883,10 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v7 = self;
-    if (!v7)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v12 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_11;
     }
 
@@ -894,24 +894,24 @@ LABEL_12:
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CustomPOIsController *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CustomPOIsController *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_9;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_9:
 
 LABEL_11:
     *buf = 138543618;
-    v18 = v12;
+    v18 = selfCopy;
     v19 = 2112;
-    v20 = v4;
+    v20 = viewCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}@] Got a new map view: %@", buf, 0x16u);
 
     goto LABEL_12;
@@ -925,10 +925,10 @@ LABEL_13:
   v3 = sub_1000177D0();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = self;
-    if (!v4)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v9 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_10;
     }
 
@@ -936,22 +936,22 @@ LABEL_13:
     v6 = NSStringFromClass(v5);
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(CustomPOIsController *)v4 performSelector:"accessibilityIdentifier"];
+      v7 = [(CustomPOIsController *)selfCopy performSelector:"accessibilityIdentifier"];
       v8 = v7;
       if (v7 && ![v7 isEqualToString:v6])
       {
-        v9 = [NSString stringWithFormat:@"%@<%p, %@>", v6, v4, v8];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v6, selfCopy, v8];
 
         goto LABEL_8;
       }
     }
 
-    v9 = [NSString stringWithFormat:@"%@<%p>", v6, v4];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v6, selfCopy];
 LABEL_8:
 
 LABEL_10:
     *buf = 138543362;
-    v12 = v9;
+    v12 = selfCopy;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}@] Deallocing", buf, 0xCu);
   }
 

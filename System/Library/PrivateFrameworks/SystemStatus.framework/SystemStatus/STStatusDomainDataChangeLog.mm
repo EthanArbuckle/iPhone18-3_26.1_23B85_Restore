@@ -1,31 +1,31 @@
 @interface STStatusDomainDataChangeLog
 - (BSIntegerSet)domainsWithData;
-- (STStatusDomainDataChangeLog)initWithRecordKeys:(id)a3;
-- (id)currentDataForDomain:(unint64_t)a3;
-- (id)recordForKey:(id)a3;
+- (STStatusDomainDataChangeLog)initWithRecordKeys:(id)keys;
+- (id)currentDataForDomain:(unint64_t)domain;
+- (id)recordForKey:(id)key;
 @end
 
 @implementation STStatusDomainDataChangeLog
 
-- (STStatusDomainDataChangeLog)initWithRecordKeys:(id)a3
+- (STStatusDomainDataChangeLog)initWithRecordKeys:(id)keys
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v24.receiver = self;
   v24.super_class = STStatusDomainDataChangeLog;
   v5 = [(STStatusDomainDataChangeLog *)&v24 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [keysCopy copy];
     sortedRecordKeys = v5->_sortedRecordKeys;
     v5->_sortedRecordKeys = v6;
 
-    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(keysCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v4;
+    v9 = keysCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v10)
     {
@@ -94,7 +94,7 @@ void __46__STStatusDomainDataChangeLog_domainsWithData__block_invoke(uint64_t a1
   [v4 enumerateWithBlock:v5];
 }
 
-- (id)currentDataForDomain:(unint64_t)a3
+- (id)currentDataForDomain:(unint64_t)domain
 {
   if (self)
   {
@@ -131,7 +131,7 @@ void __46__STStatusDomainDataChangeLog_domainsWithData__block_invoke(uint64_t a1
   v9 = v6;
   v13 = v9;
   v14 = &v16;
-  v15 = a3;
+  domainCopy = domain;
   [(NSOrderedSet *)v8 enumerateObjectsWithOptions:2 usingBlock:v12];
 
   v10 = v17[5];
@@ -154,14 +154,14 @@ void __52__STStatusDomainDataChangeLog_currentDataForDomain___block_invoke(uint6
   }
 }
 
-- (id)recordForKey:(id)a3
+- (id)recordForKey:(id)key
 {
   if (self)
   {
     self = self->_recordsByKey;
   }
 
-  return [(STStatusDomainDataChangeLog *)self objectForKey:a3];
+  return [(STStatusDomainDataChangeLog *)self objectForKey:key];
 }
 
 @end

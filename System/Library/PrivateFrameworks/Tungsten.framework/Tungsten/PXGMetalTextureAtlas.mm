@@ -1,38 +1,38 @@
 @interface PXGMetalTextureAtlas
-+ (unsigned)maxCapacityForThumbnailSize:(CGSize)a3 pixelFormat:(unint64_t)a4;
-- (BOOL)containsSpriteIndex:(unsigned int)a3;
++ (unsigned)maxCapacityForThumbnailSize:(CGSize)size pixelFormat:(unint64_t)format;
+- (BOOL)containsSpriteIndex:(unsigned int)index;
 - (CGSize)pixelSize;
 - (CGSize)thumbnailSize;
 - (NSIndexSet)renderedSpriteIndexes;
 - (NSIndexSet)thumbnailIndexesUsedBySprites;
 - (NSString)description;
 - (PXGMetalTextureAtlas)init;
-- (PXGMetalTextureAtlas)initWithThumbnailSize:(CGSize)a3 pixelFormat:(unint64_t)a4 capacity:(unsigned int)a5 mipmapped:(BOOL)a6 colorProgram:(id)a7 context:(id)a8 layoutQueue:(id)a9;
+- (PXGMetalTextureAtlas)initWithThumbnailSize:(CGSize)size pixelFormat:(unint64_t)format capacity:(unsigned int)capacity mipmapped:(BOOL)mipmapped colorProgram:(id)program context:(id)context layoutQueue:(id)queue;
 - (PXGMetalTextureAtlasDelegate)delegate;
-- (id)getAndClearDirtySpriteIndexesIntersectingSet:(id)a3;
+- (id)getAndClearDirtySpriteIndexesIntersectingSet:(id)set;
 - (unsigned)_syncQueue_checkoutNextThumbnailIndex;
 - (unsigned)spriteCount;
 - (void)_checkinPendingThumbnailIndexesIfNeeded;
 - (void)_invalidateRenderedSpriteIndexes;
-- (void)_syncQueue_checkinThumbnailIndex:(unsigned int)a3;
-- (void)_syncQueue_releaseThumbnailAtIndex:(int64_t)a3;
-- (void)_syncQueue_releaseThumbnailsAtIndexes:(id)a3;
+- (void)_syncQueue_checkinThumbnailIndex:(unsigned int)index;
+- (void)_syncQueue_releaseThumbnailAtIndex:(int64_t)index;
+- (void)_syncQueue_releaseThumbnailsAtIndexes:(id)indexes;
 - (void)_syncQueue_resizeStorageIfNeeded;
-- (void)_syncQueue_retainThumbnailsAtIndexes:(id)a3;
-- (void)addSpriteWithTextureRequestID:(int)a3 deliveryOrder:(unsigned int)a4;
-- (void)addSpriteWithTextureRequestID:(int)a3 thumbnailData:(id)a4 size:(CGSize)a5 bytesPerRow:(unint64_t)a6 contentsRect:(CGRect)a7;
-- (void)applyChangeDetails:(id)a3;
-- (void)cleanupAfterRender:(int64_t)a3;
+- (void)_syncQueue_retainThumbnailsAtIndexes:(id)indexes;
+- (void)addSpriteWithTextureRequestID:(int)d deliveryOrder:(unsigned int)order;
+- (void)addSpriteWithTextureRequestID:(int)d thumbnailData:(id)data size:(CGSize)size bytesPerRow:(unint64_t)row contentsRect:(CGRect)rect;
+- (void)applyChangeDetails:(id)details;
+- (void)cleanupAfterRender:(int64_t)render;
 - (void)dealloc;
-- (void)enumerateSpriteIndexes:(id)a3;
-- (void)getSpriteIndexes:(unsigned int *)a3 maxSpriteCount:(unsigned int)a4;
-- (void)getTextureInfos:(id *)a3 forSpriteIndexes:(const unsigned int *)a4 geometries:(id *)a5 spriteStyles:(id *)a6 spriteInfos:(id *)a7 screenScale:(double)a8 count:(unsigned int)a9;
-- (void)prepareForRender:(int64_t)a3;
-- (void)processPendingTextureRequestIDsWithHandler:(id)a3;
-- (void)processPendingThumbnailRequestIDsWithHandler:(id)a3;
-- (void)removeSpriteIndex:(unsigned int)a3;
-- (void)removeSpriteIndex:(unsigned int)a3 atThumbnailIndex:(unsigned int)a4;
-- (void)setSkipRenderSpriteIndexes:(id)a3;
+- (void)enumerateSpriteIndexes:(id)indexes;
+- (void)getSpriteIndexes:(unsigned int *)indexes maxSpriteCount:(unsigned int)count;
+- (void)getTextureInfos:(id *)infos forSpriteIndexes:(const unsigned int *)indexes geometries:(id *)geometries spriteStyles:(id *)styles spriteInfos:(id *)spriteInfos screenScale:(double)scale count:(unsigned int)count;
+- (void)prepareForRender:(int64_t)render;
+- (void)processPendingTextureRequestIDsWithHandler:(id)handler;
+- (void)processPendingThumbnailRequestIDsWithHandler:(id)handler;
+- (void)removeSpriteIndex:(unsigned int)index;
+- (void)removeSpriteIndex:(unsigned int)index atThumbnailIndex:(unsigned int)thumbnailIndex;
+- (void)setSkipRenderSpriteIndexes:(id)indexes;
 @end
 
 @implementation PXGMetalTextureAtlas
@@ -80,8 +80,8 @@
 
 - (unsigned)spriteCount
 {
-  v2 = [(PXGMetalTextureAtlas *)self renderedSpriteIndexes];
-  v3 = [v2 count];
+  renderedSpriteIndexes = [(PXGMetalTextureAtlas *)self renderedSpriteIndexes];
+  v3 = [renderedSpriteIndexes count];
 
   return v3;
 }
@@ -92,8 +92,8 @@
   if (!renderedSpriteIndexes)
   {
     v4 = [(NSMutableIndexSet *)self->_spriteIndexesUsedBySprites mutableCopy];
-    v5 = [(PXGMetalTextureAtlas *)self skipRenderSpriteIndexes];
-    [(NSIndexSet *)v4 removeIndexes:v5];
+    skipRenderSpriteIndexes = [(PXGMetalTextureAtlas *)self skipRenderSpriteIndexes];
+    [(NSIndexSet *)v4 removeIndexes:skipRenderSpriteIndexes];
 
     v6 = self->_renderedSpriteIndexes;
     self->_renderedSpriteIndexes = v4;
@@ -108,10 +108,10 @@
 {
   dispatch_assert_queue_V2(self->_syncQueue);
   atomic_fetch_add(&self->_count, 1u);
-  v3 = [(NSMutableIndexSet *)self->_syncQueue_availableThumbnailIndexes firstIndex];
-  [(NSMutableIndexSet *)self->_syncQueue_availableThumbnailIndexes removeIndex:v3];
-  [(PXGMetalTextureAtlas *)self _syncQueue_retainThumbnailAtIndex:v3];
-  return v3;
+  firstIndex = [(NSMutableIndexSet *)self->_syncQueue_availableThumbnailIndexes firstIndex];
+  [(NSMutableIndexSet *)self->_syncQueue_availableThumbnailIndexes removeIndex:firstIndex];
+  [(PXGMetalTextureAtlas *)self _syncQueue_retainThumbnailAtIndex:firstIndex];
+  return firstIndex;
 }
 
 - (NSIndexSet)thumbnailIndexesUsedBySprites
@@ -137,14 +137,14 @@
   return result;
 }
 
-- (void)_syncQueue_checkinThumbnailIndex:(unsigned int)a3
+- (void)_syncQueue_checkinThumbnailIndex:(unsigned int)index
 {
   dispatch_assert_queue_V2(self->_syncQueue);
 
-  [(PXGMetalTextureAtlas *)self _syncQueue_releaseThumbnailAtIndex:a3];
+  [(PXGMetalTextureAtlas *)self _syncQueue_releaseThumbnailAtIndex:index];
 }
 
-- (void)cleanupAfterRender:(int64_t)a3
+- (void)cleanupAfterRender:(int64_t)render
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -152,7 +152,7 @@
   block[2] = __43__PXGMetalTextureAtlas_cleanupAfterRender___block_invoke;
   block[3] = &unk_2782AA258;
   block[4] = self;
-  block[5] = a3;
+  block[5] = render;
   block[6] = a2;
   dispatch_async(syncQueue, block);
 }
@@ -170,19 +170,19 @@ void __43__PXGMetalTextureAtlas_cleanupAfterRender___block_invoke(uint64_t a1)
   [*(a1 + 32) _syncQueue_releaseThumbnailsAtIndexes:v6];
 }
 
-- (void)prepareForRender:(int64_t)a3
+- (void)prepareForRender:(int64_t)render
 {
-  v6 = [(PXGMetalTextureAtlas *)self thumbnailIndexesUsedBySprites];
+  thumbnailIndexesUsedBySprites = [(PXGMetalTextureAtlas *)self thumbnailIndexesUsedBySprites];
   syncQueue = self->_syncQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __41__PXGMetalTextureAtlas_prepareForRender___block_invoke;
   v9[3] = &unk_2782AA230;
-  v11 = a3;
+  renderCopy = render;
   v12 = a2;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = thumbnailIndexesUsedBySprites;
+  v8 = thumbnailIndexesUsedBySprites;
   dispatch_async(syncQueue, v9);
 }
 
@@ -201,56 +201,56 @@ uint64_t __41__PXGMetalTextureAtlas_prepareForRender___block_invoke(void *a1)
 
 - (CGSize)pixelSize
 {
-  v3 = [(MTLTexture *)self->_texture width];
-  v4 = [(MTLTexture *)self->_texture height];
-  v5 = v3;
-  result.height = v4;
+  width = [(MTLTexture *)self->_texture width];
+  height = [(MTLTexture *)self->_texture height];
+  v5 = width;
+  result.height = height;
   result.width = v5;
   return result;
 }
 
-- (void)removeSpriteIndex:(unsigned int)a3
+- (void)removeSpriteIndex:(unsigned int)index
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:661 description:{@"%@ is not available on %@, use the thumbnail variant", v6, self}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:661 description:{@"%@ is not available on %@, use the thumbnail variant", v6, self}];
 
   abort();
 }
 
-- (void)processPendingTextureRequestIDsWithHandler:(id)a3
+- (void)processPendingTextureRequestIDsWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  handlerCopy = handler;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:657 description:{@"%@ is not available on %@, use the thumbnail variant", v7, self}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:657 description:{@"%@ is not available on %@, use the thumbnail variant", v7, self}];
 
   abort();
 }
 
-- (void)addSpriteWithTextureRequestID:(int)a3 deliveryOrder:(unsigned int)a4
+- (void)addSpriteWithTextureRequestID:(int)d deliveryOrder:(unsigned int)order
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(a2);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:653 description:{@"%@ is not available on %@, use the thumbnail variant", v7, self}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:653 description:{@"%@ is not available on %@, use the thumbnail variant", v7, self}];
 
   abort();
 }
 
-- (BOOL)containsSpriteIndex:(unsigned int)a3
+- (BOOL)containsSpriteIndex:(unsigned int)index
 {
-  v4 = [(PXGMetalTextureAtlas *)self renderedSpriteIndexes];
-  LOBYTE(a3) = [v4 containsIndex:a3];
+  renderedSpriteIndexes = [(PXGMetalTextureAtlas *)self renderedSpriteIndexes];
+  LOBYTE(index) = [renderedSpriteIndexes containsIndex:index];
 
-  return a3;
+  return index;
 }
 
-- (void)getTextureInfos:(id *)a3 forSpriteIndexes:(const unsigned int *)a4 geometries:(id *)a5 spriteStyles:(id *)a6 spriteInfos:(id *)a7 screenScale:(double)a8 count:(unsigned int)a9
+- (void)getTextureInfos:(id *)infos forSpriteIndexes:(const unsigned int *)indexes geometries:(id *)geometries spriteStyles:(id *)styles spriteInfos:(id *)spriteInfos screenScale:(double)scale count:(unsigned int)count
 {
-  if ([(PXGMetalTextureAtlas *)self spriteCount:a3]< a9)
+  if ([(PXGMetalTextureAtlas *)self spriteCount:infos]< count)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:623 description:{@"Invalid parameter not satisfying: %@", @"count <= self.spriteCount"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:623 description:{@"Invalid parameter not satisfying: %@", @"count <= self.spriteCount"}];
   }
 
   guarded_textureInfoByThumbnailIndex = self->_guarded_textureInfoByThumbnailIndex;
@@ -265,11 +265,11 @@ uint64_t __41__PXGMetalTextureAtlas_prepareForRender___block_invoke(void *a1)
   v18[2] = __111__PXGMetalTextureAtlas_getTextureInfos_forSpriteIndexes_geometries_spriteStyles_spriteInfos_screenScale_count___block_invoke;
   v18[3] = &unk_2782AA208;
   v18[4] = v20;
-  v18[5] = a4;
+  v18[5] = indexes;
   v18[6] = spriteIndexByThumbnailIndex;
-  v18[7] = a3;
+  v18[7] = infos;
   v18[8] = guarded_textureInfoByThumbnailIndex;
-  v19 = a9;
+  countCopy = count;
   [(NSMutableIndexSet *)thumbnailIndexesUsedBySprites enumerateRangesUsingBlock:v18];
   _Block_object_dispose(v20, 8);
 }
@@ -315,29 +315,29 @@ uint64_t __111__PXGMetalTextureAtlas_getTextureInfos_forSpriteIndexes_geometries
   return result;
 }
 
-- (void)enumerateSpriteIndexes:(id)a3
+- (void)enumerateSpriteIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(PXGMetalTextureAtlas *)self renderedSpriteIndexes];
+  indexesCopy = indexes;
+  renderedSpriteIndexes = [(PXGMetalTextureAtlas *)self renderedSpriteIndexes];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__PXGMetalTextureAtlas_enumerateSpriteIndexes___block_invoke;
   v7[3] = &unk_2782AA5E0;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateIndexesUsingBlock:v7];
+  v8 = indexesCopy;
+  v6 = indexesCopy;
+  [renderedSpriteIndexes enumerateIndexesUsingBlock:v7];
 }
 
-- (void)getSpriteIndexes:(unsigned int *)a3 maxSpriteCount:(unsigned int)a4
+- (void)getSpriteIndexes:(unsigned int *)indexes maxSpriteCount:(unsigned int)count
 {
-  if ([(PXGMetalTextureAtlas *)self spriteCount]< a4)
+  if ([(PXGMetalTextureAtlas *)self spriteCount]< count)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:593 description:{@"Invalid parameter not satisfying: %@", @"maxSpriteCount <= self.spriteCount"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:593 description:{@"Invalid parameter not satisfying: %@", @"maxSpriteCount <= self.spriteCount"}];
   }
 
   spriteIndexByThumbnailIndex = self->_spriteIndexByThumbnailIndex;
-  v9 = [(PXGMetalTextureAtlas *)self renderedSpriteIndexes];
+  renderedSpriteIndexes = [(PXGMetalTextureAtlas *)self renderedSpriteIndexes];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -348,11 +348,11 @@ uint64_t __111__PXGMetalTextureAtlas_getTextureInfos_forSpriteIndexes_geometries
   v13[2] = __56__PXGMetalTextureAtlas_getSpriteIndexes_maxSpriteCount___block_invoke;
   v13[3] = &unk_2782AA1E0;
   v16 = spriteIndexByThumbnailIndex;
-  v11 = v9;
-  v17 = a3;
+  v11 = renderedSpriteIndexes;
+  indexesCopy = indexes;
   v14 = v11;
   v15 = v19;
-  v18 = a4;
+  countCopy = count;
   [(NSMutableIndexSet *)thumbnailIndexesUsedBySprites enumerateRangesUsingBlock:v13];
 
   _Block_object_dispose(v19, 8);
@@ -397,14 +397,14 @@ uint64_t __56__PXGMetalTextureAtlas_getSpriteIndexes_maxSpriteCount___block_invo
   return result;
 }
 
-- (void)_syncQueue_releaseThumbnailsAtIndexes:(id)a3
+- (void)_syncQueue_releaseThumbnailsAtIndexes:(id)indexes
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __62__PXGMetalTextureAtlas__syncQueue_releaseThumbnailsAtIndexes___block_invoke;
   v3[3] = &unk_2782AA948;
   v3[4] = self;
-  [a3 enumerateRangesUsingBlock:v3];
+  [indexes enumerateRangesUsingBlock:v3];
 }
 
 uint64_t __62__PXGMetalTextureAtlas__syncQueue_releaseThumbnailsAtIndexes___block_invoke(uint64_t result, unint64_t a2, uint64_t a3)
@@ -432,9 +432,9 @@ uint64_t __62__PXGMetalTextureAtlas__syncQueue_releaseThumbnailsAtIndexes___bloc
   return result;
 }
 
-- (void)_syncQueue_releaseThumbnailAtIndex:(int64_t)a3
+- (void)_syncQueue_releaseThumbnailAtIndex:(int64_t)index
 {
-  if (!--self->_retainCountByThumbnailIndex[a3])
+  if (!--self->_retainCountByThumbnailIndex[index])
   {
     [(NSMutableIndexSet *)self->_syncQueue_availableThumbnailIndexes addIndex:?];
     if (atomic_fetch_add(&self->_count, 0xFFFFu) == 1)
@@ -467,7 +467,7 @@ void __59__PXGMetalTextureAtlas__syncQueue_releaseThumbnailAtIndex___block_invok
   }
 }
 
-- (void)_syncQueue_retainThumbnailsAtIndexes:(id)a3
+- (void)_syncQueue_retainThumbnailsAtIndexes:(id)indexes
 {
   retainCountByThumbnailIndex = self->_retainCountByThumbnailIndex;
   v4[0] = MEMORY[0x277D85DD0];
@@ -475,7 +475,7 @@ void __59__PXGMetalTextureAtlas__syncQueue_releaseThumbnailAtIndex___block_invok
   v4[2] = __61__PXGMetalTextureAtlas__syncQueue_retainThumbnailsAtIndexes___block_invoke;
   v4[3] = &__block_descriptor_40_e24_v32__0__NSRange_QQ_8_B24l;
   v4[4] = retainCountByThumbnailIndex;
-  [a3 enumerateRangesUsingBlock:v4];
+  [indexes enumerateRangesUsingBlock:v4];
 }
 
 uint64_t __61__PXGMetalTextureAtlas__syncQueue_retainThumbnailsAtIndexes___block_invoke(uint64_t result, unint64_t a2, uint64_t a3)
@@ -494,32 +494,32 @@ uint64_t __61__PXGMetalTextureAtlas__syncQueue_retainThumbnailsAtIndexes___block
   return result;
 }
 
-- (void)applyChangeDetails:(id)a3
+- (void)applyChangeDetails:(id)details
 {
   layoutQueue = self->_layoutQueue;
-  v5 = a3;
+  detailsCopy = details;
   dispatch_assert_queue_V2(layoutQueue);
-  [v5 applyToSpriteIndexes:self->_spriteIndexByThumbnailIndex atIndexes:self->_thumbnailIndexesUsedBySprites];
-  v6 = [v5 indexSetAfterApplyingChangeDetails:self->_spriteIndexesUsedBySprites];
+  [detailsCopy applyToSpriteIndexes:self->_spriteIndexByThumbnailIndex atIndexes:self->_thumbnailIndexesUsedBySprites];
+  v6 = [detailsCopy indexSetAfterApplyingChangeDetails:self->_spriteIndexesUsedBySprites];
   v7 = [v6 mutableCopy];
   spriteIndexesUsedBySprites = self->_spriteIndexesUsedBySprites;
   self->_spriteIndexesUsedBySprites = v7;
 
-  v9 = [v5 indexSetAfterApplyingChangeDetails:self->_dirtySpriteIndexes];
+  v9 = [detailsCopy indexSetAfterApplyingChangeDetails:self->_dirtySpriteIndexes];
 
   v10 = [v9 mutableCopy];
   dirtySpriteIndexes = self->_dirtySpriteIndexes;
   self->_dirtySpriteIndexes = v10;
 
-  v12 = [MEMORY[0x277CCAA78] indexSet];
-  [(PXGMetalTextureAtlas *)self setSkipRenderSpriteIndexes:v12];
+  indexSet = [MEMORY[0x277CCAA78] indexSet];
+  [(PXGMetalTextureAtlas *)self setSkipRenderSpriteIndexes:indexSet];
 
   [(PXGMetalTextureAtlas *)self _invalidateRenderedSpriteIndexes];
 }
 
-- (void)processPendingThumbnailRequestIDsWithHandler:(id)a3
+- (void)processPendingThumbnailRequestIDsWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_layoutQueue);
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -527,9 +527,9 @@ uint64_t __61__PXGMetalTextureAtlas__syncQueue_retainThumbnailsAtIndexes___block
   block[2] = __69__PXGMetalTextureAtlas_processPendingThumbnailRequestIDsWithHandler___block_invoke;
   block[3] = &unk_2782AA198;
   block[4] = self;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = handlerCopy;
   dispatch_sync(syncQueue, block);
 }
 
@@ -631,27 +631,27 @@ void __63__PXGMetalTextureAtlas__checkinPendingThumbnailIndexesIfNeeded__block_i
   dispatch_async(v2, block);
 }
 
-- (void)removeSpriteIndex:(unsigned int)a3 atThumbnailIndex:(unsigned int)a4
+- (void)removeSpriteIndex:(unsigned int)index atThumbnailIndex:(unsigned int)thumbnailIndex
 {
   dispatch_assert_queue_V2(self->_layoutQueue);
-  [(NSMutableIndexSet *)self->_spriteIndexesUsedBySprites removeIndex:a3];
-  [(NSMutableIndexSet *)self->_dirtySpriteIndexes removeIndex:a3];
-  [(NSMutableIndexSet *)self->_thumbnailIndexesUsedBySprites removeIndex:a4];
+  [(NSMutableIndexSet *)self->_spriteIndexesUsedBySprites removeIndex:index];
+  [(NSMutableIndexSet *)self->_dirtySpriteIndexes removeIndex:index];
+  [(NSMutableIndexSet *)self->_thumbnailIndexesUsedBySprites removeIndex:thumbnailIndex];
   [(PXGMetalTextureAtlas *)self _invalidateRenderedSpriteIndexes];
-  [(NSMutableIndexSet *)self->_thumbnailIndexesPendingCheckin addIndex:a4];
+  [(NSMutableIndexSet *)self->_thumbnailIndexesPendingCheckin addIndex:thumbnailIndex];
 
   [(PXGMetalTextureAtlas *)self _checkinPendingThumbnailIndexesIfNeeded];
 }
 
-- (void)addSpriteWithTextureRequestID:(int)a3 thumbnailData:(id)a4 size:(CGSize)a5 bytesPerRow:(unint64_t)a6 contentsRect:(CGRect)a7
+- (void)addSpriteWithTextureRequestID:(int)d thumbnailData:(id)data size:(CGSize)size bytesPerRow:(unint64_t)row contentsRect:(CGRect)rect
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v37 = a5.height;
-  v9 = a5.width;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v37 = size.height;
+  v9 = size.width;
+  dataCopy = data;
   [(PXGMetalTextureAtlas *)self thumbnailCropIn];
   v13 = v12;
   v50 = 0;
@@ -670,8 +670,8 @@ void __63__PXGMetalTextureAtlas__checkinPendingThumbnailIndexesIfNeeded__block_i
   v15 = self->_thumbnailSize.height;
   v17 = *(v51 + 6);
   cols = self->_cols;
-  v19 = [(MTLTexture *)self->_texture width];
-  v20 = [(MTLTexture *)self->_texture height];
+  width = [(MTLTexture *)self->_texture width];
+  height = [(MTLTexture *)self->_texture height];
   [(PXGMetalTextureAtlas *)self alpha];
   v21.f64[0] = width;
   v21.f64[1] = height;
@@ -683,8 +683,8 @@ void __63__PXGMetalTextureAtlas__checkinPendingThumbnailIndexesIfNeeded__block_i
   v25.f32[0] = x + v13;
   *v21.f64 = y + v13;
   v25.i32[1] = LODWORD(v21.f64[0]);
-  *v21.f64 = v19;
-  *(v21.f64 + 1) = v20;
+  *v21.f64 = width;
+  *(v21.f64 + 1) = height;
   v26 = &self->_guarded_textureInfoByThumbnailIndex[8 * *(v51 + 6)];
   *v26 = vadd_f32(v25, v24);
   v26[1] = v22;
@@ -698,9 +698,9 @@ void __63__PXGMetalTextureAtlas__checkinPendingThumbnailIndexesIfNeeded__block_i
   v29 = *(v51 + 6);
   thumbnailSize = self->_thumbnailSize;
   metalRenderContext = self->_metalRenderContext;
-  v31 = [v11 bytes];
+  bytes = [dataCopy bytes];
   texture = self->_texture;
-  v33 = [v11 length];
+  v33 = [dataCopy length];
   v34.f64[0] = (v29 % v28);
   v34.f64[1] = (v29 / v28);
   v44 = vcvtq_u64_f64(vmulq_f64(thumbnailSize, v34));
@@ -708,13 +708,13 @@ void __63__PXGMetalTextureAtlas__checkinPendingThumbnailIndexesIfNeeded__block_i
   v46 = v9;
   v47 = v37;
   v48 = 1;
-  [(PXGMetalRenderContext *)metalRenderContext fastCopyBytes:v31 toTexture:texture inRegion:&v44 length:v33 bytesPerRow:a6 bytesPerImage:0];
+  [(PXGMetalRenderContext *)metalRenderContext fastCopyBytes:bytes toTexture:texture inRegion:&v44 length:v33 bytesPerRow:row bytesPerImage:0];
   v35 = self->_syncQueue;
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __98__PXGMetalTextureAtlas_addSpriteWithTextureRequestID_thumbnailData_size_bytesPerRow_contentsRect___block_invoke_2;
   v42[3] = &unk_2782AA170;
-  v43 = a3;
+  dCopy = d;
   v42[4] = self;
   v42[5] = &v50;
   v42[6] = v22;
@@ -747,11 +747,11 @@ double __98__PXGMetalTextureAtlas_addSpriteWithTextureRequestID_thumbnailData_si
   return result;
 }
 
-- (void)setSkipRenderSpriteIndexes:(id)a3
+- (void)setSkipRenderSpriteIndexes:(id)indexes
 {
-  if (self->_skipRenderSpriteIndexes != a3)
+  if (self->_skipRenderSpriteIndexes != indexes)
   {
-    v4 = [a3 copy];
+    v4 = [indexes copy];
     skipRenderSpriteIndexes = self->_skipRenderSpriteIndexes;
     self->_skipRenderSpriteIndexes = v4;
 
@@ -759,12 +759,12 @@ double __98__PXGMetalTextureAtlas_addSpriteWithTextureRequestID_thumbnailData_si
   }
 }
 
-- (id)getAndClearDirtySpriteIndexesIntersectingSet:(id)a3
+- (id)getAndClearDirtySpriteIndexesIntersectingSet:(id)set
 {
   layoutQueue = self->_layoutQueue;
-  v5 = a3;
+  setCopy = set;
   dispatch_assert_queue_V2(layoutQueue);
-  v6 = [(NSMutableIndexSet *)self->_dirtySpriteIndexes px_intersectionWithIndexSet:v5];
+  v6 = [(NSMutableIndexSet *)self->_dirtySpriteIndexes px_intersectionWithIndexSet:setCopy];
 
   [(NSMutableIndexSet *)self->_dirtySpriteIndexes removeIndexes:v6];
 
@@ -779,14 +779,14 @@ double __98__PXGMetalTextureAtlas_addSpriteWithTextureRequestID_thumbnailData_si
   v4 = [(PXGBaseTexture *)&v15 description];
   [(PXGMetalTextureAtlas *)self thumbnailSize];
   v5 = NSStringFromCGSize(v17);
-  v6 = [(PXGMetalTextureAtlas *)self pixelFormat];
-  v7 = [(PXGMetalTextureAtlas *)self capacity];
+  pixelFormat = [(PXGMetalTextureAtlas *)self pixelFormat];
+  capacity = [(PXGMetalTextureAtlas *)self capacity];
   v8 = [(PXGMetalTextureAtlas *)self count];
   v9 = [(NSMutableIndexSet *)self->_thumbnailIndexesUsedBySprites count];
   v10 = [(PXGMetalTextureAtlas *)self count];
   v11 = v10 - [(PXGMetalTextureAtlas *)self spriteCount];
-  v12 = [(PXGMetalTextureAtlas *)self texture];
-  v13 = [v3 stringWithFormat:@"<%@ thumbnailSize:%@ pixelFormat:%lu capacity:%d count:%d usedBySprites:%lu justRetained:%lu memory:%.2fMB>", v4, v5, v6, v7, v8, v9, v11, vcvtd_n_f64_u64(objc_msgSend(v12, "allocatedSize"), 0xAuLL) * 0.0009765625];
+  texture = [(PXGMetalTextureAtlas *)self texture];
+  v13 = [v3 stringWithFormat:@"<%@ thumbnailSize:%@ pixelFormat:%lu capacity:%d count:%d usedBySprites:%lu justRetained:%lu memory:%.2fMB>", v4, v5, pixelFormat, capacity, v8, v9, v11, vcvtd_n_f64_u64(objc_msgSend(texture, "allocatedSize"), 0xAuLL) * 0.0009765625];
 
   return v13;
 }
@@ -804,68 +804,68 @@ double __98__PXGMetalTextureAtlas_addSpriteWithTextureRequestID_thumbnailData_si
 
 - (PXGMetalTextureAtlas)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:356 description:{@"%s is not available as initializer", "-[PXGMetalTextureAtlas init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:356 description:{@"%s is not available as initializer", "-[PXGMetalTextureAtlas init]"}];
 
   abort();
 }
 
-- (PXGMetalTextureAtlas)initWithThumbnailSize:(CGSize)a3 pixelFormat:(unint64_t)a4 capacity:(unsigned int)a5 mipmapped:(BOOL)a6 colorProgram:(id)a7 context:(id)a8 layoutQueue:(id)a9
+- (PXGMetalTextureAtlas)initWithThumbnailSize:(CGSize)size pixelFormat:(unint64_t)format capacity:(unsigned int)capacity mipmapped:(BOOL)mipmapped colorProgram:(id)program context:(id)context layoutQueue:(id)queue
 {
-  v12 = a6;
-  height = a3.height;
-  width = a3.width;
-  v19 = a7;
-  v20 = a8;
-  v59 = a9;
+  mipmappedCopy = mipmapped;
+  height = size.height;
+  width = size.width;
+  programCopy = program;
+  contextCopy = context;
+  queueCopy = queue;
   v60.receiver = self;
   v60.super_class = PXGMetalTextureAtlas;
   v21 = [(PXGImageTexture *)&v60 init];
   if (v21)
   {
-    v58 = v19;
-    if (!a5)
+    v58 = programCopy;
+    if (!capacity)
     {
-      v52 = [MEMORY[0x277CCA890] currentHandler];
-      [v52 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"capacity > 0"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:295 description:{@"Invalid parameter not satisfying: %@", @"capacity > 0"}];
     }
 
-    v22 = [v20 device];
+    device = [contextCopy device];
 
-    if (!v22)
+    if (!device)
     {
-      v53 = [MEMORY[0x277CCA890] currentHandler];
-      [v53 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"context.device != nil"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"context.device != nil"}];
     }
 
     if (width > 4096.0)
     {
-      v54 = [MEMORY[0x277CCA890] currentHandler];
-      [v54 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"thumbnailSize.width <= kMaxTextureWidth"}];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"thumbnailSize.width <= kMaxTextureWidth"}];
     }
 
     if (height > 4096.0)
     {
-      v55 = [MEMORY[0x277CCA890] currentHandler];
-      [v55 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"thumbnailSize.height <= kMaxTextureHeight"}];
+      currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:298 description:{@"Invalid parameter not satisfying: %@", @"thumbnailSize.height <= kMaxTextureHeight"}];
     }
 
     PXSizeRoundToPixel();
     if (v24 != width || v23 != height)
     {
-      v56 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
       v61.width = width;
       v61.height = height;
       v57 = NSStringFromCGSize(v61);
-      [v56 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:299 description:{@"thumbnailSize cannot have fractional pixels:%@", v57}];
+      [currentHandler5 handleFailureInMethod:a2 object:v21 file:@"PXGMetalTextureAtlasManager.m" lineNumber:299 description:{@"thumbnailSize cannot have fractional pixels:%@", v57}];
     }
 
-    objc_storeStrong(&v21->_layoutQueue, a9);
-    objc_storeStrong(&v21->_metalRenderContext, a8);
-    objc_storeStrong(&v21->_colorProgram, a7);
-    v21->_capacity = a5;
-    v21->_mipmapped = v12;
-    v21->_pixelFormat = a4;
+    objc_storeStrong(&v21->_layoutQueue, queue);
+    objc_storeStrong(&v21->_metalRenderContext, context);
+    objc_storeStrong(&v21->_colorProgram, program);
+    v21->_capacity = capacity;
+    v21->_mipmapped = mipmappedCopy;
+    v21->_pixelFormat = format;
     v21->_thumbnailSize.width = width;
     v21->_thumbnailSize.height = height;
     v21->_thumbnailCropIn = 0.5;
@@ -877,83 +877,83 @@ double __98__PXGMetalTextureAtlas_addSpriteWithTextureRequestID_thumbnailData_si
     syncQueue_thumbnailsInUseByRenderPass = v21->_syncQueue_thumbnailsInUseByRenderPass;
     v21->_syncQueue_thumbnailsInUseByRenderPass = v27;
 
-    v29 = 4096.0 / width;
-    if (4096.0 / width > a5)
+    capacityCopy = 4096.0 / width;
+    if (4096.0 / width > capacity)
     {
-      v29 = a5;
+      capacityCopy = capacity;
     }
 
-    v30 = v29;
-    v31 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:a4 width:(width * v29) height:(height * ceil(a5 / v29)) mipmapped:0];
-    if (v12)
+    v30 = capacityCopy;
+    v31 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:format width:(width * capacityCopy) height:(height * ceil(capacity / capacityCopy)) mipmapped:0];
+    if (mipmappedCopy)
     {
-      v32 = [v20 device];
-      v33 = [v32 newTextureWithDescriptor:v31];
+      device2 = [contextCopy device];
+      v33 = [device2 newTextureWithDescriptor:v31];
       texture = v21->_texture;
       v21->_texture = v33;
     }
 
     else
     {
-      v35 = [v20 newTextureWithDescriptor:v31];
-      v32 = v21->_texture;
+      v35 = [contextCopy newTextureWithDescriptor:v31];
+      device2 = v21->_texture;
       v21->_texture = v35;
     }
 
     v21->_cols = v30;
-    v36 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     thumbnailIndexesUsedBySprites = v21->_thumbnailIndexesUsedBySprites;
-    v21->_thumbnailIndexesUsedBySprites = v36;
+    v21->_thumbnailIndexesUsedBySprites = indexSet;
 
-    v38 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet2 = [MEMORY[0x277CCAB58] indexSet];
     spriteIndexesUsedBySprites = v21->_spriteIndexesUsedBySprites;
-    v21->_spriteIndexesUsedBySprites = v38;
+    v21->_spriteIndexesUsedBySprites = indexSet2;
 
-    v40 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet3 = [MEMORY[0x277CCAB58] indexSet];
     dirtySpriteIndexes = v21->_dirtySpriteIndexes;
-    v21->_dirtySpriteIndexes = v40;
+    v21->_dirtySpriteIndexes = indexSet3;
 
-    v42 = [MEMORY[0x277CCAA78] indexSet];
+    indexSet4 = [MEMORY[0x277CCAA78] indexSet];
     skipRenderSpriteIndexes = v21->_skipRenderSpriteIndexes;
-    v21->_skipRenderSpriteIndexes = v42;
+    v21->_skipRenderSpriteIndexes = indexSet4;
 
-    v44 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet5 = [MEMORY[0x277CCAB58] indexSet];
     thumbnailIndexesPendingCheckin = v21->_thumbnailIndexesPendingCheckin;
-    v21->_thumbnailIndexesPendingCheckin = v44;
+    v21->_thumbnailIndexesPendingCheckin = indexSet5;
 
-    v46 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet6 = [MEMORY[0x277CCAB58] indexSet];
     thumbnailIndexesBeingCheckedIn = v21->_thumbnailIndexesBeingCheckedIn;
-    v21->_thumbnailIndexesBeingCheckedIn = v46;
+    v21->_thumbnailIndexesBeingCheckedIn = indexSet6;
 
-    v48 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet7 = [MEMORY[0x277CCAB58] indexSet];
     syncQueue_availableThumbnailIndexes = v21->_syncQueue_availableThumbnailIndexes;
-    v21->_syncQueue_availableThumbnailIndexes = v48;
+    v21->_syncQueue_availableThumbnailIndexes = indexSet7;
 
-    [(NSMutableIndexSet *)v21->_syncQueue_availableThumbnailIndexes addIndexesInRange:0, a5];
-    v21->_spriteIndexByThumbnailIndex = malloc_type_realloc(v21->_spriteIndexByThumbnailIndex, 4 * a5, 0x42760281uLL);
-    v21->_guarded_textureInfoByThumbnailIndex = malloc_type_realloc(v21->_guarded_textureInfoByThumbnailIndex, a5 << 6, 0x42760281uLL);
-    v50 = malloc_type_realloc(v21->_retainCountByThumbnailIndex, a5, 0x42760281uLL);
+    [(NSMutableIndexSet *)v21->_syncQueue_availableThumbnailIndexes addIndexesInRange:0, capacity];
+    v21->_spriteIndexByThumbnailIndex = malloc_type_realloc(v21->_spriteIndexByThumbnailIndex, 4 * capacity, 0x42760281uLL);
+    v21->_guarded_textureInfoByThumbnailIndex = malloc_type_realloc(v21->_guarded_textureInfoByThumbnailIndex, capacity << 6, 0x42760281uLL);
+    v50 = malloc_type_realloc(v21->_retainCountByThumbnailIndex, capacity, 0x42760281uLL);
     v21->_retainCountByThumbnailIndex = v50;
-    bzero(v50, a5);
+    bzero(v50, capacity);
 
-    v19 = v58;
+    programCopy = v58;
   }
 
   return v21;
 }
 
-+ (unsigned)maxCapacityForThumbnailSize:(CGSize)a3 pixelFormat:(unint64_t)a4
++ (unsigned)maxCapacityForThumbnailSize:(CGSize)size pixelFormat:(unint64_t)format
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   PXSizeRoundToPixel();
   if (v9 != width || v8 != height)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14.width = width;
     v14.height = height;
     v13 = NSStringFromCGSize(v14);
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXGMetalTextureAtlasManager.m" lineNumber:285 description:{@"thumbnailSize cannot have fractional pixels:%@", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGMetalTextureAtlasManager.m" lineNumber:285 description:{@"thumbnailSize cannot have fractional pixels:%@", v13}];
   }
 
   return (4096.0 / width) * (4096.0 / height);

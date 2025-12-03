@@ -1,21 +1,21 @@
 @interface USBCAccessoryFirmwareUpdater
-- (USBCAccessoryFirmwareUpdater)initWithCoder:(id)a3;
-- (USBCAccessoryFirmwareUpdater)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6;
+- (USBCAccessoryFirmwareUpdater)initWithCoder:(id)coder;
+- (USBCAccessoryFirmwareUpdater)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options;
 - (id)buildFirmwareUpdaterObject;
-- (id)retrievePlistDeviceEntryFromDeviceClass:(id)a3;
-- (unsigned)getConnectionForRegistryID:(int64_t *)a3;
-- (unsigned)getServiceForRegistryID:(int64_t *)a3;
-- (void)applyFirmwareWithOptions:(id)a3;
-- (void)attemptErrorRecovery:(id)a3 delegate:(id)a4;
-- (void)bootstrapWithOptions:(id)a3;
+- (id)retrievePlistDeviceEntryFromDeviceClass:(id)class;
+- (unsigned)getConnectionForRegistryID:(int64_t *)d;
+- (unsigned)getServiceForRegistryID:(int64_t *)d;
+- (void)applyFirmwareWithOptions:(id)options;
+- (void)attemptErrorRecovery:(id)recovery delegate:(id)delegate;
+- (void)bootstrapWithOptions:(id)options;
 - (void)dealloc;
-- (void)disconnectTimer:(id)a3;
-- (void)downloadFirmwareWithOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)finishWithOptions:(id)a3;
+- (void)disconnectTimer:(id)timer;
+- (void)downloadFirmwareWithOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)finishWithOptions:(id)options;
 - (void)getFWAssetInfo;
-- (void)prepareFirmwareWithOptions:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)prepareFirmwareWithOptions:(id)options;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation USBCAccessoryFirmwareUpdater
@@ -30,8 +30,8 @@
     if (v4)
     {
 LABEL_3:
-      v5 = [v4 resourcePath];
-      [(NSMutableDictionary *)self->_firmwareAssetProperties setObject:v5 forKeyedSubscript:@"Firmware Asset Path"];
+      resourcePath = [v4 resourcePath];
+      [(NSMutableDictionary *)self->_firmwareAssetProperties setObject:resourcePath forKeyedSubscript:@"Firmware Asset Path"];
 
       goto LABEL_6;
     }
@@ -65,16 +65,16 @@ LABEL_6:
 
 - (id)buildFirmwareUpdaterObject
 {
-  v2 = self;
+  selfCopy = self;
   v3 = IORegistryEntryIDMatching([(NSNumber *)self->_registryEntryID unsignedLongLongValue]);
   MatchingService = IOServiceGetMatchingService(kIOMasterPortDefault, v3);
-  if ([(NSString *)v2->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCBillboard-HDMI"]&& [(NSString *)v2->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCBillboard-VGA"])
+  if ([(NSString *)selfCopy->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCBillboard-HDMI"]&& [(NSString *)selfCopy->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCBillboard-VGA"])
   {
-    if ([(NSString *)v2->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.ThunderboltType1Switch"]&& [(NSString *)v2->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.ThunderboltType2Switch"])
+    if ([(NSString *)selfCopy->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.ThunderboltType1Switch"]&& [(NSString *)selfCopy->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.ThunderboltType2Switch"])
     {
-      if ([(NSString *)v2->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCSDCardReader"])
+      if ([(NSString *)selfCopy->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCSDCardReader"])
       {
-        if ([(NSString *)v2->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCHDMIAdapter"])
+        if ([(NSString *)selfCopy->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCHDMIAdapter"])
         {
           goto LABEL_11;
         }
@@ -99,44 +99,44 @@ LABEL_6:
     v5 = &off_100024318;
   }
 
-  v6 = [objc_alloc(*v5) initWithRegistryEntry:MatchingService andDelegate:v2->_delegate andControllers:v2->_pdControllers];
-  firmwareUpdater = v2->_firmwareUpdater;
-  v2->_firmwareUpdater = v6;
+  v6 = [objc_alloc(*v5) initWithRegistryEntry:MatchingService andDelegate:selfCopy->_delegate andControllers:selfCopy->_pdControllers];
+  firmwareUpdater = selfCopy->_firmwareUpdater;
+  selfCopy->_firmwareUpdater = v6;
 
 LABEL_11:
   v8 = &IOCreatePlugInInterfaceForService_ptr;
-  if (v2->_firmwareUpdater)
+  if (selfCopy->_firmwareUpdater)
   {
-    if ([(NSString *)v2->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCSDCardReader"]&& [(NSString *)v2->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCHDMIAdapter"])
+    if ([(NSString *)selfCopy->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCSDCardReader"]&& [(NSString *)selfCopy->_deviceClass compare:@"com.apple.mau.plugin.usbcupdater.USBCHDMIAdapter"])
     {
-      [(USBCAccessoryFirmwareUpdater *)v2 getFWAssetInfo];
+      [(USBCAccessoryFirmwareUpdater *)selfCopy getFWAssetInfo];
     }
 
     v9 = 0;
     v10 = 0;
-    v26 = v2;
+    v26 = selfCopy;
     while (1)
     {
-      v11 = [(USBCFirmwareUpdater *)v2->_firmwareUpdater validateDevice:v2->_installedHardwareFirmwareProperties withFirmware:v2->_firmwareAssetProperties];
+      v11 = [(USBCFirmwareUpdater *)selfCopy->_firmwareUpdater validateDevice:selfCopy->_installedHardwareFirmwareProperties withFirmware:selfCopy->_firmwareAssetProperties];
 
       if (!v11)
       {
         break;
       }
 
-      v12 = [v11 code];
-      v13 = [v8[126] dictionary];
+      code = [v11 code];
+      dictionary = [v8[126] dictionary];
       v14 = v11;
       for (i = v14; ; i = v19)
       {
-        v16 = v12 >> 8;
-        if ((v12 >> 8) <= 0x26 && ((1 << SBYTE1(v12)) & 0x4200000800) != 0)
+        v16 = code >> 8;
+        if ((code >> 8) <= 0x26 && ((1 << SBYTE1(code)) & 0x4200000800) != 0)
         {
           break;
         }
 
-        v18 = [i userInfo];
-        v19 = [v18 objectForKeyedSubscript:@"Previous Error Response"];
+        userInfo = [i userInfo];
+        v19 = [userInfo objectForKeyedSubscript:@"Previous Error Response"];
 
         if (!v19)
         {
@@ -144,19 +144,19 @@ LABEL_11:
           break;
         }
 
-        v12 = [v19 code];
+        code = [v19 code];
       }
 
-      [v13 setObject:v14 forKeyedSubscript:@"Previous Error Response"];
+      [dictionary setObject:v14 forKeyedSubscript:@"Previous Error Response"];
       v20 = [NSString stringWithFormat:@"Failed to validate connected device: %@", v26->_deviceClass];
-      [v13 setObject:v20 forKeyedSubscript:@"Notes"];
+      [dictionary setObject:v20 forKeyedSubscript:@"Notes"];
 
-      v9 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13568 userInfo:v13];
+      v9 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13568 userInfo:dictionary];
 
       if (v16 <= 0x26 && ((1 << v16) & 0x4200000800) != 0)
       {
 
-        v2 = v26;
+        selfCopy = v26;
         v8 = &IOCreatePlugInInterfaceForService_ptr;
         if (v9)
         {
@@ -169,7 +169,7 @@ LABEL_11:
       usleep(0x7A120u);
 
       ++v10;
-      v2 = v26;
+      selfCopy = v26;
       v8 = &IOCreatePlugInInterfaceForService_ptr;
       if (v10 == 5)
       {
@@ -182,14 +182,14 @@ LABEL_11:
       }
     }
 
-    [(USBCFirmwareUpdater *)v2->_firmwareUpdater setDelegate:v2->_delegate];
-    [(USBCFirmwareUpdater *)v2->_firmwareUpdater setOverrideFile:@"/var/usbc_updater_override.plist"];
+    [(USBCFirmwareUpdater *)selfCopy->_firmwareUpdater setDelegate:selfCopy->_delegate];
+    [(USBCFirmwareUpdater *)selfCopy->_firmwareUpdater setOverrideFile:@"/var/usbc_updater_override.plist"];
   }
 
   else
   {
     v21 = +[NSMutableDictionary dictionary];
-    v22 = [NSString stringWithFormat:@"Failed to create Firmware Updater for assetType: %@", v2->_deviceClass];
+    v22 = [NSString stringWithFormat:@"Failed to create Firmware Updater for assetType: %@", selfCopy->_deviceClass];
     [v21 setObject:v22 forKeyedSubscript:@"Notes"];
 
     v9 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:10240 userInfo:v21];
@@ -197,9 +197,9 @@ LABEL_11:
     if (v9)
     {
 LABEL_34:
-      v23 = [v8[126] dictionary];
-      [v23 setObject:v9 forKeyedSubscript:@"Previous Error Response"];
-      v24 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13568 userInfo:v23];
+      dictionary2 = [v8[126] dictionary];
+      [dictionary2 setObject:v9 forKeyedSubscript:@"Previous Error Response"];
+      v24 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:13568 userInfo:dictionary2];
 
       goto LABEL_37;
     }
@@ -211,21 +211,21 @@ LABEL_37:
   return v24;
 }
 
-- (void)attemptErrorRecovery:(id)a3 delegate:(id)a4
+- (void)attemptErrorRecovery:(id)recovery delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = v6;
-  v8 = [(USBCFirmwareUpdater *)self->_firmwareUpdater pdAccess];
-  [v7 log:7 format:{@"Entering: %s:%d", "-[USBCAccessoryFirmwareUpdater attemptErrorRecovery:delegate:]", 440}];
+  recoveryCopy = recovery;
+  delegateCopy = delegate;
+  v14 = recoveryCopy;
+  pdAccess = [(USBCFirmwareUpdater *)self->_firmwareUpdater pdAccess];
+  [delegateCopy log:7 format:{@"Entering: %s:%d", "-[USBCAccessoryFirmwareUpdater attemptErrorRecovery:delegate:]", 440}];
   if (v14)
   {
     v9 = v14;
     do
     {
-      v10 = [v9 userInfo];
+      userInfo = [v9 userInfo];
       [v9 code];
-      v11 = [v10 objectForKeyedSubscript:@"Previous Error Response"];
+      v11 = [userInfo objectForKeyedSubscript:@"Previous Error Response"];
 
       v9 = v11;
     }
@@ -234,22 +234,22 @@ LABEL_37:
   }
 
   v12 = [(USBCFirmwareUpdater *)self->_firmwareUpdater ExitUpdateMode:1];
-  v13 = [v8 VerifyEmptyPortAndReset:v14];
-  [v7 log:7 format:{@"%s - VerifyEmptyPortAndReset gave: %@", "-[USBCAccessoryFirmwareUpdater attemptErrorRecovery:delegate:]", v13}];
+  v13 = [pdAccess VerifyEmptyPortAndReset:v14];
+  [delegateCopy log:7 format:{@"%s - VerifyEmptyPortAndReset gave: %@", "-[USBCAccessoryFirmwareUpdater attemptErrorRecovery:delegate:]", v13}];
 }
 
-- (USBCAccessoryFirmwareUpdater)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6
+- (USBCAccessoryFirmwareUpdater)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options
 {
-  v10 = a3;
-  obj = a4;
-  v11 = a4;
-  v12 = a6;
+  classCopy = class;
+  obj = delegate;
+  delegateCopy = delegate;
+  optionsCopy = options;
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  [v11 log:7 format:{@"Initializing %@ version %s for DeviceClass %@ with options %@", v14, "0.4", v10, v12}];
+  [delegateCopy log:7 format:{@"Initializing %@ version %s for DeviceClass %@ with options %@", v14, "0.4", classCopy, optionsCopy}];
 
-  v57 = v11;
-  [v11 log:1 format:{@"Device of type %@ detected", v10}];
+  v57 = delegateCopy;
+  [delegateCopy log:1 format:{@"Device of type %@ detected", classCopy}];
   v15 = IORegistryEntryFromPath(kIOMasterPortDefault, "IODeviceTree:/options");
   CFProperty = IORegistryEntryCreateCFProperty(v15, @"boot-args", kCFAllocatorDefault, 0);
   v17 = [CFProperty componentsSeparatedByString:@" "];
@@ -262,8 +262,8 @@ LABEL_37:
   {
     v19 = v18;
     v52 = CFProperty;
-    v53 = a5;
-    v54 = v12;
+    infoCopy = info;
+    v54 = optionsCopy;
     v20 = 0;
     v21 = *v60;
     do
@@ -295,8 +295,8 @@ LABEL_37:
 
     while (v19);
 
-    a5 = v53;
-    v12 = v54;
+    info = infoCopy;
+    optionsCopy = v54;
     if (v20)
     {
 LABEL_30:
@@ -318,7 +318,7 @@ LABEL_30:
   v58.super_class = USBCAccessoryFirmwareUpdater;
   v28 = [(USBCAccessoryFirmwareUpdater *)&v58 init];
   self = v28;
-  if (!v57 || !v10 || !v28)
+  if (!v57 || !classCopy || !v28)
   {
     sub_100011430(v57);
     goto LABEL_30;
@@ -337,7 +337,7 @@ LABEL_30:
   lastState = self->_lastState;
   self->_lastState = 0;
 
-  v33 = [v12 objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
+  v33 = [optionsCopy objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
   registryEntryID = self->_registryEntryID;
   self->_registryEntryID = v33;
 
@@ -355,9 +355,9 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  objc_storeStrong(&self->_deviceClass, a3);
-  [(NSMutableDictionary *)self->_installedHardwareFirmwareProperties setObject:v10 forKeyedSubscript:@"Hardware Device Class"];
-  [(USBCAccessoryFirmwareUpdater *)self setOptions:v12];
+  objc_storeStrong(&self->_deviceClass, class);
+  [(NSMutableDictionary *)self->_installedHardwareFirmwareProperties setObject:classCopy forKeyedSubscript:@"Hardware Device Class"];
+  [(USBCAccessoryFirmwareUpdater *)self setOptions:optionsCopy];
   v39 = [[NSMutableDictionary alloc] initWithCapacity:5];
   v40 = self->_outOptions;
   self->_outOptions = v39;
@@ -365,28 +365,28 @@ LABEL_30:
   delegate = self->_delegate;
   v42 = objc_opt_class();
   v43 = NSStringFromClass(v42);
-  v44 = [NSString stringWithFormat:@"Initializing Plugin %@ for DeviceClass %@", v43, v10];
-  [(FudPluginDelegate *)delegate log:7 format:v44];
+  classCopy = [NSString stringWithFormat:@"Initializing Plugin %@ for DeviceClass %@", v43, classCopy];
+  [(FudPluginDelegate *)delegate log:7 format:classCopy];
 
-  v45 = [(USBCAccessoryFirmwareUpdater *)self buildFirmwareUpdaterObject];
-  if (v45)
+  buildFirmwareUpdaterObject = [(USBCAccessoryFirmwareUpdater *)self buildFirmwareUpdaterObject];
+  if (buildFirmwareUpdaterObject)
   {
-    v48 = v45;
+    v48 = buildFirmwareUpdaterObject;
 LABEL_34:
     v49 = 0;
     goto LABEL_26;
   }
 
-  v46 = [v12 objectForKey:@"UseDropboxLocation"];
-  v47 = [v46 BOOLValue];
+  v46 = [optionsCopy objectForKey:@"UseDropboxLocation"];
+  bOOLValue = [v46 BOOLValue];
 
-  if (v47)
+  if (bOOLValue)
   {
     [(NSMutableDictionary *)self->_installedHardwareFirmwareProperties setObject:&__kCFBooleanTrue forKey:@"UseDropboxLocation"];
   }
 
-  *a5 = &off_100027768;
-  [v57 log:7 format:{@"%s:\n deviceClass=%@\n registryID=%@", "-[USBCAccessoryFirmwareUpdater initWithDeviceClass:delegate:info:options:]", v10, self->_registryEntryID}];
+  *info = &off_100027768;
+  [v57 log:7 format:{@"%s:\n deviceClass=%@\n registryID=%@", "-[USBCAccessoryFirmwareUpdater initWithDeviceClass:delegate:info:options:]", classCopy, self->_registryEntryID}];
   v48 = 0;
   if ([(USBCFirmwareUpdater *)self->_firmwareUpdater updaterOperational])
   {
@@ -400,29 +400,29 @@ LABEL_26:
   if ((v49 & 1) == 0)
   {
 LABEL_31:
-    [v57 log:1 format:{@"Device of type %@ did not meet requirements for update", v10}];
-    v50 = 0;
+    [v57 log:1 format:{@"Device of type %@ did not meet requirements for update", classCopy}];
+    selfCopy = 0;
     goto LABEL_32;
   }
 
 LABEL_27:
   self = self;
-  v50 = self;
+  selfCopy = self;
 LABEL_32:
 
-  return v50;
+  return selfCopy;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_delegate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_delegate, delegate);
+  delegateCopy = delegate;
   [(USBCFirmwareUpdater *)self->_firmwareUpdater setDelegate:self->_delegate];
 }
 
-- (void)bootstrapWithOptions:(id)a3
+- (void)bootstrapWithOptions:(id)options
 {
-  [(USBCAccessoryFirmwareUpdater *)self setOptions:a3];
+  [(USBCAccessoryFirmwareUpdater *)self setOptions:options];
   lastState = self->_lastState;
   self->_lastState = @"Bootstrapping";
 
@@ -441,12 +441,12 @@ LABEL_32:
   [(FudPluginDelegate *)delegate didBootstrap:1 info:0 error:0];
 }
 
-- (void)downloadFirmwareWithOptions:(id)a3
+- (void)downloadFirmwareWithOptions:(id)options
 {
   delegate = self->_delegate;
-  v5 = a3;
-  [(FudPluginDelegate *)delegate log:7 format:@"%s options %@", "[USBCAccessoryFirmwareUpdater downloadFirmwareWithOptions:]", v5];
-  [(USBCAccessoryFirmwareUpdater *)self setOptions:v5];
+  optionsCopy = options;
+  [(FudPluginDelegate *)delegate log:7 format:@"%s options %@", "[USBCAccessoryFirmwareUpdater downloadFirmwareWithOptions:]", optionsCopy];
+  [(USBCAccessoryFirmwareUpdater *)self setOptions:optionsCopy];
 
   lastState = self->_lastState;
   self->_lastState = @"download";
@@ -470,12 +470,12 @@ LABEL_32:
   }
 }
 
-- (void)prepareFirmwareWithOptions:(id)a3
+- (void)prepareFirmwareWithOptions:(id)options
 {
   delegate = self->_delegate;
-  v5 = a3;
-  [(FudPluginDelegate *)delegate log:7 format:@"%s options %@", "[USBCAccessoryFirmwareUpdater prepareFirmwareWithOptions:]", v5];
-  [(USBCAccessoryFirmwareUpdater *)self setOptions:v5];
+  optionsCopy = options;
+  [(FudPluginDelegate *)delegate log:7 format:@"%s options %@", "[USBCAccessoryFirmwareUpdater prepareFirmwareWithOptions:]", optionsCopy];
+  [(USBCAccessoryFirmwareUpdater *)self setOptions:optionsCopy];
 
   lastState = self->_lastState;
   self->_lastState = @"prepare";
@@ -496,12 +496,12 @@ LABEL_32:
   v10 = [(USBCFirmwareUpdater *)firmwareUpdater prepareFirmware:v12 hardware:installedHardwareFirmwareProperties firmware:firmwareAssetProperties progress:v11];
 }
 
-- (void)applyFirmwareWithOptions:(id)a3
+- (void)applyFirmwareWithOptions:(id)options
 {
   delegate = self->_delegate;
-  v5 = a3;
-  [(FudPluginDelegate *)delegate log:7 format:@"%s options %@", "[USBCAccessoryFirmwareUpdater applyFirmwareWithOptions:]", v5];
-  [(USBCAccessoryFirmwareUpdater *)self setOptions:v5];
+  optionsCopy = options;
+  [(FudPluginDelegate *)delegate log:7 format:@"%s options %@", "[USBCAccessoryFirmwareUpdater applyFirmwareWithOptions:]", optionsCopy];
+  [(USBCAccessoryFirmwareUpdater *)self setOptions:optionsCopy];
 
   lastState = self->_lastState;
   self->_lastState = @"apply";
@@ -522,12 +522,12 @@ LABEL_32:
   v10 = [(USBCFirmwareUpdater *)firmwareUpdater applyFirmware:v12 hardware:installedHardwareFirmwareProperties firmware:firmwareAssetProperties progress:v11];
 }
 
-- (void)finishWithOptions:(id)a3
+- (void)finishWithOptions:(id)options
 {
   delegate = self->_delegate;
-  v5 = a3;
-  [(FudPluginDelegate *)delegate log:7 format:@"%s options %@", "[USBCAccessoryFirmwareUpdater finishWithOptions:]", v5];
-  [(USBCAccessoryFirmwareUpdater *)self setOptions:v5];
+  optionsCopy = options;
+  [(FudPluginDelegate *)delegate log:7 format:@"%s options %@", "[USBCAccessoryFirmwareUpdater finishWithOptions:]", optionsCopy];
+  [(USBCAccessoryFirmwareUpdater *)self setOptions:optionsCopy];
 
   lastState = self->_lastState;
   self->_lastState = @"finish";
@@ -555,9 +555,9 @@ LABEL_32:
   [(USBCAccessoryFirmwareUpdater *)&v2 dealloc];
 }
 
-- (void)disconnectTimer:(id)a3
+- (void)disconnectTimer:(id)timer
 {
-  a3;
+  timer;
   if (self->_delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     [(FudPluginDelegate *)self->_delegate accessoryDisconnected:0];
@@ -566,9 +566,9 @@ LABEL_32:
   _objc_release_x1();
 }
 
-- (USBCAccessoryFirmwareUpdater)initWithCoder:(id)a3
+- (USBCAccessoryFirmwareUpdater)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = USBCAccessoryFirmwareUpdater;
   v5 = [(USBCAccessoryFirmwareUpdater *)&v24 init];
@@ -579,59 +579,59 @@ LABEL_32:
     delegate = v5->_delegate;
     v5->_delegate = 0;
 
-    v7 = [v4 decodeObjectForKey:@"DeviceClass"];
+    v7 = [coderCopy decodeObjectForKey:@"DeviceClass"];
     deviceClass = v5->_deviceClass;
     v5->_deviceClass = v7;
 
-    v9 = [v4 decodeObjectForKey:@"Options"];
+    v9 = [coderCopy decodeObjectForKey:@"Options"];
     inOptions = v5->_inOptions;
     v5->_inOptions = v9;
 
-    v11 = [v4 decodeObjectForKey:@"OutOptions"];
+    v11 = [coderCopy decodeObjectForKey:@"OutOptions"];
     outOptions = v5->_outOptions;
     v5->_outOptions = v11;
 
-    v13 = [v4 decodeObjectForKey:@"LastState"];
+    v13 = [coderCopy decodeObjectForKey:@"LastState"];
     lastState = v5->_lastState;
     v5->_lastState = v13;
 
-    v15 = [v4 decodeObjectForKey:@"RegistryID"];
+    v15 = [coderCopy decodeObjectForKey:@"RegistryID"];
     registryEntryID = v5->_registryEntryID;
     v5->_registryEntryID = v15;
 
-    v17 = [v4 decodeObjectForKey:@"InstalledHardwareFirmwareProperties"];
+    v17 = [coderCopy decodeObjectForKey:@"InstalledHardwareFirmwareProperties"];
     installedHardwareFirmwareProperties = v5->_installedHardwareFirmwareProperties;
     v5->_installedHardwareFirmwareProperties = v17;
 
-    v19 = [v4 decodeObjectForKey:@"FirmwareAssetProperties"];
+    v19 = [coderCopy decodeObjectForKey:@"FirmwareAssetProperties"];
     firmwareAssetProperties = v5->_firmwareAssetProperties;
     v5->_firmwareAssetProperties = v19;
 
-    v21 = [(USBCAccessoryFirmwareUpdater *)v5 buildFirmwareUpdaterObject];
+    buildFirmwareUpdaterObject = [(USBCAccessoryFirmwareUpdater *)v5 buildFirmwareUpdaterObject];
     v22 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   inOptions = self->_inOptions;
-  v5 = a3;
-  [v5 encodeObject:inOptions forKey:@"Options"];
-  [v5 encodeObject:self->_outOptions forKey:@"OutOptions"];
-  [v5 encodeObject:self->_lastState forKey:@"LastState"];
-  [v5 encodeObject:self->_deviceClass forKey:@"DeviceClass"];
-  [v5 encodeObject:self->_registryEntryID forKey:@"RegistryID"];
-  [v5 encodeObject:self->_installedHardwareFirmwareProperties forKey:@"InstalledHardwareFirmwareProperties"];
-  [v5 encodeObject:self->_firmwareAssetProperties forKey:@"FirmwareAssetProperties"];
+  coderCopy = coder;
+  [coderCopy encodeObject:inOptions forKey:@"Options"];
+  [coderCopy encodeObject:self->_outOptions forKey:@"OutOptions"];
+  [coderCopy encodeObject:self->_lastState forKey:@"LastState"];
+  [coderCopy encodeObject:self->_deviceClass forKey:@"DeviceClass"];
+  [coderCopy encodeObject:self->_registryEntryID forKey:@"RegistryID"];
+  [coderCopy encodeObject:self->_installedHardwareFirmwareProperties forKey:@"InstalledHardwareFirmwareProperties"];
+  [coderCopy encodeObject:self->_firmwareAssetProperties forKey:@"FirmwareAssetProperties"];
 }
 
-- (unsigned)getServiceForRegistryID:(int64_t *)a3
+- (unsigned)getServiceForRegistryID:(int64_t *)d
 {
-  *a3 = 0;
-  v5 = [(USBCAccessoryFirmwareUpdater *)self registryEntryID];
-  v6 = IORegistryEntryIDMatching([v5 unsignedLongLongValue]);
+  *d = 0;
+  registryEntryID = [(USBCAccessoryFirmwareUpdater *)self registryEntryID];
+  v6 = IORegistryEntryIDMatching([registryEntryID unsignedLongLongValue]);
 
   MatchingService = IOServiceGetMatchingService(kIOMasterPortDefault, v6);
   [(FudPluginDelegate *)self->_delegate log:7 format:@"IOServiceGetMatchingService ioService=%u", MatchingService];
@@ -645,16 +645,16 @@ LABEL_32:
 
   else
   {
-    *a3 = 2;
+    *d = 2;
   }
 
   return MatchingService;
 }
 
-- (unsigned)getConnectionForRegistryID:(int64_t *)a3
+- (unsigned)getConnectionForRegistryID:(int64_t *)d
 {
   connect = 0;
-  *a3 = 0;
+  *d = 0;
   result = [(USBCAccessoryFirmwareUpdater *)self getServiceForRegistryID:?];
   if (result)
   {
@@ -663,7 +663,7 @@ LABEL_32:
     [(FudPluginDelegate *)self->_delegate log:7 format:@"IOServiceOpen retVal=0x%0x ioConnection=%u", v7, connect];
     if (v7 || !connect)
     {
-      *a3 = 3;
+      *d = 3;
     }
 
     IOObjectRelease(v6);
@@ -673,18 +673,18 @@ LABEL_32:
   return result;
 }
 
-- (id)retrievePlistDeviceEntryFromDeviceClass:(id)a3
+- (id)retrievePlistDeviceEntryFromDeviceClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.USBCAccessoryFirmwareUpdater"];
   v5 = v4;
   if (!v4)
   {
-    v11 = 0;
+    firstObject = 0;
     v6 = 0;
     v7 = 0;
 LABEL_10:
-    v8 = 0;
+    classCopy = 0;
     v10 = 0;
     goto LABEL_6;
   }
@@ -693,27 +693,27 @@ LABEL_10:
   v7 = [v6 objectForKey:@"MatchingDevices"];
   if (!v7)
   {
-    v11 = 0;
+    firstObject = 0;
     goto LABEL_10;
   }
 
-  v8 = [NSPredicate predicateWithFormat:@"DeviceClass = %@", v3];
-  v9 = [v7 filteredArrayUsingPredicate:v8];
+  classCopy = [NSPredicate predicateWithFormat:@"DeviceClass = %@", classCopy];
+  v9 = [v7 filteredArrayUsingPredicate:classCopy];
   v10 = v9;
   if (v9 && [v9 count])
   {
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
   }
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
 LABEL_6:
-  v12 = v11;
+  v12 = firstObject;
 
-  return v11;
+  return firstObject;
 }
 
 @end

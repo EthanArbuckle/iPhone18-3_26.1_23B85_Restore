@@ -1,19 +1,19 @@
 @interface BPSThrottle
-- (BPSThrottle)initWithUpstream:(id)a3 interval:(double)a4 latest:(BOOL)a5 getTimestamp:(id)a6;
+- (BPSThrottle)initWithUpstream:(id)upstream interval:(double)interval latest:(BOOL)latest getTimestamp:(id)timestamp;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)nextEvent;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSThrottle
 
-- (BPSThrottle)initWithUpstream:(id)a3 interval:(double)a4 latest:(BOOL)a5 getTimestamp:(id)a6
+- (BPSThrottle)initWithUpstream:(id)upstream interval:(double)interval latest:(BOOL)latest getTimestamp:(id)timestamp
 {
-  v12 = a3;
-  v13 = a6;
-  if (a4 < 0.0)
+  upstreamCopy = upstream;
+  timestampCopy = timestamp;
+  if (interval < 0.0)
   {
     [BPSThrottle initWithUpstream:a2 interval:self latest:? getTimestamp:?];
   }
@@ -24,19 +24,19 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_upstream, a3);
-    v15->_interval = a4;
-    v15->_latest = a5;
-    v16 = [v13 copy];
+    objc_storeStrong(&v14->_upstream, upstream);
+    v15->_interval = interval;
+    v15->_latest = latest;
+    v16 = [timestampCopy copy];
     getTimestamp = v15->_getTimestamp;
     v15->_getTimestamp = v16;
 
     intervalEvent = v15->_intervalEvent;
     v15->_intervalEvent = 0;
 
-    v19 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     nextIntervalBoundary = v15->_nextIntervalBoundary;
-    v15->_nextIntervalBoundary = v19;
+    v15->_nextIntervalBoundary = distantPast;
 
     startTimestamp = v15->_startTimestamp;
     v15->_startTimestamp = 0;
@@ -45,9 +45,9 @@
   return v15;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -57,19 +57,19 @@
   v6 = [_BPSThrottleInner alloc];
   [(BPSThrottle *)self interval];
   v8 = v7;
-  v9 = [(BPSThrottle *)self latest];
-  v10 = [(BPSThrottle *)self getTimestamp];
-  v11 = [(_BPSThrottleInner *)v6 initWithDownstream:v4 interval:v9 latest:v10 getTimestamp:v8];
+  latest = [(BPSThrottle *)self latest];
+  getTimestamp = [(BPSThrottle *)self getTimestamp];
+  v11 = [(_BPSThrottleInner *)v6 initWithDownstream:subscribeCopy interval:latest latest:getTimestamp getTimestamp:v8];
 
-  v12 = [(BPSThrottle *)self upstream];
-  [v12 subscribe:v11];
+  upstream = [(BPSThrottle *)self upstream];
+  [upstream subscribe:v11];
 }
 
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSThrottle *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSThrottle *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -80,17 +80,17 @@
 - (id)nextEvent
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(BPSThrottle *)self upstream];
-  v4 = [v3 nextEvent];
+  upstream = [(BPSThrottle *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
     *&v5 = 138412802;
     v35 = v5;
     while (1)
     {
-      v6 = [(BPSThrottle *)self getTimestamp];
-      v7 = (v6)[2](v6, v4);
+      getTimestamp = [(BPSThrottle *)self getTimestamp];
+      v7 = (getTimestamp)[2](getTimestamp, nextEvent);
 
       v8 = __biome_log_for_category();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -100,35 +100,35 @@
         *__y = v35;
         *&__y[4] = v26;
         v37 = 2112;
-        v38 = v4;
+        v38 = nextEvent;
         v39 = 2112;
         v40 = v27;
         _os_log_debug_impl(&dword_1C871B000, v8, OS_LOG_TYPE_DEBUG, "%@ - receiving: %@ at %@", __y, 0x20u);
       }
 
-      v9 = [(BPSThrottle *)self nextIntervalBoundary];
-      v10 = [MEMORY[0x1E695DF00] distantPast];
-      v11 = [v9 isEqualToDate:v10];
+      nextIntervalBoundary = [(BPSThrottle *)self nextIntervalBoundary];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
+      v11 = [nextIntervalBoundary isEqualToDate:distantPast];
 
       if (v11)
       {
         break;
       }
 
-      v12 = [(BPSThrottle *)self nextIntervalBoundary];
-      v13 = [v7 compare:v12];
+      nextIntervalBoundary2 = [(BPSThrottle *)self nextIntervalBoundary];
+      v13 = [v7 compare:nextIntervalBoundary2];
 
       if (v13 == 1)
       {
-        v14 = [(BPSThrottle *)self intervalEvent];
+        intervalEvent = [(BPSThrottle *)self intervalEvent];
 
-        if (v14)
+        if (intervalEvent)
         {
-          v14 = [(BPSThrottle *)self intervalEvent];
+          intervalEvent = [(BPSThrottle *)self intervalEvent];
         }
 
-        v15 = [(BPSThrottle *)self startTimestamp];
-        [v7 timeIntervalSinceDate:v15];
+        startTimestamp = [(BPSThrottle *)self startTimestamp];
+        [v7 timeIntervalSinceDate:startTimestamp];
         v17 = v16;
 
         [(BPSThrottle *)self interval];
@@ -138,8 +138,8 @@
         v22 = [v20 initWithTimeInterval:v7 sinceDate:(v19 * v21)];
         [(BPSThrottle *)self setNextIntervalBoundary:v22];
 
-        [(BPSThrottle *)self setIntervalEvent:v4];
-        if (v14)
+        [(BPSThrottle *)self setIntervalEvent:nextEvent];
+        if (intervalEvent)
         {
           v31 = __biome_log_for_category();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -153,14 +153,14 @@
 
       else if ([(BPSThrottle *)self latest]|| ([(BPSThrottle *)self intervalEvent], v23 = objc_claimAutoreleasedReturnValue(), v23, !v23))
       {
-        [(BPSThrottle *)self setIntervalEvent:v4];
+        [(BPSThrottle *)self setIntervalEvent:nextEvent];
       }
 
-      v24 = [(BPSThrottle *)self upstream];
-      v25 = [v24 nextEvent];
+      upstream2 = [(BPSThrottle *)self upstream];
+      nextEvent2 = [upstream2 nextEvent];
 
-      v4 = v25;
-      if (!v25)
+      nextEvent = nextEvent2;
+      if (!nextEvent2)
       {
         goto LABEL_15;
       }
@@ -178,26 +178,26 @@
     v30 = [v29 dateWithTimeInterval:v7 sinceDate:?];
     [(BPSThrottle *)self setNextIntervalBoundary:v30];
 
-    v14 = v4;
+    intervalEvent = nextEvent;
 LABEL_22:
   }
 
   else
   {
 LABEL_15:
-    v14 = 0;
+    intervalEvent = 0;
   }
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return intervalEvent;
 }
 
 - (void)reset
 {
   [(BPSThrottle *)self setIntervalEvent:0];
-  v3 = [MEMORY[0x1E695DF00] distantPast];
-  [(BPSThrottle *)self setNextIntervalBoundary:v3];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [(BPSThrottle *)self setNextIntervalBoundary:distantPast];
 
   [(BPSThrottle *)self setStartTimestamp:0];
   v4.receiver = self;

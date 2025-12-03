@@ -1,15 +1,15 @@
 @interface StaticTransitionAnimator
 - (_TtC23ShelfKitCollectionViews24StaticTransitionAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation StaticTransitionAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1DB658(a3);
+  selfCopy = self;
+  sub_1DB658(transition);
   swift_unknownObjectRelease();
 }
 

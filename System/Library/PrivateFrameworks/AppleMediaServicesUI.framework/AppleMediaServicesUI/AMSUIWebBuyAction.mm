@@ -1,40 +1,40 @@
 @interface AMSUIWebBuyAction
-- (AMSUIWebBuyAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebBuyAction)initWithJSObject:(id)object context:(id)context;
 - (id)_iTunesAccount;
 - (id)_runBuy;
-- (id)_runBuyWithContentType:(id)a3;
+- (id)_runBuyWithContentType:(id)type;
 - (id)_runLegacyBuy;
-- (id)purchase:(id)a3 handleSceneIdentifierRequest:(id)a4 error:(id *)a5;
-- (id)purchase:(id)a3 handleWindowRequest:(id)a4 error:(id *)a5;
-- (id)purchaseContentWithType:(id)a3;
+- (id)purchase:(id)purchase handleSceneIdentifierRequest:(id)request error:(id *)error;
+- (id)purchase:(id)purchase handleWindowRequest:(id)request error:(id *)error;
+- (id)purchaseContentWithType:(id)type;
 - (id)runAction;
-- (void)_makeCurrentAccountIfNeeded:(id)a3;
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleEngagementRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleSceneBundleIdentifierRequest:(id)a4 completion:(id)a5;
+- (void)_makeCurrentAccountIfNeeded:(id)needed;
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleDialogRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleEngagementRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleSceneBundleIdentifierRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSUIWebBuyAction
 
-- (AMSUIWebBuyAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebBuyAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v44.receiver = self;
   v44.super_class = AMSUIWebBuyAction;
-  v7 = [(AMSUIWebAction *)&v44 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v44 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"type"];
+    v8 = [objectCopy objectForKeyedSubscript:@"type"];
     if (objc_opt_respondsToSelector())
     {
       v7->_type = [v8 integerValue];
     }
 
-    v9 = [v6 objectForKeyedSubscript:@"legacyBuy"];
+    v9 = [objectCopy objectForKeyedSubscript:@"legacyBuy"];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v6 objectForKeyedSubscript:@"legacyBuy"];
+      v10 = [objectCopy objectForKeyedSubscript:@"legacyBuy"];
       v7->_legacyBuy = [v10 BOOLValue];
     }
 
@@ -43,7 +43,7 @@
       v7->_legacyBuy = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"buyParameters"];
+    v11 = [objectCopy objectForKeyedSubscript:@"buyParameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
     buyParams = v7->_buyParams;
     v7->_buyParams = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"contentType"];
+    v14 = [objectCopy objectForKeyedSubscript:@"contentType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,19 +73,19 @@
     contentType = v7->_contentType;
     v7->_contentType = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"requiresAccount"];
+    v17 = [objectCopy objectForKeyedSubscript:@"requiresAccount"];
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v17 BOOLValue];
+      bOOLValue = [v17 BOOLValue];
     }
 
     else
     {
-      v18 = 1;
+      bOOLValue = 1;
     }
 
-    v7->_requiresAccount = v18;
-    v19 = [v6 objectForKeyedSubscript:@"metricsOverlay"];
+    v7->_requiresAccount = bOOLValue;
+    v19 = [objectCopy objectForKeyedSubscript:@"metricsOverlay"];
     v20 = 0x1E695D000;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -101,7 +101,7 @@
     metricsOverlay = v7->_metricsOverlay;
     v7->_metricsOverlay = v21;
 
-    v23 = [v6 objectForKeyedSubscript:@"performanceMetricsOverlay"];
+    v23 = [objectCopy objectForKeyedSubscript:@"performanceMetricsOverlay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,10 +116,10 @@
     performanceMetricsOverlay = v7->_performanceMetricsOverlay;
     v7->_performanceMetricsOverlay = v24;
 
-    v26 = [v6 objectForKeyedSubscript:@"makeCurrentAccount"];
+    v26 = [objectCopy objectForKeyedSubscript:@"makeCurrentAccount"];
     if (objc_opt_respondsToSelector())
     {
-      v27 = [v6 objectForKeyedSubscript:@"makeCurrentAccount"];
+      v27 = [objectCopy objectForKeyedSubscript:@"makeCurrentAccount"];
       v7->_makeCurrentAccount = [v27 BOOLValue];
     }
 
@@ -128,25 +128,25 @@
       v7->_makeCurrentAccount = 0;
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"sendBlindedData"];
+    v28 = [objectCopy objectForKeyedSubscript:@"sendBlindedData"];
 
     if (v28)
     {
       v29 = objc_alloc(MEMORY[0x1E698C810]);
-      v30 = [v6 objectForKeyedSubscript:@"sendBlindedData"];
+      v30 = [objectCopy objectForKeyedSubscript:@"sendBlindedData"];
       v31 = objc_opt_respondsToSelector();
       if (v31)
       {
-        v20 = [v6 objectForKeyedSubscript:@"sendBlindedData"];
-        v32 = [v20 BOOLValue];
+        v20 = [objectCopy objectForKeyedSubscript:@"sendBlindedData"];
+        bOOLValue2 = [v20 BOOLValue];
       }
 
       else
       {
-        v32 = 0;
+        bOOLValue2 = 0;
       }
 
-      v33 = [v29 initWithBool:v32];
+      v33 = [v29 initWithBool:bOOLValue2];
       sendBlindedData = v7->_sendBlindedData;
       v7->_sendBlindedData = v33;
 
@@ -155,17 +155,17 @@
       }
     }
 
-    v35 = [(AMSUIWebAction *)v7 context];
-    v36 = [v6 objectForKeyedSubscript:@"account"];
-    v37 = [v35 iTunesAccountFromJSAccount:v36];
+    context = [(AMSUIWebAction *)v7 context];
+    v36 = [objectCopy objectForKeyedSubscript:@"account"];
+    v37 = [context iTunesAccountFromJSAccount:v36];
     account = v7->_account;
     v7->_account = v37;
 
     if (!v7->_account)
     {
-      v39 = [(AMSUIWebAction *)v7 context];
-      v40 = [v6 objectForKeyedSubscript:@"dsid"];
-      v41 = [v39 iTunesAccountFromJSDSID:v40];
+      context2 = [(AMSUIWebAction *)v7 context];
+      v40 = [objectCopy objectForKeyedSubscript:@"dsid"];
+      v41 = [context2 iTunesAccountFromJSDSID:v40];
       v42 = v7->_account;
       v7->_account = v41;
     }
@@ -179,20 +179,20 @@
   v27 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = AMSUIWebBuyAction;
-  v3 = [(AMSUIWebAction *)&v18 runAction];
-  v4 = [(AMSUIWebBuyAction *)self buyParams];
-  v5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v5)
+  runAction = [(AMSUIWebAction *)&v18 runAction];
+  buyParams = [(AMSUIWebBuyAction *)self buyParams];
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
-    v9 = [(AMSUIWebBuyAction *)self account];
+    account = [(AMSUIWebBuyAction *)self account];
     v10 = AMSHashIfNeeded();
     *buf = 138544130;
     v20 = v7;
@@ -201,18 +201,18 @@
     v23 = 2114;
     v24 = v10;
     v25 = 2112;
-    v26 = v4;
-    _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running purchase with account: %{public}@ buyParameters: %@", buf, 0x2Au);
+    v26 = buyParams;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Running purchase with account: %{public}@ buyParameters: %@", buf, 0x2Au);
   }
 
-  if (v4)
+  if (buyParams)
   {
     if (![(AMSUIWebBuyAction *)self legacyBuy]|| ([(AMSUIWebBuyAction *)self _runLegacyBuy], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v12 = [(AMSUIWebBuyAction *)self contentType];
-      if (v12)
+      contentType = [(AMSUIWebBuyAction *)self contentType];
+      if (contentType)
       {
-        [(AMSUIWebBuyAction *)self _runBuyWithContentType:v12];
+        [(AMSUIWebBuyAction *)self _runBuyWithContentType:contentType];
       }
 
       else
@@ -286,15 +286,15 @@ void __30__AMSUIWebBuyAction_runAction__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(AMSUIWebAction *)self context];
-  v10 = [v9 actionDelegate];
-  v11 = [v10 action:self pauseTimeouts:1 handleAuthenticateRequest:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  context = [(AMSUIWebAction *)self context];
+  actionDelegate = [context actionDelegate];
+  v11 = [actionDelegate action:self pauseTimeouts:1 handleAuthenticateRequest:requestCopy];
 
-  [v11 addFinishBlock:v7];
+  [v11 addFinishBlock:completionCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__AMSUIWebBuyAction_purchase_handleAuthenticateRequest_completion___block_invoke;
@@ -310,30 +310,30 @@ void __67__AMSUIWebBuyAction_purchase_handleAuthenticateRequest_completion___blo
   [v2 _makeCurrentAccountIfNeeded:v3];
 }
 
-- (void)purchase:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(AMSUIWebAction *)self context];
-  v10 = [v9 actionDelegate];
-  v11 = [v10 action:self pauseTimeouts:1 handleDialogRequest:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  context = [(AMSUIWebAction *)self context];
+  actionDelegate = [context actionDelegate];
+  v11 = [actionDelegate action:self pauseTimeouts:1 handleDialogRequest:requestCopy];
 
-  [v11 addFinishBlock:v7];
+  [v11 addFinishBlock:completionCopy];
 }
 
-- (void)purchase:(id)a3 handleEngagementRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleEngagementRequest:(id)request completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__AMSUIWebBuyAction_purchase_handleEngagementRequest_completion___block_invoke;
   block[3] = &unk_1E7F25C40;
-  v12 = v7;
-  v13 = self;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -352,52 +352,52 @@ void __65__AMSUIWebBuyAction_purchase_handleEngagementRequest_completion___block
   [v9 addFinishBlock:*(a1 + 48)];
 }
 
-- (id)purchase:(id)a3 handleWindowRequest:(id)a4 error:(id *)a5
+- (id)purchase:(id)purchase handleWindowRequest:(id)request error:(id *)error
 {
-  v6 = [(AMSUIWebAction *)self context:a3];
-  v7 = [v6 flowController];
-  v8 = [v7 currentContainer];
-  v9 = [v8 view];
-  v10 = [v9 window];
+  v6 = [(AMSUIWebAction *)self context:purchase];
+  flowController = [v6 flowController];
+  currentContainer = [flowController currentContainer];
+  view = [currentContainer view];
+  window = [view window];
 
-  if (a5 && !v10)
+  if (error && !window)
   {
-    *a5 = AMSError();
+    *error = AMSError();
   }
 
-  return v10;
+  return window;
 }
 
-- (id)purchase:(id)a3 handleSceneIdentifierRequest:(id)a4 error:(id *)a5
+- (id)purchase:(id)purchase handleSceneIdentifierRequest:(id)request error:(id *)error
 {
-  v6 = [(AMSUIWebAction *)self presentingSceneIdentifier:a3];
+  v6 = [(AMSUIWebAction *)self presentingSceneIdentifier:purchase];
   v7 = v6;
-  if (a5 && !v6)
+  if (error && !v6)
   {
-    *a5 = AMSError();
+    *error = AMSError();
   }
 
   return v7;
 }
 
-- (void)purchase:(id)a3 handleSceneBundleIdentifierRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleSceneBundleIdentifierRequest:(id)request completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [(AMSUIWebAction *)self context];
-  v9 = [v8 clientInfo];
-  v10 = [v9 proxyAppBundleID];
+  completionCopy = completion;
+  context = [(AMSUIWebAction *)self context];
+  clientInfo = [context clientInfo];
+  proxyAppBundleID = [clientInfo proxyAppBundleID];
 
-  if (v10)
+  if (proxyAppBundleID)
   {
-    v11 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v11)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v11 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_17;
     }
@@ -414,23 +414,23 @@ void __65__AMSUIWebBuyAction_purchase_handleEngagementRequest_completion___block
     goto LABEL_13;
   }
 
-  v8 = [(AMSUIWebAction *)self context];
-  v16 = [v8 clientInfo];
-  v10 = [v16 bundleIdentifier];
+  context = [(AMSUIWebAction *)self context];
+  clientInfo2 = [context clientInfo];
+  proxyAppBundleID = [clientInfo2 bundleIdentifier];
 
-  if (!v10)
+  if (!proxyAppBundleID)
   {
     goto LABEL_18;
   }
 
-  v11 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v11)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v11 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = AMSLogKey();
     v14 = MEMORY[0x1E696AEC0];
@@ -443,15 +443,15 @@ LABEL_12:
       v29 = NSStringFromSelector(a2);
       [v14 stringWithFormat:@"%@: [%@] %@ ", v15, v17, v29];
       v18 = LABEL_14:;
-      v8 = AMSHashIfNeeded();
+      context = AMSHashIfNeeded();
       v19 = AMSHashIfNeeded();
       *buf = 138543874;
       v32 = v18;
       v33 = 2114;
-      v34 = v8;
+      v34 = context;
       v35 = 2114;
       v36 = v19;
-      _os_log_impl(&dword_1BB036000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@Found scene identifier %{public}@ in %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Found scene identifier %{public}@ in %{public}@", buf, 0x20u);
       if (v13)
       {
 
@@ -471,14 +471,14 @@ LABEL_13:
 LABEL_17:
 
 LABEL_18:
-  v20 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v20)
+  mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968]2)
   {
-    v20 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v21 = [v20 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v22 = AMSLogKey();
     v23 = MEMORY[0x1E696AEC0];
@@ -486,8 +486,8 @@ LABEL_18:
     if (v22)
     {
       v25 = AMSLogKey();
-      v8 = NSStringFromSelector(a2);
-      [v23 stringWithFormat:@"%@: [%@] %@ ", v24, v25, v8];
+      context = NSStringFromSelector(a2);
+      [v23 stringWithFormat:@"%@: [%@] %@ ", v24, v25, context];
     }
 
     else
@@ -501,30 +501,30 @@ LABEL_18:
     v32 = v26;
     v33 = 2114;
     v34 = v27;
-    _os_log_impl(&dword_1BB036000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@Using bundle identifier: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Using bundle identifier: %{public}@", buf, 0x16u);
     if (v22)
     {
 
-      v26 = v8;
+      v26 = context;
     }
   }
 
-  v7[2](v7, v10, 0);
+  completionCopy[2](completionCopy, proxyAppBundleID, 0);
   v28 = *MEMORY[0x1E69E9840];
 }
 
 - (id)_iTunesAccount
 {
-  v3 = [(AMSUIWebBuyAction *)self account];
-  if (([v3 ams_isiTunesAccount] & 1) == 0)
+  account = [(AMSUIWebBuyAction *)self account];
+  if (([account ams_isiTunesAccount] & 1) == 0)
   {
     v4 = MEMORY[0x1E6959A48];
-    v5 = [(AMSUIWebAction *)self context];
-    v6 = [v5 clientInfo];
-    v7 = [v6 accountMediaType];
-    v8 = [v4 ams_sharedAccountStoreForMediaType:v7];
+    context = [(AMSUIWebAction *)self context];
+    clientInfo = [context clientInfo];
+    accountMediaType = [clientInfo accountMediaType];
+    v8 = [v4 ams_sharedAccountStoreForMediaType:accountMediaType];
 
-    v9 = [v8 ams_iTunesAccountForAccount:v3];
+    v9 = [v8 ams_iTunesAccountForAccount:account];
     v10 = v9;
     if (v9)
     {
@@ -533,33 +533,33 @@ LABEL_18:
 
     else
     {
-      v11 = v3;
+      v11 = account;
     }
 
     v12 = v11;
 
-    v3 = v12;
+    account = v12;
   }
 
-  return v3;
+  return account;
 }
 
-- (void)_makeCurrentAccountIfNeeded:(id)a3
+- (void)_makeCurrentAccountIfNeeded:(id)needed
 {
-  v10 = a3;
-  if (-[AMSUIWebBuyAction makeCurrentAccount](self, "makeCurrentAccount") || (-[AMSUIWebAction context](self, "context"), v4 = objc_claimAutoreleasedReturnValue(), [v4 account], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v10, "web_matchAccount:", v5), v5, v4, v6))
+  neededCopy = needed;
+  if (-[AMSUIWebBuyAction makeCurrentAccount](self, "makeCurrentAccount") || (-[AMSUIWebAction context](self, "context"), v4 = objc_claimAutoreleasedReturnValue(), [v4 account], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(neededCopy, "web_matchAccount:", v5), v5, v4, v6))
   {
-    v7 = [(AMSUIWebAction *)self context];
-    v8 = [(AMSUIWebAction *)self context];
-    v9 = [v8 clientInfo];
-    [v7 replaceCurrentAccount:v10 clientInfo:v9];
+    context = [(AMSUIWebAction *)self context];
+    context2 = [(AMSUIWebAction *)self context];
+    clientInfo = [context2 clientInfo];
+    [context replaceCurrentAccount:neededCopy clientInfo:clientInfo];
   }
 }
 
-- (id)purchaseContentWithType:(id)a3
+- (id)purchaseContentWithType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:AMSUIWebPluginPurchaseContentTypeApp])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:AMSUIWebPluginPurchaseContentTypeApp])
   {
     v36 = 0;
     v37 = &v36;
@@ -581,15 +581,15 @@ LABEL_18:
     _Block_object_dispose(&v36, 8);
     v7 = objc_alloc_init(v5);
     v8 = objc_alloc(MEMORY[0x1E698C818]);
-    v9 = [(AMSUIWebBuyAction *)self buyParams];
-    v10 = [v8 initWithString:v9];
+    buyParams = [(AMSUIWebBuyAction *)self buyParams];
+    v10 = [v8 initWithString:buyParams];
 
-    v11 = [(AMSUIWebBuyAction *)self account];
-    v12 = [v11 ams_DSID];
-    [v7 setAccountIdentifier:v12];
+    account = [(AMSUIWebBuyAction *)self account];
+    ams_DSID = [account ams_DSID];
+    [v7 setAccountIdentifier:ams_DSID];
 
-    v13 = [v10 stringValue];
-    [v7 setBuyParameters:v13];
+    stringValue = [v10 stringValue];
+    [v7 setBuyParameters:stringValue];
 
     v14 = MEMORY[0x1E696AD98];
     v15 = [v10 parameterForKey:*MEMORY[0x1E698C530]];
@@ -597,7 +597,7 @@ LABEL_18:
     [v7 setItemID:v16];
 
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v18 = [(AMSUIWebAction *)self presentingSceneIdentifierPromise];
+    presentingSceneIdentifierPromise = [(AMSUIWebAction *)self presentingSceneIdentifierPromise];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __45__AMSUIWebBuyAction_purchaseContentWithType___block_invoke;
@@ -605,10 +605,10 @@ LABEL_18:
     v33[4] = self;
     v19 = v7;
     v34 = v19;
-    v20 = [v18 continueWithBinaryPromiseBlock:v33];
+    v20 = [presentingSceneIdentifierPromise continueWithBinaryPromiseBlock:v33];
 
     [v17 addObject:v20];
-    v21 = [(AMSUIWebAction *)self presentingSceneBundleIdentifierPromise];
+    presentingSceneBundleIdentifierPromise = [(AMSUIWebAction *)self presentingSceneBundleIdentifierPromise];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __45__AMSUIWebBuyAction_purchaseContentWithType___block_invoke_90;
@@ -616,7 +616,7 @@ LABEL_18:
     v31[4] = self;
     v22 = v19;
     v32 = v22;
-    v23 = [v21 continueWithBinaryPromiseBlock:v31];
+    v23 = [presentingSceneBundleIdentifierPromise continueWithBinaryPromiseBlock:v31];
 
     [v17 addObject:v23];
     v24 = [MEMORY[0x1E698C7F0] promiseWithAll:v17];
@@ -821,14 +821,14 @@ LABEL_5:
 - (id)_runBuy
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v3)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v3 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -836,31 +836,31 @@ LABEL_5:
     v34 = v5;
     v35 = 2114;
     v36 = v6;
-    _os_log_impl(&dword_1BB036000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting buy", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting buy", buf, 0x16u);
   }
 
   v7 = objc_alloc(MEMORY[0x1E698C818]);
-  v29 = [(AMSUIWebBuyAction *)self buyParams];
-  v27 = [v7 initWithString:v29];
-  v28 = [(AMSUIWebAction *)self context];
-  v8 = [v28 clientInfo];
-  v9 = [(AMSUIWebBuyAction *)self requiresAccount];
-  v10 = [(AMSUIWebAction *)self context];
-  v11 = [v10 additionalHeaders];
-  v12 = [(AMSUIWebBuyAction *)self sendBlindedData];
-  v13 = [(AMSUIWebAction *)self context];
-  v14 = [v13 metricsOverlay];
-  v15 = [(AMSUIWebAction *)self context];
-  v16 = [v15 performanceMetricsOverlay];
-  v17 = [(AMSUIWebBuyAction *)self configurePurchaseWithBuyParams:v27 isUserInitiated:1 clientInfo:v8 requiresAccount:v9 additionalHeaders:v11 sendBlindedData:v12 metricsOverlay:v14 performanceMetricsOverlay:v16];
+  buyParams = [(AMSUIWebBuyAction *)self buyParams];
+  v27 = [v7 initWithString:buyParams];
+  context = [(AMSUIWebAction *)self context];
+  clientInfo = [context clientInfo];
+  requiresAccount = [(AMSUIWebBuyAction *)self requiresAccount];
+  context2 = [(AMSUIWebAction *)self context];
+  additionalHeaders = [context2 additionalHeaders];
+  sendBlindedData = [(AMSUIWebBuyAction *)self sendBlindedData];
+  context3 = [(AMSUIWebAction *)self context];
+  metricsOverlay = [context3 metricsOverlay];
+  context4 = [(AMSUIWebAction *)self context];
+  performanceMetricsOverlay = [context4 performanceMetricsOverlay];
+  v17 = [(AMSUIWebBuyAction *)self configurePurchaseWithBuyParams:v27 isUserInitiated:1 clientInfo:clientInfo requiresAccount:requiresAccount additionalHeaders:additionalHeaders sendBlindedData:sendBlindedData metricsOverlay:metricsOverlay performanceMetricsOverlay:performanceMetricsOverlay];
 
   v18 = [AMSUIPurchaseTask alloc];
-  v19 = [(AMSUIWebAction *)self context];
-  v20 = [v19 bag];
+  context5 = [(AMSUIWebAction *)self context];
+  v20 = [context5 bag];
   v21 = [(AMSPurchaseTask *)v18 initWithPurchase:v17 bag:v20];
 
   [(AMSPurchaseTask *)v21 setDelegate:self];
-  v22 = [(AMSPurchaseTask *)v21 performPurchase];
+  performPurchase = [(AMSPurchaseTask *)v21 performPurchase];
   objc_initWeak(buf, self);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -869,8 +869,8 @@ LABEL_5:
   objc_copyWeak(&v32, buf);
   v23 = v17;
   v31 = v23;
-  [v22 addFinishBlock:v30];
-  v24 = [v22 thenWithBlock:&__block_literal_global_113];
+  [performPurchase addFinishBlock:v30];
+  v24 = [performPurchase thenWithBlock:&__block_literal_global_113];
 
   objc_destroyWeak(&v32);
   objc_destroyWeak(buf);
@@ -930,44 +930,44 @@ id __28__AMSUIWebBuyAction__runBuy__block_invoke_2(uint64_t a1, void *a2)
   return v10;
 }
 
-- (id)_runBuyWithContentType:(id)a3
+- (id)_runBuyWithContentType:(id)type
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v5 = AMSLogKey();
-  v6 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v6)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v28 = objc_opt_class();
     v29 = 2114;
     v30 = v5;
     v31 = 2114;
-    v32 = v4;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Purchasing content with type: %{public}@", buf, 0x20u);
+    v32 = typeCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Purchasing content with type: %{public}@", buf, 0x20u);
   }
 
-  v8 = [(AMSUIWebBuyAction *)self _purchasePluginIdentifierForContentType:v4];
+  v8 = [(AMSUIWebBuyAction *)self _purchasePluginIdentifierForContentType:typeCopy];
   if (!v8)
   {
-    v17 = [(AMSUIWebBuyAction *)self purchaseContentWithType:v4];
+    v17 = [(AMSUIWebBuyAction *)self purchaseContentWithType:typeCopy];
     goto LABEL_18;
   }
 
-  v9 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-  if (!v9)
+  mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+  if (!mEMORY[0x1E698C968]2)
   {
-    v9 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     *buf = 138543874;
@@ -976,19 +976,19 @@ id __28__AMSUIWebBuyAction__runBuy__block_invoke_2(uint64_t a1, void *a2)
     v30 = v5;
     v31 = 2114;
     v32 = v8;
-    _os_log_impl(&dword_1BB036000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Loading plugin: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Loading plugin: %{public}@", buf, 0x20u);
   }
 
-  v12 = [(AMSUIWebAction *)self context];
-  v13 = [v12 pluginLoader];
-  v14 = [v13 pluginForBundleIdentifier:v8];
+  context = [(AMSUIWebAction *)self context];
+  pluginLoader = [context pluginLoader];
+  v14 = [pluginLoader pluginForBundleIdentifier:v8];
 
   if (!v14)
   {
     v18 = MEMORY[0x1E698CAD0];
 LABEL_16:
-    v15 = AMSError();
-    v16 = [v18 promiseWithError:v15];
+    buyParams = AMSError();
+    v16 = [v18 promiseWithError:buyParams];
     goto LABEL_17;
   }
 
@@ -998,8 +998,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v15 = [(AMSUIWebBuyAction *)self buyParams];
-  v16 = [v14 purchaseContentWithType:v4 buyParams:v15];
+  buyParams = [(AMSUIWebBuyAction *)self buyParams];
+  v16 = [v14 purchaseContentWithType:typeCopy buyParams:buyParams];
 LABEL_17:
   v17 = v16;
 
@@ -1085,11 +1085,11 @@ void __44__AMSUIWebBuyAction__runBuyWithContentType___block_invoke_133(uint64_t 
 - (id)_runLegacyBuy
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIWebAction *)self presentingSceneIdentifierPromise];
-  v4 = [(AMSUIWebAction *)self presentingSceneBundleIdentifierPromise];
+  presentingSceneIdentifierPromise = [(AMSUIWebAction *)self presentingSceneIdentifierPromise];
+  presentingSceneBundleIdentifierPromise = [(AMSUIWebAction *)self presentingSceneBundleIdentifierPromise];
   v5 = MEMORY[0x1E698CAD0];
-  v12[0] = v3;
-  v12[1] = v4;
+  v12[0] = presentingSceneIdentifierPromise;
+  v12[1] = presentingSceneBundleIdentifierPromise;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
   v7 = [v5 promiseWithAll:v6];
 

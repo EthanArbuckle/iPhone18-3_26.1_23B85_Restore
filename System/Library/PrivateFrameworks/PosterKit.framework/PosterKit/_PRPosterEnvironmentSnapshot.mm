@@ -4,11 +4,11 @@
 - (CGRect)floatingObscurableBounds;
 - (CGRect)salientContentRectangle;
 - (CGRect)screenBounds;
-- (CGRect)titleBoundsForLayout:(unint64_t)a3;
+- (CGRect)titleBoundsForLayout:(unint64_t)layout;
 - (CGSize)canvasSize;
 - (CGSize)desiredContentSize;
 - (CGSize)minimumContentSize;
-- (_PRPosterEnvironmentSnapshot)initWithEnvironment:(id)a3 layoutController:(id)a4;
+- (_PRPosterEnvironmentSnapshot)initWithEnvironment:(id)environment layoutController:(id)controller;
 - (__n128)deviceMotionRotation;
 @end
 
@@ -29,8 +29,8 @@
 
 - (__n128)deviceMotionRotation
 {
-  result = *(a1 + 432);
-  v3 = *(a1 + 448);
+  result = *(self + 432);
+  v3 = *(self + 448);
   *a2 = result;
   *(a2 + 16) = v3;
   return result;
@@ -58,15 +58,15 @@
   return result;
 }
 
-- (_PRPosterEnvironmentSnapshot)initWithEnvironment:(id)a3 layoutController:(id)a4
+- (_PRPosterEnvironmentSnapshot)initWithEnvironment:(id)environment layoutController:(id)controller
 {
   v90 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  environmentCopy = environment;
+  controllerCopy = controller;
+  v9 = controllerCopy;
+  if (environmentCopy)
   {
-    if (v8)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -88,101 +88,101 @@ LABEL_3:
   v10 = [(_PRPosterEnvironmentSnapshot *)&v87 init];
   if (v10)
   {
-    v11 = [v7 bundleURL];
+    bundleURL = [environmentCopy bundleURL];
     bundleURL = v10->_bundleURL;
-    v10->_bundleURL = v11;
+    v10->_bundleURL = bundleURL;
 
-    v13 = [v7 ambientEnvironment];
+    ambientEnvironment = [environmentCopy ambientEnvironment];
     ambientEnvironment = v10->_ambientEnvironment;
-    v10->_ambientEnvironment = v13;
+    v10->_ambientEnvironment = ambientEnvironment;
 
-    v10->_isPreview = [v7 isPreview];
-    v10->_isSnapshot = [v7 isSnapshot];
-    v10->_isIdle = [v7 isIdle];
-    [v7 unlockProgress];
+    v10->_isPreview = [environmentCopy isPreview];
+    v10->_isSnapshot = [environmentCopy isSnapshot];
+    v10->_isIdle = [environmentCopy isIdle];
+    [environmentCopy unlockProgress];
     v10->_unlockProgress = v15;
-    [v7 backlightProgress];
+    [environmentCopy backlightProgress];
     v10->_backlightProgress = v16;
-    [v7 linearBacklightProgress];
+    [environmentCopy linearBacklightProgress];
     v10->_linearBacklightProgress = v17;
-    v10->_wakeSourceIsSwipeToUnlock = [v7 wakeSourceIsSwipeToUnlock];
-    v10->_isLowLuminance = [v7 isLowLuminance];
-    v10->_luminance = [v7 luminance];
-    v18 = [v7 contents];
+    v10->_wakeSourceIsSwipeToUnlock = [environmentCopy wakeSourceIsSwipeToUnlock];
+    v10->_isLowLuminance = [environmentCopy isLowLuminance];
+    v10->_luminance = [environmentCopy luminance];
+    contents = [environmentCopy contents];
     contents = v10->_contents;
-    v10->_contents = v18;
+    v10->_contents = contents;
 
-    v10->_isParallaxEnabled = [v7 isParallaxEnabled];
-    [v7 minimumContentSize];
+    v10->_isParallaxEnabled = [environmentCopy isParallaxEnabled];
+    [environmentCopy minimumContentSize];
     v10->_minimumContentSize.width = v20;
     v10->_minimumContentSize.height = v21;
-    [v7 desiredContentSize];
+    [environmentCopy desiredContentSize];
     v10->_desiredContentSize.width = v22;
     v10->_desiredContentSize.height = v23;
-    v10->_titleAlignment = [v7 titleAlignment];
-    v24 = [v7 ambientEnvironment];
+    v10->_titleAlignment = [environmentCopy titleAlignment];
+    ambientEnvironment2 = [environmentCopy ambientEnvironment];
     v25 = v10->_ambientEnvironment;
-    v10->_ambientEnvironment = v24;
+    v10->_ambientEnvironment = ambientEnvironment2;
 
-    [v7 salientContentRectangle];
+    [environmentCopy salientContentRectangle];
     v10->_salientContentRectangle.origin.x = v26;
     v10->_salientContentRectangle.origin.y = v27;
     v10->_salientContentRectangle.size.width = v28;
     v10->_salientContentRectangle.size.height = v29;
-    v30 = [v7 contentOcclusionRectangles];
+    contentOcclusionRectangles = [environmentCopy contentOcclusionRectangles];
     contentOcclusionRectangles = v10->_contentOcclusionRectangles;
-    v10->_contentOcclusionRectangles = v30;
+    v10->_contentOcclusionRectangles = contentOcclusionRectangles;
 
-    [v7 canvasSize];
+    [environmentCopy canvasSize];
     v10->_canvasSize.width = v32;
     v10->_canvasSize.height = v33;
-    v34 = [v7 caseColor];
+    caseColor = [environmentCopy caseColor];
     caseColor = v10->_caseColor;
-    v10->_caseColor = v34;
+    v10->_caseColor = caseColor;
 
-    v36 = [v7 traitCollection];
+    traitCollection = [environmentCopy traitCollection];
     traitCollection = v10->_traitCollection;
-    v10->_traitCollection = v36;
+    v10->_traitCollection = traitCollection;
 
-    v10->_userInterfaceStyle = [v7 userInterfaceStyle];
-    v10->_deviceOrientation = [v7 deviceOrientation];
-    v10->_boundingShape = [v7 boundingShape];
-    [v7 contentCutoutBounds];
+    v10->_userInterfaceStyle = [environmentCopy userInterfaceStyle];
+    v10->_deviceOrientation = [environmentCopy deviceOrientation];
+    v10->_boundingShape = [environmentCopy boundingShape];
+    [environmentCopy contentCutoutBounds];
     v10->_contentCutoutBounds.origin.x = v38;
     v10->_contentCutoutBounds.origin.y = v39;
     v10->_contentCutoutBounds.size.width = v40;
     v10->_contentCutoutBounds.size.height = v41;
-    [v7 floatingObscurableBounds];
+    [environmentCopy floatingObscurableBounds];
     v10->_floatingObscurableBounds.origin.x = v42;
     v10->_floatingObscurableBounds.origin.y = v43;
     v10->_floatingObscurableBounds.size.width = v44;
     v10->_floatingObscurableBounds.size.height = v45;
-    v10->_significantEventsCounter = [v7 significantEventsCounter];
-    v46 = [v7 role];
+    v10->_significantEventsCounter = [environmentCopy significantEventsCounter];
+    role = [environmentCopy role];
     role = v10->_role;
-    v10->_role = v46;
+    v10->_role = role;
 
-    v48 = [v7 context];
+    context = [environmentCopy context];
     context = v10->_context;
-    v10->_context = v48;
+    v10->_context = context;
 
-    v50 = [v7 sourceTimeFontConfiguration];
+    sourceTimeFontConfiguration = [environmentCopy sourceTimeFontConfiguration];
     sourceTimeFontConfiguration = v10->_sourceTimeFontConfiguration;
-    v10->_sourceTimeFontConfiguration = v50;
+    v10->_sourceTimeFontConfiguration = sourceTimeFontConfiguration;
 
-    v10->_effectiveMotionEffectsMode = [v7 effectiveMotionEffectsMode];
-    [v7 deviceRoll];
+    v10->_effectiveMotionEffectsMode = [environmentCopy effectiveMotionEffectsMode];
+    [environmentCopy deviceRoll];
     v10->_deviceRoll = v52;
-    [v7 devicePitch];
+    [environmentCopy devicePitch];
     v10->_devicePitch = v53;
-    [v7 deviceYaw];
+    [environmentCopy deviceYaw];
     v10->_deviceYaw = v54;
     v55 = 0uLL;
     v85 = 0u;
     v86 = 0u;
-    if (v7)
+    if (environmentCopy)
     {
-      [v7 deviceMotionRotation];
+      [environmentCopy deviceMotionRotation];
       v55 = 0u;
       v56 = 0u;
     }
@@ -218,62 +218,62 @@ LABEL_3:
 
     *v10->_anon_1b0 = v85;
     *&v10->_anon_1b0[16] = v86;
-    [v7 deviceMotionUpdateInterval];
+    [environmentCopy deviceMotionUpdateInterval];
     v10->_deviceMotionUpdateInterval = v65;
-    v66 = [v7 sourceContents];
+    sourceContents = [environmentCopy sourceContents];
     sourceContents = v10->_sourceContents;
-    v10->_sourceContents = v66;
+    v10->_sourceContents = sourceContents;
 
-    v68 = [v7 context];
+    context2 = [environmentCopy context];
     v69 = v10->_context;
-    v10->_context = v68;
+    v10->_context = context2;
 
-    [v7 screenBounds];
+    [environmentCopy screenBounds];
     v10->_screenBounds.origin.x = v70;
     v10->_screenBounds.origin.y = v71;
     v10->_screenBounds.size.width = v72;
     v10->_screenBounds.size.height = v73;
-    objc_storeStrong(&v10->_layoutController, a4);
-    v74 = [v7 targetConfiguredProperties];
+    objc_storeStrong(&v10->_layoutController, controller);
+    targetConfiguredProperties = [environmentCopy targetConfiguredProperties];
     targetConfiguredProperties = v10->_targetConfiguredProperties;
-    v10->_targetConfiguredProperties = v74;
+    v10->_targetConfiguredProperties = targetConfiguredProperties;
 
-    v76 = [v7 sourceConfigurableOptions];
+    sourceConfigurableOptions = [environmentCopy sourceConfigurableOptions];
     sourceConfigurableOptions = v10->_sourceConfigurableOptions;
-    v10->_sourceConfigurableOptions = v76;
+    v10->_sourceConfigurableOptions = sourceConfigurableOptions;
 
-    v78 = [v7 sourceTimeFontConfiguration];
+    sourceTimeFontConfiguration2 = [environmentCopy sourceTimeFontConfiguration];
     v79 = v10->_sourceTimeFontConfiguration;
-    v10->_sourceTimeFontConfiguration = v78;
+    v10->_sourceTimeFontConfiguration = sourceTimeFontConfiguration2;
 
-    v80 = [v7 targetConfiguration];
+    targetConfiguration = [environmentCopy targetConfiguration];
     targetConfiguration = v10->_targetConfiguration;
-    v10->_targetConfiguration = v80;
+    v10->_targetConfiguration = targetConfiguration;
 
-    v10->_editingVariant = [v7 editingVariant];
-    v10->_editorPreview = [v7 isEditorPreview];
-    v10->_showsComplications = [v7 showsComplications];
-    v10->_showsHeaderElements = [v7 showsHeaderElements];
-    [v7 userTapLocation];
+    v10->_editingVariant = [environmentCopy editingVariant];
+    v10->_editorPreview = [environmentCopy isEditorPreview];
+    v10->_showsComplications = [environmentCopy showsComplications];
+    v10->_showsHeaderElements = [environmentCopy showsHeaderElements];
+    [environmentCopy userTapLocation];
     v10->_userTapLocation.x = v82;
     v10->_userTapLocation.y = v83;
-    v10->_userTapEventsCounter = [v7 userTapEventsCounter];
-    v10->_wallpaperObscured = [v7 isWallpaperObscured];
-    v10->_adaptiveTimeDisabled = [v7 isAdaptiveTimeDisabled];
-    v10->_depthEffectDisabled = [v7 isDepthEffectDisabled];
+    v10->_userTapEventsCounter = [environmentCopy userTapEventsCounter];
+    v10->_wallpaperObscured = [environmentCopy isWallpaperObscured];
+    v10->_adaptiveTimeDisabled = [environmentCopy isAdaptiveTimeDisabled];
+    v10->_depthEffectDisabled = [environmentCopy isDepthEffectDisabled];
   }
 
   return v10;
 }
 
-- (CGRect)titleBoundsForLayout:(unint64_t)a3
+- (CGRect)titleBoundsForLayout:(unint64_t)layout
 {
   [(_PRPosterEnvironmentSnapshot *)self screenBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(PREditorElementLayoutController *)self->_layoutController frameAttributesForElements:1 variant:1 titleLayout:a3 withBoundingRect:?];
+  v13 = [(PREditorElementLayoutController *)self->_layoutController frameAttributesForElements:1 variant:1 titleLayout:layout withBoundingRect:?];
   [v13 rect];
   v29 = v14;
   v16 = v15;

@@ -1,15 +1,15 @@
 @interface SBWindowSceneStatusBarSettingsAssertion
 - (SBWindowSceneStatusBarAssertionManager)assertionManager;
 - (SBWindowSceneStatusBarSettingsAssertion)init;
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 settings:(id)a4 atLevel:(unint64_t)a5 reason:(id)a6;
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 statusBarHidden:(BOOL)a4 atLevel:(unint64_t)a5 reason:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager settings:(id)settings atLevel:(unint64_t)level reason:(id)reason;
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager statusBarHidden:(BOOL)hidden atLevel:(unint64_t)level reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)acquireWithAnimationParameters:(id)a3;
+- (void)acquireWithAnimationParameters:(id)parameters;
 - (void)dealloc;
-- (void)invalidateWithAnimationParameters:(id)a3;
-- (void)modifySettingsWithBlock:(id)a3 animationParameters:(id)a4;
+- (void)invalidateWithAnimationParameters:(id)parameters;
+- (void)modifySettingsWithBlock:(id)block animationParameters:(id)parameters;
 @end
 
 @implementation SBWindowSceneStatusBarSettingsAssertion
@@ -24,45 +24,45 @@
 
 - (SBWindowSceneStatusBarSettingsAssertion)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBWindowSceneStatusBarSettingsAssertion.m" lineNumber:30 description:@"use initWithSettings:..."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBWindowSceneStatusBarSettingsAssertion.m" lineNumber:30 description:@"use initWithSettings:..."];
 
   return 0;
 }
 
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 settings:(id)a4 atLevel:(unint64_t)a5 reason:(id)a6
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager settings:(id)settings atLevel:(unint64_t)level reason:(id)reason
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  managerCopy = manager;
+  settingsCopy = settings;
+  reasonCopy = reason;
   v22.receiver = self;
   v22.super_class = SBWindowSceneStatusBarSettingsAssertion;
   v14 = [(SBWindowSceneStatusBarSettingsAssertion *)&v22 init];
   if (v14)
   {
-    if (a5 >= 0xE)
+    if (level >= 0xE)
     {
       [SBWindowSceneStatusBarSettingsAssertion _initWithWindowSceneStatusBarAssertionManager:a2 settings:v14 atLevel:? reason:?];
-      if (v12)
+      if (settingsCopy)
       {
 LABEL_4:
-        if (v13)
+        if (reasonCopy)
         {
 LABEL_5:
-          v15 = [v12 copy];
+          v15 = [settingsCopy copy];
           settings = v14->_settings;
           v14->_settings = v15;
 
-          v14->_level = a5;
-          v17 = [v13 copy];
+          v14->_level = level;
+          v17 = [reasonCopy copy];
           reason = v14->_reason;
           v14->_reason = v17;
 
-          v19 = [MEMORY[0x277CBEAA8] date];
+          date = [MEMORY[0x277CBEAA8] date];
           timestamp = v14->_timestamp;
-          v14->_timestamp = v19;
+          v14->_timestamp = date;
 
-          objc_storeWeak(&v14->_assertionManager, v11);
+          objc_storeWeak(&v14->_assertionManager, managerCopy);
           goto LABEL_6;
         }
 
@@ -72,13 +72,13 @@ LABEL_9:
       }
     }
 
-    else if (v12)
+    else if (settingsCopy)
     {
       goto LABEL_4;
     }
 
     [SBWindowSceneStatusBarSettingsAssertion _initWithWindowSceneStatusBarAssertionManager:a2 settings:v14 atLevel:? reason:?];
-    if (v13)
+    if (reasonCopy)
     {
       goto LABEL_5;
     }
@@ -91,14 +91,14 @@ LABEL_6:
   return v14;
 }
 
-- (id)_initWithWindowSceneStatusBarAssertionManager:(id)a3 statusBarHidden:(BOOL)a4 atLevel:(unint64_t)a5 reason:(id)a6
+- (id)_initWithWindowSceneStatusBarAssertionManager:(id)manager statusBarHidden:(BOOL)hidden atLevel:(unint64_t)level reason:(id)reason
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a3;
+  hiddenCopy = hidden;
+  reasonCopy = reason;
+  managerCopy = manager;
   v12 = objc_alloc_init(SBMutableStatusBarSettings);
   v13 = 1.0;
-  if (v7)
+  if (hiddenCopy)
   {
     v13 = 0.0;
   }
@@ -106,71 +106,71 @@ LABEL_6:
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
   [(SBMutableStatusBarSettings *)v12 setAlpha:v14];
 
-  v15 = [(SBWindowSceneStatusBarSettingsAssertion *)self _initWithWindowSceneStatusBarAssertionManager:v11 settings:v12 atLevel:a5 reason:v10];
+  v15 = [(SBWindowSceneStatusBarSettingsAssertion *)self _initWithWindowSceneStatusBarAssertionManager:managerCopy settings:v12 atLevel:level reason:reasonCopy];
   return v15;
 }
 
-- (void)acquireWithAnimationParameters:(id)a3
+- (void)acquireWithAnimationParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   WeakRetained = objc_loadWeakRetained(&self->_assertionManager);
-  [WeakRetained _addStatusBarSettingsAssertion:self withAnimationParameters:v4];
+  [WeakRetained _addStatusBarSettingsAssertion:self withAnimationParameters:parametersCopy];
 }
 
-- (void)modifySettingsWithBlock:(id)a3 animationParameters:(id)a4
+- (void)modifySettingsWithBlock:(id)block animationParameters:(id)parameters
 {
-  if (a3)
+  if (block)
   {
     settings = self->_settings;
-    v7 = a4;
-    v8 = a3;
+    parametersCopy = parameters;
+    blockCopy = block;
     v12 = [(SBStatusBarSettings *)settings mutableCopy];
-    v8[2](v8, v12);
+    blockCopy[2](blockCopy, v12);
 
     v9 = [v12 copy];
     v10 = self->_settings;
     self->_settings = v9;
 
     WeakRetained = objc_loadWeakRetained(&self->_assertionManager);
-    [WeakRetained _modifiedStatusBarSettingsAssertion:self withAnimationParameters:v7];
+    [WeakRetained _modifiedStatusBarSettingsAssertion:self withAnimationParameters:parametersCopy];
   }
 }
 
-- (void)invalidateWithAnimationParameters:(id)a3
+- (void)invalidateWithAnimationParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   WeakRetained = objc_loadWeakRetained(&self->_assertionManager);
-  [WeakRetained _removeStatusBarSettingsAssertion:self withAnimationParameters:v4];
+  [WeakRetained _removeStatusBarSettingsAssertion:self withAnimationParameters:parametersCopy];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBWindowSceneStatusBarSettingsAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWindowSceneStatusBarSettingsAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWindowSceneStatusBarSettingsAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWindowSceneStatusBarSettingsAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBWindowSceneStatusBarSettingsAssertion *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBWindowSceneStatusBarSettingsAssertion *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__SBWindowSceneStatusBarSettingsAssertion_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

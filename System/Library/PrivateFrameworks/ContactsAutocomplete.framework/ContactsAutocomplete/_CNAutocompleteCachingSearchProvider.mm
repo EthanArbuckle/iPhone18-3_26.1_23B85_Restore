@@ -1,12 +1,12 @@
 @interface _CNAutocompleteCachingSearchProvider
-- (_CNAutocompleteCachingSearchProvider)initWithSearchProvider:(id)a3;
+- (_CNAutocompleteCachingSearchProvider)initWithSearchProvider:(id)provider;
 @end
 
 @implementation _CNAutocompleteCachingSearchProvider
 
-- (_CNAutocompleteCachingSearchProvider)initWithSearchProvider:(id)a3
+- (_CNAutocompleteCachingSearchProvider)initWithSearchProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v55.receiver = self;
   v55.super_class = _CNAutocompleteCachingSearchProvider;
   v5 = [(_CNAutocompleteCachingSearchProvider *)&v55 init];
@@ -17,7 +17,7 @@
     v53[1] = 3221225472;
     v53[2] = __63___CNAutocompleteCachingSearchProvider_initWithSearchProvider___block_invoke;
     v53[3] = &unk_2781C47D0;
-    v7 = v4;
+    v7 = providerCopy;
     v54 = v7;
     v8 = [v6 lazyFutureWithBlock:v53];
     localSearchFuture = v5->_localSearchFuture;

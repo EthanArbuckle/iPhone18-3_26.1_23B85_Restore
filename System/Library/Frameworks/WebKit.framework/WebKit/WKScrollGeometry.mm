@@ -1,25 +1,25 @@
 @interface WKScrollGeometry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)contentOffset;
 - (CGSize)containerSize;
 - (CGSize)contentSize;
 - (UIEdgeInsets)contentInsets;
-- (WKScrollGeometry)initWithContainerSize:(CGSize)a3 contentInsets:(UIEdgeInsets)a4 contentOffset:(CGPoint)a5 contentSize:(CGSize)a6;
+- (WKScrollGeometry)initWithContainerSize:(CGSize)size contentInsets:(UIEdgeInsets)insets contentOffset:(CGPoint)offset contentSize:(CGSize)contentSize;
 @end
 
 @implementation WKScrollGeometry
 
-- (WKScrollGeometry)initWithContainerSize:(CGSize)a3 contentInsets:(UIEdgeInsets)a4 contentOffset:(CGPoint)a5 contentSize:(CGSize)a6
+- (WKScrollGeometry)initWithContainerSize:(CGSize)size contentInsets:(UIEdgeInsets)insets contentOffset:(CGPoint)offset contentSize:(CGSize)contentSize
 {
-  y = a5.y;
-  x = a5.x;
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  result = [(WKScrollGeometry *)self init:*&a6.width];
+  y = offset.y;
+  x = offset.x;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  result = [(WKScrollGeometry *)self init:*&contentSize.width];
   if (result)
   {
     result->_containerSize.width = width;
@@ -37,14 +37,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -55,14 +55,14 @@
     return 0;
   }
 
-  v5 = a3;
-  v6 = self->_containerSize.width == *(a3 + 1) && self->_containerSize.height == *(a3 + 2);
-  if (v6 && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, *(a3 + 56)), vceqq_f64(*&self->_contentInsets.bottom, *(a3 + 72))))) & 1) != 0)
+  equalCopy = equal;
+  v6 = self->_containerSize.width == *(equal + 1) && self->_containerSize.height == *(equal + 2);
+  if (v6 && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, *(equal + 56)), vceqq_f64(*&self->_contentInsets.bottom, *(equal + 72))))) & 1) != 0)
   {
     v7 = 0;
-    if (self->_contentOffset.x == *(a3 + 3) && self->_contentOffset.y == *(a3 + 4))
+    if (self->_contentOffset.x == *(equal + 3) && self->_contentOffset.y == *(equal + 4))
     {
-      v7 = self->_contentSize.height == *(a3 + 6) && self->_contentSize.width == *(a3 + 5);
+      v7 = self->_contentSize.height == *(equal + 6) && self->_contentSize.width == *(equal + 5);
     }
   }
 

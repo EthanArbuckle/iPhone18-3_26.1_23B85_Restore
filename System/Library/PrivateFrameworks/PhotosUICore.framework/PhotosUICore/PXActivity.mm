@@ -1,17 +1,17 @@
 @interface PXActivity
 + (id)_destructiveActivities;
-+ (id)activityWithActionTitle:(id)a3 actionType:(id)a4 activityType:(id)a5 systemImageName:(id)a6;
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
++ (id)activityWithActionTitle:(id)title actionType:(id)type activityType:(id)activityType systemImageName:(id)name;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)description;
-- (PXActivity)initWithActionTitle:(id)a3 actionType:(id)a4 activityType:(id)a5 systemImageName:(id)a6;
+- (PXActivity)initWithActionTitle:(id)title actionType:(id)type activityType:(id)activityType systemImageName:(id)name;
 - (PXActivityActionDelegate)actionDelegate;
 - (PXActivityDataSource)dataSource;
 - (PXActivityItemSourceController)itemSourceController;
-- (id)px_activityImageNamed:(id)a3;
-- (id)px_activitySettingsImageNamed:(id)a3;
+- (id)px_activityImageNamed:(id)named;
+- (id)px_activitySettingsImageNamed:(id)named;
 - (void)performActivity;
-- (void)setDataSource:(id)a3;
+- (void)setDataSource:(id)source;
 - (void)updateActivityViewControllerVisibleShareActions;
 @end
 
@@ -38,47 +38,47 @@
   return WeakRetained;
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = PXActivity;
-  return [(UIActivity *)&v6 _presentActivityOnViewController:a3 animated:a4 completion:a5];
+  return [(UIActivity *)&v6 _presentActivityOnViewController:controller animated:animated completion:completion];
 }
 
 - (void)performActivity
 {
-  v3 = [(PXActivity *)self performActivityActionHandler];
+  performActivityActionHandler = [(PXActivity *)self performActivityActionHandler];
 
-  if (v3)
+  if (performActivityActionHandler)
   {
-    v4 = [(PXActivity *)self performActivityActionHandler];
-    (v4)[2](v4, self);
+    performActivityActionHandler2 = [(PXActivity *)self performActivityActionHandler];
+    (performActivityActionHandler2)[2](performActivityActionHandler2, self);
   }
 
   else
   {
-    v4 = [(PXActivity *)self actionDelegate];
-    [v4 performActivity:self];
+    performActivityActionHandler2 = [(PXActivity *)self actionDelegate];
+    [performActivityActionHandler2 performActivity:self];
   }
 
   [(UIActivity *)self activityDidFinish:1];
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v4 = a3;
-  v5 = [(PXActivity *)self canPerformActivityActionHandler];
+  itemsCopy = items;
+  canPerformActivityActionHandler = [(PXActivity *)self canPerformActivityActionHandler];
 
-  if (v5)
+  if (canPerformActivityActionHandler)
   {
-    v6 = [(PXActivity *)self canPerformActivityActionHandler];
-    v7 = (v6)[2](v6, v4, self);
+    canPerformActivityActionHandler2 = [(PXActivity *)self canPerformActivityActionHandler];
+    v7 = (canPerformActivityActionHandler2)[2](canPerformActivityActionHandler2, itemsCopy, self);
   }
 
   else
   {
-    v6 = [(PXActivity *)self actionDelegate];
-    v7 = [v6 canPerformWithActivityItems:v4 forActivity:self];
+    canPerformActivityActionHandler2 = [(PXActivity *)self actionDelegate];
+    v7 = [canPerformActivityActionHandler2 canPerformWithActivityItems:itemsCopy forActivity:self];
   }
 
   v8 = v7;
@@ -88,15 +88,15 @@
 
 - (void)updateActivityViewControllerVisibleShareActions
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  if (v3)
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  if (itemSourceController)
   {
-    v8 = v3;
-    v4 = [v3 activityViewController];
-    [v4 updateVisibleShareActionsIfNeeded];
+    v8 = itemSourceController;
+    activityViewController = [itemSourceController activityViewController];
+    [activityViewController updateVisibleShareActionsIfNeeded];
 LABEL_3:
 
-    v3 = v8;
+    itemSourceController = v8;
     goto LABEL_7;
   }
 
@@ -104,24 +104,24 @@ LABEL_3:
   {
     v8 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v4 = [WeakRetained activityViewControllerForActivity:self];
+    activityViewController = [WeakRetained activityViewControllerForActivity:self];
 
     v6 = objc_loadWeakRetained(&self->_dataSource);
     v7 = [v6 activityItemsForActivity:self];
 
-    [v4 _updateActivityItems:v7];
+    [activityViewController _updateActivityItems:v7];
     goto LABEL_3;
   }
 
 LABEL_7:
 }
 
-- (id)px_activitySettingsImageNamed:(id)a3
+- (id)px_activitySettingsImageNamed:(id)named
 {
   cachedSmallCustomImage = self->_cachedSmallCustomImage;
   if (!cachedSmallCustomImage)
   {
-    v5 = [MEMORY[0x1E69DCAB8] px_imageNamed:a3];
+    v5 = [MEMORY[0x1E69DCAB8] px_imageNamed:named];
     PLPhysicalScreenScale();
     v6 = [v5 _applicationIconImageForFormat:0 precomposed:0 scale:?];
     v7 = self->_cachedSmallCustomImage;
@@ -133,12 +133,12 @@ LABEL_7:
   return cachedSmallCustomImage;
 }
 
-- (id)px_activityImageNamed:(id)a3
+- (id)px_activityImageNamed:(id)named
 {
   cachedCustomImage = self->_cachedCustomImage;
   if (!cachedCustomImage)
   {
-    v5 = [MEMORY[0x1E69DCAB8] px_imageNamed:a3];
+    v5 = [MEMORY[0x1E69DCAB8] px_imageNamed:named];
     PLPhysicalScreenScale();
     v6 = [v5 _applicationIconImageForFormat:10 precomposed:0 scale:?];
     v7 = self->_cachedCustomImage;
@@ -150,9 +150,9 @@ LABEL_7:
   return cachedCustomImage;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained != obj)
@@ -176,24 +176,24 @@ LABEL_7:
   return v6;
 }
 
-- (PXActivity)initWithActionTitle:(id)a3 actionType:(id)a4 activityType:(id)a5 systemImageName:(id)a6
+- (PXActivity)initWithActionTitle:(id)title actionType:(id)type activityType:(id)activityType systemImageName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  titleCopy = title;
+  typeCopy = type;
+  activityTypeCopy = activityType;
+  nameCopy = name;
+  if (titleCopy)
   {
-    if (v12)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PXActivity.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"actionType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXActivity.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"actionType"}];
 
-    if (v13)
+    if (activityTypeCopy)
     {
       goto LABEL_4;
     }
@@ -201,23 +201,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"PXActivity.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"actionTitle"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXActivity.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"actionTitle"}];
 
-  if (!v12)
+  if (!typeCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v13)
+  if (activityTypeCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"PXActivity.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"activityType"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXActivity.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"activityType"}];
 
 LABEL_4:
   v28.receiver = self;
@@ -225,19 +225,19 @@ LABEL_4:
   v15 = [(UIActivity *)&v28 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [titleCopy copy];
     actionTitle = v15->_actionTitle;
     v15->_actionTitle = v16;
 
-    v18 = [v12 copy];
+    v18 = [typeCopy copy];
     actionType = v15->_actionType;
     v15->_actionType = v18;
 
-    v20 = [v13 copy];
+    v20 = [activityTypeCopy copy];
     internalActivityType = v15->_internalActivityType;
     v15->_internalActivityType = v20;
 
-    v22 = [v14 copy];
+    v22 = [nameCopy copy];
     systemImageName = v15->_systemImageName;
     v15->_systemImageName = v22;
   }
@@ -245,14 +245,14 @@ LABEL_4:
   return v15;
 }
 
-+ (id)activityWithActionTitle:(id)a3 actionType:(id)a4 activityType:(id)a5 systemImageName:(id)a6
++ (id)activityWithActionTitle:(id)title actionType:(id)type activityType:(id)activityType systemImageName:(id)name
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 _destructiveActivities];
-  v15 = [v14 containsObject:v10];
+  activityTypeCopy = activityType;
+  nameCopy = name;
+  typeCopy = type;
+  titleCopy = title;
+  _destructiveActivities = [self _destructiveActivities];
+  v15 = [_destructiveActivities containsObject:activityTypeCopy];
 
   v16 = off_1E7720B70;
   if (!v15)
@@ -260,7 +260,7 @@ LABEL_4:
     v16 = off_1E771CF68;
   }
 
-  v17 = [objc_alloc(*v16) initWithActionTitle:v13 actionType:v12 activityType:v10 systemImageName:v11];
+  v17 = [objc_alloc(*v16) initWithActionTitle:titleCopy actionType:typeCopy activityType:activityTypeCopy systemImageName:nameCopy];
 
   return v17;
 }

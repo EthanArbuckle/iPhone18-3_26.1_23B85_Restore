@@ -1,12 +1,12 @@
 @interface MUNearestStationSectionController
-- (MUNearestStationSectionController)initWithTransitLineItem:(id)a3 etaProvider:(id)a4;
+- (MUNearestStationSectionController)initWithTransitLineItem:(id)item etaProvider:(id)provider;
 - (MUNearestStationSectionControllerDelegate)nearestStationDelegate;
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel;
-- (void)ETAProviderUpdated:(id)a3;
+- (void)ETAProviderUpdated:(id)updated;
 - (void)_createNearestStationSection;
 - (void)_handleAttributionTap;
-- (void)updateWithMapItem:(id)a3 isLoading:(BOOL)a4;
-- (void)verticalCardContainerView:(id)a3 didSelectRow:(id)a4 atIndex:(unint64_t)a5;
+- (void)updateWithMapItem:(id)item isLoading:(BOOL)loading;
+- (void)verticalCardContainerView:(id)view didSelectRow:(id)row atIndex:(unint64_t)index;
 @end
 
 @implementation MUNearestStationSectionController
@@ -18,61 +18,61 @@
   return WeakRetained;
 }
 
-- (void)verticalCardContainerView:(id)a3 didSelectRow:(id)a4 atIndex:(unint64_t)a5
+- (void)verticalCardContainerView:(id)view didSelectRow:(id)row atIndex:(unint64_t)index
 {
-  if (self->_nearestStationRowView == a4)
+  if (self->_nearestStationRowView == row)
   {
-    v7 = [(MUNearestStationSectionController *)self nearestStationDelegate];
-    [v7 nearestStationSectionController:self didTapStationItem:self->_nearestStation];
+    nearestStationDelegate = [(MUNearestStationSectionController *)self nearestStationDelegate];
+    [nearestStationDelegate nearestStationSectionController:self didTapStationItem:self->_nearestStation];
   }
 }
 
-- (void)ETAProviderUpdated:(id)a3
+- (void)ETAProviderUpdated:(id)updated
 {
-  v4 = [a3 rawDistanceString];
-  [(MUNearestStationRowView *)self->_nearestStationRowView setDistanceString:v4];
+  rawDistanceString = [updated rawDistanceString];
+  [(MUNearestStationRowView *)self->_nearestStationRowView setDistanceString:rawDistanceString];
 }
 
 - (void)_handleAttributionTap
 {
-  v3 = [MEMORY[0x1E69A2478] modernManager];
-  v4 = [v3 activeTileGroup];
-  v5 = [v4 attributions];
-  v9 = [v5 firstObject];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  activeTileGroup = [modernManager activeTileGroup];
+  attributions = [activeTileGroup attributions];
+  firstObject = [attributions firstObject];
 
-  v6 = [v9 url];
+  v6 = [firstObject url];
   if (v6)
   {
-    v7 = [(MUNearestStationSectionController *)self nearestStationDelegate];
+    nearestStationDelegate = [(MUNearestStationSectionController *)self nearestStationDelegate];
     v8 = [MEMORY[0x1E695DFF8] URLWithString:v6];
-    [v7 nearestStationSectionController:self didSelectStationAttributionURL:v8];
+    [nearestStationDelegate nearestStationSectionController:self didSelectStationAttributionURL:v8];
   }
 }
 
 - (MUPlaceSectionHeaderViewModel)sectionHeaderViewModel
 {
-  v2 = [(MUTransitLineItemSectionController *)self lineItem];
-  v3 = [v2 name];
-  v4 = [v3 length];
+  lineItem = [(MUTransitLineItemSectionController *)self lineItem];
+  name = [lineItem name];
+  v4 = [name length];
 
   if (v4)
   {
-    v5 = [v2 name];
+    name2 = [lineItem name];
   }
 
   else
   {
-    v6 = [v2 system];
-    v5 = [v6 name];
+    system = [lineItem system];
+    name2 = [system name];
   }
 
-  if ([v5 length])
+  if ([name2 length])
   {
-    if ([v5 length])
+    if ([name2 length])
     {
       v7 = MEMORY[0x1E696AEC0];
       v8 = _MULocalizedStringFromThisBundle(@"Nearest %@ Station");
-      v9 = [v7 localizedStringWithFormat:v8, v5];
+      v9 = [v7 localizedStringWithFormat:v8, name2];
     }
 
     else
@@ -91,13 +91,13 @@
   return v10;
 }
 
-- (void)updateWithMapItem:(id)a3 isLoading:(BOOL)a4
+- (void)updateWithMapItem:(id)item isLoading:(BOOL)loading
 {
-  objc_storeStrong(&self->_nearestStation, a3);
-  v6 = a3;
-  [(MUNearestStationRowView *)self->_nearestStationRowView configureWithNearestStation:v6];
-  v7 = [(MKETAProvider *)self->_etaProvider rawDistanceString];
-  [(MUNearestStationRowView *)self->_nearestStationRowView setDistanceString:v7];
+  objc_storeStrong(&self->_nearestStation, item);
+  itemCopy = item;
+  [(MUNearestStationRowView *)self->_nearestStationRowView configureWithNearestStation:itemCopy];
+  rawDistanceString = [(MKETAProvider *)self->_etaProvider rawDistanceString];
+  [(MUNearestStationRowView *)self->_nearestStationRowView setDistanceString:rawDistanceString];
 }
 
 - (void)_createNearestStationSection
@@ -119,8 +119,8 @@
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   [(MUPlaceVerticalCardContainerView *)v9 setRowViews:v10];
 
-  v11 = [(MUTransitLineItemSectionController *)self lineItem];
-  v12 = [MUPlaceFooterAtributionViewModel viewModelForMapItem:0 transitLine:v11];
+  lineItem = [(MUTransitLineItemSectionController *)self lineItem];
+  v12 = [MUPlaceFooterAtributionViewModel viewModelForMapItem:0 transitLine:lineItem];
   footerViewModel = self->_footerViewModel;
   self->_footerViewModel = v12;
 
@@ -134,8 +134,8 @@
   [(MUPlaceSectionFooterViewModel *)v14 setActionBlock:&v21];
   v15 = self->_containerView;
   v16 = [(MUNearestStationSectionController *)self sectionHeaderViewModel:v21];
-  v17 = [(MUNearestStationSectionController *)self sectionFooterViewModel];
-  v18 = [MUPlaceSectionView insetPlatterSectionViewForContentView:v15 sectionHeaderViewModel:v16 sectionFooterViewModel:v17];
+  sectionFooterViewModel = [(MUNearestStationSectionController *)self sectionFooterViewModel];
+  v18 = [MUPlaceSectionView insetPlatterSectionViewForContentView:v15 sectionHeaderViewModel:v16 sectionFooterViewModel:sectionFooterViewModel];
   sectionView = self->_sectionView;
   self->_sectionView = v18;
 
@@ -157,16 +157,16 @@ void __65__MUNearestStationSectionController__createNearestStationSection__block
   }
 }
 
-- (MUNearestStationSectionController)initWithTransitLineItem:(id)a3 etaProvider:(id)a4
+- (MUNearestStationSectionController)initWithTransitLineItem:(id)item etaProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = MUNearestStationSectionController;
-  v8 = [(MUTransitLineItemSectionController *)&v11 initWithTransitLineItem:a3];
+  v8 = [(MUTransitLineItemSectionController *)&v11 initWithTransitLineItem:item];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_etaProvider, a4);
+    objc_storeStrong(&v8->_etaProvider, provider);
     [(MKETAProvider *)v9->_etaProvider addObserver:v9];
     [(MUNearestStationSectionController *)v9 _createNearestStationSection];
   }

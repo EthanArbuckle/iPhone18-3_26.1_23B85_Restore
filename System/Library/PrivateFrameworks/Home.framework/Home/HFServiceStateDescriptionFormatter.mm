@@ -1,20 +1,20 @@
 @interface HFServiceStateDescriptionFormatter
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation HFServiceStateDescriptionFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [objc_opt_class() stateClassIdentifier];
-  v7 = [v5 stateTypeIdentifier];
+  valueCopy = value;
+  stateClassIdentifier = [objc_opt_class() stateClassIdentifier];
+  stateTypeIdentifier = [valueCopy stateTypeIdentifier];
 
-  v8 = [v4 stringWithFormat:@"HFServiceDescription.%@, State:%@", v6, v7];
+  v8 = [v4 stringWithFormat:@"HFServiceDescription.%@, State:%@", stateClassIdentifier, stateTypeIdentifier];
 
-  v9 = [(HFServiceStateDescriptionFormatter *)self descriptionContext];
-  if (v9 == 1)
+  descriptionContext = [(HFServiceStateDescriptionFormatter *)self descriptionContext];
+  if (descriptionContext == 1)
   {
     v10 = @"Control";
   }
@@ -25,7 +25,7 @@
   }
 
   v11 = v10;
-  if (v9 != 1 || ([v8 stringByAppendingFormat:@", Context:%@", @"Control"], v12 = objc_claimAutoreleasedReturnValue(), _HFLocalizedStringWithDefaultValue(v12, 0, 0), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+  if (descriptionContext != 1 || ([v8 stringByAppendingFormat:@", Context:%@", @"Control"], v12 = objc_claimAutoreleasedReturnValue(), _HFLocalizedStringWithDefaultValue(v12, 0, 0), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
   {
     v13 = _HFLocalizedStringWithDefaultValue(v8, v8, 1);
   }

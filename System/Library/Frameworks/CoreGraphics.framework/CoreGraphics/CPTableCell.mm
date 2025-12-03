@@ -2,18 +2,18 @@
 - ($0AC6E346AE4835514AAA8AC86D8F4844)columnSpan;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)rowSpan;
 - (CGColor)backgroundColor;
-- (CGColor)colorOfBorder:(int)a3;
-- (CGRect)boundsOfBorder:(int)a3;
+- (CGColor)colorOfBorder:(int)border;
+- (CGRect)boundsOfBorder:(int)border;
 - (CGRect)cellBounds;
-- (CPTableCell)initWithBounds:(CGRect)a3;
-- (id)backgroundGraphicAtIndex:(unsigned int)a3;
-- (id)graphicObjectOfBorder:(int)a3 atIndex:(unsigned int)a4;
-- (int64_t)compareCellOrdinal:(id)a3;
+- (CPTableCell)initWithBounds:(CGRect)bounds;
+- (id)backgroundGraphicAtIndex:(unsigned int)index;
+- (id)graphicObjectOfBorder:(int)border atIndex:(unsigned int)index;
+- (int64_t)compareCellOrdinal:(id)ordinal;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
-- (void)setBackgroundGraphics:(id)a3;
-- (void)setBorder:(int)a3 bounds:(CGRect)a4 graphics:(id)a5;
+- (void)setBackgroundGraphics:(id)graphics;
+- (void)setBorder:(int)border bounds:(CGRect)bounds graphics:(id)graphics;
 @end
 
 @implementation CPTableCell
@@ -51,61 +51,61 @@
   return result;
 }
 
-- (int64_t)compareCellOrdinal:(id)a3
+- (int64_t)compareCellOrdinal:(id)ordinal
 {
-  v5 = [(CPTableCell *)self rowSpan];
-  v6 = [a3 rowSpan];
-  if (v5 < v6)
+  rowSpan = [(CPTableCell *)self rowSpan];
+  rowSpan2 = [ordinal rowSpan];
+  if (rowSpan < rowSpan2)
   {
     return -1;
   }
 
-  if (v5 > v6)
+  if (rowSpan > rowSpan2)
   {
     return 1;
   }
 
-  v8 = [(CPTableCell *)self columnSpan];
-  v9 = [a3 columnSpan];
-  if (v8 < v9)
+  columnSpan = [(CPTableCell *)self columnSpan];
+  columnSpan2 = [ordinal columnSpan];
+  if (columnSpan < columnSpan2)
   {
     return -1;
   }
 
   else
   {
-    return v8 > v9;
+    return columnSpan > columnSpan2;
   }
 }
 
-- (id)graphicObjectOfBorder:(int)a3 atIndex:(unsigned int)a4
+- (id)graphicObjectOfBorder:(int)border atIndex:(unsigned int)index
 {
-  v4 = &self->borders[a3];
-  if (v4->var2 <= a4)
+  v4 = &self->borders[border];
+  if (v4->var2 <= index)
   {
     return 0;
   }
 
   else
   {
-    return v4->var3[a4];
+    return v4->var3[index];
   }
 }
 
-- (CGColor)colorOfBorder:(int)a3
+- (CGColor)colorOfBorder:(int)border
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = &self->borders[a3];
+  v5 = &self->borders[border];
   if (!v5->var1)
   {
     if (v5->var2 == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = *self->borders[a3].var3;
+      v6 = *self->borders[border].var3;
       if ([v6 parent] && (v7 = objc_msgSend(v6, "fillColor")) != 0 || (v7 = objc_msgSend(v6, "strokeColor")) != 0)
       {
         v8 = v7;
         CFRetain(v7);
-        self->borders[a3].var1 = v8;
+        self->borders[border].var1 = v8;
       }
     }
 
@@ -114,17 +114,17 @@
       DeviceRGB = CGColorSpaceCreateDeviceRGB();
       v11[0] = xmmword_184564878;
       v11[1] = unk_184564888;
-      self->borders[a3].var1 = CGColorCreate(DeviceRGB, v11);
+      self->borders[border].var1 = CGColorCreate(DeviceRGB, v11);
       CGColorSpaceRelease(DeviceRGB);
     }
   }
 
-  return self->borders[a3].var1;
+  return self->borders[border].var1;
 }
 
-- (CGRect)boundsOfBorder:(int)a3
+- (CGRect)boundsOfBorder:(int)border
 {
-  v3 = &self->borders[a3];
+  v3 = &self->borders[border];
   x = v3->var0.origin.x;
   y = v3->var0.origin.y;
   width = v3->var0.size.width;
@@ -136,12 +136,12 @@
   return result;
 }
 
-- (void)setBorder:(int)a3 bounds:(CGRect)a4 graphics:(id)a5
+- (void)setBorder:(int)border bounds:(CGRect)bounds graphics:(id)graphics
 {
   borders = self->borders;
-  v8 = a3;
-  v9 = &borders[a3];
-  v9->var0 = a4;
+  borderCopy = border;
+  v9 = &borders[border];
+  v9->var0 = bounds;
   if (v9->var3)
   {
     var2 = v9->var2;
@@ -158,21 +158,21 @@
       borders = self->borders;
     }
 
-    free(borders[v8].var3);
-    self->borders[v8].var3 = 0;
+    free(borders[borderCopy].var3);
+    self->borders[borderCopy].var3 = 0;
   }
 
-  if (a5)
+  if (graphics)
   {
-    v12 = [a5 count];
+    v12 = [graphics count];
     v13 = v12;
     if (v12)
     {
       v14 = 0;
-      self->borders[v8].var3 = malloc_type_malloc(8 * v12, 0x80040B8603338uLL);
+      self->borders[borderCopy].var3 = malloc_type_malloc(8 * v12, 0x80040B8603338uLL);
       do
       {
-        self->borders[v8].var3[v14] = [a5 objectAtIndex:v14];
+        self->borders[borderCopy].var3[v14] = [graphics objectAtIndex:v14];
         ++v14;
       }
 
@@ -185,23 +185,23 @@
     v13 = 0;
   }
 
-  self->borders[v8].var2 = v13;
+  self->borders[borderCopy].var2 = v13;
 }
 
-- (id)backgroundGraphicAtIndex:(unsigned int)a3
+- (id)backgroundGraphicAtIndex:(unsigned int)index
 {
-  if (self->backgroundGraphicCount <= a3)
+  if (self->backgroundGraphicCount <= index)
   {
     return 0;
   }
 
   else
   {
-    return self->backgroundGraphics[a3];
+    return self->backgroundGraphics[index];
   }
 }
 
-- (void)setBackgroundGraphics:(id)a3
+- (void)setBackgroundGraphics:(id)graphics
 {
   backgroundGraphics = self->backgroundGraphics;
   if (backgroundGraphics)
@@ -222,9 +222,9 @@
   }
 
   self->backgroundGraphicCount = 0;
-  if (a3)
+  if (graphics)
   {
-    v7 = [a3 count];
+    v7 = [graphics count];
     self->backgroundGraphicCount = v7;
     if (v7)
     {
@@ -234,7 +234,7 @@
         v8 = 0;
         do
         {
-          self->backgroundGraphics[v8] = [a3 objectAtIndex:v8];
+          self->backgroundGraphics[v8] = [graphics objectAtIndex:v8];
           ++v8;
         }
 
@@ -251,11 +251,11 @@
   {
     if (self->backgroundGraphicCount == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v4 = [*self->backgroundGraphics fillColor];
-      if (v4)
+      fillColor = [*self->backgroundGraphics fillColor];
+      if (fillColor)
       {
-        backgroundColor = v4;
-        CFRetain(v4);
+        backgroundColor = fillColor;
+        CFRetain(fillColor);
         self->backgroundColor = backgroundColor;
       }
 
@@ -353,12 +353,12 @@
   }
 }
 
-- (CPTableCell)initWithBounds:(CGRect)a3
+- (CPTableCell)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v12.receiver = self;
   v12.super_class = CPTableCell;
   v7 = [(CPChunk *)&v12 init];

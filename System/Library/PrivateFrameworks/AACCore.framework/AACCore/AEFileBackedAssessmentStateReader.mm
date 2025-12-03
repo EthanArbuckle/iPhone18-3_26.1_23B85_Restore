@@ -1,5 +1,5 @@
 @interface AEFileBackedAssessmentStateReader
-- (AEFileBackedAssessmentStateReader)initWithSystemNotificationPrimitives:(id)a3 fileSystemPrimitives:(id)a4 assessmentFileURL:(id)a5 queue:(id)a6;
+- (AEFileBackedAssessmentStateReader)initWithSystemNotificationPrimitives:(id)primitives fileSystemPrimitives:(id)systemPrimitives assessmentFileURL:(id)l queue:(id)queue;
 - (uint64_t)isAssessmentStateActive;
 - (void)beginObserving;
 - (void)dealloc;
@@ -17,22 +17,22 @@
   [(AEFileBackedAssessmentStateReader *)&v3 dealloc];
 }
 
-- (AEFileBackedAssessmentStateReader)initWithSystemNotificationPrimitives:(id)a3 fileSystemPrimitives:(id)a4 assessmentFileURL:(id)a5 queue:(id)a6
+- (AEFileBackedAssessmentStateReader)initWithSystemNotificationPrimitives:(id)primitives fileSystemPrimitives:(id)systemPrimitives assessmentFileURL:(id)l queue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  primitivesCopy = primitives;
+  systemPrimitivesCopy = systemPrimitives;
+  lCopy = l;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = AEFileBackedAssessmentStateReader;
   v15 = [(AEFileBackedAssessmentStateReader *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_systemNotificationPrimitives, a3);
-    objc_storeStrong(&v16->_fileSystemPrimitives, a4);
-    objc_storeStrong(&v16->_assessmentFileURL, a5);
-    objc_storeStrong(&v16->_queue, a6);
+    objc_storeStrong(&v15->_systemNotificationPrimitives, primitives);
+    objc_storeStrong(&v16->_fileSystemPrimitives, systemPrimitives);
+    objc_storeStrong(&v16->_assessmentFileURL, l);
+    objc_storeStrong(&v16->_queue, queue);
   }
 
   [(AEFileBackedAssessmentStateReader *)&v16->super.isa beginObserving];
@@ -64,11 +64,11 @@
 
 - (void)endObserving
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 48) invalidate];
-    v2 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    [*(self + 48) invalidate];
+    v2 = *(self + 48);
+    *(self + 48) = 0;
   }
 }
 
@@ -77,9 +77,9 @@
   if (result)
   {
     v1 = result;
-    v2 = [result isActive];
+    isActive = [result isActive];
     result = [(AEFileBackedAssessmentStateReader *)v1 isAssessmentStateActive];
-    if (v2 != result)
+    if (isActive != result)
     {
 
       return [v1 setActive:result];

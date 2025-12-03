@@ -9,7 +9,7 @@
 
 - (uint64_t)hk_dateWithTruncatedSecond
 {
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v2 = floor(v1 / 60.0) * 60.0;
   v3 = MEMORY[0x1E695DF00];
 
@@ -20,8 +20,8 @@
 {
   v3 = MEMORY[0x1E695DF00];
   v4 = a3;
-  v5 = [v3 date];
-  v6 = [v4 dateByAddingUnit:4 value:-130 toDate:v5 options:0];
+  date = [v3 date];
+  v6 = [v4 dateByAddingUnit:4 value:-130 toDate:date options:0];
 
   return v6;
 }
@@ -32,26 +32,26 @@
   {
     v4 = MEMORY[0x1E695DFE8];
     v5 = a3;
-    v6 = [v4 localTimeZone];
-    v7 = [v5 secondsFromGMTForDate:a1];
+    localTimeZone = [v4 localTimeZone];
+    v7 = [v5 secondsFromGMTForDate:self];
 
-    v8 = [a1 dateByAddingTimeInterval:{v7 - objc_msgSend(v6, "secondsFromGMTForDate:", a1)}];
+    selfCopy = [self dateByAddingTimeInterval:{v7 - objc_msgSend(localTimeZone, "secondsFromGMTForDate:", self)}];
   }
 
   else
   {
-    v8 = a1;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)hkui_dateNormalizedFromDateInterval:()HKUIAdditions toDateInterval:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [v7 startDate];
-  [a1 timeIntervalSinceDate:v8];
+  startDate = [v7 startDate];
+  [self timeIntervalSinceDate:startDate];
   v10 = v9;
 
   [v6 duration];
@@ -59,9 +59,9 @@
   [v7 duration];
   v14 = v13;
 
-  v15 = [v6 startDate];
+  startDate2 = [v6 startDate];
 
-  v16 = [v15 dateByAddingTimeInterval:v10 * (v12 / v14)];
+  v16 = [startDate2 dateByAddingTimeInterval:v10 * (v12 / v14)];
 
   return v16;
 }

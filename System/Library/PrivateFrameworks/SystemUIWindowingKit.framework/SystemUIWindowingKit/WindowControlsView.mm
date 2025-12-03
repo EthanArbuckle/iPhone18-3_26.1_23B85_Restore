@@ -1,24 +1,24 @@
 @interface WindowControlsView
 - (BOOL)accessibilityPerformEscape;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
-- (id)_contextMenuInteraction:(id)a3 accessoriesForMenuWithConfiguration:(id)a4;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)handleHover:(id)a3;
-- (void)handleTap:(id)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
+- (id)_contextMenuInteraction:(id)interaction accessoriesForMenuWithConfiguration:(id)configuration;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)handleHover:(id)hover;
+- (void)handleTap:(id)tap;
 - (void)handleTraitChanges;
 @end
 
 @implementation WindowControlsView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   v7 = sub_21ED2ED28();
   [v7 frame];
   v9 = v8;
@@ -39,14 +39,14 @@
 
 - (void)handleTraitChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_21ED2F5A0();
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   v7 = sub_21ED35090(v6);
   v9 = v8;
 
@@ -57,32 +57,32 @@
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_21ED2F818();
 
   return v5;
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_21ED2FD54(v6, v7);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_21ED2FD54(interactionCopy, configurationCopy);
 
   return v9;
 }
 
-- (id)_contextMenuInteraction:(id)a3 accessoriesForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction accessoriesForMenuWithConfiguration:(id)configuration
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CEE5FE8, &qword_21ED36E58);
   v5 = swift_allocObject();
   *(v5 + 16) = xmmword_21ED36CF0;
   v6 = objc_allocWithZone(type metadata accessor for WindowControlsContextMenuAccessoryView());
-  v7 = self;
-  *(v5 + 32) = sub_21ED2DBA0(v7);
+  selfCopy = self;
+  *(v5 + 32) = sub_21ED2DBA0(selfCopy);
 
   sub_21ED2CF3C(0, &qword_27CEE5FF0, 0x277D75E98);
   v8 = sub_21ED3593C();
@@ -90,26 +90,26 @@
   return v8;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_21ED30020(v8, v9, a5);
+  selfCopy = self;
+  sub_21ED30020(interactionCopy, configurationCopy, animator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v14.receiver = self;
   v14.super_class = swift_getObjectType();
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   v10 = v14.receiver;
   swift_unknownObjectRetain();
-  [(WindowControlsView *)&v14 contextMenuInteraction:v8 willEndForConfiguration:v9 animator:a5];
+  [(WindowControlsView *)&v14 contextMenuInteraction:interactionCopy willEndForConfiguration:configurationCopy animator:animator];
   v11 = &v10[OBJC_IVAR____TtC20SystemUIWindowingKit18WindowControlsView_delegate];
   if (swift_unknownObjectWeakLoadStrong())
   {
@@ -122,23 +122,23 @@
   swift_unknownObjectRelease();
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_21ED32948(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_21ED32948(tapCopy);
 }
 
-- (void)handleHover:(id)a3
+- (void)handleHover:(id)hover
 {
-  v4 = a3;
-  v5 = self;
-  sub_21ED32C18(v4);
+  hoverCopy = hover;
+  selfCopy = self;
+  sub_21ED32C18(hoverCopy);
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   sub_21ED34274();
 
   return 1;

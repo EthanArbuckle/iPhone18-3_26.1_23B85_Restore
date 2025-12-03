@@ -1,94 +1,94 @@
 @interface CSEndpointerMetrics
-- (CSEndpointerMetrics)initWithCoder:(id)a3;
-- (CSEndpointerMetrics)initWithTotalAudioRecorded:(double)a3 endpointBufferHostTime:(unint64_t)a4 featuresAtEndpoint:(id)a5 endpointerType:(int64_t)a6 asrFeatureLatencyDistribution:(id)a7 additionalMetrics:(id)a8 trailingSilenceDurationAtEndpoint:(double)a9 requestId:(id)a10 osdFeatures:(id)a11 asrFeatures:(id)a12 isRequestTimeOut:(BOOL)a13 assetConfigVersion:(id)a14 blkHepAudioOrigin:(double)a15 vtExtraAudioAtStartInMs:(double)a16 firstAudioSampleSensorTimestamp:(unint64_t)a17 isAnchorTimeBuffered:(BOOL)a18 endpointHostTime:(unint64_t)a19 audioDeliveryHostTimeDelta:(unint64_t)a20 endpointerThreshold:(float)a21 endpointerScore:(float)a22;
+- (CSEndpointerMetrics)initWithCoder:(id)coder;
+- (CSEndpointerMetrics)initWithTotalAudioRecorded:(double)recorded endpointBufferHostTime:(unint64_t)time featuresAtEndpoint:(id)endpoint endpointerType:(int64_t)type asrFeatureLatencyDistribution:(id)distribution additionalMetrics:(id)metrics trailingSilenceDurationAtEndpoint:(double)atEndpoint requestId:(id)self0 osdFeatures:(id)self1 asrFeatures:(id)self2 isRequestTimeOut:(BOOL)self3 assetConfigVersion:(id)self4 blkHepAudioOrigin:(double)self5 vtExtraAudioAtStartInMs:(double)self6 firstAudioSampleSensorTimestamp:(unint64_t)self7 isAnchorTimeBuffered:(BOOL)self8 endpointHostTime:(unint64_t)self9 audioDeliveryHostTimeDelta:(unint64_t)delta endpointerThreshold:(float)threshold endpointerScore:(float)score;
 - (id)description;
-- (id)metricsCopyWithRequestId:(id)a3 lastAudioChunkHostTime:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)metricsCopyWithRequestId:(id)id lastAudioChunkHostTime:(unint64_t)time;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSEndpointerMetrics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   totalAudioRecorded = self->_totalAudioRecorded;
-  v11 = a3;
-  [v11 encodeDouble:@"CSEndpointMetrics:::totalAudioRecorded" forKey:totalAudioRecorded];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"CSEndpointMetrics:::totalAudioRecorded" forKey:totalAudioRecorded];
   v5 = [NSNumber numberWithUnsignedLongLong:self->_endpointBufferHostTime];
-  [v11 encodeObject:v5 forKey:@"CSEndpointMetrics:::endpointBufferHostTime"];
+  [coderCopy encodeObject:v5 forKey:@"CSEndpointMetrics:::endpointBufferHostTime"];
 
-  [v11 encodeObject:self->_featuresAtEndpoint forKey:@"CSEndpointMetrics:::featuresAtEndpoint"];
-  [v11 encodeInteger:self->_endpointerType forKey:@"CSEndpointMetrics:::endpointerType"];
-  [v11 encodeObject:self->_asrFeatureLatencyDistribution forKey:@"CSEndpointMetrics:::asrFeatureLatencyDistribution"];
-  [v11 encodeObject:self->_additionalMetrics forKey:@"CSEndpointMetrics:::additionalMetrics"];
-  [v11 encodeDouble:@"CSEndpointMetrics:::trailingSilenceDurationAtEndpoint" forKey:self->_trailingSilenceDurationAtEndpoint];
-  [v11 encodeObject:self->_requestId forKey:@"CSEndpointMetrics:::requestId"];
-  [v11 encodeObject:self->_osdFeaturesAtEndpoint forKey:@"CSEndpointMetrics:::osdFeaturesAtEndpoint"];
-  [v11 encodeObject:self->_asrFeaturesAtEndpoint forKey:@"CSEndpointMetrics:::asrFeaturesAtEndpoint"];
-  [v11 encodeBool:self->_isRequestTimeOut forKey:@"CSEndpointMetrics:::isRequestTimeOut"];
-  [v11 encodeObject:self->_assetConfigVersion forKey:@"CSEndpointMetrics:::assetConfigVersion"];
-  [v11 encodeDouble:@"CSEndpointMetrics:::blkHepAudioOrigin" forKey:self->_blkHepAudioOrigin];
-  [v11 encodeDouble:@"CSEndpointMetrics:::vtExtraAudioAtStartInMs" forKey:self->_vtExtraAudioAtStartInMs];
+  [coderCopy encodeObject:self->_featuresAtEndpoint forKey:@"CSEndpointMetrics:::featuresAtEndpoint"];
+  [coderCopy encodeInteger:self->_endpointerType forKey:@"CSEndpointMetrics:::endpointerType"];
+  [coderCopy encodeObject:self->_asrFeatureLatencyDistribution forKey:@"CSEndpointMetrics:::asrFeatureLatencyDistribution"];
+  [coderCopy encodeObject:self->_additionalMetrics forKey:@"CSEndpointMetrics:::additionalMetrics"];
+  [coderCopy encodeDouble:@"CSEndpointMetrics:::trailingSilenceDurationAtEndpoint" forKey:self->_trailingSilenceDurationAtEndpoint];
+  [coderCopy encodeObject:self->_requestId forKey:@"CSEndpointMetrics:::requestId"];
+  [coderCopy encodeObject:self->_osdFeaturesAtEndpoint forKey:@"CSEndpointMetrics:::osdFeaturesAtEndpoint"];
+  [coderCopy encodeObject:self->_asrFeaturesAtEndpoint forKey:@"CSEndpointMetrics:::asrFeaturesAtEndpoint"];
+  [coderCopy encodeBool:self->_isRequestTimeOut forKey:@"CSEndpointMetrics:::isRequestTimeOut"];
+  [coderCopy encodeObject:self->_assetConfigVersion forKey:@"CSEndpointMetrics:::assetConfigVersion"];
+  [coderCopy encodeDouble:@"CSEndpointMetrics:::blkHepAudioOrigin" forKey:self->_blkHepAudioOrigin];
+  [coderCopy encodeDouble:@"CSEndpointMetrics:::vtExtraAudioAtStartInMs" forKey:self->_vtExtraAudioAtStartInMs];
   v6 = [NSNumber numberWithUnsignedLongLong:self->_firstAudioSampleSensorTimestamp];
-  [v11 encodeObject:v6 forKey:@"CSEndpointMetrics:::firstAudioSampleSensorTimestamp"];
+  [coderCopy encodeObject:v6 forKey:@"CSEndpointMetrics:::firstAudioSampleSensorTimestamp"];
 
-  [v11 encodeBool:self->_isAnchorTimeBuffered forKey:@"CSEndpointMetrics:::isAnchorTimeBuffered"];
+  [coderCopy encodeBool:self->_isAnchorTimeBuffered forKey:@"CSEndpointMetrics:::isAnchorTimeBuffered"];
   v7 = [NSNumber numberWithUnsignedLongLong:self->_endpointHostTime];
-  [v11 encodeObject:v7 forKey:@"CSEndpointMetrics:::endpointHostTime"];
+  [coderCopy encodeObject:v7 forKey:@"CSEndpointMetrics:::endpointHostTime"];
 
   v8 = [NSNumber numberWithUnsignedLongLong:self->_audioDeliveryHostTimeDelta];
-  [v11 encodeObject:v8 forKey:@"CSEndpointMetrics:::audioDeliveryHostTimeDelta"];
+  [coderCopy encodeObject:v8 forKey:@"CSEndpointMetrics:::audioDeliveryHostTimeDelta"];
 
   *&v9 = self->_endpointerThreshold;
-  [v11 encodeFloat:@"CSEndpointMetrics:::endpointerThreshold" forKey:v9];
+  [coderCopy encodeFloat:@"CSEndpointMetrics:::endpointerThreshold" forKey:v9];
   *&v10 = self->_endpointerScore;
-  [v11 encodeFloat:@"CSEndpointMetrics:::endpointerScore" forKey:v10];
+  [coderCopy encodeFloat:@"CSEndpointMetrics:::endpointerScore" forKey:v10];
 }
 
-- (CSEndpointerMetrics)initWithCoder:(id)a3
+- (CSEndpointerMetrics)initWithCoder:(id)coder
 {
-  v3 = a3;
-  [v3 decodeDoubleForKey:@"CSEndpointMetrics:::totalAudioRecorded"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"CSEndpointMetrics:::totalAudioRecorded"];
   v5 = v4;
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::endpointBufferHostTime"];
-  v40 = [v6 unsignedLongLongValue];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::endpointBufferHostTime"];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  v39 = [v3 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::featuresAtEndpoint"];
-  v38 = [v3 decodeIntegerForKey:@"CSEndpointMetrics:::endpointerType"];
+  v39 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::featuresAtEndpoint"];
+  v38 = [coderCopy decodeIntegerForKey:@"CSEndpointMetrics:::endpointerType"];
   v7 = objc_opt_class();
-  v37 = [v3 decodeDictionaryWithKeysOfClass:v7 objectsOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::asrFeatureLatencyDistribution"];
+  v37 = [coderCopy decodeDictionaryWithKeysOfClass:v7 objectsOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::asrFeatureLatencyDistribution"];
   v8 = objc_opt_class();
-  v36 = [v3 decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::additionalMetrics"];
-  [v3 decodeDoubleForKey:@"CSEndpointMetrics:::trailingSilenceDurationAtEndpoint"];
+  v36 = [coderCopy decodeDictionaryWithKeysOfClass:v8 objectsOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::additionalMetrics"];
+  [coderCopy decodeDoubleForKey:@"CSEndpointMetrics:::trailingSilenceDurationAtEndpoint"];
   v10 = v9;
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::requestId"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::osdFeaturesAtEndpoint"];
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::asrFeaturesAtEndpoint"];
-  v35 = [v3 decodeBoolForKey:@"CSEndpointMetrics:::isRequestTimeOut"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::assetConfigVersion"];
-  [v3 decodeDoubleForKey:@"CSEndpointMetrics:::blkHepAudioOrigin"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::requestId"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::osdFeaturesAtEndpoint"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::asrFeaturesAtEndpoint"];
+  v35 = [coderCopy decodeBoolForKey:@"CSEndpointMetrics:::isRequestTimeOut"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::assetConfigVersion"];
+  [coderCopy decodeDoubleForKey:@"CSEndpointMetrics:::blkHepAudioOrigin"];
   v16 = v15;
-  [v3 decodeDoubleForKey:@"CSEndpointMetrics:::vtExtraAudioAtStartInMs"];
+  [coderCopy decodeDoubleForKey:@"CSEndpointMetrics:::vtExtraAudioAtStartInMs"];
   v18 = v17;
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::firstAudioSampleSensorTimestamp"];
-  v20 = [v19 unsignedLongLongValue];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::firstAudioSampleSensorTimestamp"];
+  unsignedLongLongValue2 = [v19 unsignedLongLongValue];
 
-  LOBYTE(v19) = [v3 decodeBoolForKey:@"CSEndpointMetrics:::isAnchorTimeBuffered"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::endpointHostTime"];
-  v22 = [v21 unsignedLongLongValue];
+  LOBYTE(v19) = [coderCopy decodeBoolForKey:@"CSEndpointMetrics:::isAnchorTimeBuffered"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::endpointHostTime"];
+  unsignedLongLongValue3 = [v21 unsignedLongLongValue];
 
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::audioDeliveryHostTimeDelta"];
-  v24 = [v23 unsignedLongLongValue];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSEndpointMetrics:::audioDeliveryHostTimeDelta"];
+  unsignedLongLongValue4 = [v23 unsignedLongLongValue];
 
-  [v3 decodeFloatForKey:@"CSEndpointMetrics:::endpointerThreshold"];
+  [coderCopy decodeFloatForKey:@"CSEndpointMetrics:::endpointerThreshold"];
   v26 = v25;
-  [v3 decodeFloatForKey:@"CSEndpointMetrics:::endpointerScore"];
+  [coderCopy decodeFloatForKey:@"CSEndpointMetrics:::endpointerScore"];
   v28 = v27;
 
   LOBYTE(v34) = v19;
   LOBYTE(v33) = v35;
   LODWORD(v29) = v26;
   LODWORD(v30) = v28;
-  v31 = [(CSEndpointerMetrics *)self initWithTotalAudioRecorded:v40 endpointBufferHostTime:v39 featuresAtEndpoint:v38 endpointerType:v37 asrFeatureLatencyDistribution:v36 additionalMetrics:v11 trailingSilenceDurationAtEndpoint:v5 requestId:v10 osdFeatures:v16 asrFeatures:v18 isRequestTimeOut:v29 assetConfigVersion:v30 blkHepAudioOrigin:v12 vtExtraAudioAtStartInMs:v13 firstAudioSampleSensorTimestamp:v33 isAnchorTimeBuffered:v14 endpointHostTime:v20 audioDeliveryHostTimeDelta:v34 endpointerThreshold:v22 endpointerScore:v24];
+  v31 = [(CSEndpointerMetrics *)self initWithTotalAudioRecorded:unsignedLongLongValue endpointBufferHostTime:v39 featuresAtEndpoint:v38 endpointerType:v37 asrFeatureLatencyDistribution:v36 additionalMetrics:v11 trailingSilenceDurationAtEndpoint:v5 requestId:v10 osdFeatures:v16 asrFeatures:v18 isRequestTimeOut:v29 assetConfigVersion:v30 blkHepAudioOrigin:v12 vtExtraAudioAtStartInMs:v13 firstAudioSampleSensorTimestamp:v33 isAnchorTimeBuffered:v14 endpointHostTime:unsignedLongLongValue2 audioDeliveryHostTimeDelta:v34 endpointerThreshold:unsignedLongLongValue3 endpointerScore:unsignedLongLongValue4];
 
   return v31;
 }
@@ -120,13 +120,13 @@
   return v3;
 }
 
-- (id)metricsCopyWithRequestId:(id)a3 lastAudioChunkHostTime:(unint64_t)a4
+- (id)metricsCopyWithRequestId:(id)id lastAudioChunkHostTime:(unint64_t)time
 {
-  v6 = a3;
-  v7 = [(CSEndpointerMetrics *)self additionalMetrics];
-  v8 = [v7 mutableCopy];
+  idCopy = id;
+  additionalMetrics = [(CSEndpointerMetrics *)self additionalMetrics];
+  v8 = [additionalMetrics mutableCopy];
 
-  v9 = [NSNumber numberWithUnsignedLongLong:a4];
+  v9 = [NSNumber numberWithUnsignedLongLong:time];
   [v8 setObject:v9 forKey:@"lastAudioChunkHostTime"];
 
   v10 = [CSEndpointerMetrics alloc];
@@ -139,47 +139,47 @@
   endpointerScore = self->_endpointerScore;
   LOBYTE(v20) = self->_isAnchorTimeBuffered;
   LOBYTE(v19) = self->_isRequestTimeOut;
-  v17 = [CSEndpointerMetrics initWithTotalAudioRecorded:v10 endpointBufferHostTime:"initWithTotalAudioRecorded:endpointBufferHostTime:featuresAtEndpoint:endpointerType:asrFeatureLatencyDistribution:additionalMetrics:trailingSilenceDurationAtEndpoint:requestId:osdFeatures:asrFeatures:isRequestTimeOut:assetConfigVersion:blkHepAudioOrigin:vtExtraAudioAtStartInMs:firstAudioSampleSensorTimestamp:isAnchorTimeBuffered:endpointHostTime:audioDeliveryHostTimeDelta:endpointerThreshold:endpointerScore:" featuresAtEndpoint:self->_endpointBufferHostTime endpointerType:self->_featuresAtEndpoint asrFeatureLatencyDistribution:self->_endpointerType additionalMetrics:self->_asrFeatureLatencyDistribution trailingSilenceDurationAtEndpoint:v8 requestId:v6 osdFeatures:self->_osdFeaturesAtEndpoint asrFeatures:self->_asrFeaturesAtEndpoint isRequestTimeOut:v19 assetConfigVersion:self->_assetConfigVersion blkHepAudioOrigin:self->_firstAudioSampleSensorTimestamp vtExtraAudioAtStartInMs:v20 firstAudioSampleSensorTimestamp:endpointHostTime isAnchorTimeBuffered:self->_audioDeliveryHostTimeDelta endpointHostTime:? audioDeliveryHostTimeDelta:? endpointerThreshold:? endpointerScore:?];
+  v17 = [CSEndpointerMetrics initWithTotalAudioRecorded:v10 endpointBufferHostTime:"initWithTotalAudioRecorded:endpointBufferHostTime:featuresAtEndpoint:endpointerType:asrFeatureLatencyDistribution:additionalMetrics:trailingSilenceDurationAtEndpoint:requestId:osdFeatures:asrFeatures:isRequestTimeOut:assetConfigVersion:blkHepAudioOrigin:vtExtraAudioAtStartInMs:firstAudioSampleSensorTimestamp:isAnchorTimeBuffered:endpointHostTime:audioDeliveryHostTimeDelta:endpointerThreshold:endpointerScore:" featuresAtEndpoint:self->_endpointBufferHostTime endpointerType:self->_featuresAtEndpoint asrFeatureLatencyDistribution:self->_endpointerType additionalMetrics:self->_asrFeatureLatencyDistribution trailingSilenceDurationAtEndpoint:v8 requestId:idCopy osdFeatures:self->_osdFeaturesAtEndpoint asrFeatures:self->_asrFeaturesAtEndpoint isRequestTimeOut:v19 assetConfigVersion:self->_assetConfigVersion blkHepAudioOrigin:self->_firstAudioSampleSensorTimestamp vtExtraAudioAtStartInMs:v20 firstAudioSampleSensorTimestamp:endpointHostTime isAnchorTimeBuffered:self->_audioDeliveryHostTimeDelta endpointHostTime:? audioDeliveryHostTimeDelta:? endpointerThreshold:? endpointerScore:?];
 
   return v17;
 }
 
-- (CSEndpointerMetrics)initWithTotalAudioRecorded:(double)a3 endpointBufferHostTime:(unint64_t)a4 featuresAtEndpoint:(id)a5 endpointerType:(int64_t)a6 asrFeatureLatencyDistribution:(id)a7 additionalMetrics:(id)a8 trailingSilenceDurationAtEndpoint:(double)a9 requestId:(id)a10 osdFeatures:(id)a11 asrFeatures:(id)a12 isRequestTimeOut:(BOOL)a13 assetConfigVersion:(id)a14 blkHepAudioOrigin:(double)a15 vtExtraAudioAtStartInMs:(double)a16 firstAudioSampleSensorTimestamp:(unint64_t)a17 isAnchorTimeBuffered:(BOOL)a18 endpointHostTime:(unint64_t)a19 audioDeliveryHostTimeDelta:(unint64_t)a20 endpointerThreshold:(float)a21 endpointerScore:(float)a22
+- (CSEndpointerMetrics)initWithTotalAudioRecorded:(double)recorded endpointBufferHostTime:(unint64_t)time featuresAtEndpoint:(id)endpoint endpointerType:(int64_t)type asrFeatureLatencyDistribution:(id)distribution additionalMetrics:(id)metrics trailingSilenceDurationAtEndpoint:(double)atEndpoint requestId:(id)self0 osdFeatures:(id)self1 asrFeatures:(id)self2 isRequestTimeOut:(BOOL)self3 assetConfigVersion:(id)self4 blkHepAudioOrigin:(double)self5 vtExtraAudioAtStartInMs:(double)self6 firstAudioSampleSensorTimestamp:(unint64_t)self7 isAnchorTimeBuffered:(BOOL)self8 endpointHostTime:(unint64_t)self9 audioDeliveryHostTimeDelta:(unint64_t)delta endpointerThreshold:(float)threshold endpointerScore:(float)score
 {
-  v33 = a5;
-  v34 = a7;
-  obj = a8;
-  v35 = a8;
-  v45 = a10;
-  v44 = a11;
-  v43 = a12;
-  v36 = a14;
+  endpointCopy = endpoint;
+  distributionCopy = distribution;
+  obj = metrics;
+  metricsCopy = metrics;
+  idCopy = id;
+  featuresCopy = features;
+  asrFeaturesCopy = asrFeatures;
+  versionCopy = version;
   v46.receiver = self;
   v46.super_class = CSEndpointerMetrics;
   v37 = [(CSEndpointerMetrics *)&v46 init];
   v38 = v37;
   if (v37)
   {
-    v37->_totalAudioRecorded = a3;
-    v37->_endpointBufferHostTime = a4;
-    objc_storeStrong(&v37->_featuresAtEndpoint, a5);
-    v38->_endpointerType = a6;
-    objc_storeStrong(&v38->_asrFeatureLatencyDistribution, a7);
+    v37->_totalAudioRecorded = recorded;
+    v37->_endpointBufferHostTime = time;
+    objc_storeStrong(&v37->_featuresAtEndpoint, endpoint);
+    v38->_endpointerType = type;
+    objc_storeStrong(&v38->_asrFeatureLatencyDistribution, distribution);
     objc_storeStrong(&v38->_additionalMetrics, obj);
-    v38->_trailingSilenceDurationAtEndpoint = a9;
-    objc_storeStrong(&v38->_requestId, a10);
-    objc_storeStrong(&v38->_osdFeaturesAtEndpoint, a11);
-    objc_storeStrong(&v38->_asrFeaturesAtEndpoint, a12);
-    v38->_isRequestTimeOut = a13;
-    objc_storeStrong(&v38->_assetConfigVersion, a14);
-    v38->_blkHepAudioOrigin = a15;
-    v38->_vtExtraAudioAtStartInMs = a16;
-    v38->_isAnchorTimeBuffered = a18;
-    v38->_firstAudioSampleSensorTimestamp = a17;
-    v38->_endpointHostTime = a19;
-    v38->_audioDeliveryHostTimeDelta = a20;
-    v38->_endpointerThreshold = a21;
-    v38->_endpointerScore = a22;
+    v38->_trailingSilenceDurationAtEndpoint = atEndpoint;
+    objc_storeStrong(&v38->_requestId, id);
+    objc_storeStrong(&v38->_osdFeaturesAtEndpoint, features);
+    objc_storeStrong(&v38->_asrFeaturesAtEndpoint, asrFeatures);
+    v38->_isRequestTimeOut = out;
+    objc_storeStrong(&v38->_assetConfigVersion, version);
+    v38->_blkHepAudioOrigin = origin;
+    v38->_vtExtraAudioAtStartInMs = ms;
+    v38->_isAnchorTimeBuffered = buffered;
+    v38->_firstAudioSampleSensorTimestamp = timestamp;
+    v38->_endpointHostTime = hostTime;
+    v38->_audioDeliveryHostTimeDelta = delta;
+    v38->_endpointerThreshold = threshold;
+    v38->_endpointerScore = score;
   }
 
   return v38;

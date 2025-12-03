@@ -1,17 +1,17 @@
 @interface CRLEncodedBlockInfoWithDecodedLengthInternal
-- (CRLEncodedBlockInfoWithDecodedLengthInternal)initWithEncodedLength:(unint64_t)a3 decodedLength:(unint64_t)a4;
+- (CRLEncodedBlockInfoWithDecodedLengthInternal)initWithEncodedLength:(unint64_t)length decodedLength:(unint64_t)decodedLength;
 @end
 
 @implementation CRLEncodedBlockInfoWithDecodedLengthInternal
 
-- (CRLEncodedBlockInfoWithDecodedLengthInternal)initWithEncodedLength:(unint64_t)a3 decodedLength:(unint64_t)a4
+- (CRLEncodedBlockInfoWithDecodedLengthInternal)initWithEncodedLength:(unint64_t)length decodedLength:(unint64_t)decodedLength
 {
   v6.receiver = self;
   v6.super_class = CRLEncodedBlockInfoWithDecodedLengthInternal;
-  result = [(CRLEncodedBlockInfoInternal *)&v6 initWithEncodedLength:a3];
+  result = [(CRLEncodedBlockInfoInternal *)&v6 initWithEncodedLength:length];
   if (result)
   {
-    result->_decodedLength = a4;
+    result->_decodedLength = decodedLength;
   }
 
   return result;

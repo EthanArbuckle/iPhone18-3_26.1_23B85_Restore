@@ -1,47 +1,47 @@
 @interface HDOTAFeatureAvailabilityInfo
-- (BOOL)isEqual:(id)a3;
-- (HDOTAFeatureAvailabilityInfo)initWithAllowedCountrySet:(id)a3;
-- (HDOTAFeatureAvailabilityInfo)initWithCoder:(id)a3;
-- (HDOTAFeatureAvailabilityInfo)initWithDictionaryRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDOTAFeatureAvailabilityInfo)initWithAllowedCountrySet:(id)set;
+- (HDOTAFeatureAvailabilityInfo)initWithCoder:(id)coder;
+- (HDOTAFeatureAvailabilityInfo)initWithDictionaryRepresentation:(id)representation;
 @end
 
 @implementation HDOTAFeatureAvailabilityInfo
 
-- (HDOTAFeatureAvailabilityInfo)initWithDictionaryRepresentation:(id)a3
+- (HDOTAFeatureAvailabilityInfo)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = [a3 hk_safeDictionaryForKeyPath:@"AllowedCountrySet" error:0];
+  v4 = [representation hk_safeDictionaryForKeyPath:@"AllowedCountrySet" error:0];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277CCD260]) initWithDictionaryRepresentation:v4 provenance:4];
     if (v5)
     {
       self = [(HDOTAFeatureAvailabilityInfo *)self initWithAllowedCountrySet:v5];
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (HDOTAFeatureAvailabilityInfo)initWithAllowedCountrySet:(id)a3
+- (HDOTAFeatureAvailabilityInfo)initWithAllowedCountrySet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9.receiver = self;
   v9.super_class = HDOTAFeatureAvailabilityInfo;
   v5 = [(HDOTAFeatureAvailabilityInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [setCopy copy];
     allowedCountrySet = v5->_allowedCountrySet;
     v5->_allowedCountrySet = v6;
   }
@@ -49,12 +49,12 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = HDOTAFeatureAvailabilityInfo;
-  if ([(HDOTAFeatureAvailabilityInfo *)&v9 isEqual:v4])
+  if ([(HDOTAFeatureAvailabilityInfo *)&v9 isEqual:equalCopy])
   {
     goto LABEL_2;
   }
@@ -68,7 +68,7 @@ LABEL_7:
   }
 
   allowedCountrySet = self->_allowedCountrySet;
-  v7 = v4[1];
+  v7 = equalCopy[1];
   if (allowedCountrySet != v7)
   {
     if (v7)
@@ -87,23 +87,23 @@ LABEL_8:
   return v5;
 }
 
-- (HDOTAFeatureAvailabilityInfo)initWithCoder:(id)a3
+- (HDOTAFeatureAvailabilityInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AllowedCountrySet"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AllowedCountrySet"];
 
   if (v5)
   {
     self = [(HDOTAFeatureAvailabilityInfo *)self initWithAllowedCountrySet:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

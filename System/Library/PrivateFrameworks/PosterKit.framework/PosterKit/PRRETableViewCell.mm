@@ -1,6 +1,6 @@
 @interface PRRETableViewCell
 - (void)_configure;
-- (void)_valueChanged:(id)a3;
+- (void)_valueChanged:(id)changed;
 - (void)prepareForReuse;
 @end
 
@@ -14,21 +14,21 @@
   [(PRRETableViewCell *)self setTag:0];
 }
 
-- (void)_valueChanged:(id)a3
+- (void)_valueChanged:(id)changed
 {
-  v6 = [(PRRETableViewCell *)self _tableView];
-  v4 = [v6 delegate];
-  v5 = [(PRRETableViewCell *)self _currentValue];
-  [v4 cell:self valueChanged:v5];
+  _tableView = [(PRRETableViewCell *)self _tableView];
+  delegate = [_tableView delegate];
+  _currentValue = [(PRRETableViewCell *)self _currentValue];
+  [delegate cell:self valueChanged:_currentValue];
 }
 
 - (void)_configure
 {
-  v4 = [(PRRETableViewCell *)self defaultContentConfiguration];
+  defaultContentConfiguration = [(PRRETableViewCell *)self defaultContentConfiguration];
   v3 = NSStringForPRSceneSetting([(PRRETableViewCell *)self tag]);
-  [v4 setText:v3];
+  [defaultContentConfiguration setText:v3];
 
-  [(PRRETableViewCell *)self setContentConfiguration:v4];
+  [(PRRETableViewCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
 @end

@@ -1,41 +1,41 @@
 @interface ICSProperty
 + (id)valueAndParameterClasses;
-- (ICSProperty)initWithCoder:(id)a3;
-- (ICSProperty)initWithValue:(id)a3 type:(unint64_t)a4;
+- (ICSProperty)initWithCoder:(id)coder;
+- (ICSProperty)initWithValue:(id)value type:(unint64_t)type;
 - (id)allParameters;
 - (id)description;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4 additionalParameters:(id)a5;
-- (void)_appendDateTimeInDate:(id)a3 asUTCToResult:(id)a4;
-- (void)_setParsedValues:(id)a3 type:(unint64_t)a4;
-- (void)addParameter:(id)a3 withRawValue:(id)a4 options:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setParameterValue:(id)a3 forName:(id)a4;
-- (void)setParameters:(id)a3;
-- (void)setValue:(id)a3 type:(unint64_t)a4;
-- (void)setValueAsProperty:(id)a3 withRawValue:(const char *)a4 options:(unint64_t)a5;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string additionalParameters:(id)parameters;
+- (void)_appendDateTimeInDate:(id)date asUTCToResult:(id)result;
+- (void)_setParsedValues:(id)values type:(unint64_t)type;
+- (void)addParameter:(id)parameter withRawValue:(id)value options:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)setParameterValue:(id)value forName:(id)name;
+- (void)setParameters:(id)parameters;
+- (void)setValue:(id)value type:(unint64_t)type;
+- (void)setValueAsProperty:(id)property withRawValue:(const char *)value options:(unint64_t)options;
 @end
 
 @implementation ICSProperty
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4 additionalParameters:(id)a5
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string additionalParameters:(id)parameters
 {
   v39 = *MEMORY[0x277D85DE8];
-  v33 = a4;
-  v8 = a5;
+  stringCopy = string;
+  parametersCopy = parameters;
   v9 = MEMORY[0x277CBEB38];
-  v30 = self;
-  v10 = [(ICSProperty *)self parameters];
-  v11 = [v9 dictionaryWithDictionary:v10];
+  selfCopy = self;
+  parameters = [(ICSProperty *)self parameters];
+  v11 = [v9 dictionaryWithDictionary:parameters];
 
-  if (v8)
+  if (parametersCopy)
   {
-    [v11 addEntriesFromDictionary:v8];
+    [v11 addEntriesFromDictionary:parametersCopy];
   }
 
-  v29 = v8;
-  v12 = [v11 allKeys];
-  v13 = [v12 sortedArrayUsingSelector:sel_compare_];
+  v29 = parametersCopy;
+  allKeys = [v11 allKeys];
+  v13 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v36 = 0u;
   v37 = 0u;
@@ -60,22 +60,22 @@
         }
 
         v19 = *(*(&v34 + 1) + 8 * v18);
-        v20 = a3;
-        if ((a3 & 0x10) != 0)
+        optionsCopy2 = options;
+        if ((options & 0x10) != 0)
         {
-          if ([(ICSProperty *)v30 shouldObscureParameter:*(*(&v34 + 1) + 8 * v18)])
+          if ([(ICSProperty *)selfCopy shouldObscureParameter:*(*(&v34 + 1) + 8 * v18)])
           {
-            v20 = a3 | 0x20;
+            optionsCopy2 = options | 0x20;
           }
 
           else
           {
-            v20 = a3;
+            optionsCopy2 = options;
           }
         }
 
         v21 = [v15 objectForKey:v19];
-        v22 = v33;
+        v22 = stringCopy;
         v23 = v19;
         [v22 appendString:@";"];
         [v22 appendString:v23];
@@ -95,11 +95,11 @@
             [v21 description];
           }
           v25 = ;
-          v24 = [v25 _ICSStringForParameterQuotedValue];
+          _ICSStringForParameterQuotedValue = [v25 _ICSStringForParameterQuotedValue];
 
 LABEL_29:
           [v22 appendString:@""];
-          [v24 _ICSStringWithOptions:v20 appendingToString:v22];
+          [_ICSStringForParameterQuotedValue _ICSStringWithOptions:optionsCopy2 appendingToString:v22];
           [v22 appendString:@""];
 LABEL_30:
 
@@ -118,7 +118,7 @@ LABEL_30:
 
         if (([v23 isEqualToString:@"CN"] & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", @"DIR") & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", @"SENT-BY") & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", @"X-CALENDARSERVER-ATTENDEE-REF") & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", @"X-CALENDARSERVER-EMAIL") & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", @"EMAIL") & 1) != 0 || (objc_msgSend(v23, "isEqualToString:", @"X-APPLE-TELEPHONE") & 1) != 0 || objc_msgSend(v23, "isEqualToString:", @"TITLE"))
         {
-          v24 = [v21 _ICSStringForParameterQuotedValue];
+          _ICSStringForParameterQuotedValue = [v21 _ICSStringForParameterQuotedValue];
           goto LABEL_29;
         }
 
@@ -147,14 +147,14 @@ LABEL_30:
 
               if ([v21 rangeOfCharacterFromSet:_ICSStringWithOptions_appendingToString_additionalParameters__sQuoteCharacters] == 0x7FFFFFFFFFFFFFFFLL)
               {
-                v24 = [v21 _ICSStringForParameterValue];
-                [v24 _ICSStringWithOptions:v20 appendingToString:v22];
+                _ICSStringForParameterQuotedValue = [v21 _ICSStringForParameterValue];
+                [_ICSStringForParameterQuotedValue _ICSStringWithOptions:optionsCopy2 appendingToString:v22];
                 goto LABEL_30;
               }
 
               [v22 appendString:@""];
-              v26 = [v21 _ICSStringForParameterQuotedValue];
-              [v26 _ICSStringWithOptions:v20 appendingToString:v22];
+              _ICSStringForParameterQuotedValue2 = [v21 _ICSStringForParameterQuotedValue];
+              [_ICSStringForParameterQuotedValue2 _ICSStringWithOptions:optionsCopy2 appendingToString:v22];
 
               [v22 appendString:@""];
 LABEL_31:
@@ -162,7 +162,7 @@ LABEL_31:
               goto LABEL_32;
             }
 
-            [v21 _ICSStringWithOptions:v20 appendingToString:v22];
+            [v21 _ICSStringWithOptions:optionsCopy2 appendingToString:v22];
           }
         }
 
@@ -189,12 +189,12 @@ uint64_t __87__ICSProperty_ICSWriter___ICSStringWithOptions_appendingToString_ad
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_appendDateTimeInDate:(id)a3 asUTCToResult:(id)a4
+- (void)_appendDateTimeInDate:(id)date asUTCToResult:(id)result
 {
-  v5 = a4;
-  v6 = a3;
+  resultCopy = result;
+  dateCopy = date;
   v12 = objc_alloc_init(ICSCalendar);
-  v7 = [(ICSCalendar *)v12 systemDateForDate:v6 options:0];
+  v7 = [(ICSCalendar *)v12 systemDateForDate:dateCopy options:0];
 
   v8 = objc_alloc(MEMORY[0x277CBEA80]);
   v9 = [v8 initWithCalendarIdentifier:*MEMORY[0x277CBE5C0]];
@@ -202,18 +202,18 @@ uint64_t __87__ICSProperty_ICSWriter___ICSStringWithOptions_appendingToString_ad
   [v9 setTimeZone:v10];
 
   v11 = [v9 components:766 fromDate:v7];
-  [v5 appendFormat:@"%.4d%.2d%.2dT%.2d%.2d%.2dZ", objc_msgSend(v11, "year"), objc_msgSend(v11, "month"), objc_msgSend(v11, "day"), objc_msgSend(v11, "hour"), objc_msgSend(v11, "minute"), objc_msgSend(v11, "second")];
+  [resultCopy appendFormat:@"%.4d%.2d%.2dT%.2d%.2d%.2dZ", objc_msgSend(v11, "year"), objc_msgSend(v11, "month"), objc_msgSend(v11, "day"), objc_msgSend(v11, "hour"), objc_msgSend(v11, "minute"), objc_msgSend(v11, "second")];
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v57 = a4;
-  v6 = [(ICSProperty *)self parameters];
-  if (v6)
+  stringCopy = string;
+  parameters = [(ICSProperty *)self parameters];
+  if (parameters)
   {
 
 LABEL_4:
-    [(ICSProperty *)self _ICSStringWithOptions:a3 appendingToString:v57 additionalParameters:0];
+    [(ICSProperty *)self _ICSStringWithOptions:options appendingToString:stringCopy additionalParameters:0];
     goto LABEL_5;
   }
 
@@ -223,15 +223,15 @@ LABEL_4:
   }
 
 LABEL_5:
-  if ((a3 & 0x10) != 0 && [(ICSProperty *)self shouldObscureValue])
+  if ((options & 0x10) != 0 && [(ICSProperty *)self shouldObscureValue])
   {
-    a3 |= 0x20uLL;
+    options |= 0x20uLL;
   }
 
   switch([(ICSProperty *)self type])
   {
     case 5003uLL:
-      v36 = [(ICSProperty *)self value];
+      value = [(ICSProperty *)self value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -240,11 +240,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_9.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_9.isa, value2);
       break;
     case 5004uLL:
-      v29 = [(ICSProperty *)self value];
+      value3 = [(ICSProperty *)self value];
       objc_opt_class();
       v30 = objc_opt_isKindOfClass();
 
@@ -253,11 +253,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_7.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_7.isa, value2);
       break;
     case 5005uLL:
-      v38 = [(ICSProperty *)self value];
+      value4 = [(ICSProperty *)self value];
       objc_opt_class();
       v39 = objc_opt_isKindOfClass();
 
@@ -266,11 +266,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_6.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_6.isa, value2);
       break;
     case 5006uLL:
-      v33 = [(ICSProperty *)self value];
+      value5 = [(ICSProperty *)self value];
       v34 = objc_opt_class();
       v35 = objc_opt_class();
 
@@ -279,34 +279,34 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB.isa, value2);
       break;
     case 5007uLL:
     case 5010uLL:
-      v7 = [(ICSProperty *)self value];
-      if (v7)
+      value6 = [(ICSProperty *)self value];
+      if (value6)
       {
-        v8 = v7;
-        v9 = [(ICSProperty *)self value];
+        v8 = value6;
+        value7 = [(ICSProperty *)self value];
         objc_opt_class();
         v10 = objc_opt_isKindOfClass();
 
         if ((v10 & 1) == 0)
         {
-          v11 = [(ICSProperty *)self value];
-          NSLog(&cfstr_PropertyvalueB_4.isa, v11);
+          value8 = [(ICSProperty *)self value];
+          NSLog(&cfstr_PropertyvalueB_4.isa, value8);
         }
       }
 
-      [v57 appendString:@":"];
-      v12 = [(ICSProperty *)self value];
-      v13 = [v12 _ICSStringForProperyValue];
-      [v13 _ICSStringWithOptions:a3 appendingToString:v57];
+      [stringCopy appendString:@":"];
+      value9 = [(ICSProperty *)self value];
+      _ICSStringForProperyValue = [value9 _ICSStringForProperyValue];
+      [_ICSStringForProperyValue _ICSStringWithOptions:options appendingToString:stringCopy];
 
       goto LABEL_51;
     case 5008uLL:
-      v40 = [(ICSProperty *)self value];
+      value10 = [(ICSProperty *)self value];
       objc_opt_class();
       v41 = objc_opt_isKindOfClass();
 
@@ -315,11 +315,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_5.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_5.isa, value2);
       break;
     case 5009uLL:
-      v42 = [(ICSProperty *)self value];
+      value11 = [(ICSProperty *)self value];
       objc_opt_class();
       v43 = objc_opt_isKindOfClass();
 
@@ -328,11 +328,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_14.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_14.isa, value2);
       break;
     case 5011uLL:
-      v51 = [(ICSProperty *)self value];
+      value12 = [(ICSProperty *)self value];
       objc_opt_class();
       v52 = objc_opt_isKindOfClass();
 
@@ -341,51 +341,51 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_1.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_1.isa, value2);
       break;
     case 5012uLL:
-      v48 = [(ICSProperty *)self value];
+      value13 = [(ICSProperty *)self value];
       objc_opt_class();
       v49 = objc_opt_isKindOfClass();
 
       if ((v49 & 1) == 0)
       {
-        v50 = [(ICSProperty *)self value];
-        NSLog(&cfstr_PropertyvalueB_15.isa, v50);
+        value14 = [(ICSProperty *)self value];
+        NSLog(&cfstr_PropertyvalueB_15.isa, value14);
       }
 
-      [v57 appendString:@":"];
-      v12 = [(ICSProperty *)self value];
-      [v12 _ICSBoolAppendingToString:v57];
+      [stringCopy appendString:@":"];
+      value9 = [(ICSProperty *)self value];
+      [value9 _ICSBoolAppendingToString:stringCopy];
       goto LABEL_51;
     case 5013uLL:
-      v17 = [(ICSProperty *)self value];
+      value15 = [(ICSProperty *)self value];
       objc_opt_class();
       v18 = objc_opt_isKindOfClass();
 
       if ((v18 & 1) == 0)
       {
-        v19 = [(ICSProperty *)self value];
-        v20 = [(ICSProperty *)self value];
+        value16 = [(ICSProperty *)self value];
+        value17 = [(ICSProperty *)self value];
         v21 = objc_opt_class();
-        NSLog(&cfstr_PropertyvalueB_3.isa, v19, v21);
+        NSLog(&cfstr_PropertyvalueB_3.isa, value16, v21);
       }
 
-      v22 = v57;
+      v22 = stringCopy;
       [v22 appendString:@";"];
       [v22 appendString:@"VALUE"];
       [v22 appendString:@"="];
       [v22 appendString:@"URI"];
 
       [v22 appendString:@":"];
-      v23 = [(ICSProperty *)self value];
-      v12 = v23;
-      v24 = a3;
+      value18 = [(ICSProperty *)self value];
+      value9 = value18;
+      optionsCopy2 = options;
       v25 = v22;
       goto LABEL_50;
     case 5016uLL:
-      v31 = [(ICSProperty *)self value];
+      value19 = [(ICSProperty *)self value];
       objc_opt_class();
       v32 = objc_opt_isKindOfClass();
 
@@ -394,26 +394,26 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_0.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_0.isa, value2);
       break;
     case 5018uLL:
-      v26 = [(ICSProperty *)self value];
+      value20 = [(ICSProperty *)self value];
       objc_opt_class();
       v27 = objc_opt_isKindOfClass();
 
       if ((v27 & 1) == 0)
       {
-        v28 = [(ICSProperty *)self value];
-        NSLog(&cfstr_PropertyvalueB_13.isa, v28);
+        value21 = [(ICSProperty *)self value];
+        NSLog(&cfstr_PropertyvalueB_13.isa, value21);
       }
 
-      [v57 appendString:@":"];
-      v12 = [(ICSProperty *)self value];
-      [v12 _ICSUTCOffsetAppendingToString:v57];
+      [stringCopy appendString:@":"];
+      value9 = [(ICSProperty *)self value];
+      [value9 _ICSUTCOffsetAppendingToString:stringCopy];
       goto LABEL_51;
     case 5020uLL:
-      v14 = [(ICSProperty *)self value];
+      value22 = [(ICSProperty *)self value];
       objc_opt_class();
       v15 = objc_opt_isKindOfClass();
 
@@ -422,11 +422,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_12.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_12.isa, value2);
       break;
     case 5021uLL:
-      v44 = [(ICSProperty *)self value];
+      value23 = [(ICSProperty *)self value];
       objc_opt_class();
       v45 = objc_opt_isKindOfClass();
 
@@ -435,11 +435,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_2.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_2.isa, value2);
       break;
     case 5025uLL:
-      v46 = [(ICSProperty *)self value];
+      value24 = [(ICSProperty *)self value];
       objc_opt_class();
       v47 = objc_opt_isKindOfClass();
 
@@ -448,11 +448,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_11.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_11.isa, value2);
       break;
     case 5030uLL:
-      v55 = [(ICSProperty *)self value];
+      value25 = [(ICSProperty *)self value];
       objc_opt_class();
       v56 = objc_opt_isKindOfClass();
 
@@ -461,11 +461,11 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_10.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_10.isa, value2);
       break;
     case 5031uLL:
-      v53 = [(ICSProperty *)self value];
+      value26 = [(ICSProperty *)self value];
       objc_opt_class();
       v54 = objc_opt_isKindOfClass();
 
@@ -474,27 +474,27 @@ LABEL_5:
         goto LABEL_49;
       }
 
-      v16 = [(ICSProperty *)self value];
-      NSLog(&cfstr_PropertyvalueB_8.isa, v16);
+      value2 = [(ICSProperty *)self value];
+      NSLog(&cfstr_PropertyvalueB_8.isa, value2);
       break;
     default:
       goto LABEL_49;
   }
 
 LABEL_49:
-  [v57 appendString:@":"];
-  v23 = [(ICSProperty *)self value];
-  v12 = v23;
-  v24 = a3;
-  v25 = v57;
+  [stringCopy appendString:@":"];
+  value18 = [(ICSProperty *)self value];
+  value9 = value18;
+  optionsCopy2 = options;
+  v25 = stringCopy;
 LABEL_50:
-  [v23 _ICSStringWithOptions:v24 appendingToString:v25];
+  [value18 _ICSStringWithOptions:optionsCopy2 appendingToString:v25];
 LABEL_51:
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
-  obj = a3;
+  obj = parameters;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = obj;
@@ -514,14 +514,14 @@ LABEL_51:
   }
 }
 
-- (void)setParameterValue:(id)a3 forName:(id)a4
+- (void)setParameterValue:(id)value forName:(id)name
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
+  valueCopy = value;
+  nameCopy = name;
+  v7 = valueCopy;
+  v8 = nameCopy;
   parameters = self->_parameters;
-  if (v12)
+  if (valueCopy)
   {
     if (!parameters)
     {
@@ -529,7 +529,7 @@ LABEL_51:
       v11 = self->_parameters;
       self->_parameters = v10;
 
-      v7 = v12;
+      v7 = valueCopy;
       parameters = self->_parameters;
     }
 
@@ -542,13 +542,13 @@ LABEL_51:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   parameters = self->_parameters;
-  v5 = a3;
-  [v5 encodeObject:parameters forKey:@"Parameters"];
-  [v5 encodeInteger:self->_type forKey:@"Type"];
-  [v5 encodeObject:self->_value forKey:@"Value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:parameters forKey:@"Parameters"];
+  [coderCopy encodeInteger:self->_type forKey:@"Type"];
+  [coderCopy encodeObject:self->_value forKey:@"Value"];
 }
 
 + (id)valueAndParameterClasses
@@ -618,21 +618,21 @@ void __39__ICSProperty_valueAndParameterClasses__block_invoke()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (ICSProperty)initWithCoder:(id)a3
+- (ICSProperty)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ICSProperty;
   v5 = [(ICSProperty *)&v12 init];
   if (v5)
   {
-    v6 = [objc_opt_class() valueAndParameterClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"Parameters"];
+    valueAndParameterClasses = [objc_opt_class() valueAndParameterClasses];
+    v7 = [coderCopy decodeObjectOfClasses:valueAndParameterClasses forKey:@"Parameters"];
     parameters = v5->_parameters;
     v5->_parameters = v7;
 
-    v5->_type = [v4 decodeIntegerForKey:@"Type"];
-    v9 = [v4 decodeObjectOfClasses:v6 forKey:@"Value"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"Type"];
+    v9 = [coderCopy decodeObjectOfClasses:valueAndParameterClasses forKey:@"Value"];
     value = v5->_value;
     v5->_value = v9;
   }
@@ -643,33 +643,33 @@ void __39__ICSProperty_valueAndParameterClasses__block_invoke()
 - (id)allParameters
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(ICSProperty *)self parameters];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  parameters = [(ICSProperty *)self parameters];
+  v4 = [v2 dictionaryWithDictionary:parameters];
 
   return v4;
 }
 
-- (ICSProperty)initWithValue:(id)a3 type:(unint64_t)a4
+- (ICSProperty)initWithValue:(id)value type:(unint64_t)type
 {
-  v6 = a3;
+  valueCopy = value;
   v10.receiver = self;
   v10.super_class = ICSProperty;
   v7 = [(ICSProperty *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ICSProperty *)v7 setValue:v6 type:a4];
+    [(ICSProperty *)v7 setValue:valueCopy type:type];
   }
 
   return v8;
 }
 
-- (void)setValue:(id)a3 type:(unint64_t)a4
+- (void)setValue:(id)value type:(unint64_t)type
 {
-  if (*&self->_type != __PAIR128__(a3, a4))
+  if (*&self->_type != __PAIR128__(value, type))
   {
-    objc_storeStrong(&self->_value, a3);
-    self->_type = a4;
+    objc_storeStrong(&self->_value, value);
+    self->_type = type;
   }
 
   MEMORY[0x2821F96F8]();
@@ -680,117 +680,117 @@ void __39__ICSProperty_valueAndParameterClasses__block_invoke()
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICSProperty *)self stringValue];
-  v7 = [v3 stringWithFormat:@"<%@ %p - %@>", v5, self, v6];
+  stringValue = [(ICSProperty *)self stringValue];
+  v7 = [v3 stringWithFormat:@"<%@ %p - %@>", v5, self, stringValue];
 
   return v7;
 }
 
-- (void)addParameter:(id)a3 withRawValue:(id)a4 options:(unint64_t)a5
+- (void)addParameter:(id)parameter withRawValue:(id)value options:(unint64_t)options
 {
-  v12 = a3;
-  v7 = a4;
-  if ([v12 isEqualToString:@"CUTYPE"])
+  parameterCopy = parameter;
+  valueCopy = value;
+  if ([parameterCopy isEqualToString:@"CUTYPE"])
   {
-    v8 = [ICSCalendarUserParameter calendarUserTypeParameterFromICSString:v7];
+    v8 = [ICSCalendarUserParameter calendarUserTypeParameterFromICSString:valueCopy];
     goto LABEL_26;
   }
 
-  if ([v12 isEqualToString:@"ROLE"])
+  if ([parameterCopy isEqualToString:@"ROLE"])
   {
-    v8 = [ICSRoleParameter roleParameterFromICSString:v7];
+    v8 = [ICSRoleParameter roleParameterFromICSString:valueCopy];
     goto LABEL_26;
   }
 
-  if ([v12 isEqualToString:@"PARTSTAT"])
+  if ([parameterCopy isEqualToString:@"PARTSTAT"])
   {
-    v8 = [ICSParticipationStatusParameter participationStatusParameterFromICSString:v7];
+    v8 = [ICSParticipationStatusParameter participationStatusParameterFromICSString:valueCopy];
     goto LABEL_26;
   }
 
-  if ([v12 isEqualToString:@"SCHEDULE-STATUS"])
+  if ([parameterCopy isEqualToString:@"SCHEDULE-STATUS"])
   {
-    v8 = [ICSScheduleStatusParameter scheduleStatusParameterFromICSString:v7];
+    v8 = [ICSScheduleStatusParameter scheduleStatusParameterFromICSString:valueCopy];
     goto LABEL_26;
   }
 
-  if ([v12 isEqualToString:@"SCHEDULE-AGENT"])
+  if ([parameterCopy isEqualToString:@"SCHEDULE-AGENT"])
   {
-    v8 = [ICSScheduleAgentParameter scheduleAgentParameterFromICSString:v7];
+    v8 = [ICSScheduleAgentParameter scheduleAgentParameterFromICSString:valueCopy];
     goto LABEL_26;
   }
 
-  if ([v12 isEqualToString:@"RSVP"])
+  if ([parameterCopy isEqualToString:@"RSVP"])
   {
-    v8 = [MEMORY[0x277CCABB0] BOOLFromICSString:v7];
+    v8 = [MEMORY[0x277CCABB0] BOOLFromICSString:valueCopy];
     goto LABEL_26;
   }
 
-  if ([v12 isEqualToString:@"SCHEDULE-FORCE-SEND"])
+  if ([parameterCopy isEqualToString:@"SCHEDULE-FORCE-SEND"])
   {
-    v8 = [ICSScheduleForceSendParameter scheduleForceSendParameterFromICSString:v7];
+    v8 = [ICSScheduleForceSendParameter scheduleForceSendParameterFromICSString:valueCopy];
     goto LABEL_26;
   }
 
-  if ([v12 isEqualToString:@"X-CALENDARSERVER-DTSTAMP"])
+  if ([parameterCopy isEqualToString:@"X-CALENDARSERVER-DTSTAMP"])
   {
     v9 = ICSDateValue;
 LABEL_17:
-    v8 = [(__objc2_class *)v9 dateFromICSString:v7];
+    v8 = [(__objc2_class *)v9 dateFromICSString:valueCopy];
     goto LABEL_26;
   }
 
-  if ([v12 isEqualToString:@"FBTYPE"])
+  if ([parameterCopy isEqualToString:@"FBTYPE"])
   {
-    v8 = [ICSFreeBusyTypeParameter freeBusyTypeParameterFromICSString:v7];
+    v8 = [ICSFreeBusyTypeParameter freeBusyTypeParameterFromICSString:valueCopy];
   }
 
-  else if ([v12 isEqualToString:@"X-APPLE-RELATED-TRAVEL"])
+  else if ([parameterCopy isEqualToString:@"X-APPLE-RELATED-TRAVEL"])
   {
-    v8 = [ICSDuration durationFromICSString:v7];
+    v8 = [ICSDuration durationFromICSString:valueCopy];
   }
 
-  else if ([v12 isEqualToString:@"RELTYPE"])
+  else if ([parameterCopy isEqualToString:@"RELTYPE"])
   {
-    v8 = [ICSRelationshipTypeParameter relationshipTypeParameterFromICSString:v7];
+    v8 = [ICSRelationshipTypeParameter relationshipTypeParameterFromICSString:valueCopy];
   }
 
-  else if ([v12 isEqualToString:@"X-APPLE-MAPKIT-HANDLE"])
+  else if ([parameterCopy isEqualToString:@"X-APPLE-MAPKIT-HANDLE"])
   {
-    v10 = ICSDecodeBase64(0, v7);
+    v10 = ICSDecodeBase64(0, valueCopy);
     v8 = CFAutorelease(v10);
   }
 
   else
   {
-    if ([v12 isEqualToString:@"ACKNOWLEDGED"])
+    if ([parameterCopy isEqualToString:@"ACKNOWLEDGED"])
     {
       v9 = ICSDateTimeUTCValue;
       goto LABEL_17;
     }
 
-    if ([v12 isEqualToString:@"TO-ALL-PROPOSED-NEW-TIME"])
+    if ([parameterCopy isEqualToString:@"TO-ALL-PROPOSED-NEW-TIME"])
     {
-      v8 = [ICSAlternateTimeProposal alternateTimeProposalFromICSCString:v7];
+      v8 = [ICSAlternateTimeProposal alternateTimeProposalFromICSCString:valueCopy];
     }
 
     else
     {
-      v8 = v7;
+      v8 = valueCopy;
     }
   }
 
 LABEL_26:
   v11 = v8;
-  [(ICSProperty *)self setParameterValue:v8 forName:v12];
+  [(ICSProperty *)self setParameterValue:v8 forName:parameterCopy];
 }
 
-- (void)_setParsedValues:(id)a3 type:(unint64_t)a4
+- (void)_setParsedValues:(id)values type:(unint64_t)type
 {
-  v7 = a3;
-  if ([v7 count])
+  valuesCopy = values;
+  if ([valuesCopy count])
   {
-    v6 = [v7 objectAtIndex:0];
+    v6 = [valuesCopy objectAtIndex:0];
   }
 
   else
@@ -798,35 +798,35 @@ LABEL_26:
     v6 = 0;
   }
 
-  [(ICSProperty *)self setValue:v6 type:a4];
+  [(ICSProperty *)self setValue:v6 type:type];
 }
 
-- (void)setValueAsProperty:(id)a3 withRawValue:(const char *)a4 options:(unint64_t)a5
+- (void)setValueAsProperty:(id)property withRawValue:(const char *)value options:(unint64_t)options
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:a4];
-  v10 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:8];
+  optionsCopy = options;
+  propertyCopy = property;
+  v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:value];
+  v10 = [MEMORY[0x277CBEA90] dataWithBytes:value length:8];
   v11 = v10;
   if (!v9)
   {
     v12 = [v10 base64EncodedStringWithOptions:0];
-    NSLog(&cfstr_Utf8EncodingFa.isa, v8, v12);
+    NSLog(&cfstr_Utf8EncodingFa.isa, propertyCopy, v12);
 
-    v13 = CFStringCreateWithCString(0, a4, 0x201u);
+    v13 = CFStringCreateWithCString(0, value, 0x201u);
     if (!v13)
     {
-      v13 = CFStringCreateWithCString(0, a4, 0);
+      v13 = CFStringCreateWithCString(0, value, 0);
       if (!v13)
       {
-        v13 = CFStringCreateWithCString(0, a4, 1u);
+        v13 = CFStringCreateWithCString(0, value, 1u);
         if (!v13)
         {
-          v13 = CFStringCreateWithCString(0, a4, 0x500u);
+          v13 = CFStringCreateWithCString(0, value, 0x500u);
           if (!v13)
           {
             v26 = [v11 base64EncodedStringWithOptions:0];
-            NSLog(&cfstr_NoCorrectEncod.isa, v8, v26);
+            NSLog(&cfstr_NoCorrectEncod.isa, propertyCopy, v26);
 
             v9 = 0;
             goto LABEL_135;
@@ -838,17 +838,17 @@ LABEL_26:
     v9 = v13;
   }
 
-  if ([v8 isEqualToString:@"DURATION"])
+  if ([propertyCopy isEqualToString:@"DURATION"])
   {
     v14 = [ICSDuration durationFromICSString:v9];
     v15 = v14;
-    if ((v5 & 1) == 0 || v14)
+    if ((optionsCopy & 1) == 0 || v14)
     {
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5011;
 LABEL_51:
-      [(ICSProperty *)v16 setValue:v17 type:v18];
+      [(ICSProperty *)selfCopy12 setValue:v17 type:v18];
 LABEL_52:
 
       goto LABEL_135;
@@ -857,13 +857,13 @@ LABEL_52:
     goto LABEL_56;
   }
 
-  if ([v8 isEqualToString:@"METHOD"])
+  if ([propertyCopy isEqualToString:@"METHOD"])
   {
     v19 = [ICSMethodValue methodValueFromICSString:v9];
     v15 = v19;
-    if ((v5 & 1) == 0 || v19)
+    if ((optionsCopy & 1) == 0 || v19)
     {
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5025;
       goto LABEL_51;
@@ -872,13 +872,13 @@ LABEL_52:
     goto LABEL_56;
   }
 
-  if ([v8 isEqualToString:@"ACTION"])
+  if ([propertyCopy isEqualToString:@"ACTION"])
   {
     v20 = [ICSActionValue actionValueFromICSString:v9];
     v15 = v20;
-    if ((v5 & 1) == 0 || v20)
+    if ((optionsCopy & 1) == 0 || v20)
     {
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5020;
       goto LABEL_51;
@@ -887,13 +887,13 @@ LABEL_52:
     goto LABEL_56;
   }
 
-  if ([v8 isEqualToString:@"STATUS"])
+  if ([propertyCopy isEqualToString:@"STATUS"])
   {
     v21 = [ICSStatusValue statusValueFromICSString:v9];
     v15 = v21;
-    if ((v5 & 1) == 0 || v21)
+    if ((optionsCopy & 1) == 0 || v21)
     {
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5003;
       goto LABEL_51;
@@ -902,13 +902,13 @@ LABEL_52:
     goto LABEL_56;
   }
 
-  if ([v8 isEqualToString:@"X-CALENDARSERVER-ACCESS"])
+  if ([propertyCopy isEqualToString:@"X-CALENDARSERVER-ACCESS"])
   {
     v22 = [ICSCalendarServerAccessValue calendarServerAccessFromICSString:v9];
     v15 = v22;
-    if ((v5 & 1) == 0 || v22)
+    if ((optionsCopy & 1) == 0 || v22)
     {
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5030;
       goto LABEL_51;
@@ -917,14 +917,14 @@ LABEL_52:
     goto LABEL_56;
   }
 
-  if ([v8 isEqualToString:@"URL"])
+  if ([propertyCopy isEqualToString:@"URL"])
   {
     v23 = [MEMORY[0x277CBEBC0] _lp_URLWithUserTypedString:v9 relativeToURL:0];
     v15 = v23;
-    if ((v5 & 1) == 0 || v23)
+    if ((optionsCopy & 1) == 0 || v23)
     {
       [(ICSProperty *)self removeParameterValueForName:@"VALUE"];
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5013;
       goto LABEL_51;
@@ -933,13 +933,13 @@ LABEL_52:
     goto LABEL_56;
   }
 
-  if ([v8 isEqualToString:@"TRANSP"])
+  if ([propertyCopy isEqualToString:@"TRANSP"])
   {
     v24 = [ICSTransparencyValue transparencyValueFromICSString:v9];
     v15 = v24;
-    if ((v5 & 1) == 0 || v24)
+    if ((optionsCopy & 1) == 0 || v24)
     {
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5004;
       goto LABEL_51;
@@ -948,13 +948,13 @@ LABEL_52:
     goto LABEL_56;
   }
 
-  if ([v8 isEqualToString:@"X-APPLE-EWS-BUSYSTATUS"])
+  if ([propertyCopy isEqualToString:@"X-APPLE-EWS-BUSYSTATUS"])
   {
     v25 = [ICSBusyStatusValue busyStatusValueFromICSString:v9];
     v15 = v25;
-    if ((v5 & 1) == 0 || v25)
+    if ((optionsCopy & 1) == 0 || v25)
     {
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5031;
       goto LABEL_51;
@@ -963,20 +963,20 @@ LABEL_52:
     goto LABEL_56;
   }
 
-  if ([v8 isEqualToString:@"TRIGGER"])
+  if ([propertyCopy isEqualToString:@"TRIGGER"])
   {
     v15 = [(ICSProperty *)self parameterValueForName:@"VALUE"];
     if (([v15 isEqualToString:@"DATE"] & 1) != 0 || objc_msgSend(v15, "isEqualToString:", @"DATE-TIME"))
     {
       v27 = [ICSDateValue dateFromICSString:v9];
       v28 = v27;
-      if ((v5 & 1) == 0 || v27)
+      if ((optionsCopy & 1) == 0 || v27)
       {
-        v29 = [v27 dateType];
-        v30 = self;
+        dateType = [v27 dateType];
+        selfCopy10 = self;
         v31 = v28;
 LABEL_143:
-        [(ICSProperty *)v30 setValue:v31 type:v29];
+        [(ICSProperty *)selfCopy10 setValue:v31 type:dateType];
 
         goto LABEL_52;
       }
@@ -986,11 +986,11 @@ LABEL_143:
     {
       v33 = [ICSDuration durationFromICSString:v9];
       v28 = v33;
-      if ((v5 & 1) == 0 || v33)
+      if ((optionsCopy & 1) == 0 || v33)
       {
-        v30 = self;
+        selfCopy10 = self;
         v31 = v28;
-        v29 = 5011;
+        dateType = 5011;
         goto LABEL_143;
       }
     }
@@ -1000,13 +1000,13 @@ LABEL_56:
     goto LABEL_57;
   }
 
-  if (([v8 isEqualToString:@"ATTENDEE"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"ORGANIZER"))
+  if (([propertyCopy isEqualToString:@"ATTENDEE"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"ORGANIZER"))
   {
     v32 = [MEMORY[0x277CBEBC0] URLWithString:v9 encodingInvalidCharacters:0];
     v15 = v32;
-    if ((v5 & 1) == 0 || v32)
+    if ((optionsCopy & 1) == 0 || v32)
     {
-      v16 = self;
+      selfCopy12 = self;
       v17 = v15;
       v18 = 5021;
       goto LABEL_51;
@@ -1015,15 +1015,15 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  if (![v8 isEqualToString:@"ATTACH"])
+  if (![propertyCopy isEqualToString:@"ATTACH"])
   {
-    if ([v8 isEqualToString:@"CLASS"])
+    if ([propertyCopy isEqualToString:@"CLASS"])
     {
       v68 = [ICSClassificationValue classificationValueFromICSString:v9];
       v15 = v68;
-      if ((v5 & 1) == 0 || v68)
+      if ((optionsCopy & 1) == 0 || v68)
       {
-        v16 = self;
+        selfCopy12 = self;
         v17 = v15;
         v18 = 5005;
         goto LABEL_51;
@@ -1056,7 +1056,7 @@ LABEL_56:
     v67 = ICSDecodeBase64(0, v9);
     if (v67)
     {
-      v36 = v67;
+      array = v67;
       [(ICSProperty *)self setValue:v67 type:5026];
       goto LABEL_134;
     }
@@ -1066,15 +1066,15 @@ LABEL_56:
 
   v34 = 1;
 LABEL_57:
-  v35 = [(ICSProperty *)self isMultiValued];
-  if (v35)
+  isMultiValued = [(ICSProperty *)self isMultiValued];
+  if (isMultiValued)
   {
-    v36 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v36 = 0;
+    array = 0;
   }
 
   v37 = [(__CFString *)v9 length];
@@ -1118,10 +1118,10 @@ LABEL_123:
   }
 
   v69 = v34;
-  v70 = self;
+  selfCopy13 = self;
   v71 = v11;
   v40 = 0;
-  v41 = 0;
+  string = 0;
   v42 = 0;
   v43 = 0;
   do
@@ -1176,13 +1176,13 @@ LABEL_123:
         goto LABEL_119;
       }
 
-      if (!v41)
+      if (!string)
       {
-        v41 = [MEMORY[0x277CCAB68] string];
+        string = [MEMORY[0x277CCAB68] string];
       }
 
       v49 = [(__CFString *)v9 substringWithRange:v43, v42 - v43];
-      [v41 appendString:v49];
+      [string appendString:v49];
 
       v50 = v42 + 1;
       v51 = v84;
@@ -1242,7 +1242,7 @@ LABEL_123:
         {
           if (v52 == 92)
           {
-            v57 = v41;
+            v57 = string;
             v58 = @"\\"";
 LABEL_117:
             [v57 appendString:v58];
@@ -1252,7 +1252,7 @@ LABEL_117:
           goto LABEL_92;
         }
 
-        v57 = v41;
+        v57 = string;
         v58 = @"\n";
         goto LABEL_117;
       }
@@ -1260,42 +1260,42 @@ LABEL_117:
       switch(v52)
       {
         case '""':
-          v57 = v41;
+          v57 = string;
           v58 = @"";
           goto LABEL_117;
         case ',':
-          v57 = v41;
+          v57 = string;
           v58 = @",";
           goto LABEL_117;
         case ';':
-          v57 = v41;
+          v57 = string;
           v58 = @";";
           goto LABEL_117;
       }
 
 LABEL_92:
-      [v41 appendFormat:@"\\%c", v52];
+      [string appendFormat:@"\\%c", v52];
 LABEL_118:
       v43 = v42 + 2;
       ++v42;
       goto LABEL_119;
     }
 
-    if (v35)
+    if (isMultiValued)
     {
-      if (!v41)
+      if (!string)
       {
-        v41 = [MEMORY[0x277CCAB68] string];
+        string = [MEMORY[0x277CCAB68] string];
       }
 
       v53 = [(__CFString *)v9 substringWithRange:v43, v42 - v43];
-      [v41 appendString:v53];
+      [string appendString:v53];
 
-      [v36 addObject:v41];
-      v54 = [MEMORY[0x277CCAB68] string];
+      [array addObject:string];
+      string2 = [MEMORY[0x277CCAB68] string];
 
       v43 = v42 + 1;
-      v41 = v54;
+      string = string2;
     }
 
 LABEL_119:
@@ -1303,12 +1303,12 @@ LABEL_119:
   }
 
   while (&v37[-1].length + 7 > v42);
-  if (v41)
+  if (string)
   {
     v59 = [(__CFString *)v9 substringWithRange:v43, v37 - v43];
-    [v41 appendString:v59];
+    [string appendString:v59];
 
-    v37 = v41;
+    v37 = string;
     v9 = v37;
   }
 
@@ -1317,15 +1317,15 @@ LABEL_119:
     v37 = 0;
   }
 
-  self = v70;
+  self = selfCopy13;
   v11 = v71;
   if (!v69)
   {
 LABEL_130:
-    if (v35)
+    if (isMultiValued)
     {
-      [v36 addObject:v9];
-      [(ICSProperty *)self _setParsedValues:v36 type:5007];
+      [array addObject:v9];
+      [(ICSProperty *)self _setParsedValues:array type:5007];
     }
 
     else

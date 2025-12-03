@@ -1,39 +1,39 @@
 @interface PUJoiningAssetsDataSource
-- (PUJoiningAssetsDataSource)initWithDataSources:(id)a3;
-- (id)_assetsDataSourceForExternalIndexPath:(id)a3 outDataSourceIndex:(int64_t *)a4 outLocalIndexPath:(id *)a5;
-- (id)_externalIndexPathForLocalIndexPath:(id)a3 inAssetsDataSource:(id)a4;
-- (id)assetAtIndexPath:(id)a3;
-- (id)assetCollectionAtIndexPath:(id)a3;
-- (id)assetReferenceAtIndexPath:(id)a3;
-- (id)badgeInfoPromiseForAssetAtIndexPath:(id)a3 spatialPresentationEnabled:(BOOL)a4;
-- (id)containedAssetsDataSourceAtIndexPath:(id)a3;
-- (id)indexPathForAssetCollection:(id)a3;
-- (id)indexPathForAssetReference:(id)a3;
+- (PUJoiningAssetsDataSource)initWithDataSources:(id)sources;
+- (id)_assetsDataSourceForExternalIndexPath:(id)path outDataSourceIndex:(int64_t *)index outLocalIndexPath:(id *)indexPath;
+- (id)_externalIndexPathForLocalIndexPath:(id)path inAssetsDataSource:(id)source;
+- (id)assetAtIndexPath:(id)path;
+- (id)assetCollectionAtIndexPath:(id)path;
+- (id)assetReferenceAtIndexPath:(id)path;
+- (id)badgeInfoPromiseForAssetAtIndexPath:(id)path spatialPresentationEnabled:(BOOL)enabled;
+- (id)containedAssetsDataSourceAtIndexPath:(id)path;
+- (id)indexPathForAssetCollection:(id)collection;
+- (id)indexPathForAssetReference:(id)reference;
 - (id)startingAssetReference;
-- (int64_t)numberOfAssetsWithMaximum:(int64_t)a3;
-- (int64_t)numberOfSubItemsAtIndexPath:(id)a3;
+- (int64_t)numberOfAssetsWithMaximum:(int64_t)maximum;
+- (int64_t)numberOfSubItemsAtIndexPath:(id)path;
 @end
 
 @implementation PUJoiningAssetsDataSource
 
-- (id)containedAssetsDataSourceAtIndexPath:(id)a3
+- (id)containedAssetsDataSourceAtIndexPath:(id)path
 {
   v6 = 0;
-  v3 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:a3 outDataSourceIndex:0 outLocalIndexPath:&v6];
+  v3 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:path outDataSourceIndex:0 outLocalIndexPath:&v6];
   v4 = [v3 containedAssetsDataSourceAtIndexPath:v6];
 
   return v4;
 }
 
-- (int64_t)numberOfAssetsWithMaximum:(int64_t)a3
+- (int64_t)numberOfAssetsWithMaximum:(int64_t)maximum
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PUJoiningAssetsDataSource *)self _dataSources];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _dataSources = [(PUJoiningAssetsDataSource *)self _dataSources];
+  v5 = [_dataSources countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -45,20 +45,20 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(_dataSources);
       }
 
-      v10 = [*(*(&v12 + 1) + 8 * v9) numberOfAssetsWithMaximum:a3];
+      v10 = [*(*(&v12 + 1) + 8 * v9) numberOfAssetsWithMaximum:maximum];
       v7 += v10;
-      a3 -= v10;
-      if (a3 < 1)
+      maximum -= v10;
+      if (maximum < 1)
       {
         break;
       }
 
       if (v6 == ++v9)
       {
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [_dataSources countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -84,10 +84,10 @@ LABEL_3:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(PUJoiningAssetsDataSource *)self _dataSources];
-  v4 = [v3 reverseObjectEnumerator];
+  _dataSources = [(PUJoiningAssetsDataSource *)self _dataSources];
+  reverseObjectEnumerator = [_dataSources reverseObjectEnumerator];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -98,16 +98,16 @@ LABEL_3:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 startingAssetReference];
-        if (v10)
+        startingAssetReference = [v9 startingAssetReference];
+        if (startingAssetReference)
         {
-          v13 = v10;
-          v14 = [v10 indexPath];
-          v12 = [(PUJoiningAssetsDataSource *)self _externalIndexPathForLocalIndexPath:v14 inAssetsDataSource:v9];
+          v13 = startingAssetReference;
+          indexPath = [startingAssetReference indexPath];
+          v12 = [(PUJoiningAssetsDataSource *)self _externalIndexPathForLocalIndexPath:indexPath inAssetsDataSource:v9];
 
           if (v12)
           {
@@ -123,7 +123,7 @@ LABEL_3:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -140,37 +140,37 @@ LABEL_13:
   return v11;
 }
 
-- (id)badgeInfoPromiseForAssetAtIndexPath:(id)a3 spatialPresentationEnabled:(BOOL)a4
+- (id)badgeInfoPromiseForAssetAtIndexPath:(id)path spatialPresentationEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v8 = 0;
-  v5 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:a3 outDataSourceIndex:0 outLocalIndexPath:&v8];
-  v6 = [v5 badgeInfoPromiseForAssetAtIndexPath:v8 spatialPresentationEnabled:v4];
+  v5 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:path outDataSourceIndex:0 outLocalIndexPath:&v8];
+  v6 = [v5 badgeInfoPromiseForAssetAtIndexPath:v8 spatialPresentationEnabled:enabledCopy];
 
   return v6;
 }
 
-- (id)assetAtIndexPath:(id)a3
+- (id)assetAtIndexPath:(id)path
 {
   v6 = 0;
-  v3 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:a3 outDataSourceIndex:0 outLocalIndexPath:&v6];
+  v3 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:path outDataSourceIndex:0 outLocalIndexPath:&v6];
   v4 = [v3 assetAtIndexPath:v6];
 
   return v4;
 }
 
-- (id)indexPathForAssetCollection:(id)a3
+- (id)indexPathForAssetCollection:(id)collection
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionCopy = collection;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(PUJoiningAssetsDataSource *)self _dataSources];
-  v6 = [v5 reverseObjectEnumerator];
+  _dataSources = [(PUJoiningAssetsDataSource *)self _dataSources];
+  reverseObjectEnumerator = [_dataSources reverseObjectEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -181,11 +181,11 @@ LABEL_13:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 indexPathForAssetCollection:v4];
+        v12 = [v11 indexPathForAssetCollection:collectionCopy];
         if (v12)
         {
           v14 = v12;
@@ -195,7 +195,7 @@ LABEL_13:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -211,19 +211,19 @@ LABEL_11:
   return v13;
 }
 
-- (id)assetCollectionAtIndexPath:(id)a3
+- (id)assetCollectionAtIndexPath:(id)path
 {
   v6 = 0;
-  v3 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:a3 outDataSourceIndex:0 outLocalIndexPath:&v6];
+  v3 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:path outDataSourceIndex:0 outLocalIndexPath:&v6];
   v4 = [v3 assetCollectionAtIndexPath:v6];
 
   return v4;
 }
 
-- (id)indexPathForAssetReference:(id)a3
+- (id)indexPathForAssetReference:(id)reference
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  referenceCopy = reference;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -233,29 +233,29 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 dataSourceIdentifier];
-    v7 = [(PUTilingDataSource *)self identifier];
-    v8 = [v6 isEqualToString:v7];
+    reverseObjectEnumerator = referenceCopy;
+    dataSourceIdentifier = [reverseObjectEnumerator dataSourceIdentifier];
+    identifier = [(PUTilingDataSource *)self identifier];
+    v8 = [dataSourceIdentifier isEqualToString:identifier];
 
     if (v8)
     {
-      v9 = [v5 indexPath];
-      v10 = v44[5];
-      v44[5] = v9;
+      indexPath = [reverseObjectEnumerator indexPath];
+      containedAssetReference = v44[5];
+      v44[5] = indexPath;
     }
 
     else
     {
-      v10 = [v5 containedAssetReference];
-      v18 = [v5 hintDataSourceIndex];
-      v19 = [(PUJoiningAssetsDataSource *)self _dataSources];
-      v20 = v18 < [v19 count];
+      containedAssetReference = [reverseObjectEnumerator containedAssetReference];
+      hintDataSourceIndex = [reverseObjectEnumerator hintDataSourceIndex];
+      _dataSources = [(PUJoiningAssetsDataSource *)self _dataSources];
+      v20 = hintDataSourceIndex < [_dataSources count];
 
       if (v20)
       {
-        v21 = [(PUJoiningAssetsDataSource *)self _dataSources];
-        v22 = [v21 objectAtIndexedSubscript:v18];
+        _dataSources2 = [(PUJoiningAssetsDataSource *)self _dataSources];
+        v22 = [_dataSources2 objectAtIndexedSubscript:hintDataSourceIndex];
       }
 
       else
@@ -263,40 +263,40 @@ LABEL_11:
         v22 = 0;
       }
 
-      v23 = [v22 identifier];
-      v24 = [v10 dataSourceIdentifier];
-      v25 = [v23 isEqualToString:v24];
+      identifier2 = [v22 identifier];
+      dataSourceIdentifier2 = [containedAssetReference dataSourceIdentifier];
+      v25 = [identifier2 isEqualToString:dataSourceIdentifier2];
 
       if (v25)
       {
-        v26 = [v10 indexPath];
-        v27 = [(PUJoiningAssetsDataSource *)self _externalIndexPathForLocalIndexPath:v26 inAssetsDataSource:v22];
+        indexPath2 = [containedAssetReference indexPath];
+        v27 = [(PUJoiningAssetsDataSource *)self _externalIndexPathForLocalIndexPath:indexPath2 inAssetsDataSource:v22];
         v28 = v44[5];
         v44[5] = v27;
       }
 
       else
       {
-        v29 = [v5 hintDataSourceIndex];
-        v30 = [(PUJoiningAssetsDataSource *)self _dataSources];
-        v31 = [v30 count];
+        hintDataSourceIndex2 = [reverseObjectEnumerator hintDataSourceIndex];
+        _dataSources3 = [(PUJoiningAssetsDataSource *)self _dataSources];
+        v31 = [_dataSources3 count];
 
-        v32 = [(PUJoiningAssetsDataSource *)self _dataSources];
-        if (v29 >= v31)
+        _dataSources4 = [(PUJoiningAssetsDataSource *)self _dataSources];
+        if (hintDataSourceIndex2 >= v31)
         {
-          v29 = 0;
+          hintDataSourceIndex2 = 0;
         }
 
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __56__PUJoiningAssetsDataSource_indexPathForAssetReference___block_invoke;
         v39[3] = &unk_1E7B78A30;
-        v41 = self;
+        selfCopy = self;
         v42 = &v43;
-        v40 = v10;
-        [v32 px_enumerateObjectsFromIndex:v29 usingBlock:v39];
+        v40 = containedAssetReference;
+        [_dataSources4 px_enumerateObjectsFromIndex:hintDataSourceIndex2 usingBlock:v39];
 
-        v26 = v40;
+        indexPath2 = v40;
       }
     }
 
@@ -309,10 +309,10 @@ LABEL_23:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = [(PUJoiningAssetsDataSource *)self _dataSources];
-    v5 = [v11 reverseObjectEnumerator];
+    _dataSources5 = [(PUJoiningAssetsDataSource *)self _dataSources];
+    reverseObjectEnumerator = [_dataSources5 reverseObjectEnumerator];
 
-    v12 = [v5 countByEnumeratingWithState:&v35 objects:v49 count:16];
+    v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v35 objects:v49 count:16];
     if (v12)
     {
       v13 = *v36;
@@ -322,14 +322,14 @@ LABEL_23:
         {
           if (*v36 != v13)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v15 = *(*(&v35 + 1) + 8 * i);
-          v10 = [v15 indexPathForAssetReference:v4];
-          if (v10)
+          containedAssetReference = [v15 indexPathForAssetReference:referenceCopy];
+          if (containedAssetReference)
           {
-            v16 = [(PUJoiningAssetsDataSource *)self _externalIndexPathForLocalIndexPath:v10 inAssetsDataSource:v15];
+            v16 = [(PUJoiningAssetsDataSource *)self _externalIndexPathForLocalIndexPath:containedAssetReference inAssetsDataSource:v15];
             v17 = v44[5];
             v44[5] = v16;
 
@@ -337,7 +337,7 @@ LABEL_23:
           }
         }
 
-        v12 = [v5 countByEnumeratingWithState:&v35 objects:v49 count:16];
+        v12 = [reverseObjectEnumerator countByEnumeratingWithState:&v35 objects:v49 count:16];
         if (v12)
         {
           continue;
@@ -369,98 +369,98 @@ void __56__PUJoiningAssetsDataSource_indexPathForAssetReference___block_invoke(u
   }
 }
 
-- (id)assetReferenceAtIndexPath:(id)a3
+- (id)assetReferenceAtIndexPath:(id)path
 {
   v12 = 0;
   v13 = 0;
-  v4 = a3;
-  v5 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:v4 outDataSourceIndex:&v13 outLocalIndexPath:&v12];
+  pathCopy = path;
+  v5 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:pathCopy outDataSourceIndex:&v13 outLocalIndexPath:&v12];
   v6 = [v5 assetReferenceAtIndexPath:v12];
   v7 = [PUJoiningAssetReference alloc];
   v8 = v13;
-  v9 = [(PUTilingDataSource *)self identifier];
-  v10 = [(PUJoiningAssetReference *)v7 initWithContainedAssetReference:v6 hintDataSourceIndex:v8 indexPath:v4 dataSourceIdentifier:v9];
+  identifier = [(PUTilingDataSource *)self identifier];
+  v10 = [(PUJoiningAssetReference *)v7 initWithContainedAssetReference:v6 hintDataSourceIndex:v8 indexPath:pathCopy dataSourceIdentifier:identifier];
 
   return v10;
 }
 
-- (int64_t)numberOfSubItemsAtIndexPath:(id)a3
+- (int64_t)numberOfSubItemsAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC88] pu_rootIndexPath];
-  v6 = [v4 isEqual:v5];
+  pathCopy = path;
+  pu_rootIndexPath = [MEMORY[0x1E696AC88] pu_rootIndexPath];
+  v6 = [pathCopy isEqual:pu_rootIndexPath];
 
   if (v6)
   {
-    v7 = [(PUJoiningAssetsDataSource *)self _totalNumberOfSections];
+    _totalNumberOfSections = [(PUJoiningAssetsDataSource *)self _totalNumberOfSections];
   }
 
   else
   {
     v10 = 0;
-    v8 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:v4 outDataSourceIndex:0 outLocalIndexPath:&v10];
-    v7 = [v8 numberOfSubItemsAtIndexPath:v10];
+    v8 = [(PUJoiningAssetsDataSource *)self _assetsDataSourceForExternalIndexPath:pathCopy outDataSourceIndex:0 outLocalIndexPath:&v10];
+    _totalNumberOfSections = [v8 numberOfSubItemsAtIndexPath:v10];
   }
 
-  return v7;
+  return _totalNumberOfSections;
 }
 
-- (id)_externalIndexPathForLocalIndexPath:(id)a3 inAssetsDataSource:(id)a4
+- (id)_externalIndexPathForLocalIndexPath:(id)path inAssetsDataSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUJoiningAssetsDataSource *)self _containedDataSourceInfoByIdentifier];
-  v9 = [v6 identifier];
+  sourceCopy = source;
+  pathCopy = path;
+  _containedDataSourceInfoByIdentifier = [(PUJoiningAssetsDataSource *)self _containedDataSourceInfoByIdentifier];
+  identifier = [sourceCopy identifier];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [_containedDataSourceInfoByIdentifier objectForKeyedSubscript:identifier];
 
-  v11 = [v7 pu_indexPathByChangingIndexAtPosition:0 toIndex:{objc_msgSend(v10, "externalSections") + objc_msgSend(v7, "indexAtPosition:", 0)}];
+  v11 = [pathCopy pu_indexPathByChangingIndexAtPosition:0 toIndex:{objc_msgSend(v10, "externalSections") + objc_msgSend(pathCopy, "indexAtPosition:", 0)}];
 
   return v11;
 }
 
-- (id)_assetsDataSourceForExternalIndexPath:(id)a3 outDataSourceIndex:(int64_t *)a4 outLocalIndexPath:(id *)a5
+- (id)_assetsDataSourceForExternalIndexPath:(id)path outDataSourceIndex:(int64_t *)index outLocalIndexPath:(id *)indexPath
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [v8 indexAtPosition:0];
+  pathCopy = path;
+  v9 = [pathCopy indexAtPosition:0];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(PUJoiningAssetsDataSource *)self _containedDataSourceInfos];
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
-  if (v11)
+  _containedDataSourceInfos = [(PUJoiningAssetsDataSource *)self _containedDataSourceInfos];
+  assetsDataSource = [_containedDataSourceInfos countByEnumeratingWithState:&v23 objects:v27 count:16];
+  if (assetsDataSource)
   {
-    v22 = a4;
+    indexCopy = index;
     v12 = 0;
     v13 = *v24;
     while (2)
     {
       v14 = 0;
       v15 = v12;
-      v12 += v11;
+      v12 += assetsDataSource;
       do
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(_containedDataSourceInfos);
         }
 
         v16 = *(*(&v23 + 1) + 8 * v14);
-        v17 = [v16 externalSections];
-        if (v9 >= v17 && v9 - v17 < v18)
+        externalSections = [v16 externalSections];
+        if (v9 >= externalSections && v9 - externalSections < v18)
         {
-          v11 = [v16 assetsDataSource];
-          if (a5)
+          assetsDataSource = [v16 assetsDataSource];
+          if (indexPath)
           {
-            v20 = [v8 pu_indexPathByChangingIndexAtPosition:0 toIndex:{v9 - objc_msgSend(v16, "externalSections")}];
-            *a5 = v20;
+            v20 = [pathCopy pu_indexPathByChangingIndexAtPosition:0 toIndex:{v9 - objc_msgSend(v16, "externalSections")}];
+            *indexPath = v20;
           }
 
-          if (v22)
+          if (indexCopy)
           {
-            *v22 = v15;
+            *indexCopy = v15;
           }
 
           goto LABEL_18;
@@ -470,9 +470,9 @@ void __56__PUJoiningAssetsDataSource_indexPathForAssetReference___block_invoke(u
         ++v14;
       }
 
-      while (v11 != v14);
-      v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
-      if (v11)
+      while (assetsDataSource != v14);
+      assetsDataSource = [_containedDataSourceInfos countByEnumeratingWithState:&v23 objects:v27 count:16];
+      if (assetsDataSource)
       {
         continue;
       }
@@ -483,13 +483,13 @@ void __56__PUJoiningAssetsDataSource_indexPathForAssetReference___block_invoke(u
 
 LABEL_18:
 
-  return v11;
+  return assetsDataSource;
 }
 
-- (PUJoiningAssetsDataSource)initWithDataSources:(id)a3
+- (PUJoiningAssetsDataSource)initWithDataSources:(id)sources
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sourcesCopy = sources;
   v31.receiver = self;
   v31.super_class = PUJoiningAssetsDataSource;
   v6 = [(PUTilingDataSource *)&v31 init];
@@ -497,15 +497,15 @@ LABEL_18:
   if (v6)
   {
     v24 = v6;
-    objc_storeStrong(&v6->__dataSources, a3);
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
-    v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+    objc_storeStrong(&v6->__dataSources, sources);
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
+    v9 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(sourcesCopy, "count")}];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v25 = v5;
-    obj = v5;
+    v25 = sourcesCopy;
+    obj = sourcesCopy;
     v10 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v10)
     {
@@ -522,14 +522,14 @@ LABEL_18:
           }
 
           v15 = *(*(&v27 + 1) + 8 * i);
-          v16 = [MEMORY[0x1E696AC88] pu_rootIndexPath];
-          v17 = [v15 numberOfSubItemsAtIndexPath:v16];
+          pu_rootIndexPath = [MEMORY[0x1E696AC88] pu_rootIndexPath];
+          v17 = [v15 numberOfSubItemsAtIndexPath:pu_rootIndexPath];
 
           v18 = objc_alloc_init(PUContainedDataSourceInfo);
           [(PUContainedDataSourceInfo *)v18 setAssetsDataSource:v15];
           [(PUContainedDataSourceInfo *)v18 setExternalSections:v12, v17];
-          v19 = [v15 identifier];
-          [(NSDictionary *)v9 setObject:v18 forKeyedSubscript:v19];
+          identifier = [v15 identifier];
+          [(NSDictionary *)v9 setObject:v18 forKeyedSubscript:identifier];
 
           [(NSArray *)v8 addObject:v18];
           v12 += v17;
@@ -555,7 +555,7 @@ LABEL_18:
     v24->__containedDataSourceInfoByIdentifier = v9;
 
     v24->__totalNumberOfSections = v12;
-    v5 = v25;
+    sourcesCopy = v25;
   }
 
   return v7;

@@ -8,8 +8,8 @@
 
 - (id)hk_setArrayOfClass:()HealthKit forSelector:argumentIndex:ofReply:
 {
-  v10 = [a1 _cachedSetForArrayOfClass:?];
-  [a1 setClasses:v10 forSelector:a4 argumentIndex:a5 ofReply:a6];
+  v10 = [self _cachedSetForArrayOfClass:?];
+  [self setClasses:v10 forSelector:a4 argumentIndex:a5 ofReply:a6];
 
   return v10;
 }
@@ -17,7 +17,7 @@
 - (id)hk_setSetOfClass:()HealthKit forSelector:argumentIndex:ofReply:
 {
   v10 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), a3, 0}];
-  [a1 setClasses:v10 forSelector:a4 argumentIndex:a5 ofReply:a6];
+  [self setClasses:v10 forSelector:a4 argumentIndex:a5 ofReply:a6];
 
   return v10;
 }
@@ -28,9 +28,9 @@
   v4 = _cachedSetForArrayOfClass__cache;
   if (!_cachedSetForArrayOfClass__cache)
   {
-    v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v6 = _cachedSetForArrayOfClass__cache;
-    _cachedSetForArrayOfClass__cache = v5;
+    _cachedSetForArrayOfClass__cache = strongToStrongObjectsMapTable;
 
     v4 = _cachedSetForArrayOfClass__cache;
   }

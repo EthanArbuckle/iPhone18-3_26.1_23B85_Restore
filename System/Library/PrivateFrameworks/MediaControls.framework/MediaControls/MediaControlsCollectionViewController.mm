@@ -1,15 +1,15 @@
 @interface MediaControlsCollectionViewController
-+ (id)alphaAnimatorWithAnimations:(id)a3;
++ (id)alphaAnimatorWithAnimations:(id)animations;
 + (id)frameAnimator;
 - (BOOL)_canPerformBatchUpdates;
 - (BOOL)_isScrollViewAnimatingScroll;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (CGRect)_frameForViewAtIndex:(int64_t)a3;
-- (CGRect)_frameForViewAtIndex:(int64_t)a3 displayMode:(int64_t)a4 size:(CGSize)a5;
-- (CGRect)_frameForViewAtIndex:(int64_t)a3 size:(CGSize)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (CGRect)_frameForViewAtIndex:(int64_t)index;
+- (CGRect)_frameForViewAtIndex:(int64_t)index displayMode:(int64_t)mode size:(CGSize)size;
+- (CGRect)_frameForViewAtIndex:(int64_t)index size:(CGSize)size;
 - (MediaControlsCollectionViewController)init;
-- (MediaControlsCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (MediaControlsCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MediaControlsCollectionViewDataSource)dataSource;
 - (MediaControlsCollectionViewDelegate)delegate;
 - (NSArray)visibleBottomViewControllers;
@@ -17,62 +17,62 @@
 - (NSArray)visibleViewControllers;
 - (NSIndexSet)visibleIndexes;
 - (UIEdgeInsets)scrollViewInsets;
-- (_NSRange)_rangeOfItemsInRect:(CGRect)a3;
+- (_NSRange)_rangeOfItemsInRect:(CGRect)rect;
 - (double)_backgroundCornerRadius;
-- (double)_selectedItemHeightInSize:(CGSize)a3 shouldIgnoreInsets:(BOOL)a4;
+- (double)_selectedItemHeightInSize:(CGSize)size shouldIgnoreInsets:(BOOL)insets;
 - (double)_totalHeight;
-- (id)_indexesOfItemsInRect:(CGRect)a3;
-- (id)_insertViewControllerForIndex:(int64_t)a3;
+- (id)_indexesOfItemsInRect:(CGRect)rect;
+- (id)_insertViewControllerForIndex:(int64_t)index;
 - (id)_visibleBottomViewControllers;
 - (id)_visibleTopViewControllers;
-- (id)dequeueReusableViewControllerForItemAtIndex:(int64_t)a3;
-- (id)viewControllerForItemAtIndex:(int64_t)a3;
-- (id)viewControllerForItemAtPoint:(CGPoint)a3;
+- (id)dequeueReusableViewControllerForItemAtIndex:(int64_t)index;
+- (id)viewControllerForItemAtIndex:(int64_t)index;
+- (id)viewControllerForItemAtPoint:(CGPoint)point;
 - (id)viewControllerForSelectedItem;
-- (int64_t)_closestItemAtPoint:(CGPoint)a3;
-- (int64_t)itemAtPoint:(CGPoint)a3;
-- (void)_adjustForEnvironmentChangeIfNeededWithSize:(CGSize)a3 transitionCoordinator:(id)a4;
-- (void)_adjustForEnvironmentChangeWithSize:(CGSize)a3 transitionCoordinator:(id)a4;
-- (void)_beginAppearanceTransitionForChildViewControllers:(BOOL)a3 animated:(BOOL)a4;
-- (void)_beginAppearanceTransitionIfNeeded:(BOOL)a3 forChildViewController:(id)a4 animated:(BOOL)a5;
+- (int64_t)_closestItemAtPoint:(CGPoint)point;
+- (int64_t)itemAtPoint:(CGPoint)point;
+- (void)_adjustForEnvironmentChangeIfNeededWithSize:(CGSize)size transitionCoordinator:(id)coordinator;
+- (void)_adjustForEnvironmentChangeWithSize:(CGSize)size transitionCoordinator:(id)coordinator;
+- (void)_beginAppearanceTransitionForChildViewControllers:(BOOL)controllers animated:(BOOL)animated;
+- (void)_beginAppearanceTransitionIfNeeded:(BOOL)needed forChildViewController:(id)controller animated:(BOOL)animated;
 - (void)_commonInit;
 - (void)_dequeueAndPerformBatchUpdatesIfNeeded;
-- (void)_endAppearanceTransitionForChildViewControllerIfNeeded:(id)a3;
+- (void)_endAppearanceTransitionForChildViewControllerIfNeeded:(id)needed;
 - (void)_endAppearanceTransitionForChildViewControllers;
-- (void)_enumerateActiveViewControllers:(id)a3;
-- (void)_handleScrollViewTap:(id)a3;
-- (void)_populateViewsInFrame:(CGRect)a3;
+- (void)_enumerateActiveViewControllers:(id)controllers;
+- (void)_handleScrollViewTap:(id)tap;
+- (void)_populateViewsInFrame:(CGRect)frame;
 - (void)_reapActiveViews;
-- (void)_reapViewAtIndex:(int64_t)a3;
+- (void)_reapViewAtIndex:(int64_t)index;
 - (void)_reloadDataIfNeeded;
 - (void)_removeInactiveViewControllersFromHierarchy;
-- (void)_removeViewController:(id)a3;
-- (void)_scrollToSelectedItemAnimated:(BOOL)a3;
-- (void)_setFrame:(CGRect)a3 forVisibleViewAtIndex:(int64_t)a4;
-- (void)_setHighlighted:(BOOL)a3 forViewController:(id)a4;
-- (void)_setHighlighted:(BOOL)a3 forViewControllerAtIndex:(int64_t)a4;
-- (void)_setSelectedItemIndex:(int64_t)a3 animated:(BOOL)a4 shouldScroll:(BOOL)a5 shouldNotifyDelegate:(BOOL)a6 withReason:(int64_t)a7;
+- (void)_removeViewController:(id)controller;
+- (void)_scrollToSelectedItemAnimated:(BOOL)animated;
+- (void)_setFrame:(CGRect)frame forVisibleViewAtIndex:(int64_t)index;
+- (void)_setHighlighted:(BOOL)highlighted forViewController:(id)controller;
+- (void)_setHighlighted:(BOOL)highlighted forViewControllerAtIndex:(int64_t)index;
+- (void)_setSelectedItemIndex:(int64_t)index animated:(BOOL)animated shouldScroll:(BOOL)scroll shouldNotifyDelegate:(BOOL)delegate withReason:(int64_t)reason;
 - (void)_tileViews;
-- (void)_transitionToDisplayMode:(int64_t)a3 usingTransitionCoordinator:(id)a4 assumingSize:(CGSize)a5;
-- (void)_transitionToVisible:(BOOL)a3;
-- (void)_transitionTopAndBottomViewControllersToVisible:(BOOL)a3 completion:(id)a4;
+- (void)_transitionToDisplayMode:(int64_t)mode usingTransitionCoordinator:(id)coordinator assumingSize:(CGSize)size;
+- (void)_transitionToVisible:(BOOL)visible;
+- (void)_transitionTopAndBottomViewControllersToVisible:(BOOL)visible completion:(id)completion;
 - (void)_updateContentSize;
-- (void)_updateFrameForViewController:(id)a3 atIndex:(int64_t)a4 withCoordinator:(id)a5 assumingSize:(CGSize)a6;
-- (void)_updateFramesForActiveViewControllersWithCoordinator:(id)a3 assumingSize:(CGSize)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)performBatchUpdates:(id)a3;
+- (void)_updateFrameForViewController:(id)controller atIndex:(int64_t)index withCoordinator:(id)coordinator assumingSize:(CGSize)size;
+- (void)_updateFramesForActiveViewControllersWithCoordinator:(id)coordinator assumingSize:(CGSize)size;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)performBatchUpdates:(id)updates;
 - (void)reloadData;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDisplayMode:(int64_t)a3;
-- (void)setScrollViewInsets:(UIEdgeInsets)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setDataSource:(id)source;
+- (void)setDisplayMode:(int64_t)mode;
+- (void)setScrollViewInsets:(UIEdgeInsets)insets;
 - (void)updateContentInsets;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MediaControlsCollectionViewController
@@ -91,11 +91,11 @@
   return v3;
 }
 
-- (MediaControlsCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MediaControlsCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = MediaControlsCollectionViewController;
-  v4 = [(MediaControlsCollectionViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(MediaControlsCollectionViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -125,7 +125,7 @@
   self->_lastKnownEnvironmentSize = *MEMORY[0x1E695F060];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
   dismissalBlock = self->_dismissalBlock;
   if (dismissalBlock)
@@ -133,7 +133,7 @@
     v7 = dismissalBlock[2];
     v8 = self->_dismissalBlock;
 
-    v7(v8, a4);
+    v7(v8, completion);
   }
 
   else
@@ -142,7 +142,7 @@
     v11 = v5;
     v9.receiver = self;
     v9.super_class = MediaControlsCollectionViewController;
-    [(MediaControlsCollectionViewController *)&v9 dismissViewControllerAnimated:a3 completion:a4];
+    [(MediaControlsCollectionViewController *)&v9 dismissViewControllerAnimated:animated completion:completion];
   }
 }
 
@@ -157,8 +157,8 @@
   self->_controlCenterEdgeInsets.bottom = v5;
   self->_controlCenterEdgeInsets.right = v6;
   v7 = objc_alloc(MEMORY[0x1E69DCEF8]);
-  v8 = [(MediaControlsCollectionViewController *)self view];
-  [v8 bounds];
+  view = [(MediaControlsCollectionViewController *)self view];
+  [view bounds];
   v9 = [v7 initWithFrame:?];
   scrollView = self->_scrollView;
   self->_scrollView = v9;
@@ -167,13 +167,13 @@
   [(UIScrollView *)self->_scrollView setAutoresizingMask:18];
   [(UIScrollView *)self->_scrollView setAutoresizesSubviews:0];
   [(UIScrollView *)self->_scrollView setShowsHorizontalScrollIndicator:0];
-  v11 = [(UIScrollView *)self->_scrollView layer];
-  [v11 setHitTestsAsOpaque:1];
+  layer = [(UIScrollView *)self->_scrollView layer];
+  [layer setHitTestsAsOpaque:1];
 
-  v12 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
-  v13 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
-  [v13 _hysteresis];
-  [v12 _setHysteresis:v14 + v14];
+  panGestureRecognizer = [(UIScrollView *)self->_scrollView panGestureRecognizer];
+  panGestureRecognizer2 = [(UIScrollView *)self->_scrollView panGestureRecognizer];
+  [panGestureRecognizer2 _hysteresis];
+  [panGestureRecognizer _setHysteresis:v14 + v14];
 
   [(UIScrollView *)self->_scrollView setDelegate:self];
   v15 = [[_MediaControlsTapHoldGestureRecognizer alloc] initWithTarget:self action:sel__handleScrollViewTap_];
@@ -183,44 +183,44 @@
   [(_MediaControlsTapHoldGestureRecognizer *)self->_tapGestureRecognizer setDelegate:self];
   [(_MediaControlsTapHoldGestureRecognizer *)self->_tapGestureRecognizer setEnabled:[(MediaControlsCollectionViewController *)self _wantsTapGestureRecognizer]];
   [(UIScrollView *)self->_scrollView addGestureRecognizer:self->_tapGestureRecognizer];
-  v17 = [(MediaControlsCollectionViewController *)self view];
-  [v17 addSubview:self->_scrollView];
+  view2 = [(MediaControlsCollectionViewController *)self view];
+  [view2 addSubview:self->_scrollView];
 
   [(MediaControlsCollectionViewController *)self updateContentInsets];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = MediaControlsCollectionViewController;
   [(MediaControlsCollectionViewController *)&v5 viewWillAppear:?];
   self->_appeared = 1;
-  [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionForChildViewControllers:1 animated:v3];
+  [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionForChildViewControllers:1 animated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MediaControlsCollectionViewController;
-  [(MediaControlsCollectionViewController *)&v4 viewDidAppear:a3];
+  [(MediaControlsCollectionViewController *)&v4 viewDidAppear:appear];
   [(MediaControlsCollectionViewController *)self _endAppearanceTransitionForChildViewControllers];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = MediaControlsCollectionViewController;
   [(MediaControlsCollectionViewController *)&v5 viewWillDisappear:?];
-  [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionForChildViewControllers:0 animated:v3];
+  [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionForChildViewControllers:0 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MediaControlsCollectionViewController;
-  [(MediaControlsCollectionViewController *)&v4 viewDidDisappear:a3];
+  [(MediaControlsCollectionViewController *)&v4 viewDidDisappear:disappear];
   [(MediaControlsCollectionViewController *)self _endAppearanceTransitionForChildViewControllers];
   self->_appeared = 0;
 }
@@ -230,58 +230,58 @@
   v6.receiver = self;
   v6.super_class = MediaControlsCollectionViewController;
   [(MediaControlsCollectionViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(MediaControlsCollectionViewController *)self view];
-  [v3 bounds];
+  view = [(MediaControlsCollectionViewController *)self view];
+  [view bounds];
   [(MediaControlsCollectionViewController *)self _adjustForEnvironmentChangeIfNeededWithSize:0 transitionCoordinator:v4, v5];
 }
 
-- (id)dequeueReusableViewControllerForItemAtIndex:(int64_t)a3
+- (id)dequeueReusableViewControllerForItemAtIndex:(int64_t)index
 {
-  if (self->_selectedItemIndex == a3 && (v4 = self->_inactiveSelectedViewController) != 0)
+  if (self->_selectedItemIndex == index && (v4 = self->_inactiveSelectedViewController) != 0)
   {
-    v5 = v4;
+    anyObject = v4;
     inactiveSelectedViewController = self->_inactiveSelectedViewController;
     self->_inactiveSelectedViewController = 0;
   }
 
   else
   {
-    v5 = [(NSMutableSet *)self->_inactiveViewControllers anyObject];
-    if (v5)
+    anyObject = [(NSMutableSet *)self->_inactiveViewControllers anyObject];
+    if (anyObject)
     {
-      [(NSMutableSet *)self->_inactiveViewControllers removeObject:v5];
+      [(NSMutableSet *)self->_inactiveViewControllers removeObject:anyObject];
     }
   }
 
-  if ([(MediaControlsCollectionItemViewController *)v5 isViewLoaded])
+  if ([(MediaControlsCollectionItemViewController *)anyObject isViewLoaded])
   {
-    v7 = [(MediaControlsCollectionItemViewController *)v5 view];
-    [v7 setHidden:0];
+    view = [(MediaControlsCollectionItemViewController *)anyObject view];
+    [view setHidden:0];
 
-    v8 = [(MediaControlsCollectionItemViewController *)v5 view];
-    [v8 setAlpha:1.0];
+    view2 = [(MediaControlsCollectionItemViewController *)anyObject view];
+    [view2 setAlpha:1.0];
 
-    v9 = [(MediaControlsCollectionItemViewController *)v5 view];
+    view3 = [(MediaControlsCollectionItemViewController *)anyObject view];
     v10 = *(MEMORY[0x1E695EFD0] + 16);
     v12[0] = *MEMORY[0x1E695EFD0];
     v12[1] = v10;
     v12[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v9 setTransform:v12];
+    [view3 setTransform:v12];
   }
 
-  return v5;
+  return anyObject;
 }
 
-- (id)viewControllerForItemAtPoint:(CGPoint)a3
+- (id)viewControllerForItemAtPoint:(CGPoint)point
 {
-  v4 = [(MediaControlsCollectionViewController *)self itemAtPoint:a3.x, a3.y];
+  v4 = [(MediaControlsCollectionViewController *)self itemAtPoint:point.x, point.y];
 
   return [(MediaControlsCollectionViewController *)self viewControllerForItemAtIndex:v4];
 }
 
-- (id)viewControllerForItemAtIndex:(int64_t)a3
+- (id)viewControllerForItemAtIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
@@ -312,16 +312,16 @@
 
 - (NSArray)visibleViewControllers
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MediaControlsCollectionViewController *)self visibleIndexes];
+  array = [MEMORY[0x1E695DF70] array];
+  visibleIndexes = [(MediaControlsCollectionViewController *)self visibleIndexes];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __63__MediaControlsCollectionViewController_visibleViewControllers__block_invoke;
   v11 = &unk_1E76651B8;
-  v12 = self;
-  v13 = v3;
-  v5 = v3;
-  [v4 enumerateIndexesUsingBlock:&v8];
+  selfCopy = self;
+  v13 = array;
+  v5 = array;
+  [visibleIndexes enumerateIndexesUsingBlock:&v8];
 
   v6 = [v5 copy];
 
@@ -344,16 +344,16 @@ uint64_t __63__MediaControlsCollectionViewController_visibleViewControllers__blo
 
 - (NSArray)visibleTopViewControllers
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MediaControlsCollectionViewController *)self visibleIndexes];
+  array = [MEMORY[0x1E695DF70] array];
+  visibleIndexes = [(MediaControlsCollectionViewController *)self visibleIndexes];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __66__MediaControlsCollectionViewController_visibleTopViewControllers__block_invoke;
   v11 = &unk_1E76651B8;
-  v12 = self;
-  v13 = v3;
-  v5 = v3;
-  [v4 enumerateIndexesUsingBlock:&v8];
+  selfCopy = self;
+  v13 = array;
+  v5 = array;
+  [visibleIndexes enumerateIndexesUsingBlock:&v8];
 
   v6 = [v5 copy];
 
@@ -387,16 +387,16 @@ void *__66__MediaControlsCollectionViewController_visibleTopViewControllers__blo
 
 - (NSArray)visibleBottomViewControllers
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MediaControlsCollectionViewController *)self visibleIndexes];
+  array = [MEMORY[0x1E695DF70] array];
+  visibleIndexes = [(MediaControlsCollectionViewController *)self visibleIndexes];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __69__MediaControlsCollectionViewController_visibleBottomViewControllers__block_invoke;
   v11 = &unk_1E76651B8;
-  v12 = self;
-  v13 = v3;
-  v5 = v3;
-  [v4 enumerateIndexesUsingBlock:&v8];
+  selfCopy = self;
+  v13 = array;
+  v5 = array;
+  [visibleIndexes enumerateIndexesUsingBlock:&v8];
 
   v6 = [v5 copy];
 
@@ -423,27 +423,27 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
   return result;
 }
 
-- (void)setDisplayMode:(int64_t)a3
+- (void)setDisplayMode:(int64_t)mode
 {
-  if (self->_displayMode != a3)
+  if (self->_displayMode != mode)
   {
-    self->_displayMode = a3;
+    self->_displayMode = mode;
   }
 }
 
-- (void)setScrollViewInsets:(UIEdgeInsets)a3
+- (void)setScrollViewInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_scrollViewInsets.top, v3), vceqq_f64(*&self->_scrollViewInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_scrollViewInsets = a3;
+    self->_scrollViewInsets = insets;
     [(MediaControlsCollectionViewController *)self _tileViews];
     v9 = objc_alloc_init(MediaControlsStyleCoordinator);
-    v6 = [(MediaControlsCollectionViewController *)self view];
-    [v6 bounds];
+    view = [(MediaControlsCollectionViewController *)self view];
+    [view bounds];
     [(MediaControlsCollectionViewController *)self _updateFramesForActiveViewControllersWithCoordinator:v9 assumingSize:v7, v8];
 
     [(MediaControlsStyleCoordinator *)v9 performAnimations];
@@ -451,9 +451,9 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -465,18 +465,18 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
   }
 }
 
-- (void)performBatchUpdates:(id)a3
+- (void)performBatchUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   if ([(MediaControlsCollectionViewController *)self _canPerformBatchUpdates])
   {
     self->_isPerformingBatchUpdates = 1;
     self->_shouldIgnoreScrollNotifications = 1;
-    v4[2](v4);
+    updatesCopy[2](updatesCopy);
     if ([(MediaControlsCollectionViewCountData *)self->_countData hasPendingChanges])
     {
-      v5 = [(MediaControlsCollectionViewController *)self dataSource];
-      if (-[MediaControlsCollectionViewCountData validateCountForNumberOfItems:](self->_countData, "validateCountForNumberOfItems:", [v5 numberOfItemsInCollectionViewController:self]) && self->_displayMode == 1)
+      dataSource = [(MediaControlsCollectionViewController *)self dataSource];
+      if (-[MediaControlsCollectionViewCountData validateCountForNumberOfItems:](self->_countData, "validateCountForNumberOfItems:", [dataSource numberOfItemsInCollectionViewController:self]) && self->_displayMode == 1)
       {
         [(MediaControlsCollectionViewController *)self _setHighlighted:0 forViewControllerAtIndex:self->_highlightedItemIndex];
         [(UIScrollView *)self->_scrollView contentOffset];
@@ -491,11 +491,11 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v130[1] = v130;
         v130[2] = 0x2020000000;
         v130[3] = selectedItemIndex;
-        v9 = [(MediaControlsCollectionViewController *)self visibleIndexes];
-        v61 = [(MediaControlsCollectionViewCountData *)self->_countData insertedIndexes];
-        v59 = [(MediaControlsCollectionViewCountData *)self->_countData deletedIndexes];
-        v58 = v5;
-        v53 = [(MediaControlsCollectionViewCountData *)self->_countData updatedIndexes];
+        visibleIndexes = [(MediaControlsCollectionViewController *)self visibleIndexes];
+        insertedIndexes = [(MediaControlsCollectionViewCountData *)self->_countData insertedIndexes];
+        deletedIndexes = [(MediaControlsCollectionViewCountData *)self->_countData deletedIndexes];
+        v58 = dataSource;
+        updatedIndexes = [(MediaControlsCollectionViewCountData *)self->_countData updatedIndexes];
         v10 = [MEMORY[0x1E695DFA8] set];
         v11 = [MEMORY[0x1E695DFA8] set];
         memset(&v129, 0, sizeof(v129));
@@ -511,9 +511,9 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v116[2] = __61__MediaControlsCollectionViewController_performBatchUpdates___block_invoke;
         v116[3] = &unk_1E76651E0;
         v120 = v127;
-        v48 = v9;
+        v48 = visibleIndexes;
         v117 = v48;
-        v118 = self;
+        selfCopy = self;
         v12 = v10;
         v55 = *(MEMORY[0x1E695EFD0] + 16);
         v123 = *MEMORY[0x1E695EFD0];
@@ -525,7 +525,7 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v119 = v12;
         v121 = v130;
         v122 = &v131;
-        [v59 enumerateIndexesUsingBlock:v116];
+        [deletedIndexes enumerateIndexesUsingBlock:v116];
         [(MediaControlsCollectionViewCountData *)self->_countData applyChanges];
         [(MediaControlsCollectionViewController *)self _updateContentSize];
         [(UIScrollView *)self->_scrollView setContentOffset:v132[4], v132[5]];
@@ -544,8 +544,8 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v113 = v115;
         v114 = &v131;
         v111 = v14;
-        v112 = self;
-        [v61 enumerateIndexesUsingBlock:v110];
+        selfCopy2 = self;
+        [insertedIndexes enumerateIndexesUsingBlock:v110];
         [(UIScrollView *)self->_scrollView setContentOffset:v132[4], v132[5]];
         [(UIScrollView *)self->_scrollView bounds];
         v15 = [(MediaControlsCollectionViewController *)self _indexesOfItemsInRect:?];
@@ -562,7 +562,7 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v109 = selectedItemIndex;
         v106 = v17;
         v107 = v130;
-        [v61 enumerateIndexesUsingBlock:v104];
+        [insertedIndexes enumerateIndexesUsingBlock:v104];
         v103[0] = MEMORY[0x1E69E9820];
         v103[1] = 3221225472;
         v103[2] = __61__MediaControlsCollectionViewController_performBatchUpdates___block_invoke_4;
@@ -575,15 +575,15 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v102[3] = &unk_1E7665258;
         v102[4] = self;
         v19 = [v16 indexWithOptions:2 passingTest:v102];
-        v20 = [v16 firstIndex];
-        v21 = [v16 lastIndex];
+        firstIndex = [v16 firstIndex];
+        lastIndex = [v16 lastIndex];
         v101[0] = MEMORY[0x1E69E9820];
         v101[1] = 3221225472;
         v101[2] = __61__MediaControlsCollectionViewController_performBatchUpdates___block_invoke_6;
         v101[3] = &unk_1E7665280;
-        v101[6] = v18 - v20;
+        v101[6] = v18 - firstIndex;
         v101[7] = v19;
-        v101[8] = v21 - v19;
+        v101[8] = lastIndex - v19;
         v101[5] = v18;
         v101[4] = self;
         [v16 enumerateIndexesUsingBlock:v101];
@@ -593,7 +593,7 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v92[3] = &unk_1E76652A8;
         v47 = v16;
         v93 = v47;
-        v94 = self;
+        selfCopy3 = self;
         v97 = v57;
         v98 = v55;
         v99 = v54;
@@ -602,12 +602,12 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v100 = v129;
         v23 = v17;
         v96 = v23;
-        [v53 enumerateIndexesUsingBlock:v92];
+        [updatedIndexes enumerateIndexesUsingBlock:v92];
         v24 = self->_selectedItemIndex;
         v49 = objc_alloc_init(MediaControlsStyleCoordinator);
-        v25 = [objc_opt_class() frameAnimator];
-        v60 = [objc_opt_class() frameAnimator];
-        v63 = [objc_opt_class() frameAnimator];
+        frameAnimator = [objc_opt_class() frameAnimator];
+        frameAnimator2 = [objc_opt_class() frameAnimator];
+        frameAnimator3 = [objc_opt_class() frameAnimator];
         v26 = objc_opt_class();
         v90[0] = MEMORY[0x1E69E9820];
         v90[1] = 3221225472;
@@ -644,7 +644,7 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v84 = v46;
         v33 = v49;
         v81 = v33;
-        v45 = v61;
+        v45 = insertedIndexes;
         v82 = v45;
         v62 = _Block_copy(v79);
         v74[0] = MEMORY[0x1E69E9820];
@@ -669,27 +669,27 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
         v35 = v33;
         v71 = v35;
         v36 = _Block_copy(v69);
-        [v25 addAnimations:v31];
-        [v60 addAnimations:v62];
-        [v63 addAnimations:v34];
+        [frameAnimator addAnimations:v31];
+        [frameAnimator2 addAnimations:v62];
+        [frameAnimator3 addAnimations:v34];
         v66[0] = MEMORY[0x1E69E9820];
         v66[1] = 3221225472;
         v66[2] = __61__MediaControlsCollectionViewController_performBatchUpdates___block_invoke_15;
         v66[3] = &unk_1E7665370;
         v37 = v30;
         v67 = v37;
-        v68 = self;
-        [v25 addCompletion:v66];
+        selfCopy4 = self;
+        [frameAnimator addCompletion:v66];
         v64[0] = MEMORY[0x1E69E9820];
         v64[1] = 3221225472;
         v64[2] = __61__MediaControlsCollectionViewController_performBatchUpdates___block_invoke_16;
         v64[3] = &unk_1E7664888;
         v38 = v36;
         v65 = v38;
-        [v63 addCompletion:v64];
+        [frameAnimator3 addCompletion:v64];
         if ([v37 count])
         {
-          [v25 startAnimation];
+          [frameAnimator startAnimation];
           v39 = 0.1;
           [v51 startAnimationAfterDelay:0.1];
         }
@@ -701,20 +701,20 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
 
         if ([v37 count] || objc_msgSend(v50, "count"))
         {
-          [v60 startAnimationAfterDelay:v39];
+          [frameAnimator2 startAnimationAfterDelay:v39];
           v39 = v39 + 0.1;
         }
 
         else
         {
-          v42 = [(MediaControlsCollectionViewController *)self view];
-          [v42 bounds];
+          view = [(MediaControlsCollectionViewController *)self view];
+          [view bounds];
           [(MediaControlsCollectionViewController *)self _updateFramesForActiveViewControllersWithCoordinator:v35 assumingSize:v43, v44];
 
           [(MediaControlsStyleCoordinator *)v35 performAnimations];
         }
 
-        [v63 startAnimationAfterDelay:v39];
+        [frameAnimator3 startAnimationAfterDelay:v39];
         [v52 startAnimationAfterDelay:v39 + 0.1];
         self->_shouldIgnoreScrollNotifications = 0;
 
@@ -723,7 +723,7 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
 
         _Block_object_dispose(v130, 8);
         _Block_object_dispose(&v131, 8);
-        v5 = v58;
+        dataSource = v58;
       }
 
       else
@@ -745,7 +745,7 @@ void *__69__MediaControlsCollectionViewController_visibleBottomViewControllers__
   else
   {
     pendingUpdates = self->_pendingUpdates;
-    v41 = _Block_copy(v4);
+    v41 = _Block_copy(updatesCopy);
     [(NSMutableArray *)pendingUpdates addObject:v41];
   }
 }
@@ -1392,8 +1392,8 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
 - (void)reloadData
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(MediaControlsCollectionViewController *)self dataSource];
-  if (v3)
+  dataSource = [(MediaControlsCollectionViewController *)self dataSource];
+  if (dataSource)
   {
     [(MediaControlsCollectionViewController *)self _setHighlighted:0 forViewControllerAtIndex:self->_highlightedItemIndex];
     [(MediaControlsCollectionViewController *)self _reapActiveViews];
@@ -1437,11 +1437,11 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
     self->_pendingUpdates = v12;
 
     v14 = [MediaControlsCollectionViewCountData alloc];
-    v15 = -[MediaControlsCollectionViewCountData initWithNumberOfItems:](v14, "initWithNumberOfItems:", [v3 numberOfItemsInCollectionViewController:{self, v17}]);
+    v15 = -[MediaControlsCollectionViewCountData initWithNumberOfItems:](v14, "initWithNumberOfItems:", [dataSource numberOfItemsInCollectionViewController:{self, v17}]);
     countData = self->_countData;
     self->_countData = v15;
 
-    self->_selectedItemIndex = [v3 defaultSelectedItemIndexForCollectionViewController:self];
+    self->_selectedItemIndex = [dataSource defaultSelectedItemIndexForCollectionViewController:self];
     [(MediaControlsCollectionViewController *)self _tileViews];
     self->_needsReloadData = 0;
     [(MediaControlsCollectionViewController *)self _removeInactiveViewControllersFromHierarchy];
@@ -1453,10 +1453,10 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
   }
 }
 
-- (int64_t)itemAtPoint:(CGPoint)a3
+- (int64_t)itemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   selectedItemIndex = self->_selectedItemIndex;
   [(MediaControlsCollectionViewController *)self _preferredSelectedItemHeight];
   v8 = v7;
@@ -1538,15 +1538,15 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
 {
   if ([(NSMutableArray *)self->_pendingUpdates count]&& [(MediaControlsCollectionViewController *)self _canPerformBatchUpdates])
   {
-    v3 = [(NSMutableArray *)self->_pendingUpdates firstObject];
+    firstObject = [(NSMutableArray *)self->_pendingUpdates firstObject];
     [(NSMutableArray *)self->_pendingUpdates removeObjectAtIndex:0];
-    [(MediaControlsCollectionViewController *)self performBatchUpdates:v3];
+    [(MediaControlsCollectionViewController *)self performBatchUpdates:firstObject];
   }
 }
 
-- (int64_t)_closestItemAtPoint:(CGPoint)a3
+- (int64_t)_closestItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   selectedItemIndex = self->_selectedItemIndex;
   [(MediaControlsCollectionViewController *)self _preferredSelectedItemHeight];
   v7 = v6;
@@ -1590,14 +1590,14 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
   return v12;
 }
 
-- (double)_selectedItemHeightInSize:(CGSize)a3 shouldIgnoreInsets:(BOOL)a4
+- (double)_selectedItemHeightInSize:(CGSize)size shouldIgnoreInsets:(BOOL)insets
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  insetsCopy = insets;
+  height = size.height;
+  width = size.width;
   [(MediaControlsCollectionViewController *)self preferredItemHeightGivenWidth:?];
   v9 = v8;
-  if (v4)
+  if (insetsCopy)
   {
     v9 = v8 + self->_controlCenterEdgeInsets.top + self->_controlCenterEdgeInsets.bottom;
     v10 = 0;
@@ -1622,26 +1622,26 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
   return result;
 }
 
-- (id)_indexesOfItemsInRect:(CGRect)a3
+- (id)_indexesOfItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = objc_alloc(MEMORY[0x1E696AC90]);
-  v9 = [(MediaControlsCollectionViewController *)self _rangeOfItemsInRect:x, y, width, height];
-  v11 = [v8 initWithIndexesInRange:{v9, v10}];
+  height = [(MediaControlsCollectionViewController *)self _rangeOfItemsInRect:x, y, width, height];
+  v11 = [v8 initWithIndexesInRange:{height, v10}];
 
   return v11;
 }
 
-- (_NSRange)_rangeOfItemsInRect:(CGRect)a3
+- (_NSRange)_rangeOfItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MediaControlsCollectionViewCountData *)self->_countData numberOfItems];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  numberOfItems = [(MediaControlsCollectionViewCountData *)self->_countData numberOfItems];
   v19.origin.x = x;
   v19.origin.y = y;
   v19.size.width = width;
@@ -1657,13 +1657,13 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
   v21.size.width = width;
   v21.size.height = height;
   v11 = [(MediaControlsCollectionViewController *)self _closestItemAtPoint:MidX, CGRectGetMaxY(v21)];
-  v12 = v8 - 1;
-  if (v11 < v8 - 1)
+  v12 = numberOfItems - 1;
+  if (v11 < numberOfItems - 1)
   {
     v12 = v11;
   }
 
-  if (v8 > 0 && v9 == 0x7FFFFFFFFFFFFFFFLL)
+  if (numberOfItems > 0 && v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = 0;
   }
@@ -1699,11 +1699,11 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
   return result;
 }
 
-- (CGRect)_frameForViewAtIndex:(int64_t)a3
+- (CGRect)_frameForViewAtIndex:(int64_t)index
 {
-  v5 = [(MediaControlsCollectionViewController *)self view];
-  [v5 bounds];
-  [(MediaControlsCollectionViewController *)self _frameForViewAtIndex:a3 size:v6, v7];
+  view = [(MediaControlsCollectionViewController *)self view];
+  [view bounds];
+  [(MediaControlsCollectionViewController *)self _frameForViewAtIndex:index size:v6, v7];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -1720,9 +1720,9 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
   return result;
 }
 
-- (CGRect)_frameForViewAtIndex:(int64_t)a3 size:(CGSize)a4
+- (CGRect)_frameForViewAtIndex:(int64_t)index size:(CGSize)size
 {
-  [(MediaControlsCollectionViewController *)self _frameForViewAtIndex:a3 displayMode:self->_displayMode size:a4.width, a4.height];
+  [(MediaControlsCollectionViewController *)self _frameForViewAtIndex:index displayMode:self->_displayMode size:size.width, size.height];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -1730,13 +1730,13 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
   return result;
 }
 
-- (CGRect)_frameForViewAtIndex:(int64_t)a3 displayMode:(int64_t)a4 size:(CGSize)a5
+- (CGRect)_frameForViewAtIndex:(int64_t)index displayMode:(int64_t)mode size:(CGSize)size
 {
-  width = a5.width;
+  width = size.width;
   selectedItemIndex = self->_selectedItemIndex;
-  [(MediaControlsCollectionViewController *)self _selectedItemHeightInSize:a4 == 0 shouldIgnoreInsets:a5.width, a5.height];
+  [(MediaControlsCollectionViewController *)self _selectedItemHeightInSize:mode == 0 shouldIgnoreInsets:size.width, size.height];
   v11 = v10;
-  if (a4)
+  if (mode)
   {
     [(MediaControlsCollectionViewController *)self _regularItemHeight];
     v13 = v12;
@@ -1754,13 +1754,13 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
     v13 = v11;
   }
 
-  v18 = (v13 + v15) * a3;
-  if (selectedItemIndex < a3)
+  v18 = (v13 + v15) * index;
+  if (selectedItemIndex < index)
   {
     v18 = v11 - v13 + v18;
   }
 
-  if (selectedItemIndex == a3)
+  if (selectedItemIndex == index)
   {
     v19 = v11;
   }
@@ -1778,9 +1778,9 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
   return result;
 }
 
-- (void)_populateViewsInFrame:(CGRect)a3
+- (void)_populateViewsInFrame:(CGRect)frame
 {
-  v4 = [(MediaControlsCollectionViewController *)self _indexesOfItemsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(MediaControlsCollectionViewController *)self _indexesOfItemsInRect:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = [v4 mutableCopy];
 
   if (!self->_shouldDisableAutoReaping)
@@ -1790,7 +1790,7 @@ void __61__MediaControlsCollectionViewController_performBatchUpdates___block_inv
     v7[2] = __63__MediaControlsCollectionViewController__populateViewsInFrame___block_invoke;
     v7[3] = &unk_1E76652F8;
     v8 = v5;
-    v9 = self;
+    selfCopy = self;
     [(MediaControlsCollectionViewController *)self _enumerateActiveViewControllers:v7];
   }
 
@@ -1840,7 +1840,7 @@ void __63__MediaControlsCollectionViewController__populateViewsInFrame___block_i
   }
 }
 
-- (void)_scrollToSelectedItemAnimated:(BOOL)a3
+- (void)_scrollToSelectedItemAnimated:(BOOL)animated
 {
   if (self->_selectedItemIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1848,7 +1848,7 @@ void __63__MediaControlsCollectionViewController__populateViewsInFrame___block_i
     aBlock[6] = v5;
     aBlock[15] = v3;
     aBlock[16] = v4;
-    v7 = a3;
+    animatedCopy = animated;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated___block_invoke;
@@ -1856,7 +1856,7 @@ void __63__MediaControlsCollectionViewController__populateViewsInFrame___block_i
     aBlock[4] = self;
     v9 = _Block_copy(aBlock);
     v10 = v9;
-    if (v7 && !self->_displayMode)
+    if (animatedCopy && !self->_displayMode)
     {
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
@@ -1864,8 +1864,8 @@ void __63__MediaControlsCollectionViewController__populateViewsInFrame___block_i
       v17[3] = &unk_1E76653C0;
       v17[4] = self;
       v11 = _Block_copy(v17);
-      v12 = [(MediaControlsCollectionViewController *)self visibleViewControllers];
-      v13 = [v12 firstObject];
+      visibleViewControllers = [(MediaControlsCollectionViewController *)self visibleViewControllers];
+      firstObject = [visibleViewControllers firstObject];
       v16 = v10;
       v14 = v11[2];
       v15 = v11;
@@ -1874,7 +1874,7 @@ void __63__MediaControlsCollectionViewController__populateViewsInFrame___block_i
 
     else
     {
-      (*(v9 + 2))(v9, v7);
+      (*(v9 + 2))(v9, animatedCopy);
     }
   }
 }
@@ -1959,23 +1959,23 @@ void __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated__
   (*(v2 + 16))(v2, v3, 1, 0);
 }
 
-- (void)_setFrame:(CGRect)a3 forVisibleViewAtIndex:(int64_t)a4
+- (void)_setFrame:(CGRect)frame forVisibleViewAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   activeViewControllers = self->_activeViewControllers;
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v13 = [(NSMutableDictionary *)activeViewControllers objectForKey:v10];
 
-  v11 = [v13 backgroundView];
+  backgroundView = [v13 backgroundView];
   [(MediaControlsCollectionViewController *)self _backgroundCornerRadius];
-  [v11 _setContinuousCornerRadius:?];
+  [backgroundView _setContinuousCornerRadius:?];
 
-  v12 = [v13 view];
-  [v12 setMediaControls_untransformedFrame:{x, y, width, height}];
-  [v12 layoutIfNeeded];
+  view = [v13 view];
+  [view setMediaControls_untransformedFrame:{x, y, width, height}];
+  [view layoutIfNeeded];
 }
 
 - (void)_tileViews
@@ -1983,8 +1983,8 @@ void __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated__
   shouldIgnoreScrollNotifications = self->_shouldIgnoreScrollNotifications;
   self->_shouldIgnoreScrollNotifications = 1;
   [(MediaControlsCollectionViewController *)self updateContentInsets];
-  v4 = [(MediaControlsCollectionViewController *)self view];
-  [v4 bounds];
+  view = [(MediaControlsCollectionViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2020,8 +2020,8 @@ void __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated__
 {
   if (self->_displayMode == 1)
   {
-    v3 = [(MediaControlsCollectionViewController *)self view];
-    [v3 bounds];
+    view = [(MediaControlsCollectionViewController *)self view];
+    [view bounds];
     Height = CGRectGetHeight(v13);
     [(MediaControlsCollectionViewController *)self _preferredSelectedItemHeight];
     v6 = (Height - v5) * 0.5;
@@ -2057,35 +2057,35 @@ void __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated__
   [(UIScrollView *)scrollView setContentSize:v6, v5];
 }
 
-- (void)_updateFramesForActiveViewControllersWithCoordinator:(id)a3 assumingSize:(CGSize)a4
+- (void)_updateFramesForActiveViewControllersWithCoordinator:(id)coordinator assumingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __107__MediaControlsCollectionViewController__updateFramesForActiveViewControllersWithCoordinator_assumingSize___block_invoke;
   v9[3] = &unk_1E7665410;
   v9[4] = self;
-  v10 = v7;
+  v10 = coordinatorCopy;
   v11 = width;
   v12 = height;
-  v8 = v7;
+  v8 = coordinatorCopy;
   [(MediaControlsCollectionViewController *)self _enumerateActiveViewControllers:v9];
 }
 
-- (void)_updateFrameForViewController:(id)a3 atIndex:(int64_t)a4 withCoordinator:(id)a5 assumingSize:(CGSize)a6
+- (void)_updateFrameForViewController:(id)controller atIndex:(int64_t)index withCoordinator:(id)coordinator assumingSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v11 = a5;
-  v12 = a3;
-  [(MediaControlsCollectionViewController *)self _frameForViewAtIndex:a4 size:width, height];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
+  [(MediaControlsCollectionViewController *)self _frameForViewAtIndex:index size:width, height];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [v12 willTransitionToSize:v11 withCoordinator:{v17, v19}];
+  [controllerCopy willTransitionToSize:coordinatorCopy withCoordinator:{v17, v19}];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -2096,32 +2096,32 @@ void __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated__
   v21[6] = v16;
   *&v21[7] = v18;
   *&v21[8] = v20;
-  v21[9] = a4;
-  [v11 animateAlongsideTransition:v21 completion:0];
+  v21[9] = index;
+  [coordinatorCopy animateAlongsideTransition:v21 completion:0];
 }
 
-- (void)_adjustForEnvironmentChangeIfNeededWithSize:(CGSize)a3 transitionCoordinator:(id)a4
+- (void)_adjustForEnvironmentChangeIfNeededWithSize:(CGSize)size transitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  if (self->_lastKnownEnvironmentSize.width != a3.width || self->_lastKnownEnvironmentSize.height != a3.height)
+  height = size.height;
+  width = size.width;
+  if (self->_lastKnownEnvironmentSize.width != size.width || self->_lastKnownEnvironmentSize.height != size.height)
   {
     p_controlCenterEdgeInsets = &self->_controlCenterEdgeInsets;
-    v13 = a4;
+    coordinatorCopy = coordinator;
     CCUIExpandedModuleEdgeInsets();
     p_controlCenterEdgeInsets->top = v9;
     p_controlCenterEdgeInsets->left = v10;
     p_controlCenterEdgeInsets->bottom = v11;
     p_controlCenterEdgeInsets->right = v12;
-    [(MediaControlsCollectionViewController *)self _adjustForEnvironmentChangeWithSize:v13 transitionCoordinator:width, height];
+    [(MediaControlsCollectionViewController *)self _adjustForEnvironmentChangeWithSize:coordinatorCopy transitionCoordinator:width, height];
   }
 }
 
-- (void)_adjustForEnvironmentChangeWithSize:(CGSize)a3 transitionCoordinator:(id)a4
+- (void)_adjustForEnvironmentChangeWithSize:(CGSize)size transitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v8 = self->_lastKnownEnvironmentSize.width;
   v9 = self->_lastKnownEnvironmentSize.height;
   self->_lastKnownEnvironmentSize.width = width;
@@ -2132,7 +2132,7 @@ void __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated__
     {
       v11 = objc_alloc_init(MediaControlsStyleCoordinator);
       [(MediaControlsCollectionViewController *)self _updateFramesForActiveViewControllersWithCoordinator:v11 assumingSize:width, height];
-      if (v7)
+      if (coordinatorCopy)
       {
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
@@ -2145,7 +2145,7 @@ void __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated__
         v13[2] = __99__MediaControlsCollectionViewController__adjustForEnvironmentChangeWithSize_transitionCoordinator___block_invoke_2;
         v13[3] = &unk_1E76645E8;
         v14 = v16;
-        [v7 animateAlongsideTransition:v15 completion:v13];
+        [coordinatorCopy animateAlongsideTransition:v15 completion:v13];
       }
 
       else
@@ -2162,8 +2162,8 @@ void __71__MediaControlsCollectionViewController__scrollToSelectedItemAnimated__
     [(MediaControlsCollectionViewController *)self _transitionToDisplayMode:width usingTransitionCoordinator:height assumingSize:?];
   }
 
-  v12 = [(MediaControlsCollectionViewController *)self scrollView];
-  [v12 setScrollEnabled:self->_displayMode == 1];
+  scrollView = [(MediaControlsCollectionViewController *)self scrollView];
+  [scrollView setScrollEnabled:self->_displayMode == 1];
 }
 
 uint64_t __99__MediaControlsCollectionViewController__adjustForEnvironmentChangeWithSize_transitionCoordinator___block_invoke(uint64_t a1)
@@ -2174,32 +2174,32 @@ uint64_t __99__MediaControlsCollectionViewController__adjustForEnvironmentChange
   return [v2 performAnimations];
 }
 
-- (void)_transitionToDisplayMode:(int64_t)a3 usingTransitionCoordinator:(id)a4 assumingSize:(CGSize)a5
+- (void)_transitionToDisplayMode:(int64_t)mode usingTransitionCoordinator:(id)coordinator assumingSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4;
-  v10 = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
-  [(MediaControlsCollectionViewController *)self setDisplayMode:a3];
-  self->_shouldDisableAutoReaping = a3 == 0;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  viewControllerForSelectedItem = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
+  [(MediaControlsCollectionViewController *)self setDisplayMode:mode];
+  self->_shouldDisableAutoReaping = mode == 0;
   v11 = objc_alloc_init(MediaControlsStyleCoordinator);
-  if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (coordinatorCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     selectedItemIndex = self->_selectedItemIndex;
-    v13 = v9;
-    [(MediaControlsCollectionViewController *)self _updateFrameForViewController:v10 atIndex:selectedItemIndex withCoordinator:v13 assumingSize:width, height];
+    v13 = coordinatorCopy;
+    [(MediaControlsCollectionViewController *)self _updateFrameForViewController:viewControllerForSelectedItem atIndex:selectedItemIndex withCoordinator:v13 assumingSize:width, height];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __106__MediaControlsCollectionViewController__transitionToDisplayMode_usingTransitionCoordinator_assumingSize___block_invoke;
     v19[3] = &unk_1E7663CE0;
     v19[4] = self;
-    v19[5] = a3;
+    v19[5] = mode;
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __106__MediaControlsCollectionViewController__transitionToDisplayMode_usingTransitionCoordinator_assumingSize___block_invoke_3;
     v18[3] = &unk_1E7663CE0;
     v18[4] = self;
-    v18[5] = a3;
+    v18[5] = mode;
     [(MediaControlsStyleCoordinator *)v11 animateAlongsideTransition:v19 completion:v18];
     [(MediaControlsCollectionViewController *)self _updateFramesForActiveViewControllersWithCoordinator:v11 assumingSize:width, height];
     v16[0] = MEMORY[0x1E69E9820];
@@ -2295,10 +2295,10 @@ uint64_t __106__MediaControlsCollectionViewController__transitionToDisplayMode_u
   return result;
 }
 
-- (void)_transitionToVisible:(BOOL)a3
+- (void)_transitionToVisible:(BOOL)visible
 {
-  v3 = a3;
-  if (a3)
+  visibleCopy = visible;
+  if (visible)
   {
     [(MediaControlsCollectionViewController *)self _scrollToSelectedItemAnimated:0];
     v5 = 0.0;
@@ -2311,9 +2311,9 @@ uint64_t __106__MediaControlsCollectionViewController__transitionToDisplayMode_u
     v6 = 0.0;
   }
 
-  v7 = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
+  viewControllerForSelectedItem = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
   memset(&v38, 0, sizeof(v38));
-  if (v3)
+  if (visibleCopy)
   {
     CGAffineTransformMakeScale(&v38, 1.92, 1.92);
     v8 = *(MEMORY[0x1E695EFD0] + 16);
@@ -2361,21 +2361,21 @@ uint64_t __106__MediaControlsCollectionViewController__transitionToDisplayMode_u
   else
   {
     ++self->_appearanceTransitionCount;
-    v13 = [v7 view];
-    [v13 setHidden:0];
+    view = [viewControllerForSelectedItem view];
+    [view setHidden:0];
 
-    v14 = [v7 view];
-    [v14 setAlpha:v5];
+    view2 = [viewControllerForSelectedItem view];
+    [view2 setAlpha:v5];
 
     if (!UIAccessibilityIsReduceMotionEnabled())
     {
-      v15 = [v7 view];
+      view3 = [viewControllerForSelectedItem view];
       v33 = v38;
-      [v15 setTransform:&v33];
+      [view3 setTransform:&v33];
     }
 
     v16 = 0.1;
-    if (v3)
+    if (visibleCopy)
     {
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
@@ -2386,24 +2386,24 @@ uint64_t __106__MediaControlsCollectionViewController__transitionToDisplayMode_u
       v16 = 0.0;
     }
 
-    v17 = [objc_opt_class() frameAnimator];
+    frameAnimator = [objc_opt_class() frameAnimator];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __62__MediaControlsCollectionViewController__transitionToVisible___block_invoke_7;
     v29[3] = &unk_1E76652D0;
-    v18 = v7;
+    v18 = viewControllerForSelectedItem;
     v30 = v18;
     v31 = v37;
-    [v17 addAnimations:v29];
+    [frameAnimator addAnimations:v29];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __62__MediaControlsCollectionViewController__transitionToVisible___block_invoke_8;
     v25[3] = &unk_1E7665518;
     v19 = v18;
-    v28 = v3;
+    v28 = visibleCopy;
     v26 = v19;
-    v27 = self;
-    [v17 addCompletion:v25];
+    selfCopy = self;
+    [frameAnimator addCompletion:v25];
     v20 = objc_opt_class();
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -2412,9 +2412,9 @@ uint64_t __106__MediaControlsCollectionViewController__transitionToDisplayMode_u
     v23 = v19;
     v24 = v6;
     v21 = [v20 alphaAnimatorWithAnimations:v22];
-    [v17 startAnimationAfterDelay:v16];
+    [frameAnimator startAnimationAfterDelay:v16];
     [v21 startAnimationAfterDelay:v16 + 0.1];
-    if (!v3)
+    if (!visibleCopy)
     {
       [(MediaControlsCollectionViewController *)self _transitionTopAndBottomViewControllersToVisible:0 completion:0];
     }
@@ -2519,74 +2519,74 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
   [v2 setAlpha:*(a1 + 40)];
 }
 
-- (void)_transitionTopAndBottomViewControllersToVisible:(BOOL)a3 completion:(id)a4
+- (void)_transitionTopAndBottomViewControllersToVisible:(BOOL)visible completion:(id)completion
 {
-  v4 = a3;
+  visibleCopy = visible;
   v138 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   ++self->_appearanceTransitionCount;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __100__MediaControlsCollectionViewController__transitionTopAndBottomViewControllersToVisible_completion___block_invoke;
   aBlock[3] = &unk_1E7664490;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = completionCopy;
   v134 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
-  if (v9 && !UIAccessibilityIsReduceMotionEnabled())
+  viewControllerForSelectedItem = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
+  if (viewControllerForSelectedItem && !UIAccessibilityIsReduceMotionEnabled())
   {
-    v21 = [MEMORY[0x1E695DF70] array];
-    v85 = [MEMORY[0x1E695DF70] array];
-    v26 = [(MediaControlsCollectionViewController *)self _visibleTopViewControllers];
-    v27 = [(MediaControlsCollectionViewController *)self _visibleBottomViewControllers];
-    v28 = [v9 view];
-    v29 = v28;
-    v78 = v27;
-    if (v4)
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    _visibleTopViewControllers = [(MediaControlsCollectionViewController *)self _visibleTopViewControllers];
+    _visibleBottomViewControllers = [(MediaControlsCollectionViewController *)self _visibleBottomViewControllers];
+    view = [viewControllerForSelectedItem view];
+    v29 = view;
+    v78 = _visibleBottomViewControllers;
+    if (visibleCopy)
     {
-      v84 = v21;
+      v84 = array;
       v77 = v8;
       v80 = v7;
-      [v28 setHidden:0];
+      [view setHidden:0];
 
-      v76 = v9;
-      v30 = [v9 view];
-      [v30 setAlpha:1.0];
+      v76 = viewControllerForSelectedItem;
+      view2 = [viewControllerForSelectedItem view];
+      [view2 setAlpha:1.0];
 
-      v31 = [v26 allKeys];
+      allKeys = [_visibleTopViewControllers allKeys];
       v129[0] = MEMORY[0x1E69E9820];
       v129[1] = 3221225472;
       v129[2] = __100__MediaControlsCollectionViewController__transitionTopAndBottomViewControllersToVisible_completion___block_invoke_2;
       v129[3] = &unk_1E7665540;
-      v75 = v26;
-      v32 = v26;
+      v75 = _visibleTopViewControllers;
+      v32 = _visibleTopViewControllers;
       v130 = v32;
-      v131 = self;
+      selfCopy = self;
       v132 = 0x4056000000000000;
-      [v31 enumerateObjectsUsingBlock:v129];
+      [allKeys enumerateObjectsUsingBlock:v129];
 
-      v33 = [v27 allKeys];
+      allKeys2 = [_visibleBottomViewControllers allKeys];
       v125[0] = MEMORY[0x1E69E9820];
       v125[1] = 3221225472;
       v125[2] = __100__MediaControlsCollectionViewController__transitionTopAndBottomViewControllersToVisible_completion___block_invoke_3;
       v125[3] = &unk_1E7665540;
-      v83 = v27;
+      v83 = _visibleBottomViewControllers;
       v126 = v83;
-      v127 = self;
+      selfCopy2 = self;
       v128 = 0x4056000000000000;
-      [v33 enumerateObjectsUsingBlock:v125];
+      [allKeys2 enumerateObjectsUsingBlock:v125];
 
       v123 = 0u;
       v124 = 0u;
       v121 = 0u;
       v122 = 0u;
-      v34 = [v32 allKeys];
-      v35 = [v34 sortedArrayUsingSelector:?];
-      v36 = [v35 reverseObjectEnumerator];
+      allKeys3 = [v32 allKeys];
+      v35 = [allKeys3 sortedArrayUsingSelector:?];
+      reverseObjectEnumerator = [v35 reverseObjectEnumerator];
 
-      obj = v36;
-      v37 = [v36 countByEnumeratingWithState:&v121 objects:v137 count:16];
+      obj = reverseObjectEnumerator;
+      v37 = [reverseObjectEnumerator countByEnumeratingWithState:&v121 objects:v137 count:16];
       if (v37)
       {
         v38 = v37;
@@ -2603,16 +2603,16 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
 
             v42 = *(*(&v121 + 1) + 8 * i);
             v43 = [v32 objectForKey:v42];
-            v44 = [objc_opt_class() frameAnimator];
+            frameAnimator = [objc_opt_class() frameAnimator];
             v117[0] = MEMORY[0x1E69E9820];
             v117[1] = 3221225472;
             v117[2] = __100__MediaControlsCollectionViewController__transitionTopAndBottomViewControllersToVisible_completion___block_invoke_4;
             v117[3] = &unk_1E7663D30;
             v45 = v43;
             v118 = v45;
-            v119 = self;
+            selfCopy3 = self;
             v120 = v42;
-            [v44 addAnimations:v117];
+            [frameAnimator addAnimations:v117];
             v46 = objc_opt_class();
             v115[0] = MEMORY[0x1E69E9820];
             v115[1] = 3221225472;
@@ -2621,11 +2621,11 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
             v116 = v45;
             v47 = v45;
             v48 = [v46 alphaAnimatorWithAnimations:v115];
-            [v44 startAnimationAfterDelay:v40];
+            [frameAnimator startAnimationAfterDelay:v40];
             v40 = v40 + 0.1;
             [v48 startAnimationAfterDelay:v40];
-            [v84 addObject:v44];
-            [v85 addObject:v48];
+            [v84 addObject:frameAnimator];
+            [array2 addObject:v48];
           }
 
           v38 = [obj countByEnumeratingWithState:&v121 objects:v137 count:16];
@@ -2638,8 +2638,8 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
       v114 = 0u;
       v111 = 0u;
       v112 = 0u;
-      v49 = [v83 allKeys];
-      v50 = [v49 sortedArrayUsingSelector:sel_compare_];
+      allKeys4 = [v83 allKeys];
+      v50 = [allKeys4 sortedArrayUsingSelector:sel_compare_];
 
       obja = v50;
       v51 = [v50 countByEnumeratingWithState:&v111 objects:v136 count:16];
@@ -2659,16 +2659,16 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
 
             v56 = *(*(&v111 + 1) + 8 * j);
             v57 = [v83 objectForKey:v56];
-            v58 = [objc_opt_class() frameAnimator];
+            frameAnimator2 = [objc_opt_class() frameAnimator];
             v107[0] = MEMORY[0x1E69E9820];
             v107[1] = 3221225472;
             v107[2] = __100__MediaControlsCollectionViewController__transitionTopAndBottomViewControllersToVisible_completion___block_invoke_6;
             v107[3] = &unk_1E7663D30;
             v59 = v57;
             v108 = v59;
-            v109 = self;
+            selfCopy4 = self;
             v110 = v56;
-            [v58 addAnimations:v107];
+            [frameAnimator2 addAnimations:v107];
             v60 = objc_opt_class();
             v105[0] = MEMORY[0x1E69E9820];
             v105[1] = 3221225472;
@@ -2677,11 +2677,11 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
             v106 = v59;
             v61 = v59;
             v62 = [v60 alphaAnimatorWithAnimations:v105];
-            [v58 startAnimationAfterDelay:v54];
+            [frameAnimator2 startAnimationAfterDelay:v54];
             v54 = v54 + 0.1;
             [v62 startAnimationAfterDelay:v54];
-            [v84 addObject:v58];
-            [v85 addObject:v62];
+            [v84 addObject:frameAnimator2];
+            [array2 addObject:v62];
           }
 
           v52 = [obja countByEnumeratingWithState:&v111 objects:v136 count:16];
@@ -2690,40 +2690,40 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
         while (v52);
       }
 
-      v63 = v130;
+      frameAnimator3 = v130;
       v64 = v80;
-      v9 = v76;
+      viewControllerForSelectedItem = v76;
       v8 = v77;
-      v21 = v84;
-      v26 = v75;
+      array = v84;
+      _visibleTopViewControllers = v75;
     }
 
     else
     {
       v64 = v7;
-      [v28 frame];
+      [view frame];
       MinY = CGRectGetMinY(v139);
       [(UIScrollView *)self->_scrollView bounds];
       v66 = MinY - CGRectGetMinY(v140);
 
       [(UIScrollView *)self->_scrollView bounds];
       MaxY = CGRectGetMaxY(v141);
-      v68 = [v9 view];
-      [v68 frame];
+      view3 = [viewControllerForSelectedItem view];
+      [view3 frame];
       v69 = MaxY - CGRectGetMaxY(v142);
 
-      v63 = [objc_opt_class() frameAnimator];
+      frameAnimator3 = [objc_opt_class() frameAnimator];
       v100[0] = MEMORY[0x1E69E9820];
       v100[1] = 3221225472;
       v100[2] = __100__MediaControlsCollectionViewController__transitionTopAndBottomViewControllersToVisible_completion___block_invoke_8;
       v100[3] = &unk_1E7665590;
-      v70 = v26;
+      v70 = _visibleTopViewControllers;
       v101 = v70;
       v103 = v66;
-      v71 = v27;
+      v71 = _visibleBottomViewControllers;
       v102 = v71;
       v104 = v69;
-      [v63 addAnimations:v100];
+      [frameAnimator3 addAnimations:v100];
       v72 = objc_opt_class();
       v97[0] = MEMORY[0x1E69E9820];
       v97[1] = 3221225472;
@@ -2732,21 +2732,21 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
       v98 = v70;
       v99 = v71;
       v73 = [v72 alphaAnimatorWithAnimations:v97];
-      [v63 startAnimationAfterDelay:0.0];
+      [frameAnimator3 startAnimationAfterDelay:0.0];
       [v73 startAnimationAfterDelay:0.1];
     }
 
-    v24 = v85;
-    if ([v85 count])
+    v24 = array2;
+    if ([array2 count])
     {
-      v74 = [v85 lastObject];
+      lastObject = [array2 lastObject];
       v95[0] = MEMORY[0x1E69E9820];
       v95[1] = 3221225472;
       v95[2] = __100__MediaControlsCollectionViewController__transitionTopAndBottomViewControllersToVisible_completion___block_invoke_14;
       v95[3] = &unk_1E7664888;
       v23 = v8;
       v96 = v8;
-      [v74 addCompletion:v95];
+      [lastObject addCompletion:v95];
     }
 
     else
@@ -2761,18 +2761,18 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
   else
   {
     v79 = v7;
-    v10 = v9;
-    v11 = [(MediaControlsCollectionViewController *)self visibleViewControllers];
+    v10 = viewControllerForSelectedItem;
+    visibleViewControllers = [(MediaControlsCollectionViewController *)self visibleViewControllers];
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v91 objects:v135 count:16];
+    v12 = [visibleViewControllers countByEnumeratingWithState:&v91 objects:v135 count:16];
     if (v12)
     {
       v13 = v12;
       v14 = *v92;
-      if (v4)
+      if (visibleCopy)
       {
         v15 = 0.0;
       }
@@ -2788,18 +2788,18 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
         {
           if (*v92 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(visibleViewControllers);
           }
 
           v17 = *(*(&v91 + 1) + 8 * k);
-          v18 = [v17 view];
-          [v18 setHidden:0];
+          view4 = [v17 view];
+          [view4 setHidden:0];
 
-          v19 = [v17 view];
-          [v19 setAlpha:v15];
+          view5 = [v17 view];
+          [view5 setAlpha:v15];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v91 objects:v135 count:16];
+        v13 = [visibleViewControllers countByEnumeratingWithState:&v91 objects:v135 count:16];
       }
 
       while (v13);
@@ -2810,9 +2810,9 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
     v88[1] = 3221225472;
     v88[2] = __100__MediaControlsCollectionViewController__transitionTopAndBottomViewControllersToVisible_completion___block_invoke_15;
     v88[3] = &unk_1E7663F38;
-    v89 = v11;
-    v90 = v4;
-    v21 = v11;
+    v89 = visibleViewControllers;
+    v90 = visibleCopy;
+    array = visibleViewControllers;
     v22 = [v20 alphaAnimatorWithAnimations:v88];
     v86[0] = MEMORY[0x1E69E9820];
     v86[1] = 3221225472;
@@ -2824,7 +2824,7 @@ void __62__MediaControlsCollectionViewController__transitionToVisible___block_in
     [v22 startAnimation];
 
     v24 = v89;
-    v9 = v10;
+    viewControllerForSelectedItem = v10;
     v25 = v79;
   }
 }
@@ -3042,33 +3042,33 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
   }
 }
 
-- (id)_insertViewControllerForIndex:(int64_t)a3
+- (id)_insertViewControllerForIndex:(int64_t)index
 {
-  v5 = [(MediaControlsCollectionViewController *)self dataSource];
-  v6 = [v5 mediaControlsCollectionViewController:self viewControllerForItemAtIndex:a3];
+  dataSource = [(MediaControlsCollectionViewController *)self dataSource];
+  v6 = [dataSource mediaControlsCollectionViewController:self viewControllerForItemAtIndex:index];
 
-  [v6 setSelected:self->_selectedItemIndex == a3];
+  [v6 setSelected:self->_selectedItemIndex == index];
   activeViewControllers = self->_activeViewControllers;
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   [(NSMutableDictionary *)activeViewControllers setObject:v6 forKey:v8];
 
-  v9 = [v6 backgroundView];
+  backgroundView = [v6 backgroundView];
 
-  if (!v9)
+  if (!backgroundView)
   {
     v10 = [MediaControlsMaterialView alloc];
     v11 = [(MediaControlsMaterialView *)v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [v6 setBackgroundView:v11];
   }
 
-  [(MediaControlsCollectionViewController *)self _frameForViewAtIndex:a3];
+  [(MediaControlsCollectionViewController *)self _frameForViewAtIndex:index];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v20 = objc_alloc_init(MediaControlsStyleCoordinator);
   [v6 willTransitionToSize:v20 withCoordinator:{v17, v19}];
-  v21 = [v6 view];
+  view = [v6 view];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __71__MediaControlsCollectionViewController__insertViewControllerForIndex___block_invoke;
@@ -3078,15 +3078,15 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
   v27[6] = v15;
   *&v27[7] = v17;
   *&v27[8] = v19;
-  v27[9] = a3;
+  v27[9] = index;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v27];
   [(MediaControlsStyleCoordinator *)v20 performAnimations];
   [(MediaControlsStyleCoordinator *)v20 performCompletions];
-  v22 = [(MediaControlsCollectionViewController *)self delegate];
-  [v22 mediaControlsCollectionViewController:self willDisplayViewController:v6 forItemAtIndex:a3];
-  v23 = [v6 parentViewController];
+  delegate = [(MediaControlsCollectionViewController *)self delegate];
+  [delegate mediaControlsCollectionViewController:self willDisplayViewController:v6 forItemAtIndex:index];
+  parentViewController = [v6 parentViewController];
 
-  if (v23 == self)
+  if (parentViewController == self)
   {
     [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionIfNeeded:1 forChildViewController:v6 animated:0];
     [(MediaControlsCollectionViewController *)self _endAppearanceTransitionForChildViewControllerIfNeeded:v6];
@@ -3096,38 +3096,38 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
   {
     [(MediaControlsCollectionViewController *)self addChildViewController:v6];
     [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionIfNeeded:1 forChildViewController:v6 animated:0];
-    v24 = [v21 superview];
+    superview = [view superview];
     scrollView = self->_scrollView;
 
-    if (v24 != scrollView)
+    if (superview != scrollView)
     {
-      [(UIScrollView *)self->_scrollView addSubview:v21];
+      [(UIScrollView *)self->_scrollView addSubview:view];
     }
 
     [(MediaControlsCollectionViewController *)self _endAppearanceTransitionForChildViewControllerIfNeeded:v6];
     [v6 didMoveToParentViewController:self];
   }
 
-  [v21 setHidden:0];
-  [v21 setAlpha:1.0];
-  [v22 mediaControlsCollectionViewController:self didDisplayViewController:v6 forItemAtIndex:a3];
+  [view setHidden:0];
+  [view setAlpha:1.0];
+  [delegate mediaControlsCollectionViewController:self didDisplayViewController:v6 forItemAtIndex:index];
 
   return v6;
 }
 
-- (void)_reapViewAtIndex:(int64_t)a3
+- (void)_reapViewAtIndex:(int64_t)index
 {
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v5 = [(NSMutableDictionary *)self->_activeViewControllers objectForKey:?];
   if (v5)
   {
     [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionIfNeeded:0 forChildViewController:v5 animated:0];
-    v6 = [v5 view];
-    [v6 setHidden:1];
+    view = [v5 view];
+    [view setHidden:1];
 
     [(MediaControlsCollectionViewController *)self _endAppearanceTransitionForChildViewControllerIfNeeded:v5];
     [(NSMutableDictionary *)self->_activeViewControllers removeObjectForKey:v8];
-    if (self->_selectedItemIndex == a3)
+    if (self->_selectedItemIndex == index)
     {
       objc_storeStrong(&self->_inactiveSelectedViewController, v5);
     }
@@ -3137,8 +3137,8 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
       [(NSMutableSet *)self->_inactiveViewControllers addObject:v5];
     }
 
-    v7 = [(MediaControlsCollectionViewController *)self delegate];
-    [v7 mediaControlsCollectionViewController:self didEndDisplayingViewController:v5 forItemAtIndex:a3];
+    delegate = [(MediaControlsCollectionViewController *)self delegate];
+    [delegate mediaControlsCollectionViewController:self didEndDisplayingViewController:v5 forItemAtIndex:index];
   }
 }
 
@@ -3167,84 +3167,84 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
   }
 }
 
-- (void)_removeViewController:(id)a3
+- (void)_removeViewController:(id)controller
 {
-  v5 = a3;
-  [v5 willMoveToParentViewController:0];
-  if ([v5 isViewLoaded])
+  controllerCopy = controller;
+  [controllerCopy willMoveToParentViewController:0];
+  if ([controllerCopy isViewLoaded])
   {
-    [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionIfNeeded:0 forChildViewController:v5 animated:0];
-    v4 = [v5 view];
-    [v4 removeFromSuperview];
+    [(MediaControlsCollectionViewController *)self _beginAppearanceTransitionIfNeeded:0 forChildViewController:controllerCopy animated:0];
+    view = [controllerCopy view];
+    [view removeFromSuperview];
 
-    [(MediaControlsCollectionViewController *)self _endAppearanceTransitionForChildViewControllerIfNeeded:v5];
+    [(MediaControlsCollectionViewController *)self _endAppearanceTransitionForChildViewControllerIfNeeded:controllerCopy];
   }
 
-  [v5 removeFromParentViewController];
+  [controllerCopy removeFromParentViewController];
 }
 
-- (void)_setHighlighted:(BOOL)a3 forViewControllerAtIndex:(int64_t)a4
+- (void)_setHighlighted:(BOOL)highlighted forViewControllerAtIndex:(int64_t)index
 {
-  v5 = a3;
+  highlightedCopy = highlighted;
   if (self->_highlightedItemIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [(MediaControlsCollectionViewController *)self viewControllerForItemAtIndex:?];
     [(MediaControlsCollectionViewController *)self _setHighlighted:0 forViewController:v7];
   }
 
-  if (a4 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(MediaControlsCollectionViewController *)self viewControllerForItemAtIndex:a4];
-    [(MediaControlsCollectionViewController *)self _setHighlighted:v5 forViewController:v8];
+    v8 = [(MediaControlsCollectionViewController *)self viewControllerForItemAtIndex:index];
+    [(MediaControlsCollectionViewController *)self _setHighlighted:highlightedCopy forViewController:v8];
   }
 
-  v9 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5)
+  indexCopy = 0x7FFFFFFFFFFFFFFFLL;
+  if (highlightedCopy)
   {
-    v9 = a4;
+    indexCopy = index;
   }
 
-  self->_highlightedItemIndex = v9;
+  self->_highlightedItemIndex = indexCopy;
 }
 
-- (void)_setHighlighted:(BOOL)a3 forViewController:(id)a4
+- (void)_setHighlighted:(BOOL)highlighted forViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [a4 backgroundView];
+  highlightedCopy = highlighted;
+  backgroundView = [controller backgroundView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setHighlighted:v4];
+    [backgroundView setHighlighted:highlightedCopy];
   }
 }
 
-- (void)_beginAppearanceTransitionIfNeeded:(BOOL)a3 forChildViewController:(id)a4 animated:(BOOL)a5
+- (void)_beginAppearanceTransitionIfNeeded:(BOOL)needed forChildViewController:(id)controller animated:(BOOL)animated
 {
   if (self->_appeared)
   {
-    [a4 beginAppearanceTransition:a3 animated:a5];
+    [controller beginAppearanceTransition:needed animated:animated];
   }
 }
 
-- (void)_endAppearanceTransitionForChildViewControllerIfNeeded:(id)a3
+- (void)_endAppearanceTransitionForChildViewControllerIfNeeded:(id)needed
 {
   if (self->_appeared)
   {
-    [a3 endAppearanceTransition];
+    [needed endAppearanceTransition];
   }
 }
 
-- (void)_beginAppearanceTransitionForChildViewControllers:(BOOL)a3 animated:(BOOL)a4
+- (void)_beginAppearanceTransitionForChildViewControllers:(BOOL)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  controllersCopy = controllers;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(MediaControlsCollectionViewController *)self visibleViewControllers];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  visibleViewControllers = [(MediaControlsCollectionViewController *)self visibleViewControllers];
+  v7 = [visibleViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3256,14 +3256,14 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleViewControllers);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) beginAppearanceTransition:v5 animated:v4];
+        [*(*(&v11 + 1) + 8 * v10++) beginAppearanceTransition:controllersCopy animated:animatedCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [visibleViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -3277,8 +3277,8 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(MediaControlsCollectionViewController *)self visibleViewControllers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  visibleViewControllers = [(MediaControlsCollectionViewController *)self visibleViewControllers];
+  v3 = [visibleViewControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3290,21 +3290,21 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visibleViewControllers);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) endAppearanceTransition];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [visibleViewControllers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (!self->_shouldIgnoreScrollNotifications)
   {
@@ -3314,37 +3314,37 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  if (self->_tapGestureRecognizer != a3)
+  if (self->_tapGestureRecognizer != recognizer)
   {
     return 1;
   }
 
-  [a4 locationInView:self->_scrollView];
+  [touch locationInView:self->_scrollView];
   v6 = [(MediaControlsCollectionViewController *)self itemAtPoint:?];
   return v6 == 0x7FFFFFFFFFFFFFFFLL || v6 != self->_selectedItemIndex;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_tapGestureRecognizer != a3)
+  if (self->_tapGestureRecognizer != recognizer)
   {
     return 0;
   }
 
   scrollView = self->_scrollView;
-  v6 = a4;
-  v7 = [(UIScrollView *)scrollView gestureRecognizers];
-  v8 = [v7 containsObject:v6];
+  gestureRecognizerCopy = gestureRecognizer;
+  gestureRecognizers = [(UIScrollView *)scrollView gestureRecognizers];
+  v8 = [gestureRecognizers containsObject:gestureRecognizerCopy];
 
   return v8;
 }
 
-- (void)_handleScrollViewTap:(id)a3
+- (void)_handleScrollViewTap:(id)tap
 {
-  v13 = a3;
-  [v13 locationInView:self->_scrollView];
+  tapCopy = tap;
+  [tapCopy locationInView:self->_scrollView];
   v5 = v4;
   v6 = [(MediaControlsCollectionViewController *)self itemAtPoint:?];
   [(UIScrollView *)self->_scrollView bounds];
@@ -3355,13 +3355,13 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
     v6 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = [v13 state] == 1 || objc_msgSend(v13, "state") == 2;
+  v10 = [tapCopy state] == 1 || objc_msgSend(tapCopy, "state") == 2;
   [(MediaControlsCollectionViewController *)self _setHighlighted:v10 forViewControllerAtIndex:v6];
-  if ([v13 state] == 3)
+  if ([tapCopy state] == 3)
   {
     [(MediaControlsCollectionViewController *)self _setHighlighted:0 forViewControllerAtIndex:v6];
-    v11 = [(MediaControlsCollectionViewController *)self delegate];
-    if ([v11 mediaControlsCollectionViewController:self canSelectItemAtIndex:v6])
+    delegate = [(MediaControlsCollectionViewController *)self delegate];
+    if ([delegate mediaControlsCollectionViewController:self canSelectItemAtIndex:v6])
     {
       appearanceTransitionCount = self->_appearanceTransitionCount;
 
@@ -3377,15 +3377,15 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
   }
 }
 
-- (void)_setSelectedItemIndex:(int64_t)a3 animated:(BOOL)a4 shouldScroll:(BOOL)a5 shouldNotifyDelegate:(BOOL)a6 withReason:(int64_t)a7
+- (void)_setSelectedItemIndex:(int64_t)index animated:(BOOL)animated shouldScroll:(BOOL)scroll shouldNotifyDelegate:(BOOL)delegate withReason:(int64_t)reason
 {
-  if (!self->_isPerformingBatchUpdates && self->_selectedItemIndex != a3)
+  if (!self->_isPerformingBatchUpdates && self->_selectedItemIndex != index)
   {
-    v10 = a6;
-    v12 = a4;
-    v13 = [(MediaControlsCollectionViewController *)self visibleIndexes];
+    delegateCopy = delegate;
+    animatedCopy = animated;
+    visibleIndexes = [(MediaControlsCollectionViewController *)self visibleIndexes];
     v52 = [(MediaControlsCollectionViewController *)self viewControllerForItemAtIndex:self->_selectedItemIndex];
-    if ([v13 containsIndex:a3] & 1) != 0 || (objc_msgSend(v13, "containsIndex:", self->_selectedItemIndex))
+    if ([visibleIndexes containsIndex:index] & 1) != 0 || (objc_msgSend(visibleIndexes, "containsIndex:", self->_selectedItemIndex))
     {
       displayMode = self->_displayMode;
       v15 = displayMode == 1;
@@ -3399,35 +3399,35 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
 
     v51 = displayMode == 0;
     [v52 setSelected:0];
-    self->_selectedItemIndex = a3;
-    v16 = [(MediaControlsCollectionViewController *)self delegate];
-    v17 = v16;
-    if (v10)
+    self->_selectedItemIndex = index;
+    delegate = [(MediaControlsCollectionViewController *)self delegate];
+    v17 = delegate;
+    if (delegateCopy)
     {
-      [v16 mediaControlsCollectionViewController:self willSelectItemAtIndex:a3 withReason:a7];
+      [delegate mediaControlsCollectionViewController:self willSelectItemAtIndex:index withReason:reason];
     }
 
     if (!v15)
     {
-      if (a5 || !displayMode)
+      if (scroll || !displayMode)
       {
         [(MediaControlsCollectionViewController *)self _scrollToSelectedItemAnimated:1];
       }
 
-      if (v10)
+      if (delegateCopy)
       {
-        [v17 mediaControlsCollectionViewController:self didSelectItemAtIndex:a3 withReason:a7];
+        [v17 mediaControlsCollectionViewController:self didSelectItemAtIndex:index withReason:reason];
       }
 
       goto LABEL_25;
     }
 
     v49 = v17;
-    v50 = v13;
-    v18 = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
-    v19 = [v18 isSelected];
-    v48 = v18;
-    [v18 setSelected:1];
+    v50 = visibleIndexes;
+    viewControllerForSelectedItem = [(MediaControlsCollectionViewController *)self viewControllerForSelectedItem];
+    isSelected = [viewControllerForSelectedItem isSelected];
+    v48 = viewControllerForSelectedItem;
+    [viewControllerForSelectedItem setSelected:1];
     [(UIScrollView *)self->_scrollView bounds];
     v21 = v20;
     v23 = v22;
@@ -3441,15 +3441,15 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
     v76.size.height = v27;
     v77 = CGRectInset(v76, 0.0, v29);
     [(MediaControlsCollectionViewController *)self _populateViewsInFrame:v77.origin.x, v77.origin.y, v77.size.width, v77.size.height];
-    v30 = [(MediaControlsCollectionViewController *)self view];
-    [v30 bounds];
+    view = [(MediaControlsCollectionViewController *)self view];
+    [view bounds];
     v32 = v31;
     v34 = v33;
 
-    if (v19)
+    if (isSelected)
     {
       v17 = v49;
-      if (a5 || !displayMode)
+      if (scroll || !displayMode)
       {
         [(MediaControlsCollectionViewController *)self _scrollToSelectedItemAnimated:1];
       }
@@ -3458,7 +3458,7 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
       [(MediaControlsCollectionViewController *)self _updateFramesForActiveViewControllersWithCoordinator:v35 assumingSize:v32, v34];
       [(MediaControlsStyleCoordinator *)v35 performAnimations];
       [(MediaControlsStyleCoordinator *)v35 performCompletions];
-      if (!v10)
+      if (!delegateCopy)
       {
         goto LABEL_16;
       }
@@ -3466,28 +3466,28 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
 
     else
     {
-      if (v12)
+      if (animatedCopy)
       {
         v36 = objc_alloc_init(MediaControlsStyleCoordinator);
         v37 = objc_alloc_init(MediaControlsStyleCoordinator);
-        v38 = [objc_opt_class() frameAnimator];
-        v39 = [objc_opt_class() frameAnimator];
+        frameAnimator = [objc_opt_class() frameAnimator];
+        frameAnimator2 = [objc_opt_class() frameAnimator];
         v68[0] = MEMORY[0x1E69E9820];
         v68[1] = 3221225472;
         v68[2] = __117__MediaControlsCollectionViewController__setSelectedItemIndex_animated_shouldScroll_shouldNotifyDelegate_withReason___block_invoke;
         v68[3] = &unk_1E7665600;
         v73 = v32;
         v74 = v34;
-        v75 = a3;
+        indexCopy = index;
         v68[4] = self;
-        v69 = v39;
+        v69 = frameAnimator2;
         v40 = v37;
         v70 = v40;
-        v71 = v38;
+        v71 = frameAnimator;
         v41 = v36;
         v72 = v41;
-        v42 = v38;
-        v43 = v39;
+        v42 = frameAnimator;
+        v43 = frameAnimator2;
         [(MediaControlsCollectionViewController *)self _enumerateActiveViewControllers:v68];
         v66[0] = MEMORY[0x1E69E9820];
         v66[1] = 3221225472;
@@ -3501,10 +3501,10 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
         v61[2] = __117__MediaControlsCollectionViewController__setSelectedItemIndex_animated_shouldScroll_shouldNotifyDelegate_withReason___block_invoke_4;
         v61[3] = &unk_1E7665628;
         v45 = v40;
-        v64 = a5;
+        scrollCopy = scroll;
         v65 = v51;
         v62 = v45;
-        v63 = self;
+        selfCopy = self;
         [v43 addAnimations:v61];
         v59[0] = MEMORY[0x1E69E9820];
         v59[1] = 3221225472;
@@ -3518,10 +3518,10 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
         v53[2] = __117__MediaControlsCollectionViewController__setSelectedItemIndex_animated_shouldScroll_shouldNotifyDelegate_withReason___block_invoke_6;
         v53[3] = &unk_1E7665650;
         v53[4] = self;
-        v58 = v10;
+        v58 = delegateCopy;
         v17 = v49;
-        v56 = a3;
-        v57 = a7;
+        indexCopy2 = index;
+        reasonCopy = reason;
         v54 = v49;
         v55 = v45;
         v47 = v45;
@@ -3535,7 +3535,7 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
         goto LABEL_24;
       }
 
-      if (a5 || !displayMode)
+      if (scroll || !displayMode)
       {
         [(MediaControlsCollectionViewController *)self _scrollToSelectedItemAnimated:0];
       }
@@ -3547,19 +3547,19 @@ void __100__MediaControlsCollectionViewController__transitionTopAndBottomViewCon
       [(UIScrollView *)self->_scrollView bounds];
       [(MediaControlsCollectionViewController *)self _populateViewsInFrame:?];
       v17 = v49;
-      if (!v10)
+      if (!delegateCopy)
       {
 LABEL_16:
 
 LABEL_24:
-        v13 = v50;
+        visibleIndexes = v50;
 LABEL_25:
 
         return;
       }
     }
 
-    [v17 mediaControlsCollectionViewController:self didSelectItemAtIndex:a3 withReason:a7];
+    [v17 mediaControlsCollectionViewController:self didSelectItemAtIndex:index withReason:reason];
     goto LABEL_16;
   }
 }
@@ -3641,16 +3641,16 @@ uint64_t __117__MediaControlsCollectionViewController__setSelectedItemIndex_anim
   return [v3 _dequeueAndPerformBatchUpdatesIfNeeded];
 }
 
-- (void)_enumerateActiveViewControllers:(id)a3
+- (void)_enumerateActiveViewControllers:(id)controllers
 {
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = [(NSMutableDictionary *)self->_activeViewControllers copy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__MediaControlsCollectionViewController__enumerateActiveViewControllers___block_invoke;
   v7[3] = &unk_1E7665678;
-  v8 = v4;
-  v6 = v4;
+  v8 = controllersCopy;
+  v6 = controllersCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -3785,11 +3785,11 @@ void __54__MediaControlsCollectionViewController_frameAnimator__block_invoke()
   [frameAnimator_timing setSpringCubicTimingParameters:v2];
 }
 
-+ (id)alphaAnimatorWithAnimations:(id)a3
++ (id)alphaAnimatorWithAnimations:(id)animations
 {
   v3 = MEMORY[0x1E69DD278];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithDuration:v4 controlPoint1:0.4 controlPoint2:0.25 animations:{0.1, 0.25, 1.0}];
+  animationsCopy = animations;
+  v5 = [[v3 alloc] initWithDuration:animationsCopy controlPoint1:0.4 controlPoint2:0.25 animations:{0.1, 0.25, 1.0}];
 
   return v5;
 }

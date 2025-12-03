@@ -1,33 +1,33 @@
 @interface SUUIFloatingOverlayView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIFloatingOverlayView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIFloatingOverlayView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setContentView:(id)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SUUIFloatingOverlayView
 
-- (SUUIFloatingOverlayView)initWithFrame:(CGRect)a3
+- (SUUIFloatingOverlayView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = SUUIFloatingOverlayView;
-  v3 = [(SUUIFloatingOverlayView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIFloatingOverlayView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(SUUIFloatingOverlayView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SUUIFloatingOverlayView *)v3 setBackgroundColor:clearColor];
 
     [(SUUIFloatingOverlayView *)v3 setClipsToBounds:1];
-    v5 = [(SUUIFloatingOverlayView *)v3 layer];
-    [v5 setCornerRadius:10.0];
+    layer = [(SUUIFloatingOverlayView *)v3 layer];
+    [layer setCornerRadius:10.0];
 
     v6 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2020];
-    v7 = [v6 inputSettings];
-    v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v9 = [v8 colorWithAlphaComponent:0.6];
-    [v7 setColorTint:v9];
+    inputSettings = [v6 inputSettings];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    v9 = [systemBackgroundColor colorWithAlphaComponent:0.6];
+    [inputSettings setColorTint:v9];
 
     [v6 setAutoresizingMask:18];
     [(SUUIFloatingOverlayView *)v3 bounds];
@@ -38,33 +38,33 @@
   return v3;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIFloatingOverlayView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  v9 = v5;
-  if (contentView != v5)
+  v9 = viewCopy;
+  if (contentView != viewCopy)
   {
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     v7 = self->_contentView;
     if (v7)
     {
-      v8 = [MEMORY[0x277D75348] clearColor];
-      [(UIView *)v7 setBackgroundColor:v8];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIView *)v7 setBackgroundColor:clearColor];
 
       [(SUUIFloatingOverlayView *)self addSubview:self->_contentView];
     }
@@ -85,10 +85,10 @@
   [(UIView *)contentView setFrame:v7, v9, v11, v13];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UIView *)self->_contentView sizeThatFits:a3.width, a3.height];
+  width = fits.width;
+  [(UIView *)self->_contentView sizeThatFits:fits.width, fits.height];
   v6 = v5 + self->_contentInset.top + self->_contentInset.bottom;
   v7 = width;
   result.height = v6;

@@ -1,33 +1,33 @@
 @interface DRSProtoDiagnosticUploadRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLogs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLogs:(id)logs;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DRSProtoDiagnosticUploadRequest
 
-- (void)addLogs:(id)a3
+- (void)addLogs:(id)logs
 {
-  v4 = a3;
+  logsCopy = logs;
   logs = self->_logs;
-  v8 = v4;
+  v8 = logsCopy;
   if (!logs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_logs;
     self->_logs = v6;
 
-    v4 = v8;
+    logsCopy = v8;
     logs = self->_logs;
   }
 
-  [(NSMutableArray *)logs addObject:v4];
+  [(NSMutableArray *)logs addObject:logsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = DRSProtoDiagnosticUploadRequest;
   v4 = [(DRSProtoDiagnosticUploadRequest *)&v8 description];
-  v5 = [(DRSProtoDiagnosticUploadRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(DRSProtoDiagnosticUploadRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,18 +45,18 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   requestDescription = self->_requestDescription;
   if (requestDescription)
   {
-    v5 = [(DRSProtoRequestDescription *)requestDescription dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_description"];
+    dictionaryRepresentation = [(DRSProtoRequestDescription *)requestDescription dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_description"];
   }
 
   issueDescription = self->_issueDescription;
   if (issueDescription)
   {
-    [v3 setObject:issueDescription forKey:@"issue_description"];
+    [dictionary setObject:issueDescription forKey:@"issue_description"];
   }
 
   if ([(NSMutableArray *)self->_logs count])
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -91,18 +91,18 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"logs"];
+    [dictionary setObject:v7 forKey:@"logs"];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestDescription)
   {
     PBDataWriterWriteSubmessage();
@@ -148,44 +148,44 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_requestDescription)
   {
-    [v8 setRequestDescription:?];
+    [toCopy setRequestDescription:?];
   }
 
   if (self->_issueDescription)
   {
-    [v8 setIssueDescription:?];
+    [toCopy setIssueDescription:?];
   }
 
   if ([(DRSProtoDiagnosticUploadRequest *)self logsCount])
   {
-    [v8 clearLogs];
-    v4 = [(DRSProtoDiagnosticUploadRequest *)self logsCount];
-    if (v4)
+    [toCopy clearLogs];
+    logsCount = [(DRSProtoDiagnosticUploadRequest *)self logsCount];
+    if (logsCount)
     {
-      v5 = v4;
+      v5 = logsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(DRSProtoDiagnosticUploadRequest *)self logsAtIndex:i];
-        [v8 addLogs:v7];
+        [toCopy addLogs:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DRSProtoRequestDescription *)self->_requestDescription copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DRSProtoRequestDescription *)self->_requestDescription copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_issueDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_issueDescription copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -209,7 +209,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addLogs:v15];
 
         ++v14;
@@ -226,13 +226,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestDescription = self->_requestDescription, !(requestDescription | v4[3])) || -[DRSProtoRequestDescription isEqual:](requestDescription, "isEqual:")) && ((issueDescription = self->_issueDescription, !(issueDescription | v4[1])) || -[NSString isEqual:](issueDescription, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestDescription = self->_requestDescription, !(requestDescription | equalCopy[3])) || -[DRSProtoRequestDescription isEqual:](requestDescription, "isEqual:")) && ((issueDescription = self->_issueDescription, !(issueDescription | equalCopy[1])) || -[NSString isEqual:](issueDescription, "isEqual:")))
   {
     logs = self->_logs;
-    if (logs | v4[2])
+    if (logs | equalCopy[2])
     {
       v8 = [(NSMutableArray *)logs isEqual:?];
     }
@@ -258,12 +258,12 @@
   return v4 ^ [(NSMutableArray *)self->_logs hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   requestDescription = self->_requestDescription;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (requestDescription)
   {
     if (v6)
@@ -277,7 +277,7 @@
     [(DRSProtoDiagnosticUploadRequest *)self setRequestDescription:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(DRSProtoDiagnosticUploadRequest *)self setIssueDescription:?];
   }
@@ -286,7 +286,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

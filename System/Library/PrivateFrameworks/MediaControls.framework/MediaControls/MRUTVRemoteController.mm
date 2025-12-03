@@ -1,28 +1,28 @@
 @interface MRUTVRemoteController
 - (BOOL)transportSupportsTVRemote;
-- (MRUTVRemoteController)initWithEndpointController:(id)a3;
+- (MRUTVRemoteController)initWithEndpointController:(id)controller;
 - (MRUTVRemoteControllerDelegate)delegate;
 - (id)_stateDumpObject;
 - (id)airplayIdentifier;
 - (id)mediaRemoteIdentifier;
 - (int64_t)launchContext;
-- (void)presentTVRemoteUsingApp:(BOOL)a3;
+- (void)presentTVRemoteUsingApp:(BOOL)app;
 - (void)prewarmIfNeeded;
 - (void)updateShowTVRemote;
 @end
 
 @implementation MRUTVRemoteController
 
-- (MRUTVRemoteController)initWithEndpointController:(id)a3
+- (MRUTVRemoteController)initWithEndpointController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MRUTVRemoteController;
   v6 = [(MRUTVRemoteController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpointController, a3);
+    objc_storeStrong(&v6->_endpointController, controller);
     [(MRUEndpointController *)v7->_endpointController addObserver:v7];
     [(MRUTVRemoteController *)v7 updateShowTVRemote];
   }
@@ -32,13 +32,13 @@
 
 - (id)mediaRemoteIdentifier
 {
-  v2 = [(MRUEndpointController *)self->_endpointController route];
-  if (([v2 isAppleTVRoute] & 1) != 0 || objc_msgSend(v2, "containsDeviceWithSubtype:", 18))
+  route = [(MRUEndpointController *)self->_endpointController route];
+  if (([route isAppleTVRoute] & 1) != 0 || objc_msgSend(route, "containsDeviceWithSubtype:", 18))
   {
-    v3 = [objc_msgSend(v2 "endpoint")];
-    v4 = [v3 deviceInfo];
-    v5 = [v4 identifier];
-    v6 = [v5 copy];
+    v3 = [objc_msgSend(route "endpoint")];
+    deviceInfo = [v3 deviceInfo];
+    identifier = [deviceInfo identifier];
+    v6 = [identifier copy];
   }
 
   else
@@ -51,25 +51,25 @@
 
 - (id)airplayIdentifier
 {
-  v2 = [(MRUEndpointController *)self->_endpointController route];
-  v3 = [objc_msgSend(v2 "endpoint")];
-  v4 = [v3 firstObject];
-  if (([v2 isAppleTVRoute] & 1) != 0 || objc_msgSend(v2, "isTVRoute") && objc_msgSend(v4, "isAddedToHomeKit"))
+  route = [(MRUEndpointController *)self->_endpointController route];
+  v3 = [objc_msgSend(route "endpoint")];
+  firstObject = [v3 firstObject];
+  if (([route isAppleTVRoute] & 1) != 0 || objc_msgSend(route, "isTVRoute") && objc_msgSend(firstObject, "isAddedToHomeKit"))
   {
-    v5 = [v2 groupLeaderAirplayIdentifier];
+    groupLeaderAirplayIdentifier = [route groupLeaderAirplayIdentifier];
 LABEL_3:
-    v6 = v5;
+    v6 = groupLeaderAirplayIdentifier;
     goto LABEL_22;
   }
 
-  if ([v2 isDeviceRoute] && objc_msgSend(v2, "isAirPlayingToDevice") && objc_msgSend(v3, "count") == 1)
+  if ([route isDeviceRoute] && objc_msgSend(route, "isAirPlayingToDevice") && objc_msgSend(v3, "count") == 1)
   {
-    v7 = [v4 deviceSubtype] == 13 ? objc_msgSend(v4, "supportsRapport") : 0;
-    v8 = [v4 deviceSubtype] == 11 || objc_msgSend(v4, "deviceSubtype") == 17 || objc_msgSend(v4, "deviceSubtype") == 16 ? objc_msgSend(v4, "isAddedToHomeKit") : 0;
-    v9 = [v4 deviceSubtype] == 15 && objc_msgSend(v4, "clusterType") == 2;
+    v7 = [firstObject deviceSubtype] == 13 ? objc_msgSend(firstObject, "supportsRapport") : 0;
+    v8 = [firstObject deviceSubtype] == 11 || objc_msgSend(firstObject, "deviceSubtype") == 17 || objc_msgSend(firstObject, "deviceSubtype") == 16 ? objc_msgSend(firstObject, "isAddedToHomeKit") : 0;
+    v9 = [firstObject deviceSubtype] == 15 && objc_msgSend(firstObject, "clusterType") == 2;
     if (((v7 | v8) & 1) != 0 || v9)
     {
-      v5 = [v4 uid];
+      groupLeaderAirplayIdentifier = [firstObject uid];
       goto LABEL_3;
     }
   }
@@ -82,10 +82,10 @@ LABEL_22:
 
 - (BOOL)transportSupportsTVRemote
 {
-  v2 = [(MRUEndpointController *)self->_endpointController route];
-  v3 = [objc_msgSend(v2 "endpoint")];
-  v4 = [v3 firstObject];
-  v5 = [v4 transportType] == 1;
+  route = [(MRUEndpointController *)self->_endpointController route];
+  v3 = [objc_msgSend(route "endpoint")];
+  firstObject = [v3 firstObject];
+  v5 = [firstObject transportType] == 1;
 
   return v5;
 }
@@ -94,35 +94,35 @@ LABEL_22:
 {
   if (self->_showTVRemote)
   {
-    v3 = [MEMORY[0x1E69D6100] sharedInstance];
-    [v3 prewarm];
+    mEMORY[0x1E69D6100] = [MEMORY[0x1E69D6100] sharedInstance];
+    [mEMORY[0x1E69D6100] prewarm];
   }
 }
 
-- (void)presentTVRemoteUsingApp:(BOOL)a3
+- (void)presentTVRemoteUsingApp:(BOOL)app
 {
-  v3 = a3;
-  v5 = [(MRUTVRemoteController *)self mediaRemoteIdentifier];
-  if (v5)
+  appCopy = app;
+  mediaRemoteIdentifier = [(MRUTVRemoteController *)self mediaRemoteIdentifier];
+  if (mediaRemoteIdentifier)
   {
     v6 = 0;
-    v14 = v5;
+    airplayIdentifier = mediaRemoteIdentifier;
   }
 
   else
   {
-    v14 = [(MRUTVRemoteController *)self airplayIdentifier];
+    airplayIdentifier = [(MRUTVRemoteController *)self airplayIdentifier];
     v6 = 1;
   }
 
-  v7 = [(MRUEndpointController *)self->_endpointController route];
-  v8 = [v7 isTVRoute];
+  route = [(MRUEndpointController *)self->_endpointController route];
+  isTVRoute = [route isTVRoute];
 
-  v9 = [(MRUTVRemoteController *)self launchContext];
-  v10 = v14;
-  if (v14)
+  launchContext = [(MRUTVRemoteController *)self launchContext];
+  v10 = airplayIdentifier;
+  if (airplayIdentifier)
   {
-    if (v8)
+    if (isTVRoute)
     {
       v11 = 2;
     }
@@ -132,11 +132,11 @@ LABEL_22:
       v11 = 1;
     }
 
-    v12 = [objc_alloc(MEMORY[0x1E69D60F8]) initWithDeviceIdentifier:v14 identifierType:v6 deviceType:v11 launchContext:v9 launchMethod:v3];
-    v13 = [MEMORY[0x1E69D6100] sharedInstance];
-    [v13 presentWithContext:v12];
+    v12 = [objc_alloc(MEMORY[0x1E69D60F8]) initWithDeviceIdentifier:airplayIdentifier identifierType:v6 deviceType:v11 launchContext:launchContext launchMethod:appCopy];
+    mEMORY[0x1E69D6100] = [MEMORY[0x1E69D6100] sharedInstance];
+    [mEMORY[0x1E69D6100] presentWithContext:v12];
 
-    v10 = v14;
+    v10 = airplayIdentifier;
   }
 }
 
@@ -144,16 +144,16 @@ LABEL_22:
 {
   if ([(MRUTVRemoteController *)self transportSupportsTVRemote])
   {
-    v3 = [(MRUTVRemoteController *)self mediaRemoteIdentifier];
-    if (v3)
+    mediaRemoteIdentifier = [(MRUTVRemoteController *)self mediaRemoteIdentifier];
+    if (mediaRemoteIdentifier)
     {
       v4 = 1;
     }
 
     else
     {
-      v5 = [(MRUTVRemoteController *)self airplayIdentifier];
-      v4 = v5 != 0;
+      airplayIdentifier = [(MRUTVRemoteController *)self airplayIdentifier];
+      v4 = airplayIdentifier != 0;
     }
   }
 
@@ -188,11 +188,11 @@ LABEL_22:
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v11[0] = @"airplayIdentifier";
-  v3 = [(MRUTVRemoteController *)self airplayIdentifier];
-  v4 = v3;
-  if (v3)
+  airplayIdentifier = [(MRUTVRemoteController *)self airplayIdentifier];
+  v4 = airplayIdentifier;
+  if (airplayIdentifier)
   {
-    v5 = v3;
+    v5 = airplayIdentifier;
   }
 
   else
@@ -202,11 +202,11 @@ LABEL_22:
 
   v11[1] = @"mediaRemoteIdentifier";
   v12[0] = v5;
-  v6 = [(MRUTVRemoteController *)self mediaRemoteIdentifier];
-  v7 = v6;
-  if (v6)
+  mediaRemoteIdentifier = [(MRUTVRemoteController *)self mediaRemoteIdentifier];
+  v7 = mediaRemoteIdentifier;
+  if (mediaRemoteIdentifier)
   {
-    v8 = v6;
+    v8 = mediaRemoteIdentifier;
   }
 
   else

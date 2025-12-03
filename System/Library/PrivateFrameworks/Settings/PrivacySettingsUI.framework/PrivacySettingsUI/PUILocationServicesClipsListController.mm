@@ -29,8 +29,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) identifier];
-        v10 = [(PUILocationServicesListController *)v2 locationUsageForEntity:v9];
+        identifier = [*(*(&v14 + 1) + 8 * i) identifier];
+        v10 = [(PUILocationServicesListController *)v2 locationUsageForEntity:identifier];
 
         if (v10 == 4)
         {

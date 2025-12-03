@@ -1,16 +1,16 @@
 @interface MSPHistoryEntryStorage
-+ (MSPHistoryEntryStorage)storageWithDisplayQuery:(id)a3 locationDisplayString:(id)a4 mapRegion:(id)a5 timestamp:(double)a6;
-+ (MSPHistoryEntryStorage)storageWithQuerySearch:(id)a3 timestamp:(double)a4;
-- (id)initWithHistoryItem:(id)a3;
++ (MSPHistoryEntryStorage)storageWithDisplayQuery:(id)query locationDisplayString:(id)string mapRegion:(id)region timestamp:(double)timestamp;
++ (MSPHistoryEntryStorage)storageWithQuerySearch:(id)search timestamp:(double)timestamp;
+- (id)initWithHistoryItem:(id)item;
 @end
 
 @implementation MSPHistoryEntryStorage
 
-- (id)initWithHistoryItem:(id)a3
+- (id)initWithHistoryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -25,7 +25,7 @@
 
   if (v7)
   {
-    v8 = [v7 historyEntry];
+    historyEntry = [v7 historyEntry];
     v9 = MSPHistoryEntryGetStorage();
     v10 = [v9 copy];
   }
@@ -38,25 +38,25 @@
   return v10;
 }
 
-+ (MSPHistoryEntryStorage)storageWithDisplayQuery:(id)a3 locationDisplayString:(id)a4 mapRegion:(id)a5 timestamp:(double)a6
++ (MSPHistoryEntryStorage)storageWithDisplayQuery:(id)query locationDisplayString:(id)string mapRegion:(id)region timestamp:(double)timestamp
 {
-  v7 = [MSPQuerySearch querySearchWithDisplayQuery:a3 locationDisplayString:a4 mapRegion:a5];
-  v8 = [MSPHistoryEntryStorage storageWithQuerySearch:v7 timestamp:a6];
+  v7 = [MSPQuerySearch querySearchWithDisplayQuery:query locationDisplayString:string mapRegion:region];
+  v8 = [MSPHistoryEntryStorage storageWithQuerySearch:v7 timestamp:timestamp];
 
   return v8;
 }
 
-+ (MSPHistoryEntryStorage)storageWithQuerySearch:(id)a3 timestamp:(double)a4
++ (MSPHistoryEntryStorage)storageWithQuerySearch:(id)search timestamp:(double)timestamp
 {
-  v5 = a3;
+  searchCopy = search;
   v6 = objc_alloc_init(MSPHistoryEntryStorage);
-  [v6 setQuerySearch:v5];
+  [v6 setQuerySearch:searchCopy];
 
-  [v6 setTimestamp:a4];
+  [v6 setTimestamp:timestamp];
   [v6 setSearchType:1];
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
-  [v6 setIdentifier:v8];
+  uUIDString = [v7 UUIDString];
+  [v6 setIdentifier:uUIDString];
 
   return v6;
 }

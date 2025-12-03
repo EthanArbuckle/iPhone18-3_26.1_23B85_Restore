@@ -1,13 +1,13 @@
 @interface MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest
-- (MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest)initWithStoreIDs:(id)a3;
-- (void)performWithCompletionHandler:(id)a3;
+- (MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest)initWithStoreIDs:(id)ds;
+- (void)performWithCompletionHandler:(id)handler;
 @end
 
 @implementation MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest
 
-- (MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest)initWithStoreIDs:(id)a3
+- (MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest)initWithStoreIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v11.receiver = self;
   v11.super_class = MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest;
   v5 = [(MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest *)&v11 init];
@@ -33,7 +33,7 @@
     _Block_object_dispose(&v13, 8);
     v8 = objc_alloc_init(v6);
     [v8 setLabel:@"MusicKit_Prewarm"];
-    [v8 setStoreIDs:v4];
+    [v8 setStoreIDs:dsCopy];
     underlyingRequest = v5->_underlyingRequest;
     v5->_underlyingRequest = v8;
   }
@@ -41,16 +41,16 @@
   return v5;
 }
 
-- (void)performWithCompletionHandler:(id)a3
+- (void)performWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   underlyingRequest = self->_underlyingRequest;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__MusicKit_SoftLinking_MPCModelStorePlaybackItemsRequest_performWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E84C38C8;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(MPCModelStorePlaybackItemsRequest *)underlyingRequest performWithResponseHandler:v7];
 }
 

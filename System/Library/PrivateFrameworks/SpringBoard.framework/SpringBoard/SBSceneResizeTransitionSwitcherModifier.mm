@@ -1,45 +1,45 @@
 @interface SBSceneResizeTransitionSwitcherModifier
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (SBSceneResizeTransitionSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 minimumCardWithForDismissal:(double)a6;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)a3;
-- (id)handleSceneReadyEvent:(id)a3;
-- (id)resizeGrabberLayoutAttributesForAppLayout:(id)a3;
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout;
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (SBSceneResizeTransitionSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout minimumCardWithForDismissal:(double)dismissal;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)event;
+- (id)handleSceneReadyEvent:(id)event;
+- (id)resizeGrabberLayoutAttributesForAppLayout:(id)layout;
 @end
 
 @implementation SBSceneResizeTransitionSwitcherModifier
 
-- (SBSceneResizeTransitionSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 minimumCardWithForDismissal:(double)a6
+- (SBSceneResizeTransitionSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout minimumCardWithForDismissal:(double)dismissal
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (!v12 || !v13)
+  dCopy = d;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  v14 = appLayoutCopy;
+  if (!layoutCopy || !appLayoutCopy)
   {
     [SBSceneResizeTransitionSwitcherModifier initWithTransitionID:a2 fromAppLayout:self toAppLayout:? minimumCardWithForDismissal:?];
   }
 
-  if (([v12 isSplitConfiguration] & 1) == 0)
+  if (([layoutCopy isSplitConfiguration] & 1) == 0)
   {
     [SBSceneResizeTransitionSwitcherModifier initWithTransitionID:a2 fromAppLayout:self toAppLayout:? minimumCardWithForDismissal:?];
   }
 
   v27.receiver = self;
   v27.super_class = SBSceneResizeTransitionSwitcherModifier;
-  v15 = [(SBTransitionSwitcherModifier *)&v27 initWithTransitionID:v11];
+  v15 = [(SBTransitionSwitcherModifier *)&v27 initWithTransitionID:dCopy];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_fromAppLayout, a4);
-    objc_storeStrong(&v16->_toAppLayout, a5);
-    v16->_minimumCardWithForDismissal = a6;
+    objc_storeStrong(&v15->_fromAppLayout, layout);
+    objc_storeStrong(&v16->_toAppLayout, appLayout);
+    v16->_minimumCardWithForDismissal = dismissal;
     fromAppLayout = v16->_fromAppLayout;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
@@ -68,44 +68,44 @@
   return v16;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBSceneResizeTransitionSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBSceneResizeTransitionSwitcherModifier *)self medusaSettings];
-  v7 = [v6 medusaAnimationSettings];
+  medusaSettings = [(SBSceneResizeTransitionSwitcherModifier *)self medusaSettings];
+  medusaAnimationSettings = [medusaSettings medusaAnimationSettings];
 
-  [v5 setLayoutSettings:v7];
-  [v5 setPositionSettings:v7];
-  [v5 setScaleSettings:v7];
-  [v5 setOpacitySettings:v7];
-  [v5 setCornerRadiusSettings:v7];
+  [v5 setLayoutSettings:medusaAnimationSettings];
+  [v5 setPositionSettings:medusaAnimationSettings];
+  [v5 setScaleSettings:medusaAnimationSettings];
+  [v5 setOpacitySettings:medusaAnimationSettings];
+  [v5 setCornerRadiusSettings:medusaAnimationSettings];
   [v5 setUpdateMode:3];
 
   return v5;
 }
 
-- (id)handleSceneReadyEvent:(id)a3
+- (id)handleSceneReadyEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBSceneResizeTransitionSwitcherModifier;
-  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:a3];
+  v3 = [(SBSwitcherModifier *)&v7 handleSceneReadyEvent:event];
   v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:64 updateMode:3];
   v5 = SBAppendSwitcherModifierResponse(v4, v3);
 
   return v5;
 }
 
-- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleMatchMovedToScene:(int64_t)scene inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v9.receiver = self;
   v9.super_class = SBSceneResizeTransitionSwitcherModifier;
-  v7 = [(SBSceneResizeTransitionSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:a3 inAppLayout:v6];
-  if ([(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:v6]|| [(SBAppLayout *)self->_discardedAppLayout isOrContainsAppLayout:v6])
+  v7 = [(SBSceneResizeTransitionSwitcherModifier *)&v9 isLayoutRoleMatchMovedToScene:scene inAppLayout:layoutCopy];
+  if ([(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:layoutCopy]|| [(SBAppLayout *)self->_discardedAppLayout isOrContainsAppLayout:layoutCopy])
   {
     v7 = 1;
   }
@@ -113,15 +113,15 @@
   return v7;
 }
 
-- (BOOL)isLayoutRoleBlurred:(int64_t)a3 inAppLayout:(id)a4
+- (BOOL)isLayoutRoleBlurred:(int64_t)blurred inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 leafAppLayoutForRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy leafAppLayoutForRole:blurred];
   if (![(SBAppLayout *)self->_fromAppLayout isOrContainsAppLayout:v7]&& ![(SBAppLayout *)self->_toAppLayout isOrContainsAppLayout:v7])
   {
     v14.receiver = self;
     v14.super_class = SBSceneResizeTransitionSwitcherModifier;
-    LOBYTE(self) = [(SBSceneResizeTransitionSwitcherModifier *)&v14 isLayoutRoleBlurred:a3 inAppLayout:v6];
+    LOBYTE(self) = [(SBSceneResizeTransitionSwitcherModifier *)&v14 isLayoutRoleBlurred:blurred inAppLayout:layoutCopy];
     goto LABEL_18;
   }
 
@@ -178,26 +178,26 @@ LABEL_18:
   return self;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
   v14.receiver = self;
   v14.super_class = SBSceneResizeTransitionSwitcherModifier;
-  v8 = a4;
-  [(SBSceneResizeTransitionSwitcherModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+  layoutCopy = layout;
+  [(SBSceneResizeTransitionSwitcherModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
   v10 = v9;
-  LODWORD(a5) = [v8 isOrContainsAppLayout:{self->_discardedAppLayout, v14.receiver, v14.super_class}];
+  LODWORD(index) = [layoutCopy isOrContainsAppLayout:{self->_discardedAppLayout, v14.receiver, v14.super_class}];
 
-  if (a5)
+  if (index)
   {
-    v11 = [(SBSceneResizeTransitionSwitcherModifier *)self medusaSettings];
-    [v11 resizeAnimationDismissItemOpacity];
+    medusaSettings = [(SBSceneResizeTransitionSwitcherModifier *)self medusaSettings];
+    [medusaSettings resizeAnimationDismissItemOpacity];
     v10 = v12;
   }
 
   return v10;
 }
 
-- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)a3
+- (id)appLayoutsToEnsureExistForMainTransitionEvent:(id)event
 {
   v5[1] = *MEMORY[0x277D85DE8];
   if (self->_discardedAppLayout)
@@ -214,7 +214,7 @@ LABEL_18:
   return v3;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v27.receiver = self;
   v27.super_class = SBSceneResizeTransitionSwitcherModifier;
@@ -223,8 +223,8 @@ LABEL_18:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBSceneResizeTransitionSwitcherModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBSceneResizeTransitionSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
   if ([v14 isOrContainsAppLayout:self->_discardedAppLayout])
   {
@@ -270,21 +270,21 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v31.receiver = self;
   v31.super_class = SBSceneResizeTransitionSwitcherModifier;
-  v11 = a4;
-  [(SBSceneResizeTransitionSwitcherModifier *)&v31 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+  layoutCopy = layout;
+  [(SBSceneResizeTransitionSwitcherModifier *)&v31 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [v11 leafAppLayoutForRole:{a3, v31.receiver, v31.super_class}];
+  v20 = [layoutCopy leafAppLayoutForRole:{role, v31.receiver, v31.super_class}];
 
   discardedAppLayout = self->_discardedAppLayout;
   if (discardedAppLayout)
@@ -317,7 +317,7 @@ LABEL_9:
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBSceneResizeTransitionSwitcherModifier *)self displayCornerRadius];
 
@@ -329,10 +329,10 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBSceneResizeTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBSceneResizeTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if (v6 == self->_toAppLayout)
   {
@@ -343,23 +343,23 @@ LABEL_9:
   {
     v9.receiver = self;
     v9.super_class = SBSceneResizeTransitionSwitcherModifier;
-    v7 = [(SBSceneResizeTransitionSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+    v7 = [(SBSceneResizeTransitionSwitcherModifier *)&v9 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
   }
 
   return v7;
 }
 
-- (id)resizeGrabberLayoutAttributesForAppLayout:(id)a3
+- (id)resizeGrabberLayoutAttributesForAppLayout:(id)layout
 {
   v13.receiver = self;
   v13.super_class = SBSceneResizeTransitionSwitcherModifier;
-  v4 = [(SBSceneResizeTransitionSwitcherModifier *)&v13 resizeGrabberLayoutAttributesForAppLayout:a3];
+  v4 = [(SBSceneResizeTransitionSwitcherModifier *)&v13 resizeGrabberLayoutAttributesForAppLayout:layout];
   if (self->_discardedAppLayout)
   {
-    v5 = [(SBSceneResizeTransitionSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled = [(SBSceneResizeTransitionSwitcherModifier *)self isRTLEnabled];
     discardedLayoutRole = self->_discardedLayoutRole;
-    v7 = (discardedLayoutRole != 1) | v5;
-    v8 = ((discardedLayoutRole == 2) & v5) == 0;
+    v7 = (discardedLayoutRole != 1) | isRTLEnabled;
+    v8 = ((discardedLayoutRole == 2) & isRTLEnabled) == 0;
     v9 = 8;
     if (!v8)
     {

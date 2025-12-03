@@ -1,10 +1,10 @@
 @interface MUPlaceTileListContentView
-- (MUPlaceTileListContentView)initWithFrame:(CGRect)a3;
+- (MUPlaceTileListContentView)initWithFrame:(CGRect)frame;
 - (void)_setupConstraints;
 - (void)_setupViews;
 - (void)_updateAppearance;
 - (void)_updateFonts;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUPlaceTileListContentView
@@ -31,8 +31,8 @@
 - (void)_updateAppearance
 {
   [(MUImageView *)self->_stopImageView setImage:0];
-  v3 = [(MUPlaceTileViewModel *)self->_viewModel tileName];
-  [(MULabelViewProtocol *)self->_titleLabel setText:v3];
+  tileName = [(MUPlaceTileViewModel *)self->_viewModel tileName];
+  [(MULabelViewProtocol *)self->_titleLabel setText:tileName];
 
   viewModel = self->_viewModel;
   v5 = *MEMORY[0x1E69DDD80];
@@ -110,12 +110,12 @@ void __47__MUPlaceTileListContentView__updateAppearance__block_invoke_2(uint64_t
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if (([(MUPlaceTileViewModel *)self->_viewModel isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(MUPlaceTileListContentView *)self _updateAppearance];
   }
 }
@@ -196,11 +196,11 @@ void __47__MUPlaceTileListContentView__updateAppearance__block_invoke_2(uint64_t
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (MUPlaceTileListContentView)initWithFrame:(CGRect)a3
+- (MUPlaceTileListContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUPlaceTileListContentView;
-  v3 = [(MUPlaceSectionRowView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceSectionRowView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

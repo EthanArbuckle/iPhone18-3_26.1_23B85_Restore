@@ -1,31 +1,31 @@
 @interface PAApplication
 + (PAApplication)applicationForCurrentProcess;
-+ (PAApplication)applicationWithAuditToken:(id *)a3;
-+ (PAApplication)applicationWithBundleID:(id)a3;
-+ (PAApplication)applicationWithPath:(id)a3;
-+ (PAApplication)applicationWithType:(int64_t)a3 identifier:(id)a4;
++ (PAApplication)applicationWithAuditToken:(id *)token;
++ (PAApplication)applicationWithBundleID:(id)d;
++ (PAApplication)applicationWithPath:(id)path;
++ (PAApplication)applicationWithType:(int64_t)type identifier:(id)identifier;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)descriptionForIdentifier;
 - (NSString)identifier;
-- (PAApplication)initWithAuditToken:(id *)a3;
-- (PAApplication)initWithBundleID:(id)a3;
-- (PAApplication)initWithCoder:(id)a3;
-- (PAApplication)initWithInProcessAssumedIdentity:(id)a3;
-- (PAApplication)initWithInProcessBridgedAssumedIdentity:(id)a3;
-- (PAApplication)initWithInsecureProcessIdentifier:(int)a3;
-- (PAApplication)initWithPath:(id)a3;
-- (PAApplication)initWithProto:(id)a3;
-- (PAApplication)initWithProtoData:(id)a3;
-- (PAApplication)initWithTCCIdentity:(id)a3;
-- (PAApplication)initWithType:(int64_t)a3 identifier:(id)a4;
+- (PAApplication)initWithAuditToken:(id *)token;
+- (PAApplication)initWithBundleID:(id)d;
+- (PAApplication)initWithCoder:(id)coder;
+- (PAApplication)initWithInProcessAssumedIdentity:(id)identity;
+- (PAApplication)initWithInProcessBridgedAssumedIdentity:(id)identity;
+- (PAApplication)initWithInsecureProcessIdentifier:(int)identifier;
+- (PAApplication)initWithPath:(id)path;
+- (PAApplication)initWithProto:(id)proto;
+- (PAApplication)initWithProtoData:(id)data;
+- (PAApplication)initWithTCCIdentity:(id)identity;
+- (PAApplication)initWithType:(int64_t)type identifier:(id)identifier;
 - (id)JSONObject;
 - (id)description;
 - (id)descriptionForIdentifierType;
 - (id)encodeAsProto;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PAApplication
@@ -99,11 +99,11 @@ uint64_t __45__PAApplication_applicationForCurrentProcess__block_invoke()
 - (id)JSONObject
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-  v4 = [(PAApplication *)self descriptionForIdentifierType];
-  [v3 setObject:v4 forKeyedSubscript:@"identifierType"];
+  descriptionForIdentifierType = [(PAApplication *)self descriptionForIdentifierType];
+  [v3 setObject:descriptionForIdentifierType forKeyedSubscript:@"identifierType"];
 
-  v5 = [(PAApplication *)self descriptionForIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"identifier"];
+  descriptionForIdentifier = [(PAApplication *)self descriptionForIdentifier];
+  [v3 setObject:descriptionForIdentifier forKeyedSubscript:@"identifier"];
 
   if (self->_identifierType == 4)
   {
@@ -181,86 +181,86 @@ LABEL_12:
   identifierType = self->_identifierType;
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
-  v6 = [(PAApplication *)self descriptionForIdentifierType];
-  v7 = v6;
+  descriptionForIdentifierType = [(PAApplication *)self descriptionForIdentifierType];
+  v7 = descriptionForIdentifierType;
   if (identifierType == 4)
   {
-    v8 = [v4 stringWithFormat:@"<%@ %p identifierType:%@ assumedIdentity:%@>", v5, self, v6, self->_bridgedAssumedIdentity];
+    v8 = [v4 stringWithFormat:@"<%@ %p identifierType:%@ assumedIdentity:%@>", v5, self, descriptionForIdentifierType, self->_bridgedAssumedIdentity];
   }
 
   else
   {
-    v9 = [(PAApplication *)self descriptionForIdentifier];
-    v8 = [v4 stringWithFormat:@"<%@ %p identifierType:%@ identifier:%@>", v5, self, v7, v9];
+    descriptionForIdentifier = [(PAApplication *)self descriptionForIdentifier];
+    v8 = [v4 stringWithFormat:@"<%@ %p identifierType:%@ identifier:%@>", v5, self, v7, descriptionForIdentifier];
   }
 
   return v8;
 }
 
-+ (PAApplication)applicationWithType:(int64_t)a3 identifier:(id)a4
++ (PAApplication)applicationWithType:(int64_t)type identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithType:a3 identifier:v6];
+  identifierCopy = identifier;
+  v7 = [[self alloc] initWithType:type identifier:identifierCopy];
 
   return v7;
 }
 
-+ (PAApplication)applicationWithBundleID:(id)a3
++ (PAApplication)applicationWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBundleID:v4];
+  dCopy = d;
+  v5 = [[self alloc] initWithBundleID:dCopy];
 
   return v5;
 }
 
-+ (PAApplication)applicationWithPath:(id)a3
++ (PAApplication)applicationWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPath:v4];
+  pathCopy = path;
+  v5 = [[self alloc] initWithPath:pathCopy];
 
   return v5;
 }
 
-+ (PAApplication)applicationWithAuditToken:(id *)a3
++ (PAApplication)applicationWithAuditToken:(id *)token
 {
-  v4 = [a1 alloc];
-  v5 = *&a3->var0[4];
-  v8[0] = *a3->var0;
+  v4 = [self alloc];
+  v5 = *&token->var0[4];
+  v8[0] = *token->var0;
   v8[1] = v5;
   v6 = [v4 initWithAuditToken:v8];
 
   return v6;
 }
 
-- (PAApplication)initWithType:(int64_t)a3 identifier:(id)a4
+- (PAApplication)initWithType:(int64_t)type identifier:(id)identifier
 {
-  v6 = a4;
-  if (a3 == 1)
+  identifierCopy = identifier;
+  if (type == 1)
   {
-    v7 = [(PAApplication *)self initWithPath:v6];
+    v7 = [(PAApplication *)self initWithPath:identifierCopy];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
-      v8 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
-    v7 = [(PAApplication *)self initWithBundleID:v6];
+    v7 = [(PAApplication *)self initWithBundleID:identifierCopy];
   }
 
   self = v7;
-  v8 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v8;
+  return selfCopy;
 }
 
-- (PAApplication)initWithBundleID:(id)a3
+- (PAApplication)initWithBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = PAApplication;
   v5 = [(PAApplication *)&v10 init];
@@ -268,7 +268,7 @@ LABEL_7:
   if (v5)
   {
     v5->_identifierType = 0;
-    v7 = [v4 copy];
+    v7 = [dCopy copy];
     bundleID = v6->_bundleID;
     v6->_bundleID = v7;
   }
@@ -276,9 +276,9 @@ LABEL_7:
   return v6;
 }
 
-- (PAApplication)initWithPath:(id)a3
+- (PAApplication)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = PAApplication;
   v5 = [(PAApplication *)&v10 init];
@@ -286,7 +286,7 @@ LABEL_7:
   if (v5)
   {
     v5->_identifierType = 1;
-    v7 = [v4 copy];
+    v7 = [pathCopy copy];
     path = v6->_path;
     v6->_path = v7;
   }
@@ -294,7 +294,7 @@ LABEL_7:
   return v6;
 }
 
-- (PAApplication)initWithAuditToken:(id *)a3
+- (PAApplication)initWithAuditToken:(id *)token
 {
   v6.receiver = self;
   v6.super_class = PAApplication;
@@ -302,20 +302,20 @@ LABEL_7:
   if (result)
   {
     result->_identifierType = 2;
-    v5 = *&a3->var0[4];
-    *result->_auditToken.val = *a3->var0;
+    v5 = *&token->var0[4];
+    *result->_auditToken.val = *token->var0;
     *&result->_auditToken.val[4] = v5;
   }
 
   return result;
 }
 
-- (PAApplication)initWithInProcessAssumedIdentity:(id)a3
+- (PAApplication)initWithInProcessAssumedIdentity:(id)identity
 {
-  if (a3)
+  if (identity)
   {
-    v4 = a3;
-    v5 = [[PABridgedTCCIdentity alloc] initWithTCCIdentity:v4];
+    identityCopy = identity;
+    v5 = [[PABridgedTCCIdentity alloc] initWithTCCIdentity:identityCopy];
   }
 
   else
@@ -328,9 +328,9 @@ LABEL_7:
   return v6;
 }
 
-- (PAApplication)initWithInProcessBridgedAssumedIdentity:(id)a3
+- (PAApplication)initWithInProcessBridgedAssumedIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = PAApplication;
   v6 = [(PAApplication *)&v9 init];
@@ -338,15 +338,15 @@ LABEL_7:
   if (v6)
   {
     v6->_identifierType = 4;
-    objc_storeStrong(&v6->_bridgedAssumedIdentity, a3);
+    objc_storeStrong(&v6->_bridgedAssumedIdentity, identity);
   }
 
   return v7;
 }
 
-- (PAApplication)initWithTCCIdentity:(id)a3
+- (PAApplication)initWithTCCIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   type = tcc_identity_get_type();
   if (type == 1)
   {
@@ -358,7 +358,7 @@ LABEL_7:
   {
     if (type)
     {
-      v8 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
@@ -368,13 +368,13 @@ LABEL_7:
 
   self = v7;
 
-  v8 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v8;
+  return selfCopy;
 }
 
-- (PAApplication)initWithInsecureProcessIdentifier:(int)a3
+- (PAApplication)initWithInsecureProcessIdentifier:(int)identifier
 {
   v5.receiver = self;
   v5.super_class = PAApplication;
@@ -382,7 +382,7 @@ LABEL_7:
   if (result)
   {
     result->_identifierType = 3;
-    result->_insecureProcessIdentifier = a3;
+    result->_insecureProcessIdentifier = identifier;
   }
 
   return result;
@@ -393,20 +393,20 @@ LABEL_7:
   identifierType = self->_identifierType;
   if (identifierType == 1)
   {
-    v3 = [(PAApplication *)self path];
+    path = [(PAApplication *)self path];
   }
 
   else if (identifierType)
   {
-    v3 = 0;
+    path = 0;
   }
 
   else
   {
-    v3 = [(PAApplication *)self bundleID];
+    path = [(PAApplication *)self bundleID];
   }
 
-  return v3;
+  return path;
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
@@ -417,19 +417,19 @@ LABEL_7:
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(identifierType) = 1;
   }
 
   else
   {
-    if ([(PAApplication *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(PAApplication *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifierType = self->_identifierType;
       if (identifierType == [(PAApplication *)v5 identifierType])
       {
@@ -503,11 +503,11 @@ LABEL_33:
   return identifierType & 1;
 }
 
-- (PAApplication)initWithCoder:(id)a3
+- (PAApplication)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"identifierType"];
-  v6 = 0;
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"identifierType"];
+  selfCopy = 0;
   if (v5 > 1)
   {
     switch(v5)
@@ -515,7 +515,7 @@ LABEL_33:
       case 2:
         v13 = 0u;
         v14 = 0u;
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auditToken"];
         [v9 getValue:&v13 size:32];
 
         v12[0] = v13;
@@ -523,54 +523,54 @@ LABEL_33:
         v10 = [(PAApplication *)self initWithAuditToken:v12];
         break;
       case 3:
-        v10 = -[PAApplication initWithInsecureProcessIdentifier:](self, "initWithInsecureProcessIdentifier:", [v4 decodeIntForKey:@"insecureProcessIdentifier"]);
+        v10 = -[PAApplication initWithInsecureProcessIdentifier:](self, "initWithInsecureProcessIdentifier:", [coderCopy decodeIntForKey:@"insecureProcessIdentifier"]);
         break;
       case 4:
-        v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assumedIdentity"];
+        v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assumedIdentity"];
         v8 = [(PAApplication *)self initWithInProcessBridgedAssumedIdentity:v7];
 LABEL_13:
         self = v8;
 
-        v6 = self;
+        selfCopy = self;
         goto LABEL_14;
       default:
         goto LABEL_14;
     }
 
     self = v10;
-    v6 = v10;
+    selfCopy = v10;
     goto LABEL_14;
   }
 
   if (!v5)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     v8 = [(PAApplication *)self initWithBundleID:v7];
     goto LABEL_13;
   }
 
   if (v5 == 1)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     v8 = [(PAApplication *)self initWithPath:v7];
     goto LABEL_13;
   }
 
 LABEL_14:
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeInteger:self->_identifierType forKey:@"identifierType"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_identifierType forKey:@"identifierType"];
   identifierType = self->_identifierType;
   if (identifierType <= 1)
   {
     if (identifierType)
     {
-      v5 = v9;
+      v5 = coderCopy;
       if (identifierType != 1)
       {
         goto LABEL_14;
@@ -592,14 +592,14 @@ LABEL_14:
   if (identifierType == 2)
   {
     v8 = [MEMORY[0x1E696B098] valueWithBytes:&self->_auditToken objCType:"{?=[8I]}"];
-    [v9 encodeObject:v8 forKey:@"auditToken"];
+    [coderCopy encodeObject:v8 forKey:@"auditToken"];
   }
 
   else
   {
     if (identifierType != 3)
     {
-      v5 = v9;
+      v5 = coderCopy;
       if (identifierType != 4)
       {
         goto LABEL_14;
@@ -608,59 +608,59 @@ LABEL_14:
       path = self->_bridgedAssumedIdentity;
       v7 = @"assumedIdentity";
 LABEL_12:
-      [v9 encodeObject:path forKey:v7];
+      [coderCopy encodeObject:path forKey:v7];
       goto LABEL_13;
     }
 
-    [v9 encodeInt:self->_insecureProcessIdentifier forKey:@"insecureProcessIdentifier"];
+    [coderCopy encodeInt:self->_insecureProcessIdentifier forKey:@"insecureProcessIdentifier"];
   }
 
 LABEL_13:
-  v5 = v9;
+  v5 = coderCopy;
 LABEL_14:
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(PAApplication *)self proto];
-  v3 = [v2 data];
+  proto = [(PAApplication *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (PAApplication)initWithProto:(id)a3
+- (PAApplication)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 identifier];
+    v5 = protoCopy;
+    selfCopy = [v5 identifier];
 
-    if (v6)
+    if (selfCopy)
     {
-      v7 = [v5 identifierType];
-      if (v7 == 2)
+      identifierType = [v5 identifierType];
+      if (identifierType == 2)
       {
-        v8 = [v5 identifier];
-        v9 = [(PAApplication *)self initWithPath:v8];
+        identifier = [v5 identifier];
+        v9 = [(PAApplication *)self initWithPath:identifier];
       }
 
       else
       {
-        if (v7 != 1)
+        if (identifierType != 1)
         {
-          v6 = 0;
+          selfCopy = 0;
           goto LABEL_10;
         }
 
-        v8 = [v5 identifier];
-        v9 = [(PAApplication *)self initWithBundleID:v8];
+        identifier = [v5 identifier];
+        v9 = [(PAApplication *)self initWithBundleID:identifier];
       }
 
       self = v9;
 
-      v6 = self;
+      selfCopy = self;
     }
 
 LABEL_10:
@@ -668,18 +668,18 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = 0;
+  selfCopy = 0;
 LABEL_11:
 
-  return v6;
+  return selfCopy;
 }
 
-- (PAApplication)initWithProtoData:(id)a3
+- (PAApplication)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[PAPBApplication alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[PAPBApplication alloc] initWithData:dataCopy];
 
     v6 = [(PAApplication *)self initWithProto:v5];
     self = v6;

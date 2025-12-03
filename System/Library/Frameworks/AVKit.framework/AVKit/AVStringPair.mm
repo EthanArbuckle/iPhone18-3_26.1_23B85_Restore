@@ -1,18 +1,18 @@
 @interface AVStringPair
-- (AVStringPair)initWithString:(id)a3 separatedByString:(id)a4;
-- (BOOL)keyEquals:(id)a3;
+- (AVStringPair)initWithString:(id)string separatedByString:(id)byString;
+- (BOOL)keyEquals:(id)equals;
 @end
 
 @implementation AVStringPair
 
-- (BOOL)keyEquals:(id)a3
+- (BOOL)keyEquals:(id)equals
 {
-  v4 = a3;
+  equalsCopy = equals;
   v5 = [(AVStringPair *)self key];
   if (v5)
   {
     v6 = [(AVStringPair *)self key];
-    v7 = [v4 caseInsensitiveCompare:v6] == 0;
+    v7 = [equalsCopy caseInsensitiveCompare:v6] == 0;
   }
 
   else
@@ -23,20 +23,20 @@
   return v7;
 }
 
-- (AVStringPair)initWithString:(id)a3 separatedByString:(id)a4
+- (AVStringPair)initWithString:(id)string separatedByString:(id)byString
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  stringCopy = string;
+  byStringCopy = byString;
+  if (stringCopy)
   {
     v19.receiver = self;
     v19.super_class = AVStringPair;
     v8 = [(AVStringPair *)&v19 init];
     if (v8)
     {
-      if ([v7 length])
+      if ([byStringCopy length])
       {
-        v9 = [v6 rangeOfString:v7];
+        v9 = [stringCopy rangeOfString:byStringCopy];
         v11 = v10;
       }
 
@@ -48,17 +48,17 @@
 
       if (v11)
       {
-        v13 = [v6 substringToIndex:v9];
+        v13 = [stringCopy substringToIndex:v9];
         first = v8->_first;
         v8->_first = v13;
 
-        v15 = [v6 substringFromIndex:v9 + v11];
+        v15 = [stringCopy substringFromIndex:v9 + v11];
         v16 = 16;
       }
 
       else
       {
-        v15 = [v6 copy];
+        v15 = [stringCopy copy];
         v16 = 8;
       }
 
@@ -67,15 +67,15 @@
     }
 
     self = v8;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface CPLUploadComputeStatesAccumulator
-- (CPLUploadComputeStatesAccumulator)initWithCapacity:(unint64_t)a3 maximumPayloadRequestsBatchSize:(unint64_t)a4;
-- (id)localComputeStatesToDropAfterClientProvidedPayloadForLocalComputeStates:(id)a3;
+- (CPLUploadComputeStatesAccumulator)initWithCapacity:(unint64_t)capacity maximumPayloadRequestsBatchSize:(unint64_t)size;
+- (id)localComputeStatesToDropAfterClientProvidedPayloadForLocalComputeStates:(id)states;
 - (id)popNextBatchOfLocalComputeStatesNeedingPayload;
-- (void)addLocalComputeStateToUpload:(id)a3 cloudComputeState:(id)a4;
-- (void)enumerateUploadedComputeStateWithBlock:(id)a3;
-- (void)requestPayloadForLocalComputeState:(id)a3 cloudComputeState:(id)a4;
+- (void)addLocalComputeStateToUpload:(id)upload cloudComputeState:(id)state;
+- (void)enumerateUploadedComputeStateWithBlock:(id)block;
+- (void)requestPayloadForLocalComputeState:(id)state cloudComputeState:(id)computeState;
 @end
 
 @implementation CPLUploadComputeStatesAccumulator
 
-- (void)enumerateUploadedComputeStateWithBlock:(id)a3
+- (void)enumerateUploadedComputeStateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   localComputeStatesToUpload = self->_localComputeStatesToUpload;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__CPLUploadComputeStatesAccumulator_enumerateUploadedComputeStateWithBlock___block_invoke;
   v7[3] = &unk_1E861BD50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)localComputeStatesToUpload enumerateKeysAndObjectsUsingBlock:v7];
 }
 
@@ -32,10 +32,10 @@ void __76__CPLUploadComputeStatesAccumulator_enumerateUploadedComputeStateWithBl
   (*(v6 + 16))(v6, v8, v9, a4);
 }
 
-- (id)localComputeStatesToDropAfterClientProvidedPayloadForLocalComputeStates:(id)a3
+- (id)localComputeStatesToDropAfterClientProvidedPayloadForLocalComputeStates:(id)states
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  statesCopy = states;
   if (!self->_batchEnumerator)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -48,12 +48,12 @@ void __76__CPLUploadComputeStatesAccumulator_enumerateUploadedComputeStateWithBl
       }
     }
 
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Upload Compute State Phase/CPLUploadComputeStatesAccumulator.m"];
     v24 = @"Trying to update payload of compute states without having started enumerating the batches";
-    v25 = v22;
+    v25 = currentHandler;
     v26 = a2;
-    v27 = self;
+    selfCopy3 = self;
     v28 = v23;
     v29 = 84;
     goto LABEL_31;
@@ -71,12 +71,12 @@ void __76__CPLUploadComputeStatesAccumulator_enumerateUploadedComputeStateWithBl
       }
     }
 
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Upload Compute State Phase/CPLUploadComputeStatesAccumulator.m"];
     v24 = @"Trying to update payload without a batch";
-    v25 = v22;
+    v25 = currentHandler;
     v26 = a2;
-    v27 = self;
+    selfCopy3 = self;
     v28 = v23;
     v29 = 85;
     goto LABEL_31;
@@ -87,7 +87,7 @@ void __76__CPLUploadComputeStatesAccumulator_enumerateUploadedComputeStateWithBl
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = v5;
+  v6 = statesCopy;
   v7 = [v6 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (!v7)
   {
@@ -106,11 +106,11 @@ void __76__CPLUploadComputeStatesAccumulator_enumerateUploadedComputeStateWithBl
       }
 
       v11 = *(*(&v34 + 1) + 8 * i);
-      v12 = [v11 fileURL];
-      if (v12)
+      fileURL = [v11 fileURL];
+      if (fileURL)
       {
-        v13 = [v11 itemScopedIdentifier];
-        v14 = [(NSMutableDictionary *)self->_currentBatchOfComputeStatesNeedingPayload objectForKeyedSubscript:v13];
+        itemScopedIdentifier = [v11 itemScopedIdentifier];
+        v14 = [(NSMutableDictionary *)self->_currentBatchOfComputeStatesNeedingPayload objectForKeyedSubscript:itemScopedIdentifier];
         v15 = v14;
         if (!v14)
         {
@@ -130,14 +130,14 @@ LABEL_18:
           goto LABEL_20;
         }
 
-        [v14 setFileURL:v12];
-        v16 = [(NSMutableDictionary *)self->_cloudComputeStatesNeedingPayload objectForKeyedSubscript:v13];
+        [v14 setFileURL:fileURL];
+        v16 = [(NSMutableDictionary *)self->_cloudComputeStatesNeedingPayload objectForKeyedSubscript:itemScopedIdentifier];
         if (v16)
         {
           v17 = v16;
-          [v16 setFileURL:v12];
+          [v16 setFileURL:fileURL];
           [(CPLUploadComputeStatesAccumulator *)self addLocalComputeStateToUpload:v15 cloudComputeState:v17];
-          [(NSMutableDictionary *)self->_currentBatchOfComputeStatesNeedingPayload removeObjectForKey:v13];
+          [(NSMutableDictionary *)self->_currentBatchOfComputeStatesNeedingPayload removeObjectForKey:itemScopedIdentifier];
           goto LABEL_18;
         }
 
@@ -152,17 +152,17 @@ LABEL_18:
           }
         }
 
-        v22 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Upload Compute State Phase/CPLUploadComputeStatesAccumulator.m"];
         v32 = v15;
         v24 = @"Missing cloud compute state for %@";
-        v25 = v22;
+        v25 = currentHandler;
         v26 = v33;
-        v27 = self;
+        selfCopy3 = self;
         v28 = v23;
         v29 = 100;
 LABEL_31:
-        [v25 handleFailureInMethod:v26 object:v27 file:v28 lineNumber:v29 description:{v24, v32}];
+        [v25 handleFailureInMethod:v26 object:selfCopy3 file:v28 lineNumber:v29 description:{v24, v32}];
 
         abort();
       }
@@ -172,12 +172,12 @@ LABEL_31:
         goto LABEL_21;
       }
 
-      v13 = __CPLBatchOSLogDomain();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      itemScopedIdentifier = __CPLBatchOSLogDomain();
+      if (os_log_type_enabled(itemScopedIdentifier, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v39 = v11;
-        _os_log_impl(&dword_1DC05A000, v13, OS_LOG_TYPE_ERROR, "Client provided no file URL for %@", buf, 0xCu);
+        _os_log_impl(&dword_1DC05A000, itemScopedIdentifier, OS_LOG_TYPE_ERROR, "Client provided no file URL for %@", buf, 0xCu);
       }
 
 LABEL_20:
@@ -191,11 +191,11 @@ LABEL_21:
   while (v8);
 LABEL_23:
 
-  v18 = [(NSMutableDictionary *)self->_currentBatchOfComputeStatesNeedingPayload allValues];
+  allValues = [(NSMutableDictionary *)self->_currentBatchOfComputeStatesNeedingPayload allValues];
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return allValues;
 }
 
 - (id)popNextBatchOfLocalComputeStatesNeedingPayload
@@ -203,26 +203,26 @@ LABEL_23:
   batchEnumerator = self->_batchEnumerator;
   if (!batchEnumerator)
   {
-    v4 = [(NSMutableArray *)self->_batchedLocalComputeStatesNeedingPayload objectEnumerator];
+    objectEnumerator = [(NSMutableArray *)self->_batchedLocalComputeStatesNeedingPayload objectEnumerator];
     v5 = self->_batchEnumerator;
-    self->_batchEnumerator = v4;
+    self->_batchEnumerator = objectEnumerator;
 
     batchEnumerator = self->_batchEnumerator;
   }
 
-  v6 = [(NSEnumerator *)batchEnumerator nextObject];
+  nextObject = [(NSEnumerator *)batchEnumerator nextObject];
   currentBatchOfComputeStatesNeedingPayload = self->_currentBatchOfComputeStatesNeedingPayload;
-  self->_currentBatchOfComputeStatesNeedingPayload = v6;
+  self->_currentBatchOfComputeStatesNeedingPayload = nextObject;
 
   v8 = self->_currentBatchOfComputeStatesNeedingPayload;
 
   return [(NSMutableDictionary *)v8 allValues];
 }
 
-- (void)requestPayloadForLocalComputeState:(id)a3 cloudComputeState:(id)a4
+- (void)requestPayloadForLocalComputeState:(id)state cloudComputeState:(id)computeState
 {
-  v26 = a3;
-  v7 = a4;
+  stateCopy = state;
+  computeStateCopy = computeState;
   if (self->_batchEnumerator)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -235,14 +235,14 @@ LABEL_23:
       }
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Upload Compute State Phase/CPLUploadComputeStatesAccumulator.m"];
-    [v24 handleFailureInMethod:a2 object:self file:v25 lineNumber:52 description:@"Trying to enqueue compute states while we are already enumerating batches"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v25 lineNumber:52 description:@"Trying to enqueue compute states while we are already enumerating batches"];
 
     abort();
   }
 
-  v8 = v7;
+  v8 = computeStateCopy;
   currentBatchOfComputeStatesNeedingPayload = self->_currentBatchOfComputeStatesNeedingPayload;
   if (currentBatchOfComputeStatesNeedingPayload)
   {
@@ -285,22 +285,22 @@ LABEL_23:
     self->_cloudComputeStatesNeedingPayload = v20;
   }
 
-  v22 = [v26 itemScopedIdentifier];
-  [(NSMutableDictionary *)self->_currentBatchOfComputeStatesNeedingPayload setObject:v26 forKeyedSubscript:v22];
-  [(NSMutableDictionary *)self->_cloudComputeStatesNeedingPayload setObject:v8 forKeyedSubscript:v22];
+  itemScopedIdentifier = [stateCopy itemScopedIdentifier];
+  [(NSMutableDictionary *)self->_currentBatchOfComputeStatesNeedingPayload setObject:stateCopy forKeyedSubscript:itemScopedIdentifier];
+  [(NSMutableDictionary *)self->_cloudComputeStatesNeedingPayload setObject:v8 forKeyedSubscript:itemScopedIdentifier];
 }
 
-- (void)addLocalComputeStateToUpload:(id)a3 cloudComputeState:(id)a4
+- (void)addLocalComputeStateToUpload:(id)upload cloudComputeState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 itemScopedIdentifier];
-  [(NSMutableDictionary *)self->_localComputeStatesToUpload setObject:v7 forKeyedSubscript:v8];
+  stateCopy = state;
+  uploadCopy = upload;
+  itemScopedIdentifier = [uploadCopy itemScopedIdentifier];
+  [(NSMutableDictionary *)self->_localComputeStatesToUpload setObject:uploadCopy forKeyedSubscript:itemScopedIdentifier];
 
-  [(NSMutableDictionary *)self->_cloudComputeStatesToUpload setObject:v6 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_cloudComputeStatesToUpload setObject:stateCopy forKeyedSubscript:itemScopedIdentifier];
 }
 
-- (CPLUploadComputeStatesAccumulator)initWithCapacity:(unint64_t)a3 maximumPayloadRequestsBatchSize:(unint64_t)a4
+- (CPLUploadComputeStatesAccumulator)initWithCapacity:(unint64_t)capacity maximumPayloadRequestsBatchSize:(unint64_t)size
 {
   v13.receiver = self;
   v13.super_class = CPLUploadComputeStatesAccumulator;
@@ -308,7 +308,7 @@ LABEL_23:
   v7 = v6;
   if (v6)
   {
-    v6->_capacity = a3;
+    v6->_capacity = capacity;
     v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v6->_capacity];
     localComputeStatesToUpload = v7->_localComputeStatesToUpload;
     v7->_localComputeStatesToUpload = v8;
@@ -317,7 +317,7 @@ LABEL_23:
     cloudComputeStatesToUpload = v7->_cloudComputeStatesToUpload;
     v7->_cloudComputeStatesToUpload = v10;
 
-    v7->_maximumPayloadRequestsBatchSize = a4;
+    v7->_maximumPayloadRequestsBatchSize = size;
   }
 
   return v7;

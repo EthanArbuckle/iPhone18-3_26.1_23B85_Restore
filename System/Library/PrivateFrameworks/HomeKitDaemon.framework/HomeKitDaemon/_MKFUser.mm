@@ -1,9 +1,9 @@
 @interface _MKFUser
 + (NSPredicate)homeRelation;
-+ (id)findUserUsingReverseShareID:(id)a3 homeModelID:(id)a4 context:(id)a5;
++ (id)findUserUsingReverseShareID:(id)d homeModelID:(id)iD context:(id)context;
 + (id)logCategory;
-+ (id)modelIDForParentRelationshipTo:(id)a3;
-+ (id)sharedUserDataRootForUser:(id)a3 context:(id)a4;
++ (id)modelIDForParentRelationshipTo:(id)to;
++ (id)sharedUserDataRootForUser:(id)user context:(id)context;
 - (BOOL)isOwner;
 - (BOOL)isOwnerOrAdmin;
 - (BOOL)isResidentSyncParticipant;
@@ -23,20 +23,20 @@
 - (NSArray)presenceEvents;
 - (NSArray)triggers;
 - (NSArray)userActivityStatuses;
-- (_MKFUser)userWithAccessCode:(id)a3 context:(id)a4;
+- (_MKFUser)userWithAccessCode:(id)code context:(id)context;
 - (id)additionalModelsForSameUser;
 - (id)castIfMemberIsUser;
-- (id)characteristicBulletinRegistrationForAccessory:(id)a3 serviceInstanceID:(id)a4 characteristicInstanceID:(id)a5 deviceIdsIdentifier:(id)a6 context:(id)a7;
-- (id)createBulletinRegistrationsRelationOfType:(id)a3 modelID:(id)a4;
-- (id)createNotificationRegistrationsRelationOfType:(id)a3 modelID:(id)a4;
-- (id)findUserActivityStatusForType:(unint64_t)a3;
-- (id)materializeOrCreateBulletinRegistrationsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
-- (id)materializeOrCreateNotificationRegistrationsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5;
-- (id)matterBulletinRegistrationForEndpointID:(id)a3 accessoryUUID:(id)a4 deviceIdsIdentifier:(id)a5 context:(id)a6;
-- (id)notificationRegistrationForCharacteristic:(id)a3 deviceIdsDestination:(id)a4 context:(id)a5;
-- (id)notificationRegistrationForMediaProperty:(id)a3 mediaProfile:(id)a4 deviceIdsDestination:(id)a5 context:(id)a6;
+- (id)characteristicBulletinRegistrationForAccessory:(id)accessory serviceInstanceID:(id)d characteristicInstanceID:(id)iD deviceIdsIdentifier:(id)identifier context:(id)context;
+- (id)createBulletinRegistrationsRelationOfType:(id)type modelID:(id)d;
+- (id)createNotificationRegistrationsRelationOfType:(id)type modelID:(id)d;
+- (id)findUserActivityStatusForType:(unint64_t)type;
+- (id)materializeOrCreateBulletinRegistrationsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
+- (id)materializeOrCreateNotificationRegistrationsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new;
+- (id)matterBulletinRegistrationForEndpointID:(id)d accessoryUUID:(id)iD deviceIdsIdentifier:(id)identifier context:(id)context;
+- (id)notificationRegistrationForCharacteristic:(id)characteristic deviceIdsDestination:(id)destination context:(id)context;
+- (id)notificationRegistrationForMediaProperty:(id)property mediaProfile:(id)profile deviceIdsDestination:(id)destination context:(id)context;
 - (id)sharedUserDataRoot;
-- (void)residentSyncContextualizeConditions:(id)a3 userContext:(id)a4;
+- (void)residentSyncContextualizeConditions:(id)conditions userContext:(id)context;
 @end
 
 @implementation _MKFUser
@@ -44,65 +44,65 @@
 - (NSArray)userActivityStatuses
 {
   v2 = [(_MKFUser *)self valueForKey:@"userActivityStatuses_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)triggers
 {
   v2 = [(_MKFUser *)self valueForKey:@"triggers_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)presenceEvents
 {
   v2 = [(_MKFUser *)self valueForKey:@"presenceEvents_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)personsFromPhotos
 {
   v2 = [(_MKFUser *)self valueForKey:@"personsFromPhotos_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)pairedHAPAccessories
 {
   v2 = [(_MKFUser *)self valueForKey:@"pairedHAPAccessories_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)pairedAirPlayAccessories
 {
   v2 = [(_MKFUser *)self valueForKey:@"pairedAirPlayAccessories_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (id)createNotificationRegistrationsRelationOfType:(id)a3 modelID:(id)a4
+- (id)createNotificationRegistrationsRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"notificationRegistrations_" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"notificationRegistrations_" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateNotificationRegistrationsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateNotificationRegistrationsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"notificationRegistrations_" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"notificationRegistrations_" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
@@ -110,41 +110,41 @@
 - (NSArray)notificationRegistrations
 {
   v2 = [(_MKFUser *)self valueForKey:@"notificationRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)locationEvents
 {
   v2 = [(_MKFUser *)self valueForKey:@"locationEvents_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)faceprintsFromPhotos
 {
   v2 = [(_MKFUser *)self valueForKey:@"faceprintsFromPhotos_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (id)createBulletinRegistrationsRelationOfType:(id)a3 modelID:(id)a4
+- (id)createBulletinRegistrationsRelationOfType:(id)type modelID:(id)d
 {
-  v6 = a4;
-  v7 = NSStringFromProtocol(a3);
-  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"bulletinRegistrations_" modelProtocol:v7 keyValue:v6];
+  dCopy = d;
+  v7 = NSStringFromProtocol(type);
+  v8 = [(NSManagedObject *)self mkf_createRelationOnProperty:@"bulletinRegistrations_" modelProtocol:v7 keyValue:dCopy];
 
   return v8;
 }
 
-- (id)materializeOrCreateBulletinRegistrationsRelationOfType:(id)a3 modelID:(id)a4 createdNew:(BOOL *)a5
+- (id)materializeOrCreateBulletinRegistrationsRelationOfType:(id)type modelID:(id)d createdNew:(BOOL *)new
 {
-  v8 = a4;
-  v9 = NSStringFromProtocol(a3);
-  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"bulletinRegistrations_" modelProtocol:v9 keyValue:v8 createdNew:a5];
+  dCopy = d;
+  v9 = NSStringFromProtocol(type);
+  v10 = [(NSManagedObject *)self mkf_materializeOrCreateRelationOnProperty:@"bulletinRegistrations_" modelProtocol:v9 keyValue:dCopy createdNew:new];
 
   return v10;
 }
@@ -152,41 +152,41 @@
 - (NSArray)bulletinRegistrations
 {
   v2 = [(_MKFUser *)self valueForKey:@"bulletinRegistrations_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)bulletinConditions
 {
   v2 = [(_MKFUser *)self valueForKey:@"bulletinConditions_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)accessoriesWithPersonalRequestsEnabled
 {
   v2 = [(_MKFUser *)self valueForKey:@"accessoriesWithPersonalRequestsEnabled_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)accessoriesWithMediaContentProfileEnabled
 {
   v2 = [(_MKFUser *)self valueForKey:@"accessoriesWithMediaContentProfileEnabled_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (NSArray)accessoriesWithListeningHistoryEnabled
 {
   v2 = [(_MKFUser *)self valueForKey:@"accessoriesWithListeningHistoryEnabled_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFUserDatabaseID)databaseID
@@ -196,34 +196,34 @@
   return v2;
 }
 
-- (id)findUserActivityStatusForType:(unint64_t)a3
+- (id)findUserActivityStatusForType:(unint64_t)type
 {
-  v4 = [(_MKFUser *)self userActivityStatuses];
+  userActivityStatuses = [(_MKFUser *)self userActivityStatuses];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42___MKFUser_findUserActivityStatusForType___block_invoke;
   v7[3] = &__block_descriptor_40_e40_B32__0___MKFUserActivityStatus__8Q16_B24l;
-  v7[4] = a3;
-  v5 = [v4 hmf_objectPassingTest:v7];
+  v7[4] = type;
+  v5 = [userActivityStatuses hmf_objectPassingTest:v7];
 
   return v5;
 }
 
 - (BOOL)isRestrictedGuest
 {
-  v2 = [(_MKFUser *)self privilege];
-  v3 = [v2 isEqualToNumber:&unk_283E723C8];
+  privilege = [(_MKFUser *)self privilege];
+  v3 = [privilege isEqualToNumber:&unk_283E723C8];
 
   return v3;
 }
 
 - (id)castIfMemberIsUser
 {
-  v2 = self;
+  selfCopy = self;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -239,12 +239,12 @@
 - (id)additionalModelsForSameUser
 {
   v39[3] = *MEMORY[0x277D85DE8];
-  v3 = [(_MKFUser *)self managedObjectContext];
+  managedObjectContext = [(_MKFUser *)self managedObjectContext];
   v4 = +[_MKFUser fetchRequest];
   v5 = MEMORY[0x277CCAC30];
-  v6 = [(_MKFUser *)self home];
-  v7 = [(_MKFUser *)self modelID];
-  v8 = [v5 predicateWithFormat:@"(%K == %@) AND (%K != %@)", @"home", v6, @"modelID", v7];
+  home = [(_MKFUser *)self home];
+  modelID = [(_MKFUser *)self modelID];
+  v8 = [v5 predicateWithFormat:@"(%K == %@) AND (%K != %@)", @"home", home, @"modelID", modelID];
   [v4 setPredicate:v8];
 
   v39[0] = @"accountIdentifier";
@@ -254,7 +254,7 @@
   [v4 setPropertiesToFetch:v9];
 
   v32 = 0;
-  v10 = [v3 executeFetchRequest:v4 error:&v32];
+  v10 = [managedObjectContext executeFetchRequest:v4 error:&v32];
   v11 = v32;
   if (v10)
   {
@@ -275,7 +275,7 @@
     [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v30];
     v14 = [v13 count];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_INFO);
     if (v14)
@@ -286,7 +286,7 @@
         *buf = 138543874;
         v34 = v19;
         v35 = 2112;
-        v36 = v16;
+        v36 = selfCopy;
         v37 = 2112;
         v38 = v13;
         v20 = "%{public}@%@ matched additional models: %@";
@@ -303,7 +303,7 @@ LABEL_12:
       *buf = 138543618;
       v34 = v19;
       v35 = 2112;
-      v36 = v16;
+      v36 = selfCopy;
       v20 = "%{public}@%@ did not match any other models";
       v21 = v17;
       v22 = 22;
@@ -317,7 +317,7 @@ LABEL_12:
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy2 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
@@ -341,8 +341,8 @@ LABEL_14:
 - (BOOL)isResidentSyncParticipant
 {
   v3 = objc_opt_class();
-  v4 = [(_MKFUser *)self privilege];
-  LOBYTE(v3) = [v3 isResidentSyncParticipantWithPrivilege:{objc_msgSend(v4, "unsignedIntegerValue")}];
+  privilege = [(_MKFUser *)self privilege];
+  LOBYTE(v3) = [v3 isResidentSyncParticipantWithPrivilege:{objc_msgSend(privilege, "unsignedIntegerValue")}];
 
   return v3;
 }
@@ -350,8 +350,8 @@ LABEL_14:
 - (BOOL)isOwnerOrAdmin
 {
   v3 = objc_opt_class();
-  v4 = [(_MKFUser *)self privilege];
-  LOBYTE(v3) = [v3 isOwnerOrAdminWithPrivilege:{objc_msgSend(v4, "unsignedIntegerValue")}];
+  privilege = [(_MKFUser *)self privilege];
+  LOBYTE(v3) = [v3 isOwnerOrAdminWithPrivilege:{objc_msgSend(privilege, "unsignedIntegerValue")}];
 
   return v3;
 }
@@ -359,8 +359,8 @@ LABEL_14:
 - (BOOL)isOwner
 {
   v3 = objc_opt_class();
-  v4 = [(_MKFUser *)self privilege];
-  LOBYTE(v3) = [v3 isOwnerWithPrivilege:{objc_msgSend(v4, "unsignedIntegerValue")}];
+  privilege = [(_MKFUser *)self privilege];
+  LOBYTE(v3) = [v3 isOwnerWithPrivilege:{objc_msgSend(privilege, "unsignedIntegerValue")}];
 
   return v3;
 }
@@ -368,40 +368,40 @@ LABEL_14:
 - (id)sharedUserDataRoot
 {
   v3 = objc_opt_class();
-  v4 = [(_MKFUser *)self managedObjectContext];
-  v5 = [v3 sharedUserDataRootForUser:self context:v4];
+  managedObjectContext = [(_MKFUser *)self managedObjectContext];
+  v5 = [v3 sharedUserDataRootForUser:self context:managedObjectContext];
 
   return v5;
 }
 
-- (id)notificationRegistrationForMediaProperty:(id)a3 mediaProfile:(id)a4 deviceIdsDestination:(id)a5 context:(id)a6
+- (id)notificationRegistrationForMediaProperty:(id)property mediaProfile:(id)profile deviceIdsDestination:(id)destination context:(id)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  propertyCopy = property;
+  profileCopy = profile;
+  destinationCopy = destination;
+  contextCopy = context;
   v14 = +[_MKFNotificationRegistrationMediaProperty fetchRequest];
-  v15 = [v11 uniqueIdentifier];
-  v16 = [v11 accessory];
-  v17 = [v16 uuid];
+  uniqueIdentifier = [profileCopy uniqueIdentifier];
+  accessory = [profileCopy accessory];
+  uuid = [accessory uuid];
 
-  v28 = v10;
-  v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K == %@) AND (%K == %@) AND (%K.modelID == %@)", @"user", self, @"deviceIdsDestination", v12, @"mediaProperty", v10, @"mediaProfileIdentifier", v15, @"accessory", v17];
+  v28 = propertyCopy;
+  v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K == %@) AND (%K == %@) AND (%K.modelID == %@)", @"user", self, @"deviceIdsDestination", destinationCopy, @"mediaProperty", propertyCopy, @"mediaProfileIdentifier", uniqueIdentifier, @"accessory", uuid];
   [v14 setPredicate:v18];
 
   v29 = 0;
-  v19 = [v13 executeFetchRequest:v14 error:&v29];
+  v19 = [contextCopy executeFetchRequest:v14 error:&v29];
   v20 = v29;
   if (v19)
   {
-    v21 = [v19 firstObject];
+    firstObject = [v19 firstObject];
   }
 
   else
   {
     context = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -411,55 +411,55 @@ LABEL_14:
       v32 = 2112;
       v33 = v28;
       v34 = 2112;
-      v35 = v11;
+      v35 = profileCopy;
       v36 = 2112;
-      v37 = v12;
+      v37 = destinationCopy;
       v38 = 2112;
       v39 = v20;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch notification registrations for mediaProperty: %@, mediaProfile: %@, deviceIdsDestination: %@, error: %@", buf, 0x34u);
     }
 
     objc_autoreleasePoolPop(context);
-    v21 = 0;
+    firstObject = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return firstObject;
 }
 
-- (id)notificationRegistrationForCharacteristic:(id)a3 deviceIdsDestination:(id)a4 context:(id)a5
+- (id)notificationRegistrationForCharacteristic:(id)characteristic deviceIdsDestination:(id)destination context:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  characteristicCopy = characteristic;
+  destinationCopy = destination;
+  contextCopy = context;
   v11 = +[_MKFNotificationRegistrationCharacteristic fetchRequest];
-  v12 = [v8 instanceID];
-  v13 = [v8 service];
-  v14 = [v13 instanceID];
+  instanceID = [characteristicCopy instanceID];
+  service = [characteristicCopy service];
+  instanceID2 = [service instanceID];
 
-  v15 = [v8 accessory];
-  v16 = [v15 uuid];
+  accessory = [characteristicCopy accessory];
+  uuid = [accessory uuid];
 
-  if (v12 && v14 && v16)
+  if (instanceID && instanceID2 && uuid)
   {
-    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K == %@) AND (%K.%K.%K == %@) AND (%K.%K.%K.modelID == %@)", @"user", self, @"deviceIdsDestination", v9, @"characteristic", @"instanceID", v12, @"characteristic", @"service", @"instanceID", v14, @"characteristic", @"service", @"accessory", v16];
+    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K == %@) AND (%K.%K.%K == %@) AND (%K.%K.%K.modelID == %@)", @"user", self, @"deviceIdsDestination", destinationCopy, @"characteristic", @"instanceID", instanceID, @"characteristic", @"service", @"instanceID", instanceID2, @"characteristic", @"service", @"accessory", uuid];
     [v11 setPredicate:v17];
 
-    v32 = v10;
+    v32 = contextCopy;
     v34 = 0;
-    v18 = [v10 executeFetchRequest:v11 error:&v34];
+    v18 = [contextCopy executeFetchRequest:v11 error:&v34];
     v19 = v34;
     if (v18)
     {
-      v20 = [v18 firstObject];
+      firstObject = [v18 firstObject];
     }
 
     else
     {
       context = objc_autoreleasePoolPush();
-      v26 = self;
+      selfCopy = self;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
@@ -467,124 +467,124 @@ LABEL_14:
         *buf = 138544130;
         v36 = v30;
         v37 = 2112;
-        v38 = v8;
+        v38 = characteristicCopy;
         v39 = 2112;
-        v40 = v9;
+        v40 = destinationCopy;
         v41 = 2112;
         v42 = v19;
         _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch notification registrations for characteristic: %@, deviceIdsDestination: %@, error: %@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(context);
-      v20 = 0;
+      firstObject = 0;
     }
 
-    v10 = v32;
+    contextCopy = v32;
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy2 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v33 = v9;
-      v25 = v24 = v10;
+      v33 = destinationCopy;
+      v25 = v24 = contextCopy;
       *buf = 138544130;
       v36 = v25;
       v37 = 2112;
-      v38 = v12;
+      v38 = instanceID;
       v39 = 2112;
-      v40 = v14;
+      v40 = instanceID2;
       v41 = 2112;
-      v42 = v16;
+      v42 = uuid;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Error before fetching registration for characteristic, characteristic value should not be nil: instanceID: %@, serviceInstanceID: %@, accessoryUUID: %@", buf, 0x2Au);
 
-      v10 = v24;
-      v9 = v33;
+      contextCopy = v24;
+      destinationCopy = v33;
     }
 
     objc_autoreleasePoolPop(v21);
-    v20 = 0;
+    firstObject = 0;
   }
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return firstObject;
 }
 
-- (_MKFUser)userWithAccessCode:(id)a3 context:(id)a4
+- (_MKFUser)userWithAccessCode:(id)code context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  contextCopy = context;
   v8 = +[_MKFUserAccessCode fetchRequest];
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@)", @"accessCode", v6, @"user", self];
+  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@)", @"accessCode", codeCopy, @"user", self];
   [v8 setPredicate:v9];
 
   v20 = 0;
-  v10 = [v7 executeFetchRequest:v8 error:&v20];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v20];
   v11 = v20;
   if (v10)
   {
-    v12 = [v10 firstObject];
+    firstObject = [v10 firstObject];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [(_MKFUser *)v14 modelID];
+      modelID = [(_MKFUser *)selfCopy modelID];
       *buf = 138544130;
       v22 = v16;
       v23 = 2112;
-      v24 = v6;
+      v24 = codeCopy;
       v25 = 2112;
-      v26 = v17;
+      v26 = modelID;
       v27 = 2112;
       v28 = v11;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch userAccessCodes with access code %@ and user UUID %@: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v13);
-    v12 = 0;
+    firstObject = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)matterBulletinRegistrationForEndpointID:(id)a3 accessoryUUID:(id)a4 deviceIdsIdentifier:(id)a5 context:(id)a6
+- (id)matterBulletinRegistrationForEndpointID:(id)d accessoryUUID:(id)iD deviceIdsIdentifier:(id)identifier context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  [v13 hmd_assertIsExecuting];
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  contextCopy = context;
+  [contextCopy hmd_assertIsExecuting];
   v14 = +[_MKFMatterBulletinRegistration fetchRequest];
-  v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K contains %@) AND (%K.%K.modelID contains %@)", @"user", self, @"deviceIdsIdentifier", v12, @"matterPaths_", @"endpointID", v10, @"matterPaths_", @"accessory", v11];
-  [v14 setPredicate:v15];
+  iDCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K contains %@) AND (%K.%K.modelID contains %@)", @"user", self, @"deviceIdsIdentifier", identifierCopy, @"matterPaths_", @"endpointID", dCopy, @"matterPaths_", @"accessory", iDCopy];
+  [v14 setPredicate:iDCopy];
 
   v26 = 0;
-  v16 = [v13 executeFetchRequest:v14 error:&v26];
+  v16 = [contextCopy executeFetchRequest:v14 error:&v26];
   v17 = v26;
   if (v16)
   {
-    v18 = [v16 firstObject];
+    firstObject = [v16 firstObject];
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -593,9 +593,9 @@ LABEL_14:
       *buf = 138544130;
       v28 = v22;
       v29 = 2112;
-      v30 = v10;
+      v30 = dCopy;
       v31 = 2112;
-      v32 = v11;
+      v32 = iDCopy;
       v33 = 2112;
       v34 = v17;
       _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch Matter bulletin registration with endpointID %@: on accessory %@, error: %@", buf, 0x2Au);
@@ -604,38 +604,38 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(v19);
-    v18 = 0;
+    firstObject = 0;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return firstObject;
 }
 
-- (id)characteristicBulletinRegistrationForAccessory:(id)a3 serviceInstanceID:(id)a4 characteristicInstanceID:(id)a5 deviceIdsIdentifier:(id)a6 context:(id)a7
+- (id)characteristicBulletinRegistrationForAccessory:(id)accessory serviceInstanceID:(id)d characteristicInstanceID:(id)iD deviceIdsIdentifier:(id)identifier context:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  accessoryCopy = accessory;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  contextCopy = context;
   v17 = +[_MKFCharacteristicBulletinRegistration fetchRequest];
-  v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K == %@) AND (%K.%K.%K == %@) AND (%K.%K.%K.modelID == %@)", @"user", self, @"deviceIdsIdentifier", v15, @"characteristic", @"instanceID", v14, @"characteristic", @"service", @"instanceID", v13, @"characteristic", @"service", @"accessory", v12];
-  [v17 setPredicate:v18];
+  accessoryCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K == %@) AND (%K == %@) AND (%K.%K == %@) AND (%K.%K.%K == %@) AND (%K.%K.%K.modelID == %@)", @"user", self, @"deviceIdsIdentifier", identifierCopy, @"characteristic", @"instanceID", iDCopy, @"characteristic", @"service", @"instanceID", dCopy, @"characteristic", @"service", @"accessory", accessoryCopy];
+  [v17 setPredicate:accessoryCopy];
 
   v28 = 0;
-  v19 = [v16 executeFetchRequest:v17 error:&v28];
+  v19 = [contextCopy executeFetchRequest:v17 error:&v28];
   v20 = v28;
   if (v19)
   {
-    v21 = [v19 firstObject];
+    firstObject = [v19 firstObject];
   }
 
   else
   {
     context = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -643,21 +643,21 @@ LABEL_14:
       *buf = 138544130;
       v30 = v26;
       v31 = 2112;
-      v32 = v14;
+      v32 = iDCopy;
       v33 = 2112;
-      v34 = v12;
+      v34 = accessoryCopy;
       v35 = 2112;
       v36 = v20;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch characteristic bulletin registration with characteristic instanceID %@: on accessory %@, error: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(context);
-    v21 = 0;
+    firstObject = 0;
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return firstObject;
 }
 
 + (id)logCategory
@@ -684,9 +684,9 @@ LABEL_14:
   return v3;
 }
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -698,28 +698,28 @@ LABEL_14:
   objc_exception_throw(v10);
 }
 
-+ (id)sharedUserDataRootForUser:(id)a3 context:(id)a4
++ (id)sharedUserDataRootForUser:(id)user context:(id)context
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 hmd_coreData];
-  v8 = [v5 home];
-  v9 = [v8 modelID];
+  userCopy = user;
+  contextCopy = context;
+  hmd_coreData = [contextCopy hmd_coreData];
+  home = [userCopy home];
+  modelID = [home modelID];
 
-  v10 = [v5 reverseShareID];
-  if ([v5 isOwner])
+  reverseShareID = [userCopy reverseShareID];
+  if ([userCopy isOwner])
   {
     v11 = objc_autoreleasePoolPush();
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v5 modelID];
+      modelID2 = [userCopy modelID];
       *buf = 138543618;
       v61 = v13;
       v62 = 2112;
-      v63 = v14;
+      v63 = modelID2;
       v15 = "%{public}@Owner %@ does not have a reverse share for their own home";
 LABEL_21:
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, v15, buf, 0x16u);
@@ -730,18 +730,18 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!v10)
+  if (!reverseShareID)
   {
     v11 = objc_autoreleasePoolPush();
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v5 modelID];
+      modelID2 = [userCopy modelID];
       *buf = 138543618;
       v61 = v13;
       v62 = 2112;
-      v63 = v14;
+      v63 = modelID2;
       v15 = "%{public}@Shared user %@ does not have a reverse share assigned";
       goto LABEL_21;
     }
@@ -754,25 +754,25 @@ LABEL_22:
   }
 
   v16 = +[MKFCKSharedUserDataRoot fetchRequest];
-  v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", v9];
+  v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"homeModelID", modelID];
   [v16 setPredicate:v17];
 
   v58 = 0;
-  v18 = [v6 executeFetchRequest:v16 error:&v58];
+  v18 = [contextCopy executeFetchRequest:v16 error:&v58];
   v19 = v58;
   v50 = v18;
   if (v18)
   {
     if ([v18 count])
     {
-      v47 = v5;
+      v47 = userCopy;
       v48 = v19;
       v43 = v16;
-      v44 = v9;
-      v52 = v10;
-      v45 = v7;
-      v46 = v6;
-      v20 = [v7 container];
+      v44 = modelID;
+      v52 = reverseShareID;
+      v45 = hmd_coreData;
+      v46 = contextCopy;
+      container = [hmd_coreData container];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
@@ -793,15 +793,15 @@ LABEL_22:
             }
 
             v25 = *(*(&v54 + 1) + 8 * i);
-            v26 = [v25 objectID];
-            v27 = [v20 recordForManagedObjectID:v26];
+            objectID = [v25 objectID];
+            v27 = [container recordForManagedObjectID:objectID];
 
             if (v27)
             {
-              v28 = [v52 zoneID];
-              v29 = [v27 recordID];
-              v30 = [v29 zoneID];
-              v31 = [v28 isEqual:v30];
+              zoneID = [v52 zoneID];
+              recordID = [v27 recordID];
+              zoneID2 = [recordID zoneID];
+              v31 = [zoneID isEqual:zoneID2];
 
               if (v31)
               {
@@ -835,11 +835,11 @@ LABEL_22:
       objc_autoreleasePoolPop(v32);
       v35 = 0;
 LABEL_29:
-      v6 = v46;
-      v5 = v47;
-      v9 = v44;
-      v7 = v45;
-      v10 = v52;
+      contextCopy = v46;
+      userCopy = v47;
+      modelID = v44;
+      hmd_coreData = v45;
+      reverseShareID = v52;
       v19 = v48;
 
       v16 = v43;
@@ -855,7 +855,7 @@ LABEL_29:
       *buf = 138543618;
       v61 = v40;
       v62 = 2112;
-      v63 = v9;
+      v63 = modelID;
       _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_ERROR, "%{public}@No shared user data roots for home %@", buf, 0x16u);
 
       v19 = v49;
@@ -874,7 +874,7 @@ LABEL_29:
       *buf = 138543874;
       v61 = v39;
       v62 = 2112;
-      v63 = v9;
+      v63 = modelID;
       v64 = 2112;
       v65 = v38;
       _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch shared user data roots for home %@: %@", buf, 0x20u);
@@ -894,30 +894,30 @@ LABEL_31:
   return v35;
 }
 
-+ (id)findUserUsingReverseShareID:(id)a3 homeModelID:(id)a4 context:(id)a5
++ (id)findUserUsingReverseShareID:(id)d homeModelID:(id)iD context:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
   v11 = +[_MKFUser fetchRequest];
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ && %K.%K == %@", @"reverseShareID", v8, @"home", @"modelID", v9];
-  [v11 setPredicate:v12];
+  iDCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ && %K.%K == %@", @"reverseShareID", dCopy, @"home", @"modelID", iDCopy];
+  [v11 setPredicate:iDCopy];
 
   [v11 setFetchLimit:2];
   v24 = 0;
-  v13 = [v10 executeFetchRequest:v11 error:&v24];
+  v13 = [contextCopy executeFetchRequest:v11 error:&v24];
   v14 = v24;
   if (v13)
   {
     if ([v13 count] == 1)
     {
-      v15 = [v13 firstObject];
+      firstObject = [v13 firstObject];
       goto LABEL_10;
     }
 
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -935,7 +935,7 @@ LABEL_31:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -951,27 +951,27 @@ LABEL_8:
   }
 
   objc_autoreleasePoolPop(v16);
-  v15 = 0;
+  firstObject = 0;
 LABEL_10:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
-- (void)residentSyncContextualizeConditions:(id)a3 userContext:(id)a4
+- (void)residentSyncContextualizeConditions:(id)conditions userContext:(id)context
 {
-  v7 = a3;
-  v6 = [a4 targetUser];
+  conditionsCopy = conditions;
+  targetUser = [context targetUser];
 
-  if (v6 == self)
+  if (targetUser == self)
   {
-    [v7 addCondition:@"userIsTargetUser"];
+    [conditionsCopy addCondition:@"userIsTargetUser"];
   }
 
   if ([(_MKFUser *)self isOwner])
   {
-    [v7 addCondition:@"userIsOwner"];
+    [conditionsCopy addCondition:@"userIsOwner"];
   }
 }
 

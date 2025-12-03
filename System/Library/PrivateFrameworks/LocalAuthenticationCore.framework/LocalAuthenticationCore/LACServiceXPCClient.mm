@@ -1,55 +1,55 @@
 @interface LACServiceXPCClient
-- (LACServiceXPCClient)initWithEndpointProvider:(id)a3 remoteObjectInterface:(id)a4 serviceIdentifier:(id)a5;
-- (id)_connectionWithErrorHandler:(id)a3;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (LACServiceXPCClient)initWithEndpointProvider:(id)provider remoteObjectInterface:(id)interface serviceIdentifier:(id)identifier;
+- (id)_connectionWithErrorHandler:(id)handler;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_handleConnectionClose;
-- (void)connectionDidActivate:(id)a3;
+- (void)connectionDidActivate:(id)activate;
 @end
 
 @implementation LACServiceXPCClient
 
-- (LACServiceXPCClient)initWithEndpointProvider:(id)a3 remoteObjectInterface:(id)a4 serviceIdentifier:(id)a5
+- (LACServiceXPCClient)initWithEndpointProvider:(id)provider remoteObjectInterface:(id)interface serviceIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  interfaceCopy = interface;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = LACServiceXPCClient;
   v12 = [(LACServiceXPCClient *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_endpointProvider, a3);
-    objc_storeStrong(&v13->_remoteObjectInterface, a4);
-    objc_storeStrong(&v13->_serviceIdentifier, a5);
+    objc_storeStrong(&v12->_endpointProvider, provider);
+    objc_storeStrong(&v13->_remoteObjectInterface, interface);
+    objc_storeStrong(&v13->_serviceIdentifier, identifier);
     v13->_connectionLock._os_unfair_lock_opaque = 0;
   }
 
   return v13;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(LACServiceXPCClient *)self _connectionWithErrorHandler:v4];
-  v6 = [v5 remoteObjectWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(LACServiceXPCClient *)self _connectionWithErrorHandler:handlerCopy];
+  v6 = [v5 remoteObjectWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(LACServiceXPCClient *)self _connectionWithErrorHandler:v4];
-  v6 = [v5 synchronousRemoteObjectWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(LACServiceXPCClient *)self _connectionWithErrorHandler:handlerCopy];
+  v6 = [v5 synchronousRemoteObjectWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)_connectionWithErrorHandler:(id)a3
+- (id)_connectionWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_connectionLock);
   if (self->_connection)
   {
@@ -70,7 +70,7 @@
       v16[2] = __51__LACServiceXPCClient__connectionWithErrorHandler___block_invoke;
       v16[3] = &unk_1E7A96BB0;
       v17 = v8;
-      v18 = self;
+      selfCopy = self;
       v9 = __51__LACServiceXPCClient__connectionWithErrorHandler___block_invoke(v16);
       connection = self->_connection;
       self->_connection = v9;
@@ -93,7 +93,7 @@
         [(LACServiceXPCClient *)v5 _connectionWithErrorHandler:v12];
       }
 
-      v4[2](v4, v5);
+      handlerCopy[2](handlerCopy, v5);
     }
   }
 
@@ -138,7 +138,7 @@ LACXPCConnectionDefaultAdapter *__51__LACServiceXPCClient__connectionWithErrorHa
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectionDidActivate:(id)a3
+- (void)connectionDidActivate:(id)activate
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = LACLogService();

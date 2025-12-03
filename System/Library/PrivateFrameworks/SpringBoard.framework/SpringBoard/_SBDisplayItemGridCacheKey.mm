@@ -1,18 +1,18 @@
 @interface _SBDisplayItemGridCacheKey
-- (BOOL)isEqual:(id)a3;
-- (_SBDisplayItemGridCacheKey)initWithBounds:(CGRect)a3 orientation:(int64_t)a4 layoutRestrictionInfo:(id)a5 screenScale:(double)a6 windowingConfiguration:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (_SBDisplayItemGridCacheKey)initWithBounds:(CGRect)bounds orientation:(int64_t)orientation layoutRestrictionInfo:(id)info screenScale:(double)scale windowingConfiguration:(id)configuration;
 @end
 
 @implementation _SBDisplayItemGridCacheKey
 
-- (_SBDisplayItemGridCacheKey)initWithBounds:(CGRect)a3 orientation:(int64_t)a4 layoutRestrictionInfo:(id)a5 screenScale:(double)a6 windowingConfiguration:(id)a7
+- (_SBDisplayItemGridCacheKey)initWithBounds:(CGRect)bounds orientation:(int64_t)orientation layoutRestrictionInfo:(id)info screenScale:(double)scale windowingConfiguration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a5;
-  v17 = a7;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  infoCopy = info;
+  configurationCopy = configuration;
   v27.receiver = self;
   v27.super_class = _SBDisplayItemGridCacheKey;
   v18 = [(_SBDisplayItemGridCacheKey *)&v27 init];
@@ -23,30 +23,30 @@
     v18->_bounds.origin.y = y;
     v18->_bounds.size.width = width;
     v18->_bounds.size.height = height;
-    v18->_orientation = a4;
-    objc_storeStrong(&v18->_layoutRestrictionInfo, a5);
-    v19->_screenScale = a6;
-    objc_storeStrong(&v19->_windowingConfiguration, a7);
-    v20 = [MEMORY[0x277CF0C40] builder];
-    v21 = [v20 appendCGRect:{v19->_bounds.origin.x, v19->_bounds.origin.y, v19->_bounds.size.width, v19->_bounds.size.height}];
-    v22 = [v20 appendInteger:v19->_orientation];
-    v23 = [v20 appendObject:v19->_layoutRestrictionInfo];
-    v24 = [v20 appendCGFloat:v19->_screenScale];
+    v18->_orientation = orientation;
+    objc_storeStrong(&v18->_layoutRestrictionInfo, info);
+    v19->_screenScale = scale;
+    objc_storeStrong(&v19->_windowingConfiguration, configuration);
+    builder = [MEMORY[0x277CF0C40] builder];
+    v21 = [builder appendCGRect:{v19->_bounds.origin.x, v19->_bounds.origin.y, v19->_bounds.size.width, v19->_bounds.size.height}];
+    v22 = [builder appendInteger:v19->_orientation];
+    v23 = [builder appendObject:v19->_layoutRestrictionInfo];
+    v24 = [builder appendCGFloat:v19->_screenScale];
     if (v19->_windowingConfiguration)
     {
-      v25 = [v20 appendObject:?];
+      v25 = [builder appendObject:?];
     }
 
-    v19->_cachedHash = [v20 hash];
+    v19->_cachedHash = [builder hash];
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -56,7 +56,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (CGRectEqualToRect(self->_bounds, v5->_bounds) && self->_orientation == v5->_orientation && BSEqualObjects() && self->_screenScale == v5->_screenScale)
       {
         v6 = BSEqualObjects();

@@ -12,13 +12,13 @@
     return 0;
   }
 
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 > CVPixelBufferGetDataSize(a3) || CVPixelBufferLockBaseAddress(a3, 0))
   {
     return 0;
   }
 
-  [a1 getBytes:CVPixelBufferGetBaseAddress(a3) length:v5];
+  [self getBytes:CVPixelBufferGetBaseAddress(a3) length:v5];
   return CVPixelBufferUnlockBaseAddress(a3, 0) == 0;
 }
 

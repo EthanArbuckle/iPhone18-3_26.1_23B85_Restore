@@ -1,23 +1,23 @@
 @interface FilterSpamSettingsBundleController
-+ (id)localizedStringForKey:(id)a3;
-- (FilterSpamSettingsBundleController)initWithParentListController:(id)a3;
++ (id)localizedStringForKey:(id)key;
+- (FilterSpamSettingsBundleController)initWithParentListController:(id)controller;
 - (PSListController)parentListController;
-- (id)getFilterSpamEnabledForFaceTime:(id)a3;
+- (id)getFilterSpamEnabledForFaceTime:(id)time;
 - (id)specifierForFaceTime;
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (void)initSilenceJunkCallingController;
 - (void)refreshView;
-- (void)setFilterSpamEnabledForFaceTime:(id)a3 specifier:(id)a4;
+- (void)setFilterSpamEnabledForFaceTime:(id)time specifier:(id)specifier;
 @end
 
 @implementation FilterSpamSettingsBundleController
 
-- (FilterSpamSettingsBundleController)initWithParentListController:(id)a3
+- (FilterSpamSettingsBundleController)initWithParentListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = FilterSpamSettingsBundleController;
-  v5 = [(FilterSpamSettingsBundleController *)&v14 initWithParentListController:v4];
+  v5 = [(FilterSpamSettingsBundleController *)&v14 initWithParentListController:controllerCopy];
   if (v5)
   {
     v6 = +[NSNotificationCenter defaultCenter];
@@ -28,8 +28,8 @@
     v5->_configurationProvider = v7;
 
     [(TUConfigurationProvider *)v5->_configurationProvider setDelegate:v5];
-    v9 = [v4 specifierID];
-    if ([v9 isEqualToString:@"com.apple.preferences.facetime"])
+    specifierID = [controllerCopy specifierID];
+    if ([specifierID isEqualToString:@"com.apple.preferences.facetime"])
     {
 
 LABEL_5:
@@ -63,9 +63,9 @@ LABEL_9:
 {
   v12 = [NSString stringWithFormat:@"com.apple.calls.queue.%@.%p", objc_opt_class(), self];
   v3 = v12;
-  v4 = [v12 UTF8String];
+  uTF8String = [v12 UTF8String];
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v6 = dispatch_queue_create(v4, v5);
+  v6 = dispatch_queue_create(uTF8String, v5);
   queue = self->_queue;
   self->_queue = v6;
 
@@ -79,17 +79,17 @@ LABEL_9:
   self->_silenceJunkCallingController = v10;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = +[NSMutableArray array];
   if ([(FilterSpamSettingsBundleController *)self inFaceTimeSection])
   {
-    v6 = [(FilterSpamSettingsBundleController *)self specifierForFaceTime];
-    if (v6)
+    specifierForFaceTime = [(FilterSpamSettingsBundleController *)self specifierForFaceTime];
+    if (specifierForFaceTime)
     {
-      [v5 addObject:v6];
-      [(FilterSpamSettingsBundleController *)self setActiveSpecifier:v4];
+      [v5 addObject:specifierForFaceTime];
+      [(FilterSpamSettingsBundleController *)self setActiveSpecifier:specifierCopy];
       v7 = PHDefaultLog();
       if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -117,10 +117,10 @@ LABEL_9:
 
   else
   {
-    v6 = [(PHSilenceJunkCallingController *)self->_silenceJunkCallingController specifiers];
-    if (v6)
+    specifierForFaceTime = [(PHSilenceJunkCallingController *)self->_silenceJunkCallingController specifiers];
+    if (specifierForFaceTime)
     {
-      [v5 addObjectsFromArray:v6];
+      [v5 addObjectsFromArray:specifierForFaceTime];
       v7 = PHDefaultLog();
       if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -170,12 +170,12 @@ LABEL_13:
   return v4;
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [a1 localizationTableName];
-  v7 = [v5 localizedStringForKey:v4 value:&stru_42E0 table:v6];
+  localizationTableName = [self localizationTableName];
+  v7 = [v5 localizedStringForKey:keyCopy value:&stru_42E0 table:localizationTableName];
 
   return v7;
 }
@@ -189,22 +189,22 @@ LABEL_13:
 
 - (void)refreshView
 {
-  v4 = [(FilterSpamSettingsBundleController *)self parentListController];
-  v3 = [(FilterSpamSettingsBundleController *)self activeSpecifier];
-  [v4 reloadSpecifier:v3];
+  parentListController = [(FilterSpamSettingsBundleController *)self parentListController];
+  activeSpecifier = [(FilterSpamSettingsBundleController *)self activeSpecifier];
+  [parentListController reloadSpecifier:activeSpecifier];
 }
 
-- (void)setFilterSpamEnabledForFaceTime:(id)a3 specifier:(id)a4
+- (void)setFilterSpamEnabledForFaceTime:(id)time specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(FilterSpamSettingsBundleController *)self configurationProvider];
-  [v6 setSpamFilterEnabledForFaceTime:v5];
+  bOOLValue = [time BOOLValue];
+  configurationProvider = [(FilterSpamSettingsBundleController *)self configurationProvider];
+  [configurationProvider setSpamFilterEnabledForFaceTime:bOOLValue];
 }
 
-- (id)getFilterSpamEnabledForFaceTime:(id)a3
+- (id)getFilterSpamEnabledForFaceTime:(id)time
 {
-  v3 = [(FilterSpamSettingsBundleController *)self configurationProvider];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isSpamFilterEnabledForFaceTime]);
+  configurationProvider = [(FilterSpamSettingsBundleController *)self configurationProvider];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configurationProvider isSpamFilterEnabledForFaceTime]);
 
   return v4;
 }

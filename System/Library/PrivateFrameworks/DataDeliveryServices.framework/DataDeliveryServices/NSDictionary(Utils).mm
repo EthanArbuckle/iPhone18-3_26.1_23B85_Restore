@@ -9,11 +9,11 @@
 - (id)dds_numberForKey:()Utils
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a1 objectForKey:v4];
+    v6 = [self objectForKey:v4];
   }
 
   else
@@ -27,11 +27,11 @@
 - (id)dds_dateForKey:()Utils
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a1 objectForKey:v4];
+    v6 = [self objectForKey:v4];
   }
 
   else
@@ -45,11 +45,11 @@
 - (id)dds_stringForKey:()Utils
 {
   v4 = a3;
-  v5 = [a1 objectForKey:v4];
+  v5 = [self objectForKey:v4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a1 objectForKey:v4];
+    v6 = [self objectForKey:v4];
   }
 
   else

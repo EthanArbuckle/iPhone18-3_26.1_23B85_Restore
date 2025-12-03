@@ -1,24 +1,24 @@
 @interface AKCandidatePickerView_iOSAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_createButtonsWithBlurStyle:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_createButtonsWithBlurStyle:(int64_t)style;
 @end
 
 @implementation AKCandidatePickerView_iOSAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKCandidatePickerView_iOS" hasInstanceMethod:@"_createButtonsWithBlurStyle:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"AKCandidatePickerView_iOS" hasInstanceMethod:@"_selectBackground: animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"AKCandidatePickerView_iOS" hasInstanceMethod:@"annotations" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKCandidatePickerView_iOS" hasInstanceMethod:@"buttons" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKCandidatePickerView_iOS" hasInstanceMethod:@"_createButtonsWithBlurStyle:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"AKCandidatePickerView_iOS" hasInstanceMethod:@"_selectBackground: animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"AKCandidatePickerView_iOS" hasInstanceMethod:@"annotations" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKCandidatePickerView_iOS" hasInstanceMethod:@"buttons" withFullSignature:{"@", 0}];
 }
 
-- (void)_createButtonsWithBlurStyle:(int64_t)a3
+- (void)_createButtonsWithBlurStyle:(int64_t)style
 {
   v12.receiver = self;
   v12.super_class = AKCandidatePickerView_iOSAccessibility;
-  [(AKCandidatePickerView_iOSAccessibility *)&v12 _createButtonsWithBlurStyle:a3];
+  [(AKCandidatePickerView_iOSAccessibility *)&v12 _createButtonsWithBlurStyle:style];
   objc_opt_class();
   v4 = [(AKCandidatePickerView_iOSAccessibility *)self safeValueForKey:@"annotations"];
   v5 = __UIAccessibilityCastAsClass();

@@ -1,16 +1,16 @@
 @interface CHFriendDetailCompetitionGraphCell
-- (CHFriendDetailCompetitionGraphCell)initWithFrame:(CGRect)a3;
+- (CHFriendDetailCompetitionGraphCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setCompetition:(id)a3;
+- (void)setCompetition:(id)competition;
 @end
 
 @implementation CHFriendDetailCompetitionGraphCell
 
-- (CHFriendDetailCompetitionGraphCell)initWithFrame:(CGRect)a3
+- (CHFriendDetailCompetitionGraphCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CHFriendDetailCompetitionGraphCell;
-  v3 = [(CHFriendDetailCompetitionGraphCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendDetailCompetitionGraphCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[ASCompetitionGraphView companionGraph];
@@ -34,9 +34,9 @@
   [(ASCompetitionGraphView *)graphView setNeedsLayout];
 }
 
-- (void)setCompetition:(id)a3
+- (void)setCompetition:(id)competition
 {
-  [(ASCompetitionGraphView *)self->_graphView setCompetition:a3];
+  [(ASCompetitionGraphView *)self->_graphView setCompetition:competition];
 
   [(CHFriendDetailCompetitionGraphCell *)self setNeedsLayout];
 }

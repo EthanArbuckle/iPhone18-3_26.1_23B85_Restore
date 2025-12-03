@@ -1,32 +1,32 @@
 @interface ICQUpgradePhotosCloudEnableHook
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6;
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion;
 @end
 
 @implementation ICQUpgradePhotosCloudEnableHook
 
-- (void)processElement:(id)a3 attributes:(id)a4 objectModel:(id)a5 completion:(id)a6
+- (void)processElement:(id)element attributes:(id)attributes objectModel:(id)model completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a6;
+  elementCopy = element;
+  completionCopy = completion;
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 name];
+    name = [elementCopy name];
     v11 = 138412290;
-    v12 = v10;
+    v12 = name;
     _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "Couldn't process element |%@|, It's not yet supported.", &v11, 0xCu);
   }
 
-  (*(v8 + 2))(v8, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 objectForKey:@"action"];
+  clientInfo = [model clientInfo];
+  v4 = [clientInfo objectForKey:@"action"];
   v5 = [v4 isEqualToString:@"ENABLE_ICPL"];
 
   return v5;

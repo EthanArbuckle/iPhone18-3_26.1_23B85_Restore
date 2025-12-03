@@ -1,37 +1,37 @@
 @interface _DASInternalPolicyEvaluationMetadata
-+ (id)metadataWithScore:(double)a3;
-- (_DASInternalPolicyEvaluationMetadata)initWithScore:(double)a3 reason:(int64_t)a4 decision:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)metadataWithScore:(double)score;
+- (_DASInternalPolicyEvaluationMetadata)initWithScore:(double)score reason:(int64_t)reason decision:(int64_t)decision;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _DASInternalPolicyEvaluationMetadata
 
-+ (id)metadataWithScore:(double)a3
++ (id)metadataWithScore:(double)score
 {
   v4 = objc_opt_new();
-  [v4 setScore:a3];
+  [v4 setScore:score];
 
   return v4;
 }
 
-- (_DASInternalPolicyEvaluationMetadata)initWithScore:(double)a3 reason:(int64_t)a4 decision:(int64_t)a5
+- (_DASInternalPolicyEvaluationMetadata)initWithScore:(double)score reason:(int64_t)reason decision:(int64_t)decision
 {
   v9.receiver = self;
   v9.super_class = _DASInternalPolicyEvaluationMetadata;
   result = [(_DASInternalPolicyEvaluationMetadata *)&v9 init];
   if (result)
   {
-    result->_score = a3;
-    result->_reason = a4;
-    result->_decision = a5;
+    result->_score = score;
+    result->_reason = reason;
+    result->_decision = decision;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_DASInternalPolicyEvaluationMetadata allocWithZone:a3];
+  v4 = [_DASInternalPolicyEvaluationMetadata allocWithZone:zone];
   score = self->_score;
   reason = self->_reason;
   decision = self->_decision;

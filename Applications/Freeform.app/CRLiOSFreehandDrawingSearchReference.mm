@@ -1,21 +1,21 @@
 @interface CRLiOSFreehandDrawingSearchReference
-- (CRLiOSFreehandDrawingSearchReference)initWithShapeItems:(id)a3 selectionPath:(id)a4 unscaledRect:(CGRect)a5 isCanvasAnchoredAtRight:(BOOL)a6;
-- (int64_t)compare:(id)a3;
+- (CRLiOSFreehandDrawingSearchReference)initWithShapeItems:(id)items selectionPath:(id)path unscaledRect:(CGRect)rect isCanvasAnchoredAtRight:(BOOL)right;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation CRLiOSFreehandDrawingSearchReference
 
-- (CRLiOSFreehandDrawingSearchReference)initWithShapeItems:(id)a3 selectionPath:(id)a4 unscaledRect:(CGRect)a5 isCanvasAnchoredAtRight:(BOOL)a6
+- (CRLiOSFreehandDrawingSearchReference)initWithShapeItems:(id)items selectionPath:(id)path unscaledRect:(CGRect)rect isCanvasAnchoredAtRight:(BOOL)right
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a4;
-  v14 = [a3 firstObject];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathCopy = path;
+  firstObject = [items firstObject];
   v17.receiver = self;
   v17.super_class = CRLiOSFreehandDrawingSearchReference;
-  v15 = [(CRLCanvasSearchReference *)&v17 initWithBoardItem:v14 selectionPath:v13];
+  v15 = [(CRLCanvasSearchReference *)&v17 initWithBoardItem:firstObject selectionPath:pathCopy];
 
   if (v15)
   {
@@ -23,7 +23,7 @@
     v15->_unscaledRect.origin.y = y;
     v15->_unscaledRect.size.width = width;
     v15->_unscaledRect.size.height = height;
-    v15->_isCanvasAnchoredAtRight = a6;
+    v15->_isCanvasAnchoredAtRight = right;
     [(CRLCanvasSearchReference *)v15 setSearchReferenceLayoutFrame:x, y, width, height];
     [(CRLCanvasSearchReference *)v15 setSearchReferencePoint:x, y];
   }
@@ -31,16 +31,16 @@
   return v15;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, compareCopy);
   v7 = v6;
   if (!v6)
   {
-    v35 = self;
-    v24 = &v35;
+    selfCopy = self;
+    v24 = &selfCopy;
     goto LABEL_11;
   }
 
@@ -134,7 +134,7 @@
     v24 = &v34;
 LABEL_11:
     v24->super_class = CRLiOSFreehandDrawingSearchReference;
-    v29 = [(objc_super *)v24 compare:v4];
+    v29 = [(objc_super *)v24 compare:compareCopy];
     goto LABEL_12;
   }
 

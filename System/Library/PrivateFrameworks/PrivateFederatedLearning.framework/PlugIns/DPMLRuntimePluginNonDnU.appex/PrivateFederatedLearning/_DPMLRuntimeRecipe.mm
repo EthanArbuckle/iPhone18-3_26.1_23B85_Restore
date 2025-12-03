@@ -1,19 +1,19 @@
 @interface _DPMLRuntimeRecipe
-+ (id)recipeWithTrialClient:(id)a3 error:(id *)a4;
-+ (int64_t)dataRecorderTypeEnumFromString:(id)a3;
-- (_DPMLRuntimeRecipe)initWithTrialClient:(id)a3 recipeIdentifier:(id)a4 clientIdentifier:(id)a5 recordMetadata:(id)a6 dataRecorderType:(int64_t)a7 dataTypeContent:(id)a8 recordParameters:(id)a9 cohortNameList:(id)a10;
-- (_DPMLRuntimeRecipe)initWithTrialClient:(id)a3 recipeIdentifier:(id)a4 clientIdentifier:(id)a5 recordMetadata:(id)a6 dataTypeContent:(id)a7 sqlQuery:(id)a8 sqlAccessTable:(id)a9 cohortNameList:(id)a10 isUnknownDictionaryCase:(BOOL)a11;
-- (id)recordDataArray:(id)a3 error:(id *)a4;
-- (id)recordDataArray:(id)a3 metadata:(id)a4 error:(id *)a5;
-- (id)runRecipeWithError:(id *)a3;
-- (void)setRecipeType:(unint64_t)a3;
++ (id)recipeWithTrialClient:(id)client error:(id *)error;
++ (int64_t)dataRecorderTypeEnumFromString:(id)string;
+- (_DPMLRuntimeRecipe)initWithTrialClient:(id)client recipeIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier recordMetadata:(id)metadata dataRecorderType:(int64_t)type dataTypeContent:(id)content recordParameters:(id)parameters cohortNameList:(id)self0;
+- (_DPMLRuntimeRecipe)initWithTrialClient:(id)client recipeIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier recordMetadata:(id)metadata dataTypeContent:(id)content sqlQuery:(id)query sqlAccessTable:(id)table cohortNameList:(id)self0 isUnknownDictionaryCase:(BOOL)self1;
+- (id)recordDataArray:(id)array error:(id *)error;
+- (id)recordDataArray:(id)array metadata:(id)metadata error:(id *)error;
+- (id)runRecipeWithError:(id *)error;
+- (void)setRecipeType:(unint64_t)type;
 @end
 
 @implementation _DPMLRuntimeRecipe
 
-- (void)setRecipeType:(unint64_t)a3
+- (void)setRecipeType:(unint64_t)type
 {
-  self->_recipeType = a3;
+  self->_recipeType = type;
   recordParameters = self->_recordParameters;
   self->_recordParameters = 0;
 
@@ -30,15 +30,15 @@
   self->_cohortNameList = 0;
 }
 
-- (_DPMLRuntimeRecipe)initWithTrialClient:(id)a3 recipeIdentifier:(id)a4 clientIdentifier:(id)a5 recordMetadata:(id)a6 dataRecorderType:(int64_t)a7 dataTypeContent:(id)a8 recordParameters:(id)a9 cohortNameList:(id)a10
+- (_DPMLRuntimeRecipe)initWithTrialClient:(id)client recipeIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier recordMetadata:(id)metadata dataRecorderType:(int64_t)type dataTypeContent:(id)content recordParameters:(id)parameters cohortNameList:(id)self0
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v16 = a8;
-  v17 = a9;
-  v18 = a10;
+  clientCopy = client;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  metadataCopy = metadata;
+  contentCopy = content;
+  parametersCopy = parameters;
+  listCopy = list;
   v29.receiver = self;
   v29.super_class = _DPMLRuntimeRecipe;
   v19 = [(_DPMLRuntimeRecipe *)&v29 init];
@@ -46,15 +46,15 @@
   if (v19)
   {
     [(_DPMLRuntimeRecipe *)v19 setRecipeType:1];
-    objc_storeStrong(&v20->_recipeIdentifier, a4);
-    objc_storeStrong(&v20->_clientIdentifier, a5);
-    objc_storeStrong(&v20->_recordMetadata, a6);
-    objc_storeStrong(&v20->_trialClient, a3);
-    v20->_dataRecorderType = a7;
-    objc_storeStrong(&v20->_cohortNameList, a10);
+    objc_storeStrong(&v20->_recipeIdentifier, identifier);
+    objc_storeStrong(&v20->_clientIdentifier, clientIdentifier);
+    objc_storeStrong(&v20->_recordMetadata, metadata);
+    objc_storeStrong(&v20->_trialClient, client);
+    v20->_dataRecorderType = type;
+    objc_storeStrong(&v20->_cohortNameList, list);
     if ([(_DPMLRuntimeRecipe *)v20 dataRecorderType]== 6)
     {
-      v21 = v16;
+      v21 = contentCopy;
     }
 
     else
@@ -65,22 +65,22 @@
     dataTypeContent = v20->_dataTypeContent;
     v20->_dataTypeContent = v21;
 
-    objc_storeStrong(&v20->_recordParameters, a9);
+    objc_storeStrong(&v20->_recordParameters, parameters);
   }
 
   return v20;
 }
 
-- (_DPMLRuntimeRecipe)initWithTrialClient:(id)a3 recipeIdentifier:(id)a4 clientIdentifier:(id)a5 recordMetadata:(id)a6 dataTypeContent:(id)a7 sqlQuery:(id)a8 sqlAccessTable:(id)a9 cohortNameList:(id)a10 isUnknownDictionaryCase:(BOOL)a11
+- (_DPMLRuntimeRecipe)initWithTrialClient:(id)client recipeIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier recordMetadata:(id)metadata dataTypeContent:(id)content sqlQuery:(id)query sqlAccessTable:(id)table cohortNameList:(id)self0 isUnknownDictionaryCase:(BOOL)self1
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  v23 = a8;
-  v22 = a9;
-  v18 = a10;
+  clientCopy = client;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  metadataCopy = metadata;
+  contentCopy = content;
+  queryCopy = query;
+  tableCopy = table;
+  listCopy = list;
   v29.receiver = self;
   v29.super_class = _DPMLRuntimeRecipe;
   v19 = [(_DPMLRuntimeRecipe *)&v29 init];
@@ -88,28 +88,28 @@
   if (v19)
   {
     [(_DPMLRuntimeRecipe *)v19 setRecipeType:2];
-    objc_storeStrong(&v20->_recipeIdentifier, a4);
-    objc_storeStrong(&v20->_clientIdentifier, a5);
-    objc_storeStrong(&v20->_recordMetadata, a6);
-    objc_storeStrong(&v20->_dataTypeContent, a7);
-    objc_storeStrong(&v20->_sqlQuery, a8);
-    objc_storeStrong(&v20->_trialClient, a3);
-    objc_storeStrong(&v20->_sqlAccessTable, a9);
-    objc_storeStrong(&v20->_cohortNameList, a10);
-    v20->_isUnknownDictionaryCase = a11;
+    objc_storeStrong(&v20->_recipeIdentifier, identifier);
+    objc_storeStrong(&v20->_clientIdentifier, clientIdentifier);
+    objc_storeStrong(&v20->_recordMetadata, metadata);
+    objc_storeStrong(&v20->_dataTypeContent, content);
+    objc_storeStrong(&v20->_sqlQuery, query);
+    objc_storeStrong(&v20->_trialClient, client);
+    objc_storeStrong(&v20->_sqlAccessTable, table);
+    objc_storeStrong(&v20->_cohortNameList, list);
+    v20->_isUnknownDictionaryCase = case;
   }
 
   return v20;
 }
 
-+ (id)recipeWithTrialClient:(id)a3 error:(id *)a4
++ (id)recipeWithTrialClient:(id)client error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 recipeDictionary];
-  v7 = v6;
-  if (v6)
+  clientCopy = client;
+  recipeDictionary = [clientCopy recipeDictionary];
+  v7 = recipeDictionary;
+  if (recipeDictionary)
   {
-    v8 = [v6 objectForKey:@"useCaseEncoding"];
+    v8 = [recipeDictionary objectForKey:@"useCaseEncoding"];
     if ([v8 length])
     {
       v9 = 1;
@@ -124,10 +124,10 @@
     v12 = [v7 objectForKey:@"version"];
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      if (a4)
+      if (error)
       {
         [_DPMLRuntimeError errorWithCode:100 description:@"Recipe is missing version string"];
-        *a4 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -141,10 +141,10 @@
     v13 = [v7 objectForKey:@"recipeIdentifier"];
     if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      if (a4)
+      if (error)
       {
         [_DPMLRuntimeError errorWithCode:100 description:@"Recipe is missing recipe identifier string"];
-        *a4 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -158,10 +158,10 @@
     v14 = [v7 objectForKey:@"clientIdentifier"];
     if (!v14 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      if (a4)
+      if (error)
       {
         [_DPMLRuntimeError errorWithCode:100 description:@"Recipe is missing client identifier string"];
-        *a4 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -174,9 +174,9 @@
 
     v78 = v13;
     v79 = v14;
-    v15 = [v5 namespaceIdentifier];
+    namespaceIdentifier = [clientCopy namespaceIdentifier];
     v89 = 0;
-    v16 = [_DPMLRecipeIDValidator checkClientIdentifier:v14 againstNamespaceIdentifier:v15 error:&v89];
+    v16 = [_DPMLRecipeIDValidator checkClientIdentifier:v14 againstNamespaceIdentifier:namespaceIdentifier error:&v89];
     v77 = v89;
 
     v17 = v16;
@@ -205,8 +205,8 @@
               if (v26)
               {
                 v22 = v26;
-                v27 = [v5 namespaceIdentifier];
-                v28 = sub_1000169BC(v27, v22);
+                namespaceIdentifier2 = [clientCopy namespaceIdentifier];
+                v28 = sub_1000169BC(namespaceIdentifier2, v22);
 
                 if (v28)
                 {
@@ -218,16 +218,16 @@ LABEL_45:
                   goto LABEL_46;
                 }
 
-                if (a4)
+                if (error)
                 {
-                  *a4 = [_DPMLRuntimeError errorWithCode:100 description:@"Data type content contains factor field(s) that are not allowed"];
+                  *error = [_DPMLRuntimeError errorWithCode:100 description:@"Data type content contains factor field(s) that are not allowed"];
                 }
               }
 
-              else if (a4)
+              else if (error)
               {
                 v43 = [NSString stringWithFormat:@"key %@ missing from recipe", @"dataTypeContent"];
-                *a4 = [_DPMLRuntimeError errorWithCode:100 description:v43];
+                *error = [_DPMLRuntimeError errorWithCode:100 description:v43];
               }
 
               goto LABEL_113;
@@ -253,24 +253,24 @@ LABEL_59:
                   }
                 }
 
-                if (a4)
+                if (error)
                 {
                   v51 = [NSString stringWithFormat:@"key %@ missing from recipe", @"maxValue"];
-                  *a4 = [_DPMLRuntimeError errorWithCode:100 description:v51];
+                  *error = [_DPMLRuntimeError errorWithCode:100 description:v51];
                 }
               }
 
-              else if (a4)
+              else if (error)
               {
                 v42 = [NSString stringWithFormat:@"key %@ missing from recipe", @"minValue"];
-                *a4 = [_DPMLRuntimeError errorWithCode:100 description:v42];
+                *error = [_DPMLRuntimeError errorWithCode:100 description:v42];
               }
             }
 
-            else if (a4)
+            else if (error)
             {
               v40 = [NSString stringWithFormat:@"key %@ missing from recipe", @"numBucket"];
-              *a4 = [_DPMLRuntimeError errorWithCode:100 description:v40];
+              *error = [_DPMLRuntimeError errorWithCode:100 description:v40];
             }
 
 LABEL_113:
@@ -293,10 +293,10 @@ LABEL_46:
                 objc_opt_class();
                 if ((objc_opt_isKindOfClass() & 1) == 0)
                 {
-                  if (a4)
+                  if (error)
                   {
                     [_DPMLRuntimeError errorWithCode:100 description:@"Cohorts must be a list of strings."];
-                    *a4 = v10 = 0;
+                    *error = v10 = 0;
                   }
 
                   else
@@ -332,9 +332,9 @@ LABEL_46:
                       objc_opt_class();
                       if ((objc_opt_isKindOfClass() & 1) == 0)
                       {
-                        if (a4)
+                        if (error)
                         {
-                          *a4 = [_DPMLRuntimeError errorWithCode:100 description:@"Cohorts must be a list of strings."];
+                          *error = [_DPMLRuntimeError errorWithCode:100 description:@"Cohorts must be a list of strings."];
                         }
 
                         v10 = 0;
@@ -385,12 +385,12 @@ LABEL_46:
               v14 = v79;
               if ([v12 isEqualToString:@"legacy"])
               {
-                if (a4)
+                if (error)
                 {
                   v44 = @"DSL is not supported.";
 LABEL_104:
                   [_DPMLRuntimeError errorWithCode:100 description:v44];
-                  *a4 = v10 = 0;
+                  *error = v10 = 0;
 LABEL_166:
                   v23 = v77;
                   v29 = v66;
@@ -404,7 +404,7 @@ LABEL_167:
 
               if (([v12 isEqualToString:@"sql+dtc"] & 1) == 0)
               {
-                if (a4)
+                if (error)
                 {
                   v44 = @"Recipe version not supported";
                   goto LABEL_104;
@@ -417,10 +417,10 @@ LABEL_105:
 
               if (!v67)
               {
-                if (a4)
+                if (error)
                 {
                   v53 = [NSString stringWithFormat:@"key %@ is required for SQL queries", @"dataTypeContent"];
-                  *a4 = [_DPMLRuntimeError errorWithCode:100 description:v53];
+                  *error = [_DPMLRuntimeError errorWithCode:100 description:v53];
                 }
 
                 v10 = 0;
@@ -430,10 +430,10 @@ LABEL_105:
               v45 = [v7 objectForKey:@"sqlParameters"];
               if (!v45 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
-                if (a4)
+                if (error)
                 {
                   [_DPMLRuntimeError errorWithCode:100 description:@"SQL parameters dictionary are missing"];
-                  *a4 = v10 = 0;
+                  *error = v10 = 0;
                 }
 
                 else
@@ -447,10 +447,10 @@ LABEL_105:
               v64 = [v45 objectForKey:@"accessControl"];
               if (!v64 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
-                if (a4)
+                if (error)
                 {
                   [_DPMLRuntimeError errorWithCode:100 description:@"SQL parameters dictionary is missing access controls"];
-                  *a4 = v10 = 0;
+                  *error = v10 = 0;
                 }
 
                 else
@@ -496,9 +496,9 @@ LABEL_105:
                         objc_opt_class();
                         if ((objc_opt_isKindOfClass() & 1) == 0)
                         {
-                          if (a4)
+                          if (error)
                           {
-                            *a4 = [_DPMLRuntimeError errorWithCode:100 description:@"If SQL query is an array, all entries must be strings"];
+                            *error = [_DPMLRuntimeError errorWithCode:100 description:@"If SQL query is an array, all entries must be strings"];
                           }
 
                           goto LABEL_155;
@@ -525,8 +525,8 @@ LABEL_93:
                   }
 
                   v80 = 0;
-                  v49 = [v5 namespaceIdentifier];
-                  v50 = [_DPMLSQLQueryValidator isValidSQLQuery:v47 forNamespaceID:v49 possibleError:&v80];
+                  namespaceIdentifier3 = [clientCopy namespaceIdentifier];
+                  v50 = [_DPMLSQLQueryValidator isValidSQLQuery:v47 forNamespaceID:namespaceIdentifier3 possibleError:&v80];
 
                   if (v50)
                   {
@@ -535,20 +535,20 @@ LABEL_93:
                       if (sub_100016BFC(v47, v79, v73))
                       {
                         LOBYTE(v59) = v9;
-                        v10 = [[_DPMLRuntimeRecipe alloc] initWithTrialClient:v5 recipeIdentifier:v78 clientIdentifier:v79 recordMetadata:obja dataTypeContent:v67 sqlQuery:v47 sqlAccessTable:v64 cohortNameList:v66 isUnknownDictionaryCase:v59];
+                        v10 = [[_DPMLRuntimeRecipe alloc] initWithTrialClient:clientCopy recipeIdentifier:v78 clientIdentifier:v79 recordMetadata:obja dataTypeContent:v67 sqlQuery:v47 sqlAccessTable:v64 cohortNameList:v66 isUnknownDictionaryCase:v59];
 LABEL_161:
 
                         goto LABEL_162;
                       }
 
-                      if (a4)
+                      if (error)
                       {
                         v58 = @"Cannot validate recipe for Private Relay usage";
                         goto LABEL_158;
                       }
                     }
 
-                    else if (a4)
+                    else if (error)
                     {
                       v58 = @"SQL query not valid";
 LABEL_158:
@@ -557,12 +557,12 @@ LABEL_158:
                     }
                   }
 
-                  else if (a4)
+                  else if (error)
                   {
                     v57 = [_DPMLRuntimeError errorWithCode:100 underlyingError:v80 description:@"Cannot validate SQL query"];
 LABEL_159:
                     v10 = 0;
-                    *a4 = v57;
+                    *error = v57;
                     goto LABEL_161;
                   }
 
@@ -570,19 +570,19 @@ LABEL_159:
                   goto LABEL_161;
                 }
 
-                if (a4)
+                if (error)
                 {
                   v54 = @"SQL query should either be an array of strings or a single string";
                   goto LABEL_147;
                 }
               }
 
-              else if (a4)
+              else if (error)
               {
                 v54 = @"SQL parameters dictionary is missing SQL query";
 LABEL_147:
                 [_DPMLRuntimeError errorWithCode:100 description:v54];
-                *a4 = v10 = 0;
+                *error = v10 = 0;
 LABEL_162:
 
 LABEL_163:
@@ -601,17 +601,17 @@ LABEL_155:
             goto LABEL_59;
           }
 
-          if (a4)
+          if (error)
           {
             v41 = [NSString stringWithFormat:@"The data recorder type %@ is not supported", v19];
-            *a4 = [_DPMLRuntimeError errorWithCode:100 description:v41];
+            *error = [_DPMLRuntimeError errorWithCode:100 description:v41];
           }
         }
 
-        else if (a4)
+        else if (error)
         {
           [_DPMLRuntimeError errorWithCode:100 description:@"Recipe is missing data recorder type string"];
-          *a4 = v10 = 0;
+          *error = v10 = 0;
 LABEL_114:
           v23 = v77;
 LABEL_115:
@@ -624,11 +624,11 @@ LABEL_115:
         goto LABEL_114;
       }
 
-      if (a4)
+      if (error)
       {
-        v24 = [v5 namespaceIdentifier];
-        v25 = [NSString stringWithFormat:@"The client identifier %@ is not allowed for the Trial namespace %@", v79, v24];
-        *a4 = [_DPMLRuntimeError errorWithCode:100 description:v25];
+        namespaceIdentifier4 = [clientCopy namespaceIdentifier];
+        v25 = [NSString stringWithFormat:@"The client identifier %@ is not allowed for the Trial namespace %@", v79, namespaceIdentifier4];
+        *error = [_DPMLRuntimeError errorWithCode:100 description:v25];
 
         v14 = v79;
       }
@@ -639,11 +639,11 @@ LABEL_115:
 
     else
     {
-      if (a4)
+      if (error)
       {
         v23 = v77;
         [_DPMLRuntimeError errorWithCode:100 underlyingError:v77 description:@"Cannot perform recipe ID check"];
-        *a4 = v10 = 0;
+        *error = v10 = 0;
         v17 = 0;
 LABEL_116:
         v13 = v78;
@@ -664,10 +664,10 @@ LABEL_120:
     goto LABEL_121;
   }
 
-  if (a4)
+  if (error)
   {
     [_DPMLRuntimeError errorWithCode:100 description:@"Trial client cannot provide the recipe"];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -680,24 +680,24 @@ LABEL_121:
   return v10;
 }
 
-- (id)runRecipeWithError:(id *)a3
+- (id)runRecipeWithError:(id *)error
 {
-  v5 = [(_DPMLRuntimeRecipe *)self recipeType];
-  if (v5 == 2)
+  recipeType = [(_DPMLRuntimeRecipe *)self recipeType];
+  if (recipeType == 2)
   {
     v8 = [_DPMLRuntimeSQL alloc];
-    v9 = [(_DPMLRuntimeRecipe *)self sqlAccessTable];
-    v10 = [(_DPMLRuntimeRecipe *)self recipeIdentifier];
+    sqlAccessTable = [(_DPMLRuntimeRecipe *)self sqlAccessTable];
+    recipeIdentifier = [(_DPMLRuntimeRecipe *)self recipeIdentifier];
     v30 = 0;
-    v11 = [(_DPMLRuntimeSQL *)v8 initWithSQLAccessTable:v9 forRecipeIdentifier:v10 withError:&v30];
+    v11 = [(_DPMLRuntimeSQL *)v8 initWithSQLAccessTable:sqlAccessTable forRecipeIdentifier:recipeIdentifier withError:&v30];
     v12 = v30;
 
     if (!v11)
     {
-      if (a3)
+      if (error)
       {
         [_DPMLRuntimeError errorWithCode:400 underlyingError:v12 description:@"SQL Constructor Error"];
-        *a3 = v18 = 0;
+        *error = v18 = 0;
       }
 
       else
@@ -708,9 +708,9 @@ LABEL_121:
       goto LABEL_30;
     }
 
-    v13 = [(_DPMLRuntimeRecipe *)self sqlQuery];
+    sqlQuery = [(_DPMLRuntimeRecipe *)self sqlQuery];
     v29 = v12;
-    v14 = [(_DPMLRuntimeSQL *)v11 runQuery:v13 withError:&v29];
+    v14 = [(_DPMLRuntimeSQL *)v11 runQuery:sqlQuery withError:&v29];
     v15 = v29;
 
     if (v14)
@@ -729,7 +729,7 @@ LABEL_121:
 
       if ([(_DPMLRuntimeRecipe *)self isUnknownDictionaryCase])
       {
-        v16 = [UnknownDictionary runWithRecipe:self data:v14 error:a3];
+        v16 = [UnknownDictionary runWithRecipe:self data:v14 error:error];
         if ((v16 & 0x80000000) == 0)
         {
           v17 = v16;
@@ -741,9 +741,9 @@ LABEL_26:
 
       else
       {
-        v20 = [(_DPMLRuntimeRecipe *)self trialClient];
-        v21 = [v20 namespaceIdentifier];
-        v22 = [&off_100034668 containsObject:v21];
+        trialClient = [(_DPMLRuntimeRecipe *)self trialClient];
+        namespaceIdentifier = [trialClient namespaceIdentifier];
+        v22 = [&off_100034668 containsObject:namespaceIdentifier];
 
         if (!v22)
         {
@@ -765,16 +765,16 @@ LABEL_26:
             v27 = v18;
           }
 
-          else if (a3)
+          else if (error)
           {
-            *a3 = [_DPMLRuntimeError errorWithCode:400 underlyingError:v12 description:@"SQL Query Recording Error"];
+            *error = [_DPMLRuntimeError errorWithCode:400 underlyingError:v12 description:@"SQL Query Recording Error"];
           }
 
           goto LABEL_29;
         }
 
-        v23 = [(_DPMLRuntimeRecipe *)self trialClient];
-        v24 = [DPMLRuntimeKeyboard runWithTrialClient:v23 error:a3];
+        trialClient2 = [(_DPMLRuntimeRecipe *)self trialClient];
+        v24 = [DPMLRuntimeKeyboard runWithTrialClient:trialClient2 error:error];
 
         if ((v24 & 0x80000000) == 0)
         {
@@ -784,10 +784,10 @@ LABEL_26:
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       [_DPMLRuntimeError errorWithCode:400 underlyingError:v15 description:@"SQL Query Running Error"];
-      *a3 = v18 = 0;
+      *error = v18 = 0;
 LABEL_28:
       v12 = v15;
 LABEL_29:
@@ -800,20 +800,20 @@ LABEL_30:
     goto LABEL_28;
   }
 
-  if (v5 == 1)
+  if (recipeType == 1)
   {
-    if (a3)
+    if (error)
     {
       v6 = @"DSL is not supported";
       v7 = 200;
 LABEL_13:
       [_DPMLRuntimeError errorWithCode:v7 description:v6];
-      *a3 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_31;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v6 = @"Recipe version not supported";
     v7 = 100;
@@ -826,26 +826,26 @@ LABEL_31:
   return v18;
 }
 
-- (id)recordDataArray:(id)a3 error:(id *)a4
+- (id)recordDataArray:(id)array error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_DPMLRuntimeRecipe *)self recordMetadata];
-  v8 = [(_DPMLRuntimeRecipe *)self recordDataArray:v6 metadata:v7 error:a4];
+  arrayCopy = array;
+  recordMetadata = [(_DPMLRuntimeRecipe *)self recordMetadata];
+  v8 = [(_DPMLRuntimeRecipe *)self recordDataArray:arrayCopy metadata:recordMetadata error:error];
 
   return v8;
 }
 
-- (id)recordDataArray:(id)a3 metadata:(id)a4 error:(id *)a5
+- (id)recordDataArray:(id)array metadata:(id)metadata error:(id *)error
 {
-  v8 = a3;
-  v207 = a4;
-  v205 = v8;
-  if (!v8)
+  arrayCopy = array;
+  metadataCopy = metadata;
+  v205 = arrayCopy;
+  if (!arrayCopy)
   {
-    if (a5)
+    if (error)
     {
       [_DPMLRuntimeError errorWithCode:400 description:@"Received nil data array"];
-      *a5 = v72 = 0;
+      *error = v72 = 0;
     }
 
     else
@@ -856,40 +856,40 @@ LABEL_31:
     goto LABEL_202;
   }
 
-  if (![v8 count])
+  if (![arrayCopy count])
   {
     v72 = &off_1000343B0;
     goto LABEL_202;
   }
 
-  v9 = [(_DPMLRuntimeRecipe *)self clientIdentifier];
-  v281[0] = v9;
-  v10 = [(_DPMLRuntimeRecipe *)self recipeIdentifier];
-  v281[1] = v10;
+  clientIdentifier = [(_DPMLRuntimeRecipe *)self clientIdentifier];
+  v281[0] = clientIdentifier;
+  recipeIdentifier = [(_DPMLRuntimeRecipe *)self recipeIdentifier];
+  v281[1] = recipeIdentifier;
   v11 = [NSArray arrayWithObjects:v281 count:2];
 
   v204 = v11;
   v210 = [v11 componentsJoinedByString:@":"];
-  v12 = [(_DPMLRuntimeRecipe *)self dataTypeContent];
+  dataTypeContent = [(_DPMLRuntimeRecipe *)self dataTypeContent];
 
-  if (!v12)
+  if (!dataTypeContent)
   {
-    v73 = [v205 firstObject];
+    firstObject = [v205 firstObject];
     v74 = &sqlite3_close_ptr;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v76 = [(_DPMLRuntimeRecipe *)self recordParameters];
-      v77 = [v76 minValue];
-      v78 = [v77 intValue];
-      v79 = [(_DPMLRuntimeRecipe *)self recordParameters];
-      v80 = [v79 maxValue];
-      v81 = [v80 intValue];
-      v82 = [(_DPMLRuntimeRecipe *)self recordParameters];
-      v83 = [v82 numBucket];
-      v84 = +[_DPMLRuntimeResultRecorderNumber recordData:forKey:minValue:maxValue:numBucket:metadata:error:](_DPMLRuntimeResultRecorderNumber, "recordData:forKey:minValue:maxValue:numBucket:metadata:error:", v205, v210, v78, v81, [v83 unsignedIntValue], v207, a5);
+      recordParameters = [(_DPMLRuntimeRecipe *)self recordParameters];
+      minValue = [recordParameters minValue];
+      intValue = [minValue intValue];
+      recordParameters2 = [(_DPMLRuntimeRecipe *)self recordParameters];
+      maxValue = [recordParameters2 maxValue];
+      intValue2 = [maxValue intValue];
+      recordParameters3 = [(_DPMLRuntimeRecipe *)self recordParameters];
+      numBucket = [recordParameters3 numBucket];
+      v84 = +[_DPMLRuntimeResultRecorderNumber recordData:forKey:minValue:maxValue:numBucket:metadata:error:](_DPMLRuntimeResultRecorderNumber, "recordData:forKey:minValue:maxValue:numBucket:metadata:error:", v205, v210, intValue, intValue2, [numBucket unsignedIntValue], metadataCopy, error);
 
       v74 = &sqlite3_close_ptr;
 LABEL_70:
@@ -917,7 +917,7 @@ LABEL_195:
       goto LABEL_201;
     }
 
-    v167 = [v205 firstObject];
+    firstObject2 = [v205 firstObject];
     objc_opt_class();
     v168 = objc_opt_isKindOfClass();
 
@@ -928,22 +928,22 @@ LABEL_195:
 
     else
     {
-      v182 = [v205 firstObject];
+      firstObject3 = [v205 firstObject];
       objc_opt_class();
       v183 = objc_opt_isKindOfClass();
 
       if ((v183 & 1) == 0)
       {
-        v189 = [v205 firstObject];
+        firstObject4 = [v205 firstObject];
         objc_opt_class();
         v190 = objc_opt_isKindOfClass();
 
         if ((v190 & 1) == 0)
         {
-          if (a5)
+          if (error)
           {
             [_DPMLRuntimeError errorWithCode:400 description:@"Unsupported data type"];
-            *a5 = v72 = 0;
+            *error = v72 = 0;
           }
 
           else
@@ -954,28 +954,28 @@ LABEL_195:
           goto LABEL_201;
         }
 
-        v191 = [v205 firstObject];
-        v76 = [v191 objectEnumerator];
+        firstObject5 = [v205 firstObject];
+        recordParameters = [firstObject5 objectEnumerator];
 
-        v77 = [v76 nextObject];
-        if (v77 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+        minValue = [recordParameters nextObject];
+        if (minValue && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v243 = [(_DPMLRuntimeRecipe *)self recordParameters];
-          v192 = [v243 minValue];
-          v193 = [v192 intValue];
-          v194 = [(_DPMLRuntimeRecipe *)self recordParameters];
-          v195 = [v194 maxValue];
-          v196 = [v195 intValue];
-          v197 = [(_DPMLRuntimeRecipe *)self recordParameters];
-          v198 = [v197 numBucket];
-          v84 = +[_DPMLRuntimeResultRecorderNumber recordMultipleKeysData:forBaseKey:minValue:maxValue:numBucket:metadata:error:](_DPMLRuntimeResultRecorderNumber, "recordMultipleKeysData:forBaseKey:minValue:maxValue:numBucket:metadata:error:", v205, v210, v193, v196, [v198 unsignedIntValue], v207, a5);
+          recordParameters4 = [(_DPMLRuntimeRecipe *)self recordParameters];
+          minValue2 = [recordParameters4 minValue];
+          intValue3 = [minValue2 intValue];
+          recordParameters5 = [(_DPMLRuntimeRecipe *)self recordParameters];
+          maxValue2 = [recordParameters5 maxValue];
+          intValue4 = [maxValue2 intValue];
+          recordParameters6 = [(_DPMLRuntimeRecipe *)self recordParameters];
+          numBucket2 = [recordParameters6 numBucket];
+          v84 = +[_DPMLRuntimeResultRecorderNumber recordMultipleKeysData:forBaseKey:minValue:maxValue:numBucket:metadata:error:](_DPMLRuntimeResultRecorderNumber, "recordMultipleKeysData:forBaseKey:minValue:maxValue:numBucket:metadata:error:", v205, v210, intValue3, intValue4, [numBucket2 unsignedIntValue], metadataCopy, error);
 
           v74 = &sqlite3_close_ptr;
         }
 
         else
         {
-          v84 = [_DPMLRuntimeResultRecorderBitVector recordMultipleKeysData:v205 forBaseKey:v210 metadata:v207 error:a5];
+          v84 = [_DPMLRuntimeResultRecorderBitVector recordMultipleKeysData:v205 forBaseKey:v210 metadata:metadataCopy error:error];
         }
 
         goto LABEL_70;
@@ -984,22 +984,22 @@ LABEL_195:
       v169 = _DPMLRuntimeResultRecorderBitVector;
     }
 
-    v84 = [(__objc2_class *)v169 recordData:v205 forKey:v210 metadata:v207 error:a5];
+    v84 = [(__objc2_class *)v169 recordData:v205 forKey:v210 metadata:metadataCopy error:error];
     goto LABEL_195;
   }
 
-  v13 = [(_DPMLRuntimeRecipe *)self trialClient];
-  v14 = [v13 namespaceIdentifier];
+  trialClient = [(_DPMLRuntimeRecipe *)self trialClient];
+  namespaceIdentifier = [trialClient namespaceIdentifier];
 
-  v15 = [(_DPMLRuntimeRecipe *)self dataTypeContent];
-  v16 = sub_1000169BC(v14, v15);
+  dataTypeContent2 = [(_DPMLRuntimeRecipe *)self dataTypeContent];
+  v16 = sub_1000169BC(namespaceIdentifier, dataTypeContent2);
 
   if (!v16)
   {
-    if (a5)
+    if (error)
     {
       [_DPMLRuntimeError errorWithCode:300 description:@"Cannot generate factor names. Check the logs for details"];
-      *a5 = v72 = 0;
+      *error = v72 = 0;
     }
 
     else
@@ -1010,11 +1010,11 @@ LABEL_195:
     goto LABEL_191;
   }
 
-  v17 = [(_DPMLRuntimeRecipe *)self cohortNameList];
+  cohortNameList = [(_DPMLRuntimeRecipe *)self cohortNameList];
   v18 = v205;
-  v203 = v14;
-  v19 = v14;
-  v20 = v17;
+  v203 = namespaceIdentifier;
+  v19 = namespaceIdentifier;
+  v20 = cohortNameList;
   v202 = v16;
   v238 = v16;
   v21 = +[NSMutableDictionary dictionary];
@@ -1023,7 +1023,7 @@ LABEL_195:
   v297 = 0u;
   v298 = 0u;
   obj = v18;
-  v242 = self;
+  selfCopy = self;
   v218 = v21;
   v228 = [obj countByEnumeratingWithState:&v295 objects:v299 count:16];
   if (!v228)
@@ -1069,11 +1069,11 @@ LABEL_195:
           v27 = @"N/A";
         }
 
-        v29 = [v238 allKeys];
-        v30 = [NSMutableSet setWithArray:v29];
+        allKeys = [v238 allKeys];
+        v30 = [NSMutableSet setWithArray:allKeys];
 
-        v31 = [v24 allKeys];
-        v32 = [NSSet setWithArray:v31];
+        allKeys2 = [v24 allKeys];
+        v32 = [NSSet setWithArray:allKeys2];
         [v30 intersectSet:v32];
 
         v33 = +[_PFLLog extension];
@@ -1222,13 +1222,13 @@ LABEL_44:
   while (v228);
 LABEL_46:
 
-  v55 = [v21 allKeys];
+  allKeys3 = [v21 allKeys];
   v56 = +[NSMutableSet set];
   v295 = 0u;
   v296 = 0u;
   v297 = 0u;
   v298 = 0u;
-  v236 = v55;
+  v236 = allKeys3;
   v57 = [v236 countByEnumeratingWithState:&v295 objects:v299 count:16];
   if (v57)
   {
@@ -1244,13 +1244,13 @@ LABEL_46:
         }
 
         v61 = [*(*(&v295 + 1) + 8 * k) componentsSeparatedByString:@":"];
-        v62 = [v61 lastObject];
+        lastObject = [v61 lastObject];
 
         v294 = 0u;
         v293 = 0u;
         v292 = 0u;
         v291 = 0u;
-        v63 = [v62 componentsSeparatedByString:@"|"];
+        v63 = [lastObject componentsSeparatedByString:@"|"];
         v64 = [v63 countByEnumeratingWithState:&v291 objects:&v287 count:16];
         if (v64)
         {
@@ -1309,30 +1309,30 @@ LABEL_46:
         }
 
         v88 = [*(*(&v266 + 1) + 8 * n) componentsSeparatedByString:@"+"];
-        v89 = [v88 firstObject];
-        v90 = [v238 objectForKey:v89];
+        firstObject6 = [v88 firstObject];
+        v90 = [v238 objectForKey:firstObject6];
 
         if (v90)
         {
           v229 = v88;
-          v91 = [v88 lastObject];
-          v92 = [(_DPMLRuntimeRecipe *)v242 trialClient];
+          lastObject2 = [v88 lastObject];
+          trialClient2 = [(_DPMLRuntimeRecipe *)selfCopy trialClient];
           v265 = 0;
-          v93 = [v92 downloadFactor:v91 error:&v265];
+          v93 = [trialClient2 downloadFactor:lastObject2 error:&v265];
           v231 = v265;
 
           v233 = v93;
-          v224 = v89;
+          v224 = firstObject6;
           if (v93)
           {
             v94 = v71;
-            v95 = [v85 objectForKey:v89];
+            v95 = [v85 objectForKey:firstObject6];
             v96 = v85;
-            v97 = v89;
-            v98 = v95;
+            v97 = firstObject6;
+            describe = v95;
             if (v95)
             {
-              v99 = [v95 objectForKey:v91];
+              v99 = [v95 objectForKey:lastObject2];
 
               if (v99)
               {
@@ -1341,13 +1341,13 @@ LABEL_46:
               }
 
               v107 = [NSURL fileURLWithPath:v233];
-              [v98 setObject:v107 forKey:v91];
+              [describe setObject:v107 forKey:lastObject2];
             }
 
             else
             {
               v107 = [NSURL fileURLWithPath:v233];
-              v108 = [NSMutableDictionary dictionaryWithObject:v107 forKey:v91];
+              v108 = [NSMutableDictionary dictionaryWithObject:v107 forKey:lastObject2];
               [v96 setObject:v108 forKey:v97];
 
               v86 = v216;
@@ -1365,7 +1365,7 @@ LABEL_99:
             if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
             {
               *v299 = 138412290;
-              v300 = v91;
+              v300 = lastObject2;
               _os_log_error_impl(&_mh_execute_header, v100, OS_LOG_TYPE_ERROR, "Cannot download Trial factor %@. Error: ", v299, 0xCu);
             }
 
@@ -1373,8 +1373,8 @@ LABEL_99:
             v264 = 0u;
             v261 = 0u;
             v262 = 0u;
-            v98 = [v231 describe];
-            v101 = [v98 countByEnumeratingWithState:&v261 objects:v279 count:16];
+            describe = [v231 describe];
+            v101 = [describe countByEnumeratingWithState:&v261 objects:v279 count:16];
             if (v101)
             {
               v102 = v101;
@@ -1385,7 +1385,7 @@ LABEL_99:
                 {
                   if (*v262 != v103)
                   {
-                    objc_enumerationMutation(v98);
+                    objc_enumerationMutation(describe);
                   }
 
                   v105 = *(*(&v261 + 1) + 8 * ii);
@@ -1398,7 +1398,7 @@ LABEL_99:
                   }
                 }
 
-                v102 = [v98 countByEnumeratingWithState:&v261 objects:v279 count:16];
+                v102 = [describe countByEnumeratingWithState:&v261 objects:v279 count:16];
               }
 
               while (v102);
@@ -1409,16 +1409,16 @@ LABEL_99:
           }
 
           v88 = v229;
-          v89 = v224;
+          firstObject6 = v224;
           goto LABEL_101;
         }
 
-        v91 = +[_PFLLog extension];
-        if (os_log_type_enabled(v91, OS_LOG_TYPE_FAULT))
+        lastObject2 = +[_PFLLog extension];
+        if (os_log_type_enabled(lastObject2, OS_LOG_TYPE_FAULT))
         {
           *v299 = 138412290;
-          v300 = v89;
-          _os_log_fault_impl(&_mh_execute_header, v91, OS_LOG_TYPE_FAULT, "Categorical type '%@' is not using a factor.", v299, 0xCu);
+          v300 = firstObject6;
+          _os_log_fault_impl(&_mh_execute_header, lastObject2, OS_LOG_TYPE_FAULT, "Categorical type '%@' is not using a factor.", v299, 0xCu);
         }
 
 LABEL_101:
@@ -1447,12 +1447,12 @@ LABEL_103:
     sub_10001D7DC();
   }
 
-  v110 = [(_DPMLRuntimeRecipe *)v242 trialClient];
-  v111 = [v110 experimentIdentifier];
+  trialClient3 = [(_DPMLRuntimeRecipe *)selfCopy trialClient];
+  experimentIdentifier = [trialClient3 experimentIdentifier];
 
-  if (v111)
+  if (experimentIdentifier)
   {
-    v112 = v111;
+    v112 = experimentIdentifier;
   }
 
   else
@@ -1460,12 +1460,12 @@ LABEL_103:
     v112 = @"NoTrialExperimentIdentifier";
   }
 
-  v113 = [(_DPMLRuntimeRecipe *)v242 trialClient];
-  v114 = [v113 deploymentIdentifier];
+  trialClient4 = [(_DPMLRuntimeRecipe *)selfCopy trialClient];
+  deploymentIdentifier = [trialClient4 deploymentIdentifier];
 
-  if (v114)
+  if (deploymentIdentifier)
   {
-    v115 = v114;
+    v115 = deploymentIdentifier;
   }
 
   else
@@ -1473,17 +1473,17 @@ LABEL_103:
     v115 = @"NoTrialDeploymentIdentifier";
   }
 
-  v116 = [(_DPMLRuntimeRecipe *)v242 trialClient];
-  v117 = [v116 treatmentIdentifier];
+  trialClient5 = [(_DPMLRuntimeRecipe *)selfCopy trialClient];
+  treatmentIdentifier = [trialClient5 treatmentIdentifier];
 
-  if (!v117)
+  if (!treatmentIdentifier)
   {
-    v117 = @"NoTrialTreatmentIdentifier";
+    treatmentIdentifier = @"NoTrialTreatmentIdentifier";
   }
 
   v278[0] = v112;
   v278[1] = v115;
-  v278[2] = v117;
+  v278[2] = treatmentIdentifier;
   v118 = [NSArray arrayWithObjects:v278 count:3];
   v209 = [v118 componentsJoinedByString:@":"];
 
@@ -1495,7 +1495,7 @@ LABEL_103:
   v211 = [v212 countByEnumeratingWithState:&v257 objects:v277 count:16];
   v200 = v115;
   v201 = v112;
-  v199 = v117;
+  v199 = treatmentIdentifier;
   if (v211)
   {
     v206 = 0;
@@ -1520,8 +1520,8 @@ LABEL_103:
         v217 = [v121 componentsJoinedByString:@":"];
 
         v122 = [v120 componentsSeparatedByString:@":"];
-        v123 = [v122 lastObject];
-        v124 = [v123 componentsSeparatedByString:@"|"];
+        lastObject3 = [v122 lastObject];
+        v124 = [lastObject3 componentsSeparatedByString:@"|"];
 
         v125 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v124 count]);
         v253 = 0u;
@@ -1555,15 +1555,15 @@ LABEL_103:
               }
 
               v132 = [v130 componentsSeparatedByString:@"+"];
-              v133 = [v132 firstObject];
-              v134 = [v227 objectForKey:v133];
+              firstObject7 = [v132 firstObject];
+              v134 = [v227 objectForKey:firstObject7];
               if (!v134)
               {
                 v141 = +[_PFLLog extension];
                 if (os_log_type_enabled(v141, OS_LOG_TYPE_ERROR))
                 {
                   *v299 = 138412290;
-                  v300 = v133;
+                  v300 = firstObject7;
                   _os_log_error_impl(&_mh_execute_header, v141, OS_LOG_TYPE_ERROR, "No level URLs found for data type %@", v299, 0xCu);
                 }
 
@@ -1571,11 +1571,11 @@ LABEL_103:
               }
 
               v135 = v134;
-              v136 = [v132 lastObject];
-              v137 = [v135 objectForKey:v136];
+              lastObject4 = [v132 lastObject];
+              v137 = [v135 objectForKey:lastObject4];
               if (v137)
               {
-                [v125 setObject:v137 forKey:v133];
+                [v125 setObject:v137 forKey:firstObject7];
               }
 
               else
@@ -1586,9 +1586,9 @@ LABEL_103:
                 if (os_log_type_enabled(v140, OS_LOG_TYPE_ERROR))
                 {
                   *v299 = 138412546;
-                  v300 = v133;
+                  v300 = firstObject7;
                   v301 = 2112;
-                  v302 = v136;
+                  v302 = lastObject4;
                   _os_log_error_impl(&_mh_execute_header, v140, OS_LOG_TYPE_ERROR, "No level URL found for data type %@ and level %@", v299, 0x16u);
                 }
 
@@ -1618,14 +1618,14 @@ LABEL_103:
 
 LABEL_138:
 
-        v142 = [(_DPMLRuntimeRecipe *)v242 dataTypeContent];
+        dataTypeContent3 = [(_DPMLRuntimeRecipe *)selfCopy dataTypeContent];
         v237 = v125;
-        v234 = [v142 mutableCopy];
+        v234 = [dataTypeContent3 mutableCopy];
         v287 = 0u;
         v288 = 0u;
         v289 = 0u;
         v290 = 0u;
-        v143 = v142;
+        v143 = dataTypeContent3;
         v144 = [v143 countByEnumeratingWithState:&v287 objects:v299 count:16];
         if (v144)
         {
@@ -1715,7 +1715,7 @@ LABEL_156:
           }
 
           v252 = 0;
-          v164 = [FedStatsDataEncoder encodeDataArrayAndRecord:v219 dataTypeContent:v158 metadata:v207 baseKey:v159 errorOut:&v252];
+          v164 = [FedStatsDataEncoder encodeDataArrayAndRecord:v219 dataTypeContent:v158 metadata:metadataCopy baseKey:v159 errorOut:&v252];
           v161 = v252;
           v165 = +[_PFLLog extension];
           v166 = v165;
@@ -1770,8 +1770,8 @@ LABEL_156:
   v251 = 0u;
   v248 = 0u;
   v249 = 0u;
-  v241 = [v227 allValues];
-  v170 = [v241 countByEnumeratingWithState:&v248 objects:v274 count:16];
+  allValues = [v227 allValues];
+  v170 = [allValues countByEnumeratingWithState:&v248 objects:v274 count:16];
   if (v170)
   {
     v171 = v170;
@@ -1782,7 +1782,7 @@ LABEL_156:
       {
         if (*v249 != v172)
         {
-          objc_enumerationMutation(v241);
+          objc_enumerationMutation(allValues);
         }
 
         v174 = *(*(&v248 + 1) + 8 * kk);
@@ -1790,8 +1790,8 @@ LABEL_156:
         v245 = 0u;
         v246 = 0u;
         v247 = 0u;
-        v175 = [v174 allKeys];
-        v176 = [v175 countByEnumeratingWithState:&v244 objects:v273 count:16];
+        allKeys4 = [v174 allKeys];
+        v176 = [allKeys4 countByEnumeratingWithState:&v244 objects:v273 count:16];
         if (v176)
         {
           v177 = v176;
@@ -1802,22 +1802,22 @@ LABEL_156:
             {
               if (*v245 != v178)
               {
-                objc_enumerationMutation(v175);
+                objc_enumerationMutation(allKeys4);
               }
 
               v180 = *(*(&v244 + 1) + 8 * mm);
-              v181 = [(_DPMLRuntimeRecipe *)v242 trialClient];
-              [v181 removeFactor:v180];
+              trialClient6 = [(_DPMLRuntimeRecipe *)selfCopy trialClient];
+              [trialClient6 removeFactor:v180];
             }
 
-            v177 = [v175 countByEnumeratingWithState:&v244 objects:v273 count:16];
+            v177 = [allKeys4 countByEnumeratingWithState:&v244 objects:v273 count:16];
           }
 
           while (v177);
         }
       }
 
-      v171 = [v241 countByEnumeratingWithState:&v248 objects:v274 count:16];
+      v171 = [allValues countByEnumeratingWithState:&v248 objects:v274 count:16];
     }
 
     while (v171);
@@ -1826,7 +1826,7 @@ LABEL_156:
   v72 = [NSNumber numberWithUnsignedInteger:v206];
 
   v16 = v202;
-  v14 = v203;
+  namespaceIdentifier = v203;
 LABEL_191:
 
 LABEL_201:
@@ -1835,7 +1835,7 @@ LABEL_202:
   return v72;
 }
 
-+ (int64_t)dataRecorderTypeEnumFromString:(id)a3
++ (int64_t)dataRecorderTypeEnumFromString:(id)string
 {
   v8[0] = @"numericType";
   v8[1] = @"bitVectorType";
@@ -1851,21 +1851,21 @@ LABEL_202:
   v9[5] = &off_100034440;
   v8[6] = @"dataContentType";
   v9[6] = &off_100034458;
-  v3 = a3;
+  stringCopy = string;
   v4 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:7];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:stringCopy];
 
   if (v5)
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
-  return v6;
+  return integerValue;
 }
 
 @end

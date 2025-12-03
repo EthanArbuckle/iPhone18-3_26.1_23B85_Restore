@@ -1,18 +1,18 @@
 @interface MFMutableMessageHeaders
-- (BOOL)hasHeaderForKey:(id)a3;
+- (BOOL)hasHeaderForKey:(id)key;
 - (NSData)encodedHeaders;
 - (NSString)description;
-- (id)_copyHeaderValueForKey:(id)a3;
+- (id)_copyHeaderValueForKey:(id)key;
 - (id)allHeaderKeys;
-- (id)firstHeaderForKey:(id)a3;
+- (id)firstHeaderForKey:(id)key;
 - (id)headersDictionary;
 - (id)mutableCopy;
-- (void)_appendAddedHeaderKey:(id)a3 value:(id)a4 toData:(id)a5;
-- (void)_appendHeaderKey:(id)a3 value:(id)a4 toData:(id)a5;
-- (void)removeHeaderForKey:(id)a3;
-- (void)setAddressList:(id)a3 forKey:(id)a4;
-- (void)setHeader:(id)a3 forKey:(id)a4;
-- (void)setReferences:(id)a3;
+- (void)_appendAddedHeaderKey:(id)key value:(id)value toData:(id)data;
+- (void)_appendHeaderKey:(id)key value:(id)value toData:(id)data;
+- (void)removeHeaderForKey:(id)key;
+- (void)setAddressList:(id)list forKey:(id)key;
+- (void)setHeader:(id)header forKey:(id)key;
+- (void)setReferences:(id)references;
 - (void)stripInternalHeaders;
 @end
 
@@ -39,13 +39,13 @@
   v18 = *MEMORY[0x1E69E9840];
   if ([(NSMutableDictionary *)self->_headersAdded count]|| [(NSMutableArray *)self->_headersRemoved count])
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(MFMutableMessageHeaders *)self allHeaderKeys];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    allHeaderKeys = [(MFMutableMessageHeaders *)self allHeaderKeys];
+    v5 = [allHeaderKeys countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v5)
     {
       v6 = *v13;
@@ -55,15 +55,15 @@
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allHeaderKeys);
           }
 
           v8 = *(*(&v12 + 1) + 8 * i);
           v9 = [(MFMessageHeaders *)self headersForKey:v8];
-          [v3 setObject:v9 forKey:v8];
+          [dictionary setObject:v9 forKey:v8];
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v5 = [allHeaderKeys countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v5);
@@ -74,42 +74,42 @@
   {
     v16.receiver = self;
     v16.super_class = MFMutableMessageHeaders;
-    v3 = [(MFMessageHeaders *)&v16 headersDictionary];
+    dictionary = [(MFMessageHeaders *)&v16 headersDictionary];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)allHeaderKeys
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MFMessageHeaders *)self data];
-  v5 = [(MFMessageHeaders *)self _decodeHeaderKeysFromData:v4];
-  [v3 addObjectsFromArray:v5];
+  array = [MEMORY[0x1E695DF70] array];
+  data = [(MFMessageHeaders *)self data];
+  v5 = [(MFMessageHeaders *)self _decodeHeaderKeysFromData:data];
+  [array addObjectsFromArray:v5];
 
   if (self->_headersRemoved)
   {
-    [v3 removeObjectsInArray:?];
+    [array removeObjectsInArray:?];
   }
 
   headersAdded = self->_headersAdded;
   if (headersAdded)
   {
-    v7 = [(NSMutableDictionary *)headersAdded allKeys];
-    [v3 addObjectsFromArray:v7];
+    allKeys = [(NSMutableDictionary *)headersAdded allKeys];
+    [array addObjectsFromArray:allKeys];
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)hasHeaderForKey:(id)a3
+- (BOOL)hasHeaderForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   headersRemoved = self->_headersRemoved;
-  if (headersRemoved && ([v4 lowercaseString], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSMutableArray indexOfObject:](headersRemoved, "indexOfObject:", v7), v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
+  if (headersRemoved && ([keyCopy lowercaseString], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSMutableArray indexOfObject:](headersRemoved, "indexOfObject:", v7), v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v10 = 0;
   }
@@ -134,12 +134,12 @@
   return v10;
 }
 
-- (id)firstHeaderForKey:(id)a3
+- (id)firstHeaderForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   headersRemoved = self->_headersRemoved;
-  if (headersRemoved && ([v4 lowercaseString], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSMutableArray indexOfObject:](headersRemoved, "indexOfObject:", v7), v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
+  if (headersRemoved && ([keyCopy lowercaseString], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSMutableArray indexOfObject:](headersRemoved, "indexOfObject:", v7), v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v9 = 0;
   }
@@ -169,11 +169,11 @@
   return v9;
 }
 
-- (void)removeHeaderForKey:(id)a3
+- (void)removeHeaderForKey:(id)key
 {
-  v4 = [a3 lowercaseString];
+  lowercaseString = [key lowercaseString];
   headersRemoved = self->_headersRemoved;
-  v8 = v4;
+  v8 = lowercaseString;
   if (!headersRemoved)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -181,25 +181,25 @@
     self->_headersRemoved = v6;
 
     headersRemoved = self->_headersRemoved;
-    v4 = v8;
+    lowercaseString = v8;
   }
 
-  [(NSMutableArray *)headersRemoved addObject:v4];
+  [(NSMutableArray *)headersRemoved addObject:lowercaseString];
   [(NSMutableDictionary *)self->_headersAdded removeObjectForKey:v8];
 }
 
-- (void)setHeader:(id)a3 forKey:(id)a4
+- (void)setHeader:(id)header forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  headerCopy = header;
+  keyCopy = key;
+  if (headerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
-      v9 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-      v10 = [v8 rangeOfCharacterFromSet:v9 options:2];
+      lowercaseString = headerCopy;
+      newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+      v10 = [lowercaseString rangeOfCharacterFromSet:newlineCharacterSet options:2];
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -214,7 +214,7 @@
       }
     }
 
-    v8 = [v7 lowercaseString];
+    lowercaseString = [keyCopy lowercaseString];
     headersAdded = self->_headersAdded;
     if (!headersAdded)
     {
@@ -225,8 +225,8 @@
       headersAdded = self->_headersAdded;
     }
 
-    [(NSMutableDictionary *)headersAdded setObject:v6 forKey:v8];
-    v14 = [(NSMutableArray *)self->_headersRemoved indexOfObject:v8];
+    [(NSMutableDictionary *)headersAdded setObject:headerCopy forKey:lowercaseString];
+    v14 = [(NSMutableArray *)self->_headersRemoved indexOfObject:lowercaseString];
     headersRemoved = self->_headersRemoved;
     if (headersRemoved && v14 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -237,32 +237,32 @@ LABEL_13:
   }
 }
 
-- (void)_appendHeaderKey:(id)a3 value:(id)a4 toData:(id)a5
+- (void)_appendHeaderKey:(id)key value:(id)value toData:(id)data
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MFMessageHeaders *)self _capitalizedKeyForKey:v15];
-  [v9 mf_appendCString:{objc_msgSend(v10, "ef_lossyDefaultCStringBytes")}];
+  keyCopy = key;
+  valueCopy = value;
+  dataCopy = data;
+  v10 = [(MFMessageHeaders *)self _capitalizedKeyForKey:keyCopy];
+  [dataCopy mf_appendCString:{objc_msgSend(v10, "ef_lossyDefaultCStringBytes")}];
 
-  if (([v15 isEqualToString:@"From "] & 1) == 0)
+  if (([keyCopy isEqualToString:@"From "] & 1) == 0)
   {
-    [v9 mf_appendCString:": "];
+    [dataCopy mf_appendCString:": "];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v11 = *MEMORY[0x1E699B0B0];
-    if ([v15 isEqualToString:*MEMORY[0x1E699B0B0]] && objc_msgSend(v8, "rangeOfString:", @"<") == 0x7FFFFFFFFFFFFFFFLL)
+    if ([keyCopy isEqualToString:*MEMORY[0x1E699B0B0]] && objc_msgSend(valueCopy, "rangeOfString:", @"<") == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v9 mf_appendCString:"<"];
+      [dataCopy mf_appendCString:"<"];
     }
 
-    v12 = [v8 mf_encodedHeaderDataWithEncodingHint:{-[MFMessageHeaders preferredEncoding](self, "preferredEncoding")}];
-    if ([v15 isEqualToString:v11])
+    v12 = [valueCopy mf_encodedHeaderDataWithEncodingHint:{-[MFMessageHeaders preferredEncoding](self, "preferredEncoding")}];
+    if ([keyCopy isEqualToString:v11])
     {
-      v13 = [v8 rangeOfString:@">"] == 0x7FFFFFFFFFFFFFFFLL;
+      v13 = [valueCopy rangeOfString:@">"] == 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -282,21 +282,21 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v8;
+    v14 = valueCopy;
     v13 = 0;
     if (!v14)
     {
 LABEL_17:
       if (v13)
       {
-        [v9 mf_appendCString:">"];
+        [dataCopy mf_appendCString:">"];
       }
 
       goto LABEL_19;
     }
 
 LABEL_16:
-    [v9 appendData:v14];
+    [dataCopy appendData:v14];
     goto LABEL_17;
   }
 
@@ -308,15 +308,15 @@ LABEL_16:
 
   v14 = 0;
 LABEL_19:
-  [v9 mf_appendCString:"\n"];
+  [dataCopy mf_appendCString:"\n"];
 }
 
-- (void)_appendAddedHeaderKey:(id)a3 value:(id)a4 toData:(id)a5
+- (void)_appendAddedHeaderKey:(id)key value:(id)value toData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  valueCopy = value;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -324,7 +324,7 @@ LABEL_19:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v11 = v9;
+    v11 = valueCopy;
     v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v12)
     {
@@ -339,7 +339,7 @@ LABEL_19:
             objc_enumerationMutation(v11);
           }
 
-          [(MFMutableMessageHeaders *)self _appendHeaderKey:v8 value:*(*(&v16 + 1) + 8 * v14++) toData:v10, v16];
+          [(MFMutableMessageHeaders *)self _appendHeaderKey:keyCopy value:*(*(&v16 + 1) + 8 * v14++) toData:dataCopy, v16];
         }
 
         while (v12 != v14);
@@ -352,19 +352,19 @@ LABEL_19:
 
   else
   {
-    [(MFMutableMessageHeaders *)self _appendHeaderKey:v8 value:v9 toData:v10];
+    [(MFMutableMessageHeaders *)self _appendHeaderKey:keyCopy value:valueCopy toData:dataCopy];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_copyHeaderValueForKey:(id)a3
+- (id)_copyHeaderValueForKey:(id)key
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   headersRemoved = self->_headersRemoved;
-  if (headersRemoved && ([v4 lowercaseString], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSMutableArray indexOfObject:](headersRemoved, "indexOfObject:", v7), v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
+  if (headersRemoved && ([keyCopy lowercaseString], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSMutableArray indexOfObject:](headersRemoved, "indexOfObject:", v7), v7, v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v9 = 0;
   }
@@ -439,19 +439,19 @@ LABEL_19:
   v45 = *MEMORY[0x1E69E9840];
   if ([(NSMutableDictionary *)self->_headersAdded count]|| [(NSMutableArray *)self->_headersRemoved count])
   {
-    v3 = objc_alloc_init(MFMutableData);
+    encodedHeaders = objc_alloc_init(MFMutableData);
     v4 = [(NSMutableDictionary *)self->_headersAdded mutableCopy];
     v32 = [(NSMutableArray *)self->_headersRemoved mutableCopy];
     memset(v41, 170, sizeof(v41));
-    v5 = [(MFMessageHeaders *)self data];
-    v6 = [v5 bytes];
+    data = [(MFMessageHeaders *)self data];
+    bytes = [data bytes];
 
-    v7 = [(MFMessageHeaders *)self data];
-    v8 = [v7 length];
+    data2 = [(MFMessageHeaders *)self data];
+    v8 = [data2 length];
 
     while (1)
     {
-      v9 = [(MFMessageHeaders *)self data];
+      data3 = [(MFMessageHeaders *)self data];
       v10 = v8;
       HeaderFromDataInRange = ECGetNextHeaderFromDataInRange();
 
@@ -460,13 +460,13 @@ LABEL_19:
         break;
       }
 
-      v12 = CFStringCreateWithBytes(0, (v6 + v41[0]), v41[1], 0x600u, 0);
-      v13 = [(__CFString *)v12 lowercaseString];
-      if (([v13 isEqualToString:@"from "] & 1) == 0)
+      v12 = CFStringCreateWithBytes(0, (bytes + v41[0]), v41[1], 0x600u, 0);
+      lowercaseString = [(__CFString *)v12 lowercaseString];
+      if (([lowercaseString isEqualToString:@"from "] & 1) == 0)
       {
         if (v32)
         {
-          v14 = [v32 indexOfObject:v13] != 0x7FFFFFFFFFFFFFFFLL;
+          v14 = [v32 indexOfObject:lowercaseString] != 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
@@ -474,25 +474,25 @@ LABEL_19:
           v14 = 0;
         }
 
-        v15 = [v4 objectForKey:v13];
+        v15 = [v4 objectForKey:lowercaseString];
 
         if (v14 || v15 != 0)
         {
           if (v15)
           {
-            v16 = [v4 objectForKey:v13];
-            [v4 removeObjectForKey:v13];
-            [(MFMutableMessageHeaders *)self _appendAddedHeaderKey:v12 value:v16 toData:v3];
-            [v32 addObject:v13];
+            v16 = [v4 objectForKey:lowercaseString];
+            [v4 removeObjectForKey:lowercaseString];
+            [(MFMutableMessageHeaders *)self _appendAddedHeaderKey:v12 value:v16 toData:encodedHeaders];
+            [v32 addObject:lowercaseString];
           }
         }
 
         else
         {
-          [(MFMutableData *)v3 appendBytes:v6 + v41[0] length:v41[1]];
-          [(NSMutableData *)v3 mf_appendCString:": "];
-          [(MFMutableData *)v3 appendBytes:v6 + v41[2] length:v41[3]];
-          [(NSMutableData *)v3 mf_appendCString:"\n"];
+          [(MFMutableData *)encodedHeaders appendBytes:bytes + v41[0] length:v41[1]];
+          [(NSMutableData *)encodedHeaders mf_appendCString:": "];
+          [(MFMutableData *)encodedHeaders appendBytes:bytes + v41[2] length:v41[3]];
+          [(NSMutableData *)encodedHeaders mf_appendCString:"\n"];
         }
       }
 
@@ -527,7 +527,7 @@ LABEL_19:
           if (v22)
           {
             v23 = [v4 objectForKey:v21];
-            [(MFMutableMessageHeaders *)self _appendAddedHeaderKey:v21 value:v23 toData:v3];
+            [(MFMutableMessageHeaders *)self _appendAddedHeaderKey:v21 value:v23 toData:encodedHeaders];
 
             [v4 removeObjectForKey:v21];
           }
@@ -559,7 +559,7 @@ LABEL_19:
 
           v28 = *(*(&v33 + 1) + 8 * j);
           v29 = [v4 objectForKey:v28];
-          [(MFMutableMessageHeaders *)self _appendAddedHeaderKey:v28 value:v29 toData:v3];
+          [(MFMutableMessageHeaders *)self _appendAddedHeaderKey:v28 value:v29 toData:encodedHeaders];
         }
 
         v25 = [v24 countByEnumeratingWithState:&v33 objects:v43 count:16];
@@ -568,19 +568,19 @@ LABEL_19:
       while (v25);
     }
 
-    [(MFMutableData *)v3 appendBytes:"\n" length:1];
+    [(MFMutableData *)encodedHeaders appendBytes:"\n" length:1];
   }
 
   else
   {
     v42.receiver = self;
     v42.super_class = MFMutableMessageHeaders;
-    v3 = [(MFMessageHeaders *)&v42 encodedHeaders];
+    encodedHeaders = [(MFMessageHeaders *)&v42 encodedHeaders];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return encodedHeaders;
 }
 
 uint64_t __41__MFMutableMessageHeaders_encodedHeaders__block_invoke()
@@ -592,28 +592,28 @@ uint64_t __41__MFMutableMessageHeaders_encodedHeaders__block_invoke()
   return MEMORY[0x1EEE66BB8](v1);
 }
 
-- (void)setAddressList:(id)a3 forKey:(id)a4
+- (void)setAddressList:(id)list forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 count])
+  listCopy = list;
+  keyCopy = key;
+  if ([listCopy count])
   {
-    v7 = +[MFMessageHeaders encodedDataForAddressList:splittingAtLength:firstLineBuffer:](MFMessageHeaders, "encodedDataForAddressList:splittingAtLength:firstLineBuffer:", v8, 72, [v6 length] + 2);
-    [(MFMutableMessageHeaders *)self setHeader:v7 forKey:v6];
+    v7 = +[MFMessageHeaders encodedDataForAddressList:splittingAtLength:firstLineBuffer:](MFMessageHeaders, "encodedDataForAddressList:splittingAtLength:firstLineBuffer:", listCopy, 72, [keyCopy length] + 2);
+    [(MFMutableMessageHeaders *)self setHeader:v7 forKey:keyCopy];
   }
 
   else
   {
-    [(MFMutableMessageHeaders *)self removeHeaderForKey:v6];
+    [(MFMutableMessageHeaders *)self removeHeaderForKey:keyCopy];
   }
 }
 
-- (void)setReferences:(id)a3
+- (void)setReferences:(id)references
 {
-  v5 = a3;
-  if (v5 && [v5 count])
+  referencesCopy = references;
+  if (referencesCopy && [referencesCopy count])
   {
-    v4 = [v5 componentsJoinedByString:@" "];
+    v4 = [referencesCopy componentsJoinedByString:@" "];
     [(MFMutableMessageHeaders *)self setHeader:v4 forKey:*MEMORY[0x1E699B140]];
   }
 

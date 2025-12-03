@@ -1,5 +1,5 @@
 @interface ListViewScrollTest
-- (ListViewScrollTest)initWithApplication:(id)a3 model:(id)a4 options:(id)a5;
+- (ListViewScrollTest)initWithApplication:(id)application model:(id)model options:(id)options;
 - (void)_listViewDidAppear;
 - (void)dealloc;
 - (void)runTest;
@@ -7,18 +7,18 @@
 
 @implementation ListViewScrollTest
 
-- (ListViewScrollTest)initWithApplication:(id)a3 model:(id)a4 options:(id)a5
+- (ListViewScrollTest)initWithApplication:(id)application model:(id)model options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  applicationCopy = application;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = ListViewScrollTest;
-  v10 = [(ApplicationTest *)&v16 initWithApplication:v8 model:a4 options:v9];
+  v10 = [(ApplicationTest *)&v16 initWithApplication:applicationCopy model:model options:optionsCopy];
   if (v10)
   {
     v11 = [TestScroller alloc];
-    v12 = [objc_opt_class() testName];
-    v13 = [(TestScroller *)v11 initWithOptions:v9 testName:v12 application:v8];
+    testName = [objc_opt_class() testName];
+    v13 = [(TestScroller *)v11 initWithOptions:optionsCopy testName:testName application:applicationCopy];
     scroller = v10->_scroller;
     v10->_scroller = v13;
   }
@@ -38,34 +38,34 @@
 
 - (void)runTest
 {
-  v3 = [(ApplicationTest *)self application];
-  v4 = [objc_opt_class() testName];
+  application = [(ApplicationTest *)self application];
+  testName = [objc_opt_class() testName];
   if ([(TestScroller *)self->_scroller inputInvalid])
   {
-    [v3 startedTest:v4];
-    [v3 failedTest:v4 withResults:0];
+    [application startedTest:testName];
+    [application failedTest:testName withResults:0];
   }
 
   else
   {
-    v5 = [(ApplicationTest *)self application];
-    v6 = [v5 rootNavigationController];
+    application2 = [(ApplicationTest *)self application];
+    rootNavigationController = [application2 rootNavigationController];
 
-    v7 = [v6 resetToYearView];
-    v8 = [(ApplicationTest *)self model];
-    [v8 setShowDayAsList:1];
+    resetToYearView = [rootNavigationController resetToYearView];
+    model = [(ApplicationTest *)self model];
+    [model setShowDayAsList:1];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000D8AFC;
     v16[3] = &unk_10020EC68;
     v16[4] = self;
-    v9 = v6;
+    v9 = rootNavigationController;
     v17 = v9;
     v10 = objc_retainBlock(v16);
-    v11 = [v9 presentedViewController];
+    presentedViewController = [v9 presentedViewController];
 
-    if (v11)
+    if (presentedViewController)
     {
       v12 = dispatch_time(0, 1000000000);
       v13[0] = _NSConcreteStackBlock;

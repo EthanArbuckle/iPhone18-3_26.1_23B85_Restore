@@ -2,16 +2,16 @@
 - (CGPoint)initialLocation;
 - (CGPoint)translation;
 - (id)_containerPanGestureDescription;
-- (void)setInitialLocation:(CGPoint)a3;
-- (void)setTranslation:(CGPoint)a3;
+- (void)setInitialLocation:(CGPoint)location;
+- (void)setTranslation:(CGPoint)translation;
 @end
 
 @implementation SBSAContainerPanGestureDescriptionMutator
 
 - (CGPoint)initialLocation
 {
-  v2 = [(SBSAContainerPanGestureDescriptionMutator *)self _containerPanGestureDescription];
-  [v2 initialLocation];
+  _containerPanGestureDescription = [(SBSAContainerPanGestureDescriptionMutator *)self _containerPanGestureDescription];
+  [_containerPanGestureDescription initialLocation];
   v4 = v3;
   v6 = v5;
 
@@ -22,18 +22,18 @@
   return result;
 }
 
-- (void)setInitialLocation:(CGPoint)a3
+- (void)setInitialLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SBSAContainerPanGestureDescriptionMutator *)self _containerPanGestureDescription];
-  [v5 _setInitialLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  _containerPanGestureDescription = [(SBSAContainerPanGestureDescriptionMutator *)self _containerPanGestureDescription];
+  [_containerPanGestureDescription _setInitialLocation:{x, y}];
 }
 
 - (CGPoint)translation
 {
-  v2 = [(SBSAContainerPanGestureDescriptionMutator *)self _containerPanGestureDescription];
-  [v2 translation];
+  _containerPanGestureDescription = [(SBSAContainerPanGestureDescriptionMutator *)self _containerPanGestureDescription];
+  [_containerPanGestureDescription translation];
   v4 = v3;
   v6 = v5;
 
@@ -44,19 +44,19 @@
   return result;
 }
 
-- (void)setTranslation:(CGPoint)a3
+- (void)setTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SBSAContainerPanGestureDescriptionMutator *)self _containerPanGestureDescription];
-  [v5 _setTranslation:{x, y}];
+  y = translation.y;
+  x = translation.x;
+  _containerPanGestureDescription = [(SBSAContainerPanGestureDescriptionMutator *)self _containerPanGestureDescription];
+  [_containerPanGestureDescription _setTranslation:{x, y}];
 }
 
 - (id)_containerPanGestureDescription
 {
-  v2 = [(SBSAGestureDescriptionMutator *)self gestureDescription];
+  gestureDescription = [(SBSAGestureDescriptionMutator *)self gestureDescription];
   v3 = objc_opt_class();
-  v4 = v2;
+  v4 = gestureDescription;
   if (v3)
   {
     if (objc_opt_isKindOfClass())

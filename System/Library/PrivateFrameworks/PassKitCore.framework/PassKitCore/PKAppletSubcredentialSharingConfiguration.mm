@@ -1,37 +1,37 @@
 @interface PKAppletSubcredentialSharingConfiguration
-- (PKAppletSubcredentialSharingConfiguration)initWithCoder:(id)a3;
-- (PKAppletSubcredentialSharingConfiguration)initWithDictionary:(id)a3;
+- (PKAppletSubcredentialSharingConfiguration)initWithCoder:(id)coder;
+- (PKAppletSubcredentialSharingConfiguration)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppletSubcredentialSharingConfiguration
 
-- (PKAppletSubcredentialSharingConfiguration)initWithDictionary:(id)a3
+- (PKAppletSubcredentialSharingConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PKAppletSubcredentialSharingConfiguration *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"maxNumberOfSharedCredentials"];
+    v6 = [dictionaryCopy objectForKey:@"maxNumberOfSharedCredentials"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v5->_maxNumberOfSharedCredentials = [v6 unsignedIntegerValue];
-      v7 = [v4 objectForKey:@"numberOfShareableCredentials"];
+      v7 = [dictionaryCopy objectForKey:@"numberOfShareableCredentials"];
       if (v7)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v5->_numberOfShareableCredentials = [v7 unsignedIntegerValue];
-          v5->_sharingRequiresPassword = [v4 PKBoolForKey:@"sharingRequiresPassword"];
-          v8 = [v4 PKArrayContaining:objc_opt_class() forKey:@"shareActivationOptions"];
+          v5->_sharingRequiresPassword = [dictionaryCopy PKBoolForKey:@"sharingRequiresPassword"];
+          v8 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"shareActivationOptions"];
           v9 = [[PKPassShareActivationOptions alloc] initWithCarKeyIdentifiers:v8];
           activationOptions = v5->_activationOptions;
           v5->_activationOptions = v9;
 
-          v11 = [v4 objectForKey:@"sharingPasswordLength"];
+          v11 = [dictionaryCopy objectForKey:@"sharingPasswordLength"];
           if (v11)
           {
             objc_opt_class();
@@ -41,7 +41,7 @@
             }
           }
 
-          v12 = [v4 PKArrayForKey:@"entitlements"];
+          v12 = [dictionaryCopy PKArrayForKey:@"entitlements"];
           entitlements = v5->_entitlements;
           v5->_entitlements = v12;
 
@@ -90,8 +90,8 @@ LABEL_17:
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_sharingRequiresPassword];
   [v3 setObject:v6 forKeyedSubscript:@"sharingRequiresPassword"];
 
-  v7 = [(PKPassShareActivationOptions *)self->_activationOptions identifiers];
-  [v3 setObject:v7 forKeyedSubscript:@"shareActivationOptions"];
+  identifiers = [(PKPassShareActivationOptions *)self->_activationOptions identifiers];
+  [v3 setObject:identifiers forKeyedSubscript:@"shareActivationOptions"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_sharingPasswordLength];
   [v3 setObject:v8 forKeyedSubscript:@"sharingPasswordLength"];
@@ -129,38 +129,38 @@ LABEL_17:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   maxNumberOfSharedCredentials = self->_maxNumberOfSharedCredentials;
-  v5 = a3;
-  [v5 encodeInteger:maxNumberOfSharedCredentials forKey:@"maxNumberOfSharedCredentials"];
-  [v5 encodeInteger:self->_numberOfShareableCredentials forKey:@"numberOfShareableCredentials"];
-  [v5 encodeInteger:self->_sharingRequiresPassword forKey:@"sharingRequiresPassword"];
-  [v5 encodeObject:self->_activationOptions forKey:@"shareActivationOptions"];
-  [v5 encodeInteger:self->_sharingPasswordLength forKey:@"sharingPasswordLength"];
-  [v5 encodeObject:self->_entitlements forKey:@"entitlements"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:maxNumberOfSharedCredentials forKey:@"maxNumberOfSharedCredentials"];
+  [coderCopy encodeInteger:self->_numberOfShareableCredentials forKey:@"numberOfShareableCredentials"];
+  [coderCopy encodeInteger:self->_sharingRequiresPassword forKey:@"sharingRequiresPassword"];
+  [coderCopy encodeObject:self->_activationOptions forKey:@"shareActivationOptions"];
+  [coderCopy encodeInteger:self->_sharingPasswordLength forKey:@"sharingPasswordLength"];
+  [coderCopy encodeObject:self->_entitlements forKey:@"entitlements"];
 }
 
-- (PKAppletSubcredentialSharingConfiguration)initWithCoder:(id)a3
+- (PKAppletSubcredentialSharingConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKAppletSubcredentialSharingConfiguration *)self init];
   if (v5)
   {
-    v5->_maxNumberOfSharedCredentials = [v4 decodeIntegerForKey:@"maxNumberOfSharedCredentials"];
-    v5->_numberOfShareableCredentials = [v4 decodeIntegerForKey:@"numberOfShareableCredentials"];
-    v5->_sharingRequiresPassword = [v4 decodeIntegerForKey:@"sharingRequiresPassword"] != 0;
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareActivationOptions"];
+    v5->_maxNumberOfSharedCredentials = [coderCopy decodeIntegerForKey:@"maxNumberOfSharedCredentials"];
+    v5->_numberOfShareableCredentials = [coderCopy decodeIntegerForKey:@"numberOfShareableCredentials"];
+    v5->_sharingRequiresPassword = [coderCopy decodeIntegerForKey:@"sharingRequiresPassword"] != 0;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareActivationOptions"];
     activationOptions = v5->_activationOptions;
     v5->_activationOptions = v6;
 
-    v5->_sharingPasswordLength = [v4 decodeIntegerForKey:@"sharingPasswordLength"];
+    v5->_sharingPasswordLength = [coderCopy decodeIntegerForKey:@"sharingPasswordLength"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v8 setWithObjects:{v9, v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"entitlements"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"entitlements"];
     entitlements = v5->_entitlements;
     v5->_entitlements = v13;
   }

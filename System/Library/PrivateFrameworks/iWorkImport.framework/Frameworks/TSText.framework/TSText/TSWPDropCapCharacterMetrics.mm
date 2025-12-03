@@ -1,13 +1,13 @@
 @interface TSWPDropCapCharacterMetrics
-- (TSWPDropCapCharacterMetrics)initWithCharacterCount:(unint64_t)a3 isRightToLeft:(BOOL)a4 isVertical:(BOOL)a5 baseline:(double)a6;
+- (TSWPDropCapCharacterMetrics)initWithCharacterCount:(unint64_t)count isRightToLeft:(BOOL)left isVertical:(BOOL)vertical baseline:(double)baseline;
 - (id)description;
-- (void)adjustMetricsForWidth:(double)a3;
-- (void)applyTransform:(CGAffineTransform *)a3;
+- (void)adjustMetricsForWidth:(double)width;
+- (void)applyTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation TSWPDropCapCharacterMetrics
 
-- (TSWPDropCapCharacterMetrics)initWithCharacterCount:(unint64_t)a3 isRightToLeft:(BOOL)a4 isVertical:(BOOL)a5 baseline:(double)a6
+- (TSWPDropCapCharacterMetrics)initWithCharacterCount:(unint64_t)count isRightToLeft:(BOOL)left isVertical:(BOOL)vertical baseline:(double)baseline
 {
   v20.receiver = self;
   v20.super_class = TSWPDropCapCharacterMetrics;
@@ -15,15 +15,15 @@
   v11 = v10;
   if (v10)
   {
-    v10->_isRightToLeft = a4;
-    v10->_isVertical = a5;
-    v10->_baseline = a6;
+    v10->_isRightToLeft = left;
+    v10->_isVertical = vertical;
+    v10->_baseline = baseline;
     v12 = objc_alloc(MEMORY[0x277CBEB18]);
-    v14 = objc_msgSend_initWithCapacity_(v12, v13, a3);
+    v14 = objc_msgSend_initWithCapacity_(v12, v13, count);
     metricData = v11->_metricData;
     v11->_metricData = v14;
 
-    for (; a3; --a3)
+    for (; count; --count)
     {
       v16 = v11->_metricData;
       v17 = objc_opt_new();
@@ -34,7 +34,7 @@
   return v11;
 }
 
-- (void)applyTransform:(CGAffineTransform *)a3
+- (void)applyTransform:(CGAffineTransform *)transform
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
@@ -60,13 +60,13 @@
         if (objc_msgSend_hasLeadingOffset(v12, v7, v8, v21))
         {
           objc_msgSend_leadingOffset(v12, v13, v14);
-          objc_msgSend_setLeadingOffset_(v12, v16, v17, a3->tx + a3->c * 0.0 + a3->a * v15);
+          objc_msgSend_setLeadingOffset_(v12, v16, v17, transform->tx + transform->c * 0.0 + transform->a * v15);
         }
 
         if (objc_msgSend_hasTrailingOffset(v12, v13, v14))
         {
           objc_msgSend_trailingOffset(v12, v7, v8);
-          objc_msgSend_setTrailingOffset_(v12, v19, v20, a3->tx + a3->c * 0.0 + a3->a * v18);
+          objc_msgSend_setTrailingOffset_(v12, v19, v20, transform->tx + transform->c * 0.0 + transform->a * v18);
         }
       }
 
@@ -77,7 +77,7 @@
   }
 }
 
-- (void)adjustMetricsForWidth:(double)a3
+- (void)adjustMetricsForWidth:(double)width
 {
   v64 = *MEMORY[0x277D85DE8];
   v58 = 0u;
@@ -162,7 +162,7 @@
           objc_msgSend_leadingOffset(v42, v43, v44);
           v46 = v45;
           v47 = 0.0;
-          if (v46 == v12 || (objc_msgSend_leadingOffset(v42, v43, v44, 0.0), v49 = v48 == v13, v47 = a3, v49))
+          if (v46 == v12 || (objc_msgSend_leadingOffset(v42, v43, v44, 0.0), v49 = v48 == v13, v47 = width, v49))
           {
             objc_msgSend_setLeadingOffset_(v42, v43, v44, v47);
           }
@@ -173,7 +173,7 @@
           objc_msgSend_trailingOffset(v42, v37, v38);
           v51 = v50;
           v52 = 0.0;
-          if (v51 == v12 || (objc_msgSend_trailingOffset(v42, v37, v38, 0.0), v49 = v53 == v13, v52 = a3, v49))
+          if (v51 == v12 || (objc_msgSend_trailingOffset(v42, v37, v38, 0.0), v49 = v53 == v13, v52 = width, v49))
           {
             objc_msgSend_setTrailingOffset_(v42, v37, v38, v52);
           }

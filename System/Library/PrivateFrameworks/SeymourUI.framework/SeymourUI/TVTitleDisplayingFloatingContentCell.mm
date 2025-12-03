@@ -1,12 +1,12 @@
 @interface TVTitleDisplayingFloatingContentCell
-- (_TtC9SeymourUI36TVTitleDisplayingFloatingContentCell)initWithCoder:(id)a3;
+- (_TtC9SeymourUI36TVTitleDisplayingFloatingContentCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TVTitleDisplayingFloatingContentCell
 
-- (_TtC9SeymourUI36TVTitleDisplayingFloatingContentCell)initWithCoder:(id)a3
+- (_TtC9SeymourUI36TVTitleDisplayingFloatingContentCell)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);
@@ -20,8 +20,8 @@
   v2 = v13.receiver;
   [(TVTitleDisplayingFloatingContentCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC9SeymourUI36TVTitleDisplayingFloatingContentCell_floatingView];
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -30,11 +30,11 @@
   [v3 setFrame_];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20C04F004(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20C04F004(change);
 }
 
 @end

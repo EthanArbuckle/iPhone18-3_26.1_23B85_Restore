@@ -1,16 +1,16 @@
 @interface OSDError
-+ (BOOL)setError:(id *)a3 withDomain:(id)a4 withCode:(int)a5 format:(id)a6;
++ (BOOL)setError:(id *)error withDomain:(id)domain withCode:(int)code format:(id)format;
 @end
 
 @implementation OSDError
 
-+ (BOOL)setError:(id *)a3 withDomain:(id)a4 withCode:(int)a5 format:(id)a6
++ (BOOL)setError:(id *)error withDomain:(id)domain withCode:(int)code format:(id)format
 {
-  v9 = a4;
-  v10 = a6;
-  if (v10)
+  domainCopy = domain;
+  formatCopy = format;
+  if (formatCopy)
   {
-    v11 = [[NSString alloc] initWithFormat:v10 arguments:&v20];
+    v11 = [[NSString alloc] initWithFormat:formatCopy arguments:&v20];
   }
 
   else
@@ -25,14 +25,14 @@
     [v12 setObject:v11 forKeyedSubscript:NSLocalizedDescriptionKey];
   }
 
-  v14 = [NSError errorWithDomain:v9 code:a5 userInfo:v13];
+  v14 = [NSError errorWithDomain:domainCopy code:code userInfo:v13];
   v15 = v14;
-  if (a3)
+  if (error)
   {
-    if (!*a3)
+    if (!*error)
     {
       v18 = v14;
-      *a3 = v15;
+      *error = v15;
       v17 = 1;
       goto LABEL_14;
     }

@@ -1,20 +1,20 @@
 @interface HFCharacteristicCondition
-+ (id)_characteristicPredicateInCompoundPredicate:(id)a3;
-+ (id)_valuePredicateInCompoundPredicate:(id)a3;
-- (HFCharacteristicCondition)initWithCharacteristic:(id)a3 operatorType:(unint64_t)a4 value:(id)a5;
-- (HFCharacteristicCondition)initWithPredicate:(id)a3;
-- (id)_nameFormattingContext:(int64_t)a3;
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3;
++ (id)_characteristicPredicateInCompoundPredicate:(id)predicate;
++ (id)_valuePredicateInCompoundPredicate:(id)predicate;
+- (HFCharacteristicCondition)initWithCharacteristic:(id)characteristic operatorType:(unint64_t)type value:(id)value;
+- (HFCharacteristicCondition)initWithPredicate:(id)predicate;
+- (id)_nameFormattingContext:(int64_t)context;
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options;
 @end
 
 @implementation HFCharacteristicCondition
 
-- (HFCharacteristicCondition)initWithPredicate:(id)a3
+- (HFCharacteristicCondition)initWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v21.receiver = self;
   v21.super_class = HFCharacteristicCondition;
-  v5 = [(HFCondition *)&v21 initWithPredicate:v4];
+  v5 = [(HFCondition *)&v21 initWithPredicate:predicateCopy];
   if (!v5)
   {
     goto LABEL_7;
@@ -28,9 +28,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v6 = v4;
-  v7 = [v6 subpredicates];
-  v8 = [v7 count];
+  v6 = predicateCopy;
+  subpredicates = [v6 subpredicates];
+  v8 = [subpredicates count];
 
   if (v8 != 2 || ([objc_opt_class() _characteristicPredicateInCompoundPredicate:v6], v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
@@ -40,10 +40,10 @@ LABEL_9:
   }
 
   v10 = [objc_opt_class() _characteristicPredicateInCompoundPredicate:v6];
-  v11 = [v10 rightExpression];
-  v12 = [v11 constantValue];
+  rightExpression = [v10 rightExpression];
+  constantValue = [rightExpression constantValue];
   characteristic = v5->_characteristic;
-  v5->_characteristic = v12;
+  v5->_characteristic = constantValue;
 
   v14 = [objc_opt_class() _valuePredicateInCompoundPredicate:v6];
 
@@ -55,10 +55,10 @@ LABEL_9:
 
   v15 = [objc_opt_class() _valuePredicateInCompoundPredicate:v6];
   v5->_operatorType = [v15 predicateOperatorType];
-  v16 = [v15 rightExpression];
-  v17 = [v16 constantValue];
+  rightExpression2 = [v15 rightExpression];
+  constantValue2 = [rightExpression2 constantValue];
   value = v5->_value;
-  v5->_value = v17;
+  v5->_value = constantValue2;
 
 LABEL_7:
   v19 = v5;
@@ -67,18 +67,18 @@ LABEL_11:
   return v19;
 }
 
-- (HFCharacteristicCondition)initWithCharacteristic:(id)a3 operatorType:(unint64_t)a4 value:(id)a5
+- (HFCharacteristicCondition)initWithCharacteristic:(id)characteristic operatorType:(unint64_t)type value:(id)value
 {
-  v6 = [MEMORY[0x277CD19F8] predicateForEvaluatingTriggerWithCharacteristic:a3 relatedBy:a4 toValue:a5];
+  v6 = [MEMORY[0x277CD19F8] predicateForEvaluatingTriggerWithCharacteristic:characteristic relatedBy:type toValue:value];
   v7 = [(HFCharacteristicCondition *)self initWithPredicate:v6];
 
   return v7;
 }
 
-+ (id)_characteristicPredicateInCompoundPredicate:(id)a3
++ (id)_characteristicPredicateInCompoundPredicate:(id)predicate
 {
-  v3 = [a3 subpredicates];
-  v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_191];
+  subpredicates = [predicate subpredicates];
+  v4 = [subpredicates na_firstObjectPassingTest:&__block_literal_global_191];
 
   return v4;
 }
@@ -134,10 +134,10 @@ LABEL_9:
   return v8;
 }
 
-+ (id)_valuePredicateInCompoundPredicate:(id)a3
++ (id)_valuePredicateInCompoundPredicate:(id)predicate
 {
-  v3 = [a3 subpredicates];
-  v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_5_2];
+  subpredicates = [predicate subpredicates];
+  v4 = [subpredicates na_firstObjectPassingTest:&__block_literal_global_5_2];
 
   return v4;
 }
@@ -181,17 +181,17 @@ LABEL_10:
   return v8;
 }
 
-- (id)hf_naturalLanguageSummaryWithOptions:(id)a3
+- (id)hf_naturalLanguageSummaryWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = -[HFCharacteristicCondition _nameFormattingContext:](self, "_nameFormattingContext:", [v4 formattingContext]);
-  v6 = [v4 formattingContext];
+  optionsCopy = options;
+  v5 = -[HFCharacteristicCondition _nameFormattingContext:](self, "_nameFormattingContext:", [optionsCopy formattingContext]);
+  formattingContext = [optionsCopy formattingContext];
 
-  if (v6 != 5)
+  if (formattingContext != 5)
   {
-    v7 = [v5 hf_stringByCapitalizingFirstWord];
+    hf_stringByCapitalizingFirstWord = [v5 hf_stringByCapitalizingFirstWord];
 
-    v5 = v7;
+    v5 = hf_stringByCapitalizingFirstWord;
   }
 
   v8 = [[HFConditionUISummary alloc] initWithCondition:self title:v5 description:0];
@@ -199,23 +199,23 @@ LABEL_10:
   return v8;
 }
 
-- (id)_nameFormattingContext:(int64_t)a3
+- (id)_nameFormattingContext:(int64_t)context
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = [(HFCharacteristicCondition *)self characteristic];
-  if (!v5 || (v6 = v5, [(HFCharacteristicCondition *)self value], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  characteristic = [(HFCharacteristicCondition *)self characteristic];
+  if (!characteristic || (v6 = characteristic, [(HFCharacteristicCondition *)self value], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
-    v27 = [(HFCharacteristicCondition *)self value];
+    value = [(HFCharacteristicCondition *)self value];
 
-    if (v27)
+    if (value)
     {
-      v28 = [(HFCharacteristicCondition *)self characteristic];
+      characteristic2 = [(HFCharacteristicCondition *)self characteristic];
 
-      if (v28)
+      if (characteristic2)
       {
 LABEL_17:
-        v10 = [@"HFConditionNameUnknown" stringByAppendingString:&stru_2824B1A78];
-        v26 = _HFLocalizedStringWithDefaultValue(v10, v10, 1);
+        hf_displayName = [@"HFConditionNameUnknown" stringByAppendingString:&stru_2824B1A78];
+        v26 = _HFLocalizedStringWithDefaultValue(hf_displayName, hf_displayName, 1);
         goto LABEL_18;
       }
 
@@ -241,14 +241,14 @@ LABEL_17:
         v33 = objc_opt_class();
         v34 = NSStringFromClass(v33);
         v35 = NSStringFromSelector(a2);
-        v36 = [(HFCharacteristicCondition *)self characteristic];
-        v37 = [v36 uniqueIdentifier];
+        characteristic3 = [(HFCharacteristicCondition *)self characteristic];
+        uniqueIdentifier = [characteristic3 uniqueIdentifier];
         *buf = 138412802;
         v41 = v34;
         v42 = 2112;
         v43 = v35;
         v44 = 2112;
-        v45 = v37;
+        v45 = uniqueIdentifier;
         _os_log_impl(&dword_20D9BF000, v29, OS_LOG_TYPE_DEFAULT, "%@:%@ missing value for characteristic %@. Using unknown condition string", buf, 0x20u);
       }
     }
@@ -256,30 +256,30 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v8 = [(HFCharacteristicCondition *)self characteristic];
-  v9 = [v8 service];
-  v10 = [v9 hf_displayName];
+  characteristic4 = [(HFCharacteristicCondition *)self characteristic];
+  service = [characteristic4 service];
+  hf_displayName = [service hf_displayName];
 
   v11 = MEMORY[0x277CCAA28];
-  v12 = [(HFCharacteristicCondition *)self characteristic];
-  v13 = [v11 hf_valueFormatterForCharacteristic:v12 options:0];
+  characteristic5 = [(HFCharacteristicCondition *)self characteristic];
+  v13 = [v11 hf_valueFormatterForCharacteristic:characteristic5 options:0];
 
-  v14 = [(HFCharacteristicCondition *)self value];
-  v15 = [v13 stringForObjectValue:v14];
+  value2 = [(HFCharacteristicCondition *)self value];
+  v15 = [v13 stringForObjectValue:value2];
 
-  v16 = [(HFCharacteristicCondition *)self operatorType];
+  operatorType = [(HFCharacteristicCondition *)self operatorType];
   v17 = 0;
-  if (v16 <= 5)
+  if (operatorType <= 5)
   {
-    v17 = off_277E01058[v16];
+    v17 = off_277E01058[operatorType];
   }
 
   v18 = [(__CFString *)v17 stringByAppendingString:&stru_2824B1A78];
   v25 = v18;
   v26 = 0;
-  if (v10 && v15 && v18)
+  if (hf_displayName && v15 && v18)
   {
-    v26 = HFLocalizedStringWithFormat(v18, @"%@%@", v19, v20, v21, v22, v23, v24, v10);
+    v26 = HFLocalizedStringWithFormat(v18, @"%@%@", v19, v20, v21, v22, v23, v24, hf_displayName);
   }
 
 LABEL_18:

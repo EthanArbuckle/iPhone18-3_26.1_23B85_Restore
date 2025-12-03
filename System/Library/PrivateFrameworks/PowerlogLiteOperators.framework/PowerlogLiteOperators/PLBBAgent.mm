@@ -7,96 +7,96 @@
 + (id)entryEventPointDefinitionCommandInfo;
 + (id)entryEventPointDefinitions;
 + (id)entryIceMsgLite;
-+ (id)humanReadableStateFromKey:(id)a3;
-+ (id)indexToRat:(unint64_t)a3;
++ (id)humanReadableStateFromKey:(id)key;
++ (id)indexToRat:(unint64_t)rat;
 + (void)load;
 - (BOOL)isChangedAndSetAirplaneMode;
 - (BOOL)isTimeToRequestReport;
-- (BOOL)setupChannel:(id)a3 withLogCodes:(id)a4 andEvents:(id)a5 andExtracode:(id)a6;
+- (BOOL)setupChannel:(id)channel withLogCodes:(id)codes andEvents:(id)events andExtracode:(id)extracode;
 - (PLBBAgent)init;
-- (double)translateChannelRBsToChannelBW:(double)a3;
-- (float)translateTransBW:(int)a3;
-- (id)getKeyForLTEBw:(double)a3;
-- (id)getKeyForNRBw:(double)a3;
+- (double)translateChannelRBsToChannelBW:(double)w;
+- (float)translateTransBW:(int)w;
+- (id)getKeyForLTEBw:(double)bw;
+- (id)getKeyForNRBw:(double)bw;
 - (id)humanReadableDataActiveString;
-- (id)humanReadableDataIndicator:(id)a3;
-- (id)humanReadableRegistrationStatus:(id)a3;
+- (id)humanReadableDataIndicator:(id)indicator;
+- (id)humanReadableRegistrationStatus:(id)status;
 - (id)humanReadableSimStatusString;
 - (id)setupIOKitNotifications;
-- (int64_t)getSubsIdFromCTContext:(id)a3;
-- (void)accountVoicePower:(id)a3 state:(id)a4;
-- (void)bootStateChange:(id)a3;
+- (int64_t)getSubsIdFromCTContext:(id)context;
+- (void)accountVoicePower:(id)power state:(id)state;
+- (void)bootStateChange:(id)change;
 - (void)cacheCommitTimerFired;
-- (void)callStatusChanged:(id)a3;
+- (void)callStatusChanged:(id)changed;
 - (void)cancelCacheCommitTimer;
-- (void)cellChanged:(id)a3 cell:(id)a4;
-- (void)channel:(id)a3 hasDataAvailable:(id)a4;
-- (void)channelDidBecomeInvalid:(id)a3;
+- (void)cellChanged:(id)changed cell:(id)cell;
+- (void)channel:(id)channel hasDataAvailable:(id)available;
+- (void)channelDidBecomeInvalid:(id)invalid;
 - (void)checkKICEChannelTimeout;
-- (void)commitBBCacheWithClientInfo:(int64_t)a3;
-- (void)createOOSAccountingEvent:(id)a3;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
+- (void)commitBBCacheWithClientInfo:(int64_t)info;
+- (void)createOOSAccountingEvent:(id)event;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
 - (void)dealloc;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
+- (void)displayStatusChanged:(id)changed status:(id)status;
 - (void)eventToCommitCacheOccurred;
 - (void)eventToFlushCacheOccurred;
-- (void)flushBBCacheWithClientInfo:(int64_t)a3;
-- (void)handlePLBasebandEventNotification:(id)a3;
+- (void)flushBBCacheWithClientInfo:(int64_t)info;
+- (void)handlePLBasebandEventNotification:(id)notification;
 - (void)handlePostCDRXCapability;
 - (void)initCacheCommitTimer;
 - (void)initOperatorDependancies;
 - (void)loadOOSModelValues;
 - (void)log;
 - (void)logBasebandConfig;
-- (void)logDSDSEventForwardTelephonyRegistrationWithKVPairs:(id)a3 subsId:(int64_t)a4 andOperator:(id)a5;
-- (void)logDSDSEventPointTelephonyActivityWithSubsId:(int64_t)a3 context:(id)a4 callStatus:(id)a5 simStatus:(id)a6 signalInfo:(id)a7 RATselection:(id)a8 andCurrCampedRAT:(id)a9;
-- (void)logEntries:(id)a3 withGroupID:(id)a4;
-- (void)logEntry:(id)a3;
-- (void)logEventNoneBBReportBy:(int64_t)a3 withAction:(int64_t)a4;
-- (void)logMessage:(id)a3 andState:(id)a4;
+- (void)logDSDSEventForwardTelephonyRegistrationWithKVPairs:(id)pairs subsId:(int64_t)id andOperator:(id)operator;
+- (void)logDSDSEventPointTelephonyActivityWithSubsId:(int64_t)id context:(id)context callStatus:(id)status simStatus:(id)simStatus signalInfo:(id)info RATselection:(id)tselection andCurrCampedRAT:(id)t;
+- (void)logEntries:(id)entries withGroupID:(id)d;
+- (void)logEntry:(id)entry;
+- (void)logEventNoneBBReportBy:(int64_t)by withAction:(int64_t)action;
+- (void)logMessage:(id)message andState:(id)state;
 - (void)logOperatorName;
 - (void)logTelephonyActivity;
 - (void)logTelephonyActivityAtInit;
 - (void)logTelephonyActivityDSDSAtInit;
-- (void)logTelephonyRegMsgWith:(id)a3;
+- (void)logTelephonyRegMsgWith:(id)with;
 - (void)logTelephonyRegistrationAtInit;
 - (void)logTelephonyRegistrationDSDSAtInit;
-- (void)metricMessage:(id)a3;
-- (void)metricMessageDebugLog:(id)a3;
-- (void)modelGPSPower:(id)a3;
-- (void)modelLTESLEEPMGRPower:(id)a3;
-- (void)modelMav10BBHWPower:(id)a3;
-- (void)modelMavBBHWOtherPerRATPower:(id)a3;
-- (void)modelOOSPower:(id)a3;
-- (void)modelScanPower:(id)a3;
-- (void)modelStateTransitionPower:(id)a3 rat:(id)a4 state:(id)a5;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
-- (void)postCDRXCapability:(BOOL)a3;
-- (void)processTimeUpdateInfoDict:(id)a3;
-- (void)ratSelectionChanged:(id)a3 selection:(id)a4;
+- (void)metricMessage:(id)message;
+- (void)metricMessageDebugLog:(id)log;
+- (void)modelGPSPower:(id)power;
+- (void)modelLTESLEEPMGRPower:(id)power;
+- (void)modelMav10BBHWPower:(id)power;
+- (void)modelMavBBHWOtherPerRATPower:(id)power;
+- (void)modelOOSPower:(id)power;
+- (void)modelScanPower:(id)power;
+- (void)modelStateTransitionPower:(id)power rat:(id)rat state:(id)state;
+- (void)operatorNameChanged:(id)changed name:(id)name;
+- (void)postCDRXCapability:(BOOL)capability;
+- (void)processTimeUpdateInfoDict:(id)dict;
+- (void)ratSelectionChanged:(id)changed selection:(id)selection;
 - (void)reconnectTimerFired;
 - (void)refreshBBReport;
 - (void)refreshRequestHandler;
 - (void)registerForAirplaneModeChange;
-- (void)registerForICEModelMetricsNotifications:(id)a3;
-- (void)registerForMAVModelMetricsNotifications:(id)a3;
-- (void)registerForSinopeModelMetricsNotifications:(id)a3;
+- (void)registerForICEModelMetricsNotifications:(id)notifications;
+- (void)registerForMAVModelMetricsNotifications:(id)notifications;
+- (void)registerForSinopeModelMetricsNotifications:(id)notifications;
 - (void)resetCacheCommitTimer;
 - (void)scheduleFlushPostCacheCommit;
 - (void)scheduleReconnect;
-- (void)setOpName:(id)a3;
-- (void)setupBBChannelsWithAction:(int64_t)a3;
+- (void)setOpName:(id)name;
+- (void)setupBBChannelsWithAction:(int64_t)action;
 - (void)setupKICEChannels;
 - (void)setupKICEChannelsForDebug;
 - (void)setupMavABMChannel;
 - (void)setupTelephonyActivityChannels;
 - (void)setupTelephonyRegistrationChannels;
 - (void)setupTimeUpdateChannel;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
-- (void)simStatusDidChange:(id)a3 status:(id)a4;
-- (void)telephonyActivityNotificationCB_Agent:(id)a3 withName:(__CFString *)a4;
-- (void)triggerMessage:(id)a3;
-- (void)wakeMessage:(id)a3;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
+- (void)simStatusDidChange:(id)change status:(id)status;
+- (void)telephonyActivityNotificationCB_Agent:(id)agent withName:(__CFString *)name;
+- (void)triggerMessage:(id)message;
+- (void)wakeMessage:(id)message;
 @end
 
 @implementation PLBBAgent
@@ -122,9 +122,9 @@
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent checkKICEChannelTimeout]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent checkKICEChannelTimeout]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:547];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:547];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -136,13 +136,13 @@
     }
   }
 
-  v10 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__PLBBAgent_checkKICEChannelTimeout__block_invoke_1024;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v10, block);
+  dispatch_async(workQueue, block);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -583,7 +583,7 @@ LABEL_18:
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLBBAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -609,9 +609,9 @@ LABEL_18:
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent eventToFlushCacheOccurred]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent eventToFlushCacheOccurred]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:525];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:525];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -623,21 +623,21 @@ LABEL_18:
     }
   }
 
-  v10 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__PLBBAgent_eventToFlushCacheOccurred__block_invoke_1007;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v10, block);
+  dispatch_async(workQueue, block);
 
-  v11 = [(PLOperator *)self workQueue];
+  workQueue2 = [(PLOperator *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__PLBBAgent_eventToFlushCacheOccurred__block_invoke_2;
   v13[3] = &unk_2782591D0;
   v13[4] = self;
-  dispatch_async(v11, v13);
+  dispatch_async(workQueue2, v13);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -832,9 +832,9 @@ uint64_t __36__PLBBAgent_checkKICEChannelTimeout__block_invoke_1074(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent eventToCommitCacheOccurred]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent eventToCommitCacheOccurred]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:593];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:593];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -846,13 +846,13 @@ uint64_t __36__PLBBAgent_checkKICEChannelTimeout__block_invoke_1074(uint64_t a1)
     }
   }
 
-  v10 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__PLBBAgent_eventToCommitCacheOccurred__block_invoke_1075;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_async(v10, block);
+  dispatch_async(workQueue, block);
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -866,12 +866,12 @@ uint64_t __39__PLBBAgent_eventToCommitCacheOccurred__block_invoke(uint64_t a1)
 
 - (void)reconnectTimerFired
 {
-  v3 = [(PLBBAgent *)self channelReconnectTimer];
+  channelReconnectTimer = [(PLBBAgent *)self channelReconnectTimer];
 
-  if (v3)
+  if (channelReconnectTimer)
   {
-    v4 = [(PLBBAgent *)self channelReconnectTimer];
-    [v4 invalidate];
+    channelReconnectTimer2 = [(PLBBAgent *)self channelReconnectTimer];
+    [channelReconnectTimer2 invalidate];
   }
 
   [(PLBBAgent *)self setChannelReconnectTimer:0];
@@ -883,28 +883,28 @@ uint64_t __39__PLBBAgent_eventToCommitCacheOccurred__block_invoke(uint64_t a1)
 {
   [(PLBasebandLogChannel *)self->streamingChannel close];
   [(PLBasebandLogChannel *)self->cachedChannel close];
-  v3 = [(PLBBAgent *)self channelReconnectTimer];
-  v4 = [v3 timerActive];
+  channelReconnectTimer = [(PLBBAgent *)self channelReconnectTimer];
+  timerActive = [channelReconnectTimer timerActive];
 
-  if ((v4 & 1) == 0)
+  if ((timerActive & 1) == 0)
   {
     v5 = objc_alloc(MEMORY[0x277D3F250]);
     v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:60.0];
-    v7 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __30__PLBBAgent_scheduleReconnect__block_invoke;
     v9[3] = &unk_278259C40;
     v9[4] = self;
-    v8 = [v5 initWithFireDate:v6 withInterval:0 withTolerance:0 repeats:v7 withUserInfo:v9 withQueue:0.0 withBlock:0.0];
+    v8 = [v5 initWithFireDate:v6 withInterval:0 withTolerance:0 repeats:workQueue withUserInfo:v9 withQueue:0.0 withBlock:0.0];
     [(PLBBAgent *)self setChannelReconnectTimer:v8];
   }
 }
 
-- (void)channelDidBecomeInvalid:(id)a3
+- (void)channelDidBecomeInvalid:(id)invalid
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidCopy = invalid;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -923,9 +923,9 @@ uint64_t __39__PLBBAgent_eventToCommitCacheOccurred__block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent channelDidBecomeInvalid:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent channelDidBecomeInvalid:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:623];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:623];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -957,9 +957,9 @@ uint64_t __39__PLBBAgent_eventToCommitCacheOccurred__block_invoke(uint64_t a1)
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"channelDidBecomeInvalid not valid for Protobuf channel"];
         v14 = MEMORY[0x277D3F178];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v16 = [v15 lastPathComponent];
+        lastPathComponent2 = [v15 lastPathComponent];
         v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent channelDidBecomeInvalid:]"];
-        [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:625];
+        [v14 logMessage:v13 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:625];
 
         v18 = PLLogCommon();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -999,11 +999,11 @@ uint64_t __37__PLBBAgent_channelDidBecomeInvalid___block_invoke_1080(uint64_t a1
   return result;
 }
 
-- (void)channel:(id)a3 hasDataAvailable:(id)a4
+- (void)channel:(id)channel hasDataAvailable:(id)available
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  availableCopy = available;
   v8 = objc_autoreleasePoolPush();
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -1023,9 +1023,9 @@ uint64_t __37__PLBBAgent_channelDidBecomeInvalid___block_invoke_1080(uint64_t a1
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s \n CT channel has data available", "-[PLBBAgent channel:hasDataAvailable:]", block, v20, v21, v22, v23];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent channel:hasDataAvailable:]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:635];
+      [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:635];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1037,7 +1037,7 @@ uint64_t __37__PLBBAgent_channelDidBecomeInvalid___block_invoke_1080(uint64_t a1
     }
   }
 
-  v16 = [PLBasebandMessage messageWithData:v7];
+  v16 = [PLBasebandMessage messageWithData:availableCopy];
   [v16 setAgent:self];
   [v16 logWithLogger:0];
   objc_opt_class();
@@ -1047,8 +1047,8 @@ uint64_t __37__PLBBAgent_channelDidBecomeInvalid___block_invoke_1080(uint64_t a1
   }
 
   objc_autoreleasePoolPop(v8);
-  v17 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLBBAgent *)self setLastBBActivityTimestamp:v17];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLBBAgent *)self setLastBBActivityTimestamp:monotonicDate];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -1060,9 +1060,9 @@ uint64_t __38__PLBBAgent_channel_hasDataAvailable___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)metricMessageDebugLog:(id)a3
+- (void)metricMessageDebugLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   if ([MEMORY[0x277D3F208] isBasebandMav])
   {
     v5 = *MEMORY[0x277D3F5E0];
@@ -1071,9 +1071,9 @@ uint64_t __38__PLBBAgent_channel_hasDataAvailable___block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [MEMORY[0x277D3F208] isBasebandProto];
+    isBasebandProto = [MEMORY[0x277D3F208] isBasebandProto];
     v5 = *MEMORY[0x277D3F5E0];
-    if (v7)
+    if (isBasebandProto)
     {
       v6 = @"BBSinopeMsgMetricDump";
     }
@@ -1089,31 +1089,31 @@ uint64_t __38__PLBBAgent_channel_hasDataAvailable___block_invoke(uint64_t a1)
   if (v9)
   {
     v10 = *MEMORY[0x277D3F2B0];
-    v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2B0]];
+    v11 = [logCopy objectForKeyedSubscript:*MEMORY[0x277D3F2B0]];
     [v9 setObject:v11 forKeyedSubscript:v10];
 
     v12 = *MEMORY[0x277D3F2B8];
-    v13 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2B8]];
+    v13 = [logCopy objectForKeyedSubscript:*MEMORY[0x277D3F2B8]];
     v14 = [PLICEBBMetricUtility convertToStringData:v13];
     [v9 setObject:v14 forKeyedSubscript:v12];
 
     v15 = *MEMORY[0x277D3F2C8];
-    v16 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2C8]];
+    v16 = [logCopy objectForKeyedSubscript:*MEMORY[0x277D3F2C8]];
     [v9 setObject:v16 forKeyedSubscript:v15];
 
     v17 = *MEMORY[0x277D3F2C0];
-    v18 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2C0]];
+    v18 = [logCopy objectForKeyedSubscript:*MEMORY[0x277D3F2C0]];
     [v9 setObject:v18 forKeyedSubscript:v17];
 
     v19 = *MEMORY[0x277D3F2A8];
-    v20 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2A8]];
+    v20 = [logCopy objectForKeyedSubscript:*MEMORY[0x277D3F2A8]];
     [v9 setObject:v20 forKeyedSubscript:v19];
 
     if ([MEMORY[0x277D3F208] isBasebandProto])
     {
-      v21 = [v9 dictionary];
-      v22 = [v9 entryDate];
-      [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"MsgMetricDump" data:v21 date:v22];
+      dictionary = [v9 dictionary];
+      entryDate = [v9 entryDate];
+      [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"MsgMetricDump" data:dictionary date:entryDate];
     }
 
     if (([MEMORY[0x277D3F208] isBasebandMav] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandIce"))
@@ -1133,10 +1133,10 @@ uint64_t __38__PLBBAgent_channel_hasDataAvailable___block_invoke(uint64_t a1)
   }
 }
 
-- (void)metricMessage:(id)a3
+- (void)metricMessage:(id)message
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -1155,9 +1155,9 @@ uint64_t __38__PLBBAgent_channel_hasDataAvailable___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent metricMessage:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent metricMessage:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:717];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:717];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1182,11 +1182,11 @@ uint64_t __38__PLBBAgent_channel_hasDataAvailable___block_invoke(uint64_t a1)
 
   if (byte_2811F4FA7 == 1)
   {
-    [(PLBBAgent *)self metricMessageDebugLog:v4];
+    [(PLBBAgent *)self metricMessageDebugLog:messageCopy];
   }
 
-  v13 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLBBAgent *)self setLastBBActivityTimestamp:v13];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLBBAgent *)self setLastBBActivityTimestamp:monotonicDate];
 
   if ([MEMORY[0x277D3F208] isBasebandMav])
   {
@@ -1207,27 +1207,27 @@ uint64_t __38__PLBBAgent_channel_hasDataAvailable___block_invoke(uint64_t a1)
     }
 
     v16 = *MEMORY[0x277D3F2C0];
-    v17 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2C0]];
+    v17 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2C0]];
     if ([v17 intValue] == 680000)
     {
 
       goto LABEL_37;
     }
 
-    v35 = [v4 objectForKeyedSubscript:v16];
-    v36 = [v35 intValue];
+    v35 = [messageCopy objectForKeyedSubscript:v16];
+    intValue = [v35 intValue];
 
-    if (v36 == 703488)
+    if (intValue == 703488)
     {
 LABEL_37:
       if ([(PLOperator *)self isDebugEnabled])
       {
-        v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"periodic MAV metric handler: %@", v4];
+        messageCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"periodic MAV metric handler: %@", messageCopy];
         v37 = MEMORY[0x277D3F178];
         v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v39 = [v38 lastPathComponent];
+        lastPathComponent2 = [v38 lastPathComponent];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent metricMessage:]"];
-        [v37 logMessage:v29 fromFile:v39 fromFunction:v40 fromLineNumber:736];
+        [v37 logMessage:messageCopy fromFile:lastPathComponent2 fromFunction:v40 fromLineNumber:736];
 
         v34 = PLLogCommon();
         if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -1236,7 +1236,7 @@ LABEL_37:
         }
 
         *buf = 138412290;
-        v55 = v29;
+        v55 = messageCopy;
         goto LABEL_51;
       }
 
@@ -1245,12 +1245,12 @@ LABEL_37:
 
     if ([(PLOperator *)self isDebugEnabled])
     {
-      v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"aperiodic MAV metric handler: %@", v4];
+      messageCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"aperiodic MAV metric handler: %@", messageCopy];
       v47 = MEMORY[0x277D3F178];
       v48 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v49 = [v48 lastPathComponent];
+      lastPathComponent3 = [v48 lastPathComponent];
       v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent metricMessage:]"];
-      [v47 logMessage:v41 fromFile:v49 fromFunction:v50 fromLineNumber:743];
+      [v47 logMessage:messageCopy2 fromFile:lastPathComponent3 fromFunction:v50 fromLineNumber:743];
 
       v46 = PLLogCommon();
       if (!os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -1259,7 +1259,7 @@ LABEL_37:
       }
 
       *buf = 138412290;
-      v55 = v41;
+      v55 = messageCopy2;
       goto LABEL_53;
     }
 
@@ -1285,20 +1285,20 @@ LABEL_37:
     }
 
     v16 = *MEMORY[0x277D3F2C0];
-    v26 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2C0]];
-    v27 = [v26 intValue];
+    v26 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2C0]];
+    intValue2 = [v26 intValue];
 
-    v28 = [(PLOperator *)self isDebugEnabled];
-    if (v27 == 1)
+    isDebugEnabled = [(PLOperator *)self isDebugEnabled];
+    if (intValue2 == 1)
     {
-      if (v28)
+      if (isDebugEnabled)
       {
-        v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"periodic ICE metric handler: %@", v4];
+        messageCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"periodic ICE metric handler: %@", messageCopy];
         v30 = MEMORY[0x277D3F178];
         v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v32 = [v31 lastPathComponent];
+        lastPathComponent4 = [v31 lastPathComponent];
         v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent metricMessage:]"];
-        [v30 logMessage:v29 fromFile:v32 fromFunction:v33 fromLineNumber:783];
+        [v30 logMessage:messageCopy fromFile:lastPathComponent4 fromFunction:v33 fromLineNumber:783];
 
         v34 = PLLogCommon();
         if (!os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -1309,29 +1309,29 @@ LABEL_39:
         }
 
         *buf = 138412290;
-        v55 = v29;
+        v55 = messageCopy;
 LABEL_51:
         _os_log_debug_impl(&dword_21A4C6000, v34, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         goto LABEL_39;
       }
 
 LABEL_40:
-      v22 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2B0]];
-      v23 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2B8]];
-      v24 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2C8]];
+      v22 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2B0]];
+      v23 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2B8]];
+      v24 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2C8]];
 LABEL_41:
       [v14 queuePeriodicMetricId:v22 payload:v23 forTrigger:v24];
       goto LABEL_49;
     }
 
-    if (v28)
+    if (isDebugEnabled)
     {
-      v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"aperiodic ICE metric handler: %@", v4];
+      messageCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"aperiodic ICE metric handler: %@", messageCopy];
       v42 = MEMORY[0x277D3F178];
       v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v44 = [v43 lastPathComponent];
+      lastPathComponent5 = [v43 lastPathComponent];
       v45 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent metricMessage:]"];
-      [v42 logMessage:v41 fromFile:v44 fromFunction:v45 fromLineNumber:790];
+      [v42 logMessage:messageCopy2 fromFile:lastPathComponent5 fromFunction:v45 fromLineNumber:790];
 
       v46 = PLLogCommon();
       if (!os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -1342,16 +1342,16 @@ LABEL_47:
       }
 
       *buf = 138412290;
-      v55 = v41;
+      v55 = messageCopy2;
 LABEL_53:
       _os_log_debug_impl(&dword_21A4C6000, v46, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       goto LABEL_47;
     }
 
 LABEL_48:
-    v22 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2B0]];
-    v23 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2B8]];
-    v24 = [v4 objectForKeyedSubscript:v16];
+    v22 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2B0]];
+    v23 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2B8]];
+    v24 = [messageCopy objectForKeyedSubscript:v16];
     [v14 queueAperiodicMetricId:v22 payload:v23 profileId:v24];
     goto LABEL_49;
   }
@@ -1380,13 +1380,13 @@ LABEL_48:
     }
   }
 
-  v20 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2C0]];
-  v21 = [v20 intValue];
+  v20 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2C0]];
+  intValue3 = [v20 intValue];
 
-  v22 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2B0]];
-  v23 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2B8]];
-  v24 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2C8]];
-  if (v21 == 1625)
+  v22 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2B0]];
+  v23 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2B8]];
+  v24 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2C8]];
+  if (intValue3 == 1625)
   {
     goto LABEL_41;
   }
@@ -1411,10 +1411,10 @@ uint64_t __27__PLBBAgent_metricMessage___block_invoke_1102(uint64_t a1)
   return result;
 }
 
-- (void)triggerMessage:(id)a3
+- (void)triggerMessage:(id)message
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -1433,9 +1433,9 @@ uint64_t __27__PLBBAgent_metricMessage___block_invoke_1102(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent triggerMessage:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent triggerMessage:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:800];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:800];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1468,9 +1468,9 @@ uint64_t __27__PLBBAgent_metricMessage___block_invoke_1102(uint64_t a1)
 
     else
     {
-      v15 = [MEMORY[0x277D3F208] isBasebandProto];
+      isBasebandProto = [MEMORY[0x277D3F208] isBasebandProto];
       v13 = *MEMORY[0x277D3F5E0];
-      if (v15)
+      if (isBasebandProto)
       {
         v14 = @"BBSinopeMsgTriggerDump";
       }
@@ -1486,30 +1486,30 @@ uint64_t __27__PLBBAgent_metricMessage___block_invoke_1102(uint64_t a1)
     if (v17)
     {
       v18 = *MEMORY[0x277D3F2D0];
-      v19 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2D0]];
+      v19 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2D0]];
       [v17 setObject:v19 forKeyedSubscript:v18];
 
       v20 = *MEMORY[0x277D3F2D8];
-      v21 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2D8]];
+      v21 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2D8]];
       [v17 setObject:v21 forKeyedSubscript:v20];
 
       v22 = *MEMORY[0x277D3F2E8];
-      v23 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2E8]];
+      v23 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2E8]];
       [v17 setObject:v23 forKeyedSubscript:v22];
 
       v24 = *MEMORY[0x277D3F2E0];
-      v25 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2E0]];
+      v25 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2E0]];
       [v17 setObject:v25 forKeyedSubscript:v24];
 
       v26 = *MEMORY[0x277D3F2A8];
-      v27 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3F2A8]];
+      v27 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D3F2A8]];
       [v17 setObject:v27 forKeyedSubscript:v26];
 
       if ([MEMORY[0x277D3F208] isBasebandProto])
       {
-        v28 = [v17 dictionary];
-        v29 = [v17 entryDate];
-        [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"MsgTriggerDump" data:v28 date:v29];
+        dictionary = [v17 dictionary];
+        entryDate = [v17 entryDate];
+        [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"MsgTriggerDump" data:dictionary date:entryDate];
       }
 
       if (([MEMORY[0x277D3F208] isBasebandMav] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandIce"))
@@ -1536,9 +1536,9 @@ uint64_t __27__PLBBAgent_metricMessage___block_invoke_1102(uint64_t a1)
         v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBBICEMsg unable to allocate memory for PLEntry"];
         v32 = MEMORY[0x277D3F178];
         v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v34 = [v33 lastPathComponent];
+        lastPathComponent2 = [v33 lastPathComponent];
         v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent triggerMessage:]"];
-        [v32 logMessage:v31 fromFile:v34 fromFunction:v35 fromLineNumber:821];
+        [v32 logMessage:v31 fromFile:lastPathComponent2 fromFunction:v35 fromLineNumber:821];
 
         v36 = PLLogCommon();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -1575,10 +1575,10 @@ uint64_t __28__PLBBAgent_triggerMessage___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)wakeMessage:(id)a3
+- (void)wakeMessage:(id)message
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -1597,9 +1597,9 @@ uint64_t __28__PLBBAgent_triggerMessage___block_invoke_2(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent wakeMessage:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent wakeMessage:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:842];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:842];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1616,8 +1616,8 @@ uint64_t __28__PLBBAgent_triggerMessage___block_invoke_2(uint64_t a1)
     v12 = objc_opt_new();
     [v12 setAgent:self];
     [v12 setMsgProcErr:0];
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", @"SleepWakeDataABM:", v4];
-    [v12 setPayload:v13];
+    messageCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", @"SleepWakeDataABM:", messageCopy];
+    [v12 setPayload:messageCopy];
 
     [v12 setMsgType:&unk_282C11CD0];
     [v12 logEventNoneBBMsgAll];
@@ -1627,35 +1627,35 @@ uint64_t __28__PLBBAgent_triggerMessage___block_invoke_2(uint64_t a1)
   [v14 setAgent:self];
   [v14 setMsgProcErr:0];
   [v14 setSwReason:@"baseband"];
-  v15 = [v4 objectForKeyedSubscript:@"kKeyBasebandWakeType"];
+  v15 = [messageCopy objectForKeyedSubscript:@"kKeyBasebandWakeType"];
   [v14 setBbWakeType:v15];
 
-  v16 = [v4 objectForKeyedSubscript:@"kKeyBasebandWakeSubType"];
+  v16 = [messageCopy objectForKeyedSubscript:@"kKeyBasebandWakeSubType"];
   [v14 setBbWakeSubType:v16];
 
-  v17 = [v4 objectForKeyedSubscript:@"kKeyBasebandWakeChannel"];
+  v17 = [messageCopy objectForKeyedSubscript:@"kKeyBasebandWakeChannel"];
 
   if (v17)
   {
     v18 = MEMORY[0x277CCACA8];
-    v19 = [v4 objectForKeyedSubscript:@"kKeyBasebandWakeChannel"];
+    v19 = [messageCopy objectForKeyedSubscript:@"kKeyBasebandWakeChannel"];
     v20 = [v18 stringWithFormat:@"%@", v19];
     [v14 setBbWakeChannel:v20];
   }
 
-  v21 = [v4 objectForKeyedSubscript:@"kKeyBasebandWakeData"];
+  v21 = [messageCopy objectForKeyedSubscript:@"kKeyBasebandWakeData"];
 
   if (v21)
   {
-    v22 = [v4 objectForKeyedSubscript:@"kKeyBasebandWakeData"];
+    v22 = [messageCopy objectForKeyedSubscript:@"kKeyBasebandWakeData"];
     [v14 setBbWakeDataBin:v22];
   }
 
-  v23 = [v4 objectForKeyedSubscript:@"kKeyBasebandWakeDataParsed"];
+  v23 = [messageCopy objectForKeyedSubscript:@"kKeyBasebandWakeDataParsed"];
 
   if (v23)
   {
-    v24 = [v4 objectForKeyedSubscript:@"kKeyBasebandWakeDataParsed"];
+    v24 = [messageCopy objectForKeyedSubscript:@"kKeyBasebandWakeDataParsed"];
     [v14 setBbWakeDataParsed:v24];
   }
 
@@ -1671,10 +1671,10 @@ uint64_t __25__PLBBAgent_wakeMessage___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)bootStateChange:(id)a3
+- (void)bootStateChange:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -1693,9 +1693,9 @@ uint64_t __25__PLBBAgent_wakeMessage___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent bootStateChange:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent bootStateChange:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:874];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:874];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1707,15 +1707,15 @@ uint64_t __25__PLBBAgent_wakeMessage___block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__PLBBAgent_bootStateChange___block_invoke_1150;
   block[3] = &unk_278259658;
   block[4] = self;
-  v16 = v4;
-  v13 = v4;
-  dispatch_async(v12, block);
+  v16 = changeCopy;
+  v13 = changeCopy;
+  dispatch_async(workQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1755,23 +1755,23 @@ void __29__PLBBAgent_bootStateChange___block_invoke_1150(uint64_t a1)
   }
 }
 
-- (void)handlePLBasebandEventNotification:(id)a3
+- (void)handlePLBasebandEventNotification:(id)notification
 {
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x3032000000;
   v7[3] = __Block_byref_object_copy__12;
   v7[4] = __Block_byref_object_dispose__12;
-  v4 = a3;
-  v8 = v4;
-  v5 = [(PLOperator *)self workQueue];
+  notificationCopy = notification;
+  v8 = notificationCopy;
+  workQueue = [(PLOperator *)self workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__PLBBAgent_handlePLBasebandEventNotification___block_invoke;
   v6[3] = &unk_27825F6D0;
   v6[4] = self;
   v6[5] = v7;
-  dispatch_async(v5, v6);
+  dispatch_async(workQueue, v6);
 
   _Block_object_dispose(v7, 8);
 }
@@ -1837,9 +1837,9 @@ void __47__PLBBAgent_handlePLBasebandEventNotification___block_invoke_2(uint64_t
   qword_2811F5318 = 0;
 }
 
-- (void)postCDRXCapability:(BOOL)a3
+- (void)postCDRXCapability:(BOOL)capability
 {
-  v3 = a3;
+  capabilityCopy = capability;
   v21 = *MEMORY[0x277D85DE8];
   if (qword_2811F5318)
   {
@@ -1848,11 +1848,11 @@ void __47__PLBBAgent_handlePLBasebandEventNotification___block_invoke_2(uint64_t
     qword_2811F5318 = 0;
   }
 
-  if (v3)
+  if (capabilityCopy)
   {
-    v5 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     v6 = qword_2811F5310;
-    qword_2811F5310 = v5;
+    qword_2811F5310 = monotonicDate;
   }
 
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -1877,9 +1877,9 @@ void __47__PLBBAgent_handlePLBasebandEventNotification___block_invoke_2(uint64_t
 
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent postCDRXCapability:]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:942];
+      [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:942];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -1894,7 +1894,7 @@ void __47__PLBBAgent_handlePLBasebandEventNotification___block_invoke_2(uint64_t
   out_token = 0;
   if (!notify_register_check("com.apple.powerlog.BasebandHasCDRXCapability", &out_token))
   {
-    if (!notify_set_state(out_token, v3))
+    if (!notify_set_state(out_token, capabilityCopy))
     {
       notify_post("com.apple.powerlog.BasebandHasCDRXCapability");
     }
@@ -1935,9 +1935,9 @@ uint64_t __32__PLBBAgent_postCDRXCapability___block_invoke(uint64_t a1)
         v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"KMAV point defs"];
         v4 = MEMORY[0x277D3F178];
         v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v6 = [v5 lastPathComponent];
+        lastPathComponent = [v5 lastPathComponent];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLBBAgent entryEventPointDefinitions]"];
-        [v4 logMessage:v3 fromFile:v6 fromFunction:v7 fromLineNumber:966];
+        [v4 logMessage:v3 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:966];
 
         v8 = PLLogCommon();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1986,9 +1986,9 @@ uint64_t __32__PLBBAgent_postCDRXCapability___block_invoke(uint64_t a1)
           v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"KICE point defs", v25, v26, v27, v28, v29];
           v20 = MEMORY[0x277D3F178];
           v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-          v22 = [v21 lastPathComponent];
+          lastPathComponent2 = [v21 lastPathComponent];
           v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLBBAgent entryEventPointDefinitions]"];
-          [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:984];
+          [v20 logMessage:v19 fromFile:lastPathComponent2 fromFunction:v23 fromLineNumber:984];
 
           v24 = PLLogCommon();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -2062,17 +2062,17 @@ uint64_t __39__PLBBAgent_entryEventPointDefinitions__block_invoke_1174(uint64_t 
     v18[0] = v2;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"commandType";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
-    v14[0] = v4;
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+    v14[0] = commonTypeDict_IntegerFormat;
     v13[1] = @"commandResult";
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_BoolFormat];
-    v14[1] = v6;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+    v14[1] = commonTypeDict_BoolFormat;
     v13[2] = @"commandResultDescription";
-    v7 = [MEMORY[0x277D3F198] sharedInstance];
-    v8 = [v7 commonTypeDict_StringFormat];
-    v14[2] = v8;
+    mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+    v14[2] = commonTypeDict_StringFormat;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
     v18[1] = v9;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -2111,9 +2111,9 @@ uint64_t __39__PLBBAgent_entryEventPointDefinitions__block_invoke_1174(uint64_t 
         v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"KICE forward defs"];
         v5 = MEMORY[0x277D3F178];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v7 = [v6 lastPathComponent];
+        lastPathComponent = [v6 lastPathComponent];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLBBAgent entryEventForwardDefinitions]"];
-        [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1026];
+        [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1026];
 
         v9 = PLLogCommon();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2129,8 +2129,8 @@ uint64_t __39__PLBBAgent_entryEventPointDefinitions__block_invoke_1174(uint64_t 
     v10 = +[PLBBTelephonyRegMsg bbEuLogMsgNameTelephonyReg];
     v28[1] = @"SDM";
     v29[0] = v10;
-    v11 = [a1 entryEventForwardSDM];
-    v29[1] = v11;
+    entryEventForwardSDM = [self entryEventForwardSDM];
+    v29[1] = entryEventForwardSDM;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
     goto LABEL_11;
   }
@@ -2143,8 +2143,8 @@ uint64_t __39__PLBBAgent_entryEventPointDefinitions__block_invoke_1174(uint64_t 
       v10 = +[PLBBTelephonyRegMsg bbEuLogMsgNameTelephonyReg];
       v25[0] = v10;
       v24[1] = @"SDEventActionCode";
-      v11 = +[PLBBEurekaEventMsg bbEuEvMsgNameSDEventActionCode];
-      v25[1] = v11;
+      entryEventForwardSDM = +[PLBBEurekaEventMsg bbEuEvMsgNameSDEventActionCode];
+      v25[1] = entryEventForwardSDM;
       v24[2] = @"WCDMARRCState";
       v15 = +[PLBBEurekaEventMsg bbEuEvMsgNameWCDMARRCState];
       v25[2] = v15;
@@ -2171,8 +2171,8 @@ uint64_t __39__PLBBAgent_entryEventPointDefinitions__block_invoke_1174(uint64_t 
       v10 = +[PLBBTelephonyRegMsg bbEuLogMsgNameTelephonyReg];
       v27[0] = v10;
       v26[1] = @"SDEventActionCode";
-      v11 = +[PLBBEurekaEventMsg bbEuEvMsgNameSDEventActionCode];
-      v27[1] = v11;
+      entryEventForwardSDM = +[PLBBEurekaEventMsg bbEuEvMsgNameSDEventActionCode];
+      v27[1] = entryEventForwardSDM;
       v26[2] = @"WCDMARRCState";
       v15 = +[PLBBEurekaEventMsg bbEuEvMsgNameWCDMARRCState];
       v27[2] = v15;
@@ -2450,9 +2450,9 @@ LABEL_19:
         v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"KMAV backward defs"];
         v29 = MEMORY[0x277D3F178];
         v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v31 = [v30 lastPathComponent];
+        lastPathComponent = [v30 lastPathComponent];
         v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLBBAgent entryEventBackwardDefinitions]"];
-        [v29 logMessage:v28 fromFile:v31 fromFunction:v32 fromLineNumber:1277];
+        [v29 logMessage:v28 fromFile:lastPathComponent fromFunction:v32 fromLineNumber:1277];
 
         v33 = PLLogCommon();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -2498,9 +2498,9 @@ LABEL_38:
         v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"KICE backward defs"];
         v39 = MEMORY[0x277D3F178];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v41 = [v40 lastPathComponent];
+        lastPathComponent2 = [v40 lastPathComponent];
         v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[PLBBAgent entryEventBackwardDefinitions]"];
-        [v39 logMessage:v38 fromFile:v41 fromFunction:v42 fromLineNumber:1287];
+        [v39 logMessage:v38 fromFile:lastPathComponent2 fromFunction:v42 fromLineNumber:1287];
 
         v43 = PLLogCommon();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -2558,14 +2558,14 @@ uint64_t __42__PLBBAgent_entryEventBackwardDefinitions__block_invoke_1210(uint64
     v22[1] = v4;
     v5 = +[PLBBAgent getNameBBReport];
     v21[2] = v5;
-    v6 = [a1 entryEventNoneBBReport];
-    v22[2] = v6;
+    entryEventNoneBBReport = [self entryEventNoneBBReport];
+    v22[2] = entryEventNoneBBReport;
     v21[3] = @"BBMsgLite";
-    v7 = [a1 entryIceMsgLite];
-    v22[3] = v7;
+    entryIceMsgLite = [self entryIceMsgLite];
+    v22[3] = entryIceMsgLite;
     v21[4] = @"BBMsgAll";
-    v8 = +[PLBBMsgAll entryEventNoneBBMsgAll];
-    v22[4] = v8;
+    entryEventNoneBBReport2 = +[PLBBMsgAll entryEventNoneBBMsgAll];
+    v22[4] = entryEventNoneBBReport2;
     v9 = MEMORY[0x277CBEAC0];
     v10 = v22;
     v11 = v21;
@@ -2587,14 +2587,14 @@ LABEL_3:
       v20[1] = v4;
       v5 = +[PLBBAgent getNameBBReport];
       v19[2] = v5;
-      v6 = [a1 entryEventNoneBBReport];
-      v20[2] = v6;
+      entryEventNoneBBReport = [self entryEventNoneBBReport];
+      v20[2] = entryEventNoneBBReport;
       v19[3] = @"BBMsgLite";
-      v7 = [a1 entryIceMsgLite];
-      v20[3] = v7;
+      entryIceMsgLite = [self entryIceMsgLite];
+      v20[3] = entryIceMsgLite;
       v19[4] = @"BBMsgAll";
-      v8 = +[PLBBMsgAll entryEventNoneBBMsgAll];
-      v20[4] = v8;
+      entryEventNoneBBReport2 = +[PLBBMsgAll entryEventNoneBBMsgAll];
+      v20[4] = entryEventNoneBBReport2;
       v9 = MEMORY[0x277CBEAC0];
       v10 = v20;
       v11 = v19;
@@ -2612,12 +2612,12 @@ LABEL_3:
       v5 = +[PLBBEurekaEventMsg bbEuEvMsgEventNotProcessed];
       v16[2] = v5;
       v15[3] = @"BBMsgAll";
-      v6 = +[PLBBMsgAll entryEventNoneBBMsgAll];
-      v16[3] = v6;
-      v7 = +[PLBBAgent getNameBBReport];
-      v15[4] = v7;
-      v8 = [a1 entryEventNoneBBReport];
-      v16[4] = v8;
+      entryEventNoneBBReport = +[PLBBMsgAll entryEventNoneBBMsgAll];
+      v16[3] = entryEventNoneBBReport;
+      entryIceMsgLite = +[PLBBAgent getNameBBReport];
+      v15[4] = entryIceMsgLite;
+      entryEventNoneBBReport2 = [self entryEventNoneBBReport];
+      v16[4] = entryEventNoneBBReport2;
       v9 = MEMORY[0x277CBEAC0];
       v10 = v16;
       v11 = v15;
@@ -2635,12 +2635,12 @@ LABEL_3:
       v5 = +[PLBBEurekaEventMsg bbEuEvMsgEventNotProcessed];
       v18[2] = v5;
       v17[3] = @"BBMsgAll";
-      v6 = +[PLBBMsgAll entryEventNoneBBMsgAll];
-      v18[3] = v6;
-      v7 = +[PLBBAgent getNameBBReport];
-      v17[4] = v7;
-      v8 = [a1 entryEventNoneBBReport];
-      v18[4] = v8;
+      entryEventNoneBBReport = +[PLBBMsgAll entryEventNoneBBMsgAll];
+      v18[3] = entryEventNoneBBReport;
+      entryIceMsgLite = +[PLBBAgent getNameBBReport];
+      v17[4] = entryIceMsgLite;
+      entryEventNoneBBReport2 = [self entryEventNoneBBReport];
+      v18[4] = entryEventNoneBBReport2;
       v9 = MEMORY[0x277CBEAC0];
       v10 = v18;
       v11 = v17;
@@ -2662,7 +2662,7 @@ LABEL_6:
   if (![MEMORY[0x277D3F208] hasBaseband])
   {
 LABEL_29:
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_30;
   }
 
@@ -2690,9 +2690,9 @@ LABEL_29:
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBBAgent: failed to init"];
         v17 = MEMORY[0x277D3F178];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v19 = [v18 lastPathComponent];
+        lastPathComponent = [v18 lastPathComponent];
         v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent init]"];
-        [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:1409];
+        [v17 logMessage:v16 fromFile:lastPathComponent fromFunction:v20 fromLineNumber:1409];
 
         v21 = PLLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -2730,9 +2730,9 @@ LABEL_29:
         v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"no telephony connection"];
         v7 = MEMORY[0x277D3F178];
         v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v9 = [v8 lastPathComponent];
+        lastPathComponent2 = [v8 lastPathComponent];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent init]"];
-        [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:1394];
+        [v7 logMessage:v6 fromFile:lastPathComponent2 fromFunction:v10 fromLineNumber:1394];
 
         v11 = PLLogCommon();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -2770,9 +2770,9 @@ LABEL_29:
         v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: BBAgent no connection"];
         v25 = MEMORY[0x277D3F178];
         v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v27 = [v26 lastPathComponent];
+        lastPathComponent3 = [v26 lastPathComponent];
         v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent init]"];
-        [v25 logMessage:v24 fromFile:v27 fromFunction:v28 fromLineNumber:1401];
+        [v25 logMessage:v24 fromFile:lastPathComponent3 fromFunction:v28 fromLineNumber:1401];
 
         v29 = PLLogCommon();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -2795,11 +2795,11 @@ LABEL_29:
   self->_lteCurrentState = 0;
 LABEL_21:
   self = self;
-  v22 = self;
+  selfCopy = self;
 LABEL_30:
 
   v30 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
 uint64_t __17__PLBBAgent_init__block_invoke(uint64_t a1)
@@ -2825,20 +2825,20 @@ uint64_t __17__PLBBAgent_init__block_invoke_1230(uint64_t a1)
 
 - (void)setupTelephonyRegistrationChannels
 {
-  v3 = [(PLBBAgent *)self connection];
-  [v3 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC3BE8]];
+  connection = [(PLBBAgent *)self connection];
+  [connection registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC3BE8]];
 
-  v4 = [(PLBBAgent *)self connection];
-  [v4 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC3E48]];
+  connection2 = [(PLBBAgent *)self connection];
+  [connection2 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC3E48]];
 
-  v5 = [(PLBBAgent *)self connection];
-  [v5 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC3CB0]];
+  connection3 = [(PLBBAgent *)self connection];
+  [connection3 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC3CB0]];
 
-  v6 = [(PLBBAgent *)self connection];
-  [v6 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC3D58]];
+  connection4 = [(PLBBAgent *)self connection];
+  [connection4 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC3D58]];
 
-  v7 = [(PLBBAgent *)self connection];
-  [v7 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC4310]];
+  connection5 = [(PLBBAgent *)self connection];
+  [connection5 registerCallback:TelephonyNotificationCB forTelephonyNotification:*MEMORY[0x277CC4310]];
 }
 
 uint64_t __72__PLBBAgent_connectionStateChanged_connection_dataConnectionStatusInfo___block_invoke(uint64_t a1)
@@ -2848,18 +2848,18 @@ uint64_t __72__PLBBAgent_connectionStateChanged_connection_dataConnectionStatusI
   return result;
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D3F208] isBasebandDSDS];
-  if (!v7 || !v8)
+  statusCopy = status;
+  infoCopy = info;
+  isBasebandDSDS = [MEMORY[0x277D3F208] isBasebandDSDS];
+  if (!infoCopy || !isBasebandDSDS)
   {
     goto LABEL_25;
   }
 
-  v9 = [(PLBBAgent *)self getSubsIdFromCTContext:v6];
+  v9 = [(PLBBAgent *)self getSubsIdFromCTContext:statusCopy];
   v10 = v9;
   v59 = v9;
   if (v9 == -1)
@@ -2868,57 +2868,57 @@ uint64_t __72__PLBBAgent_connectionStateChanged_connection_dataConnectionStatusI
     goto LABEL_15;
   }
 
-  v11 = [v7 indicator];
-  v12 = [(PLBBAgent *)self dsdsRegMsgs];
-  v13 = [v12 objectAtIndexedSubscript:v10];
-  if (v11 != [v13 dataIndicator])
+  indicator = [infoCopy indicator];
+  dsdsRegMsgs = [(PLBBAgent *)self dsdsRegMsgs];
+  v13 = [dsdsRegMsgs objectAtIndexedSubscript:v10];
+  if (indicator != [v13 dataIndicator])
   {
     goto LABEL_11;
   }
 
-  v14 = [v7 dataBearerSoMask];
-  v15 = [(PLBBAgent *)self dsdsRegMsgs];
-  v16 = [v15 objectAtIndexedSubscript:v10];
-  v17 = [v16 serviceOpt];
+  dataBearerSoMask = [infoCopy dataBearerSoMask];
+  dsdsRegMsgs2 = [(PLBBAgent *)self dsdsRegMsgs];
+  v16 = [dsdsRegMsgs2 objectAtIndexedSubscript:v10];
+  serviceOpt = [v16 serviceOpt];
 
-  if (v14 != v17)
+  if (dataBearerSoMask != serviceOpt)
   {
     goto LABEL_12;
   }
 
   if ([MEMORY[0x277D3F258] isFullModeDaemon])
   {
-    v12 = [(PLBBAgent *)self dsdsRegMsgs];
-    v13 = [v12 objectAtIndexedSubscript:v10];
+    dsdsRegMsgs = [(PLBBAgent *)self dsdsRegMsgs];
+    v13 = [dsdsRegMsgs objectAtIndexedSubscript:v10];
     if ([v13 dataAttached] != -1)
     {
-      v18 = [(PLBBAgent *)self dsdsRegMsgs];
-      v19 = [v18 objectAtIndexedSubscript:v10];
-      v20 = [v19 dataAttached];
-      LOBYTE(v20) = (v20 == 0) ^ [v7 attached];
+      dsdsRegMsgs3 = [(PLBBAgent *)self dsdsRegMsgs];
+      v19 = [dsdsRegMsgs3 objectAtIndexedSubscript:v10];
+      dataAttached = [v19 dataAttached];
+      LOBYTE(dataAttached) = (dataAttached == 0) ^ [infoCopy attached];
 
-      if (v20)
+      if (dataAttached)
       {
         goto LABEL_9;
       }
 
 LABEL_12:
-      v22 = [v7 indicator];
-      v23 = [(PLBBAgent *)self dsdsRegMsgs];
-      v24 = [v23 objectAtIndexedSubscript:v10];
-      [v24 setDataIndicator:v22];
+      indicator2 = [infoCopy indicator];
+      dsdsRegMsgs4 = [(PLBBAgent *)self dsdsRegMsgs];
+      v24 = [dsdsRegMsgs4 objectAtIndexedSubscript:v10];
+      [v24 setDataIndicator:indicator2];
 
-      v25 = [v7 dataBearerSoMask];
-      v26 = [(PLBBAgent *)self dsdsRegMsgs];
-      v27 = [v26 objectAtIndexedSubscript:v10];
-      [v27 setServiceOpt:v25];
+      dataBearerSoMask2 = [infoCopy dataBearerSoMask];
+      dsdsRegMsgs5 = [(PLBBAgent *)self dsdsRegMsgs];
+      v27 = [dsdsRegMsgs5 objectAtIndexedSubscript:v10];
+      [v27 setServiceOpt:dataBearerSoMask2];
 
       if ([MEMORY[0x277D3F258] isFullModeDaemon])
       {
-        v28 = [v7 attached];
-        v29 = [(PLBBAgent *)self dsdsRegMsgs];
-        v30 = [v29 objectAtIndexedSubscript:v10];
-        [v30 setDataAttached:v28];
+        attached = [infoCopy attached];
+        dsdsRegMsgs6 = [(PLBBAgent *)self dsdsRegMsgs];
+        v30 = [dsdsRegMsgs6 objectAtIndexedSubscript:v10];
+        [v30 setDataAttached:attached];
       }
 
       v21 = 1;
@@ -2950,24 +2950,24 @@ LABEL_15:
     {
       v53 = v10;
       v57 = MEMORY[0x277CCACA8];
-      v56 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "attached")}];
-      v55 = [v7 indicator];
-      v54 = [v7 indicatorOverride];
-      v52 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "roamAllowed")}];
-      v51 = [v7 radioTechnology];
-      v50 = [v7 dataBearerSoMask];
-      v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "dataPlanSignalingReductionOverride")}];
-      v33 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "cellularDataPossible")}];
-      v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "activeContexts")}];
-      v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "totalActiveContexts")}];
-      v36 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "inHomeCountry")}];
-      v58 = [v57 stringWithFormat:@"dataStatus:dataStatusInfo: called with subsId: %d                               attached: %@                               indicator: %d                               indicatorOverride: %d                               roamAllowed: %@                               radioTechnology: %d                               dataBearerSoMask: %d                               dataPlanSignalingReductionOverride: %@                               cellularDataPossible: %@                               activeContexts: %@                               totalActiveContexts: %@                               inHomeCountry: %@", v59, v56, v55, v54, v52, v51, v50, v32, v33, v34, v35, v36];
+      v56 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "attached")}];
+      indicator3 = [infoCopy indicator];
+      indicatorOverride = [infoCopy indicatorOverride];
+      v52 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "roamAllowed")}];
+      radioTechnology = [infoCopy radioTechnology];
+      dataBearerSoMask3 = [infoCopy dataBearerSoMask];
+      v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "dataPlanSignalingReductionOverride")}];
+      v33 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "cellularDataPossible")}];
+      v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(infoCopy, "activeContexts")}];
+      v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(infoCopy, "totalActiveContexts")}];
+      v36 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "inHomeCountry")}];
+      v58 = [v57 stringWithFormat:@"dataStatus:dataStatusInfo: called with subsId: %d                               attached: %@                               indicator: %d                               indicatorOverride: %d                               roamAllowed: %@                               radioTechnology: %d                               dataBearerSoMask: %d                               dataPlanSignalingReductionOverride: %@                               cellularDataPossible: %@                               activeContexts: %@                               totalActiveContexts: %@                               inHomeCountry: %@", v59, v56, indicator3, indicatorOverride, v52, radioTechnology, dataBearerSoMask3, v32, v33, v34, v35, v36];
 
       v37 = MEMORY[0x277D3F178];
       v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v39 = [v38 lastPathComponent];
+      lastPathComponent = [v38 lastPathComponent];
       v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent dataStatus:dataStatusInfo:]"];
-      [v37 logMessage:v58 fromFile:v39 fromFunction:v40 fromLineNumber:1539];
+      [v37 logMessage:v58 fromFile:lastPathComponent fromFunction:v40 fromLineNumber:1539];
 
       v41 = PLLogCommon();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -2981,24 +2981,24 @@ LABEL_15:
     }
   }
 
-  v42 = [(PLBBAgent *)self dsdsRegMsgs];
-  v43 = [v42 objectAtIndexedSubscript:v10];
-  v44 = [v43 operatorName];
+  dsdsRegMsgs7 = [(PLBBAgent *)self dsdsRegMsgs];
+  v43 = [dsdsRegMsgs7 objectAtIndexedSubscript:v10];
+  operatorName = [v43 operatorName];
 
   if (v21)
   {
     v61[0] = @"dataAttached";
-    v45 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "attached")}];
+    v45 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(infoCopy, "attached")}];
     v62[0] = v45;
     v61[1] = @"dataInd";
-    v46 = dataIndicatorToString([v7 indicator]);
+    v46 = dataIndicatorToString([infoCopy indicator]);
     v62[1] = v46;
     v61[2] = @"serviceOpt";
-    v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "dataBearerSoMask")}];
+    v47 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(infoCopy, "dataBearerSoMask")}];
     v62[2] = v47;
     v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:3];
 
-    [(PLBBAgent *)self logDSDSEventForwardTelephonyRegistrationWithKVPairs:v48 subsId:v59 andOperator:v44];
+    [(PLBBAgent *)self logDSDSEventForwardTelephonyRegistrationWithKVPairs:v48 subsId:v59 andOperator:operatorName];
   }
 
 LABEL_25:
@@ -3012,33 +3012,33 @@ uint64_t __39__PLBBAgent_dataStatus_dataStatusInfo___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D3F208] isBasebandDSDS];
-  if (!v7 || !v8)
+  changedCopy = changed;
+  nameCopy = name;
+  isBasebandDSDS = [MEMORY[0x277D3F208] isBasebandDSDS];
+  if (!nameCopy || !isBasebandDSDS)
   {
     goto LABEL_17;
   }
 
-  v9 = [(PLBBAgent *)self getSubsIdFromCTContext:v6];
+  v9 = [(PLBBAgent *)self getSubsIdFromCTContext:changedCopy];
   if (v9 == -1)
   {
     goto LABEL_7;
   }
 
-  v10 = [(PLBBAgent *)self dsdsRegMsgs];
-  v11 = [v10 objectAtIndexedSubscript:v9];
-  v12 = [v11 operatorName];
-  v13 = [v7 isEqualToString:v12];
+  dsdsRegMsgs = [(PLBBAgent *)self dsdsRegMsgs];
+  v11 = [dsdsRegMsgs objectAtIndexedSubscript:v9];
+  operatorName = [v11 operatorName];
+  v13 = [nameCopy isEqualToString:operatorName];
 
   if ((v13 & 1) == 0)
   {
-    v15 = [(PLBBAgent *)self dsdsRegMsgs];
-    v16 = [v15 objectAtIndexedSubscript:v9];
-    [v16 setOperatorName:v7];
+    dsdsRegMsgs2 = [(PLBBAgent *)self dsdsRegMsgs];
+    v16 = [dsdsRegMsgs2 objectAtIndexedSubscript:v9];
+    [v16 setOperatorName:nameCopy];
 
 LABEL_7:
     v14 = 0;
@@ -3065,9 +3065,9 @@ LABEL_8:
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"operatorNameChanged:name: called with subsId: %d", v9, block, v26, v27, v28, v29];
       v19 = MEMORY[0x277D3F178];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v21 = [v20 lastPathComponent];
+      lastPathComponent = [v20 lastPathComponent];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent operatorNameChanged:name:]"];
-      [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:1569];
+      [v19 logMessage:v18 fromFile:lastPathComponent fromFunction:v22 fromLineNumber:1569];
 
       v23 = PLLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -3081,7 +3081,7 @@ LABEL_8:
 
   if ((v14 & 1) == 0)
   {
-    [(PLBBAgent *)self logDSDSEventForwardTelephonyRegistrationWithKVPairs:0 subsId:v9 andOperator:v7];
+    [(PLBBAgent *)self logDSDSEventForwardTelephonyRegistrationWithKVPairs:0 subsId:v9 andOperator:nameCopy];
   }
 
 LABEL_17:
@@ -3096,20 +3096,20 @@ uint64_t __38__PLBBAgent_operatorNameChanged_name___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D3F208] isBasebandDSDS];
-  if (!v7 || !v8)
+  changedCopy = changed;
+  statusCopy = status;
+  isBasebandDSDS = [MEMORY[0x277D3F208] isBasebandDSDS];
+  if (!statusCopy || !isBasebandDSDS)
   {
     goto LABEL_24;
   }
 
-  v9 = [(PLBBAgent *)self getSubsIdFromCTContext:v6];
-  v10 = [v7 registrationDisplayStatus];
-  v11 = removeCTPrefixFromString(@"kCTRegistrationStatus", v10);
+  v9 = [(PLBBAgent *)self getSubsIdFromCTContext:changedCopy];
+  registrationDisplayStatus = [statusCopy registrationDisplayStatus];
+  v11 = removeCTPrefixFromString(@"kCTRegistrationStatus", registrationDisplayStatus);
 
   v49 = v9;
   if (v9 == -1)
@@ -3119,12 +3119,12 @@ uint64_t __38__PLBBAgent_operatorNameChanged_name___block_invoke(uint64_t a1)
     goto LABEL_14;
   }
 
-  v12 = [(PLBBAgent *)self dsdsRegMsgs];
+  dsdsRegMsgs = [(PLBBAgent *)self dsdsRegMsgs];
   v13 = v9;
-  v14 = [v12 objectAtIndexedSubscript:v9];
-  v15 = [v14 status];
+  v14 = [dsdsRegMsgs objectAtIndexedSubscript:v9];
+  status = [v14 status];
   v16 = v11;
-  v17 = [v11 isEqualToString:v15];
+  v17 = [v11 isEqualToString:status];
 
   if (!v17)
   {
@@ -3133,38 +3133,38 @@ uint64_t __38__PLBBAgent_operatorNameChanged_name___block_invoke(uint64_t a1)
 
   if ([MEMORY[0x277D3F258] isFullModeDaemon])
   {
-    v18 = [(PLBBAgent *)self dsdsRegMsgs];
-    v19 = [v18 objectAtIndexedSubscript:v9];
+    dsdsRegMsgs2 = [(PLBBAgent *)self dsdsRegMsgs];
+    v19 = [dsdsRegMsgs2 objectAtIndexedSubscript:v9];
     if ([v19 isHome] == -1)
     {
     }
 
     else
     {
-      v20 = [(PLBBAgent *)self dsdsRegMsgs];
-      v21 = [v20 objectAtIndexedSubscript:v9];
-      v47 = v18;
-      v22 = [v21 isHome];
-      LOBYTE(v22) = (v22 == 0) ^ [v7 isInHomeCountry];
+      dsdsRegMsgs3 = [(PLBBAgent *)self dsdsRegMsgs];
+      v21 = [dsdsRegMsgs3 objectAtIndexedSubscript:v9];
+      v47 = dsdsRegMsgs2;
+      isHome = [v21 isHome];
+      LOBYTE(isHome) = (isHome == 0) ^ [statusCopy isInHomeCountry];
 
-      if (v22)
+      if (isHome)
       {
         goto LABEL_8;
       }
     }
 
 LABEL_11:
-    v24 = [(PLBBAgent *)self dsdsRegMsgs];
-    v25 = [v24 objectAtIndexedSubscript:v9];
+    dsdsRegMsgs4 = [(PLBBAgent *)self dsdsRegMsgs];
+    v25 = [dsdsRegMsgs4 objectAtIndexedSubscript:v9];
     [v25 setStatus:v16];
 
     v11 = v16;
     if ([MEMORY[0x277D3F258] isFullModeDaemon])
     {
-      v26 = [v7 isInHomeCountry];
-      v27 = [(PLBBAgent *)self dsdsRegMsgs];
-      v28 = [v27 objectAtIndexedSubscript:v9];
-      [v28 setIsHome:v26];
+      isInHomeCountry = [statusCopy isInHomeCountry];
+      dsdsRegMsgs5 = [(PLBBAgent *)self dsdsRegMsgs];
+      v28 = [dsdsRegMsgs5 objectAtIndexedSubscript:v9];
+      [v28 setIsHome:isInHomeCountry];
     }
 
     v23 = 1;
@@ -3175,9 +3175,9 @@ LABEL_8:
   v23 = 0;
   v11 = v16;
 LABEL_14:
-  v29 = [(PLBBAgent *)self dsdsRegMsgs];
-  v30 = [v29 objectAtIndexedSubscript:v13];
-  v31 = [v30 operatorName];
+  dsdsRegMsgs6 = [(PLBBAgent *)self dsdsRegMsgs];
+  v30 = [dsdsRegMsgs6 objectAtIndexedSubscript:v13];
+  operatorName = [v30 operatorName];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -3196,17 +3196,17 @@ LABEL_14:
     {
       v48 = v11;
       v33 = MEMORY[0x277CCACA8];
-      v34 = [v7 registrationDisplayStatus];
-      v35 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "isInHomeCountry")}];
-      v36 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "changedDueToSimRemoval")}];
-      v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "isRegistrationForcedHome")}];
-      v38 = [v33 stringWithFormat:@"displayStatusChanged:status: called with subsId: %d                               registrationDisplayStatus: %@                               isInHomeCountry: %@                               changedDueToSimRemoval: %@                               isRegistrationForcedHome: %@", v49, v34, v35, v36, v37];
+      registrationDisplayStatus2 = [statusCopy registrationDisplayStatus];
+      v35 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statusCopy, "isInHomeCountry")}];
+      v36 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statusCopy, "changedDueToSimRemoval")}];
+      v37 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statusCopy, "isRegistrationForcedHome")}];
+      v38 = [v33 stringWithFormat:@"displayStatusChanged:status: called with subsId: %d                               registrationDisplayStatus: %@                               isInHomeCountry: %@                               changedDueToSimRemoval: %@                               isRegistrationForcedHome: %@", v49, registrationDisplayStatus2, v35, v36, v37];
 
       v39 = MEMORY[0x277D3F178];
       v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v41 = [v40 lastPathComponent];
+      lastPathComponent = [v40 lastPathComponent];
       v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent displayStatusChanged:status:]"];
-      [v39 logMessage:v38 fromFile:v41 fromFunction:v42 fromLineNumber:1619];
+      [v39 logMessage:v38 fromFile:lastPathComponent fromFunction:v42 fromLineNumber:1619];
 
       v43 = PLLogCommon();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -3223,13 +3223,13 @@ LABEL_14:
   if (v23)
   {
     v51[0] = @"home";
-    v44 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "isInHomeCountry")}];
+    v44 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(statusCopy, "isInHomeCountry")}];
     v51[1] = @"status";
     v52[0] = v44;
     v52[1] = v11;
     v45 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:2];
 
-    [(PLBBAgent *)self logDSDSEventForwardTelephonyRegistrationWithKVPairs:v45 subsId:v49 andOperator:v31];
+    [(PLBBAgent *)self logDSDSEventForwardTelephonyRegistrationWithKVPairs:v45 subsId:v49 andOperator:operatorName];
   }
 
 LABEL_24:
@@ -3243,40 +3243,40 @@ uint64_t __41__PLBBAgent_displayStatusChanged_status___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D3F208] isBasebandDSDS];
-  if (!v7 || !v8)
+  changedCopy = changed;
+  infoCopy = info;
+  isBasebandDSDS = [MEMORY[0x277D3F208] isBasebandDSDS];
+  if (!infoCopy || !isBasebandDSDS)
   {
     goto LABEL_19;
   }
 
-  v9 = [(PLBBAgent *)self getSubsIdFromCTContext:v6];
-  v10 = [MEMORY[0x277CBEAA8] monotonicDate];
+  v9 = [(PLBBAgent *)self getSubsIdFromCTContext:changedCopy];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   if (v9 == -1)
   {
     goto LABEL_8;
   }
 
-  v11 = [(PLBBAgent *)self dsdsActivityMsgs];
-  v12 = [v11 objectAtIndexedSubscript:v9];
-  v13 = [v12 signalStrengthLogTimestamp];
-  [v10 timeIntervalSinceDate:v13];
+  dsdsActivityMsgs = [(PLBBAgent *)self dsdsActivityMsgs];
+  v12 = [dsdsActivityMsgs objectAtIndexedSubscript:v9];
+  signalStrengthLogTimestamp = [v12 signalStrengthLogTimestamp];
+  [monotonicDate timeIntervalSinceDate:signalStrengthLogTimestamp];
   v15 = v14;
 
   if (v15 >= 60.0 || v15 <= 0.0)
   {
-    v17 = [(PLBBAgent *)self dsdsActivityMsgs];
-    v18 = [v17 objectAtIndexedSubscript:v9];
-    [v18 setSignalStrengthLogTimestamp:v10];
+    dsdsActivityMsgs2 = [(PLBBAgent *)self dsdsActivityMsgs];
+    v18 = [dsdsActivityMsgs2 objectAtIndexedSubscript:v9];
+    [v18 setSignalStrengthLogTimestamp:monotonicDate];
 
-    v19 = [v7 bars];
-    v20 = [(PLBBAgent *)self dsdsActivityMsgs];
-    v21 = [v20 objectAtIndexedSubscript:v9];
-    [v21 setSignalBars:v19];
+    bars = [infoCopy bars];
+    dsdsActivityMsgs3 = [(PLBBAgent *)self dsdsActivityMsgs];
+    v21 = [dsdsActivityMsgs3 objectAtIndexedSubscript:v9];
+    [v21 setSignalBars:bars];
 
 LABEL_8:
     v16 = 1;
@@ -3300,13 +3300,13 @@ LABEL_9:
 
     if (byte_2811F4FBA == 1)
     {
-      v31 = v10;
+      v31 = monotonicDate;
       v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"signalStrengthChanged:info: called with subsId: %d", v9];
       v24 = MEMORY[0x277D3F178];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v26 = [v25 lastPathComponent];
+      lastPathComponent = [v25 lastPathComponent];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent signalStrengthChanged:info:]"];
-      [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:1650];
+      [v24 logMessage:v23 fromFile:lastPathComponent fromFunction:v27 fromLineNumber:1650];
 
       v28 = PLLogCommon();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -3316,14 +3316,14 @@ LABEL_9:
         _os_log_debug_impl(&dword_21A4C6000, v28, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v10 = v31;
+      monotonicDate = v31;
     }
   }
 
   if (v16)
   {
-    v29 = [v7 bars];
-    [(PLBBAgent *)self logDSDSEventPointTelephonyActivityWithSubsId:v9 context:0 callStatus:0 simStatus:0 signalInfo:v29 RATselection:0 andCurrCampedRAT:0];
+    bars2 = [infoCopy bars];
+    [(PLBBAgent *)self logDSDSEventPointTelephonyActivityWithSubsId:v9 context:0 callStatus:0 simStatus:0 signalInfo:bars2 RATselection:0 andCurrCampedRAT:0];
   }
 
 LABEL_19:
@@ -3337,21 +3337,21 @@ uint64_t __40__PLBBAgent_signalStrengthChanged_info___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)cellChanged:(id)a3 cell:(id)a4
+- (void)cellChanged:(id)changed cell:(id)cell
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D3F208] isBasebandDSDS];
-  if (v7 && v8)
+  changedCopy = changed;
+  cellCopy = cell;
+  isBasebandDSDS = [MEMORY[0x277D3F208] isBasebandDSDS];
+  if (cellCopy && isBasebandDSDS)
   {
-    v9 = [(PLBBAgent *)self getSubsIdFromCTContext:v6];
+    v9 = [(PLBBAgent *)self getSubsIdFromCTContext:changedCopy];
     v10 = *MEMORY[0x277CC3DE0];
-    v11 = [v7 objectForKeyedSubscript:*MEMORY[0x277CC3DE0]];
+    v11 = [cellCopy objectForKeyedSubscript:*MEMORY[0x277CC3DE0]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v7 objectForKeyedSubscript:v10];
+      v12 = [cellCopy objectForKeyedSubscript:v10];
 
       if (v12)
       {
@@ -3364,12 +3364,12 @@ uint64_t __40__PLBBAgent_signalStrengthChanged_info___block_invoke(uint64_t a1)
 
         else
         {
-          v14 = [(PLBBAgent *)self dsdsActivityMsgs];
+          dsdsActivityMsgs = [(PLBBAgent *)self dsdsActivityMsgs];
           v43 = v9;
           v15 = v9;
-          v16 = [v14 objectAtIndexedSubscript:v9];
-          v17 = [v16 campedRAT];
-          v18 = [v13 isEqualToString:v17];
+          v16 = [dsdsActivityMsgs objectAtIndexedSubscript:v9];
+          campedRAT = [v16 campedRAT];
+          v18 = [v13 isEqualToString:campedRAT];
 
           if (v18)
           {
@@ -3378,8 +3378,8 @@ uint64_t __40__PLBBAgent_signalStrengthChanged_info___block_invoke(uint64_t a1)
 
           else
           {
-            v20 = [(PLBBAgent *)self dsdsActivityMsgs];
-            v21 = [v20 objectAtIndexedSubscript:v15];
+            dsdsActivityMsgs2 = [(PLBBAgent *)self dsdsActivityMsgs];
+            v21 = [dsdsActivityMsgs2 objectAtIndexedSubscript:v15];
             [v21 setCampedRAT:v13];
 
             v19 = 0;
@@ -3408,9 +3408,9 @@ uint64_t __40__PLBBAgent_signalStrengthChanged_info___block_invoke(uint64_t a1)
             v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"cellChanged:cell: called with subsId: %d", v9];
             v24 = MEMORY[0x277D3F178];
             v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-            v26 = [v25 lastPathComponent];
+            lastPathComponent = [v25 lastPathComponent];
             v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent cellChanged:cell:]"];
-            [v24 logMessage:v23 fromFile:v26 fromFunction:v27 fromLineNumber:1682];
+            [v24 logMessage:v23 fromFile:lastPathComponent fromFunction:v27 fromLineNumber:1682];
 
             v28 = PLLogCommon();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -3427,17 +3427,17 @@ uint64_t __40__PLBBAgent_signalStrengthChanged_info___block_invoke(uint64_t a1)
 
         if ((v19 & 1) == 0)
         {
-          [(PLBBAgent *)self logDSDSEventPointTelephonyActivityWithSubsId:v9 context:v6 callStatus:0 simStatus:0 signalInfo:0 RATselection:0 andCurrCampedRAT:v13];
+          [(PLBBAgent *)self logDSDSEventPointTelephonyActivityWithSubsId:v9 context:changedCopy callStatus:0 simStatus:0 signalInfo:0 RATselection:0 andCurrCampedRAT:v13];
         }
 
         if ([MEMORY[0x277D3F258] isFullModeDaemon])
         {
           v29 = *MEMORY[0x277CC3BF0];
-          v30 = [v7 objectForKeyedSubscript:*MEMORY[0x277CC3BF0]];
+          v30 = [cellCopy objectForKeyedSubscript:*MEMORY[0x277CC3BF0]];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v31 = [v7 objectForKeyedSubscript:v29];
+            v31 = [cellCopy objectForKeyedSubscript:v29];
           }
 
           else
@@ -3446,11 +3446,11 @@ uint64_t __40__PLBBAgent_signalStrengthChanged_info___block_invoke(uint64_t a1)
           }
 
           v32 = *MEMORY[0x277CC3CC0];
-          v33 = [v7 objectForKeyedSubscript:*MEMORY[0x277CC3CC0]];
+          v33 = [cellCopy objectForKeyedSubscript:*MEMORY[0x277CC3CC0]];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v34 = [v7 objectForKeyedSubscript:v32];
+            v34 = [cellCopy objectForKeyedSubscript:v32];
           }
 
           else
@@ -3466,12 +3466,12 @@ uint64_t __40__PLBBAgent_signalStrengthChanged_info___block_invoke(uint64_t a1)
             v48[1] = v34;
             [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:2];
             v35 = v42 = v13;
-            v36 = [(PLBBAgent *)self dsdsRegMsgs];
-            [v36 objectAtIndexedSubscript:v9];
+            dsdsRegMsgs = [(PLBBAgent *)self dsdsRegMsgs];
+            [dsdsRegMsgs objectAtIndexedSubscript:v9];
             v38 = v37 = v9;
-            v39 = [v38 operatorName];
+            operatorName = [v38 operatorName];
 
-            [(PLBBAgent *)self logDSDSEventForwardTelephonyRegistrationWithKVPairs:v35 subsId:v37 andOperator:v39];
+            [(PLBBAgent *)self logDSDSEventForwardTelephonyRegistrationWithKVPairs:v35 subsId:v37 andOperator:operatorName];
             v13 = v42;
           }
         }
@@ -3493,16 +3493,16 @@ uint64_t __30__PLBBAgent_cellChanged_cell___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)simStatusDidChange:(id)a3 status:(id)a4
+- (void)simStatusDidChange:(id)change status:(id)status
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  statusCopy = status;
   if ([MEMORY[0x277D3F208] isBasebandDSDS])
   {
-    if (v7)
+    if (statusCopy)
     {
-      v8 = [(PLBBAgent *)self getSubsIdFromCTContext:v6];
+      v8 = [(PLBBAgent *)self getSubsIdFromCTContext:changeCopy];
       if ([MEMORY[0x277D3F180] debugEnabled])
       {
         v9 = objc_opt_class();
@@ -3518,33 +3518,33 @@ uint64_t __30__PLBBAgent_cellChanged_cell___block_invoke(uint64_t a1)
 
         if (byte_2811F4FBC == 1)
         {
-          v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"simStatusDidChange:status: called with subsId: %d, status: %@", v8, v7];
+          statusCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"simStatusDidChange:status: called with subsId: %d, status: %@", v8, statusCopy];
           v11 = MEMORY[0x277D3F178];
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-          v13 = [v12 lastPathComponent];
+          lastPathComponent = [v12 lastPathComponent];
           v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent simStatusDidChange:status:]"];
-          [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:1711];
+          [v11 logMessage:statusCopy fromFile:lastPathComponent fromFunction:v14 fromLineNumber:1711];
 
           v15 = PLLogCommon();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v22 = v10;
+            v22 = statusCopy;
             _os_log_debug_impl(&dword_21A4C6000, v15, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
         }
       }
 
-      v16 = removeCTPrefixFromString(@"kCTSIMSupportSIMStatus", v7);
+      v16 = removeCTPrefixFromString(@"kCTSIMSupportSIMStatus", statusCopy);
 
       if (v8 != -1)
       {
-        v17 = [(PLBBAgent *)self dsdsActivityMsgs];
-        v18 = [v17 objectAtIndexedSubscript:v8];
+        dsdsActivityMsgs = [(PLBBAgent *)self dsdsActivityMsgs];
+        v18 = [dsdsActivityMsgs objectAtIndexedSubscript:v8];
         [v18 setSimStatus:v16];
       }
 
-      [(PLBBAgent *)self logDSDSEventPointTelephonyActivityWithSubsId:v8 context:v6 callStatus:0 simStatus:v16 signalInfo:0 RATselection:0 andCurrCampedRAT:0];
+      [(PLBBAgent *)self logDSDSEventPointTelephonyActivityWithSubsId:v8 context:changeCopy callStatus:0 simStatus:v16 signalInfo:0 RATselection:0 andCurrCampedRAT:0];
     }
 
     else
@@ -3555,7 +3555,7 @@ uint64_t __30__PLBBAgent_cellChanged_cell___block_invoke(uint64_t a1)
 
   else
   {
-    v16 = v7;
+    v16 = statusCopy;
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -3568,21 +3568,21 @@ uint64_t __39__PLBBAgent_simStatusDidChange_status___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)ratSelectionChanged:(id)a3 selection:(id)a4
+- (void)ratSelectionChanged:(id)changed selection:(id)selection
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D3F208] isBasebandDSDS];
-  if (!v7 || !v8)
+  changedCopy = changed;
+  selectionCopy = selection;
+  isBasebandDSDS = [MEMORY[0x277D3F208] isBasebandDSDS];
+  if (!selectionCopy || !isBasebandDSDS)
   {
     goto LABEL_26;
   }
 
-  v9 = [MEMORY[0x277CC3798] contextWithServiceDescriptor:v6];
+  v9 = [MEMORY[0x277CC3798] contextWithServiceDescriptor:changedCopy];
   v10 = [(PLBBAgent *)self getSubsIdFromCTContext:v9];
-  v11 = [v7 selection];
-  v12 = removeCTPrefixFromString(@"kCTRegistrationRATSelection", v11);
+  selection = [selectionCopy selection];
+  v12 = removeCTPrefixFromString(@"kCTRegistrationRATSelection", selection);
 
   if ([v12 isEqualToString:@"NRStandAlone"])
   {
@@ -3604,27 +3604,27 @@ LABEL_8:
   if (v10 != -1)
   {
     v44 = v9;
-    v41 = v6;
-    v14 = [(PLBBAgent *)self dsdsActivityMsgs];
+    v41 = changedCopy;
+    dsdsActivityMsgs = [(PLBBAgent *)self dsdsActivityMsgs];
     v15 = v10;
-    v16 = [v14 objectAtIndexedSubscript:v10];
-    v17 = [v16 currentRAT];
+    v16 = [dsdsActivityMsgs objectAtIndexedSubscript:v10];
+    currentRAT = [v16 currentRAT];
     v42 = v10;
-    if ([v12 isEqualToString:v17])
+    if ([v12 isEqualToString:currentRAT])
     {
-      v18 = [v7 preferred];
+      preferred = [selectionCopy preferred];
       [(PLBBAgent *)self dsdsActivityMsgs];
       v19 = v39 = self;
       v20 = [v19 objectAtIndexedSubscript:v15];
-      v21 = [v20 preferredRAT];
-      v38 = [v18 isEqualToString:v21];
+      preferredRAT = [v20 preferredRAT];
+      v38 = [preferred isEqualToString:preferredRAT];
 
       self = v39;
       if (v38)
       {
         v22 = 1;
 LABEL_15:
-        v6 = v41;
+        changedCopy = v41;
         v10 = v42;
         v9 = v44;
         goto LABEL_16;
@@ -3635,14 +3635,14 @@ LABEL_15:
     {
     }
 
-    v23 = [(PLBBAgent *)self dsdsActivityMsgs];
-    v24 = [v23 objectAtIndexedSubscript:v15];
+    dsdsActivityMsgs2 = [(PLBBAgent *)self dsdsActivityMsgs];
+    v24 = [dsdsActivityMsgs2 objectAtIndexedSubscript:v15];
     [v24 setCurrentRAT:v12];
 
-    v25 = [v7 preferred];
-    v26 = removeCTPrefixFromString(@"kCTRegistrationRATSelection", v25);
-    v27 = [(PLBBAgent *)self dsdsActivityMsgs];
-    [v27 objectAtIndexedSubscript:v15];
+    preferred2 = [selectionCopy preferred];
+    v26 = removeCTPrefixFromString(@"kCTRegistrationRATSelection", preferred2);
+    dsdsActivityMsgs3 = [(PLBBAgent *)self dsdsActivityMsgs];
+    [dsdsActivityMsgs3 objectAtIndexedSubscript:v15];
     v29 = v28 = self;
     [v29 setPreferredRAT:v26];
 
@@ -3670,23 +3670,23 @@ LABEL_16:
     {
       v43 = v10;
       v45 = v9;
-      v40 = self;
-      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"ratSelectionChanged:selection: called with subsId: %d, selection: %@", v10, v7];
+      selfCopy = self;
+      selectionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ratSelectionChanged:selection: called with subsId: %d, selection: %@", v10, selectionCopy];
       v32 = MEMORY[0x277D3F178];
       v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v34 = [v33 lastPathComponent];
+      lastPathComponent = [v33 lastPathComponent];
       v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent ratSelectionChanged:selection:]"];
-      [v32 logMessage:v31 fromFile:v34 fromFunction:v35 fromLineNumber:1751];
+      [v32 logMessage:selectionCopy fromFile:lastPathComponent fromFunction:v35 fromLineNumber:1751];
 
       v36 = PLLogCommon();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v48 = v31;
+        v48 = selectionCopy;
         _os_log_debug_impl(&dword_21A4C6000, v36, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      self = v40;
+      self = selfCopy;
       v10 = v43;
       v9 = v45;
     }
@@ -3694,7 +3694,7 @@ LABEL_16:
 
   if ((v22 & 1) == 0)
   {
-    [(PLBBAgent *)self logDSDSEventPointTelephonyActivityWithSubsId:v10 context:v9 callStatus:0 simStatus:0 signalInfo:0 RATselection:v7 andCurrCampedRAT:0];
+    [(PLBBAgent *)self logDSDSEventPointTelephonyActivityWithSubsId:v10 context:v9 callStatus:0 simStatus:0 signalInfo:0 RATselection:selectionCopy andCurrCampedRAT:0];
   }
 
 LABEL_26:
@@ -3708,22 +3708,22 @@ uint64_t __43__PLBBAgent_ratSelectionChanged_selection___block_invoke(uint64_t a
   return result;
 }
 
-- (void)callStatusChanged:(id)a3
+- (void)callStatusChanged:(id)changed
 {
   if ([MEMORY[0x277D3F208] isBasebandDSDS])
   {
-    v4 = [(PLBBAgent *)self callCenter];
-    v5 = [v4 currentCalls];
+    callCenter = [(PLBBAgent *)self callCenter];
+    currentCalls = [callCenter currentCalls];
 
-    v6 = [(PLBBAgent *)self telephonyClientQueue];
+    telephonyClientQueue = [(PLBBAgent *)self telephonyClientQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __31__PLBBAgent_callStatusChanged___block_invoke;
     v8[3] = &unk_278259658;
-    v9 = v5;
-    v10 = self;
-    v7 = v5;
-    dispatch_async(v6, v8);
+    v9 = currentCalls;
+    selfCopy = self;
+    v7 = currentCalls;
+    dispatch_async(telephonyClientQueue, v8);
   }
 }
 
@@ -3969,9 +3969,9 @@ uint64_t __46__PLBBAgent_smartDataModeChanged_userEnabled___block_invoke(uint64_
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logTelephonyRegistrationDSDSAtInit]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyRegistrationDSDSAtInit]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1853];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1853];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -3983,20 +3983,20 @@ uint64_t __46__PLBBAgent_smartDataModeChanged_userEnabled___block_invoke(uint64_
     }
   }
 
-  v10 = [(PLBBAgent *)self telephonyClient];
+  telephonyClient = [(PLBBAgent *)self telephonyClient];
   v24 = 0;
-  v11 = [v10 getSubscriptionInfoWithError:&v24];
+  v11 = [telephonyClient getSubscriptionInfoWithError:&v24];
   v12 = v24;
 
   if (v11)
   {
-    v13 = [v11 subscriptions];
+    subscriptions = [v11 subscriptions];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __47__PLBBAgent_logTelephonyRegistrationDSDSAtInit__block_invoke_1353;
     v23[3] = &unk_27825F720;
     v23[4] = self;
-    [v13 enumerateObjectsUsingBlock:v23];
+    [subscriptions enumerateObjectsUsingBlock:v23];
   }
 
   else if ([MEMORY[0x277D3F180] debugEnabled])
@@ -4017,9 +4017,9 @@ uint64_t __46__PLBBAgent_smartDataModeChanged_userEnabled___block_invoke(uint64_
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not determine CoreTelephony Subscription Info. Error: %@", v12];
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent2 = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyRegistrationDSDSAtInit]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:1876];
+      [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:1876];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -4156,9 +4156,9 @@ uint64_t __47__PLBBAgent_logTelephonyRegistrationDSDSAtInit__block_invoke_1359(u
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logTelephonyActivityDSDSAtInit]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyActivityDSDSAtInit]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1881];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1881];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -4170,20 +4170,20 @@ uint64_t __47__PLBBAgent_logTelephonyRegistrationDSDSAtInit__block_invoke_1359(u
     }
   }
 
-  v10 = [(PLBBAgent *)self telephonyClient];
+  telephonyClient = [(PLBBAgent *)self telephonyClient];
   v24 = 0;
-  v11 = [v10 getSubscriptionInfoWithError:&v24];
+  v11 = [telephonyClient getSubscriptionInfoWithError:&v24];
   v12 = v24;
 
   if (v11)
   {
-    v13 = [v11 subscriptions];
+    subscriptions = [v11 subscriptions];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __43__PLBBAgent_logTelephonyActivityDSDSAtInit__block_invoke_1360;
     v23[3] = &unk_27825F720;
     v23[4] = self;
-    [v13 enumerateObjectsUsingBlock:v23];
+    [subscriptions enumerateObjectsUsingBlock:v23];
   }
 
   else if ([MEMORY[0x277D3F180] debugEnabled])
@@ -4204,9 +4204,9 @@ uint64_t __47__PLBBAgent_logTelephonyRegistrationDSDSAtInit__block_invoke_1359(u
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not determine CoreTelephony Subscription Info. Error: %@", v12];
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent2 = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyActivityDSDSAtInit]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:1926];
+      [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:1926];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -4384,11 +4384,11 @@ uint64_t __43__PLBBAgent_logTelephonyActivityDSDSAtInit__block_invoke_1367(uint6
   return result;
 }
 
-- (int64_t)getSubsIdFromCTContext:(id)a3
+- (int64_t)getSubsIdFromCTContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  contextCopy = context;
+  if (!contextCopy)
   {
     goto LABEL_15;
   }
@@ -4409,16 +4409,16 @@ uint64_t __43__PLBBAgent_logTelephonyActivityDSDSAtInit__block_invoke_1367(uint6
     if (byte_2811F4FC7 == 1)
     {
       v5 = MEMORY[0x277CCACA8];
-      v6 = [v3 slotID];
-      v7 = [v3 userDataPreferred];
-      v8 = [v3 userDefaultVoice];
-      v9 = [v5 stringWithFormat:@"Slot ID %d, data preferred: %@, default voice: %@", v6, v7, v8, block, v23, v24, v25, v26];
+      slotID = [contextCopy slotID];
+      userDataPreferred = [contextCopy userDataPreferred];
+      userDefaultVoice = [contextCopy userDefaultVoice];
+      v9 = [v5 stringWithFormat:@"Slot ID %d, data preferred: %@, default voice: %@", slotID, userDataPreferred, userDefaultVoice, block, v23, v24, v25, v26];
 
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent getSubsIdFromCTContext:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:1935];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:1935];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -4430,26 +4430,26 @@ uint64_t __43__PLBBAgent_logTelephonyActivityDSDSAtInit__block_invoke_1367(uint6
     }
   }
 
-  if ([v3 slotID] == 1)
+  if ([contextCopy slotID] == 1)
   {
-    v15 = [v3 userDataPreferred];
-    v16 = [v15 BOOLValue];
+    userDataPreferred2 = [contextCopy userDataPreferred];
+    bOOLValue = [userDataPreferred2 BOOLValue];
 
-    v17 = v16 ^ 1u;
+    v17 = bOOLValue ^ 1u;
     goto LABEL_16;
   }
 
-  if ([v3 slotID] != 2)
+  if ([contextCopy slotID] != 2)
   {
 LABEL_15:
     v17 = -1;
     goto LABEL_16;
   }
 
-  v18 = [v3 userDataPreferred];
-  v19 = [v18 BOOLValue];
+  userDataPreferred3 = [contextCopy userDataPreferred];
+  bOOLValue2 = [userDataPreferred3 BOOLValue];
 
-  if (v19)
+  if (bOOLValue2)
   {
     v17 = 2;
   }
@@ -4472,63 +4472,63 @@ uint64_t __36__PLBBAgent_getSubsIdFromCTContext___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)logDSDSEventForwardTelephonyRegistrationWithKVPairs:(id)a3 subsId:(int64_t)a4 andOperator:(id)a5
+- (void)logDSDSEventForwardTelephonyRegistrationWithKVPairs:(id)pairs subsId:(int64_t)id andOperator:(id)operator
 {
   v8 = *MEMORY[0x277D3F5D0];
-  v9 = a5;
-  v10 = a3;
+  operatorCopy = operator;
+  pairsCopy = pairs;
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:v8 andName:@"TelephonyRegistration"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:id];
   [v12 setObject:v13 forKeyedSubscript:@"subsId"];
 
-  [v12 setObject:v9 forKeyedSubscript:@"operator"];
+  [v12 setObject:operatorCopy forKeyedSubscript:@"operator"];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __84__PLBBAgent_logDSDSEventForwardTelephonyRegistrationWithKVPairs_subsId_andOperator___block_invoke;
   v17[3] = &unk_27825F748;
   v14 = v12;
   v18 = v14;
-  [v10 enumerateKeysAndObjectsUsingBlock:v17];
+  [pairsCopy enumerateKeysAndObjectsUsingBlock:v17];
 
   if ([MEMORY[0x277D3F208] isBasebandProto])
   {
-    v15 = [v14 dictionary];
-    v16 = [v14 entryDate];
-    [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"TelephonyRegistration" data:v15 date:v16];
+    dictionary = [v14 dictionary];
+    entryDate = [v14 entryDate];
+    [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"TelephonyRegistration" data:dictionary date:entryDate];
   }
 
   [(PLBBAgent *)self logEntry:v14];
 }
 
-- (void)logDSDSEventPointTelephonyActivityWithSubsId:(int64_t)a3 context:(id)a4 callStatus:(id)a5 simStatus:(id)a6 signalInfo:(id)a7 RATselection:(id)a8 andCurrCampedRAT:(id)a9
+- (void)logDSDSEventPointTelephonyActivityWithSubsId:(int64_t)id context:(id)context callStatus:(id)status simStatus:(id)simStatus signalInfo:(id)info RATselection:(id)tselection andCurrCampedRAT:(id)t
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v20 = [(PLOperator *)self workQueue];
+  statusCopy = status;
+  simStatusCopy = simStatus;
+  infoCopy = info;
+  tselectionCopy = tselection;
+  tCopy = t;
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  workQueue = [(PLOperator *)self workQueue];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __128__PLBBAgent_logDSDSEventPointTelephonyActivityWithSubsId_context_callStatus_simStatus_signalInfo_RATselection_andCurrCampedRAT___block_invoke;
   v27[3] = &unk_27825F770;
-  v28 = v19;
-  v29 = v14;
-  v30 = self;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = a3;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
-  v26 = v19;
-  dispatch_async(v20, v27);
+  v28 = monotonicDate;
+  v29 = statusCopy;
+  selfCopy = self;
+  v31 = simStatusCopy;
+  v32 = infoCopy;
+  v33 = tselectionCopy;
+  v34 = tCopy;
+  idCopy = id;
+  v21 = tCopy;
+  v22 = tselectionCopy;
+  v23 = infoCopy;
+  v24 = simStatusCopy;
+  v25 = statusCopy;
+  v26 = monotonicDate;
+  dispatch_async(workQueue, v27);
 }
 
 void __128__PLBBAgent_logDSDSEventPointTelephonyActivityWithSubsId_context_callStatus_simStatus_signalInfo_RATselection_andCurrCampedRAT___block_invoke(uint64_t a1)
@@ -4668,22 +4668,22 @@ uint64_t __56__PLBBAgent_logDSDSEventForwardSDMwithSubsId_SDMEnable___block_invo
 - (void)setupKICEChannels
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D3F120] sharedABMClient];
-  [(PLBBAgent *)self setAbmClient:v3];
+  mEMORY[0x277D3F120] = [MEMORY[0x277D3F120] sharedABMClient];
+  [(PLBBAgent *)self setAbmClient:mEMORY[0x277D3F120]];
 
-  v4 = [(PLBBAgent *)self abmClient];
+  abmClient = [(PLBBAgent *)self abmClient];
 
-  if (v4)
+  if (abmClient)
   {
-    v5 = [(PLBBAgent *)self abmClient];
-    [v5 setDelegate:self];
+    abmClient2 = [(PLBBAgent *)self abmClient];
+    [abmClient2 setDelegate:self];
 
-    v6 = [(PLBBAgent *)self abmClient];
-    v7 = [v6 removeDeviceConfig];
+    abmClient3 = [(PLBBAgent *)self abmClient];
+    removeDeviceConfig = [abmClient3 removeDeviceConfig];
 
     if ([MEMORY[0x277D3F208] internalBuild])
     {
-      -[PLBBAgent logCommandInfo:result:resultDescription:](self, "logCommandInfo:result:resultDescription:", 1, [v7 isEqual:@"kSuccess"], v7);
+      -[PLBBAgent logCommandInfo:result:resultDescription:](self, "logCommandInfo:result:resultDescription:", 1, [removeDeviceConfig isEqual:@"kSuccess"], removeDeviceConfig);
     }
 
     if ([MEMORY[0x277D3F208] isBasebandMav])
@@ -4713,9 +4713,9 @@ uint64_t __56__PLBBAgent_logDSDSEventForwardSDMwithSubsId_SDMEnable___block_invo
           v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add MAV DeviceConfig for ABM"];
           v11 = MEMORY[0x277D3F178];
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-          v13 = [v12 lastPathComponent];
+          lastPathComponent = [v12 lastPathComponent];
           v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupKICEChannels]"];
-          [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:2137];
+          [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:2137];
 
           v15 = PLLogCommon();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -4727,35 +4727,35 @@ uint64_t __56__PLBBAgent_logDSDSEventForwardSDMwithSubsId_SDMEnable___block_invo
         }
       }
 
-      v16 = [(PLBBAgent *)self abmClient];
-      v17 = [v16 addMavDeviceConfig];
+      abmClient4 = [(PLBBAgent *)self abmClient];
+      addMavDeviceConfig = [abmClient4 addMavDeviceConfig];
 
       if ([MEMORY[0x277D3F208] internalBuild])
       {
-        if ([v17 isEqual:@"kSuccess"])
+        if ([addMavDeviceConfig isEqual:@"kSuccess"])
         {
-          v18 = self;
+          selfCopy2 = self;
           v19 = 1;
         }
 
         else
         {
-          v18 = self;
+          selfCopy2 = self;
           v19 = 0;
         }
 
-        [(PLBBAgent *)v18 logCommandInfo:0 result:v19 resultDescription:v17];
+        [(PLBBAgent *)selfCopy2 logCommandInfo:0 result:v19 resultDescription:addMavDeviceConfig];
       }
 
-      v7 = v17;
+      removeDeviceConfig = addMavDeviceConfig;
     }
 
     else
     {
-      v26 = [MEMORY[0x277D3F208] isBasebandProto];
+      isBasebandProto = [MEMORY[0x277D3F208] isBasebandProto];
       v27 = PLLogCommon();
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG);
-      if (v26)
+      if (isBasebandProto)
       {
         if (v28)
         {
@@ -4781,9 +4781,9 @@ uint64_t __56__PLBBAgent_logDSDSEventForwardSDMwithSubsId_SDMEnable___block_invo
             v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add Sinope DeviceConfig for ABM"];
             v31 = MEMORY[0x277D3F178];
             v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-            v33 = [v32 lastPathComponent];
+            lastPathComponent2 = [v32 lastPathComponent];
             v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupKICEChannels]"];
-            [v31 logMessage:v30 fromFile:v33 fromFunction:v34 fromLineNumber:2152];
+            [v31 logMessage:v30 fromFile:lastPathComponent2 fromFunction:v34 fromLineNumber:2152];
 
             v35 = PLLogCommon();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -4795,8 +4795,8 @@ uint64_t __56__PLBBAgent_logDSDSEventForwardSDMwithSubsId_SDMEnable___block_invo
           }
         }
 
-        v36 = [(PLBBAgent *)self abmClient];
-        [v36 addSinopeDeviceConfig];
+        abmClient5 = [(PLBBAgent *)self abmClient];
+        [abmClient5 addSinopeDeviceConfig];
       }
 
       else
@@ -4825,9 +4825,9 @@ uint64_t __56__PLBBAgent_logDSDSEventForwardSDMwithSubsId_SDMEnable___block_invo
             v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add ICE DeviceConfig for ABM"];
             v39 = MEMORY[0x277D3F178];
             v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-            v41 = [v40 lastPathComponent];
+            lastPathComponent3 = [v40 lastPathComponent];
             v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupKICEChannels]"];
-            [v39 logMessage:v38 fromFile:v41 fromFunction:v42 fromLineNumber:2158];
+            [v39 logMessage:v38 fromFile:lastPathComponent3 fromFunction:v42 fromLineNumber:2158];
 
             v43 = PLLogCommon();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
@@ -4839,22 +4839,22 @@ uint64_t __56__PLBBAgent_logDSDSEventForwardSDMwithSubsId_SDMEnable___block_invo
           }
         }
 
-        v36 = [(PLBBAgent *)self abmClient];
-        [v36 addICEDeviceConfig];
+        abmClient5 = [(PLBBAgent *)self abmClient];
+        [abmClient5 addICEDeviceConfig];
       }
     }
 
-    v44 = [(PLBBAgent *)self abmClient];
-    [v44 regMetricListener];
+    abmClient6 = [(PLBBAgent *)self abmClient];
+    [abmClient6 regMetricListener];
 
-    v45 = [(PLBBAgent *)self abmClient];
-    [v45 regBBWakeListener];
+    abmClient7 = [(PLBBAgent *)self abmClient];
+    [abmClient7 regBBWakeListener];
 
-    v46 = [(PLBBAgent *)self abmClient];
-    [v46 regBootStateListener];
+    abmClient8 = [(PLBBAgent *)self abmClient];
+    [abmClient8 regBootStateListener];
 
-    v47 = [(PLBBAgent *)self abmClient];
-    [v47 startListening];
+    abmClient9 = [(PLBBAgent *)self abmClient];
+    [abmClient9 startListening];
 
     if ([MEMORY[0x277D3F208] isBasebandMav])
     {
@@ -4905,9 +4905,9 @@ LABEL_54:
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to init PLABMClient"];
   v21 = MEMORY[0x277D3F178];
   v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-  v23 = [v22 lastPathComponent];
+  lastPathComponent4 = [v22 lastPathComponent];
   v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupKICEChannels]"];
-  [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:2118];
+  [v21 logMessage:v20 fromFile:lastPathComponent4 fromFunction:v24 fromLineNumber:2118];
 
   v25 = PLLogCommon();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -4946,15 +4946,15 @@ uint64_t __30__PLBBAgent_setupKICEChannels__block_invoke_1429(uint64_t a1)
 - (void)setupKICEChannelsForDebug
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D3F120] sharedABMClient];
-  v4 = v3;
-  if (v3)
+  mEMORY[0x277D3F120] = [MEMORY[0x277D3F120] sharedABMClient];
+  v4 = mEMORY[0x277D3F120];
+  if (mEMORY[0x277D3F120])
   {
-    [v3 setDelegate:self];
-    v5 = [v4 removeDeviceConfig];
+    [mEMORY[0x277D3F120] setDelegate:self];
+    removeDeviceConfig = [v4 removeDeviceConfig];
     if ([MEMORY[0x277D3F208] internalBuild])
     {
-      -[PLBBAgent logCommandInfo:result:resultDescription:](self, "logCommandInfo:result:resultDescription:", 1, [v5 isEqual:@"kSuccess"], v5);
+      -[PLBBAgent logCommandInfo:result:resultDescription:](self, "logCommandInfo:result:resultDescription:", 1, [removeDeviceConfig isEqual:@"kSuccess"], removeDeviceConfig);
     }
 
     if ([MEMORY[0x277D3F208] isBasebandMav])
@@ -4984,9 +4984,9 @@ uint64_t __30__PLBBAgent_setupKICEChannels__block_invoke_1429(uint64_t a1)
           v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add MAV DeviceConfigDebug for ABM"];
           v9 = MEMORY[0x277D3F178];
           v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-          v11 = [v10 lastPathComponent];
+          lastPathComponent = [v10 lastPathComponent];
           v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupKICEChannelsForDebug]"];
-          [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:2218];
+          [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:2218];
 
           v13 = PLLogCommon();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -4998,35 +4998,35 @@ uint64_t __30__PLBBAgent_setupKICEChannels__block_invoke_1429(uint64_t a1)
         }
       }
 
-      v14 = [(PLBBAgent *)self abmClient];
-      v15 = [v14 addMavDeviceConfigDebug];
+      abmClient = [(PLBBAgent *)self abmClient];
+      addMavDeviceConfigDebug = [abmClient addMavDeviceConfigDebug];
 
       if ([MEMORY[0x277D3F208] internalBuild])
       {
-        if ([v15 isEqual:@"kSuccess"])
+        if ([addMavDeviceConfigDebug isEqual:@"kSuccess"])
         {
-          v16 = self;
+          selfCopy2 = self;
           v17 = 1;
         }
 
         else
         {
-          v16 = self;
+          selfCopy2 = self;
           v17 = 0;
         }
 
-        [(PLBBAgent *)v16 logCommandInfo:2 result:v17 resultDescription:v15];
+        [(PLBBAgent *)selfCopy2 logCommandInfo:2 result:v17 resultDescription:addMavDeviceConfigDebug];
       }
 
-      v5 = v15;
+      removeDeviceConfig = addMavDeviceConfigDebug;
     }
 
     else
     {
-      v24 = [MEMORY[0x277D3F208] isBasebandProto];
+      isBasebandProto = [MEMORY[0x277D3F208] isBasebandProto];
       v25 = PLLogCommon();
       v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG);
-      if (v24)
+      if (isBasebandProto)
       {
         if (v26)
         {
@@ -5052,9 +5052,9 @@ uint64_t __30__PLBBAgent_setupKICEChannels__block_invoke_1429(uint64_t a1)
             v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add Sinope DeviceConfigDebug for ABM"];
             v29 = MEMORY[0x277D3F178];
             v30 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-            v31 = [v30 lastPathComponent];
+            lastPathComponent2 = [v30 lastPathComponent];
             v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupKICEChannelsForDebug]"];
-            [v29 logMessage:v28 fromFile:v31 fromFunction:v32 fromLineNumber:2233];
+            [v29 logMessage:v28 fromFile:lastPathComponent2 fromFunction:v32 fromLineNumber:2233];
 
             v33 = PLLogCommon();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
@@ -5066,8 +5066,8 @@ uint64_t __30__PLBBAgent_setupKICEChannels__block_invoke_1429(uint64_t a1)
           }
         }
 
-        v34 = [(PLBBAgent *)self abmClient];
-        [v34 addSinopeDeviceConfigDebug];
+        abmClient2 = [(PLBBAgent *)self abmClient];
+        [abmClient2 addSinopeDeviceConfigDebug];
       }
 
       else
@@ -5096,9 +5096,9 @@ uint64_t __30__PLBBAgent_setupKICEChannels__block_invoke_1429(uint64_t a1)
             v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add ICE DeviceConfigDebug for ABM"];
             v37 = MEMORY[0x277D3F178];
             v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-            v39 = [v38 lastPathComponent];
+            lastPathComponent3 = [v38 lastPathComponent];
             v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupKICEChannelsForDebug]"];
-            [v37 logMessage:v36 fromFile:v39 fromFunction:v40 fromLineNumber:2239];
+            [v37 logMessage:v36 fromFile:lastPathComponent3 fromFunction:v40 fromLineNumber:2239];
 
             v41 = PLLogCommon();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -5110,8 +5110,8 @@ uint64_t __30__PLBBAgent_setupKICEChannels__block_invoke_1429(uint64_t a1)
           }
         }
 
-        v34 = [(PLBBAgent *)self abmClient];
-        [v34 addICEDeviceConfigDebug];
+        abmClient2 = [(PLBBAgent *)self abmClient];
+        [abmClient2 addICEDeviceConfigDebug];
       }
     }
 
@@ -5168,9 +5168,9 @@ LABEL_54:
   v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to init PLABMClient"];
   v19 = MEMORY[0x277D3F178];
   v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-  v21 = [v20 lastPathComponent];
+  lastPathComponent4 = [v20 lastPathComponent];
   v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupKICEChannelsForDebug]"];
-  [v19 logMessage:v18 fromFile:v21 fromFunction:v22 fromLineNumber:2199];
+  [v19 logMessage:v18 fromFile:lastPathComponent4 fromFunction:v22 fromLineNumber:2199];
 
   v23 = PLLogCommon();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -5210,24 +5210,24 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
 - (void)setupMavABMChannel
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D3F120] sharedABMClient];
-  [(PLBBAgent *)self setAbmClient:v3];
+  mEMORY[0x277D3F120] = [MEMORY[0x277D3F120] sharedABMClient];
+  [(PLBBAgent *)self setAbmClient:mEMORY[0x277D3F120]];
 
-  v4 = [(PLBBAgent *)self abmClient];
+  abmClient = [(PLBBAgent *)self abmClient];
 
-  if (v4)
+  if (abmClient)
   {
-    v5 = [(PLBBAgent *)self abmClient];
-    [v5 setDelegate:self];
+    abmClient2 = [(PLBBAgent *)self abmClient];
+    [abmClient2 setDelegate:self];
 
-    v6 = [(PLBBAgent *)self abmClient];
-    [v6 regBBWakeListener];
+    abmClient3 = [(PLBBAgent *)self abmClient];
+    [abmClient3 regBBWakeListener];
 
-    v7 = [(PLBBAgent *)self abmClient];
-    [v7 regBootStateListener];
+    abmClient4 = [(PLBBAgent *)self abmClient];
+    [abmClient4 regBootStateListener];
 
-    v16 = [(PLBBAgent *)self abmClient];
-    [v16 startListening];
+    abmClient5 = [(PLBBAgent *)self abmClient];
+    [abmClient5 startListening];
     v8 = *MEMORY[0x277D85DE8];
   }
 
@@ -5236,9 +5236,9 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to init PLABMClient"];
     v10 = MEMORY[0x277D3F178];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-    v12 = [v11 lastPathComponent];
+    lastPathComponent = [v11 lastPathComponent];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupMavABMChannel]"];
-    [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:2282];
+    [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:2282];
 
     v14 = PLLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -5252,10 +5252,10 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
   }
 }
 
-- (void)registerForICEModelMetricsNotifications:(id)a3
+- (void)registerForICEModelMetricsNotifications:(id)notifications
 {
   v4 = MEMORY[0x277D3F1F0];
-  v5 = a3;
+  notificationsCopy = notifications;
   v6 = [v4 alloc];
   v7 = [MEMORY[0x277D3F258] workQueueForClass:objc_opt_class()];
   v10[0] = MEMORY[0x277D85DD0];
@@ -5263,16 +5263,16 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
   v10[2] = __53__PLBBAgent_registerForICEModelMetricsNotifications___block_invoke;
   v10[3] = &unk_2782597E8;
   v10[4] = self;
-  v8 = [v6 initWithWorkQueue:v7 forNotification:v5 withBlock:v10];
+  v8 = [v6 initWithWorkQueue:v7 forNotification:notificationsCopy withBlock:v10];
 
   bbICEModelLTEMetricsNotification = self->_bbICEModelLTEMetricsNotification;
   self->_bbICEModelLTEMetricsNotification = v8;
 }
 
-- (void)registerForSinopeModelMetricsNotifications:(id)a3
+- (void)registerForSinopeModelMetricsNotifications:(id)notifications
 {
   v4 = MEMORY[0x277D3F1F0];
-  v5 = a3;
+  notificationsCopy = notifications;
   v6 = [v4 alloc];
   v7 = [MEMORY[0x277D3F258] workQueueForClass:objc_opt_class()];
   v10[0] = MEMORY[0x277D85DD0];
@@ -5280,16 +5280,16 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
   v10[2] = __56__PLBBAgent_registerForSinopeModelMetricsNotifications___block_invoke;
   v10[3] = &unk_2782597E8;
   v10[4] = self;
-  v8 = [v6 initWithWorkQueue:v7 forNotification:v5 withBlock:v10];
+  v8 = [v6 initWithWorkQueue:v7 forNotification:notificationsCopy withBlock:v10];
 
   bbSinopeModelMetricsNotification = self->_bbSinopeModelMetricsNotification;
   self->_bbSinopeModelMetricsNotification = v8;
 }
 
-- (void)registerForMAVModelMetricsNotifications:(id)a3
+- (void)registerForMAVModelMetricsNotifications:(id)notifications
 {
   v4 = MEMORY[0x277D3F1F0];
-  v5 = a3;
+  notificationsCopy = notifications;
   v6 = [v4 alloc];
   v7 = [MEMORY[0x277D3F258] workQueueForClass:objc_opt_class()];
   v10[0] = MEMORY[0x277D85DD0];
@@ -5297,7 +5297,7 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
   v10[2] = __53__PLBBAgent_registerForMAVModelMetricsNotifications___block_invoke;
   v10[3] = &unk_2782597E8;
   v10[4] = self;
-  v8 = [v6 initWithWorkQueue:v7 forNotification:v5 withBlock:v10];
+  v8 = [v6 initWithWorkQueue:v7 forNotification:notificationsCopy withBlock:v10];
 
   bbICEModelLTEMetricsNotification = self->_bbICEModelLTEMetricsNotification;
   self->_bbICEModelLTEMetricsNotification = v8;
@@ -5305,36 +5305,36 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
 
 - (void)setupTimeUpdateChannel
 {
-  v2 = [(PLBBAgent *)self connection];
-  [v2 registerCallback:TimeUpdateNotificationCB forTelephonyNotification:*MEMORY[0x277CC4310]];
+  connection = [(PLBBAgent *)self connection];
+  [connection registerCallback:TimeUpdateNotificationCB forTelephonyNotification:*MEMORY[0x277CC4310]];
 }
 
 - (void)setupTelephonyActivityChannels
 {
   [(PLBBAgent *)self setSimStatus:CTSIMSupportGetSIMStatus()];
-  v3 = [(PLBBAgent *)self connection];
-  [v3 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3A40]];
+  connection = [(PLBBAgent *)self connection];
+  [connection registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3A40]];
 
-  v4 = [(PLBBAgent *)self connection];
-  [v4 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3950]];
+  connection2 = [(PLBBAgent *)self connection];
+  [connection2 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3950]];
 
-  v5 = [(PLBBAgent *)self connection];
-  [v5 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC37E8]];
+  connection3 = [(PLBBAgent *)self connection];
+  [connection3 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC37E8]];
 
-  v6 = [(PLBBAgent *)self connection];
-  [v6 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC37D0]];
+  connection4 = [(PLBBAgent *)self connection];
+  [connection4 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC37D0]];
 
-  v7 = [(PLBBAgent *)self connection];
-  [v7 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3A18]];
+  connection5 = [(PLBBAgent *)self connection];
+  [connection5 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3A18]];
 
-  v8 = [(PLBBAgent *)self connection];
-  [v8 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3B00]];
+  connection6 = [(PLBBAgent *)self connection];
+  [connection6 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3B00]];
 
-  v9 = [(PLBBAgent *)self connection];
-  [v9 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3AF8]];
+  connection7 = [(PLBBAgent *)self connection];
+  [connection7 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3AF8]];
 
-  v10 = [(PLBBAgent *)self connection];
-  [v10 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3EC8]];
+  connection8 = [(PLBBAgent *)self connection];
+  [connection8 registerCallback:TelephonyActivityNotificationCB forTelephonyNotification:*MEMORY[0x277CC3EC8]];
 
   [(PLBBAgent *)self setLastReportedSignal:0];
   [(PLBBAgent *)self setInDCH:0];
@@ -5345,22 +5345,22 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
   [(PLBBAgent *)self setChanged:1];
 }
 
-- (BOOL)setupChannel:(id)a3 withLogCodes:(id)a4 andEvents:(id)a5 andExtracode:(id)a6
+- (BOOL)setupChannel:(id)channel withLogCodes:(id)codes andEvents:(id)events andExtracode:(id)extracode
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 count] || objc_msgSend(v12, "count"))
+  channelCopy = channel;
+  codesCopy = codes;
+  eventsCopy = events;
+  extracodeCopy = extracode;
+  if ([codesCopy count] || objc_msgSend(eventsCopy, "count"))
   {
-    if (![v10 openWithConnection:self->_connection])
+    if (![channelCopy openWithConnection:self->_connection])
     {
       v14 = 0;
       goto LABEL_7;
     }
 
-    [v10 enableLogCodes:v11 andEvents:v12 andExtraCode:v13];
+    [channelCopy enableLogCodes:codesCopy andEvents:eventsCopy andExtraCode:extracodeCopy];
   }
 
   else if ([MEMORY[0x277D3F180] debugEnabled])
@@ -5384,9 +5384,9 @@ uint64_t __38__PLBBAgent_setupKICEChannelsForDebug__block_invoke_1466(uint64_t a
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Empty log and event codes - leaving channel disabled", v25, v26, v27, v28];
       v20 = MEMORY[0x277D3F178];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v22 = [v21 lastPathComponent];
+      lastPathComponent = [v21 lastPathComponent];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupChannel:withLogCodes:andEvents:andExtracode:]"];
-      [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:2364];
+      [v20 logMessage:v19 fromFile:lastPathComponent fromFunction:v23 fromLineNumber:2364];
 
       v24 = PLLogCommon();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -5412,22 +5412,22 @@ uint64_t __62__PLBBAgent_setupChannel_withLogCodes_andEvents_andExtracode___bloc
   return result;
 }
 
-- (void)setupBBChannelsWithAction:(int64_t)a3
+- (void)setupBBChannelsWithAction:(int64_t)action
 {
   v237 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLBBAgent *)self setLastBBActivityTimestamp:v5];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLBBAgent *)self setLastBBActivityTimestamp:monotonicDate];
 
   v125 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v123 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v124 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [(PLBBAgent *)self logEventNoneBBReportBy:0 withAction:a3];
+  [(PLBBAgent *)self logEventNoneBBReportBy:0 withAction:action];
   v6 = objc_opt_new();
   cachedChannel = self->cachedChannel;
   self->cachedChannel = v6;
 
   [(PLBasebandLogChannel *)self->cachedChannel setDelegate:self];
-  v126 = self;
+  selfCopy = self;
   [(PLBasebandLogChannel *)self->cachedChannel setCachingEnabled:1];
   v8 = MEMORY[0x277CBEA60];
   v9 = [MEMORY[0x277CCABB0] numberWithInt:45452];
@@ -5630,26 +5630,26 @@ uint64_t __62__PLBBAgent_setupChannel_withLogCodes_andEvents_andExtracode___bloc
 
   v81 = v127;
   [v123 addObjectsFromArray:v231];
-  v82 = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
-  if ((v82 - 1003001) < 5 || v82 == 1003007)
+  kPLBasebandClassOfDevice = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
+  if ((kPLBasebandClassOfDevice - 1003001) < 5 || kPLBasebandClassOfDevice == 1003007)
   {
     [v123 addObjectsFromArray:v127];
   }
 
   v83 = v129;
-  v84 = v126;
+  v84 = selfCopy;
   if ([MEMORY[0x277D3F180] fullMode])
   {
-    v85 = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
-    if ((v85 - 1003002) >= 4)
+    kPLBasebandClassOfDevice2 = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
+    if ((kPLBasebandClassOfDevice2 - 1003002) >= 4)
     {
       v86 = v139;
-      if (v85 == 1003001)
+      if (kPLBasebandClassOfDevice2 == 1003001)
       {
         goto LABEL_6;
       }
 
-      if (v85 != 1003007)
+      if (kPLBasebandClassOfDevice2 != 1003007)
       {
         goto LABEL_7;
       }
@@ -5663,8 +5663,8 @@ LABEL_6:
 
 LABEL_7:
   [v125 addObjectsFromArray:v129];
-  v87 = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
-  if ((v87 - 1003002) < 4 || v87 == 1003007)
+  kPLBasebandClassOfDevice3 = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
+  if ((kPLBasebandClassOfDevice3 - 1003002) < 4 || kPLBasebandClassOfDevice3 == 1003007)
   {
     [v125 addObjectsFromArray:v150];
     [v125 addObjectsFromArray:v148];
@@ -5676,7 +5676,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v87 == 1003001)
+  if (kPLBasebandClassOfDevice3 == 1003001)
   {
     [v125 addObjectsFromArray:v150];
     [v125 addObjectsFromArray:v148];
@@ -5692,12 +5692,12 @@ LABEL_10:
   }
 
   [v125 addObjectsFromArray:v135];
-  v90 = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
-  if (v90 <= 1003002)
+  kPLBasebandClassOfDevice4 = [MEMORY[0x277D3F208] kPLBasebandClassOfDevice];
+  if (kPLBasebandClassOfDevice4 <= 1003002)
   {
     v92 = v137;
     v93 = v138;
-    if (v90 == 1003001)
+    if (kPLBasebandClassOfDevice4 == 1003001)
     {
       goto LABEL_16;
     }
@@ -5705,7 +5705,7 @@ LABEL_10:
     v91 = v137;
     v93 = v138;
     v92 = v134;
-    if (v90 == 1003002)
+    if (kPLBasebandClassOfDevice4 == 1003002)
     {
 LABEL_15:
       [v125 addObjectsFromArray:v91];
@@ -5715,7 +5715,7 @@ LABEL_16:
     }
   }
 
-  else if ((v90 - 1003003) < 3 || v90 == 1003007)
+  else if ((kPLBasebandClassOfDevice4 - 1003003) < 3 || kPLBasebandClassOfDevice4 == 1003007)
   {
     [v125 addObjectsFromArray:v137];
     v91 = v134;
@@ -5725,9 +5725,9 @@ LABEL_16:
   }
 
 LABEL_17:
-  if ([(PLBBAgent *)v126 setupChannel:v126->cachedChannel withLogCodes:v123 andEvents:v125 andExtracode:v124])
+  if ([(PLBBAgent *)selfCopy setupChannel:selfCopy->cachedChannel withLogCodes:v123 andEvents:v125 andExtracode:v124])
   {
-    [(PLBasebandLogChannel *)v126->cachedChannel setChannelTimeout:10.0];
+    [(PLBasebandLogChannel *)selfCopy->cachedChannel setChannelTimeout:10.0];
     v94 = [MEMORY[0x277CCABB0] numberWithInt:1];
     v95 = [v123 containsObject:v94];
 
@@ -5748,22 +5748,22 @@ LABEL_17:
 
         if (byte_2811F4FD1 == 1)
         {
-          v97 = [MEMORY[0x277CCACA8] stringWithFormat:@"Hw log level %d, win size %d", 6, 420000];
+          420000 = [MEMORY[0x277CCACA8] stringWithFormat:@"Hw log level %d, win size %d", 6, 420000];
           v98 = MEMORY[0x277D3F178];
           v99 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-          v100 = [v99 lastPathComponent];
+          lastPathComponent = [v99 lastPathComponent];
           v101 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupBBChannelsWithAction:]"];
-          [v98 logMessage:v97 fromFile:v100 fromFunction:v101 fromLineNumber:2705];
+          [v98 logMessage:420000 fromFile:lastPathComponent fromFunction:v101 fromLineNumber:2705];
 
           v102 = PLLogCommon();
           if (os_log_type_enabled(v102, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v236 = v97;
+            v236 = 420000;
             _os_log_debug_impl(&dword_21A4C6000, v102, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
           }
 
-          v84 = v126;
+          v84 = selfCopy;
           v81 = v127;
           v83 = v129;
         }
@@ -5791,9 +5791,9 @@ LABEL_17:
         v105 = [MEMORY[0x277CCACA8] stringWithFormat:@"Initializing BB channels complete"];
         v106 = MEMORY[0x277D3F178];
         v107 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v108 = [v107 lastPathComponent];
+        lastPathComponent2 = [v107 lastPathComponent];
         v109 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupBBChannelsWithAction:]"];
-        [v106 logMessage:v105 fromFile:v108 fromFunction:v109 fromLineNumber:2710];
+        [v106 logMessage:v105 fromFile:lastPathComponent2 fromFunction:v109 fromLineNumber:2710];
 
         v110 = PLLogCommon();
         if (os_log_type_enabled(v110, OS_LOG_TYPE_DEBUG))
@@ -5812,7 +5812,7 @@ LABEL_52:
 
   else
   {
-    [(PLBBAgent *)v126 scheduleReconnect];
+    [(PLBBAgent *)selfCopy scheduleReconnect];
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v111 = objc_opt_class();
@@ -5832,9 +5832,9 @@ LABEL_52:
         v105 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: need to schedule reconnect"];
         v112 = MEMORY[0x277D3F178];
         v113 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v114 = [v113 lastPathComponent];
+        lastPathComponent3 = [v113 lastPathComponent];
         v115 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupBBChannelsWithAction:]"];
-        [v112 logMessage:v105 fromFile:v114 fromFunction:v115 fromLineNumber:2697];
+        [v112 logMessage:v105 fromFile:lastPathComponent3 fromFunction:v115 fromLineNumber:2697];
 
         v110 = PLLogCommon();
         if (os_log_type_enabled(v110, OS_LOG_TYPE_DEBUG))
@@ -5883,16 +5883,16 @@ uint64_t __39__PLBBAgent_setupBBChannelsWithAction___block_invoke_1489(uint64_t 
     v3 = *MEMORY[0x277CD28A0];
     v4 = IONotificationPortCreate(*MEMORY[0x277CD28A0]);
     self->ioNotifyPort = v4;
-    v5 = [(PLOperator *)self workQueue];
-    IONotificationPortSetDispatchQueue(v4, v5);
+    workQueue = [(PLOperator *)self workQueue];
+    IONotificationPortSetDispatchQueue(v4, workQueue);
 
     v6 = IOServiceMatching("AppleBaseband");
     MatchingService = IOServiceGetMatchingService(v3, v6);
     self->baseband_service = MatchingService;
-    v8 = [MEMORY[0x277D3F180] debugEnabled];
+    debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
     if (!MatchingService)
     {
-      if (!v8)
+      if (!debugEnabled)
       {
         goto LABEL_23;
       }
@@ -5916,9 +5916,9 @@ uint64_t __39__PLBBAgent_setupBBChannelsWithAction___block_invoke_1489(uint64_t 
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find %s service\n", "AppleBaseband"];
       v26 = MEMORY[0x277D3F178];
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v28 = [v27 lastPathComponent];
+      lastPathComponent = [v27 lastPathComponent];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupIOKitNotifications]"];
-      [v26 logMessage:v19 fromFile:v28 fromFunction:v29 fromLineNumber:2723];
+      [v26 logMessage:v19 fromFile:lastPathComponent fromFunction:v29 fromLineNumber:2723];
 
       v24 = PLLogCommon();
       if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -5931,7 +5931,7 @@ uint64_t __39__PLBBAgent_setupBBChannelsWithAction___block_invoke_1489(uint64_t 
       goto LABEL_36;
     }
 
-    if (v8)
+    if (debugEnabled)
     {
       v9 = objc_opt_class();
       block[0] = MEMORY[0x277D85DD0];
@@ -5949,9 +5949,9 @@ uint64_t __39__PLBBAgent_setupBBChannelsWithAction___block_invoke_1489(uint64_t 
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"found matching service for baseband"];
         v11 = MEMORY[0x277D3F178];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v13 = [v12 lastPathComponent];
+        lastPathComponent2 = [v12 lastPathComponent];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupIOKitNotifications]"];
-        [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:2726];
+        [v11 logMessage:v10 fromFile:lastPathComponent2 fromFunction:v14 fromLineNumber:2726];
 
         v15 = PLLogCommon();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -5964,10 +5964,10 @@ uint64_t __39__PLBBAgent_setupBBChannelsWithAction___block_invoke_1489(uint64_t 
     }
 
     v16 = IOServiceAddInterestNotification(self->ioNotifyPort, self->baseband_service, "IOGeneralInterest", BasebandResetCallback, self, &self->notificationRef);
-    v17 = [MEMORY[0x277D3F180] debugEnabled];
+    debugEnabled2 = [MEMORY[0x277D3F180] debugEnabled];
     if (v16)
     {
-      if (!v17)
+      if (!debugEnabled2)
       {
         goto LABEL_23;
       }
@@ -5991,9 +5991,9 @@ uint64_t __39__PLBBAgent_setupBBChannelsWithAction___block_invoke_1489(uint64_t 
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error calling IOServiceAddInterestNotification (0x%08x)", v16];
       v20 = MEMORY[0x277D3F178];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v22 = [v21 lastPathComponent];
+      lastPathComponent3 = [v21 lastPathComponent];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupIOKitNotifications]"];
-      [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:2733];
+      [v20 logMessage:v19 fromFile:lastPathComponent3 fromFunction:v23 fromLineNumber:2733];
 
       v24 = PLLogCommon();
       if (!os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -6001,7 +6001,7 @@ uint64_t __39__PLBBAgent_setupBBChannelsWithAction___block_invoke_1489(uint64_t 
 LABEL_22:
 
 LABEL_23:
-        v30 = 0;
+        selfCopy = 0;
         goto LABEL_32;
       }
 
@@ -6012,7 +6012,7 @@ LABEL_36:
       goto LABEL_22;
     }
 
-    if (v17)
+    if (debugEnabled2)
     {
       v31 = objc_opt_class();
       v40[0] = MEMORY[0x277D85DD0];
@@ -6030,9 +6030,9 @@ LABEL_36:
         v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Subscribed to notification for baseband"];
         v33 = MEMORY[0x277D3F178];
         v34 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v35 = [v34 lastPathComponent];
+        lastPathComponent4 = [v34 lastPathComponent];
         v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent setupIOKitNotifications]"];
-        [v33 logMessage:v32 fromFile:v35 fromFunction:v36 fromLineNumber:2736];
+        [v33 logMessage:v32 fromFile:lastPathComponent4 fromFunction:v36 fromLineNumber:2736];
 
         v37 = PLLogCommon();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
@@ -6045,11 +6045,11 @@ LABEL_36:
     }
   }
 
-  v30 = self;
+  selfCopy = self;
 LABEL_32:
   v38 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return selfCopy;
 }
 
 uint64_t __36__PLBBAgent_setupIOKitNotifications__block_invoke(uint64_t a1)
@@ -6082,12 +6082,12 @@ uint64_t __36__PLBBAgent_setupIOKitNotifications__block_invoke_1512(uint64_t a1)
 
 - (BOOL)isTimeToRequestReport
 {
-  v3 = [(PLBBAgent *)self lastReportRequestDate];
+  lastReportRequestDate = [(PLBBAgent *)self lastReportRequestDate];
 
-  if (v3)
+  if (lastReportRequestDate)
   {
-    v4 = [(PLBBAgent *)self lastReportRequestDate];
-    [v4 timeIntervalSinceNow];
+    lastReportRequestDate2 = [(PLBBAgent *)self lastReportRequestDate];
+    [lastReportRequestDate2 timeIntervalSinceNow];
     v6 = v5;
 
     if (v6 >= -300.0)
@@ -6108,8 +6108,8 @@ uint64_t __36__PLBBAgent_setupIOKitNotifications__block_invoke_1512(uint64_t a1)
         return 0;
       }
 
-      v10 = [(PLBBAgent *)self lastReportRequestDate];
-      [v10 timeIntervalSinceNow];
+      lastReportRequestDate3 = [(PLBBAgent *)self lastReportRequestDate];
+      [lastReportRequestDate3 timeIntervalSinceNow];
       v12 = v11;
 
       if (v12 >= -30.0)
@@ -6119,8 +6119,8 @@ uint64_t __36__PLBBAgent_setupIOKitNotifications__block_invoke_1512(uint64_t a1)
     }
   }
 
-  v7 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLBBAgent *)self setLastReportRequestDate:v7];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLBBAgent *)self setLastReportRequestDate:monotonicDate];
 
   return 1;
 }
@@ -6153,9 +6153,9 @@ uint64_t __34__PLBBAgent_isTimeToRequestReport__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent cacheCommitTimerFired]", block, v12, v13, v14, v15];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent cacheCommitTimerFired]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:2769];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:2769];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -6199,9 +6199,9 @@ uint64_t __34__PLBBAgent_cacheCommitTimerFired__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent scheduleFlushPostCacheCommit]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent scheduleFlushPostCacheCommit]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:2775];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:2775];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -6214,13 +6214,13 @@ uint64_t __34__PLBBAgent_cacheCommitTimerFired__block_invoke(uint64_t a1)
   }
 
   v10 = dispatch_time(0, 30000000000);
-  v11 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__PLBBAgent_scheduleFlushPostCacheCommit__block_invoke_1516;
   block[3] = &unk_2782591D0;
   block[4] = self;
-  dispatch_after(v10, v11, block);
+  dispatch_after(v10, workQueue, block);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -6253,9 +6253,9 @@ uint64_t __41__PLBBAgent_scheduleFlushPostCacheCommit__block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent initCacheCommitTimer]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent initCacheCommitTimer]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:2785];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:2785];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -6269,13 +6269,13 @@ uint64_t __41__PLBBAgent_scheduleFlushPostCacheCommit__block_invoke(uint64_t a1)
 
   v10 = objc_alloc(MEMORY[0x277D3F250]);
   v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:300.0];
-  v12 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __33__PLBBAgent_initCacheCommitTimer__block_invoke_1517;
   v15[3] = &unk_278259C40;
   v15[4] = self;
-  v13 = [v10 initWithFireDate:v11 withInterval:1 withTolerance:0 repeats:v12 withUserInfo:v15 withQueue:300.0 withBlock:0.0];
+  v13 = [v10 initWithFireDate:v11 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v15 withQueue:300.0 withBlock:0.0];
   [(PLBBAgent *)self setCacheCommitTimer:v13];
 
   v14 = *MEMORY[0x277D85DE8];
@@ -6298,15 +6298,15 @@ uint64_t __33__PLBBAgent_initCacheCommitTimer__block_invoke_1517(uint64_t a1)
 
 - (void)cancelCacheCommitTimer
 {
-  v2 = [(PLBBAgent *)self cacheCommitTimer];
-  [v2 setTimerActive:0];
+  cacheCommitTimer = [(PLBBAgent *)self cacheCommitTimer];
+  [cacheCommitTimer setTimerActive:0];
 }
 
 - (void)resetCacheCommitTimer
 {
-  v3 = [(PLBBAgent *)self cacheCommitTimer];
+  cacheCommitTimer = [(PLBBAgent *)self cacheCommitTimer];
   v2 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:300.0];
-  [v3 setFireDate:v2];
+  [cacheCommitTimer setFireDate:v2];
 }
 
 - (void)initOperatorDependancies
@@ -6330,9 +6330,9 @@ uint64_t __33__PLBBAgent_initCacheCommitTimer__block_invoke_1517(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent initOperatorDependancies]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent initOperatorDependancies]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:2807];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:2807];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -6344,22 +6344,22 @@ uint64_t __33__PLBBAgent_initCacheCommitTimer__block_invoke_1517(uint64_t a1)
     }
   }
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  [(PLBBAgent *)self setDsdsRegMsgs:v10];
+  array = [MEMORY[0x277CBEB18] array];
+  [(PLBBAgent *)self setDsdsRegMsgs:array];
 
-  v11 = [MEMORY[0x277CBEB18] array];
-  [(PLBBAgent *)self setDsdsActivityMsgs:v11];
+  array2 = [MEMORY[0x277CBEB18] array];
+  [(PLBBAgent *)self setDsdsActivityMsgs:array2];
 
   v12 = 4;
   do
   {
-    v13 = [(PLBBAgent *)self dsdsRegMsgs];
+    dsdsRegMsgs = [(PLBBAgent *)self dsdsRegMsgs];
     v14 = objc_alloc_init(PLBBTelephonyDsdsRegMsg);
-    [v13 addObject:v14];
+    [dsdsRegMsgs addObject:v14];
 
-    v15 = [(PLBBAgent *)self dsdsActivityMsgs];
+    dsdsActivityMsgs = [(PLBBAgent *)self dsdsActivityMsgs];
     v16 = objc_alloc_init(PLBBTelephonyDsdsActivityMsg);
-    [v15 addObject:v16];
+    [dsdsActivityMsgs addObject:v16];
 
     --v12;
   }
@@ -6372,20 +6372,20 @@ uint64_t __33__PLBBAgent_initCacheCommitTimer__block_invoke_1517(uint64_t a1)
     self->_telephonyClientQueue = v17;
 
     v19 = objc_alloc(MEMORY[0x277CC37B0]);
-    v20 = [(PLBBAgent *)self telephonyClientQueue];
-    v21 = [v19 initWithQueue:v20];
+    telephonyClientQueue = [(PLBBAgent *)self telephonyClientQueue];
+    v21 = [v19 initWithQueue:telephonyClientQueue];
     telephonyClient = self->_telephonyClient;
     self->_telephonyClient = v21;
 
     [(CoreTelephonyClient *)self->_telephonyClient setDelegate:self];
     v23 = MEMORY[0x277D6EDF8];
-    v24 = [(PLBBAgent *)self telephonyClientQueue];
-    v25 = [v23 callCenterWithQueue:v24];
+    telephonyClientQueue2 = [(PLBBAgent *)self telephonyClientQueue];
+    v25 = [v23 callCenterWithQueue:telephonyClientQueue2];
     callCenter = self->_callCenter;
     self->_callCenter = v25;
 
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:self selector:sel_callStatusChanged_ name:*MEMORY[0x277D6EFF0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_callStatusChanged_ name:*MEMORY[0x277D6EFF0] object:0];
   }
 
   self->_isBBOOS = 0;
@@ -6427,9 +6427,9 @@ LABEL_16:
         v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"Setup TelephonyRegistration init"];
         v32 = MEMORY[0x277D3F178];
         v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v34 = [v33 lastPathComponent];
+        lastPathComponent2 = [v33 lastPathComponent];
         v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent initOperatorDependancies]"];
-        [v32 logMessage:v31 fromFile:v34 fromFunction:v35 fromLineNumber:2873];
+        [v32 logMessage:v31 fromFile:lastPathComponent2 fromFunction:v35 fromLineNumber:2873];
 
         v36 = PLLogCommon();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
@@ -6444,8 +6444,8 @@ LABEL_16:
     v37 = objc_opt_new();
     [(PLBBAgent *)self setTelRegMsgHelper:v37];
 
-    v38 = [(PLBBAgent *)self telRegMsgHelper];
-    [v38 setAgent:self];
+    telRegMsgHelper = [(PLBBAgent *)self telRegMsgHelper];
+    [telRegMsgHelper setAgent:self];
 
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -6465,9 +6465,9 @@ LABEL_16:
         v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"Setup TelephonyActivity init"];
         v41 = MEMORY[0x277D3F178];
         v42 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v43 = [v42 lastPathComponent];
+        lastPathComponent3 = [v42 lastPathComponent];
         v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent initOperatorDependancies]"];
-        [v41 logMessage:v40 fromFile:v43 fromFunction:v44 fromLineNumber:2878];
+        [v41 logMessage:v40 fromFile:lastPathComponent3 fromFunction:v44 fromLineNumber:2878];
 
         v45 = PLLogCommon();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
@@ -6482,8 +6482,8 @@ LABEL_16:
     v46 = objc_opt_new();
     [(PLBBAgent *)self setTelActMsgHelper:v46];
 
-    v47 = [(PLBBAgent *)self telActMsgHelper];
-    [v47 setAgent:self];
+    telActMsgHelper = [(PLBBAgent *)self telActMsgHelper];
+    [telActMsgHelper setAgent:self];
 
     [(PLBBAgent *)self logTelephonyRegistrationAtInit];
     [(PLBBAgent *)self logTelephonyActivityAtInit];
@@ -6545,12 +6545,12 @@ LABEL_16:
     v62 = [v60 initWithOperator:self forEntryKey:v61 withBlock:v84];
     [(PLBBAgent *)self setTelephonyActivityNotification:v62];
 
-    v63 = [MEMORY[0x277D3F0C0] sharedInstance];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
     v94 = @"BB-Standard";
     v95 = &unk_282C1C688;
     v64 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-    v65 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v63 createDistributionEventForwardWithDistributionID:6 withChildNodeNameToWeight:v64 withStartDate:v65];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:6 withChildNodeNameToWeight:v64 withStartDate:monotonicDate];
 
     v66 = objc_alloc(MEMORY[0x277D3F1F0]);
     v83[0] = MEMORY[0x277D85DD0];
@@ -6563,13 +6563,13 @@ LABEL_16:
     self->_thermalMonitorListener = v67;
 
     v69 = objc_alloc(MEMORY[0x277D3F278]);
-    v70 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v82[0] = MEMORY[0x277D85DD0];
     v82[1] = 3221225472;
     v82[2] = __37__PLBBAgent_initOperatorDependancies__block_invoke_3_1598;
     v82[3] = &unk_278259810;
     v82[4] = self;
-    v71 = [v69 initWithWorkQueue:v70 withRegistration:&unk_282C18AA8 withBlock:v82];
+    v71 = [v69 initWithWorkQueue:workQueue withRegistration:&unk_282C18AA8 withBlock:v82];
 
     [(PLBBAgent *)self setBBLogsSysdiagnoseResponder:v71];
     objc_storeStrong(&qword_2811F5260, self);
@@ -6583,9 +6583,9 @@ LABEL_16:
     goto LABEL_33;
   }
 
-  v74 = [(PLBBAgent *)self setupIOKitNotifications];
+  setupIOKitNotifications = [(PLBBAgent *)self setupIOKitNotifications];
 
-  if (v74)
+  if (setupIOKitNotifications)
   {
     [(PLBBAgent *)self setupMavABMChannel];
     [(PLBBAgent *)self setupBBChannelsWithAction:0];
@@ -6612,9 +6612,9 @@ LABEL_16:
       v76 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: BBAgent no ioKitNotifications"];
       v77 = MEMORY[0x277D3F178];
       v78 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v79 = [v78 lastPathComponent];
+      lastPathComponent4 = [v78 lastPathComponent];
       v80 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent initOperatorDependancies]"];
-      [v77 logMessage:v76 fromFile:v79 fromFunction:v80 fromLineNumber:2855];
+      [v77 logMessage:v76 fromFile:lastPathComponent4 fromFunction:v80 fromLineNumber:2855];
 
       v81 = PLLogCommon();
       if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
@@ -6728,21 +6728,21 @@ void *__37__PLBBAgent_initOperatorDependancies__block_invoke_3_1598(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D6EFF0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D6EFF0] object:0];
 
   v4.receiver = self;
   v4.super_class = PLBBAgent;
   [(PLAgent *)&v4 dealloc];
 }
 
-- (void)logEntry:(id)a3
+- (void)logEntry:(id)entry
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   v50.receiver = self;
   v50.super_class = PLBBAgent;
-  [(PLOperator *)&v50 logEntry:v4];
+  [(PLOperator *)&v50 logEntry:entryCopy];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -6761,9 +6761,9 @@ void *__37__PLBBAgent_initOperatorDependancies__block_invoke_3_1598(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logEntry:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEntry:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:3027];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:3027];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -6791,9 +6791,9 @@ void *__37__PLBBAgent_initOperatorDependancies__block_invoke_3_1598(uint64_t a1)
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\n\n\n\nAgent has sent PL Entry"];
     v14 = MEMORY[0x277D3F178];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-    v16 = [v15 lastPathComponent];
+    lastPathComponent2 = [v15 lastPathComponent];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEntry:]"];
-    [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:3030];
+    [v14 logMessage:v13 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:3030];
 
     v18 = PLLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -6806,9 +6806,9 @@ void *__37__PLBBAgent_initOperatorDependancies__block_invoke_3_1598(uint64_t a1)
     v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** START of PLEntry ***"];
     v20 = MEMORY[0x277D3F178];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-    v22 = [v21 lastPathComponent];
+    lastPathComponent3 = [v21 lastPathComponent];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEntry:]"];
-    [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:3031];
+    [v20 logMessage:v19 fromFile:lastPathComponent3 fromFunction:v23 fromLineNumber:3031];
 
     v24 = PLLogCommon();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -6819,14 +6819,14 @@ void *__37__PLBBAgent_initOperatorDependancies__block_invoke_3_1598(uint64_t a1)
     }
 
     v25 = MEMORY[0x277CCACA8];
-    v26 = [v4 entryKey];
-    v27 = [v25 stringWithFormat:@"Name: %@\n", v26];
+    entryKey = [entryCopy entryKey];
+    v27 = [v25 stringWithFormat:@"Name: %@\n", entryKey];
 
     v28 = MEMORY[0x277D3F178];
     v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-    v30 = [v29 lastPathComponent];
+    lastPathComponent4 = [v29 lastPathComponent];
     v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEntry:]"];
-    [v28 logMessage:v27 fromFile:v30 fromFunction:v31 fromLineNumber:3032];
+    [v28 logMessage:v27 fromFile:lastPathComponent4 fromFunction:v31 fromLineNumber:3032];
 
     v32 = PLLogCommon();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -6837,14 +6837,14 @@ void *__37__PLBBAgent_initOperatorDependancies__block_invoke_3_1598(uint64_t a1)
     }
 
     v33 = MEMORY[0x277CCACA8];
-    v34 = [v4 description];
+    v34 = [entryCopy description];
     v35 = [v33 stringWithFormat:@"Description:%@\n", v34];
 
     v36 = MEMORY[0x277D3F178];
     v37 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-    v38 = [v37 lastPathComponent];
+    lastPathComponent5 = [v37 lastPathComponent];
     v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEntry:]"];
-    [v36 logMessage:v35 fromFile:v38 fromFunction:v39 fromLineNumber:3033];
+    [v36 logMessage:v35 fromFile:lastPathComponent5 fromFunction:v39 fromLineNumber:3033];
 
     v40 = PLLogCommon();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -6857,9 +6857,9 @@ void *__37__PLBBAgent_initOperatorDependancies__block_invoke_3_1598(uint64_t a1)
     v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"*** END of PLEntry ***\n\n\n\n\n"];
     v42 = MEMORY[0x277D3F178];
     v43 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-    v44 = [v43 lastPathComponent];
+    lastPathComponent6 = [v43 lastPathComponent];
     v45 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEntry:]"];
-    [v42 logMessage:v41 fromFile:v44 fromFunction:v45 fromLineNumber:3034];
+    [v42 logMessage:v41 fromFile:lastPathComponent6 fromFunction:v45 fromLineNumber:3034];
 
     v46 = PLLogCommon();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
@@ -6887,13 +6887,13 @@ uint64_t __22__PLBBAgent_logEntry___block_invoke_1621(uint64_t a1)
   return result;
 }
 
-- (void)logEntries:(id)a3 withGroupID:(id)a4
+- (void)logEntries:(id)entries withGroupID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  entriesCopy = entries;
   v23.receiver = self;
   v23.super_class = PLBBAgent;
-  [(PLOperator *)&v23 logEntries:v6 withGroupID:a4];
+  [(PLOperator *)&v23 logEntries:entriesCopy withGroupID:d];
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v7 = objc_opt_class();
@@ -6912,9 +6912,9 @@ uint64_t __22__PLBBAgent_logEntry___block_invoke_1621(uint64_t a1)
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logEntries:withGroupID:]", block, v19, v20, v21, v22];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEntries:withGroupID:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:3046];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:3046];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -6928,19 +6928,19 @@ uint64_t __22__PLBBAgent_logEntry___block_invoke_1621(uint64_t a1)
 
   if ([MEMORY[0x277D3F208] isBasebandMavLeg])
   {
-    [(PLBBAgent *)self modelMav10BBHWPower:v6];
+    [(PLBBAgent *)self modelMav10BBHWPower:entriesCopy];
   }
 
   else
   {
-    [(PLBBAgent *)self modelMavBBHWOtherPerRATPower:v6];
+    [(PLBBAgent *)self modelMavBBHWOtherPerRATPower:entriesCopy];
   }
 
-  v14 = [v6 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
+  v14 = [entriesCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
 
   if (v14)
   {
-    v15 = [v6 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
+    v15 = [entriesCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
     v16 = [v15 objectAtIndexedSubscript:0];
 
     [(PLBBAgent *)self modelGPSPower:v16];
@@ -6948,7 +6948,7 @@ uint64_t __22__PLBBAgent_logEntry___block_invoke_1621(uint64_t a1)
 
   if (([MEMORY[0x277D3F208] isBasebandClass:1003001] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003002) & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandMavLeg"))
   {
-    [(PLBBAgent *)self modelScanPower:v6];
+    [(PLBBAgent *)self modelScanPower:entriesCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -6982,9 +6982,9 @@ uint64_t __36__PLBBAgent_logEntries_withGroupID___block_invoke(uint64_t a1)
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent log]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent log]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:3069];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:3069];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -7016,9 +7016,9 @@ uint64_t __36__PLBBAgent_logEntries_withGroupID___block_invoke(uint64_t a1)
         v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBBAgent:log for Protobuf platforms"];
         v12 = MEMORY[0x277D3F178];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v14 = [v13 lastPathComponent];
+        lastPathComponent2 = [v13 lastPathComponent];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent log]"];
-        [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:3072];
+        [v12 logMessage:v11 fromFile:lastPathComponent2 fromFunction:v15 fromLineNumber:3072];
 
         v16 = PLLogCommon();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -7053,9 +7053,9 @@ uint64_t __36__PLBBAgent_logEntries_withGroupID___block_invoke(uint64_t a1)
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBBAgent:log for Mav"];
         v21 = MEMORY[0x277D3F178];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v23 = [v22 lastPathComponent];
+        lastPathComponent3 = [v22 lastPathComponent];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent log]"];
-        [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:3075];
+        [v21 logMessage:v20 fromFile:lastPathComponent3 fromFunction:v24 fromLineNumber:3075];
 
         v25 = PLLogCommon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -7096,7 +7096,7 @@ uint64_t __16__PLBBAgent_log__block_invoke_1647(uint64_t a1)
   return result;
 }
 
-- (void)flushBBCacheWithClientInfo:(int64_t)a3
+- (void)flushBBCacheWithClientInfo:(int64_t)info
 {
   v36 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -7117,9 +7117,9 @@ uint64_t __16__PLBBAgent_log__block_invoke_1647(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent flushBBCacheWithClientInfo:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent flushBBCacheWithClientInfo:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:3083];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:3083];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -7146,18 +7146,18 @@ uint64_t __16__PLBBAgent_log__block_invoke_1647(uint64_t a1)
 
     if (byte_2811F4FE6 == 1)
     {
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBBAgent log method called by:%ld", a3];
+      info = [MEMORY[0x277CCACA8] stringWithFormat:@"PLBBAgent log method called by:%ld", info];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent2 = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent flushBBCacheWithClientInfo:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:3084];
+      [v14 logMessage:info fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:3084];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v35 = v13;
+        v35 = info;
         _os_log_debug_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -7183,12 +7183,12 @@ uint64_t __16__PLBBAgent_log__block_invoke_1647(uint64_t a1)
 
     if (byte_2811F4FE7 == 1)
     {
-      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: PLBBAgent log method called by %ld before init", a3, v27, v28, v29, v30, v31];
+      v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: PLBBAgent log method called by %ld before init", info, v27, v28, v29, v30, v31];
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent3 = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent flushBBCacheWithClientInfo:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:3087];
+      [v21 logMessage:v20 fromFile:lastPathComponent3 fromFunction:v24 fromLineNumber:3087];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -7224,7 +7224,7 @@ uint64_t __40__PLBBAgent_flushBBCacheWithClientInfo___block_invoke_1659(uint64_t
   return result;
 }
 
-- (void)commitBBCacheWithClientInfo:(int64_t)a3
+- (void)commitBBCacheWithClientInfo:(int64_t)info
 {
   v24 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -7242,18 +7242,18 @@ uint64_t __40__PLBBAgent_flushBBCacheWithClientInfo___block_invoke_1659(uint64_t
 
     if (byte_2811F4FE8 == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s client: %ld", "-[PLBBAgent commitBBCacheWithClientInfo:]", a3];
+      info = [MEMORY[0x277CCACA8] stringWithFormat:@"%s client: %ld", "-[PLBBAgent commitBBCacheWithClientInfo:]", info];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent commitBBCacheWithClientInfo:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:3096];
+      [v7 logMessage:info fromFile:lastPathComponent fromFunction:v10 fromLineNumber:3096];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v23 = v6;
+        v23 = info;
         _os_log_debug_impl(&dword_21A4C6000, v11, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -7279,18 +7279,18 @@ uint64_t __40__PLBBAgent_flushBBCacheWithClientInfo___block_invoke_1659(uint64_t
 
     if (byte_2811F4FE9 == 1)
     {
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: method called by %ld before init", a3];
+      info2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: method called by %ld before init", info];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent2 = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent commitBBCacheWithClientInfo:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:3100];
+      [v14 logMessage:info2 fromFile:lastPathComponent2 fromFunction:v17 fromLineNumber:3100];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v23 = v13;
+        v23 = info2;
         _os_log_debug_impl(&dword_21A4C6000, v18, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -7313,11 +7313,11 @@ uint64_t __41__PLBBAgent_commitBBCacheWithClientInfo___block_invoke_1668(uint64_
   return result;
 }
 
-- (void)logTelephonyRegMsgWith:(id)a3
+- (void)logTelephonyRegMsgWith:(id)with
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D3F180];
-  v5 = a3;
+  withCopy = with;
   if ([v4 debugEnabled])
   {
     v6 = objc_opt_class();
@@ -7336,9 +7336,9 @@ uint64_t __41__PLBBAgent_commitBBCacheWithClientInfo___block_invoke_1668(uint64_
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logTelephonyRegMsgWith:]"];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyRegMsgWith:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:3124];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:3124];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -7350,8 +7350,8 @@ uint64_t __41__PLBBAgent_commitBBCacheWithClientInfo___block_invoke_1668(uint64_
     }
   }
 
-  v13 = [(PLBBAgent *)self telRegMsgHelper];
-  [v13 setTelRegInfo:v5];
+  telRegMsgHelper = [(PLBBAgent *)self telRegMsgHelper];
+  [telRegMsgHelper setTelRegInfo:withCopy];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -7371,9 +7371,9 @@ uint64_t __41__PLBBAgent_commitBBCacheWithClientInfo___block_invoke_1668(uint64_
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoded Telephony Registration msgs"];
       v16 = MEMORY[0x277D3F178];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v18 = [v17 lastPathComponent];
+      lastPathComponent2 = [v17 lastPathComponent];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyRegMsgWith:]"];
-      [v16 logMessage:v15 fromFile:v18 fromFunction:v19 fromLineNumber:3130];
+      [v16 logMessage:v15 fromFile:lastPathComponent2 fromFunction:v19 fromLineNumber:3130];
 
       v20 = PLLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -7385,7 +7385,7 @@ uint64_t __41__PLBBAgent_commitBBCacheWithClientInfo___block_invoke_1668(uint64_
     }
   }
 
-  [v13 logEventPointTelephonyRegistration];
+  [telRegMsgHelper logEventPointTelephonyRegistration];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -7404,12 +7404,12 @@ uint64_t __36__PLBBAgent_logTelephonyRegMsgWith___block_invoke_1674(uint64_t a1)
   return result;
 }
 
-- (id)humanReadableRegistrationStatus:(id)a3
+- (id)humanReadableRegistrationStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
-    v3 = a3;
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"kCTRegistrationStatus", "length")}];
+    statusCopy = status;
+    v4 = [statusCopy substringFromIndex:{objc_msgSend(@"kCTRegistrationStatus", "length")}];
   }
 
   else
@@ -7420,12 +7420,12 @@ uint64_t __36__PLBBAgent_logTelephonyRegMsgWith___block_invoke_1674(uint64_t a1)
   return v4;
 }
 
-- (id)humanReadableDataIndicator:(id)a3
+- (id)humanReadableDataIndicator:(id)indicator
 {
-  if (a3)
+  if (indicator)
   {
-    v3 = a3;
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"kCTRegistrationDataIndicator", "length")}];
+    indicatorCopy = indicator;
+    v4 = [indicatorCopy substringFromIndex:{objc_msgSend(@"kCTRegistrationDataIndicator", "length")}];
   }
 
   else
@@ -7436,17 +7436,17 @@ uint64_t __36__PLBBAgent_logTelephonyRegMsgWith___block_invoke_1674(uint64_t a1)
   return v4;
 }
 
-+ (id)humanReadableStateFromKey:(id)a3
++ (id)humanReadableStateFromKey:(id)key
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"kCTRegistrationBasebandState"])
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"kCTRegistrationBasebandState"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"kCTRegistrationBasebandState", "length")}];
+    v4 = [keyCopy substringFromIndex:{objc_msgSend(@"kCTRegistrationBasebandState", "length")}];
   }
 
   else
   {
-    v4 = v3;
+    v4 = keyCopy;
   }
 
   v5 = v4;
@@ -7483,9 +7483,9 @@ uint64_t __36__PLBBAgent_logTelephonyRegMsgWith___block_invoke_1674(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logTelephonyRegistrationAtInit]", block, v14, v15, v16, v17];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyRegistrationAtInit]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:3163];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:3163];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -7497,8 +7497,8 @@ uint64_t __36__PLBBAgent_logTelephonyRegMsgWith___block_invoke_1674(uint64_t a1)
     }
   }
 
-  v11 = [(PLBBAgent *)self telRegMsgHelper];
-  [v11 logEventPointTelephonyRegistrationAtInit];
+  telRegMsgHelper = [(PLBBAgent *)self telRegMsgHelper];
+  [telRegMsgHelper logEventPointTelephonyRegistrationAtInit];
   [(PLBBAgent *)self logTelephonyRegistrationDSDSAtInit];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -7540,9 +7540,9 @@ uint64_t __43__PLBBAgent_logTelephonyRegistrationAtInit__block_invoke(uint64_t a
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logTelephonyActivityAtInit]", block, v14, v15, v16, v17];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyActivityAtInit]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:3174];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:3174];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -7554,12 +7554,12 @@ uint64_t __43__PLBBAgent_logTelephonyRegistrationAtInit__block_invoke(uint64_t a
     }
   }
 
-  v11 = [(PLBBAgent *)self telActMsgHelper];
+  telActMsgHelper = [(PLBBAgent *)self telActMsgHelper];
   [(PLBBAgent *)self registerForAirplaneModeChange];
   if ([(PLBBAgent *)self isChangedAndSetAirplaneMode])
   {
-    [v11 setAirplaneMode:airplaneModeCurrent];
-    [v11 logPointIntervalTelephonyActivityAirplaneModeChange];
+    [telActMsgHelper setAirplaneMode:airplaneModeCurrent];
+    [telActMsgHelper logPointIntervalTelephonyActivityAirplaneModeChange];
   }
 
   [(PLBBAgent *)self logTelephonyActivityDSDSAtInit];
@@ -7589,17 +7589,17 @@ uint64_t __39__PLBBAgent_logTelephonyActivityAtInit__block_invoke(uint64_t a1)
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"value_enabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
+  v15[0] = commonTypeDict_StringFormat;
   v14[1] = @"value_history";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v15[1] = commonTypeDict_StringFormat2;
   v14[2] = @"unit";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v15[2] = commonTypeDict_StringFormat3;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -7622,13 +7622,13 @@ uint64_t __39__PLBBAgent_logTelephonyActivityAtInit__block_invoke(uint64_t a1)
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"ClientName";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v12[1] = @"ClientAction";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v13[1] = commonTypeDict_IntegerFormat2;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -7655,13 +7655,13 @@ uint64_t __39__PLBBAgent_logTelephonyActivityAtInit__block_invoke(uint64_t a1)
     v16[0] = v2;
     v15[1] = *MEMORY[0x277D3F540];
     v11[0] = @"SDMState";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_IntegerFormat];
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
     v11[1] = @"subsId";
-    v12[0] = v4;
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_IntegerFormat];
-    v12[1] = v6;
+    v12[0] = commonTypeDict_IntegerFormat;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+    v12[1] = commonTypeDict_IntegerFormat2;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
     v16[1] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -7702,9 +7702,9 @@ uint64_t __39__PLBBAgent_logTelephonyActivityAtInit__block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent refreshBBReport]", block, v15, v16, v17, v18];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent refreshBBReport]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:3246];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:3246];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -7751,7 +7751,7 @@ uint64_t __28__PLBBAgent_refreshBBReport__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)logEventNoneBBReportBy:(int64_t)a3 withAction:(int64_t)a4
+- (void)logEventNoneBBReportBy:(int64_t)by withAction:(int64_t)action
 {
   v48 = *MEMORY[0x277D85DE8];
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -7772,15 +7772,15 @@ uint64_t __28__PLBBAgent_refreshBBReport__block_invoke(uint64_t a1)
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logEventNoneBBReportBy:withAction:]"];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEventNoneBBReportBy:withAction:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:3266];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:3266];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v45 = v8;
+        byCopy = v8;
         _os_log_debug_impl(&dword_21A4C6000, v13, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -7793,17 +7793,17 @@ uint64_t __28__PLBBAgent_refreshBBReport__block_invoke(uint64_t a1)
     v16 = [(PLOperator *)PLBBAgent entryKeyForType:v14 andName:v15];
 
     v17 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v16];
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:by];
     [v17 setObject:v18 forKeyedSubscript:@"ClientName"];
 
-    v19 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v19 = [MEMORY[0x277CCABB0] numberWithInteger:action];
     [v17 setObject:v19 forKeyedSubscript:@"ClientAction"];
 
     if ([MEMORY[0x277D3F208] isBasebandProto])
     {
-      v20 = [v17 dictionary];
-      v21 = [v17 entryDate];
-      [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"Report" data:v20 date:v21];
+      dictionary = [v17 dictionary];
+      entryDate = [v17 entryDate];
+      [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"Report" data:dictionary date:entryDate];
     }
 
     if (([MEMORY[0x277D3F208] isBasebandMav] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandIce"))
@@ -7816,9 +7816,9 @@ uint64_t __28__PLBBAgent_refreshBBReport__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
-    v45 = a3;
+    byCopy = by;
     v46 = 2048;
-    v47 = a4;
+    actionCopy = action;
     _os_log_debug_impl(&dword_21A4C6000, v22, OS_LOG_TYPE_DEBUG, "logEventNoneBBReportBy Client %ld, Action %ld", buf, 0x16u);
   }
 
@@ -7837,31 +7837,31 @@ uint64_t __28__PLBBAgent_refreshBBReport__block_invoke(uint64_t a1)
 
     if (byte_2811F4FF0 == 1)
     {
-      v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Client: %ld, Action: %ld", a3, a4];
+      action = [MEMORY[0x277CCACA8] stringWithFormat:@"Client: %ld, Action: %ld", by, action];
       v25 = MEMORY[0x277D3F178];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v27 = [v26 lastPathComponent];
+      lastPathComponent2 = [v26 lastPathComponent];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEventNoneBBReportBy:withAction:]"];
-      [v25 logMessage:v24 fromFile:v27 fromFunction:v28 fromLineNumber:3290];
+      [v25 logMessage:action fromFile:lastPathComponent2 fromFunction:v28 fromLineNumber:3290];
 
       v29 = PLLogCommon();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v45 = v24;
+        byCopy = action;
         _os_log_debug_impl(&dword_21A4C6000, v29, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
   }
 
-  if (a4 > 6)
+  if (action > 6)
   {
-    if (a4 == 7)
+    if (action == 7)
     {
       if ([MEMORY[0x277D3F208] isBasebandProto])
       {
-        v30 = [MEMORY[0x277D3F120] sharedABMClient];
-        v31 = v30;
+        mEMORY[0x277D3F120] = [MEMORY[0x277D3F120] sharedABMClient];
+        action2 = mEMORY[0x277D3F120];
         v32 = 8323087;
         v33 = 1625;
         goto LABEL_44;
@@ -7872,40 +7872,40 @@ uint64_t __28__PLBBAgent_refreshBBReport__block_invoke(uint64_t a1)
         goto LABEL_46;
       }
 
-      v30 = [MEMORY[0x277D3F120] sharedABMClient];
-      v31 = v30;
+      mEMORY[0x277D3F120] = [MEMORY[0x277D3F120] sharedABMClient];
+      action2 = mEMORY[0x277D3F120];
       v32 = 520207;
     }
 
     else
     {
-      if (a4 != 8)
+      if (action != 8)
       {
         goto LABEL_34;
       }
 
-      v30 = [MEMORY[0x277D3F120] sharedABMClient];
-      v31 = v30;
+      mEMORY[0x277D3F120] = [MEMORY[0x277D3F120] sharedABMClient];
+      action2 = mEMORY[0x277D3F120];
       v32 = 703488;
     }
 
     v33 = 0;
 LABEL_44:
-    [v30 triggerPeriodicMetrics:v32 andprofileId:v33];
+    [mEMORY[0x277D3F120] triggerPeriodicMetrics:v32 andprofileId:v33];
 LABEL_45:
 
     goto LABEL_46;
   }
 
-  if (a4 == 3)
+  if (action == 3)
   {
-    [(PLBBAgent *)self commitBBCacheWithClientInfo:a3];
+    [(PLBBAgent *)self commitBBCacheWithClientInfo:by];
     goto LABEL_46;
   }
 
-  if (a4 == 4)
+  if (action == 4)
   {
-    [(PLBBAgent *)self flushBBCacheWithClientInfo:a3];
+    [(PLBBAgent *)self flushBBCacheWithClientInfo:by];
     goto LABEL_46;
   }
 
@@ -7925,18 +7925,18 @@ LABEL_34:
 
     if (byte_2811F4FF1 == 1)
     {
-      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"***NOOP*** Client: %ld, Action: %ld", a3, a4];
+      action2 = [MEMORY[0x277CCACA8] stringWithFormat:@"***NOOP*** Client: %ld, Action: %ld", by, action];
       v35 = MEMORY[0x277D3F178];
       v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v37 = [v36 lastPathComponent];
+      lastPathComponent3 = [v36 lastPathComponent];
       v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logEventNoneBBReportBy:withAction:]"];
-      [v35 logMessage:v31 fromFile:v37 fromFunction:v38 fromLineNumber:3310];
+      [v35 logMessage:action2 fromFile:lastPathComponent3 fromFunction:v38 fromLineNumber:3310];
 
       v39 = PLLogCommon();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v45 = v31;
+        byCopy = action2;
         _os_log_debug_impl(&dword_21A4C6000, v39, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
@@ -7969,38 +7969,38 @@ uint64_t __47__PLBBAgent_logEventNoneBBReportBy_withAction___block_invoke_1724(u
   return result;
 }
 
-- (void)modelLTESLEEPMGRPower:(id)a3
+- (void)modelLTESLEEPMGRPower:(id)power
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D3F258] MavRevStringQuery];
+  powerCopy = power;
+  mavRevStringQuery = [MEMORY[0x277D3F258] MavRevStringQuery];
   if (([MEMORY[0x277D3F208] isBasebandClass:1003001] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003002))
   {
-    v5 = [v3 objectForKeyedSubscript:@"ML1State"];
+    v5 = [powerCopy objectForKeyedSubscript:@"ML1State"];
     [v5 doubleValue];
     v7 = v6;
 
-    v8 = [v3 objectForKeyedSubscript:@"StateDuration"];
+    v8 = [powerCopy objectForKeyedSubscript:@"StateDuration"];
     [v8 doubleValue];
     v10 = v9 / 1000.0;
 
-    v11 = [v3 objectForKeyedSubscript:@"LightSleepDuration"];
+    v11 = [powerCopy objectForKeyedSubscript:@"LightSleepDuration"];
     [v11 doubleValue];
     v13 = v12;
 
-    v14 = [v3 objectForKeyedSubscript:@"DeepSleepDuration"];
+    v14 = [powerCopy objectForKeyedSubscript:@"DeepSleepDuration"];
     [v14 doubleValue];
     v16 = v15;
 
-    v17 = [v3 entryDate];
+    entryDate = [powerCopy entryDate];
     v18 = [MEMORY[0x277D3F258] powerModelForOperatorName:@"baseband"];
-    v19 = [v18 objectForKeyedSubscript:v4];
+    v19 = [v18 objectForKeyedSubscript:mavRevStringQuery];
     v20 = [v19 objectForKeyedSubscript:@"LTE"];
     v21 = [v20 objectForKeyedSubscript:@"SleepStateAwakePower"];
     [v21 doubleValue];
     v23 = v22;
 
-    v24 = [v18 objectForKeyedSubscript:v4];
+    v24 = [v18 objectForKeyedSubscript:mavRevStringQuery];
     v25 = [v24 objectForKeyedSubscript:@"LTE"];
     v26 = [v25 objectForKeyedSubscript:@"SleepStateLightSleepPower"];
     [v26 doubleValue];
@@ -8023,7 +8023,7 @@ uint64_t __47__PLBBAgent_logEventNoneBBReportBy_withAction___block_invoke_1724(u
       v33 = v32;
       [LTESleepMgrStatCumulativeTimestamp timeIntervalSince1970];
       v35 = v34;
-      [v17 timeIntervalSince1970];
+      [entryDate timeIntervalSince1970];
       v37 = 0.0;
       if (v33 < v35 && v35 < v36)
       {
@@ -8045,12 +8045,12 @@ uint64_t __47__PLBBAgent_logEventNoneBBReportBy_withAction___block_invoke_1724(u
     }
 
     LTESleepMgrStatLastEnergy = 0;
-    objc_storeStrong(&LTESleepMgrStatLastTimestamp, v17);
+    objc_storeStrong(&LTESleepMgrStatLastTimestamp, entryDate);
     LTESleepMgrStatCumulativeEnergy = 0;
     v39 = LTESleepMgrStatCumulativeTimestamp;
     LTESleepMgrStatCumulativeTimestamp = 0;
 
-    [v17 timeIntervalSince1970];
+    [entryDate timeIntervalSince1970];
     v41 = v40;
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -8070,9 +8070,9 @@ uint64_t __47__PLBBAgent_logEventNoneBBReportBy_withAction___block_invoke_1724(u
         v43 = [MEMORY[0x277CCACA8] stringWithFormat:@"SleepStats --> Model power: %f, power=%f", v41, *&v37];
         v44 = MEMORY[0x277D3F178];
         v45 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v46 = [v45 lastPathComponent];
+        lastPathComponent = [v45 lastPathComponent];
         v47 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelLTESLEEPMGRPower:]"];
-        [v44 logMessage:v43 fromFile:v46 fromFunction:v47 fromLineNumber:3409];
+        [v44 logMessage:v43 fromFile:lastPathComponent fromFunction:v47 fromLineNumber:3409];
 
         v48 = PLLogCommon();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -8084,8 +8084,8 @@ uint64_t __47__PLBBAgent_logEventNoneBBReportBy_withAction___block_invoke_1724(u
       }
     }
 
-    v49 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v49 createPowerEventBackwardWithRootNodeID:21 withPower:v17 withEndDate:v37];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:21 withPower:entryDate withEndDate:v37];
   }
 
   v50 = *MEMORY[0x277D85DE8];
@@ -8098,44 +8098,44 @@ uint64_t __35__PLBBAgent_modelLTESLEEPMGRPower___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)modelStateTransitionPower:(id)a3 rat:(id)a4 state:(id)a5
+- (void)modelStateTransitionPower:(id)power rat:(id)rat state:(id)state
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D3F258] MavRevStringQuery];
+  powerCopy = power;
+  ratCopy = rat;
+  stateCopy = state;
+  mavRevStringQuery = [MEMORY[0x277D3F258] MavRevStringQuery];
   if (([MEMORY[0x277D3F208] isBasebandMavLeg] & 1) == 0)
   {
-    if ([v9 isEqualToString:@"LTE"] && ((objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003002) & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003001)))
+    if ([ratCopy isEqualToString:@"LTE"] && ((objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003002) & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003001)))
     {
-      if ([v10 isEqualToString:@"Connected"])
+      if ([stateCopy isEqualToString:@"Connected"])
       {
-        v12 = self;
+        selfCopy2 = self;
         v13 = 1;
       }
 
       else
       {
-        v12 = self;
+        selfCopy2 = self;
         v13 = 0;
       }
 
-      [(PLBBAgent *)v12 setLteCurrentState:v13];
+      [(PLBBAgent *)selfCopy2 setLteCurrentState:v13];
     }
 
     else
     {
       v14 = [MEMORY[0x277D3F258] powerModelForOperatorName:@"baseband"];
-      v15 = [v14 objectForKeyedSubscript:v11];
-      v16 = [v15 objectForKeyedSubscript:v9];
-      v17 = [v16 objectForKeyedSubscript:v10];
+      v15 = [v14 objectForKeyedSubscript:mavRevStringQuery];
+      v16 = [v15 objectForKeyedSubscript:ratCopy];
+      v17 = [v16 objectForKeyedSubscript:stateCopy];
 
       if (v17)
       {
-        v18 = [v14 objectForKeyedSubscript:v11];
-        v19 = [v18 objectForKeyedSubscript:v9];
-        v20 = [v19 objectForKeyedSubscript:v10];
+        v18 = [v14 objectForKeyedSubscript:mavRevStringQuery];
+        v19 = [v18 objectForKeyedSubscript:ratCopy];
+        v20 = [v19 objectForKeyedSubscript:stateCopy];
         [v20 doubleValue];
         v22 = v21;
       }
@@ -8161,16 +8161,16 @@ uint64_t __35__PLBBAgent_modelLTESLEEPMGRPower___block_invoke(uint64_t a1)
         if (byte_2811F4FF3 == 1)
         {
           v24 = MEMORY[0x277CCACA8];
-          v25 = [v14 objectForKeyedSubscript:v11];
-          v26 = [v25 objectForKeyedSubscript:v9];
-          v27 = [v26 objectForKeyedSubscript:v10];
-          v36 = [v24 stringWithFormat:@"Model RRC state transistion: mavVersion=%@, rat=%@, state=%@, basebandModel=%@", v11, v9, v10, v27];
+          v25 = [v14 objectForKeyedSubscript:mavRevStringQuery];
+          v26 = [v25 objectForKeyedSubscript:ratCopy];
+          v27 = [v26 objectForKeyedSubscript:stateCopy];
+          v36 = [v24 stringWithFormat:@"Model RRC state transistion: mavVersion=%@, rat=%@, state=%@, basebandModel=%@", mavRevStringQuery, ratCopy, stateCopy, v27];
 
           v28 = MEMORY[0x277D3F178];
           v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-          v30 = [v29 lastPathComponent];
+          lastPathComponent = [v29 lastPathComponent];
           v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelStateTransitionPower:rat:state:]"];
-          [v28 logMessage:v36 fromFile:v30 fromFunction:v31 fromLineNumber:3447];
+          [v28 logMessage:v36 fromFile:lastPathComponent fromFunction:v31 fromLineNumber:3447];
 
           v32 = PLLogCommon();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -8182,10 +8182,10 @@ uint64_t __35__PLBBAgent_modelLTESLEEPMGRPower___block_invoke(uint64_t a1)
         }
       }
 
-      v33 = [v8 entryDate];
-      v34 = [MEMORY[0x277D3F0C0] sharedInstance];
+      entryDate = [powerCopy entryDate];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
       [(PLBBAgent *)self lastBBProtoPower];
-      [v34 createPowerEventBackwardWithRootNodeID:22 withPower:v33 withEndDate:?];
+      [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:22 withPower:entryDate withEndDate:?];
 
       [(PLBBAgent *)self setLastBBProtoPower:v22];
     }
@@ -8201,13 +8201,13 @@ uint64_t __49__PLBBAgent_modelStateTransitionPower_rat_state___block_invoke(uint
   return result;
 }
 
-- (void)modelMav10BBHWPower:(id)a3
+- (void)modelMav10BBHWPower:(id)power
 {
   v1175 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+  powerCopy = power;
+  v4 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
 
-  v1134 = v3;
+  v1134 = powerCopy;
   if (!v4)
   {
     v1156 = 0;
@@ -8223,7 +8223,7 @@ uint64_t __49__PLBBAgent_modelStateTransitionPower_rat_state___block_invoke(uint
   v1169 = 0u;
   v1170 = 0u;
   v1168 = 0u;
-  v5 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+  v5 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
   v6 = [v5 countByEnumeratingWithState:&v1168 objects:v1174 count:16];
   if (!v6)
   {
@@ -8255,11 +8255,11 @@ uint64_t __49__PLBBAgent_modelStateTransitionPower_rat_state___block_invoke(uint
 
       v11 = *(*(&v1168 + 1) + 8 * i);
       v12 = [v11 objectForKeyedSubscript:@"RadioTech"];
-      v13 = [v12 intValue];
+      intValue = [v12 intValue];
 
-      if (v13 > 2)
+      if (intValue > 2)
       {
-        switch(v13)
+        switch(intValue)
         {
           case 3:
             v14 = v1159;
@@ -8281,7 +8281,7 @@ uint64_t __49__PLBBAgent_modelStateTransitionPower_rat_state___block_invoke(uint
         goto LABEL_21;
       }
 
-      if (!v13)
+      if (!intValue)
       {
         v14 = v1158;
         v15 = v8;
@@ -8293,7 +8293,7 @@ LABEL_21:
         continue;
       }
 
-      if (v13 == 1)
+      if (intValue == 1)
       {
         v14 = v1157;
         v15 = v8;
@@ -8303,7 +8303,7 @@ LABEL_21:
 
       v14 = v8;
       v15 = v11;
-      if (v13 == 2)
+      if (intValue == 2)
       {
         goto LABEL_21;
       }
@@ -8315,12 +8315,12 @@ LABEL_21:
   while (v7);
 LABEL_27:
 
-  v3 = v1134;
+  powerCopy = v1134;
 LABEL_28:
-  v17 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRf1x"];
+  v17 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRf1x"];
   if (v17)
   {
-    v18 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRf1x"];
+    v18 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRf1x"];
     v1130 = [v18 objectAtIndexedSubscript:0];
   }
 
@@ -8329,10 +8329,10 @@ LABEL_28:
     v1130 = 0;
   }
 
-  v19 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfHDR"];
+  v19 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfHDR"];
   if (v19)
   {
-    v20 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfHDR"];
+    v20 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfHDR"];
     v1129 = [v20 objectAtIndexedSubscript:0];
   }
 
@@ -8341,10 +8341,10 @@ LABEL_28:
     v1129 = 0;
   }
 
-  v21 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfGSM"];
+  v21 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfGSM"];
   if (v21)
   {
-    v22 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfGSM"];
+    v22 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfGSM"];
     v1122 = [v22 objectAtIndexedSubscript:0];
   }
 
@@ -8353,10 +8353,10 @@ LABEL_28:
     v1122 = 0;
   }
 
-  v23 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfWCDMA"];
+  v23 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfWCDMA"];
   if (v23)
   {
-    v24 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfWCDMA"];
+    v24 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfWCDMA"];
     v25 = [v24 objectAtIndexedSubscript:0];
   }
 
@@ -8365,10 +8365,10 @@ LABEL_28:
     v25 = 0;
   }
 
-  v26 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfLTE"];
+  v26 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfLTE"];
   if (v26)
   {
-    v27 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfLTE"];
+    v27 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfLTE"];
     v1131 = [v27 objectAtIndexedSubscript:0];
   }
 
@@ -8377,10 +8377,10 @@ LABEL_28:
     v1131 = 0;
   }
 
-  v28 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfTDS"];
+  v28 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfTDS"];
   if (v28)
   {
-    v29 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfTDS"];
+    v29 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfTDS"];
     v1132 = [v29 objectAtIndexedSubscript:0];
   }
 
@@ -8389,16 +8389,16 @@ LABEL_28:
     v1132 = 0;
   }
 
-  v30 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
+  v30 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
   v31 = [v30 objectAtIndexedSubscript:0];
 
-  v32 = [v31 entryDate];
+  entryDate = [v31 entryDate];
   v1118 = v31;
   v33 = [v31 objectForKeyedSubscript:@"LogDuration"];
   [v33 doubleValue];
   v35 = v34;
 
-  v1153 = [MEMORY[0x277D3F258] MavRevStringQuery];
+  mavRevStringQuery = [MEMORY[0x277D3F258] MavRevStringQuery];
   if (v35 <= 0.0)
   {
     goto LABEL_321;
@@ -8410,14 +8410,14 @@ LABEL_28:
   v1110 = 0.0;
   v37 = 0.0;
   v1127 = v25;
-  v1128 = v32;
+  v1128 = entryDate;
   v1154 = v36;
   if (v1130)
   {
     v38 = [v1130 objectForKeyedSubscript:@"DTxOn"];
     [v38 doubleValue];
     v40 = v39;
-    v41 = [v36 objectForKeyedSubscript:v1153];
+    v41 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v42 = [v41 objectForKeyedSubscript:@"CDMA2K"];
     v43 = [v42 objectForKeyedSubscript:@"DTxOn"];
     [v43 doubleValue];
@@ -8427,7 +8427,7 @@ LABEL_28:
     v47 = [v46 objectAtIndexedSubscript:1];
     [v47 doubleValue];
     v49 = v48;
-    v50 = [v36 objectForKeyedSubscript:v1153];
+    v50 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v51 = [v50 objectForKeyedSubscript:@"CDMA2K"];
     v52 = [v51 objectForKeyedSubscript:@"Voice"];
     [v52 doubleValue];
@@ -8447,7 +8447,7 @@ LABEL_28:
     v64 = [v46 objectAtIndexedSubscript:5];
     [v64 doubleValue];
     v66 = v63 + v65;
-    v67 = [v57 objectForKeyedSubscript:v1153];
+    v67 = [v57 objectForKeyedSubscript:mavRevStringQuery];
     v68 = [v67 objectForKeyedSubscript:@"CDMA2K"];
     v69 = [v68 objectForKeyedSubscript:@"Connected"];
     [v69 doubleValue];
@@ -8463,7 +8463,7 @@ LABEL_28:
         v76 = [v74 objectAtIndexedSubscript:j];
         [v76 doubleValue];
         v78 = v77;
-        v79 = [v1154 objectForKeyedSubscript:v1153];
+        v79 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
         v80 = [v79 objectForKeyedSubscript:@"CDMA2K"];
         v81 = [v80 objectForKeyedSubscript:@"txPower"];
         v82 = [v81 objectAtIndexedSubscript:j];
@@ -8479,14 +8479,14 @@ LABEL_28:
         v37 = v37 + v86;
       }
 
-      v32 = v1128;
+      entryDate = v1128;
     }
 
     v87 = v45 / v35 + v73 / v35;
     if (v87 <= 0.0)
     {
       v89 = 0.0;
-      v3 = v1134;
+      powerCopy = v1134;
       v25 = v1127;
       v36 = v1154;
     }
@@ -8495,7 +8495,7 @@ LABEL_28:
     {
       v88 = v54 + v71;
       v89 = 0.0;
-      v3 = v1134;
+      powerCopy = v1134;
       v25 = v1127;
       v36 = v1154;
       if (v54 + v71 > 0.0)
@@ -8517,7 +8517,7 @@ LABEL_28:
     [v90 doubleValue];
     v92 = v91;
 
-    v93 = [v36 objectForKeyedSubscript:v1153];
+    v93 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v94 = [v93 objectForKeyedSubscript:@"1xEVDO"];
     v95 = [v94 objectForKeyedSubscript:@"Connected"];
     [v95 doubleValue];
@@ -8563,18 +8563,18 @@ LABEL_28:
 
       if (byte_2811F4FF4 == 1)
       {
-        v117 = [MEMORY[0x277CCACA8] stringWithFormat:@"EVDO stats: %f %f %f %f %f %f", *&v99, v102, *&v105, v108, v111, v114];
+        v114 = [MEMORY[0x277CCACA8] stringWithFormat:@"EVDO stats: %f %f %f %f %f %f", *&v99, v102, *&v105, v108, v111, v114];
         v118 = MEMORY[0x277D3F178];
         v119 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v120 = [v119 lastPathComponent];
+        lastPathComponent = [v119 lastPathComponent];
         v121 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelMav10BBHWPower:]"];
-        [v118 logMessage:v117 fromFile:v120 fromFunction:v121 fromLineNumber:3677];
+        [v118 logMessage:v114 fromFile:lastPathComponent fromFunction:v121 fromLineNumber:3677];
 
         v122 = PLLogCommon();
         if (os_log_type_enabled(v122, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v1173 = v117;
+          v1173 = v114;
           _os_log_debug_impl(&dword_21A4C6000, v122, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
       }
@@ -8583,7 +8583,7 @@ LABEL_28:
     v123 = v92 * v1143;
     if (v99 + v105 <= v92)
     {
-      v124 = [v36 objectForKeyedSubscript:v1153];
+      v124 = [v36 objectForKeyedSubscript:mavRevStringQuery];
       v125 = [v124 objectForKeyedSubscript:@"1xEVDO"];
       v126 = [v125 objectForKeyedSubscript:@"DTXSavings"];
       [v126 doubleValue];
@@ -8601,7 +8601,7 @@ LABEL_28:
       v132 = [v129 objectAtIndexedSubscript:v130];
       [v132 doubleValue];
       v134 = v133;
-      v135 = [v1154 objectForKeyedSubscript:v1153];
+      v135 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v136 = [v135 objectForKeyedSubscript:@"1xEVDO"];
       v137 = [v136 objectForKeyedSubscript:@"txPower"];
       v138 = [v137 objectAtIndexedSubscript:v130];
@@ -8621,9 +8621,9 @@ LABEL_28:
 
     v1104 = v123 / v1133 + v131 / v1133;
 
-    v3 = v1134;
+    powerCopy = v1134;
     v25 = v1127;
-    v32 = v1128;
+    entryDate = v1128;
     v36 = v1154;
   }
 
@@ -8634,7 +8634,7 @@ LABEL_28:
     v144 = [v143 objectAtIndexedSubscript:1];
     [v144 doubleValue];
     v146 = v145;
-    v147 = [v36 objectForKeyedSubscript:v1153];
+    v147 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v148 = [v147 objectForKeyedSubscript:@"GSM"];
     v149 = [v148 objectForKeyedSubscript:@"ConnStates"];
     v150 = [v149 objectAtIndexedSubscript:1];
@@ -8645,7 +8645,7 @@ LABEL_28:
     v153 = [v143 objectAtIndexedSubscript:2];
     [v153 doubleValue];
     v155 = v154;
-    v156 = [v36 objectForKeyedSubscript:v1153];
+    v156 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v157 = [v156 objectForKeyedSubscript:@"GSM"];
     v158 = [v157 objectForKeyedSubscript:@"ConnStates"];
     v159 = [v158 objectAtIndexedSubscript:2];
@@ -8662,7 +8662,7 @@ LABEL_28:
         v165 = [v162 objectAtIndexedSubscript:v163];
         [v165 doubleValue];
         v167 = v166;
-        v168 = [v1154 objectForKeyedSubscript:v1153];
+        v168 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
         v169 = [v168 objectForKeyedSubscript:@"GSM"];
         v170 = [v169 objectForKeyedSubscript:@"txPower"];
         v171 = [v170 objectAtIndexedSubscript:v163];
@@ -8690,7 +8690,7 @@ LABEL_28:
       v183 = [v176 objectAtIndexedSubscript:3];
       [v183 doubleValue];
       v185 = v182 + v184;
-      v186 = [v1154 objectForKeyedSubscript:v1153];
+      v186 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v187 = [v186 objectForKeyedSubscript:@"GSM"];
       v188 = [v187 objectForKeyedSubscript:@"RX"];
       [v188 doubleValue];
@@ -8718,9 +8718,9 @@ LABEL_28:
         }
       }
 
-      v3 = v1134;
+      powerCopy = v1134;
       v25 = v1127;
-      v32 = v1128;
+      entryDate = v1128;
       v36 = v1154;
     }
 
@@ -8728,7 +8728,7 @@ LABEL_28:
     {
       v192 = 0.0;
       v193 = 0.0;
-      v32 = v1128;
+      entryDate = v1128;
       v36 = v1154;
       v25 = v1127;
     }
@@ -8792,9 +8792,9 @@ LABEL_28:
         v207 = [MEMORY[0x277CCACA8] stringWithFormat:@"DurationInRabType = %@, DurationInRabMode = %@, SCEqTypeDuration = %@, DCEqTypeDuration = %@, SCQSetNumCell = %@, DCQSetNumCell = %@, TimeInCarrierMode=%@, fetCount=%f", v200, v201, v1150, v1138, v1135, v1124, v1144, *&v195];
         v208 = MEMORY[0x277D3F178];
         v209 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v210 = [v209 lastPathComponent];
+        lastPathComponent2 = [v209 lastPathComponent];
         v211 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelMav10BBHWPower:]"];
-        [v208 logMessage:v207 fromFile:v210 fromFunction:v211 fromLineNumber:3787];
+        [v208 logMessage:v207 fromFile:lastPathComponent2 fromFunction:v211 fromLineNumber:3787];
 
         v212 = PLLogCommon();
         if (os_log_type_enabled(v212, OS_LOG_TYPE_DEBUG))
@@ -8807,7 +8807,7 @@ LABEL_28:
     }
 
     v1085 = v195;
-    v213 = [v36 objectForKeyedSubscript:v1153];
+    v213 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v214 = [v213 objectForKeyedSubscript:@"WCDMA"];
     v215 = [v214 objectForKeyedSubscript:@"Cell_FACH"];
     [v215 doubleValue];
@@ -8826,21 +8826,21 @@ LABEL_28:
     [v221 doubleValue];
     v1111 = v222;
 
-    v223 = [v36 objectForKeyedSubscript:v1153];
+    v223 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v224 = [v223 objectForKeyedSubscript:@"WCDMA"];
     v225 = [v224 objectForKeyedSubscript:@"RabMode"];
     v226 = [v225 objectAtIndexedSubscript:1];
     [v226 doubleValue];
     v1078 = v227;
 
-    v228 = [v36 objectForKeyedSubscript:v1153];
+    v228 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v229 = [v228 objectForKeyedSubscript:@"WCDMA"];
     v230 = [v229 objectForKeyedSubscript:@"RabMode"];
     v231 = [v230 objectAtIndexedSubscript:2];
     [v231 doubleValue];
     v1073 = v232;
 
-    v233 = [v36 objectForKeyedSubscript:v1153];
+    v233 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v234 = [v233 objectForKeyedSubscript:@"WCDMA"];
     v235 = [v234 objectForKeyedSubscript:@"RabMode"];
     v236 = [v235 objectAtIndexedSubscript:3];
@@ -8850,7 +8850,7 @@ LABEL_28:
     v1105 = [v200 objectAtIndexedSubscript:1];
     [v1105 doubleValue];
     v239 = v238;
-    v1099 = [v36 objectForKeyedSubscript:v1153];
+    v1099 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v1059 = [v1099 objectForKeyedSubscript:@"WCDMA"];
     v1055 = [v1059 objectForKeyedSubscript:@"RabType"];
     v1051 = [v1055 objectAtIndexedSubscript:1];
@@ -8859,7 +8859,7 @@ LABEL_28:
     v1047 = [v200 objectAtIndexedSubscript:2];
     [v1047 doubleValue];
     v243 = v242;
-    v244 = [v36 objectForKeyedSubscript:v1153];
+    v244 = [v36 objectForKeyedSubscript:mavRevStringQuery];
     v245 = [v244 objectForKeyedSubscript:@"WCDMA"];
     v246 = [v245 objectForKeyedSubscript:@"RabType"];
     v247 = [v246 objectAtIndexedSubscript:2];
@@ -8869,7 +8869,7 @@ LABEL_28:
     v250 = [v200 objectAtIndexedSubscript:3];
     [v250 doubleValue];
     v1066 = v251;
-    v252 = [v1154 objectForKeyedSubscript:v1153];
+    v252 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v253 = [v252 objectForKeyedSubscript:@"WCDMA"];
     v254 = [v253 objectForKeyedSubscript:@"RabType"];
     v255 = [v254 objectAtIndexedSubscript:3];
@@ -8894,7 +8894,7 @@ LABEL_28:
       v268 = [v1138 objectAtIndexedSubscript:2];
       [v268 doubleValue];
       v270 = v267 - v269;
-      v271 = [v1154 objectForKeyedSubscript:v1153];
+      v271 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v272 = [v271 objectForKeyedSubscript:@"WCDMA"];
       v273 = [v272 objectForKeyedSubscript:@"SCeq"];
       v274 = [v273 objectAtIndexedSubscript:1];
@@ -8906,7 +8906,7 @@ LABEL_28:
     v277 = [v1138 objectAtIndexedSubscript:2];
     [v277 doubleValue];
     v279 = v278;
-    v280 = [v1154 objectForKeyedSubscript:v1153];
+    v280 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v281 = [v280 objectForKeyedSubscript:@"WCDMA"];
     v282 = [v281 objectForKeyedSubscript:@"DCeq"];
     v283 = [v282 objectAtIndexedSubscript:2];
@@ -8916,7 +8916,7 @@ LABEL_28:
     v286 = [v1135 objectAtIndexedSubscript:2];
     [v286 doubleValue];
     v288 = v287;
-    v289 = [v1154 objectForKeyedSubscript:v1153];
+    v289 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v290 = [v289 objectForKeyedSubscript:@"WCDMA"];
     v291 = [v290 objectForKeyedSubscript:@"SCeq"];
     v292 = [v291 objectAtIndexedSubscript:1];
@@ -8926,7 +8926,7 @@ LABEL_28:
     v294 = [v1135 objectAtIndexedSubscript:3];
     [v294 doubleValue];
     v1056 = v295;
-    v296 = [v1154 objectForKeyedSubscript:v1153];
+    v296 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v297 = [v296 objectForKeyedSubscript:@"WCDMA"];
     v298 = [v297 objectForKeyedSubscript:@"SCeq"];
     v299 = [v298 objectAtIndexedSubscript:2];
@@ -8936,7 +8936,7 @@ LABEL_28:
     v1106 = [v1135 objectAtIndexedSubscript:1];
     [v1106 doubleValue];
     v302 = v301;
-    v1043 = [v1154 objectForKeyedSubscript:v1153];
+    v1043 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v1041 = [v1043 objectForKeyedSubscript:@"WCDMA"];
     v1040 = [v1041 objectForKeyedSubscript:@"SCqset"];
     v1039 = [v1040 objectAtIndexedSubscript:1];
@@ -8945,7 +8945,7 @@ LABEL_28:
     v1038 = [v1135 objectAtIndexedSubscript:2];
     [v1038 doubleValue];
     v306 = v305;
-    v1037 = [v1154 objectForKeyedSubscript:v1153];
+    v1037 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v1036 = [v1037 objectForKeyedSubscript:@"WCDMA"];
     v1035 = [v1036 objectForKeyedSubscript:@"SCqset"];
     v1034 = [v1035 objectAtIndexedSubscript:2];
@@ -8954,7 +8954,7 @@ LABEL_28:
     v1033 = [v1135 objectAtIndexedSubscript:3];
     [v1033 doubleValue];
     v310 = v309;
-    v1032 = [v1154 objectForKeyedSubscript:v1153];
+    v1032 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v1031 = [v1032 objectForKeyedSubscript:@"WCDMA"];
     v1030 = [v1031 objectForKeyedSubscript:@"SCqset"];
     v1029 = [v1030 objectAtIndexedSubscript:3];
@@ -8963,7 +8963,7 @@ LABEL_28:
     v1028 = [v1124 objectAtIndexedSubscript:1];
     [v1028 doubleValue];
     v314 = v313;
-    v1027 = [v1154 objectForKeyedSubscript:v1153];
+    v1027 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v1026 = [v1027 objectForKeyedSubscript:@"WCDMA"];
     v1025 = [v1026 objectForKeyedSubscript:@"DCqset"];
     v1024 = [v1025 objectAtIndexedSubscript:1];
@@ -8972,7 +8972,7 @@ LABEL_28:
     v1023 = [v1124 objectAtIndexedSubscript:2];
     [v1023 doubleValue];
     v318 = v317;
-    v319 = [v1154 objectForKeyedSubscript:v1153];
+    v319 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v320 = [v319 objectForKeyedSubscript:@"WCDMA"];
     v321 = [v320 objectForKeyedSubscript:@"DCqset"];
     v322 = [v321 objectAtIndexedSubscript:2];
@@ -8981,7 +8981,7 @@ LABEL_28:
     v324 = [v1124 objectAtIndexedSubscript:3];
     [v324 doubleValue];
     v1046 = v325;
-    v326 = [v1154 objectForKeyedSubscript:v1153];
+    v326 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v327 = [v326 objectForKeyedSubscript:@"WCDMA"];
     v328 = [v327 objectForKeyedSubscript:@"DCqset"];
     v329 = [v328 objectAtIndexedSubscript:3];
@@ -8991,21 +8991,21 @@ LABEL_28:
     v331 = [v1144 objectAtIndexedSubscript:1];
     [v331 doubleValue];
     v1044 = v332;
-    v333 = [v1154 objectForKeyedSubscript:v1153];
+    v333 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v334 = [v333 objectForKeyedSubscript:@"WCDMA"];
     v335 = [v334 objectForKeyedSubscript:@"DC"];
     [v335 doubleValue];
     v1042 = v336;
 
     v1107 = [v1159 objectForKeyedSubscript:@"RSSIModeCount"];
-    v337 = [v1154 objectForKeyedSubscript:v1153];
+    v337 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v338 = [v337 objectForKeyedSubscript:@"WCDMA"];
     v339 = [v338 objectForKeyedSubscript:@"RXD"];
     v340 = [v339 objectForKeyedSubscript:@"DC"];
     [v340 doubleValue];
     v342 = v341;
 
-    v343 = [v1154 objectForKeyedSubscript:v1153];
+    v343 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v344 = [v343 objectForKeyedSubscript:@"WCDMA"];
     v345 = [v344 objectForKeyedSubscript:@"RXD"];
     v346 = [v345 objectForKeyedSubscript:@"SC"];
@@ -9036,7 +9036,7 @@ LABEL_28:
     v363 = v1114 * v1073;
     v364 = v1111 * v1069;
     v365 = v276 + v1066 * v1063;
-    v366 = [v1154 objectForKeyedSubscript:v1153];
+    v366 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v367 = [v366 objectForKeyedSubscript:@"WCDMA"];
     v368 = [v367 objectForKeyedSubscript:@"FetCnt"];
     [v368 doubleValue];
@@ -9095,7 +9095,7 @@ LABEL_28:
       v379 = [v1119 objectAtIndexedSubscript:v375];
       [v379 doubleValue];
       v381 = v380;
-      v382 = [v1154 objectForKeyedSubscript:v1153];
+      v382 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v383 = [v382 objectForKeyedSubscript:@"WCDMA"];
       v384 = [v383 objectForKeyedSubscript:@"txPower"];
       v385 = [v384 objectAtIndexedSubscript:v375];
@@ -9108,18 +9108,18 @@ LABEL_28:
     while (v376 != v375);
     if (v1070 >= v376)
     {
-      v3 = v1134;
+      powerCopy = v1134;
       v25 = v1127;
-      v32 = v1128;
+      entryDate = v1128;
       v388 = v1119;
     }
 
     else
     {
       v387 = v1070;
-      v3 = v1134;
+      powerCopy = v1134;
       v25 = v1127;
-      v32 = v1128;
+      entryDate = v1128;
       v388 = v1119;
       do
       {
@@ -9177,9 +9177,9 @@ LABEL_28:
         v397 = [MEMORY[0x277CCACA8] stringWithFormat:@"wcdmaDataPower = %f, wcdmaFACHPower = %f, wcdmaPSonlyPower = %f, wcdmaMRABPower = %f, wcdmaDataAdder = %f", *&v372, *&v1083, *&v1079, *&v1074, *&v393];
         v398 = MEMORY[0x277D3F178];
         v399 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v400 = [v399 lastPathComponent];
+        lastPathComponent3 = [v399 lastPathComponent];
         v401 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelMav10BBHWPower:]"];
-        [v398 logMessage:v397 fromFile:v400 fromFunction:v401 fromLineNumber:3936];
+        [v398 logMessage:v397 fromFile:lastPathComponent3 fromFunction:v401 fromLineNumber:3936];
 
         v402 = PLLogCommon();
         if (os_log_type_enabled(v402, OS_LOG_TYPE_DEBUG))
@@ -9189,7 +9189,7 @@ LABEL_28:
           _os_log_debug_impl(&dword_21A4C6000, v402, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        v32 = v1128;
+        entryDate = v1128;
         v25 = v1127;
       }
     }
@@ -9214,9 +9214,9 @@ LABEL_28:
         v405 = [MEMORY[0x277CCACA8] stringWithFormat:@"wcdmaVoicePower = %f, wcdmaCSonlyPower = %f, wcdmaVoiceAdder = %f", *&v1113, *&v1086, *&v394];
         v406 = MEMORY[0x277D3F178];
         v407 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-        v408 = [v407 lastPathComponent];
+        lastPathComponent4 = [v407 lastPathComponent];
         v409 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelMav10BBHWPower:]"];
-        [v406 logMessage:v405 fromFile:v408 fromFunction:v409 fromLineNumber:3937];
+        [v406 logMessage:v405 fromFile:lastPathComponent4 fromFunction:v409 fromLineNumber:3937];
 
         v410 = PLLogCommon();
         if (os_log_type_enabled(v410, OS_LOG_TYPE_DEBUG))
@@ -9226,7 +9226,7 @@ LABEL_28:
           _os_log_debug_impl(&dword_21A4C6000, v410, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
         }
 
-        v32 = v1128;
+        entryDate = v1128;
         v25 = v1127;
       }
     }
@@ -9255,7 +9255,7 @@ LABEL_28:
   v1125 = [v1131 objectForKeyedSubscript:@"DLTBSzArr"];
   v1112 = [v1131 objectForKeyedSubscript:@"CASCCStateArr"];
   v413 = [v1131 objectForKeyedSubscript:@"DupMode"];
-  v414 = [v413 longValue];
+  longValue = [v413 longValue];
 
   v1136 = v412;
   if ([MEMORY[0x277D3F180] debugEnabled])
@@ -9274,18 +9274,18 @@ LABEL_28:
 
     if (byte_2811F4FF8 == 1)
     {
-      v417 = [MEMORY[0x277CCACA8] stringWithFormat:@"C0TBSz = %@, C1TBSz = %@, carrierAggregationStates = %@", v411, v412, v1112];
+      v1112 = [MEMORY[0x277CCACA8] stringWithFormat:@"C0TBSz = %@, C1TBSz = %@, carrierAggregationStates = %@", v411, v412, v1112];
       v418 = MEMORY[0x277D3F178];
       v419 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v420 = [v419 lastPathComponent];
+      lastPathComponent5 = [v419 lastPathComponent];
       v421 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelMav10BBHWPower:]"];
-      [v418 logMessage:v417 fromFile:v420 fromFunction:v421 fromLineNumber:3955];
+      [v418 logMessage:v1112 fromFile:lastPathComponent5 fromFunction:v421 fromLineNumber:3955];
 
       v422 = PLLogCommon();
       if (os_log_type_enabled(v422, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v1173 = v417;
+        v1173 = v1112;
         _os_log_debug_impl(&dword_21A4C6000, v422, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
@@ -9294,7 +9294,7 @@ LABEL_28:
   }
 
   v423 = @"FDD";
-  if (v414 == 1)
+  if (longValue == 1)
   {
     v423 = @"TDD";
   }
@@ -9310,7 +9310,7 @@ LABEL_28:
     v427 = [v1084 objectAtIndexedSubscript:2];
     [v427 doubleValue];
     v429 = v428;
-    v430 = [v1154 objectForKeyedSubscript:v1153];
+    v430 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v431 = [v430 objectForKeyedSubscript:@"LTE"];
     v432 = [v431 objectForKeyedSubscript:@"SemiLite"];
     [v432 doubleValue];
@@ -9318,7 +9318,7 @@ LABEL_28:
     v1101 = [v1084 objectAtIndexedSubscript:3];
     [v1101 doubleValue];
     v436 = v435;
-    v1091 = [v1154 objectForKeyedSubscript:v1153];
+    v1091 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v1087 = [v1091 objectForKeyedSubscript:@"LTE"];
     v1075 = [v1087 objectForKeyedSubscript:@"FullLite"];
     [v1075 doubleValue];
@@ -9326,7 +9326,7 @@ LABEL_28:
     v439 = [v1084 objectAtIndexedSubscript:4];
     [v439 doubleValue];
     v441 = v440;
-    v442 = [v1154 objectForKeyedSubscript:v1153];
+    v442 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v443 = [v442 objectForKeyedSubscript:@"LTE"];
     v444 = [v443 objectForKeyedSubscript:@"DeepLite"];
     [v444 doubleValue];
@@ -9342,7 +9342,7 @@ LABEL_28:
     v1067 = [v1080 objectAtIndexedSubscript:2];
     [v1067 doubleValue];
     v452 = v451;
-    v1071 = [v1154 objectForKeyedSubscript:v1153];
+    v1071 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v1061 = [v1071 objectForKeyedSubscript:@"LTE"];
     v1064 = [v1061 objectForKeyedSubscript:@"MacroSleep"];
     [v1064 doubleValue];
@@ -9350,7 +9350,7 @@ LABEL_28:
     v1101 = [v1080 objectAtIndexedSubscript:3];
     [v1101 doubleValue];
     v456 = v455;
-    v1091 = [v1154 objectForKeyedSubscript:v1153];
+    v1091 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v1087 = [v1091 objectForKeyedSubscript:@"LTE"];
     v1075 = [v1087 objectForKeyedSubscript:@"LightSleep"];
     [v1075 doubleValue];
@@ -9358,7 +9358,7 @@ LABEL_28:
     v1057 = [v1080 objectAtIndexedSubscript:4];
     [v1057 doubleValue];
     v460 = v459;
-    v1049 = [v1154 objectForKeyedSubscript:v1153];
+    v1049 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v1053 = [v1049 objectForKeyedSubscript:@"LTE"];
     v444 = [v1053 objectForKeyedSubscript:@"DeepLightSleep"];
     [v444 doubleValue];
@@ -9366,7 +9366,7 @@ LABEL_28:
     v463 = [v1080 objectAtIndexedSubscript:5];
     [v463 doubleValue];
     v465 = v464;
-    v466 = [v1154 objectForKeyedSubscript:v1153];
+    v466 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v467 = [v466 objectForKeyedSubscript:@"LTE"];
     v468 = [v467 objectForKeyedSubscript:@"QuickDeepLightSleep"];
     [v468 doubleValue];
@@ -9374,7 +9374,7 @@ LABEL_28:
     v471 = [v1080 objectAtIndexedSubscript:6];
     [v471 doubleValue];
     v473 = v472;
-    v474 = [v1154 objectForKeyedSubscript:v1153];
+    v474 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v475 = [v474 objectForKeyedSubscript:@"LTE"];
     v476 = [v475 objectForKeyedSubscript:@"DeepSleep"];
     [v476 doubleValue];
@@ -9442,12 +9442,12 @@ LABEL_28:
   if (v491)
   {
     v493 = 0x277D3F000uLL;
-    v494 = v1153;
+    v494 = mavRevStringQuery;
     v495 = v1154;
     v496 = v1112;
     if (([MEMORY[0x277D3F208] isBasebandClass:1003004] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003005) & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003007))
     {
-      v497 = [v1154 objectForKeyedSubscript:v1153];
+      v497 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v498 = [v497 objectForKeyedSubscript:@"LTE"];
       v499 = [v498 objectForKeyedSubscript:@"elnaAdder"];
       [v499 doubleValue];
@@ -9457,7 +9457,7 @@ LABEL_28:
 
   else
   {
-    v494 = v1153;
+    v494 = mavRevStringQuery;
     v495 = v1154;
     v493 = 0x277D3F000uLL;
     v496 = v1112;
@@ -9506,7 +9506,7 @@ LABEL_28:
     v501 = [v496 objectAtIndexedSubscript:4];
     [v501 doubleValue];
     v539 = v538;
-    v504 = [v1154 objectForKeyedSubscript:v1153];
+    v504 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v505 = [v504 objectForKeyedSubscript:@"LTE"];
     v506 = [v505 objectForKeyedSubscript:@"ActiveCA1configured"];
     v507 = [v506 objectForKeyedSubscript:v1145];
@@ -9581,7 +9581,7 @@ LABEL_28:
   {
     v511 = [v1116 objectAtIndexedSubscript:2];
 
-    v512 = v1153;
+    v512 = mavRevStringQuery;
     v513 = v1154;
     if (v511)
     {
@@ -9595,7 +9595,7 @@ LABEL_28:
   {
     v541 = [v1131 objectForKeyedSubscript:@"PCC_BW"];
 
-    v512 = v1153;
+    v512 = mavRevStringQuery;
     v513 = v1154;
     if (v541)
     {
@@ -9758,7 +9758,7 @@ LABEL_186:
   if (([*(v493 + 520) isBasebandClass:1003003] & 1) != 0 || objc_msgSend(*(v493 + 520), "isBasebandClass:", 1003004))
   {
     v671 = [v1116 objectAtIndexedSubscript:2];
-    v672 = v1153;
+    v672 = mavRevStringQuery;
     v673 = v1154;
     if (v671)
     {
@@ -9789,8 +9789,8 @@ LABEL_229:
 
   v692 = [*(v493 + 520) isBasebandClass:1003005];
   v693 = [v1131 objectForKeyedSubscript:@"PCC_BW"];
-  v683 = v693;
-  v672 = v1153;
+  v682 = v693;
+  v672 = mavRevStringQuery;
   v673 = v1154;
   if (!v692)
   {
@@ -9809,15 +9809,15 @@ LABEL_229:
         [(PLBBAgent *)self translateChannelRBsToChannelBW:?];
         v709 = v706 + v708;
 
-        v710 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", v709];
-        v711 = [v1154 objectForKeyedSubscript:v1153];
+        v709 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", v709];
+        v711 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
         v712 = [v711 objectForKeyedSubscript:@"LTE"];
         v713 = [v712 objectForKeyedSubscript:@"2CAMultiplier"];
-        v714 = [v713 objectForKeyedSubscript:v710];
+        v714 = [v713 objectForKeyedSubscript:v709];
         [v714 doubleValue];
         v716 = v715;
 
-        v672 = v1153;
+        v672 = mavRevStringQuery;
         if (v716 > 0.0)
         {
           v558 = v558 * v716;
@@ -9838,7 +9838,7 @@ LABEL_229:
       goto LABEL_228;
     }
 
-    v719 = v718;
+    v731 = v718;
     v720 = [v717 objectForKeyedSubscript:@"SCC1_BW"];
     if (v720)
     {
@@ -9865,11 +9865,11 @@ LABEL_228:
       [(PLBBAgent *)self translateChannelRBsToChannelBW:?];
       v731 = v728 + v730;
 
-      v719 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", v731];
+      v731 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", v731];
       v732 = [v1154 objectForKeyedSubscript:v672];
       v733 = [v732 objectForKeyedSubscript:@"LTE"];
       v734 = [v733 objectForKeyedSubscript:@"3CAMultiplier"];
-      [v734 objectForKeyedSubscript:v719];
+      [v734 objectForKeyedSubscript:v731];
       v736 = v735 = v672;
       [v736 doubleValue];
       v738 = v737;
@@ -9915,11 +9915,11 @@ LABEL_228:
     v682 = v700 + v702;
 
 LABEL_206:
-    v683 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", v682];
+    v682 = [MEMORY[0x277CCACA8] stringWithFormat:@"%i", v682];
     v684 = [v673 objectForKeyedSubscript:v672];
     v685 = [v684 objectForKeyedSubscript:@"LTE"];
     v686 = [v685 objectForKeyedSubscript:@"CAMultiplier"];
-    [v686 objectForKeyedSubscript:v683];
+    [v686 objectForKeyedSubscript:v682];
     v688 = v687 = v672;
     [v688 doubleValue];
     v690 = v689;
@@ -9977,7 +9977,7 @@ LABEL_230:
       v758 = [v1139 objectAtIndexedSubscript:v756];
       [v758 doubleValue];
       v760 = v759;
-      v761 = [v1154 objectForKeyedSubscript:v1153];
+      v761 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v762 = [v761 objectForKeyedSubscript:@"LTE"];
       v763 = [v762 objectForKeyedSubscript:@"C0TBSz"];
       v764 = [v763 objectForKeyedSubscript:v1145];
@@ -9988,7 +9988,7 @@ LABEL_230:
       v767 = [v1136 objectAtIndexedSubscript:v756];
       [v767 doubleValue];
       v769 = v768;
-      v770 = [v1154 objectForKeyedSubscript:v1153];
+      v770 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v771 = [v770 objectForKeyedSubscript:@"LTE"];
       v772 = [v771 objectForKeyedSubscript:@"C1TBSz"];
       v773 = [v772 objectForKeyedSubscript:v1145];
@@ -10013,7 +10013,7 @@ LABEL_230:
       v777 = [v1139 objectAtIndexedSubscript:v776];
       [v777 doubleValue];
       v779 = v778;
-      v780 = [v1154 objectForKeyedSubscript:v1153];
+      v780 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v781 = [v780 objectForKeyedSubscript:@"LTE"];
       v782 = [v781 objectForKeyedSubscript:@"C0TBSz"];
       v783 = [v782 objectForKeyedSubscript:v1145];
@@ -10024,7 +10024,7 @@ LABEL_230:
       v786 = [v1136 objectAtIndexedSubscript:v776];
       [v786 doubleValue];
       v788 = v787;
-      v789 = [v1154 objectForKeyedSubscript:v1153];
+      v789 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v790 = [v789 objectForKeyedSubscript:@"LTE"];
       v791 = [v790 objectForKeyedSubscript:@"C1TBSz"];
       v792 = [v791 objectForKeyedSubscript:v1145];
@@ -10044,7 +10044,7 @@ LABEL_241:
 
   else
   {
-    v1012 = v1153;
+    v1012 = mavRevStringQuery;
     v796 = v1125;
     if (([MEMORY[0x277D3F208] isBasebandClass:1003005] & 1) != 0 || (v795 = 0.0, objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003007)))
     {
@@ -10063,7 +10063,7 @@ LABEL_241:
         v795 = v795 + v1016 * v1022;
 
         v796 = v1125;
-        v1012 = v1153;
+        v1012 = mavRevStringQuery;
       }
     }
   }
@@ -10118,9 +10118,9 @@ LABEL_241:
   }
 
   v447 = v741 + v510 + v1094 + v797 + v1120 + v798 + v799 + v800;
-  v3 = v1134;
+  powerCopy = v1134;
   v25 = v1127;
-  v32 = v1128;
+  entryDate = v1128;
   v448 = v1154;
   v815 = v1116;
   v816 = v1103;
@@ -10143,9 +10143,9 @@ LABEL_241:
       v819 = [MEMORY[0x277CCACA8] stringWithFormat:@"lteSleepPowerAdder=%f, lteNonCaActivePowerAdder=%f, CAActivePowerAdder=%f, lteTxPowerAdder=%f, TBSzPowerAdder=%f, lnaAdder=%f, nlicAdder=%f, advRxAdder=%f, ltePower=%f", *&v741, *&v510, *&v1094, *&v797, *&v1120, *&v798, *&v799, *&v800, *&v447];
       v820 = MEMORY[0x277D3F178];
       v821 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v822 = [v821 lastPathComponent];
+      lastPathComponent6 = [v821 lastPathComponent];
       v823 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelMav10BBHWPower:]"];
-      [v820 logMessage:v819 fromFile:v822 fromFunction:v823 fromLineNumber:4246];
+      [v820 logMessage:v819 fromFile:lastPathComponent6 fromFunction:v823 fromLineNumber:4246];
 
       v824 = PLLogCommon();
       if (os_log_type_enabled(v824, OS_LOG_TYPE_DEBUG))
@@ -10155,7 +10155,7 @@ LABEL_241:
         _os_log_debug_impl(&dword_21A4C6000, v824, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v32 = v1128;
+      entryDate = v1128;
       v815 = v1116;
       v796 = v1125;
       v816 = v1103;
@@ -10171,7 +10171,7 @@ LABEL_270:
     v826 = [v825 objectAtIndexedSubscript:0];
     [v826 doubleValue];
     v828 = v827;
-    v829 = [v448 objectForKeyedSubscript:v1153];
+    v829 = [v448 objectForKeyedSubscript:mavRevStringQuery];
     v830 = [v829 objectForKeyedSubscript:@"UTRAN"];
     v831 = [v830 objectForKeyedSubscript:@"SrvcType"];
     v832 = [v831 objectAtIndexedSubscript:0];
@@ -10182,7 +10182,7 @@ LABEL_270:
     v836 = [v825 objectAtIndexedSubscript:1];
     [v836 doubleValue];
     v838 = v837;
-    v839 = [v448 objectForKeyedSubscript:v1153];
+    v839 = [v448 objectForKeyedSubscript:mavRevStringQuery];
     v840 = [v839 objectForKeyedSubscript:@"UTRAN"];
     v841 = [v840 objectForKeyedSubscript:@"SrvcType"];
     v842 = [v841 objectAtIndexedSubscript:1];
@@ -10192,7 +10192,7 @@ LABEL_270:
     v845 = [v825 objectAtIndexedSubscript:2];
     [v845 doubleValue];
     v847 = v846;
-    v848 = [v448 objectForKeyedSubscript:v1153];
+    v848 = [v448 objectForKeyedSubscript:mavRevStringQuery];
     v849 = [v848 objectForKeyedSubscript:@"UTRAN"];
     v850 = [v849 objectForKeyedSubscript:@"SrvcType"];
     v851 = [v850 objectAtIndexedSubscript:2];
@@ -10202,7 +10202,7 @@ LABEL_270:
     v854 = [v825 objectAtIndexedSubscript:5];
     [v854 doubleValue];
     v856 = v855;
-    v857 = [v448 objectForKeyedSubscript:v1153];
+    v857 = [v448 objectForKeyedSubscript:mavRevStringQuery];
     v858 = [v857 objectForKeyedSubscript:@"UTRAN"];
     v859 = [v858 objectForKeyedSubscript:@"SrvcType"];
     v860 = [v859 objectAtIndexedSubscript:5];
@@ -10213,7 +10213,7 @@ LABEL_270:
     v863 = [v825 objectAtIndexedSubscript:3];
     [v863 doubleValue];
     v865 = v864;
-    v866 = [v448 objectForKeyedSubscript:v1153];
+    v866 = [v448 objectForKeyedSubscript:mavRevStringQuery];
     v867 = [v866 objectForKeyedSubscript:@"UTRAN"];
     v868 = [v867 objectForKeyedSubscript:@"SrvcType"];
     v869 = [v868 objectAtIndexedSubscript:0];
@@ -10223,14 +10223,14 @@ LABEL_270:
     v872 = [v825 objectAtIndexedSubscript:3];
     [v872 doubleValue];
     v874 = v873;
-    v875 = [v448 objectForKeyedSubscript:v1153];
+    v875 = [v448 objectForKeyedSubscript:mavRevStringQuery];
     [v875 objectForKeyedSubscript:@"UTRAN"];
     v877 = v876 = v448;
     v878 = [v877 objectForKeyedSubscript:@"SrvcType"];
     v879 = [v878 objectAtIndexedSubscript:3];
     [v879 doubleValue];
     v881 = v880;
-    v882 = [v876 objectForKeyedSubscript:v1153];
+    v882 = [v876 objectForKeyedSubscript:mavRevStringQuery];
     v883 = [v882 objectForKeyedSubscript:@"UTRAN"];
     v884 = [v883 objectForKeyedSubscript:@"SrvcType"];
     v885 = [v884 objectAtIndexedSubscript:0];
@@ -10240,7 +10240,7 @@ LABEL_270:
     v888 = [v1146 objectAtIndexedSubscript:4];
     [v888 doubleValue];
     v890 = v889;
-    v891 = [v1154 objectForKeyedSubscript:v1153];
+    v891 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v892 = [v891 objectForKeyedSubscript:@"UTRAN"];
     v893 = [v892 objectForKeyedSubscript:@"SrvcType"];
     v894 = [v893 objectAtIndexedSubscript:0];
@@ -10250,13 +10250,13 @@ LABEL_270:
     v1140 = [v1146 objectAtIndexedSubscript:4];
     [v1140 doubleValue];
     v898 = v897;
-    v899 = [v1154 objectForKeyedSubscript:v1153];
+    v899 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v900 = [v899 objectForKeyedSubscript:@"UTRAN"];
     v901 = [v900 objectForKeyedSubscript:@"SrvcType"];
     v902 = [v901 objectAtIndexedSubscript:4];
     [v902 doubleValue];
     v904 = v903;
-    v905 = [v1154 objectForKeyedSubscript:v1153];
+    v905 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v906 = [v905 objectForKeyedSubscript:@"UTRAN"];
     v907 = [v906 objectForKeyedSubscript:@"SrvcType"];
     v908 = [v907 objectAtIndexedSubscript:0];
@@ -10267,7 +10267,7 @@ LABEL_270:
     v912 = [v911 objectAtIndexedSubscript:1];
     [v912 doubleValue];
     v1141 = v913;
-    v914 = [v1154 objectForKeyedSubscript:v1153];
+    v914 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
     v915 = [v914 objectForKeyedSubscript:@"UTRAN"];
     v916 = [v915 objectForKeyedSubscript:@"RxDState"];
     v917 = [v916 objectAtIndexedSubscript:1];
@@ -10289,7 +10289,7 @@ LABEL_270:
       v926 = [v919 objectAtIndexedSubscript:3];
       [v926 doubleValue];
       v928 = v927;
-      v929 = [v1154 objectForKeyedSubscript:v1153];
+      v929 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
       v930 = [v929 objectForKeyedSubscript:@"UTRAN"];
       v931 = [v930 objectForKeyedSubscript:@"RX"];
       [v931 doubleValue];
@@ -10303,7 +10303,7 @@ LABEL_270:
         v937 = [v934 objectAtIndexedSubscript:v935];
         [v937 doubleValue];
         v939 = v938;
-        v940 = [v1154 objectForKeyedSubscript:v1153];
+        v940 = [v1154 objectForKeyedSubscript:mavRevStringQuery];
         v941 = [v940 objectForKeyedSubscript:@"UTRAN"];
         v942 = [v941 objectForKeyedSubscript:@"txPower"];
         v943 = [v942 objectAtIndexedSubscript:v935];
@@ -10326,7 +10326,7 @@ LABEL_270:
       v833 = v945 * v933 / v1133;
       v950 = v936 / v1133;
 
-      v3 = v1134;
+      powerCopy = v1134;
       v951 = v1146;
       v911 = v1126;
       v896 = v1121;
@@ -10335,7 +10335,7 @@ LABEL_270:
     else
     {
       v950 = 0.0;
-      v3 = v1134;
+      powerCopy = v1134;
       v949 = v1133;
       v951 = v1146;
     }
@@ -10378,7 +10378,7 @@ LABEL_270:
       v952 = v952 + v979 * v977 / v978;
     }
 
-    v32 = v1128;
+    entryDate = v1128;
     v1108 = v953;
   }
 
@@ -10465,12 +10465,12 @@ LABEL_270:
     if (byte_2811F4FFA == 1)
     {
       v990 = v25;
-      v991 = [MEMORY[0x277CCACA8] stringWithFormat:@"cdma2kDataPower=%f, evdoPower=%f, gsmDataPower=%f, wcdmaDataPower=%f, ltePower=%f, tdscdmaDataPower=%f, basebandDataPower=%f, BBDate=%@", *&v980, *&v981, *&v982, *&v983, *&v984, *&v952, *&v987, v32];
+      v991 = [MEMORY[0x277CCACA8] stringWithFormat:@"cdma2kDataPower=%f, evdoPower=%f, gsmDataPower=%f, wcdmaDataPower=%f, ltePower=%f, tdscdmaDataPower=%f, basebandDataPower=%f, BBDate=%@", *&v980, *&v981, *&v982, *&v983, *&v984, *&v952, *&v987, entryDate];
       v992 = MEMORY[0x277D3F178];
       v993 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v994 = [v993 lastPathComponent];
+      lastPathComponent7 = [v993 lastPathComponent];
       v995 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelMav10BBHWPower:]"];
-      [v992 logMessage:v991 fromFile:v994 fromFunction:v995 fromLineNumber:4346];
+      [v992 logMessage:v991 fromFile:lastPathComponent7 fromFunction:v995 fromLineNumber:4346];
 
       v996 = PLLogCommon();
       if (os_log_type_enabled(v996, OS_LOG_TYPE_DEBUG))
@@ -10480,13 +10480,13 @@ LABEL_270:
         _os_log_debug_impl(&dword_21A4C6000, v996, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v32 = v1128;
+      entryDate = v1128;
       v25 = v990;
     }
   }
 
-  v997 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v997 createPowerEventBackwardWithRootNodeID:37 withPower:v32 withEndDate:v987];
+  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:37 withPower:entryDate withEndDate:v987];
 
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
@@ -10507,9 +10507,9 @@ LABEL_270:
       v1000 = [MEMORY[0x277CCACA8] stringWithFormat:@"cdma2kVoicePower=%f, wcdmaVoicePower=%f, gsmVoicePower=%f, tdscdmaVoicePower=%f", *&v1110, *&v1113, *&v1098, *&v1108];
       v1001 = MEMORY[0x277D3F178];
       v1002 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v1003 = [v1002 lastPathComponent];
+      lastPathComponent8 = [v1002 lastPathComponent];
       v1004 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelMav10BBHWPower:]"];
-      [v1001 logMessage:v1000 fromFile:v1003 fromFunction:v1004 fromLineNumber:4354];
+      [v1001 logMessage:v1000 fromFile:lastPathComponent8 fromFunction:v1004 fromLineNumber:4354];
 
       v1005 = PLLogCommon();
       if (os_log_type_enabled(v1005, OS_LOG_TYPE_DEBUG))
@@ -10519,17 +10519,17 @@ LABEL_270:
         _os_log_debug_impl(&dword_21A4C6000, v1005, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
-      v32 = v1128;
+      entryDate = v1128;
       v25 = v1127;
     }
   }
 
-  v1006 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v1006 createPowerEventBackwardWithRootNodeID:38 withPower:v32 withEndDate:v1098 + v1110 + v1113 + v1108];
+  mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0]2 createPowerEventBackwardWithRootNodeID:38 withPower:entryDate withEndDate:v1098 + v1110 + v1113 + v1108];
 
-  v1007 = [v32 dateByAddingTimeInterval:v1133 * -0.0000305175781];
-  v1008 = [MEMORY[0x277D3F0C0] sharedInstance];
-  v1009 = v1008;
+  v1007 = [entryDate dateByAddingTimeInterval:v1133 * -0.0000305175781];
+  mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+  v1009 = mEMORY[0x277D3F0C0]3;
   if (v37 / v1133 <= 0.100000001)
   {
     v1010 = MEMORY[0x277CBEBF8];
@@ -10540,7 +10540,7 @@ LABEL_270:
     v1010 = &unk_282C14C88;
   }
 
-  [v1008 createQualificationEventForwardWithQualificationID:1 withChildNodeNames:v1010 withStartDate:v1007];
+  [mEMORY[0x277D3F0C0]3 createQualificationEventForwardWithQualificationID:1 withChildNodeNames:v1010 withStartDate:v1007];
 
 LABEL_321:
   v1011 = *MEMORY[0x277D85DE8];
@@ -10602,25 +10602,25 @@ uint64_t __33__PLBBAgent_modelMav10BBHWPower___block_invoke_1800(uint64_t a1)
   return result;
 }
 
-- (double)translateChannelRBsToChannelBW:(double)a3
+- (double)translateChannelRBsToChannelBW:(double)w
 {
   v3 = 0.0;
-  if (a3 != 0.0)
+  if (w != 0.0)
   {
     v3 = 20.0;
-    if (a3 != 100.0)
+    if (w != 100.0)
     {
       v3 = 15.0;
-      if (a3 != 75.0)
+      if (w != 75.0)
       {
         v3 = 10.0;
-        if (a3 != 50.0)
+        if (w != 50.0)
         {
           v3 = 5.0;
-          if (a3 != 25.0)
+          if (w != 25.0)
           {
             v3 = 3.0;
-            if (a3 != 15.0)
+            if (w != 15.0)
             {
               return 1.5;
             }
@@ -10633,14 +10633,14 @@ uint64_t __33__PLBBAgent_modelMav10BBHWPower___block_invoke_1800(uint64_t a1)
   return v3;
 }
 
-- (void)modelMavBBHWOtherPerRATPower:(id)a3
+- (void)modelMavBBHWOtherPerRATPower:(id)power
 {
-  v140 = a3;
-  v4 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+  powerCopy = power;
+  v4 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
 
   if (v4)
   {
-    v5 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+    v5 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
     v6 = [v5 count];
 
     if (v6)
@@ -10648,7 +10648,7 @@ uint64_t __33__PLBBAgent_modelMav10BBHWPower___block_invoke_1800(uint64_t a1)
       v7 = 0;
       while (1)
       {
-        v8 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+        v8 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
         v9 = [v8 objectAtIndexedSubscript:v7];
 
         if (!v9)
@@ -10666,15 +10666,15 @@ uint64_t __33__PLBBAgent_modelMav10BBHWPower___block_invoke_1800(uint64_t a1)
     else
     {
 LABEL_6:
-      v10 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
+      v10 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
       v11 = [v10 objectAtIndexedSubscript:0];
 
       if (v11)
       {
-        v12 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
+        v12 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
         v13 = [v12 objectAtIndexedSubscript:0];
 
-        v14 = [v13 entryDate];
+        entryDate = [v13 entryDate];
         v15 = [v13 objectForKeyedSubscript:@"LogDuration"];
         [v15 doubleValue];
         v17 = v16;
@@ -10683,10 +10683,10 @@ LABEL_6:
         {
           v125 = v17;
           v126 = v13;
-          v18 = [MEMORY[0x277D3F258] MavRevStringQuery];
+          mavRevStringQuery = [MEMORY[0x277D3F258] MavRevStringQuery];
           v19 = [MEMORY[0x277D3F258] powerModelForOperatorName:@"baseband"];
-          v127 = v14;
-          v128 = self;
+          v127 = entryDate;
+          selfCopy = self;
           if ([MEMORY[0x277D3F208] isBasebandClass:?])
           {
             goto LABEL_10;
@@ -10703,16 +10703,16 @@ LABEL_6:
           if ([MEMORY[0x277D3F208] isBasebandClass:1003002])
           {
 LABEL_10:
-            v28 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+            v28 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
             v29 = [v28 objectAtIndexedSubscript:0];
 
-            v30 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+            v30 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
             v31 = [v30 objectAtIndexedSubscript:1];
 
-            v32 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+            v32 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
             v33 = [v32 objectAtIndexedSubscript:2];
 
-            v34 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+            v34 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
             v35 = [v34 objectAtIndexedSubscript:3];
 
             v123 = v29;
@@ -10752,7 +10752,7 @@ LABEL_10:
               v45 = [v131 objectAtIndexedSubscript:v36];
               [v45 doubleValue];
               v47 = v46;
-              v48 = [v19 objectForKeyedSubscript:v18];
+              v48 = [v19 objectForKeyedSubscript:mavRevStringQuery];
               v49 = [v48 objectForKeyedSubscript:@"CDMA2K"];
               v50 = [v49 objectForKeyedSubscript:@"txPower"];
               v51 = [v50 objectAtIndexedSubscript:v36];
@@ -10762,7 +10762,7 @@ LABEL_10:
               v53 = [v129 objectAtIndexedSubscript:v36];
               [v53 doubleValue];
               v55 = v54;
-              v56 = [v19 objectForKeyedSubscript:v18];
+              v56 = [v19 objectForKeyedSubscript:mavRevStringQuery];
               v57 = [v56 objectForKeyedSubscript:@"1xEVDO"];
               v58 = [v57 objectForKeyedSubscript:@"txPower"];
               v59 = [v58 objectAtIndexedSubscript:v36];
@@ -10772,7 +10772,7 @@ LABEL_10:
               v61 = [v136 objectAtIndexedSubscript:v36];
               [v61 doubleValue];
               v63 = v62;
-              v64 = [v19 objectForKeyedSubscript:v18];
+              v64 = [v19 objectForKeyedSubscript:mavRevStringQuery];
               v65 = [v64 objectForKeyedSubscript:@"GSM"];
               v66 = [v65 objectForKeyedSubscript:@"txPower"];
               v67 = [v66 objectAtIndexedSubscript:v36];
@@ -10782,7 +10782,7 @@ LABEL_10:
               v69 = [v133 objectAtIndexedSubscript:v36];
               [v69 doubleValue];
               v71 = v70;
-              v72 = [v19 objectForKeyedSubscript:v18];
+              v72 = [v19 objectForKeyedSubscript:mavRevStringQuery];
               v73 = [v72 objectForKeyedSubscript:@"WCDMA"];
               v74 = [v73 objectForKeyedSubscript:@"txPower"];
               v75 = [v74 objectAtIndexedSubscript:v36];
@@ -10795,8 +10795,8 @@ LABEL_10:
 
             while (v36 != 12);
 
-            v14 = v127;
-            self = v128;
+            entryDate = v127;
+            self = selfCopy;
           }
 
           v130 = v21;
@@ -10804,7 +10804,7 @@ LABEL_10:
           v139 = v26;
           if (([MEMORY[0x277D3F208] isBasebandClass:1003001] & 1) != 0 || (v77 = 0.0, v78 = 0.0, objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003002)))
           {
-            v79 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+            v79 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
             v80 = [v79 objectAtIndexedSubscript:4];
 
             v134 = v80;
@@ -10821,7 +10821,7 @@ LABEL_10:
               v85 = [v81 objectAtIndexedSubscript:v82];
               [v85 doubleValue];
               v87 = v86;
-              v88 = [v19 objectForKeyedSubscript:v18];
+              v88 = [v19 objectForKeyedSubscript:mavRevStringQuery];
               v89 = [v88 objectForKeyedSubscript:@"LTE"];
               v90 = [v89 objectForKeyedSubscript:@"txPower"];
               v91 = [v90 objectAtIndexedSubscript:v82];
@@ -10833,8 +10833,8 @@ LABEL_10:
 
             while (v82 != 12);
 
-            v14 = v127;
-            self = v128;
+            entryDate = v127;
+            self = selfCopy;
             v26 = v139;
           }
 
@@ -10844,7 +10844,7 @@ LABEL_10:
           v94 = 0.0;
           if ([MEMORY[0x277D3F208] isBasebandClass:1003002])
           {
-            v95 = [v140 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+            v95 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
             v96 = [v95 objectAtIndexedSubscript:5];
 
             v124 = v96;
@@ -10858,7 +10858,7 @@ LABEL_10:
               v101 = [v97 objectAtIndexedSubscript:i];
               [v101 doubleValue];
               v103 = v102;
-              v104 = [v19 objectForKeyedSubscript:v18];
+              v104 = [v19 objectForKeyedSubscript:mavRevStringQuery];
               v105 = [v104 objectForKeyedSubscript:@"UTRAN"];
               v106 = [v105 objectForKeyedSubscript:@"txPower"];
               v107 = [v106 objectAtIndexedSubscript:i];
@@ -10866,8 +10866,8 @@ LABEL_10:
               v93 = v93 + v103 * v108;
             }
 
-            v14 = v127;
-            self = v128;
+            entryDate = v127;
+            self = selfCopy;
             v26 = v139;
           }
 
@@ -10908,24 +10908,24 @@ LABEL_10:
           }
 
           v115 = v112 + v111 + v110 + v109 + v113 + v114;
-          v116 = [MEMORY[0x277D3F0C0] sharedInstance];
-          [v116 createPowerEventBackwardWithRootNodeID:45 withPower:v14 withEndDate:v115];
+          mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+          [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:45 withPower:entryDate withEndDate:v115];
 
-          v117 = [MEMORY[0x277D3F0C0] sharedInstance];
+          mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
           [(PLBBAgent *)self lastBBProtoPower];
-          [v117 createPowerEventBackwardWithRootNodeID:22 withPower:v14 withEndDate:?];
+          [mEMORY[0x277D3F0C0]2 createPowerEventBackwardWithRootNodeID:22 withPower:entryDate withEndDate:?];
 
           if ((([MEMORY[0x277D3F208] isBasebandClass:1003001] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003002)) && !-[PLBBAgent lteCurrentState](self, "lteCurrentState"))
           {
-            v118 = [MEMORY[0x277D3F0C0] sharedInstance];
-            [v118 createPowerEventBackwardWithRootNodeID:21 withPower:v14 withEndDate:0.0];
+            mEMORY[0x277D3F0C0]3 = [MEMORY[0x277D3F0C0] sharedInstance];
+            [mEMORY[0x277D3F0C0]3 createPowerEventBackwardWithRootNodeID:21 withPower:entryDate withEndDate:0.0];
           }
 
           if (v115 > 100.0)
           {
-            v119 = [v14 dateByAddingTimeInterval:v125 * -0.0000305175781];
-            v120 = [MEMORY[0x277D3F0C0] sharedInstance];
-            [v120 createQualificationEventForwardWithQualificationID:1 withChildNodeNames:&unk_282C14CA0 withStartDate:v119];
+            v119 = [entryDate dateByAddingTimeInterval:v125 * -0.0000305175781];
+            mEMORY[0x277D3F0C0]4 = [MEMORY[0x277D3F0C0] sharedInstance];
+            [mEMORY[0x277D3F0C0]4 createQualificationEventForwardWithQualificationID:1 withChildNodeNames:&unk_282C14CA0 withStartDate:v119];
           }
 
           v13 = v126;
@@ -10935,16 +10935,16 @@ LABEL_10:
   }
 }
 
-- (float)translateTransBW:(int)a3
+- (float)translateTransBW:(int)w
 {
-  if (a3 > 5)
+  if (w > 5)
   {
     return 50.0;
   }
 
   else
   {
-    return flt_21AA221A8[a3];
+    return flt_21AA221A8[w];
   }
 }
 
@@ -14168,29 +14168,29 @@ uint64_t __27__PLBBAgent_modelMavPower___block_invoke_4894(uint64_t a1)
   return result;
 }
 
-- (id)getKeyForNRBw:(double)a3
+- (id)getKeyForNRBw:(double)bw
 {
-  if (a3 <= 0.0)
+  if (bw <= 0.0)
   {
     return 0;
   }
 
-  if (a3 < 40.0)
+  if (bw < 40.0)
   {
     return @"39";
   }
 
-  if (a3 < 60.0)
+  if (bw < 60.0)
   {
     return @"40";
   }
 
-  if (a3 < 80.0)
+  if (bw < 80.0)
   {
     return @"60";
   }
 
-  if (a3 >= 100.0 || a3 < 80.0)
+  if (bw >= 100.0 || bw < 80.0)
   {
     return @"100";
   }
@@ -14201,39 +14201,39 @@ uint64_t __27__PLBBAgent_modelMavPower___block_invoke_4894(uint64_t a1)
   }
 }
 
-- (id)getKeyForLTEBw:(double)a3
+- (id)getKeyForLTEBw:(double)bw
 {
-  if (a3 <= 0.0)
+  if (bw <= 0.0)
   {
     return 0;
   }
 
-  if (a3 < 1.5)
+  if (bw < 1.5)
   {
     return @"1.4";
   }
 
-  if (a3 < 3.0)
+  if (bw < 3.0)
   {
     return @"1.5";
   }
 
-  if (a3 < 5.0)
+  if (bw < 5.0)
   {
     return @"3";
   }
 
-  if (a3 < 10.0)
+  if (bw < 10.0)
   {
     return @"5";
   }
 
-  if (a3 < 15.0)
+  if (bw < 15.0)
   {
     return @"10";
   }
 
-  if (a3 >= 20.0 || a3 < 15.0)
+  if (bw >= 20.0 || bw < 15.0)
   {
     return @"20";
   }
@@ -15112,31 +15112,31 @@ uint64_t __30__PLBBAgent_modelSinopePower___block_invoke_5656(uint64_t a1)
   return result;
 }
 
-+ (id)indexToRat:(unint64_t)a3
++ (id)indexToRat:(unint64_t)rat
 {
-  if (a3 > 5)
+  if (rat > 5)
   {
     return &stru_282B650A0;
   }
 
   else
   {
-    return off_27825F8D0[a3];
+    return off_27825F8D0[rat];
   }
 }
 
-- (void)modelScanPower:(id)a3
+- (void)modelScanPower:(id)power
 {
   v167 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+  powerCopy = power;
+  v4 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
 
   if (!v4)
   {
     goto LABEL_63;
   }
 
-  v5 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+  v5 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
   v6 = [v5 count];
 
   v160 = v6;
@@ -15145,11 +15145,11 @@ uint64_t __30__PLBBAgent_modelSinopePower___block_invoke_5656(uint64_t a1)
     goto LABEL_63;
   }
 
-  v7 = [MEMORY[0x277D3F258] MavRevStringQuery];
-  v8 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
+  mavRevStringQuery = [MEMORY[0x277D3F258] MavRevStringQuery];
+  v8 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOther"];
   v9 = [v8 objectAtIndexedSubscript:0];
 
-  v10 = [v9 entryDate];
+  entryDate = [v9 entryDate];
   v11 = [v9 objectForKeyedSubscript:@"LogDuration"];
   [v11 doubleValue];
   v13 = v12;
@@ -15160,16 +15160,16 @@ uint64_t __30__PLBBAgent_modelSinopePower___block_invoke_5656(uint64_t a1)
   }
 
   v140 = v9;
-  v141 = v10;
-  v157 = v7;
-  v158 = v3;
+  v141 = entryDate;
+  v157 = mavRevStringQuery;
+  v158 = powerCopy;
   v159 = [MEMORY[0x277D3F258] powerModelForOperatorName:@"baseband"];
   v14 = 0;
   v15 = 0.0;
   v16 = 0.0;
   do
   {
-    v17 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+    v17 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
     v18 = [v17 objectAtIndexedSubscript:v14];
 
     if (!v18)
@@ -15177,36 +15177,36 @@ uint64_t __30__PLBBAgent_modelSinopePower___block_invoke_5656(uint64_t a1)
       goto LABEL_12;
     }
 
-    v19 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+    v19 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
     v20 = [v19 objectAtIndexedSubscript:v14];
     v21 = [v20 objectForKeyedSubscript:@"RadioTech"];
-    v22 = [v21 intValue];
+    intValue = [v21 intValue];
 
-    v23 = [PLBBAgent indexToRat:v22];
+    v23 = [PLBBAgent indexToRat:intValue];
     if (!v23)
     {
       goto LABEL_61;
     }
 
     v24 = v23;
-    v25 = [v159 objectForKeyedSubscript:v7];
+    v25 = [v159 objectForKeyedSubscript:mavRevStringQuery];
     v26 = [v25 objectForKeyedSubscript:v24];
     v27 = [v26 objectForKeyedSubscript:@"SCAN"];
     [v27 doubleValue];
     v29 = v28;
 
-    v30 = [v159 objectForKeyedSubscript:v7];
+    v30 = [v159 objectForKeyedSubscript:mavRevStringQuery];
     v31 = [v30 objectForKeyedSubscript:v24];
     v32 = [v31 objectForKeyedSubscript:@"CELL_SEL_RESEL"];
     [v32 doubleValue];
     v34 = v33;
 
-    v35 = [v159 objectForKeyedSubscript:v7];
+    v35 = [v159 objectForKeyedSubscript:mavRevStringQuery];
     v36 = [v35 objectForKeyedSubscript:v24];
     v37 = [v36 objectForKeyedSubscript:@"IDLE"];
     [v37 doubleValue];
 
-    v38 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+    v38 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
     v39 = [v38 objectAtIndexedSubscript:v14];
 
     v40 = [v39 objectForKeyedSubscript:@"ProtocolStateHist"];
@@ -15246,8 +15246,8 @@ LABEL_12:
   v48 = [MEMORY[0x277D3F208] isBasebandClass:1003001];
   if ((v48 & 1) != 0 || [MEMORY[0x277D3F208] isBasebandClass:1003002])
   {
-    v49 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v49 createPowerEventBackwardWithRootNodeID:46 withPower:v141 withEndDate:v16 / v13];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:46 withPower:v141 withEndDate:v16 / v13];
   }
 
   if (![MEMORY[0x277D3F208] isBasebandMavLeg])
@@ -15255,7 +15255,7 @@ LABEL_12:
     goto LABEL_61;
   }
 
-  v50 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+  v50 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
 
   v51 = 0.0;
   if (!v50)
@@ -15272,7 +15272,7 @@ LABEL_12:
   v165 = 0u;
   v162 = 0u;
   v163 = 0u;
-  v52 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
+  v52 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_MavBBHwOtherPerRAT"];
   v53 = [v52 countByEnumeratingWithState:&v162 objects:v166 count:16];
   if (!v53)
   {
@@ -15300,11 +15300,11 @@ LABEL_12:
 
       v58 = *(*(&v162 + 1) + 8 * v57);
       v59 = [v58 objectForKeyedSubscript:@"RadioTech"];
-      v60 = [v59 intValue];
+      intValue2 = [v59 intValue];
 
-      if (v60)
+      if (intValue2)
       {
-        if (v60 == 1)
+        if (intValue2 == 1)
         {
           v61 = v161;
           v161 = v58;
@@ -15431,18 +15431,18 @@ LABEL_37:
 LABEL_46:
     }
 
-    v3 = v158;
+    powerCopy = v158;
 LABEL_50:
   }
 
   else
   {
     v161 = 0;
-    v3 = v158;
+    powerCopy = v158;
   }
 
 LABEL_51:
-  v106 = [v3 objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfOos"];
+  v106 = [powerCopy objectForKeyedSubscript:@"PLBBAgent_EventBackward_BBMavHwRfOos"];
 
   if (v106)
   {
@@ -15519,15 +15519,15 @@ LABEL_51:
     v135 = 2000.0;
   }
 
-  v136 = [MEMORY[0x277D3F0C0] sharedInstance];
-  [v136 createPowerEventBackwardWithRootNodeID:47 withPower:v68 withEndDate:v135];
+  mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+  [mEMORY[0x277D3F0C0]2 createPowerEventBackwardWithRootNodeID:47 withPower:v68 withEndDate:v135];
 
-  v3 = v158;
+  powerCopy = v158;
 LABEL_61:
 
-  v7 = v157;
+  mavRevStringQuery = v157;
   v9 = v140;
-  v10 = v141;
+  entryDate = v141;
 LABEL_62:
 
 LABEL_63:
@@ -15570,40 +15570,40 @@ void __31__PLBBAgent_loadOOSModelValues__block_invoke(uint64_t a1)
   [*(a1 + 32) setOosHDRPower:?];
 }
 
-- (void)modelOOSPower:(id)a3
+- (void)modelOOSPower:(id)power
 {
-  v31 = a3;
+  powerCopy = power;
   [(PLBBAgent *)self loadOOSModelValues];
-  v4 = [v31 objectForKeyedSubscript:@"Event"];
-  v5 = [v4 intValue];
+  v4 = [powerCopy objectForKeyedSubscript:@"Event"];
+  intValue = [v4 intValue];
 
-  v6 = [v31 objectForKeyedSubscript:@"Action"];
-  v7 = [v6 intValue];
+  v6 = [powerCopy objectForKeyedSubscript:@"Action"];
+  intValue2 = [v6 intValue];
 
-  if (v7 != 11)
+  if (intValue2 != 11)
   {
-    if ((v5 - 1001) < 2 || !v7)
+    if ((intValue - 1001) < 2 || !intValue2)
     {
-      v18 = [v31 entryDate];
-      [v18 timeIntervalSinceDate:self->_lastOOSTimestamp];
+      entryDate = [powerCopy entryDate];
+      [entryDate timeIntervalSinceDate:self->_lastOOSTimestamp];
       v20 = v19;
 
       self->_totalOosGWScanEnergy = self->_totalOosGWScanEnergy + v20 * self->_lastGWPower;
       self->_lastGWPower = 0.0;
-      v21 = [v31 entryDate];
+      entryDate2 = [powerCopy entryDate];
       lastOOSTimestamp = self->_lastOOSTimestamp;
-      self->_lastOOSTimestamp = v21;
+      self->_lastOOSTimestamp = entryDate2;
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    if (v5 == 801)
+    if (intValue == 801)
     {
       if (self->_lastOOSTimestamp)
       {
-        v23 = [v31 entryDate];
-        [v23 timeIntervalSinceDate:self->_lastOOSTimestamp];
+        entryDate3 = [powerCopy entryDate];
+        [entryDate3 timeIntervalSinceDate:self->_lastOOSTimestamp];
         v16 = v24;
 
         if (v16 < 0.15)
@@ -15620,15 +15620,15 @@ LABEL_21:
 
     else
     {
-      if (v5 != 301)
+      if (intValue != 301)
       {
         goto LABEL_22;
       }
 
       if (self->_lastOOSTimestamp)
       {
-        v14 = [v31 entryDate];
-        [v14 timeIntervalSinceDate:self->_lastOOSTimestamp];
+        entryDate4 = [powerCopy entryDate];
+        [entryDate4 timeIntervalSinceDate:self->_lastOOSTimestamp];
         v16 = v15;
 
         if (v16 < 0.15)
@@ -15640,9 +15640,9 @@ LABEL_16:
           v27 = *(&self->super.super.super.isa + v25) + v16 * *(&self->super.super.super.isa + v26);
 LABEL_20:
           *(&self->super.super.super.isa + v25) = v27;
-          v30 = [v31 entryDate];
+          entryDate5 = [powerCopy entryDate];
           lastOOSTimestamp = self->_lastOOSTimestamp;
-          self->_lastOOSTimestamp = v30;
+          self->_lastOOSTimestamp = entryDate5;
           goto LABEL_21;
         }
       }
@@ -15659,12 +15659,12 @@ LABEL_20:
   oosGWPower = self->_oosGWPower;
   if (self->_lastGWPower != oosGWPower)
   {
-    v9 = [v31 entryDate];
+    entryDate6 = [powerCopy entryDate];
     v10 = self->_lastOOSTimestamp;
-    self->_lastOOSTimestamp = v9;
+    self->_lastOOSTimestamp = entryDate6;
 
-    v11 = [v31 entryDate];
-    [v11 timeIntervalSinceDate:self->_lastOOSTimestamp];
+    entryDate7 = [powerCopy entryDate];
+    [entryDate7 timeIntervalSinceDate:self->_lastOOSTimestamp];
     v13 = v12;
 
     self->_totalOosGWScanEnergy = self->_totalOosGWScanEnergy + v13 * self->_lastGWPower;
@@ -15675,54 +15675,54 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)modelGPSPower:(id)a3
+- (void)modelGPSPower:(id)power
 {
   v141 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D3F258] MavRevStringQuery];
+  powerCopy = power;
+  mavRevStringQuery = [MEMORY[0x277D3F258] MavRevStringQuery];
   v5 = [MEMORY[0x277D3F258] powerModelForOperatorName:@"baseband"];
   if (([MEMORY[0x277D3F208] isBasebandClass:1003002] & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003003) & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003004) & 1) != 0 || (objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003005) & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003007))
   {
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v6 = [v5 objectForKeyedSubscript:mavRevStringQuery];
     v7 = [v6 objectForKeyedSubscript:@"GPS"];
     v8 = [v7 objectForKeyedSubscript:@"gps_dpo_bins_80ms"];
     [v8 doubleValue];
     v127 = v9;
 
-    v10 = [v5 objectForKeyedSubscript:v4];
+    v10 = [v5 objectForKeyedSubscript:mavRevStringQuery];
     v11 = [v10 objectForKeyedSubscript:@"GPS"];
     v12 = [v11 objectForKeyedSubscript:@"gps_dpo_bins_200ms"];
     [v12 doubleValue];
     v126 = v13;
 
-    v14 = [v5 objectForKeyedSubscript:v4];
+    v14 = [v5 objectForKeyedSubscript:mavRevStringQuery];
     v15 = [v14 objectForKeyedSubscript:@"GPS"];
     v16 = [v15 objectForKeyedSubscript:@"gps_dpo_bins_400ms"];
     [v16 doubleValue];
     v125 = v17;
 
-    v18 = [v5 objectForKeyedSubscript:v4];
+    v18 = [v5 objectForKeyedSubscript:mavRevStringQuery];
     v19 = [v18 objectForKeyedSubscript:@"GPS"];
     v20 = [v19 objectForKeyedSubscript:@"gps_dpo_bins_1000ms"];
     [v20 doubleValue];
     v124 = v21;
 
-    v22 = [v5 objectForKeyedSubscript:v4];
+    v22 = [v5 objectForKeyedSubscript:mavRevStringQuery];
     v23 = [v22 objectForKeyedSubscript:@"GPS"];
     v24 = [v23 objectForKeyedSubscript:@"gps_dpo_bins_unknown"];
     [v24 doubleValue];
     v123 = v25;
 
-    v26 = [v5 objectForKeyedSubscript:v4];
+    v26 = [v5 objectForKeyedSubscript:mavRevStringQuery];
     v27 = [v26 objectForKeyedSubscript:@"GPS"];
     v28 = [v27 objectForKeyedSubscript:@"gps_dpo_bins_aborted"];
     [v28 doubleValue];
     v122 = v29;
 
-    v30 = [v3 objectForKeyedSubscript:@"GPSOnOffStateHistogram"];
-    v31 = [v3 objectForKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
-    v32 = [v3 objectForKeyedSubscript:@"GPSDPOBins"];
-    v33 = [v3 objectForKeyedSubscript:@"LogDuration"];
+    v30 = [powerCopy objectForKeyedSubscript:@"GPSOnOffStateHistogram"];
+    v31 = [powerCopy objectForKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
+    v32 = [powerCopy objectForKeyedSubscript:@"GPSDPOBins"];
+    v33 = [powerCopy objectForKeyedSubscript:@"LogDuration"];
     [v33 doubleValue];
     v35 = v34;
 
@@ -15793,9 +15793,9 @@ LABEL_11:
           v65 = [MEMORY[0x277CCACA8] stringWithFormat:@"modelGPSPower: Add %f to rail", *&v63];
           v66 = MEMORY[0x277D3F178];
           v67 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-          v68 = [v67 lastPathComponent];
+          lastPathComponent = [v67 lastPathComponent];
           v69 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelGPSPower:]"];
-          [v66 logMessage:v65 fromFile:v68 fromFunction:v69 fromLineNumber:11510];
+          [v66 logMessage:v65 fromFile:lastPathComponent fromFunction:v69 fromLineNumber:11510];
 
           v70 = PLLogCommon();
           if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
@@ -15807,9 +15807,9 @@ LABEL_11:
         }
       }
 
-      v71 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v72 = [v3 entryDate];
-      [v71 createPowerEventBackwardWithRootNodeID:48 withPower:v72 withEndDate:v63];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+      entryDate = [powerCopy entryDate];
+      [mEMORY[0x277D3F0C0] createPowerEventBackwardWithRootNodeID:48 withPower:entryDate withEndDate:v63];
 LABEL_19:
 
       goto LABEL_22;
@@ -15820,15 +15820,15 @@ LABEL_19:
 
   if ([MEMORY[0x277D3F208] isBasebandClass:1003001])
   {
-    v74 = [v5 objectForKeyedSubscript:v4];
+    v74 = [v5 objectForKeyedSubscript:mavRevStringQuery];
     v75 = [v74 objectForKeyedSubscript:@"GPS"];
     v76 = [v75 objectForKeyedSubscript:@"gps_dpo"];
     [v76 doubleValue];
     v78 = v77;
 
-    v30 = [v3 objectForKeyedSubscript:@"GPSOnOffStateHistogram"];
-    v31 = [v3 objectForKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
-    v79 = [v3 objectForKeyedSubscript:@"LogDuration"];
+    v30 = [powerCopy objectForKeyedSubscript:@"GPSOnOffStateHistogram"];
+    v31 = [powerCopy objectForKeyedSubscript:@"GPSDPOOnOffStateHistogram"];
+    v79 = [powerCopy objectForKeyedSubscript:@"LogDuration"];
     [v79 doubleValue];
     v81 = v80;
 
@@ -15869,9 +15869,9 @@ LABEL_19:
           v108 = [MEMORY[0x277CCACA8] stringWithFormat:@"gpsOnDuration + gpsOffDuration = %f", *&v95];
           v132 = MEMORY[0x277D3F178];
           v109 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-          v110 = [v109 lastPathComponent];
+          lastPathComponent2 = [v109 lastPathComponent];
           v111 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelGPSPower:]"];
-          [v132 logMessage:v108 fromFile:v110 fromFunction:v111 fromLineNumber:11478];
+          [v132 logMessage:v108 fromFile:lastPathComponent2 fromFunction:v111 fromLineNumber:11478];
 
           v112 = v108;
           v113 = PLLogCommon();
@@ -15884,9 +15884,9 @@ LABEL_19:
         }
       }
 
-      v114 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v115 = [v3 entryDate];
-      [v114 createPowerEventBackwardWithRootNodeID:48 withPower:v115 withEndDate:0.0];
+      mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+      entryDate2 = [powerCopy entryDate];
+      [mEMORY[0x277D3F0C0]2 createPowerEventBackwardWithRootNodeID:48 withPower:entryDate2 withEndDate:0.0];
     }
 
     else
@@ -15917,11 +15917,11 @@ LABEL_19:
             v97 = [MEMORY[0x277CCACA8] stringWithFormat:@"gpsDPOOnDuration = %f, logDuration = %f, power = %f", *&v87, *&v81, *&v63];
             v130 = MEMORY[0x277D3F178];
             v128 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-            v98 = [v128 lastPathComponent];
+            lastPathComponent3 = [v128 lastPathComponent];
             v99 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelGPSPower:]"];
             v100 = v130;
             v131 = v97;
-            [v100 logMessage:v97 fromFile:v98 fromFunction:v99 fromLineNumber:11495];
+            [v100 logMessage:v97 fromFile:lastPathComponent3 fromFunction:v99 fromLineNumber:11495];
 
             v101 = PLLogCommon();
             if (os_log_type_enabled(v101, OS_LOG_TYPE_DEBUG))
@@ -15959,19 +15959,19 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v114 = [MEMORY[0x277CCACA8] stringWithFormat:@"modelGPSPower: LogDuration is zero"];
+      mEMORY[0x277D3F0C0]2 = [MEMORY[0x277CCACA8] stringWithFormat:@"modelGPSPower: LogDuration is zero"];
       v133 = MEMORY[0x277D3F178];
       v117 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v118 = [v117 lastPathComponent];
+      lastPathComponent4 = [v117 lastPathComponent];
       v119 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelGPSPower:]"];
-      [v133 logMessage:v114 fromFile:v118 fromFunction:v119 fromLineNumber:11497];
+      [v133 logMessage:mEMORY[0x277D3F0C0]2 fromFile:lastPathComponent4 fromFunction:v119 fromLineNumber:11497];
 
-      v115 = PLLogCommon();
-      if (os_log_type_enabled(v115, OS_LOG_TYPE_DEBUG))
+      entryDate2 = PLLogCommon();
+      if (os_log_type_enabled(entryDate2, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v140 = v114;
-        _os_log_debug_impl(&dword_21A4C6000, v115, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
+        v140 = mEMORY[0x277D3F0C0]2;
+        _os_log_debug_impl(&dword_21A4C6000, entryDate2, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
@@ -15993,19 +15993,19 @@ LABEL_21:
 
     if (byte_2811F5247 == 1)
     {
-      v71 = [MEMORY[0x277CCACA8] stringWithFormat:@"Mav version not found, return"];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277CCACA8] stringWithFormat:@"Mav version not found, return"];
       v103 = MEMORY[0x277D3F178];
       v104 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v105 = [v104 lastPathComponent];
+      lastPathComponent5 = [v104 lastPathComponent];
       v106 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent modelGPSPower:]"];
-      [v103 logMessage:v71 fromFile:v105 fromFunction:v106 fromLineNumber:11502];
+      [v103 logMessage:mEMORY[0x277D3F0C0] fromFile:lastPathComponent5 fromFunction:v106 fromLineNumber:11502];
 
-      v72 = PLLogCommon();
-      if (os_log_type_enabled(v72, OS_LOG_TYPE_DEBUG))
+      entryDate = PLLogCommon();
+      if (os_log_type_enabled(entryDate, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v140 = v71;
-        _os_log_debug_impl(&dword_21A4C6000, v72, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
+        v140 = mEMORY[0x277D3F0C0];
+        _os_log_debug_impl(&dword_21A4C6000, entryDate, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
       goto LABEL_19;
@@ -16052,46 +16052,46 @@ uint64_t __27__PLBBAgent_modelGPSPower___block_invoke_5740(uint64_t a1)
   return result;
 }
 
-- (void)accountVoicePower:(id)a3 state:(id)a4
+- (void)accountVoicePower:(id)power state:(id)state
 {
-  v19 = a3;
-  v6 = a4;
+  powerCopy = power;
+  stateCopy = state;
   if (([MEMORY[0x277D3F208] isBasebandMavLeg] & 1) == 0)
   {
-    v7 = [v19 objectForKey:@"callId"];
+    v7 = [powerCopy objectForKey:@"callId"];
 
     if (v7)
     {
-      if ([v6 isEqualToString:@"voice_start"])
+      if ([stateCopy isEqualToString:@"voice_start"])
       {
-        v8 = [(PLBBAgent *)self currentCallList];
-        [v8 count];
+        currentCallList = [(PLBBAgent *)self currentCallList];
+        [currentCallList count];
 
-        v9 = [(PLBBAgent *)self currentCallList];
-        v10 = [v19 objectForKeyedSubscript:@"callId"];
+        currentCallList2 = [(PLBBAgent *)self currentCallList];
+        v10 = [powerCopy objectForKeyedSubscript:@"callId"];
         v11 = [v10 description];
-        [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v11];
+        [currentCallList2 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v11];
 
 LABEL_8:
         goto LABEL_9;
       }
 
-      if ([v6 isEqualToString:@"voice_end"])
+      if ([stateCopy isEqualToString:@"voice_end"])
       {
-        v12 = [(PLBBAgent *)self currentCallList];
-        v13 = [v19 objectForKeyedSubscript:@"callId"];
+        currentCallList3 = [(PLBBAgent *)self currentCallList];
+        v13 = [powerCopy objectForKeyedSubscript:@"callId"];
         v14 = [v13 description];
-        v15 = [v12 objectForKey:v14];
+        v15 = [currentCallList3 objectForKey:v14];
 
         if (v15)
         {
-          v16 = [(PLBBAgent *)self currentCallList];
-          v17 = [v19 objectForKeyedSubscript:@"callId"];
+          currentCallList4 = [(PLBBAgent *)self currentCallList];
+          v17 = [powerCopy objectForKeyedSubscript:@"callId"];
           v18 = [v17 description];
-          [v16 removeObjectForKey:v18];
+          [currentCallList4 removeObjectForKey:v18];
 
-          v9 = [(PLBBAgent *)self currentCallList];
-          [v9 count];
+          currentCallList2 = [(PLBBAgent *)self currentCallList];
+          [currentCallList2 count];
           goto LABEL_8;
         }
       }
@@ -16101,14 +16101,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)createOOSAccountingEvent:(id)a3
+- (void)createOOSAccountingEvent:(id)event
 {
-  v17 = a3;
-  v4 = [v17 objectForKey:@"status"];
+  eventCopy = event;
+  v4 = [eventCopy objectForKey:@"status"];
 
   if (v4)
   {
-    v5 = [v17 objectForKeyedSubscript:@"status"];
+    v5 = [eventCopy objectForKeyedSubscript:@"status"];
     v6 = [v5 description];
     if ([v6 isEqualToString:@"NotRegistered"])
     {
@@ -16117,7 +16117,7 @@ LABEL_9:
 
     else
     {
-      v8 = [v17 objectForKeyedSubscript:@"status"];
+      v8 = [eventCopy objectForKeyedSubscript:@"status"];
       v9 = [v8 description];
       v7 = [v9 isEqualToString:@"EmergencyOnly"];
     }
@@ -16128,10 +16128,10 @@ LABEL_9:
       [(PLBBAgent *)self setIsFirstTimeAccountingOOS:0];
     }
 
-    v10 = [(PLBBAgent *)self isBBOOS];
+    isBBOOS = [(PLBBAgent *)self isBBOOS];
     if (v7)
     {
-      if (v10)
+      if (isBBOOS)
       {
         goto LABEL_13;
       }
@@ -16142,7 +16142,7 @@ LABEL_9:
 
     else
     {
-      if (!v10)
+      if (!isBBOOS)
       {
         goto LABEL_13;
       }
@@ -16151,13 +16151,13 @@ LABEL_9:
       v12 = MEMORY[0x277CBEC10];
     }
 
-    v13 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v14 = [v17 entryDate];
-    [v13 createDistributionEventForwardWithDistributionID:40 withChildNodeNameToWeight:v12 withStartDate:v14];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate = [eventCopy entryDate];
+    [mEMORY[0x277D3F0C0] createDistributionEventForwardWithDistributionID:40 withChildNodeNameToWeight:v12 withStartDate:entryDate];
 
-    v15 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v16 = [v17 entryDate];
-    [v15 createQualificationEventForwardWithQualificationID:1 withChildNodeNames:v11 withStartDate:v16];
+    mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    entryDate2 = [eventCopy entryDate];
+    [mEMORY[0x277D3F0C0]2 createQualificationEventForwardWithQualificationID:1 withChildNodeNames:v11 withStartDate:entryDate2];
 
     [(PLBBAgent *)self setIsBBOOS:v7];
   }
@@ -16170,26 +16170,26 @@ LABEL_13:
 - (void)registerForAirplaneModeChange
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v4)
+  if (!bundleIdentifier)
   {
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v5 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    bundleIdentifier = [processInfo processName];
   }
 
   context.version = 0;
   memset(&context.retain, 0, 24);
   context.info = self;
-  v6 = SCPreferencesCreate(0, v4, @"com.apple.radios.plist");
+  v6 = SCPreferencesCreate(0, bundleIdentifier, @"com.apple.radios.plist");
   qword_2811F39F0 = v6;
   if (v6)
   {
     SCPreferencesSetCallback(v6, preferencesChanged, &context);
     v7 = qword_2811F39F0;
-    v8 = [(PLOperator *)self workQueue];
-    SCPreferencesSetDispatchQueue(v7, v8);
+    workQueue = [(PLOperator *)self workQueue];
+    SCPreferencesSetDispatchQueue(v7, workQueue);
 LABEL_5:
 
     goto LABEL_13;
@@ -16212,18 +16212,18 @@ LABEL_5:
     {
       v10 = MEMORY[0x277CCACA8];
       v11 = SCError();
-      v8 = [v10 stringWithFormat:@"Unable to create preferences handle: %s", SCErrorString(v11), block, v19, v20, v21, v22, context.version, context.info, context.retain, context.release, context.copyDescription];
+      workQueue = [v10 stringWithFormat:@"Unable to create preferences handle: %s", SCErrorString(v11), block, v19, v20, v21, v22, context.version, context.info, context.retain, context.release, context.copyDescription];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent registerForAirplaneModeChange]"];
-      [v12 logMessage:v8 fromFile:v14 fromFunction:v15 fromLineNumber:11691];
+      [v12 logMessage:workQueue fromFile:lastPathComponent fromFunction:v15 fromLineNumber:11691];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v25 = v8;
+        v25 = workQueue;
         _os_log_debug_impl(&dword_21A4C6000, v16, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
 
@@ -16246,16 +16246,16 @@ uint64_t __42__PLBBAgent_registerForAirplaneModeChange__block_invoke(uint64_t a1
 - (BOOL)isChangedAndSetAirplaneMode
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (!v3)
+  if (!bundleIdentifier)
   {
-    v4 = [MEMORY[0x277CCAC38] processInfo];
-    v3 = [v4 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    bundleIdentifier = [processInfo processName];
   }
 
-  v5 = SCPreferencesCreateWithAuthorization(*MEMORY[0x277CBECE8], v3, @"com.apple.radios.plist", 0);
+  v5 = SCPreferencesCreateWithAuthorization(*MEMORY[0x277CBECE8], bundleIdentifier, @"com.apple.radios.plist", 0);
   if (SCPreferencesGetValue(v5, @"AirplaneMode") == *MEMORY[0x277CBED28])
   {
     v6 = @"on";
@@ -16286,9 +16286,9 @@ uint64_t __42__PLBBAgent_registerForAirplaneModeChange__block_invoke(uint64_t a1
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Airplane mode %@", v7, block, v19, v20, v21, v22];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent isChangedAndSetAirplaneMode]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:11751];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:11751];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -16317,13 +16317,13 @@ uint64_t __40__PLBBAgent_isChangedAndSetAirplaneMode__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)telephonyActivityNotificationCB_Agent:(id)a3 withName:(__CFString *)a4
+- (void)telephonyActivityNotificationCB_Agent:(id)agent withName:(__CFString *)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  agentCopy = agent;
+  if (name)
   {
-    CFRetain(a4);
+    CFRetain(name);
   }
 
   else if ([MEMORY[0x277D3F180] debugEnabled])
@@ -16344,9 +16344,9 @@ uint64_t __40__PLBBAgent_isChangedAndSetAirplaneMode__block_invoke(uint64_t a1)
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bad name in Tel Act CB"];
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent telephonyActivityNotificationCB_Agent:withName:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:11767];
+      [v9 logMessage:v8 fromFile:lastPathComponent fromFunction:v12 fromLineNumber:11767];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -16358,16 +16358,16 @@ uint64_t __40__PLBBAgent_isChangedAndSetAirplaneMode__block_invoke(uint64_t a1)
     }
   }
 
-  v14 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __60__PLBBAgent_telephonyActivityNotificationCB_Agent_withName___block_invoke_5800;
   v17[3] = &unk_27825CFA0;
-  v18 = v6;
-  v19 = a4;
+  v18 = agentCopy;
+  nameCopy = name;
   v17[4] = self;
-  v15 = v6;
-  dispatch_async(v14, v17);
+  v15 = agentCopy;
+  dispatch_async(workQueue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -16585,9 +16585,9 @@ uint64_t __60__PLBBAgent_telephonyActivityNotificationCB_Agent_withName___block_
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logTelephonyActivity]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyActivity]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:11870];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:11870];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -16599,48 +16599,48 @@ uint64_t __60__PLBBAgent_telephonyActivityNotificationCB_Agent_withName___block_
     }
   }
 
-  v10 = [(PLBBAgent *)self connection];
+  connection = [(PLBBAgent *)self connection];
   v36 = 0;
   v37 = 0;
   v35 = 0;
-  [v10 getRAT:&v37 preferredRAT:&v36 campedRAT:&v35];
+  [connection getRAT:&v37 preferredRAT:&v36 campedRAT:&v35];
   v11 = v37;
   v12 = v36;
   v13 = v35;
 
-  v14 = [(PLBBAgent *)self connection];
-  [v14 getSignalStrength:&v41 asPercentage:&v40 withBars:&v39];
+  connection2 = [(PLBBAgent *)self connection];
+  [connection2 getSignalStrength:&v41 asPercentage:&v40 withBars:&v39];
 
-  v15 = [(PLBBAgent *)self telActMsgHelper];
-  [v15 setActiveBand:0];
-  v16 = [(PLBBAgent *)self humanReadableDataActiveString];
-  [v15 setDataStatus:v16];
+  telActMsgHelper = [(PLBBAgent *)self telActMsgHelper];
+  [telActMsgHelper setActiveBand:0];
+  humanReadableDataActiveString = [(PLBBAgent *)self humanReadableDataActiveString];
+  [telActMsgHelper setDataStatus:humanReadableDataActiveString];
 
-  [v15 setCurrentRat:v11];
-  [v15 setPreferredRat:v12];
-  [v15 setCampedRat:v13];
-  v17 = [(PLBBAgent *)self connection];
-  v18 = [v17 currentCallStatus];
-  [v15 setCallStatus:v18];
+  [telActMsgHelper setCurrentRat:v11];
+  [telActMsgHelper setPreferredRat:v12];
+  [telActMsgHelper setCampedRat:v13];
+  connection3 = [(PLBBAgent *)self connection];
+  currentCallStatus = [connection3 currentCallStatus];
+  [telActMsgHelper setCallStatus:currentCallStatus];
 
-  [v15 setAirplaneMode:airplaneModeCurrent];
-  v19 = [(PLBBAgent *)self humanReadableSimStatusString];
-  [v15 setSimStatus:v19];
+  [telActMsgHelper setAirplaneMode:airplaneModeCurrent];
+  humanReadableSimStatusString = [(PLBBAgent *)self humanReadableSimStatusString];
+  [telActMsgHelper setSimStatus:humanReadableSimStatusString];
 
   v20 = [MEMORY[0x277CCABB0] numberWithInteger:v41];
-  [v15 setSignalStrength:v20];
+  [telActMsgHelper setSignalStrength:v20];
 
   v21 = [MEMORY[0x277CCABB0] numberWithInteger:v39];
-  [v15 setSignalBars:v21];
+  [telActMsgHelper setSignalBars:v21];
 
   v22 = [MEMORY[0x277CCABB0] numberWithLong:v41];
   [(PLBBAgent *)self setLastReportedSignal:v22];
 
   if (([MEMORY[0x277D3F180] fullMode] & 1) == 0)
   {
-    v23 = [(PLBBAgent *)self operatorName];
+    operatorName = [(PLBBAgent *)self operatorName];
 
-    if (v23)
+    if (operatorName)
     {
       if (![(PLBBAgent *)self changed])
       {
@@ -16674,9 +16674,9 @@ uint64_t __60__PLBBAgent_telephonyActivityNotificationCB_Agent_withName___block_
       v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Decoded Telephony activity line"];
       v28 = MEMORY[0x277D3F178];
       v29 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v30 = [v29 lastPathComponent];
+      lastPathComponent2 = [v29 lastPathComponent];
       v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logTelephonyActivity]"];
-      [v28 logMessage:v27 fromFile:v30 fromFunction:v31 fromLineNumber:11918];
+      [v28 logMessage:v27 fromFile:lastPathComponent2 fromFunction:v31 fromLineNumber:11918];
 
       v32 = PLLogCommon();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -16688,7 +16688,7 @@ uint64_t __60__PLBBAgent_telephonyActivityNotificationCB_Agent_withName___block_
     }
   }
 
-  [v15 logPointIntervalTelephonyActivity];
+  [telActMsgHelper logPointIntervalTelephonyActivity];
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -16707,11 +16707,11 @@ uint64_t __33__PLBBAgent_logTelephonyActivity__block_invoke_5818(uint64_t a1)
   return result;
 }
 
-- (void)logMessage:(id)a3 andState:(id)a4
+- (void)logMessage:(id)message andState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  stateCopy = state;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v7 = objc_opt_class();
@@ -16727,18 +16727,18 @@ uint64_t __33__PLBBAgent_logTelephonyActivity__block_invoke_5818(uint64_t a1)
 
     if (byte_2811F5250 == 1)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Messages: type=%@ state=%@;", v5, v6];;
+      stateCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Messages: type=%@ state=%@;", messageCopy, stateCopy];;
       v9 = MEMORY[0x277D3F178];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v11 = [v10 lastPathComponent];
+      lastPathComponent = [v10 lastPathComponent];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logMessage:andState:]"];
-      [v9 logMessage:v8 fromFile:v11 fromFunction:v12 fromLineNumber:11924];
+      [v9 logMessage:stateCopy fromFile:lastPathComponent fromFunction:v12 fromLineNumber:11924];
 
       v13 = PLLogCommon();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v17 = v8;
+        v17 = stateCopy;
         _os_log_debug_impl(&dword_21A4C6000, v13, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
@@ -16754,12 +16754,12 @@ uint64_t __33__PLBBAgent_logMessage_andState___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setOpName:(id)a3
+- (void)setOpName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (([(NSString *)self->_operatorName isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     operatorName = self->_operatorName;
     self->_operatorName = v4;
 
@@ -16769,41 +16769,41 @@ uint64_t __33__PLBBAgent_logMessage_andState___block_invoke(uint64_t a1)
 
 - (void)logOperatorName
 {
-  v3 = [(PLBBAgent *)self operatorName];
-  if (v3)
+  operatorName = [(PLBBAgent *)self operatorName];
+  if (operatorName)
   {
-    v5 = v3;
-    v4 = [(PLBBAgent *)self operatorName];
-    [v4 isEqualToString:&stru_282B650A0];
+    v5 = operatorName;
+    operatorName2 = [(PLBBAgent *)self operatorName];
+    [operatorName2 isEqualToString:&stru_282B650A0];
 
-    v3 = v5;
+    operatorName = v5;
   }
 }
 
 - (id)humanReadableDataActiveString
 {
-  v3 = [(PLBBAgent *)self inDCH];
-  if (v3)
+  inDCH = [(PLBBAgent *)self inDCH];
+  if (inDCH)
   {
   }
 
   else
   {
-    v4 = [(PLBBAgent *)self inUTBF];
+    inUTBF = [(PLBBAgent *)self inUTBF];
 
-    if (!v4)
+    if (!inUTBF)
     {
       return 0;
     }
   }
 
-  v5 = [(PLBBAgent *)self inDCH];
-  if ([v5 BOOLValue])
+  inDCH2 = [(PLBBAgent *)self inDCH];
+  if ([inDCH2 BOOLValue])
   {
-    v6 = [(PLBBAgent *)self inUTBF];
-    v7 = [v6 BOOLValue];
+    inUTBF2 = [(PLBBAgent *)self inUTBF];
+    bOOLValue = [inUTBF2 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
       return @"DCH/UTBF";
     }
@@ -16813,18 +16813,18 @@ uint64_t __33__PLBBAgent_logMessage_andState___block_invoke(uint64_t a1)
   {
   }
 
-  v9 = [(PLBBAgent *)self inDCH];
-  v10 = [v9 BOOLValue];
+  inDCH3 = [(PLBBAgent *)self inDCH];
+  bOOLValue2 = [inDCH3 BOOLValue];
 
-  if (v10)
+  if (bOOLValue2)
   {
     return @"Active";
   }
 
-  v11 = [(PLBBAgent *)self inUTBF];
-  v12 = [v11 BOOLValue];
+  inUTBF3 = [(PLBBAgent *)self inUTBF];
+  bOOLValue3 = [inUTBF3 BOOLValue];
 
-  if (v12)
+  if (bOOLValue3)
   {
     return @"UTBF";
   }
@@ -16837,11 +16837,11 @@ uint64_t __33__PLBBAgent_logMessage_andState___block_invoke(uint64_t a1)
 
 - (id)humanReadableSimStatusString
 {
-  v3 = [(PLBBAgent *)self simStatus];
-  if (v3 && (v4 = v3, -[PLBBAgent simStatus](self, "simStatus"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEqualToString:&stru_282B650A0], v5, v4, (v6 & 1) == 0))
+  simStatus = [(PLBBAgent *)self simStatus];
+  if (simStatus && (v4 = simStatus, -[PLBBAgent simStatus](self, "simStatus"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEqualToString:&stru_282B650A0], v5, v4, (v6 & 1) == 0))
   {
-    v8 = [(PLBBAgent *)self simStatus];
-    v7 = [v8 substringFromIndex:{objc_msgSend(*MEMORY[0x277CC3EC0], "length")}];
+    simStatus2 = [(PLBBAgent *)self simStatus];
+    v7 = [simStatus2 substringFromIndex:{objc_msgSend(*MEMORY[0x277CC3EC0], "length")}];
   }
 
   else
@@ -16852,10 +16852,10 @@ uint64_t __33__PLBBAgent_logMessage_andState___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)processTimeUpdateInfoDict:(id)a3
+- (void)processTimeUpdateInfoDict:(id)dict
 {
-  v4 = a3;
-  [MEMORY[0x277D3F258] postNotificationName:@"BasebandTimeChangeNotification" object:self userInfo:v4];
+  dictCopy = dict;
+  [MEMORY[0x277D3F258] postNotificationName:@"BasebandTimeChangeNotification" object:self userInfo:dictCopy];
   v5 = objc_opt_class();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -16875,8 +16875,8 @@ uint64_t __33__PLBBAgent_logMessage_andState___block_invoke(uint64_t a1)
     v7 = objc_opt_new();
     [v7 setAgent:self];
     [v7 setMsgProcErr:0];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"TimeUpdate Dict: %@", v4];
-    [v7 setPayload:v8];
+    dictCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"TimeUpdate Dict: %@", dictCopy];
+    [v7 setPayload:dictCopy];
 
     [v7 logEventNoneBBMsgAll];
   }
@@ -16910,9 +16910,9 @@ uint64_t __39__PLBBAgent_processTimeUpdateInfoDict___block_invoke(uint64_t a1)
       v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"refreshRequestHandler not implemented"];
       v4 = MEMORY[0x277D3F178];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v6 = [v5 lastPathComponent];
+      lastPathComponent = [v5 lastPathComponent];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent refreshRequestHandler]"];
-      [v4 logMessage:v3 fromFile:v6 fromFunction:v7 fromLineNumber:12020];
+      [v4 logMessage:v3 fromFile:lastPathComponent fromFunction:v7 fromLineNumber:12020];
 
       v8 = PLLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -16956,9 +16956,9 @@ uint64_t __34__PLBBAgent_refreshRequestHandler__block_invoke(uint64_t a1)
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBAgent logBasebandConfig]"];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Agents/Radios/PLBBAgent.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBAgent logBasebandConfig]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:12026];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:12026];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -16976,24 +16976,24 @@ uint64_t __34__PLBBAgent_refreshRequestHandler__block_invoke(uint64_t a1)
   [(PLBasebandMessage *)v11 setAgent:self];
   [(PLBBEurekaEventMsg *)v11 setEventCode:0];
   [(PLBBEurekaEventMsg *)v11 setError:&stru_282B650A0];
-  v12 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLBBEurekaEventMsg *)v11 setHeaderWithSeqNum:&unk_282C11D60 andDate:v12 andTimeCal:0.0];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLBBEurekaEventMsg *)v11 setHeaderWithSeqNum:&unk_282C11D60 andDate:monotonicDate andTimeCal:0.0];
 
   v13 = 0;
   v25 = *MEMORY[0x277D3F5E0];
   do
   {
     v14 = logBasebandConfig_basebandConfigPropertyKeys[v13];
-    v15 = [(PLBBAgent *)self connection];
-    v16 = [v15 getProperty:@"enabled" forTrace:v14];
+    connection = [(PLBBAgent *)self connection];
+    v16 = [connection getProperty:@"enabled" forTrace:v14];
 
     if (!v16)
     {
       v16 = @"null";
     }
 
-    v17 = [(PLBBAgent *)self connection];
-    v18 = [v17 getProperty:@"history" forTrace:v14];
+    connection2 = [(PLBBAgent *)self connection];
+    v18 = [connection2 getProperty:@"history" forTrace:v14];
 
     if (!v18)
     {
@@ -17012,9 +17012,9 @@ uint64_t __34__PLBBAgent_refreshRequestHandler__block_invoke(uint64_t a1)
       [v21 setObject:v18 forKeyedSubscript:@"value_history"];
       if ([MEMORY[0x277D3F208] isBasebandProto])
       {
-        v22 = [v21 dictionary];
-        v23 = [v21 entryDate];
-        [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"MessageLite" data:v22 date:v23];
+        dictionary = [v21 dictionary];
+        entryDate = [v21 entryDate];
+        [(PLOperator *)self logForSubsystem:@"BasebandMetrics" category:@"MessageLite" data:dictionary date:entryDate];
 
         v3 = 0x278257000;
       }

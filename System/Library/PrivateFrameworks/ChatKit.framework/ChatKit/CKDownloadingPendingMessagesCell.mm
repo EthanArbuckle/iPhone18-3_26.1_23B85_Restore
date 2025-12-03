@@ -1,22 +1,22 @@
 @interface CKDownloadingPendingMessagesCell
-- (CKDownloadingPendingMessagesCell)initWithFrame:(CGRect)a3;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (CKDownloadingPendingMessagesCell)initWithFrame:(CGRect)frame;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
-- (void)setPendingMessageCountAttributedText:(id)a3;
+- (void)setPendingMessageCountAttributedText:(id)text;
 @end
 
 @implementation CKDownloadingPendingMessagesCell
 
-- (CKDownloadingPendingMessagesCell)initWithFrame:(CGRect)a3
+- (CKDownloadingPendingMessagesCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKDownloadingPendingMessagesCell;
-  v3 = [(CKTranscriptCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[_TtC7ChatKit39CKDownloadingPendingMessagesViewBuilder createDownloadingPendingMessagesViewInstanceForChatKit];
-    v5 = [(CKEditableCollectionViewCell *)v3 contentView];
-    [v5 addSubview:v4];
+    contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v4];
 
     [(CKDownloadingPendingMessagesCell *)v3 setPendingMessagesContentView:v4];
   }
@@ -34,50 +34,50 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKDownloadingPendingMessagesCell *)self pendingMessagesContentView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  pendingMessagesContentView = [(CKDownloadingPendingMessagesCell *)self pendingMessagesContentView];
+  [pendingMessagesContentView setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)setPendingMessageCountAttributedText:(id)a3
+- (void)setPendingMessageCountAttributedText:(id)text
 {
-  v5 = a3;
-  if (self->_pendingMessageCountAttributedText != v5)
+  textCopy = text;
+  if (self->_pendingMessageCountAttributedText != textCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_pendingMessageCountAttributedText, a3);
-    v6 = [(CKDownloadingPendingMessagesCell *)self pendingMessagesContentView];
-    [v6 updateMessageCountWith:self->_pendingMessageCountAttributedText];
+    v7 = textCopy;
+    objc_storeStrong(&self->_pendingMessageCountAttributedText, text);
+    pendingMessagesContentView = [(CKDownloadingPendingMessagesCell *)self pendingMessagesContentView];
+    [pendingMessagesContentView updateMessageCountWith:self->_pendingMessageCountAttributedText];
 
-    v5 = v7;
+    textCopy = v7;
   }
 }
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
-  v12 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   v26.receiver = self;
   v26.super_class = CKDownloadingPendingMessagesCell;
-  [(CKTranscriptCell *)&v26 configureForChatItem:v12 context:a4 animated:v9 animationDuration:a7 animationCurve:a6];
-  v13 = [v12 IMChatItem];
+  [(CKTranscriptCell *)&v26 configureForChatItem:itemCopy context:context animated:animatedCopy animationDuration:curve animationCurve:duration];
+  iMChatItem = [itemCopy IMChatItem];
   objc_opt_class();
-  LOBYTE(v9) = objc_opt_isKindOfClass();
+  LOBYTE(animatedCopy) = objc_opt_isKindOfClass();
 
-  if (v9)
+  if (animatedCopy)
   {
-    v14 = [v12 IMChatItem];
-    v15 = [v14 pendingIncomingSatelliteMessageCount];
-    -[CKDownloadingPendingMessagesCell setTotalSatelliteMessageCount:](self, "setTotalSatelliteMessageCount:", [v14 totalSatelliteMessageCount]);
-    v16 = [(CKDownloadingPendingMessagesCell *)self totalSatelliteMessageCount]- v15 + 1;
+    iMChatItem2 = [itemCopy IMChatItem];
+    pendingIncomingSatelliteMessageCount = [iMChatItem2 pendingIncomingSatelliteMessageCount];
+    -[CKDownloadingPendingMessagesCell setTotalSatelliteMessageCount:](self, "setTotalSatelliteMessageCount:", [iMChatItem2 totalSatelliteMessageCount]);
+    v16 = [(CKDownloadingPendingMessagesCell *)self totalSatelliteMessageCount]- pendingIncomingSatelliteMessageCount + 1;
     v17 = MEMORY[0x1E696AEC0];
     v18 = CKFrameworkBundle();
     v19 = [v18 localizedStringForKey:@"NUMBER_OF_REMAINING_PENDING_MESSAGES" value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
     v20 = [v17 localizedStringWithFormat:v19, v16, -[CKDownloadingPendingMessagesCell totalSatelliteMessageCount](self, "totalSatelliteMessageCount")];
 
-    v21 = [MEMORY[0x1E69DC668] sharedApplication];
-    v22 = [v21 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v22 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v23 = @"\u200F";
     }

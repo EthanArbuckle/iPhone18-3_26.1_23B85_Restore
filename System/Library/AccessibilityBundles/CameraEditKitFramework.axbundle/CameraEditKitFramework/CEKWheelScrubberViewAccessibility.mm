@@ -1,5 +1,5 @@
 @interface CEKWheelScrubberViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsFilterChooser;
 - (BOOL)accessibilityActivate;
 - (BOOL)isPhotoStyleScrubber;
@@ -17,16 +17,16 @@
 
 @implementation CEKWheelScrubberViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"markedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"switchToNextItem" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"switchToPreviousItem" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CEKWheelScrubberView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"markedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"switchToNextItem" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CEKWheelScrubberView" hasInstanceMethod:@"switchToPreviousItem" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CEKWheelScrubberView" isKindOfClass:@"UIView"];
 }
 
 - (BOOL)_axIsFilterChooser
@@ -67,9 +67,9 @@
 
 - (void)_axFilterAnnouncement
 {
-  v2 = [(CEKWheelScrubberViewAccessibility *)self _axPhotoEffect];
+  _axPhotoEffect = [(CEKWheelScrubberViewAccessibility *)self _axPhotoEffect];
 
-  if (v2)
+  if (_axPhotoEffect)
   {
     v3 = MEMORY[0x29EDBD7E8];
     v4 = accessibilityCameraEditKitD2xLocalizedString(@"filter.intensity.hint");
@@ -95,22 +95,22 @@
   MEMORY[0x29C2CE830](@"PUFilterToolController");
   if (objc_opt_isKindOfClass())
   {
-    v4 = accessibilityCameraEditKitD2xLocalizedString(@"filter.chooser");
+    accessibilityLabel = accessibilityCameraEditKitD2xLocalizedString(@"filter.chooser");
   }
 
   else if ([(CEKWheelScrubberViewAccessibility *)self isPhotoStyleScrubber])
   {
-    v4 = accessibilityCameraEditKitV2LocalizedString(@"styles.chooser");
+    accessibilityLabel = accessibilityCameraEditKitV2LocalizedString(@"styles.chooser");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CEKWheelScrubberViewAccessibility;
-    v4 = [(CEKWheelScrubberViewAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(CEKWheelScrubberViewAccessibility *)&v7 accessibilityLabel];
   }
 
-  v5 = v4;
+  v5 = accessibilityLabel;
 
   return v5;
 }
@@ -129,10 +129,10 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(CEKWheelScrubberViewAccessibility *)self isPhotoStyleScrubber];
+  isPhotoStyleScrubber = [(CEKWheelScrubberViewAccessibility *)self isPhotoStyleScrubber];
   v4 = -1.0;
   v5 = -1.0;
-  if (!v3)
+  if (!isPhotoStyleScrubber)
   {
     v6.receiver = self;
     v6.super_class = CEKWheelScrubberViewAccessibility;
@@ -170,8 +170,8 @@
       v6 = @"none";
     }
 
-    v7 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"filter.%@", v6];
-    v10 = accessibilityCameraEditKitD2xLocalizedString(v7);
+    _axPhotoFilterName = [MEMORY[0x29EDBA0F8] stringWithFormat:@"filter.%@", v6];
+    accessibilityValue = accessibilityCameraEditKitD2xLocalizedString(_axPhotoFilterName);
     goto LABEL_17;
   }
 
@@ -182,87 +182,87 @@
     {
       v14.receiver = self;
       v14.super_class = CEKWheelScrubberViewAccessibility;
-      v10 = [(CEKWheelScrubberViewAccessibility *)&v14 accessibilityValue];
+      accessibilityValue = [(CEKWheelScrubberViewAccessibility *)&v14 accessibilityValue];
       goto LABEL_18;
     }
 
-    v7 = [v3 safeSwiftValueForKey:@"styleLabel"];
-    v8 = [v7 accessibilityLabel];
+    _axPhotoFilterName = [v3 safeSwiftValueForKey:@"styleLabel"];
+    accessibilityLabel = [_axPhotoFilterName accessibilityLabel];
     v11 = __UIAXStringForVariables();
     goto LABEL_15;
   }
 
-  v7 = [(CEKWheelScrubberViewAccessibility *)self _axPhotoFilterName];
-  v8 = [(CEKWheelScrubberViewAccessibility *)self _axPhotoEffect];
-  if (!v8)
+  _axPhotoFilterName = [(CEKWheelScrubberViewAccessibility *)self _axPhotoFilterName];
+  accessibilityLabel = [(CEKWheelScrubberViewAccessibility *)self _axPhotoEffect];
+  if (!accessibilityLabel)
   {
-    v11 = v7;
+    v11 = _axPhotoFilterName;
 LABEL_15:
-    v10 = v11;
+    accessibilityValue = v11;
     goto LABEL_16;
   }
 
   v9 = [v3 safeValueForKey:@"_slider"];
   [v9 safeCGFloatForKey:@"value"];
   v13 = AXFormatFloatWithPercentage();
-  v10 = __UIAXStringForVariables();
+  accessibilityValue = __UIAXStringForVariables();
 
 LABEL_16:
 LABEL_17:
 
 LABEL_18:
 
-  return v10;
+  return accessibilityValue;
 }
 
 - (id)_axPhotoFilterName
 {
-  v2 = [(CEKWheelScrubberViewAccessibility *)self _axPhotoEffect];
-  v3 = v2;
-  if (v2)
+  _axPhotoEffect = [(CEKWheelScrubberViewAccessibility *)self _axPhotoEffect];
+  v3 = _axPhotoEffect;
+  if (_axPhotoEffect)
   {
-    v4 = [v2 CIFilterName];
-    if ([v4 isEqualToString:@"CIPhotoEffect3DVivid"])
+    cIFilterName = [_axPhotoEffect CIFilterName];
+    if ([cIFilterName isEqualToString:@"CIPhotoEffect3DVivid"])
     {
       v5 = @"vivid";
     }
 
-    else if ([v4 isEqualToString:@"CIPhotoEffect3DVividWarm"])
+    else if ([cIFilterName isEqualToString:@"CIPhotoEffect3DVividWarm"])
     {
       v5 = @"vivid.warm";
     }
 
-    else if ([v4 isEqualToString:@"CIPhotoEffect3DVividCool"])
+    else if ([cIFilterName isEqualToString:@"CIPhotoEffect3DVividCool"])
     {
       v5 = @"vivid.cool";
     }
 
-    else if ([v4 isEqualToString:@"CIPhotoEffect3DDramatic"])
+    else if ([cIFilterName isEqualToString:@"CIPhotoEffect3DDramatic"])
     {
       v5 = @"dramatic";
     }
 
-    else if ([v4 isEqualToString:@"CIPhotoEffect3DDramaticWarm"])
+    else if ([cIFilterName isEqualToString:@"CIPhotoEffect3DDramaticWarm"])
     {
       v5 = @"dramatic.warm";
     }
 
-    else if ([v4 isEqualToString:@"CIPhotoEffect3DDramaticCool"])
+    else if ([cIFilterName isEqualToString:@"CIPhotoEffect3DDramaticCool"])
     {
       v5 = @"dramatic.cool";
     }
 
-    else if ([v4 isEqualToString:@"CIPhotoEffectMono"])
+    else if ([cIFilterName isEqualToString:@"CIPhotoEffectMono"])
     {
       v5 = @"mono";
     }
 
-    else if ([v4 isEqualToString:@"CIPhotoEffect3DSilverplate"])
+    else if ([cIFilterName isEqualToString:@"CIPhotoEffect3DSilverplate"])
     {
       v5 = @"silverplate";
     }
 
-    else if ([v4 isEqualToString:@"CIPhotoEffect3DNoir"])
+    else if ([cIFilterName isEqualToString:@"CIPhotoEffect3DNoir"])
     {
       v5 = @"noir";
     }
@@ -288,39 +288,39 @@ LABEL_18:
 {
   v8.receiver = self;
   v8.super_class = CEKWheelScrubberViewAccessibility;
-  v3 = [(CEKWheelScrubberViewAccessibility *)&v8 accessibilityHint];
+  accessibilityHint = [(CEKWheelScrubberViewAccessibility *)&v8 accessibilityHint];
   if ([(CEKWheelScrubberViewAccessibility *)self _axIsFilterChooser])
   {
     v4 = accessibilityCameraEditKitD2xLocalizedString(@"filter.adjustable.instructions");
 
-    v5 = [(CEKWheelScrubberViewAccessibility *)self _axPhotoEffect];
+    _axPhotoEffect = [(CEKWheelScrubberViewAccessibility *)self _axPhotoEffect];
 
-    if (v5)
+    if (_axPhotoEffect)
     {
       v7 = accessibilityCameraEditKitD2xLocalizedString(@"filter.intensity.hint");
-      v3 = __UIAXStringForVariables();
+      accessibilityHint = __UIAXStringForVariables();
     }
 
     else
     {
-      v3 = v4;
+      accessibilityHint = v4;
     }
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v8.receiver = self;
   v8.super_class = CEKWheelScrubberViewAccessibility;
-  v3 = [(CEKWheelScrubberViewAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits = [(CEKWheelScrubberViewAccessibility *)&v8 accessibilityTraits];
   v4 = [(CEKWheelScrubberViewAccessibility *)self safeIntegerForKey:@"selectedIndex"];
   v5 = [(CEKWheelScrubberViewAccessibility *)self safeIntegerForKey:@"markedIndex"];
-  v6 = v3 & ~*MEMORY[0x29EDC7FC0];
+  v6 = accessibilityTraits & ~*MEMORY[0x29EDC7FC0];
   if (v4 == v5)
   {
-    v6 = *MEMORY[0x29EDC7FC0] | v3;
+    v6 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   }
 
   return *MEMORY[0x29EDC7F60] | v6;

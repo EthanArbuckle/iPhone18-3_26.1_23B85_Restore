@@ -1,14 +1,14 @@
 @interface RWIProtocolConsoleChannel
-- (RWIProtocolConsoleChannel)initWithSource:(int64_t)a3 level:(int64_t)a4;
+- (RWIProtocolConsoleChannel)initWithSource:(int64_t)source level:(int64_t)level;
 - (int64_t)level;
 - (int64_t)source;
-- (void)setLevel:(int64_t)a3;
-- (void)setSource:(int64_t)a3;
+- (void)setLevel:(int64_t)level;
+- (void)setSource:(int64_t)source;
 @end
 
 @implementation RWIProtocolConsoleChannel
 
-- (RWIProtocolConsoleChannel)initWithSource:(int64_t)a3 level:(int64_t)a4
+- (RWIProtocolConsoleChannel)initWithSource:(int64_t)source level:(int64_t)level
 {
   v10.receiver = self;
   v10.super_class = RWIProtocolConsoleChannel;
@@ -16,15 +16,15 @@
   v7 = v6;
   if (v6)
   {
-    [(RWIProtocolConsoleChannel *)v6 setSource:a3];
-    [(RWIProtocolConsoleChannel *)v7 setLevel:a4];
+    [(RWIProtocolConsoleChannel *)v6 setSource:source];
+    [(RWIProtocolConsoleChannel *)v7 setLevel:level];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)setSource:(int64_t)a3
+- (void)setSource:(int64_t)source
 {
   Inspector::toProtocolString();
   if (v6)
@@ -92,7 +92,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)setLevel:(int64_t)a3
+- (void)setLevel:(int64_t)level
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)

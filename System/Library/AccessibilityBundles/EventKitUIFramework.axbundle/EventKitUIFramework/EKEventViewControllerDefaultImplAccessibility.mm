@@ -1,16 +1,16 @@
 @interface EKEventViewControllerDefaultImplAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation EKEventViewControllerDefaultImplAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKEventViewControllerDefaultImpl" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"EKEventViewControllerDefaultImpl" hasInstanceVariable:@"_tableView" withType:"UITableView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKEventViewControllerDefaultImpl" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"EKEventViewControllerDefaultImpl" hasInstanceVariable:@"_tableView" withType:"UITableView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

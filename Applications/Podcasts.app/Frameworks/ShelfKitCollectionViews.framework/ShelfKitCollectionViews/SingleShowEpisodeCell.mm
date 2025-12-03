@@ -1,17 +1,17 @@
 @interface SingleShowEpisodeCell
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)didMoveToWindow;
 - (void)prepareForReuse;
 @end
 
 @implementation SingleShowEpisodeCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_100E9C(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_100E9C(attributesCopy);
   v7 = v6;
 
   return v7;
@@ -53,34 +53,34 @@
   v8.super_class = swift_getObjectType();
   v2 = v8.receiver;
   [(SingleShowEpisodeCell *)&v8 didMoveToWindow];
-  v3 = [v2 window];
-  if (v3)
+  window = [v2 window];
+  if (window)
   {
-    v4 = v3;
-    v5 = [v3 screen];
-    [v5 scale];
+    v4 = window;
+    screen = [window screen];
+    [screen scale];
     v7 = v6;
 
     *&v2[OBJC_IVAR____TtC23ShelfKitCollectionViews21SingleShowEpisodeCell_displayScale] = v7;
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [a4 view];
-  if (v4)
+  view = [touch view];
+  if (view)
   {
-    v5 = v4;
+    v5 = view;
     objc_opt_self();
-    v4 = swift_dynamicCastObjCClass();
-    if (!v4)
+    view = swift_dynamicCastObjCClass();
+    if (!view)
     {
 
-      v4 = 0;
+      view = 0;
     }
   }
 
-  v6 = v4 == 0;
+  v6 = view == 0;
 
   return v6;
 }

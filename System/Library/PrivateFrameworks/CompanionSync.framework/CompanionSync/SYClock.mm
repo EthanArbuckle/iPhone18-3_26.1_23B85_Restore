@@ -1,34 +1,34 @@
 @interface SYClock
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_myDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unint64_t)increaseBy:(unint64_t)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (unint64_t)increaseBy:(unint64_t)by;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYClock
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    InstanceMethod = class_getInstanceMethod(a1, sel_description);
-    v4 = class_getInstanceMethod(a1, sel__myDescription);
+    InstanceMethod = class_getInstanceMethod(self, sel_description);
+    v4 = class_getInstanceMethod(self, sel__myDescription);
 
     method_exchangeImplementations(InstanceMethod, v4);
   }
 }
 
-- (unint64_t)increaseBy:(unint64_t)a3
+- (unint64_t)increaseBy:(unint64_t)by
 {
-  v5 = [(SYClock *)self version];
-  [(SYClock *)self setVersion:v5 + a3];
-  return v5 + a3;
+  version = [(SYClock *)self version];
+  [(SYClock *)self setVersion:version + by];
+  return version + by;
 }
 
 - (id)_myDescription
@@ -37,9 +37,9 @@
   v9.receiver = self;
   v9.super_class = SYClock;
   v4 = [(SYClock *)&v9 description];
-  v5 = [(SYClock *)self peer];
-  v6 = [v5 peerID];
-  v7 = [v3 stringWithFormat:@"%@: %@::%qu", v4, v6, -[SYClock version](self, "version")];
+  peer = [(SYClock *)self peer];
+  peerID = [peer peerID];
+  v7 = [v3 stringWithFormat:@"%@: %@::%qu", v4, peerID, -[SYClock version](self, "version")];
 
   return v7;
 }
@@ -50,54 +50,54 @@
   v8.receiver = self;
   v8.super_class = SYClock;
   v4 = [(SYClock *)&v8 description];
-  v5 = [(SYClock *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYClock *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   peer = self->_peer;
   if (peer)
   {
-    v5 = [(SYPeer *)peer dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"peer"];
+    dictionaryRepresentation = [(SYPeer *)peer dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"peer"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_version];
-  [v3 setObject:v6 forKey:@"version"];
+  [dictionary setObject:v6 forKey:@"version"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_peer)
   {
     [SYClock writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteSubmessage();
   version = self->_version;
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   peer = self->_peer;
-  v5 = a3;
-  [v5 setPeer:peer];
-  v5[1] = self->_version;
+  toCopy = to;
+  [toCopy setPeer:peer];
+  toCopy[1] = self->_version;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYPeer *)self->_peer copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYPeer *)self->_peer copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -105,19 +105,19 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((peer = self->_peer, !(peer | v4[2])) || -[SYPeer isEqual:](peer, "isEqual:")) && self->_version == v4[1];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((peer = self->_peer, !(peer | equalCopy[2])) || -[SYPeer isEqual:](peer, "isEqual:")) && self->_version == equalCopy[1];
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   peer = self->_peer;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (peer)
   {
     if (!v6)
@@ -125,7 +125,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     peer = [(SYPeer *)peer mergeFrom:?];
   }
 
@@ -136,15 +136,15 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     peer = [(SYClock *)self setPeer:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_version = v4[1];
+  self->_version = fromCopy[1];
 
-  MEMORY[0x1EEE66BB8](peer, v4);
+  MEMORY[0x1EEE66BB8](peer, fromCopy);
 }
 
 @end

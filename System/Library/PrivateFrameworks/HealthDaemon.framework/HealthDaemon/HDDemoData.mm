@@ -245,18 +245,18 @@ void __HDDemoData_canonicalDietaryUnits_block_invoke()
   objc_opt_self();
   if (([MEMORY[0x277CCDD68] usingDemoDataDatabase] & 1) == 0 && !objc_msgSend(MEMORY[0x277CCDD30], "isRunningStoreDemoMode"))
   {
-    v33 = 0;
+    _directoryPath2 = 0;
     goto LABEL_53;
   }
 
   v2 = 0x277CBE000uLL;
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [HDDemoDataGeneratorConfiguration configurationFromDefaults:v3];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [HDDemoDataGeneratorConfiguration configurationFromDefaults:standardUserDefaults];
 
-  v5 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v6 = [v5 isAppleWatch];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-  if (v6)
+  if (isAppleWatch)
   {
     if ([MEMORY[0x277CCDD30] runningInStoreDemoModeF201])
     {
@@ -274,16 +274,16 @@ void __HDDemoData_canonicalDietaryUnits_block_invoke()
     }
 
 LABEL_14:
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v4 persistToDefaults:v10];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [v4 persistToDefaults:standardUserDefaults2];
 
     goto LABEL_15;
   }
 
   if ([MEMORY[0x277CCDD30] isRunningStoreDemoMode])
   {
-    v8 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v9 = [v8 isAppleWatch] ? 1 : 180;
+    mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+    v9 = [mEMORY[0x277CCDD30]2 isAppleWatch] ? 1 : 180;
 
     if ([v4 generationPeriodInDays] > v9)
     {
@@ -293,10 +293,10 @@ LABEL_14:
 
 LABEL_15:
   v11 = [HDDemoData alloc];
-  v12 = [v4 profileType];
+  profileType = [v4 profileType];
   if (v11)
   {
-    v13 = v12;
+    v13 = profileType;
     v59.receiver = v11;
     v59.super_class = HDDemoData;
     v11 = objc_msgSendSuper2(&v59, sel_init);
@@ -325,30 +325,30 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_INFO))
     {
       v35 = v34;
-      v36 = [(HDDemoData *)&v11->super.isa _directoryPath];
+      _directoryPath = [(HDDemoData *)&v11->super.isa _directoryPath];
       LODWORD(v59.receiver) = 138412290;
-      *(&v59.receiver + 4) = v36;
+      *(&v59.receiver + 4) = _directoryPath;
       _os_log_impl(&dword_228986000, v35, OS_LOG_TYPE_INFO, "Returning demo data directory path: %@", &v59, 0xCu);
     }
 
-    v33 = [(HDDemoData *)&v11->super.isa _directoryPath];
+    _directoryPath2 = [(HDDemoData *)&v11->super.isa _directoryPath];
     goto LABEL_52;
   }
 
-  v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v23 = [v22 BOOLForKey:@"HealthDemoDataResetDatabaseKey"];
+  standardUserDefaults3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v23 = [standardUserDefaults3 BOOLForKey:@"HealthDemoDataResetDatabaseKey"];
 
-  v24 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v25 = [v24 objectForKey:@"HealthDemoDataLastRunDateKey"];
+  standardUserDefaults4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v25 = [standardUserDefaults4 objectForKey:@"HealthDemoDataLastRunDateKey"];
 
-  v26 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (v25 && [MEMORY[0x277CCDD30] isRunningStoreDemoMode])
   {
-    v27 = [MEMORY[0x277CBEA80] currentCalendar];
-    v28 = [v27 dateByAddingUnit:16 value:-7 toDate:v26 options:0];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v28 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:date options:0];
 
-    v29 = [MEMORY[0x277CBEA80] currentCalendar];
-    v30 = [v29 dateByAddingUnit:16 value:7 toDate:v26 options:0];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    v30 = [currentCalendar2 dateByAddingUnit:16 value:7 toDate:date options:0];
 
     v31 = [v25 hk_isBeforeDate:v28];
     v32 = [v25 hk_isAfterDate:v30];
@@ -398,20 +398,20 @@ LABEL_27:
     }
 
 LABEL_40:
-    v39 = [*(v2 + 3024) standardUserDefaults];
-    [v39 setBool:0 forKey:@"HealthDemoDataResetDatabaseKey"];
+    standardUserDefaults5 = [*(v2 + 3024) standardUserDefaults];
+    [standardUserDefaults5 setBool:0 forKey:@"HealthDemoDataResetDatabaseKey"];
 
-    v40 = [*(v2 + 3024) standardUserDefaults];
-    [v40 removeObjectForKey:@"HealthDemoDataFirstRunDateKey"];
+    standardUserDefaults6 = [*(v2 + 3024) standardUserDefaults];
+    [standardUserDefaults6 removeObjectForKey:@"HealthDemoDataFirstRunDateKey"];
 
-    v41 = [*(v2 + 3024) standardUserDefaults];
-    [v41 removeObjectForKey:@"HealthDemoDataLastRunDateKey"];
+    standardUserDefaults7 = [*(v2 + 3024) standardUserDefaults];
+    [standardUserDefaults7 removeObjectForKey:@"HealthDemoDataLastRunDateKey"];
 
-    v42 = [*(v2 + 3024) standardUserDefaults];
-    [v42 removeObjectForKey:@"HealthDemoDataFirstSampleDateKey"];
+    standardUserDefaults8 = [*(v2 + 3024) standardUserDefaults];
+    [standardUserDefaults8 removeObjectForKey:@"HealthDemoDataFirstSampleDateKey"];
 
-    v43 = [*(v2 + 3024) standardUserDefaults];
-    [v43 removeObjectForKey:@"HealthDemoDataLastSampleDateKey"];
+    standardUserDefaults9 = [*(v2 + 3024) standardUserDefaults];
+    [standardUserDefaults9 removeObjectForKey:@"HealthDemoDataLastSampleDateKey"];
 
     v58 = 0;
     if ([(NSFileManager *)v11->_fileManager fileExistsAtPath:v11->_demoDataPath isDirectory:&v58])
@@ -480,30 +480,30 @@ LABEL_49:
   if (os_log_type_enabled(*MEMORY[0x277CCC2B8], OS_LOG_TYPE_INFO))
   {
     v51 = v50;
-    v52 = [(HDDemoData *)&v11->super.isa _directoryPath];
+    _directoryPath3 = [(HDDemoData *)&v11->super.isa _directoryPath];
     LODWORD(v59.receiver) = 138412290;
-    *(&v59.receiver + 4) = v52;
+    *(&v59.receiver + 4) = _directoryPath3;
     _os_log_impl(&dword_228986000, v51, OS_LOG_TYPE_INFO, "Returning demo data directory path: %@", &v59, 0xCu);
   }
 
-  v33 = [(HDDemoData *)&v11->super.isa _directoryPath];
+  _directoryPath2 = [(HDDemoData *)&v11->super.isa _directoryPath];
 
 LABEL_52:
 LABEL_53:
   v53 = *MEMORY[0x277D85DE8];
 
-  return v33;
+  return _directoryPath2;
 }
 
 - (id)_directoryPath
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

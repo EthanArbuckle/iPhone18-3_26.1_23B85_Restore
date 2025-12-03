@@ -10,8 +10,8 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ISIcon *)self type];
-    v4 = sub_10002491C(v3);
+    type = [(ISIcon *)self type];
+    v4 = sub_10002491C(type);
   }
 
   else
@@ -29,12 +29,12 @@
     v5 = objc_alloc_init(ISFolderIconConfiguration);
     [v5 setFolderEmpty:{objc_msgSend(v4, "folderEmpty")}];
     [v5 setSystemTintColor:{objc_msgSend(v4, "systemTintColor")}];
-    v6 = [v4 symbolName];
-    v7 = sub_100024518(v6);
+    symbolName = [v4 symbolName];
+    v7 = sub_100024518(symbolName);
     [v5 setSymbolName:v7];
 
-    v8 = [v4 emoji];
-    v9 = sub_100024518(v8);
+    emoji = [v4 emoji];
+    v9 = sub_100024518(emoji);
     [v5 setEmoji:v9];
   }
 
@@ -48,15 +48,15 @@
 
 - (id)ds_simplifiedFolderIcon
 {
-  v2 = [(ISIcon *)self ds_copyFolderConfig];
-  v3 = v2;
-  if (v2)
+  ds_copyFolderConfig = [(ISIcon *)self ds_copyFolderConfig];
+  v3 = ds_copyFolderConfig;
+  if (ds_copyFolderConfig)
   {
-    [v2 setSymbolName:0];
+    [ds_copyFolderConfig setSymbolName:0];
     [v3 setEmoji:0];
     v4 = [ISIcon alloc];
-    v5 = [UTTypeFolder identifier];
-    v6 = [v4 initWithType:v5 iconConfiguration:v3];
+    identifier = [UTTypeFolder identifier];
+    v6 = [v4 initWithType:identifier iconConfiguration:v3];
   }
 
   else

@@ -6,10 +6,10 @@
 - (double)_coachingLabelWrapperViewAlpha;
 - (double)_coachingLabelWrapperViewSize;
 - (double)_xTranslationTransformForCurrentState;
-- (id)_accessibilityCoachingLabelTextForConfiguredAction:(void *)a1;
-- (id)_animationSettingsForTransitionFromState:(uint64_t)a3 toState:;
+- (id)_accessibilityCoachingLabelTextForConfiguredAction:(void *)action;
+- (id)_animationSettingsForTransitionFromState:(uint64_t)state toState:;
 - (id)_cameraCoachingLabelText;
-- (id)_controlCoachingLabelTextForAction:(void *)a1;
+- (id)_controlCoachingLabelTextForAction:(void *)action;
 - (id)_flashlightCoachingLabelText;
 - (id)_focusCoachingLabelText;
 - (id)_makeCoachingButton;
@@ -23,7 +23,7 @@
 - (id)_translateCoachingLabelText;
 - (id)_voiceMemosCoachingLabelText;
 - (id)delegate;
-- (id)initWithRingerControl:(void *)a3 activityManager:(void *)a4 applicationController:(void *)a5 doNotDisturbStateMonitor:(void *)a6 flashlightActivityManager:;
+- (id)initWithRingerControl:(void *)control activityManager:(void *)manager applicationController:(void *)controller doNotDisturbStateMonitor:(void *)monitor flashlightActivityManager:;
 - (id)setDelegate:(id *)result;
 - (uint64_t)_layoutCoachingContentView;
 - (uint64_t)_layoutDimmingView;
@@ -53,93 +53,93 @@
 - (uint64_t)state;
 - (uint64_t)stateTransitionAnimationCount;
 - (uint64_t)systemApertureFrames;
-- (void)_canFitTextInCoachingLabel:(void *)a1;
+- (void)_canFitTextInCoachingLabel:(void *)label;
 - (void)_layoutCoachingButton;
 - (void)_layoutCoachingLabel;
 - (void)_layoutCoachingLabelWrapperView;
 - (void)_setNeedsUpdateCoachingLabelText;
-- (void)_shortcutCoachingLabelTextForConfiguredAction:(void *)a1;
-- (void)_updateCoachingButtonLayer:(uint64_t)a1;
+- (void)_shortcutCoachingLabelTextForConfiguredAction:(void *)action;
+- (void)_updateCoachingButtonLayer:(uint64_t)layer;
 - (void)_updateCoachingLabelOccluded;
 - (void)_updateCoachingLabelTextIfNeeded;
 - (void)_updateLiveRenderingAssertionIfNeeded;
-- (void)controlSystemAction:(id)a3 propertiesDidChange:(id)a4;
-- (void)setAction:(id *)a1;
-- (void)setAttachmentDelegate:(id)a3;
-- (void)setIsAttached:(uint64_t)a1;
-- (void)setPositionOffset:(CGPoint)a3;
-- (void)setShouldLayoutForButtonHints:(uint64_t)a1;
-- (void)setSystemApertureFrames:(uint64_t)a1;
-- (void)transitionToState:(int)a3 animated:(void *)a4 completion:;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)controlSystemAction:(id)action propertiesDidChange:(id)change;
+- (void)setAction:(id *)action;
+- (void)setAttachmentDelegate:(id)delegate;
+- (void)setIsAttached:(uint64_t)attached;
+- (void)setPositionOffset:(CGPoint)offset;
+- (void)setShouldLayoutForButtonHints:(uint64_t)hints;
+- (void)setSystemApertureFrames:(uint64_t)frames;
+- (void)transitionToState:(int)state animated:(void *)animated completion:;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBSystemActionCoachingHUDViewController
 
-- (id)initWithRingerControl:(void *)a3 activityManager:(void *)a4 applicationController:(void *)a5 doNotDisturbStateMonitor:(void *)a6 flashlightActivityManager:
+- (id)initWithRingerControl:(void *)control activityManager:(void *)manager applicationController:(void *)controller doNotDisturbStateMonitor:(void *)monitor flashlightActivityManager:
 {
   v12 = a2;
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a1)
+  controlCopy = control;
+  managerCopy = manager;
+  controllerCopy = controller;
+  monitorCopy = monitor;
+  if (self)
   {
     if (!v12)
     {
       [SBSystemActionCoachingHUDViewController initWithRingerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:?];
     }
 
-    if (!v21)
+    if (!controlCopy)
     {
       [SBSystemActionCoachingHUDViewController initWithRingerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:?];
     }
 
-    if (!v13)
+    if (!managerCopy)
     {
       [SBSystemActionCoachingHUDViewController initWithRingerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:?];
     }
 
-    if (!v14)
+    if (!controllerCopy)
     {
       [SBSystemActionCoachingHUDViewController initWithRingerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:?];
     }
 
-    if (!v15)
+    if (!monitorCopy)
     {
       [SBSystemActionCoachingHUDViewController initWithRingerControl:? activityManager:? applicationController:? doNotDisturbStateMonitor:? flashlightActivityManager:?];
     }
 
-    v22.receiver = a1;
+    v22.receiver = self;
     v22.super_class = SBSystemActionCoachingHUDViewController;
     v16 = objc_msgSendSuper2(&v22, sel_initWithNibName_bundle_, 0, 0);
-    a1 = v16;
+    self = v16;
     if (v16)
     {
       objc_storeStrong(v16 + 132, a2);
-      objc_storeStrong(a1 + 133, a3);
-      objc_storeStrong(a1 + 134, a4);
-      objc_storeStrong(a1 + 135, a5);
-      objc_storeStrong(a1 + 136, a6);
+      objc_storeStrong(self + 133, control);
+      objc_storeStrong(self + 134, manager);
+      objc_storeStrong(self + 135, controller);
+      objc_storeStrong(self + 136, monitor);
       v17 = +[SBSystemActionDomain rootSettings];
-      v18 = [v17 coachingSettings];
-      v19 = a1[137];
-      a1[137] = v18;
+      coachingSettings = [v17 coachingSettings];
+      v19 = self[137];
+      self[137] = coachingSettings;
 
-      *(a1 + 1016) = 0;
-      a1[131] = 0;
-      a1[140] = 0;
-      *(a1 + 1017) = 0;
-      a1[141] = 1;
-      [a1 setTransitioningDelegate:a1];
+      *(self + 1016) = 0;
+      self[131] = 0;
+      self[140] = 0;
+      *(self + 1017) = 0;
+      self[141] = 1;
+      [self setTransitioningDelegate:self];
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __81__SBSystemActionCoachingHUDViewController_transitionToState_animated_completion___block_invoke(uint64_t a1)
@@ -253,17 +253,17 @@ uint64_t __81__SBSystemActionCoachingHUDViewController_transitionToState_animate
   v17.receiver = self;
   v17.super_class = SBSystemActionCoachingHUDViewController;
   [(SBSystemActionCoachingHUDViewController *)&v17 viewDidLoad];
-  v3 = [(SBOrientationTransformWrapperViewController *)self view];
-  [v3 setCounterTransformView:1];
-  [v3 bs_setHitTestingDisabled:1];
-  v4 = [(SBSystemActionCoachingHUDViewController *)self _makeContentView];
+  view = [(SBOrientationTransformWrapperViewController *)self view];
+  [view setCounterTransformView:1];
+  [view bs_setHitTestingDisabled:1];
+  _makeContentView = [(SBSystemActionCoachingHUDViewController *)self _makeContentView];
   contentView = self->_contentView;
-  self->_contentView = v4;
+  self->_contentView = _makeContentView;
 
-  [v3 addContentView:self->_contentView];
-  v6 = [(SBSystemActionCoachingHUDViewController *)self _makeDimmingView];
+  [view addContentView:self->_contentView];
+  _makeDimmingView = [(SBSystemActionCoachingHUDViewController *)self _makeDimmingView];
   dimmingView = self->_dimmingView;
-  self->_dimmingView = v6;
+  self->_dimmingView = _makeDimmingView;
 
   [(UIView *)self->_contentView addSubview:self->_dimmingView];
   v8 = objc_alloc(MEMORY[0x277D75D18]);
@@ -273,34 +273,34 @@ uint64_t __81__SBSystemActionCoachingHUDViewController_transitionToState_animate
   self->_coachingContentView = v9;
 
   [(UIView *)self->_contentView addSubview:self->_coachingContentView];
-  v11 = [(SBSystemActionCoachingHUDViewController *)self _makeCoachingButton];
+  _makeCoachingButton = [(SBSystemActionCoachingHUDViewController *)self _makeCoachingButton];
   coachingButton = self->_coachingButton;
-  self->_coachingButton = v11;
+  self->_coachingButton = _makeCoachingButton;
 
   [(UIView *)self->_coachingContentView addSubview:self->_coachingButton];
-  v13 = [(SBSystemActionCoachingHUDViewController *)self _makeCoachingLabelWrapperView];
+  _makeCoachingLabelWrapperView = [(SBSystemActionCoachingHUDViewController *)self _makeCoachingLabelWrapperView];
   coachingLabelWrapperView = self->_coachingLabelWrapperView;
-  self->_coachingLabelWrapperView = v13;
+  self->_coachingLabelWrapperView = _makeCoachingLabelWrapperView;
 
   [(UIView *)self->_coachingContentView addSubview:self->_coachingLabelWrapperView];
-  v15 = [(SBSystemActionCoachingHUDViewController *)self _makeCoachingLabel];
+  _makeCoachingLabel = [(SBSystemActionCoachingHUDViewController *)self _makeCoachingLabel];
   coachingLabel = self->_coachingLabel;
-  self->_coachingLabel = v15;
+  self->_coachingLabel = _makeCoachingLabel;
 
   [(UIView *)self->_coachingLabelWrapperView addSubview:self->_coachingLabel];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13.receiver = self;
   v13.super_class = SBSystemActionCoachingHUDViewController;
-  v7 = a4;
-  [(SBSystemActionCoachingHUDViewController *)&v13 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SBSystemActionCoachingHUDViewController *)&v13 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   self->_rotating = 1;
   v8 = SBFWindowForViewControllerTransition();
-  v9 = [v8 _toWindowOrientation];
+  _toWindowOrientation = [v8 _toWindowOrientation];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -313,15 +313,15 @@ uint64_t __81__SBSystemActionCoachingHUDViewController_transitionToState_animate
   v11[2] = __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v11[3] = &unk_2783BE3B8;
   v11[4] = self;
-  v11[5] = v9;
+  v11[5] = _toWindowOrientation;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_3;
   v10[3] = &unk_2783B50F8;
   v10[4] = self;
-  v10[5] = v9;
+  v10[5] = _toWindowOrientation;
   v10[6] = 0x3FC999999999999ALL;
-  [v7 animateAlongsideTransition:v11 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:v10];
 }
 
 uint64_t __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -362,9 +362,9 @@ uint64_t __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_
   return [*(v1 + 1168) setAlpha:v2];
 }
 
-- (void)setAttachmentDelegate:(id)a3
+- (void)setAttachmentDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_attachmentDelegate);
 
   v5 = obj;
@@ -376,15 +376,15 @@ uint64_t __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_
   }
 }
 
-- (void)setPositionOffset:(CGPoint)a3
+- (void)setPositionOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SBOrientationTransformWrapperViewController *)self view];
-  v7 = [v6 containerOrientation];
+  y = offset.y;
+  x = offset.x;
+  view = [(SBOrientationTransformWrapperViewController *)self view];
+  containerOrientation = [view containerOrientation];
 
-  v8 = v7 - 3;
-  if (v7 == 2)
+  v8 = containerOrientation - 3;
+  if (containerOrientation == 2)
   {
     v9 = -x;
   }
@@ -430,13 +430,13 @@ uint64_t __61__SBSystemActionCoachingHUDViewController_setPositionOffset___block
   return [v2 setTransform:&v4];
 }
 
-- (void)controlSystemAction:(id)a3 propertiesDidChange:(id)a4
+- (void)controlSystemAction:(id)action propertiesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = [(SBHomeScreenConfigurationServer *)a4 connections];
-  v8 = [(SBControlSystemAction *)v6 properties];
+  actionCopy = action;
+  connections = [(SBHomeScreenConfigurationServer *)change connections];
+  properties = [(SBControlSystemAction *)actionCopy properties];
 
-  v9 = [(SBHomeScreenConfigurationServer *)v8 connections];
+  connections2 = [(SBHomeScreenConfigurationServer *)properties connections];
   v10 = BSEqualStrings();
 
   if ((v10 & 1) == 0)
@@ -495,10 +495,10 @@ void __91__SBSystemActionCoachingHUDViewController__makeViewControllerTransition
 
 - (double)_xTranslationTransformForCurrentState
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1048);
-    if (*(a1 + 1019) == 1)
+    v2 = *(self + 1048);
+    if (*(self + 1019) == 1)
     {
       v3 = 0.0;
       if (v2 == 2)
@@ -558,28 +558,28 @@ uint64_t __71__SBSystemActionCoachingHUDViewController__updateCoachingLabelOcclu
   return WeakRetained;
 }
 
-- (void)setAction:(id *)a1
+- (void)setAction:(id *)action
 {
   v4 = a2;
-  if (a1)
+  if (action)
   {
-    v5 = a1[129];
+    v5 = action[129];
     if (v5 != v4)
     {
       v9 = v4;
-      v6 = [v5 controlAction];
-      [(SBControlSystemAction *)v6 removeObserver:a1];
+      controlAction = [v5 controlAction];
+      [(SBControlSystemAction *)controlAction removeObserver:action];
 
-      [a1[138] invalidate];
-      v7 = a1[138];
-      a1[138] = 0;
+      [action[138] invalidate];
+      v7 = action[138];
+      action[138] = 0;
 
-      objc_storeStrong(a1 + 129, a2);
-      v8 = [v9 controlAction];
-      [(SBControlSystemAction *)v8 addObserver:a1];
+      objc_storeStrong(action + 129, a2);
+      controlAction2 = [v9 controlAction];
+      [(SBControlSystemAction *)controlAction2 addObserver:action];
 
-      [(SBSystemActionCoachingHUDViewController *)a1 _updateContentVisibilityAssertion];
-      [(SBSystemActionCoachingHUDViewController *)a1 _setNeedsUpdateCoachingLabelText];
+      [(SBSystemActionCoachingHUDViewController *)action _updateContentVisibilityAssertion];
+      [(SBSystemActionCoachingHUDViewController *)action _setNeedsUpdateCoachingLabelText];
       v4 = v9;
     }
   }
@@ -593,15 +593,15 @@ uint64_t __71__SBSystemActionCoachingHUDViewController__updateCoachingLabelOcclu
   }
 
   v1 = result;
-  v2 = [*(result + 1032) controlAction];
-  if (v2)
+  controlAction = [*(result + 1032) controlAction];
+  if (controlAction)
   {
     v3 = *(v1 + 1104);
     if (*(v1 + 1048))
     {
       if (!v3)
       {
-        v4 = [(SBControlSystemAction *)v2 acquireContentVisibilityAssertionForReason:?];
+        v4 = [(SBControlSystemAction *)controlAction acquireContentVisibilityAssertionForReason:?];
 LABEL_8:
         v5 = *(v1 + 1104);
         *(v1 + 1104) = v4;
@@ -621,18 +621,18 @@ LABEL_8:
 
 - (void)_setNeedsUpdateCoachingLabelText
 {
-  if (a1)
+  if (self)
   {
-    a1[1017] = 1;
-    v1 = [a1 viewIfLoaded];
-    [v1 setNeedsLayout];
+    self[1017] = 1;
+    viewIfLoaded = [self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)setSystemApertureFrames:(uint64_t)a1
+- (void)setSystemApertureFrames:(uint64_t)frames
 {
   v3 = a2;
-  if (a1)
+  if (frames)
   {
     v7 = v3;
     v4 = BSEqualArrays();
@@ -640,10 +640,10 @@ LABEL_8:
     if ((v4 & 1) == 0)
     {
       v5 = [v7 copy];
-      v6 = *(a1 + 1040);
-      *(a1 + 1040) = v5;
+      v6 = *(frames + 1040);
+      *(frames + 1040) = v5;
 
-      [(SBSystemActionCoachingHUDViewController *)a1 _updateCoachingLabelOccluded];
+      [(SBSystemActionCoachingHUDViewController *)frames _updateCoachingLabelOccluded];
       v3 = v7;
     }
   }
@@ -652,9 +652,9 @@ LABEL_8:
 - (void)_updateCoachingLabelOccluded
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1040);
+    v2 = *(self + 1040);
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -693,39 +693,39 @@ LABEL_8:
 
     else
     {
-      v8 = [a1 view];
-      v9 = *(a1 + 1176);
+      view = [self view];
+      v9 = *(self + 1176);
       [v9 bounds];
-      [v9 convertRect:v8 toView:?];
-      [v8 convertRectFromContainerInterfaceOrientationToContentInterfaceOrientation:?];
+      [v9 convertRect:view toView:?];
+      [view convertRectFromContainerInterfaceOrientationToContentInterfaceOrientation:?];
       OUTLINED_FUNCTION_8_4();
       v25.origin.x = OUTLINED_FUNCTION_5_11();
       v7 = CGRectIntersectsRect(v25, v27);
     }
 
-    if (*(a1 + 1018) != v7)
+    if (*(self + 1018) != v7)
     {
-      *(a1 + 1018) = v7;
-      if ([a1 isViewLoaded])
+      *(self + 1018) = v7;
+      if ([self isViewLoaded])
       {
         OUTLINED_FUNCTION_1_4();
         v12 = 3221225472;
         v13 = __71__SBSystemActionCoachingHUDViewController__updateCoachingLabelOccluded__block_invoke;
         v14 = &unk_2783A8C18;
-        v15 = a1;
+        selfCopy = self;
         [v10 animateWithDuration:v11 animations:0.2];
       }
     }
   }
 }
 
-- (void)transitionToState:(int)a3 animated:(void *)a4 completion:
+- (void)transitionToState:(int)state animated:(void *)animated completion:
 {
-  v7 = a4;
-  if (a1)
+  animatedCopy = animated;
+  if (self)
   {
-    v8 = [(SBSystemActionCoachingHUDViewController *)a1 _animationSettingsForTransitionFromState:a2 toState:?];
-    if (a3)
+    v8 = [(SBSystemActionCoachingHUDViewController *)self _animationSettingsForTransitionFromState:a2 toState:?];
+    if (state)
     {
       v9 = 3;
     }
@@ -735,20 +735,20 @@ LABEL_8:
       v9 = 2;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 1024));
-    v11 = *(a1 + 1048);
-    *(a1 + 1048) = a2;
-    ++*(a1 + 1120);
-    [(SBSystemActionCoachingHUDViewController *)a1 _updateCoachingLabelTextIfNeeded];
-    [(SBSystemActionCoachingHUDViewController *)a1 _updateContentVisibilityAssertion];
+    WeakRetained = objc_loadWeakRetained((self + 1024));
+    v11 = *(self + 1048);
+    *(self + 1048) = a2;
+    ++*(self + 1120);
+    [(SBSystemActionCoachingHUDViewController *)self _updateCoachingLabelTextIfNeeded];
+    [(SBSystemActionCoachingHUDViewController *)self _updateContentVisibilityAssertion];
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained systemActionCoachingHUDViewController:a1 didBeginTransitionToState:a2];
+      [WeakRetained systemActionCoachingHUDViewController:self didBeginTransitionToState:a2];
     }
 
     if (a2 && !v11)
     {
-      [(SBSystemActionCoachingHUDViewController *)a1 setIsAttached:?];
+      [(SBSystemActionCoachingHUDViewController *)self setIsAttached:?];
     }
 
     v12 = MEMORY[0x277D75D18];
@@ -756,33 +756,33 @@ LABEL_8:
     v18[1] = 3221225472;
     v18[2] = __81__SBSystemActionCoachingHUDViewController_transitionToState_animated_completion___block_invoke;
     v18[3] = &unk_2783A8BC8;
-    v18[4] = a1;
+    v18[4] = self;
     v18[5] = a2;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __81__SBSystemActionCoachingHUDViewController_transitionToState_animated_completion___block_invoke_361;
     v14[3] = &unk_2783BE390;
     v17 = a2;
-    v14[4] = a1;
+    v14[4] = self;
     v15 = WeakRetained;
-    v16 = v7;
+    v16 = animatedCopy;
     v13 = WeakRetained;
     [v12 sb_animateWithSettings:v8 mode:v9 animations:v18 completion:v14];
   }
 }
 
-- (id)_animationSettingsForTransitionFromState:(uint64_t)a3 toState:
+- (id)_animationSettingsForTransitionFromState:(uint64_t)state toState:
 {
-  if (a1)
+  if (self)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      a1 = [a1[137] expansionSettings];
+      self = [self[137] expansionSettings];
     }
 
-    else if (a3 == 1)
+    else if (state == 1)
     {
-      v3 = a1[137];
+      v3 = self[137];
       if (a2 == 2)
       {
         [v3 contractionSettings];
@@ -792,52 +792,52 @@ LABEL_8:
       {
         [v3 presentationSettings];
       }
-      a1 = ;
+      self = ;
     }
 
-    else if (a3)
+    else if (state)
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      a1 = [a1[137] dismissalSettings];
+      self = [self[137] dismissalSettings];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_updateCoachingLabelTextIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 1017) == 1)
+    if (*(self + 1017) == 1)
     {
-      v2 = [a1 viewIfLoaded];
-      v3 = [v2 window];
+      viewIfLoaded = [self viewIfLoaded];
+      window = [viewIfLoaded window];
 
-      if (v3)
+      if (window)
       {
-        if (*(a1 + 1048) || !*(a1 + 1120))
+        if (*(self + 1048) || !*(self + 1120))
         {
-          v4 = [(SBSystemActionCoachingHUDViewController *)a1 _coachingLabelText];
-          [*(a1 + 1176) setText:v4];
-          *(a1 + 1017) = 0;
+          _coachingLabelText = [(SBSystemActionCoachingHUDViewController *)self _coachingLabelText];
+          [*(self + 1176) setText:_coachingLabelText];
+          *(self + 1017) = 0;
         }
       }
     }
   }
 }
 
-- (void)setIsAttached:(uint64_t)a1
+- (void)setIsAttached:(uint64_t)attached
 {
-  if (a1 && *(a1 + 1020) != a2)
+  if (attached && *(attached + 1020) != a2)
   {
-    *(a1 + 1020) = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 992));
-    [WeakRetained updateAttachmentStateForHUDViewController:a1];
+    *(attached + 1020) = a2;
+    WeakRetained = objc_loadWeakRetained((attached + 992));
+    [WeakRetained updateAttachmentStateForHUDViewController:attached];
   }
 }
 
@@ -864,8 +864,8 @@ LABEL_8:
   if (result)
   {
     v3 = result;
-    v4 = [result traitCollection];
-    [v4 displayScale];
+    traitCollection = [result traitCollection];
+    [traitCollection displayScale];
 
     [(SBSystemActionCoachingHUDViewController *)v3 _actionButtonFrame];
     OUTLINED_FUNCTION_14();
@@ -907,14 +907,14 @@ LABEL_8:
   if (result)
   {
     v1 = result;
-    v2 = [result traitCollection];
-    [v2 displayScale];
+    traitCollection = [result traitCollection];
+    [traitCollection displayScale];
 
     [(SBSystemActionCoachingHUDViewController *)v1 _actionButtonFrame];
-    v3 = [(SBSystemActionCoachingHUDViewController *)v1 _coachingLabelWrapperViewSize];
-    if (v3 >= v4)
+    _coachingLabelWrapperViewSize = [(SBSystemActionCoachingHUDViewController *)v1 _coachingLabelWrapperViewSize];
+    if (_coachingLabelWrapperViewSize >= v4)
     {
-      v5 = v3;
+      v5 = _coachingLabelWrapperViewSize;
     }
 
     else
@@ -953,8 +953,8 @@ LABEL_8:
     UIRectGetCenter();
     v10 = v9;
     v12 = v11;
-    v13 = [*(v1 + 1168) layer];
-    [v13 anchorPoint];
+    layer = [*(v1 + 1168) layer];
+    [layer anchorPoint];
     v15 = v14;
     v17 = v16;
 
@@ -972,14 +972,14 @@ LABEL_8:
 
 - (void)_layoutCoachingLabel
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 traitCollection];
-    [v2 displayScale];
+    traitCollection = [self traitCollection];
+    [traitCollection displayScale];
     v4 = v3;
 
-    [a1[146] bounds];
-    [a1[147] sizeThatFits:-[SBSystemActionCoachingHUDViewController _coachingLabelWrapperViewSize](a1)];
+    [self[146] bounds];
+    [self[147] sizeThatFits:-[SBSystemActionCoachingHUDViewController _coachingLabelWrapperViewSize](self)];
     UIRectIntegralWithScale();
     OUTLINED_FUNCTION_14();
     UIRectGetCenter();
@@ -1006,28 +1006,28 @@ LABEL_8:
     OUTLINED_FUNCTION_8_4();
     SBUnintegralizedRectCenteredAboutPoint();
     BSPointRoundForScale();
-    v23 = a1[147];
+    v23 = self[147];
     UIRectGetCenter();
     [v23 setCenter:?];
-    v24 = a1[147];
+    v24 = self[147];
     BSRectWithSize();
     [v24 setBounds:?];
-    v25 = a1[147];
+    v25 = self[147];
     v41 = v37;
     v42 = v38;
     v43 = v39;
     [v25 setTransform:&v41];
-    [(SBSystemActionCoachingHUDViewController *)a1 _updateCoachingLabelOccluded];
+    [(SBSystemActionCoachingHUDViewController *)self _updateCoachingLabelOccluded];
   }
 }
 
 - (double)_coachingLabelWrapperViewAlpha
 {
   result = 0.0;
-  if (a1 && (*(a1 + 1018) & 1) == 0 && (*(a1 + 1048) - 1) <= 1)
+  if (self && (*(self + 1018) & 1) == 0 && (*(self + 1048) - 1) <= 1)
   {
     result = 1.0;
-    if (*(a1 + 1016))
+    if (*(self + 1016))
     {
       return 0.0;
     }
@@ -1038,24 +1038,24 @@ LABEL_8:
 
 - (id)_makeContentView
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc(MEMORY[0x277D75D18]);
-    a1 = OUTLINED_FUNCTION_13_0(v2, MEMORY[0x277CBF3A0]);
+    self = OUTLINED_FUNCTION_13_0(v2, MEMORY[0x277CBF3A0]);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_makeDimmingView
 {
-  if (a1)
+  if (self)
   {
     v1 = objc_alloc(MEMORY[0x277D75D18]);
     v2 = OUTLINED_FUNCTION_13_0(v1, MEMORY[0x277CBF3A0]);
     [v2 setAlpha:0.0];
-    v3 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
     [OUTLINED_FUNCTION_12_0() setBackgroundColor:?];
   }
 
@@ -1069,7 +1069,7 @@ LABEL_8:
 
 - (id)_makeCoachingButton
 {
-  if (a1)
+  if (self)
   {
     v3 = objc_alloc(MEMORY[0x277D75D18]);
     v4 = OUTLINED_FUNCTION_13_0(v3, MEMORY[0x277CBF3A0]);
@@ -1078,23 +1078,23 @@ LABEL_8:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_11_4() setBackgroundColor:?];
 
-    v5 = [v4 layer];
-    [v5 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer = [v4 layer];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
     v6 = OUTLINED_FUNCTION_10_6();
     if (!v7)
     {
       v6 = 2.5;
     }
 
-    [v5 setCornerRadius:v6];
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [v5 setShadowColor:{objc_msgSend(v8, "CGColor")}];
+    [layer setCornerRadius:v6];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    [v5 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-    [v5 setShadowOpacity:0.0];
-    [v5 setShadowPathIsBounds:1];
-    [*(a1 + 1096) coachingButtonShadowRadius];
-    [v5 setShadowRadius:?];
+    [layer setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [layer setShadowOpacity:0.0];
+    [layer setShadowPathIsBounds:1];
+    [*(self + 1096) coachingButtonShadowRadius];
+    [layer setShadowRadius:?];
   }
 
   else
@@ -1108,28 +1108,28 @@ LABEL_8:
 - (id)_makeCoachingLabelWrapperView
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc(MEMORY[0x277D75D18]);
     v3 = OUTLINED_FUNCTION_13_0(v2, MEMORY[0x277CBF3A0]);
     v4 = v3;
     v5 = 0.0;
-    if ((*(a1 + 1018) & 1) == 0 && (*(a1 + 1048) - 1) <= 1)
+    if ((*(self + 1018) & 1) == 0 && (*(self + 1048) - 1) <= 1)
     {
       v5 = 1.0;
-      if (*(a1 + 1016))
+      if (*(self + 1016))
       {
         v5 = 0.0;
       }
     }
 
     [v3 setAlpha:v5];
-    v6 = [v4 layer];
-    [v6 setAnchorPoint:{0.0, 0.5}];
-    v7 = [(SBSystemActionCoachingHUDViewController *)a1 _makeGaussianBlurFilter];
-    v10[0] = v7;
+    layer = [v4 layer];
+    [layer setAnchorPoint:{0.0, 0.5}];
+    _makeGaussianBlurFilter = [(SBSystemActionCoachingHUDViewController *)self _makeGaussianBlurFilter];
+    v10[0] = _makeGaussianBlurFilter;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    [v6 setFilters:v8];
+    [layer setFilters:v8];
   }
 
   else
@@ -1142,7 +1142,7 @@ LABEL_8:
 
 - (id)_makeCoachingLabel
 {
-  if (a1)
+  if (self)
   {
     v3 = objc_alloc(MEMORY[0x277D756B8]);
     v4 = OUTLINED_FUNCTION_13_0(v3, MEMORY[0x277CBF3A0]);
@@ -1156,16 +1156,16 @@ LABEL_8:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_11_4() setTextColor:?];
 
-    v5 = [v4 layer];
-    v6 = [MEMORY[0x277D75348] blackColor];
-    [v5 setShadowColor:{objc_msgSend(v6, "CGColor")}];
+    layer = [v4 layer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    [v5 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-    [*(a1 + 1096) coachingLabelShadowOpacity];
+    [layer setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [*(self + 1096) coachingLabelShadowOpacity];
     *&v7 = v7;
-    [v5 setShadowOpacity:v7];
-    [*(a1 + 1096) coachingLabelShadowRadius];
-    [v5 setShadowRadius:?];
+    [layer setShadowOpacity:v7];
+    [*(self + 1096) coachingLabelShadowRadius];
+    [layer setShadowRadius:?];
   }
 
   else
@@ -1176,21 +1176,21 @@ LABEL_8:
   return v4;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v8.receiver = self;
   v8.super_class = SBSystemActionCoachingHUDViewController;
-  [(SBSystemActionCoachingHUDViewController *)&v8 viewIsAppearing:a3];
-  v4 = [(SBOrientationTransformWrapperViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 interfaceOrientation];
+  [(SBSystemActionCoachingHUDViewController *)&v8 viewIsAppearing:appearing];
+  view = [(SBOrientationTransformWrapperViewController *)self view];
+  window = [view window];
+  interfaceOrientation = [window interfaceOrientation];
 
-  [v4 setContainerOrientation:v6];
-  [v4 setContentOrientation:1];
-  if (self && self->_coachingLabelOrientation != v6)
+  [view setContainerOrientation:interfaceOrientation];
+  [view setContentOrientation:1];
+  if (self && self->_coachingLabelOrientation != interfaceOrientation)
   {
-    self->_coachingLabelOrientation = v6;
-    if ((v6 - 3) < 2)
+    self->_coachingLabelOrientation = interfaceOrientation;
+    if ((interfaceOrientation - 3) < 2)
     {
       v7 = 1;
     }
@@ -1231,15 +1231,15 @@ LABEL_8:
 - (void)_updateLiveRenderingAssertionIfNeeded
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 view];
-    v3 = [v2 window];
-    v4 = [v3 windowScene];
+    view = [self view];
+    window = [view window];
+    windowScene = [window windowScene];
 
-    if (v4)
+    if (windowScene)
     {
-      v5 = [a1 _appearState] != 0;
+      v5 = [self _appearState] != 0;
     }
 
     else
@@ -1247,10 +1247,10 @@ LABEL_8:
       v5 = 0;
     }
 
-    v6 = a1[139];
+    v6 = self[139];
     if (v6)
     {
-      v7 = [a1[139] isAcquired];
+      isAcquired = [self[139] isAcquired];
       if (!v5)
       {
         goto LABEL_11;
@@ -1259,28 +1259,28 @@ LABEL_8:
 
     else
     {
-      v7 = 0;
+      isAcquired = 0;
       if (!v5)
       {
         goto LABEL_11;
       }
     }
 
-    if ((v7 & 1) == 0)
+    if ((isAcquired & 1) == 0)
     {
-      [a1[139] invalidate];
+      [self[139] invalidate];
       v8 = MEMORY[0x277CF0868];
       v9 = objc_opt_class();
       v10 = NSStringFromClass(v9);
-      v11 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:v4];
-      v12 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:{v4, v11}];
+      v11 = [MEMORY[0x277CF09A8] requestLiveUpdatingForScene:windowScene];
+      v12 = [MEMORY[0x277CF09B0] requestUnrestrictedFramerateForScene:{windowScene, v11}];
       v19[1] = v12;
-      v13 = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
-      v19[2] = v13;
+      ignoreWhenBacklightInactivates = [MEMORY[0x277CF09E8] ignoreWhenBacklightInactivates];
+      v19[2] = ignoreWhenBacklightInactivates;
       v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
       v15 = [v8 acquireWithExplanation:v10 observer:0 attributes:v14];
-      v16 = a1[139];
-      a1[139] = v15;
+      v16 = self[139];
+      self[139] = v15;
 
 LABEL_16:
       return;
@@ -1299,20 +1299,20 @@ LABEL_11:
 
     if ((v17 & 1) == 0)
     {
-      [a1[139] invalidate];
-      v18 = a1[139];
-      a1[139] = 0;
+      [self[139] invalidate];
+      v18 = self[139];
+      self[139] = 0;
     }
 
     goto LABEL_16;
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBSystemActionCoachingHUDViewController;
-  [(SBSystemActionCoachingHUDViewController *)&v4 viewDidDisappear:a3];
+  [(SBSystemActionCoachingHUDViewController *)&v4 viewDidDisappear:disappear];
   [(SBSystemActionCoachingHUDViewController *)&self->super.super.super.super.isa _updateLiveRenderingAssertionIfNeeded];
 }
 
@@ -1381,17 +1381,17 @@ uint64_t __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_
   return [v5 animateWithDuration:v7 animations:?];
 }
 
-- (void)setShouldLayoutForButtonHints:(uint64_t)a1
+- (void)setShouldLayoutForButtonHints:(uint64_t)hints
 {
-  if (a1)
+  if (hints)
   {
-    if (*(a1 + 1019) != a2)
+    if (*(hints + 1019) != a2)
     {
-      *(a1 + 1019) = a2;
-      v2 = *(a1 + 1160);
+      *(hints + 1019) = a2;
+      v2 = *(hints + 1160);
       if (v2)
       {
-        v6 = [v2 layer];
+        layer = [v2 layer];
         v4 = OUTLINED_FUNCTION_10_6();
         if (!v5)
         {
@@ -1406,19 +1406,19 @@ uint64_t __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_
 
 - (SBUIAnimationPropertyAnimator)_makeViewControllerTransitionAnimationController
 {
-  if (a1)
+  if (self)
   {
-    a1 = [[SBUIAnimationPropertyAnimator alloc] initWithPropertyAnimatorGenerator:&__block_literal_global_291];
+    self = [[SBUIAnimationPropertyAnimator alloc] initWithPropertyAnimatorGenerator:&__block_literal_global_291];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_updateCoachingButtonLayer:(uint64_t)a1
+- (void)_updateCoachingButtonLayer:(uint64_t)layer
 {
   v3 = a2;
-  if (a1)
+  if (layer)
   {
     v5 = OUTLINED_FUNCTION_10_6();
     if (!v6)
@@ -1434,7 +1434,7 @@ uint64_t __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_
 
 - (id)_makeGaussianBlurFilter
 {
-  if (a1)
+  if (self)
   {
     v1 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v1 setName:@"gaussianBlur"];
@@ -1455,79 +1455,79 @@ uint64_t __94__SBSystemActionCoachingHUDViewController_viewWillTransitionToSize_
 
 - (__CFString)_coachingLabelText
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1[129] configuredAction];
-    v3 = [v2 sectionIdentifier];
-    if ([v3 isEqualToString:@"SilentMode"])
+    configuredAction = [self[129] configuredAction];
+    sectionIdentifier = [configuredAction sectionIdentifier];
+    if ([sectionIdentifier isEqualToString:@"SilentMode"])
     {
-      v4 = [(SBSystemActionCoachingHUDViewController *)v1 _silentModeCoachingLabelText];
+      _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _silentModeCoachingLabelText];
     }
 
-    else if ([v3 isEqualToString:@"Focus"])
+    else if ([sectionIdentifier isEqualToString:@"Focus"])
     {
-      v4 = [(SBSystemActionCoachingHUDViewController *)v1 _focusCoachingLabelText];
+      _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _focusCoachingLabelText];
     }
 
     else
     {
-      if ([v3 isEqualToString:@"Camera"])
+      if ([sectionIdentifier isEqualToString:@"Camera"])
       {
         goto LABEL_26;
       }
 
-      if ([v3 isEqualToString:@"VoiceMemos"])
+      if ([sectionIdentifier isEqualToString:@"VoiceMemos"])
       {
-        v4 = [(SBSystemActionCoachingHUDViewController *)v1 _voiceMemosCoachingLabelText];
+        _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _voiceMemosCoachingLabelText];
         goto LABEL_27;
       }
 
-      if ([v3 isEqualToString:@"Flashlight"])
+      if ([sectionIdentifier isEqualToString:@"Flashlight"])
       {
-        v4 = [(SBSystemActionCoachingHUDViewController *)v1 _flashlightCoachingLabelText];
+        _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _flashlightCoachingLabelText];
         goto LABEL_27;
       }
 
-      if ([v3 isEqualToString:@"Accessibility"])
+      if ([sectionIdentifier isEqualToString:@"Accessibility"])
       {
-        v4 = [(SBSystemActionCoachingHUDViewController *)v1 _accessibilityCoachingLabelTextForConfiguredAction:v2];
+        _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _accessibilityCoachingLabelTextForConfiguredAction:configuredAction];
         goto LABEL_27;
       }
 
-      if ([v3 isEqualToString:@"Translate"])
+      if ([sectionIdentifier isEqualToString:@"Translate"])
       {
-        v4 = [(SBSystemActionCoachingHUDViewController *)v1 _translateCoachingLabelText];
+        _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _translateCoachingLabelText];
         goto LABEL_27;
       }
 
-      if ([v3 isEqualToString:@"Magnifier"])
+      if ([sectionIdentifier isEqualToString:@"Magnifier"])
       {
 LABEL_26:
-        v4 = [(SBSystemActionCoachingHUDViewController *)v1 _cameraCoachingLabelText];
+        _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _cameraCoachingLabelText];
         goto LABEL_27;
       }
 
-      if ([v3 isEqualToString:@"MusicRecognition"])
+      if ([sectionIdentifier isEqualToString:@"MusicRecognition"])
       {
-        v4 = [(SBSystemActionCoachingHUDViewController *)v1 _musicRecognitionCoachingLabelText];
+        _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _musicRecognitionCoachingLabelText];
       }
 
       else
       {
-        if ([v3 isEqualToString:@"Controls"])
+        if ([sectionIdentifier isEqualToString:@"Controls"])
         {
-          v5 = [v1[32].info controlAction];
-          v1 = [(SBSystemActionCoachingHUDViewController *)v1 _controlCoachingLabelTextForAction:v5];
+          controlAction = [selfCopy[32].info controlAction];
+          selfCopy = [(SBSystemActionCoachingHUDViewController *)selfCopy _controlCoachingLabelTextForAction:controlAction];
 
           goto LABEL_28;
         }
 
-        if (![v3 isEqualToString:@"Shortcuts"])
+        if (![sectionIdentifier isEqualToString:@"Shortcuts"])
         {
-          if (![v3 isEqualToString:@"VisualIntelligence"])
+          if (![sectionIdentifier isEqualToString:@"VisualIntelligence"])
           {
-            v1 = &stru_283094718;
+            selfCopy = &stru_283094718;
 LABEL_28:
 
             goto LABEL_29;
@@ -1536,30 +1536,30 @@ LABEL_28:
           goto LABEL_26;
         }
 
-        v4 = [(SBSystemActionCoachingHUDViewController *)v1 _shortcutCoachingLabelTextForConfiguredAction:v2];
+        _silentModeCoachingLabelText = [(SBSystemActionCoachingHUDViewController *)selfCopy _shortcutCoachingLabelTextForConfiguredAction:configuredAction];
       }
     }
 
 LABEL_27:
-    v1 = v4;
+    selfCopy = _silentModeCoachingLabelText;
     goto LABEL_28;
   }
 
 LABEL_29:
 
-  return v1;
+  return selfCopy;
 }
 
 - (double)_actionButtonFrame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   v2 = +[SBButtonBezelGeometryInfo buttonBezelGeometryInfoForCurrentEmbeddedDisplayBezel];
-  v3 = [a1 view];
-  [v2 buttonHWRectForButton:8 inView:v3];
+  view = [self view];
+  [v2 buttonHWRectForButton:8 inView:view];
   v5 = v4;
 
   return v5;
@@ -1567,23 +1567,23 @@ LABEL_29:
 
 - (double)_coachingLabelWrapperViewSize
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [a1 traitCollection];
-  [v2 displayScale];
+  traitCollection = [self traitCollection];
+  [traitCollection displayScale];
 
-  v3 = [a1 view];
-  v4 = [v3 window];
-  [v4 interfaceOrientation];
+  view = [self view];
+  window = [view window];
+  [window interfaceOrientation];
 
-  v5 = [a1 view];
-  [v5 safeAreaInsets];
+  view2 = [self view];
+  [view2 safeAreaInsets];
   OUTLINED_FUNCTION_14();
 
-  v7.origin.x = [(SBSystemActionCoachingHUDViewController *)a1 _actionButtonFrame];
+  v7.origin.x = [(SBSystemActionCoachingHUDViewController *)self _actionButtonFrame];
   CGRectGetMidY(v7);
   BSFloatRoundForScale();
   return result;
@@ -1601,12 +1601,12 @@ LABEL_29:
 
 - (id)_silentModeCoachingLabelText
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(SBRingerControl *)*(a1 + 1056) isRingerMuted];
-    v2 = [MEMORY[0x277CCA8D8] mainBundle];
-    v3 = v2;
-    if (v1)
+    isRingerMuted = [(SBRingerControl *)*(self + 1056) isRingerMuted];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v3 = mainBundle;
+    if (isRingerMuted)
     {
       v4 = @"SYSTEM_ACTION_COACHING_RING";
     }
@@ -1616,7 +1616,7 @@ LABEL_29:
       v4 = @"SYSTEM_ACTION_COACHING_SILENT";
     }
 
-    v5 = [v2 localizedStringForKey:v4 value:&stru_283094718 table:@"SpringBoard"];
+    v5 = [mainBundle localizedStringForKey:v4 value:&stru_283094718 table:@"SpringBoard"];
   }
 
   else
@@ -1629,23 +1629,23 @@ LABEL_29:
 
 - (id)_focusCoachingLabelText
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 1032) configuredAction];
-    v3 = [v2 sb_configuredIntentAction];
-    v4 = [(WFConfiguredStaccatoIntentAction *)v3 sb_focusModeIdentifier];
+    configuredAction = [*(self + 1032) configuredAction];
+    sb_configuredIntentAction = [configuredAction sb_configuredIntentAction];
+    sb_focusModeIdentifier = [(WFConfiguredStaccatoIntentAction *)sb_configuredIntentAction sb_focusModeIdentifier];
 
-    if ([v4 isEqualToString:*MEMORY[0x277D66970]])
+    if ([sb_focusModeIdentifier isEqualToString:*MEMORY[0x277D66970]])
     {
-      v5 = [MEMORY[0x277CCA8D8] mainBundle];
-      v6 = [v5 localizedStringForKey:@"SYSTEM_ACTION_COACHING_SHOW_FOCUS_LIST" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v6 = [mainBundle localizedStringForKey:@"SYSTEM_ACTION_COACHING_SHOW_FOCUS_LIST" value:&stru_283094718 table:@"SpringBoard"];
     }
 
     else
     {
-      v5 = [*(a1 + 1080) state];
-      v7 = [v5 activeModeIdentifier];
-      if ([v5 isActive] && v7 && (objc_msgSend(v4, "isEqualToString:", v7) & 1) != 0)
+      mainBundle = [*(self + 1080) state];
+      activeModeIdentifier = [mainBundle activeModeIdentifier];
+      if ([mainBundle isActive] && activeModeIdentifier && (objc_msgSend(sb_focusModeIdentifier, "isEqualToString:", activeModeIdentifier) & 1) != 0)
       {
         v8 = @"SYSTEM_ACTION_COACHING_TURN_OFF";
       }
@@ -1655,8 +1655,8 @@ LABEL_29:
         v8 = @"SYSTEM_ACTION_COACHING_TURN_ON";
       }
 
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v6 = [v9 localizedStringForKey:v8 value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v6 = [mainBundle2 localizedStringForKey:v8 value:&stru_283094718 table:@"SpringBoard"];
     }
   }
 
@@ -1670,10 +1670,10 @@ LABEL_29:
 
 - (id)_cameraCoachingLabelText
 {
-  if (a1)
+  if (self)
   {
-    v1 = [MEMORY[0x277CCA8D8] mainBundle];
-    v2 = [v1 localizedStringForKey:@"SYSTEM_ACTION_COACHING_OPEN" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v2 = [mainBundle localizedStringForKey:@"SYSTEM_ACTION_COACHING_OPEN" value:&stru_283094718 table:@"SpringBoard"];
   }
 
   else
@@ -1687,14 +1687,14 @@ LABEL_29:
 - (id)_voiceMemosCoachingLabelText
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v1 = [*(a1 + 1064) activities];
-    v2 = [v1 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    activities = [*(self + 1064) activities];
+    v2 = [activities countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v2)
     {
       v3 = v2;
@@ -1705,21 +1705,21 @@ LABEL_4:
       {
         if (*v29 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(activities);
         }
 
         v6 = *(*(&v28 + 1) + 8 * v5);
-        v7 = [v6 descriptor];
-        v8 = [v7 platterTargetBundleIdentifier];
-        v9 = [v8 isEqualToString:@"com.apple.VoiceMemos"];
+        descriptor = [v6 descriptor];
+        platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
+        v9 = [platterTargetBundleIdentifier isEqualToString:@"com.apple.VoiceMemos"];
 
         if (v9)
         {
-          v10 = [v6 contentUpdate];
-          v11 = [v10 content];
-          v12 = [v11 contentData];
+          contentUpdate = [v6 contentUpdate];
+          content = [contentUpdate content];
+          contentData = [content contentData];
 
-          if (v12)
+          if (contentData)
           {
             break;
           }
@@ -1727,7 +1727,7 @@ LABEL_4:
 
         if (v3 == ++v5)
         {
-          v3 = [v1 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v3 = [activities countByEnumeratingWithState:&v28 objects:v32 count:16];
           if (v3)
           {
             goto LABEL_4;
@@ -1737,7 +1737,7 @@ LABEL_4:
         }
       }
 
-      v13 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v12 options:0 error:0];
+      v13 = [MEMORY[0x277CCAAA0] JSONObjectWithData:contentData options:0 error:0];
       v14 = objc_opt_class();
       v15 = v13;
       if (v14)
@@ -1784,8 +1784,8 @@ LABEL_4:
 
       v22 = v21;
 
-      v23 = [v22 BOOLValue];
-      if (v23)
+      bOOLValue = [v22 BOOLValue];
+      if (bOOLValue)
       {
         v24 = @"SYSTEM_ACTION_COACHING_STOP";
         goto LABEL_25;
@@ -1799,8 +1799,8 @@ LABEL_11:
 
     v24 = @"SYSTEM_ACTION_COACHING_RECORD";
 LABEL_25:
-    v25 = [MEMORY[0x277CCA8D8] mainBundle];
-    v26 = [v25 localizedStringForKey:v24 value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v26 = [mainBundle localizedStringForKey:v24 value:&stru_283094718 table:@"SpringBoard"];
   }
 
   else
@@ -1813,12 +1813,12 @@ LABEL_25:
 
 - (id)_flashlightCoachingLabelText
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(SBFlashlightActivityManager *)*(a1 + 1088) isFlashlightOn];
-    v2 = [MEMORY[0x277CCA8D8] mainBundle];
-    v3 = v2;
-    if (v1)
+    isFlashlightOn = [(SBFlashlightActivityManager *)*(self + 1088) isFlashlightOn];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v3 = mainBundle;
+    if (isFlashlightOn)
     {
       v4 = @"SYSTEM_ACTION_COACHING_TURN_OFF";
     }
@@ -1828,7 +1828,7 @@ LABEL_25:
       v4 = @"SYSTEM_ACTION_COACHING_TURN_ON";
     }
 
-    v5 = [v2 localizedStringForKey:v4 value:&stru_283094718 table:@"SpringBoard"];
+    v5 = [mainBundle localizedStringForKey:v4 value:&stru_283094718 table:@"SpringBoard"];
   }
 
   else
@@ -1839,60 +1839,60 @@ LABEL_25:
   return v5;
 }
 
-- (id)_accessibilityCoachingLabelTextForConfiguredAction:(void *)a1
+- (id)_accessibilityCoachingLabelTextForConfiguredAction:(void *)action
 {
-  if (a1)
+  if (action)
   {
-    v4 = [a2 sb_configuredIntentAction];
-    v5 = [(WFConfiguredStaccatoIntentAction *)v4 sb_accessibilityTripleClickState];
-    if (v5 == 1)
+    sb_configuredIntentAction = [a2 sb_configuredIntentAction];
+    sb_accessibilityTripleClickState = [(WFConfiguredStaccatoIntentAction *)sb_configuredIntentAction sb_accessibilityTripleClickState];
+    if (sb_accessibilityTripleClickState == 1)
     {
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = v13;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = mainBundle;
       v14 = @"SYSTEM_ACTION_COACHING_TURN_OFF";
     }
 
     else
     {
-      if (v5 != 2)
+      if (sb_accessibilityTripleClickState != 2)
       {
-        if (v5)
+        if (sb_accessibilityTripleClickState)
         {
 LABEL_11:
 
           goto LABEL_12;
         }
 
-        v6 = [v4 templateParameterValues];
-        v7 = [v6 objectForKey:*MEMORY[0x277CE79B0]];
+        templateParameterValues = [sb_configuredIntentAction templateParameterValues];
+        v7 = [templateParameterValues objectForKey:*MEMORY[0x277CE79B0]];
 
         v8 = MEMORY[0x277CCACA8];
-        v9 = [MEMORY[0x277CCA8D8] mainBundle];
-        v10 = [v9 localizedStringForKey:@"SYSTEM_ACTION_COACHING_ACCESSIBILITY_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
-        v11 = [v7 localizedTitle];
-        v12 = [v8 stringWithFormat:v10, v11];
+        mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+        v10 = [mainBundle2 localizedStringForKey:@"SYSTEM_ACTION_COACHING_ACCESSIBILITY_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
+        localizedTitle = [v7 localizedTitle];
+        v12 = [v8 stringWithFormat:v10, localizedTitle];
 
-        if ([(SBSystemActionCoachingHUDViewController *)a1 _canFitTextInCoachingLabel:v12])
+        if ([(SBSystemActionCoachingHUDViewController *)action _canFitTextInCoachingLabel:v12])
         {
           v2 = v12;
         }
 
         else
         {
-          v16 = [MEMORY[0x277CCA8D8] mainBundle];
-          v2 = [v16 localizedStringForKey:@"SYSTEM_ACTION_COACHING_ACCESSIBILITY_FALLBACK" value:&stru_283094718 table:@"SpringBoard"];
+          mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+          v2 = [mainBundle3 localizedStringForKey:@"SYSTEM_ACTION_COACHING_ACCESSIBILITY_FALLBACK" value:&stru_283094718 table:@"SpringBoard"];
         }
 
 LABEL_10:
         goto LABEL_11;
       }
 
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = v13;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = mainBundle;
       v14 = @"SYSTEM_ACTION_COACHING_TURN_ON";
     }
 
-    v2 = [v13 localizedStringForKey:v14 value:&stru_283094718 table:@"SpringBoard"];
+    v2 = [mainBundle localizedStringForKey:v14 value:&stru_283094718 table:@"SpringBoard"];
     goto LABEL_10;
   }
 
@@ -1904,10 +1904,10 @@ LABEL_12:
 
 - (id)_translateCoachingLabelText
 {
-  if (a1)
+  if (self)
   {
-    v1 = [MEMORY[0x277CCA8D8] mainBundle];
-    v2 = [v1 localizedStringForKey:@"SYSTEM_ACTION_COACHING_TRANSLATE" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v2 = [mainBundle localizedStringForKey:@"SYSTEM_ACTION_COACHING_TRANSLATE" value:&stru_283094718 table:@"SpringBoard"];
   }
 
   else
@@ -1920,10 +1920,10 @@ LABEL_12:
 
 - (id)_musicRecognitionCoachingLabelText
 {
-  if (a1)
+  if (self)
   {
-    v1 = [MEMORY[0x277CCA8D8] mainBundle];
-    v2 = [v1 localizedStringForKey:@"SYSTEM_ACTION_COACHING_MUSIC_RECOGNITION" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v2 = [mainBundle localizedStringForKey:@"SYSTEM_ACTION_COACHING_MUSIC_RECOGNITION" value:&stru_283094718 table:@"SpringBoard"];
   }
 
   else
@@ -1934,44 +1934,44 @@ LABEL_12:
   return v2;
 }
 
-- (id)_controlCoachingLabelTextForAction:(void *)a1
+- (id)_controlCoachingLabelTextForAction:(void *)action
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (action)
   {
-    v5 = [(SBControlSystemAction *)v3 properties];
-    v6 = [(SBHomeScreenConfigurationServer *)v5 connections];
-    v7 = [(SBCameraHardwareButton *)v5 allCameraShutterButtonPIDs];
-    if (v6)
+    properties = [(SBControlSystemAction *)v3 properties];
+    connections = [(SBHomeScreenConfigurationServer *)properties connections];
+    allCameraShutterButtonPIDs = [(SBCameraHardwareButton *)properties allCameraShutterButtonPIDs];
+    if (connections)
     {
-      v8 = v7;
+      v8 = allCameraShutterButtonPIDs;
     }
 
     else
     {
-      v9 = [v4 configuredAction];
-      v10 = [v9 associatedBundleIdentifier];
+      configuredAction = [v4 configuredAction];
+      associatedBundleIdentifier = [configuredAction associatedBundleIdentifier];
 
-      v11 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v10 allowPlaceholder:1 error:0];
-      v12 = [v11 localizedName];
-      v13 = v12;
-      if (v12)
+      v11 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:associatedBundleIdentifier allowPlaceholder:1 error:0];
+      localizedName = [v11 localizedName];
+      v13 = localizedName;
+      if (localizedName)
       {
-        v14 = v12;
+        localizedShortName = localizedName;
       }
 
       else
       {
-        v14 = [v11 localizedShortName];
+        localizedShortName = [v11 localizedShortName];
       }
 
-      v6 = v14;
+      connections = localizedShortName;
 
       v8 = 0;
     }
 
-    if (![v6 length])
+    if (![connections length])
     {
       goto LABEL_9;
     }
@@ -1993,19 +1993,19 @@ LABEL_12:
     }
 
     v19 = MEMORY[0x277CCACA8];
-    v20 = [MEMORY[0x277CCA8D8] mainBundle];
-    v21 = [v20 localizedStringForKey:v18 value:&stru_283094718 table:@"SpringBoard"];
-    v16 = [v19 stringWithFormat:v21, v6];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v21 = [mainBundle localizedStringForKey:v18 value:&stru_283094718 table:@"SpringBoard"];
+    v16 = [v19 stringWithFormat:v21, connections];
 
 LABEL_20:
-    if (([(SBSystemActionCoachingHUDViewController *)a1 _canFitTextInCoachingLabel:v16]& 1) != 0)
+    if (([(SBSystemActionCoachingHUDViewController *)action _canFitTextInCoachingLabel:v16]& 1) != 0)
     {
       goto LABEL_10;
     }
 
 LABEL_9:
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 localizedStringForKey:@"SYSTEM_ACTION_COACHING_CONTROL_FALLBACK" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = [mainBundle2 localizedStringForKey:@"SYSTEM_ACTION_COACHING_CONTROL_FALLBACK" value:&stru_283094718 table:@"SpringBoard"];
 
 LABEL_10:
     goto LABEL_11;
@@ -2017,35 +2017,35 @@ LABEL_11:
   return v16;
 }
 
-- (void)_shortcutCoachingLabelTextForConfiguredAction:(void *)a1
+- (void)_shortcutCoachingLabelTextForConfiguredAction:(void *)action
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (action)
   {
-    v5 = [v3 identifier];
-    v6 = [v5 isEqualToString:@"is.workflow.actions.openapp"];
+    identifier = [v3 identifier];
+    v6 = [identifier isEqualToString:@"is.workflow.actions.openapp"];
 
     if (v6)
     {
-      v7 = a1[134];
-      v8 = [v4 associatedBundleIdentifier];
-      v9 = [v7 applicationWithBundleIdentifier:v8];
+      v7 = action[134];
+      associatedBundleIdentifier = [v4 associatedBundleIdentifier];
+      mainBundle4 = [v7 applicationWithBundleIdentifier:associatedBundleIdentifier];
 
-      if (v9)
+      if (mainBundle4)
       {
         v10 = MEMORY[0x277CCACA8];
-        v11 = [MEMORY[0x277CCA8D8] mainBundle];
-        v12 = [v11 localizedStringForKey:@"SYSTEM_ACTION_COACHING_OPEN_APP_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
-        v13 = [v9 displayName];
-        v14 = [v10 stringWithFormat:v12, v13];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v12 = [mainBundle localizedStringForKey:@"SYSTEM_ACTION_COACHING_OPEN_APP_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
+        displayName = [mainBundle4 displayName];
+        v14 = [v10 stringWithFormat:v12, displayName];
 
-        if (v14 && [(SBSystemActionCoachingHUDViewController *)a1 _canFitTextInCoachingLabel:v14])
+        if (v14 && [(SBSystemActionCoachingHUDViewController *)action _canFitTextInCoachingLabel:v14])
         {
           v15 = v14;
           v14 = v15;
 LABEL_17:
-          a1 = v15;
+          action = v15;
           goto LABEL_9;
         }
       }
@@ -2055,8 +2055,8 @@ LABEL_17:
         v14 = 0;
       }
 
-      v16 = [MEMORY[0x277CCA8D8] mainBundle];
-      a1 = [v16 localizedStringForKey:@"SYSTEM_ACTION_COACHING_OPEN_APP_FALLBACK" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      action = [mainBundle2 localizedStringForKey:@"SYSTEM_ACTION_COACHING_OPEN_APP_FALLBACK" value:&stru_283094718 table:@"SpringBoard"];
 
 LABEL_9:
 LABEL_10:
@@ -2065,55 +2065,55 @@ LABEL_10:
     }
 
     v18 = MEMORY[0x277CCACA8];
-    v19 = [MEMORY[0x277CCA8D8] mainBundle];
-    v20 = [v19 localizedStringForKey:@"SYSTEM_ACTION_COACHING_SHORTCUT_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
-    v21 = [v4 name];
-    v14 = [v18 stringWithFormat:v20, v21];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v20 = [mainBundle3 localizedStringForKey:@"SYSTEM_ACTION_COACHING_SHORTCUT_FORMAT" value:&stru_283094718 table:@"SpringBoard"];
+    name = [v4 name];
+    v14 = [v18 stringWithFormat:v20, name];
 
-    if ([(SBSystemActionCoachingHUDViewController *)a1 _canFitTextInCoachingLabel:v14])
+    if ([(SBSystemActionCoachingHUDViewController *)action _canFitTextInCoachingLabel:v14])
     {
       v14 = v14;
-      a1 = v14;
+      action = v14;
       goto LABEL_10;
     }
 
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v15 = [v9 localizedStringForKey:@"SYSTEM_ACTION_COACHING_SHORTCUT_FALLBACK" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v15 = [mainBundle4 localizedStringForKey:@"SYSTEM_ACTION_COACHING_SHORTCUT_FALLBACK" value:&stru_283094718 table:@"SpringBoard"];
     goto LABEL_17;
   }
 
 LABEL_11:
 
-  return a1;
+  return action;
 }
 
-- (void)_canFitTextInCoachingLabel:(void *)a1
+- (void)_canFitTextInCoachingLabel:(void *)label
 {
-  v2 = a1;
+  labelCopy = label;
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (label)
   {
     v8 = *MEMORY[0x277D740A8];
-    v3 = a1[147];
+    v3 = label[147];
     v4 = a2;
-    v5 = [v3 font];
-    v9[0] = v5;
+    font = [v3 font];
+    v9[0] = font;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
     [v4 boundingRectWithSize:3 options:v6 attributes:0 context:{1.79769313e308, 1.79769313e308}];
-    [(SBSystemActionCoachingHUDViewController *)v2 _coachingLabelWrapperViewSize];
+    [(SBSystemActionCoachingHUDViewController *)labelCopy _coachingLabelWrapperViewSize];
     if (BSFloatLessThanOrEqualToFloat())
     {
-      v2 = BSFloatLessThanOrEqualToFloat();
+      labelCopy = BSFloatLessThanOrEqualToFloat();
     }
 
     else
     {
-      v2 = 0;
+      labelCopy = 0;
     }
   }
 
-  return v2;
+  return labelCopy;
 }
 
 - (id)delegate
@@ -2239,9 +2239,9 @@ LABEL_11:
 
 - (uint64_t)isRotating
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 1016));
+    return OUTLINED_FUNCTION_0_9(*(self + 1016));
   }
 
   else
@@ -2262,9 +2262,9 @@ LABEL_11:
 
 - (uint64_t)coachingLabelTextNeedsUpdate
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 1017));
+    return OUTLINED_FUNCTION_0_9(*(self + 1017));
   }
 
   else
@@ -2285,9 +2285,9 @@ LABEL_11:
 
 - (uint64_t)isCoachingLabelOccluded
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 1018));
+    return OUTLINED_FUNCTION_0_9(*(self + 1018));
   }
 
   else
@@ -2358,9 +2358,9 @@ LABEL_11:
 
 - (uint64_t)shouldLayoutForButtonHints
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 1019));
+    return OUTLINED_FUNCTION_0_9(*(self + 1019));
   }
 
   else
@@ -2371,9 +2371,9 @@ LABEL_11:
 
 - (uint64_t)isAttached
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0_9(*(a1 + 1020));
+    return OUTLINED_FUNCTION_0_9(*(self + 1020));
   }
 
   else

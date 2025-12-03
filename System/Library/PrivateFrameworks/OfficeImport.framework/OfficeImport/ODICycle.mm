@@ -1,57 +1,57 @@
 @interface ODICycle
-+ (BOOL)mapIdentifier:(id)a3 state:(id)a4;
-+ (CGRect)boundingBoxWithIsTight:(BOOL)a3 state:(id)a4;
-+ (CGRect)mapGSpaceWithState:(id)a3;
-+ (CGRect)nodeBoundsWithIndex:(unsigned int)a3 state:(id)a4;
-+ (CGSize)nodeSizeWithState:(id)a3;
-+ (unint64_t)nodeCountWithState:(id)a3;
-+ (void)mapWithState:(id)a3;
++ (BOOL)mapIdentifier:(id)identifier state:(id)state;
++ (CGRect)boundingBoxWithIsTight:(BOOL)tight state:(id)state;
++ (CGRect)mapGSpaceWithState:(id)state;
++ (CGRect)nodeBoundsWithIndex:(unsigned int)index state:(id)state;
++ (CGSize)nodeSizeWithState:(id)state;
++ (unint64_t)nodeCountWithState:(id)state;
++ (void)mapWithState:(id)state;
 @end
 
 @implementation ODICycle
 
-+ (BOOL)mapIdentifier:(id)a3 state:(id)a4
++ (BOOL)mapIdentifier:(id)identifier state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"cycle1"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"cycle2") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"cycle8"))
+  identifierCopy = identifier;
+  stateCopy = state;
+  if ([identifierCopy isEqualToString:@"cycle1"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"cycle2") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"cycle8"))
   {
     v7 = off_2799C57B0;
   }
 
-  else if ([v5 isEqualToString:@"cycle3"])
+  else if ([identifierCopy isEqualToString:@"cycle3"])
   {
     v7 = off_2799C57B8;
   }
 
-  else if ([v5 isEqualToString:@"cycle4"])
+  else if ([identifierCopy isEqualToString:@"cycle4"])
   {
     v7 = off_2799C57C0;
   }
 
-  else if ([v5 isEqualToString:@"cycle5"])
+  else if ([identifierCopy isEqualToString:@"cycle5"])
   {
     v7 = off_2799C57C8;
   }
 
-  else if ([v5 isEqualToString:@"cycle6"])
+  else if ([identifierCopy isEqualToString:@"cycle6"])
   {
     v7 = off_2799C57D0;
   }
 
-  else if ([v5 isEqualToString:@"cycle7"])
+  else if ([identifierCopy isEqualToString:@"cycle7"])
   {
     v7 = off_2799C57D8;
   }
 
-  else if ([v5 isEqualToString:@"chart3"])
+  else if ([identifierCopy isEqualToString:@"chart3"])
   {
     v7 = off_2799C57A8;
   }
 
   else
   {
-    if (![v5 isEqualToString:@"gear1"])
+    if (![identifierCopy isEqualToString:@"gear1"])
     {
       v8 = 0;
       goto LABEL_6;
@@ -60,21 +60,21 @@
     v7 = off_2799C57E0;
   }
 
-  [(__objc2_class *)*v7 mapWithState:v6];
+  [(__objc2_class *)*v7 mapWithState:stateCopy];
   v8 = 1;
 LABEL_6:
 
   return v8;
 }
 
-+ (void)mapWithState:(id)a3
++ (void)mapWithState:(id)state
 {
-  v13 = a3;
-  v4 = [a1 nodeCountWithState:?];
-  [v13 setPointCount:v4];
+  stateCopy = state;
+  v4 = [self nodeCountWithState:?];
+  [stateCopy setPointCount:v4];
   if (v4 == 2)
   {
-    v5 = [a1 map2NodeWithState:v13];
+    v5 = [self map2NodeWithState:stateCopy];
 LABEL_5:
     if (v5)
     {
@@ -86,16 +86,16 @@ LABEL_5:
 
   if (v4 == 1)
   {
-    v5 = [a1 map1NodeWithState:v13];
+    v5 = [self map1NodeWithState:stateCopy];
     goto LABEL_5;
   }
 
 LABEL_6:
-  [a1 mapGSpaceWithState:v13];
-  [v13 setLogicalBounds:?];
-  v6 = [v13 diagram];
-  v7 = [v6 documentPoint];
-  v8 = [v7 children];
+  [self mapGSpaceWithState:stateCopy];
+  [stateCopy setLogicalBounds:?];
+  diagram = [stateCopy diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
 
   if (v4)
   {
@@ -103,11 +103,11 @@ LABEL_6:
     v10 = 0;
     do
     {
-      v11 = [v8 objectAtIndex:v9];
-      [v13 setPointIndex:v10];
-      [a1 mapNode:v11 index:v10 state:v13];
-      v12 = [v11 siblingTransition];
-      [a1 mapTransition:v12 index:v10 state:v13];
+      v11 = [children objectAtIndex:v9];
+      [stateCopy setPointIndex:v10];
+      [self mapNode:v11 index:v10 state:stateCopy];
+      siblingTransition = [v11 siblingTransition];
+      [self mapTransition:siblingTransition index:v10 state:stateCopy];
 
       v9 = (v10 + 1);
       v10 = v9;
@@ -119,17 +119,17 @@ LABEL_6:
 LABEL_10:
 }
 
-+ (unint64_t)nodeCountWithState:(id)a3
++ (unint64_t)nodeCountWithState:(id)state
 {
-  v3 = [a3 diagram];
-  v4 = [v3 documentPoint];
-  v5 = [v4 children];
-  v6 = [v5 count];
+  diagram = [state diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
+  v6 = [children count];
 
   return v6;
 }
 
-+ (CGSize)nodeSizeWithState:(id)a3
++ (CGSize)nodeSizeWithState:(id)state
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -138,12 +138,12 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)boundingBoxWithIsTight:(BOOL)a3 state:(id)a4
++ (CGRect)boundingBoxWithIsTight:(BOOL)tight state:(id)state
 {
-  v6 = a4;
-  if (a3)
+  stateCopy = state;
+  if (tight)
   {
-    v7 = ODIRegularPolygonBounds([a1 nodeCountWithState:v6], 1.0, -90.0);
+    v7 = ODIRegularPolygonBounds([self nodeCountWithState:stateCopy], 1.0, -90.0);
   }
 
   else
@@ -155,7 +155,7 @@ LABEL_10:
   v12 = v8;
   v13 = v9;
   v14 = v10;
-  [a1 nodeSizeWithState:v6];
+  [self nodeSizeWithState:stateCopy];
   v16 = v15 * -0.5;
   v18 = v17 * -0.5;
   v27.origin.x = v11;
@@ -179,13 +179,13 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)nodeBoundsWithIndex:(unsigned int)a3 state:(id)a4
++ (CGRect)nodeBoundsWithIndex:(unsigned int)index state:(id)state
 {
-  v6 = a4;
-  v7 = [a1 nodeCountWithState:v6];
-  [a1 nodeSizeWithState:v6];
+  stateCopy = state;
+  v7 = [self nodeCountWithState:stateCopy];
+  [self nodeSizeWithState:stateCopy];
   v9 = v8;
-  *&v8 = (2 * a3) * 3.14159265 / v7 + -1.57079633;
+  *&v8 = (2 * index) * 3.14159265 / v7 + -1.57079633;
   v10 = __sincosf_stret(*&v8);
   v11 = TSURectWithCenterAndSize(v10.__cosval, v10.__sinval, v9);
   v13 = v12;
@@ -203,7 +203,7 @@ LABEL_10:
   return result;
 }
 
-+ (CGRect)mapGSpaceWithState:(id)a3
++ (CGRect)mapGSpaceWithState:(id)state
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);

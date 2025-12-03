@@ -1,20 +1,20 @@
 @interface WBSUserAgentQuirksSnapshot
-- (BOOL)isEqual:(id)a3;
-- (WBSUserAgentQuirksSnapshot)initWithSnapshotData:(id)a3 error:(id *)a4;
-- (id)quirkTypeForURLString:(id)a3 withDefaultUserAgent:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WBSUserAgentQuirksSnapshot)initWithSnapshotData:(id)data error:(id *)error;
+- (id)quirkTypeForURLString:(id)string withDefaultUserAgent:(id)agent;
 @end
 
 @implementation WBSUserAgentQuirksSnapshot
 
-- (WBSUserAgentQuirksSnapshot)initWithSnapshotData:(id)a3 error:(id *)a4
+- (WBSUserAgentQuirksSnapshot)initWithSnapshotData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v37.receiver = self;
   v37.super_class = WBSUserAgentQuirksSnapshot;
   v7 = [(WBSUserAgentQuirksSnapshot *)&v37 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF20] safari_dictionaryWithPropertyListData:v6 options:0];
+    v8 = [MEMORY[0x1E695DF20] safari_dictionaryWithPropertyListData:dataCopy options:0];
     v9 = v8;
     if (v8)
     {
@@ -44,12 +44,12 @@
           v26 = &v33;
           v24 = v11;
           [v13 enumerateKeysAndObjectsUsingBlock:v23];
-          if (a4)
+          if (error)
           {
             v14 = v28[5];
             if (v14)
             {
-              *a4 = v14;
+              *error = v14;
             }
           }
 
@@ -79,10 +79,10 @@
           _Block_object_dispose(&v33, 8);
         }
 
-        else if (a4)
+        else if (error)
         {
           [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-          *a4 = v21 = 0;
+          *error = v21 = 0;
         }
 
         else
@@ -91,10 +91,10 @@
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-        *a4 = v21 = 0;
+        *error = v21 = 0;
       }
 
       else
@@ -103,10 +103,10 @@
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:259 userInfo:0];
-      *a4 = v21 = 0;
+      *error = v21 = 0;
     }
 
     else
@@ -139,11 +139,11 @@ void __57__WBSUserAgentQuirksSnapshot_initWithSnapshotData_error___block_invoke(
   }
 }
 
-- (id)quirkTypeForURLString:(id)a3 withDefaultUserAgent:(id)a4
+- (id)quirkTypeForURLString:(id)string withDefaultUserAgent:(id)agent
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 safari_simplifiedUserVisibleURLStringWithSimplifications:495 forDisplayOnly:0 simplifiedStringOffset:0];
+  stringCopy = string;
+  agentCopy = agent;
+  v8 = [stringCopy safari_simplifiedUserVisibleURLStringWithSimplifications:495 forDisplayOnly:0 simplifiedStringOffset:0];
   if ([v8 hasSuffix:@"/"])
   {
     v9 = [v8 substringToIndex:{objc_msgSend(v8, "length") - 1}];
@@ -154,22 +154,22 @@ void __57__WBSUserAgentQuirksSnapshot_initWithSnapshotData_error___block_invoke(
   v10 = [(NSDictionary *)self->_sitesRequiringUserAgentQuirks objectForKeyedSubscript:v8];
   if (!v10)
   {
-    v11 = [v6 safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:0 simplifiedStringOffset:0];
+    v11 = [stringCopy safari_simplifiedUserVisibleURLStringWithSimplifications:511 forDisplayOnly:0 simplifiedStringOffset:0];
     v10 = [(NSDictionary *)self->_sitesRequiringUserAgentQuirks objectForKeyedSubscript:v11];
     if (!v10)
     {
-      v12 = [v6 safari_highLevelDomainFromHost];
-      v10 = [(NSDictionary *)self->_sitesRequiringUserAgentQuirks objectForKeyedSubscript:v12];
+      safari_highLevelDomainFromHost = [stringCopy safari_highLevelDomainFromHost];
+      v10 = [(NSDictionary *)self->_sitesRequiringUserAgentQuirks objectForKeyedSubscript:safari_highLevelDomainFromHost];
     }
   }
 
   v13 = [(NSDictionary *)self->_userAgentQuirks objectForKeyedSubscript:v10];
   v14 = v13;
-  if (v7 && !v13)
+  if (agentCopy && !v13)
   {
     if ([v10 containsString:@"*"])
     {
-      v14 = [v10 stringByReplacingOccurrencesOfString:@"*" withString:v7];
+      v14 = [v10 stringByReplacingOccurrencesOfString:@"*" withString:agentCopy];
     }
 
     else
@@ -181,10 +181,10 @@ void __57__WBSUserAgentQuirksSnapshot_initWithSnapshotData_error___block_invoke(
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -192,7 +192,7 @@ void __57__WBSUserAgentQuirksSnapshot_initWithSnapshotData_error___block_invoke(
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_domainsToQuirkTypes isEqualToDictionary:v4->_domainsToQuirkTypes];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_domainsToQuirkTypes isEqualToDictionary:equalCopy->_domainsToQuirkTypes];
   }
 
   return v5;

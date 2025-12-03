@@ -1,109 +1,109 @@
 @interface SBHLibraryMutableCategoryMap
-- (void)addApplicationIdentifier:(id)a3 forCategoryIdentifier:(id)a4;
-- (void)removeCategoryIdentifier:(id)a3;
-- (void)setLocalizedCategoryName:(id)a3 forCategoryIdentifier:(id)a4;
-- (void)setSortedApplicationIdentifiers:(id)a3 forCategoryIdentifier:(id)a4;
-- (void)sortApplicationIdentifiersForCategoryIdentifier:(id)a3 descriptors:(id)a4;
-- (void)updateRecentlyAddedCategoryFromMap:(id)a3;
+- (void)addApplicationIdentifier:(id)identifier forCategoryIdentifier:(id)categoryIdentifier;
+- (void)removeCategoryIdentifier:(id)identifier;
+- (void)setLocalizedCategoryName:(id)name forCategoryIdentifier:(id)identifier;
+- (void)setSortedApplicationIdentifiers:(id)identifiers forCategoryIdentifier:(id)identifier;
+- (void)sortApplicationIdentifiersForCategoryIdentifier:(id)identifier descriptors:(id)descriptors;
+- (void)updateRecentlyAddedCategoryFromMap:(id)map;
 @end
 
 @implementation SBHLibraryMutableCategoryMap
 
-- (void)setLocalizedCategoryName:(id)a3 forCategoryIdentifier:(id)a4
+- (void)setLocalizedCategoryName:(id)name forCategoryIdentifier:(id)identifier
 {
-  v8 = a3;
+  nameCopy = name;
   v6 = self->super._localizedCategoryNameByCategoryIdentifier;
-  v7 = a4;
-  if ([v8 length])
+  identifierCopy = identifier;
+  if ([nameCopy length])
   {
-    [(NSMutableDictionary *)v6 setObject:v8 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)v6 setObject:nameCopy forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)v6 removeObjectForKey:v7];
+    [(NSMutableDictionary *)v6 removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)setSortedApplicationIdentifiers:(id)a3 forCategoryIdentifier:(id)a4
+- (void)setSortedApplicationIdentifiers:(id)identifiers forCategoryIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifiersCopy = identifiers;
   v6 = self->super._sortedApplicationIdentifiersByCategoryIdentifier;
-  v7 = a4;
-  v8 = [v7 predictionCategoryID];
-  if ([v9 count] || v8 == 7)
+  identifierCopy = identifier;
+  predictionCategoryID = [identifierCopy predictionCategoryID];
+  if ([identifiersCopy count] || predictionCategoryID == 7)
   {
-    [(NSMutableDictionary *)v6 setObject:v9 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)v6 setObject:identifiersCopy forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)v6 removeObjectForKey:v7];
+    [(NSMutableDictionary *)v6 removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)sortApplicationIdentifiersForCategoryIdentifier:(id)a3 descriptors:(id)a4
+- (void)sortApplicationIdentifiersForCategoryIdentifier:(id)identifier descriptors:(id)descriptors
 {
   sortedApplicationIdentifiersByCategoryIdentifier = self->super._sortedApplicationIdentifiersByCategoryIdentifier;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)sortedApplicationIdentifiersByCategoryIdentifier objectForKeyedSubscript:v8];
+  descriptorsCopy = descriptors;
+  identifierCopy = identifier;
+  v9 = [(NSMutableDictionary *)sortedApplicationIdentifiersByCategoryIdentifier objectForKeyedSubscript:identifierCopy];
   v10 = [v9 mutableCopy];
 
-  [v10 sortUsingDescriptors:v7];
-  [(SBHLibraryMutableCategoryMap *)self setSortedApplicationIdentifiers:v10 forCategoryIdentifier:v8];
+  [v10 sortUsingDescriptors:descriptorsCopy];
+  [(SBHLibraryMutableCategoryMap *)self setSortedApplicationIdentifiers:v10 forCategoryIdentifier:identifierCopy];
 }
 
-- (void)addApplicationIdentifier:(id)a3 forCategoryIdentifier:(id)a4
+- (void)addApplicationIdentifier:(id)identifier forCategoryIdentifier:(id)categoryIdentifier
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  categoryIdentifierCopy = categoryIdentifier;
   v8 = self->super._categoryIdentifiers;
-  if (([(NSMutableOrderedSet *)self->super._categoryIdentifiers containsObject:v7]& 1) == 0)
+  if (([(NSMutableOrderedSet *)self->super._categoryIdentifiers containsObject:categoryIdentifierCopy]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)v8 addObject:v7];
+    [(NSMutableOrderedSet *)v8 addObject:categoryIdentifierCopy];
   }
 
-  v9 = [(NSMutableDictionary *)self->super._sortedApplicationIdentifiersByCategoryIdentifier objectForKey:v7];
-  if (([v9 containsObject:v6] & 1) == 0)
+  v9 = [(NSMutableDictionary *)self->super._sortedApplicationIdentifiersByCategoryIdentifier objectForKey:categoryIdentifierCopy];
+  if (([v9 containsObject:identifierCopy] & 1) == 0)
   {
     if (v9)
     {
-      v10 = [v9 arrayByAddingObject:v6];
+      v10 = [v9 arrayByAddingObject:identifierCopy];
 
       v9 = v10;
     }
 
     else
     {
-      v11[0] = v6;
+      v11[0] = identifierCopy;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     }
 
-    [(NSMutableDictionary *)self->super._sortedApplicationIdentifiersByCategoryIdentifier setObject:v9 forKey:v7];
+    [(NSMutableDictionary *)self->super._sortedApplicationIdentifiersByCategoryIdentifier setObject:v9 forKey:categoryIdentifierCopy];
   }
 }
 
-- (void)removeCategoryIdentifier:(id)a3
+- (void)removeCategoryIdentifier:(id)identifier
 {
   sortedApplicationIdentifiersByCategoryIdentifier = self->super._sortedApplicationIdentifiersByCategoryIdentifier;
-  v5 = a3;
-  [(NSMutableDictionary *)sortedApplicationIdentifiersByCategoryIdentifier removeObjectForKey:v5];
-  [(NSMutableDictionary *)self->super._localizedCategoryNameByCategoryIdentifier removeObjectForKey:v5];
-  [(NSMutableOrderedSet *)self->super._categoryIdentifiers removeObject:v5];
+  identifierCopy = identifier;
+  [(NSMutableDictionary *)sortedApplicationIdentifiersByCategoryIdentifier removeObjectForKey:identifierCopy];
+  [(NSMutableDictionary *)self->super._localizedCategoryNameByCategoryIdentifier removeObjectForKey:identifierCopy];
+  [(NSMutableOrderedSet *)self->super._categoryIdentifiers removeObject:identifierCopy];
 }
 
-- (void)updateRecentlyAddedCategoryFromMap:(id)a3
+- (void)updateRecentlyAddedCategoryFromMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__SBHLibraryMutableCategoryMap_updateRecentlyAddedCategoryFromMap___block_invoke;
   v7[3] = &unk_1E808B7D8;
-  v8 = v4;
-  v9 = self;
-  v5 = v4;
+  v8 = mapCopy;
+  selfCopy = self;
+  v5 = mapCopy;
   v6 = _Block_copy(v7);
   v6[2](v6, 4);
 }

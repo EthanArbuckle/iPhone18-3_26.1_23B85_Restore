@@ -7,17 +7,17 @@
 - (id)actionButtonMenu;
 - (void)_configureHierarchy;
 - (void)_gotoPerson;
-- (void)_requestPersonWithID:(id)a3;
+- (void)_requestPersonWithID:(id)d;
 - (void)_sharePerson;
-- (void)_updatePerson:(id)a3 filmography:(id)a4;
+- (void)_updatePerson:(id)person filmography:(id)filmography;
 - (void)_updateUIFromCurrentState;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)requestImageForTemplate:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6;
-- (void)setPersonID:(id)a3;
-- (void)setPersonName:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)requestImageForTemplate:(id)template size:(CGSize)size identifier:(id)identifier completion:(id)completion;
+- (void)setPersonID:(id)d;
+- (void)setPersonName:(id)name;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVRUIPersonViewController
@@ -31,48 +31,48 @@
   [(TVRUIPersonViewController *)self _updateUIFromCurrentState];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = TVRUIPersonViewController;
-  [(TVRUIPersonViewController *)&v5 viewWillAppear:a3];
-  v4 = [(TVRUIPersonViewController *)self navigationController];
-  [v4 setNavigationBarHidden:0 animated:1];
+  [(TVRUIPersonViewController *)&v5 viewWillAppear:appear];
+  navigationController = [(TVRUIPersonViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = TVRUIPersonViewController;
-  [(TVRUIPersonViewController *)&v8 viewDidAppear:a3];
-  v4 = [(TVRUIPersonViewController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  [(TVRUIPersonViewController *)&v8 viewDidAppear:appear];
+  collectionView = [(TVRUIPersonViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  if ([v5 count])
+  if ([indexPathsForSelectedItems count])
   {
-    v6 = [(TVRUIPersonViewController *)self collectionView];
-    v7 = [v5 firstObject];
-    [v6 deselectItemAtIndexPath:v7 animated:1];
+    collectionView2 = [(TVRUIPersonViewController *)self collectionView];
+    firstObject = [indexPathsForSelectedItems firstObject];
+    [collectionView2 deselectItemAtIndexPath:firstObject animated:1];
   }
 }
 
-- (void)setPersonID:(id)a3
+- (void)setPersonID:(id)d
 {
-  v6 = a3;
-  v5 = [v6 isEqualToString:self->_personID];
-  objc_storeStrong(&self->_personID, a3);
+  dCopy = d;
+  v5 = [dCopy isEqualToString:self->_personID];
+  objc_storeStrong(&self->_personID, d);
   if ((v5 & 1) == 0 && ![(TVRUIPersonViewController *)self isRequestingPerson])
   {
-    [(TVRUIPersonViewController *)self _requestPersonWithID:v6];
+    [(TVRUIPersonViewController *)self _requestPersonWithID:dCopy];
   }
 }
 
-- (void)setPersonName:(id)a3
+- (void)setPersonName:(id)name
 {
-  objc_storeStrong(&self->_personName, a3);
-  v5 = a3;
-  v6 = [(TVRUIPersonViewController *)self navigationItem];
-  [v6 setTitle:v5];
+  objc_storeStrong(&self->_personName, name);
+  nameCopy = name;
+  navigationItem = [(TVRUIPersonViewController *)self navigationItem];
+  [navigationItem setTitle:nameCopy];
 }
 
 - (TVRUIImageFetcher)imageFetcher
@@ -95,9 +95,9 @@
   v92 = *MEMORY[0x277D85DE8];
   [(TVRUIPersonViewController *)self setOverrideUserInterfaceStyle:2];
   val = self;
-  v3 = [(TVRUIPersonViewController *)self view];
+  view = [(TVRUIPersonViewController *)self view];
   v4 = [MEMORY[0x277D75348] colorWithWhite:0.1 alpha:1.0];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v69 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
   v5 = [MEMORY[0x277D752B0] registrationWithCellClass:objc_opt_class() configurationHandler:&__block_literal_global_9];
@@ -111,8 +111,8 @@
   objc_copyWeak(&v87, &location);
   v8 = [v6 registrationWithCellClass:v7 configurationHandler:v86];
   v9 = objc_alloc(MEMORY[0x277D752A0]);
-  v10 = [(TVRUIPersonViewController *)val _collectionViewLayout];
-  v71 = [v9 initWithFrame:v10 collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _collectionViewLayout = [(TVRUIPersonViewController *)val _collectionViewLayout];
+  v71 = [v9 initWithFrame:_collectionViewLayout collectionViewLayout:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   [v71 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v71 setClipsToBounds:1];
@@ -188,7 +188,7 @@
 
         v30 = *(*(&v72 + 1) + 8 * i);
         [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v3 addSubview:v30];
+        [view addSubview:v30];
       }
 
       v27 = [v26 countByEnumeratingWithState:&v72 objects:v91 count:16];
@@ -198,30 +198,30 @@
   }
 
   v52 = MEMORY[0x277CCAAD0];
-  v67 = [v69 centerXAnchor];
-  v66 = [v3 centerXAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  centerXAnchor = [v69 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v65 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v89[0] = v65;
-  v64 = [v69 centerYAnchor];
-  v63 = [v3 centerYAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  centerYAnchor = [v69 centerYAnchor];
+  centerYAnchor2 = [view centerYAnchor];
+  v62 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v89[1] = v62;
-  v60 = [v71 topAnchor];
-  v61 = [v3 safeAreaLayoutGuide];
-  v59 = [v61 topAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  topAnchor = [v71 topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v58 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v89[2] = v58;
-  v57 = [v71 leadingAnchor];
-  v31 = [v3 leadingAnchor];
-  v32 = [v57 constraintEqualToAnchor:v31];
+  leadingAnchor = [v71 leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v89[3] = v32;
-  v33 = [v71 trailingAnchor];
-  v34 = [v3 trailingAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  trailingAnchor = [v71 trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v89[4] = v35;
-  v36 = [v71 bottomAnchor];
-  v37 = [v3 bottomAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37];
+  bottomAnchor = [v71 bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v89[5] = v38;
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:6];
   [v52 activateConstraints:v39];
@@ -234,19 +234,19 @@
   v44 = [MEMORY[0x277D755B8] systemImageNamed:@"ellipsis.circle" withConfiguration:v42];
   v45 = [v43 actionWithTitle:&stru_287E6AEF8 image:v44 identifier:0 handler:&__block_literal_global_32];
 
-  v46 = [MEMORY[0x277D75230] plainButtonConfiguration];
-  v47 = [MEMORY[0x277D75220] buttonWithConfiguration:v46 primaryAction:v45];
-  v48 = [MEMORY[0x277D75348] whiteColor];
-  [v47 setTintColor:v48];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+  v47 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:v45];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v47 setTintColor:whiteColor];
 
   [v47 setOverrideUserInterfaceStyle:2];
-  v49 = [(TVRUIPersonViewController *)val actionButtonMenu];
-  [v47 setMenu:v49];
+  actionButtonMenu = [(TVRUIPersonViewController *)val actionButtonMenu];
+  [v47 setMenu:actionButtonMenu];
   [v47 setShowsMenuAsPrimaryAction:1];
   v50 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v47];
 
-  v51 = [(TVRUIPersonViewController *)val navigationItem];
-  [v51 setRightBarButtonItem:v50];
+  navigationItem = [(TVRUIPersonViewController *)val navigationItem];
+  [navigationItem setRightBarButtonItem:v50];
 
   [(TVRUIPersonViewController *)val setActivityIndicatorView:v69];
   [(TVRUIPersonViewController *)val setCollectionView:v71];
@@ -522,9 +522,9 @@ LABEL_9:
   return v16;
 }
 
-- (void)_requestPersonWithID:(id)a3
+- (void)_requestPersonWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(TVRUIPersonViewController *)self setIsRequestingPerson:1];
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MEMORY[0x277D6C548]);
@@ -533,7 +533,7 @@ LABEL_9:
   v6[2] = __50__TVRUIPersonViewController__requestPersonWithID___block_invoke;
   v6[3] = &unk_279D883B0;
   objc_copyWeak(&v7, &location);
-  [v5 requestForPersonID:v4 completion:v6];
+  [v5 requestForPersonID:dCopy completion:v6];
   objc_destroyWeak(&v7);
 
   objc_destroyWeak(&location);
@@ -556,30 +556,30 @@ void __50__TVRUIPersonViewController__requestPersonWithID___block_invoke(uint64_
   }
 }
 
-- (void)_updatePerson:(id)a3 filmography:(id)a4
+- (void)_updatePerson:(id)person filmography:(id)filmography
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_person, a3);
-  objc_storeStrong(&self->_filmography, a4);
-  if (v7)
+  personCopy = person;
+  filmographyCopy = filmography;
+  objc_storeStrong(&self->_person, person);
+  objc_storeStrong(&self->_filmography, filmography);
+  if (personCopy)
   {
     [(TVRUIPersonViewController *)self _updateUIFromCurrentState];
-    v9 = [v7 imageURLTemplate];
-    v10 = [v9 length];
+    imageURLTemplate = [personCopy imageURLTemplate];
+    v10 = [imageURLTemplate length];
 
     if (v10)
     {
       objc_initWeak(&location, self);
-      v11 = [(TVRUIPersonViewController *)self imageFetcher];
-      v12 = [v7 imageURLTemplate];
-      v13 = [v7 identifier];
+      imageFetcher = [(TVRUIPersonViewController *)self imageFetcher];
+      imageURLTemplate2 = [personCopy imageURLTemplate];
+      identifier = [personCopy identifier];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __55__TVRUIPersonViewController__updatePerson_filmography___block_invoke;
       v14[3] = &unk_279D87EC8;
       objc_copyWeak(&v15, &location);
-      [v11 fetchImageWithTemplateString:v12 size:v13 identifier:v14 completion:{1000.0, 1000.0}];
+      [imageFetcher fetchImageWithTemplateString:imageURLTemplate2 size:identifier identifier:v14 completion:{1000.0, 1000.0}];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -622,31 +622,31 @@ void __55__TVRUIPersonViewController__updatePerson_filmography___block_invoke(ui
 - (void)_updateUIFromCurrentState
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUIPersonViewController *)self person];
-  v4 = [(TVRUIPersonViewController *)self _canShowPerson];
-  v5 = [(TVRUIPersonViewController *)self activityIndicatorView];
-  [v5 setHidden:v4];
+  person = [(TVRUIPersonViewController *)self person];
+  _canShowPerson = [(TVRUIPersonViewController *)self _canShowPerson];
+  activityIndicatorView = [(TVRUIPersonViewController *)self activityIndicatorView];
+  [activityIndicatorView setHidden:_canShowPerson];
 
-  if (v4)
+  if (_canShowPerson)
   {
-    v6 = [v3 name];
-    v7 = [(TVRUIPersonViewController *)self navigationItem];
-    [v7 setTitle:v6];
+    name = [person name];
+    navigationItem = [(TVRUIPersonViewController *)self navigationItem];
+    [navigationItem setTitle:name];
 
     v8 = objc_alloc_init(MEMORY[0x277CFB890]);
     [v8 appendSectionsWithIdentifiers:&unk_287E84AE0];
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [v3 birthplace];
-    v11 = __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(v10, &stru_287E6AEF8, v10);
+    birthplace = [person birthplace];
+    v11 = __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(birthplace, &stru_287E6AEF8, birthplace);
 
-    v12 = [v3 formattedBirthDate];
-    v13 = __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(v12, v11, v12);
+    formattedBirthDate = [person formattedBirthDate];
+    v13 = __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(formattedBirthDate, v11, formattedBirthDate);
 
-    v14 = [v3 formattedDeathDate];
-    v15 = __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(v14, v13, v14);
+    formattedDeathDate = [person formattedDeathDate];
+    v15 = __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(formattedDeathDate, v13, formattedDeathDate);
 
-    v16 = [v3 formattedAge];
-    v17 = __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(v16, v15, v16);
+    formattedAge = [person formattedAge];
+    v17 = __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(formattedAge, v15, formattedAge);
 
     if ([v17 length])
     {
@@ -655,30 +655,30 @@ void __55__TVRUIPersonViewController__updatePerson_filmography___block_invoke(ui
       [v9 addObject:v19];
     }
 
-    v20 = [v3 bio];
+    v20 = [person bio];
     v21 = [v20 length];
 
     if (v21)
     {
-      v22 = [v3 bio];
+      v22 = [person bio];
       v23 = [_TVRUIFactoidItem factoidWithText:v22 options:6];
       v24 = [_TVRUIPersonItem itemWithFactoidItem:v23];
       [v9 addObject:v24];
     }
 
-    v46 = v3;
+    v46 = person;
     v44 = v9;
     [v8 appendItemsWithIdentifiers:v9];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v45 = self;
-    v25 = [(TVRUIPersonViewController *)self filmography];
-    v26 = [v25 categories];
+    selfCopy = self;
+    filmography = [(TVRUIPersonViewController *)self filmography];
+    categories = [filmography categories];
 
-    obj = v26;
-    v27 = [v26 countByEnumeratingWithState:&v53 objects:v59 count:16];
+    obj = categories;
+    v27 = [categories countByEnumeratingWithState:&v53 objects:v59 count:16];
     if (v27)
     {
       v28 = v27;
@@ -693,8 +693,8 @@ void __55__TVRUIPersonViewController__updatePerson_filmography___block_invoke(ui
           }
 
           v30 = *(*(&v53 + 1) + 8 * i);
-          v31 = [v30 title];
-          v58 = v31;
+          title = [v30 title];
+          v58 = title;
           v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
           v33 = v8;
           [v8 appendSectionsWithIdentifiers:v32];
@@ -704,8 +704,8 @@ void __55__TVRUIPersonViewController__updatePerson_filmography___block_invoke(ui
           v50 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v35 = [v30 orderedItems];
-          v36 = [v35 countByEnumeratingWithState:&v49 objects:v57 count:16];
+          orderedItems = [v30 orderedItems];
+          v36 = [orderedItems countByEnumeratingWithState:&v49 objects:v57 count:16];
           if (v36)
           {
             v37 = v36;
@@ -716,14 +716,14 @@ void __55__TVRUIPersonViewController__updatePerson_filmography___block_invoke(ui
               {
                 if (*v50 != v38)
                 {
-                  objc_enumerationMutation(v35);
+                  objc_enumerationMutation(orderedItems);
                 }
 
                 v40 = [_TVRUIPersonItem itemWithMediaInfo:*(*(&v49 + 1) + 8 * j)];
                 [v34 addObject:v40];
               }
 
-              v37 = [v35 countByEnumeratingWithState:&v49 objects:v57 count:16];
+              v37 = [orderedItems countByEnumeratingWithState:&v49 objects:v57 count:16];
             }
 
             while (v37);
@@ -739,16 +739,16 @@ void __55__TVRUIPersonViewController__updatePerson_filmography___block_invoke(ui
       while (v28);
     }
 
-    v41 = [(TVRUIPersonViewController *)v45 dataSource];
-    [v41 applySnapshotUsingReloadData:v8];
+    dataSource = [(TVRUIPersonViewController *)selfCopy dataSource];
+    [dataSource applySnapshotUsingReloadData:v8];
 
-    v3 = v46;
+    person = v46;
   }
 
   else
   {
-    v42 = [(TVRUIPersonViewController *)self activityIndicatorView];
-    [v42 startAnimating];
+    activityIndicatorView2 = [(TVRUIPersonViewController *)self activityIndicatorView];
+    [activityIndicatorView2 startAnimating];
   }
 }
 
@@ -781,15 +781,15 @@ id __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(uint6
 
 - (BOOL)_canShowPerson
 {
-  v3 = [(TVRUIPersonViewController *)self person];
+  person = [(TVRUIPersonViewController *)self person];
 
-  v4 = [(TVRUIPersonViewController *)self filmography];
+  filmography = [(TVRUIPersonViewController *)self filmography];
 
-  v5 = [(TVRUIPersonViewController *)self personImage];
+  personImage = [(TVRUIPersonViewController *)self personImage];
 
-  if (v3)
+  if (person)
   {
-    v6 = v4 == 0;
+    v6 = filmography == 0;
   }
 
   else
@@ -798,7 +798,7 @@ id __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(uint6
   }
 
   v7 = v6;
-  if (v6 || v5)
+  if (v6 || personImage)
   {
     return v7 ^ 1;
   }
@@ -808,69 +808,69 @@ id __54__TVRUIPersonViewController__updateUIFromCurrentState__block_invoke(uint6
 
 - (void)_sharePerson
 {
-  v3 = [(TVRUIPersonViewController *)self person];
-  v6 = [v3 url];
+  person = [(TVRUIPersonViewController *)self person];
+  v6 = [person url];
 
   if (v6)
   {
-    v4 = [(TVRUIPersonViewController *)self actionProvider];
-    v5 = [(TVRUIPersonViewController *)self view];
-    [v4 shareItem:v6 presentingViewController:self sourceView:v5];
+    actionProvider = [(TVRUIPersonViewController *)self actionProvider];
+    view = [(TVRUIPersonViewController *)self view];
+    [actionProvider shareItem:v6 presentingViewController:self sourceView:view];
   }
 }
 
 - (void)_gotoPerson
 {
-  v3 = [(TVRUIPersonViewController *)self person];
-  v5 = [v3 url];
+  person = [(TVRUIPersonViewController *)self person];
+  v5 = [person url];
 
   if (v5)
   {
-    v4 = [(TVRUIPersonViewController *)self actionProvider];
-    [v4 openURL:v5];
+    actionProvider = [(TVRUIPersonViewController *)self actionProvider];
+    [actionProvider openURL:v5];
   }
 }
 
-- (void)requestImageForTemplate:(id)a3 size:(CGSize)a4 identifier:(id)a5 completion:(id)a6
+- (void)requestImageForTemplate:(id)template size:(CGSize)size identifier:(id)identifier completion:(id)completion
 {
-  v9 = a4.width + a4.width;
-  v10 = a4.height + a4.height;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(TVRUIPersonViewController *)self imageFetcher];
-  [v14 fetchImageWithTemplateString:v13 size:v12 identifier:v11 completion:{v9, v10}];
+  v9 = size.width + size.width;
+  v10 = size.height + size.height;
+  completionCopy = completion;
+  identifierCopy = identifier;
+  templateCopy = template;
+  imageFetcher = [(TVRUIPersonViewController *)self imageFetcher];
+  [imageFetcher fetchImageWithTemplateString:templateCopy size:identifierCopy identifier:completionCopy completion:{v9, v10}];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(TVRUIPersonViewController *)self dataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  dataSource = [(TVRUIPersonViewController *)self dataSource];
+  v7 = [dataSource itemIdentifierForIndexPath:pathCopy];
 
   if ([v7 isFactoid] && objc_msgSend(v7, "isExpandable"))
   {
     [v7 setIsExpanded:{objc_msgSend(v7, "isExpanded") ^ 1}];
-    v8 = [(TVRUIPersonViewController *)self dataSource];
-    v9 = [v8 snapshot];
+    dataSource2 = [(TVRUIPersonViewController *)self dataSource];
+    snapshot = [dataSource2 snapshot];
 
     v17[0] = v7;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    [v9 reconfigureItemsWithIdentifiers:v10];
+    [snapshot reconfigureItemsWithIdentifiers:v10];
 
-    v11 = [(TVRUIPersonViewController *)self dataSource];
-    [v11 applySnapshot:v9 animatingDifferences:0];
+    dataSource3 = [(TVRUIPersonViewController *)self dataSource];
+    [dataSource3 applySnapshot:snapshot animatingDifferences:0];
   }
 
   else if ([v7 isMediaInfo])
   {
-    v12 = [(TVRUIPersonViewController *)self actionProvider];
-    v13 = [v7 mediaInfo];
-    v14 = [v13 identifier];
-    v15 = [v7 mediaInfo];
-    v16 = [v15 title];
-    [v12 presentMediaWithID:v14 title:v16 presentingViewController:self];
+    actionProvider = [(TVRUIPersonViewController *)self actionProvider];
+    mediaInfo = [v7 mediaInfo];
+    identifier = [mediaInfo identifier];
+    mediaInfo2 = [v7 mediaInfo];
+    title = [mediaInfo2 title];
+    [actionProvider presentMediaWithID:identifier title:title presentingViewController:self];
   }
 }
 

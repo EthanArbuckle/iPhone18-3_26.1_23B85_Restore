@@ -2,10 +2,10 @@
 - (id)documentSource;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setDocumentSource:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateFooterAnimated:(BOOL)a3;
-- (void)updateRadioGroupWithSources:(id)a3 animated:(BOOL)a4;
+- (void)setDocumentSource:(id)source;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateFooterAnimated:(BOOL)animated;
+- (void)updateRadioGroupWithSources:(id)sources animated:(BOOL)animated;
 @end
 
 @implementation PSDocumentsPolicyController
@@ -13,8 +13,8 @@
 - (void)dealloc
 {
   v3 = MEMORY[0x1E699A348];
-  v4 = [(PSDocumentsPolicyController *)self searchingContext];
-  [v3 endSearchingSources:v4];
+  searchingContext = [(PSDocumentsPolicyController *)self searchingContext];
+  [v3 endSearchingSources:searchingContext];
 
   v5.receiver = self;
   v5.super_class = PSDocumentsPolicyController;
@@ -26,8 +26,8 @@
   specifiers = self->super._specifiers;
   if (!specifiers)
   {
-    v4 = [(PSDocumentsPolicyController *)self documentSource];
-    [(PSDocumentsPolicyController *)self setSelectedDocumentSource:v4];
+    documentSource = [(PSDocumentsPolicyController *)self documentSource];
+    [(PSDocumentsPolicyController *)self setSelectedDocumentSource:documentSource];
     v5 = [(PSSpecifier *)self->super.super._specifier propertyForKey:PSDocumentBundleIdentifierKey];
     [(PSDocumentsPolicyController *)self setBundleIdentifier:v5];
 
@@ -36,35 +36,35 @@
     v8 = [PSSpecifier groupSpecifierWithName:v7];
     [(PSDocumentsPolicyController *)self setGroupSpecifier:v8];
 
-    v9 = [(PSDocumentsPolicyController *)self groupSpecifier];
-    [v9 setIdentifier:@"DOCS_AND_DATA_GROUP"];
+    groupSpecifier = [(PSDocumentsPolicyController *)self groupSpecifier];
+    [groupSpecifier setIdentifier:@"DOCS_AND_DATA_GROUP"];
 
-    v10 = [(PSDocumentsPolicyController *)self groupSpecifier];
-    [v10 setProperty:MEMORY[0x1E695E118] forKey:@"isRadioGroup"];
+    groupSpecifier2 = [(PSDocumentsPolicyController *)self groupSpecifier];
+    [groupSpecifier2 setProperty:MEMORY[0x1E695E118] forKey:@"isRadioGroup"];
 
-    v11 = [(PSDocumentsPolicyController *)self groupSpecifier];
-    [v6 addObject:v11];
+    groupSpecifier3 = [(PSDocumentsPolicyController *)self groupSpecifier];
+    [v6 addObject:groupSpecifier3];
 
     objc_storeStrong(&self->super._specifiers, v6);
     [(PSListController *)self reload];
-    v12 = [(PSDocumentsPolicyController *)self searchingContext];
+    searchingContext = [(PSDocumentsPolicyController *)self searchingContext];
 
-    if (v12)
+    if (searchingContext)
     {
       v13 = MEMORY[0x1E699A348];
-      v14 = [(PSDocumentsPolicyController *)self searchingContext];
-      [v13 endSearchingSources:v14];
+      searchingContext2 = [(PSDocumentsPolicyController *)self searchingContext];
+      [v13 endSearchingSources:searchingContext2];
     }
 
     objc_initWeak(&location, self);
     v15 = MEMORY[0x1E699A348];
-    v16 = [(PSDocumentsPolicyController *)self bundleIdentifier];
+    bundleIdentifier = [(PSDocumentsPolicyController *)self bundleIdentifier];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __41__PSDocumentsPolicyController_specifiers__block_invoke;
     v22 = &unk_1E71DBF90;
     objc_copyWeak(&v23, &location);
-    v17 = [v15 startSearchingSourcesForBundleIdentifier:v16 updateBlock:&v19];
+    v17 = [v15 startSearchingSourcesForBundleIdentifier:bundleIdentifier updateBlock:&v19];
     [(PSDocumentsPolicyController *)self setSearchingContext:v17, v19, v20, v21, v22];
 
     objc_destroyWeak(&v23);
@@ -103,12 +103,12 @@ void __41__PSDocumentsPolicyController_specifiers__block_invoke_2(uint64_t a1)
   [v5 updateRadioGroupWithSources:*(a1 + 32) animated:v3];
 }
 
-- (void)updateRadioGroupWithSources:(id)a3 animated:(BOOL)a4
+- (void)updateRadioGroupWithSources:(id)sources animated:(BOOL)animated
 {
-  v29 = a4;
+  animatedCopy = animated;
   v40 = *MEMORY[0x1E69E9840];
-  v5 = [a3 allValues];
-  v6 = [v5 mutableCopy];
+  allValues = [sources allValues];
+  v6 = [allValues mutableCopy];
 
   [v6 sortUsingComparator:&__block_literal_global_3];
   [(PSListController *)self beginUpdates];
@@ -116,11 +116,11 @@ void __41__PSDocumentsPolicyController_specifiers__block_invoke_2(uint64_t a1)
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [(PSDocumentsPolicyController *)self specifiers];
-  v8 = [v7 reverseObjectEnumerator];
-  v9 = [v8 allObjects];
+  specifiers = [(PSDocumentsPolicyController *)self specifiers];
+  reverseObjectEnumerator = [specifiers reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  v10 = [allObjects countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v10)
   {
     v11 = v10;
@@ -131,7 +131,7 @@ void __41__PSDocumentsPolicyController_specifiers__block_invoke_2(uint64_t a1)
       {
         if (*v35 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObjects);
         }
 
         v14 = *(*(&v34 + 1) + 8 * i);
@@ -140,11 +140,11 @@ void __41__PSDocumentsPolicyController_specifiers__block_invoke_2(uint64_t a1)
 
         if (v16)
         {
-          [(PSListController *)self removeSpecifier:v14 animated:v29];
+          [(PSListController *)self removeSpecifier:v14 animated:animatedCopy];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v11 = [allObjects countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v11);
@@ -174,16 +174,16 @@ void __41__PSDocumentsPolicyController_specifiers__block_invoke_2(uint64_t a1)
         v22 = *(*(&v30 + 1) + 8 * j);
         if (([v22 hidden] & 1) == 0)
         {
-          v23 = [v22 displayName];
-          v24 = [PSSpecifier preferenceSpecifierNamed:v23 target:self set:0 get:0 detail:0 cell:3 edit:0];
+          displayName = [v22 displayName];
+          v24 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:0 cell:3 edit:0];
 
           [v24 setProperty:v22 forKey:@"PSDocumentSourceKey"];
           v25 = [v22 iconForSize:0];
           [v24 setProperty:v25 forKey:@"iconImage"];
 
-          [(PSListController *)self addSpecifier:v24 animated:v29];
-          v26 = [(PSDocumentsPolicyController *)self selectedDocumentSource];
-          v27 = [v22 isEqual:v26];
+          [(PSListController *)self addSpecifier:v24 animated:animatedCopy];
+          selectedDocumentSource = [(PSDocumentsPolicyController *)self selectedDocumentSource];
+          v27 = [v22 isEqual:selectedDocumentSource];
 
           if (v27)
           {
@@ -200,7 +200,7 @@ void __41__PSDocumentsPolicyController_specifiers__block_invoke_2(uint64_t a1)
   }
 
   [(PSListController *)self endUpdates];
-  [(PSDocumentsPolicyController *)self updateFooterAnimated:v29];
+  [(PSDocumentsPolicyController *)self updateFooterAnimated:animatedCopy];
 }
 
 uint64_t __68__PSDocumentsPolicyController_updateRadioGroupWithSources_animated___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -254,12 +254,12 @@ LABEL_5:
   return v9;
 }
 
-- (void)updateFooterAnimated:(BOOL)a3
+- (void)updateFooterAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PSDocumentsPolicyController *)self selectedDocumentSource];
-  v6 = [v5 identifier];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E699A368]];
+  animatedCopy = animated;
+  selectedDocumentSource = [(PSDocumentsPolicyController *)self selectedDocumentSource];
+  identifier = [selectedDocumentSource identifier];
+  v7 = [identifier isEqualToString:*MEMORY[0x1E699A368]];
 
   if (v7)
   {
@@ -269,9 +269,9 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v9 = [(PSDocumentsPolicyController *)self selectedDocumentSource];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E699A390]];
+  selectedDocumentSource2 = [(PSDocumentsPolicyController *)self selectedDocumentSource];
+  identifier2 = [selectedDocumentSource2 identifier];
+  v11 = [identifier2 isEqualToString:*MEMORY[0x1E699A390]];
 
   if (v11)
   {
@@ -281,14 +281,14 @@ LABEL_5:
 
   v12 = MEMORY[0x1E696AEC0];
   v13 = PS_LocalizedStringForDocumentsPolicy(@"DOCUMENTS_AND_DATA_THIRD_PARTY_FOOTER");
-  v14 = [(PSDocumentsPolicyController *)self selectedDocumentSource];
-  v15 = [v14 displayName];
-  v17 = [v12 stringWithFormat:v13, v15];
+  selectedDocumentSource3 = [(PSDocumentsPolicyController *)self selectedDocumentSource];
+  displayName = [selectedDocumentSource3 displayName];
+  v17 = [v12 stringWithFormat:v13, displayName];
 
 LABEL_7:
   v16 = [(PSListController *)self specifierForID:@"DOCS_AND_DATA_GROUP"];
   [v16 setProperty:v17 forKey:@"footerText"];
-  [(PSListController *)self reloadSpecifier:v16 animated:v3];
+  [(PSListController *)self reloadSpecifier:v16 animated:animatedCopy];
 }
 
 - (id)documentSource
@@ -340,22 +340,22 @@ void __45__PSDocumentsPolicyController_documentSource__block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)setDocumentSource:(id)a3
+- (void)setDocumentSource:(id)source
 {
-  v4 = a3;
-  [(PSDocumentsPolicyController *)self setSelectedDocumentSource:v4];
+  sourceCopy = source;
+  [(PSDocumentsPolicyController *)self setSelectedDocumentSource:sourceCopy];
   v5 = MEMORY[0x1E699A348];
-  v6 = [(PSDocumentsPolicyController *)self bundleIdentifier];
-  [v5 setDefaultSource:v4 forBundleIdentifier:v6];
+  bundleIdentifier = [(PSDocumentsPolicyController *)self bundleIdentifier];
+  [v5 setDefaultSource:sourceCopy forBundleIdentifier:bundleIdentifier];
 
   [(PSDocumentsPolicyController *)self updateFooterAnimated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSListController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(PSListController *)self indexForIndexPath:pathCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -378,7 +378,7 @@ void __45__PSDocumentsPolicyController_documentSource__block_invoke(uint64_t a1,
 
   v13.receiver = self;
   v13.super_class = PSDocumentsPolicyController;
-  [(PSListController *)&v13 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(PSListController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 @end

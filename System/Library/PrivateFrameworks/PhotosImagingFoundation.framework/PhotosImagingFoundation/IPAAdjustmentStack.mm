@@ -1,8 +1,8 @@
 @interface IPAAdjustmentStack
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAdjustmentStack:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAdjustmentStack:(id)stack;
 - (IPAAdjustmentStack)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 @end
 
@@ -11,10 +11,10 @@
 - (id)debugDescription
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  [v3 appendFormat:@"<%@:%p ", objc_opt_class(), self];
-  v4 = [(IPAAdjustmentStack *)self versionInfo];
-  [v3 appendFormat:@"versionInfo=%@", v4];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendFormat:@"<%@:%p ", objc_opt_class(), self];
+  versionInfo = [(IPAAdjustmentStack *)self versionInfo];
+  [string appendFormat:@"versionInfo=%@", versionInfo];
 
   v5 = objc_opt_new();
   v15 = 0u;
@@ -47,26 +47,26 @@
   }
 
   v12 = [v5 componentsJoinedByString:{@", "}];
-  [v3 appendFormat:@"adjustments=[%@]", v12];
+  [string appendFormat:@"adjustments=[%@]", v12];
 
-  v13 = [(IPAAdjustmentStack *)self _debugDescriptionSuffix];
-  if (v13)
+  _debugDescriptionSuffix = [(IPAAdjustmentStack *)self _debugDescriptionSuffix];
+  if (_debugDescriptionSuffix)
   {
-    [v3 appendString:@" "];
-    [v3 appendString:v13];
+    [string appendString:@" "];
+    [string appendString:_debugDescriptionSuffix];
   }
 
-  [v3 appendString:@">"];
+  [string appendString:@">"];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqualToAdjustmentStack:(id)a3
+- (BOOL)isEqualToAdjustmentStack:(id)stack
 {
   v4 = self->_adjustments;
-  v5 = [a3 adjustments];
+  adjustments = [stack adjustments];
   v6 = [(NSArray *)v4 count];
-  if (v6 == [v5 count])
+  if (v6 == [adjustments count])
   {
     if (v6)
     {
@@ -75,7 +75,7 @@
       do
       {
         v9 = [(NSArray *)v4 objectAtIndexedSubscript:v7];
-        v10 = [v5 objectAtIndexedSubscript:v7];
+        v10 = [adjustments objectAtIndexedSubscript:v7];
         v11 = [v9 isEqualToAdjustment:v10];
 
         if (!v11)
@@ -101,23 +101,23 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAdjustmentStack *)self isEqualToAdjustmentStack:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IPAAdjustmentStack *)self isEqualToAdjustmentStack:equalCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(IPAAdjustmentStack *)self versionInfo];
-  [v4 setVersionInfo:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  versionInfo = [(IPAAdjustmentStack *)self versionInfo];
+  [v4 setVersionInfo:versionInfo];
 
-  v6 = [(IPAAdjustmentStack *)self adjustments];
-  [v4 setAdjustments:v6];
+  adjustments = [(IPAAdjustmentStack *)self adjustments];
+  [v4 setAdjustments:adjustments];
 
   return v4;
 }

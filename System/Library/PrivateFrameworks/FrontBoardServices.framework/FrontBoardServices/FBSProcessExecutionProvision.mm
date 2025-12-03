@@ -2,13 +2,13 @@
 - (FBSProcessExecutionProvision)init;
 - (FBSProcessExecutionProvisionDelegate)delegate;
 - (FBSProcessInternal)process;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)_noteViolatedWithError:(id)a3;
-- (void)_performDelegateCallout:(id)a3;
-- (void)monitorProcess:(id)a3;
+- (void)_noteViolatedWithError:(id)error;
+- (void)_performDelegateCallout:(id)callout;
+- (void)monitorProcess:(id)process;
 - (void)prepareForReuse;
 - (void)stopMonitoring;
 - (void)updateProgress;
@@ -67,20 +67,20 @@
   objc_sync_exit(obj);
 }
 
-- (void)monitorProcess:(id)a3
+- (void)monitorProcess:(id)process
 {
-  obj = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (!v4->_monitoring)
+  obj = process;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_monitoring)
   {
-    objc_storeWeak(&v4->_process, obj);
-    v4->_monitoring = 1;
-    v4->_activated = 1;
-    [(FBSProcessExecutionProvision *)v4 _beginMonitoring];
+    objc_storeWeak(&selfCopy->_process, obj);
+    selfCopy->_monitoring = 1;
+    selfCopy->_activated = 1;
+    [(FBSProcessExecutionProvision *)selfCopy _beginMonitoring];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)updateProgress
@@ -95,16 +95,16 @@
   objc_sync_exit(obj);
 }
 
-- (void)_noteViolatedWithError:(id)a3
+- (void)_noteViolatedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__FBSProcessExecutionProvision__noteViolatedWithError___block_invoke;
   v6[3] = &unk_1E76BCD60;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(FBSProcessExecutionProvision *)self _performDelegateCallout:v6];
 }
 
@@ -135,9 +135,9 @@ void __55__FBSProcessExecutionProvision__noteViolatedWithError___block_invoke(ui
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSError *)self->_error copy];
   v6 = *(v4 + 40);
   *(v4 + 40) = v5;
@@ -151,10 +151,10 @@ void __55__FBSProcessExecutionProvision__noteViolatedWithError___block_invoke(ui
   return v4;
 }
 
-- (void)_performDelegateCallout:(id)a3
+- (void)_performDelegateCallout:(id)callout
 {
-  v5 = a3;
-  if (!v5)
+  calloutCopy = callout;
+  if (!calloutCopy)
   {
     [(FBSProcessExecutionProvision *)a2 _performDelegateCallout:?];
   }
@@ -164,34 +164,34 @@ void __55__FBSProcessExecutionProvision__noteViolatedWithError___block_invoke(ui
   block[1] = 3221225472;
   block[2] = __56__FBSProcessExecutionProvision__performDelegateCallout___block_invoke;
   block[3] = &unk_1E76BD318;
-  v9 = v5;
-  v7 = v5;
+  v9 = calloutCopy;
+  v7 = calloutCopy;
   dispatch_async(delegateCalloutQueue, block);
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSProcessExecutionProvision *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSProcessExecutionProvision *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSProcessExecutionProvision *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSProcessExecutionProvision *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(FBSProcessExecutionProvision *)self succinctDescriptionBuilder];
-  v5 = [v4 appendBool:-[FBSProcessExecutionProvision isMonitoring](self withName:"isMonitoring") ifEqualTo:{@"monitoring", 1}];
-  v6 = [v4 appendBool:-[FBSProcessExecutionProvision isViolated](self withName:"isViolated") ifEqualTo:{@"violated", 1}];
+  succinctDescriptionBuilder = [(FBSProcessExecutionProvision *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendBool:-[FBSProcessExecutionProvision isMonitoring](self withName:"isMonitoring") ifEqualTo:{@"monitoring", 1}];
+  v6 = [succinctDescriptionBuilder appendBool:-[FBSProcessExecutionProvision isViolated](self withName:"isViolated") ifEqualTo:{@"violated", 1}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (FBSProcessExecutionProvisionDelegate)delegate

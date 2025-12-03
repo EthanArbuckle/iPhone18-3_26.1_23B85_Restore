@@ -2,13 +2,13 @@
 - (ATHostBrowser)init;
 - (void)_finishSearchIfComplete;
 - (void)_handleTimeout;
-- (void)browseForHostsWithTimeout:(unint64_t)a3 completion:(id)a4;
-- (void)netService:(id)a3 didNotResolve:(id)a4;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowserDidStopSearch:(id)a3;
-- (void)netServiceDidResolveAddress:(id)a3;
+- (void)browseForHostsWithTimeout:(unint64_t)timeout completion:(id)completion;
+- (void)netService:(id)service didNotResolve:(id)resolve;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowserDidStopSearch:(id)search;
+- (void)netServiceDidResolveAddress:(id)address;
 @end
 
 @implementation ATHostBrowser
@@ -20,7 +20,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%@ timeout expired - ending search", &v4, 0xCu);
   }
 
@@ -39,13 +39,13 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%@ host browse completed", &v8, 0xCu);
     }
 
     netServiceBrowser = self->_netServiceBrowser;
-    v5 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [(NSNetServiceBrowser *)netServiceBrowser removeFromRunLoop:v5 forMode:*MEMORY[0x277CBE640]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [(NSNetServiceBrowser *)netServiceBrowser removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE640]];
 
     [(NSNetServiceBrowser *)self->_netServiceBrowser setDelegate:0];
     v6 = self->_netServiceBrowser;
@@ -60,17 +60,17 @@
   }
 }
 
-- (void)netService:(id)a3 didNotResolve:(id)a4
+- (void)netService:(id)service didNotResolve:(id)resolve
 {
-  v5 = a3;
+  serviceCopy = service;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__ATHostBrowser_netService_didNotResolve___block_invoke;
   v8[3] = &unk_2784E5960;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = serviceCopy;
+  v7 = serviceCopy;
   dispatch_async(queue, v8);
 }
 
@@ -82,17 +82,17 @@ uint64_t __42__ATHostBrowser_netService_didNotResolve___block_invoke(uint64_t a1
   return [v2 _finishSearchIfComplete];
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ATHostBrowser_netServiceDidResolveAddress___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = addressCopy;
+  v6 = addressCopy;
   dispatch_async(queue, v7);
 }
 
@@ -118,18 +118,18 @@ uint64_t __45__ATHostBrowser_netServiceDidResolveAddress___block_invoke(uint64_t
   return result;
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
-  v7 = a4;
+  serviceCopy = service;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__ATHostBrowser_netServiceBrowser_didRemoveService_moreComing___block_invoke;
   block[3] = &unk_2784E5480;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = serviceCopy;
+  comingCopy = coming;
+  v9 = serviceCopy;
   dispatch_async(queue, block);
 }
 
@@ -146,18 +146,18 @@ uint64_t __63__ATHostBrowser_netServiceBrowser_didRemoveService_moreComing___blo
   return result;
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
-  v7 = a4;
+  serviceCopy = service;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__ATHostBrowser_netServiceBrowser_didFindService_moreComing___block_invoke;
   block[3] = &unk_2784E5480;
   block[4] = self;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
+  v11 = serviceCopy;
+  comingCopy = coming;
+  v9 = serviceCopy;
   dispatch_async(queue, block);
 }
 
@@ -200,7 +200,7 @@ uint64_t __61__ATHostBrowser_netServiceBrowser_didFindService_moreComing___block
   return result;
 }
 
-- (void)netServiceBrowserDidStopSearch:(id)a3
+- (void)netServiceBrowserDidStopSearch:(id)search
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -227,17 +227,17 @@ uint64_t __48__ATHostBrowser_netServiceBrowserDidStopSearch___block_invoke(uint6
   return [*(a1 + 32) _finishSearchIfComplete];
 }
 
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search
 {
-  v5 = a4;
+  searchCopy = search;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__ATHostBrowser_netServiceBrowser_didNotSearch___block_invoke;
   v8[3] = &unk_2784E5960;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = searchCopy;
+  v7 = searchCopy;
   dispatch_async(queue, v8);
 }
 
@@ -260,18 +260,18 @@ uint64_t __48__ATHostBrowser_netServiceBrowser_didNotSearch___block_invoke(uint6
   return [*(a1 + 32) _finishSearchIfComplete];
 }
 
-- (void)browseForHostsWithTimeout:(unint64_t)a3 completion:(id)a4
+- (void)browseForHostsWithTimeout:(unint64_t)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__ATHostBrowser_browseForHostsWithTimeout_completion___block_invoke;
   block[3] = &unk_2784E5458;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  timeoutCopy = timeout;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 

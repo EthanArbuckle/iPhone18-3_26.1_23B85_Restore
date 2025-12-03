@@ -1,11 +1,11 @@
 @interface ACCTransportIOAccessoryPort
 - (ACCTransportIOAccessoryPortProtocol)delegate;
-- (BOOL)transmitData:(id)a3;
+- (BOOL)transmitData:(id)data;
 - (NSString)ioAccPortParentConnectionUUID;
 - (void)_handleAccessoryPortDetach;
-- (void)_handleIncomingData:(id)a3;
+- (void)_handleIncomingData:(id)data;
 - (void)_handlePropertyChange;
-- (void)_handleResistorIDChange:(int)a3;
+- (void)_handleResistorIDChange:(int)change;
 - (void)_registerForIOAccessoryPortInterestNotifications;
 - (void)dealloc;
 - (void)portServiceRegistrationComplete;
@@ -45,7 +45,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v11 = [(ACCTransportIOAccessoryBase *)self ioService];
+    ioService = [(ACCTransportIOAccessoryBase *)self ioService];
     _os_log_impl(&dword_233656000, v5, OS_LOG_TYPE_DEFAULT, "Deallocating IOAccessoryPort with service: %d", buf, 8u);
   }
 
@@ -72,15 +72,15 @@
 - (void)portServiceRegistrationComplete
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(ACCTransportIOAccessoryPort *)self delegate];
+  delegate = [(ACCTransportIOAccessoryPort *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(ACCTransportIOAccessoryPort *)self delegate];
-    if (v4)
+    delegate2 = [(ACCTransportIOAccessoryPort *)self delegate];
+    if (delegate2)
     {
-      v5 = v4;
-      v6 = [(ACCTransportIOAccessoryPort *)self delegate];
+      v5 = delegate2;
+      delegate3 = [(ACCTransportIOAccessoryPort *)self delegate];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
@@ -165,8 +165,8 @@
           goto LABEL_49;
         }
 
-        v16 = [(ACCTransportIOAccessoryPort *)self delegate];
-        v15 = [v16 IOAccessoryPortArrived:self withEndpointProtocol:v12 publish:v10];
+        delegate4 = [(ACCTransportIOAccessoryPort *)self delegate];
+        v15 = [delegate4 IOAccessoryPortArrived:self withEndpointProtocol:v12 publish:v10];
 
         if (v15)
         {
@@ -176,8 +176,8 @@
 
           if (v11)
           {
-            v19 = [(ACCTransportIOAccessoryPort *)self delegate];
-            [v19 IOAccessoryPortPublish:self];
+            delegate5 = [(ACCTransportIOAccessoryPort *)self delegate];
+            [delegate5 IOAccessoryPortPublish:self];
 LABEL_48:
 
 LABEL_49:
@@ -186,7 +186,7 @@ LABEL_49:
 
           if (gLogObjects && gNumLogObjects >= 5)
           {
-            v19 = *(gLogObjects + 32);
+            delegate5 = *(gLogObjects + 32);
           }
 
           else
@@ -196,11 +196,11 @@ LABEL_49:
               [ACCTransportIOAccessoryOOBPairing dealloc];
             }
 
-            v19 = MEMORY[0x277D86220];
+            delegate5 = MEMORY[0x277D86220];
             v25 = MEMORY[0x277D86220];
           }
 
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+          if (!os_log_type_enabled(delegate5, OS_LOG_TYPE_INFO))
           {
             goto LABEL_48;
           }
@@ -208,7 +208,7 @@ LABEL_49:
           v27 = 67109120;
           v28 = v12;
           v22 = "Did not publish endpoint for protocol:%{coreacc:ACCEndpoint_Protocol_t}d";
-          v23 = v19;
+          v23 = delegate5;
           v24 = OS_LOG_TYPE_INFO;
         }
 
@@ -216,7 +216,7 @@ LABEL_49:
         {
           if (gLogObjects && gNumLogObjects >= 5)
           {
-            v19 = *(gLogObjects + 32);
+            delegate5 = *(gLogObjects + 32);
           }
 
           else
@@ -226,11 +226,11 @@ LABEL_49:
               [ACCTransportIOAccessoryOOBPairing dealloc];
             }
 
-            v19 = MEMORY[0x277D86220];
+            delegate5 = MEMORY[0x277D86220];
             v21 = MEMORY[0x277D86220];
           }
 
-          if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          if (!os_log_type_enabled(delegate5, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_48;
           }
@@ -238,7 +238,7 @@ LABEL_49:
           v27 = 67109120;
           v28 = v12;
           v22 = "Failed to create endpointUUID! protocol:%{coreacc:ACCEndpoint_Protocol_t}d";
-          v23 = v19;
+          v23 = delegate5;
           v24 = OS_LOG_TYPE_DEFAULT;
         }
 
@@ -260,17 +260,17 @@ LABEL_50:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleIncomingData:(id)a3
+- (void)_handleIncomingData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   notificationPortQueue = self->super._notificationPortQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__ACCTransportIOAccessoryPort__handleIncomingData___block_invoke;
   v7[3] = &unk_2789E8900;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dataCopy;
+  selfCopy = self;
+  v6 = dataCopy;
   dispatch_async(notificationPortQueue, v7);
 }
 
@@ -486,9 +486,9 @@ LABEL_68:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)transmitData:(id)a3
+- (BOOL)transmitData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 5;
@@ -517,12 +517,12 @@ LABEL_68:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCTransportIOAccessoryPort *)v4 transmitData:v7];
+    [(ACCTransportIOAccessoryPort *)dataCopy transmitData:v7];
   }
 
   ioConnect = self->super._ioConnect;
-  [v4 bytes];
-  [v4 length];
+  [dataCopy bytes];
+  [dataCopy length];
   v9 = IOAccessoryPortTransmitData();
   if (v9)
   {
@@ -554,7 +554,7 @@ LABEL_68:
 - (void)_handleAccessoryPortDetach
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(ACCTransportIOAccessoryPort *)self ioAccPortEndpointUUID];
+  ioAccPortEndpointUUID = [(ACCTransportIOAccessoryPort *)self ioAccPortEndpointUUID];
 
   if (gLogObjects)
   {
@@ -567,7 +567,7 @@ LABEL_68:
   }
 
   v5 = !v4;
-  if (v3)
+  if (ioAccPortEndpointUUID)
   {
     if (v5)
     {
@@ -587,23 +587,23 @@ LABEL_68:
 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ACCTransportIOAccessoryPort *)self ioAccPortEndpointUUID];
+      ioAccPortEndpointUUID2 = [(ACCTransportIOAccessoryPort *)self ioAccPortEndpointUUID];
       v17 = 138412290;
-      v18 = v9;
+      v18 = ioAccPortEndpointUUID2;
       _os_log_impl(&dword_233656000, v6, OS_LOG_TYPE_DEFAULT, "detaching endpointUUID %@", &v17, 0xCu);
     }
 
-    v10 = [(ACCTransportIOAccessoryPort *)self delegate];
-    if (v10)
+    delegate = [(ACCTransportIOAccessoryPort *)self delegate];
+    if (delegate)
     {
-      v11 = v10;
-      v12 = [(ACCTransportIOAccessoryPort *)self delegate];
+      v11 = delegate;
+      delegate2 = [(ACCTransportIOAccessoryPort *)self delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [(ACCTransportIOAccessoryPort *)self delegate];
-        [v14 IOAccessoryPortDetach:self];
+        delegate3 = [(ACCTransportIOAccessoryPort *)self delegate];
+        [delegate3 IOAccessoryPortDetach:self];
       }
     }
 
@@ -639,10 +639,10 @@ LABEL_68:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResistorIDChange:(int)a3
+- (void)_handleResistorIDChange:(int)change
 {
   v9 = *MEMORY[0x277D85DE8];
-  self->_resistorID = a3;
+  self->_resistorID = change;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 5;
@@ -781,13 +781,13 @@ LABEL_68:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v32 = 67109888;
-      v33 = [(ACCTransportIOAccessoryBase *)self upstreamManagerService];
+      upstreamManagerService = [(ACCTransportIOAccessoryBase *)self upstreamManagerService];
       v34 = 1024;
       v35 = ManagerService;
       v36 = 1024;
-      v37 = [(ACCTransportIOAccessoryPort *)self portIDNumber];
+      portIDNumber = [(ACCTransportIOAccessoryPort *)self portIDNumber];
       v38 = 1024;
-      v39 = [(ACCTransportIOAccessoryBase *)self ioService];
+      ioService = [(ACCTransportIOAccessoryBase *)self ioService];
       _os_log_impl(&dword_233656000, v9, OS_LOG_TYPE_DEFAULT, "changing io acc port parent service from %d to %d upstream service for portIDNumber %d, service %d", &v32, 0x1Au);
     }
 
@@ -797,7 +797,7 @@ LABEL_68:
 
   [(ACCTransportIOAccessoryBase *)self ioService];
   ManagerPrimaryPort = IOAccessoryPortGetManagerPrimaryPort();
-  v14 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+  primaryPortNumber = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
   if (gLogObjects)
   {
     v15 = gNumLogObjects <= 4;
@@ -809,7 +809,7 @@ LABEL_68:
   }
 
   v16 = !v15;
-  if (ManagerPrimaryPort == v14)
+  if (ManagerPrimaryPort == primaryPortNumber)
   {
     if (v16)
     {
@@ -829,9 +829,9 @@ LABEL_68:
 
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+      primaryPortNumber2 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
       v32 = 67109120;
-      v33 = v20;
+      upstreamManagerService = primaryPortNumber2;
       _os_log_impl(&dword_233656000, v17, OS_LOG_TYPE_DEFAULT, "NOT changing io acc port parent primary port from %d", &v32, 8u);
     }
   }
@@ -856,35 +856,35 @@ LABEL_68:
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
-      v23 = [(ACCTransportIOAccessoryPort *)self portIDNumber];
-      v24 = [(ACCTransportIOAccessoryBase *)self ioService];
+      primaryPortNumber3 = [(ACCTransportIOAccessoryBase *)self primaryPortNumber];
+      portIDNumber2 = [(ACCTransportIOAccessoryPort *)self portIDNumber];
+      ioService2 = [(ACCTransportIOAccessoryBase *)self ioService];
       v32 = 67109888;
-      v33 = v22;
+      upstreamManagerService = primaryPortNumber3;
       v34 = 1024;
       v35 = ManagerPrimaryPort;
       v36 = 1024;
-      v37 = v23;
+      portIDNumber = portIDNumber2;
       v38 = 1024;
-      v39 = v24;
+      ioService = ioService2;
       _os_log_impl(&dword_233656000, v18, OS_LOG_TYPE_DEFAULT, "changing io acc port parent primary port from %d to %d for portIDNumber %d, service %d", &v32, 0x1Au);
     }
 
     [(ACCTransportIOAccessoryBase *)self setPrimaryPortNumber:ManagerPrimaryPort];
   }
 
-  v25 = [(ACCTransportIOAccessoryPort *)self delegate];
-  if (v25 && (v26 = v25, [(ACCTransportIOAccessoryPort *)self delegate], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_opt_respondsToSelector(), v27, v26, (v28 & 1) != 0))
+  delegate = [(ACCTransportIOAccessoryPort *)self delegate];
+  if (delegate && (v26 = delegate, [(ACCTransportIOAccessoryPort *)self delegate], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_opt_respondsToSelector(), v27, v26, (v28 & 1) != 0))
   {
-    v29 = [(ACCTransportIOAccessoryPort *)self delegate];
-    [v29 IOAccessoryPortPropertyChanged:self];
+    delegate2 = [(ACCTransportIOAccessoryPort *)self delegate];
+    [delegate2 IOAccessoryPortPropertyChanged:self];
   }
 
   else
   {
     if (gLogObjects && gNumLogObjects >= 5)
     {
-      v29 = *(gLogObjects + 32);
+      delegate2 = *(gLogObjects + 32);
     }
 
     else
@@ -894,11 +894,11 @@ LABEL_68:
         [ACCTransportIOAccessoryOOBPairing dealloc];
       }
 
-      v29 = MEMORY[0x277D86220];
+      delegate2 = MEMORY[0x277D86220];
       v30 = MEMORY[0x277D86220];
     }
 
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_ERROR))
     {
       [ACCTransportIOAccessoryPort _handlePropertyChange];
     }

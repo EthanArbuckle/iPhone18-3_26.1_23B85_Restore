@@ -1,21 +1,21 @@
 @interface TSPKnownFieldMessage
-- (TSPKnownFieldMessage)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6;
+- (TSPKnownFieldMessage)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection;
 - (id)debugDescription;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSPKnownFieldMessage
 
-- (TSPKnownFieldMessage)initWithFieldDescriptor:(const void *)a3 fieldInfo:(const void *)a4 message:(const Message *)a5 reflection:(const Reflection *)a6
+- (TSPKnownFieldMessage)initWithFieldDescriptor:(const void *)descriptor fieldInfo:(const void *)info message:(const Message *)message reflection:(const Reflection *)reflection
 {
   v15.receiver = self;
   v15.super_class = TSPKnownFieldMessage;
-  v9 = [TSPKnownFieldStringValue initWithFieldDescriptor:sel_initWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:a3 message:a4 reflection:?];
+  v9 = [TSPKnownFieldStringValue initWithFieldDescriptor:sel_initWithFieldDescriptor_fieldInfo_message_reflection_ fieldInfo:descriptor message:info reflection:?];
   if (v9)
   {
     v10 = [TSPKnownFieldReferencesHelper alloc];
-    v12 = objc_msgSend_initWithFieldDescriptor_message_reflection_(v10, v11, a3, a5, a6);
+    v12 = objc_msgSend_initWithFieldDescriptor_message_reflection_(v10, v11, descriptor, message, reflection);
     referencesHelper = v9->_referencesHelper;
     v9->_referencesHelper = v12;
   }
@@ -23,22 +23,22 @@
   return v9;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   v6.receiver = self;
   v6.super_class = TSPKnownFieldMessage;
-  [(TSPKnownField *)&v6 loadFromUnarchiver:v4];
-  objc_msgSend_loadFromUnarchiver_(self->_referencesHelper, v5, v4);
+  [(TSPKnownField *)&v6 loadFromUnarchiver:unarchiverCopy];
+  objc_msgSend_loadFromUnarchiver_(self->_referencesHelper, v5, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v6.receiver = self;
   v6.super_class = TSPKnownFieldMessage;
-  [(TSPKnownField *)&v6 saveToArchiver:v4];
-  objc_msgSend_saveToArchiver_(self->_referencesHelper, v5, v4);
+  [(TSPKnownField *)&v6 saveToArchiver:archiverCopy];
+  objc_msgSend_saveToArchiver_(self->_referencesHelper, v5, archiverCopy);
 }
 
 - (id)debugDescription

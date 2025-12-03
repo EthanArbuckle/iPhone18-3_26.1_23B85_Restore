@@ -1,9 +1,9 @@
 @interface TRDeviceSetupBrowser
 - (TRDeviceSetupBrowser)init;
 - (TRDeviceSetupBrowserDelegate)delegate;
-- (void)browser:(id)a3 didStartTransferWithSendDataHandler:(id)a4;
-- (void)browserDidChangeState:(id)a3;
-- (void)browserDidDisconnect:(id)a3;
+- (void)browser:(id)browser didStartTransferWithSendDataHandler:(id)handler;
+- (void)browserDidChangeState:(id)state;
+- (void)browserDidDisconnect:(id)disconnect;
 @end
 
 @implementation TRDeviceSetupBrowser
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (void)browserDidChangeState:(id)a3
+- (void)browserDidChangeState:(id)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -37,11 +37,11 @@
   }
 }
 
-- (void)browser:(id)a3 didStartTransferWithSendDataHandler:(id)a4
+- (void)browser:(id)browser didStartTransferWithSendDataHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  browserCopy = browser;
+  handlerCopy = handler;
   if (self->_peripheral)
   {
     if (_TRLogEnabled == 1)
@@ -56,7 +56,7 @@
       }
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -74,16 +74,16 @@
       [v14 deviceSetupBrowser:self didFindPeripheral:self->_peripheral];
     }
 
-    [(TRDeviceSetupPeripheral *)self->_peripheral _didTapWithSendDataHandler:v7];
+    [(TRDeviceSetupPeripheral *)self->_peripheral _didTapWithSendDataHandler:handlerCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)browserDidDisconnect:(id)a3
+- (void)browserDidDisconnect:(id)disconnect
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disconnectCopy = disconnect;
   if (_TRLogEnabled == 1)
   {
     v5 = TRLogHandle();

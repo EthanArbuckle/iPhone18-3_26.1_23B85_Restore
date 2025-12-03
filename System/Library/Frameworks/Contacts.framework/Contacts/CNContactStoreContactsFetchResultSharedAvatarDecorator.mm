@@ -1,17 +1,17 @@
 @interface CNContactStoreContactsFetchResultSharedAvatarDecorator
 + (BOOL)enableSharedPhoto;
 + (CNKeyDescriptor)descriptorForRequiredKeys;
-+ (id)allNicknamesForContact:(id)a3;
++ (id)allNicknamesForContact:(id)contact;
 + (id)log;
 - (BOOL)doesKeysToFetchContainRequiredKeys;
-- (CNContactStoreContactsFetchResultSharedAvatarDecorator)initWithContacts:(id)a3 keysToFetch:(id)a4 unifyContactsFromMainStore:(BOOL)a5;
-- (CNContactStoreContactsFetchResultSharedAvatarDecorator)initWithContactsFetchResult:(id)a3 keysToFetch:(id)a4 unifyContactsFromMainStore:(BOOL)a5;
+- (CNContactStoreContactsFetchResultSharedAvatarDecorator)initWithContacts:(id)contacts keysToFetch:(id)fetch unifyContactsFromMainStore:(BOOL)store;
+- (CNContactStoreContactsFetchResultSharedAvatarDecorator)initWithContactsFetchResult:(id)result keysToFetch:(id)fetch unifyContactsFromMainStore:(BOOL)store;
 - (NSArray)decoratedValue;
-- (id)decoratedContacts:(id)a3;
-- (id)nicknameForContact:(id)a3;
-- (id)sharedWallpaperForContact:(id)a3 withNickname:(id)a4;
-- (id)sharedWatchWallpaperImageDataForContact:(id)a3 withNickname:(id)a4;
-- (void)setValue:(id)a3;
+- (id)decoratedContacts:(id)contacts;
+- (id)nicknameForContact:(id)contact;
+- (id)sharedWallpaperForContact:(id)contact withNickname:(id)nickname;
+- (id)sharedWatchWallpaperImageDataForContact:(id)contact withNickname:(id)nickname;
+- (void)setValue:(id)value;
 @end
 
 @implementation CNContactStoreContactsFetchResultSharedAvatarDecorator
@@ -21,8 +21,8 @@
   decoratedValue = self->_decoratedValue;
   if (!decoratedValue)
   {
-    v4 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self value];
-    v5 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self decoratedContacts:v4];
+    value = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self value];
+    v5 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self decoratedContacts:value];
     v6 = self->_decoratedValue;
     self->_decoratedValue = v5;
 
@@ -40,9 +40,9 @@
   v3 = [objc_opt_class() log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self keysToFetch];
+    keysToFetch = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self keysToFetch];
     *buf = 134217984;
-    v31 = [v4 count];
+    v31 = [keysToFetch count];
     _os_log_impl(&dword_1954A0000, v3, OS_LOG_TYPE_DEFAULT, "Validating keys for %lu descriptors", buf, 0xCu);
   }
 
@@ -51,8 +51,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self keysToFetch];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  keysToFetch2 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self keysToFetch];
+  v7 = [keysToFetch2 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -63,17 +63,17 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keysToFetch2);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 _cn_requiredKeys];
-        v13 = [v11 _cn_optionalKeys];
-        [(CNMutableContactKeyVector *)v5 unionKeyVector:v12];
-        [(CNMutableContactKeyVector *)v5 unionKeyVector:v13];
+        _cn_requiredKeys = [v11 _cn_requiredKeys];
+        _cn_optionalKeys = [v11 _cn_optionalKeys];
+        [(CNMutableContactKeyVector *)v5 unionKeyVector:_cn_requiredKeys];
+        [(CNMutableContactKeyVector *)v5 unionKeyVector:_cn_optionalKeys];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [keysToFetch2 countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v8);
@@ -98,20 +98,20 @@
 
   if (v15)
   {
-    v17 = [objc_opt_class() descriptorForRequiredKeys];
-    v18 = [v17 _cn_requiredKeys];
+    descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+    _cn_requiredKeys2 = [descriptorForRequiredKeys _cn_requiredKeys];
 
     v19 = [objc_opt_class() log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v18;
+      v31 = _cn_requiredKeys2;
       _os_log_impl(&dword_1954A0000, v19, OS_LOG_TYPE_DEFAULT, "Original required keys: %@", buf, 0xCu);
     }
 
     v28 = @"wallpaper";
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
-    v21 = [v18 keyVectorByRemovingKeys:v20];
+    v21 = [_cn_requiredKeys2 keyVectorByRemovingKeys:v20];
 
     v22 = [v21 isSubsetOfKeyVector:v5];
   }
@@ -126,9 +126,9 @@
 
 + (BOOL)enableSharedPhoto
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:25];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:25];
 
   return v4;
 }
@@ -180,63 +180,63 @@ uint64_t __61__CNContactStoreContactsFetchResultSharedAvatarDecorator_log__block
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNContactStoreContactsFetchResultSharedAvatarDecorator)initWithContacts:(id)a3 keysToFetch:(id)a4 unifyContactsFromMainStore:(BOOL)a5
+- (CNContactStoreContactsFetchResultSharedAvatarDecorator)initWithContacts:(id)contacts keysToFetch:(id)fetch unifyContactsFromMainStore:(BOOL)store
 {
-  v8 = a3;
-  v9 = a4;
+  contactsCopy = contacts;
+  fetchCopy = fetch;
   v15.receiver = self;
   v15.super_class = CNContactStoreContactsFetchResultSharedAvatarDecorator;
   v10 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)&v15 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [contactsCopy copy];
     value = v10->_value;
     v10->_value = v11;
 
-    objc_storeStrong(&v10->_keysToFetch, a4);
-    v10->_unifyContactsFromMainStore = a5;
+    objc_storeStrong(&v10->_keysToFetch, fetch);
+    v10->_unifyContactsFromMainStore = store;
     v13 = v10;
   }
 
   return v10;
 }
 
-- (CNContactStoreContactsFetchResultSharedAvatarDecorator)initWithContactsFetchResult:(id)a3 keysToFetch:(id)a4 unifyContactsFromMainStore:(BOOL)a5
+- (CNContactStoreContactsFetchResultSharedAvatarDecorator)initWithContactsFetchResult:(id)result keysToFetch:(id)fetch unifyContactsFromMainStore:(BOOL)store
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a3 value];
-  v10 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self initWithContacts:v9 keysToFetch:v8 unifyContactsFromMainStore:v5];
+  storeCopy = store;
+  fetchCopy = fetch;
+  value = [result value];
+  v10 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self initWithContacts:value keysToFetch:fetchCopy unifyContactsFromMainStore:storeCopy];
 
   return v10;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   p_value = &self->_value;
-  if (self->_value != v5)
+  if (self->_value != valueCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_value, a3);
+    v8 = valueCopy;
+    objc_storeStrong(p_value, value);
     decoratedValue = self->_decoratedValue;
     self->_decoratedValue = 0;
 
-    v5 = v8;
+    valueCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_value, v5);
+  MEMORY[0x1EEE66BB8](p_value, valueCopy);
 }
 
-- (id)decoratedContacts:(id)a3
+- (id)decoratedContacts:(id)contacts
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = [objc_opt_class() log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = [v4 count];
+    v16 = [contactsCopy count];
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_DEFAULT, "decoratedContacts called with %lu contacts", buf, 0xCu);
   }
 
@@ -252,10 +252,10 @@ uint64_t __61__CNContactStoreContactsFetchResultSharedAvatarDecorator_log__block
     goto LABEL_14;
   }
 
-  v6 = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self doesKeysToFetchContainRequiredKeys];
+  doesKeysToFetchContainRequiredKeys = [(CNContactStoreContactsFetchResultSharedAvatarDecorator *)self doesKeysToFetchContainRequiredKeys];
   v7 = [objc_opt_class() log];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!doesKeysToFetchContainRequiredKeys)
   {
     if (v8)
     {
@@ -264,13 +264,13 @@ uint64_t __61__CNContactStoreContactsFetchResultSharedAvatarDecorator_log__block
     }
 
 LABEL_14:
-    v10 = v4;
+    v10 = contactsCopy;
     goto LABEL_15;
   }
 
   if (v8)
   {
-    v9 = [v4 count];
+    v9 = [contactsCopy count];
     *buf = 134217984;
     v16 = v9;
     _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_DEFAULT, "Processing %lu contacts for shared photo decoration", buf, 0xCu);
@@ -281,7 +281,7 @@ LABEL_14:
   v14[2] = __76__CNContactStoreContactsFetchResultSharedAvatarDecorator_decoratedContacts___block_invoke;
   v14[3] = &unk_1E7412EB0;
   v14[4] = self;
-  v10 = [v4 _cn_map:v14];
+  v10 = [contactsCopy _cn_map:v14];
 LABEL_15:
   v12 = v10;
 
@@ -403,14 +403,14 @@ id __76__CNContactStoreContactsFetchResultSharedAvatarDecorator_decoratedContact
   return v14;
 }
 
-- (id)sharedWallpaperForContact:(id)a3 withNickname:(id)a4
+- (id)sharedWallpaperForContact:(id)contact withNickname:(id)nickname
 {
-  v5 = a4;
-  if ([CNSharedProfileStateOracle contactIsInAutoUpdateState:a3])
+  nicknameCopy = nickname;
+  if ([CNSharedProfileStateOracle contactIsInAutoUpdateState:contact])
   {
-    v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v7 = [v6 nicknameProvider];
-    v8 = [v7 sharedWallpaperForNickname:v5];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    nicknameProvider = [currentEnvironment nicknameProvider];
+    v8 = [nicknameProvider sharedWallpaperForNickname:nicknameCopy];
   }
 
   else
@@ -421,14 +421,14 @@ id __76__CNContactStoreContactsFetchResultSharedAvatarDecorator_decoratedContact
   return v8;
 }
 
-- (id)sharedWatchWallpaperImageDataForContact:(id)a3 withNickname:(id)a4
+- (id)sharedWatchWallpaperImageDataForContact:(id)contact withNickname:(id)nickname
 {
-  v5 = a4;
-  if ([CNSharedProfileStateOracle contactIsInAutoUpdateState:a3])
+  nicknameCopy = nickname;
+  if ([CNSharedProfileStateOracle contactIsInAutoUpdateState:contact])
   {
-    v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v7 = [v6 nicknameProvider];
-    v8 = [v7 sharedWatchWallpaperImageDataForNickname:v5];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    nicknameProvider = [currentEnvironment nicknameProvider];
+    v8 = [nicknameProvider sharedWatchWallpaperImageDataForNickname:nicknameCopy];
   }
 
   else
@@ -439,25 +439,25 @@ id __76__CNContactStoreContactsFetchResultSharedAvatarDecorator_decoratedContact
   return v8;
 }
 
-+ (id)allNicknamesForContact:(id)a3
++ (id)allNicknamesForContact:(id)contact
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 log];
+  contactCopy = contact;
+  v5 = [self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [contactCopy identifier];
     v17 = 138412290;
-    v18 = v6;
+    v18 = identifier;
     _os_log_impl(&dword_1954A0000, v5, OS_LOG_TYPE_DEFAULT, "allNicknamesForContact called for %@", &v17, 0xCu);
   }
 
   objc_opt_class();
-  v7 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v8 = [v7 nicknameProvider];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  nicknameProvider = [currentEnvironment nicknameProvider];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = nicknameProvider;
   }
 
   else
@@ -467,18 +467,18 @@ id __76__CNContactStoreContactsFetchResultSharedAvatarDecorator_decoratedContact
 
   v10 = v9;
 
-  v11 = [a1 log];
+  v11 = [self log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v17) = 0;
     _os_log_impl(&dword_1954A0000, v11, OS_LOG_TYPE_DEFAULT, "Calling imNicknameProvider.allNicknamesForContact:contact", &v17, 2u);
   }
 
-  v12 = [v10 imNicknameProvider];
+  imNicknameProvider = [v10 imNicknameProvider];
 
-  v13 = [v12 allNicknamesForContact:v4];
+  v13 = [imNicknameProvider allNicknamesForContact:contactCopy];
 
-  v14 = [a1 log];
+  v14 = [self log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = [v13 count];
@@ -490,29 +490,29 @@ id __76__CNContactStoreContactsFetchResultSharedAvatarDecorator_decoratedContact
   return v13;
 }
 
-- (id)nicknameForContact:(id)a3
+- (id)nicknameForContact:(id)contact
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contactCopy = contact;
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 identifier];
+    identifier = [contactCopy identifier];
     *buf = 138412290;
-    *&buf[4] = v5;
+    *&buf[4] = identifier;
     _os_log_impl(&dword_1954A0000, v4, OS_LOG_TYPE_DEFAULT, "nicknameForContact called for %@", buf, 0xCu);
   }
 
-  v6 = [objc_opt_class() allNicknamesForContact:v3];
+  v6 = [objc_opt_class() allNicknamesForContact:contactCopy];
   v7 = [objc_opt_class() log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = [v6 count];
-    v9 = [v6 allKeys];
+    allKeys = [v6 allKeys];
     *buf = 134218242;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = allKeys;
     _os_log_impl(&dword_1954A0000, v7, OS_LOG_TYPE_DEFAULT, "Got %lu nicknames: %@", buf, 0x16u);
   }
 

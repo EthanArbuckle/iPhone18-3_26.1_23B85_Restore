@@ -1,31 +1,31 @@
 @interface WebProcessPlugInBrowserPageController
-- (WebProcessPlugInBrowserPageController)initWithPlugIn:(id)a3 contextController:(id)a4;
+- (WebProcessPlugInBrowserPageController)initWithPlugIn:(id)in contextController:(id)controller;
 - (id)_touchIconFetcherObserverProxy;
 - (void)_readPageLoadTestParameters;
 - (void)_setupPageLoadTestController;
 - (void)_setupTouchIconFetcherController;
 - (void)dealloc;
-- (void)enablePageMemoryMeasurementCollection:(id)a3;
+- (void)enablePageMemoryMeasurementCollection:(id)collection;
 - (void)fetchTouchIconURLs;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didCommitLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFailLoadWithErrorForFrame:(id)a4 error:(id)a5;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFailProvisionalLoadWithErrorForFrame:(id)a4 error:(id)a5;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 didStartProvisionalLoadForFrame:(id)a4;
-- (void)webProcessPlugInBrowserContextController:(id)a3 renderingProgressDidChange:(unint64_t)a4;
-- (void)willDestroyBrowserContextController:(id)a3;
+- (void)webProcessPlugInBrowserContextController:(id)controller didCommitLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFailLoadWithErrorForFrame:(id)frame error:(id)error;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFailProvisionalLoadWithErrorForFrame:(id)frame error:(id)error;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller didStartProvisionalLoadForFrame:(id)frame;
+- (void)webProcessPlugInBrowserContextController:(id)controller renderingProgressDidChange:(unint64_t)change;
+- (void)willDestroyBrowserContextController:(id)controller;
 @end
 
 @implementation WebProcessPlugInBrowserPageController
 
-- (WebProcessPlugInBrowserPageController)initWithPlugIn:(id)a3 contextController:(id)a4
+- (WebProcessPlugInBrowserPageController)initWithPlugIn:(id)in contextController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  inCopy = in;
+  controllerCopy = controller;
   v27.receiver = self;
   v27.super_class = WebProcessPlugInBrowserPageController;
-  v8 = [(_SFWebProcessPlugInReaderEnabledPageController *)&v27 initWithPlugIn:v6 contextController:v7];
+  v8 = [(_SFWebProcessPlugInReaderEnabledPageController *)&v27 initWithPlugIn:inCopy contextController:controllerCopy];
   v12 = v8;
   if (v8)
   {
@@ -52,10 +52,10 @@
   [(WebProcessPlugInBrowserPageController *)&v8 dealloc];
 }
 
-- (void)willDestroyBrowserContextController:(id)a3
+- (void)willDestroyBrowserContextController:(id)controller
 {
-  v4 = a3;
-  v8 = objc_msgSend__remoteObjectRegistry(v4, v5, v6, v7);
+  controllerCopy = controller;
+  v8 = objc_msgSend__remoteObjectRegistry(controllerCopy, v5, v6, v7);
   objc_msgSend_unregisterExportedObject_interface_(v8, v9, self, self->_pageLoadTestControllerInterface);
   pageLoadTestControllerInterface = self->_pageLoadTestControllerInterface;
   self->_pageLoadTestControllerInterface = 0;
@@ -66,7 +66,7 @@
 
   v13.receiver = self;
   v13.super_class = WebProcessPlugInBrowserPageController;
-  [(_SFWebProcessPlugInReaderEnabledPageController *)&v13 willDestroyBrowserContextController:v4];
+  [(_SFWebProcessPlugInReaderEnabledPageController *)&v13 willDestroyBrowserContextController:controllerCopy];
 }
 
 - (void)_setupTouchIconFetcherController
@@ -125,12 +125,12 @@
   return v4;
 }
 
-- (void)enablePageMemoryMeasurementCollection:(id)a3
+- (void)enablePageMemoryMeasurementCollection:(id)collection
 {
-  v12 = a3;
+  collectionCopy = collection;
   v4 = [PageMemoryMeasurementController alloc];
   v8 = objc_msgSend_browserContextController(self, v5, v6, v7);
-  v10 = objc_msgSend_initWithPluginPageContextController_pagesNeedingMemoryWarningSent_(v4, v9, v8, v12);
+  v10 = objc_msgSend_initWithPluginPageContextController_pagesNeedingMemoryWarningSent_(v4, v9, v8, collectionCopy);
   pageLoadTestMeasurementController = self->_pageLoadTestMeasurementController;
   self->_pageLoadTestMeasurementController = v10;
 }
@@ -183,88 +183,88 @@
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didStartProvisionalLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didStartProvisionalLoadForFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  frameCopy = frame;
   v17.receiver = self;
   v17.super_class = WebProcessPlugInBrowserPageController;
-  [(_SFWebProcessPlugInReaderEnabledPageController *)&v17 webProcessPlugInBrowserContextController:v6 didStartProvisionalLoadForFrame:v7];
-  v11 = objc_msgSend_mainFrame(v6, v8, v9, v10);
+  [(_SFWebProcessPlugInReaderEnabledPageController *)&v17 webProcessPlugInBrowserContextController:controllerCopy didStartProvisionalLoadForFrame:frameCopy];
+  v11 = objc_msgSend_mainFrame(controllerCopy, v8, v9, v10);
 
-  if (v11 == v7)
+  if (v11 == frameCopy)
   {
-    objc_msgSend__logPageLoadStarted_(self, v12, v7, v13);
+    objc_msgSend__logPageLoadStarted_(self, v12, frameCopy, v13);
     if (!self->_haveCheckedIfPageLoadTestIsEnabled)
     {
       objc_msgSend__readPageLoadTestParameters(self, v14, v15, v16);
     }
 
     self->_haveCheckedIfPageLoadTestIsEnabled = 1;
-    objc_msgSend_webProcessPlugInBrowserContextController_didStartProvisionalLoadForFrame_(self->_pageLoadTestMeasurementController, v14, v6, v7);
+    objc_msgSend_webProcessPlugInBrowserContextController_didStartProvisionalLoadForFrame_(self->_pageLoadTestMeasurementController, v14, controllerCopy, frameCopy);
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didCommitLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didCommitLoadForFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  frameCopy = frame;
   v9.receiver = self;
   v9.super_class = WebProcessPlugInBrowserPageController;
-  [(_SFWebProcessPlugInReaderEnabledPageController *)&v9 webProcessPlugInBrowserContextController:v6 didCommitLoadForFrame:v7];
-  objc_msgSend_webProcessPlugInBrowserContextController_didCommitLoadForFrame_(self->_pageLoadTestMeasurementController, v8, v6, v7);
+  [(_SFWebProcessPlugInReaderEnabledPageController *)&v9 webProcessPlugInBrowserContextController:controllerCopy didCommitLoadForFrame:frameCopy];
+  objc_msgSend_webProcessPlugInBrowserContextController_didCommitLoadForFrame_(self->_pageLoadTestMeasurementController, v8, controllerCopy, frameCopy);
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishDocumentLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishDocumentLoadForFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  frameCopy = frame;
   v9.receiver = self;
   v9.super_class = WebProcessPlugInBrowserPageController;
-  [(_SFWebProcessPlugInReaderEnabledPageController *)&v9 webProcessPlugInBrowserContextController:v6 didFinishDocumentLoadForFrame:v7];
-  objc_msgSend_webProcessPlugInBrowserContextController_didFinishDocumentLoadForFrame_(self->_pageLoadTestMeasurementController, v8, v6, v7);
+  [(_SFWebProcessPlugInReaderEnabledPageController *)&v9 webProcessPlugInBrowserContextController:controllerCopy didFinishDocumentLoadForFrame:frameCopy];
+  objc_msgSend_webProcessPlugInBrowserContextController_didFinishDocumentLoadForFrame_(self->_pageLoadTestMeasurementController, v8, controllerCopy, frameCopy);
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFinishLoadForFrame:(id)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller didFinishLoadForFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  frameCopy = frame;
   v14.receiver = self;
   v14.super_class = WebProcessPlugInBrowserPageController;
-  [(_SFWebProcessPlugInReaderEnabledPageController *)&v14 webProcessPlugInBrowserContextController:v6 didFinishLoadForFrame:v7];
-  v11 = objc_msgSend_mainFrame(v6, v8, v9, v10);
+  [(_SFWebProcessPlugInReaderEnabledPageController *)&v14 webProcessPlugInBrowserContextController:controllerCopy didFinishLoadForFrame:frameCopy];
+  v11 = objc_msgSend_mainFrame(controllerCopy, v8, v9, v10);
 
-  if (v11 == v7)
+  if (v11 == frameCopy)
   {
-    objc_msgSend__logPageLoadCompleted_withErrorCode_(self, v12, v7, 0);
-    objc_msgSend_webProcessPlugInBrowserContextController_didFinishLoadForFrame_(self->_pageLoadTestMeasurementController, v13, v6, v7);
+    objc_msgSend__logPageLoadCompleted_withErrorCode_(self, v12, frameCopy, 0);
+    objc_msgSend_webProcessPlugInBrowserContextController_didFinishLoadForFrame_(self->_pageLoadTestMeasurementController, v13, controllerCopy, frameCopy);
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 renderingProgressDidChange:(unint64_t)a4
+- (void)webProcessPlugInBrowserContextController:(id)controller renderingProgressDidChange:(unint64_t)change
 {
-  v6 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = WebProcessPlugInBrowserPageController;
-  [(_SFWebProcessPlugInReaderEnabledPageController *)&v8 webProcessPlugInBrowserContextController:v6 renderingProgressDidChange:a4];
-  objc_msgSend_webProcessPlugInBrowserContextController_renderingProgressDidChange_(self->_pageLoadTestMeasurementController, v7, v6, a4);
+  [(_SFWebProcessPlugInReaderEnabledPageController *)&v8 webProcessPlugInBrowserContextController:controllerCopy renderingProgressDidChange:change];
+  objc_msgSend_webProcessPlugInBrowserContextController_renderingProgressDidChange_(self->_pageLoadTestMeasurementController, v7, controllerCopy, change);
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFailProvisionalLoadWithErrorForFrame:(id)a4 error:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller didFailProvisionalLoadWithErrorForFrame:(id)frame error:(id)error
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
-  v13 = objc_msgSend_mainFrame(v24, v10, v11, v12);
+  controllerCopy = controller;
+  frameCopy = frame;
+  errorCopy = error;
+  v13 = objc_msgSend_mainFrame(controllerCopy, v10, v11, v12);
   v17 = v13;
-  if (v13 == v8)
+  if (v13 == frameCopy)
   {
-    v18 = objc_msgSend_code(v9, v14, v15, v16);
+    v18 = objc_msgSend_code(errorCopy, v14, v15, v16);
 
     if (v18 != -999)
     {
-      v22 = objc_msgSend_code(v9, v19, v20, v21);
-      objc_msgSend__logPageLoadCompleted_withErrorCode_(self, v23, v8, v22);
+      v22 = objc_msgSend_code(errorCopy, v19, v20, v21);
+      objc_msgSend__logPageLoadCompleted_withErrorCode_(self, v23, frameCopy, v22);
     }
   }
 
@@ -273,21 +273,21 @@
   }
 }
 
-- (void)webProcessPlugInBrowserContextController:(id)a3 didFailLoadWithErrorForFrame:(id)a4 error:(id)a5
+- (void)webProcessPlugInBrowserContextController:(id)controller didFailLoadWithErrorForFrame:(id)frame error:(id)error
 {
-  v24 = a3;
-  v8 = a4;
-  v9 = a5;
-  v13 = objc_msgSend_mainFrame(v24, v10, v11, v12);
+  controllerCopy = controller;
+  frameCopy = frame;
+  errorCopy = error;
+  v13 = objc_msgSend_mainFrame(controllerCopy, v10, v11, v12);
   v17 = v13;
-  if (v13 == v8)
+  if (v13 == frameCopy)
   {
-    v19 = objc_msgSend_code(v9, v14, v15, v16);
+    v19 = objc_msgSend_code(errorCopy, v14, v15, v16);
 
     if (v19 != -999)
     {
-      v22 = objc_msgSend_code(v9, v18, v20, v21);
-      objc_msgSend__logPageLoadCompleted_withErrorCode_(self, v23, v8, v22);
+      v22 = objc_msgSend_code(errorCopy, v18, v20, v21);
+      objc_msgSend__logPageLoadCompleted_withErrorCode_(self, v23, frameCopy, v22);
     }
   }
 
@@ -295,7 +295,7 @@
   {
   }
 
-  objc_msgSend_webProcessPlugInBrowserContextController_didFailLoadWithErrorForFrame_error_(self->_pageLoadTestMeasurementController, v18, v24, v8, v9);
+  objc_msgSend_webProcessPlugInBrowserContextController_didFailLoadWithErrorForFrame_error_(self->_pageLoadTestMeasurementController, v18, controllerCopy, frameCopy, errorCopy);
 }
 
 @end

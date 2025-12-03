@@ -1,22 +1,22 @@
 @interface SBRemoveWidgetAlertItem
 - (SBHIconManager)iconManager;
-- (SBRemoveWidgetAlertItem)initWithWidget:(id)a3 inIcon:(id)a4 location:(id)a5 iconManager:(id)a6;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBRemoveWidgetAlertItem)initWithWidget:(id)widget inIcon:(id)icon location:(id)location iconManager:(id)manager;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 - (void)didActivate;
 @end
 
 @implementation SBRemoveWidgetAlertItem
 
-- (SBRemoveWidgetAlertItem)initWithWidget:(id)a3 inIcon:(id)a4 location:(id)a5 iconManager:(id)a6
+- (SBRemoveWidgetAlertItem)initWithWidget:(id)widget inIcon:(id)icon location:(id)location iconManager:(id)manager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v15;
-  if (v13)
+  widgetCopy = widget;
+  iconCopy = icon;
+  locationCopy = location;
+  managerCopy = manager;
+  v16 = managerCopy;
+  if (iconCopy)
   {
-    if (v15)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -33,9 +33,9 @@
 
   [SBRemoveWidgetAlertItem initWithWidget:a2 inIcon:self location:? iconManager:?];
 LABEL_3:
-  if (([v13 isWidgetIcon] & 1) == 0)
+  if (([iconCopy isWidgetIcon] & 1) == 0)
   {
-    [SBRemoveWidgetAlertItem initWithWidget:a2 inIcon:self location:v13 iconManager:?];
+    [SBRemoveWidgetAlertItem initWithWidget:a2 inIcon:self location:iconCopy iconManager:?];
   }
 
   v20.receiver = self;
@@ -44,9 +44,9 @@ LABEL_3:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_widget, a3);
-    objc_storeStrong(&v18->_icon, a4);
-    objc_storeStrong(&v18->_iconLocation, a5);
+    objc_storeStrong(&v17->_widget, widget);
+    objc_storeStrong(&v18->_icon, icon);
+    objc_storeStrong(&v18->_iconLocation, location);
     objc_storeWeak(&v18->_iconManager, v16);
   }
 
@@ -68,13 +68,13 @@ LABEL_3:
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v6 = MEMORY[0x277D65DD0];
   v7 = v5;
-  v8 = [v6 sharedInstance];
-  [v8 emitEvent:18 withPayload:v7];
+  sharedInstance = [v6 sharedInstance];
+  [sharedInstance emitEvent:18 withPayload:v7];
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
+  v5 = [(SBAlertItem *)self alertController:configure];
   widget = self->_widget;
   if (widget)
   {
@@ -97,15 +97,15 @@ LABEL_3:
   if (widget)
   {
 LABEL_2:
-    v7 = [(SBLeafIconDataSource *)widget icon:self->_icon displayNameForLocation:*MEMORY[0x277D666C8]];
+    displayName = [(SBLeafIconDataSource *)widget icon:self->_icon displayNameForLocation:*MEMORY[0x277D666C8]];
   }
 
   else
   {
-    v7 = [(SBWidgetIcon *)self->_icon displayName];
+    displayName = [(SBWidgetIcon *)self->_icon displayName];
   }
 
-  v8 = v7;
+  v8 = displayName;
   v9 = MEMORY[0x277CCACA8];
   v10 = SBHBundle();
   v11 = [v10 localizedStringForKey:@"REMOVE_WIDGET_TITLE_REMOVE_WITH_NAME" value:&stru_283094718 table:@"SpringBoardHome"];
@@ -128,13 +128,13 @@ LABEL_4:
   v17 = [MEMORY[0x277D750F8] actionWithTitle:v16 style:2 handler:v24];
   [v5 addAction:v17];
   v18 = MEMORY[0x277D750F8];
-  v19 = [(SBWidgetIcon *)self->_icon uninstallAlertCancelTitle];
+  uninstallAlertCancelTitle = [(SBWidgetIcon *)self->_icon uninstallAlertCancelTitle];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __63__SBRemoveWidgetAlertItem_configure_requirePasscodeForActions___block_invoke_46;
   v23[3] = &unk_2783A8A40;
   v23[4] = self;
-  v20 = [v18 actionWithTitle:v19 style:1 handler:v23];
+  v20 = [v18 actionWithTitle:uninstallAlertCancelTitle style:1 handler:v23];
   [v5 addAction:v20];
 
   [v5 setPreferredAction:v17];

@@ -1,5 +1,5 @@
 @interface PGMemoryTriggerResult
-- (PGMemoryTriggerResult)initWithMemoryNode:(id)a3 validityInterval:(id)a4;
+- (PGMemoryTriggerResult)initWithMemoryNode:(id)node validityInterval:(id)interval;
 - (id)description;
 @end
 
@@ -16,18 +16,18 @@
   return v5;
 }
 
-- (PGMemoryTriggerResult)initWithMemoryNode:(id)a3 validityInterval:(id)a4
+- (PGMemoryTriggerResult)initWithMemoryNode:(id)node validityInterval:(id)interval
 {
-  v7 = a3;
-  v8 = a4;
+  nodeCopy = node;
+  intervalCopy = interval;
   v12.receiver = self;
   v12.super_class = PGMemoryTriggerResult;
   v9 = [(PGMemoryTriggerResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_memoryNode, a3);
-    objc_storeStrong(&v10->_validityInterval, a4);
+    objc_storeStrong(&v9->_memoryNode, node);
+    objc_storeStrong(&v10->_validityInterval, interval);
   }
 
   return v10;

@@ -1,15 +1,15 @@
 @interface _EXNSExtensionShim
 - (BOOL)optedIn;
-- (_EXNSExtensionShim)initWithIdentity:(id)a3;
-- (_EXNSExtensionShim)initWithIdentity:(id)a3 implementation:(id)a4;
+- (_EXNSExtensionShim)initWithIdentity:(id)identity;
+- (_EXNSExtensionShim)initWithIdentity:(id)identity implementation:(id)implementation;
 - (_EXNSExtensionShimImplementation)implementation;
-- (id)_beginExtensionRequest:(id)a3 error:(id *)a4;
+- (id)_beginExtensionRequest:(id)request error:(id *)error;
 - (id)_init;
 - (id)attributes;
-- (id)beginExtensionRequest:(id)a3 error:(id *)a4;
-- (id)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 error:(id *)a5;
-- (id)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 listenerEndpoint:(id)a5 error:(id *)a6;
-- (id)beginRequest:(id)a3 error:(id *)a4;
+- (id)beginExtensionRequest:(id)request error:(id *)error;
+- (id)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items error:(id *)error;
+- (id)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items listenerEndpoint:(id)endpoint error:(id *)error;
+- (id)beginRequest:(id)request error:(id *)error;
 - (id)extensionPointIdentifier;
 - (id)identifier;
 - (id)makeDefaultImplementation;
@@ -17,15 +17,15 @@
 - (id)requestCompletionBlock;
 - (id)requestInterruptionBlock;
 - (id)version;
-- (void)_beginExtensionRequest:(id)a3 completion:(id)a4;
-- (void)beginExtensionRequest:(id)a3 completion:(id)a4;
-- (void)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 completion:(id)a5;
-- (void)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 listenerEndpoint:(id)a5 completion:(id)a6;
-- (void)beginRequest:(id)a3 completion:(id)a4;
-- (void)cancelExtensionRequestWithIdentifier:(id)a3;
-- (void)setRequestCancellationBlock:(id)a3;
-- (void)setRequestCompletionBlock:(id)a3;
-- (void)setRequestInterruptionBlock:(id)a3;
+- (void)_beginExtensionRequest:(id)request completion:(id)completion;
+- (void)beginExtensionRequest:(id)request completion:(id)completion;
+- (void)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items completion:(id)completion;
+- (void)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items listenerEndpoint:(id)endpoint completion:(id)completion;
+- (void)beginRequest:(id)request completion:(id)completion;
+- (void)cancelExtensionRequestWithIdentifier:(id)identifier;
+- (void)setRequestCancellationBlock:(id)block;
+- (void)setRequestCompletionBlock:(id)block;
+- (void)setRequestInterruptionBlock:(id)block;
 @end
 
 @implementation _EXNSExtensionShim
@@ -43,35 +43,35 @@
   return result;
 }
 
-- (_EXNSExtensionShim)initWithIdentity:(id)a3
+- (_EXNSExtensionShim)initWithIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v9.receiver = self;
   v9.super_class = _EXNSExtensionShim;
-  v6 = [(_EXNSExtensionShim *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(_EXNSExtensionShim *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    v6->_requestBlockLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_identity, a3);
+    _init->_requestBlockLock._os_unfair_lock_opaque = 0;
+    objc_storeStrong(&_init->_identity, identity);
   }
 
   return v7;
 }
 
-- (_EXNSExtensionShim)initWithIdentity:(id)a3 implementation:(id)a4
+- (_EXNSExtensionShim)initWithIdentity:(id)identity implementation:(id)implementation
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  implementationCopy = implementation;
   v12.receiver = self;
   v12.super_class = _EXNSExtensionShim;
-  v9 = [(_EXNSExtensionShim *)&v12 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(_EXNSExtensionShim *)&v12 _init];
+  v10 = _init;
+  if (_init)
   {
-    v9->_requestBlockLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_identity, a3);
-    objc_storeStrong(&v10->_implementation, a4);
+    _init->_requestBlockLock._os_unfair_lock_opaque = 0;
+    objc_storeStrong(&_init->_identity, identity);
+    objc_storeStrong(&v10->_implementation, implementation);
   }
 
   return v10;
@@ -82,9 +82,9 @@
   implementation = self->_implementation;
   if (!implementation)
   {
-    v4 = [(_EXNSExtensionShim *)self makeDefaultImplementation];
+    makeDefaultImplementation = [(_EXNSExtensionShim *)self makeDefaultImplementation];
     v5 = self->_implementation;
-    self->_implementation = v4;
+    self->_implementation = makeDefaultImplementation;
 
     implementation = self->_implementation;
   }
@@ -94,55 +94,55 @@
 
 - (id)identifier
 {
-  v2 = [(_EXNSExtensionShim *)self identity];
-  v3 = [v2 bundleIdentifier];
+  identity = [(_EXNSExtensionShim *)self identity];
+  bundleIdentifier = [identity bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)version
 {
-  v3 = [(_EXNSExtensionShim *)self attributes];
-  v4 = [v3 _EX_stringForKey:@"NSExtensionVersion"];
+  attributes = [(_EXNSExtensionShim *)self attributes];
+  bundleVersion = [attributes _EX_stringForKey:@"NSExtensionVersion"];
 
-  if (!v4)
+  if (!bundleVersion)
   {
-    v5 = [(_EXNSExtensionShim *)self identity];
-    v4 = [v5 bundleVersion];
+    identity = [(_EXNSExtensionShim *)self identity];
+    bundleVersion = [identity bundleVersion];
   }
 
-  return v4;
+  return bundleVersion;
 }
 
 - (id)attributes
 {
-  v2 = [(_EXNSExtensionShim *)self identity];
-  v3 = [v2 nsExtensionAttributes];
+  identity = [(_EXNSExtensionShim *)self identity];
+  nsExtensionAttributes = [identity nsExtensionAttributes];
 
-  return v3;
+  return nsExtensionAttributes;
 }
 
 - (id)extensionPointIdentifier
 {
-  v2 = [(_EXNSExtensionShim *)self identity];
-  v3 = [v2 extensionPointIdentifier];
+  identity = [(_EXNSExtensionShim *)self identity];
+  extensionPointIdentifier = [identity extensionPointIdentifier];
 
-  return v3;
+  return extensionPointIdentifier;
 }
 
 - (BOOL)optedIn
 {
-  v2 = [(_EXNSExtensionShim *)self identity];
-  v3 = [v2 enabled];
+  identity = [(_EXNSExtensionShim *)self identity];
+  enabled = [identity enabled];
 
-  return v3;
+  return enabled;
 }
 
-- (void)setRequestCompletionBlock:(id)a3
+- (void)setRequestCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_requestBlockLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   requestCompletionBlock = self->_requestCompletionBlock;
   self->_requestCompletionBlock = v5;
@@ -160,11 +160,11 @@
   return v4;
 }
 
-- (void)setRequestCancellationBlock:(id)a3
+- (void)setRequestCancellationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_requestBlockLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   requestCancellationBlock = self->_requestCancellationBlock;
   self->_requestCancellationBlock = v5;
@@ -182,11 +182,11 @@
   return v4;
 }
 
-- (void)setRequestInterruptionBlock:(id)a3
+- (void)setRequestInterruptionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_requestBlockLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   requestInterruptionBlock = self->_requestInterruptionBlock;
   self->_requestInterruptionBlock = v5;
@@ -204,135 +204,135 @@
   return v4;
 }
 
-- (void)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 completion:(id)a5
+- (void)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  itemsCopy = items;
   v10 = objc_opt_new();
-  [v10 setOptions:a3];
-  [v10 setInputItems:v9];
+  [v10 setOptions:options];
+  [v10 setInputItems:itemsCopy];
 
-  [(_EXNSExtensionShim *)self _beginExtensionRequest:v10 completion:v8];
+  [(_EXNSExtensionShim *)self _beginExtensionRequest:v10 completion:completionCopy];
 }
 
-- (id)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 error:(id *)a5
+- (id)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items error:(id *)error
 {
-  v8 = a4;
+  itemsCopy = items;
   v9 = objc_opt_new();
-  [v9 setOptions:a3];
-  [v9 setInputItems:v8];
+  [v9 setOptions:options];
+  [v9 setInputItems:itemsCopy];
 
-  v10 = [(_EXNSExtensionShim *)self _beginExtensionRequest:v9 error:a5];
+  v10 = [(_EXNSExtensionShim *)self _beginExtensionRequest:v9 error:error];
 
   return v10;
 }
 
-- (void)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 listenerEndpoint:(id)a5 completion:(id)a6
+- (void)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items listenerEndpoint:(id)endpoint completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  completionCopy = completion;
+  endpointCopy = endpoint;
+  itemsCopy = items;
   v13 = objc_opt_new();
-  [v13 setOptions:a3];
-  [v13 setInputItems:v12];
+  [v13 setOptions:options];
+  [v13 setInputItems:itemsCopy];
 
-  [v13 setEndpoint:v11];
-  [(_EXNSExtensionShim *)self _beginExtensionRequest:v13 completion:v10];
+  [v13 setEndpoint:endpointCopy];
+  [(_EXNSExtensionShim *)self _beginExtensionRequest:v13 completion:completionCopy];
 }
 
-- (id)beginExtensionRequestWithOptions:(unint64_t)a3 inputItems:(id)a4 listenerEndpoint:(id)a5 error:(id *)a6
+- (id)beginExtensionRequestWithOptions:(unint64_t)options inputItems:(id)items listenerEndpoint:(id)endpoint error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
+  endpointCopy = endpoint;
+  itemsCopy = items;
   v12 = objc_opt_new();
-  [v12 setOptions:a3];
-  [v12 setInputItems:v11];
+  [v12 setOptions:options];
+  [v12 setInputItems:itemsCopy];
 
-  [v12 setEndpoint:v10];
-  v13 = [(_EXNSExtensionShim *)self _beginExtensionRequest:v12 error:a6];
+  [v12 setEndpoint:endpointCopy];
+  v13 = [(_EXNSExtensionShim *)self _beginExtensionRequest:v12 error:error];
 
   return v13;
 }
 
-- (void)beginExtensionRequest:(id)a3 completion:(id)a4
+- (void)beginExtensionRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_EXNSExtensionShim *)self implementation];
+  completionCopy = completion;
+  requestCopy = request;
+  implementation = [(_EXNSExtensionShim *)self implementation];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55___EXNSExtensionShim_beginExtensionRequest_completion___block_invoke;
   v10[3] = &unk_1E6E4E628;
-  v11 = v6;
-  v9 = v6;
-  [v8 beginExtensionRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [implementation beginExtensionRequest:requestCopy completion:v10];
 }
 
-- (id)beginExtensionRequest:(id)a3 error:(id *)a4
+- (id)beginExtensionRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_EXNSExtensionShim *)self implementation];
-  v8 = [v7 beginExtensionRequest:v6 error:a4];
+  requestCopy = request;
+  implementation = [(_EXNSExtensionShim *)self implementation];
+  v8 = [implementation beginExtensionRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (void)_beginExtensionRequest:(id)a3 completion:(id)a4
+- (void)_beginExtensionRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_EXNSExtensionShim *)self implementation];
+  completionCopy = completion;
+  requestCopy = request;
+  implementation = [(_EXNSExtensionShim *)self implementation];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56___EXNSExtensionShim__beginExtensionRequest_completion___block_invoke;
   v10[3] = &unk_1E6E4E628;
-  v11 = v6;
-  v9 = v6;
-  [v8 beginExtensionRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [implementation beginExtensionRequest:requestCopy completion:v10];
 }
 
-- (id)_beginExtensionRequest:(id)a3 error:(id *)a4
+- (id)_beginExtensionRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_EXNSExtensionShim *)self implementation];
-  v8 = [v7 beginExtensionRequest:v6 error:a4];
+  requestCopy = request;
+  implementation = [(_EXNSExtensionShim *)self implementation];
+  v8 = [implementation beginExtensionRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (id)beginRequest:(id)a3 error:(id *)a4
+- (id)beginRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_EXNSExtensionShim *)self implementation];
-  v8 = [v7 beginExtensionRequest:v6 error:a4];
+  requestCopy = request;
+  implementation = [(_EXNSExtensionShim *)self implementation];
+  v8 = [implementation beginExtensionRequest:requestCopy error:error];
 
   return v8;
 }
 
-- (void)beginRequest:(id)a3 completion:(id)a4
+- (void)beginRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_EXNSExtensionShim *)self implementation];
+  completionCopy = completion;
+  requestCopy = request;
+  implementation = [(_EXNSExtensionShim *)self implementation];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46___EXNSExtensionShim_beginRequest_completion___block_invoke;
   v10[3] = &unk_1E6E4E628;
-  v11 = v6;
-  v9 = v6;
-  [v8 beginExtensionRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [implementation beginExtensionRequest:requestCopy completion:v10];
 }
 
-- (void)cancelExtensionRequestWithIdentifier:(id)a3
+- (void)cancelExtensionRequestWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_EXNSExtensionShim *)self implementation];
-  [v5 cancelExtensionRequestWithIdentifier:v4];
+  identifierCopy = identifier;
+  implementation = [(_EXNSExtensionShim *)self implementation];
+  [implementation cancelExtensionRequestWithIdentifier:identifierCopy];
 }
 
 - (id)makeDefaultImplementation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = _EXNSExtensionShim.makeDefaultImplementation()();
 
   return v3;

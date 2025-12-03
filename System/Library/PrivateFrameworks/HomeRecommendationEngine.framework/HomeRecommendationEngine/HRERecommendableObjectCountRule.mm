@@ -1,19 +1,19 @@
 @interface HRERecommendableObjectCountRule
-+ (id)ruleWithAccessoryType:(id)a3 allowedCount:(_NSRange)a4;
-- (BOOL)passesWithHomeObjects:(id)a3;
-- (HRERecommendableObjectCountRule)initWithAccessoryType:(id)a3 allowedCount:(_NSRange)a4;
++ (id)ruleWithAccessoryType:(id)type allowedCount:(_NSRange)count;
+- (BOOL)passesWithHomeObjects:(id)objects;
+- (HRERecommendableObjectCountRule)initWithAccessoryType:(id)type allowedCount:(_NSRange)count;
 - (_NSRange)allowedCount;
 @end
 
 @implementation HRERecommendableObjectCountRule
 
-- (HRERecommendableObjectCountRule)initWithAccessoryType:(id)a3 allowedCount:(_NSRange)a4
+- (HRERecommendableObjectCountRule)initWithAccessoryType:(id)type allowedCount:(_NSRange)count
 {
-  length = a4.length;
-  location = a4.location;
+  length = count.length;
+  location = count.location;
   v7.receiver = self;
   v7.super_class = HRERecommendableObjectCountRule;
-  result = [(HRERecommendableObjectTypeRule *)&v7 initWithRequiredType:a3];
+  result = [(HRERecommendableObjectTypeRule *)&v7 initWithRequiredType:type];
   if (result)
   {
     result->_allowedCount.location = location;
@@ -23,25 +23,25 @@
   return result;
 }
 
-+ (id)ruleWithAccessoryType:(id)a3 allowedCount:(_NSRange)a4
++ (id)ruleWithAccessoryType:(id)type allowedCount:(_NSRange)count
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  v7 = [[HRERecommendableObjectCountRule alloc] initWithAccessoryType:v6 allowedCount:location, length];
+  length = count.length;
+  location = count.location;
+  typeCopy = type;
+  v7 = [[HRERecommendableObjectCountRule alloc] initWithAccessoryType:typeCopy allowedCount:location, length];
 
   return v7;
 }
 
-- (BOOL)passesWithHomeObjects:(id)a3
+- (BOOL)passesWithHomeObjects:(id)objects
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectsCopy = objects;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v5 = [objectsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -53,17 +53,17 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectsCopy);
         }
 
-        v10 = [*(*(&v19 + 1) + 8 * i) hre_matchingTypes];
-        v11 = [(HRERecommendableObjectTypeRule *)self requiredType];
-        v12 = [v10 containsObject:v11];
+        hre_matchingTypes = [*(*(&v19 + 1) + 8 * i) hre_matchingTypes];
+        requiredType = [(HRERecommendableObjectTypeRule *)self requiredType];
+        v12 = [hre_matchingTypes containsObject:requiredType];
 
         v7 += v12;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [objectsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -74,8 +74,8 @@
     v7 = 0;
   }
 
-  v13 = [(HRERecommendableObjectCountRule *)self allowedCount];
-  v16 = v7 >= v13 && v7 - v13 < v14;
+  allowedCount = [(HRERecommendableObjectCountRule *)self allowedCount];
+  v16 = v7 >= allowedCount && v7 - allowedCount < v14;
 
   v17 = *MEMORY[0x277D85DE8];
   return v16;

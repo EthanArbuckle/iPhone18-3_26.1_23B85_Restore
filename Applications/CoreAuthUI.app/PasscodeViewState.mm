@@ -1,32 +1,32 @@
 @interface PasscodeViewState
-+ (id)activeStateWithTitle:(id)a3 subtitle:(id)a4 accessoryView:(id)a5;
-+ (id)backOffStateWithTitle:(id)a3 subtitle:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (PasscodeViewState)initWithRawValue:(int64_t)a3 title:(id)a4 subtitle:(id)a5 accessoryView:(id)a6 style:(id)a7;
-- (id)withStyle:(id)a3;
++ (id)activeStateWithTitle:(id)title subtitle:(id)subtitle accessoryView:(id)view;
++ (id)backOffStateWithTitle:(id)title subtitle:(id)subtitle;
+- (BOOL)isEqual:(id)equal;
+- (PasscodeViewState)initWithRawValue:(int64_t)value title:(id)title subtitle:(id)subtitle accessoryView:(id)view style:(id)style;
+- (id)withStyle:(id)style;
 @end
 
 @implementation PasscodeViewState
 
-- (PasscodeViewState)initWithRawValue:(int64_t)a3 title:(id)a4 subtitle:(id)a5 accessoryView:(id)a6 style:(id)a7
+- (PasscodeViewState)initWithRawValue:(int64_t)value title:(id)title subtitle:(id)subtitle accessoryView:(id)view style:(id)style
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  viewCopy = view;
+  styleCopy = style;
   v22.receiver = self;
   v22.super_class = PasscodeViewState;
   v17 = [(PasscodeViewState *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    v17->_rawValue = a3;
-    objc_storeStrong(&v17->_title, a4);
-    objc_storeStrong(&v18->_subtitle, a5);
-    objc_storeStrong(&v18->_accessoryView, a6);
-    if (v16)
+    v17->_rawValue = value;
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v18->_subtitle, subtitle);
+    objc_storeStrong(&v18->_accessoryView, view);
+    if (styleCopy)
     {
-      v19 = v16;
+      v19 = styleCopy;
     }
 
     else
@@ -41,77 +41,77 @@
   return v18;
 }
 
-+ (id)activeStateWithTitle:(id)a3 subtitle:(id)a4 accessoryView:(id)a5
++ (id)activeStateWithTitle:(id)title subtitle:(id)subtitle accessoryView:(id)view
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PasscodeViewState alloc] initWithRawValue:0 title:v9 subtitle:v8 accessoryView:v7 style:0];
+  viewCopy = view;
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v10 = [[PasscodeViewState alloc] initWithRawValue:0 title:titleCopy subtitle:subtitleCopy accessoryView:viewCopy style:0];
 
   return v10;
 }
 
-+ (id)backOffStateWithTitle:(id)a3 subtitle:(id)a4
++ (id)backOffStateWithTitle:(id)title subtitle:(id)subtitle
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PasscodeViewState alloc] initWithRawValue:1 title:v6 subtitle:v5 accessoryView:0 style:0];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  v7 = [[PasscodeViewState alloc] initWithRawValue:1 title:titleCopy subtitle:subtitleCopy accessoryView:0 style:0];
 
   return v7;
 }
 
-- (id)withStyle:(id)a3
+- (id)withStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = [PasscodeViewState alloc];
-  v6 = [(PasscodeViewState *)self rawValue];
-  v7 = [(PasscodeViewState *)self title];
-  v8 = [(PasscodeViewState *)self subtitle];
-  v9 = [(PasscodeViewState *)self accessoryView];
-  v10 = [(PasscodeViewState *)v5 initWithRawValue:v6 title:v7 subtitle:v8 accessoryView:v9 style:v4];
+  rawValue = [(PasscodeViewState *)self rawValue];
+  title = [(PasscodeViewState *)self title];
+  subtitle = [(PasscodeViewState *)self subtitle];
+  accessoryView = [(PasscodeViewState *)self accessoryView];
+  v10 = [(PasscodeViewState *)v5 initWithRawValue:rawValue title:title subtitle:subtitle accessoryView:accessoryView style:styleCopy];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PasscodeViewState *)self rawValue];
-    if (v6 != [v5 rawValue])
+    v5 = equalCopy;
+    rawValue = [(PasscodeViewState *)self rawValue];
+    if (rawValue != [v5 rawValue])
     {
       goto LABEL_8;
     }
 
-    v7 = [(PasscodeViewState *)self style];
-    v8 = [v5 style];
+    style = [(PasscodeViewState *)self style];
+    style2 = [v5 style];
 
-    if (v7 != v8)
+    if (style != style2)
     {
       goto LABEL_8;
     }
 
-    v9 = [(PasscodeViewState *)self title];
-    v10 = [v5 title];
-    v11 = [v9 isEqualToString:v10];
+    title = [(PasscodeViewState *)self title];
+    title2 = [v5 title];
+    v11 = [title isEqualToString:title2];
 
     if (!v11)
     {
       goto LABEL_8;
     }
 
-    v12 = [(PasscodeViewState *)self subtitle];
-    v13 = [v5 subtitle];
-    v14 = [v12 isEqualToString:v13];
+    subtitle = [(PasscodeViewState *)self subtitle];
+    subtitle2 = [v5 subtitle];
+    v14 = [subtitle isEqualToString:subtitle2];
 
     if (v14)
     {
-      v15 = [(PasscodeViewState *)self accessoryView];
-      v16 = [v5 accessoryView];
-      v17 = v15 == v16;
+      accessoryView = [(PasscodeViewState *)self accessoryView];
+      accessoryView2 = [v5 accessoryView];
+      v17 = accessoryView == accessoryView2;
     }
 
     else

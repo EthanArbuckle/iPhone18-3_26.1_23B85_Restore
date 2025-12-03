@@ -87,8 +87,8 @@
   v7 = a3;
   v8 = [[v6 alloc] initWithURL:v7 resolvingAgainstBaseURL:0];
 
-  v9 = [v8 queryItems];
-  v10 = [v9 mutableCopy];
+  queryItems = [v8 queryItems];
+  v10 = [queryItems mutableCopy];
 
   if (!v10)
   {
@@ -102,8 +102,8 @@
   if (v11)
   {
     v14 = [v11 base64EncodedStringWithOptions:0];
-    v15 = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
-    v16 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:v15];
+    uRLQueryAllowedCharacterSet = [MEMORY[0x1E696AB08] URLQueryAllowedCharacterSet];
+    v16 = [v14 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
     v17 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"pi" value:v16];
     [v10 addObject:v17];
@@ -131,14 +131,14 @@
 
 - (id)_hk_extractEncodedHKProfileIdentifier
 {
-  v1 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
-  v2 = [v1 queryItems];
-  v3 = [v2 hk_firstObjectPassingTest:&__block_literal_global_83];
-  v4 = [v3 value];
-  v5 = [v4 stringByRemovingPercentEncoding];
-  if (v5)
+  v1 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
+  queryItems = [v1 queryItems];
+  v3 = [queryItems hk_firstObjectPassingTest:&__block_literal_global_83];
+  value = [v3 value];
+  stringByRemovingPercentEncoding = [value stringByRemovingPercentEncoding];
+  if (stringByRemovingPercentEncoding)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v5 options:0];
+    v6 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:stringByRemovingPercentEncoding options:0];
     if (v6)
     {
       v13 = 0;
@@ -188,7 +188,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19197B000, a2, OS_LOG_TYPE_ERROR, "Error decodeding profile information from URL: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

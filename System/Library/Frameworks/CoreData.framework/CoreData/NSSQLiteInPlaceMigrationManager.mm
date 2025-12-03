@@ -1,5 +1,5 @@
 @interface NSSQLiteInPlaceMigrationManager
-- (BOOL)migrateStoreFromURL:(id)a3 type:(id)a4 options:(id)a5 withMappingModel:(id)a6 toDestinationURL:(id)a7 destinationType:(id)a8 destinationOptions:(id)a9 error:(id *)a10;
+- (BOOL)migrateStoreFromURL:(id)l type:(id)type options:(id)options withMappingModel:(id)model toDestinationURL:(id)rL destinationType:(id)destinationType destinationOptions:(id)destinationOptions error:(id *)self0;
 - (void)dealloc;
 @end
 
@@ -12,24 +12,24 @@
   [(NSMigrationManager *)&v2 dealloc];
 }
 
-- (BOOL)migrateStoreFromURL:(id)a3 type:(id)a4 options:(id)a5 withMappingModel:(id)a6 toDestinationURL:(id)a7 destinationType:(id)a8 destinationOptions:(id)a9 error:(id *)a10
+- (BOOL)migrateStoreFromURL:(id)l type:(id)type options:(id)options withMappingModel:(id)model toDestinationURL:(id)rL destinationType:(id)destinationType destinationOptions:(id)destinationOptions error:(id *)self0
 {
   v95 = *MEMORY[0x1E69E9840];
-  if (([a3 isEqual:a7] & 1) == 0)
+  if (([l isEqual:rL] & 1) == 0)
   {
-    if ([a7 isFileURL])
+    if ([rL isFileURL])
     {
       memset(&v94, 0, sizeof(v94));
-      if (!stat([objc_msgSend(a7 "path")], &v94) && v94.st_size >= 1)
+      if (!stat([objc_msgSend(rL "path")], &v94) && v94.st_size >= 1)
       {
-        if (a10)
+        if (error)
         {
           v16 = MEMORY[0x1E696ABC0];
           v92 = *MEMORY[0x1E696A368];
-          v93 = [a7 path];
-          v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
+          path = [rL path];
+          v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&path forKeys:&v92 count:1];
           v18 = 0;
-          *a10 = [v16 errorWithDomain:*MEMORY[0x1E696A250] code:516 userInfo:v17];
+          *error = [v16 errorWithDomain:*MEMORY[0x1E696A250] code:516 userInfo:v17];
         }
 
         else
@@ -44,7 +44,7 @@
 
   v76 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   v19 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[(NSMigrationManager *)self sourceModel]];
-  v20 = [a5 valueForKey:@"NSPersistentStoreCoordinatorCodableAdapterFactoryKey"];
+  v20 = [options valueForKey:@"NSPersistentStoreCoordinatorCodableAdapterFactoryKey"];
   [(NSPersistentStoreCoordinator *)v19 _setIsMigrating:?];
   if (v20)
   {
@@ -52,19 +52,19 @@
   }
 
   v79 = v19;
-  v21 = [a3 isEqual:a7];
+  v21 = [l isEqual:rL];
   v82 = 0;
   v83 = 0;
-  v77 = a7;
-  v22 = [a9 mutableCopy];
+  rLCopy = rL;
+  v22 = [destinationOptions mutableCopy];
   v23 = MEMORY[0x1E695E118];
   [v22 setObject:MEMORY[0x1E695E118] forKey:@"NSPersistentStoreForceDestroyOption"];
   [v22 setObject:v23 forKey:@"NSPersistentStoreUnlinkDestroyOption"];
-  v24 = a3;
+  lCopy = l;
   if ((v21 & 1) == 0)
   {
-    v24 = v77;
-    if (![(NSPersistentStoreCoordinator *)v79 replacePersistentStoreAtURL:v77 destinationOptions:a9 withPersistentStoreFromURL:a3 sourceOptions:a5 storeType:a4 error:&v83])
+    lCopy = rLCopy;
+    if (![(NSPersistentStoreCoordinator *)v79 replacePersistentStoreAtURL:rLCopy destinationOptions:destinationOptions withPersistentStoreFromURL:l sourceOptions:options storeType:type error:&v83])
     {
       v29 = 0;
       v30 = 0;
@@ -79,22 +79,22 @@ LABEL_22:
   }
 
   v80 = v21 ^ 1;
-  if (![@"SQLite" isEqualToString:a4] || (objc_msgSend(@"SQLite", "isEqualToString:", a8) & 1) == 0)
+  if (![@"SQLite" isEqualToString:type] || (objc_msgSend(@"SQLite", "isEqualToString:", destinationType) & 1) == 0)
   {
 
     v72 = MEMORY[0x1E695DF30];
-    v73 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{-[NSMigrationManager sourceModel](self, "sourceModel"), @"sourceModel", -[NSMigrationManager destinationModel](self, "destinationModel"), @"destinationModel", a6, @"mappingModel", 0}];
+    v73 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{-[NSMigrationManager sourceModel](self, "sourceModel"), @"sourceModel", -[NSMigrationManager destinationModel](self, "destinationModel"), @"destinationModel", model, @"mappingModel", 0}];
     objc_exception_throw([v72 exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSSQLiteInPlaceMigrationManager requires that the source and destination stores to be NSSQLiteStoreType" userInfo:v73]);
   }
 
-  if (([(NSMappingModel *)a6 _isInferredMappingModel]& 1) == 0)
+  if (([(NSMappingModel *)model _isInferredMappingModel]& 1) == 0)
   {
     if (v21)
     {
       v27 = MEMORY[0x1E696ABC0];
       v90 = @"sourceStore";
-      v91 = a3;
-      v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v91 forKeys:&v90 count:1];
+      lCopy2 = l;
+      v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&lCopy2 forKeys:&v90 count:1];
       v29 = 0;
       v30 = 0;
       v80 = 0;
@@ -107,7 +107,7 @@ LABEL_22:
       v81.receiver = self;
       v81.super_class = NSSQLiteInPlaceMigrationManager;
       v80 = 1;
-      v18 = [(NSMigrationManager *)&v81 migrateStoreFromURL:v24 type:a4 options:a5 withMappingModel:a6 toDestinationURL:v77 destinationType:a8 destinationOptions:a9 error:&v83];
+      v18 = [(NSMigrationManager *)&v81 migrateStoreFromURL:lCopy type:type options:options withMappingModel:model toDestinationURL:rLCopy destinationType:destinationType destinationOptions:destinationOptions error:&v83];
       v29 = 0;
       v30 = 0;
     }
@@ -115,10 +115,10 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  if (([NSMigrationManager _performSanityCheckForMapping:a6 fromSourceModel:[(NSMigrationManager *)self sourceModel] toDestinationModel:[(NSMigrationManager *)self destinationModel]]& 1) == 0)
+  if (([NSMigrationManager _performSanityCheckForMapping:model fromSourceModel:[(NSMigrationManager *)self sourceModel] toDestinationModel:[(NSMigrationManager *)self destinationModel]]& 1) == 0)
   {
     v74 = MEMORY[0x1E695DF30];
-    v75 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{-[NSMigrationManager sourceModel](self, "sourceModel"), @"sourceModel", -[NSMigrationManager destinationModel](self, "destinationModel"), @"destinationModel", a6, @"mappingModel", 0}];
+    v75 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{-[NSMigrationManager sourceModel](self, "sourceModel"), @"sourceModel", -[NSMigrationManager destinationModel](self, "destinationModel"), @"destinationModel", model, @"mappingModel", 0}];
     objc_exception_throw([v74 exceptionWithName:*MEMORY[0x1E695D940] reason:@"Mismatch between mapping and source/destination models" userInfo:v75]);
   }
 
@@ -133,10 +133,10 @@ LABEL_22:
     v26 = v25;
   }
 
-  if (a9)
+  if (destinationOptions)
   {
-    v39 = [a9 objectForKey:@"NSSQLitePragmasOption"];
-    v40 = [a9 mutableCopy];
+    v39 = [destinationOptions objectForKey:@"NSSQLitePragmasOption"];
+    v40 = [destinationOptions mutableCopy];
     if (v39)
     {
       v41 = [v39 mutableCopy];
@@ -146,8 +146,8 @@ LABEL_22:
     else
     {
       v88 = @"journal_mode";
-      v89 = [MEMORY[0x1E695DFB0] null];
-      v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
+      null = [MEMORY[0x1E695DFB0] null];
+      v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&null forKeys:&v88 count:1];
     }
 
     [v40 setObject:v41 forKey:@"NSSQLitePragmasOption"];
@@ -157,16 +157,16 @@ LABEL_22:
   {
     v86 = @"NSSQLitePragmasOption";
     v84 = @"journal_mode";
-    v85 = [MEMORY[0x1E695DFB0] null];
-    v87 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v87 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&null2 forKeys:&v84 count:1];
     v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v87 forKeys:&v86 count:1];
   }
 
-  v42 = [(NSPersistentStoreCoordinator *)v79 addPersistentStoreWithType:@"SQLite" configuration:0 URL:v24 options:v40 error:&v82];
+  v42 = [(NSPersistentStoreCoordinator *)v79 addPersistentStoreWithType:@"SQLite" configuration:0 URL:lCopy options:v40 error:&v82];
 
   if (!v42)
   {
-    if (a10)
+    if (error)
     {
       v53 = MEMORY[0x1E696ABC0];
       v54 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Failed to open the store", @"reason", v82, *MEMORY[0x1E696AA08], 0}];
@@ -186,12 +186,12 @@ LABEL_65:
     goto LABEL_22;
   }
 
-  v43 = [(NSMigrationManager *)self destinationModel];
-  [(NSManagedObjectModel *)v43 _setIsEditable:0];
-  v44 = [[NSSQLModel alloc] initWithManagedObjectModel:v43];
+  destinationModel = [(NSMigrationManager *)self destinationModel];
+  [(NSManagedObjectModel *)destinationModel _setIsEditable:0];
+  v44 = [[NSSQLModel alloc] initWithManagedObjectModel:destinationModel];
   if (!v44)
   {
-    if (a10)
+    if (error)
     {
       v56 = MEMORY[0x1E696ABC0];
       v57 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Invalid destination data model", @"reason", 0}];
@@ -203,7 +203,7 @@ LABEL_65:
   }
 
   v29 = v44;
-  v30 = [[_NSSQLiteStoreMigrator alloc] initWithStore:v42 destinationModel:v44 mappingModel:a6];
+  v30 = [[_NSSQLiteStoreMigrator alloc] initWithStore:v42 destinationModel:v44 mappingModel:model];
   [v30 setDestinationConfigurationForCloudKitValidation:{-[NSMigrationManager destinationConfigurationForCloudKitValidation](self, "destinationConfigurationForCloudKitValidation")}];
   if (self)
   {
@@ -245,7 +245,7 @@ LABEL_53:
 LABEL_54:
   v48 = [(_NSSQLiteStoreMigrator *)v30 performMigration:?];
   v49 = v48;
-  if (a10)
+  if (error)
   {
     v50 = v48;
   }
@@ -269,7 +269,7 @@ LABEL_54:
     }
 
     v64 = MEMORY[0x1E696ABC0];
-    v65 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v52, @"reason", v82, *MEMORY[0x1E696AA08], a3, @"sourceURL", a3, @"destinationURL", 0}];
+    v65 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v52, @"reason", v82, *MEMORY[0x1E696AA08], l, @"sourceURL", l, @"destinationURL", 0}];
     v83 = [v64 errorWithDomain:*MEMORY[0x1E696A250] code:134110 userInfo:v65];
   }
 
@@ -341,14 +341,14 @@ LABEL_23:
   {
     if (+[NSMappingModel migrationDebugLevel]< 1)
     {
-      if (([a3 isEqual:v77] & 1) == 0)
+      if (([l isEqual:rLCopy] & 1) == 0)
       {
-        [(NSPersistentStoreCoordinator *)v79 _destroyPersistentStoreAtURL:v77 withType:@"SQLite" options:v22 error:0];
-        v38 = [MEMORY[0x1E696AC08] defaultManager];
-        [v38 removeItemAtPath:objc_msgSend(v77 error:{"path"), 0}];
-        [v38 removeItemAtPath:objc_msgSend(objc_msgSend(v77 error:{"path"), "stringByAppendingString:", @"-shm", 0}];
-        [v38 removeItemAtPath:objc_msgSend(objc_msgSend(v77 error:{"path"), "stringByAppendingString:", @"-journal", 0}];
-        [v38 removeItemAtPath:objc_msgSend(objc_msgSend(v77 error:{"path"), "stringByAppendingString:", @"-wal", 0}];
+        [(NSPersistentStoreCoordinator *)v79 _destroyPersistentStoreAtURL:rLCopy withType:@"SQLite" options:v22 error:0];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager removeItemAtPath:objc_msgSend(rLCopy error:{"path"), 0}];
+        [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(rLCopy error:{"path"), "stringByAppendingString:", @"-shm", 0}];
+        [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(rLCopy error:{"path"), "stringByAppendingString:", @"-journal", 0}];
+        [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(rLCopy error:{"path"), "stringByAppendingString:", @"-wal", 0}];
       }
 
       goto LABEL_94;
@@ -374,7 +374,7 @@ LABEL_23:
           }
 
           v94.st_dev = 138412546;
-          *&v94.st_mode = v77;
+          *&v94.st_mode = rLCopy;
           WORD2(v94.st_ino) = 2112;
           *(&v94.st_ino + 6) = v37;
           _os_log_error_impl(&dword_18565F000, v36, OS_LOG_TYPE_ERROR, "CoreData: error: (migration) leaving incompletely migrated store on disk after in-place migration error. (%@, %@)\n", &v94, 0x16u);
@@ -397,7 +397,7 @@ LABEL_23:
           }
 
           v94.st_dev = 138412546;
-          *&v94.st_mode = v77;
+          *&v94.st_mode = rLCopy;
           WORD2(v94.st_ino) = 2112;
           *(&v94.st_ino + 6) = v63;
           _os_log_impl(&dword_18565F000, v62, OS_LOG_TYPE_DEFAULT, "CoreData: annotation: (migration) leaving incompletely migrated store on disk after in-place migration error. (%@, %@)\n", &v94, 0x16u);
@@ -435,7 +435,7 @@ LABEL_23:
       v67 = 4;
     }
 
-    _NSCoreDataLog_console(v67, "(migration) leaving incompletely migrated store on disk after in-place migration error. (%@, %@)", v77, v66);
+    _NSCoreDataLog_console(v67, "(migration) leaving incompletely migrated store on disk after in-place migration error. (%@, %@)", rLCopy, v66);
   }
 
   objc_autoreleasePoolPop(v33);
@@ -444,9 +444,9 @@ LABEL_94:
   [v76 drain];
   v68 = 0;
   v69 = v83;
-  if (a10 && v83)
+  if (error && v83)
   {
-    *a10 = v83;
+    *error = v83;
   }
 
   if ((v31 | 2) == 2)

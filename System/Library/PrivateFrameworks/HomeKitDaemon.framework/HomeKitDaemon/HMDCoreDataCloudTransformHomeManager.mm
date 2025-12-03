@@ -1,18 +1,18 @@
 @interface HMDCoreDataCloudTransformHomeManager
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
-+ (id)fixUpPrimaryHomeCounterForPrimaryHome:(id)a3 primaryHomeModelID:(id)a4;
-+ (uint64_t)_exportUpdateWithObjectID:(int)a3 updateApplicationData:(void *)a4 context:;
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context;
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
++ (id)fixUpPrimaryHomeCounterForPrimaryHome:(id)home primaryHomeModelID:(id)d;
++ (uint64_t)_exportUpdateWithObjectID:(int)d updateApplicationData:(void *)data context:;
 @end
 
 @implementation HMDCoreDataCloudTransformHomeManager
 
-+ (BOOL)exportDeleteWithObjectID:(id)a3 modelID:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportDeleteWithObjectID:(id)d modelID:(id)iD additionalUpdates:(id)updates context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  updatesCopy = updates;
+  contextCopy = context;
   v14 = MEMORY[0x277CBEAD8];
   v15 = *MEMORY[0x277CBE658];
   v16 = MEMORY[0x277CCACA8];
@@ -24,24 +24,24 @@
   objc_exception_throw(v19);
 }
 
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  propertiesCopy = properties;
+  updatesCopy = updates;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if ([v11 count])
+  if ([propertiesCopy count])
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __109__HMDCoreDataCloudTransformHomeManager_exportUpdateWithObjectID_updatedProperties_additionalUpdates_context___block_invoke;
     v17[3] = &unk_278684488;
     v17[4] = &v18;
-    [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
+    [propertiesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
     v14 = *(v19 + 24);
   }
 
@@ -51,7 +51,7 @@
     *(v19 + 24) = 1;
   }
 
-  v15 = [(HMDCoreDataCloudTransformHomeManager *)a1 _exportUpdateWithObjectID:v10 updateApplicationData:v14 & 1 context:v13];
+  v15 = [(HMDCoreDataCloudTransformHomeManager *)self _exportUpdateWithObjectID:dCopy updateApplicationData:v14 & 1 context:contextCopy];
   _Block_object_dispose(&v18, 8);
 
   return v15;
@@ -81,31 +81,31 @@ void __109__HMDCoreDataCloudTransformHomeManager_exportUpdateWithObjectID_update
 LABEL_5:
 }
 
-+ (uint64_t)_exportUpdateWithObjectID:(int)a3 updateApplicationData:(void *)a4 context:
++ (uint64_t)_exportUpdateWithObjectID:(int)d updateApplicationData:(void *)data context:
 {
   v71 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a4;
+  dataCopy = data;
   v7 = objc_opt_self();
   v48 = v5;
-  v8 = [v6 objectWithID:v5];
+  v8 = [dataCopy objectWithID:v5];
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 homes];
-  v11 = [v9 setWithCapacity:{objc_msgSend(v10, "count")}];
+  homes = [v8 homes];
+  v11 = [v9 setWithCapacity:{objc_msgSend(homes, "count")}];
 
-  v12 = [v8 homes];
+  homes2 = [v8 homes];
   v62[0] = MEMORY[0x277D85DD0];
   v62[1] = 3221225472;
   v62[2] = __96__HMDCoreDataCloudTransformHomeManager__exportUpdateWithObjectID_updateApplicationData_context___block_invoke;
   v62[3] = &unk_278684438;
   v13 = v11;
   v63 = v13;
-  [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v62];
+  [homes2 hmf_enumerateWithAutoreleasePoolUsingBlock:v62];
 
   v14 = +[MKFCKHome fetchRequest];
   [v14 setFetchBatchSize:2];
   v61 = 0;
-  v15 = [v6 executeFetchRequest:v14 error:&v61];
+  v15 = [dataCopy executeFetchRequest:v14 error:&v61];
   v49 = v61;
   if (v15)
   {
@@ -123,7 +123,7 @@ LABEL_5:
     v51[3] = &unk_278684460;
     v52 = v13;
     v56 = v7;
-    v16 = v6;
+    v16 = dataCopy;
     v53 = v16;
     v54 = buf;
     v55 = &v57;
@@ -169,23 +169,23 @@ LABEL_5:
       }
 
       v22 = objc_opt_class();
-      v23 = [v8 primaryHome];
-      v24 = [v23 handle];
-      v25 = [v24 homeUUID];
-      v26 = [v22 fixUpPrimaryHomeCounterForPrimaryHome:v15 primaryHomeModelID:v25];
+      primaryHome = [v8 primaryHome];
+      handle = [primaryHome handle];
+      homeUUID = [handle homeUUID];
+      v26 = [v22 fixUpPrimaryHomeCounterForPrimaryHome:v15 primaryHomeModelID:homeUUID];
 
       if (v26)
       {
-        if (a3)
+        if (d)
         {
-          v27 = [v8 appDataDictionary];
-          v28 = [v26 homeManagerApplicationData];
-          v29 = isEqualDeepCompare(v27, v28);
+          appDataDictionary = [v8 appDataDictionary];
+          homeManagerApplicationData = [v26 homeManagerApplicationData];
+          v29 = isEqualDeepCompare(appDataDictionary, homeManagerApplicationData);
 
           if ((v29 & 1) == 0)
           {
-            v30 = [v8 appDataDictionary];
-            v31 = [v30 copy];
+            appDataDictionary2 = [v8 appDataDictionary];
+            v31 = [appDataDictionary2 copy];
             [v26 setHomeManagerApplicationData:v31];
           }
         }
@@ -307,10 +307,10 @@ void __96__HMDCoreDataCloudTransformHomeManager__exportUpdateWithObjectID_update
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)fixUpPrimaryHomeCounterForPrimaryHome:(id)a3 primaryHomeModelID:(id)a4
++ (id)fixUpPrimaryHomeCounterForPrimaryHome:(id)home primaryHomeModelID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  homeCopy = home;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -325,11 +325,11 @@ void __96__HMDCoreDataCloudTransformHomeManager__exportUpdateWithObjectID_update
   v12[1] = 3221225472;
   v12[2] = __97__HMDCoreDataCloudTransformHomeManager_fixUpPrimaryHomeCounterForPrimaryHome_primaryHomeModelID___block_invoke;
   v12[3] = &unk_278684410;
-  v7 = v6;
+  v7 = dCopy;
   v13 = v7;
   v14 = &v20;
   v15 = &v16;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
+  [homeCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
   v8 = v21[5];
   if (v8)
   {

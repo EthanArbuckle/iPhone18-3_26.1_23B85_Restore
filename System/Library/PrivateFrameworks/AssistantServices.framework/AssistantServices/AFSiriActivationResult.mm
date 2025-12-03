@@ -1,15 +1,15 @@
 @interface AFSiriActivationResult
-+ (id)newWithBuilder:(id)a3;
-- (AFSiriActivationResult)initWithActionType:(int64_t)a3 error:(id)a4;
-- (AFSiriActivationResult)initWithBuilder:(id)a3;
-- (AFSiriActivationResult)initWithCoder:(id)a3;
-- (AFSiriActivationResult)initWithDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSiriActivationResult)initWithActionType:(int64_t)type error:(id)error;
+- (AFSiriActivationResult)initWithBuilder:(id)builder;
+- (AFSiriActivationResult)initWithCoder:(id)coder;
+- (AFSiriActivationResult)initWithDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSiriActivationResult
@@ -42,12 +42,12 @@
   return v8;
 }
 
-- (AFSiriActivationResult)initWithDictionaryRepresentation:(id)a3
+- (AFSiriActivationResult)initWithDictionaryRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
-    v4 = a3;
-    v5 = [v4 objectForKey:@"actionType"];
+    representationCopy = representation;
+    v5 = [representationCopy objectForKey:@"actionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       v6 = 0;
     }
 
-    v8 = [v4 objectForKey:@"error"];
+    v8 = [representationCopy objectForKey:@"error"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -73,44 +73,44 @@
     }
 
     self = [(AFSiriActivationResult *)self initWithActionType:v6 error:v9];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   actionType = self->_actionType;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:actionType];
-  [v7 encodeObject:v6 forKey:@"AFSiriActivationResult::actionType"];
+  [coderCopy encodeObject:v6 forKey:@"AFSiriActivationResult::actionType"];
 
-  [v7 encodeObject:self->_error forKey:@"AFSiriActivationResult::error"];
+  [coderCopy encodeObject:self->_error forKey:@"AFSiriActivationResult::error"];
 }
 
-- (AFSiriActivationResult)initWithCoder:(id)a3
+- (AFSiriActivationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationResult::actionType"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationResult::actionType"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationResult::error"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationResult::error"];
 
-  v8 = [(AFSiriActivationResult *)self initWithActionType:v6 error:v7];
+  v8 = [(AFSiriActivationResult *)self initWithActionType:integerValue error:v7];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -120,13 +120,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       actionType = self->_actionType;
       if (actionType == [(AFSiriActivationResult *)v5 actionType])
       {
-        v7 = [(AFSiriActivationResult *)v5 error];
+        error = [(AFSiriActivationResult *)v5 error];
         error = self->_error;
-        v9 = error == v7 || [(NSError *)error isEqual:v7];
+        v9 = error == error || [(NSError *)error isEqual:error];
       }
 
       else
@@ -153,7 +153,7 @@
   return v5 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v11.receiver = self;
@@ -176,16 +176,16 @@
   return v9;
 }
 
-- (AFSiriActivationResult)initWithActionType:(int64_t)a3 error:(id)a4
+- (AFSiriActivationResult)initWithActionType:(int64_t)type error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__AFSiriActivationResult_initWithActionType_error___block_invoke;
   v10[3] = &unk_1E7348EB8;
-  v11 = v6;
-  v12 = a3;
-  v7 = v6;
+  v11 = errorCopy;
+  typeCopy = type;
+  v7 = errorCopy;
   v8 = [(AFSiriActivationResult *)self initWithBuilder:v10];
 
   return v8;
@@ -199,22 +199,22 @@ void __51__AFSiriActivationResult_initWithActionType_error___block_invoke(uint64
   [v4 setError:*(a1 + 32)];
 }
 
-- (AFSiriActivationResult)initWithBuilder:(id)a3
+- (AFSiriActivationResult)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = AFSiriActivationResult;
   v5 = [(AFSiriActivationResult *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSiriActivationResultMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSiriActivationResultMutation *)v7 isDirty])
     {
       v6->_actionType = [(_AFSiriActivationResultMutation *)v7 getActionType];
-      v8 = [(_AFSiriActivationResultMutation *)v7 getError];
-      v9 = [v8 copy];
+      getError = [(_AFSiriActivationResultMutation *)v7 getError];
+      v9 = [getError copy];
       error = v6->_error;
       v6->_error = v9;
     }
@@ -223,27 +223,27 @@ void __51__AFSiriActivationResult_initWithActionType_error___block_invoke(uint64
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSiriActivationResultMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSiriActivationResultMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSiriActivationResult);
       v6->_actionType = [(_AFSiriActivationResultMutation *)v5 getActionType];
-      v7 = [(_AFSiriActivationResultMutation *)v5 getError];
-      v8 = [v7 copy];
+      getError = [(_AFSiriActivationResultMutation *)v5 getError];
+      v8 = [getError copy];
       error = v6->_error;
       v6->_error = v8;
     }

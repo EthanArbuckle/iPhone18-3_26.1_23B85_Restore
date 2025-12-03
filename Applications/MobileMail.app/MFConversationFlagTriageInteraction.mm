@@ -1,56 +1,56 @@
 @interface MFConversationFlagTriageInteraction
-+ (id)interactionWithMessageListItemSelection:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6;
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6;
-+ (id)interactionWithReferenceMessage:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6;
++ (id)interactionWithMessageListItemSelection:(id)selection undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor;
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor;
++ (id)interactionWithReferenceMessage:(id)message undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor;
 - (EMMessage)referenceMessage;
 @end
 
 @implementation MFConversationFlagTriageInteraction
 
-+ (id)interactionWithMessageListItemSelection:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6
++ (id)interactionWithMessageListItemSelection:(id)selection undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor
 {
-  v10 = a3;
-  v16.receiver = a1;
+  selectionCopy = selection;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___MFConversationFlagTriageInteraction;
-  v11 = objc_msgSendSuper2(&v16, "interactionWithMessageListItemSelection:undoManager:origin:actor:reason:", v10, a4, a5, a6, 4);
-  if (([v10 isSelectAll] & 1) == 0)
+  v11 = objc_msgSendSuper2(&v16, "interactionWithMessageListItemSelection:undoManager:origin:actor:reason:", selectionCopy, manager, origin, actor, 4);
+  if (([selectionCopy isSelectAll] & 1) == 0)
   {
-    v12 = [v10 messageListItems];
-    v13 = [v12 firstObject];
-    v14 = [v13 displayMessage];
-    [v11 setDisplayMessage:v14];
+    messageListItems = [selectionCopy messageListItems];
+    firstObject = [messageListItems firstObject];
+    displayMessage = [firstObject displayMessage];
+    [v11 setDisplayMessage:displayMessage];
   }
 
   return v11;
 }
 
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [[MSMessageListItemSelection alloc] initWithMessageListItems:v10];
-  v13 = [a1 interactionWithMessageListItemSelection:v12 undoManager:v11 origin:a5 actor:a6];
+  itemsCopy = items;
+  managerCopy = manager;
+  v12 = [[MSMessageListItemSelection alloc] initWithMessageListItems:itemsCopy];
+  v13 = [self interactionWithMessageListItemSelection:v12 undoManager:managerCopy origin:origin actor:actor];
 
   return v13;
 }
 
-+ (id)interactionWithReferenceMessage:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6
++ (id)interactionWithReferenceMessage:(id)message undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor
 {
-  v10 = a3;
-  v11 = a4;
-  v15 = v10;
+  messageCopy = message;
+  managerCopy = manager;
+  v15 = messageCopy;
   v12 = [NSArray arrayWithObjects:&v15 count:1];
-  v13 = [a1 interactionWithMessageListItems:v12 undoManager:v11 origin:a5 actor:a6];
+  v13 = [self interactionWithMessageListItems:v12 undoManager:managerCopy origin:origin actor:actor];
 
   return v13;
 }
 
 - (EMMessage)referenceMessage
 {
-  v2 = [(MFConversationFlagTriageInteraction *)self displayMessage];
-  v3 = [v2 result];
+  displayMessage = [(MFConversationFlagTriageInteraction *)self displayMessage];
+  result = [displayMessage result];
 
-  return v3;
+  return result;
 }
 
 @end

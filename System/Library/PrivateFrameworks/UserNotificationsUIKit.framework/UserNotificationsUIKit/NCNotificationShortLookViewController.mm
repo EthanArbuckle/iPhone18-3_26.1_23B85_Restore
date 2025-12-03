@@ -4,22 +4,22 @@
 + (void)_prepareSharedNotificationFeedbackGenerator;
 - (BOOL)_isLockedByAppProtection;
 - (BOOL)_isPresentingCustomContentProvidingViewController;
-- (BOOL)_setNotificationRequest:(id)a3;
+- (BOOL)_setNotificationRequest:(id)request;
 - (BOOL)_shouldPerformHoverHighlighting;
 - (BOOL)_shouldSupportExpandedPlatterInteraction;
 - (BOOL)_shouldUseHapticTouch;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canResignFirstResponder;
-- (BOOL)clickPresentationInteractionManager:(id)a3 shouldBeginInteractionWithTouchAtLocation:(CGPoint)a4;
-- (BOOL)clickPresentationInteractionManagerShouldAllowLongPressGesture:(id)a3;
-- (BOOL)didForwardNotificationRequestToCustomContent:(id)a3;
-- (BOOL)dismissPresentedViewControllerAnimated:(BOOL)a3;
-- (BOOL)expandedPlatterInteractionManager:(id)a3 shouldBeginInteractionWithTouchAtLocation:(CGPoint)a4;
-- (BOOL)expandedPlatterInteractionManagerShouldAllowLongPressGesture:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)clickPresentationInteractionManager:(id)manager shouldBeginInteractionWithTouchAtLocation:(CGPoint)location;
+- (BOOL)clickPresentationInteractionManagerShouldAllowLongPressGesture:(id)gesture;
+- (BOOL)didForwardNotificationRequestToCustomContent:(id)content;
+- (BOOL)dismissPresentedViewControllerAnimated:(BOOL)animated;
+- (BOOL)expandedPlatterInteractionManager:(id)manager shouldBeginInteractionWithTouchAtLocation:(CGPoint)location;
+- (BOOL)expandedPlatterInteractionManagerShouldAllowLongPressGesture:(id)gesture;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)hasCommittedToPresentingCustomContentProvidingViewController;
-- (BOOL)isContentExtensionVisible:(id)a3;
+- (BOOL)isContentExtensionVisible:(id)visible;
 - (BOOL)isHighlighted;
 - (BOOL)isNotPresentingOrHasCommittedToDismissingCustomContentProvidingViewController;
 - (BOOL)isNotificationContentViewHidden;
@@ -30,7 +30,7 @@
 - (CGRect)initialPresentedFrameOfViewForPreview;
 - (UIBezierPath)visiblePath;
 - (id)_expandedPlatterViewController;
-- (id)_initWithNotificationRequest:(id)a3 revealingAdditionalContentOnPresentation:(BOOL)a4;
+- (id)_initWithNotificationRequest:(id)request revealingAdditionalContentOnPresentation:(BOOL)presentation;
 - (id)_interactionManagerCreatingIfNecessary;
 - (id)_longLookNotificationViewController;
 - (id)_newClickPresentationInteractionManager;
@@ -40,82 +40,82 @@
 - (id)backgroundMaterialView;
 - (id)containerViewForExpandedContent;
 - (id)currentTraits;
-- (id)customBackgroundContainerViewForExpandedPlatterPresentationController:(id)a3;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)expandedPlatterInteractionManager:(id)a3 menuWithSuggestedActions:(id)a4;
-- (id)expandedPlatterInteractionManagerIdentifier:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)customBackgroundContainerViewForExpandedPlatterPresentationController:(id)controller;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)expandedPlatterInteractionManager:(id)manager menuWithSuggestedActions:(id)actions;
+- (id)expandedPlatterInteractionManagerIdentifier:(id)identifier;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)presentedExpandedPlatterViewController;
-- (id)transitioningDelegateForClickPresentationInteractionManager:(id)a3;
-- (int64_t)expandedPlatterViewController:(id)a3 dateFormatStyleForNotificationRequest:(id)a4;
+- (id)transitioningDelegateForClickPresentationInteractionManager:(id)manager;
+- (int64_t)expandedPlatterViewController:(id)controller dateFormatStyleForNotificationRequest:(id)request;
 - (unint64_t)_maximumNumberOfPrimaryTextLinesForProvidedStaticContent;
 - (unint64_t)_maximumNumberOfSecondaryTextLinesForProvidedStaticContent;
-- (unint64_t)_maximumNumberOfTextLinesForProvidedStaticContentWithDefaultNumber:(unint64_t)a3 isPrimary:(BOOL)a4 isLarge:(BOOL)a5;
-- (unint64_t)importantAdornmentEligibleOptionsForNotificationViewController:(id)a3;
-- (void)_askDelegateToExecuteAction:(id)a3 withParameters:(id)a4 animated:(BOOL)a5;
-- (void)_checkDelegateShouldTransitionForTrigger:(int64_t)a3 completionBlock:(id)a4;
-- (void)_dismissPresentedViewControllerAnimated:(BOOL)a3;
-- (void)_expandedPlatterInteractionManager:(id)a3 didDismissWithReason:(id)a4;
-- (void)_expandedPlatterInteractionManager:(id)a3 willDismissWithReason:(id)a4;
-- (void)_handlePresentedContentDismissalForClickPresentationInteractionManagerWithTrigger:(int64_t)a3;
-- (void)_handleTapOnView:(id)a3;
+- (unint64_t)_maximumNumberOfTextLinesForProvidedStaticContentWithDefaultNumber:(unint64_t)number isPrimary:(BOOL)primary isLarge:(BOOL)large;
+- (unint64_t)importantAdornmentEligibleOptionsForNotificationViewController:(id)controller;
+- (void)_askDelegateToExecuteAction:(id)action withParameters:(id)parameters animated:(BOOL)animated;
+- (void)_checkDelegateShouldTransitionForTrigger:(int64_t)trigger completionBlock:(id)block;
+- (void)_dismissPresentedViewControllerAnimated:(BOOL)animated;
+- (void)_expandedPlatterInteractionManager:(id)manager didDismissWithReason:(id)reason;
+- (void)_expandedPlatterInteractionManager:(id)manager willDismissWithReason:(id)reason;
+- (void)_handlePresentedContentDismissalForClickPresentationInteractionManagerWithTrigger:(int64_t)trigger;
+- (void)_handleTapOnView:(id)view;
 - (void)_intelligenceLightAnimationIfNeeded;
 - (void)_loadLookView;
 - (void)_notificationViewControllerViewDidLoad;
-- (void)_presentLongLookAnimated:(BOOL)a3 trigger:(int64_t)a4 completion:(id)a5;
-- (void)_presentLongLookForScrollAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_presentLongLookViaClickPresentationInteraction:(id)a3;
-- (void)_presentLongLookViaInteractionManager:(id)a3;
-- (void)_requestAppProtectionUnlockWithCompletion:(id)a3;
-- (void)_updateLookView:(id)a3 withTitleFromProvidedStaticContent:(id)a4;
+- (void)_presentLongLookAnimated:(BOOL)animated trigger:(int64_t)trigger completion:(id)completion;
+- (void)_presentLongLookForScrollAnimated:(BOOL)animated completion:(id)completion;
+- (void)_presentLongLookViaClickPresentationInteraction:(id)interaction;
+- (void)_presentLongLookViaInteractionManager:(id)manager;
+- (void)_requestAppProtectionUnlockWithCompletion:(id)completion;
+- (void)_updateLookView:(id)view withTitleFromProvidedStaticContent:(id)content;
 - (void)_updateScreenCaptureProhibited;
 - (void)_updateShortLookShadow;
-- (void)_updateThumbnailForRichContentForShortLookView:(id)a3 withContentProvider:(id)a4;
+- (void)_updateThumbnailForRichContentForShortLookView:(id)view withContentProvider:(id)provider;
 - (void)_updateWithProvidedAuxiliaryOptionsContent;
 - (void)_updateWithProvidedStaticContent;
-- (void)clickPresentationInteractionManager:(id)a3 shouldFinishInteractionThatReachedForceThreshold:(BOOL)a4 withCompletionBlock:(id)a5;
-- (void)clickPresentationInteractionManagerDidEndUserInteraction:(id)a3;
+- (void)clickPresentationInteractionManager:(id)manager shouldFinishInteractionThatReachedForceThreshold:(BOOL)threshold withCompletionBlock:(id)block;
+- (void)clickPresentationInteractionManagerDidEndUserInteraction:(id)interaction;
 - (void)containerViewForExpandedContent;
-- (void)contentProvider:(id)a3 performAction:(id)a4 animated:(BOOL)a5;
-- (void)customContent:(id)a3 didUpdateUserNotificationActions:(id)a4;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
+- (void)contentProvider:(id)provider performAction:(id)action animated:(BOOL)animated;
+- (void)customContent:(id)content didUpdateUserNotificationActions:(id)actions;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
 - (void)expandAndPlayMedia;
-- (void)expandedPlatter:(id)a3 didDismissWithReason:(id)a4;
-- (void)expandedPlatter:(id)a3 willDismissWithReason:(id)a4;
-- (void)expandedPlatterDidPresent:(id)a3;
-- (void)expandedPlatterInteractionManager:(id)a3 shouldCommitInteraction:(id)a4;
-- (void)expandedPlatterInteractionManager:(id)a3 willDismissContentWithAnimator:(id)a4;
-- (void)expandedPlatterInteractionManager:(id)a3 willPresentContentWithAnimator:(id)a4;
-- (void)expandedPlatterViewController:(id)a3 requestsDismissalWithReason:(id)a4 userInfo:(id)a5;
-- (void)expandedPlatterWillPresent:(id)a3;
-- (void)notificationViewControllerDidDismiss:(id)a3;
-- (void)notificationViewControllerDidPresent:(id)a3;
-- (void)notificationViewControllerWillDismiss:(id)a3;
-- (void)notificationViewControllerWillPresent:(id)a3;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)presentLongLookAnimated:(BOOL)a3 trigger:(int64_t)a4 completion:(id)a5;
-- (void)setContentReplacedWithSnapshot:(BOOL)a3;
-- (void)setCustomContentHomeAffordanceGestureRecognizer:(id)a3;
-- (void)setCustomContentHomeAffordanceVisible:(BOOL)a3;
-- (void)setGlassMode:(unint64_t)a3;
-- (void)setHasShadow:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setInteractionEnabled:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setNotificationContentViewHidden:(BOOL)a3;
-- (void)setPlatterHighlighted:(BOOL)a3;
+- (void)expandedPlatter:(id)platter didDismissWithReason:(id)reason;
+- (void)expandedPlatter:(id)platter willDismissWithReason:(id)reason;
+- (void)expandedPlatterDidPresent:(id)present;
+- (void)expandedPlatterInteractionManager:(id)manager shouldCommitInteraction:(id)interaction;
+- (void)expandedPlatterInteractionManager:(id)manager willDismissContentWithAnimator:(id)animator;
+- (void)expandedPlatterInteractionManager:(id)manager willPresentContentWithAnimator:(id)animator;
+- (void)expandedPlatterViewController:(id)controller requestsDismissalWithReason:(id)reason userInfo:(id)info;
+- (void)expandedPlatterWillPresent:(id)present;
+- (void)notificationViewControllerDidDismiss:(id)dismiss;
+- (void)notificationViewControllerDidPresent:(id)present;
+- (void)notificationViewControllerWillDismiss:(id)dismiss;
+- (void)notificationViewControllerWillPresent:(id)present;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)presentLongLookAnimated:(BOOL)animated trigger:(int64_t)trigger completion:(id)completion;
+- (void)setContentReplacedWithSnapshot:(BOOL)snapshot;
+- (void)setCustomContentHomeAffordanceGestureRecognizer:(id)recognizer;
+- (void)setCustomContentHomeAffordanceVisible:(BOOL)visible;
+- (void)setGlassMode:(unint64_t)mode;
+- (void)setHasShadow:(BOOL)shadow;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setInteractionEnabled:(BOOL)enabled;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setNotificationContentViewHidden:(BOOL)hidden;
+- (void)setPlatterHighlighted:(BOOL)highlighted;
 - (void)shouldCommitToExpandedPlatterPresentationWithFeedback;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -126,10 +126,10 @@
   containerViewForExpandedContent = self->_containerViewForExpandedContent;
   if (!containerViewForExpandedContent)
   {
-    v4 = [(NCNotificationViewController *)self delegate];
+    delegate = [(NCNotificationViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 notificationViewControllerContainerViewProviderForExpandedContent:self];
+      v5 = [delegate notificationViewControllerContainerViewProviderForExpandedContent:self];
       if (v5)
       {
         containerViewProviders = self->_containerViewProviders;
@@ -143,9 +143,9 @@
         }
 
         [(NSMutableArray *)containerViewProviders addObject:v5];
-        v9 = [v5 containerView];
+        containerView = [v5 containerView];
         v10 = self->_containerViewForExpandedContent;
-        self->_containerViewForExpandedContent = v9;
+        self->_containerViewForExpandedContent = containerView;
       }
 
       else
@@ -153,7 +153,7 @@
         v11 = *MEMORY[0x277D77DB0];
         if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
         {
-          [(NCNotificationShortLookViewController *)v4 containerViewForExpandedContent];
+          [(NCNotificationShortLookViewController *)delegate containerViewForExpandedContent];
         }
       }
     }
@@ -168,10 +168,10 @@
 {
   if ([(NCNotificationShortLookViewController *)self _isPresentingCustomContentProvidingViewController])
   {
-    v3 = [(NCNotificationShortLookViewController *)self _presentedViewController];
-    v4 = [v3 canBecomeFirstResponder];
+    _presentedViewController = [(NCNotificationShortLookViewController *)self _presentedViewController];
+    canBecomeFirstResponder = [_presentedViewController canBecomeFirstResponder];
 
-    return v4;
+    return canBecomeFirstResponder;
   }
 
   else
@@ -189,9 +189,9 @@
     return 1;
   }
 
-  v4 = [(NCNotificationShortLookViewController *)self _presentedViewController];
-  v5 = [v4 presentingViewController];
-  v2 = v5 != 0;
+  _presentedViewController = [(NCNotificationShortLookViewController *)self _presentedViewController];
+  presentingViewController = [_presentedViewController presentingViewController];
+  v2 = presentingViewController != 0;
 
   return v2;
 }
@@ -206,9 +206,9 @@
 
   else
   {
-    v5 = [(PLClickPresentationInteractionManager *)self->_clickPresentationInteractionManager presentedViewController];
-    longLookNotificationViewController = v5;
-    if (!v5)
+    presentedViewController = [(PLClickPresentationInteractionManager *)self->_clickPresentationInteractionManager presentedViewController];
+    longLookNotificationViewController = presentedViewController;
+    if (!presentedViewController)
     {
       longLookNotificationViewController = self->_longLookNotificationViewController;
     }
@@ -235,10 +235,10 @@
 {
   if ([(NCNotificationShortLookViewController *)self _isPresentingCustomContentProvidingViewController])
   {
-    v3 = [(NCNotificationShortLookViewController *)self _presentedViewController];
-    v4 = [v3 becomeFirstResponder];
+    _presentedViewController = [(NCNotificationShortLookViewController *)self _presentedViewController];
+    becomeFirstResponder = [_presentedViewController becomeFirstResponder];
 
-    return v4;
+    return becomeFirstResponder;
   }
 
   else
@@ -254,8 +254,8 @@
   v12.receiver = self;
   v12.super_class = NCNotificationShortLookViewController;
   [(NCNotificationViewController *)&v12 viewWillLayoutSubviews];
-  v3 = [(NCNotificationShortLookViewController *)self view];
-  [v3 bounds];
+  view = [(NCNotificationShortLookViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -271,22 +271,22 @@
   v12.receiver = self;
   v12.super_class = NCNotificationShortLookViewController;
   [(NCNotificationViewController *)&v12 _updateWithProvidedStaticContent];
-  v3 = [(NCNotificationViewController *)self _lookViewIfLoaded];
-  if (v3)
+  _lookViewIfLoaded = [(NCNotificationViewController *)self _lookViewIfLoaded];
+  if (_lookViewIfLoaded)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
-      v5 = [(NCNotificationViewController *)self staticContentProvider];
+      v4 = _lookViewIfLoaded;
+      staticContentProvider = [(NCNotificationViewController *)self staticContentProvider];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v7 = [(NCNotificationViewController *)self staticContentProvider];
-        [(NCNotificationShortLookViewController *)self _updateThumbnailForRichContentForShortLookView:v4 withContentProvider:v7];
-        if (([v7 isIconVisible] & 1) == 0)
+        staticContentProvider2 = [(NCNotificationViewController *)self staticContentProvider];
+        [(NCNotificationShortLookViewController *)self _updateThumbnailForRichContentForShortLookView:v4 withContentProvider:staticContentProvider2];
+        if (([staticContentProvider2 isIconVisible] & 1) == 0)
         {
           [v4 setBadgedIconDescription:0];
         }
@@ -294,15 +294,15 @@
     }
   }
 
-  v8 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  if (v8)
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  if (_notificationShortLookViewIfLoaded)
   {
-    v9 = [(NCNotificationViewController *)self delegate];
-    if (v9)
+    delegate = [(NCNotificationViewController *)self delegate];
+    if (delegate)
     {
       if (objc_opt_respondsToSelector())
       {
-        v10 = [v9 shouldAlignContentToBottomForNotificationViewController:self];
+        v10 = [delegate shouldAlignContentToBottomForNotificationViewController:self];
       }
 
       else
@@ -310,12 +310,12 @@
         v10 = 0;
       }
 
-      [v8 setAlignContentToBottom:v10];
+      [_notificationShortLookViewIfLoaded setAlignContentToBottom:v10];
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v9 isGroupCollapsedForNotificationViewController:self];
+        v11 = [delegate isGroupCollapsedForNotificationViewController:self];
 LABEL_17:
-        [v8 setIsGroupCollapsed:v11];
+        [_notificationShortLookViewIfLoaded setIsGroupCollapsed:v11];
 
         goto LABEL_18;
       }
@@ -323,7 +323,7 @@ LABEL_17:
 
     else
     {
-      [v8 setAlignContentToBottom:0];
+      [_notificationShortLookViewIfLoaded setAlignContentToBottom:0];
     }
 
     v11 = 0;
@@ -335,11 +335,11 @@ LABEL_18:
 
 - (id)_notificationShortLookViewIfLoaded
 {
-  v2 = [(NCNotificationViewController *)self _lookViewIfLoaded];
+  _lookViewIfLoaded = [(NCNotificationViewController *)self _lookViewIfLoaded];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = _lookViewIfLoaded;
   }
 
   else
@@ -356,10 +356,10 @@ LABEL_18:
 {
   v8.receiver = self;
   v8.super_class = NCNotificationShortLookViewController;
-  v3 = [(NCNotificationViewController *)&v8 _maximumNumberOfPrimaryTextLinesForProvidedStaticContent];
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = [(NCNotificationShortLookViewController *)self _maximumNumberOfTextLinesForProvidedStaticContentWithDefaultNumber:v3 isPrimary:1 isLarge:UIContentSizeCategoryIsAccessibilityCategory(v5)];
+  _maximumNumberOfPrimaryTextLinesForProvidedStaticContent = [(NCNotificationViewController *)&v8 _maximumNumberOfPrimaryTextLinesForProvidedStaticContent];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  v6 = [(NCNotificationShortLookViewController *)self _maximumNumberOfTextLinesForProvidedStaticContentWithDefaultNumber:_maximumNumberOfPrimaryTextLinesForProvidedStaticContent isPrimary:1 isLarge:UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory)];
 
   return v6;
 }
@@ -368,10 +368,10 @@ LABEL_18:
 {
   v8.receiver = self;
   v8.super_class = NCNotificationShortLookViewController;
-  v3 = [(NCNotificationViewController *)&v8 _maximumNumberOfSecondaryTextLinesForProvidedStaticContent];
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
-  v6 = [(NCNotificationShortLookViewController *)self _maximumNumberOfTextLinesForProvidedStaticContentWithDefaultNumber:v3 isPrimary:0 isLarge:UIContentSizeCategoryIsAccessibilityCategory(v5)];
+  _maximumNumberOfSecondaryTextLinesForProvidedStaticContent = [(NCNotificationViewController *)&v8 _maximumNumberOfSecondaryTextLinesForProvidedStaticContent];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
+  v6 = [(NCNotificationShortLookViewController *)self _maximumNumberOfTextLinesForProvidedStaticContentWithDefaultNumber:_maximumNumberOfSecondaryTextLinesForProvidedStaticContent isPrimary:0 isLarge:UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory)];
 
   return v6;
 }
@@ -381,57 +381,57 @@ LABEL_18:
   v19.receiver = self;
   v19.super_class = NCNotificationShortLookViewController;
   [(NCNotificationViewController *)&v19 _updateWithProvidedAuxiliaryOptionsContent];
-  v3 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  if (v3)
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  if (_notificationShortLookViewIfLoaded)
   {
-    v4 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
+    auxiliaryOptionsContentProvider = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
 
-    if (v4)
+    if (auxiliaryOptionsContentProvider)
     {
-      v5 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
+      auxiliaryOptionsContentProvider2 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
       {
-        v7 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
-        v8 = [v7 auxiliaryOptionsVisible];
+        auxiliaryOptionsContentProvider3 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
+        auxiliaryOptionsVisible = [auxiliaryOptionsContentProvider3 auxiliaryOptionsVisible];
 
-        if (v8)
+        if (auxiliaryOptionsVisible)
         {
-          v9 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
+          auxiliaryOptionsContentProvider4 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
           v10 = objc_opt_respondsToSelector();
 
           if (v10)
           {
-            v11 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
-            v12 = [v11 auxiliaryOptionsSummaryText];
+            auxiliaryOptionsContentProvider5 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
+            auxiliaryOptionsSummaryText = [auxiliaryOptionsContentProvider5 auxiliaryOptionsSummaryText];
           }
 
           else
           {
-            v12 = 0;
+            auxiliaryOptionsSummaryText = 0;
           }
 
-          [v3 setAuxiliaryOptionsSummaryText:v12];
-          [v3 setMaterialRecipe:{-[NCNotificationViewController materialRecipe](self, "materialRecipe")}];
-          v14 = [(NCNotificationViewController *)self materialGroupNameBase];
-          [v3 setMaterialGroupNameBase:v14];
+          [_notificationShortLookViewIfLoaded setAuxiliaryOptionsSummaryText:auxiliaryOptionsSummaryText];
+          [_notificationShortLookViewIfLoaded setMaterialRecipe:{-[NCNotificationViewController materialRecipe](self, "materialRecipe")}];
+          materialGroupNameBase = [(NCNotificationViewController *)self materialGroupNameBase];
+          [_notificationShortLookViewIfLoaded setMaterialGroupNameBase:materialGroupNameBase];
 
-          v15 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
+          auxiliaryOptionsContentProvider6 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
           v16 = objc_opt_respondsToSelector();
 
           if (v16)
           {
-            v17 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
-            v18 = [v17 auxiliaryOptionActions];
+            auxiliaryOptionsContentProvider7 = [(NCNotificationViewController *)self auxiliaryOptionsContentProvider];
+            auxiliaryOptionActions = [auxiliaryOptionsContentProvider7 auxiliaryOptionActions];
           }
 
           else
           {
-            v18 = 0;
+            auxiliaryOptionActions = 0;
           }
 
-          [v3 setAuxiliaryOptionActions:v18];
+          [_notificationShortLookViewIfLoaded setAuxiliaryOptionActions:auxiliaryOptionActions];
 
           v13 = 1;
           goto LABEL_9;
@@ -441,49 +441,49 @@ LABEL_18:
 
     else
     {
-      [v3 removeAuxiliaryOptionsView];
+      [_notificationShortLookViewIfLoaded removeAuxiliaryOptionsView];
     }
 
     v13 = 0;
 LABEL_9:
-    [v3 setAuxiliaryOptionsVisible:v13];
+    [_notificationShortLookViewIfLoaded setAuxiliaryOptionsVisible:v13];
     [(NCNotificationViewController *)self _updatePreferredContentSize];
   }
 }
 
 - (id)currentTraits
 {
-  v2 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v3 = v2;
-  if (v2)
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  v3 = _notificationShortLookViewIfLoaded;
+  if (_notificationShortLookViewIfLoaded)
   {
-    v4 = [v2 currentTraits];
+    currentTraits = [_notificationShortLookViewIfLoaded currentTraits];
   }
 
   else
   {
-    v4 = objc_alloc_init(NCNotificationListCellDynamicHeightTraits);
+    currentTraits = objc_alloc_init(NCNotificationListCellDynamicHeightTraits);
   }
 
-  v5 = v4;
+  v5 = currentTraits;
 
   return v5;
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v3 = [v2 backgroundMaterialView];
-  v4 = [v3 isHighlighted];
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  backgroundMaterialView = [_notificationShortLookViewIfLoaded backgroundMaterialView];
+  isHighlighted = [backgroundMaterialView isHighlighted];
 
-  return v4;
+  return isHighlighted;
 }
 
-- (id)_initWithNotificationRequest:(id)a3 revealingAdditionalContentOnPresentation:(BOOL)a4
+- (id)_initWithNotificationRequest:(id)request revealingAdditionalContentOnPresentation:(BOOL)presentation
 {
   v7.receiver = self;
   v7.super_class = NCNotificationShortLookViewController;
-  v4 = [(NCNotificationViewController *)&v7 _initWithNotificationRequest:a3 revealingAdditionalContentOnPresentation:a4];
+  v4 = [(NCNotificationViewController *)&v7 _initWithNotificationRequest:request revealingAdditionalContentOnPresentation:presentation];
   v5 = v4;
   if (v4)
   {
@@ -493,14 +493,14 @@ LABEL_9:
   return v5;
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
   v6.receiver = self;
   v6.super_class = NCNotificationShortLookViewController;
-  [(NCNotificationViewController *)&v6 setMaterialGroupNameBase:a3];
-  v4 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v5 = [(NCNotificationViewController *)self materialGroupNameBase];
-  [v4 setMaterialGroupNameBase:v5];
+  [(NCNotificationViewController *)&v6 setMaterialGroupNameBase:base];
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  materialGroupNameBase = [(NCNotificationViewController *)self materialGroupNameBase];
+  [_notificationShortLookViewIfLoaded setMaterialGroupNameBase:materialGroupNameBase];
 }
 
 - (BOOL)isNotPresentingOrHasCommittedToDismissingCustomContentProvidingViewController
@@ -510,22 +510,22 @@ LABEL_9:
     return 1;
   }
 
-  v3 = [(NCNotificationShortLookViewController *)self _presentedViewController];
-  v4 = [v3 isBeingDismissed];
+  _presentedViewController = [(NCNotificationShortLookViewController *)self _presentedViewController];
+  isBeingDismissed = [_presentedViewController isBeingDismissed];
 
-  return v4;
+  return isBeingDismissed;
 }
 
-- (BOOL)didForwardNotificationRequestToCustomContent:(id)a3
+- (BOOL)didForwardNotificationRequestToCustomContent:(id)content
 {
-  v4 = a3;
-  v5 = [(NCNotificationViewController *)self _customContentProvidingViewController];
+  contentCopy = content;
+  _customContentProvidingViewController = [(NCNotificationViewController *)self _customContentProvidingViewController];
 
-  if (v5)
+  if (_customContentProvidingViewController)
   {
     v11.receiver = self;
     v11.super_class = NCNotificationShortLookViewController;
-    v6 = [(NCNotificationViewController *)&v11 didForwardNotificationRequestToCustomContent:v4];
+    v6 = [(NCNotificationViewController *)&v11 didForwardNotificationRequestToCustomContent:contentCopy];
   }
 
   else
@@ -533,13 +533,13 @@ LABEL_9:
     expandedPlatterViewController = self->_expandedPlatterViewController;
     if (expandedPlatterViewController)
     {
-      v9 = [(NCExpandedPlatterViewController *)expandedPlatterViewController customContentViewController];
-      v7 = [v9 didReceiveNotificationRequest:v4];
+      customContentViewController = [(NCExpandedPlatterViewController *)expandedPlatterViewController customContentViewController];
+      v7 = [customContentViewController didReceiveNotificationRequest:contentCopy];
 
       goto LABEL_6;
     }
 
-    v6 = [(NCNotificationViewController *)self->_longLookNotificationViewController didForwardNotificationRequestToCustomContent:v4];
+    v6 = [(NCNotificationViewController *)self->_longLookNotificationViewController didForwardNotificationRequestToCustomContent:contentCopy];
   }
 
   v7 = v6;
@@ -548,134 +548,134 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)dismissPresentedViewControllerAnimated:(BOOL)a3
+- (BOOL)dismissPresentedViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NCNotificationShortLookViewController *)self _isPresentingCustomContentProvidingViewController];
-  if (v5)
+  animatedCopy = animated;
+  _isPresentingCustomContentProvidingViewController = [(NCNotificationShortLookViewController *)self _isPresentingCustomContentProvidingViewController];
+  if (_isPresentingCustomContentProvidingViewController)
   {
-    [(NCNotificationViewController *)self _executeNilAction:v3];
+    [(NCNotificationViewController *)self _executeNilAction:animatedCopy];
   }
 
-  return v5;
+  return _isPresentingCustomContentProvidingViewController;
 }
 
-- (BOOL)isContentExtensionVisible:(id)a3
+- (BOOL)isContentExtensionVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(NCExpandedPlatterViewController *)self->_expandedPlatterViewController customContentViewController];
-  v6 = v5;
-  if (v5)
+  visibleCopy = visible;
+  customContentViewController = [(NCExpandedPlatterViewController *)self->_expandedPlatterViewController customContentViewController];
+  v6 = customContentViewController;
+  if (customContentViewController)
   {
-    v7 = v5;
+    _customContentProvidingViewController = customContentViewController;
   }
 
   else
   {
-    v7 = [(NCNotificationViewController *)self->_longLookNotificationViewController _customContentProvidingViewController];
+    _customContentProvidingViewController = [(NCNotificationViewController *)self->_longLookNotificationViewController _customContentProvidingViewController];
   }
 
-  v8 = v7;
+  v8 = _customContentProvidingViewController;
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 contentExtensionIdentifier];
+    contentExtensionIdentifier = [v8 contentExtensionIdentifier];
   }
 
   else
   {
-    v9 = 0;
+    contentExtensionIdentifier = 0;
   }
 
-  v10 = [v9 isEqualToString:v4];
+  v10 = [contentExtensionIdentifier isEqualToString:visibleCopy];
 
   return v10;
 }
 
-- (void)setCustomContentHomeAffordanceVisible:(BOOL)a3
+- (void)setCustomContentHomeAffordanceVisible:(BOOL)visible
 {
   v4.receiver = self;
   v4.super_class = NCNotificationShortLookViewController;
-  [(NCNotificationViewController *)&v4 setCustomContentHomeAffordanceVisible:a3];
+  [(NCNotificationViewController *)&v4 setCustomContentHomeAffordanceVisible:visible];
   [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController setCustomContentHomeAffordanceVisible:[(NCNotificationViewController *)self isCustomContentHomeAffordanceVisible]];
 }
 
-- (void)setCustomContentHomeAffordanceGestureRecognizer:(id)a3
+- (void)setCustomContentHomeAffordanceGestureRecognizer:(id)recognizer
 {
   v5.receiver = self;
   v5.super_class = NCNotificationShortLookViewController;
-  v4 = a3;
-  [(NCNotificationViewController *)&v5 setCustomContentHomeAffordanceGestureRecognizer:v4];
-  [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController setCustomContentHomeAffordanceGestureRecognizer:v4, v5.receiver, v5.super_class];
+  recognizerCopy = recognizer;
+  [(NCNotificationViewController *)&v5 setCustomContentHomeAffordanceGestureRecognizer:recognizerCopy];
+  [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController setCustomContentHomeAffordanceGestureRecognizer:recognizerCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setNotificationContentViewHidden:(BOOL)a3
+- (void)setNotificationContentViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  if (v4)
+  hiddenCopy = hidden;
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  if (_notificationShortLookViewIfLoaded)
   {
-    v5 = v4;
-    [v4 setNotificationContentViewHidden:v3];
-    v4 = v5;
+    v5 = _notificationShortLookViewIfLoaded;
+    [_notificationShortLookViewIfLoaded setNotificationContentViewHidden:hiddenCopy];
+    _notificationShortLookViewIfLoaded = v5;
   }
 }
 
 - (BOOL)isNotificationContentViewHidden
 {
-  v2 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v3 = v2;
-  if (v2)
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  v3 = _notificationShortLookViewIfLoaded;
+  if (_notificationShortLookViewIfLoaded)
   {
-    v4 = [v2 isNotificationContentViewHidden];
+    isNotificationContentViewHidden = [_notificationShortLookViewIfLoaded isNotificationContentViewHidden];
   }
 
   else
   {
-    v4 = 0;
+    isNotificationContentViewHidden = 0;
   }
 
-  return v4;
+  return isNotificationContentViewHidden;
 }
 
-- (void)setHasShadow:(BOOL)a3
+- (void)setHasShadow:(BOOL)shadow
 {
-  v3 = a3;
-  v5 = [(NCNotificationViewController *)self hasShadow];
+  shadowCopy = shadow;
+  hasShadow = [(NCNotificationViewController *)self hasShadow];
   v6.receiver = self;
   v6.super_class = NCNotificationShortLookViewController;
-  [(NCNotificationViewController *)&v6 setHasShadow:v3];
-  if (v5 != [(NCNotificationViewController *)self hasShadow])
+  [(NCNotificationViewController *)&v6 setHasShadow:shadowCopy];
+  if (hasShadow != [(NCNotificationViewController *)self hasShadow])
   {
     [(NCNotificationShortLookViewController *)self _updateShortLookShadow];
   }
 }
 
-- (void)setGlassMode:(unint64_t)a3
+- (void)setGlassMode:(unint64_t)mode
 {
   v6.receiver = self;
   v6.super_class = NCNotificationShortLookViewController;
-  if ([(NCNotificationViewController *)&v6 glassMode]!= a3)
+  if ([(NCNotificationViewController *)&v6 glassMode]!= mode)
   {
     v5.receiver = self;
     v5.super_class = NCNotificationShortLookViewController;
-    [(NCNotificationViewController *)&v5 setGlassMode:a3];
+    [(NCNotificationViewController *)&v5 setGlassMode:mode];
     [(NCNotificationShortLookViewController *)self _updateShortLookShadow];
   }
 }
 
-- (void)setContentReplacedWithSnapshot:(BOOL)a3
+- (void)setContentReplacedWithSnapshot:(BOOL)snapshot
 {
-  v3 = a3;
-  v5 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v6 = v5;
-  if (v5)
+  snapshotCopy = snapshot;
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  v6 = _notificationShortLookViewIfLoaded;
+  if (_notificationShortLookViewIfLoaded)
   {
-    v7 = [v5 backgroundMaterialView];
-    v8 = v7;
-    if (v7)
+    backgroundMaterialView = [_notificationShortLookViewIfLoaded backgroundMaterialView];
+    v8 = backgroundMaterialView;
+    if (backgroundMaterialView)
     {
-      [v7 setContentReplacedWithSnapshot:v3];
+      [backgroundMaterialView setContentReplacedWithSnapshot:snapshotCopy];
       v9.receiver = self;
       v9.super_class = NCNotificationShortLookViewController;
       -[NCNotificationViewController setContentReplacedWithSnapshot:](&v9, sel_setContentReplacedWithSnapshot_, [v8 isContentReplacedWithSnapshot]);
@@ -687,10 +687,10 @@ LABEL_6:
 {
   if ([(NCNotificationShortLookViewController *)self _isPresentingCustomContentProvidingViewController])
   {
-    v3 = [(NCNotificationShortLookViewController *)self _presentedViewController];
-    v4 = [v3 canResignFirstResponder];
+    _presentedViewController = [(NCNotificationShortLookViewController *)self _presentedViewController];
+    canResignFirstResponder = [_presentedViewController canResignFirstResponder];
 
-    return v4;
+    return canResignFirstResponder;
   }
 
   else
@@ -705,10 +705,10 @@ LABEL_6:
 {
   if ([(NCNotificationShortLookViewController *)self _isPresentingCustomContentProvidingViewController])
   {
-    v3 = [(NCNotificationShortLookViewController *)self _presentedViewController];
-    v4 = [v3 resignFirstResponder];
+    _presentedViewController = [(NCNotificationShortLookViewController *)self _presentedViewController];
+    resignFirstResponder = [_presentedViewController resignFirstResponder];
 
-    return v4;
+    return resignFirstResponder;
   }
 
   else
@@ -719,11 +719,11 @@ LABEL_6:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = NCNotificationShortLookViewController;
-  [(NCNotificationViewController *)&v4 viewDidAppear:a3];
+  [(NCNotificationViewController *)&v4 viewDidAppear:appear];
   [(NCNotificationShortLookViewController *)self _intelligenceLightAnimationIfNeeded];
   if ([(NCNotificationViewController *)self _canPan])
   {
@@ -731,32 +731,32 @@ LABEL_6:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = NCNotificationShortLookViewController;
-  [(NCNotificationViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  [v4 updateLightEffectToFillLightEnabled:0 edgeLightEnabled:0 duration:0.0 delay:0.0];
+  [(NCNotificationViewController *)&v5 viewDidDisappear:disappear];
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  [_notificationShortLookViewIfLoaded updateLightEffectToFillLightEnabled:0 edgeLightEnabled:0 duration:0.0 delay:0.0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = NCNotificationShortLookViewController;
   [(NCNotificationViewController *)&v5 viewWillDisappear:?];
   if ([(NCNotificationShortLookViewController *)self _isPresentingCustomContentProvidingViewController])
   {
-    [(NCNotificationShortLookViewController *)self dismissPresentedViewControllerAnimated:v3];
+    [(NCNotificationShortLookViewController *)self dismissPresentedViewControllerAnimated:disappearCopy];
   }
 }
 
 - (BOOL)shouldCommitToExpandedPlatterPresentationWithFeedback
 {
-  v3 = [(NCNotificationShortLookViewController *)self containerViewForExpandedContent];
+  containerViewForExpandedContent = [(NCNotificationShortLookViewController *)self containerViewForExpandedContent];
 
-  if (!v3)
+  if (!containerViewForExpandedContent)
   {
     v4 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
@@ -765,35 +765,35 @@ LABEL_6:
     }
   }
 
-  return v3 != 0;
+  return containerViewForExpandedContent != 0;
 }
 
-- (void)presentLongLookAnimated:(BOOL)a3 trigger:(int64_t)a4 completion:(id)a5
+- (void)presentLongLookAnimated:(BOOL)animated trigger:(int64_t)trigger completion:(id)completion
 {
-  v6 = a3;
+  animatedCopy = animated;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(NCNotificationViewController *)self notificationRequest];
-    v12 = [v11 notificationIdentifier];
-    v13 = [v12 un_logDigest];
-    v14 = NCStringFromLongLookPresentationTrigger(a4);
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
+    v14 = NCStringFromLongLookPresentationTrigger(trigger);
     *buf = 138543618;
-    v24 = v13;
+    v24 = un_logDigest;
     v25 = 2114;
     v26 = v14;
     _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "Asked to present long look for request %{public}@ for trigger %{public}@", buf, 0x16u);
   }
 
-  self->_trigger = a4;
+  self->_trigger = trigger;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__NCNotificationShortLookViewController_presentLongLookAnimated_trigger_completion___block_invoke;
   aBlock[3] = &unk_2783731F8;
-  v15 = v8;
+  v15 = completionCopy;
   aBlock[4] = self;
   v22 = v15;
   v16 = _Block_copy(aBlock);
@@ -803,16 +803,16 @@ LABEL_6:
     v17[1] = 3221225472;
     v17[2] = __84__NCNotificationShortLookViewController_presentLongLookAnimated_trigger_completion___block_invoke_2;
     v17[3] = &unk_278373220;
-    v20 = v6;
+    v20 = animatedCopy;
     v17[4] = self;
-    v19 = a4;
+    triggerCopy = trigger;
     v18 = v16;
     [(NCNotificationShortLookViewController *)self _requestAppProtectionUnlockWithCompletion:v17];
   }
 
   else
   {
-    [(NCNotificationShortLookViewController *)self _presentLongLookAnimated:v6 trigger:a4 completion:v16];
+    [(NCNotificationShortLookViewController *)self _presentLongLookAnimated:animatedCopy trigger:trigger completion:v16];
   }
 }
 
@@ -841,52 +841,52 @@ uint64_t __84__NCNotificationShortLookViewController_presentLongLookAnimated_tri
   }
 }
 
-- (void)_presentLongLookAnimated:(BOOL)a3 trigger:(int64_t)a4 completion:(id)a5
+- (void)_presentLongLookAnimated:(BOOL)animated trigger:(int64_t)trigger completion:(id)completion
 {
-  if (a4 == 6)
+  if (trigger == 6)
   {
-    [(NCNotificationShortLookViewController *)self _presentLongLookForScrollAnimated:a3 completion:a5];
+    [(NCNotificationShortLookViewController *)self _presentLongLookForScrollAnimated:animated completion:completion];
   }
 
   else
   {
-    [(NCNotificationShortLookViewController *)self _presentLongLookViaInteractionManager:a5];
+    [(NCNotificationShortLookViewController *)self _presentLongLookViaInteractionManager:completion];
   }
 }
 
-- (void)_requestAppProtectionUnlockWithCompletion:(id)a3
+- (void)_requestAppProtectionUnlockWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NCNotificationViewController *)self notificationRequest];
-  v6 = [v5 notificationIdentifier];
-  v7 = [v5 sectionIdentifier];
-  v8 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v7];
+  completionCopy = completion;
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  notificationIdentifier = [notificationRequest notificationIdentifier];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
+  v8 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:sectionIdentifier];
   v9 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v6 un_logDigest];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138412546;
-    v20 = v11;
+    v20 = un_logDigest;
     v21 = 2112;
-    v22 = v7;
+    v22 = sectionIdentifier;
     _os_log_impl(&dword_21E77E000, v10, OS_LOG_TYPE_DEFAULT, "Requesting AppProtection authentication for %@ in %@", buf, 0x16u);
   }
 
   [(NCNotificationShortLookViewController *)self setNotificationContentViewHidden:1];
   objc_initWeak(buf, self);
-  v12 = [MEMORY[0x277CEBE98] sharedGuard];
+  mEMORY[0x277CEBE98] = [MEMORY[0x277CEBE98] sharedGuard];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __83__NCNotificationShortLookViewController__requestAppProtectionUnlockWithCompletion___block_invoke;
   v15[3] = &unk_278373248;
-  v13 = v6;
+  v13 = notificationIdentifier;
   v16 = v13;
   objc_copyWeak(&v18, buf);
-  v14 = v4;
+  v14 = completionCopy;
   v17 = v14;
-  [v12 authenticateForSubject:v8 completion:v15];
+  [mEMORY[0x277CEBE98] authenticateForSubject:v8 completion:v15];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(buf);
@@ -958,14 +958,14 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
   return result;
 }
 
-- (void)setInteractionEnabled:(BOOL)a3
+- (void)setInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (enabledCopy)
     {
       v6 = @"ENABLED";
     }
@@ -976,27 +976,27 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
     }
 
     v7 = v5;
-    v8 = [(NCNotificationViewController *)self notificationRequest];
-    v9 = [v8 notificationIdentifier];
-    v10 = [v9 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138412546;
     v13 = v6;
     v14 = 2114;
-    v15 = v10;
+    v15 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v7, OS_LOG_TYPE_DEFAULT, "Setting tap interaction %@ for notification cell for request %{public}@", buf, 0x16u);
   }
 
   v11.receiver = self;
   v11.super_class = NCNotificationShortLookViewController;
-  [(NCNotificationViewController *)&v11 setInteractionEnabled:v3];
-  [(UITapGestureRecognizer *)self->_tapGesture setEnabled:v3];
+  [(NCNotificationViewController *)&v11 setInteractionEnabled:enabledCopy];
+  [(UITapGestureRecognizer *)self->_tapGesture setEnabled:enabledCopy];
 }
 
-- (void)setPlatterHighlighted:(BOOL)a3
+- (void)setPlatterHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  [v4 setHighlighted:v3];
+  highlightedCopy = highlighted;
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  [_notificationShortLookViewIfLoaded setHighlighted:highlightedCopy];
 }
 
 - (id)backgroundMaterialView
@@ -1026,27 +1026,27 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
   return expandedPlatterViewController;
 }
 
-- (BOOL)_setNotificationRequest:(id)a3
+- (BOOL)_setNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NCNotificationViewController *)self notificationRequest];
-  v6 = [v4 matchesRequest:v5];
+  requestCopy = request;
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  v6 = [requestCopy matchesRequest:notificationRequest];
 
   v14.receiver = self;
   v14.super_class = NCNotificationShortLookViewController;
-  v7 = [(NCNotificationViewController *)&v14 _setNotificationRequest:v4];
+  v7 = [(NCNotificationViewController *)&v14 _setNotificationRequest:requestCopy];
 
   if (v7)
   {
     if (v6)
     {
       longLookNotificationViewController = self->_longLookNotificationViewController;
-      v9 = [(NCNotificationViewController *)self notificationRequest];
-      [(NCNotificationLongLookViewController *)longLookNotificationViewController setNotificationRequest:v9];
+      notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+      [(NCNotificationLongLookViewController *)longLookNotificationViewController setNotificationRequest:notificationRequest2];
 
       expandedPlatterViewController = self->_expandedPlatterViewController;
-      v11 = [(NCNotificationViewController *)self notificationRequest];
-      [(NCExpandedPlatterViewController *)expandedPlatterViewController setNotificationRequest:v11];
+      notificationRequest3 = [(NCNotificationViewController *)self notificationRequest];
+      [(NCExpandedPlatterViewController *)expandedPlatterViewController setNotificationRequest:notificationRequest3];
     }
 
     else
@@ -1055,7 +1055,7 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
       v12 = self->_longLookNotificationViewController;
       self->_longLookNotificationViewController = 0;
 
-      v11 = self->_expandedPlatterViewController;
+      notificationRequest3 = self->_expandedPlatterViewController;
       self->_expandedPlatterViewController = 0;
     }
 
@@ -1067,8 +1067,8 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
 
 - (id)_newClickPresentationInteractionManager
 {
-  v3 = [(NCNotificationViewController *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v3 notificationViewControllerShouldSupportClickPresentationInteraction:self])
+  delegate = [(NCNotificationViewController *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate notificationViewControllerShouldSupportClickPresentationInteraction:self])
   {
     v4 = 0;
   }
@@ -1085,9 +1085,9 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
 {
   if (!self->super._lookView)
   {
-    v3 = [(NCNotificationViewController *)self delegate];
+    delegate = [(NCNotificationViewController *)self delegate];
     v4 = off_27836E0F8;
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 isRichNotificationContentViewForNotificationViewController:self])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate isRichNotificationContentViewForNotificationViewController:self])
     {
       v4 = off_27836E0D0;
     }
@@ -1107,7 +1107,7 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
     v9 = self->super._lookView;
     [(NCNotificationViewController *)self contentTransform];
     [(NCNotificationLookView *)v9 setContentTransform:&v14];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 notificationViewControllerShouldAllowDragInteraction:self])
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate notificationViewControllerShouldAllowDragInteraction:self])
     {
       v10 = [objc_alloc(MEMORY[0x277D75468]) initWithDelegate:self];
       [v10 _setAllowsPointerDragBeforeLiftDelay:0];
@@ -1130,10 +1130,10 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
 
 - (BOOL)_shouldSupportExpandedPlatterInteraction
 {
-  v3 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 notificationViewControllerShouldSupportExpandedPlatterInteraction:self];
+    v4 = [delegate notificationViewControllerShouldSupportExpandedPlatterInteraction:self];
   }
 
   else
@@ -1166,65 +1166,65 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
   [(NCNotificationViewController *)&v16 _notificationViewControllerViewDidLoad];
   if ([(NCNotificationShortLookViewController *)self _shouldSupportExpandedPlatterInteraction])
   {
-    v3 = [(NCNotificationShortLookViewController *)self _interactionManagerCreatingIfNecessary];
+    _interactionManagerCreatingIfNecessary = [(NCNotificationShortLookViewController *)self _interactionManagerCreatingIfNecessary];
   }
 
-  v4 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
   [(NCNotificationShortLookViewController *)self setHasShadow:[(NCNotificationViewController *)self _canPan]];
   [(NCNotificationShortLookViewController *)self _updateShortLookShadow];
-  v5 = [(NCNotificationViewController *)self materialGroupNameBase];
-  [v4 setMaterialGroupNameBase:v5];
+  materialGroupNameBase = [(NCNotificationViewController *)self materialGroupNameBase];
+  [_notificationShortLookViewIfLoaded setMaterialGroupNameBase:materialGroupNameBase];
 
-  [v4 setMaterialRecipe:{-[NCNotificationViewController materialRecipe](self, "materialRecipe")}];
-  [(UIView *)self->_lookViewWrapper addSubview:v4];
-  v6 = [(NCNotificationShortLookViewController *)self view];
-  [v6 addSubview:self->_lookViewWrapper];
+  [_notificationShortLookViewIfLoaded setMaterialRecipe:{-[NCNotificationViewController materialRecipe](self, "materialRecipe")}];
+  [(UIView *)self->_lookViewWrapper addSubview:_notificationShortLookViewIfLoaded];
+  view = [(NCNotificationShortLookViewController *)self view];
+  [view addSubview:self->_lookViewWrapper];
 
-  v7 = [(NCNotificationViewController *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v7 notificationViewControllerShouldInterpretTapAsDefaultAction:self])
+  delegate = [(NCNotificationViewController *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate notificationViewControllerShouldInterpretTapAsDefaultAction:self])
   {
     v8 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleTapOnView_];
     tapGesture = self->_tapGesture;
     self->_tapGesture = v8;
 
     [(UITapGestureRecognizer *)self->_tapGesture setDelegate:self];
-    [v4 addGestureRecognizer:self->_tapGesture];
+    [_notificationShortLookViewIfLoaded addGestureRecognizer:self->_tapGesture];
     [(UITapGestureRecognizer *)self->_tapGesture setEnabled:[(NCNotificationViewController *)self isInteractionEnabled]];
-    v10 = [(PLClickPresentationInteractionManager *)self->_clickPresentationInteractionManager gestureRecognizerForExclusionRelationship];
-    if (v10)
+    gestureRecognizerForExclusionRelationship = [(PLClickPresentationInteractionManager *)self->_clickPresentationInteractionManager gestureRecognizerForExclusionRelationship];
+    if (gestureRecognizerForExclusionRelationship)
     {
-      [(UITapGestureRecognizer *)self->_tapGesture requireGestureRecognizerToFail:v10];
+      [(UITapGestureRecognizer *)self->_tapGesture requireGestureRecognizerToFail:gestureRecognizerForExclusionRelationship];
     }
   }
 
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v12 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v13 = [objc_alloc(MEMORY[0x277D75870]) initWithDelegate:self];
     pointerInteraction = self->_pointerInteraction;
     self->_pointerInteraction = v13;
 
-    [v4 addInteraction:self->_pointerInteraction];
-    v15 = [v4 backgroundMaterialView];
-    [v15 _cornerRadius];
-    [v4 _setCornerRadius:?];
+    [_notificationShortLookViewIfLoaded addInteraction:self->_pointerInteraction];
+    backgroundMaterialView = [_notificationShortLookViewIfLoaded backgroundMaterialView];
+    [backgroundMaterialView _cornerRadius];
+    [_notificationShortLookViewIfLoaded _setCornerRadius:?];
   }
 }
 
-- (void)_updateLookView:(id)a3 withTitleFromProvidedStaticContent:(id)a4
+- (void)_updateLookView:(id)view withTitleFromProvidedStaticContent:(id)content
 {
-  v5 = a4;
-  v6 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  [v6 setTitle:v5];
+  contentCopy = content;
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  [_notificationShortLookViewIfLoaded setTitle:contentCopy];
 }
 
-- (void)_handleTapOnView:(id)a3
+- (void)_handleTapOnView:(id)view
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 state] != 3)
+  viewCopy = view;
+  if ([viewCopy state] != 3)
   {
     goto LABEL_11;
   }
@@ -1237,28 +1237,28 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
 
   if (v5 < 0.3)
   {
-    v6 = [(NCNotificationViewController *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || ([v6 handleTapOnNotificationViewController:self] & 1) == 0)
+    delegate = [(NCNotificationViewController *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate handleTapOnNotificationViewController:self] & 1) == 0)
     {
       v7 = +[NCNotificationEventTracker sharedInstance];
-      v8 = [(NCNotificationViewController *)self notificationRequest];
-      v9 = [(NCNotificationViewController *)self notificationUsageTrackingState];
-      [v7 shortLookDefaultActionInvokedWithTrigger:0 forNotificationRequest:v8 withState:v9];
+      notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+      notificationUsageTrackingState = [(NCNotificationViewController *)self notificationUsageTrackingState];
+      [v7 shortLookDefaultActionInvokedWithTrigger:0 forNotificationRequest:notificationRequest withState:notificationUsageTrackingState];
 
-      v10 = [(NCNotificationViewController *)self staticContentProvider];
-      v11 = [v10 defaultAction];
+      staticContentProvider = [(NCNotificationViewController *)self staticContentProvider];
+      defaultAction = [staticContentProvider defaultAction];
 
-      if (v11)
+      if (defaultAction)
       {
         v12 = *MEMORY[0x277D77DD0];
         if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
         {
           v13 = v12;
-          v14 = [(NCNotificationViewController *)self notificationRequest];
-          v15 = [v14 notificationIdentifier];
-          v16 = [v15 un_logDigest];
+          notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+          notificationIdentifier = [notificationRequest2 notificationIdentifier];
+          un_logDigest = [notificationIdentifier un_logDigest];
           v26 = 138543362;
-          v27 = v16;
+          v27 = un_logDigest;
           _os_log_impl(&dword_21E77E000, v13, OS_LOG_TYPE_DEFAULT, "Notification cell tap performing default action for request %{public}@", &v26, 0xCu);
         }
 
@@ -1267,21 +1267,21 @@ uint64_t __59__NCNotificationShortLookViewController_expandAndPlayMedia__block_i
 
       else
       {
-        v18 = [(NCNotificationViewController *)self notificationRequest];
-        v19 = [v18 options];
-        v20 = [v19 revealsAdditionalContentIfNoDefaultAction];
+        notificationRequest3 = [(NCNotificationViewController *)self notificationRequest];
+        options = [notificationRequest3 options];
+        revealsAdditionalContentIfNoDefaultAction = [options revealsAdditionalContentIfNoDefaultAction];
 
-        if (v20)
+        if (revealsAdditionalContentIfNoDefaultAction)
         {
           v21 = *MEMORY[0x277D77DD0];
           if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
           {
             v22 = v21;
-            v23 = [(NCNotificationViewController *)self notificationRequest];
-            v24 = [v23 notificationIdentifier];
-            v25 = [v24 un_logDigest];
+            notificationRequest4 = [(NCNotificationViewController *)self notificationRequest];
+            notificationIdentifier2 = [notificationRequest4 notificationIdentifier];
+            un_logDigest2 = [notificationIdentifier2 un_logDigest];
             v26 = 138543362;
-            v27 = v25;
+            v27 = un_logDigest2;
             _os_log_impl(&dword_21E77E000, v22, OS_LOG_TYPE_DEFAULT, "Notification cell tap presenting long look for request %{public}@", &v26, 0xCu);
           }
 
@@ -1297,67 +1297,67 @@ LABEL_11:
     v17 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
     {
-      [(NCNotificationShortLookViewController *)v17 _handleTapOnView:v4];
+      [(NCNotificationShortLookViewController *)v17 _handleTapOnView:viewCopy];
     }
   }
 }
 
-- (unint64_t)_maximumNumberOfTextLinesForProvidedStaticContentWithDefaultNumber:(unint64_t)a3 isPrimary:(BOOL)a4 isLarge:(BOOL)a5
+- (unint64_t)_maximumNumberOfTextLinesForProvidedStaticContentWithDefaultNumber:(unint64_t)number isPrimary:(BOOL)primary isLarge:(BOOL)large
 {
-  v5 = a5;
-  v9 = [(NCNotificationViewController *)self delegate];
-  v10 = [(NCNotificationViewController *)self staticContentProvider];
-  v11 = [v10 isNumberOfLinesInfinite];
+  largeCopy = large;
+  delegate = [(NCNotificationViewController *)self delegate];
+  staticContentProvider = [(NCNotificationViewController *)self staticContentProvider];
+  isNumberOfLinesInfinite = [staticContentProvider isNumberOfLinesInfinite];
 
-  if (v11)
+  if (isNumberOfLinesInfinite)
   {
-    v12 = 0;
+    numberCopy3 = 0;
   }
 
   else
   {
-    v12 = a3;
+    numberCopy3 = number;
   }
 
-  if ((v11 & 1) == 0 && !a4)
+  if ((isNumberOfLinesInfinite & 1) == 0 && !primary)
   {
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v9 showAdditionalMessageLinesForNotificationViewController:self];
+      v13 = [delegate showAdditionalMessageLinesForNotificationViewController:self];
       v14 = 4;
-      if (v5)
+      if (largeCopy)
       {
         v14 = 6;
       }
 
       if (v13)
       {
-        v12 = v14;
+        numberCopy3 = v14;
       }
 
       else
       {
-        v12 = a3;
+        numberCopy3 = number;
       }
     }
 
     else
     {
-      v12 = a3;
+      numberCopy3 = number;
     }
   }
 
-  return v12;
+  return numberCopy3;
 }
 
-- (void)_updateThumbnailForRichContentForShortLookView:(id)a3 withContentProvider:(id)a4
+- (void)_updateThumbnailForRichContentForShortLookView:(id)view withContentProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NCNotificationViewController *)self delegate];
+  viewCopy = view;
+  providerCopy = provider;
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 isRichNotificationContentViewForNotificationViewController:self];
+    v9 = [delegate isRichNotificationContentViewForNotificationViewController:self];
   }
 
   else
@@ -1367,7 +1367,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v8 isAttachmentImageFeaturedForNotificationViewController:self];
+    v10 = [delegate isAttachmentImageFeaturedForNotificationViewController:self];
   }
 
   else
@@ -1375,15 +1375,15 @@ LABEL_11:
     v10 = 0;
   }
 
-  [v6 setAttachmentImageFeatured:v10];
-  if (([v7 hasAttachmentImage] & v9) == 1)
+  [viewCopy setAttachmentImageFeatured:v10];
+  if (([providerCopy hasAttachmentImage] & v9) == 1)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __108__NCNotificationShortLookViewController__updateThumbnailForRichContentForShortLookView_withContentProvider___block_invoke;
     v11[3] = &unk_278370A40;
-    v12 = v6;
-    [v7 fetchRichAttachmentImageIsFeatured:v10 withCompletion:v11];
+    v12 = viewCopy;
+    [providerCopy fetchRichAttachmentImageIsFeatured:v10 withCompletion:v11];
   }
 }
 
@@ -1405,10 +1405,10 @@ LABEL_11:
 
 - (void)_updateShortLookShadow
 {
-  v3 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  if (v3)
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  if (_notificationShortLookViewIfLoaded)
   {
-    v5 = v3;
+    v5 = _notificationShortLookViewIfLoaded;
     if ([(NCNotificationViewController *)self hasShadow])
     {
       v4 = [(NCNotificationViewController *)self backgroundGlassState]== 0;
@@ -1420,24 +1420,24 @@ LABEL_11:
     }
 
     [v5 setHasShadow:v4];
-    v3 = v5;
+    _notificationShortLookViewIfLoaded = v5;
   }
 }
 
 - (void)_updateScreenCaptureProhibited
 {
   lookView = self->super._lookView;
-  v4 = [(NCNotificationViewController *)self notificationRequest];
-  v3 = [v4 options];
-  -[NCNotificationLookView setScreenCaptureProhibited:](lookView, "setScreenCaptureProhibited:", [v3 screenCaptureProhibited]);
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  options = [notificationRequest options];
+  -[NCNotificationLookView setScreenCaptureProhibited:](lookView, "setScreenCaptureProhibited:", [options screenCaptureProhibited]);
 }
 
 - (BOOL)_shouldPerformHoverHighlighting
 {
-  v3 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 notificationViewControllerShouldPerformHoverHighlighting:self];
+    v4 = [delegate notificationViewControllerShouldPerformHoverHighlighting:self];
   }
 
   else
@@ -1454,11 +1454,11 @@ LABEL_11:
   if (!expandedPlatterViewController)
   {
     v4 = [NCExpandedPlatterViewController alloc];
-    v5 = [(NCNotificationViewController *)self notificationRequest];
-    v6 = [(NCNotificationViewController *)self customContentProvider];
-    v7 = [(NCNotificationViewController *)self notificationRequest];
-    v8 = [v6 customContentViewControllerForNotificationRequest:v7];
-    v9 = [(NCExpandedPlatterViewController *)v4 initWithNotificationRequest:v5 customContentViewController:v8];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    customContentProvider = [(NCNotificationViewController *)self customContentProvider];
+    notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+    v8 = [customContentProvider customContentViewControllerForNotificationRequest:notificationRequest2];
+    v9 = [(NCExpandedPlatterViewController *)v4 initWithNotificationRequest:notificationRequest customContentViewController:v8];
     v10 = self->_expandedPlatterViewController;
     self->_expandedPlatterViewController = v9;
 
@@ -1470,9 +1470,9 @@ LABEL_11:
   return expandedPlatterViewController;
 }
 
-- (void)_dismissPresentedViewControllerAnimated:(BOOL)a3
+- (void)_dismissPresentedViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   expandedPlatterViewController = self->_expandedPlatterViewController;
   if (!expandedPlatterViewController)
   {
@@ -1480,13 +1480,13 @@ LABEL_11:
   }
 
   v9 = expandedPlatterViewController;
-  v6 = [(NCExpandedPlatterViewController *)v9 presentingViewController];
-  if (v6)
+  presentingViewController = [(NCExpandedPlatterViewController *)v9 presentingViewController];
+  if (presentingViewController)
   {
-    v7 = v6;
-    v8 = [(NCExpandedPlatterViewController *)v9 isBeingDismissed];
+    v7 = presentingViewController;
+    isBeingDismissed = [(NCExpandedPlatterViewController *)v9 isBeingDismissed];
 
-    if ((v8 & 1) == 0)
+    if ((isBeingDismissed & 1) == 0)
     {
       if (v9 == self->_expandedPlatterViewController)
       {
@@ -1495,37 +1495,37 @@ LABEL_11:
 
       else if (([(PLClickPresentationInteractionManager *)self->_clickPresentationInteractionManager dismissIfPossible:0]& 1) == 0)
       {
-        [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController dismissViewControllerAnimated:v3 completion:0];
+        [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController dismissViewControllerAnimated:animatedCopy completion:0];
       }
     }
   }
 }
 
-- (void)_askDelegateToExecuteAction:(id)a3 withParameters:(id)a4 animated:(BOOL)a5
+- (void)_askDelegateToExecuteAction:(id)action withParameters:(id)parameters animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  actionCopy = action;
+  parametersCopy = parameters;
   if (!self->_expandedPlatterDismissalReason)
   {
-    v10 = [v8 identifier];
-    if ([v10 length])
+    identifier = [actionCopy identifier];
+    if ([identifier length])
     {
-      objc_storeStrong(&self->_expandedPlatterDismissalReason, v10);
+      objc_storeStrong(&self->_expandedPlatterDismissalReason, identifier);
     }
   }
 
   v11.receiver = self;
   v11.super_class = NCNotificationShortLookViewController;
-  [(NCNotificationViewController *)&v11 _askDelegateToExecuteAction:v8 withParameters:v9 animated:v5];
+  [(NCNotificationViewController *)&v11 _askDelegateToExecuteAction:actionCopy withParameters:parametersCopy animated:animatedCopy];
 }
 
 - (void)_intelligenceLightAnimationIfNeeded
 {
-  v13 = [(NCNotificationViewController *)self delegate];
-  if (v13 && (objc_opt_respondsToSelector() & 1) != 0 && [v13 importantAdornmentEligibleOptionsForNotificationViewController:self])
+  delegate = [(NCNotificationViewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0 && [delegate importantAdornmentEligibleOptionsForNotificationViewController:self])
   {
-    v3 = [v13 importantAdornmentEligibleOptionsForNotificationViewController:self];
+    v3 = [delegate importantAdornmentEligibleOptionsForNotificationViewController:self];
   }
 
   else
@@ -1533,25 +1533,25 @@ LABEL_11:
     v3 = 0;
   }
 
-  v4 = [(NCNotificationViewController *)self notificationRequest];
-  v5 = [v4 alertOptions];
-  v6 = [v5 intelligentBehavior];
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  alertOptions = [notificationRequest alertOptions];
+  intelligentBehavior = [alertOptions intelligentBehavior];
 
-  LODWORD(v5) = [v4 isHighlight];
-  v7 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v8 = v7;
-  v9 = v5 ^ 1;
+  LODWORD(alertOptions) = [notificationRequest isHighlight];
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  v8 = _notificationShortLookViewIfLoaded;
+  v9 = alertOptions ^ 1;
   if ((v3 & 4) == 0)
   {
     v9 = 1;
   }
 
-  v10 = (v3 & 2) != 0 && v6 == 2;
+  v10 = (v3 & 2) != 0 && intelligentBehavior == 2;
   if (v10 || !v9)
   {
-    [v7 updateLightEffectToFillLightEnabled:1 edgeLightEnabled:1 duration:0.65 delay:0.0];
+    [_notificationShortLookViewIfLoaded updateLightEffectToFillLightEnabled:1 edgeLightEnabled:1 duration:0.65 delay:0.0];
     v12 = 1.5;
-    v7 = v8;
+    _notificationShortLookViewIfLoaded = v8;
     v11 = 0.65;
   }
 
@@ -1561,36 +1561,36 @@ LABEL_11:
     v12 = 0.0;
   }
 
-  [v7 updateLightEffectToFillLightEnabled:0 edgeLightEnabled:0 duration:v11 delay:v12];
+  [_notificationShortLookViewIfLoaded updateLightEffectToFillLightEnabled:0 edgeLightEnabled:0 duration:v11 delay:v12];
 }
 
-- (void)contentProvider:(id)a3 performAction:(id)a4 animated:(BOOL)a5
+- (void)contentProvider:(id)provider performAction:(id)action animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NCExpandedPlatterViewController *)self->_expandedPlatterViewController customContentViewController];
-  v11 = v10;
-  if (v10)
+  providerCopy = provider;
+  actionCopy = action;
+  customContentViewController = [(NCExpandedPlatterViewController *)self->_expandedPlatterViewController customContentViewController];
+  v11 = customContentViewController;
+  if (customContentViewController)
   {
-    v12 = v10;
+    _customContentProvidingViewController = customContentViewController;
   }
 
   else
   {
-    v12 = [(NCNotificationViewController *)self->_longLookNotificationViewController _customContentProvidingViewController];
+    _customContentProvidingViewController = [(NCNotificationViewController *)self->_longLookNotificationViewController _customContentProvidingViewController];
   }
 
-  v13 = v12;
+  v13 = _customContentProvidingViewController;
 
-  if (v9 && (-[NCNotificationViewController notificationRequest](self, "notificationRequest"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v13 performAction:v9 forNotification:v14], v14, (v15 & 1) != 0))
+  if (actionCopy && (-[NCNotificationViewController notificationRequest](self, "notificationRequest"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v13 performAction:actionCopy forNotification:v14], v14, (v15 & 1) != 0))
   {
     v16 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21E77E000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Notification action handled by customContentProvider", buf, 0xCu);
     }
   }
@@ -1599,34 +1599,34 @@ LABEL_11:
   {
     v17.receiver = self;
     v17.super_class = NCNotificationShortLookViewController;
-    [(NCNotificationViewController *)&v17 contentProvider:v8 performAction:v9 animated:v5];
+    [(NCNotificationViewController *)&v17 contentProvider:providerCopy performAction:actionCopy animated:animatedCopy];
   }
 }
 
-- (void)_expandedPlatterInteractionManager:(id)a3 willDismissWithReason:(id)a4
+- (void)_expandedPlatterInteractionManager:(id)manager willDismissWithReason:(id)reason
 {
-  if (a4)
+  if (reason)
   {
-    v4 = a4;
+    reasonCopy = reason;
   }
 
   else
   {
-    v4 = @"NCExpandedPlatterObservableDismissalReasonUnknown";
+    reasonCopy = @"NCExpandedPlatterObservableDismissalReasonUnknown";
   }
 
   expandedPlatterViewController = self->_expandedPlatterViewController;
-  v6 = a4;
-  [(NCExpandedPlatterViewController *)expandedPlatterViewController expandedPlatter:expandedPlatterViewController willDismissWithReason:v4];
+  reasonCopy2 = reason;
+  [(NCExpandedPlatterViewController *)expandedPlatterViewController expandedPlatter:expandedPlatterViewController willDismissWithReason:reasonCopy];
 }
 
-- (void)_expandedPlatterInteractionManager:(id)a3 didDismissWithReason:(id)a4
+- (void)_expandedPlatterInteractionManager:(id)manager didDismissWithReason:(id)reason
 {
-  v5 = a4;
-  v8 = v5;
-  if (v5)
+  reasonCopy = reason;
+  v8 = reasonCopy;
+  if (reasonCopy)
   {
-    v6 = v5;
+    v6 = reasonCopy;
   }
 
   else
@@ -1656,30 +1656,30 @@ void __97__NCNotificationShortLookViewController__expandedPlatterInteractionMana
 
 - (BOOL)_isLockedByAppProtection
 {
-  v2 = [(NCNotificationViewController *)self notificationRequest];
-  v3 = [v2 sectionIdentifier];
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
 
-  v4 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v3];
-  v5 = [v4 isLocked];
+  v4 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:sectionIdentifier];
+  isLocked = [v4 isLocked];
 
-  return v5;
+  return isLocked;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [a4 view];
+  view = [touch view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return (isKindOfClass & 1) == 0;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v6 = a5;
+  regionCopy = region;
   if ([(NCNotificationShortLookViewController *)self _shouldPerformHoverHighlighting])
   {
-    v7 = v6;
+    v7 = regionCopy;
   }
 
   else
@@ -1692,12 +1692,12 @@ void __97__NCNotificationShortLookViewController__expandedPlatterInteractionMana
   return v7;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded:a3];
-  v6 = [(__CFString *)v5 window];
+  v5 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded:interaction];
+  window = [(__CFString *)v5 window];
 
-  if (v6)
+  if (window)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v5];
     v8 = [MEMORY[0x277D75868] effectWithPreview:v7];
@@ -1721,18 +1721,18 @@ void __97__NCNotificationShortLookViewController__expandedPlatterInteractionMana
   return v9;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v6 = [(NCNotificationViewController *)self delegate:a3];
+  v6 = [(NCNotificationViewController *)self delegate:interaction];
   if (objc_opt_respondsToSelector())
   {
     [v6 notificationViewController:self isPerformingHoverHighlighting:1];
   }
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v6 = [(NCNotificationViewController *)self delegate:a3];
+  v6 = [(NCNotificationViewController *)self delegate:interaction];
   if (objc_opt_respondsToSelector())
   {
     [v6 notificationViewController:self isPerformingHoverHighlighting:0];
@@ -1761,26 +1761,26 @@ uint64_t __77__NCNotificationShortLookViewController__sharedNotificationFeedback
 
 + (void)_prepareSharedNotificationFeedbackGenerator
 {
-  v2 = [a1 _sharedNotificationFeedbackGenerator];
-  [v2 prepare];
+  _sharedNotificationFeedbackGenerator = [self _sharedNotificationFeedbackGenerator];
+  [_sharedNotificationFeedbackGenerator prepare];
 }
 
 + (void)_playNegativeInteractionHaptic
 {
-  v2 = [a1 _sharedNotificationFeedbackGenerator];
-  [v2 notificationOccurred:2];
+  _sharedNotificationFeedbackGenerator = [self _sharedNotificationFeedbackGenerator];
+  [_sharedNotificationFeedbackGenerator notificationOccurred:2];
 }
 
-- (void)_presentLongLookViaClickPresentationInteraction:(id)a3
+- (void)_presentLongLookViaClickPresentationInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   clickPresentationInteractionManager = self->_clickPresentationInteractionManager;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __89__NCNotificationShortLookViewController__presentLongLookViaClickPresentationInteraction___block_invoke;
   v7[3] = &unk_27836F910;
-  v8 = v4;
-  v6 = v4;
+  v8 = interactionCopy;
+  v6 = interactionCopy;
   [(PLClickPresentationInteractionManager *)clickPresentationInteractionManager presentIfPossible:v7];
 }
 
@@ -1795,19 +1795,19 @@ uint64_t __89__NCNotificationShortLookViewController__presentLongLookViaClickPre
   return result;
 }
 
-- (void)_presentLongLookViaInteractionManager:(id)a3
+- (void)_presentLongLookViaInteractionManager:(id)manager
 {
-  v4 = a3;
-  v6 = [(NCNotificationShortLookViewController *)self _interactionManagerCreatingIfNecessary];
-  v5 = [(NCNotificationViewController *)self _lookView];
-  [v5 bounds];
+  managerCopy = manager;
+  _interactionManagerCreatingIfNecessary = [(NCNotificationShortLookViewController *)self _interactionManagerCreatingIfNecessary];
+  _lookView = [(NCNotificationViewController *)self _lookView];
+  [_lookView bounds];
   UIRectGetCenter();
-  [v6 presentAtLocation:v4 completion:?];
+  [_interactionManagerCreatingIfNecessary presentAtLocation:managerCopy completion:?];
 }
 
-- (void)_presentLongLookForScrollAnimated:(BOOL)a3 completion:(id)a4
+- (void)_presentLongLookForScrollAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   self->_didScrollPresentLongLookViewController = 1;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1821,7 +1821,7 @@ uint64_t __89__NCNotificationShortLookViewController__presentLongLookViaClickPre
   v22[2] = __86__NCNotificationShortLookViewController__presentLongLookForScrollAnimated_completion___block_invoke_3;
   v22[3] = &unk_27836F4C0;
   objc_copyWeak(&v24, &location);
-  v7 = v5;
+  v7 = completionCopy;
   v23 = v7;
   v8 = _Block_copy(v22);
   v14 = MEMORY[0x277D85DD0];
@@ -1907,33 +1907,33 @@ uint64_t __86__NCNotificationShortLookViewController__presentLongLookForScrollAn
   return MEMORY[0x2821F96F8](WeakRetained);
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCAA88]);
   [v5 registerDataRepresentationForTypeIdentifier:@"com.apple.usernotifications.drag.response" visibility:3 loadHandler:&__block_literal_global_164_0];
   v6 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v5];
-  v7 = [(NCNotificationViewController *)self notificationRequest];
-  v8 = [v7 userNotification];
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  userNotification = [notificationRequest userNotification];
 
-  v9 = [(NCNotificationViewController *)self notificationRequest];
-  v10 = [v9 sectionIdentifier];
+  notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+  sectionIdentifier = [notificationRequest2 sectionIdentifier];
 
-  v11 = [v8 request];
-  v12 = [v11 content];
-  v13 = [v12 defaultActionURL];
+  request = [userNotification request];
+  content = [request content];
+  defaultActionURL = [content defaultActionURL];
 
-  if (v13)
+  if (defaultActionURL)
   {
-    v14 = [objc_alloc(MEMORY[0x277D66998]) initWithUniqueIdentifier:v10 withLaunchActions:0 startLocation:9];
-    [v14 setLaunchURL:v13];
+    v14 = [objc_alloc(MEMORY[0x277D66998]) initWithUniqueIdentifier:sectionIdentifier withLaunchActions:0 startLocation:9];
+    [v14 setLaunchURL:defaultActionURL];
     [v6 setLocalObject:v14];
   }
 
   else
   {
     v15 = objc_alloc(MEMORY[0x277D757C0]);
-    v16 = [MEMORY[0x277CE1FC8] responseWithNotification:v8 actionIdentifier:*MEMORY[0x277CE20E8]];
+    v16 = [MEMORY[0x277CE1FC8] responseWithNotification:userNotification actionIdentifier:*MEMORY[0x277CE20E8]];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __82__NCNotificationShortLookViewController_dragInteraction_itemsForBeginningSession___block_invoke_2;
@@ -1943,7 +1943,7 @@ uint64_t __86__NCNotificationShortLookViewController__presentLongLookForScrollAn
 
     v17 = objc_alloc(MEMORY[0x277D66998]);
     v18 = [MEMORY[0x277CBEB98] setWithObject:v14];
-    v19 = [v17 initWithUniqueIdentifier:v10 withLaunchActions:v18 startLocation:9];
+    v19 = [v17 initWithUniqueIdentifier:sectionIdentifier withLaunchActions:v18 startLocation:9];
 
     [v6 setLocalObject:v19];
   }
@@ -1986,7 +1986,7 @@ void __82__NCNotificationShortLookViewController_dragInteraction_itemsForBeginni
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
   v5 = [objc_alloc(MEMORY[0x277D75B88]) initWithView:self->_lookViewWrapper];
   [v5 set_springboardPlatterStyle:1];
@@ -1994,16 +1994,16 @@ void __82__NCNotificationShortLookViewController_dragInteraction_itemsForBeginni
   return v5;
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v6 = a5;
+  defaultCopy = default;
   v7 = self->_lookViewWrapper;
-  v8 = [(UIView *)v7 superview];
-  v9 = v6;
+  superview = [(UIView *)v7 superview];
+  v9 = defaultCopy;
   v10 = v9;
   if (v7)
   {
-    v11 = v8 == 0;
+    v11 = superview == 0;
   }
 
   else
@@ -2014,10 +2014,10 @@ void __82__NCNotificationShortLookViewController_dragInteraction_itemsForBeginni
   v12 = v9;
   if (!v11)
   {
-    v13 = [v8 window];
+    window = [superview window];
 
     v12 = v10;
-    if (v13)
+    if (window)
     {
       v14 = objc_alloc(MEMORY[0x277D75488]);
       [(UIView *)v7 center];
@@ -2025,7 +2025,7 @@ void __82__NCNotificationShortLookViewController_dragInteraction_itemsForBeginni
       v18[0] = *MEMORY[0x277CBF2C0];
       v18[1] = v15;
       v18[2] = *(MEMORY[0x277CBF2C0] + 32);
-      v16 = [v14 initWithContainer:v8 center:v18 transform:?];
+      v16 = [v14 initWithContainer:superview center:v18 transform:?];
       v12 = [v10 retargetedPreviewWithTarget:v16];
 
       [v12 set_springboardPlatterStyle:1];
@@ -2035,10 +2035,10 @@ void __82__NCNotificationShortLookViewController_dragInteraction_itemsForBeginni
   return v12;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
   v7 = self->super._lookView;
-  v8 = a4;
+  animatorCopy = animator;
   [(NCNotificationLookView *)v7 bounds];
   x = v23.origin.x;
   y = v23.origin.y;
@@ -2062,7 +2062,7 @@ void __82__NCNotificationShortLookViewController_dragInteraction_itemsForBeginni
   v21 = v7;
   v22 = fmax(fmin((v14 + 12.0) / v14, 1.10000002), 1.00100005);
   v15 = v7;
-  [v8 addAnimations:v20];
+  [animatorCopy addAnimations:v20];
   v16 = self->_lookViewWrapper;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -2070,7 +2070,7 @@ void __82__NCNotificationShortLookViewController_dragInteraction_itemsForBeginni
   v18[3] = &unk_2783732E0;
   v19 = v16;
   v17 = v16;
-  [v8 addCompletion:v18];
+  [animatorCopy addCompletion:v18];
 }
 
 uint64_t __93__NCNotificationShortLookViewController_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke(uint64_t a1)
@@ -2090,7 +2090,7 @@ uint64_t __93__NCNotificationShortLookViewController_dragInteraction_willAnimate
   return result;
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
   v6 = self->super._lookView;
   v8[0] = MEMORY[0x277D85DD0];
@@ -2099,7 +2099,7 @@ uint64_t __93__NCNotificationShortLookViewController_dragInteraction_willAnimate
   v8[3] = &unk_27836F6A8;
   v9 = v6;
   v7 = v6;
-  [a5 addAnimations:v8];
+  [animator addAnimations:v8];
 }
 
 uint64_t __92__NCNotificationShortLookViewController_dragInteraction_item_willAnimateCancelWithAnimator___block_invoke(uint64_t a1)
@@ -2109,14 +2109,14 @@ uint64_t __92__NCNotificationShortLookViewController_dragInteraction_item_willAn
   return [v1 setTransform:&v3];
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NCNotificationViewController *)self delegate];
+  interactionCopy = interaction;
+  beginCopy = begin;
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 notificationViewController:self dragInteraction:v8 sessionWillBegin:v6];
+    [delegate notificationViewController:self dragInteraction:interactionCopy sessionWillBegin:beginCopy];
   }
 
   [(NCNotificationViewController *)self _notifyObserversWithBlock:&__block_literal_global_179];
@@ -2132,30 +2132,30 @@ void __74__NCNotificationShortLookViewController_dragInteraction_sessionWillBegi
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [(NCNotificationViewController *)self delegate];
+  interactionCopy = interaction;
+  sessionCopy = session;
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 notificationViewController:self dragInteraction:v10 session:v8 willEndWithOperation:a5];
+    [delegate notificationViewController:self dragInteraction:interactionCopy session:sessionCopy willEndWithOperation:operation];
   }
 
-  if (a5 <= 1)
+  if (operation <= 1)
   {
     [(UIView *)self->_lookViewWrapper setAlpha:1.0];
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [(NCNotificationViewController *)self delegate];
+  interactionCopy = interaction;
+  sessionCopy = session;
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 notificationViewController:self dragInteraction:v10 session:v8 didEndWithOperation:a5];
+    [delegate notificationViewController:self dragInteraction:interactionCopy session:sessionCopy didEndWithOperation:operation];
   }
 
   [(NCNotificationViewController *)self _notifyObserversWithBlock:&__block_literal_global_187];
@@ -2171,50 +2171,50 @@ void __85__NCNotificationShortLookViewController_dragInteraction_session_didEndW
   }
 }
 
-- (id)expandedPlatterInteractionManagerIdentifier:(id)a3
+- (id)expandedPlatterInteractionManagerIdentifier:(id)identifier
 {
-  v4 = [(NCNotificationViewController *)self notificationRequest];
-  v5 = [v4 sectionIdentifier];
-  v6 = [(NCNotificationViewController *)self notificationRequest];
-  v7 = [v6 notificationIdentifier];
-  v8 = [v7 un_logDigest];
-  v9 = [v5 stringByAppendingPathExtension:v8];
+  notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
+  notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+  notificationIdentifier = [notificationRequest2 notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
+  v9 = [sectionIdentifier stringByAppendingPathExtension:un_logDigest];
 
   return v9;
 }
 
-- (id)expandedPlatterInteractionManager:(id)a3 menuWithSuggestedActions:(id)a4
+- (id)expandedPlatterInteractionManager:(id)manager menuWithSuggestedActions:(id)actions
 {
   v4 = MEMORY[0x277D75710];
-  v5 = [(NCNotificationViewController *)self staticContentProvider:a3];
-  v6 = [v5 menuActions];
-  v7 = [v4 menuWithChildren:v6];
+  v5 = [(NCNotificationViewController *)self staticContentProvider:manager];
+  menuActions = [v5 menuActions];
+  v7 = [v4 menuWithChildren:menuActions];
 
   return v7;
 }
 
-- (BOOL)expandedPlatterInteractionManager:(id)a3 shouldBeginInteractionWithTouchAtLocation:(CGPoint)a4
+- (BOOL)expandedPlatterInteractionManager:(id)manager shouldBeginInteractionWithTouchAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(NCNotificationViewController *)self staticContentProvider];
-  v9 = [v8 isThreadSummary];
+  managerCopy = manager;
+  staticContentProvider = [(NCNotificationViewController *)self staticContentProvider];
+  isThreadSummary = [staticContentProvider isThreadSummary];
 
-  if (v9)
+  if (isThreadSummary)
   {
 LABEL_33:
     v22 = 0;
     goto LABEL_34;
   }
 
-  v10 = [(NCNotificationViewController *)self isInteractionEnabled];
+  isInteractionEnabled = [(NCNotificationViewController *)self isInteractionEnabled];
   if ([(NCNotificationShortLookViewController *)self isViewLoaded])
   {
-    v11 = [(NCNotificationShortLookViewController *)self viewForPreview];
-    v12 = [v11 window];
-    v13 = v12 != 0;
+    viewForPreview = [(NCNotificationShortLookViewController *)self viewForPreview];
+    window = [viewForPreview window];
+    v13 = window != 0;
   }
 
   else
@@ -2224,17 +2224,17 @@ LABEL_33:
 
   if (([(NCNotificationShortLookViewController *)self isBeingPresented]& 1) != 0)
   {
-    v14 = 1;
+    isBeingDismissed = 1;
   }
 
   else
   {
-    v14 = [(NCNotificationShortLookViewController *)self isBeingDismissed];
+    isBeingDismissed = [(NCNotificationShortLookViewController *)self isBeingDismissed];
   }
 
-  if (!v10 || !v13)
+  if (!isInteractionEnabled || !v13)
   {
-    if (v10)
+    if (isInteractionEnabled)
     {
       goto LABEL_15;
     }
@@ -2247,11 +2247,11 @@ LABEL_30:
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v26 = v25;
-      v27 = [(NCNotificationViewController *)self notificationRequest];
-      v28 = [v27 notificationIdentifier];
-      v29 = [v28 un_logDigest];
+      notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+      notificationIdentifier = [notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543618;
-      *&buf[4] = v29;
+      *&buf[4] = un_logDigest;
       *&buf[12] = 2114;
       *&buf[14] = v24;
       _os_log_impl(&dword_21E77E000, v26, OS_LOG_TYPE_DEFAULT, "Denying interaction for view controller for request %{public}@: %{public}@", buf, 0x16u);
@@ -2260,17 +2260,17 @@ LABEL_30:
     goto LABEL_33;
   }
 
-  v15 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v16 = [v15 auxiliaryOptionsVisible];
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  auxiliaryOptionsVisible = [_notificationShortLookViewIfLoaded auxiliaryOptionsVisible];
 
-  if (v16)
+  if (auxiliaryOptionsVisible)
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v33 = 0;
-    v17 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-    v18 = [v17 auxiliaryOptionButtons];
+    _notificationShortLookViewIfLoaded2 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+    auxiliaryOptionButtons = [_notificationShortLookViewIfLoaded2 auxiliaryOptionButtons];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __117__NCNotificationShortLookViewController_expandedPlatterInteractionManager_shouldBeginInteractionWithTouchAtLocation___block_invoke;
@@ -2279,11 +2279,11 @@ LABEL_30:
     v31[5] = buf;
     *&v31[6] = x;
     *&v31[7] = y;
-    [v18 enumerateObjectsUsingBlock:v31];
+    [auxiliaryOptionButtons enumerateObjectsUsingBlock:v31];
 
-    LOBYTE(v17) = *(*&buf[8] + 24);
+    LOBYTE(_notificationShortLookViewIfLoaded2) = *(*&buf[8] + 24);
     _Block_object_dispose(buf, 8);
-    if (v17)
+    if (_notificationShortLookViewIfLoaded2)
     {
       goto LABEL_29;
     }
@@ -2294,10 +2294,10 @@ LABEL_30:
     goto LABEL_15;
   }
 
-  v19 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v20 = [v19 notificationViewControllerShouldAllowExpandedPlatterInteraction:self];
+    v20 = [delegate notificationViewControllerShouldAllowExpandedPlatterInteraction:self];
 LABEL_24:
     v23 = v20;
     goto LABEL_26;
@@ -2305,13 +2305,13 @@ LABEL_24:
 
   if (objc_opt_respondsToSelector())
   {
-    v20 = [v19 notificationViewControllerShouldAllowClickPresentationInteraction:self];
+    v20 = [delegate notificationViewControllerShouldAllowClickPresentationInteraction:self];
     goto LABEL_24;
   }
 
   v23 = 1;
 LABEL_26:
-  if (!((self->_trigger != 0 || (v23 & 1) == 0) | v14 & 1))
+  if (!((self->_trigger != 0 || (v23 & 1) == 0) | isBeingDismissed & 1))
   {
     self->_trigger = 1;
   }
@@ -2322,7 +2322,7 @@ LABEL_26:
   }
 
 LABEL_15:
-  if (v14 & 1 | !v13)
+  if (isBeingDismissed & 1 | !v13)
   {
     v21 = @"view not in a window";
     if (v13)
@@ -2367,26 +2367,26 @@ void __117__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   }
 }
 
-- (void)expandedPlatterInteractionManager:(id)a3 shouldCommitInteraction:(id)a4
+- (void)expandedPlatterInteractionManager:(id)manager shouldCommitInteraction:(id)interaction
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __99__NCNotificationShortLookViewController_expandedPlatterInteractionManager_shouldCommitInteraction___block_invoke;
   aBlock[3] = &unk_2783706E8;
   objc_copyWeak(&v23, &location);
-  v8 = v7;
+  v8 = interactionCopy;
   v22 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(NCNotificationViewController *)self delegate];
-  v11 = [(NCNotificationViewController *)self staticContentProvider];
-  v12 = [v11 isThreadSummary];
+  delegate = [(NCNotificationViewController *)self delegate];
+  staticContentProvider = [(NCNotificationViewController *)self staticContentProvider];
+  isThreadSummary = [staticContentProvider isThreadSummary];
 
-  if (v12)
+  if (isThreadSummary)
   {
-    [v10 handleTapOnNotificationViewController:self];
+    [delegate handleTapOnNotificationViewController:self];
 LABEL_14:
     v9[2](v9, 0);
     goto LABEL_15;
@@ -2397,11 +2397,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = [v6 reachedForceThreshold];
+  reachedForceThreshold = [managerCopy reachedForceThreshold];
   trigger = self->_trigger;
   if (trigger == 1)
   {
-    v15 = v13;
+    v15 = reachedForceThreshold;
   }
 
   else
@@ -2415,8 +2415,8 @@ LABEL_14:
     self->_trigger = 2;
   }
 
-  v16 = [(NCNotificationShortLookViewController *)self _isLockedByAppProtection];
-  if (trigger == 1 && v16)
+  _isLockedByAppProtection = [(NCNotificationShortLookViewController *)self _isLockedByAppProtection];
+  if (trigger == 1 && _isLockedByAppProtection)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -2481,14 +2481,14 @@ uint64_t __99__NCNotificationShortLookViewController_expandedPlatterInteractionM
   }
 }
 
-- (void)_checkDelegateShouldTransitionForTrigger:(int64_t)a3 completionBlock:(id)a4
+- (void)_checkDelegateShouldTransitionForTrigger:(int64_t)trigger completionBlock:(id)block
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NCNotificationViewController *)self delegate];
+  blockCopy = block;
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 notificationRequestPresenter:self shouldTransitionToStage:@"notificationViewController.presentingStage.longLook" forTrigger:a3 completionBlock:v6];
+    [delegate notificationRequestPresenter:self shouldTransitionToStage:@"notificationViewController.presentingStage.longLook" forTrigger:trigger completionBlock:blockCopy];
   }
 
   else
@@ -2497,31 +2497,31 @@ uint64_t __99__NCNotificationShortLookViewController_expandedPlatterInteractionM
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(NCNotificationViewController *)self notificationRequest];
-      v11 = [v10 notificationIdentifier];
-      v12 = [v11 un_logDigest];
+      notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+      notificationIdentifier = [notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v13 = 138543362;
-      v14 = v12;
+      v14 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "Delegate for notification view controller for request %{public}@ doesn't respond to selector – denying presentation", &v13, 0xCu);
     }
 
-    v6[2](v6, 0);
+    blockCopy[2](blockCopy, 0);
     [objc_opt_class() _playNegativeInteractionHaptic];
   }
 }
 
-- (void)expandedPlatterInteractionManager:(id)a3 willPresentContentWithAnimator:(id)a4
+- (void)expandedPlatterInteractionManager:(id)manager willPresentContentWithAnimator:(id)animator
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_activeExpandedPlatterInteractionAnimator, a4);
+  managerCopy = manager;
+  animatorCopy = animator;
+  objc_storeStrong(&self->_activeExpandedPlatterInteractionAnimator, animator);
   v8 = self->_expandedPlatterViewController;
   [(NCExpandedPlatterViewController *)v8 expandedPlatterWillPresent:v8];
-  v9 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [(NCNotificationViewController *)self notificationRequest];
-    [v9 notificationViewController:self willPresentLongLookForRequst:v10 animator:v7];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    [delegate notificationViewController:self willPresentLongLookForRequst:notificationRequest animator:animatorCopy];
   }
 
   objc_initWeak(&location, self);
@@ -2532,7 +2532,7 @@ uint64_t __99__NCNotificationShortLookViewController_expandedPlatterInteractionM
   objc_copyWeak(&v16, &location);
   v11 = v8;
   v14 = v11;
-  v12 = v7;
+  v12 = animatorCopy;
   v15 = v12;
   [v12 addCompletion:v13];
 
@@ -2576,12 +2576,12 @@ void __106__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   }
 }
 
-- (BOOL)expandedPlatterInteractionManagerShouldAllowLongPressGesture:(id)a3
+- (BOOL)expandedPlatterInteractionManagerShouldAllowLongPressGesture:(id)gesture
 {
-  v4 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 notificationViewControllerShouldAllowLongPressGesture:self];
+    v5 = [delegate notificationViewControllerShouldAllowLongPressGesture:self];
   }
 
   else
@@ -2592,11 +2592,11 @@ void __106__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   return v5;
 }
 
-- (void)expandedPlatterInteractionManager:(id)a3 willDismissContentWithAnimator:(id)a4
+- (void)expandedPlatterInteractionManager:(id)manager willDismissContentWithAnimator:(id)animator
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_activeExpandedPlatterInteractionAnimator, a4);
+  managerCopy = manager;
+  animatorCopy = animator;
+  objc_storeStrong(&self->_activeExpandedPlatterInteractionAnimator, animator);
   expandedPlatterDismissalReason = self->_expandedPlatterDismissalReason;
   if (!expandedPlatterDismissalReason)
   {
@@ -2604,12 +2604,12 @@ void __106__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   }
 
   v9 = expandedPlatterDismissalReason;
-  [(NCNotificationShortLookViewController *)self _expandedPlatterInteractionManager:v6 willDismissWithReason:v9];
-  v10 = [(NCNotificationViewController *)self delegate];
+  [(NCNotificationShortLookViewController *)self _expandedPlatterInteractionManager:managerCopy willDismissWithReason:v9];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(NCNotificationViewController *)self notificationRequest];
-    [v10 notificationViewController:self dismissPresentLongLookForRequst:v11 animator:v7];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    [delegate notificationViewController:self dismissPresentLongLookForRequst:notificationRequest animator:animatorCopy];
   }
 
   v16[0] = MEMORY[0x277D85DD0];
@@ -2617,13 +2617,13 @@ void __106__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   v16[2] = __106__NCNotificationShortLookViewController_expandedPlatterInteractionManager_willDismissContentWithAnimator___block_invoke;
   v16[3] = &unk_278371788;
   v16[4] = self;
-  v17 = v7;
-  v18 = v6;
+  v17 = animatorCopy;
+  v18 = managerCopy;
   v19 = v9;
   v12 = v9;
-  v13 = v6;
-  v14 = v7;
-  v15 = self;
+  v13 = managerCopy;
+  v14 = animatorCopy;
+  selfCopy = self;
   [v14 addCompletion:v16];
 }
 
@@ -2640,9 +2640,9 @@ void __106__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   }
 }
 
-- (int64_t)expandedPlatterViewController:(id)a3 dateFormatStyleForNotificationRequest:(id)a4
+- (int64_t)expandedPlatterViewController:(id)controller dateFormatStyleForNotificationRequest:(id)request
 {
-  v5 = [(NCNotificationViewController *)self delegate:a3];
+  v5 = [(NCNotificationViewController *)self delegate:controller];
   if (objc_opt_respondsToSelector())
   {
     v6 = [v5 notificationViewControllerDateFormatStyle:self];
@@ -2656,14 +2656,14 @@ void __106__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   return v6;
 }
 
-- (void)expandedPlatterViewController:(id)a3 requestsDismissalWithReason:(id)a4 userInfo:(id)a5
+- (void)expandedPlatterViewController:(id)controller requestsDismissalWithReason:(id)reason userInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  objc_storeStrong(&self->_expandedPlatterDismissalReason, a4);
+  reasonCopy = reason;
+  infoCopy = info;
+  objc_storeStrong(&self->_expandedPlatterDismissalReason, reason);
   if (NCEqualExpandedPlatterObservableDismissalReasons(self->_expandedPlatterDismissalReason, @"dismissalReasonURL"))
   {
-    v10 = [v9 objectForKey:@"NCExpandedPlatterObservableDismissalReasonUserInfoKeyURL"];
+    v10 = [infoCopy objectForKey:@"NCExpandedPlatterObservableDismissalReasonUserInfoKeyURL"];
     if (v10)
     {
       v11 = dispatch_get_global_queue(25, 0);
@@ -2679,9 +2679,9 @@ void __106__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   else if (NCEqualExpandedPlatterObservableDismissalReasons(self->_expandedPlatterDismissalReason, @"dismissalReasonDefaultTap"))
   {
     v12 = +[NCNotificationEventTracker sharedInstance];
-    v13 = [(NCNotificationViewController *)self notificationRequest];
-    v14 = [(NCNotificationViewController *)self notificationUsageTrackingState];
-    [v12 longLookDefaultActionInvokedWithTrigger:1 forNotificationRequest:v13 withState:v14];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationUsageTrackingState = [(NCNotificationViewController *)self notificationUsageTrackingState];
+    [v12 longLookDefaultActionInvokedWithTrigger:1 forNotificationRequest:notificationRequest withState:notificationUsageTrackingState];
 
     [(NCNotificationViewController *)self _executeDefaultAction:1];
   }
@@ -2689,9 +2689,9 @@ void __106__NCNotificationShortLookViewController_expandedPlatterInteractionMana
   else if (NCEqualExpandedPlatterObservableDismissalReasons(self->_expandedPlatterDismissalReason, @"dismissalReasonHomeAction"))
   {
     v15 = +[NCNotificationEventTracker sharedInstance];
-    v16 = [(NCNotificationViewController *)self notificationRequest];
-    v17 = [(NCNotificationViewController *)self notificationUsageTrackingState];
-    [v15 longLookReparkInvokedWithTrigger:0 forNotificationRequest:v16 withState:v17];
+    notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+    notificationUsageTrackingState2 = [(NCNotificationViewController *)self notificationUsageTrackingState];
+    [v15 longLookReparkInvokedWithTrigger:0 forNotificationRequest:notificationRequest2 withState:notificationUsageTrackingState2];
 
     [(NCNotificationViewController *)self _executeCancelAction:1];
   }
@@ -2720,12 +2720,12 @@ void __108__NCNotificationShortLookViewController_expandedPlatterViewController_
   [v5 openSensitiveURL:v2 withOptions:v7 error:0];
 }
 
-- (unint64_t)importantAdornmentEligibleOptionsForNotificationViewController:(id)a3
+- (unint64_t)importantAdornmentEligibleOptionsForNotificationViewController:(id)controller
 {
-  v4 = [(NCNotificationViewController *)self delegate];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0 && [v4 importantAdornmentEligibleOptionsForNotificationViewController:self])
+  delegate = [(NCNotificationViewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0 && [delegate importantAdornmentEligibleOptionsForNotificationViewController:self])
   {
-    v5 = [v4 importantAdornmentEligibleOptionsForNotificationViewController:self];
+    v5 = [delegate importantAdornmentEligibleOptionsForNotificationViewController:self];
   }
 
   else
@@ -2736,20 +2736,20 @@ void __108__NCNotificationShortLookViewController_expandedPlatterViewController_
   return v5;
 }
 
-- (void)expandedPlatterWillPresent:(id)a3
+- (void)expandedPlatterWillPresent:(id)present
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentCopy = present;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationViewController *)self notificationRequest];
-    v8 = [v7 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v10 = NCStringFromLongLookPresentationTrigger(self->_trigger);
     v19 = 138543618;
-    v20 = v9;
+    v20 = un_logDigest;
     v21 = 2114;
     v22 = v10;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Notification view controller will present expanded platter for request %{public}@ (_trigger: %{public}@)", &v19, 0x16u);
@@ -2757,23 +2757,23 @@ void __108__NCNotificationShortLookViewController_expandedPlatterViewController_
 
   self->_expandedPlatterPresentationState = 1;
   v11 = +[NCNotificationEventTracker sharedInstance];
-  v12 = [(NCNotificationViewController *)self notificationRequest];
-  [v11 longLookPresentedForNotificationRequest:v12];
+  notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+  [v11 longLookPresentedForNotificationRequest:notificationRequest2];
 
   [(NCNotificationViewController *)self _notifyObserversWithBlock:&__block_literal_global_220];
-  v13 = [(NCExpandedPlatterViewController *)self->_expandedPlatterViewController customContentViewController];
-  v14 = [v13 contentExtensionIdentifier];
+  customContentViewController = [(NCExpandedPlatterViewController *)self->_expandedPlatterViewController customContentViewController];
+  contentExtensionIdentifier = [customContentViewController contentExtensionIdentifier];
 
-  if ([v14 length])
+  if ([contentExtensionIdentifier length])
   {
-    v15 = NCSDKVersionForExtensionWithIdentifier(v14, 0);
+    v15 = NCSDKVersionForExtensionWithIdentifier(contentExtensionIdentifier, 0);
     v16 = NCIsSDKVersionSameOrAfterSDKVersion(v15, @"13.0");
 
     if (!v16)
     {
-      v17 = [(NCExpandedPlatterViewController *)self->_expandedPlatterViewController presentationController];
+      presentationController = [(NCExpandedPlatterViewController *)self->_expandedPlatterViewController presentationController];
       v18 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
-      [v17 setOverrideTraitCollection:v18];
+      [presentationController setOverrideTraitCollection:v18];
     }
   }
 }
@@ -2788,18 +2788,18 @@ void __68__NCNotificationShortLookViewController_expandedPlatterWillPresent___bl
   }
 }
 
-- (void)expandedPlatterDidPresent:(id)a3
+- (void)expandedPlatterDidPresent:(id)present
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(NCNotificationViewController *)self notificationRequest];
-    v7 = [v6 notificationIdentifier];
-    v8 = [v7 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v9 = 138543362;
-    v10 = v8;
+    v10 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "Notification view controller did present expanded platter for request %{public}@", &v9, 0xCu);
   }
 
@@ -2817,18 +2817,18 @@ void __67__NCNotificationShortLookViewController_expandedPlatterDidPresent___blo
   }
 }
 
-- (void)expandedPlatter:(id)a3 willDismissWithReason:(id)a4
+- (void)expandedPlatter:(id)platter willDismissWithReason:(id)reason
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationViewController *)self notificationRequest];
-    v8 = [v7 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v10 = 138543362;
-    v11 = v9;
+    v11 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Notification view controller will dismiss expanded platter for request %{public}@", &v10, 0xCu);
   }
 
@@ -2846,18 +2846,18 @@ void __79__NCNotificationShortLookViewController_expandedPlatter_willDismissWith
   }
 }
 
-- (void)expandedPlatter:(id)a3 didDismissWithReason:(id)a4
+- (void)expandedPlatter:(id)platter didDismissWithReason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationViewController *)self notificationRequest];
-    v8 = [v7 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v14 = 138543362;
-    v15 = v9;
+    v15 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Notification view controller did dismiss expanded platter for request %{public}@", &v14, 0xCu);
   }
 
@@ -2866,8 +2866,8 @@ void __79__NCNotificationShortLookViewController_expandedPlatter_willDismissWith
   expandedPlatterViewController = self->_expandedPlatterViewController;
   self->_expandedPlatterViewController = 0;
 
-  v11 = [(NSMutableArray *)self->_containerViewProviders firstObject];
-  [v11 invalidate];
+  firstObject = [(NSMutableArray *)self->_containerViewProviders firstObject];
+  [firstObject invalidate];
 
   [(NSMutableArray *)self->_containerViewProviders removeFirstObject];
   containerViewForExpandedContent = self->_containerViewForExpandedContent;
@@ -2891,22 +2891,22 @@ void __78__NCNotificationShortLookViewController_expandedPlatter_didDismissWithR
   }
 }
 
-- (void)customContent:(id)a3 didUpdateUserNotificationActions:(id)a4
+- (void)customContent:(id)content didUpdateUserNotificationActions:(id)actions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  actionsCopy = actions;
   if (self->_expandedPlatterViewController)
   {
     v8 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(NCNotificationViewController *)self notificationRequest];
-      v11 = [v10 notificationIdentifier];
-      v12 = [v11 un_logDigest];
+      notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+      notificationIdentifier = [notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543362;
-      v20 = v12;
+      v20 = un_logDigest;
       _os_log_impl(&dword_21E77E000, v9, OS_LOG_TYPE_DEFAULT, "Custom content extension is updating expanded platter actions for notification request %{public}@", buf, 0xCu);
     }
 
@@ -2916,7 +2916,7 @@ void __78__NCNotificationShortLookViewController_expandedPlatter_didDismissWithR
     aBlock[2] = __88__NCNotificationShortLookViewController_customContent_didUpdateUserNotificationActions___block_invoke;
     aBlock[3] = &unk_278370A90;
     objc_copyWeak(&v18, buf);
-    v17 = v7;
+    v17 = actionsCopy;
     v13 = _Block_copy(aBlock);
     activeExpandedPlatterInteractionAnimator = self->_activeExpandedPlatterInteractionAnimator;
     if (activeExpandedPlatterInteractionAnimator)
@@ -2937,7 +2937,7 @@ void __78__NCNotificationShortLookViewController_expandedPlatter_didDismissWithR
   {
     v15.receiver = self;
     v15.super_class = NCNotificationShortLookViewController;
-    [(NCNotificationShortLookViewController *)&v15 customContent:v6 didUpdateUserNotificationActions:v7];
+    [(NCNotificationShortLookViewController *)&v15 customContent:contentCopy didUpdateUserNotificationActions:actionsCopy];
   }
 }
 
@@ -2976,24 +2976,24 @@ id __88__NCNotificationShortLookViewController_customContent_didUpdateUserNotifi
   if (!longLookNotificationViewController)
   {
     v4 = [NCNotificationLongLookViewController alloc];
-    v5 = [(NCNotificationViewController *)self notificationRequest];
-    v6 = [(NCNotificationLongLookViewController *)v4 _initWithNotificationRequest:v5 andPresentingNotificationViewController:self revealingAdditionalContentOnPresentation:[(NCNotificationViewController *)self revealAdditionalContentOnPresentation]];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    v6 = [(NCNotificationLongLookViewController *)v4 _initWithNotificationRequest:notificationRequest andPresentingNotificationViewController:self revealingAdditionalContentOnPresentation:[(NCNotificationViewController *)self revealAdditionalContentOnPresentation]];
     v7 = self->_longLookNotificationViewController;
     self->_longLookNotificationViewController = v6;
 
     v8 = self->_longLookNotificationViewController;
-    v9 = [(NCNotificationViewController *)self delegate];
-    [(NCNotificationViewController *)v8 setDelegate:v9];
+    delegate = [(NCNotificationViewController *)self delegate];
+    [(NCNotificationViewController *)v8 setDelegate:delegate];
 
     [(NCNotificationViewController *)self->_longLookNotificationViewController addObserver:self];
     [(NCNotificationViewController *)self->_longLookNotificationViewController updateContent];
-    v10 = [(NCNotificationViewController *)self->_longLookNotificationViewController staticContentProvider];
+    staticContentProvider = [(NCNotificationViewController *)self->_longLookNotificationViewController staticContentProvider];
 
     longLookNotificationViewController = self->_longLookNotificationViewController;
-    if (!v10)
+    if (!staticContentProvider)
     {
-      v11 = [(NCNotificationViewController *)self staticContentProvider];
-      [(NCNotificationViewController *)longLookNotificationViewController setStaticContentProvider:v11];
+      staticContentProvider2 = [(NCNotificationViewController *)self staticContentProvider];
+      [(NCNotificationViewController *)longLookNotificationViewController setStaticContentProvider:staticContentProvider2];
 
       longLookNotificationViewController = self->_longLookNotificationViewController;
     }
@@ -3002,23 +3002,23 @@ id __88__NCNotificationShortLookViewController_customContent_didUpdateUserNotifi
   return longLookNotificationViewController;
 }
 
-- (id)transitioningDelegateForClickPresentationInteractionManager:(id)a3
+- (id)transitioningDelegateForClickPresentationInteractionManager:(id)manager
 {
   v3 = objc_alloc_init(NCLongLookTransitioningDelegate);
 
   return v3;
 }
 
-- (BOOL)clickPresentationInteractionManager:(id)a3 shouldBeginInteractionWithTouchAtLocation:(CGPoint)a4
+- (BOOL)clickPresentationInteractionManager:(id)manager shouldBeginInteractionWithTouchAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(NCNotificationViewController *)self isInteractionEnabled];
+  y = location.y;
+  x = location.x;
+  managerCopy = manager;
+  isInteractionEnabled = [(NCNotificationViewController *)self isInteractionEnabled];
   if (([(NCNotificationShortLookViewController *)self isBeingPresented]& 1) != 0)
   {
-    v9 = 1;
-    if (!v8)
+    isBeingDismissed = 1;
+    if (!isInteractionEnabled)
     {
       goto LABEL_7;
     }
@@ -3026,8 +3026,8 @@ id __88__NCNotificationShortLookViewController_customContent_didUpdateUserNotifi
 
   else
   {
-    v9 = [(NCNotificationShortLookViewController *)self isBeingDismissed];
-    if (!v8)
+    isBeingDismissed = [(NCNotificationShortLookViewController *)self isBeingDismissed];
+    if (!isInteractionEnabled)
     {
 LABEL_7:
       v14 = 0;
@@ -3035,17 +3035,17 @@ LABEL_7:
     }
   }
 
-  v10 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v11 = [v10 auxiliaryOptionsVisible];
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  auxiliaryOptionsVisible = [_notificationShortLookViewIfLoaded auxiliaryOptionsVisible];
 
-  if (v11)
+  if (auxiliaryOptionsVisible)
   {
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
     v23 = 0;
-    v12 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-    v13 = [v12 auxiliaryOptionButtons];
+    _notificationShortLookViewIfLoaded2 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+    auxiliaryOptionButtons = [_notificationShortLookViewIfLoaded2 auxiliaryOptionButtons];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __119__NCNotificationShortLookViewController_clickPresentationInteractionManager_shouldBeginInteractionWithTouchAtLocation___block_invoke;
@@ -3054,20 +3054,20 @@ LABEL_7:
     v19[5] = &v20;
     *&v19[6] = x;
     *&v19[7] = y;
-    [v13 enumerateObjectsUsingBlock:v19];
+    [auxiliaryOptionButtons enumerateObjectsUsingBlock:v19];
 
-    LOBYTE(v12) = *(v21 + 24);
+    LOBYTE(_notificationShortLookViewIfLoaded2) = *(v21 + 24);
     _Block_object_dispose(&v20, 8);
-    if (v12)
+    if (_notificationShortLookViewIfLoaded2)
     {
       goto LABEL_7;
     }
   }
 
-  v15 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v15 notificationViewControllerShouldAllowClickPresentationInteraction:self];
+    v14 = [delegate notificationViewControllerShouldAllowClickPresentationInteraction:self];
   }
 
   else
@@ -3075,17 +3075,17 @@ LABEL_7:
     v14 = 1;
   }
 
-  if (!(v9 & 1 | ((v14 & 1) == 0)))
+  if (!(isBeingDismissed & 1 | ((v14 & 1) == 0)))
   {
-    v16 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     tapBeginTime = self->_tapBeginTime;
-    self->_tapBeginTime = v16;
+    self->_tapBeginTime = date;
 
     self->_trigger = 1;
   }
 
 LABEL_14:
-  return v14 & (v9 ^ 1);
+  return v14 & (isBeingDismissed ^ 1);
 }
 
 void __119__NCNotificationShortLookViewController_clickPresentationInteractionManager_shouldBeginInteractionWithTouchAtLocation___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -3110,7 +3110,7 @@ void __101__NCNotificationShortLookViewController_clickPresentationInteractionMa
   }
 }
 
-- (void)clickPresentationInteractionManagerDidEndUserInteraction:(id)a3
+- (void)clickPresentationInteractionManagerDidEndUserInteraction:(id)interaction
 {
   tapBeginTime = self->_tapBeginTime;
   self->_tapBeginTime = 0;
@@ -3132,28 +3132,28 @@ void __98__NCNotificationShortLookViewController_clickPresentationInteractionMan
   }
 }
 
-- (void)clickPresentationInteractionManager:(id)a3 shouldFinishInteractionThatReachedForceThreshold:(BOOL)a4 withCompletionBlock:(id)a5
+- (void)clickPresentationInteractionManager:(id)manager shouldFinishInteractionThatReachedForceThreshold:(BOOL)threshold withCompletionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v7 = [(NCNotificationViewController *)self delegate];
-  if (v5 && self->_trigger == 1)
+  thresholdCopy = threshold;
+  blockCopy = block;
+  delegate = [(NCNotificationViewController *)self delegate];
+  if (thresholdCopy && self->_trigger == 1)
   {
     self->_trigger = 2;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 notificationRequestPresenter:self shouldTransitionToStage:@"notificationViewController.presentingStage.longLook" forTrigger:self->_trigger completionBlock:v8];
+    [delegate notificationRequestPresenter:self shouldTransitionToStage:@"notificationViewController.presentingStage.longLook" forTrigger:self->_trigger completionBlock:blockCopy];
   }
 
   else
   {
-    v8[2](v8, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (void)_handlePresentedContentDismissalForClickPresentationInteractionManagerWithTrigger:(int64_t)a3
+- (void)_handlePresentedContentDismissalForClickPresentationInteractionManagerWithTrigger:(int64_t)trigger
 {
   v16 = *MEMORY[0x277D85DE8];
   if (objc_opt_respondsToSelector())
@@ -3190,20 +3190,20 @@ void __98__NCNotificationShortLookViewController_clickPresentationInteractionMan
     v12 = 2114;
     v13 = v8;
     v14 = 2114;
-    v15 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_21E77E000, v9, OS_LOG_TYPE_ERROR, "Couldn't find both presentable (%{public}@) and dismisser (%{public}@) for long look VC %{public}@", &v10, 0x20u);
   }
 
 LABEL_11:
-  [(NCNotificationLongLookViewController *)v8 expandedPlatterPresentable:v6 requestsDismissalWithTrigger:a3];
+  [(NCNotificationLongLookViewController *)v8 expandedPlatterPresentable:v6 requestsDismissalWithTrigger:trigger];
 }
 
-- (BOOL)clickPresentationInteractionManagerShouldAllowLongPressGesture:(id)a3
+- (BOOL)clickPresentationInteractionManagerShouldAllowLongPressGesture:(id)gesture
 {
-  v4 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 notificationViewControllerShouldAllowLongPressGesture:self];
+    v5 = [delegate notificationViewControllerShouldAllowLongPressGesture:self];
   }
 
   else
@@ -3216,13 +3216,13 @@ LABEL_11:
 
 - (CGRect)initialPresentedFrameOfViewForPreview
 {
-  v3 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
-  v5 = [(NCNotificationShortLookViewController *)self viewForPreview];
-  v6 = v5;
+  viewForPreview = [(NCNotificationShortLookViewController *)self viewForPreview];
+  v6 = viewForPreview;
   if (v4)
   {
-    [v3 notificationViewController:self initialFrameForPresentingLongLookFromView:v5];
+    [delegate notificationViewController:self initialFrameForPresentingLongLookFromView:viewForPreview];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -3231,9 +3231,9 @@ LABEL_11:
 
   else
   {
-    v15 = [v5 superview];
+    superview = [viewForPreview superview];
     [v6 frame];
-    [v15 convertRect:0 toView:?];
+    [superview convertRect:0 toView:?];
     v8 = v16;
     v10 = v17;
     v12 = v18;
@@ -3267,11 +3267,11 @@ LABEL_11:
 
 - (CGRect)finalDismissedFrameOfViewForPreview
 {
-  v3 = [(NCNotificationViewController *)self delegate];
+  delegate = [(NCNotificationViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(NCNotificationShortLookViewController *)self viewForPreview];
-    [v3 notificationViewController:self finalFrameForDismissingLongLookFromView:v4];
+    viewForPreview = [(NCNotificationShortLookViewController *)self viewForPreview];
+    [delegate notificationViewController:self finalFrameForDismissingLongLookFromView:viewForPreview];
     x = v5;
     y = v7;
     width = v9;
@@ -3297,67 +3297,67 @@ LABEL_11:
   return result;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
-  v4 = [v5 backgroundMaterialView];
-  [v4 setHighlighted:v3];
+  highlightedCopy = highlighted;
+  _notificationShortLookViewIfLoaded = [(NCNotificationShortLookViewController *)self _notificationShortLookViewIfLoaded];
+  backgroundMaterialView = [_notificationShortLookViewIfLoaded backgroundMaterialView];
+  [backgroundMaterialView setHighlighted:highlightedCopy];
 }
 
 - (UIBezierPath)visiblePath
 {
-  v2 = [(NCNotificationShortLookViewController *)self viewForPreview];
+  viewForPreview = [(NCNotificationShortLookViewController *)self viewForPreview];
   v3 = MEMORY[0x277D75208];
-  [v2 bounds];
+  [viewForPreview bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v2 _continuousCornerRadius];
+  [viewForPreview _continuousCornerRadius];
   v13 = [v3 bezierPathWithRoundedRect:v5 cornerRadius:{v7, v9, v11, v12 + -2.0}];
 
   return v13;
 }
 
-- (void)notificationViewControllerWillPresent:(id)a3
+- (void)notificationViewControllerWillPresent:(id)present
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentCopy = present;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationViewController *)self notificationRequest];
-    v8 = [v7 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v10 = NCStringFromLongLookPresentationTrigger(self->_trigger);
     v19 = 138543618;
-    v20 = v9;
+    v20 = un_logDigest;
     v21 = 2114;
     v22 = v10;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Notification view controller will present long look for request %{public}@ (_trigger: %{public}@)", &v19, 0x16u);
   }
 
   v11 = +[NCNotificationEventTracker sharedInstance];
-  v12 = [(NCNotificationViewController *)self notificationRequest];
-  [v11 longLookPresentedForNotificationRequest:v12];
+  notificationRequest2 = [(NCNotificationViewController *)self notificationRequest];
+  [v11 longLookPresentedForNotificationRequest:notificationRequest2];
 
   [(UITapGestureRecognizer *)self->_tapGesture setEnabled:0];
   [(NCNotificationViewController *)self _notifyObserversWithBlock:&__block_literal_global_259];
-  v13 = [(NCNotificationViewController *)self->_longLookNotificationViewController _customContentProvidingViewController];
-  v14 = [v13 contentExtensionIdentifier];
+  _customContentProvidingViewController = [(NCNotificationViewController *)self->_longLookNotificationViewController _customContentProvidingViewController];
+  contentExtensionIdentifier = [_customContentProvidingViewController contentExtensionIdentifier];
 
-  if ([v14 length])
+  if ([contentExtensionIdentifier length])
   {
-    v15 = NCSDKVersionForExtensionWithIdentifier(v14, 0);
+    v15 = NCSDKVersionForExtensionWithIdentifier(contentExtensionIdentifier, 0);
     v16 = NCIsSDKVersionSameOrAfterSDKVersion(v15, @"13.0");
 
     if (!v16)
     {
-      v17 = [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController presentationController];
+      presentationController = [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController presentationController];
       v18 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
-      [v17 setOverrideTraitCollection:v18];
+      [presentationController setOverrideTraitCollection:v18];
     }
   }
 
@@ -3374,29 +3374,29 @@ void __79__NCNotificationShortLookViewController_notificationViewControllerWillP
   }
 }
 
-- (void)notificationViewControllerDidPresent:(id)a3
+- (void)notificationViewControllerDidPresent:(id)present
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentCopy = present;
   v5 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(NCNotificationViewController *)self notificationRequest];
-    v8 = [v7 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v13 = 138543362;
-    v14 = v9;
+    v14 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v6, OS_LOG_TYPE_DEFAULT, "Notification view controller did present long look for request %{public}@", &v13, 0xCu);
   }
 
   if ([(NCNotificationViewController *)self _canPan])
   {
-    v10 = [(NCNotificationShortLookViewController *)self view];
-    v11 = [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController presentationController];
-    v12 = [v11 containerView];
-    [v12 bounds];
-    [v10 setFrame:?];
+    view = [(NCNotificationShortLookViewController *)self view];
+    presentationController = [(NCNotificationLongLookViewController *)self->_longLookNotificationViewController presentationController];
+    containerView = [presentationController containerView];
+    [containerView bounds];
+    [view setFrame:?];
   }
 
   [(NCNotificationViewController *)self _notifyObserversWithBlock:&__block_literal_global_261];
@@ -3412,18 +3412,18 @@ void __78__NCNotificationShortLookViewController_notificationViewControllerDidPr
   }
 }
 
-- (void)notificationViewControllerWillDismiss:(id)a3
+- (void)notificationViewControllerWillDismiss:(id)dismiss
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(NCNotificationViewController *)self notificationRequest];
-    v7 = [v6 notificationIdentifier];
-    v8 = [v7 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v9 = 138543362;
-    v10 = v8;
+    v10 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "Notification view controller will dismiss long look for request %{public}@", &v9, 0xCu);
   }
 
@@ -3440,18 +3440,18 @@ void __79__NCNotificationShortLookViewController_notificationViewControllerWillD
   }
 }
 
-- (void)notificationViewControllerDidDismiss:(id)a3
+- (void)notificationViewControllerDidDismiss:(id)dismiss
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(NCNotificationViewController *)self notificationRequest];
-    v7 = [v6 notificationIdentifier];
-    v8 = [v7 un_logDigest];
+    notificationRequest = [(NCNotificationViewController *)self notificationRequest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v10 = 138543362;
-    v11 = v8;
+    v11 = un_logDigest;
     _os_log_impl(&dword_21E77E000, v5, OS_LOG_TYPE_DEFAULT, "Notification view controller did dismiss long look for request %{public}@", &v10, 0xCu);
   }
 
@@ -3473,13 +3473,13 @@ void __78__NCNotificationShortLookViewController_notificationViewControllerDidDi
   }
 }
 
-- (id)customBackgroundContainerViewForExpandedPlatterPresentationController:(id)a3
+- (id)customBackgroundContainerViewForExpandedPlatterPresentationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(NCNotificationShortLookViewController *)self parentViewController];
+  controllerCopy = controller;
+  parentViewController = [(NCNotificationShortLookViewController *)self parentViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 customBackgroundContainerViewForExpandedPlatterPresentationController:v4];
+    v6 = [parentViewController customBackgroundContainerViewForExpandedPlatterPresentationController:controllerCopy];
   }
 
   else
@@ -3492,9 +3492,9 @@ void __78__NCNotificationShortLookViewController_notificationViewControllerDidDi
 
 - (id)_presentedLongLookViewController
 {
-  v3 = [(PLClickPresentationInteractionManager *)self->_clickPresentationInteractionManager presentedViewController];
-  longLookNotificationViewController = v3;
-  if (!v3)
+  presentedViewController = [(PLClickPresentationInteractionManager *)self->_clickPresentationInteractionManager presentedViewController];
+  longLookNotificationViewController = presentedViewController;
+  if (!presentedViewController)
   {
     longLookNotificationViewController = self->_longLookNotificationViewController;
   }
@@ -3522,13 +3522,13 @@ void __78__NCNotificationShortLookViewController_notificationViewControllerDidDi
 - (void)shouldCommitToExpandedPlatterPresentationWithFeedback
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 notificationRequest];
-  v5 = [v4 notificationIdentifier];
-  v6 = [v5 un_logDigest];
+  selfCopy = self;
+  notificationRequest = [a2 notificationRequest];
+  notificationIdentifier = [notificationRequest notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
   v7 = 138543362;
-  v8 = v6;
-  _os_log_error_impl(&dword_21E77E000, v3, OS_LOG_TYPE_ERROR, "Notification view controller for request %{public}@ doesn't have a container view for expanded content – aborting presentation", &v7, 0xCu);
+  v8 = un_logDigest;
+  _os_log_error_impl(&dword_21E77E000, selfCopy, OS_LOG_TYPE_ERROR, "Notification view controller for request %{public}@ doesn't have a container view for expanded content – aborting presentation", &v7, 0xCu);
 }
 
 void __83__NCNotificationShortLookViewController__requestAppProtectionUnlockWithCompletion___block_invoke_cold_1(uint64_t a1, void *a2, void *a3)
@@ -3544,9 +3544,9 @@ void __83__NCNotificationShortLookViewController__requestAppProtectionUnlockWith
 - (void)containerViewForExpandedContent
 {
   v4 = a2;
-  v5 = [a3 notificationRequest];
-  v6 = [v5 notificationIdentifier];
-  v12 = [v6 un_logDigest];
+  notificationRequest = [a3 notificationRequest];
+  notificationIdentifier = [notificationRequest notificationIdentifier];
+  un_logDigest = [notificationIdentifier un_logDigest];
   OUTLINED_FUNCTION_0_8();
   _os_log_error_impl(v7, v8, v9, v10, v11, 0x16u);
 }

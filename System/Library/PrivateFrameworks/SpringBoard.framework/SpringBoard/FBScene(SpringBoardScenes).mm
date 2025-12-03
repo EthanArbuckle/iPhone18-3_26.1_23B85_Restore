@@ -6,11 +6,11 @@
 
 - (uint64_t)sb_isSpringBoardRootScene
 {
-  v2 = [a1 definition];
-  v3 = [v2 specification];
+  definition = [self definition];
+  specification = [definition specification];
 
-  v4 = [a1 clientProcess];
-  if ([v4 isCurrentProcess])
+  clientProcess = [self clientProcess];
+  if ([clientProcess isCurrentProcess])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())

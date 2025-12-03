@@ -1,6 +1,6 @@
 @interface DAOpticalProximityManager
 + (id)sharedInstance;
-- (BOOL)startProximitySensorUpdatesWithHandler:(id)a3;
+- (BOOL)startProximitySensorUpdatesWithHandler:(id)handler;
 - (BOOL)stopProximitySensorUpdates;
 - (DAOpticalProximityManager)init;
 - (id)sensorData;
@@ -87,25 +87,25 @@
   return v4;
 }
 
-- (BOOL)startProximitySensorUpdatesWithHandler:(id)a3
+- (BOOL)startProximitySensorUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DAOpticalProximityManager *)self isUpdating];
-  if ((v5 & 1) == 0)
+  handlerCopy = handler;
+  isUpdating = [(DAOpticalProximityManager *)self isUpdating];
+  if ((isUpdating & 1) == 0)
   {
     [(DAOpticalProximityManager *)self deviceStart];
     [(DAOpticalProximityManager *)self registerProximityChangedCallback];
     [(DAOpticalProximityManager *)self setUpdating:1];
-    [(DAOpticalProximityManager *)self setHandler:v4];
+    [(DAOpticalProximityManager *)self setHandler:handlerCopy];
   }
 
-  return v5 ^ 1;
+  return isUpdating ^ 1;
 }
 
 - (BOOL)stopProximitySensorUpdates
 {
-  v3 = [(DAOpticalProximityManager *)self isUpdating];
-  if (v3)
+  isUpdating = [(DAOpticalProximityManager *)self isUpdating];
+  if (isUpdating)
   {
     [(DAOpticalProximityManager *)self deviceStop];
     [(DAOpticalProximityManager *)self unregisterProximityChangedCallback];
@@ -113,7 +113,7 @@
     [(DAOpticalProximityManager *)self setHandler:0];
   }
 
-  return v3;
+  return isUpdating;
 }
 
 - (void)deviceStart
@@ -134,16 +134,16 @@
 
 - (void)registerProximityChangedCallback
 {
-  v2 = [(DAOpticalProximityManager *)self deviceRef];
+  deviceRef = [(DAOpticalProximityManager *)self deviceRef];
 
-  _MTRegisterOpticalProximityChangedCallback(v2, MTProximityChangedCallbackFunc, 0);
+  _MTRegisterOpticalProximityChangedCallback(deviceRef, MTProximityChangedCallbackFunc, 0);
 }
 
 - (void)unregisterProximityChangedCallback
 {
-  v2 = [(DAOpticalProximityManager *)self deviceRef];
+  deviceRef = [(DAOpticalProximityManager *)self deviceRef];
 
-  _MTUnregisterOpticalProximityChangedCallback(v2, MTProximityChangedCallbackFunc);
+  _MTUnregisterOpticalProximityChangedCallback(deviceRef, MTProximityChangedCallbackFunc);
 }
 
 @end

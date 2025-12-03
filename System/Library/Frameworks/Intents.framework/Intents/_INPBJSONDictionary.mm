@@ -1,40 +1,40 @@
 @interface _INPBJSONDictionary
-- (BOOL)isEqual:(id)a3;
-- (_INPBJSONDictionary)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBJSONDictionary)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setJsonString:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setJsonString:(id)string;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBJSONDictionary
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_jsonString)
   {
-    v4 = [(_INPBJSONDictionary *)self jsonString];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"jsonString"];
+    jsonString = [(_INPBJSONDictionary *)self jsonString];
+    v5 = [jsonString copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"jsonString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBJSONDictionary *)self jsonString];
-    v6 = [v4 jsonString];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    jsonString = [(_INPBJSONDictionary *)self jsonString];
+    jsonString2 = [equalCopy jsonString];
+    v7 = jsonString2;
+    if ((jsonString != 0) != (jsonString2 == 0))
     {
-      v8 = [(_INPBJSONDictionary *)self jsonString];
-      if (!v8)
+      jsonString3 = [(_INPBJSONDictionary *)self jsonString];
+      if (!jsonString3)
       {
 
 LABEL_10:
@@ -42,10 +42,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBJSONDictionary *)self jsonString];
-      v11 = [v4 jsonString];
-      v12 = [v10 isEqual:v11];
+      v9 = jsonString3;
+      jsonString4 = [(_INPBJSONDictionary *)self jsonString];
+      jsonString5 = [equalCopy jsonString];
+      v12 = [jsonString4 isEqual:jsonString5];
 
       if (v12)
       {
@@ -64,54 +64,54 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBJSONDictionary allocWithZone:](_INPBJSONDictionary init];
-  v6 = [(NSString *)self->_jsonString copyWithZone:a3];
+  v6 = [(NSString *)self->_jsonString copyWithZone:zone];
   [(_INPBJSONDictionary *)v5 setJsonString:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBJSONDictionary *)self data];
+  coderCopy = coder;
+  data = [(_INPBJSONDictionary *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBJSONDictionary)initWithCoder:(id)a3
+- (_INPBJSONDictionary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBJSONDictionary *)self initWithData:v6];
+    self = [(_INPBJSONDictionary *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_INPBJSONDictionary *)self jsonString];
+  toCopy = to;
+  jsonString = [(_INPBJSONDictionary *)self jsonString];
 
-  if (v4)
+  if (jsonString)
   {
     jsonString = self->_jsonString;
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setJsonString:(id)a3
+- (void)setJsonString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   jsonString = self->_jsonString;
   self->_jsonString = v4;
 

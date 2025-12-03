@@ -1,19 +1,19 @@
 @interface ICSettingsSubtitleTableCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ICSettingsSubtitleTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = ICSettingsSubtitleTableCell;
-  v4 = a3;
-  [(ICSettingsSubtitleTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:{PSTableCellSubtitleTextKey, v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(ICSettingsSubtitleTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{PSTableCellSubtitleTextKey, v7.receiver, v7.super_class}];
 
-  v6 = [(ICSettingsSubtitleTableCell *)self detailTextLabel];
-  [v6 setText:v5];
+  detailTextLabel = [(ICSettingsSubtitleTableCell *)self detailTextLabel];
+  [detailTextLabel setText:v5];
 
   [(ICSettingsSubtitleTableCell *)self setNeedsLayout];
 }

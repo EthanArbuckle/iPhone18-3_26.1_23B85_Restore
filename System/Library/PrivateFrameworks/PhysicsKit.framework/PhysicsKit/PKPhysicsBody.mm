@@ -1,32 +1,32 @@
 @interface PKPhysicsBody
-+ (id)bodyWithBodies:(id)a3;
-+ (id)bodyWithCircleOfRadius:(double)a3;
-+ (id)bodyWithCircleOfRadius:(double)a3 center:(CGPoint)a4;
-+ (id)bodyWithEdgeChainFromPath:(CGPath *)a3;
-+ (id)bodyWithEdgeFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4;
-+ (id)bodyWithEdgeLoopFromPath:(CGPath *)a3;
-+ (id)bodyWithOutline:(shared_ptr<PKPath>)a3 offset:(CGPoint)a4;
-+ (id)bodyWithPolygonFromPath:(CGPath *)a3;
-+ (id)bodyWithRectangleOfSize:(CGSize)a3;
-+ (id)bodyWithRectangleOfSize:(CGSize)a3 center:(CGPoint)a4;
-+ (id)bodyWithRectangleOfSize:(CGSize)a3 center:(CGPoint)a4 edgeRadius:(double)a5;
-+ (id)bodyWithRectangleOfSize:(CGSize)a3 edgeRadius:(double)a4;
-+ (id)initWithMarchingCubes:(void *)a3 pixelFrame:(CGRect)a4;
-+ (id)initWithQuadTree:(id)a3;
++ (id)bodyWithBodies:(id)bodies;
++ (id)bodyWithCircleOfRadius:(double)radius;
++ (id)bodyWithCircleOfRadius:(double)radius center:(CGPoint)center;
++ (id)bodyWithEdgeChainFromPath:(CGPath *)path;
++ (id)bodyWithEdgeFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint;
++ (id)bodyWithEdgeLoopFromPath:(CGPath *)path;
++ (id)bodyWithOutline:(shared_ptr<PKPath>)outline offset:(CGPoint)offset;
++ (id)bodyWithPolygonFromPath:(CGPath *)path;
++ (id)bodyWithRectangleOfSize:(CGSize)size;
++ (id)bodyWithRectangleOfSize:(CGSize)size center:(CGPoint)center;
++ (id)bodyWithRectangleOfSize:(CGSize)size center:(CGPoint)center edgeRadius:(double)radius;
++ (id)bodyWithRectangleOfSize:(CGSize)size edgeRadius:(double)radius;
++ (id)initWithMarchingCubes:(void *)cubes pixelFrame:(CGRect)frame;
++ (id)initWithQuadTree:(id)tree;
 - (BOOL)_allowSleep;
 - (BOOL)active;
-- (BOOL)isEqualToBody:(id)a3;
+- (BOOL)isEqualToBody:(id)body;
 - (BOOL)isResting;
 - (CGPoint)position;
 - (CGVector)velocity;
 - (NSArray)joints;
 - (NSObject)representedObject;
 - (PKPhysicsBody)init;
-- (PKPhysicsBody)initWithBodies:(id)a3;
-- (PKPhysicsBody)initWithCircleOfRadius:(double)a3 center:(CGPoint)a4;
-- (PKPhysicsBody)initWithCoder:(id)a3;
-- (PKPhysicsBody)initWithRectangleOfSize:(CGSize)a3;
-- (PKPhysicsBody)initWithRectangleOfSize:(CGSize)a3 center:(CGPoint)a4;
+- (PKPhysicsBody)initWithBodies:(id)bodies;
+- (PKPhysicsBody)initWithCircleOfRadius:(double)radius center:(CGPoint)center;
+- (PKPhysicsBody)initWithCoder:(id)coder;
+- (PKPhysicsBody)initWithRectangleOfSize:(CGSize)size;
+- (PKPhysicsBody)initWithRectangleOfSize:(CGSize)size center:(CGPoint)center;
 - (b2BodyDef)_bodyDef;
 - (double)angularDamping;
 - (double)angularVelocity;
@@ -43,50 +43,50 @@
 - (id)_world;
 - (id)allContactedBodies;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (shared_ptr<PKPath>)outline;
 - (shared_ptr<QuadTree>)_quadTree;
-- (void)applyAngularImpulse:(double)a3;
-- (void)applyForce:(CGPoint)a3;
-- (void)applyForce:(CGPoint)a3 atPoint:(CGPoint)a4;
-- (void)applyImpulse:(CGVector)a3;
-- (void)applyImpulse:(CGVector)a3 atPoint:(CGPoint)a4;
-- (void)applyTorque:(double)a3;
-- (void)applyUnscaledForce:(CGVector)a3;
-- (void)applyUnscaledForce:(CGVector)a3 atPoint:(CGPoint)a4;
-- (void)applyUnscaledImpulse:(CGVector)a3;
-- (void)applyUnscaledImpulse:(CGVector)a3 atPoint:(CGPoint)a4;
+- (void)applyAngularImpulse:(double)impulse;
+- (void)applyForce:(CGPoint)force;
+- (void)applyForce:(CGPoint)force atPoint:(CGPoint)point;
+- (void)applyImpulse:(CGVector)impulse;
+- (void)applyImpulse:(CGVector)impulse atPoint:(CGPoint)point;
+- (void)applyTorque:(double)torque;
+- (void)applyUnscaledForce:(CGVector)force;
+- (void)applyUnscaledForce:(CGVector)force atPoint:(CGPoint)point;
+- (void)applyUnscaledImpulse:(CGVector)impulse;
+- (void)applyUnscaledImpulse:(CGVector)impulse atPoint:(CGPoint)point;
 - (void)clearBox2DData;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)reapplyScale:(double)a3 yScale:(double)a4;
-- (void)setActive:(BOOL)a3;
-- (void)setAffectedByGravity:(BOOL)a3;
-- (void)setAllowsRotation:(BOOL)a3;
-- (void)setAngularDamping:(double)a3;
-- (void)setAngularVelocity:(double)a3;
-- (void)setCategoryBitMask:(unsigned int)a3;
-- (void)setCharge:(double)a3;
-- (void)setCollisionBitMask:(unsigned int)a3;
-- (void)setContactTestBitMask:(unsigned int)a3;
-- (void)setDensity:(double)a3;
-- (void)setDynamic:(BOOL)a3;
-- (void)setFieldBitMask:(unsigned int)a3;
-- (void)setFriction:(double)a3;
-- (void)setLinearDamping:(double)a3;
-- (void)setMass:(double)a3;
-- (void)setOutline:(shared_ptr<PKPath>)a3;
-- (void)setPinned:(BOOL)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setRadius:(double)a3;
-- (void)setResting:(BOOL)a3;
-- (void)setRestitution:(double)a3;
-- (void)setRotation:(double)a3;
-- (void)setUsesPreciseCollisionDetection:(BOOL)a3;
-- (void)setVelocity:(CGVector)a3;
-- (void)set_allowSleep:(BOOL)a3;
-- (void)set_bodyDef:(b2BodyDef *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)reapplyScale:(double)scale yScale:(double)yScale;
+- (void)setActive:(BOOL)active;
+- (void)setAffectedByGravity:(BOOL)gravity;
+- (void)setAllowsRotation:(BOOL)rotation;
+- (void)setAngularDamping:(double)damping;
+- (void)setAngularVelocity:(double)velocity;
+- (void)setCategoryBitMask:(unsigned int)mask;
+- (void)setCharge:(double)charge;
+- (void)setCollisionBitMask:(unsigned int)mask;
+- (void)setContactTestBitMask:(unsigned int)mask;
+- (void)setDensity:(double)density;
+- (void)setDynamic:(BOOL)dynamic;
+- (void)setFieldBitMask:(unsigned int)mask;
+- (void)setFriction:(double)friction;
+- (void)setLinearDamping:(double)damping;
+- (void)setMass:(double)mass;
+- (void)setOutline:(shared_ptr<PKPath>)outline;
+- (void)setPinned:(BOOL)pinned;
+- (void)setPosition:(CGPoint)position;
+- (void)setRadius:(double)radius;
+- (void)setResting:(BOOL)resting;
+- (void)setRestitution:(double)restitution;
+- (void)setRotation:(double)rotation;
+- (void)setUsesPreciseCollisionDetection:(BOOL)detection;
+- (void)setVelocity:(CGVector)velocity;
+- (void)set_allowSleep:(BOOL)sleep;
+- (void)set_bodyDef:(b2BodyDef *)def;
 - (void)volume;
 @end
 
@@ -107,10 +107,10 @@
   return result;
 }
 
-- (void)setOutline:(shared_ptr<PKPath>)a3
+- (void)setOutline:(shared_ptr<PKPath>)outline
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *outline.__ptr_;
+  v3 = *(outline.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -159,11 +159,11 @@
   }
 }
 
-+ (id)bodyWithOutline:(shared_ptr<PKPath>)a3 offset:(CGPoint)a4
++ (id)bodyWithOutline:(shared_ptr<PKPath>)outline offset:(CGPoint)offset
 {
-  v26 = *&a4.y;
-  x = a4.x;
-  ptr = a3.__ptr_;
+  v26 = *&offset.y;
+  x = offset.x;
+  ptr = outline.__ptr_;
   v34 = 0;
   v35 = 0;
   v36 = 0;
@@ -173,8 +173,8 @@
   v29 = 0;
   v30 = 0;
   __p = 0;
-  v5 = *(*a3.__ptr_ + 8);
-  if (v5 != *(*a3.__ptr_ + 16))
+  v5 = *(*outline.__ptr_ + 8);
+  if (v5 != *(*outline.__ptr_ + 16))
   {
     v6 = 0;
     do
@@ -337,10 +337,10 @@
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:self->_shapeType forKey:@"_shapeType"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_shapeType forKey:@"_shapeType"];
   shapeType = self->_shapeType;
   if (shapeType > 3)
   {
@@ -351,7 +351,7 @@
 
     if (shapeType == 4)
     {
-      [v4 encodeCGPoint:@"_p0" forKey:{self->_p0.x, self->_p0.y}];
+      [coderCopy encodeCGPoint:@"_p0" forKey:{self->_p0.x, self->_p0.y}];
       v28 = @"_p1";
       v29 = 224;
       v30 = 216;
@@ -365,7 +365,7 @@ LABEL_28:
       goto LABEL_31;
     }
 
-    [v4 encodeInt32:(self->_shapes.__end_ - self->_shapes.__begin_) >> 3 forKey:@"_compoundBodyCount"];
+    [coderCopy encodeInt32:(self->_shapes.__end_ - self->_shapes.__begin_) >> 3 forKey:@"_compoundBodyCount"];
     begin = self->_shapes.__begin_;
     if (begin == self->_shapes.__end_)
     {
@@ -380,37 +380,37 @@ LABEL_28:
       {
         if (!v8)
         {
-          [v4 encodeObject:@"circle"];
+          [coderCopy encodeObject:@"circle"];
           v20 = *(var0 + 12);
           v21 = PKGet_PTM_RATIO();
           v22 = CFStringCreateWithFormat(0, 0, @"{%g, %g}", (v20 * v21), 0);
-          [v4 encodeObject:v22];
+          [coderCopy encodeObject:v22];
 
           v23 = *(var0 + 16);
           v24 = PKGet_PTM_RATIO();
           v25 = *(var0 + 20);
           v26 = PKGet_PTM_RATIO();
           v19 = CFStringCreateWithFormat(0, 0, @"{%g, %g}", (v23 * v24), (v25 * v26));
-          [v4 encodeObject:v19];
+          [coderCopy encodeObject:v19];
           goto LABEL_21;
         }
 
         if (v8 == 1)
         {
-          [v4 encodeObject:@"edge"];
+          [coderCopy encodeObject:@"edge"];
           v10 = *(var0 + 16);
           v11 = PKGet_PTM_RATIO();
           v12 = *(var0 + 20);
           v13 = PKGet_PTM_RATIO();
           v14 = CFStringCreateWithFormat(0, 0, @"{%g, %g}", (v10 * v11), (v12 * v13));
-          [v4 encodeObject:v14];
+          [coderCopy encodeObject:v14];
 
           v15 = *(var0 + 24);
           v16 = PKGet_PTM_RATIO();
           v17 = *(var0 + 28);
           v18 = PKGet_PTM_RATIO();
           v19 = CFStringCreateWithFormat(0, 0, @"{%g, %g}", (v15 * v16), (v17 * v18));
-          [v4 encodeObject:v19];
+          [coderCopy encodeObject:v19];
 LABEL_21:
         }
       }
@@ -419,9 +419,9 @@ LABEL_21:
       {
         if (v8 == 2)
         {
-          [v4 encodeObject:@"polygon"];
+          [coderCopy encodeObject:@"polygon"];
           v19 = PKArrayFromB2PolygonShape(var0);
-          [v4 encodeObject:v19];
+          [coderCopy encodeObject:v19];
           goto LABEL_21;
         }
 
@@ -435,7 +435,7 @@ LABEL_21:
         {
           v9 = @"quadtree";
 LABEL_15:
-          [v4 encodeObject:v9];
+          [coderCopy encodeObject:v9];
         }
       }
 
@@ -449,15 +449,15 @@ LABEL_15:
   switch(shapeType)
   {
     case 1:
-      [v4 encodeDouble:@"_radius" forKey:self->_radius];
+      [coderCopy encodeDouble:@"_radius" forKey:self->_radius];
       break;
     case 2:
-      [v4 encodeCGSize:@"_size" forKey:{self->_size.width, self->_size.height}];
+      [coderCopy encodeCGSize:@"_size" forKey:{self->_size.width, self->_size.height}];
       break;
     case 3:
 LABEL_24:
       v27 = PKArrayFromPKPath(self->_pathPtr.__ptr_);
-      [v4 encodeObject:v27 forKey:@"_path"];
+      [coderCopy encodeObject:v27 forKey:@"_path"];
 
       goto LABEL_31;
     default:
@@ -468,7 +468,7 @@ LABEL_24:
   v29 = 208;
   v30 = 200;
 LABEL_30:
-  [v4 encodeCGPoint:v28 forKey:{*(&self->super.isa + v30), *(&self->super.isa + v29)}];
+  [coderCopy encodeCGPoint:v28 forKey:{*(&self->super.isa + v30), *(&self->super.isa + v29)}];
 LABEL_31:
   ptr = self->_outline.__ptr_;
   if (ptr)
@@ -486,48 +486,48 @@ LABEL_31:
       v33 += 2;
     }
 
-    [v4 encodeObject:v32 forKey:@"_outline"];
+    [coderCopy encodeObject:v32 forKey:@"_outline"];
   }
 
-  [v4 encodeDouble:@"_edgeRadius" forKey:self->_edgeRadius];
-  [v4 encodeBool:-[PKPhysicsBody isDynamic](self forKey:{"isDynamic"), @"dynamic"}];
-  [v4 encodeBool:-[PKPhysicsBody usesPreciseCollisionDetection](self forKey:{"usesPreciseCollisionDetection"), @"needsContinuousCollsionDetection"}];
-  [v4 encodeBool:-[PKPhysicsBody allowsRotation](self forKey:{"allowsRotation"), @"allowRotation"}];
-  [v4 encodeBool:-[PKPhysicsBody pinned](self forKey:{"pinned"), @"pinned"}];
+  [coderCopy encodeDouble:@"_edgeRadius" forKey:self->_edgeRadius];
+  [coderCopy encodeBool:-[PKPhysicsBody isDynamic](self forKey:{"isDynamic"), @"dynamic"}];
+  [coderCopy encodeBool:-[PKPhysicsBody usesPreciseCollisionDetection](self forKey:{"usesPreciseCollisionDetection"), @"needsContinuousCollsionDetection"}];
+  [coderCopy encodeBool:-[PKPhysicsBody allowsRotation](self forKey:{"allowsRotation"), @"allowRotation"}];
+  [coderCopy encodeBool:-[PKPhysicsBody pinned](self forKey:{"pinned"), @"pinned"}];
   [(PKPhysicsBody *)self friction];
-  [v4 encodeDouble:@"friction" forKey:?];
+  [coderCopy encodeDouble:@"friction" forKey:?];
   [(PKPhysicsBody *)self charge];
-  [v4 encodeDouble:@"charge" forKey:?];
+  [coderCopy encodeDouble:@"charge" forKey:?];
   [(PKPhysicsBody *)self restitution];
-  [v4 encodeDouble:@"restitution" forKey:?];
+  [coderCopy encodeDouble:@"restitution" forKey:?];
   [(PKPhysicsBody *)self density];
-  [v4 encodeDouble:@"density" forKey:?];
-  [v4 encodeBool:-[PKPhysicsBody affectedByGravity](self forKey:{"affectedByGravity"), @"affectedByGravity"}];
-  [v4 encodeInt32:-[PKPhysicsBody categoryBitMask](self forKey:{"categoryBitMask"), @"categoryBitMask"}];
-  [v4 encodeInt32:-[PKPhysicsBody collisionBitMask](self forKey:{"collisionBitMask"), @"collisionBitMask"}];
-  [v4 encodeInt32:-[PKPhysicsBody contactTestBitMask](self forKey:{"contactTestBitMask"), @"intersectionTestBitMask"}];
-  [v4 encodeInt32:-[PKPhysicsBody fieldBitMask](self forKey:{"fieldBitMask"), @"fieldBitMask"}];
+  [coderCopy encodeDouble:@"density" forKey:?];
+  [coderCopy encodeBool:-[PKPhysicsBody affectedByGravity](self forKey:{"affectedByGravity"), @"affectedByGravity"}];
+  [coderCopy encodeInt32:-[PKPhysicsBody categoryBitMask](self forKey:{"categoryBitMask"), @"categoryBitMask"}];
+  [coderCopy encodeInt32:-[PKPhysicsBody collisionBitMask](self forKey:{"collisionBitMask"), @"collisionBitMask"}];
+  [coderCopy encodeInt32:-[PKPhysicsBody contactTestBitMask](self forKey:{"contactTestBitMask"), @"intersectionTestBitMask"}];
+  [coderCopy encodeInt32:-[PKPhysicsBody fieldBitMask](self forKey:{"fieldBitMask"), @"fieldBitMask"}];
   [(PKPhysicsBody *)self velocity];
-  [v4 encodeCGVector:@"linearVelocity" forKey:?];
+  [coderCopy encodeCGVector:@"linearVelocity" forKey:?];
   [(PKPhysicsBody *)self angularVelocity];
-  [v4 encodeDouble:@"angularVelocity" forKey:?];
+  [coderCopy encodeDouble:@"angularVelocity" forKey:?];
   [(PKPhysicsBody *)self linearDamping];
-  [v4 encodeDouble:@"linearDamping" forKey:?];
+  [coderCopy encodeDouble:@"linearDamping" forKey:?];
   [(PKPhysicsBody *)self angularDamping];
-  [v4 encodeDouble:@"angularDamping" forKey:?];
+  [coderCopy encodeDouble:@"angularDamping" forKey:?];
 }
 
-- (PKPhysicsBody)initWithCoder:(id)a3
+- (PKPhysicsBody)initWithCoder:(id)coder
 {
   v72[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (!self)
   {
     goto LABEL_38;
   }
 
-  self->_shapeType = [v4 decodeIntForKey:@"_shapeType"];
+  self->_shapeType = [coderCopy decodeIntForKey:@"_shapeType"];
   self->_edgeRadius = 0.00899999961;
   if ([v5 containsValueForKey:@"_edgeRadius"])
   {
@@ -671,14 +671,14 @@ LABEL_27:
   {
     do
     {
-      v19 = [v5 decodeObject];
-      if ([v19 isEqualToString:@"circle"])
+      decodeObject = [v5 decodeObject];
+      if ([decodeObject isEqualToString:@"circle"])
       {
-        v20 = [v5 decodeObject];
-        v21 = PKCGPointFromString(v20);
-        v22 = [v5 decodeObject];
+        decodeObject2 = [v5 decodeObject];
+        v21 = PKCGPointFromString(decodeObject2);
+        decodeObject3 = [v5 decodeObject];
 
-        v23 = PKCGPointFromString(v22);
+        v23 = PKCGPointFromString(decodeObject3);
         v25 = v24;
         v26 = PKGet_INV_PTM_RATIO();
         v27 = PKGet_INV_PTM_RATIO();
@@ -689,14 +689,14 @@ LABEL_27:
         addCircleBody(v17, v29, &v69);
       }
 
-      if ([v19 isEqualToString:@"edge"])
+      if ([decodeObject isEqualToString:@"edge"])
       {
-        v30 = [v5 decodeObject];
-        v31 = PKCGPointFromString(v30);
+        decodeObject4 = [v5 decodeObject];
+        v31 = PKCGPointFromString(decodeObject4);
         v33 = v32;
-        v34 = [v5 decodeObject];
+        decodeObject5 = [v5 decodeObject];
 
-        v35 = PKCGPointFromString(v34);
+        v35 = PKCGPointFromString(decodeObject5);
         v37 = v36;
         v38 = PKGet_INV_PTM_RATIO();
         v39 = PKGet_INV_PTM_RATIO();
@@ -709,17 +709,17 @@ LABEL_27:
         addEdge(v17, &v69, &v68);
       }
 
-      if ([v19 isEqualToString:@"polygon"])
+      if ([decodeObject isEqualToString:@"polygon"])
       {
-        v41 = [v5 decodeObject];
-        PKCGPathCreateFromArray(v41, 1);
+        decodeObject6 = [v5 decodeObject];
+        PKCGPathCreateFromArray(decodeObject6, 1);
         PKPathCreateFromCGPathWithOptions();
       }
 
-      if ([v19 isEqualToString:@"chain"])
+      if ([decodeObject isEqualToString:@"chain"])
       {
-        v42 = [v5 decodeObject];
-        PKCGPathCreateFromArray(v42, 1);
+        decodeObject7 = [v5 decodeObject];
+        PKCGPathCreateFromArray(decodeObject7, 1);
         PKPathCreateFromCGPathWithOptions();
       }
 
@@ -774,16 +774,16 @@ LABEL_38:
   return self;
 }
 
-- (BOOL)isEqualToBody:(id)a3
+- (BOOL)isEqualToBody:(id)body
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  bodyCopy = body;
+  v5 = bodyCopy;
+  if (self == bodyCopy)
   {
     goto LABEL_20;
   }
 
-  if (self->_shapeType != v4->_shapeType)
+  if (self->_shapeType != bodyCopy->_shapeType)
   {
     goto LABEL_21;
   }
@@ -817,56 +817,56 @@ LABEL_21:
   }
 
 LABEL_8:
-  v11 = [(PKPhysicsBody *)self isDynamic];
-  if (v11 != [v5 isDynamic])
+  isDynamic = [(PKPhysicsBody *)self isDynamic];
+  if (isDynamic != [v5 isDynamic])
   {
     goto LABEL_21;
   }
 
-  v12 = [(PKPhysicsBody *)self usesPreciseCollisionDetection];
-  if (v12 != [v5 usesPreciseCollisionDetection])
+  usesPreciseCollisionDetection = [(PKPhysicsBody *)self usesPreciseCollisionDetection];
+  if (usesPreciseCollisionDetection != [v5 usesPreciseCollisionDetection])
   {
     goto LABEL_21;
   }
 
-  v13 = [(PKPhysicsBody *)self allowsRotation];
-  if (v13 != [v5 allowsRotation])
+  allowsRotation = [(PKPhysicsBody *)self allowsRotation];
+  if (allowsRotation != [v5 allowsRotation])
   {
     goto LABEL_21;
   }
 
-  v14 = [(PKPhysicsBody *)self pinned];
-  if (v14 != [v5 pinned])
+  pinned = [(PKPhysicsBody *)self pinned];
+  if (pinned != [v5 pinned])
   {
     goto LABEL_21;
   }
 
-  v15 = [(PKPhysicsBody *)self affectedByGravity];
-  if (v15 != [v5 affectedByGravity])
+  affectedByGravity = [(PKPhysicsBody *)self affectedByGravity];
+  if (affectedByGravity != [v5 affectedByGravity])
   {
     goto LABEL_21;
   }
 
-  v16 = [(PKPhysicsBody *)self categoryBitMask];
-  if (v16 != [v5 categoryBitMask])
+  categoryBitMask = [(PKPhysicsBody *)self categoryBitMask];
+  if (categoryBitMask != [v5 categoryBitMask])
   {
     goto LABEL_21;
   }
 
-  v17 = [(PKPhysicsBody *)self collisionBitMask];
-  if (v17 != [v5 collisionBitMask])
+  collisionBitMask = [(PKPhysicsBody *)self collisionBitMask];
+  if (collisionBitMask != [v5 collisionBitMask])
   {
     goto LABEL_21;
   }
 
-  v18 = [(PKPhysicsBody *)self fieldBitMask];
-  if (v18 != [v5 fieldBitMask])
+  fieldBitMask = [(PKPhysicsBody *)self fieldBitMask];
+  if (fieldBitMask != [v5 fieldBitMask])
   {
     goto LABEL_21;
   }
 
-  v19 = [(PKPhysicsBody *)self contactTestBitMask];
-  if (v19 != [v5 contactTestBitMask])
+  contactTestBitMask = [(PKPhysicsBody *)self contactTestBitMask];
+  if (contactTestBitMask != [v5 contactTestBitMask])
   {
     goto LABEL_21;
   }
@@ -917,9 +917,9 @@ LABEL_22:
   if (v2)
   {
     *&v2->_isPinned = 256;
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     joints = v3->_joints;
-    v3->_joints = v4;
+    v3->_joints = array;
 
     v3->_shapes.__end_ = v3->_shapes.__begin_;
     *&v3->_bodyDef.linearDamping = vdup_n_s32(0x3DCCCCCDu);
@@ -990,16 +990,16 @@ LABEL_22:
   [(PKPhysicsBody *)&v7 dealloc];
 }
 
-- (PKPhysicsBody)initWithBodies:(id)a3
+- (PKPhysicsBody)initWithBodies:(id)bodies
 {
   v35 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  bodiesCopy = bodies;
   v4 = [(PKPhysicsBody *)self init];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v27 copyItems:1];
+  v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:bodiesCopy copyItems:1];
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v6)
   {
@@ -1081,8 +1081,8 @@ LABEL_22:
           v4->_shapes.__end_ = v14;
         }
 
-        v25 = [v9 _shapes];
-        v25[1] = *v25;
+        _shapes = [v9 _shapes];
+        _shapes[1] = *_shapes;
         ++v8;
       }
 
@@ -1097,35 +1097,35 @@ LABEL_22:
   return v4;
 }
 
-- (PKPhysicsBody)initWithCircleOfRadius:(double)a3 center:(CGPoint)a4
+- (PKPhysicsBody)initWithCircleOfRadius:(double)radius center:(CGPoint)center
 {
-  v5 = [(PKPhysicsBody *)self init:*&a4.x];
-  v6 = a3;
-  addCircleBody(v5, v6, &v8);
+  v5 = [(PKPhysicsBody *)self init:*&center.x];
+  radiusCopy = radius;
+  addCircleBody(v5, radiusCopy, &v8);
 }
 
-- (PKPhysicsBody)initWithRectangleOfSize:(CGSize)a3
+- (PKPhysicsBody)initWithRectangleOfSize:(CGSize)size
 {
   edgeRadius = self->_edgeRadius;
   *&edgeRadius = edgeRadius;
-  return [(PKPhysicsBody *)self initWithRectangleOfSize:a3.width center:a3.height edgeRadius:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), edgeRadius];
+  return [(PKPhysicsBody *)self initWithRectangleOfSize:size.width center:size.height edgeRadius:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), edgeRadius];
 }
 
-- (PKPhysicsBody)initWithRectangleOfSize:(CGSize)a3 center:(CGPoint)a4
+- (PKPhysicsBody)initWithRectangleOfSize:(CGSize)size center:(CGPoint)center
 {
   edgeRadius = self->_edgeRadius;
   *&edgeRadius = edgeRadius;
-  return [(PKPhysicsBody *)self initWithRectangleOfSize:a3.width center:a3.height edgeRadius:a4.x, a4.y, edgeRadius];
+  return [(PKPhysicsBody *)self initWithRectangleOfSize:size.width center:size.height edgeRadius:center.x, center.y, edgeRadius];
 }
 
-+ (id)initWithQuadTree:(id)a3
++ (id)initWithQuadTree:(id)tree
 {
-  v3 = a3;
+  treeCopy = tree;
   v4 = objc_alloc_init(PKPhysicsBody);
   v5 = v4;
   v4->_shapeType = 8;
-  v7 = v3[1];
-  v6 = v3[2];
+  v7 = treeCopy[1];
+  v6 = treeCopy[2];
   if (v6)
   {
     atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
@@ -1145,86 +1145,86 @@ LABEL_22:
   operator new();
 }
 
-+ (id)initWithMarchingCubes:(void *)a3 pixelFrame:(CGRect)a4
++ (id)initWithMarchingCubes:(void *)cubes pixelFrame:(CGRect)frame
 {
-  v6 = a4;
-  v4 = PKCGrid::physicsBodyFromMarchingCubes(a3, &v6);
+  frameCopy = frame;
+  v4 = PKCGrid::physicsBodyFromMarchingCubes(cubes, &frameCopy);
 
   return v4;
 }
 
-+ (id)bodyWithBodies:(id)a3
++ (id)bodyWithBodies:(id)bodies
 {
-  v3 = a3;
-  v4 = [[PKPhysicsBody alloc] initWithBodies:v3];
+  bodiesCopy = bodies;
+  v4 = [[PKPhysicsBody alloc] initWithBodies:bodiesCopy];
 
   return v4;
 }
 
-+ (id)bodyWithCircleOfRadius:(double)a3
++ (id)bodyWithCircleOfRadius:(double)radius
 {
   v4 = [PKPhysicsBody alloc];
-  v5 = [(PKPhysicsBody *)v4 initWithCircleOfRadius:a3 center:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  v5 = [(PKPhysicsBody *)v4 initWithCircleOfRadius:radius center:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
 
   return v5;
 }
 
-+ (id)bodyWithCircleOfRadius:(double)a3 center:(CGPoint)a4
++ (id)bodyWithCircleOfRadius:(double)radius center:(CGPoint)center
 {
-  v4 = [[PKPhysicsBody alloc] initWithCircleOfRadius:a3 center:a4.x, a4.y];
+  v4 = [[PKPhysicsBody alloc] initWithCircleOfRadius:radius center:center.x, center.y];
 
   return v4;
 }
 
-+ (id)bodyWithRectangleOfSize:(CGSize)a3
++ (id)bodyWithRectangleOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = [PKPhysicsBody alloc];
   v6 = [(PKPhysicsBody *)v5 initWithRectangleOfSize:width center:height, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
 
   return v6;
 }
 
-+ (id)bodyWithRectangleOfSize:(CGSize)a3 edgeRadius:(double)a4
++ (id)bodyWithRectangleOfSize:(CGSize)size edgeRadius:(double)radius
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = [PKPhysicsBody alloc];
-  *&v8 = a4;
+  *&v8 = radius;
   v9 = [(PKPhysicsBody *)v7 initWithRectangleOfSize:width center:height edgeRadius:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v8];
 
   return v9;
 }
 
-+ (id)bodyWithRectangleOfSize:(CGSize)a3 center:(CGPoint)a4
++ (id)bodyWithRectangleOfSize:(CGSize)size center:(CGPoint)center
 {
-  v4 = [[PKPhysicsBody alloc] initWithRectangleOfSize:a3.width center:a3.height, a4.x, a4.y];
+  v4 = [[PKPhysicsBody alloc] initWithRectangleOfSize:size.width center:size.height, center.x, center.y];
 
   return v4;
 }
 
-+ (id)bodyWithRectangleOfSize:(CGSize)a3 center:(CGPoint)a4 edgeRadius:(double)a5
++ (id)bodyWithRectangleOfSize:(CGSize)size center:(CGPoint)center edgeRadius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  y = center.y;
+  x = center.x;
+  height = size.height;
+  width = size.width;
   v10 = [PKPhysicsBody alloc];
-  *&v11 = a5;
+  *&v11 = radius;
   v12 = [(PKPhysicsBody *)v10 initWithRectangleOfSize:width center:height edgeRadius:x, y, v11];
 
   return v12;
 }
 
-+ (id)bodyWithEdgeFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4
++ (id)bodyWithEdgeFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint
 {
-  v4 = [[PKPhysicsBody alloc] initWithEdgeFromPoint:a3.x toPoint:a3.y, a4.x, a4.y];
+  v4 = [[PKPhysicsBody alloc] initWithEdgeFromPoint:point.x toPoint:point.y, toPoint.x, toPoint.y];
 
   return v4;
 }
 
-+ (id)bodyWithPolygonFromPath:(CGPath *)a3
++ (id)bodyWithPolygonFromPath:(CGPath *)path
 {
   if (!CGPathIsEllipse() || (width = v13.size.width, height = v13.size.height, v6 = v13.size.width, v7 = v13.size.height, (COERCE_UNSIGNED_INT(v6 - v7) & 0x60000000) != 0))
   {
@@ -1234,21 +1234,21 @@ LABEL_22:
   x = v13.origin.x;
   y = v13.origin.y;
   MidX = CGRectGetMidX(*(&width - 2));
-  v11 = [a1 bodyWithCircleOfRadius:(v6 * 0.5) center:{MidX, CGRectGetMidY(v13)}];
+  v11 = [self bodyWithCircleOfRadius:(v6 * 0.5) center:{MidX, CGRectGetMidY(v13)}];
 
   return v11;
 }
 
-+ (id)bodyWithEdgeChainFromPath:(CGPath *)a3
++ (id)bodyWithEdgeChainFromPath:(CGPath *)path
 {
-  v3 = [[PKPhysicsBody alloc] initWithEdgeChainFromPath:a3];
+  v3 = [[PKPhysicsBody alloc] initWithEdgeChainFromPath:path];
 
   return v3;
 }
 
-+ (id)bodyWithEdgeLoopFromPath:(CGPath *)a3
++ (id)bodyWithEdgeLoopFromPath:(CGPath *)path
 {
-  v3 = [[PKPhysicsBody alloc] initWithEdgeLoopFromPath:a3];
+  v3 = [[PKPhysicsBody alloc] initWithEdgeLoopFromPath:path];
 
   return v3;
 }
@@ -1260,10 +1260,10 @@ LABEL_22:
   return WeakRetained;
 }
 
-- (void)setPinned:(BOOL)a3
+- (void)setPinned:(BOOL)pinned
 {
-  self->_isPinned = a3;
-  v10 = !self->_allowsRotation && !a3;
+  self->_isPinned = pinned;
+  v10 = !self->_allowsRotation && !pinned;
   self->_bodyDef.fixedRotation = v10;
   body = self->_body;
   if (body)
@@ -1272,10 +1272,10 @@ LABEL_22:
   }
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  v5 = a3.x * PKGet_INV_PTM_RATIO();
+  y = position.y;
+  v5 = position.x * PKGet_INV_PTM_RATIO();
   v6 = y * PKGet_INV_PTM_RATIO();
   v10.x = v5;
   v10.y = v6;
@@ -1316,15 +1316,15 @@ LABEL_22:
   return result;
 }
 
-- (void)set_allowSleep:(BOOL)a3
+- (void)set_allowSleep:(BOOL)sleep
 {
   body = self->_body;
   if (body)
   {
-    b2Body::SetSleepingAllowed(body, a3);
+    b2Body::SetSleepingAllowed(body, sleep);
   }
 
-  self->_bodyDef.allowSleep = a3;
+  self->_bodyDef.allowSleep = sleep;
 }
 
 - (BOOL)_allowSleep
@@ -1343,9 +1343,9 @@ LABEL_22:
   return v4;
 }
 
-- (void)setRotation:(double)a3
+- (void)setRotation:(double)rotation
 {
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&rotation & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
     v11 = v6;
     v12 = v5;
@@ -1355,16 +1355,16 @@ LABEL_22:
     if (body)
     {
       var0 = body->var8.var0;
-      v9 = a3;
-      b2Body::SetTransform(body, &var0, v9);
+      rotationCopy2 = rotation;
+      b2Body::SetTransform(body, &var0, rotationCopy2);
     }
 
     else
     {
-      v9 = a3;
+      rotationCopy2 = rotation;
     }
 
-    self->_bodyDef.angle = v9;
+    self->_bodyDef.angle = rotationCopy2;
     [(PKPhysicsBody *)self setResting:0];
   }
 }
@@ -1383,16 +1383,16 @@ LABEL_22:
   }
 }
 
-- (void)setLinearDamping:(double)a3
+- (void)setLinearDamping:(double)damping
 {
   body = self->_body;
-  v4 = a3;
+  dampingCopy = damping;
   if (body)
   {
-    *(&body->var30 + 1) = v4;
+    *(&body->var30 + 1) = dampingCopy;
   }
 
-  self->_bodyDef.linearDamping = v4;
+  self->_bodyDef.linearDamping = dampingCopy;
 }
 
 - (double)linearDamping
@@ -1411,16 +1411,16 @@ LABEL_22:
   return *p_linearDamping;
 }
 
-- (void)setAngularDamping:(double)a3
+- (void)setAngularDamping:(double)damping
 {
   body = self->_body;
-  v4 = a3;
+  dampingCopy = damping;
   if (body)
   {
-    *&body[1].var0 = v4;
+    *&body[1].var0 = dampingCopy;
   }
 
-  self->_bodyDef.angularDamping = v4;
+  self->_bodyDef.angularDamping = dampingCopy;
 }
 
 - (double)angularDamping
@@ -1439,14 +1439,14 @@ LABEL_22:
   return *p_var0;
 }
 
-- (void)applyForce:(CGPoint)a3 atPoint:(CGPoint)a4
+- (void)applyForce:(CGPoint)force atPoint:(CGPoint)point
 {
   body = self->_body;
   if (body)
   {
-    x = a4.x;
-    v19 = a3.x;
-    y = a3.y;
+    x = point.x;
+    v19 = force.x;
+    y = force.y;
     v18 = PKGet_INV_PTM_RATIO();
     v6 = PKGet_INV_PTM_RATIO();
     v7.f64[0] = v19;
@@ -1473,13 +1473,13 @@ LABEL_22:
   }
 }
 
-- (void)applyForce:(CGPoint)a3
+- (void)applyForce:(CGPoint)force
 {
   body = self->_body;
   if (body)
   {
-    x = a3.x;
-    y = a3.y;
+    x = force.x;
+    y = force.y;
     v8 = PKGet_INV_PTM_RATIO();
     v4 = PKGet_INV_PTM_RATIO();
     v5.f64[0] = x;
@@ -1498,13 +1498,13 @@ LABEL_22:
   }
 }
 
-- (void)applyTorque:(double)a3
+- (void)applyTorque:(double)torque
 {
   body = self->_body;
-  v4 = a3;
+  torqueCopy = torque;
   if (body)
   {
-    v5 = COERCE_UNSIGNED_INT(fabs(a3)) <= 0x7F7FFFFF;
+    v5 = COERCE_UNSIGNED_INT(fabs(torque)) <= 0x7F7FFFFF;
   }
 
   else
@@ -1519,18 +1519,18 @@ LABEL_22:
       b2Body::SetAwake(body, 1);
     }
 
-    *(&body->var16 + 1) = *(&body->var16 + 1) + v4;
+    *(&body->var16 + 1) = *(&body->var16 + 1) + torqueCopy;
   }
 }
 
-- (void)applyImpulse:(CGVector)a3 atPoint:(CGPoint)a4
+- (void)applyImpulse:(CGVector)impulse atPoint:(CGPoint)point
 {
   body = self->_body;
   if (body)
   {
-    x = a4.x;
-    dx = a3.dx;
-    dy = a3.dy;
+    x = point.x;
+    dx = impulse.dx;
+    dy = impulse.dy;
     v18 = PKGet_INV_PTM_RATIO();
     v6 = PKGet_INV_PTM_RATIO();
     v7.f64[0] = dx;
@@ -1557,14 +1557,14 @@ LABEL_22:
   }
 }
 
-- (void)applyImpulse:(CGVector)a3
+- (void)applyImpulse:(CGVector)impulse
 {
   body = self->_body;
   if (body)
   {
     var1 = body->var10.var2.var0.var1;
-    dx = a3.dx;
-    dy = a3.dy;
+    dx = impulse.dx;
+    dy = impulse.dy;
     v16 = PKGet_INV_PTM_RATIO();
     v5 = PKGet_INV_PTM_RATIO();
     v6.f64[0] = dx;
@@ -1589,13 +1589,13 @@ LABEL_22:
   }
 }
 
-- (void)applyAngularImpulse:(double)a3
+- (void)applyAngularImpulse:(double)impulse
 {
   body = self->_body;
-  v4 = a3;
+  impulseCopy = impulse;
   if (body)
   {
-    v5 = COERCE_UNSIGNED_INT(fabs(a3)) <= 0x7F7FFFFF;
+    v5 = COERCE_UNSIGNED_INT(fabs(impulse)) <= 0x7F7FFFFF;
   }
 
   else
@@ -1610,19 +1610,19 @@ LABEL_22:
       b2Body::SetAwake(body, 1);
     }
 
-    *&body->var15 = *&body->var15 + (*&body->var30 * v4);
+    *&body->var15 = *&body->var15 + (*&body->var30 * impulseCopy);
   }
 }
 
-- (void)applyUnscaledForce:(CGVector)a3 atPoint:(CGPoint)a4
+- (void)applyUnscaledForce:(CGVector)force atPoint:(CGPoint)point
 {
   body = self->_body;
   if (body)
   {
-    y = a4.y;
-    x = a4.x;
-    dx = a3.dx;
-    dy = a3.dy;
+    y = point.y;
+    x = point.x;
+    dx = force.dx;
+    dy = force.dy;
     v15 = dy;
     v9 = dy;
     v10 = PKGet_INV_PTM_RATIO();
@@ -1644,14 +1644,14 @@ LABEL_22:
   }
 }
 
-- (void)applyUnscaledForce:(CGVector)a3
+- (void)applyUnscaledForce:(CGVector)force
 {
   body = self->_body;
   if (body)
   {
-    dx = a3.dx;
-    dy = a3.dy;
-    if ((LODWORD(dx) & 0x7FFFFFFFu) <= 0x7F7FFFFF && COERCE_UNSIGNED_INT(fabs(a3.dy)) <= 0x7F7FFFFF && body->var5 == 2)
+    dx = force.dx;
+    dy = force.dy;
+    if ((LODWORD(dx) & 0x7FFFFFFFu) <= 0x7F7FFFFF && COERCE_UNSIGNED_INT(fabs(force.dy)) <= 0x7F7FFFFF && body->var5 == 2)
     {
       if ((b2Body::IsAwake(self->_body) & 1) == 0)
       {
@@ -1665,14 +1665,14 @@ LABEL_22:
   }
 }
 
-- (void)applyUnscaledImpulse:(CGVector)a3 atPoint:(CGPoint)a4
+- (void)applyUnscaledImpulse:(CGVector)impulse atPoint:(CGPoint)point
 {
   body = self->_body;
   if (body)
   {
-    x = a4.x;
-    dy = a3.dy;
-    v17 = vcvt_f32_f64(a3);
+    x = point.x;
+    dy = impulse.dy;
+    v17 = vcvt_f32_f64(impulse);
     v7 = PKGet_INV_PTM_RATIO();
     PKGet_INV_PTM_RATIO();
     v8 = vcge_s32((*&v17 & 0x7FFFFFFF7FFFFFFFLL), vneg_f32(0x7F0000007FLL));
@@ -1694,13 +1694,13 @@ LABEL_22:
   }
 }
 
-- (void)applyUnscaledImpulse:(CGVector)a3
+- (void)applyUnscaledImpulse:(CGVector)impulse
 {
   body = self->_body;
   if (body)
   {
-    dy = a3.dy;
-    v5 = vcvt_f32_f64(a3);
+    dy = impulse.dy;
+    v5 = vcvt_f32_f64(impulse);
     v6 = vcge_s32((*&v5 & 0x7FFFFFFF7FFFFFFFLL), vneg_f32(0x7F0000007FLL));
     if (((v6.i32[0] | v6.i32[1]) & 1) == 0 && body->var5 == 2)
     {
@@ -1721,70 +1721,70 @@ LABEL_22:
   }
 }
 
-- (void)setUsesPreciseCollisionDetection:(BOOL)a3
+- (void)setUsesPreciseCollisionDetection:(BOOL)detection
 {
-  self->_bodyDef.bullet = a3;
+  self->_bodyDef.bullet = detection;
   body = self->_body;
   if (body)
   {
-    b2Body::SetBullet(body, a3);
+    b2Body::SetBullet(body, detection);
   }
 }
 
-- (void)setAffectedByGravity:(BOOL)a3
+- (void)setAffectedByGravity:(BOOL)gravity
 {
-  self->_bodyDef._sk_affectedByGravity = a3;
+  self->_bodyDef._sk_affectedByGravity = gravity;
   body = self->_body;
   if (body)
   {
-    body->var0 = a3;
+    body->var0 = gravity;
   }
 }
 
-- (void)setCategoryBitMask:(unsigned int)a3
+- (void)setCategoryBitMask:(unsigned int)mask
 {
-  self->_bodyDef._sk_categoryBitMask = a3;
+  self->_bodyDef._sk_categoryBitMask = mask;
   body = self->_body;
   if (body)
   {
-    b2Body::SetCategoryBitMask(body, a3);
+    b2Body::SetCategoryBitMask(body, mask);
   }
 }
 
-- (void)setFieldBitMask:(unsigned int)a3
+- (void)setFieldBitMask:(unsigned int)mask
 {
-  self->_bodyDef._sk_fieldCategoryBitMask = a3;
+  self->_bodyDef._sk_fieldCategoryBitMask = mask;
   body = self->_body;
   if (body)
   {
-    body->var1 = a3;
+    body->var1 = mask;
   }
 }
 
-- (void)setCollisionBitMask:(unsigned int)a3
+- (void)setCollisionBitMask:(unsigned int)mask
 {
-  self->_bodyDef._sk_collisionBitMask = a3;
+  self->_bodyDef._sk_collisionBitMask = mask;
   body = self->_body;
   if (body)
   {
-    b2Body::SetCollisionBitMask(body, a3);
+    b2Body::SetCollisionBitMask(body, mask);
   }
 }
 
-- (void)setContactTestBitMask:(unsigned int)a3
+- (void)setContactTestBitMask:(unsigned int)mask
 {
-  self->_bodyDef._sk_intersectionCallbackBitMask = a3;
+  self->_bodyDef._sk_intersectionCallbackBitMask = mask;
   body = self->_body;
   if (body)
   {
-    b2Body::SetIntersectionCallbackBitMask(body, a3);
+    b2Body::SetIntersectionCallbackBitMask(body, mask);
   }
 }
 
-- (void)setVelocity:(CGVector)a3
+- (void)setVelocity:(CGVector)velocity
 {
-  dy = a3.dy;
-  v5 = a3.dx * PKGet_INV_PTM_RATIO();
+  dy = velocity.dy;
+  v5 = velocity.dx * PKGet_INV_PTM_RATIO();
   v6 = dy * PKGet_INV_PTM_RATIO();
   if ((LODWORD(v5) & 0x7FFFFFFFu) <= 0x7F7FFFFF && (LODWORD(v6) & 0x7FFFFFFFu) < 0x7F800000)
   {
@@ -1838,16 +1838,16 @@ LABEL_22:
   return result;
 }
 
-- (void)setAngularVelocity:(double)a3
+- (void)setAngularVelocity:(double)velocity
 {
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&velocity & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v3 = a3;
-    self->_bodyDef.angularVelocity = v3;
+    velocityCopy = velocity;
+    self->_bodyDef.angularVelocity = velocityCopy;
     body = self->_body;
     if (body)
     {
-      v5 = (LODWORD(v3) & 0x7FFFFFFFu) >= 0x7F800000 ? 0.0 : v3;
+      v5 = (LODWORD(velocityCopy) & 0x7FFFFFFFu) >= 0x7F800000 ? 0.0 : velocityCopy;
       if (body->var5)
       {
         if ((v5 * v5) > 0.0)
@@ -1877,10 +1877,10 @@ LABEL_22:
   return *p_var15;
 }
 
-- (void)setAllowsRotation:(BOOL)a3
+- (void)setAllowsRotation:(BOOL)rotation
 {
-  self->_allowsRotation = a3;
-  if (a3)
+  self->_allowsRotation = rotation;
+  if (rotation)
   {
     v11 = 0;
   }
@@ -1915,13 +1915,13 @@ LABEL_22:
   return (IsAwake & 1) == 0;
 }
 
-- (void)setResting:(BOOL)a3
+- (void)setResting:(BOOL)resting
 {
-  self->_bodyDef.awake = !a3;
+  self->_bodyDef.awake = !resting;
   body = self->_body;
   if (body)
   {
-    b2Body::SetAwake(body, !a3);
+    b2Body::SetAwake(body, !resting);
   }
 }
 
@@ -2006,34 +2006,34 @@ LABEL_7:
   return 0.0;
 }
 
-- (void)setMass:(double)a3
+- (void)setMass:(double)mass
 {
   [(PKPhysicsBody *)self mass];
   v6 = v5;
   [(PKPhysicsBody *)self density];
-  v8 = v7 / v6 * a3;
+  v8 = v7 / v6 * mass;
 
   [(PKPhysicsBody *)self setDensity:v8];
 }
 
-- (void)setDensity:(double)a3
+- (void)setDensity:(double)density
 {
   begin = self->_shapes.__begin_;
   end = self->_shapes.__end_;
   if (begin != end)
   {
-    *&a3 = a3;
-    v11 = (LODWORD(a3) & 0x7FFFFFFF) == 0;
-    if ((LODWORD(a3) - 1) < 0x7FFFFF)
+    *&density = density;
+    v11 = (LODWORD(density) & 0x7FFFFFFF) == 0;
+    if ((LODWORD(density) - 1) < 0x7FFFFF)
     {
       v11 = 1;
     }
 
-    v13 = ((LODWORD(a3) & 0x7FFFFFFFu) - 0x800000) >> 24 < 0x7F && SLODWORD(a3) >= 0 || v11;
+    v13 = ((LODWORD(density) & 0x7FFFFFFFu) - 0x800000) >> 24 < 0x7F && SLODWORD(density) >= 0 || v11;
     do
     {
       v14 = *begin;
-      v14->var0.var4 = *&a3;
+      v14->var0.var4 = *&density;
       var1 = v14->var1;
       if (var1)
       {
@@ -2042,7 +2042,7 @@ LABEL_7:
           [PKPhysicsBody setDensity:];
         }
 
-        *(var1 + 2) = LODWORD(a3);
+        *(var1 + 2) = LODWORD(density);
       }
 
       ++begin;
@@ -2055,7 +2055,7 @@ LABEL_7:
   if (body)
   {
 
-    b2Body::ResetMassData(body, a3, v3, v4, v5, v6, v7, v8);
+    b2Body::ResetMassData(body, density, v3, v4, v5, v6, v7, v8);
   }
 }
 
@@ -2101,29 +2101,29 @@ LABEL_7:
   }
 }
 
-- (void)reapplyScale:(double)a3 yScale:(double)a4
+- (void)reapplyScale:(double)scale yScale:(double)yScale
 {
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&a4 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
+  if ((*&scale & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&yScale & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
   {
     begin = self->_shapes.__begin_;
     end = self->_shapes.__end_;
     if (begin != end)
     {
-      v7 = a3;
-      v8 = a4;
+      scaleCopy = scale;
+      yScaleCopy = yScale;
       do
       {
         v9 = *begin;
         var1 = (*begin)->var1;
         if (var1)
         {
-          PKPhysicsReapplyScaleOnFixture(v9, var1, v7, v8);
+          PKPhysicsReapplyScaleOnFixture(v9, var1, scaleCopy, yScaleCopy);
         }
 
         else
         {
-          v9->var5 = v7;
-          v9->var6 = v8;
+          v9->var5 = scaleCopy;
+          v9->var6 = yScaleCopy;
         }
 
         ++begin;
@@ -2142,19 +2142,19 @@ LABEL_7:
   }
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&radius & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
     begin = self->_shapes.__begin_;
     end = self->_shapes.__end_;
     if (begin != end)
     {
-      v6 = a3;
+      radiusCopy = radius;
       do
       {
         v7 = *begin++;
-        *(*(*(v7 + 40) + 32) + 12) = v6;
+        *(*(*(v7 + 40) + 32) + 12) = radiusCopy;
       }
 
       while (begin != end);
@@ -2167,21 +2167,21 @@ LABEL_7:
   }
 }
 
-- (void)setRestitution:(double)a3
+- (void)setRestitution:(double)restitution
 {
   begin = self->_shapes.__begin_;
   end = self->_shapes.__end_;
   if (begin != end)
   {
-    v5 = a3;
+    restitutionCopy = restitution;
     do
     {
       v6 = *begin;
-      v6->var0.var3 = v5;
+      v6->var0.var3 = restitutionCopy;
       var1 = v6->var1;
       if (var1)
       {
-        *(var1 + 11) = v5;
+        *(var1 + 11) = restitutionCopy;
       }
 
       ++begin;
@@ -2205,21 +2205,21 @@ LABEL_7:
   }
 }
 
-- (void)setFriction:(double)a3
+- (void)setFriction:(double)friction
 {
   begin = self->_shapes.__begin_;
   end = self->_shapes.__end_;
   if (begin != end)
   {
-    v5 = a3;
+    frictionCopy = friction;
     do
     {
       v6 = *begin;
-      v6->var0.var2 = v5;
+      v6->var0.var2 = frictionCopy;
       var1 = v6->var1;
       if (var1)
       {
-        *(var1 + 10) = v5;
+        *(var1 + 10) = frictionCopy;
       }
 
       ++begin;
@@ -2243,16 +2243,16 @@ LABEL_7:
   }
 }
 
-- (void)setCharge:(double)a3
+- (void)setCharge:(double)charge
 {
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&charge & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v3 = a3;
-    self->_bodyDef.charge = v3;
+    chargeCopy = charge;
+    self->_bodyDef.charge = chargeCopy;
     body = self->_body;
     if (body)
     {
-      b2Body::SetCharge(body, v3);
+      b2Body::SetCharge(body, chargeCopy);
     }
   }
 }
@@ -2271,9 +2271,9 @@ LABEL_7:
   }
 }
 
-- (void)setDynamic:(BOOL)a3
+- (void)setDynamic:(BOOL)dynamic
 {
-  if (a3)
+  if (dynamic)
   {
     dynamicType = self->_dynamicType;
   }
@@ -2298,9 +2298,9 @@ LABEL_7:
   return [(PKPhysicsBody *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   *(v4 + 164) = self->_shapeType;
   *(v4 + 256) = self->_edgeRadius;
@@ -2503,7 +2503,7 @@ LABEL_47:
 {
   v3 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_representedObject);
-  v5 = [v3 stringWithFormat:@"%@", WeakRetained];
+  weakRetained = [v3 stringWithFormat:@"%@", WeakRetained];
 
   v6 = objc_loadWeakRetained(&self->_representedObject);
   if (v6)
@@ -2528,7 +2528,7 @@ LABEL_47:
 
   else
   {
-    v10 = v5;
+    v10 = weakRetained;
   }
 
   v12 = self->_shapeType - 1;
@@ -2543,15 +2543,15 @@ LABEL_47:
   }
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(PKPhysicsBody *)self _descriptionClassName];
-  v16 = [v14 stringWithFormat:@"<%@> type:%@ representedObject:[%@]", v15, v13, v10];
+  _descriptionClassName = [(PKPhysicsBody *)self _descriptionClassName];
+  v16 = [v14 stringWithFormat:@"<%@> type:%@ representedObject:[%@]", _descriptionClassName, v13, v10];
 
   return v16;
 }
 
 - (id)allContactedBodies
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   body = self->_body;
   if (body)
   {
@@ -2570,12 +2570,12 @@ LABEL_47:
 
       if (!v7 && (*(v6 + 12) & 2) != 0 && *(*i + 240))
       {
-        [v3 addObject:?];
+        [array addObject:?];
       }
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (id).cxx_construct
@@ -2607,12 +2607,12 @@ LABEL_47:
   return v4;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  self->_bodyDef.active = a3;
+  self->_bodyDef.active = active;
   if (self->_body)
   {
-    v3 = a3;
+    activeCopy = active;
     WeakRetained = objc_loadWeakRetained(&self->_world);
 
     if (WeakRetained)
@@ -2623,7 +2623,7 @@ LABEL_47:
       v8[2] = __37__PKPhysicsBody_Internal__setActive___block_invoke;
       v8[3] = &unk_279A388F0;
       v8[4] = self;
-      v9 = v3;
+      v9 = activeCopy;
       [v6 _runBlockOutsideOfTimeStep:v8];
     }
 
@@ -2631,7 +2631,7 @@ LABEL_47:
     {
       body = self->_body;
 
-      b2Body::SetActive(body, v3);
+      b2Body::SetActive(body, activeCopy);
     }
   }
 }
@@ -2670,13 +2670,13 @@ LABEL_47:
   return self;
 }
 
-- (void)set_bodyDef:(b2BodyDef *)a3
+- (void)set_bodyDef:(b2BodyDef *)def
 {
-  *&self->_bodyDef._sk_affectedByGravity = *&a3->_sk_affectedByGravity;
-  v3 = *&a3->_sk_intersectionCallbackBitMask;
-  v4 = *&a3->angle;
-  v5 = *&a3->active;
-  *&self->_bodyDef.charge = *&a3->charge;
+  *&self->_bodyDef._sk_affectedByGravity = *&def->_sk_affectedByGravity;
+  v3 = *&def->_sk_intersectionCallbackBitMask;
+  v4 = *&def->angle;
+  v5 = *&def->active;
+  *&self->_bodyDef.charge = *&def->charge;
   *&self->_bodyDef.active = v5;
   *&self->_bodyDef._sk_intersectionCallbackBitMask = v3;
   *&self->_bodyDef.angle = v4;

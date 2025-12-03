@@ -1,17 +1,17 @@
 @interface RTBatteryManagerNotificationChargerConnected
-- (RTBatteryManagerNotificationChargerConnected)initWithChargerConnected:(BOOL)a3;
+- (RTBatteryManagerNotificationChargerConnected)initWithChargerConnected:(BOOL)connected;
 @end
 
 @implementation RTBatteryManagerNotificationChargerConnected
 
-- (RTBatteryManagerNotificationChargerConnected)initWithChargerConnected:(BOOL)a3
+- (RTBatteryManagerNotificationChargerConnected)initWithChargerConnected:(BOOL)connected
 {
   v5.receiver = self;
   v5.super_class = RTBatteryManagerNotificationChargerConnected;
   result = [(RTNotification *)&v5 init];
   if (result)
   {
-    result->_connected = a3;
+    result->_connected = connected;
   }
 
   return result;

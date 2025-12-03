@@ -1,19 +1,19 @@
 @interface SBFButton
 - (BOOL)_drawingAsSelected;
-- (SBFButton)initWithFrame:(CGRect)a3;
+- (SBFButton)initWithFrame:(CGRect)frame;
 - (void)_touchUpInside;
-- (void)_updateSelected:(BOOL)a3 highlighted:(BOOL)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)_updateSelected:(BOOL)selected highlighted:(BOOL)highlighted;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation SBFButton
 
-- (SBFButton)initWithFrame:(CGRect)a3
+- (SBFButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBFButton;
-  v3 = [(SBFButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,37 +45,37 @@
   return [(SBFButton *)self isHighlighted];
 }
 
-- (void)_updateSelected:(BOOL)a3 highlighted:(BOOL)a4
+- (void)_updateSelected:(BOOL)selected highlighted:(BOOL)highlighted
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SBFButton *)self _drawingAsSelected];
+  highlightedCopy = highlighted;
+  selectedCopy = selected;
+  _drawingAsSelected = [(SBFButton *)self _drawingAsSelected];
   v9.receiver = self;
   v9.super_class = SBFButton;
-  [(SBFButton *)&v9 setSelected:v5];
+  [(SBFButton *)&v9 setSelected:selectedCopy];
   v8.receiver = self;
   v8.super_class = SBFButton;
-  [(SBFButton *)&v8 setHighlighted:v4];
-  if (v7 != [(SBFButton *)self _drawingAsSelected])
+  [(SBFButton *)&v8 setHighlighted:highlightedCopy];
+  if (_drawingAsSelected != [(SBFButton *)self _drawingAsSelected])
   {
     [(SBFButton *)self _updateForStateChange];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(SBFButton *)self isHighlighted];
+  selectedCopy = selected;
+  isHighlighted = [(SBFButton *)self isHighlighted];
 
-  [(SBFButton *)self _updateSelected:v3 highlighted:v5];
+  [(SBFButton *)self _updateSelected:selectedCopy highlighted:isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SBFButton *)self isSelected];
+  highlightedCopy = highlighted;
+  isSelected = [(SBFButton *)self isSelected];
 
-  [(SBFButton *)self _updateSelected:v5 highlighted:v3];
+  [(SBFButton *)self _updateSelected:isSelected highlighted:highlightedCopy];
 }
 
 @end

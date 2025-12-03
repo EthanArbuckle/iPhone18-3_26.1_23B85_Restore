@@ -1,14 +1,14 @@
 @interface NSMutableDictionary
-- (void)cr_setSafeObject:(id)a3 forKey:(id)a4;
+- (void)cr_setSafeObject:(id)object forKey:(id)key;
 @end
 
 @implementation NSMutableDictionary
 
-- (void)cr_setSafeObject:(id)a3 forKey:(id)a4
+- (void)cr_setSafeObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    [(NSMutableDictionary *)self setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)self setObject:object forKey:key];
   }
 }
 

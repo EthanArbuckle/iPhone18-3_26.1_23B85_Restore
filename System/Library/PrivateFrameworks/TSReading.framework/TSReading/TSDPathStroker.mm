@@ -1,20 +1,20 @@
 @interface TSDPathStroker
-- (TSDPathStroker)initWithProperties:(id)a3 bundle:(id)a4 dataManager:(void *)a5 precedingStroker:(id)a6;
+- (TSDPathStroker)initWithProperties:(id)properties bundle:(id)bundle dataManager:(void *)manager precedingStroker:(id)stroker;
 - (void)dealloc;
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4 inColor:(id)a5;
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context inColor:(id)color;
 @end
 
 @implementation TSDPathStroker
 
-- (TSDPathStroker)initWithProperties:(id)a3 bundle:(id)a4 dataManager:(void *)a5 precedingStroker:(id)a6
+- (TSDPathStroker)initWithProperties:(id)properties bundle:(id)bundle dataManager:(void *)manager precedingStroker:(id)stroker
 {
   v19.receiver = self;
   v19.super_class = TSDPathStroker;
-  v8 = [(TSDPathStroker *)&v19 init:a3];
+  v8 = [(TSDPathStroker *)&v19 init:properties];
   if (v8)
   {
-    v8->mPrecedingStroker = a6;
-    v9 = [a3 objectForKey:@"color"];
+    v8->mPrecedingStroker = stroker;
+    v9 = [properties objectForKey:@"color"];
     if (v9)
     {
       v17 = 0.0;
@@ -30,7 +30,7 @@
     }
 
     v8->mColor = v9;
-    v11 = [a3 objectForKey:@"width"];
+    v11 = [properties objectForKey:@"width"];
     if (v11)
     {
       [v11 floatValue];
@@ -60,33 +60,33 @@
   [(TSDPathStroker *)&v4 dealloc];
 }
 
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4 inColor:(id)a5
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context inColor:(id)color
 {
   mPrecedingStroker = self->mPrecedingStroker;
   if (mPrecedingStroker)
   {
-    [(TSDPathStroker *)mPrecedingStroker strokePath:a3 inContext:a4 inColor:a5];
+    [(TSDPathStroker *)mPrecedingStroker strokePath:path inContext:context inColor:color];
   }
 
   mWidth = self->mWidth;
   if (mWidth > 0.0)
   {
-    CGContextSetLineWidth(a4, mWidth);
+    CGContextSetLineWidth(context, mWidth);
   }
 
   mColor = self->mColor;
   if (!mColor)
   {
-    mColor = a5;
+    mColor = color;
   }
 
-  CGContextSetStrokeColorWithColor(a4, [mColor CGColor]);
-  CGContextAddPath(a4, a3);
-  CGContextStrokePath(a4);
+  CGContextSetStrokeColorWithColor(context, [mColor CGColor]);
+  CGContextAddPath(context, path);
+  CGContextStrokePath(context);
   if (self->mWidth > 0.0)
   {
 
-    CGContextSetLineWidth(a4, 1.0);
+    CGContextSetLineWidth(context, 1.0);
   }
 }
 

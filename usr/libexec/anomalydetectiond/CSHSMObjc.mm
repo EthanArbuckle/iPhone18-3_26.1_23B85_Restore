@@ -1,18 +1,18 @@
 @interface CSHSMObjc
-- (BOOL)isIn:(id)a3;
-- (CSHSMObjc)initWithCategory:(id)a3 state:(id)a4;
-- (void)signal:(unint64_t)a3 data:(const void *)a4;
+- (BOOL)isIn:(id)in;
+- (CSHSMObjc)initWithCategory:(id)category state:(id)state;
+- (void)signal:(unint64_t)signal data:(const void *)data;
 @end
 
 @implementation CSHSMObjc
 
-- (BOOL)isIn:(id)a3
+- (BOOL)isIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v5 = objc_retainBlock(self->_state);
   if (v5)
   {
-    while (v5 != v4)
+    while (v5 != inCopy)
     {
       v6 = (*(v5 + 2))(v5, 2, 0, 0);
 
@@ -31,18 +31,18 @@ LABEL_6:
   return v5;
 }
 
-- (CSHSMObjc)initWithCategory:(id)a3 state:(id)a4
+- (CSHSMObjc)initWithCategory:(id)category state:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  categoryCopy = category;
+  stateCopy = state;
   v19.receiver = self;
   v19.super_class = CSHSMObjc;
   v9 = [(CSHSMObjc *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_category, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_category, category);
+    v11 = objc_retainBlock(stateCopy);
     if (v11)
     {
       do
@@ -73,7 +73,7 @@ LABEL_6:
   return v10;
 }
 
-- (void)signal:(unint64_t)a3 data:(const void *)a4
+- (void)signal:(unint64_t)signal data:(const void *)data
 {
   v7 = objc_retainBlock(self->_state);
   if (v7)
@@ -81,7 +81,7 @@ LABEL_6:
     while (1)
     {
       v41 = v7;
-      v8 = (*(v7 + 2))(v7, 3, a3, 0);
+      v8 = (*(v7 + 2))(v7, 3, signal, 0);
       if (v8)
       {
         break;
@@ -142,23 +142,23 @@ LABEL_6:
 
       while (1)
       {
-        v22 = [v10 lastObject];
-        if (!v22)
+        lastObject = [v10 lastObject];
+        if (!lastObject)
         {
           break;
         }
 
-        v19 = [v40 lastObject];
+        lastObject2 = [v40 lastObject];
 
-        if (!v19)
+        if (!lastObject2)
         {
           break;
         }
 
-        v20 = [v10 lastObject];
-        v21 = [v40 lastObject];
+        lastObject3 = [v10 lastObject];
+        lastObject4 = [v40 lastObject];
 
-        if (v20 != v21)
+        if (lastObject3 != lastObject4)
         {
           break;
         }
@@ -191,13 +191,13 @@ LABEL_6:
             {
               v28 = (*(v26 + 16))(v26, 1, 0, 0);
               *buf = 134218242;
-              v48 = a3;
+              signalCopy2 = signal;
               v49 = 2112;
               v50 = v28;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "event %llu, exit(%@)", buf, 0x16u);
             }
 
-            v29 = (*(v26 + 16))(v26, 6, a3, a4);
+            v29 = (*(v26 + 16))(v26, 6, signal, data);
           }
 
           v23 = [obj countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -206,12 +206,12 @@ LABEL_6:
         while (v23);
       }
 
-      v30 = (v41[2])(v41, 5, a3, a4);
-      v31 = [v40 reverseObjectEnumerator];
+      v30 = (v41[2])(v41, 5, signal, data);
+      reverseObjectEnumerator = [v40 reverseObjectEnumerator];
       while (1)
       {
-        v32 = [v31 nextObject];
-        if (!v32)
+        nextObject = [reverseObjectEnumerator nextObject];
+        if (!nextObject)
         {
           break;
         }
@@ -219,15 +219,15 @@ LABEL_6:
         v33 = self->_category;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
-          v34 = v32[2](v32, 1, 0, 0);
+          v34 = nextObject[2](nextObject, 1, 0, 0);
           *buf = 134218242;
-          v48 = a3;
+          signalCopy2 = signal;
           v49 = 2112;
           v50 = v34;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "event %llu, enter(%@)", buf, 0x16u);
         }
 
-        v35 = (v32[2])(v32, 4, a3, a4);
+        v35 = (nextObject[2])(nextObject, 4, signal, data);
       }
 
       v36 = objc_retainBlock(v39);

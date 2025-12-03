@@ -1,24 +1,24 @@
 @interface BMIndexRow
-- (BMIndexRow)initWithIndexFields:(id)a3 storeBookmark:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMIndexRow)initWithIndexFields:(id)fields storeBookmark:(id)bookmark;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BMIndexRow
 
-- (BMIndexRow)initWithIndexFields:(id)a3 storeBookmark:(id)a4
+- (BMIndexRow)initWithIndexFields:(id)fields storeBookmark:(id)bookmark
 {
-  v7 = a3;
-  v8 = a4;
+  fieldsCopy = fields;
+  bookmarkCopy = bookmark;
   v12.receiver = self;
   v12.super_class = BMIndexRow;
   v9 = [(BMIndexRow *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_indexFields, a3);
-    objc_storeStrong(&v10->_storeBookmark, a4);
+    objc_storeStrong(&v9->_indexFields, fields);
+    objc_storeStrong(&v10->_storeBookmark, bookmark);
   }
 
   return v10;
@@ -69,10 +69,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -82,14 +82,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       indexFields = self->_indexFields;
-      v7 = [(BMIndexRow *)v5 indexFields];
-      if ([(NSArray *)indexFields isEqual:v7])
+      indexFields = [(BMIndexRow *)v5 indexFields];
+      if ([(NSArray *)indexFields isEqual:indexFields])
       {
         storeBookmark = self->_storeBookmark;
-        v9 = [(BMIndexRow *)v5 storeBookmark];
-        v10 = [(BMStoreBookmark *)storeBookmark isEqual:v9];
+        storeBookmark = [(BMIndexRow *)v5 storeBookmark];
+        v10 = [(BMStoreBookmark *)storeBookmark isEqual:storeBookmark];
       }
 
       else

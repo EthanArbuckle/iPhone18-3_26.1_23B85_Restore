@@ -1,6 +1,6 @@
 @interface VNSmartCam5CompoundRequestGroupingConfiguration
 - (BOOL)preferBackgroundProcessing;
-- (VNSmartCam5CompoundRequestGroupingConfiguration)initWithImageCropAndScaleOption:(unint64_t)a3;
+- (VNSmartCam5CompoundRequestGroupingConfiguration)initWithImageCropAndScaleOption:(unint64_t)option;
 - (id)detectorConfigurationOptions;
 - (id)processingDevice;
 @end
@@ -52,10 +52,10 @@ LABEL_11:
 
 - (id)processingDevice
 {
-  v2 = [(NSMutableSet *)self->_originalRequests anyObject];
-  v3 = [v2 processingDevice];
+  anyObject = [(NSMutableSet *)self->_originalRequests anyObject];
+  processingDevice = [anyObject processingDevice];
 
-  return v3;
+  return processingDevice;
 }
 
 - (id)detectorConfigurationOptions
@@ -65,7 +65,7 @@ LABEL_11:
   return v2;
 }
 
-- (VNSmartCam5CompoundRequestGroupingConfiguration)initWithImageCropAndScaleOption:(unint64_t)a3
+- (VNSmartCam5CompoundRequestGroupingConfiguration)initWithImageCropAndScaleOption:(unint64_t)option
 {
   v11.receiver = self;
   v11.super_class = VNSmartCam5CompoundRequestGroupingConfiguration;
@@ -73,7 +73,7 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    v4->_imageCropAndScaleOption = a3;
+    v4->_imageCropAndScaleOption = option;
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     originalRequests = v5->_originalRequests;
     v5->_originalRequests = v6;

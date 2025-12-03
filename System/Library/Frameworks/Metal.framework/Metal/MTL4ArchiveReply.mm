@@ -1,12 +1,12 @@
 @interface MTL4ArchiveReply
-- (MTL4ArchiveReply)initWithData:(id)a3 reflectionBlock:(id)a4 airScript:(id)a5;
-- (MTL4ArchiveReply)initWithError:(id)a3;
+- (MTL4ArchiveReply)initWithData:(id)data reflectionBlock:(id)block airScript:(id)script;
+- (MTL4ArchiveReply)initWithError:(id)error;
 - (void)dealloc;
 @end
 
 @implementation MTL4ArchiveReply
 
-- (MTL4ArchiveReply)initWithData:(id)a3 reflectionBlock:(id)a4 airScript:(id)a5
+- (MTL4ArchiveReply)initWithData:(id)data reflectionBlock:(id)block airScript:(id)script
 {
   v11.receiver = self;
   v11.super_class = MTL4ArchiveReply;
@@ -15,22 +15,22 @@
   if (v8)
   {
     v8->_errorMessage = 0;
-    v8->_binary = a3;
-    v9->_reflectionBlock = a4;
-    v9->_airScript = a5;
+    v8->_binary = data;
+    v9->_reflectionBlock = block;
+    v9->_airScript = script;
   }
 
   return v9;
 }
 
-- (MTL4ArchiveReply)initWithError:(id)a3
+- (MTL4ArchiveReply)initWithError:(id)error
 {
   v6.receiver = self;
   v6.super_class = MTL4ArchiveReply;
   v4 = [(MTL4ArchiveReply *)&v6 init];
   if (v4)
   {
-    v4->_errorMessage = [a3 copy];
+    v4->_errorMessage = [error copy];
     v4->_reflectionBlock = 0;
     v4->_airScript = 0;
     v4->_binary = 0;

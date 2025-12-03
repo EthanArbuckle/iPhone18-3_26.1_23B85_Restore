@@ -1,7 +1,7 @@
 @interface EQKitMathMLMStackCarries
 - (BOOL)isBaseFontNameUsed;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)layoutSchemata;
 - (void)dealloc;
 @end
@@ -12,13 +12,13 @@
 {
   *a2 = &unk_2884CB990;
   *(a2 + 8) = 16;
-  result = a1;
+  result = self;
   *(a2 + 16) = result;
   *(a2 + 24) = 0;
   return result;
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v41 = *MEMORY[0x277D85DE8];
   v39.receiver = self;
@@ -26,7 +26,7 @@
   v8 = [(EQKitMathMLMStackCarries *)&v39 init];
   if (v8)
   {
-    v9 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(a4, v6, a3, v7);
+    v9 = objc_msgSend_parseChildrenAsArrayFromXMLNode_(parser, v6, node, v7);
     v13 = objc_msgSend_count(v9, v10, v11, v12);
     if (v13)
     {

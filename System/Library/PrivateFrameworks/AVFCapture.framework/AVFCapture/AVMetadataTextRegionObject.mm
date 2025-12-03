@@ -1,63 +1,63 @@
 @interface AVMetadataTextRegionObject
-+ (id)textRegionObjectWithDictionary:(id)a3 input:(id)a4;
++ (id)textRegionObjectWithDictionary:(id)dictionary input:(id)input;
 - (CGRect)angularOffsetBounds;
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6;
-- (id)initTextRegionObjectWithDictionary:(id)a3 input:(id)a4;
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment;
+- (id)initTextRegionObjectWithDictionary:(id)dictionary input:(id)input;
 - (void)dealloc;
 @end
 
 @implementation AVMetadataTextRegionObject
 
-+ (id)textRegionObjectWithDictionary:(id)a3 input:(id)a4
++ (id)textRegionObjectWithDictionary:(id)dictionary input:(id)input
 {
-  v4 = [objc_alloc(objc_opt_class()) initTextRegionObjectWithDictionary:a3 input:a4];
+  v4 = [objc_alloc(objc_opt_class()) initTextRegionObjectWithDictionary:dictionary input:input];
 
   return v4;
 }
 
-- (id)initTextRegionObjectWithDictionary:(id)a3 input:(id)a4
+- (id)initTextRegionObjectWithDictionary:(id)dictionary input:(id)input
 {
   memset(&v17, 0, sizeof(v17));
-  CMTimeMakeFromDictionary(&v17, [a3 objectForKeyedSubscript:*MEMORY[0x1E69912E0]]);
+  CMTimeMakeFromDictionary(&v17, [dictionary objectForKeyedSubscript:*MEMORY[0x1E69912E0]]);
   v7 = *(MEMORY[0x1E695F058] + 16);
   rect.origin = *MEMORY[0x1E695F058];
   rect.size = v7;
-  CGRectMakeWithDictionaryRepresentation([a3 objectForKeyedSubscript:*MEMORY[0x1E69912C8]], &rect);
+  CGRectMakeWithDictionaryRepresentation([dictionary objectForKeyedSubscript:*MEMORY[0x1E69912C8]], &rect);
   v15.receiver = self;
   v15.super_class = AVMetadataTextRegionObject;
   v14 = v17;
   v12 = *MEMORY[0x1E6960C70];
   v13 = *(MEMORY[0x1E6960C70] + 16);
-  v8 = [(AVMetadataObject *)&v15 initWithType:@"textRegion" time:&v14 duration:&v12 bounds:0 optionalInfoDict:0 originalMetadataObject:a4 sourceCaptureInput:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  v8 = [(AVMetadataObject *)&v15 initWithType:@"textRegion" time:&v14 duration:&v12 bounds:0 optionalInfoDict:0 originalMetadataObject:input sourceCaptureInput:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (v8)
   {
-    v8->_regionID = [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69912D8]), "integerValue"}];
-    [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69912D0]), "floatValue"}];
+    v8->_regionID = [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E69912D8]), "integerValue"}];
+    [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E69912D0]), "floatValue"}];
     v8->_confidence = v9;
-    [objc_msgSend(a3 objectForKeyedSubscript:{*MEMORY[0x1E69912B8]), "floatValue"}];
+    [objc_msgSend(dictionary objectForKeyedSubscript:{*MEMORY[0x1E69912B8]), "floatValue"}];
     v8->_angularOffset = v10;
-    CGRectMakeWithDictionaryRepresentation([a3 objectForKeyedSubscript:*MEMORY[0x1E69912C0]], &v8->_angularOffsetBounds);
+    CGRectMakeWithDictionaryRepresentation([dictionary objectForKeyedSubscript:*MEMORY[0x1E69912C0]], &v8->_angularOffsetBounds);
   }
 
   return v8;
 }
 
-- (id)initDerivedMetadataObjectFromMetadataObject:(id)a3 withTransform:(CGAffineTransform *)a4 isVideoMirrored:(BOOL)a5 rollAdjustment:(double)a6
+- (id)initDerivedMetadataObjectFromMetadataObject:(id)object withTransform:(CGAffineTransform *)transform isVideoMirrored:(BOOL)mirrored rollAdjustment:(double)adjustment
 {
   v9 = *(MEMORY[0x1E695F058] + 16);
   v24.origin = *MEMORY[0x1E695F058];
   v24.size = v9;
-  [a3 bounds];
-  v10 = *&a4->c;
-  *&v23.a = *&a4->a;
+  [object bounds];
+  v10 = *&transform->c;
+  *&v23.a = *&transform->a;
   *&v23.c = v10;
-  *&v23.tx = *&a4->tx;
+  *&v23.tx = *&transform->tx;
   if (AVMetadataObjectAdjustBaseClassProperties(&v23, &v24, v11, v12, v13, v14))
   {
-    if (a3)
+    if (object)
     {
-      [a3 time];
-      [a3 duration];
+      [object time];
+      [object duration];
     }
 
     else
@@ -66,22 +66,22 @@
       memset(v22, 0, sizeof(v22));
     }
 
-    v16 = [a3 input];
+    input = [object input];
     v21.receiver = self;
     v21.super_class = AVMetadataTextRegionObject;
-    v15 = [(AVMetadataObject *)&v21 initWithType:@"textRegion" time:&v23 duration:v22 bounds:0 optionalInfoDict:a3 originalMetadataObject:v16 sourceCaptureInput:*&v24.origin, *&v24.size];
+    v15 = [(AVMetadataObject *)&v21 initWithType:@"textRegion" time:&v23 duration:v22 bounds:0 optionalInfoDict:object originalMetadataObject:input sourceCaptureInput:*&v24.origin, *&v24.size];
     if (v15)
     {
-      v15->_regionID = [a3 regionID];
-      [a3 confidence];
+      v15->_regionID = [object regionID];
+      [object confidence];
       v15->_confidence = v17;
-      [a3 angularOffset];
+      [object angularOffset];
       v15->_angularOffset = v18;
-      [a3 angularOffsetBounds];
-      v19 = *&a4->c;
-      *&v23.a = *&a4->a;
+      [object angularOffsetBounds];
+      v19 = *&transform->c;
+      *&v23.a = *&transform->a;
       *&v23.c = v19;
-      *&v23.tx = *&a4->tx;
+      *&v23.tx = *&transform->tx;
       v15->_angularOffsetBounds = CGRectApplyAffineTransform(v25, &v23);
     }
   }

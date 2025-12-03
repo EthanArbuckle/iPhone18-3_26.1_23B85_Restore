@@ -1,12 +1,12 @@
 @interface CKDPUserAvailableQuotaResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPUserAvailableQuotaResponse
@@ -35,7 +35,7 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -44,19 +44,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_storageAvailableBytes;
-    *(a3 + 16) |= 1u;
+    *(to + 1) = self->_storageAvailableBytes;
+    *(to + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   if (*&self->_has)
   {
@@ -67,19 +67,19 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_6;
   }
 
-  v7 = (*(v4 + 16) & 1) == 0;
+  v7 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) != 0 && self->_storageAvailableBytes == *(v4 + 1))
+    if ((*(equalCopy + 16) & 1) != 0 && self->_storageAvailableBytes == *(equalCopy + 1))
     {
       v7 = 1;
       goto LABEL_7;
@@ -107,11 +107,11 @@ LABEL_7:
   }
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 16))
+  if (*(from + 16))
   {
-    self->_storageAvailableBytes = *(a3 + 1);
+    self->_storageAvailableBytes = *(from + 1);
     *&self->_has |= 1u;
   }
 }

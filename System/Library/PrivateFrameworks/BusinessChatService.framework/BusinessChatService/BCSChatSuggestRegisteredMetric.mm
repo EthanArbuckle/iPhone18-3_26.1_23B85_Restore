@@ -1,5 +1,5 @@
 @interface BCSChatSuggestRegisteredMetric
-+ (id)metricWithPostProcessingMetricHandlers:(id)a3;
++ (id)metricWithPostProcessingMetricHandlers:(id)handlers;
 - (NSDictionary)coreAnalyticsPayload;
 @end
 
@@ -10,8 +10,8 @@
   v12[2] = *MEMORY[0x277D85DE8];
   v11[0] = @"duration";
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(BCSChatSuggestRegisteredMetric *)self timingMeasurement];
-  [v4 duration];
+  timingMeasurement = [(BCSChatSuggestRegisteredMetric *)self timingMeasurement];
+  [timingMeasurement duration];
   v6 = [v3 numberWithInteger:(v5 * 1000.0)];
   v11[1] = @"errorCode";
   v12[0] = v6;
@@ -24,10 +24,10 @@
   return v8;
 }
 
-+ (id)metricWithPostProcessingMetricHandlers:(id)a3
++ (id)metricWithPostProcessingMetricHandlers:(id)handlers
 {
-  v3 = a3;
-  v4 = [(BCSMetric *)[BCSChatSuggestRegisteredMetric alloc] _initWithType:0 context:v3 postProcessingMetricHandlers:?];
+  handlersCopy = handlers;
+  v4 = [(BCSMetric *)[BCSChatSuggestRegisteredMetric alloc] _initWithType:0 context:handlersCopy postProcessingMetricHandlers:?];
 
   return v4;
 }

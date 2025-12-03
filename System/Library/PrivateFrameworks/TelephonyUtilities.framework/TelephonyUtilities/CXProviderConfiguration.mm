@@ -9,15 +9,15 @@
 
 - (NSSet)supportedTUHandleTypes
 {
-  v3 = [(CXProviderConfiguration *)self supportedHandleTypes];
-  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v3 count]);
+  supportedHandleTypes = [(CXProviderConfiguration *)self supportedHandleTypes];
+  v4 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [supportedHandleTypes count]);
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CXProviderConfiguration *)self supportedHandleTypes];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  supportedHandleTypes2 = [(CXProviderConfiguration *)self supportedHandleTypes];
+  v6 = [supportedHandleTypes2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -28,11 +28,11 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(supportedHandleTypes2);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) integerValue];
-        if (v10 == 2)
+        integerValue = [*(*(&v16 + 1) + 8 * i) integerValue];
+        if (integerValue == 2)
         {
           v11 = 2;
         }
@@ -42,7 +42,7 @@
           v11 = 1;
         }
 
-        if (v10 == 3)
+        if (integerValue == 3)
         {
           v12 = 3;
         }
@@ -56,7 +56,7 @@
         [v4 addObject:v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [supportedHandleTypes2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -69,15 +69,15 @@
 
 - (NSArray)emergencyTUHandles
 {
-  v3 = [(CXProviderConfiguration *)self emergencyHandles];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  emergencyHandles = [(CXProviderConfiguration *)self emergencyHandles];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [emergencyHandles count]);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CXProviderConfiguration *)self emergencyHandles];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  emergencyHandles2 = [(CXProviderConfiguration *)self emergencyHandles];
+  v6 = [emergencyHandles2 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
     v8 = v6;
@@ -90,14 +90,14 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(emergencyHandles2);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 tuHandle];
-        if (v12)
+        tuHandle = [v11 tuHandle];
+        if (tuHandle)
         {
-          [v4 addObject:v12];
+          [v4 addObject:tuHandle];
         }
 
         else
@@ -112,7 +112,7 @@
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v8 = [emergencyHandles2 countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v8);
@@ -125,15 +125,15 @@
 
 - (NSArray)emergencyTULabeledHandles
 {
-  v3 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  emergencyLabeledHandles = [(CXProviderConfiguration *)self emergencyLabeledHandles];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [emergencyLabeledHandles count]);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  emergencyLabeledHandles2 = [(CXProviderConfiguration *)self emergencyLabeledHandles];
+  v6 = [emergencyLabeledHandles2 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
     v8 = v6;
@@ -146,14 +146,14 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(emergencyLabeledHandles2);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 tuLabeledHandle];
-        if (v12)
+        tuLabeledHandle = [v11 tuLabeledHandle];
+        if (tuLabeledHandle)
         {
-          [v4 addObject:v12];
+          [v4 addObject:tuLabeledHandle];
         }
 
         else
@@ -168,7 +168,7 @@
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v8 = [emergencyLabeledHandles2 countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v8);
@@ -181,15 +181,15 @@
 
 - (NSOrderedSet)prioritizedTUSenderIdentities
 {
-  v3 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
-  v4 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v3 count]);
+  prioritizedSenderIdentities = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+  v4 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [prioritizedSenderIdentities count]);
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  prioritizedSenderIdentities2 = [(CXProviderConfiguration *)self prioritizedSenderIdentities];
+  v6 = [prioritizedSenderIdentities2 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
     v8 = v6;
@@ -202,14 +202,14 @@
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(prioritizedSenderIdentities2);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 tuSenderIdentity];
-        if (v12)
+        tuSenderIdentity = [v11 tuSenderIdentity];
+        if (tuSenderIdentity)
         {
-          [v4 addObject:v12];
+          [v4 addObject:tuSenderIdentity];
         }
 
         else
@@ -224,7 +224,7 @@
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v8 = [prioritizedSenderIdentities2 countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v8);

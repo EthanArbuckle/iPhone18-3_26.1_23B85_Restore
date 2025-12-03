@@ -1,21 +1,21 @@
 @interface OBSetupAssistantFinishedController
 - (NSDirectionalEdgeInsets)directionalLayoutMargins;
-- (OBSetupAssistantFinishedController)initWithTitle:(id)a3;
+- (OBSetupAssistantFinishedController)initWithTitle:(id)title;
 - (id)_headerFont;
 - (id)_instructionFont;
-- (void)buttonTapped:(id)a3;
-- (void)setButtonTitle:(id)a3 action:(id)a4;
-- (void)setInstructionalText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)buttonTapped:(id)tapped;
+- (void)setButtonTitle:(id)title action:(id)action;
+- (void)setInstructionalText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation OBSetupAssistantFinishedController
 
-- (OBSetupAssistantFinishedController)initWithTitle:(id)a3
+- (OBSetupAssistantFinishedController)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v30.receiver = self;
   v30.super_class = OBSetupAssistantFinishedController;
   v5 = [(OBSetupAssistantFinishedController *)&v30 initWithNibName:0 bundle:0];
@@ -24,61 +24,61 @@
     v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(OBSetupAssistantFinishedController *)v5 setTitleLabel:v6];
 
-    v7 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    titleLabel = [(OBSetupAssistantFinishedController *)v5 titleLabel];
+    [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [MEMORY[0x1E69DC888] labelColor];
-    v9 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
-    [v9 setTextColor:v8];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    titleLabel2 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
+    [titleLabel2 setTextColor:labelColor];
 
-    v10 = [(OBSetupAssistantFinishedController *)v5 _headerFont];
-    v11 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
-    [v11 setFont:v10];
+    _headerFont = [(OBSetupAssistantFinishedController *)v5 _headerFont];
+    titleLabel3 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
+    [titleLabel3 setFont:_headerFont];
 
-    v12 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
-    [v12 setText:v4];
+    titleLabel4 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
+    [titleLabel4 setText:titleCopy];
 
-    v13 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
-    [v13 setTextAlignment:1];
+    titleLabel5 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
+    [titleLabel5 setTextAlignment:1];
 
-    v14 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
-    [v14 setNumberOfLines:0];
+    titleLabel6 = [(OBSetupAssistantFinishedController *)v5 titleLabel];
+    [titleLabel6 setNumberOfLines:0];
 
     v15 = [OBButtonTray alloc];
     v16 = [(OBButtonTray *)v15 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(OBSetupAssistantFinishedController *)v5 setButtonTray:v16];
 
-    v17 = [(OBSetupAssistantFinishedController *)v5 buttonTray];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+    buttonTray = [(OBSetupAssistantFinishedController *)v5 buttonTray];
+    [buttonTray setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v18 = [(OBSetupAssistantFinishedController *)v5 buttonTray];
-    [v18 setHidden:1];
+    buttonTray2 = [(OBSetupAssistantFinishedController *)v5 buttonTray];
+    [buttonTray2 setHidden:1];
 
     v19 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(OBSetupAssistantFinishedController *)v5 setInstructionalLabel:v19];
 
-    v20 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
-    [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+    instructionalLabel = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
+    [instructionalLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v21 = [MEMORY[0x1E69DC888] labelColor];
-    v22 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
-    [v22 setTextColor:v21];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    instructionalLabel2 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
+    [instructionalLabel2 setTextColor:labelColor2];
 
-    v23 = [(OBSetupAssistantFinishedController *)v5 _instructionFont];
-    v24 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
-    [v24 setFont:v23];
+    _instructionFont = [(OBSetupAssistantFinishedController *)v5 _instructionFont];
+    instructionalLabel3 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
+    [instructionalLabel3 setFont:_instructionFont];
 
-    v25 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
-    [v25 setText:v4];
+    instructionalLabel4 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
+    [instructionalLabel4 setText:titleCopy];
 
-    v26 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
-    [v26 setTextAlignment:1];
+    instructionalLabel5 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
+    [instructionalLabel5 setTextAlignment:1];
 
-    v27 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
-    [v27 setNumberOfLines:0];
+    instructionalLabel6 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
+    [instructionalLabel6 setNumberOfLines:0];
 
-    v28 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
-    [v28 setHidden:1];
+    instructionalLabel7 = [(OBSetupAssistantFinishedController *)v5 instructionalLabel];
+    [instructionalLabel7 setHidden:1];
   }
 
   return v5;
@@ -90,9 +90,9 @@
   v100.receiver = self;
   v100.super_class = OBSetupAssistantFinishedController;
   [(OBBaseWelcomeController *)&v100 viewDidLoad];
-  v3 = [(OBSetupAssistantFinishedController *)self contentView];
+  contentView = [(OBSetupAssistantFinishedController *)self contentView];
 
-  if (v3)
+  if (contentView)
   {
     [(OBSetupAssistantFinishedController *)self contentView];
   }
@@ -102,145 +102,145 @@
     [(OBSetupAssistantFinishedController *)self titleLabel];
   }
   v4 = ;
-  v5 = [(OBSetupAssistantFinishedController *)self view];
-  [v5 addSubview:v4];
+  view = [(OBSetupAssistantFinishedController *)self view];
+  [view addSubview:v4];
 
-  v6 = [(OBSetupAssistantFinishedController *)self view];
-  v7 = [(OBSetupAssistantFinishedController *)self buttonTray];
-  [v6 addSubview:v7];
+  view2 = [(OBSetupAssistantFinishedController *)self view];
+  buttonTray = [(OBSetupAssistantFinishedController *)self buttonTray];
+  [view2 addSubview:buttonTray];
 
-  v8 = [(OBSetupAssistantFinishedController *)self view];
-  v9 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  [v8 addSubview:v9];
+  view3 = [(OBSetupAssistantFinishedController *)self view];
+  instructionalLabel = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  [view3 addSubview:instructionalLabel];
 
   v66 = MEMORY[0x1E696ACD8];
-  v97 = [(OBSetupAssistantFinishedController *)self view];
-  v95 = [v97 layoutMarginsGuide];
-  v93 = [v95 leftAnchor];
-  v91 = [v4 leftAnchor];
-  v89 = [v93 constraintEqualToAnchor:v91];
+  view4 = [(OBSetupAssistantFinishedController *)self view];
+  layoutMarginsGuide = [view4 layoutMarginsGuide];
+  leftAnchor = [layoutMarginsGuide leftAnchor];
+  leftAnchor2 = [v4 leftAnchor];
+  v89 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v103[0] = v89;
-  v87 = [(OBSetupAssistantFinishedController *)self view];
-  v85 = [v87 layoutMarginsGuide];
-  v84 = [v85 rightAnchor];
-  v83 = [v4 rightAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  view5 = [(OBSetupAssistantFinishedController *)self view];
+  layoutMarginsGuide2 = [view5 layoutMarginsGuide];
+  rightAnchor = [layoutMarginsGuide2 rightAnchor];
+  rightAnchor2 = [v4 rightAnchor];
+  v82 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v103[1] = v82;
-  v81 = [(OBSetupAssistantFinishedController *)self view];
-  v80 = [v81 layoutMarginsGuide];
-  v79 = [v80 centerXAnchor];
-  v78 = [v4 centerXAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  view6 = [(OBSetupAssistantFinishedController *)self view];
+  layoutMarginsGuide3 = [view6 layoutMarginsGuide];
+  centerXAnchor = [layoutMarginsGuide3 centerXAnchor];
+  centerXAnchor2 = [v4 centerXAnchor];
+  v77 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v103[2] = v77;
-  v76 = [(OBSetupAssistantFinishedController *)self view];
-  v75 = [v76 centerYAnchor];
-  v74 = [v4 bottomAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  view7 = [(OBSetupAssistantFinishedController *)self view];
+  centerYAnchor = [view7 centerYAnchor];
+  bottomAnchor = [v4 bottomAnchor];
+  v73 = [centerYAnchor constraintEqualToAnchor:bottomAnchor];
   v103[3] = v73;
-  v71 = [v4 topAnchor];
-  v72 = [(OBSetupAssistantFinishedController *)self view];
-  v70 = [v72 layoutMarginsGuide];
-  v69 = [v70 topAnchor];
-  v68 = [v71 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v69 multiplier:1.0];
+  topAnchor = [v4 topAnchor];
+  view8 = [(OBSetupAssistantFinishedController *)self view];
+  layoutMarginsGuide4 = [view8 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide4 topAnchor];
+  v68 = [topAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   v103[4] = v68;
-  v67 = [(OBSetupAssistantFinishedController *)self buttonTray];
-  v64 = [v67 bottomAnchor];
-  v65 = [(OBSetupAssistantFinishedController *)self view];
-  v63 = [v65 bottomAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63 constant:0.0];
+  buttonTray2 = [(OBSetupAssistantFinishedController *)self buttonTray];
+  bottomAnchor2 = [buttonTray2 bottomAnchor];
+  view9 = [(OBSetupAssistantFinishedController *)self view];
+  bottomAnchor3 = [view9 bottomAnchor];
+  v62 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:0.0];
   v103[5] = v62;
-  v61 = [(OBSetupAssistantFinishedController *)self buttonTray];
-  v59 = [v61 leadingAnchor];
-  v60 = [(OBSetupAssistantFinishedController *)self view];
-  v58 = [v60 leadingAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58 constant:0.0];
+  buttonTray3 = [(OBSetupAssistantFinishedController *)self buttonTray];
+  leadingAnchor = [buttonTray3 leadingAnchor];
+  view10 = [(OBSetupAssistantFinishedController *)self view];
+  leadingAnchor2 = [view10 leadingAnchor];
+  v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
   v103[6] = v57;
-  v56 = [(OBSetupAssistantFinishedController *)self buttonTray];
-  v54 = [v56 trailingAnchor];
-  v55 = [(OBSetupAssistantFinishedController *)self view];
-  v53 = [v55 trailingAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53 constant:0.0];
+  buttonTray4 = [(OBSetupAssistantFinishedController *)self buttonTray];
+  trailingAnchor = [buttonTray4 trailingAnchor];
+  view11 = [(OBSetupAssistantFinishedController *)self view];
+  trailingAnchor2 = [view11 trailingAnchor];
+  v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   v103[7] = v52;
-  v51 = [(OBSetupAssistantFinishedController *)self view];
-  v50 = [v51 layoutMarginsGuide];
-  v48 = [v50 leftAnchor];
-  v49 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  v47 = [v49 leftAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  view12 = [(OBSetupAssistantFinishedController *)self view];
+  layoutMarginsGuide5 = [view12 layoutMarginsGuide];
+  leftAnchor3 = [layoutMarginsGuide5 leftAnchor];
+  instructionalLabel2 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  leftAnchor4 = [instructionalLabel2 leftAnchor];
+  v46 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v103[8] = v46;
-  v45 = [(OBSetupAssistantFinishedController *)self view];
-  v44 = [v45 layoutMarginsGuide];
-  v42 = [v44 rightAnchor];
-  v43 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  v41 = [v43 rightAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  view13 = [(OBSetupAssistantFinishedController *)self view];
+  layoutMarginsGuide6 = [view13 layoutMarginsGuide];
+  rightAnchor3 = [layoutMarginsGuide6 rightAnchor];
+  instructionalLabel3 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  rightAnchor4 = [instructionalLabel3 rightAnchor];
+  v40 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v103[9] = v40;
-  v39 = [(OBSetupAssistantFinishedController *)self view];
-  v38 = [v39 layoutMarginsGuide];
-  v10 = [v38 bottomAnchor];
-  v11 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  view14 = [(OBSetupAssistantFinishedController *)self view];
+  layoutMarginsGuide7 = [view14 layoutMarginsGuide];
+  bottomAnchor4 = [layoutMarginsGuide7 bottomAnchor];
+  instructionalLabel4 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  bottomAnchor5 = [instructionalLabel4 bottomAnchor];
+  v13 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v103[10] = v13;
-  v14 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  v15 = [v14 topAnchor];
+  instructionalLabel5 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  topAnchor3 = [instructionalLabel5 topAnchor];
   v99 = v4;
-  v16 = [v4 bottomAnchor];
-  v17 = [v15 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v16 multiplier:1.0];
+  bottomAnchor6 = [v4 bottomAnchor];
+  v17 = [topAnchor3 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor6 multiplier:1.0];
   v103[11] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:12];
   [v66 activateConstraints:v18];
 
   v19 = +[OBDevice currentDevice];
-  v20 = [v19 type];
+  type = [v19 type];
 
   v96 = MEMORY[0x1E696ACD8];
-  v21 = [(OBSetupAssistantFinishedController *)self buttonTray];
-  v22 = [v21 buttonLayoutGuide];
-  v23 = v22;
-  if (v20 == 2)
+  buttonTray5 = [(OBSetupAssistantFinishedController *)self buttonTray];
+  buttonLayoutGuide = [buttonTray5 buttonLayoutGuide];
+  v23 = buttonLayoutGuide;
+  if (type == 2)
   {
-    v24 = [v22 widthAnchor];
-    v25 = [v24 constraintEqualToConstant:360.0];
+    widthAnchor = [buttonLayoutGuide widthAnchor];
+    v25 = [widthAnchor constraintEqualToConstant:360.0];
     v102[0] = v25;
-    v26 = [(OBSetupAssistantFinishedController *)self buttonTray];
-    v98 = [v26 buttonLayoutGuide];
-    v27 = [v98 centerXAnchor];
-    v28 = [(OBSetupAssistantFinishedController *)self view];
-    v29 = [v28 centerXAnchor];
-    v94 = v27;
-    v30 = [v27 constraintEqualToAnchor:v29];
-    v102[1] = v30;
-    v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:2];
-    [v96 activateConstraints:v31];
+    buttonTray6 = [(OBSetupAssistantFinishedController *)self buttonTray];
+    buttonLayoutGuide2 = [buttonTray6 buttonLayoutGuide];
+    centerXAnchor3 = [buttonLayoutGuide2 centerXAnchor];
+    view15 = [(OBSetupAssistantFinishedController *)self view];
+    centerXAnchor4 = [view15 centerXAnchor];
+    v94 = centerXAnchor3;
+    trailingAnchor3 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+    v102[1] = trailingAnchor3;
+    view17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:2];
+    [v96 activateConstraints:view17];
   }
 
   else
   {
-    v86 = [v22 leadingAnchor];
-    v88 = [(OBSetupAssistantFinishedController *)self view];
-    v90 = [v88 layoutMarginsGuide];
-    v98 = [v90 leadingAnchor];
-    v94 = [v86 constraintEqualToAnchor:?];
+    leadingAnchor3 = [buttonLayoutGuide leadingAnchor];
+    view16 = [(OBSetupAssistantFinishedController *)self view];
+    layoutMarginsGuide8 = [view16 layoutMarginsGuide];
+    buttonLayoutGuide2 = [layoutMarginsGuide8 leadingAnchor];
+    v94 = [leadingAnchor3 constraintEqualToAnchor:?];
     v101[0] = v94;
-    v28 = [(OBSetupAssistantFinishedController *)self buttonTray];
-    v29 = [v28 buttonLayoutGuide];
-    v30 = [v29 trailingAnchor];
-    v31 = [(OBSetupAssistantFinishedController *)self view];
-    [v31 layoutMarginsGuide];
+    view15 = [(OBSetupAssistantFinishedController *)self buttonTray];
+    centerXAnchor4 = [view15 buttonLayoutGuide];
+    trailingAnchor3 = [centerXAnchor4 trailingAnchor];
+    view17 = [(OBSetupAssistantFinishedController *)self view];
+    [view17 layoutMarginsGuide];
     v32 = v92 = v23;
     [v32 trailingAnchor];
-    v34 = v33 = v21;
-    v35 = [v30 constraintEqualToAnchor:v34];
+    v34 = v33 = buttonTray5;
+    v35 = [trailingAnchor3 constraintEqualToAnchor:v34];
     v101[1] = v35;
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:2];
     [v96 activateConstraints:v36];
 
-    v25 = v88;
-    v24 = v86;
+    v25 = view16;
+    widthAnchor = leadingAnchor3;
 
-    v21 = v33;
-    v26 = v90;
+    buttonTray5 = v33;
+    buttonTray6 = layoutMarginsGuide8;
 
     v23 = v92;
   }
@@ -254,29 +254,29 @@
   v16.receiver = self;
   v16.super_class = OBSetupAssistantFinishedController;
   [(OBBaseWelcomeController *)&v16 viewDidLayoutSubviews];
-  v3 = [(OBSetupAssistantFinishedController *)self view];
-  [v3 safeAreaInsets];
+  view = [(OBSetupAssistantFinishedController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
 
-  v6 = [(OBSetupAssistantFinishedController *)self buttonTrayBottomConstraint];
+  buttonTrayBottomConstraint = [(OBSetupAssistantFinishedController *)self buttonTrayBottomConstraint];
 
-  if (!v6)
+  if (!buttonTrayBottomConstraint)
   {
-    v7 = [(OBSetupAssistantFinishedController *)self buttonTray];
-    v8 = [v7 buttonLayoutGuide];
-    v9 = [v8 bottomAnchor];
-    v10 = [(OBSetupAssistantFinishedController *)self view];
-    v11 = [v10 layoutMarginsGuide];
-    v12 = [v11 bottomAnchor];
-    v13 = [v9 constraintEqualToAnchor:v12];
+    buttonTray = [(OBSetupAssistantFinishedController *)self buttonTray];
+    buttonLayoutGuide = [buttonTray buttonLayoutGuide];
+    bottomAnchor = [buttonLayoutGuide bottomAnchor];
+    view2 = [(OBSetupAssistantFinishedController *)self view];
+    layoutMarginsGuide = [view2 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(OBSetupAssistantFinishedController *)self setButtonTrayBottomConstraint:v13];
 
-    v14 = [(OBSetupAssistantFinishedController *)self buttonTrayBottomConstraint];
-    [v14 setActive:1];
+    buttonTrayBottomConstraint2 = [(OBSetupAssistantFinishedController *)self buttonTrayBottomConstraint];
+    [buttonTrayBottomConstraint2 setActive:1];
   }
 
-  v15 = [(OBSetupAssistantFinishedController *)self buttonTrayBottomConstraint];
-  [v15 setConstant:v5];
+  buttonTrayBottomConstraint3 = [(OBSetupAssistantFinishedController *)self buttonTrayBottomConstraint];
+  [buttonTrayBottomConstraint3 setConstant:v5];
 }
 
 - (NSDirectionalEdgeInsets)directionalLayoutMargins
@@ -292,71 +292,71 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = OBSetupAssistantFinishedController;
-  [(OBSetupAssistantFinishedController *)&v8 traitCollectionDidChange:a3];
-  v4 = [(OBSetupAssistantFinishedController *)self _headerFont];
-  v5 = [(OBSetupAssistantFinishedController *)self titleLabel];
-  [v5 setFont:v4];
+  [(OBSetupAssistantFinishedController *)&v8 traitCollectionDidChange:change];
+  _headerFont = [(OBSetupAssistantFinishedController *)self _headerFont];
+  titleLabel = [(OBSetupAssistantFinishedController *)self titleLabel];
+  [titleLabel setFont:_headerFont];
 
-  v6 = [(OBSetupAssistantFinishedController *)self _instructionFont];
-  v7 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  [v7 setFont:v6];
+  _instructionFont = [(OBSetupAssistantFinishedController *)self _instructionFont];
+  instructionalLabel = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  [instructionalLabel setFont:_instructionFont];
 }
 
-- (void)setButtonTitle:(id)a3 action:(id)a4
+- (void)setButtonTitle:(id)title action:(id)action
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(OBSetupAssistantFinishedController *)self boldButton];
-  [v8 removeFromSuperview];
+  actionCopy = action;
+  titleCopy = title;
+  boldButton = [(OBSetupAssistantFinishedController *)self boldButton];
+  [boldButton removeFromSuperview];
 
-  v9 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  [v9 removeFromSuperview];
+  instructionalLabel = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  [instructionalLabel removeFromSuperview];
 
-  v10 = [(OBSetupAssistantFinishedController *)self buttonTray];
-  [v10 setHidden:0];
+  buttonTray = [(OBSetupAssistantFinishedController *)self buttonTray];
+  [buttonTray setHidden:0];
 
   v11 = +[OBBoldTrayButton boldButton];
   [(OBSetupAssistantFinishedController *)self setBoldButton:v11];
 
-  [(OBSetupAssistantFinishedController *)self setBoldButtonBlock:v6];
-  v12 = [(OBSetupAssistantFinishedController *)self boldButton];
-  [v12 setTitle:v7 forState:0];
+  [(OBSetupAssistantFinishedController *)self setBoldButtonBlock:actionCopy];
+  boldButton2 = [(OBSetupAssistantFinishedController *)self boldButton];
+  [boldButton2 setTitle:titleCopy forState:0];
 
-  v13 = [(OBSetupAssistantFinishedController *)self boldButton];
-  [v13 addTarget:self action:sel_buttonTapped_ forControlEvents:0x2000];
+  boldButton3 = [(OBSetupAssistantFinishedController *)self boldButton];
+  [boldButton3 addTarget:self action:sel_buttonTapped_ forControlEvents:0x2000];
 
-  v14 = [(OBSetupAssistantFinishedController *)self boldButton];
-  [v14 _obk_applyGlassWithProminence:0];
+  boldButton4 = [(OBSetupAssistantFinishedController *)self boldButton];
+  [boldButton4 _obk_applyGlassWithProminence:0];
 
-  v16 = [(OBSetupAssistantFinishedController *)self buttonTray];
-  v15 = [(OBSetupAssistantFinishedController *)self boldButton];
-  [v16 addButton:v15];
+  buttonTray2 = [(OBSetupAssistantFinishedController *)self buttonTray];
+  boldButton5 = [(OBSetupAssistantFinishedController *)self boldButton];
+  [buttonTray2 addButton:boldButton5];
 }
 
-- (void)setInstructionalText:(id)a3
+- (void)setInstructionalText:(id)text
 {
-  v4 = a3;
-  v5 = [(OBSetupAssistantFinishedController *)self buttonTray];
-  [v5 removeFromSuperview];
+  textCopy = text;
+  buttonTray = [(OBSetupAssistantFinishedController *)self buttonTray];
+  [buttonTray removeFromSuperview];
 
-  v6 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  [v6 setHidden:0];
+  instructionalLabel = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  [instructionalLabel setHidden:0];
 
-  v7 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
-  [v7 setText:v4];
+  instructionalLabel2 = [(OBSetupAssistantFinishedController *)self instructionalLabel];
+  [instructionalLabel2 setText:textCopy];
 }
 
 - (id)_headerFont
 {
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD58]];
   v3 = +[OBDevice currentDevice];
-  v4 = [v3 templateType];
+  templateType = [v3 templateType];
 
-  if (v4 == 5)
+  if (templateType == 5)
   {
     v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDDB8]];
 
@@ -380,14 +380,14 @@
   return v4;
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = [(OBSetupAssistantFinishedController *)self boldButtonBlock];
+  boldButtonBlock = [(OBSetupAssistantFinishedController *)self boldButtonBlock];
 
-  if (v4)
+  if (boldButtonBlock)
   {
-    v5 = [(OBSetupAssistantFinishedController *)self boldButtonBlock];
-    v5[2]();
+    boldButtonBlock2 = [(OBSetupAssistantFinishedController *)self boldButtonBlock];
+    boldButtonBlock2[2]();
   }
 }
 

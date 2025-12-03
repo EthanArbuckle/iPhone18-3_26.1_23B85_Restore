@@ -1,7 +1,7 @@
 @interface QSSRequestStatsResponse_Int32Stat
 - (NSString)name;
-- (Offset<siri::speech::schema_fb::RequestStatsResponse_::Int32Stat>)addObjectToBuffer:(void *)a3;
-- (QSSRequestStatsResponse_Int32Stat)initWithFlatbuffData:(id)a3 root:(const Int32Stat *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::RequestStatsResponse_::Int32Stat>)addObjectToBuffer:(void *)buffer;
+- (QSSRequestStatsResponse_Int32Stat)initWithFlatbuffData:(id)data root:(const Int32Stat *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int)value;
 @end
@@ -24,28 +24,28 @@
   operator new();
 }
 
-- (Offset<siri::speech::schema_fb::RequestStatsResponse_::Int32Stat>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::RequestStatsResponse_::Int32Stat>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSRequestStatsResponse_Int32Stat *)self name];
-  v6 = v5;
-  if (!v5)
+  name = [(QSSRequestStatsResponse_Int32Stat *)self name];
+  v6 = name;
+  if (!name)
   {
-    v5 = &stru_2879AE8E0;
+    name = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)name UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v9 = [(QSSRequestStatsResponse_Int32Stat *)self value];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v10 = *(a3 + 10);
-  v11 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v9);
+  value = [(QSSRequestStatsResponse_Int32Stat *)self value];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v10 = *(buffer + 10);
+  v11 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, uTF8String);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, value);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v11 + v10);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v11 + v10);
 }
 
 - (int)value
@@ -86,42 +86,42 @@
   return v6;
 }
 
-- (QSSRequestStatsResponse_Int32Stat)initWithFlatbuffData:(id)a3 root:(const Int32Stat *)a4 verify:(BOOL)a5
+- (QSSRequestStatsResponse_Int32Stat)initWithFlatbuffData:(id)data root:(const Int32Stat *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSRequestStatsResponse_Int32Stat;
   v10 = [(QSSRequestStatsResponse_Int32Stat *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -143,9 +143,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

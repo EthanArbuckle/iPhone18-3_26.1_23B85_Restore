@@ -1,18 +1,18 @@
 @interface ODCurareModelSelectionParameter
-- (ODCurareModelSelectionParameter)initWithMetricName:(id)a3 percentageIncrease:(double)a4;
+- (ODCurareModelSelectionParameter)initWithMetricName:(id)name percentageIncrease:(double)increase;
 @end
 
 @implementation ODCurareModelSelectionParameter
 
-- (ODCurareModelSelectionParameter)initWithMetricName:(id)a3 percentageIncrease:(double)a4
+- (ODCurareModelSelectionParameter)initWithMetricName:(id)name percentageIncrease:(double)increase
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = [(ODCurareModelSelectionParameter *)self init];
   v8 = v7;
   if (v7)
   {
-    [(ODCurareModelSelectionParameter *)v7 setMetricName:v6];
-    [(ODCurareModelSelectionParameter *)v8 setPercentageIncrease:a4];
+    [(ODCurareModelSelectionParameter *)v7 setMetricName:nameCopy];
+    [(ODCurareModelSelectionParameter *)v8 setPercentageIncrease:increase];
   }
 
   return v8;

@@ -24,7 +24,7 @@
 
 - (void)didUpdateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E9B5F8();
 }
 

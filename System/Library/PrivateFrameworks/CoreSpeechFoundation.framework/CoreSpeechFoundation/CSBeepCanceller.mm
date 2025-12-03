@@ -3,7 +3,7 @@
 - (CSBeepCancellerDelegate)delegate;
 - (NSDictionary)metrics;
 - (id).cxx_construct;
-- (void)cancelBeepFromSamples:(id)a3 timestamp:(unint64_t)a4;
+- (void)cancelBeepFromSamples:(id)samples timestamp:(unint64_t)timestamp;
 - (void)reset;
 - (void)willBeep;
 @end
@@ -165,18 +165,18 @@ uint64_t __27__CSBeepCanceller_willBeep__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)cancelBeepFromSamples:(id)a3 timestamp:(unint64_t)a4
+- (void)cancelBeepFromSamples:(id)samples timestamp:(unint64_t)timestamp
 {
-  v6 = a3;
+  samplesCopy = samples;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__CSBeepCanceller_cancelBeepFromSamples_timestamp___block_invoke;
   block[3] = &unk_1E865C350;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
+  v10 = samplesCopy;
+  selfCopy = self;
+  timestampCopy = timestamp;
+  v8 = samplesCopy;
   dispatch_async(queue, block);
 }
 
@@ -245,7 +245,7 @@ void __51__CSBeepCanceller_cancelBeepFromSamples_timestamp___block_invoke(uint64
     if (v10 && !v11)
     {
       v13 = v10;
-      v14 = [v10 bytes];
+      bytes = [v10 bytes];
       v15 = [v10 length];
       v16 = v15 & 0xFFFFFFFFFFFFFFFCLL;
       p_beepFloatVec = &v2->_beepFloatVec;
@@ -294,7 +294,7 @@ void __51__CSBeepCanceller_cancelBeepFromSamples_timestamp___block_invoke(uint64
       {
         if (v15 >= 4)
         {
-          memmove(begin, v14, v16);
+          memmove(begin, bytes, v16);
         }
 
         v26 = (begin + v16);
@@ -304,13 +304,13 @@ void __51__CSBeepCanceller_cancelBeepFromSamples_timestamp___block_invoke(uint64
       {
         if (end != begin)
         {
-          memmove(begin, v14, end - begin);
+          memmove(begin, bytes, end - begin);
         }
 
         v27 = v2->_beepFloatVec.__end_;
         if (v25 != v16)
         {
-          v28 = &v14[v25];
+          v28 = &bytes[v25];
           v29 = (begin + v16 - end);
           v27 = v2->_beepFloatVec.__end_;
           do

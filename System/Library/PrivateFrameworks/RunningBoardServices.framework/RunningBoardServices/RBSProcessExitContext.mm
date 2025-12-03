@@ -1,17 +1,17 @@
 @interface RBSProcessExitContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (NSString)description;
-- (RBSProcessExitContext)initWithCoder:(id)a3;
-- (RBSProcessExitContext)initWithRBSXPCCoder:(id)a3;
+- (RBSProcessExitContext)initWithCoder:(id)coder;
+- (RBSProcessExitContext)initWithRBSXPCCoder:(id)coder;
 - (RBSProcessExitStatus)status;
-- (id)_initWithNamespace:(uint64_t)a3 code:(int)a4 wait4Status:;
-- (id)_initWithStatus:(int)a3 legacyCode:(void *)a4 timestamp:(void *)a5 context:;
-- (id)copyWithStatus:(id)a3;
-- (id)copyWithTerminationContext:(id)a3;
-- (id)copyWithTimestamp:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (id)_initWithNamespace:(uint64_t)namespace code:(int)code wait4Status:;
+- (id)_initWithStatus:(int)status legacyCode:(void *)code timestamp:(void *)timestamp context:;
+- (id)copyWithStatus:(id)status;
+- (id)copyWithTerminationContext:(id)context;
+- (id)copyWithTimestamp:(id)timestamp;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSProcessExitContext
@@ -61,22 +61,22 @@ LABEL_7:
   return status;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_15;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || self->_legacyCode != v4->_legacyCode || self->_type != v4->_type)
+  if (v5 != objc_opt_class() || self->_legacyCode != equalCopy->_legacyCode || self->_type != equalCopy->_type)
   {
     goto LABEL_14;
   }
 
   status = self->_status;
-  v7 = v4->_status;
+  v7 = equalCopy->_status;
   if (status != v7)
   {
     v8 = 0;
@@ -91,7 +91,7 @@ LABEL_7:
     }
   }
 
-  if (!RBSXPCEqualDates(self->_timestamp, v4->_timestamp))
+  if (!RBSXPCEqualDates(self->_timestamp, equalCopy->_timestamp))
   {
 LABEL_14:
     v8 = 0;
@@ -99,7 +99,7 @@ LABEL_14:
   }
 
   terminationContext = self->_terminationContext;
-  v10 = v4->_terminationContext;
+  v10 = equalCopy->_terminationContext;
   if (terminationContext == v10)
   {
 LABEL_15:
@@ -134,7 +134,7 @@ LABEL_16:
       terminationContext = &stru_1F01CD8F0;
     }
 
-    v14 = [v4 initWithFormat:@"<%@| voluntary%@%@>", v5, v12, terminationContext];
+    terminationContext = [v4 initWithFormat:@"<%@| voluntary%@%@>", v5, v12, terminationContext];
     goto LABEL_12;
   }
 
@@ -148,9 +148,9 @@ LABEL_16:
       v16 = &stru_1F01CD8F0;
     }
 
-    v14 = [v4 initWithFormat:@"<%@| unknown%@%@>", v5, v15, v16];
+    terminationContext = [v4 initWithFormat:@"<%@| unknown%@%@>", v5, v15, v16];
 LABEL_12:
-    v11 = v14;
+    v11 = terminationContext;
     goto LABEL_13;
   }
 
@@ -171,175 +171,175 @@ LABEL_13:
   return v11;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt64:type forKey:@"_type"];
-  [v5 encodeObject:self->_status forKey:@"_status"];
-  [v5 encodeObject:self->_timestamp forKey:@"_timestamp"];
-  [v5 encodeObject:self->_terminationContext forKey:@"_terminationContext"];
-  [v5 encodeInt64:self->_legacyCode forKey:@"_legacyCode"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:type forKey:@"_type"];
+  [coderCopy encodeObject:self->_status forKey:@"_status"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"_timestamp"];
+  [coderCopy encodeObject:self->_terminationContext forKey:@"_terminationContext"];
+  [coderCopy encodeInt64:self->_legacyCode forKey:@"_legacyCode"];
 }
 
-- (RBSProcessExitContext)initWithRBSXPCCoder:(id)a3
+- (RBSProcessExitContext)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RBSProcessExitContext;
   v5 = [(RBSProcessExitContext *)&v13 init];
   if (v5)
   {
-    v5->_type = [v4 decodeInt64ForKey:@"_type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
+    v5->_type = [coderCopy decodeInt64ForKey:@"_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
     status = v5->_status;
     v5->_status = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_terminationContext"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_terminationContext"];
     terminationContext = v5->_terminationContext;
     v5->_terminationContext = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v10;
 
-    v5->_legacyCode = [v4 decodeInt64ForKey:@"_legacyCode"];
+    v5->_legacyCode = [coderCopy decodeInt64ForKey:@"_legacyCode"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt64:type forKey:@"_type"];
-  [v5 encodeObject:self->_timestamp forKey:@"_timestamp"];
-  [v5 encodeObject:self->_status forKey:@"_status"];
-  [v5 encodeInt32:self->_legacyCode forKey:@"_legacyCode"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:type forKey:@"_type"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"_timestamp"];
+  [coderCopy encodeObject:self->_status forKey:@"_status"];
+  [coderCopy encodeInt32:self->_legacyCode forKey:@"_legacyCode"];
 }
 
-- (RBSProcessExitContext)initWithCoder:(id)a3
+- (RBSProcessExitContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RBSProcessExitContext;
   v5 = [(RBSProcessExitContext *)&v11 init];
   if (v5)
   {
-    v5->_type = [v4 decodeInt64ForKey:@"_type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
+    v5->_type = [coderCopy decodeInt64ForKey:@"_type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
     status = v5->_status;
     v5->_status = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v8;
 
-    v5->_legacyCode = [v4 decodeInt32ForKey:@"_legacyCode"];
+    v5->_legacyCode = [coderCopy decodeInt32ForKey:@"_legacyCode"];
   }
 
   return v5;
 }
 
-- (id)_initWithStatus:(int)a3 legacyCode:(void *)a4 timestamp:(void *)a5 context:
+- (id)_initWithStatus:(int)status legacyCode:(void *)code timestamp:(void *)timestamp context:
 {
   v21 = *MEMORY[0x1E69E9840];
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  codeCopy = code;
+  timestampCopy = timestamp;
+  if (self)
   {
-    v18.receiver = a1;
+    v18.receiver = self;
     v18.super_class = RBSProcessExitContext;
-    a1 = objc_msgSendSuper2(&v18, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v18, sel_init);
+    if (self)
     {
       if (![v9 domain])
       {
-        v13 = [v9 code];
-        if (a3)
+        code = [v9 code];
+        if (status)
         {
-          if (!v13 && (a3 & 0x7F) != 0 && (a3 & 0x7F) != 0x7F)
+          if (!code && (status & 0x7F) != 0 && (status & 0x7F) != 0x7F)
           {
             v14 = rbs_process_log();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109120;
-              v20 = a3;
+              statusCopy = status;
               _os_log_impl(&dword_18E8AD000, v14, OS_LOG_TYPE_DEFAULT, "Modern status reporting system failed (signal detected), translating $d into 2,%d", buf, 8u);
             }
 
-            v15 = [RBSProcessExitStatus statusWithDomain:2 code:a3 & 0x7F];
+            0x7F = [RBSProcessExitStatus statusWithDomain:2 code:status & 0x7F];
 
-            v9 = v15;
+            v9 = 0x7F;
           }
         }
       }
 
-      objc_storeStrong(a1 + 4, v9);
-      if ([a1[4] isValid])
+      objc_storeStrong(self + 4, v9);
+      if ([self[4] isValid])
       {
         v12 = 2;
       }
 
       else
       {
-        if (![a1[4] _isVoluntary])
+        if (![self[4] _isVoluntary])
         {
-          a1[3] = 0;
+          self[3] = 0;
           goto LABEL_17;
         }
 
         v12 = 1;
       }
 
-      a1[3] = v12;
+      self[3] = v12;
 LABEL_17:
-      *(a1 + 2) = a3;
-      objc_storeStrong(a1 + 2, a4);
-      objc_storeStrong(a1 + 5, a5);
+      *(self + 2) = status;
+      objc_storeStrong(self + 2, code);
+      objc_storeStrong(self + 5, timestamp);
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (id)copyWithStatus:(id)a3
+- (id)copyWithStatus:(id)status
 {
-  v4 = a3;
-  v5 = [[RBSProcessExitContext alloc] _initWithStatus:v4 legacyCode:0 timestamp:self->_timestamp context:self->_terminationContext];
+  statusCopy = status;
+  v5 = [[RBSProcessExitContext alloc] _initWithStatus:statusCopy legacyCode:0 timestamp:self->_timestamp context:self->_terminationContext];
 
   return v5;
 }
 
-- (id)copyWithTimestamp:(id)a3
+- (id)copyWithTimestamp:(id)timestamp
 {
-  v4 = a3;
-  v5 = [[RBSProcessExitContext alloc] _initWithStatus:self->_legacyCode legacyCode:v4 timestamp:self->_terminationContext context:?];
+  timestampCopy = timestamp;
+  v5 = [[RBSProcessExitContext alloc] _initWithStatus:self->_legacyCode legacyCode:timestampCopy timestamp:self->_terminationContext context:?];
 
   return v5;
 }
 
-- (id)copyWithTerminationContext:(id)a3
+- (id)copyWithTerminationContext:(id)context
 {
-  v4 = a3;
-  v5 = [[RBSProcessExitContext alloc] _initWithStatus:self->_legacyCode legacyCode:self->_timestamp timestamp:v4 context:?];
+  contextCopy = context;
+  v5 = [[RBSProcessExitContext alloc] _initWithStatus:self->_legacyCode legacyCode:self->_timestamp timestamp:contextCopy context:?];
 
   return v5;
 }
 
-- (id)_initWithNamespace:(uint64_t)a3 code:(int)a4 wait4Status:
+- (id)_initWithNamespace:(uint64_t)namespace code:(int)code wait4Status:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6 = [RBSProcessExitStatus statusWithDomain:a2 code:a3];
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [(RBSProcessExitContext *)a1 _initWithStatus:v6 legacyCode:a4 timestamp:v7 context:0];
+  v6 = [RBSProcessExitStatus statusWithDomain:a2 code:namespace];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [(RBSProcessExitContext *)self _initWithStatus:v6 legacyCode:code timestamp:date context:0];
 
   return v8;
 }

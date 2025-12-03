@@ -1,20 +1,20 @@
 @interface COSExpressSetupDetailItemView
-- (void)populateItem:(id)a3;
+- (void)populateItem:(id)item;
 @end
 
 @implementation COSExpressSetupDetailItemView
 
-- (void)populateItem:(id)a3
+- (void)populateItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_new();
   titleLabel = self->_titleLabel;
   self->_titleLabel = v5;
 
   [(COSExpressSetupDetailItemView *)self addSubview:self->_titleLabel];
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v4 title];
-  [(UILabel *)self->_titleLabel setText:v7];
+  title = [itemCopy title];
+  [(UILabel *)self->_titleLabel setText:title];
 
   v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
   [(UILabel *)self->_titleLabel setFont:v8];
@@ -26,8 +26,8 @@
 
   [(COSExpressSetupDetailItemView *)self addSubview:self->_statusLabel];
   [(UILabel *)self->_statusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [v4 status];
-  [(UILabel *)self->_statusLabel setText:v11];
+  status = [itemCopy status];
+  [(UILabel *)self->_statusLabel setText:status];
 
   v12 = +[UIColor systemGrayColor];
   [(UILabel *)self->_statusLabel setTextColor:v12];
@@ -39,8 +39,8 @@
   [(UILabel *)self->_statusLabel setContentCompressionResistancePriority:0 forAxis:v14];
   LODWORD(v15) = 1148846080;
   [(UILabel *)self->_statusLabel setContentHuggingPriority:0 forAxis:v15];
-  v16 = [v4 detail];
-  v17 = [v16 length];
+  detail = [itemCopy detail];
+  v17 = [detail length];
 
   v69 = v17;
   if (v17)
@@ -51,8 +51,8 @@
 
     [(COSExpressSetupDetailItemView *)self addSubview:self->_detailLabel];
     [(UILabel *)self->_detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v20 = [v4 detail];
-    [(UILabel *)self->_detailLabel setText:v20];
+    detail2 = [itemCopy detail];
+    [(UILabel *)self->_detailLabel setText:detail2];
 
     v21 = +[UIColor systemGrayColor];
     [(UILabel *)self->_detailLabel setTextColor:v21];
@@ -70,44 +70,44 @@
   [(COSExpressSetupDetailItemView *)self addSubview:self->_imageView];
   [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_imageView setContentMode:1];
-  v71 = v4;
-  v25 = [v4 image];
-  [(UIImageView *)self->_imageView setImage:v25];
+  v71 = itemCopy;
+  image = [itemCopy image];
+  [(UIImageView *)self->_imageView setImage:image];
 
   v67 = [NSMutableArray alloc];
-  v65 = [(UIImageView *)self->_imageView centerYAnchor];
-  v63 = [(COSExpressSetupDetailItemView *)self centerYAnchor];
-  v61 = [v65 constraintEqualToAnchor:v63];
+  centerYAnchor = [(UIImageView *)self->_imageView centerYAnchor];
+  centerYAnchor2 = [(COSExpressSetupDetailItemView *)self centerYAnchor];
+  v61 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v74[0] = v61;
-  v60 = [(UIImageView *)self->_imageView leadingAnchor];
-  v59 = [(COSExpressSetupDetailItemView *)self leadingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59 constant:16.0];
+  leadingAnchor = [(UIImageView *)self->_imageView leadingAnchor];
+  leadingAnchor2 = [(COSExpressSetupDetailItemView *)self leadingAnchor];
+  v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v74[1] = v58;
-  v57 = [(UIImageView *)self->_imageView widthAnchor];
-  v56 = [v57 constraintEqualToConstant:36.0];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v56 = [widthAnchor constraintEqualToConstant:36.0];
   v74[2] = v56;
-  v55 = [(UIImageView *)self->_imageView heightAnchor];
-  v54 = [v55 constraintEqualToConstant:36.0];
+  heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+  v54 = [heightAnchor constraintEqualToConstant:36.0];
   v74[3] = v54;
-  v53 = [(UILabel *)self->_titleLabel topAnchor];
-  v52 = [(COSExpressSetupDetailItemView *)self topAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52 constant:16.0];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  topAnchor2 = [(COSExpressSetupDetailItemView *)self topAnchor];
+  v51 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v74[4] = v51;
-  v50 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v49 = [(UIImageView *)self->_imageView trailingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49 constant:8.0];
+  leadingAnchor3 = [(UILabel *)self->_titleLabel leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_imageView trailingAnchor];
+  v48 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
   v74[5] = v48;
-  v47 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v26 = [(UILabel *)self->_statusLabel leadingAnchor];
-  v27 = [v47 constraintEqualToAnchor:v26 constant:-8.0];
+  trailingAnchor2 = [(UILabel *)self->_titleLabel trailingAnchor];
+  leadingAnchor4 = [(UILabel *)self->_statusLabel leadingAnchor];
+  v27 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4 constant:-8.0];
   v74[6] = v27;
-  v28 = [(UILabel *)self->_statusLabel topAnchor];
-  v29 = [(UILabel *)self->_titleLabel topAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  topAnchor3 = [(UILabel *)self->_statusLabel topAnchor];
+  topAnchor4 = [(UILabel *)self->_titleLabel topAnchor];
+  v30 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v74[7] = v30;
-  v31 = [(UILabel *)self->_statusLabel trailingAnchor];
-  v32 = [(COSExpressSetupDetailItemView *)self trailingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32 constant:-16.0];
+  trailingAnchor3 = [(UILabel *)self->_statusLabel trailingAnchor];
+  trailingAnchor4 = [(COSExpressSetupDetailItemView *)self trailingAnchor];
+  v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   v74[8] = v33;
   v34 = [NSArray arrayWithObjects:v74 count:9];
   v68 = [v67 initWithArray:v34];
@@ -115,35 +115,35 @@
   v35 = objc_opt_new();
   if (v69)
   {
-    v70 = [(UILabel *)self->_detailLabel topAnchor];
-    v62 = [(UILabel *)self->_titleLabel bottomAnchor];
-    v36 = [v70 constraintEqualToAnchor:v62 constant:2.0];
+    topAnchor5 = [(UILabel *)self->_detailLabel topAnchor];
+    bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+    v36 = [topAnchor5 constraintEqualToAnchor:bottomAnchor constant:2.0];
     v73[0] = v36;
-    v66 = [(UILabel *)self->_detailLabel leadingAnchor];
-    v64 = [(UILabel *)self->_titleLabel leadingAnchor];
-    v37 = [v66 constraintEqualToAnchor:v64];
+    leadingAnchor5 = [(UILabel *)self->_detailLabel leadingAnchor];
+    leadingAnchor6 = [(UILabel *)self->_titleLabel leadingAnchor];
+    v37 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v73[1] = v37;
-    v38 = [(UILabel *)self->_detailLabel bottomAnchor];
-    v39 = [(COSExpressSetupDetailItemView *)self bottomAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:-16.0];
+    bottomAnchor2 = [(UILabel *)self->_detailLabel bottomAnchor];
+    bottomAnchor3 = [(COSExpressSetupDetailItemView *)self bottomAnchor];
+    v40 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-16.0];
     v73[2] = v40;
-    v41 = [(UILabel *)self->_detailLabel trailingAnchor];
-    v42 = [(COSExpressSetupDetailItemView *)self trailingAnchor];
-    v43 = [v41 constraintEqualToAnchor:v42 constant:-16.0];
+    trailingAnchor5 = [(UILabel *)self->_detailLabel trailingAnchor];
+    trailingAnchor6 = [(COSExpressSetupDetailItemView *)self trailingAnchor];
+    v43 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
     v73[3] = v43;
     v44 = [NSArray arrayWithObjects:v73 count:4];
 
-    v45 = v62;
-    v46 = v70;
+    bottomAnchor5 = bottomAnchor;
+    bottomAnchor4 = topAnchor5;
 
-    v35 = v66;
+    v35 = leadingAnchor5;
   }
 
   else
   {
-    v46 = [(UILabel *)self->_titleLabel bottomAnchor];
-    v45 = [(COSExpressSetupDetailItemView *)self bottomAnchor];
-    v36 = [v46 constraintEqualToAnchor:v45 constant:-16.0];
+    bottomAnchor4 = [(UILabel *)self->_titleLabel bottomAnchor];
+    bottomAnchor5 = [(COSExpressSetupDetailItemView *)self bottomAnchor];
+    v36 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-16.0];
     v72 = v36;
     v44 = [NSArray arrayWithObjects:&v72 count:1];
   }

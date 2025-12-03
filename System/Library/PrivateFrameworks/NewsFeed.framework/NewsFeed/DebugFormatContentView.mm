@@ -1,8 +1,8 @@
 @interface DebugFormatContentView
-- (_TtC8NewsFeed22DebugFormatContentView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed22DebugFormatContentView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed22DebugFormatContentView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed22DebugFormatContentView)initWithFrame:(CGRect)frame;
 - (double)contentScaleFactor;
-- (void)setContentScaleFactor:(double)a3;
+- (void)setContentScaleFactor:(double)factor;
 @end
 
 @implementation DebugFormatContentView
@@ -15,18 +15,18 @@
   return result;
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
-  v4 = self;
-  sub_1D6CA81F8(a3);
+  selfCopy = self;
+  sub_1D6CA81F8(factor);
 }
 
-- (_TtC8NewsFeed22DebugFormatContentView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed22DebugFormatContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (self + OBJC_IVAR____TtC8NewsFeed22DebugFormatContentView_contentFrame);
   *v9 = 0u;
@@ -38,12 +38,12 @@
   v11[1] = 0u;
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(DebugFormatContentView *)&v14 initWithFrame:x, y, width, height];
-  [(DebugFormatContentView *)v12 addSubview:*(&v12->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed22DebugFormatContentView_bezelView)];
-  return v12;
+  height = [(DebugFormatContentView *)&v14 initWithFrame:x, y, width, height];
+  [(DebugFormatContentView *)height addSubview:*(&height->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed22DebugFormatContentView_bezelView)];
+  return height;
 }
 
-- (_TtC8NewsFeed22DebugFormatContentView)initWithCoder:(id)a3
+- (_TtC8NewsFeed22DebugFormatContentView)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC8NewsFeed22DebugFormatContentView_contentFrame);
   *v4 = 0u;

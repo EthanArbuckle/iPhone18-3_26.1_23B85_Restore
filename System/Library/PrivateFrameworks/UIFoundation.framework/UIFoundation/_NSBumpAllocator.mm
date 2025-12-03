@@ -1,23 +1,23 @@
 @interface _NSBumpAllocator
-- (Slab)_allocateSlabWithSize:(unint64_t)a3;
-- (void)allocate:(unint64_t)a3;
+- (Slab)_allocateSlabWithSize:(unint64_t)size;
+- (void)allocate:(unint64_t)allocate;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation _NSBumpAllocator
 
-- (Slab)_allocateSlabWithSize:(unint64_t)a3
+- (Slab)_allocateSlabWithSize:(unint64_t)size
 {
-  result = malloc_type_malloc(a3, 0x299B2E2DuLL);
-  result->var0 = a3;
+  result = malloc_type_malloc(size, 0x299B2E2DuLL);
+  result->var0 = size;
   result->var1 = 0;
   return result;
 }
 
-- (void)allocate:(unint64_t)a3
+- (void)allocate:(unint64_t)allocate
 {
-  if (a3 - 4081 <= 0xFFFFFFFFFFFFEFFELL)
+  if (allocate - 4081 <= 0xFFFFFFFFFFFFEFFELL)
   {
     [_NSBumpAllocator allocate:];
   }
@@ -36,7 +36,7 @@ LABEL_8:
   }
 
   result = self->_ptr;
-  if ((result + a3) > self->_endPtr)
+  if ((result + allocate) > self->_endPtr)
   {
     var1 = self->_curSlab->var1;
     if (!var1)
@@ -51,7 +51,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  self->_ptr = result + a3;
+  self->_ptr = result + allocate;
   return result;
 }
 

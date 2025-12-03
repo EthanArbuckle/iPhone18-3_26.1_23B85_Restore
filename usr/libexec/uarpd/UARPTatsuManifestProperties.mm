@@ -1,19 +1,19 @@
 @interface UARPTatsuManifestProperties
-- (UARPTatsuManifestProperties)initWithManifestPropertyDictionary:(id)a3;
+- (UARPTatsuManifestProperties)initWithManifestPropertyDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation UARPTatsuManifestProperties
 
-- (UARPTatsuManifestProperties)initWithManifestPropertyDictionary:(id)a3
+- (UARPTatsuManifestProperties)initWithManifestPropertyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = UARPTatsuManifestProperties;
   v5 = [(UARPTatsuManifestProperties *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Key Name"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"Key Name"];
     if (!v6)
     {
       goto LABEL_19;
@@ -29,7 +29,7 @@
     keyName = v5->_keyName;
     v5->_keyName = v7;
 
-    v9 = [v4 objectForKeyedSubscript:@"Payload 4CC"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"Payload 4CC"];
     if (v9)
     {
       objc_opt_class();
@@ -47,11 +47,11 @@ LABEL_19:
       v5->_componentTag = v10;
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"Property Name"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"Property Name"];
     if (!v12)
     {
 LABEL_12:
-      v15 = [v4 objectForKeyedSubscript:@"Property Value"];
+      v15 = [dictionaryCopy objectForKeyedSubscript:@"Property Value"];
       v16 = v15;
       if (v15)
       {

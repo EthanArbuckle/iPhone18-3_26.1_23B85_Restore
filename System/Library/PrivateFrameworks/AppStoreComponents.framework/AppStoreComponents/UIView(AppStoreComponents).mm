@@ -8,8 +8,8 @@
 
 - (id)asc_layoutTraitEnvironment
 {
-  v2 = [a1 effectiveUserInterfaceLayoutDirection];
-  if (v2 == 1)
+  effectiveUserInterfaceLayoutDirection = [self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v3 = 1;
   }
@@ -19,7 +19,7 @@
     v3 = -1;
   }
 
-  if (v2)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     v4 = v3;
   }
@@ -29,10 +29,10 @@
     v4 = 0;
   }
 
-  v5 = [a1 traitCollection];
-  if ([v5 layoutDirection] == v4)
+  traitCollection = [self traitCollection];
+  if ([traitCollection layoutDirection] == v4)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
@@ -42,11 +42,11 @@
     v9[2] = __56__UIView_AppStoreComponents__asc_layoutTraitEnvironment__block_invoke;
     v9[3] = &__block_descriptor_40_e27_v16__0___UIMutableTraits__8l;
     v9[4] = v4;
-    v7 = [v5 traitCollectionByModifyingTraits:v9];
-    v6 = [__ASCLayoutProxy traitEnvironmentWithTraitCollection:v7];
+    v7 = [traitCollection traitCollectionByModifyingTraits:v9];
+    selfCopy = [__ASCLayoutProxy traitEnvironmentWithTraitCollection:v7];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (uint64_t)asc_isEqualToOrDescendantOfFocusItem:()AppStoreComponents
@@ -55,7 +55,7 @@
   v5 = v4;
   if (v4)
   {
-    if (v4 == a1)
+    if (v4 == self)
     {
       v9 = 1;
     }
@@ -78,7 +78,7 @@
 
       if (v8)
       {
-        v9 = [a1 isDescendantOfView:v8];
+        v9 = [self isDescendantOfView:v8];
       }
 
       else
@@ -100,28 +100,28 @@
 {
   v4 = a3;
   v8 = 0;
-  v5 = [a1 superview];
-  if (v5)
+  superview = [self superview];
+  if (superview)
   {
-    while ((v4[2](v4, v5, &v8) & 1) == 0)
+    while ((v4[2](v4, superview, &v8) & 1) == 0)
     {
       if ((v8 & 1) == 0)
       {
-        v6 = [v5 superview];
+        v5Superview = [superview superview];
 
-        v5 = v6;
-        if (v6)
+        superview = v5Superview;
+        if (v5Superview)
         {
           continue;
         }
       }
 
-      v5 = 0;
+      superview = 0;
       break;
     }
   }
 
-  return v5;
+  return superview;
 }
 
 @end

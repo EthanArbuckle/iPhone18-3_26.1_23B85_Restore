@@ -1,35 +1,35 @@
 @interface SearchResultCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SearchResultCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3EA8F8();
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(SearchResultCell *)v5 traitCollection];
-  sub_3ECF40(v6);
+  attributesCopy = attributes;
+  selfCopy = self;
+  traitCollection = [(SearchResultCell *)selfCopy traitCollection];
+  sub_3ECF40(traitCollection);
 
-  [v4 frame];
-  [v4 setFrame:?];
+  [attributesCopy frame];
+  [attributesCopy setFrame:?];
 
-  return v4;
+  return attributesCopy;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_3EB490(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_3EB490(change);
 }
 
 @end

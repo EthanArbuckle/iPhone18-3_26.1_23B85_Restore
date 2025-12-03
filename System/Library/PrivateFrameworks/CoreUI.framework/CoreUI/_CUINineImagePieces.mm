@@ -1,27 +1,27 @@
 @interface _CUINineImagePieces
-- (_CUINineImagePieces)initWithCenter:(id)a3 topLeft:(id)a4 top:(id)a5 topRight:(id)a6 right:(id)a7 bottomRight:(id)a8 bottom:(id)a9 bottomLeft:(id)a10 left:(id)a11 tileCenterAndEdges:(BOOL)a12;
+- (_CUINineImagePieces)initWithCenter:(id)center topLeft:(id)left top:(id)top topRight:(id)right right:(id)a7 bottomRight:(id)bottomRight bottom:(id)bottom bottomLeft:(id)self0 left:(id)self1 tileCenterAndEdges:(BOOL)self2;
 - (void)dealloc;
 @end
 
 @implementation _CUINineImagePieces
 
-- (_CUINineImagePieces)initWithCenter:(id)a3 topLeft:(id)a4 top:(id)a5 topRight:(id)a6 right:(id)a7 bottomRight:(id)a8 bottom:(id)a9 bottomLeft:(id)a10 left:(id)a11 tileCenterAndEdges:(BOOL)a12
+- (_CUINineImagePieces)initWithCenter:(id)center topLeft:(id)left top:(id)top topRight:(id)right right:(id)a7 bottomRight:(id)bottomRight bottom:(id)bottom bottomLeft:(id)self0 left:(id)self1 tileCenterAndEdges:(BOOL)self2
 {
   v20.receiver = self;
   v20.super_class = _CUINineImagePieces;
   v18 = [(_CUINineImagePieces *)&v20 init];
   if (v18)
   {
-    v18->_center = a3;
-    v18->_topLeft = a4;
-    v18->_top = a5;
-    v18->_topRight = a6;
+    v18->_center = center;
+    v18->_topLeft = left;
+    v18->_top = top;
+    v18->_topRight = right;
     v18->_right = a7;
-    v18->_bottomRight = a8;
-    v18->_bottom = a9;
-    v18->_bottomLeft = a10;
+    v18->_bottomRight = bottomRight;
+    v18->_bottom = bottom;
+    v18->_bottomLeft = bottomLeft;
     v18->_left = a11;
-    v18->_tileCenterAndEdges = a12;
+    v18->_tileCenterAndEdges = edges;
   }
 
   return v18;

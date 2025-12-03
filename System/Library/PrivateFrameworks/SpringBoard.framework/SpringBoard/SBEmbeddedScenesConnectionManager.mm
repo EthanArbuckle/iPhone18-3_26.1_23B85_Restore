@@ -1,16 +1,16 @@
 @interface SBEmbeddedScenesConnectionManager
 - (void)_reevaluateSceneConnection;
-- (void)noteMainSceneConnected:(id)a3;
-- (void)noteSystemApertureCurtainSceneConnected:(id)a3;
-- (void)noteSystemApertureSceneConnected:(id)a3;
+- (void)noteMainSceneConnected:(id)connected;
+- (void)noteSystemApertureCurtainSceneConnected:(id)connected;
+- (void)noteSystemApertureSceneConnected:(id)connected;
 @end
 
 @implementation SBEmbeddedScenesConnectionManager
 
-- (void)noteMainSceneConnected:(id)a3
+- (void)noteMainSceneConnected:(id)connected
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectedCopy = connected;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   WeakRetained = objc_loadWeakRetained(&self->_mainSBWindowScene);
   if (WeakRetained)
@@ -22,24 +22,24 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = _SBFLoggingMethodProem();
-    v8 = [v4 _sceneIdentifier];
+    _sceneIdentifier = [connectedCopy _sceneIdentifier];
     v9 = 138543874;
     v10 = v7;
     v11 = 2048;
-    v12 = v4;
+    v12 = connectedCopy;
     v13 = 2114;
-    v14 = v8;
+    v14 = _sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] main scene connected: <%p>:%{public}@", &v9, 0x20u);
   }
 
-  objc_storeWeak(&self->_mainSBWindowScene, v4);
+  objc_storeWeak(&self->_mainSBWindowScene, connectedCopy);
   [(SBEmbeddedScenesConnectionManager *)self _reevaluateSceneConnection];
 }
 
-- (void)noteSystemApertureSceneConnected:(id)a3
+- (void)noteSystemApertureSceneConnected:(id)connected
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectedCopy = connected;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   WeakRetained = objc_loadWeakRetained(&self->_systemApertureScene);
   if (WeakRetained)
@@ -51,24 +51,24 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = _SBFLoggingMethodProem();
-    v8 = [v4 _sceneIdentifier];
+    _sceneIdentifier = [connectedCopy _sceneIdentifier];
     v9 = 138543874;
     v10 = v7;
     v11 = 2048;
-    v12 = v4;
+    v12 = connectedCopy;
     v13 = 2114;
-    v14 = v8;
+    v14 = _sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] system aperture scene connected: <%p>:%{public}@", &v9, 0x20u);
   }
 
-  objc_storeWeak(&self->_systemApertureScene, v4);
+  objc_storeWeak(&self->_systemApertureScene, connectedCopy);
   [(SBEmbeddedScenesConnectionManager *)self _reevaluateSceneConnection];
 }
 
-- (void)noteSystemApertureCurtainSceneConnected:(id)a3
+- (void)noteSystemApertureCurtainSceneConnected:(id)connected
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectedCopy = connected;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   WeakRetained = objc_loadWeakRetained(&self->_systemApertureCurtainScene);
   if (WeakRetained)
@@ -80,17 +80,17 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = _SBFLoggingMethodProem();
-    v8 = [v4 _sceneIdentifier];
+    _sceneIdentifier = [connectedCopy _sceneIdentifier];
     v9 = 138543874;
     v10 = v7;
     v11 = 2048;
-    v12 = v4;
+    v12 = connectedCopy;
     v13 = 2114;
-    v14 = v8;
+    v14 = _sceneIdentifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] system aperture curtain scene connected: <%p>:%{public}@", &v9, 0x20u);
   }
 
-  objc_storeWeak(&self->_systemApertureCurtainScene, v4);
+  objc_storeWeak(&self->_systemApertureCurtainScene, connectedCopy);
   [(SBEmbeddedScenesConnectionManager *)self _reevaluateSceneConnection];
 }
 
@@ -163,9 +163,9 @@ LABEL_21:
 
 LABEL_11:
 
-  v11 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v12 = objc_opt_class();
-  v13 = v11;
+  v13 = delegate;
   if (v12)
   {
     if (objc_opt_isKindOfClass())

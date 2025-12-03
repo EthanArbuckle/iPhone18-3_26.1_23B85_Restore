@@ -1,16 +1,16 @@
 @interface MIBUDefaultPreferences
-+ (BOOL)setObject:(id)a3 forKey:(id)a4;
++ (BOOL)setObject:(id)object forKey:(id)key;
 + (id)dictionaryRepresentation;
-+ (id)objectForKey:(id)a3;
++ (id)objectForKey:(id)key;
 @end
 
 @implementation MIBUDefaultPreferences
 
-+ (BOOL)setObject:(id)a3 forKey:(id)a4
++ (BOOL)setObject:(id)object forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   if (MIBUOnceToken != -1)
   {
     +[MIBUDefaultPreferences setObject:forKey:];
@@ -22,16 +22,16 @@
     v13 = 136315650;
     v14 = "+[MIBUDefaultPreferences setObject:forKey:]";
     v15 = 2114;
-    v16 = v5;
+    v16 = objectCopy;
     v17 = 2114;
-    v18 = v6;
+    v18 = keyCopy;
     _os_log_impl(&dword_259ABF000, v7, OS_LOG_TYPE_DEFAULT, "%s - Setting %{public}@ for key %{public}@", &v13, 0x20u);
   }
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v8 setObject:v5 forKey:v6];
-  v9 = [v8 synchronize];
-  if ((v9 & 1) == 0)
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:objectCopy forKey:keyCopy];
+  synchronize = [standardUserDefaults synchronize];
+  if ((synchronize & 1) == 0)
   {
     if (MIBUOnceToken != -1)
     {
@@ -41,12 +41,12 @@
     v10 = MIBUConnObj;
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
     {
-      [(MIBUDefaultPreferences *)v5 setObject:v6 forKey:v10];
+      [(MIBUDefaultPreferences *)objectCopy setObject:keyCopy forKey:v10];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v9;
+  return synchronize;
 }
 
 void __43__MIBUDefaultPreferences_setObject_forKey___block_invoke()
@@ -73,22 +73,22 @@ void __43__MIBUDefaultPreferences_setObject_forKey___block_invoke_3()
   }
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:keyCopy];
 
   return v6;
 }
 
 + (id)dictionaryRepresentation
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 dictionaryRepresentation];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  dictionaryRepresentation = [standardUserDefaults dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 + (void)setObject:(os_log_t)log forKey:.cold.3(uint64_t a1, uint64_t a2, os_log_t log)

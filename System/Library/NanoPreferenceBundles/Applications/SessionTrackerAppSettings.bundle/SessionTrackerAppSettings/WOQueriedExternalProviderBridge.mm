@@ -10,7 +10,7 @@
 - (NSString)sourceName
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOQueriedExternalProviderBridge_externalProvider);
-  v3 = self;
+  selfCopy = self;
   sub_22544();
   sub_22434();
 
@@ -22,7 +22,7 @@
 - (NSData)sourceImageData
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOQueriedExternalProviderBridge_externalProvider);
-  v3 = self;
+  selfCopy = self;
   sub_22544();
   v4 = sub_22444();
   v6 = v5;
@@ -36,7 +36,7 @@
 - (BOOL)isEnabled
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOQueriedExternalProviderBridge_externalProvider);
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22554();
 
   return v4 == 2;

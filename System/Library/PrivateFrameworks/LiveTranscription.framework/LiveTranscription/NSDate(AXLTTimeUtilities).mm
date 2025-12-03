@@ -37,8 +37,8 @@
   {
     v4 = [MEMORY[0x277CBEAA8] stringToDate:v3];
     v5 = MEMORY[0x277CBEAA8];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v5 timeAgoSinceDate:v4 currentDate:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    v7 = [v5 timeAgoSinceDate:v4 currentDate:date];
   }
 
   else

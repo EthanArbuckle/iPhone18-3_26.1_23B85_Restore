@@ -1,12 +1,12 @@
 @interface SBWakeLogger
 + (id)sharedInstance;
 - (SBWakeLogger)init;
-- (void)_lock_wakeDidBegin:(int64_t)a3;
+- (void)_lock_wakeDidBegin:(int64_t)begin;
 - (void)dealloc;
 - (void)lockDidBegin;
-- (void)wakeDidBegin:(int64_t)a3;
+- (void)wakeDidBegin:(int64_t)begin;
 - (void)wakeDidEnd;
-- (void)wakeMayBegin:(int64_t)a3 withTimestamp:(unint64_t)a4;
+- (void)wakeMayBegin:(int64_t)begin withTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation SBWakeLogger
@@ -28,8 +28,8 @@
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
     v3->_lock._os_unfair_lock_opaque = 0;
-    v6 = [MEMORY[0x1E698E730] sharedInstance];
-    v3->_homeButtonType = [v6 homeButtonType];
+    mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+    v3->_homeButtonType = [mEMORY[0x1E698E730] homeButtonType];
 
     v7 = *MEMORY[0x1E696CD60];
     v8 = IOServiceMatching("AppleSPUTimesync");
@@ -85,7 +85,7 @@ uint64_t __30__SBWakeLogger_sharedInstance__block_invoke()
     if (os_signpost_enabled(v4))
     {
       v5 = 134349056;
-      v6 = [v3 unsignedLongLongValue];
+      unsignedLongLongValue = [v3 unsignedLongLongValue];
       _os_signpost_emit_with_name_impl(&dword_1BEA11000, v4, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SB_WAKE_EVENT", "%{public,signpost.description:end_time}llu enableTelemetry=YES ", &v5, 0xCu);
     }
   }
@@ -102,24 +102,24 @@ uint64_t __30__SBWakeLogger_sharedInstance__block_invoke()
   [(SBWakeLogger *)&v3 dealloc];
 }
 
-- (void)wakeMayBegin:(int64_t)a3 withTimestamp:(unint64_t)a4
+- (void)wakeMayBegin:(int64_t)begin withTimestamp:(unint64_t)timestamp
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v7 = [[SBWakeEvent alloc] initWithTimestamp:a4];
+  v7 = [[SBWakeEvent alloc] initWithTimestamp:timestamp];
   wakeSouceToEventDict = self->_wakeSouceToEventDict;
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:begin];
   [(NSMutableDictionary *)wakeSouceToEventDict setObject:v7 forKeyedSubscript:v9];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)wakeDidBegin:(int64_t)a3
+- (void)wakeDidBegin:(int64_t)begin
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(SBWakeLogger *)self _lock_wakeDidBegin:a3];
-  self->_activeWakeLoggerSource = a3;
+  [(SBWakeLogger *)self _lock_wakeDidBegin:begin];
+  self->_activeWakeLoggerSource = begin;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -134,7 +134,7 @@ uint64_t __30__SBWakeLogger_sharedInstance__block_invoke()
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_wakeDidBegin:(int64_t)a3
+- (void)_lock_wakeDidBegin:(int64_t)begin
 {
   v62 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
@@ -189,7 +189,7 @@ uint64_t __30__SBWakeLogger_sharedInstance__block_invoke()
       v19 = *v50;
       *&v17 = 134349056;
       v45 = v17;
-      v46 = a3;
+      beginCopy = begin;
       do
       {
         v20 = 0;
@@ -202,13 +202,13 @@ uint64_t __30__SBWakeLogger_sharedInstance__block_invoke()
 
           v21 = *(*(&v49 + 1) + 8 * v20);
           v22 = [(NSMutableDictionary *)self->_wakeSouceToEventDict objectForKey:v21, v45];
-          v23 = [v21 integerValue];
-          v24 = [v22 eventRecvContTimestamp];
-          v25 = [v22 eventAbsTimestamp];
-          if (v23 <= 6)
+          integerValue = [v21 integerValue];
+          eventRecvContTimestamp = [v22 eventRecvContTimestamp];
+          eventAbsTimestamp = [v22 eventAbsTimestamp];
+          if (integerValue <= 6)
           {
-            v26 = v25;
-            if (((1 << v23) & 0x66) != 0)
+            v26 = eventAbsTimestamp;
+            if (((1 << integerValue) & 0x66) != 0)
             {
               if (!v48)
               {
@@ -224,7 +224,7 @@ uint64_t __30__SBWakeLogger_sharedInstance__block_invoke()
               goto LABEL_17;
             }
 
-            if (v23 == 3)
+            if (integerValue == 3)
             {
               homeButtonType = self->_homeButtonType;
               if (homeButtonType != 1)
@@ -253,13 +253,13 @@ LABEL_17:
               *info = 0;
               mach_timebase_info(info);
               v32 = v31 * *&info[4];
-              a3 = v46;
+              begin = beginCopy;
               v33 = 1000 * v32 / *info;
             }
 
             else
             {
-              if (v23 != 4)
+              if (integerValue != 4)
               {
                 goto LABEL_33;
               }
@@ -271,18 +271,18 @@ LABEL_23:
               v33 = v57 + v26 - *info;
             }
 
-            if (v23 == a3)
+            if (integerValue == begin)
             {
               self->_trackingWake = 1;
               v35 = SBLogTailspinSignposts();
               if (os_signpost_enabled(v35))
               {
-                v36 = SBWakeLoggerSourceDescription(a3);
-                v37 = [v36 UTF8String];
+                v36 = SBWakeLoggerSourceDescription(begin);
+                uTF8String = [v36 UTF8String];
                 *info = 134349314;
                 *&info[4] = v33;
                 v59 = 2082;
-                v60 = v37;
+                v60 = uTF8String;
                 _os_signpost_emit_with_name_impl(&dword_1BEA11000, v35, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SB_WAKE_EVENT", "%{public,signpost.description:begin_time,public}llu WakeReason=%{public,signpost.telemetry:string1}s enableTelemetry=YES ", info, 0x16u);
               }
             }
@@ -290,12 +290,12 @@ LABEL_23:
             v38 = SBLogTailspinSignposts();
             if (os_signpost_enabled(v38))
             {
-              v39 = SBWakeLoggerSourceDescription(a3);
-              v40 = [v39 UTF8String];
+              v39 = SBWakeLoggerSourceDescription(begin);
+              uTF8String2 = [v39 UTF8String];
               *info = 134349314;
               *&info[4] = v33;
               v59 = 2082;
-              v60 = v40;
+              v60 = uTF8String2;
               _os_signpost_emit_with_name_impl(&dword_1BEA11000, v38, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SB_WAKE_EVENT_HID_LATENCY", "%{public,signpost.description:begin_time}llu WakeReason=%{public,signpost.telemetry:string1}s enableTelemetry=YES ", info, 0x16u);
             }
 
@@ -303,7 +303,7 @@ LABEL_23:
             if (os_signpost_enabled(v41))
             {
               *info = v45;
-              *&info[4] = v24;
+              *&info[4] = eventRecvContTimestamp;
               _os_signpost_emit_with_name_impl(&dword_1BEA11000, v41, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "SB_WAKE_EVENT_HID_LATENCY", "%{public,signpost.description:end_time}llu enableTelemetry=YES ", info, 0xCu);
             }
           }

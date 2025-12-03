@@ -1,5 +1,5 @@
 @interface _NTKKeylinePathViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (BOOL)canBecomeFocused;
 - (id)_accessibilityEditPageView;
@@ -14,11 +14,11 @@
 
 @implementation _NTKKeylinePathViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NTKKeylinePathView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NTKKeylinePathView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityActivate
@@ -85,14 +85,14 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = [(_NTKKeylinePathViewAccessibility *)self _accessibilityEditPageView];
-  _accessibilityEditComplicationPickerView(v2, 1);
+  _accessibilityEditPageView = [(_NTKKeylinePathViewAccessibility *)self _accessibilityEditPageView];
+  _accessibilityEditComplicationPickerView(_accessibilityEditPageView, 1);
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(_NTKKeylinePathViewAccessibility *)self _accessibilityEditPageView];
-  _accessibilityEditComplicationPickerView(v2, 0);
+  _accessibilityEditPageView = [(_NTKKeylinePathViewAccessibility *)self _accessibilityEditPageView];
+  _accessibilityEditComplicationPickerView(_accessibilityEditPageView, 0);
 }
 
 - (id)_accessibilityEditPageView

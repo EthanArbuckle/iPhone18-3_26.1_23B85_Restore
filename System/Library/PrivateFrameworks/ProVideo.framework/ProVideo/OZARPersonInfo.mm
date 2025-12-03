@@ -1,7 +1,7 @@
 @interface OZARPersonInfo
 - (OZARPersonInfo)init;
-- (__n128)simdTransform:(uint64_t)a3;
-- (id)init:(id)a3;
+- (__n128)simdTransform:(uint64_t)transform;
+- (id)init:(id)init;
 - (uint64_t)simdTransform;
 - (void)dealloc;
 @end
@@ -15,7 +15,7 @@
   return [(OZARPersonInfo *)self init:v3];
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v7.receiver = self;
   v7.super_class = OZARPersonInfo;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    [(OZARPersonInfo *)v4 setTransform:a3];
+    [(OZARPersonInfo *)v4 setTransform:init];
     [(OZARPersonInfo *)v5 setJointTransforms:objc_opt_new()];
   }
 
@@ -39,15 +39,15 @@
 
 - (uint64_t)simdTransform
 {
-  v1 = [a1 transform];
+  transform = [self transform];
 
-  return [v1 PCSIMDFloat4x4Value];
+  return [transform PCSIMDFloat4x4Value];
 }
 
-- (__n128)simdTransform:(uint64_t)a3
+- (__n128)simdTransform:(uint64_t)transform
 {
-  v4 = [a1 jointTransforms];
-  v5 = [v4 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", a3)}];
+  jointTransforms = [self jointTransforms];
+  v5 = [jointTransforms objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", transform)}];
   if (v5)
   {
     [v5 PCSIMDFloat4x4Value];

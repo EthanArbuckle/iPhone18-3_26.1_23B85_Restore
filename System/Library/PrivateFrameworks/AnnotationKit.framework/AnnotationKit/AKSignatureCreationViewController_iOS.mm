@@ -1,51 +1,51 @@
 @interface AKSignatureCreationViewController_iOS
 - (AKController)controller;
 - (AKSignatureCreationControllerDelegate)delegate;
-- (AKSignatureCreationViewController_iOS)initWithController:(id)a3;
+- (AKSignatureCreationViewController_iOS)initWithController:(id)controller;
 - (BOOL)becomeFirstResponder;
 - (UIResponder)responderToRestore;
 - (id)undoManager;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_cancel:(id)a3;
-- (void)_clear:(id)a3;
-- (void)_done:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_cancel:(id)_cancel;
+- (void)_clear:(id)_clear;
+- (void)_done:(id)_done;
 - (void)_notifyDidDismiss;
 - (void)_removeSignatureDescription;
 - (void)_showSignatureDescriptionSelectionAlert;
-- (void)_updateSignatureDescriptionWithStringValue:(id)a3;
+- (void)_updateSignatureDescriptionWithStringValue:(id)value;
 - (void)_validateButtons;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
 - (void)showEditCustomDescriptionAlert;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AKSignatureCreationViewController_iOS
 
-- (AKSignatureCreationViewController_iOS)initWithController:(id)a3
+- (AKSignatureCreationViewController_iOS)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = AKSignatureCreationViewController_iOS;
   v5 = [(AKSignatureCreationViewController_iOS *)&v11 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(AKSignatureCreationViewController_iOS *)v5 setController:v4];
+    [(AKSignatureCreationViewController_iOS *)v5 setController:controllerCopy];
     v7 = +[AKController akBundle];
     v8 = [v7 localizedStringForKey:@"New Signature" value:&stru_28519E870 table:@"AKSignatureCreationViewController_iOS"];
     [(AKSignatureCreationViewController_iOS *)v6 setTitle:v8];
 
     [(AKSignatureCreationViewController_iOS *)v6 setPreferredContentSize:540.0, 388.0];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v6 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
   }
 
   return v6;
@@ -53,8 +53,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AKSignatureCreationViewController_iOS;
@@ -74,8 +74,8 @@
   v141.receiver = self;
   v141.super_class = AKSignatureCreationViewController_iOS;
   [(AKSignatureCreationViewController_iOS *)&v141 viewDidLoad];
-  v3 = [(AKSignatureCreationViewController_iOS *)self traitCollection];
-  if ([v3 userInterfaceStyle] == 2)
+  traitCollection = [(AKSignatureCreationViewController_iOS *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     [MEMORY[0x277D75348] blackColor];
   }
@@ -85,8 +85,8 @@
     [MEMORY[0x277D75348] whiteColor];
   }
   v4 = ;
-  v5 = [(AKSignatureCreationViewController_iOS *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(AKSignatureCreationViewController_iOS *)self view];
+  [view setBackgroundColor:v4];
 
   v6 = objc_alloc(MEMORY[0x277D75780]);
   v7 = *MEMORY[0x277CBF3A0];
@@ -96,26 +96,26 @@
   v11 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], v8, v9, v10}];
   [(AKSignatureCreationViewController_iOS *)self setNavBar:v11];
 
-  v12 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  navBar = [(AKSignatureCreationViewController_iOS *)self navBar];
+  [navBar setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  [v13 setDelegate:self];
+  navBar2 = [(AKSignatureCreationViewController_iOS *)self navBar];
+  [navBar2 setDelegate:self];
 
-  v14 = [(AKSignatureCreationViewController_iOS *)self view];
-  v15 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  [v14 addSubview:v15];
+  view2 = [(AKSignatureCreationViewController_iOS *)self view];
+  navBar3 = [(AKSignatureCreationViewController_iOS *)self navBar];
+  [view2 addSubview:navBar3];
 
   v16 = _NSDictionaryOfVariableBindings(&cfstr_Navbar.isa, self->_navBar, 0);
-  v17 = [(AKSignatureCreationViewController_iOS *)self view];
+  view3 = [(AKSignatureCreationViewController_iOS *)self view];
   v18 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_navBar]|" options:0 metrics:0 views:v16];
-  [v17 addConstraints:v18];
+  [view3 addConstraints:v18];
 
-  v19 = [(UINavigationBar *)self->_navBar topAnchor];
-  v20 = [(AKSignatureCreationViewController_iOS *)self view];
-  v21 = [v20 safeAreaLayoutGuide];
-  v22 = [v21 topAnchor];
-  v23 = [v19 constraintEqualToAnchor:v22];
+  topAnchor = [(UINavigationBar *)self->_navBar topAnchor];
+  view4 = [(AKSignatureCreationViewController_iOS *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
   if (_UISolariumEnabled())
   {
@@ -128,81 +128,81 @@
   v25 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
   [(AKSignatureCreationViewController_iOS *)self setTitleLabel:v25];
 
-  v26 = [(AKSignatureCreationViewController_iOS *)self title];
-  v27 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
-  [v27 setText:v26];
+  title = [(AKSignatureCreationViewController_iOS *)self title];
+  titleLabel = [(AKSignatureCreationViewController_iOS *)self titleLabel];
+  [titleLabel setText:title];
 
-  v28 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  v29 = [v28 standardAppearance];
-  v30 = [v29 titleTextAttributes];
-  v31 = [v30 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
-  v32 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
-  [v32 setFont:v31];
+  navBar4 = [(AKSignatureCreationViewController_iOS *)self navBar];
+  standardAppearance = [navBar4 standardAppearance];
+  titleTextAttributes = [standardAppearance titleTextAttributes];
+  v31 = [titleTextAttributes objectForKeyedSubscript:*MEMORY[0x277D740A8]];
+  titleLabel2 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
+  [titleLabel2 setFont:v31];
 
-  v33 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
-  [v33 setTextAlignment:1];
+  titleLabel3 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
+  [titleLabel3 setTextAlignment:1];
 
   v34 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{v7, v8, v9, v10}];
   [(AKSignatureCreationViewController_iOS *)self setDownArrowButton:v34];
 
-  v35 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
-  [v35 addTarget:self action:sel__showSignatureDescriptionSelectionAlert forControlEvents:1];
+  downArrowButton = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  [downArrowButton addTarget:self action:sel__showSignatureDescriptionSelectionAlert forControlEvents:1];
 
-  v36 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  downArrowButton2 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
   v37 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.down"];
-  [v36 setImage:v37 forState:0];
+  [downArrowButton2 setImage:v37 forState:0];
 
-  v38 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
-  [v38 setContentEdgeInsets:{8.0, 8.0, 8.0, 8.0}];
+  downArrowButton3 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  [downArrowButton3 setContentEdgeInsets:{8.0, 8.0, 8.0, 8.0}];
 
   v39 = [objc_alloc(MEMORY[0x277D75A68]) initWithFrame:{v7, v8, v9, v10}];
   [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v39 setAlignment:3];
   [v39 setAxis:0];
-  v40 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
-  [v39 addArrangedSubview:v40];
+  titleLabel4 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
+  [v39 addArrangedSubview:titleLabel4];
 
-  v41 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
-  [v39 addArrangedSubview:v41];
+  downArrowButton4 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  [v39 addArrangedSubview:downArrowButton4];
 
-  v42 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
-  v147[0] = v42;
-  v43 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
-  v147[1] = v43;
+  titleLabel5 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
+  v147[0] = titleLabel5;
+  downArrowButton5 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  v147[1] = downArrowButton5;
   v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v147 count:2];
   [v39 setAccessibilityElements:v44];
 
   [v24 setTitleView:v39];
   v138 = v39;
-  v45 = [v39 trailingAnchor];
-  v46 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
-  v47 = [v46 trailingAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47 constant:0.0];
+  trailingAnchor = [v39 trailingAnchor];
+  downArrowButton6 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  trailingAnchor2 = [downArrowButton6 trailingAnchor];
+  v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
   [v48 setActive:1];
 
-  v49 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  downArrowButton7 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
   LODWORD(v50) = 1144750080;
-  [v49 setContentCompressionResistancePriority:0 forAxis:v50];
+  [downArrowButton7 setContentCompressionResistancePriority:0 forAxis:v50];
 
-  v51 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
+  titleLabel6 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
   LODWORD(v52) = 1132068864;
-  [v51 setContentCompressionResistancePriority:0 forAxis:v52];
+  [titleLabel6 setContentCompressionResistancePriority:0 forAxis:v52];
 
-  v53 = [(AKSignatureCreationViewController_iOS *)self navBar];
+  navBar5 = [(AKSignatureCreationViewController_iOS *)self navBar];
   v146 = v24;
   v54 = [MEMORY[0x277CBEA60] arrayWithObjects:&v146 count:1];
-  [v53 setItems:v54];
+  [navBar5 setItems:v54];
 
   v55 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancel_];
   v56 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__done_];
   v140 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:6 target:0 action:0];
   [v140 setWidth:16.0];
-  v57 = [(AKSignatureCreationViewController_iOS *)self presentationController];
-  v58 = [v57 presentationStyle];
+  presentationController = [(AKSignatureCreationViewController_iOS *)self presentationController];
+  presentationStyle = [presentationController presentationStyle];
 
   v136 = v55;
   v137 = v56;
-  if (v58 == 7)
+  if (presentationStyle == 7)
   {
     v145 = v56;
     v59 = &v145;
@@ -222,81 +222,81 @@
   v61 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:1];
   [v24 setRightBarButtonItems:v61];
 
-  v62 = [(AKSignatureCreationViewController_iOS *)self view];
-  v63 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  [v62 addSubview:v63];
+  view5 = [(AKSignatureCreationViewController_iOS *)self view];
+  navBar6 = [(AKSignatureCreationViewController_iOS *)self navBar];
+  [view5 addSubview:navBar6];
 
   v64 = [AKSignatureBaselineView alloc];
-  v65 = [(AKSignatureCreationViewController_iOS *)self view];
-  [v65 bounds];
+  view6 = [(AKSignatureCreationViewController_iOS *)self view];
+  [view6 bounds];
   v66 = [(AKSignatureBaselineView *)v64 initWithFrame:?];
   [(AKSignatureCreationViewController_iOS *)self setBaselineView:v66];
 
-  v67 = [(AKSignatureCreationViewController_iOS *)self baselineView];
-  [v67 setTranslatesAutoresizingMaskIntoConstraints:0];
+  baselineView = [(AKSignatureCreationViewController_iOS *)self baselineView];
+  [baselineView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v68 = [(AKSignatureCreationViewController_iOS *)self view];
-  v69 = [(AKSignatureCreationViewController_iOS *)self baselineView];
-  v70 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  [v68 insertSubview:v69 aboveSubview:v70];
+  view7 = [(AKSignatureCreationViewController_iOS *)self view];
+  baselineView2 = [(AKSignatureCreationViewController_iOS *)self baselineView];
+  navBar7 = [(AKSignatureCreationViewController_iOS *)self navBar];
+  [view7 insertSubview:baselineView2 aboveSubview:navBar7];
 
   v71 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
   [(AKSignatureCreationViewController_iOS *)self setLabel:v71];
 
-  v72 = [(AKSignatureCreationViewController_iOS *)self label];
-  [v72 setTranslatesAutoresizingMaskIntoConstraints:0];
+  label = [(AKSignatureCreationViewController_iOS *)self label];
+  [label setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v73 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-  v74 = [(AKSignatureCreationViewController_iOS *)self label];
-  [v74 setFont:v73];
+  label2 = [(AKSignatureCreationViewController_iOS *)self label];
+  [label2 setFont:v73];
 
-  v75 = [(AKSignatureCreationViewController_iOS *)self label];
-  [v75 setTextAlignment:1];
+  label3 = [(AKSignatureCreationViewController_iOS *)self label];
+  [label3 setTextAlignment:1];
 
   v76 = [MEMORY[0x277D75348] colorWithWhite:0.6 alpha:0.8];
-  v77 = [(AKSignatureCreationViewController_iOS *)self label];
-  [v77 setTextColor:v76];
+  label4 = [(AKSignatureCreationViewController_iOS *)self label];
+  [label4 setTextColor:v76];
 
-  v78 = [MEMORY[0x277D75348] clearColor];
-  v79 = [(AKSignatureCreationViewController_iOS *)self label];
-  [v79 setBackgroundColor:v78];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  label5 = [(AKSignatureCreationViewController_iOS *)self label];
+  [label5 setBackgroundColor:clearColor];
 
   v80 = +[AKController akBundle];
   v135 = v24;
   v81 = [v80 localizedStringForKey:@"Sign your name using your finger." value:&stru_28519E870 table:@"AKSignatureCreationViewController_iOS"];
-  v82 = [(AKSignatureCreationViewController_iOS *)self label];
-  [v82 setText:v81];
+  label6 = [(AKSignatureCreationViewController_iOS *)self label];
+  [label6 setText:v81];
 
-  v83 = [(AKSignatureCreationViewController_iOS *)self view];
-  v84 = [(AKSignatureCreationViewController_iOS *)self label];
-  v85 = [(AKSignatureCreationViewController_iOS *)self baselineView];
-  [v83 insertSubview:v84 aboveSubview:v85];
+  view8 = [(AKSignatureCreationViewController_iOS *)self view];
+  label7 = [(AKSignatureCreationViewController_iOS *)self label];
+  baselineView3 = [(AKSignatureCreationViewController_iOS *)self baselineView];
+  [view8 insertSubview:label7 aboveSubview:baselineView3];
 
   v86 = [objc_alloc(MEMORY[0x277D75220]) initWithFrame:{v7, v8, v9, v10}];
   [(AKSignatureCreationViewController_iOS *)self setClearButton:v86];
 
-  v87 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  [v87 setTranslatesAutoresizingMaskIntoConstraints:0];
+  clearButton = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  [clearButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v88 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  clearButton2 = [(AKSignatureCreationViewController_iOS *)self clearButton];
   v89 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.counterclockwise"];
-  [v88 setImage:v89 forState:0];
+  [clearButton2 setImage:v89 forState:0];
 
-  v90 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  clearButton3 = [(AKSignatureCreationViewController_iOS *)self clearButton];
   v91 = +[AKController akBundle];
   v92 = [v91 localizedStringForKey:@"Clear" value:&stru_28519E870 table:@"AKSignatureCreationViewController_iOS"];
-  [v90 setTitle:v92 forState:0];
+  [clearButton3 setTitle:v92 forState:0];
 
-  v93 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  v94 = [MEMORY[0x277D75348] tintColor];
-  [v93 setTitleColor:v94 forState:0];
+  clearButton4 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  tintColor = [MEMORY[0x277D75348] tintColor];
+  [clearButton4 setTitleColor:tintColor forState:0];
 
-  v95 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  v96 = [v95 effectiveUserInterfaceLayoutDirection];
+  clearButton5 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  effectiveUserInterfaceLayoutDirection = [clearButton5 effectiveUserInterfaceLayoutDirection];
 
-  v97 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  v98 = v97;
-  if (v96 == 1)
+  clearButton6 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  v98 = clearButton6;
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v99 = -8.0;
   }
@@ -306,7 +306,7 @@
     v99 = 8.0;
   }
 
-  if (v96 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v100 = 8.0;
   }
@@ -316,118 +316,118 @@
     v100 = -8.0;
   }
 
-  [v97 setTitleEdgeInsets:{0.0, v99, 0.0, v100}];
+  [clearButton6 setTitleEdgeInsets:{0.0, v99, 0.0, v100}];
 
-  v101 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  [v101 setContentEdgeInsets:{11.0, 2.0, 11.0, 10.0}];
+  clearButton7 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  [clearButton7 setContentEdgeInsets:{11.0, 2.0, 11.0, 10.0}];
 
-  v102 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  [v102 addTarget:self action:sel__clear_ forControlEvents:64];
+  clearButton8 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  [clearButton8 addTarget:self action:sel__clear_ forControlEvents:64];
 
-  v103 = [(AKSignatureCreationViewController_iOS *)self view];
-  v104 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  v105 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  [v103 insertSubview:v104 aboveSubview:v105];
+  view9 = [(AKSignatureCreationViewController_iOS *)self view];
+  clearButton9 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  navBar8 = [(AKSignatureCreationViewController_iOS *)self navBar];
+  [view9 insertSubview:clearButton9 aboveSubview:navBar8];
 
   v106 = [AKInkSignatureView alloc];
-  v107 = [(AKSignatureCreationViewController_iOS *)self view];
-  [v107 bounds];
+  view10 = [(AKSignatureCreationViewController_iOS *)self view];
+  [view10 bounds];
   v108 = [(AKInkSignatureView *)v106 initWithFrame:?];
   [(AKSignatureCreationViewController_iOS *)self setSignatureView:v108];
 
-  v109 = [(AKSignatureCreationViewController_iOS *)self signatureView];
-  [v109 setTranslatesAutoresizingMaskIntoConstraints:0];
+  signatureView = [(AKSignatureCreationViewController_iOS *)self signatureView];
+  [signatureView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v110 = [MEMORY[0x277D75348] whiteColor];
-  v111 = [(AKSignatureCreationViewController_iOS *)self signatureView];
-  [v111 setBackgroundColor:v110];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  signatureView2 = [(AKSignatureCreationViewController_iOS *)self signatureView];
+  [signatureView2 setBackgroundColor:whiteColor];
 
-  v112 = [(AKSignatureCreationViewController_iOS *)self view];
-  v113 = [(AKSignatureCreationViewController_iOS *)self signatureView];
-  v114 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  [v112 insertSubview:v113 belowSubview:v114];
+  view11 = [(AKSignatureCreationViewController_iOS *)self view];
+  signatureView3 = [(AKSignatureCreationViewController_iOS *)self signatureView];
+  navBar9 = [(AKSignatureCreationViewController_iOS *)self navBar];
+  [view11 insertSubview:signatureView3 belowSubview:navBar9];
 
   v115 = _NSDictionaryOfVariableBindings(&cfstr_BaselineviewNa.isa, self->_baselineView, self->_navBar, self->_label, self->_signatureView, self->_clearButton, 0);
 
-  v116 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v117 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[_baselineView(20)]-[_label]-8-[_clearButton]" options:0 metrics:0 views:v115];
-  [v116 addObjectsFromArray:v117];
+  [array addObjectsFromArray:v117];
 
   v118 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_label]|" options:0 metrics:0 views:v115];
-  [v116 addObjectsFromArray:v118];
+  [array addObjectsFromArray:v118];
 
   v119 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_signatureView]|" options:0 metrics:0 views:v115];
-  [v116 addObjectsFromArray:v119];
+  [array addObjectsFromArray:v119];
 
   v134 = v115;
   v120 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[_baselineView]|" options:0 metrics:0 views:v115];
-  [v116 addObjectsFromArray:v120];
+  [array addObjectsFromArray:v120];
 
   v121 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:[_navBar][_signatureView]|" options:0 metrics:0 views:v115];
-  [v116 addObjectsFromArray:v121];
+  [array addObjectsFromArray:v121];
 
-  v133 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  v131 = [v133 bottomAnchor];
-  v132 = [(AKSignatureCreationViewController_iOS *)self view];
-  v122 = [v132 safeAreaLayoutGuide];
-  v123 = [v122 bottomAnchor];
-  v124 = [v131 constraintEqualToAnchor:v123 constant:-8.0];
+  clearButton10 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  bottomAnchor = [clearButton10 bottomAnchor];
+  view12 = [(AKSignatureCreationViewController_iOS *)self view];
+  safeAreaLayoutGuide2 = [view12 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v124 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-8.0];
   v142[0] = v124;
-  v125 = [(AKSignatureCreationViewController_iOS *)self clearButton];
-  v126 = [v125 centerXAnchor];
-  v127 = [(AKSignatureCreationViewController_iOS *)self view];
-  v128 = [v127 centerXAnchor];
-  v129 = [v126 constraintEqualToAnchor:v128];
+  clearButton11 = [(AKSignatureCreationViewController_iOS *)self clearButton];
+  centerXAnchor = [clearButton11 centerXAnchor];
+  view13 = [(AKSignatureCreationViewController_iOS *)self view];
+  centerXAnchor2 = [view13 centerXAnchor];
+  v129 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v142[1] = v129;
   v130 = [MEMORY[0x277CBEA60] arrayWithObjects:v142 count:2];
-  [v116 addObjectsFromArray:v130];
+  [array addObjectsFromArray:v130];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v116];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(AKSignatureCreationViewController_iOS *)self view];
-  v4 = [v3 window];
-  v5 = [v4 firstResponder];
+  view = [(AKSignatureCreationViewController_iOS *)self view];
+  window = [view window];
+  firstResponder = [window firstResponder];
 
   v9.receiver = self;
   v9.super_class = AKSignatureCreationViewController_iOS;
-  v6 = [(AKSignatureCreationViewController_iOS *)&v9 becomeFirstResponder];
-  if (v6 && v5 != self)
+  becomeFirstResponder = [(AKSignatureCreationViewController_iOS *)&v9 becomeFirstResponder];
+  if (becomeFirstResponder && firstResponder != self)
   {
-    [(AKSignatureCreationViewController_iOS *)self setResponderToRestore:v5];
+    [(AKSignatureCreationViewController_iOS *)self setResponderToRestore:firstResponder];
   }
 
-  return v6;
+  return becomeFirstResponder;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AKSignatureCreationViewController_iOS;
-  [(AKSignatureCreationViewController_iOS *)&v4 viewDidAppear:a3];
+  [(AKSignatureCreationViewController_iOS *)&v4 viewDidAppear:appear];
   if (([(AKSignatureCreationViewController_iOS *)self isFirstResponder]& 1) == 0)
   {
     [(AKSignatureCreationViewController_iOS *)self becomeFirstResponder];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(AKSignatureCreationViewController_iOS *)self resignFirstResponder];
-  v5 = [(AKSignatureCreationViewController_iOS *)self responderToRestore];
-  v6 = v5;
-  if (v5)
+  responderToRestore = [(AKSignatureCreationViewController_iOS *)self responderToRestore];
+  v6 = responderToRestore;
+  if (responderToRestore)
   {
-    [v5 becomeFirstResponder];
+    [responderToRestore becomeFirstResponder];
   }
 
   [(AKSignatureCreationViewController_iOS *)self setResponderToRestore:0];
   v7.receiver = self;
   v7.super_class = AKSignatureCreationViewController_iOS;
-  [(AKSignatureCreationViewController_iOS *)&v7 viewDidDisappear:v3];
+  [(AKSignatureCreationViewController_iOS *)&v7 viewDidDisappear:disappearCopy];
 }
 
 - (void)didReceiveMemoryWarning
@@ -437,16 +437,16 @@
   [(AKSignatureCreationViewController_iOS *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v16.receiver = self;
   v16.super_class = AKSignatureCreationViewController_iOS;
-  [(AKSignatureCreationViewController_iOS *)&v16 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(AKSignatureCreationViewController_iOS *)self view];
-  [v8 bounds];
+  [(AKSignatureCreationViewController_iOS *)&v16 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  view = [(AKSignatureCreationViewController_iOS *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
 
@@ -462,24 +462,24 @@
     v14[1] = 3221225472;
     v14[2] = sub_23F42F0CC;
     v14[3] = &unk_278C7BAB0;
-    [v7 animateAlongsideTransition:v15 completion:v14];
+    [coordinatorCopy animateAlongsideTransition:v15 completion:v14];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = AKSignatureCreationViewController_iOS;
-  v4 = a3;
-  [(AKSignatureCreationViewController_iOS *)&v11 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(AKSignatureCreationViewController_iOS *)&v11 traitCollectionDidChange:changeCopy];
   v5 = [(AKSignatureCreationViewController_iOS *)self traitCollection:v11.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
-    v8 = [(AKSignatureCreationViewController_iOS *)self traitCollection];
-    if ([v8 userInterfaceStyle] == 2)
+    traitCollection = [(AKSignatureCreationViewController_iOS *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x277D75348] blackColor];
     }
@@ -489,37 +489,37 @@
       [MEMORY[0x277D75348] whiteColor];
     }
     v9 = ;
-    v10 = [(AKSignatureCreationViewController_iOS *)self view];
-    [v10 setBackgroundColor:v9];
+    view = [(AKSignatureCreationViewController_iOS *)self view];
+    [view setBackgroundColor:v9];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = AKSignatureCreationViewController_iOS;
-  v7 = a4;
-  [(AKSignatureCreationViewController_iOS *)&v16 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-  v8 = [(AKSignatureCreationViewController_iOS *)self traitCollection];
-  v9 = [v8 horizontalSizeClass];
-  LOBYTE(v9) = v9 != [v6 horizontalSizeClass];
+  coordinatorCopy = coordinator;
+  [(AKSignatureCreationViewController_iOS *)&v16 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  traitCollection = [(AKSignatureCreationViewController_iOS *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  LOBYTE(horizontalSizeClass) = horizontalSizeClass != [collectionCopy horizontalSizeClass];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_23F42F38C;
   v13[3] = &unk_278C7BAD8;
-  v15 = v9;
+  v15 = horizontalSizeClass;
   v13[4] = self;
-  v14 = v6;
+  v14 = collectionCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_23F42F410;
   v11[3] = &unk_278C7BB00;
-  v12 = v9;
+  v12 = horizontalSizeClass;
   v11[4] = self;
-  v10 = v6;
-  [v7 animateAlongsideTransition:v13 completion:v11];
+  v10 = collectionCopy;
+  [coordinatorCopy animateAlongsideTransition:v13 completion:v11];
 }
 
 - (void)_validateButtons
@@ -529,11 +529,11 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(AKSignatureCreationViewController_iOS *)self navBar];
-  v4 = [v3 topItem];
-  v5 = [v4 rightBarButtonItems];
+  navBar = [(AKSignatureCreationViewController_iOS *)self navBar];
+  topItem = [navBar topItem];
+  rightBarButtonItems = [topItem rightBarButtonItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [rightBarButtonItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -544,145 +544,145 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(rightBarButtonItems);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         if ([v10 action] == sel__clear_)
         {
-          v11 = [(AKSignatureCreationViewController_iOS *)self signatureView];
-          [v10 setEnabled:{objc_msgSend(v11, "hasStrokes")}];
+          signatureView = [(AKSignatureCreationViewController_iOS *)self signatureView];
+          [v10 setEnabled:{objc_msgSend(signatureView, "hasStrokes")}];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [rightBarButtonItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(AKSignatureCreationViewController_iOS *)self controller];
-  v5 = [v4 delegate];
+  controller = [(AKSignatureCreationViewController_iOS *)self controller];
+  delegate = [controller delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 controllerWillDismissSignatureCaptureView:v4];
+    [delegate controllerWillDismissSignatureCaptureView:controller];
   }
 
-  v6 = [(AKSignatureCreationViewController_iOS *)self presentingViewController];
+  presentingViewController = [(AKSignatureCreationViewController_iOS *)self presentingViewController];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_23F42F6E4;
   v8[3] = &unk_278C7B540;
   v8[4] = self;
-  [v6 dismissViewControllerAnimated:1 completion:v8];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v8];
 
-  v7 = [(AKSignatureCreationViewController_iOS *)self signatureView];
-  [v7 clear];
+  signatureView = [(AKSignatureCreationViewController_iOS *)self signatureView];
+  [signatureView clear];
 }
 
-- (void)_clear:(id)a3
+- (void)_clear:(id)_clear
 {
-  v3 = [(AKSignatureCreationViewController_iOS *)self signatureView];
-  [v3 clear];
+  signatureView = [(AKSignatureCreationViewController_iOS *)self signatureView];
+  [signatureView clear];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v4 = [(AKSignatureCreationViewController_iOS *)self controller];
-  v5 = [(AKSignatureCreationViewController_iOS *)self signatureView];
+  controller = [(AKSignatureCreationViewController_iOS *)self controller];
+  signatureView = [(AKSignatureCreationViewController_iOS *)self signatureView];
   v20 = 0;
-  v6 = [v5 copyPotracedPathAndReturnDrawing:&v20];
+  v6 = [signatureView copyPotracedPathAndReturnDrawing:&v20];
   v7 = v20;
 
   v8 = 0;
   if (!CGPathIsEmpty(v6))
   {
     v9 = [AKSignature alloc];
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [(AKSignatureCreationViewController_iOS *)self descriptionTag];
-    v12 = [(AKSignatureCreationViewController_iOS *)self customDescription];
-    v8 = [(AKSignature *)v9 initWithDrawing:v7 path:v6 baselineOffset:v10 creationDate:v11 descriptionTag:v12 customDescription:0.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    descriptionTag = [(AKSignatureCreationViewController_iOS *)self descriptionTag];
+    customDescription = [(AKSignatureCreationViewController_iOS *)self customDescription];
+    v8 = [(AKSignature *)v9 initWithDrawing:v7 path:v6 baselineOffset:date creationDate:descriptionTag descriptionTag:customDescription customDescription:0.0];
   }
 
   CGPathRelease(v6);
-  v13 = [(AKSignatureCreationViewController_iOS *)self signatureView];
-  [v13 clear];
+  signatureView2 = [(AKSignatureCreationViewController_iOS *)self signatureView];
+  [signatureView2 clear];
 
   if (v8)
   {
-    v14 = [v4 signatureModelController];
-    [v14 insertObject:v8 inSignaturesAtIndex:0];
+    signatureModelController = [controller signatureModelController];
+    [signatureModelController insertObject:v8 inSignaturesAtIndex:0];
 
-    v15 = [v4 signatureModelController];
-    [v15 setSelectedSignature:v8];
+    signatureModelController2 = [controller signatureModelController];
+    [signatureModelController2 setSelectedSignature:v8];
 
-    v16 = [(AKSignatureCreationViewController_iOS *)self delegate];
+    delegate = [(AKSignatureCreationViewController_iOS *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v16 signatureCreationControllerDidCreateSignature:self];
+      [delegate signatureCreationControllerDidCreateSignature:self];
     }
   }
 
-  v17 = [v4 delegate];
+  delegate2 = [controller delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v17 controllerWillDismissSignatureCaptureView:v4];
+    [delegate2 controllerWillDismissSignatureCaptureView:controller];
   }
 
-  v18 = [(AKSignatureCreationViewController_iOS *)self presentingViewController];
+  presentingViewController = [(AKSignatureCreationViewController_iOS *)self presentingViewController];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = sub_23F42F968;
   v19[3] = &unk_278C7B540;
   v19[4] = self;
-  [v18 dismissViewControllerAnimated:1 completion:v19];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v19];
 
   NSLog(&cfstr_AddedSignature.isa, v8);
 }
 
 - (void)_notifyDidDismiss
 {
-  v3 = [(AKSignatureCreationViewController_iOS *)self delegate];
+  delegate = [(AKSignatureCreationViewController_iOS *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 signatureCreationControllerDidDismiss:self];
+    [delegate signatureCreationControllerDidDismiss:self];
   }
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
-  v5 = [(AKSignatureCreationViewController_iOS *)self firstResponder];
+  firstResponder = [(AKSignatureCreationViewController_iOS *)self firstResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v5 textFields];
-    v4 = [v3 firstObject];
-    [v4 becomeFirstResponder];
+    textFields = [firstResponder textFields];
+    firstObject = [textFields firstObject];
+    [firstObject becomeFirstResponder];
   }
 }
 
 - (void)_showSignatureDescriptionSelectionAlert
 {
   v3 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v4 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
-  v5 = [v3 popoverPresentationController];
-  [v5 setSourceView:v4];
+  downArrowButton = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  popoverPresentationController = [v3 popoverPresentationController];
+  [popoverPresentationController setSourceView:downArrowButton];
 
-  v6 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
-  [v6 bounds];
+  downArrowButton2 = [(AKSignatureCreationViewController_iOS *)self downArrowButton];
+  [downArrowButton2 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v3 popoverPresentationController];
-  [v15 setSourceRect:{v8, v10, v12, v14}];
+  popoverPresentationController2 = [v3 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v8, v10, v12, v14}];
 
-  v16 = [v3 popoverPresentationController];
+  popoverPresentationController3 = [v3 popoverPresentationController];
   v17 = 1;
-  [v16 setPermittedArrowDirections:1];
+  [popoverPresentationController3 setPermittedArrowDirections:1];
 
   objc_initWeak(location, self);
   objc_initWeak(&from, v3);
@@ -800,25 +800,25 @@
   [(AKSignatureCreationViewController_iOS *)self setCustomDescription:0];
   v5 = +[AKController akBundle];
   v3 = [v5 localizedStringForKey:@"New Signature" value:&stru_28519E870 table:@"AKSignatureCreationViewController_iOS"];
-  v4 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
-  [v4 setText:v3];
+  titleLabel = [(AKSignatureCreationViewController_iOS *)self titleLabel];
+  [titleLabel setText:v3];
 }
 
-- (void)_updateSignatureDescriptionWithStringValue:(id)a3
+- (void)_updateSignatureDescriptionWithStringValue:(id)value
 {
-  v10 = a3;
+  valueCopy = value;
   v4 = [AKSignatureDescription stringValueForSignatureDescriptionTag:[(AKSignatureCreationViewController_iOS *)self descriptionTag]];
-  v5 = [(AKSignatureCreationViewController_iOS *)self undoManager];
-  [v5 registerUndoWithTarget:self selector:sel__updateSignatureDescriptionWithStringValue_ object:v4];
+  undoManager = [(AKSignatureCreationViewController_iOS *)self undoManager];
+  [undoManager registerUndoWithTarget:self selector:sel__updateSignatureDescriptionWithStringValue_ object:v4];
 
-  v6 = [AKSignatureDescription signatureDescriptionTagFromStringValue:v10];
+  v6 = [AKSignatureDescription signatureDescriptionTagFromStringValue:valueCopy];
   if (v6)
   {
     v7 = v6;
     [(AKSignatureCreationViewController_iOS *)self setDescriptionTag:v6];
     if (v7 == -1)
     {
-      v8 = v10;
+      v8 = valueCopy;
     }
 
     else
@@ -827,8 +827,8 @@
     }
 
     [(AKSignatureCreationViewController_iOS *)self setCustomDescription:v8];
-    v9 = [(AKSignatureCreationViewController_iOS *)self titleLabel];
-    [v9 setText:v10];
+    titleLabel = [(AKSignatureCreationViewController_iOS *)self titleLabel];
+    [titleLabel setText:valueCopy];
   }
 
   else
@@ -839,9 +839,9 @@
 
 - (id)undoManager
 {
-  v3 = [(AKSignatureCreationViewController_iOS *)self _undoManager];
+  _undoManager = [(AKSignatureCreationViewController_iOS *)self _undoManager];
 
-  if (!v3)
+  if (!_undoManager)
   {
     v4 = objc_alloc_init(MEMORY[0x277CCAD90]);
     [(AKSignatureCreationViewController_iOS *)self set_undoManager:v4];
@@ -850,11 +850,11 @@
   return [(AKSignatureCreationViewController_iOS *)self _undoManager];
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  if (a3 == 1)
+  if (ended == 1)
   {
-    v5 = [(AKSignatureCreationViewController_iOS *)self undoManager:a3];
+    v5 = [(AKSignatureCreationViewController_iOS *)self undoManager:ended];
     [v5 undo];
   }
 }

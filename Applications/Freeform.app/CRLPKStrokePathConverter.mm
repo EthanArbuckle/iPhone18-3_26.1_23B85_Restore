@@ -1,18 +1,18 @@
 @interface CRLPKStrokePathConverter
-+ (id)pathFromPKStrokePath:(id)a3 pencilKitStrokePathData:(id *)a4;
-+ (id)strokePathDataFromPKStroke:(id)a3 startingAtIndex:(unint64_t)a4 endingAtIndex:(unint64_t)a5;
-+ (id)strokePathsFromBezierPath:(id)a3 baseWidth:(double)a4 strokePathCompactData:(id)a5 inkType:(id)a6 isFountainPenInkV2:(BOOL)a7;
-+ (unint64_t)countOfBSplineControlPointsForBezierPath:(id)a3;
++ (id)pathFromPKStrokePath:(id)path pencilKitStrokePathData:(id *)data;
++ (id)strokePathDataFromPKStroke:(id)stroke startingAtIndex:(unint64_t)index endingAtIndex:(unint64_t)atIndex;
++ (id)strokePathsFromBezierPath:(id)path baseWidth:(double)width strokePathCompactData:(id)data inkType:(id)type isFountainPenInkV2:(BOOL)v2;
++ (unint64_t)countOfBSplineControlPointsForBezierPath:(id)path;
 @end
 
 @implementation CRLPKStrokePathConverter
 
-+ (id)strokePathDataFromPKStroke:(id)a3 startingAtIndex:(unint64_t)a4 endingAtIndex:(unint64_t)a5
++ (id)strokePathDataFromPKStroke:(id)stroke startingAtIndex:(unint64_t)index endingAtIndex:(unint64_t)atIndex
 {
-  v6 = a3;
-  v7 = [v6 path];
-  v8 = [v7 count];
-  if (v8 < a4)
+  strokeCopy = stroke;
+  path = [strokeCopy path];
+  v8 = [path count];
+  if (v8 < index)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -41,7 +41,7 @@
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:404 isFatal:0 description:"Out-of-bounds startingAtIndex parameter."];
   }
 
-  if (v8 < a5)
+  if (v8 < atIndex)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -70,60 +70,60 @@
     [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:405 isFatal:0 description:"Out-of-bounds endAtIndex parameter."];
   }
 
-  v15 = (v8 - 1);
-  if ((v8 - 1) >= a4)
+  atIndexCopy = (v8 - 1);
+  if ((v8 - 1) >= index)
   {
-    v16 = a4;
+    indexCopy = index;
   }
 
   else
   {
-    v16 = (v8 - 1);
+    indexCopy = (v8 - 1);
   }
 
-  if (v15 >= a5)
+  if (atIndexCopy >= atIndex)
   {
-    v15 = a5;
+    atIndexCopy = atIndex;
   }
 
-  v61 = v15;
-  v17 = v15 - v16;
+  v61 = atIndexCopy;
+  v17 = atIndexCopy - indexCopy;
   v18 = [CRLPKStrokePathCompactData alloc];
-  v19 = [v6 randomSeed];
-  v20 = [v7 creationDate];
+  randomSeed = [strokeCopy randomSeed];
+  creationDate = [path creationDate];
   v57 = v17;
-  v21 = [(CRLPKStrokePathCompactData *)v18 initWithCapacity:v17 + 1 randomSeed:v19 creationDate:v20];
+  v21 = [(CRLPKStrokePathCompactData *)v18 initWithCapacity:v17 + 1 randomSeed:randomSeed creationDate:creationDate];
 
-  v58 = v6;
-  v22 = [v6 _flags];
-  [(CRLPKStrokePathCompactData *)v21 setShouldSolveMath:(v22 >> 41) & 1];
-  v23 = (v22 >> 40) & 1;
+  v58 = strokeCopy;
+  _flags = [strokeCopy _flags];
+  [(CRLPKStrokePathCompactData *)v21 setShouldSolveMath:(_flags >> 41) & 1];
+  v23 = (_flags >> 40) & 1;
   v24 = v21;
   [(CRLPKStrokePathCompactData *)v21 setIsSynthesizedStroke:v23];
   v25 = 0;
   v60 = v21;
   do
   {
-    if (v16 <= a5)
+    if (indexCopy <= atIndex)
     {
       v26 = 0;
       while (1)
       {
-        v27 = [v7 pointAtIndex:v16 + v26];
+        v27 = [path pointAtIndex:indexCopy + v26];
         if (v25 <= 4)
         {
           if (v25 <= 1)
           {
             if (v25)
             {
-              v28 = [(CRLPKStrokePathCompactData *)v24 azimuthData];
+              azimuthData = [(CRLPKStrokePathCompactData *)v24 azimuthData];
               [v27 azimuth];
               sub_1001210C4(v34);
             }
 
             else
             {
-              v28 = [(CRLPKStrokePathCompactData *)v24 altitudeData];
+              azimuthData = [(CRLPKStrokePathCompactData *)v24 altitudeData];
               [v27 altitude];
             }
 
@@ -132,22 +132,22 @@
 
           if (v25 == 2)
           {
-            v28 = [(CRLPKStrokePathCompactData *)v24 opacityData];
+            azimuthData = [(CRLPKStrokePathCompactData *)v24 opacityData];
             [v27 opacity];
             goto LABEL_49;
           }
 
           if (v25 == 3)
           {
-            v28 = [(CRLPKStrokePathCompactData *)v24 forceData];
+            azimuthData = [(CRLPKStrokePathCompactData *)v24 forceData];
             [v27 force];
 LABEL_49:
             v32 = v29;
-            v30 = 0;
+            sizeXData = 0;
             goto LABEL_53;
           }
 
-          v30 = [(CRLPKStrokePathCompactData *)v24 sizeXData];
+          sizeXData = [(CRLPKStrokePathCompactData *)v24 sizeXData];
           [v27 size];
           goto LABEL_51;
         }
@@ -159,20 +159,20 @@ LABEL_49:
 
         if (v25 != 5)
         {
-          v30 = [(CRLPKStrokePathCompactData *)v24 timeOffsetData];
+          sizeXData = [(CRLPKStrokePathCompactData *)v24 timeOffsetData];
           [v27 timeOffset];
 LABEL_51:
           v32 = v33;
           goto LABEL_52;
         }
 
-        v30 = [(CRLPKStrokePathCompactData *)v24 sizeYData];
+        sizeXData = [(CRLPKStrokePathCompactData *)v24 sizeYData];
         [v27 size];
         v32 = v31;
 LABEL_52:
-        v28 = 0;
+        azimuthData = 0;
 LABEL_53:
-        if (!(v28 | v30))
+        if (!(azimuthData | sizeXData))
         {
           v41 = +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -219,7 +219,7 @@ LABEL_53:
           goto LABEL_76;
         }
 
-        if (v28 && v30)
+        if (azimuthData && sizeXData)
         {
           v35 = +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -246,7 +246,7 @@ LABEL_53:
             sub_10132D70C();
           }
 
-          v37 = v7;
+          v37 = path;
           v38 = off_1019EDA68;
           if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
           {
@@ -263,26 +263,26 @@ LABEL_53:
           v40 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLPKStrokePathConverter.m"];
           [CRLAssertionHandler handleFailureInFunction:v39 file:v40 lineNumber:488 isFatal:0 description:"Expected a uint16 value or a float value but not both."];
 
-          v7 = v37;
+          path = v37;
           v24 = v60;
         }
 
-        else if (!v28)
+        else if (!azimuthData)
         {
-          if (v30)
+          if (sizeXData)
           {
             v46 = v32 * dbl_101462D50[v25];
-            *(v30 + v26) = v46;
+            *(sizeXData + v26) = v46;
           }
 
           goto LABEL_76;
         }
 
-        *(v28 + 2 * v26) = (v32 * dbl_101462D50[v25]);
+        *(azimuthData + 2 * v26) = (v32 * dbl_101462D50[v25]);
 LABEL_76:
 
         ++v26;
-        if (v16 + v26 > v61)
+        if (indexCopy + v26 > v61)
         {
           goto LABEL_28;
         }
@@ -292,20 +292,20 @@ LABEL_76:
       {
         if (v25 == 8)
         {
-          v28 = [(CRLPKStrokePathCompactData *)v24 edgeWidthData];
+          azimuthData = [(CRLPKStrokePathCompactData *)v24 edgeWidthData];
           [v27 _edgeWidth];
         }
 
         else
         {
-          v28 = [(CRLPKStrokePathCompactData *)v24 thresholdData];
+          azimuthData = [(CRLPKStrokePathCompactData *)v24 thresholdData];
           [v27 threshold];
         }
 
         goto LABEL_49;
       }
 
-      v30 = [(CRLPKStrokePathCompactData *)v24 radius2Data];
+      sizeXData = [(CRLPKStrokePathCompactData *)v24 radius2Data];
       [v27 _radius2];
       goto LABEL_51;
     }
@@ -332,8 +332,8 @@ LABEL_28:
   [(CRLPKStrokePathCompactData *)v24 setRenderScaleX:v51];
   *&v54 = v53;
   [(CRLPKStrokePathCompactData *)v24 setRenderScaleY:v54];
-  v55 = [v58 _renderGroupID];
-  [(CRLPKStrokePathCompactData *)v24 setRenderGroupID:v55];
+  _renderGroupID = [v58 _renderGroupID];
+  [(CRLPKStrokePathCompactData *)v24 setRenderGroupID:_renderGroupID];
 
   [v58 _anchorPointForTexture];
   [(CRLPKStrokePathCompactData *)v24 setAnchorPointForTexture:?];
@@ -345,15 +345,15 @@ LABEL_28:
   return v24;
 }
 
-+ (id)strokePathsFromBezierPath:(id)a3 baseWidth:(double)a4 strokePathCompactData:(id)a5 inkType:(id)a6 isFountainPenInkV2:(BOOL)a7
++ (id)strokePathsFromBezierPath:(id)path baseWidth:(double)width strokePathCompactData:(id)data inkType:(id)type isFountainPenInkV2:(BOOL)v2
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  pathCopy = path;
+  dataCopy = data;
+  typeCopy = type;
   v14 = +[NSMutableArray array];
-  if (v13)
+  if (typeCopy)
   {
-    v15 = v13;
+    v15 = typeCopy;
   }
 
   else
@@ -364,45 +364,45 @@ LABEL_28:
   v16 = v15;
   v47 = 0uLL;
   v48 = 0;
-  sub_1001C9848(v11, &v47);
+  sub_1001C9848(pathCopy, &v47);
   v17 = v48;
   if (v48)
   {
-    if (v12)
+    if (dataCopy)
     {
-      if (a7)
+      if (v2)
       {
         v18 = 0;
       }
 
       else
       {
-        v18 = [(NSString *)v13 isEqualToString:PKInkTypeFountainPen];
+        v18 = [(NSString *)typeCopy isEqualToString:PKInkTypeFountainPen];
       }
 
       v45 = v47;
       v46 = v48;
-      v20 = sub_1001C95C0(v12, &v45, v18);
+      v20 = sub_1001C95C0(dataCopy, &v45, v18);
     }
 
     else
     {
       v41 = v48;
-      v42 = v13;
-      v40 = v11;
+      v42 = typeCopy;
+      v40 = pathCopy;
       v22 = +[NSMutableArray array];
       v23 = *(&v47 + 1);
       if (*(&v47 + 1))
       {
-        v24 = fmax(a4 * 0.5, 1.0);
-        v43 = fmax(a4 * 0.5 + 2.0, 1.0);
+        v24 = fmax(width * 0.5, 1.0);
+        v43 = fmax(width * 0.5 + 2.0, 1.0);
         v25 = dbl_101462D20[v24 < 2.0];
         v26 = dbl_101462D30[v24 < 2.0];
-        v44 = (a4 + 1.0) * 0.85;
+        v44 = (width + 1.0) * 0.85;
         v27 = qword_101462D40[v24 < 2.0];
         if (v24 < 2.0)
         {
-          a4 = 0.0;
+          width = 0.0;
         }
 
         v28 = v41 + 1;
@@ -413,7 +413,7 @@ LABEL_28:
           v31 = v16;
           if ([(NSString *)v31 isEqualToString:PKInkTypePencil])
           {
-            v32 = [[PKStrokePoint alloc] initWithLocation:v30 timeOffset:v29 size:0.0 opacity:v24 force:v24 azimuth:v25 altitude:0.0 edgeWidth:v26 radius2:{v27, *&a4, 0}];
+            v32 = [[PKStrokePoint alloc] initWithLocation:v30 timeOffset:v29 size:0.0 opacity:v24 force:v24 azimuth:v25 altitude:0.0 edgeWidth:v26 radius2:{v27, *&width, 0}];
           }
 
           else if ([(NSString *)v31 isEqualToString:PKInkTypeWatercolor])
@@ -445,10 +445,10 @@ LABEL_28:
       v35 = +[NSDate date];
       v20 = [v34 initWithControlPoints:v22 creationDate:v35];
 
-      v12 = 0;
-      v11 = v40;
+      dataCopy = 0;
+      pathCopy = v40;
       v17 = v41;
-      v13 = v42;
+      typeCopy = v42;
     }
 
     free(v17);
@@ -519,9 +519,9 @@ LABEL_28:
   return v14;
 }
 
-+ (id)pathFromPKStrokePath:(id)a3 pencilKitStrokePathData:(id *)a4
++ (id)pathFromPKStrokePath:(id)path pencilKitStrokePathData:(id *)data
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = [PKInk alloc];
   v7 = +[UIColor blackColor];
   v8 = [v6 initWithInkType:PKInkTypePen color:v7];
@@ -531,16 +531,16 @@ LABEL_28:
   v14[0] = *&CGAffineTransformIdentity.a;
   v14[1] = v10;
   v14[2] = *&CGAffineTransformIdentity.tx;
-  v11 = [v9 initWithInk:v8 strokePath:v5 transform:v14 mask:0];
+  v11 = [v9 initWithInk:v8 strokePath:pathCopy transform:v14 mask:0];
 
-  v12 = [CRLPKStrokeConverter pathFromPKStroke:v11 pencilKitStrokePathData:a4];
+  v12 = [CRLPKStrokeConverter pathFromPKStroke:v11 pencilKitStrokePathData:data];
 
   return v12;
 }
 
-+ (unint64_t)countOfBSplineControlPointsForBezierPath:(id)a3
++ (unint64_t)countOfBSplineControlPointsForBezierPath:(id)path
 {
-  if (!a3)
+  if (!path)
   {
     return 0;
   }
@@ -548,7 +548,7 @@ LABEL_28:
   v5 = 0;
   v6 = 0;
   v7 = 0;
-  sub_1001C9848(a3, &v5);
+  sub_1001C9848(path, &v5);
   v3 = v6;
   if (v7)
   {

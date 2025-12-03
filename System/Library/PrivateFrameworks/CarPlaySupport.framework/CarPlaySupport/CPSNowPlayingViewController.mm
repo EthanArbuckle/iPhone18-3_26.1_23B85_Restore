@@ -1,160 +1,160 @@
 @interface CPSNowPlayingViewController
-- (CPSNowPlayingViewController)initWithNowPlayingTemplate:(id)a3 templateDelegate:(id)a4 environment:(id)a5;
+- (CPSNowPlayingViewController)initWithNowPlayingTemplate:(id)template templateDelegate:(id)delegate environment:(id)environment;
 - (CPSTemplateEnvironment)templateEnvironment;
 - (CPSTemplateViewControllerDelegate)viewControllerDelegate;
 - (id)nowPlayingTemplate;
 - (void)_cleanup;
-- (void)didSelectButton:(id)a3;
+- (void)didSelectButton:(id)button;
 - (void)invalidate;
 - (void)reloadData;
 - (void)removeFromParentViewController;
-- (void)setControl:(id)a3 enabled:(BOOL)a4;
-- (void)setControl:(id)a3 selected:(BOOL)a4;
-- (void)setDidDisappear:(BOOL)a3;
-- (void)setIsPopping:(BOOL)a3;
-- (void)updateNowPlayingTemplate:(id)a3 withProxyDelegate:(id)a4 canThrottle:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setControl:(id)control enabled:(BOOL)enabled;
+- (void)setControl:(id)control selected:(BOOL)selected;
+- (void)setDidDisappear:(BOOL)disappear;
+- (void)setIsPopping:(BOOL)popping;
+- (void)updateNowPlayingTemplate:(id)template withProxyDelegate:(id)delegate canThrottle:(id)throttle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CPSNowPlayingViewController
 
-- (CPSNowPlayingViewController)initWithNowPlayingTemplate:(id)a3 templateDelegate:(id)a4 environment:(id)a5
+- (CPSNowPlayingViewController)initWithNowPlayingTemplate:(id)template templateDelegate:(id)delegate environment:(id)environment
 {
   v35 = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, delegate);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
+  objc_storeStrong(&v30, environment);
   v5 = [CPSAudioPlaybackManager alloc];
   v29 = [(CPSAudioPlaybackManager *)v5 initWithNowPlayingTemplate:location[0] templateDelegate:v31 environment:v30];
-  v24 = v33;
-  v25 = [v30 bundleIdentifier];
-  v33 = 0;
+  v24 = selfCopy;
+  bundleIdentifier = [v30 bundleIdentifier];
+  selfCopy = 0;
   v28.receiver = v24;
   v28.super_class = CPSNowPlayingViewController;
   v26 = [CPUINowPlayingViewController initWithBundleIdentifier:sel_initWithBundleIdentifier_dataSource_delegate_ dataSource:? delegate:?];
-  v33 = v26;
-  objc_storeStrong(&v33, v26);
-  MEMORY[0x277D82BD8](v25);
+  selfCopy = v26;
+  objc_storeStrong(&selfCopy, v26);
+  MEMORY[0x277D82BD8](bundleIdentifier);
   if (v26)
   {
-    objc_storeStrong(&v33->_audioPlaybackManager, v29);
-    [(CPSAudioPlaybackManager *)v33->_audioPlaybackManager setNowPlayingViewController:v33];
+    objc_storeStrong(&selfCopy->_audioPlaybackManager, v29);
+    [(CPSAudioPlaybackManager *)selfCopy->_audioPlaybackManager setNowPlayingViewController:selfCopy];
     v6 = [objc_alloc(MEMORY[0x277CF91A8]) initWithBase:2.0];
-    updateThrottle = v33->_updateThrottle;
-    v33->_updateThrottle = v6;
+    updateThrottle = selfCopy->_updateThrottle;
+    selfCopy->_updateThrottle = v6;
     MEMORY[0x277D82BD8](updateThrottle);
-    objc_storeWeak(&v33->_templateEnvironment, v30);
-    objc_storeStrong(&v33->_associatedTemplate, location[0]);
-    objc_storeStrong(&v33->_templateDelegate, v31);
-    v21 = [location[0] tabImage];
-    MEMORY[0x277D82BD8](v21);
-    if (v21)
+    objc_storeWeak(&selfCopy->_templateEnvironment, v30);
+    objc_storeStrong(&selfCopy->_associatedTemplate, location[0]);
+    objc_storeStrong(&selfCopy->_templateDelegate, v31);
+    tabImage = [location[0] tabImage];
+    MEMORY[0x277D82BD8](tabImage);
+    if (tabImage)
     {
       v17 = objc_alloc(MEMORY[0x277D75B28]);
-      v20 = [location[0] tabTitle];
-      v19 = [location[0] tabImage];
-      v18 = [v17 initWithTitle:v20 image:? tag:?];
-      [(CPSNowPlayingViewController *)v33 setTabBarItem:?];
+      tabTitle = [location[0] tabTitle];
+      tabImage2 = [location[0] tabImage];
+      v18 = [v17 initWithTitle:tabTitle image:? tag:?];
+      [(CPSNowPlayingViewController *)selfCopy setTabBarItem:?];
       MEMORY[0x277D82BD8](v18);
-      MEMORY[0x277D82BD8](v19);
-      MEMORY[0x277D82BD8](v20);
+      MEMORY[0x277D82BD8](tabImage2);
+      MEMORY[0x277D82BD8](tabTitle);
     }
 
     else
     {
       v13 = objc_alloc(MEMORY[0x277D75B28]);
       v14 = [v13 initWithTabBarSystemItem:objc_msgSend(location[0] tag:{"tabSystemItem"), 0}];
-      [(CPSNowPlayingViewController *)v33 setTabBarItem:?];
+      [(CPSNowPlayingViewController *)selfCopy setTabBarItem:?];
       *&v8 = MEMORY[0x277D82BD8](v14).n128_u64[0];
-      v16 = [(CPSNowPlayingViewController *)v33 tabBarItem];
-      v15 = [location[0] tabTitle];
-      [v16 _setInternalTitle:?];
-      MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v16);
+      tabBarItem = [(CPSNowPlayingViewController *)selfCopy tabBarItem];
+      tabTitle2 = [location[0] tabTitle];
+      [tabBarItem _setInternalTitle:?];
+      MEMORY[0x277D82BD8](tabTitle2);
+      MEMORY[0x277D82BD8](tabBarItem);
     }
 
     v27 = CarPlaySupportGeneralLogging();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_2_1_8_64(v34, v33);
+      __os_log_helper_16_2_1_8_64(v34, selfCopy);
       _os_log_impl(&dword_242FE8000, v27, OS_LOG_TYPE_DEFAULT, "%@: Creating now playing Future", v34, 0xCu);
     }
 
     objc_storeStrong(&v27, 0);
-    v9 = [MEMORY[0x277D2C900] futureWithResult:v33];
-    templateProviderFuture = v33->_templateProviderFuture;
-    v33->_templateProviderFuture = v9;
+    v9 = [MEMORY[0x277D2C900] futureWithResult:selfCopy];
+    templateProviderFuture = selfCopy->_templateProviderFuture;
+    selfCopy->_templateProviderFuture = v9;
     MEMORY[0x277D82BD8](templateProviderFuture);
   }
 
-  v12 = MEMORY[0x277D82BE0](v33);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v33, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v12;
 }
 
 - (id)nowPlayingTemplate
 {
   v3 = objc_opt_class();
-  v4 = [(CPSNowPlayingViewController *)self associatedTemplate];
-  v5 = CPSSafeCast_6(v3, v4);
-  MEMORY[0x277D82BD8](v4);
+  associatedTemplate = [(CPSNowPlayingViewController *)self associatedTemplate];
+  v5 = CPSSafeCast_6(v3, associatedTemplate);
+  MEMORY[0x277D82BD8](associatedTemplate);
 
   return v5;
 }
 
 - (void)viewDidLoad
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CPSNowPlayingViewController;
   [(CPUINowPlayingViewController *)&v3 viewDidLoad];
-  v2 = [(CPSNowPlayingViewController *)v5 navigationController];
-  [v2 setNavigationBarHidden:0 animated:1];
-  MEMORY[0x277D82BD8](v2);
+  navigationController = [(CPSNowPlayingViewController *)selfCopy navigationController];
+  [navigationController setNavigationBarHidden:0 animated:1];
+  MEMORY[0x277D82BD8](navigationController);
 }
 
 - (void)invalidate
 {
   v5 = *MEMORY[0x277D85DE8];
-  v3 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = CarPlaySupportGeneralLogging();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v4, v3);
+    __os_log_helper_16_2_1_8_64(v4, selfCopy);
     _os_log_impl(&dword_242FE8000, oslog[0], OS_LOG_TYPE_DEFAULT, "Invalidating %@", v4, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  objc_storeStrong(&v3->_templateProviderFuture, 0);
-  objc_storeStrong(&v3->_audioPlaybackManager, 0);
+  objc_storeStrong(&selfCopy->_templateProviderFuture, 0);
+  objc_storeStrong(&selfCopy->_audioPlaybackManager, 0);
 }
 
-- (void)updateNowPlayingTemplate:(id)a3 withProxyDelegate:(id)a4 canThrottle:(id)a5
+- (void)updateNowPlayingTemplate:(id)template withProxyDelegate:(id)delegate canThrottle:(id)throttle
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, template);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, delegate);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, throttle);
   v8 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
   queue = v8;
@@ -163,7 +163,7 @@
   v12 = 0;
   v13 = __86__CPSNowPlayingViewController_updateNowPlayingTemplate_withProxyDelegate_canThrottle___block_invoke;
   v14 = &unk_278D91E10;
-  v15 = MEMORY[0x277D82BE0](v22);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v16 = MEMORY[0x277D82BE0](location[0]);
   v17 = MEMORY[0x277D82BE0](v20);
   v18 = MEMORY[0x277D82BE0](v19);
@@ -206,23 +206,23 @@ void __86__CPSNowPlayingViewController_updateNowPlayingTemplate_withProxyDelegat
 
 - (void)reloadData
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CPSNowPlayingViewController;
   [(CPUINowPlayingViewController *)&v3 reloadData];
-  v2 = [(CPSNowPlayingViewController *)v5 updateThrottle];
-  [(CPUIThrottle *)v2 unthrottle];
-  MEMORY[0x277D82BD8](v2);
+  updateThrottle = [(CPSNowPlayingViewController *)selfCopy updateThrottle];
+  [(CPUIThrottle *)updateThrottle unthrottle];
+  MEMORY[0x277D82BD8](updateThrottle);
 }
 
-- (void)setControl:(id)a3 enabled:(BOOL)a4
+- (void)setControl:(id)control enabled:(BOOL)enabled
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
+  objc_storeStrong(location, control);
+  enabledCopy = enabled;
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -231,9 +231,9 @@ void __86__CPSNowPlayingViewController_updateNowPlayingTemplate_withProxyDelegat
   v10 = 0;
   v11 = __50__CPSNowPlayingViewController_setControl_enabled___block_invoke;
   v12 = &unk_278D92318;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
-  v15 = v16;
+  v15 = enabledCopy;
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v14, 0);
@@ -289,13 +289,13 @@ double __50__CPSNowPlayingViewController_setControl_enabled___block_invoke(uint6
   return result;
 }
 
-- (void)setControl:(id)a3 selected:(BOOL)a4
+- (void)setControl:(id)control selected:(BOOL)selected
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
+  objc_storeStrong(location, control);
+  selectedCopy = selected;
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -304,9 +304,9 @@ double __50__CPSNowPlayingViewController_setControl_enabled___block_invoke(uint6
   v10 = 0;
   v11 = __51__CPSNowPlayingViewController_setControl_selected___block_invoke;
   v12 = &unk_278D92318;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
-  v15 = v16;
+  v15 = selectedCopy;
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v14, 0);
@@ -362,27 +362,27 @@ double __51__CPSNowPlayingViewController_setControl_selected___block_invoke(uint
   return result;
 }
 
-- (void)setIsPopping:(BOOL)a3
+- (void)setIsPopping:(BOOL)popping
 {
-  if (a3 != self->_isPopping)
+  if (popping != self->_isPopping)
   {
-    self->_isPopping = a3;
+    self->_isPopping = popping;
   }
 
-  if (self->_didDisappear && a3)
+  if (self->_didDisappear && popping)
   {
     [(CPSNowPlayingViewController *)self _cleanup];
   }
 }
 
-- (void)setDidDisappear:(BOOL)a3
+- (void)setDidDisappear:(BOOL)disappear
 {
-  if (self->_didDisappear != a3)
+  if (self->_didDisappear != disappear)
   {
-    self->_didDisappear = a3;
+    self->_didDisappear = disappear;
   }
 
-  if (a3 && self->_isPopping)
+  if (disappear && self->_isPopping)
   {
     [(CPSNowPlayingViewController *)self _cleanup];
   }
@@ -390,171 +390,171 @@ double __51__CPSNowPlayingViewController_setControl_selected___block_invoke(uint
 
 - (void)removeFromParentViewController
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSNowPlayingViewController;
   [(CPSNowPlayingViewController *)&v2 removeFromParentViewController];
-  [(CPSNowPlayingViewController *)v4 _cleanup];
+  [(CPSNowPlayingViewController *)selfCopy _cleanup];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = CPSNowPlayingViewController;
   [(CPUINowPlayingViewController *)&v3 viewDidLayoutSubviews];
-  v2 = [(CPSNowPlayingViewController *)v5 audioPlaybackManager];
-  [(CPSAudioPlaybackManager *)v2 _updateArtworkSizing];
-  MEMORY[0x277D82BD8](v2);
+  audioPlaybackManager = [(CPSNowPlayingViewController *)selfCopy audioPlaybackManager];
+  [(CPSAudioPlaybackManager *)audioPlaybackManager _updateArtworkSizing];
+  MEMORY[0x277D82BD8](audioPlaybackManager);
 }
 
 - (void)_cleanup
 {
   v6 = *MEMORY[0x277D85DE8];
-  v4 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = CarPlaySupportGeneralLogging();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    __os_log_helper_16_2_1_8_64(v5, v4);
+    __os_log_helper_16_2_1_8_64(v5, selfCopy);
     _os_log_impl(&dword_242FE8000, oslog[0], OS_LOG_TYPE_DEFAULT, "Cleaning up %@", v5, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  objc_storeStrong(&v4->_templateProviderFuture, 0);
-  v2 = [(CPSNowPlayingViewController *)v4 viewControllerDelegate];
-  [(CPSTemplateViewControllerDelegate *)v2 templateViewControllerDidPop:v4];
-  MEMORY[0x277D82BD8](v2);
+  objc_storeStrong(&selfCopy->_templateProviderFuture, 0);
+  viewControllerDelegate = [(CPSNowPlayingViewController *)selfCopy viewControllerDelegate];
+  [(CPSTemplateViewControllerDelegate *)viewControllerDelegate templateViewControllerDidPop:selfCopy];
+  MEMORY[0x277D82BD8](viewControllerDelegate);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = CPSNowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v9 viewWillAppear:a3];
-  [(CPSNowPlayingViewController *)v12 setIsPopping:0];
-  [(CPSNowPlayingViewController *)v12 setDidDisappear:0];
-  v7 = [(CPSNowPlayingViewController *)v12 templateDelegate];
-  v8 = [(CPTemplateDelegate *)v7 conformsToProtocol:&unk_28562C040];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  [(CPUINowPlayingViewController *)&v9 viewWillAppear:appear];
+  [(CPSNowPlayingViewController *)selfCopy setIsPopping:0];
+  [(CPSNowPlayingViewController *)selfCopy setDidDisappear:0];
+  templateDelegate = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+  v8 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  *&v3 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v8)
   {
-    v6 = [(CPSNowPlayingViewController *)v12 templateDelegate];
-    v5 = [(CPSNowPlayingViewController *)v12 associatedTemplate];
-    v4 = [(CPTemplate *)v5 identifier];
-    [CPTemplateDelegate templateWillAppearWithIdentifier:v6 animated:"templateWillAppearWithIdentifier:animated:"];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    templateDelegate2 = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+    associatedTemplate = [(CPSNowPlayingViewController *)selfCopy associatedTemplate];
+    identifier = [(CPTemplate *)associatedTemplate identifier];
+    [CPTemplateDelegate templateWillAppearWithIdentifier:templateDelegate2 animated:"templateWillAppearWithIdentifier:animated:"];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](associatedTemplate);
+    MEMORY[0x277D82BD8](templateDelegate2);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  appearCopy = appear;
   v11.receiver = self;
   v11.super_class = CPSNowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v11 viewDidAppear:a3];
-  v8 = [(CPSNowPlayingViewController *)v14 audioPlaybackManager];
-  [(CPSAudioPlaybackManager *)v8 _updateArtworkSizing];
-  *&v3 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-  v9 = [(CPSNowPlayingViewController *)v14 templateDelegate];
-  v10 = [(CPTemplateDelegate *)v9 conformsToProtocol:&unk_28562C040];
-  *&v4 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+  [(CPUINowPlayingViewController *)&v11 viewDidAppear:appear];
+  audioPlaybackManager = [(CPSNowPlayingViewController *)selfCopy audioPlaybackManager];
+  [(CPSAudioPlaybackManager *)audioPlaybackManager _updateArtworkSizing];
+  *&v3 = MEMORY[0x277D82BD8](audioPlaybackManager).n128_u64[0];
+  templateDelegate = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+  v10 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  *&v4 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v10)
   {
-    v7 = [(CPSNowPlayingViewController *)v14 templateDelegate];
-    v6 = [(CPSNowPlayingViewController *)v14 associatedTemplate];
-    v5 = [(CPTemplate *)v6 identifier];
-    [CPTemplateDelegate templateDidAppearWithIdentifier:v7 animated:"templateDidAppearWithIdentifier:animated:"];
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
+    templateDelegate2 = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+    associatedTemplate = [(CPSNowPlayingViewController *)selfCopy associatedTemplate];
+    identifier = [(CPTemplate *)associatedTemplate identifier];
+    [CPTemplateDelegate templateDidAppearWithIdentifier:templateDelegate2 animated:"templateDidAppearWithIdentifier:animated:"];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](associatedTemplate);
+    MEMORY[0x277D82BD8](templateDelegate2);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = CPSNowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v9 viewWillDisappear:a3];
-  v7 = [(CPSNowPlayingViewController *)v12 templateDelegate];
-  v8 = [(CPTemplateDelegate *)v7 conformsToProtocol:&unk_28562C040];
-  *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  [(CPUINowPlayingViewController *)&v9 viewWillDisappear:disappear];
+  templateDelegate = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+  v8 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  *&v3 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v8)
   {
-    v6 = [(CPSNowPlayingViewController *)v12 templateDelegate];
-    v5 = [(CPSNowPlayingViewController *)v12 associatedTemplate];
-    v4 = [(CPTemplate *)v5 identifier];
-    [CPTemplateDelegate templateWillDisappearWithIdentifier:v6 animated:"templateWillDisappearWithIdentifier:animated:"];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    templateDelegate2 = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+    associatedTemplate = [(CPSNowPlayingViewController *)selfCopy associatedTemplate];
+    identifier = [(CPTemplate *)associatedTemplate identifier];
+    [CPTemplateDelegate templateWillDisappearWithIdentifier:templateDelegate2 animated:"templateWillDisappearWithIdentifier:animated:"];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](associatedTemplate);
+    MEMORY[0x277D82BD8](templateDelegate2);
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  disappearCopy = disappear;
   v9.receiver = self;
   v9.super_class = CPSNowPlayingViewController;
-  [(CPUINowPlayingViewController *)&v9 viewDidDisappear:a3];
-  v7 = [(CPSNowPlayingViewController *)v12 templateDelegate];
-  v8 = [(CPTemplateDelegate *)v7 conformsToProtocol:&unk_28562C040];
-  v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  [(CPUINowPlayingViewController *)&v9 viewDidDisappear:disappear];
+  templateDelegate = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+  v8 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  v3 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v8)
   {
-    v6 = [(CPSNowPlayingViewController *)v12 templateDelegate];
-    v5 = [(CPSNowPlayingViewController *)v12 associatedTemplate];
-    v4 = [(CPTemplate *)v5 identifier];
-    [CPTemplateDelegate templateDidDisappearWithIdentifier:v6 animated:"templateDidDisappearWithIdentifier:animated:"];
-    MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
-    v3 = MEMORY[0x277D82BD8](v6).n128_u64[0];
+    templateDelegate2 = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+    associatedTemplate = [(CPSNowPlayingViewController *)selfCopy associatedTemplate];
+    identifier = [(CPTemplate *)associatedTemplate identifier];
+    [CPTemplateDelegate templateDidDisappearWithIdentifier:templateDelegate2 animated:"templateDidDisappearWithIdentifier:animated:"];
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](associatedTemplate);
+    v3 = MEMORY[0x277D82BD8](templateDelegate2).n128_u64[0];
   }
 
-  [(CPSNowPlayingViewController *)v12 setDidDisappear:1, *&v3];
+  [(CPSNowPlayingViewController *)selfCopy setDidDisappear:1, *&v3];
 }
 
-- (void)didSelectButton:(id)a3
+- (void)didSelectButton:(id)button
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v8 = [location[0] cps_identifier];
+  objc_storeStrong(location, button);
+  cps_identifier = [location[0] cps_identifier];
   oslog = CarPlaySupportGeneralLogging();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v11, v10, v8);
+    __os_log_helper_16_2_2_8_64_8_64(v11, selfCopy, cps_identifier);
     _os_log_debug_impl(&dword_242FE8000, oslog, OS_LOG_TYPE_DEBUG, "%@: button selected with UUID: %@", v11, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = [(CPSNowPlayingViewController *)v10 templateDelegate];
-  v6 = [(CPTemplateDelegate *)v5 conformsToProtocol:&unk_28562C040];
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  templateDelegate = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+  v6 = [(CPTemplateDelegate *)templateDelegate conformsToProtocol:&unk_28562C040];
+  *&v3 = MEMORY[0x277D82BD8](templateDelegate).n128_u64[0];
   if (v6)
   {
-    v4 = [(CPSNowPlayingViewController *)v10 templateDelegate];
-    [(CPTemplateDelegate *)v4 handleActionForControlIdentifier:v8];
-    MEMORY[0x277D82BD8](v4);
+    templateDelegate2 = [(CPSNowPlayingViewController *)selfCopy templateDelegate];
+    [(CPTemplateDelegate *)templateDelegate2 handleActionForControlIdentifier:cps_identifier];
+    MEMORY[0x277D82BD8](templateDelegate2);
   }
 
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&cps_identifier, 0);
   objc_storeStrong(location, 0);
 }
 

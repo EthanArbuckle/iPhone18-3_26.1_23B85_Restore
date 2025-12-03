@@ -1,18 +1,18 @@
 @interface ManagedInputStream
-- (ManagedInputStream)initWithPaused:(BOOL)a3 attributedTo:(id)a4 definition:(id)a5 canRecord:(BOOL)a6 fader:(shared_ptr<caulk:(id)a8 :synchronized<Phase::Controller::ExternalStreamFader>>)a7 pauseStateDidUpdateCallback:;
+- (ManagedInputStream)initWithPaused:(BOOL)paused attributedTo:(id)to definition:(id)definition canRecord:(BOOL)record fader:(shared_ptr<caulk:(id)fader :synchronized<Phase::Controller::ExternalStreamFader>>)a7 pauseStateDidUpdateCallback:;
 - (id).cxx_construct;
 - (shared_ptr<caulk::synchronized<Phase::Controller::ExternalStreamFader>>)fader;
-- (void)setFader:(shared_ptr<caulk::synchronized<Phase::Controller::ExternalStreamFader>>)a3;
+- (void)setFader:(shared_ptr<caulk::synchronized<Phase::Controller::ExternalStreamFader>>)fader;
 @end
 
 @implementation ManagedInputStream
 
-- (ManagedInputStream)initWithPaused:(BOOL)a3 attributedTo:(id)a4 definition:(id)a5 canRecord:(BOOL)a6 fader:(shared_ptr<caulk:(id)a8 :synchronized<Phase::Controller::ExternalStreamFader>>)a7 pauseStateDidUpdateCallback:
+- (ManagedInputStream)initWithPaused:(BOOL)paused attributedTo:(id)to definition:(id)definition canRecord:(BOOL)record fader:(shared_ptr<caulk:(id)fader :synchronized<Phase::Controller::ExternalStreamFader>>)a7 pauseStateDidUpdateCallback:
 {
   cntrl = a7.__cntrl_;
   ptr = a7.__ptr_;
-  v15 = a4;
-  v16 = a5;
+  toCopy = to;
+  definitionCopy = definition;
   v17 = cntrl;
   v26.receiver = self;
   v26.super_class = ManagedInputStream;
@@ -20,10 +20,10 @@
   v19 = v18;
   if (v18)
   {
-    v18->_streamPaused = a3;
-    objc_storeStrong(&v18->_definition, a5);
-    objc_storeStrong(&v19->_attributedClientID, a4);
-    v19->_canRecord = a6;
+    v18->_streamPaused = paused;
+    objc_storeStrong(&v18->_definition, definition);
+    objc_storeStrong(&v19->_attributedClientID, to);
+    v19->_canRecord = record;
     v19->_isMuted = 0;
     v21 = *ptr;
     v20 = ptr[1];
@@ -64,10 +64,10 @@
   return result;
 }
 
-- (void)setFader:(shared_ptr<caulk::synchronized<Phase::Controller::ExternalStreamFader>>)a3
+- (void)setFader:(shared_ptr<caulk::synchronized<Phase::Controller::ExternalStreamFader>>)fader
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *fader.__ptr_;
+  v3 = *(fader.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

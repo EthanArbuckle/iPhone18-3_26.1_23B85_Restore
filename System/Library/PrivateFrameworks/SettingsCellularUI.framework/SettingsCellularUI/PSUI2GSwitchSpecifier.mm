@@ -1,20 +1,20 @@
 @interface PSUI2GSwitchSpecifier
-- (PSUI2GSwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 switchFactory:(id)a5;
-- (PSUI2GSwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 switchFactory:(id)a5 registrationCache:(id)a6;
+- (PSUI2GSwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier switchFactory:(id)factory;
+- (PSUI2GSwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier switchFactory:(id)factory registrationCache:(id)cache;
 - (id)getLogger;
 - (id)groupFooterText;
 - (id)is2GEnabled;
-- (void)enable2G:(id)a3 specifier:(id)a4;
+- (void)enable2G:(id)g specifier:(id)specifier;
 @end
 
 @implementation PSUI2GSwitchSpecifier
 
-- (PSUI2GSwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 switchFactory:(id)a5 registrationCache:(id)a6
+- (PSUI2GSwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier switchFactory:(id)factory registrationCache:(id)cache
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  specifierCopy = specifier;
+  factoryCopy = factory;
+  cacheCopy = cache;
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"ENABLE_2G" value:&stru_287733598 table:@"Cellular"];
   v21.receiver = self;
@@ -23,14 +23,14 @@
 
   if (v16)
   {
-    objc_storeWeak(&v16->_hostController, v10);
-    objc_storeStrong(&v16->_parentSpecifier, a4);
-    v17 = [v11 propertyForKey:*MEMORY[0x277D40128]];
+    objc_storeWeak(&v16->_hostController, controllerCopy);
+    objc_storeStrong(&v16->_parentSpecifier, specifier);
+    v17 = [specifierCopy propertyForKey:*MEMORY[0x277D40128]];
     subscriptionContext = v16->_subscriptionContext;
     v16->_subscriptionContext = v17;
 
-    objc_storeStrong(&v16->_switchFactory, a5);
-    objc_storeStrong(&v16->_registrationCache, a6);
+    objc_storeStrong(&v16->_switchFactory, factory);
+    objc_storeStrong(&v16->_registrationCache, cache);
     v19 = [MEMORY[0x277CCABB0] numberWithBool:{-[PSUIVoiceAndDataDrillDownSwitchSpecifiersFactory shouldEnable2GSwitchForSubscriptionContext:](v16->_switchFactory, "shouldEnable2GSwitchForSubscriptionContext:", v16->_subscriptionContext)}];
     [(PSUI2GSwitchSpecifier *)v16 setProperty:v19 forKey:*MEMORY[0x277D3FF38]];
   }
@@ -38,13 +38,13 @@
   return v16;
 }
 
-- (PSUI2GSwitchSpecifier)initWithHostController:(id)a3 parentSpecifier:(id)a4 switchFactory:(id)a5
+- (PSUI2GSwitchSpecifier)initWithHostController:(id)controller parentSpecifier:(id)specifier switchFactory:(id)factory
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  factoryCopy = factory;
+  specifierCopy = specifier;
+  controllerCopy = controller;
   v11 = +[PSUICoreTelephonyRegistrationCache sharedInstance];
-  v12 = [(PSUI2GSwitchSpecifier *)self initWithHostController:v10 parentSpecifier:v9 switchFactory:v8 registrationCache:v11];
+  v12 = [(PSUI2GSwitchSpecifier *)self initWithHostController:controllerCopy parentSpecifier:specifierCopy switchFactory:factoryCopy registrationCache:v11];
 
   return v12;
 }
@@ -53,8 +53,8 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = [(PSUICoreTelephonyRegistrationCache *)self->_registrationCache is2GEnabledForContext:self->_subscriptionContext];
-  v4 = [(PSUI2GSwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUI2GSwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "OFF";
     if (v3)
@@ -64,7 +64,7 @@
 
     v9 = 136315138;
     v10 = v5;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "2G state is : %s", &v9, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "2G state is : %s", &v9, 0xCu);
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
@@ -73,25 +73,25 @@
   return v6;
 }
 
-- (void)enable2G:(id)a3 specifier:(id)a4
+- (void)enable2G:(id)g specifier:(id)specifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [a3 BOOLValue];
-  v6 = [(PSUI2GSwitchSpecifier *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  bOOLValue = [g BOOLValue];
+  getLogger = [(PSUI2GSwitchSpecifier *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"disable";
-    if (v5)
+    if (bOOLValue)
     {
       v7 = @"enable";
     }
 
     v9 = 138412290;
     v10 = v7;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "attempting to %@ 2G", &v9, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "attempting to %@ 2G", &v9, 0xCu);
   }
 
-  [(PSUICoreTelephonyRegistrationCache *)self->_registrationCache set2GEnabled:v5 forContext:self->_subscriptionContext];
+  [(PSUICoreTelephonyRegistrationCache *)self->_registrationCache set2GEnabled:bOOLValue forContext:self->_subscriptionContext];
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -107,8 +107,8 @@
 {
   v2 = MEMORY[0x277D4D830];
   v3 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CTXPCServiceSubscriptionContext slotID](self->_subscriptionContext, "slotID")}];
-  v4 = [v3 stringValue];
-  v5 = [v2 loggerWithCategory:@"2GSwitchSpecifier" instance:v4];
+  stringValue = [v3 stringValue];
+  v5 = [v2 loggerWithCategory:@"2GSwitchSpecifier" instance:stringValue];
 
   return v5;
 }

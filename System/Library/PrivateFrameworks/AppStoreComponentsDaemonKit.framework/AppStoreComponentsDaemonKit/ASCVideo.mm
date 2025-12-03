@@ -1,29 +1,29 @@
 @interface ASCVideo
-- (ASCVideo)initWithCoder:(id)a3;
-- (ASCVideo)initWithVideoURL:(id)a3 preview:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ASCVideo)initWithCoder:(id)coder;
+- (ASCVideo)initWithVideoURL:(id)l preview:(id)preview;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCVideo
 
-- (ASCVideo)initWithVideoURL:(id)a3 preview:(id)a4
+- (ASCVideo)initWithVideoURL:(id)l preview:(id)preview
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  previewCopy = preview;
   +[ASCEligibility assertCurrentProcessEligibility];
   v14.receiver = self;
   v14.super_class = ASCVideo;
   v8 = [(ASCVideo *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     videoURL = v8->_videoURL;
     v8->_videoURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [previewCopy copy];
     preview = v8->_preview;
     v8->_preview = v11;
   }
@@ -31,14 +31,14 @@
   return v8;
 }
 
-- (ASCVideo)initWithCoder:(id)a3
+- (ASCVideo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   +[ASCEligibility assertCurrentProcessEligibility];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"videoURL"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"videoURL"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preview"];
     if (v6)
     {
       v14.receiver = self;
@@ -56,7 +56,7 @@
       }
 
       self = v7;
-      v12 = self;
+      selfCopy = self;
     }
 
     else
@@ -66,7 +66,7 @@
         [ASCVideo initWithCoder:];
       }
 
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -77,42 +77,42 @@
       [ASCVideo initWithCoder:];
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ASCVideo *)self videoURL];
-  [v4 encodeObject:v5 forKey:@"videoURL"];
+  coderCopy = coder;
+  videoURL = [(ASCVideo *)self videoURL];
+  [coderCopy encodeObject:videoURL forKey:@"videoURL"];
 
-  v6 = [(ASCVideo *)self preview];
-  [v4 encodeObject:v6 forKey:@"preview"];
+  preview = [(ASCVideo *)self preview];
+  [coderCopy encodeObject:preview forKey:@"preview"];
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCVideo *)self videoURL];
-  [(ASCHasher *)v3 combineObject:v4];
+  videoURL = [(ASCVideo *)self videoURL];
+  [(ASCHasher *)v3 combineObject:videoURL];
 
-  v5 = [(ASCVideo *)self preview];
-  [(ASCHasher *)v3 combineObject:v5];
+  preview = [(ASCVideo *)self preview];
+  [(ASCHasher *)v3 combineObject:preview];
 
-  v6 = [(ASCHasher *)v3 finalizeHash];
-  return v6;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -141,31 +141,31 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v9 = [(ASCVideo *)self videoURL];
-    v10 = [(ASCVideo *)v8 videoURL];
-    v11 = v10;
-    if (v9 && v10)
+    videoURL = [(ASCVideo *)self videoURL];
+    videoURL2 = [(ASCVideo *)v8 videoURL];
+    v11 = videoURL2;
+    if (videoURL && videoURL2)
     {
-      if ([v9 isEqual:v10])
+      if ([videoURL isEqual:videoURL2])
       {
         goto LABEL_12;
       }
     }
 
-    else if (v9 == v10)
+    else if (videoURL == videoURL2)
     {
 LABEL_12:
-      v12 = [(ASCVideo *)self preview];
-      v13 = [(ASCVideo *)v8 preview];
-      v14 = v13;
-      if (v12 && v13)
+      preview = [(ASCVideo *)self preview];
+      preview2 = [(ASCVideo *)v8 preview];
+      v14 = preview2;
+      if (preview && preview2)
       {
-        v7 = [v12 isEqual:v13];
+        v7 = [preview isEqual:preview2];
       }
 
       else
       {
-        v7 = v12 == v13;
+        v7 = preview == preview2;
       }
 
       goto LABEL_20;
@@ -186,15 +186,15 @@ LABEL_22:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCVideo *)self videoURL];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"videoURL"];
+  videoURL = [(ASCVideo *)self videoURL];
+  [(ASCDescriber *)v3 addObject:videoURL withName:@"videoURL"];
 
-  v5 = [(ASCVideo *)self preview];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"preview"];
+  preview = [(ASCVideo *)self preview];
+  [(ASCDescriber *)v3 addObject:preview withName:@"preview"];
 
-  v6 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v6;
+  return finalizeDescription;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface TrainingLoadDaySummaryQueryConfiguration
 - (_TtC13HealthBalance40TrainingLoadDaySummaryQueryConfiguration)init;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TrainingLoadDaySummaryQueryConfiguration
@@ -21,10 +21,10 @@
   return [(HKQueryServerConfiguration *)&v9 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  TrainingLoadDaySummaryQueryConfiguration.copy(with:)(a3, v7);
+  selfCopy = self;
+  TrainingLoadDaySummaryQueryConfiguration.copy(with:)(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_1CFE310A4();
@@ -32,11 +32,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TrainingLoadDaySummaryQueryConfiguration.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TrainingLoadDaySummaryQueryConfiguration.encode(with:)(coderCopy);
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface NEURLFilterControlProviderHost
 - (NEURLFilterControlProviderHost)init;
-- (void)fetchPrefilterDataWithTag:(NSString *)a3 completion:(id)a4;
-- (void)initialize:(id)a3;
-- (void)setExportedObject:(id)a3;
-- (void)startWithCompletion:(id)a3;
-- (void)stopWithReason:(int64_t)a3 completion:(id)a4;
+- (void)fetchPrefilterDataWithTag:(NSString *)tag completion:(id)completion;
+- (void)initialize:(id)initialize;
+- (void)setExportedObject:(id)object;
+- (void)startWithCompletion:(id)completion;
+- (void)stopWithReason:(int64_t)reason completion:(id)completion;
 @end
 
 @implementation NEURLFilterControlProviderHost
 
-- (void)setExportedObject:(id)a3
+- (void)setExportedObject:(id)object
 {
   v4 = *&self->NEExtensionBaseProviderHost_opaque[OBJC_IVAR___NEURLFilterControlProviderHost_exportedObject];
-  *&self->NEExtensionBaseProviderHost_opaque[OBJC_IVAR___NEURLFilterControlProviderHost_exportedObject] = a3;
-  v3 = a3;
+  *&self->NEExtensionBaseProviderHost_opaque[OBJC_IVAR___NEURLFilterControlProviderHost_exportedObject] = object;
+  objectCopy = object;
 }
 
-- (void)initialize:(id)a3
+- (void)initialize:(id)initialize
 {
   sub_1BAA39D9C();
-  v4 = self;
+  selfCopy = self;
   sub_1BA85EE3C();
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBC0EAC0, &qword_1BAA4CD50);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -45,19 +45,19 @@
   v13[3] = 0;
   v13[4] = &unk_1BAA4D448;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BA8737D8(0, 0, v8, &unk_1BAA4D450, v13);
 }
 
-- (void)stopWithReason:(int64_t)a3 completion:(id)a4
+- (void)stopWithReason:(int64_t)reason completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBC0EAC0, &qword_1BAA4CD50);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = reason;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1BAA39EFC();
@@ -72,19 +72,19 @@
   v15[3] = 0;
   v15[4] = &unk_1BAA4CDA8;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   sub_1BA8737D8(0, 0, v10, &unk_1BAA4CDB0, v15);
 }
 
-- (void)fetchPrefilterDataWithTag:(NSString *)a3 completion:(id)a4
+- (void)fetchPrefilterDataWithTag:(NSString *)tag completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBC0EAC0, &qword_1BAA4CD50);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = tag;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1BAA39EFC();
@@ -99,8 +99,8 @@
   v15[3] = 0;
   v15[4] = &unk_1BAA4D100;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  tagCopy = tag;
+  selfCopy = self;
   sub_1BA8737D8(0, 0, v10, &unk_1BAA4CD70, v15);
 }
 

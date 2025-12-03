@@ -1,27 +1,27 @@
 @interface SKAccountPageSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
 - (BOOL)_isSingleIdentity;
-- (BOOL)handleURL:(id)a3;
+- (BOOL)handleURL:(id)l;
 - (NSArray)specifiers;
-- (SKAccountPageSpecifierProvider)initWithAccountManager:(id)a3;
+- (SKAccountPageSpecifierProvider)initWithAccountManager:(id)manager;
 - (id)_appleAccount;
 - (id)_storeAccount;
-- (void)_accountPageSpecifierWasTapped:(id)a3;
-- (void)_viewAccountPageSpecifierWasTapped:(id)a3;
+- (void)_accountPageSpecifierWasTapped:(id)tapped;
+- (void)_viewAccountPageSpecifierWasTapped:(id)tapped;
 @end
 
 @implementation SKAccountPageSpecifierProvider
 
-- (SKAccountPageSpecifierProvider)initWithAccountManager:(id)a3
+- (SKAccountPageSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SKAccountPageSpecifierProvider;
   v6 = [(SKAccountPageSpecifierProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountManager, a3);
+    objc_storeStrong(&v6->_accountManager, manager);
   }
 
   return v7;
@@ -38,9 +38,9 @@
 
   else
   {
-    v5 = [(SKAccountPageSpecifierProvider *)self _storeAccount];
+    _storeAccount = [(SKAccountPageSpecifierProvider *)self _storeAccount];
 
-    if (v5)
+    if (_storeAccount)
     {
       v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v7 = [v6 localizedStringForKey:@"APPLEID_ACCOUNT_PAGE_CELL_TITLE" value:&stru_1F29BCE20 table:0];
@@ -53,9 +53,9 @@
       {
         [v8 setProperty:objc_opt_class() forKey:*MEMORY[0x1E69C5860]];
         [v8 setProperty:v7 forKey:*MEMORY[0x1E69C59A8]];
-        v9 = [(SKAccountPageSpecifierProvider *)self _storeAccount];
-        v10 = [v9 aa_formattedUsername];
-        [v8 setProperty:v10 forKey:*MEMORY[0x1E69C59A0]];
+        _storeAccount2 = [(SKAccountPageSpecifierProvider *)self _storeAccount];
+        aa_formattedUsername = [_storeAccount2 aa_formattedUsername];
+        [v8 setProperty:aa_formattedUsername forKey:*MEMORY[0x1E69C59A0]];
       }
 
       v14[0] = v8;
@@ -77,27 +77,27 @@
 
 - (BOOL)_isSingleIdentity
 {
-  v3 = [(SKAccountPageSpecifierProvider *)self _appleAccount];
-  v4 = [(SKAccountPageSpecifierProvider *)self _storeAccount];
-  v5 = v4;
+  _appleAccount = [(SKAccountPageSpecifierProvider *)self _appleAccount];
+  _storeAccount = [(SKAccountPageSpecifierProvider *)self _storeAccount];
+  v5 = _storeAccount;
   v6 = 1;
-  if (v3 && v4)
+  if (_appleAccount && _storeAccount)
   {
-    v7 = [v3 ams_altDSID];
-    v8 = [v5 ams_altDSID];
-    if ([v7 length] && objc_msgSend(v8, "length"))
+    ams_altDSID = [_appleAccount ams_altDSID];
+    ams_altDSID2 = [v5 ams_altDSID];
+    if ([ams_altDSID length] && objc_msgSend(ams_altDSID2, "length"))
     {
-      v6 = [v7 isEqualToString:v8];
+      v6 = [ams_altDSID isEqualToString:ams_altDSID2];
     }
 
     else
     {
-      v9 = [v3 ams_DSID];
-      v10 = [v5 ams_DSID];
-      v11 = v10;
-      if (v10)
+      ams_DSID = [_appleAccount ams_DSID];
+      ams_DSID2 = [v5 ams_DSID];
+      v11 = ams_DSID2;
+      if (ams_DSID2)
       {
-        v12 = v10;
+        v12 = ams_DSID2;
       }
 
       else
@@ -105,7 +105,7 @@
         v12 = &unk_1F29D5210;
       }
 
-      v6 = [v9 isEqualToNumber:v12];
+      v6 = [ams_DSID isEqualToNumber:v12];
     }
   }
 
@@ -114,7 +114,7 @@
 
 - (id)_appleAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -136,14 +136,14 @@
     _Unwind_Resume(v7);
   }
 
-  v5 = [v2 objectForKeyedSubscript:*v3];
+  v5 = [accounts objectForKeyedSubscript:*v3];
 
   return v5;
 }
 
 - (id)_storeAccount
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -165,16 +165,16 @@
     _Unwind_Resume(v7);
   }
 
-  v5 = [v2 objectForKeyedSubscript:*v3];
+  v5 = [accounts objectForKeyedSubscript:*v3];
 
   return v5;
 }
 
-- (void)_accountPageSpecifierWasTapped:(id)a3
+- (void)_accountPageSpecifierWasTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(SKAccountPageSpecifierProvider *)self delegate];
-  [v5 specifierProvider:self willBeginLoadingSpecifier:v4];
+  tappedCopy = tapped;
+  delegate = [(SKAccountPageSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self willBeginLoadingSpecifier:tappedCopy];
 
   v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
@@ -186,8 +186,8 @@
   v39[3] = &unk_1E7B28A30;
   v10 = v6;
   v40 = v10;
-  v41 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = tappedCopy;
   v42 = v11;
   v12 = [v8 actionWithTitle:v9 style:2 handler:v39];
   [v7 addAction:v12];
@@ -210,8 +210,8 @@
 
   v14 = v13;
   _Block_object_dispose(&v44, 8);
-  v15 = [(SKAccountPageSpecifierProvider *)self _storeAccount];
-  v16 = [v13 isAvailableForAccount:v15];
+  _storeAccount = [(SKAccountPageSpecifierProvider *)self _storeAccount];
+  v16 = [v13 isAvailableForAccount:_storeAccount];
 
   if ((v16 & 1) == 0)
   {
@@ -245,14 +245,14 @@
   v30 = 3221225472;
   v31 = __65__SKAccountPageSpecifierProvider__accountPageSpecifierWasTapped___block_invoke_8;
   v32 = &unk_1E7B289E0;
-  v33 = self;
+  selfCopy2 = self;
   v34 = v22;
   v26 = v22;
   v27 = [v24 actionWithTitle:v25 style:1 handler:&v29];
-  [v7 addAction:{v27, v29, v30, v31, v32, v33}];
+  [v7 addAction:{v27, v29, v30, v31, v32, selfCopy2}];
 
-  v28 = [(SKAccountPageSpecifierProvider *)self delegate];
-  [v28 specifierProvider:self showViewController:v7];
+  delegate2 = [(SKAccountPageSpecifierProvider *)self delegate];
+  [delegate2 specifierProvider:self showViewController:v7];
 }
 
 void __65__SKAccountPageSpecifierProvider__accountPageSpecifierWasTapped___block_invoke(uint64_t a1)
@@ -377,31 +377,31 @@ void __65__SKAccountPageSpecifierProvider__accountPageSpecifierWasTapped___block
   [v2 specifierProvider:*(a1 + 32) didFinishLoadingSpecifier:*(a1 + 40)];
 }
 
-- (void)_viewAccountPageSpecifierWasTapped:(id)a3
+- (void)_viewAccountPageSpecifierWasTapped:(id)tapped
 {
   v6 = [[SKAccountPageViewController alloc] initWithAccountURL:0];
-  v4 = [(SKAccountPageSpecifierProvider *)self _storeAccount];
-  [(SKAccountPageViewController *)v6 setAccount:v4];
+  _storeAccount = [(SKAccountPageSpecifierProvider *)self _storeAccount];
+  [(SKAccountPageViewController *)v6 setAccount:_storeAccount];
 
-  v5 = [(SKAccountPageSpecifierProvider *)self delegate];
-  [v5 specifierProvider:self showViewController:v6];
+  delegate = [(SKAccountPageSpecifierProvider *)self delegate];
+  [delegate specifierProvider:self showViewController:v6];
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
-  v4 = [a3 valueForKey:@"path"];
+  v4 = [l valueForKey:@"path"];
   v5 = [v4 isEqualToString:@"VIEW_ACCOUNT"];
   if (v5)
   {
-    v6 = [(SKAccountPageSpecifierProvider *)self specifiers];
-    v7 = [v6 firstObject];
+    specifiers = [(SKAccountPageSpecifierProvider *)self specifiers];
+    firstObject = [specifiers firstObject];
 
-    v8 = [(SKAccountPageSpecifierProvider *)self delegate];
-    [v8 specifierProvider:self willBeginLoadingSpecifier:v7];
+    delegate = [(SKAccountPageSpecifierProvider *)self delegate];
+    [delegate specifierProvider:self willBeginLoadingSpecifier:firstObject];
 
-    [(SKAccountPageSpecifierProvider *)self _viewAccountPageSpecifierWasTapped:v7];
-    v9 = [(SKAccountPageSpecifierProvider *)self delegate];
-    [v9 specifierProvider:self didFinishLoadingSpecifier:v7];
+    [(SKAccountPageSpecifierProvider *)self _viewAccountPageSpecifierWasTapped:firstObject];
+    delegate2 = [(SKAccountPageSpecifierProvider *)self delegate];
+    [delegate2 specifierProvider:self didFinishLoadingSpecifier:firstObject];
   }
 
   return v5;

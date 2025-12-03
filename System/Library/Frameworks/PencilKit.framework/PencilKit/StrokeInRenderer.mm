@@ -1,15 +1,15 @@
 @interface StrokeInRenderer
 - (_TtC9PencilKit16StrokeInRenderer)init;
-- (void)drawInMTKView:(id)a3;
+- (void)drawInMTKView:(id)view;
 @end
 
 @implementation StrokeInRenderer
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  StrokeInRenderer.draw(in:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  StrokeInRenderer.draw(in:)(viewCopy);
 }
 
 - (_TtC9PencilKit16StrokeInRenderer)init

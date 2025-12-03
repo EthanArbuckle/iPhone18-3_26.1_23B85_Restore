@@ -1,25 +1,25 @@
 @interface JavaUtilCollections_SynchronizedList
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilCollections_SynchronizedList)initWithJavaUtilList:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilCollections_SynchronizedList)initWithJavaUtilList:(id)list;
 - (id)listIterator;
 - (id)readResolve;
-- (int)indexOfWithId:(id)a3;
-- (int)lastIndexOfWithId:(id)a3;
+- (int)indexOfWithId:(id)id;
+- (int)lastIndexOfWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilCollections_SynchronizedList
 
-- (JavaUtilCollections_SynchronizedList)initWithJavaUtilList:(id)a3
+- (JavaUtilCollections_SynchronizedList)initWithJavaUtilList:(id)list
 {
-  JavaUtilCollections_SynchronizedCollection_initWithJavaUtilCollection_(self, a3);
-  JreStrongAssign(&self->list_, a3);
+  JavaUtilCollections_SynchronizedCollection_initWithJavaUtilCollection_(self, list);
+  JreStrongAssign(&self->list_, list);
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
@@ -29,7 +29,7 @@
     JreThrowNullPointerException();
   }
 
-  v7 = [(JavaUtilList *)list isEqual:a3];
+  v7 = [(JavaUtilList *)list isEqual:equal];
   objc_sync_exit(mutex);
   return v7;
 }
@@ -49,7 +49,7 @@
   return v5;
 }
 
-- (int)indexOfWithId:(id)a3
+- (int)indexOfWithId:(id)id
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
@@ -63,7 +63,7 @@
   v8 = [IOSObjectArray arrayWithLength:v7 type:NSObject_class_()];
   [(JavaUtilList *)self->list_ toArrayWithNSObjectArray:v8];
   objc_sync_exit(mutex);
-  if (a3)
+  if (id)
   {
     if (v7 >= 1)
     {
@@ -76,7 +76,7 @@
           IOSArray_throwOutOfBoundsWithMsg(size, v9);
         }
 
-        if ([a3 isEqual:(&v8->elementType_)[v9]])
+        if ([id isEqual:(&v8->elementType_)[v9]])
         {
           break;
         }
@@ -122,7 +122,7 @@ LABEL_17:
   }
 }
 
-- (int)lastIndexOfWithId:(id)a3
+- (int)lastIndexOfWithId:(id)id
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
@@ -136,7 +136,7 @@ LABEL_17:
   v8 = [IOSObjectArray arrayWithLength:v7 type:NSObject_class_()];
   [(JavaUtilList *)self->list_ toArrayWithNSObjectArray:v8];
   objc_sync_exit(mutex);
-  if (a3)
+  if (id)
   {
     v9 = v7 - 1;
     while (1)
@@ -153,7 +153,7 @@ LABEL_17:
         IOSArray_throwOutOfBoundsWithMsg(size, v7);
       }
 
-      v11 = [a3 isEqual:(&v8->elementType_)[v9-- & 0x7FFFFFFF]];
+      v11 = [id isEqual:(&v8->elementType_)[v9-- & 0x7FFFFFFF]];
       if (v11)
       {
         return v7;
@@ -199,21 +199,21 @@ LABEL_17:
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaUtilList *)list listIterator];
+  listIterator = [(JavaUtilList *)list listIterator];
   objc_sync_exit(mutex);
-  return v5;
+  return listIterator;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   mutex = self->super.mutex_;
   objc_sync_enter(mutex);
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 
   objc_sync_exit(mutex);
 }

@@ -3,10 +3,10 @@
 - (IMDDaemonPropertyManager)init;
 - (NSDictionary)persistentProperties;
 - (NSDictionary)properties;
-- (id)valueOfPersistentProperty:(id)a3;
-- (id)valueOfProperty:(id)a3;
-- (void)setValue:(id)a3 ofPersistentProperty:(id)a4;
-- (void)setValue:(id)a3 ofProperty:(id)a4;
+- (id)valueOfPersistentProperty:(id)property;
+- (id)valueOfProperty:(id)property;
+- (void)setValue:(id)value ofPersistentProperty:(id)property;
+- (void)setValue:(id)value ofProperty:(id)property;
 @end
 
 @implementation IMDDaemonPropertyManager
@@ -25,16 +25,16 @@
 
 - (NSDictionary)properties
 {
-  v2 = [(IMDDaemonPropertyManager *)self mutableProperties];
-  v3 = [v2 copy];
+  mutableProperties = [(IMDDaemonPropertyManager *)self mutableProperties];
+  v3 = [mutableProperties copy];
 
   return v3;
 }
 
 - (NSDictionary)persistentProperties
 {
-  v2 = [(IMDDaemonPropertyManager *)self mutablePersistentProperties];
-  v3 = [v2 copy];
+  mutablePersistentProperties = [(IMDDaemonPropertyManager *)self mutablePersistentProperties];
+  v3 = [mutablePersistentProperties copy];
 
   return v3;
 }
@@ -107,39 +107,39 @@
   return v2;
 }
 
-- (void)setValue:(id)a3 ofProperty:(id)a4
+- (void)setValue:(id)value ofProperty:(id)property
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(IMDDaemonPropertyManager *)self mutableProperties];
-  [v7 setObject:v10 forKeyedSubscript:v6];
+  valueCopy = value;
+  propertyCopy = property;
+  mutableProperties = [(IMDDaemonPropertyManager *)self mutableProperties];
+  [mutableProperties setObject:valueCopy forKeyedSubscript:propertyCopy];
 
-  if (v10)
+  if (valueCopy)
   {
     v8 = +[IMDBroadcastController sharedProvider];
-    v9 = [v8 broadcasterForAllListeners];
-    [v9 property:v6 changedTo:v10 from:0];
+    broadcasterForAllListeners = [v8 broadcasterForAllListeners];
+    [broadcasterForAllListeners property:propertyCopy changedTo:valueCopy from:0];
   }
 }
 
-- (id)valueOfProperty:(id)a3
+- (id)valueOfProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(IMDDaemonPropertyManager *)self mutableProperties];
-  v6 = [v5 objectForKey:v4];
+  propertyCopy = property;
+  mutableProperties = [(IMDDaemonPropertyManager *)self mutableProperties];
+  v6 = [mutableProperties objectForKey:propertyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 ofPersistentProperty:(id)a4
+- (void)setValue:(id)value ofPersistentProperty:(id)property
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(IMDDaemonPropertyManager *)self mutablePersistentProperties];
-  [v7 setObject:v11 forKeyedSubscript:v6];
+  valueCopy = value;
+  propertyCopy = property;
+  mutablePersistentProperties = [(IMDDaemonPropertyManager *)self mutablePersistentProperties];
+  [mutablePersistentProperties setObject:valueCopy forKeyedSubscript:propertyCopy];
 
-  v8 = [@"Setting." stringByAppendingString:v6];
-  if (v11)
+  v8 = [@"Setting." stringByAppendingString:propertyCopy];
+  if (valueCopy)
   {
     IMSetAppValueForKey();
   }
@@ -149,19 +149,19 @@
     IMRemoveAppValueForKey();
   }
 
-  if (v11)
+  if (valueCopy)
   {
     v9 = +[IMDBroadcastController sharedProvider];
-    v10 = [v9 broadcasterForAllListeners];
-    [v10 persistentProperty:v6 changedTo:v11 from:0];
+    broadcasterForAllListeners = [v9 broadcasterForAllListeners];
+    [broadcasterForAllListeners persistentProperty:propertyCopy changedTo:valueCopy from:0];
   }
 }
 
-- (id)valueOfPersistentProperty:(id)a3
+- (id)valueOfPersistentProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(IMDDaemonPropertyManager *)self mutablePersistentProperties];
-  v6 = [v5 objectForKey:v4];
+  propertyCopy = property;
+  mutablePersistentProperties = [(IMDDaemonPropertyManager *)self mutablePersistentProperties];
+  v6 = [mutablePersistentProperties objectForKey:propertyCopy];
 
   return v6;
 }

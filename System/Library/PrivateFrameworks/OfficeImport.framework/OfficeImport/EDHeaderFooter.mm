@@ -1,8 +1,8 @@
 @interface EDHeaderFooter
 + (id)headerFooter;
 - (id)description;
-- (void)setFooterString:(id)a3;
-- (void)setHeaderString:(id)a3;
+- (void)setFooterString:(id)string;
+- (void)setHeaderString:(id)string;
 @end
 
 @implementation EDHeaderFooter
@@ -14,29 +14,29 @@
   return v2;
 }
 
-- (void)setHeaderString:(id)a3
+- (void)setHeaderString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   mHeaderString = self->mHeaderString;
   p_mHeaderString = &self->mHeaderString;
-  if (mHeaderString != v5)
+  if (mHeaderString != stringCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mHeaderString, a3);
-    v5 = v8;
+    v8 = stringCopy;
+    objc_storeStrong(p_mHeaderString, string);
+    stringCopy = v8;
   }
 }
 
-- (void)setFooterString:(id)a3
+- (void)setFooterString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   mFooterString = self->mFooterString;
   p_mFooterString = &self->mFooterString;
-  if (mFooterString != v5)
+  if (mFooterString != stringCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mFooterString, a3);
-    v5 = v8;
+    v8 = stringCopy;
+    objc_storeStrong(p_mFooterString, string);
+    stringCopy = v8;
   }
 }
 

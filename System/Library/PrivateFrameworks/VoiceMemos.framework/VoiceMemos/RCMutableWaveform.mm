@@ -1,37 +1,37 @@
 @interface RCMutableWaveform
-- (BOOL)clipToTimeRange:(id)a3;
-- (void)addSegment:(id)a3;
-- (void)addSegments:(id)a3;
+- (BOOL)clipToTimeRange:(id)range;
+- (void)addSegment:(id)segment;
+- (void)addSegments:(id)segments;
 - (void)removeAllSegments;
-- (void)removeSegment:(id)a3;
-- (void)setSegments:(id)a3;
+- (void)removeSegment:(id)segment;
+- (void)setSegments:(id)segments;
 @end
 
 @implementation RCMutableWaveform
 
-- (void)setSegments:(id)a3
+- (void)setSegments:(id)segments
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  v6 = [v5 mutableCopy];
+  selfCopy = self;
+  segmentsCopy = segments;
+  objc_sync_enter(selfCopy);
+  v6 = [segmentsCopy mutableCopy];
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = RCMutableWaveform;
   [(RCWaveform *)&v7 setSegments:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)clipToTimeRange:(id)a3
+- (BOOL)clipToTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = self;
-  objc_sync_enter(v5);
+  var1 = range.var1;
+  var0 = range.var0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = objc_opt_class();
-  v7 = [(RCWaveform *)v5 segments];
-  v8 = [v6 _mutableSegmentsByClippingToTimeRange:v7 withSegments:{var0, var1}];
+  segments = [(RCWaveform *)selfCopy segments];
+  v8 = [v6 _mutableSegmentsByClippingToTimeRange:segments withSegments:{var0, var1}];
 
   if ([v8 count])
   {
@@ -46,51 +46,51 @@
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [(RCMutableWaveform *)v5 setSegments:v8];
+  [(RCMutableWaveform *)selfCopy setSegments:v8];
   return 1;
 }
 
-- (void)addSegment:(id)a3
+- (void)addSegment:(id)segment
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(RCWaveform *)v4 segments];
-  [v5 addObject:v6];
+  segmentCopy = segment;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  segments = [(RCWaveform *)selfCopy segments];
+  [segments addObject:segmentCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addSegments:(id)a3
+- (void)addSegments:(id)segments
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(RCWaveform *)v4 segments];
-  [v5 addObjectsFromArray:v6];
+  segmentsCopy = segments;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  segments = [(RCWaveform *)selfCopy segments];
+  [segments addObjectsFromArray:segmentsCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeSegment:(id)a3
+- (void)removeSegment:(id)segment
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(RCWaveform *)v4 segments];
-  [v5 removeObject:v6];
+  segmentCopy = segment;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  segments = [(RCWaveform *)selfCopy segments];
+  [segments removeObject:segmentCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)removeAllSegments
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(RCWaveform *)obj segments];
-  [v2 removeAllObjects];
+  segments = [(RCWaveform *)obj segments];
+  [segments removeAllObjects];
 
   objc_sync_exit(obj);
 }

@@ -1,6 +1,6 @@
 @interface WatchControlFocusMovementController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WatchControlFocusMovementController
@@ -11,16 +11,16 @@
   if (!v3)
   {
     v38 = *MEMORY[0x277D3FC48];
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:0 edit:0];
     v6 = *MEMORY[0x277D3FFE8];
     [v5 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FFE8]];
-    [v4 addObject:v5];
-    v39 = self;
+    [array addObject:v5];
+    selfCopy = self;
     v40 = v5;
     objc_storeStrong(&self->_focusMovementStyleGroup, v5);
-    v7 = [MEMORY[0x277D7A910] sharedInstance];
-    v8 = [v7 focusMovementStyle];
+    mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+    focusMovementStyle = [mEMORY[0x277D7A910] focusMovementStyle];
 
     v9 = 0;
     v10 = 0;
@@ -36,8 +36,8 @@
       v17 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
       [v16 setProperty:v17 forKey:v11];
 
-      [v4 addObject:v16];
-      if (v10 == v8)
+      [array addObject:v16];
+      if (v10 == focusMovementStyle)
       {
         v18 = v16;
 
@@ -51,10 +51,10 @@
     while ((v13 & 1) != 0);
     v19 = *MEMORY[0x277D40090];
     [v40 setProperty:v9 forKey:*MEMORY[0x277D40090]];
-    v20 = [MEMORY[0x277D7A910] sharedInstance];
-    v21 = [v20 focusMovementStyle];
+    mEMORY[0x277D7A910]2 = [MEMORY[0x277D7A910] sharedInstance];
+    focusMovementStyle2 = [mEMORY[0x277D7A910]2 focusMovementStyle];
 
-    if (v21 == 1)
+    if (focusMovementStyle2 == 1)
     {
       v37 = v19;
       v22 = MEMORY[0x277D3FAD8];
@@ -62,10 +62,10 @@
       v24 = [v22 preferenceSpecifierNamed:v23 target:self set:0 get:0 detail:0 cell:0 edit:0];
 
       [v24 setProperty:MEMORY[0x277CBEC38] forKey:v6];
-      [v4 addObject:v24];
+      [array addObject:v24];
       objc_storeStrong(&self->_autoSpeedGroupSpecifier, v24);
-      v25 = [MEMORY[0x277D7A910] sharedInstance];
-      v26 = [v25 autoFocusNavigationSpeed];
+      mEMORY[0x277D7A910]3 = [MEMORY[0x277D7A910] sharedInstance];
+      autoFocusNavigationSpeed = [mEMORY[0x277D7A910]3 autoFocusNavigationSpeed];
 
       v27 = 0;
       v28 = 0;
@@ -78,8 +78,8 @@
         v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v27];
         [v31 setProperty:v32 forKey:v11];
 
-        [v4 addObject:v31];
-        if (v26 == v27)
+        [array addObject:v31];
+        if (autoFocusNavigationSpeed == v27)
         {
           v33 = v31;
 
@@ -94,46 +94,46 @@
     }
 
     v34 = *(&self->super.super.super.super.super.super.isa + v38);
-    *(&v39->super.super.super.super.super.super.isa + v38) = v4;
-    v35 = v4;
+    *(&selfCopy->super.super.super.super.super.super.isa + v38) = array;
+    v35 = array;
 
-    v3 = *(&v39->super.super.super.super.super.super.isa + v38);
+    v3 = *(&selfCopy->super.super.super.super.super.super.isa + v38);
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = WatchControlFocusMovementController;
-  v6 = a4;
-  [(WatchControlFocusMovementController *)&v16 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(WatchControlFocusMovementController *)self indexForIndexPath:v6, v16.receiver, v16.super_class];
-  v8 = [(WatchControlFocusMovementController *)self specifiers];
-  v9 = [v8 objectAtIndex:v7];
+  pathCopy = path;
+  [(WatchControlFocusMovementController *)&v16 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(WatchControlFocusMovementController *)self indexForIndexPath:pathCopy, v16.receiver, v16.super_class];
+  specifiers = [(WatchControlFocusMovementController *)self specifiers];
+  v9 = [specifiers objectAtIndex:v7];
 
-  v10 = [v6 section];
-  v11 = [(WatchControlFocusMovementController *)self specifierAtIndex:[(WatchControlFocusMovementController *)self indexOfGroup:v10]];
+  section = [pathCopy section];
+  v11 = [(WatchControlFocusMovementController *)self specifierAtIndex:[(WatchControlFocusMovementController *)self indexOfGroup:section]];
   v12 = [(PSSpecifier *)v11 propertyForKey:*MEMORY[0x277D3FFE8]];
-  v13 = [v12 BOOLValue];
+  bOOLValue = [v12 BOOLValue];
 
-  if (v13)
+  if (bOOLValue)
   {
     v14 = [v9 propertyForKey:*MEMORY[0x277D401A8]];
     if (v14)
     {
       if (v11 == self->_focusMovementStyleGroup)
       {
-        v15 = [MEMORY[0x277D7A910] sharedInstance];
-        [v15 setFocusMovementStyle:{objc_msgSend(v14, "integerValue")}];
+        mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+        [mEMORY[0x277D7A910] setFocusMovementStyle:{objc_msgSend(v14, "integerValue")}];
         goto LABEL_7;
       }
 
       if (v11 == self->_autoSpeedGroupSpecifier)
       {
-        v15 = [MEMORY[0x277D7A910] sharedInstance];
-        [v15 setAutoFocusNavigationSpeed:{objc_msgSend(v14, "integerValue")}];
+        mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+        [mEMORY[0x277D7A910] setAutoFocusNavigationSpeed:{objc_msgSend(v14, "integerValue")}];
 LABEL_7:
 
         [(WatchControlFocusMovementController *)self reloadSpecifiers];

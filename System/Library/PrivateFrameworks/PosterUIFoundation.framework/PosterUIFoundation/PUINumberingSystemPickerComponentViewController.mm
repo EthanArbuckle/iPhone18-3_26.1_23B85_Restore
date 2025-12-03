@@ -1,14 +1,14 @@
 @interface PUINumberingSystemPickerComponentViewController
 - (CGSize)cellSize;
 - (NSLocale)displayLocale;
-- (PUINumberingSystemPickerComponentViewController)initWithNumberingSystem:(id)a3 font:(id)a4;
+- (PUINumberingSystemPickerComponentViewController)initWithNumberingSystem:(id)system font:(id)font;
 - (PUINumberingSystemPickerComponentViewControllerDelegate)delegate;
 - (double)estimatedHeight;
-- (id)baseContentStringForLocale:(id)a3;
-- (id)contentStringForFont:(id)a3 locale:(id)a4;
+- (id)baseContentStringForLocale:(id)locale;
+- (id)contentStringForFont:(id)font locale:(id)locale;
 - (id)displayFont;
-- (void)didSelectNumberingSystem:(id)a3;
-- (void)setFont:(id)a3;
+- (void)didSelectNumberingSystem:(id)system;
+- (void)setFont:(id)font;
 - (void)updateLayoutForCurrentSize;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -16,16 +16,16 @@
 
 @implementation PUINumberingSystemPickerComponentViewController
 
-- (PUINumberingSystemPickerComponentViewController)initWithNumberingSystem:(id)a3 font:(id)a4
+- (PUINumberingSystemPickerComponentViewController)initWithNumberingSystem:(id)system font:(id)font
 {
-  v6 = a3;
-  v7 = a4;
+  systemCopy = system;
+  fontCopy = font;
   v13.receiver = self;
   v13.super_class = PUINumberingSystemPickerComponentViewController;
   v8 = [(PUINumberingSystemPickerComponentViewController *)&v13 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [systemCopy copy];
     v10 = v9;
     if (!v9)
     {
@@ -37,14 +37,14 @@
     {
     }
 
-    v11 = v7;
-    if (!v7)
+    v11 = fontCopy;
+    if (!fontCopy)
     {
       v11 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
     }
 
     objc_storeStrong(&v8->_font, v11);
-    if (!v7)
+    if (!fontCopy)
     {
     }
   }
@@ -60,7 +60,7 @@
   [(PUINumberingSystemPickerComponentViewController *)&v64 viewDidLoad];
   v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v3 = +[PUINumberingSystem supportedNumberingSystemTypes];
-  v53 = [(PUINumberingSystemPickerComponentViewController *)self selectedNumberingSystem];
+  selectedNumberingSystem = [(PUINumberingSystemPickerComponentViewController *)self selectedNumberingSystem];
   objc_initWeak(&location, self);
   v61 = 0u;
   v62 = 0u;
@@ -81,17 +81,17 @@
         }
 
         v6 = [[PUINumberingSystem alloc] initWithNumberingSystemType:*(*(&v59 + 1) + 8 * i)];
-        v7 = [(PUINumberingSystem *)v6 locale];
-        v8 = [(PUINumberingSystem *)v6 localizedDisplayName];
-        v9 = [(PUINumberingSystemPickerComponentViewController *)self font];
-        v10 = [(PUINumberingSystemPickerComponentViewController *)self contentStringForFont:v9 locale:v7];
+        locale = [(PUINumberingSystem *)v6 locale];
+        localizedDisplayName = [(PUINumberingSystem *)v6 localizedDisplayName];
+        font = [(PUINumberingSystemPickerComponentViewController *)self font];
+        v10 = [(PUINumberingSystemPickerComponentViewController *)self contentStringForFont:font locale:locale];
 
         v11 = objc_alloc_init(PUIStylePickerLabeledButton);
-        v12 = [(PUIStylePickerLabeledButton *)v11 contentLabel];
-        [v12 setAttributedText:v10];
+        contentLabel = [(PUIStylePickerLabeledButton *)v11 contentLabel];
+        [contentLabel setAttributedText:v10];
 
-        v13 = [(PUIStylePickerLabeledButton *)v11 nameLabel];
-        [v13 setText:v8];
+        nameLabel = [(PUIStylePickerLabeledButton *)v11 nameLabel];
+        [nameLabel setText:localizedDisplayName];
 
         v14 = MEMORY[0x1E69DC628];
         v55[0] = MEMORY[0x1E69E9820];
@@ -105,7 +105,7 @@
         v57 = v16;
         v17 = [v14 actionWithHandler:v55];
         [(PUIStylePickerLabeledButton *)v16 addAction:v17 forControlEvents:0x2000];
-        if ([(PUINumberingSystem *)v15 isEqual:v53])
+        if ([(PUINumberingSystem *)v15 isEqual:selectedNumberingSystem])
         {
           [(PUIStylePickerLabeledButton *)v16 setSelected:1];
           [(PUINumberingSystemPickerComponentViewController *)self setSelectedSymbolView:v16];
@@ -148,13 +148,13 @@
     v22 = v21 / 3 + 1;
   }
 
-  v23 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v22)
   {
     v24 = 0;
     for (j = 0; j != v22; ++j)
     {
-      v26 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v27 = v24;
       v28 = 3;
       do
@@ -165,52 +165,52 @@
         }
 
         v29 = [v54 objectAtIndexedSubscript:v27];
-        [v26 addObject:v29];
+        [array2 addObject:v29];
 
         ++v27;
         --v28;
       }
 
       while (v28);
-      v30 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v26];
+      v30 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array2];
       [v30 setAxis:0];
       [v30 setDistribution:1];
       [v30 setAlignment:1];
       [v30 setSpacing:0.0];
       [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v23 addObject:v30];
+      [array addObject:v30];
 
       v24 += 3;
     }
   }
 
-  v31 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v23];
+  v31 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array];
   [v31 setAxis:1];
   [v31 setSpacing:24.0];
   [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(PUINumberingSystemPickerComponentViewController *)self view];
-  [v32 addSubview:v31];
+  view = [(PUINumberingSystemPickerComponentViewController *)self view];
+  [view addSubview:v31];
 
   v40 = MEMORY[0x1E696ACD8];
-  v33 = [v31 leadingAnchor];
-  v52 = [(PUINumberingSystemPickerComponentViewController *)self view];
-  v49 = [v52 leadingAnchor];
-  v48 = [v33 constraintEqualToAnchor:v49 constant:23.0];
+  leadingAnchor = [v31 leadingAnchor];
+  view2 = [(PUINumberingSystemPickerComponentViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:23.0];
   v65[0] = v48;
-  v45 = [v31 trailingAnchor];
-  v47 = [(PUINumberingSystemPickerComponentViewController *)self view];
-  v46 = [v47 trailingAnchor];
-  v44 = [v45 constraintEqualToAnchor:v46 constant:-23.0];
+  trailingAnchor = [v31 trailingAnchor];
+  view3 = [(PUINumberingSystemPickerComponentViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-23.0];
   v65[1] = v44;
-  v42 = [v31 bottomAnchor];
-  v43 = [(PUINumberingSystemPickerComponentViewController *)self view];
-  v41 = [v43 bottomAnchor];
-  v34 = [v42 constraintEqualToAnchor:v41];
+  bottomAnchor = [v31 bottomAnchor];
+  view4 = [(PUINumberingSystemPickerComponentViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v65[2] = v34;
-  v35 = [v31 topAnchor];
-  v36 = [(PUINumberingSystemPickerComponentViewController *)self view];
-  v37 = [v36 topAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
+  topAnchor = [v31 topAnchor];
+  view5 = [(PUINumberingSystemPickerComponentViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v65[3] = v38;
   v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:4];
   [v40 activateConstraints:v39];
@@ -236,8 +236,8 @@ void __62__PUINumberingSystemPickerComponentViewController_viewDidLoad__block_in
   v8.receiver = self;
   v8.super_class = PUINumberingSystemPickerComponentViewController;
   [(PUINumberingSystemPickerComponentViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(PUINumberingSystemPickerComponentViewController *)self view];
-  [v3 bounds];
+  view = [(PUINumberingSystemPickerComponentViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   if (v5 > 375.0)
@@ -257,8 +257,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v7 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v6 = [currentDevice userInterfaceIdiom] != 1;
 
   if (v6 == [(PUINumberingSystemPickerComponentViewController *)self isUsingSmallerSizing])
   {
@@ -273,16 +273,16 @@ LABEL_6:
 - (void)updateLayoutForCurrentSize
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = [(PUINumberingSystemPickerComponentViewController *)self isUsingSmallerSizing];
+  isUsingSmallerSizing = [(PUINumberingSystemPickerComponentViewController *)self isUsingSmallerSizing];
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(PUINumberingSystemPickerComponentViewController *)self widthCellConstraints];
-  [v4 deactivateConstraints:v5];
+  widthCellConstraints = [(PUINumberingSystemPickerComponentViewController *)self widthCellConstraints];
+  [v4 deactivateConstraints:widthCellConstraints];
 
   v6 = MEMORY[0x1E696ACD8];
-  v7 = [(PUINumberingSystemPickerComponentViewController *)self heightCellConstraints];
-  [v6 deactivateConstraints:v7];
+  heightCellConstraints = [(PUINumberingSystemPickerComponentViewController *)self heightCellConstraints];
+  [v6 deactivateConstraints:heightCellConstraints];
 
-  if (v3)
+  if (isUsingSmallerSizing)
   {
     v8 = 86.0;
   }
@@ -292,7 +292,7 @@ LABEL_6:
     v8 = 89.0;
   }
 
-  if (v3)
+  if (isUsingSmallerSizing)
   {
     v9 = 88.0;
   }
@@ -302,11 +302,11 @@ LABEL_6:
     v9 = 90.0;
   }
 
-  v47 = [MEMORY[0x1E695DF70] array];
-  v46 = [MEMORY[0x1E695DF70] array];
-  v45 = [(PUINumberingSystemPickerComponentViewController *)self font];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  font = [(PUINumberingSystemPickerComponentViewController *)self font];
   v10 = +[PUINumberingSystem supportedNumberingSystemTypes];
-  v44 = [v10 array];
+  array3 = [v10 array];
 
   v51 = 0u;
   v52 = 0u;
@@ -328,20 +328,20 @@ LABEL_6:
         }
 
         v13 = *(*(&v49 + 1) + 8 * i);
-        v14 = [v44 objectAtIndexedSubscript:v11];
+        v14 = [array3 objectAtIndexedSubscript:v11];
         v15 = [[PUINumberingSystem alloc] initWithNumberingSystemType:v14];
-        v16 = [v13 contentLabel];
-        v17 = [(PUINumberingSystem *)v15 locale];
-        v18 = [(PUINumberingSystemPickerComponentViewController *)self contentStringForFont:v45 locale:v17];
+        contentLabel = [v13 contentLabel];
+        locale = [(PUINumberingSystem *)v15 locale];
+        v18 = [(PUINumberingSystemPickerComponentViewController *)self contentStringForFont:font locale:locale];
 
-        [v16 setAttributedText:v18];
-        v19 = [v13 widthAnchor];
-        v20 = [v19 constraintEqualToConstant:v8];
-        [v47 addObject:v20];
+        [contentLabel setAttributedText:v18];
+        widthAnchor = [v13 widthAnchor];
+        v20 = [widthAnchor constraintEqualToConstant:v8];
+        [array addObject:v20];
 
-        v21 = [v13 heightAnchor];
-        v22 = [v21 constraintEqualToConstant:v9];
-        [v46 addObject:v22];
+        heightAnchor = [v13 heightAnchor];
+        v22 = [heightAnchor constraintEqualToConstant:v9];
+        [array2 addObject:v22];
 
         v11 += 2;
       }
@@ -352,30 +352,30 @@ LABEL_6:
     while (v48);
   }
 
-  v23 = [v47 copy];
+  v23 = [array copy];
   widthCellConstraints = self->_widthCellConstraints;
   self->_widthCellConstraints = v23;
 
-  v25 = [v46 copy];
+  v25 = [array2 copy];
   heightCellConstraints = self->_heightCellConstraints;
   self->_heightCellConstraints = v25;
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v47];
-  [MEMORY[0x1E696ACD8] activateConstraints:v46];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
+  [MEMORY[0x1E696ACD8] activateConstraints:array2];
   if ([(PUINumberingSystemPickerComponentViewController *)self isViewLoaded])
   {
-    v27 = [(PUINumberingSystemPickerComponentViewController *)self view];
-    [v27 bounds];
+    view = [(PUINumberingSystemPickerComponentViewController *)self view];
+    [view bounds];
     v29 = v28;
 
     if (self->_configuredViewWidth != v29)
     {
       v30 = v29 + v8 * -3.0;
-      v31 = [(PUINumberingSystemPickerComponentViewController *)self stackViewLeadingConstraint];
-      [v31 constant];
+      stackViewLeadingConstraint = [(PUINumberingSystemPickerComponentViewController *)self stackViewLeadingConstraint];
+      [stackViewLeadingConstraint constant];
       v33 = v32;
-      v34 = [(PUINumberingSystemPickerComponentViewController *)self stackViewTrailingConstraint];
-      [v34 constant];
+      stackViewTrailingConstraint = [(PUINumberingSystemPickerComponentViewController *)self stackViewTrailingConstraint];
+      [stackViewTrailingConstraint constant];
       v36 = v33 - v35;
 
       if (v30 >= v36)
@@ -388,8 +388,8 @@ LABEL_6:
         v37 = v30 * 0.5;
       }
 
-      v38 = [(PUINumberingSystemPickerComponentViewController *)self stackViewLeadingConstraint];
-      v39 = v38;
+      stackViewLeadingConstraint2 = [(PUINumberingSystemPickerComponentViewController *)self stackViewLeadingConstraint];
+      v39 = stackViewLeadingConstraint2;
       if (v37 >= 0.0)
       {
         v40 = v37;
@@ -400,38 +400,38 @@ LABEL_6:
         v40 = 0.0;
       }
 
-      [v38 setConstant:v40];
+      [stackViewLeadingConstraint2 setConstant:v40];
 
-      v41 = [(PUINumberingSystemPickerComponentViewController *)self stackViewTrailingConstraint];
-      [v41 setConstant:{fmin(-v37, 0.0)}];
+      stackViewTrailingConstraint2 = [(PUINumberingSystemPickerComponentViewController *)self stackViewTrailingConstraint];
+      [stackViewTrailingConstraint2 setConstant:{fmin(-v37, 0.0)}];
 
       self->_configuredViewWidth = v29;
     }
   }
 }
 
-- (id)baseContentStringForLocale:(id)a3
+- (id)baseContentStringForLocale:(id)locale
 {
   v3 = MEMORY[0x1E696ADA0];
-  v4 = a3;
+  localeCopy = locale;
   v5 = objc_alloc_init(v3);
   [v5 setNumberStyle:1];
-  [v5 setLocale:v4];
+  [v5 setLocale:localeCopy];
 
   v6 = [v5 stringFromNumber:&unk_1F1C929A0];
 
   return v6;
 }
 
-- (id)contentStringForFont:(id)a3 locale:(id)a4
+- (id)contentStringForFont:(id)font locale:(id)locale
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = [(PUINumberingSystemPickerComponentViewController *)self baseContentStringForLocale:a4];
-  v6 = [(PUINumberingSystemPickerComponentViewController *)self selectedNumberingSystem];
-  v7 = v6;
-  if (v6)
+  v5 = [(PUINumberingSystemPickerComponentViewController *)self baseContentStringForLocale:locale];
+  selectedNumberingSystem = [(PUINumberingSystemPickerComponentViewController *)self selectedNumberingSystem];
+  v7 = selectedNumberingSystem;
+  if (selectedNumberingSystem)
   {
-    v8 = v6;
+    v8 = selectedNumberingSystem;
   }
 
   else
@@ -441,8 +441,8 @@ LABEL_6:
 
   v9 = v8;
 
-  v10 = [(PUINumberingSystemPickerComponentViewController *)self font];
-  v11 = [PUINumberingSystem numberingSystemDisplayFontForFont:v10];
+  font = [(PUINumberingSystemPickerComponentViewController *)self font];
+  v11 = [PUINumberingSystem numberingSystemDisplayFontForFont:font];
 
   v12 = MEMORY[0x1E695DF90];
   v21 = *MEMORY[0x1E69DB648];
@@ -450,13 +450,13 @@ LABEL_6:
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
   v14 = [v12 dictionaryWithDictionary:v13];
 
-  v15 = [v9 type];
-  v16 = PUINumberingSystemTypeRequiresLanguageTagging(v15);
+  type = [v9 type];
+  v16 = PUINumberingSystemTypeRequiresLanguageTagging(type);
 
   if (v16)
   {
-    v17 = [v9 type];
-    v18 = PUINumberingTypeSystemLanguageTag(v17);
+    type2 = [v9 type];
+    v18 = PUINumberingTypeSystemLanguageTag(type2);
     [v14 setObject:v18 forKeyedSubscript:*MEMORY[0x1E696A518]];
   }
 
@@ -465,15 +465,15 @@ LABEL_6:
   return v19;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_font != v5)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    v21 = v5;
-    objc_storeStrong(&self->_font, a3);
-    v25 = [(PUINumberingSystemPickerComponentViewController *)self displayFont];
+    v21 = fontCopy;
+    objc_storeStrong(&self->_font, font);
+    displayFont = [(PUINumberingSystemPickerComponentViewController *)self displayFont];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -496,15 +496,15 @@ LABEL_6:
           }
 
           v10 = *(*(&v26 + 1) + 8 * i);
-          v11 = [v10 contentLabel];
-          v12 = [v11 attributedText];
+          contentLabel = [v10 contentLabel];
+          attributedText = [contentLabel attributedText];
           v13 = MEMORY[0x1E695DF90];
           v30 = v23;
-          v31 = v25;
+          v31 = displayFont;
           v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
           v15 = [v13 dictionaryWithDictionary:v14];
 
-          v16 = [v12 attributesAtIndex:0 effectiveRange:0];
+          v16 = [attributedText attributesAtIndex:0 effectiveRange:0];
           v17 = [v16 objectForKeyedSubscript:v8];
 
           if (v17 && [v17 length])
@@ -513,10 +513,10 @@ LABEL_6:
           }
 
           v18 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v19 = [v12 string];
-          v20 = [v18 initWithString:v19 attributes:v15];
+          string = [attributedText string];
+          v20 = [v18 initWithString:string attributes:v15];
 
-          [v11 setAttributedText:v20];
+          [contentLabel setAttributedText:v20];
           [v10 invalidateIntrinsicContentSize];
         }
 
@@ -526,20 +526,20 @@ LABEL_6:
       while (v7);
     }
 
-    v5 = v21;
+    fontCopy = v21;
   }
 }
 
 - (double)estimatedHeight
 {
   v3 = +[PUINumberingSystem supportedNumberingSystemTypes];
-  v4 = [v3 array];
+  array = [v3 array];
 
-  if ((-[PUINumberingSystemPickerComponentViewController isViewLoaded](self, "isViewLoaded") & 1) == 0 && [v4 count])
+  if ((-[PUINumberingSystemPickerComponentViewController isViewLoaded](self, "isViewLoaded") & 1) == 0 && [array count])
   {
-    v5 = [(PUINumberingSystemPickerComponentViewController *)self isUsingSmallerSizing];
+    isUsingSmallerSizing = [(PUINumberingSystemPickerComponentViewController *)self isUsingSmallerSizing];
     v6 = 64.0;
-    if (v5)
+    if (isUsingSmallerSizing)
     {
       v6 = 62.0;
     }
@@ -547,8 +547,8 @@ LABEL_6:
     self->_largestItemHeight = v6;
   }
 
-  v7 = [v4 count] / 3uLL;
-  if (0xAAAAAAAAAAAAAAABLL * [v4 count] <= 0x5555555555555555)
+  v7 = [array count] / 3uLL;
+  if (0xAAAAAAAAAAAAAAABLL * [array count] <= 0x5555555555555555)
   {
     v8 = v7;
   }
@@ -565,11 +565,11 @@ LABEL_6:
 
 - (id)displayFont
 {
-  v2 = [(PUINumberingSystemPickerComponentViewController *)self font];
-  v3 = v2;
-  if (v2)
+  font = [(PUINumberingSystemPickerComponentViewController *)self font];
+  v3 = font;
+  if (font)
   {
-    [v2 fontWithSize:56.0];
+    [font fontWithSize:56.0];
   }
 
   else
@@ -583,17 +583,17 @@ LABEL_6:
 
 - (NSLocale)displayLocale
 {
-  v2 = [(PUINumberingSystemPickerComponentViewController *)self selectedNumberingSystem];
-  v3 = [v2 locale];
+  selectedNumberingSystem = [(PUINumberingSystemPickerComponentViewController *)self selectedNumberingSystem];
+  locale = [selectedNumberingSystem locale];
 
-  return v3;
+  return locale;
 }
 
-- (void)didSelectNumberingSystem:(id)a3
+- (void)didSelectNumberingSystem:(id)system
 {
-  v4 = a3;
-  v5 = [(PUINumberingSystemPickerComponentViewController *)self delegate];
-  [v5 numberingSystemPickerViewController:self didSelectNumberingSystem:v4];
+  systemCopy = system;
+  delegate = [(PUINumberingSystemPickerComponentViewController *)self delegate];
+  [delegate numberingSystemPickerViewController:self didSelectNumberingSystem:systemCopy];
 }
 
 - (PUINumberingSystemPickerComponentViewControllerDelegate)delegate

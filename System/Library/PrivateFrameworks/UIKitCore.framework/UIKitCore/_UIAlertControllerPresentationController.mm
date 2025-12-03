@@ -2,52 +2,52 @@
 - (BOOL)_canDismissPresentation;
 - (BOOL)_preserveResponderAcrossWindows;
 - (BOOL)_shouldOccludeDuringPresentation;
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3;
-- (_UIAlertControllerPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview;
+- (_UIAlertControllerPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (_UIForcePresentationControllerDelegate)forcePresentationControllerDelegate;
-- (id)_createVisualStyleForProvider:(id)a3;
+- (id)_createVisualStyleForProvider:(id)provider;
 - (id)_presentedAlertController;
 - (void)_prepareConstraintsIfNecessary;
 - (void)_prepareDimmingViewIfNecessary;
 - (void)_presentedAlertControllerDidAdapt;
-- (void)_setChromeHidden:(BOOL)a3;
+- (void)_setChromeHidden:(BOOL)hidden;
 - (void)_updateConstraintsIfNecessary;
-- (void)_willRunTransitionForCurrentStateDeferred:(BOOL)a3;
+- (void)_willRunTransitionForCurrentStateDeferred:(BOOL)deferred;
 - (void)containerViewDidLayoutSubviews;
 - (void)containerViewWillLayoutSubviews;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)presentationTransitionWillBegin;
-- (void)setDelegate:(id)a3;
-- (void)setPanningGestureRecognizer:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)setPanningGestureRecognizer:(id)recognizer;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _UIAlertControllerPresentationController
 
 - (BOOL)_canDismissPresentation
 {
-  v2 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-  v3 = [v2 transitionCoordinator];
-  if (v3)
+  _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+  transitionCoordinator = [_presentedAlertController transitionCoordinator];
+  if (transitionCoordinator)
   {
-    v4 = [v2 transitionCoordinator];
-    v5 = [v4 isInteractive];
+    transitionCoordinator2 = [_presentedAlertController transitionCoordinator];
+    isInteractive = [transitionCoordinator2 isInteractive];
   }
 
   else
   {
-    v5 = 0;
+    isInteractive = 0;
   }
 
-  return v5;
+  return isInteractive;
 }
 
-- (_UIAlertControllerPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_UIAlertControllerPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   v24.receiver = self;
   v24.super_class = _UIAlertControllerPresentationController;
-  v7 = [(UIPresentationController *)&v24 initWithPresentedViewController:a3 presentingViewController:v6];
+  v7 = [(UIPresentationController *)&v24 initWithPresentedViewController:controller presentingViewController:viewControllerCopy];
   v8 = v7;
   if (v7)
   {
@@ -71,8 +71,8 @@
     v19 = [v18 tweakedConfigurationForClass:objc_opt_class() usage:@"previewInteractionPresentation"];
 
     v20 = [_UIStatesFeedbackGenerator alloc];
-    v21 = [v6 view];
-    v22 = [(_UIStatesFeedbackGenerator *)v20 initWithConfiguration:v19 view:v21];
+    view = [viewControllerCopy view];
+    v22 = [(_UIStatesFeedbackGenerator *)v20 initWithConfiguration:v19 view:view];
     [(_UIAlertControllerPresentationController *)v8 setFeedbackGenerator:v22];
   }
 
@@ -95,26 +95,26 @@
   dimmingView = self->_dimmingView;
   if (dimmingView)
   {
-    v4 = [(UIPresentationController *)self containerView];
-    [v4 bounds];
+    containerView = [(UIPresentationController *)self containerView];
+    [containerView bounds];
     [(UIView *)dimmingView setFrame:?];
   }
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v24.receiver = self;
   v24.super_class = _UIAlertControllerPresentationController;
-  [(UIPresentationController *)&v24 preferredContentSizeDidChangeForChildContentContainer:a3];
-  v4 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-  [v4 preferredContentSize];
+  [(UIPresentationController *)&v24 preferredContentSizeDidChangeForChildContentContainer:container];
+  _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+  [_presentedAlertController preferredContentSize];
   v7 = v6;
   v8 = v5;
   if (v6 != *MEMORY[0x1E695F060] || v5 != *(MEMORY[0x1E695F060] + 8))
   {
-    v10 = [v4 _visualStyle];
-    v11 = [(UIPresentationController *)self containerView];
-    [v10 contentInsetsForContainerView:v11];
+    _visualStyle = [_presentedAlertController _visualStyle];
+    containerView = [(UIPresentationController *)self containerView];
+    [_visualStyle contentInsetsForContainerView:containerView];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -137,9 +137,9 @@
   }
 }
 
-- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)a3
+- (CGRect)_frameForTransitionViewInPresentationSuperview:(id)superview
 {
-  [a3 bounds];
+  [superview bounds];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -149,23 +149,23 @@
 
 - (void)_prepareDimmingViewIfNecessary
 {
-  v12 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-  v3 = [v12 _visualStyle];
-  v4 = [(_UIAlertControllerPresentationController *)self _dimmingView];
-  if (v12 && !v4 && v3)
+  _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+  _visualStyle = [_presentedAlertController _visualStyle];
+  _dimmingView = [(_UIAlertControllerPresentationController *)self _dimmingView];
+  if (_presentedAlertController && !_dimmingView && _visualStyle)
   {
-    if (![v12 _allowsShowingDimmingView])
+    if (![_presentedAlertController _allowsShowingDimmingView])
     {
       goto LABEL_10;
     }
 
-    v4 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-    v5 = [(UIPresentationController *)self containerView];
-    v6 = [(_UIAlertControllerPresentationController *)self _dimmingView];
-    [v6 removeFromSuperview];
+    _dimmingView = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+    containerView = [(UIPresentationController *)self containerView];
+    _dimmingView2 = [(_UIAlertControllerPresentationController *)self _dimmingView];
+    [_dimmingView2 removeFromSuperview];
 
-    v7 = [v4 _visualStyle];
-    v8 = [v7 dimmingViewForAlertController:v4];
+    _visualStyle2 = [_dimmingView _visualStyle];
+    v8 = [_visualStyle2 dimmingViewForAlertController:_dimmingView];
     dimmingView = self->_dimmingView;
     self->_dimmingView = v8;
 
@@ -173,12 +173,12 @@
     v10 = self->_dimmingView;
     if (v10)
     {
-      [v5 insertSubview:v10 atIndex:0];
-      [v5 sendSubviewToBack:v10];
-      if ([v4 _canDismissWithGestureRecognizer])
+      [containerView insertSubview:v10 atIndex:0];
+      [containerView sendSubviewToBack:v10];
+      if ([_dimmingView _canDismissWithGestureRecognizer])
       {
-        v11 = [v4 _dismissGestureRecognizer];
-        [(UIView *)v10 addGestureRecognizer:v11];
+        _dismissGestureRecognizer = [_dimmingView _dismissGestureRecognizer];
+        [(UIView *)v10 addGestureRecognizer:_dismissGestureRecognizer];
       }
     }
   }
@@ -186,11 +186,11 @@
 LABEL_10:
 }
 
-- (void)_willRunTransitionForCurrentStateDeferred:(BOOL)a3
+- (void)_willRunTransitionForCurrentStateDeferred:(BOOL)deferred
 {
   v4.receiver = self;
   v4.super_class = _UIAlertControllerPresentationController;
-  [(UIPresentationController *)&v4 _willRunTransitionForCurrentStateDeferred:a3];
+  [(UIPresentationController *)&v4 _willRunTransitionForCurrentStateDeferred:deferred];
   if (![(UIPresentationController *)self presenting])
   {
     [(_UIKeyboardLayoutAlignmentView *)self->keyboardLayoutAlignmentView setAutomaticKeyboardFrameTrackingDisabled:1];
@@ -199,27 +199,27 @@ LABEL_10:
 
 - (void)presentationTransitionWillBegin
 {
-  v12 = [(UIPresentationController *)self containerView];
-  v3 = [(UIPresentationController *)self presentingViewController];
-  v4 = [v3 _transitionCoordinator];
+  containerView = [(UIPresentationController *)self containerView];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  _transitionCoordinator = [presentingViewController _transitionCoordinator];
 
-  [v12 insertSubview:self->keyboardLayoutAlignmentView atIndex:0];
-  [v12 insertSubview:self->keyboardLayoutAlignmentAvailableSpaceView atIndex:0];
-  v5 = [(UIPresentationController *)self presentedView];
-  [v12 addSubview:v5];
+  [containerView insertSubview:self->keyboardLayoutAlignmentView atIndex:0];
+  [containerView insertSubview:self->keyboardLayoutAlignmentAvailableSpaceView atIndex:0];
+  presentedView = [(UIPresentationController *)self presentedView];
+  [containerView addSubview:presentedView];
 
-  v6 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-  v7 = [(UIPresentationController *)self presentedViewController];
-  v8 = [v7 traitCollection];
-  [v6 _updateProvidedStyleWithTraitCollection:v8];
+  _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  traitCollection = [presentedViewController traitCollection];
+  [_presentedAlertController _updateProvidedStyleWithTraitCollection:traitCollection];
 
   [(_UIAlertControllerPresentationController *)self _prepareDimmingViewIfNecessary];
   [(_UIAlertControllerPresentationController *)self _prepareConstraintsIfNecessary];
-  [v12 layoutIfNeeded];
-  v9 = [(_UIAlertControllerPresentationController *)self forcePresentationControllerDelegate];
+  [containerView layoutIfNeeded];
+  forcePresentationControllerDelegate = [(_UIAlertControllerPresentationController *)self forcePresentationControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 forcePresentationTransitionWillBegin:self];
+    [forcePresentationControllerDelegate forcePresentationTransitionWillBegin:self];
     v10 = +[_UIStatistics previewInteractionTapCount];
     [v10 setSampleRate:0.0];
 
@@ -230,71 +230,71 @@ LABEL_10:
 
 - (BOOL)_preserveResponderAcrossWindows
 {
-  v2 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-  v3 = [v2 _visualStyle];
-  v4 = [v3 shouldPreserveRespondersAcrossWindows];
+  _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+  _visualStyle = [_presentedAlertController _visualStyle];
+  shouldPreserveRespondersAcrossWindows = [_visualStyle shouldPreserveRespondersAcrossWindows];
 
-  return v4;
+  return shouldPreserveRespondersAcrossWindows;
 }
 
 - (BOOL)_shouldOccludeDuringPresentation
 {
-  v2 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-  v3 = [v2 _visualStyle];
-  v4 = [v3 shouldOccludeDuringPresentation];
+  _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+  _visualStyle = [_presentedAlertController _visualStyle];
+  shouldOccludeDuringPresentation = [_visualStyle shouldOccludeDuringPresentation];
 
-  return v4;
+  return shouldOccludeDuringPresentation;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = _UIAlertControllerPresentationController;
-  v7 = a4;
-  [(UIPresentationController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(UIPresentationController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __95___UIAlertControllerPresentationController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E70F3B98;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)_prepareConstraintsIfNecessary
 {
   if (!self->constraintsPrepared)
   {
-    v3 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-    v4 = [v3 view];
-    v5 = [(UIPresentationController *)self containerView];
-    v6 = [v3 _visualStyle];
-    if ([v4 isDescendantOfView:v5])
+    _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+    view = [_presentedAlertController view];
+    containerView = [(UIPresentationController *)self containerView];
+    _visualStyle = [_presentedAlertController _visualStyle];
+    if ([view isDescendantOfView:containerView])
     {
-      if ([(UIView *)self->keyboardLayoutAlignmentAvailableSpaceView isDescendantOfView:v5]&& v6 != 0)
+      if ([(UIView *)self->keyboardLayoutAlignmentAvailableSpaceView isDescendantOfView:containerView]&& _visualStyle != 0)
       {
         self->constraintsPrepared = 1;
         v8 = objc_opt_new();
         visualStyleUpdatableConstraints = self->_visualStyleUpdatableConstraints;
         self->_visualStyleUpdatableConstraints = v8;
 
-        v10 = [MEMORY[0x1E695DF70] array];
-        v11 = [MEMORY[0x1E69977A0] constraintWithItem:self->keyboardLayoutAlignmentAvailableSpaceView attribute:3 relatedBy:0 toItem:v5 attribute:3 multiplier:1.0 constant:0.0];
-        [v10 addObject:v11];
+        array = [MEMORY[0x1E695DF70] array];
+        v11 = [MEMORY[0x1E69977A0] constraintWithItem:self->keyboardLayoutAlignmentAvailableSpaceView attribute:3 relatedBy:0 toItem:containerView attribute:3 multiplier:1.0 constant:0.0];
+        [array addObject:v11];
 
         v12 = [MEMORY[0x1E69977A0] constraintWithItem:self->keyboardLayoutAlignmentAvailableSpaceView attribute:4 relatedBy:0 toItem:self->keyboardLayoutAlignmentView attribute:3 multiplier:1.0 constant:0.0];
-        [v10 addObject:v12];
+        [array addObject:v12];
 
-        v13 = [MEMORY[0x1E69977A0] constraintWithItem:self->keyboardLayoutAlignmentAvailableSpaceView attribute:7 relatedBy:0 toItem:v5 attribute:7 multiplier:1.0 constant:0.0];
-        [v10 addObject:v13];
+        v13 = [MEMORY[0x1E69977A0] constraintWithItem:self->keyboardLayoutAlignmentAvailableSpaceView attribute:7 relatedBy:0 toItem:containerView attribute:7 multiplier:1.0 constant:0.0];
+        [array addObject:v13];
 
-        v14 = [MEMORY[0x1E69977A0] constraintWithItem:self->keyboardLayoutAlignmentAvailableSpaceView attribute:1 relatedBy:0 toItem:v5 attribute:1 multiplier:1.0 constant:0.0];
-        [v10 addObject:v14];
+        v14 = [MEMORY[0x1E69977A0] constraintWithItem:self->keyboardLayoutAlignmentAvailableSpaceView attribute:1 relatedBy:0 toItem:containerView attribute:1 multiplier:1.0 constant:0.0];
+        [array addObject:v14];
 
-        v15 = [v3 _alignsToKeyboard];
-        keyboardLayoutAlignmentAvailableSpaceView = v5;
-        if (v15)
+        _alignsToKeyboard = [_presentedAlertController _alignsToKeyboard];
+        keyboardLayoutAlignmentAvailableSpaceView = containerView;
+        if (_alignsToKeyboard)
         {
           keyboardLayoutAlignmentAvailableSpaceView = self->keyboardLayoutAlignmentAvailableSpaceView;
         }
@@ -304,14 +304,14 @@ LABEL_10:
         v20[1] = 3221225472;
         v20[2] = __74___UIAlertControllerPresentationController__prepareConstraintsIfNecessary__block_invoke;
         v20[3] = &unk_1E70F4570;
-        v21 = v6;
-        v22 = v3;
-        v23 = v4;
+        v21 = _visualStyle;
+        v22 = _presentedAlertController;
+        v23 = view;
         v24 = v17;
-        v25 = self;
-        v26 = v10;
-        v27 = v5;
-        v18 = v10;
+        selfCopy = self;
+        v26 = array;
+        v27 = containerView;
+        v18 = array;
         v19 = v17;
         [UIView performWithoutAnimation:v20];
       }
@@ -321,33 +321,33 @@ LABEL_10:
 
 - (void)_updateConstraintsIfNecessary
 {
-  v3 = [(UIPresentationController *)self containerView];
+  containerView = [(UIPresentationController *)self containerView];
   if (self->constraintsPrepared)
   {
-    v17 = v3;
+    v17 = containerView;
     v4 = ![(UIAlertVisualStyleUpdatableConstraints *)self->_visualStyleUpdatableConstraints hasUpdatableConstraints];
-    v3 = v17;
+    containerView = v17;
     v4 = v4 || v17 == 0;
     if (!v4)
     {
-      v5 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-      v6 = [v5 view];
-      v7 = [v6 window];
+      _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+      view = [_presentedAlertController view];
+      window = [view window];
 
-      if (v7)
+      if (window)
       {
-        v8 = [v5 _alignsToKeyboard];
+        _alignsToKeyboard = [_presentedAlertController _alignsToKeyboard];
         keyboardLayoutAlignmentAvailableSpaceView = v17;
-        if (v8)
+        if (_alignsToKeyboard)
         {
           keyboardLayoutAlignmentAvailableSpaceView = self->keyboardLayoutAlignmentAvailableSpaceView;
         }
 
         v10 = keyboardLayoutAlignmentAvailableSpaceView;
-        v11 = [v5 _visualStyle];
-        [objc_opt_class() positionContentsOfAlertController:v5 alertContentView:v6 availableSpaceView:v10 visualStyle:v11 updatableConstraints:self->_visualStyleUpdatableConstraints];
-        v12 = [(UIPresentationController *)self containerView];
-        [v11 contentInsetsForContainerView:v12];
+        _visualStyle = [_presentedAlertController _visualStyle];
+        [objc_opt_class() positionContentsOfAlertController:_presentedAlertController alertContentView:view availableSpaceView:v10 visualStyle:_visualStyle updatableConstraints:self->_visualStyleUpdatableConstraints];
+        containerView2 = [(UIPresentationController *)self containerView];
+        [_visualStyle contentInsetsForContainerView:containerView2];
         v14 = v13;
         v16 = v15;
 
@@ -355,7 +355,7 @@ LABEL_10:
         [(NSLayoutConstraint *)self->_bottomAvailableSpaceConstraint setConstant:-v16];
       }
 
-      v3 = v17;
+      containerView = v17;
     }
   }
 }
@@ -373,60 +373,60 @@ LABEL_10:
   self->_bottomAvailableSpaceConstraint = 0;
 }
 
-- (id)_createVisualStyleForProvider:(id)a3
+- (id)_createVisualStyleForProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 styleForAlertPresentationController:self];
+  providerCopy = provider;
+  v5 = [providerCopy styleForAlertPresentationController:self];
   if (!v5)
   {
     v7.receiver = self;
     v7.super_class = _UIAlertControllerPresentationController;
-    v5 = [(UIPresentationController *)&v7 _createVisualStyleForProvider:v4];
+    v5 = [(UIPresentationController *)&v7 _createVisualStyleForProvider:providerCopy];
   }
 
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  if (v5 != self)
+  delegateCopy = delegate;
+  if (delegateCopy != self)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIAlertControllerPresentationController.m" lineNumber:346 description:@"The presentation controller of an alert controller presenting as an alert must not have its delegate modified"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAlertControllerPresentationController.m" lineNumber:346 description:@"The presentation controller of an alert controller presenting as an alert must not have its delegate modified"];
   }
 
   v7.receiver = self;
   v7.super_class = _UIAlertControllerPresentationController;
-  [(UIPresentationController *)&v7 setDelegate:v5];
+  [(UIPresentationController *)&v7 setDelegate:delegateCopy];
 }
 
 - (id)_presentedAlertController
 {
-  v4 = [(UIPresentationController *)self presentedViewController];
-  if (([v4 conformsToProtocol:&unk_1EFEC3198] & 1) == 0)
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  if (([presentedViewController conformsToProtocol:&unk_1EFEC3198] & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIAlertControllerPresentationController.m" lineNumber:369 description:@"presentedViewController of _UIAlertControllerPresentationController does not contain an alert controller"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIAlertControllerPresentationController.m" lineNumber:369 description:@"presentedViewController of _UIAlertControllerPresentationController does not contain an alert controller"];
   }
 
-  v5 = [v4 _containedAlertController];
+  _containedAlertController = [presentedViewController _containedAlertController];
 
-  return v5;
+  return _containedAlertController;
 }
 
-- (void)setPanningGestureRecognizer:(id)a3
+- (void)setPanningGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
-  [v5 _setSystemProvidedGestureRecognizer:v4];
+  recognizerCopy = recognizer;
+  _presentedAlertController = [(_UIAlertControllerPresentationController *)self _presentedAlertController];
+  [_presentedAlertController _setSystemProvidedGestureRecognizer:recognizerCopy];
 }
 
-- (void)_setChromeHidden:(BOOL)a3
+- (void)_setChromeHidden:(BOOL)hidden
 {
-  if (self->_chromeHidden != a3)
+  if (self->_chromeHidden != hidden)
   {
-    self->_chromeHidden = a3;
+    self->_chromeHidden = hidden;
     [(UIView *)self->_dimmingView setHidden:?];
   }
 }

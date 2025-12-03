@@ -1,31 +1,31 @@
 @interface CADPredicate
-+ (id)conciseCalendarList:(id)a3;
-+ (void)setValidator:(Class)a3;
-- (BOOL)evaluateWithObject:(id)a3;
++ (id)conciseCalendarList:(id)list;
++ (void)setValidator:(Class)validator;
+- (BOOL)evaluateWithObject:(id)object;
 - (id)concisePublicDescription;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
-- (id)matchingDatesForEvent:(void *)a3 modifiedProperties:(unint64_t)a4 dates:(id)a5 inRange:(id)a6 database:(CalDatabase *)a7 outReset:(BOOL *)a8;
-- (void)beginSignpostWithHandle:(id)a3 signpostID:(unint64_t)a4;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
+- (id)matchingDatesForEvent:(void *)event modifiedProperties:(unint64_t)properties dates:(id)dates inRange:(id)range database:(CalDatabase *)database outReset:(BOOL *)reset;
+- (void)beginSignpostWithHandle:(id)handle signpostID:(unint64_t)d;
 @end
 
 @implementation CADPredicate
 
-+ (void)setValidator:(Class)a3
++ (void)setValidator:(Class)validator
 {
   obj = objc_opt_class();
   objc_sync_enter(obj);
-  __CADPredicateValidator = a3;
+  __CADPredicateValidator = validator;
   objc_sync_exit(obj);
 }
 
-- (BOOL)evaluateWithObject:(id)a3
+- (BOOL)evaluateWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_class();
   objc_sync_enter(v5);
   if (__CADPredicateValidator)
   {
-    v6 = [__CADPredicateValidator evaluatePredicate:self withObject:v4];
+    v6 = [__CADPredicateValidator evaluatePredicate:self withObject:objectCopy];
   }
 
   else
@@ -38,50 +38,50 @@
   return v6;
 }
 
-- (id)matchingDatesForEvent:(void *)a3 modifiedProperties:(unint64_t)a4 dates:(id)a5 inRange:(id)a6 database:(CalDatabase *)a7 outReset:(BOOL *)a8
+- (id)matchingDatesForEvent:(void *)event modifiedProperties:(unint64_t)properties dates:(id)dates inRange:(id)range database:(CalDatabase *)database outReset:(BOOL *)reset
 {
-  if (a8)
+  if (reset)
   {
-    *a8 = 1;
+    *reset = 1;
   }
 
   return 0;
 }
 
-- (void)beginSignpostWithHandle:(id)a3 signpostID:(unint64_t)a4
+- (void)beginSignpostWithHandle:(id)handle signpostID:(unint64_t)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
+  handleCopy = handle;
+  v7 = handleCopy;
+  if (d - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(handleCopy))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [(CADPredicate *)self predicateFormat];
+    predicateFormat = [(CADPredicate *)self predicateFormat];
     v12 = 138412546;
     v13 = v8;
     v14 = 2112;
-    v15 = v10;
-    _os_signpost_emit_with_name_impl(&dword_22430B000, v7, OS_SIGNPOST_INTERVAL_BEGIN, a4, "EKPredicateSearch", "predicateClass=%@; predicateFormat=%@", &v12, 0x16u);
+    v15 = predicateFormat;
+    _os_signpost_emit_with_name_impl(&dword_22430B000, v7, OS_SIGNPOST_INTERVAL_BEGIN, d, "EKPredicateSearch", "predicateClass=%@; predicateFormat=%@", &v12, 0x16u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)conciseCalendarList:(id)a3
++ (id)conciseCalendarList:(id)list
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  listCopy = list;
+  if (listCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{(4 * objc_msgSend(v3, "count")) | 2}];
+    v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithCapacity:{(4 * objc_msgSend(listCopy, "count")) | 2}];
     -[__CFString appendString:](v4, "appendString:", @"(");
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v3;
-    v5 = v3;
+    v18 = listCopy;
+    v5 = listCopy;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
     {
@@ -104,16 +104,16 @@
             [(__CFString *)v4 appendString:@", "];
           }
 
-          v13 = [v12 databaseID];
-          v14 = [v12 entityID];
-          if (v13 == v10)
+          databaseID = [v12 databaseID];
+          entityID = [v12 entityID];
+          if (databaseID == v10)
           {
-            [(__CFString *)v4 appendFormat:@"%i", v14, v17];
+            [(__CFString *)v4 appendFormat:@"%i", entityID, v17];
           }
 
           else
           {
-            [(__CFString *)v4 appendFormat:@"%i/%i", v13, v14];
+            [(__CFString *)v4 appendFormat:@"%i/%i", databaseID, entityID];
           }
 
           v8 = 1;
@@ -126,7 +126,7 @@
     }
 
     [(__CFString *)v4 appendString:@""]);
-    v3 = v18;
+    listCopy = v18;
   }
 
   else
@@ -146,7 +146,7 @@
   return NSStringFromClass(v2);
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

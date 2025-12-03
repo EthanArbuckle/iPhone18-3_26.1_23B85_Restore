@@ -1,23 +1,23 @@
 @interface CRLiOSCanvasHUDView
-+ (double)fontSizeForHUDViewSize:(unint64_t)a3;
-+ (double)viewHeightForHUDViewSize:(unint64_t)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)initForHUDViewSize:(unint64_t)a3;
++ (double)fontSizeForHUDViewSize:(unint64_t)size;
++ (double)viewHeightForHUDViewSize:(unint64_t)size;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)initForHUDViewSize:(unint64_t)size;
 - (void)p_setupView;
-- (void)updateViewToHUDViewSize:(unint64_t)a3;
+- (void)updateViewToHUDViewSize:(unint64_t)size;
 @end
 
 @implementation CRLiOSCanvasHUDView
 
-+ (double)viewHeightForHUDViewSize:(unint64_t)a3
++ (double)viewHeightForHUDViewSize:(unint64_t)size
 {
   result = 35.0;
-  if (a3 != 1)
+  if (size != 1)
   {
     result = 0.0;
   }
 
-  if (!a3)
+  if (!size)
   {
     return 29.0;
   }
@@ -25,15 +25,15 @@
   return result;
 }
 
-+ (double)fontSizeForHUDViewSize:(unint64_t)a3
++ (double)fontSizeForHUDViewSize:(unint64_t)size
 {
   result = 0.0;
-  if (a3 == 1)
+  if (size == 1)
   {
     result = 18.0;
   }
 
-  if (!a3)
+  if (!size)
   {
     return 14.0;
   }
@@ -41,7 +41,7 @@
   return result;
 }
 
-- (id)initForHUDViewSize:(unint64_t)a3
+- (id)initForHUDViewSize:(unint64_t)size
 {
   [CRLiOSCanvasHUDView viewHeightForHUDViewSize:?];
   v9.receiver = self;
@@ -50,23 +50,23 @@
   v7 = v6;
   if (v6)
   {
-    v6->_size = a3;
+    v6->_size = size;
     [(CRLiOSCanvasHUDView *)v6 p_setupView];
   }
 
   return v7;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if ([(CRLiOSCanvasHUDView *)self p_shouldAllowTouches])
   {
     v10.receiver = self;
     v10.super_class = CRLiOSCanvasHUDView;
-    v8 = [(CRLiOSCanvasHUDView *)&v10 pointInside:v7 withEvent:x, y];
+    v8 = [(CRLiOSCanvasHUDView *)&v10 pointInside:eventCopy withEvent:x, y];
   }
 
   else
@@ -77,11 +77,11 @@
   return v8;
 }
 
-- (void)updateViewToHUDViewSize:(unint64_t)a3
+- (void)updateViewToHUDViewSize:(unint64_t)size
 {
-  if (self->_size != a3)
+  if (self->_size != size)
   {
-    self->_size = a3;
+    self->_size = size;
     [CRLiOSCanvasHUDView fontSizeForHUDViewSize:?];
     v4 = [UIFont boldSystemFontOfSize:?];
     [(UILabel *)self->_label setFont:v4];
@@ -109,18 +109,18 @@
   v8 = 5.0 / v7;
   [v6 size];
   v10 = 5.0 / v9;
-  v11 = [v6 CGImage];
-  v12 = [(CRLiOSCanvasHUDView *)self layer];
-  [v12 setContents:v11];
+  cGImage = [v6 CGImage];
+  layer = [(CRLiOSCanvasHUDView *)self layer];
+  [layer setContents:cGImage];
 
-  v13 = [(CRLiOSCanvasHUDView *)self layer];
-  [v13 setContentsCenter:{v8, v10, 1.0 - v8 * 2.0, 1.0 - v10 * 2.0}];
+  layer2 = [(CRLiOSCanvasHUDView *)self layer];
+  [layer2 setContentsCenter:{v8, v10, 1.0 - v8 * 2.0, 1.0 - v10 * 2.0}];
 
-  v14 = [(CRLiOSCanvasHUDView *)self layer];
-  [v14 setContentsScale:v5];
+  layer3 = [(CRLiOSCanvasHUDView *)self layer];
+  [layer3 setContentsScale:v5];
 
-  v15 = [(CRLiOSCanvasHUDView *)self layer];
-  [v15 setZPosition:1.0];
+  layer4 = [(CRLiOSCanvasHUDView *)self layer];
+  [layer4 setZPosition:1.0];
 
   v16 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 150.0, 20.0}];
   label = self->_label;

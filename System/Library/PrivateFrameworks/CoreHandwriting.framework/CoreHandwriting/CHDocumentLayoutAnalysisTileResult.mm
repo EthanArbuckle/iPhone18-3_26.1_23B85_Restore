@@ -1,21 +1,21 @@
 @interface CHDocumentLayoutAnalysisTileResult
-+ (id)descriptionForSparseAdjacencyMatrix:(const void *)a3;
-+ (id)descriptionForStrokeClassificationMatrix:(const void *)a3;
-+ (void)deserializeStrokeClassificationMatrix:(void *)a3 sparseAdjacencyMatrix:(void *)a4 withCoder:(id)a5;
-+ (void)serializeStrokeClassificationMatrix:(const void *)a3 sparseAdjacencyMatrix:(const void *)a4 withCoder:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (CHDocumentLayoutAnalysisTileResult)initWithCoder:(id)a3;
-- (CHDocumentLayoutAnalysisTileResult)initWithStrokeClassificationMatrix:(void *)a3 sparseAdjacencyMatrix:(void *)a4;
++ (id)descriptionForSparseAdjacencyMatrix:(const void *)matrix;
++ (id)descriptionForStrokeClassificationMatrix:(const void *)matrix;
++ (void)deserializeStrokeClassificationMatrix:(void *)matrix sparseAdjacencyMatrix:(void *)adjacencyMatrix withCoder:(id)coder;
++ (void)serializeStrokeClassificationMatrix:(const void *)matrix sparseAdjacencyMatrix:(const void *)adjacencyMatrix withCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (CHDocumentLayoutAnalysisTileResult)initWithCoder:(id)coder;
+- (CHDocumentLayoutAnalysisTileResult)initWithStrokeClassificationMatrix:(void *)matrix sparseAdjacencyMatrix:(void *)adjacencyMatrix;
 - (id).cxx_construct;
 - (id)debugDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHDocumentLayoutAnalysisTileResult
 
-- (CHDocumentLayoutAnalysisTileResult)initWithStrokeClassificationMatrix:(void *)a3 sparseAdjacencyMatrix:(void *)a4
+- (CHDocumentLayoutAnalysisTileResult)initWithStrokeClassificationMatrix:(void *)matrix sparseAdjacencyMatrix:(void *)adjacencyMatrix
 {
   v10.receiver = self;
   v10.super_class = CHDocumentLayoutAnalysisTileResult;
@@ -24,14 +24,14 @@
   if (v6)
   {
     p_strokeClassificationMatrix = &v6->_strokeClassificationMatrix;
-    if (&v7->_strokeClassificationMatrix != a3)
+    if (&v7->_strokeClassificationMatrix != matrix)
     {
-      sub_18372D05C(p_strokeClassificationMatrix, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+      sub_18372D05C(p_strokeClassificationMatrix, *matrix, *(matrix + 1), 0xAAAAAAAAAAAAAAABLL * ((*(matrix + 1) - *matrix) >> 3));
     }
 
-    if (&v7->_sparseAdjacencyMatrix != a4)
+    if (&v7->_sparseAdjacencyMatrix != adjacencyMatrix)
     {
-      sub_18372D3D4(&v7->_sparseAdjacencyMatrix, *a4, *(a4 + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(a4 + 1) - *a4) >> 3));
+      sub_18372D3D4(&v7->_sparseAdjacencyMatrix, *adjacencyMatrix, *(adjacencyMatrix + 1), 0xCCCCCCCCCCCCCCCDLL * ((*(adjacencyMatrix + 1) - *adjacencyMatrix) >> 3));
     }
 
     v7->_hash = 0x7FFFFFFFFFFFFFFFLL;
@@ -40,15 +40,15 @@
   return v7;
 }
 
-+ (void)serializeStrokeClassificationMatrix:(const void *)a3 sparseAdjacencyMatrix:(const void *)a4 withCoder:(id)a5
++ (void)serializeStrokeClassificationMatrix:(const void *)matrix sparseAdjacencyMatrix:(const void *)adjacencyMatrix withCoder:(id)coder
 {
-  v7 = a5;
-  v11 = v7;
-  v12 = *(a3 + 1) - *a3;
+  coderCopy = coder;
+  v11 = coderCopy;
+  v12 = *(matrix + 1) - *matrix;
   v13 = 0xAAAAAAAAAAAAAAABLL * (v12 >> 3);
   if (v12)
   {
-    v14 = (*(*a3 + 8) - **a3) >> 2;
+    v14 = (*(*matrix + 8) - **matrix) >> 2;
   }
 
   else
@@ -56,7 +56,7 @@
     v14 = 0;
   }
 
-  objc_msgSend_encodeInteger_forKey_(v7, v8, v13, @"strokeCount", v9, v10);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v8, v13, @"strokeCount", v9, v10);
   objc_msgSend_encodeInteger_forKey_(v11, v15, v14, @"strokeClassCount", v16, v17);
   if (v14 * v13)
   {
@@ -69,9 +69,9 @@
   }
 
   v68 = v11;
-  v22 = *a3;
-  v48 = *(a3 + 1);
-  if (*a3 != v48)
+  v22 = *matrix;
+  v48 = *(matrix + 1);
+  if (*matrix != v48)
   {
     v21 = 0;
     while (1)
@@ -212,8 +212,8 @@ LABEL_34:
   v49 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v18, 0, v21, v19, v20);
   objc_msgSend_encodeObject_forKey_(v68, v50, v49, @"strokeClassificationMatrix", v51, v52);
   v61 = objc_msgSend_data(MEMORY[0x1E695DF88], v53, v54, v55, v56, v57);
-  v62 = *a4;
-  v63 = *(a4 + 1);
+  v62 = *adjacencyMatrix;
+  v63 = *(adjacencyMatrix + 1);
   while (v62 != v63)
   {
     v69 = *(v62 + 24);
@@ -235,14 +235,14 @@ LABEL_34:
   objc_msgSend_encodeObject_forKey_(v68, v58, v61, @"sparseAdjacencyMatrix", v59, v60);
 }
 
-+ (void)deserializeStrokeClassificationMatrix:(void *)a3 sparseAdjacencyMatrix:(void *)a4 withCoder:(id)a5
++ (void)deserializeStrokeClassificationMatrix:(void *)matrix sparseAdjacencyMatrix:(void *)adjacencyMatrix withCoder:(id)coder
 {
-  v7 = a5;
-  v12 = objc_msgSend_decodeIntegerForKey_(v7, v8, @"strokeCount", v9, v10, v11);
-  v17 = objc_msgSend_decodeIntegerForKey_(v7, v13, @"strokeClassCount", v14, v15, v16);
+  coderCopy = coder;
+  v12 = objc_msgSend_decodeIntegerForKey_(coderCopy, v8, @"strokeCount", v9, v10, v11);
+  v17 = objc_msgSend_decodeIntegerForKey_(coderCopy, v13, @"strokeClassCount", v14, v15, v16);
   v18 = objc_opt_class();
-  objc_msgSend_decodeObjectOfClass_forKey_(v7, v19, v18, @"strokeClassificationMatrix", v20, v21);
-  v85 = v84 = v7;
+  objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"strokeClassificationMatrix", v20, v21);
+  v85 = v84 = coderCopy;
   if (v17 * v12 != objc_msgSend_length(v85, v22, v23, v24, v25, v26) >> 2)
   {
     if (qword_1EA84DC48 != -1)
@@ -273,7 +273,7 @@ LABEL_34:
     }
   }
 
-  if (0xAAAAAAAAAAAAAAABLL * ((*(a3 + 2) - *a3) >> 3) < v12)
+  if (0xAAAAAAAAAAAAAAABLL * ((*(matrix + 2) - *matrix) >> 3) < v12)
   {
     if (v12 <= 0xAAAAAAAAAAAAAAALL)
     {
@@ -302,8 +302,8 @@ LABEL_34:
         sub_18369761C();
       }
 
-      v44 = *(a3 + 1);
-      v43 = *(a3 + 2);
+      v44 = *(matrix + 1);
+      v43 = *(matrix + 2);
       if (v44 < v43)
       {
         *v44 = 0;
@@ -314,8 +314,8 @@ LABEL_34:
 
       else
       {
-        v45 = *a3;
-        v46 = v44 - *a3;
+        v45 = *matrix;
+        v46 = v44 - *matrix;
         v47 = 0xAAAAAAAAAAAAAAABLL * (v46 >> 3) + 1;
         if (v47 > 0xAAAAAAAAAAAAAAALL)
         {
@@ -355,25 +355,25 @@ LABEL_34:
         v42 = v50 + 3;
         v51 = v50 - v46;
         memcpy(v50 - v46, v45, v46);
-        *a3 = v51;
-        *(a3 + 1) = v42;
-        *(a3 + 2) = 0;
+        *matrix = v51;
+        *(matrix + 1) = v42;
+        *(matrix + 2) = 0;
         if (v45)
         {
           operator delete(v45);
         }
       }
 
-      *(a3 + 1) = v42;
+      *(matrix + 1) = v42;
       --v40;
     }
 
     while (v40);
-    if (0xCCCCCCCCCCCCCCCDLL * ((*(a4 + 2) - *a4) >> 3) < v12)
+    if (0xCCCCCCCCCCCCCCCDLL * ((*(adjacencyMatrix + 2) - *adjacencyMatrix) >> 3) < v12)
     {
       if (v12 < 0x666666666666667)
       {
-        v89 = a4;
+        adjacencyMatrixCopy = adjacencyMatrix;
         operator new();
       }
 
@@ -392,7 +392,7 @@ LABEL_34:
     v71 = *(v68 + v69);
     *buf = 0u;
     v88 = 0u;
-    LODWORD(v89) = 1065353216;
+    LODWORD(adjacencyMatrixCopy) = 1065353216;
     if (v71)
     {
       v72 = -8 - v69;
@@ -409,13 +409,13 @@ LABEL_34:
 
       while (v71);
       v69 = -v72;
-      v74 = *(a4 + 1);
-      if (v74 >= *(a4 + 2))
+      v74 = *(adjacencyMatrix + 1);
+      if (v74 >= *(adjacencyMatrix + 2))
       {
 LABEL_49:
-        v80 = sub_18372E058(a4, buf);
+        v80 = sub_18372E058(adjacencyMatrix, buf);
         v76 = v88;
-        *(a4 + 1) = v80;
+        *(adjacencyMatrix + 1) = v80;
         if (v76)
         {
           goto LABEL_55;
@@ -428,8 +428,8 @@ LABEL_49:
     else
     {
       v69 += 8;
-      v74 = *(a4 + 1);
-      if (v74 >= *(a4 + 2))
+      v74 = *(adjacencyMatrix + 1);
+      if (v74 >= *(adjacencyMatrix + 2))
       {
         goto LABEL_49;
       }
@@ -444,7 +444,7 @@ LABEL_49:
     *(v74 + 16) = v88;
     v77 = *(&v88 + 1);
     *(v74 + 24) = *(&v88 + 1);
-    *(v74 + 32) = v89;
+    *(v74 + 32) = adjacencyMatrixCopy;
     if (v77)
     {
       v78 = v76[1];
@@ -467,7 +467,7 @@ LABEL_49:
       v88 = 0uLL;
     }
 
-    *(a4 + 1) = v74 + 40;
+    *(adjacencyMatrix + 1) = v74 + 40;
     if (v76)
     {
       do
@@ -491,9 +491,9 @@ LABEL_56:
   }
 }
 
-+ (id)descriptionForStrokeClassificationMatrix:(const void *)a3
++ (id)descriptionForStrokeClassificationMatrix:(const void *)matrix
 {
-  if (*(a3 + 1) == *a3)
+  if (*(matrix + 1) == *matrix)
   {
     v24 = @"Stroke Classification Matrix:";
   }
@@ -506,11 +506,11 @@ LABEL_56:
     {
       v9 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AD60], a2, @"\n%lu: [", v3, v4, v5, v7);
       v14 = v9;
-      v15 = *(*a3 + 24 * v7);
-      if (*(*a3 + 24 * v7 + 8) != v15)
+      v15 = *(*matrix + 24 * v7);
+      if (*(*matrix + 24 * v7 + 8) != v15)
       {
         objc_msgSend_appendFormat_(v9, v10, @"%.3f", v11, v12, v13, *v15);
-        v16 = (*a3 + 24 * v7);
+        v16 = (*matrix + 24 * v7);
         v17 = *v16;
         if ((v16[1] - *v16) >= 5)
         {
@@ -518,7 +518,7 @@ LABEL_56:
           do
           {
             objc_msgSend_appendFormat_(v14, v10, @", %.3f", v11, v12, v13, *(v17 + 4 * v18));
-            v19 = (*a3 + 24 * v7);
+            v19 = (*matrix + 24 * v7);
             v17 = *v19;
             ++v18;
           }
@@ -534,15 +534,15 @@ LABEL_56:
       v8 = v24;
     }
 
-    while (v7 < 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+    while (v7 < 0xAAAAAAAAAAAAAAABLL * ((*(matrix + 1) - *matrix) >> 3));
   }
 
   return v24;
 }
 
-+ (id)descriptionForSparseAdjacencyMatrix:(const void *)a3
++ (id)descriptionForSparseAdjacencyMatrix:(const void *)matrix
 {
-  if (*(a3 + 1) == *a3)
+  if (*(matrix + 1) == *matrix)
   {
     v26 = @"Sparse Adjacent Matrix:";
   }
@@ -554,11 +554,11 @@ LABEL_56:
     objc_msgSend_stringWithFormat_(MEMORY[0x1E696AD60], a2, @"\n%lu: [", v3, v4, v5, 0);
     while (1)
       v13 = {;
-      if (*(*a3 + 40 * v7 + 16))
+      if (*(*matrix + 40 * v7 + 16))
       {
         v15 = 0;
         v16 = -1;
-        v17 = *(*a3 + 40 * v7 + 16);
+        v17 = *(*matrix + 40 * v7 + 16);
         do
         {
           v17 = *v17;
@@ -581,7 +581,7 @@ LABEL_56:
 
       ++v7;
       v8 = v26;
-      if (v7 >= 0xCCCCCCCCCCCCCCCDLL * ((*(a3 + 1) - *a3) >> 3))
+      if (v7 >= 0xCCCCCCCCCCCCCCCDLL * ((*(matrix + 1) - *matrix) >> 3))
       {
         break;
       }
@@ -593,20 +593,20 @@ LABEL_56:
   return v26;
 }
 
-- (CHDocumentLayoutAnalysisTileResult)initWithCoder:(id)a3
+- (CHDocumentLayoutAnalysisTileResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33 = 0;
   v34 = 0;
   v35 = 0;
   __p = 0;
   v31 = 0;
   v32 = 0;
-  objc_msgSend_deserializeStrokeClassificationMatrix_sparseAdjacencyMatrix_withCoder_(CHDocumentLayoutAnalysisTileResult, v5, &v33, &__p, v4, v6);
+  objc_msgSend_deserializeStrokeClassificationMatrix_sparseAdjacencyMatrix_withCoder_(CHDocumentLayoutAnalysisTileResult, v5, &v33, &__p, coderCopy, v6);
   v14 = objc_msgSend_initWithStrokeClassificationMatrix_sparseAdjacencyMatrix_(self, v7, &v33, &__p, v8, v9);
   if (v14)
   {
-    v14[7] = objc_msgSend_decodeIntegerForKey_(v4, v10, @"hash", v11, v12, v13);
+    v14[7] = objc_msgSend_decodeIntegerForKey_(coderCopy, v10, @"hash", v11, v12, v13);
   }
 
   v15 = v14;
@@ -683,10 +683,10 @@ LABEL_56:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  coderCopy = coder;
   if (0xAAAAAAAAAAAAAAABLL * ((self->_strokeClassificationMatrix.__end_ - self->_strokeClassificationMatrix.__begin_) >> 3) != 0xCCCCCCCCCCCCCCCDLL * ((self->_sparseAdjacencyMatrix.__end_ - self->_sparseAdjacencyMatrix.__begin_) >> 3))
   {
     if (qword_1EA84DC48 != -1)
@@ -741,8 +741,8 @@ LABEL_10:
   }
 
 LABEL_11:
-  objc_msgSend_serializeStrokeClassificationMatrix_sparseAdjacencyMatrix_withCoder_(CHDocumentLayoutAnalysisTileResult, v4, &self->_strokeClassificationMatrix, &self->_sparseAdjacencyMatrix, v6, v5);
-  objc_msgSend_encodeInteger_forKey_(v6, v13, self->_hash, @"hash", v14, v15);
+  objc_msgSend_serializeStrokeClassificationMatrix_sparseAdjacencyMatrix_withCoder_(CHDocumentLayoutAnalysisTileResult, v4, &self->_strokeClassificationMatrix, &self->_sparseAdjacencyMatrix, coderCopy, v5);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v13, self->_hash, @"hash", v14, v15);
 }
 
 - (id)description
@@ -767,13 +767,13 @@ LABEL_11:
   return v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = sub_1837285DC(self, v4);
+    v5 = sub_1837285DC(self, equalCopy);
 
     return v5;
   }

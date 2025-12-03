@@ -1,5 +1,5 @@
 @interface DOCDateFormatter
-+ (id)longDateStringFromDate:(id)a3;
++ (id)longDateStringFromDate:(id)date;
 + (id)sharedLongDateFormatter;
 @end
 
@@ -29,11 +29,11 @@ uint64_t __43__DOCDateFormatter_sharedLongDateFormatter__block_invoke()
   return [v2 setTimeStyle:1];
 }
 
-+ (id)longDateStringFromDate:(id)a3
++ (id)longDateStringFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [a1 sharedLongDateFormatter];
-  v6 = [v5 stringFromDate:v4];
+  dateCopy = date;
+  sharedLongDateFormatter = [self sharedLongDateFormatter];
+  v6 = [sharedLongDateFormatter stringFromDate:dateCopy];
 
   return v6;
 }

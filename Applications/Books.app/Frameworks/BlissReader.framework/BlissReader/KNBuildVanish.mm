@@ -1,22 +1,22 @@
 @interface KNBuildVanish
 + (id)defaultAttributes;
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8;
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (KNBuildVanish)initWithAnimationContext:(id)a3;
-- (void)animationDidEndWithContext:(id)a3;
-- (void)animationWillBeginWithContext:(id)a3;
-- (void)metalAnimationDidEndWithContext:(id)a3;
-- (void)metalAnimationHasBegunWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)metalRenderFrameWithContext:(id)a3;
-- (void)metalTeardownAnimationsWithContext:(id)a3;
-- (void)p_drawMetalParticleSystemsWithEncoder:(id)a3 texture:(id)a4 percent:(double)a5 sparkles:(BOOL)a6 particleSystemOpacity:(double)a7 metalContext:(id)a8;
-- (void)p_setupMVPMatricesWithContext:(id)a3;
-- (void)p_setupMetalBlurEffectsWithContext:(id)a3;
-- (void)p_setupMetalShaderUniformsWithTexture:(id)a3;
-- (void)p_setupMetalShadersWithContext:(id)a3;
-- (void)p_setupParticleSystemWithContext:(id)a3 image:(id)a4 build:(id)a5 randomGenerator:(id)a6;
-- (void)p_setupParticleTexturedRectWithContext:(id)a3;
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (KNBuildVanish)initWithAnimationContext:(id)context;
+- (void)animationDidEndWithContext:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
+- (void)metalAnimationDidEndWithContext:(id)context;
+- (void)metalAnimationHasBegunWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)metalRenderFrameWithContext:(id)context;
+- (void)metalTeardownAnimationsWithContext:(id)context;
+- (void)p_drawMetalParticleSystemsWithEncoder:(id)encoder texture:(id)texture percent:(double)percent sparkles:(BOOL)sparkles particleSystemOpacity:(double)opacity metalContext:(id)context;
+- (void)p_setupMVPMatricesWithContext:(id)context;
+- (void)p_setupMetalBlurEffectsWithContext:(id)context;
+- (void)p_setupMetalShaderUniformsWithTexture:(id)texture;
+- (void)p_setupMetalShadersWithContext:(id)context;
+- (void)p_setupParticleSystemWithContext:(id)context image:(id)image build:(id)build randomGenerator:(id)generator;
+- (void)p_setupParticleTexturedRectWithContext:(id)context;
 @end
 
 @implementation KNBuildVanish
@@ -30,24 +30,24 @@
   return v2;
 }
 
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version
 {
-  if (a7)
+  if (classic)
   {
-    v8 = *&a6;
-    *a4 = @"apple:dissolve";
+    v8 = *&type;
+    *name = @"apple:dissolve";
     v13 = KNBundle();
     v11 = [v13 localizedStringForKey:@"%@ builds were exported as Dissolve." value:&stru_471858 table:@"Keynote"];
-    v12 = [a1 localizedMenuString:v8];
-    *a5 = [NSString stringWithFormat:v11, v12];
+    v12 = [self localizedMenuString:v8];
+    *warning = [NSString stringWithFormat:v11, v12];
   }
 }
 
-- (KNBuildVanish)initWithAnimationContext:(id)a3
+- (KNBuildVanish)initWithAnimationContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = KNBuildVanish;
-  v3 = [(KNAnimationEffect *)&v9 initWithAnimationContext:a3];
+  v3 = [(KNAnimationEffect *)&v9 initWithAnimationContext:context];
   if (v3)
   {
     v4 = KNBundle();
@@ -61,9 +61,9 @@
   return v3;
 }
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  [a3 drawableFrame];
+  [context drawableFrame];
   x = v20.origin.x;
   y = v20.origin.y;
   width = v20.size.width;
@@ -108,14 +108,14 @@
   return result;
 }
 
-- (void)p_setupMVPMatricesWithContext:(id)a3
+- (void)p_setupMVPMatricesWithContext:(id)context
 {
-  v4 = [a3 textures];
-  v5 = [v4 firstObject];
+  textures = [context textures];
+  firstObject = [textures firstObject];
 
-  [v5 frameOnCanvas];
+  [firstObject frameOnCanvas];
   v7 = v6 - CGRectGetMinX(self->_animationRect);
-  [v5 frameOnCanvas];
+  [firstObject frameOnCanvas];
   v9 = v8 - CGRectGetMaxY(self->_animationRect);
   CGRectGetWidth(self->_animationRect);
   CGRectGetHeight(self->_animationRect);
@@ -173,13 +173,13 @@
   *&self->_projectionMatrix.m33 = v26;
 }
 
-- (void)p_setupParticleSystemWithContext:(id)a3 image:(id)a4 build:(id)a5 randomGenerator:(id)a6
+- (void)p_setupParticleSystemWithContext:(id)context image:(id)image build:(id)build randomGenerator:(id)generator
 {
-  v37 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  contextCopy = context;
+  imageCopy = image;
+  buildCopy = build;
+  generatorCopy = generator;
+  if (!generatorCopy)
   {
     v13 = +[TSUAssertionHandler currentHandler];
     v14 = [NSString stringWithUTF8String:"[KNBuildVanish p_setupParticleSystemWithContext:image:build:randomGenerator:]"];
@@ -190,16 +190,16 @@
   [(KNAnimationContext *)self->super.mAnimationContext slideRect];
   v17 = v16;
   v19 = v18;
-  [v11 duration];
+  [buildCopy duration];
   v21 = v20;
-  [v10 frame];
+  [imageCopy frame];
   v24 = (sqrt(sqrt(v23 * (v22 / v19) / v17)) * 10000.0);
-  [v10 size];
+  [imageCopy size];
   v26 = v25;
   v28 = v27;
   vanishMetalShader = self->_vanishMetalShader;
-  v30 = [v37 metalContext];
-  v31 = [KNBuildVanishParticleSystem newParticleSystemWithNumberOfParticles:v24 objectSize:0 slideSize:v12 duration:vanishMetalShader direction:v30 randomGenerator:v26 shader:v28 metalContext:v17, v19, v21];
+  metalContext = [contextCopy metalContext];
+  v31 = [KNBuildVanishParticleSystem newParticleSystemWithNumberOfParticles:v24 objectSize:0 slideSize:generatorCopy duration:vanishMetalShader direction:metalContext randomGenerator:v26 shader:v28 metalContext:v17, v19, v21];
   vanishParticleSystem = self->_vanishParticleSystem;
   self->_vanishParticleSystem = v31;
 
@@ -214,38 +214,38 @@
   [(KNBuildVanishParticleSystem *)self->_vanishParticleSystem setRandomParticleSpeedMax:?];
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Max Speed"];
   [(KNBuildVanishParticleSystem *)self->_vanishParticleSystem setMaxSpeed:?];
-  [(KNBuildVanishParticleSystem *)self->_vanishParticleSystem setupWithTexture:v10 particleTextureSize:0 reverseDrawOrder:v34, v36];
+  [(KNBuildVanishParticleSystem *)self->_vanishParticleSystem setupWithTexture:imageCopy particleTextureSize:0 reverseDrawOrder:v34, v36];
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  [(KNBuildVanish *)self metalPrepareAnimationWithContext:v4];
-  [(KNBuildVanish *)self metalAnimationHasBegunWithContext:v4];
+  contextCopy = context;
+  [(KNBuildVanish *)self metalPrepareAnimationWithContext:contextCopy];
+  [(KNBuildVanish *)self metalAnimationHasBegunWithContext:contextCopy];
 }
 
-- (void)animationDidEndWithContext:(id)a3
+- (void)animationDidEndWithContext:(id)context
 {
-  v4 = a3;
-  [(KNBuildVanish *)self metalAnimationDidEndWithContext:v4];
-  [(KNBuildVanish *)self metalTeardownAnimationsWithContext:v4];
+  contextCopy = context;
+  [(KNBuildVanish *)self metalAnimationDidEndWithContext:contextCopy];
+  [(KNBuildVanish *)self metalTeardownAnimationsWithContext:contextCopy];
 }
 
-- (void)p_setupMetalBlurEffectsWithContext:(id)a3
+- (void)p_setupMetalBlurEffectsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 metalContext];
-  v6 = [v4 textures];
-  v7 = [v6 lastObject];
+  contextCopy = context;
+  metalContext = [contextCopy metalContext];
+  textures = [contextCopy textures];
+  lastObject = [textures lastObject];
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Blur Steps"];
   v9 = fmax(v8, 1.0);
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Blur Radius Max"];
   v11 = v10;
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Half Size Radius Every"];
   v13 = v12;
-  v14 = [v5 commandQueue];
-  v15 = [v14 commandBuffer];
-  v16 = [[KNGaussianBlurEffect alloc] initWithContext:v4];
+  commandQueue = [metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
+  v16 = [[KNGaussianBlurEffect alloc] initWithContext:contextCopy];
 
   blurEffect = self->_blurEffect;
   self->_blurEffect = v16;
@@ -263,19 +263,19 @@
   v24[2] = *&self->_projectionMatrix.m21;
   v24[3] = v21;
   [(KNGaussianBlurEffect *)self->_blurEffect setMVPMatrix:v24];
-  [(KNGaussianBlurEffect *)self->_blurEffect setTexture:v7];
+  [(KNGaussianBlurEffect *)self->_blurEffect setTexture:lastObject];
   [(KNGaussianBlurEffect *)self->_blurEffect setSaturateBlurTextures:1];
   [(KNGaussianBlurEffect *)self->_blurEffect setupEffectIfNecessary];
   v22 = self->_blurEffect;
-  v23 = [(KNAnimationContext *)self->super.mAnimationContext capabilities];
-  [(KNGaussianBlurEffect *)v22 createBlurTexturesWithBlurSteps:v9 + 1 maxBlurRadius:v15 stepsToDecreaseRadius:v23 commandBuffer:v11 capabilities:v13];
+  capabilities = [(KNAnimationContext *)self->super.mAnimationContext capabilities];
+  [(KNGaussianBlurEffect *)v22 createBlurTexturesWithBlurSteps:v9 + 1 maxBlurRadius:commandBuffer stepsToDecreaseRadius:capabilities commandBuffer:v11 capabilities:v13];
 
-  [v15 commit];
+  [commandBuffer commit];
 }
 
-- (void)p_setupParticleTexturedRectWithContext:(id)a3
+- (void)p_setupParticleTexturedRectWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = KNBundle();
   v14 = [v5 pathForResource:@"KNBuildVanish" ofType:@"png"];
 
@@ -289,32 +289,32 @@
   self->_particleTR = v9;
 
   v11 = self->_particleTR;
-  v12 = [v4 metalContext];
+  metalContext = [contextCopy metalContext];
 
-  v13 = [v12 device];
-  [(TSDTexturedRectangle *)v11 setupMetalTextureForDevice:v13];
+  device = [metalContext device];
+  [(TSDTexturedRectangle *)v11 setupMetalTextureForDevice:device];
 
   CGImageRelease(v8);
 }
 
-- (void)p_setupMetalShadersWithContext:(id)a3
+- (void)p_setupMetalShadersWithContext:(id)context
 {
-  v8 = [a3 metalContext];
-  v4 = [v8 device];
+  metalContext = [context metalContext];
+  device = [metalContext device];
   v5 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  [v5 setPixelFormat:objc_msgSend(v8, "pixelFormat")];
+  [v5 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
   [v5 setBlendingEnabled:1];
   [v5 setDestinationRGBBlendFactor:5];
   [v5 setDestinationAlphaBlendFactor:5];
-  v6 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildVanishVertexShader" fragmentShader:@"buildVanishFragmentShader" device:v4 library:@"KeynoteMetalLibrary" colorAttachment:v5];
+  v6 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildVanishVertexShader" fragmentShader:@"buildVanishFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v5];
   vanishMetalShader = self->_vanishMetalShader;
   self->_vanishMetalShader = v6;
 }
 
-- (void)p_setupMetalShaderUniformsWithTexture:(id)a3
+- (void)p_setupMetalShaderUniformsWithTexture:(id)texture
 {
   parameterGroup = self->_parameterGroup;
-  v5 = a3;
+  textureCopy = texture;
   [(KNAnimParameterGroup *)parameterGroup valueForConstant:@"Should Sparkle"];
   *&v6 = v6;
   *&self->_anon_5c[44] = LODWORD(v6);
@@ -329,9 +329,9 @@
   *&v10 = v10;
   *&self->_anon_5c[48] = LODWORD(v10);
   [(KNBuildVanishParticleSystem *)self->_vanishParticleSystem particleSize];
-  [v5 size];
+  [textureCopy size];
   [(KNBuildVanishParticleSystem *)self->_vanishParticleSystem particleSize];
-  [v5 size];
+  [textureCopy size];
 
   TSDRectWithSize();
   x = v24.origin.x;
@@ -374,9 +374,9 @@
   *&self->_anon_5c[132] = v21;
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(KNAnimationContext *)self->super.mAnimationContext slideRect];
   self->_drawableFrame.origin.x = v5;
   self->_drawableFrame.origin.y = v6;
@@ -385,79 +385,79 @@
   size = self->_drawableFrame.size;
   self->_animationRect.origin = self->_drawableFrame.origin;
   self->_animationRect.size = size;
-  v10 = [v4 textures];
-  v11 = [v10 lastObject];
+  textures = [contextCopy textures];
+  lastObject = [textures lastObject];
 
-  [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:v4];
+  [(KNAnimationEffect *)self perspectiveMVPMatrixWithContext:contextCopy];
   self->_projectionMatrix = v15;
-  [(KNBuildVanish *)self p_setupParticleTexturedRectWithContext:v4];
-  [(KNBuildVanish *)self p_setupMetalShadersWithContext:v4];
-  v12 = [v4 animatedBuild];
-  v13 = [v4 randomGenerator];
-  [(KNBuildVanish *)self p_setupParticleSystemWithContext:v4 image:v11 build:v12 randomGenerator:v13];
+  [(KNBuildVanish *)self p_setupParticleTexturedRectWithContext:contextCopy];
+  [(KNBuildVanish *)self p_setupMetalShadersWithContext:contextCopy];
+  animatedBuild = [contextCopy animatedBuild];
+  randomGenerator = [contextCopy randomGenerator];
+  [(KNBuildVanish *)self p_setupParticleSystemWithContext:contextCopy image:lastObject build:animatedBuild randomGenerator:randomGenerator];
 
-  [(KNBuildVanish *)self p_setupMetalShaderUniformsWithTexture:v11];
-  v14 = [v4 animatedBuild];
-  LODWORD(v13) = [v14 isBuildIn];
+  [(KNBuildVanish *)self p_setupMetalShaderUniformsWithTexture:lastObject];
+  animatedBuild2 = [contextCopy animatedBuild];
+  LODWORD(randomGenerator) = [animatedBuild2 isBuildIn];
 
-  if (v13)
+  if (randomGenerator)
   {
-    [(KNBuildVanish *)self p_setupMetalBlurEffectsWithContext:v4];
+    [(KNBuildVanish *)self p_setupMetalBlurEffectsWithContext:contextCopy];
   }
 }
 
-- (void)metalAnimationHasBegunWithContext:(id)a3
+- (void)metalAnimationHasBegunWithContext:(id)context
 {
-  v6 = a3;
-  v4 = [v6 animatedBuild];
-  v5 = [v4 isBuildOut];
+  contextCopy = context;
+  animatedBuild = [contextCopy animatedBuild];
+  isBuildOut = [animatedBuild isBuildOut];
 
-  if (v5)
+  if (isBuildOut)
   {
-    [(KNBuildVanish *)self p_setupMetalBlurEffectsWithContext:v6];
+    [(KNBuildVanish *)self p_setupMetalBlurEffectsWithContext:contextCopy];
   }
 }
 
-- (void)p_drawMetalParticleSystemsWithEncoder:(id)a3 texture:(id)a4 percent:(double)a5 sparkles:(BOOL)a6 particleSystemOpacity:(double)a7 metalContext:(id)a8
+- (void)p_drawMetalParticleSystemsWithEncoder:(id)encoder texture:(id)texture percent:(double)percent sparkles:(BOOL)sparkles particleSystemOpacity:(double)opacity metalContext:(id)context
 {
-  v10 = a6;
-  v23 = a3;
-  v14 = a4;
-  v15 = a8;
-  [(KNAnimParameterGroup *)self->_parameterGroup valueForAnimationCurve:@"ParticleTransparency" atPercent:a5];
-  if (v10)
+  sparklesCopy = sparkles;
+  encoderCopy = encoder;
+  textureCopy = texture;
+  contextCopy = context;
+  [(KNAnimParameterGroup *)self->_parameterGroup valueForAnimationCurve:@"ParticleTransparency" atPercent:percent];
+  if (sparklesCopy)
   {
-    [(KNAnimParameterGroup *)self->_parameterGroup valueForAnimationCurve:@"ParticleTransparency" atPercent:a5];
+    [(KNAnimParameterGroup *)self->_parameterGroup valueForAnimationCurve:@"ParticleTransparency" atPercent:percent];
     v18 = 1.0 - v17;
   }
 
   else
   {
-    v18 = v16 * a7;
+    v18 = v16 * opacity;
   }
 
   v19 = v18;
-  v20 = a5;
-  *&self->_anon_5c[36] = v20;
+  percentCopy = percent;
+  *&self->_anon_5c[36] = percentCopy;
   *&self->_anon_5c[40] = v19;
-  v21 = [v14 metalTextureWithContext:v15];
+  v21 = [textureCopy metalTextureWithContext:contextCopy];
   if (v21)
   {
-    [(TSDMetalShader *)self->_vanishMetalShader setPipelineStateWithEncoder:v23 vertexBytes:&self->_vertexUniforms];
-    [v23 setVertexTexture:v21 atIndex:0];
-    v22 = [(TSDTexturedRectangle *)self->_particleTR metalTexture];
-    [v23 setFragmentTexture:v22 atIndex:0];
+    [(TSDMetalShader *)self->_vanishMetalShader setPipelineStateWithEncoder:encoderCopy vertexBytes:&self->_vertexUniforms];
+    [encoderCopy setVertexTexture:v21 atIndex:0];
+    metalTexture = [(TSDTexturedRectangle *)self->_particleTR metalTexture];
+    [encoderCopy setFragmentTexture:metalTexture atIndex:0];
 
-    [(KNBuildVanishParticleSystem *)self->_vanishParticleSystem drawMetalWithEncoder:v23];
+    [(KNBuildVanishParticleSystem *)self->_vanishParticleSystem drawMetalWithEncoder:encoderCopy];
   }
 }
 
-- (void)metalRenderFrameWithContext:(id)a3
+- (void)metalRenderFrameWithContext:(id)context
 {
-  v32 = a3;
-  v4 = [v32 metalContext];
-  v5 = [v4 renderEncoder];
-  [v32 percent];
+  contextCopy = context;
+  metalContext = [contextCopy metalContext];
+  renderEncoder = [metalContext renderEncoder];
+  [contextCopy percent];
   v7 = v6;
   v8 = 1.0 - v6;
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"ParticleScale Pow"];
@@ -473,48 +473,48 @@
   *&self->_anon_5c[60] = LODWORD(v12);
   [(KNAnimParameterGroup *)self->_parameterGroup valueForAnimationCurve:@"Opacity Fade" atPercent:v7];
   v14 = v13;
-  [v32 duration];
+  [contextCopy duration];
   v16 = v7 * v15;
   v17 = 0.0;
   if (v16 < 0.1)
   {
-    [v32 duration];
+    [contextCopy duration];
     v17 = v7 * v18 / 0.1;
   }
 
   [(KNAnimParameterGroup *)self->_parameterGroup valueForAnimationCurve:@"Blur Radius Curve" atPercent:v17];
   v20 = v19;
-  v21 = [v32 textures];
-  v22 = [v21 lastObject];
+  textures = [contextCopy textures];
+  lastObject = [textures lastObject];
 
-  [v32 duration];
+  [contextCopy duration];
   if (v7 * v23 <= 0.2)
   {
-    [v22 singleTextureOpacity];
+    [lastObject singleTextureOpacity];
     [(KNGaussianBlurEffect *)self->_blurEffect setOpacity:(1.0 - v14) * v24];
-    [(KNGaussianBlurEffect *)self->_blurEffect renderEffectAtPercent:v4 withContext:v20];
+    [(KNGaussianBlurEffect *)self->_blurEffect renderEffectAtPercent:metalContext withContext:v20];
   }
 
-  [v32 duration];
+  [contextCopy duration];
   if (v7 * v25 >= 0.1)
   {
-    v26 = [v32 randomGenerator];
+    randomGenerator = [contextCopy randomGenerator];
     [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Min Particle Opacity for Random"];
     v28 = v27;
     [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Max Particle Opacity for Random"];
-    [v26 doubleBetween:v28 :v29];
+    [randomGenerator doubleBetween:v28 :v29];
     v31 = v30;
 
-    [(KNBuildVanish *)self p_drawMetalParticleSystemsWithEncoder:v5 texture:v22 percent:1 sparkles:v4 particleSystemOpacity:v7 metalContext:v31];
+    [(KNBuildVanish *)self p_drawMetalParticleSystemsWithEncoder:renderEncoder texture:lastObject percent:1 sparkles:metalContext particleSystemOpacity:v7 metalContext:v31];
   }
 }
 
-- (void)metalAnimationDidEndWithContext:(id)a3
+- (void)metalAnimationDidEndWithContext:(id)context
 {
-  v4 = [a3 animatedBuild];
-  v5 = [v4 isBuildOut];
+  animatedBuild = [context animatedBuild];
+  isBuildOut = [animatedBuild isBuildOut];
 
-  if (v5)
+  if (isBuildOut)
   {
     blurEffect = self->_blurEffect;
 
@@ -522,7 +522,7 @@
   }
 }
 
-- (void)metalTeardownAnimationsWithContext:(id)a3
+- (void)metalTeardownAnimationsWithContext:(id)context
 {
   [(KNGaussianBlurEffect *)self->_blurEffect teardown];
   [(TSDTexturedRectangle *)self->_particleTR teardown];

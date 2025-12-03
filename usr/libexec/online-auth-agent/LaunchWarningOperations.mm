@@ -1,27 +1,27 @@
 @interface LaunchWarningOperations
-- (BOOL)setUserOverride:(BOOL)a3 forID:(unint64_t)a4 error:(id *)a5;
-- (BOOL)syncLaunchWarningsAndReturnError:(id *)a3;
-- (id)lookupLaunchWarningData:(id)a3 cdhashType:(unsigned int)a4 error:(id *)a5;
+- (BOOL)setUserOverride:(BOOL)override forID:(unint64_t)d error:(id *)error;
+- (BOOL)syncLaunchWarningsAndReturnError:(id *)error;
+- (id)lookupLaunchWarningData:(id)data cdhashType:(unsigned int)type error:(id *)error;
 @end
 
 @implementation LaunchWarningOperations
 
-- (BOOL)setUserOverride:(BOOL)a3 forID:(unint64_t)a4 error:(id *)a5
+- (BOOL)setUserOverride:(BOOL)override forID:(unint64_t)d error:(id *)error
 {
-  v7 = self;
-  sub_10002A064(a3, a4);
+  selfCopy = self;
+  sub_10002A064(override, d);
 
   return 1;
 }
 
-- (id)lookupLaunchWarningData:(id)a3 cdhashType:(unsigned int)a4 error:(id *)a5
+- (id)lookupLaunchWarningData:(id)data cdhashType:(unsigned int)type error:(id *)error
 {
-  v7 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v9 = sub_1000430B4();
   v11 = v10;
 
-  v12 = sub_10002A5E4(v9, v11, a4);
+  v12 = sub_10002A5E4(v9, v11, type);
   v14 = v13;
 
   sub_10001316C(v9, v11);
@@ -31,9 +31,9 @@
   return v15.super.isa;
 }
 
-- (BOOL)syncLaunchWarningsAndReturnError:(id *)a3
+- (BOOL)syncLaunchWarningsAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_10002B1CC();
 
   return 1;

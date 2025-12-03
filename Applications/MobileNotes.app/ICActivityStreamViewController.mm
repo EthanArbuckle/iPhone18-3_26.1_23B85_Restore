@@ -1,13 +1,13 @@
 @interface ICActivityStreamViewController
 - (ICActivityStreamCoordinating)coordinator;
 - (ICActivityStreamSelection)selection;
-- (ICActivityStreamViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ICActivityStreamViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSManagedObjectID)objectID;
 - (void)addHostingViewIfNeeded;
-- (void)close:(id)a3;
-- (void)observeActivityStreamForObject:(id)a3;
-- (void)setSelection:(id)a3;
-- (void)setTopInset:(double)a3;
+- (void)close:(id)close;
+- (void)observeActivityStreamForObject:(id)object;
+- (void)setSelection:(id)selection;
+- (void)setTopInset:(double)inset;
 - (void)updateContentLayout;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -24,7 +24,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10019314C();
 }
 
@@ -39,20 +39,20 @@
 
 - (void)addHostingViewIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001935A8();
 }
 
-- (void)setTopInset:(double)a3
+- (void)setTopInset:(double)inset
 {
-  *&self->ICNAViewController_opaque[OBJC_IVAR___ICActivityStreamViewController_topInset] = a3;
-  v3 = self;
+  *&self->ICNAViewController_opaque[OBJC_IVAR___ICActivityStreamViewController_topInset] = inset;
+  selfCopy = self;
   sub_100193390();
 }
 
 - (void)updateContentLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_100193390();
 }
 
@@ -60,47 +60,47 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   return v5;
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  selectionCopy = selection;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
-- (void)observeActivityStreamForObject:(id)a3
+- (void)observeActivityStreamForObject:(id)object
 {
-  v5 = a3;
-  v6 = self;
-  sub_100193AF0(a3);
+  objectCopy = object;
+  selfCopy = self;
+  sub_100193AF0(object);
 }
 
 - (NSManagedObjectID)objectID
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100194694();
 
   return v3;
 }
 
-- (void)close:(id)a3
+- (void)close:(id)close
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  [*&v4->ICNAViewController_opaque[OBJC_IVAR___ICActivityStreamViewController_coordinator] hideActivityStreamWithCompletion:0];
+  [*&selfCopy->ICNAViewController_opaque[OBJC_IVAR___ICActivityStreamViewController_coordinator] hideActivityStreamWithCompletion:0];
   sub_100009F60(&v5);
 }
 
-- (ICActivityStreamViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICActivityStreamViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

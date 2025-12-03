@@ -1,10 +1,10 @@
 @interface PKDiscoveryDriver
-- (PKDiscoveryDriver)initWithAttributes:(id)a3 flags:(unint64_t)a4 host:(id)a5 report:(id)a6;
-- (void)_performWithPreviousResults:(id)a3 forceNotify:(BOOL)a4 uninstalledProxies:(id)a5;
+- (PKDiscoveryDriver)initWithAttributes:(id)attributes flags:(unint64_t)flags host:(id)host report:(id)report;
+- (void)_performWithPreviousResults:(id)results forceNotify:(BOOL)notify uninstalledProxies:(id)proxies;
 - (void)cancel;
 - (void)dealloc;
 - (void)installWatchers;
-- (void)performWithPreviousResults:(id)a3 forceNotify:(BOOL)a4;
+- (void)performWithPreviousResults:(id)results forceNotify:(BOOL)notify;
 - (void)removeWatchers;
 @end
 
@@ -17,7 +17,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C6892000, v3, OS_LOG_TYPE_DEFAULT, "<PKDiscoveryDriver:%p> installing watchers for continuous discovery", buf, 0xCu);
   }
 
@@ -26,13 +26,13 @@
   [(PKDiscoveryDriver *)self setLsWatcher:v4];
 
   out_token = 0;
-  v5 = [(PKDiscoveryDriver *)self queue];
+  queue = [(PKDiscoveryDriver *)self queue];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = sub_1C689FF10;
   handler[3] = &unk_1E827F5F8;
   objc_copyWeak(&v18, buf);
-  sub_1C68939B0(&out_token, v5, handler);
+  sub_1C68939B0(&out_token, queue, handler);
 
   [(PKDiscoveryDriver *)self setAnnotationNotifyToken:out_token];
   v15[0] = MEMORY[0x1E69E9820];
@@ -41,8 +41,8 @@
   v15[3] = &unk_1E827F620;
   objc_copyWeak(&v16, buf);
   v6 = MEMORY[0x1C6960190](v15);
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  v8 = [MEMORY[0x1E696ADC8] mainQueue];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_1C68A0118;
@@ -50,7 +50,7 @@
   objc_copyWeak(&v14, buf);
   v9 = v6;
   v13 = v9;
-  v10 = [v7 addObserverForName:@"com.apple.managedconfiguration.effectivesettingschanged" object:0 queue:v8 usingBlock:v12];
+  v10 = [defaultCenter addObserverForName:@"com.apple.managedconfiguration.effectivesettingschanged" object:0 queue:mainQueue usingBlock:v12];
   [(PKDiscoveryDriver *)self setMcNotificationToken:v10];
 
   objc_destroyWeak(&v14);
@@ -60,11 +60,11 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (PKDiscoveryDriver)initWithAttributes:(id)a3 flags:(unint64_t)a4 host:(id)a5 report:(id)a6
+- (PKDiscoveryDriver)initWithAttributes:(id)attributes flags:(unint64_t)flags host:(id)host report:(id)report
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  attributesCopy = attributes;
+  hostCopy = host;
+  reportCopy = report;
   v13 = _os_activity_create(&dword_1C6892000, "continuous-discovery", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   v29 = 0;
   v30 = &v29;
@@ -76,18 +76,18 @@
   block[1] = 3221225472;
   block[2] = sub_1C689EF28;
   block[3] = &unk_1E827F4B8;
-  v22 = self;
-  v23 = v10;
+  selfCopy = self;
+  v23 = attributesCopy;
   v27 = &v29;
-  v28 = a4;
+  flagsCopy = flags;
   v24 = v13;
-  v25 = v11;
-  v26 = v12;
-  v14 = v11;
+  v25 = hostCopy;
+  v26 = reportCopy;
+  v14 = hostCopy;
   v15 = v13;
-  v16 = v12;
-  v17 = v10;
-  v18 = self;
+  v16 = reportCopy;
+  v17 = attributesCopy;
+  selfCopy2 = self;
   os_activity_apply(v15, block);
   v19 = v30[5];
 
@@ -97,52 +97,52 @@
 
 - (void)dealloc
 {
-  v3 = [(PKDiscoveryDriver *)self relatedActivity];
+  relatedActivity = [(PKDiscoveryDriver *)self relatedActivity];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1C689F150;
   block[3] = &unk_1E827F1C8;
   block[4] = self;
-  os_activity_apply(v3, block);
+  os_activity_apply(relatedActivity, block);
 
   v4.receiver = self;
   v4.super_class = PKDiscoveryDriver;
   [(PKDiscoveryDriver *)&v4 dealloc];
 }
 
-- (void)performWithPreviousResults:(id)a3 forceNotify:(BOOL)a4
+- (void)performWithPreviousResults:(id)results forceNotify:(BOOL)notify
 {
-  v6 = a3;
-  v7 = [(PKDiscoveryDriver *)self relatedActivity];
+  resultsCopy = results;
+  relatedActivity = [(PKDiscoveryDriver *)self relatedActivity];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1C689F2B8;
   block[3] = &unk_1E827F530;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  os_activity_apply(v7, block);
+  v10 = resultsCopy;
+  notifyCopy = notify;
+  v8 = resultsCopy;
+  os_activity_apply(relatedActivity, block);
 }
 
-- (void)_performWithPreviousResults:(id)a3 forceNotify:(BOOL)a4 uninstalledProxies:(id)a5
+- (void)_performWithPreviousResults:(id)results forceNotify:(BOOL)notify uninstalledProxies:(id)proxies
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PKDiscoveryDriver *)self report];
+  resultsCopy = results;
+  proxiesCopy = proxies;
+  report = [(PKDiscoveryDriver *)self report];
 
-  if (v10)
+  if (report)
   {
-    v11 = [(PKDiscoveryDriver *)self relatedActivity];
+    relatedActivity = [(PKDiscoveryDriver *)self relatedActivity];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1C689F8C8;
     v12[3] = &unk_1E827F5A8;
-    v13 = v9;
-    v16 = a4;
-    v14 = v8;
-    v15 = self;
-    os_activity_apply(v11, v12);
+    v13 = proxiesCopy;
+    notifyCopy = notify;
+    v14 = resultsCopy;
+    selfCopy = self;
+    os_activity_apply(relatedActivity, v12);
   }
 }
 
@@ -153,39 +153,39 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C6892000, v3, OS_LOG_TYPE_DEFAULT, "<PKDiscoveryDriver:%p> explicit cancellation for discovery", buf, 0xCu);
   }
 
-  v4 = [(PKDiscoveryDriver *)self report];
+  report = [(PKDiscoveryDriver *)self report];
   v5 = dispatch_get_current_queue();
-  v6 = [(PKDiscoveryDriver *)self sync];
+  sync = [(PKDiscoveryDriver *)self sync];
 
-  if (v5 == v6)
+  if (v5 == sync)
   {
     [(PKDiscoveryDriver *)self removeWatchers];
   }
 
   else
   {
-    v7 = [(PKDiscoveryDriver *)self sync];
+    sync2 = [(PKDiscoveryDriver *)self sync];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1C689FE6C;
     block[3] = &unk_1E827F1C8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(sync2, block);
   }
 
-  v8 = [(PKDiscoveryDriver *)self queue];
+  queue = [(PKDiscoveryDriver *)self queue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1C689FE74;
   v11[3] = &unk_1E827F5D0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  dispatch_async(v8, v11);
+  v12 = report;
+  v9 = report;
+  dispatch_async(queue, v11);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -197,19 +197,19 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C6892000, v3, OS_LOG_TYPE_DEFAULT, "<PKDiscoveryDriver:%p> removing watchers for continous discovery", &v8, 0xCu);
   }
 
   if ([(PKDiscoveryDriver *)self annotationNotifyToken])
   {
-    v4 = [(PKDiscoveryDriver *)self lsWatcher];
-    [v4 stopUpdates];
+    lsWatcher = [(PKDiscoveryDriver *)self lsWatcher];
+    [lsWatcher stopUpdates];
 
     sub_1C68A4694([(PKDiscoveryDriver *)self annotationNotifyToken]);
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    v6 = [(PKDiscoveryDriver *)self mcNotificationToken];
-    [v5 removeObserver:v6];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mcNotificationToken = [(PKDiscoveryDriver *)self mcNotificationToken];
+    [defaultCenter removeObserver:mcNotificationToken];
 
     [(PKDiscoveryDriver *)self setAnnotationNotifyToken:0];
     [(PKDiscoveryDriver *)self setReport:0];

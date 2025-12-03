@@ -1,14 +1,14 @@
 @interface HMDHomeNaturalLightingContextUpdater
 + (id)logCategory;
-- (BOOL)areEncodedBrightnessLevelTransitionPointsValid:(id)a3;
+- (BOOL)areEncodedBrightnessLevelTransitionPointsValid:(id)valid;
 - (HMDHome)home;
-- (HMDHomeNaturalLightingContextUpdater)initWithHome:(id)a3 workQueue:(id)a4 demoModeEnabled:(BOOL)a5 logIdentifier:(id)a6 notificationCenter:(id)a7 dataSource:(id)a8;
-- (id)colorTemperatureTransitionPointsForMaximumBrightnessWithEncodeNaturalLightingCurve:(id)a3;
-- (id)colorTemperatureTransitionPointsForMinimumBrightnessWithEncodeNaturalLightingCurve:(id)a3;
-- (int64_t)colorTemperatureForTransitionPoint:(id)a3;
-- (int64_t)timeOfDayForMinimumBrightnessTransitionPoint:(id)a3 maximumBrighnessTransitionPoint:(id)a4;
+- (HMDHomeNaturalLightingContextUpdater)initWithHome:(id)home workQueue:(id)queue demoModeEnabled:(BOOL)enabled logIdentifier:(id)identifier notificationCenter:(id)center dataSource:(id)source;
+- (id)colorTemperatureTransitionPointsForMaximumBrightnessWithEncodeNaturalLightingCurve:(id)curve;
+- (id)colorTemperatureTransitionPointsForMinimumBrightnessWithEncodeNaturalLightingCurve:(id)curve;
+- (int64_t)colorTemperatureForTransitionPoint:(id)point;
+- (int64_t)timeOfDayForMinimumBrightnessTransitionPoint:(id)point maximumBrighnessTransitionPoint:(id)transitionPoint;
 - (void)configure;
-- (void)handleResidentDeviceUpdated:(id)a3;
+- (void)handleResidentDeviceUpdated:(id)updated;
 - (void)initalizeCurve;
 - (void)updateNaturalLightingContext;
 @end
@@ -25,15 +25,15 @@
 - (void)updateNaturalLightingContext
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDHomeNaturalLightingContextUpdater *)self home];
-  v5 = v4;
-  if (!v4)
+  home = [(HMDHomeNaturalLightingContextUpdater *)self home];
+  v5 = home;
+  if (!home)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -50,12 +50,12 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  v6 = [v4 isCurrentDeviceConfirmedPrimaryResident];
-  v7 = [(HMDHomeNaturalLightingContextUpdater *)self isDemoModeEnabled];
-  if ((v6 & 1) == 0 && !v7)
+  isCurrentDeviceConfirmedPrimaryResident = [home isCurrentDeviceConfirmedPrimaryResident];
+  isDemoModeEnabled = [(HMDHomeNaturalLightingContextUpdater *)self isDemoModeEnabled];
+  if ((isCurrentDeviceConfirmedPrimaryResident & 1) == 0 && !isDemoModeEnabled)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -77,13 +77,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v14 = [(HMDHomeNaturalLightingContextUpdater *)self curve];
-  if (v14)
+  curve = [(HMDHomeNaturalLightingContextUpdater *)self curve];
+  if (curve)
   {
     v15 = [HMDNaturalLightingContext alloc];
-    v16 = [(HMDHomeNaturalLightingContextUpdater *)self dataSource];
-    v17 = [v16 localTimeZone];
-    v18 = [(HMDNaturalLightingContext *)v15 initWithCurve:v14 timeZone:v17];
+    dataSource = [(HMDHomeNaturalLightingContextUpdater *)self dataSource];
+    localTimeZone = [dataSource localTimeZone];
+    v18 = [(HMDNaturalLightingContext *)v15 initWithCurve:curve timeZone:localTimeZone];
   }
 
   else
@@ -91,10 +91,10 @@ LABEL_8:
     v18 = 0;
   }
 
-  v19 = [v5 naturalLightingContext];
-  v20 = [(HMDNaturalLightingContext *)v19 isEqual:v18];
+  naturalLightingContext = [v5 naturalLightingContext];
+  v20 = [(HMDNaturalLightingContext *)naturalLightingContext isEqual:v18];
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy3 = self;
   v23 = HMFGetOSLogHandle();
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_INFO);
   if (v20)
@@ -105,7 +105,7 @@ LABEL_8:
       v36 = 138543618;
       v37 = v25;
       v38 = 2112;
-      v39 = v19;
+      v39 = naturalLightingContext;
       _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_INFO, "%{public}@Skipping updating natural lighting context, since it is already set: %@", &v36, 0x16u);
     }
 
@@ -126,15 +126,15 @@ LABEL_8:
 
     objc_autoreleasePoolPop(v21);
     v27 = [HMDHomeModel alloc];
-    v28 = [v5 uuid];
-    v29 = [v5 homeManager];
-    v30 = [v29 uuid];
-    v31 = [(HMDBackingStoreModelObject *)v27 initWithObjectChangeType:2 uuid:v28 parentUUID:v30];
+    uuid = [v5 uuid];
+    homeManager = [v5 homeManager];
+    uuid2 = [homeManager uuid];
+    v31 = [(HMDBackingStoreModelObject *)v27 initWithObjectChangeType:2 uuid:uuid parentUUID:uuid2];
 
     [(HMDHomeModel *)v31 setNaturalLightingContext:v18];
-    v32 = [v5 backingStore];
+    backingStore = [v5 backingStore];
     v33 = +[HMDBackingStoreTransactionOptions defaultXPCOptions];
-    v34 = [v32 transaction:@"Updating natural lighting context" options:v33];
+    v34 = [backingStore transaction:@"Updating natural lighting context" options:v33];
 
     [v34 add:v31];
     [v34 run];
@@ -144,14 +144,14 @@ LABEL_21:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)colorTemperatureForTransitionPoint:(id)a3
+- (int64_t)colorTemperatureForTransitionPoint:(id)point
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  pointCopy = point;
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 hmf_numberForKey:@"ColorTemperature"];
+  v6 = [pointCopy hmf_numberForKey:@"ColorTemperature"];
   v7 = v6;
   if (v6 && [v6 integerValue] > 0)
   {
@@ -161,7 +161,7 @@ LABEL_21:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -169,7 +169,7 @@ LABEL_21:
       v15 = 138543874;
       v16 = v12;
       v17 = 2112;
-      v18 = v4;
+      v18 = pointCopy;
       v19 = 2112;
       v20 = @"ColorTemperature";
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_ERROR, "%{public}@Minimum Brightness Transition Point: %@ is missing key: %@", &v15, 0x20u);
@@ -183,30 +183,30 @@ LABEL_21:
   return v8;
 }
 
-- (int64_t)timeOfDayForMinimumBrightnessTransitionPoint:(id)a3 maximumBrighnessTransitionPoint:(id)a4
+- (int64_t)timeOfDayForMinimumBrightnessTransitionPoint:(id)point maximumBrighnessTransitionPoint:(id)transitionPoint
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  pointCopy = point;
+  transitionPointCopy = transitionPoint;
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = [(__CFString *)v6 hmf_numberForKey:@"TimeOfDay"];
+  v9 = [(__CFString *)pointCopy hmf_numberForKey:@"TimeOfDay"];
   if (v9)
   {
-    v10 = [(__CFString *)v7 hmf_numberForKey:@"TimeOfDay"];
+    v10 = [(__CFString *)transitionPointCopy hmf_numberForKey:@"TimeOfDay"];
     if (v10)
     {
       if ([v9 isEqualToNumber:v10])
       {
-        v11 = [v9 longLongValue];
+        longLongValue = [v9 longLongValue];
 LABEL_14:
 
         goto LABEL_15;
       }
 
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy2 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -216,9 +216,9 @@ LABEL_14:
         v27 = 2112;
         v28 = @"TimeOfDay";
         v29 = 2112;
-        v30 = v7;
+        v30 = transitionPointCopy;
         v31 = 2112;
-        v32 = v6;
+        v32 = pointCopy;
         v20 = "%{public}@Maximum Brightness Transition Point: %@ key value:%@ doesn't match Minimum Brightness Transition Point: %@";
         v21 = v18;
         v22 = 42;
@@ -229,7 +229,7 @@ LABEL_14:
     else
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy2 = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
@@ -237,7 +237,7 @@ LABEL_14:
         v25 = 138543874;
         v26 = v19;
         v27 = 2112;
-        v28 = v7;
+        v28 = transitionPointCopy;
         v29 = 2112;
         v30 = @"TimeOfDay";
         v20 = "%{public}@Maximum Brightness Transition Point: %@ is missing key: %@";
@@ -249,12 +249,12 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v16);
-    v11 = -1;
+    longLongValue = -1;
     goto LABEL_14;
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy3 = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
@@ -262,33 +262,33 @@ LABEL_12:
     v25 = 138543874;
     v26 = v15;
     v27 = 2112;
-    v28 = v6;
+    v28 = pointCopy;
     v29 = 2112;
     v30 = @"TimeOfDay";
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Minimum Brightness Transition Point: %@ is missing key: %@", &v25, 0x20u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v11 = -1;
+  longLongValue = -1;
 LABEL_15:
 
   v23 = *MEMORY[0x277D85DE8];
-  return v11;
+  return longLongValue;
 }
 
-- (id)colorTemperatureTransitionPointsForMinimumBrightnessWithEncodeNaturalLightingCurve:(id)a3
+- (id)colorTemperatureTransitionPointsForMinimumBrightnessWithEncodeNaturalLightingCurve:(id)curve
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  curveCopy = curve;
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionPointsForMinimumBrightnessWithEncodeNaturalLightingCurve___block_invoke;
   v26[3] = &unk_278686BA8;
   v26[4] = self;
-  v6 = [v4 na_firstObjectPassingTest:v26];
+  v6 = [curveCopy na_firstObjectPassingTest:v26];
   v7 = [v6 hmf_arrayForKey:@"ColorTemperatureTransitionPoints"];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -302,7 +302,7 @@ LABEL_15:
     v14 = [v8 sortedArrayUsingComparator:&__block_literal_global_43_257882];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -313,7 +313,7 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v15);
-    if ([(HMDHomeNaturalLightingContextUpdater *)v16 areEncodedBrightnessLevelTransitionPointsValid:v14])
+    if ([(HMDHomeNaturalLightingContextUpdater *)selfCopy areEncodedBrightnessLevelTransitionPointsValid:v14])
     {
       v8 = v14;
       v13 = v8;
@@ -322,7 +322,7 @@ LABEL_15:
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v16;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -341,7 +341,7 @@ LABEL_15:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -449,19 +449,19 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
   return v7;
 }
 
-- (id)colorTemperatureTransitionPointsForMaximumBrightnessWithEncodeNaturalLightingCurve:(id)a3
+- (id)colorTemperatureTransitionPointsForMaximumBrightnessWithEncodeNaturalLightingCurve:(id)curve
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  curveCopy = curve;
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionPointsForMaximumBrightnessWithEncodeNaturalLightingCurve___block_invoke;
   v26[3] = &unk_278686BA8;
   v26[4] = self;
-  v6 = [v4 na_firstObjectPassingTest:v26];
+  v6 = [curveCopy na_firstObjectPassingTest:v26];
   v7 = [v6 hmf_arrayForKey:@"ColorTemperatureTransitionPoints"];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -475,7 +475,7 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
     v14 = [v8 sortedArrayUsingComparator:&__block_literal_global_39_257890];
 
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -486,7 +486,7 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
     }
 
     objc_autoreleasePoolPop(v15);
-    if ([(HMDHomeNaturalLightingContextUpdater *)v16 areEncodedBrightnessLevelTransitionPointsValid:v14])
+    if ([(HMDHomeNaturalLightingContextUpdater *)selfCopy areEncodedBrightnessLevelTransitionPointsValid:v14])
     {
       v8 = v14;
       v13 = v8;
@@ -495,7 +495,7 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v16;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -514,7 +514,7 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -621,28 +621,28 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
   return v7;
 }
 
-- (BOOL)areEncodedBrightnessLevelTransitionPointsValid:(id)a3
+- (BOOL)areEncodedBrightnessLevelTransitionPointsValid:(id)valid
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  validCopy = valid;
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 firstObject];
-  v7 = [v6 hmf_numberForKey:@"TimeOfDay"];
+  firstObject = [validCopy firstObject];
+  v7 = [firstObject hmf_numberForKey:@"TimeOfDay"];
   if ([v7 isEqualToNumber:&unk_283E74F48])
   {
-    v8 = [v4 lastObject];
-    v9 = [v8 hmf_numberForKey:@"TimeOfDay"];
+    lastObject = [validCopy lastObject];
+    v9 = [lastObject hmf_numberForKey:@"TimeOfDay"];
     if ([v9 isEqualToNumber:&unk_283E74F60])
     {
-      v10 = [v6 hmf_numberForKey:@"ColorTemperature"];
-      v11 = [v8 hmf_numberForKey:@"ColorTemperature"];
+      v10 = [firstObject hmf_numberForKey:@"ColorTemperature"];
+      v11 = [lastObject hmf_numberForKey:@"ColorTemperature"];
       v12 = [v10 isEqualToNumber:v11];
       if ((v12 & 1) == 0)
       {
         context = objc_autoreleasePoolPush();
-        v13 = self;
+        selfCopy = self;
         v14 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
@@ -663,7 +663,7 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy2 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -683,7 +683,7 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy3 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -706,11 +706,11 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
 - (void)initalizeCurve
 {
   v94 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -721,16 +721,16 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDHomeNaturalLightingContextUpdater *)v5 dataSource];
-  v9 = [v8 naturalLightingCurveResourceFileContent];
+  dataSource = [(HMDHomeNaturalLightingContextUpdater *)selfCopy dataSource];
+  naturalLightingCurveResourceFileContent = [dataSource naturalLightingCurveResourceFileContent];
 
-  v10 = [v9 hmf_arrayForKey:@"NaturalLightingCurve"];
+  v10 = [naturalLightingCurveResourceFileContent hmf_arrayForKey:@"NaturalLightingCurve"];
   v11 = [v10 na_filter:&__block_literal_global_257905];
 
   if (!v11)
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = v5;
+    v38 = selfCopy;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
@@ -738,7 +738,7 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
       *buf = 138543874;
       v89 = v40;
       v90 = 2112;
-      v91 = v9;
+      v91 = naturalLightingCurveResourceFileContent;
       v92 = 2112;
       v93 = @"NaturalLightingCurve";
       _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_ERROR, "%{public}@Missing natural lighting curve key in resource file content %@:%@", buf, 0x20u);
@@ -752,7 +752,7 @@ uint64_t __123__HMDHomeNaturalLightingContextUpdater_colorTemperatureTransitionP
   {
     v41 = v12;
     v37 = objc_autoreleasePoolPush();
-    v42 = v5;
+    v42 = selfCopy;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -771,17 +771,17 @@ LABEL_45:
     goto LABEL_77;
   }
 
-  v13 = [(HMDHomeNaturalLightingContextUpdater *)v5 colorTemperatureTransitionPointsForMaximumBrightnessWithEncodeNaturalLightingCurve:v11];
+  v13 = [(HMDHomeNaturalLightingContextUpdater *)selfCopy colorTemperatureTransitionPointsForMaximumBrightnessWithEncodeNaturalLightingCurve:v11];
   if ([v13 count])
   {
-    v14 = [(HMDHomeNaturalLightingContextUpdater *)v5 colorTemperatureTransitionPointsForMinimumBrightnessWithEncodeNaturalLightingCurve:v11];
+    v14 = [(HMDHomeNaturalLightingContextUpdater *)selfCopy colorTemperatureTransitionPointsForMinimumBrightnessWithEncodeNaturalLightingCurve:v11];
     if ([v14 count])
     {
       v15 = [v14 count];
       if (v15 == [v13 count])
       {
-        v74 = v9;
-        v16 = [MEMORY[0x277CBEB18] array];
+        v74 = naturalLightingCurveResourceFileContent;
+        array = [MEMORY[0x277CBEB18] array];
         v83 = 0u;
         v84 = 0u;
         v85 = 0u;
@@ -796,7 +796,7 @@ LABEL_45:
           v18 = 0;
           v19 = 0;
           v76 = *v84;
-          v77 = v16;
+          v77 = array;
           v72 = v14;
           v73 = v11;
           while (2)
@@ -813,12 +813,12 @@ LABEL_45:
 
               v22 = *(*(&v83 + 1) + 8 * v20);
               v23 = [v13 objectAtIndex:v19];
-              v24 = [(HMDHomeNaturalLightingContextUpdater *)v5 timeOfDayForMinimumBrightnessTransitionPoint:v22 maximumBrighnessTransitionPoint:v23];
+              v24 = [(HMDHomeNaturalLightingContextUpdater *)selfCopy timeOfDayForMinimumBrightnessTransitionPoint:v22 maximumBrighnessTransitionPoint:v23];
               v80 = v23;
               if (v24 < 0)
               {
                 v58 = objc_autoreleasePoolPush();
-                v59 = v5;
+                v59 = selfCopy;
                 v60 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
                 {
@@ -834,11 +834,11 @@ LABEL_45:
                 goto LABEL_72;
               }
 
-              v25 = [(HMDHomeNaturalLightingContextUpdater *)v5 colorTemperatureForTransitionPoint:v22];
+              v25 = [(HMDHomeNaturalLightingContextUpdater *)selfCopy colorTemperatureForTransitionPoint:v22];
               if (v25 < 0)
               {
                 v58 = objc_autoreleasePoolPush();
-                v67 = v5;
+                v67 = selfCopy;
                 v60 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
                 {
@@ -855,11 +855,11 @@ LABEL_45:
               }
 
               v26 = v25;
-              v27 = [(HMDHomeNaturalLightingContextUpdater *)v5 colorTemperatureForTransitionPoint:v23];
+              v27 = [(HMDHomeNaturalLightingContextUpdater *)selfCopy colorTemperatureForTransitionPoint:v23];
               if ((v27 & 0x8000000000000000) != 0)
               {
                 v58 = objc_autoreleasePoolPush();
-                v68 = v5;
+                v68 = selfCopy;
                 v60 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
                 {
@@ -937,7 +937,7 @@ LABEL_45:
               if (v34 < 0)
               {
                 v58 = objc_autoreleasePoolPush();
-                v69 = v5;
+                v69 = selfCopy;
                 v60 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
                 {
@@ -952,9 +952,9 @@ LABEL_45:
 
 LABEL_72:
                 v11 = v73;
-                v9 = v74;
+                naturalLightingCurveResourceFileContent = v74;
                 v14 = v72;
-                v16 = v77;
+                array = v77;
 
                 objc_autoreleasePoolPop(v58);
                 goto LABEL_73;
@@ -963,12 +963,12 @@ LABEL_72:
               v82 = v32;
               if (!v34)
               {
-                v35 = [obj firstObject];
+                firstObject = [obj firstObject];
 
-                if (v22 != v35)
+                if (v22 != firstObject)
                 {
                   v58 = objc_autoreleasePoolPush();
-                  v70 = v5;
+                  v70 = selfCopy;
                   v60 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
                   {
@@ -986,7 +986,7 @@ LABEL_71:
                 }
               }
 
-              v36 = [MEMORY[0x277CFEAA0] transitionPointWithMinimumBrightness:-[HMDHomeNaturalLightingContextUpdater curveMinimumBrightness](v5 minimumBrightnessColorTemperature:"curveMinimumBrightness") maximumBrightness:v26 maximumBrightnessColorTemperature:100 targetCompletionDuration:{v28, v34}];
+              v36 = [MEMORY[0x277CFEAA0] transitionPointWithMinimumBrightness:-[HMDHomeNaturalLightingContextUpdater curveMinimumBrightness](selfCopy minimumBrightnessColorTemperature:"curveMinimumBrightness") maximumBrightness:v26 maximumBrightnessColorTemperature:100 targetCompletionDuration:{v28, v34}];
               [v77 addObject:v36];
               ++v19;
 
@@ -998,7 +998,7 @@ LABEL_71:
             while (v75 != v20);
             v14 = v72;
             v11 = v73;
-            v16 = v77;
+            array = v77;
             v17 = v81;
             v75 = [obj countByEnumeratingWithState:&v83 objects:v87 count:16];
             if (v75)
@@ -1015,36 +1015,36 @@ LABEL_71:
           v82 = 0;
         }
 
-        if ([v16 count])
+        if ([array count])
         {
-          v51 = [(HMDNaturalLightingCurve *)[HMDMutableNaturalLightingCurve alloc] initWithVersion:1 transitionPoints:v16 minimumBrightness:[(HMDHomeNaturalLightingContextUpdater *)v5 curveMinimumBrightness] maximumBrightness:[(HMDHomeNaturalLightingContextUpdater *)v5 curveMaximumBrightness] minimumColorTemperature:v82 maximumColorTemperature:v17];
-          v9 = v74;
+          v51 = [(HMDNaturalLightingCurve *)[HMDMutableNaturalLightingCurve alloc] initWithVersion:1 transitionPoints:array minimumBrightness:[(HMDHomeNaturalLightingContextUpdater *)selfCopy curveMinimumBrightness] maximumBrightness:[(HMDHomeNaturalLightingContextUpdater *)selfCopy curveMaximumBrightness] minimumColorTemperature:v82 maximumColorTemperature:v17];
+          naturalLightingCurveResourceFileContent = v74;
           v52 = [v74 hmf_numberForKey:@"ColorTemperatureValueUpdateInterval"];
-          v53 = [v52 longLongValue];
+          longLongValue = [v52 longLongValue];
 
-          if (v53 >= 1)
+          if (longLongValue >= 1)
           {
-            [(HMDNaturalLightingCurve *)v51 setColorTemperatureUpdateIntervalInMilliseconds:v53];
+            [(HMDNaturalLightingCurve *)v51 setColorTemperatureUpdateIntervalInMilliseconds:longLongValue];
           }
 
           v54 = [v74 hmf_numberForKey:@"ColorTemperatureNotifyIntervalThreshold"];
-          v55 = [v54 longLongValue];
+          longLongValue2 = [v54 longLongValue];
 
-          if (v55 >= 1)
+          if (longLongValue2 >= 1)
           {
-            [(HMDNaturalLightingCurve *)v51 setColorTemperatureNotifyIntervalThresholdInMilliseconds:v55];
+            [(HMDNaturalLightingCurve *)v51 setColorTemperatureNotifyIntervalThresholdInMilliseconds:longLongValue2];
           }
 
           v56 = [v74 hmf_numberForKey:@"ColorTemperatureNotifyValueChangeThreshold"];
-          v57 = [v56 integerValue];
+          integerValue = [v56 integerValue];
 
-          if (v57 >= 1)
+          if (integerValue >= 1)
           {
-            [(HMDNaturalLightingCurve *)v51 setColorTemperatureNotifyValueChangeThreshold:v57];
+            [(HMDNaturalLightingCurve *)v51 setColorTemperatureNotifyValueChangeThreshold:integerValue];
           }
 
-          [(HMDHomeNaturalLightingContextUpdater *)v5 setCurve:v51];
-          [(HMDHomeNaturalLightingContextUpdater *)v5 updateNaturalLightingContext];
+          [(HMDHomeNaturalLightingContextUpdater *)selfCopy setCurve:v51];
+          [(HMDHomeNaturalLightingContextUpdater *)selfCopy updateNaturalLightingContext];
 
 LABEL_73:
           v13 = v78;
@@ -1053,9 +1053,9 @@ LABEL_73:
         else
         {
           v63 = objc_autoreleasePoolPush();
-          v64 = v5;
+          v64 = selfCopy;
           v65 = HMFGetOSLogHandle();
-          v9 = v74;
+          naturalLightingCurveResourceFileContent = v74;
           if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
           {
             v66 = HMFGetLogIdentifier();
@@ -1073,7 +1073,7 @@ LABEL_73:
       else
       {
         v45 = objc_autoreleasePoolPush();
-        v46 = v5;
+        v46 = selfCopy;
         v47 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
         {
@@ -1107,55 +1107,55 @@ uint64_t __54__HMDHomeNaturalLightingContextUpdater_initalizeCurve__block_invoke
   return isKindOfClass & (v2 != 0);
 }
 
-- (void)handleResidentDeviceUpdated:(id)a3
+- (void)handleResidentDeviceUpdated:(id)updated
 {
-  v4 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__HMDHomeNaturalLightingContextUpdater_handleResidentDeviceUpdated___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)configure
 {
-  v3 = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDHomeNaturalLightingContextUpdater *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDHomeNaturalLightingContextUpdater *)self notificationCenter];
-  v5 = [(HMDHomeNaturalLightingContextUpdater *)self home];
-  v6 = [v5 residentDeviceManager];
-  [v4 addObserver:self selector:sel_handleResidentDeviceUpdated_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:v6];
+  notificationCenter = [(HMDHomeNaturalLightingContextUpdater *)self notificationCenter];
+  home = [(HMDHomeNaturalLightingContextUpdater *)self home];
+  residentDeviceManager = [home residentDeviceManager];
+  [notificationCenter addObserver:self selector:sel_handleResidentDeviceUpdated_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:residentDeviceManager];
 
-  v7 = [(HMDHomeNaturalLightingContextUpdater *)self notificationCenter];
-  [v7 addObserver:self selector:sel_handleResidentDeviceUpdated_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+  notificationCenter2 = [(HMDHomeNaturalLightingContextUpdater *)self notificationCenter];
+  [notificationCenter2 addObserver:self selector:sel_handleResidentDeviceUpdated_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
 
   [(HMDHomeNaturalLightingContextUpdater *)self initalizeCurve];
 }
 
-- (HMDHomeNaturalLightingContextUpdater)initWithHome:(id)a3 workQueue:(id)a4 demoModeEnabled:(BOOL)a5 logIdentifier:(id)a6 notificationCenter:(id)a7 dataSource:(id)a8
+- (HMDHomeNaturalLightingContextUpdater)initWithHome:(id)home workQueue:(id)queue demoModeEnabled:(BOOL)enabled logIdentifier:(id)identifier notificationCenter:(id)center dataSource:(id)source
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  homeCopy = home;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  centerCopy = center;
+  sourceCopy = source;
   v24.receiver = self;
   v24.super_class = HMDHomeNaturalLightingContextUpdater;
   v19 = [(HMDHomeNaturalLightingContextUpdater *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_home, v14);
-    objc_storeStrong(&v20->_workQueue, a4);
-    objc_storeStrong(&v20->_dataSource, a8);
-    v21 = [v16 copy];
+    objc_storeWeak(&v19->_home, homeCopy);
+    objc_storeStrong(&v20->_workQueue, queue);
+    objc_storeStrong(&v20->_dataSource, source);
+    v21 = [identifierCopy copy];
     logIdentifier = v20->_logIdentifier;
     v20->_logIdentifier = v21;
 
-    objc_storeStrong(&v20->_notificationCenter, a7);
-    v20->_demoModeEnabled = a5;
+    objc_storeStrong(&v20->_notificationCenter, center);
+    v20->_demoModeEnabled = enabled;
   }
 
   return v20;

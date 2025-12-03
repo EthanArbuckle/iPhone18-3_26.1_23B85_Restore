@@ -1,7 +1,7 @@
 @interface HFAccessoriesWithIssuesStatusItem
 + (id)statusItemClasses;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects;
 @end
 
 @implementation HFAccessoriesWithIssuesStatusItem
@@ -33,18 +33,18 @@ void __54__HFAccessoriesWithIssuesStatusItem_statusItemClasses__block_invoke_2()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects
 {
   v3 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"exclamationmark.circle.fill"];
 
   return v3;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = HFAccessoriesWithIssuesStatusItem;
-  v3 = [(HFAbstractGroupedStatusItem *)&v6 _subclass_updateWithOptions:a3];
+  v3 = [(HFAbstractGroupedStatusItem *)&v6 _subclass_updateWithOptions:options];
   v4 = [v3 flatMap:&__block_literal_global_15_4];
 
   return v4;

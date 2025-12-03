@@ -1,20 +1,20 @@
 @interface THGlossaryLinkResolver
-+ (THGlossaryLinkResolver)glossaryLinkResolverWithGlossaryController:(id)a3;
-- (THGlossaryLinkResolver)initWithGlossaryController:(id)a3;
-- (id)anchorFromAbsoluteLink:(id)a3;
++ (THGlossaryLinkResolver)glossaryLinkResolverWithGlossaryController:(id)controller;
+- (THGlossaryLinkResolver)initWithGlossaryController:(id)controller;
+- (id)anchorFromAbsoluteLink:(id)link;
 - (void)dealloc;
 @end
 
 @implementation THGlossaryLinkResolver
 
-+ (THGlossaryLinkResolver)glossaryLinkResolverWithGlossaryController:(id)a3
++ (THGlossaryLinkResolver)glossaryLinkResolverWithGlossaryController:(id)controller
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithGlossaryController:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithGlossaryController:controller];
 
   return v3;
 }
 
-- (THGlossaryLinkResolver)initWithGlossaryController:(id)a3
+- (THGlossaryLinkResolver)initWithGlossaryController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = THGlossaryLinkResolver;
@@ -22,7 +22,7 @@
   v5 = v4;
   if (v4)
   {
-    [(THGlossaryLinkResolver *)v4 setGlossaryController:a3];
+    [(THGlossaryLinkResolver *)v4 setGlossaryController:controller];
   }
 
   return v5;
@@ -36,15 +36,15 @@
   [(THGlossaryLinkResolver *)&v2 dealloc];
 }
 
-- (id)anchorFromAbsoluteLink:(id)a3
+- (id)anchorFromAbsoluteLink:(id)link
 {
-  v4 = [a3 docRelativePath];
-  if (!v4)
+  docRelativePath = [link docRelativePath];
+  if (!docRelativePath)
   {
     return 0;
   }
 
-  v5 = -[THGlossaryController entryForPath:](-[THGlossaryLinkResolver glossaryController](self, "glossaryController"), "entryForPath:", [@"/" stringByAppendingString:v4]);
+  v5 = -[THGlossaryController entryForPath:](-[THGlossaryLinkResolver glossaryController](self, "glossaryController"), "entryForPath:", [@"/" stringByAppendingString:docRelativePath]);
   if (!v5)
   {
     return 0;

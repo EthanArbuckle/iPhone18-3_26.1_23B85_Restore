@@ -1,8 +1,8 @@
 @interface FloatingButtonItem
 + (FloatingButtonItem)separatorItem;
-- (FloatingButtonItem)initWithButton:(id)a3 option:(int64_t)a4;
-- (void)registerHidesBackgroundChangeHandler:(id)a3;
-- (void)setHideBackground:(BOOL)a3;
+- (FloatingButtonItem)initWithButton:(id)button option:(int64_t)option;
+- (void)registerHidesBackgroundChangeHandler:(id)handler;
+- (void)setHideBackground:(BOOL)background;
 @end
 
 @implementation FloatingButtonItem
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (void)setHideBackground:(BOOL)a3
+- (void)setHideBackground:(BOOL)background
 {
-  if (self->_hideBackground != a3)
+  if (self->_hideBackground != background)
   {
-    self->_hideBackground = a3;
+    self->_hideBackground = background;
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
@@ -57,36 +57,36 @@
   }
 }
 
-- (void)registerHidesBackgroundChangeHandler:(id)a3
+- (void)registerHidesBackgroundChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   hidesBackgroundChangeHandlers = self->_hidesBackgroundChangeHandlers;
-  v9 = v4;
+  v9 = handlerCopy;
   if (!hidesBackgroundChangeHandlers)
   {
     v6 = [[NSMutableArray alloc] initWithCapacity:1];
     v7 = self->_hidesBackgroundChangeHandlers;
     self->_hidesBackgroundChangeHandlers = v6;
 
-    v4 = v9;
+    handlerCopy = v9;
     hidesBackgroundChangeHandlers = self->_hidesBackgroundChangeHandlers;
   }
 
-  v8 = [v4 copy];
+  v8 = [handlerCopy copy];
   [(NSMutableArray *)hidesBackgroundChangeHandlers addObject:v8];
 }
 
-- (FloatingButtonItem)initWithButton:(id)a3 option:(int64_t)a4
+- (FloatingButtonItem)initWithButton:(id)button option:(int64_t)option
 {
-  v7 = a3;
+  buttonCopy = button;
   v11.receiver = self;
   v11.super_class = FloatingButtonItem;
   v8 = [(FloatingButtonItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_button, a3);
-    v9->_option = a4;
+    objc_storeStrong(&v8->_button, button);
+    v9->_option = option;
   }
 
   return v9;

@@ -1,42 +1,42 @@
 @interface CAMAnimationHelper
-+ (id)_animationWithKeyPath:(id)a3;
++ (id)_animationWithKeyPath:(id)path;
 + (id)highlightTransformAnimation;
-+ (void)animateLayer:(id)a3 toFrame:(CGRect)a4 fromCurrentState:(BOOL)a5;
-+ (void)configurePowerSensitiveAnimation:(id)a3;
-+ (void)setLayer:(id)a3 highlighted:(BOOL)a4 inverted:(BOOL)a5 animated:(BOOL)a6 layoutStyle:(int64_t)a7;
++ (void)animateLayer:(id)layer toFrame:(CGRect)frame fromCurrentState:(BOOL)state;
++ (void)configurePowerSensitiveAnimation:(id)animation;
++ (void)setLayer:(id)layer highlighted:(BOOL)highlighted inverted:(BOOL)inverted animated:(BOOL)animated layoutStyle:(int64_t)style;
 @end
 
 @implementation CAMAnimationHelper
 
-+ (void)animateLayer:(id)a3 toFrame:(CGRect)a4 fromCurrentState:(BOOL)a5
++ (void)animateLayer:(id)layer toFrame:(CGRect)frame fromCurrentState:(BOOL)state
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v23 = a3;
-  v11 = [v23 presentationLayer];
-  if (v11 && a5)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layerCopy = layer;
+  presentationLayer = [layerCopy presentationLayer];
+  if (presentationLayer && state)
   {
-    v12 = [v23 presentationLayer];
-    v13 = [v12 valueForKeyPath:@"position"];
+    presentationLayer2 = [layerCopy presentationLayer];
+    v13 = [presentationLayer2 valueForKeyPath:@"position"];
   }
 
   else
   {
-    v13 = [v23 valueForKeyPath:@"position"];
+    v13 = [layerCopy valueForKeyPath:@"position"];
   }
 
-  v14 = [v23 presentationLayer];
-  if (v14 && a5)
+  presentationLayer3 = [layerCopy presentationLayer];
+  if (presentationLayer3 && state)
   {
-    v15 = [v23 presentationLayer];
-    v16 = [v15 valueForKeyPath:@"bounds"];
+    presentationLayer4 = [layerCopy presentationLayer];
+    v16 = [presentationLayer4 valueForKeyPath:@"bounds"];
   }
 
   else
   {
-    v16 = [v23 valueForKeyPath:@"bounds"];
+    v16 = [layerCopy valueForKeyPath:@"bounds"];
   }
 
   v25.origin.x = x;
@@ -59,19 +59,19 @@
   v28.size.width = width;
   v28.size.height = height;
   v20 = CGRectGetHeight(v28);
-  [v23 setPosition:{MidX, MidY}];
-  [v23 setBounds:{0.0, 0.0, v19, v20}];
-  v21 = [a1 _animationWithKeyPath:@"position"];
+  [layerCopy setPosition:{MidX, MidY}];
+  [layerCopy setBounds:{0.0, 0.0, v19, v20}];
+  v21 = [self _animationWithKeyPath:@"position"];
   [v21 setFromValue:v13];
-  v22 = [a1 _animationWithKeyPath:@"bounds"];
+  v22 = [self _animationWithKeyPath:@"bounds"];
   [v22 setFromValue:v16];
-  [v23 addAnimation:v21 forKey:@"positionAnimation"];
-  [v23 addAnimation:v22 forKey:@"boundsAnimation"];
+  [layerCopy addAnimation:v21 forKey:@"positionAnimation"];
+  [layerCopy addAnimation:v22 forKey:@"boundsAnimation"];
 }
 
-+ (id)_animationWithKeyPath:(id)a3
++ (id)_animationWithKeyPath:(id)path
 {
-  v3 = [MEMORY[0x1E69794A8] animationWithKeyPath:a3];
+  v3 = [MEMORY[0x1E69794A8] animationWithKeyPath:path];
   [v3 setMass:2.0];
   [v3 setStiffness:300.0];
   [v3 setDamping:400.0];
@@ -89,22 +89,22 @@
   return v3;
 }
 
-+ (void)setLayer:(id)a3 highlighted:(BOOL)a4 inverted:(BOOL)a5 animated:(BOOL)a6 layoutStyle:(int64_t)a7
++ (void)setLayer:(id)layer highlighted:(BOOL)highlighted inverted:(BOOL)inverted animated:(BOOL)animated layoutStyle:(int64_t)style
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v12 = a3;
-  v13 = [v12 presentationLayer];
-  v14 = v13;
-  if (v13)
+  animatedCopy = animated;
+  invertedCopy = inverted;
+  highlightedCopy = highlighted;
+  layerCopy = layer;
+  presentationLayer = [layerCopy presentationLayer];
+  v14 = presentationLayer;
+  if (presentationLayer)
   {
-    v15 = v13;
+    v15 = presentationLayer;
   }
 
   else
   {
-    v15 = v12;
+    v15 = layerCopy;
   }
 
   v16 = v15;
@@ -133,11 +133,11 @@
   CATransform3DInvert(&b, &a);
   a = v32;
   CATransform3DConcat(&v30, &a, &b);
-  if (v10)
+  if (highlightedCopy)
   {
-    [a1 highlightScaleForLayoutStyle:a7];
+    [self highlightScaleForLayoutStyle:style];
     memset(&b.m21, 0, 96);
-    if (v9)
+    if (invertedCopy)
     {
       v22 = 1.0 / v22;
     }
@@ -150,22 +150,22 @@
     v30 = a;
   }
 
-  if (v8)
+  if (animatedCopy)
   {
-    v23 = [a1 highlightTransformAnimation];
+    highlightTransformAnimation = [self highlightTransformAnimation];
     b = v32;
     v24 = [MEMORY[0x1E696B098] valueWithCATransform3D:&b];
-    [v23 setFromValue:v24];
+    [highlightTransformAnimation setFromValue:v24];
 
     b = v30;
     v25 = [MEMORY[0x1E696B098] valueWithCATransform3D:&b];
-    [v23 setToValue:v25];
+    [highlightTransformAnimation setToValue:v25];
 
-    [v12 addAnimation:v23 forKey:@"highlightScaleAnimation"];
+    [layerCopy addAnimation:highlightTransformAnimation forKey:@"highlightScaleAnimation"];
   }
 
   b = v30;
-  [v12 setTransform:&b];
+  [layerCopy setTransform:&b];
 }
 
 + (id)highlightTransformAnimation
@@ -188,11 +188,11 @@
   return v4;
 }
 
-+ (void)configurePowerSensitiveAnimation:(id)a3
++ (void)configurePowerSensitiveAnimation:(id)animation
 {
-  v3 = a3;
-  [v3 setFrameInterval:0.0166666667];
-  [v3 setDiscretizesTime:1];
+  animationCopy = animation;
+  [animationCopy setFrameInterval:0.0166666667];
+  [animationCopy setDiscretizesTime:1];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface HMAccessCodeValue
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMAccessCodeValue)initWithCoder:(id)a3;
-- (HMAccessCodeValue)initWithStringValue:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMAccessCodeValue)initWithCoder:(id)coder;
+- (HMAccessCodeValue)initWithStringValue:(id)value;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMAccessCodeValue
@@ -15,8 +15,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMAccessCodeValue *)self stringValue];
-  v5 = [v3 initWithName:@"stringValue" value:v4];
+  stringValue = [(HMAccessCodeValue *)self stringValue];
+  v5 = [v3 initWithName:@"stringValue" value:stringValue];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
@@ -32,21 +32,21 @@
   return [v2 shortDescription];
 }
 
-- (HMAccessCodeValue)initWithCoder:(id)a3
+- (HMAccessCodeValue)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeValueCodingKeyStringValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMAccessCodeValueCodingKeyStringValue"];
   if (v5)
   {
-    v6 = [(HMAccessCodeValue *)self initWithStringValue:v5];
-    v7 = v6;
+    selfCopy = [(HMAccessCodeValue *)self initWithStringValue:v5];
+    v7 = selfCopy;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -66,28 +66,28 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMAccessCodeValue *)self stringValue];
-  [v4 encodeObject:v5 forKey:@"HMAccessCodeValueCodingKeyStringValue"];
+  coderCopy = coder;
+  stringValue = [(HMAccessCodeValue *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"HMAccessCodeValueCodingKeyStringValue"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMAccessCodeValue *)self stringValue];
-  v3 = [v2 hash];
+  stringValue = [(HMAccessCodeValue *)self stringValue];
+  v3 = [stringValue hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -98,9 +98,9 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMAccessCodeValue *)self stringValue];
-    v8 = [v6 stringValue];
-    v9 = [v7 isEqualToString:v8];
+    stringValue = [(HMAccessCodeValue *)self stringValue];
+    stringValue2 = [v6 stringValue];
+    v9 = [stringValue isEqualToString:stringValue2];
   }
 
   else
@@ -111,15 +111,15 @@
   return v9;
 }
 
-- (HMAccessCodeValue)initWithStringValue:(id)a3
+- (HMAccessCodeValue)initWithStringValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = HMAccessCodeValue;
   v5 = [(HMAccessCodeValue *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [valueCopy copy];
     stringValue = v5->_stringValue;
     v5->_stringValue = v6;
   }

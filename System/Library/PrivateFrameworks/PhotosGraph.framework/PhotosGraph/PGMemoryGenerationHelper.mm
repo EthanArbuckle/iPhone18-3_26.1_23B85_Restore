@@ -1,32 +1,32 @@
 @interface PGMemoryGenerationHelper
-+ (BOOL)dates:(id)a3 passSpreadicityWithMinimumCardinal:(unint64_t)a4 minimumTimeInterval:(double)a5;
-+ (BOOL)prepareAssets:(id)a3 forMemoriesWithTopTierAestheticScore:(double)a4 curationContext:(id)a5;
-+ (id)assetFetchResultForMomentNodes:(id)a3 inLocationOrAreaNode:(id)a4 requireInteresting:(BOOL)a5 curationManager:(id)a6 progressReporter:(id)a7;
-+ (id)assetLocalIdentifiersFromAssets:(id)a3;
-+ (id)assetUUIDsFromAssets:(id)a3;
-+ (id)feederForMemoriesWithAssetFetchResult:(id)a3 memoryCurationSession:(id)a4 graph:(id)a5;
-+ (id)feederForMemoriesWithFeeder:(id)a3 topTierAestheticScore:(double)a4 didFeederChange:(BOOL *)a5 curationContext:(id)a6;
-+ (id)scoringContextForMemoriesWithAssets:(id)a3 withTopTierAestheticScore:(double)a4;
++ (BOOL)dates:(id)dates passSpreadicityWithMinimumCardinal:(unint64_t)cardinal minimumTimeInterval:(double)interval;
++ (BOOL)prepareAssets:(id)assets forMemoriesWithTopTierAestheticScore:(double)score curationContext:(id)context;
++ (id)assetFetchResultForMomentNodes:(id)nodes inLocationOrAreaNode:(id)node requireInteresting:(BOOL)interesting curationManager:(id)manager progressReporter:(id)reporter;
++ (id)assetLocalIdentifiersFromAssets:(id)assets;
++ (id)assetUUIDsFromAssets:(id)assets;
++ (id)feederForMemoriesWithAssetFetchResult:(id)result memoryCurationSession:(id)session graph:(id)graph;
++ (id)feederForMemoriesWithFeeder:(id)feeder topTierAestheticScore:(double)score didFeederChange:(BOOL *)change curationContext:(id)context;
++ (id)scoringContextForMemoriesWithAssets:(id)assets withTopTierAestheticScore:(double)score;
 @end
 
 @implementation PGMemoryGenerationHelper
 
-+ (BOOL)dates:(id)a3 passSpreadicityWithMinimumCardinal:(unint64_t)a4 minimumTimeInterval:(double)a5
++ (BOOL)dates:(id)dates passSpreadicityWithMinimumCardinal:(unint64_t)cardinal minimumTimeInterval:(double)interval
 {
   v94 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 count] >= a4)
+  datesCopy = dates;
+  if ([datesCopy count] >= cardinal)
   {
     v9 = [objc_alloc(MEMORY[0x277D3AC98]) initWithNumericValueKeypaths:&unk_284485BB0];
-    [v9 setK:a4];
-    v10 = [v7 allObjects];
-    v11 = [v9 performWithDataset:v10 progressBlock:&__block_literal_global_36129];
+    [v9 setK:cardinal];
+    allObjects = [datesCopy allObjects];
+    v11 = [v9 performWithDataset:allObjects progressBlock:&__block_literal_global_36129];
 
-    if ([v11 count] >= a4)
+    if ([v11 count] >= cardinal)
     {
-      v54 = a4;
+      cardinalCopy = cardinal;
       v56 = v9;
-      v57 = v7;
+      v57 = datesCopy;
       v58 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v11, "count")}];
       v75 = 0u;
       v76 = 0u;
@@ -54,8 +54,8 @@
             v72 = 0u;
             v73 = 0u;
             v74 = 0u;
-            v19 = [v18 objects];
-            v20 = [v19 countByEnumeratingWithState:&v71 objects:v92 count:16];
+            objects = [v18 objects];
+            v20 = [objects countByEnumeratingWithState:&v71 objects:v92 count:16];
             if (v20)
             {
               v21 = v20;
@@ -67,7 +67,7 @@
                 {
                   if (*v72 != v23)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(objects);
                   }
 
                   v25 = *(*(&v71 + 1) + 8 * j);
@@ -84,7 +84,7 @@
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v71 objects:v92 count:16];
+                v21 = [objects countByEnumeratingWithState:&v71 objects:v92 count:16];
               }
 
               while (v21);
@@ -155,7 +155,7 @@
       v66 = 0u;
       v36 = [v58 sortedArrayUsingSelector:sel_compare_];
       v37 = [v36 countByEnumeratingWithState:&v63 objects:v90 count:16];
-      v7 = v57;
+      datesCopy = v57;
       if (v37)
       {
         v38 = v37;
@@ -185,8 +185,8 @@
       v60 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v44 = [v57 allObjects];
-      v45 = [v44 sortedArrayUsingSelector:sel_compare_];
+      allObjects2 = [v57 allObjects];
+      v45 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
 
       v46 = [v45 countByEnumeratingWithState:&v59 objects:v89 count:16];
       if (v46)
@@ -213,15 +213,15 @@
       }
 
       v51 = [v43 componentsJoinedByString:{@", "}];
-      v8 = v16 >= a5;
+      v8 = v16 >= interval;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
         *buf = 67110146;
-        v80 = v16 >= a5;
+        v80 = v16 >= interval;
         v81 = 1024;
-        v82 = v54;
+        v82 = cardinalCopy;
         v83 = 1024;
-        v84 = (a5 / 86400.0);
+        v84 = (interval / 86400.0);
         v85 = 2112;
         v86 = v42;
         v87 = 2112;
@@ -248,15 +248,15 @@
   return v8;
 }
 
-+ (id)assetFetchResultForMomentNodes:(id)a3 inLocationOrAreaNode:(id)a4 requireInteresting:(BOOL)a5 curationManager:(id)a6 progressReporter:(id)a7
++ (id)assetFetchResultForMomentNodes:(id)nodes inLocationOrAreaNode:(id)node requireInteresting:(BOOL)interesting curationManager:(id)manager progressReporter:(id)reporter
 {
-  v9 = a5;
+  interestingCopy = interesting;
   v48 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if ([v14 isCancelledWithProgress:0.0])
+  nodesCopy = nodes;
+  nodeCopy = node;
+  managerCopy = manager;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -271,43 +271,43 @@
     goto LABEL_23;
   }
 
-  v16 = [v12 label];
-  v17 = [v16 isEqualToString:@"City"];
-  v18 = [v16 isEqualToString:@"Area"];
-  v19 = [v16 isEqualToString:@"State"];
-  v20 = [v13 defaultAssetFetchOptionsForMemories];
-  v45 = v11;
-  v21 = v11;
+  label = [nodeCopy label];
+  v17 = [label isEqualToString:@"City"];
+  v18 = [label isEqualToString:@"Area"];
+  v19 = [label isEqualToString:@"State"];
+  defaultAssetFetchOptionsForMemories = [managerCopy defaultAssetFetchOptionsForMemories];
+  v45 = nodesCopy;
+  v21 = nodesCopy;
   v22 = v21;
-  v44 = v13;
-  if (v9)
+  v44 = managerCopy;
+  if (interestingCopy)
   {
-    v23 = [v21 interestingSubset];
+    interestingSubset = [v21 interestingSubset];
 
-    v22 = v23;
+    v22 = interestingSubset;
   }
 
   v24 = MEMORY[0x277CCAC30];
-  v25 = [v22 uuids];
-  v26 = [v24 predicateWithFormat:@"%K IN %@", @"moment.uuid", v25];
-  [v20 setInternalPredicate:v26];
+  uuids = [v22 uuids];
+  v26 = [v24 predicateWithFormat:@"%K IN %@", @"moment.uuid", uuids];
+  [defaultAssetFetchOptionsForMemories setInternalPredicate:v26];
 
-  v27 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v20];
+  v27 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:defaultAssetFetchOptionsForMemories];
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v42 = v27;
-  v43 = v16;
+  v43 = label;
   if (v17)
   {
-    v29 = [v27 fetchedObjects];
-    v30 = [v12 collection];
-    v31 = [PGCurationManager filterAssets:v29 inMomentNodes:v22 forCityNodes:v30 withMaximumDistance:5000.0];
+    fetchedObjects = [v27 fetchedObjects];
+    collection = [nodeCopy collection];
+    v31 = [PGCurationManager filterAssets:fetchedObjects inMomentNodes:v22 forCityNodes:collection withMaximumDistance:5000.0];
   }
 
   else if (v18)
   {
-    v29 = [v27 fetchedObjects];
-    v30 = [v12 collection];
-    v31 = [PGCurationManager filterAssets:v29 inMomentNodes:v22 forAreaNodes:v30 withMaximumDistance:20000.0];
+    fetchedObjects = [v27 fetchedObjects];
+    collection = [nodeCopy collection];
+    v31 = [PGCurationManager filterAssets:fetchedObjects inMomentNodes:v22 forAreaNodes:collection withMaximumDistance:20000.0];
   }
 
   else
@@ -319,32 +319,32 @@
         *buf = 136315394;
         *v47 = "+[PGMemoryGenerationHelper assetFetchResultForMomentNodes:inLocationOrAreaNode:requireInteresting:curationManager:progressReporter:]";
         *&v47[8] = 2112;
-        *&v47[10] = v16;
+        *&v47[10] = label;
         _os_log_error_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%s called for location node %@, see rdar://75269533", buf, 0x16u);
       }
 
-      v32 = [v27 fetchedObjects];
+      fetchedObjects2 = [v27 fetchedObjects];
       goto LABEL_14;
     }
 
-    v29 = [v27 fetchedObjects];
-    v30 = [v12 collection];
-    v31 = [PGCurationManager filterAssets:v29 inMomentNodes:v22 forStateNodes:v30 withMaximumDistance:5000.0];
+    fetchedObjects = [v27 fetchedObjects];
+    collection = [nodeCopy collection];
+    v31 = [PGCurationManager filterAssets:fetchedObjects inMomentNodes:v22 forStateNodes:collection withMaximumDistance:5000.0];
   }
 
-  v32 = v31;
+  fetchedObjects2 = v31;
 
 LABEL_14:
-  v33 = v12;
-  [v28 addObjectsFromArray:v32];
+  v33 = nodeCopy;
+  [v28 addObjectsFromArray:fetchedObjects2];
   if ([v28 count])
   {
     v34 = objc_alloc(MEMORY[0x277CD98D0]);
-    v35 = [v20 photoLibrary];
+    photoLibrary = [defaultAssetFetchOptionsForMemories photoLibrary];
     v36 = MEMORY[0x277CBEB98];
-    v37 = [v20 fetchPropertySets];
-    v38 = [v36 setWithArray:v37];
-    v39 = [v34 initWithObjects:v28 photoLibrary:v35 fetchType:0 fetchPropertySets:v38 identifier:0 registerIfNeeded:0];
+    fetchPropertySets = [defaultAssetFetchOptionsForMemories fetchPropertySets];
+    v38 = [v36 setWithArray:fetchPropertySets];
+    v39 = [v34 initWithObjects:v28 photoLibrary:photoLibrary fetchType:0 fetchPropertySets:v38 identifier:0 registerIfNeeded:0];
   }
 
   else
@@ -352,10 +352,10 @@ LABEL_14:
     v39 = 0;
   }
 
-  v13 = v44;
-  if ([v14 isCancelledWithProgress:1.0])
+  managerCopy = v44;
+  if ([reporterCopy isCancelledWithProgress:1.0])
   {
-    v12 = v33;
+    nodeCopy = v33;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
@@ -371,10 +371,10 @@ LABEL_14:
   else
   {
     v15 = v39;
-    v12 = v33;
+    nodeCopy = v33;
   }
 
-  v11 = v45;
+  nodesCopy = v45;
 LABEL_23:
 
   v40 = *MEMORY[0x277D85DE8];
@@ -382,16 +382,16 @@ LABEL_23:
   return v15;
 }
 
-+ (id)assetLocalIdentifiersFromAssets:(id)a3
++ (id)assetLocalIdentifiersFromAssets:(id)assets
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = [MEMORY[0x277CBEB58] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -406,8 +406,8 @@ LABEL_23:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) localIdentifier];
-        [v4 addObject:v10];
+        localIdentifier = [*(*(&v13 + 1) + 8 * i) localIdentifier];
+        [v4 addObject:localIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -421,16 +421,16 @@ LABEL_23:
   return v4;
 }
 
-+ (id)assetUUIDsFromAssets:(id)a3
++ (id)assetUUIDsFromAssets:(id)assets
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = [MEMORY[0x277CBEB58] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -445,8 +445,8 @@ LABEL_23:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) uuid];
-        [v4 addObject:v10];
+        uuid = [*(*(&v13 + 1) + 8 * i) uuid];
+        [v4 addObject:uuid];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -460,17 +460,17 @@ LABEL_23:
   return v4;
 }
 
-+ (BOOL)prepareAssets:(id)a3 forMemoriesWithTopTierAestheticScore:(double)a4 curationContext:(id)a5
++ (BOOL)prepareAssets:(id)assets forMemoriesWithTopTierAestheticScore:(double)score curationContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 scoringContextForMemoriesWithAssets:v8 withTopTierAestheticScore:a4];
+  assetsCopy = assets;
+  contextCopy = context;
+  v10 = [self scoringContextForMemoriesWithAssets:assetsCopy withTopTierAestheticScore:score];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v8;
+  v11 = assetsCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -486,7 +486,7 @@ LABEL_23:
           objc_enumerationMutation(v11);
         }
 
-        v14 |= [*(*(&v19 + 1) + 8 * i) prepareWithAlternateJunkingHeuristics:1 withContext:v10 curationContext:v9 blockSocialMediaImportedAssets:{PGMemoryGenerationBlockSocialMediaImportedAssets, v19}];
+        v14 |= [*(*(&v19 + 1) + 8 * i) prepareWithAlternateJunkingHeuristics:1 withContext:v10 curationContext:contextCopy blockSocialMediaImportedAssets:{PGMemoryGenerationBlockSocialMediaImportedAssets, v19}];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -504,55 +504,55 @@ LABEL_23:
   return v14 & 1;
 }
 
-+ (id)scoringContextForMemoriesWithAssets:(id)a3 withTopTierAestheticScore:(double)a4
++ (id)scoringContextForMemoriesWithAssets:(id)assets withTopTierAestheticScore:(double)score
 {
-  v4 = [MEMORY[0x277D3C7A0] scoringContextWithAssets:a3 aestheticScoreThresholdToBeAwesome:a4];
+  v4 = [MEMORY[0x277D3C7A0] scoringContextWithAssets:assets aestheticScoreThresholdToBeAwesome:score];
   [v4 setShouldEmphasizePanorama:0];
 
   return v4;
 }
 
-+ (id)feederForMemoriesWithFeeder:(id)a3 topTierAestheticScore:(double)a4 didFeederChange:(BOOL *)a5 curationContext:(id)a6
++ (id)feederForMemoriesWithFeeder:(id)feeder topTierAestheticScore:(double)score didFeederChange:(BOOL *)change curationContext:(id)context
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [v10 allItems];
-  v13 = [a1 prepareAssets:v12 forMemoriesWithTopTierAestheticScore:v11 curationContext:a4];
+  feederCopy = feeder;
+  contextCopy = context;
+  allItems = [feederCopy allItems];
+  v13 = [self prepareAssets:allItems forMemoriesWithTopTierAestheticScore:contextCopy curationContext:score];
 
-  if (a5)
+  if (change)
   {
-    *a5 = v13;
+    *change = v13;
   }
 
-  return v10;
+  return feederCopy;
 }
 
-+ (id)feederForMemoriesWithAssetFetchResult:(id)a3 memoryCurationSession:(id)a4 graph:(id)a5
++ (id)feederForMemoriesWithAssetFetchResult:(id)result memoryCurationSession:(id)session graph:(id)graph
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  resultCopy = result;
+  sessionCopy = session;
+  graphCopy = graph;
+  if ([resultCopy count])
   {
-    v11 = [v8 fetchPropertySets];
+    fetchPropertySets = [resultCopy fetchPropertySets];
     v12 = MEMORY[0x277CD97A8];
-    v13 = [v9 curationContext];
-    v14 = [v12 clsAllAssetsFromFetchResult:v8 prefetchOptions:31 curationContext:v13];
+    curationContext = [sessionCopy curationContext];
+    v14 = [v12 clsAllAssetsFromFetchResult:resultCopy prefetchOptions:31 curationContext:curationContext];
 
-    v15 = [v10 infoNode];
-    [v15 topTierAestheticScore];
+    infoNode = [graphCopy infoNode];
+    [infoNode topTierAestheticScore];
     v17 = v16;
-    v18 = [v9 curationContext];
-    [a1 prepareAssets:v14 forMemoriesWithTopTierAestheticScore:v18 curationContext:v17];
+    curationContext2 = [sessionCopy curationContext];
+    [self prepareAssets:v14 forMemoriesWithTopTierAestheticScore:curationContext2 curationContext:v17];
 
     v19 = objc_alloc(MEMORY[0x277CD98D0]);
-    v20 = [v8 photoLibrary];
-    v21 = [v8 fetchType];
-    v22 = [v19 initWithObjects:v14 photoLibrary:v20 fetchType:v21 fetchPropertySets:v11 identifier:0 registerIfNeeded:0];
+    photoLibrary = [resultCopy photoLibrary];
+    fetchType = [resultCopy fetchType];
+    v22 = [v19 initWithObjects:v14 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:0];
 
     v23 = objc_alloc(MEMORY[0x277D27710]);
-    v24 = [v9 curationContext];
-    v25 = [v23 initWithAssetFetchResult:v22 curationContext:v24];
+    curationContext3 = [sessionCopy curationContext];
+    v25 = [v23 initWithAssetFetchResult:v22 curationContext:curationContext3];
   }
 
   else

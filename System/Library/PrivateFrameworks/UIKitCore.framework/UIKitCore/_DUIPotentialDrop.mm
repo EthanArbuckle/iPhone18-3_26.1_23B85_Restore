@@ -1,9 +1,9 @@
 @interface _DUIPotentialDrop
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_DUIPotentialDrop)init;
-- (_DUIPotentialDrop)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_DUIPotentialDrop)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DUIPotentialDrop
@@ -21,47 +21,47 @@
   return result;
 }
 
-- (_DUIPotentialDrop)initWithCoder:(id)a3
+- (_DUIPotentialDrop)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = _DUIPotentialDrop;
   v5 = [(_DUIPotentialDrop *)&v7 init];
   if (v5)
   {
-    v5->_operation = [v4 decodeIntegerForKey:@"operation"];
-    v5->_forbidden = [v4 decodeBoolForKey:@"forbidden"];
-    v5->_precise = [v4 decodeBoolForKey:@"precise"];
-    v5->_prefersFullSizePreview = [v4 decodeBoolForKey:@"prefersFullSizePreview"];
-    v5->_preferredBadgeStyle = [v4 decodeIntegerForKey:@"preferredBadgeStyle"];
+    v5->_operation = [coderCopy decodeIntegerForKey:@"operation"];
+    v5->_forbidden = [coderCopy decodeBoolForKey:@"forbidden"];
+    v5->_precise = [coderCopy decodeBoolForKey:@"precise"];
+    v5->_prefersFullSizePreview = [coderCopy decodeBoolForKey:@"prefersFullSizePreview"];
+    v5->_preferredBadgeStyle = [coderCopy decodeIntegerForKey:@"preferredBadgeStyle"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   operation = self->_operation;
-  v5 = a3;
-  [v5 encodeInteger:operation forKey:@"operation"];
-  [v5 encodeBool:self->_forbidden forKey:@"forbidden"];
-  [v5 encodeBool:self->_precise forKey:@"precise"];
-  [v5 encodeBool:self->_prefersFullSizePreview forKey:@"prefersFullSizePreview"];
-  [v5 encodeInteger:self->_preferredBadgeStyle forKey:@"preferredBadgeStyle"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:operation forKey:@"operation"];
+  [coderCopy encodeBool:self->_forbidden forKey:@"forbidden"];
+  [coderCopy encodeBool:self->_precise forKey:@"precise"];
+  [coderCopy encodeBool:self->_prefersFullSizePreview forKey:@"prefersFullSizePreview"];
+  [coderCopy encodeInteger:self->_preferredBadgeStyle forKey:@"preferredBadgeStyle"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_DUIPotentialDrop *)self operation];
-    if (v6 == [v5 operation] && (v7 = -[_DUIPotentialDrop forbidden](self, "forbidden"), v7 == objc_msgSend(v5, "forbidden")) && (v8 = -[_DUIPotentialDrop precise](self, "precise"), v8 == objc_msgSend(v5, "precise")) && (v9 = -[_DUIPotentialDrop prefersFullSizePreview](self, "prefersFullSizePreview"), v9 == objc_msgSend(v5, "prefersFullSizePreview")))
+    v5 = equalCopy;
+    operation = [(_DUIPotentialDrop *)self operation];
+    if (operation == [v5 operation] && (v7 = -[_DUIPotentialDrop forbidden](self, "forbidden"), v7 == objc_msgSend(v5, "forbidden")) && (v8 = -[_DUIPotentialDrop precise](self, "precise"), v8 == objc_msgSend(v5, "precise")) && (v9 = -[_DUIPotentialDrop prefersFullSizePreview](self, "prefersFullSizePreview"), v9 == objc_msgSend(v5, "prefersFullSizePreview")))
     {
-      v12 = [(_DUIPotentialDrop *)self preferredBadgeStyle];
-      v10 = v12 == [v5 preferredBadgeStyle];
+      preferredBadgeStyle = [(_DUIPotentialDrop *)self preferredBadgeStyle];
+      v10 = preferredBadgeStyle == [v5 preferredBadgeStyle];
     }
 
     else
@@ -78,7 +78,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setOperation:{-[_DUIPotentialDrop operation](self, "operation")}];

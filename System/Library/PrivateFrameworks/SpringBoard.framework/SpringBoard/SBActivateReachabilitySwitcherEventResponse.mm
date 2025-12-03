@@ -1,25 +1,25 @@
 @interface SBActivateReachabilitySwitcherEventResponse
-- (SBActivateReachabilitySwitcherEventResponse)initWithReachabilityContext:(SBReachabilityActivationContext *)a3;
+- (SBActivateReachabilitySwitcherEventResponse)initWithReachabilityContext:(SBReachabilityActivationContext *)context;
 - (SBReachabilityActivationContext)reachabilityActivationContext;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBActivateReachabilitySwitcherEventResponse
 
-- (SBActivateReachabilitySwitcherEventResponse)initWithReachabilityContext:(SBReachabilityActivationContext *)a3
+- (SBActivateReachabilitySwitcherEventResponse)initWithReachabilityContext:(SBReachabilityActivationContext *)context
 {
   v9.receiver = self;
   v9.super_class = SBActivateReachabilitySwitcherEventResponse;
   result = [(SBChainableModifierEventResponse *)&v9 init];
   if (result)
   {
-    translation = a3->translation;
-    result->_reachabilityActivationContext.location = a3->location;
+    translation = context->translation;
+    result->_reachabilityActivationContext.location = context->location;
     result->_reachabilityActivationContext.translation = translation;
-    origin = a3->viewBounds.origin;
-    size = a3->viewBounds.size;
-    velocity = a3->velocity;
-    *&result->_reachabilityActivationContext.beganInSafeArea = *&a3->beganInSafeArea;
+    origin = context->viewBounds.origin;
+    size = context->viewBounds.size;
+    velocity = context->velocity;
+    *&result->_reachabilityActivationContext.beganInSafeArea = *&context->beganInSafeArea;
     result->_reachabilityActivationContext.viewBounds.origin = origin;
     result->_reachabilityActivationContext.viewBounds.size = size;
     result->_reachabilityActivationContext.velocity = velocity;
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v11.receiver = self;
   v11.super_class = SBActivateReachabilitySwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v11 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v11 descriptionBuilderWithMultilinePrefix:prefix];
   origin = self->_reachabilityActivationContext.viewBounds.origin;
   v9[2] = self->_reachabilityActivationContext.velocity;
   v9[3] = origin;

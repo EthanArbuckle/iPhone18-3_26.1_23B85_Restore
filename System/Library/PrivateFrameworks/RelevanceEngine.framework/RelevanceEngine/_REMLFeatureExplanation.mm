@@ -1,23 +1,23 @@
 @interface _REMLFeatureExplanation
-+ (id)combinedExplanationsFromExplanations:(id)a3;
-- (_REMLFeatureExplanation)explanationWithStyle:(unint64_t)a3;
-- (_REMLFeatureExplanation)initWithFeature:(id)a3 mean:(float)a4 variance:(float)a5;
-- (id)explanationByCombiningWithExplanation:(id)a3;
-- (int64_t)_rankExplanationToSimilarExplanation:(id)a3;
++ (id)combinedExplanationsFromExplanations:(id)explanations;
+- (_REMLFeatureExplanation)explanationWithStyle:(unint64_t)style;
+- (_REMLFeatureExplanation)initWithFeature:(id)feature mean:(float)mean variance:(float)variance;
+- (id)explanationByCombiningWithExplanation:(id)explanation;
+- (int64_t)_rankExplanationToSimilarExplanation:(id)explanation;
 @end
 
 @implementation _REMLFeatureExplanation
 
-+ (id)combinedExplanationsFromExplanations:(id)a3
++ (id)combinedExplanationsFromExplanations:(id)explanations
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  explanationsCopy = explanations;
   v4 = [MEMORY[0x277CCA940] set];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v5 = v3;
+  v5 = explanationsCopy;
   v6 = [v5 countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v6)
   {
@@ -32,8 +32,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(*(&v53 + 1) + 8 * i) + 8) allFeatures];
-        [v4 addObjectsFromArray:v10];
+        allFeatures = [*(*(*(&v53 + 1) + 8 * i) + 8) allFeatures];
+        [v4 addObjectsFromArray:allFeatures];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v53 objects:v59 count:16];
@@ -155,21 +155,21 @@
     }
 
     [v25 minusSet:v24];
-    v31 = [v24 anyObject];
-    if (v31)
+    anyObject = [v24 anyObject];
+    if (anyObject)
     {
-      v32 = v31;
-      [v24 removeObject:v31];
+      v32 = anyObject;
+      [v24 removeObject:anyObject];
       v33 = v32[4];
       v34 = v32[5];
       while ([v24 count])
       {
-        v35 = [v24 anyObject];
-        [v24 removeObject:v35];
-        v33 = v33 + v35[4];
-        if (v34 >= v35[5])
+        anyObject2 = [v24 anyObject];
+        [v24 removeObject:anyObject2];
+        v33 = v33 + anyObject2[4];
+        if (v34 >= anyObject2[5])
         {
-          v34 = v35[5];
+          v34 = anyObject2[5];
         }
       }
 
@@ -189,39 +189,39 @@
   return v43;
 }
 
-- (_REMLFeatureExplanation)initWithFeature:(id)a3 mean:(float)a4 variance:(float)a5
+- (_REMLFeatureExplanation)initWithFeature:(id)feature mean:(float)mean variance:(float)variance
 {
-  v8 = a3;
+  featureCopy = feature;
   v14.receiver = self;
   v14.super_class = _REMLFeatureExplanation;
   v9 = [(_REMLFeatureExplanation *)&v14 init];
   if (v9)
   {
-    v10 = [REFeatureSet featureSetWithFeature:v8];
+    v10 = [REFeatureSet featureSetWithFeature:featureCopy];
     v11 = RERootFeatureSetForFeatures(v10);
     features = v9->_features;
     v9->_features = v11;
 
-    v9->_mean = a4;
-    v9->_variance = a5;
+    v9->_mean = mean;
+    v9->_variance = variance;
   }
 
   return v9;
 }
 
-- (id)explanationByCombiningWithExplanation:(id)a3
+- (id)explanationByCombiningWithExplanation:(id)explanation
 {
-  v4 = a3;
+  explanationCopy = explanation;
   v5 = objc_alloc_init(_REMLFeatureExplanation);
-  v6 = [*(v4 + 1) mutableCopy];
+  v6 = [*(explanationCopy + 1) mutableCopy];
   [v6 intersetFeatureSet:self->_features];
   v7 = [v6 copy];
   features = v5->_features;
   v5->_features = v7;
 
-  v5->_mean = self->_mean + *(v4 + 4);
+  v5->_mean = self->_mean + *(explanationCopy + 4);
   variance = self->_variance;
-  v10 = *(v4 + 5);
+  v10 = *(explanationCopy + 5);
 
   if (variance >= v10)
   {
@@ -238,9 +238,9 @@
   return v5;
 }
 
-- (int64_t)_rankExplanationToSimilarExplanation:(id)a3
+- (int64_t)_rankExplanationToSimilarExplanation:(id)explanation
 {
-  LODWORD(v3) = *(a3 + 4);
+  LODWORD(v3) = *(explanation + 4);
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:v3];
   *&v6 = self->_mean;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
@@ -249,12 +249,12 @@
   return v8;
 }
 
-- (_REMLFeatureExplanation)explanationWithStyle:(unint64_t)a3
+- (_REMLFeatureExplanation)explanationWithStyle:(unint64_t)style
 {
-  v5 = [(REFeatureSet *)self->_features allFeatures];
-  v6 = [(REMLExplanation *)self _formattedFeatureListFromFeatures:v5 style:a3];
+  allFeatures = [(REFeatureSet *)self->_features allFeatures];
+  v6 = [(REMLExplanation *)self _formattedFeatureListFromFeatures:allFeatures style:style];
 
-  if (a3 == 1)
+  if (style == 1)
   {
     if (self->_mean <= 0.0)
     {
@@ -269,7 +269,7 @@
 
   else
   {
-    if (a3)
+    if (style)
     {
       v7 = @"Unknown style";
       goto LABEL_11;

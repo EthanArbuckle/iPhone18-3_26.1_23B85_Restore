@@ -2,42 +2,42 @@
 - (UIControl)actionButton;
 - (UILabel)subtitleLabel;
 - (UILabel)titleLabel;
-- (void)setActionButton:(id)a3;
-- (void)setSubtitleLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setActionButton:(id)button;
+- (void)setSubtitleLabel:(id)label;
+- (void)setTitleLabel:(id)label;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation InCallControlsStatusCell
 
 - (UILabel)titleLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = InCallControlsStatusCell.titleLabel.getter();
 
   return v3;
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  InCallControlsStatusCell.titleLabel.setter(v4);
+  labelCopy = label;
+  selfCopy = self;
+  InCallControlsStatusCell.titleLabel.setter(labelCopy);
 }
 
 - (UILabel)subtitleLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = InCallControlsStatusCell.subtitleLabel.getter();
 
   return v3;
 }
 
-- (void)setSubtitleLabel:(id)a3
+- (void)setSubtitleLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  InCallControlsStatusCell.subtitleLabel.setter(v4);
+  labelCopy = label;
+  selfCopy = self;
+  InCallControlsStatusCell.subtitleLabel.setter(labelCopy);
 }
 
 - (UIControl)actionButton
@@ -47,20 +47,20 @@
   return v2;
 }
 
-- (void)setActionButton:(id)a3
+- (void)setActionButton:(id)button
 {
-  v5 = a3;
-  v6 = self;
-  InCallControlsStatusCell.actionButton.setter(a3);
+  buttonCopy = button;
+  selfCopy = self;
+  InCallControlsStatusCell.actionButton.setter(button);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   InCallControlsStatusCell.traitCollectionDidChange(_:)(v9);
 }
 

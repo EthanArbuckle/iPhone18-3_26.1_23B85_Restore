@@ -1,7 +1,7 @@
 @interface HKMedicationScheduleLocalIncompatibilityResolver
 - (HKMedicationScheduleLocalIncompatibilityResolver)init;
-- (void)checkIncompatibilityForSchedule:(id)a3 completion:(id)a4;
-- (void)checkIncompatibilityForSchedule:(id)a3 pairedDevice:(id)a4 completion:(id)a5;
+- (void)checkIncompatibilityForSchedule:(id)schedule completion:(id)completion;
+- (void)checkIncompatibilityForSchedule:(id)schedule pairedDevice:(id)device completion:(id)completion;
 @end
 
 @implementation HKMedicationScheduleLocalIncompatibilityResolver
@@ -21,25 +21,25 @@
   return v3;
 }
 
-- (void)checkIncompatibilityForSchedule:(id)a3 completion:(id)a4
+- (void)checkIncompatibilityForSchedule:(id)schedule completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  scheduleCopy = schedule;
+  completionCopy = completion;
   v8 = self->_unitTestPairedDevice;
   if (v8)
   {
-    v9 = v8;
+    getActivePairedDevice = v8;
 LABEL_4:
-    [(HKMedicationScheduleLocalIncompatibilityResolver *)self checkIncompatibilityForSchedule:v6 pairedDevice:v9 completion:v7];
+    [(HKMedicationScheduleLocalIncompatibilityResolver *)self checkIncompatibilityForSchedule:scheduleCopy pairedDevice:getActivePairedDevice completion:completionCopy];
 
     goto LABEL_5;
   }
 
-  v10 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v9 = [v10 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  if (v9)
+  if (getActivePairedDevice)
   {
     goto LABEL_4;
   }
@@ -54,21 +54,21 @@ LABEL_4:
     _os_log_impl(&dword_2517E7000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping incompatibility check, no active paired device found.", &v14, 0xCu);
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(completionCopy + 2))(completionCopy, 0, 0);
 LABEL_5:
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkIncompatibilityForSchedule:(id)a3 pairedDevice:(id)a4 completion:(id)a5
+- (void)checkIncompatibilityForSchedule:(id)schedule pairedDevice:(id)device completion:(id)completion
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[HKACAccountDevice alloc] initWithPairedDevice:v9];
+  completionCopy = completion;
+  deviceCopy = device;
+  scheduleCopy = schedule;
+  v11 = [[HKACAccountDevice alloc] initWithPairedDevice:deviceCopy];
 
-  v19[0] = v10;
+  v19[0] = scheduleCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v18 = v11;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
@@ -76,8 +76,8 @@ LABEL_5:
   v16[1] = 3221225472;
   v16[2] = __108__HKMedicationScheduleLocalIncompatibilityResolver_checkIncompatibilityForSchedule_pairedDevice_completion___block_invoke;
   v16[3] = &unk_2796C9FA0;
-  v17 = v8;
-  v14 = v8;
+  v17 = completionCopy;
+  v14 = completionCopy;
   [(HKMedicationScheduleBaseIncompatibilityResolver *)self _resolveIncompatibleScheduleResultsFromSchedules:v12 scheduleError:0 devices:v13 deviceError:0 completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];

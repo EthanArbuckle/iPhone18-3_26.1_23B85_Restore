@@ -1,29 +1,29 @@
 @interface PKWebServiceLoggableRequestBody
-- (PKWebServiceLoggableRequestBody)initWithBody:(id)a3 sensitiveKeys:(id)a4;
-- (id)_descriptionIncludingPrivateFields:(BOOL)a3;
-- (void)_redactLogsFromJSONObject:(id)a3;
+- (PKWebServiceLoggableRequestBody)initWithBody:(id)body sensitiveKeys:(id)keys;
+- (id)_descriptionIncludingPrivateFields:(BOOL)fields;
+- (void)_redactLogsFromJSONObject:(id)object;
 @end
 
 @implementation PKWebServiceLoggableRequestBody
 
-- (PKWebServiceLoggableRequestBody)initWithBody:(id)a3 sensitiveKeys:(id)a4
+- (PKWebServiceLoggableRequestBody)initWithBody:(id)body sensitiveKeys:(id)keys
 {
-  v7 = a3;
-  v8 = a4;
+  bodyCopy = body;
+  keysCopy = keys;
   v12.receiver = self;
   v12.super_class = PKWebServiceLoggableRequestBody;
   v9 = [(PKWebServiceLoggableRequestBody *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_body, a3);
-    objc_storeStrong(&v10->_sensitiveKeys, a4);
+    objc_storeStrong(&v9->_body, body);
+    objc_storeStrong(&v10->_sensitiveKeys, keys);
   }
 
   return v10;
 }
 
-- (id)_descriptionIncludingPrivateFields:(BOOL)a3
+- (id)_descriptionIncludingPrivateFields:(BOOL)fields
 {
   if (!self->_body)
   {
@@ -31,7 +31,7 @@
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!fields)
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu bytes", -[NSData length](self->_body, "length")];
     goto LABEL_12;
@@ -66,20 +66,20 @@ LABEL_12:
   return v7;
 }
 
-- (void)_redactLogsFromJSONObject:(id)a3
+- (void)_redactLogsFromJSONObject:(id)object
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = [v5 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    allKeys = [v5 allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v7)
     {
       v8 = v7;
@@ -90,7 +90,7 @@ LABEL_12:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v22 + 1) + 8 * i);
@@ -106,7 +106,7 @@ LABEL_12:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v8);
@@ -119,7 +119,7 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v4;
+    v13 = objectCopy;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;

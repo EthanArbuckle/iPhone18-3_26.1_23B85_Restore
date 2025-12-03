@@ -1,12 +1,12 @@
 @interface NSBatchInsertResult
-- (NSBatchInsertResult)initWithResultType:(unint64_t)a3 andObject:(id)a4;
-- (NSBatchInsertResult)initWithSubresults:(id)a3;
+- (NSBatchInsertResult)initWithResultType:(unint64_t)type andObject:(id)object;
+- (NSBatchInsertResult)initWithSubresults:(id)subresults;
 - (void)dealloc;
 @end
 
 @implementation NSBatchInsertResult
 
-- (NSBatchInsertResult)initWithResultType:(unint64_t)a3 andObject:(id)a4
+- (NSBatchInsertResult)initWithResultType:(unint64_t)type andObject:(id)object
 {
   v9.receiver = self;
   v9.super_class = NSBatchInsertResult;
@@ -14,14 +14,14 @@
   v7 = v6;
   if (v6)
   {
-    v6->_resultType = a3;
-    v6->_aggregatedResult = [a4 copy];
+    v6->_resultType = type;
+    v6->_aggregatedResult = [object copy];
   }
 
   return v7;
 }
 
-- (NSBatchInsertResult)initWithSubresults:(id)a3
+- (NSBatchInsertResult)initWithSubresults:(id)subresults
 {
   v60 = *MEMORY[0x1E69E9840];
   v50.receiver = self;
@@ -32,9 +32,9 @@
     goto LABEL_45;
   }
 
-  if ([a3 count])
+  if ([subresults count])
   {
-    resultType = [objc_msgSend(a3 "lastObject")];
+    resultType = [objc_msgSend(subresults "lastObject")];
     v4->_resultType = resultType;
   }
 
@@ -49,7 +49,7 @@
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v23 = [a3 countByEnumeratingWithState:&v42 objects:v56 count:16];
+    v23 = [subresults countByEnumeratingWithState:&v42 objects:v56 count:16];
     if (v23)
     {
       v24 = v23;
@@ -61,7 +61,7 @@
         {
           if (*v43 != v26)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(subresults);
           }
 
           v28 = *(*(&v42 + 1) + 8 * i);
@@ -71,9 +71,9 @@
             v32 = MEMORY[0x1E695DF30];
             v33 = *MEMORY[0x1E695D930];
             v54 = @"Results";
-            v55 = a3;
+            subresultsCopy = subresults;
             v34 = MEMORY[0x1E695DF20];
-            v35 = &v55;
+            v35 = &subresultsCopy;
             v36 = &v54;
             goto LABEL_49;
           }
@@ -81,7 +81,7 @@
           v25 += [objc_msgSend(v28 "result")];
         }
 
-        v24 = [a3 countByEnumeratingWithState:&v42 objects:v56 count:16];
+        v24 = [subresults countByEnumeratingWithState:&v42 objects:v56 count:16];
       }
 
       while (v24);
@@ -103,7 +103,7 @@
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v16 = [a3 countByEnumeratingWithState:&v38 objects:v53 count:16];
+    v16 = [subresults countByEnumeratingWithState:&v38 objects:v53 count:16];
     if (!v16)
     {
       goto LABEL_44;
@@ -117,7 +117,7 @@
       {
         if (*v39 != v18)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(subresults);
         }
 
         v20 = *(*(&v38 + 1) + 8 * j);
@@ -127,21 +127,21 @@
           v32 = MEMORY[0x1E695DF30];
           v33 = *MEMORY[0x1E695D930];
           v51 = @"Results";
-          v52 = a3;
+          subresultsCopy2 = subresults;
           v34 = MEMORY[0x1E695DF20];
-          v35 = &v52;
+          v35 = &subresultsCopy2;
           v36 = &v51;
           goto LABEL_49;
         }
 
-        v22 = [v20 result];
-        if ([v22 count])
+        result = [v20 result];
+        if ([result count])
         {
-          [v7 addObjectsFromArray:v22];
+          [v7 addObjectsFromArray:result];
         }
       }
 
-      v17 = [a3 countByEnumeratingWithState:&v38 objects:v53 count:16];
+      v17 = [subresults countByEnumeratingWithState:&v38 objects:v53 count:16];
       if (!v17)
       {
         goto LABEL_44;
@@ -158,7 +158,7 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v46 objects:v59 count:16];
+  v6 = [subresults countByEnumeratingWithState:&v46 objects:v59 count:16];
   v7 = MEMORY[0x1E695E110];
   if (!v6)
   {
@@ -178,7 +178,7 @@
     {
       if (*v47 != v11)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(subresults);
       }
 
       v14 = *(*(&v46 + 1) + 8 * v12);
@@ -188,9 +188,9 @@
         v32 = MEMORY[0x1E695DF30];
         v33 = *MEMORY[0x1E695D930];
         v57 = @"Results";
-        v58 = a3;
+        subresultsCopy3 = subresults;
         v34 = MEMORY[0x1E695DF20];
-        v35 = &v58;
+        v35 = &subresultsCopy3;
         v36 = &v57;
 LABEL_49:
         objc_exception_throw([v32 exceptionWithName:v33 reason:@"Mismatched result types during aggregation of batch insert results" userInfo:{objc_msgSend(v34, "dictionaryWithObjects:forKeys:count:", v35, v36, 1)}]);
@@ -210,7 +210,7 @@ LABEL_49:
     }
 
     while (v8 != v12);
-    v8 = [a3 countByEnumeratingWithState:&v46 objects:v59 count:16];
+    v8 = [subresults countByEnumeratingWithState:&v46 objects:v59 count:16];
     v10 = v37;
   }
 

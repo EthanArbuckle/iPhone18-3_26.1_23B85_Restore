@@ -15,10 +15,10 @@
 
   [v4 setContentManager:v7];
   v8 = [MCDUpNextViewController alloc];
-  v9 = [v4 contentManager];
-  v10 = [v4 playerResponse];
-  v11 = [v10 tracklist];
-  v12 = [(MCDUpNextViewController *)v8 initWithContentManager:v9 tracklist:v11];
+  contentManager = [v4 contentManager];
+  playerResponse = [v4 playerResponse];
+  tracklist = [playerResponse tracklist];
+  v12 = [(MCDUpNextViewController *)v8 initWithContentManager:contentManager tracklist:tracklist];
   [v4 setPlaybackQueueViewController:v12];
 
   [v4 setPlayActivityFeatureName:@"now_playing"];

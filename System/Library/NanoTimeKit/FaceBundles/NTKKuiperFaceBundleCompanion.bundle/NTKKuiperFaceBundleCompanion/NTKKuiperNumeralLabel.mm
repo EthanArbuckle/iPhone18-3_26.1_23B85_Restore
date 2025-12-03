@@ -1,20 +1,20 @@
 @interface NTKKuiperNumeralLabel
-- (NTKKuiperNumeralLabel)initWithDevice:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (NTKKuiperNumeralLabel)initWithDevice:(id)device;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation NTKKuiperNumeralLabel
 
-- (NTKKuiperNumeralLabel)initWithDevice:(id)a3
+- (NTKKuiperNumeralLabel)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NTKKuiperNumeralLabel;
   v6 = [(NTKKuiperNumeralLabel *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     [(NTKKuiperNumeralLabel *)v7 setOpaque:0];
     [(NTKKuiperNumeralLabel *)v7 setClearsContextBeforeDrawing:1];
   }
@@ -22,11 +22,11 @@
   return v7;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v23.receiver = self;
   v23.super_class = NTKKuiperNumeralLabel;
-  [(NTKKuiperNumeralLabel *)&v23 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NTKKuiperNumeralLabel *)&v23 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v4 = self->_device;
   [(NTKKuiperNumeralLabel *)self bounds];
   v6 = v5;
@@ -57,15 +57,15 @@
   v21[6] = CurrentContext;
   v21[7] = sub_6A64(v11, v4);
   v12 = objc_retainBlock(v21);
-  v13 = [(NTKKuiperNumeralLabel *)self text];
-  v14 = v13;
+  text = [(NTKKuiperNumeralLabel *)self text];
+  v14 = text;
   backgroundFont = self->_backgroundFont;
   if (backgroundFont)
   {
     backgroundTextColor = self->_backgroundTextColor;
     if (backgroundTextColor)
     {
-      v17 = sub_6828(v13, backgroundFont, backgroundTextColor);
+      v17 = sub_6828(text, backgroundFont, backgroundTextColor);
       (v12[2])(v12, v17);
     }
   }

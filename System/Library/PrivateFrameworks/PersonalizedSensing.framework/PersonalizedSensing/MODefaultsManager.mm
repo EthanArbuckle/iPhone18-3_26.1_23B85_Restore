@@ -1,42 +1,42 @@
 @interface MODefaultsManager
-+ (BOOL)isExtendedLogEnabled:(id)a3 forDetaultsManager:(id)a4;
++ (BOOL)isExtendedLogEnabled:(id)enabled forDetaultsManager:(id)manager;
 + (id)momentsDaemonDefaults;
-- (MODefaultsManager)initWithSuiteName:(id)a3;
-- (MODefaultsManager)initWithUniverse:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)objectForKeyWithoutLog:(id)a3;
-- (void)deleteObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setObjectWithoutLog:(id)a3 forKey:(id)a4;
+- (MODefaultsManager)initWithSuiteName:(id)name;
+- (MODefaultsManager)initWithUniverse:(id)universe;
+- (id)objectForKey:(id)key;
+- (id)objectForKeyWithoutLog:(id)log;
+- (void)deleteObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setObjectWithoutLog:(id)log forKey:(id)key;
 @end
 
 @implementation MODefaultsManager
 
-- (MODefaultsManager)initWithUniverse:(id)a3
+- (MODefaultsManager)initWithUniverse:(id)universe
 {
   v7.receiver = self;
   v7.super_class = MODefaultsManager;
   v3 = [(MODefaultsManager *)&v7 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     userDefaults = v3->_userDefaults;
-    v3->_userDefaults = v4;
+    v3->_userDefaults = standardUserDefaults;
   }
 
   return v3;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(NSUserDefaults *)self->_userDefaults objectForKey:v4];
+    v5 = [(NSUserDefaults *)self->_userDefaults objectForKey:keyCopy];
     v6 = _mo_log_facility_get_os_log(MOLogFacilityDefaults);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(MODefaultsManager *)v4 objectForKey:v5, v6];
+      [(MODefaultsManager *)keyCopy objectForKey:v5, v6];
     }
   }
 
@@ -60,9 +60,9 @@
   return v5;
 }
 
-- (id)objectForKeyWithoutLog:(id)a3
+- (id)objectForKeyWithoutLog:(id)log
 {
-  if (a3)
+  if (log)
   {
     v3 = [(NSUserDefaults *)self->_userDefaults objectForKey:?];
   }
@@ -87,11 +87,11 @@
   return v3;
 }
 
-- (void)deleteObjectForKey:(id)a3
+- (void)deleteObjectForKey:(id)key
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
     v5 = _mo_log_facility_get_os_log(MOLogFacilityDefaults);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -99,11 +99,11 @@
       v8 = 136315394;
       v9 = "[MODefaultsManager deleteObjectForKey:]";
       v10 = 2112;
-      v11 = v4;
+      v11 = keyCopy;
       _os_log_impl(&dword_25E48F000, v5, OS_LOG_TYPE_INFO, "%s, deleting key, %@", &v8, 0x16u);
     }
 
-    [(NSUserDefaults *)self->_userDefaults removeObjectForKey:v4];
+    [(NSUserDefaults *)self->_userDefaults removeObjectForKey:keyCopy];
   }
 
   else
@@ -118,12 +118,12 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  objectCopy = object;
+  keyCopy = key;
+  if (keyCopy)
   {
     v8 = _mo_log_facility_get_os_log(MOLogFacilityDefaults);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -131,13 +131,13 @@
       v11 = 136315650;
       v12 = "[MODefaultsManager setObject:forKey:]";
       v13 = 2112;
-      v14 = v7;
+      v14 = keyCopy;
       v15 = 2112;
-      v16 = v6;
+      v16 = objectCopy;
       _os_log_impl(&dword_25E48F000, v8, OS_LOG_TYPE_INFO, "%s, key, %@, value, %@", &v11, 0x20u);
     }
 
-    [(NSUserDefaults *)self->_userDefaults setObject:v6 forKey:v7];
+    [(NSUserDefaults *)self->_userDefaults setObject:objectCopy forKey:keyCopy];
   }
 
   else
@@ -152,13 +152,13 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setObjectWithoutLog:(id)a3 forKey:(id)a4
+- (void)setObjectWithoutLog:(id)log forKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     userDefaults = self->_userDefaults;
 
-    [(NSUserDefaults *)userDefaults setObject:a3 forKey:?];
+    [(NSUserDefaults *)userDefaults setObject:log forKey:?];
   }
 
   else
@@ -171,15 +171,15 @@
   }
 }
 
-- (MODefaultsManager)initWithSuiteName:(id)a3
+- (MODefaultsManager)initWithSuiteName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = MODefaultsManager;
   v5 = [(MODefaultsManager *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:nameCopy];
     userDefaults = v5->_userDefaults;
     v5->_userDefaults = v6;
   }
@@ -220,21 +220,21 @@ void __42__MODefaultsManager_momentsDaemonDefaults__block_invoke()
   momentsDaemonDefaults_shared = v2;
 }
 
-+ (BOOL)isExtendedLogEnabled:(id)a3 forDetaultsManager:(id)a4
++ (BOOL)isExtendedLogEnabled:(id)enabled forDetaultsManager:(id)manager
 {
-  v4 = [a4 objectForKey:a3];
+  v4 = [manager objectForKey:enabled];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)objectForKey:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

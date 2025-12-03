@@ -1,20 +1,20 @@
 @interface WGWidgetListEditViewTableHeaderView
-- (CGRect)_explanationLabelFrameForBoundsWidth:(double)a3 withHeadlineLabelFrame:(CGRect)a4;
-- (CGRect)_headlineLabelFrameForBoundsWidth:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WGWidgetListEditViewTableHeaderView)initWithReuseIdentifier:(id)a3 forTodayView:(BOOL)a4;
+- (CGRect)_explanationLabelFrameForBoundsWidth:(double)width withHeadlineLabelFrame:(CGRect)frame;
+- (CGRect)_headlineLabelFrameForBoundsWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WGWidgetListEditViewTableHeaderView)initWithReuseIdentifier:(id)identifier forTodayView:(BOOL)view;
 - (double)contentMinY;
 - (void)layoutSubviews;
 @end
 
 @implementation WGWidgetListEditViewTableHeaderView
 
-- (WGWidgetListEditViewTableHeaderView)initWithReuseIdentifier:(id)a3 forTodayView:(BOOL)a4
+- (WGWidgetListEditViewTableHeaderView)initWithReuseIdentifier:(id)identifier forTodayView:(BOOL)view
 {
-  v4 = a4;
+  viewCopy = view;
   v31.receiver = self;
   v31.super_class = WGWidgetListEditViewTableHeaderView;
-  v5 = [(WGWidgetListEditViewTableHeaderView *)&v31 initWithReuseIdentifier:a3];
+  v5 = [(WGWidgetListEditViewTableHeaderView *)&v31 initWithReuseIdentifier:identifier];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -28,7 +28,7 @@
     [(UILabel *)v8 setFont:v9];
 
     v10 = v5->_headlineLabel;
-    if (v4)
+    if (viewCopy)
     {
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v12 = v11;
@@ -55,8 +55,8 @@
     [(UILabel *)v10 setText:v15];
 
     v16 = v5->_headlineLabel;
-    v17 = [MEMORY[0x277D75348] _labelColor];
-    [(UILabel *)v16 setTextColor:v17];
+    _labelColor = [MEMORY[0x277D75348] _labelColor];
+    [(UILabel *)v16 setTextColor:_labelColor];
 
     [(WGWidgetListEditViewTableHeaderView *)v5 addSubview:v5->_headlineLabel];
     v18 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -70,7 +70,7 @@
     [(UILabel *)v20 setFont:v21];
 
     v22 = v5->_explanationLabel;
-    if (v4)
+    if (viewCopy)
     {
       v23 = _os_feature_enabled_impl();
       v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -97,8 +97,8 @@
     [(UILabel *)v22 setText:v27];
 
     v28 = v5->_explanationLabel;
-    v29 = [MEMORY[0x277D75348] _labelColor];
-    [(UILabel *)v28 setTextColor:v29];
+    _labelColor2 = [MEMORY[0x277D75348] _labelColor];
+    [(UILabel *)v28 setTextColor:_labelColor2];
 
     [(WGWidgetListEditViewTableHeaderView *)v5 addSubview:v5->_explanationLabel];
   }
@@ -117,10 +117,10 @@
   return CGRectGetMinY(*&v8);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(WGWidgetListEditViewTableHeaderView *)self _headlineLabelFrameForBoundsWidth:a3.width, a3.height];
+  width = fits.width;
+  [(WGWidgetListEditViewTableHeaderView *)self _headlineLabelFrameForBoundsWidth:fits.width, fits.height];
   [(WGWidgetListEditViewTableHeaderView *)self _explanationLabelFrameForBoundsWidth:width withHeadlineLabelFrame:v5, v6, v7, v8];
   MaxY = CGRectGetMaxY(v12);
   v10 = width;
@@ -129,14 +129,14 @@
   return result;
 }
 
-- (CGRect)_headlineLabelFrameForBoundsWidth:(double)a3
+- (CGRect)_headlineLabelFrameForBoundsWidth:(double)width
 {
   v4 = *(MEMORY[0x277CBF3A0] + 8);
-  v5 = a3 + -60.0;
-  [(UILabel *)self->_headlineLabel sizeThatFits:a3 + -60.0, 1.79769313e308];
+  v5 = width + -60.0;
+  [(UILabel *)self->_headlineLabel sizeThatFits:width + -60.0, 1.79769313e308];
   [(UILabel *)self->_headlineLabel setFrame:30.0, v4, v5, v6];
-  v7 = [(UILabel *)self->_headlineLabel font];
-  [v7 _scaledValueForValue:43.0];
+  font = [(UILabel *)self->_headlineLabel font];
+  [font _scaledValueForValue:43.0];
   [(UILabel *)self->_headlineLabel _firstLineBaselineOffsetFromBoundsTop];
 
   _WGMainScreenScale();
@@ -149,21 +149,21 @@
   return result;
 }
 
-- (CGRect)_explanationLabelFrameForBoundsWidth:(double)a3 withHeadlineLabelFrame:(CGRect)a4
+- (CGRect)_explanationLabelFrameForBoundsWidth:(double)width withHeadlineLabelFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
+  height = frame.size.height;
+  width = frame.size.width;
+  x = frame.origin.x;
+  y = frame.origin.y;
   v37 = *(MEMORY[0x277CBF3A0] + 8);
-  v7 = a3 + -60.0;
-  [(UILabel *)self->_explanationLabel sizeThatFits:a3 + -60.0, 1.79769313e308];
+  v7 = width + -60.0;
+  [(UILabel *)self->_explanationLabel sizeThatFits:width + -60.0, 1.79769313e308];
   v9 = v8;
-  v10 = [(UILabel *)self->_explanationLabel font];
-  [v10 _scaledValueForValue:27.0];
+  font = [(UILabel *)self->_explanationLabel font];
+  [font _scaledValueForValue:27.0];
   v12 = v11;
-  v13 = [(UILabel *)self->_explanationLabel font];
-  [v13 descender];
+  font2 = [(UILabel *)self->_explanationLabel font];
+  [font2 descender];
   v15 = v9 + v12 + v14;
 
   headlineLabel = self->_headlineLabel;
@@ -188,12 +188,12 @@
   v41.size.width = v26;
   v41.size.height = v28;
   CGRectGetHeight(v41);
-  v29 = [(UILabel *)self->_explanationLabel font];
-  [v29 descender];
+  font3 = [(UILabel *)self->_explanationLabel font];
+  [font3 descender];
 
   [(UILabel *)self->_explanationLabel setFrame:30.0, v37, v7, v15];
-  v30 = [(UILabel *)self->_explanationLabel font];
-  [v30 _scaledValueForValue:26.0];
+  font4 = [(UILabel *)self->_explanationLabel font];
+  [font4 _scaledValueForValue:26.0];
   [(UILabel *)self->_explanationLabel _firstLineBaselineOffsetFromBoundsTop];
 
   _WGMainScreenScale();

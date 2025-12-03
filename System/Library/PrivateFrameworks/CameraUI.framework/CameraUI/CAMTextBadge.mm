@@ -1,31 +1,31 @@
 @interface CAMTextBadge
-- (void)_updateBadgeWithText:(id)a3 symbol:(id)a4 fillColor:(id)a5;
-- (void)updateForFlashMode:(int64_t)a3;
-- (void)updateForLivePhotoMode:(int64_t)a3;
-- (void)updateForNightModeControlMode:(unint64_t)a3;
-- (void)updateForSharedLibraryMode:(int64_t)a3;
-- (void)updateForSmartFramingAutoFramingDidZoom:(BOOL)a3 didRotate:(BOOL)a4;
-- (void)updateForSmartFramingAutoRotation:(BOOL)a3;
-- (void)updateForSmartFramingAutoZoom:(BOOL)a3;
+- (void)_updateBadgeWithText:(id)text symbol:(id)symbol fillColor:(id)color;
+- (void)updateForFlashMode:(int64_t)mode;
+- (void)updateForLivePhotoMode:(int64_t)mode;
+- (void)updateForNightModeControlMode:(unint64_t)mode;
+- (void)updateForSharedLibraryMode:(int64_t)mode;
+- (void)updateForSmartFramingAutoFramingDidZoom:(BOOL)zoom didRotate:(BOOL)rotate;
+- (void)updateForSmartFramingAutoRotation:(BOOL)rotation;
+- (void)updateForSmartFramingAutoZoom:(BOOL)zoom;
 - (void)updateForSmartFramingDisabled;
-- (void)updateForTorchMode:(int64_t)a3;
+- (void)updateForTorchMode:(int64_t)mode;
 @end
 
 @implementation CAMTextBadge
 
-- (void)_updateBadgeWithText:(id)a3 symbol:(id)a4 fillColor:(id)a5
+- (void)_updateBadgeWithText:(id)text symbol:(id)symbol fillColor:(id)color
 {
-  v9 = a5;
-  v8 = a4;
-  [(CEKBadgeTextView *)self _setText:a3];
-  [(CEKBadgeTextView *)self _setSymbol:v8];
+  colorCopy = color;
+  symbolCopy = symbol;
+  [(CEKBadgeTextView *)self _setText:text];
+  [(CEKBadgeTextView *)self _setSymbol:symbolCopy];
 
-  [(CEKBadgeView *)self _setFillColor:v9];
+  [(CEKBadgeView *)self _setFillColor:colorCopy];
 }
 
-- (void)updateForFlashMode:(int64_t)a3
+- (void)updateForFlashMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 2:
       v5 = @"FLASH_AUTO_TEXT";
@@ -34,13 +34,13 @@
       v5 = @"FLASH_ON_TEXT";
 LABEL_7:
       v7 = CAMLocalizedFrameworkString(v5, 0);
-      v4 = [MEMORY[0x1E69DC888] systemYellowColor];
+      systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
       goto LABEL_8;
     case 0:
       v7 = CAMLocalizedFrameworkString(@"FLASH_OFF_TEXT", 0);
-      v4 = [MEMORY[0x1E69DC888] whiteColor];
+      systemYellowColor = [MEMORY[0x1E69DC888] whiteColor];
 LABEL_8:
-      v6 = v4;
+      v6 = systemYellowColor;
       goto LABEL_10;
   }
 
@@ -50,9 +50,9 @@ LABEL_10:
   [(CAMTextBadge *)self _updateBadgeWithText:v7 symbol:0 fillColor:v6];
 }
 
-- (void)updateForTorchMode:(int64_t)a3
+- (void)updateForTorchMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 2:
       v5 = @"FLASH_AUTO_TEXT";
@@ -61,13 +61,13 @@ LABEL_10:
       v5 = @"FLASH_ON_TEXT";
 LABEL_7:
       v7 = CAMLocalizedFrameworkString(v5, 0);
-      v4 = [MEMORY[0x1E69DC888] systemYellowColor];
+      systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
       goto LABEL_8;
     case 0:
       v7 = CAMLocalizedFrameworkString(@"FLASH_OFF_TEXT", 0);
-      v4 = [MEMORY[0x1E69DC888] whiteColor];
+      systemYellowColor = [MEMORY[0x1E69DC888] whiteColor];
 LABEL_8:
-      v6 = v4;
+      v6 = systemYellowColor;
       goto LABEL_10;
   }
 
@@ -77,9 +77,9 @@ LABEL_10:
   [(CAMTextBadge *)self _updateBadgeWithText:v7 symbol:0 fillColor:v6];
 }
 
-- (void)updateForNightModeControlMode:(unint64_t)a3
+- (void)updateForNightModeControlMode:(unint64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case 2uLL:
       v5 = @"NIGHT_MODE_MAX";
@@ -88,13 +88,13 @@ LABEL_10:
       v5 = @"NIGHT_MODE_AUTO";
 LABEL_7:
       v7 = CAMLocalizedFrameworkString(v5, 0);
-      v4 = [MEMORY[0x1E69DC888] systemYellowColor];
+      systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
       goto LABEL_8;
     case 0uLL:
       v7 = CAMLocalizedFrameworkString(@"NIGHT_MODE_OFF", 0);
-      v4 = [MEMORY[0x1E69DC888] whiteColor];
+      systemYellowColor = [MEMORY[0x1E69DC888] whiteColor];
 LABEL_8:
-      v6 = v4;
+      v6 = systemYellowColor;
       goto LABEL_10;
   }
 
@@ -104,21 +104,21 @@ LABEL_10:
   [(CAMTextBadge *)self _updateBadgeWithText:v7 symbol:0 fillColor:v6];
 }
 
-- (void)updateForLivePhotoMode:(int64_t)a3
+- (void)updateForLivePhotoMode:(int64_t)mode
 {
-  if ((a3 - 1) < 2)
+  if ((mode - 1) < 2)
   {
     v6 = CAMLocalizedFrameworkString(@"LIVE", @"Text shown to the user when a Live Photo is being captured or has been enabled");
-    v4 = [MEMORY[0x1E69DC888] systemYellowColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
 LABEL_5:
-    v5 = v4;
+    v5 = systemYellowColor;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!mode)
   {
     v6 = CAMLocalizedFrameworkString(@"LIVE_OFF", @"Text shown to the user when Live Photo recording has been disabled");
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] whiteColor];
     goto LABEL_5;
   }
 
@@ -128,9 +128,9 @@ LABEL_7:
   [(CAMTextBadge *)self _updateBadgeWithText:v6 symbol:0 fillColor:v5];
 }
 
-- (void)updateForSharedLibraryMode:(int64_t)a3
+- (void)updateForSharedLibraryMode:(int64_t)mode
 {
-  if (CAMSharedLibraryModeIsOn(a3))
+  if (CAMSharedLibraryModeIsOn(mode))
   {
     v5 = @"SHARED_LIBRARY_CAPS";
   }
@@ -141,7 +141,7 @@ LABEL_7:
   }
 
   v7 = CAMLocalizedFrameworkString(v5, 0);
-  if (CAMSharedLibraryModeIsOn(a3))
+  if (CAMSharedLibraryModeIsOn(mode))
   {
     [MEMORY[0x1E69DC888] systemYellowColor];
   }
@@ -154,9 +154,9 @@ LABEL_7:
   [(CAMTextBadge *)self _updateBadgeWithText:v7 symbol:0 fillColor:v6];
 }
 
-- (void)updateForSmartFramingAutoZoom:(BOOL)a3
+- (void)updateForSmartFramingAutoZoom:(BOOL)zoom
 {
-  if (a3)
+  if (zoom)
   {
     v5 = CAMLocalizedFrameworkString(@"CAMERA_SMART_FRAMING_AUTO_ZOOM_ON", 0);
     [MEMORY[0x1E69DC888] systemYellowColor];
@@ -171,9 +171,9 @@ LABEL_7:
   [(CAMTextBadge *)self _updateBadgeWithText:v5 symbol:@"person.fill.viewfinder" fillColor:v4];
 }
 
-- (void)updateForSmartFramingAutoRotation:(BOOL)a3
+- (void)updateForSmartFramingAutoRotation:(BOOL)rotation
 {
-  if (a3)
+  if (rotation)
   {
     v5 = CAMLocalizedFrameworkString(@"CAMERA_SMART_FRAMING_AUTO_ROTATION_ON", 0);
     [MEMORY[0x1E69DC888] systemYellowColor];
@@ -191,21 +191,21 @@ LABEL_7:
 - (void)updateForSmartFramingDisabled
 {
   v4 = CAMLocalizedFrameworkString(@"CAMERA_SMART_FRAMING_CENTER_STAGE_OFF", 0);
-  v3 = [MEMORY[0x1E69DC888] whiteColor];
-  [(CAMTextBadge *)self _updateBadgeWithText:v4 symbol:@"person.fill.viewfinder" fillColor:v3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(CAMTextBadge *)self _updateBadgeWithText:v4 symbol:@"person.fill.viewfinder" fillColor:whiteColor];
 }
 
-- (void)updateForSmartFramingAutoFramingDidZoom:(BOOL)a3 didRotate:(BOOL)a4
+- (void)updateForSmartFramingAutoFramingDidZoom:(BOOL)zoom didRotate:(BOOL)rotate
 {
-  if (a3 || a4)
+  if (zoom || rotate)
   {
     v5 = @"CAMERA_SMART_FRAMING_ZOOM";
-    if (a3 && a4)
+    if (zoom && rotate)
     {
       v5 = @"CAMERA_SMART_FRAMING_ZOOM_AND_ROTATE";
     }
 
-    if (a3)
+    if (zoom)
     {
       v6 = v5;
     }
@@ -216,8 +216,8 @@ LABEL_7:
     }
 
     v8 = CAMLocalizedFrameworkString(v6, 0);
-    v7 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(CAMTextBadge *)self _updateBadgeWithText:v8 symbol:@"person.fill.viewfinder" fillColor:v7];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(CAMTextBadge *)self _updateBadgeWithText:v8 symbol:@"person.fill.viewfinder" fillColor:systemYellowColor];
   }
 }
 

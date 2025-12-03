@@ -1,7 +1,7 @@
 @interface TSCH3DGridlineResource
-+ (id)resourceWithAxisEnumerator:(id)a3;
++ (id)resourceWithAxisEnumerator:(id)enumerator;
 - (BOOL)enabled;
-- (TSCH3DGridlineResource)initWithAxisEnumerator:(id)a3;
+- (TSCH3DGridlineResource)initWithAxisEnumerator:(id)enumerator;
 - (TSDStroke)stroke;
 - (float)opacity;
 - (id)get;
@@ -9,25 +9,25 @@
 
 @implementation TSCH3DGridlineResource
 
-+ (id)resourceWithAxisEnumerator:(id)a3
++ (id)resourceWithAxisEnumerator:(id)enumerator
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithAxisEnumerator_(v5, v6, v7, v8, v9, v4);
+  enumeratorCopy = enumerator;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithAxisEnumerator_(v5, v6, v7, v8, v9, enumeratorCopy);
 
   return v10;
 }
 
-- (TSCH3DGridlineResource)initWithAxisEnumerator:(id)a3
+- (TSCH3DGridlineResource)initWithAxisEnumerator:(id)enumerator
 {
-  v5 = a3;
+  enumeratorCopy = enumerator;
   v9.receiver = self;
   v9.super_class = TSCH3DGridlineResource;
   v6 = [(TSCH3DResource *)&v9 initWithCaching:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_axis, a3);
+    objc_storeStrong(&v6->_axis, enumerator);
   }
 
   return v7;

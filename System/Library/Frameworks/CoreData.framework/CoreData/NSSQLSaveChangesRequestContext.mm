@@ -1,8 +1,8 @@
 @interface NSSQLSaveChangesRequestContext
-- (BOOL)executeRequestCore:(id *)a3;
-- (NSSQLSaveChangesRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5;
-- (double)originalRowForObjectID:(uint64_t)a1;
-- (void)addDataMask:(uint64_t)a3 forEntityKey:;
+- (BOOL)executeRequestCore:(id *)core;
+- (NSSQLSaveChangesRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core;
+- (double)originalRowForObjectID:(uint64_t)d;
+- (void)addDataMask:(uint64_t)mask forEntityKey:;
 - (void)dealloc;
 - (void)executeEpilogue;
 - (void)executePrologue;
@@ -23,14 +23,14 @@
 - (void)executeEpilogue
 {
   v120 = *MEMORY[0x1E69E9840];
-  v3 = [(NSSQLSaveChangesRequestContext *)self rowCache];
+  rowCache = [(NSSQLSaveChangesRequestContext *)self rowCache];
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
   v101 = objc_alloc_init(MEMORY[0x1E695DF70]);
   obj = self->_objectIDsInsertUpdatedToPruneDATrigger;
-  v104 = self;
+  selfCopy = self;
   v4 = [(NSArray *)obj countByEnumeratingWithState:&v113 objects:v119 count:16];
   if (v4)
   {
@@ -47,15 +47,15 @@
         }
 
         v8 = *(*(&v113 + 1) + 8 * v7);
-        v9 = [v8 firstObject];
-        if (v3)
+        firstObject = [v8 firstObject];
+        if (rowCache)
         {
-          v10 = v9;
-          v11 = [(NSPersistentStoreCache *)v3 rowForObjectID:v9 afterTimestamp:*&NSSQLDistantPastTimeInterval];
+          v10 = firstObject;
+          v11 = [(NSPersistentStoreCache *)rowCache rowForObjectID:firstObject afterTimestamp:*&NSSQLDistantPastTimeInterval];
           if (v11)
           {
             v12 = v11;
-            v13 = [(NSSQLCore *)v104->super._sqlCore entityForObjectID:v10];
+            v13 = [(NSSQLCore *)selfCopy->super._sqlCore entityForObjectID:v10];
             v14 = [v8 objectAtIndex:1];
             if (v13)
             {
@@ -67,58 +67,58 @@
               v15 = 0;
             }
 
-            v16 = [v15 slot];
-            v17 = [v8 lastObject];
+            slot = [v15 slot];
+            lastObject = [v8 lastObject];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              snapshot_set_null([v12 _snapshot], v16);
+              snapshot_set_null([v12 _snapshot], slot);
               goto LABEL_33;
             }
 
-            if ([v17 isNSDate])
+            if ([lastObject isNSDate])
             {
-              v18 = [v12 _snapshot];
+              _snapshot = [v12 _snapshot];
               goto LABEL_14;
             }
 
-            if ([v17 isNSString])
+            if ([lastObject isNSString])
             {
-              v23 = [v12 _snapshot];
-              v24 = CFStringCreateWithCString(0, [v17 UTF8String], 0x8000100u);
-              snapshot_set_object(v23, v16, v24);
+              _snapshot2 = [v12 _snapshot];
+              v24 = CFStringCreateWithCString(0, [lastObject UTF8String], 0x8000100u);
+              snapshot_set_object(_snapshot2, slot, v24);
             }
 
-            else if ([v17 isNSNumber])
+            else if ([lastObject isNSNumber])
             {
-              type = snapshot_get_type([v12 _snapshot], v16);
+              type = snapshot_get_type([v12 _snapshot], slot);
               if (type > 0x68)
               {
                 switch(type)
                 {
                   case 'i':
-                    v39 = [v12 _snapshot];
-                    v40 = [v17 intValue];
-                    Class = object_getClass(v39);
+                    _snapshot3 = [v12 _snapshot];
+                    intValue = [lastObject intValue];
+                    Class = object_getClass(_snapshot3);
                     IndexedIvars = object_getIndexedIvars(Class);
-                    v39[(v16 >> 3) + 28] &= ~(1 << (v16 & 7));
-                    *&v39[IndexedIvars[v16 + 19]] = v40;
+                    _snapshot3[(slot >> 3) + 28] &= ~(1 << (slot & 7));
+                    *&_snapshot3[IndexedIvars[slot + 19]] = intValue;
                     break;
                   case 'q':
-                    v43 = [v12 _snapshot];
-                    v44 = [v17 longLongValue];
-                    v45 = object_getClass(v43);
+                    _snapshot4 = [v12 _snapshot];
+                    longLongValue = [lastObject longLongValue];
+                    v45 = object_getClass(_snapshot4);
                     v46 = object_getIndexedIvars(v45);
-                    v43[(v16 >> 3) + 28] &= ~(1 << (v16 & 7));
-                    *&v43[v46[v16 + 19]] = v44;
+                    _snapshot4[(slot >> 3) + 28] &= ~(1 << (slot & 7));
+                    *&_snapshot4[v46[slot + 19]] = longLongValue;
                     break;
                   case 's':
-                    v31 = [v12 _snapshot];
-                    v32 = [v17 shortValue];
-                    v33 = object_getClass(v31);
+                    _snapshot5 = [v12 _snapshot];
+                    shortValue = [lastObject shortValue];
+                    v33 = object_getClass(_snapshot5);
                     v34 = object_getIndexedIvars(v33);
-                    v31[(v16 >> 3) + 28] &= ~(1 << (v16 & 7));
-                    *&v31[v34[v16 + 19]] = v32;
+                    _snapshot5[(slot >> 3) + 28] &= ~(1 << (slot & 7));
+                    *&_snapshot5[v34[slot + 19]] = shortValue;
                     break;
                 }
 
@@ -127,12 +127,12 @@
 
               if (type == 99)
               {
-                v35 = [v12 _snapshot];
-                v36 = [v17 charValue];
-                v37 = object_getClass(v35);
+                _snapshot6 = [v12 _snapshot];
+                charValue = [lastObject charValue];
+                v37 = object_getClass(_snapshot6);
                 v38 = object_getIndexedIvars(v37);
-                *(v35 + (v16 >> 3) + 28) &= ~(1 << (v16 & 7));
-                *(v35 + v38[v16 + 19]) = v36;
+                *(_snapshot6 + (slot >> 3) + 28) &= ~(1 << (slot & 7));
+                *(_snapshot6 + v38[slot + 19]) = charValue;
               }
 
               else
@@ -141,35 +141,35 @@
                 {
                   if (type == 102)
                   {
-                    v26 = [v12 _snapshot];
-                    [v17 floatValue];
+                    _snapshot7 = [v12 _snapshot];
+                    [lastObject floatValue];
                     v28 = v27;
-                    v29 = object_getClass(v26);
+                    v29 = object_getClass(_snapshot7);
                     v30 = object_getIndexedIvars(v29);
-                    v26[(v16 >> 3) + 28] &= ~(1 << (v16 & 7));
-                    *&v26[v30[v16 + 19]] = v28;
+                    _snapshot7[(slot >> 3) + 28] &= ~(1 << (slot & 7));
+                    *&_snapshot7[v30[slot + 19]] = v28;
                   }
 
                   goto LABEL_33;
                 }
 
-                v18 = [v12 _snapshot];
-                if ([v17 isNSNumber])
+                _snapshot = [v12 _snapshot];
+                if ([lastObject isNSNumber])
                 {
-                  [v17 doubleValue];
+                  [lastObject doubleValue];
                 }
 
                 else
                 {
 LABEL_14:
-                  [v17 timeIntervalSinceReferenceDate];
+                  [lastObject timeIntervalSinceReferenceDate];
                 }
 
                 v20 = v19;
-                v21 = object_getClass(v18);
+                v21 = object_getClass(_snapshot);
                 v22 = object_getIndexedIvars(v21);
-                v18[(v16 >> 3) + 28] &= ~(1 << (v16 & 7));
-                *&v18[v22[v16 + 19]] = v20;
+                _snapshot[(slot >> 3) + 28] &= ~(1 << (slot & 7));
+                *&_snapshot[v22[slot + 19]] = v20;
               }
             }
 
@@ -192,13 +192,13 @@ LABEL_33:
     while (v47);
   }
 
-  [(NSManagedObjectContext *)v104->super._context _addObjectIDsInsertUpdatedByDATriggers:v101];
+  [(NSManagedObjectContext *)selfCopy->super._context _addObjectIDsInsertUpdatedByDATriggers:v101];
   obja = objc_alloc_init(MEMORY[0x1E695DF70]);
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
-  objectIDsUpdatedToPruneDATrigger = v104->_objectIDsUpdatedToPruneDATrigger;
+  objectIDsUpdatedToPruneDATrigger = selfCopy->_objectIDsUpdatedToPruneDATrigger;
   v49 = [(NSArray *)objectIDsUpdatedToPruneDATrigger countByEnumeratingWithState:&v109 objects:v118 count:16];
   if (!v49)
   {
@@ -218,15 +218,15 @@ LABEL_33:
       }
 
       v53 = *(*(&v109 + 1) + 8 * v52);
-      v54 = [v53 firstObject];
-      if (v3)
+      firstObject2 = [v53 firstObject];
+      if (rowCache)
       {
-        v55 = v54;
-        v56 = [(NSPersistentStoreCache *)v3 rowForObjectID:v54 afterTimestamp:*&NSSQLDistantPastTimeInterval];
+        v55 = firstObject2;
+        v56 = [(NSPersistentStoreCache *)rowCache rowForObjectID:firstObject2 afterTimestamp:*&NSSQLDistantPastTimeInterval];
         if (v56)
         {
           v57 = v56;
-          v58 = [(NSSQLCore *)v104->super._sqlCore entityForObjectID:v55];
+          v58 = [(NSSQLCore *)selfCopy->super._sqlCore entityForObjectID:v55];
           v59 = [v53 objectAtIndex:1];
           if (v58)
           {
@@ -238,58 +238,58 @@ LABEL_33:
             v60 = 0;
           }
 
-          v61 = [v60 slot];
-          v62 = [v53 lastObject];
+          slot2 = [v60 slot];
+          lastObject2 = [v53 lastObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            snapshot_set_null([v57 _snapshot], v61);
+            snapshot_set_null([v57 _snapshot], slot2);
             goto LABEL_71;
           }
 
-          if ([v62 isNSDate])
+          if ([lastObject2 isNSDate])
           {
-            v63 = [v57 _snapshot];
+            _snapshot8 = [v57 _snapshot];
             goto LABEL_52;
           }
 
-          if ([v62 isNSString])
+          if ([lastObject2 isNSString])
           {
-            v68 = [v57 _snapshot];
-            v69 = CFStringCreateWithCString(0, [v62 UTF8String], 0x8000100u);
-            snapshot_set_object(v68, v61, v69);
+            _snapshot9 = [v57 _snapshot];
+            v69 = CFStringCreateWithCString(0, [lastObject2 UTF8String], 0x8000100u);
+            snapshot_set_object(_snapshot9, slot2, v69);
           }
 
-          else if ([v62 isNSNumber])
+          else if ([lastObject2 isNSNumber])
           {
-            v70 = snapshot_get_type([v57 _snapshot], v61);
+            v70 = snapshot_get_type([v57 _snapshot], slot2);
             if (v70 > 0x68)
             {
               switch(v70)
               {
                 case 'i':
-                  v84 = [v57 _snapshot];
-                  v85 = [v62 intValue];
-                  v86 = object_getClass(v84);
+                  _snapshot10 = [v57 _snapshot];
+                  intValue2 = [lastObject2 intValue];
+                  v86 = object_getClass(_snapshot10);
                   v87 = object_getIndexedIvars(v86);
-                  v84[(v61 >> 3) + 28] &= ~(1 << (v61 & 7));
-                  *&v84[v87[v61 + 19]] = v85;
+                  _snapshot10[(slot2 >> 3) + 28] &= ~(1 << (slot2 & 7));
+                  *&_snapshot10[v87[slot2 + 19]] = intValue2;
                   break;
                 case 'q':
-                  v88 = [v57 _snapshot];
-                  v89 = [v62 longLongValue];
-                  v90 = object_getClass(v88);
+                  _snapshot11 = [v57 _snapshot];
+                  longLongValue2 = [lastObject2 longLongValue];
+                  v90 = object_getClass(_snapshot11);
                   v91 = object_getIndexedIvars(v90);
-                  v88[(v61 >> 3) + 28] &= ~(1 << (v61 & 7));
-                  *&v88[v91[v61 + 19]] = v89;
+                  _snapshot11[(slot2 >> 3) + 28] &= ~(1 << (slot2 & 7));
+                  *&_snapshot11[v91[slot2 + 19]] = longLongValue2;
                   break;
                 case 's':
-                  v76 = [v57 _snapshot];
-                  v77 = [v62 shortValue];
-                  v78 = object_getClass(v76);
+                  _snapshot12 = [v57 _snapshot];
+                  shortValue2 = [lastObject2 shortValue];
+                  v78 = object_getClass(_snapshot12);
                   v79 = object_getIndexedIvars(v78);
-                  v76[(v61 >> 3) + 28] &= ~(1 << (v61 & 7));
-                  *&v76[v79[v61 + 19]] = v77;
+                  _snapshot12[(slot2 >> 3) + 28] &= ~(1 << (slot2 & 7));
+                  *&_snapshot12[v79[slot2 + 19]] = shortValue2;
                   break;
               }
 
@@ -298,12 +298,12 @@ LABEL_33:
 
             if (v70 == 99)
             {
-              v80 = [v57 _snapshot];
-              v81 = [v62 charValue];
-              v82 = object_getClass(v80);
+              _snapshot13 = [v57 _snapshot];
+              charValue2 = [lastObject2 charValue];
+              v82 = object_getClass(_snapshot13);
               v83 = object_getIndexedIvars(v82);
-              *(v80 + (v61 >> 3) + 28) &= ~(1 << (v61 & 7));
-              *(v80 + v83[v61 + 19]) = v81;
+              *(_snapshot13 + (slot2 >> 3) + 28) &= ~(1 << (slot2 & 7));
+              *(_snapshot13 + v83[slot2 + 19]) = charValue2;
             }
 
             else
@@ -312,35 +312,35 @@ LABEL_33:
               {
                 if (v70 == 102)
                 {
-                  v71 = [v57 _snapshot];
-                  [v62 floatValue];
+                  _snapshot14 = [v57 _snapshot];
+                  [lastObject2 floatValue];
                   v73 = v72;
-                  v74 = object_getClass(v71);
+                  v74 = object_getClass(_snapshot14);
                   v75 = object_getIndexedIvars(v74);
-                  v71[(v61 >> 3) + 28] &= ~(1 << (v61 & 7));
-                  *&v71[v75[v61 + 19]] = v73;
+                  _snapshot14[(slot2 >> 3) + 28] &= ~(1 << (slot2 & 7));
+                  *&_snapshot14[v75[slot2 + 19]] = v73;
                 }
 
                 goto LABEL_71;
               }
 
-              v63 = [v57 _snapshot];
-              if ([v62 isNSNumber])
+              _snapshot8 = [v57 _snapshot];
+              if ([lastObject2 isNSNumber])
               {
-                [v62 doubleValue];
+                [lastObject2 doubleValue];
               }
 
               else
               {
 LABEL_52:
-                [v62 timeIntervalSinceReferenceDate];
+                [lastObject2 timeIntervalSinceReferenceDate];
               }
 
               v65 = v64;
-              v66 = object_getClass(v63);
+              v66 = object_getClass(_snapshot8);
               v67 = object_getIndexedIvars(v66);
-              v63[(v61 >> 3) + 28] &= ~(1 << (v61 & 7));
-              *&v63[v67[v61 + 19]] = v65;
+              _snapshot8[(slot2 >> 3) + 28] &= ~(1 << (slot2 & 7));
+              *&_snapshot8[v67[slot2 + 19]] = v65;
             }
           }
 
@@ -362,13 +362,13 @@ LABEL_71:
 
   while (v92);
 LABEL_77:
-  [(NSManagedObjectContext *)v104->super._context _addObjectIDsUpdatedByDATriggers:?];
+  [(NSManagedObjectContext *)selfCopy->super._context _addObjectIDsUpdatedByDATriggers:?];
   v93 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
-  objectIDsToPruneTrigger = v104->_objectIDsToPruneTrigger;
+  objectIDsToPruneTrigger = selfCopy->_objectIDsToPruneTrigger;
   v95 = [(NSSet *)objectIDsToPruneTrigger countByEnumeratingWithState:&v105 objects:v117 count:16];
   if (v95)
   {
@@ -386,7 +386,7 @@ LABEL_77:
         v99 = *(*(&v105 + 1) + 8 * i);
         if (v99 != NSKeyValueCoding_NullValue)
         {
-          [(NSPersistentStoreCache *)v3 forgetRowForObjectID:?];
+          [(NSPersistentStoreCache *)rowCache forgetRowForObjectID:?];
           [v93 addObject:v99];
         }
       }
@@ -397,11 +397,11 @@ LABEL_77:
     while (v96);
   }
 
-  [(NSManagedObjectContext *)v104->super._context _addObjectIDsUpdatedByTriggers:v93];
+  [(NSManagedObjectContext *)selfCopy->super._context _addObjectIDsUpdatedByTriggers:v93];
 
-  v104->_objectIDsInsertUpdatedToPruneDATrigger = 0;
-  v104->_objectIDsToPruneTrigger = 0;
-  [(NSMutableDictionary *)v104->_originalCachedRows removeAllObjects];
+  selfCopy->_objectIDsInsertUpdatedToPruneDATrigger = 0;
+  selfCopy->_objectIDsToPruneTrigger = 0;
+  [(NSMutableDictionary *)selfCopy->_originalCachedRows removeAllObjects];
   v100 = *MEMORY[0x1E69E9840];
 }
 
@@ -428,21 +428,21 @@ LABEL_77:
   [(NSSQLStoreRequestContext *)&v3 dealloc];
 }
 
-- (NSSQLSaveChangesRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5
+- (NSSQLSaveChangesRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core
 {
   v18.receiver = self;
   v18.super_class = NSSQLSaveChangesRequestContext;
-  v7 = [NSSQLStoreRequestContext initWithRequest:sel_initWithRequest_context_sqlCore_ context:a3 sqlCore:?];
+  v7 = [NSSQLStoreRequestContext initWithRequest:sel_initWithRequest_context_sqlCore_ context:request sqlCore:?];
   if (!v7)
   {
     return v7;
   }
 
-  v7->_metadataToWrite = [(NSSQLCore *)a5 metadataToWrite];
+  v7->_metadataToWrite = [(NSSQLCore *)core metadataToWrite];
   v7->_savePlan = [[NSSQLSavePlan alloc] initForRequestContext:v7];
-  if (a5)
+  if (core)
   {
-    v8 = *(a5 + 6);
+    v8 = *(core + 6);
   }
 
   else
@@ -456,30 +456,30 @@ LABEL_77:
   v7->_objectIDsToPruneTrigger = 0;
   v7->_originalCachedRows = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7->_updateMasksForHistoryTracking = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (!a5)
+  if (!core)
   {
-    v17 = [0 externalDataReferencesDirectory];
+    externalDataReferencesDirectory = [0 externalDataReferencesDirectory];
     v10 = 0;
-    v7->_externalDataReferencesDirectory = v17;
+    v7->_externalDataReferencesDirectory = externalDataReferencesDirectory;
 LABEL_9:
     v7->_externalDataLinksDirectory = v10;
     goto LABEL_10;
   }
 
-  if ((*(a5 + 201) & 0x40) == 0)
+  if ((*(core + 201) & 0x40) == 0)
   {
-    v7->_externalDataReferencesDirectory = [a5 externalDataReferencesDirectory];
-    if (!atomic_load(a5 + 21))
+    v7->_externalDataReferencesDirectory = [core externalDataReferencesDirectory];
+    if (!atomic_load(core + 21))
     {
-      [a5 externalDataReferencesDirectory];
+      [core externalDataReferencesDirectory];
     }
 
-    v10 = atomic_load(a5 + 22);
+    v10 = atomic_load(core + 22);
     goto LABEL_9;
   }
 
 LABEL_10:
-  v7->_fileBackedFuturesDirectory = [a5 fileBackedFuturesDirectory];
+  v7->_fileBackedFuturesDirectory = [core fileBackedFuturesDirectory];
   sqlCore = v7->super._sqlCore;
   if (sqlCore)
   {
@@ -496,7 +496,7 @@ LABEL_10:
   v14 = v7->super._sqlCore;
   if (v14)
   {
-    v15 = -[NSSQLCore rowCacheForGeneration:](v14, [a4 _queryGenerationToken]);
+    v15 = -[NSSQLCore rowCacheForGeneration:](v14, [context _queryGenerationToken]);
     primaryRowCache = v7->_primaryRowCache;
   }
 
@@ -513,7 +513,7 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)executeRequestCore:(id *)a3
+- (BOOL)executeRequestCore:(id *)core
 {
   [(NSSQLStoreRequestContext *)self setResult:_executeSaveChangesRequest(self)];
   if (!self)
@@ -581,41 +581,41 @@ LABEL_10:
   }
 
   [(NSSQLStoreRequestContext *)self setConnection:?];
-  if (a3 && *a3)
+  if (core && *core)
   {
-    objc_setProperty_nonatomic(self, v14, *a3, 40);
+    objc_setProperty_nonatomic(self, v14, *core, 40);
   }
 
   return !self->super._exception && !self->super._error && [(NSSQLStoreRequestContext *)self result]!= 0;
 }
 
-- (double)originalRowForObjectID:(uint64_t)a1
+- (double)originalRowForObjectID:(uint64_t)d
 {
-  if (!a1)
+  if (!d)
   {
     return 0;
   }
 
-  v4 = [*(a1 + 136) objectForKey:a2];
+  v4 = [*(d + 136) objectForKey:a2];
   if (v4)
   {
     return v4;
   }
 
-  v5 = [a1 rowCache];
-  if (v5)
+  rowCache = [d rowCache];
+  if (rowCache)
   {
-    v6 = [(NSPersistentStoreCache *)v5 rowForObjectID:a2 afterTimestamp:*&NSSQLDistantPastTimeInterval];
+    v6 = [(NSPersistentStoreCache *)rowCache rowForObjectID:a2 afterTimestamp:*&NSSQLDistantPastTimeInterval];
     if (v6)
     {
       v4 = v6;
 LABEL_8:
-      [*(a1 + 136) setObject:v4 forKey:a2];
+      [*(d + 136) setObject:v4 forKey:a2];
       return v4;
     }
   }
 
-  v7 = *(a1 + 184);
+  v7 = *(d + 184);
   if (!v7)
   {
     return 0;
@@ -630,22 +630,22 @@ LABEL_8:
   return v4;
 }
 
-- (void)addDataMask:(uint64_t)a3 forEntityKey:
+- (void)addDataMask:(uint64_t)mask forEntityKey:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 144) objectForKey:?];
+    v6 = [*(self + 144) objectForKey:?];
     if (v6)
     {
       v8 = [_NSPersistentHistoryChange _mergeOldMask:v6 andNewMask:a2];
-      [*(a1 + 144) setObject:v8 forKey:a3];
+      [*(self + 144) setObject:v8 forKey:mask];
     }
 
     else
     {
-      v7 = *(a1 + 144);
+      v7 = *(self + 144);
 
-      [v7 setObject:a2 forKey:a3];
+      [v7 setObject:a2 forKey:mask];
     }
   }
 }

@@ -10,8 +10,8 @@
 + (void)killMobilePhone;
 + (void)killMobileSMS;
 + (void)nukeKeychain;
-+ (void)setIDSEnvironment:(id)a3;
-+ (void)setViceroyLoggingEnabled:(BOOL)a3;
++ (void)setIDSEnvironment:(id)environment;
++ (void)setViceroyLoggingEnabled:(BOOL)enabled;
 + (void)signOutAllAccounts;
 + (void)syncImagentLogSettings;
 @end
@@ -25,9 +25,9 @@
   return keyExistsAndHasValidFormat && AppIntegerValue == 7;
 }
 
-+ (void)setViceroyLoggingEnabled:(BOOL)a3
++ (void)setViceroyLoggingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = [MEMORY[0x277CCABB0] numberWithInt:8];
   }
@@ -50,9 +50,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -9 imagent" UTF8String];
+  uTF8String = [@"killall -9 imagent" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)killImavagent
@@ -63,9 +63,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -9 imavagent" UTF8String];
+  uTF8String = [@"killall -9 imavagent" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)syncImagentLogSettings
@@ -76,9 +76,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -USR2 imagent" UTF8String];
+  uTF8String = [@"killall -USR2 imagent" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)killMediaServerd
@@ -89,9 +89,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -9 mediaserverd" UTF8String];
+  uTF8String = [@"killall -9 mediaserverd" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)killCallservicesd
@@ -102,9 +102,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -9 callservicesd" UTF8String];
+  uTF8String = [@"killall -9 callservicesd" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)killFaceTime
@@ -115,9 +115,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -9 FaceTime" UTF8String];
+  uTF8String = [@"killall -9 FaceTime" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)killMobilePhone
@@ -128,9 +128,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -9 MobilePhone" UTF8String];
+  uTF8String = [@"killall -9 MobilePhone" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)killMobileSMS
@@ -141,9 +141,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -9 MobileSMS" UTF8String];
+  uTF8String = [@"killall -9 MobileSMS" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)killEverything
@@ -154,9 +154,9 @@
     MarcoLogRegistration();
   }
 
-  v2 = [@"killall -9 mediaserverd Contacts imagent imavagent identityservicesd SpringBoard MobilePhone MobileSMS" UTF8String];
+  uTF8String = [@"killall -9 mediaserverd Contacts imagent imavagent identityservicesd SpringBoard MobilePhone MobileSMS" UTF8String];
 
-  MEMORY[0x2821736B0](v2);
+  MEMORY[0x2821736B0](uTF8String);
 }
 
 + (void)nukeKeychain
@@ -195,20 +195,20 @@
   v40 = *MEMORY[0x277D85DE8];
   MarcoLogRegistration();
   v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-  v3 = [MEMORY[0x277D18DD8] facetimeService];
+  facetimeService = [MEMORY[0x277D18DD8] facetimeService];
 
-  if (v3)
+  if (facetimeService)
   {
-    v4 = [MEMORY[0x277D18DD8] facetimeService];
-    [v2 addObject:v4];
+    facetimeService2 = [MEMORY[0x277D18DD8] facetimeService];
+    [v2 addObject:facetimeService2];
   }
 
-  v5 = [MEMORY[0x277D18DD8] iMessageService];
+  iMessageService = [MEMORY[0x277D18DD8] iMessageService];
 
-  if (v5)
+  if (iMessageService)
   {
-    v6 = [MEMORY[0x277D18DD8] iMessageService];
-    [v2 addObject:v6];
+    iMessageService2 = [MEMORY[0x277D18DD8] iMessageService];
+    [v2 addObject:iMessageService2];
   }
 
   v36 = 0u;
@@ -233,8 +233,8 @@
 
         v29 = v8;
         v9 = *(*(&v34 + 1) + 8 * v8);
-        v10 = [MEMORY[0x277D18D28] sharedInstance];
-        v11 = [v10 accountsForService:v9];
+        mEMORY[0x277D18D28] = [MEMORY[0x277D18D28] sharedInstance];
+        v11 = [mEMORY[0x277D18D28] accountsForService:v9];
 
         v32 = 0u;
         v33 = 0u;
@@ -262,22 +262,22 @@
                 [v17 unregisterAccount];
                 [v17 setBool:1 forKey:@"AccountSignedOut"];
                 v18 = objc_alloc(MEMORY[0x277CBEB18]);
-                v19 = [v17 aliases];
-                v20 = [v18 initWithArray:v19];
+                aliases = [v17 aliases];
+                v20 = [v18 initWithArray:aliases];
 
-                v21 = [v7 lowercaseString];
-                v22 = [v20 containsObject:v21];
+                lowercaseString = [v7 lowercaseString];
+                v22 = [v20 containsObject:lowercaseString];
 
                 if ((v22 & 1) == 0)
                 {
-                  v23 = [v7 lowercaseString];
-                  [v20 addObject:v23];
+                  lowercaseString2 = [v7 lowercaseString];
+                  [v20 addObject:lowercaseString2];
                 }
 
                 [v17 removeAliases:v20];
                 [v17 writeSettings];
-                v24 = [MEMORY[0x277D18D28] sharedInstance];
-                [v24 deactivateAccount:v17];
+                mEMORY[0x277D18D28]2 = [MEMORY[0x277D18D28] sharedInstance];
+                [mEMORY[0x277D18D28]2 deactivateAccount:v17];
               }
             }
 
@@ -318,11 +318,11 @@
   return v4;
 }
 
-+ (void)setIDSEnvironment:(id)a3
++ (void)setIDSEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   MarcoLogRegistration();
-  CFPreferencesSetAppValue(@"env", v3, @"com.apple.ids");
+  CFPreferencesSetAppValue(@"env", environmentCopy, @"com.apple.ids");
 
   CFPreferencesAppSynchronize(@"com.apple.ids");
 }

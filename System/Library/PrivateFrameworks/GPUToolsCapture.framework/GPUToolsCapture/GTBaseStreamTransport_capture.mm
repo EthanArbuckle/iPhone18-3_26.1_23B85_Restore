@@ -1,24 +1,24 @@
 @interface GTBaseStreamTransport_capture
-- (BOOL)_packMessage:(id)a3 error:(id *)a4;
+- (BOOL)_packMessage:(id)message error:(id *)error;
 - (GTBaseStreamTransport_capture)init;
-- (int64_t)_performRead:(void *)a3 size:(unint64_t)a4;
+- (int64_t)_performRead:(void *)read size:(unint64_t)size;
 - (int64_t)_readAndAccumulate;
-- (int64_t)_relayBuffer:(const void *)a3 size:(unint64_t)a4;
-- (int64_t)_relayBufferInner:(const void *)a3 size:(unint64_t)a4;
-- (int64_t)_sendMessage:(id)a3 error:(id *)a4;
-- (int64_t)_syncTmuToHeader:(dy_transport_message_unpack_s *)a3 ioBlock:(id)a4;
-- (int64_t)_writeBuffers:(id *)a3;
+- (int64_t)_relayBuffer:(const void *)buffer size:(unint64_t)size;
+- (int64_t)_relayBufferInner:(const void *)inner size:(unint64_t)size;
+- (int64_t)_sendMessage:(id)message error:(id *)error;
+- (int64_t)_syncTmuToHeader:(dy_transport_message_unpack_s *)header ioBlock:(id)block;
+- (int64_t)_writeBuffers:(id *)buffers;
 - (void)_allocateMessageBuffer;
 - (void)_clearBuffers;
 - (void)_invalidate;
-- (void)_scheduleInvalidation:(id)a3;
+- (void)_scheduleInvalidation:(id)invalidation;
 - (void)_unpackAndDispatchMessage;
 - (void)dealloc;
 @end
 
 @implementation GTBaseStreamTransport_capture
 
-- (int64_t)_relayBuffer:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_relayBuffer:(const void *)buffer size:(unint64_t)size
 {
   v7 = BYTE1(self->super._interposerVersion);
   if (v7 == 1)
@@ -37,8 +37,8 @@
   block[3] = &unk_2F16A0;
   block[4] = self;
   block[5] = &v13;
-  block[6] = a3;
-  block[7] = a4;
+  block[6] = buffer;
+  block[7] = size;
   v12 = v7;
   dispatch_sync(relayQueue, block);
   v9 = v14[3];
@@ -46,18 +46,18 @@
   return v9;
 }
 
-- (int64_t)_relayBufferInner:(const void *)a3 size:(unint64_t)a4
+- (int64_t)_relayBufferInner:(const void *)inner size:(unint64_t)size
 {
   if (self->super._interposerVersion)
   {
     return -1;
   }
 
-  v4 = a4;
+  sizeCopy = size;
   if (self->_relayTmu->var5)
   {
     v7 = 0;
-    if (!a4)
+    if (!size)
     {
       goto LABEL_5;
     }
@@ -96,13 +96,13 @@
     return 0;
   }
 
-  v4 -= v16;
-  a3 = a3 + v16;
+  sizeCopy -= v16;
+  inner = inner + v16;
   v7 = 1;
-  if (v4)
+  if (sizeCopy)
   {
 LABEL_4:
-    self->_buffers[v7] = [[NSData alloc] initWithBytesNoCopy:a3 length:v4 freeWhenDone:0];
+    self->_buffers[v7] = [[NSData alloc] initWithBytesNoCopy:inner length:sizeCopy freeWhenDone:0];
   }
 
 LABEL_5:
@@ -132,20 +132,20 @@ LABEL_9:
   return v9;
 }
 
-- (int64_t)_sendMessage:(id)a3 error:(id *)a4
+- (int64_t)_sendMessage:(id)message error:(id *)error
 {
-  v7 = [a3 payload];
-  v8 = [a3 encodedAttributes];
-  v9 = [a3 kind];
-  v10 = [a3 serial];
-  v11 = [a3 replySerial];
-  if (v8)
+  payload = [message payload];
+  encodedAttributes = [message encodedAttributes];
+  kind = [message kind];
+  serial = [message serial];
+  replySerial = [message replySerial];
+  if (encodedAttributes)
   {
-    v12 = [v8 length] | 0x80000000;
-    if (v7)
+    v12 = [encodedAttributes length] | 0x80000000;
+    if (payload)
     {
 LABEL_3:
-      v13 = [v7 length] | 0x80000000;
+      v13 = [payload length] | 0x80000000;
       goto LABEL_6;
     }
   }
@@ -153,7 +153,7 @@ LABEL_3:
   else
   {
     v12 = 0;
-    if (v7)
+    if (payload)
     {
       goto LABEL_3;
     }
@@ -162,24 +162,24 @@ LABEL_3:
   v13 = 0;
 LABEL_6:
   v17[0] = 1296389188;
-  v17[1] = bswap32(v9);
-  v17[2] = bswap32(v10);
-  v17[3] = bswap32(v11);
+  v17[1] = bswap32(kind);
+  v17[2] = bswap32(serial);
+  v17[3] = bswap32(replySerial);
   v17[4] = bswap32(v12);
   v17[5] = bswap32(v13);
   dispatch_semaphore_wait(self->_sendSema, 0xFFFFFFFFFFFFFFFFLL);
   if (LOBYTE(self->super._interposerVersion) == 1)
   {
     dispatch_semaphore_signal(self->_sendSema);
-    [a3 setEncodedAttributes:0];
+    [message setEncodedAttributes:0];
     return -1;
   }
 
   self->_buffers[0] = [[NSData alloc] initWithBytes:v17 length:24];
-  if (!v8)
+  if (!encodedAttributes)
   {
     v14 = 1;
-    if (!v7)
+    if (!payload)
     {
       goto LABEL_10;
     }
@@ -187,44 +187,44 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  self->_buffers[1] = v8;
-  [a3 setEncodedAttributes:0];
+  self->_buffers[1] = encodedAttributes;
+  [message setEncodedAttributes:0];
   v14 = 2;
-  if (v7)
+  if (payload)
   {
 LABEL_9:
-    self->_buffers[v14] = v7;
+    self->_buffers[v14] = payload;
   }
 
 LABEL_10:
-  v15 = [(GTBaseStreamTransport_capture *)self _writeBuffers:a4];
+  v15 = [(GTBaseStreamTransport_capture *)self _writeBuffers:error];
   dispatch_semaphore_signal(self->_sendSema);
   return v15;
 }
 
-- (BOOL)_packMessage:(id)a3 error:(id *)a4
+- (BOOL)_packMessage:(id)message error:(id *)error
 {
-  if ([a3 attributes])
+  if ([message attributes])
   {
     v14 = 0;
     v6 = objc_autoreleasePoolPush();
-    v7 = +[NSPropertyListSerialization dataWithPropertyList:format:options:error:](NSPropertyListSerialization, "dataWithPropertyList:format:options:error:", [a3 attributes], 200, 0, &v14);
+    v7 = +[NSPropertyListSerialization dataWithPropertyList:format:options:error:](NSPropertyListSerialization, "dataWithPropertyList:format:options:error:", [message attributes], 200, 0, &v14);
     v8 = v7;
     v9 = v14;
     objc_autoreleasePoolPop(v6);
     if (!v7)
     {
-      if (a4)
+      if (error)
       {
         v13 = [NSDictionary dictionaryWithObject:v14 forKey:NSUnderlyingErrorKey];
 
-        *a4 = [GTError_capture errorWithDomain:@"DYErrorDomain" code:36 userInfo:v13];
+        *error = [GTError_capture errorWithDomain:@"DYErrorDomain" code:36 userInfo:v13];
       }
 
       return 0;
     }
 
-    [a3 setEncodedAttributes:v7];
+    [message setEncodedAttributes:v7];
   }
 
   else
@@ -233,25 +233,25 @@ LABEL_10:
   }
 
   v10 = [(NSData *)v7 length];
-  if (v10 + [objc_msgSend(a3 "payload")] + 24 < 0xF4240001uLL)
+  if (v10 + [objc_msgSend(message "payload")] + 24 < 0xF4240001uLL)
   {
-    [a3 _setTransportSize:?];
+    [message _setTransportSize:?];
     return 1;
   }
 
-  [a3 setEncodedAttributes:0];
-  if (a4)
+  [message setEncodedAttributes:0];
+  if (error)
   {
     v12 = [GTError_capture errorWithDomain:@"DYErrorDomain" code:261 userInfo:0];
     result = 0;
-    *a4 = v12;
+    *error = v12;
     return result;
   }
 
   return 0;
 }
 
-- (int64_t)_writeBuffers:(id *)a3
+- (int64_t)_writeBuffers:(id *)buffers
 {
   v5 = 0;
   v6 = 0;
@@ -345,9 +345,9 @@ LABEL_20:
 
       if (LOBYTE(self->super._interposerVersion) == 1)
       {
-        if (a3)
+        if (buffers)
         {
-          *a3 = [(GTTransport_capture *)self error];
+          *buffers = [(GTTransport_capture *)self error];
         }
 
         goto LABEL_24;
@@ -358,9 +358,9 @@ LABEL_20:
 
     v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v17 userInfo:0];
     [(GTBaseStreamTransport_capture *)self _scheduleInvalidation:v21];
-    if (a3)
+    if (buffers)
     {
-      *a3 = v21;
+      *buffers = v21;
     }
 
     *__error() = v17;
@@ -421,9 +421,9 @@ LABEL_16:
     }
 
     [(GTBaseStreamTransport_capture *)self _allocateMessageBuffer];
-    v9 = [(GTVMBuffer *)self->_messageBuffer mutableBytes];
+    mutableBytes = [(GTVMBuffer *)self->_messageBuffer mutableBytes];
     var1 = self->_tmu->var1;
-    self->_messageBufferWritePtr = ((v9 + var1 - 1) & -var1);
+    self->_messageBufferWritePtr = ((mutableBytes + var1 - 1) & -var1);
     tmu = self->_tmu;
     if (!tmu->var5)
     {
@@ -464,16 +464,16 @@ LABEL_16:
   return v4;
 }
 
-- (int64_t)_performRead:(void *)a3 size:(unint64_t)a4
+- (int64_t)_performRead:(void *)read size:(unint64_t)size
 {
   if (!self->_bytesToRead)
   {
-    self->_bytesToRead = a4;
+    self->_bytesToRead = size;
   }
 
   do
   {
-    result = [(GTBaseStreamTransport_capture *)self _read:a3 size:self->_bytesToRead];
+    result = [(GTBaseStreamTransport_capture *)self _read:read size:self->_bytesToRead];
     if (result != -1)
     {
       if (result)
@@ -551,9 +551,9 @@ LABEL_11:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = self->_tmu->var0.var4 & 0x7FFFFFFF;
-  v5 = [(GTVMBuffer *)self->_messageBuffer mutableBytes];
+  mutableBytes = [(GTVMBuffer *)self->_messageBuffer mutableBytes];
   tmu = self->_tmu;
-  v7 = (v5 + tmu->var1 - 1) & -tmu->var1;
+  v7 = (mutableBytes + tmu->var1 - 1) & -tmu->var1;
   if ((tmu->var0.var4 & 0x80000000) == 0)
   {
     v8 = 0;
@@ -581,8 +581,8 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [(GTVMBuffer *)self->_messageBuffer vmBuffer];
-      vm_protect(mach_task_self_, *v16, v16[2] * v16[1], 0, 1);
+      vmBuffer = [(GTVMBuffer *)self->_messageBuffer vmBuffer];
+      vm_protect(mach_task_self_, *vmBuffer, vmBuffer[2] * vmBuffer[1], 0, 1);
     }
 
     self->_messageBuffer = 0;
@@ -608,20 +608,20 @@ LABEL_5:
   objc_autoreleasePoolPop(v3);
 }
 
-- (int64_t)_syncTmuToHeader:(dy_transport_message_unpack_s *)a3 ioBlock:(id)a4
+- (int64_t)_syncTmuToHeader:(dy_transport_message_unpack_s *)header ioBlock:(id)block
 {
-  result = (*(a4 + 2))(a4, a2);
-  if (result != -1 && !a3->var3)
+  result = (*(block + 2))(block, a2);
+  if (result != -1 && !header->var3)
   {
-    a3->var5 = 1;
-    v7 = *&a3->var0.var0;
-    *&a3->var0.var0 = vrev32q_s8(*&a3->var0.var0);
-    v8 = vrev32_s8(*&a3->var0.var4);
-    *&a3->var0.var4 = v8;
+    header->var5 = 1;
+    v7 = *&header->var0.var0;
+    *&header->var0.var0 = vrev32q_s8(*&header->var0.var0);
+    v8 = vrev32_s8(*&header->var0.var4);
+    *&header->var0.var4 = v8;
     if (v7 == 1296389188)
     {
-      a3->var3 = (v8.i32[1] & 0x7FFFFFFF) + (v8.i32[0] & 0x7FFFFFFFu);
-      a3->var4 = 0;
+      header->var3 = (v8.i32[1] & 0x7FFFFFFF) + (v8.i32[0] & 0x7FFFFFFFu);
+      header->var4 = 0;
       if (self->_tmu->var3 + self->_tmu->var1 - 1 + self->_tmu->var2 - 1 < 0xF4240001)
       {
         return result;
@@ -645,11 +645,11 @@ LABEL_5:
   return result;
 }
 
-- (void)_scheduleInvalidation:(id)a3
+- (void)_scheduleInvalidation:(id)invalidation
 {
   v4.receiver = self;
   v4.super_class = GTBaseStreamTransport_capture;
-  [(GTTransport_capture *)&v4 _scheduleInvalidation:a3];
+  [(GTTransport_capture *)&v4 _scheduleInvalidation:invalidation];
   dispatch_semaphore_signal(self->_sendSema);
 }
 

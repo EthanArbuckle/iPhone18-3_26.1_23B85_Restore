@@ -1,22 +1,22 @@
 @interface APCoordinatedRankRequestBox
-- (APCoordinatedRankRequestBox)initWithDelegate:(id)a3 contents:(id)a4 placement:(unint64_t)a5 handler:(id)a6;
+- (APCoordinatedRankRequestBox)initWithDelegate:(id)delegate contents:(id)contents placement:(unint64_t)placement handler:(id)handler;
 @end
 
 @implementation APCoordinatedRankRequestBox
 
-- (APCoordinatedRankRequestBox)initWithDelegate:(id)a3 contents:(id)a4 placement:(unint64_t)a5 handler:(id)a6
+- (APCoordinatedRankRequestBox)initWithDelegate:(id)delegate contents:(id)contents placement:(unint64_t)placement handler:(id)handler
 {
-  v11 = a4;
-  v12 = a6;
+  contentsCopy = contents;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = APCoordinatedRankRequestBox;
-  v13 = [(APCoordinatedRetryBox *)&v18 initWithType:1 delegate:a3];
+  v13 = [(APCoordinatedRetryBox *)&v18 initWithType:1 delegate:delegate];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_contentDatas, a4);
-    v14->_placement = a5;
-    v15 = _Block_copy(v12);
+    objc_storeStrong(&v13->_contentDatas, contents);
+    v14->_placement = placement;
+    v15 = _Block_copy(handlerCopy);
     completionHandler = v14->_completionHandler;
     v14->_completionHandler = v15;
   }

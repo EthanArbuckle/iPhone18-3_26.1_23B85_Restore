@@ -1,21 +1,21 @@
 @interface UIPrintActivityWrapperNavigationController
-- (UIPrintActivityWrapperNavigationController)initWithPrintInteractionController:(id)a3 completion:(id)a4;
+- (UIPrintActivityWrapperNavigationController)initWithPrintInteractionController:(id)controller completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation UIPrintActivityWrapperNavigationController
 
-- (UIPrintActivityWrapperNavigationController)initWithPrintInteractionController:(id)a3 completion:(id)a4
+- (UIPrintActivityWrapperNavigationController)initWithPrintInteractionController:(id)controller completion:(id)completion
 {
   v11.receiver = self;
   v11.super_class = UIPrintActivityWrapperNavigationController;
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v7 = [(UIPrintActivityWrapperNavigationController *)&v11 init];
-  [(UIPrintActivityWrapperNavigationController *)v7 setPrintInteractionController:v6, v11.receiver, v11.super_class];
+  [(UIPrintActivityWrapperNavigationController *)v7 setPrintInteractionController:controllerCopy, v11.receiver, v11.super_class];
 
-  v8 = [v5 copy];
+  v8 = [completionCopy copy];
   completionHandler = v7->_completionHandler;
   v7->_completionHandler = v8;
 
@@ -34,20 +34,20 @@
   [(UIPrintActivityWrapperNavigationController *)&v3 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(UIPrintActivityWrapperNavigationController *)self printInteractionController];
+  appearCopy = appear;
+  printInteractionController = [(UIPrintActivityWrapperNavigationController *)self printInteractionController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__UIPrintActivityWrapperNavigationController_viewWillAppear___block_invoke;
   v7[3] = &unk_1E71FAD88;
   v7[4] = self;
-  [v5 presentAnimated:0 completionHandler:v7];
+  [printInteractionController presentAnimated:0 completionHandler:v7];
 
   v6.receiver = self;
   v6.super_class = UIPrintActivityWrapperNavigationController;
-  [(UIPrintActivityWrapperNavigationController *)&v6 viewWillAppear:v3];
+  [(UIPrintActivityWrapperNavigationController *)&v6 viewWillAppear:appearCopy];
 }
 
 @end

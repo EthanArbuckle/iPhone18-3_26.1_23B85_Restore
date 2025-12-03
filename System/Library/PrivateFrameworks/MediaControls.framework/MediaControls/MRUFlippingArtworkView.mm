@@ -1,22 +1,22 @@
 @interface MRUFlippingArtworkView
 - (BOOL)isSquareArtwork;
-- (BOOL)shouldTransitionFromImage:(id)a3 toImage:(id)a4;
+- (BOOL)shouldTransitionFromImage:(id)image toImage:(id)toImage;
 - (CGRect)artworkFrame;
-- (CGRect)artworkFrameForSize:(CGSize)a3 availableBounds:(CGRect)a4;
-- (MRUFlippingArtworkView)initWithFrame:(CGRect)a3;
+- (CGRect)artworkFrameForSize:(CGSize)size availableBounds:(CGRect)bounds;
+- (MRUFlippingArtworkView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)shadowViewInsets;
-- (void)controller:(id)a3 didStartLoadingImageForCatalog:(id)a4;
+- (void)controller:(id)controller didStartLoadingImageForCatalog:(id)catalog;
 - (void)layoutSubviews;
-- (void)setArtwork:(id)a3;
-- (void)setArtwork:(id)a3 transitionDirection:(int64_t)a4;
-- (void)setArtworkImage:(id)a3;
-- (void)setArtworkImageWithThrottle:(id)a3 updatePlaceholder:(BOOL)a4;
-- (void)setDimsWhenPaused:(BOOL)a3;
-- (void)setItemIdentifier:(id)a3;
-- (void)setPlaceholderSymbolName:(id)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setArtwork:(id)artwork;
+- (void)setArtwork:(id)artwork transitionDirection:(int64_t)direction;
+- (void)setArtworkImage:(id)image;
+- (void)setArtworkImageWithThrottle:(id)throttle updatePlaceholder:(BOOL)placeholder;
+- (void)setDimsWhenPaused:(BOOL)paused;
+- (void)setItemIdentifier:(id)identifier;
+- (void)setPlaceholderSymbolName:(id)name;
+- (void)setPlaying:(BOOL)playing;
+- (void)setStyle:(int64_t)style;
+- (void)setStylingProvider:(id)provider;
 - (void)updateOpacity;
 - (void)updatePlaceholder;
 - (void)updateStyle;
@@ -25,17 +25,17 @@
 
 @implementation MRUFlippingArtworkView
 
-- (MRUFlippingArtworkView)initWithFrame:(CGRect)a3
+- (MRUFlippingArtworkView)initWithFrame:(CGRect)frame
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = MRUFlippingArtworkView;
-  v3 = [(MRUFlippingArtworkView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUFlippingArtworkView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
 
     v3->_currentItemHasChangedSinceArtworkLastSet = 0;
     v3->_catalogHasChangedSinceArtworkImageLastSet = 0;
@@ -49,12 +49,12 @@
     v3->_artworkLayer = v8;
 
     [(MRUFlippingArtworkLayer *)v3->_artworkLayer setAnchorPoint:0.5, 0.5];
-    v10 = [(MRUFlippingArtworkView *)v3 traitCollection];
-    [v10 displayScale];
+    traitCollection = [(MRUFlippingArtworkView *)v3 traitCollection];
+    [traitCollection displayScale];
     [(MRUFlippingArtworkLayer *)v3->_artworkLayer setContentsScale:?];
 
-    v11 = [(MRUFlippingArtworkView *)v3 layer];
-    [v11 addSublayer:v3->_artworkLayer];
+    layer = [(MRUFlippingArtworkView *)v3 layer];
+    [layer addSublayer:v3->_artworkLayer];
 
     v12 = objc_alloc_init(MRUArtworkController);
     controller = v3->_controller;
@@ -92,25 +92,25 @@
   [(MRUShadowView *)self->_artworkShadowView setFrame:v4 + v16, v6 + v13, v8 - (v16 + v14), v10 - (v13 + v15)];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUFlippingArtworkView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self->_itemIdentifier != v4)
+  identifierCopy = identifier;
+  if (self->_itemIdentifier != identifierCopy)
   {
-    v7 = v4;
-    if (([(NSString *)v4 isEqual:?]& 1) == 0)
+    v7 = identifierCopy;
+    if (([(NSString *)identifierCopy isEqual:?]& 1) == 0)
     {
       v5 = [(NSString *)v7 copy];
       itemIdentifier = self->_itemIdentifier;
@@ -123,16 +123,16 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
     v10[9] = v3;
     v10[10] = v4;
-    v5 = a3;
-    self->_playing = a3;
-    v7 = [(MRUFlippingArtworkView *)self artworkLayer];
-    [v7 setPlaying:v5];
+    playingCopy = playing;
+    self->_playing = playing;
+    artworkLayer = [(MRUFlippingArtworkView *)self artworkLayer];
+    [artworkLayer setPlaying:playingCopy];
 
     [(MRUFlippingArtworkView *)self setNeedsLayout];
     if (self->_onScreen)
@@ -150,62 +150,62 @@
   }
 }
 
-- (void)setDimsWhenPaused:(BOOL)a3
+- (void)setDimsWhenPaused:(BOOL)paused
 {
-  if (self->_dimsWhenPaused != a3)
+  if (self->_dimsWhenPaused != paused)
   {
-    v4 = a3;
-    self->_dimsWhenPaused = a3;
-    v5 = [(MRUFlippingArtworkView *)self artworkLayer];
-    [v5 setDimsWhenPaused:v4];
+    pausedCopy = paused;
+    self->_dimsWhenPaused = paused;
+    artworkLayer = [(MRUFlippingArtworkView *)self artworkLayer];
+    [artworkLayer setDimsWhenPaused:pausedCopy];
   }
 }
 
-- (void)setArtwork:(id)a3
+- (void)setArtwork:(id)artwork
 {
-  v10 = a3;
-  objc_storeStrong(&self->_artwork, a3);
-  v5 = [(MRUArtworkController *)self->_controller catalog];
-  v6 = [v10 catalog];
-  v7 = [v5 isArtworkVisuallyIdenticalToCatalog:v6];
+  artworkCopy = artwork;
+  objc_storeStrong(&self->_artwork, artwork);
+  catalog = [(MRUArtworkController *)self->_controller catalog];
+  catalog2 = [artworkCopy catalog];
+  v7 = [catalog isArtworkVisuallyIdenticalToCatalog:catalog2];
 
   if ((v7 & 1) == 0)
   {
     self->_catalogHasChangedSinceArtworkImageLastSet = 1;
   }
 
-  v8 = [v10 catalog];
-  [(MRUArtworkController *)self->_controller setCatalog:v8];
+  catalog3 = [artworkCopy catalog];
+  [(MRUArtworkController *)self->_controller setCatalog:catalog3];
 
-  v9 = [v10 catalog];
+  catalog4 = [artworkCopy catalog];
 
-  if (!v9)
+  if (!catalog4)
   {
     [(MRUFlippingArtworkView *)self updatePlaceholder];
   }
 }
 
-- (void)setArtwork:(id)a3 transitionDirection:(int64_t)a4
+- (void)setArtwork:(id)artwork transitionDirection:(int64_t)direction
 {
-  v6 = a3;
-  [(MRUFlippingArtworkView *)self setPendingTransitionDirection:a4];
-  [(MRUFlippingArtworkView *)self setArtwork:v6];
+  artworkCopy = artwork;
+  [(MRUFlippingArtworkView *)self setPendingTransitionDirection:direction];
+  [(MRUFlippingArtworkView *)self setArtwork:artworkCopy];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(MRUFlippingArtworkView *)self updateStyle];
 
     [(MRUFlippingArtworkView *)self setNeedsLayout];
   }
 }
 
-- (void)setArtworkImageWithThrottle:(id)a3 updatePlaceholder:(BOOL)a4
+- (void)setArtworkImageWithThrottle:(id)throttle updatePlaceholder:(BOOL)placeholder
 {
-  v6 = a3;
+  throttleCopy = throttle;
   [(MSVTimer *)self->_setArtworkThrottleTimer invalidate];
   v7 = MEMORY[0x1E69B14D8];
   v11[0] = MEMORY[0x1E69E9820];
@@ -213,9 +213,9 @@
   v11[2] = __72__MRUFlippingArtworkView_setArtworkImageWithThrottle_updatePlaceholder___block_invoke;
   v11[3] = &unk_1E7663DF8;
   v11[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v8 = v6;
+  v12 = throttleCopy;
+  placeholderCopy = placeholder;
+  v8 = throttleCopy;
   v9 = [v7 timerWithInterval:0 repeats:v11 block:0.1];
   setArtworkThrottleTimer = self->_setArtworkThrottleTimer;
   self->_setArtworkThrottleTimer = v9;
@@ -235,18 +235,18 @@ uint64_t __72__MRUFlippingArtworkView_setArtworkImageWithThrottle_updatePlacehol
   return result;
 }
 
-- (void)setArtworkImage:(id)a3
+- (void)setArtworkImage:(id)image
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  imageCopy = image;
+  v6 = imageCopy;
   artworkImage = self->_artworkImage;
-  if (v5 && artworkImage == v5)
+  if (imageCopy && artworkImage == imageCopy)
   {
     goto LABEL_21;
   }
 
-  if (![(MRUFlippingArtworkView *)self shouldTransitionFromImage:artworkImage toImage:v5]|| ![(MRUFlippingArtworkView *)self isOnScreen])
+  if (![(MRUFlippingArtworkView *)self shouldTransitionFromImage:artworkImage toImage:imageCopy]|| ![(MRUFlippingArtworkView *)self isOnScreen])
   {
     self->_currentItemHasChangedSinceArtworkLastSet = 0;
     self->_catalogHasChangedSinceArtworkImageLastSet = 0;
@@ -263,7 +263,7 @@ LABEL_10:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218496;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2048;
       v26 = v6;
       v27 = 1024;
@@ -271,8 +271,8 @@ LABEL_10:
       _os_log_impl(&dword_1A20FC000, v12, OS_LOG_TYPE_DEBUG, "[FlippingArtwork].View view<%p> will set image:<%p> to current layer onScreen:%{BOOL}u", buf, 0x1Cu);
     }
 
-    v11 = [(MRUFlippingArtworkView *)self artworkLayer];
-    [v11 setImageToCurrentLayer:-[UIImage CGImage](v6 animated:{"CGImage"), -[MRUFlippingArtworkView isOnScreen](self, "isOnScreen")}];
+    artworkLayer = [(MRUFlippingArtworkView *)self artworkLayer];
+    [artworkLayer setImageToCurrentLayer:-[UIImage CGImage](v6 animated:{"CGImage"), -[MRUFlippingArtworkView isOnScreen](self, "isOnScreen")}];
     goto LABEL_13;
   }
 
@@ -281,7 +281,7 @@ LABEL_10:
   {
     v10 = MRUFlippingArtworkTransitionDirectionDescription([(MRUFlippingArtworkView *)self pendingTransitionDirection]);
     *buf = 134218498;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2048;
     v26 = v6;
     v27 = 2112;
@@ -289,11 +289,11 @@ LABEL_10:
     _os_log_impl(&dword_1A20FC000, v9, OS_LOG_TYPE_DEBUG, "[FlippingArtwork].View view<%p> will transition to image:<%p> direction:%@", buf, 0x20u);
   }
 
-  v11 = [(MRUFlippingArtworkView *)self artworkLayer];
-  [v11 transitionToImage:-[UIImage CGImage](v6 transitionDirection:{"CGImage"), -[MRUFlippingArtworkView pendingTransitionDirection](self, "pendingTransitionDirection")}];
+  artworkLayer = [(MRUFlippingArtworkView *)self artworkLayer];
+  [artworkLayer transitionToImage:-[UIImage CGImage](v6 transitionDirection:{"CGImage"), -[MRUFlippingArtworkView pendingTransitionDirection](self, "pendingTransitionDirection")}];
 LABEL_13:
 
-  objc_storeStrong(&self->_artworkImage, a3);
+  objc_storeStrong(&self->_artworkImage, image);
   [(MRUFlippingArtworkView *)self setNeedsLayout];
   v20 = 0u;
   v21 = 0u;
@@ -327,9 +327,9 @@ LABEL_13:
 LABEL_21:
 }
 
-- (void)setPlaceholderSymbolName:(id)a3
+- (void)setPlaceholderSymbolName:(id)name
 {
-  objc_storeStrong(&self->_placeholderSymbolName, a3);
+  objc_storeStrong(&self->_placeholderSymbolName, name);
 
   [(MRUFlippingArtworkView *)self updatePlaceholder];
 }
@@ -353,9 +353,9 @@ LABEL_21:
   [(MRUFlippingArtworkView *)self updateOpacity];
 }
 
-- (BOOL)shouldTransitionFromImage:(id)a3 toImage:(id)a4
+- (BOOL)shouldTransitionFromImage:(id)image toImage:(id)toImage
 {
-  v7 = a3 != a4 && self->_currentItemHasChangedSinceArtworkLastSet;
+  v7 = image != toImage && self->_currentItemHasChangedSinceArtworkLastSet;
   if ([(MRUFlippingArtworkLayer *)self->_artworkLayer placeholderImage])
   {
     currentItemHasChangedSinceArtworkLastSet = self->_currentItemHasChangedSinceArtworkLastSet;
@@ -366,26 +366,26 @@ LABEL_21:
     currentItemHasChangedSinceArtworkLastSet = 0;
   }
 
-  if (a3)
+  if (image)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = a4 == 0;
+    v9 = toImage == 0;
   }
 
   v10 = v9;
   return (currentItemHasChangedSinceArtworkLastSet | v10 & v7) & 1;
 }
 
-- (void)controller:(id)a3 didStartLoadingImageForCatalog:(id)a4
+- (void)controller:(id)controller didStartLoadingImageForCatalog:(id)catalog
 {
   artwork = self->_artwork;
-  v6 = a4;
-  v7 = [(MRUArtwork *)artwork catalog];
-  v8 = [v7 isArtworkVisuallyIdenticalToCatalog:v6];
+  catalogCopy = catalog;
+  catalog = [(MRUArtwork *)artwork catalog];
+  v8 = [catalog isArtworkVisuallyIdenticalToCatalog:catalogCopy];
 
   if (v8)
   {
@@ -416,15 +416,15 @@ LABEL_21:
   return result;
 }
 
-- (CGRect)artworkFrameForSize:(CGSize)a3 availableBounds:(CGRect)a4
+- (CGRect)artworkFrameForSize:(CGSize)size availableBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.height;
-  v9 = a3.width;
-  if (!MRUArtworkIsSquare(a3.width, a3.height))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = size.height;
+  v9 = size.width;
+  if (!MRUArtworkIsSquare(size.width, size.height))
   {
     v20.origin.x = x;
     v20.origin.y = y;
@@ -522,8 +522,8 @@ LABEL_8:
   [(MRUShadowView *)self->_artworkShadowView setOffset:MRUArtworkShadowOffset()];
   [(MRUShadowView *)self->_artworkShadowView setRadius:MRUArtworkShadowRadius(self->_style)];
   v7 = self->_style;
-  v8 = [(MRUFlippingArtworkView *)self traitCollection];
-  v9 = MRUArtworkShadowOpacity(v7, [v8 userInterfaceStyle]);
+  traitCollection = [(MRUFlippingArtworkView *)self traitCollection];
+  v9 = MRUArtworkShadowOpacity(v7, [traitCollection userInterfaceStyle]);
   *&v9 = v9;
   [(MRUShadowView *)self->_artworkShadowView setOpacity:v9];
 
@@ -536,9 +536,9 @@ LABEL_8:
 
 - (void)updateVisualStyling
 {
-  v4 = [(MRUVisualStylingProvider *)self->_stylingProvider primaryColor];
-  v3 = v4;
-  -[MRUFlippingArtworkLayer setPlaceholderImageTintColor:](self->_artworkLayer, "setPlaceholderImageTintColor:", [v4 CGColor]);
+  primaryColor = [(MRUVisualStylingProvider *)self->_stylingProvider primaryColor];
+  v3 = primaryColor;
+  -[MRUFlippingArtworkLayer setPlaceholderImageTintColor:](self->_artworkLayer, "setPlaceholderImageTintColor:", [primaryColor CGColor]);
 }
 
 - (UIEdgeInsets)shadowViewInsets

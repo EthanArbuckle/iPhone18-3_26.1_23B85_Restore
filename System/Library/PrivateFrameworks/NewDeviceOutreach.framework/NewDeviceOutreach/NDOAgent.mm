@@ -1,53 +1,53 @@
 @interface NDOAgent
 + (void)createCachesDirectoryIfNeeded;
-- (NDOAgent)initWithCallingProcessBundleID:(id)a3;
-- (NDOAgent)initWithWarrantyProvider:(id)a3 deviceProvider:(id)a4;
-- (void)_getInfosForDevices:(id)a3 usingPolicy:(unint64_t)a4 updateFollowUps:(BOOL)a5 withReply:(id)a6;
-- (void)allFUPEligibleDevices:(id)a3;
-- (void)appSupportAvailability:(id)a3 withReply:(id)a4;
-- (void)checkIsAvailableInStore:(id)a3 withReply:(id)a4;
-- (void)clearAllUserInitiatedFollowUpDismissalsWithCompletion:(id)a3;
-- (void)clearUserInitiatedFollowUpDismissalForSerialNumber:(id)a3 completion:(id)a4;
-- (void)defaultDevice:(id)a3;
-- (void)dismissFollowUpForSerialNumber:(id)a3 completion:(id)a4;
-- (void)dismissFollowUps:(id)a3 completion:(id)a4;
-- (void)dismissNotificationForSerialNumber:(id)a3 completion:(id)a4;
-- (void)getAmsPropertiesForContext:(id)a3 withReply:(id)a4;
-- (void)getBTDeviceInfosUsingPolicy:(unint64_t)a3 updateFollowUps:(BOOL)a4 withReply:(id)a5;
-- (void)getBTPioneerDeviceInfosUsingPolicy:(unint64_t)a3 updateFollowUps:(BOOL)a4 withReply:(id)a5;
-- (void)getClientConfigurationWithReply:(id)a3;
-- (void)getCoverageInfoForSerialNumber:(id)a3 usingPolicy:(unint64_t)a4 withReply:(id)a5;
-- (void)getDecodedParamsForPath:(id)a3 withReply:(id)a4;
-- (void)getDefaultDeviceInfoUsingPolicy:(unint64_t)a3 withReply:(id)a4;
-- (void)getDeviceInfoForSerialNumber:(id)a3 usingPolicy:(unint64_t)a4 sessionID:(id)a5 params:(id)a6 andForcePostFollowup:(BOOL)a7 withReply:(id)a8;
-- (void)getDeviceListForLocalDevices:(id)a3 sessionID:(id)a4 params:(id)a5 withReply:(id)a6;
-- (void)getEligibleBluetoothAndWatchDeviceInfos:(id)a3;
-- (void)getLocalDeviceListWithReply:(id)a3;
-- (void)getLocalDeviceWarrantyForSerialNumber:(id)a3 withReply:(id)a4;
-- (void)getPrimaryFUPEligibleDeviceInfosUsingPolicy:(unint64_t)a3 updateFollowUps:(BOOL)a4 withReply:(id)a5;
-- (void)getRemoteDeviceListWithReply:(id)a3;
-- (void)getRemoteDeviceWarrantyForSerialNumber:(id)a3 withAdditionalHeaders:(id)a4 withReply:(id)a5;
-- (void)getWarrantyUsingPolicy:(unint64_t)a3 params:(id)a4 withReply:(id)a5;
-- (void)getWarrantyUsingPolicy:(unint64_t)a3 serialNumber:(id)a4 sessionID:(id)a5 params:(id)a6 withReply:(id)a7;
-- (void)handleInternalCommand:(id)a3 withReply:(id)a4;
-- (void)pairedBTDevices:(id)a3;
-- (void)pairedBTPioneerDevices:(id)a3;
-- (void)pairedWatches:(id)a3;
-- (void)primaryFUPEligibleDevices:(id)a3;
-- (void)readAPSSupportedOverride:(id)a3;
-- (void)readULWebURLOverride:(id)a3;
-- (void)readWebURLOverride:(id)a3;
-- (void)removePromoSectionWithHashValue:(int64_t)a3 andAckData:(id)a4 withReply:(id)a5;
-- (void)scheduleOutreachAfter:(double)a3 withReply:(id)a4;
-- (void)storeUserInitiatedFollowUpDismissalForSerialNumber:(id)a3 completion:(id)a4;
+- (NDOAgent)initWithCallingProcessBundleID:(id)d;
+- (NDOAgent)initWithWarrantyProvider:(id)provider deviceProvider:(id)deviceProvider;
+- (void)_getInfosForDevices:(id)devices usingPolicy:(unint64_t)policy updateFollowUps:(BOOL)ups withReply:(id)reply;
+- (void)allFUPEligibleDevices:(id)devices;
+- (void)appSupportAvailability:(id)availability withReply:(id)reply;
+- (void)checkIsAvailableInStore:(id)store withReply:(id)reply;
+- (void)clearAllUserInitiatedFollowUpDismissalsWithCompletion:(id)completion;
+- (void)clearUserInitiatedFollowUpDismissalForSerialNumber:(id)number completion:(id)completion;
+- (void)defaultDevice:(id)device;
+- (void)dismissFollowUpForSerialNumber:(id)number completion:(id)completion;
+- (void)dismissFollowUps:(id)ups completion:(id)completion;
+- (void)dismissNotificationForSerialNumber:(id)number completion:(id)completion;
+- (void)getAmsPropertiesForContext:(id)context withReply:(id)reply;
+- (void)getBTDeviceInfosUsingPolicy:(unint64_t)policy updateFollowUps:(BOOL)ups withReply:(id)reply;
+- (void)getBTPioneerDeviceInfosUsingPolicy:(unint64_t)policy updateFollowUps:(BOOL)ups withReply:(id)reply;
+- (void)getClientConfigurationWithReply:(id)reply;
+- (void)getCoverageInfoForSerialNumber:(id)number usingPolicy:(unint64_t)policy withReply:(id)reply;
+- (void)getDecodedParamsForPath:(id)path withReply:(id)reply;
+- (void)getDefaultDeviceInfoUsingPolicy:(unint64_t)policy withReply:(id)reply;
+- (void)getDeviceInfoForSerialNumber:(id)number usingPolicy:(unint64_t)policy sessionID:(id)d params:(id)params andForcePostFollowup:(BOOL)followup withReply:(id)reply;
+- (void)getDeviceListForLocalDevices:(id)devices sessionID:(id)d params:(id)params withReply:(id)reply;
+- (void)getEligibleBluetoothAndWatchDeviceInfos:(id)infos;
+- (void)getLocalDeviceListWithReply:(id)reply;
+- (void)getLocalDeviceWarrantyForSerialNumber:(id)number withReply:(id)reply;
+- (void)getPrimaryFUPEligibleDeviceInfosUsingPolicy:(unint64_t)policy updateFollowUps:(BOOL)ups withReply:(id)reply;
+- (void)getRemoteDeviceListWithReply:(id)reply;
+- (void)getRemoteDeviceWarrantyForSerialNumber:(id)number withAdditionalHeaders:(id)headers withReply:(id)reply;
+- (void)getWarrantyUsingPolicy:(unint64_t)policy params:(id)params withReply:(id)reply;
+- (void)getWarrantyUsingPolicy:(unint64_t)policy serialNumber:(id)number sessionID:(id)d params:(id)params withReply:(id)reply;
+- (void)handleInternalCommand:(id)command withReply:(id)reply;
+- (void)pairedBTDevices:(id)devices;
+- (void)pairedBTPioneerDevices:(id)devices;
+- (void)pairedWatches:(id)watches;
+- (void)primaryFUPEligibleDevices:(id)devices;
+- (void)readAPSSupportedOverride:(id)override;
+- (void)readULWebURLOverride:(id)override;
+- (void)readWebURLOverride:(id)override;
+- (void)removePromoSectionWithHashValue:(int64_t)value andAckData:(id)data withReply:(id)reply;
+- (void)scheduleOutreachAfter:(double)after withReply:(id)reply;
+- (void)storeUserInitiatedFollowUpDismissalForSerialNumber:(id)number completion:(id)completion;
 @end
 
 @implementation NDOAgent
 
-- (NDOAgent)initWithCallingProcessBundleID:(id)a3
+- (NDOAgent)initWithCallingProcessBundleID:(id)d
 {
-  v5 = a3;
-  objc_storeStrong(&self->_callingProcessBundleID, a3);
+  dCopy = d;
+  objc_storeStrong(&self->_callingProcessBundleID, d);
   if (!self->_callingProcessBundleID)
   {
     v6 = _NDOLogSystem();
@@ -69,18 +69,18 @@
   return v10;
 }
 
-- (NDOAgent)initWithWarrantyProvider:(id)a3 deviceProvider:(id)a4
+- (NDOAgent)initWithWarrantyProvider:(id)provider deviceProvider:(id)deviceProvider
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  deviceProviderCopy = deviceProvider;
   v16.receiver = self;
   v16.super_class = NDOAgent;
   v8 = [(NDOAgent *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    [(NDOAgent *)v8 setWarrantyProvider:v6];
-    [(NDOAgent *)v9 setDeviceProvider:v7];
+    [(NDOAgent *)v8 setWarrantyProvider:providerCopy];
+    [(NDOAgent *)v9 setDeviceProvider:deviceProviderCopy];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.NewDeviceOutreach/.ndoagent.policyqueue", v10);
     policyLookupQueue = v9->_policyLookupQueue;
@@ -143,61 +143,61 @@
   }
 }
 
-- (void)scheduleOutreachAfter:(double)a3 withReply:(id)a4
+- (void)scheduleOutreachAfter:(double)after withReply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = objc_opt_new();
   v7 = [NDOScheduler newSchedulerWithActivityDelegate:v6];
 
-  [v7 scheduleActivityWithDelay:a3];
-  v5[2](v5, 1);
+  [v7 scheduleActivityWithDelay:after];
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)checkIsAvailableInStore:(id)a3 withReply:(id)a4
+- (void)checkIsAvailableInStore:(id)store withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  replyCopy = reply;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = storeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Checking for %@ in the App Store", &v9, 0xCu);
   }
 
   v8 = objc_opt_new();
-  [v8 checkIsAvailableInStore:v5 withReply:v6];
+  [v8 checkIsAvailableInStore:storeCopy withReply:replyCopy];
 }
 
-- (void)appSupportAvailability:(id)a3 withReply:(id)a4
+- (void)appSupportAvailability:(id)availability withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  availabilityCopy = availability;
+  replyCopy = reply;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = availabilityCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Availability for %@", &v9, 0xCu);
   }
 
   v8 = objc_opt_new();
-  [v8 appSupportAvailability:v5 withReply:v6];
+  [v8 appSupportAvailability:availabilityCopy withReply:replyCopy];
 }
 
-- (void)readWebURLOverride:(id)a3
+- (void)readWebURLOverride:(id)override
 {
-  v3 = a3;
+  overrideCopy = override;
   if (!+[NDOUtilities isInternal])
   {
     v4 = 0;
-    if (!v3)
+    if (!overrideCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_7:
-    v3[2](v3, v4);
+    overrideCopy[2](overrideCopy, v4);
     goto LABEL_8;
   }
 
@@ -210,7 +210,7 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "readWebURLOverride = %@", &v6, 0xCu);
   }
 
-  if (v3)
+  if (overrideCopy)
   {
     goto LABEL_7;
   }
@@ -218,19 +218,19 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)readULWebURLOverride:(id)a3
+- (void)readULWebURLOverride:(id)override
 {
-  v3 = a3;
+  overrideCopy = override;
   if (!+[NDOUtilities isInternal])
   {
     v4 = 0;
-    if (!v3)
+    if (!overrideCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_7:
-    v3[2](v3, v4);
+    overrideCopy[2](overrideCopy, v4);
     goto LABEL_8;
   }
 
@@ -243,7 +243,7 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "readULWebURLOverride = %@", &v6, 0xCu);
   }
 
-  if (v3)
+  if (overrideCopy)
   {
     goto LABEL_7;
   }
@@ -251,9 +251,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)readAPSSupportedOverride:(id)a3
+- (void)readAPSSupportedOverride:(id)override
 {
-  v3 = a3;
+  overrideCopy = override;
   v4 = +[NDOServerVersionUtilities readAPSSupportedOverride];
   v5 = _NDOLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -263,128 +263,128 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "readAPSSupportedOverride = %@", &v6, 0xCu);
   }
 
-  if (v3)
+  if (overrideCopy)
   {
-    v3[2](v3, v4);
+    overrideCopy[2](overrideCopy, v4);
   }
 }
 
-- (void)getDecodedParamsForPath:(id)a3 withReply:(id)a4
+- (void)getDecodedParamsForPath:(id)path withReply:(id)reply
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  replyCopy = reply;
+  v6 = replyCopy;
+  if (replyCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100014E94;
     v7[3] = &unk_10009AC80;
-    v8 = v5;
-    [NDOServerVersionUtilities getDecodedParamsForPath:a3 withCompletion:v7];
+    v8 = replyCopy;
+    [NDOServerVersionUtilities getDecodedParamsForPath:path withCompletion:v7];
   }
 }
 
-- (void)getClientConfigurationWithReply:(id)a3
+- (void)getClientConfigurationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[NDOServerVersionUtilities clientConfig];
-  (*(a3 + 2))(v4, v5);
+  (*(reply + 2))(replyCopy, v5);
 }
 
-- (void)defaultDevice:(id)a3
+- (void)defaultDevice:(id)device
 {
-  v5 = a3;
-  v7 = [(NDOAgent *)self deviceProvider];
-  v6 = [v7 defaultDevice];
-  (*(a3 + 2))(v5, v6);
+  deviceCopy = device;
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  defaultDevice = [deviceProvider defaultDevice];
+  (*(device + 2))(deviceCopy, defaultDevice);
 }
 
-- (void)pairedWatches:(id)a3
+- (void)pairedWatches:(id)watches
 {
-  v5 = a3;
-  v8 = [(NDOAgent *)self deviceProvider];
-  v6 = [v8 pairedWatches];
-  v7 = [v6 allValues];
-  (*(a3 + 2))(v5, v7);
+  watchesCopy = watches;
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  pairedWatches = [deviceProvider pairedWatches];
+  allValues = [pairedWatches allValues];
+  (*(watches + 2))(watchesCopy, allValues);
 }
 
-- (void)pairedBTDevices:(id)a3
+- (void)pairedBTDevices:(id)devices
 {
-  v5 = a3;
-  v8 = [(NDOAgent *)self deviceProvider];
-  v6 = [v8 pairedBTDevices];
-  v7 = [v6 allValues];
-  (*(a3 + 2))(v5, v7);
+  devicesCopy = devices;
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  pairedBTDevices = [deviceProvider pairedBTDevices];
+  allValues = [pairedBTDevices allValues];
+  (*(devices + 2))(devicesCopy, allValues);
 }
 
-- (void)pairedBTPioneerDevices:(id)a3
+- (void)pairedBTPioneerDevices:(id)devices
 {
-  v5 = a3;
-  v8 = [(NDOAgent *)self deviceProvider];
-  v6 = [v8 pairedBTPioneerDevices];
-  v7 = [v6 allValues];
-  (*(a3 + 2))(v5, v7);
+  devicesCopy = devices;
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  pairedBTPioneerDevices = [deviceProvider pairedBTPioneerDevices];
+  allValues = [pairedBTPioneerDevices allValues];
+  (*(devices + 2))(devicesCopy, allValues);
 }
 
-- (void)allFUPEligibleDevices:(id)a3
+- (void)allFUPEligibleDevices:(id)devices
 {
-  v5 = a3;
-  v8 = [(NDOAgent *)self deviceProvider];
-  v6 = [v8 allFUPEligibleDevices];
-  v7 = [v6 allValues];
-  (*(a3 + 2))(v5, v7);
+  devicesCopy = devices;
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  allFUPEligibleDevices = [deviceProvider allFUPEligibleDevices];
+  allValues = [allFUPEligibleDevices allValues];
+  (*(devices + 2))(devicesCopy, allValues);
 }
 
-- (void)primaryFUPEligibleDevices:(id)a3
+- (void)primaryFUPEligibleDevices:(id)devices
 {
-  v5 = a3;
-  v8 = [(NDOAgent *)self deviceProvider];
-  v6 = [v8 primaryFUPEligibleDevices];
-  v7 = [v6 allValues];
-  (*(a3 + 2))(v5, v7);
+  devicesCopy = devices;
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  primaryFUPEligibleDevices = [deviceProvider primaryFUPEligibleDevices];
+  allValues = [primaryFUPEligibleDevices allValues];
+  (*(devices + 2))(devicesCopy, allValues);
 }
 
-- (void)getDefaultDeviceInfoUsingPolicy:(unint64_t)a3 withReply:(id)a4
+- (void)getDefaultDeviceInfoUsingPolicy:(unint64_t)policy withReply:(id)reply
 {
-  v6 = a4;
-  v7 = [(NDOAgent *)self deviceProvider];
-  v8 = [v7 defaultDevice];
+  replyCopy = reply;
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  defaultDevice = [deviceProvider defaultDevice];
 
-  v9 = [v8 serialNumber];
+  serialNumber = [defaultDevice serialNumber];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10001538C;
   v12[3] = &unk_10009ACA8;
-  v14 = self;
-  v15 = v6;
-  v13 = v8;
-  v10 = v6;
-  v11 = v8;
-  [(NDOAgent *)self getWarrantyUsingPolicy:a3 serialNumber:v9 sessionID:0 params:0 withReply:v12];
+  selfCopy = self;
+  v15 = replyCopy;
+  v13 = defaultDevice;
+  v10 = replyCopy;
+  v11 = defaultDevice;
+  [(NDOAgent *)self getWarrantyUsingPolicy:policy serialNumber:serialNumber sessionID:0 params:0 withReply:v12];
 }
 
-- (void)getDeviceListForLocalDevices:(id)a3 sessionID:(id)a4 params:(id)a5 withReply:(id)a6
+- (void)getDeviceListForLocalDevices:(id)devices sessionID:(id)d params:(id)params withReply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  replyCopy = reply;
+  paramsCopy = params;
+  dCopy = d;
+  devicesCopy = devices;
   v14 = [[NDOWarrantyDownloader alloc] initWithCallingProcessBundleID:self->_callingProcessBundleID];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000155A0;
   v16[3] = &unk_10009ACD0;
-  v17 = v10;
-  v15 = v10;
-  [(NDOWarrantyDownloader *)v14 downloadDeviceForLocalDevices:v13 sessionID:v12 params:v11 completionHandler:v16];
+  v17 = replyCopy;
+  v15 = replyCopy;
+  [(NDOWarrantyDownloader *)v14 downloadDeviceForLocalDevices:devicesCopy sessionID:dCopy params:paramsCopy completionHandler:v16];
 }
 
-- (void)getDeviceInfoForSerialNumber:(id)a3 usingPolicy:(unint64_t)a4 sessionID:(id)a5 params:(id)a6 andForcePostFollowup:(BOOL)a7 withReply:(id)a8
+- (void)getDeviceInfoForSerialNumber:(id)number usingPolicy:(unint64_t)policy sessionID:(id)d params:(id)params andForcePostFollowup:(BOOL)followup withReply:(id)reply
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  numberCopy = number;
+  dCopy = d;
+  paramsCopy = params;
+  replyCopy = reply;
   v18 = +[NSUserDefaults standardUserDefaults];
   v19 = [v18 dictionaryForKey:@"PairedWatchesSerialNumbers"];
 
@@ -393,8 +393,8 @@ LABEL_8:
 
   if (v19 | v21)
   {
-    v31 = a4;
-    v22 = [v19 objectForKeyedSubscript:v14];
+    policyCopy = policy;
+    v22 = [v19 objectForKeyedSubscript:numberCopy];
     v23 = v22;
     if (v22)
     {
@@ -403,7 +403,7 @@ LABEL_8:
 
     else
     {
-      v24 = [v21 objectForKeyedSubscript:v14];
+      v24 = [v21 objectForKeyedSubscript:numberCopy];
     }
 
     v25 = v24;
@@ -424,37 +424,37 @@ LABEL_8:
         sub_100073D34();
       }
 
-      v14 = v27;
+      numberCopy = v27;
     }
 
-    a4 = v31;
+    policy = policyCopy;
   }
 
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1000157FC;
   v32[3] = &unk_10009ACF8;
-  v33 = v14;
-  v34 = self;
-  v35 = v17;
-  v36 = a7;
-  v29 = v17;
-  v30 = v14;
-  [(NDOAgent *)self getWarrantyUsingPolicy:a4 serialNumber:v30 sessionID:v15 params:v16 withReply:v32];
+  v33 = numberCopy;
+  selfCopy = self;
+  v35 = replyCopy;
+  followupCopy = followup;
+  v29 = replyCopy;
+  v30 = numberCopy;
+  [(NDOAgent *)self getWarrantyUsingPolicy:policy serialNumber:v30 sessionID:dCopy params:paramsCopy withReply:v32];
 }
 
-- (void)getPrimaryFUPEligibleDeviceInfosUsingPolicy:(unint64_t)a3 updateFollowUps:(BOOL)a4 withReply:(id)a5
+- (void)getPrimaryFUPEligibleDeviceInfosUsingPolicy:(unint64_t)policy updateFollowUps:(BOOL)ups withReply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = sub_100001F0C;
   v20[4] = sub_100003F8C;
   v21 = +[NSMutableArray array];
-  v9 = [(NDOAgent *)self deviceProvider];
-  v10 = [v9 primaryFUPEligibleDevices];
-  v11 = [v10 allValues];
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  primaryFUPEligibleDevices = [deviceProvider primaryFUPEligibleDevices];
+  allValues = [primaryFUPEligibleDevices allValues];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -462,46 +462,46 @@ LABEL_8:
   v19[3] = &unk_10009AD70;
   v19[4] = self;
   v19[5] = v20;
-  v19[6] = a3;
-  [v11 enumerateObjectsUsingBlock:v19];
+  v19[6] = policy;
+  [allValues enumerateObjectsUsingBlock:v19];
   policyLookupQueue = self->_policyLookupQueue;
   group = self->_group;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100015E7C;
   block[3] = &unk_10009AD98;
-  v16 = v8;
+  v16 = replyCopy;
   v17 = v20;
-  v18 = a4;
+  upsCopy = ups;
   block[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   dispatch_group_notify(group, policyLookupQueue, block);
 
   _Block_object_dispose(v20, 8);
 }
 
-- (void)getEligibleBluetoothAndWatchDeviceInfos:(id)a3
+- (void)getEligibleBluetoothAndWatchDeviceInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v12 = objc_opt_new();
-  v5 = [(NDOAgent *)self deviceProvider];
-  v6 = [v5 pairedWatches];
-  v7 = [v6 allValues];
-  [v12 addObjectsFromArray:v7];
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  pairedWatches = [deviceProvider pairedWatches];
+  allValues = [pairedWatches allValues];
+  [v12 addObjectsFromArray:allValues];
 
-  v8 = [(NDOAgent *)self deviceProvider];
-  v9 = [v8 pairedBTDevices];
-  v10 = [v9 allValues];
-  [v12 addObjectsFromArray:v10];
+  deviceProvider2 = [(NDOAgent *)self deviceProvider];
+  pairedBTDevices = [deviceProvider2 pairedBTDevices];
+  allValues2 = [pairedBTDevices allValues];
+  [v12 addObjectsFromArray:allValues2];
 
   v11 = [v12 copy];
-  [(NDOAgent *)self _getInfosForDevices:v11 usingPolicy:2 updateFollowUps:1 withReply:v4];
+  [(NDOAgent *)self _getInfosForDevices:v11 usingPolicy:2 updateFollowUps:1 withReply:infosCopy];
 }
 
-- (void)_getInfosForDevices:(id)a3 usingPolicy:(unint64_t)a4 updateFollowUps:(BOOL)a5 withReply:(id)a6
+- (void)_getInfosForDevices:(id)devices usingPolicy:(unint64_t)policy updateFollowUps:(BOOL)ups withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  devicesCopy = devices;
+  replyCopy = reply;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -513,37 +513,37 @@ LABEL_8:
   v19[2] = sub_1000162F8;
   v19[3] = &unk_10009AD70;
   v19[5] = v20;
-  v19[6] = a4;
+  v19[6] = policy;
   v19[4] = self;
-  [v10 enumerateObjectsUsingBlock:v19];
+  [devicesCopy enumerateObjectsUsingBlock:v19];
   policyLookupQueue = self->_policyLookupQueue;
   group = self->_group;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016518;
   block[3] = &unk_10009AD98;
-  v16 = v11;
+  v16 = replyCopy;
   v17 = v20;
-  v18 = a5;
+  upsCopy = ups;
   block[4] = self;
-  v14 = v11;
+  v14 = replyCopy;
   dispatch_group_notify(group, policyLookupQueue, block);
 
   _Block_object_dispose(v20, 8);
 }
 
-- (void)getBTDeviceInfosUsingPolicy:(unint64_t)a3 updateFollowUps:(BOOL)a4 withReply:(id)a5
+- (void)getBTDeviceInfosUsingPolicy:(unint64_t)policy updateFollowUps:(BOOL)ups withReply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = sub_100001F0C;
   v20[4] = sub_100003F8C;
   v21 = +[NSMutableArray array];
-  v9 = [(NDOAgent *)self deviceProvider];
-  v10 = [v9 pairedBTDevices];
-  v11 = [v10 allValues];
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  pairedBTDevices = [deviceProvider pairedBTDevices];
+  allValues = [pairedBTDevices allValues];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -551,36 +551,36 @@ LABEL_8:
   v19[3] = &unk_10009AD70;
   v19[4] = self;
   v19[5] = v20;
-  v19[6] = a3;
-  [v11 enumerateObjectsUsingBlock:v19];
+  v19[6] = policy;
+  [allValues enumerateObjectsUsingBlock:v19];
   policyLookupQueue = self->_policyLookupQueue;
   group = self->_group;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016A20;
   block[3] = &unk_10009AD98;
-  v16 = v8;
+  v16 = replyCopy;
   v17 = v20;
-  v18 = a4;
+  upsCopy = ups;
   block[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   dispatch_group_notify(group, policyLookupQueue, block);
 
   _Block_object_dispose(v20, 8);
 }
 
-- (void)getBTPioneerDeviceInfosUsingPolicy:(unint64_t)a3 updateFollowUps:(BOOL)a4 withReply:(id)a5
+- (void)getBTPioneerDeviceInfosUsingPolicy:(unint64_t)policy updateFollowUps:(BOOL)ups withReply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
   v20[3] = sub_100001F0C;
   v20[4] = sub_100003F8C;
   v21 = +[NSMutableArray array];
-  v9 = [(NDOAgent *)self deviceProvider];
-  v10 = [v9 pairedBTPioneerDevices];
-  v11 = [v10 allValues];
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  pairedBTPioneerDevices = [deviceProvider pairedBTPioneerDevices];
+  allValues = [pairedBTPioneerDevices allValues];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -588,60 +588,60 @@ LABEL_8:
   v19[3] = &unk_10009AD70;
   v19[4] = self;
   v19[5] = v20;
-  v19[6] = a3;
-  [v11 enumerateObjectsUsingBlock:v19];
+  v19[6] = policy;
+  [allValues enumerateObjectsUsingBlock:v19];
   policyLookupQueue = self->_policyLookupQueue;
   group = self->_group;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016F14;
   block[3] = &unk_10009AD98;
-  v16 = v8;
+  v16 = replyCopy;
   v17 = v20;
-  v18 = a4;
+  upsCopy = ups;
   block[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   dispatch_group_notify(group, policyLookupQueue, block);
 
   _Block_object_dispose(v20, 8);
 }
 
-- (void)dismissFollowUpForSerialNumber:(id)a3 completion:(id)a4
+- (void)dismissFollowUpForSerialNumber:(id)number completion:(id)completion
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(NDOAgent *)self warrantyProvider];
-  [v7 dismissFollowUpForSerialNumber:v6];
+  completionCopy = completion;
+  numberCopy = number;
+  warrantyProvider = [(NDOAgent *)self warrantyProvider];
+  [warrantyProvider dismissFollowUpForSerialNumber:numberCopy];
 
-  v8[2](v8, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (void)dismissNotificationForSerialNumber:(id)a3 completion:(id)a4
+- (void)dismissNotificationForSerialNumber:(id)number completion:(id)completion
 {
-  v8 = a4;
-  v6 = a3;
-  v7 = [(NDOAgent *)self warrantyProvider];
-  [v7 dismissNotificationForSerialNumber:v6];
+  completionCopy = completion;
+  numberCopy = number;
+  warrantyProvider = [(NDOAgent *)self warrantyProvider];
+  [warrantyProvider dismissNotificationForSerialNumber:numberCopy];
 
-  v8[2](v8, 1);
+  completionCopy[2](completionCopy, 1);
 }
 
-- (void)getWarrantyUsingPolicy:(unint64_t)a3 params:(id)a4 withReply:(id)a5
+- (void)getWarrantyUsingPolicy:(unint64_t)policy params:(id)params withReply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = [(NDOAgent *)self deviceProvider];
-  v10 = [v12 defaultDevice];
-  v11 = [v10 serialNumber];
-  [(NDOAgent *)self getWarrantyUsingPolicy:a3 serialNumber:v11 sessionID:0 params:v9 withReply:v8];
+  replyCopy = reply;
+  paramsCopy = params;
+  deviceProvider = [(NDOAgent *)self deviceProvider];
+  defaultDevice = [deviceProvider defaultDevice];
+  serialNumber = [defaultDevice serialNumber];
+  [(NDOAgent *)self getWarrantyUsingPolicy:policy serialNumber:serialNumber sessionID:0 params:paramsCopy withReply:replyCopy];
 }
 
-- (void)getWarrantyUsingPolicy:(unint64_t)a3 serialNumber:(id)a4 sessionID:(id)a5 params:(id)a6 withReply:(id)a7
+- (void)getWarrantyUsingPolicy:(unint64_t)policy serialNumber:(id)number sessionID:(id)d params:(id)params withReply:(id)reply
 {
-  v12 = a4;
-  v53 = a5;
-  v54 = a6;
-  v13 = a7;
+  numberCopy = number;
+  dCopy = d;
+  paramsCopy = params;
+  replyCopy = reply;
   v69 = 0;
   v70 = &v69;
   v71 = 0x2020000000;
@@ -656,9 +656,9 @@ LABEL_8:
   v58[1] = 3221225472;
   v58[2] = sub_100017AE8;
   v58[3] = &unk_10009ADC0;
-  v14 = COERCE_DOUBLE(v12);
+  v14 = COERCE_DOUBLE(numberCopy);
   v59 = v14;
-  v52 = v13;
+  v52 = replyCopy;
   v60 = v52;
   v61 = &v69;
   v62 = &v63;
@@ -670,12 +670,12 @@ LABEL_8:
     *buf = 138412546;
     v74 = v14;
     v75 = 2048;
-    v76 = a3;
+    policyCopy = policy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "getting warranty using policy %@: %lu", buf, 0x16u);
   }
 
-  v16 = [(NDOAgent *)self warrantyProvider];
-  v17 = [v16 cachedWarrantyForSerialNumber:*&v14];
+  warrantyProvider = [(NDOAgent *)self warrantyProvider];
+  v17 = [warrantyProvider cachedWarrantyForSerialNumber:*&v14];
   v18 = v64[5];
   v64[5] = v17;
 
@@ -688,30 +688,30 @@ LABEL_8:
       *buf = 138412546;
       v74 = v14;
       v75 = 2112;
-      v76 = v20;
+      policyCopy = v20;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Has cache: %@ with cached warranty : %@", buf, 0x16u);
     }
 
-    v21 = [(NDOAgent *)self warrantyProvider];
-    [v21 cachedWarrantyVersionForSerialNumber:*&v14];
+    warrantyProvider2 = [(NDOAgent *)self warrantyProvider];
+    [warrantyProvider2 cachedWarrantyVersionForSerialNumber:*&v14];
     *&v22 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
     if ([v22 isEqualToString:@"2"])
     {
-      v23 = [(NDOAgent *)self warrantyProvider];
-      [v23 cachedWarrantyLocaleForSerialNumber:*&v14];
+      warrantyProvider3 = [(NDOAgent *)self warrantyProvider];
+      [warrantyProvider3 cachedWarrantyLocaleForSerialNumber:*&v14];
       *&v24 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
       v25 = +[NSLocale preferredLocale];
-      v26 = [v25 localeIdentifier];
-      v27 = [v24 isEqualToString:v26];
+      localeIdentifier = [v25 localeIdentifier];
+      v27 = [v24 isEqualToString:localeIdentifier];
 
       if (v27)
       {
-        v28 = [(NDOAgent *)self warrantyProvider];
-        v29 = [v28 isSignedInToiCloud];
+        warrantyProvider4 = [(NDOAgent *)self warrantyProvider];
+        isSignedInToiCloud = [warrantyProvider4 isSignedInToiCloud];
 
-        if (v29)
+        if (isSignedInToiCloud)
         {
           v30 = _NDOLogSystem();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -719,7 +719,7 @@ LABEL_8:
             *buf = 138412546;
             v74 = *&v24;
             v75 = 2112;
-            v76 = v22;
+            policyCopy = v22;
             _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "cached warranty is for locale ('%@') and version ('%@') match system, consider it valid", buf, 0x16u);
           }
 
@@ -743,11 +743,11 @@ LABEL_8:
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           v32 = +[NSLocale preferredLocale];
-          v33 = [v32 localeIdentifier];
+          localeIdentifier2 = [v32 localeIdentifier];
           *buf = 138412546;
           v74 = *&v24;
           v75 = 2112;
-          v76 = v33;
+          policyCopy = localeIdentifier2;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "cached warranty is for locale '%@', system is now in '%@', consider it invalid", buf, 0x16u);
         }
       }
@@ -762,7 +762,7 @@ LABEL_8:
         *buf = 138412546;
         v74 = *&v22;
         v75 = 2112;
-        v76 = @"2";
+        policyCopy = @"2";
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "cached warranty is of outdated version '%@', current version is '%@', consider it invalid", buf, 0x16u);
       }
     }
@@ -780,7 +780,7 @@ LABEL_8:
     }
   }
 
-  if (a3 == 2)
+  if (policy == 2)
   {
     *(v70 + 24) = 0;
 LABEL_38:
@@ -788,7 +788,7 @@ LABEL_38:
     goto LABEL_46;
   }
 
-  if (a3)
+  if (policy)
   {
     v45 = 0;
     goto LABEL_46;
@@ -813,15 +813,15 @@ LABEL_38:
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Default policy query: cached warranty is valid, examine expiration date", buf, 2u);
   }
 
-  v36 = [(NDOAgent *)self warrantyProvider];
-  v37 = [v36 lastUpdatedDateForSerialNumber:*&v14];
+  warrantyProvider5 = [(NDOAgent *)self warrantyProvider];
+  v37 = [warrantyProvider5 lastUpdatedDateForSerialNumber:*&v14];
 
   if (v37)
   {
     [v37 timeIntervalSinceNow];
     v39 = v38;
-    v40 = [(NDOAgent *)self warrantyProvider];
-    [v40 cachedWarrantyValidityDurationForSerialNumber:*&v14];
+    warrantyProvider6 = [(NDOAgent *)self warrantyProvider];
+    [warrantyProvider6 cachedWarrantyValidityDurationForSerialNumber:*&v14];
     v42 = v41;
 
     v43 = v39 + v42;
@@ -875,19 +875,19 @@ LABEL_46:
     *buf = 136446466;
     v74 = COERCE_DOUBLE("[NDOAgent getWarrantyUsingPolicy:serialNumber:sessionID:params:withReply:]");
     v75 = 1024;
-    LODWORD(v76) = v45;
+    LODWORD(policyCopy) = v45;
     _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "%{public}s: shouldDownloadWarranty: %d", buf, 0x12u);
   }
 
   if (v45)
   {
-    v51 = [(NDOAgent *)self warrantyProvider];
+    warrantyProvider7 = [(NDOAgent *)self warrantyProvider];
     v56[0] = _NSConcreteStackBlock;
     v56[1] = 3221225472;
     v56[2] = sub_100017C08;
     v56[3] = &unk_10009ADE8;
     v57 = v55;
-    [v51 downloadWarrantyForSerialNumber:*&v14 sessionID:v53 params:v54 completionHandler:v56];
+    [warrantyProvider7 downloadWarrantyForSerialNumber:*&v14 sessionID:dCopy params:paramsCopy completionHandler:v56];
   }
 
   else
@@ -899,10 +899,10 @@ LABEL_46:
   _Block_object_dispose(&v69, 8);
 }
 
-- (void)clearUserInitiatedFollowUpDismissalForSerialNumber:(id)a3 completion:(id)a4
+- (void)clearUserInitiatedFollowUpDismissalForSerialNumber:(id)number completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -911,16 +911,16 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{private}s", &v8, 0xCu);
   }
 
-  [NDOFollowUpDismissalTracker eraseFollowUpDismissalForDeviceSerial:v6];
-  if (v5)
+  [NDOFollowUpDismissalTracker eraseFollowUpDismissalForDeviceSerial:numberCopy];
+  if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)clearAllUserInitiatedFollowUpDismissalsWithCompletion:(id)a3
+- (void)clearAllUserInitiatedFollowUpDismissalsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = _NDOLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -930,16 +930,16 @@ LABEL_46:
   }
 
   +[NDOFollowUpDismissalTracker eraseAllFollowUpDismissals];
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)storeUserInitiatedFollowUpDismissalForSerialNumber:(id)a3 completion:(id)a4
+- (void)storeUserInitiatedFollowUpDismissalForSerialNumber:(id)number completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -948,16 +948,16 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{private}s", &v8, 0xCu);
   }
 
-  [NDOFollowUpDismissalTracker storeFollowUpDismissalWithDeviceSerial:v6];
-  if (v5)
+  [NDOFollowUpDismissalTracker storeFollowUpDismissalWithDeviceSerial:numberCopy];
+  if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)getLocalDeviceListWithReply:(id)a3
+- (void)getLocalDeviceListWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = _NDOLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -966,12 +966,12 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{private}s", &v5, 0xCu);
   }
 
-  [_TtC8ndoagent19NDOCompositionLayer getLocalDeviceListWithCompletion:v3];
+  [_TtC8ndoagent19NDOCompositionLayer getLocalDeviceListWithCompletion:replyCopy];
 }
 
-- (void)getRemoteDeviceListWithReply:(id)a3
+- (void)getRemoteDeviceListWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = _NDOLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -980,13 +980,13 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{private}s", &v5, 0xCu);
   }
 
-  [_TtC8ndoagent19NDOCompositionLayer getRemoteDeviceListWithCompletion:v3];
+  [_TtC8ndoagent19NDOCompositionLayer getRemoteDeviceListWithCompletion:replyCopy];
 }
 
-- (void)removePromoSectionWithHashValue:(int64_t)a3 andAckData:(id)a4 withReply:(id)a5
+- (void)removePromoSectionWithHashValue:(int64_t)value andAckData:(id)data withReply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
+  replyCopy = reply;
+  dataCopy = data;
   v9 = _NDOLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -996,15 +996,15 @@ LABEL_46:
   }
 
   v10 = +[_TtC8ndoagent19NDOCompositionLayer uiActionHandler];
-  [v10 removeAndAckDismissedPromoFor:a3 actionData:v8];
+  [v10 removeAndAckDismissedPromoFor:value actionData:dataCopy];
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
 }
 
-- (void)getAmsPropertiesForContext:(id)a3 withReply:(id)a4
+- (void)getAmsPropertiesForContext:(id)context withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  replyCopy = reply;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1015,9 +1015,9 @@ LABEL_46:
 
   if (+[NDOUtilities isInternal])
   {
-    v8 = [v5 serialNumber];
+    serialNumber = [contextCopy serialNumber];
 
-    if (v8)
+    if (serialNumber)
     {
       v9 = +[NSUserDefaults standardUserDefaults];
       v10 = [v9 dictionaryForKey:@"PairedWatchesSerialNumbers"];
@@ -1025,8 +1025,8 @@ LABEL_46:
       v11 = +[NSUserDefaults standardUserDefaults];
       v12 = [v11 dictionaryForKey:@"PairedBluetoothDevicesSerialNumbers"];
 
-      v13 = [v5 serialNumber];
-      v14 = [v10 objectForKeyedSubscript:v13];
+      serialNumber2 = [contextCopy serialNumber];
+      v14 = [v10 objectForKeyedSubscript:serialNumber2];
       if (v14)
       {
         v15 = v14;
@@ -1034,8 +1034,8 @@ LABEL_46:
 
       else
       {
-        v16 = [v5 serialNumber];
-        v15 = [v12 objectForKeyedSubscript:v16];
+        serialNumber3 = [contextCopy serialNumber];
+        v15 = [v12 objectForKeyedSubscript:serialNumber3];
 
         if (!v15)
         {
@@ -1048,28 +1048,28 @@ LABEL_11:
       v17 = _NDOLogSystem();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
-        sub_100073DA4(v15, v5, v17);
+        sub_100073DA4(v15, contextCopy, v17);
       }
 
       v18 = [NDOAMSPropertiesRequestContext alloc];
-      v19 = [v5 requestType];
-      v20 = [v5 universalLinkPath];
-      v21 = [v5 additionalBody];
-      v22 = [v18 initWithRequestType:v19 serialNumber:v15 universalLinkPath:v20 additionalBody:v21];
+      requestType = [contextCopy requestType];
+      universalLinkPath = [contextCopy universalLinkPath];
+      additionalBody = [contextCopy additionalBody];
+      v22 = [v18 initWithRequestType:requestType serialNumber:v15 universalLinkPath:universalLinkPath additionalBody:additionalBody];
 
-      v5 = v22;
+      contextCopy = v22;
       goto LABEL_11;
     }
   }
 
 LABEL_12:
-  [_TtC8ndoagent20NDOAgentSwiftHelpers getAmsPropertiesFor:v5 completion:v6];
+  [_TtC8ndoagent20NDOAgentSwiftHelpers getAmsPropertiesFor:contextCopy completion:replyCopy];
 }
 
-- (void)getLocalDeviceWarrantyForSerialNumber:(id)a3 withReply:(id)a4
+- (void)getLocalDeviceWarrantyForSerialNumber:(id)number withReply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  numberCopy = number;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1078,14 +1078,14 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{private}s", &v8, 0xCu);
   }
 
-  [_TtC8ndoagent19NDOCompositionLayer getLocalDeviceWarrantyFor:v6 completion:v5];
+  [_TtC8ndoagent19NDOCompositionLayer getLocalDeviceWarrantyFor:numberCopy completion:replyCopy];
 }
 
-- (void)getRemoteDeviceWarrantyForSerialNumber:(id)a3 withAdditionalHeaders:(id)a4 withReply:(id)a5
+- (void)getRemoteDeviceWarrantyForSerialNumber:(id)number withAdditionalHeaders:(id)headers withReply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  replyCopy = reply;
+  headersCopy = headers;
+  numberCopy = number;
   v10 = _NDOLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1094,19 +1094,19 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{private}s", &v11, 0xCu);
   }
 
-  [_TtC8ndoagent19NDOCompositionLayer getRemoteDeviceWarrantyFor:v9 with:v8 completion:v7];
+  [_TtC8ndoagent19NDOCompositionLayer getRemoteDeviceWarrantyFor:numberCopy with:headersCopy completion:replyCopy];
 }
 
-- (void)getCoverageInfoForSerialNumber:(id)a3 usingPolicy:(unint64_t)a4 withReply:(id)a5
+- (void)getCoverageInfoForSerialNumber:(id)number usingPolicy:(unint64_t)policy withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  numberCopy = number;
+  replyCopy = reply;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = sub_100001F0C;
   v26 = sub_100003F8C;
-  v27 = [_TtC8ndoagent19NDOCompositionLayer makeWarrantyPropertiesLoaderFor:a4];
+  v27 = [_TtC8ndoagent19NDOCompositionLayer makeWarrantyPropertiesLoaderFor:policy];
   if (v23[5])
   {
     if (+[NDOUtilities isInternal])
@@ -1117,8 +1117,8 @@ LABEL_12:
       v11 = +[NSUserDefaults standardUserDefaults];
       v12 = [v11 dictionaryForKey:@"PairedBluetoothDevicesSerialNumbers"];
 
-      v13 = [v10 objectForKeyedSubscript:v7];
-      if (v13 || ([v12 objectForKeyedSubscript:v7], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      v13 = [v10 objectForKeyedSubscript:numberCopy];
+      if (v13 || ([v12 objectForKeyedSubscript:numberCopy], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v14 = _NDOLogSystem();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1127,7 +1127,7 @@ LABEL_12:
         }
 
         v15 = v13;
-        v7 = v15;
+        numberCopy = v15;
       }
     }
 
@@ -1137,8 +1137,8 @@ LABEL_12:
     v19[2] = sub_100018860;
     v19[3] = &unk_10009AE10;
     v21 = &v22;
-    v20 = v8;
-    [v16 fetchWarrantyPropertiesFor:v7 completionHandler:v19];
+    v20 = replyCopy;
+    [v16 fetchWarrantyPropertiesFor:numberCopy completionHandler:v19];
     v17 = v20;
   }
 
@@ -1147,23 +1147,23 @@ LABEL_12:
     v18 = _NDOLogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_100073EC4(a4, v18);
+      sub_100073EC4(policy, v18);
     }
 
     v17 = [NSError errorWithDomain:@"com.apple.newDeviceOutreach" code:-400 userInfo:&off_10009F7D0];
-    (*(v8 + 2))(v8, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, v17);
   }
 
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)dismissFollowUps:(id)a3 completion:(id)a4
+- (void)dismissFollowUps:(id)ups completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  upsCopy = ups;
   v7 = [[FLFollowUpController alloc] initWithClientIdentifier:@"com.apple.NewDeviceOutreach"];
   v12 = 0;
-  v8 = [v7 clearPendingFollowUpItemsWithUniqueIdentifiers:v6 error:&v12];
+  v8 = [v7 clearPendingFollowUpItemsWithUniqueIdentifiers:upsCopy error:&v12];
 
   v9 = v12;
   v10 = v9;
@@ -1177,14 +1177,14 @@ LABEL_12:
     v11 = v9;
   }
 
-  (v5)[2](v5, v11);
+  (completionCopy)[2](completionCopy, v11);
 }
 
-- (void)handleInternalCommand:(id)a3 withReply:(id)a4
+- (void)handleInternalCommand:(id)command withReply:(id)reply
 {
-  v5 = a4;
-  v6 = [_TtC8ndoagent28NDOAgentInternalDebugHelpers handleInternalCommand:a3];
-  v5[2](v5, v6);
+  replyCopy = reply;
+  v6 = [_TtC8ndoagent28NDOAgentInternalDebugHelpers handleInternalCommand:command];
+  replyCopy[2](replyCopy, v6);
 }
 
 @end

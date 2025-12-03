@@ -6,58 +6,58 @@
 - (CGRect)initialFrameBeforeAppearance;
 - (MSMessagesAppPresentationContext)presentationContext;
 - (MSMessagesAppPresentationStyle)presentationStyle;
-- (MSMessagesAppViewController)initWithCoder:(id)a3;
-- (MSMessagesAppViewController)initWithShouldBeSheetPresentationControllerDelegate:(BOOL)a3;
+- (MSMessagesAppViewController)initWithCoder:(id)coder;
+- (MSMessagesAppViewController)initWithShouldBeSheetPresentationControllerDelegate:(BOOL)delegate;
 - (UIEdgeInsets)_balloonMaskEdgeInsets;
 - (UIEdgeInsets)additionalSafeAreaInsets;
 - (_MSMessageComposeExtensionImplProtocol)appContext;
 - (double)_percentExpanded;
 - (double)messageCornerRadius;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4;
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4;
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler;
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds;
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion;
 - (void)_balloonMaskEdgeInsets;
-- (void)_conversation:(id)a3 didSelectMessage:(id)a4;
-- (void)_conversation:(id)a3 willSelectMessage:(id)a4;
+- (void)_conversation:(id)_conversation didSelectMessage:(id)message;
+- (void)_conversation:(id)_conversation willSelectMessage:(id)message;
 - (void)_dismissAndPresentPhotosApp;
 - (void)_emojiStickerDragEnded;
 - (void)_emojiStickerDragStarted;
-- (void)_prepareForPresentationWithCompletionHandler:(id)a3;
-- (void)_presentAlertSheetWith:(id)a3 styles:(id)a4 completion:(id)a5;
-- (void)_presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 completion:(id)a6;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7;
-- (void)_presentContextMenuWithButtonTitles:(id)a3 imageNames:(id)a4 buttonFrame:(CGRect)a5 completion:(id)a6;
-- (void)_requestFullScreenModalPresentationWithSize:(CGSize)a3;
-- (void)_requestHostSceneIdentifierWithCompletion:(id)a3;
-- (void)_setAppPresentationStyle:(unint64_t)a3;
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3;
-- (void)_setSendingEnabled:(BOOL)a3;
+- (void)_prepareForPresentationWithCompletionHandler:(id)handler;
+- (void)_presentAlertSheetWith:(id)with styles:(id)styles completion:(id)completion;
+- (void)_presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion;
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion;
+- (void)_presentContextMenuWithButtonTitles:(id)titles imageNames:(id)names buttonFrame:(CGRect)frame completion:(id)completion;
+- (void)_requestFullScreenModalPresentationWithSize:(CGSize)size;
+- (void)_requestHostSceneIdentifierWithCompletion:(id)completion;
+- (void)_setAppPresentationStyle:(unint64_t)style;
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets;
+- (void)_setSendingEnabled:(BOOL)enabled;
 - (void)_setUpEmojiDragNotificationObservers;
 - (void)_updateLayoutMargins;
-- (void)addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5;
+- (void)addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion;
 - (void)contentDidLoad;
 - (void)dealloc;
 - (void)dismiss;
-- (void)generateSnapshotWithContentSize:(CGSize)a3 completion:(id)a4;
+- (void)generateSnapshotWithContentSize:(CGSize)size completion:(id)completion;
 - (void)invalidateMessageTintColor;
 - (void)messageCornerRadius;
 - (void)requestPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
-- (void)requestPresentationWithStickerType:(id)a3 identifier:(id)a4;
+- (void)requestPresentationWithStickerType:(id)type identifier:(id)identifier;
 - (void)requestResize;
-- (void)requestStickerExtensionMetadataDictionary:(id)a3;
-- (void)setInitialFrameBeforeAppearance:(CGRect)a3;
+- (void)requestStickerExtensionMetadataDictionary:(id)dictionary;
+- (void)setInitialFrameBeforeAppearance:(CGRect)appearance;
 - (void)setNeedsSizeMatchBeforeSnapshotSwap;
 - (void)setProvidesExplicitSizeSnapshot;
 - (void)setReadyForDisplay;
 - (void)setShouldPerformSendAnimationOnAppear;
-- (void)updateSnapshotWithCompletionBlock:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateSnapshotWithCompletionBlock:(id)block;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willTransitionToPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;
 @end
 
@@ -71,12 +71,12 @@
   _os_log_debug_impl(&dword_1CADE6000, log, OS_LOG_TYPE_DEBUG, "%s", &v1, 0xCu);
 }
 
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = _MSMainBundleIdentifier();
   if ([v8 isEqualToString:@"com.gamerdelights.gamepigeon.ext"])
   {
@@ -109,11 +109,11 @@
   [(MSMessagesAppViewController *)self _setNavigationControllerContentInsetAdjustment:top, 0.0, bottom, 0.0];
 }
 
-- (MSMessagesAppViewController)initWithCoder:(id)a3
+- (MSMessagesAppViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = MSMessagesAppViewController;
-  v3 = [(MSMessagesAppViewController *)&v7 initWithCoder:a3];
+  v3 = [(MSMessagesAppViewController *)&v7 initWithCoder:coder];
   if (v3)
   {
     v4 = [[_MSMessagesAppPresentationControllerDelegate alloc] initWithMessagesAppViewController:v3];
@@ -126,15 +126,15 @@
   return v3;
 }
 
-- (MSMessagesAppViewController)initWithShouldBeSheetPresentationControllerDelegate:(BOOL)a3
+- (MSMessagesAppViewController)initWithShouldBeSheetPresentationControllerDelegate:(BOOL)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MSMessagesAppViewController;
   v4 = [(MSMessagesAppViewController *)&v8 init];
   if (v4)
   {
-    if (v3)
+    if (delegateCopy)
     {
       v5 = [[_MSMessagesAppPresentationControllerDelegate alloc] initWithMessagesAppViewController:v4];
       sheetPresentationControllerDelegate = v4->_sheetPresentationControllerDelegate;
@@ -152,57 +152,57 @@
   appContext = self->_appContext;
   if (appContext)
   {
-    v3 = appContext;
+    extensionContext = appContext;
   }
 
   else
   {
-    v3 = [(MSMessagesAppViewController *)self extensionContext];
+    extensionContext = [(MSMessagesAppViewController *)self extensionContext];
   }
 
-  return v3;
+  return extensionContext;
 }
 
 - (void)_setUpEmojiDragNotificationObservers
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__emojiStickerDragStarted name:*MEMORY[0x1E69DE058] object:0];
-  [v3 addObserver:self selector:sel__emojiStickerDragEnded name:*MEMORY[0x1E69DE070] object:0];
-  [v3 addObserver:self selector:sel__emojiStickerDragEnded name:*MEMORY[0x1E69DE060] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__emojiStickerDragStarted name:*MEMORY[0x1E69DE058] object:0];
+  [defaultCenter addObserver:self selector:sel__emojiStickerDragEnded name:*MEMORY[0x1E69DE070] object:0];
+  [defaultCenter addObserver:self selector:sel__emojiStickerDragEnded name:*MEMORY[0x1E69DE060] object:0];
 }
 
 - (void)_emojiStickerDragStarted
 {
-  v3 = [(MSMessagesAppViewController *)self activeConversation];
-  v2 = [v3 context];
-  [v2 stickerDruidDragStarted];
+  activeConversation = [(MSMessagesAppViewController *)self activeConversation];
+  context = [activeConversation context];
+  [context stickerDruidDragStarted];
 }
 
 - (void)_emojiStickerDragEnded
 {
-  v3 = [(MSMessagesAppViewController *)self activeConversation];
-  v2 = [v3 context];
-  [v2 stickerDruidDragEndedWithPayload:0];
+  activeConversation = [(MSMessagesAppViewController *)self activeConversation];
+  context = [activeConversation context];
+  [context stickerDruidDragEndedWithPayload:0];
 }
 
-- (void)_conversation:(id)a3 willSelectMessage:(id)a4
+- (void)_conversation:(id)_conversation willSelectMessage:(id)message
 {
-  if (a3)
+  if (_conversation)
   {
-    if (a4)
+    if (message)
     {
-      [(MSMessagesAppViewController *)self willSelectMessage:a4 conversation:a3];
+      [(MSMessagesAppViewController *)self willSelectMessage:message conversation:_conversation];
     }
   }
 }
 
-- (void)_conversation:(id)a3 didSelectMessage:(id)a4
+- (void)_conversation:(id)_conversation didSelectMessage:(id)message
 {
-  if (a3)
+  if (_conversation)
   {
-    if (a4)
+    if (message)
     {
-      [(MSMessagesAppViewController *)self didSelectMessage:a4 conversation:a3];
+      [(MSMessagesAppViewController *)self didSelectMessage:message conversation:_conversation];
     }
   }
 }
@@ -228,27 +228,27 @@
     _os_log_impl(&dword_1CADE6000, v5, OS_LOG_TYPE_DEFAULT, "Requesting presentation style %@", &v8, 0xCu);
   }
 
-  v7 = [(MSMessagesAppViewController *)self appContext];
-  [v7 requestPresentationStyle:presentationStyle];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext requestPresentationStyle:presentationStyle];
 }
 
 - (MSMessagesAppPresentationStyle)presentationStyle
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [(MSMessagesAppViewController *)self appContext];
-  v3 = [v2 presentationStyle];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  presentationStyle = [appContext presentationStyle];
 
   v4 = ms_defaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3 > MSMessagesAppPresentationStyleTranscript)
+    if (presentationStyle > MSMessagesAppPresentationStyleTranscript)
     {
       v5 = @"Other";
     }
 
     else
     {
-      v5 = off_1E83A2C00[v3];
+      v5 = off_1E83A2C00[presentationStyle];
     }
 
     v7 = 138412290;
@@ -256,20 +256,20 @@
     _os_log_impl(&dword_1CADE6000, v4, OS_LOG_TYPE_DEFAULT, "Getting presentation style %@", &v7, 0xCu);
   }
 
-  return v3;
+  return presentationStyle;
 }
 
 - (MSMessagesAppPresentationContext)presentationContext
 {
-  v2 = [(MSMessagesAppViewController *)self appContext];
-  v3 = [v2 presentationContext];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  presentationContext = [appContext presentationContext];
 
-  return v3;
+  return presentationContext;
 }
 
-- (void)requestStickerExtensionMetadataDictionary:(id)a3
+- (void)requestStickerExtensionMetadataDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = ms_defaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -277,52 +277,52 @@
     _os_log_impl(&dword_1CADE6000, v5, OS_LOG_TYPE_DEFAULT, "Requesting Sticker Extension Metadata", v7, 2u);
   }
 
-  v6 = [(MSMessagesAppViewController *)self appContext];
-  [v6 _requestStickerExtensionMetadataDictionary:v4];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext _requestStickerExtensionMetadataDictionary:dictionaryCopy];
 }
 
-- (void)requestPresentationWithStickerType:(id)a3 identifier:(id)a4
+- (void)requestPresentationWithStickerType:(id)type identifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v8 = ms_defaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = v6;
+    v11 = typeCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = identifierCopy;
     _os_log_impl(&dword_1CADE6000, v8, OS_LOG_TYPE_DEFAULT, "Requesting presentation of string app with type: %ld and identifier %@", &v10, 0x16u);
   }
 
-  v9 = [(MSMessagesAppViewController *)self appContext];
-  [v9 _requestPresentationWithStickerType:v6 identifier:v7];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext _requestPresentationWithStickerType:typeCopy identifier:identifierCopy];
 }
 
 - (void)invalidateMessageTintColor
 {
-  v4 = [(MSMessagesAppViewController *)self messageTintColor];
-  v3 = [(MSMessagesAppViewController *)self appContext];
-  [v3 _remoteViewDidInvalidateMessageTintColorWithUpdatedColor:v4];
+  messageTintColor = [(MSMessagesAppViewController *)self messageTintColor];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext _remoteViewDidInvalidateMessageTintColorWithUpdatedColor:messageTintColor];
 }
 
-- (void)generateSnapshotWithContentSize:(CGSize)a3 completion:(id)a4
+- (void)generateSnapshotWithContentSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v42 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  completionCopy = completion;
   v8 = 0.0;
   v9 = height;
   v10 = width;
   if ([(MSMessagesAppViewController *)self _shouldUseBackwardsCompatibilityOffsets])
   {
-    v11 = [(MSMessagesAppViewController *)self activeConversation];
-    v12 = [v11 selectedMessage];
-    v13 = [v12 isFromMe];
+    activeConversation = [(MSMessagesAppViewController *)self activeConversation];
+    selectedMessage = [activeConversation selectedMessage];
+    isFromMe = [selectedMessage isFromMe];
 
-    if ((v13 & 1) == 0)
+    if ((isFromMe & 1) == 0)
     {
       CKUIBehaviorClass = getCKUIBehaviorClass();
       v15 = IMLogHandleForCategory();
@@ -340,8 +340,8 @@
         [MSMessagesAppViewController generateSnapshotWithContentSize:completion:];
       }
 
-      v17 = [(objc_class *)CKUIBehaviorClass sharedBehaviors];
-      [v17 pluginBackwardsCompatibilityLeadingTrailingOffset];
+      cKUIBehaviorClass = [(objc_class *)CKUIBehaviorClass sharedBehaviors];
+      [cKUIBehaviorClass pluginBackwardsCompatibilityLeadingTrailingOffset];
       v8 = -v18;
     }
 
@@ -361,8 +361,8 @@
       [MSMessagesAppViewController generateSnapshotWithContentSize:completion:];
     }
 
-    v22 = [(objc_class *)v19 sharedBehaviors];
-    [v22 pluginBackwardsCompatibilityLeadingTrailingOffset];
+    sharedBehaviors = [(objc_class *)v19 sharedBehaviors];
+    [sharedBehaviors pluginBackwardsCompatibilityLeadingTrailingOffset];
     v24 = v23;
 
     v25 = getCKUIBehaviorClass();
@@ -383,8 +383,8 @@
 
     v10 = width + v24;
 
-    v28 = [(objc_class *)v25 sharedBehaviors];
-    [v28 pluginBackwardsCompatibilityBottomOffset];
+    sharedBehaviors2 = [(objc_class *)v25 sharedBehaviors];
+    [sharedBehaviors2 pluginBackwardsCompatibilityBottomOffset];
     v9 = height + v29;
   }
 
@@ -402,7 +402,7 @@
       _os_log_impl(&dword_1CADE6000, v30, OS_LOG_TYPE_DEFAULT, "%s Not taking a new snapshot because bounds were empty", buf, 0xCu);
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -432,7 +432,7 @@
       _os_log_impl(&dword_1CADE6000, v33, OS_LOG_TYPE_DEFAULT, "%s Took new snapshot image with size %@. snapshotImage: %@", buf, 0x20u);
     }
 
-    (v7)[2](v7, v32);
+    (completionCopy)[2](completionCopy, v32);
   }
 }
 
@@ -464,15 +464,15 @@ void __74__MSMessagesAppViewController_generateSnapshotWithContentSize_completio
   [v4 drawViewHierarchyInRect:v5() != 0 afterScreenUpdates:{*(a1 + 40), *(a1 + 48), *(a1 + 56), *(a1 + 64)}];
 }
 
-- (void)updateSnapshotWithCompletionBlock:(id)a3
+- (void)updateSnapshotWithCompletionBlock:(id)block
 {
-  v9 = a3;
-  v4 = [(MSMessagesAppViewController *)self view];
-  [v4 bounds];
+  blockCopy = block;
+  view = [(MSMessagesAppViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
 
-  [(MSMessagesAppViewController *)self generateSnapshotWithContentSize:v9 completion:v6, v8];
+  [(MSMessagesAppViewController *)self generateSnapshotWithContentSize:blockCopy completion:v6, v8];
 }
 
 - (BOOL)_isAppleInternalAppAndWantsSafeAreaInsets
@@ -480,32 +480,32 @@ void __74__MSMessagesAppViewController_generateSnapshotWithContentSize_completio
   v2 = _MSMainBundleIdentifier();
   if ([v2 isEqualToString:*MEMORY[0x1E69A69D0]] && (objc_msgSend(MEMORY[0x1E69DC938], "currentDevice"), v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "userInterfaceIdiom"), v3, (v4 & 0xFFFFFFFFFFFFFFFBLL) == 1))
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
   else if ([v2 hasPrefix:@"com.apple."])
   {
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v7 = [v6 infoDictionary];
-    v8 = [v7 objectForKeyedSubscript:@"MSMessagesOverlayAppearanceDisableInsetsForGrabber"];
-    v5 = [v8 BOOLValue];
+    infoDictionary = [v6 infoDictionary];
+    v8 = [infoDictionary objectForKeyedSubscript:@"MSMessagesOverlayAppearanceDisableInsetsForGrabber"];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v5 = dyld_program_sdk_at_least();
+    bOOLValue = dyld_program_sdk_at_least();
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (UIEdgeInsets)additionalSafeAreaInsets
 {
   if ([(MSMessagesAppViewController *)self _isAppleInternalAppAndWantsSafeAreaInsets])
   {
-    v3 = [(MSMessagesAppViewController *)self _ms_isInSheet];
-    v4 = [(MSMessagesAppViewController *)self presentationStyle];
-    if (v3)
+    _ms_isInSheet = [(MSMessagesAppViewController *)self _ms_isInSheet];
+    presentationStyle = [(MSMessagesAppViewController *)self presentationStyle];
+    if (_ms_isInSheet)
     {
       v5 = 0.0;
       v6 = 20.0;
@@ -517,10 +517,10 @@ void __74__MSMessagesAppViewController_generateSnapshotWithContentSize_completio
 
   else
   {
-    v4 = [(MSMessagesAppViewController *)self presentationStyle];
+    presentationStyle = [(MSMessagesAppViewController *)self presentationStyle];
   }
 
-  if (v4 == MSMessagesAppPresentationStyleTranscript)
+  if (presentationStyle == MSMessagesAppPresentationStyleTranscript)
   {
 
     [(MSMessagesAppViewController *)self _transcriptSpecificSafeAreaInsets];
@@ -556,8 +556,8 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(MSMessagesAppViewController *)self traitCollection];
-  v3 = [v4 _presentationSemanticContext] == 2;
+  traitCollection = [(MSMessagesAppViewController *)self traitCollection];
+  v3 = [traitCollection _presentationSemanticContext] == 2;
 
   return v3;
 }
@@ -567,53 +567,53 @@ LABEL_10:
   v5.receiver = self;
   v5.super_class = MSMessagesAppViewController;
   [(MSMessagesAppViewController *)&v5 viewDidLoad];
-  v3 = [(MSMessagesAppViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setHitTestsAsOpaque:1];
+  view = [(MSMessagesAppViewController *)self view];
+  layer = [view layer];
+  [layer setHitTestsAsOpaque:1];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v9.receiver = self;
   v9.super_class = MSMessagesAppViewController;
-  [(MSMessagesAppViewController *)&v9 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(MSMessagesAppViewController *)&v9 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   sheetPresentationControllerDelegate = self->_sheetPresentationControllerDelegate;
   if (sheetPresentationControllerDelegate)
   {
-    v8 = [v6 _rootSheetPresentationController];
-    [v8 setDelegate:sheetPresentationControllerDelegate];
+    _rootSheetPresentationController = [windowCopy _rootSheetPresentationController];
+    [_rootSheetPresentationController setDelegate:sheetPresentationControllerDelegate];
   }
 }
 
-- (void)setInitialFrameBeforeAppearance:(CGRect)a3
+- (void)setInitialFrameBeforeAppearance:(CGRect)appearance
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_initialFrameBeforeAppearance = a3;
-  if (!CGRectEqualToRect(a3, *MEMORY[0x1E695F058]))
+  height = appearance.size.height;
+  width = appearance.size.width;
+  y = appearance.origin.y;
+  x = appearance.origin.x;
+  self->_initialFrameBeforeAppearance = appearance;
+  if (!CGRectEqualToRect(appearance, *MEMORY[0x1E695F058]))
   {
-    v8 = [(MSMessagesAppViewController *)self view];
-    [v8 setFrame:{x, y, width, height}];
+    view = [(MSMessagesAppViewController *)self view];
+    [view setFrame:{x, y, width, height}];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MSMessagesAppViewController;
-  [(MSMessagesAppViewController *)&v4 viewWillAppear:a3];
+  [(MSMessagesAppViewController *)&v4 viewWillAppear:appear];
   [(MSMessagesAppViewController *)self setInitialFrameBeforeAppearance:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MSMessagesAppViewController;
-  [(MSMessagesAppViewController *)&v4 viewDidAppear:a3];
+  [(MSMessagesAppViewController *)&v4 viewDidAppear:appear];
   if ([(MSMessagesAppViewController *)self displaysAfterAppearance])
   {
     [(MSMessagesAppViewController *)self setReadyForDisplay];
@@ -636,8 +636,8 @@ LABEL_10:
 {
   if (![(MSMessagesAppViewController *)self providesExplicitSizeSnapshot])
   {
-    v3 = [(MSMessagesAppViewController *)self appContext];
-    [v3 _remoteViewProvidesExplicitSizeSnapshot];
+    appContext = [(MSMessagesAppViewController *)self appContext];
+    [appContext _remoteViewProvidesExplicitSizeSnapshot];
 
     [(MSMessagesAppViewController *)self setProvidesExplicitSizeSnapshot:1];
   }
@@ -647,8 +647,8 @@ LABEL_10:
 {
   if (![(MSMessagesAppViewController *)self needsSizeMatchBeforeSnapshotSwap])
   {
-    v3 = [(MSMessagesAppViewController *)self appContext];
-    [v3 _remoteViewNeedsSizeMatchBeforeSnapshotSwap];
+    appContext = [(MSMessagesAppViewController *)self appContext];
+    [appContext _remoteViewNeedsSizeMatchBeforeSnapshotSwap];
 
     [(MSMessagesAppViewController *)self setNeedsSizeMatchBeforeSnapshotSwap:1];
   }
@@ -658,8 +658,8 @@ LABEL_10:
 {
   if (![(MSMessagesAppViewController *)self isReadyForDisplay])
   {
-    v3 = [(MSMessagesAppViewController *)self appContext];
-    [v3 _remoteViewDidBecomeReadyForDisplay];
+    appContext = [(MSMessagesAppViewController *)self appContext];
+    [appContext _remoteViewDidBecomeReadyForDisplay];
 
     [(MSMessagesAppViewController *)self setIsReadyForDisplay:1];
   }
@@ -667,21 +667,21 @@ LABEL_10:
 
 - (void)requestResize
 {
-  v2 = [(MSMessagesAppViewController *)self appContext];
-  [v2 requestResize];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext requestResize];
 }
 
 - (void)contentDidLoad
 {
-  v2 = [(MSMessagesAppViewController *)self appContext];
-  [v2 contentDidLoad];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext contentDidLoad];
 }
 
 - (UIEdgeInsets)_balloonMaskEdgeInsets
 {
-  v2 = [(MSMessagesAppViewController *)self activeConversation];
-  v3 = [v2 selectedMessage];
-  v4 = [v3 isFromMe];
+  activeConversation = [(MSMessagesAppViewController *)self activeConversation];
+  selectedMessage = [activeConversation selectedMessage];
+  isFromMe = [selectedMessage isFromMe];
 
   CKUIBehaviorClass = getCKUIBehaviorClass();
   v6 = IMLogHandleForCategory();
@@ -699,8 +699,8 @@ LABEL_10:
     [MSMessagesAppViewController _balloonMaskEdgeInsets];
   }
 
-  v8 = [(objc_class *)CKUIBehaviorClass sharedBehaviors];
-  [v8 pluginBalloonInsetsForMessageFromMe:v4];
+  cKUIBehaviorClass = [(objc_class *)CKUIBehaviorClass sharedBehaviors];
+  [cKUIBehaviorClass pluginBalloonInsetsForMessageFromMe:isFromMe];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -717,119 +717,119 @@ LABEL_10:
   return result;
 }
 
-- (void)_prepareForPresentationWithCompletionHandler:(id)a3
+- (void)_prepareForPresentationWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 completion:(id)a6
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(MSMessagesAppViewController *)self appContext];
-  [v14 presentAlertWithTitle:v13 message:v12 buttonTitle:v11 completion:v10];
+  completionCopy = completion;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy completion:completionCopy];
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 image:(id)a6 completion:(id)a7
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle image:(id)image completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(MSMessagesAppViewController *)self appContext];
-  [v17 presentAlertWithTitle:v16 message:v15 buttonTitle:v14 image:v13 completion:v12];
+  completionCopy = completion;
+  imageCopy = image;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy image:imageCopy completion:completionCopy];
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 destructiveButtonTitle:(id)a6 completion:(id)a7
+- (void)_presentAlertWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle destructiveButtonTitle:(id)destructiveButtonTitle completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(MSMessagesAppViewController *)self appContext];
-  [v17 presentAlertWithTitle:v16 message:v15 buttonTitle:v14 destructiveButtonTitle:v13 completion:v12];
+  completionCopy = completion;
+  destructiveButtonTitleCopy = destructiveButtonTitle;
+  buttonTitleCopy = buttonTitle;
+  messageCopy = message;
+  titleCopy = title;
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext presentAlertWithTitle:titleCopy message:messageCopy buttonTitle:buttonTitleCopy destructiveButtonTitle:destructiveButtonTitleCopy completion:completionCopy];
 }
 
-- (void)_presentAlertSheetWith:(id)a3 styles:(id)a4 completion:(id)a5
+- (void)_presentAlertSheetWith:(id)with styles:(id)styles completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MSMessagesAppViewController *)self appContext];
-  [v11 presentAlertSheetWith:v10 styles:v9 completion:v8];
+  completionCopy = completion;
+  stylesCopy = styles;
+  withCopy = with;
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext presentAlertSheetWith:withCopy styles:stylesCopy completion:completionCopy];
 }
 
-- (void)_presentContextMenuWithButtonTitles:(id)a3 imageNames:(id)a4 buttonFrame:(CGRect)a5 completion:(id)a6
+- (void)_presentContextMenuWithButtonTitles:(id)titles imageNames:(id)names buttonFrame:(CGRect)frame completion:(id)completion
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(MSMessagesAppViewController *)self appContext];
-  [v16 presentContextMenuWithButtonTitles:v15 imageNames:v14 buttonFrame:v13 completion:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  completionCopy = completion;
+  namesCopy = names;
+  titlesCopy = titles;
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext presentContextMenuWithButtonTitles:titlesCopy imageNames:namesCopy buttonFrame:completionCopy completion:{x, y, width, height}];
 }
 
-- (void)_presentAlertSheetWithTitle:(id)a3 message:(id)a4 buttonTitles:(id)a5 styles:(id)a6 completion:(id)a7
+- (void)_presentAlertSheetWithTitle:(id)title message:(id)message buttonTitles:(id)titles styles:(id)styles completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(MSMessagesAppViewController *)self appContext];
-  [v17 presentAlertSheetWithTitle:v16 message:v15 buttonTitles:v14 styles:v13 completion:v12];
+  completionCopy = completion;
+  stylesCopy = styles;
+  titlesCopy = titles;
+  messageCopy = message;
+  titleCopy = title;
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext presentAlertSheetWithTitle:titleCopy message:messageCopy buttonTitles:titlesCopy styles:stylesCopy completion:completionCopy];
 }
 
-- (void)_requestHostSceneIdentifierWithCompletion:(id)a3
+- (void)_requestHostSceneIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MSMessagesAppViewController *)self appContext];
-  [v5 requestHostSceneIdentifierWithCompletion:v4];
+  completionCopy = completion;
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext requestHostSceneIdentifierWithCompletion:completionCopy];
 }
 
-- (void)_setAppPresentationStyle:(unint64_t)a3
+- (void)_setAppPresentationStyle:(unint64_t)style
 {
-  v4 = [(MSMessagesAppViewController *)self appContext];
-  [v4 setPresentationStyle:a3];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext setPresentationStyle:style];
 }
 
-- (void)_requestFullScreenModalPresentationWithSize:(CGSize)a3
+- (void)_requestFullScreenModalPresentationWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MSMessagesAppViewController *)self appContext];
-  [v5 requestFullScreenModalPresentationWithSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext requestFullScreenModalPresentationWithSize:{width, height}];
 }
 
 - (double)_percentExpanded
 {
-  v3 = [(MSMessagesAppViewController *)self view];
-  v4 = [v3 window];
+  view = [(MSMessagesAppViewController *)self view];
+  window = [view window];
 
-  v5 = [v4 _rootSheetPresentationController];
-  v6 = [v5 _detentValues];
-  if ([v6 count] > 1)
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  _detentValues = [_rootSheetPresentationController _detentValues];
+  if ([_detentValues count] > 1)
   {
-    v8 = [(MSMessagesAppViewController *)self view];
-    [v8 bounds];
+    view2 = [(MSMessagesAppViewController *)self view];
+    [view2 bounds];
     v10 = v9;
-    v11 = [(MSMessagesAppViewController *)self view];
-    [v11 safeAreaInsets];
+    view3 = [(MSMessagesAppViewController *)self view];
+    [view3 safeAreaInsets];
     v13 = v10 - v12;
-    v14 = [v6 objectAtIndexedSubscript:1];
+    v14 = [_detentValues objectAtIndexedSubscript:1];
     [v14 doubleValue];
     v16 = v15;
-    v17 = [v6 objectAtIndexedSubscript:0];
+    v17 = [_detentValues objectAtIndexedSubscript:0];
     [v17 doubleValue];
     v7 = (v13 - v16) / (v18 - v16);
   }
@@ -880,8 +880,8 @@ LABEL_10:
     [MSMessagesAppViewController messageCornerRadius];
   }
 
-  v5 = [(objc_class *)CKUIBehaviorClass sharedBehaviors];
-  [v5 balloonCornerRadius];
+  cKUIBehaviorClass = [(objc_class *)CKUIBehaviorClass sharedBehaviors];
+  [cKUIBehaviorClass balloonCornerRadius];
   v7 = v6;
 
   return v7;
@@ -902,17 +902,17 @@ LABEL_10:
 
 - (void)dismiss
 {
-  v2 = [(MSMessagesAppViewController *)self appContext];
-  [v2 dismiss];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext dismiss];
 }
 
 - (void)willTransitionToPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle
 {
-  v4 = [(MSMessagesAppViewController *)self _isInsideUserGeneratedStickerExtension];
-  if (presentationStyle == MSMessagesAppPresentationStyleCompact && v4)
+  _isInsideUserGeneratedStickerExtension = [(MSMessagesAppViewController *)self _isInsideUserGeneratedStickerExtension];
+  if (presentationStyle == MSMessagesAppPresentationStyleCompact && _isInsideUserGeneratedStickerExtension)
   {
-    v5 = [MEMORY[0x1E69DCE60] _ms_currentFirstResponder];
-    [v5 resignFirstResponder];
+    _ms_currentFirstResponder = [MEMORY[0x1E69DCE60] _ms_currentFirstResponder];
+    [_ms_currentFirstResponder resignFirstResponder];
   }
 }
 
@@ -927,8 +927,8 @@ LABEL_10:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = [v2 inputItems];
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    inputItems = [v2 inputItems];
+    v4 = [inputItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -939,11 +939,11 @@ LABEL_10:
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(inputItems);
           }
 
-          v8 = [*(*(&v13 + 1) + 8 * i) userInfo];
-          v9 = [v8 objectForKeyedSubscript:@"context-is-sue"];
+          userInfo = [*(*(&v13 + 1) + 8 * i) userInfo];
+          v9 = [userInfo objectForKeyedSubscript:@"context-is-sue"];
           v10 = [v9 isEqual:&unk_1F4AC7048];
 
           if (v10)
@@ -953,7 +953,7 @@ LABEL_10:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [inputItems countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v5)
         {
           continue;
@@ -975,75 +975,75 @@ LABEL_13:
   return v11;
 }
 
-- (void)_setSendingEnabled:(BOOL)a3
+- (void)_setSendingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(MSMessagesAppViewController *)self presentationStyle]== 4)
   {
-    v5 = [(MSMessagesAppViewController *)self appContext];
-    [v5 _setSendingEnabled:v3];
+    appContext = [(MSMessagesAppViewController *)self appContext];
+    [appContext _setSendingEnabled:enabledCopy];
   }
 }
 
 - (void)setShouldPerformSendAnimationOnAppear
 {
   [(MSMessagesAppViewController *)self setPerformSendAnimationOnAppear:1];
-  v3 = [(MSMessagesAppViewController *)self performSendAnimationOnAppear];
+  performSendAnimationOnAppear = [(MSMessagesAppViewController *)self performSendAnimationOnAppear];
 
-  [(MSMessagesAppViewController *)self didChangeShouldPerformSendAnimationOnAppear:v3];
+  [(MSMessagesAppViewController *)self didChangeShouldPerformSendAnimationOnAppear:performSendAnimationOnAppear];
 }
 
 - (void)_dismissAndPresentPhotosApp
 {
-  v2 = [(MSMessagesAppViewController *)self appContext];
-  [v2 dismissAndPresentPhotosApp];
+  appContext = [(MSMessagesAppViewController *)self appContext];
+  [appContext dismissAndPresentPhotosApp];
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionHandler:(id)a4
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A250];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:3328 userInfo:0];
-  (*(a4 + 2))(v7, v8, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+  (*(handler + 2))(handlerCopy, v8, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
 }
 
-- (void)_addStickerToStoreWithRepresentations:(id)a3 completionWithStickerIDs:(id)a4
+- (void)_addStickerToStoreWithRepresentations:(id)representations completionWithStickerIDs:(id)ds
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A250];
-  v7 = a4;
+  dsCopy = ds;
   v8 = [v5 errorWithDomain:v6 code:3328 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+  (*(ds + 2))(dsCopy, 0, v8, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
 }
 
-- (void)addStickerToStoreWithRepresentations:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)addStickerToStoreWithRepresentations:(id)representations sourceRect:(CGRect)rect completion:(id)completion
 {
   v6 = MEMORY[0x1E696ABC0];
   v7 = *MEMORY[0x1E696A250];
-  v8 = a5;
+  completionCopy = completion;
   v9 = [v6 errorWithDomain:v7 code:3328 userInfo:0];
-  (*(a5 + 2))(v8, 0, v9);
+  (*(completion + 2))(completionCopy, 0, v9);
 }
 
-- (void)_addStickerToStoreWithUISticker:(id)a3 sourceRect:(CGRect)a4 completion:(id)a5
+- (void)_addStickerToStoreWithUISticker:(id)sticker sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  stickerCopy = sticker;
+  completionCopy = completion;
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v13 representations];
-    -[MSMessagesAppViewController _addStickerToStoreWithRepresentations:sourceRect:effect:completion:](self, "_addStickerToStoreWithRepresentations:sourceRect:effect:completion:", v12, [v13 effectType], v11, x, y, width, height);
+    representations = [stickerCopy representations];
+    -[MSMessagesAppViewController _addStickerToStoreWithRepresentations:sourceRect:effect:completion:](self, "_addStickerToStoreWithRepresentations:sourceRect:effect:completion:", representations, [stickerCopy effectType], completionCopy, x, y, width, height);
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:0];
-    v11[2](v11, 0, v12);
+    representations = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:3328 userInfo:0];
+    completionCopy[2](completionCopy, 0, representations);
   }
 }
 

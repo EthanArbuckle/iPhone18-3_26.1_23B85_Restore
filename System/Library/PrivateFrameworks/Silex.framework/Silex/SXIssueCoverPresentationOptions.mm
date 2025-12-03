@@ -1,15 +1,15 @@
 @interface SXIssueCoverPresentationOptions
 - (CGSize)size;
-- (SXIssueCoverPresentationOptions)initWithSize:(CGSize)a3 videoPlaybackEnabled:(BOOL)a4 parentBackgroundColor:(id)a5;
+- (SXIssueCoverPresentationOptions)initWithSize:(CGSize)size videoPlaybackEnabled:(BOOL)enabled parentBackgroundColor:(id)color;
 @end
 
 @implementation SXIssueCoverPresentationOptions
 
-- (SXIssueCoverPresentationOptions)initWithSize:(CGSize)a3 videoPlaybackEnabled:(BOOL)a4 parentBackgroundColor:(id)a5
+- (SXIssueCoverPresentationOptions)initWithSize:(CGSize)size videoPlaybackEnabled:(BOOL)enabled parentBackgroundColor:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v15.receiver = self;
   v15.super_class = SXIssueCoverPresentationOptions;
   v10 = [(SXIssueCoverPresentationOptions *)&v15 init];
@@ -18,19 +18,19 @@
   {
     v10->_size.width = width;
     v10->_size.height = height;
-    v10->_videoPlaybackEnabled = a4;
-    if (v9)
+    v10->_videoPlaybackEnabled = enabled;
+    if (colorCopy)
     {
-      v12 = v9;
+      whiteColor = colorCopy;
     }
 
     else
     {
-      v12 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     }
 
     parentBackgroundColor = v11->_parentBackgroundColor;
-    v11->_parentBackgroundColor = v12;
+    v11->_parentBackgroundColor = whiteColor;
   }
 
   return v11;

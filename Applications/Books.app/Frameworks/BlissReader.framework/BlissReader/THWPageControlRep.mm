@@ -1,26 +1,26 @@
 @interface THWPageControlRep
-+ (id)dotLayerUsingColor:(id)a3 diameter:(double)a4;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)handleGesture:(id)a3;
-- (THWPageControlRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)p_indicatorAtIndex:(unint64_t)a3;
-- (id)p_layerForState:(int)a3 pageIndex:(unint64_t)a4;
-- (id)p_nearestIndicatorToLocation:(CGPoint)a3;
-- (void)addAdditionalChildLayersToArray:(id)a3;
++ (id)dotLayerUsingColor:(id)color diameter:(double)diameter;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)handleGesture:(id)gesture;
+- (THWPageControlRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)p_indicatorAtIndex:(unint64_t)index;
+- (id)p_layerForState:(int)state pageIndex:(unint64_t)index;
+- (id)p_nearestIndicatorToLocation:(CGPoint)location;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)dealloc;
-- (void)p_changeToPageAtIndex:(unint64_t)a3;
+- (void)p_changeToPageAtIndex:(unint64_t)index;
 - (void)screenScaleDidChange;
-- (void)setHighlightedPageIndex:(unint64_t)a3;
+- (void)setHighlightedPageIndex:(unint64_t)index;
 - (void)updateFromLayout;
 @end
 
 @implementation THWPageControlRep
 
-- (THWPageControlRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWPageControlRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v5.receiver = self;
   v5.super_class = THWPageControlRep;
-  result = [(THWPageControlRep *)&v5 initWithLayout:a3 canvas:a4];
+  result = [(THWPageControlRep *)&v5 initWithLayout:layout canvas:canvas];
   if (result)
   {
     *(&result->_highlightedPageIndex + 1) = 0x7FFFFFFFFFFFFFFFLL;
@@ -37,9 +37,9 @@
   [(THWPageControlRep *)&v3 dealloc];
 }
 
-- (id)p_nearestIndicatorToLocation:(CGPoint)a3
+- (id)p_nearestIndicatorToLocation:(CGPoint)location
 {
-  x = a3.x;
+  x = location.x;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -69,15 +69,15 @@
       }
 
       v15 = *(*(&v32 + 1) + 8 * i);
-      v16 = [v15 layer];
-      v17 = v16;
+      layer = [v15 layer];
+      v17 = layer;
       v18 = height;
       v19 = width;
       v20 = y;
       v21 = v31;
-      if (v16)
+      if (layer)
       {
-        [v16 bounds];
+        [layer bounds];
       }
 
       v22 = CGRectGetWidth(*&v21);
@@ -102,31 +102,31 @@
   return v8;
 }
 
-- (id)p_indicatorAtIndex:(unint64_t)a3
+- (id)p_indicatorAtIndex:(unint64_t)index
 {
-  if ([*(&self->_indicators + 1) count] <= a3)
+  if ([*(&self->_indicators + 1) count] <= index)
   {
     return 0;
   }
 
   v5 = *(&self->_indicators + 1);
 
-  return [v5 objectAtIndex:a3];
+  return [v5 objectAtIndex:index];
 }
 
-+ (id)dotLayerUsingColor:(id)a3 diameter:(double)a4
++ (id)dotLayerUsingColor:(id)color diameter:(double)diameter
 {
   v6 = +[TSDNoDefaultImplicitActionLayer layer];
   [v6 setMasksToBounds:1];
-  [v6 setBackgroundColor:{objc_msgSend(a3, "CGColor")}];
-  [v6 setCornerRadius:a4 * 0.5];
-  [v6 setBounds:{0.0, 0.0, a4, a4}];
+  [v6 setBackgroundColor:{objc_msgSend(color, "CGColor")}];
+  [v6 setCornerRadius:diameter * 0.5];
+  [v6 setBounds:{0.0, 0.0, diameter, diameter}];
   return v6;
 }
 
-- (id)p_layerForState:(int)a3 pageIndex:(unint64_t)a4
+- (id)p_layerForState:(int)state pageIndex:(unint64_t)index
 {
-  v5 = *&a3;
+  v5 = *&state;
   v7 = *(&self->_cachedLayers + 1);
   if (!v7)
   {
@@ -137,12 +137,12 @@
   if (objc_opt_respondsToSelector())
   {
     objc_opt_class();
-    [*(&self->_cachedLayers + 1) objectForKey:a4];
+    [*(&self->_cachedLayers + 1) objectForKey:index];
     v7 = TSUDynamicCast();
     if (!v7)
     {
       v7 = objc_alloc_init(TSUIntegerKeyDictionary);
-      [*(&self->_cachedLayers + 1) setObject:v7 forKey:a4];
+      [*(&self->_cachedLayers + 1) setObject:v7 forKey:index];
       v8 = v7;
     }
 
@@ -150,7 +150,7 @@
     v10 = [v7 objectForKey:v5];
     if (!v10)
     {
-      v11 = [(THWPageControlDelegate *)[(THWPageControlRep *)self delegate] pageControl:self layerForState:v5 pageIndex:a4];
+      v11 = [(THWPageControlDelegate *)[(THWPageControlRep *)self delegate] pageControl:self layerForState:v5 pageIndex:index];
       goto LABEL_11;
     }
 
@@ -180,9 +180,9 @@ LABEL_11:
   v18.receiver = self;
   v18.super_class = THWPageControlRep;
   [(THWPageControlRep *)&v18 updateFromLayout];
-  v3 = [(THWPageControlRep *)self layout];
-  v4 = [v3 numberOfPages];
-  if (v4 > 0xA || [v3 forceTextOnly])
+  layout = [(THWPageControlRep *)self layout];
+  numberOfPages = [layout numberOfPages];
+  if (numberOfPages > 0xA || [layout forceTextOnly])
   {
     v5 = *(&self->_indicators + 1);
     if (v5)
@@ -198,9 +198,9 @@ LABEL_11:
       [*(&self->_textIndicator + 1) setDelegate:{+[THNoAnimationLayerDelegate sharedInstance](THNoAnimationLayerDelegate, "sharedInstance")}];
       [-[THWPageControlRep canvas](self "canvas")];
       [*(&self->_textIndicator + 1) setContentsScale:?];
-      v6 = [(THWPageControlRep *)self delegate];
-      v7 = [(THWPageControlDelegate *)v6 pageControlCreateFont:self];
-      v8 = [(THWPageControlDelegate *)v6 pageControlTextColor:self];
+      delegate = [(THWPageControlRep *)self delegate];
+      v7 = [(THWPageControlDelegate *)delegate pageControlCreateFont:self];
+      v8 = [(THWPageControlDelegate *)delegate pageControlTextColor:self];
       v9 = CTFontCopyPostScriptName(v7);
       [*(&self->_textIndicator + 1) setFontName:v9];
       [*(&self->_textIndicator + 1) setFontSize:14.0];
@@ -239,13 +239,13 @@ LABEL_11:
   v11 = *(&self->_indicators + 1);
   if (v11)
   {
-    if ([v11 count] != v4)
+    if ([v11 count] != numberOfPages)
     {
       [*(&self->_indicators + 1) removeAllObjects];
       *(&self->_currentPage + 1) = 0x7FFFFFFFFFFFFFFFLL;
-      if (v4)
+      if (numberOfPages)
       {
-        for (i = 0; i != v4; ++i)
+        for (i = 0; i != numberOfPages; ++i)
         {
           v13 = [[THWPageIndicator alloc] initWithLayer:[(THWPageControlRep *)self p_layerForState:0 pageIndex:i]];
           [*(&self->_indicators + 1) addObject:v13];
@@ -253,11 +253,11 @@ LABEL_11:
       }
     }
 
-    v14 = [v3 currentPage];
+    currentPage = [layout currentPage];
     v15 = *(&self->_currentPage + 1);
-    if (v15 != v14)
+    if (v15 != currentPage)
     {
-      v16 = v14;
+      v16 = currentPage;
       if (v15 != 0x7FFFFFFFFFFFFFFFLL)
       {
         [-[THWPageControlRep p_indicatorAtIndex:](self "p_indicatorAtIndex:{"setLayer:", -[THWPageControlRep p_layerForState:pageIndex:](self, "p_layerForState:pageIndex:", 0, *(&self->_currentPage + 1))}")];
@@ -273,11 +273,11 @@ LABEL_11:
 
   if (*(&self->_textIndicator + 1))
   {
-    v17 = [v3 currentPage];
-    if (*(&self->_currentPage + 1) != v17)
+    currentPage2 = [layout currentPage];
+    if (*(&self->_currentPage + 1) != currentPage2)
     {
-      *(&self->_currentPage + 1) = v17;
-      [*(&self->_textIndicator + 1) setString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", objc_msgSend(THBundle(), "localizedStringForKey:value:table:", @"%lu of %lu", &stru_471858, 0), *(&self->_currentPage + 1) + 1, v4)}];
+      *(&self->_currentPage + 1) = currentPage2;
+      [*(&self->_textIndicator + 1) setString:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", objc_msgSend(THBundle(), "localizedStringForKey:value:table:", @"%lu of %lu", &stru_471858, 0), *(&self->_currentPage + 1) + 1, numberOfPages)}];
     }
   }
 }
@@ -299,13 +299,13 @@ LABEL_11:
   [v3 enumerateObjectsUsingBlock:v4];
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   if (*(&self->_indicators + 1))
   {
-    v49 = [(THWPageControlRep *)self delegate];
+    delegate = [(THWPageControlRep *)self delegate];
     v5 = objc_opt_respondsToSelector();
-    v6 = [(THWPageControlRep *)self layout];
+    layout = [(THWPageControlRep *)self layout];
     v7 = [(THWPageControlRep *)self p_layerForState:0 pageIndex:0];
     if (v7)
     {
@@ -320,7 +320,7 @@ LABEL_11:
       height = CGSizeZero.height;
     }
 
-    [v6 spacing];
+    [layout spacing];
     v13 = v12;
     v14 = [*(&self->_indicators + 1) count];
     v51 = v13;
@@ -352,7 +352,7 @@ LABEL_11:
     v20 = v19;
     memset(&v57, 0, sizeof(v57));
     CATransform3DMakeScale(&v57, v19, v19, 1.0);
-    [v6 frame];
+    [layout frame];
     v22 = v21;
     v53 = 0u;
     v54 = 0u;
@@ -379,21 +379,21 @@ LABEL_11:
             objc_enumerationMutation(v23);
           }
 
-          v34 = [*(*(&v53 + 1) + 8 * i) layer];
-          [v34 bounds];
+          layer = [*(*(&v53 + 1) + 8 * i) layer];
+          [layer bounds];
           v36 = v35;
           TSDRoundedPointForScale();
-          [v34 setPosition:{v37 + v31 * 0.5, v38 + v32 * 0.5}];
+          [layer setPosition:{v37 + v31 * 0.5, v38 + v32 * 0.5}];
           v52 = v57;
-          [v34 setTransform:&v52];
-          if (v34)
+          [layer setTransform:&v52];
+          if (layer)
           {
             if (v5)
             {
-              [v50 pageControl:self updateLayer:v34 forHighlight:v26 == *(&self->_highlightedPageIndex + 1)];
+              [v50 pageControl:self updateLayer:layer forHighlight:v26 == *(&self->_highlightedPageIndex + 1)];
             }
 
-            [a3 addObject:v34];
+            [array addObject:layer];
           }
 
           v28 = v28 + v51 + v36;
@@ -419,36 +419,36 @@ LABEL_11:
     v48 = v47;
     [*(&self->_textIndicator + 1) setFrame:{v40, v42, v44, v46}];
     [*(&self->_textIndicator + 1) setFontSize:v48 * 14.0];
-    [a3 addObject:*(&self->_textIndicator + 1)];
+    [array addObject:*(&self->_textIndicator + 1)];
   }
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v5 = [(THWControlRep *)self controlHostRep];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (v6 = [v5 control:-[THWPageControlRep layout](self isInteractionEnabledForRep:{"layout"), self}]) != 0)
+  controlHostRep = [(THWControlRep *)self controlHostRep];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (v6 = [controlHostRep control:-[THWPageControlRep layout](self isInteractionEnabledForRep:{"layout"), self}]) != 0)
   {
-    LOBYTE(v6) = *(&self->_indicators + 1) && (v7 = [a3 gestureKind], v7 == TSWPImmediatePress) && objc_msgSend(-[THWPageControlRep layout](self, "layout"), "numberOfPages") != 0;
+    LOBYTE(v6) = *(&self->_indicators + 1) && (v7 = [gesture gestureKind], v7 == TSWPImmediatePress) && objc_msgSend(-[THWPageControlRep layout](self, "layout"), "numberOfPages") != 0;
   }
 
   return v6;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  if (!*(&self->_indicators + 1) || (v5 = -[THWPageControlRep layout](self, "layout"), v6 = [a3 gestureKind], v6 != TSWPImmediatePress))
+  if (!*(&self->_indicators + 1) || (v5 = -[THWPageControlRep layout](self, "layout"), v6 = [gesture gestureKind], v6 != TSWPImmediatePress))
   {
-    LOBYTE(v7) = 0;
-    return v7;
+    LOBYTE(numberOfPages) = 0;
+    return numberOfPages;
   }
 
-  v7 = [v5 numberOfPages];
-  if (!v7)
+  numberOfPages = [v5 numberOfPages];
+  if (!numberOfPages)
   {
-    return v7;
+    return numberOfPages;
   }
 
-  [a3 naturalLocationForRep:self];
+  [gesture naturalLocationForRep:self];
   v9 = v8;
   [(THWPageControlRep *)self convertNaturalPointToLayerRelative:?];
   v10 = [(THWPageControlRep *)self p_nearestIndicatorToLocation:?];
@@ -462,12 +462,12 @@ LABEL_11:
     v11 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v12 = [a3 gestureState];
-  if (v12 - 1 < 2)
+  gestureState = [gesture gestureState];
+  if (gestureState - 1 < 2)
   {
     if (![objc_msgSend(-[THWPageControlRep interactiveCanvasController](self "interactiveCanvasController")])
     {
-      v18 = self;
+      selfCopy2 = self;
       v19 = v11;
       goto LABEL_23;
     }
@@ -476,20 +476,20 @@ LABEL_11:
     [TSUDynamicCast() cancel];
   }
 
-  else if (v12 - 4 >= 2)
+  else if (gestureState - 4 >= 2)
   {
-    if (v12 == 3)
+    if (gestureState == 3)
     {
       [(THWPageControlRep *)self setHighlightedPageIndex:0x7FFFFFFFFFFFFFFFLL];
-      v13 = [v5 currentPage];
+      currentPage = [v5 currentPage];
       if (![(THWPageControlRep *)self pageDirectlyToIndex])
       {
         v14 = [(THWPageControlRep *)self p_indicatorAtIndex:*(&self->_currentPage + 1)];
-        v15 = [v5 numberOfPages];
+        numberOfPages2 = [v5 numberOfPages];
         if (v14 && ([-[THWPageControlRep canvas](self "canvas")], v17 = v9 * v16, objc_msgSend(objc_msgSend(v14, "layer"), "frame"), v17 > CGRectGetMidX(v21)))
         {
-          v11 = (v13 + 1);
-          if (v13 + 1 == v15)
+          v11 = (currentPage + 1);
+          if (currentPage + 1 == numberOfPages2)
           {
             if ([v5 wrapEnabled])
             {
@@ -498,16 +498,16 @@ LABEL_11:
 
             else
             {
-              v11 = v13;
+              v11 = currentPage;
             }
           }
         }
 
-        else if (![v5 wrapEnabled] || v13)
+        else if (![v5 wrapEnabled] || currentPage)
         {
-          if (v13)
+          if (currentPage)
           {
-            v11 = (v13 - 1);
+            v11 = (currentPage - 1);
           }
 
           else
@@ -518,7 +518,7 @@ LABEL_11:
 
         else
         {
-          v11 = (v15 - 1);
+          v11 = (numberOfPages2 - 1);
         }
       }
 
@@ -528,40 +528,40 @@ LABEL_11:
     goto LABEL_24;
   }
 
-  v18 = self;
+  selfCopy2 = self;
   v19 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_23:
-  [(THWPageControlRep *)v18 setHighlightedPageIndex:v19];
+  [(THWPageControlRep *)selfCopy2 setHighlightedPageIndex:v19];
 LABEL_24:
-  LOBYTE(v7) = 1;
-  return v7;
+  LOBYTE(numberOfPages) = 1;
+  return numberOfPages;
 }
 
-- (void)p_changeToPageAtIndex:(unint64_t)a3
+- (void)p_changeToPageAtIndex:(unint64_t)index
 {
   v5 = [-[THWPageControlRep layout](self "layout")];
-  if (v5 != a3)
+  if (v5 != index)
   {
     v6 = v5;
     [-[THWPageControlRep layout](self "layout")];
-    v7 = [(THWPageControlRep *)self delegate];
+    delegate = [(THWPageControlRep *)self delegate];
 
-    [(THWPageControlDelegate *)v7 pageControl:self didChangeInteractivelyFromPageIndex:v6 toPageIndex:a3];
+    [(THWPageControlDelegate *)delegate pageControl:self didChangeInteractivelyFromPageIndex:v6 toPageIndex:index];
   }
 }
 
-- (void)setHighlightedPageIndex:(unint64_t)a3
+- (void)setHighlightedPageIndex:(unint64_t)index
 {
   v3 = *(&self->_highlightedPageIndex + 1);
-  if (v3 != a3)
+  if (v3 != index)
   {
-    *(&self->_highlightedPageIndex + 1) = a3;
-    v5 = [(THWPageControlRep *)self delegate];
+    *(&self->_highlightedPageIndex + 1) = index;
+    delegate = [(THWPageControlRep *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v6 = *(&self->_highlightedPageIndex + 1);
 
-      [(THWPageControlDelegate *)v5 pageControl:self didChangeHighlightedFromPageIndex:v3 toPageIndex:v6];
+      [(THWPageControlDelegate *)delegate pageControl:self didChangeHighlightedFromPageIndex:v3 toPageIndex:v6];
     }
   }
 }

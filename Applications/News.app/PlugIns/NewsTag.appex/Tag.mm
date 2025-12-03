@@ -1,13 +1,13 @@
 @interface Tag
-- (Tag)initWithCoder:(id)a3;
-- (Tag)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (Tag)initWithCoder:(id)coder;
+- (Tag)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation Tag
 
-- (Tag)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (Tag)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_1000A2D40();
     v8 = v7;
@@ -21,7 +21,7 @@
 
   v9 = sub_1000A2D40();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_1000A2D40();
     v14 = v13;
@@ -36,12 +36,12 @@
   return Tag.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (Tag)initWithCoder:(id)a3
+- (Tag)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for Tag();
-  v4 = a3;
-  v5 = [(Tag *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(Tag *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

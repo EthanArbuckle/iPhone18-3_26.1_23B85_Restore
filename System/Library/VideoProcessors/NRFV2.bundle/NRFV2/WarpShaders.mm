@@ -1,12 +1,12 @@
 @interface WarpShaders
-- (WarpShaders)initWithMetal:(id)a3;
+- (WarpShaders)initWithMetal:(id)metal;
 @end
 
 @implementation WarpShaders
 
-- (WarpShaders)initWithMetal:(id)a3
+- (WarpShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v15.receiver = self;
   v15.super_class = WarpShaders;
   v6 = [(WarpShaders *)&v15 init];
@@ -16,7 +16,7 @@
     goto LABEL_10;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"warpCompute", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v5, @"warpCompute", 0);
   warpComputePipeline = v6->warpComputePipeline;
   v6->warpComputePipeline = v7;
 
@@ -26,7 +26,7 @@
     goto LABEL_9;
   }
 
-  v10 = objc_msgSend_computePipelineStateFor_constants_(v4, v9, @"warpComputeYCbCr", 0);
+  v10 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v9, @"warpComputeYCbCr", 0);
   warpComputePipelineYCbCr = v6->warpComputePipelineYCbCr;
   v6->warpComputePipelineYCbCr = v10;
 

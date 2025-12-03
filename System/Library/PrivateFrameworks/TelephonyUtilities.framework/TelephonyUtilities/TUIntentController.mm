@@ -1,52 +1,52 @@
 @interface TUIntentController
-+ (id)tu_INPersonHandleForTUHandle:(id)a3 label:(id)a4;
-+ (id)tu_INPersonsFromHandle:(id)a3 contacts:(id)a4;
-+ (int64_t)tu_INPersonHandleTypeForTUHandleType:(int64_t)a3;
-- (TUIntentController)initWithContactProvider:(id)a3;
-- (id)personsByHandleForHandles:(id)a3;
-- (id)startCallIntentByHandleForHandles:(id)a3 capability:(int64_t)a4 destinationType:(int64_t)a5;
++ (id)tu_INPersonHandleForTUHandle:(id)handle label:(id)label;
++ (id)tu_INPersonsFromHandle:(id)handle contacts:(id)contacts;
++ (int64_t)tu_INPersonHandleTypeForTUHandleType:(int64_t)type;
+- (TUIntentController)initWithContactProvider:(id)provider;
+- (id)personsByHandleForHandles:(id)handles;
+- (id)startCallIntentByHandleForHandles:(id)handles capability:(int64_t)capability destinationType:(int64_t)type;
 @end
 
 @implementation TUIntentController
 
-- (TUIntentController)initWithContactProvider:(id)a3
+- (TUIntentController)initWithContactProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = TUIntentController;
   v6 = [(TUIntentController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactProvider, a3);
+    objc_storeStrong(&v6->_contactProvider, provider);
   }
 
   return v7;
 }
 
-- (id)personsByHandleForHandles:(id)a3
+- (id)personsByHandleForHandles:(id)handles
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlesCopy = handles;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = *MEMORY[0x1E695C330];
   v31[0] = *MEMORY[0x1E695C258];
   v31[1] = v6;
-  v7 = [MEMORY[0x1E696ADF0] descriptorForUsedKeys];
-  v31[2] = v7;
+  descriptorForUsedKeys = [MEMORY[0x1E696ADF0] descriptorForUsedKeys];
+  v31[2] = descriptorForUsedKeys;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:3];
 
-  v9 = [(TUIntentController *)self contactProvider];
+  contactProvider = [(TUIntentController *)self contactProvider];
   v29 = 0;
   v24 = v8;
-  v10 = [v9 tu_contactsByHandleForHandles:v4 keyDescriptors:v8 error:&v29];
+  v10 = [contactProvider tu_contactsByHandleForHandles:handlesCopy keyDescriptors:v8 error:&v29];
   v23 = v29;
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v11 = v4;
+  v11 = handlesCopy;
   v12 = [v11 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v12)
   {
@@ -80,17 +80,17 @@
   return v20;
 }
 
-- (id)startCallIntentByHandleForHandles:(id)a3 capability:(int64_t)a4 destinationType:(int64_t)a5
+- (id)startCallIntentByHandleForHandles:(id)handles capability:(int64_t)capability destinationType:(int64_t)type
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v8, "count")}];
-  v9 = [(TUIntentController *)self personsByHandleForHandles:v8];
+  handlesCopy = handles;
+  v22 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(handlesCopy, "count")}];
+  v9 = [(TUIntentController *)self personsByHandleForHandles:handlesCopy];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v8;
+  obj = handlesCopy;
   v10 = [obj countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v10)
   {
@@ -124,7 +124,7 @@
 
         v16 = v15;
         _Block_object_dispose(&v28, 8);
-        v17 = [[v15 alloc] initWithCallRecordFilter:0 callRecordToCallBack:0 audioRoute:0 destinationType:a5 contacts:v14 callCapability:a4];
+        v17 = [[v15 alloc] initWithCallRecordFilter:0 callRecordToCallBack:0 audioRoute:0 destinationType:type contacts:v14 callCapability:capability];
         if (v17)
         {
           [v22 setObject:v17 forKeyedSubscript:v13];
@@ -143,24 +143,24 @@
   return v18;
 }
 
-+ (int64_t)tu_INPersonHandleTypeForTUHandleType:(int64_t)a3
++ (int64_t)tu_INPersonHandleTypeForTUHandleType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (type == 2);
   }
 }
 
-+ (id)tu_INPersonHandleForTUHandle:(id)a3 label:(id)a4
++ (id)tu_INPersonHandleForTUHandle:(id)handle label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 tu_INPersonHandleTypeForTUHandleType:{objc_msgSend(v6, "type")}];
+  handleCopy = handle;
+  labelCopy = label;
+  v8 = [self tu_INPersonHandleTypeForTUHandleType:{objc_msgSend(handleCopy, "type")}];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -180,30 +180,30 @@
   v10 = v9;
   _Block_object_dispose(&v17, 8);
   v11 = [v9 alloc];
-  v12 = [v6 normalizedValue];
-  if (v12)
+  normalizedValue = [handleCopy normalizedValue];
+  if (normalizedValue)
   {
-    v13 = [v11 initWithValue:v12 type:v8 label:v7];
+    v13 = [v11 initWithValue:normalizedValue type:v8 label:labelCopy];
   }
 
   else
   {
-    v14 = [v6 value];
-    v13 = [v11 initWithValue:v14 type:v8 label:v7];
+    value = [handleCopy value];
+    v13 = [v11 initWithValue:value type:v8 label:labelCopy];
   }
 
   return v13;
 }
 
-+ (id)tu_INPersonsFromHandle:(id)a3 contacts:(id)a4
++ (id)tu_INPersonsFromHandle:(id)handle contacts:(id)contacts
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  handleCopy = handle;
+  contactsCopy = contacts;
+  if (contactsCopy)
   {
-    v7 = v6;
-    v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count", v6)}];
+    v7 = contactsCopy;
+    v30 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(contactsCopy, "count", contactsCopy)}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -223,7 +223,7 @@
           }
 
           v10 = *(*(&v32 + 1) + 8 * i);
-          v11 = [v10 tu_labeledValueForHandle:v5];
+          v11 = [v10 tu_labeledValueForHandle:handleCopy];
           v12 = v11;
           if (v11)
           {
@@ -261,7 +261,7 @@
             v17 = 0;
           }
 
-          v18 = [objc_opt_class() tu_INPersonHandleForTUHandle:v5 label:v17];
+          v18 = [objc_opt_class() tu_INPersonHandleForTUHandle:handleCopy label:v17];
           if (v10)
           {
             v19 = [MEMORY[0x1E696ADF0] componentsForContact:v10];
@@ -273,8 +273,8 @@
           }
 
           v20 = objc_alloc(getINPersonClass());
-          v21 = [v10 identifier];
-          v22 = [v20 initWithPersonHandle:v18 nameComponents:v19 displayName:0 image:0 contactIdentifier:v21 customIdentifier:0];
+          identifier = [v10 identifier];
+          v22 = [v20 initWithPersonHandle:v18 nameComponents:v19 displayName:0 image:0 contactIdentifier:identifier customIdentifier:0];
 
           if (v22)
           {
@@ -291,7 +291,7 @@
 
   else
   {
-    v23 = [objc_opt_class() tu_INPersonHandleForTUHandle:v5 label:{0, 0}];
+    v23 = [objc_opt_class() tu_INPersonHandleForTUHandle:handleCopy label:{0, 0}];
     v24 = [objc_alloc(getINPersonClass()) initWithPersonHandle:v23 nameComponents:0 displayName:0 image:0 contactIdentifier:0 customIdentifier:0];
     if (v24)
     {

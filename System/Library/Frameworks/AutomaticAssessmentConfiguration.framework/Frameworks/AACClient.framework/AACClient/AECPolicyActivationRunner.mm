@@ -1,13 +1,13 @@
 @interface AECPolicyActivationRunner
-- (void)activateWithScratchpad:(id)a3 invalidationHandler:(id)a4 completion:(id)a5;
+- (void)activateWithScratchpad:(id)scratchpad invalidationHandler:(id)handler completion:(id)completion;
 @end
 
 @implementation AECPolicyActivationRunner
 
-- (void)activateWithScratchpad:(id)a3 invalidationHandler:(id)a4 completion:(id)a5
+- (void)activateWithScratchpad:(id)scratchpad invalidationHandler:(id)handler completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
+  v7 = _Block_copy(completion);
   v8 = swift_allocObject();
   *(v8 + 16) = v6;
   v9 = swift_allocObject();

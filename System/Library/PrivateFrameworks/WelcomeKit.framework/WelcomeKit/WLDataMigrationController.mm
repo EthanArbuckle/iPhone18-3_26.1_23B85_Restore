@@ -1,16 +1,16 @@
 @interface WLDataMigrationController
-- (WLDataMigrationController)initWithDelegate:(id)a3;
+- (WLDataMigrationController)initWithDelegate:(id)delegate;
 - (WLDataMigrationDelegate)delegate;
 - (void)deleteMessages;
-- (void)lookupAppDataContainer:(id)a3;
+- (void)lookupAppDataContainer:(id)container;
 - (void)testAMSPurchase;
 @end
 
 @implementation WLDataMigrationController
 
-- (WLDataMigrationController)initWithDelegate:(id)a3
+- (WLDataMigrationController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = [(WLDaemonConnection *)self init];
   if (v5)
   {
@@ -21,7 +21,7 @@
     v7[3] = &unk_279EB40B0;
     objc_copyWeak(&v8, &location);
     [(WLDaemonConnection *)v5 setInterruptionHandler:v7];
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -98,16 +98,16 @@ void __43__WLDataMigrationController_deleteMessages__block_invoke(uint64_t a1, v
   [WeakRetained dataMigrator:0 didFailWithError:v10];
 }
 
-- (void)lookupAppDataContainer:(id)a3
+- (void)lookupAppDataContainer:(id)container
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__WLDataMigrationController_lookupAppDataContainer___block_invoke;
   v6[3] = &unk_279EB4128;
   v6[4] = self;
-  v4 = a3;
+  containerCopy = container;
   v5 = [(WLDaemonConnection *)self daemonWithErrorHandler:v6];
-  [v5 lookupAppDataContainer:v4];
+  [v5 lookupAppDataContainer:containerCopy];
 }
 
 void __52__WLDataMigrationController_lookupAppDataContainer___block_invoke(uint64_t a1, void *a2)

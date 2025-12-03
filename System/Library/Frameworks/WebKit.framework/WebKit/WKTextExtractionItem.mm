@@ -1,7 +1,7 @@
 @interface WKTextExtractionItem
 - (CGRect)rectInWebView;
 - (WKTextExtractionItem)init;
-- (WKTextExtractionItem)initWith:(CGRect)a3 children:(id)a4;
+- (WKTextExtractionItem)initWith:(CGRect)with children:(id)children;
 @end
 
 @implementation WKTextExtractionItem
@@ -19,12 +19,12 @@
   return result;
 }
 
-- (WKTextExtractionItem)initWith:(CGRect)a3 children:(id)a4
+- (WKTextExtractionItem)initWith:(CGRect)with children:(id)children
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = with.size.height;
+  width = with.size.width;
+  y = with.origin.y;
+  x = with.origin.x;
   type metadata accessor for WKTextExtractionItem(self);
   v9 = sub_19E6CD538();
   v10 = (self + OBJC_IVAR___WKTextExtractionItem_rectInWebView);

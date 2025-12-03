@@ -1,37 +1,37 @@
 @interface DOCItemCollectionViewController.FooterView
-- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController10FooterView)initWithCoder:(id)a3;
-- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController10FooterView)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController10FooterView)initWithCoder:(id)coder;
+- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController10FooterView)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 @end
 
 @implementation DOCItemCollectionViewController.FooterView
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = specialized DOCItemCollectionViewController.FooterView.preferredLayoutAttributesFitting(_:)(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = specialized DOCItemCollectionViewController.FooterView.preferredLayoutAttributesFitting(_:)(attributesCopy);
 
   return v6;
 }
 
-- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController10FooterView)initWithFrame:(CGRect)a3
+- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController10FooterView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCItemCollectionViewController.FooterView();
   return [(DOCItemCollectionViewController.FooterView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController10FooterView)initWithCoder:(id)a3
+- (_TtCC26DocumentManagerExecutables31DOCItemCollectionViewController10FooterView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for DOCItemCollectionViewController.FooterView();
-  v4 = a3;
-  v5 = [(DOCItemCollectionViewController.FooterView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DOCItemCollectionViewController.FooterView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

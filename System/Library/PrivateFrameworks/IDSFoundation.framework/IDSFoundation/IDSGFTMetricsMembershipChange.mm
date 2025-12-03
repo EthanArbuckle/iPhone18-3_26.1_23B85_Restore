@@ -1,14 +1,14 @@
 @interface IDSGFTMetricsMembershipChange
-- (IDSGFTMetricsMembershipChange)initWithFromType:(id)a3 fromUniqueID:(id)a4 anonymizer:(id)a5 templateDictionary:(id)a6;
+- (IDSGFTMetricsMembershipChange)initWithFromType:(id)type fromUniqueID:(id)d anonymizer:(id)anonymizer templateDictionary:(id)dictionary;
 @end
 
 @implementation IDSGFTMetricsMembershipChange
 
-- (IDSGFTMetricsMembershipChange)initWithFromType:(id)a3 fromUniqueID:(id)a4 anonymizer:(id)a5 templateDictionary:(id)a6
+- (IDSGFTMetricsMembershipChange)initWithFromType:(id)type fromUniqueID:(id)d anonymizer:(id)anonymizer templateDictionary:(id)dictionary
 {
   v8.receiver = self;
   v8.super_class = IDSGFTMetricsMembershipChange;
-  v6 = [(IDSGFTMetricsReferencePoint *)&v8 initWithFromType:a3 fromUniqueID:a4 anonymizer:a5 templateDictionary:a6];
+  v6 = [(IDSGFTMetricsReferencePoint *)&v8 initWithFromType:type fromUniqueID:d anonymizer:anonymizer templateDictionary:dictionary];
   if (v6)
   {
     v6->_referenceTime = ids_monotonic_time();

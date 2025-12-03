@@ -1,44 +1,44 @@
 @interface _UILibArchiveStreamingExtractor
-+ (BOOL)shouldExtractPathInArchive:(id)a3 forExtractionRootedAtStandardizedSubpathInArchive:(id)a4;
-+ (id)archiveSubpathByStandardizingArchiveSubpath:(id)a3;
-- (BOOL)extractArchivePath:(id)a3 toDirectory:(id)a4 error:(id *)a5;
-- (id)initForExtractingArchivePath:(id)a3;
++ (BOOL)shouldExtractPathInArchive:(id)archive forExtractionRootedAtStandardizedSubpathInArchive:(id)inArchive;
++ (id)archiveSubpathByStandardizingArchiveSubpath:(id)subpath;
+- (BOOL)extractArchivePath:(id)path toDirectory:(id)directory error:(id *)error;
+- (id)initForExtractingArchivePath:(id)path;
 @end
 
 @implementation _UILibArchiveStreamingExtractor
 
-- (id)initForExtractingArchivePath:(id)a3
+- (id)initForExtractingArchivePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _UILibArchiveStreamingExtractor;
   v6 = [(_UILibArchiveStreamingExtractor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archivePath, a3);
+    objc_storeStrong(&v6->_archivePath, path);
   }
 
   return v7;
 }
 
-+ (id)archiveSubpathByStandardizingArchiveSubpath:(id)a3
++ (id)archiveSubpathByStandardizingArchiveSubpath:(id)subpath
 {
-  v3 = [a3 stringByStandardizingPath];
-  if ([v3 length] && (objc_msgSend(v3, "isEqualToString:", @"/") & 1) == 0)
+  stringByStandardizingPath = [subpath stringByStandardizingPath];
+  if ([stringByStandardizingPath length] && (objc_msgSend(stringByStandardizingPath, "isEqualToString:", @"/") & 1) == 0)
   {
     v4 = @".";
-    if (([v3 isEqualToString:@"."] & 1) == 0)
+    if (([stringByStandardizingPath isEqualToString:@"."] & 1) == 0)
     {
-      if ([v3 hasPrefix:@"/"])
+      if ([stringByStandardizingPath hasPrefix:@"/"])
       {
-        v6 = [v3 substringFromIndex:1];
+        v6 = [stringByStandardizingPath substringFromIndex:1];
 
-        v3 = v6;
+        stringByStandardizingPath = v6;
       }
 
-      v4 = v3;
-      v3 = v4;
+      v4 = stringByStandardizingPath;
+      stringByStandardizingPath = v4;
     }
   }
 
@@ -50,46 +50,46 @@
   return v4;
 }
 
-+ (BOOL)shouldExtractPathInArchive:(id)a3 forExtractionRootedAtStandardizedSubpathInArchive:(id)a4
++ (BOOL)shouldExtractPathInArchive:(id)archive forExtractionRootedAtStandardizedSubpathInArchive:(id)inArchive
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"."])
+  archiveCopy = archive;
+  inArchiveCopy = inArchive;
+  if ([inArchiveCopy isEqualToString:@"."])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 stringByStandardizingPath];
+    stringByStandardizingPath = [archiveCopy stringByStandardizingPath];
 
-    v7 = [v8 hasPrefix:v6];
-    v5 = v8;
+    v7 = [stringByStandardizingPath hasPrefix:inArchiveCopy];
+    archiveCopy = stringByStandardizingPath;
   }
 
   return v7;
 }
 
-- (BOOL)extractArchivePath:(id)a3 toDirectory:(id)a4 error:(id *)a5
+- (BOOL)extractArchivePath:(id)path toDirectory:(id)directory error:(id *)error
 {
   v75 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  directoryCopy = directory;
   bzero(v69, 0x400uLL);
-  v9 = v8;
-  v10 = a3;
-  if (realpath_DARWIN_EXTSN([v8 fileSystemRepresentation], v69))
+  v9 = directoryCopy;
+  pathCopy = path;
+  if (realpath_DARWIN_EXTSN([directoryCopy fileSystemRepresentation], v69))
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v69];
   }
 
   else
   {
-    v11 = v8;
+    v11 = directoryCopy;
   }
 
   v12 = v11;
 
-  v13 = [objc_opt_class() archiveSubpathByStandardizingArchiveSubpath:v10];
+  v13 = [objc_opt_class() archiveSubpathByStandardizingArchiveSubpath:pathCopy];
 
   v14 = [[_UILibArchiveStreamingReader alloc] initForReadingArchivePath:self->_archivePath];
   if ([v14 open])
@@ -112,7 +112,7 @@
     v54 = &v53;
     v55 = 0x2020000000;
     v56 = 0;
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     obj = [MEMORY[0x1E695DF70] array];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
@@ -127,7 +127,7 @@
     v46 = v19;
     v51 = v69;
     v52 = v16;
-    v20 = v17;
+    v20 = array;
     v47 = v20;
     v21 = obj;
     v48 = v21;
@@ -202,7 +202,7 @@ LABEL_13:
       {
 LABEL_19:
         _UIAppleDoubleMergeAppleDoubleItemsIntoRealFiles(v20, v19);
-        LOBYTE(a5) = *(v70 + 5) == 0;
+        LOBYTE(error) = *(v70 + 5) == 0;
 
         _Block_object_dispose(&v53, 8);
         _Block_object_dispose(&v57, 8);
@@ -222,29 +222,29 @@ LABEL_15:
       _os_log_impl(&dword_188A29000, v29, OS_LOG_TYPE_ERROR, "encountered writing error: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(v70 + 5);
+      *error = *(v70 + 5);
     }
 
     goto LABEL_19;
   }
 
-  if (a5)
+  if (error)
   {
     v31 = MEMORY[0x1E696ABC0];
     v67 = *MEMORY[0x1E696A578];
     v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to open source archive %@ for extracting", self->_archivePath];
     v68 = v32;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v68 forKeys:&v67 count:1];
-    *a5 = [v31 errorWithDomain:@"_UIArchiveExtractorErrorDomain" code:-1 userInfo:v33];
+    *error = [v31 errorWithDomain:@"_UIArchiveExtractorErrorDomain" code:-1 userInfo:v33];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_22:
 
-  return a5;
+  return error;
 }
 
 @end

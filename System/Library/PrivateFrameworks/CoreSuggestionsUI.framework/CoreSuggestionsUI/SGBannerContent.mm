@@ -10,17 +10,17 @@
 - (SGSuggestionDelegate)delegate;
 - (UIColor)backgroundColor;
 - (UIVisualEffectView)backgroundVisualEffectView;
-- (void)setAttributedSubtitle:(id)a3;
-- (void)setAttributedTitle:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBackgroundVisualEffectView:(id)a3;
-- (void)setBannerDivider:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDismissAction:(id)a3;
-- (void)setFeedbackAction:(id)a3;
-- (void)setIconSFSymbols:(id)a3;
-- (void)setPrimaryAction:(id)a3;
-- (void)setSuggestion:(id)a3;
+- (void)setAttributedSubtitle:(id)subtitle;
+- (void)setAttributedTitle:(id)title;
+- (void)setBackgroundColor:(id)color;
+- (void)setBackgroundVisualEffectView:(id)view;
+- (void)setBannerDivider:(id)divider;
+- (void)setDelegate:(id)delegate;
+- (void)setDismissAction:(id)action;
+- (void)setFeedbackAction:(id)action;
+- (void)setIconSFSymbols:(id)symbols;
+- (void)setPrimaryAction:(id)action;
+- (void)setSuggestion:(id)suggestion;
 @end
 
 @implementation SGBannerContent
@@ -32,7 +32,7 @@
   return v2;
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
   OUTLINED_FUNCTION_9_1();
   v5 = v3;
@@ -48,7 +48,7 @@
   return v2;
 }
 
-- (void)setAttributedSubtitle:(id)a3
+- (void)setAttributedSubtitle:(id)subtitle
 {
   OUTLINED_FUNCTION_9_1();
   v5 = v3;
@@ -64,7 +64,7 @@
   return v2;
 }
 
-- (void)setSuggestion:(id)a3
+- (void)setSuggestion:(id)suggestion
 {
   OUTLINED_FUNCTION_9_1();
   swift_unknownObjectRetain();
@@ -80,7 +80,7 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   OUTLINED_FUNCTION_9_1();
   swift_unknownObjectRetain();
@@ -96,7 +96,7 @@
   return v2;
 }
 
-- (void)setBackgroundVisualEffectView:(id)a3
+- (void)setBackgroundVisualEffectView:(id)view
 {
   OUTLINED_FUNCTION_9_1();
   v5 = v3;
@@ -112,7 +112,7 @@
   return v2;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   OUTLINED_FUNCTION_9_1();
   v5 = v3;
@@ -128,7 +128,7 @@
   return v2;
 }
 
-- (void)setBannerDivider:(id)a3
+- (void)setBannerDivider:(id)divider
 {
   OUTLINED_FUNCTION_9_1();
   v5 = v3;
@@ -144,7 +144,7 @@
   return v2;
 }
 
-- (void)setPrimaryAction:(id)a3
+- (void)setPrimaryAction:(id)action
 {
   OUTLINED_FUNCTION_9_1();
   v5 = v3;
@@ -160,7 +160,7 @@
   return v2;
 }
 
-- (void)setDismissAction:(id)a3
+- (void)setDismissAction:(id)action
 {
   OUTLINED_FUNCTION_9_1();
   v5 = v3;
@@ -185,14 +185,14 @@
   return self;
 }
 
-- (void)setIconSFSymbols:(id)a3
+- (void)setIconSFSymbols:(id)symbols
 {
-  if (a3)
+  if (symbols)
   {
     sub_1B81F90C8();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_1B8196978();
 }
 
@@ -203,7 +203,7 @@
   return v2;
 }
 
-- (void)setFeedbackAction:(id)a3
+- (void)setFeedbackAction:(id)action
 {
   OUTLINED_FUNCTION_9_1();
   v5 = v3;

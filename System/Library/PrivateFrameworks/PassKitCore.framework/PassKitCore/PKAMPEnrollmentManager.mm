@@ -1,15 +1,15 @@
 @interface PKAMPEnrollmentManager
 + (id)sharedManager;
-- (BOOL)shouldOfferAMPEnrollmentForPaymentPass:(id)a3;
+- (BOOL)shouldOfferAMPEnrollmentForPaymentPass:(id)pass;
 - (PKAMPEnrollmentManager)init;
-- (id)performCanEnrollPaymentPass:(id)a3;
-- (id)performEnrollPaymentPass:(id)a3 isDefault:(BOOL)a4;
-- (void)_accessObserversWithHandler:(id)a3;
-- (void)canEnrollPaymentPass:(id)a3 completion:(id)a4;
-- (void)enrollPaymentPass:(id)a3 isDefault:(BOOL)a4 completion:(id)a5;
-- (void)enrollmentStatusForPaymentPass:(id)a3 completion:(id)a4 progress:(id)a5;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (id)performCanEnrollPaymentPass:(id)pass;
+- (id)performEnrollPaymentPass:(id)pass isDefault:(BOOL)default;
+- (void)_accessObserversWithHandler:(id)handler;
+- (void)canEnrollPaymentPass:(id)pass completion:(id)completion;
+- (void)enrollPaymentPass:(id)pass isDefault:(BOOL)default completion:(id)completion;
+- (void)enrollmentStatusForPaymentPass:(id)pass completion:(id)completion progress:(id)progress;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation PKAMPEnrollmentManager
@@ -56,9 +56,9 @@ void __39__PKAMPEnrollmentManager_sharedManager__block_invoke()
     callbackQueue = v2->_callbackQueue;
     v2->_callbackQueue = v9;
 
-    v11 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v2->_observers;
-    v2->_observers = v11;
+    v2->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v2->_lockObservers._os_unfair_lock_opaque = 0;
   }
@@ -66,23 +66,23 @@ void __39__PKAMPEnrollmentManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)enrollmentStatusForPaymentPass:(id)a3 completion:(id)a4 progress:(id)a5
+- (void)enrollmentStatusForPaymentPass:(id)pass completion:(id)completion progress:(id)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  completionCopy = completion;
+  progressCopy = progress;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__PKAMPEnrollmentManager_enrollmentStatusForPaymentPass_completion_progress___block_invoke;
   v15[3] = &unk_1E79D2668;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = passCopy;
+  v17 = completionCopy;
+  v18 = progressCopy;
+  v12 = progressCopy;
+  v13 = completionCopy;
+  v14 = passCopy;
   dispatch_async(internalQueue, v15);
 }
 
@@ -172,10 +172,10 @@ void __77__PKAMPEnrollmentManager_enrollmentStatusForPaymentPass_completion_prog
   }
 }
 
-- (void)canEnrollPaymentPass:(id)a3 completion:(id)a4
+- (void)canEnrollPaymentPass:(id)pass completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKAMPEnrollmentManager *)self performCanEnrollPaymentPass:a3];
+  completionCopy = completion;
+  v7 = [(PKAMPEnrollmentManager *)self performCanEnrollPaymentPass:pass];
   if (v7)
   {
     callbackQueue = self->_callbackQueue;
@@ -184,14 +184,14 @@ void __77__PKAMPEnrollmentManager_enrollmentStatusForPaymentPass_completion_prog
     v13[2] = __58__PKAMPEnrollmentManager_canEnrollPaymentPass_completion___block_invoke;
     v13[3] = &unk_1E79C7B80;
     v9 = &v14;
-    v14 = v6;
+    v14 = completionCopy;
     [v7 pk_addQueue:callbackQueue finishBlock:v13];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (v6)
+  if (completionCopy)
   {
     v10 = self->_callbackQueue;
     v11[0] = MEMORY[0x1E69E9820];
@@ -199,7 +199,7 @@ LABEL_5:
     v11[2] = __58__PKAMPEnrollmentManager_canEnrollPaymentPass_completion___block_invoke_2;
     v11[3] = &unk_1E79C4428;
     v9 = &v12;
-    v12 = v6;
+    v12 = completionCopy;
     dispatch_async(v10, v11);
     goto LABEL_5;
   }
@@ -235,19 +235,19 @@ void __58__PKAMPEnrollmentManager_canEnrollPaymentPass_completion___block_invoke
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)performCanEnrollPaymentPass:(id)a3
+- (id)performCanEnrollPaymentPass:(id)pass
 {
   v4 = MEMORY[0x1E698C838];
-  v5 = a3;
+  passCopy = pass;
   v6 = [v4 alloc];
-  v7 = [(PKAMPEnrollmentManager *)self _bag];
-  v8 = [v5 issuerCountryCode];
-  v9 = [v6 initWithBag:v7 countryCode:v8];
+  _bag = [(PKAMPEnrollmentManager *)self _bag];
+  issuerCountryCode = [passCopy issuerCountryCode];
+  v9 = [v6 initWithBag:_bag countryCode:issuerCountryCode];
 
-  v10 = [v5 passTypeIdentifier];
-  v11 = [v5 serialNumber];
+  passTypeIdentifier = [passCopy passTypeIdentifier];
+  serialNumber = [passCopy serialNumber];
 
-  v12 = [v9 performCanWriteBillingInfoQueryWithPassTypeIdentifier:v10 serialNumber:v11];
+  v12 = [v9 performCanWriteBillingInfoQueryWithPassTypeIdentifier:passTypeIdentifier serialNumber:serialNumber];
 
   if (v12)
   {
@@ -262,21 +262,21 @@ void __58__PKAMPEnrollmentManager_canEnrollPaymentPass_completion___block_invoke
   return v12;
 }
 
-- (void)enrollPaymentPass:(id)a3 isDefault:(BOOL)a4 completion:(id)a5
+- (void)enrollPaymentPass:(id)pass isDefault:(BOOL)default completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  passCopy = pass;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__PKAMPEnrollmentManager_enrollPaymentPass_isDefault_completion___block_invoke;
   v13[3] = &unk_1E79C4F18;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = passCopy;
+  defaultCopy = default;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = passCopy;
   dispatch_async(internalQueue, v13);
 }
 
@@ -384,23 +384,23 @@ void __65__PKAMPEnrollmentManager_enrollPaymentPass_isDefault_completion___block
   }
 }
 
-- (BOOL)shouldOfferAMPEnrollmentForPaymentPass:(id)a3
+- (BOOL)shouldOfferAMPEnrollmentForPaymentPass:(id)pass
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 cardType] - 2) > 2)
+  passCopy = pass;
+  if (([passCopy cardType] - 2) > 2)
   {
-    v8 = [v4 devicePrimaryInAppPaymentApplication];
-    v9 = [v8 paymentNetworkIdentifier];
+    devicePrimaryInAppPaymentApplication = [passCopy devicePrimaryInAppPaymentApplication];
+    paymentNetworkIdentifier = [devicePrimaryInAppPaymentApplication paymentNetworkIdentifier];
 
-    if (v9 - 103 <= 0x25 && ((1 << (v9 - 103)) & 0x3F5F087CF1) != 0 || v9 <= 0x1E && ((1 << v9) & 0x77400000) != 0 || v9 == 301)
+    if (paymentNetworkIdentifier - 103 <= 0x25 && ((1 << (paymentNetworkIdentifier - 103)) & 0x3F5F087CF1) != 0 || paymentNetworkIdentifier <= 0x1E && ((1 << paymentNetworkIdentifier) & 0x77400000) != 0 || paymentNetworkIdentifier == 301)
     {
       v5 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v6 = [v4 serialNumber];
+        serialNumber = [passCopy serialNumber];
         v15 = 138412290;
-        v16 = v6;
+        v16 = serialNumber;
         v7 = "Not presenting AMP offer for pass: %@ as it is not a supported credential type";
         goto LABEL_10;
       }
@@ -408,16 +408,16 @@ void __65__PKAMPEnrollmentManager_enrollPaymentPass_isDefault_completion___block
 
     else
     {
-      v11 = [v4 effectiveContactlessPaymentApplicationState];
-      if (v11 > 0xF)
+      effectiveContactlessPaymentApplicationState = [passCopy effectiveContactlessPaymentApplicationState];
+      if (effectiveContactlessPaymentApplicationState > 0xF)
       {
         goto LABEL_13;
       }
 
-      v12 = v11;
-      if (((1 << v11) & 0x7F9) == 0)
+      v12 = effectiveContactlessPaymentApplicationState;
+      if (((1 << effectiveContactlessPaymentApplicationState) & 0x7F9) == 0)
       {
-        if (((1 << v11) & 0x8006) == 0)
+        if (((1 << effectiveContactlessPaymentApplicationState) & 0x8006) == 0)
         {
           goto LABEL_13;
         }
@@ -425,9 +425,9 @@ void __65__PKAMPEnrollmentManager_enrollPaymentPass_isDefault_completion___block
         v5 = PKLogFacilityTypeGetObject(7uLL);
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v4 serialNumber];
+          serialNumber2 = [passCopy serialNumber];
           v15 = 138412546;
-          v16 = v14;
+          v16 = serialNumber2;
           v17 = 2048;
           v18 = v12;
           _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Presenting AMP offer for pass: %@ state is %lu and has been Personalized or Personalizing", &v15, 0x16u);
@@ -440,9 +440,9 @@ void __65__PKAMPEnrollmentManager_enrollPaymentPass_isDefault_completion___block
       v5 = PKLogFacilityTypeGetObject(7uLL);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v4 serialNumber];
+        serialNumber3 = [passCopy serialNumber];
         v15 = 138412546;
-        v16 = v13;
+        v16 = serialNumber3;
         v17 = 2048;
         v18 = v12;
         _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Not presenting AMP offer for pass: %@ state is %lu and needs to be Personalized or Personalizing", &v15, 0x16u);
@@ -455,9 +455,9 @@ void __65__PKAMPEnrollmentManager_enrollPaymentPass_isDefault_completion___block
     v5 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 serialNumber];
+      serialNumber = [passCopy serialNumber];
       v15 = 138412290;
-      v16 = v6;
+      v16 = serialNumber;
       v7 = "Not presenting AMP offer for pass: %@ as it is not a valid card type";
 LABEL_10:
       _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, v7, &v15, 0xCu);
@@ -471,12 +471,12 @@ LABEL_13:
   return v3 & 1;
 }
 
-- (id)performEnrollPaymentPass:(id)a3 isDefault:(BOOL)a4
+- (id)performEnrollPaymentPass:(id)pass isDefault:(BOOL)default
 {
-  v6 = a3;
+  passCopy = pass;
   promiseMap = self->_promiseMap;
-  v8 = [v6 uniqueID];
-  v9 = [(NSMutableDictionary *)promiseMap objectForKeyedSubscript:v8];
+  uniqueID = [passCopy uniqueID];
+  v9 = [(NSMutableDictionary *)promiseMap objectForKeyedSubscript:uniqueID];
 
   if (!v9)
   {
@@ -486,14 +486,14 @@ LABEL_13:
     v24[2] = __61__PKAMPEnrollmentManager_performEnrollPaymentPass_isDefault___block_invoke;
     v24[3] = &unk_1E79D2730;
     v24[4] = self;
-    v11 = v6;
+    v11 = passCopy;
     v25 = v11;
     [v10 addFinishBlock:v24];
     v12 = self->_promiseMap;
-    v13 = [v11 uniqueID];
-    [(NSMutableDictionary *)v12 setObject:v10 forKeyedSubscript:v13];
+    uniqueID2 = [v11 uniqueID];
+    [(NSMutableDictionary *)v12 setObject:v10 forKeyedSubscript:uniqueID2];
 
-    v14 = [(PKAMPEnrollmentManager *)self _bag];
+    _bag = [(PKAMPEnrollmentManager *)self _bag];
     v15 = MEMORY[0x1E698C840];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -501,11 +501,11 @@ LABEL_13:
     v18[3] = &unk_1E79D2780;
     v9 = v10;
     v19 = v9;
-    v20 = self;
-    v23 = a4;
+    selfCopy = self;
+    defaultCopy = default;
     v21 = v11;
-    v22 = v14;
-    v16 = v14;
+    v22 = _bag;
+    v16 = _bag;
     [v15 paymentSessionWithBag:v16 completion:v18];
   }
 
@@ -609,48 +609,48 @@ void __61__PKAMPEnrollmentManager_performEnrollPaymentPass_isDefault___block_inv
   }
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers addObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lockObservers);
     [(NSHashTable *)self->_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_lockObservers);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (void)_accessObserversWithHandler:(id)a3
+- (void)_accessObserversWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_lockObservers);
-    v5 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
     os_unfair_lock_unlock(&self->_lockObservers);
     callbackQueue = self->_callbackQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __54__PKAMPEnrollmentManager__accessObserversWithHandler___block_invoke;
     v8[3] = &unk_1E79C4A40;
-    v9 = v5;
-    v10 = v4;
-    v7 = v5;
+    v9 = allObjects;
+    v10 = handlerCopy;
+    v7 = allObjects;
     dispatch_async(callbackQueue, v8);
   }
 }

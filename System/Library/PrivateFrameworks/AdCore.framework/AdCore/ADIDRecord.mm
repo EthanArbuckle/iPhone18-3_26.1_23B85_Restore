@@ -1,10 +1,10 @@
 @interface ADIDRecord
 - (ADIDRecord)init;
-- (ADIDRecord)initWithID:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ADIDRecord)initWithID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (NSData)encryptedID;
 - (id)dictionaryRepresentation;
-- (void)setID:(id)a3;
+- (void)setID:(id)d;
 @end
 
 @implementation ADIDRecord
@@ -16,10 +16,10 @@
   v2 = [(ADIDRecord *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     ID = v2->_ID;
-    v2->_ID = v4;
+    v2->_ID = uUIDString;
 
     v2->_dirty = 1;
   }
@@ -27,15 +27,15 @@
   return v2;
 }
 
-- (ADIDRecord)initWithID:(id)a3
+- (ADIDRecord)initWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = ADIDRecord;
   v5 = [(ADIDRecord *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     ID = v5->_ID;
     v5->_ID = v6;
 
@@ -45,12 +45,12 @@
   return v5;
 }
 
-- (void)setID:(id)a3
+- (void)setID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if (![(NSString *)self->_ID isEqualToString:?])
   {
-    objc_storeStrong(&self->_ID, a3);
+    objc_storeStrong(&self->_ID, d);
     self->_dirty = 1;
   }
 }
@@ -78,16 +78,16 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_7;

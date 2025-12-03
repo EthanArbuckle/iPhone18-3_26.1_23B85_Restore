@@ -1,13 +1,13 @@
 @interface ATXTrialClientWrapper
-- (ATXTrialClientWrapper)initWithClientIdentifier:(int)a3 namespaceName:(id)a4;
+- (ATXTrialClientWrapper)initWithClientIdentifier:(int)identifier namespaceName:(id)name;
 - (BOOL)refreshEnrollmentInformation;
 - (BOOL)refreshRolloutIdentifiers;
-- (id)BOOLForFactor:(id)a3;
-- (id)dictionaryForTrialResource:(id)a3;
-- (id)directoryPathForTrialResource:(id)a3;
-- (id)filePathForTrialResource:(id)a3;
-- (id)longForFactor:(id)a3;
-- (id)stringForFactor:(id)a3;
+- (id)BOOLForFactor:(id)factor;
+- (id)dictionaryForTrialResource:(id)resource;
+- (id)directoryPathForTrialResource:(id)resource;
+- (id)filePathForTrialResource:(id)resource;
+- (id)longForFactor:(id)factor;
+- (id)stringForFactor:(id)factor;
 - (void)updateFactors;
 @end
 
@@ -20,14 +20,14 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 experimentId];
+    experimentId = [v3 experimentId];
     trialExperimentId = self->_trialExperimentId;
-    self->_trialExperimentId = v5;
+    self->_trialExperimentId = experimentId;
 
     self->_trialDeploymentId = [v4 deploymentId];
-    v7 = [v4 treatmentId];
+    treatmentId = [v4 treatmentId];
     trialTreatmentId = self->_trialTreatmentId;
-    self->_trialTreatmentId = v7;
+    self->_trialTreatmentId = treatmentId;
   }
 
   else
@@ -43,19 +43,19 @@
   return v4 != 0;
 }
 
-- (ATXTrialClientWrapper)initWithClientIdentifier:(int)a3 namespaceName:(id)a4
+- (ATXTrialClientWrapper)initWithClientIdentifier:(int)identifier namespaceName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = ATXTrialClientWrapper;
   v7 = [(ATXTrialClientWrapper *)&v17 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69DB518] client];
+    client = [MEMORY[0x1E69DB518] client];
     trialClient = v7->_trialClient;
-    v7->_trialClient = v8;
+    v7->_trialClient = client;
 
-    objc_storeStrong(&v7->_trialNamespaceName, a4);
+    objc_storeStrong(&v7->_trialNamespaceName, name);
     objc_initWeak(&location, v7);
     v10 = v7->_trialClient;
     v14[0] = MEMORY[0x1E69E9820];
@@ -63,7 +63,7 @@
     v14[2] = __64__ATXTrialClientWrapper_initWithClientIdentifier_namespaceName___block_invoke;
     v14[3] = &unk_1E80C6200;
     objc_copyWeak(&v15, &location);
-    v11 = [(TRIClient *)v10 addUpdateHandlerForNamespaceName:v6 usingBlock:v14];
+    v11 = [(TRIClient *)v10 addUpdateHandlerForNamespaceName:nameCopy usingBlock:v14];
     token = v7->_token;
     v7->_token = v11;
 
@@ -109,7 +109,7 @@ void __64__ATXTrialClientWrapper_initWithClientIdentifier_namespaceName___block_
 - (void)updateFactors
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = NSStringFromSelector(a1);
+  v4 = NSStringFromSelector(self);
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = 138412546;
@@ -119,11 +119,11 @@ void __64__ATXTrialClientWrapper_initWithClientIdentifier_namespaceName___block_
   _os_log_error_impl(&dword_1BF549000, a3, OS_LOG_TYPE_ERROR, "ATXTrialClientWrapper: Method %@ not overriden in %@", &v7, 0x16u);
 }
 
-- (id)dictionaryForTrialResource:(id)a3
+- (id)dictionaryForTrialResource:(id)resource
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ATXTrialClientWrapper *)self filePathForTrialResource:v4];
+  resourceCopy = resource;
+  v5 = [(ATXTrialClientWrapper *)self filePathForTrialResource:resourceCopy];
   if (v5)
   {
     v16 = 0;
@@ -184,7 +184,7 @@ LABEL_19:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    *&buf[4] = v4;
+    *&buf[4] = resourceCopy;
     _os_log_impl(&dword_1BF549000, v14, OS_LOG_TYPE_INFO, "ATXTrialClientWrapper: Could not get file path for resource: %@", buf, 0xCu);
   }
 
@@ -194,27 +194,27 @@ LABEL_20:
   return v11;
 }
 
-- (id)filePathForTrialResource:(id)a3
+- (id)filePathForTrialResource:(id)resource
 {
-  v3 = [(TRIClient *)self->_trialClient levelForFactor:a3 withNamespaceName:self->_trialNamespaceName];
-  v4 = [v3 fileValue];
-  v5 = [v4 path];
+  v3 = [(TRIClient *)self->_trialClient levelForFactor:resource withNamespaceName:self->_trialNamespaceName];
+  fileValue = [v3 fileValue];
+  path = [fileValue path];
 
-  return v5;
+  return path;
 }
 
-- (id)directoryPathForTrialResource:(id)a3
+- (id)directoryPathForTrialResource:(id)resource
 {
-  v3 = [(TRIClient *)self->_trialClient levelForFactor:a3 withNamespaceName:self->_trialNamespaceName];
-  v4 = [v3 directoryValue];
-  v5 = [v4 path];
+  v3 = [(TRIClient *)self->_trialClient levelForFactor:resource withNamespaceName:self->_trialNamespaceName];
+  directoryValue = [v3 directoryValue];
+  path = [directoryValue path];
 
-  return v5;
+  return path;
 }
 
-- (id)BOOLForFactor:(id)a3
+- (id)BOOLForFactor:(id)factor
 {
-  v3 = [(TRIClient *)self->_trialClient levelForFactor:a3 withNamespaceName:self->_trialNamespaceName];
+  v3 = [(TRIClient *)self->_trialClient levelForFactor:factor withNamespaceName:self->_trialNamespaceName];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:{objc_msgSend(v3, "BOOLeanValue")}];
@@ -228,9 +228,9 @@ LABEL_20:
   return v4;
 }
 
-- (id)longForFactor:(id)a3
+- (id)longForFactor:(id)factor
 {
-  v3 = [(TRIClient *)self->_trialClient levelForFactor:a3 withNamespaceName:self->_trialNamespaceName];
+  v3 = [(TRIClient *)self->_trialClient levelForFactor:factor withNamespaceName:self->_trialNamespaceName];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLong:{objc_msgSend(v3, "longValue")}];
@@ -244,21 +244,21 @@ LABEL_20:
   return v4;
 }
 
-- (id)stringForFactor:(id)a3
+- (id)stringForFactor:(id)factor
 {
-  v3 = [(TRIClient *)self->_trialClient levelForFactor:a3 withNamespaceName:self->_trialNamespaceName];
+  v3 = [(TRIClient *)self->_trialClient levelForFactor:factor withNamespaceName:self->_trialNamespaceName];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 stringValue];
+    stringValue = [v3 stringValue];
   }
 
   else
   {
-    v5 = 0;
+    stringValue = 0;
   }
 
-  return v5;
+  return stringValue;
 }
 
 - (void)dictionaryForTrialResource:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

@@ -1,32 +1,32 @@
 @interface AMDTasteProfile
-+ (BOOL)hasArcade:(id *)a3;
-+ (id)deleteAppInfoEntries:(id *)a3;
-+ (id)deleteEntriesOfFeature:(id)a3 withDomain:(int64_t)a4 error:(id *)a5;
-+ (id)deleteWithPredicates:(id)a3 error:(id *)a4;
-+ (id)fetchTasteProfile:(id *)a3;
-+ (id)getEntries:(id)a3 error:(id *)a4;
-+ (id)getFeatureValueWithName:(id)a3 inDomain:(id)a4 error:(id *)a5;
-+ (id)getFeatureWithName:(id)a3 inDomain:(id)a4 withColumnName:(id)a5 error:(id *)a6;
-+ (id)getPurchasedAppsSet:(id *)a3;
-+ (id)getPurchasedArcadeGamesSet:(id *)a3;
-+ (id)getStorefrontIdForDomain:(id)a3;
-+ (id)getUserIdForDomain:(id)a3;
-+ (id)refreshAggregationTasteProfileForDomain:(id)a3 forUser:(id)a4 andStoreFrontId:(unsigned int)a5 error:(id *)a6;
-+ (id)refreshAppInformationTasteProfile:(id *)a3;
-+ (id)refreshServerTasteProfile:(id)a3 error:(id *)a4;
-+ (id)saveTasteProfileEntriesFromDict:(id)a3 inDomain:(id)a4 forSource:(id)a5 error:(id *)a6;
++ (BOOL)hasArcade:(id *)arcade;
++ (id)deleteAppInfoEntries:(id *)entries;
++ (id)deleteEntriesOfFeature:(id)feature withDomain:(int64_t)domain error:(id *)error;
++ (id)deleteWithPredicates:(id)predicates error:(id *)error;
++ (id)fetchTasteProfile:(id *)profile;
++ (id)getEntries:(id)entries error:(id *)error;
++ (id)getFeatureValueWithName:(id)name inDomain:(id)domain error:(id *)error;
++ (id)getFeatureWithName:(id)name inDomain:(id)domain withColumnName:(id)columnName error:(id *)error;
++ (id)getPurchasedAppsSet:(id *)set;
++ (id)getPurchasedArcadeGamesSet:(id *)set;
++ (id)getStorefrontIdForDomain:(id)domain;
++ (id)getUserIdForDomain:(id)domain;
++ (id)refreshAggregationTasteProfileForDomain:(id)domain forUser:(id)user andStoreFrontId:(unsigned int)id error:(id *)error;
++ (id)refreshAppInformationTasteProfile:(id *)profile;
++ (id)refreshServerTasteProfile:(id)profile error:(id *)error;
++ (id)saveTasteProfileEntriesFromDict:(id)dict inDomain:(id)domain forSource:(id)source error:(id *)error;
 + (void)refreshCToLMaps;
-+ (void)saveMinimalCToLMapForModelId:(id)a3 usingMapData:(id)a4 andPurchases:(id)a5;
++ (void)saveMinimalCToLMapForModelId:(id)id usingMapData:(id)data andPurchases:(id)purchases;
 @end
 
 @implementation AMDTasteProfile
 
-+ (id)fetchTasteProfile:(id *)a3
++ (id)fetchTasteProfile:(id *)profile
 {
   v57 = *MEMORY[0x277D85DE8];
-  v53 = a1;
+  selfCopy = self;
   v52 = a2;
-  v51 = a3;
+  profileCopy = profile;
   v44 = 0;
   v45 = &v44;
   v46 = 838860800;
@@ -42,23 +42,23 @@
   v42 = __Block_byref_object_dispose__8;
   v43 = 0;
   v21 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v36 = [v21 getManagedObjectContext];
+  getManagedObjectContext = [v21 getManagedObjectContext];
   MEMORY[0x277D82BD8](v21);
-  v20 = v36;
+  v20 = getManagedObjectContext;
   v30 = MEMORY[0x277D85DD0];
   v31 = -1073741824;
   v32 = 0;
   v33 = __37__AMDTasteProfile_fetchTasteProfile___block_invoke;
   v34 = &unk_278CB5AD0;
   v35[1] = &v37;
-  v35[0] = MEMORY[0x277D82BE0](v36);
+  v35[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v35[2] = &v44;
   [v20 performBlockAndWait:&v30];
   if (v45[5])
   {
     v19 = v45[5];
     v3 = v19;
-    *v51 = v19;
+    *profileCopy = v19;
     v54 = 0;
     v29 = 1;
   }
@@ -86,7 +86,7 @@
         v11 = [v28 objectForKey:@"value"];
         v26 = [v12 JSONObjectWithData:? options:? error:?];
         MEMORY[0x277D82BD8](v11);
-        if (*v51)
+        if (*profileCopy)
         {
           oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           type = OS_LOG_TYPE_ERROR;
@@ -97,11 +97,11 @@
             v7 = [v28 objectForKey:@"feeatureName"];
             v8 = MEMORY[0x277D82BE0](v7);
             v23 = v8;
-            v6 = [*v51 localizedDescription];
-            location = MEMORY[0x277D82BE0](v6);
+            localizedDescription = [*profileCopy localizedDescription];
+            location = MEMORY[0x277D82BE0](localizedDescription);
             __os_log_helper_16_2_2_8_64_8_64(v55, v8, location);
             _os_log_error_impl(&dword_240CB9000, log, v10, "error deserializing value for feature %@: %@", v55, 0x16u);
-            MEMORY[0x277D82BD8](v6);
+            MEMORY[0x277D82BD8](localizedDescription);
             MEMORY[0x277D82BD8](v7);
             objc_storeStrong(&location, 0);
             objc_storeStrong(&v23, 0);
@@ -152,7 +152,7 @@ LABEL_15:
   }
 
   objc_storeStrong(v35, 0);
-  objc_storeStrong(&v36, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v37, 8);
   objc_storeStrong(&v43, 0);
   _Block_object_dispose(&v44, 8);
@@ -186,23 +186,23 @@ void __37__AMDTasteProfile_fetchTasteProfile___block_invoke(void *a1)
   objc_storeStrong(v11, 0);
 }
 
-+ (id)getUserIdForDomain:(id)a3
++ (id)getUserIdForDomain:(id)domain
 {
-  v13 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   v11 = 0;
   v9 = 0;
-  v6 = [v13 getFeatureWithName:@"OD_DSID" inDomain:location[0] withColumnName:0 error:&v9];
+  v6 = [selfCopy getFeatureWithName:@"OD_DSID" inDomain:location[0] withColumnName:0 error:&v9];
   objc_storeStrong(&v11, v9);
   v10 = v6;
   v7 = 0;
   if (v6)
   {
-    v8 = [v10 getValue];
+    getValue = [v10 getValue];
     v7 = 1;
-    v3 = MEMORY[0x277D82BE0](v8);
+    v3 = MEMORY[0x277D82BE0](getValue);
   }
 
   else
@@ -213,7 +213,7 @@ void __37__AMDTasteProfile_fetchTasteProfile___block_invoke(void *a1)
   v14 = v3;
   if (v7)
   {
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](getValue);
   }
 
   objc_storeStrong(&v10, 0);
@@ -224,15 +224,15 @@ void __37__AMDTasteProfile_fetchTasteProfile___block_invoke(void *a1)
   return v4;
 }
 
-+ (id)getStorefrontIdForDomain:(id)a3
++ (id)getStorefrontIdForDomain:(id)domain
 {
-  v16 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   v14 = 0;
   v12 = 0;
-  v9 = [v16 getFeatureWithName:@"OD_STOREFRONT_ID" inDomain:location[0] withColumnName:0 error:&v12];
+  v9 = [selfCopy getFeatureWithName:@"OD_STOREFRONT_ID" inDomain:location[0] withColumnName:0 error:&v12];
   objc_storeStrong(&v14, v12);
   v13 = v9;
   if (v9)
@@ -240,13 +240,13 @@ void __37__AMDTasteProfile_fetchTasteProfile___block_invoke(void *a1)
     v10 = objc_alloc_init(MEMORY[0x277CCABB8]);
     [v10 setNumberStyle:1];
     v5 = v10;
-    v8 = [v13 getValue];
-    v7 = [v8 allKeys];
-    v6 = [v7 firstObject];
+    getValue = [v13 getValue];
+    allKeys = [getValue allKeys];
+    firstObject = [allKeys firstObject];
     v17 = [v5 numberFromString:?];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](firstObject);
+    MEMORY[0x277D82BD8](allKeys);
+    MEMORY[0x277D82BD8](getValue);
     v11 = 1;
     objc_storeStrong(&v10, 0);
   }
@@ -265,13 +265,13 @@ void __37__AMDTasteProfile_fetchTasteProfile___block_invoke(void *a1)
   return v3;
 }
 
-+ (id)getEntries:(id)a3 error:(id *)a4
++ (id)getEntries:(id)entries error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = a4;
+  objc_storeStrong(location, entries);
+  errorCopy = error;
   v26 = 0;
   v27 = &v26;
   v28 = 838860800;
@@ -287,9 +287,9 @@ void __37__AMDTasteProfile_fetchTasteProfile___block_invoke(void *a1)
   v24 = __Block_byref_object_dispose__8;
   v25 = 0;
   v9 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v18 = [v9 getManagedObjectContext];
+  getManagedObjectContext = [v9 getManagedObjectContext];
   MEMORY[0x277D82BD8](v9);
-  v8 = v18;
+  v8 = getManagedObjectContext;
   v11 = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;
@@ -297,14 +297,14 @@ void __37__AMDTasteProfile_fetchTasteProfile___block_invoke(void *a1)
   v15 = &unk_278CB5AA8;
   v16 = MEMORY[0x277D82BE0](location[0]);
   v17[1] = &v19;
-  v17[0] = MEMORY[0x277D82BE0](v18);
+  v17[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[2] = &v26;
   [v8 performBlockAndWait:&v11];
   if (v27[5])
   {
     v7 = v27[5];
     v4 = v7;
-    *v33 = v7;
+    *errorCopy = v7;
     v35 = 0;
   }
 
@@ -315,7 +315,7 @@ void __37__AMDTasteProfile_fetchTasteProfile___block_invoke(void *a1)
 
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v16, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v19, 8);
   objc_storeStrong(&v25, 0);
   _Block_object_dispose(&v26, 8);
@@ -350,17 +350,17 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
   objc_storeStrong(v11, 0);
 }
 
-+ (id)getFeatureValueWithName:(id)a3 inDomain:(id)a4 error:(id *)a5
++ (id)getFeatureValueWithName:(id)name inDomain:(id)domain error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v35 = 0;
-  objc_storeStrong(&v35, a4);
-  v34 = a5;
-  *a5 = 0;
+  objc_storeStrong(&v35, domain);
+  errorCopy = error;
+  *error = 0;
   v33 = [MEMORY[0x277CCAC30] predicateWithFormat:@"featureName == %@", location[0]];
   if (v35 && ([v35 isEqualToString:@"all"] & 1) == 0)
   {
@@ -371,8 +371,8 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
     MEMORY[0x277D82BD8](v6);
   }
 
-  v31 = [AMDTasteProfile getEntries:v33 error:v34];
-  if (*v34)
+  v31 = [AMDTasteProfile getEntries:v33 error:errorCopy];
+  if (*errorCopy)
   {
     v30 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v29 = 16;
@@ -381,11 +381,11 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
       log = v30;
       type = v29;
       v14 = location[0];
-      v17 = [*v34 localizedDescription];
-      v28 = MEMORY[0x277D82BE0](v17);
+      localizedDescription = [*errorCopy localizedDescription];
+      v28 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_2_8_64_8_64(v40, v14, v28);
       _os_log_error_impl(&dword_240CB9000, log, type, "Error fetching feature %@: %@", v40, 0x16u);
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v28, 0);
     }
 
@@ -396,11 +396,11 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
 
   else if (v31 && [v31 count])
   {
-    v13 = [v31 firstObject];
-    v24 = [v13 objectForKey:@"value"];
-    MEMORY[0x277D82BD8](v13);
-    v23 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v24 options:4 error:v34];
-    if (*v34)
+    firstObject = [v31 firstObject];
+    v24 = [firstObject objectForKey:@"value"];
+    MEMORY[0x277D82BD8](firstObject);
+    v23 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v24 options:4 error:errorCopy];
+    if (*errorCopy)
     {
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v21 = OS_LOG_TYPE_ERROR;
@@ -409,11 +409,11 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
         v10 = oslog;
         v11 = v21;
         v9 = location[0];
-        v12 = [*v34 localizedDescription];
-        v20 = MEMORY[0x277D82BE0](v12);
+        localizedDescription2 = [*errorCopy localizedDescription];
+        v20 = MEMORY[0x277D82BE0](localizedDescription2);
         __os_log_helper_16_2_2_8_64_8_64(v38, v9, v20);
         _os_log_error_impl(&dword_240CB9000, v10, v11, "Error deserializing value for feature %@: %@", v38, 0x16u);
-        MEMORY[0x277D82BD8](v12);
+        MEMORY[0x277D82BD8](localizedDescription2);
         objc_storeStrong(&v20, 0);
       }
 
@@ -457,29 +457,29 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
   return v7;
 }
 
-+ (id)getFeatureWithName:(id)a3 inDomain:(id)a4 withColumnName:(id)a5 error:(id *)a6
++ (id)getFeatureWithName:(id)name inDomain:(id)domain withColumnName:(id)columnName error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v23 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, domain);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
-  v19 = a6;
-  v18 = [v23 getFeatureValueWithName:location[0] inDomain:v21 error:a6];
-  if (*a6 || !v18)
+  objc_storeStrong(&v20, columnName);
+  errorCopy = error;
+  v18 = [selfCopy getFeatureValueWithName:location[0] inDomain:v21 error:error];
+  if (*error || !v18)
   {
-    *v19 = 0;
-    v6 = [AMDSQLite getFeatureValueWithName:location[0] inDomain:v21 withColumnName:v20 skipRowset:1 error:v19];
+    *errorCopy = 0;
+    v6 = [AMDSQLite getFeatureValueWithName:location[0] inDomain:v21 withColumnName:v20 skipRowset:1 error:errorCopy];
     v7 = v18;
     v18 = v6;
     MEMORY[0x277D82BD8](v7);
   }
 
-  if (*v19)
+  if (*errorCopy)
   {
     v24 = 0;
     v17 = 1;
@@ -504,7 +504,7 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
     objc_storeStrong(&oslog, 0);
     v11 = [AMDError allocError:16 withMessage:v16];
     v8 = v11;
-    *v19 = v11;
+    *errorCopy = v11;
     v24 = 0;
     v17 = 1;
     objc_storeStrong(&v16, 0);
@@ -520,17 +520,17 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
   return v9;
 }
 
-+ (id)refreshAggregationTasteProfileForDomain:(id)a3 forUser:(id)a4 andStoreFrontId:(unsigned int)a5 error:(id *)a6
++ (id)refreshAggregationTasteProfileForDomain:(id)domain forUser:(id)user andStoreFrontId:(unsigned int)id error:(id *)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   v67 = 0;
-  objc_storeStrong(&v67, a4);
-  v66 = a5;
-  v65 = a6;
+  objc_storeStrong(&v67, user);
+  idCopy = id;
+  errorCopy = error;
   v64 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [AMDPerf startMonitoringEvent:@"RefreshODTP"];
   if ([AMDMiscHelpers isValidDSID:v67])
@@ -538,8 +538,8 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
     v62 = [AMDDomains getCodeForDomain:location[0]];
     if (v62)
     {
-      v61 = [AMDDescriptor getDescriptorsForDomain:v62 error:v65];
-      if (*v65)
+      v61 = [AMDDescriptor getDescriptorsForDomain:v62 error:errorCopy];
+      if (*errorCopy)
       {
         v69 = 0;
         v63 = 1;
@@ -592,8 +592,8 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
             MEMORY[0x277D82BD8](v11);
             if (v52)
             {
-              v48 = [v52 getFeatureData:v65];
-              if (*v65)
+              v48 = [v52 getFeatureData:errorCopy];
+              if (*errorCopy)
               {
                 [v57 addObject:v56];
                 v59 = v59 || v53;
@@ -645,7 +645,7 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
               objc_storeStrong(&oslog, 0);
               v26 = [AMDError allocError:16 withMessage:v51];
               v12 = v26;
-              *v65 = v26;
+              *errorCopy = v26;
               v59 = v59 || v53;
               [v57 addObject:v56];
               v63 = 3;
@@ -690,7 +690,7 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
         else
         {
           v19 = v60;
-          v21 = [MEMORY[0x277CCACA8] stringWithFormat:v66];
+          v21 = [MEMORY[0x277CCACA8] stringWithFormat:idCopy];
           v72 = v21;
           v73 = &unk_2852BA998;
           v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v73 forKeys:&v72 count:?];
@@ -698,19 +698,19 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
           MEMORY[0x277D82BD8](v20);
           MEMORY[0x277D82BD8](v21);
           v22 = v60;
-          v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v66 - 143440];
-          v70 = v24;
+          143440 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", idCopy - 143440];
+          v70 = 143440;
           v71 = &unk_2852BA998;
           v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v71 forKeys:&v70 count:1];
           [v22 setObject:? forKey:?];
           MEMORY[0x277D82BD8](v23);
-          MEMORY[0x277D82BD8](v24);
+          MEMORY[0x277D82BD8](143440);
           [v60 setObject:v67 forKey:@"OD_DSID"];
-          v13 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v60 inDomain:location[0] forSource:@"device" error:v65];
+          v13 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v60 inDomain:location[0] forSource:@"device" error:errorCopy];
           v14 = v45;
           v45 = v13;
           MEMORY[0x277D82BD8](v14);
-          if (!*v65)
+          if (!*errorCopy)
           {
             [v64 setObject:v45 forKey:@"tpSaveSummary"];
           }
@@ -732,7 +732,7 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
     {
       v37 = [AMDError allocError:15 withMessage:@"unknown domain"];
       v7 = v37;
-      *v65 = v37;
+      *errorCopy = v37;
       v69 = 0;
       v63 = 1;
     }
@@ -742,7 +742,7 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
   {
     v38 = [AMDError allocError:15 withMessage:@"Invalid dsid"];
     v6 = v38;
-    *v65 = v38;
+    *errorCopy = v38;
     v69 = 0;
     v63 = 1;
   }
@@ -756,18 +756,18 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
   return v15;
 }
 
-+ (id)saveTasteProfileEntriesFromDict:(id)a3 inDomain:(id)a4 forSource:(id)a5 error:(id *)a6
++ (id)saveTasteProfileEntriesFromDict:(id)dict inDomain:(id)domain forSource:(id)source error:(id *)error
 {
   v85 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dict);
   v71 = 0;
-  objc_storeStrong(&v71, a4);
+  objc_storeStrong(&v71, domain);
   v70 = 0;
-  objc_storeStrong(&v70, a5);
-  v69 = a6;
+  objc_storeStrong(&v70, source);
+  errorCopy = error;
   if ([location[0] count])
   {
     v64 = [AMDDomains getCodeForDomain:v71];
@@ -795,17 +795,17 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
         v18 = [location[0] valueForKey:v60];
         v58 = [v19 dataWithJSONObject:? options:? error:?];
         MEMORY[0x277D82BD8](v18);
-        if (*v69 || !v58)
+        if (*errorCopy || !v58)
         {
           v16 = MEMORY[0x277CCACA8];
           v17 = v60;
-          v6 = *v69;
+          v6 = *errorCopy;
           v55 = 0;
           if (v6)
           {
-            v56 = [*v69 localizedDescription];
+            localizedDescription = [*errorCopy localizedDescription];
             v55 = 1;
-            v15 = v56;
+            v15 = localizedDescription;
           }
 
           else
@@ -816,7 +816,7 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
           v57 = [v16 stringWithFormat:@"Could not retrieve TP data for feature '%@': %@", v17, v15];
           if (v55)
           {
-            MEMORY[0x277D82BD8](v56);
+            MEMORY[0x277D82BD8](localizedDescription);
           }
 
           v54 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -830,7 +830,7 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
 
           objc_storeStrong(&v54, 0);
           [v62 addObject:v60];
-          *v69 = 0;
+          *errorCopy = 0;
           objc_storeStrong(&v57, 0);
         }
 
@@ -863,15 +863,15 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
     v51 = __Block_byref_object_dispose__8;
     v52 = 0;
     v45 = +[AMDCoreDataPersistentContainer sharedContainer];
-    v44 = [v45 getManagedObjectContext];
-    v13 = v44;
+    getManagedObjectContext = [v45 getManagedObjectContext];
+    v13 = getManagedObjectContext;
     v35 = MEMORY[0x277D85DD0];
     v36 = -1073741824;
     v37 = 0;
     v38 = __76__AMDTasteProfile_saveTasteProfileEntriesFromDict_inDomain_forSource_error___block_invoke;
     v39 = &unk_278CB6290;
     v40 = MEMORY[0x277D82BE0](v61);
-    v41 = MEMORY[0x277D82BE0](v44);
+    v41 = MEMORY[0x277D82BE0](getManagedObjectContext);
     v42 = MEMORY[0x277D82BE0](v70);
     v43[2] = v64;
     v43[0] = MEMORY[0x277D82BE0](v45);
@@ -881,11 +881,11 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
     {
       v12 = v47[5];
       v7 = v12;
-      *v69 = v12;
+      *errorCopy = v12;
       v11 = MEMORY[0x277CCACA8];
-      v10 = [v47[5] localizedDescription];
-      v34 = [v11 stringWithFormat:@"Error saving TP entries: %@", v10];
-      MEMORY[0x277D82BD8](v10);
+      localizedDescription2 = [v47[5] localizedDescription];
+      v34 = [v11 stringWithFormat:@"Error saving TP entries: %@", localizedDescription2];
+      MEMORY[0x277D82BD8](localizedDescription2);
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v32 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -904,27 +904,27 @@ void __36__AMDTasteProfile_getEntries_error___block_invoke(void *a1)
 
     else
     {
-      v31 = [v61 allKeys];
+      allKeys = [v61 allKeys];
       v30 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_2_3_8_64_8_0_8_64(v76, v70, [v31 count], v31);
+        __os_log_helper_16_2_3_8_64_8_0_8_64(v76, v70, [allKeys count], allKeys);
         _os_log_debug_impl(&dword_240CB9000, v30, OS_LOG_TYPE_DEBUG, "Saved %@ TP features (%lu): %@", v76, 0x20u);
       }
 
       objc_storeStrong(&v30, 0);
       v74 = @"savedFeatures";
-      v75 = v31;
+      v75 = allKeys;
       v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
       v65 = 1;
-      objc_storeStrong(&v31, 0);
+      objc_storeStrong(&allKeys, 0);
     }
 
     objc_storeStrong(v43, 0);
     objc_storeStrong(&v42, 0);
     objc_storeStrong(&v41, 0);
     objc_storeStrong(&v40, 0);
-    objc_storeStrong(&v44, 0);
+    objc_storeStrong(&getManagedObjectContext, 0);
     objc_storeStrong(&v45, 0);
     _Block_object_dispose(&v46, 8);
     objc_storeStrong(&v52, 0);
@@ -1028,13 +1028,13 @@ void __76__AMDTasteProfile_saveTasteProfileEntriesFromDict_inDomain_forSource_er
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)deleteWithPredicates:(id)a3 error:(id *)a4
++ (id)deleteWithPredicates:(id)predicates error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, predicates);
+  errorCopy = error;
   v27 = 0;
   v28 = &v27;
   v29 = 838860800;
@@ -1050,15 +1050,15 @@ void __76__AMDTasteProfile_saveTasteProfileEntriesFromDict_inDomain_forSource_er
   v25 = __Block_byref_object_dispose__8;
   v26 = 0;
   v19 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v18 = [v19 getManagedObjectContext];
-  v8 = v18;
+  getManagedObjectContext = [v19 getManagedObjectContext];
+  v8 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke;
   v14 = &unk_278CB5A58;
   v15 = MEMORY[0x277D82BE0](location[0]);
-  v16 = MEMORY[0x277D82BE0](v18);
+  v16 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[1] = &v27;
   v17[0] = MEMORY[0x277D82BE0](v19);
   v17[2] = &v20;
@@ -1067,7 +1067,7 @@ void __76__AMDTasteProfile_saveTasteProfileEntriesFromDict_inDomain_forSource_er
   {
     v7 = v28[5];
     v4 = v7;
-    *v34 = v7;
+    *errorCopy = v7;
     v36 = 0;
   }
 
@@ -1079,7 +1079,7 @@ void __76__AMDTasteProfile_saveTasteProfileEntriesFromDict_inDomain_forSource_er
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v19, 0);
   _Block_object_dispose(&v20, 8);
   objc_storeStrong(&v26, 0);
@@ -1141,14 +1141,14 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
   objc_storeStrong(v19, 0);
 }
 
-+ (id)deleteAppInfoEntries:(id *)a3
++ (id)deleteAppInfoEntries:(id *)entries
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v8 = a1;
+  selfCopy = self;
   v7[2] = a2;
-  v7[1] = a3;
+  v7[1] = entries;
   v7[0] = [MEMORY[0x277CCAC30] predicateWithFormat:@"featureName == %@ || featureName == %@ || featureName == %@ || featureName == %@", @"APPS_IS_ARCADE", @"APPS_PURCHASED", @"APPS_GENRE", @"APPS_RATINGS_RANK"];
-  v4 = v8;
+  v4 = selfCopy;
   v9[0] = v7[0];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   v6 = [v4 deleteWithPredicates:? error:?];
@@ -1159,17 +1159,17 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
   return v6;
 }
 
-+ (id)deleteEntriesOfFeature:(id)a3 withDomain:(int64_t)a4 error:(id *)a5
++ (id)deleteEntriesOfFeature:(id)feature withDomain:(int64_t)domain error:(id *)error
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v13 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11[2] = a4;
-  v11[1] = a5;
-  v11[0] = [MEMORY[0x277CCAC30] predicateWithFormat:@"featureName == %@ && domain == %d", location[0], a4];
-  v8 = v13;
+  objc_storeStrong(location, feature);
+  v11[2] = domain;
+  v11[1] = error;
+  v11[0] = [MEMORY[0x277CCAC30] predicateWithFormat:@"featureName == %@ && domain == %d", location[0], domain];
+  v8 = selfCopy;
   v14[0] = v11[0];
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   v10 = [v8 deleteWithPredicates:? error:?];
@@ -1181,15 +1181,15 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
   return v10;
 }
 
-+ (id)refreshAppInformationTasteProfile:(id *)a3
++ (id)refreshAppInformationTasteProfile:(id *)profile
 {
   v117 = *MEMORY[0x277D85DE8];
-  v94 = a1;
+  selfCopy = self;
   v93 = a2;
-  v92 = a3;
+  profileCopy = profile;
   [AMDPerf startMonitoringEvent:@"RefreshAppInfo"];
-  v91 = [v94 deleteAppInfoEntries:v92];
-  if (*v92)
+  v91 = [selfCopy deleteAppInfoEntries:profileCopy];
+  if (*profileCopy)
   {
     oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     type = OS_LOG_TYPE_ERROR;
@@ -1197,11 +1197,11 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
     {
       log = oslog;
       v43 = type;
-      v44 = [*v92 localizedDescription];
-      v88 = MEMORY[0x277D82BE0](v44);
+      localizedDescription = [*profileCopy localizedDescription];
+      v88 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_1_8_64(v116, v88);
       _os_log_error_impl(&dword_240CB9000, log, v43, "Previous App Information Taste Profiles could not be deleted. %@", v116, 0xCu);
-      MEMORY[0x277D82BD8](v44);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v88, 0);
     }
 
@@ -1264,36 +1264,36 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
 
         v70 = *(__b[1] + 8 * v38);
         ++v78;
-        v68 = [v70 iTunesMetadata];
-        v67 = [v68 storeItemIdentifier];
-        v66 = [MEMORY[0x277CCACA8] stringWithFormat:v67];
+        iTunesMetadata = [v70 iTunesMetadata];
+        storeItemIdentifier = [iTunesMetadata storeItemIdentifier];
+        v66 = [MEMORY[0x277CCACA8] stringWithFormat:storeItemIdentifier];
         v65 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v70, "isArcadeApp")}];
-        v64 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v68, "isPurchasedRedownload")}];
-        v63 = [v68 genreIdentifier];
-        v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", v63];
-        v61 = [v68 ratingRank];
+        v64 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(iTunesMetadata, "isPurchasedRedownload")}];
+        genreIdentifier = [iTunesMetadata genreIdentifier];
+        v62 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", genreIdentifier];
+        ratingRank = [iTunesMetadata ratingRank];
         [v84 setObject:v65 forKey:v66];
         [v83 setObject:v64 forKey:v66];
         v25 = v82;
-        v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v63];
+        v26 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:genreIdentifier];
         [v25 setObject:? forKey:?];
         MEMORY[0x277D82BD8](v26);
         v27 = v81;
-        v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v61];
+        v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:ratingRank];
         [v27 setObject:? forKey:?];
         MEMORY[0x277D82BD8](v28);
         v29 = v75;
-        v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v67];
+        v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:storeItemIdentifier];
         [v29 addObject:?];
         MEMORY[0x277D82BD8](v30);
         [v74 addObject:v65];
         [v73 addObject:v64];
         v31 = v72;
-        v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v63];
+        v32 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:genreIdentifier];
         [v31 addObject:?];
         MEMORY[0x277D82BD8](v32);
         v33 = v71;
-        v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v61];
+        v34 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:ratingRank];
         [v33 addObject:?];
         MEMORY[0x277D82BD8](v34);
         v35 = [v80 objectForKey:v62];
@@ -1319,7 +1319,7 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
         objc_storeStrong(&v64, 0);
         objc_storeStrong(&v65, 0);
         objc_storeStrong(&v66, 0);
-        objc_storeStrong(&v68, 0);
+        objc_storeStrong(&iTunesMetadata, 0);
         ++v38;
         if (v36 + 1 >= v39)
         {
@@ -1380,9 +1380,9 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
     v103[1] = @"v2FeatureDescriptor";
     v58 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v103 forKeys:v102 count:2];
     v22 = MEMORY[0x277CBEB58];
-    v23 = [v83 allKeys];
+    allKeys = [v83 allKeys];
     v57 = [v22 setWithArray:?];
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](allKeys);
     v56 = 0;
     v54 = 0;
     v24 = [AMDTasteProfile getFeatureValueWithName:@"PURCHASED_ITEM_AFFINITY" inDomain:@"apps" error:&v54];
@@ -1391,9 +1391,9 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
     if (!v56 && v55)
     {
       v10 = v57;
-      v11 = [v55 allKeys];
+      allKeys2 = [v55 allKeys];
       [v10 addObjectsFromArray:?];
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](allKeys2);
       v53 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v52 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
@@ -1417,15 +1417,15 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
     v99[4] = @"APPS_PURCHASED";
     v100[4] = v83;
     v99[5] = @"APPS_PURCHASED_ALL";
-    v8 = [v57 allObjects];
-    v100[5] = v8;
+    allObjects = [v57 allObjects];
+    v100[5] = allObjects;
     v99[6] = @"APPS_RATINGS_RANK";
     v100[6] = v81;
     v99[7] = @"APPS_LIST_BY_GENRE";
     v100[7] = v80;
     v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v100 forKeys:v99 count:8];
     MEMORY[0x277D82BD8](0);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](allObjects);
     MEMORY[0x277D82BD8](v9);
     if (v78)
     {
@@ -1455,7 +1455,7 @@ void __46__AMDTasteProfile_deleteWithPredicates_error___block_invoke(uint64_t a1
       objc_storeStrong(&v48, 0);
     }
 
-    v45 = [v94 saveTasteProfileEntriesFromDict:v51 inDomain:@"apps" forSource:@"device" error:v92];
+    v45 = [selfCopy saveTasteProfileEntriesFromDict:v51 inDomain:@"apps" forSource:@"device" error:profileCopy];
     [AMDPerf endMonitoringEvent:@"RefreshAppInfo"];
     v96[0] = @"deletedForRefresh";
     v97[0] = v91;
@@ -1502,43 +1502,43 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   return v4;
 }
 
-+ (BOOL)hasArcade:(id *)a3
++ (BOOL)hasArcade:(id *)arcade
 {
-  v10 = a1;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  location = [a1 getFeatureWithName:@"APPS_HAS_ARCADE" inDomain:@"apps" withColumnName:0 error:a3];
+  arcadeCopy = arcade;
+  location = [self getFeatureWithName:@"APPS_HAS_ARCADE" inDomain:@"apps" withColumnName:0 error:arcade];
   v5 = 0;
   v4 = 0;
-  if (!*v8)
+  if (!*arcadeCopy)
   {
     v4 = 0;
     if (location)
     {
-      v6 = [location getValue];
+      getValue = [location getValue];
       v5 = 1;
-      v4 = [v6 longValue] != 0;
+      v4 = [getValue longValue] != 0;
     }
   }
 
   v11 = v4;
   if (v5)
   {
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](getValue);
   }
 
   objc_storeStrong(&location, 0);
   return v11;
 }
 
-+ (id)refreshServerTasteProfile:(id)a3 error:(id *)a4
++ (id)refreshServerTasteProfile:(id)profile error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
+  objc_storeStrong(location, profile);
+  errorCopy = error;
   v19 = [location[0] objectForKey:0x2852A86A8];
   if (v19)
   {
@@ -1549,8 +1549,8 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
       if (objc_opt_isKindOfClass())
       {
         v13 = MEMORY[0x277D82BE0](v16);
-        *v20 = 0;
-        v22 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v13 inDomain:v19 forSource:@"server" error:v20];
+        *errorCopy = 0;
+        v22 = [AMDTasteProfile saveTasteProfileEntriesFromDict:v13 inDomain:v19 forSource:@"server" error:errorCopy];
         v17 = 1;
         objc_storeStrong(&v13, 0);
       }
@@ -1560,7 +1560,7 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Server TP data not a dictionary for domain: %@", v19];
         v9 = [AMDError allocError:23 withMessage:v14];
         v6 = v9;
-        *v20 = v9;
+        *errorCopy = v9;
         v23 = @"error";
         v24 = v14;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
@@ -1574,7 +1574,7 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
       v15 = MEMORY[0x277D82BE0](@"Missing TP data");
       v10 = [AMDError allocError:23 withMessage:v15];
       v5 = v10;
-      *v20 = v10;
+      *errorCopy = v10;
       v25 = @"error";
       v26 = v15;
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
@@ -1590,7 +1590,7 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
     v18 = MEMORY[0x277D82BE0](@"Missing domian");
     v11 = [AMDError allocError:23 withMessage:v18];
     v4 = v11;
-    *v20 = v11;
+    *errorCopy = v11;
     v27 = @"error";
     v28[0] = v18;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
@@ -1606,14 +1606,14 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   return v7;
 }
 
-+ (id)getPurchasedAppsSet:(id *)a3
++ (id)getPurchasedAppsSet:(id *)set
 {
   v29 = *MEMORY[0x277D85DE8];
-  v25 = a1;
+  selfCopy = self;
   v24 = a2;
-  v23 = a3;
-  v22 = [AMDTasteProfile getFeatureValueWithName:@"APPS_PURCHASED_ALL" inDomain:@"apps" error:a3];
-  if (!*v23 && v22)
+  setCopy = set;
+  v22 = [AMDTasteProfile getFeatureValueWithName:@"APPS_PURCHASED_ALL" inDomain:@"apps" error:set];
+  if (!*setCopy && v22)
   {
     v17 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v22, "count")}];
     memset(__b, 0, sizeof(__b));
@@ -1659,9 +1659,9 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   else
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [*v23 localizedDescription];
-    v21 = [v13 stringWithFormat:@"Error fetching all purchases: %@", v14];
-    MEMORY[0x277D82BD8](v14);
+    localizedDescription = [*setCopy localizedDescription];
+    v21 = [v13 stringWithFormat:@"Error fetching all purchases: %@", localizedDescription];
+    MEMORY[0x277D82BD8](localizedDescription);
     location = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v19 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(location, OS_LOG_TYPE_INFO))
@@ -1684,14 +1684,14 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   return v3;
 }
 
-+ (id)getPurchasedArcadeGamesSet:(id *)a3
++ (id)getPurchasedArcadeGamesSet:(id *)set
 {
   v30 = *MEMORY[0x277D85DE8];
-  v26 = a1;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
-  v23 = [AMDTasteProfile getFeatureValueWithName:@"APPS_IS_ARCADE" inDomain:@"apps" error:a3];
-  if (!*v24 && v23)
+  setCopy = set;
+  v23 = [AMDTasteProfile getFeatureValueWithName:@"APPS_IS_ARCADE" inDomain:@"apps" error:set];
+  if (!*setCopy && v23)
   {
     v18 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v23, "count")}];
     memset(__b, 0, sizeof(__b));
@@ -1743,9 +1743,9 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   else
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [*v24 localizedDescription];
-    v22 = [v13 stringWithFormat:@"Error fetching arcade purchases: %@", v14];
-    MEMORY[0x277D82BD8](v14);
+    localizedDescription = [*setCopy localizedDescription];
+    v22 = [v13 stringWithFormat:@"Error fetching arcade purchases: %@", localizedDescription];
+    MEMORY[0x277D82BD8](localizedDescription);
     location = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v20 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(location, OS_LOG_TYPE_INFO))
@@ -1768,17 +1768,17 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   return v3;
 }
 
-+ (void)saveMinimalCToLMapForModelId:(id)a3 usingMapData:(id)a4 andPurchases:(id)a5
++ (void)saveMinimalCToLMapForModelId:(id)id usingMapData:(id)data andPurchases:(id)purchases
 {
   v53 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, id);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
+  objc_storeStrong(&v45, data);
   v44 = 0;
-  objc_storeStrong(&v44, a5);
+  objc_storeStrong(&v44, purchases);
   v21 = objc_alloc(MEMORY[0x277CBEB38]);
   v43 = [v21 initWithCapacity:{objc_msgSend(v44, "count")}];
   v22 = [AMDSimpleHash alloc];
@@ -1830,9 +1830,9 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   MEMORY[0x277D82BD8](v23);
   v13 = v45;
   v5 = v45;
-  v37 = [v13 bytes];
+  bytes = [v13 bytes];
   v36 = 0;
-  v35 = *v37;
+  v35 = *bytes;
   v34 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v33 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
@@ -1842,22 +1842,22 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   }
 
   objc_storeStrong(&v34, 0);
-  ++v37;
+  ++bytes;
   v32 = 0;
   v31 = 0;
   for (i = 0; i < v35; ++i)
   {
-    v36 = v37++;
-    v31 = *v37;
-    v37 += 2;
+    v36 = bytes++;
+    v31 = *bytes;
+    bytes += 2;
     if ([v42 getValueForKey:v31 into:&v32])
     {
       v9 = v43;
       v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*v36];
       v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v31];
-      v10 = [v11 stringValue];
+      stringValue = [v11 stringValue];
       [v9 setObject:v12 forKey:?];
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](stringValue);
       MEMORY[0x277D82BD8](v11);
       MEMORY[0x277D82BD8](v12);
     }
@@ -1874,9 +1874,9 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
   MEMORY[0x277D82BD8](v8);
   if (v28)
   {
-    v7 = [v28 localizedDescription];
+    localizedDescription = [v28 localizedDescription];
     [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:? atVerbosity:?];
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](localizedDescription);
   }
 
   else
@@ -1907,7 +1907,7 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
 + (void)refreshCToLMaps
 {
   v65 = *MEMORY[0x277D85DE8];
-  v60 = a1;
+  selfCopy = self;
   v59[1] = a2;
   v59[0] = 0;
   v57 = 0;
@@ -1926,10 +1926,10 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
       v49 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
-        v26 = [v59[0] localizedDescription];
-        __os_log_helper_16_2_1_8_64(v64, v26);
+        localizedDescription = [v59[0] localizedDescription];
+        __os_log_helper_16_2_1_8_64(v64, localizedDescription);
         _os_log_error_impl(&dword_240CB9000, v50, v49, "Error fetching models' info: '%@'", v64, 0xCu);
-        MEMORY[0x277D82BD8](v26);
+        MEMORY[0x277D82BD8](localizedDescription);
       }
 
       objc_storeStrong(&v50, 0);
@@ -1974,12 +1974,12 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
             {
               v11 = [AMDModelAssets alloc];
               v10 = v44;
-              v13 = [v38 getAssetsMetadata];
+              getAssetsMetadata = [v38 getAssetsMetadata];
               v32 = v59[0];
               v12 = [AMDModelAssets initFromDir:v11 andMetadata:"initFromDir:andMetadata:useBinaryInputMap:useBinaryOutputMap:withModelId:isInference:error:" useBinaryInputMap:v10 useBinaryOutputMap:&v32 withModelId:? isInference:? error:?];
               objc_storeStrong(v59, v32);
               v33 = v12;
-              MEMORY[0x277D82BD8](v13);
+              MEMORY[0x277D82BD8](getAssetsMetadata);
               if (v59[0])
               {
                 v31 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -1987,10 +1987,10 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
                 {
                   v8 = v31;
                   v7 = v44;
-                  v9 = [v59[0] localizedDescription];
-                  __os_log_helper_16_2_2_8_64_8_64(v61, v7, v9);
+                  localizedDescription2 = [v59[0] localizedDescription];
+                  __os_log_helper_16_2_2_8_64_8_64(v61, v7, localizedDescription2);
                   _os_log_error_impl(&dword_240CB9000, v8, OS_LOG_TYPE_ERROR, "Error loading assets from %@: %@", v61, 0x16u);
-                  MEMORY[0x277D82BD8](v9);
+                  MEMORY[0x277D82BD8](localizedDescription2);
                 }
 
                 objc_storeStrong(&v31, 0);
@@ -2000,15 +2000,15 @@ BOOL __53__AMDTasteProfile_refreshAppInformationTasteProfile___block_invoke(void
 
               else
               {
-                v6 = [v33 getContentToLogicalMap];
-                MEMORY[0x277D82BD8](v6);
-                if (v6)
+                getContentToLogicalMap = [v33 getContentToLogicalMap];
+                MEMORY[0x277D82BD8](getContentToLogicalMap);
+                if (getContentToLogicalMap)
                 {
-                  v4 = v60;
+                  v4 = selfCopy;
                   v3 = v46;
-                  v5 = [v33 getContentToLogicalMap];
+                  getContentToLogicalMap2 = [v33 getContentToLogicalMap];
                   [v4 saveMinimalCToLMapForModelId:v3 usingMapData:? andPurchases:?];
-                  MEMORY[0x277D82BD8](v5);
+                  MEMORY[0x277D82BD8](getContentToLogicalMap2);
                   [AMDPerf endMonitoringEvent:v45];
                   v53 = 0;
                 }

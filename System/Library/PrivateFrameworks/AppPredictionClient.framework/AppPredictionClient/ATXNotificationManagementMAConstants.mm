@@ -74,9 +74,9 @@
   {
     v3 = [ATXAssets2 dictionaryWithLegacyPathForClass:objc_opt_class()];
     v4 = [[ATXAssetsABHelper alloc] initWithAssetContents:v3];
-    v5 = [(ATXAssetsABHelper *)v4 abGroupContents];
+    abGroupContents = [(ATXAssetsABHelper *)v4 abGroupContents];
     parameters = v2->_parameters;
-    v2->_parameters = v5;
+    v2->_parameters = abGroupContents;
   }
 
   return v2;
@@ -182,15 +182,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 10;
+    integerValue = 10;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)interruptionManagerMaxAppSuggestionsForDenyList
@@ -199,15 +199,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 12;
+    integerValue = 12;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)interruptionManagerMaxContactSuggestionsForDenyList
@@ -216,15 +216,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 10;
+    integerValue = 10;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)interruptionManagerPromptAllowScoreThreshold
@@ -287,15 +287,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)digestOnboardingSuggestionHour
@@ -304,15 +304,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 18;
+    integerValue = 18;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)digestOnboardingSuggestionMinute
@@ -321,15 +321,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)smartPauseManagerPauseDurationSeconds
@@ -392,15 +392,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)sendMessagesToDigestManagerMaxNumNonEngagementsAllowedForMessageNotifications
@@ -409,15 +409,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)thresholdForShowingDigestOnboardingSuggestionToSeedUsers
@@ -444,15 +444,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 15;
+    integerValue = 15;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)smartPauseManagerThresholdForNumNotificationsReceivedInLastFiveMinutesForApp
@@ -461,15 +461,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 10;
+    integerValue = 10;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)smartPauseManagerEngagementRateThresholdForThread
@@ -532,15 +532,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 10;
+    integerValue = 10;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)urgencyTuningStartTimeoutSeconds
@@ -729,15 +729,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)chinSuggestionsAreDisabled
@@ -746,15 +746,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)digestOnboardingSuggestionMinimumActiveNotifications
@@ -763,15 +763,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 5;
+    integerValue = 5;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)digestOnboardingSuggestionMinimumUniqueBundleIds
@@ -780,15 +780,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)interruptionManagerMaxRecommendedAndCandidateContactSuggestionsForDenyList
@@ -797,15 +797,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 11;
+    integerValue = 11;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)interruptionManagerMaxRecommendedAndCandidateContactSuggestionsForAllowList
@@ -814,15 +814,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 11;
+    integerValue = 11;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)interruptionManagerMaxRecommendedAndCandidateAppSuggestionsForDenyList
@@ -831,15 +831,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 11;
+    integerValue = 11;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)interruptionManagerMaxRecommendedAndCandidateAppSuggestionsForAllowList
@@ -848,15 +848,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 11;
+    integerValue = 11;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)interruptionManagerThresholdForRecommendedContactSuggestionForAllowList
@@ -1009,15 +1009,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 18;
+    integerValue = 18;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)ATXUserEducationSuggestionExploreFacesServer_maxHour
@@ -1026,15 +1026,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 22;
+    integerValue = 22;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)ATXUserEducationSuggestionExploreFacesServer_tryAgainIntervalSeconds
@@ -1043,15 +1043,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 3600;
+    integerValue = 3600;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)ATXUserEducationSuggestionExploreFacesServer_gracePeriod
@@ -1060,15 +1060,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 1800;
+    integerValue = 1800;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)ATXUserEducationSuggestionExploreFacesServer_numBacklightOffEventsBeforeDismissSuggestion
@@ -1077,15 +1077,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 3;
+    integerValue = 3;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)ATXNotificationAndSuggestionDatabase_maxNumberOfNotificationsPerApp
@@ -1094,15 +1094,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 10000;
+    integerValue = 10000;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)ATXNotificationAndSuggestionDatabase_maxNumberOfNotifications
@@ -1111,15 +1111,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 100000;
+    integerValue = 100000;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)ATXNotificationAndSuggestionDatabase_maxNumberOfSuggestions
@@ -1128,15 +1128,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 100000;
+    integerValue = 100000;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)ATXNotificationAndSuggestionDatabase_pruningBatchSize
@@ -1145,15 +1145,15 @@ void __54__ATXNotificationManagementMAConstants_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 5000;
+    integerValue = 5000;
   }
 
-  return v4;
+  return integerValue;
 }
 
 @end

@@ -9,16 +9,16 @@
   v31 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v27 = 0;
-  v6 = [a1 expressionType];
-  if (v6 > 9)
+  expressionType = [self expressionType];
+  if (expressionType > 9)
   {
-    if (v6 == 10)
+    if (expressionType == 10)
     {
-      v7 = [a1 keyPath];
+      keyPath = [self keyPath];
       goto LABEL_19;
     }
 
-    if (v6 != 14)
+    if (expressionType != 14)
     {
       goto LABEL_28;
     }
@@ -27,8 +27,8 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [a1 collection];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v30 count:16];
+    collection = [self collection];
+    v9 = [collection countByEnumeratingWithState:&v23 objects:v30 count:16];
     if (v9)
     {
       v10 = *v24;
@@ -38,7 +38,7 @@ LABEL_9:
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(collection);
         }
 
         v12 = [*(*(&v23 + 1) + 8 * v11) _keypathsForDerivedPropertyValidation:&v27];
@@ -55,7 +55,7 @@ LABEL_9:
 
         if (v9 == ++v11)
         {
-          v9 = [v8 countByEnumeratingWithState:&v23 objects:v30 count:16];
+          v9 = [collection countByEnumeratingWithState:&v23 objects:v30 count:16];
           v14 = 1;
           if (v9)
           {
@@ -68,13 +68,13 @@ LABEL_9:
     }
   }
 
-  else if (v6 >= 2)
+  else if (expressionType >= 2)
   {
-    if (v6 == 2)
+    if (expressionType == 2)
     {
-      v7 = [a1 predicateFormat];
+      keyPath = [self predicateFormat];
 LABEL_19:
-      [v5 addObject:v7];
+      [v5 addObject:keyPath];
       goto LABEL_20;
     }
 
@@ -83,8 +83,8 @@ LABEL_28:
     {
       v21 = MEMORY[0x1E696ABC0];
       v28 = @"expression";
-      v29 = a1;
-      v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
+      selfCopy = self;
+      v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&selfCopy forKeys:&v28 count:1];
       v14 = 0;
       *a3 = [v21 errorWithDomain:*MEMORY[0x1E696A250] code:134097 userInfo:v22];
       goto LABEL_21;

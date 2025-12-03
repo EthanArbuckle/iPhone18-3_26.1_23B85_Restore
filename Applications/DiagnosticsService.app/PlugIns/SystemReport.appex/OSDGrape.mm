@@ -1,21 +1,21 @@
 @interface OSDGrape
-- (BOOL)_enableProx:(BOOL)a3;
-- (BOOL)_getMTReport:(unsigned __int8)a3 payloadBuffer:(char *)a4 bufferSize:(unsigned int *)a5;
-- (BOOL)_grapeCriticalErrorDetected:(id)a3;
+- (BOOL)_enableProx:(BOOL)prox;
+- (BOOL)_getMTReport:(unsigned __int8)report payloadBuffer:(char *)buffer bufferSize:(unsigned int *)size;
+- (BOOL)_grapeCriticalErrorDetected:(id)detected;
 - (BOOL)_isProxEnabled;
 - (BOOL)_refreshGrapeProperties;
-- (BOOL)_setMTReport:(unsigned __int8)a3 payloadBuffer:(char *)a4 bufferSize:(unsigned int)a5;
+- (BOOL)_setMTReport:(unsigned __int8)report payloadBuffer:(char *)buffer bufferSize:(unsigned int)size;
 - (BOOL)didDopplerErrorOccur;
 - (BOOL)isDoppler;
 - (BOOL)isGrapePowered;
 - (BOOL)proxErrorDetected;
-- (BOOL)scheduleSystemWake:(unsigned int)a3;
+- (BOOL)scheduleSystemWake:(unsigned int)wake;
 - (OSDGrape)init;
-- (__MTDevice)_createMTDevice:(unsigned int)a3;
-- (id)_getMTReportErrorFromCommandBuffer:(char *)a3 length:(int)a4;
+- (__MTDevice)_createMTDevice:(unsigned int)device;
+- (id)_getMTReportErrorFromCommandBuffer:(char *)buffer length:(int)length;
 - (id)bcdVersion;
 - (id)constructedFirmwareVersion;
-- (id)criticalErrorSet:(unint64_t *)a3;
+- (id)criticalErrorSet:(unint64_t *)set;
 - (id)getDopplerDataRegister;
 - (id)getDopplerError;
 - (id)getDopplerSiliconVersion;
@@ -23,15 +23,15 @@
 - (id)orbErrorDetected;
 - (unsigned)getDopplerReferenceSignalEvents;
 - (unsigned)multitouchFirmwareVersion;
-- (void)cleanupStreaming:(void *)a3;
+- (void)cleanupStreaming:(void *)streaming;
 - (void)dealloc;
 - (void)resetGrape;
-- (void)startStreaming:(void *)a3;
+- (void)startStreaming:(void *)streaming;
 @end
 
 @implementation OSDGrape
 
-- (__MTDevice)_createMTDevice:(unsigned int)a3
+- (__MTDevice)_createMTDevice:(unsigned int)device
 {
   Default = MTDeviceCreateDefault();
   if (!Default)
@@ -181,9 +181,9 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)_grapeCriticalErrorDetected:(id)a3
+- (BOOL)_grapeCriticalErrorDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -199,7 +199,7 @@ LABEL_9:
     v10[3] = &unk_1000909C8;
     v11 = v5;
     v12 = &v15;
-    [v4 enumerateObjectsUsingBlock:v10];
+    [detectedCopy enumerateObjectsUsingBlock:v10];
 
     v7 = *(v16 + 24);
   }
@@ -240,14 +240,14 @@ LABEL_9:
   return self;
 }
 
-- (BOOL)_getMTReport:(unsigned __int8)a3 payloadBuffer:(char *)a4 bufferSize:(unsigned int *)a5
+- (BOOL)_getMTReport:(unsigned __int8)report payloadBuffer:(char *)buffer bufferSize:(unsigned int *)size
 {
-  if (!a5)
+  if (!size)
   {
     return 0;
   }
 
-  v5 = *a5;
+  v5 = *size;
   grapeDevice = self->_grapeDevice;
   Report = MTDeviceGetReport();
   if (Report)
@@ -269,7 +269,7 @@ LABEL_9:
   return 1;
 }
 
-- (BOOL)_setMTReport:(unsigned __int8)a3 payloadBuffer:(char *)a4 bufferSize:(unsigned int)a5
+- (BOOL)_setMTReport:(unsigned __int8)report payloadBuffer:(char *)buffer bufferSize:(unsigned int)size
 {
   grapeDevice = self->_grapeDevice;
   v6 = MTDeviceSetReport();
@@ -289,7 +289,7 @@ LABEL_9:
   return v6 == 0;
 }
 
-- (id)criticalErrorSet:(unint64_t *)a3
+- (id)criticalErrorSet:(unint64_t *)set
 {
   v5 = +[NSMutableSet set];
   v15 = 4;
@@ -324,9 +324,9 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a3)
+  if (set)
   {
-    *a3 = v16;
+    *set = v16;
   }
 
   v6 = DiagnosticLogHandleForCategory();
@@ -381,10 +381,10 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)scheduleSystemWake:(unsigned int)a3
+- (BOOL)scheduleSystemWake:(unsigned int)wake
 {
   v4 = 64;
-  v5 = 1000 * a3;
+  v5 = 1000 * wake;
   return [(OSDGrape *)self _setMTReport:244 payloadBuffer:&v4 bufferSize:3];
 }
 
@@ -426,7 +426,7 @@ LABEL_12:
   }
 }
 
-- (void)startStreaming:(void *)a3
+- (void)startStreaming:(void *)streaming
 {
   v5 = [(OSDGrape *)self _createMTDevice:0];
   self->_grapeDevice = v5;
@@ -442,7 +442,7 @@ LABEL_12:
       }
     }
 
-    if (![(OSDGrape *)self _registerForProx:a3])
+    if (![(OSDGrape *)self _registerForProx:streaming])
     {
       v7 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -460,11 +460,11 @@ LABEL_12:
   }
 }
 
-- (void)cleanupStreaming:(void *)a3
+- (void)cleanupStreaming:(void *)streaming
 {
   grapeDevice = self->_grapeDevice;
   MTDeviceSetZephyrParameter();
-  [(OSDGrape *)self _unregisterForProx:a3];
+  [(OSDGrape *)self _unregisterForProx:streaming];
   [(OSDGrape *)self _enableProx:0];
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -503,10 +503,10 @@ LABEL_12:
   return v5 != 0;
 }
 
-- (BOOL)_enableProx:(BOOL)a3
+- (BOOL)_enableProx:(BOOL)prox
 {
-  v3 = a3;
-  if (a3 && [(OSDGrape *)self _isProxEnabled])
+  proxCopy = prox;
+  if (prox && [(OSDGrape *)self _isProxEnabled])
   {
     return 1;
   }
@@ -515,7 +515,7 @@ LABEL_12:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v10 = v3;
+    v10 = proxCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Enabling prox: %d", buf, 8u);
   }
 
@@ -596,8 +596,8 @@ LABEL_9:
   v12 = 0;
   v9 = 0x80020001C1582CLL;
   v10 = 0;
-  v3 = [(OSDGrape *)self getDopplerSiliconVersion];
-  if ([v3 isEqualToString:@"A0"])
+  getDopplerSiliconVersion = [(OSDGrape *)self getDopplerSiliconVersion];
+  if ([getDopplerSiliconVersion isEqualToString:@"A0"])
   {
     v4 = &v11;
 LABEL_5:
@@ -605,7 +605,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"TC"])
+  if ([getDopplerSiliconVersion isEqualToString:@"TC"])
   {
     v4 = &v9;
     goto LABEL_5;
@@ -640,16 +640,16 @@ LABEL_9:
   return v3;
 }
 
-- (id)_getMTReportErrorFromCommandBuffer:(char *)a3 length:(int)a4
+- (id)_getMTReportErrorFromCommandBuffer:(char *)buffer length:(int)length
 {
   grapeDevice = self->_grapeDevice;
-  v7 = *a3;
+  v7 = *buffer;
   if (MTDeviceSetReport())
   {
     v8 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = *a3;
+      v9 = *buffer;
       v18[0] = 67109120;
       v18[1] = v9;
       v10 = "Unable to set MTReport 0x%x";
@@ -668,7 +668,7 @@ LABEL_14:
     v8 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v15 = *a3;
+      v15 = *buffer;
       *buf = 67109120;
       v17 = v15;
       v10 = "Unable to get MTReport 0x%x";
@@ -752,10 +752,10 @@ LABEL_11:
 
 - (unsigned)getDopplerReferenceSignalEvents
 {
-  v2 = [(OSDGrape *)self getDopplerDataRegister];
-  if ([v2 length] > 0x20)
+  getDopplerDataRegister = [(OSDGrape *)self getDopplerDataRegister];
+  if ([getDopplerDataRegister length] > 0x20)
   {
-    v4 = *([v2 bytes] + 7);
+    v4 = *([getDopplerDataRegister bytes] + 7);
   }
 
   else

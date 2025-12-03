@@ -1,13 +1,13 @@
 @interface WFTrelloAccessResourceUserInterface
-- (id)authorizationURLWithCallbackURL:(id)a3;
-- (void)authorizeWithCompletionHandler:(id)a3;
+- (id)authorizationURLWithCallbackURL:(id)l;
+- (void)authorizeWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFTrelloAccessResourceUserInterface
 
-- (void)authorizeWithCompletionHandler:(id)a3
+- (void)authorizeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x277CBEBC0] URLWithString:@"workflow://trello-auth-flow"];
   v6 = [(WFTrelloAccessResourceUserInterface *)self authorizationURLWithCallbackURL:v5];
   v18 = 0;
@@ -17,15 +17,15 @@
   v22 = __Block_byref_object_dispose__415;
   v23 = 0;
   v7 = objc_alloc(MEMORY[0x277CBA9D8]);
-  v8 = [v5 scheme];
+  scheme = [v5 scheme];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __70__WFTrelloAccessResourceUserInterface_authorizeWithCompletionHandler___block_invoke;
   v15 = &unk_278C36520;
   v17 = &v18;
-  v9 = v4;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v7 initWithURL:v6 callbackURLScheme:v8 completionHandler:&v12];
+  v10 = [v7 initWithURL:v6 callbackURLScheme:scheme completionHandler:&v12];
   v11 = v19[5];
   v19[5] = v10;
 
@@ -109,18 +109,18 @@ void __70__WFTrelloAccessResourceUserInterface_authorizeWithCompletionHandler___
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (id)authorizationURLWithCallbackURL:(id)a3
+- (id)authorizationURLWithCallbackURL:(id)l
 {
   v19[6] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEBC0];
-  v4 = a3;
+  lCopy = l;
   v5 = [v3 URLWithString:@"https://trello.com/1/authorize"];
   v6 = [MEMORY[0x277CCAD18] queryItemWithName:@"callback_method" value:@"fragment"];
   v19[0] = v6;
   v7 = MEMORY[0x277CCAD18];
-  v8 = [v4 absoluteString];
+  absoluteString = [lCopy absoluteString];
 
-  v9 = [v7 queryItemWithName:@"return_url" value:v8];
+  v9 = [v7 queryItemWithName:@"return_url" value:absoluteString];
   v19[1] = v9;
   v10 = [MEMORY[0x277CCAD18] queryItemWithName:@"scope" value:{@"read, write, account"}];
   v19[2] = v10;

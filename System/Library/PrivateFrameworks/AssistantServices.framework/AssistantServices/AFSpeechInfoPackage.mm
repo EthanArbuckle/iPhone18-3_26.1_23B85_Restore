@@ -1,27 +1,27 @@
 @interface AFSpeechInfoPackage
-- (AFSpeechInfoPackage)initWithCoder:(id)a3;
-- (AFSpeechInfoPackage)initWithCommandGrammarParsePackage:(id)a3 debugInfo:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AFSpeechInfoPackage)initWithCoder:(id)coder;
+- (AFSpeechInfoPackage)initWithCommandGrammarParsePackage:(id)package debugInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSpeechInfoPackage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   commandGrammarParsePackage = self->_commandGrammarParsePackage;
-  v5 = a3;
-  [v5 encodeObject:commandGrammarParsePackage forKey:@"AFSpeechInfoPackage::CommandGrammarParsePackage"];
-  [v5 encodeObject:self->_debugInfo forKey:@"AFSpeechInfoPackage::DebugInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:commandGrammarParsePackage forKey:@"AFSpeechInfoPackage::CommandGrammarParsePackage"];
+  [coderCopy encodeObject:self->_debugInfo forKey:@"AFSpeechInfoPackage::DebugInfo"];
 }
 
-- (AFSpeechInfoPackage)initWithCoder:(id)a3
+- (AFSpeechInfoPackage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechInfoPackage::CommandGrammarParsePackage"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechInfoPackage::DebugInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechInfoPackage::CommandGrammarParsePackage"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSpeechInfoPackage::DebugInfo"];
 
   v7 = [(AFSpeechInfoPackage *)self initWithCommandGrammarParsePackage:v5 debugInfo:v6];
   return v7;
@@ -31,11 +31,11 @@
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"commandGrammarParsePackage";
-  v3 = [(AFVoiceCommandGrammarParsePackage *)self->_commandGrammarParsePackage dictionaryRepresentation];
+  dictionaryRepresentation = [(AFVoiceCommandGrammarParsePackage *)self->_commandGrammarParsePackage dictionaryRepresentation];
   v8[1] = @"debugInfo";
-  v9[0] = v3;
-  v4 = [(AFVoiceCommandDebugInfo *)self->_debugInfo dictionaryRepresentation];
-  v9[1] = v4;
+  v9[0] = dictionaryRepresentation;
+  dictionaryRepresentation2 = [(AFVoiceCommandDebugInfo *)self->_debugInfo dictionaryRepresentation];
+  v9[1] = dictionaryRepresentation2;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -45,20 +45,20 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = [(AFVoiceCommandGrammarParsePackage *)self->_commandGrammarParsePackage description];
-  [v3 appendFormat:@"[CommandGrammarParsePackage = %@]", v4];
+  [string appendFormat:@"[CommandGrammarParsePackage = %@]", v4];
 
   v5 = [(AFVoiceCommandDebugInfo *)self->_debugInfo description];
-  [v3 appendFormat:@"[DebugInfo = %@]", v5];
+  [string appendFormat:@"[DebugInfo = %@]", v5];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -68,14 +68,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AFSpeechInfoPackage *)v5 commandGrammarParsePackage];
+      v5 = equalCopy;
+      commandGrammarParsePackage = [(AFSpeechInfoPackage *)v5 commandGrammarParsePackage];
       commandGrammarParsePackage = self->_commandGrammarParsePackage;
-      if (commandGrammarParsePackage == v6 || [(AFVoiceCommandGrammarParsePackage *)commandGrammarParsePackage isEqual:v6])
+      if (commandGrammarParsePackage == commandGrammarParsePackage || [(AFVoiceCommandGrammarParsePackage *)commandGrammarParsePackage isEqual:commandGrammarParsePackage])
       {
-        v8 = [(AFSpeechInfoPackage *)v5 debugInfo];
+        debugInfo = [(AFSpeechInfoPackage *)v5 debugInfo];
         debugInfo = self->_debugInfo;
-        v10 = debugInfo == v8 || [(AFVoiceCommandDebugInfo *)debugInfo isEqual:v8];
+        v10 = debugInfo == debugInfo || [(AFVoiceCommandDebugInfo *)debugInfo isEqual:debugInfo];
       }
 
       else
@@ -93,20 +93,20 @@
   return v10;
 }
 
-- (AFSpeechInfoPackage)initWithCommandGrammarParsePackage:(id)a3 debugInfo:(id)a4
+- (AFSpeechInfoPackage)initWithCommandGrammarParsePackage:(id)package debugInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  packageCopy = package;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = AFSpeechInfoPackage;
   v8 = [(AFSpeechInfoPackage *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [packageCopy copy];
     commandGrammarParsePackage = v8->_commandGrammarParsePackage;
     v8->_commandGrammarParsePackage = v9;
 
-    v11 = [v7 copy];
+    v11 = [infoCopy copy];
     debugInfo = v8->_debugInfo;
     v8->_debugInfo = v11;
   }

@@ -1,7 +1,7 @@
 @interface _UICollectionViewTrackedValue
 - (_UICollectionViewTrackedValue)init;
 - (double)speed;
-- (void)addValue:(double)a3;
+- (void)addValue:(double)value;
 @end
 
 @implementation _UICollectionViewTrackedValue
@@ -17,8 +17,8 @@
     v2->_isAccumulating = 1;
     v2->_trackedValue = 0.0;
     *&v2->_valuesCount = xmmword_18A679080;
-    v4 = [MEMORY[0x1E695DF00] date];
-    [v4 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v6 = v5;
 
     if (v3->_valuesCount >= 1)
@@ -53,7 +53,7 @@
   return v3;
 }
 
-- (void)addValue:(double)a3
+- (void)addValue:(double)value
 {
   if (self->_isAccumulating)
   {
@@ -62,10 +62,10 @@
     values = self->_values;
     self->_currentIndex = v7 % valuesCount;
     v10 = [(NSArray *)values objectAtIndex:?];
-    self->_trackedValue = a3;
-    [v10 setValue:a3];
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSince1970];
+    self->_trackedValue = value;
+    [v10 setValue:value];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     [v10 setTimeStamp:?];
   }
 }

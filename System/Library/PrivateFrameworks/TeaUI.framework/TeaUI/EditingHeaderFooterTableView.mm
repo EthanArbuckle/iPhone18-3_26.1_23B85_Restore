@@ -1,13 +1,13 @@
 @interface EditingHeaderFooterTableView
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 @end
 
 @implementation EditingHeaderFooterTableView
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  EditingHeaderFooterTableView.setEditing(_:animated:)(a3, a4);
+  selfCopy = self;
+  EditingHeaderFooterTableView.setEditing(_:animated:)(editing, animated);
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface TRITaskAttributionInternalInsecure
-+ (id)taskAttributionFirstPartyWithNetworkOptions:(id)a3;
-+ (id)taskAttributionFromPersistedTask:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTaskAttribution:(id)a3;
++ (id)taskAttributionFirstPartyWithNetworkOptions:(id)options;
++ (id)taskAttributionFromPersistedTask:(id)task;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTaskAttribution:(id)attribution;
 - (NSString)description;
-- (TRITaskAttributionInternalInsecure)initWithTeamIdentifier:(id)a3 triCloudKitContainer:(int)a4 applicationBundleIdentifier:(id)a5 networkOptions:(id)a6;
+- (TRITaskAttributionInternalInsecure)initWithTeamIdentifier:(id)identifier triCloudKitContainer:(int)container applicationBundleIdentifier:(id)bundleIdentifier networkOptions:(id)options;
 - (id)asPersistedTaskAttribution;
-- (id)copyWithReplacementApplicationBundleIdentifier:(id)a3;
-- (id)copyWithReplacementNetworkOptions:(id)a3;
-- (id)copyWithReplacementTeamIdentifier:(id)a3;
+- (id)copyWithReplacementApplicationBundleIdentifier:(id)identifier;
+- (id)copyWithReplacementNetworkOptions:(id)options;
+- (id)copyWithReplacementTeamIdentifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
 @implementation TRITaskAttributionInternalInsecure
 
-+ (id)taskAttributionFromPersistedTask:(id)a3
++ (id)taskAttributionFromPersistedTask:(id)task
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (([v3 hasApplicationBundleId] & 1) == 0)
+  taskCopy = task;
+  if (([taskCopy hasApplicationBundleId] & 1) == 0)
   {
     v8 = TRILogCategory_Server();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
       _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Cannot decode message of type %@ with missing field: applicationBundleId", &v26, 0xCu);
     }
 
-    v7 = TRILogCategory_Server();
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    teamId2 = TRILogCategory_Server();
+    if (!os_log_type_enabled(teamId2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_15;
     }
@@ -44,13 +44,13 @@
     goto LABEL_14;
   }
 
-  v4 = [v3 applicationBundleId];
-  v5 = [v4 length];
+  applicationBundleId = [taskCopy applicationBundleId];
+  v5 = [applicationBundleId length];
 
   if (!v5)
   {
-    v7 = TRILogCategory_Server();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    teamId2 = TRILogCategory_Server();
+    if (os_log_type_enabled(teamId2, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v10 = NSStringFromClass(v12);
@@ -58,7 +58,7 @@
       v27 = v10;
       v11 = "Cannot decode message of type %@ with field of length 0: applicationBundleId";
 LABEL_14:
-      _os_log_error_impl(&dword_26F567000, v7, OS_LOG_TYPE_ERROR, v11, &v26, 0xCu);
+      _os_log_error_impl(&dword_26F567000, teamId2, OS_LOG_TYPE_ERROR, v11, &v26, 0xCu);
     }
 
 LABEL_15:
@@ -66,10 +66,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (([v3 hasCloudKitContainer] & 1) == 0)
+  if (([taskCopy hasCloudKitContainer] & 1) == 0)
   {
-    v7 = TRILogCategory_Server();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    teamId2 = TRILogCategory_Server();
+    if (os_log_type_enabled(teamId2, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v10 = NSStringFromClass(v13);
@@ -82,18 +82,18 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v6 = [v3 teamId];
-  if ([v6 length])
+  teamId = [taskCopy teamId];
+  if ([teamId length])
   {
-    v7 = [v3 teamId];
+    teamId2 = [taskCopy teamId];
   }
 
   else
   {
-    v7 = 0;
+    teamId2 = 0;
   }
 
-  if (![v3 hasNetworkBehavior] || (v17 = objc_alloc(MEMORY[0x277D736A0]), objc_msgSend(v3, "networkBehavior"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "initFromPersistedBehavior:", v18), v18, !v19))
+  if (![taskCopy hasNetworkBehavior] || (v17 = objc_alloc(MEMORY[0x277D736A0]), objc_msgSend(taskCopy, "networkBehavior"), v18 = objc_claimAutoreleasedReturnValue(), inexpensiveOptions = objc_msgSend(v17, "initFromPersistedBehavior:", v18), v18, !inexpensiveOptions))
   {
     v20 = TRILogCategory_Server();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -102,13 +102,13 @@ LABEL_15:
       _os_log_impl(&dword_26F567000, v20, OS_LOG_TYPE_DEFAULT, "unable to parse persisted network behavior, assuming discretionary", &v26, 2u);
     }
 
-    v19 = [MEMORY[0x277D736A0] inexpensiveOptions];
+    inexpensiveOptions = [MEMORY[0x277D736A0] inexpensiveOptions];
   }
 
   v21 = [TRITaskAttributionInternalInsecure alloc];
-  v22 = [v3 cloudKitContainer];
-  v23 = [v3 applicationBundleId];
-  v14 = [(TRITaskAttributionInternalInsecure *)v21 initWithTeamIdentifier:v7 triCloudKitContainer:v22 applicationBundleIdentifier:v23 networkOptions:v19];
+  cloudKitContainer = [taskCopy cloudKitContainer];
+  applicationBundleId2 = [taskCopy applicationBundleId];
+  v14 = [(TRITaskAttributionInternalInsecure *)v21 initWithTeamIdentifier:teamId2 triCloudKitContainer:cloudKitContainer applicationBundleIdentifier:applicationBundleId2 networkOptions:inexpensiveOptions];
 
 LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
@@ -119,11 +119,11 @@ LABEL_16:
 - (id)asPersistedTaskAttribution
 {
   v3 = objc_alloc_init(TRIPersistedTaskAttribution);
-  v4 = [(TRITaskAttributionInternalInsecure *)self teamIdentifier];
-  if ([v4 length])
+  teamIdentifier = [(TRITaskAttributionInternalInsecure *)self teamIdentifier];
+  if ([teamIdentifier length])
   {
-    v5 = [(TRITaskAttributionInternalInsecure *)self teamIdentifier];
-    [(TRIPersistedTaskAttribution *)v3 setTeamId:v5];
+    teamIdentifier2 = [(TRITaskAttributionInternalInsecure *)self teamIdentifier];
+    [(TRIPersistedTaskAttribution *)v3 setTeamId:teamIdentifier2];
   }
 
   else
@@ -131,36 +131,36 @@ LABEL_16:
     [(TRIPersistedTaskAttribution *)v3 setTeamId:0];
   }
 
-  v6 = [(TRITaskAttributionInternalInsecure *)self applicationBundleIdentifier];
-  [(TRIPersistedTaskAttribution *)v3 setApplicationBundleId:v6];
+  applicationBundleIdentifier = [(TRITaskAttributionInternalInsecure *)self applicationBundleIdentifier];
+  [(TRIPersistedTaskAttribution *)v3 setApplicationBundleId:applicationBundleIdentifier];
 
   [(TRIPersistedTaskAttribution *)v3 setCloudKitContainer:[(TRITaskAttributionInternalInsecure *)self triCloudKitContainer]];
-  v7 = [(TRITaskAttributionInternalInsecure *)self networkOptions];
-  v8 = [v7 serializeToPersistedBehavior];
-  [(TRIPersistedTaskAttribution *)v3 setNetworkBehavior:v8];
+  networkOptions = [(TRITaskAttributionInternalInsecure *)self networkOptions];
+  serializeToPersistedBehavior = [networkOptions serializeToPersistedBehavior];
+  [(TRIPersistedTaskAttribution *)v3 setNetworkBehavior:serializeToPersistedBehavior];
 
   return v3;
 }
 
-+ (id)taskAttributionFirstPartyWithNetworkOptions:(id)a3
++ (id)taskAttributionFirstPartyWithNetworkOptions:(id)options
 {
   v3 = MEMORY[0x277D737A8];
-  v4 = a3;
-  v5 = [v3 callerBundleId];
-  v6 = [[TRITaskAttributionInternalInsecure alloc] initWithTeamIdentifier:0 triCloudKitContainer:1 applicationBundleIdentifier:v5 networkOptions:v4];
+  optionsCopy = options;
+  callerBundleId = [v3 callerBundleId];
+  v6 = [[TRITaskAttributionInternalInsecure alloc] initWithTeamIdentifier:0 triCloudKitContainer:1 applicationBundleIdentifier:callerBundleId networkOptions:optionsCopy];
 
   return v6;
 }
 
-- (TRITaskAttributionInternalInsecure)initWithTeamIdentifier:(id)a3 triCloudKitContainer:(int)a4 applicationBundleIdentifier:(id)a5 networkOptions:(id)a6
+- (TRITaskAttributionInternalInsecure)initWithTeamIdentifier:(id)identifier triCloudKitContainer:(int)container applicationBundleIdentifier:(id)bundleIdentifier networkOptions:(id)options
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v13)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  optionsCopy = options;
+  v15 = optionsCopy;
+  if (bundleIdentifierCopy)
   {
-    if (v14)
+    if (optionsCopy)
     {
       goto LABEL_3;
     }
@@ -168,8 +168,8 @@ LABEL_16:
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:861 description:{@"Invalid parameter not satisfying: %@", @"applicationBundleIdentifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:861 description:{@"Invalid parameter not satisfying: %@", @"applicationBundleIdentifier != nil"}];
 
     if (v15)
     {
@@ -177,8 +177,8 @@ LABEL_16:
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"networkOptions != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:862 description:{@"Invalid parameter not satisfying: %@", @"networkOptions != nil"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -187,51 +187,51 @@ LABEL_3:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_teamIdentifier, a3);
-    v17->_triCloudKitContainer = a4;
-    objc_storeStrong(&v17->_applicationBundleIdentifier, a5);
-    objc_storeStrong(&v17->_networkOptions, a6);
+    objc_storeStrong(&v16->_teamIdentifier, identifier);
+    v17->_triCloudKitContainer = container;
+    objc_storeStrong(&v17->_applicationBundleIdentifier, bundleIdentifier);
+    objc_storeStrong(&v17->_networkOptions, options);
   }
 
   return v17;
 }
 
-- (id)copyWithReplacementTeamIdentifier:(id)a3
+- (id)copyWithReplacementTeamIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithTeamIdentifier:v4 triCloudKitContainer:self->_triCloudKitContainer applicationBundleIdentifier:self->_applicationBundleIdentifier networkOptions:self->_networkOptions];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithTeamIdentifier:identifierCopy triCloudKitContainer:self->_triCloudKitContainer applicationBundleIdentifier:self->_applicationBundleIdentifier networkOptions:self->_networkOptions];
 
   return v5;
 }
 
-- (id)copyWithReplacementApplicationBundleIdentifier:(id)a3
+- (id)copyWithReplacementApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithTeamIdentifier:self->_teamIdentifier triCloudKitContainer:self->_triCloudKitContainer applicationBundleIdentifier:v4 networkOptions:self->_networkOptions];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithTeamIdentifier:self->_teamIdentifier triCloudKitContainer:self->_triCloudKitContainer applicationBundleIdentifier:identifierCopy networkOptions:self->_networkOptions];
 
   return v5;
 }
 
-- (id)copyWithReplacementNetworkOptions:(id)a3
+- (id)copyWithReplacementNetworkOptions:(id)options
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithTeamIdentifier:self->_teamIdentifier triCloudKitContainer:self->_triCloudKitContainer applicationBundleIdentifier:self->_applicationBundleIdentifier networkOptions:v4];
+  optionsCopy = options;
+  v5 = [objc_alloc(objc_opt_class()) initWithTeamIdentifier:self->_teamIdentifier triCloudKitContainer:self->_triCloudKitContainer applicationBundleIdentifier:self->_applicationBundleIdentifier networkOptions:optionsCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToTaskAttribution:(id)a3
+- (BOOL)isEqualToTaskAttribution:(id)attribution
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  attributionCopy = attribution;
+  v5 = attributionCopy;
+  if (!attributionCopy)
   {
     goto LABEL_12;
   }
 
   v6 = self->_teamIdentifier == 0;
-  v7 = [v4 teamIdentifier];
-  v8 = v7 != 0;
+  teamIdentifier = [attributionCopy teamIdentifier];
+  v8 = teamIdentifier != 0;
 
   if (v6 == v8)
   {
@@ -241,8 +241,8 @@ LABEL_3:
   teamIdentifier = self->_teamIdentifier;
   if (teamIdentifier)
   {
-    v10 = [v5 teamIdentifier];
-    v11 = [(NSString *)teamIdentifier isEqual:v10];
+    teamIdentifier2 = [v5 teamIdentifier];
+    v11 = [(NSString *)teamIdentifier isEqual:teamIdentifier2];
 
     if (!v11)
     {
@@ -257,8 +257,8 @@ LABEL_3:
   }
 
   v13 = self->_applicationBundleIdentifier == 0;
-  v14 = [v5 applicationBundleIdentifier];
-  v15 = v14 != 0;
+  applicationBundleIdentifier = [v5 applicationBundleIdentifier];
+  v15 = applicationBundleIdentifier != 0;
 
   if (v13 == v15)
   {
@@ -268,8 +268,8 @@ LABEL_3:
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   if (applicationBundleIdentifier)
   {
-    v17 = [v5 applicationBundleIdentifier];
-    v18 = [(NSString *)applicationBundleIdentifier isEqual:v17];
+    applicationBundleIdentifier2 = [v5 applicationBundleIdentifier];
+    v18 = [(NSString *)applicationBundleIdentifier isEqual:applicationBundleIdentifier2];
 
     if (!v18)
     {
@@ -278,8 +278,8 @@ LABEL_3:
   }
 
   v19 = self->_networkOptions == 0;
-  v20 = [v5 networkOptions];
-  v21 = v20 != 0;
+  networkOptions = [v5 networkOptions];
+  v21 = networkOptions != 0;
 
   if (v19 == v21)
   {
@@ -292,8 +292,8 @@ LABEL_12:
     networkOptions = self->_networkOptions;
     if (networkOptions)
     {
-      v23 = [v5 networkOptions];
-      v24 = [(TRIDownloadOptions *)networkOptions isEqual:v23];
+      networkOptions2 = [v5 networkOptions];
+      v24 = [(TRIDownloadOptions *)networkOptions isEqual:networkOptions2];
     }
 
     else
@@ -305,18 +305,18 @@ LABEL_12:
   return v24 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRITaskAttributionInternalInsecure *)self isEqualToTaskAttribution:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRITaskAttributionInternalInsecure *)self isEqualToTaskAttribution:v5];
   }
 
   return v6;

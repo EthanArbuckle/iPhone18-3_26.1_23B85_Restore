@@ -1,15 +1,15 @@
 @interface BCMessage
-+ (id)defaultBubbleTitleFor:(id)a3;
-- (BCMessage)initWithData:(id)a3 url:(id)a4 messageGUID:(id)a5 isFromMe:(BOOL)a6;
++ (id)defaultBubbleTitleFor:(id)for;
+- (BCMessage)initWithData:(id)data url:(id)url messageGUID:(id)d isFromMe:(BOOL)me;
 - (BOOL)isVersionSupported;
 - (NSData)data;
 - (NSDictionary)dictionaryValue;
 - (NSString)rootKey;
 - (NSURL)url;
 - (UIImage)image;
-- (id)encodedStringForDictionary:(uint64_t)a1;
-- (id)initFromOriginalMessage:(id)a3 rootKey:(id)a4 rootObject:(id)a5 receivedMessage:(id)a6 replyMessage:(id)a7;
-- (id)makeRootObjectWithMessageData:(id)a3 dictionary:(id)a4 imageDictionary:(id)a5 version:(int64_t)a6;
+- (id)encodedStringForDictionary:(uint64_t)dictionary;
+- (id)initFromOriginalMessage:(id)message rootKey:(id)key rootObject:(id)object receivedMessage:(id)receivedMessage replyMessage:(id)replyMessage;
+- (id)makeRootObjectWithMessageData:(id)data dictionary:(id)dictionary imageDictionary:(id)imageDictionary version:(int64_t)version;
 - (int64_t)style;
 - (int64_t)type;
 - (uint64_t)isAnyUnknownRootKey;
@@ -18,24 +18,24 @@
 
 @implementation BCMessage
 
-- (BCMessage)initWithData:(id)a3 url:(id)a4 messageGUID:(id)a5 isFromMe:(BOOL)a6
+- (BCMessage)initWithData:(id)data url:(id)url messageGUID:(id)d isFromMe:(BOOL)me
 {
-  v6 = a6;
+  meCopy = me;
   v81 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  urlCopy = url;
+  dCopy = d;
   v13 = LogCategory_Daemon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v50 = [v10 description];
-    v51 = [v11 description];
+    v50 = [dataCopy description];
+    v51 = [urlCopy description];
     *buf = 138412802;
     v76 = v50;
     v77 = 2112;
     v78 = v51;
     v79 = 1024;
-    v80 = v6;
+    v80 = meCopy;
     _os_log_debug_impl(&dword_236EA0000, v13, OS_LOG_TYPE_DEBUG, "BCMessage: initWithData: %@ url: %@ isFromMe: %d", buf, 0x1Cu);
   }
 
@@ -47,11 +47,11 @@
     goto LABEL_35;
   }
 
-  v15 = [[BCMessageData alloc] initWithUrl:v11 data:v10];
+  v15 = [[BCMessageData alloc] initWithUrl:urlCopy data:dataCopy];
   objc_storeStrong(&v14->_messageData, v15);
-  v16 = [(BCMessageData *)v15 combinedDictionary];
+  combinedDictionary = [(BCMessageData *)v15 combinedDictionary];
 
-  if (!v16)
+  if (!combinedDictionary)
   {
     v47 = LogCategory_Daemon();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -63,12 +63,12 @@
     goto LABEL_22;
   }
 
-  v73 = v10;
-  v17 = v12;
-  v18 = [(BCMessageData *)v15 combinedDictionary];
-  v19 = [v18 objectForKeyedSubscript:@"version"];
-  v20 = [(BCMessageData *)v15 combinedDictionary];
-  v21 = v20;
+  v73 = dataCopy;
+  v17 = dCopy;
+  combinedDictionary2 = [(BCMessageData *)v15 combinedDictionary];
+  v19 = [combinedDictionary2 objectForKeyedSubscript:@"version"];
+  combinedDictionary3 = [(BCMessageData *)v15 combinedDictionary];
+  v21 = combinedDictionary3;
   if (v19)
   {
     v22 = @"version";
@@ -79,30 +79,30 @@
     v22 = @"mspVersion";
   }
 
-  v23 = [v20 objectForKeyedSubscript:v22];
+  v23 = [combinedDictionary3 objectForKeyedSubscript:v22];
 
   v24 = v23;
   if (!v23)
   {
     v48 = LogCategory_Daemon();
-    v12 = v17;
+    dCopy = v17;
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
       _os_log_error_impl(&dword_236EA0000, v48, OS_LOG_TYPE_ERROR, "BCMessage: Cannot initialize with nil version", buf, 2u);
     }
 
-    v10 = v73;
+    dataCopy = v73;
     goto LABEL_21;
   }
 
-  v25 = [v23 integerValue];
-  v14->_version = v25;
-  if (v25 <= 0)
+  integerValue = [v23 integerValue];
+  v14->_version = integerValue;
+  if (integerValue <= 0)
   {
     v48 = LogCategory_Daemon();
-    v12 = v17;
-    v10 = v73;
+    dCopy = v17;
+    dataCopy = v73;
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
     {
       version = v14->_version;
@@ -118,61 +118,61 @@ LABEL_22:
     goto LABEL_36;
   }
 
-  v26 = [(BCMessageData *)v15 combinedDictionary];
-  v27 = [v26 objectForKeyedSubscript:@"requestIdentifier"];
+  combinedDictionary4 = [(BCMessageData *)v15 combinedDictionary];
+  v27 = [combinedDictionary4 objectForKeyedSubscript:@"requestIdentifier"];
 
-  v12 = v17;
+  dCopy = v17;
   obj = v27;
   if (v27)
   {
     v70 = v24;
     v28 = [BCImageStore alloc];
-    v29 = [(BCMessageData *)v15 imagesArray];
-    v30 = [(BCImageStore *)v28 initWithArray:v29];
+    imagesArray = [(BCMessageData *)v15 imagesArray];
+    v30 = [(BCImageStore *)v28 initWithArray:imagesArray];
 
-    v31 = [(BCMessageData *)v15 combinedDictionary];
-    v32 = [(BCMessage *)v14 rootKey];
-    v33 = [v31 objectForKey:v32];
+    combinedDictionary5 = [(BCMessageData *)v15 combinedDictionary];
+    rootKey = [(BCMessage *)v14 rootKey];
+    v33 = [combinedDictionary5 objectForKey:rootKey];
 
-    v34 = [(BCImageStore *)v30 dictionary];
-    v14->_isFromMe = v6;
+    dictionary = [(BCImageStore *)v30 dictionary];
+    v14->_isFromMe = meCopy;
     v69 = v30;
     objc_storeStrong(&v14->_imageStore, v30);
     if ([(BCMessage *)v14 isVersionSupported])
     {
-      v35 = [(BCMessage *)v14 makeRootObjectWithMessageData:v15 dictionary:v33 imageDictionary:v34 version:v14->_version];
-      v36 = v34;
+      v35 = [(BCMessage *)v14 makeRootObjectWithMessageData:v15 dictionary:v33 imageDictionary:dictionary version:v14->_version];
+      v36 = dictionary;
       rootObject = v14->_rootObject;
       v14->_rootObject = v35;
       v67 = v35;
 
       v38 = [BCMessageInfo alloc];
-      v39 = [(BCMessageData *)v15 replyMessageDictionary];
-      v40 = [(BCMessageInfo *)v38 initWithDictionary:v39 imageDictionary:v36];
+      replyMessageDictionary = [(BCMessageData *)v15 replyMessageDictionary];
+      v40 = [(BCMessageInfo *)v38 initWithDictionary:replyMessageDictionary imageDictionary:v36];
       replyMessage = v14->_replyMessage;
       v14->_replyMessage = v40;
 
       v42 = [BCMessageInfo alloc];
-      v43 = [(BCMessageData *)v15 receivedMessageDictionary];
+      receivedMessageDictionary = [(BCMessageData *)v15 receivedMessageDictionary];
       v44 = v42;
-      v34 = v36;
-      v45 = [(BCMessageInfo *)v44 initWithDictionary:v43 imageDictionary:v36];
+      dictionary = v36;
+      v45 = [(BCMessageInfo *)v44 initWithDictionary:receivedMessageDictionary imageDictionary:v36];
       receivedMessage = v14->_receivedMessage;
       v14->_receivedMessage = v45;
     }
 
     else
     {
-      v43 = LogCategory_Daemon();
-      if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+      receivedMessageDictionary = LogCategory_Daemon();
+      if (os_log_type_enabled(receivedMessageDictionary, OS_LOG_TYPE_DEFAULT))
       {
-        v53 = [(BCMessage *)v14 type];
+        type = [(BCMessage *)v14 type];
         v54 = v14->_version;
         *buf = 134218240;
-        v76 = v53;
+        v76 = type;
         v77 = 2048;
         v78 = v54;
-        _os_log_impl(&dword_236EA0000, v43, OS_LOG_TYPE_DEFAULT, "BCMessage: Cannot create rootObject for BCMessage of type %ld since version %ld of payload is not supported", buf, 0x16u);
+        _os_log_impl(&dword_236EA0000, receivedMessageDictionary, OS_LOG_TYPE_DEFAULT, "BCMessage: Cannot create rootObject for BCMessage of type %ld since version %ld of payload is not supported", buf, 0x16u);
       }
     }
 
@@ -183,23 +183,23 @@ LABEL_22:
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
     {
       [(BCMessageData *)v15 combinedDictionary];
-      v65 = v64 = v34;
+      v65 = v64 = dictionary;
       *buf = 138412290;
       v76 = v65;
       _os_log_debug_impl(&dword_236EA0000, v56, OS_LOG_TYPE_DEBUG, "BCMessage: messageData: %@ ", buf, 0xCu);
 
-      v34 = v64;
+      dictionary = v64;
     }
 
     v57 = LogCategory_Daemon();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
     {
-      v68 = [(BCMessageData *)v15 combinedDictionary];
-      [v68 objectForKeyedSubscript:@"version"];
+      combinedDictionary6 = [(BCMessageData *)v15 combinedDictionary];
+      [combinedDictionary6 objectForKeyedSubscript:@"version"];
       v72 = v33;
-      v59 = v58 = v34;
-      v60 = [(BCMessageData *)v15 combinedDictionary];
-      v61 = [v60 objectForKeyedSubscript:@"mspVersion"];
+      v59 = v58 = dictionary;
+      combinedDictionary7 = [(BCMessageData *)v15 combinedDictionary];
+      v61 = [combinedDictionary7 objectForKeyedSubscript:@"mspVersion"];
       *buf = 138412546;
       v76 = v59;
       v77 = 2112;
@@ -207,17 +207,17 @@ LABEL_22:
       _os_log_impl(&dword_236EA0000, v57, OS_LOG_TYPE_DEFAULT, "BCMessage: version: %@ mspVersion: %@", buf, 0x16u);
 
       v55 = v70;
-      v34 = v58;
+      dictionary = v58;
       v33 = v72;
     }
 
-    if (v12)
+    if (dCopy)
     {
-      objc_storeStrong(&v14->_messageGUID, a5);
+      objc_storeStrong(&v14->_messageGUID, d);
       [(BCMessage *)v14 updateTitles];
     }
 
-    v10 = v73;
+    dataCopy = v73;
 LABEL_35:
     v49 = v14;
     goto LABEL_36;
@@ -231,7 +231,7 @@ LABEL_35:
   }
 
   v49 = 0;
-  v10 = v73;
+  dataCopy = v73;
 LABEL_36:
 
   v62 = *MEMORY[0x277D85DE8];
@@ -240,100 +240,100 @@ LABEL_36:
 
 - (void)updateTitles
 {
-  if ([a1 isFromMe])
+  if ([self isFromMe])
   {
-    [a1 replyMessage];
+    [self replyMessage];
   }
 
   else
   {
-    [a1 receivedMessage];
+    [self receivedMessage];
   }
   v25 = ;
-  v2 = [v25 title];
-  [a1 setTitle:v2];
+  title = [v25 title];
+  [self setTitle:title];
 
-  v3 = [v25 alternateTitle];
+  alternateTitle = [v25 alternateTitle];
 
-  if (v3)
+  if (alternateTitle)
   {
-    v4 = [v25 alternateTitle];
-    [v25 setTitle:v4];
+    alternateTitle2 = [v25 alternateTitle];
+    [v25 setTitle:alternateTitle2];
   }
 
-  v5 = [a1 title];
-  if (!v5 || (v6 = v5, [a1 rootKey], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"error"), v7, v6, v8))
+  title2 = [self title];
+  if (!title2 || (v6 = title2, [self rootKey], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"error"), v7, v6, v8))
   {
-    v9 = [BCMessage defaultBubbleTitleFor:a1];
+    v9 = [BCMessage defaultBubbleTitleFor:self];
     [v25 setTitle:v9];
   }
 
-  v10 = [v25 subtitle];
-  if (v10)
+  subtitle = [v25 subtitle];
+  if (subtitle)
   {
-    v11 = v10;
-    v12 = [a1 rootKey];
-    v13 = [v12 isEqualToString:@"error"];
+    v11 = subtitle;
+    rootKey = [self rootKey];
+    v13 = [rootKey isEqualToString:@"error"];
 
     if ((v13 & 1) == 0)
     {
       v14 = objc_alloc(MEMORY[0x277CCA898]);
-      v15 = [v25 subtitle];
-      v16 = [v14 initWithString:v15];
-      [a1 setSubtitle:v16];
+      subtitle2 = [v25 subtitle];
+      v16 = [v14 initWithString:subtitle2];
+      [self setSubtitle:v16];
     }
   }
 
-  v17 = [a1 rootObject];
+  rootObject = [self rootObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [[BCInternalAuthenticationManager alloc] initWithAuthenticationRequest:v17];
-    v19 = [(BCInternalAuthenticationManager *)v18 title];
-    [a1 setTitle:v19];
+    v18 = [[BCInternalAuthenticationManager alloc] initWithAuthenticationRequest:rootObject];
+    title3 = [(BCInternalAuthenticationManager *)v18 title];
+    [self setTitle:title3];
 
     v20 = objc_alloc(MEMORY[0x277CCA898]);
-    v21 = [(BCInternalAuthenticationManager *)v18 subtitle];
-    v22 = [v20 initWithString:v21];
-    [a1 setSubtitle:v22];
+    subtitle3 = [(BCInternalAuthenticationManager *)v18 subtitle];
+    v22 = [v20 initWithString:subtitle3];
+    [self setSubtitle:v22];
   }
 
-  v23 = [a1 title];
-  [a1 setSummaryText:v23];
+  title4 = [self title];
+  [self setSummaryText:title4];
 
-  v24 = [a1 title];
-  [a1 setAccessibilityLabel:v24];
+  title5 = [self title];
+  [self setAccessibilityLabel:title5];
 }
 
-- (id)initFromOriginalMessage:(id)a3 rootKey:(id)a4 rootObject:(id)a5 receivedMessage:(id)a6 replyMessage:(id)a7
+- (id)initFromOriginalMessage:(id)message rootKey:(id)key rootObject:(id)object receivedMessage:(id)receivedMessage replyMessage:(id)replyMessage
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  messageCopy = message;
+  keyCopy = key;
+  objectCopy = object;
+  receivedMessageCopy = receivedMessage;
+  replyMessageCopy = replyMessage;
   v25.receiver = self;
   v25.super_class = BCMessage;
   v17 = [(BCMessage *)&v25 init];
   if (v17)
   {
-    v17->_version = [v12 version];
-    v18 = [v12 requestIdentifier];
+    v17->_version = [messageCopy version];
+    requestIdentifier = [messageCopy requestIdentifier];
     requestIdentifier = v17->_requestIdentifier;
-    v17->_requestIdentifier = v18;
+    v17->_requestIdentifier = requestIdentifier;
 
-    objc_storeStrong(&v17->_rootObject, a5);
-    objc_storeStrong(&v17->_internalRootKey, a4);
+    objc_storeStrong(&v17->_rootObject, object);
+    objc_storeStrong(&v17->_internalRootKey, key);
     v17->_isFromMe = 1;
-    objc_storeStrong(&v17->_replyMessage, a7);
-    objc_storeStrong(&v17->_receivedMessage, a6);
-    v20 = [v12 imageStore];
+    objc_storeStrong(&v17->_replyMessage, replyMessage);
+    objc_storeStrong(&v17->_receivedMessage, receivedMessage);
+    imageStore = [messageCopy imageStore];
     imageStore = v17->_imageStore;
-    v17->_imageStore = v20;
+    v17->_imageStore = imageStore;
 
-    v22 = [v12 messageGUID];
+    messageGUID = [messageCopy messageGUID];
     messageGUID = v17->_messageGUID;
-    v17->_messageGUID = v22;
+    v17->_messageGUID = messageGUID;
 
     [(BCMessage *)v17 updateTitles];
   }
@@ -344,43 +344,43 @@ LABEL_36:
 - (NSDictionary)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(BCMessage *)self rootObject];
-  v5 = [v4 dictionaryValue];
-  v6 = [(BCMessage *)self rootKey];
-  [v3 setObject:v5 forKey:v6];
+  rootObject = [(BCMessage *)self rootObject];
+  dictionaryValue = [rootObject dictionaryValue];
+  rootKey = [(BCMessage *)self rootKey];
+  [v3 setObject:dictionaryValue forKey:rootKey];
 
-  v7 = [(BCMessage *)self requestIdentifier];
-  [v3 setObject:v7 forKey:@"requestIdentifier"];
+  requestIdentifier = [(BCMessage *)self requestIdentifier];
+  [v3 setObject:requestIdentifier forKey:@"requestIdentifier"];
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", -[BCMessage version](self, "version")];
   [v3 setObject:v8 forKey:@"version"];
 
-  v9 = [(BCMessage *)self imageStore];
-  v10 = [v9 rawArray];
+  imageStore = [(BCMessage *)self imageStore];
+  rawArray = [imageStore rawArray];
 
-  if (v10)
+  if (rawArray)
   {
-    v11 = [(BCMessage *)self imageStore];
-    v12 = [v11 rawArray];
-    [v3 setObject:v12 forKey:@"images"];
+    imageStore2 = [(BCMessage *)self imageStore];
+    rawArray2 = [imageStore2 rawArray];
+    [v3 setObject:rawArray2 forKey:@"images"];
   }
 
-  v13 = [(BCMessage *)self receivedMessage];
+  receivedMessage = [(BCMessage *)self receivedMessage];
 
-  if (v13)
+  if (receivedMessage)
   {
-    v14 = [(BCMessage *)self receivedMessage];
-    v15 = [v14 dictionaryValue];
-    [v3 setObject:v15 forKey:@"receivedMessage"];
+    receivedMessage2 = [(BCMessage *)self receivedMessage];
+    dictionaryValue2 = [receivedMessage2 dictionaryValue];
+    [v3 setObject:dictionaryValue2 forKey:@"receivedMessage"];
   }
 
-  v16 = [(BCMessage *)self replyMessage];
+  replyMessage = [(BCMessage *)self replyMessage];
 
-  if (v16)
+  if (replyMessage)
   {
-    v17 = [(BCMessage *)self replyMessage];
-    v18 = [v17 dictionaryValue];
-    [v3 setObject:v18 forKey:@"replyMessage"];
+    replyMessage2 = [(BCMessage *)self replyMessage];
+    dictionaryValue3 = [replyMessage2 dictionaryValue];
+    [v3 setObject:dictionaryValue3 forKey:@"replyMessage"];
   }
 
   v19 = [v3 copy];
@@ -390,16 +390,16 @@ LABEL_36:
 
 - (NSURL)url
 {
-  v3 = [(BCMessage *)self receivedMessage];
-  v4 = [v3 dictionaryValue];
-  v5 = [(BCMessage *)self encodedStringForDictionary:v4];
+  receivedMessage = [(BCMessage *)self receivedMessage];
+  dictionaryValue = [receivedMessage dictionaryValue];
+  v5 = [(BCMessage *)self encodedStringForDictionary:dictionaryValue];
 
-  v6 = [(BCMessage *)self replyMessage];
-  v7 = [v6 dictionaryValue];
-  v8 = [(BCMessage *)self encodedStringForDictionary:v7];
+  replyMessage = [(BCMessage *)self replyMessage];
+  dictionaryValue2 = [replyMessage dictionaryValue];
+  v8 = [(BCMessage *)self encodedStringForDictionary:dictionaryValue2];
 
-  v9 = [(BCMessage *)self dictionaryValue];
-  v10 = [(BCMessage *)self encodedStringForDictionary:v9];
+  dictionaryValue3 = [(BCMessage *)self dictionaryValue];
+  v10 = [(BCMessage *)self encodedStringForDictionary:dictionaryValue3];
 
   v11 = objc_opt_new();
   v12 = objc_opt_new();
@@ -427,11 +427,11 @@ LABEL_36:
   return v16;
 }
 
-- (id)encodedStringForDictionary:(uint64_t)a1
+- (id)encodedStringForDictionary:(uint64_t)dictionary
 {
-  v2 = 0;
+  normalizedBase64Encoded = 0;
   v12 = *MEMORY[0x277D85DE8];
-  if (a1 && a2)
+  if (dictionary && a2)
   {
     v9 = 0;
     v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a2 options:1 error:&v9];
@@ -446,7 +446,7 @@ LABEL_36:
         _os_log_error_impl(&dword_236EA0000, v5, OS_LOG_TYPE_ERROR, "BCMessage: error encoding dictionary %@", buf, 0xCu);
       }
 
-      v2 = 0;
+      normalizedBase64Encoded = 0;
     }
 
     else
@@ -454,21 +454,21 @@ LABEL_36:
       v6 = [v3 base64EncodedDataWithOptions:0];
 
       v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
-      v2 = [(NSString *)v5 normalizedBase64Encoded];
+      normalizedBase64Encoded = [(NSString *)v5 normalizedBase64Encoded];
       v3 = v6;
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return normalizedBase64Encoded;
 }
 
 - (NSData)data
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(BCMessage *)self dictionaryValue];
-  v4 = [v2 dataWithJSONObject:v3 options:0 error:0];
+  dictionaryValue = [(BCMessage *)self dictionaryValue];
+  v4 = [v2 dataWithJSONObject:dictionaryValue options:0 error:0];
 
   return v4;
 }
@@ -486,22 +486,22 @@ LABEL_36:
     [(BCMessage *)self receivedMessage];
   }
   v3 = ;
-  v4 = [v3 style];
+  style = [v3 style];
 
   v5 = LogCategory_Daemon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = style;
     _os_log_impl(&dword_236EA0000, v5, OS_LOG_TYPE_DEFAULT, "BCMessage: style %@", &v9, 0xCu);
   }
 
-  if ([v4 isEqualToString:@"small"])
+  if ([style isEqualToString:@"small"])
   {
     v6 = 1;
   }
 
-  else if ([v4 isEqualToString:@"large"])
+  else if ([style isEqualToString:@"large"])
   {
     v6 = 2;
   }
@@ -517,72 +517,72 @@ LABEL_36:
 
 - (int64_t)type
 {
-  v3 = [(BCMessage *)self rootKey];
-  v4 = [v3 isEqualToString:@"authenticate"];
+  rootKey = [(BCMessage *)self rootKey];
+  v4 = [rootKey isEqualToString:@"authenticate"];
 
   if (v4)
   {
     return 5;
   }
 
-  v6 = [(BCMessage *)self rootKey];
-  v7 = [v6 isEqualToString:@"internalAuthenticate"];
+  rootKey2 = [(BCMessage *)self rootKey];
+  v7 = [rootKey2 isEqualToString:@"internalAuthenticate"];
 
   if (v7)
   {
     return 6;
   }
 
-  v8 = [(BCMessage *)self rootKey];
-  v9 = [v8 isEqualToString:@"content"];
+  rootKey3 = [(BCMessage *)self rootKey];
+  v9 = [rootKey3 isEqualToString:@"content"];
 
   if (v9)
   {
     return 3;
   }
 
-  v10 = [(BCMessage *)self rootKey];
-  v11 = [v10 isEqualToString:@"listPicker"];
+  rootKey4 = [(BCMessage *)self rootKey];
+  v11 = [rootKey4 isEqualToString:@"listPicker"];
 
   if (v11)
   {
     return 1;
   }
 
-  v12 = [(BCMessage *)self rootKey];
-  v13 = [v12 isEqualToString:@"quick-reply"];
+  rootKey5 = [(BCMessage *)self rootKey];
+  v13 = [rootKey5 isEqualToString:@"quick-reply"];
 
   if (v13)
   {
     return 8;
   }
 
-  v14 = [(BCMessage *)self rootKey];
-  v15 = [v14 isEqualToString:@"event"];
+  rootKey6 = [(BCMessage *)self rootKey];
+  v15 = [rootKey6 isEqualToString:@"event"];
 
   if (v15)
   {
     return 2;
   }
 
-  v16 = [(BCMessage *)self rootKey];
-  v17 = [v16 isEqualToString:@"payment"];
+  rootKey7 = [(BCMessage *)self rootKey];
+  v17 = [rootKey7 isEqualToString:@"payment"];
 
   if (v17)
   {
     return 0;
   }
 
-  v18 = [(BCMessage *)self rootKey];
-  v19 = [v18 isEqualToString:@"dynamic"];
+  rootKey8 = [(BCMessage *)self rootKey];
+  v19 = [rootKey8 isEqualToString:@"dynamic"];
 
   if (v19)
   {
     return 7;
   }
 
-  v20 = [(BCMessage *)self rootKey];
-  v21 = [v20 isEqualToString:@"unknown"];
+  rootKey9 = [(BCMessage *)self rootKey];
+  v21 = [rootKey9 isEqualToString:@"unknown"];
 
   if (v21)
   {
@@ -607,9 +607,9 @@ LABEL_36:
     [(BCMessage *)self receivedMessage];
   }
   v3 = ;
-  v4 = [v3 image];
+  image = [v3 image];
 
-  return v4;
+  return image;
 }
 
 - (NSString)rootKey
@@ -624,66 +624,66 @@ LABEL_36:
     }
   }
 
-  v5 = [(BCMessage *)self messageData];
-  v6 = [v5 combinedDictionary];
+  messageData = [(BCMessage *)self messageData];
+  combinedDictionary = [messageData combinedDictionary];
   v4 = @"internalAuthenticate";
-  v7 = [v6 objectForKey:@"internalAuthenticate"];
+  v7 = [combinedDictionary objectForKey:@"internalAuthenticate"];
 
   if (!v7)
   {
-    v8 = [(BCMessage *)self messageData];
-    v9 = [v8 combinedDictionary];
+    messageData2 = [(BCMessage *)self messageData];
+    combinedDictionary2 = [messageData2 combinedDictionary];
     v4 = @"authenticate";
-    v10 = [v9 objectForKey:@"authenticate"];
+    v10 = [combinedDictionary2 objectForKey:@"authenticate"];
 
     if (!v10)
     {
-      v11 = [(BCMessage *)self messageData];
-      v12 = [v11 combinedDictionary];
+      messageData3 = [(BCMessage *)self messageData];
+      combinedDictionary3 = [messageData3 combinedDictionary];
       v4 = @"listPicker";
-      v13 = [v12 objectForKey:@"listPicker"];
+      v13 = [combinedDictionary3 objectForKey:@"listPicker"];
 
       if (!v13)
       {
-        v14 = [(BCMessage *)self messageData];
-        v15 = [v14 combinedDictionary];
+        messageData4 = [(BCMessage *)self messageData];
+        combinedDictionary4 = [messageData4 combinedDictionary];
         v4 = @"quick-reply";
-        v16 = [v15 objectForKey:@"quick-reply"];
+        v16 = [combinedDictionary4 objectForKey:@"quick-reply"];
 
         if (!v16)
         {
-          v17 = [(BCMessage *)self messageData];
-          v18 = [v17 combinedDictionary];
+          messageData5 = [(BCMessage *)self messageData];
+          combinedDictionary5 = [messageData5 combinedDictionary];
           v4 = @"event";
-          v19 = [v18 objectForKey:@"event"];
+          v19 = [combinedDictionary5 objectForKey:@"event"];
 
           if (!v19)
           {
-            v20 = [(BCMessage *)self messageData];
-            v21 = [v20 combinedDictionary];
+            messageData6 = [(BCMessage *)self messageData];
+            combinedDictionary6 = [messageData6 combinedDictionary];
             v4 = @"content";
-            v22 = [v21 objectForKey:@"content"];
+            v22 = [combinedDictionary6 objectForKey:@"content"];
 
             if (!v22)
             {
-              v23 = [(BCMessage *)self messageData];
-              v24 = [v23 combinedDictionary];
+              messageData7 = [(BCMessage *)self messageData];
+              combinedDictionary7 = [messageData7 combinedDictionary];
               v4 = @"payment";
-              v25 = [v24 objectForKey:@"payment"];
+              v25 = [combinedDictionary7 objectForKey:@"payment"];
 
               if (!v25)
               {
-                v26 = [(BCMessage *)self messageData];
-                v27 = [v26 combinedDictionary];
+                messageData8 = [(BCMessage *)self messageData];
+                combinedDictionary8 = [messageData8 combinedDictionary];
                 v4 = @"dynamic";
-                v28 = [v27 objectForKey:@"dynamic"];
+                v28 = [combinedDictionary8 objectForKey:@"dynamic"];
                 if (v28)
                 {
                   v29 = v28;
-                  v30 = [(BCMessage *)self messageData];
-                  v31 = [v30 combinedDictionary];
+                  messageData9 = [(BCMessage *)self messageData];
+                  combinedDictionary9 = [messageData9 combinedDictionary];
                   v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", @"dynamic", @"data", @"encryptionKey"];
-                  v33 = [v31 valueForKeyPath:v32];
+                  v33 = [combinedDictionary9 valueForKeyPath:v32];
                   v34 = [v33 length];
 
                   if (!v34)
@@ -696,10 +696,10 @@ LABEL_36:
                 {
                 }
 
-                v35 = [(BCMessage *)self messageData];
-                v36 = [v35 combinedDictionary];
+                messageData10 = [(BCMessage *)self messageData];
+                combinedDictionary10 = [messageData10 combinedDictionary];
                 v4 = @"notification";
-                v37 = [v36 objectForKey:@"notification"];
+                v37 = [combinedDictionary10 objectForKey:@"notification"];
 
                 if (!v37)
                 {
@@ -729,7 +729,7 @@ LABEL_19:
 - (uint64_t)isAnyUnknownRootKey
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     if (qword_27DE8BA78 != -1)
     {
@@ -740,11 +740,11 @@ LABEL_19:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v2 = [a1 messageData];
-    v3 = [v2 combinedDictionary];
-    v4 = [v3 allKeys];
+    messageData = [self messageData];
+    combinedDictionary = [messageData combinedDictionary];
+    allKeys = [combinedDictionary allKeys];
 
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = *v11;
@@ -754,7 +754,7 @@ LABEL_19:
         {
           if (*v11 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           if (![_MergedGlobals_4 containsObject:*(*(&v10 + 1) + 8 * i)])
@@ -764,7 +764,7 @@ LABEL_19:
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v5)
         {
           continue;
@@ -786,22 +786,22 @@ LABEL_14:
   return v5;
 }
 
-- (id)makeRootObjectWithMessageData:(id)a3 dictionary:(id)a4 imageDictionary:(id)a5 version:(int64_t)a6
+- (id)makeRootObjectWithMessageData:(id)data dictionary:(id)dictionary imageDictionary:(id)imageDictionary version:(int64_t)version
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 combinedDictionary];
-  v12 = [v11 objectForKey:@"internalAuthenticate"];
+  dataCopy = data;
+  dictionaryCopy = dictionary;
+  combinedDictionary = [dataCopy combinedDictionary];
+  v12 = [combinedDictionary objectForKey:@"internalAuthenticate"];
   if (v12)
   {
     v13 = v12;
-    v14 = [(BCMessage *)self isFromMe];
+    isFromMe = [(BCMessage *)self isFromMe];
 
-    if (v14)
+    if (isFromMe)
     {
       v15 = BCInternalAuthenticationResponse;
 LABEL_7:
-      v18 = [[v15 alloc] initWithDictionary:v10];
+      v18 = [[v15 alloc] initWithDictionary:dictionaryCopy];
 LABEL_8:
       v19 = v18;
       goto LABEL_9;
@@ -812,8 +812,8 @@ LABEL_8:
   {
   }
 
-  v16 = [v9 combinedDictionary];
-  v17 = [v16 objectForKey:@"internalAuthenticate"];
+  combinedDictionary2 = [dataCopy combinedDictionary];
+  v17 = [combinedDictionary2 objectForKey:@"internalAuthenticate"];
 
   if (v17)
   {
@@ -821,16 +821,16 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v21 = [v9 combinedDictionary];
-  v22 = [v21 objectForKey:@"authenticate"];
+  combinedDictionary3 = [dataCopy combinedDictionary];
+  v22 = [combinedDictionary3 objectForKey:@"authenticate"];
   if (v22)
   {
     v23 = v22;
-    v24 = [(BCMessage *)self isFromMe];
+    isFromMe2 = [(BCMessage *)self isFromMe];
 
-    if (v24)
+    if (isFromMe2)
     {
-      v18 = [BCOAuth2ResponseFactory makeResponseObjectWithDictionary:v10 version:a6];
+      v18 = [BCOAuth2ResponseFactory makeResponseObjectWithDictionary:dictionaryCopy version:version];
       goto LABEL_8;
     }
   }
@@ -839,12 +839,12 @@ LABEL_8:
   {
   }
 
-  v25 = [v9 combinedDictionary];
-  v26 = [v25 objectForKey:@"authenticate"];
+  combinedDictionary4 = [dataCopy combinedDictionary];
+  v26 = [combinedDictionary4 objectForKey:@"authenticate"];
 
   if (v26)
   {
-    v18 = [BCOAuth2RequestFactory makeRequestObjectWithDictionary:v10 version:a6];
+    v18 = [BCOAuth2RequestFactory makeRequestObjectWithDictionary:dictionaryCopy version:version];
     goto LABEL_8;
   }
 
@@ -886,26 +886,26 @@ void __32__BCMessage_isAnyUnknownRootKey__block_invoke()
 
 - (BOOL)isVersionSupported
 {
-  v3 = [(BCMessage *)self type];
-  if (v3 > 0xA || ((0x5FFu >> v3) & 1) == 0)
+  type = [(BCMessage *)self type];
+  if (type > 0xA || ((0x5FFu >> type) & 1) == 0)
   {
     return 0;
   }
 
-  v4 = qword_236EB4E88[v3];
+  v4 = qword_236EB4E88[type];
   return [(BCMessage *)self version]<= v4;
 }
 
-+ (id)defaultBubbleTitleFor:(id)a3
++ (id)defaultBubbleTitleFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = +[BCShared classBundle];
   v5 = [v4 localizedStringForKey:@"DEFAULT_ERROR_TITLE" value:&stru_2849DDCD8 table:0];
 
-  if (v3)
+  if (forCopy)
   {
-    v6 = [v3 rootKey];
-    if ([v6 isEqualToString:@"unknown"])
+    rootKey = [forCopy rootKey];
+    if ([rootKey isEqualToString:@"unknown"])
     {
 
 LABEL_8:
@@ -913,19 +913,19 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v7 = [v3 isVersionSupported];
+    isVersionSupported = [forCopy isVersionSupported];
 
-    if ((v7 & 1) == 0)
+    if ((isVersionSupported & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    v8 = [v3 rootKey];
-    if ([v8 isEqualToString:@"listPicker"])
+    rootKey2 = [forCopy rootKey];
+    if ([rootKey2 isEqualToString:@"listPicker"])
     {
-      v9 = [v3 isFromMe];
+      isFromMe = [forCopy isFromMe];
 
-      if (v9)
+      if (isFromMe)
       {
         v10 = @"DEFAULT_LIST_PICKER_SELECTED_TITLE";
         goto LABEL_9;
@@ -936,8 +936,8 @@ LABEL_8:
     {
     }
 
-    v15 = [v3 rootKey];
-    v16 = [v15 isEqualToString:@"listPicker"];
+    rootKey3 = [forCopy rootKey];
+    v16 = [rootKey3 isEqualToString:@"listPicker"];
 
     if (v16)
     {
@@ -946,12 +946,12 @@ LABEL_8:
 
     else
     {
-      v17 = [v3 rootKey];
-      if ([v17 isEqualToString:@"event"])
+      rootKey4 = [forCopy rootKey];
+      if ([rootKey4 isEqualToString:@"event"])
       {
-        v18 = [v3 isFromMe];
+        isFromMe2 = [forCopy isFromMe];
 
-        if (v18)
+        if (isFromMe2)
         {
           v10 = @"DEFAULT_TIME_PICKER_SELECTED_TITLE";
           goto LABEL_9;
@@ -962,8 +962,8 @@ LABEL_8:
       {
       }
 
-      v19 = [v3 rootKey];
-      v20 = [v19 isEqualToString:@"event"];
+      rootKey5 = [forCopy rootKey];
+      v20 = [rootKey5 isEqualToString:@"event"];
 
       if (v20)
       {
@@ -972,8 +972,8 @@ LABEL_8:
 
       else
       {
-        v21 = [v3 rootKey];
-        v22 = [v21 isEqualToString:@"payment"];
+        rootKey6 = [forCopy rootKey];
+        v22 = [rootKey6 isEqualToString:@"payment"];
 
         if (v22)
         {
@@ -982,22 +982,22 @@ LABEL_8:
 
         else
         {
-          v23 = [v3 rootKey];
-          v24 = [v23 isEqualToString:@"authenticate"];
+          rootKey7 = [forCopy rootKey];
+          v24 = [rootKey7 isEqualToString:@"authenticate"];
 
-          if (v24 & 1) != 0 || ([v3 rootKey], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", @"internalAuthenticate"), v25, (v26))
+          if (v24 & 1) != 0 || ([forCopy rootKey], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "isEqualToString:", @"internalAuthenticate"), v25, (v26))
           {
             v10 = @"DEFAULT_ERROR_TITLE";
           }
 
           else
           {
-            v27 = [v3 rootKey];
-            if ([v27 isEqualToString:@"dynamic"])
+            rootKey8 = [forCopy rootKey];
+            if ([rootKey8 isEqualToString:@"dynamic"])
             {
-              v28 = [v3 isFromMe];
+              isFromMe3 = [forCopy isFromMe];
 
-              if (v28)
+              if (isFromMe3)
               {
                 v10 = @"DEFAULT_JITAPPKIT_SELECTED_TITLE";
                 goto LABEL_9;
@@ -1008,13 +1008,13 @@ LABEL_8:
             {
             }
 
-            v29 = [v3 rootKey];
-            v30 = [v29 isEqualToString:@"dynamic"];
+            rootKey9 = [forCopy rootKey];
+            v30 = [rootKey9 isEqualToString:@"dynamic"];
 
             if ((v30 & 1) == 0)
             {
-              v31 = [v3 rootKey];
-              v32 = [v31 isEqualToString:@"notification"];
+              rootKey10 = [forCopy rootKey];
+              v32 = [rootKey10 isEqualToString:@"notification"];
 
               if ((v32 & 1) == 0)
               {

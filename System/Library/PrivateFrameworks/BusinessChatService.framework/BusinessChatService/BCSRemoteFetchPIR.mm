@@ -1,24 +1,24 @@
 @interface BCSRemoteFetchPIR
-- (id)errorForPIRError:(id)a3;
-- (id)initWithEnvironment:(void *)a3 metricFactory:;
-- (void)fetchDataMatching:(id)a3 timeout:(int64_t)a4 completion:(id)a5;
-- (void)fetchDataMatchingBatch:(id)a3 timeout:(int64_t)a4 perItemBlock:(id)a5 completion:(id)a6;
+- (id)errorForPIRError:(id)error;
+- (id)initWithEnvironment:(void *)environment metricFactory:;
+- (void)fetchDataMatching:(id)matching timeout:(int64_t)timeout completion:(id)completion;
+- (void)fetchDataMatchingBatch:(id)batch timeout:(int64_t)timeout perItemBlock:(id)block completion:(id)completion;
 @end
 
 @implementation BCSRemoteFetchPIR
 
-- (id)initWithEnvironment:(void *)a3 metricFactory:
+- (id)initWithEnvironment:(void *)environment metricFactory:
 {
   v33 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    v7 = a3;
+    environmentCopy = environment;
     v8 = dispatch_queue_create("com.apple.businesschat.calleridresolver.pir", 0);
-    v9 = [v6 secondaryIdentifier];
-    if (v9)
+    secondaryIdentifier = [v6 secondaryIdentifier];
+    if (secondaryIdentifier)
     {
-      v10 = v9;
+      v10 = secondaryIdentifier;
     }
 
     else
@@ -27,53 +27,53 @@
     }
 
     v11 = objc_alloc(MEMORY[0x277CFA598]);
-    v12 = [v6 pirUseCase];
+    pirUseCase = [v6 pirUseCase];
     v27 = v10;
-    v13 = [v11 initWithUseCase:v12 sourceApplicationBundleIdentifier:v10];
+    v13 = [v11 initWithUseCase:pirUseCase sourceApplicationBundleIdentifier:v10];
 
     v26 = v13;
     v14 = [objc_alloc(MEMORY[0x277CFA5B0]) initWithClientConfig:v13];
     v15 = v6;
-    v16 = v7;
+    v16 = environmentCopy;
     v17 = v8;
     v18 = v14;
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = BCSRemoteFetchPIR;
     v19 = objc_msgSendSuper2(&v28, sel_init);
     v20 = v19;
     if (v19)
     {
       objc_storeStrong(v19 + 1, a2);
-      objc_storeStrong(v20 + 2, a3);
+      objc_storeStrong(v20 + 2, environment);
       objc_storeStrong(v20 + 3, v14);
       objc_storeStrong(v20 + 4, v8);
       v21 = ABSLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [v15 pirUseCase];
-        v23 = [v15 pirUsesCompression];
+        pirUseCase2 = [v15 pirUseCase];
+        pirUsesCompression = [v15 pirUsesCompression];
         *buf = 138412546;
-        v30 = v22;
+        v30 = pirUseCase2;
         v31 = 1024;
-        v32 = v23;
+        v32 = pirUsesCompression;
         _os_log_impl(&dword_242072000, v21, OS_LOG_TYPE_DEFAULT, "Fetch from PIR configured for use case '%@', compressed: %d", buf, 0x12u);
       }
     }
 
-    a1 = v20;
+    self = v20;
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
-- (void)fetchDataMatchingBatch:(id)a3 timeout:(int64_t)a4 perItemBlock:(id)a5 completion:(id)a6
+- (void)fetchDataMatchingBatch:(id)batch timeout:(int64_t)timeout perItemBlock:(id)block completion:(id)completion
 {
-  delta = a4;
+  delta = timeout;
   v65 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v38 = a5;
-  v35 = a6;
+  batchCopy = batch;
+  blockCopy = block;
+  completionCopy = completion;
   v8 = ABSLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -82,14 +82,14 @@
     _os_log_impl(&dword_242072000, v8, OS_LOG_TYPE_DEFAULT, "%s", &buf, 0xCu);
   }
 
-  v37 = [[BCSPIRBatchRequest alloc] initWithQuery:v36];
-  v34 = [(BCSPIRBatchRequest *)v37 pirKeysToFetch];
+  v37 = [[BCSPIRBatchRequest alloc] initWithQuery:batchCopy];
+  pirKeysToFetch = [(BCSPIRBatchRequest *)v37 pirKeysToFetch];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v9 = [(BCSPIRBatchRequest *)v37 invalidIdentifiers];
-  v10 = [v9 countByEnumeratingWithState:&v53 objects:v64 count:16];
+  invalidIdentifiers = [(BCSPIRBatchRequest *)v37 invalidIdentifiers];
+  v10 = [invalidIdentifiers countByEnumeratingWithState:&v53 objects:v64 count:16];
   if (v10)
   {
     v11 = *v54;
@@ -99,7 +99,7 @@
       {
         if (*v54 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(invalidIdentifiers);
         }
 
         v13 = *(*(&v53 + 1) + 8 * i);
@@ -111,17 +111,17 @@
           _os_log_impl(&dword_242072000, v14, OS_LOG_TYPE_DEFAULT, "%s - Invalid item identifier (non-PIR identifying)", &buf, 0xCu);
         }
 
-        v15 = [BCSError errorWithDomain:@"com.apple.businessservices" code:1000 errorDescription:@"Invalid item identifier (non-PIR identifying)", delta];
-        if ((v38[2](v38, v13, 0, v15) & 1) == 0)
+        delta = [BCSError errorWithDomain:@"com.apple.businessservices" code:1000 errorDescription:@"Invalid item identifier (non-PIR identifying)", delta];
+        if ((blockCopy[2](blockCopy, v13, 0, delta) & 1) == 0)
         {
           v29 = [BCSError errorWithDomain:@"com.apple.businessservices" code:45 errorDescription:@"Request cancelled by caller (perItem block return NO)"];
-          v35[2](v35, v29);
+          completionCopy[2](completionCopy, v29);
 
           goto LABEL_18;
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v53 objects:v64 count:16];
+      v10 = [invalidIdentifiers countByEnumeratingWithState:&v53 objects:v64 count:16];
       if (v10)
       {
         continue;
@@ -131,21 +131,21 @@
     }
   }
 
-  if ([v34 count])
+  if ([pirKeysToFetch count])
   {
     v16 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     *&buf = 0;
     *(&buf + 1) = &buf;
     v62 = 0x2020000000;
     v63 = 0;
-    v17 = [(BCSRemoteFetchPIR *)self metricFactory];
-    v18 = [v17 measurementFactory];
-    v19 = [v36 itemIdentifier];
-    v20 = [v18 pirFetchTimingMeasurementForItemIdentifier:v19];
+    metricFactory = [(BCSRemoteFetchPIR *)self metricFactory];
+    measurementFactory = [metricFactory measurementFactory];
+    itemIdentifier = [batchCopy itemIdentifier];
+    v20 = [measurementFactory pirFetchTimingMeasurementForItemIdentifier:itemIdentifier];
 
     [v20 begin];
     v21 = dispatch_time(0, delta);
-    v22 = [(BCSRemoteFetchPIR *)self pirQueue];
+    pirQueue = [(BCSRemoteFetchPIR *)self pirQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__BCSRemoteFetchPIR_fetchDataMatchingBatch_timeout_perItemBlock_completion___block_invoke;
@@ -153,9 +153,9 @@
     v23 = v16;
     v50 = v23;
     p_buf = &buf;
-    v24 = v35;
+    v24 = completionCopy;
     v51 = v24;
-    dispatch_after(v21, v22, block);
+    dispatch_after(v21, pirQueue, block);
 
     v25 = ABSLogCommon();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -163,11 +163,11 @@
       *v57 = 136315395;
       v58 = "[BCSRemoteFetchPIR fetchDataMatchingBatch:timeout:perItemBlock:completion:]";
       v59 = 2113;
-      v60 = v34;
+      v60 = pirKeysToFetch;
       _os_log_impl(&dword_242072000, v25, OS_LOG_TYPE_DEFAULT, "%s - fetching data from PIR for keys '%{private}@'", v57, 0x16u);
     }
 
-    v26 = [(BCSRemoteFetchPIR *)self pirQueue];
+    pirQueue2 = [(BCSRemoteFetchPIR *)self pirQueue];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __76__BCSRemoteFetchPIR_fetchDataMatchingBatch_timeout_perItemBlock_completion___block_invoke_22;
@@ -176,14 +176,14 @@
     v41 = v23;
     v48 = &buf;
     v46 = v24;
-    v42 = v34;
+    v42 = pirKeysToFetch;
     v43 = v37;
-    v44 = v36;
-    v47 = v38;
-    v45 = self;
+    v44 = batchCopy;
+    v47 = blockCopy;
+    selfCopy = self;
     v27 = v23;
     v28 = v20;
-    dispatch_async(v26, v39);
+    dispatch_async(pirQueue2, v39);
 
     _Block_object_dispose(&buf, 8);
   }
@@ -191,7 +191,7 @@
   else
   {
     v31 = [BCSError errorWithDomain:@"com.apple.businessservices" code:42 errorDescription:@"No identifiers requested"];
-    v35[2](v35, v31);
+    completionCopy[2](completionCopy, v31);
   }
 
 LABEL_18:
@@ -563,42 +563,42 @@ void __76__BCSRemoteFetchPIR_fetchDataMatchingBatch_timeout_perItemBlock_complet
   (*(v4 + 16))(v4, v6, v7);
 }
 
-- (void)fetchDataMatching:(id)a3 timeout:(int64_t)a4 completion:(id)a5
+- (void)fetchDataMatching:(id)matching timeout:(int64_t)timeout completion:(id)completion
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  matchingCopy = matching;
+  completionCopy = completion;
   v10 = ABSLogCommon();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(BCSRemoteFetchPIR *)self environment];
-    v12 = [v11 pirUseCase];
+    environment = [(BCSRemoteFetchPIR *)self environment];
+    pirUseCase = [environment pirUseCase];
     *buf = 136315394;
     *&buf[4] = "[BCSRemoteFetchPIR fetchDataMatching:timeout:completion:]";
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = pirUseCase;
     _os_log_impl(&dword_242072000, v10, OS_LOG_TYPE_DEFAULT, "%s (%@)", buf, 0x16u);
   }
 
-  v13 = [v8 itemIdentifier];
-  v14 = [v13 conformsToProtocol:&unk_2854664E0];
+  itemIdentifier = [matchingCopy itemIdentifier];
+  v14 = [itemIdentifier conformsToProtocol:&unk_2854664E0];
 
   if (v14)
   {
-    v15 = [v8 itemIdentifier];
+    itemIdentifier2 = [matchingCopy itemIdentifier];
     v16 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
     v50 = 0;
-    v17 = [(BCSRemoteFetchPIR *)self metricFactory];
-    v18 = [v17 measurementFactory];
-    v19 = [v8 itemIdentifier];
-    v20 = [v18 pirFetchTimingMeasurementForItemIdentifier:v19];
+    metricFactory = [(BCSRemoteFetchPIR *)self metricFactory];
+    measurementFactory = [metricFactory measurementFactory];
+    itemIdentifier3 = [matchingCopy itemIdentifier];
+    v20 = [measurementFactory pirFetchTimingMeasurementForItemIdentifier:itemIdentifier3];
 
     [v20 begin];
-    v21 = dispatch_time(0, a4);
-    v22 = [(BCSRemoteFetchPIR *)self pirQueue];
+    v21 = dispatch_time(0, timeout);
+    pirQueue = [(BCSRemoteFetchPIR *)self pirQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__BCSRemoteFetchPIR_fetchDataMatching_timeout_completion___block_invoke;
@@ -606,22 +606,22 @@ void __76__BCSRemoteFetchPIR_fetchDataMatchingBatch_timeout_perItemBlock_complet
     v23 = v16;
     v42 = v23;
     v44 = buf;
-    v24 = v9;
+    v24 = completionCopy;
     v43 = v24;
-    dispatch_after(v21, v22, block);
+    dispatch_after(v21, pirQueue, block);
 
-    v25 = [v15 pirKey];
+    pirKey = [itemIdentifier2 pirKey];
     v26 = ABSLogCommon();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *v45 = 136315395;
       v46 = "[BCSRemoteFetchPIR fetchDataMatching:timeout:completion:]";
       v47 = 2113;
-      v48 = v25;
+      v48 = pirKey;
       _os_log_impl(&dword_242072000, v26, OS_LOG_TYPE_DEFAULT, "%s - fetching data from PIR for key '%{private}@'", v45, 0x16u);
     }
 
-    v27 = [(BCSRemoteFetchPIR *)self pirQueue];
+    pirQueue2 = [(BCSRemoteFetchPIR *)self pirQueue];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __58__BCSRemoteFetchPIR_fetchDataMatching_timeout_completion___block_invoke_90;
@@ -629,13 +629,13 @@ void __76__BCSRemoteFetchPIR_fetchDataMatchingBatch_timeout_perItemBlock_complet
     v35 = v20;
     v36 = v23;
     v40 = buf;
-    v37 = self;
-    v38 = v25;
+    selfCopy = self;
+    v38 = pirKey;
     v39 = v24;
-    v28 = v25;
+    v28 = pirKey;
     v29 = v23;
     v30 = v20;
-    dispatch_async(v27, v34);
+    dispatch_async(pirQueue2, v34);
 
     _Block_object_dispose(buf, 8);
   }
@@ -653,9 +653,9 @@ void __76__BCSRemoteFetchPIR_fetchDataMatchingBatch_timeout_perItemBlock_complet
     v51 = *MEMORY[0x277CCA450];
     v52[0] = @"Invalid item identifier (non-PIR identifying)";
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:1];
-    v15 = [BCSError errorWithDomain:@"com.apple.businessservices" code:1000 userInfo:v32];
+    itemIdentifier2 = [BCSError errorWithDomain:@"com.apple.businessservices" code:1000 userInfo:v32];
 
-    (*(v9 + 2))(v9, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, itemIdentifier2);
   }
 
   v33 = *MEMORY[0x277D85DE8];
@@ -831,12 +831,12 @@ void __58__BCSRemoteFetchPIR_fetchDataMatching_timeout_completion___block_invoke
   (*(v4 + 16))(v4, v6, v7);
 }
 
-- (id)errorForPIRError:(id)a3
+- (id)errorForPIRError:(id)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
-    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error fetching data from PIR: %@", a3, *MEMORY[0x277CCA450]];
+    v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error fetching data from PIR: %@", error, *MEMORY[0x277CCA450]];
     v9[0] = v3;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     v5 = [BCSError errorWithDomain:@"com.apple.businessservices" code:48 userInfo:v4];

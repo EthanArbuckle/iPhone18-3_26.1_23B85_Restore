@@ -1,6 +1,6 @@
 @interface SHSheetUIServiceClient
 - (SHSheetContentPresenter)presenter;
-- (SHSheetUIServiceClient)initWithSessionIdentifier:(id)a3;
+- (SHSheetUIServiceClient)initWithSessionIdentifier:(id)identifier;
 - (id)sessionServer;
 - (void)_activateConnection;
 - (void)_didActivateConnection;
@@ -9,20 +9,20 @@
 - (void)_setupNewConnection;
 - (void)connect;
 - (void)invalidate;
-- (void)updateWithContext:(id)a3;
+- (void)updateWithContext:(id)context;
 @end
 
 @implementation SHSheetUIServiceClient
 
-- (SHSheetUIServiceClient)initWithSessionIdentifier:(id)a3
+- (SHSheetUIServiceClient)initWithSessionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SHSheetUIServiceClient;
   v5 = [(SHSheetUIServiceClient *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
@@ -121,10 +121,10 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
 
 - (id)sessionServer
 {
-  v2 = [(SHSheetUIServiceClient *)self connection];
-  v3 = [v2 remoteTarget];
+  connection = [(SHSheetUIServiceClient *)self connection];
+  remoteTarget = [connection remoteTarget];
 
-  return v3;
+  return remoteTarget;
 }
 
 - (void)connect
@@ -138,9 +138,9 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
 
   if ([(SHSheetUIServiceClient *)self isConnected])
   {
-    v4 = [(SHSheetUIServiceClient *)self sessionServer];
-    v5 = [(SHSheetUIServiceClient *)self sessionIdentifier];
-    [v4 connectWithSessionIdentifier:v5];
+    sessionServer = [(SHSheetUIServiceClient *)self sessionServer];
+    sessionIdentifier = [(SHSheetUIServiceClient *)self sessionIdentifier];
+    [sessionServer connectWithSessionIdentifier:sessionIdentifier];
   }
 
   else
@@ -156,9 +156,9 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
   }
 }
 
-- (void)updateWithContext:(id)a3
+- (void)updateWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = share_sheet_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -166,11 +166,11 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
     _os_log_impl(&dword_18B359000, v5, OS_LOG_TYPE_DEFAULT, "Request UI Service update", buf, 2u);
   }
 
-  [(SHSheetUIServiceClient *)self setCurrentContext:v4];
+  [(SHSheetUIServiceClient *)self setCurrentContext:contextCopy];
   if ([(SHSheetUIServiceClient *)self isConnected])
   {
-    v6 = [(SHSheetUIServiceClient *)self sessionServer];
-    [v6 updateWithContext:v4];
+    sessionServer = [(SHSheetUIServiceClient *)self sessionServer];
+    [sessionServer updateWithContext:contextCopy];
   }
 
   else
@@ -195,8 +195,8 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "Invalidate UI Service connection", v5, 2u);
   }
 
-  v4 = [(SHSheetUIServiceClient *)self connection];
-  [v4 invalidate];
+  connection = [(SHSheetUIServiceClient *)self connection];
+  [connection invalidate];
 }
 
 - (void)_activateConnection
@@ -205,17 +205,17 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
   v3 = share_sheet_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SHSheetUIServiceClient *)self connection];
+    connection = [(SHSheetUIServiceClient *)self connection];
     v6 = 138412290;
-    v7 = v4;
+    v7 = connection;
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "Activate UI Service connection:%@", &v6, 0xCu);
   }
 
   if ([(SHSheetUIServiceClient *)self state]!= 1)
   {
     [(SHSheetUIServiceClient *)self setState:1];
-    v5 = [(SHSheetUIServiceClient *)self connection];
-    [v5 activate];
+    connection2 = [(SHSheetUIServiceClient *)self connection];
+    [connection2 activate];
   }
 }
 
@@ -225,9 +225,9 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
   v3 = share_sheet_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SHSheetUIServiceClient *)self connection];
+    connection = [(SHSheetUIServiceClient *)self connection];
     v5 = 138412290;
-    v6 = v4;
+    v6 = connection;
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "Reconnect UI Service connection:%@", &v5, 0xCu);
   }
 
@@ -242,9 +242,9 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
   v3 = share_sheet_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SHSheetUIServiceClient *)self connection];
+    connection = [(SHSheetUIServiceClient *)self connection];
     v6 = 138412290;
-    v7 = v4;
+    v7 = connection;
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "UI Service Connection was activated:%@", &v6, 0xCu);
   }
 
@@ -256,8 +256,8 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
 
   if (([(SHSheetUIServiceClient *)self pendingRequest]& 2) != 0)
   {
-    v5 = [(SHSheetUIServiceClient *)self currentContext];
-    [(SHSheetUIServiceClient *)self updateWithContext:v5];
+    currentContext = [(SHSheetUIServiceClient *)self currentContext];
+    [(SHSheetUIServiceClient *)self updateWithContext:currentContext];
   }
 
   [(SHSheetUIServiceClient *)self setPendingRequest:0];
@@ -269,9 +269,9 @@ void __45__SHSheetUIServiceClient__setupNewConnection__block_invoke_5(uint64_t a
   v3 = share_sheet_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SHSheetUIServiceClient *)self connection];
+    connection = [(SHSheetUIServiceClient *)self connection];
     v5 = 138412290;
-    v6 = v4;
+    v6 = connection;
     _os_log_impl(&dword_18B359000, v3, OS_LOG_TYPE_DEFAULT, "UI Service Connection was invalidated:%@", &v5, 0xCu);
   }
 

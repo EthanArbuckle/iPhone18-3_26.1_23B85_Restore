@@ -41,17 +41,17 @@
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
     {
       v3 = +[FTDeviceSupport sharedInstance];
-      v4 = [v3 deviceInformationString];
+      deviceInformationString = [v3 deviceInformationString];
       v8 = 138412290;
-      v9 = v4;
+      v9 = deviceInformationString;
       _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_INFO, "imagent launching (%@)", &v8, 0xCu);
     }
   }
 
   v5 = +[IMLockdownManager sharedInstance];
-  v6 = [v5 isInternalInstall];
+  isInternalInstall = [v5 isInternalInstall];
 
-  if (v6 && IMOSLoggingEnabled())
+  if (isInternalInstall && IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMEventCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))

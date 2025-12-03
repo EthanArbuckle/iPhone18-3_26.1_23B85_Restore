@@ -1,10 +1,10 @@
 @interface SensorDispatcherHelper
 + (id)sharedInstance;
 - (SensorDispatcherHelper)init;
-- (float)getFloatValueFromSMCForKey:(__CFString *)a3;
-- (int)getTemperatureFromSMCForKey:(__CFString *)a3;
-- (int)getValueFromSMCForKey:(__CFString *)a3;
-- (int)writeKeysToSensorDispatcher:(smcKeyWrites *)a3;
+- (float)getFloatValueFromSMCForKey:(__CFString *)key;
+- (int)getTemperatureFromSMCForKey:(__CFString *)key;
+- (int)getValueFromSMCForKey:(__CFString *)key;
+- (int)writeKeysToSensorDispatcher:(smcKeyWrites *)dispatcher;
 - (void)readKeysFromSensorDispatcher;
 @end
 
@@ -96,7 +96,7 @@
   return v2;
 }
 
-- (int)writeKeysToSensorDispatcher:(smcKeyWrites *)a3
+- (int)writeKeysToSensorDispatcher:(smcKeyWrites *)dispatcher
 {
   connect = self->connect;
   if (!connect)
@@ -104,7 +104,7 @@
     return -536870212;
   }
 
-  v4 = IOConnectCallStructMethod(connect, 3u, a3, 0x58uLL, 0, 0);
+  v4 = IOConnectCallStructMethod(connect, 3u, dispatcher, 0x58uLL, 0, 0);
   if (v4)
   {
     v5 = qword_1000AB718;
@@ -117,7 +117,7 @@
   return v4;
 }
 
-- (int)getValueFromSMCForKey:(__CFString *)a3
+- (int)getValueFromSMCForKey:(__CFString *)key
 {
   v9 = 0;
   if (byte_1000AB2F8 == 1)
@@ -126,12 +126,12 @@
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      CStringPtr = CFStringGetCStringPtr(a3, 0x8000100u);
+      CStringPtr = CFStringGetCStringPtr(key, 0x8000100u);
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Looking for SMC Key %s", buf, 0xCu);
     }
   }
 
-  if (!sub_100002A20(self->_smcSensorDict, a3, kCFNumberSInt32Type, &v9))
+  if (!sub_100002A20(self->_smcSensorDict, key, kCFNumberSInt32Type, &v9))
   {
     return -1;
   }
@@ -154,10 +154,10 @@
   return result;
 }
 
-- (float)getFloatValueFromSMCForKey:(__CFString *)a3
+- (float)getFloatValueFromSMCForKey:(__CFString *)key
 {
   v8 = 0;
-  v4 = sub_100002A20(self->_smcSensorDict, a3, kCFNumberSInt32Type, &v8);
+  v4 = sub_100002A20(self->_smcSensorDict, key, kCFNumberSInt32Type, &v8);
   result = -1.0;
   if (v4)
   {
@@ -180,9 +180,9 @@
   return result;
 }
 
-- (int)getTemperatureFromSMCForKey:(__CFString *)a3
+- (int)getTemperatureFromSMCForKey:(__CFString *)key
 {
-  result = [(SensorDispatcherHelper *)self getValueFromSMCForKey:a3];
+  result = [(SensorDispatcherHelper *)self getValueFromSMCForKey:key];
   if (result != -1)
   {
     if (result == -12700)

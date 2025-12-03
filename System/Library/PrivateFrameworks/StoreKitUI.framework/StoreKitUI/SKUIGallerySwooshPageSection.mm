@@ -1,26 +1,26 @@
 @interface SKUIGallerySwooshPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUIGallerySwooshPageSection)initWithPageComponent:(id)a3;
-- (id)_newArtworkRequestWithArtwork:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUIGallerySwooshPageSection)initWithPageComponent:(id)component;
+- (id)_newArtworkRequestWithArtwork:(id)artwork;
 - (id)_swooshViewController;
-- (id)cellForIndexPath:(id)a3;
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4;
-- (void)_addImpressionForIndex:(int64_t)a3 toSession:(id)a4;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
+- (id)cellForIndexPath:(id)path;
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index;
+- (void)_addImpressionForIndex:(int64_t)index toSession:(id)session;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
 - (void)dealloc;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)swoosh:(id)a3 didChangePlaybackState:(int64_t)a4 forItemAtIndex:(int64_t)a5;
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4;
-- (void)swoosh:(id)a3 willDisplayCellAtIndex:(int64_t)a4;
-- (void)willAppearInContext:(id)a3;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)swoosh:(id)swoosh didChangePlaybackState:(int64_t)state forItemAtIndex:(int64_t)index;
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index;
+- (void)swoosh:(id)swoosh willDisplayCellAtIndex:(int64_t)index;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SKUIGallerySwooshPageSection
 
-- (SKUIGallerySwooshPageSection)initWithPageComponent:(id)a3
+- (SKUIGallerySwooshPageSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIGallerySwooshPageSection initWithPageComponent:];
@@ -28,7 +28,7 @@
 
   v9.receiver = self;
   v9.super_class = SKUIGallerySwooshPageSection;
-  v5 = [(SKUIStorePageSection *)&v9 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v9 initWithPageComponent:componentCopy];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
@@ -47,20 +47,20 @@
   [(SKUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v6 viewElement];
-  [v5 addItemViewElement:v7];
+  sessionCopy = session;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
-  v8 = [(SKUIGallerySwooshViewController *)self->_swooshViewController indexPathsForVisibleItems];
+  indexPathsForVisibleItems = [(SKUIGallerySwooshViewController *)self->_swooshViewController indexPathsForVisibleItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -72,60 +72,60 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
-        -[SKUIGallerySwooshPageSection _addImpressionForIndex:toSession:](self, "_addImpressionForIndex:toSession:", [*(*(&v13 + 1) + 8 * v12++) item], v5);
+        -[SKUIGallerySwooshPageSection _addImpressionForIndex:toSession:](self, "_addImpressionForIndex:toSession:", [*(*(&v13 + 1) + 8 * v12++) item], sessionCopy);
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v3 = [a3 collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIGallerySwooshPageSectionReuseIdentifier"];
+  collectionView = [context collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIGallerySwooshPageSectionReuseIdentifier"];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SKUIGallerySwooshPageSectionReuseIdentifier" forIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUIGallerySwooshPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
-  v8 = [(SKUIGallerySwooshPageSection *)self _swooshViewController];
-  v9 = [v8 view];
+  _swooshViewController = [(SKUIGallerySwooshPageSection *)self _swooshViewController];
+  view = [_swooshViewController view];
 
-  v10 = [v7 contentChildView];
+  contentChildView = [v7 contentChildView];
 
-  if (v9 != v10)
+  if (view != contentChildView)
   {
-    [v7 setContentChildView:v9];
+    [v7 setContentChildView:view];
     [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   }
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SKUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v6 = [(SKUIGallerySwooshPageSection *)self _swooshViewController];
-  v7 = [v6 view];
+  _swooshViewController = [(SKUIGallerySwooshPageSection *)self _swooshViewController];
+  view = [_swooshViewController view];
 
-  [v7 sizeToFit];
-  [v7 frame];
+  [view sizeToFit];
+  [view frame];
   v9 = v8;
-  [v5 bounds];
+  [collectionView bounds];
   v11 = v10;
 
   v12 = v11;
@@ -135,49 +135,49 @@
   return result;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
-  v3 = self;
-  v4 = [(SKUIStorePageSection *)self pageComponent];
-  v26 = [v4 mediaComponents];
+  selfCopy = self;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  mediaComponents = [pageComponent mediaComponents];
 
-  v5 = [(SKUIStorePageSection *)v3 context];
-  v25 = [v5 resourceLoader];
+  context = [(SKUIStorePageSection *)selfCopy context];
+  resourceLoader = [context resourceLoader];
 
-  v6 = [(SKUIGallerySwooshPageSection *)v3 _swooshViewController];
-  v7 = [v26 count];
+  _swooshViewController = [(SKUIGallerySwooshPageSection *)selfCopy _swooshViewController];
+  v7 = [mediaComponents count];
   if (v7 >= 1)
   {
     v8 = v7;
     v9 = 0;
     v10 = 1;
     v11 = &OBJC_IVAR___SKUIGiftContactSearchController__autocompleteSearchResults;
-    v23 = v3;
+    v23 = selfCopy;
     do
     {
-      v12 = [v26 objectAtIndex:{v10 - 1, v23}];
+      v12 = [mediaComponents objectAtIndex:{v10 - 1, v23}];
       v13 = v11[344];
-      v14 = [*(&v3->super.super.isa + v13) objectForKey:v12];
+      v14 = [*(&selfCopy->super.super.isa + v13) objectForKey:v12];
 
       if (!v14)
       {
-        v15 = [v6 artworkForItemAtIndex:v10 - 1];
-        v16 = [(SKUIGallerySwooshPageSection *)v3 _newArtworkRequestWithArtwork:v15];
+        v15 = [_swooshViewController artworkForItemAtIndex:v10 - 1];
+        v16 = [(SKUIGallerySwooshPageSection *)selfCopy _newArtworkRequestWithArtwork:v15];
         v17 = v16;
         if (v16)
         {
-          v18 = *(&v3->super.super.isa + v13);
+          v18 = *(&selfCopy->super.super.isa + v13);
           v19 = v8;
           v20 = v11;
-          v21 = v6;
+          v21 = _swooshViewController;
           v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "requestIdentifier")}];
           [v18 setObject:v22 forKey:v12];
 
-          v6 = v21;
+          _swooshViewController = v21;
           v11 = v20;
           v8 = v19;
-          v3 = v23;
-          [v25 loadResourceWithRequest:v17 reason:a3];
+          selfCopy = v23;
+          [resourceLoader loadResourceWithRequest:v17 reason:reason];
           ++v9;
         }
       }
@@ -194,29 +194,29 @@
   }
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  v9 = [v8 mediaComponents];
+  requestCopy = request;
+  imageCopy = image;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  mediaComponents = [pageComponent mediaComponents];
 
-  v10 = [v6 requestIdentifier];
-  v11 = [(SKUIGallerySwooshPageSection *)self _swooshViewController];
-  v12 = [v11 indexPathsForVisibleItems];
+  requestIdentifier = [requestCopy requestIdentifier];
+  _swooshViewController = [(SKUIGallerySwooshPageSection *)self _swooshViewController];
+  indexPathsForVisibleItems = [_swooshViewController indexPathsForVisibleItems];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v12;
+  obj = indexPathsForVisibleItems;
   v13 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v25;
-    v22 = v7;
+    v22 = imageCopy;
     while (2)
     {
       for (i = 0; i != v14; ++i)
@@ -227,21 +227,21 @@
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v9 objectAtIndex:{objc_msgSend(v17, "item")}];
+        v18 = [mediaComponents objectAtIndex:{objc_msgSend(v17, "item")}];
         v19 = [(NSMapTable *)self->_componentArtworkRequests objectForKey:v18];
-        if ([v19 unsignedIntegerValue] == v10)
+        if ([v19 unsignedIntegerValue] == requestIdentifier)
         {
-          v20 = [(SKUIGallerySwooshPageSection *)self _swooshViewController];
-          v21 = [v17 item];
-          v7 = v22;
-          [v20 setImage:v22 forItemAtIndex:v21];
+          _swooshViewController2 = [(SKUIGallerySwooshPageSection *)self _swooshViewController];
+          item = [v17 item];
+          imageCopy = v22;
+          [_swooshViewController2 setImage:v22 forItemAtIndex:item];
 
           goto LABEL_11;
         }
       }
 
       v14 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
-      v7 = v22;
+      imageCopy = v22;
       if (v14)
       {
         continue;
@@ -254,36 +254,36 @@
 LABEL_11:
 }
 
-- (void)swoosh:(id)a3 didChangePlaybackState:(int64_t)a4 forItemAtIndex:(int64_t)a5
+- (void)swoosh:(id)swoosh didChangePlaybackState:(int64_t)state forItemAtIndex:(int64_t)index
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v8 = [(SKUIStorePageSection *)self context];
-  v9 = [v8 metricsController];
+  context = [(SKUIStorePageSection *)self context];
+  metricsController = [context metricsController];
 
-  if ([v9 canRecordEventWithType:*MEMORY[0x277D6A488]])
+  if ([metricsController canRecordEventWithType:*MEMORY[0x277D6A488]])
   {
     v10 = objc_alloc_init(MEMORY[0x277D69BA8]);
-    v11 = SKUIMetricsMediaEventTypeForPlaybackState(a4);
+    v11 = SKUIMetricsMediaEventTypeForPlaybackState(state);
     [v10 setMediaEventType:v11];
 
-    v12 = [(SKUIStorePageSection *)self pageComponent];
-    v13 = [v12 mediaComponents];
-    v14 = [v13 objectAtIndex:a5];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    mediaComponents = [pageComponent mediaComponents];
+    v14 = [mediaComponents objectAtIndex:index];
 
-    v15 = [v14 mediaIdentifier];
-    if (v15)
+    mediaIdentifier = [v14 mediaIdentifier];
+    if (mediaIdentifier)
     {
-      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:v15];
+      v16 = [MEMORY[0x277CCABB0] numberWithLongLong:mediaIdentifier];
       [v10 setItemIdentifier:v16];
     }
 
-    v17 = [v14 mediaURLString];
-    [v10 setMediaURL:v17];
+    mediaURLString = [v14 mediaURLString];
+    [v10 setMediaURL:mediaURLString];
 
-    v18 = [(SKUIStorePageSection *)self pageComponent];
-    v19 = [v9 locationWithPageComponent:v18];
+    pageComponent2 = [(SKUIStorePageSection *)self pageComponent];
+    v19 = [metricsController locationWithPageComponent:pageComponent2];
 
-    v20 = [v9 locationWithPageComponent:v14];
+    v20 = [metricsController locationWithPageComponent:v14];
     v21 = v20;
     if (v19 && v20)
     {
@@ -293,65 +293,65 @@ LABEL_11:
       [v10 setLocationWithEventLocations:v22];
     }
 
-    [v9 recordEvent:v10];
+    [metricsController recordEvent:v10];
   }
 }
 
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index
 {
-  v13 = a3;
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v6 mediaComponents];
-  v8 = [v7 objectAtIndex:a4];
+  swooshCopy = swoosh;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  mediaComponents = [pageComponent mediaComponents];
+  v8 = [mediaComponents objectAtIndex:index];
 
-  v9 = [(SKUIStorePageSection *)self clickEventWithMedia:v8 elementName:*MEMORY[0x277D6A4E0] index:a4];
+  v9 = [(SKUIStorePageSection *)self clickEventWithMedia:v8 elementName:*MEMORY[0x277D6A4E0] index:index];
   if (v9)
   {
-    v10 = [(SKUIStorePageSection *)self context];
-    v11 = [v10 metricsController];
-    [v11 recordEvent:v9];
+    context = [(SKUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    [metricsController recordEvent:v9];
   }
 
   if ([v8 mediaType])
   {
-    [v13 performActionForItemAtIndex:a4 animated:1];
+    [swooshCopy performActionForItemAtIndex:index animated:1];
   }
 
   else
   {
-    v12 = [v8 link];
-    [(SKUIStorePageSection *)self showPageWithLink:v12];
+    link = [v8 link];
+    [(SKUIStorePageSection *)self showPageWithLink:link];
   }
 }
 
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 resourceLoader];
+  swooshCopy = swoosh;
+  context = [(SKUIStorePageSection *)self context];
+  resourceLoader = [context resourceLoader];
 
-  v9 = [(SKUIStorePageSection *)self pageComponent];
-  v10 = [v9 mediaComponents];
-  v11 = [v10 objectAtIndex:a4];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  mediaComponents = [pageComponent mediaComponents];
+  v11 = [mediaComponents objectAtIndex:index];
 
   v12 = [(NSMapTable *)self->_componentArtworkRequests objectForKey:v11];
-  v13 = [v12 unsignedIntegerValue];
+  unsignedIntegerValue = [v12 unsignedIntegerValue];
 
-  if (!v13)
+  if (!unsignedIntegerValue)
   {
     goto LABEL_4;
   }
 
-  v14 = [v8 cachedResourceForRequestIdentifier:v13];
+  v14 = [resourceLoader cachedResourceForRequestIdentifier:unsignedIntegerValue];
   if (v14)
   {
     goto LABEL_8;
   }
 
-  if (([v8 trySetReason:1 forRequestWithIdentifier:v13] & 1) == 0)
+  if (([resourceLoader trySetReason:1 forRequestWithIdentifier:unsignedIntegerValue] & 1) == 0)
   {
 LABEL_4:
-    v15 = [v6 artworkForItemAtIndex:a4];
+    v15 = [swooshCopy artworkForItemAtIndex:index];
     v16 = [(SKUIGallerySwooshPageSection *)self _newArtworkRequestWithArtwork:v15];
     v17 = v16;
     if (v16)
@@ -360,7 +360,7 @@ LABEL_4:
       v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v16, "requestIdentifier")}];
       [(NSMapTable *)componentArtworkRequests setObject:v19 forKey:v11];
 
-      [v8 loadResourceWithRequest:v17 reason:1];
+      [resourceLoader loadResourceWithRequest:v17 reason:1];
     }
   }
 
@@ -370,40 +370,40 @@ LABEL_8:
   return v14;
 }
 
-- (void)swoosh:(id)a3 willDisplayCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh willDisplayCellAtIndex:(int64_t)index
 {
-  v6 = [(SKUIStorePageSection *)self context];
-  v7 = [v6 metricsController];
-  v9 = [v7 activeImpressionsSession];
+  context = [(SKUIStorePageSection *)self context];
+  metricsController = [context metricsController];
+  activeImpressionsSession = [metricsController activeImpressionsSession];
 
-  v8 = v9;
-  if (v9)
+  v8 = activeImpressionsSession;
+  if (activeImpressionsSession)
   {
-    [(SKUIGallerySwooshPageSection *)self _addImpressionForIndex:a4 toSession:v9];
-    v8 = v9;
+    [(SKUIGallerySwooshPageSection *)self _addImpressionForIndex:index toSession:activeImpressionsSession];
+    v8 = activeImpressionsSession;
   }
 }
 
-- (void)_addImpressionForIndex:(int64_t)a3 toSession:(id)a4
+- (void)_addImpressionForIndex:(int64_t)index toSession:(id)session
 {
-  v6 = a4;
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v8 = [v7 mediaComponents];
-  v10 = [v8 objectAtIndex:a3];
+  sessionCopy = session;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  mediaComponents = [pageComponent mediaComponents];
+  v10 = [mediaComponents objectAtIndex:index];
 
-  [v6 addItemIdentifier:{objc_msgSend(v10, "mediaIdentifier")}];
-  v9 = [v10 viewElement];
-  [v6 addItemViewElement:v9];
+  [sessionCopy addItemIdentifier:{objc_msgSend(v10, "mediaIdentifier")}];
+  viewElement = [v10 viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (id)_newArtworkRequestWithArtwork:(id)a3
+- (id)_newArtworkRequestWithArtwork:(id)artwork
 {
-  v4 = a3;
-  v5 = [v4 URL];
+  artworkCopy = artwork;
+  v5 = [artworkCopy URL];
   if (v5)
   {
     v6 = objc_alloc_init(SKUIArtworkRequest);
-    v7 = +[SKUISizeToFitImageDataConsumer consumerWithConstraintSize:](SKUISizeToFitImageDataConsumer, "consumerWithConstraintSize:", [v4 width], objc_msgSend(v4, "height"));
+    v7 = +[SKUISizeToFitImageDataConsumer consumerWithConstraintSize:](SKUISizeToFitImageDataConsumer, "consumerWithConstraintSize:", [artworkCopy width], objc_msgSend(artworkCopy, "height"));
     [(SKUIArtworkRequest *)v6 setDataConsumer:v7];
 
     [(SKUIArtworkRequest *)v6 setDelegate:self];
@@ -423,24 +423,24 @@ LABEL_8:
   swooshViewController = self->_swooshViewController;
   if (!swooshViewController)
   {
-    v4 = [(SKUIStorePageSection *)self context];
-    v5 = [v4 parentViewController];
+    context = [(SKUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
     v6 = [SKUIGallerySwooshViewController alloc];
-    v7 = [(SKUIStorePageSection *)self pageComponent];
-    v8 = [(SKUIGallerySwooshViewController *)v6 initWithGallerySwoosh:v7];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    v8 = [(SKUIGallerySwooshViewController *)v6 initWithGallerySwoosh:pageComponent];
     v9 = self->_swooshViewController;
     self->_swooshViewController = v8;
 
     v10 = self->_swooshViewController;
-    v11 = [v5 clientContext];
-    [(SKUISwooshViewController *)v10 setClientContext:v11];
+    clientContext = [parentViewController clientContext];
+    [(SKUISwooshViewController *)v10 setClientContext:clientContext];
 
     v12 = self->_swooshViewController;
-    v13 = [v4 colorScheme];
-    [(SKUIGallerySwooshViewController *)v12 setColorScheme:v13];
+    colorScheme = [context colorScheme];
+    [(SKUIGallerySwooshViewController *)v12 setColorScheme:colorScheme];
 
     [(SKUIGallerySwooshViewController *)self->_swooshViewController setDelegate:self];
-    [v5 addChildViewController:self->_swooshViewController];
+    [parentViewController addChildViewController:self->_swooshViewController];
 
     swooshViewController = self->_swooshViewController;
   }

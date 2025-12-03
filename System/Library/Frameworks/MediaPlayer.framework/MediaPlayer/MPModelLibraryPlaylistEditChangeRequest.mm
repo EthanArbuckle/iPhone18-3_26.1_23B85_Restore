@@ -1,39 +1,39 @@
 @interface MPModelLibraryPlaylistEditChangeRequest
 - (MPModelLibraryPlaylistEditChangeRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newOperationWithLocalPersistenceResponseHandler:(id)a3 completeResponseHandler:(id)a4;
-- (id)newSDKOperationWithLocalPersistenceResponseHandler:(id)a3 completeResponseHandler:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newOperationWithLocalPersistenceResponseHandler:(id)handler completeResponseHandler:(id)responseHandler;
+- (id)newSDKOperationWithLocalPersistenceResponseHandler:(id)handler completeResponseHandler:(id)responseHandler;
 @end
 
 @implementation MPModelLibraryPlaylistEditChangeRequest
 
-- (id)newSDKOperationWithLocalPersistenceResponseHandler:(id)a3 completeResponseHandler:(id)a4
+- (id)newSDKOperationWithLocalPersistenceResponseHandler:(id)handler completeResponseHandler:(id)responseHandler
 {
-  v6 = a4;
-  v7 = a3;
+  responseHandlerCopy = responseHandler;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MPModelLibrarySDKPlaylistEditChangeRequestOperation);
   [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setRequest:self];
-  [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setCompleteResponseHandler:v6];
+  [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setCompleteResponseHandler:responseHandlerCopy];
 
-  [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setLocalPersistenceResponseHandler:v7];
+  [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setLocalPersistenceResponseHandler:handlerCopy];
   return v8;
 }
 
-- (id)newOperationWithLocalPersistenceResponseHandler:(id)a3 completeResponseHandler:(id)a4
+- (id)newOperationWithLocalPersistenceResponseHandler:(id)handler completeResponseHandler:(id)responseHandler
 {
-  v6 = a4;
-  v7 = a3;
+  responseHandlerCopy = responseHandler;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MPModelLibraryPlaylistEditChangeRequestOperation);
   [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setRequest:self];
-  [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setCompleteResponseHandler:v6];
+  [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setCompleteResponseHandler:responseHandlerCopy];
 
-  [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setLocalPersistenceResponseHandler:v7];
+  [(MPModelLibraryPlaylistEditChangeRequestOperation *)v8 setLocalPersistenceResponseHandler:handlerCopy];
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

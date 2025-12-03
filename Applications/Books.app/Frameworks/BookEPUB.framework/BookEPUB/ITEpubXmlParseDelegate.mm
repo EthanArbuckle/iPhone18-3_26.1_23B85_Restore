@@ -1,9 +1,9 @@
 @interface ITEpubXmlParseDelegate
 - (void)dealloc;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)setDecoder:(void *)a3;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)setDecoder:(void *)decoder;
 @end
 
 @implementation ITEpubXmlParseDelegate
@@ -25,7 +25,7 @@
   [(ITEpubXmlParseDelegate *)&v5 dealloc];
 }
 
-- (void)setDecoder:(void *)a3
+- (void)setDecoder:(void *)decoder
 {
   decoder = self->decoder;
   if (decoder)
@@ -33,18 +33,18 @@
     ITRetain::release(decoder);
   }
 
-  self->decoder = a3;
-  if (a3)
+  self->decoder = decoder;
+  if (decoder)
   {
 
-    ITRetain::retain(a3);
+    ITRetain::retain(decoder);
   }
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v13 = a3;
-  v6 = a4;
+  parserCopy = parser;
+  charactersCopy = characters;
   foundCharacters = self->foundCharacters;
   if (!foundCharacters)
   {
@@ -52,7 +52,7 @@
   }
 
   v8 = foundCharacters;
-  v9 = [(__CFString *)v8 stringByAppendingString:v6];
+  v9 = [(__CFString *)v8 stringByAppendingString:charactersCopy];
   v10 = self->foundCharacters;
   self->foundCharacters = v9;
 
@@ -69,32 +69,32 @@
   self->foundCharacters = 0;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
+  attributesCopy = attributes;
   decoder = self->decoder;
   if (decoder)
   {
-    (*(*decoder + 40))(decoder, v13);
-    (*(*self->decoder + 16))(self->decoder, v12, v15);
+    (*(*decoder + 40))(decoder, iCopy);
+    (*(*self->decoder + 16))(self->decoder, elementCopy, attributesCopy);
   }
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
   decoder = self->decoder;
   if (decoder)
   {
-    (*(*decoder + 40))(decoder, v11);
-    (*(*self->decoder + 32))(self->decoder, v10);
+    (*(*decoder + 40))(decoder, iCopy);
+    (*(*self->decoder + 32))(self->decoder, elementCopy);
   }
 }
 

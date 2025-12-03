@@ -1,18 +1,18 @@
 @interface NSData
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (id)serializeWithError:(id *)a3;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation NSData
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
 
   return v4;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v3 = [(NSData *)self copy];
 

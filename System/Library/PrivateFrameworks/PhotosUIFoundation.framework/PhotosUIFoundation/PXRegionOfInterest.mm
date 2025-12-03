@@ -1,13 +1,13 @@
 @interface PXRegionOfInterest
-+ (CGRect)convertedImageContentsRectOfRegionOfInterest:(id)a3 toCoordinateSpace:(id)a4 fittingSize:(CGSize)a5 flipped:(BOOL)a6;
++ (CGRect)convertedImageContentsRectOfRegionOfInterest:(id)interest toCoordinateSpace:(id)space fittingSize:(CGSize)size flipped:(BOOL)flipped;
 - (CGRect)imageContentsRect;
-- (CGRect)uncroppedImageFrameInCoordinateSpace:(id)a3;
+- (CGRect)uncroppedImageFrameInCoordinateSpace:(id)space;
 - (PXAnonymousView)trackingContainerView;
-- (PXRegionOfInterest)initWithRect:(CGRect)a3 inCoordinateSpace:(id)a4;
-- (id)copyWithRect:(CGRect)a3 inCoordinateSpace:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_copyPropertiesTo:(id)a3;
-- (void)setContainingScrollViews:(id)a3;
+- (PXRegionOfInterest)initWithRect:(CGRect)rect inCoordinateSpace:(id)space;
+- (id)copyWithRect:(CGRect)rect inCoordinateSpace:(id)space;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_copyPropertiesTo:(id)to;
+- (void)setContainingScrollViews:(id)views;
 @end
 
 @implementation PXRegionOfInterest
@@ -25,19 +25,19 @@
   return result;
 }
 
-- (void)setContainingScrollViews:(id)a3
+- (void)setContainingScrollViews:(id)views
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+  viewsCopy = views;
+  weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
   scrollViews = self->_scrollViews;
-  self->_scrollViews = v5;
+  self->_scrollViews = weakObjectsPointerArray;
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v4;
+  v7 = viewsCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -64,43 +64,43 @@
   }
 }
 
-- (void)_copyPropertiesTo:(id)a3
+- (void)_copyPropertiesTo:(id)to
 {
-  objc_storeStrong(a3 + 10, self->_imageRequester);
-  v14 = a3;
+  objc_storeStrong(to + 10, self->_imageRequester);
+  toCopy = to;
   size = self->_imageContentsRect.size;
-  *(v14 + 136) = self->_imageContentsRect.origin;
-  *(v14 + 152) = size;
+  *(toCopy + 136) = self->_imageContentsRect.origin;
+  *(toCopy + 152) = size;
   v6 = [(PXViewSpec *)self->_imageViewSpec copy];
-  v7 = *(v14 + 11);
-  *(v14 + 11) = v6;
+  v7 = *(toCopy + 11);
+  *(toCopy + 11) = v6;
 
-  objc_storeStrong(v14 + 12, self->_title);
-  objc_storeStrong(v14 + 13, self->_subtitle);
+  objc_storeStrong(toCopy + 12, self->_title);
+  objc_storeStrong(toCopy + 13, self->_subtitle);
   v8 = [(PXTitleSubtitleLabelSpec *)self->_textViewSpec copy];
-  v9 = *(v14 + 14);
-  *(v14 + 14) = v8;
+  v9 = *(toCopy + 14);
+  *(toCopy + 14) = v8;
 
   v10 = _Block_copy(self->_placeholderViewFactory);
-  v11 = *(v14 + 15);
-  *(v14 + 15) = v10;
+  v11 = *(toCopy + 15);
+  *(toCopy + 15) = v10;
 
   v12 = _Block_copy(self->_trackingContainerViewFactory);
-  v13 = *(v14 + 16);
-  *(v14 + 16) = v12;
+  v13 = *(toCopy + 16);
+  *(toCopy + 16) = v12;
 
-  v14[72] = self->_isRepresentingPlaceholderContent;
-  objc_storeStrong(v14 + 8, self->_scrollViews);
+  toCopy[72] = self->_isRepresentingPlaceholderContent;
+  objc_storeStrong(toCopy + 8, self->_scrollViews);
 }
 
-- (id)copyWithRect:(CGRect)a3 inCoordinateSpace:(id)a4
+- (id)copyWithRect:(CGRect)rect inCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [objc_alloc(objc_opt_class()) initWithRect:v9 inCoordinateSpace:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
+  v10 = [objc_alloc(objc_opt_class()) initWithRect:spaceCopy inCoordinateSpace:{x, y, width, height}];
 
   [(PXRegionOfInterest *)self _copyPropertiesTo:v10];
   return v10;
@@ -108,11 +108,11 @@
 
 - (PXAnonymousView)trackingContainerView
 {
-  v3 = [(PXRegionOfInterest *)self trackingContainerViewFactory];
-  if (v3)
+  trackingContainerViewFactory = [(PXRegionOfInterest *)self trackingContainerViewFactory];
+  if (trackingContainerViewFactory)
   {
-    v4 = [(PXRegionOfInterest *)self trackingContainerViewFactory];
-    v5 = (v4)[2](v4, self);
+    trackingContainerViewFactory2 = [(PXRegionOfInterest *)self trackingContainerViewFactory];
+    v5 = (trackingContainerViewFactory2)[2](trackingContainerViewFactory2, self);
   }
 
   else
@@ -123,10 +123,10 @@
   return v5;
 }
 
-- (CGRect)uncroppedImageFrameInCoordinateSpace:(id)a3
+- (CGRect)uncroppedImageFrameInCoordinateSpace:(id)space
 {
   v30 = *MEMORY[0x1E69E9840];
-  [(PXDisplayRect *)self rectInCoordinateSpace:a3];
+  [(PXDisplayRect *)self rectInCoordinateSpace:space];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -168,20 +168,20 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PXRegionOfInterest;
-  v4 = [(PXDisplayRect *)&v6 copyWithZone:a3];
+  v4 = [(PXDisplayRect *)&v6 copyWithZone:zone];
   [(PXRegionOfInterest *)self _copyPropertiesTo:v4];
   return v4;
 }
 
-- (PXRegionOfInterest)initWithRect:(CGRect)a3 inCoordinateSpace:(id)a4
+- (PXRegionOfInterest)initWithRect:(CGRect)rect inCoordinateSpace:(id)space
 {
   v5.receiver = self;
   v5.super_class = PXRegionOfInterest;
-  result = [(PXDisplayRect *)&v5 initWithRect:a4 inCoordinateSpace:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(PXDisplayRect *)&v5 initWithRect:space inCoordinateSpace:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (result)
   {
     result->_imageContentsRect.origin = *PXRectUnit;
@@ -191,16 +191,16 @@
   return result;
 }
 
-+ (CGRect)convertedImageContentsRectOfRegionOfInterest:(id)a3 toCoordinateSpace:(id)a4 fittingSize:(CGSize)a5 flipped:(BOOL)a6
++ (CGRect)convertedImageContentsRectOfRegionOfInterest:(id)interest toCoordinateSpace:(id)space fittingSize:(CGSize)size flipped:(BOOL)flipped
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  flippedCopy = flipped;
+  height = size.height;
+  width = size.width;
+  interestCopy = interest;
+  spaceCopy = space;
+  if (interestCopy)
   {
-    [v10 imageContentsRect];
+    [interestCopy imageContentsRect];
     x = v22.origin.x;
     y = v22.origin.y;
     v14 = v22.size.width;
@@ -211,7 +211,7 @@
     v24.size.height = 1.0;
     if (CGRectEqualToRect(v22, v24))
     {
-      [v10 rectInCoordinateSpace:v11];
+      [interestCopy rectInCoordinateSpace:spaceCopy];
       v15 = 0.0;
       PFSizeWithAspectRatioFittingSize();
       x = width * 0.5 + 0.0 + v16 * -0.5;
@@ -230,7 +230,7 @@
       }
     }
 
-    if (v6)
+    if (flippedCopy)
     {
       y = 1.0 - (y + v15);
     }

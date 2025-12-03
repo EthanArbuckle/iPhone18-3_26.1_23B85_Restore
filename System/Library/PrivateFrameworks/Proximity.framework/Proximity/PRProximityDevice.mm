@@ -1,8 +1,8 @@
 @interface PRProximityDevice
 - (PRProximityDevice)init;
-- (PRProximityDevice)initWithPeer:(id)a3 andPeerModel:(id)a4 withError:(id *)a5;
+- (PRProximityDevice)initWithPeer:(id)peer andPeerModel:(id)model withError:(id *)error;
 - (id).cxx_construct;
-- (void)addSample:(BtProxData *)a3;
+- (void)addSample:(BtProxData *)sample;
 - (void)estimateProximity;
 @end
 
@@ -15,10 +15,10 @@
   return 0;
 }
 
-- (PRProximityDevice)initWithPeer:(id)a3 andPeerModel:(id)a4 withError:(id *)a5
+- (PRProximityDevice)initWithPeer:(id)peer andPeerModel:(id)model withError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  peerCopy = peer;
+  modelCopy = model;
   v20.receiver = self;
   v20.super_class = PRProximityDevice;
   v11 = [(PRProximityDevice *)&v20 init];
@@ -28,11 +28,11 @@
     logger = v11->_logger;
     v11->_logger = v12;
 
-    objc_storeStrong(&v11->_peer, a3);
-    objc_storeStrong(&v11->_model, a4);
+    objc_storeStrong(&v11->_peer, peer);
+    objc_storeStrong(&v11->_model, model);
     v11->_proximity = 0;
     v19 = 0;
-    v14 = [PRProximityDatabase getProximityDeviceParameters:&v19 forDeviceModel:v11->_model withError:a5];
+    v14 = [PRProximityDatabase getProximityDeviceParameters:&v19 forDeviceModel:v11->_model withError:error];
     v15 = v19;
     if (!v14)
     {
@@ -51,7 +51,7 @@ LABEL_6:
   return v17;
 }
 
-- (void)addSample:(BtProxData *)a3
+- (void)addSample:(BtProxData *)sample
 {
   obj = self;
   objc_sync_enter(obj);
@@ -69,7 +69,7 @@ LABEL_6:
 - (void)estimateProximity
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_1(&dword_230EB5000, a1, a3, "%s - estimatedProximity: PRDeviceProximityFar", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_1(&dword_230EB5000, self, a3, "%s - estimatedProximity: PRDeviceProximityFar", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

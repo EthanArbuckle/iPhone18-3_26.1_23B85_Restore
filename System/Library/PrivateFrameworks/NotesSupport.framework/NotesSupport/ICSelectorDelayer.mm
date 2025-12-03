@@ -1,6 +1,6 @@
 @interface ICSelectorDelayer
 - (BOOL)isScheduledToFire;
-- (ICSelectorDelayer)initWithTarget:(id)a3 selector:(SEL)a4 delay:(double)a5 maximumDelay:(double)a6 waitToFireUntilRequestsStop:(BOOL)a7 callOnMainThread:(BOOL)a8;
+- (ICSelectorDelayer)initWithTarget:(id)target selector:(SEL)selector delay:(double)delay maximumDelay:(double)maximumDelay waitToFireUntilRequestsStop:(BOOL)stop callOnMainThread:(BOOL)thread;
 - (OS_dispatch_queue)backgroundQueue;
 - (SEL)selector;
 - (id)target;
@@ -10,20 +10,20 @@
 - (void)dealloc;
 - (void)fireImmediately;
 - (void)requestFire;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation ICSelectorDelayer
 
 - (void)requestFire
 {
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __32__ICSelectorDelayer_requestFire__block_invoke;
   block[3] = &unk_1E84848B8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 }
 
 void __32__ICSelectorDelayer_requestFire__block_invoke(uint64_t a1)
@@ -149,13 +149,13 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __28__ICSelectorDelayer_dealloc__block_invoke;
   block[3] = &unk_1E84848B8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 
   v4.receiver = self;
   v4.super_class = ICSelectorDelayer;
@@ -164,12 +164,12 @@ LABEL_19:
 
 - (void)_cancelFireRequests
 {
-  v3 = [(ICSelectorDelayer *)self fireBlock];
+  fireBlock = [(ICSelectorDelayer *)self fireBlock];
 
-  if (v3)
+  if (fireBlock)
   {
-    v4 = [(ICSelectorDelayer *)self fireBlock];
-    dispatch_block_cancel(v4);
+    fireBlock2 = [(ICSelectorDelayer *)self fireBlock];
+    dispatch_block_cancel(fireBlock2);
 
     [(ICSelectorDelayer *)self setFireBlock:0];
   }
@@ -177,23 +177,23 @@ LABEL_19:
 
 - (BOOL)isScheduledToFire
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __38__ICSelectorDelayer_isScheduledToFire__block_invoke;
   v5[3] = &unk_1E8484848;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(requestQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __38__ICSelectorDelayer_isScheduledToFire__block_invoke(uint64_t a1)
@@ -225,23 +225,23 @@ void __38__ICSelectorDelayer_isScheduledToFire__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (ICSelectorDelayer)initWithTarget:(id)a3 selector:(SEL)a4 delay:(double)a5 maximumDelay:(double)a6 waitToFireUntilRequestsStop:(BOOL)a7 callOnMainThread:(BOOL)a8
+- (ICSelectorDelayer)initWithTarget:(id)target selector:(SEL)selector delay:(double)delay maximumDelay:(double)maximumDelay waitToFireUntilRequestsStop:(BOOL)stop callOnMainThread:(BOOL)thread
 {
-  v8 = a8;
-  v9 = a7;
-  v14 = a3;
+  threadCopy = thread;
+  stopCopy = stop;
+  targetCopy = target;
   v20.receiver = self;
   v20.super_class = ICSelectorDelayer;
   v15 = [(ICSelectorDelayer *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    [(ICSelectorDelayer *)v15 setTarget:v14];
-    [(ICSelectorDelayer *)v16 setSelector:a4];
-    [(ICSelectorDelayer *)v16 setDelay:a5];
-    [(ICSelectorDelayer *)v16 setMaximumDelay:a6];
-    [(ICSelectorDelayer *)v16 setWaitToFireUntilRequestsStop:v9];
-    [(ICSelectorDelayer *)v16 setCallOnMainThread:v8];
+    [(ICSelectorDelayer *)v15 setTarget:targetCopy];
+    [(ICSelectorDelayer *)v16 setSelector:selector];
+    [(ICSelectorDelayer *)v16 setDelay:delay];
+    [(ICSelectorDelayer *)v16 setMaximumDelay:maximumDelay];
+    [(ICSelectorDelayer *)v16 setWaitToFireUntilRequestsStop:stopCopy];
+    [(ICSelectorDelayer *)v16 setCallOnMainThread:threadCopy];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("com.apple.notes.coalescer.requests", v17);
     [(ICSelectorDelayer *)v16 setRequestQueue:v18];
@@ -271,13 +271,13 @@ void __32__ICSelectorDelayer_requestFire__block_invoke_2(uint64_t a1)
 
 - (void)fireImmediately
 {
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__ICSelectorDelayer_fireImmediately__block_invoke;
   block[3] = &unk_1E84848B8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 
   if (-[ICSelectorDelayer callOnMainThread](self, "callOnMainThread") && ([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
@@ -298,24 +298,24 @@ void __32__ICSelectorDelayer_requestFire__block_invoke_2(uint64_t a1)
 - (void)callTargetSelector
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = NSStringFromSelector([a1 selector]);
-  v5 = [a1 target];
+  v4 = NSStringFromSelector([self selector]);
+  target = [self target];
   v6 = 138412546;
   v7 = v4;
   v8 = 2112;
-  v9 = v5;
+  v9 = target;
   _os_log_error_impl(&dword_1D4576000, a2, OS_LOG_TYPE_ERROR, "Could not get method for selector %@ on target %@", &v6, 0x16u);
 }
 
 - (void)cancelPreviousFireRequests
 {
-  v3 = [(ICSelectorDelayer *)self requestQueue];
+  requestQueue = [(ICSelectorDelayer *)self requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__ICSelectorDelayer_cancelPreviousFireRequests__block_invoke;
   block[3] = &unk_1E84848B8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestQueue, block);
 }
 
 - (id)target
@@ -338,19 +338,19 @@ void __32__ICSelectorDelayer_requestFire__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

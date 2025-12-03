@@ -1,16 +1,16 @@
 @interface CHFriendInboxBarButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CHFriendInboxBarButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHFriendInboxBarButtonView" hasInstanceVariable:@"_badgeView" withType:"CHFriendInboxBadgeView"];
-  [v3 validateClass:@"CHFriendInboxBadgeView" hasInstanceMethod:@"badgeText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHFriendInboxBarButtonView" hasInstanceVariable:@"_badgeView" withType:"CHFriendInboxBadgeView"];
+  [validationsCopy validateClass:@"CHFriendInboxBadgeView" hasInstanceMethod:@"badgeText" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -27,9 +27,9 @@
 
   v4 = objc_opt_new();
   v5 = [v4 numberFromString:v3];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 < 1)
+  if (intValue < 1)
   {
     v8 = 0;
   }
@@ -37,7 +37,7 @@
   else
   {
     v7 = accessibilityLocalizedString(@"badge.format");
-    v8 = [NSString stringWithFormat:v7, v6];
+    v8 = [NSString stringWithFormat:v7, intValue];
   }
 
   return v8;

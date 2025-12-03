@@ -1,9 +1,9 @@
 @interface CalendarMessageAttendeeReplyCell
-+ (id)actionsForNotification:(id)a3 proposedTimeAttendee:(id *)a4 eventStore:(id)a5;
++ (id)actionsForNotification:(id)notification proposedTimeAttendee:(id *)attendee eventStore:(id)store;
 - (id)actions;
 - (id)bodyStringDict;
 - (id)titleStrings;
-- (void)setNotification:(id)a3;
+- (void)setNotification:(id)notification;
 - (void)updateAuthor;
 @end
 
@@ -11,22 +11,22 @@
 
 - (id)titleStrings
 {
-  v3 = [(CalendarMessageCell *)self notification];
-  v4 = [v3 title];
+  notification = [(CalendarMessageCell *)self notification];
+  title = [notification title];
 
-  if (v4)
+  if (title)
   {
-    v5 = [(CalendarMessageCell *)self notification];
-    v6 = [v5 title];
-    v11 = v6;
+    notification2 = [(CalendarMessageCell *)self notification];
+    title2 = [notification2 title];
+    v11 = title2;
     v7 = &v11;
   }
 
   else
   {
-    v5 = [NSBundle bundleForClass:objc_opt_class()];
-    v6 = [v5 localizedStringForKey:@"(No Title)" value:&stru_1002133B8 table:0];
-    v10 = v6;
+    notification2 = [NSBundle bundleForClass:objc_opt_class()];
+    title2 = [notification2 localizedStringForKey:@"(No Title)" value:&stru_1002133B8 table:0];
+    v10 = title2;
     v7 = &v10;
   }
 
@@ -37,14 +37,14 @@
 
 - (void)updateAuthor
 {
-  v2 = self;
-  v3 = [(CalendarMessageAttendeeReplyCell *)self bodyStringDict];
-  v4 = [v3 objectForKeyedSubscript:CUIKNotificationDescriptionKeyImportantAttendee];
-  v5 = [(CalendarMessageCell *)v2 authorView];
-  v6 = v5;
+  selfCopy = self;
+  bodyStringDict = [(CalendarMessageAttendeeReplyCell *)self bodyStringDict];
+  v4 = [bodyStringDict objectForKeyedSubscript:CUIKNotificationDescriptionKeyImportantAttendee];
+  authorView = [(CalendarMessageCell *)selfCopy authorView];
+  v6 = authorView;
   if (v4)
   {
-    v7 = [(CalendarMessageCell *)v2 authorCacheKeyForIdentity:v4];
+    v7 = [(CalendarMessageCell *)selfCopy authorCacheKeyForIdentity:v4];
     v8 = [objc_opt_class() authorCacheObjectForKey:v7];
     v9 = v8;
     if (v8)
@@ -61,17 +61,17 @@
         [v6 updateWithContacts:0];
       }
 
-      v31 = [(CalendarMessageCell *)v2 authorAddressForIdentity:v4];
-      v32 = [v4 name];
-      v33 = [v4 firstName];
-      v34 = [v4 lastName];
-      [v6 updateWithAddress:v31 fullName:v32 firstName:v33 lastName:v34];
+      v31 = [(CalendarMessageCell *)selfCopy authorAddressForIdentity:v4];
+      name = [v4 name];
+      firstName = [v4 firstName];
+      lastName = [v4 lastName];
+      [v6 updateWithAddress:v31 fullName:name firstName:firstName lastName:lastName];
 
       if (([v6 loadContactsAsynchronously] & 1) == 0)
       {
         v35 = objc_opt_class();
-        v36 = [v6 contact];
-        [v35 authorCacheSetObject:v36 forKey:v7];
+        contact = [v6 contact];
+        [v35 authorCacheSetObject:contact forKey:v7];
       }
     }
 
@@ -80,28 +80,28 @@
 
   else
   {
-    v37 = v5;
-    v38 = v3;
-    v11 = [(CalendarMessageCell *)v2 notification];
-    v12 = [v11 attendees];
-    v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+    v37 = authorView;
+    v38 = bodyStringDict;
+    notification = [(CalendarMessageCell *)selfCopy notification];
+    attendees = [notification attendees];
+    v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [attendees count]);
 
     v14 = v13;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v15 = [(CalendarMessageCell *)v2 notification];
-    v16 = [v15 attendees];
+    notification2 = [(CalendarMessageCell *)selfCopy notification];
+    attendees2 = [notification2 attendees];
 
-    obj = v16;
-    v17 = [v16 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    obj = attendees2;
+    v17 = [attendees2 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v17)
     {
       v18 = v17;
       v19 = *v43;
       v39 = *v43;
-      v40 = v2;
+      v40 = selfCopy;
       do
       {
         for (i = 0; i != v18; i = i + 1)
@@ -112,24 +112,24 @@
           }
 
           v21 = *(*(&v42 + 1) + 8 * i);
-          v22 = [(CalendarMessageCell *)v2 authorCacheKeyForIdentity:v21];
+          v22 = [(CalendarMessageCell *)selfCopy authorCacheKeyForIdentity:v21];
           v23 = [objc_opt_class() authorCacheObjectForKey:v22];
           if (!v23)
           {
-            v24 = [(CalendarMessageCell *)v2 authorAddressForIdentity:v21];
-            v25 = [v21 name];
+            v24 = [(CalendarMessageCell *)selfCopy authorAddressForIdentity:v21];
+            name2 = [v21 name];
             [v21 firstName];
             v27 = v26 = v18;
-            v28 = [v21 lastName];
+            lastName2 = [v21 lastName];
             +[EKUILabeledAvatarView contactKeysToFetch];
             v30 = v29 = v14;
-            v23 = [ContactsUtils contactForAddress:v24 fullName:v25 firstName:v27 lastName:v28 keysToFetch:v30];
+            v23 = [ContactsUtils contactForAddress:v24 fullName:name2 firstName:v27 lastName:lastName2 keysToFetch:v30];
 
             v14 = v29;
             v18 = v26;
 
             v19 = v39;
-            v2 = v40;
+            selfCopy = v40;
             [objc_opt_class() authorCacheSetObject:v23 forKey:v22];
           }
 
@@ -145,15 +145,15 @@
     v6 = v37;
     [v37 updateWithContacts:v14];
     v4 = 0;
-    v3 = v38;
+    bodyStringDict = v38;
   }
 }
 
 - (id)bodyStringDict
 {
   v3 = objc_opt_class();
-  v4 = [(CalendarMessageCell *)self notification];
-  v5 = [v3 _bodyStringDict:v4];
+  notification = [(CalendarMessageCell *)self notification];
+  v5 = [v3 _bodyStringDict:notification];
 
   return v5;
 }
@@ -161,13 +161,13 @@
 - (id)actions
 {
   [(CalendarMessageAttendeeReplyCell *)self layoutIfNeeded];
-  v3 = [(CalendarMessageCell *)self delegate];
-  v4 = [v3 eventStoreForCell:self];
+  delegate = [(CalendarMessageCell *)self delegate];
+  v4 = [delegate eventStoreForCell:self];
 
   v5 = objc_opt_class();
-  v6 = [(CalendarMessageCell *)self notification];
+  notification = [(CalendarMessageCell *)self notification];
   v10 = 0;
-  v7 = [v5 actionsForNotification:v6 proposedTimeAttendee:&v10 eventStore:v4];
+  v7 = [v5 actionsForNotification:notification proposedTimeAttendee:&v10 eventStore:v4];
   v8 = v10;
 
   [(CalendarMessageAttendeeReplyCell *)self setProposedTimeAttendee:v8];
@@ -175,19 +175,19 @@
   return v7;
 }
 
-+ (id)actionsForNotification:(id)a3 proposedTimeAttendee:(id *)a4 eventStore:(id)a5
++ (id)actionsForNotification:(id)notification proposedTimeAttendee:(id *)attendee eventStore:(id)store
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _bodyStringDict:v8];
+  notificationCopy = notification;
+  storeCopy = store;
+  v10 = [self _bodyStringDict:notificationCopy];
   v11 = [v10 objectForKeyedSubscript:CUIKNotificationDescriptionKeyImportantAttendee];
   v12 = v11;
   if (v11 && [v11 proposedStartDateChanged] && (objc_msgSend(v12, "proposedStartDate"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
-    if (a4)
+    if (attendee)
     {
       v14 = v12;
-      *a4 = v12;
+      *attendee = v12;
     }
 
     if ([v12 proposedStartDateDeclined])
@@ -198,19 +198,19 @@
     else
     {
       v33 = v10;
-      v19 = [v8 objectID];
-      v35 = v8;
-      v20 = [v8 startDate];
-      v34 = v9;
-      v21 = [v9 eventForObjectID:v19 occurrenceDate:v20 checkValid:0];
+      objectID = [notificationCopy objectID];
+      v35 = notificationCopy;
+      startDate = [notificationCopy startDate];
+      v34 = storeCopy;
+      v21 = [storeCopy eventForObjectID:objectID occurrenceDate:startDate checkValid:0];
 
       v36 = objc_opt_new();
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v22 = [v21 attendees];
-      v23 = [v22 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      attendees = [v21 attendees];
+      v23 = [attendees countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v23)
       {
         v24 = v23;
@@ -221,7 +221,7 @@
           {
             if (*v38 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(attendees);
             }
 
             v27 = *(*(&v37 + 1) + 8 * i);
@@ -229,9 +229,9 @@
             if (objc_opt_isKindOfClass())
             {
               v28 = v27;
-              v29 = [v12 emailAddress];
-              v30 = [v28 emailAddress];
-              v31 = [v29 isEqual:v30];
+              emailAddress = [v12 emailAddress];
+              emailAddress2 = [v28 emailAddress];
+              v31 = [emailAddress isEqual:emailAddress2];
 
               if (v31)
               {
@@ -242,7 +242,7 @@
             }
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v37 objects:v41 count:16];
+          v24 = [attendees countByEnumeratingWithState:&v37 objects:v41 count:16];
           if (v24)
           {
             continue;
@@ -264,17 +264,17 @@ LABEL_29:
         v15 = &off_100219F90;
       }
 
-      v9 = v34;
-      v8 = v35;
+      storeCopy = v34;
+      notificationCopy = v35;
       v10 = v33;
     }
   }
 
   else
   {
-    if (a4)
+    if (attendee)
     {
-      *a4 = 0;
+      *attendee = 0;
     }
 
     v16 = [v10 objectForKeyedSubscript:CUIKNotificationDescriptionKeyTimeProposals];
@@ -313,16 +313,16 @@ LABEL_29:
   return v15;
 }
 
-- (void)setNotification:(id)a3
+- (void)setNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   [(CalendarMessageCell *)self setHasDisclosure:EKUICurrentWidthSizeClassIsCompactInViewHierarchy()];
   dateString = self->_dateString;
   self->_dateString = 0;
 
   v6.receiver = self;
   v6.super_class = CalendarMessageAttendeeReplyCell;
-  [(CalendarMessageCell *)&v6 setNotification:v4];
+  [(CalendarMessageCell *)&v6 setNotification:notificationCopy];
 }
 
 @end

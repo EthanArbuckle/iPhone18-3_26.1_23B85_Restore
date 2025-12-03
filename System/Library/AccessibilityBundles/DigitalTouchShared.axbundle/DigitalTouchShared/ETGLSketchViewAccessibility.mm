@@ -1,16 +1,16 @@
 @interface ETGLSketchViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)animateOutWithCompletion:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)animateOutWithCompletion:(id)completion;
 @end
 
 @implementation ETGLSketchViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ETGLSketchView"];
-  [v3 validateClass:@"ETGLSketchView" hasInstanceMethod:@"setPaused:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"ETGLSketchView" hasInstanceMethod:@"animateOutWithCompletion:" withFullSignature:{"v", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ETGLSketchView"];
+  [validationsCopy validateClass:@"ETGLSketchView" hasInstanceMethod:@"setPaused:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"ETGLSketchView" hasInstanceMethod:@"animateOutWithCompletion:" withFullSignature:{"v", "@?", 0}];
 }
 
 id __41__ETGLSketchViewAccessibility_setPaused___block_invoke(uint64_t a1)
@@ -21,14 +21,14 @@ id __41__ETGLSketchViewAccessibility_setPaused___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v3, sel_setPaused_, v1);
 }
 
-- (void)animateOutWithCompletion:(id)a3
+- (void)animateOutWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -36,7 +36,7 @@ id __41__ETGLSketchViewAccessibility_setPaused___block_invoke(uint64_t a1)
   {
     v5.receiver = self;
     v5.super_class = ETGLSketchViewAccessibility;
-    [(ETGLSketchViewAccessibility *)&v5 animateOutWithCompletion:v4];
+    [(ETGLSketchViewAccessibility *)&v5 animateOutWithCompletion:completionCopy];
   }
 }
 

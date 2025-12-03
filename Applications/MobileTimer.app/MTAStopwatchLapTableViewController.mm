@@ -1,27 +1,27 @@
 @interface MTAStopwatchLapTableViewController
 - ($0AC6E346AE4835514AAA8AC86D8F4844)lapExtrema;
-- (MTAStopwatchLapTableViewController)initWithStyle:(int64_t)a3;
-- (double)runningTotalForLap:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (MTAStopwatchLapTableViewController)initWithStyle:(int64_t)style;
+- (double)runningTotalForLap:(int64_t)lap;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (unint64_t)lapCount;
 - (void)_updateCurrentLapCell;
 - (void)_updateLapExtrema;
-- (void)addLap:(double)a3;
+- (void)addLap:(double)lap;
 - (void)clearAllLaps;
 - (void)loadView;
-- (void)setCellStyle:(unint64_t)a3;
-- (void)setLaps:(id)a3;
-- (void)setShowsCurrentLap:(BOOL)a3;
+- (void)setCellStyle:(unint64_t)style;
+- (void)setLaps:(id)laps;
+- (void)setShowsCurrentLap:(BOOL)lap;
 @end
 
 @implementation MTAStopwatchLapTableViewController
 
-- (MTAStopwatchLapTableViewController)initWithStyle:(int64_t)a3
+- (MTAStopwatchLapTableViewController)initWithStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = MTAStopwatchLapTableViewController;
-  v3 = [(MTAStopwatchLapTableViewController *)&v6 initWithStyle:a3];
+  v3 = [(MTAStopwatchLapTableViewController *)&v6 initWithStyle:style];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -39,152 +39,152 @@
   v3 = [[MTAStopwatchTableView alloc] initWithFrame:0 style:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(MTAStopwatchLapTableViewController *)self setTableView:v3];
 
-  v4 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"MTCurrentLapCell"];
+  tableView = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"MTCurrentLapCell"];
 
-  v5 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:off_1000D19D8];
+  tableView2 = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:off_1000D19D8];
 
-  v6 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v6 setDelegate:self];
+  tableView3 = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView3 setDelegate:self];
 
-  v7 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v7 setDataSource:self];
+  tableView4 = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView4 setDataSource:self];
 
   v8 = +[UIColor mtui_backgroundColor];
-  v9 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v9 setBackgroundColor:v8];
+  tableView5 = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView5 setBackgroundColor:v8];
 
-  v10 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v10 setSeparatorInset:{0.0, 15.0, 0.0, 15.0}];
+  tableView6 = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView6 setSeparatorInset:{0.0, 15.0, 0.0, 15.0}];
 
-  v11 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v11 setCellLayoutMarginsFollowReadableWidth:0];
+  tableView7 = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView7 setCellLayoutMarginsFollowReadableWidth:0];
 }
 
-- (void)setCellStyle:(unint64_t)a3
+- (void)setCellStyle:(unint64_t)style
 {
-  if (self->_cellStyle != a3)
+  if (self->_cellStyle != style)
   {
-    self->_cellStyle = a3;
-    if (a3 - 2 > 2)
+    self->_cellStyle = style;
+    if (style - 2 > 2)
     {
       v5 = 44.0;
     }
 
     else
     {
-      v5 = dbl_10008BBF8[a3 - 2];
+      v5 = dbl_10008BBF8[style - 2];
     }
 
-    v6 = [(MTAStopwatchLapTableViewController *)self tableView];
-    [v6 setEstimatedRowHeight:v5];
+    tableView = [(MTAStopwatchLapTableViewController *)self tableView];
+    [tableView setEstimatedRowHeight:v5];
 
-    v7 = [(MTAStopwatchLapTableViewController *)self tableView];
-    [v7 reloadData];
+    tableView2 = [(MTAStopwatchLapTableViewController *)self tableView];
+    [tableView2 reloadData];
   }
 }
 
-- (void)setShowsCurrentLap:(BOOL)a3
+- (void)setShowsCurrentLap:(BOOL)lap
 {
-  if (self->_showsCurrentLap != a3)
+  if (self->_showsCurrentLap != lap)
   {
-    self->_showsCurrentLap = a3;
-    v4 = [(MTAStopwatchLapTableViewController *)self tableView];
-    [v4 reloadData];
+    self->_showsCurrentLap = lap;
+    tableView = [(MTAStopwatchLapTableViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
 - (void)_updateCurrentLapCell
 {
-  v3 = [(MTAStopwatchLapTableViewController *)self lapCount];
-  v4 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
-  [v4 setLap:v3];
+  lapCount = [(MTAStopwatchLapTableViewController *)self lapCount];
+  currentLapCell = [(MTAStopwatchLapTableViewController *)self currentLapCell];
+  [currentLapCell setLap:lapCount];
 
   [(MTAStopwatchLapTableViewController *)self currentInterval];
   v6 = v5;
-  v7 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
-  [v7 setTime:v6];
+  currentLapCell2 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
+  [currentLapCell2 setTime:v6];
 
   [(MTAStopwatchLapTableViewController *)self previousLapsTotalInterval];
   v9 = v8;
   [(MTAStopwatchLapTableViewController *)self currentInterval];
   v11 = v9 + v10;
-  v12 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
-  [v12 setRunningTotal:v11];
+  currentLapCell3 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
+  [currentLapCell3 setRunningTotal:v11];
 
   v13 = +[UIColor mtui_primaryTextColor];
-  v14 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
-  [v14 setColor:v13];
+  currentLapCell4 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
+  [currentLapCell4 setColor:v13];
 
-  v15 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
-  [v15 setNeedsLayout];
+  currentLapCell5 = [(MTAStopwatchLapTableViewController *)self currentLapCell];
+  [currentLapCell5 setNeedsLayout];
 }
 
-- (void)addLap:(double)a3
+- (void)addLap:(double)lap
 {
-  v5 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-  v6 = [NSNumber numberWithDouble:a3];
-  [v5 addObject:v6];
+  lapTimes = [(MTAStopwatchLapTableViewController *)self lapTimes];
+  v6 = [NSNumber numberWithDouble:lap];
+  [lapTimes addObject:v6];
 
   [(MTAStopwatchLapTableViewController *)self _updateLapExtrema];
   [(MTAStopwatchLapTableViewController *)self previousLapsTotalInterval];
-  [(MTAStopwatchLapTableViewController *)self setPreviousLapsTotalInterval:v7 + a3];
-  v8 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v8 reloadData];
+  [(MTAStopwatchLapTableViewController *)self setPreviousLapsTotalInterval:v7 + lap];
+  tableView = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)setLaps:(id)a3
+- (void)setLaps:(id)laps
 {
-  v4 = a3;
-  v5 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-  [v5 removeAllObjects];
+  lapsCopy = laps;
+  lapTimes = [(MTAStopwatchLapTableViewController *)self lapTimes];
+  [lapTimes removeAllObjects];
 
-  v6 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-  [v6 addObjectsFromArray:v4];
+  lapTimes2 = [(MTAStopwatchLapTableViewController *)self lapTimes];
+  [lapTimes2 addObjectsFromArray:lapsCopy];
 
   [(MTAStopwatchLapTableViewController *)self _updateLapExtrema];
-  v7 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-  -[MTAStopwatchLapTableViewController runningTotalForLap:](self, "runningTotalForLap:", [v7 count] - 1);
+  lapTimes3 = [(MTAStopwatchLapTableViewController *)self lapTimes];
+  -[MTAStopwatchLapTableViewController runningTotalForLap:](self, "runningTotalForLap:", [lapTimes3 count] - 1);
   [(MTAStopwatchLapTableViewController *)self setPreviousLapsTotalInterval:?];
 
-  v8 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)clearAllLaps
 {
-  v3 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-  [v3 removeAllObjects];
+  lapTimes = [(MTAStopwatchLapTableViewController *)self lapTimes];
+  [lapTimes removeAllObjects];
 
   [(MTAStopwatchLapTableViewController *)self _updateLapExtrema];
   [(MTAStopwatchLapTableViewController *)self setPreviousLapsTotalInterval:0.0];
-  v4 = [(MTAStopwatchLapTableViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(MTAStopwatchLapTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (unint64_t)lapCount
 {
-  v3 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-  v4 = [v3 count];
+  lapTimes = [(MTAStopwatchLapTableViewController *)self lapTimes];
+  v4 = [lapTimes count];
 
   return v4 + [(MTAStopwatchLapTableViewController *)self showsCurrentLap];
 }
 
-- (double)runningTotalForLap:(int64_t)a3
+- (double)runningTotalForLap:(int64_t)lap
 {
-  if (a3 < 0)
+  if (lap < 0)
   {
     return 0.0;
   }
 
   v4 = 0;
-  v5 = a3 + 1;
+  v5 = lap + 1;
   v6 = 0.0;
   do
   {
-    v7 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-    v8 = [v7 objectAtIndexedSubscript:v4];
+    lapTimes = [(MTAStopwatchLapTableViewController *)self lapTimes];
+    v8 = [lapTimes objectAtIndexedSubscript:v4];
     [v8 doubleValue];
     v6 = v6 + v9;
 
@@ -197,23 +197,23 @@
 
 - (void)_updateLapExtrema
 {
-  v3 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-  v4 = [v3 count];
+  lapTimes = [(MTAStopwatchLapTableViewController *)self lapTimes];
+  v4 = [lapTimes count];
 
   if (v4 >= 2)
   {
-    v7 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    lapTimes2 = [(MTAStopwatchLapTableViewController *)self lapTimes];
+    v8 = [lapTimes2 objectAtIndexedSubscript:0];
     [v8 doubleValue];
     v10 = v9;
 
-    v11 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-    v12 = [v11 objectAtIndexedSubscript:0];
+    lapTimes3 = [(MTAStopwatchLapTableViewController *)self lapTimes];
+    v12 = [lapTimes3 objectAtIndexedSubscript:0];
     [v12 doubleValue];
     v14 = v13;
 
-    v15 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-    v16 = [v15 count];
+    lapTimes4 = [(MTAStopwatchLapTableViewController *)self lapTimes];
+    v16 = [lapTimes4 count];
 
     v5 = 0;
     v6 = 0;
@@ -224,8 +224,8 @@
       v17 = 1;
       do
       {
-        v18 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-        v19 = [v18 objectAtIndexedSubscript:v17];
+        lapTimes5 = [(MTAStopwatchLapTableViewController *)self lapTimes];
+        v19 = [lapTimes5 objectAtIndexedSubscript:v17];
         [v19 doubleValue];
         v21 = v20;
 
@@ -271,8 +271,8 @@
         }
 
         ++v17;
-        v25 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-        v26 = [v25 count];
+        lapTimes6 = [(MTAStopwatchLapTableViewController *)self lapTimes];
+        v26 = [lapTimes6 count];
       }
 
       while (v17 < v26);
@@ -288,22 +288,22 @@
   [(MTAStopwatchLapTableViewController *)self setLapExtrema:v5, v6];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [(MTAStopwatchLapTableViewController *)self cellStyle:a3];
+  v4 = [(MTAStopwatchLapTableViewController *)self cellStyle:view];
 
   [MTAStopwatchLapCell cellHeightWithCellStyle:v4];
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTAStopwatchLapTableViewController *)self lapCount];
-  v9 = v8 - [v6 row];
-  v10 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-  v11 = [v10 count];
+  pathCopy = path;
+  viewCopy = view;
+  lapCount = [(MTAStopwatchLapTableViewController *)self lapCount];
+  v9 = lapCount - [pathCopy row];
+  lapTimes = [(MTAStopwatchLapTableViewController *)self lapTimes];
+  v11 = [lapTimes count];
 
   if (v9 <= v11)
   {
@@ -315,15 +315,15 @@
     v12 = @"MTCurrentLapCell";
   }
 
-  v13 = [v7 dequeueReusableCellWithIdentifier:v12 forIndexPath:v6];
+  v13 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
 
   [v13 setLapStyle:{-[MTAStopwatchLapTableViewController cellStyle](self, "cellStyle")}];
   if (v9 <= v11)
   {
     v14 = (v9 - 1);
     [v13 setLap:v9];
-    v15 = [(MTAStopwatchLapTableViewController *)self lapTimes];
-    v16 = [v15 objectAtIndexedSubscript:v14];
+    lapTimes2 = [(MTAStopwatchLapTableViewController *)self lapTimes];
+    v16 = [lapTimes2 objectAtIndexedSubscript:v14];
     [v16 doubleValue];
     [v13 setTime:?];
 

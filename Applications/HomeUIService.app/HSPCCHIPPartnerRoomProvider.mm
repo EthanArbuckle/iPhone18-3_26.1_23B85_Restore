@@ -8,12 +8,12 @@
 - (id)loadData
 {
   v3 = objc_opt_class();
-  v4 = [(HSPCDataProvider *)self config];
-  if (v4)
+  config = [(HSPCDataProvider *)self config];
+  if (config)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = config;
     }
 
     else
@@ -24,7 +24,7 @@
     v6 = v5;
     if (!v6)
     {
-      sub_1000774F0(v4, v3);
+      sub_1000774F0(config, v3);
     }
   }
 
@@ -33,20 +33,20 @@
     v6 = 0;
   }
 
-  v7 = [v6 selectedPartnerHome];
-  if (v7)
+  selectedPartnerHome = [v6 selectedPartnerHome];
+  if (selectedPartnerHome)
   {
-    v8 = [v6 targetEcosystem];
-    if (v8)
+    targetEcosystem = [v6 targetEcosystem];
+    if (targetEcosystem)
     {
       objc_initWeak(&location, self);
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10005EA5C;
       v17[3] = &unk_1000C6298;
-      v8 = v8;
-      v18 = v8;
-      v19 = v7;
+      targetEcosystem = targetEcosystem;
+      v18 = targetEcosystem;
+      v19 = selectedPartnerHome;
       v9 = [NAFuture futureWithCompletionHandlerAdapterBlock:v17];
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
@@ -80,8 +80,8 @@
       sub_10007B4BC(v11);
     }
 
-    v8 = [NSError hmfErrorWithCode:8];
-    v10 = [NAFuture futureWithError:v8];
+    targetEcosystem = [NSError hmfErrorWithCode:8];
+    v10 = [NAFuture futureWithError:targetEcosystem];
   }
 
   return v10;
@@ -89,8 +89,8 @@
 
 - (unint64_t)initialRowIndex
 {
-  v2 = [(HSPCDataProvider *)self items];
-  v3 = [v2 count] >> 1;
+  items = [(HSPCDataProvider *)self items];
+  v3 = [items count] >> 1;
 
   return v3;
 }

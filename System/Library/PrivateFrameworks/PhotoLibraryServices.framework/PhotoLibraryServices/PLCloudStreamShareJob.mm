@@ -1,11 +1,11 @@
 @interface PLCloudStreamShareJob
-+ (id)cloudStreamShareJobToPublishMediaFromSources:(id)a3 toCollectionShareScopeIdentifier:(id)a4 withCommentText:(id)a5 clientBundleIdentifier:(id)a6 unitTestingMode:(BOOL)a7;
-+ (void)publishMediaFromSources:(id)a3 toNewSharedAlbumWithName:(id)a4 withCommentText:(id)a5 recipients:(id)a6;
-+ (void)publishMediaFromSources:(id)a3 toSharedAlbum:(id)a4 withCommentText:(id)a5 completionHandler:(id)a6;
++ (id)cloudStreamShareJobToPublishMediaFromSources:(id)sources toCollectionShareScopeIdentifier:(id)identifier withCommentText:(id)text clientBundleIdentifier:(id)bundleIdentifier unitTestingMode:(BOOL)mode;
++ (void)publishMediaFromSources:(id)sources toNewSharedAlbumWithName:(id)name withCommentText:(id)text recipients:(id)recipients;
++ (void)publishMediaFromSources:(id)sources toSharedAlbum:(id)album withCommentText:(id)text completionHandler:(id)handler;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
-- (void)addInfosForRecipients:(id)a3;
-- (void)encodeToXPCObject:(id)a3;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
+- (void)addInfosForRecipients:(id)recipients;
+- (void)encodeToXPCObject:(id)object;
 - (void)executeDaemonOperation;
 - (void)runDaemonSide;
 @end
@@ -37,9 +37,9 @@
   v39[1] = v39;
   v39[2] = 0x2020000000;
   v40 = 0;
-  v4 = [MEMORY[0x1E69BF320] UUIDString];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [(PLCloudSharingJob *)self transientPhotoLibrary];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  date = [MEMORY[0x1E695DF00] date];
+  transientPhotoLibrary = [(PLCloudSharingJob *)self transientPhotoLibrary];
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -48,14 +48,14 @@
   aBlock[4] = self;
   v35 = v39;
   v36 = v45;
-  v8 = v6;
+  v8 = transientPhotoLibrary;
   v30 = v8;
   v9 = v7;
   v31 = v9;
   v37 = v43;
-  v10 = v4;
+  v10 = uUIDString;
   v32 = v10;
-  v11 = v5;
+  v11 = date;
   v33 = v11;
   v12 = v3;
   v34 = v12;
@@ -65,7 +65,7 @@
   v19 = 3221225472;
   v20 = __47__PLCloudStreamShareJob_executeDaemonOperation__block_invoke_103;
   v21 = &unk_1E7572760;
-  v22 = self;
+  selfCopy = self;
   v26 = v39;
   v27 = v45;
   v14 = v8;
@@ -78,12 +78,12 @@
   v17 = _Block_copy(&v18);
   if (self->_executeSynchronously)
   {
-    [v14 performTransactionAndWait:v13 completionHandler:{v17, v18, v19, v20, v21, v22, v23, v24}];
+    [v14 performTransactionAndWait:v13 completionHandler:{v17, v18, v19, v20, v21, selfCopy, v23, v24}];
   }
 
   else
   {
-    [v14 performTransaction:v13 completionHandler:v17 withPriority:{1, v18, v19, v20, v21, v22, v23, v24}];
+    [v14 performTransaction:v13 completionHandler:v17 withPriority:{1, v18, v19, v20, v21, selfCopy, v23, v24}];
   }
 
   _Block_object_dispose(v39, 8);
@@ -808,12 +808,12 @@ uint64_t __47__PLCloudStreamShareJob_executeDaemonOperation__block_invoke_95(uin
   v13.receiver = self;
   v13.super_class = PLCloudStreamShareJob;
   v4 = [(PLDaemonJob *)&v13 description];
-  v5 = [(PLCloudStreamShareJob *)self commentText];
-  v6 = [(PLCloudStreamShareJob *)self mediaSources];
-  v7 = [v6 count];
-  v8 = [(PLCloudStreamShareJob *)self recipientsInfo];
-  v9 = [(PLCloudStreamShareJob *)self albumCloudGUID];
-  if (v9)
+  commentText = [(PLCloudStreamShareJob *)self commentText];
+  mediaSources = [(PLCloudStreamShareJob *)self mediaSources];
+  v7 = [mediaSources count];
+  recipientsInfo = [(PLCloudStreamShareJob *)self recipientsInfo];
+  albumCloudGUID = [(PLCloudStreamShareJob *)self albumCloudGUID];
+  if (albumCloudGUID)
   {
     [(PLCloudStreamShareJob *)self albumCloudGUID];
   }
@@ -823,7 +823,7 @@ uint64_t __47__PLCloudStreamShareJob_executeDaemonOperation__block_invoke_95(uin
     [(PLCloudStreamShareJob *)self albumName];
   }
   v10 = ;
-  v11 = [v3 stringWithFormat:@"%@ comment (%@), sources (%lu sources), recipients (%@), album (%@)", v4, v5, v7, v8, v10];
+  v11 = [v3 stringWithFormat:@"%@ comment (%@), sources (%lu sources), recipients (%@), album (%@)", v4, commentText, v7, recipientsInfo, v10];
 
   return v11;
 }
@@ -837,13 +837,13 @@ uint64_t __47__PLCloudStreamShareJob_executeDaemonOperation__block_invoke_95(uin
     *buf = 138412546;
     v11 = objc_opt_class();
     v12 = 2112;
-    v13 = self;
+    selfCopy = self;
     v4 = v11;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "%@ : runDaemonSide %@", buf, 0x16u);
   }
 
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudStreamShareJob runDaemonSide]"];
-  v6 = [objc_opt_class() highPriorityOperationQueue];
+  highPriorityOperationQueue = [objc_opt_class() highPriorityOperationQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__PLCloudStreamShareJob_runDaemonSide__block_invoke;
@@ -851,7 +851,7 @@ uint64_t __47__PLCloudStreamShareJob_executeDaemonOperation__block_invoke_95(uin
   v8[4] = self;
   v9 = v5;
   v7 = v5;
-  [v6 addOperationWithBlock:v8];
+  [highPriorityOperationQueue addOperationWithBlock:v8];
 }
 
 void __38__PLCloudStreamShareJob_runDaemonSide__block_invoke(uint64_t a1)
@@ -869,13 +869,13 @@ void __38__PLCloudStreamShareJob_runDaemonSide__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v28.receiver = self;
   v28.super_class = PLCloudStreamShareJob;
-  v7 = [(PLCloudSharingJob *)&v28 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLCloudSharingJob *)&v28 initFromXPCObject:objectCopy libraryServicesManager:manager];
   if (v7)
   {
     v8 = PLArrayFromXPCDictionary();
@@ -934,53 +934,53 @@ void __38__PLCloudStreamShareJob_runDaemonSide__block_invoke(uint64_t a1)
     v22 = PLStringFromXPCDictionary();
     [v7 setClientBundleIdentifier:v22];
 
-    [v7 setUnitTestingMode:{xpc_dictionary_get_BOOL(v6, "kPropertyKeyUnitTestingMode")}];
-    [v7 setExecuteSynchronously:{xpc_dictionary_get_BOOL(v6, "kPropertyKeyExecuteSynchronously")}];
+    [v7 setUnitTestingMode:{xpc_dictionary_get_BOOL(objectCopy, "kPropertyKeyUnitTestingMode")}];
+    [v7 setExecuteSynchronously:{xpc_dictionary_get_BOOL(objectCopy, "kPropertyKeyExecuteSynchronously")}];
   }
 
   return v7;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
   v12.receiver = self;
   v12.super_class = PLCloudStreamShareJob;
-  v4 = a3;
-  [(PLDaemonJob *)&v12 encodeToXPCObject:v4];
+  objectCopy = object;
+  [(PLDaemonJob *)&v12 encodeToXPCObject:objectCopy];
   v5 = [(PLCloudStreamShareJob *)self mediaSources:v12.receiver];
   v6 = [v5 valueForKeyPath:@"serializedDictionary"];
 
   PLXPCDictionarySetArray();
-  v7 = [(PLCloudStreamShareJob *)self recipientsInfo];
+  recipientsInfo = [(PLCloudStreamShareJob *)self recipientsInfo];
   PLXPCDictionarySetArray();
 
-  v8 = [(PLCloudStreamShareJob *)self commentText];
+  commentText = [(PLCloudStreamShareJob *)self commentText];
   PLXPCDictionarySetString();
 
-  v9 = [(PLCloudStreamShareJob *)self albumCloudGUID];
+  albumCloudGUID = [(PLCloudStreamShareJob *)self albumCloudGUID];
   PLXPCDictionarySetString();
 
-  v10 = [(PLCloudStreamShareJob *)self albumName];
+  albumName = [(PLCloudStreamShareJob *)self albumName];
   PLXPCDictionarySetString();
 
-  v11 = [(PLCloudStreamShareJob *)self clientBundleIdentifier];
+  clientBundleIdentifier = [(PLCloudStreamShareJob *)self clientBundleIdentifier];
   PLXPCDictionarySetString();
 
-  xpc_dictionary_set_BOOL(v4, "kPropertyKeyUnitTestingMode", [(PLCloudStreamShareJob *)self unitTestingMode]);
-  xpc_dictionary_set_BOOL(v4, "kPropertyKeyExecuteSynchronously", [(PLCloudStreamShareJob *)self executeSynchronously]);
+  xpc_dictionary_set_BOOL(objectCopy, "kPropertyKeyUnitTestingMode", [(PLCloudStreamShareJob *)self unitTestingMode]);
+  xpc_dictionary_set_BOOL(objectCopy, "kPropertyKeyExecuteSynchronously", [(PLCloudStreamShareJob *)self executeSynchronously]);
 }
 
-- (void)addInfosForRecipients:(id)a3
+- (void)addInfosForRecipients:(id)recipients
 {
-  v19 = self;
+  selfCopy = self;
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  recipientsCopy = recipients;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = recipientsCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -997,34 +997,34 @@ void __38__PLCloudStreamShareJob_runDaemonSide__block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v21 + 1) + 8 * v8);
-        v10 = [MEMORY[0x1E695DF90] dictionary];
-        v11 = [v9 firstName];
-        v12 = [v9 lastName];
-        v13 = [v9 allEmailsArray];
-        v14 = [v9 allPhonesArray];
-        if (v11)
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        firstName = [v9 firstName];
+        lastName = [v9 lastName];
+        allEmailsArray = [v9 allEmailsArray];
+        allPhonesArray = [v9 allPhonesArray];
+        if (firstName)
         {
-          [v10 setObject:v11 forKeyedSubscript:@"kRecipientFirstNameKey"];
+          [dictionary setObject:firstName forKeyedSubscript:@"kRecipientFirstNameKey"];
         }
 
-        if (v12)
+        if (lastName)
         {
-          [v10 setObject:v12 forKeyedSubscript:@"kRecipientLastNameKey"];
+          [dictionary setObject:lastName forKeyedSubscript:@"kRecipientLastNameKey"];
         }
 
-        if (v13)
+        if (allEmailsArray)
         {
-          v15 = [v13 copy];
-          [v10 setObject:v15 forKeyedSubscript:@"kRecipientEmailsNameKey"];
+          v15 = [allEmailsArray copy];
+          [dictionary setObject:v15 forKeyedSubscript:@"kRecipientEmailsNameKey"];
         }
 
-        if (v14)
+        if (allPhonesArray)
         {
-          v16 = [v14 copy];
-          [v10 setObject:v16 forKeyedSubscript:@"kRecipientPhonesNameKey"];
+          v16 = [allPhonesArray copy];
+          [dictionary setObject:v16 forKeyedSubscript:@"kRecipientPhonesNameKey"];
         }
 
-        [v4 addObject:v10];
+        [v4 addObject:dictionary];
 
         ++v8;
       }
@@ -1037,61 +1037,61 @@ void __38__PLCloudStreamShareJob_runDaemonSide__block_invoke(uint64_t a1)
   }
 
   v17 = [v4 copy];
-  recipientsInfo = v19->_recipientsInfo;
-  v19->_recipientsInfo = v17;
+  recipientsInfo = selfCopy->_recipientsInfo;
+  selfCopy->_recipientsInfo = v17;
 }
 
-+ (void)publishMediaFromSources:(id)a3 toNewSharedAlbumWithName:(id)a4 withCommentText:(id)a5 recipients:(id)a6
++ (void)publishMediaFromSources:(id)sources toNewSharedAlbumWithName:(id)name withCommentText:(id)text recipients:(id)recipients
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  recipientsCopy = recipients;
+  textCopy = text;
+  nameCopy = name;
+  sourcesCopy = sources;
   objc_opt_class();
   v13 = objc_opt_new();
-  [v13 setMediaSources:v12];
+  [v13 setMediaSources:sourcesCopy];
 
-  [v13 setAlbumName:v11];
-  [v13 setCommentText:v10];
+  [v13 setAlbumName:nameCopy];
+  [v13 setCommentText:textCopy];
 
-  [v13 addInfosForRecipients:v9];
+  [v13 addInfosForRecipients:recipientsCopy];
   [v13 runWithCompletionHandler:0];
 }
 
-+ (void)publishMediaFromSources:(id)a3 toSharedAlbum:(id)a4 withCommentText:(id)a5 completionHandler:(id)a6
++ (void)publishMediaFromSources:(id)sources toSharedAlbum:(id)album withCommentText:(id)text completionHandler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  textCopy = text;
+  albumCopy = album;
+  sourcesCopy = sources;
   objc_opt_class();
   v14 = objc_opt_new();
-  [v14 setMediaSources:v12];
+  [v14 setMediaSources:sourcesCopy];
 
-  v13 = [v11 cloudGUID];
+  cloudGUID = [albumCopy cloudGUID];
 
-  [v14 setAlbumCloudGUID:v13];
-  [v14 setCommentText:v10];
+  [v14 setAlbumCloudGUID:cloudGUID];
+  [v14 setCommentText:textCopy];
 
-  [v14 runWithCompletionHandler:v9];
+  [v14 runWithCompletionHandler:handlerCopy];
 }
 
-+ (id)cloudStreamShareJobToPublishMediaFromSources:(id)a3 toCollectionShareScopeIdentifier:(id)a4 withCommentText:(id)a5 clientBundleIdentifier:(id)a6 unitTestingMode:(BOOL)a7
++ (id)cloudStreamShareJobToPublishMediaFromSources:(id)sources toCollectionShareScopeIdentifier:(id)identifier withCommentText:(id)text clientBundleIdentifier:(id)bundleIdentifier unitTestingMode:(BOOL)mode
 {
-  v7 = a7;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  modeCopy = mode;
+  bundleIdentifierCopy = bundleIdentifier;
+  textCopy = text;
+  identifierCopy = identifier;
+  sourcesCopy = sources;
   objc_opt_class();
   v15 = objc_opt_new();
-  [v15 setMediaSources:v14];
+  [v15 setMediaSources:sourcesCopy];
 
-  [v15 setAlbumCloudGUID:v13];
-  [v15 setCommentText:v12];
+  [v15 setAlbumCloudGUID:identifierCopy];
+  [v15 setCommentText:textCopy];
 
-  [v15 setClientBundleIdentifier:v11];
-  [v15 setUnitTestingMode:v7];
+  [v15 setClientBundleIdentifier:bundleIdentifierCopy];
+  [v15 setUnitTestingMode:modeCopy];
   [v15 setExecuteSynchronously:1];
 
   return v15;

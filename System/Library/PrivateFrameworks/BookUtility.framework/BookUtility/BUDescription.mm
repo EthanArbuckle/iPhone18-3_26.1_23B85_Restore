@@ -1,27 +1,27 @@
 @interface BUDescription
-+ (id)descriptionWithCFType:(void *)a3 format:(id)a4;
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4;
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4 format:(id)a5;
-+ (id)descriptionWithObject:(id)a3 format:(id)a4;
-- (BUDescription)initWithCFType:(void *)a3 header:(id)a4;
-- (BUDescription)initWithObject:(id)a3;
-- (BUDescription)initWithObject:(id)a3 class:(Class)a4 format:(id)a5 arguments:(char *)a6;
-- (BUDescription)initWithObject:(id)a3 class:(Class)a4 header:(id)a5;
-- (BUDescription)initWithObject:(id)a3 format:(id)a4;
++ (id)descriptionWithCFType:(void *)type format:(id)format;
++ (id)descriptionWithObject:(id)object class:(Class)class;
++ (id)descriptionWithObject:(id)object class:(Class)class format:(id)format;
++ (id)descriptionWithObject:(id)object format:(id)format;
+- (BUDescription)initWithCFType:(void *)type header:(id)header;
+- (BUDescription)initWithObject:(id)object;
+- (BUDescription)initWithObject:(id)object class:(Class)class format:(id)format arguments:(char *)arguments;
+- (BUDescription)initWithObject:(id)object class:(Class)class header:(id)header;
+- (BUDescription)initWithObject:(id)object format:(id)format;
 - (NSString)descriptionString;
 - (id)p_header;
-- (void)addField:(id)a3 format:(id)a4;
-- (void)addField:(id)a3 value:(id)a4;
-- (void)addFieldWithFormat:(id)a3;
+- (void)addField:(id)field format:(id)format;
+- (void)addField:(id)field value:(id)value;
+- (void)addFieldWithFormat:(id)format;
 - (void)addSuperDescription;
 @end
 
 @implementation BUDescription
 
-- (BUDescription)initWithObject:(id)a3 class:(Class)a4 header:(id)a5
+- (BUDescription)initWithObject:(id)object class:(Class)class header:(id)header
 {
-  v8 = a3;
-  v9 = a5;
+  objectCopy = object;
+  headerCopy = header;
   ++qword_27EC72990;
   v17.receiver = self;
   v17.super_class = BUDescription;
@@ -29,9 +29,9 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_object, v8);
-    v11->_class = a4;
-    v14 = objc_msgSend_copy(v9, v12, v13);
+    objc_storeWeak(&v10->_object, objectCopy);
+    v11->_class = class;
+    v14 = objc_msgSend_copy(headerCopy, v12, v13);
     header = v11->_header;
     v11->_header = v14;
   }
@@ -39,9 +39,9 @@
   return v11;
 }
 
-- (BUDescription)initWithCFType:(void *)a3 header:(id)a4
+- (BUDescription)initWithCFType:(void *)type header:(id)header
 {
-  v6 = a4;
+  headerCopy = header;
   ++qword_27EC72990;
   v14.receiver = self;
   v14.super_class = BUDescription;
@@ -49,8 +49,8 @@
   v10 = v7;
   if (v7)
   {
-    v7->_cfType = a3;
-    v11 = objc_msgSend_copy(v6, v8, v9);
+    v7->_cfType = type;
+    v11 = objc_msgSend_copy(headerCopy, v8, v9);
     header = v10->_header;
     v10->_header = v11;
   }
@@ -58,76 +58,76 @@
   return v10;
 }
 
-- (BUDescription)initWithObject:(id)a3 class:(Class)a4 format:(id)a5 arguments:(char *)a6
+- (BUDescription)initWithObject:(id)object class:(Class)class format:(id)format arguments:(char *)arguments
 {
   v10 = MEMORY[0x277CCACA8];
-  v11 = a5;
-  v12 = a3;
+  formatCopy = format;
+  objectCopy = object;
   v13 = [v10 alloc];
-  v15 = objc_msgSend_initWithFormat_arguments_(v13, v14, v11, a6);
+  v15 = objc_msgSend_initWithFormat_arguments_(v13, v14, formatCopy, arguments);
 
-  v17 = objc_msgSend_initWithObject_class_header_(self, v16, v12, a4, v15);
+  v17 = objc_msgSend_initWithObject_class_header_(self, v16, objectCopy, class, v15);
   return v17;
 }
 
-- (BUDescription)initWithObject:(id)a3 format:(id)a4
+- (BUDescription)initWithObject:(id)object format:(id)format
 {
-  v6 = a4;
-  v7 = a3;
-  Class = object_getClass(v7);
-  v10 = objc_msgSend_initWithObject_class_format_arguments_(self, v9, v7, Class, v6, &v12);
+  formatCopy = format;
+  objectCopy = object;
+  Class = object_getClass(objectCopy);
+  v10 = objc_msgSend_initWithObject_class_format_arguments_(self, v9, objectCopy, Class, formatCopy, &v12);
 
   return v10;
 }
 
-- (BUDescription)initWithObject:(id)a3
+- (BUDescription)initWithObject:(id)object
 {
-  v4 = a3;
-  Class = object_getClass(v4);
-  v7 = objc_msgSend_initWithObject_class_format_(self, v6, v4, Class, &stru_2853F3C08);
+  objectCopy = object;
+  Class = object_getClass(objectCopy);
+  v7 = objc_msgSend_initWithObject_class_format_(self, v6, objectCopy, Class, &stru_2853F3C08);
 
   return v7;
 }
 
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4 format:(id)a5
++ (id)descriptionWithObject:(id)object class:(Class)class format:(id)format
 {
-  v7 = a5;
-  v8 = a3;
+  formatCopy = format;
+  objectCopy = object;
   v9 = [BUDescription alloc];
-  v11 = objc_msgSend_initWithObject_class_format_arguments_(v9, v10, v8, a4, v7, &v14);
+  v11 = objc_msgSend_initWithObject_class_format_arguments_(v9, v10, objectCopy, class, formatCopy, &v14);
 
   return v11;
 }
 
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4
++ (id)descriptionWithObject:(id)object class:(Class)class
 {
-  v5 = a3;
+  objectCopy = object;
   v6 = [BUDescription alloc];
-  v8 = objc_msgSend_initWithObject_class_format_(v6, v7, v5, a4, &stru_2853F3C08);
+  v8 = objc_msgSend_initWithObject_class_format_(v6, v7, objectCopy, class, &stru_2853F3C08);
 
   return v8;
 }
 
-+ (id)descriptionWithObject:(id)a3 format:(id)a4
++ (id)descriptionWithObject:(id)object format:(id)format
 {
-  v5 = a4;
-  v6 = a3;
+  formatCopy = format;
+  objectCopy = object;
   v7 = [BUDescription alloc];
-  Class = object_getClass(v6);
-  v10 = objc_msgSend_initWithObject_class_format_arguments_(v7, v9, v6, Class, v5, &v13);
+  Class = object_getClass(objectCopy);
+  v10 = objc_msgSend_initWithObject_class_format_arguments_(v7, v9, objectCopy, Class, formatCopy, &v13);
 
   return v10;
 }
 
-+ (id)descriptionWithCFType:(void *)a3 format:(id)a4
++ (id)descriptionWithCFType:(void *)type format:(id)format
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
+  formatCopy = format;
   v7 = [v5 alloc];
-  v9 = objc_msgSend_initWithFormat_arguments_(v7, v8, v6, &v15);
+  v9 = objc_msgSend_initWithFormat_arguments_(v7, v8, formatCopy, &v15);
 
   v10 = [BUDescription alloc];
-  v12 = objc_msgSend_initWithCFType_header_(v10, v11, a3, v9);
+  v12 = objc_msgSend_initWithCFType_header_(v10, v11, type, v9);
 
   return v12;
 }
@@ -164,10 +164,10 @@
   return v8;
 }
 
-- (void)addField:(id)a3 value:(id)a4
+- (void)addField:(id)field value:(id)value
 {
-  v6 = a3;
-  v9 = a4;
+  fieldCopy = field;
+  valueCopy = value;
   if (!self->_fields)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -179,14 +179,14 @@
     self->_fieldOrder = v12;
   }
 
-  if (!v9)
+  if (!valueCopy)
   {
-    v9 = @"nil";
+    valueCopy = @"nil";
   }
 
-  if (v6 && objc_msgSend_length(v6, v7, v8))
+  if (fieldCopy && objc_msgSend_length(fieldCopy, v7, v8))
   {
-    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"%@: ", v6);
+    objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v7, @"%@: ", fieldCopy);
   }
 
   else
@@ -198,7 +198,7 @@
   v23 = ;
 
   objc_msgSend_addObject_(self->_fieldOrder, v16, v23);
-  objc_msgSend_setObject_forKey_(self->_fields, v17, v9, v23);
+  objc_msgSend_setObject_forKey_(self->_fields, v17, valueCopy, v23);
   if ((objc_msgSend_hasPrefix_(v23, v18, @"$$$") & 1) == 0)
   {
     v21 = objc_msgSend_length(v23, v19, v20);
@@ -209,23 +209,23 @@
   }
 }
 
-- (void)addField:(id)a3 format:(id)a4
+- (void)addField:(id)field format:(id)format
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
+  formatCopy = format;
+  fieldCopy = field;
   v9 = [v6 alloc];
-  v11 = objc_msgSend_initWithFormat_arguments_(v9, v10, v7, &v13);
+  v11 = objc_msgSend_initWithFormat_arguments_(v9, v10, formatCopy, &v13);
 
-  objc_msgSend_addField_value_(self, v12, v8, v11);
+  objc_msgSend_addField_value_(self, v12, fieldCopy, v11);
 }
 
-- (void)addFieldWithFormat:(id)a3
+- (void)addFieldWithFormat:(id)format
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  formatCopy = format;
   v6 = [v4 alloc];
-  v8 = objc_msgSend_initWithFormat_arguments_(v6, v7, v5, &v10);
+  v8 = objc_msgSend_initWithFormat_arguments_(v6, v7, formatCopy, &v10);
 
   objc_msgSend_addField_value_(self, v9, 0, v8);
 }

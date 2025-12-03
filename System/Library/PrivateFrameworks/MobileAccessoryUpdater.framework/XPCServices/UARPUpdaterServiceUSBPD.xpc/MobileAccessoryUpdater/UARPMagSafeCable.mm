@@ -1,15 +1,15 @@
 @interface UARPMagSafeCable
-+ (BOOL)isActive:(unsigned int)a3;
-+ (BOOL)needsAuthentication:(unsigned int)a3;
-+ (const)authenticationStatusToString:(int)a3;
-+ (id)getFirmwareVersionGiven32Bits:(unsigned int)a3;
-+ (id)matchingDictionary:(BOOL)a3;
-+ (id)matchingDictionaryUSBCLightning:(id)a3 launchStream:(BOOL)a4;
-+ (id)matchingDictionaryUSBCLightningDisconnectLaunchStream:(BOOL)a3;
-+ (int)authenticationStatus:(unsigned int)a3;
-+ (unint64_t)rid:(unsigned int)a3;
-+ (unint64_t)valueForService:(unsigned int)a3 key:(id)a4;
-- (BOOL)solicitLogs:(id)a3 error:(id *)a4;
++ (BOOL)isActive:(unsigned int)active;
++ (BOOL)needsAuthentication:(unsigned int)authentication;
++ (const)authenticationStatusToString:(int)string;
++ (id)getFirmwareVersionGiven32Bits:(unsigned int)bits;
++ (id)matchingDictionary:(BOOL)dictionary;
++ (id)matchingDictionaryUSBCLightning:(id)lightning launchStream:(BOOL)stream;
++ (id)matchingDictionaryUSBCLightningDisconnectLaunchStream:(BOOL)stream;
++ (int)authenticationStatus:(unsigned int)status;
++ (unint64_t)rid:(unsigned int)rid;
++ (unint64_t)valueForService:(unsigned int)service key:(id)key;
+- (BOOL)solicitLogs:(id)logs error:(id *)error;
 - (NSNumber)hardwareVersion;
 - (NSString)description;
 - (UARPMagSafeCable)init;
@@ -18,7 +18,7 @@
 - (id)modelName;
 - (id)queryExpectedPayloadTag;
 - (id)queryHardwareVersion;
-- (id)querySerialNumber:(id *)a3;
+- (id)querySerialNumber:(id *)number;
 - (id)serialNumber;
 @end
 
@@ -108,9 +108,9 @@ LABEL_5:
 {
   v2 = [[UARPAccessoryHardwareUSBPD alloc] initWithVendorID:LOWORD(self->_vendorID) productID:LOWORD(self->_productID) usbpdClass:0 locationType:self->_location supportsAccMode7:1];
   v3 = [UARPSupportedAccessory findByHardwareID:v2];
-  v4 = [v3 appleModelNumber];
+  appleModelNumber = [v3 appleModelNumber];
 
-  return v4;
+  return appleModelNumber;
 }
 
 - (NSNumber)hardwareVersion
@@ -128,9 +128,9 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Querying hardware version", v10, 2u);
   }
 
-  v5 = [(UARPMagSafeCable *)self queryHardwareVersion];
+  queryHardwareVersion = [(UARPMagSafeCable *)self queryHardwareVersion];
   v6 = self->_hardwareVersion;
-  self->_hardwareVersion = v5;
+  self->_hardwareVersion = queryHardwareVersion;
 
   hardwareVersion = self->_hardwareVersion;
   if (hardwareVersion)
@@ -179,12 +179,12 @@ LABEL_5:
   return v3;
 }
 
-- (id)querySerialNumber:(id *)a3
+- (id)querySerialNumber:(id *)number
 {
   v5 = objc_alloc_init(NSMutableString);
   v6 = 0;
   v11 = 0;
-  while ([(UARPAppleHPM *)self->_hpm readCFUa:0 remoteEndpoint:1 offset:0x2000 buffer:v14 bufferLength:24 lengthRead:&v11 error:a3])
+  while ([(UARPAppleHPM *)self->_hpm readCFUa:0 remoteEndpoint:1 offset:0x2000 buffer:v14 bufferLength:24 lengthRead:&v11 error:number])
   {
     [v5 appendFormat:@"%.*s", v11, v14];
     v6 += v11;
@@ -225,9 +225,9 @@ LABEL_11:
 {
   if (!self->_tagAlreadyQueried)
   {
-    v3 = [(UARPMagSafeCable *)self queryExpectedPayloadTag];
+    queryExpectedPayloadTag = [(UARPMagSafeCable *)self queryExpectedPayloadTag];
     expectedPayloadTag = self->_expectedPayloadTag;
-    self->_expectedPayloadTag = v3;
+    self->_expectedPayloadTag = queryExpectedPayloadTag;
   }
 
   v5 = self->_expectedPayloadTag;
@@ -244,26 +244,26 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)solicitLogs:(id)a3 error:(id *)a4
+- (BOOL)solicitLogs:(id)logs error:(id *)error
 {
   hpm = self->_hpm;
-  v7 = a3;
-  v8 = [(UARPMagSafeCable *)self modelName];
-  v9 = [(UARPMagSafeCable *)self serialNumber];
-  LOBYTE(a4) = [(UARPAppleHPM *)hpm accMode7SolicitLogs:v7 modelName:v8 serialNumber:v9 error:a4];
+  logsCopy = logs;
+  modelName = [(UARPMagSafeCable *)self modelName];
+  serialNumber = [(UARPMagSafeCable *)self serialNumber];
+  LOBYTE(error) = [(UARPAppleHPM *)hpm accMode7SolicitLogs:logsCopy modelName:modelName serialNumber:serialNumber error:error];
 
-  return a4;
+  return error;
 }
 
-+ (id)matchingDictionary:(BOOL)a3
++ (id)matchingDictionary:(BOOL)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = IOServiceMatching("IOPortTransportStateCC");
   v5 = objc_alloc_init(NSMutableDictionary);
   [v5 setObject:&off_100041450 forKeyedSubscript:@"TransportType"];
   [v5 setObject:&off_100041468 forKeyedSubscript:@"ParentPortType"];
   [(__CFDictionary *)v4 setObject:v5 forKeyedSubscript:@"IOPropertyMatch"];
-  if (v3)
+  if (dictionaryCopy)
   {
     [(__CFDictionary *)v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IOMatchLaunchStream"];
     [(__CFDictionary *)v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IOMatchAll"];
@@ -274,23 +274,23 @@ LABEL_11:
   return v6;
 }
 
-+ (id)matchingDictionaryUSBCLightning:(id)a3 launchStream:(BOOL)a4
++ (id)matchingDictionaryUSBCLightning:(id)lightning launchStream:(BOOL)stream
 {
-  v4 = a4;
-  v5 = a3;
+  streamCopy = stream;
+  lightningCopy = lightning;
   v6 = IOServiceMatching("IOPortTransportStateCC");
   v7 = objc_alloc_init(NSMutableDictionary);
   [v7 setObject:&off_100041450 forKeyedSubscript:@"TransportType"];
   [v7 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Active"];
-  v8 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v5 vendorID]);
+  v8 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [lightningCopy vendorID]);
   [v7 setObject:v8 forKeyedSubscript:@"Vendor ID (SOP)"];
 
-  v9 = [v5 productID];
-  v10 = [NSNumber numberWithUnsignedShort:v9];
+  productID = [lightningCopy productID];
+  v10 = [NSNumber numberWithUnsignedShort:productID];
   [v7 setObject:v10 forKeyedSubscript:@"Product ID (SOP)"];
 
   [(__CFDictionary *)v6 setObject:v7 forKeyedSubscript:@"IOPropertyMatch"];
-  if (v4)
+  if (streamCopy)
   {
     [(__CFDictionary *)v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IOMatchLaunchStream"];
     [(__CFDictionary *)v6 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IOMatchAll"];
@@ -305,15 +305,15 @@ LABEL_11:
   return v11;
 }
 
-+ (id)matchingDictionaryUSBCLightningDisconnectLaunchStream:(BOOL)a3
++ (id)matchingDictionaryUSBCLightningDisconnectLaunchStream:(BOOL)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   v4 = IOServiceMatching("IOPortTransportStateCC");
   v5 = objc_alloc_init(NSMutableDictionary);
   [v5 setObject:&off_100041450 forKeyedSubscript:@"TransportType"];
   [v5 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Active"];
   [(__CFDictionary *)v4 setObject:v5 forKeyedSubscript:@"IOPropertyMatch"];
-  if (v3)
+  if (streamCopy)
   {
     [(__CFDictionary *)v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IOMatchLaunchStream"];
     [(__CFDictionary *)v4 setObject:&__kCFBooleanTrue forKeyedSubscript:@"IOMatchAll"];
@@ -328,9 +328,9 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)needsAuthentication:(unsigned int)a3
++ (BOOL)needsAuthentication:(unsigned int)authentication
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"AuthenticationRequired", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(authentication, @"AuthenticationRequired", kCFAllocatorDefault, 0);
   if (!CFProperty)
   {
     return 1;
@@ -343,10 +343,10 @@ LABEL_11:
   return v6;
 }
 
-+ (int)authenticationStatus:(unsigned int)a3
++ (int)authenticationStatus:(unsigned int)status
 {
   valuePtr = 0;
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"AuthenticationStatus", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(status, @"AuthenticationStatus", kCFAllocatorDefault, 0);
   if (CFProperty)
   {
     v4 = CFProperty;
@@ -363,9 +363,9 @@ LABEL_11:
   return CFProperty;
 }
 
-+ (unint64_t)valueForService:(unsigned int)a3 key:(id)a4
++ (unint64_t)valueForService:(unsigned int)service key:(id)key
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, a4, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(service, key, kCFAllocatorDefault, 0);
   if (!CFProperty)
   {
     return -1;
@@ -375,22 +375,22 @@ LABEL_11:
   v6 = CFGetTypeID(CFProperty);
   if (v6 == CFNumberGetTypeID())
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = -1;
+    unsignedIntegerValue = -1;
   }
 
   CFRelease(v5);
-  return v7;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)rid:(unsigned int)a3
++ (unint64_t)rid:(unsigned int)rid
 {
   parent = 0;
-  if (IORegistryEntryGetParentEntry(a3, "IOService", &parent))
+  if (IORegistryEntryGetParentEntry(rid, "IOService", &parent))
   {
     v3 = 1;
   }
@@ -431,9 +431,9 @@ LABEL_11:
   return v4;
 }
 
-+ (BOOL)isActive:(unsigned int)a3
++ (BOOL)isActive:(unsigned int)active
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"Active", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(active, @"Active", kCFAllocatorDefault, 0);
   if (!CFProperty)
   {
     return 0;
@@ -446,24 +446,24 @@ LABEL_11:
   return v6;
 }
 
-+ (const)authenticationStatusToString:(int)a3
++ (const)authenticationStatusToString:(int)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return "authentication unknown";
   }
 
   else
   {
-    return off_1000407D0[a3];
+    return off_1000407D0[string];
   }
 }
 
-+ (id)getFirmwareVersionGiven32Bits:(unsigned int)a3
++ (id)getFirmwareVersionGiven32Bits:(unsigned int)bits
 {
-  v3 = [[UARPAssetVersion alloc] initWithMajorVersion:HIBYTE(a3) & 0x3F minorVersion:BYTE2(a3) releaseVersion:BYTE1(a3) buildVersion:a3 & 0xC0000000];
+  0xC0000000 = [[UARPAssetVersion alloc] initWithMajorVersion:HIBYTE(bits) & 0x3F minorVersion:BYTE2(bits) releaseVersion:BYTE1(bits) buildVersion:bits & 0xC0000000];
 
-  return v3;
+  return 0xC0000000;
 }
 
 @end

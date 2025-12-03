@@ -1,26 +1,26 @@
 @interface ORCHSchemaORCHIFFlowError
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHIFFlowError)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHIFFlowError)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHIFFlowError)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHIFFlowError)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHIFFlowError
 
-- (ORCHSchemaORCHIFFlowError)initWithDictionary:(id)a3
+- (ORCHSchemaORCHIFFlowError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ORCHSchemaORCHIFFlowError;
   v5 = [(ORCHSchemaORCHIFFlowError *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"underLyingError"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"underLyingError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(ORCHSchemaORCHIFFlowError *)v5 setUnderLyingError:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"ifflowErrorCode"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ifflowErrorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHIFFlowError)initWithJSON:(id)a3
+- (ORCHSchemaORCHIFFlowError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHIFFlowError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHIFFlowError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHIFFlowError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,32 +77,32 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[ORCHSchemaORCHIFFlowError ifflowErrorCode](self, "ifflowErrorCode")}];
-    [v3 setObject:v4 forKeyedSubscript:@"ifflowErrorCode"];
+    [dictionary setObject:v4 forKeyedSubscript:@"ifflowErrorCode"];
   }
 
   if (self->_underLyingError)
   {
-    v5 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    underLyingError = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
+    dictionaryRepresentation = [underLyingError dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"underLyingError"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"underLyingError"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"underLyingError"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"underLyingError"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
-  v6 = [v4 underLyingError];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  underLyingError = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
+  underLyingError2 = [equalCopy underLyingError];
+  v7 = underLyingError2;
+  if ((underLyingError != 0) == (underLyingError2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
-  if (v8)
+  underLyingError3 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
+  if (underLyingError3)
   {
-    v9 = v8;
-    v10 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
-    v11 = [v4 underLyingError];
-    v12 = [v10 isEqual:v11];
+    v9 = underLyingError3;
+    underLyingError4 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
+    underLyingError5 = [equalCopy underLyingError];
+    v12 = [underLyingError4 isEqual:underLyingError5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[24] & 1))
+  if ((*&self->_has & 1) != (equalCopy[24] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*&self->_has)
   {
     ifflowErrorCode = self->_ifflowErrorCode;
-    if (ifflowErrorCode != [v4 ifflowErrorCode])
+    if (ifflowErrorCode != [equalCopy ifflowErrorCode])
     {
       goto LABEL_12;
     }
@@ -178,14 +178,14 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
+  toCopy = to;
+  underLyingError = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
 
-  if (v4)
+  if (underLyingError)
   {
-    v5 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
+    underLyingError2 = [(ORCHSchemaORCHIFFlowError *)self underLyingError];
     PBDataWriterWriteSubmessage();
   }
 
@@ -195,17 +195,17 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ORCHSchemaORCHIFFlowError;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ORCHSchemaORCHIFFlowError *)self underLyingError:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ORCHSchemaORCHIFFlowError *)self deleteUnderLyingError];
   }

@@ -3,7 +3,7 @@
 - (void)dealloc;
 - (void)prune;
 - (void)purge;
-- (void)setShmemSize:(unsigned int)a3;
+- (void)setShmemSize:(unsigned int)size;
 @end
 
 @implementation IOGPUMetalDeviceShmemPool
@@ -87,12 +87,12 @@
   os_unfair_lock_unlock(&self->_priv.lock);
 }
 
-- (void)setShmemSize:(unsigned int)a3
+- (void)setShmemSize:(unsigned int)size
 {
   os_unfair_lock_lock(&self->_priv.lock);
-  if (self->_priv.shmemSize < a3)
+  if (self->_priv.shmemSize < size)
   {
-    self->_priv.shmemSize = a3;
+    self->_priv.shmemSize = size;
     tqh_first = self->_priv.queue.tqh_first;
     if (tqh_first)
     {

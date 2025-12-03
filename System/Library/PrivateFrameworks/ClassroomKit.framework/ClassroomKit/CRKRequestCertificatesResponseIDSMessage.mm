@@ -1,28 +1,28 @@
 @interface CRKRequestCertificatesResponseIDSMessage
-+ (id)instanceWithDictionary:(id)a3;
-- (CRKRequestCertificatesResponseIDSMessage)initWithRequestIdentifier:(id)a3 certificateDataCollection:(id)a4 error:(id)a5;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CRKRequestCertificatesResponseIDSMessage)initWithRequestIdentifier:(id)identifier certificateDataCollection:(id)collection error:(id)error;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CRKRequestCertificatesResponseIDSMessage
 
-- (CRKRequestCertificatesResponseIDSMessage)initWithRequestIdentifier:(id)a3 certificateDataCollection:(id)a4 error:(id)a5
+- (CRKRequestCertificatesResponseIDSMessage)initWithRequestIdentifier:(id)identifier certificateDataCollection:(id)collection error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  collectionCopy = collection;
+  errorCopy = error;
   v17.receiver = self;
   v17.super_class = CRKRequestCertificatesResponseIDSMessage;
   v12 = [(CRKRequestCertificatesResponseIDSMessage *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_requestIdentifier, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_requestIdentifier, identifier);
+    v14 = [collectionCopy copy];
     certificateDataCollection = v13->_certificateDataCollection;
     v13->_certificateDataCollection = v14;
 
-    objc_storeStrong(&v13->_error, a5);
+    objc_storeStrong(&v13->_error, error);
   }
 
   return v13;
@@ -31,22 +31,22 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(CRKRequestCertificatesResponseIDSMessage *)self requestIdentifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKeyedSubscript:@"RequestIdentifier"];
+  requestIdentifier = [(CRKRequestCertificatesResponseIDSMessage *)self requestIdentifier];
+  uUIDString = [requestIdentifier UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"RequestIdentifier"];
 
-  v6 = [(CRKRequestCertificatesResponseIDSMessage *)self certificateDataCollection];
-  [v3 setObject:v6 forKeyedSubscript:@"CertificateDataCollection"];
+  certificateDataCollection = [(CRKRequestCertificatesResponseIDSMessage *)self certificateDataCollection];
+  [v3 setObject:certificateDataCollection forKeyedSubscript:@"CertificateDataCollection"];
 
-  v7 = [(CRKRequestCertificatesResponseIDSMessage *)self error];
+  error = [(CRKRequestCertificatesResponseIDSMessage *)self error];
 
-  if (v7)
+  if (error)
   {
     v8 = [CRKErrorBox alloc];
-    v9 = [(CRKRequestCertificatesResponseIDSMessage *)self error];
-    v10 = [(CRKErrorBox *)v8 initWithError:v9];
-    v11 = [(CRKErrorBox *)v10 dictionaryValue];
-    [v3 setObject:v11 forKeyedSubscript:@"ErrorBox"];
+    error2 = [(CRKRequestCertificatesResponseIDSMessage *)self error];
+    v10 = [(CRKErrorBox *)v8 initWithError:error2];
+    dictionaryValue = [(CRKErrorBox *)v10 dictionaryValue];
+    [v3 setObject:dictionaryValue forKeyedSubscript:@"ErrorBox"];
   }
 
   v12 = [v3 copy];
@@ -54,10 +54,10 @@
   return v12;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"RequestIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"RequestIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -71,7 +71,7 @@
 
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"ErrorBox"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"ErrorBox"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -85,7 +85,7 @@
 
   v10 = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"CertificateDataCollection"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"CertificateDataCollection"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -111,7 +111,7 @@
   {
     if (!v10)
     {
-      v17 = 0;
+      error = 0;
       goto LABEL_18;
     }
 
@@ -119,10 +119,10 @@
     if (v15)
     {
       v16 = v15;
-      v17 = [v15 error];
+      error = [v15 error];
 
 LABEL_18:
-      v18 = [[a1 alloc] initWithRequestIdentifier:v14 certificateDataCollection:v13 error:v17];
+      v18 = [[self alloc] initWithRequestIdentifier:v14 certificateDataCollection:v13 error:error];
 
       goto LABEL_19;
     }

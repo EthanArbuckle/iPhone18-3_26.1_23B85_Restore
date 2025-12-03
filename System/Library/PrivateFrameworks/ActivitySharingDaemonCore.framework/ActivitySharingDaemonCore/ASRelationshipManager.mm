@@ -1,67 +1,67 @@
 @interface ASRelationshipManager
-- (ASRelationshipManager)initWithIsWatch:(BOOL)a3;
+- (ASRelationshipManager)initWithIsWatch:(BOOL)watch;
 - (ASRelationshipManagerSecureCloudDelegate)secureCloudDelegate;
 - (BOOL)_appIsInstalled;
-- (id)_contactWithIncomingHandshakeToken:(id)a3;
-- (id)_contactWithInviteRequest:(id)a3 fromSender:(id)a4;
-- (id)_contactWithOutgoingHandshakeToken:(id)a3;
-- (id)_contactWithRemoteRelationshipRecordZoneID:(id)a3;
-- (id)_contactWithUUIDPreferringPlaceholders:(id)a3;
+- (id)_contactWithIncomingHandshakeToken:(id)token;
+- (id)_contactWithInviteRequest:(id)request fromSender:(id)sender;
+- (id)_contactWithOutgoingHandshakeToken:(id)token;
+- (id)_contactWithRemoteRelationshipRecordZoneID:(id)d;
+- (id)_contactWithUUIDPreferringPlaceholders:(id)placeholders;
 - (id)_currentActivityDataPreview;
-- (id)_queue_handleSavedRecords:(id)a3 forContact:(id)a4 error:(id *)a5;
-- (id)_relationshipFromContact:(id)a3;
-- (id)_remoteRelationshipFromContact:(id)a3;
-- (void)_contactStoreDidChangeNotification:(id)a3;
-- (void)_insertInviteForContact:(id)a3 destination:(id)a4 serviceIdentifier:(id)a5;
-- (void)_processActivityDataPreview:(id)a3 friendUUID:(id)a4;
+- (id)_queue_handleSavedRecords:(id)records forContact:(id)contact error:(id *)error;
+- (id)_relationshipFromContact:(id)contact;
+- (id)_remoteRelationshipFromContact:(id)contact;
+- (void)_contactStoreDidChangeNotification:(id)notification;
+- (void)_insertInviteForContact:(id)contact destination:(id)destination serviceIdentifier:(id)identifier;
+- (void)_processActivityDataPreview:(id)preview friendUUID:(id)d;
 - (void)_processPersistedMessagesIfNeeded;
-- (void)_queue_acceptShares:(id)a3 forRelationship:(id)a4 contact:(id)a5 cloudKitGroup:(id)a6 completion:(id)a7;
-- (void)_queue_addPersonWithCloudKitAddress:(id)a3 toShares:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6;
-- (void)_queue_fetchSharesForRelationship:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5;
-- (void)_queue_insertPlaceholderFriendshipDidBeginForContactWithUUID:(id)a3;
-- (void)_queue_processEndRelationshipIfNeededForPreviousRemoteRelationship:(id)a3 newRemoteRelationship:(id)a4 contact:(id)a5 xpcActivity:(id)a6 cloudKitGroup:(id)a7 processGroup:(id)a8;
-- (void)_queue_processRemoteRelationships:(id)a3 activity:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6;
-- (void)_queue_reconcileCloudKitRelationships:(id)a3;
-- (void)_queue_saveRelationship:(id)a3 contact:(id)a4 activity:(id)a5 cloudKitGroup:(id)a6 completion:(id)a7;
-- (void)_queue_saveRelationship:(id)a3 contact:(id)a4 extraRecordsToSave:(id)a5 extraRecordIDsToDelete:(id)a6 activity:(id)a7 cloudKitGroup:(id)a8 completion:(id)a9;
-- (void)_queue_saveRelationship:(id)a3 contact:(id)a4 withExtraRecords:(id)a5 activity:(id)a6 cloudKitGroup:(id)a7 completion:(id)a8;
-- (void)_queue_saveRelationshipAndFetchOrCreateShares:(id)a3 contact:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6;
-- (void)acceptInviteRequestFromFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)acceptShares:(id)a3 forRelationship:(id)a4 contact:(id)a5 cloudKitGroup:(id)a6 completion:(id)a7;
-- (void)activitySharingManagerReady:(id)a3;
+- (void)_queue_acceptShares:(id)shares forRelationship:(id)relationship contact:(id)contact cloudKitGroup:(id)group completion:(id)completion;
+- (void)_queue_addPersonWithCloudKitAddress:(id)address toShares:(id)shares cloudKitGroup:(id)group completion:(id)completion;
+- (void)_queue_fetchSharesForRelationship:(id)relationship cloudKitGroup:(id)group completion:(id)completion;
+- (void)_queue_insertPlaceholderFriendshipDidBeginForContactWithUUID:(id)d;
+- (void)_queue_processEndRelationshipIfNeededForPreviousRemoteRelationship:(id)relationship newRemoteRelationship:(id)remoteRelationship contact:(id)contact xpcActivity:(id)activity cloudKitGroup:(id)group processGroup:(id)processGroup;
+- (void)_queue_processRemoteRelationships:(id)relationships activity:(id)activity cloudKitGroup:(id)group completion:(id)completion;
+- (void)_queue_reconcileCloudKitRelationships:(id)relationships;
+- (void)_queue_saveRelationship:(id)relationship contact:(id)contact activity:(id)activity cloudKitGroup:(id)group completion:(id)completion;
+- (void)_queue_saveRelationship:(id)relationship contact:(id)contact extraRecordsToSave:(id)save extraRecordIDsToDelete:(id)delete activity:(id)activity cloudKitGroup:(id)group completion:(id)completion;
+- (void)_queue_saveRelationship:(id)relationship contact:(id)contact withExtraRecords:(id)records activity:(id)activity cloudKitGroup:(id)group completion:(id)completion;
+- (void)_queue_saveRelationshipAndFetchOrCreateShares:(id)shares contact:(id)contact cloudKitGroup:(id)group completion:(id)completion;
+- (void)acceptInviteRequestFromFriendWithUUID:(id)d completion:(id)completion;
+- (void)acceptShares:(id)shares forRelationship:(id)relationship contact:(id)contact cloudKitGroup:(id)group completion:(id)completion;
+- (void)activitySharingManagerReady:(id)ready;
 - (void)beginReceivingMessages;
-- (void)cloudKitManager:(id)a3 didBeginUpdatesForFetchWithType:(int64_t)a4;
-- (void)cloudKitManager:(id)a3 didReceiveNewRelationships:(id)a4 fromRecordZoneWithID:(id)a5 moreComing:(BOOL)a6 changesProcessedHandler:(id)a7;
-- (void)cloudKitManager:(id)a3 didReceiveNewRemoteRelationships:(id)a4 fromRecordZoneWithID:(id)a5 moreComing:(BOOL)a6 activity:(id)a7 cloudKitGroup:(id)a8 changesProcessedHandler:(id)a9;
+- (void)cloudKitManager:(id)manager didBeginUpdatesForFetchWithType:(int64_t)type;
+- (void)cloudKitManager:(id)manager didReceiveNewRelationships:(id)relationships fromRecordZoneWithID:(id)d moreComing:(BOOL)coming changesProcessedHandler:(id)handler;
+- (void)cloudKitManager:(id)manager didReceiveNewRemoteRelationships:(id)relationships fromRecordZoneWithID:(id)d moreComing:(BOOL)coming activity:(id)activity cloudKitGroup:(id)group changesProcessedHandler:(id)handler;
 - (void)dealloc;
 - (void)endReceivingMessages;
-- (void)friendInviteBulletinManagerDidReceiveActionResponse:(int64_t)a3 fromContactWithUUID:(id)a4;
-- (void)handleSavedRecords:(id)a3 forContact:(id)a4 completion:(id)a5;
-- (void)ignoreInviteRequestFromFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)insertRemoteEventType:(unsigned __int16)a3 onContactWithUUID:(id)a4 cloudType:(unint64_t)a5 completion:(id)a6;
-- (void)messageCenter:(id)a3 didReceiveFinalizeHandshake:(id)a4 fromSenderAddress:(id)a5 receiverAddress:(id)a6 messageHandledCompletion:(id)a7;
-- (void)messageCenter:(id)a3 didReceiveInviteRequest:(id)a4 fromSenderAddress:(id)a5 receiverAddress:(id)a6 messageHandledCompletion:(id)a7;
-- (void)messageCenter:(id)a3 didReceiveInviteResponse:(id)a4 fromSenderAddress:(id)a5 receiverAddress:(id)a6 messageHandledCompletion:(id)a7;
-- (void)messageCenter:(id)a3 didReceiveWithdrawInviteRequest:(id)a4 fromSenderAddress:(id)a5 receiverAddress:(id)a6 messageHandledCompletion:(id)a7;
-- (void)notificationManager:(id)a3 didReceiveActionResponse:(int64_t)a4 fromContactWithUUID:(id)a5;
-- (void)removeFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)removeLegacyFriendWithUUID:(id)a3 event:(unsigned __int16)a4 cloudKitGroup:(id)a5 completion:(id)a6;
-- (void)removePlaceholderRelationshipEventWithToken:(id)a3;
-- (void)saveRelationship:(id)a3 contact:(id)a4 cloudKitGroup:(id)a5 activity:(id)a6 completion:(id)a7;
-- (void)saveRelationship:(id)a3 contact:(id)a4 extraRecordsToSave:(id)a5 extraRecordIDsToDelete:(id)a6 cloudKitGroup:(id)a7 activity:(id)a8 completion:(id)a9;
-- (void)saveRelationshipAndFetchOrCreateShares:(id)a3 contact:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6;
-- (void)saveRelationships:(id)a3 extraRecordsToSave:(id)a4 cloudKitGroup:(id)a5 activity:(id)a6 completion:(id)a7;
-- (void)sendInviteToPersonWithDestination:(id)a3 callerID:(id)a4 serviceIdentifier:(id)a5 completion:(id)a6;
-- (void)sendWithdrawInviteRequestToFriendWithUUID:(id)a3 completion:(id)a4;
-- (void)setActivityDataVisible:(BOOL)a3 toFriendWithUUID:(id)a4 completion:(id)a5;
-- (void)setActivityDataVisible:(BOOL)a3 toFriendWithUUID:(id)a4 eventType:(unsigned __int16)a5 cloudKitGroup:(id)a6 completion:(id)a7;
-- (void)setMuteEnabled:(BOOL)a3 forFriendWithUUID:(id)a4 completion:(id)a5;
-- (void)updateRelationshipsForCurrentFeatureSupportWithActivity:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5;
+- (void)friendInviteBulletinManagerDidReceiveActionResponse:(int64_t)response fromContactWithUUID:(id)d;
+- (void)handleSavedRecords:(id)records forContact:(id)contact completion:(id)completion;
+- (void)ignoreInviteRequestFromFriendWithUUID:(id)d completion:(id)completion;
+- (void)insertRemoteEventType:(unsigned __int16)type onContactWithUUID:(id)d cloudType:(unint64_t)cloudType completion:(id)completion;
+- (void)messageCenter:(id)center didReceiveFinalizeHandshake:(id)handshake fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)messageCenter:(id)center didReceiveInviteRequest:(id)request fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)messageCenter:(id)center didReceiveInviteResponse:(id)response fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)messageCenter:(id)center didReceiveWithdrawInviteRequest:(id)request fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion;
+- (void)notificationManager:(id)manager didReceiveActionResponse:(int64_t)response fromContactWithUUID:(id)d;
+- (void)removeFriendWithUUID:(id)d completion:(id)completion;
+- (void)removeLegacyFriendWithUUID:(id)d event:(unsigned __int16)event cloudKitGroup:(id)group completion:(id)completion;
+- (void)removePlaceholderRelationshipEventWithToken:(id)token;
+- (void)saveRelationship:(id)relationship contact:(id)contact cloudKitGroup:(id)group activity:(id)activity completion:(id)completion;
+- (void)saveRelationship:(id)relationship contact:(id)contact extraRecordsToSave:(id)save extraRecordIDsToDelete:(id)delete cloudKitGroup:(id)group activity:(id)activity completion:(id)completion;
+- (void)saveRelationshipAndFetchOrCreateShares:(id)shares contact:(id)contact cloudKitGroup:(id)group completion:(id)completion;
+- (void)saveRelationships:(id)relationships extraRecordsToSave:(id)save cloudKitGroup:(id)group activity:(id)activity completion:(id)completion;
+- (void)sendInviteToPersonWithDestination:(id)destination callerID:(id)d serviceIdentifier:(id)identifier completion:(id)completion;
+- (void)sendWithdrawInviteRequestToFriendWithUUID:(id)d completion:(id)completion;
+- (void)setActivityDataVisible:(BOOL)visible toFriendWithUUID:(id)d completion:(id)completion;
+- (void)setActivityDataVisible:(BOOL)visible toFriendWithUUID:(id)d eventType:(unsigned __int16)type cloudKitGroup:(id)group completion:(id)completion;
+- (void)setMuteEnabled:(BOOL)enabled forFriendWithUUID:(id)d completion:(id)completion;
+- (void)updateRelationshipsForCurrentFeatureSupportWithActivity:(id)activity cloudKitGroup:(id)group completion:(id)completion;
 @end
 
 @implementation ASRelationshipManager
 
-- (ASRelationshipManager)initWithIsWatch:(BOOL)a3
+- (ASRelationshipManager)initWithIsWatch:(BOOL)watch
 {
   v37[2] = *MEMORY[0x277D85DE8];
   v33.receiver = self;
@@ -111,8 +111,8 @@
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = [(NSDictionary *)v3->_messageCenters allValues];
-    v23 = [v22 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    allValues = [(NSDictionary *)v3->_messageCenters allValues];
+    v23 = [allValues countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v23)
     {
       v24 = v23;
@@ -123,13 +123,13 @@
         {
           if (*v30 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v29 + 1) + 8 * i) setDelegate:v3];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v24 = [allValues countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v24);
@@ -145,55 +145,55 @@
   WeakRetained = objc_loadWeakRetained(&self->_gatewayManager);
   [WeakRetained removeObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = ASRelationshipManager;
   [(ASRelationshipManager *)&v5 dealloc];
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = a3;
-  v5 = [v4 fitnessAppsStateObserver];
+  readyCopy = ready;
+  fitnessAppsStateObserver = [readyCopy fitnessAppsStateObserver];
   fitnessAppsStateObserver = self->_fitnessAppsStateObserver;
-  self->_fitnessAppsStateObserver = v5;
+  self->_fitnessAppsStateObserver = fitnessAppsStateObserver;
 
-  v7 = [v4 achievementManager];
-  objc_storeWeak(&self->_achievementManager, v7);
+  achievementManager = [readyCopy achievementManager];
+  objc_storeWeak(&self->_achievementManager, achievementManager);
 
-  v8 = [v4 activityDataManager];
-  objc_storeWeak(&self->_activityDataManager, v8);
+  activityDataManager = [readyCopy activityDataManager];
+  objc_storeWeak(&self->_activityDataManager, activityDataManager);
 
-  v9 = [v4 contactsManager];
-  objc_storeWeak(&self->_contactsManager, v9);
+  contactsManager = [readyCopy contactsManager];
+  objc_storeWeak(&self->_contactsManager, contactsManager);
 
-  v10 = [v4 friendListManager];
-  objc_storeWeak(&self->_friendListManager, v10);
+  friendListManager = [readyCopy friendListManager];
+  objc_storeWeak(&self->_friendListManager, friendListManager);
 
-  v11 = [v4 cloudKitManager];
-  objc_storeWeak(&self->_cloudKitManager, v11);
+  cloudKitManager = [readyCopy cloudKitManager];
+  objc_storeWeak(&self->_cloudKitManager, cloudKitManager);
 
   WeakRetained = objc_loadWeakRetained(&self->_cloudKitManager);
   [WeakRetained addObserver:self];
 
-  v13 = [v4 gatewayManager];
-  objc_storeWeak(&self->_gatewayManager, v13);
+  gatewayManager = [readyCopy gatewayManager];
+  objc_storeWeak(&self->_gatewayManager, gatewayManager);
 
   v14 = objc_loadWeakRetained(&self->_gatewayManager);
   [v14 addObserver:self];
 
-  v15 = [v4 friendInviteBulletinManager];
-  objc_storeWeak(&self->_friendInviteBulletinManager, v15);
+  friendInviteBulletinManager = [readyCopy friendInviteBulletinManager];
+  objc_storeWeak(&self->_friendInviteBulletinManager, friendInviteBulletinManager);
 
   v16 = objc_loadWeakRetained(&self->_friendInviteBulletinManager);
   [v16 setDelegate:self];
 
-  self->_isWatch = [v4 isWatch];
-  v17 = [v4 bulletinPostingManager];
+  self->_isWatch = [readyCopy isWatch];
+  bulletinPostingManager = [readyCopy bulletinPostingManager];
 
-  objc_storeWeak(&self->_bulletinPostingManager, v17);
+  objc_storeWeak(&self->_bulletinPostingManager, bulletinPostingManager);
   v18 = [ASRelationshipFinalizationStore alloc];
   v21 = objc_loadWeakRetained(&self->_contactsManager);
   v19 = [(ASRelationshipFinalizationStore *)v18 initWithCloudType:0 contactsManager:v21 clientQueue:self->_serialQueue];
@@ -224,8 +224,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSDictionary *)self->_messageCenters allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSDictionary *)self->_messageCenters allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -237,21 +237,21 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) beginReceivingMessages];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel__contactStoreDidChangeNotification_ name:*MEMORY[0x277CBD140] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contactStoreDidChangeNotification_ name:*MEMORY[0x277CBD140] object:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -263,8 +263,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSDictionary *)self->_messageCenters allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSDictionary *)self->_messageCenters allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -276,31 +276,31 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) endReceivingMessages];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self name:*MEMORY[0x277CBD140] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBD140] object:0];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActivityDataVisible:(BOOL)a3 toFriendWithUUID:(id)a4 completion:(id)a5
+- (void)setActivityDataVisible:(BOOL)visible toFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  visibleCopy = visible;
+  dCopy = d;
+  completionCopy = completion;
+  if (visibleCopy)
   {
     v10 = 6;
   }
@@ -310,7 +310,7 @@
     v10 = 5;
   }
 
-  v11 = [(ASRelationshipManager *)self insertPlaceholderRelationshipEvent:v10 friendUUID:v8];
+  v11 = [(ASRelationshipManager *)self insertPlaceholderRelationshipEvent:v10 friendUUID:dCopy];
   objc_copyWeak(&to, &self->_contactsManager);
   v12 = ASCloudKitGroupUserActionExplicit();
   WeakRetained = objc_loadWeakRetained(&self->_cloudKitManager);
@@ -321,12 +321,12 @@
   objc_copyWeak(&v24, &to);
   v14 = v11;
   v19 = v14;
-  v15 = v9;
+  v15 = completionCopy;
   v23 = v15;
-  v20 = self;
-  v16 = v8;
+  selfCopy = self;
+  v16 = dCopy;
   v21 = v16;
-  v26 = v6;
+  v26 = visibleCopy;
   v25 = v10;
   v17 = v12;
   v22 = v17;
@@ -394,31 +394,31 @@ void __76__ASRelationshipManager_setActivityDataVisible_toFriendWithUUID_complet
   (*(*(a1 + 40) + 16))(*(a1 + 40), a2 != 0, v6);
 }
 
-- (void)setActivityDataVisible:(BOOL)a3 toFriendWithUUID:(id)a4 eventType:(unsigned __int16)a5 cloudKitGroup:(id)a6 completion:(id)a7
+- (void)setActivityDataVisible:(BOOL)visible toFriendWithUUID:(id)d eventType:(unsigned __int16)type cloudKitGroup:(id)group completion:(id)completion
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  groupCopy = group;
+  completionCopy = completion;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __100__ASRelationshipManager_setActivityDataVisible_toFriendWithUUID_eventType_cloudKitGroup_completion___block_invoke;
   v26[3] = &unk_278C4DC80;
-  v27 = v14;
-  v15 = v14;
+  v27 = completionCopy;
+  v15 = completionCopy;
   v16 = MEMORY[0x23EF0EB00](v26);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __100__ASRelationshipManager_setActivityDataVisible_toFriendWithUUID_eventType_cloudKitGroup_completion___block_invoke_3;
   v20[3] = &unk_278C4DDC0;
-  v25 = a3;
+  visibleCopy = visible;
   v20[4] = self;
-  v21 = v12;
-  v24 = a5;
-  v22 = v13;
+  v21 = dCopy;
+  typeCopy = type;
+  v22 = groupCopy;
   v23 = v16;
   v17 = v16;
-  v18 = v13;
-  v19 = v12;
+  v18 = groupCopy;
+  v19 = dCopy;
   [(ASRelationshipManager *)self _performBlockWaitingForFriendshipBeganForFriendWithUUID:v19 block:v20];
 }
 
@@ -699,12 +699,12 @@ void __100__ASRelationshipManager_setActivityDataVisible_toFriendWithUUID_eventT
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setMuteEnabled:(BOOL)a3 forFriendWithUUID:(id)a4 completion:(id)a5
+- (void)setMuteEnabled:(BOOL)enabled forFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  enabledCopy = enabled;
+  dCopy = d;
+  completionCopy = completion;
+  if (enabledCopy)
   {
     v10 = 8;
   }
@@ -714,20 +714,20 @@ void __100__ASRelationshipManager_setActivityDataVisible_toFriendWithUUID_eventT
     v10 = 9;
   }
 
-  v11 = [(ASRelationshipManager *)self insertPlaceholderRelationshipEvent:v10 friendUUID:v8];
+  v11 = [(ASRelationshipManager *)self insertPlaceholderRelationshipEvent:v10 friendUUID:dCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__ASRelationshipManager_setMuteEnabled_forFriendWithUUID_completion___block_invoke;
   v15[3] = &unk_278C4DDC0;
-  v20 = v6;
+  v20 = enabledCopy;
   v15[4] = self;
-  v16 = v8;
+  v16 = dCopy;
   v19 = v10;
   v17 = v11;
-  v18 = v9;
-  v12 = v9;
+  v18 = completionCopy;
+  v12 = completionCopy;
   v13 = v11;
-  v14 = v8;
+  v14 = dCopy;
   [(ASRelationshipManager *)self _performBlockWaitingForFriendshipBeganForFriendWithUUID:v14 block:v15];
 }
 
@@ -840,20 +840,20 @@ void __69__ASRelationshipManager_setMuteEnabled_forFriendWithUUID_completion___b
   _NotifyOnMainQueue(a2, v7, *(a1 + 56));
 }
 
-- (void)removeFriendWithUUID:(id)a3 completion:(id)a4
+- (void)removeFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ASRelationshipManager_removeFriendWithUUID_completion___block_invoke;
   block[3] = &unk_278C4BA30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -865,24 +865,24 @@ void __57__ASRelationshipManager_removeFriendWithUUID_completion___block_invoke(
   [v2 _queue_removeFriendWithUUID:v3 eventType:4 activity:0 cloudKitGroup:v4 completion:a1[6]];
 }
 
-- (void)removeLegacyFriendWithUUID:(id)a3 event:(unsigned __int16)a4 cloudKitGroup:(id)a5 completion:(id)a6
+- (void)removeLegacyFriendWithUUID:(id)d event:(unsigned __int16)event cloudKitGroup:(id)group completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  groupCopy = group;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__ASRelationshipManager_removeLegacyFriendWithUUID_event_cloudKitGroup_completion___block_invoke;
   block[3] = &unk_278C4DE10;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = dCopy;
+  eventCopy = event;
+  v19 = groupCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = groupCopy;
+  v16 = dCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -949,23 +949,23 @@ void __109__ASRelationshipManager_updateRelationshipWithCompetitionEvent_friendU
   _NotifyOnMainQueue(a2, v7, *(a1 + 40));
 }
 
-- (void)updateRelationshipsForCurrentFeatureSupportWithActivity:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5
+- (void)updateRelationshipsForCurrentFeatureSupportWithActivity:(id)activity cloudKitGroup:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  groupCopy = group;
+  completionCopy = completion;
   transactionQueue = self->_transactionQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __106__ASRelationshipManager_updateRelationshipsForCurrentFeatureSupportWithActivity_cloudKitGroup_completion___block_invoke;
   v15[3] = &unk_278C4DEA8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = activityCopy;
+  v17 = groupCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = groupCopy;
+  v14 = activityCopy;
   [(ASAsyncTransactionQueue *)transactionQueue performTransaction:v15];
 }
 
@@ -1161,29 +1161,29 @@ void __106__ASRelationshipManager_updateRelationshipsForCurrentFeatureSupportWit
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendInviteToPersonWithDestination:(id)a3 callerID:(id)a4 serviceIdentifier:(id)a5 completion:(id)a6
+- (void)sendInviteToPersonWithDestination:(id)destination callerID:(id)d serviceIdentifier:(id)identifier completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  destinationCopy = destination;
+  dCopy = d;
+  identifierCopy = identifier;
+  completionCopy = completion;
   ASLoggingInitialize();
   v14 = MEMORY[0x277CE9008];
   v15 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v10;
+    v27 = destinationCopy;
     v28 = 2114;
-    v29 = v12;
+    v29 = identifierCopy;
     _os_log_impl(&dword_23E5E3000, v15, OS_LOG_TYPE_DEFAULT, "RelationshipManager starting invite flow for person with destination: %@, serviceIdentifier: %{public}@", buf, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_gatewayManager);
-  v17 = [WeakRetained hasReachedMaximumNumberOfFriends];
+  hasReachedMaximumNumberOfFriends = [WeakRetained hasReachedMaximumNumberOfFriends];
 
-  if (v17)
+  if (hasReachedMaximumNumberOfFriends)
   {
     ASLoggingInitialize();
     if (os_log_type_enabled(*v14, OS_LOG_TYPE_ERROR))
@@ -1192,7 +1192,7 @@ void __106__ASRelationshipManager_updateRelationshipsForCurrentFeatureSupportWit
     }
 
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.RelationshipManager" code:6 userInfo:0];
-    _NotifyOnMainQueue(0, v18, v13);
+    _NotifyOnMainQueue(0, v18, completionCopy);
   }
 
   else
@@ -1203,10 +1203,10 @@ void __106__ASRelationshipManager_updateRelationshipsForCurrentFeatureSupportWit
     block[2] = __97__ASRelationshipManager_sendInviteToPersonWithDestination_callerID_serviceIdentifier_completion___block_invoke;
     block[3] = &unk_278C4E010;
     block[4] = self;
-    v22 = v10;
-    v23 = v12;
-    v25 = v13;
-    v24 = v11;
+    v22 = destinationCopy;
+    v23 = identifierCopy;
+    v25 = completionCopy;
+    v24 = dCopy;
     dispatch_async(serialQueue, block);
   }
 
@@ -1611,14 +1611,14 @@ void __97__ASRelationshipManager_sendInviteToPersonWithDestination_callerID_serv
   _NotifyOnMainQueue(0, v2, v3);
 }
 
-- (void)acceptInviteRequestFromFriendWithUUID:(id)a3 completion:(id)a4
+- (void)acceptInviteRequestFromFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_gatewayManager);
-  v9 = [WeakRetained hasReachedMaximumNumberOfFriends];
+  hasReachedMaximumNumberOfFriends = [WeakRetained hasReachedMaximumNumberOfFriends];
 
-  if (v9)
+  if (hasReachedMaximumNumberOfFriends)
   {
     ASLoggingInitialize();
     if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_ERROR))
@@ -1627,7 +1627,7 @@ void __97__ASRelationshipManager_sendInviteToPersonWithDestination_callerID_serv
     }
 
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.RelationshipManager" code:6 userInfo:0];
-    _NotifyOnMainQueue(0, v10, v7);
+    _NotifyOnMainQueue(0, v10, completionCopy);
   }
 
   else
@@ -1638,8 +1638,8 @@ void __97__ASRelationshipManager_sendInviteToPersonWithDestination_callerID_serv
     block[2] = __74__ASRelationshipManager_acceptInviteRequestFromFriendWithUUID_completion___block_invoke;
     block[3] = &unk_278C4BA30;
     block[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = dCopy;
+    v14 = completionCopy;
     dispatch_async(serialQueue, block);
   }
 }
@@ -2065,23 +2065,23 @@ void __74__ASRelationshipManager_acceptInviteRequestFromFriendWithUUID_completio
   _NotifyOnMainQueue(a2, v7, *(a1 + 40));
 }
 
-- (void)sendWithdrawInviteRequestToFriendWithUUID:(id)a3 completion:(id)a4
+- (void)sendWithdrawInviteRequestToFriendWithUUID:(id)d completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   ASLoggingInitialize();
   v8 = MEMORY[0x277CE9008];
   v9 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = v6;
+    v23 = dCopy;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "RelationshipManager attempting to withdraw invite request to friend with UUID: %{public}@", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
-  v11 = [WeakRetained contactWithUUID:v6];
+  v11 = [WeakRetained contactWithUUID:dCopy];
 
   if (v11)
   {
@@ -2099,9 +2099,9 @@ LABEL_14:
         v18[2] = __78__ASRelationshipManager_sendWithdrawInviteRequestToFriendWithUUID_completion___block_invoke;
         v18[3] = &unk_278C4E1A0;
         v18[4] = self;
-        v19 = v6;
+        v19 = dCopy;
         v20 = v12;
-        v21 = v7;
+        v21 = completionCopy;
         v15 = v12;
         dispatch_async(serialQueue, v18);
 
@@ -2141,7 +2141,7 @@ LABEL_14:
   }
 
   v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.RelationshipManager" code:3 userInfo:0];
-  _NotifyOnMainQueue(0, v15, v7);
+  _NotifyOnMainQueue(0, v15, completionCopy);
 LABEL_15:
 
   v17 = *MEMORY[0x277D85DE8];
@@ -2183,11 +2183,11 @@ void __78__ASRelationshipManager_sendWithdrawInviteRequestToFriendWithUUID_compl
   }
 }
 
-- (void)ignoreInviteRequestFromFriendWithUUID:(id)a3 completion:(id)a4
+- (void)ignoreInviteRequestFromFriendWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASRelationshipManager *)self insertPlaceholderRelationshipEvent:7 friendUUID:v6];
+  dCopy = d;
+  completionCopy = completion;
+  v8 = [(ASRelationshipManager *)self insertPlaceholderRelationshipEvent:7 friendUUID:dCopy];
   WeakRetained = objc_loadWeakRetained(&self->_friendListManager);
   [WeakRetained updateFitnessAppBadgeCount];
 
@@ -2196,13 +2196,13 @@ void __78__ASRelationshipManager_sendWithdrawInviteRequestToFriendWithUUID_compl
   v14[1] = 3221225472;
   v14[2] = __74__ASRelationshipManager_ignoreInviteRequestFromFriendWithUUID_completion___block_invoke;
   v14[3] = &unk_278C4E128;
-  v15 = v6;
-  v16 = self;
+  v15 = dCopy;
+  selfCopy = self;
   v17 = v8;
-  v18 = v7;
+  v18 = completionCopy;
   v11 = v8;
-  v12 = v7;
-  v13 = v6;
+  v12 = completionCopy;
+  v13 = dCopy;
   [(ASAsyncTransactionQueue *)transactionQueue performTransaction:v14];
 }
 
@@ -2300,28 +2300,28 @@ void __74__ASRelationshipManager_ignoreInviteRequestFromFriendWithUUID_completio
   _NotifyOnMainQueue(a2, v8, *(a1 + 64));
 }
 
-- (void)messageCenter:(id)a3 didReceiveInviteRequest:(id)a4 fromSenderAddress:(id)a5 receiverAddress:(id)a6 messageHandledCompletion:(id)a7
+- (void)messageCenter:(id)center didReceiveInviteRequest:(id)request fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  centerCopy = center;
+  requestCopy = request;
+  addressCopy = address;
+  receiverAddressCopy = receiverAddress;
+  completionCopy = completion;
   ASLoggingInitialize();
   v16 = MEMORY[0x277CE9008];
   v17 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v12 inviterCloudKitAddress];
-    v20 = [v12 inviterCallerID];
+    inviterCloudKitAddress = [requestCopy inviterCloudKitAddress];
+    inviterCallerID = [requestCopy inviterCallerID];
     *buf = 138412802;
-    v38 = v13;
+    v38 = addressCopy;
     v39 = 2112;
-    v40 = v19;
+    v40 = inviterCloudKitAddress;
     v41 = 2112;
-    v42 = v20;
+    v42 = inviterCallerID;
     _os_log_impl(&dword_23E5E3000, v18, OS_LOG_TYPE_DEFAULT, "RelationshipManager received invite request from %@, cloudKitAddress=%@, callerID=%@", buf, 0x20u);
   }
 
@@ -2330,15 +2330,15 @@ void __74__ASRelationshipManager_ignoreInviteRequestFromFriendWithUUID_completio
   if (os_log_type_enabled(*v16, OS_LOG_TYPE_DEFAULT))
   {
     v22 = v21;
-    v23 = [v12 handshakeToken];
-    v24 = [v12 inviterBuildNumber];
-    v25 = [v12 inviterVersion];
+    handshakeToken = [requestCopy handshakeToken];
+    inviterBuildNumber = [requestCopy inviterBuildNumber];
+    inviterVersion = [requestCopy inviterVersion];
     *buf = 138412802;
-    v38 = v23;
+    v38 = handshakeToken;
     v39 = 2114;
-    v40 = v24;
+    v40 = inviterBuildNumber;
     v41 = 1024;
-    LODWORD(v42) = v25;
+    LODWORD(v42) = inviterVersion;
     _os_log_impl(&dword_23E5E3000, v22, OS_LOG_TYPE_DEFAULT, "RelationshipManager invite info: handshakeToken=%@, buildNumber=%{public}@, version=%d", buf, 0x1Cu);
   }
 
@@ -2349,13 +2349,13 @@ void __74__ASRelationshipManager_ignoreInviteRequestFromFriendWithUUID_completio
     v31[1] = 3221225472;
     v31[2] = __122__ASRelationshipManager_messageCenter_didReceiveInviteRequest_fromSenderAddress_receiverAddress_messageHandledCompletion___block_invoke;
     v31[3] = &unk_278C4E268;
-    v36 = v15;
+    v36 = completionCopy;
     v31[4] = self;
-    v32 = v12;
-    v33 = v13;
-    v27 = v30;
-    v34 = v30;
-    v35 = v14;
+    v32 = requestCopy;
+    v33 = addressCopy;
+    v27 = centerCopy;
+    v34 = centerCopy;
+    v35 = receiverAddressCopy;
     [WeakRetained gatewayStatusWithCompletion:v31];
   }
 
@@ -2363,14 +2363,14 @@ void __74__ASRelationshipManager_ignoreInviteRequestFromFriendWithUUID_completio
   {
     ASLoggingInitialize();
     v28 = *v16;
-    v27 = v30;
+    v27 = centerCopy;
     if (os_log_type_enabled(*v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_23E5E3000, v28, OS_LOG_TYPE_DEFAULT, "RelationshipManager not processing invite because activity app is not installed, persisting for later delivery", buf, 2u);
     }
 
-    (*(v15 + 2))(v15, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -2776,24 +2776,24 @@ uint64_t __122__ASRelationshipManager_messageCenter_didReceiveInviteRequest_from
   return (*(v3 + 16))(v3, v4);
 }
 
-- (void)messageCenter:(id)a3 didReceiveInviteResponse:(id)a4 fromSenderAddress:(id)a5 receiverAddress:(id)a6 messageHandledCompletion:(id)a7
+- (void)messageCenter:(id)center didReceiveInviteResponse:(id)response fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  centerCopy = center;
+  responseCopy = response;
+  addressCopy = address;
+  completionCopy = completion;
   ASLoggingInitialize();
   v15 = MEMORY[0x277CE9008];
   v16 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v17 = v16;
-    v18 = [v12 inviteeCloudKitAddress];
+    inviteeCloudKitAddress = [responseCopy inviteeCloudKitAddress];
     *buf = 138412546;
-    v36 = v13;
+    v36 = addressCopy;
     v37 = 2112;
-    v38 = v18;
+    v38 = inviteeCloudKitAddress;
     _os_log_impl(&dword_23E5E3000, v17, OS_LOG_TYPE_DEFAULT, "RelationshipManager received invite response from %@, cloudKitAddress=%@", buf, 0x16u);
   }
 
@@ -2802,15 +2802,15 @@ uint64_t __122__ASRelationshipManager_messageCenter_didReceiveInviteRequest_from
   if (os_log_type_enabled(*v15, OS_LOG_TYPE_DEFAULT))
   {
     v20 = v19;
-    v21 = [v12 handshakeToken];
-    v22 = [v12 inviteeBuildNumber];
-    v23 = [v12 inviteeVersion];
+    handshakeToken = [responseCopy handshakeToken];
+    inviteeBuildNumber = [responseCopy inviteeBuildNumber];
+    inviteeVersion = [responseCopy inviteeVersion];
     *buf = 138412802;
-    v36 = v21;
+    v36 = handshakeToken;
     v37 = 2114;
-    v38 = v22;
+    v38 = inviteeBuildNumber;
     v39 = 1024;
-    v40 = v23;
+    v40 = inviteeVersion;
     _os_log_impl(&dword_23E5E3000, v20, OS_LOG_TYPE_DEFAULT, "RelationshipManager response info: handshakeToken=%@, buildNumber=%{public}@, version=%d", buf, 0x1Cu);
   }
 
@@ -2822,12 +2822,12 @@ uint64_t __122__ASRelationshipManager_messageCenter_didReceiveInviteRequest_from
     v29[1] = 3221225472;
     v29[2] = __123__ASRelationshipManager_messageCenter_didReceiveInviteResponse_fromSenderAddress_receiverAddress_messageHandledCompletion___block_invoke;
     v29[3] = &unk_278C4D2C8;
-    v34 = v14;
+    v34 = completionCopy;
     v29[4] = self;
-    v30 = v12;
+    v30 = responseCopy;
     v31 = v24;
-    v32 = v11;
-    v33 = v13;
+    v32 = centerCopy;
+    v33 = addressCopy;
     v26 = v24;
     [WeakRetained fetchAllChangesWithPriority:2 activity:0 group:v26 completion:v29];
   }
@@ -2842,7 +2842,7 @@ uint64_t __122__ASRelationshipManager_messageCenter_didReceiveInviteRequest_from
       _os_log_impl(&dword_23E5E3000, v27, OS_LOG_TYPE_DEFAULT, "RelationshipManager not processing response because activity app is not installed, persisting for later delivery", buf, 2u);
     }
 
-    (*(v14 + 2))(v14, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -3234,20 +3234,20 @@ uint64_t __123__ASRelationshipManager_messageCenter_didReceiveInviteResponse_fro
   return (*(v3 + 16))(v3, v4);
 }
 
-- (void)messageCenter:(id)a3 didReceiveFinalizeHandshake:(id)a4 fromSenderAddress:(id)a5 receiverAddress:(id)a6 messageHandledCompletion:(id)a7
+- (void)messageCenter:(id)center didReceiveFinalizeHandshake:(id)handshake fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
-  v9 = a4;
-  v10 = a7;
+  handshakeCopy = handshake;
+  completionCopy = completion;
   transactionQueue = self->_transactionQueue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __126__ASRelationshipManager_messageCenter_didReceiveFinalizeHandshake_fromSenderAddress_receiverAddress_messageHandledCompletion___block_invoke;
   v14[3] = &unk_278C4D5C8;
-  v15 = v9;
-  v16 = self;
-  v17 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = handshakeCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = handshakeCopy;
   [(ASAsyncTransactionQueue *)transactionQueue performTransaction:v14];
 }
 
@@ -3399,21 +3399,21 @@ uint64_t __126__ASRelationshipManager_messageCenter_didReceiveFinalizeHandshake_
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)messageCenter:(id)a3 didReceiveWithdrawInviteRequest:(id)a4 fromSenderAddress:(id)a5 receiverAddress:(id)a6 messageHandledCompletion:(id)a7
+- (void)messageCenter:(id)center didReceiveWithdrawInviteRequest:(id)request fromSenderAddress:(id)address receiverAddress:(id)receiverAddress messageHandledCompletion:(id)completion
 {
-  v9 = a4;
-  v10 = a7;
+  requestCopy = request;
+  completionCopy = completion;
   v11 = ASCloudKitGroupSharingSetup();
   WeakRetained = objc_loadWeakRetained(&self->_cloudKitManager);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __130__ASRelationshipManager_messageCenter_didReceiveWithdrawInviteRequest_fromSenderAddress_receiverAddress_messageHandledCompletion___block_invoke;
   v15[3] = &unk_278C4E178;
-  v16 = v9;
-  v17 = v10;
+  v16 = requestCopy;
+  v17 = completionCopy;
   v15[4] = self;
-  v13 = v9;
-  v14 = v10;
+  v13 = requestCopy;
+  v14 = completionCopy;
   [WeakRetained fetchAllChangesWithPriority:2 activity:0 group:v11 completion:v15];
 }
 
@@ -3545,7 +3545,7 @@ uint64_t __130__ASRelationshipManager_messageCenter_didReceiveWithdrawInviteRequ
   return v6();
 }
 
-- (void)cloudKitManager:(id)a3 didBeginUpdatesForFetchWithType:(int64_t)a4
+- (void)cloudKitManager:(id)manager didBeginUpdatesForFetchWithType:(int64_t)type
 {
   serialQueue = self->_serialQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -3553,22 +3553,22 @@ uint64_t __130__ASRelationshipManager_messageCenter_didReceiveWithdrawInviteRequ
   v5[2] = __73__ASRelationshipManager_cloudKitManager_didBeginUpdatesForFetchWithType___block_invoke;
   v5[3] = &unk_278C4C9B0;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = type;
   dispatch_async(serialQueue, v5);
 }
 
-- (void)cloudKitManager:(id)a3 didReceiveNewRelationships:(id)a4 fromRecordZoneWithID:(id)a5 moreComing:(BOOL)a6 changesProcessedHandler:(id)a7
+- (void)cloudKitManager:(id)manager didReceiveNewRelationships:(id)relationships fromRecordZoneWithID:(id)d moreComing:(BOOL)coming changesProcessedHandler:(id)handler
 {
-  v8 = a6;
+  comingCopy = coming;
   v24 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a7;
+  relationshipsCopy = relationships;
+  handlerCopy = handler;
   ASLoggingInitialize();
   v12 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v23 = v8;
+    v23 = comingCopy;
     _os_log_impl(&dword_23E5E3000, v12, OS_LOG_TYPE_DEFAULT, "RelationshipManager received new relationship records from CloudKit, more coming: %{BOOL}d", buf, 8u);
   }
 
@@ -3577,12 +3577,12 @@ uint64_t __130__ASRelationshipManager_messageCenter_didReceiveWithdrawInviteRequ
   v17[1] = 3221225472;
   v17[2] = __124__ASRelationshipManager_cloudKitManager_didReceiveNewRelationships_fromRecordZoneWithID_moreComing_changesProcessedHandler___block_invoke;
   v17[3] = &unk_278C4E380;
-  v18 = v10;
-  v19 = self;
-  v21 = v8;
-  v20 = v11;
-  v14 = v11;
-  v15 = v10;
+  v18 = relationshipsCopy;
+  selfCopy = self;
+  v21 = comingCopy;
+  v20 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = relationshipsCopy;
   [(ASAsyncTransactionQueue *)transactionQueue performTransaction:v17];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -3676,12 +3676,12 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloudKitManager:(id)a3 didReceiveNewRemoteRelationships:(id)a4 fromRecordZoneWithID:(id)a5 moreComing:(BOOL)a6 activity:(id)a7 cloudKitGroup:(id)a8 changesProcessedHandler:(id)a9
+- (void)cloudKitManager:(id)manager didReceiveNewRemoteRelationships:(id)relationships fromRecordZoneWithID:(id)d moreComing:(BOOL)coming activity:(id)activity cloudKitGroup:(id)group changesProcessedHandler:(id)handler
 {
-  v13 = a4;
-  v14 = a7;
-  v15 = a8;
-  v16 = a9;
+  relationshipsCopy = relationships;
+  activityCopy = activity;
+  groupCopy = group;
+  handlerCopy = handler;
   ASLoggingInitialize();
   v17 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
@@ -3695,16 +3695,16 @@ LABEL_13:
   v23[1] = 3221225472;
   v23[2] = __153__ASRelationshipManager_cloudKitManager_didReceiveNewRemoteRelationships_fromRecordZoneWithID_moreComing_activity_cloudKitGroup_changesProcessedHandler___block_invoke;
   v23[3] = &unk_278C4E3A8;
-  v24 = v13;
-  v25 = self;
-  v29 = a6;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
+  v24 = relationshipsCopy;
+  selfCopy = self;
+  comingCopy = coming;
+  v26 = activityCopy;
+  v27 = groupCopy;
+  v28 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = groupCopy;
+  v21 = activityCopy;
+  v22 = relationshipsCopy;
   [(ASAsyncTransactionQueue *)transactionQueue performTransaction:v23];
 }
 
@@ -3809,31 +3809,31 @@ uint64_t __153__ASRelationshipManager_cloudKitManager_didReceiveNewRemoteRelatio
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)notificationManager:(id)a3 didReceiveActionResponse:(int64_t)a4 fromContactWithUUID:(id)a5
+- (void)notificationManager:(id)manager didReceiveActionResponse:(int64_t)response fromContactWithUUID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  dCopy = d;
   ASLoggingInitialize();
   v8 = MEMORY[0x277CE9008];
   v9 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v19 = a4;
+    responseCopy = response;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "RelationshipManager received BB response: %ld in ASActivitySharingManager", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
-  v11 = [WeakRetained contactWithUUID:v7];
+  v11 = [WeakRetained contactWithUUID:dCopy];
 
   if (v11)
   {
-    if (a4 == 1)
+    if (response == 1)
     {
       v12 = objc_loadWeakRetained(&self->_gatewayManager);
-      v13 = [v12 hasReachedMaximumNumberOfFriends];
+      hasReachedMaximumNumberOfFriends = [v12 hasReachedMaximumNumberOfFriends];
 
-      if (v13)
+      if (hasReachedMaximumNumberOfFriends)
       {
         v14 = objc_loadWeakRetained(&self->_friendInviteBulletinManager);
         [v14 showMaxNumberOfFriendsError];
@@ -3847,7 +3847,7 @@ uint64_t __153__ASRelationshipManager_cloudKitManager_didReceiveNewRemoteRelatio
         v16[3] = &unk_278C4C308;
         v16[4] = self;
         v17 = v11;
-        [(ASRelationshipManager *)self acceptInviteRequestFromFriendWithUUID:v7 completion:v16];
+        [(ASRelationshipManager *)self acceptInviteRequestFromFriendWithUUID:dCopy completion:v16];
       }
     }
   }
@@ -4193,29 +4193,29 @@ void __103__ASRelationshipManager__queue_removeLegacyFriendWithUUID_eventType_ac
   }
 }
 
-- (id)_contactWithInviteRequest:(id)a3 fromSender:(id)a4
+- (id)_contactWithInviteRequest:(id)request fromSender:(id)sender
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v35[0] = v7;
+  requestCopy = request;
+  senderCopy = sender;
+  v35[0] = senderCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  v9 = [v6 inviterCloudKitAddress];
+  inviterCloudKitAddress = [requestCopy inviterCloudKitAddress];
 
-  if (v9)
+  if (inviterCloudKitAddress)
   {
-    v10 = [v6 inviterCloudKitAddress];
-    v11 = [v8 arrayByAddingObject:v10];
+    inviterCloudKitAddress2 = [requestCopy inviterCloudKitAddress];
+    v11 = [v8 arrayByAddingObject:inviterCloudKitAddress2];
 
     v8 = v11;
   }
 
-  v12 = [v6 inviterCallerID];
+  inviterCallerID = [requestCopy inviterCallerID];
 
-  if (v12)
+  if (inviterCallerID)
   {
-    v13 = [v6 inviterCallerID];
-    v14 = [v8 arrayByAddingObject:v13];
+    inviterCallerID2 = [requestCopy inviterCallerID];
+    v14 = [v8 arrayByAddingObject:inviterCallerID2];
 
     v8 = v14;
   }
@@ -4238,14 +4238,14 @@ void __103__ASRelationshipManager__queue_removeLegacyFriendWithUUID_eventType_ac
     goto LABEL_16;
   }
 
-  v17 = [v6 inviterCloudKitAddress];
-  if (v17)
+  inviterCloudKitAddress3 = [requestCopy inviterCloudKitAddress];
+  if (inviterCloudKitAddress3)
   {
-    v18 = v17;
+    v18 = inviterCloudKitAddress3;
     v19 = [(ASRelationshipManager *)self _relationshipFromContact:v16];
-    v20 = [v19 cloudKitAddress];
-    v21 = [v6 inviterCloudKitAddress];
-    v22 = [v20 isEqualToString:v21];
+    cloudKitAddress = [v19 cloudKitAddress];
+    inviterCloudKitAddress4 = [requestCopy inviterCloudKitAddress];
+    v22 = [cloudKitAddress isEqualToString:inviterCloudKitAddress4];
 
     if ((v22 & 1) == 0)
     {
@@ -4267,8 +4267,8 @@ void __103__ASRelationshipManager__queue_removeLegacyFriendWithUUID_eventType_ac
       }
 
       v26 = objc_loadWeakRetained(&self->_contactsManager);
-      v27 = [v6 inviterCloudKitAddress];
-      v34 = v27;
+      inviterCloudKitAddress5 = [requestCopy inviterCloudKitAddress];
+      v34 = inviterCloudKitAddress5;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
       v29 = [v26 createContactWithDestinations:v28];
 
@@ -4282,26 +4282,26 @@ LABEL_16:
   return v16;
 }
 
-- (id)_contactWithOutgoingHandshakeToken:(id)a3
+- (id)_contactWithOutgoingHandshakeToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
-  v6 = ASContactForOutgoingHandshakeTokenWithManager(v4, WeakRetained, 0);
+  v6 = ASContactForOutgoingHandshakeTokenWithManager(tokenCopy, WeakRetained, 0);
 
   return v6;
 }
 
-- (id)_contactWithIncomingHandshakeToken:(id)a3
+- (id)_contactWithIncomingHandshakeToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__ASRelationshipManager__contactWithIncomingHandshakeToken___block_invoke;
   v9[3] = &unk_278C4E498;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = tokenCopy;
+  v6 = tokenCopy;
   v7 = [WeakRetained contactMatchingCriteriaBlock:v9];
 
   return v7;
@@ -4316,17 +4316,17 @@ uint64_t __60__ASRelationshipManager__contactWithIncomingHandshakeToken___block_
   return v5;
 }
 
-- (id)_contactWithRemoteRelationshipRecordZoneID:(id)a3
+- (id)_contactWithRemoteRelationshipRecordZoneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__ASRelationshipManager__contactWithRemoteRelationshipRecordZoneID___block_invoke;
   v9[3] = &unk_278C4E498;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = dCopy;
+  v6 = dCopy;
   v7 = [WeakRetained contactMatchingCriteriaBlock:v9];
 
   return v7;
@@ -4342,33 +4342,33 @@ uint64_t __68__ASRelationshipManager__contactWithRemoteRelationshipRecordZoneID_
   return v6;
 }
 
-- (void)_insertInviteForContact:(id)a3 destination:(id)a4 serviceIdentifier:(id)a5
+- (void)_insertInviteForContact:(id)contact destination:(id)destination serviceIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(ASRelationshipManager *)self _relationshipFromContact:v8];
-  v12 = [v8 destinations];
-  [v11 setAddresses:v12];
+  contactCopy = contact;
+  identifierCopy = identifier;
+  destinationCopy = destination;
+  v11 = [(ASRelationshipManager *)self _relationshipFromContact:contactCopy];
+  destinations = [contactCopy destinations];
+  [v11 setAddresses:destinations];
 
   v13 = ASSanitizedContactDestination();
 
   [v11 setPreferredReachableAddress:v13];
-  [v11 setPreferredReachableService:v9];
+  [v11 setPreferredReachableService:identifierCopy];
 
-  v14 = [v11 outgoingHandshakeToken];
+  outgoingHandshakeToken = [v11 outgoingHandshakeToken];
 
-  if (v14)
+  if (outgoingHandshakeToken)
   {
     ASLoggingInitialize();
     v15 = *MEMORY[0x277CE9008];
     if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v11 outgoingHandshakeToken];
+      outgoingHandshakeToken2 = [v11 outgoingHandshakeToken];
       *v24 = 138412290;
-      *&v24[4] = v17;
+      *&v24[4] = outgoingHandshakeToken2;
       v18 = "RelationshipManager outgoing handshake token already exists for this person: %@";
 LABEL_6:
       _os_log_impl(&dword_23E5E3000, v16, OS_LOG_TYPE_DEFAULT, v18, v24, 0xCu);
@@ -4377,78 +4377,78 @@ LABEL_6:
 
   else
   {
-    v19 = [MEMORY[0x277CCAD78] UUID];
-    v20 = [v19 UUIDString];
-    [v11 setOutgoingHandshakeToken:v20];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v11 setOutgoingHandshakeToken:uUIDString];
 
     ASLoggingInitialize();
     v21 = *MEMORY[0x277CE9008];
     if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
     {
       v16 = v21;
-      v17 = [v11 outgoingHandshakeToken];
+      outgoingHandshakeToken2 = [v11 outgoingHandshakeToken];
       *v24 = 138412290;
-      *&v24[4] = v17;
+      *&v24[4] = outgoingHandshakeToken2;
       v18 = "RelationshipManager creating new outgoing handshake token: %@";
       goto LABEL_6;
     }
   }
 
   [v11 insertEventWithType:{1, *v24}];
-  v22 = [v8 relationshipStorage];
-  [v22 setLegacyRelationship:v11];
-  [v8 setRelationshipStorage:v22];
+  relationshipStorage = [contactCopy relationshipStorage];
+  [relationshipStorage setLegacyRelationship:v11];
+  [contactCopy setRelationshipStorage:relationshipStorage];
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePlaceholderRelationshipEventWithToken:(id)a3
+- (void)removePlaceholderRelationshipEventWithToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
-  ASRemovePlaceholderForToken(v4, WeakRetained);
+  ASRemovePlaceholderForToken(tokenCopy, WeakRetained);
 }
 
-- (id)_contactWithUUIDPreferringPlaceholders:(id)a3
+- (id)_contactWithUUIDPreferringPlaceholders:(id)placeholders
 {
-  v4 = a3;
+  placeholdersCopy = placeholders;
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
-  v6 = ASContactPreferringPlaceholderForUUID(v4, WeakRetained);
+  v6 = ASContactPreferringPlaceholderForUUID(placeholdersCopy, WeakRetained);
 
   return v6;
 }
 
-- (void)_queue_insertPlaceholderFriendshipDidBeginForContactWithUUID:(id)a3
+- (void)_queue_insertPlaceholderFriendshipDidBeginForContactWithUUID:(id)d
 {
   serialQueue = self->_serialQueue;
-  v5 = a3;
+  dCopy = d;
   dispatch_assert_queue_V2(serialQueue);
-  [(ASRelationshipFinalizationStore *)self->_finalizingStore insertPlaceholderForEventTypes:&unk_2850F5240 contactUUID:v5];
+  [(ASRelationshipFinalizationStore *)self->_finalizingStore insertPlaceholderForEventTypes:&unk_2850F5240 contactUUID:dCopy];
 }
 
-- (void)saveRelationship:(id)a3 contact:(id)a4 cloudKitGroup:(id)a5 activity:(id)a6 completion:(id)a7
+- (void)saveRelationship:(id)relationship contact:(id)contact cloudKitGroup:(id)group activity:(id)activity completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  relationshipCopy = relationship;
+  contactCopy = contact;
+  groupCopy = group;
+  activityCopy = activity;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __84__ASRelationshipManager_saveRelationship_contact_cloudKitGroup_activity_completion___block_invoke;
   v23[3] = &unk_278C4E4E8;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v15;
-  v27 = v14;
-  v28 = v16;
-  v18 = v16;
-  v19 = v14;
-  v20 = v15;
-  v21 = v13;
-  v22 = v12;
+  v24 = relationshipCopy;
+  v25 = contactCopy;
+  v26 = activityCopy;
+  v27 = groupCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = groupCopy;
+  v20 = activityCopy;
+  v21 = contactCopy;
+  v22 = relationshipCopy;
   dispatch_async(serialQueue, v23);
 }
 
@@ -4467,35 +4467,35 @@ void __84__ASRelationshipManager_saveRelationship_contact_cloudKitGroup_activity
   [v1 _queue_saveRelationship:v2 contact:v3 activity:v4 cloudKitGroup:v5 completion:v6];
 }
 
-- (void)saveRelationship:(id)a3 contact:(id)a4 extraRecordsToSave:(id)a5 extraRecordIDsToDelete:(id)a6 cloudKitGroup:(id)a7 activity:(id)a8 completion:(id)a9
+- (void)saveRelationship:(id)relationship contact:(id)contact extraRecordsToSave:(id)save extraRecordIDsToDelete:(id)delete cloudKitGroup:(id)group activity:(id)activity completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  relationshipCopy = relationship;
+  contactCopy = contact;
+  saveCopy = save;
+  deleteCopy = delete;
+  groupCopy = group;
+  activityCopy = activity;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __126__ASRelationshipManager_saveRelationship_contact_extraRecordsToSave_extraRecordIDsToDelete_cloudKitGroup_activity_completion___block_invoke;
   v30[3] = &unk_278C4E538;
   v30[4] = self;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = v20;
-  v36 = v19;
-  v37 = v21;
-  v23 = v21;
-  v24 = v19;
-  v25 = v20;
-  v26 = v18;
-  v27 = v17;
-  v28 = v16;
-  v29 = v15;
+  v31 = relationshipCopy;
+  v32 = contactCopy;
+  v33 = saveCopy;
+  v34 = deleteCopy;
+  v35 = activityCopy;
+  v36 = groupCopy;
+  v37 = completionCopy;
+  v23 = completionCopy;
+  v24 = groupCopy;
+  v25 = activityCopy;
+  v26 = deleteCopy;
+  v27 = saveCopy;
+  v28 = contactCopy;
+  v29 = relationshipCopy;
   dispatch_async(serialQueue, v30);
 }
 
@@ -4516,26 +4516,26 @@ void __126__ASRelationshipManager_saveRelationship_contact_extraRecordsToSave_ex
   [v1 _queue_saveRelationship:v2 contact:v3 extraRecordsToSave:v4 extraRecordIDsToDelete:v5 activity:v6 cloudKitGroup:v7 completion:v8];
 }
 
-- (void)saveRelationships:(id)a3 extraRecordsToSave:(id)a4 cloudKitGroup:(id)a5 activity:(id)a6 completion:(id)a7
+- (void)saveRelationships:(id)relationships extraRecordsToSave:(id)save cloudKitGroup:(id)group activity:(id)activity completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v12 count])
+  relationshipsCopy = relationships;
+  saveCopy = save;
+  groupCopy = group;
+  activityCopy = activity;
+  completionCopy = completion;
+  if ([relationshipsCopy count])
   {
     transactionQueue = self->_transactionQueue;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __96__ASRelationshipManager_saveRelationships_extraRecordsToSave_cloudKitGroup_activity_completion___block_invoke;
     v20[3] = &unk_278C4E588;
-    v21 = v12;
-    v22 = v13;
-    v23 = self;
-    v24 = v15;
-    v25 = v14;
-    v26 = v16;
+    v21 = relationshipsCopy;
+    v22 = saveCopy;
+    selfCopy = self;
+    v24 = activityCopy;
+    v25 = groupCopy;
+    v26 = completionCopy;
     [(ASAsyncTransactionQueue *)transactionQueue performTransaction:v20];
 
     v18 = v21;
@@ -4552,7 +4552,7 @@ void __126__ASRelationshipManager_saveRelationship_contact_extraRecordsToSave_ex
     }
 
     v18 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.RelationshipManager" code:10 userInfo:0];
-    (*(v16 + 2))(v16, 0, v18, 0);
+    (*(completionCopy + 2))(completionCopy, 0, v18, 0);
   }
 }
 
@@ -4682,60 +4682,60 @@ void __96__ASRelationshipManager_saveRelationships_extraRecordsToSave_cloudKitGr
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveRelationshipAndFetchOrCreateShares:(id)a3 contact:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6
+- (void)saveRelationshipAndFetchOrCreateShares:(id)shares contact:(id)contact cloudKitGroup:(id)group completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sharesCopy = shares;
+  contactCopy = contact;
+  groupCopy = group;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__ASRelationshipManager_saveRelationshipAndFetchOrCreateShares_contact_cloudKitGroup_completion___block_invoke;
   block[3] = &unk_278C4E5B0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = sharesCopy;
+  v21 = contactCopy;
+  v22 = groupCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = groupCopy;
+  v17 = contactCopy;
+  v18 = sharesCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)acceptShares:(id)a3 forRelationship:(id)a4 contact:(id)a5 cloudKitGroup:(id)a6 completion:(id)a7
+- (void)acceptShares:(id)shares forRelationship:(id)relationship contact:(id)contact cloudKitGroup:(id)group completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sharesCopy = shares;
+  relationshipCopy = relationship;
+  contactCopy = contact;
+  groupCopy = group;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __87__ASRelationshipManager_acceptShares_forRelationship_contact_cloudKitGroup_completion___block_invoke;
   v23[3] = &unk_278C4E4E8;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = sharesCopy;
+  v25 = relationshipCopy;
+  v26 = contactCopy;
+  v27 = groupCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = groupCopy;
+  v20 = contactCopy;
+  v21 = relationshipCopy;
+  v22 = sharesCopy;
   dispatch_async(serialQueue, v23);
 }
 
-- (void)_queue_fetchSharesForRelationship:(id)a3 cloudKitGroup:(id)a4 completion:(id)a5
+- (void)_queue_fetchSharesForRelationship:(id)relationship cloudKitGroup:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  relationshipCopy = relationship;
+  groupCopy = group;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
   v11 = dispatch_group_create();
   v43[0] = 0;
@@ -4781,15 +4781,15 @@ void __96__ASRelationshipManager_saveRelationships_extraRecordsToSave_cloudKitGr
   v35 = v43;
   v15 = v11;
   v33 = v15;
-  [WeakRetained fetchOrCreateActivityDataShareWithGroup:v9 activity:0 completion:v32];
+  [WeakRetained fetchOrCreateActivityDataShareWithGroup:groupCopy activity:0 completion:v32];
 
   dispatch_group_enter(v15);
-  v16 = [v8 relationshipShareID];
+  relationshipShareID = [relationshipCopy relationshipShareID];
 
-  if (v16)
+  if (relationshipShareID)
   {
     v17 = objc_loadWeakRetained(&self->_cloudKitManager);
-    v18 = [v8 relationshipShareID];
+    relationshipShareID2 = [relationshipCopy relationshipShareID];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __84__ASRelationshipManager__queue_fetchSharesForRelationship_cloudKitGroup_completion___block_invoke_411;
@@ -4797,7 +4797,7 @@ void __96__ASRelationshipManager_saveRelationships_extraRecordsToSave_cloudKitGr
     v30 = v37;
     v31 = v41;
     v29 = v15;
-    [v17 fetchShareWithShareRecordID:v18 activity:0 group:v9 completion:v28];
+    [v17 fetchShareWithShareRecordID:relationshipShareID2 activity:0 group:groupCopy completion:v28];
   }
 
   else
@@ -4819,9 +4819,9 @@ void __96__ASRelationshipManager_saveRelationships_extraRecordsToSave_cloudKitGr
   v25 = v37;
   v26 = v43;
   v27 = v41;
-  v23 = v10;
+  v23 = completionCopy;
   v24 = v39;
-  v21 = v10;
+  v21 = completionCopy;
   dispatch_group_notify(v15, serialQueue, block);
 
   _Block_object_dispose(v37, 8);
@@ -4928,23 +4928,23 @@ uint64_t __84__ASRelationshipManager__queue_fetchSharesForRelationship_cloudKitG
   return (*(v3 + 16))(v3, v4, v1);
 }
 
-- (void)handleSavedRecords:(id)a3 forContact:(id)a4 completion:(id)a5
+- (void)handleSavedRecords:(id)records forContact:(id)contact completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordsCopy = records;
+  contactCopy = contact;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__ASRelationshipManager_handleSavedRecords_forContact_completion___block_invoke;
   v15[3] = &unk_278C4E600;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = recordsCopy;
+  v17 = contactCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = contactCopy;
+  v14 = recordsCopy;
   dispatch_async(serialQueue, v15);
 }
 
@@ -4959,32 +4959,32 @@ void __66__ASRelationshipManager_handleSavedRecords_forContact_completion___bloc
   (*(a1[7] + 16))();
 }
 
-- (id)_queue_handleSavedRecords:(id)a3 forContact:(id)a4 error:(id *)a5
+- (id)_queue_handleSavedRecords:(id)records forContact:(id)contact error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  contactCopy = contact;
+  recordsCopy = records;
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
-  v11 = ASSaveRelationshipRecordForContact(v9, v8, WeakRetained, a5);
+  v11 = ASSaveRelationshipRecordForContact(recordsCopy, contactCopy, WeakRetained, error);
 
   return v11;
 }
 
-- (void)insertRemoteEventType:(unsigned __int16)a3 onContactWithUUID:(id)a4 cloudType:(unint64_t)a5 completion:(id)a6
+- (void)insertRemoteEventType:(unsigned __int16)type onContactWithUUID:(id)d cloudType:(unint64_t)cloudType completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  dCopy = d;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__ASRelationshipManager_insertRemoteEventType_onContactWithUUID_cloudType_completion___block_invoke;
   block[3] = &unk_278C4E628;
   block[4] = self;
-  v16 = v10;
-  v19 = a3;
-  v17 = v11;
-  v18 = a5;
-  v13 = v11;
-  v14 = v10;
+  v16 = dCopy;
+  typeCopy = type;
+  v17 = completionCopy;
+  cloudTypeCopy = cloudType;
+  v13 = completionCopy;
+  v14 = dCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -5004,12 +5004,12 @@ void __86__ASRelationshipManager_insertRemoteEventType_onContactWithUUID_cloudTy
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_queue_saveRelationshipAndFetchOrCreateShares:(id)a3 contact:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6
+- (void)_queue_saveRelationshipAndFetchOrCreateShares:(id)shares contact:(id)contact cloudKitGroup:(id)group completion:(id)completion
 {
-  v10 = a3;
-  v35 = a4;
-  v11 = a5;
-  v12 = a6;
+  sharesCopy = shares;
+  contactCopy = contact;
+  groupCopy = group;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
   v64[0] = 0;
   v64[1] = v64;
@@ -5042,7 +5042,7 @@ void __86__ASRelationshipManager_insertRemoteEventType_onContactWithUUID_cloudTy
   v56[4] = __Block_byref_object_dispose__13;
   v57 = 0;
   v13 = +[ASCloudKitManager relationshipZone];
-  v14 = [v10 recordWithZoneID:v13 recordEncryptionType:0];
+  v14 = [sharesCopy recordWithZoneID:v13 recordEncryptionType:0];
 
   v15 = dispatch_group_create();
   dispatch_group_enter(v15);
@@ -5055,16 +5055,16 @@ void __86__ASRelationshipManager_insertRemoteEventType_onContactWithUUID_cloudTy
   v55 = v58;
   v17 = v15;
   v53 = v17;
-  [WeakRetained fetchOrCreateActivityDataShareWithGroup:v11 activity:0 completion:v52];
+  [WeakRetained fetchOrCreateActivityDataShareWithGroup:groupCopy activity:0 completion:v52];
 
-  v18 = [v14 share];
+  share = [v14 share];
 
-  if (v18)
+  if (share)
   {
     dispatch_group_enter(v17);
     v19 = objc_loadWeakRetained(&self->_cloudKitManager);
-    v20 = [v14 share];
-    v21 = [v20 recordID];
+    share2 = [v14 share];
+    recordID = [share2 recordID];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __104__ASRelationshipManager__queue_saveRelationshipAndFetchOrCreateShares_contact_cloudKitGroup_completion___block_invoke_413;
@@ -5073,26 +5073,26 @@ void __86__ASRelationshipManager_insertRemoteEventType_onContactWithUUID_cloudTy
     v51[1] = v56;
     v49 = v17;
     v51[2] = v62;
-    v50 = v10;
-    v51[0] = v35;
+    v50 = sharesCopy;
+    v51[0] = contactCopy;
     v51[3] = v60;
-    [v19 fetchShareWithShareRecordID:v21 activity:0 group:v11 completion:v48];
+    [v19 fetchShareWithShareRecordID:recordID activity:0 group:groupCopy completion:v48];
     v34 = v17;
     v22 = v14;
-    v23 = v21;
-    v24 = self;
-    v25 = v12;
-    v26 = v10;
-    v27 = v11;
+    v23 = recordID;
+    selfCopy2 = self;
+    v25 = completionCopy;
+    v26 = sharesCopy;
+    v27 = groupCopy;
     v28 = &v49;
     v29 = &v50;
     v30 = v51;
 
 LABEL_7:
-    v11 = v27;
-    v10 = v26;
-    v12 = v25;
-    self = v24;
+    groupCopy = v27;
+    sharesCopy = v26;
+    completionCopy = v25;
+    self = selfCopy2;
     v14 = v22;
     v17 = v34;
     goto LABEL_8;
@@ -5116,18 +5116,18 @@ LABEL_7:
     v43[3] = &unk_278C4E6F0;
     v43[4] = self;
     v46[1] = v56;
-    v44 = v10;
+    v44 = sharesCopy;
     v46[2] = v60;
-    v45 = v35;
+    v45 = contactCopy;
     v46[3] = v62;
     v46[0] = v17;
     [v19 createShareWithRootRecord:v14 otherRecordsToSave:0 completion:v43];
     v34 = v17;
     v22 = v14;
-    v24 = self;
-    v25 = v12;
-    v26 = v10;
-    v27 = v11;
+    selfCopy2 = self;
+    v25 = completionCopy;
+    v26 = sharesCopy;
+    v27 = groupCopy;
     v28 = &v44;
     v29 = &v45;
     v30 = v46;
@@ -5140,13 +5140,13 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __104__ASRelationshipManager__queue_saveRelationshipAndFetchOrCreateShares_contact_cloudKitGroup_completion___block_invoke_418;
   block[3] = &unk_278C4E718;
-  v37 = v12;
+  v37 = completionCopy;
   v38 = v58;
   v39 = v56;
   v40 = v60;
   v41 = v64;
   v42 = v62;
-  v33 = v12;
+  v33 = completionCopy;
   dispatch_group_notify(v17, serialQueue, block);
 
   _Block_object_dispose(v56, 8);
@@ -5407,16 +5407,16 @@ void __104__ASRelationshipManager__queue_saveRelationshipAndFetchOrCreateShares_
   }
 }
 
-- (void)_queue_saveRelationship:(id)a3 contact:(id)a4 activity:(id)a5 cloudKitGroup:(id)a6 completion:(id)a7
+- (void)_queue_saveRelationship:(id)relationship contact:(id)contact activity:(id)activity cloudKitGroup:(id)group completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __91__ASRelationshipManager__queue_saveRelationship_contact_activity_cloudKitGroup_completion___block_invoke;
   v14[3] = &unk_278C4E4C0;
-  v15 = v12;
-  v13 = v12;
-  [(ASRelationshipManager *)self _queue_saveRelationship:a3 contact:a4 withExtraRecords:0 activity:a5 cloudKitGroup:a6 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [(ASRelationshipManager *)self _queue_saveRelationship:relationship contact:contact withExtraRecords:0 activity:activity cloudKitGroup:group completion:v14];
 }
 
 uint64_t __91__ASRelationshipManager__queue_saveRelationship_contact_activity_cloudKitGroup_completion___block_invoke(uint64_t a1)
@@ -5430,20 +5430,20 @@ uint64_t __91__ASRelationshipManager__queue_saveRelationship_contact_activity_cl
   return result;
 }
 
-- (void)_queue_saveRelationship:(id)a3 contact:(id)a4 withExtraRecords:(id)a5 activity:(id)a6 cloudKitGroup:(id)a7 completion:(id)a8
+- (void)_queue_saveRelationship:(id)relationship contact:(id)contact withExtraRecords:(id)records activity:(id)activity cloudKitGroup:(id)group completion:(id)completion
 {
-  v14 = a4;
-  v15 = a8;
+  contactCopy = contact;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __108__ASRelationshipManager__queue_saveRelationship_contact_withExtraRecords_activity_cloudKitGroup_completion___block_invoke;
   v18[3] = &unk_278C4E740;
-  v19 = v14;
-  v20 = v15;
+  v19 = contactCopy;
+  v20 = completionCopy;
   v18[4] = self;
-  v16 = v14;
-  v17 = v15;
-  [(ASRelationshipManager *)self _queue_saveRelationship:a3 contact:v16 extraRecordsToSave:a5 extraRecordIDsToDelete:0 activity:a6 cloudKitGroup:a7 completion:v18];
+  v16 = contactCopy;
+  v17 = completionCopy;
+  [(ASRelationshipManager *)self _queue_saveRelationship:relationship contact:v16 extraRecordsToSave:records extraRecordIDsToDelete:0 activity:activity cloudKitGroup:group completion:v18];
 }
 
 void __108__ASRelationshipManager__queue_saveRelationship_contact_withExtraRecords_activity_cloudKitGroup_completion___block_invoke(void *a1, char a2, void *a3, void *a4)
@@ -5482,16 +5482,16 @@ void __108__ASRelationshipManager__queue_saveRelationship_contact_withExtraRecor
   }
 }
 
-- (void)_queue_saveRelationship:(id)a3 contact:(id)a4 extraRecordsToSave:(id)a5 extraRecordIDsToDelete:(id)a6 activity:(id)a7 cloudKitGroup:(id)a8 completion:(id)a9
+- (void)_queue_saveRelationship:(id)relationship contact:(id)contact extraRecordsToSave:(id)save extraRecordIDsToDelete:(id)delete activity:(id)activity cloudKitGroup:(id)group completion:(id)completion
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a9;
+  relationshipCopy = relationship;
+  saveCopy = save;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
+  groupCopy = group;
+  activityCopy = activity;
+  deleteCopy = delete;
   dispatch_assert_queue_V2(serialQueue);
   v21 = ASRelationshipNeedsSupportedFeaturesUpdate();
   v22 = MEMORY[0x277CE9008];
@@ -5517,13 +5517,13 @@ void __108__ASRelationshipManager__queue_saveRelationship_contact_withExtraRecor
   }
 
   v25 = +[ASCloudKitManager relationshipZone];
-  v26 = [v14 recordWithZoneID:v25 recordEncryptionType:0];
+  v26 = [relationshipCopy recordWithZoneID:v25 recordEncryptionType:0];
 
-  if (v15)
+  if (saveCopy)
   {
     v36[0] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-    v28 = [v27 arrayByAddingObjectsFromArray:v15];
+    v28 = [v27 arrayByAddingObjectsFromArray:saveCopy];
   }
 
   else
@@ -5538,9 +5538,9 @@ void __108__ASRelationshipManager__queue_saveRelationship_contact_withExtraRecor
   v32[2] = __133__ASRelationshipManager__queue_saveRelationship_contact_extraRecordsToSave_extraRecordIDsToDelete_activity_cloudKitGroup_completion___block_invoke;
   v32[3] = &unk_278C4D340;
   v32[4] = self;
-  v33 = v16;
-  v30 = v16;
-  [WeakRetained saveRecordsIntoPrivateDatabase:v28 recordIDsToDelete:v20 priority:2 activity:v19 group:v18 completion:v32];
+  v33 = completionCopy;
+  v30 = completionCopy;
+  [WeakRetained saveRecordsIntoPrivateDatabase:v28 recordIDsToDelete:deleteCopy priority:2 activity:activityCopy group:groupCopy completion:v32];
 
   v31 = *MEMORY[0x277D85DE8];
 }
@@ -5575,21 +5575,21 @@ uint64_t __133__ASRelationshipManager__queue_saveRelationship_contact_extraRecor
   return result;
 }
 
-- (void)_queue_addPersonWithCloudKitAddress:(id)a3 toShares:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6
+- (void)_queue_addPersonWithCloudKitAddress:(id)address toShares:(id)shares cloudKitGroup:(id)group completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  addressCopy = address;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
-  v13 = a5;
-  v14 = a4;
+  groupCopy = group;
+  sharesCopy = shares;
   dispatch_assert_queue_V2(serialQueue);
   ASLoggingInitialize();
   v15 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v10;
+    v22 = addressCopy;
     _os_log_impl(&dword_23E5E3000, v15, OS_LOG_TYPE_DEFAULT, "RelationshipManager adding person with cloudKitAddress %@ to my shares", buf, 0xCu);
   }
 
@@ -5599,9 +5599,9 @@ uint64_t __133__ASRelationshipManager__queue_saveRelationship_contact_extraRecor
   v19[2] = __95__ASRelationshipManager__queue_addPersonWithCloudKitAddress_toShares_cloudKitGroup_completion___block_invoke;
   v19[3] = &unk_278C4BA08;
   v19[4] = self;
-  v20 = v11;
-  v17 = v11;
-  [WeakRetained addParticipantWithCloudKitAddress:v10 toShares:v14 group:v13 completion:v19];
+  v20 = completionCopy;
+  v17 = completionCopy;
+  [WeakRetained addParticipantWithCloudKitAddress:addressCopy toShares:sharesCopy group:groupCopy completion:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -5648,24 +5648,24 @@ uint64_t __95__ASRelationshipManager__queue_addPersonWithCloudKitAddress_toShare
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_queue_acceptShares:(id)a3 forRelationship:(id)a4 contact:(id)a5 cloudKitGroup:(id)a6 completion:(id)a7
+- (void)_queue_acceptShares:(id)shares forRelationship:(id)relationship contact:(id)contact cloudKitGroup:(id)group completion:(id)completion
 {
   v43[2] = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  relationshipCopy = relationship;
+  contactCopy = contact;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
-  v16 = a6;
-  v17 = a3;
+  groupCopy = group;
+  sharesCopy = shares;
   dispatch_assert_queue_V2(serialQueue);
   v18 = MEMORY[0x277CBEBC0];
-  v19 = [v17 activityShareURL];
-  v20 = [v18 URLWithString:v19];
+  activityShareURL = [sharesCopy activityShareURL];
+  v20 = [v18 URLWithString:activityShareURL];
 
   v21 = MEMORY[0x277CBEBC0];
-  v22 = [v17 relationshipShareURL];
+  relationshipShareURL = [sharesCopy relationshipShareURL];
 
-  v23 = [v21 URLWithString:v22];
+  v23 = [v21 URLWithString:relationshipShareURL];
 
   v43[0] = v20;
   v43[1] = v23;
@@ -5686,18 +5686,18 @@ uint64_t __95__ASRelationshipManager__queue_addPersonWithCloudKitAddress_toShare
   v34[3] = &unk_278C4E7B8;
   v34[4] = self;
   v35 = v24;
-  v39 = v13;
-  v40 = v14;
-  v36 = v12;
+  v39 = contactCopy;
+  v40 = completionCopy;
+  v36 = relationshipCopy;
   v37 = v20;
   v38 = v23;
-  v27 = v13;
+  v27 = contactCopy;
   v28 = v23;
   v29 = v20;
-  v30 = v12;
-  v31 = v14;
+  v30 = relationshipCopy;
+  v31 = completionCopy;
   v32 = v24;
-  [WeakRetained acceptSharesWithURLs:v32 cloudKitGroup:v16 completion:v34];
+  [WeakRetained acceptSharesWithURLs:v32 cloudKitGroup:groupCopy completion:v34];
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -5782,32 +5782,32 @@ void __94__ASRelationshipManager__queue_acceptShares_forRelationship_contact_clo
   }
 }
 
-- (void)_queue_reconcileCloudKitRelationships:(id)a3
+- (void)_queue_reconcileCloudKitRelationships:(id)relationships
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  relationshipsCopy = relationships;
   dispatch_assert_queue_V2(self->_serialQueue);
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v4;
+    v21 = relationshipsCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "RelationshipManager reconciling new cloudKit relationships %@", &v20, 0xCu);
   }
 
-  v7 = ASFilterInvalidCloudKitRelationships(v4, v6);
+  v7 = ASFilterInvalidCloudKitRelationships(relationshipsCopy, v6);
   v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
-  v10 = [WeakRetained contacts];
-  v11 = ASReconcileCloudKitRelationshipsForCloudType(v7, v10, self->_currentFetchType, 0);
+  contacts = [WeakRetained contacts];
+  v11 = ASReconcileCloudKitRelationshipsForCloudType(v7, contacts, self->_currentFetchType, 0);
   v12 = [v11 mutableCopy];
 
   if (ASSecureCloudEnabled())
   {
     v13 = objc_loadWeakRetained(&self->_contactsManager);
-    v14 = [v13 contacts];
-    v15 = ASReconcileCloudKitRelationshipsForCloudType(v7, v14, self->_currentFetchType, 1);
+    contacts2 = [v13 contacts];
+    v15 = ASReconcileCloudKitRelationshipsForCloudType(v7, contacts2, self->_currentFetchType, 1);
     v16 = [v15 mutableCopy];
 
     v17 = [v12 hk_dictionaryByAddingEntriesFromDictionary:v16];
@@ -5821,14 +5821,14 @@ void __94__ASRelationshipManager__queue_acceptShares_forRelationship_contact_clo
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_processRemoteRelationships:(id)a3 activity:(id)a4 cloudKitGroup:(id)a5 completion:(id)a6
+- (void)_queue_processRemoteRelationships:(id)relationships activity:(id)activity cloudKitGroup:(id)group completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  relationshipsCopy = relationships;
+  activityCopy = activity;
+  groupCopy = group;
   serialQueue = self->_serialQueue;
-  v14 = a6;
+  completionCopy = completion;
   dispatch_assert_queue_V2(serialQueue);
   ASLoggingInitialize();
   v15 = MEMORY[0x277CE9008];
@@ -5836,7 +5836,7 @@ void __94__ASRelationshipManager__queue_acceptShares_forRelationship_contact_clo
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v10;
+    v31 = relationshipsCopy;
     _os_log_impl(&dword_23E5E3000, v16, OS_LOG_TYPE_DEFAULT, "RelationshipManager processing remote relationships %@", buf, 0xCu);
   }
 
@@ -5847,11 +5847,11 @@ void __94__ASRelationshipManager__queue_acceptShares_forRelationship_contact_clo
   v25[2] = __93__ASRelationshipManager__queue_processRemoteRelationships_activity_cloudKitGroup_completion___block_invoke;
   v25[3] = &unk_278C4E858;
   v25[4] = self;
-  v19 = v10;
+  v19 = relationshipsCopy;
   v26 = v19;
-  v20 = v11;
+  v20 = activityCopy;
   v27 = v20;
-  v21 = v12;
+  v21 = groupCopy;
   v28 = v21;
   v22 = v17;
   v29 = v22;
@@ -5865,7 +5865,7 @@ void __94__ASRelationshipManager__queue_acceptShares_forRelationship_contact_clo
     _os_log_impl(&dword_23E5E3000, v23, OS_LOG_TYPE_DEFAULT, "RelationshipManager waiting for asynchronous remote processing", buf, 2u);
   }
 
-  dispatch_group_notify(v22, self->_serialQueue, v14);
+  dispatch_group_notify(v22, self->_serialQueue, completionCopy);
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -6323,15 +6323,15 @@ void __93__ASRelationshipManager__queue_processRemoteRelationships_activity_clou
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_processEndRelationshipIfNeededForPreviousRemoteRelationship:(id)a3 newRemoteRelationship:(id)a4 contact:(id)a5 xpcActivity:(id)a6 cloudKitGroup:(id)a7 processGroup:(id)a8
+- (void)_queue_processEndRelationshipIfNeededForPreviousRemoteRelationship:(id)relationship newRemoteRelationship:(id)remoteRelationship contact:(id)contact xpcActivity:(id)activity cloudKitGroup:(id)group processGroup:(id)processGroup
 {
   v32 = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a4;
-  v19 = a3;
+  contactCopy = contact;
+  activityCopy = activity;
+  groupCopy = group;
+  processGroupCopy = processGroup;
+  remoteRelationshipCopy = remoteRelationship;
+  relationshipCopy = relationship;
   ASLoggingInitialize();
   v20 = MEMORY[0x277CE9008];
   v21 = *MEMORY[0x277CE9008];
@@ -6341,19 +6341,19 @@ void __93__ASRelationshipManager__queue_processRemoteRelationships_activity_clou
     _os_log_impl(&dword_23E5E3000, v21, OS_LOG_TYPE_DEFAULT, "RelationshipManager local friendship is active, comparing final remote state with previous remote relationship", buf, 2u);
   }
 
-  IsRelationshipTransitioningToInactive = _IsRelationshipTransitioningToInactive(v19, v18);
+  IsRelationshipTransitioningToInactive = _IsRelationshipTransitioningToInactive(relationshipCopy, remoteRelationshipCopy);
 
-  v23 = [v18 hasIncomingInviteRequest];
+  hasIncomingInviteRequest = [remoteRelationshipCopy hasIncomingInviteRequest];
   ASLoggingInitialize();
   v24 = *v20;
   if (os_log_type_enabled(*v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v31 = v23;
+    v31 = hasIncomingInviteRequest;
     _os_log_impl(&dword_23E5E3000, v24, OS_LOG_TYPE_DEFAULT, "RelationshipManager checking if another invite flow is in progress: %d", buf, 8u);
   }
 
-  if (!(v23 & 1 | ((IsRelationshipTransitioningToInactive & 1) == 0)))
+  if (!(hasIncomingInviteRequest & 1 | ((IsRelationshipTransitioningToInactive & 1) == 0)))
   {
     ASLoggingInitialize();
     v25 = *v20;
@@ -6363,20 +6363,20 @@ void __93__ASRelationshipManager__queue_processRemoteRelationships_activity_clou
       _os_log_impl(&dword_23E5E3000, v25, OS_LOG_TYPE_DEFAULT, "RelationshipManager determined this relationship was ended remotely", buf, 2u);
     }
 
-    dispatch_group_enter(v17);
-    v26 = [v14 UUID];
+    dispatch_group_enter(processGroupCopy);
+    uUID = [contactCopy UUID];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __161__ASRelationshipManager__queue_processEndRelationshipIfNeededForPreviousRemoteRelationship_newRemoteRelationship_contact_xpcActivity_cloudKitGroup_processGroup___block_invoke;
     v28[3] = &unk_278C4C218;
-    v29 = v17;
-    [(ASRelationshipManager *)self _queue_removeFriendWithUUID:v26 eventType:104 activity:v15 cloudKitGroup:v16 completion:v28];
+    v29 = processGroupCopy;
+    [(ASRelationshipManager *)self _queue_removeFriendWithUUID:uUID eventType:104 activity:activityCopy cloudKitGroup:groupCopy completion:v28];
   }
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_contactStoreDidChangeNotification:(id)a3
+- (void)_contactStoreDidChangeNotification:(id)notification
 {
   ASLoggingInitialize();
   v4 = *MEMORY[0x277CE9008];
@@ -6473,12 +6473,12 @@ void __60__ASRelationshipManager__contactStoreDidChangeNotification___block_invo
   v3[2](v3);
 }
 
-- (void)_processActivityDataPreview:(id)a3 friendUUID:(id)a4
+- (void)_processActivityDataPreview:(id)preview friendUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  previewCopy = preview;
   WeakRetained = objc_loadWeakRetained(&self->_activityDataManager);
-  ASProcessActivityDataPreviewWithManager(v7, v6, WeakRetained);
+  ASProcessActivityDataPreviewWithManager(previewCopy, dCopy, WeakRetained);
 }
 
 - (id)_currentActivityDataPreview
@@ -6489,31 +6489,31 @@ void __60__ASRelationshipManager__contactStoreDidChangeNotification___block_invo
   return v3;
 }
 
-- (void)friendInviteBulletinManagerDidReceiveActionResponse:(int64_t)a3 fromContactWithUUID:(id)a4
+- (void)friendInviteBulletinManagerDidReceiveActionResponse:(int64_t)response fromContactWithUUID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   ASLoggingInitialize();
   v7 = MEMORY[0x277CE9008];
   v8 = *MEMORY[0x277CE9008];
   if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v22 = a3;
+    responseCopy = response;
     _os_log_impl(&dword_23E5E3000, v8, OS_LOG_TYPE_DEFAULT, "RelationshipManager received notification action response: %ld in ASActivitySharingManager", buf, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_contactsManager);
-  v10 = [WeakRetained contactWithUUID:v6];
+  v10 = [WeakRetained contactWithUUID:dCopy];
 
   if (v10)
   {
-    if (a3 == 1)
+    if (response == 1)
     {
       v11 = objc_loadWeakRetained(&self->_gatewayManager);
-      v12 = [v11 hasReachedMaximumNumberOfFriends];
+      hasReachedMaximumNumberOfFriends = [v11 hasReachedMaximumNumberOfFriends];
 
-      if (v12)
+      if (hasReachedMaximumNumberOfFriends)
       {
         v13 = objc_loadWeakRetained(&self->_friendInviteBulletinManager);
         [v13 showMaxNumberOfFriendsError];
@@ -6530,7 +6530,7 @@ void __60__ASRelationshipManager__contactStoreDidChangeNotification___block_invo
           v19[3] = &unk_278C4C308;
           v19[4] = self;
           v20 = v10;
-          [v14 relationshipManager:self acceptedInviteForFriend:v6 completion:v19];
+          [v14 relationshipManager:self acceptedInviteForFriend:dCopy completion:v19];
 
           v15 = v20;
         }
@@ -6543,7 +6543,7 @@ void __60__ASRelationshipManager__contactStoreDidChangeNotification___block_invo
           v17[3] = &unk_278C4C308;
           v17[4] = self;
           v18 = v10;
-          [(ASRelationshipManager *)self acceptInviteRequestFromFriendWithUUID:v6 completion:v17];
+          [(ASRelationshipManager *)self acceptInviteRequestFromFriendWithUUID:dCopy completion:v17];
           v15 = v18;
         }
       }
@@ -6580,20 +6580,20 @@ void __97__ASRelationshipManager_friendInviteBulletinManagerDidReceiveActionResp
   }
 }
 
-- (id)_relationshipFromContact:(id)a3
+- (id)_relationshipFromContact:(id)contact
 {
-  v3 = [a3 relationshipStorage];
-  v4 = [v3 legacyRelationship];
+  relationshipStorage = [contact relationshipStorage];
+  legacyRelationship = [relationshipStorage legacyRelationship];
 
-  return v4;
+  return legacyRelationship;
 }
 
-- (id)_remoteRelationshipFromContact:(id)a3
+- (id)_remoteRelationshipFromContact:(id)contact
 {
-  v3 = [a3 relationshipStorage];
-  v4 = [v3 legacyRemoteRelationship];
+  relationshipStorage = [contact relationshipStorage];
+  legacyRemoteRelationship = [relationshipStorage legacyRemoteRelationship];
 
-  return v4;
+  return legacyRemoteRelationship;
 }
 
 - (ASRelationshipManagerSecureCloudDelegate)secureCloudDelegate

@@ -1,26 +1,26 @@
 @interface BKHIDTouchSensitiveButtonEventProcessor
-- (BKHIDTouchSensitiveButtonEventProcessor)initWithContext:(id)a3;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (BKHIDTouchSensitiveButtonEventProcessor)initWithContext:(id)context;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 @end
 
 @implementation BKHIDTouchSensitiveButtonEventProcessor
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = *a3;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v10 = *event;
   if (IOHIDEventGetType() == 42)
   {
     os_unfair_lock_lock(&self->_lock);
-    v70 = v8;
-    v72 = v8;
-    v69 = v9;
-    v71 = v9;
+    v70 = senderCopy;
+    v72 = senderCopy;
+    v69 = dispatcherCopy;
+    v71 = dispatcherCopy;
     if (self)
     {
       os_unfair_lock_assert_owner(&self->_lock);
-      v68 = [v72 senderID];
+      senderID = [v72 senderID];
       IntegerValue = IOHIDEventGetIntegerValue();
       v66 = IOHIDEventGetIntegerValue();
       memset(buf, 0, sizeof(buf));
@@ -90,7 +90,7 @@ LABEL_22:
           v24 = v23;
           if (v23)
           {
-            *&v23->_lock._os_unfair_lock_opaque = v68;
+            *&v23->_lock._os_unfair_lock_opaque = senderID;
             LOWORD(v23->_buttonScanningController) = IntegerValue;
             WORD1(v23->_buttonScanningController) = v66;
           }
@@ -347,8 +347,8 @@ LABEL_43:
 
     os_unfair_lock_unlock(&self->_lock);
     v19 = 1;
-    v9 = v69;
-    v8 = v70;
+    dispatcherCopy = v69;
+    senderCopy = v70;
   }
 
   else
@@ -359,9 +359,9 @@ LABEL_43:
   return v19;
 }
 
-- (BKHIDTouchSensitiveButtonEventProcessor)initWithContext:(id)a3
+- (BKHIDTouchSensitiveButtonEventProcessor)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = BKHIDTouchSensitiveButtonEventProcessor;
   v5 = [(BKHIDTouchSensitiveButtonEventProcessor *)&v10 init];
@@ -369,7 +369,7 @@ LABEL_43:
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [[BKHIDTouchSensitiveButtonScanningController alloc] initWithContext:v4];
+    v7 = [[BKHIDTouchSensitiveButtonScanningController alloc] initWithContext:contextCopy];
     buttonScanningController = v6->_buttonScanningController;
     v6->_buttonScanningController = v7;
   }

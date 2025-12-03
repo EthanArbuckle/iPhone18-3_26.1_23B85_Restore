@@ -1,16 +1,16 @@
 @interface NUStyleTransferLearnNode
-- (id)_evaluateImage:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)_evaluateImage:(id *)image;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUStyleTransferLearnNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = [(NUStyleTransferNode *)self thumbnailNode];
-  if (!v5)
+  thumbnailNode = [(NUStyleTransferNode *)self thumbnailNode];
+  if (!thumbnailNode)
   {
     v22 = NUAssertLogger_30110();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
         v36 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v37 = MEMORY[0x1E696AF00];
         v38 = v36;
-        v39 = [v37 callStackSymbols];
-        v40 = [v39 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v37 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v36;
         v61 = 2114;
@@ -43,8 +43,8 @@
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v60 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -53,9 +53,9 @@
     _NUAssertFailHandler("[NUStyleTransferLearnNode _evaluateImage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1254, @"Missing input thumbnail node", v41, v42, v43, v44, v54);
   }
 
-  v6 = v5;
-  v7 = [(NUStyleTransferNode *)self targetNode];
-  if (!v7)
+  v6 = thumbnailNode;
+  targetNode = [(NUStyleTransferNode *)self targetNode];
+  if (!targetNode)
   {
     v29 = NUAssertLogger_30110();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -76,8 +76,8 @@
         v45 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v46 = MEMORY[0x1E696AF00];
         v47 = v45;
-        v48 = [v46 callStackSymbols];
-        v49 = [v48 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v46 callStackSymbols];
+        v49 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v45;
         v61 = 2114;
@@ -88,8 +88,8 @@
 
     else if (v33)
     {
-      v34 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v35 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v60 = v35;
       _os_log_error_impl(&dword_1C0184000, v32, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -98,7 +98,7 @@
     _NUAssertFailHandler("[NUStyleTransferLearnNode _evaluateImage:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1257, @"Missing output thumbnail node", v50, v51, v52, v53, v54);
   }
 
-  v8 = v7;
+  v8 = targetNode;
   v58 = 0;
   v9 = [v6 outputImage:&v58];
   v10 = v58;
@@ -110,14 +110,14 @@
 
     if (v11)
     {
-      v13 = [(NUStyleTransferNode *)self configuration];
-      v14 = [v13 mutableCopy];
+      configuration = [(NUStyleTransferNode *)self configuration];
+      v14 = [configuration mutableCopy];
 
       [v14 setObject:&unk_1F3F828C0 forKeyedSubscript:@"useFloat16"];
-      v15 = [(NUStyleTransferNode *)self tuningParameters];
-      v16 = [(NUStyleTransferNode *)self targetColorSpace];
+      tuningParameters = [(NUStyleTransferNode *)self tuningParameters];
+      targetColorSpace = [(NUStyleTransferNode *)self targetColorSpace];
       v56 = 0;
-      v17 = [_NUStyleTransferLearnProcessor learnStyleFromInputThumbnail:v9 targetThumbnail:v11 colorSpace:v16 configuration:v14 tuningParameters:v15 error:&v56];
+      v17 = [_NUStyleTransferLearnProcessor learnStyleFromInputThumbnail:v9 targetThumbnail:v11 colorSpace:targetColorSpace configuration:v14 tuningParameters:tuningParameters error:&v56];
       v55 = v56;
 
       if ([(NUStyleTransferNode *)self shouldCache])
@@ -127,9 +127,9 @@
         v19 = +[NUPixelFormat R16h];
         [(NUProcessorCache *)v18 setPixelFormat:v19];
 
-        v20 = [(NUProcessorCache *)v18 outputImage];
+        outputImage = [(NUProcessorCache *)v18 outputImage];
 
-        v17 = v20;
+        v17 = outputImage;
       }
 
       v12 = v55;
@@ -138,7 +138,7 @@
     else
     {
       [NUError errorWithCode:1 reason:@"Invalid target thumbnail" object:v6 underlyingError:v12];
-      *a3 = v17 = 0;
+      *image = v17 = 0;
     }
 
     v10 = v12;
@@ -147,27 +147,27 @@
   else
   {
     [NUError errorWithCode:1 reason:@"Invalid input thumbnail" object:v6 underlyingError:v10];
-    *a3 = v17 = 0;
+    *image = v17 = 0;
   }
 
   return v17;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = NUStyleTransferLearnNode;
-  v6 = [(NUStyleTransferNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NUStyleTransferNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v9 auxiliaryImageType] != 1)
+  cacheCopy = cache;
+  stateCopy = state;
+  if ([stateCopy auxiliaryImageType] != 1)
   {
     v23 = NUAssertLogger_30110();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -188,8 +188,8 @@
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v37;
         v60 = 2114;
@@ -200,8 +200,8 @@
 
     else if (v27)
     {
-      v28 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v29 = [v28 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v29 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -211,7 +211,7 @@
     _NUAssertFailHandler("[NUStyleTransferLearnNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1193, @"%@ cannot be applied to aux images", v43, v44, v45, v46, v42);
   }
 
-  if ([v9 evaluationMode] == 2)
+  if ([stateCopy evaluationMode] == 2)
   {
     v30 = NUAssertLogger_30110();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -232,8 +232,8 @@
         v47 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v50 = [v48 callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v48 callStackSymbols];
+        v51 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v59 = v47;
         v60 = 2114;
@@ -244,8 +244,8 @@
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v59 = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -255,30 +255,30 @@
     _NUAssertFailHandler("[NUStyleTransferLearnNode nodeByReplayingAgainstCache:pipelineState:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUStyleTransferNode.m", 1194, @"%@ cannot be evaluated for video", v53, v54, v55, v56, v52);
   }
 
-  if ([v9 evaluationMode])
+  if ([stateCopy evaluationMode])
   {
     v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
     v11 = [NUStyleTransferThumbnailNode alloc];
-    v12 = [(NUStyleTransferNode *)self inputNode];
-    v13 = [(NURenderNode *)self settings];
-    v14 = [(NUStyleTransferThumbnailNode *)v11 initWithInput:v12 settings:v13];
+    inputNode = [(NUStyleTransferNode *)self inputNode];
+    settings = [(NURenderNode *)self settings];
+    v14 = [(NUStyleTransferThumbnailNode *)v11 initWithInput:inputNode settings:settings];
 
-    v15 = [(NUStyleTransferThumbnailNode *)v14 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    v15 = [(NUStyleTransferThumbnailNode *)v14 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
     if (v15)
     {
       [v10 setObject:v15 forKeyedSubscript:@"thumbnail"];
       v16 = [NUStyleTransferThumbnailNode alloc];
-      v17 = [(NUStyleTransferNode *)self targetNode];
-      v18 = [(NURenderNode *)self settings];
-      v19 = [(NUStyleTransferThumbnailNode *)v16 initWithInput:v17 settings:v18];
+      targetNode = [(NUStyleTransferNode *)self targetNode];
+      settings2 = [(NURenderNode *)self settings];
+      v19 = [(NUStyleTransferThumbnailNode *)v16 initWithInput:targetNode settings:settings2];
 
-      v20 = [(NUStyleTransferThumbnailNode *)v19 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+      v20 = [(NUStyleTransferThumbnailNode *)v19 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
 
       if (v20)
       {
         [v10 setObject:v20 forKeyedSubscript:@"target"];
-        v21 = [(NURenderNode *)self resolvedNodeWithCachedInputs:v10 cache:v8 pipelineState:v9 error:a5];
+        v21 = [(NURenderNode *)self resolvedNodeWithCachedInputs:v10 cache:cacheCopy pipelineState:stateCopy error:error];
       }
 
       else
@@ -297,7 +297,7 @@
   {
     v57.receiver = self;
     v57.super_class = NUStyleTransferLearnNode;
-    v21 = [(NUStyleTransferNode *)&v57 nodeByReplayingAgainstCache:v8 pipelineState:v9 error:a5];
+    v21 = [(NUStyleTransferNode *)&v57 nodeByReplayingAgainstCache:cacheCopy pipelineState:stateCopy error:error];
   }
 
   return v21;

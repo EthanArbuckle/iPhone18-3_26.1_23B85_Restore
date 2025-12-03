@@ -1,31 +1,31 @@
 @interface MOEventRefreshHelper
-- (MOEventRefreshHelper)initWithUniverse:(id)a3;
-- (void)getBundlingDatesForVariant:(unint64_t)a3 withHandler:(id)a4;
-- (void)getCollectDatesForVariant:(unint64_t)a3 withHandler:(id)a4;
-- (void)getPatternDetectorDatesForVariant:(unint64_t)a3 withHandler:(id)a4;
+- (MOEventRefreshHelper)initWithUniverse:(id)universe;
+- (void)getBundlingDatesForVariant:(unint64_t)variant withHandler:(id)handler;
+- (void)getCollectDatesForVariant:(unint64_t)variant withHandler:(id)handler;
+- (void)getPatternDetectorDatesForVariant:(unint64_t)variant withHandler:(id)handler;
 @end
 
 @implementation MOEventRefreshHelper
 
-- (MOEventRefreshHelper)initWithUniverse:(id)a3
+- (MOEventRefreshHelper)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v18.receiver = self;
   v18.super_class = MOEventRefreshHelper;
   v6 = [(MOEventRefreshHelper *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_universe, a3);
+    objc_storeStrong(&v6->_universe, universe);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v5 getService:v9];
+    v10 = [universeCopy getService:v9];
     configurationManager = v7->_configurationManager;
     v7->_configurationManager = v10;
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    v14 = [v5 getService:v13];
+    v14 = [universeCopy getService:v13];
     defaultsManager = v7->_defaultsManager;
     v7->_defaultsManager = v14;
 
@@ -35,11 +35,11 @@
   return v7;
 }
 
-- (void)getCollectDatesForVariant:(unint64_t)a3 withHandler:(id)a4
+- (void)getCollectDatesForVariant:(unint64_t)variant withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MOEventRefreshHelper *)self defaultsManager];
-  v8 = [v7 objectForKey:@"EventRefreshSchedulerLastSuccessfulTrigger"];
+  handlerCopy = handler;
+  defaultsManager = [(MOEventRefreshHelper *)self defaultsManager];
+  v8 = [defaultsManager objectForKey:@"EventRefreshSchedulerLastSuccessfulTrigger"];
 
   if (!v8)
   {
@@ -47,12 +47,12 @@
   }
 
   v10 = 0;
-  if (a3 <= 767)
+  if (variant <= 767)
   {
-    if (a3 != 256 && a3 != 336)
+    if (variant != 256 && variant != 336)
     {
       v11 = 0;
-      if (a3 != 512)
+      if (variant != 512)
       {
         goto LABEL_20;
       }
@@ -67,7 +67,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 == 768)
+  if (variant == 768)
   {
 LABEL_12:
     configurationManager = self->_configurationManager;
@@ -75,10 +75,10 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (a3 != 1280)
+  if (variant != 1280)
   {
     v11 = 0;
-    if (a3 != 1536)
+    if (variant != 1536)
     {
       goto LABEL_20;
     }
@@ -112,10 +112,10 @@ LABEL_20:
     v17 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshHelper);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      [MOEventRefreshHelper getCollectDatesForVariant:a3 withHandler:?];
+      [MOEventRefreshHelper getCollectDatesForVariant:variant withHandler:?];
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     goto LABEL_31;
   }
 
@@ -125,7 +125,7 @@ LABEL_20:
   v20 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshHelper);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [NSNumber numberWithUnsignedInteger:a3];
+    v22 = [NSNumber numberWithUnsignedInteger:variant];
     v24 = 138412802;
     v25 = v19;
     v26 = 2112;
@@ -143,22 +143,22 @@ LABEL_20:
       [MOEventRefreshHelper getCollectDatesForVariant:withHandler:];
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 
   else
   {
-    (*(v6 + 2))(v6, 1, v19, v11);
+    (*(handlerCopy + 2))(handlerCopy, 1, v19, v11);
   }
 
 LABEL_31:
 }
 
-- (void)getBundlingDatesForVariant:(unint64_t)a3 withHandler:(id)a4
+- (void)getBundlingDatesForVariant:(unint64_t)variant withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MOEventRefreshHelper *)self defaultsManager];
-  v8 = [v7 objectForKey:@"EventRefreshSchedulerLastSuccessfulTrigger"];
+  handlerCopy = handler;
+  defaultsManager = [(MOEventRefreshHelper *)self defaultsManager];
+  v8 = [defaultsManager objectForKey:@"EventRefreshSchedulerLastSuccessfulTrigger"];
 
   if (!v8)
   {
@@ -166,12 +166,12 @@ LABEL_31:
   }
 
   v10 = 0;
-  if (a3 <= 767)
+  if (variant <= 767)
   {
-    if (a3 != 256 && a3 != 336)
+    if (variant != 256 && variant != 336)
     {
       v11 = 0;
-      if (a3 != 512)
+      if (variant != 512)
       {
         goto LABEL_19;
       }
@@ -186,7 +186,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 == 768)
+  if (variant == 768)
   {
 LABEL_12:
     configurationManager = self->_configurationManager;
@@ -195,10 +195,10 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (a3 != 1280)
+  if (variant != 1280)
   {
     v11 = 0;
-    if (a3 != 1536)
+    if (variant != 1536)
     {
       goto LABEL_19;
     }
@@ -231,7 +231,7 @@ LABEL_19:
     v17 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshHelper);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      [MOEventRefreshHelper getBundlingDatesForVariant:a3 withHandler:?];
+      [MOEventRefreshHelper getBundlingDatesForVariant:variant withHandler:?];
     }
 
     goto LABEL_28;
@@ -240,7 +240,7 @@ LABEL_19:
   v18 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshHelper);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [NSNumber numberWithUnsignedInteger:a3];
+    v20 = [NSNumber numberWithUnsignedInteger:variant];
     v22 = 138412802;
     v23 = v10;
     v24 = 2112;
@@ -252,7 +252,7 @@ LABEL_19:
 
   if (![v10 isAfterDate:v11])
   {
-    v6[2](v6, 1, v10, v11);
+    handlerCopy[2](handlerCopy, 1, v10, v11);
     goto LABEL_30;
   }
 
@@ -263,15 +263,15 @@ LABEL_19:
   }
 
 LABEL_28:
-  v6[2](v6, 0, 0, 0);
+  handlerCopy[2](handlerCopy, 0, 0, 0);
 LABEL_30:
 }
 
-- (void)getPatternDetectorDatesForVariant:(unint64_t)a3 withHandler:(id)a4
+- (void)getPatternDetectorDatesForVariant:(unint64_t)variant withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(MOEventRefreshHelper *)self defaultsManager];
-  v8 = [v7 objectForKey:@"EventRefreshSchedulerLastSuccessfulTrigger"];
+  handlerCopy = handler;
+  defaultsManager = [(MOEventRefreshHelper *)self defaultsManager];
+  v8 = [defaultsManager objectForKey:@"EventRefreshSchedulerLastSuccessfulTrigger"];
 
   if (!v8)
   {
@@ -279,12 +279,12 @@ LABEL_30:
   }
 
   v10 = 0;
-  if (a3 <= 767)
+  if (variant <= 767)
   {
-    if (a3 != 256 && a3 != 336)
+    if (variant != 256 && variant != 336)
     {
       v11 = 0;
-      if (a3 != 512)
+      if (variant != 512)
       {
         goto LABEL_20;
       }
@@ -299,7 +299,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 == 768)
+  if (variant == 768)
   {
 LABEL_12:
     configurationManager = self->_configurationManager;
@@ -307,10 +307,10 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (a3 != 1280)
+  if (variant != 1280)
   {
     v11 = 0;
-    if (a3 != 1536)
+    if (variant != 1536)
     {
       goto LABEL_20;
     }
@@ -344,10 +344,10 @@ LABEL_20:
     v17 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshHelper);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      [MOEventRefreshHelper getPatternDetectorDatesForVariant:a3 withHandler:?];
+      [MOEventRefreshHelper getPatternDetectorDatesForVariant:variant withHandler:?];
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     goto LABEL_31;
   }
 
@@ -357,7 +357,7 @@ LABEL_20:
   v20 = _mo_log_facility_get_os_log(&MOLogFacilityRefreshHelper);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [NSNumber numberWithUnsignedInteger:a3];
+    v22 = [NSNumber numberWithUnsignedInteger:variant];
     v24 = 138412802;
     v25 = v19;
     v26 = 2112;
@@ -375,12 +375,12 @@ LABEL_20:
       [MOEventRefreshHelper getPatternDetectorDatesForVariant:withHandler:];
     }
 
-    (*(v6 + 2))(v6, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
   }
 
   else
   {
-    (*(v6 + 2))(v6, 1, v19, v11);
+    (*(handlerCopy + 2))(handlerCopy, 1, v19, v11);
   }
 
 LABEL_31:

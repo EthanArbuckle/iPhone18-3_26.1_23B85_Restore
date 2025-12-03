@@ -1,19 +1,19 @@
 @interface WBSPasswordSetWordList
-- (WBSPasswordSetWordList)initWithIdentifier:(id)a3 words:(id)a4;
-- (void)enumerateEntriesForString:(id)a3 withBlock:(id)a4;
+- (WBSPasswordSetWordList)initWithIdentifier:(id)identifier words:(id)words;
+- (void)enumerateEntriesForString:(id)string withBlock:(id)block;
 @end
 
 @implementation WBSPasswordSetWordList
 
-- (WBSPasswordSetWordList)initWithIdentifier:(id)a3 words:(id)a4
+- (WBSPasswordSetWordList)initWithIdentifier:(id)identifier words:(id)words
 {
-  v6 = a4;
+  wordsCopy = words;
   v12.receiver = self;
   v12.super_class = WBSPasswordSetWordList;
-  v7 = [(WBSPasswordWordList *)&v12 initWithIdentifier:a3];
+  v7 = [(WBSPasswordWordList *)&v12 initWithIdentifier:identifier];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [wordsCopy copy];
     words = v7->_words;
     v7->_words = v8;
 
@@ -23,11 +23,11 @@
   return v7;
 }
 
-- (void)enumerateEntriesForString:(id)a3 withBlock:(id)a4
+- (void)enumerateEntriesForString:(id)string withBlock:(id)block
 {
-  v12 = a3;
-  v6 = a4;
-  if ([(NSSet *)self->_words containsObject:v12])
+  stringCopy = string;
+  blockCopy = block;
+  if ([(NSSet *)self->_words containsObject:stringCopy])
   {
     v7 = [(NSSet *)self->_words count];
     if (v7 <= 1)
@@ -41,10 +41,10 @@
     }
 
     v9 = [WBSPasswordWordListEntry alloc];
-    v10 = [(WBSPasswordWordList *)self identifier];
-    v11 = [(WBSPasswordWordListEntry *)v9 initWithWord:v12 isSensitive:0 wordListIdentifier:v10 guessesRequired:v8];
+    identifier = [(WBSPasswordWordList *)self identifier];
+    v11 = [(WBSPasswordWordListEntry *)v9 initWithWord:stringCopy isSensitive:0 wordListIdentifier:identifier guessesRequired:v8];
 
-    v6[2](v6, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 

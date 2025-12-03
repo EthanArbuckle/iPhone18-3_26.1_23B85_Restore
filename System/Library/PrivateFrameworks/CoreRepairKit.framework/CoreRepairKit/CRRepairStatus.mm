@@ -1,13 +1,13 @@
 @interface CRRepairStatus
-+ (id)_wasRepairedWithSysCfg:(id)a3;
++ (id)_wasRepairedWithSysCfg:(id)cfg;
 + (id)getVeridianFWVersionInfo;
 @end
 
 @implementation CRRepairStatus
 
-+ (id)_wasRepairedWithSysCfg:(id)a3
++ (id)_wasRepairedWithSysCfg:(id)cfg
 {
-  v3 = a3;
+  cfgCopy = cfg;
   cf = 0;
   v4 = ZhuGeCopyValue();
   if (v4)
@@ -27,29 +27,29 @@
     v10 = v19;
     if (v6)
     {
-      v9 = [v6 objectForKeyedSubscript:v3];
+      v9 = [v6 objectForKeyedSubscript:cfgCopy];
       if (v9)
       {
         v11 = MGCopyAnswer();
         v12 = v11;
         if (v11)
         {
-          v8 = [v11 SHA256DigestString];
+          sHA256DigestString = [v11 SHA256DigestString];
         }
 
         else
         {
           v13 = [MEMORY[0x277CBEA90] dataWithBytes:&stru_285976CC0 length:0];
-          v8 = [v13 SHA256DigestString];
+          sHA256DigestString = [v13 SHA256DigestString];
         }
 
         v14 = handleForCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          [(CRRepairStatus *)v8 _wasRepairedWithSysCfg:v9, v14];
+          [(CRRepairStatus *)sHA256DigestString _wasRepairedWithSysCfg:v9, v14];
         }
 
-        v7 = [v8 isEqual:v9];
+        v7 = [sHA256DigestString isEqual:v9];
         if (v7)
         {
           v15 = handleForCategory();
@@ -63,9 +63,9 @@
 
       else
       {
-        [CRRepairStatus _wasRepairedWithSysCfg:v3];
+        [CRRepairStatus _wasRepairedWithSysCfg:cfgCopy];
         v7 = 0;
-        v8 = 0;
+        sHA256DigestString = 0;
       }
     }
 
@@ -78,7 +78,7 @@
       }
 
       v7 = 0;
-      v8 = 0;
+      sHA256DigestString = 0;
       v9 = 0;
     }
   }
@@ -92,7 +92,7 @@
     }
 
     v7 = 0;
-    v8 = 0;
+    sHA256DigestString = 0;
     v9 = 0;
     v10 = 0;
   }

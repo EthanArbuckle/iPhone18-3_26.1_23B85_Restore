@@ -2,7 +2,7 @@
 + (WFServiceConnection)sharedServiceConnection;
 - (BOOL)isCancelled;
 - (WFTask)init;
-- (WFTask)initWithResponseRequired:(BOOL)a3;
+- (WFTask)initWithResponseRequired:(BOOL)required;
 - (void)cancel;
 - (void)executeSynchronously;
 - (void)start;
@@ -44,20 +44,20 @@ uint64_t __33__WFTask_sharedServiceConnection__block_invoke()
     v5 = objc_opt_new();
     [(WFTask *)v3 setProgress:v5];
 
-    v6 = [(WFTask *)v3 progress];
-    [v6 setUserInfoObject:v3->_identifier forKey:@"taskIdentifier"];
+    progress = [(WFTask *)v3 progress];
+    [progress setUserInfoObject:v3->_identifier forKey:@"taskIdentifier"];
 
-    v7 = [(WFTask *)v3 progress];
-    [v7 setCancellable:1];
+    progress2 = [(WFTask *)v3 progress];
+    [progress2 setCancellable:1];
 
-    v8 = [(WFTask *)v3 progress];
+    progress3 = [(WFTask *)v3 progress];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __14__WFTask_init__block_invoke;
     v11[3] = &unk_279E6D9A8;
     v12 = v4;
     v9 = v4;
-    [v8 setCancellationHandler:v11];
+    [progress3 setCancellationHandler:v11];
   }
 
   return v3;
@@ -69,12 +69,12 @@ void __14__WFTask_init__block_invoke(uint64_t a1)
   [v2 cancelRequestWithIdentifier:*(a1 + 32)];
 }
 
-- (WFTask)initWithResponseRequired:(BOOL)a3
+- (WFTask)initWithResponseRequired:(BOOL)required
 {
   result = [(WFTask *)self init];
   if (result)
   {
-    result->_requiresResponse = a3;
+    result->_requiresResponse = required;
   }
 
   return result;
@@ -82,30 +82,30 @@ void __14__WFTask_init__block_invoke(uint64_t a1)
 
 - (void)start
 {
-  v3 = [objc_opt_class() sharedServiceConnection];
-  [v3 enqueueRequest:self];
+  sharedServiceConnection = [objc_opt_class() sharedServiceConnection];
+  [sharedServiceConnection enqueueRequest:self];
 }
 
 - (void)executeSynchronously
 {
-  v3 = [objc_opt_class() sharedServiceConnection];
-  [v3 enqueueRequest:self waitUntilDone:1];
+  sharedServiceConnection = [objc_opt_class() sharedServiceConnection];
+  [sharedServiceConnection enqueueRequest:self waitUntilDone:1];
 }
 
 - (BOOL)isCancelled
 {
-  v2 = [(WFTask *)self progress];
-  v3 = [v2 isCancelled];
+  progress = [(WFTask *)self progress];
+  isCancelled = [progress isCancelled];
 
-  return v3;
+  return isCancelled;
 }
 
 - (void)cancel
 {
   if (![(WFTask *)self isCancelled])
   {
-    v3 = [(WFTask *)self progress];
-    [v3 cancel];
+    progress = [(WFTask *)self progress];
+    [progress cancel];
   }
 }
 

@@ -1,33 +1,33 @@
 @interface HSFigCaptureStream
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStream:(id)a3;
-- (BOOL)start:(id *)a3;
-- (BOOL)stop:(id *)a3;
-- (HSFigCaptureStream)initWithCaptureStream:(OpaqueFigCaptureStream *)a3 fromDevice:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStream:(id)stream;
+- (BOOL)start:(id *)start;
+- (BOOL)stop:(id *)stop;
+- (HSFigCaptureStream)initWithCaptureStream:(OpaqueFigCaptureStream *)stream fromDevice:(id)device;
 - (id)description;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 @end
 
 @implementation HSFigCaptureStream
 
-- (HSFigCaptureStream)initWithCaptureStream:(OpaqueFigCaptureStream *)a3 fromDevice:(id)a4
+- (HSFigCaptureStream)initWithCaptureStream:(OpaqueFigCaptureStream *)stream fromDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   FigBaseObject = FigCaptureStreamGetFigBaseObject();
   v11.receiver = self;
   v11.super_class = HSFigCaptureStream;
   v8 = [(HSCMBaseObject *)&v11 initWithBaseObject:FigBaseObject];
-  v8->_underlyingStream = a3;
+  v8->_underlyingStream = stream;
   device = v8->_device;
-  v8->_device = v6;
+  v8->_device = deviceCopy;
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -35,17 +35,17 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSFigCaptureStream *)self isEqualToStream:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HSFigCaptureStream *)self isEqualToStream:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToStream:(id)a3
+- (BOOL)isEqualToStream:(id)stream
 {
-  v5 = a3;
-  v6 = [a3 underlyingStream];
-  return v6 == [(HSFigCaptureStream *)self underlyingStream];
+  streamCopy = stream;
+  underlyingStream = [stream underlyingStream];
+  return underlyingStream == [(HSFigCaptureStream *)self underlyingStream];
 }
 
 - (id)description
@@ -55,18 +55,18 @@
   v10.super_class = HSFigCaptureStream;
   v4 = [(HSFigCaptureStream *)&v10 description];
   underlyingStream = self->_underlyingStream;
-  v6 = [(HSFigCaptureStream *)self device];
-  v7 = [v6 description];
+  device = [(HSFigCaptureStream *)self device];
+  v7 = [device description];
   v8 = [v3 stringWithFormat:@"%@ [streamRef: %p, device: %@]", v4, underlyingStream, v7];
 
   return v8;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = NSStringFromSelector(sel_underlyingStream);
-  v6 = [v4 isEqualToString:v5];
+  v6 = [keyCopy isEqualToString:v5];
 
   if (v6)
   {
@@ -77,7 +77,7 @@
   {
     v10.receiver = self;
     v10.super_class = HSFigCaptureStream;
-    v7 = [(HSFigCaptureStream *)&v10 valueForKey:v4];
+    v7 = [(HSFigCaptureStream *)&v10 valueForKey:keyCopy];
   }
 
   v8 = v7;
@@ -85,7 +85,7 @@
   return v8;
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   v32[1] = *MEMORY[0x277D85DE8];
   v5 = HSLogHandle();
@@ -119,7 +119,7 @@
     [(HSFigCaptureStream *)self start:v17];
   }
 
-  if (a3)
+  if (start)
   {
     v20 = MEMORY[0x277CCACA8];
     v21 = objc_opt_class();
@@ -135,7 +135,7 @@
     v28 = [v25 errorWithDomain:v26 code:v17 userInfo:v27];
 
     v29 = v28;
-    *a3 = v28;
+    *start = v28;
   }
 
   result = 0;
@@ -144,7 +144,7 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   v32[1] = *MEMORY[0x277D85DE8];
   v5 = HSLogHandle();
@@ -178,7 +178,7 @@ LABEL_12:
     [(HSFigCaptureStream *)self stop:v17];
   }
 
-  if (a3)
+  if (stop)
   {
     v20 = MEMORY[0x277CCACA8];
     v21 = objc_opt_class();
@@ -194,7 +194,7 @@ LABEL_12:
     v28 = [v25 errorWithDomain:v26 code:v17 userInfo:v27];
 
     v29 = v28;
-    *a3 = v28;
+    *stop = v28;
   }
 
   result = 0;

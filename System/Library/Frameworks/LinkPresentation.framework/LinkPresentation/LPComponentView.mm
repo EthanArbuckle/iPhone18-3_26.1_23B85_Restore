@@ -1,21 +1,21 @@
 @interface LPComponentView
-- (LPComponentView)initWithHost:(id)a3;
+- (LPComponentView)initWithHost:(id)host;
 - (LPComponentViewHost)host;
 - (void)layoutSubviews;
 @end
 
 @implementation LPComponentView
 
-- (LPComponentView)initWithHost:(id)a3
+- (LPComponentView)initWithHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   v9.receiver = self;
   v9.super_class = LPComponentView;
   v5 = [(LPComponentView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_host, v4);
+    objc_storeWeak(&v5->_host, hostCopy);
     v7 = v6;
   }
 

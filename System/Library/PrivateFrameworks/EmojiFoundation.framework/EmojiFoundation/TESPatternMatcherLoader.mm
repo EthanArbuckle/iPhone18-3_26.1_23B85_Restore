@@ -1,20 +1,20 @@
 @interface TESPatternMatcherLoader
-+ (id)_loadPatternMatcherForKey:(id)a3;
-- (TESPatternMatcherLoader)initWithLocale:(id)a3;
++ (id)_loadPatternMatcherForKey:(id)key;
+- (TESPatternMatcherLoader)initWithLocale:(id)locale;
 - (void)_loadPatternMatchers;
 @end
 
 @implementation TESPatternMatcherLoader
 
-- (TESPatternMatcherLoader)initWithLocale:(id)a3
+- (TESPatternMatcherLoader)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v11.receiver = self;
   v11.super_class = TESPatternMatcherLoader;
   v5 = [(TESPatternMatcherLoader *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [localeCopy copy];
     locale = v5->_locale;
     v5->_locale = v6;
 
@@ -28,10 +28,10 @@
   return v5;
 }
 
-+ (id)_loadPatternMatcherForKey:(id)a3
++ (id)_loadPatternMatcherForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"capitalLetter"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"capitalLetter"])
   {
     v4 = off_1E7A4C7D8;
 LABEL_15:
@@ -39,37 +39,37 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"repeatedCharacter"])
+  if ([keyCopy isEqualToString:@"repeatedCharacter"])
   {
     v4 = off_1E7A4C7F0;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"asterisk"])
+  if ([keyCopy isEqualToString:@"asterisk"])
   {
     v4 = off_1E7A4C7D0;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"underScore"])
+  if ([keyCopy isEqualToString:@"underScore"])
   {
     v4 = off_1E7A4C808;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"slash"])
+  if ([keyCopy isEqualToString:@"slash"])
   {
     v4 = off_1E7A4C7F8;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"hyphen"])
+  if ([keyCopy isEqualToString:@"hyphen"])
   {
     v4 = off_1E7A4C7E0;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"tilde"])
+  if ([keyCopy isEqualToString:@"tilde"])
   {
     v4 = off_1E7A4C800;
     goto LABEL_15;
@@ -86,17 +86,17 @@ LABEL_16:
   v22 = *MEMORY[0x1E69E9840];
   if (![(NSMutableArray *)self->_matchers count])
   {
-    v3 = [(TESPatternMatcherLoader *)self locale];
-    v4 = [v3 languageIdentifier];
+    locale = [(TESPatternMatcherLoader *)self locale];
+    languageIdentifier = [locale languageIdentifier];
 
-    v14 = v4;
+    v14 = languageIdentifier;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v13 = [[TESStylePatternLoader alloc] initWithLocaleIdentifier:v4];
-    v5 = [(TESLocalizedPListLoader *)v13 items];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    v13 = [[TESStylePatternLoader alloc] initWithLocaleIdentifier:languageIdentifier];
+    items = [(TESLocalizedPListLoader *)v13 items];
+    v6 = [items countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -107,7 +107,7 @@ LABEL_16:
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(items);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
@@ -129,7 +129,7 @@ LABEL_16:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v7 = [items countByEnumeratingWithState:&v15 objects:v21 count:16];
       }
 
       while (v7);

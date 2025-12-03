@@ -1,45 +1,45 @@
 @interface EKAlarmUtils
-+ (id)adjustedRelativeAlarmOffset:(double)a3 isAllDay:(BOOL)a4;
-+ (id)adjustedRelativeAlarmOffsetFromAllDayToTimed:(double)a3;
-+ (id)adjustedRelativeAlarmOffsetFromTimedToAllDay:(double)a3;
++ (id)adjustedRelativeAlarmOffset:(double)offset isAllDay:(BOOL)day;
++ (id)adjustedRelativeAlarmOffsetFromAllDayToTimed:(double)timed;
++ (id)adjustedRelativeAlarmOffsetFromTimedToAllDay:(double)day;
 @end
 
 @implementation EKAlarmUtils
 
-+ (id)adjustedRelativeAlarmOffset:(double)a3 isAllDay:(BOOL)a4
++ (id)adjustedRelativeAlarmOffset:(double)offset isAllDay:(BOOL)day
 {
-  if (a4)
+  if (day)
   {
-    [a1 adjustedRelativeAlarmOffsetFromTimedToAllDay:a3];
+    [self adjustedRelativeAlarmOffsetFromTimedToAllDay:offset];
   }
 
   else
   {
-    [a1 adjustedRelativeAlarmOffsetFromAllDayToTimed:a3];
+    [self adjustedRelativeAlarmOffsetFromAllDayToTimed:offset];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)adjustedRelativeAlarmOffsetFromTimedToAllDay:(double)a3
++ (id)adjustedRelativeAlarmOffsetFromTimedToAllDay:(double)day
 {
-  if (a3 >= -43200.0 && a3 < 43200.0)
+  if (day >= -43200.0 && day < 43200.0)
   {
     return &unk_1F1B6AB58;
   }
 
-  if (a3 >= -129600.0 && a3 < -43200.0)
+  if (day >= -129600.0 && day < -43200.0)
   {
     return &unk_1F1B6AB70;
   }
 
-  if (a3 >= -216000.0 && a3 < -129600.0)
+  if (day >= -216000.0 && day < -129600.0)
   {
     return &unk_1F1B6AB88;
   }
 
-  if (a3 >= -561600.0 || a3 < -648000.0)
+  if (day >= -561600.0 || day < -648000.0)
   {
     return 0;
   }
@@ -50,24 +50,24 @@
   }
 }
 
-+ (id)adjustedRelativeAlarmOffsetFromAllDayToTimed:(double)a3
++ (id)adjustedRelativeAlarmOffsetFromAllDayToTimed:(double)timed
 {
-  if (fabs(a3 + -32400.0) < 0.0000001)
+  if (fabs(timed + -32400.0) < 0.0000001)
   {
     return &unk_1F1B6ABB8;
   }
 
-  if (fabs(a3 + 54000.0) < 0.0000001)
+  if (fabs(timed + 54000.0) < 0.0000001)
   {
     return &unk_1F1B6ABD0;
   }
 
-  if (fabs(a3 + 140400.0) < 0.0000001)
+  if (fabs(timed + 140400.0) < 0.0000001)
   {
     return &unk_1F1B6ABE8;
   }
 
-  if (fabs(a3 + 572400.0) >= 0.0000001)
+  if (fabs(timed + 572400.0) >= 0.0000001)
   {
     return 0;
   }

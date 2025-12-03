@@ -1,6 +1,6 @@
 @interface CPContact
-- (BOOL)isEqual:(id)a3;
-- (CPContact)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CPContact)initWithCoder:(id)coder;
 - (CPContact)initWithName:(NSString *)name image:(UIImage *)image;
 - (CPTemplate)associatedTemplate;
 - (NSArray)actions;
@@ -8,10 +8,10 @@
 - (NSString)name;
 - (NSString)subtitle;
 - (UIImage)image;
-- (void)_associateControlsToTemplate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_associateControlsToTemplate:(id)template;
+- (void)encodeWithCoder:(id)coder;
 - (void)setActions:(NSArray *)actions;
-- (void)setAssociatedTemplate:(id)a3;
+- (void)setAssociatedTemplate:(id)template;
 - (void)setImage:(UIImage *)image;
 - (void)setInformativeText:(NSString *)informativeText;
 - (void)setName:(NSString *)name;
@@ -38,15 +38,15 @@
   return v8;
 }
 
-- (CPContact)initWithCoder:(id)a3
+- (CPContact)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPContact;
   v5 = [(CPContact *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPContactEntity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPContactEntity"];
     contactEntity = v5->_contactEntity;
     v5->_contactEntity = v6;
   }
@@ -54,10 +54,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -67,9 +67,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CPContact *)self contactEntity];
-      v6 = [(CPContact *)v4 contactEntity];
-      v7 = [v5 isEqual:v6];
+      contactEntity = [(CPContact *)self contactEntity];
+      contactEntity2 = [(CPContact *)equalCopy contactEntity];
+      v7 = [contactEntity isEqual:contactEntity2];
     }
 
     else
@@ -81,36 +81,36 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPContact *)self contactEntity];
-  [v4 encodeObject:v5 forKey:@"kCPContactEntity"];
+  coderCopy = coder;
+  contactEntity = [(CPContact *)self contactEntity];
+  [coderCopy encodeObject:contactEntity forKey:@"kCPContactEntity"];
 }
 
 - (void)setName:(NSString *)name
 {
   v9 = name;
-  v4 = [(CPContact *)self contactEntity];
-  v5 = [v4 name];
-  v6 = [v5 isEqual:v9];
+  contactEntity = [(CPContact *)self contactEntity];
+  name = [contactEntity name];
+  v6 = [name isEqual:v9];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CPContact *)self contactEntity];
-    [v7 setName:v9];
+    contactEntity2 = [(CPContact *)self contactEntity];
+    [contactEntity2 setName:v9];
 
-    v8 = [(CPContact *)self associatedTemplate];
-    [v8 setNeedsUpdate];
+    associatedTemplate = [(CPContact *)self associatedTemplate];
+    [associatedTemplate setNeedsUpdate];
   }
 }
 
 - (NSString)name
 {
-  v2 = [(CPContact *)self contactEntity];
-  v3 = [v2 name];
+  contactEntity = [(CPContact *)self contactEntity];
+  name = [contactEntity name];
 
-  return v3;
+  return name;
 }
 
 - (void)setImage:(UIImage *)image
@@ -118,96 +118,96 @@
   v4 = image;
   v7 = [[CPImageSet alloc] initWithImage:v4];
 
-  v5 = [(CPContact *)self contactEntity];
-  [v5 setImageSet:v7];
+  contactEntity = [(CPContact *)self contactEntity];
+  [contactEntity setImageSet:v7];
 
-  v6 = [(CPContact *)self associatedTemplate];
-  [v6 setNeedsUpdate];
+  associatedTemplate = [(CPContact *)self associatedTemplate];
+  [associatedTemplate setNeedsUpdate];
 }
 
 - (UIImage)image
 {
-  v2 = [(CPContact *)self contactEntity];
-  v3 = [v2 imageSet];
-  v4 = [v3 image];
+  contactEntity = [(CPContact *)self contactEntity];
+  imageSet = [contactEntity imageSet];
+  image = [imageSet image];
 
-  return v4;
+  return image;
 }
 
 - (void)setActions:(NSArray *)actions
 {
   v4 = actions;
-  v5 = [(CPContact *)self associatedTemplate];
-  [(CPContact *)self _associateControlsToTemplate:v5];
+  associatedTemplate = [(CPContact *)self associatedTemplate];
+  [(CPContact *)self _associateControlsToTemplate:associatedTemplate];
 
-  v6 = [(CPContact *)self contactEntity];
-  [v6 setActionButtons:v4];
+  contactEntity = [(CPContact *)self contactEntity];
+  [contactEntity setActionButtons:v4];
 
-  v7 = [(CPContact *)self associatedTemplate];
-  [v7 setNeedsUpdate];
+  associatedTemplate2 = [(CPContact *)self associatedTemplate];
+  [associatedTemplate2 setNeedsUpdate];
 }
 
 - (NSArray)actions
 {
-  v2 = [(CPContact *)self contactEntity];
-  v3 = [v2 actionButtons];
+  contactEntity = [(CPContact *)self contactEntity];
+  actionButtons = [contactEntity actionButtons];
 
-  return v3;
+  return actionButtons;
 }
 
 - (void)setSubtitle:(NSString *)subtitle
 {
   v9 = subtitle;
-  v4 = [(CPContact *)self contactEntity];
-  v5 = [v4 subtitle];
-  v6 = [v5 isEqual:v9];
+  contactEntity = [(CPContact *)self contactEntity];
+  subtitle = [contactEntity subtitle];
+  v6 = [subtitle isEqual:v9];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CPContact *)self contactEntity];
-    [v7 setSubtitle:v9];
+    contactEntity2 = [(CPContact *)self contactEntity];
+    [contactEntity2 setSubtitle:v9];
 
-    v8 = [(CPContact *)self associatedTemplate];
-    [v8 setNeedsUpdate];
+    associatedTemplate = [(CPContact *)self associatedTemplate];
+    [associatedTemplate setNeedsUpdate];
   }
 }
 
 - (NSString)subtitle
 {
-  v2 = [(CPContact *)self contactEntity];
-  v3 = [v2 subtitle];
+  contactEntity = [(CPContact *)self contactEntity];
+  subtitle = [contactEntity subtitle];
 
-  return v3;
+  return subtitle;
 }
 
 - (void)setInformativeText:(NSString *)informativeText
 {
   v9 = informativeText;
-  v4 = [(CPContact *)self contactEntity];
-  v5 = [v4 informativeText];
-  v6 = [v5 isEqual:v9];
+  contactEntity = [(CPContact *)self contactEntity];
+  informativeText = [contactEntity informativeText];
+  v6 = [informativeText isEqual:v9];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CPContact *)self contactEntity];
-    [v7 setInformativeText:v9];
+    contactEntity2 = [(CPContact *)self contactEntity];
+    [contactEntity2 setInformativeText:v9];
 
-    v8 = [(CPContact *)self associatedTemplate];
-    [v8 setNeedsUpdate];
+    associatedTemplate = [(CPContact *)self associatedTemplate];
+    [associatedTemplate setNeedsUpdate];
   }
 }
 
 - (NSString)informativeText
 {
-  v2 = [(CPContact *)self contactEntity];
-  v3 = [v2 informativeText];
+  contactEntity = [(CPContact *)self contactEntity];
+  informativeText = [contactEntity informativeText];
 
-  return v3;
+  return informativeText;
 }
 
-- (void)setAssociatedTemplate:(id)a3
+- (void)setAssociatedTemplate:(id)template
 {
-  obj = a3;
+  obj = template;
   WeakRetained = objc_loadWeakRetained(&self->_associatedTemplate);
 
   if (WeakRetained != obj)
@@ -217,16 +217,16 @@
   }
 }
 
-- (void)_associateControlsToTemplate:(id)a3
+- (void)_associateControlsToTemplate:(id)template
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  templateCopy = template;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(CPContact *)self actions];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  actions = [(CPContact *)self actions];
+  v6 = [actions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -237,15 +237,15 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actions);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        [v10 setAssociatedTemplate:v4];
-        [v10 setDelegate:v4];
+        [v10 setAssociatedTemplate:templateCopy];
+        [v10 setDelegate:templateCopy];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [actions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

@@ -1,8 +1,8 @@
 @interface CHRootViewController
-- (CHRootViewController)initWithTabBarController:(id)a3 healthStore:(id)a4;
-- (void)adjustSafeAreaInsetsWithHeight:(double)a3;
+- (CHRootViewController)initWithTabBarController:(id)controller healthStore:(id)store;
+- (void)adjustSafeAreaInsetsWithHeight:(double)height;
 - (void)hide;
-- (void)setActivitySetUp:(BOOL)a3;
+- (void)setActivitySetUp:(BOOL)up;
 - (void)unhide;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -15,19 +15,19 @@
   v36.receiver = self;
   v36.super_class = CHRootViewController;
   [(CHRootViewController *)&v36 viewDidLoad];
-  v3 = [(CHRootViewController *)self view];
-  [v3 bounds];
+  view = [(CHRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UITabBarController *)self->_tabBarController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(UITabBarController *)self->_tabBarController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 
   [(CHRootViewController *)self addChildViewController:self->_tabBarController];
-  v13 = [(CHRootViewController *)self view];
-  v14 = [(UITabBarController *)self->_tabBarController view];
-  [v13 addSubview:v14];
+  view3 = [(CHRootViewController *)self view];
+  view4 = [(UITabBarController *)self->_tabBarController view];
+  [view3 addSubview:view4];
 
   [(UITabBarController *)self->_tabBarController didMoveToParentViewController:self];
   v15 = objc_alloc_init(UIView);
@@ -39,53 +39,53 @@
 
   [(UIView *)self->_overlayView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_overlayView setAlpha:0.0];
-  v18 = [(CHRootViewController *)self view];
-  [v18 addSubview:self->_overlayView];
+  view5 = [(CHRootViewController *)self view];
+  [view5 addSubview:self->_overlayView];
 
-  v34 = [(UIView *)self->_overlayView topAnchor];
-  v35 = [(CHRootViewController *)self view];
-  v33 = [v35 topAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  topAnchor = [(UIView *)self->_overlayView topAnchor];
+  view6 = [(CHRootViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v37[0] = v32;
-  v30 = [(UIView *)self->_overlayView bottomAnchor];
-  v31 = [(CHRootViewController *)self view];
-  v29 = [v31 bottomAnchor];
-  v19 = [v30 constraintEqualToAnchor:v29];
+  bottomAnchor = [(UIView *)self->_overlayView bottomAnchor];
+  view7 = [(CHRootViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v37[1] = v19;
-  v20 = [(UIView *)self->_overlayView leadingAnchor];
-  v21 = [(CHRootViewController *)self view];
-  v22 = [v21 leadingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  leadingAnchor = [(UIView *)self->_overlayView leadingAnchor];
+  view8 = [(CHRootViewController *)self view];
+  leadingAnchor2 = [view8 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v37[2] = v23;
-  v24 = [(UIView *)self->_overlayView trailingAnchor];
-  v25 = [(CHRootViewController *)self view];
-  v26 = [v25 trailingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  trailingAnchor = [(UIView *)self->_overlayView trailingAnchor];
+  view9 = [(CHRootViewController *)self view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v37[3] = v27;
   v28 = [NSArray arrayWithObjects:v37 count:4];
   [NSLayoutConstraint activateConstraints:v28];
 }
 
-- (CHRootViewController)initWithTabBarController:(id)a3 healthStore:(id)a4
+- (CHRootViewController)initWithTabBarController:(id)controller healthStore:(id)store
 {
-  v6 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CHRootViewController;
   v7 = [(CHRootViewController *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_tabBarController, a3);
+    objc_storeStrong(&v7->_tabBarController, controller);
   }
 
   return v8;
 }
 
-- (void)setActivitySetUp:(BOOL)a3
+- (void)setActivitySetUp:(BOOL)up
 {
-  if (self->_activitySetUp != a3)
+  if (self->_activitySetUp != up)
   {
-    self->_activitySetUp = a3;
+    self->_activitySetUp = up;
   }
 }
 
@@ -94,24 +94,24 @@
   v13.receiver = self;
   v13.super_class = CHRootViewController;
   [(CHRootViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(CHRootViewController *)self view];
-  [v3 bounds];
+  view = [(CHRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UITabBarController *)self->_tabBarController view];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  view2 = [(UITabBarController *)self->_tabBarController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)adjustSafeAreaInsetsWithHeight:(double)a3
+- (void)adjustSafeAreaInsetsWithHeight:(double)height
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(UITabBarController *)self->_tabBarController viewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  viewControllers = [(UITabBarController *)self->_tabBarController viewControllers];
+  v4 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -122,7 +122,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(viewControllers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -130,7 +130,7 @@
         [v8 setAdditionalSafeAreaInsets:?];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [viewControllers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);

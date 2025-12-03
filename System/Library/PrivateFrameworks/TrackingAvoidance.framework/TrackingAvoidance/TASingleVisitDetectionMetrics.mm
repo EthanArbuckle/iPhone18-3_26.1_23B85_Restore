@@ -1,30 +1,30 @@
 @interface TASingleVisitDetectionMetrics
-- (BOOL)isEqual:(id)a3;
-- (TASingleVisitDetectionMetrics)initWithCoder:(id)a3;
-- (TASingleVisitDetectionMetrics)initWithInterVisitMetrics:(id)a3 loiType:(unint64_t)a4 previousVisitType:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TASingleVisitDetectionMetrics)initWithCoder:(id)coder;
+- (TASingleVisitDetectionMetrics)initWithInterVisitMetrics:(id)metrics loiType:(unint64_t)type previousVisitType:(unint64_t)visitType;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TASingleVisitDetectionMetrics
 
-- (TASingleVisitDetectionMetrics)initWithInterVisitMetrics:(id)a3 loiType:(unint64_t)a4 previousVisitType:(unint64_t)a5
+- (TASingleVisitDetectionMetrics)initWithInterVisitMetrics:(id)metrics loiType:(unint64_t)type previousVisitType:(unint64_t)visitType
 {
-  v8 = a3;
+  metricsCopy = metrics;
   v12.receiver = self;
   v12.super_class = TASingleVisitDetectionMetrics;
   v9 = [(TASingleVisitDetectionMetrics *)&v12 init];
   interVisitMetrics = v9->_interVisitMetrics;
-  v9->_interVisitMetrics = v8;
+  v9->_interVisitMetrics = metricsCopy;
 
-  v9->_loiType = a4;
-  v9->_previousVisitType = a5;
+  v9->_loiType = type;
+  v9->_previousVisitType = visitType;
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,16 +34,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(TASingleVisitDetectionMetrics *)self interVisitMetrics];
-      v9 = [(TASingleVisitDetectionMetrics *)v7 interVisitMetrics];
-      if (v8 == v9 || (-[TASingleVisitDetectionMetrics interVisitMetrics](self, "interVisitMetrics"), v3 = objc_claimAutoreleasedReturnValue(), -[TASingleVisitDetectionMetrics interVisitMetrics](v7, "interVisitMetrics"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      v7 = equalCopy;
+      interVisitMetrics = [(TASingleVisitDetectionMetrics *)self interVisitMetrics];
+      interVisitMetrics2 = [(TASingleVisitDetectionMetrics *)v7 interVisitMetrics];
+      if (interVisitMetrics == interVisitMetrics2 || (-[TASingleVisitDetectionMetrics interVisitMetrics](self, "interVisitMetrics"), v3 = objc_claimAutoreleasedReturnValue(), -[TASingleVisitDetectionMetrics interVisitMetrics](v7, "interVisitMetrics"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v11 = [(TASingleVisitDetectionMetrics *)self loiType];
-        if (v11 == [(TASingleVisitDetectionMetrics *)v7 loiType])
+        loiType = [(TASingleVisitDetectionMetrics *)self loiType];
+        if (loiType == [(TASingleVisitDetectionMetrics *)v7 loiType])
         {
-          v12 = [(TASingleVisitDetectionMetrics *)self previousVisitType];
-          v10 = v12 == [(TASingleVisitDetectionMetrics *)v7 previousVisitType];
+          previousVisitType = [(TASingleVisitDetectionMetrics *)self previousVisitType];
+          v10 = previousVisitType == [(TASingleVisitDetectionMetrics *)v7 previousVisitType];
         }
 
         else
@@ -51,7 +51,7 @@
           v10 = 0;
         }
 
-        if (v8 == v9)
+        if (interVisitMetrics == interVisitMetrics2)
         {
           goto LABEL_13;
         }
@@ -74,24 +74,24 @@ LABEL_14:
   return v10;
 }
 
-- (TASingleVisitDetectionMetrics)initWithCoder:(id)a3
+- (TASingleVisitDetectionMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVInterVisitMetrics"];
-  v6 = [v4 decodeIntegerForKey:@"SVLOI"];
-  v7 = [v4 decodeIntegerForKey:@"SVPreviousVisitType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVInterVisitMetrics"];
+  v6 = [coderCopy decodeIntegerForKey:@"SVLOI"];
+  v7 = [coderCopy decodeIntegerForKey:@"SVPreviousVisitType"];
 
   v8 = [(TASingleVisitDetectionMetrics *)self initWithInterVisitMetrics:v5 loiType:v6 previousVisitType:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   interVisitMetrics = self->_interVisitMetrics;
-  v5 = a3;
-  [v5 encodeObject:interVisitMetrics forKey:@"SVInterVisitMetrics"];
-  [v5 encodeInteger:self->_loiType forKey:@"SVLOI"];
-  [v5 encodeInteger:self->_previousVisitType forKey:@"SVPreviousVisitType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:interVisitMetrics forKey:@"SVInterVisitMetrics"];
+  [coderCopy encodeInteger:self->_loiType forKey:@"SVLOI"];
+  [coderCopy encodeInteger:self->_previousVisitType forKey:@"SVPreviousVisitType"];
 }
 
 @end

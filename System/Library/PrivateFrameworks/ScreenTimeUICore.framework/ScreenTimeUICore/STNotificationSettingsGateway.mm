@@ -1,18 +1,18 @@
 @interface STNotificationSettingsGateway
-- (BOOL)hasNotificationSettings:(id)a3;
+- (BOOL)hasNotificationSettings:(id)settings;
 - (STNotificationSettingsGateway)init;
-- (STNotificationSettingsGateway)initWithBundleIdentifiers:(id)a3;
-- (id)notificationSettingsForBundleIdentifier:(id)a3;
+- (STNotificationSettingsGateway)initWithBundleIdentifiers:(id)identifiers;
+- (id)notificationSettingsForBundleIdentifier:(id)identifier;
 @end
 
 @implementation STNotificationSettingsGateway
 
-- (STNotificationSettingsGateway)initWithBundleIdentifiers:(id)a3
+- (STNotificationSettingsGateway)initWithBundleIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [(STNotificationSettingsGateway *)self init];
-  v6 = [(BBSettingsGateway *)v5->_notificationSettingsGateway sectionInfoForSectionIDs:v4];
+  v6 = [(BBSettingsGateway *)v5->_notificationSettingsGateway sectionInfoForSectionIDs:identifiersCopy];
   v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v6, "count")}];
   v19 = 0u;
   v20 = 0u;
@@ -36,8 +36,8 @@
         v13 = *(*(&v19 + 1) + 8 * i);
         if (([v13 suppressFromSettings] & 1) == 0)
         {
-          v14 = [v13 sectionID];
-          [v7 setObject:v13 forKeyedSubscript:v14];
+          sectionID = [v13 sectionID];
+          [v7 setObject:v13 forKeyedSubscript:sectionID];
         }
       }
 
@@ -71,11 +71,11 @@
   return v2;
 }
 
-- (BOOL)hasNotificationSettings:(id)a3
+- (BOOL)hasNotificationSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(STNotificationSettingsGateway *)self sectionInfoByBundleIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  settingsCopy = settings;
+  sectionInfoByBundleIdentifier = [(STNotificationSettingsGateway *)self sectionInfoByBundleIdentifier];
+  v6 = [sectionInfoByBundleIdentifier objectForKeyedSubscript:settingsCopy];
   if (v6)
   {
     v7 = v6;
@@ -83,8 +83,8 @@
 
   else
   {
-    v8 = [(STNotificationSettingsGateway *)self notificationSettingsGateway];
-    v7 = [v8 sectionInfoForSectionID:v4];
+    notificationSettingsGateway = [(STNotificationSettingsGateway *)self notificationSettingsGateway];
+    v7 = [notificationSettingsGateway sectionInfoForSectionID:settingsCopy];
 
     if (!v7)
     {
@@ -99,11 +99,11 @@ LABEL_5:
   return v9;
 }
 
-- (id)notificationSettingsForBundleIdentifier:(id)a3
+- (id)notificationSettingsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STNotificationSettingsGateway *)self sectionInfoByBundleIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  sectionInfoByBundleIdentifier = [(STNotificationSettingsGateway *)self sectionInfoByBundleIdentifier];
+  v6 = [sectionInfoByBundleIdentifier objectForKeyedSubscript:identifierCopy];
   if (v6)
   {
     v7 = v6;
@@ -111,8 +111,8 @@ LABEL_5:
 
   else
   {
-    v8 = [(STNotificationSettingsGateway *)self notificationSettingsGateway];
-    v7 = [v8 sectionInfoForSectionID:v4];
+    notificationSettingsGateway = [(STNotificationSettingsGateway *)self notificationSettingsGateway];
+    v7 = [notificationSettingsGateway sectionInfoForSectionID:identifierCopy];
 
     if (!v7)
     {

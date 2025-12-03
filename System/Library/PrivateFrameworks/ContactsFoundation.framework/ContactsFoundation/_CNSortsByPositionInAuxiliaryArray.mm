@@ -1,38 +1,38 @@
 @interface _CNSortsByPositionInAuxiliaryArray
-+ (id)comparatorForSortingAccordingToAuxiliaryValues:(id)a3 transform:(id)a4;
-- (_CNSortsByPositionInAuxiliaryArray)initWithAuxiliaryValues:(id)a3 transform:(id)a4;
++ (id)comparatorForSortingAccordingToAuxiliaryValues:(id)values transform:(id)transform;
+- (_CNSortsByPositionInAuxiliaryArray)initWithAuxiliaryValues:(id)values transform:(id)transform;
 - (id)comparator;
-- (id)rankForObject:(id)a3;
+- (id)rankForObject:(id)object;
 - (void)prepareRankingIndex;
 @end
 
 @implementation _CNSortsByPositionInAuxiliaryArray
 
-+ (id)comparatorForSortingAccordingToAuxiliaryValues:(id)a3 transform:(id)a4
++ (id)comparatorForSortingAccordingToAuxiliaryValues:(id)values transform:(id)transform
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithAuxiliaryValues:v7 transform:v6];
+  transformCopy = transform;
+  valuesCopy = values;
+  v8 = [[self alloc] initWithAuxiliaryValues:valuesCopy transform:transformCopy];
 
-  v9 = [v8 comparator];
+  comparator = [v8 comparator];
 
-  return v9;
+  return comparator;
 }
 
-- (_CNSortsByPositionInAuxiliaryArray)initWithAuxiliaryValues:(id)a3 transform:(id)a4
+- (_CNSortsByPositionInAuxiliaryArray)initWithAuxiliaryValues:(id)values transform:(id)transform
 {
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  transformCopy = transform;
   v15.receiver = self;
   v15.super_class = _CNSortsByPositionInAuxiliaryArray;
   v8 = [(_CNSortsByPositionInAuxiliaryArray *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [valuesCopy copy];
     auxiliaryValues = v8->_auxiliaryValues;
     v8->_auxiliaryValues = v9;
 
-    v11 = [v7 copy];
+    v11 = [transformCopy copy];
     transform = v8->_transform;
     v8->_transform = v11;
 
@@ -45,14 +45,14 @@
 
 - (void)prepareRankingIndex
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   auxiliaryValues = self->_auxiliaryValues;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57___CNSortsByPositionInAuxiliaryArray_prepareRankingIndex__block_invoke;
   v8[3] = &unk_1E6ED7898;
-  v9 = v3;
-  v5 = v3;
+  v9 = dictionary;
+  v5 = dictionary;
   [(NSArray *)auxiliaryValues enumerateObjectsUsingBlock:v8];
   v6 = [v5 copy];
   ranks = self->_ranks;
@@ -71,14 +71,14 @@
   return v2;
 }
 
-- (id)rankForObject:(id)a3
+- (id)rankForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(_CNSortsByPositionInAuxiliaryArray *)self ranks];
-  v6 = [(_CNSortsByPositionInAuxiliaryArray *)self transform];
-  v7 = (v6)[2](v6, v4);
+  objectCopy = object;
+  ranks = [(_CNSortsByPositionInAuxiliaryArray *)self ranks];
+  transform = [(_CNSortsByPositionInAuxiliaryArray *)self transform];
+  v7 = (transform)[2](transform, objectCopy);
 
-  v8 = [v5 objectForKeyedSubscript:v7];
+  v8 = [ranks objectForKeyedSubscript:v7];
   v9 = v8;
   if (v8)
   {
@@ -88,8 +88,8 @@
   else
   {
     v11 = MEMORY[0x1E696AD98];
-    v12 = [(_CNSortsByPositionInAuxiliaryArray *)self auxiliaryValues];
-    v10 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
+    auxiliaryValues = [(_CNSortsByPositionInAuxiliaryArray *)self auxiliaryValues];
+    v10 = [v11 numberWithUnsignedInteger:{objc_msgSend(auxiliaryValues, "count")}];
   }
 
   return v10;

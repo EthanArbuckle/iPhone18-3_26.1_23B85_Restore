@@ -1,30 +1,30 @@
 @interface HNDTrackpadView
-- (HNDTrackpadView)initWithFrame:(CGRect)a3;
+- (HNDTrackpadView)initWithFrame:(CGRect)frame;
 - (id)getTrackpadColor;
 - (void)registerForSettingsUpdates;
 @end
 
 @implementation HNDTrackpadView
 
-- (HNDTrackpadView)initWithFrame:(CGRect)a3
+- (HNDTrackpadView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = HNDTrackpadView;
-  v3 = [(HNDTrackpadView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(HNDTrackpadView *)v3 getTrackpadColor];
-  [(HNDTrackpadView *)v3 setBackgroundColor:v4];
+  v3 = [(HNDTrackpadView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  getTrackpadColor = [(HNDTrackpadView *)v3 getTrackpadColor];
+  [(HNDTrackpadView *)v3 setBackgroundColor:getTrackpadColor];
 
   v5 = +[AXSettings sharedInstance];
   [v5 assistiveTouchVirtualTrackpadInnerOpacity];
   [(HNDTrackpadView *)v3 setAlpha:?];
 
   v6 = +[UIColor blackColor];
-  v7 = [v6 CGColor];
-  v8 = [(HNDTrackpadView *)v3 layer];
-  [v8 setBorderColor:v7];
+  cGColor = [v6 CGColor];
+  layer = [(HNDTrackpadView *)v3 layer];
+  [layer setBorderColor:cGColor];
 
-  v9 = [(HNDTrackpadView *)v3 layer];
-  [v9 setCornerRadius:11.0];
+  layer2 = [(HNDTrackpadView *)v3 layer];
+  [layer2 setCornerRadius:11.0];
 
   [(HNDTrackpadView *)v3 setUserInteractionEnabled:1];
   [(HNDTrackpadView *)v3 registerForSettingsUpdates];
@@ -58,19 +58,19 @@
 - (id)getTrackpadColor
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 assistiveTouchVirtualTrackpadInnerColor];
+  assistiveTouchVirtualTrackpadInnerColor = [v2 assistiveTouchVirtualTrackpadInnerColor];
 
-  if (v3 <= 2)
+  if (assistiveTouchVirtualTrackpadInnerColor <= 2)
   {
-    if (!v3)
+    if (!assistiveTouchVirtualTrackpadInnerColor)
     {
       v4 = +[UIColor systemGrayColor];
       goto LABEL_18;
     }
 
-    if (v3 != 1)
+    if (assistiveTouchVirtualTrackpadInnerColor != 1)
     {
-      if (v3 == 2)
+      if (assistiveTouchVirtualTrackpadInnerColor == 2)
       {
         v4 = +[UIColor systemBlueColor];
         goto LABEL_18;
@@ -86,9 +86,9 @@ LABEL_14:
 
   else
   {
-    if (v3 <= 4)
+    if (assistiveTouchVirtualTrackpadInnerColor <= 4)
     {
-      if (v3 == 3)
+      if (assistiveTouchVirtualTrackpadInnerColor == 3)
       {
         +[UIColor systemRedColor];
       }
@@ -101,9 +101,9 @@ LABEL_14:
       goto LABEL_18;
     }
 
-    if (v3 != 5)
+    if (assistiveTouchVirtualTrackpadInnerColor != 5)
     {
-      if (v3 == 6)
+      if (assistiveTouchVirtualTrackpadInnerColor == 6)
       {
         v4 = +[UIColor systemOrangeColor];
         goto LABEL_18;

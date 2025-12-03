@@ -44,29 +44,29 @@
 - (int64_t)songMixType;
 - (int64_t)stationID;
 - (unint64_t)impressionThreshold;
-- (void)setAdData:(id)a3;
-- (void)setAdamID:(int64_t)a3;
-- (void)setArtworkURL:(id)a3;
-- (void)setArtworkURLData:(id)a3;
-- (void)setCoreSeedName:(id)a3;
-- (void)setDebugDictionary:(id)a3;
-- (void)setEditableFields:(id)a3;
-- (void)setImpressionThreshold:(unint64_t)a3;
-- (void)setName:(id)a3;
-- (void)setPersistentID:(int64_t)a3;
-- (void)setSeedTracks:(id)a3;
-- (void)setShareToken:(id)a3;
-- (void)setSkipIdentifier:(id)a3;
-- (void)setSkipInterval:(double)a3;
-- (void)setSkipTimestamps:(id)a3;
-- (void)setSongMixType:(int64_t)a3;
-- (void)setStationDescription:(id)a3;
-- (void)setStationHash:(id)a3;
-- (void)setStationID:(int64_t)a3;
-- (void)setStationStringID:(id)a3;
-- (void)setStreamCertificateURL:(id)a3;
-- (void)setStreamKeyURL:(id)a3;
-- (void)setStreamURL:(id)a3;
+- (void)setAdData:(id)data;
+- (void)setAdamID:(int64_t)d;
+- (void)setArtworkURL:(id)l;
+- (void)setArtworkURLData:(id)data;
+- (void)setCoreSeedName:(id)name;
+- (void)setDebugDictionary:(id)dictionary;
+- (void)setEditableFields:(id)fields;
+- (void)setImpressionThreshold:(unint64_t)threshold;
+- (void)setName:(id)name;
+- (void)setPersistentID:(int64_t)d;
+- (void)setSeedTracks:(id)tracks;
+- (void)setShareToken:(id)token;
+- (void)setSkipIdentifier:(id)identifier;
+- (void)setSkipInterval:(double)interval;
+- (void)setSkipTimestamps:(id)timestamps;
+- (void)setSongMixType:(int64_t)type;
+- (void)setStationDescription:(id)description;
+- (void)setStationHash:(id)hash;
+- (void)setStationID:(int64_t)d;
+- (void)setStationStringID:(id)d;
+- (void)setStreamCertificateURL:(id)l;
+- (void)setStreamKeyURL:(id)l;
+- (void)setStreamURL:(id)l;
 @end
 
 @implementation RadioManagedStation
@@ -80,28 +80,28 @@
     [v3 setObject:v4 forKey:@"station-id"];
   }
 
-  v5 = [(RadioManagedStation *)self stationHash];
+  stationHash = [(RadioManagedStation *)self stationHash];
 
-  if (v5)
+  if (stationHash)
   {
-    v6 = [(RadioManagedStation *)self stationHash];
-    [v3 setObject:v6 forKey:@"station-hash"];
+    stationHash2 = [(RadioManagedStation *)self stationHash];
+    [v3 setObject:stationHash2 forKey:@"station-hash"];
   }
 
-  v7 = [(RadioManagedStation *)self stationDescription];
+  stationDescription = [(RadioManagedStation *)self stationDescription];
 
-  if (v7)
+  if (stationDescription)
   {
-    v8 = [(RadioManagedStation *)self stationDescription];
-    [v3 setObject:v8 forKey:@"description"];
+    stationDescription2 = [(RadioManagedStation *)self stationDescription];
+    [v3 setObject:stationDescription2 forKey:@"description"];
   }
 
-  v9 = [(RadioManagedStation *)self name];
+  name = [(RadioManagedStation *)self name];
 
-  if (v9)
+  if (name)
   {
-    v10 = [(RadioManagedStation *)self name];
-    [v3 setObject:v10 forKey:@"name"];
+    name2 = [(RadioManagedStation *)self name];
+    [v3 setObject:name2 forKey:@"name"];
   }
 
   if ([(RadioManagedStation *)self adamID])
@@ -116,12 +116,12 @@
     [v3 setObject:v12 forKey:@"mix-type"];
   }
 
-  v13 = [(RadioManagedStation *)self seedTracks];
+  seedTracks = [(RadioManagedStation *)self seedTracks];
 
-  if (v13)
+  if (seedTracks)
   {
-    v14 = [(RadioManagedStation *)self seedTracks];
-    [v3 setObject:v14 forKey:@"seeds"];
+    seedTracks2 = [(RadioManagedStation *)self seedTracks];
+    [v3 setObject:seedTracks2 forKey:@"seeds"];
   }
 
   return v3;
@@ -131,20 +131,20 @@
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"virtual_play_enabled"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"virtual_play_enabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"virtual_play_enabled"];
-  return v4;
+  return bOOLValue;
 }
 
 - (int)subscriberCount
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"listeners"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"listeners"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"listeners"];
-  return v4;
+  return intValue;
 }
 
 - (id)streamKeyURL
@@ -214,10 +214,10 @@
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"station_id"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"station_id"];
-  v4 = [v3 longLongValue];
+  longLongValue = [v3 longLongValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"station_id"];
-  return v4;
+  return longLongValue;
 }
 
 - (NSString)stationHash
@@ -242,20 +242,20 @@
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"sort_order"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"sort_order"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"sort_order"];
-  return v4;
+  return intValue;
 }
 
 - (int64_t)songMixType
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"song_mix_type"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"song_mix_type"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"song_mix_type"];
-  return v4;
+  return intValue;
 }
 
 - (NSArray)skipTimestamps
@@ -300,20 +300,20 @@
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"skip_frequency"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"skip_frequency"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"skip_frequency"];
-  return v4;
+  return intValue;
 }
 
 - (BOOL)skipEnabled
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"skip_enabled"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"skip_enabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"skip_enabled"];
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)shareToken
@@ -325,115 +325,115 @@
   return v3;
 }
 
-- (void)setStreamKeyURL:(id)a3
+- (void)setStreamKeyURL:(id)l
 {
-  v5 = [a3 absoluteString];
+  absoluteString = [l absoluteString];
   [(RadioManagedStation *)self willAccessValueForKey:@"stream_key_url"];
   v4 = [(RadioManagedStation *)self primitiveValueForKey:@"stream_key_url"];
   [(RadioManagedStation *)self didAccessValueForKey:@"stream_key_url"];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v4 != absoluteString && ([v4 isEqualToString:absoluteString] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"stream_key_url"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"stream_key_url"];
+    [(RadioManagedStation *)self setPrimitiveValue:absoluteString forKey:@"stream_key_url"];
     [(RadioManagedStation *)self didChangeValueForKey:@"stream_key_url"];
   }
 }
 
-- (void)setStreamCertificateURL:(id)a3
+- (void)setStreamCertificateURL:(id)l
 {
-  v5 = [a3 absoluteString];
+  absoluteString = [l absoluteString];
   [(RadioManagedStation *)self willAccessValueForKey:@"stream_certificate_url"];
   v4 = [(RadioManagedStation *)self primitiveValueForKey:@"stream_sertificate_url"];
   [(RadioManagedStation *)self didAccessValueForKey:@"stream_certificate_url"];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v4 != absoluteString && ([v4 isEqualToString:absoluteString] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"stream_certificate_url"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"stream_certificate_url"];
+    [(RadioManagedStation *)self setPrimitiveValue:absoluteString forKey:@"stream_certificate_url"];
     [(RadioManagedStation *)self didChangeValueForKey:@"stream_certificate_url"];
   }
 }
 
-- (void)setStreamURL:(id)a3
+- (void)setStreamURL:(id)l
 {
-  v5 = [a3 absoluteString];
+  absoluteString = [l absoluteString];
   [(RadioManagedStation *)self willAccessValueForKey:@"stream_url"];
   v4 = [(RadioManagedStation *)self primitiveValueForKey:@"stream_url"];
   [(RadioManagedStation *)self didAccessValueForKey:@"stream_url"];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v4 != absoluteString && ([v4 isEqualToString:absoluteString] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"stream_url"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"stream_url"];
+    [(RadioManagedStation *)self setPrimitiveValue:absoluteString forKey:@"stream_url"];
     [(RadioManagedStation *)self didChangeValueForKey:@"stream_url"];
   }
 }
 
-- (void)setStationStringID:(id)a3
+- (void)setStationStringID:(id)d
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self stationStringID];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  dCopy = d;
+  stationStringID = [(RadioManagedStation *)self stationStringID];
+  if (stationStringID != dCopy && ([stationStringID isEqualToString:dCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"station_string_id"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"station_string_id"];
+    [(RadioManagedStation *)self setPrimitiveValue:dCopy forKey:@"station_string_id"];
     [(RadioManagedStation *)self didChangeValueForKey:@"station_string_id"];
   }
 }
 
-- (void)setStationHash:(id)a3
+- (void)setStationHash:(id)hash
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self stationHash];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  hashCopy = hash;
+  stationHash = [(RadioManagedStation *)self stationHash];
+  if (stationHash != hashCopy && ([stationHash isEqualToString:hashCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"station_hash"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"station_hash"];
+    [(RadioManagedStation *)self setPrimitiveValue:hashCopy forKey:@"station_hash"];
     [(RadioManagedStation *)self didChangeValueForKey:@"station_hash"];
   }
 }
 
-- (void)setStationID:(int64_t)a3
+- (void)setStationID:(int64_t)d
 {
-  if ([(RadioManagedStation *)self stationID]!= a3)
+  if ([(RadioManagedStation *)self stationID]!= d)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"station_id"];
-    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
     [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"station_id"];
 
     [(RadioManagedStation *)self didChangeValueForKey:@"station_id"];
   }
 }
 
-- (void)setStationDescription:(id)a3
+- (void)setStationDescription:(id)description
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self stationDescription];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  descriptionCopy = description;
+  stationDescription = [(RadioManagedStation *)self stationDescription];
+  if (stationDescription != descriptionCopy && ([stationDescription isEqualToString:descriptionCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"station_description"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"station_description"];
+    [(RadioManagedStation *)self setPrimitiveValue:descriptionCopy forKey:@"station_description"];
     [(RadioManagedStation *)self didChangeValueForKey:@"station_description"];
   }
 }
 
-- (void)setSongMixType:(int64_t)a3
+- (void)setSongMixType:(int64_t)type
 {
-  if ([(RadioManagedStation *)self songMixType]!= a3)
+  if ([(RadioManagedStation *)self songMixType]!= type)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"song_mix_type"];
-    v5 = [MEMORY[0x277CCABB0] numberWithInt:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithInt:type];
     [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"song_mix_type"];
 
     [(RadioManagedStation *)self didChangeValueForKey:@"song_mix_type"];
   }
 }
 
-- (void)setSkipTimestamps:(id)a3
+- (void)setSkipTimestamps:(id)timestamps
 {
-  v7 = a3;
+  timestampsCopy = timestamps;
   [(RadioManagedStation *)self willAccessValueForKey:@"skip_timestamps"];
   v4 = [(RadioManagedStation *)self primitiveValueForKey:@"skip_timestamps"];
   [(RadioManagedStation *)self didAccessValueForKey:@"skip_timestamps"];
-  if (!v7)
+  if (!timestampsCopy)
   {
     v6 = 0;
     if (!v4)
@@ -444,7 +444,7 @@
     goto LABEL_8;
   }
 
-  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:v7 format:200 options:0 error:0];
+  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:timestampsCopy format:200 options:0 error:0];
   v6 = v5;
   if (v4 && v5 && v4 != v5)
   {
@@ -468,46 +468,46 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSkipInterval:(double)a3
+- (void)setSkipInterval:(double)interval
 {
   [(RadioManagedStation *)self skipInterval];
-  if (vabdd_f64(v5, a3) > 2.22044605e-16)
+  if (vabdd_f64(v5, interval) > 2.22044605e-16)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"skip_interval"];
-    v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithDouble:interval];
     [(RadioManagedStation *)self setPrimitiveValue:v6 forKey:@"skip_interval"];
 
     [(RadioManagedStation *)self didChangeValueForKey:@"skip_interval"];
   }
 }
 
-- (void)setSkipIdentifier:(id)a3
+- (void)setSkipIdentifier:(id)identifier
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self skipIdentifier];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  identifierCopy = identifier;
+  skipIdentifier = [(RadioManagedStation *)self skipIdentifier];
+  if (skipIdentifier != identifierCopy && ([skipIdentifier isEqualToString:identifierCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"skip_identifier"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"skip_identifier"];
+    [(RadioManagedStation *)self setPrimitiveValue:identifierCopy forKey:@"skip_identifier"];
     [(RadioManagedStation *)self didChangeValueForKey:@"skip_identifier"];
   }
 }
 
-- (void)setShareToken:(id)a3
+- (void)setShareToken:(id)token
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self shareToken];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  tokenCopy = token;
+  shareToken = [(RadioManagedStation *)self shareToken];
+  if (shareToken != tokenCopy && ([shareToken isEqualToString:tokenCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"share_token"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"share_token"];
+    [(RadioManagedStation *)self setPrimitiveValue:tokenCopy forKey:@"share_token"];
     [(RadioManagedStation *)self didChangeValueForKey:@"share_token"];
   }
 }
 
-- (void)setSeedTracks:(id)a3
+- (void)setSeedTracks:(id)tracks
 {
-  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:0];
+  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:tracks format:200 options:0 error:0];
   if (![v5 length])
   {
 
@@ -551,45 +551,45 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setPersistentID:(int64_t)a3
+- (void)setPersistentID:(int64_t)d
 {
-  if ([(RadioManagedStation *)self persistentID]!= a3)
+  if ([(RadioManagedStation *)self persistentID]!= d)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"persistent_id"];
-    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
     [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"persistent_id"];
 
     [(RadioManagedStation *)self didChangeValueForKey:@"persistent_id"];
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self name];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  nameCopy = name;
+  name = [(RadioManagedStation *)self name];
+  if (name != nameCopy && ([name isEqualToString:nameCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"name"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"name"];
+    [(RadioManagedStation *)self setPrimitiveValue:nameCopy forKey:@"name"];
     [(RadioManagedStation *)self didChangeValueForKey:@"name"];
   }
 }
 
-- (void)setImpressionThreshold:(unint64_t)a3
+- (void)setImpressionThreshold:(unint64_t)threshold
 {
-  if ([(RadioManagedStation *)self impressionThreshold]!= a3)
+  if ([(RadioManagedStation *)self impressionThreshold]!= threshold)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"impression_threshold"];
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:threshold];
     [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"impression_threshold"];
 
     [(RadioManagedStation *)self didChangeValueForKey:@"impression_threshold"];
   }
 }
 
-- (void)setEditableFields:(id)a3
+- (void)setEditableFields:(id)fields
 {
-  v5 = [a3 componentsJoinedByString:{@", "}];
+  v5 = [fields componentsJoinedByString:{@", "}];
   [(RadioManagedStation *)self willAccessValueForKey:@"editable_fields"];
   v4 = [(RadioManagedStation *)self primitiveValueForKey:@"editable_fields"];
   [(RadioManagedStation *)self didAccessValueForKey:@"editable_fields"];
@@ -601,9 +601,9 @@ LABEL_11:
   }
 }
 
-- (void)setDebugDictionary:(id)a3
+- (void)setDebugDictionary:(id)dictionary
 {
-  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:0];
+  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:200 options:0 error:0];
   if (![v5 length])
   {
 
@@ -647,65 +647,65 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setCoreSeedName:(id)a3
+- (void)setCoreSeedName:(id)name
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self coreSeedName];
-  if (v4 != v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  nameCopy = name;
+  coreSeedName = [(RadioManagedStation *)self coreSeedName];
+  if (coreSeedName != nameCopy && ([coreSeedName isEqualToString:nameCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"core_seed_name"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"core_seed_name"];
+    [(RadioManagedStation *)self setPrimitiveValue:nameCopy forKey:@"core_seed_name"];
     [(RadioManagedStation *)self didChangeValueForKey:@"core_seed_name"];
   }
 }
 
-- (void)setArtworkURLData:(id)a3
+- (void)setArtworkURLData:(id)data
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self artworkURLData];
-  if (v4 != v5 && ([v4 isEqualToData:v5] & 1) == 0)
+  dataCopy = data;
+  artworkURLData = [(RadioManagedStation *)self artworkURLData];
+  if (artworkURLData != dataCopy && ([artworkURLData isEqualToData:dataCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"artwork_url_data"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"artwork_url_data"];
+    [(RadioManagedStation *)self setPrimitiveValue:dataCopy forKey:@"artwork_url_data"];
     [(RadioManagedStation *)self didChangeValueForKey:@"artwork_url_data"];
   }
 }
 
-- (void)setArtworkURL:(id)a3
+- (void)setArtworkURL:(id)l
 {
-  v7 = a3;
-  v4 = [v7 absoluteString];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
   [(RadioManagedStation *)self willAccessValueForKey:@"artwork_url"];
   v5 = [(RadioManagedStation *)self primitiveValueForKey:@"artwork_url"];
   [(RadioManagedStation *)self didAccessValueForKey:@"artwork_url"];
-  if (v5 != v4 && ([v5 isEqualToString:v4] & 1) == 0)
+  if (v5 != absoluteString && ([v5 isEqualToString:absoluteString] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"artwork_url"];
-    v6 = [v7 absoluteString];
-    [(RadioManagedStation *)self setPrimitiveValue:v6 forKey:@"artwork_url"];
+    absoluteString2 = [lCopy absoluteString];
+    [(RadioManagedStation *)self setPrimitiveValue:absoluteString2 forKey:@"artwork_url"];
 
     [(RadioManagedStation *)self didChangeValueForKey:@"artwork_url"];
   }
 }
 
-- (void)setAdData:(id)a3
+- (void)setAdData:(id)data
 {
-  v5 = a3;
-  v4 = [(RadioManagedStation *)self adData];
-  if (v4 != v5 && ([v4 isEqualToData:v5] & 1) == 0)
+  dataCopy = data;
+  adData = [(RadioManagedStation *)self adData];
+  if (adData != dataCopy && ([adData isEqualToData:dataCopy] & 1) == 0)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"ad_data"];
-    [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"ad_data"];
+    [(RadioManagedStation *)self setPrimitiveValue:dataCopy forKey:@"ad_data"];
     [(RadioManagedStation *)self didChangeValueForKey:@"ad_data"];
   }
 }
 
-- (void)setAdamID:(int64_t)a3
+- (void)setAdamID:(int64_t)d
 {
-  if ([(RadioManagedStation *)self adamID]!= a3)
+  if ([(RadioManagedStation *)self adamID]!= d)
   {
     [(RadioManagedStation *)self willChangeValueForKey:@"adam_id"];
-    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:d];
     [(RadioManagedStation *)self setPrimitiveValue:v5 forKey:@"adam_id"];
 
     [(RadioManagedStation *)self didChangeValueForKey:@"adam_id"];
@@ -734,20 +734,20 @@ LABEL_11:
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"requires_subscription"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"requires_subscription"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"requires_subscription"];
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)persistentID
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"persistent_id"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"persistent_id"];
-  v4 = [v3 longLongValue];
+  longLongValue = [v3 longLongValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"persistent_id"];
-  return v4;
+  return longLongValue;
 }
 
 - (NSString)name
@@ -763,60 +763,60 @@ LABEL_11:
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"likes_enabled"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"likes_enabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"likes_enabled"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isSubscribed
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"is_subscribed"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"is_subscribed"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"is_subscribed"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isSponsored
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"is_sponsored"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"is_sponsored"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"is_sponsored"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isSharingEnabled
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"sharing_enabled"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"sharing_enabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"sharing_enabled"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isShared
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"is_shared"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"is_shared"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"is_shared"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isPreviewOnly
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"is_preview_only"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"is_preview_only"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"is_preview_only"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isPreview
@@ -836,71 +836,71 @@ LABEL_11:
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"is_premium_placement"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"is_premium_placement"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"is_premium_placement"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isGatewayVideoAdEnabled
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"is_gateway_video_ad_enabled"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"is_gateway_video_ad_enabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"is_gateway_video_ad_enabled"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isFeatured
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"is_featured"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"is_featured"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"is_featured"];
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isExplicit
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"is_explicit"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"is_explicit"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"is_explicit"];
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)impressionThreshold
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"impression_threshold"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"impression_threshold"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"impression_threshold"];
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)hasSkipRules
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"has_skip_rules"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"has_skip_rules"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"has_skip_rules"];
-  return v4;
+  return bOOLValue;
 }
 
 - (id)feedbackDictionaryRepresentation
 {
-  v3 = [(RadioManagedStation *)self dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(RadioManagedStation *)self dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
-  v5 = [(RadioManagedStation *)self debugDictionary];
-  if (v5)
+  debugDictionary = [(RadioManagedStation *)self debugDictionary];
+  if (debugDictionary)
   {
-    [v4 setObject:v5 forKey:@"debug-dict"];
+    [v4 setObject:debugDictionary forKey:@"debug-dict"];
   }
 
   v6 = [v4 copy];
@@ -912,10 +912,10 @@ LABEL_11:
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"edit_enabled"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"edit_enabled"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"edit_enabled"];
-  return v4;
+  return bOOLValue;
 }
 
 - (NSArray)editableFields
@@ -976,9 +976,9 @@ LABEL_11:
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 scheme];
+      scheme = [v4 scheme];
 
-      if (!v6)
+      if (!scheme)
       {
         v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3 isDirectory:0];
 
@@ -1017,10 +1017,10 @@ LABEL_11:
 {
   [(RadioManagedStation *)self willAccessValueForKey:@"adam_id"];
   v3 = [(RadioManagedStation *)self primitiveValueForKey:@"adam_id"];
-  v4 = [v3 longLongValue];
+  longLongValue = [v3 longLongValue];
 
   [(RadioManagedStation *)self didAccessValueForKey:@"adam_id"];
-  return v4;
+  return longLongValue;
 }
 
 @end

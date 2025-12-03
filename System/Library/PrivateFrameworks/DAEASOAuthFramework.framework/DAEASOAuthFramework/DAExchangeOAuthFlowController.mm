@@ -1,20 +1,20 @@
 @interface DAExchangeOAuthFlowController
-- (void)exchangeAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5 withCompletion:(id)a6;
+- (void)exchangeAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims withCompletion:(id)completion;
 @end
 
 @implementation DAExchangeOAuthFlowController
 
-- (void)exchangeAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5 withCompletion:(id)a6
+- (void)exchangeAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims withCompletion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__DAExchangeOAuthFlowController_exchangeAuthCode_codeVerifier_claims_withCompletion___block_invoke;
   v12[3] = &unk_278EE06A8;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(DAEASOAuthFlowController *)self exchangeAuthCode:a3 codeVerifier:a4 claims:a5 forTokensAndUsernameWithCompletion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(DAEASOAuthFlowController *)self exchangeAuthCode:code codeVerifier:verifier claims:claims forTokensAndUsernameWithCompletion:v12];
 }
 
 void __85__DAExchangeOAuthFlowController_exchangeAuthCode_codeVerifier_claims_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)

@@ -1,27 +1,27 @@
 @interface NSNumberFormatter
-+ (id)imaxLocalizedDouble:(double)a3 maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)a4;
-+ (id)imaxLocalizedNumber:(id)a3 numberStyle:(unint64_t)a4 maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)a5;
-+ (id)imaxLocalizedPercentage:(double)a3 maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)a4;
-+ (id)imaxLocalizedUnsignedInteger:(unint64_t)a3;
-+ (id)imaxLocalizedUnsignedInteger:(unint64_t)a3 usesGroupingSeparator:(BOOL)a4;
-+ (id)localizedStringFromNumber:(id)a3 numberStyle:(unint64_t)a4 auxiliarySymbolSuffix:(id)a5;
++ (id)imaxLocalizedDouble:(double)double maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)separator;
++ (id)imaxLocalizedNumber:(id)number numberStyle:(unint64_t)style maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)separator;
++ (id)imaxLocalizedPercentage:(double)percentage maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)separator;
++ (id)imaxLocalizedUnsignedInteger:(unint64_t)integer;
++ (id)imaxLocalizedUnsignedInteger:(unint64_t)integer usesGroupingSeparator:(BOOL)separator;
++ (id)localizedStringFromNumber:(id)number numberStyle:(unint64_t)style auxiliarySymbolSuffix:(id)suffix;
 @end
 
 @implementation NSNumberFormatter
 
-+ (id)imaxLocalizedUnsignedInteger:(unint64_t)a3
++ (id)imaxLocalizedUnsignedInteger:(unint64_t)integer
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
-  v5 = [a1 imaxLocalizedNumber:v4 maximumNumberOfDigitsAfterDecimalSeparator:0];
+  v4 = [NSNumber numberWithUnsignedInteger:integer];
+  v5 = [self imaxLocalizedNumber:v4 maximumNumberOfDigitsAfterDecimalSeparator:0];
 
   return v5;
 }
 
-+ (id)imaxLocalizedUnsignedInteger:(unint64_t)a3 usesGroupingSeparator:(BOOL)a4
++ (id)imaxLocalizedUnsignedInteger:(unint64_t)integer usesGroupingSeparator:(BOOL)separator
 {
-  if (a4)
+  if (separator)
   {
-    v5 = [a1 imaxLocalizedUnsignedInteger:a3];
+    v5 = [self imaxLocalizedUnsignedInteger:integer];
   }
 
   else
@@ -32,51 +32,51 @@
     v7 = +[NSLocale currentLocale];
     [v6 setLocale:v7];
 
-    v8 = [NSNumber numberWithUnsignedInteger:a3];
+    v8 = [NSNumber numberWithUnsignedInteger:integer];
     v5 = [v6 stringFromNumber:v8];
   }
 
   return v5;
 }
 
-+ (id)imaxLocalizedDouble:(double)a3 maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)a4
++ (id)imaxLocalizedDouble:(double)double maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)separator
 {
-  v6 = [NSNumber numberWithDouble:a3];
-  v7 = [a1 imaxLocalizedNumber:v6 maximumNumberOfDigitsAfterDecimalSeparator:a4];
+  v6 = [NSNumber numberWithDouble:double];
+  v7 = [self imaxLocalizedNumber:v6 maximumNumberOfDigitsAfterDecimalSeparator:separator];
 
   return v7;
 }
 
-+ (id)imaxLocalizedPercentage:(double)a3 maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)a4
++ (id)imaxLocalizedPercentage:(double)percentage maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)separator
 {
-  v6 = [NSNumber numberWithDouble:a3];
-  v7 = [a1 imaxLocalizedNumber:v6 numberStyle:3 maximumNumberOfDigitsAfterDecimalSeparator:a4];
+  v6 = [NSNumber numberWithDouble:percentage];
+  v7 = [self imaxLocalizedNumber:v6 numberStyle:3 maximumNumberOfDigitsAfterDecimalSeparator:separator];
 
   return v7;
 }
 
-+ (id)imaxLocalizedNumber:(id)a3 numberStyle:(unint64_t)a4 maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)a5
++ (id)imaxLocalizedNumber:(id)number numberStyle:(unint64_t)style maximumNumberOfDigitsAfterDecimalSeparator:(unint64_t)separator
 {
-  v7 = a3;
+  numberCopy = number;
   v8 = objc_opt_new();
-  [v8 setNumberStyle:a4];
-  [v8 setMaximumFractionDigits:a5];
-  v9 = [v8 stringFromNumber:v7];
+  [v8 setNumberStyle:style];
+  [v8 setMaximumFractionDigits:separator];
+  v9 = [v8 stringFromNumber:numberCopy];
 
   return v9;
 }
 
-+ (id)localizedStringFromNumber:(id)a3 numberStyle:(unint64_t)a4 auxiliarySymbolSuffix:(id)a5
++ (id)localizedStringFromNumber:(id)number numberStyle:(unint64_t)style auxiliarySymbolSuffix:(id)suffix
 {
-  v7 = a5;
-  v8 = a3;
+  suffixCopy = suffix;
+  numberCopy = number;
   v9 = objc_opt_new();
-  [v9 setNumberStyle:a4];
-  v10 = [v9 stringFromNumber:v8];
+  [v9 setNumberStyle:style];
+  v10 = [v9 stringFromNumber:numberCopy];
 
-  v11 = [NSString stringWithFormat:@"%@%@", v10, v7];
+  suffixCopy = [NSString stringWithFormat:@"%@%@", v10, suffixCopy];
 
-  return v11;
+  return suffixCopy;
 }
 
 @end

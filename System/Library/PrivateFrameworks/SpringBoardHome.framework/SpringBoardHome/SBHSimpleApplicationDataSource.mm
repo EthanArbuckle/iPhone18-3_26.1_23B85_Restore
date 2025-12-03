@@ -1,16 +1,16 @@
 @interface SBHSimpleApplicationDataSource
-- (id)iconModel:(id)a3 applicationWithBundleIdentifier:(id)a4;
-- (id)makeApplicationWithRecord:(id)a3;
-- (id)simpleApplicationsWithEnumeratorOptions:(unint64_t)a3;
+- (id)iconModel:(id)model applicationWithBundleIdentifier:(id)identifier;
+- (id)makeApplicationWithRecord:(id)record;
+- (id)simpleApplicationsWithEnumeratorOptions:(unint64_t)options;
 @end
 
 @implementation SBHSimpleApplicationDataSource
 
-- (id)iconModel:(id)a3 applicationWithBundleIdentifier:(id)a4
+- (id)iconModel:(id)model applicationWithBundleIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69635F8];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
+  identifierCopy = identifier;
+  v7 = [[v5 alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
 
   if (v7)
   {
@@ -25,14 +25,14 @@
   return v8;
 }
 
-- (id)simpleApplicationsWithEnumeratorOptions:(unint64_t)a3
+- (id)simpleApplicationsWithEnumeratorOptions:(unint64_t)options
 {
-  v4 = [MEMORY[0x1E69635F8] enumeratorWithOptions:a3];
+  v4 = [MEMORY[0x1E69635F8] enumeratorWithOptions:options];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 nextObject];
-  if (v6)
+  nextObject = [v4 nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     do
     {
       v8 = [(SBHSimpleApplicationDataSource *)self makeApplicationWithRecord:v7];
@@ -41,23 +41,23 @@
         [v5 addObject:v8];
       }
 
-      v9 = [v4 nextObject];
+      nextObject2 = [v4 nextObject];
 
-      v7 = v9;
+      v7 = nextObject2;
     }
 
-    while (v9);
+    while (nextObject2);
   }
 
   return v5;
 }
 
-- (id)makeApplicationWithRecord:(id)a3
+- (id)makeApplicationWithRecord:(id)record
 {
-  v4 = a3;
-  if ([v4 sbh_isValidType])
+  recordCopy = record;
+  if ([recordCopy sbh_isValidType])
   {
-    v5 = [[SBHSimpleApplication alloc] initWithApplicationRecord:v4];
+    v5 = [[SBHSimpleApplication alloc] initWithApplicationRecord:recordCopy];
     [(SBHSimpleApplication *)v5 setIconModelApplicationDataSource:self];
   }
 

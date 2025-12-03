@@ -1,18 +1,18 @@
 @interface PROConcretePlugInGroup
-- (BOOL)isEqual:(id)a3;
-- (PROConcretePlugInGroup)initWithUUID:(__CFUUID *)a3 name:(id)a4 bundle:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PROConcretePlugInGroup)initWithUUID:(__CFUUID *)d name:(id)name bundle:(id)bundle;
 - (id)description;
 - (id)uuidString;
-- (void)addPlugIn:(id)a3;
+- (void)addPlugIn:(id)in;
 - (void)dealloc;
-- (void)removePlugIn:(id)a3;
+- (void)removePlugIn:(id)in;
 @end
 
 @implementation PROConcretePlugInGroup
 
-- (PROConcretePlugInGroup)initWithUUID:(__CFUUID *)a3 name:(id)a4 bundle:(id)a5
+- (PROConcretePlugInGroup)initWithUUID:(__CFUUID *)d name:(id)name bundle:(id)bundle
 {
-  if (a3 && a4 && a5)
+  if (d && name && bundle)
   {
     v14.receiver = self;
     v14.super_class = PROConcretePlugInGroup;
@@ -21,10 +21,10 @@
     if (v8)
     {
       v10 = [(PROConcretePlugInGroup *)v8 zone];
-      v9->uuidRef = CFRetain(a3);
-      v11 = [a4 copy];
+      v9->uuidRef = CFRetain(d);
+      v11 = [name copy];
       v9->name = v11;
-      v9->displayName = [objc_msgSend(a5 localizedStringForKey:v11 value:0 table:{0), "copy"}];
+      v9->displayName = [objc_msgSend(bundle localizedStringForKey:v11 value:0 table:{0), "copy"}];
       v9->plugIns = [objc_msgSend(MEMORY[0x277CBEB18] allocWithZone:{v10), "init"}];
       v9->protocols = [objc_msgSend(MEMORY[0x277CBEB38] allocWithZone:{v10), "init"}];
       v9->mutex = [objc_msgSend(MEMORY[0x277CCAAF8] allocWithZone:{v10), "init"}];
@@ -33,7 +33,7 @@
 
   else
   {
-    v12 = self;
+    selfCopy = self;
     return 0;
   }
 
@@ -54,43 +54,43 @@
   [(PROConcretePlugInGroup *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if (objc_opt_respondsToSelector())
   {
 
-    return [(PROConcretePlugInGroup *)self isEqualToPlugInGroup:a3];
+    return [(PROConcretePlugInGroup *)self isEqualToPlugInGroup:equal];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PROConcretePlugInGroup;
-    return [(PROConcretePlugInGroup *)&v6 isEqual:a3];
+    return [(PROConcretePlugInGroup *)&v6 isEqual:equal];
   }
 }
 
-- (void)addPlugIn:(id)a3
+- (void)addPlugIn:(id)in
 {
-  if (!a3)
+  if (!in)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "plugIn", NSStringFromSelector(a2)}];
   }
 
   [(NSLock *)self->mutex lock];
-  [-[PROConcretePlugInGroup mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", "addObject:", a3}];
-  v5 = [objc_msgSend(a3 "implementedProtocols")];
-  v6 = [v5 nextObject];
-  if (v6)
+  [-[PROConcretePlugInGroup mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", "addObject:", in}];
+  v5 = [objc_msgSend(in "implementedProtocols")];
+  nextObject = [v5 nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject2 = nextObject;
     do
     {
-      [(NSMutableDictionary *)self->protocols addObject:a3 toSetForKey:v7];
-      v7 = [v5 nextObject];
+      [(NSMutableDictionary *)self->protocols addObject:in toSetForKey:nextObject2];
+      nextObject2 = [v5 nextObject];
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
   mutex = self->mutex;
@@ -98,29 +98,29 @@
   [(NSLock *)mutex unlock];
 }
 
-- (void)removePlugIn:(id)a3
+- (void)removePlugIn:(id)in
 {
-  if (!a3)
+  if (!in)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Nil argument '%s' to method '%@'", "plugIn", NSStringFromSelector(a2)}];
   }
 
-  v5 = [objc_msgSend(a3 "implementedProtocols")];
+  v5 = [objc_msgSend(in "implementedProtocols")];
   [(NSLock *)self->mutex lock];
-  v6 = [v5 nextObject];
-  if (v6)
+  nextObject = [v5 nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    nextObject2 = nextObject;
     do
     {
-      [(NSMutableDictionary *)self->protocols removeObject:a3 fromSetForKey:v7];
-      v7 = [v5 nextObject];
+      [(NSMutableDictionary *)self->protocols removeObject:in fromSetForKey:nextObject2];
+      nextObject2 = [v5 nextObject];
     }
 
-    while (v7);
+    while (nextObject2);
   }
 
-  [-[PROConcretePlugInGroup mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", v7), "removeObject:", a3}];
+  [-[PROConcretePlugInGroup mutableArrayValueForKey:](self mutableArrayValueForKey:{@"plugIns", nextObject2), "removeObject:", in}];
   mutex = self->mutex;
 
   [(NSLock *)mutex unlock];

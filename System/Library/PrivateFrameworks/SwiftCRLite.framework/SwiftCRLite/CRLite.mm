@@ -1,37 +1,37 @@
 @interface CRLite
-- (BOOL)certStatus:(__SecCertificate *)a3 issuerCert:(__SecCertificate *)a4 error:(id *)a5;
-- (BOOL)issuerEnrolled:(__SecCertificate *)a3 error:(id *)a4;
-- (BOOL)loadFilter:(id)a3 error:(id *)a4;
-- (BOOL)loadIssuers:(id)a3 error:(id *)a4;
+- (BOOL)certStatus:(__SecCertificate *)status issuerCert:(__SecCertificate *)cert error:(id *)error;
+- (BOOL)issuerEnrolled:(__SecCertificate *)enrolled error:(id *)error;
+- (BOOL)loadFilter:(id)filter error:(id *)error;
+- (BOOL)loadIssuers:(id)issuers error:(id *)error;
 - (_TtC11SwiftCRLite6CRLite)init;
 @end
 
 @implementation CRLite
 
-- (BOOL)loadFilter:(id)a3 error:(id *)a4
+- (BOOL)loadFilter:(id)filter error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  filterCopy = filter;
+  selfCopy = self;
   v7 = sub_26BDF857C();
   v9 = v8;
 
   sub_26BDF85AC();
   v10 = sub_26BDF859C();
   sub_26BDF697C(v7, v9);
-  v11 = *(&v6->super.isa + OBJC_IVAR____TtC11SwiftCRLite6CRLite_filter);
-  *(&v6->super.isa + OBJC_IVAR____TtC11SwiftCRLite6CRLite_filter) = v10;
+  v11 = *(&selfCopy->super.isa + OBJC_IVAR____TtC11SwiftCRLite6CRLite_filter);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC11SwiftCRLite6CRLite_filter) = v10;
 
   return 1;
 }
 
-- (BOOL)loadIssuers:(id)a3 error:(id *)a4
+- (BOOL)loadIssuers:(id)issuers error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  issuersCopy = issuers;
+  selfCopy = self;
   v7 = sub_26BDF857C();
   v9 = v8;
 
-  v10 = *(&v6->super.isa + OBJC_IVAR____TtC11SwiftCRLite6CRLite_issuers);
+  v10 = *(&selfCopy->super.isa + OBJC_IVAR____TtC11SwiftCRLite6CRLite_issuers);
 
   sub_26BDF4D94();
 
@@ -39,21 +39,21 @@
   return 1;
 }
 
-- (BOOL)issuerEnrolled:(__SecCertificate *)a3 error:(id *)a4
+- (BOOL)issuerEnrolled:(__SecCertificate *)enrolled error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_26BDF3D8C(v5);
+  enrolledCopy = enrolled;
+  selfCopy = self;
+  sub_26BDF3D8C(enrolledCopy);
 
   return 1;
 }
 
-- (BOOL)certStatus:(__SecCertificate *)a3 issuerCert:(__SecCertificate *)a4 error:(id *)a5
+- (BOOL)certStatus:(__SecCertificate *)status issuerCert:(__SecCertificate *)cert error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_26BDF402C(v7);
+  statusCopy = status;
+  certCopy = cert;
+  selfCopy = self;
+  sub_26BDF402C(statusCopy);
 
   return 1;
 }

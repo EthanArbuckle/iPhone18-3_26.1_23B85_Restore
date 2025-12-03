@@ -1,18 +1,18 @@
 @interface HealthHTNCustomerDiagnosticExtension
-- (HAHypertensivePatternAnalysis)_analyzeMeasurements:(id)a3 withDateInterval:(id)a4;
-- (id)_HTPMeasurementsWithHealthStore:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (id)_attachmentItemWithFileURL:(id)a3;
-- (id)_attachmentsWithFileURLs:(id)a3;
-- (id)_heartDataWithQuantityType:(id)a3 healthStore:(id)a4 startDate:(id)a5 endDate:(id)a6 predicates:(id)a7;
-- (id)_lastAnalysisMeasurementsRerunAnalysisWithHealthStore:(id)a3;
-- (id)_sleepDataWithHealthStore:(id)a3 endDate:(id)a4;
-- (id)_writeJSON:(id)a3 logDirectoryURL:(id)a4 fileName:(id)a5;
-- (id)attachmentsForParameters:(id)a3;
+- (HAHypertensivePatternAnalysis)_analyzeMeasurements:(id)measurements withDateInterval:(id)interval;
+- (id)_HTPMeasurementsWithHealthStore:(id)store startDate:(id)date endDate:(id)endDate;
+- (id)_attachmentItemWithFileURL:(id)l;
+- (id)_attachmentsWithFileURLs:(id)ls;
+- (id)_heartDataWithQuantityType:(id)type healthStore:(id)store startDate:(id)date endDate:(id)endDate predicates:(id)predicates;
+- (id)_lastAnalysisMeasurementsRerunAnalysisWithHealthStore:(id)store;
+- (id)_sleepDataWithHealthStore:(id)store endDate:(id)date;
+- (id)_writeJSON:(id)n logDirectoryURL:(id)l fileName:(id)name;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation HealthHTNCustomerDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   _HKInitializeLogging();
   v4 = HKLogDefault;
@@ -25,8 +25,8 @@
   v5 = +[NSDate now];
   v6 = objc_alloc_init(HKHealthStore);
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 temporaryDirectory];
-  v9 = [v8 URLByAppendingPathComponent:@"HealthHTNCustomerDiagnosticExtension" isDirectory:1];
+  temporaryDirectory = [v7 temporaryDirectory];
+  v9 = [temporaryDirectory URLByAppendingPathComponent:@"HealthHTNCustomerDiagnosticExtension" isDirectory:1];
 
   v76 = NSFileProtectionKey;
   v77 = NSFileProtectionCompleteUnlessOpen;
@@ -185,35 +185,35 @@
   return v13;
 }
 
-- (id)_attachmentsWithFileURLs:(id)a3
+- (id)_attachmentsWithFileURLs:(id)ls
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000168C;
   v5[3] = &unk_1000082B0;
   v5[4] = self;
-  v3 = [a3 hk_map:v5];
+  v3 = [ls hk_map:v5];
 
   return v3;
 }
 
-- (id)_attachmentItemWithFileURL:(id)a3
+- (id)_attachmentItemWithFileURL:(id)l
 {
-  v3 = [DEAttachmentItem attachmentWithPathURL:a3];
+  v3 = [DEAttachmentItem attachmentWithPathURL:l];
   [v3 setDeleteOnAttach:&__kCFBooleanTrue];
   [v3 setShouldCompress:&__kCFBooleanFalse];
 
   return v3;
 }
 
-- (id)_writeJSON:(id)a3 logDirectoryURL:(id)a4 fileName:(id)a5
+- (id)_writeJSON:(id)n logDirectoryURL:(id)l fileName:(id)name
 {
-  v7 = a5;
+  nameCopy = name;
   v17 = 0;
-  v8 = a4;
-  v9 = [NSJSONSerialization dataWithJSONObject:a3 options:1 error:&v17];
+  lCopy = l;
+  v9 = [NSJSONSerialization dataWithJSONObject:n options:1 error:&v17];
   v10 = v17;
-  v11 = [v8 URLByAppendingPathComponent:v7];
+  v11 = [lCopy URLByAppendingPathComponent:nameCopy];
 
   v16 = v10;
   [v9 writeToURL:v11 options:1 error:&v16];
@@ -225,7 +225,7 @@
     v13 = HKLogDefault;
     if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_ERROR))
     {
-      sub_100003430(v7, v12, v13);
+      sub_100003430(nameCopy, v12, v13);
     }
 
     v14 = 0;
@@ -239,14 +239,14 @@
   return v14;
 }
 
-- (id)_sleepDataWithHealthStore:(id)a3 endDate:(id)a4
+- (id)_sleepDataWithHealthStore:(id)store endDate:(id)date
 {
-  v45 = a3;
-  v49 = a4;
-  v50 = [v49 dateByAddingTimeInterval:-7776000.0];
+  storeCopy = store;
+  dateCopy = date;
+  v50 = [dateCopy dateByAddingTimeInterval:-7776000.0];
   v46 = +[NSCalendar hk_gregorianCalendar];
   v48 = [v50 hk_dayIndexWithCalendar:v46];
-  v47 = [v49 hk_dayIndexWithCalendar:v46];
+  v47 = [dateCopy hk_dayIndexWithCalendar:v46];
   v76 = 0;
   v77 = &v76;
   v78 = 0x3032000000;
@@ -270,7 +270,7 @@
   dsema = v5;
   v70 = dsema;
   v7 = [v6 initWithMorningIndexRange:v48 ascending:v47 limit:1 options:0 resultsHandler:{3, v69}];
-  [v45 executeQuery:v7];
+  [storeCopy executeQuery:v7];
   v42 = v7;
   v8 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(dsema, v8);
@@ -314,8 +314,8 @@
           v62 = 0u;
           v63 = 0u;
           v64 = 0u;
-          v51 = [v12 periods];
-          v53 = [v51 countByEnumeratingWithState:&v61 objects:v87 count:16];
+          periods = [v12 periods];
+          v53 = [periods countByEnumeratingWithState:&v61 objects:v87 count:16];
           if (v53)
           {
             v52 = *v62;
@@ -325,7 +325,7 @@
               {
                 if (*v62 != v52)
                 {
-                  objc_enumerationMutation(v51);
+                  objc_enumerationMutation(periods);
                 }
 
                 v13 = *(*(&v61 + 1) + 8 * j);
@@ -333,12 +333,12 @@
                 v58 = 0u;
                 v59 = 0u;
                 v60 = 0u;
-                v14 = [v13 segments];
-                v15 = [v14 countByEnumeratingWithState:&v57 objects:v86 count:16];
+                segments = [v13 segments];
+                v15 = [segments countByEnumeratingWithState:&v57 objects:v86 count:16];
                 if (v15)
                 {
                   v16 = *v58;
-                  v55 = v14;
+                  v55 = segments;
                   do
                   {
                     for (k = 0; k != v15; k = k + 1)
@@ -352,21 +352,21 @@
                       if (v18)
                       {
                         v84[0] = @"startDate";
-                        v19 = [v18 dateInterval];
-                        v20 = [v19 startDate];
-                        v21 = [v20 description];
+                        dateInterval = [v18 dateInterval];
+                        startDate = [dateInterval startDate];
+                        v21 = [startDate description];
                         v85[0] = v21;
                         v84[1] = @"endDate";
-                        v22 = [v18 dateInterval];
-                        v23 = [v22 endDate];
-                        v24 = [v23 description];
+                        dateInterval2 = [v18 dateInterval];
+                        endDate = [dateInterval2 endDate];
+                        v24 = [endDate description];
                         v85[1] = v24;
                         v25 = [NSDictionary dictionaryWithObjects:v85 forKeys:v84 count:2];
                         [v56 addObject:v25];
                       }
                     }
 
-                    v14 = v55;
+                    segments = v55;
                     v15 = [v55 countByEnumeratingWithState:&v57 objects:v86 count:16];
                   }
 
@@ -374,7 +374,7 @@
                 }
               }
 
-              v53 = [v51 countByEnumeratingWithState:&v61 objects:v87 count:16];
+              v53 = [periods countByEnumeratingWithState:&v61 objects:v87 count:16];
             }
 
             while (v53);
@@ -434,7 +434,7 @@
   v32 = [v50 description];
   v83[3] = v32;
   v82[4] = @"endDate";
-  v33 = [v49 description];
+  v33 = [dateCopy description];
   v83[4] = v33;
   v82[5] = @"count";
   v34 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v56 count]);
@@ -463,13 +463,13 @@
   return v37;
 }
 
-- (id)_lastAnalysisMeasurementsRerunAnalysisWithHealthStore:(id)a3
+- (id)_lastAnalysisMeasurementsRerunAnalysisWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = [HKKeyValueDomain alloc];
-  v32 = v4;
+  v32 = storeCopy;
   v34 = 0;
-  v27 = [v5 initWithCategory:4 domainName:HKHRHypertensionNotificationsDefaultsDomain healthStore:v4];
+  v27 = [v5 initWithCategory:4 domainName:HKHRHypertensionNotificationsDefaultsDomain healthStore:storeCopy];
   v6 = [v27 dateForKey:HKHRHypertensionNotificationsLastAnalysisWindowEndDateKey error:&v34];
   v7 = v34;
   v29 = v7;
@@ -479,7 +479,7 @@
     v28 = [[NSDateInterval alloc] initWithStartDate:v31 endDate:v6];
     v30 = +[HKQuantityType hypertensiveMeasurementType];
     v33 = 0;
-    v8 = [(HealthHTNCustomerDiagnosticExtension *)self _samplesWithQuantityType:v30 dateInterval:v28 healthStore:v4 predicates:0 ascending:1 error:&v33];
+    v8 = [(HealthHTNCustomerDiagnosticExtension *)self _samplesWithQuantityType:v30 dateInterval:v28 healthStore:storeCopy predicates:0 ascending:1 error:&v33];
     v9 = v33;
     if (v8)
     {
@@ -586,15 +586,15 @@ LABEL_25:
   return v18;
 }
 
-- (id)_heartDataWithQuantityType:(id)a3 healthStore:(id)a4 startDate:(id)a5 endDate:(id)a6 predicates:(id)a7
+- (id)_heartDataWithQuantityType:(id)type healthStore:(id)store startDate:(id)date endDate:(id)endDate predicates:(id)predicates
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a4;
-  v28 = [[NSDateInterval alloc] initWithStartDate:v13 endDate:v14];
-  v17 = [HealthHTNCustomerDiagnosticExtension _samplesWithQuantityType:"_samplesWithQuantityType:dateInterval:healthStore:predicates:ascending:error:" dateInterval:v12 healthStore:? predicates:? ascending:? error:?];
+  typeCopy = type;
+  dateCopy = date;
+  endDateCopy = endDate;
+  predicatesCopy = predicates;
+  storeCopy = store;
+  v28 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
+  v17 = [HealthHTNCustomerDiagnosticExtension _samplesWithQuantityType:"_samplesWithQuantityType:dateInterval:healthStore:predicates:ascending:error:" dateInterval:typeCopy healthStore:? predicates:? ascending:? error:?];
 
   v18 = 0;
   if (v17)
@@ -610,15 +610,15 @@ LABEL_25:
   }
 
   v31[0] = @"quantityType";
-  v30 = v12;
-  v21 = [v12 description];
+  v30 = typeCopy;
+  v21 = [typeCopy description];
   v32[0] = v21;
   v31[1] = @"startDate";
-  v29 = v13;
-  v22 = [v13 description];
+  v29 = dateCopy;
+  v22 = [dateCopy description];
   v32[1] = v22;
   v31[2] = @"endDate";
-  v23 = [v14 description];
+  v23 = [endDateCopy description];
   v32[2] = v23;
   v31[3] = @"count";
   v24 = [NSNumber numberWithInt:v19];
@@ -645,16 +645,16 @@ LABEL_25:
   return v26;
 }
 
-- (id)_HTPMeasurementsWithHealthStore:(id)a3 startDate:(id)a4 endDate:(id)a5
+- (id)_HTPMeasurementsWithHealthStore:(id)store startDate:(id)date endDate:(id)endDate
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[NSDateInterval alloc] initWithStartDate:v8 endDate:v9];
+  dateCopy = date;
+  endDateCopy = endDate;
+  storeCopy = store;
+  v11 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
   v12 = +[HKQuantityType hypertensiveMeasurementType];
   v27 = 0;
   v24 = v11;
-  v13 = [(HealthHTNCustomerDiagnosticExtension *)self _samplesWithQuantityType:v12 dateInterval:v11 healthStore:v10 predicates:0 ascending:0 error:&v27];
+  v13 = [(HealthHTNCustomerDiagnosticExtension *)self _samplesWithQuantityType:v12 dateInterval:v11 healthStore:storeCopy predicates:0 ascending:0 error:&v27];
 
   v14 = v27;
   if (v13)
@@ -673,12 +673,12 @@ LABEL_25:
   v17 = [v12 description];
   v29[0] = v17;
   v28[1] = @"startDate";
-  v26 = v8;
-  v18 = [v8 description];
+  v26 = dateCopy;
+  v18 = [dateCopy description];
   v29[1] = v18;
   v28[2] = @"endDate";
-  v25 = v9;
-  v19 = [v9 description];
+  v25 = endDateCopy;
+  v19 = [endDateCopy description];
   v29[2] = v19;
   v28[3] = @"count";
   v20 = [NSNumber numberWithInt:v15];
@@ -705,11 +705,11 @@ LABEL_25:
   return v22;
 }
 
-- (HAHypertensivePatternAnalysis)_analyzeMeasurements:(id)a3 withDateInterval:(id)a4
+- (HAHypertensivePatternAnalysis)_analyzeMeasurements:(id)measurements withDateInterval:(id)interval
 {
-  if (a3)
+  if (measurements)
   {
-    v4 = [HAHypertensivePatternAnalyzer analyzeMeasurements:a3 forDateInterval:a4];
+    v4 = [HAHypertensivePatternAnalyzer analyzeMeasurements:measurements forDateInterval:interval];
   }
 
   else

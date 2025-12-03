@@ -1,7 +1,7 @@
 @interface NFPreferenceObserver
 - (void)dealloc;
 - (void)handlePreferencesOrProfileChanged;
-- (void)start:(id)a3;
+- (void)start:(id)start;
 - (void)stop;
 @end
 
@@ -15,19 +15,19 @@
   [(NFPreferenceObserver *)&v4 dealloc];
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  objc_msgSend_setCallback_(v4, v6, v5);
+  selfCopy = self;
+  startCopy = start;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_setCallback_(selfCopy, v6, startCopy);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v4, sub_22EEE12D8, @"com.apple.stockholm.preferenceschanged", 0, 1026);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, selfCopy, sub_22EEE12D8, @"com.apple.stockholm.preferenceschanged", 0, 1026);
   v8 = CFNotificationCenterGetDarwinNotifyCenter();
 
-  CFNotificationCenterAddObserver(v8, v4, sub_22EEE12D8, @"com.apple.ManagedConfiguration.profileListChanged", 0, 1026);
+  CFNotificationCenterAddObserver(v8, selfCopy, sub_22EEE12D8, @"com.apple.ManagedConfiguration.profileListChanged", 0, 1026);
 }
 
 - (void)stop

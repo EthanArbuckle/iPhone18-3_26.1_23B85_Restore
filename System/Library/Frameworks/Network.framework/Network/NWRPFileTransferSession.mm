@@ -3,157 +3,157 @@
 - (NSData)selfPublicKey;
 - (NSString)targetID;
 - (NSURL)temporaryDirectoryURL;
-- (id)initAsTarget:(BOOL)a3;
+- (id)initAsTarget:(BOOL)target;
 - (void)activate;
-- (void)handleProgress:(id)a3;
-- (void)handleReceivedItem:(id)a3;
+- (void)handleProgress:(id)progress;
+- (void)handleReceivedItem:(id)item;
 - (void)invalidate;
 - (void)prepare;
-- (void)setPeerPublicKey:(id)a3;
-- (void)setTargetID:(id)a3;
-- (void)setTemporaryDirectoryURL:(id)a3;
-- (void)transferFileURL:(id)a3 completion:(id)a4;
+- (void)setPeerPublicKey:(id)key;
+- (void)setTargetID:(id)d;
+- (void)setTemporaryDirectoryURL:(id)l;
+- (void)transferFileURL:(id)l completion:(id)completion;
 @end
 
 @implementation NWRPFileTransferSession
 
-- (void)handleProgress:(id)a3
+- (void)handleProgress:(id)progress
 {
-  v7 = a3;
-  v4 = [(NWRPFileTransferSession *)self completionHandler];
+  progressCopy = progress;
+  completionHandler = [(NWRPFileTransferSession *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    if (-[NWRPFileTransferSession isTarget](self, "isTarget") && [v7 type] == 11 || objc_msgSend(v7, "totalFileCount") >= 1 && (v5 = objc_msgSend(v7, "totalFileCount"), v5 == objc_msgSend(v7, "transferredFileCount")))
+    if (-[NWRPFileTransferSession isTarget](self, "isTarget") && [progressCopy type] == 11 || objc_msgSend(progressCopy, "totalFileCount") >= 1 && (v5 = objc_msgSend(progressCopy, "totalFileCount"), v5 == objc_msgSend(progressCopy, "transferredFileCount")))
     {
-      v6 = [(NWRPFileTransferSession *)self completionHandler];
-      v6[2]();
+      completionHandler2 = [(NWRPFileTransferSession *)self completionHandler];
+      completionHandler2[2]();
     }
   }
 }
 
-- (void)handleReceivedItem:(id)a3
+- (void)handleReceivedItem:(id)item
 {
-  v6 = [a3 filename];
-  if (v6)
+  filename = [item filename];
+  if (filename)
   {
-    v4 = [(NWRPFileTransferSession *)self receivedFileHandler];
+    receivedFileHandler = [(NWRPFileTransferSession *)self receivedFileHandler];
 
-    if (v4)
+    if (receivedFileHandler)
     {
-      v5 = [(NWRPFileTransferSession *)self receivedFileHandler];
-      (v5)[2](v5, v6);
+      receivedFileHandler2 = [(NWRPFileTransferSession *)self receivedFileHandler];
+      (receivedFileHandler2)[2](receivedFileHandler2, filename);
     }
   }
 }
 
-- (void)transferFileURL:(id)a3 completion:(id)a4
+- (void)transferFileURL:(id)l completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   gotLoadHelper_x8__OBJC_CLASS___RPFileTransferItem(v7);
   v9 = *(v8 + 2944);
-  v10 = a3;
+  lCopy = l;
   v11 = objc_alloc_init(v9);
-  [v11 setItemURL:v10];
-  v12 = [v10 lastPathComponent];
+  [v11 setItemURL:lCopy];
+  lastPathComponent = [lCopy lastPathComponent];
 
-  [v11 setFilename:v12];
+  [v11 setFilename:lastPathComponent];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__NWRPFileTransferSession_transferFileURL_completion___block_invoke;
   v15[3] = &unk_1E6A2E2A0;
-  v16 = v6;
-  v13 = v6;
+  v16 = completionCopy;
+  v13 = completionCopy;
   [v11 setCompletionHandler:v15];
-  v14 = [(NWRPFileTransferSession *)self session];
-  [v14 addItem:v11];
+  session = [(NWRPFileTransferSession *)self session];
+  [session addItem:v11];
 }
 
 - (void)prepare
 {
-  v2 = [(NWRPFileTransferSession *)self session];
-  [v2 prepareTemplateAndReturnError:0];
+  session = [(NWRPFileTransferSession *)self session];
+  [session prepareTemplateAndReturnError:0];
 }
 
 - (void)invalidate
 {
-  v2 = [(NWRPFileTransferSession *)self session];
-  [v2 invalidate];
+  session = [(NWRPFileTransferSession *)self session];
+  [session invalidate];
 }
 
 - (void)activate
 {
-  v2 = [(NWRPFileTransferSession *)self session];
-  [v2 activate];
+  session = [(NWRPFileTransferSession *)self session];
+  [session activate];
 }
 
-- (void)setTemporaryDirectoryURL:(id)a3
+- (void)setTemporaryDirectoryURL:(id)l
 {
-  v4 = a3;
-  v5 = [(NWRPFileTransferSession *)self session];
-  [v5 setTemporaryDirectoryURL:v4];
+  lCopy = l;
+  session = [(NWRPFileTransferSession *)self session];
+  [session setTemporaryDirectoryURL:lCopy];
 }
 
 - (NSURL)temporaryDirectoryURL
 {
-  v2 = [(NWRPFileTransferSession *)self session];
-  v3 = [v2 temporaryDirectoryURL];
+  session = [(NWRPFileTransferSession *)self session];
+  temporaryDirectoryURL = [session temporaryDirectoryURL];
 
-  return v3;
+  return temporaryDirectoryURL;
 }
 
-- (void)setTargetID:(id)a3
+- (void)setTargetID:(id)d
 {
-  v4 = a3;
-  v5 = [(NWRPFileTransferSession *)self session];
-  [v5 setTargetID:v4];
+  dCopy = d;
+  session = [(NWRPFileTransferSession *)self session];
+  [session setTargetID:dCopy];
 }
 
 - (NSString)targetID
 {
-  v2 = [(NWRPFileTransferSession *)self session];
-  v3 = [v2 targetID];
+  session = [(NWRPFileTransferSession *)self session];
+  targetID = [session targetID];
 
-  return v3;
+  return targetID;
 }
 
 - (NSData)selfPublicKey
 {
-  v2 = [(NWRPFileTransferSession *)self session];
-  v3 = [v2 selfPublicKey];
+  session = [(NWRPFileTransferSession *)self session];
+  selfPublicKey = [session selfPublicKey];
 
-  return v3;
+  return selfPublicKey;
 }
 
-- (void)setPeerPublicKey:(id)a3
+- (void)setPeerPublicKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NWRPFileTransferSession *)self session];
-  [v5 setPeerPublicKey:v4];
+  keyCopy = key;
+  session = [(NWRPFileTransferSession *)self session];
+  [session setPeerPublicKey:keyCopy];
 }
 
 - (NSData)peerPublicKey
 {
-  v2 = [(NWRPFileTransferSession *)self session];
-  v3 = [v2 peerPublicKey];
+  session = [(NWRPFileTransferSession *)self session];
+  peerPublicKey = [session peerPublicKey];
 
-  return v3;
+  return peerPublicKey;
 }
 
-- (id)initAsTarget:(BOOL)a3
+- (id)initAsTarget:(BOOL)target
 {
-  v3 = a3;
+  targetCopy = target;
   v15.receiver = self;
   v15.super_class = NWRPFileTransferSession;
   v4 = [(NWRPFileTransferSession *)&v15 init];
-  v4->_isTarget = v3;
+  v4->_isTarget = targetCopy;
   objc_initWeak(&location, v4);
   gotLoadHelper_x8__OBJC_CLASS___RPFileTransferSession(v5);
   v7 = objc_alloc_init(*(v6 + 2968));
   session = v4->_session;
   v4->_session = v7;
 
-  [(RPFileTransferSession *)v4->_session setFlags:v3 | 0x50u];
+  [(RPFileTransferSession *)v4->_session setFlags:targetCopy | 0x50u];
   [(RPFileTransferSession *)v4->_session setProgressHandlerTimeInterval:1.0];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;

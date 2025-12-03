@@ -1,8 +1,8 @@
 @interface WFImagePlaygroundAvailabilityResource
 - (NSString)name;
-- (_TtC11WorkflowKit37WFImagePlaygroundAvailabilityResource)initWithDefinition:(id)a3;
-- (_TtC11WorkflowKit37WFImagePlaygroundAvailabilityResource)initWithDefinition:(id)a3 enableDistributedNotifications:(BOOL)a4;
-- (id)localizedErrorReasonForStatus:(unint64_t)a3;
+- (_TtC11WorkflowKit37WFImagePlaygroundAvailabilityResource)initWithDefinition:(id)definition;
+- (_TtC11WorkflowKit37WFImagePlaygroundAvailabilityResource)initWithDefinition:(id)definition enableDistributedNotifications:(BOOL)notifications;
+- (id)localizedErrorReasonForStatus:(unint64_t)status;
 - (void)refreshAvailability;
 @end
 
@@ -10,7 +10,7 @@
 
 - (NSString)name
 {
-  v2 = self;
+  selfCopy = self;
   WFImagePlaygroundAvailabilityResource.name.getter();
   v4 = v3;
 
@@ -29,14 +29,14 @@
 
 - (void)refreshAvailability
 {
-  v2 = self;
+  selfCopy = self;
   WFImagePlaygroundAvailabilityResource.refreshAvailability()();
 }
 
-- (id)localizedErrorReasonForStatus:(unint64_t)a3
+- (id)localizedErrorReasonForStatus:(unint64_t)status
 {
-  v4 = self;
-  WFImagePlaygroundAvailabilityResource.localizedErrorReason(for:)(a3);
+  selfCopy = self;
+  WFImagePlaygroundAvailabilityResource.localizedErrorReason(for:)(status);
   v6 = v5;
 
   if (v6)
@@ -52,9 +52,9 @@
   return v7;
 }
 
-- (_TtC11WorkflowKit37WFImagePlaygroundAvailabilityResource)initWithDefinition:(id)a3 enableDistributedNotifications:(BOOL)a4
+- (_TtC11WorkflowKit37WFImagePlaygroundAvailabilityResource)initWithDefinition:(id)definition enableDistributedNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (definition)
   {
     sub_1CA94C1C8();
   }
@@ -62,9 +62,9 @@
   WFImagePlaygroundAvailabilityResource.init(definition:enableDistributedNotifications:)();
 }
 
-- (_TtC11WorkflowKit37WFImagePlaygroundAvailabilityResource)initWithDefinition:(id)a3
+- (_TtC11WorkflowKit37WFImagePlaygroundAvailabilityResource)initWithDefinition:(id)definition
 {
-  if (a3)
+  if (definition)
   {
     sub_1CA94C1C8();
   }

@@ -1,16 +1,16 @@
 @interface AXUIScrollSpeedSlider
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AXUIScrollSpeedSlider
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v16.receiver = self;
   v16.super_class = AXUIScrollSpeedSlider;
-  v4 = a3;
-  [(AXUIScrollSpeedSlider *)&v16 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(AXUIScrollSpeedSlider *)&v16 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(AXUIScrollSpeedSlider *)self control:v16.receiver];
   [v5 minimumValue];
   v7 = 0.3125 - v6;
@@ -25,7 +25,7 @@
   v14 = [UISliderTrackConfiguration configurationWithTicks:v13];
 
   [v14 setAllowsTickValuesOnly:0];
-  v15 = [v4 propertyForKey:PSSliderLocksToSegment];
+  v15 = [specifierCopy propertyForKey:PSSliderLocksToSegment];
 
   if (v15)
   {
@@ -40,8 +40,8 @@
   v4.receiver = self;
   v4.super_class = AXUIScrollSpeedSlider;
   [(AXUIScrollSpeedSlider *)&v4 prepareForReuse];
-  v3 = [(AXUIScrollSpeedSlider *)self control];
-  [v3 setTrackConfiguration:0];
+  control = [(AXUIScrollSpeedSlider *)self control];
+  [control setTrackConfiguration:0];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface TTRLocationChangeMonitor
 - (_TtC15RemindersUICore24TTRLocationChangeMonitor)init;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation TTRLocationChangeMonitor
@@ -14,30 +14,30 @@
   return result;
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
+  authorizationCopy = authorization;
   v5._internal = self;
   internal = v5._internal;
-  v5.super.isa = v4;
+  v5.super.isa = authorizationCopy;
   TTRLocationChangeMonitor.locationManagerDidChangeAuthorization(_:)(v5);
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   sub_21D0D8CF0(0, &qword_280D17890);
   v6 = sub_21DBFA5EC();
-  v7 = a3;
-  v8 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_21D1B70C8(v6);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_21D1B7290(v8);
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
+  sub_21D1B7290(errorCopy);
 }
 
 @end

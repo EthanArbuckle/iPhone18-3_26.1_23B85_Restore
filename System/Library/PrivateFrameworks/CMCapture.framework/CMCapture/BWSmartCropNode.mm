@@ -1,46 +1,46 @@
 @interface BWSmartCropNode
 - ($1981ABD3383123DE67D3222CA4FC2B97)cinematicFramingControls;
-- (BOOL)_isSampleBufferFromPrimaryStream:(opaqueCMSampleBuffer *)a3 metadataDict:(id)a4;
-- (BWSmartCropNode)initWithOutputDimensions:(__n128)a3 cameraInfoByPortType:(__n128)a4 horizontalSensorBinningFactor:(uint64_t)a5 verticalSensorBinningFactor:(id)a6 maxLossyCompressionLevel:(void *)a7 cameraExtrinsicMatrix:(int)a8 processingMode:(int)a9 stillCaptureEnabled:(int)a10 objectMetadataIdentifiers:(int)a11 captureDevice:(BOOL)a12;
+- (BOOL)_isSampleBufferFromPrimaryStream:(opaqueCMSampleBuffer *)stream metadataDict:(id)dict;
+- (BWSmartCropNode)initWithOutputDimensions:(__n128)dimensions cameraInfoByPortType:(__n128)type horizontalSensorBinningFactor:(uint64_t)factor verticalSensorBinningFactor:(id)binningFactor maxLossyCompressionLevel:(void *)level cameraExtrinsicMatrix:(int)matrix processingMode:(int)mode stillCaptureEnabled:(int)self0 objectMetadataIdentifiers:(int)self1 captureDevice:(BOOL)self2;
 - (CGRect)regionOfInterestForCameraControls;
-- (id)_createCalibrationDictionaryFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (id)_createCalibrationDictionaryFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (id)_popHomography;
 - (id)_supportedOutputPixelFormats;
-- (id)smartCropHomographyDataForPTS:(id *)a3;
-- (int)_updateDetectedFacesArray:(id)a3;
-- (int)_updateDetectedObjectsInfo:(id)a3;
+- (id)smartCropHomographyDataForPTS:(id *)s;
+- (int)_updateDetectedFacesArray:(id)array;
+- (int)_updateDetectedObjectsInfo:(id)info;
 - (uint64_t)_initRTSCProcessor;
-- (uint64_t)_pushHomography:(__n128)a3 pts:(__n128)a4;
-- (void)_addMetadataInputsAndOutputsWithMetadataIdentifiers:(id)a3;
+- (uint64_t)_pushHomography:(__n128)homography pts:(__n128)pts;
+- (void)_addMetadataInputsAndOutputsWithMetadataIdentifiers:(id)identifiers;
 - (void)_addVideoCaptureInputAndOutput;
 - (void)_initRTSCProcessor;
-- (void)_processFaceDetectionTimeAnalytics:(id)a3;
+- (void)_processFaceDetectionTimeAnalytics:(id)analytics;
 - (void)_startFaceDetectionTimeAnalytics;
 - (void)_updateFaceDetectionTimeAnalytics;
 - (void)_updateOutputRequirements;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didChangeCenterStageRectOfInterest:(CGRect)a3;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
+- (void)didChangeCenterStageRectOfInterest:(CGRect)interest;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderMetadataSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)renderVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderMetadataSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)renderVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWSmartCropNode
 
-- (BWSmartCropNode)initWithOutputDimensions:(__n128)a3 cameraInfoByPortType:(__n128)a4 horizontalSensorBinningFactor:(uint64_t)a5 verticalSensorBinningFactor:(id)a6 maxLossyCompressionLevel:(void *)a7 cameraExtrinsicMatrix:(int)a8 processingMode:(int)a9 stillCaptureEnabled:(int)a10 objectMetadataIdentifiers:(int)a11 captureDevice:(BOOL)a12
+- (BWSmartCropNode)initWithOutputDimensions:(__n128)dimensions cameraInfoByPortType:(__n128)type horizontalSensorBinningFactor:(uint64_t)factor verticalSensorBinningFactor:(id)binningFactor maxLossyCompressionLevel:(void *)level cameraExtrinsicMatrix:(int)matrix processingMode:(int)mode stillCaptureEnabled:(int)self0 objectMetadataIdentifiers:(int)self1 captureDevice:(BOOL)self2
 {
-  v30.receiver = a1;
+  v30.receiver = self;
   v30.super_class = BWSmartCropNode;
   v20 = [(BWNode *)&v30 init];
   if (v20)
   {
-    v20->_cameraInfoByPortType = a7;
-    v20->_processingMode = a11;
-    v21 = [a7 objectForKeyedSubscript:*off_1E798A0D8];
+    v20->_cameraInfoByPortType = level;
+    v20->_processingMode = identifiers;
+    v21 = [level objectForKeyedSubscript:*off_1E798A0D8];
     v20->_teleNondisruptiveSwitchingZoomFactor = 1.0;
     if (v21)
     {
@@ -52,14 +52,14 @@
     }
 
     v20->_captureDevice = a14;
-    if ((a8 - 3) >= 0xFFFFFFFE && (v20->_horizontalSensorBinningFactor = a8, (a9 - 3) >= 0xFFFFFFFE))
+    if ((matrix - 3) >= 0xFFFFFFFE && (v20->_horizontalSensorBinningFactor = matrix, (mode - 3) >= 0xFFFFFFFE))
     {
-      v20->_verticalSensorBinningFactor = a9;
-      v20->_maxLossyCompressionLevel = a10;
+      v20->_verticalSensorBinningFactor = mode;
+      v20->_maxLossyCompressionLevel = enabled;
       *v20->_anon_a0 = a2;
-      *&v20->_anon_a0[16] = a3;
-      *&v20->_anon_a0[32] = a4;
-      v20->_outputDimensions = a6;
+      *&v20->_anon_a0[16] = dimensions;
+      *&v20->_anon_a0[32] = type;
+      v20->_outputDimensions = binningFactor;
       [(BWNode *)v20 setSupportsLiveReconfiguration:1];
       [(BWNode *)v20 setSupportsPrepareWhileRunning:1];
       [(BWSmartCropNode *)v20 _addVideoCaptureInputAndOutput];
@@ -68,7 +68,7 @@
         [(BWSmartCropNode *)v20 _addMetadataInputsAndOutputsWithMetadataIdentifiers:a13];
       }
 
-      v20->_stillCaptureEnabled = a12;
+      v20->_stillCaptureEnabled = device;
       v20->_stillHomographyByPTS = objc_alloc_init(MEMORY[0x1E695DF90]);
       v20->_stillPTSQueue = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
       v20->_stillHomographyQueueLock._os_unfair_lock_opaque = 0;
@@ -116,12 +116,12 @@
   }
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   [(BWSmartCropNode *)self _updateOutputRequirements];
   if (self->_processingMode == 2)
   {
-    v7 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [a4 index]);
+    v7 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [input index]);
     v8 = [v7 mediaPropertiesForAttachedMediaKey:@"PrimaryFormat"];
     if (!v8)
     {
@@ -129,73 +129,73 @@
       [v7 _setMediaProperties:v8 forAttachedMediaKey:@"PrimaryFormat"];
     }
 
-    [(BWNodeOutputMediaProperties *)v8 setResolvedFormat:a3];
+    [(BWNodeOutputMediaProperties *)v8 setResolvedFormat:format];
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if (!self->_videoOutputFormatIsLive && self->super._input == a5)
+  if (!self->_videoOutputFormatIsLive && self->super._input == input)
   {
-    [(BWNodeOutput *)self->super._output makeConfiguredFormatLive:a3];
+    [(BWNodeOutput *)self->super._output makeConfiguredFormatLive:d];
     self->_videoOutputFormatIsLive = 1;
   }
 
-  if (!self->_detectionMetadataIsLive && self->_detectionMetadataInput == a5)
+  if (!self->_detectionMetadataIsLive && self->_detectionMetadataInput == input)
   {
-    [(BWNodeOutput *)self->_detectionMetadataOutput makeConfiguredFormatLive:a3];
+    [(BWNodeOutput *)self->_detectionMetadataOutput makeConfiguredFormatLive:d];
     self->_detectionMetadataIsLive = 1;
   }
 
-  if (self->super._input == a5)
+  if (self->super._input == input)
   {
     if (!self->_liveReconfigurationInProgress)
     {
-      [(BWSmartCropNode *)self _startFaceDetectionTimeAnalytics:a3];
+      [(BWSmartCropNode *)self _startFaceDetectionTimeAnalytics:d];
     }
 
     if (self->_rtscProcessor)
     {
       if (self->_liveReconfigurationInProgress)
       {
-        [(BWFigVideoCaptureDevice *)self->_captureDevice resetSmartFramingSceneMonitor:a3];
+        [(BWFigVideoCaptureDevice *)self->_captureDevice resetSmartFramingSceneMonitor:d];
         self->_liveReconfigurationInProgress = 0;
       }
     }
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (self->super._input == a4)
+  if (self->super._input == input)
   {
-    [(BWNodeOutput *)self->super._output markEndOfLiveOutputForConfigurationID:a3];
+    [(BWNodeOutput *)self->super._output markEndOfLiveOutputForConfigurationID:d];
     self->_videoOutputFormatIsLive = 0;
     [(BWSmartCropNode *)self _updateFaceDetectionTimeAnalytics];
   }
 
-  if (self->_detectionMetadataInput == a4)
+  if (self->_detectionMetadataInput == input)
   {
-    [(BWNodeOutput *)self->_detectionMetadataOutput markEndOfLiveOutputForConfigurationID:a3];
+    [(BWNodeOutput *)self->_detectionMetadataOutput markEndOfLiveOutputForConfigurationID:d];
     self->_detectionMetadataIsLive = 0;
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   input = self->super._input;
   detectionMetadataInput = self->_detectionMetadataInput;
-  if (input == a4 || detectionMetadataInput == a4)
+  if (input == input || detectionMetadataInput == input)
   {
     os_unfair_lock_lock(&self->_bufferServicingLock);
-    if (input == a4)
+    if (input == input)
     {
-      [(BWSmartCropNode *)self renderVideoSampleBuffer:a3 forInput:a4];
+      [(BWSmartCropNode *)self renderVideoSampleBuffer:buffer forInput:input];
     }
 
-    else if (detectionMetadataInput == a4)
+    else if (detectionMetadataInput == input)
     {
-      [(BWSmartCropNode *)self renderMetadataSampleBuffer:a3 forInput:a4];
+      [(BWSmartCropNode *)self renderMetadataSampleBuffer:buffer forInput:input];
     }
 
     os_unfair_lock_unlock(&self->_bufferServicingLock);
@@ -207,15 +207,15 @@
   }
 }
 
-- (void)renderMetadataSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderMetadataSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   [(BWSmartCropNode *)self _updateDetectedObjectsInfo:v6];
   [(BWSmartCropNode *)self _updateDetectedFacesArray:v6];
   [v6 setObject:0 forKeyedSubscript:*off_1E798A5C8];
   detectionMetadataOutput = self->_detectionMetadataOutput;
 
-  [(BWNodeOutput *)detectionMetadataOutput emitSampleBuffer:a3];
+  [(BWNodeOutput *)detectionMetadataOutput emitSampleBuffer:buffer];
 }
 
 - (CGRect)regionOfInterestForCameraControls
@@ -265,14 +265,14 @@
   [(BWNode *)self addOutput:v6];
 }
 
-- (void)_addMetadataInputsAndOutputsWithMetadataIdentifiers:(id)a3
+- (void)_addMetadataInputsAndOutputsWithMetadataIdentifiers:(id)identifiers
 {
   v5 = [[BWNodeInput alloc] initWithMediaType:1835365473 node:self index:0];
   [(BWNode *)self addInput:v5];
   self->_detectionMetadataInput = v5;
 
   v6 = [[BWNodeOutput alloc] initWithMediaType:1836016234 node:self];
-  [(BWNodeOutput *)v6 setFormat:[BWMetadataObjectFormat formatWithMetadataIdentifiers:a3]];
+  [(BWNodeOutput *)v6 setFormat:[BWMetadataObjectFormat formatWithMetadataIdentifiers:identifiers]];
   [(BWNode *)self addOutput:v6];
   self->_detectionMetadataOutput = v6;
 }
@@ -280,10 +280,10 @@
 - (id)_supportedOutputPixelFormats
 {
   v3 = [MEMORY[0x1E695DF70] arrayWithArray:{-[BWSmartCropNode _supportedInputPixelFormats](self, "_supportedInputPixelFormats")}];
-  v4 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] pixelFormat];
-  if (v4)
+  pixelFormat = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] pixelFormat];
+  if (pixelFormat)
   {
-    IsFullRange = FigCapturePixelFormatIsFullRange(v4);
+    IsFullRange = FigCapturePixelFormatIsFullRange(pixelFormat);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __47__BWSmartCropNode__supportedOutputPixelFormats__block_invoke;
@@ -297,10 +297,10 @@
 
 - (void)_updateOutputRequirements
 {
-  v3 = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] colorSpaceProperties];
-  if (v3)
+  colorSpaceProperties = [(BWVideoFormat *)[(BWNodeInput *)self->super._input videoFormat] colorSpaceProperties];
+  if (colorSpaceProperties)
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInt:v3];
+    v9 = [MEMORY[0x1E696AD98] numberWithInt:colorSpaceProperties];
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
   }
 
@@ -309,18 +309,18 @@
     v4 = 0;
   }
 
-  v5 = [(BWSmartCropNode *)self _supportedOutputPixelFormats];
-  v6 = [(BWNodeOutput *)self->super._output formatRequirements];
-  v7 = v6;
+  _supportedOutputPixelFormats = [(BWSmartCropNode *)self _supportedOutputPixelFormats];
+  formatRequirements = [(BWNodeOutput *)self->super._output formatRequirements];
+  v7 = formatRequirements;
   if (self->_processingMode != 2)
   {
     p_outputDimensions = &self->_outputDimensions;
-    [(BWFormatRequirements *)v6 setWidth:p_outputDimensions->width];
+    [(BWFormatRequirements *)formatRequirements setWidth:p_outputDimensions->width];
     [(BWFormatRequirements *)v7 setHeight:p_outputDimensions->height];
   }
 
   [(BWFormatRequirements *)v7 setSupportedColorSpaceProperties:v4];
-  [(BWFormatRequirements *)v7 setSupportedPixelFormats:v5];
+  [(BWFormatRequirements *)v7 setSupportedPixelFormats:_supportedOutputPixelFormats];
 }
 
 - (void)_initRTSCProcessor
@@ -406,9 +406,9 @@ LABEL_14:
   }
 }
 
-- (id)_createCalibrationDictionaryFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (id)_createCalibrationDictionaryFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v5 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v5)
   {
     [BWSmartCropNode _createCalibrationDictionaryFromSampleBuffer:];
@@ -421,7 +421,7 @@ LABEL_9:
   Value = CFDictionaryGetValue(v5, *off_1E798A420);
   memset(&v19, 0, sizeof(v19));
   CMTimeMakeFromDictionary(&v19, Value);
-  v8 = CMGetAttachment(a3, *MEMORY[0x1E6960470], 0);
+  v8 = CMGetAttachment(buffer, *MEMORY[0x1E6960470], 0);
   if (!v8)
   {
     [BWSmartCropNode _createCalibrationDictionaryFromSampleBuffer:];
@@ -429,7 +429,7 @@ LABEL_9:
   }
 
   v9 = v8;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   Width = CVPixelBufferGetWidth(ImageBuffer);
   v20.height = CVPixelBufferGetHeight(ImageBuffer);
   v20.width = Width;
@@ -488,10 +488,10 @@ uint64_t __45__BWSmartCropNode__updateDetectedFacesArray___block_invoke(uint64_t
   return result;
 }
 
-- (void)renderVideoSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderVideoSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   cf = 0;
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v7 = v6;
   output = self->super._output;
   if (self->_processingMode == 2)
@@ -514,28 +514,28 @@ uint64_t __45__BWSmartCropNode__updateDetectedFacesArray___block_invoke(uint64_t
     }
   }
 
-  else if (BWSampleBufferIsMarkerBuffer(a3))
+  else if (BWSampleBufferIsMarkerBuffer(buffer))
   {
 LABEL_7:
 
-    [(BWNodeOutput *)output emitSampleBuffer:a3];
+    [(BWNodeOutput *)output emitSampleBuffer:buffer];
     return;
   }
 
-  v12 = [(BWSmartCropNode *)self _isSampleBufferFromPrimaryStream:a3 metadataDict:v7];
+  v12 = [(BWSmartCropNode *)self _isSampleBufferFromPrimaryStream:buffer metadataDict:v7];
   if (self->_processingMode == 2 || v12)
   {
     [(BWSmartCropNode *)self _processFaceDetectionTimeAnalytics:v7];
-    v14 = [(BWPixelBufferPool *)[(BWNodeOutputMediaProperties *)[(BWNodeOutput *)[(BWNode *)self output] primaryMediaProperties] livePixelBufferPool] newPixelBuffer];
-    if (!v14)
+    newPixelBuffer = [(BWPixelBufferPool *)[(BWNodeOutputMediaProperties *)[(BWNodeOutput *)[(BWNode *)self output] primaryMediaProperties] livePixelBufferPool] newPixelBuffer];
+    if (!newPixelBuffer)
     {
       goto LABEL_31;
     }
 
-    v15 = v14;
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    v15 = newPixelBuffer;
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     memset(&v31, 0, sizeof(v31));
-    CMSampleBufferGetPresentationTimeStamp(&v31, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v31, buffer);
     v17 = *off_1E798A420;
     if ([v7 objectForKeyedSubscript:*off_1E798A420])
     {
@@ -543,7 +543,7 @@ LABEL_7:
       v31 = *v29;
     }
 
-    v18 = [(BWSmartCropNode *)self _createCalibrationDictionaryFromSampleBuffer:a3];
+    v18 = [(BWSmartCropNode *)self _createCalibrationDictionaryFromSampleBuffer:buffer];
     if (v18)
     {
       [(RTSCProcessor *)self->_rtscProcessor setInputCalibrationData:v18];
@@ -570,7 +570,7 @@ LABEL_7:
         [(BWSmartCropNode *)self _updateDetectedObjectsInfo:v7];
         [(BWSmartCropNode *)self _updateDetectedFacesArray:v7];
         v19 = *MEMORY[0x1E6960470];
-        if (CMGetAttachment(a3, *MEMORY[0x1E6960470], 0))
+        if (CMGetAttachment(buffer, *MEMORY[0x1E6960470], 0))
         {
           v30 = 0u;
           memset(v29, 0, sizeof(v29));
@@ -581,13 +581,13 @@ LABEL_7:
           *&v29[16] = v23;
           DWORD2(v30) = v24;
           *&v30 = v25;
-          CMSetAttachment(a3, v19, [MEMORY[0x1E695DEF0] dataWithBytes:v29 length:48], 1u);
+          CMSetAttachment(buffer, v19, [MEMORY[0x1E695DEF0] dataWithBytes:v29 length:48], 1u);
         }
 
-        CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(a3, v15, &self->_outputFormatDescription, &cf);
+        CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(buffer, v15, &self->_outputFormatDescription, &cf);
         if (cf)
         {
-          v27 = CMSampleBufferGetImageBuffer(a3);
+          v27 = CMSampleBufferGetImageBuffer(buffer);
           CVBufferPropagateAttachments(v27, v15);
           [(BWFigVideoCaptureDevice *)self->_captureDevice setSmartCropCandidateFramingRects:[(RTSCProcessor *)self->_rtscProcessor candidateFramingCropRects]];
           [(BWNodeOutput *)output emitSampleBuffer:cf];
@@ -620,14 +620,14 @@ LABEL_7:
     if (CopyWithNewPixelBuffer)
     {
 LABEL_31:
-      CMSampleBufferGetPresentationTimeStamp(v29, a3);
+      CMSampleBufferGetPresentationTimeStamp(v29, buffer);
       v28 = [BWDroppedSample newDroppedSampleWithReason:0x1F219C0F0 pts:v29];
       [(BWNodeOutput *)output emitDroppedSample:v28];
     }
   }
 }
 
-- (id)smartCropHomographyDataForPTS:(id *)a3
+- (id)smartCropHomographyDataForPTS:(id *)s
 {
   v43 = **&MEMORY[0x1E6960C88];
   os_unfair_lock_lock(&self->_stillHomographyQueueLock);
@@ -658,7 +658,7 @@ LABEL_31:
       memset(&v37, 0, sizeof(v37));
       CMTimeMakeFromDictionary(&v37, v19);
       time1 = v37;
-      time2 = *a3;
+      time2 = *s;
       if (!CMTimeCompare(&time1, &time2))
       {
         v16 = v19;
@@ -666,7 +666,7 @@ LABEL_31:
       }
 
       memset(&time1, 0, sizeof(time1));
-      lhs = *a3;
+      lhs = *s;
       v30 = v37;
       CMTimeSubtract(&time2, &lhs, &v30);
       CMTimeAbsoluteValue(&time1, &time2);
@@ -705,14 +705,14 @@ LABEL_16:
   return v28;
 }
 
-- (void)didChangeCenterStageRectOfInterest:(CGRect)a3
+- (void)didChangeCenterStageRectOfInterest:(CGRect)interest
 {
   if (!self->_processingMode)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = interest.size.height;
+    width = interest.size.width;
+    y = interest.origin.y;
+    x = interest.origin.x;
     os_unfair_lock_lock(&self->_bufferServicingLock);
     [(RTSCProcessor *)self->_rtscProcessor setOutputROI:x, y, width, height];
 
@@ -720,9 +720,9 @@ LABEL_16:
   }
 }
 
-- (BOOL)_isSampleBufferFromPrimaryStream:(opaqueCMSampleBuffer *)a3 metadataDict:(id)a4
+- (BOOL)_isSampleBufferFromPrimaryStream:(opaqueCMSampleBuffer *)stream metadataDict:(id)dict
 {
-  v4 = [a4 objectForKeyedSubscript:*off_1E798B710];
+  v4 = [dict objectForKeyedSubscript:*off_1E798B710];
   if (!v4)
   {
     return 1;
@@ -731,11 +731,11 @@ LABEL_16:
   return [v4 BOOLValue];
 }
 
-- (uint64_t)_pushHomography:(__n128)a3 pts:(__n128)a4
+- (uint64_t)_pushHomography:(__n128)homography pts:(__n128)pts
 {
   v11[0] = a2;
-  v11[1] = a3;
-  v11[2] = a4;
+  v11[1] = homography;
+  v11[2] = pts;
   if (*(a6 + 12))
   {
     v7 = result;
@@ -769,7 +769,7 @@ LABEL_16:
   return result;
 }
 
-- (int)_updateDetectedObjectsInfo:(id)a3
+- (int)_updateDetectedObjectsInfo:(id)info
 {
   OUTLINED_FUNCTION_1_50();
   v46 = 3221225472;
@@ -785,7 +785,7 @@ LABEL_16:
     {
       v9 = DeepCopy;
       v28 = v5;
-      v29 = a3;
+      infoCopy = info;
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
@@ -860,7 +860,7 @@ LABEL_16:
         while (v33);
       }
 
-      [v29 setObject:v9 forKeyedSubscript:v28];
+      [infoCopy setObject:v9 forKeyedSubscript:v28];
       CFRelease(v9);
       LODWORD(v7) = 0;
     }
@@ -877,7 +877,7 @@ LABEL_16:
   return v7;
 }
 
-- (int)_updateDetectedFacesArray:(id)a3
+- (int)_updateDetectedFacesArray:(id)array
 {
   OUTLINED_FUNCTION_1_50();
   v4 = *off_1E798B218;
@@ -895,7 +895,7 @@ LABEL_16:
       goto LABEL_12;
     }
 
-    v16 = OUTLINED_FUNCTION_5_4(DeepCopy, v8, v9, v10, v11, v12, v13, v14, v40, v42, v44, a3, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, 0);
+    v16 = OUTLINED_FUNCTION_5_4(DeepCopy, v8, v9, v10, v11, v12, v13, v14, v40, v42, v44, array, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, 0);
     if (v16)
     {
       v17 = v16;
@@ -978,11 +978,11 @@ LABEL_12:
   }
 }
 
-- (void)_processFaceDetectionTimeAnalytics:(id)a3
+- (void)_processFaceDetectionTimeAnalytics:(id)analytics
 {
   if (!self->_processingMode)
   {
-    v4 = [objc_msgSend(objc_msgSend(a3 objectForKeyedSubscript:{*off_1E798B220), "objectForKeyedSubscript:", *off_1E798ACB8), "objectForKeyedSubscript:", *off_1E798ACE8}];
+    v4 = [objc_msgSend(objc_msgSend(analytics objectForKeyedSubscript:{*off_1E798B220), "objectForKeyedSubscript:", *off_1E798ACB8), "objectForKeyedSubscript:", *off_1E798ACE8}];
     if ([v4 count] != self->_numFacesDetected)
     {
       [(BWSmartCropNode *)self _updateFaceDetectionTimeAnalytics];

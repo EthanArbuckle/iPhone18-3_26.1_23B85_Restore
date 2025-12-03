@@ -1,21 +1,21 @@
 @interface AWDWifiAwdlHistogramBin
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBinStart:(BOOL)a3;
-- (void)setHasValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBinStart:(BOOL)start;
+- (void)setHasValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWifiAwdlHistogramBin
 
-- (void)setHasBinStart:(BOOL)a3
+- (void)setHasBinStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasValue:(BOOL)a3
+- (void)setHasValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -52,7 +52,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -62,16 +62,16 @@
     }
 
 LABEL_7:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_binEnd), @"binEnd"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_binEnd), @"binEnd"}];
     if ((*&self->_has & 4) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_4;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_binStart), @"binStart"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_binStart), @"binStart"}];
   has = self->_has;
   if (has)
   {
@@ -82,13 +82,13 @@ LABEL_3:
   if ((has & 4) != 0)
   {
 LABEL_4:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_value), @"value"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithDouble:", self->_value), @"value"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) == 0)
@@ -129,13 +129,13 @@ LABEL_7:
   PBDataWriterWriteDoubleField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 2) = *&self->_binStart;
-    *(a3 + 32) |= 2u;
+    *(to + 2) = *&self->_binStart;
+    *(to + 32) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -146,8 +146,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 3) = *&self->_value;
-      *(a3 + 32) |= 4u;
+      *(to + 3) = *&self->_value;
+      *(to + 32) |= 4u;
       return;
     }
   }
@@ -157,17 +157,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 1) = *&self->_binEnd;
-  *(a3 + 32) |= 1u;
+  *(to + 1) = *&self->_binEnd;
+  *(to + 32) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -204,20 +204,20 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 32) & 2) == 0 || self->_binStart != *(a3 + 2))
+      if ((*(equal + 32) & 2) == 0 || self->_binStart != *(equal + 2))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 32) & 2) != 0)
+    else if ((*(equal + 32) & 2) != 0)
     {
 LABEL_16:
       LOBYTE(v5) = 0;
@@ -226,21 +226,21 @@ LABEL_16:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 32) & 1) == 0 || self->_binEnd != *(a3 + 1))
+      if ((*(equal + 32) & 1) == 0 || self->_binEnd != *(equal + 1))
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(a3 + 32))
+    else if (*(equal + 32))
     {
       goto LABEL_16;
     }
 
-    LOBYTE(v5) = (*(a3 + 32) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 32) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 32) & 4) == 0 || self->_value != *(a3 + 3))
+      if ((*(equal + 32) & 4) == 0 || self->_value != *(equal + 3))
       {
         goto LABEL_16;
       }
@@ -358,14 +358,14 @@ LABEL_16:
   return v8 ^ v4 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 2) != 0)
   {
-    self->_binStart = *(a3 + 2);
+    self->_binStart = *(from + 2);
     *&self->_has |= 2u;
-    v3 = *(a3 + 32);
+    v3 = *(from + 32);
     if ((v3 & 1) == 0)
     {
 LABEL_3:
@@ -375,20 +375,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_value = *(a3 + 3);
+      self->_value = *(from + 3);
       *&self->_has |= 4u;
       return;
     }
   }
 
-  else if ((*(a3 + 32) & 1) == 0)
+  else if ((*(from + 32) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_binEnd = *(a3 + 1);
+  self->_binEnd = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 32) & 4) != 0)
+  if ((*(from + 32) & 4) != 0)
   {
     goto LABEL_7;
   }

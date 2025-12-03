@@ -1,6 +1,6 @@
 @interface NTKPeopleComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-- (NTKPeopleComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
+- (NTKPeopleComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_loadTimelineEntry;
 - (id)currentSwitcherTemplate;
 - (id)lockedTemplate;
@@ -11,19 +11,19 @@
 - (void)_setupNotifications;
 - (void)_tearDownNotifications;
 - (void)dealloc;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 - (void)resume;
 @end
 
 @implementation NTKPeopleComplicationDataSource
 
-- (NTKPeopleComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKPeopleComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v9 = a3;
+  complicationCopy = complication;
   v21.receiver = self;
   v21.super_class = NTKPeopleComplicationDataSource;
-  v10 = [(CLKCComplicationDataSource *)&v21 initWithComplication:v9 family:a4 forDevice:a5];
+  v10 = [(CLKCComplicationDataSource *)&v21 initWithComplication:complicationCopy family:family forDevice:device];
   if (v10)
   {
     v11 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
@@ -31,20 +31,20 @@
     queue = v10->_queue;
     v10->_queue = v12;
 
-    objc_storeStrong(&v10->_complication, a3);
+    objc_storeStrong(&v10->_complication, complication);
     if (NTKIsDaemonOrFaceSnapshotService())
     {
-      v14 = [(NTKPeopleComplicationDataSource *)v10 _loadTimelineEntry];
+      _loadTimelineEntry = [(NTKPeopleComplicationDataSource *)v10 _loadTimelineEntry];
       switcherEntry = v10->_switcherEntry;
-      v10->_switcherEntry = v14;
+      v10->_switcherEntry = _loadTimelineEntry;
     }
 
     else
     {
       v16 = [NTKPeopleComplicationEntry alloc];
-      switcherEntry = [v9 fullName];
-      v17 = [v9 abbreviation];
-      v18 = [(NTKPeopleComplicationEntry *)v16 initWithFullName:switcherEntry abbreviation:v17 profileImage:0];
+      switcherEntry = [complicationCopy fullName];
+      abbreviation = [complicationCopy abbreviation];
+      v18 = [(NTKPeopleComplicationEntry *)v16 initWithFullName:switcherEntry abbreviation:abbreviation profileImage:0];
       v19 = v10->_switcherEntry;
       v10->_switcherEntry = v18;
     }
@@ -65,13 +65,13 @@
   [(NTKPeopleComplicationDataSource *)&v3 dealloc];
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v9 = a5;
-  v6 = [(NTKPeopleComplication *)self->_complication storeBackedContactID];
-  if (v6)
+  handlerCopy = handler;
+  storeBackedContactID = [(NTKPeopleComplication *)self->_complication storeBackedContactID];
+  if (storeBackedContactID)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"contact://show?id=", v6];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"contact://show?id=", storeBackedContactID];
     v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
   }
 
@@ -80,18 +80,18 @@
     v8 = 0;
   }
 
-  v9[2](v9, v8);
+  handlerCopy[2](handlerCopy, v8);
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   timelineEntry = self->_timelineEntry;
   if (timelineEntry)
   {
     v6 = [(NTKTimelineEntryModel *)timelineEntry entryForComplicationFamily:[(CLKCComplicationDataSource *)self family]];
-    v4[2](v4, v6);
+    handlerCopy[2](handlerCopy, v6);
   }
 
   else
@@ -114,18 +114,18 @@
     v3 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(NTKPeopleComplication *)self->_complication contactID];
+      contactID = [(NTKPeopleComplication *)self->_complication contactID];
       v9 = 138412290;
-      v10 = v4;
+      v10 = contactID;
       _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "People complication: asked for lockedEntry in daemon for id: %@", &v9, 0xCu);
     }
   }
 
   v5 = +[NTKPeopleComplicationEntry lockedEntry];
   v6 = [v5 entryForComplicationFamily:{-[CLKCComplicationDataSource family](self, "family")}];
-  v7 = [v6 complicationTemplate];
+  complicationTemplate = [v6 complicationTemplate];
 
-  return v7;
+  return complicationTemplate;
 }
 
 - (id)currentSwitcherTemplate
@@ -145,9 +145,9 @@
   }
 
   v5 = [(NTKTimelineEntryModel *)timelineEntry entryForComplicationFamily:[(CLKCComplicationDataSource *)self family]];
-  v6 = [v5 complicationTemplate];
+  complicationTemplate = [v5 complicationTemplate];
 
-  return v6;
+  return complicationTemplate;
 }
 
 - (void)resume
@@ -159,13 +159,13 @@
   [(NTKPeopleComplicationDataSource *)self _invalidateIfNeeded];
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
   LOBYTE(v4) = 1;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 8 && *MEMORY[0x277CBB668] != a3)
+  if ((family & 0xFFFFFFFFFFFFFFFELL) != 8 && *MEMORY[0x277CBB668] != family)
   {
-    v4 = 0x1495u >> a3;
-    if (a3 > 0xC)
+    v4 = 0x1495u >> family;
+    if (family > 0xC)
     {
       LOBYTE(v4) = 0;
     }
@@ -179,11 +179,11 @@
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (self->_needsInvalidation)
   {
-    v3 = [(CLKCComplicationDataSource *)self delegate];
-    [v3 invalidateEntries];
+    delegate = [(CLKCComplicationDataSource *)self delegate];
+    [delegate invalidateEntries];
 
-    v4 = [(CLKCComplicationDataSource *)self delegate];
-    [v4 invalidateSwitcherTemplate];
+    delegate2 = [(CLKCComplicationDataSource *)self delegate];
+    [delegate2 invalidateSwitcherTemplate];
 
     self->_needsInvalidation = 0;
   }
@@ -192,16 +192,16 @@
 - (void)_queue_reloadTimelineEntry
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NTKPeopleComplicationDataSource *)self _loadTimelineEntry];
-  v4 = v3;
-  if (v3)
+  _loadTimelineEntry = [(NTKPeopleComplicationDataSource *)self _loadTimelineEntry];
+  v4 = _loadTimelineEntry;
+  if (_loadTimelineEntry)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __61__NTKPeopleComplicationDataSource__queue_reloadTimelineEntry__block_invoke;
     v5[3] = &unk_27877E438;
     v5[4] = self;
-    v6 = v3;
+    v6 = _loadTimelineEntry;
     dispatch_async(MEMORY[0x277D85CD0], v5);
   }
 }
@@ -219,8 +219,8 @@ uint64_t __61__NTKPeopleComplicationDataSource__queue_reloadTimelineEntry__block
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = +[NTKPeopleComplicationContactsCache sharedCache];
-  v4 = [(NTKPeopleComplication *)self->_complication storeBackedContactID];
-  v5 = [v3 contactForId:v4];
+  storeBackedContactID = [(NTKPeopleComplication *)self->_complication storeBackedContactID];
+  v5 = [v3 contactForId:storeBackedContactID];
   if (v5)
   {
     v6 = [v3 fullNameForContact:v5];
@@ -230,8 +230,8 @@ uint64_t __61__NTKPeopleComplicationDataSource__queue_reloadTimelineEntry__block
       if ([v5 isKeyAvailable:*MEMORY[0x277CBD158]] && (objc_msgSend(v5, "thumbnailImageData"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
       {
         v9 = objc_alloc(MEMORY[0x277D755B8]);
-        v10 = [v5 thumbnailImageData];
-        v11 = [v9 initWithData:v10];
+        thumbnailImageData = [v5 thumbnailImageData];
+        v11 = [v9 initWithData:thumbnailImageData];
 
         v12 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -243,7 +243,7 @@ uint64_t __61__NTKPeopleComplicationDataSource__queue_reloadTimelineEntry__block
           }
 
           v18 = 138412546;
-          v19 = v4;
+          v19 = storeBackedContactID;
           v20 = 2112;
           v21 = v13;
           _os_log_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEFAULT, "People complication: is _roundedProfileImageFromImage for id: %@ nil? %@", &v18, 0x16u);
@@ -255,7 +255,7 @@ uint64_t __61__NTKPeopleComplicationDataSource__queue_reloadTimelineEntry__block
         v12 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          [(NTKPeopleComplicationDataSource *)v4 _loadTimelineEntry];
+          [(NTKPeopleComplicationDataSource *)storeBackedContactID _loadTimelineEntry];
         }
 
         v11 = 0;
@@ -314,8 +314,8 @@ uint64_t __61__NTKPeopleComplicationDataSource__queue_reloadTimelineEntry__block
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "%@ _setupNotifications,addObserver", &v7, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__didReceiveContactsCachceChangedNotification name:@"NTKPeopleComplicationContactsCacheDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__didReceiveContactsCachceChangedNotification name:@"NTKPeopleComplicationContactsCacheDidChangeNotification" object:0];
 }
 
 - (void)_tearDownNotifications
@@ -331,8 +331,8 @@ uint64_t __61__NTKPeopleComplicationDataSource__queue_reloadTimelineEntry__block
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "%@ tearDownNotification,removeObserver", &v7, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_didReceiveContactsCachceChangedNotification
@@ -360,9 +360,9 @@ uint64_t __61__NTKPeopleComplicationDataSource__queue_reloadTimelineEntry__block
 - (void)_loadTimelineEntry
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = [*a1 fullName];
+  fullName = [*self fullName];
   v6 = 138412546;
-  v7 = v5;
+  v7 = fullName;
   v8 = 2112;
   v9 = a2;
   _os_log_error_impl(&dword_22D9C5000, a3, OS_LOG_TYPE_ERROR, "People Complication: Failed to load contact [%@] with id: %@", &v6, 0x16u);

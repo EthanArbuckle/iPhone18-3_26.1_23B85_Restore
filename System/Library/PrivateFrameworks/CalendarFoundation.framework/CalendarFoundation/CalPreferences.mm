@@ -1,18 +1,18 @@
 @interface CalPreferences
 + (id)log;
-- (BOOL)getBooleanPreference:(id)a3 defaultValue:(BOOL)a4;
-- (CalPreferences)initWithDomain:(id)a3 store:(id)a4 readOnly:(BOOL)a5;
-- (id)getValueForPreference:(id)a3 expectedClass:(Class)a4;
-- (int64_t)getIntegerPreference:(id)a3 defaultValue:(int64_t)a4;
-- (void)_preferenceChangedExternally:(id)a3;
-- (void)_preferenceChangedInternally:(id)a3;
+- (BOOL)getBooleanPreference:(id)preference defaultValue:(BOOL)value;
+- (CalPreferences)initWithDomain:(id)domain store:(id)store readOnly:(BOOL)only;
+- (id)getValueForPreference:(id)preference expectedClass:(Class)class;
+- (int64_t)getIntegerPreference:(id)preference defaultValue:(int64_t)value;
+- (void)_preferenceChangedExternally:(id)externally;
+- (void)_preferenceChangedInternally:(id)internally;
 - (void)dealloc;
-- (void)registerReflectionForPreferenceWithNotificationName:(id)a3;
-- (void)removePreference:(id)a3 notificationName:(id)a4;
-- (void)setBooleanPreference:(id)a3 value:(BOOL)a4 notificationName:(id)a5;
-- (void)setIntegerPreference:(id)a3 value:(int64_t)a4 notificationName:(id)a5;
-- (void)setValueForPreference:(id)a3 value:(id)a4 notificationName:(id)a5;
-- (void)unregisterReflectionForPreferenceWithNotificationName:(id)a3;
+- (void)registerReflectionForPreferenceWithNotificationName:(id)name;
+- (void)removePreference:(id)preference notificationName:(id)name;
+- (void)setBooleanPreference:(id)preference value:(BOOL)value notificationName:(id)name;
+- (void)setIntegerPreference:(id)preference value:(int64_t)value notificationName:(id)name;
+- (void)setValueForPreference:(id)preference value:(id)value notificationName:(id)name;
+- (void)unregisterReflectionForPreferenceWithNotificationName:(id)name;
 @end
 
 @implementation CalPreferences
@@ -36,22 +36,22 @@ uint64_t __21__CalPreferences_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CalPreferences)initWithDomain:(id)a3 store:(id)a4 readOnly:(BOOL)a5
+- (CalPreferences)initWithDomain:(id)domain store:(id)store readOnly:(BOOL)only
 {
-  v8 = a3;
-  v9 = a4;
+  domainCopy = domain;
+  storeCopy = store;
   v18.receiver = self;
   v18.super_class = CalPreferences;
   v10 = [(CalPreferences *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_store, a4);
-    v11->_readOnly = a5;
+    objc_storeStrong(&v10->_store, store);
+    v11->_readOnly = only;
     v12 = *MEMORY[0x1E695E8A8];
-    if (v8)
+    if (domainCopy)
     {
-      v12 = v8;
+      v12 = domainCopy;
     }
 
     v13 = v12;
@@ -80,11 +80,11 @@ uint64_t __21__CalPreferences_log__block_invoke()
   [(CalPreferences *)&v4 dealloc];
 }
 
-- (void)registerReflectionForPreferenceWithNotificationName:(id)a3
+- (void)registerReflectionForPreferenceWithNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     [CalDistributedNotificationCenter addObserver:self selector:sel__preferenceChangedExternally_ name:v5];
     [(NSMutableSet *)self->_registeredNotificationsToReflect addObject:v5];
@@ -100,11 +100,11 @@ uint64_t __21__CalPreferences_log__block_invoke()
   }
 }
 
-- (void)unregisterReflectionForPreferenceWithNotificationName:(id)a3
+- (void)unregisterReflectionForPreferenceWithNotificationName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     [CalDistributedNotificationCenter removeObserver:self name:v5];
     [(NSMutableSet *)self->_registeredNotificationsToReflect removeObject:v5];
@@ -120,15 +120,15 @@ uint64_t __21__CalPreferences_log__block_invoke()
   }
 }
 
-- (BOOL)getBooleanPreference:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)getBooleanPreference:(id)preference defaultValue:(BOOL)value
 {
-  v6 = a3;
-  v7 = v6;
-  v10 = a4;
-  if (v6 && [v6 length])
+  preferenceCopy = preference;
+  v7 = preferenceCopy;
+  valueCopy = value;
+  if (preferenceCopy && [preferenceCopy length])
   {
-    [(CalPreferencesStore *)self->_store getBoolean:&v10 forDomain:self->_domain key:v7];
-    a4 = v10;
+    [(CalPreferencesStore *)self->_store getBoolean:&valueCopy forDomain:self->_domain key:v7];
+    value = valueCopy;
   }
 
   else
@@ -140,36 +140,36 @@ uint64_t __21__CalPreferences_log__block_invoke()
     }
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setBooleanPreference:(id)a3 value:(BOOL)a4 notificationName:(id)a5
+- (void)setBooleanPreference:(id)preference value:(BOOL)value notificationName:(id)name
 {
-  v6 = a4;
-  v10 = a3;
-  v8 = a5;
-  if (v10 && !self->_readOnly && [v10 length])
+  valueCopy = value;
+  preferenceCopy = preference;
+  nameCopy = name;
+  if (preferenceCopy && !self->_readOnly && [preferenceCopy length])
   {
     v9 = MEMORY[0x1E695E4D0];
-    if (!v6)
+    if (!valueCopy)
     {
       v9 = MEMORY[0x1E695E4C0];
     }
 
-    [(CalPreferencesStore *)self->_store setValue:*v9 forDomain:self->_domain key:v10];
-    [(CalPreferences *)self _preferenceChangedInternally:v8];
+    [(CalPreferencesStore *)self->_store setValue:*v9 forDomain:self->_domain key:preferenceCopy];
+    [(CalPreferences *)self _preferenceChangedInternally:nameCopy];
   }
 }
 
-- (int64_t)getIntegerPreference:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)getIntegerPreference:(id)preference defaultValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = v6;
-  v10 = a4;
-  if (v6 && [v6 length])
+  preferenceCopy = preference;
+  v7 = preferenceCopy;
+  valueCopy = value;
+  if (preferenceCopy && [preferenceCopy length])
   {
-    [(CalPreferencesStore *)self->_store getInteger:&v10 forDomain:self->_domain key:v7];
-    a4 = v10;
+    [(CalPreferencesStore *)self->_store getInteger:&valueCopy forDomain:self->_domain key:v7];
+    value = valueCopy;
   }
 
   else
@@ -181,34 +181,34 @@ uint64_t __21__CalPreferences_log__block_invoke()
     }
   }
 
-  return a4;
+  return value;
 }
 
-- (void)setIntegerPreference:(id)a3 value:(int64_t)a4 notificationName:(id)a5
+- (void)setIntegerPreference:(id)preference value:(int64_t)value notificationName:(id)name
 {
-  v8 = a3;
-  valuePtr = a4;
-  v9 = a5;
-  if (v8 && !self->_readOnly && [v8 length])
+  preferenceCopy = preference;
+  valuePtr = value;
+  nameCopy = name;
+  if (preferenceCopy && !self->_readOnly && [preferenceCopy length])
   {
     v10 = CFNumberCreate(0, kCFNumberLongType, &valuePtr);
     if (v10)
     {
       v11 = v10;
-      [(CalPreferencesStore *)self->_store setValue:v10 forDomain:self->_domain key:v8];
+      [(CalPreferencesStore *)self->_store setValue:v10 forDomain:self->_domain key:preferenceCopy];
       CFRelease(v11);
     }
 
-    [(CalPreferences *)self _preferenceChangedInternally:v9];
+    [(CalPreferences *)self _preferenceChangedInternally:nameCopy];
   }
 }
 
-- (id)getValueForPreference:(id)a3 expectedClass:(Class)a4
+- (id)getValueForPreference:(id)preference expectedClass:(Class)class
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ![v6 length])
+  preferenceCopy = preference;
+  v7 = preferenceCopy;
+  if (!preferenceCopy || ![preferenceCopy length])
   {
     v9 = +[CalPreferences log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -223,7 +223,7 @@ uint64_t __21__CalPreferences_log__block_invoke()
   [(CalPreferencesStore *)self->_store getValue:&v15 forDomain:self->_domain key:v7];
   v8 = v15;
   v9 = v8;
-  if (a4 && v8 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (class && v8 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     v10 = +[CalPreferences log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -232,7 +232,7 @@ uint64_t __21__CalPreferences_log__block_invoke()
       *buf = 138543874;
       v17 = v7;
       v18 = 2114;
-      v19 = a4;
+      classCopy = class;
       v20 = 2114;
       v21 = v13;
       v14 = v13;
@@ -248,17 +248,17 @@ LABEL_11:
   return v9;
 }
 
-- (void)setValueForPreference:(id)a3 value:(id)a4 notificationName:(id)a5
+- (void)setValueForPreference:(id)preference value:(id)value notificationName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  preferenceCopy = preference;
+  valueCopy = value;
+  nameCopy = name;
   if (!self->_readOnly)
   {
-    if (v8 && [v8 length])
+    if (preferenceCopy && [preferenceCopy length])
     {
-      [(CalPreferencesStore *)self->_store setValue:v9 forDomain:self->_domain key:v8];
-      [(CalPreferences *)self _preferenceChangedInternally:v10];
+      [(CalPreferencesStore *)self->_store setValue:valueCopy forDomain:self->_domain key:preferenceCopy];
+      [(CalPreferences *)self _preferenceChangedInternally:nameCopy];
     }
 
     else
@@ -272,37 +272,37 @@ LABEL_11:
   }
 }
 
-- (void)removePreference:(id)a3 notificationName:(id)a4
+- (void)removePreference:(id)preference notificationName:(id)name
 {
   if (!self->_readOnly)
   {
     store = self->_store;
     domain = self->_domain;
-    v9 = a4;
-    [(CalPreferencesStore *)store setValue:0 forDomain:domain key:a3];
-    [(CalPreferences *)self _preferenceChangedInternally:v9];
+    nameCopy = name;
+    [(CalPreferencesStore *)store setValue:0 forDomain:domain key:preference];
+    [(CalPreferences *)self _preferenceChangedInternally:nameCopy];
   }
 }
 
-- (void)_preferenceChangedExternally:(id)a3
+- (void)_preferenceChangedExternally:(id)externally
 {
-  v5 = a3;
+  externallyCopy = externally;
   [(CalPreferences *)self _synchronizePreferences];
-  if (v5 && [v5 length])
+  if (externallyCopy && [externallyCopy length])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:v5 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:externallyCopy object:0];
   }
 }
 
-- (void)_preferenceChangedInternally:(id)a3
+- (void)_preferenceChangedInternally:(id)internally
 {
-  name = a3;
+  name = internally;
   [(CalPreferences *)self _synchronizePreferences];
   if (name && [(__CFString *)name length])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:name object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:name object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, name, 0, 0, 1u);

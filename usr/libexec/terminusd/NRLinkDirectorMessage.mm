@@ -21,9 +21,9 @@
     payloadLength = 0;
   }
 
-  v7 = [v3 initWithFormat:@"[%llu, vers %u, len %u]", v4, messageVersion, payloadLength];
+  payloadLength = [v3 initWithFormat:@"[%llu, vers %u, len %u]", v4, messageVersion, payloadLength];
 
-  return v7;
+  return payloadLength;
 }
 
 - (void)dealloc

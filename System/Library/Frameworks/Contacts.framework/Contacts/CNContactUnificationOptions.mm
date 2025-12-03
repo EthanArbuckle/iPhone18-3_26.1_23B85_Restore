@@ -1,8 +1,8 @@
 @interface CNContactUnificationOptions
 + (CNContactUnificationOptions)sharedInstance;
 - (CNContactUnificationOptions)init;
-- (CNContactUnificationOptions)initWithContactFetchRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CNContactUnificationOptions)initWithContactFetchRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CNContactUnificationOptions
@@ -44,15 +44,15 @@ uint64_t __45__CNContactUnificationOptions_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNContactUnificationOptions)initWithContactFetchRequest:(id)a3
+- (CNContactUnificationOptions)initWithContactFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(CNContactUnificationOptions *)self init];
   if (v5)
   {
-    v6 = [v4 alwaysUnifyLabeledValues];
+    alwaysUnifyLabeledValues = [requestCopy alwaysUnifyLabeledValues];
     v7 = 20;
-    if (v6)
+    if (alwaysUnifyLabeledValues)
     {
       v7 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -64,7 +64,7 @@ uint64_t __45__CNContactUnificationOptions_sharedInstance__block_invoke()
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)

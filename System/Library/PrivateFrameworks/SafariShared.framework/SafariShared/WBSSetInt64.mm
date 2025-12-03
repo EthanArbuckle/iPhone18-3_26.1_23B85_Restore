@@ -1,12 +1,12 @@
 @interface WBSSetInt64
 - (WBSSetInt64)init;
-- (WBSSetInt64)initWithCoder:(id)a3;
-- (WBSSetInt64)initWithInt64:(int64_t)a3;
-- (WBSSetInt64)initWithMovableSet:(void *)a3;
-- (WBSSetInt64)initWithSet:(const void *)a3;
+- (WBSSetInt64)initWithCoder:(id)coder;
+- (WBSSetInt64)initWithInt64:(int64_t)int64;
+- (WBSSetInt64)initWithMovableSet:(void *)set;
+- (WBSSetInt64)initWithSet:(const void *)set;
 - (id).cxx_construct;
 - (id)commaSeparatedValues;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSSetInt64
@@ -25,23 +25,23 @@
   return v3;
 }
 
-- (WBSSetInt64)initWithInt64:(int64_t)a3
+- (WBSSetInt64)initWithInt64:(int64_t)int64
 {
   v7.receiver = self;
   v7.super_class = WBSSetInt64;
-  v8 = a3;
+  int64Copy = int64;
   v3 = [(WBSSetInt64 *)&v7 init];
   v4 = v3;
   if (v3)
   {
-    std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v3->_set.__table_.__bucket_list_.__ptr_, &v8);
+    std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v3->_set.__table_.__bucket_list_.__ptr_, &int64Copy);
     v5 = v4;
   }
 
   return v4;
 }
 
-- (WBSSetInt64)initWithSet:(const void *)a3
+- (WBSSetInt64)initWithSet:(const void *)set
 {
   v9.receiver = self;
   v9.super_class = WBSSetInt64;
@@ -50,10 +50,10 @@
   if (v4)
   {
     p_set = &v4->_set;
-    if (&v5->_set != a3)
+    if (&v5->_set != set)
     {
-      v5->_set.__table_.__max_load_factor_ = *(a3 + 8);
-      std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<long long,void *> *>>(p_set, *(a3 + 2), 0);
+      v5->_set.__table_.__max_load_factor_ = *(set + 8);
+      std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__assign_multi<std::__hash_const_iterator<std::__hash_node<long long,void *> *>>(p_set, *(set + 2), 0);
     }
 
     v7 = v5;
@@ -62,7 +62,7 @@
   return v5;
 }
 
-- (WBSSetInt64)initWithMovableSet:(void *)a3
+- (WBSSetInt64)initWithMovableSet:(void *)set
 {
   v8.receiver = self;
   v8.super_class = WBSSetInt64;
@@ -70,31 +70,31 @@
   v5 = v4;
   if (v4)
   {
-    std::__hash_table<std::__hash_value_type<long long,long long>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,long long>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,long long>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,long long>>>::__move_assign(&v4->_set, a3);
+    std::__hash_table<std::__hash_value_type<long long,long long>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,long long>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,long long>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,long long>>>::__move_assign(&v4->_set, set);
     v6 = v5;
   }
 
   return v5;
 }
 
-- (WBSSetInt64)initWithCoder:(id)a3
+- (WBSSetInt64)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WBSSetInt64;
   v5 = [(WBSSetInt64 *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     v7 = [v6 length];
     if (v7 >= 8)
     {
       v8 = v7 >> 3;
       std::__hash_table<std::__hash_value_type<long long,long long>,std::__unordered_map_hasher<long long,std::__hash_value_type<long long,long long>,std::hash<long long>,std::equal_to<long long>,true>,std::__unordered_map_equal<long long,std::__hash_value_type<long long,long long>,std::equal_to<long long>,std::hash<long long>,true>,std::allocator<std::__hash_value_type<long long,long long>>>::__rehash<true>(&v5->_set, vcvtps_u32_f32((v7 >> 3) / v5->_set.__table_.__max_load_factor_));
-      v9 = [v6 bytes];
+      bytes = [v6 bytes];
       do
       {
-        std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v5->_set.__table_.__bucket_list_.__ptr_, v9++);
+        std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::__emplace_unique_key_args<long long,long long const&>(&v5->_set.__table_.__bucket_list_.__ptr_, bytes++);
         --v8;
       }
 
@@ -107,26 +107,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   size = self->_set.__table_.__size_;
   if (size)
   {
-    v5 = [MEMORY[0x1E695DF88] dataWithLength:8 * size];
-    v6 = [v5 mutableBytes];
+    data = [MEMORY[0x1E695DF88] dataWithLength:8 * size];
+    mutableBytes = [data mutableBytes];
     for (i = self->_set.__table_.__first_node_.__next_; i; i = *i)
     {
-      *v6++ = i[2];
+      *mutableBytes++ = i[2];
     }
 
-    [v8 encodeObject:v5 forKey:@"data"];
+    [coderCopy encodeObject:data forKey:@"data"];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DEF0] data];
-    [v8 encodeObject:v5 forKey:@"data"];
+    data = [MEMORY[0x1E695DEF0] data];
+    [coderCopy encodeObject:data forKey:@"data"];
   }
 }
 

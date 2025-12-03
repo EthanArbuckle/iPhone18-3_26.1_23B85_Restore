@@ -4,50 +4,50 @@
 - (BOOL)enabledForCalendarsDataClass;
 - (BOOL)provisionedForCalendarsDataClass;
 - (BOOL)visible;
-- (CalPlistSavingMigrationAccount)initWithIdentifier:(id)a3 accountTypeIdentifier:(id)a4 backingAccount:(id)a5 initialProperties:(id)a6;
+- (CalPlistSavingMigrationAccount)initWithIdentifier:(id)identifier accountTypeIdentifier:(id)typeIdentifier backingAccount:(id)account initialProperties:(id)properties;
 - (NSString)accountDescription;
 - (NSString)username;
-- (id)accountPropertyForKey:(id)a3;
+- (id)accountPropertyForKey:(id)key;
 - (void)save;
-- (void)setAccountDescription:(id)a3;
-- (void)setAccountProperty:(id)a3 forKey:(id)a4;
-- (void)setPassword:(id)a3;
-- (void)setUsername:(id)a3;
+- (void)setAccountDescription:(id)description;
+- (void)setAccountProperty:(id)property forKey:(id)key;
+- (void)setPassword:(id)password;
+- (void)setUsername:(id)username;
 @end
 
 @implementation CalPlistSavingMigrationAccount
 
-- (CalPlistSavingMigrationAccount)initWithIdentifier:(id)a3 accountTypeIdentifier:(id)a4 backingAccount:(id)a5 initialProperties:(id)a6
+- (CalPlistSavingMigrationAccount)initWithIdentifier:(id)identifier accountTypeIdentifier:(id)typeIdentifier backingAccount:(id)account initialProperties:(id)properties
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  accountCopy = account;
+  propertiesCopy = properties;
   v22.receiver = self;
   v22.super_class = CalPlistSavingMigrationAccount;
   v15 = [(CalPlistSavingMigrationAccount *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_accountTypeIdentifier, a4);
-    objc_storeStrong(&v16->_backingAccount, a5);
-    if (v14)
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_accountTypeIdentifier, typeIdentifier);
+    objc_storeStrong(&v16->_backingAccount, account);
+    if (propertiesCopy)
     {
-      v17 = [v14 mutableCopy];
+      dictionary = [propertiesCopy mutableCopy];
     }
 
     else
     {
-      v17 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     savedProperties = v16->_savedProperties;
-    v16->_savedProperties = v17;
+    v16->_savedProperties = dictionary;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     modifiedProperties = v16->_modifiedProperties;
-    v16->_modifiedProperties = v19;
+    v16->_modifiedProperties = dictionary2;
   }
 
   return v16;
@@ -55,27 +55,27 @@
 
 - (BOOL)dirty
 {
-  v2 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  v3 = [v2 count] != 0;
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  v3 = [modifiedProperties count] != 0;
 
   return v3;
 }
 
-- (id)accountPropertyForKey:(id)a3
+- (id)accountPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  v6 = [modifiedProperties objectForKeyedSubscript:keyCopy];
 
   if (!v6)
   {
-    v7 = [(CalPlistSavingMigrationAccount *)self savedProperties];
-    v6 = [v7 objectForKeyedSubscript:v4];
+    savedProperties = [(CalPlistSavingMigrationAccount *)self savedProperties];
+    v6 = [savedProperties objectForKeyedSubscript:keyCopy];
 
     if (!v6)
     {
-      v8 = [(CalPlistSavingMigrationAccount *)self backingAccount];
-      v6 = [v8 accountPropertyForKey:v4];
+      backingAccount = [(CalPlistSavingMigrationAccount *)self backingAccount];
+      v6 = [backingAccount accountPropertyForKey:keyCopy];
     }
   }
 
@@ -84,167 +84,167 @@
   return v9;
 }
 
-- (void)setAccountProperty:(id)a3 forKey:(id)a4
+- (void)setAccountProperty:(id)property forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  propertyCopy = property;
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  [modifiedProperties setObject:propertyCopy forKeyedSubscript:keyCopy];
 }
 
 - (void)save
 {
-  v3 = [(CalPlistSavingMigrationAccount *)self savedProperties];
-  v4 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  [v3 addEntriesFromDictionary:v4];
+  savedProperties = [(CalPlistSavingMigrationAccount *)self savedProperties];
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  [savedProperties addEntriesFromDictionary:modifiedProperties];
 
-  v5 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  [v5 removeAllObjects];
+  modifiedProperties2 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  [modifiedProperties2 removeAllObjects];
 }
 
 - (NSString)accountDescription
 {
-  v3 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  v4 = [v3 objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_accountDescription"];
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  accountDescription = [modifiedProperties objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_accountDescription"];
 
-  if (!v4)
+  if (!accountDescription)
   {
-    v5 = [(CalPlistSavingMigrationAccount *)self savedProperties];
-    v4 = [v5 objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_accountDescription"];
+    savedProperties = [(CalPlistSavingMigrationAccount *)self savedProperties];
+    accountDescription = [savedProperties objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_accountDescription"];
 
-    if (!v4)
+    if (!accountDescription)
     {
-      v6 = [(CalPlistSavingMigrationAccount *)self backingAccount];
-      v4 = [v6 accountDescription];
+      backingAccount = [(CalPlistSavingMigrationAccount *)self backingAccount];
+      accountDescription = [backingAccount accountDescription];
     }
   }
 
-  return v4;
+  return accountDescription;
 }
 
-- (void)setAccountDescription:(id)a3
+- (void)setAccountDescription:(id)description
 {
-  v4 = a3;
-  v5 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  [v5 setObject:v4 forKeyedSubscript:@"_CalPlistSavingMigrationAccount_accountDescription"];
+  descriptionCopy = description;
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  [modifiedProperties setObject:descriptionCopy forKeyedSubscript:@"_CalPlistSavingMigrationAccount_accountDescription"];
 }
 
 - (BOOL)visible
 {
-  v3 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  v4 = [v3 objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_visible"];
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  backingAccount = [modifiedProperties objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_visible"];
 
-  if (v4 || (-[CalPlistSavingMigrationAccount savedProperties](self, "savedProperties"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_visible"], v4 = objc_claimAutoreleasedReturnValue(), v5, v4))
+  if (backingAccount || (-[CalPlistSavingMigrationAccount savedProperties](self, "savedProperties"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_visible"], backingAccount = objc_claimAutoreleasedReturnValue(), v5, backingAccount))
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [backingAccount BOOLValue];
   }
 
   else
   {
-    v4 = [(CalPlistSavingMigrationAccount *)self backingAccount];
-    v6 = [v4 visible];
+    backingAccount = [(CalPlistSavingMigrationAccount *)self backingAccount];
+    bOOLValue = [backingAccount visible];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
 - (BOOL)enabledForCalendarsDataClass
 {
-  v3 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  v4 = [v3 objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_enabledForCalendarsDataClass"];
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  backingAccount = [modifiedProperties objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_enabledForCalendarsDataClass"];
 
-  if (v4 || (-[CalPlistSavingMigrationAccount savedProperties](self, "savedProperties"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_enabledForCalendarsDataClass"], v4 = objc_claimAutoreleasedReturnValue(), v5, v4))
+  if (backingAccount || (-[CalPlistSavingMigrationAccount savedProperties](self, "savedProperties"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"_CalPlistSavingMigrationAccount_enabledForCalendarsDataClass"], backingAccount = objc_claimAutoreleasedReturnValue(), v5, backingAccount))
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [backingAccount BOOLValue];
   }
 
   else
   {
-    v4 = [(CalPlistSavingMigrationAccount *)self backingAccount];
-    v6 = [v4 enabledForCalendarsDataClass];
+    backingAccount = [(CalPlistSavingMigrationAccount *)self backingAccount];
+    bOOLValue = [backingAccount enabledForCalendarsDataClass];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
 - (BOOL)provisionedForCalendarsDataClass
 {
-  v3 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  v4 = [v3 objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_provisionedForCalendarsDataClass"];
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  backingAccount = [modifiedProperties objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_provisionedForCalendarsDataClass"];
 
-  if (v4 || (-[CalPlistSavingMigrationAccount savedProperties](self, "savedProperties"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_provisionedForCalendarsDataClass"], v4 = objc_claimAutoreleasedReturnValue(), v5, v4))
+  if (backingAccount || (-[CalPlistSavingMigrationAccount savedProperties](self, "savedProperties"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_provisionedForCalendarsDataClass"], backingAccount = objc_claimAutoreleasedReturnValue(), v5, backingAccount))
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [backingAccount BOOLValue];
   }
 
   else
   {
-    v4 = [(CalPlistSavingMigrationAccount *)self backingAccount];
-    v6 = [v4 provisionedForCalendarsDataClass];
+    backingAccount = [(CalPlistSavingMigrationAccount *)self backingAccount];
+    bOOLValue = [backingAccount provisionedForCalendarsDataClass];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
 - (BOOL)authenticated
 {
-  v3 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  v4 = [v3 objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_authenticated"];
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  backingAccount = [modifiedProperties objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_authenticated"];
 
-  if (v4 || (-[CalPlistSavingMigrationAccount savedProperties](self, "savedProperties"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_authenticated"], v4 = objc_claimAutoreleasedReturnValue(), v5, v4))
+  if (backingAccount || (-[CalPlistSavingMigrationAccount savedProperties](self, "savedProperties"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_authenticated"], backingAccount = objc_claimAutoreleasedReturnValue(), v5, backingAccount))
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [backingAccount BOOLValue];
   }
 
   else
   {
-    v4 = [(CalPlistSavingMigrationAccount *)self backingAccount];
-    v6 = [v4 authenticated];
+    backingAccount = [(CalPlistSavingMigrationAccount *)self backingAccount];
+    bOOLValue = [backingAccount authenticated];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
 
 - (NSString)username
 {
-  v3 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  v4 = [v3 objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_username"];
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  username = [modifiedProperties objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_username"];
 
-  if (!v4)
+  if (!username)
   {
-    v5 = [(CalPlistSavingMigrationAccount *)self savedProperties];
-    v4 = [v5 objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_username"];
+    savedProperties = [(CalPlistSavingMigrationAccount *)self savedProperties];
+    username = [savedProperties objectForKeyedSubscript:@"_CalChangeFilterMigrationAccount_username"];
 
-    if (!v4)
+    if (!username)
     {
-      v6 = [(CalPlistSavingMigrationAccount *)self backingAccount];
-      v4 = [v6 username];
+      backingAccount = [(CalPlistSavingMigrationAccount *)self backingAccount];
+      username = [backingAccount username];
     }
   }
 
-  return v4;
+  return username;
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v4 = a3;
-  v5 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  [v5 setObject:v4 forKeyedSubscript:@"_CalChangeFilterMigrationAccount_username"];
+  usernameCopy = username;
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  [modifiedProperties setObject:usernameCopy forKeyedSubscript:@"_CalChangeFilterMigrationAccount_username"];
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = a3;
-  v5 = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
-  [v5 setObject:v4 forKeyedSubscript:@"_CalChangeFilterMigrationAccount_password"];
+  passwordCopy = password;
+  modifiedProperties = [(CalPlistSavingMigrationAccount *)self modifiedProperties];
+  [modifiedProperties setObject:passwordCopy forKeyedSubscript:@"_CalChangeFilterMigrationAccount_password"];
 }
 
 @end

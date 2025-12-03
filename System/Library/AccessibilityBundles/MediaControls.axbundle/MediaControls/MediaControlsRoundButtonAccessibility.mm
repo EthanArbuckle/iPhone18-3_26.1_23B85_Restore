@@ -1,5 +1,5 @@
 @interface MediaControlsRoundButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,20 +7,20 @@
 
 @implementation MediaControlsRoundButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MediaControlsRoundButton" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"MediaControlsRoundButton" hasInstanceMethod:@"assetView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUAssetView" hasInstanceMethod:@"packageView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MediaControlsRoundButton" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MediaControlsRoundButton" hasInstanceMethod:@"assetView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUAssetView" hasInstanceMethod:@"packageView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(MediaControlsRoundButtonAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame

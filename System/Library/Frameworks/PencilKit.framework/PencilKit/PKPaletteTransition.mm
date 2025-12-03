@@ -1,23 +1,23 @@
 @interface PKPaletteTransition
 - (BOOL)_canMoveToNextTransitionStage;
 - (BOOL)isTransitionInProgress;
-- (PKPaletteTransition)initWithInitialVisualState:(int64_t)a3;
+- (PKPaletteTransition)initWithInitialVisualState:(int64_t)state;
 - (PKPaletteTransitionDelegate)delegate;
 - (double)expandedToCollapsedRatio;
 - (int64_t)_currentStage;
 - (void)_handleExpandedToCollapsedAnimatablePropertyPresentationValueChanged;
 - (void)_handleRotationAnimatablePropertyPresentationValueChanged;
 - (void)_moveToNextTransitionStageIfReady;
-- (void)_setIntermediateVisualState:(int64_t)a3;
-- (void)_setPointingDirection:(int64_t)a3;
+- (void)_setIntermediateVisualState:(int64_t)state;
+- (void)_setPointingDirection:(int64_t)direction;
 - (void)paletteDidBeginResizingAnimation;
 - (void)paletteDidBeginRotationAnimation;
-- (void)transitionToVisualState:(int64_t)a3;
+- (void)transitionToVisualState:(int64_t)state;
 @end
 
 @implementation PKPaletteTransition
 
-- (PKPaletteTransition)initWithInitialVisualState:(int64_t)a3
+- (PKPaletteTransition)initWithInitialVisualState:(int64_t)state
 {
   v41[1] = *MEMORY[0x1E69E9840];
   v35.receiver = self;
@@ -26,14 +26,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_targetVisualState = a3;
-    v4->_intermediateVisualState = a3;
-    v4->_initialVisualState = a3;
+    v4->_targetVisualState = state;
+    v4->_intermediateVisualState = state;
+    v4->_initialVisualState = state;
     objc_initWeak(&location, v4);
-    v6 = 2 * (a3 == 6);
+    v6 = 2 * (state == 6);
     remainingTransitionStages = v5->__remainingTransitionStages;
     v8 = MEMORY[0x1E695E0F0];
-    if (a3 == 7)
+    if (state == 7)
     {
       v6 = 1;
     }
@@ -45,25 +45,25 @@
     rotationAngleAnimatableProperty = v5->_rotationAngleAnimatableProperty;
     v5->_rotationAngleAnimatableProperty = v9;
 
-    v11 = [(PKPaletteTransition *)v5 pointingDirection];
-    v12 = [(PKPaletteTransition *)v5 rotationAngleAnimatableProperty];
-    v13 = v12;
+    pointingDirection = [(PKPaletteTransition *)v5 pointingDirection];
+    rotationAngleAnimatableProperty = [(PKPaletteTransition *)v5 rotationAngleAnimatableProperty];
+    v13 = rotationAngleAnimatableProperty;
     v14 = 1.57079633;
-    if (v11 != 2)
+    if (pointingDirection != 2)
     {
       v14 = 0.0;
     }
 
-    if (v11 == 1)
+    if (pointingDirection == 1)
     {
       v14 = -1.57079633;
     }
 
-    [v12 setValue:v14];
+    [rotationAngleAnimatableProperty setValue:v14];
 
     v15 = MEMORY[0x1E69DD250];
-    v16 = [(PKPaletteTransition *)v5 rotationAngleAnimatableProperty];
-    v41[0] = v16;
+    rotationAngleAnimatableProperty2 = [(PKPaletteTransition *)v5 rotationAngleAnimatableProperty];
+    v41[0] = rotationAngleAnimatableProperty2;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -77,17 +77,17 @@
     v5->_expandedToCollapsedAnimatableProperty = v18;
 
     v20 = 1.0;
-    if ((a3 - 1) <= 6)
+    if ((state - 1) <= 6)
     {
-      v20 = dbl_1C801DDB0[a3 - 1];
+      v20 = dbl_1C801DDB0[state - 1];
     }
 
-    v21 = [(PKPaletteTransition *)v5 expandedToCollapsedAnimatableProperty];
-    [v21 setValue:v20];
+    expandedToCollapsedAnimatableProperty = [(PKPaletteTransition *)v5 expandedToCollapsedAnimatableProperty];
+    [expandedToCollapsedAnimatableProperty setValue:v20];
 
     v22 = MEMORY[0x1E69DD250];
-    v23 = [(PKPaletteTransition *)v5 expandedToCollapsedAnimatableProperty];
-    v40 = v23;
+    expandedToCollapsedAnimatableProperty2 = [(PKPaletteTransition *)v5 expandedToCollapsedAnimatableProperty];
+    v40 = expandedToCollapsedAnimatableProperty2;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v40 count:1];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -99,16 +99,16 @@
     v25 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = PKPaletteVisualStateDescription(a3);
-      v27 = [(PKPaletteTransition *)v5 pointingDirection];
-      if (v27 > 2)
+      v26 = PKPaletteVisualStateDescription(state);
+      pointingDirection2 = [(PKPaletteTransition *)v5 pointingDirection];
+      if (pointingDirection2 > 2)
       {
         v28 = 0;
       }
 
       else
       {
-        v28 = off_1E82DA188[v27];
+        v28 = off_1E82DA188[pointingDirection2];
       }
 
       *buf = 138412546;
@@ -148,79 +148,79 @@ void __50__PKPaletteTransition_initWithInitialVisualState___block_invoke_2(uint6
   }
 }
 
-- (void)_setIntermediateVisualState:(int64_t)a3
+- (void)_setIntermediateVisualState:(int64_t)state
 {
-  if (self->_intermediateVisualState != a3)
+  if (self->_intermediateVisualState != state)
   {
-    self->_intermediateVisualState = a3;
-    v5 = [(PKPaletteTransition *)self delegate];
-    [v5 transitionIntermediateVisualStateDidChange:self];
+    self->_intermediateVisualState = state;
+    delegate = [(PKPaletteTransition *)self delegate];
+    [delegate transitionIntermediateVisualStateDidChange:self];
   }
 }
 
-- (void)_setPointingDirection:(int64_t)a3
+- (void)_setPointingDirection:(int64_t)direction
 {
-  if (self->_pointingDirection != a3)
+  if (self->_pointingDirection != direction)
   {
-    self->_pointingDirection = a3;
-    v5 = [(PKPaletteTransition *)self delegate];
-    [v5 transitionPointingDirectionDidChange:self];
+    self->_pointingDirection = direction;
+    delegate = [(PKPaletteTransition *)self delegate];
+    [delegate transitionPointingDirectionDidChange:self];
   }
 }
 
 - (int64_t)_currentStage
 {
-  v3 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v4 = [v3 count];
+  _remainingTransitionStages = [(PKPaletteTransition *)self _remainingTransitionStages];
+  v4 = [_remainingTransitionStages count];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v6 = [v5 firstObject];
-  v7 = [v6 integerValue];
+  _remainingTransitionStages2 = [(PKPaletteTransition *)self _remainingTransitionStages];
+  firstObject = [_remainingTransitionStages2 firstObject];
+  integerValue = [firstObject integerValue];
 
-  return v7;
+  return integerValue;
 }
 
 - (BOOL)isTransitionInProgress
 {
-  v2 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v3 = [v2 count] != 0;
+  _remainingTransitionStages = [(PKPaletteTransition *)self _remainingTransitionStages];
+  v3 = [_remainingTransitionStages count] != 0;
 
   return v3;
 }
 
 - (double)expandedToCollapsedRatio
 {
-  v2 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
-  [v2 presentationValue];
+  expandedToCollapsedAnimatableProperty = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
+  [expandedToCollapsedAnimatableProperty presentationValue];
   v4 = v3;
 
   return v4;
 }
 
-- (void)transitionToVisualState:(int64_t)a3
+- (void)transitionToVisualState:(int64_t)state
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  if ([(PKPaletteTransition *)self targetVisualState]== a3)
+  if ([(PKPaletteTransition *)self targetVisualState]== state)
   {
     return;
   }
 
-  v5 = [(PKPaletteTransition *)self intermediateVisualState];
-  v6 = [(PKPaletteTransition *)self pointingDirection];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = v7;
-  if (v5 <= 4)
+  intermediateVisualState = [(PKPaletteTransition *)self intermediateVisualState];
+  pointingDirection = [(PKPaletteTransition *)self pointingDirection];
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = array;
+  if (intermediateVisualState <= 4)
   {
-    if (v5 == 2)
+    if (intermediateVisualState == 2)
     {
-      if (a3 > 5)
+      if (state > 5)
       {
-        if ((a3 - 6) < 2)
+        if ((state - 6) < 2)
         {
           v9 = &unk_1F47C1B98;
           goto LABEL_58;
@@ -229,20 +229,20 @@ void __50__PKPaletteTransition_initWithInitialVisualState___block_invoke_2(uint6
         goto LABEL_59;
       }
 
-      if ((a3 - 4) < 2)
+      if ((state - 4) < 2)
       {
-        if (v6)
+        if (pointingDirection)
         {
-          [v7 addObjectsFromArray:&unk_1F47C1B68];
+          [array addObjectsFromArray:&unk_1F47C1B68];
         }
 
         v9 = &unk_1F47C1B80;
         goto LABEL_58;
       }
 
-      if (a3 == 2)
+      if (state == 2)
       {
-        if (v6)
+        if (pointingDirection)
         {
           v9 = &unk_1F47C1B38;
           goto LABEL_58;
@@ -251,14 +251,14 @@ void __50__PKPaletteTransition_initWithInitialVisualState___block_invoke_2(uint6
         goto LABEL_59;
       }
 
-      if (a3 != 3)
+      if (state != 3)
       {
         goto LABEL_59;
       }
 
-      if (v6)
+      if (pointingDirection)
       {
-        [v7 addObjectsFromArray:&unk_1F47C1B50];
+        [array addObjectsFromArray:&unk_1F47C1B50];
       }
 
       v10 = &unk_1F47C1460;
@@ -266,17 +266,17 @@ void __50__PKPaletteTransition_initWithInitialVisualState___block_invoke_2(uint6
 
     else
     {
-      if (v5 != 3)
+      if (intermediateVisualState != 3)
       {
-        if (v5 == 4)
+        if (intermediateVisualState == 4)
         {
-          if ((a3 - 2) < 2)
+          if ((state - 2) < 2)
           {
             v9 = &unk_1F47C1C28;
             goto LABEL_58;
           }
 
-          if ((a3 - 6) < 2)
+          if ((state - 6) < 2)
           {
             v9 = &unk_1F47C1C58;
 LABEL_58:
@@ -284,7 +284,7 @@ LABEL_58:
             goto LABEL_59;
           }
 
-          if (a3 == 5)
+          if (state == 5)
           {
             v9 = &unk_1F47C1C40;
             goto LABEL_58;
@@ -294,9 +294,9 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      if (a3 > 5)
+      if (state > 5)
       {
-        if ((a3 - 6) < 2)
+        if ((state - 6) < 2)
         {
           v9 = &unk_1F47C1C10;
           goto LABEL_58;
@@ -305,20 +305,20 @@ LABEL_58:
         goto LABEL_59;
       }
 
-      if ((a3 - 4) < 2)
+      if ((state - 4) < 2)
       {
-        if (v6)
+        if (pointingDirection)
         {
-          [v7 addObjectsFromArray:&unk_1F47C1BE0];
+          [array addObjectsFromArray:&unk_1F47C1BE0];
         }
 
         v9 = &unk_1F47C1BF8;
         goto LABEL_58;
       }
 
-      if (a3 != 2)
+      if (state != 2)
       {
-        if (a3 != 3 || !v6)
+        if (state != 3 || !pointingDirection)
         {
           goto LABEL_59;
         }
@@ -327,9 +327,9 @@ LABEL_58:
         goto LABEL_58;
       }
 
-      if (v6)
+      if (pointingDirection)
       {
-        [v7 addObjectsFromArray:&unk_1F47C1BB0];
+        [array addObjectsFromArray:&unk_1F47C1BB0];
       }
 
       v10 = &unk_1F47C1490;
@@ -339,22 +339,22 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  switch(v5)
+  switch(intermediateVisualState)
   {
     case 5:
-      if ((a3 - 2) < 2)
+      if ((state - 2) < 2)
       {
         v9 = &unk_1F47C1C70;
         goto LABEL_58;
       }
 
-      if ((a3 - 6) < 2)
+      if ((state - 6) < 2)
       {
         v9 = &unk_1F47C1CA0;
         goto LABEL_58;
       }
 
-      if (a3 == 4)
+      if (state == 4)
       {
         v9 = &unk_1F47C1C88;
         goto LABEL_58;
@@ -362,19 +362,19 @@ LABEL_58:
 
       break;
     case 6:
-      if ((a3 - 2) < 2)
+      if ((state - 2) < 2)
       {
         v9 = &unk_1F47C1CB8;
         goto LABEL_58;
       }
 
-      if ((a3 - 4) < 2)
+      if ((state - 4) < 2)
       {
         v9 = &unk_1F47C1CD0;
         goto LABEL_58;
       }
 
-      if (a3 == 7)
+      if (state == 7)
       {
         v9 = &unk_1F47C1CE8;
         goto LABEL_58;
@@ -382,19 +382,19 @@ LABEL_58:
 
       break;
     case 7:
-      if ((a3 - 2) < 2)
+      if ((state - 2) < 2)
       {
         v9 = &unk_1F47C1D00;
         goto LABEL_58;
       }
 
-      if ((a3 - 4) < 2)
+      if ((state - 4) < 2)
       {
         v9 = &unk_1F47C1D18;
         goto LABEL_58;
       }
 
-      if (a3 == 6)
+      if (state == 6)
       {
         v9 = &unk_1F47C1D30;
         goto LABEL_58;
@@ -404,8 +404,8 @@ LABEL_58:
   }
 
 LABEL_59:
-  v11 = [(PKPaletteTransition *)self _currentStage];
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
+  _currentStage = [(PKPaletteTransition *)self _currentStage];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:_currentStage];
   v26[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v14 = [v13 arrayByAddingObjectsFromArray:v8];
@@ -413,19 +413,19 @@ LABEL_59:
   v15 = os_log_create("com.apple.pencilkit", "PKPalette");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = PKPaletteVisualStateDescription(v5);
-    v17 = [(PKPaletteTransition *)self pointingDirection];
-    if (v17 > 2)
+    v16 = PKPaletteVisualStateDescription(intermediateVisualState);
+    pointingDirection2 = [(PKPaletteTransition *)self pointingDirection];
+    if (pointingDirection2 > 2)
     {
       v18 = 0;
     }
 
     else
     {
-      v18 = off_1E82DA188[v17];
+      v18 = off_1E82DA188[pointingDirection2];
     }
 
-    v19 = PKPaletteVisualStateDescription(a3);
+    v19 = PKPaletteVisualStateDescription(state);
     v20 = 138412802;
     v21 = v16;
     v22 = 2112;
@@ -436,50 +436,50 @@ LABEL_59:
   }
 
   [(PKPaletteTransition *)self set_remainingTransitionStages:v14];
-  [(PKPaletteTransition *)self _setTargetVisualState:a3];
+  [(PKPaletteTransition *)self _setTargetVisualState:state];
   [(PKPaletteTransition *)self _moveToNextTransitionStageIfReady];
 }
 
 - (BOOL)_canMoveToNextTransitionStage
 {
-  v3 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v4 = [v3 count];
+  _remainingTransitionStages = [(PKPaletteTransition *)self _remainingTransitionStages];
+  v4 = [_remainingTransitionStages count];
 
   if (!v4)
   {
     return 0;
   }
 
-  v5 = [(PKPaletteTransition *)self _currentStage];
+  _currentStage = [(PKPaletteTransition *)self _currentStage];
   if (v4 < 2)
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
   else
   {
-    v6 = [(PKPaletteTransition *)self _remainingTransitionStages];
-    v7 = [v6 objectAtIndexedSubscript:1];
-    v8 = [v7 integerValue];
+    _remainingTransitionStages2 = [(PKPaletteTransition *)self _remainingTransitionStages];
+    v7 = [_remainingTransitionStages2 objectAtIndexedSubscript:1];
+    integerValue = [v7 integerValue];
   }
 
   result = 0;
-  if (v5 > 2)
+  if (_currentStage > 2)
   {
-    if ((v5 - 3) >= 2)
+    if ((_currentStage - 3) >= 2)
     {
-      if (v5 != 5)
+      if (_currentStage != 5)
       {
         return result;
       }
 
-      if ((v8 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+      if ((integerValue & 0xFFFFFFFFFFFFFFFDLL) == 0)
       {
-        v18 = [(PKPaletteTransition *)self rotationAngleAnimatableProperty];
-        [v18 value];
+        rotationAngleAnimatableProperty = [(PKPaletteTransition *)self rotationAngleAnimatableProperty];
+        [rotationAngleAnimatableProperty value];
         v20 = v19;
-        v21 = [(PKPaletteTransition *)self rotationAngleAnimatableProperty];
-        [v21 presentationValue];
+        rotationAngleAnimatableProperty2 = [(PKPaletteTransition *)self rotationAngleAnimatableProperty];
+        [rotationAngleAnimatableProperty2 presentationValue];
         v23 = v20 - v22;
 
         v16 = -v23;
@@ -496,25 +496,25 @@ LABEL_59:
     return 1;
   }
 
-  if (!v5)
+  if (!_currentStage)
   {
     return 1;
   }
 
-  if (v5 != 1)
+  if (_currentStage != 1)
   {
-    if (v5 != 2)
+    if (_currentStage != 2)
     {
       return result;
     }
 
-    if (!v8)
+    if (!integerValue)
     {
-      v10 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
-      [v10 value];
+      expandedToCollapsedAnimatableProperty = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
+      [expandedToCollapsedAnimatableProperty value];
       v12 = v11;
-      v13 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
-      [v13 presentationValue];
+      expandedToCollapsedAnimatableProperty2 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
+      [expandedToCollapsedAnimatableProperty2 presentationValue];
       v15 = v12 - v14;
 
       v16 = -v15;
@@ -530,15 +530,15 @@ LABEL_59:
     return 1;
   }
 
-  if (v8 <= 5)
+  if (integerValue <= 5)
   {
-    if (((1 << v8) & 0x39) != 0)
+    if (((1 << integerValue) & 0x39) != 0)
     {
-      v24 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
-      [v24 value];
+      expandedToCollapsedAnimatableProperty3 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
+      [expandedToCollapsedAnimatableProperty3 value];
       v26 = v25;
-      v27 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
-      [v27 presentationValue];
+      expandedToCollapsedAnimatableProperty4 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
+      [expandedToCollapsedAnimatableProperty4 presentationValue];
       v29 = v26 - v28;
 
       v16 = -v29;
@@ -565,12 +565,12 @@ LABEL_59:
     return;
   }
 
-  v3 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v4 = [v3 count];
+  _remainingTransitionStages = [(PKPaletteTransition *)self _remainingTransitionStages];
+  v4 = [_remainingTransitionStages count];
 
-  v5 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v6 = [v5 objectAtIndexedSubscript:0];
-  v7 = [v6 integerValue];
+  _remainingTransitionStages2 = [(PKPaletteTransition *)self _remainingTransitionStages];
+  v6 = [_remainingTransitionStages2 objectAtIndexedSubscript:0];
+  integerValue = [v6 integerValue];
 
   if (v4 < 2)
   {
@@ -578,19 +578,19 @@ LABEL_59:
     goto LABEL_9;
   }
 
-  v8 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v9 = [v8 objectAtIndexedSubscript:1];
-  v10 = [v9 integerValue];
+  _remainingTransitionStages3 = [(PKPaletteTransition *)self _remainingTransitionStages];
+  v9 = [_remainingTransitionStages3 objectAtIndexedSubscript:1];
+  integerValue2 = [v9 integerValue];
 
-  v11 = [(PKPaletteTransition *)self intermediateVisualState];
+  intermediateVisualState = [(PKPaletteTransition *)self intermediateVisualState];
   v12 = 0;
-  if (v10 <= 2)
+  if (integerValue2 <= 2)
   {
-    if (v10)
+    if (integerValue2)
     {
-      if (v10 == 1)
+      if (integerValue2 == 1)
       {
-        v27 = v11;
+        v27 = intermediateVisualState;
         if ([(PKPaletteTransition *)self targetVisualState]== 2)
         {
           v13 = 2;
@@ -607,7 +607,7 @@ LABEL_59:
       }
 
       v13 = 0;
-      if (v10 != 2)
+      if (integerValue2 != 2)
       {
         goto LABEL_21;
       }
@@ -616,12 +616,12 @@ LABEL_59:
     }
 
 LABEL_9:
-    v14 = [(PKPaletteTransition *)self targetVisualState];
-    v13 = v14;
-    v10 = 0;
+    targetVisualState = [(PKPaletteTransition *)self targetVisualState];
+    v13 = targetVisualState;
+    integerValue2 = 0;
 LABEL_17:
-    v15 = 2 * (v14 == 6);
-    v16 = v14 == 7;
+    v15 = 2 * (targetVisualState == 6);
+    v16 = targetVisualState == 7;
 LABEL_18:
     if (v16)
     {
@@ -636,16 +636,16 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  if ((v10 - 3) < 2)
+  if ((integerValue2 - 3) < 2)
   {
 LABEL_11:
-    v14 = [(PKPaletteTransition *)self targetVisualState];
-    v13 = v14;
+    targetVisualState = [(PKPaletteTransition *)self targetVisualState];
+    v13 = targetVisualState;
     goto LABEL_17;
   }
 
   v13 = 0;
-  if (v10 == 5)
+  if (integerValue2 == 5)
   {
     if ([(PKPaletteTransition *)self targetVisualState]== 2)
     {
@@ -657,7 +657,7 @@ LABEL_11:
       v13 = 3;
     }
 
-    v14 = [(PKPaletteTransition *)self targetVisualState];
+    targetVisualState = [(PKPaletteTransition *)self targetVisualState];
     goto LABEL_17;
   }
 
@@ -666,19 +666,19 @@ LABEL_21:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     v28 = PKPaletteVisualStateDescription([(PKPaletteTransition *)self targetVisualState]);
-    v29 = PKPaletteTransitionStageDescription(v7);
-    v30 = PKPaletteTransitionStageDescription(v10);
+    v29 = PKPaletteTransitionStageDescription(integerValue);
+    v30 = PKPaletteTransitionStageDescription(integerValue2);
     v31 = PKPaletteVisualStateDescription([(PKPaletteTransition *)self intermediateVisualState]);
     v32 = PKPaletteVisualStateDescription(v13);
-    v33 = [(PKPaletteTransition *)self pointingDirection];
-    if (v33 > 2)
+    pointingDirection = [(PKPaletteTransition *)self pointingDirection];
+    if (pointingDirection > 2)
     {
       v34 = 0;
     }
 
     else
     {
-      v34 = off_1E82DA188[v33];
+      v34 = off_1E82DA188[pointingDirection];
     }
 
     v35 = off_1E82DA188[v12];
@@ -700,14 +700,14 @@ LABEL_21:
   }
 
   v18 = [(PKPaletteTransition *)self intermediateVisualState]!= v13 || [(PKPaletteTransition *)self pointingDirection]!= v12;
-  v19 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v20 = [v19 subarrayWithRange:{1, v4 - 1}];
+  _remainingTransitionStages4 = [(PKPaletteTransition *)self _remainingTransitionStages];
+  v20 = [_remainingTransitionStages4 subarrayWithRange:{1, v4 - 1}];
   [(PKPaletteTransition *)self set_remainingTransitionStages:v20];
 
   [(PKPaletteTransition *)self _setIntermediateVisualState:v13];
   [(PKPaletteTransition *)self _setPointingDirection:v12];
-  v21 = [(PKPaletteTransition *)self _remainingTransitionStages];
-  v22 = [v21 count];
+  _remainingTransitionStages5 = [(PKPaletteTransition *)self _remainingTransitionStages];
+  v22 = [_remainingTransitionStages5 count];
 
   if (v22)
   {
@@ -731,8 +731,8 @@ LABEL_21:
   if (!v18)
   {
 LABEL_31:
-    v25 = [(PKPaletteTransition *)self _remainingTransitionStages];
-    v26 = [v25 count];
+    _remainingTransitionStages6 = [(PKPaletteTransition *)self _remainingTransitionStages];
+    v26 = [_remainingTransitionStages6 count];
 
     if (v26)
     {
@@ -743,14 +743,14 @@ LABEL_31:
 
 - (void)paletteDidBeginRotationAnimation
 {
-  v3 = [(PKPaletteTransition *)self pointingDirection];
+  pointingDirection = [(PKPaletteTransition *)self pointingDirection];
   v4 = 1.57079633;
-  if (v3 != 2)
+  if (pointingDirection != 2)
   {
     v4 = 0.0;
   }
 
-  if (v3 == 1)
+  if (pointingDirection == 1)
   {
     v5 = -1.57079633;
   }
@@ -760,20 +760,20 @@ LABEL_31:
     v5 = v4;
   }
 
-  v6 = [(PKPaletteTransition *)self rotationAngleAnimatableProperty];
-  [v6 setValue:v5];
+  rotationAngleAnimatableProperty = [(PKPaletteTransition *)self rotationAngleAnimatableProperty];
+  [rotationAngleAnimatableProperty setValue:v5];
 }
 
 - (void)paletteDidBeginResizingAnimation
 {
-  v3 = [(PKPaletteTransition *)self _currentStage];
-  if ((v3 - 3) < 2)
+  _currentStage = [(PKPaletteTransition *)self _currentStage];
+  if ((_currentStage - 3) < 2)
   {
 
     [(PKPaletteTransition *)self _moveToNextTransitionStageIfReady];
   }
 
-  else if ((v3 - 1) <= 1)
+  else if ((_currentStage - 1) <= 1)
   {
     v4 = [(PKPaletteTransition *)self intermediateVisualState]- 1;
     v5 = 1.0;
@@ -782,8 +782,8 @@ LABEL_31:
       v5 = dbl_1C801DDB0[v4];
     }
 
-    v6 = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
-    [v6 setValue:v5];
+    expandedToCollapsedAnimatableProperty = [(PKPaletteTransition *)self expandedToCollapsedAnimatableProperty];
+    [expandedToCollapsedAnimatableProperty setValue:v5];
   }
 }
 
@@ -803,8 +803,8 @@ LABEL_31:
     [(PKPaletteTransition *)self _moveToNextTransitionStageIfReady];
   }
 
-  v3 = [(PKPaletteTransition *)self delegate];
-  [v3 transitionExpandedToCollapsedRatioDidChange:self];
+  delegate = [(PKPaletteTransition *)self delegate];
+  [delegate transitionExpandedToCollapsedRatioDidChange:self];
 }
 
 - (PKPaletteTransitionDelegate)delegate

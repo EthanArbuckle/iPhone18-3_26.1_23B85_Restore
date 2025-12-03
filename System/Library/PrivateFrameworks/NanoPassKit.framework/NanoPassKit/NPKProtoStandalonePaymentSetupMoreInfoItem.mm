@@ -1,12 +1,12 @@
 @interface NPKProtoStandalonePaymentSetupMoreInfoItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentSetupMoreInfoItem
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentSetupMoreInfoItem;
   v4 = [(NPKProtoStandalonePaymentSetupMoreInfoItem *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentSetupMoreInfoItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentSetupMoreInfoItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   body = self->_body;
@@ -66,125 +66,125 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_body)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_linkText)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_linkURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_imageURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_imageData)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v5;
+    [toCopy setTitle:?];
+    toCopy = v5;
   }
 
   if (self->_body)
   {
     [v5 setBody:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_linkText)
   {
     [v5 setLinkText:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_linkURL)
   {
     [v5 setLinkURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_imageURL)
   {
     [v5 setImageURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_imageData)
   {
     [v5 setImageData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSString *)self->_body copyWithZone:a3];
+  v8 = [(NSString *)self->_body copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_linkText copyWithZone:a3];
+  v10 = [(NSString *)self->_linkText copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSString *)self->_linkURL copyWithZone:a3];
+  v12 = [(NSString *)self->_linkURL copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSString *)self->_imageURL copyWithZone:a3];
+  v14 = [(NSString *)self->_imageURL copyWithZone:zone];
   v15 = v5[3];
   v5[3] = v14;
 
-  v16 = [(NSData *)self->_imageData copyWithZone:a3];
+  v16 = [(NSData *)self->_imageData copyWithZone:zone];
   v17 = v5[2];
   v5[2] = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | v4[6])) || -[NSString isEqual:](title, "isEqual:")) && ((body = self->_body, !(body | v4[1])) || -[NSString isEqual:](body, "isEqual:")) && ((linkText = self->_linkText, !(linkText | v4[4])) || -[NSString isEqual:](linkText, "isEqual:")) && ((linkURL = self->_linkURL, !(linkURL | v4[5])) || -[NSString isEqual:](linkURL, "isEqual:")) && ((imageURL = self->_imageURL, !(imageURL | v4[3])) || -[NSString isEqual:](imageURL, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((title = self->_title, !(title | equalCopy[6])) || -[NSString isEqual:](title, "isEqual:")) && ((body = self->_body, !(body | equalCopy[1])) || -[NSString isEqual:](body, "isEqual:")) && ((linkText = self->_linkText, !(linkText | equalCopy[4])) || -[NSString isEqual:](linkText, "isEqual:")) && ((linkURL = self->_linkURL, !(linkURL | equalCopy[5])) || -[NSString isEqual:](linkURL, "isEqual:")) && ((imageURL = self->_imageURL, !(imageURL | equalCopy[3])) || -[NSString isEqual:](imageURL, "isEqual:")))
   {
     imageData = self->_imageData;
-    if (imageData | v4[2])
+    if (imageData | equalCopy[2])
     {
       v11 = [(NSData *)imageData isEqual:?];
     }
@@ -213,35 +213,35 @@
   return v6 ^ v7 ^ [(NSData *)self->_imageData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
     [(NPKProtoStandalonePaymentSetupMoreInfoItem *)self setTitle:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(NPKProtoStandalonePaymentSetupMoreInfoItem *)self setBody:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(NPKProtoStandalonePaymentSetupMoreInfoItem *)self setLinkText:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(NPKProtoStandalonePaymentSetupMoreInfoItem *)self setLinkURL:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoStandalonePaymentSetupMoreInfoItem *)self setImageURL:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoStandalonePaymentSetupMoreInfoItem *)self setImageData:?];
   }

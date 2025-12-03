@@ -1,12 +1,12 @@
 @interface GKAchievementInternal
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
-- (GKAchievementInternal)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GKAchievementInternal)initWithCoder:(id)coder;
 - (id)serverRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setReplayable:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHidden:(BOOL)hidden;
+- (void)setReplayable:(BOOL)replayable;
 @end
 
 @implementation GKAchievementInternal
@@ -76,30 +76,30 @@ void __48__GKAchievementInternal_secureCodedPropertyKeys__block_invoke()
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = GKAchievementInternal;
-  v4 = a3;
-  [(GKInternalRepresentation *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(GKInternalRepresentation *)&v7 encodeWithCoder:coderCopy];
   v5 = [(GKAchievementInternal *)self player:v7.receiver];
-  v6 = [v5 playerID];
-  [v4 encodeObject:v6 forKey:@"playerID"];
+  playerID = [v5 playerID];
+  [coderCopy encodeObject:playerID forKey:@"playerID"];
 
-  [v4 encodeObject:MEMORY[0x277CBEC38] forKey:@"hasFullPlayer"];
+  [coderCopy encodeObject:MEMORY[0x277CBEC38] forKey:@"hasFullPlayer"];
 }
 
-- (GKAchievementInternal)initWithCoder:(id)a3
+- (GKAchievementInternal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = GKAchievementInternal;
-  v5 = [(GKInternalRepresentation *)&v11 initWithCoder:v4];
+  v5 = [(GKInternalRepresentation *)&v11 initWithCoder:coderCopy];
   v6 = v5;
   if (v5 && !v5->_player)
   {
     v7 = +[(GKInternalRepresentation *)GKPlayerInternal];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playerID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playerID"];
     [(GKPlayerInternal *)v7 setPlayerID:v8];
 
     player = v6->_player;
@@ -113,10 +113,10 @@ void __48__GKAchievementInternal_secureCodedPropertyKeys__block_invoke()
 {
   [(GKAchievementInternal *)self percentComplete];
   v4 = v3;
-  v5 = [(GKAchievementInternal *)self lastReportedDate];
-  if (!v5)
+  lastReportedDate = [(GKAchievementInternal *)self lastReportedDate];
+  if (!lastReportedDate)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    lastReportedDate = [MEMORY[0x277CBEAA8] date];
   }
 
   v6 = v4;
@@ -131,35 +131,35 @@ void __48__GKAchievementInternal_secureCodedPropertyKeys__block_invoke()
   }
 
   v8 = MEMORY[0x277CBEAC0];
-  v9 = [(GKAchievementInternal *)self identifier];
+  identifier = [(GKAchievementInternal *)self identifier];
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[GKAchievementInternal isHidden](self, "isHidden")}];
   v11 = [MEMORY[0x277CCABB0] numberWithLong:v7];
-  v12 = [v5 _gkServerTimestamp];
-  v13 = [(GKAchievementInternal *)self groupIdentifier];
-  v14 = [v8 dictionaryWithObjectsAndKeys:{v9, @"achievement-id", v10, @"is-hidden", v11, @"achievement-pct", v12, @"timestamp", v13, @"group-achievement-id", 0}];
+  _gkServerTimestamp = [lastReportedDate _gkServerTimestamp];
+  groupIdentifier = [(GKAchievementInternal *)self groupIdentifier];
+  v14 = [v8 dictionaryWithObjectsAndKeys:{identifier, @"achievement-id", v10, @"is-hidden", v11, @"achievement-pct", _gkServerTimestamp, @"timestamp", groupIdentifier, @"group-achievement-id", 0}];
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKAchievementInternal *)self identifier];
-    v7 = [v5 identifier];
-    if ([v6 isEqualToString:v7])
+    v5 = equalCopy;
+    identifier = [(GKAchievementInternal *)self identifier];
+    identifier2 = [v5 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [(GKAchievementInternal *)self groupIdentifier];
-      v10 = [v5 groupIdentifier];
-      v8 = [v9 isEqualToString:v10];
+      groupIdentifier = [(GKAchievementInternal *)self groupIdentifier];
+      groupIdentifier2 = [v5 groupIdentifier];
+      v8 = [groupIdentifier isEqualToString:groupIdentifier2];
     }
   }
 
@@ -173,15 +173,15 @@ void __48__GKAchievementInternal_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(GKAchievementInternal *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(GKAchievementInternal *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = 0x10000;
   }
@@ -194,9 +194,9 @@ void __48__GKAchievementInternal_secureCodedPropertyKeys__block_invoke()
   self->_attributes._value = self->_attributes._value & 0xFFFEFFFF | v3;
 }
 
-- (void)setReplayable:(BOOL)a3
+- (void)setReplayable:(BOOL)replayable
 {
-  if (a3)
+  if (replayable)
   {
     v3 = 0x20000;
   }

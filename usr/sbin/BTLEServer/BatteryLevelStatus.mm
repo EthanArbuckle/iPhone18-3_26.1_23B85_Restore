@@ -1,13 +1,13 @@
 @interface BatteryLevelStatus
-- (BatteryLevelStatus)initWithData:(id)a3;
+- (BatteryLevelStatus)initWithData:(id)data;
 - (id)description;
 @end
 
 @implementation BatteryLevelStatus
 
-- (BatteryLevelStatus)initWithData:(id)a3
+- (BatteryLevelStatus)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (!self)
   {
     v17.receiver = 0;
@@ -15,20 +15,20 @@
     self = [(BatteryLevelStatus *)&v17 init];
   }
 
-  v5 = [v4 bytes];
-  if (!v5)
+  bytes = [dataCopy bytes];
+  if (!bytes)
   {
-    sub_1000711C4(v4, &v18);
+    sub_1000711C4(dataCopy, &v18);
 LABEL_18:
-    v15 = v18;
+    selfCopy = v18;
     goto LABEL_15;
   }
 
-  v6 = v5;
-  v7 = [v4 length];
+  v6 = bytes;
+  v7 = [dataCopy length];
   if (v7 <= 2)
   {
-    sub_100071100(v4, v6, &v18);
+    sub_100071100(dataCopy, v6, &v18);
     goto LABEL_18;
   }
 
@@ -71,10 +71,10 @@ LABEL_11:
   }
 
 LABEL_14:
-  v15 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)description

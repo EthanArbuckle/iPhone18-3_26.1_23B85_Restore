@@ -1,17 +1,17 @@
 @interface SAThreadCallTree
-- (id)initWithThread:(void *)a3 dispatchQueue:(void *)a4 swiftTask:(uint64_t)a5 rootObjects:;
+- (id)initWithThread:(void *)thread dispatchQueue:(void *)queue swiftTask:(uint64_t)task rootObjects:;
 @end
 
 @implementation SAThreadCallTree
 
-- (id)initWithThread:(void *)a3 dispatchQueue:(void *)a4 swiftTask:(uint64_t)a5 rootObjects:
+- (id)initWithThread:(void *)thread dispatchQueue:(void *)queue swiftTask:(uint64_t)task rootObjects:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (!a2 && !a3 && !a4)
+  if (!a2 && !thread && !queue)
   {
     v11 = *__error();
     v12 = _sa_logt();
@@ -28,15 +28,15 @@
     return 0;
   }
 
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = SAThreadCallTree;
-  v8 = objc_msgSendSuper2(&v19, sel_initWithRootObjects_, a5);
+  v8 = objc_msgSendSuper2(&v19, sel_initWithRootObjects_, task);
   v9 = v8;
   if (v8)
   {
     objc_storeStrong(v8 + 2, a2);
-    objc_storeStrong(v9 + 3, a3);
-    objc_storeStrong(v9 + 4, a4);
+    objc_storeStrong(v9 + 3, thread);
+    objc_storeStrong(v9 + 4, queue);
   }
 
   return v9;

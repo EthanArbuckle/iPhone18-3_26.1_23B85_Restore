@@ -1,6 +1,6 @@
 @interface PSGResetNetworkSettingsListController
-- (BOOL)customizedMutableSpecifiers:(id)a3;
-- (void)appDidEnterBackground:(id)a3;
+- (BOOL)customizedMutableSpecifiers:(id)specifiers;
+- (void)appDidEnterBackground:(id)background;
 - (void)didCancelResetActionSheet;
 - (void)dismissSelfIfNeeded;
 - (void)viewDidLoad;
@@ -8,14 +8,14 @@
 
 @implementation PSGResetNetworkSettingsListController
 
-- (BOOL)customizedMutableSpecifiers:(id)a3
+- (BOOL)customizedMutableSpecifiers:(id)specifiers
 {
-  v3 = a3;
-  v4 = [v3 specifierForID:@"RESET_NETWORK_LABEL"];
-  [v3 removeAllObjects];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy specifierForID:@"RESET_NETWORK_LABEL"];
+  [specifiersCopy removeAllObjects];
   if (v4)
   {
-    [v3 addObject:v4];
+    [specifiersCopy addObject:v4];
   }
 
   return 1;
@@ -26,15 +26,15 @@
   v4.receiver = self;
   v4.super_class = PSGResetNetworkSettingsListController;
   [(PSGResetOrEraseListController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_appDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_appDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
 }
 
-- (void)appDidEnterBackground:(id)a3
+- (void)appDidEnterBackground:(id)background
 {
-  v4 = [(PSGResetNetworkSettingsListController *)self presentedViewController];
+  presentedViewController = [(PSGResetNetworkSettingsListController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -53,9 +53,9 @@
 
 - (void)dismissSelfIfNeeded
 {
-  v3 = [(PSGResetNetworkSettingsListController *)self presentingViewController];
+  presentingViewController = [(PSGResetNetworkSettingsListController *)self presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
 
     [(PSGResetNetworkSettingsListController *)self dismissViewControllerAnimated:0 completion:0];
@@ -63,13 +63,13 @@
 
   else
   {
-    v4 = [(PSGResetNetworkSettingsListController *)self navigationController];
-    if (v4)
+    navigationController = [(PSGResetNetworkSettingsListController *)self navigationController];
+    if (navigationController)
     {
-      v5 = v4;
-      v6 = [(PSGResetNetworkSettingsListController *)self navigationController];
-      v7 = [v6 viewControllers];
-      v8 = [v7 count];
+      v5 = navigationController;
+      navigationController2 = [(PSGResetNetworkSettingsListController *)self navigationController];
+      viewControllers = [navigationController2 viewControllers];
+      v8 = [viewControllers count];
 
       if (v8 >= 2)
       {
@@ -82,16 +82,16 @@
 
 - (void)didCancelResetActionSheet
 {
-  v3 = [(PSGResetNetworkSettingsListController *)self cancelCallbackURL];
+  cancelCallbackURL = [(PSGResetNetworkSettingsListController *)self cancelCallbackURL];
 
-  if (v3)
+  if (cancelCallbackURL)
   {
-    v4 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v5 = [(PSGResetNetworkSettingsListController *)self cancelCallbackURL];
-    [v4 openSensitiveURL:v5 withOptions:0];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    cancelCallbackURL2 = [(PSGResetNetworkSettingsListController *)self cancelCallbackURL];
+    [defaultWorkspace openSensitiveURL:cancelCallbackURL2 withOptions:0];
 
-    v7 = [(PSGResetNetworkSettingsListController *)self navigationController];
-    v6 = [v7 popViewControllerAnimated:1];
+    navigationController = [(PSGResetNetworkSettingsListController *)self navigationController];
+    v6 = [navigationController popViewControllerAnimated:1];
   }
 }
 

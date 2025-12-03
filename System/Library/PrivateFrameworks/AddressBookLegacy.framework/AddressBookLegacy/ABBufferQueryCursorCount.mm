@@ -1,15 +1,15 @@
 @interface ABBufferQueryCursorCount
-- (ABBufferQueryCursorCount)initWithAddressBook:(void *)a3 predicate:(id)a4 includeLinkedContacts:(BOOL)a5 managedConfiguration:(id)a6;
-- (ABBufferQueryCursorCount)initWithQuery:(id)a3;
+- (ABBufferQueryCursorCount)initWithAddressBook:(void *)book predicate:(id)predicate includeLinkedContacts:(BOOL)contacts managedConfiguration:(id)configuration;
+- (ABBufferQueryCursorCount)initWithQuery:(id)query;
 - (int64_t)fetchContactCount;
 - (void)dealloc;
 @end
 
 @implementation ABBufferQueryCursorCount
 
-- (ABBufferQueryCursorCount)initWithAddressBook:(void *)a3 predicate:(id)a4 includeLinkedContacts:(BOOL)a5 managedConfiguration:(id)a6
+- (ABBufferQueryCursorCount)initWithAddressBook:(void *)book predicate:(id)predicate includeLinkedContacts:(BOOL)contacts managedConfiguration:(id)configuration
 {
-  v7 = [[ABBufferQueryCount alloc] initWithAddressBook:a3 predicate:a4 includeLinkedContacts:a5 managedConfiguration:a6];
+  v7 = [[ABBufferQueryCount alloc] initWithAddressBook:book predicate:predicate includeLinkedContacts:contacts managedConfiguration:configuration];
   if (v7)
   {
     v8 = v7;
@@ -25,14 +25,14 @@
   }
 }
 
-- (ABBufferQueryCursorCount)initWithQuery:(id)a3
+- (ABBufferQueryCursorCount)initWithQuery:(id)query
 {
   v6.receiver = self;
   v6.super_class = ABBufferQueryCursorCount;
   v4 = [(ABBufferQueryCursorCount *)&v6 init];
   if (v4)
   {
-    v4->_query = a3;
+    v4->_query = query;
   }
 
   return v4;
@@ -40,14 +40,14 @@
 
 - (int64_t)fetchContactCount
 {
-  v2 = [(ABBufferQuery *)self->_query statement];
-  if (!v2)
+  statement = [(ABBufferQuery *)self->_query statement];
+  if (!statement)
   {
     return 0;
   }
 
-  v3 = v2;
-  var1 = v2->var1;
+  v3 = statement;
+  var1 = statement->var1;
   if (!var1 || !*v3 || !*(*v3 + 1))
   {
     return 0;

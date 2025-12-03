@@ -1,18 +1,18 @@
 @interface MPGreenTeaLoggerWrapper
-- (MPGreenTeaLoggerWrapper)initWithAccessorName:(id)a3;
+- (MPGreenTeaLoggerWrapper)initWithAccessorName:(id)name;
 @end
 
 @implementation MPGreenTeaLoggerWrapper
 
-- (MPGreenTeaLoggerWrapper)initWithAccessorName:(id)a3
+- (MPGreenTeaLoggerWrapper)initWithAccessorName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = MPGreenTeaLoggerWrapper;
   v5 = [(MPGreenTeaLoggerWrapper *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69B34D0]) initWithAccessorName:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69B34D0]) initWithAccessorName:nameCopy];
     logger = v5->_logger;
     v5->_logger = v6;
   }

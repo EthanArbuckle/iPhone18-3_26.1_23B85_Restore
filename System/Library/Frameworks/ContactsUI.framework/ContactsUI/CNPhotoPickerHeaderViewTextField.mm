@@ -1,17 +1,17 @@
 @interface CNPhotoPickerHeaderViewTextField
-- (CGRect)editingRectForBounds:(CGRect)a3;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
 @end
 
 @implementation CNPhotoPickerHeaderViewTextField
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v27.receiver = self;
   v27.super_class = CNPhotoPickerHeaderViewTextField;
-  height = a3.size.height;
+  height = bounds.size.height;
   [(CNPhotoPickerHeaderViewTextField *)&v27 editingRectForBounds:?];
   v8 = v7;
   v10 = v9;

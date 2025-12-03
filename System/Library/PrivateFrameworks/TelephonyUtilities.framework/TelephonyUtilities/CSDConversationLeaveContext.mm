@@ -1,19 +1,19 @@
 @interface CSDConversationLeaveContext
 + (id)greenTeaLeaveContext;
-- (CSDConversationLeaveContext)initWithLeaveReason:(unint64_t)a3;
+- (CSDConversationLeaveContext)initWithLeaveReason:(unint64_t)reason;
 - (id)description;
 @end
 
 @implementation CSDConversationLeaveContext
 
-- (CSDConversationLeaveContext)initWithLeaveReason:(unint64_t)a3
+- (CSDConversationLeaveContext)initWithLeaveReason:(unint64_t)reason
 {
   v5.receiver = self;
   v5.super_class = CSDConversationLeaveContext;
   result = [(CSDConversationLeaveContext *)&v5 init];
   if (result)
   {
-    result->_leaveReason = a3;
+    result->_leaveReason = reason;
   }
 
   return result;

@@ -44,7 +44,7 @@
     v8 = __n;
   }
 
-  return [a1 initWithBytes:__s length:v8 encoding:4];
+  return [self initWithBytes:__s length:v8 encoding:4];
 }
 
 @end

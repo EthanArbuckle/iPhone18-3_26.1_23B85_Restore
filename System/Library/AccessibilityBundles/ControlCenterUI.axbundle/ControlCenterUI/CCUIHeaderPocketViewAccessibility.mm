@@ -1,22 +1,22 @@
 @interface CCUIHeaderPocketViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CCUIHeaderPocketViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIHeaderPocketView" hasInstanceMethod:@"editButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIHeaderPocketView" hasInstanceMethod:@"powerButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIHeaderPocketView" hasInstanceMethod:@"statusBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIHeaderPocketView" hasInstanceVariable:@"_compactSensorAttributionControl" withType:"CCUISensorAttributionCompactControl"];
-  [v3 validateClass:@"CCUIHeaderPocketView" hasInstanceVariable:@"_sensorAttributionExpandedViewController" withType:"CCUISensorAttributionExpandedViewController"];
-  [v3 validateClass:@"CCUISensorAttributionExpandedViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CCUISensorAttributionExpandedViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUIPowerButton" isKindOfClass:@"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIHeaderPocketView" hasInstanceMethod:@"editButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIHeaderPocketView" hasInstanceMethod:@"powerButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIHeaderPocketView" hasInstanceMethod:@"statusBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIHeaderPocketView" hasInstanceVariable:@"_compactSensorAttributionControl" withType:"CCUISensorAttributionCompactControl"];
+  [validationsCopy validateClass:@"CCUIHeaderPocketView" hasInstanceVariable:@"_sensorAttributionExpandedViewController" withType:"CCUISensorAttributionExpandedViewController"];
+  [validationsCopy validateClass:@"CCUISensorAttributionExpandedViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CCUISensorAttributionExpandedViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUIPowerButton" isKindOfClass:@"UIControl"];
 }
 
 - (id)accessibilityElements
@@ -67,14 +67,14 @@
   objc_copyWeak(&v13, &location);
   [v5 setAccessibilityActivateBlock:v12];
   v7 = [(CCUIHeaderPocketViewAccessibility *)self safeValueForKey:@"_sensorAttributionExpandedViewController"];
-  v8 = [v7 view];
+  view = [v7 view];
   objc_initWeak(&from, v7);
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = __79__CCUIHeaderPocketViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke_2;
   v9[3] = &unk_29F2B6D90;
   objc_copyWeak(&v10, &from);
-  [v8 setAccessibilityViewIsModalBlock:v9];
+  [view setAccessibilityViewIsModalBlock:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&from);
 

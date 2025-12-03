@@ -3,9 +3,9 @@
 - (BOOL)isVolumeControlAvailable;
 - (BOOL)isVolumeWarningEnabled;
 - (NACVolumeControllerDelegate)delegate;
-- (NACVolumeControllerLocal)initWithAudioCategory:(id)a3;
-- (NACVolumeControllerLocal)initWithRoute:(id)a3;
-- (NACVolumeControllerLocal)initWithTarget:(int64_t)a3 category:(id)a4;
+- (NACVolumeControllerLocal)initWithAudioCategory:(id)category;
+- (NACVolumeControllerLocal)initWithRoute:(id)route;
+- (NACVolumeControllerLocal)initWithTarget:(int64_t)target category:(id)category;
 - (NSOrderedSet)availableListeningModes;
 - (NSString)currentListeningMode;
 - (float)EUVolumeLimit;
@@ -17,9 +17,9 @@
 - (int64_t)hapticState;
 - (int64_t)volumeWarningState;
 - (void)_ignoreHapticObservation;
-- (void)_setHapticIntensity:(id)a3;
-- (void)_setVolumeValue:(id)a3;
-- (void)_updateMutedStateFromVolumeController:(id)a3;
+- (void)_setHapticIntensity:(id)intensity;
+- (void)_setVolumeValue:(id)value;
+- (void)_updateMutedStateFromVolumeController:(id)controller;
 - (void)_updateVolumeState;
 - (void)allowUserToExceedEUVolumeLimit;
 - (void)beginObservingHapticState;
@@ -31,17 +31,17 @@
 - (void)playDefaultHapticPreview;
 - (void)playPreview;
 - (void)playProminentHapticPreview;
-- (void)routingControllerAvailableRoutesDidChange:(id)a3;
-- (void)setCurrentListeningMode:(id)a3;
-- (void)setHapticIntensity:(float)a3;
-- (void)setHapticState:(int64_t)a3;
-- (void)setVolumeValue:(float)a3;
+- (void)routingControllerAvailableRoutesDidChange:(id)change;
+- (void)setCurrentListeningMode:(id)mode;
+- (void)setHapticIntensity:(float)intensity;
+- (void)setHapticState:(int64_t)state;
+- (void)setVolumeValue:(float)value;
 - (void)updateCachedHapticState;
-- (void)volumeController:(id)a3 EUVolumeLimitDidChange:(float)a4;
-- (void)volumeController:(id)a3 mutedStateDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4;
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4;
-- (void)volumeController:(id)a3 volumeWarningStateDidChange:(int64_t)a4;
+- (void)volumeController:(id)controller EUVolumeLimitDidChange:(float)change;
+- (void)volumeController:(id)controller mutedStateDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change;
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change;
+- (void)volumeController:(id)controller volumeWarningStateDidChange:(int64_t)change;
 @end
 
 @implementation NACVolumeControllerLocal
@@ -51,32 +51,32 @@
   target = self->_target;
   if (target == 1)
   {
-    v8 = [(MPVolumeController *)self->_volumeController dataSource];
-    v9 = [v8 groupRoute];
-    if (v9)
+    dataSource = [(MPVolumeController *)self->_volumeController dataSource];
+    groupRoute = [dataSource groupRoute];
+    if (groupRoute)
     {
-      v2 = [(MPVolumeController *)self->_volumeController isVolumeControlAvailable];
+      isVolumeControlAvailable = [(MPVolumeController *)self->_volumeController isVolumeControlAvailable];
     }
 
     else
     {
-      v2 = 0;
+      isVolumeControlAvailable = 0;
     }
 
-    return v2 & 1;
+    return isVolumeControlAvailable & 1;
   }
 
   if (target)
   {
-    return v2 & 1;
+    return isVolumeControlAvailable & 1;
   }
 
   if (self->_route)
   {
-    v5 = [(NACVolumeControllerLocal *)self _volumeController];
-    v6 = [v5 isVolumeControlAvailable];
+    _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
+    isVolumeControlAvailable2 = [_volumeController isVolumeControlAvailable];
 
-    return v6;
+    return isVolumeControlAvailable2;
   }
 
   else
@@ -128,9 +128,9 @@ LABEL_8:
     [(NACVolumeControllerLocal *)self beginObservingHaptics];
   }
 
-  v11 = [(NACVolumeControllerLocal *)self _volumeController];
+  _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
 
-  if (v11)
+  if (_volumeController)
   {
     [(NACVolumeControllerLocal *)self _updateVolumeState];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -158,16 +158,16 @@ LABEL_8:
 
 - (void)_updateVolumeState
 {
-  v3 = [(NACVolumeControllerLocal *)self _volumeController];
-  [v3 updateVolumeValue];
-  [v3 updateVolumeWarningState];
-  [(NACVolumeControllerLocal *)self _updateMutedStateFromVolumeController:v3];
+  _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
+  [_volumeController updateVolumeValue];
+  [_volumeController updateVolumeWarningState];
+  [(NACVolumeControllerLocal *)self _updateMutedStateFromVolumeController:_volumeController];
 }
 
 - (float)volumeValue
 {
-  v2 = [(NACVolumeControllerLocal *)self _volumeController];
-  [v2 volumeValue];
+  _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
+  [_volumeController volumeValue];
   v4 = v3;
 
   return v4;
@@ -177,8 +177,8 @@ LABEL_8:
 {
   if (!self->_validCachedMutedValue)
   {
-    v3 = [(NACVolumeControllerLocal *)self _volumeController];
-    self->_muted = [v3 isMuted];
+    _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
+    self->_muted = [_volumeController isMuted];
 
     self->_validCachedMutedValue = 1;
   }
@@ -188,10 +188,10 @@ LABEL_8:
 
 - (BOOL)isVolumeWarningEnabled
 {
-  v2 = [(NACVolumeControllerLocal *)self _volumeController];
-  v3 = [v2 volumeWarningEnabled];
+  _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
+  volumeWarningEnabled = [_volumeController volumeWarningEnabled];
 
-  return v3;
+  return volumeWarningEnabled;
 }
 
 - (void)_ignoreHapticObservation
@@ -212,43 +212,43 @@ LABEL_8:
   }
 }
 
-- (NACVolumeControllerLocal)initWithAudioCategory:(id)a3
+- (NACVolumeControllerLocal)initWithAudioCategory:(id)category
 {
-  v5 = a3;
-  v6 = [(NACVolumeControllerLocal *)self _init];
-  v7 = v6;
-  if (v6)
+  categoryCopy = category;
+  _init = [(NACVolumeControllerLocal *)self _init];
+  v7 = _init;
+  if (_init)
   {
-    v6->_target = 0;
-    objc_storeStrong(&v6->_audioCategory, a3);
+    _init->_target = 0;
+    objc_storeStrong(&_init->_audioCategory, category);
   }
 
   return v7;
 }
 
-- (NACVolumeControllerLocal)initWithRoute:(id)a3
+- (NACVolumeControllerLocal)initWithRoute:(id)route
 {
-  v5 = a3;
-  v6 = [(NACVolumeControllerLocal *)self _init];
-  v7 = v6;
-  if (v6)
+  routeCopy = route;
+  _init = [(NACVolumeControllerLocal *)self _init];
+  v7 = _init;
+  if (_init)
   {
-    v6->_target = 0;
-    objc_storeStrong(&v6->_route, a3);
+    _init->_target = 0;
+    objc_storeStrong(&_init->_route, route);
   }
 
   return v7;
 }
 
-- (NACVolumeControllerLocal)initWithTarget:(int64_t)a3 category:(id)a4
+- (NACVolumeControllerLocal)initWithTarget:(int64_t)target category:(id)category
 {
-  v7 = a4;
-  v8 = [(NACVolumeControllerLocal *)self _init];
-  v9 = v8;
-  if (v8)
+  categoryCopy = category;
+  _init = [(NACVolumeControllerLocal *)self _init];
+  v9 = _init;
+  if (_init)
   {
-    v8->_target = a3;
-    objc_storeStrong(&v8->_audioCategory, a4);
+    _init->_target = target;
+    objc_storeStrong(&_init->_audioCategory, category);
   }
 
   return v9;
@@ -383,14 +383,14 @@ void __48__NACVolumeControllerLocal_beginObservingVolume__block_invoke_2(uint64_
 
 - (void)beginObservingListeningModes
 {
-  v3 = [(NACVolumeControllerLocal *)self _mediaControlsVolumeController];
-  [v3 addObserver:self];
+  _mediaControlsVolumeController = [(NACVolumeControllerLocal *)self _mediaControlsVolumeController];
+  [_mediaControlsVolumeController addObserver:self];
 }
 
 - (float)EUVolumeLimit
 {
-  v2 = [(NACVolumeControllerLocal *)self _volumeController];
-  [v2 EUVolumeLimit];
+  _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
+  [_volumeController EUVolumeLimit];
   v4 = v3;
 
   return v4;
@@ -398,30 +398,30 @@ void __48__NACVolumeControllerLocal_beginObservingVolume__block_invoke_2(uint64_
 
 - (int64_t)volumeWarningState
 {
-  v2 = [(NACVolumeControllerLocal *)self _volumeController];
-  v3 = [v2 volumeWarningState];
+  _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
+  volumeWarningState = [_volumeController volumeWarningState];
 
-  return v3;
+  return volumeWarningState;
 }
 
-- (void)setVolumeValue:(float)a3
+- (void)setVolumeValue:(float)value
 {
   volumeThrottler = self->_volumeThrottler;
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   [(NACEventThrottler *)volumeThrottler setValue:v4];
 }
 
-- (void)_setVolumeValue:(id)a3
+- (void)_setVolumeValue:(id)value
 {
-  v4 = a3;
-  [v4 floatValue];
+  valueCopy = value;
+  [valueCopy floatValue];
   v6 = v5;
-  [(NSCountedSet *)self->_volumeSetHistory addObject:v4];
+  [(NSCountedSet *)self->_volumeSetHistory addObject:valueCopy];
 
-  v7 = [(NACVolumeControllerLocal *)self _volumeController];
+  _volumeController = [(NACVolumeControllerLocal *)self _volumeController];
   LODWORD(v8) = 0.5;
   LODWORD(v9) = v6;
-  [v7 setVolume:v9 withNotificationDelay:v8];
+  [_volumeController setVolume:v9 withNotificationDelay:v8];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -448,16 +448,16 @@ uint64_t __44__NACVolumeControllerLocal__setVolumeValue___block_invoke(uint64_t 
 {
   if (!self->_route)
   {
-    v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
-    [v3 allowUserToExceedEUVolumeLimit];
+    mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+    [mEMORY[0x277D26E58] allowUserToExceedEUVolumeLimit];
   }
 }
 
 - (NSOrderedSet)availableListeningModes
 {
   v2 = MEMORY[0x277CBEB70];
-  v3 = [(NACVolumeControllerLocal *)self _mediaControlsVolumeController];
-  v4 = [v3 availableBluetoothListeningModeForRouteType:0];
+  _mediaControlsVolumeController = [(NACVolumeControllerLocal *)self _mediaControlsVolumeController];
+  v4 = [_mediaControlsVolumeController availableBluetoothListeningModeForRouteType:0];
   v5 = [v2 orderedSetWithArray:v4];
 
   return v5;
@@ -465,18 +465,18 @@ uint64_t __44__NACVolumeControllerLocal__setVolumeValue___block_invoke(uint64_t 
 
 - (NSString)currentListeningMode
 {
-  v2 = [(NACVolumeControllerLocal *)self _mediaControlsVolumeController];
-  v3 = [v2 currentBluetoothListeningModeForRouteType:0];
+  _mediaControlsVolumeController = [(NACVolumeControllerLocal *)self _mediaControlsVolumeController];
+  v3 = [_mediaControlsVolumeController currentBluetoothListeningModeForRouteType:0];
 
   return v3;
 }
 
-- (void)setCurrentListeningMode:(id)a3
+- (void)setCurrentListeningMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(NACVolumeControllerLocal *)self _mediaControlsVolumeController];
+  modeCopy = mode;
+  _mediaControlsVolumeController = [(NACVolumeControllerLocal *)self _mediaControlsVolumeController];
   v11 = 0;
-  v6 = [v5 setCurrentBluetoothListeningModeForRouteType:0 bluetoothListeningMode:v4 error:&v11];
+  v6 = [_mediaControlsVolumeController setCurrentBluetoothListeningModeForRouteType:0 bluetoothListeningMode:modeCopy error:&v11];
 
   v7 = v11;
   if ((v6 & 1) == 0)
@@ -508,7 +508,7 @@ uint64_t __44__NACVolumeControllerLocal__setVolumeValue___block_invoke(uint64_t 
   return mediaControlsVolumeController;
 }
 
-- (void)volumeController:(id)a3 volumeControlAvailableDidChange:(BOOL)a4
+- (void)volumeController:(id)controller volumeControlAvailableDidChange:(BOOL)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
@@ -520,16 +520,16 @@ uint64_t __44__NACVolumeControllerLocal__setVolumeValue___block_invoke(uint64_t 
   }
 }
 
-- (void)volumeController:(id)a3 volumeValueDidChange:(float)a4
+- (void)volumeController:(id)controller volumeValueDidChange:(float)change
 {
   volumeSetHistory = self->_volumeSetHistory;
-  v7 = [MEMORY[0x277CCABB0] numberWithFloat:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithFloat:controller];
   v8 = [(NSCountedSet *)volumeSetHistory containsObject:v7];
 
   v10 = self->_volumeSetHistory;
   if (v8)
   {
-    *&v9 = a4;
+    *&v9 = change;
     v11 = [MEMORY[0x277CCABB0] numberWithFloat:v9];
     [(NSCountedSet *)v10 removeObject:v11];
   }
@@ -558,14 +558,14 @@ void __66__NACVolumeControllerLocal_volumeController_volumeValueDidChange___bloc
   }
 }
 
-- (void)volumeController:(id)a3 mutedStateDidChange:(BOOL)a4
+- (void)volumeController:(id)controller mutedStateDidChange:(BOOL)change
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__NACVolumeControllerLocal_volumeController_mutedStateDidChange___block_invoke;
   v4[3] = &unk_27992B600;
   v4[4] = self;
-  v5 = a4;
+  changeCopy = change;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
@@ -583,7 +583,7 @@ void __65__NACVolumeControllerLocal_volumeController_mutedStateDidChange___block
   }
 }
 
-- (void)volumeController:(id)a3 EUVolumeLimitDidChange:(float)a4
+- (void)volumeController:(id)controller EUVolumeLimitDidChange:(float)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -605,7 +605,7 @@ void __68__NACVolumeControllerLocal_volumeController_EUVolumeLimitDidChange___bl
   }
 }
 
-- (void)volumeController:(id)a3 volumeWarningStateDidChange:(int64_t)a4
+- (void)volumeController:(id)controller volumeWarningStateDidChange:(int64_t)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -627,7 +627,7 @@ void __73__NACVolumeControllerLocal_volumeController_volumeWarningStateDidChange
   }
 }
 
-- (void)routingControllerAvailableRoutesDidChange:(id)a3
+- (void)routingControllerAvailableRoutesDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -661,9 +661,9 @@ void __70__NACVolumeControllerLocal_routingControllerAvailableRoutesDidChange___
   }
 }
 
-- (void)setHapticState:(int64_t)a3
+- (void)setHapticState:(int64_t)state
 {
-  v5 = NACProminentEnabledFromState(a3);
+  v5 = NACProminentEnabledFromState(state);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__NACVolumeControllerLocal_setHapticState___block_invoke;
@@ -671,9 +671,9 @@ void __70__NACVolumeControllerLocal_routingControllerAvailableRoutesDidChange___
   v8 = v5;
   v7[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v7);
-  *&v6 = NACIntensityFromState(a3);
+  *&v6 = NACIntensityFromState(state);
   [(NACVolumeControllerLocal *)self setHapticIntensity:v6];
-  [(NACVolumeControllerLocal *)self setProminentHapticEnabled:NACProminentEnabledFromState(a3)];
+  [(NACVolumeControllerLocal *)self setProminentHapticEnabled:NACProminentEnabledFromState(state)];
 }
 
 uint64_t __43__NACVolumeControllerLocal_setHapticState___block_invoke(uint64_t a1)
@@ -695,9 +695,9 @@ uint64_t __43__NACVolumeControllerLocal_setHapticState___block_invoke(uint64_t a
 {
   [(NACVolumeControllerLocal *)self hapticIntensity];
   v4 = v3;
-  v5 = [(NACVolumeControllerLocal *)self isProminentHapticEnabled];
+  isProminentHapticEnabled = [(NACVolumeControllerLocal *)self isProminentHapticEnabled];
 
-  return NACStateFromIntensityAndProminentEnabled(v5, v4);
+  return NACStateFromIntensityAndProminentEnabled(isProminentHapticEnabled, v4);
 }
 
 - (void)updateCachedHapticState
@@ -743,30 +743,30 @@ void __51__NACVolumeControllerLocal_updateCachedHapticState__block_invoke_2(uint
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25AEBF000, a2, OS_LOG_TYPE_ERROR, "Failed to set AVSC notifications attribute: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
 - (void)endObservingHapticState
 {
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  [v4 removeObserver:self name:*MEMORY[0x277D26DF8] object:v3];
-  [v4 removeObserver:self name:*MEMORY[0x277D72088] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D26DF8] object:mEMORY[0x277D26E58]];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D72088] object:0];
 }
 
-- (void)setHapticIntensity:(float)a3
+- (void)setHapticIntensity:(float)intensity
 {
   hapticThrottler = self->_hapticThrottler;
   v4 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   [(NACEventThrottler *)hapticThrottler setValue:v4];
 }
 
-- (void)_setHapticIntensity:(id)a3
+- (void)_setHapticIntensity:(id)intensity
 {
   v12 = *MEMORY[0x277D85DE8];
-  [a3 floatValue];
+  [intensity floatValue];
   v5 = NACSystemHapticValueForUIValue(v4);
   v6 = NMLogForCategory(4);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -776,9 +776,9 @@ void __51__NACVolumeControllerLocal_updateCachedHapticState__block_invoke_2(uint
     _os_log_impl(&dword_25AEBF000, v6, OS_LOG_TYPE_DEFAULT, "Handling set haptic intensity. Setting haptic intensity: %f", &v10, 0xCu);
   }
 
-  v7 = [MEMORY[0x277D26E58] sharedAVSystemController];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
   *&v8 = v5;
-  [v7 setVibeIntensityTo:v8];
+  [mEMORY[0x277D26E58] setVibeIntensityTo:v8];
   [(NACVolumeControllerLocal *)self updateCachedHapticState];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -787,8 +787,8 @@ void __51__NACVolumeControllerLocal_updateCachedHapticState__block_invoke_2(uint
 - (float)hapticIntensity
 {
   v5 = 0.0;
-  v2 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  if ([v2 getVibeIntensity:&v5])
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  if ([mEMORY[0x277D26E58] getVibeIntensity:&v5])
   {
     v3 = NACUIValueForSystemHapticValue(v5);
   }
@@ -819,11 +819,11 @@ void __51__NACVolumeControllerLocal_updateCachedHapticState__block_invoke_2(uint
   [v2 playProminentHapticPreview];
 }
 
-- (void)_updateMutedStateFromVolumeController:(id)a3
+- (void)_updateMutedStateFromVolumeController:(id)controller
 {
   if (!self->_validCachedMutedValue)
   {
-    self->_muted = [a3 isMuted];
+    self->_muted = [controller isMuted];
     self->_validCachedMutedValue = 1;
   }
 }

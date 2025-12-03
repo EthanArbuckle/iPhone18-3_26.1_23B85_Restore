@@ -1,7 +1,7 @@
 @interface SWSystemActivityProvider
 + (id)sharedProvider;
-- (id)createTimerWithIdentifier:(id)a3;
-- (id)declareSystemActivityWithName:(id)a3;
+- (id)createTimerWithIdentifier:(id)identifier;
+- (id)declareSystemActivityWithName:(id)name;
 @end
 
 @implementation SWSystemActivityProvider
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __42__SWSystemActivityProvider_sharedProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D3F908 != -1)
   {
     dispatch_once(&qword_280D3F908, block);
@@ -30,18 +30,18 @@ uint64_t __42__SWSystemActivityProvider_sharedProvider__block_invoke(uint64_t a1
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)declareSystemActivityWithName:(id)a3
+- (id)declareSystemActivityWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [[SWDeclareSystemActivityResult alloc] initWithReturnValue:IOPMAssertionDeclareSystemActivity() assertionID:0 systemState:0];
 
   return v4;
 }
 
-- (id)createTimerWithIdentifier:(id)a3
+- (id)createTimerWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:identifierCopy];
 
   return v4;
 }

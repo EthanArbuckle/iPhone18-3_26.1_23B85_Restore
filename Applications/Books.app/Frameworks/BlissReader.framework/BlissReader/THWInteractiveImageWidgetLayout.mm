@@ -1,5 +1,5 @@
 @interface THWInteractiveImageWidgetLayout
-- (BOOL)hasContentForPanel:(int)a3;
+- (BOOL)hasContentForPanel:(int)panel;
 - (BOOL)isCompactFlowPresentation;
 - (BOOL)isCompactHeight;
 - (BOOL)isExpanded;
@@ -9,29 +9,29 @@
 - (BOOL)p_useTitleOnlyForCallout;
 - (CGAffineTransform)transformFromContentToContainerCoords;
 - (CGPoint)contentOffset;
-- (CGPoint)interactiveImageCallout:(id)a3 convertContentPointToUnscaledOverlayPoint:(CGPoint)a4;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)calloutFrameWithViewScale:(double)a3;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGPoint)interactiveImageCallout:(id)callout convertContentPointToUnscaledOverlayPoint:(CGPoint)point;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)calloutFrameWithViewScale:(double)scale;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGRect)sidebarFrame;
 - (CGRect)stageFrame;
 - (CGRect)transportControlsFrame;
-- (CGSize)interactiveImageSidebarSize:(id)a3;
+- (CGSize)interactiveImageSidebarSize:(id)size;
 - (CGSize)zoomableCanvasSize;
-- (THWInteractiveImageWidgetLayout)initWithInfo:(id)a3;
+- (THWInteractiveImageWidgetLayout)initWithInfo:(id)info;
 - (TSUColor)primaryColor;
 - (double)baseViewScale;
-- (double)baseViewScaleForStageSize:(CGSize)a3;
-- (double)interactiveImageCalloutFontScale:(id)a3;
+- (double)baseViewScaleForStageSize:(CGSize)size;
+- (double)interactiveImageCalloutFontScale:(id)scale;
 - (id)additionalLayouts;
-- (id)additionalLayoutsForPanel:(int)a3;
+- (id)additionalLayoutsForPanel:(int)panel;
 - (id)childInfosForLayout;
 - (id)computeLayoutGeometry;
-- (id)controlContainerAdditionalChildLayouts:(id)a3;
+- (id)controlContainerAdditionalChildLayouts:(id)layouts;
 - (id)infosForContainer;
-- (id)infosForPanel:(int)a3;
-- (id)infosForStageContentViewport:(CGRect)a3;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)infosForPanel:(int)panel;
+- (id)infosForStageContentViewport:(CGRect)viewport;
+- (id)layoutGeometryForLayout:(id)layout;
 - (id)layoutGeometryFromProvider;
 - (id)p_allScrollContainerLayouts;
 - (void)dealloc;
@@ -41,20 +41,20 @@
 - (void)p_invalidateExternal;
 - (void)p_updateCalloutLayouts;
 - (void)p_updateSidebarLayouts;
-- (void)setDelegate:(id)a3;
-- (void)setViewScale:(double)a3 contentOffset:(CGPoint)a4 animated:(BOOL)a5;
+- (void)setDelegate:(id)delegate;
+- (void)setViewScale:(double)scale contentOffset:(CGPoint)offset animated:(BOOL)animated;
 - (void)updateChildrenFromInfo;
-- (void)updateSelectedCallout:(id)a3;
-- (void)wasAddedToLayoutController:(id)a3;
+- (void)updateSelectedCallout:(id)callout;
+- (void)wasAddedToLayoutController:(id)controller;
 @end
 
 @implementation THWInteractiveImageWidgetLayout
 
-- (THWInteractiveImageWidgetLayout)initWithInfo:(id)a3
+- (THWInteractiveImageWidgetLayout)initWithInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = THWInteractiveImageWidgetLayout;
-  result = [(THWInteractiveImageWidgetLayout *)&v4 initWithInfo:a3];
+  result = [(THWInteractiveImageWidgetLayout *)&v4 initWithInfo:info];
   if (result)
   {
     result->_viewScale = 1.0;
@@ -70,10 +70,10 @@
   [(THWContainerLayout *)&v3 dealloc];
 }
 
-- (double)baseViewScaleForStageSize:(CGSize)a3
+- (double)baseViewScaleForStageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [objc_msgSend(-[THWInteractiveImageWidgetLayout info](self "info")];
 
   return THScaleNeededToFitSizeInSize(v5, v6, width, height);
@@ -94,30 +94,30 @@
 
 - (CGSize)zoomableCanvasSize
 {
-  v2 = [(THWInteractiveImageWidgetLayout *)self info];
+  info = [(THWInteractiveImageWidgetLayout *)self info];
 
-  [v2 backgroundSize];
+  [info backgroundSize];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (id)infosForStageContentViewport:(CGRect)a3
+- (id)infosForStageContentViewport:(CGRect)viewport
 {
-  v3 = [-[THWInteractiveImageWidgetLayout info](self info];
+  info = [-[THWInteractiveImageWidgetLayout info](self info];
 
-  return [NSArray arrayWithObject:v3];
+  return [NSArray arrayWithObject:info];
 }
 
-- (void)setViewScale:(double)a3 contentOffset:(CGPoint)a4 animated:(BOOL)a5
+- (void)setViewScale:(double)scale contentOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   [(THWInteractiveImageWidgetLayout *)self contentOffset];
   if (x == v10 && y == v9)
   {
     [(THWInteractiveImageWidgetLayout *)self viewScale];
-    if (v13 == a3)
+    if (v13 == scale)
     {
       return;
     }
@@ -127,13 +127,13 @@
   {
     [(THWInteractiveImageWidgetLayout *)self setContentOffset:x, y];
     [(THWInteractiveImageWidgetLayout *)self viewScale];
-    if (v12 == a3)
+    if (v12 == scale)
     {
       goto LABEL_9;
     }
   }
 
-  [(THWInteractiveImageWidgetLayout *)self setViewScale:a3];
+  [(THWInteractiveImageWidgetLayout *)self setViewScale:scale];
 LABEL_9:
 
   [(THWInteractiveImageWidgetLayout *)self p_invalidateAllCalloutLayoutFrames];
@@ -188,14 +188,14 @@ LABEL_9:
   return [(THWInteractiveImageWidgetLayout *)self p_captionsInPanel];
 }
 
-- (BOOL)hasContentForPanel:(int)a3
+- (BOOL)hasContentForPanel:(int)panel
 {
-  if (a3 == 2 || a3 == 1)
+  if (panel == 2 || panel == 1)
   {
     return 1;
   }
 
-  if (a3)
+  if (panel)
   {
     return 0;
   }
@@ -205,15 +205,15 @@ LABEL_9:
 
 - (BOOL)isCompactHeight
 {
-  v2 = [(THWInteractiveImageWidgetLayout *)self layoutController];
+  layoutController = [(THWInteractiveImageWidgetLayout *)self layoutController];
 
-  return [v2 isCompactHeight];
+  return [layoutController isCompactHeight];
 }
 
-- (id)infosForPanel:(int)a3
+- (id)infosForPanel:(int)panel
 {
   v5 = +[NSMutableArray array];
-  if (a3 == 1)
+  if (panel == 1)
   {
     if ([(THWInteractiveImageWidgetLayout *)self p_captionsInPanel]&& [(THWInteractiveImageWidgetLayout *)self selectedCalloutIndex])
     {
@@ -233,7 +233,7 @@ LABEL_9:
     }
   }
 
-  else if (!a3 && [objc_msgSend(-[THWInteractiveImageWidgetLayout info](self "info")])
+  else if (!panel && [objc_msgSend(-[THWInteractiveImageWidgetLayout info](self "info")])
   {
     v6 = [objc_msgSend(-[THWInteractiveImageWidgetLayout info](self "info")];
 LABEL_12:
@@ -243,9 +243,9 @@ LABEL_12:
   return v5;
 }
 
-- (id)additionalLayoutsForPanel:(int)a3
+- (id)additionalLayoutsForPanel:(int)panel
 {
-  if (a3 != 2 || !self->_transportControlLayout || ![(THWInteractiveImageWidgetLayout *)self isExpanded]|| ![(THWInteractiveImageWidgetLayout *)self p_showTransportControls])
+  if (panel != 2 || !self->_transportControlLayout || ![(THWInteractiveImageWidgetLayout *)self isExpanded]|| ![(THWInteractiveImageWidgetLayout *)self p_showTransportControls])
   {
     return 0;
   }
@@ -276,7 +276,7 @@ LABEL_12:
 {
   v23.receiver = self;
   v23.super_class = THWInteractiveImageWidgetLayout;
-  v3 = [(THWInteractiveImageWidgetLayout *)&v23 computeLayoutGeometry];
+  computeLayoutGeometry = [(THWInteractiveImageWidgetLayout *)&v23 computeLayoutGeometry];
   if ([(THWInteractiveImageWidgetLayout *)self isExpanded])
   {
     [(THWWidgetLayoutDelegate *)[(THWInteractiveImageWidgetLayout *)self delegate] widgetLayoutBounds];
@@ -327,12 +327,12 @@ LABEL_12:
       if (v12 <= v13)
       {
 LABEL_15:
-        v17 = [(THWInteractiveImageWidgetLayout *)self isExpanded];
+        isExpanded = [(THWInteractiveImageWidgetLayout *)self isExpanded];
         [-[THWInteractiveImageWidgetLayout info](self "info")];
         v19 = v18;
         [(THWInteractiveImageWidgetLayout *)self stageFrame];
         p_sidebarFrame = &self->_sidebarFrame;
-        if (v17)
+        if (isExpanded)
         {
           p_sidebarFrame->origin = xmmword_34AF10;
         }
@@ -345,7 +345,7 @@ LABEL_15:
 
         self->_sidebarFrame.size.width = v19;
         self->_sidebarFrame.size.height = v20;
-        return v3;
+        return computeLayoutGeometry;
       }
 
       [(THWInteractiveImageWidgetLayout *)self stageFrame];
@@ -356,7 +356,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  return v3;
+  return computeLayoutGeometry;
 }
 
 - (void)updateChildrenFromInfo
@@ -384,8 +384,8 @@ LABEL_15:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(THWInteractiveImageWidgetLayout *)self dependentLayouts];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  dependentLayouts = [(THWInteractiveImageWidgetLayout *)self dependentLayouts];
+  v4 = [dependentLayouts countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -397,7 +397,7 @@ LABEL_15:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dependentLayouts);
         }
 
         [*(*(&v8 + 1) + 8 * v7) invalidateFrame];
@@ -405,7 +405,7 @@ LABEL_15:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [dependentLayouts countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -435,7 +435,7 @@ LABEL_15:
   return v3;
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -449,9 +449,9 @@ LABEL_9:
     return v13;
   }
 
-  if (!-[THWInteractiveImageWidgetLayout isExpanded](self, "isExpanded") || (v11 = [a3 info], v11 != objc_msgSend(-[THWInteractiveImageWidgetLayout info](self, "info"), "backgroundImageInfo")))
+  if (!-[THWInteractiveImageWidgetLayout isExpanded](self, "isExpanded") || (v11 = [layout info], v11 != objc_msgSend(-[THWInteractiveImageWidgetLayout info](self, "info"), "backgroundImageInfo")))
   {
-    if ([a3 info] != self->_calloutContainer && objc_msgSend(a3, "info") != self->_sidebarContainer)
+    if ([layout info] != self->_calloutContainer && objc_msgSend(layout, "info") != self->_sidebarContainer)
     {
       return 0;
     }
@@ -464,10 +464,10 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  return [a3 layoutGeometryFromInfo];
+  return [layout layoutGeometryFromInfo];
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -480,7 +480,7 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -502,46 +502,46 @@ LABEL_9:
   [(THWInteractiveImageWidgetLayout *)self p_updateSidebarLayouts];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     [(THWInteractiveImageWidgetLayout *)self p_invalidateExternal];
   }
 }
 
-- (void)wasAddedToLayoutController:(id)a3
+- (void)wasAddedToLayoutController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = THWInteractiveImageWidgetLayout;
-  [(THWInteractiveImageWidgetLayout *)&v4 wasAddedToLayoutController:a3];
+  [(THWInteractiveImageWidgetLayout *)&v4 wasAddedToLayoutController:controller];
   [(THWInteractiveImageWidgetLayout *)self p_invalidateExternal];
 }
 
 - (BOOL)isExpanded
 {
-  v3 = [(THWInteractiveImageWidgetLayout *)self delegate];
-  if (v3)
+  delegate = [(THWInteractiveImageWidgetLayout *)self delegate];
+  if (delegate)
   {
-    LOBYTE(v3) = [(THWWidgetLayoutDelegate *)[(THWInteractiveImageWidgetLayout *)self delegate] widgetLayoutMode:self]== 1;
+    LOBYTE(delegate) = [(THWWidgetLayoutDelegate *)[(THWInteractiveImageWidgetLayout *)self delegate] widgetLayoutMode:self]== 1;
   }
 
-  return v3;
+  return delegate;
 }
 
 - (BOOL)isCompactFlowPresentation
 {
-  v3 = [(THWInteractiveImageWidgetLayout *)self delegate];
+  delegate = [(THWInteractiveImageWidgetLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsCompactFlow:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsCompactFlow:self];
 }
 
 - (BOOL)isReflowablePresentation
 {
-  v3 = [(THWInteractiveImageWidgetLayout *)self delegate];
+  delegate = [(THWInteractiveImageWidgetLayout *)self delegate];
 
-  return [(THWWidgetLayoutDelegate *)v3 widgetLayoutIsReflowablePresentation:self];
+  return [(THWWidgetLayoutDelegate *)delegate widgetLayoutIsReflowablePresentation:self];
 }
 
 - (id)p_allScrollContainerLayouts
@@ -557,8 +557,8 @@ LABEL_9:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  calloutLayouts = [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
+  v3 = [calloutLayouts countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -570,7 +570,7 @@ LABEL_9:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(calloutLayouts);
         }
 
         [*(*(&v7 + 1) + 8 * v6) invalidateFrame];
@@ -578,14 +578,14 @@ LABEL_9:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [calloutLayouts countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (CGRect)calloutFrameWithViewScale:(double)a3
+- (CGRect)calloutFrameWithViewScale:(double)scale
 {
   x = CGRectNull.origin.x;
   y = CGRectNull.origin.y;
@@ -595,8 +595,8 @@ LABEL_9:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  calloutLayouts = [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
+  v9 = [calloutLayouts countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -608,10 +608,10 @@ LABEL_9:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(calloutLayouts);
         }
 
-        [*(*(&v21 + 1) + 8 * v12) groupFrameWithViewScale:a3];
+        [*(*(&v21 + 1) + 8 * v12) groupFrameWithViewScale:scale];
         v29.origin.x = v13;
         v29.origin.y = v14;
         v29.size.width = v15;
@@ -629,7 +629,7 @@ LABEL_9:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [calloutLayouts countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -648,23 +648,23 @@ LABEL_9:
 
 - (BOOL)p_captionsInPanel
 {
-  v3 = [(THWInteractiveImageWidgetLayout *)self isExpanded];
-  if (v3)
+  isExpanded = [(THWInteractiveImageWidgetLayout *)self isExpanded];
+  if (isExpanded)
   {
     if ([-[THWInteractiveImageWidgetLayout layoutController](self "layoutController")])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isExpanded) = 1;
     }
 
     else
     {
-      v4 = [(THWInteractiveImageWidgetLayout *)self layoutController];
+      layoutController = [(THWInteractiveImageWidgetLayout *)self layoutController];
 
-      LOBYTE(v3) = [v4 isCompactHeight];
+      LOBYTE(isExpanded) = [layoutController isCompactHeight];
     }
   }
 
-  return v3;
+  return isExpanded;
 }
 
 - (BOOL)p_useTitleOnlyForCallout
@@ -679,13 +679,13 @@ LABEL_9:
 
 - (void)p_updateCalloutLayouts
 {
-  v3 = [(THWInteractiveImageWidgetLayout *)self p_useTitleOnlyForCallout];
+  p_useTitleOnlyForCallout = [(THWInteractiveImageWidgetLayout *)self p_useTitleOnlyForCallout];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [-[THWInteractiveImageWidgetLayout info](self info];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  info = [-[THWInteractiveImageWidgetLayout info](self info];
+  v5 = [info countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -697,7 +697,7 @@ LABEL_9:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(info);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -712,7 +712,7 @@ LABEL_9:
           if (v11)
           {
             v12 = v11;
-            [(THWInteractiveImageCalloutLayout *)v11 setTitleOnly:v3];
+            [(THWInteractiveImageCalloutLayout *)v11 setTitleOnly:p_useTitleOnlyForCallout];
           }
 
           else
@@ -720,7 +720,7 @@ LABEL_9:
             v12 = [[THWInteractiveImageCalloutLayout alloc] initWithInfo:0];
             [(THWInteractiveImageCalloutLayout *)v12 setCalloutInfo:v10];
             [(THWInteractiveImageCalloutLayout *)v12 setDelegate:self];
-            [(THWInteractiveImageCalloutLayout *)v12 setTitleOnly:v3];
+            [(THWInteractiveImageCalloutLayout *)v12 setTitleOnly:p_useTitleOnlyForCallout];
             if (!v12)
             {
               continue;
@@ -731,7 +731,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [info countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (!v6)
       {
         if (v7)
@@ -830,14 +830,14 @@ LABEL_9:
   return 0;
 }
 
-- (void)updateSelectedCallout:(id)a3
+- (void)updateSelectedCallout:(id)callout
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  calloutLayouts = [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
+  v5 = [calloutLayouts countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -849,15 +849,15 @@ LABEL_9:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(calloutLayouts);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setSelected:{objc_msgSend(*(*(&v9 + 1) + 8 * v8), "calloutInfo") == a3}];
+        [*(*(&v9 + 1) + 8 * v8) setSelected:{objc_msgSend(*(*(&v9 + 1) + 8 * v8), "calloutInfo") == callout}];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [calloutLayouts countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -872,8 +872,8 @@ LABEL_9:
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  calloutLayouts = [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
+  v4 = [calloutLayouts countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -885,7 +885,7 @@ LABEL_9:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(calloutLayouts);
         }
 
         [*(*(&v8 + 1) + 8 * v7) invalidateTitleStyle];
@@ -893,22 +893,22 @@ LABEL_9:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [calloutLayouts countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)controlContainerAdditionalChildLayouts:(id)a3
+- (id)controlContainerAdditionalChildLayouts:(id)layouts
 {
-  if ([a3 info] == self->_calloutContainer)
+  if ([layouts info] == self->_calloutContainer)
   {
 
     return [(THWInteractiveImageWidgetLayout *)self calloutLayouts];
   }
 
-  else if ([a3 info] == self->_sidebarContainer && self->_sidebarLayout)
+  else if ([layouts info] == self->_sidebarContainer && self->_sidebarLayout)
   {
     sidebarLayout = self->_sidebarLayout;
     return [NSArray arrayWithObjects:&sidebarLayout count:1];
@@ -920,19 +920,19 @@ LABEL_9:
   }
 }
 
-- (CGPoint)interactiveImageCallout:(id)a3 convertContentPointToUnscaledOverlayPoint:(CGPoint)a4
+- (CGPoint)interactiveImageCallout:(id)callout convertContentPointToUnscaledOverlayPoint:(CGPoint)point
 {
-  [(THWOverlayableZoomableCanvasController *)self->_stageCanvasController unscaledContainerPointFromUnscaledContentPoint:a3, a4.x, a4.y];
+  [(THWOverlayableZoomableCanvasController *)self->_stageCanvasController unscaledContainerPointFromUnscaledContentPoint:callout, point.x, point.y];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (double)interactiveImageCalloutFontScale:(id)a3
+- (double)interactiveImageCalloutFontScale:(id)scale
 {
-  v3 = [(THWInteractiveImageWidgetLayout *)self p_captionsInPanel];
+  p_captionsInPanel = [(THWInteractiveImageWidgetLayout *)self p_captionsInPanel];
   result = 0.8;
-  if (!v3)
+  if (!p_captionsInPanel)
   {
     return 1.0;
   }
@@ -940,7 +940,7 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)interactiveImageSidebarSize:(id)a3
+- (CGSize)interactiveImageSidebarSize:(id)size
 {
   width = self->_sidebarFrame.size.width;
   height = self->_sidebarFrame.size.height;

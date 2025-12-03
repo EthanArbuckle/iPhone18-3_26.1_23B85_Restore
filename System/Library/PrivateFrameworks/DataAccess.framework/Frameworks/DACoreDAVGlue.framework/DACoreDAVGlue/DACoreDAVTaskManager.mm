@@ -1,18 +1,18 @@
 @interface DACoreDAVTaskManager
-- (DACoreDAVTaskManager)initWithAccount:(id)a3;
-- (void)_updateSpinner:(BOOL)a3;
+- (DACoreDAVTaskManager)initWithAccount:(id)account;
+- (void)_updateSpinner:(BOOL)spinner;
 - (void)dealloc;
-- (void)taskManagerDidAddTask:(id)a3;
-- (void)taskManagerWillRemoveTask:(id)a3;
+- (void)taskManagerDidAddTask:(id)task;
+- (void)taskManagerWillRemoveTask:(id)task;
 @end
 
 @implementation DACoreDAVTaskManager
 
-- (DACoreDAVTaskManager)initWithAccount:(id)a3
+- (DACoreDAVTaskManager)initWithAccount:(id)account
 {
   v7.receiver = self;
   v7.super_class = DACoreDAVTaskManager;
-  v3 = [(DATaskManager *)&v7 initWithAccount:a3];
+  v3 = [(DATaskManager *)&v7 initWithAccount:account];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -23,22 +23,22 @@
   return v3;
 }
 
-- (void)_updateSpinner:(BOOL)a3
+- (void)_updateSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   v53 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained((&self->super.super.isa + *MEMORY[0x277D03810]));
-  v6 = [WeakRetained spinnerIdentifiers];
+  spinnerIdentifiers = [WeakRetained spinnerIdentifiers];
 
   v7 = objc_opt_new();
-  v33 = v3;
-  if (v3)
+  v33 = spinnerCopy;
+  if (spinnerCopy)
   {
     v44 = 0uLL;
     v45 = 0uLL;
     v42 = 0uLL;
     v43 = 0uLL;
-    v8 = v6;
+    v8 = spinnerIdentifiers;
     v9 = [v8 countByEnumeratingWithState:&v42 objects:v52 count:16];
     if (v9)
     {
@@ -74,7 +74,7 @@
     v41 = 0uLL;
     v38 = 0uLL;
     v39 = 0uLL;
-    v14 = v6;
+    v14 = spinnerIdentifiers;
     v15 = [v14 countByEnumeratingWithState:&v38 objects:v51 count:16];
     if (v15)
     {
@@ -106,7 +106,7 @@
 
   if ([v7 count])
   {
-    v31 = v6;
+    v31 = spinnerIdentifiers;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -167,7 +167,7 @@
       while (v21);
     }
 
-    v6 = v31;
+    spinnerIdentifiers = v31;
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -228,30 +228,30 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)taskManagerDidAddTask:(id)a3
+- (void)taskManagerDidAddTask:(id)task
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(DACoreDAVTaskManager *)v5 _updateSpinner:1];
-  objc_sync_exit(v5);
+  taskCopy = task;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(DACoreDAVTaskManager *)selfCopy _updateSpinner:1];
+  objc_sync_exit(selfCopy);
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = DACoreDAVTaskManager;
-  [(DATaskManager *)&v6 taskManagerDidAddTask:v4];
+  [(DATaskManager *)&v6 taskManagerDidAddTask:taskCopy];
 }
 
-- (void)taskManagerWillRemoveTask:(id)a3
+- (void)taskManagerWillRemoveTask:(id)task
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(DACoreDAVTaskManager *)v5 _updateSpinner:0];
-  objc_sync_exit(v5);
+  taskCopy = task;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(DACoreDAVTaskManager *)selfCopy _updateSpinner:0];
+  objc_sync_exit(selfCopy);
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = DACoreDAVTaskManager;
-  [(DATaskManager *)&v6 taskManagerWillRemoveTask:v4];
+  [(DATaskManager *)&v6 taskManagerWillRemoveTask:taskCopy];
 }
 
 @end

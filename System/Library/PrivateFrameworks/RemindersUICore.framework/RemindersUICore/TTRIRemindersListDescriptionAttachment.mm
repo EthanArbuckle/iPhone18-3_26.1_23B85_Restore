@@ -1,7 +1,7 @@
 @interface TTRIRemindersListDescriptionAttachment
-- (_TtC15RemindersUICore38TTRIRemindersListDescriptionAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (_TtC15RemindersUICore38TTRIRemindersListDescriptionAttachment)initWithData:(id)data ofType:(id)type;
 - (double)lineLayoutPadding;
-- (void)setLineLayoutPadding:(double)a3;
+- (void)setLineLayoutPadding:(double)padding;
 @end
 
 @implementation TTRIRemindersListDescriptionAttachment
@@ -10,12 +10,12 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultMetrics];
-  [v6 scaledValueForValue:*(&v5->super.super.isa + OBJC_IVAR____TtC15RemindersUICore38TTRIRemindersListDescriptionAttachment_traitCollection) compatibleWithTraitCollection:1.0];
+  selfCopy = self;
+  defaultMetrics = [v4 defaultMetrics];
+  [defaultMetrics scaledValueForValue:*(&selfCopy->super.super.isa + OBJC_IVAR____TtC15RemindersUICore38TTRIRemindersListDescriptionAttachment_traitCollection) compatibleWithTraitCollection:1.0];
   v8 = v7;
 
-  v12.receiver = v5;
+  v12.receiver = selfCopy;
   v12.super_class = ObjectType;
   [(TTRIRemindersListDescriptionAttachment *)&v12 lineLayoutPadding];
   v10 = v9;
@@ -31,18 +31,18 @@
   }
 }
 
-- (void)setLineLayoutPadding:(double)a3
+- (void)setLineLayoutPadding:(double)padding
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(TTRIRemindersListDescriptionAttachment *)&v4 setLineLayoutPadding:a3];
+  [(TTRIRemindersListDescriptionAttachment *)&v4 setLineLayoutPadding:padding];
 }
 
-- (_TtC15RemindersUICore38TTRIRemindersListDescriptionAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC15RemindersUICore38TTRIRemindersListDescriptionAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = sub_21DBF551C();
     sub_21D17B8A8(v5, v6);
   }

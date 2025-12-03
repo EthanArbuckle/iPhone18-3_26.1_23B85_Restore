@@ -17,10 +17,10 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(HDClinicalPostExtractionOperation *)self extractionResult];
-  v5 = [v4 allUnits];
+  extractionResult = [(HDClinicalPostExtractionOperation *)self extractionResult];
+  allUnits = [extractionResult allUnits];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [allUnits countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -32,21 +32,21 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allUnits);
         }
 
-        v10 = [*(*(&v17 + 1) + 8 * v9) medicalRecord];
+        medicalRecord = [*(*(&v17 + 1) + 8 * v9) medicalRecord];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = v10;
-          v12 = [v11 value];
-          if (![v12 collectionType] || (objc_msgSend(v12, "inspectableValue"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "valueType"), v13, v14 == &dword_4 + 2))
+          v11 = medicalRecord;
+          value = [v11 value];
+          if (![value collectionType] || (objc_msgSend(value, "inspectableValue"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "valueType"), v13, v14 == &dword_4 + 2))
           {
-            if (v12)
+            if (value)
             {
-              v15 = [v11 referenceRanges];
-              v16 = [v12 referenceRangeStatusWithRanges:v15];
+              referenceRanges = [v11 referenceRanges];
+              v16 = [value referenceRangeStatusWithRanges:referenceRanges];
             }
 
             else
@@ -62,7 +62,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [allUnits countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);

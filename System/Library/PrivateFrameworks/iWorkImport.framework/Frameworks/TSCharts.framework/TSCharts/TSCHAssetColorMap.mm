@@ -1,17 +1,17 @@
 @interface TSCHAssetColorMap
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedInstance;
 - (TSCHAssetColorMap)init;
-- (id)colorForFilename:(id)a3 fillSetIdentifier:(id)a4;
-- (id)colorForFilename:(id)a3 imageSetIdentifier:(id)a4;
+- (id)colorForFilename:(id)filename fillSetIdentifier:(id)identifier;
+- (id)colorForFilename:(id)filename imageSetIdentifier:(id)identifier;
 @end
 
 @implementation TSCHAssetColorMap
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___TSCHAssetColorMap;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_276323F18;
   block[3] = &unk_27A6B6250;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A47AD0 != -1)
   {
     dispatch_once(&qword_280A47AD0, block);
@@ -33,7 +33,7 @@
   return v2;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v6 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "+[TSCHAssetColorMap allocWithZone:]");
@@ -62,13 +62,13 @@
   return v3;
 }
 
-- (id)colorForFilename:(id)a3 fillSetIdentifier:(id)a4
+- (id)colorForFilename:(id)filename fillSetIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_length(v6, v8, v9, v10, v11))
+  filenameCopy = filename;
+  identifierCopy = identifier;
+  if (objc_msgSend_length(filenameCopy, v8, v9, v10, v11))
   {
-    if (v7)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -80,27 +80,27 @@ LABEL_7:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v56, v63, v64, v65, v66, v57, v62, 39, 0, "invalid nil value for '%{public}s'", "fillSetIdentifier");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v67, v68, v69, v70);
-    objc_msgSend_length(v6, v71, v72, v73, v74);
+    objc_msgSend_length(filenameCopy, v71, v72, v73, v74);
     goto LABEL_9;
   }
 
   v41 = MEMORY[0x277D81150];
   v42 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "[TSCHAssetColorMap colorForFilename:fillSetIdentifier:]");
   v47 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v43, v44, v45, v46, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHAssetColorMap.m");
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v48, v49, v50, v51, v42, v47, 38, 0, "Empty chart asset filename %@", v6);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v48, v49, v50, v51, v42, v47, 38, 0, "Empty chart asset filename %@", filenameCopy);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55);
-  if (!v7)
+  if (!identifierCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (objc_msgSend_length(v6, v12, v13, v14, v15))
+  if (objc_msgSend_length(filenameCopy, v12, v13, v14, v15))
   {
-    v20 = objc_msgSend_textureSetFilename(v7, v16, v17, v18, v19);
+    v20 = objc_msgSend_textureSetFilename(identifierCopy, v16, v17, v18, v19);
     v25 = objc_msgSend_stringByAppendingPathComponent_(@"Charts/Fills/Textures", v21, v22, v23, v24, v20);
-    v30 = objc_msgSend_stringByAppendingPathComponent_(v25, v26, v27, v28, v29, v6);
+    v30 = objc_msgSend_stringByAppendingPathComponent_(v25, v26, v27, v28, v29, filenameCopy);
 
     objc_opt_class();
     v35 = objc_msgSend_objectForKeyedSubscript_(self->_assetPathToColorMap, v31, v32, v33, v34, v30);
@@ -133,14 +133,14 @@ LABEL_10:
   return v36;
 }
 
-- (id)colorForFilename:(id)a3 imageSetIdentifier:(id)a4
+- (id)colorForFilename:(id)filename imageSetIdentifier:(id)identifier
 {
   v189 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_length(v5, v7, v8, v9, v10))
+  filenameCopy = filename;
+  identifierCopy = identifier;
+  if (objc_msgSend_length(filenameCopy, v7, v8, v9, v10))
   {
-    if (v6)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -152,29 +152,29 @@ LABEL_7:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v60, v67, v68, v69, v70, v61, v66, 54, 0, "invalid nil value for '%{public}s'", "imageSetIdentifier");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v71, v72, v73, v74);
-    objc_msgSend_length(v5, v75, v76, v77, v78);
+    objc_msgSend_length(filenameCopy, v75, v76, v77, v78);
     goto LABEL_32;
   }
 
   v45 = MEMORY[0x277D81150];
   v46 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "[TSCHAssetColorMap colorForFilename:imageSetIdentifier:]");
   v51 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v47, v48, v49, v50, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHAssetColorMap.m");
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v45, v52, v53, v54, v55, v46, v51, 53, 0, "Empty chart asset filename %@", v5);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v45, v52, v53, v54, v55, v46, v51, 53, 0, "Empty chart asset filename %@", filenameCopy);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v56, v57, v58, v59);
-  if (!v6)
+  if (!identifierCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (!objc_msgSend_length(v5, v11, v12, v13, v14))
+  if (!objc_msgSend_length(filenameCopy, v11, v12, v13, v14))
   {
 LABEL_32:
     v158 = MEMORY[0x277D81150];
     v159 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "[TSCHAssetColorMap colorForFilename:imageSetIdentifier:]");
     v164 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v160, v161, v162, v163, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHAssetColorMap.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v158, v165, v166, v167, v168, v159, v164, 87, 0, "nil color for filename %@", v5);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v158, v165, v166, v167, v168, v159, v164, 87, 0, "nil color for filename %@", filenameCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v169, v170, v171, v172);
     v111 = 0;
@@ -182,11 +182,11 @@ LABEL_32:
   }
 
   v19 = MEMORY[0x277CBEB18];
-  v20 = objc_msgSend_stringByAppendingPathComponent_(@"charts/fills/images", v15, v16, v17, v18, v6);
-  v25 = objc_msgSend_stringByAppendingPathComponent_(v20, v21, v22, v23, v24, v5);
+  v20 = objc_msgSend_stringByAppendingPathComponent_(@"charts/fills/images", v15, v16, v17, v18, identifierCopy);
+  v25 = objc_msgSend_stringByAppendingPathComponent_(v20, v21, v22, v23, v24, filenameCopy);
   v30 = objc_msgSend_arrayWithObject_(v19, v26, v27, v28, v29, v25);
 
-  v35 = objc_msgSend_pathExtension(v5, v31, v32, v33, v34);
+  v35 = objc_msgSend_pathExtension(filenameCopy, v31, v32, v33, v34);
   LOBYTE(v25) = objc_msgSend_isEqualToString_(v35, v36, v37, v38, v39, @"tiff");
 
   if (v25)
@@ -196,7 +196,7 @@ LABEL_32:
 
   else
   {
-    v79 = objc_msgSend_pathExtension(v5, v40, v41, v42, v43);
+    v79 = objc_msgSend_pathExtension(filenameCopy, v40, v41, v42, v43);
     isEqualToString = objc_msgSend_isEqualToString_(v79, v80, v81, v82, v83, @"jpeg");
 
     if (!isEqualToString)
@@ -207,16 +207,16 @@ LABEL_32:
     v44 = @"jpg";
   }
 
-  v85 = objc_msgSend_stringByDeletingPathExtension(v5, v40, v41, v42, v43);
+  v85 = objc_msgSend_stringByDeletingPathExtension(filenameCopy, v40, v41, v42, v43);
   v90 = objc_msgSend_stringByAppendingPathExtension_(v85, v86, v87, v88, v89, v44);
 
-  v95 = objc_msgSend_stringByAppendingPathComponent_(@"charts/fills/images", v91, v92, v93, v94, v6);
+  v95 = objc_msgSend_stringByAppendingPathComponent_(@"charts/fills/images", v91, v92, v93, v94, identifierCopy);
   v100 = objc_msgSend_stringByAppendingPathComponent_(v95, v96, v97, v98, v99, v90);
   objc_msgSend_addObject_(v30, v101, v102, v103, v104, v100);
 
 LABEL_11:
-  v174 = v6;
-  v175 = v5;
+  v174 = identifierCopy;
+  v175 = filenameCopy;
   v178 = objc_msgSend_allKeys(self->_assetPathToColorMap, v40, v41, v42, v43);
   v183 = 0u;
   v184 = 0u;
@@ -305,8 +305,8 @@ LABEL_27:
     v111 = 0;
   }
 
-  v6 = v174;
-  v5 = v175;
+  identifierCopy = v174;
+  filenameCopy = v175;
   if (!v111)
   {
     goto LABEL_32;

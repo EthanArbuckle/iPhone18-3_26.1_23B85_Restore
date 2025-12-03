@@ -1,10 +1,10 @@
 @interface StockChartCalloutView
-- (_TtC8StocksUI21StockChartCalloutView)initWithCoder:(id)a3;
+- (_TtC8StocksUI21StockChartCalloutView)initWithCoder:(id)coder;
 @end
 
 @implementation StockChartCalloutView
 
-- (_TtC8StocksUI21StockChartCalloutView)initWithCoder:(id)a3
+- (_TtC8StocksUI21StockChartCalloutView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8StocksUI21StockChartCalloutView_dateLabel;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D756B8]) initWithFrame_];

@@ -1,35 +1,35 @@
 @interface PTCinematographyRefinement
-- (BOOL)_needSnapshotForPolicy:(unint64_t)a3;
-- (PTCinematographyRefinement)initWithOptions:(id)a3;
-- (id)_extractFramesReturningAll:(BOOL)a3;
-- (id)_extractFramesToIndex:(unint64_t)a3;
+- (BOOL)_needSnapshotForPolicy:(unint64_t)policy;
+- (PTCinematographyRefinement)initWithOptions:(id)options;
+- (id)_extractFramesReturningAll:(BOOL)all;
+- (id)_extractFramesToIndex:(unint64_t)index;
 - (id)globalCinematographyDictionary;
 - (id)refinedFrames;
-- (unint64_t)_framesIndexForTime:(id *)a3;
+- (unint64_t)_framesIndexForTime:(id *)time;
 - (void)_endSmoothedFrames;
-- (void)_logRackFocusPullToFrameAtIndex:(unint64_t)a3 fromIndex:(unint64_t)a4 label:(id)a5;
+- (void)_logRackFocusPullToFrameAtIndex:(unint64_t)index fromIndex:(unint64_t)fromIndex label:(id)label;
 - (void)_moveAlongSmoothedFrames;
-- (void)_performLinearRackFocusPullToFrameAtIndex:(unint64_t)a3 fromIndex:(int64_t)a4;
-- (void)_performRackFocusPullToFrameAtIndex:(unint64_t)a3;
-- (void)_performRackFocusPullsStartingAtIndex:(unint64_t)a3;
-- (void)_updateGlobalsWithSnapshot:(id)a3;
-- (void)_updateRecordingStateForSnapshot:(id)a3;
-- (void)addFrames:(id)a3;
+- (void)_performLinearRackFocusPullToFrameAtIndex:(unint64_t)index fromIndex:(int64_t)fromIndex;
+- (void)_performRackFocusPullToFrameAtIndex:(unint64_t)index;
+- (void)_performRackFocusPullsStartingAtIndex:(unint64_t)index;
+- (void)_updateGlobalsWithSnapshot:(id)snapshot;
+- (void)_updateRecordingStateForSnapshot:(id)snapshot;
+- (void)addFrames:(id)frames;
 - (void)startRecording;
 - (void)stopRecording;
 @end
 
 @implementation PTCinematographyRefinement
 
-- (PTCinematographyRefinement)initWithOptions:(id)a3
+- (PTCinematographyRefinement)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v24.receiver = self;
   v24.super_class = PTCinematographyRefinement;
   v5 = [(PTCinematographyRefinement *)&v24 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     v7 = v6;
     if (v6)
     {
@@ -46,11 +46,11 @@
 
     memset(&v23, 0, sizeof(v23));
     CMTimeMake(&v23, 1, 1);
-    v10 = [(PTCinematographyRefinementOptions *)v5->_options focusFramesOptions];
-    v11 = v10;
-    if (v10)
+    focusFramesOptions = [(PTCinematographyRefinementOptions *)v5->_options focusFramesOptions];
+    v11 = focusFramesOptions;
+    if (focusFramesOptions)
     {
-      [v10 maximumRackFocusPullTime];
+      [focusFramesOptions maximumRackFocusPullTime];
     }
 
     else
@@ -62,9 +62,9 @@
     CMTimeAdd(&v22, &v20, &rhs);
     v5->_timeDelayForRefinement = v22;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     globals = v5->_globals;
-    v5->_globals = v12;
+    v5->_globals = dictionary;
 
     v14 = objc_opt_new();
     frames = v5->_frames;
@@ -86,15 +86,15 @@
   return v5;
 }
 
-- (void)addFrames:(id)a3
+- (void)addFrames:(id)frames
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  framesCopy = frames;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  v5 = [framesCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v5)
   {
     v7 = v5;
@@ -108,42 +108,42 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(framesCopy);
         }
 
         v10 = *(*(&v21 + 1) + 8 * v9);
-        v11 = [(PTCinematographyRefinement *)self refinedFrameNumber];
+        refinedFrameNumber = [(PTCinematographyRefinement *)self refinedFrameNumber];
 
-        if (v11)
+        if (refinedFrameNumber)
         {
-          v12 = [(PTCinematographyRefinement *)self refinedFrameNumber];
-          [v10 _setFrameNumber:v12];
+          refinedFrameNumber2 = [(PTCinematographyRefinement *)self refinedFrameNumber];
+          [v10 _setFrameNumber:refinedFrameNumber2];
 
           v13 = MEMORY[0x277CCABB0];
-          v14 = [(PTCinematographyRefinement *)self refinedFrameNumber];
-          v15 = [v13 numberWithInteger:{objc_msgSend(v14, "integerValue") + 1}];
+          refinedFrameNumber3 = [(PTCinematographyRefinement *)self refinedFrameNumber];
+          v15 = [v13 numberWithInteger:{objc_msgSend(refinedFrameNumber3, "integerValue") + 1}];
           [(PTCinematographyRefinement *)self setRefinedFrameNumber:v15];
         }
 
         if (-[PTCinematographyRefinement _needSnapshotForPolicy:](self, "_needSnapshotForPolicy:", [v10 _snapshotPolicy]))
         {
-          v16 = [v10 _snapshot];
+          _snapshot = [v10 _snapshot];
 
-          if (v16)
+          if (_snapshot)
           {
-            v17 = [v10 _snapshot];
-            [(PTCinematographyRefinement *)self _updateRecordingStateForSnapshot:v17];
+            _snapshot2 = [v10 _snapshot];
+            [(PTCinematographyRefinement *)self _updateRecordingStateForSnapshot:_snapshot2];
           }
 
           else
           {
-            v17 = _PTLogSystem();
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+            _snapshot2 = _PTLogSystem();
+            if (os_log_type_enabled(_snapshot2, OS_LOG_TYPE_INFO))
             {
-              v18 = [v10 _frameNumber];
+              _frameNumber = [v10 _frameNumber];
               *buf = v20;
-              v26 = v18;
-              _os_log_impl(&dword_2243FB000, v17, OS_LOG_TYPE_INFO, "warning: snapshot missing from refined frame %@", buf, 0xCu);
+              v26 = _frameNumber;
+              _os_log_impl(&dword_2243FB000, _snapshot2, OS_LOG_TYPE_INFO, "warning: snapshot missing from refined frame %@", buf, 0xCu);
             }
           }
         }
@@ -168,7 +168,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v4 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v7 = [framesCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v7);
@@ -187,7 +187,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2243FB000, v3, OS_LOG_TYPE_INFO, "Cinematography refinement <%p> start recording", &v4, 0xCu);
   }
 
@@ -202,7 +202,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134217984;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2243FB000, v3, OS_LOG_TYPE_INFO, "Cinematography refinement <%p> stop recording", &v4, 0xCu);
   }
 
@@ -252,8 +252,8 @@
 
 - (id)globalCinematographyDictionary
 {
-  v2 = [(PTCinematographyRefinement *)self globals];
-  v3 = [v2 copy];
+  globals = [(PTCinematographyRefinement *)self globals];
+  v3 = [globals copy];
 
   return v3;
 }
@@ -264,8 +264,8 @@
   {
     do
     {
-      v3 = [(PTCinematographyFrameDetectionSmoother *)self->_smoother nextFrame];
-      [(NSMutableArray *)self->_frames addObject:v3];
+      nextFrame = [(PTCinematographyFrameDetectionSmoother *)self->_smoother nextFrame];
+      [(NSMutableArray *)self->_frames addObject:nextFrame];
     }
 
     while ([(PTCinematographyFrameDetectionSmoother *)self->_smoother isNextFrameAvailable]);
@@ -286,80 +286,80 @@
   }
 }
 
-- (void)_performRackFocusPullsStartingAtIndex:(unint64_t)a3
+- (void)_performRackFocusPullsStartingAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_frames count]>= a3 + 2)
+  if ([(NSMutableArray *)self->_frames count]>= index + 2)
   {
-    v5 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a3];
-    v6 = [v5 focusTrackIdentifier];
+    v5 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:index];
+    focusTrackIdentifier = [v5 focusTrackIdentifier];
 
-    v7 = a3 + 1;
+    v7 = index + 1;
     v8 = [(NSMutableArray *)self->_frames count];
     while (v7 < v8)
     {
       v9 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:v7];
-      v10 = [v9 focusTrackIdentifier];
+      focusTrackIdentifier2 = [v9 focusTrackIdentifier];
 
-      if (v10 != v6)
+      if (focusTrackIdentifier2 != focusTrackIdentifier)
       {
         [(PTCinematographyRefinement *)self _performRackFocusPullToFrameAtIndex:v7];
       }
 
       ++v7;
       v8 = [(NSMutableArray *)self->_frames count];
-      v6 = v10;
+      focusTrackIdentifier = focusTrackIdentifier2;
     }
   }
 }
 
-- (void)_performRackFocusPullToFrameAtIndex:(unint64_t)a3
+- (void)_performRackFocusPullToFrameAtIndex:(unint64_t)index
 {
   v5 = [PTCinematographyFocusFrames alloc];
   frames = self->_frames;
-  v7 = [(PTCinematographyRefinementOptions *)self->_options focusFramesOptions];
-  v9 = [(PTCinematographyFocusFrames *)v5 initWithFrames:frames options:v7];
+  focusFramesOptions = [(PTCinematographyRefinementOptions *)self->_options focusFramesOptions];
+  v9 = [(PTCinematographyFocusFrames *)v5 initWithFrames:frames options:focusFramesOptions];
 
-  v8 = [(PTCinematographyFocusFrames *)v9 startIndexForLinearRackFocusPullToFrameAtIndex:a3];
-  [(PTCinematographyRefinement *)self _logRackFocusPullToFrameAtIndex:a3 fromIndex:v8 label:@"linear rack focus"];
-  [(PTCinematographyRefinement *)self _performLinearRackFocusPullToFrameAtIndex:a3 fromIndex:v8];
+  v8 = [(PTCinematographyFocusFrames *)v9 startIndexForLinearRackFocusPullToFrameAtIndex:index];
+  [(PTCinematographyRefinement *)self _logRackFocusPullToFrameAtIndex:index fromIndex:v8 label:@"linear rack focus"];
+  [(PTCinematographyRefinement *)self _performLinearRackFocusPullToFrameAtIndex:index fromIndex:v8];
 }
 
-- (void)_logRackFocusPullToFrameAtIndex:(unint64_t)a3 fromIndex:(unint64_t)a4 label:(id)a5
+- (void)_logRackFocusPullToFrameAtIndex:(unint64_t)index fromIndex:(unint64_t)fromIndex label:(id)label
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  labelCopy = label;
   v9 = _PTLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v21 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a4];
-    v20 = [v21 _frameNumber];
-    v18 = [v20 longValue];
-    v19 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a4];
-    v10 = [v19 focusDetection];
-    v11 = [v10 focusIdentifier];
-    v12 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a3];
-    v13 = [v12 _frameNumber];
-    v14 = [v13 longValue];
-    v15 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a3];
-    v16 = [v15 focusDetection];
-    v17 = [v16 focusIdentifier];
+    v21 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:fromIndex];
+    _frameNumber = [v21 _frameNumber];
+    longValue = [_frameNumber longValue];
+    v19 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:fromIndex];
+    focusDetection = [v19 focusDetection];
+    focusIdentifier = [focusDetection focusIdentifier];
+    v12 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:index];
+    _frameNumber2 = [v12 _frameNumber];
+    longValue2 = [_frameNumber2 longValue];
+    v15 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:index];
+    focusDetection2 = [v15 focusDetection];
+    focusIdentifier2 = [focusDetection2 focusIdentifier];
     *buf = 138413314;
-    v23 = v8;
+    v23 = labelCopy;
     v24 = 2048;
-    v25 = v18;
+    v25 = longValue;
     v26 = 2112;
-    v27 = v11;
+    v27 = focusIdentifier;
     v28 = 2048;
-    v29 = v14;
+    v29 = longValue2;
     v30 = 2112;
-    v31 = v17;
+    v31 = focusIdentifier2;
     _os_log_impl(&dword_2243FB000, v9, OS_LOG_TYPE_INFO, "Cinematography %@ from frame %ld (%@) to frame %ld (%@)", buf, 0x34u);
   }
 }
 
-- (void)_performLinearRackFocusPullToFrameAtIndex:(unint64_t)a3 fromIndex:(int64_t)a4
+- (void)_performLinearRackFocusPullToFrameAtIndex:(unint64_t)index fromIndex:(int64_t)fromIndex
 {
-  v7 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a4];
+  v7 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:fromIndex];
   v8 = v7;
   if (v7)
   {
@@ -373,7 +373,7 @@
 
   Seconds = CMTimeGetSeconds(&time);
 
-  v10 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a3];
+  v10 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:index];
   v11 = v10;
   if (v10)
   {
@@ -387,16 +387,16 @@
 
   v12 = CMTimeGetSeconds(&time);
 
-  v13 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a4];
+  v13 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:fromIndex];
   [v13 focusDistance];
   v15 = v14;
 
-  v16 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:a3];
+  v16 = [(NSMutableArray *)self->_frames objectAtIndexedSubscript:index];
   [v16 focusDistance];
   v18 = v17;
 
-  v20 = a4 + 1;
-  if (v20 < a3)
+  v20 = fromIndex + 1;
+  if (v20 < index)
   {
     v21 = Seconds;
     v22 = v12;
@@ -438,13 +438,13 @@
       ++v20;
     }
 
-    while (a3 != v20);
+    while (index != v20);
   }
 }
 
-- (id)_extractFramesReturningAll:(BOOL)a3
+- (id)_extractFramesReturningAll:(BOOL)all
 {
-  if (a3)
+  if (all)
   {
     v4 = [(NSMutableArray *)self->_frames count];
   }
@@ -465,11 +465,11 @@
     }
 
     memset(&v13, 0, sizeof(v13));
-    v7 = [(PTCinematographyRefinementOptions *)self->_options focusFramesOptions];
-    v8 = v7;
-    if (v7)
+    focusFramesOptions = [(PTCinematographyRefinementOptions *)self->_options focusFramesOptions];
+    v8 = focusFramesOptions;
+    if (focusFramesOptions)
     {
-      [v7 maximumRackFocusPullTime];
+      [focusFramesOptions maximumRackFocusPullTime];
     }
 
     else
@@ -489,15 +489,15 @@
   return v9;
 }
 
-- (id)_extractFramesToIndex:(unint64_t)a3
+- (id)_extractFramesToIndex:(unint64_t)index
 {
-  v5 = [(NSMutableArray *)self->_frames subarrayWithRange:0, a3];
-  [(NSMutableArray *)self->_frames removeObjectsInRange:0, a3];
+  index = [(NSMutableArray *)self->_frames subarrayWithRange:0, index];
+  [(NSMutableArray *)self->_frames removeObjectsInRange:0, index];
 
-  return v5;
+  return index;
 }
 
-- (unint64_t)_framesIndexForTime:(id *)a3
+- (unint64_t)_framesIndexForTime:(id *)time
 {
   if (![(NSMutableArray *)self->_frames count])
   {
@@ -519,7 +519,7 @@
       memset(&time1, 0, sizeof(time1));
     }
 
-    v10 = *a3;
+    v10 = *time;
     v8 = CMTimeCompare(&time1, &v10);
 
     if ((v8 & 0x80000000) == 0)
@@ -536,14 +536,14 @@
   return v5;
 }
 
-- (BOOL)_needSnapshotForPolicy:(unint64_t)a3
+- (BOOL)_needSnapshotForPolicy:(unint64_t)policy
 {
-  if (a3 == 2)
+  if (policy == 2)
   {
     return 0;
   }
 
-  if (a3)
+  if (policy)
   {
     return 1;
   }
@@ -551,21 +551,21 @@
   return [(PTCinematographyRefinement *)self recordingState:v3]== 1;
 }
 
-- (void)_updateRecordingStateForSnapshot:(id)a3
+- (void)_updateRecordingStateForSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   if ([(PTCinematographyRefinement *)self recordingState]== 1)
   {
     [(PTCinematographyRefinement *)self setRecordingState:2];
-    [(PTCinematographyRefinement *)self _updateGlobalsWithSnapshot:v4];
+    [(PTCinematographyRefinement *)self _updateGlobalsWithSnapshot:snapshotCopy];
   }
 }
 
-- (void)_updateGlobalsWithSnapshot:(id)a3
+- (void)_updateGlobalsWithSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(PTCinematographyRefinement *)self globals];
-  [v5 addEntriesFromDictionary:v4];
+  snapshotCopy = snapshot;
+  globals = [(PTCinematographyRefinement *)self globals];
+  [globals addEntriesFromDictionary:snapshotCopy];
 }
 
 @end

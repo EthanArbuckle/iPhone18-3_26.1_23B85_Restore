@@ -1,33 +1,33 @@
 @interface CATSharingMessage
-+ (id)instanceWithDictionary:(id)a3;
-- (CATSharingMessage)initWithContentMessage:(id)a3;
-- (CATSharingMessage)initWithMessageType:(int64_t)a3 contentDictionary:(id)a4;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CATSharingMessage)initWithContentMessage:(id)message;
+- (CATSharingMessage)initWithMessageType:(int64_t)type contentDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CATSharingMessage
 
-- (CATSharingMessage)initWithContentMessage:(id)a3
+- (CATSharingMessage)initWithContentMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 messageType];
-  v6 = [v4 dictionaryValue];
+  messageCopy = message;
+  messageType = [messageCopy messageType];
+  dictionaryValue = [messageCopy dictionaryValue];
 
-  v7 = [(CATSharingMessage *)self initWithMessageType:v5 contentDictionary:v6];
+  v7 = [(CATSharingMessage *)self initWithMessageType:messageType contentDictionary:dictionaryValue];
   return v7;
 }
 
-- (CATSharingMessage)initWithMessageType:(int64_t)a3 contentDictionary:(id)a4
+- (CATSharingMessage)initWithMessageType:(int64_t)type contentDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CATSharingMessage;
   v7 = [(CATSharingMessage *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_messageType = a3;
-    v9 = [v6 copy];
+    v7->_messageType = type;
+    v9 = [dictionaryCopy copy];
     contentDictionaryValue = v8->_contentDictionaryValue;
     v8->_contentDictionaryValue = v9;
   }
@@ -42,8 +42,8 @@
   v3 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CATSharingMessage messageType](self, "messageType")}];
   v8[1] = @"SharingMessageContent";
   v9[0] = v3;
-  v4 = [(CATSharingMessage *)self contentDictionaryValue];
-  v9[1] = v4;
+  contentDictionaryValue = [(CATSharingMessage *)self contentDictionaryValue];
+  v9[1] = contentDictionaryValue;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -51,10 +51,10 @@
   return v5;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"SharingMessageType"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"SharingMessageType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -68,8 +68,8 @@
 
   v7 = v6;
 
-  v8 = [v7 integerValue];
-  v9 = [v4 objectForKeyedSubscript:@"SharingMessageContent"];
+  integerValue = [v7 integerValue];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"SharingMessageContent"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -85,7 +85,7 @@
 
   if (v11)
   {
-    v12 = [[a1 alloc] initWithMessageType:v8 contentDictionary:v11];
+    v12 = [[self alloc] initWithMessageType:integerValue contentDictionary:v11];
   }
 
   else
@@ -98,7 +98,7 @@
     v13 = _CATLogGeneral_logObj_18;
     if (os_log_type_enabled(_CATLogGeneral_logObj_18, OS_LOG_TYPE_ERROR))
     {
-      [(CATSharingMessage *)v13 instanceWithDictionary:a1, v4];
+      [(CATSharingMessage *)v13 instanceWithDictionary:self, dictionaryCopy];
     }
 
     v12 = 0;

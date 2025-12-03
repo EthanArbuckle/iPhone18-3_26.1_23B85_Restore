@@ -1,22 +1,22 @@
 @interface SLRemoteComposeViewController
 - (SLRemoteComposeViewControllerDelegateProtocol)delegate;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation SLRemoteComposeViewController
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   _SLLog(v3, 3, @"SLRemoteComposeViewController: (this may be harmless) viewServiceDidTerminateWithError: %@");
   v8.receiver = self;
   v8.super_class = SLRemoteComposeViewController;
-  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:v5, v5];
-  v6 = [(SLRemoteComposeViewController *)self delegate];
-  v7 = v6;
-  if (v6)
+  [(_UIRemoteViewController *)&v8 viewServiceDidTerminateWithError:errorCopy, errorCopy];
+  delegate = [(SLRemoteComposeViewController *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    [v6 remoteViewController:self didTerminateWithError:v5];
+    [delegate remoteViewController:self didTerminateWithError:errorCopy];
   }
 }
 

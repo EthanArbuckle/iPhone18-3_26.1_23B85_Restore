@@ -1,25 +1,25 @@
 @interface MTCoreMaterialVisualStylingProvider
-+ (BOOL)canGenerateVisualStyleSetFromRecipe:(id)a3;
-+ (id)coreMaterialVisualStylingProviderForRecipe:(id)a3 andCategory:(id)a4;
-+ (id)coreMaterialVisualStylingProviderForStyleSetNamed:(id)a3 inBundle:(id)a4;
-- (BOOL)updateVisualStyleSetFromRecipe:(id)a3 andCategory:(id)a4;
-- (BOOL)updateVisualStyleSetGeneratedFromRecipe:(id)a3;
++ (BOOL)canGenerateVisualStyleSetFromRecipe:(id)recipe;
++ (id)coreMaterialVisualStylingProviderForRecipe:(id)recipe andCategory:(id)category;
++ (id)coreMaterialVisualStylingProviderForStyleSetNamed:(id)named inBundle:(id)bundle;
+- (BOOL)updateVisualStyleSetFromRecipe:(id)recipe andCategory:(id)category;
+- (BOOL)updateVisualStyleSetGeneratedFromRecipe:(id)recipe;
 - (id)description;
-- (void)_notifyObserversWithBlock:(id)a3;
-- (void)_setVisualStyleSet:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_notifyObserversWithBlock:(id)block;
+- (void)_setVisualStyleSet:(id)set;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation MTCoreMaterialVisualStylingProvider
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
       v6 = [objc_alloc(MEMORY[0x1E696AE08]) initWithOptions:5];
@@ -35,10 +35,10 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v6 = a3;
-  if (v6)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
     if (observers)
@@ -47,7 +47,7 @@
       if ([(NSPointerArray *)self->_observers count])
       {
         v5 = 0;
-        while ([(NSPointerArray *)self->_observers pointerAtIndex:v5]!= v6)
+        while ([(NSPointerArray *)self->_observers pointerAtIndex:v5]!= observerCopy)
         {
           if (++v5 >= [(NSPointerArray *)self->_observers count])
           {
@@ -63,15 +63,15 @@
 LABEL_9:
 }
 
-- (void)_setVisualStyleSet:(id)a3
+- (void)_setVisualStyleSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   p_visualStyleSet = &self->_visualStyleSet;
   visualStyleSet = self->_visualStyleSet;
-  if (visualStyleSet != v5)
+  if (visualStyleSet != setCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_visualStyleSet, a3);
+    v8 = setCopy;
+    objc_storeStrong(p_visualStyleSet, set);
     if (v8)
     {
       if (visualStyleSet)
@@ -94,10 +94,10 @@ void __58__MTCoreMaterialVisualStylingProvider__setVisualStyleSet___block_invoke
   }
 }
 
-- (void)_notifyObserversWithBlock:(id)a3
+- (void)_notifyObserversWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
@@ -111,7 +111,7 @@ void __58__MTCoreMaterialVisualStylingProvider__setVisualStyleSet___block_invoke
           objc_initWeak(&location, self);
           v7 = [(NSPointerArray *)self->_observers pointerAtIndex:v6];
           v8 = objc_loadWeakRetained(&location);
-          v4[2](v4, v8, v7);
+          blockCopy[2](blockCopy, v8, v7);
 
           objc_destroyWeak(&location);
           ++v6;
@@ -127,18 +127,18 @@ void __58__MTCoreMaterialVisualStylingProvider__setVisualStyleSet___block_invoke
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTCoreMaterialVisualStylingProvider *)self visualStyleSetName];
-  v6 = [v3 stringWithFormat:@"<%@: %p: visualStyleSetName: %@>", v4, self, v5];
+  visualStyleSetName = [(MTCoreMaterialVisualStylingProvider *)self visualStyleSetName];
+  v6 = [v3 stringWithFormat:@"<%@: %p: visualStyleSetName: %@>", v4, self, visualStyleSetName];
 
   return v6;
 }
 
-+ (id)coreMaterialVisualStylingProviderForRecipe:(id)a3 andCategory:(id)a4
++ (id)coreMaterialVisualStylingProviderForRecipe:(id)recipe andCategory:(id)category
 {
   v4 = 0;
-  if (a3 && a4)
+  if (recipe && category)
   {
-    v5 = MTSharedVisualStyleSetForRecipeAndCategory(a3, a4);
+    v5 = MTSharedVisualStyleSetForRecipeAndCategory(recipe, category);
     if (v5)
     {
       v4 = objc_alloc_init(MTCoreMaterialVisualStylingProvider);
@@ -154,11 +154,11 @@ void __58__MTCoreMaterialVisualStylingProvider__setVisualStyleSet___block_invoke
   return v4;
 }
 
-+ (id)coreMaterialVisualStylingProviderForStyleSetNamed:(id)a3 inBundle:(id)a4
++ (id)coreMaterialVisualStylingProviderForStyleSetNamed:(id)named inBundle:(id)bundle
 {
-  if (a3)
+  if (named)
   {
-    v4 = MTSharedVisualStyleSetForStyleNameFromBundle(a3, a4);
+    v4 = MTSharedVisualStyleSetForStyleNameFromBundle(named, bundle);
     if (v4)
     {
       v5 = objc_alloc_init(MTCoreMaterialVisualStylingProvider);
@@ -179,20 +179,20 @@ void __58__MTCoreMaterialVisualStylingProvider__setVisualStyleSet___block_invoke
   return v5;
 }
 
-+ (BOOL)canGenerateVisualStyleSetFromRecipe:(id)a3
++ (BOOL)canGenerateVisualStyleSetFromRecipe:(id)recipe
 {
-  v3 = MTMaterialSettingsForRecipe(a3);
+  v3 = MTMaterialSettingsForRecipe(recipe);
   VisualStylingDescriptionFromRecipeSettings = MTCanGenerateVisualStylingDescriptionFromRecipeSettings(v3);
 
   return VisualStylingDescriptionFromRecipeSettings;
 }
 
-- (BOOL)updateVisualStyleSetFromRecipe:(id)a3 andCategory:(id)a4
+- (BOOL)updateVisualStyleSetFromRecipe:(id)recipe andCategory:(id)category
 {
   v4 = 0;
-  if (a3 && a4)
+  if (recipe && category)
   {
-    v6 = MTSharedVisualStyleSetForRecipeAndCategory(a3, a4);
+    v6 = MTSharedVisualStyleSetForRecipeAndCategory(recipe, category);
     v4 = v6 != 0;
     if (v6)
     {
@@ -203,19 +203,19 @@ void __58__MTCoreMaterialVisualStylingProvider__setVisualStyleSet___block_invoke
   return v4;
 }
 
-- (BOOL)updateVisualStyleSetGeneratedFromRecipe:(id)a3
+- (BOOL)updateVisualStyleSetGeneratedFromRecipe:(id)recipe
 {
-  v4 = a3;
-  if (v4)
+  recipeCopy = recipe;
+  if (recipeCopy)
   {
-    v5 = [MTRecipeMaterialSettings styleSetNameForStyleSetFromRecipeWithName:v4];
-    v6 = [(MTCoreMaterialVisualStylingProvider *)self _visualStyleSet];
-    v7 = [v6 visualStyleSetName];
-    v8 = [v7 isEqualToString:v5];
+    v5 = [MTRecipeMaterialSettings styleSetNameForStyleSetFromRecipeWithName:recipeCopy];
+    _visualStyleSet = [(MTCoreMaterialVisualStylingProvider *)self _visualStyleSet];
+    visualStyleSetName = [_visualStyleSet visualStyleSetName];
+    v8 = [visualStyleSetName isEqualToString:v5];
 
     if ((v8 & 1) == 0)
     {
-      v9 = MTSharedVisualStyleSetGeneratedFromRecipe(v4);
+      v9 = MTSharedVisualStyleSetGeneratedFromRecipe(recipeCopy);
       [(MTCoreMaterialVisualStylingProvider *)self _setVisualStyleSet:v9];
     }
 

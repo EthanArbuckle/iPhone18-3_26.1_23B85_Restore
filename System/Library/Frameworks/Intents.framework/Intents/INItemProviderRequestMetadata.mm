@@ -1,44 +1,44 @@
 @interface INItemProviderRequestMetadata
-- (INItemProviderRequestMetadata)initWithCoder:(id)a3;
-- (INItemProviderRequestMetadata)initWithMetadata:(id)a3 supportedContentTypes:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (INItemProviderRequestMetadata)initWithCoder:(id)coder;
+- (INItemProviderRequestMetadata)initWithMetadata:(id)metadata supportedContentTypes:(id)types;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INItemProviderRequestMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   metadata = self->_metadata;
-  v5 = a3;
-  [v5 encodeObject:metadata forKey:@"metadata"];
-  [v5 encodeObject:self->_supportedContentTypes forKey:@"supportedContentTypes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:metadata forKey:@"metadata"];
+  [coderCopy encodeObject:self->_supportedContentTypes forKey:@"supportedContentTypes"];
 }
 
-- (INItemProviderRequestMetadata)initWithCoder:(id)a3
+- (INItemProviderRequestMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"supportedContentTypes"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"supportedContentTypes"];
 
   v10 = [(INItemProviderRequestMetadata *)self initWithMetadata:v5 supportedContentTypes:v9];
   return v10;
 }
 
-- (INItemProviderRequestMetadata)initWithMetadata:(id)a3 supportedContentTypes:(id)a4
+- (INItemProviderRequestMetadata)initWithMetadata:(id)metadata supportedContentTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  typesCopy = types;
   v8 = [(INItemProviderRequestMetadata *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [metadataCopy copy];
     metadata = v8->_metadata;
     v8->_metadata = v9;
 
-    v11 = [v7 copy];
+    v11 = [typesCopy copy];
     supportedContentTypes = v8->_supportedContentTypes;
     v8->_supportedContentTypes = v11;
 

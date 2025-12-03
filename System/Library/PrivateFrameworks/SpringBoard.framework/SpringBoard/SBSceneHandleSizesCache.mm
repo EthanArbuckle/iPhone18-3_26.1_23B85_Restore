@@ -1,8 +1,8 @@
 @interface SBSceneHandleSizesCache
-- (CGSize)minimumSizeForDisplayItem:(id)a3;
+- (CGSize)minimumSizeForDisplayItem:(id)item;
 - (SBSceneHandleSizesCache)init;
 - (void)reset;
-- (void)setMinimumSize:(CGSize)a3 forDisplayItem:(id)a4;
+- (void)setMinimumSize:(CGSize)size forDisplayItem:(id)item;
 @end
 
 @implementation SBSceneHandleSizesCache
@@ -14,9 +14,9 @@
   v2 = [(SBSceneHandleSizesCache *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     displayItemsToMinSizes = v2->_displayItemsToMinSizes;
-    v2->_displayItemsToMinSizes = v3;
+    v2->_displayItemsToMinSizes = weakToStrongObjectsMapTable;
   }
 
   return v2;
@@ -24,20 +24,20 @@
 
 - (void)reset
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBSceneHandleSizesCache reset]"];
-  [v1 handleFailureInFunction:v0 file:@"SBSceneHandleSizesCache.m" lineNumber:29 description:@"this call must be made on the main thread"];
+  [currentHandler handleFailureInFunction:v0 file:@"SBSceneHandleSizesCache.m" lineNumber:29 description:@"this call must be made on the main thread"];
 }
 
-- (CGSize)minimumSizeForDisplayItem:(id)a3
+- (CGSize)minimumSizeForDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBSceneHandleSizesCache minimumSizeForDisplayItem:];
   }
 
-  v5 = [(NSMapTable *)self->_displayItemsToMinSizes objectForKey:v4];
+  v5 = [(NSMapTable *)self->_displayItemsToMinSizes objectForKey:itemCopy];
   v6 = v5;
   if (v5)
   {
@@ -58,10 +58,10 @@
   return result;
 }
 
-- (void)setMinimumSize:(CGSize)a3 forDisplayItem:(id)a4
+- (void)setMinimumSize:(CGSize)size forDisplayItem:(id)item
 {
   v5 = MEMORY[0x277CCACC8];
-  v6 = a4;
+  itemCopy = item;
   if (([v5 isMainThread] & 1) == 0)
   {
     [SBSceneHandleSizesCache setMinimumSize:forDisplayItem:];
@@ -69,7 +69,7 @@
 
   displayItemsToMinSizes = self->_displayItemsToMinSizes;
   v8 = BSValueWithSize();
-  [(NSMapTable *)displayItemsToMinSizes setObject:v8 forKey:v6];
+  [(NSMapTable *)displayItemsToMinSizes setObject:v8 forKey:itemCopy];
 }
 
 - (void)minimumSizeForDisplayItem:.cold.1()

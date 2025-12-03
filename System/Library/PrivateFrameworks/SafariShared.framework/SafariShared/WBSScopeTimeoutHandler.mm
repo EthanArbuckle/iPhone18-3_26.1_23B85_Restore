@@ -1,24 +1,24 @@
 @interface WBSScopeTimeoutHandler
-- (WBSScopeTimeoutHandler)initWithTimeout:(double)a3 autoBugCaptureDomain:(id)a4 detectedProcess:(id)a5 context:(id)a6;
-- (WBSScopeTimeoutHandler)initWithTimeout:(double)a3 handler:(id)a4;
+- (WBSScopeTimeoutHandler)initWithTimeout:(double)timeout autoBugCaptureDomain:(id)domain detectedProcess:(id)process context:(id)context;
+- (WBSScopeTimeoutHandler)initWithTimeout:(double)timeout handler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation WBSScopeTimeoutHandler
 
-- (WBSScopeTimeoutHandler)initWithTimeout:(double)a3 handler:(id)a4
+- (WBSScopeTimeoutHandler)initWithTimeout:(double)timeout handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = WBSScopeTimeoutHandler;
   v7 = [(WBSScopeTimeoutHandler *)&v14 init];
   if (v7)
   {
-    v8 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, v6);
+    v8 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, handlerCopy);
     handler = v7->_handler;
     v7->_handler = v8;
 
-    v10 = dispatch_time(0, (a3 * 1000000000.0));
+    v10 = dispatch_time(0, (timeout * 1000000000.0));
     v11 = dispatch_get_global_queue(9, 0);
     dispatch_after(v10, v11, v7->_handler);
 
@@ -28,22 +28,22 @@
   return v7;
 }
 
-- (WBSScopeTimeoutHandler)initWithTimeout:(double)a3 autoBugCaptureDomain:(id)a4 detectedProcess:(id)a5 context:(id)a6
+- (WBSScopeTimeoutHandler)initWithTimeout:(double)timeout autoBugCaptureDomain:(id)domain detectedProcess:(id)process context:(id)context
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  domainCopy = domain;
+  processCopy = process;
+  contextCopy = context;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __87__WBSScopeTimeoutHandler_initWithTimeout_autoBugCaptureDomain_detectedProcess_context___block_invoke;
   v18[3] = &unk_1E7FB7258;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = [(WBSScopeTimeoutHandler *)self initWithTimeout:v18 handler:a3];
+  v19 = domainCopy;
+  v20 = processCopy;
+  v21 = contextCopy;
+  v13 = contextCopy;
+  v14 = processCopy;
+  v15 = domainCopy;
+  v16 = [(WBSScopeTimeoutHandler *)self initWithTimeout:v18 handler:timeout];
 
   return v16;
 }

@@ -1,7 +1,7 @@
 @interface CPSTravelEstimatesStringFormatter
 - (CPSTravelEstimatesStringFormatter)init;
-- (double)_minuteRoundedTimeRemainingForTravelEstimates:(id)a3;
-- (id)generateTravelEstimatesStringsForTravelEstimates:(id)a3;
+- (double)_minuteRoundedTimeRemainingForTravelEstimates:(id)estimates;
+- (id)generateTravelEstimatesStringsForTravelEstimates:(id)estimates;
 @end
 
 @implementation CPSTravelEstimatesStringFormatter
@@ -18,9 +18,9 @@
   {
     v10 = objc_alloc_init(MEMORY[0x277CCA968]);
     v7 = v10;
-    v8 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     [v7 setLocale:?];
-    *&v2 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+    *&v2 = MEMORY[0x277D82BD8](autoupdatingCurrentLocale).n128_u64[0];
     [v10 setDateStyle:v2];
     [v10 setTimeStyle:1];
     [v10 setAMSymbol:?];
@@ -29,9 +29,9 @@
     v9 = objc_alloc_init(MEMORY[0x277CCA958]);
     [v9 setUnitsStyle:0];
     objc_storeStrong(&v13->_remainingTimeFormatter, v9);
-    v3 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+    autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
     calendar = v13->_calendar;
-    v13->_calendar = v3;
+    v13->_calendar = autoupdatingCurrentCalendar;
     MEMORY[0x277D82BD8](calendar);
     objc_storeStrong(&v9, 0);
     objc_storeStrong(&v10, 0);
@@ -42,12 +42,12 @@
   return v6;
 }
 
-- (double)_minuteRoundedTimeRemainingForTravelEstimates:(id)a3
+- (double)_minuteRoundedTimeRemainingForTravelEstimates:(id)estimates
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   [location[0] timeRemaining];
   v6 = v3;
   [location[0] timeRemaining];
@@ -56,20 +56,20 @@
   return v7;
 }
 
-- (id)generateTravelEstimatesStringsForTravelEstimates:(id)a3
+- (id)generateTravelEstimatesStringsForTravelEstimates:(id)estimates
 {
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   v49 = objc_alloc_init(CPSTravelEstimatesStrings);
   v30 = CPSLocalizedStringForKey(@"ARRIVAL");
   [(CPSTravelEstimatesStrings *)v49 setLocalizedArrivalString:?];
   *&v3 = MEMORY[0x277D82BD8](v30).n128_u64[0];
-  v48 = [location[0] distanceRemaining];
-  if (v48 && ([v48 doubleValue], v4 >= 0.0))
+  distanceRemaining = [location[0] distanceRemaining];
+  if (distanceRemaining && ([distanceRemaining doubleValue], v4 >= 0.0))
   {
-    v27 = v48;
+    v27 = distanceRemaining;
     v38 = MEMORY[0x277D85DD0];
     v39 = -1073741824;
     v40 = 0;
@@ -83,10 +83,10 @@
   else
   {
     [(CPSTravelEstimatesStrings *)v49 setDistanceRemainingString:0x2855A63C8];
-    v29 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v46 = 0;
     v44 = 0;
-    if ([v29 usesMetricSystem])
+    if ([currentLocale usesMetricSystem])
     {
       v47 = CPSLocalizedStringForKey(@"KMS");
       v46 = 1;
@@ -111,37 +111,37 @@
       MEMORY[0x277D82BD8](v47);
     }
 
-    *&v5 = MEMORY[0x277D82BD8](v29).n128_u64[0];
+    *&v5 = MEMORY[0x277D82BD8](currentLocale).n128_u64[0];
   }
 
   [location[0] timeRemaining];
   if (v6 >= 0.0)
   {
-    [(CPSTravelEstimatesStringFormatter *)v51 _minuteRoundedTimeRemainingForTravelEstimates:location[0]];
+    [(CPSTravelEstimatesStringFormatter *)selfCopy _minuteRoundedTimeRemainingForTravelEstimates:location[0]];
     v37 = v7;
-    v36 = [MEMORY[0x277CBEAA8] date];
-    v35 = [v36 dateByAddingTimeInterval:v37];
-    v24 = [(CPSTravelEstimatesStringFormatter *)v51 arrivalTimeFormatter];
-    v34 = [(NSDateFormatter *)v24 stringFromDate:v35];
-    *&v8 = MEMORY[0x277D82BD8](v24).n128_u64[0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v35 = [date dateByAddingTimeInterval:v37];
+    arrivalTimeFormatter = [(CPSTravelEstimatesStringFormatter *)selfCopy arrivalTimeFormatter];
+    v34 = [(NSDateFormatter *)arrivalTimeFormatter stringFromDate:v35];
+    *&v8 = MEMORY[0x277D82BD8](arrivalTimeFormatter).n128_u64[0];
     [(CPSTravelEstimatesStrings *)v49 setArrivalTimeString:v34, v8];
-    v25 = [(CPSTravelEstimatesStringFormatter *)v51 calendar];
-    v33 = [(NSCalendar *)v25 components:96 fromDate:v36 toDate:v35 options:0];
-    *&v9 = MEMORY[0x277D82BD8](v25).n128_u64[0];
+    calendar = [(CPSTravelEstimatesStringFormatter *)selfCopy calendar];
+    v33 = [(NSCalendar *)calendar components:96 fromDate:date toDate:v35 options:0];
+    *&v9 = MEMORY[0x277D82BD8](calendar).n128_u64[0];
     if (v33)
     {
-      v23 = [(CPSTravelEstimatesStringFormatter *)v51 remainingTimeFormatter];
-      [(NSDateComponentsFormatter *)v23 setAllowedUnits:96];
+      remainingTimeFormatter = [(CPSTravelEstimatesStringFormatter *)selfCopy remainingTimeFormatter];
+      [(NSDateComponentsFormatter *)remainingTimeFormatter setAllowedUnits:96];
       if ([v33 hour] >= 10)
       {
         [v33 setMinute:0];
-        v22 = [(CPSTravelEstimatesStringFormatter *)v51 remainingTimeFormatter];
-        [(NSDateComponentsFormatter *)v22 setAllowedUnits:32];
-        *&v10 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+        remainingTimeFormatter2 = [(CPSTravelEstimatesStringFormatter *)selfCopy remainingTimeFormatter];
+        [(NSDateComponentsFormatter *)remainingTimeFormatter2 setAllowedUnits:32];
+        *&v10 = MEMORY[0x277D82BD8](remainingTimeFormatter2).n128_u64[0];
       }
 
-      v21 = [(CPSTravelEstimatesStringFormatter *)v51 remainingTimeFormatter];
-      v32 = [(NSDateComponentsFormatter *)v21 stringFromDateComponents:v33];
+      remainingTimeFormatter3 = [(CPSTravelEstimatesStringFormatter *)selfCopy remainingTimeFormatter];
+      v32 = [(NSDateComponentsFormatter *)remainingTimeFormatter3 stringFromDateComponents:v33];
       v31 = 0;
       if ([v33 hour] <= 1)
       {
@@ -197,7 +197,7 @@
     objc_storeStrong(&v33, 0);
     objc_storeStrong(&v34, 0);
     objc_storeStrong(&v35, 0);
-    objc_storeStrong(&v36, 0);
+    objc_storeStrong(&date, 0);
   }
 
   else
@@ -210,7 +210,7 @@
   }
 
   v19 = MEMORY[0x277D82BE0](v49);
-  objc_storeStrong(&v48, 0);
+  objc_storeStrong(&distanceRemaining, 0);
   objc_storeStrong(&v49, 0);
   objc_storeStrong(location, 0);
 

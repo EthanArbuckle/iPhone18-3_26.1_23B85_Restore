@@ -1,38 +1,38 @@
 @interface NBRemoteObjectClassC
-- (NBRemoteObjectClassC)initWithDelegate:(id)a3 andQueue:(id)a4;
+- (NBRemoteObjectClassC)initWithDelegate:(id)delegate andQueue:(id)queue;
 - (id)activelyPairingDevice;
-- (id)backupFromProtobuf:(id)a3;
-- (id)bytesFromClass:(id)a3;
-- (id)class:(Class)a3 fromBytes:(id)a4;
-- (id)dataFromUUID:(id)a3;
-- (id)protobufFromBackup:(id)a3;
-- (id)sha256FromData:(id)a3;
-- (id)uuidFromData:(id)a3;
-- (id)writeWatchFaceToFile:(id)a3;
-- (void)idsHandleBackupListRequest:(id)a3;
-- (void)idsHandleDeleteBackupRequest:(id)a3;
-- (void)idsHandlePayloadRestoreRequest:(id)a3 context:(id)a4;
-- (void)idsHandleRestoreRequest:(id)a3;
+- (id)backupFromProtobuf:(id)protobuf;
+- (id)bytesFromClass:(id)class;
+- (id)class:(Class)class fromBytes:(id)bytes;
+- (id)dataFromUUID:(id)d;
+- (id)protobufFromBackup:(id)backup;
+- (id)sha256FromData:(id)data;
+- (id)uuidFromData:(id)data;
+- (id)writeWatchFaceToFile:(id)file;
+- (void)idsHandleBackupListRequest:(id)request;
+- (void)idsHandleDeleteBackupRequest:(id)request;
+- (void)idsHandlePayloadRestoreRequest:(id)request context:(id)context;
+- (void)idsHandleRestoreRequest:(id)request;
 - (void)registerProtobufHandlers;
-- (void)sendBackupListRequestWithResponseBlock:(id)a3;
-- (void)sendBackupListResponse:(id)a3 error:(id)a4 withRequestIdentifier:(id)a5 withSentBlock:(id)a6;
-- (void)sendBackupPayload:(id)a3 withResponseBlock:(id)a4;
-- (void)sendCreateBackupRequestWithResponseBlock:(id)a3;
-- (void)sendCreateBackupResponse:(id)a3 withRequestIdentifier:(id)a4 error:(id)a5 withSentBlock:(id)a6;
-- (void)sendDeleteBackupRequest:(id)a3 withResponseBlock:(id)a4;
-- (void)sendDeleteBackupResponse:(id)a3 withRequestIdentifier:(id)a4 withSentBlock:(id)a5;
-- (void)sendRestoreRequest:(id)a3 withResponseBlock:(id)a4;
-- (void)sendRestoreResponse:(id)a3 withRequestIdentifier:(id)a4 withSentBlock:(id)a5;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)sendBackupListRequestWithResponseBlock:(id)block;
+- (void)sendBackupListResponse:(id)response error:(id)error withRequestIdentifier:(id)identifier withSentBlock:(id)block;
+- (void)sendBackupPayload:(id)payload withResponseBlock:(id)block;
+- (void)sendCreateBackupRequestWithResponseBlock:(id)block;
+- (void)sendCreateBackupResponse:(id)response withRequestIdentifier:(id)identifier error:(id)error withSentBlock:(id)block;
+- (void)sendDeleteBackupRequest:(id)request withResponseBlock:(id)block;
+- (void)sendDeleteBackupResponse:(id)response withRequestIdentifier:(id)identifier withSentBlock:(id)block;
+- (void)sendRestoreRequest:(id)request withResponseBlock:(id)block;
+- (void)sendRestoreResponse:(id)response withRequestIdentifier:(id)identifier withSentBlock:(id)block;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation NBRemoteObjectClassC
 
-- (NBRemoteObjectClassC)initWithDelegate:(id)a3 andQueue:(id)a4
+- (NBRemoteObjectClassC)initWithDelegate:(id)delegate andQueue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = NBRemoteObjectClassC;
-  return [(NBRemoteObject *)&v5 initWithServiceName:@"com.apple.private.alloy.nanobackup" andDelegate:a3 andClientQueue:a4];
+  return [(NBRemoteObject *)&v5 initWithServiceName:@"com.apple.private.alloy.nanobackup" andDelegate:delegate andClientQueue:queue];
 }
 
 - (void)registerProtobufHandlers
@@ -47,10 +47,10 @@
   [(NBRemoteObject *)self setProtobufAction:0 forIncomingResponsesOfType:7];
 }
 
-- (void)idsHandleBackupListRequest:(id)a3
+- (void)idsHandleBackupListRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NBRemoteObject *)self delegate];
+  requestCopy = request;
+  delegate = [(NBRemoteObject *)self delegate];
   v6 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -58,23 +58,23 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "idsHandleBackupListRequest called", buf, 2u);
   }
 
-  v7 = [(NBRemoteObject *)self clientQueue];
+  clientQueue = [(NBRemoteObject *)self clientQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000CE18;
   block[3] = &unk_10002CE18;
-  v11 = v5;
-  v12 = self;
-  v13 = v4;
-  v8 = v4;
-  v9 = v5;
-  dispatch_async(v7, block);
+  v11 = delegate;
+  selfCopy = self;
+  v13 = requestCopy;
+  v8 = requestCopy;
+  v9 = delegate;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)idsHandleRestoreRequest:(id)a3
+- (void)idsHandleRestoreRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NBRemoteObject *)self delegate];
+  requestCopy = request;
+  delegate = [(NBRemoteObject *)self delegate];
   v6 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -83,50 +83,50 @@
   }
 
   v7 = [NBPBRestoreRequest alloc];
-  v8 = [v4 data];
-  v9 = [(NBPBRestoreRequest *)v7 initWithData:v8];
+  data = [requestCopy data];
+  v9 = [(NBPBRestoreRequest *)v7 initWithData:data];
 
-  v10 = [(NBRemoteObject *)self clientQueue];
+  clientQueue = [(NBRemoteObject *)self clientQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000CF98;
   v14[3] = &unk_10002CE40;
-  v15 = v5;
-  v16 = self;
+  v15 = delegate;
+  selfCopy = self;
   v17 = v9;
-  v18 = v4;
-  v11 = v4;
+  v18 = requestCopy;
+  v11 = requestCopy;
   v12 = v9;
-  v13 = v5;
-  dispatch_async(v10, v14);
+  v13 = delegate;
+  dispatch_async(clientQueue, v14);
 }
 
-- (void)idsHandlePayloadRestoreRequest:(id)a3 context:(id)a4
+- (void)idsHandlePayloadRestoreRequest:(id)request context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NBRemoteObject *)self delegate];
-  v9 = [(NBRemoteObject *)self clientQueue];
+  requestCopy = request;
+  contextCopy = context;
+  delegate = [(NBRemoteObject *)self delegate];
+  clientQueue = [(NBRemoteObject *)self clientQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D114;
   block[3] = &unk_10002CE18;
-  v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v7;
-  v11 = v6;
-  v12 = v8;
-  dispatch_async(v9, block);
+  v14 = delegate;
+  v15 = requestCopy;
+  v16 = contextCopy;
+  v10 = contextCopy;
+  v11 = requestCopy;
+  v12 = delegate;
+  dispatch_async(clientQueue, block);
 }
 
-- (void)idsHandleDeleteBackupRequest:(id)a3
+- (void)idsHandleDeleteBackupRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(NBRemoteObject *)self delegate];
+  requestCopy = request;
+  delegate = [(NBRemoteObject *)self delegate];
   v6 = [NBPBDeleteBackupRequest alloc];
-  v7 = [v4 data];
-  v8 = [(NBPBDeleteBackupRequest *)v6 initWithData:v7];
+  data = [requestCopy data];
+  v8 = [(NBPBDeleteBackupRequest *)v6 initWithData:data];
 
   v9 = nb_daemon_log;
   if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -135,57 +135,57 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "idsHandleDeleteBackupRequest called", buf, 2u);
   }
 
-  v10 = [(NBRemoteObject *)self clientQueue];
+  clientQueue = [(NBRemoteObject *)self clientQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000D2E0;
   v14[3] = &unk_10002CE40;
-  v15 = v5;
-  v16 = self;
+  v15 = delegate;
+  selfCopy = self;
   v17 = v8;
-  v18 = v4;
-  v11 = v4;
+  v18 = requestCopy;
+  v11 = requestCopy;
   v12 = v8;
-  v13 = v5;
-  dispatch_async(v10, v14);
+  v13 = delegate;
+  dispatch_async(clientQueue, v14);
 }
 
-- (id)uuidFromData:(id)a3
+- (id)uuidFromData:(id)data
 {
   v5[0] = 0;
   v5[1] = 0;
-  [a3 getBytes:v5 length:16];
+  [data getBytes:v5 length:16];
   v3 = [[NSUUID alloc] initWithUUIDBytes:v5];
 
   return v3;
 }
 
-- (id)dataFromUUID:(id)a3
+- (id)dataFromUUID:(id)d
 {
   v5[0] = 0;
   v5[1] = 0;
-  [a3 getUUIDBytes:v5];
+  [d getUUIDBytes:v5];
   v3 = [NSData dataWithBytes:v5 length:16];
 
   return v3;
 }
 
-- (id)sha256FromData:(id)a3
+- (id)sha256FromData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
 
-  CC_SHA256(v4, v5, md);
+  CC_SHA256(bytes, v5, md);
   v6 = [NSData dataWithBytes:md length:32];
 
   return v6;
 }
 
-- (id)writeWatchFaceToFile:(id)a3
+- (id)writeWatchFaceToFile:(id)file
 {
-  v4 = a3;
-  if ([v4 length])
+  fileCopy = file;
+  if ([fileCopy length])
   {
     v5 = NSTemporaryDirectory();
     v6 = [v5 stringByAppendingPathComponent:@"NanoBackup"];
@@ -212,10 +212,10 @@
 
     else
     {
-      v13 = [(NBRemoteObjectClassC *)self sha256FromData:v4];
+      v13 = [(NBRemoteObjectClassC *)self sha256FromData:fileCopy];
       v14 = [v13 base64EncodedStringWithOptions:0];
       v15 = [v5 stringByAppendingPathComponent:v14];
-      [v4 writeToFile:v5 atomically:1];
+      [fileCopy writeToFile:v5 atomically:1];
       v11 = [NSURL fileURLWithPath:v5];
     }
   }
@@ -236,13 +236,13 @@
   return v11;
 }
 
-- (id)bytesFromClass:(id)a3
+- (id)bytesFromClass:(id)class
 {
-  v3 = a3;
-  if (v3)
+  classCopy = class;
+  if (classCopy)
   {
     v12 = 0;
-    v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v12];
+    v4 = [NSKeyedArchiver archivedDataWithRootObject:classCopy requiringSecureCoding:1 error:&v12];
     v5 = v12;
     if (v5)
     {
@@ -271,13 +271,13 @@
   return v10;
 }
 
-- (id)class:(Class)a3 fromBytes:(id)a4
+- (id)class:(Class)class fromBytes:(id)bytes
 {
-  v5 = a4;
+  bytesCopy = bytes;
   v15 = 0;
-  v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v5 error:&v15];
+  v6 = [[NSKeyedUnarchiver alloc] initForReadingFromData:bytesCopy error:&v15];
   v7 = v15;
-  v8 = [NSSet setWithObject:a3];
+  v8 = [NSSet setWithObject:class];
   v9 = [v6 decodeObjectOfClasses:v8 forKey:NSKeyedArchiveRootObjectKey];
 
   [v6 finishDecoding];
@@ -287,7 +287,7 @@
     if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = NSStringFromClass(a3);
+      v12 = NSStringFromClass(class);
       *buf = 138543618;
       v17 = v12;
       v18 = 2114;
@@ -301,181 +301,181 @@
   return v13;
 }
 
-- (id)backupFromProtobuf:(id)a3
+- (id)backupFromProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = objc_alloc_init(NBBackup);
-  v6 = [v4 uuid];
-  v7 = [(NBRemoteObjectClassC *)self uuidFromData:v6];
+  uuid = [protobufCopy uuid];
+  v7 = [(NBRemoteObjectClassC *)self uuidFromData:uuid];
   [v5 setUuid:v7];
 
-  [v5 setBackupType:{objc_msgSend(v4, "backupType")}];
-  v8 = [v4 name];
-  [v5 setName:v8];
+  [v5 setBackupType:{objc_msgSend(protobufCopy, "backupType")}];
+  name = [protobufCopy name];
+  [v5 setName:name];
 
-  v9 = [v4 productType];
-  [v5 setProductType:v9];
+  productType = [protobufCopy productType];
+  [v5 setProductType:productType];
 
-  v10 = [v4 productName];
-  [v5 setProductName:v10];
+  productName = [protobufCopy productName];
+  [v5 setProductName:productName];
 
-  v11 = [v4 systemVersion];
-  [v5 setSystemVersion:v11];
+  systemVersion = [protobufCopy systemVersion];
+  [v5 setSystemVersion:systemVersion];
 
-  v12 = [v4 systemBuildVersion];
-  [v5 setSystemBuildVersion:v12];
+  systemBuildVersion = [protobufCopy systemBuildVersion];
+  [v5 setSystemBuildVersion:systemBuildVersion];
 
-  v13 = [v4 marketingVersion];
-  [v5 setMarketingVersion:v13];
+  marketingVersion = [protobufCopy marketingVersion];
+  [v5 setMarketingVersion:marketingVersion];
 
-  v14 = [v4 deviceColor];
-  [v5 setDeviceColor:v14];
+  deviceColor = [protobufCopy deviceColor];
+  [v5 setDeviceColor:deviceColor];
 
-  v15 = [v4 deviceEnclosureColor];
-  [v5 setDeviceEnclosureColor:v15];
+  deviceEnclosureColor = [protobufCopy deviceEnclosureColor];
+  [v5 setDeviceEnclosureColor:deviceEnclosureColor];
 
-  v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 bottomEnclosureMaterial]);
+  v16 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [protobufCopy bottomEnclosureMaterial]);
   [v5 setBottomEnclosureMaterial:v16];
 
-  v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 topEnclosureMaterial]);
+  v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [protobufCopy topEnclosureMaterial]);
   [v5 setTopEnclosureMaterial:v17];
 
-  v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 fcmMaterial]);
+  v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [protobufCopy fcmMaterial]);
   [v5 setFcmMaterial:v18];
 
-  v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 bcmWindowMaterial]);
+  v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [protobufCopy bcmWindowMaterial]);
   [v5 setBcmWindowMaterial:v19];
 
-  v20 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 coverGlassColor]);
+  v20 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [protobufCopy coverGlassColor]);
   [v5 setCoverGlassColor:v20];
 
-  v21 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 housingColor]);
+  v21 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [protobufCopy housingColor]);
   [v5 setHousingColor:v21];
 
-  v22 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 backingColor]);
+  v22 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [protobufCopy backingColor]);
   [v5 setBackingColor:v22];
 
-  v23 = [v4 watchFace];
-  [v5 setWatchFace:v23];
+  watchFace = [protobufCopy watchFace];
+  [v5 setWatchFace:watchFace];
 
-  v24 = [v4 watchFaceColor];
-  [v5 setWatchFaceColor:v24];
+  watchFaceColor = [protobufCopy watchFaceColor];
+  [v5 setWatchFaceColor:watchFaceColor];
 
-  [v5 setLocationOptInEnabled:{objc_msgSend(v4, "locationOptInEnabled")}];
-  [v5 setDiagnosticsOptInEnabled:{objc_msgSend(v4, "diagnosticsOptInEnabled")}];
-  [v4 lastModificationDate];
+  [v5 setLocationOptInEnabled:{objc_msgSend(protobufCopy, "locationOptInEnabled")}];
+  [v5 setDiagnosticsOptInEnabled:{objc_msgSend(protobufCopy, "diagnosticsOptInEnabled")}];
+  [protobufCopy lastModificationDate];
   v25 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
   [v5 setLastModificationDate:v25];
 
-  v26 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v4 sizeInBytes]);
+  v26 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [protobufCopy sizeInBytes]);
   [v5 setSizeInBytes:v26];
 
-  v27 = [v4 activeWatchFaceFileContents];
-  v28 = [(NBRemoteObjectClassC *)self writeWatchFaceToFile:v27];
+  activeWatchFaceFileContents = [protobufCopy activeWatchFaceFileContents];
+  v28 = [(NBRemoteObjectClassC *)self writeWatchFaceToFile:activeWatchFaceFileContents];
   [v5 setActiveWatchFaceFileURL:v28];
 
-  v29 = [v4 deviceCSN];
-  [v5 setDeviceCSN:v29];
+  deviceCSN = [protobufCopy deviceCSN];
+  [v5 setDeviceCSN:deviceCSN];
 
-  v30 = [v4 watchFaceData];
+  watchFaceData = [protobufCopy watchFaceData];
 
-  [v5 setWatchFaceData:v30];
+  [v5 setWatchFaceData:watchFaceData];
 
   return v5;
 }
 
-- (id)protobufFromBackup:(id)a3
+- (id)protobufFromBackup:(id)backup
 {
-  v4 = a3;
+  backupCopy = backup;
   v5 = objc_opt_new();
-  v6 = [v4 uuid];
-  v7 = [(NBRemoteObjectClassC *)self dataFromUUID:v6];
+  uuid = [backupCopy uuid];
+  v7 = [(NBRemoteObjectClassC *)self dataFromUUID:uuid];
   [v5 setUuid:v7];
 
-  [v5 setBackupType:{objc_msgSend(v4, "backupType")}];
-  v8 = [v4 name];
-  [v5 setName:v8];
+  [v5 setBackupType:{objc_msgSend(backupCopy, "backupType")}];
+  name = [backupCopy name];
+  [v5 setName:name];
 
-  v9 = [v4 productType];
-  [v5 setProductType:v9];
+  productType = [backupCopy productType];
+  [v5 setProductType:productType];
 
-  v10 = [v4 productName];
-  [v5 setProductName:v10];
+  productName = [backupCopy productName];
+  [v5 setProductName:productName];
 
-  v11 = [v4 systemVersion];
-  [v5 setSystemVersion:v11];
+  systemVersion = [backupCopy systemVersion];
+  [v5 setSystemVersion:systemVersion];
 
-  v12 = [v4 systemBuildVersion];
-  [v5 setSystemBuildVersion:v12];
+  systemBuildVersion = [backupCopy systemBuildVersion];
+  [v5 setSystemBuildVersion:systemBuildVersion];
 
-  v13 = [v4 marketingVersion];
-  [v5 setMarketingVersion:v13];
+  marketingVersion = [backupCopy marketingVersion];
+  [v5 setMarketingVersion:marketingVersion];
 
-  v14 = [v4 deviceColor];
-  [v5 setDeviceColor:v14];
+  deviceColor = [backupCopy deviceColor];
+  [v5 setDeviceColor:deviceColor];
 
-  v15 = [v4 deviceEnclosureColor];
-  [v5 setDeviceEnclosureColor:v15];
+  deviceEnclosureColor = [backupCopy deviceEnclosureColor];
+  [v5 setDeviceEnclosureColor:deviceEnclosureColor];
 
-  v16 = [v4 bottomEnclosureMaterial];
-  [v5 setBottomEnclosureMaterial:{objc_msgSend(v16, "integerValue")}];
+  bottomEnclosureMaterial = [backupCopy bottomEnclosureMaterial];
+  [v5 setBottomEnclosureMaterial:{objc_msgSend(bottomEnclosureMaterial, "integerValue")}];
 
-  v17 = [v4 topEnclosureMaterial];
-  [v5 setTopEnclosureMaterial:{objc_msgSend(v17, "integerValue")}];
+  topEnclosureMaterial = [backupCopy topEnclosureMaterial];
+  [v5 setTopEnclosureMaterial:{objc_msgSend(topEnclosureMaterial, "integerValue")}];
 
-  v18 = [v4 fcmMaterial];
-  [v5 setFcmMaterial:{objc_msgSend(v18, "integerValue")}];
+  fcmMaterial = [backupCopy fcmMaterial];
+  [v5 setFcmMaterial:{objc_msgSend(fcmMaterial, "integerValue")}];
 
-  v19 = [v4 bcmWindowMaterial];
-  [v5 setBcmWindowMaterial:{objc_msgSend(v19, "integerValue")}];
+  bcmWindowMaterial = [backupCopy bcmWindowMaterial];
+  [v5 setBcmWindowMaterial:{objc_msgSend(bcmWindowMaterial, "integerValue")}];
 
-  v20 = [v4 coverGlassColor];
-  [v5 setCoverGlassColor:{objc_msgSend(v20, "integerValue")}];
+  coverGlassColor = [backupCopy coverGlassColor];
+  [v5 setCoverGlassColor:{objc_msgSend(coverGlassColor, "integerValue")}];
 
-  v21 = [v4 housingColor];
-  [v5 setHousingColor:{objc_msgSend(v21, "integerValue")}];
+  housingColor = [backupCopy housingColor];
+  [v5 setHousingColor:{objc_msgSend(housingColor, "integerValue")}];
 
-  v22 = [v4 backingColor];
-  [v5 setBackingColor:{objc_msgSend(v22, "integerValue")}];
+  backingColor = [backupCopy backingColor];
+  [v5 setBackingColor:{objc_msgSend(backingColor, "integerValue")}];
 
-  v23 = [v4 watchFace];
-  [v5 setWatchFace:v23];
+  watchFace = [backupCopy watchFace];
+  [v5 setWatchFace:watchFace];
 
-  v24 = [v4 watchFaceColor];
-  [v5 setWatchFaceColor:v24];
+  watchFaceColor = [backupCopy watchFaceColor];
+  [v5 setWatchFaceColor:watchFaceColor];
 
-  [v5 setLocationOptInEnabled:{objc_msgSend(v4, "isLocationOptInEnabled")}];
-  [v5 setDiagnosticsOptInEnabled:{objc_msgSend(v4, "isDiagnosticsOptInEnabled")}];
-  v25 = [v4 lastModificationDate];
-  [v25 timeIntervalSinceReferenceDate];
+  [v5 setLocationOptInEnabled:{objc_msgSend(backupCopy, "isLocationOptInEnabled")}];
+  [v5 setDiagnosticsOptInEnabled:{objc_msgSend(backupCopy, "isDiagnosticsOptInEnabled")}];
+  lastModificationDate = [backupCopy lastModificationDate];
+  [lastModificationDate timeIntervalSinceReferenceDate];
   [v5 setLastModificationDate:?];
 
-  v26 = [v4 sizeInBytes];
-  [v5 setSizeInBytes:{objc_msgSend(v26, "longLongValue")}];
+  sizeInBytes = [backupCopy sizeInBytes];
+  [v5 setSizeInBytes:{objc_msgSend(sizeInBytes, "longLongValue")}];
 
-  v27 = [v4 activeWatchFaceFileURL];
-  v28 = [(NBRemoteObjectClassC *)self readWatchFaceFromFile:v27];
+  activeWatchFaceFileURL = [backupCopy activeWatchFaceFileURL];
+  v28 = [(NBRemoteObjectClassC *)self readWatchFaceFromFile:activeWatchFaceFileURL];
   [v5 setActiveWatchFaceFileContents:v28];
 
-  v29 = [v4 deviceCSN];
-  [v5 setDeviceCSN:v29];
+  deviceCSN = [backupCopy deviceCSN];
+  [v5 setDeviceCSN:deviceCSN];
 
-  v30 = [v4 watchFaceData];
+  watchFaceData = [backupCopy watchFaceData];
 
-  [v5 setWatchFaceData:v30];
+  [v5 setWatchFaceData:watchFaceData];
 
   return v5;
 }
 
-- (void)sendBackupListRequestWithResponseBlock:(id)a3
+- (void)sendBackupListRequestWithResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000E514;
   v9[3] = &unk_10002C960;
-  v10 = v4;
+  v10 = blockCopy;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000E5FC;
@@ -486,17 +486,17 @@
   [(NBRemoteObject *)self sendRequest:v5 type:0 withTimeout:&off_10002E828 withResponseTimeout:&off_10002E828 withDescription:@"NanoBackup Backup Metadata Request" onlyOneFor:0 didSend:v9 andResponse:v7];
 }
 
-- (void)sendBackupListResponse:(id)a3 error:(id)a4 withRequestIdentifier:(id)a5 withSentBlock:(id)a6
+- (void)sendBackupListResponse:(id)response error:(id)error withRequestIdentifier:(id)identifier withSentBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  responseCopy = response;
+  identifierCopy = identifier;
+  blockCopy = block;
   v12 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v13 = v9;
+  v13 = responseCopy;
   v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v14)
   {
@@ -529,24 +529,24 @@
   v20[1] = 3221225472;
   v20[2] = sub_10000EA38;
   v20[3] = &unk_10002C960;
-  v21 = v11;
-  v19 = v11;
-  [(NBRemoteObject *)self sendResponse:v12 type:1 withRequest:v10 withTimeout:&off_10002E828 withDescription:@"NanoBackup Backup Metadata Response" onlyOneFor:0 didSend:v20];
+  v21 = blockCopy;
+  v19 = blockCopy;
+  [(NBRemoteObject *)self sendResponse:v12 type:1 withRequest:identifierCopy withTimeout:&off_10002E828 withDescription:@"NanoBackup Backup Metadata Response" onlyOneFor:0 didSend:v20];
 }
 
-- (void)sendRestoreRequest:(id)a3 withResponseBlock:(id)a4
+- (void)sendRestoreRequest:(id)request withResponseBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  requestCopy = request;
   v8 = objc_opt_new();
-  v9 = [(NBRemoteObjectClassC *)self dataFromUUID:v7];
+  v9 = [(NBRemoteObjectClassC *)self dataFromUUID:requestCopy];
 
   [v8 setBackupID:v9];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000EC84;
   v13[3] = &unk_10002C960;
-  v14 = v6;
+  v14 = blockCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000ED68;
@@ -564,71 +564,71 @@
 
   if ([v3 count] <= 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (void)sendBackupPayload:(id)a3 withResponseBlock:(id)a4
+- (void)sendBackupPayload:(id)payload withResponseBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NBRemoteObject *)self service];
-  v9 = [v8 nb_defaultPairedDeviceIDIncludingTinkerDevices];
+  payloadCopy = payload;
+  blockCopy = block;
+  service = [(NBRemoteObject *)self service];
+  nb_defaultPairedDeviceIDIncludingTinkerDevices = [service nb_defaultPairedDeviceIDIncludingTinkerDevices];
 
-  if (v9)
+  if (nb_defaultPairedDeviceIDIncludingTinkerDevices)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_10000F280;
     v22[3] = &unk_10002C960;
-    v23 = v7;
+    v23 = blockCopy;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_10000F364;
     v20[3] = &unk_10002CE68;
     v20[4] = self;
     v21 = v23;
-    [(NBRemoteObject *)self sendFileRequest:v6 type:8 withTimeout:&off_10002E840 withResponseTimeout:&off_10002E840 withDescription:@"NanoBackup Restore Request From Payload" onlyOneFor:0 didSend:v22 andResponse:v20];
+    [(NBRemoteObject *)self sendFileRequest:payloadCopy type:8 withTimeout:&off_10002E840 withResponseTimeout:&off_10002E840 withDescription:@"NanoBackup Restore Request From Payload" onlyOneFor:0 didSend:v22 andResponse:v20];
 
-    v10 = v23;
+    activelyPairingDevice = v23;
   }
 
   else
   {
-    v11 = [(NBRemoteObject *)self delayedRestoreMessages];
+    delayedRestoreMessages = [(NBRemoteObject *)self delayedRestoreMessages];
 
-    if (!v11)
+    if (!delayedRestoreMessages)
     {
       v12 = objc_opt_new();
       [(NBRemoteObject *)self setDelayedRestoreMessages:v12];
     }
 
-    v10 = [(NBRemoteObjectClassC *)self activelyPairingDevice];
-    if (v10)
+    activelyPairingDevice = [(NBRemoteObjectClassC *)self activelyPairingDevice];
+    if (activelyPairingDevice)
     {
       v13 = nb_daemon_log;
       if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = v10;
+        v25 = activelyPairingDevice;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Device is: %@", buf, 0xCu);
       }
 
       v14 = objc_opt_new();
-      [v14 setValue:v6 forKey:@"NBMessagePathKey"];
-      v15 = objc_retainBlock(v7);
+      [v14 setValue:payloadCopy forKey:@"NBMessagePathKey"];
+      v15 = objc_retainBlock(blockCopy);
       [v14 setValue:v15 forKey:@"NBMessageBlockKey"];
 
-      v16 = [(NBRemoteObject *)self delayedRestoreMessages];
-      v17 = [v10 valueForProperty:NRDevicePropertyPairingID];
-      [v16 setValue:v14 forKey:v17];
+      delayedRestoreMessages2 = [(NBRemoteObject *)self delayedRestoreMessages];
+      v17 = [activelyPairingDevice valueForProperty:NRDevicePropertyPairingID];
+      [delayedRestoreMessages2 setValue:v14 forKey:v17];
 
       v18 = nb_daemon_log;
       if (os_log_type_enabled(nb_daemon_log, OS_LOG_TYPE_DEFAULT))
@@ -641,38 +641,38 @@
     else
     {
       v19 = NBError();
-      (*(v7 + 2))(v7, v19);
+      (*(blockCopy + 2))(blockCopy, v19);
     }
   }
 }
 
-- (void)sendRestoreResponse:(id)a3 withRequestIdentifier:(id)a4 withSentBlock:(id)a5
+- (void)sendRestoreResponse:(id)response withRequestIdentifier:(id)identifier withSentBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
+  responseCopy = response;
   v11 = objc_opt_new();
-  v12 = [(NBRemoteObjectClassC *)self bytesFromClass:v10];
+  v12 = [(NBRemoteObjectClassC *)self bytesFromClass:responseCopy];
 
   [v11 setError:v12];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000F588;
   v14[3] = &unk_10002C960;
-  v15 = v8;
-  v13 = v8;
-  [(NBRemoteObject *)self sendResponse:v11 type:3 requestUUID:v9 withTimeout:&off_10002E840 withDescription:@"NanoBackup Restore Response" onlyOneFor:0 didSend:v14];
+  v15 = blockCopy;
+  v13 = blockCopy;
+  [(NBRemoteObject *)self sendResponse:v11 type:3 requestUUID:identifierCopy withTimeout:&off_10002E840 withDescription:@"NanoBackup Restore Response" onlyOneFor:0 didSend:v14];
 }
 
-- (void)sendCreateBackupRequestWithResponseBlock:(id)a3
+- (void)sendCreateBackupRequestWithResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000F79C;
   v9[3] = &unk_10002C960;
-  v10 = v4;
+  v10 = blockCopy;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000F884;
@@ -683,41 +683,41 @@
   [(NBRemoteObject *)self sendRequest:v5 type:4 withTimeout:&off_10002E840 withResponseTimeout:&off_10002E840 withDescription:@"NanoBackup Create Backup Request" onlyOneFor:0 didSend:v9 andResponse:v7];
 }
 
-- (void)sendCreateBackupResponse:(id)a3 withRequestIdentifier:(id)a4 error:(id)a5 withSentBlock:(id)a6
+- (void)sendCreateBackupResponse:(id)response withRequestIdentifier:(id)identifier error:(id)error withSentBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  blockCopy = block;
+  errorCopy = error;
+  identifierCopy = identifier;
+  responseCopy = response;
   v14 = objc_opt_new();
-  v15 = [(NBRemoteObjectClassC *)self protobufFromBackup:v13];
+  v15 = [(NBRemoteObjectClassC *)self protobufFromBackup:responseCopy];
 
   [v14 setBackup:v15];
-  v16 = [(NBRemoteObjectClassC *)self bytesFromClass:v11];
+  v16 = [(NBRemoteObjectClassC *)self bytesFromClass:errorCopy];
 
   [v14 setError:v16];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000FB44;
   v18[3] = &unk_10002C960;
-  v19 = v10;
-  v17 = v10;
-  [(NBRemoteObject *)self sendResponse:v14 type:5 withRequest:v12 withTimeout:&off_10002E840 withDescription:@"NanoBackup Create Backup Response" onlyOneFor:0 didSend:v18];
+  v19 = blockCopy;
+  v17 = blockCopy;
+  [(NBRemoteObject *)self sendResponse:v14 type:5 withRequest:identifierCopy withTimeout:&off_10002E840 withDescription:@"NanoBackup Create Backup Response" onlyOneFor:0 didSend:v18];
 }
 
-- (void)sendDeleteBackupRequest:(id)a3 withResponseBlock:(id)a4
+- (void)sendDeleteBackupRequest:(id)request withResponseBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  requestCopy = request;
   v8 = objc_opt_new();
-  v9 = [(NBRemoteObjectClassC *)self dataFromUUID:v7];
+  v9 = [(NBRemoteObjectClassC *)self dataFromUUID:requestCopy];
 
   [v8 setBackupID:v9];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000FD90;
   v13[3] = &unk_10002C960;
-  v14 = v6;
+  v14 = blockCopy;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000FE74;
@@ -728,37 +728,37 @@
   [(NBRemoteObject *)self sendRequest:v8 type:6 withTimeout:&off_10002E840 withResponseTimeout:&off_10002E840 withDescription:@"NanoBackup Delete Backup Request" onlyOneFor:0 didSend:v13 andResponse:v11];
 }
 
-- (void)sendDeleteBackupResponse:(id)a3 withRequestIdentifier:(id)a4 withSentBlock:(id)a5
+- (void)sendDeleteBackupResponse:(id)response withRequestIdentifier:(id)identifier withSentBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  blockCopy = block;
+  identifierCopy = identifier;
+  responseCopy = response;
   v11 = objc_opt_new();
-  v12 = [(NBRemoteObjectClassC *)self bytesFromClass:v10];
+  v12 = [(NBRemoteObjectClassC *)self bytesFromClass:responseCopy];
 
   [v11 setError:v12];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000100EC;
   v14[3] = &unk_10002C960;
-  v15 = v8;
-  v13 = v8;
-  [(NBRemoteObject *)self sendResponse:v11 type:7 withRequest:v9 withTimeout:&off_10002E840 withDescription:@"NanoBackup Delete Backup Response" onlyOneFor:0 didSend:v14];
+  v15 = blockCopy;
+  v13 = blockCopy;
+  [(NBRemoteObject *)self sendResponse:v11 type:7 withRequest:identifierCopy withTimeout:&off_10002E840 withDescription:@"NanoBackup Delete Backup Response" onlyOneFor:0 didSend:v14];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a3;
-  v6 = [(NBRemoteObjectClassC *)self activelyPairingDevice];
-  v7 = [(NBRemoteObject *)self delayedRestoreMessages];
-  if (v7)
+  serviceCopy = service;
+  activelyPairingDevice = [(NBRemoteObjectClassC *)self activelyPairingDevice];
+  delayedRestoreMessages = [(NBRemoteObject *)self delayedRestoreMessages];
+  if (delayedRestoreMessages)
   {
-    v8 = v7;
-    v9 = [v5 nb_defaultPairedDeviceIDIncludingTinkerDevices];
+    v8 = delayedRestoreMessages;
+    nb_defaultPairedDeviceIDIncludingTinkerDevices = [serviceCopy nb_defaultPairedDeviceIDIncludingTinkerDevices];
 
-    if (v9)
+    if (nb_defaultPairedDeviceIDIncludingTinkerDevices)
     {
-      v10 = [v6 valueForProperty:NRDevicePropertyPairingID];
+      v10 = [activelyPairingDevice valueForProperty:NRDevicePropertyPairingID];
       if (v10)
       {
         v11 = nb_daemon_log;

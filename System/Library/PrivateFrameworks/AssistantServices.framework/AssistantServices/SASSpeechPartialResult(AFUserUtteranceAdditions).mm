@@ -7,25 +7,25 @@
 
 - (id)af_bestTextInterpretation
 {
-  v1 = [a1 af_userUtteranceValue];
-  v2 = [v1 bestTextInterpretation];
+  af_userUtteranceValue = [self af_userUtteranceValue];
+  bestTextInterpretation = [af_userUtteranceValue bestTextInterpretation];
 
-  return v2;
+  return bestTextInterpretation;
 }
 
 - (AFUserUtterance)af_userUtteranceValue
 {
   v21 = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E695DF70];
-  v3 = [a1 tokens];
-  v4 = [v2 arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  tokens = [self tokens];
+  v4 = [v2 arrayWithCapacity:{objc_msgSend(tokens, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 tokens];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  tokens2 = [self tokens];
+  v6 = [tokens2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -36,22 +36,22 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tokens2);
         }
 
-        v10 = [*(*(&v16 + 1) + 8 * i) af_speechToken];
-        [v4 addObject:v10];
+        af_speechToken = [*(*(&v16 + 1) + 8 * i) af_speechToken];
+        [v4 addObject:af_speechToken];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [tokens2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
   v11 = [AFUserUtterance alloc];
-  v12 = [a1 af_correctionContext];
-  v13 = [(AFUserUtterance *)v11 initWithTokens:v4 correctionIdentifier:v12];
+  af_correctionContext = [self af_correctionContext];
+  v13 = [(AFUserUtterance *)v11 initWithTokens:v4 correctionIdentifier:af_correctionContext];
 
   v14 = *MEMORY[0x1E69E9840];
 

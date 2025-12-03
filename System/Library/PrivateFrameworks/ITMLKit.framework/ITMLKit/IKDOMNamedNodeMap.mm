@@ -1,21 +1,21 @@
 @interface IKDOMNamedNodeMap
-- (id)getNamedItem:(id)a3;
-- (id)setNamedItem:(id)a3;
+- (id)getNamedItem:(id)item;
+- (id)setNamedItem:(id)item;
 @end
 
 @implementation IKDOMNamedNodeMap
 
-- (id)getNamedItem:(id)a3
+- (id)getNamedItem:(id)item
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   [(IKDOMNodeList *)self _updateNodes];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(IKDOMNodeList *)self nodes];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  nodes = [(IKDOMNodeList *)self nodes];
+  v6 = [nodes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -25,12 +25,12 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(nodes);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 nodeName];
-        v11 = [v10 isEqualToString:v4];
+        nodeName = [v9 nodeName];
+        v11 = [nodeName isEqualToString:itemCopy];
 
         if (v11)
         {
@@ -39,7 +39,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [nodes countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -56,29 +56,29 @@ LABEL_11:
   return v6;
 }
 
-- (id)setNamedItem:(id)a3
+- (id)setNamedItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 nodeName];
-  v6 = [(IKDOMNamedNodeMap *)self getNamedItem:v5];
+  itemCopy = item;
+  nodeName = [itemCopy nodeName];
+  v6 = [(IKDOMNamedNodeMap *)self getNamedItem:nodeName];
 
-  v7 = [(IKDOMNodeList *)self contextNode];
-  v8 = [v7 nodePtr];
+  contextNode = [(IKDOMNodeList *)self contextNode];
+  nodePtr = [contextNode nodePtr];
 
-  v9 = [v4 nodeName];
-  v10 = [v9 UTF8String];
+  nodeName2 = [itemCopy nodeName];
+  uTF8String = [nodeName2 UTF8String];
 
-  v11 = [v4 nodeValue];
+  nodeValue = [itemCopy nodeValue];
 
-  v12 = [v11 UTF8String];
+  uTF8String2 = [nodeValue UTF8String];
   if (v6)
   {
-    xmlSetProp(v8, v10, v12);
+    xmlSetProp(nodePtr, uTF8String, uTF8String2);
   }
 
   else
   {
-    xmlNewProp(v8, v10, v12);
+    xmlNewProp(nodePtr, uTF8String, uTF8String2);
   }
 
   return v6;

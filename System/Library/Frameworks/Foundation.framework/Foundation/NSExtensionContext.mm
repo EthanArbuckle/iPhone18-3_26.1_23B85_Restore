@@ -1,15 +1,15 @@
 @interface NSExtensionContext
 + (id)_defaultExtensionContextProtocol;
 + (id)_defaultExtensionContextVendorProtocol;
-+ (id)_extensionContextForIdentifier:(id)a3;
++ (id)_extensionContextForIdentifier:(id)identifier;
 + (id)_extensionContextHostProtocolAllowedClassesForItems;
-+ (id)_extensionContextHostProtocolWithAllowedErrorClasses:(id)a3;
-+ (id)_extensionContextVendorProtocolWithAllowedErrorClasses:(id)a3;
++ (id)_extensionContextHostProtocolWithAllowedErrorClasses:(id)classes;
++ (id)_extensionContextVendorProtocolWithAllowedErrorClasses:(id)classes;
 - ($115C4C562B26FF47E01F9F4EA65B5887)_extensionHostAuditToken;
 - (BOOL)_isHost;
 - (NSArray)inputItems;
-- (NSExtensionContext)initWithCoder:(id)a3;
-- (NSExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (NSExtensionContext)initWithCoder:(id)coder;
+- (NSExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 - (NSString)description;
 - (NSUUID)_UUID;
 - (NSXPCConnection)_auxiliaryConnection;
@@ -20,57 +20,57 @@
 - (id)_principalObject;
 - (id)_processAssertion;
 - (id)_requestCleanUpBlock;
-- (void)_loadItemForPayload:(id)a3 completionHandler:(id)a4;
-- (void)_loadPreviewImageForPayload:(id)a3 completionHandler:(id)a4;
-- (void)_openURL:(id)a3 completion:(id)a4;
-- (void)_setAuxiliaryConnection:(id)a3;
-- (void)_setAuxiliaryListener:(id)a3;
-- (void)_setExtensionHostAuditToken:(id *)a3;
-- (void)_setExtensionHostProxy:(id)a3;
-- (void)_setExtensionVendorProxy:(id)a3;
-- (void)_setPrincipalObject:(id)a3;
-- (void)_setProcessAssertion:(id)a3;
-- (void)_setRequestCleanUpBlock:(id)a3;
-- (void)_setTransaction:(id)a3;
-- (void)_willPerformHostCallback:(id)a3;
+- (void)_loadItemForPayload:(id)payload completionHandler:(id)handler;
+- (void)_loadPreviewImageForPayload:(id)payload completionHandler:(id)handler;
+- (void)_openURL:(id)l completion:(id)completion;
+- (void)_setAuxiliaryConnection:(id)connection;
+- (void)_setAuxiliaryListener:(id)listener;
+- (void)_setExtensionHostAuditToken:(id *)token;
+- (void)_setExtensionHostProxy:(id)proxy;
+- (void)_setExtensionVendorProxy:(id)proxy;
+- (void)_setPrincipalObject:(id)object;
+- (void)_setProcessAssertion:(id)assertion;
+- (void)_setRequestCleanUpBlock:(id)block;
+- (void)_setTransaction:(id)transaction;
+- (void)_willPerformHostCallback:(id)callback;
 - (void)cancelRequestWithError:(NSError *)error;
 - (void)completeRequestReturningItems:(NSArray *)items completionHandler:(void *)completionHandler;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 - (void)openURL:(NSURL *)URL completionHandler:(void *)completionHandler;
-- (void)setInputItems:(id)a3;
-- (void)set_UUID:(id)a3;
+- (void)setInputItems:(id)items;
+- (void)set_UUID:(id)d;
 @end
 
 @implementation NSExtensionContext
 
 - (NSUUID)_UUID
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _UUID];
+  return [internalImplementation _UUID];
 }
 
 - (NSXPCConnection)_auxiliaryConnection
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _auxiliaryConnection];
+  return [internalImplementation _auxiliaryConnection];
 }
 
 - (NSArray)inputItems
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 inputItems];
+  return [internalImplementation inputItems];
 }
 
 - (id)_principalObject
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _principalObject];
+  return [internalImplementation _principalObject];
 }
 
 - (void)dealloc
@@ -82,42 +82,42 @@
   [(NSExtensionContext *)&v3 dealloc];
 }
 
-+ (id)_extensionContextForIdentifier:(id)a3
++ (id)_extensionContextForIdentifier:(id)identifier
 {
   v4 = +[_NSExtensionContextVendor _sharedExtensionContextVendor];
 
-  return [v4 _extensionContextForUUID:a3];
+  return [v4 _extensionContextForUUID:identifier];
 }
 
-- (void)setInputItems:(id)a3
+- (void)setInputItems:(id)items
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setInputItems:a3];
+  [internalImplementation _setInputItems:items];
 }
 
 - (void)completeRequestReturningItems:(NSArray *)items completionHandler:(void *)completionHandler
 {
-  v6 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v6 completeRequestReturningItems:items completionHandler:completionHandler];
+  [internalImplementation completeRequestReturningItems:items completionHandler:completionHandler];
 }
 
 - (void)cancelRequestWithError:(NSError *)error
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 cancelRequestWithError:error];
+  [internalImplementation cancelRequestWithError:error];
 }
 
 - (void)openURL:(NSURL *)URL completionHandler:(void *)completionHandler
 {
-  v6 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v6 openURL:URL completionHandler:completionHandler];
+  [internalImplementation openURL:URL completionHandler:completionHandler];
 }
 
-- (NSExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (NSExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -130,7 +130,7 @@
       dispatch_once(&qword_1ED43F768, &__block_literal_global_2_0);
     }
 
-    v8->_internalImplementation = [[qword_1ED43F760 alloc] initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5 extensionContext:v8];
+    v8->_internalImplementation = [[qword_1ED43F760 alloc] initWithInputItems:items listenerEndpoint:endpoint contextUUID:d extensionContext:v8];
   }
 
   return v8;
@@ -160,7 +160,7 @@
   return [v3 _defaultExtensionContextProtocol];
 }
 
-+ (id)_extensionContextHostProtocolWithAllowedErrorClasses:(id)a3
++ (id)_extensionContextHostProtocolWithAllowedErrorClasses:(id)classes
 {
   if (qword_1ED43F768 != -1)
   {
@@ -169,7 +169,7 @@
 
   v4 = qword_1ED43F760;
 
-  return [v4 _extensionContextHostProtocolWithAllowedErrorClasses:a3];
+  return [v4 _extensionContextHostProtocolWithAllowedErrorClasses:classes];
 }
 
 + (id)_defaultExtensionContextVendorProtocol
@@ -184,7 +184,7 @@
   return [v3 _defaultExtensionContextVendorProtocol];
 }
 
-+ (id)_extensionContextVendorProtocolWithAllowedErrorClasses:(id)a3
++ (id)_extensionContextVendorProtocolWithAllowedErrorClasses:(id)classes
 {
   if (qword_1ED43F768 != -1)
   {
@@ -193,10 +193,10 @@
 
   v4 = qword_1ED43F760;
 
-  return [v4 _extensionContextVendorProtocolWithAllowedErrorClasses:a3];
+  return [v4 _extensionContextVendorProtocolWithAllowedErrorClasses:classes];
 }
 
-- (NSExtensionContext)initWithCoder:(id)a3
+- (NSExtensionContext)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
   if (qword_1ED43F768 != -1)
@@ -204,7 +204,7 @@
     dispatch_once(&qword_1ED43F768, &__block_literal_global_2_0);
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"self.internalExtensionContext"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"self.internalExtensionContext"];
   v8.receiver = self;
   v8.super_class = NSExtensionContext;
   v6 = [(NSExtensionContext *)&v8 init];
@@ -216,102 +216,102 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [a3 encodeObject:v4 forKey:@"self.internalExtensionContext"];
+  [coder encodeObject:internalImplementation forKey:@"self.internalExtensionContext"];
 }
 
-- (void)set_UUID:(id)a3
+- (void)set_UUID:(id)d
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 set_UUID:a3];
+  [internalImplementation set_UUID:d];
 }
 
-- (void)_setAuxiliaryConnection:(id)a3
+- (void)_setAuxiliaryConnection:(id)connection
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setAuxiliaryConnection:a3];
+  [internalImplementation _setAuxiliaryConnection:connection];
 }
 
 - (NSXPCListener)_auxiliaryListener
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _auxiliaryListener];
+  return [internalImplementation _auxiliaryListener];
 }
 
-- (void)_setAuxiliaryListener:(id)a3
+- (void)_setAuxiliaryListener:(id)listener
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setAuxiliaryListener:a3];
+  [internalImplementation _setAuxiliaryListener:listener];
 }
 
 - (_NSExtensionContextHosting)_extensionHostProxy
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _extensionHostProxy];
+  return [internalImplementation _extensionHostProxy];
 }
 
-- (void)_setExtensionHostProxy:(id)a3
+- (void)_setExtensionHostProxy:(id)proxy
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setExtensionHostProxy:a3];
+  [internalImplementation _setExtensionHostProxy:proxy];
 }
 
 - (BOOL)_isHost
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _isHost];
+  return [internalImplementation _isHost];
 }
 
 - (_NSExtensionContextVending)_extensionVendorProxy
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _extensionVendorProxy];
+  return [internalImplementation _extensionVendorProxy];
 }
 
-- (void)_setExtensionVendorProxy:(id)a3
+- (void)_setExtensionVendorProxy:(id)proxy
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setExtensionVendorProxy:a3];
+  [internalImplementation _setExtensionVendorProxy:proxy];
 }
 
 - (id)_processAssertion
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _processAssertion];
+  return [internalImplementation _processAssertion];
 }
 
-- (void)_setProcessAssertion:(id)a3
+- (void)_setProcessAssertion:(id)assertion
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setProcessAssertion:a3];
+  [internalImplementation _setProcessAssertion:assertion];
 }
 
 - (OS_os_transaction)_transaction
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _transaction];
+  return [internalImplementation _transaction];
 }
 
-- (void)_setTransaction:(id)a3
+- (void)_setTransaction:(id)transaction
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setTransaction:a3];
+  [internalImplementation _setTransaction:transaction];
 }
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)_extensionHostAuditToken
@@ -332,77 +332,77 @@
   return result;
 }
 
-- (void)_setExtensionHostAuditToken:(id *)a3
+- (void)_setExtensionHostAuditToken:(id *)token
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = [(NSExtensionContext *)self internalImplementation];
-  v5 = *&a3->var0[4];
-  v6[0] = *a3->var0;
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
+  v5 = *&token->var0[4];
+  v6[0] = *token->var0;
   v6[1] = v5;
-  [v4 _setExtensionHostAuditToken:v6];
+  [internalImplementation _setExtensionHostAuditToken:v6];
 }
 
 - (id)_requestCleanUpBlock
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 _requestCleanUpBlock];
+  return [internalImplementation _requestCleanUpBlock];
 }
 
-- (void)_setRequestCleanUpBlock:(id)a3
+- (void)_setRequestCleanUpBlock:(id)block
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setRequestCleanUpBlock:a3];
+  [internalImplementation _setRequestCleanUpBlock:block];
 }
 
-- (void)_setPrincipalObject:(id)a3
+- (void)_setPrincipalObject:(id)object
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _setPrincipalObject:a3];
+  [internalImplementation _setPrincipalObject:object];
 }
 
 - (void)invalidate
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v2 invalidate];
+  [internalImplementation invalidate];
 }
 
-- (void)_willPerformHostCallback:(id)a3
+- (void)_willPerformHostCallback:(id)callback
 {
-  v4 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v4 _willPerformHostCallback:a3];
+  [internalImplementation _willPerformHostCallback:callback];
 }
 
-- (void)_loadItemForPayload:(id)a3 completionHandler:(id)a4
+- (void)_loadItemForPayload:(id)payload completionHandler:(id)handler
 {
-  v6 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v6 _loadItemForPayload:a3 completionHandler:a4];
+  [internalImplementation _loadItemForPayload:payload completionHandler:handler];
 }
 
-- (void)_loadPreviewImageForPayload:(id)a3 completionHandler:(id)a4
+- (void)_loadPreviewImageForPayload:(id)payload completionHandler:(id)handler
 {
-  v6 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v6 _loadPreviewImageForPayload:a3 completionHandler:a4];
+  [internalImplementation _loadPreviewImageForPayload:payload completionHandler:handler];
 }
 
-- (void)_openURL:(id)a3 completion:(id)a4
+- (void)_openURL:(id)l completion:(id)completion
 {
-  v6 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  [v6 _openURL:a3 completion:a4];
+  [internalImplementation _openURL:l completion:completion];
 }
 
 - (NSString)description
 {
-  v2 = [(NSExtensionContext *)self internalImplementation];
+  internalImplementation = [(NSExtensionContext *)self internalImplementation];
 
-  return [v2 description];
+  return [internalImplementation description];
 }
 
 @end

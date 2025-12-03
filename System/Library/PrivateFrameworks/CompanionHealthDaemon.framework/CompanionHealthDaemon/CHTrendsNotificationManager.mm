@@ -1,13 +1,13 @@
 @interface CHTrendsNotificationManager
-- (CHTrendsNotificationManager)initWithProfile:(id)a3;
+- (CHTrendsNotificationManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (int64_t)notificationDelayNumberOfMinutes;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)notificationDidSendSuccessfully;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
 - (void)protectedDataBecameAvailable;
 - (void)sendNotificationIfAllowed;
-- (void)sendNotificationWithCompletion:(id)a3;
+- (void)sendNotificationWithCompletion:(id)completion;
 @end
 
 @implementation CHTrendsNotificationManager
@@ -35,9 +35,9 @@
 
     if (v4 && ([v4 BOOLValue] & 1) != 0)
     {
-      v7 = [(CHTrendsNotificationManager *)self profile];
-      v8 = [v7 database];
-      [v8 removeProtectedDataObserver:self];
+      profile = [(CHTrendsNotificationManager *)self profile];
+      database = [profile database];
+      [database removeProtectedDataObserver:self];
     }
 
     else
@@ -53,7 +53,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_243CCD000, a2, OS_LOG_TYPE_ERROR, "Error fetching user birth date: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -65,16 +65,16 @@
   return WeakRetained;
 }
 
-- (CHTrendsNotificationManager)initWithProfile:(id)a3
+- (CHTrendsNotificationManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v15.receiver = self;
   v15.super_class = CHTrendsNotificationManager;
   v5 = [(CHTrendsNotificationManager *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277D10718]);
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
     v9 = [v7 initWithCategory:1 domainName:@"TrendsNotificationManager" profile:WeakRetained];
@@ -82,8 +82,8 @@
     v6->_keyValueDomain = v9;
 
     v11 = objc_loadWeakRetained(&v6->_profile);
-    v12 = [v11 database];
-    [v12 addProtectedDataObserver:v6];
+    database = [v11 database];
+    [database addProtectedDataObserver:v6];
 
     v13 = objc_loadWeakRetained(&v6->_profile);
     [v13 registerProfileReadyObserver:v6 queue:0];
@@ -92,24 +92,24 @@
   return v6;
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  if (a4)
+  if (available)
   {
     [(CHTrendsNotificationManager *)self protectedDataBecameAvailable];
   }
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = [(CHTrendsNotificationManager *)self profile];
-  v5 = [v4 database];
+  profile = [(CHTrendsNotificationManager *)self profile];
+  database = [profile database];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__CHTrendsNotificationManager_profileDidBecomeReady___block_invoke;
   v6[3] = &unk_278DF00F0;
   v6[4] = self;
-  [v5 performWhenDataProtectedByFirstUnlockIsAvailable:v6];
+  [database performWhenDataProtectedByFirstUnlockIsAvailable:v6];
 }
 
 void __53__CHTrendsNotificationManager_profileDidBecomeReady___block_invoke(uint64_t a1)
@@ -171,9 +171,9 @@ void __56__CHTrendsNotificationManager_sendNotificationIfAllowed__block_invoke_3
 - (void)notificationDidSendSuccessfully
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(CHTrendsNotificationManager *)self keyValueDomain];
+  keyValueDomain = [(CHTrendsNotificationManager *)self keyValueDomain];
   v11 = 0;
-  v4 = [v3 setNumber:MEMORY[0x277CBEC38] forKey:@"TrendsNotificationManagerDidSendNotification" error:&v11];
+  v4 = [keyValueDomain setNumber:MEMORY[0x277CBEC38] forKey:@"TrendsNotificationManagerDidSendNotification" error:&v11];
   v5 = v11;
 
   _HKInitializeLogging();
@@ -187,9 +187,9 @@ void __56__CHTrendsNotificationManager_sendNotificationIfAllowed__block_invoke_3
       _os_log_impl(&dword_243CCD000, v6, OS_LOG_TYPE_DEFAULT, "Successfully sent trends notification.", buf, 2u);
     }
 
-    v8 = [(CHTrendsNotificationManager *)self profile];
-    v9 = [v8 database];
-    [v9 removeProtectedDataObserver:self];
+    profile = [(CHTrendsNotificationManager *)self profile];
+    database = [profile database];
+    [database removeProtectedDataObserver:self];
   }
 
   else if (v7)
@@ -204,8 +204,8 @@ void __56__CHTrendsNotificationManager_sendNotificationIfAllowed__block_invoke_3
 
 - (int64_t)notificationDelayNumberOfMinutes
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 integerForKey:@"OverrideTrendsNumberOfMinutesToWaitForNotification"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"OverrideTrendsNumberOfMinutesToWaitForNotification"];
 
   if (v3 <= 0)
   {
@@ -218,11 +218,11 @@ void __56__CHTrendsNotificationManager_sendNotificationIfAllowed__block_invoke_3
   }
 }
 
-- (void)sendNotificationWithCompletion:(id)a3
+- (void)sendNotificationWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CE1F60];
-  v5 = a3;
+  completionCopy = completion;
   v6 = objc_alloc_init(v4);
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"TRENDS_NOTIFICATION_TITLE" value:&stru_2856EDB90 table:@"Localizable"];
@@ -236,13 +236,13 @@ void __56__CHTrendsNotificationManager_sendNotificationIfAllowed__block_invoke_3
   v12 = [v11 localizedStringForKey:@"TRENDS_NOTIFICATION_BODY" value:&stru_2856EDB90 table:@"Localizable"];
   [v6 setBody:v12];
 
-  v13 = [MEMORY[0x277CBEA80] currentCalendar];
-  v14 = [(CHTrendsNotificationManager *)self notificationDelayNumberOfMinutes];
-  v15 = [MEMORY[0x277CBEAA8] date];
-  v16 = [v13 dateByAddingUnit:64 value:v14 toDate:v15 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  notificationDelayNumberOfMinutes = [(CHTrendsNotificationManager *)self notificationDelayNumberOfMinutes];
+  date = [MEMORY[0x277CBEAA8] date];
+  v16 = [currentCalendar dateByAddingUnit:64 value:notificationDelayNumberOfMinutes toDate:date options:0];
 
-  v17 = [MEMORY[0x277CBEA80] currentCalendar];
-  v18 = [v17 components:96 fromDate:v16];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v18 = [currentCalendar2 components:96 fromDate:v16];
 
   v19 = [MEMORY[0x277CE1F38] triggerWithDateMatchingComponents:v18 repeats:0];
   _HKInitializeLogging();
@@ -255,8 +255,8 @@ void __56__CHTrendsNotificationManager_sendNotificationIfAllowed__block_invoke_3
   }
 
   v21 = [MEMORY[0x277CE1FC0] requestWithIdentifier:@"ACTIVITY_TRENDS_READY" content:v6 trigger:v19];
-  v22 = [(CHTrendsNotificationManager *)self userNotificationCenter];
-  [v22 addNotificationRequest:v21 withCompletionHandler:v5];
+  userNotificationCenter = [(CHTrendsNotificationManager *)self userNotificationCenter];
+  [userNotificationCenter addNotificationRequest:v21 withCompletionHandler:completionCopy];
 
   v23 = *MEMORY[0x277D85DE8];
 }

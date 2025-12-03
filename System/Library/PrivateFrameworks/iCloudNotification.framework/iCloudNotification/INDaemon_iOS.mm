@@ -1,11 +1,11 @@
 @interface INDaemon_iOS
 - (BOOL)_unsafe_isLegacyDeviceStorageLevelNotificationEnabled;
 - (INDaemon_iOS)init;
-- (id)accountPushNotificationHandlerForEventType:(id)a3;
+- (id)accountPushNotificationHandlerForEventType:(id)type;
 - (id)pushTopics;
 - (void)_configureXPCEventStreamHandler;
 - (void)_handleDeviceDidPairEvent;
-- (void)_handleDeviceDidSetupNotification:(id)a3;
+- (void)_handleDeviceDidSetupNotification:(id)notification;
 - (void)_handleDeviceNameChangeEvent;
 - (void)_handleLanguageChangedEvent;
 - (void)_loadPushNotificationHandlers;
@@ -18,19 +18,19 @@
 - (void)_unsafe_handleVFSFallBelowVeryLowDisk;
 - (void)_unsafe_handleVFSRiseAboveDesiredDisk;
 - (void)_unsafe_handleVFSRiseAboveLowDisk;
-- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)a3;
-- (void)commonHeadersForRequest:(id)a3 withCompletion:(id)a4;
-- (void)getCacheDataForLink:(id)a3 completion:(id)a4;
-- (void)handleICloudQuotaPush:(id)a3;
-- (void)iCloudServerOfferForAccountWithID:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)notifyDeviceStorageLevel:(int64_t)a3 completion:(id)a4;
-- (void)observeFPItem:(id)a3 notifyURL:(id)a4 completion:(id)a5;
-- (void)presentHiddenFreshmintWithContext:(id)a3 completion:(id)a4;
-- (void)renewCredentialsWithCompletion:(id)a3;
+- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)identifier;
+- (void)commonHeadersForRequest:(id)request withCompletion:(id)completion;
+- (void)getCacheDataForLink:(id)link completion:(id)completion;
+- (void)handleICloudQuotaPush:(id)push;
+- (void)iCloudServerOfferForAccountWithID:(id)d options:(id)options completion:(id)completion;
+- (void)notifyDeviceStorageLevel:(int64_t)level completion:(id)completion;
+- (void)observeFPItem:(id)item notifyURL:(id)l completion:(id)completion;
+- (void)presentHiddenFreshmintWithContext:(id)context completion:(id)completion;
+- (void)renewCredentialsWithCompletion:(id)completion;
 - (void)start;
-- (void)startDelayedOfferFailsafeActivityWithDelaySecs:(int64_t)a3 completion:(id)a4;
-- (void)stopDelayedOfferFailsafeActivityWithCompletion:(id)a3;
-- (void)syncFPItem:(id)a3 observeItemIDs:(id)a4 notifyURL:(id)a5 completion:(id)a6;
+- (void)startDelayedOfferFailsafeActivityWithDelaySecs:(int64_t)secs completion:(id)completion;
+- (void)stopDelayedOfferFailsafeActivityWithCompletion:(id)completion;
+- (void)syncFPItem:(id)item observeItemIDs:(id)ds notifyURL:(id)l completion:(id)completion;
 @end
 
 @implementation INDaemon_iOS
@@ -119,16 +119,16 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Device name has changed.", buf, 2u);
   }
 
-  v4 = [(INDaemon *)self accountStore];
-  v5 = [v4 aa_appleAccounts];
+  accountStore = [(INDaemon *)self accountStore];
+  aa_appleAccounts = [accountStore aa_appleAccounts];
 
-  if ([v5 count])
+  if ([aa_appleAccounts count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = aa_appleAccounts;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v7)
     {
@@ -188,7 +188,7 @@
   }
 }
 
-- (void)_handleDeviceDidSetupNotification:(id)a3
+- (void)_handleDeviceDidSetupNotification:(id)notification
 {
   v4 = _INLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -197,16 +197,16 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "New paired device!", buf, 2u);
   }
 
-  v5 = [(INDaemon *)self accountStore];
-  v6 = [v5 aa_appleAccounts];
+  accountStore = [(INDaemon *)self accountStore];
+  aa_appleAccounts = [accountStore aa_appleAccounts];
 
-  if ([v6 count])
+  if ([aa_appleAccounts count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v6;
+    v7 = aa_appleAccounts;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v8)
     {
@@ -280,8 +280,8 @@
 {
   v14 = objc_alloc_init(NSMutableDictionary);
   v3 = [INVerifyTermsPushHandler alloc];
-  v4 = [(INDaemon *)self accountStore];
-  v5 = [(INVerifyTermsPushHandler *)v3 initWithAccountStore:v4];
+  accountStore = [(INDaemon *)self accountStore];
+  v5 = [(INVerifyTermsPushHandler *)v3 initWithAccountStore:accountStore];
 
   [v14 setObject:v5 forKeyedSubscript:@"t_needs_agree"];
   [v14 setObject:v5 forKeyedSubscript:@"t_did_agree"];
@@ -290,8 +290,8 @@
   self->_accountPushNotificationHandlersByEventType = v6;
 
   v8 = [INAccountEventPushHandler alloc];
-  v9 = [(INDaemon *)self accountStore];
-  v10 = [(INAccountEventPushHandler *)v8 initWithAccountStore:v9];
+  accountStore2 = [(INDaemon *)self accountStore];
+  v10 = [(INAccountEventPushHandler *)v8 initWithAccountStore:accountStore2];
   accountDefaultEventPushNotificationHandler = self->_accountDefaultEventPushNotificationHandler;
   self->_accountDefaultEventPushNotificationHandler = v10;
 
@@ -300,9 +300,9 @@
   self->_mercuryPushHandler = v12;
 }
 
-- (id)accountPushNotificationHandlerForEventType:(id)a3
+- (id)accountPushNotificationHandlerForEventType:(id)type
 {
-  v4 = [(NSDictionary *)self->_accountPushNotificationHandlersByEventType objectForKeyedSubscript:a3];
+  v4 = [(NSDictionary *)self->_accountPushNotificationHandlersByEventType objectForKeyedSubscript:type];
   accountDefaultEventPushNotificationHandler = v4;
   if (!v4)
   {
@@ -336,25 +336,25 @@
   return v4;
 }
 
-- (void)handleICloudQuotaPush:(id)a3
+- (void)handleICloudQuotaPush:(id)push
 {
-  v4 = a3;
+  pushCopy = push;
   v5 = _INLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 userInfo];
+    userInfo = [pushCopy userInfo];
     *buf = 138412290;
-    v24 = v6;
+    v24 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "> Handling iCloudQuota push message: %@", buf, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"category"];
+  userInfo2 = [pushCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"category"];
 
   if ([v8 isEqualToString:@"oobe"])
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"eventDetails"];
+    userInfo3 = [pushCopy userInfo];
+    v10 = [userInfo3 objectForKeyedSubscript:@"eventDetails"];
 
     v11 = [v10 objectForKeyedSubscript:@"subCategory"];
     if (![v11 isEqualToString:@"prebuddy"])
@@ -382,11 +382,11 @@ LABEL_20:
     v16 = _INLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v4 userInfo];
+      userInfo4 = [pushCopy userInfo];
       *buf = 138412546;
       v24 = v12;
       v25 = 2112;
-      v26 = v17;
+      v26 = userInfo4;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Handling iCloudQuota OOBE Prebuddy %@ push notification: %@", buf, 0x16u);
     }
 
@@ -450,28 +450,28 @@ LABEL_19:
 
   v21.receiver = self;
   v21.super_class = INDaemon_iOS;
-  [(INDaemon *)&v21 handleICloudQuotaPush:v4];
+  [(INDaemon *)&v21 handleICloudQuotaPush:pushCopy];
 LABEL_21:
 }
 
-- (void)iCloudServerOfferForAccountWithID:(id)a3 options:(id)a4 completion:(id)a5
+- (void)iCloudServerOfferForAccountWithID:(id)d options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _INLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v8;
+    v20 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Received offer request for account %@ over XPC.", &v19, 0xCu);
   }
 
-  if ((sub_100002168() & 1) != 0 && v8 && (-[INDaemon accountStore](self, "accountStore"), v12 = objc_claimAutoreleasedReturnValue(), [v12 accountWithIdentifier:v8], v13 = objc_claimAutoreleasedReturnValue(), v12, v13))
+  if ((sub_100002168() & 1) != 0 && dCopy && (-[INDaemon accountStore](self, "accountStore"), v12 = objc_claimAutoreleasedReturnValue(), [v12 accountWithIdentifier:dCopy], v13 = objc_claimAutoreleasedReturnValue(), v12, v13))
   {
-    v14 = [v13 accountType];
-    v15 = [v14 identifier];
-    v16 = [v15 isEqualToString:ACAccountTypeIdentifierAppleAccount];
+    accountType = [v13 accountType];
+    identifier = [accountType identifier];
+    v16 = [identifier isEqualToString:ACAccountTypeIdentifierAppleAccount];
 
     if (v16)
     {
@@ -482,44 +482,44 @@ LABEL_21:
       }
 
       v18 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-      [v18 daemonOfferDictionaryForAccount:v13 options:v9 completion:v10];
+      [v18 daemonOfferDictionaryForAccount:v13 options:optionsCopy completion:completionCopy];
     }
 
     else
     {
       v18 = INCreateError();
-      v10[2](v10, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
     }
   }
 
   else
   {
     v13 = INCreateError();
-    v10[2](v10, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 }
 
-- (void)notifyDeviceStorageLevel:(int64_t)a3 completion:(id)a4
+- (void)notifyDeviceStorageLevel:(int64_t)level completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ((sub_100002168() & 1) == 0)
   {
 LABEL_17:
     v8 = INCreateError();
-    v6[2](v6, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
 
     goto LABEL_18;
   }
 
-  if (a3 <= 1)
+  if (level <= 1)
   {
-    if (!a3)
+    if (!level)
     {
       [(INDaemon_iOS *)self _unsafe_handleVFSRiseAboveDesiredDisk];
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (level == 1)
     {
       [(INDaemon_iOS *)self _unsafe_handleVFSFallBelowNearLowDisk];
       goto LABEL_13;
@@ -528,19 +528,19 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (level == 2)
   {
     [(INDaemon_iOS *)self _unsafe_handleVFSFallBelowLowDisk];
     goto LABEL_13;
   }
 
-  if (a3 == 3)
+  if (level == 3)
   {
     [(INDaemon_iOS *)self _unsafe_handleVFSFallBelowVeryLowDisk];
     goto LABEL_13;
   }
 
-  if (a3 != 6)
+  if (level != 6)
   {
 LABEL_14:
     v7 = _INLogSystem();
@@ -554,29 +554,29 @@ LABEL_14:
 
   [(INDaemon_iOS *)self _unsafe_handleVFSRiseAboveLowDisk];
 LABEL_13:
-  v6[2](v6, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 LABEL_18:
 }
 
-- (void)presentHiddenFreshmintWithContext:(id)a3 completion:(id)a4
+- (void)presentHiddenFreshmintWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _INLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v6;
+    v21 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "presenting freshmint flow with context %@", buf, 0xCu);
   }
 
   if (sub_100002168())
   {
-    v9 = objc_retainBlock(v7);
+    v9 = objc_retainBlock(completionCopy);
     freshmintCompletion = self->_freshmintCompletion;
     self->_freshmintCompletion = v9;
 
-    v11 = [[ICQRemotePresentationManager alloc] initWithRemoteContext:v6];
+    v11 = [[ICQRemotePresentationManager alloc] initWithRemoteContext:contextCopy];
     presentationManager = self->_presentationManager;
     self->_presentationManager = v11;
 
@@ -588,10 +588,10 @@ LABEL_18:
     objc_copyWeak(&v19, buf);
     [(ICQRemotePresentationManager *)self->_presentationManager setPresentationWasInvalidated:v18];
     v13 = self->_presentationManager;
-    v14 = [(INDaemon *)self listener];
-    v15 = [v14 endpoint];
-    v16 = [v15 _endpoint];
-    [(ICQRemotePresentationManager *)v13 presentHiddenFreshmintFlowWithEndpoint:v16];
+    listener = [(INDaemon *)self listener];
+    endpoint = [listener endpoint];
+    _endpoint = [endpoint _endpoint];
+    [(ICQRemotePresentationManager *)v13 presentHiddenFreshmintFlowWithEndpoint:_endpoint];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(buf);
@@ -600,44 +600,44 @@ LABEL_18:
   else
   {
     v17 = INCreateError();
-    (*(v7 + 2))(v7, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, v17);
   }
 }
 
-- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)a3
+- (void)appLaunchLinkDidPresentForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = _INLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "AppLaunch detected for Bundle: %@", &v6, 0xCu);
   }
 
   v5 = +[NSDate now];
-  [_ICQHelperFunctions appLaunchLinkTrackerSetLastShownDate:v5 forBundleID:v3];
+  [_ICQHelperFunctions appLaunchLinkTrackerSetLastShownDate:v5 forBundleID:identifierCopy];
 }
 
-- (void)getCacheDataForLink:(id)a3 completion:(id)a4
+- (void)getCacheDataForLink:(id)link completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  linkCopy = link;
+  completionCopy = completion;
   v7 = _INLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = linkCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Checking for Cached content for Link: %@", &v8, 0xCu);
   }
 
-  [v5 getCachedContentWithCompletion:v6];
+  [linkCopy getCachedContentWithCompletion:completionCopy];
 }
 
-- (void)commonHeadersForRequest:(id)a3 withCompletion:(id)a4
+- (void)commonHeadersForRequest:(id)request withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v7 = sub_100002168();
   v8 = _INLogSystem();
   v9 = v8;
@@ -649,14 +649,14 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Adding common headers to request", v13, 2u);
     }
 
-    v10 = [v6 mutableCopy];
+    allHTTPHeaderFields2 = [requestCopy mutableCopy];
     v11 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-    [v11 addCommonHeadersToRequest:v10];
+    [v11 addCommonHeadersToRequest:allHTTPHeaderFields2];
 
-    v12 = [v10 allHTTPHeaderFields];
-    v5[2](v5, v12);
+    allHTTPHeaderFields = [allHTTPHeaderFields2 allHTTPHeaderFields];
+    completionCopy[2](completionCopy, allHTTPHeaderFields);
 
-    v5 = v12;
+    completionCopy = allHTTPHeaderFields;
   }
 
   else
@@ -666,15 +666,15 @@ LABEL_18:
       sub_100038B98();
     }
 
-    v10 = [v6 allHTTPHeaderFields];
+    allHTTPHeaderFields2 = [requestCopy allHTTPHeaderFields];
 
-    v5[2](v5, v10);
+    completionCopy[2](completionCopy, allHTTPHeaderFields2);
   }
 }
 
-- (void)renewCredentialsWithCompletion:(id)a3
+- (void)renewCredentialsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sub_100002168();
   v5 = _INLogSystem();
   v6 = v5;
@@ -686,9 +686,9 @@ LABEL_18:
     }
 
     v7 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-    [v7 renewCredentialsWithCompletion:v3];
+    [v7 renewCredentialsWithCompletion:completionCopy];
 
-    v3 = v7;
+    completionCopy = v7;
   }
 
   else
@@ -698,7 +698,7 @@ LABEL_18:
       sub_100038BD4();
     }
 
-    (*(v3 + 2))(v3, 2, 0);
+    (*(completionCopy + 2))(completionCopy, 2, 0);
   }
 }
 
@@ -815,34 +815,34 @@ LABEL_18:
 - (BOOL)_unsafe_isLegacyDeviceStorageLevelNotificationEnabled
 {
   v2 = +[ICQDaemonOfferManager sharedDaemonOfferManager];
-  v3 = [v2 isLegacyDeviceStorageLevelNotificationEnabled];
+  isLegacyDeviceStorageLevelNotificationEnabled = [v2 isLegacyDeviceStorageLevelNotificationEnabled];
 
-  return v3;
+  return isLegacyDeviceStorageLevelNotificationEnabled;
 }
 
-- (void)startDelayedOfferFailsafeActivityWithDelaySecs:(int64_t)a3 completion:(id)a4
+- (void)startDelayedOfferFailsafeActivityWithDelaySecs:(int64_t)secs completion:(id)completion
 {
-  v7 = a4;
-  v6 = [(INDaemon_iOS *)self delayedOfferFailsafeActivity];
-  [v6 startActivityWithDelaySecs:a3];
+  completionCopy = completion;
+  delayedOfferFailsafeActivity = [(INDaemon_iOS *)self delayedOfferFailsafeActivity];
+  [delayedOfferFailsafeActivity startActivityWithDelaySecs:secs];
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)stopDelayedOfferFailsafeActivityWithCompletion:(id)a3
+- (void)stopDelayedOfferFailsafeActivityWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(INDaemon_iOS *)self delayedOfferFailsafeActivity];
-  [v4 stopActivity];
+  completionCopy = completion;
+  delayedOfferFailsafeActivity = [(INDaemon_iOS *)self delayedOfferFailsafeActivity];
+  [delayedOfferFailsafeActivity stopActivity];
 
-  v5[2](v5, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)observeFPItem:(id)a3 notifyURL:(id)a4 completion:(id)a5
+- (void)observeFPItem:(id)item notifyURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  lCopy = l;
+  completionCopy = completion;
   if (!self->_fpItemCollectionManager)
   {
     v11 = objc_alloc_init(_TtC3ind25INFPItemCollectionManager);
@@ -857,18 +857,18 @@ LABEL_18:
   v17[2] = sub_10001AFA8;
   v17[3] = &unk_100055C80;
   v18 = v13;
-  v19 = v10;
+  v19 = completionCopy;
   v15 = v13;
-  v16 = v10;
-  [(INFPItemCollectionManager *)v14 syncWithItemID:v8 notifyURL:v9 syncCompletion:v17];
+  v16 = completionCopy;
+  [(INFPItemCollectionManager *)v14 syncWithItemID:itemCopy notifyURL:lCopy syncCompletion:v17];
 }
 
-- (void)syncFPItem:(id)a3 observeItemIDs:(id)a4 notifyURL:(id)a5 completion:(id)a6
+- (void)syncFPItem:(id)item observeItemIDs:(id)ds notifyURL:(id)l completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  dsCopy = ds;
+  lCopy = l;
+  completionCopy = completion;
   if (!self->_fpItemCollectionManager)
   {
     v14 = objc_alloc_init(_TtC3ind25INFPItemCollectionManager);
@@ -883,10 +883,10 @@ LABEL_18:
   v20[2] = sub_10001B0E8;
   v20[3] = &unk_100055C80;
   v21 = v16;
-  v22 = v13;
+  v22 = completionCopy;
   v18 = v16;
-  v19 = v13;
-  [(INFPItemCollectionManager *)v17 syncWithItemID:v10 observeItemIDs:v11 notifyURL:v12 syncCompletion:v20];
+  v19 = completionCopy;
+  [(INFPItemCollectionManager *)v17 syncWithItemID:itemCopy observeItemIDs:dsCopy notifyURL:lCopy syncCompletion:v20];
 }
 
 @end

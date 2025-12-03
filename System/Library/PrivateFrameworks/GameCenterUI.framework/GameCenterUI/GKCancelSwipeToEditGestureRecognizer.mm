@@ -1,19 +1,19 @@
 @interface GKCancelSwipeToEditGestureRecognizer
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation GKCancelSwipeToEditGestureRecognizer
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v6;
+  v8 = endedCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -49,7 +49,7 @@ LABEL_11:
 
   v13.receiver = self;
   v13.super_class = GKCancelSwipeToEditGestureRecognizer;
-  [(GKCancelSwipeToEditGestureRecognizer *)&v13 touchesEnded:v8 withEvent:v7];
+  [(GKCancelSwipeToEditGestureRecognizer *)&v13 touchesEnded:v8 withEvent:eventCopy];
 }
 
 @end

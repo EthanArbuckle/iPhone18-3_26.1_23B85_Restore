@@ -11,15 +11,15 @@
   v13 = a6;
   if (!v12)
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"BSAnimationSettings+UIKit.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"animations"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSAnimationSettings+UIKit.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"animations"}];
   }
 
   [v11 duration];
   v15 = v14;
   [v11 delay];
   v17 = v16;
-  v18 = [v11 timingFunction];
+  timingFunction = [v11 timingFunction];
   if ([v11 isSpringAnimation])
   {
     v19 = v11;
@@ -56,10 +56,10 @@
     goto LABEL_8;
   }
 
-  if (v18)
+  if (timingFunction)
   {
     v34 = objc_alloc_init(_UISceneSettingsMediaTimingAnimationFactory);
-    [(_UISceneSettingsMediaTimingAnimationFactory *)v34 set_timingFunctionForAnimation:v18];
+    [(_UISceneSettingsMediaTimingAnimationFactory *)v34 set_timingFunctionForAnimation:timingFunction];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __91__BSAnimationSettings_UIKit__tryAnimatingWithSettings_fromCurrentState_actions_completion___block_invoke_2;

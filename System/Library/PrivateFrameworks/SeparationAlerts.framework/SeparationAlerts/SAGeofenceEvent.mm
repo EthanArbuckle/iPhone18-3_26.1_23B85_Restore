@@ -1,63 +1,63 @@
 @interface SAGeofenceEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SAGeofenceEvent)initWithCoder:(id)a3;
-- (SAGeofenceEvent)initWithRegion:(id)a3 eventType:(unint64_t)a4 eventDate:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SAGeofenceEvent)initWithCoder:(id)coder;
+- (SAGeofenceEvent)initWithRegion:(id)region eventType:(unint64_t)type eventDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation SAGeofenceEvent
 
-- (SAGeofenceEvent)initWithCoder:(id)a3
+- (SAGeofenceEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GeofenceEventRegion"];
-  v6 = [v4 decodeIntegerForKey:@"GeofenceEventType"];
-  v7 = [v4 decodeObjectForKey:@"GeofenceEventDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GeofenceEventRegion"];
+  v6 = [coderCopy decodeIntegerForKey:@"GeofenceEventType"];
+  v7 = [coderCopy decodeObjectForKey:@"GeofenceEventDate"];
 
   v8 = [(SAGeofenceEvent *)self initWithRegion:v5 eventType:v6 eventDate:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SAGeofenceEvent *)self region];
-  [v4 encodeObject:v5 forKey:@"GeofenceEventRegion"];
+  coderCopy = coder;
+  region = [(SAGeofenceEvent *)self region];
+  [coderCopy encodeObject:region forKey:@"GeofenceEventRegion"];
 
-  [v4 encodeInteger:-[SAGeofenceEvent eventType](self forKey:{"eventType"), @"GeofenceEventType"}];
-  v6 = [(SAGeofenceEvent *)self eventDate];
-  [v4 encodeObject:v6 forKey:@"GeofenceEventDate"];
+  [coderCopy encodeInteger:-[SAGeofenceEvent eventType](self forKey:{"eventType"), @"GeofenceEventType"}];
+  eventDate = [(SAGeofenceEvent *)self eventDate];
+  [coderCopy encodeObject:eventDate forKey:@"GeofenceEventDate"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SAGeofenceEvent allocWithZone:a3];
-  v5 = [(SAGeofenceEvent *)self region];
-  v6 = [(SAGeofenceEvent *)self eventType];
-  v7 = [(SAGeofenceEvent *)self eventDate];
-  v8 = [(SAGeofenceEvent *)v4 initWithRegion:v5 eventType:v6 eventDate:v7];
+  v4 = [SAGeofenceEvent allocWithZone:zone];
+  region = [(SAGeofenceEvent *)self region];
+  eventType = [(SAGeofenceEvent *)self eventType];
+  eventDate = [(SAGeofenceEvent *)self eventDate];
+  v8 = [(SAGeofenceEvent *)v4 initWithRegion:region eventType:eventType eventDate:eventDate];
 
   return v8;
 }
 
-- (SAGeofenceEvent)initWithRegion:(id)a3 eventType:(unint64_t)a4 eventDate:(id)a5
+- (SAGeofenceEvent)initWithRegion:(id)region eventType:(unint64_t)type eventDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
+  regionCopy = region;
+  dateCopy = date;
   v17.receiver = self;
   v17.super_class = SAGeofenceEvent;
   v10 = [(SAGeofenceEvent *)&v17 init];
@@ -67,14 +67,14 @@
   }
 
   v11 = 0;
-  if (v8 && v9)
+  if (regionCopy && dateCopy)
   {
-    v12 = [v8 copy];
+    v12 = [regionCopy copy];
     region = v10->_region;
     v10->_region = v12;
 
-    v10->_eventType = a4;
-    v14 = [v9 copy];
+    v10->_eventType = type;
+    v14 = [dateCopy copy];
     eventDate = v10->_eventDate;
     v10->_eventDate = v14;
 
@@ -85,10 +85,10 @@ LABEL_5:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -98,18 +98,18 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(SAGeofenceEvent *)self region];
-      v9 = [(SAGeofenceEvent *)v7 region];
-      if (v8 == v9 || (-[SAGeofenceEvent region](self, "region"), v3 = objc_claimAutoreleasedReturnValue(), -[SAGeofenceEvent region](v7, "region"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+      v7 = equalCopy;
+      region = [(SAGeofenceEvent *)self region];
+      region2 = [(SAGeofenceEvent *)v7 region];
+      if (region == region2 || (-[SAGeofenceEvent region](self, "region"), v3 = objc_claimAutoreleasedReturnValue(), -[SAGeofenceEvent region](v7, "region"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
       {
-        v11 = [(SAGeofenceEvent *)self eventType];
-        if (v11 == [(SAGeofenceEvent *)v7 eventType])
+        eventType = [(SAGeofenceEvent *)self eventType];
+        if (eventType == [(SAGeofenceEvent *)v7 eventType])
         {
-          v12 = [(SAGeofenceEvent *)self eventDate];
-          v13 = [(SAGeofenceEvent *)v7 eventDate];
-          v14 = v13;
-          if (v12 == v13)
+          eventDate = [(SAGeofenceEvent *)self eventDate];
+          eventDate2 = [(SAGeofenceEvent *)v7 eventDate];
+          v14 = eventDate2;
+          if (eventDate == eventDate2)
           {
 
             v10 = 1;
@@ -117,10 +117,10 @@ LABEL_5:
 
           else
           {
-            v15 = [(SAGeofenceEvent *)self eventDate];
+            eventDate3 = [(SAGeofenceEvent *)self eventDate];
             [(SAGeofenceEvent *)v7 eventDate];
             v16 = v18 = v3;
-            v10 = [v15 isEqual:v16];
+            v10 = [eventDate3 isEqual:v16];
 
             v3 = v18;
           }
@@ -131,7 +131,7 @@ LABEL_5:
           v10 = 0;
         }
 
-        if (v8 == v9)
+        if (region == region2)
         {
           goto LABEL_15;
         }
@@ -162,15 +162,15 @@ LABEL_16:
   v4 = NSStringFromClass(v3);
   v14[0] = v4;
   v13[1] = @"GeofenceEventDate";
-  v5 = [(SAGeofenceEvent *)self eventDate];
-  v6 = [v5 getDateString];
-  v14[1] = v6;
+  eventDate = [(SAGeofenceEvent *)self eventDate];
+  getDateString = [eventDate getDateString];
+  v14[1] = getDateString;
   v13[2] = @"GeofenceEventType";
   v7 = SAGeofenceEventTypeToString([(SAGeofenceEvent *)self eventType]);
   v14[2] = v7;
   v13[3] = @"GeofenceEventRegion";
-  v8 = [(SAGeofenceEvent *)self region];
-  v9 = [v8 description];
+  region = [(SAGeofenceEvent *)self region];
+  v9 = [region description];
   v14[3] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:4];
 
@@ -181,9 +181,9 @@ LABEL_16:
 
 - (NSString)description
 {
-  v3 = [(SAGeofenceEvent *)self descriptionDictionary];
+  descriptionDictionary = [(SAGeofenceEvent *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -193,15 +193,15 @@ LABEL_16:
       [(SAConnectionEvent *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }

@@ -8,8 +8,8 @@
 {
   v4 = MEMORY[0x1E696C2E0];
   v5 = a3;
-  v6 = [a1 identifier];
-  v7 = [v4 categoryTypeForIdentifier:v6];
+  identifier = [self identifier];
+  v7 = [v4 categoryTypeForIdentifier:identifier];
 
   v8 = [HKDisplayTypeController sharedInstanceForHealthStore:v5];
 

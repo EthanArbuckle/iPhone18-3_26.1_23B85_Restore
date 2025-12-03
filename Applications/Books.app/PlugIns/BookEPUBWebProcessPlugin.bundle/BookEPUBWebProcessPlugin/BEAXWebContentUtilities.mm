@@ -1,34 +1,34 @@
 @interface BEAXWebContentUtilities
 + (BOOL)checkIfCurrentSelection;
 + (CGPoint)offset;
-+ (CGRect)frameForLineNumber:(int64_t)a3 forBookContentElement:(id)a4;
-+ (CGRect)frameForRange:(_NSRange)a3 forBookContentElement:(id)a4;
-+ (_NSRange)_visibleRangeWithRect:(CGRect)a3 withLineInfos:(id)a4;
-+ (_NSRange)chapterRangeForRange:(_NSRange)a3 forBookContentElement:(id)a4;
-+ (_NSRange)lineRangeForCharacterPosition:(int64_t)a3 forBookContentElement:(id)a4;
-+ (_NSRange)lineRangeForLineNumber:(int64_t)a3 forBookContentElement:(id)a4;
-+ (_NSRange)rangeFromBookContentElement:(id)a3;
-+ (_NSRange)selectedTextRangeForBookContentElement:(id)a3;
-+ (_NSRange)visibleLinesForBookContentElement:(id)a3;
-+ (_NSRange)visibleTextRangeInChapterForBookContentElement:(id)a3;
-+ (id)attributedStringForLineNumber:(int64_t)a3 forBookContentElement:(id)a4;
-+ (id)attributedStringWithFixedAttachments:(id)a3;
-+ (id)attributedValueForBookContentElement:(id)a3;
-+ (id)attributedValueForRange:(_NSRange)a3 forBookContentElement:(id)a4;
-+ (id)childElementForRange:(_NSRange)a3 forBookContentElement:(id)a4;
++ (CGRect)frameForLineNumber:(int64_t)number forBookContentElement:(id)element;
++ (CGRect)frameForRange:(_NSRange)range forBookContentElement:(id)element;
++ (_NSRange)_visibleRangeWithRect:(CGRect)rect withLineInfos:(id)infos;
++ (_NSRange)chapterRangeForRange:(_NSRange)range forBookContentElement:(id)element;
++ (_NSRange)lineRangeForCharacterPosition:(int64_t)position forBookContentElement:(id)element;
++ (_NSRange)lineRangeForLineNumber:(int64_t)number forBookContentElement:(id)element;
++ (_NSRange)rangeFromBookContentElement:(id)element;
++ (_NSRange)selectedTextRangeForBookContentElement:(id)element;
++ (_NSRange)visibleLinesForBookContentElement:(id)element;
++ (_NSRange)visibleTextRangeInChapterForBookContentElement:(id)element;
++ (id)attributedStringForLineNumber:(int64_t)number forBookContentElement:(id)element;
++ (id)attributedStringWithFixedAttachments:(id)attachments;
++ (id)attributedValueForBookContentElement:(id)element;
++ (id)attributedValueForRange:(_NSRange)range forBookContentElement:(id)element;
++ (id)childElementForRange:(_NSRange)range forBookContentElement:(id)element;
 + (id)jsContext;
 + (id)sharedUtilities;
-+ (id)stringForRange:(_NSRange)a3 forBookContentElement:(id)a4;
-+ (id)visiblePageContentForBookContentElement:(id)a3;
-+ (int64_t)lineNumberForPoint:(CGPoint)a3 forBookContentElement:(id)a4;
++ (id)stringForRange:(_NSRange)range forBookContentElement:(id)element;
++ (id)visiblePageContentForBookContentElement:(id)element;
++ (int64_t)lineNumberForPoint:(CGPoint)point forBookContentElement:(id)element;
 + (void)checkCanPerformActions;
-+ (void)jsSetSelectionWithFrame:(CGRect)a3;
-+ (void)performNativeAction:(id)a3;
-+ (void)setSelectedTextRange:(_NSRange)a3 forBookContentElement:(id)a4;
-+ (void)setWebProcessPlugin:(id)a3;
++ (void)jsSetSelectionWithFrame:(CGRect)frame;
++ (void)performNativeAction:(id)action;
++ (void)setSelectedTextRange:(_NSRange)range forBookContentElement:(id)element;
++ (void)setWebProcessPlugin:(id)plugin;
 + (void)toggleBookmark;
 + (void)toggleControlsVisibility;
-+ (void)turnPageWithDirection:(id)a3;
++ (void)turnPageWithDirection:(id)direction;
 - (BookEPUBWebProcessPlugin)webProcessPlugin;
 @end
 
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_C3A4;
   block[3] = &unk_208C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_26D88 != -1)
   {
     dispatch_once(&qword_26D88, block);
@@ -51,18 +51,18 @@
   return v2;
 }
 
-+ (void)setWebProcessPlugin:(id)a3
++ (void)setWebProcessPlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [a1 sharedUtilities];
-  [v5 setWebProcessPlugin:v4];
+  pluginCopy = plugin;
+  sharedUtilities = [self sharedUtilities];
+  [sharedUtilities setWebProcessPlugin:pluginCopy];
 }
 
-+ (_NSRange)lineRangeForCharacterPosition:(int64_t)a3 forBookContentElement:(id)a4
++ (_NSRange)lineRangeForCharacterPosition:(int64_t)position forBookContentElement:(id)element
 {
-  v6 = a4;
-  v7 = [BEAXLineInfo chapterLineInfosForElement:v6];
-  v8 = [a1 visibleTextRangeInChapterForBookContentElement:v6];
+  elementCopy = element;
+  v7 = [BEAXLineInfo chapterLineInfosForElement:elementCopy];
+  v8 = [self visibleTextRangeInChapterForBookContentElement:elementCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -73,7 +73,7 @@
   {
     v11 = v10;
     v12 = *v25;
-    v13 = &v8[a3];
+    v13 = &v8[position];
     while (2)
     {
       for (i = 0; i != v11; i = i + 1)
@@ -84,12 +84,12 @@
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v15 rangeInChapter];
-        if (v13 <= &v16[v17])
+        rangeInChapter = [v15 rangeInChapter];
+        if (v13 <= &rangeInChapter[v17])
         {
-          v20 = [v15 rangeInChapter];
+          rangeInChapter2 = [v15 rangeInChapter];
           v18 = v21;
-          v19 = v20 - v8;
+          v19 = rangeInChapter2 - v8;
           goto LABEL_11;
         }
       }
@@ -115,14 +115,14 @@ LABEL_11:
   return result;
 }
 
-+ (_NSRange)lineRangeForLineNumber:(int64_t)a3 forBookContentElement:(id)a4
++ (_NSRange)lineRangeForLineNumber:(int64_t)number forBookContentElement:(id)element
 {
-  v6 = a4;
-  v7 = [BEAXLineInfo chapterLineInfosForElement:v6];
-  v8 = [a1 visibleTextRangeInChapterForBookContentElement:v6];
-  v9 = [a1 visibleLinesForBookContentElement:v6];
+  elementCopy = element;
+  v7 = [BEAXLineInfo chapterLineInfosForElement:elementCopy];
+  v8 = [self visibleTextRangeInChapterForBookContentElement:elementCopy];
+  v9 = [self visibleLinesForBookContentElement:elementCopy];
 
-  v10 = v9 + a3;
+  v10 = v9 + number;
   if (v10 >= [v7 count])
   {
     v14 = 0;
@@ -132,10 +132,10 @@ LABEL_11:
   else
   {
     v11 = [v7 objectAtIndexedSubscript:v10];
-    v12 = [v11 rangeInChapter];
+    rangeInChapter = [v11 rangeInChapter];
     v14 = v13;
 
-    v15 = v12 - v8;
+    v15 = rangeInChapter - v8;
   }
 
   v16 = v15;
@@ -145,36 +145,36 @@ LABEL_11:
   return result;
 }
 
-+ (_NSRange)selectedTextRangeForBookContentElement:(id)a3
++ (_NSRange)selectedTextRangeForBookContentElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 elementTextRange];
+    elementTextRange = [elementCopy elementTextRange];
     v6 = v5;
   }
 
   else
   {
-    v4 = 0;
+    elementTextRange = 0;
     v6 = 0;
   }
 
-  v7 = v4;
+  v7 = elementTextRange;
   v8 = v6;
   result.length = v8;
   result.location = v7;
   return result;
 }
 
-+ (id)attributedValueForRange:(_NSRange)a3 forBookContentElement:(id)a4
++ (id)attributedValueForRange:(_NSRange)range forBookContentElement:(id)element
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  elementCopy = element;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 attributedStringForRange:{objc_msgSend(a1, "visibleTextRangeInChapterForBookContentElement:", v7) + location, length}];
+    v8 = [elementCopy attributedStringForRange:{objc_msgSend(self, "visibleTextRangeInChapterForBookContentElement:", elementCopy) + location, length}];
   }
 
   else
@@ -185,14 +185,14 @@ LABEL_11:
   return v8;
 }
 
-+ (id)stringForRange:(_NSRange)a3 forBookContentElement:(id)a4
++ (id)stringForRange:(_NSRange)range forBookContentElement:(id)element
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  elementCopy = element;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 stringForRange:{objc_msgSend(a1, "visibleTextRangeInChapterForBookContentElement:", v7) + location, length}];
+    v8 = [elementCopy stringForRange:{objc_msgSend(self, "visibleTextRangeInChapterForBookContentElement:", elementCopy) + location, length}];
   }
 
   else
@@ -203,27 +203,27 @@ LABEL_11:
   return v8;
 }
 
-+ (id)attributedValueForBookContentElement:(id)a3
++ (id)attributedValueForBookContentElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 attributedStringForElement];
+    attributedStringForElement = [elementCopy attributedStringForElement];
   }
 
   else
   {
-    v4 = 0;
+    attributedStringForElement = 0;
   }
 
-  return v4;
+  return attributedStringForElement;
 }
 
-+ (CGRect)frameForLineNumber:(int64_t)a3 forBookContentElement:(id)a4
++ (CGRect)frameForLineNumber:(int64_t)number forBookContentElement:(id)element
 {
-  v6 = a4;
-  v7 = [a1 visibleLinesForBookContentElement:v6] + a3;
-  v8 = [BEAXLineInfo chapterLineInfosForElement:v6];
+  elementCopy = element;
+  v7 = [self visibleLinesForBookContentElement:elementCopy] + number;
+  v8 = [BEAXLineInfo chapterLineInfosForElement:elementCopy];
 
   if (v7 >= [v8 count])
   {
@@ -258,12 +258,12 @@ LABEL_11:
   return result;
 }
 
-+ (CGRect)frameForRange:(_NSRange)a3 forBookContentElement:(id)a4
++ (CGRect)frameForRange:(_NSRange)range forBookContentElement:(id)element
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  [v7 baxBoundsForRange:{objc_msgSend(a1, "visibleTextRangeInChapterForBookContentElement:", v7) + location, length}];
+  length = range.length;
+  location = range.location;
+  elementCopy = element;
+  [elementCopy baxBoundsForRange:{objc_msgSend(self, "visibleTextRangeInChapterForBookContentElement:", elementCopy) + location, length}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -280,26 +280,26 @@ LABEL_11:
   return result;
 }
 
-+ (_NSRange)chapterRangeForRange:(_NSRange)a3 forBookContentElement:(id)a4
++ (_NSRange)chapterRangeForRange:(_NSRange)range forBookContentElement:(id)element
 {
-  length = a3.length;
-  v5 = [a1 visibleTextRangeInChapterForBookContentElement:a4] + a3.location;
+  length = range.length;
+  v5 = [self visibleTextRangeInChapterForBookContentElement:element] + range.location;
   v6 = length;
   result.length = v6;
   result.location = v5;
   return result;
 }
 
-+ (int64_t)lineNumberForPoint:(CGPoint)a3 forBookContentElement:(id)a4
++ (int64_t)lineNumberForPoint:(CGPoint)point forBookContentElement:(id)element
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  elementCopy = element;
   [BEAXLineInfo addOffsetForPoint:x, y];
   v9 = v8;
   v11 = v10;
-  v12 = [BEAXLineInfo chapterLineInfosForElement:v7];
-  v13 = [a1 visibleLinesForBookContentElement:v7];
+  v12 = [BEAXLineInfo chapterLineInfosForElement:elementCopy];
+  v13 = [self visibleLinesForBookContentElement:elementCopy];
   v44 = v14;
   v15 = +[NSMutableIndexSet indexSet];
   v45 = v13;
@@ -385,9 +385,9 @@ LABEL_23:
     [v20 frameInScreenCoordinates];
     MinY = CGRectGetMinY(v67);
     v28 = +[BEAccessibilityReadingState currentReadingState];
-    v29 = [v28 bookLayout];
+    bookLayout = [v28 bookLayout];
 
-    if (v29 == &dword_0 + 3)
+    if (bookLayout == &dword_0 + 3)
     {
       v68.origin.x = v21;
       v68.origin.y = v22;
@@ -471,45 +471,45 @@ LABEL_30:
   return v17;
 }
 
-+ (id)attributedStringForLineNumber:(int64_t)a3 forBookContentElement:(id)a4
++ (id)attributedStringForLineNumber:(int64_t)number forBookContentElement:(id)element
 {
-  v6 = a4;
-  v7 = [BEAXLineInfo chapterLineInfosForElement:v6];
-  v8 = [a1 visibleLinesForBookContentElement:v6];
+  elementCopy = element;
+  v7 = [BEAXLineInfo chapterLineInfosForElement:elementCopy];
+  v8 = [self visibleLinesForBookContentElement:elementCopy];
 
-  v9 = v8 + a3;
+  v9 = v8 + number;
   if (v9 >= [v7 count])
   {
-    v11 = 0;
+    attributedText = 0;
   }
 
   else
   {
     v10 = [v7 objectAtIndexedSubscript:v9];
-    v11 = [v10 attributedText];
+    attributedText = [v10 attributedText];
   }
 
-  return v11;
+  return attributedText;
 }
 
 + (id)jsContext
 {
-  v2 = [a1 sharedUtilities];
-  v3 = [v2 webProcessPlugin];
-  v4 = [v3 defaultJSContext];
+  sharedUtilities = [self sharedUtilities];
+  webProcessPlugin = [sharedUtilities webProcessPlugin];
+  defaultJSContext = [webProcessPlugin defaultJSContext];
 
-  return v4;
+  return defaultJSContext;
 }
 
 + (CGPoint)offset
 {
   v3 = [NSString stringWithFormat:@"__ibooks_content_support.pageOffset()"];
-  v4 = [a1 jsContext];
-  v5 = [v4 evaluateScript:v3];
+  jsContext = [self jsContext];
+  v5 = [jsContext evaluateScript:v3];
 
-  v6 = [v5 toDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"xOffset"];
-  v8 = [v6 objectForKeyedSubscript:@"yOffset"];
+  toDictionary = [v5 toDictionary];
+  v7 = [toDictionary objectForKeyedSubscript:@"xOffset"];
+  v8 = [toDictionary objectForKeyedSubscript:@"yOffset"];
   [v7 floatValue];
   v10 = v9;
   [v8 floatValue];
@@ -522,123 +522,123 @@ LABEL_30:
   return result;
 }
 
-+ (_NSRange)rangeFromBookContentElement:(id)a3
++ (_NSRange)rangeFromBookContentElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 elementTextRange];
+    elementTextRange = [elementCopy elementTextRange];
     v6 = v5;
   }
 
   else
   {
-    v4 = 0;
+    elementTextRange = 0;
     v6 = 0;
   }
 
-  v7 = v4;
+  v7 = elementTextRange;
   v8 = v6;
   result.length = v8;
   result.location = v7;
   return result;
 }
 
-+ (void)setSelectedTextRange:(_NSRange)a3 forBookContentElement:(id)a4
++ (void)setSelectedTextRange:(_NSRange)range forBookContentElement:(id)element
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
+  length = range.length;
+  location = range.location;
+  elementCopy = element;
   if (objc_opt_respondsToSelector())
   {
-    [v6 _accessibilitySetSelectedTextRange:{location, length}];
+    [elementCopy _accessibilitySetSelectedTextRange:{location, length}];
   }
 }
 
-+ (id)visiblePageContentForBookContentElement:(id)a3
++ (id)visiblePageContentForBookContentElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 baxStoredAttributedPageContent];
-  if (!v5 || (v6 = v5, [v4 baxStoredAttributedPageContent], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, !v8))
+  elementCopy = element;
+  baxStoredAttributedPageContent = [elementCopy baxStoredAttributedPageContent];
+  if (!baxStoredAttributedPageContent || (v6 = baxStoredAttributedPageContent, [elementCopy baxStoredAttributedPageContent], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, !v8))
   {
-    v9 = [v4 attributedStringForElement];
-    v10 = [a1 visibleTextRangeInChapterForBookContentElement:v4];
+    attributedStringForElement = [elementCopy attributedStringForElement];
+    v10 = [self visibleTextRangeInChapterForBookContentElement:elementCopy];
     v12 = v11;
-    if (&v10[v11] <= [v9 length])
+    if (&v10[v11] <= [attributedStringForElement length])
     {
-      v13 = [v9 attributedSubstringFromRange:{v10, v12}];
-      [v4 baxSetStoredAttributedPageContent:v13];
+      v13 = [attributedStringForElement attributedSubstringFromRange:{v10, v12}];
+      [elementCopy baxSetStoredAttributedPageContent:v13];
     }
 
     else
     {
-      [v4 baxSetStoredAttributedPageContent:0];
+      [elementCopy baxSetStoredAttributedPageContent:0];
     }
   }
 
-  v14 = [v4 baxStoredAttributedPageContent];
+  baxStoredAttributedPageContent2 = [elementCopy baxStoredAttributedPageContent];
 
-  return v14;
+  return baxStoredAttributedPageContent2;
 }
 
 + (void)toggleBookmark
 {
-  v3 = [a1 jsContext];
-  v2 = [v3 evaluateScript:@"__ibooks_content_support.notifyNativeOfBookmarkPage()"];
+  jsContext = [self jsContext];
+  v2 = [jsContext evaluateScript:@"__ibooks_content_support.notifyNativeOfBookmarkPage()"];
 }
 
 + (void)toggleControlsVisibility
 {
-  v3 = [a1 jsContext];
-  v2 = [v3 evaluateScript:@"__ibooks_content_support.notifyNativeOfToggleControlsVisibility()"];
+  jsContext = [self jsContext];
+  v2 = [jsContext evaluateScript:@"__ibooks_content_support.notifyNativeOfToggleControlsVisibility()"];
 }
 
-+ (void)turnPageWithDirection:(id)a3
++ (void)turnPageWithDirection:(id)direction
 {
-  v6 = [NSString stringWithFormat:@"__ibooks_content_support.notifyNativeOfPageTurn('%@')", a3];
-  v4 = [a1 jsContext];
-  v5 = [v4 evaluateScript:v6];
+  direction = [NSString stringWithFormat:@"__ibooks_content_support.notifyNativeOfPageTurn('%@')", direction];
+  jsContext = [self jsContext];
+  v5 = [jsContext evaluateScript:direction];
 }
 
 + (void)checkCanPerformActions
 {
   v5 = [NSString stringWithFormat:@"__ibooks_content_support.checkNativeForOperations()"];
-  v3 = [a1 jsContext];
-  v4 = [v3 evaluateScript:v5];
+  jsContext = [self jsContext];
+  v4 = [jsContext evaluateScript:v5];
 }
 
-+ (void)performNativeAction:(id)a3
++ (void)performNativeAction:(id)action
 {
-  v6 = [NSString stringWithFormat:@"__ibooks_content_support.performNativeOperation('%@')", a3];
-  v4 = [a1 jsContext];
-  v5 = [v4 evaluateScript:v6];
+  action = [NSString stringWithFormat:@"__ibooks_content_support.performNativeOperation('%@')", action];
+  jsContext = [self jsContext];
+  v5 = [jsContext evaluateScript:action];
 }
 
 + (BOOL)checkIfCurrentSelection
 {
   v3 = [NSString stringWithFormat:@"__ibooks_content_support.checkIfCurrentSelection()"];
-  v4 = [a1 jsContext];
-  v5 = [v4 evaluateScript:v3];
-  v6 = [v5 toBool];
+  jsContext = [self jsContext];
+  v5 = [jsContext evaluateScript:v3];
+  toBool = [v5 toBool];
 
-  return v6;
+  return toBool;
 }
 
-+ (void)jsSetSelectionWithFrame:(CGRect)a3
++ (void)jsSetSelectionWithFrame:(CGRect)frame
 {
-  v6 = [NSString stringWithFormat:@"__ibooks_content_support.setSelectionForRange('%f, %f')", a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, *&a3.origin.x, *&a3.origin.y];
-  v4 = [a1 jsContext];
-  v5 = [v4 evaluateScript:v6];
+  v6 = [NSString stringWithFormat:@"__ibooks_content_support.setSelectionForRange('%f, %f')", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, *&frame.origin.x, *&frame.origin.y];
+  jsContext = [self jsContext];
+  v5 = [jsContext evaluateScript:v6];
 }
 
-+ (_NSRange)visibleLinesForBookContentElement:(id)a3
++ (_NSRange)visibleLinesForBookContentElement:(id)element
 {
-  v3 = a3;
-  v4 = [BEAXLineInfo chapterLineInfosForElement:v3];
+  elementCopy = element;
+  v4 = [BEAXLineInfo chapterLineInfosForElement:elementCopy];
   v5 = +[BEAccessibilityReadingState currentReadingState];
   if ([v5 isFixedLayoutBook])
   {
-    [v3 accessibilityVisibleContentRect];
+    [elementCopy accessibilityVisibleContentRect];
     v7 = v6;
     v9 = v8;
   }
@@ -658,7 +658,7 @@ LABEL_30:
     v15 = +[BEAccessibilityReadingState currentReadingState];
     if ([v15 isFixedLayoutBook])
     {
-      [v3 accessibilityVisibleContentRect];
+      [elementCopy accessibilityVisibleContentRect];
       v17 = v16;
       v19 = v18;
       v21 = v20;
@@ -688,21 +688,21 @@ LABEL_30:
   return result;
 }
 
-+ (_NSRange)_visibleRangeWithRect:(CGRect)a3 withLineInfos:(id)a4
++ (_NSRange)_visibleRangeWithRect:(CGRect)rect withLineInfos:(id)infos
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  infosCopy = infos;
   v9 = 0;
-  if ([v8 count])
+  if ([infosCopy count])
   {
     v10 = 0;
     v11 = 0x7FFFFFFFFFFFFFFFLL;
     while (1)
     {
-      v12 = [v8 objectAtIndexedSubscript:v10];
+      v12 = [infosCopy objectAtIndexedSubscript:v10];
       [v12 frameInScreenCoordinates];
       v22.origin.x = v13;
       v22.origin.y = v14;
@@ -737,14 +737,14 @@ LABEL_30:
         }
       }
 
-      if (v10 == [v8 count] - 1)
+      if (v10 == [infosCopy count] - 1)
       {
-        v9 = [v8 count] - v17;
+        v9 = [infosCopy count] - v17;
       }
 
       ++v10;
       v11 = v17;
-      if (v10 >= [v8 count])
+      if (v10 >= [infosCopy count])
       {
         goto LABEL_14;
       }
@@ -761,54 +761,54 @@ LABEL_14:
   return result;
 }
 
-+ (_NSRange)visibleTextRangeInChapterForBookContentElement:(id)a3
++ (_NSRange)visibleTextRangeInChapterForBookContentElement:(id)element
 {
-  v4 = a3;
-  v5 = [a1 visibleLinesForBookContentElement:v4];
+  elementCopy = element;
+  v5 = [self visibleLinesForBookContentElement:elementCopy];
   v7 = v6;
-  v8 = [BEAXLineInfo chapterLineInfosForElement:v4];
+  v8 = [BEAXLineInfo chapterLineInfosForElement:elementCopy];
 
   if (v5 < [v8 count] && (v9 = &v5[v7], &v5[v7] <= objc_msgSend(v8, "count")))
   {
     v12 = [v8 objectAtIndexedSubscript:v5];
-    v10 = [v12 rangeInChapter];
+    rangeInChapter = [v12 rangeInChapter];
 
     v13 = [v8 objectAtIndexedSubscript:v9 - 1];
-    v14 = [v13 rangeInChapter];
+    rangeInChapter2 = [v13 rangeInChapter];
     v16 = v15;
 
-    v11 = &v14[v16 - v10];
+    v11 = &rangeInChapter2[v16 - rangeInChapter];
   }
 
   else
   {
-    v10 = 0;
+    rangeInChapter = 0;
     v11 = 0;
   }
 
-  v17 = v10;
+  v17 = rangeInChapter;
   v18 = v11;
   result.length = v18;
   result.location = v17;
   return result;
 }
 
-+ (id)childElementForRange:(_NSRange)a3 forBookContentElement:(id)a4
++ (id)childElementForRange:(_NSRange)range forBookContentElement:(id)element
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [a1 visibleTextRangeInChapterForBookContentElement:v7];
-  v9 = [v7 accessibilityElementCount];
+  length = range.length;
+  location = range.location;
+  elementCopy = element;
+  v8 = [self visibleTextRangeInChapterForBookContentElement:elementCopy];
+  accessibilityElementCount = [elementCopy accessibilityElementCount];
   v10 = 0;
-  v11 = v9 - 1;
-  if (v9 >= 1)
+  v11 = accessibilityElementCount - 1;
+  if (accessibilityElementCount >= 1)
   {
     v12 = 0;
     do
     {
       v13 = v10;
-      v10 = [v7 accessibilityElementAtIndex:v12];
+      v10 = [elementCopy accessibilityElementAtIndex:v12];
 
       v19.location = [v10 elementTextRange];
       v19.length = v14;
@@ -826,9 +826,9 @@ LABEL_14:
   return v10;
 }
 
-+ (id)attributedStringWithFixedAttachments:(id)a3
++ (id)attributedStringWithFixedAttachments:(id)attachments
 {
-  v4 = [a3 mutableCopy];
+  v4 = [attachments mutableCopy];
   v5 = UIAccessibilityTokenAttachment;
   v6 = [v4 length];
   v10 = _NSConcreteStackBlock;
@@ -836,7 +836,7 @@ LABEL_14:
   v12 = sub_DB04;
   v13 = &unk_20910;
   v14 = v4;
-  v15 = a1;
+  selfCopy = self;
   v7 = v4;
   [v7 enumerateAttribute:v5 inRange:0 options:v6 usingBlock:{0x100000, &v10}];
   v8 = [v7 copy];

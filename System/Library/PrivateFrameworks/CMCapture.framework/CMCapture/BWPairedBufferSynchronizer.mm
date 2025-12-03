@@ -1,24 +1,24 @@
 @interface BWPairedBufferSynchronizer
 - ($1EEEE4500D0FE33ACBA34EA247EACA08)getSynchronizedBufferPair;
-- (BWPairedBufferSynchronizer)initWithCapacity:(int)a3;
-- (void)_addBuffer:(opaqueCMSimpleQueue *)a3 toQueue:;
+- (BWPairedBufferSynchronizer)initWithCapacity:(int)capacity;
+- (void)_addBuffer:(opaqueCMSimpleQueue *)buffer toQueue:;
 - (void)_emptyBufferQueues;
 - (void)dealloc;
 - (void)flush;
-- (void)setSecondaryStreamComplete:(BOOL)a3;
+- (void)setSecondaryStreamComplete:(BOOL)complete;
 @end
 
 @implementation BWPairedBufferSynchronizer
 
-- (void)setSecondaryStreamComplete:(BOOL)a3
+- (void)setSecondaryStreamComplete:(BOOL)complete
 {
-  if (self->_secondaryStreamComplete != a3)
+  if (self->_secondaryStreamComplete != complete)
   {
-    self->_secondaryStreamComplete = a3;
+    self->_secondaryStreamComplete = complete;
   }
 }
 
-- (BWPairedBufferSynchronizer)initWithCapacity:(int)a3
+- (BWPairedBufferSynchronizer)initWithCapacity:(int)capacity
 {
   v8.receiver = self;
   v8.super_class = BWPairedBufferSynchronizer;
@@ -28,7 +28,7 @@
   {
     v4->_stateLock._os_unfair_lock_opaque = 0;
     v6 = *MEMORY[0x1E695E480];
-    if (CMSimpleQueueCreate(*MEMORY[0x1E695E480], a3, &v4->_primarySampleBufferQueue) || CMSimpleQueueCreate(v6, a3, &v5->_secondarySampleBufferQueue))
+    if (CMSimpleQueueCreate(*MEMORY[0x1E695E480], capacity, &v4->_primarySampleBufferQueue) || CMSimpleQueueCreate(v6, capacity, &v5->_secondarySampleBufferQueue))
     {
 
       return 0;
@@ -221,11 +221,11 @@ LABEL_39:
 
 - (void)_emptyBufferQueues
 {
-  if (a1)
+  if (self)
   {
     while (1)
     {
-      v2 = CMSimpleQueueDequeue(*(a1 + 16));
+      v2 = CMSimpleQueueDequeue(*(self + 16));
       if (!v2)
       {
         break;
@@ -236,7 +236,7 @@ LABEL_39:
 
     while (1)
     {
-      v3 = CMSimpleQueueDequeue(*(a1 + 24));
+      v3 = CMSimpleQueueDequeue(*(self + 24));
       if (!v3)
       {
         break;
@@ -245,26 +245,26 @@ LABEL_39:
       CFRelease(v3);
     }
 
-    v4 = *(a1 + 32);
+    v4 = *(self + 32);
     if (v4)
     {
       CFRelease(v4);
-      *(a1 + 32) = 0;
+      *(self + 32) = 0;
     }
   }
 }
 
-- (void)_addBuffer:(opaqueCMSimpleQueue *)a3 toQueue:
+- (void)_addBuffer:(opaqueCMSimpleQueue *)buffer toQueue:
 {
-  if (a1)
+  if (self)
   {
     CMSampleBufferGetPresentationTimeStamp(&time, sbuf);
     CMTimeGetSeconds(&time);
-    os_unfair_lock_lock(a1 + 2);
-    Count = CMSimpleQueueGetCount(a3);
-    if (Count == CMSimpleQueueGetCapacity(a3))
+    os_unfair_lock_lock(self + 2);
+    Count = CMSimpleQueueGetCount(buffer);
+    if (Count == CMSimpleQueueGetCapacity(buffer))
     {
-      v7 = CMSimpleQueueDequeue(a3);
+      v7 = CMSimpleQueueDequeue(buffer);
       CMSampleBufferGetPresentationTimeStamp(&time, v7);
       CMTimeGetSeconds(&time);
       if (v7)
@@ -283,12 +283,12 @@ LABEL_39:
       v8 = 0;
     }
 
-    if (CMSimpleQueueEnqueue(a3, v8))
+    if (CMSimpleQueueEnqueue(buffer, v8))
     {
       CFRelease(sbuf);
     }
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(self + 2);
   }
 }
 

@@ -6,7 +6,7 @@
 
 - (uint64_t)toolKitToolTypeDefinitionVersion1EnumerationKind
 {
-  LODWORD(result) = [a1 uint32Value];
+  LODWORD(result) = [self uint32Value];
   if (result >= 4)
   {
     return 0;

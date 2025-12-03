@@ -1,9 +1,9 @@
 @interface ABActionSelectorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axActionString;
 - (id)_axPageControl;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axChangePageControl:(BOOL)a3;
+- (void)_axChangePageControl:(BOOL)control;
 - (void)_axSetupPageControl;
 - (void)_updateSubviews;
 - (void)viewDidLoad;
@@ -11,18 +11,18 @@
 
 @implementation ABActionSelectorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ABActionSelectorViewController" hasInstanceVariable:@"_carouselView" withType:"ABCarouselView"];
-  [v3 validateClass:@"ABActionSelectorViewController" hasInstanceVariable:@"_detailsView" withType:"UIView"];
-  [v3 validateClass:@"ABActionSelectorViewController" hasInstanceVariable:@"_welcomeView" withType:"UIView"];
-  [v3 validateClass:@"ActionButtonConfigurationUI.ActionDetailsView" hasSwiftField:@"titleLabel" withSwiftType:"Optional<UILabel>"];
-  [v3 validateClass:@"ActionButtonConfigurationUI.ActionDetailsView" hasSwiftField:@"pageControl" withSwiftType:"Optional<UIPageControl>"];
-  [v3 validateClass:@"ABActionSelectorViewController" hasInstanceMethod:@"selectActionItemWithIndex:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"ABActionSelectorViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ABActionSelectorViewController" hasInstanceMethod:@"_updateSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ABActionSelectorViewController" hasInstanceMethod:@"carouselView:didSelectItemAtIndex:" withFullSignature:{"v", "@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ABActionSelectorViewController" hasInstanceVariable:@"_carouselView" withType:"ABCarouselView"];
+  [validationsCopy validateClass:@"ABActionSelectorViewController" hasInstanceVariable:@"_detailsView" withType:"UIView"];
+  [validationsCopy validateClass:@"ABActionSelectorViewController" hasInstanceVariable:@"_welcomeView" withType:"UIView"];
+  [validationsCopy validateClass:@"ActionButtonConfigurationUI.ActionDetailsView" hasSwiftField:@"titleLabel" withSwiftType:"Optional<UILabel>"];
+  [validationsCopy validateClass:@"ActionButtonConfigurationUI.ActionDetailsView" hasSwiftField:@"pageControl" withSwiftType:"Optional<UIPageControl>"];
+  [validationsCopy validateClass:@"ABActionSelectorViewController" hasInstanceMethod:@"selectActionItemWithIndex:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"ABActionSelectorViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ABActionSelectorViewController" hasInstanceMethod:@"_updateSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ABActionSelectorViewController" hasInstanceMethod:@"carouselView:didSelectItemAtIndex:" withFullSignature:{"v", "@", "q", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -79,9 +79,9 @@
   v3 = [v2 safeSwiftValueForKey:@"titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 text];
+  text = [v4 text];
 
-  return v5;
+  return text;
 }
 
 - (id)_axPageControl
@@ -96,27 +96,27 @@
 
 - (void)_axSetupPageControl
 {
-  v3 = [(ABActionSelectorViewControllerAccessibility *)self _axPageControl];
-  [v3 setUserInteractionEnabled:0];
+  _axPageControl = [(ABActionSelectorViewControllerAccessibility *)self _axPageControl];
+  [_axPageControl setUserInteractionEnabled:0];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __66__ABActionSelectorViewControllerAccessibility__axSetupPageControl__block_invoke;
   v8[3] = &unk_29F29BDB0;
   objc_copyWeak(&v9, &location);
-  [v3 setAccessibilityDecrementBlock:v8];
+  [_axPageControl setAccessibilityDecrementBlock:v8];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __66__ABActionSelectorViewControllerAccessibility__axSetupPageControl__block_invoke_2;
   v6[3] = &unk_29F29BDB0;
   objc_copyWeak(&v7, &location);
-  [v3 setAccessibilityIncrementBlock:v6];
+  [_axPageControl setAccessibilityIncrementBlock:v6];
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = __66__ABActionSelectorViewControllerAccessibility__axSetupPageControl__block_invoke_3;
   v4[3] = &unk_29F29BDD8;
   objc_copyWeak(&v5, &location);
-  [v3 setAccessibilityValueBlock:v4];
+  [_axPageControl setAccessibilityValueBlock:v4];
   objc_destroyWeak(&v5);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
@@ -143,21 +143,21 @@ id __66__ABActionSelectorViewControllerAccessibility__axSetupPageControl__block_
   return v2;
 }
 
-- (void)_axChangePageControl:(BOOL)a3
+- (void)_axChangePageControl:(BOOL)control
 {
-  v3 = a3;
-  v5 = [(ABActionSelectorViewControllerAccessibility *)self _axPageControl];
-  v6 = [v5 numberOfPages];
-  v7 = [v5 currentPage];
-  v8 = v7 - 1;
-  if (v3)
+  controlCopy = control;
+  _axPageControl = [(ABActionSelectorViewControllerAccessibility *)self _axPageControl];
+  numberOfPages = [_axPageControl numberOfPages];
+  currentPage = [_axPageControl currentPage];
+  v8 = currentPage - 1;
+  if (controlCopy)
   {
-    v8 = v7 + 1;
+    v8 = currentPage + 1;
   }
 
-  if (v8 >= v6)
+  if (v8 >= numberOfPages)
   {
-    v9 = (v6 - 1);
+    v9 = (numberOfPages - 1);
   }
 
   else
@@ -179,7 +179,7 @@ id __66__ABActionSelectorViewControllerAccessibility__axSetupPageControl__block_
   objc_copyWeak(v11, &location);
   v11[1] = v10;
   AXPerformSafeBlock();
-  [v5 setCurrentPage:v10];
+  [_axPageControl setCurrentPage:v10];
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
 }

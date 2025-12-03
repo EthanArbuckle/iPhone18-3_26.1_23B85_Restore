@@ -1,26 +1,26 @@
 @interface CLSTimeInterval
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (CLSTimeInterval)initWithCKRecord:(id)a3;
-- (id)generateInsightEventsWithDatabase:(id)a3;
-- (id)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (CLSTimeInterval)initWithCKRecord:(id)record;
+- (id)generateInsightEventsWithDatabase:(id)database;
+- (id)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
 @end
 
 @implementation CLSTimeInterval
 
-- (CLSTimeInterval)initWithCKRecord:(id)a3
+- (CLSTimeInterval)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CLSTimeInterval *)self _init];
-  v6 = v5;
-  if (v5)
+  recordCopy = record;
+  _init = [(CLSTimeInterval *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithRecord:v4];
-    v7 = [v4 objectForKeyedSubscript:@"startTime"];
+    [_init _initCommonPropsWithRecord:recordCopy];
+    v7 = [recordCopy objectForKeyedSubscript:@"startTime"];
     [v6 setStartTime:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"length"];
+    v8 = [recordCopy objectForKeyedSubscript:@"length"];
     [v8 doubleValue];
     [v6 setLength:?];
   }
@@ -28,23 +28,23 @@
   return v6;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
-  v5 = a3;
+  populateCopy = populate;
   v22.receiver = self;
   v22.super_class = CLSTimeInterval;
-  [(CLSTimeInterval *)&v22 populate:v5];
-  v6 = [v5 objectForKeyedSubscript:@"startTime"];
+  [(CLSTimeInterval *)&v22 populate:populateCopy];
+  v6 = [populateCopy objectForKeyedSubscript:@"startTime"];
   if (!v6)
   {
-    v3 = [(CLSTimeInterval *)self startTime];
-    if (!v3)
+    startTime = [(CLSTimeInterval *)self startTime];
+    if (!startTime)
     {
       goto LABEL_13;
     }
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"startTime"];
+  v7 = [populateCopy objectForKeyedSubscript:@"startTime"];
   if (!v7)
   {
 LABEL_9:
@@ -56,17 +56,17 @@ LABEL_9:
   }
 
   v8 = v7;
-  v9 = [(CLSTimeInterval *)self startTime];
-  if (!v9)
+  startTime2 = [(CLSTimeInterval *)self startTime];
+  if (!startTime2)
   {
 
     goto LABEL_9;
   }
 
-  v10 = v9;
-  v11 = [v5 objectForKeyedSubscript:@"startTime"];
-  v12 = [(CLSTimeInterval *)self startTime];
-  v13 = [v11 isEqualToDate:v12];
+  v10 = startTime2;
+  v11 = [populateCopy objectForKeyedSubscript:@"startTime"];
+  startTime3 = [(CLSTimeInterval *)self startTime];
+  v13 = [v11 isEqualToDate:startTime3];
 
   if (v6)
   {
@@ -77,8 +77,8 @@ LABEL_9:
     }
 
 LABEL_12:
-    v14 = [(CLSTimeInterval *)self startTime];
-    [v5 setObject:v14 forKeyedSubscript:@"startTime"];
+    startTime4 = [(CLSTimeInterval *)self startTime];
+    [populateCopy setObject:startTime4 forKeyedSubscript:@"startTime"];
 
     goto LABEL_13;
   }
@@ -91,15 +91,15 @@ LABEL_12:
 LABEL_13:
   [(CLSTimeInterval *)self length];
   v15 = [NSNumber numberWithDouble:?];
-  v16 = [v5 objectForKeyedSubscript:@"length"];
+  v16 = [populateCopy objectForKeyedSubscript:@"length"];
   if (v16 | v15)
   {
     v17 = v16;
-    v18 = [v5 objectForKeyedSubscript:@"length"];
+    v18 = [populateCopy objectForKeyedSubscript:@"length"];
     v19 = v18;
     if (v18 && v15)
     {
-      v20 = [v5 objectForKeyedSubscript:@"length"];
+      v20 = [populateCopy objectForKeyedSubscript:@"length"];
       v21 = [v20 isEqualToNumber:v15];
 
       if (v21)
@@ -112,16 +112,16 @@ LABEL_13:
     {
     }
 
-    [v5 setObject:v15 forKeyedSubscript:@"length"];
+    [populateCopy setObject:v15 forKeyedSubscript:@"length"];
   }
 
 LABEL_20:
-  [(CLSTimeInterval *)self updateParentReferencesForRecord:v5];
+  [(CLSTimeInterval *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (id)generateInsightEventsWithDatabase:(id)a3
+- (id)generateInsightEventsWithDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   [(CLSTimeInterval *)self length];
   if (v5 < 1.0)
   {
@@ -132,8 +132,8 @@ LABEL_14:
 
   v6 = objc_autoreleasePoolPush();
   v7 = objc_opt_class();
-  v8 = [(CLSTimeInterval *)self parentObjectID];
-  v9 = [v4 select:v7 identity:v8];
+  parentObjectID = [(CLSTimeInterval *)self parentObjectID];
+  v9 = [databaseCopy select:v7 identity:parentObjectID];
 
   if (!v9)
   {
@@ -142,9 +142,9 @@ LABEL_14:
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_ERROR))
     {
       v21 = v19;
-      v22 = [(CLSTimeInterval *)self parentObjectID];
+      parentObjectID2 = [(CLSTimeInterval *)self parentObjectID];
       *buf = 138412290;
-      v29 = v22;
+      v29 = parentObjectID2;
       _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "CLSTimeInterval failed to find parent activity: %@", buf, 0xCu);
     }
 
@@ -152,8 +152,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v10 = [(CLSTimeInterval *)self objectID];
-  v11 = sub_10004BE2C(v4, v9, 202, v10);
+  objectID = [(CLSTimeInterval *)self objectID];
+  v11 = sub_10004BE2C(databaseCopy, v9, 202, objectID);
 
   objc_autoreleasePoolPop(v6);
   v25 = 0u;
@@ -177,8 +177,8 @@ LABEL_14:
 
         v17 = *(*(&v23 + 1) + 8 * i);
         [v17 setTimeIntervalInfo:{self, v23}];
-        v18 = [(CLSTimeInterval *)self parentObjectID];
-        [v17 setParentObjectID:v18];
+        parentObjectID3 = [(CLSTimeInterval *)self parentObjectID];
+        [v17 setParentObjectID:parentObjectID3];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -192,21 +192,21 @@ LABEL_15:
   return v12;
 }
 
-- (id)initWithDatabaseRow:(id)a3
+- (id)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSTimeInterval *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSTimeInterval *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D6F0(v4, @"startTime");
+    v8 = sub_10016D6F0(rowCopy, @"startTime");
     [v6 setStartTime:v8];
 
-    v9 = sub_10016D778(v4, @"length");
+    v9 = sub_10016D778(rowCopy, @"length");
     [v9 doubleValue];
     [v6 setLength:?];
   }
@@ -214,36 +214,36 @@ LABEL_15:
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v8.receiver = self;
   v8.super_class = CLSTimeInterval;
-  v4 = a3;
-  [(CLSTimeInterval *)&v8 bindTo:v4];
+  toCopy = to;
+  [(CLSTimeInterval *)&v8 bindTo:toCopy];
   v5 = [(CLSTimeInterval *)self parentObjectID:v8.receiver];
-  sub_1000982FC(v4, v5, @"parentObjectID");
+  sub_1000982FC(toCopy, v5, @"parentObjectID");
 
-  v6 = [(CLSTimeInterval *)self startTime];
-  sub_1000982FC(v4, v6, @"startTime");
+  startTime = [(CLSTimeInterval *)self startTime];
+  sub_1000982FC(toCopy, startTime, @"startTime");
 
   [(CLSTimeInterval *)self length];
   v7 = [NSNumber numberWithDouble:?];
-  sub_1000982FC(v4, v7, @"length");
+  sub_1000982FC(toCopy, v7, @"length");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version)
   {
     v9 = 1;
   }
 
-  else if (sub_1000B9298(v7, @"create table CLSTimeInterval(   objectID          text not null,    parentObjectID    text not null,    appIdentifier     text not null,    dateCreated       real not null,    dateLastModified  real not null,    startTime         real not null,    length            real not null,    foreign key (parentObjectID) references CLSActivity(objectID) on delete cascade on update cascade)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index CLSTimeInterval_objectID on CLSTimeInterval (objectID)", 0, 0, 0) && sub_1000B9298(v8, @"create index CLSTimeInterval_parentObjectID on CLSTimeInterval (parentObjectID)", 0, 0, 0))
+  else if (sub_1000B9298(databaseCopy, @"create table CLSTimeInterval(   objectID          text not null,    parentObjectID    text not null,    appIdentifier     text not null,    dateCreated       real not null,    dateLastModified  real not null,    startTime         real not null,    length            real not null,    foreign key (parentObjectID) references CLSActivity(objectID) on delete cascade on update cascade)", 0, 0, 0) && sub_1000B9298(v8, @"create unique index CLSTimeInterval_objectID on CLSTimeInterval (objectID)", 0, 0, 0) && sub_1000B9298(v8, @"create index CLSTimeInterval_parentObjectID on CLSTimeInterval (parentObjectID)", 0, 0, 0))
   {
     v9 = 1;
-    *a4 = 1;
+    *finalVersion = 1;
   }
 
   else

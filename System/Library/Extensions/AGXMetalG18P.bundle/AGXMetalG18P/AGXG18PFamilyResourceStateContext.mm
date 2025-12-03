@@ -1,57 +1,57 @@
 @interface AGXG18PFamilyResourceStateContext
-- (AGXG18PFamilyResourceStateContext)initWithCommandBuffer:(id)a3 descriptor:(id)a4;
+- (AGXG18PFamilyResourceStateContext)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor;
 - (void)endEncoding;
-- (void)moveTextureMappingsFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)updateFence:(id)a3;
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 region:(id *)a5 mipLevel:(unint64_t)a6 slice:(unint64_t)a7 heap:(id)a8 rangeOffset:(unint64_t)a9;
-- (void)updateTextureMappings:(id)a3 mode:(unint64_t)a4 regions:(id *)a5 mipLevels:(const unint64_t *)a6 slices:(const unint64_t *)a7 numRegions:(unint64_t)a8;
-- (void)waitForFence:(id)a3;
+- (void)moveTextureMappingsFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)updateFence:(id)fence;
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice heap:(id)heap rangeOffset:(unint64_t)offset;
+- (void)updateTextureMappings:(id)mappings mode:(unint64_t)mode regions:(id *)regions mipLevels:(const unint64_t *)levels slices:(const unint64_t *)slices numRegions:(unint64_t)numRegions;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation AGXG18PFamilyResourceStateContext
 
-- (void)moveTextureMappingsFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)moveTextureMappingsFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v11[0] = *a6;
-  v11[1] = *a7;
-  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(self->_impl, a3, v11, a5, a4, 0, 0, 0, 0, a8, a11, a10, a9, 0, 0);
+  v11[0] = *origin;
+  v11[1] = *size;
+  AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(self->_impl, texture, v11, level, slice, 0, 0, 0, 0, toTexture, destinationOrigin, destinationLevel, destinationSlice, 0, 0);
 }
 
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 region:(id *)a5 mipLevel:(unint64_t)a6 slice:(unint64_t)a7 heap:(id)a8 rangeOffset:(unint64_t)a9
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice heap:(id)heap rangeOffset:(unint64_t)offset
 {
   impl = self->_impl;
-  if (a4)
+  if (mode)
   {
-    AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, a3, a5, a6, a7, a4, 0, 0, 0, 0, 0, 0, 0, 1u, 0);
+    AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, mapping, region, level, slice, mode, 0, 0, 0, 0, 0, 0, 0, 1u, 0);
   }
 
   else
   {
-    AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, a3, a5, a6, a7, 0, 0, 0, 0, 0, 0, 0, 0, 1u, [*(a8 + *MEMORY[0x29EDC5618]) gpuAddress] + *(*(a3 + 74) + 236) * a9);
+    AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, mapping, region, level, slice, 0, 0, 0, 0, 0, 0, 0, 0, 1u, [*(heap + *MEMORY[0x29EDC5618]) gpuAddress] + *(*(mapping + 74) + 236) * offset);
   }
 }
 
-- (void)updateTextureMappings:(id)a3 mode:(unint64_t)a4 regions:(id *)a5 mipLevels:(const unint64_t *)a6 slices:(const unint64_t *)a7 numRegions:(unint64_t)a8
+- (void)updateTextureMappings:(id)mappings mode:(unint64_t)mode regions:(id *)regions mipLevels:(const unint64_t *)levels slices:(const unint64_t *)slices numRegions:(unint64_t)numRegions
 {
-  v8 = a8;
-  if (a8)
+  numRegionsCopy = numRegions;
+  if (numRegions)
   {
-    v12 = a4;
+    modeCopy = mode;
     impl = self->_impl;
     do
     {
-      v16 = *a6++;
+      v16 = *levels++;
       v15 = v16;
-      v17 = *a7++;
-      AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, a3, a5++, v15, v17, v12, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-      --v8;
+      v17 = *slices++;
+      AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(impl, mappings, regions++, v15, v17, modeCopy, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      --numRegionsCopy;
     }
 
-    while (v8);
+    while (numRegionsCopy);
   }
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   impl = self->_impl;
   if (*(*(impl + 1) + 1896))
@@ -65,12 +65,12 @@
     operator new();
   }
 
-  v6 = *(a3 + *MEMORY[0x29EDC5610]);
+  v6 = *(fence + *MEMORY[0x29EDC5610]);
 
   AGX::FenceList::insertFence(v5, v6);
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
   impl = self->_impl;
   if (*(*(impl + 1) + 1896))
@@ -84,7 +84,7 @@
     operator new();
   }
 
-  v6 = *(a3 + *MEMORY[0x29EDC5610]);
+  v6 = *(fence + *MEMORY[0x29EDC5610]);
 
   AGX::FenceList::insertFence(v5, v6);
 }
@@ -93,12 +93,12 @@
 {
   if (self->_impl)
   {
-    v3 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x29EDBB780]) device];
+    device = [*(&self->super.super.super.super.super.isa + *MEMORY[0x29EDBB780]) device];
     impl = self->_impl;
     v6 = impl[31];
     v5 = impl[32];
-    atomic_fetch_or((v3 + 856), v6);
-    atomic_fetch_or((v3 + 864), v5);
+    atomic_fetch_or((device + 856), v6);
+    atomic_fetch_or((device + 864), v5);
     AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::commit(self->_impl, v7, v8, v9, v10);
     AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::~BlitDispatchContextGen2(self->_impl);
     ctx_common = self->_ctx_common;
@@ -131,7 +131,7 @@
   [(IOGPUMetalCommandEncoder *)&v15 endEncoding];
 }
 
-- (AGXG18PFamilyResourceStateContext)initWithCommandBuffer:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilyResourceStateContext)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor
 {
   v25.receiver = self;
   v25.super_class = AGXG18PFamilyResourceStateContext;
@@ -143,19 +143,19 @@
     *(v6 + 12) = v7 + 5008;
     if (v7)
     {
-      v24 = a4;
-      v8 = [a3 device];
-      v9 = *(a3 + 90);
-      v10 = [a3 commandBufferStorage];
-      v11 = [a3 globalTraceObjectID];
-      v12 = [v6 globalTraceObjectID];
-      v13 = [a3 protectionOptions];
+      descriptorCopy = descriptor;
+      device = [buffer device];
+      v9 = *(buffer + 90);
+      commandBufferStorage = [buffer commandBufferStorage];
+      globalTraceObjectID = [buffer globalTraceObjectID];
+      globalTraceObjectID2 = [v6 globalTraceObjectID];
+      protectionOptions = [buffer protectionOptions];
       v14 = *(v6 + 12);
-      *&v15 = a3;
+      *&v15 = buffer;
       *(&v15 + 1) = v9;
-      *&v16 = v11;
-      *(&v16 + 1) = v12;
-      v17 = *(v8 + 848) + 7008;
+      *&v16 = globalTraceObjectID;
+      *(&v16 + 1) = globalTraceObjectID2;
+      v17 = *(device + 848) + 7008;
       block[0] = MEMORY[0x29EDCA5F8];
       block[1] = 3221225472;
       block[2] = ___ZN3AGX18BlitUSCStateLoaderINS_6HAL3008EncodersENS1_7ClassesEE17dataBufferConfigsERK16AGXGPUCoreConfig_block_invoke;
@@ -163,31 +163,31 @@
       block[4] = v17;
       if (AGX::BlitUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once != -1)
       {
-        v21 = v13;
+        v21 = protectionOptions;
         v22 = v15;
         v23 = v16;
         dispatch_once(&AGX::BlitUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::dataBufferConfigs(AGXGPUCoreConfig const&)::once, block);
         v15 = v22;
         v16 = v23;
-        v13 = v21;
+        protectionOptions = v21;
       }
 
       *v14 = v15;
-      *(v14 + 16) = v10;
+      *(v14 + 16) = commandBufferStorage;
       *(v14 + 24) = &AGX::BlitUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::databuffer_configs;
-      *(v14 + 32) = v8;
-      *(v14 + 40) = v10;
-      v18 = v10[96];
+      *(v14 + 32) = device;
+      *(v14 + 40) = commandBufferStorage;
+      v18 = commandBufferStorage[96];
       *(v14 + 1848) = 0;
       *(v14 + 1832) = 0;
       *(v14 + 1840) = 0;
       *(v14 + 1824) = 0;
-      *(v14 + 1864) = v13;
+      *(v14 + 1864) = protectionOptions;
       *(v14 + 48) = v18;
-      *(v14 + 56) = v10 + 18;
-      *(v14 + 1856) = v10[98];
-      *(v14 + 1880) = v10;
-      *(v14 + 1888) = v10 + 8;
+      *(v14 + 56) = commandBufferStorage + 18;
+      *(v14 + 1856) = commandBufferStorage[98];
+      *(v14 + 1880) = commandBufferStorage;
+      *(v14 + 1888) = commandBufferStorage + 8;
       *(v14 + 1920) = 0;
       *(v14 + 1961) = 0;
       *(v14 + 1992) = v16;
@@ -198,17 +198,17 @@
       *(v14 + 2044) = 0u;
       *(v14 + 2053) = 0u;
       *(v14 + 2069) = 1;
-      *(v14 + 1872) = v8;
-      *(v14 + 1896) = v10[91];
-      *(v14 + 1904) = v10[92];
-      *(v14 + 1912) = v10 + 18;
-      *(v14 + 1968) = v10[6];
-      *(v14 + 1976) = v10[7];
-      *(v14 + 1924) = v12;
+      *(v14 + 1872) = device;
+      *(v14 + 1896) = commandBufferStorage[91];
+      *(v14 + 1904) = commandBufferStorage[92];
+      *(v14 + 1912) = commandBufferStorage + 18;
+      *(v14 + 1968) = commandBufferStorage[6];
+      *(v14 + 1976) = commandBufferStorage[7];
+      *(v14 + 1924) = globalTraceObjectID2;
       *(v14 + 1932) = 0xFFFFFFFF00000000;
       *(v14 + 1956) = 0;
       *(v14 + 1960) = 1;
-      v19 = AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::BlitDispatchContext(*(v6 + 11), *(v6 + 12), 0, v24, 0);
+      v19 = AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::BlitDispatchContext(*(v6 + 11), *(v6 + 12), 0, descriptorCopy, 0);
       *(v19 + 4896) = 0;
       *(v19 + 4960) = 0;
       *(v19 + 4968) = 0;

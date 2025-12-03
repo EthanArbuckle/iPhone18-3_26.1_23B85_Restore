@@ -1,19 +1,19 @@
 @interface IMDOneTimeCodeManager
 + (id)sharedInstance;
 - (BOOL)autoDeletionPreference;
-- (IMDOneTimeCodeManager)initWithBroadcaster:(id)a3 otcUtilities:(id)a4;
+- (IMDOneTimeCodeManager)initWithBroadcaster:(id)broadcaster otcUtilities:(id)utilities;
 - (IMDaemonListenerProtocol)broadcaster;
 - (IMOneTimeCodeUtilities)otcUtilities;
 - (id)_urlForPasswordsIcon;
-- (void)_setNewCodeAndPrepareInvalidationTimer:(id)a3;
-- (void)_updateLastMessageTimeStampForChat:(id)a3;
+- (void)_setNewCodeAndPrepareInvalidationTimer:(id)timer;
+- (void)_updateLastMessageTimeStampForChat:(id)chat;
 - (void)broadcastCodeStatusToClients;
-- (void)consumeCodeWithGuid:(id)a3 codeExpired:(BOOL)a4;
+- (void)consumeCodeWithGuid:(id)guid codeExpired:(BOOL)expired;
 - (void)dealloc;
-- (void)moveOneTimeCodeToRecentlyDeleted:(id)a3;
-- (void)onboardDeleteVerificationCodesIfNeededWithCompletionHandler:(id)a3;
-- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)a3 completionHandler:(id)a4;
-- (void)startTrackingCode:(id)a3;
+- (void)moveOneTimeCodeToRecentlyDeleted:(id)deleted;
+- (void)onboardDeleteVerificationCodesIfNeededWithCompletionHandler:(id)handler;
+- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)message completionHandler:(id)handler;
+- (void)startTrackingCode:(id)code;
 @end
 
 @implementation IMDOneTimeCodeManager
@@ -28,7 +28,7 @@
   return qword_281420F68;
 }
 
-- (IMDOneTimeCodeManager)initWithBroadcaster:(id)a3 otcUtilities:(id)a4
+- (IMDOneTimeCodeManager)initWithBroadcaster:(id)broadcaster otcUtilities:(id)utilities
 {
   v13.receiver = self;
   v13.super_class = IMDOneTimeCodeManager;
@@ -37,8 +37,8 @@
   if (v6)
   {
     [(IMDOneTimeCodeManager *)v6 setValidCodes:MEMORY[0x277CBEBF8]];
-    [(IMDOneTimeCodeManager *)v7 setOtcUtilities:a4];
-    [(IMDOneTimeCodeManager *)v7 setBroadcasterOverride:a3];
+    [(IMDOneTimeCodeManager *)v7 setOtcUtilities:utilities];
+    [(IMDOneTimeCodeManager *)v7 setBroadcasterOverride:broadcaster];
     v7->_syncedSettingsManager = +[IMDSyncedSettingsServiceManager sharedManager];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     v9 = CFRetain(v7);
@@ -65,10 +65,10 @@
   [(IMDOneTimeCodeManager *)&v3 dealloc];
 }
 
-- (void)startTrackingCode:(id)a3
+- (void)startTrackingCode:(id)code
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = [(IMOneTimeCodeUtilities *)[(IMDOneTimeCodeManager *)self otcUtilities] isValidOneTimeCode:a3];
+  v5 = [(IMOneTimeCodeUtilities *)[(IMDOneTimeCodeManager *)self otcUtilities] isValidOneTimeCode:code];
   v6 = IMOSLoggingEnabled();
   if (v5)
   {
@@ -77,16 +77,16 @@
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [a3 objectForKeyedSubscript:*MEMORY[0x277D1A468]];
+        v8 = [code objectForKeyedSubscript:*MEMORY[0x277D1A468]];
         v12 = 138412290;
         v13 = v8;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Asked to track a new OTC with guid %@", &v12, 0xCu);
       }
     }
 
-    [(IMDOneTimeCodeManager *)self _setNewCodeAndPrepareInvalidationTimer:a3];
-    [a3 objectForKeyedSubscript:*MEMORY[0x277D1A470]];
-    [a3 objectForKeyedSubscript:*MEMORY[0x277D1A478]];
+    [(IMDOneTimeCodeManager *)self _setNewCodeAndPrepareInvalidationTimer:code];
+    [code objectForKeyedSubscript:*MEMORY[0x277D1A470]];
+    [code objectForKeyedSubscript:*MEMORY[0x277D1A478]];
     IMGreenTeaReceived2FACode();
     [(IMDOneTimeCodeManager *)self broadcastCodeStatusToClients];
   }
@@ -96,7 +96,7 @@
     v9 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [a3 objectForKeyedSubscript:*MEMORY[0x277D1A468]];
+      v10 = [code objectForKeyedSubscript:*MEMORY[0x277D1A468]];
       v12 = 138412290;
       v13 = v10;
       _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Asked to track a OTC but code appears to be invalid %@", &v12, 0xCu);
@@ -121,9 +121,9 @@
   [(IMDaemonListenerProtocol *)[(IMDOneTimeCodeManager *)self broadcaster] oneTimeCodesDidChange:[(IMDOneTimeCodeManager *)self validCodes]];
 }
 
-- (void)consumeCodeWithGuid:(id)a3 codeExpired:(BOOL)a4
+- (void)consumeCodeWithGuid:(id)guid codeExpired:(BOOL)expired
 {
-  v4 = a4;
+  expiredCopy = expired;
   v19 = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
   {
@@ -131,16 +131,16 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v16 = a3;
+      guidCopy3 = guid;
       v17 = 1024;
-      LODWORD(v18) = v4;
+      LODWORD(v18) = expiredCopy;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Consuming code for message guid: %@, expried: %{BOOL}d", buf, 0x12u);
     }
   }
 
-  v8 = [(NSArray *)[(IMDOneTimeCodeManager *)self validCodes] firstObject];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D1A468]];
-  if ([v9 length] && objc_msgSend(v9, "isEqualToString:", a3))
+  firstObject = [(NSArray *)[(IMDOneTimeCodeManager *)self validCodes] firstObject];
+  v9 = [firstObject objectForKeyedSubscript:*MEMORY[0x277D1A468]];
+  if ([v9 length] && objc_msgSend(v9, "isEqualToString:", guid))
   {
     if (IMOSLoggingEnabled())
     {
@@ -148,20 +148,20 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v16 = a3;
+        guidCopy3 = guid;
         _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Clearing code for GUID: %@", buf, 0xCu);
       }
     }
 
     [(IMDOneTimeCodeManager *)self _setNewCodeAndPrepareInvalidationTimer:0];
-    if (!v4)
+    if (!expiredCopy)
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = sub_22B505618;
       v14[3] = &unk_278703128;
       v14[4] = self;
-      v14[5] = a3;
+      v14[5] = guid;
       [(IMDOneTimeCodeManager *)self onboardDeleteVerificationCodesIfNeededWithCompletionHandler:v14];
     }
   }
@@ -173,7 +173,7 @@
     {
       v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](-[IMDOneTimeCodeManager validCodes](self, "validCodes"), "count")}];
       *buf = 138412546;
-      v16 = a3;
+      guidCopy3 = guid;
       v17 = 2112;
       v18 = v12;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Asked to consume code for guid %@, but unable, current code count: %@", buf, 0x16u);
@@ -203,23 +203,23 @@
   return v2;
 }
 
-- (void)onboardDeleteVerificationCodesIfNeededWithCompletionHandler:(id)a3
+- (void)onboardDeleteVerificationCodesIfNeededWithCompletionHandler:(id)handler
 {
   [IMDaemonCoreBundle() __im_localizedStringForKey:@"OTP_CLEANUP_ALERT_MESSAGE"];
 
   MEMORY[0x2821F9670](self, sel_onboardDeleteVerificationCodesIfNeededWithMessage_completionHandler_);
 }
 
-- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)a3 completionHandler:(id)a4
+- (void)onboardDeleteVerificationCodesIfNeededWithMessage:(id)message completionHandler:(id)handler
 {
   v29[4] = *MEMORY[0x277D85DE8];
   v7 = objc_alloc(MEMORY[0x277CBEBD0]);
   v22 = [v7 initWithSuiteName:*MEMORY[0x277D1A460]];
   if ([v22 integerForKey:*MEMORY[0x277D1A458]])
   {
-    if (a4)
+    if (handler)
     {
-      (*(a4 + 2))(a4, 2);
+      (*(handler + 2))(handler, 2);
     }
 
     v8 = *MEMORY[0x277D85DE8];
@@ -234,20 +234,20 @@
     v28[0] = *MEMORY[0x277D19228];
     v28[1] = v12;
     v29[0] = v9;
-    v29[1] = a3;
+    v29[1] = message;
     v13 = *MEMORY[0x277D19210];
     v28[2] = *MEMORY[0x277D191F8];
     v28[3] = v13;
     v29[2] = v10;
     v29[3] = v11;
     v14 = [objc_msgSend(MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:{4), "mutableCopy"}];
-    v15 = [(IMDOneTimeCodeManager *)self _urlForPasswordsIcon];
-    if (v15)
+    _urlForPasswordsIcon = [(IMDOneTimeCodeManager *)self _urlForPasswordsIcon];
+    if (_urlForPasswordsIcon)
     {
-      [v14 setObject:v15 forKeyedSubscript:*MEMORY[0x277D19200]];
+      [v14 setObject:_urlForPasswordsIcon forKeyedSubscript:*MEMORY[0x277D19200]];
     }
 
-    v16 = [MEMORY[0x277D192D0] userNotificationWithIdentifier:objc_msgSend(MEMORY[0x277CCACA8] timeout:"stringGUID" alertLevel:v15) displayFlags:3 displayInformation:{32, v14, 0.0}];
+    v16 = [MEMORY[0x277D192D0] userNotificationWithIdentifier:objc_msgSend(MEMORY[0x277CCACA8] timeout:"stringGUID" alertLevel:_urlForPasswordsIcon) displayFlags:3 displayInformation:{32, v14, 0.0}];
 
     v17 = IMOSLoggingEnabled();
     if (v16)
@@ -260,21 +260,21 @@
           *buf = 138412546;
           v25 = v9;
           v26 = 2112;
-          v27 = a3;
+          messageCopy = message;
           _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "Delete Verification Codes | Presenting Delete Verification Codes notification with title: %@ message: %@", buf, 0x16u);
         }
       }
 
       [v16 setUsesNotificationCenter:0];
       [v16 setRepresentedApplicationBundle:*MEMORY[0x277D192F0]];
-      v19 = [MEMORY[0x277D192D8] sharedInstance];
+      mEMORY[0x277D192D8] = [MEMORY[0x277D192D8] sharedInstance];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = sub_22B505EAC;
       v23[3] = &unk_278703150;
       v23[4] = v22;
-      v23[5] = a4;
-      [v19 addUserNotification:v16 listener:0 completionHandler:v23];
+      v23[5] = handler;
+      [mEMORY[0x277D192D8] addUserNotification:v16 listener:0 completionHandler:v23];
     }
 
     else
@@ -368,7 +368,7 @@
   return v9;
 }
 
-- (void)moveOneTimeCodeToRecentlyDeleted:(id)a3
+- (void)moveOneTimeCodeToRecentlyDeleted:(id)deleted
 {
   v33[1] = *MEMORY[0x277D85DE8];
   if (IMOSLoggingEnabled())
@@ -377,22 +377,22 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v29 = a3;
+      deletedCopy4 = deleted;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Delete Verification Codes | Attempting to move message with OTP code (guid: %@) to recently deleted.", buf, 0xCu);
     }
   }
 
-  if (a3)
+  if (deleted)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v33[0] = a3;
+    date = [MEMORY[0x277CBEAA8] date];
+    v33[0] = deleted;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
-    v8 = [+[IMDMessageStore sharedInstance](IMDMessageStore chatForMessageGUID:"chatForMessageGUID:", a3];
-    v9 = v8;
-    if (v8)
+    deleted = [+[IMDMessageStore sharedInstance](IMDMessageStore chatForMessageGUID:"chatForMessageGUID:", deleted];
+    v9 = deleted;
+    if (deleted)
     {
-      v32 = [v8 guid];
-      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
+      guid = [deleted guid];
+      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&guid count:1];
     }
 
     else
@@ -406,9 +406,9 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v29 = v9;
+        deletedCopy4 = v9;
         v30 = 2112;
-        v31 = a3;
+        deletedCopy2 = deleted;
         _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Found chat: %@ for codeMessageGUID: %@", buf, 0x16u);
       }
     }
@@ -420,11 +420,11 @@
       v27[0] = v7;
       v27[1] = MEMORY[0x277CBEC28];
       v26[2] = @"recoverableDeleteDate";
-      v27[2] = v6;
+      v27[2] = date;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:3];
-      v13 = [v9 serviceName];
+      serviceName = [v9 serviceName];
       v14 = MEMORY[0x277D1A610];
-      v15 = [v13 isEqualToString:*MEMORY[0x277D1A610]];
+      v15 = [serviceName isEqualToString:*MEMORY[0x277D1A610]];
       v16 = MEMORY[0x277D1A620];
       if (v15)
       {
@@ -447,14 +447,14 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v29 = a3;
+        deletedCopy4 = deleted;
         _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Delete Verification Codes | Could not derive chat from codeMessageGUID: %@", buf, 0xCu);
       }
     }
 
     [+[IMDMessageStore sharedInstance](IMDMessageStore retractPostedNotificationsForMessageGUIDs:"retractPostedNotificationsForMessageGUIDs:", v7];
     [objc_msgSend(MEMORY[0x277D1AA10] "sharedInstance")];
-    [+[IMDChatRegistry sharedInstance](IMDChatRegistry moveMessagesWithGUIDsToRecentlyDeleted:"moveMessagesWithGUIDsToRecentlyDeleted:deleteDate:" deleteDate:v7, v6];
+    [+[IMDChatRegistry sharedInstance](IMDChatRegistry moveMessagesWithGUIDsToRecentlyDeleted:"moveMessagesWithGUIDsToRecentlyDeleted:deleteDate:" deleteDate:v7, date];
     [+[IMDMessageStore sharedInstance](IMDMessageStore updateStampForGUIDs:"updateStampForGUIDs:", v10];
     [(IMDOneTimeCodeManager *)self _updateLastMessageTimeStampForChat:v9];
     [-[IMDBroadcasterProviding broadcasterForChatListeners](+[IMDBroadcastController sharedProvider](IMDBroadcastController "sharedProvider")];
@@ -464,7 +464,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v29 = a3;
+        deletedCopy4 = deleted;
         v19 = "Delete Verification Codes | Finished moving message with OTP code (guid: %@) to recently deleted.";
         v20 = v18;
         v21 = 12;
@@ -490,13 +490,13 @@ LABEL_27:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateLastMessageTimeStampForChat:(id)a3
+- (void)_updateLastMessageTimeStampForChat:(id)chat
 {
   v23 = *MEMORY[0x277D85DE8];
-  [a3 setLastMessage:{-[IMDMessageStore lastMessageForChatWithRowID:](+[IMDMessageStore sharedInstance](IMDMessageStore, "sharedInstance"), "lastMessageForChatWithRowID:", objc_msgSend(a3, "rowID"))}];
-  if ([a3 lastMessage])
+  [chat setLastMessage:{-[IMDMessageStore lastMessageForChatWithRowID:](+[IMDMessageStore sharedInstance](IMDMessageStore, "sharedInstance"), "lastMessageForChatWithRowID:", objc_msgSend(chat, "rowID"))}];
+  if ([chat lastMessage])
   {
-    [objc_msgSend(objc_msgSend(a3 "lastMessage")];
+    [objc_msgSend(objc_msgSend(chat "lastMessage")];
     v5 = v4;
   }
 
@@ -505,24 +505,24 @@ LABEL_27:
     v5 = 0;
   }
 
-  [a3 setLastMessageTimeStampOnLoad:v5];
+  [chat setLastMessageTimeStampOnLoad:v5];
   if ([objc_msgSend(MEMORY[0x277D1A9B8] "sharedFeatureFlags")])
   {
-    v6 = [+[IMDMessageStore sharedInstance](IMDMessageStore lastTUConversationItemForChat:"lastTUConversationItemForChat:", a3];
-    if (!v6)
+    chat = [+[IMDMessageStore sharedInstance](IMDMessageStore lastTUConversationItemForChat:"lastTUConversationItemForChat:", chat];
+    if (!chat)
     {
-      v9 = a3;
-      v8 = 0;
+      chatCopy2 = chat;
+      time = 0;
       goto LABEL_9;
     }
 
-    v7 = v6;
-    if ([v6 time])
+    v7 = chat;
+    if ([chat time])
     {
-      v8 = [v7 time];
-      v9 = a3;
+      time = [v7 time];
+      chatCopy2 = chat;
 LABEL_9:
-      [v9 setLastTUConversationCreatedDate:v8];
+      [chatCopy2 setLastTUConversationCreatedDate:time];
       goto LABEL_10;
     }
 
@@ -539,17 +539,17 @@ LABEL_10:
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [a3 guid];
+      guid = [chat guid];
       v12 = MEMORY[0x277CCABB0];
-      [objc_msgSend(objc_msgSend(a3 "lastMessage")];
+      [objc_msgSend(objc_msgSend(chat "lastMessage")];
       v15 = 138413058;
-      v16 = v11;
+      v16 = guid;
       v17 = 2112;
       v18 = [v12 numberWithDouble:?];
       v19 = 2112;
-      v20 = [a3 lastTUConversationCreatedDate];
+      lastTUConversationCreatedDate = [chat lastTUConversationCreatedDate];
       v21 = 2112;
-      v22 = [a3 lastScheduledMessageCreatedDate];
+      lastScheduledMessageCreatedDate = [chat lastScheduledMessageCreatedDate];
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Verification Code | IMChat: %@, updating last message timestamp on load: %@ lastTUConversationCreatedDate: %@ lastScheduledMessageCreatedDate: %@", &v15, 0x2Au);
     }
   }
@@ -586,15 +586,15 @@ LABEL_10:
   return result;
 }
 
-- (void)_setNewCodeAndPrepareInvalidationTimer:(id)a3
+- (void)_setNewCodeAndPrepareInvalidationTimer:(id)timer
 {
   v10[1] = *MEMORY[0x277D85DE8];
   [(NSTimer *)[(IMDOneTimeCodeManager *)self codeInvalidationTimer] invalidate];
-  if (a3)
+  if (timer)
   {
-    v10[0] = a3;
+    v10[0] = timer;
     -[IMDOneTimeCodeManager setValidCodes:](self, "setValidCodes:", [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1]);
-    v5 = [a3 objectForKeyedSubscript:*MEMORY[0x277D1A468]];
+    v5 = [timer objectForKeyedSubscript:*MEMORY[0x277D1A468]];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = sub_22B506B18;

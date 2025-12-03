@@ -8,7 +8,7 @@
 - (id)initWithDevice:()Rapport
 {
   v4 = a3;
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &off_2851D5BE8;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   v6 = v5;
@@ -23,20 +23,20 @@
 - (void)populateWithDevice:()Rapport
 {
   v4 = a3;
-  [a1 setIsAccessory:{objc_msgSend(v4, "isAccessory")}];
-  v5 = [v4 identifier];
-  [a1 setRapportID:v5];
+  [self setIsAccessory:{objc_msgSend(v4, "isAccessory")}];
+  identifier = [v4 identifier];
+  [self setRapportID:identifier];
 
-  v6 = [v4 idsDeviceIdentifier];
-  [a1 setIdsID:v6];
+  idsDeviceIdentifier = [v4 idsDeviceIdentifier];
+  [self setIdsID:idsDeviceIdentifier];
 
-  v7 = [v4 homeKitIdentifier];
-  v8 = [v7 UUIDString];
-  [a1 setHomeKitID:v8];
+  homeKitIdentifier = [v4 homeKitIdentifier];
+  uUIDString = [homeKitIdentifier UUIDString];
+  [self setHomeKitID:uUIDString];
 
-  v9 = [v4 name];
+  name = [v4 name];
 
-  [a1 setName:v9];
+  [self setName:name];
 }
 
 @end

@@ -1,56 +1,56 @@
 @interface _SFPBCommandButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCommandButtonItem)initWithDictionary:(id)a3;
-- (_SFPBCommandButtonItem)initWithFacade:(id)a3;
-- (_SFPBCommandButtonItem)initWithJSON:(id)a3;
+- (_SFPBCommandButtonItem)initWithDictionary:(id)dictionary;
+- (_SFPBCommandButtonItem)initWithFacade:(id)facade;
+- (_SFPBCommandButtonItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPreviewButtonItems:(id)a3;
-- (void)setPreviewButtonItems:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPreviewButtonItems:(id)items;
+- (void)setPreviewButtonItems:(id)items;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCommandButtonItem
 
-- (_SFPBCommandButtonItem)initWithFacade:(id)a3
+- (_SFPBCommandButtonItem)initWithFacade:(id)facade
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCommandButtonItem *)self init];
   if (v5)
   {
-    v6 = [v4 image];
+    image = [facadeCopy image];
 
-    if (v6)
+    if (image)
     {
       v7 = [_SFPBImage alloc];
-      v8 = [v4 image];
-      v9 = [(_SFPBImage *)v7 initWithFacade:v8];
+      image2 = [facadeCopy image];
+      v9 = [(_SFPBImage *)v7 initWithFacade:image2];
       [(_SFPBCommandButtonItem *)v5 setImage:v9];
     }
 
-    v10 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v10)
+    if (title)
     {
-      v11 = [v4 title];
-      [(_SFPBCommandButtonItem *)v5 setTitle:v11];
+      title2 = [facadeCopy title];
+      [(_SFPBCommandButtonItem *)v5 setTitle:title2];
     }
 
-    v12 = [v4 command];
+    command = [facadeCopy command];
 
-    if (v12)
+    if (command)
     {
       v13 = [_SFPBCommand alloc];
-      v14 = [v4 command];
-      v15 = [(_SFPBCommand *)v13 initWithFacade:v14];
+      command2 = [facadeCopy command];
+      v15 = [(_SFPBCommand *)v13 initWithFacade:command2];
       [(_SFPBCommandButtonItem *)v5 setCommand:v15];
     }
 
-    v16 = [v4 previewButtonItems];
-    if (v16)
+    previewButtonItems = [facadeCopy previewButtonItems];
+    if (previewButtonItems)
     {
       v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -64,8 +64,8 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v18 = [v4 previewButtonItems];
-    v19 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    previewButtonItems2 = [facadeCopy previewButtonItems];
+    v19 = [previewButtonItems2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v19)
     {
       v20 = v19;
@@ -76,7 +76,7 @@
         {
           if (*v28 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(previewButtonItems2);
           }
 
           v23 = [[_SFPBButtonItem alloc] initWithFacade:*(*(&v27 + 1) + 8 * i)];
@@ -86,21 +86,21 @@
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v20 = [previewButtonItems2 countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v20);
     }
 
     [(_SFPBCommandButtonItem *)v5 setPreviewButtonItems:v17];
-    if ([v4 hasIsDestructive])
+    if ([facadeCopy hasIsDestructive])
     {
-      -[_SFPBCommandButtonItem setIsDestructive:](v5, "setIsDestructive:", [v4 isDestructive]);
+      -[_SFPBCommandButtonItem setIsDestructive:](v5, "setIsDestructive:", [facadeCopy isDestructive]);
     }
 
-    if ([v4 hasUniqueId])
+    if ([facadeCopy hasUniqueId])
     {
-      -[_SFPBCommandButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[_SFPBCommandButtonItem setUniqueId:](v5, "setUniqueId:", [facadeCopy uniqueId]);
     }
 
     v24 = v5;
@@ -110,16 +110,16 @@
   return v5;
 }
 
-- (_SFPBCommandButtonItem)initWithDictionary:(id)a3
+- (_SFPBCommandButtonItem)initWithDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = _SFPBCommandButtonItem;
   v5 = [(_SFPBCommandButtonItem *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"image"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"image"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,7 +127,7 @@
       [(_SFPBCommandButtonItem *)v5 setImage:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"title"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -135,7 +135,7 @@
       [(_SFPBCommandButtonItem *)v5 setTitle:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"command"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"command"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -143,7 +143,7 @@
       [(_SFPBCommandButtonItem *)v5 setCommand:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"previewButtonItems"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"previewButtonItems"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -187,14 +187,14 @@
       v10 = v25;
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"isDestructive"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isDestructive"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBCommandButtonItem setIsDestructive:](v5, "setIsDestructive:", [v20 BOOLValue]);
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"uniqueId"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"uniqueId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -208,30 +208,30 @@
   return v5;
 }
 
-- (_SFPBCommandButtonItem)initWithJSON:(id)a3
+- (_SFPBCommandButtonItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCommandButtonItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCommandButtonItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCommandButtonItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -245,48 +245,48 @@
 - (id)dictionaryRepresentation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_command)
   {
-    v4 = [(_SFPBCommandButtonItem *)self command];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    command = [(_SFPBCommandButtonItem *)self command];
+    dictionaryRepresentation = [command dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"command"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"command"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"command"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"command"];
     }
   }
 
   if (self->_image)
   {
-    v7 = [(_SFPBCommandButtonItem *)self image];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    image = [(_SFPBCommandButtonItem *)self image];
+    dictionaryRepresentation2 = [image dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"image"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"image"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"image"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"image"];
     }
   }
 
   if (self->_isDestructive)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBCommandButtonItem isDestructive](self, "isDestructive")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isDestructive"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isDestructive"];
   }
 
   if ([(NSArray *)self->_previewButtonItems count])
   {
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -306,16 +306,16 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
-          if (v17)
+          dictionaryRepresentation3 = [*(*(&v24 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v11 addObject:v17];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v18 = [MEMORY[0x1E695DFB0] null];
-            [v11 addObject:v18];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -325,25 +325,25 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"previewButtonItems"];
+    [dictionary setObject:array forKeyedSubscript:@"previewButtonItems"];
   }
 
   if (self->_title)
   {
-    v19 = [(_SFPBCommandButtonItem *)self title];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"title"];
+    title = [(_SFPBCommandButtonItem *)self title];
+    v20 = [title copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"title"];
   }
 
   if (self->_uniqueId)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_SFPBCommandButtonItem uniqueId](self, "uniqueId")}];
-    [v3 setObject:v21 forKeyedSubscript:@"uniqueId"];
+    [dictionary setObject:v21 forKeyedSubscript:@"uniqueId"];
   }
 
   v22 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -365,28 +365,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ (2654435761u * self->_uniqueId);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_SFPBCommandButtonItem *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBCommandButtonItem *)self image];
+  image2 = [equalCopy image];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_SFPBCommandButtonItem *)self image];
-  if (v7)
+  image3 = [(_SFPBCommandButtonItem *)self image];
+  if (image3)
   {
-    v8 = v7;
-    v9 = [(_SFPBCommandButtonItem *)self image];
-    v10 = [v4 image];
-    v11 = [v9 isEqual:v10];
+    v8 = image3;
+    image4 = [(_SFPBCommandButtonItem *)self image];
+    image5 = [equalCopy image];
+    v11 = [image4 isEqual:image5];
 
     if (!v11)
     {
@@ -398,20 +398,20 @@
   {
   }
 
-  v5 = [(_SFPBCommandButtonItem *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBCommandButtonItem *)self title];
+  image2 = [equalCopy title];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_SFPBCommandButtonItem *)self title];
-  if (v12)
+  title = [(_SFPBCommandButtonItem *)self title];
+  if (title)
   {
-    v13 = v12;
-    v14 = [(_SFPBCommandButtonItem *)self title];
-    v15 = [v4 title];
-    v16 = [v14 isEqual:v15];
+    v13 = title;
+    title2 = [(_SFPBCommandButtonItem *)self title];
+    title3 = [equalCopy title];
+    v16 = [title2 isEqual:title3];
 
     if (!v16)
     {
@@ -423,20 +423,20 @@
   {
   }
 
-  v5 = [(_SFPBCommandButtonItem *)self command];
-  v6 = [v4 command];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBCommandButtonItem *)self command];
+  image2 = [equalCopy command];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_SFPBCommandButtonItem *)self command];
-  if (v17)
+  command = [(_SFPBCommandButtonItem *)self command];
+  if (command)
   {
-    v18 = v17;
-    v19 = [(_SFPBCommandButtonItem *)self command];
-    v20 = [v4 command];
-    v21 = [v19 isEqual:v20];
+    v18 = command;
+    command2 = [(_SFPBCommandButtonItem *)self command];
+    command3 = [equalCopy command];
+    v21 = [command2 isEqual:command3];
 
     if (!v21)
     {
@@ -448,22 +448,22 @@
   {
   }
 
-  v5 = [(_SFPBCommandButtonItem *)self previewButtonItems];
-  v6 = [v4 previewButtonItems];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBCommandButtonItem *)self previewButtonItems];
+  image2 = [equalCopy previewButtonItems];
+  if ((image != 0) == (image2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(_SFPBCommandButtonItem *)self previewButtonItems];
-  if (v22)
+  previewButtonItems = [(_SFPBCommandButtonItem *)self previewButtonItems];
+  if (previewButtonItems)
   {
-    v23 = v22;
-    v24 = [(_SFPBCommandButtonItem *)self previewButtonItems];
-    v25 = [v4 previewButtonItems];
-    v26 = [v24 isEqual:v25];
+    v23 = previewButtonItems;
+    previewButtonItems2 = [(_SFPBCommandButtonItem *)self previewButtonItems];
+    previewButtonItems3 = [equalCopy previewButtonItems];
+    v26 = [previewButtonItems2 isEqual:previewButtonItems3];
 
     if (!v26)
     {
@@ -476,10 +476,10 @@ LABEL_21:
   }
 
   isDestructive = self->_isDestructive;
-  if (isDestructive == [v4 isDestructive])
+  if (isDestructive == [equalCopy isDestructive])
   {
     uniqueId = self->_uniqueId;
-    v27 = uniqueId == [v4 uniqueId];
+    v27 = uniqueId == [equalCopy uniqueId];
     goto LABEL_23;
   }
 
@@ -490,34 +490,34 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBCommandButtonItem *)self image];
-  if (v5)
+  toCopy = to;
+  image = [(_SFPBCommandButtonItem *)self image];
+  if (image)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBCommandButtonItem *)self title];
-  if (v6)
+  title = [(_SFPBCommandButtonItem *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBCommandButtonItem *)self command];
-  if (v7)
+  command = [(_SFPBCommandButtonItem *)self command];
+  if (command)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_SFPBCommandButtonItem *)self previewButtonItems];
+  previewButtonItems = [(_SFPBCommandButtonItem *)self previewButtonItems];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [previewButtonItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -529,7 +529,7 @@ LABEL_23:
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(previewButtonItems);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
@@ -538,7 +538,7 @@ LABEL_23:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [previewButtonItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -557,36 +557,36 @@ LABEL_23:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPreviewButtonItems:(id)a3
+- (void)addPreviewButtonItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   previewButtonItems = self->_previewButtonItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!previewButtonItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_previewButtonItems;
-    self->_previewButtonItems = v6;
+    self->_previewButtonItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     previewButtonItems = self->_previewButtonItems;
   }
 
-  [(NSArray *)previewButtonItems addObject:v4];
+  [(NSArray *)previewButtonItems addObject:itemsCopy];
 }
 
-- (void)setPreviewButtonItems:(id)a3
+- (void)setPreviewButtonItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   previewButtonItems = self->_previewButtonItems;
   self->_previewButtonItems = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

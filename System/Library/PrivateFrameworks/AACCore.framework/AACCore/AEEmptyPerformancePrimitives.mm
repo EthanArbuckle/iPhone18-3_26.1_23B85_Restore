@@ -1,10 +1,10 @@
 @interface AEEmptyPerformancePrimitives
-- (id)beginIntervalWithCategory:(id)a3 name:(id)a4;
+- (id)beginIntervalWithCategory:(id)category name:(id)name;
 @end
 
 @implementation AEEmptyPerformancePrimitives
 
-- (id)beginIntervalWithCategory:(id)a3 name:(id)a4
+- (id)beginIntervalWithCategory:(id)category name:(id)name
 {
   v4 = objc_opt_new();
 

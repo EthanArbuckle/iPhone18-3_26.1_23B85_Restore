@@ -2,14 +2,14 @@
 - (BOOL)wantsLocalCompatibilityRules;
 - (BOOL)wantsLocalIdealRules;
 - (_UIEventDeferringBehavior_Default)init;
-- (_UIEventDeferringBehavior_Default)initWithEventDeferringManager:(id)a3;
+- (_UIEventDeferringBehavior_Default)initWithEventDeferringManager:(id)manager;
 - (_UIEventDeferringManager)eventDeferringManager;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)setSystemShellBehaviorDelegate:(id)a3;
-- (void)setSystemShellManagesKeyboardFocus:(BOOL)a3;
+- (void)setSystemShellBehaviorDelegate:(id)delegate;
+- (void)setSystemShellManagesKeyboardFocus:(BOOL)focus;
 @end
 
 @implementation _UIEventDeferringBehavior_Default
@@ -17,9 +17,9 @@
 - (BOOL)wantsLocalIdealRules
 {
   WeakRetained = objc_loadWeakRetained(&self->_eventDeferringManager);
-  v3 = [WeakRetained windowHostingScene];
-  v4 = [v3 _FBSScene];
-  v5 = v4 != 0;
+  windowHostingScene = [WeakRetained windowHostingScene];
+  _FBSScene = [windowHostingScene _FBSScene];
+  v5 = _FBSScene != 0;
 
   return v5;
 }
@@ -56,13 +56,13 @@
 
 - (_UIEventDeferringBehavior_Default)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringBehavior_Default.m" lineNumber:32 description:{@"init is not allowed on %@", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringBehavior_Default.m" lineNumber:32 description:{@"init is not allowed on %@", objc_opt_class()}];
 
   return 0;
 }
 
-- (_UIEventDeferringBehavior_Default)initWithEventDeferringManager:(id)a3
+- (_UIEventDeferringBehavior_Default)initWithEventDeferringManager:(id)manager
 {
   v9.receiver = self;
   v9.super_class = _UIEventDeferringBehavior_Default;
@@ -70,40 +70,40 @@
   v5 = v4;
   if (v4)
   {
-    v6 = objc_storeWeak(&v4->_eventDeferringManager, a3);
-    v7 = [a3 windowHostingScene];
-    *&v5->_behaviorFlags = *&v5->_behaviorFlags & 0xFE | _UISceneSystemShellManagesKeyboardFocusForScene(v7);
+    v6 = objc_storeWeak(&v4->_eventDeferringManager, manager);
+    windowHostingScene = [manager windowHostingScene];
+    *&v5->_behaviorFlags = *&v5->_behaviorFlags & 0xFE | _UISceneSystemShellManagesKeyboardFocusForScene(windowHostingScene);
   }
 
   return v5;
 }
 
-- (void)setSystemShellBehaviorDelegate:(id)a3
+- (void)setSystemShellBehaviorDelegate:(id)delegate
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringBehavior_Default.m" lineNumber:52 description:{@"%s: Invalid to set a system shell behavior delegate for this class: %@", "-[_UIEventDeferringBehavior_Default setSystemShellBehaviorDelegate:]", self}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringBehavior_Default.m" lineNumber:52 description:{@"%s: Invalid to set a system shell behavior delegate for this class: %@", "-[_UIEventDeferringBehavior_Default setSystemShellBehaviorDelegate:]", self}];
 }
 
-- (void)setSystemShellManagesKeyboardFocus:(BOOL)a3
+- (void)setSystemShellManagesKeyboardFocus:(BOOL)focus
 {
   behaviorFlags = self->_behaviorFlags;
-  if ((behaviorFlags & 1) != 0 || !a3)
+  if ((behaviorFlags & 1) != 0 || !focus)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringBehavior_Default.m" lineNumber:61 description:{@"%s: This method should never be called again after it is set", "-[_UIEventDeferringBehavior_Default setSystemShellManagesKeyboardFocus:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringBehavior_Default.m" lineNumber:61 description:{@"%s: This method should never be called again after it is set", "-[_UIEventDeferringBehavior_Default setSystemShellManagesKeyboardFocus:]"}];
 
     behaviorFlags = self->_behaviorFlags;
   }
 
-  *&self->_behaviorFlags = behaviorFlags & 0xFE | a3;
+  *&self->_behaviorFlags = behaviorFlags & 0xFE | focus;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIEventDeferringBehavior_Default *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIEventDeferringBehavior_Default *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -114,20 +114,20 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIEventDeferringBehavior_Default *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIEventDeferringBehavior_Default *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIEventDeferringBehavior_Default *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIEventDeferringBehavior_Default *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

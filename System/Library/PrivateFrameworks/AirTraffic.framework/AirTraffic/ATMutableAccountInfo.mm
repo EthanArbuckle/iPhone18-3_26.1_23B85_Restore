@@ -1,16 +1,16 @@
 @interface ATMutableAccountInfo
-- (void)setAltDSID:(id)a3;
-- (void)setAppleID:(id)a3;
-- (void)setDSID:(id)a3;
+- (void)setAltDSID:(id)d;
+- (void)setAppleID:(id)d;
+- (void)setDSID:(id)d;
 @end
 
 @implementation ATMutableAccountInfo
 
-- (void)setAppleID:(id)a3
+- (void)setAppleID:(id)d
 {
-  if (self->super._appleID != a3)
+  if (self->super._appleID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     appleID = self->super._appleID;
     self->super._appleID = v5;
 
@@ -18,11 +18,11 @@
   }
 }
 
-- (void)setAltDSID:(id)a3
+- (void)setAltDSID:(id)d
 {
-  if (self->super._altDSID != a3)
+  if (self->super._altDSID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     altDSID = self->super._altDSID;
     self->super._altDSID = v5;
 
@@ -30,11 +30,11 @@
   }
 }
 
-- (void)setDSID:(id)a3
+- (void)setDSID:(id)d
 {
-  if (self->super._DSID != a3)
+  if (self->super._DSID != d)
   {
-    v5 = [a3 copy];
+    v5 = [d copy];
     DSID = self->super._DSID;
     self->super._DSID = v5;
 

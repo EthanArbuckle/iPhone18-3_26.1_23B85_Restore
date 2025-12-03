@@ -1,6 +1,6 @@
 @interface BUZipFileDescriptorWrapper
 - (BUZipFileDescriptorWrapper)init;
-- (BUZipFileDescriptorWrapper)initWithFileDescriptor:(int)a3 queue:(id)a4;
+- (BUZipFileDescriptorWrapper)initWithFileDescriptor:(int)descriptor queue:(id)queue;
 - (void)dealloc;
 @end
 
@@ -17,10 +17,10 @@
   objc_exception_throw(v6);
 }
 
-- (BUZipFileDescriptorWrapper)initWithFileDescriptor:(int)a3 queue:(id)a4
+- (BUZipFileDescriptorWrapper)initWithFileDescriptor:(int)descriptor queue:(id)queue
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&descriptor;
+  queueCopy = queue;
   if ((v4 & 0x80000000) == 0)
   {
     v18.receiver = self;
@@ -40,7 +40,7 @@
     v16[2] = sub_241DBA500;
     v16[3] = &unk_278D1D518;
     v17 = v4;
-    v10 = objc_msgSend_initForReadingDescriptor_queue_cleanupHandler_(v8, v9, v4, v6, v16);
+    v10 = objc_msgSend_initForReadingDescriptor_queue_cleanupHandler_(v8, v9, v4, queueCopy, v16);
     readChannel = self->_readChannel;
     self->_readChannel = v10;
 
@@ -52,15 +52,15 @@
 
 LABEL_7:
       self = self;
-      v14 = self;
+      selfCopy = self;
       goto LABEL_8;
     }
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_8:
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc

@@ -1,24 +1,24 @@
 @interface CPSEmptyView
-- (CPSEmptyView)initWithFrame:(CGRect)a3;
+- (CPSEmptyView)initWithFrame:(CGRect)frame;
 - (NSArray)subtitleVariants;
 - (NSArray)titleVariants;
 - (void)_updateLabelTraits;
-- (void)setShowsSpinner:(BOOL)a3;
-- (void)setSubtitleVariants:(id)a3;
-- (void)setTitleVariants:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setShowsSpinner:(BOOL)spinner;
+- (void)setSubtitleVariants:(id)variants;
+- (void)setTitleVariants:(id)variants;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPSEmptyView
 
-- (CPSEmptyView)initWithFrame:(CGRect)a3
+- (CPSEmptyView)initWithFrame:(CGRect)frame
 {
-  v20 = a3;
+  frameCopy = frame;
   v18 = a2;
   v19 = 0;
   v17.receiver = self;
   v17.super_class = CPSEmptyView;
-  v13 = [(CPSEmptyView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v13 = [(CPSEmptyView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v19 = v13;
   objc_storeStrong(&v19, v13);
   if (v13)
@@ -29,24 +29,24 @@
     [(CPSEmptyView *)v19 setAlignment:3];
     [(CPSEmptyView *)v19 setSpacing:12.0];
     v16 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:21];
-    v9 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     [v16 setColor:?];
-    *&v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
+    *&v3 = MEMORY[0x277D82BD8](labelColor).n128_u64[0];
     [(CPSEmptyView *)v19 setSpinnerView:v16, v3];
     v4 = [CPSAbridgableLabel alloc];
     v11 = MEMORY[0x277CBF3A0];
     v15 = [(CPSAbridgableLabel *)v4 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(CPSAbridgableLabel *)v15 setTextAlignment:1];
-    v10 = [MEMORY[0x277D75348] labelColor];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
     [(CPSAbridgableLabel *)v15 setTextColor:?];
-    *&v5 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+    *&v5 = MEMORY[0x277D82BD8](labelColor2).n128_u64[0];
     [(CPSAbridgableLabel *)v15 setNumberOfLines:1, v5];
     [(CPSEmptyView *)v19 setTitleLabel:v15];
     v14 = [[CPSAbridgableLabel alloc] initWithFrame:*v11, v11[1], v11[2], v11[3]];
     [(CPSAbridgableLabel *)v14 setTextAlignment:1];
-    v12 = [MEMORY[0x277D75348] labelColor];
+    labelColor3 = [MEMORY[0x277D75348] labelColor];
     [(CPSAbridgableLabel *)v14 setTextColor:?];
-    *&v6 = MEMORY[0x277D82BD8](v12).n128_u64[0];
+    *&v6 = MEMORY[0x277D82BD8](labelColor3).n128_u64[0];
     [(CPSAbridgableLabel *)v14 setNumberOfLines:2, v6];
     [(CPSEmptyView *)v19 setSubtitleLabel:v14];
     [(CPSEmptyView *)v19 setNeedsUpdateConstraints];
@@ -61,59 +61,59 @@
   return v8;
 }
 
-- (void)setShowsSpinner:(BOOL)a3
+- (void)setShowsSpinner:(BOOL)spinner
 {
-  if (self->_showsSpinner != a3)
+  if (self->_showsSpinner != spinner)
   {
-    self->_showsSpinner = a3;
-    if (a3)
+    self->_showsSpinner = spinner;
+    if (spinner)
     {
-      v6 = [(CPSEmptyView *)self spinnerView];
+      spinnerView = [(CPSEmptyView *)self spinnerView];
       [CPSEmptyView insertArrangedSubview:"insertArrangedSubview:atIndex:" atIndex:?];
-      v7 = [(CPSEmptyView *)self spinnerView];
-      [(UIActivityIndicatorView *)v7 startAnimating];
-      MEMORY[0x277D82BD8](v7);
+      spinnerView2 = [(CPSEmptyView *)self spinnerView];
+      [(UIActivityIndicatorView *)spinnerView2 startAnimating];
+      MEMORY[0x277D82BD8](spinnerView2);
     }
 
     else
     {
-      v3 = [(CPSEmptyView *)self spinnerView];
-      [(UIActivityIndicatorView *)v3 stopAnimating];
-      v4 = [(CPSEmptyView *)self spinnerView];
+      spinnerView3 = [(CPSEmptyView *)self spinnerView];
+      [(UIActivityIndicatorView *)spinnerView3 stopAnimating];
+      spinnerView4 = [(CPSEmptyView *)self spinnerView];
       [(CPSEmptyView *)self removeArrangedSubview:?];
-      v5 = [(CPSEmptyView *)self spinnerView];
-      [(UIActivityIndicatorView *)v5 removeFromSuperview];
-      MEMORY[0x277D82BD8](v5);
+      spinnerView5 = [(CPSEmptyView *)self spinnerView];
+      [(UIActivityIndicatorView *)spinnerView5 removeFromSuperview];
+      MEMORY[0x277D82BD8](spinnerView5);
     }
   }
 }
 
-- (void)setTitleVariants:(id)a3
+- (void)setTitleVariants:(id)variants
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [(CPSEmptyView *)v12 titleLabel];
-  [(CPUIAbridgableLabel *)v10 setTextVariants:location[0]];
-  *&v3 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  objc_storeStrong(location, variants);
+  titleLabel = [(CPSEmptyView *)selfCopy titleLabel];
+  [(CPUIAbridgableLabel *)titleLabel setTextVariants:location[0]];
+  *&v3 = MEMORY[0x277D82BD8](titleLabel).n128_u64[0];
   if ([location[0] count])
   {
-    v8 = v12;
-    v9 = [(CPSEmptyView *)v12 titleLabel];
+    v8 = selfCopy;
+    titleLabel2 = [(CPSEmptyView *)selfCopy titleLabel];
     [(CPSEmptyView *)v8 addArrangedSubview:?];
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](titleLabel2);
   }
 
   else
   {
-    v5 = v12;
-    v6 = [(CPSEmptyView *)v12 titleLabel];
+    v5 = selfCopy;
+    titleLabel3 = [(CPSEmptyView *)selfCopy titleLabel];
     [(CPSEmptyView *)v5 removeArrangedSubview:?];
-    *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    v7 = [(CPSEmptyView *)v12 titleLabel];
-    [(CPSAbridgableLabel *)v7 removeFromSuperview];
-    MEMORY[0x277D82BD8](v7);
+    *&v4 = MEMORY[0x277D82BD8](titleLabel3).n128_u64[0];
+    titleLabel4 = [(CPSEmptyView *)selfCopy titleLabel];
+    [(CPSAbridgableLabel *)titleLabel4 removeFromSuperview];
+    MEMORY[0x277D82BD8](titleLabel4);
   }
 
   objc_storeStrong(location, 0);
@@ -121,39 +121,39 @@
 
 - (NSArray)titleVariants
 {
-  v3 = [(CPSEmptyView *)self titleLabel];
-  v4 = [(CPUIAbridgableLabel *)v3 textVariants];
-  MEMORY[0x277D82BD8](v3);
+  titleLabel = [(CPSEmptyView *)self titleLabel];
+  textVariants = [(CPUIAbridgableLabel *)titleLabel textVariants];
+  MEMORY[0x277D82BD8](titleLabel);
 
-  return v4;
+  return textVariants;
 }
 
-- (void)setSubtitleVariants:(id)a3
+- (void)setSubtitleVariants:(id)variants
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [(CPSEmptyView *)v12 subtitleLabel];
-  [(CPUIAbridgableLabel *)v10 setTextVariants:location[0]];
-  *&v3 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  objc_storeStrong(location, variants);
+  subtitleLabel = [(CPSEmptyView *)selfCopy subtitleLabel];
+  [(CPUIAbridgableLabel *)subtitleLabel setTextVariants:location[0]];
+  *&v3 = MEMORY[0x277D82BD8](subtitleLabel).n128_u64[0];
   if ([location[0] count])
   {
-    v8 = v12;
-    v9 = [(CPSEmptyView *)v12 subtitleLabel];
+    v8 = selfCopy;
+    subtitleLabel2 = [(CPSEmptyView *)selfCopy subtitleLabel];
     [(CPSEmptyView *)v8 addArrangedSubview:?];
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](subtitleLabel2);
   }
 
   else
   {
-    v5 = v12;
-    v6 = [(CPSEmptyView *)v12 subtitleLabel];
+    v5 = selfCopy;
+    subtitleLabel3 = [(CPSEmptyView *)selfCopy subtitleLabel];
     [(CPSEmptyView *)v5 removeArrangedSubview:?];
-    *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-    v7 = [(CPSEmptyView *)v12 subtitleLabel];
-    [(CPSAbridgableLabel *)v7 removeFromSuperview];
-    MEMORY[0x277D82BD8](v7);
+    *&v4 = MEMORY[0x277D82BD8](subtitleLabel3).n128_u64[0];
+    subtitleLabel4 = [(CPSEmptyView *)selfCopy subtitleLabel];
+    [(CPSAbridgableLabel *)subtitleLabel4 removeFromSuperview];
+    MEMORY[0x277D82BD8](subtitleLabel4);
   }
 
   objc_storeStrong(location, 0);
@@ -161,23 +161,23 @@
 
 - (NSArray)subtitleVariants
 {
-  v3 = [(CPSEmptyView *)self subtitleLabel];
-  v4 = [(CPUIAbridgableLabel *)v3 textVariants];
-  MEMORY[0x277D82BD8](v3);
+  subtitleLabel = [(CPSEmptyView *)self subtitleLabel];
+  textVariants = [(CPUIAbridgableLabel *)subtitleLabel textVariants];
+  MEMORY[0x277D82BD8](subtitleLabel);
 
-  return v4;
+  return textVariants;
 }
 
 - (void)_updateLabelTraits
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   v21[1] = a2;
   v8 = MEMORY[0x277D74310];
   v7 = *MEMORY[0x277D76A20];
-  v9 = [(CPSEmptyView *)self traitCollection];
+  traitCollection = [(CPSEmptyView *)self traitCollection];
   v21[0] = [v8 preferredFontDescriptorWithTextStyle:v7 compatibleWithTraitCollection:?];
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](traitCollection);
   v25 = *MEMORY[0x277D74430];
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D743F8]];
   v26[0] = v10;
@@ -193,34 +193,34 @@
   MEMORY[0x277D82BD8](v4);
   MEMORY[0x277D82BD8](v12);
   v14 = [MEMORY[0x277D74300] fontWithDescriptor:v21[0] size:0.0];
-  v13 = [(CPSEmptyView *)v22 titleLabel];
-  [(CPSAbridgableLabel *)v13 setFont:v14];
-  MEMORY[0x277D82BD8](v13);
+  titleLabel = [(CPSEmptyView *)selfCopy titleLabel];
+  [(CPSAbridgableLabel *)titleLabel setFont:v14];
+  MEMORY[0x277D82BD8](titleLabel);
   *&v5 = MEMORY[0x277D82BD8](v14).n128_u64[0];
   v16 = MEMORY[0x277D74300];
   v15 = *MEMORY[0x277D76920];
-  v19 = [(CPSEmptyView *)v22 traitCollection];
+  traitCollection2 = [(CPSEmptyView *)selfCopy traitCollection];
   v18 = [v16 preferredFontForTextStyle:v15 compatibleWithTraitCollection:?];
-  v17 = [(CPSEmptyView *)v22 subtitleLabel];
-  [(CPSAbridgableLabel *)v17 setFont:v18];
-  MEMORY[0x277D82BD8](v17);
+  subtitleLabel = [(CPSEmptyView *)selfCopy subtitleLabel];
+  [(CPSAbridgableLabel *)subtitleLabel setFont:v18];
+  MEMORY[0x277D82BD8](subtitleLabel);
   MEMORY[0x277D82BD8](v18);
-  *&v6 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-  [(CPSEmptyView *)v22 setNeedsDisplay];
+  *&v6 = MEMORY[0x277D82BD8](traitCollection2).n128_u64[0];
+  [(CPSEmptyView *)selfCopy setNeedsDisplay];
   objc_storeStrong(&v20, 0);
   objc_storeStrong(v21, 0);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = CPSEmptyView;
   [(CPSEmptyView *)&v3 traitCollectionDidChange:location[0]];
-  [(CPSEmptyView *)v5 _updateLabelTraits];
+  [(CPSEmptyView *)selfCopy _updateLabelTraits];
   objc_storeStrong(location, 0);
 }
 

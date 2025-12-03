@@ -1,35 +1,35 @@
 @interface NCAnimationCoordinator
-+ (id)animationCoordinatorWithDuration:(double)a3;
-- (NCAnimationCoordinator)initWithAnimationFactory:(id)a3;
-- (double)transitionDuration:(id)a3;
-- (void)animate:(id)a3 completion:(id)a4;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
-- (void)setDurationInherited:(BOOL)a3;
-- (void)viewOfChildContainer:(id)a3 willChangeToSize:(CGSize)a4;
++ (id)animationCoordinatorWithDuration:(double)duration;
+- (NCAnimationCoordinator)initWithAnimationFactory:(id)factory;
+- (double)transitionDuration:(id)duration;
+- (void)animate:(id)animate completion:(id)completion;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
+- (void)setDurationInherited:(BOOL)inherited;
+- (void)viewOfChildContainer:(id)container willChangeToSize:(CGSize)size;
 @end
 
 @implementation NCAnimationCoordinator
 
-+ (id)animationCoordinatorWithDuration:(double)a3
++ (id)animationCoordinatorWithDuration:(double)duration
 {
-  v4 = [a1 alloc];
-  v5 = [MEMORY[0x277CF0D38] factoryWithDuration:a3];
+  v4 = [self alloc];
+  v5 = [MEMORY[0x277CF0D38] factoryWithDuration:duration];
   v6 = [v4 initWithAnimationFactory:v5];
 
   return v6;
 }
 
-- (NCAnimationCoordinator)initWithAnimationFactory:(id)a3
+- (NCAnimationCoordinator)initWithAnimationFactory:(id)factory
 {
-  v5 = a3;
+  factoryCopy = factory;
   v14.receiver = self;
   v14.super_class = NCAnimationCoordinator;
   v6 = [(NCAnimationCoordinator *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_factory, a3);
+    objc_storeStrong(&v6->_factory, factory);
     v8 = objc_alloc_init(MEMORY[0x277D763A0]);
     transitionContext = v7->_transitionContext;
     v7->_transitionContext = v8;
@@ -45,12 +45,12 @@
   return v7;
 }
 
-- (void)setDurationInherited:(BOOL)a3
+- (void)setDurationInherited:(BOOL)inherited
 {
-  self->_durationInherited = a3;
+  self->_durationInherited = inherited;
   transitionContext = self->_transitionContext;
   v5 = 0.0;
-  if (!a3)
+  if (!inherited)
   {
     [(BSUIAnimationFactory *)self->_factory duration];
   }
@@ -71,27 +71,27 @@
   [(_UIViewControllerTransitionContext *)v6 _setIsAnimated:v7];
 }
 
-- (void)viewOfChildContainer:(id)a3 willChangeToSize:(CGSize)a4
+- (void)viewOfChildContainer:(id)container willChangeToSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(NCAnimationCoordinator *)self transitionCoordinator];
-  [v7 viewWillTransitionToSize:v8 withTransitionCoordinator:{width, height}];
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
+  transitionCoordinator = [(NCAnimationCoordinator *)self transitionCoordinator];
+  [containerCopy viewWillTransitionToSize:transitionCoordinator withTransitionCoordinator:{width, height}];
 }
 
-- (void)animate:(id)a3 completion:(id)a4
+- (void)animate:(id)animate completion:(id)completion
 {
-  v6 = a4;
-  [(NCAnimationCoordinator *)self setAnimations:a3];
-  [(NCAnimationCoordinator *)self setCompletion:v6];
+  completionCopy = completion;
+  [(NCAnimationCoordinator *)self setAnimations:animate];
+  [(NCAnimationCoordinator *)self setCompletion:completionCopy];
 
   transitionContext = self->_transitionContext;
 
   [(NCAnimationCoordinator *)self animateTransition:transitionContext];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   if (self->_durationInherited)
   {
@@ -106,7 +106,7 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   [(_UIViewControllerTransitionContext *)self->_transitionContext _setAnimator:self];
   [(NCAnimationCoordinator *)self transitionDuration:self->_transitionContext];
@@ -175,12 +175,12 @@ uint64_t __44__NCAnimationCoordinator_animateTransition___block_invoke_2(uint64_
   return [v4 _setAnimator:0];
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, self, a3);
+    completion[2](completion, self, ended);
   }
 
   animations = self->_animations;

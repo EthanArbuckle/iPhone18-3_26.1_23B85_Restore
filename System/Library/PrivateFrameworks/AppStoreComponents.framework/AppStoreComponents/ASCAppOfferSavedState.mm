@@ -1,27 +1,27 @@
 @interface ASCAppOfferSavedState
-- (ASCAppOfferSavedState)initWithState:(id)a3 metadata:(id)a4 flags:(int64_t)a5;
+- (ASCAppOfferSavedState)initWithState:(id)state metadata:(id)metadata flags:(int64_t)flags;
 @end
 
 @implementation ASCAppOfferSavedState
 
-- (ASCAppOfferSavedState)initWithState:(id)a3 metadata:(id)a4 flags:(int64_t)a5
+- (ASCAppOfferSavedState)initWithState:(id)state metadata:(id)metadata flags:(int64_t)flags
 {
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  metadataCopy = metadata;
   v16.receiver = self;
   v16.super_class = ASCAppOfferSavedState;
   v10 = [(ASCAppOfferSavedState *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [stateCopy copy];
     state = v10->_state;
     v10->_state = v11;
 
-    v13 = [v9 copy];
+    v13 = [metadataCopy copy];
     metadata = v10->_metadata;
     v10->_metadata = v13;
 
-    v10->_flags = a5;
+    v10->_flags = flags;
   }
 
   return v10;

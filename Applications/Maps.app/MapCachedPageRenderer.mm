@@ -8,15 +8,15 @@
 
 - (id)currentPrintInfo
 {
-  v3 = [(MapCachedPageRenderer *)self currentCacheKey];
-  v4 = [(NSCache *)self->_printAreaToPrintInfoCache objectForKey:v3];
+  currentCacheKey = [(MapCachedPageRenderer *)self currentCacheKey];
+  v4 = [(NSCache *)self->_printAreaToPrintInfoCache objectForKey:currentCacheKey];
   if (!v4)
   {
-    v5 = [(MapCachedPageRenderer *)self computeCurrentPrintInfo];
-    if (v5)
+    computeCurrentPrintInfo = [(MapCachedPageRenderer *)self computeCurrentPrintInfo];
+    if (computeCurrentPrintInfo)
     {
-      v4 = v5;
-      [(NSCache *)self->_printAreaToPrintInfoCache setObject:v5 forKey:v3];
+      v4 = computeCurrentPrintInfo;
+      [(NSCache *)self->_printAreaToPrintInfoCache setObject:computeCurrentPrintInfo forKey:currentCacheKey];
     }
 
     else
@@ -24,7 +24,7 @@
       v7 = sub_10006D178();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [NSString stringWithFormat:@"Unexpectedly could not generate print info for key: %@", v3];
+        v8 = [NSString stringWithFormat:@"Unexpectedly could not generate print info for key: %@", currentCacheKey];
         *buf = 136316162;
         v12 = "[MapCachedPageRenderer currentPrintInfo]";
         v13 = 2080;

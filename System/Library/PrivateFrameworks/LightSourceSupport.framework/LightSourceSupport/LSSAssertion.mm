@@ -1,21 +1,21 @@
 @interface LSSAssertion
-+ (id)acquire:(unsigned __int8)a3 reason:(id)a4;
++ (id)acquire:(unsigned __int8)acquire reason:(id)reason;
 - (void)dealloc;
 - (void)invalidate;
-- (xpc_connection_t)initWithType:(void *)a3 reason:;
+- (xpc_connection_t)initWithType:(void *)type reason:;
 @end
 
 @implementation LSSAssertion
 
-- (xpc_connection_t)initWithType:(void *)a3 reason:
+- (xpc_connection_t)initWithType:(void *)type reason:
 {
-  v5 = a3;
-  if (a1)
+  typeCopy = type;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = LSSAssertion;
-    a1 = [(xpc_connection_t *)&v19 init];
-    if (a1)
+    self = [(xpc_connection_t *)&v19 init];
+    if (self)
     {
       if (qword_280D2F600 == -1)
       {
@@ -24,23 +24,23 @@
         {
 LABEL_5:
           mach_service = xpc_connection_create_mach_service([@"com.apple.lightsourcesupport.lightstate" UTF8String], 0, 0);
-          v8 = a1[1];
-          a1[1] = mach_service;
+          v8 = self[1];
+          self[1] = mach_service;
 
-          objc_initWeak(&location, a1);
-          v9 = a1[1];
+          objc_initWeak(&location, self);
+          v9 = self[1];
           v13 = MEMORY[0x277D85DD0];
           v14 = 3221225472;
           v15 = __36__LSSAssertion_initWithType_reason___block_invoke;
           v16 = &unk_279812A60;
           objc_copyWeak(&v17, &location);
           xpc_connection_set_event_handler(v9, &v13);
-          xpc_connection_activate(a1[1]);
+          xpc_connection_activate(self[1]);
           empty = xpc_dictionary_create_empty();
           xpc_dictionary_set_int64(empty, "assert", a2);
-          v11 = v5;
+          v11 = typeCopy;
           xpc_dictionary_set_string(empty, "reason", [v11 UTF8String]);
-          xpc_connection_send_message(a1[1], empty);
+          xpc_connection_send_message(self[1], empty);
 
           objc_destroyWeak(&v17);
           objc_destroyWeak(&location);
@@ -65,7 +65,7 @@ LABEL_5:
 
 LABEL_6:
 
-  return a1;
+  return self;
 }
 
 void __36__LSSAssertion_initWithType_reason___block_invoke(uint64_t a1, void *a2)
@@ -166,11 +166,11 @@ LABEL_5:
   self->_connection = 0;
 }
 
-+ (id)acquire:(unsigned __int8)a3 reason:(id)a4
++ (id)acquire:(unsigned __int8)acquire reason:(id)reason
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [[LSSAssertion alloc] initWithType:v5 reason:?];
+  acquireCopy = acquire;
+  reasonCopy = reason;
+  v6 = [[LSSAssertion alloc] initWithType:reasonCopy reason:?];
 
   return v6;
 }

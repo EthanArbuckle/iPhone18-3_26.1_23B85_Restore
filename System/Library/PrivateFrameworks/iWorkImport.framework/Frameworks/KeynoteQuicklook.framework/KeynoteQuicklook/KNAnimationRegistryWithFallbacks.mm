@@ -1,7 +1,7 @@
 @interface KNAnimationRegistryWithFallbacks
 - (KNAnimationRegistryWithFallbacks)init;
-- (id)animationInfoForEffectIdentifier:(id)a3 animationType:(int64_t)a4;
-- (void)registerFallbackEffectIdentifer:(id)a3 forEffectIdentifer:(id)a4;
+- (id)animationInfoForEffectIdentifier:(id)identifier animationType:(int64_t)type;
+- (void)registerFallbackEffectIdentifer:(id)identifer forEffectIdentifer:(id)effectIdentifer;
 @end
 
 @implementation KNAnimationRegistryWithFallbacks
@@ -21,24 +21,24 @@
   return v4;
 }
 
-- (id)animationInfoForEffectIdentifier:(id)a3 animationType:(int64_t)a4
+- (id)animationInfoForEffectIdentifier:(id)identifier animationType:(int64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   fallbacks = self->_fallbacks;
-  if (!fallbacks || (objc_msgSend_objectForKeyedSubscript_(fallbacks, v6, v7), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!fallbacks || (objc_msgSend_objectForKeyedSubscript_(fallbacks, v6, identifierCopy), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v10 = v7;
+    v10 = identifierCopy;
   }
 
-  v11 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(self->_registry, v9, v10, a4);
+  v11 = objc_msgSend_animationInfoForEffectIdentifier_animationType_(self->_registry, v9, v10, type);
 
   return v11;
 }
 
-- (void)registerFallbackEffectIdentifer:(id)a3 forEffectIdentifer:(id)a4
+- (void)registerFallbackEffectIdentifer:(id)identifer forEffectIdentifer:(id)effectIdentifer
 {
-  v11 = a3;
-  v7 = a4;
+  identiferCopy = identifer;
+  effectIdentiferCopy = effectIdentifer;
   fallbacks = self->_fallbacks;
   if (!fallbacks)
   {
@@ -49,7 +49,7 @@
     fallbacks = self->_fallbacks;
   }
 
-  objc_msgSend_setObject_forKeyedSubscript_(fallbacks, v6, v11, v7);
+  objc_msgSend_setObject_forKeyedSubscript_(fallbacks, v6, identiferCopy, effectIdentiferCopy);
 }
 
 @end

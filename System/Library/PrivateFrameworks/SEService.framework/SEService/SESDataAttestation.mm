@@ -1,74 +1,74 @@
 @interface SESDataAttestation
-- (SESDataAttestation)initWithAppBundleID:(id)a3 nonce:(id)a4 signedData:(id)a5 signature:(id)a6;
-- (SESDataAttestation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SESDataAttestation)initWithAppBundleID:(id)d nonce:(id)nonce signedData:(id)data signature:(id)signature;
+- (SESDataAttestation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SESDataAttestation
 
-- (SESDataAttestation)initWithAppBundleID:(id)a3 nonce:(id)a4 signedData:(id)a5 signature:(id)a6
+- (SESDataAttestation)initWithAppBundleID:(id)d nonce:(id)nonce signedData:(id)data signature:(id)signature
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  nonceCopy = nonce;
+  dataCopy = data;
+  signatureCopy = signature;
   v18.receiver = self;
   v18.super_class = SESDataAttestation;
   v15 = [(SESDataAttestation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_appBundleID, a3);
-    objc_storeStrong(&v16->_nonce, a4);
-    objc_storeStrong(&v16->_signedData, a5);
-    objc_storeStrong(&v16->_signature, a6);
+    objc_storeStrong(&v15->_appBundleID, d);
+    objc_storeStrong(&v16->_nonce, nonce);
+    objc_storeStrong(&v16->_signedData, data);
+    objc_storeStrong(&v16->_signature, signature);
   }
 
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SESDataAttestation *)self appBundleID];
-  [v4 encodeObject:v5 forKey:@"appBundleID"];
+  coderCopy = coder;
+  appBundleID = [(SESDataAttestation *)self appBundleID];
+  [coderCopy encodeObject:appBundleID forKey:@"appBundleID"];
 
-  v6 = [(SESDataAttestation *)self nonce];
-  [v4 encodeObject:v6 forKey:@"nonce"];
+  nonce = [(SESDataAttestation *)self nonce];
+  [coderCopy encodeObject:nonce forKey:@"nonce"];
 
-  v7 = [(SESDataAttestation *)self signedData];
-  [v4 encodeObject:v7 forKey:@"signedData"];
+  signedData = [(SESDataAttestation *)self signedData];
+  [coderCopy encodeObject:signedData forKey:@"signedData"];
 
-  v8 = [(SESDataAttestation *)self signature];
-  [v4 encodeObject:v8 forKey:@"signature"];
+  signature = [(SESDataAttestation *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 }
 
-- (SESDataAttestation)initWithCoder:(id)a3
+- (SESDataAttestation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = SESDataAttestation;
   v5 = [(SESDataAttestation *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SESDataAttestation *)v5 appBundleID];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleID"];
+    appBundleID = [(SESDataAttestation *)v5 appBundleID];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleID"];
     appBundleID = v6->_appBundleID;
     v6->_appBundleID = v8;
 
-    v10 = [(SESDataAttestation *)v6 nonce];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    nonce = [(SESDataAttestation *)v6 nonce];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v6->_nonce;
     v6->_nonce = v11;
 
-    v13 = [(SESDataAttestation *)v6 signedData];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signedData"];
+    signedData = [(SESDataAttestation *)v6 signedData];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signedData"];
     signedData = v6->_signedData;
     v6->_signedData = v14;
 
-    v16 = [(SESDataAttestation *)v6 signature];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    signature = [(SESDataAttestation *)v6 signature];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v6->_signature;
     v6->_signature = v17;
   }

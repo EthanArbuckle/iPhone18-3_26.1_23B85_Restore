@@ -12,164 +12,164 @@
 - (TTRIContentUnavailableTextProperties)textProperties;
 - (UIImage)image;
 - (id)makeContentView;
-- (id)updatedConfigurationForState:(id)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setSecondaryAttributedText:(id)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setText:(id)a3;
+- (id)updatedConfigurationForState:(id)state;
+- (void)setAttributedText:(id)text;
+- (void)setImage:(id)image;
+- (void)setSecondaryAttributedText:(id)text;
+- (void)setSecondaryText:(id)text;
+- (void)setText:(id)text;
 @end
 
 @implementation TTRIContentUnavailableConfiguration
 
 + (id)emptyConfiguration
 {
-  v2 = [MEMORY[0x277D75390] emptyConfiguration];
-  v3 = [v2 asTTRI];
+  emptyConfiguration = [MEMORY[0x277D75390] emptyConfiguration];
+  asTTRI = [emptyConfiguration asTTRI];
 
-  return v3;
+  return asTTRI;
 }
 
 + (id)emptyProminentConfiguration
 {
-  v2 = [MEMORY[0x277D75390] emptyProminentConfiguration];
-  v3 = [v2 asTTRI];
+  emptyProminentConfiguration = [MEMORY[0x277D75390] emptyProminentConfiguration];
+  asTTRI = [emptyProminentConfiguration asTTRI];
 
-  return v3;
+  return asTTRI;
 }
 
 + (id)loadingConfiguration
 {
-  v2 = [MEMORY[0x277D75390] loadingConfiguration];
-  v3 = [v2 asTTRI];
+  loadingConfiguration = [MEMORY[0x277D75390] loadingConfiguration];
+  asTTRI = [loadingConfiguration asTTRI];
 
-  return v3;
+  return asTTRI;
 }
 
 + (id)searchConfiguration
 {
-  v2 = [MEMORY[0x277D75390] searchConfiguration];
-  v3 = [v2 asTTRI];
+  searchConfiguration = [MEMORY[0x277D75390] searchConfiguration];
+  asTTRI = [searchConfiguration asTTRI];
 
-  return v3;
+  return asTTRI;
 }
 
 - (UIImage)image
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 image];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  image = [asUIKit image];
 
-  return v3;
+  return image;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  [v5 setImage:v4];
+  imageCopy = image;
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  [asUIKit setImage:imageCopy];
 }
 
 - (NSString)text
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 text];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  text = [asUIKit text];
 
-  return v3;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  [v5 setText:v4];
+  textCopy = text;
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  [asUIKit setText:textCopy];
 }
 
 - (NSAttributedString)attributedText
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 attributedText];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  attributedText = [asUIKit attributedText];
 
-  return v3;
+  return attributedText;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  [v5 setAttributedText:v4];
+  textCopy = text;
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  [asUIKit setAttributedText:textCopy];
 }
 
 - (TTRIContentUnavailableTextProperties)textProperties
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 textProperties];
-  v4 = [v3 asTTRI];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  textProperties = [asUIKit textProperties];
+  asTTRI = [textProperties asTTRI];
 
-  return v4;
+  return asTTRI;
 }
 
 - (NSString)secondaryText
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 secondaryText];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  secondaryText = [asUIKit secondaryText];
 
-  return v3;
+  return secondaryText;
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v4 = a3;
-  v5 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  [v5 setSecondaryText:v4];
+  textCopy = text;
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  [asUIKit setSecondaryText:textCopy];
 }
 
 - (NSAttributedString)secondaryAttributedText
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 secondaryAttributedText];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  secondaryAttributedText = [asUIKit secondaryAttributedText];
 
-  return v3;
+  return secondaryAttributedText;
 }
 
-- (void)setSecondaryAttributedText:(id)a3
+- (void)setSecondaryAttributedText:(id)text
 {
-  v4 = a3;
-  v5 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  [v5 setSecondaryAttributedText:v4];
+  textCopy = text;
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  [asUIKit setSecondaryAttributedText:textCopy];
 }
 
 - (TTRIContentUnavailableTextProperties)secondaryTextProperties
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 secondaryTextProperties];
-  v4 = [v3 asTTRI];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  secondaryTextProperties = [asUIKit secondaryTextProperties];
+  asTTRI = [secondaryTextProperties asTTRI];
 
-  return v4;
+  return asTTRI;
 }
 
 - (TTRIContentUnavailableButtonProperties)buttonProperties
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 buttonProperties];
-  v4 = [v3 asTTRI];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  buttonProperties = [asUIKit buttonProperties];
+  asTTRI = [buttonProperties asTTRI];
 
-  return v4;
+  return asTTRI;
 }
 
 - (id)makeContentView
 {
-  v2 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v3 = [v2 makeContentView];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  makeContentView = [asUIKit makeContentView];
 
-  return v3;
+  return makeContentView;
 }
 
-- (id)updatedConfigurationForState:(id)a3
+- (id)updatedConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_opt_class();
-  v6 = [(TTRIContentUnavailableConfiguration *)self asUIKit];
-  v7 = [v6 updatedConfigurationForState:v4];
+  asUIKit = [(TTRIContentUnavailableConfiguration *)self asUIKit];
+  v7 = [asUIKit updatedConfigurationForState:stateCopy];
 
   v8 = [v5 instanceWrappingImpl:v7];
 

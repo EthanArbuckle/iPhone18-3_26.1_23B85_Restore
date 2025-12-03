@@ -1,6 +1,6 @@
 @interface PuzzleRadarReporter
 - (_TtC7NewsUI219PuzzleRadarReporter)init;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation PuzzleRadarReporter
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_219661FD4(a3);
+  selfCopy = self;
+  sub_219661FD4(message);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

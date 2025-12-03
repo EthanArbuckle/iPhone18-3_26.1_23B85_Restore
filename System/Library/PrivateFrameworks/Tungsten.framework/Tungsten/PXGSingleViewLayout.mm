@@ -1,13 +1,13 @@
 @interface PXGSingleViewLayout
 - ($B30C796585FC215A6CA6704F8BA3D5B6)cornerRadius;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (PXGSingleViewLayout)init;
 - (PXGSingleViewLayoutDelegate)delegate;
 - (PXGSpriteReference)viewSpriteReference;
 - (UIEdgeInsets)padding;
-- (id)axSpriteIndexesInRect:(CGRect)a3;
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)axSpriteIndexesInRect:(CGRect)rect;
+- (id)hitTestResultForSpriteIndex:(unsigned int)index;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (void)_invalidateContent;
 - (void)_updateContent;
 - (void)alphaDidChange;
@@ -16,12 +16,12 @@
 - (void)didUpdate;
 - (void)displayScaleDidChange;
 - (void)referenceSizeDidChange;
-- (void)setContentView:(id)a3;
-- (void)setContentViewClass:(Class)a3;
-- (void)setCornerRadius:(id)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setZPosition:(float)a3;
+- (void)setContentView:(id)view;
+- (void)setContentViewClass:(Class)class;
+- (void)setCornerRadius:(id)radius;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setStyle:(int64_t)style;
+- (void)setZPosition:(float)position;
 - (void)update;
 - (void)willUpdate;
 @end
@@ -55,12 +55,12 @@
   return WeakRetained;
 }
 
-- (id)axSpriteIndexesInRect:(CGRect)a3
+- (id)axSpriteIndexesInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = *MEMORY[0x277CBF348];
   v9 = *(MEMORY[0x277CBF348] + 8);
   [(PXGLayout *)self contentSize];
@@ -85,17 +85,17 @@
   return v12;
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  if ([(PXGSingleViewLayout *)self contentViewClass:*&a3])
+  if ([(PXGSingleViewLayout *)self contentViewClass:*&index])
   {
-    v5 = [(PXGSingleViewLayout *)self delegate];
+    delegate = [(PXGSingleViewLayout *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(PXGSingleViewLayout *)self delegate];
-      v8 = [v7 configurationForSingleViewLayout:self];
+      delegate2 = [(PXGSingleViewLayout *)self delegate];
+      v8 = [delegate2 configurationForSingleViewLayout:self];
     }
 
     else
@@ -109,16 +109,16 @@
   else
   {
     v9 = [PXGSingleViewUserData alloc];
-    v10 = [(PXGSingleViewLayout *)self contentView];
-    v8 = [(PXGSingleViewUserData *)v9 initWithContentView:v10];
+    contentView = [(PXGSingleViewLayout *)self contentView];
+    v8 = [(PXGSingleViewUserData *)v9 initWithContentView:contentView];
   }
 
   return v8;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v4 = [(PXGSingleViewLayout *)self contentViewClass:*&a3];
+  v4 = [(PXGSingleViewLayout *)self contentViewClass:*&index];
   if (!v4)
   {
     v4 = objc_opt_class();
@@ -129,16 +129,16 @@
 
 - (void)_updateContent
 {
-  v4 = [(PXGSingleViewLayout *)self contentView];
-  if (v4)
+  contentView = [(PXGSingleViewLayout *)self contentView];
+  if (contentView)
   {
-    v5 = v4;
-    v6 = [(PXGSingleViewLayout *)self contentViewClass];
+    v5 = contentView;
+    contentViewClass = [(PXGSingleViewLayout *)self contentViewClass];
 
-    if (v6)
+    if (contentViewClass)
     {
-      v30 = [MEMORY[0x277CCA890] currentHandler];
-      [v30 handleFailureInMethod:a2 object:self file:@"PXGSingleViewLayout.m" lineNumber:190 description:@"Content may be specified via contentView or contentViewClass but not both"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSingleViewLayout.m" lineNumber:190 description:@"Content may be specified via contentView or contentViewClass but not both"];
     }
   }
 
@@ -163,8 +163,8 @@
   v20 = v19;
   if ([(PXGSingleViewLayout *)self contentViewClass]|| (v26 = [(PXGSingleViewLayout *)self style], v26 == 2))
   {
-    v21 = [(PXGSingleViewLayout *)self delegate];
-    [v21 singleViewLayout:self desiredSizeForReferenceSize:{v16, v18}];
+    delegate = [(PXGSingleViewLayout *)self delegate];
+    [delegate singleViewLayout:self desiredSizeForReferenceSize:{v16, v18}];
     v16 = v22;
     v18 = v23;
 LABEL_8:
@@ -174,30 +174,30 @@ LABEL_8:
 
   if (v26 == 1)
   {
-    v21 = [(PXGSingleViewLayout *)self contentView];
-    if (!v21)
+    delegate = [(PXGSingleViewLayout *)self contentView];
+    if (!delegate)
     {
       v16 = 0.0;
       goto LABEL_8;
     }
 
-    v27 = [(PXGSingleViewLayout *)self contentView];
-    [v27 sizeThatFits:{1.79769313e308, v18}];
+    contentView2 = [(PXGSingleViewLayout *)self contentView];
+    [contentView2 sizeThatFits:{1.79769313e308, v18}];
     v16 = v29;
     goto LABEL_21;
   }
 
   if (!v26)
   {
-    v21 = [(PXGSingleViewLayout *)self contentView];
-    if (!v21)
+    delegate = [(PXGSingleViewLayout *)self contentView];
+    if (!delegate)
     {
       v18 = 0.0;
       goto LABEL_8;
     }
 
-    v27 = [(PXGSingleViewLayout *)self contentView];
-    [v27 sizeThatFits:{v16, 1.79769313e308}];
+    contentView2 = [(PXGSingleViewLayout *)self contentView];
+    [contentView2 sizeThatFits:{v16, 1.79769313e308}];
     v18 = v28;
 LABEL_21:
 
@@ -305,9 +305,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSingleViewLayout _invalidateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGSingleViewLayout.m" lineNumber:186 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGSingleViewLayout.m" lineNumber:186 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -336,9 +336,9 @@ LABEL_5:
   [(PXGLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSingleViewLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGSingleViewLayout.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGSingleViewLayout.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
@@ -351,9 +351,9 @@ LABEL_5:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSingleViewLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXGSingleViewLayout.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXGSingleViewLayout.m" lineNumber:172 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -370,9 +370,9 @@ LABEL_5:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSingleViewLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGSingleViewLayout.m" lineNumber:176 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGSingleViewLayout.m" lineNumber:176 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -389,24 +389,24 @@ LABEL_5:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGSingleViewLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGSingleViewLayout.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGSingleViewLayout.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
-- (id)hitTestResultForSpriteIndex:(unsigned int)a3
+- (id)hitTestResultForSpriteIndex:(unsigned int)index
 {
-  if (a3)
+  if (index)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGSingleViewLayout.m" lineNumber:158 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGSingleViewLayout.m" lineNumber:158 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
   v4 = [(PXGLayout *)self spriteReferenceForSpriteIndex:?];
-  v5 = [(PXGSingleViewLayout *)self delegate];
+  delegate = [(PXGSingleViewLayout *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0 || (-[PXGSingleViewLayout delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 singleViewLayout:self hitTestResultForSpriteReference:v4], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
@@ -419,12 +419,12 @@ LABEL_5:
 
 - (PXGSpriteReference)viewSpriteReference
 {
-  v3 = [(PXGSingleViewLayout *)self viewSpriteIndex];
+  viewSpriteIndex = [(PXGSingleViewLayout *)self viewSpriteIndex];
 
-  return [(PXGLayout *)self spriteReferenceForSpriteIndex:v3];
+  return [(PXGLayout *)self spriteReferenceForSpriteIndex:viewSpriteIndex];
 }
 
-- (void)setCornerRadius:(id)a3
+- (void)setCornerRadius:(id)radius
 {
   v7.i64[0] = __PAIR64__(LODWORD(v4), LODWORD(v3));
   v7.i64[1] = __PAIR64__(LODWORD(v6), LODWORD(v5));
@@ -434,25 +434,25 @@ LABEL_5:
     self->_cornerRadius.var0.var0.topRight = v4;
     self->_cornerRadius.var0.var0.bottomLeft = v5;
     self->_cornerRadius.var0.var0.bottomRight = v6;
-    [(PXGSingleViewLayout *)self _invalidateContent:*&a3.var0.var0.var0];
+    [(PXGSingleViewLayout *)self _invalidateContent:*&radius.var0.var0.var0];
   }
 }
 
-- (void)setZPosition:(float)a3
+- (void)setZPosition:(float)position
 {
-  if (self->_zPosition != a3)
+  if (self->_zPosition != position)
   {
-    self->_zPosition = a3;
+    self->_zPosition = position;
     [(PXGSingleViewLayout *)self _invalidateContent];
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   p_padding = &self->_padding;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -465,45 +465,45 @@ LABEL_5:
   }
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(PXGSingleViewLayout *)self _invalidateContent];
   }
 }
 
-- (void)setContentViewClass:(Class)a3
+- (void)setContentViewClass:(Class)class
 {
-  if (self->_contentViewClass != a3)
+  if (self->_contentViewClass != class)
   {
-    objc_storeStrong(&self->_contentViewClass, a3);
+    objc_storeStrong(&self->_contentViewClass, class);
 
     [(PXGSingleViewLayout *)self _invalidateMediaVersion];
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    object = v5;
+    object = viewCopy;
     if (contentView)
     {
       objc_setAssociatedObject(contentView, PXGSingleViewLayoutAssociationKey, 0, 0);
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     if (object)
     {
       objc_setAssociatedObject(object, PXGSingleViewLayoutAssociationKey, self, 0);
     }
 
     [(PXGSingleViewLayout *)self _invalidateMediaVersion];
-    v5 = object;
+    viewCopy = object;
   }
 }
 
@@ -536,13 +536,13 @@ LABEL_5:
   v6.receiver = self;
   v6.super_class = PXGSingleViewLayout;
   [(PXGLayout *)&v6 appearStateDidChange];
-  v3 = [(PXGSingleViewLayout *)self delegate];
+  delegate = [(PXGSingleViewLayout *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PXGSingleViewLayout *)self delegate];
-    [v5 appearStateDidChangeForSingleViewLayout:self];
+    delegate2 = [(PXGSingleViewLayout *)self delegate];
+    [delegate2 appearStateDidChangeForSingleViewLayout:self];
   }
 }
 

@@ -1,32 +1,32 @@
 @interface ASSettingsDataclassConfigurationViewController
-- (BOOL)_isNetworkOfflineError:(id)a3;
-- (BOOL)_storeHasDuplicateForUsername:(id)a3 withoutIdentifier:(id)a4 withAccountType:(id)a5;
+- (BOOL)_isNetworkOfflineError:(id)error;
+- (BOOL)_storeHasDuplicateForUsername:(id)username withoutIdentifier:(id)identifier withAccountType:(id)type;
 - (Class)accountInfoControllerClass;
 - (id)_reAuthenticationSectionSpecifiers;
 - (id)accountDescriptionForFirstTimeSetup;
 - (id)accountFromSpecifier;
-- (id)accountIntegerPropertyWithSpecifier:(id)a3;
-- (id)numFoldersToPushString:(id)a3;
+- (id)accountIntegerPropertyWithSpecifier:(id)specifier;
+- (id)numFoldersToPushString:(id)string;
 - (id)otherSpecifiers;
-- (id)outOfOfficeEnabled:(id)a3;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
+- (id)outOfOfficeEnabled:(id)enabled;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
 - (id)specifiers;
-- (void)OAuthAccount:(id)a3 authorizationURI:(id)a4 error:(id)a5;
-- (void)_autodiscoverOAuthAccountIsOnPrem:(BOOL)a3;
+- (void)OAuthAccount:(id)account authorizationURI:(id)i error:(id)error;
+- (void)_autodiscoverOAuthAccountIsOnPrem:(BOOL)prem;
 - (void)_disableReAuthenticationButton;
 - (void)_enableReAuthenticationButton;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4;
+- (void)_presentAlertWithTitle:(id)title message:(id)message;
 - (void)_reAuthenticationButtonTapped;
 - (void)checkAndFetchOutOfOfficeState;
 - (void)dealloc;
 - (void)fetchingOutOfOfficeState;
-- (void)handleRedirectURL:(id)a3;
-- (void)handleURL:(id)a3;
-- (void)oofRequestInfo:(id)a3 finishedWithResult:(id)a4 error:(id)a5;
+- (void)handleRedirectURL:(id)l;
+- (void)handleURL:(id)l;
+- (void)oofRequestInfo:(id)info finishedWithResult:(id)result error:(id)error;
 - (void)reloadAccount;
 - (void)removeOutOfOfficeSpecifier;
-- (void)saveOutOfOfficeData:(id)a3;
-- (void)setAccountIntegerProperty:(id)a3 withSpecifier:(id)a4;
+- (void)saveOutOfOfficeData:(id)data;
+- (void)setAccountIntegerProperty:(id)property withSpecifier:(id)specifier;
 - (void)updateOutOfOfficeSpecifier;
 @end
 
@@ -34,9 +34,9 @@
 
 - (Class)accountInfoControllerClass
 {
-  v2 = [objc_opt_class() isHotmailAccount];
+  isHotmailAccount = [objc_opt_class() isHotmailAccount];
   v3 = off_30300;
-  if (!v2)
+  if (!isHotmailAccount)
   {
     v3 = off_302F0;
   }
@@ -52,38 +52,38 @@
   if ([objc_opt_class() isHotmailAccount])
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = v3;
+    account2 = v3;
     v5 = @"HOTMAIL";
   }
 
   else
   {
-    v6 = [(ASSettingsDataclassConfigurationViewController *)self account];
-    v7 = [v6 accountDescription];
+    account = [(ASSettingsDataclassConfigurationViewController *)self account];
+    accountDescription = [account accountDescription];
 
-    if (v7)
+    if (accountDescription)
     {
-      v4 = [(ASSettingsDataclassConfigurationViewController *)self account];
-      v8 = [v4 accountDescription];
+      account2 = [(ASSettingsDataclassConfigurationViewController *)self account];
+      accountDescription2 = [account2 accountDescription];
       goto LABEL_7;
     }
 
     v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = v3;
+    account2 = v3;
     v5 = @"EXCHANGE";
   }
 
-  v8 = [v3 localizedStringForKey:v5 value:&stru_30C98 table:@"ASAccountSetup"];
+  accountDescription2 = [v3 localizedStringForKey:v5 value:&stru_30C98 table:@"ASAccountSetup"];
 LABEL_7:
-  v9 = v8;
+  v9 = accountDescription2;
 
   return v9;
 }
 
 - (void)reloadAccount
 {
-  v2 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-  [v2 reload];
+  daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+  [daAccount reload];
 }
 
 - (void)dealloc
@@ -109,56 +109,56 @@ LABEL_7:
 {
   if (([objc_opt_class() isHotmailAccount] & 1) == 0)
   {
-    v3 = [(ASSettingsDataclassConfigurationViewController *)self account];
-    v4 = [v3 objectForKeyedSubscript:kESExchangeOAuthSupportedKey];
+    account = [(ASSettingsDataclassConfigurationViewController *)self account];
+    v4 = [account objectForKeyedSubscript:kESExchangeOAuthSupportedKey];
     if (v4)
     {
     }
 
     else
     {
-      v5 = [(ASSettingsDataclassConfigurationViewController *)self account];
-      v6 = [v5 migrationStatus];
+      account2 = [(ASSettingsDataclassConfigurationViewController *)self account];
+      migrationStatus = [account2 migrationStatus];
 
-      if (v6 != &dword_0 + 1)
+      if (migrationStatus != &dword_0 + 1)
       {
         v35.receiver = self;
         v35.super_class = ASSettingsDataclassConfigurationViewController;
-        v7 = [(ESSettingsDataclassConfigurationViewController *)&v35 specifiers];
+        specifiers = [(ESSettingsDataclassConfigurationViewController *)&v35 specifiers];
         goto LABEL_31;
       }
     }
   }
 
-  v7 = objc_opt_new();
-  v8 = [(ASSettingsDataclassConfigurationViewController *)self account];
-  v9 = [v8 isAuthenticated];
+  specifiers = objc_opt_new();
+  account3 = [(ASSettingsDataclassConfigurationViewController *)self account];
+  isAuthenticated = [account3 isAuthenticated];
 
-  if (v9 && (-[ASSettingsDataclassConfigurationViewController account](self, "account"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 migrationStatus], v10, v11 != &dword_0 + 1))
+  if (isAuthenticated && (-[ASSettingsDataclassConfigurationViewController account](self, "account"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 migrationStatus], v10, v11 != &dword_0 + 1))
   {
-    v12 = 0;
+    _reAuthenticationSectionSpecifiers = 0;
   }
 
   else
   {
-    v12 = [(ASSettingsDataclassConfigurationViewController *)self _reAuthenticationSectionSpecifiers];
-    [v7 addObjectsFromArray:v12];
+    _reAuthenticationSectionSpecifiers = [(ASSettingsDataclassConfigurationViewController *)self _reAuthenticationSectionSpecifiers];
+    [specifiers addObjectsFromArray:_reAuthenticationSectionSpecifiers];
   }
 
   v40.receiver = self;
   v40.super_class = ASSettingsDataclassConfigurationViewController;
-  v13 = [(ESSettingsDataclassConfigurationViewController *)&v40 specifiers];
-  v14 = [v13 mutableCopy];
-  [v7 addObjectsFromArray:v14];
+  specifiers2 = [(ESSettingsDataclassConfigurationViewController *)&v40 specifiers];
+  v14 = [specifiers2 mutableCopy];
+  [specifiers addObjectsFromArray:v14];
 
-  if (!v9 || [(ASSettingsDataclassConfigurationViewController *)self isAccountModificationDisabled])
+  if (!isAuthenticated || [(ASSettingsDataclassConfigurationViewController *)self isAccountModificationDisabled])
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v34 = v7;
-    v15 = v7;
+    v34 = specifiers;
+    v15 = specifiers;
     v16 = [v15 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v16)
     {
@@ -175,15 +175,15 @@ LABEL_7:
           }
 
           v21 = *(*(&v36 + 1) + 8 * i);
-          v22 = [(ASSettingsDataclassConfigurationViewController *)self deleteButtonSpecifier];
-          v23 = v22;
-          if (v21 == v22)
+          deleteButtonSpecifier = [(ASSettingsDataclassConfigurationViewController *)self deleteButtonSpecifier];
+          v23 = deleteButtonSpecifier;
+          if (v21 == deleteButtonSpecifier)
           {
           }
 
           else
           {
-            v24 = [v12 containsObject:v21];
+            v24 = [_reAuthenticationSectionSpecifiers containsObject:v21];
 
             if ((v24 & 1) == 0)
             {
@@ -198,21 +198,21 @@ LABEL_7:
       while (v17);
     }
 
-    v7 = v34;
+    specifiers = v34;
   }
 
-  if ([v7 count])
+  if ([specifiers count])
   {
-    v25 = [v7 objectAtIndexedSubscript:0];
-    v26 = [v25 name];
-    v27 = [v26 length];
+    v25 = [specifiers objectAtIndexedSubscript:0];
+    name = [v25 name];
+    v27 = [name length];
 
     if (v27)
     {
-      v28 = [objc_opt_class() isHotmailAccount];
+      isHotmailAccount = [objc_opt_class() isHotmailAccount];
       v29 = [NSBundle bundleForClass:objc_opt_class()];
       v30 = v29;
-      if (v28)
+      if (isHotmailAccount)
       {
         v31 = @"HOTMAIL";
       }
@@ -227,18 +227,18 @@ LABEL_7:
     }
   }
 
-  objc_storeStrong(&self->super.ACUIDataclassConfigurationViewController_opaque[OBJC_IVAR___PSListController__specifiers], v7);
+  objc_storeStrong(&self->super.ACUIDataclassConfigurationViewController_opaque[OBJC_IVAR___PSListController__specifiers], specifiers);
 
 LABEL_31:
 
-  return v7;
+  return specifiers;
 }
 
 - (id)accountFromSpecifier
 {
-  v2 = [(ASSettingsDataclassConfigurationViewController *)self specifier];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:ACUIAccountKey];
+  specifier = [(ASSettingsDataclassConfigurationViewController *)self specifier];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:ACUIAccountKey];
 
   if (v4)
   {
@@ -270,9 +270,9 @@ LABEL_31:
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[PSSpecifier emptyGroupSpecifier];
-  v5 = [(ASSettingsDataclassConfigurationViewController *)self account];
-  v6 = [v5 username];
-  [v4 setProperty:v6 forKey:@"EASNameForAccountToAuthenticate"];
+  account = [(ASSettingsDataclassConfigurationViewController *)self account];
+  username = [account username];
+  [v4 setProperty:username forKey:@"EASNameForAccountToAuthenticate"];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
@@ -287,74 +287,74 @@ LABEL_31:
   v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:objc_opt_class() cell:13 edit:0];
   [(ASSettingsDataclassConfigurationViewController *)self setReAuthenticationButtonSpecifier:v12];
 
-  v13 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
-  [v13 setButtonAction:"_reAuthenticationButtonTapped"];
+  reAuthenticationButtonSpecifier = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
+  [reAuthenticationButtonSpecifier setButtonAction:"_reAuthenticationButtonTapped"];
 
-  v14 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
-  [v3 addObject:v14];
+  reAuthenticationButtonSpecifier2 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
+  [v3 addObject:reAuthenticationButtonSpecifier2];
 
   return v3;
 }
 
 - (void)_enableReAuthenticationButton
 {
-  v3 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
-  [v3 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
+  reAuthenticationButtonSpecifier = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
+  [reAuthenticationButtonSpecifier setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
 
-  v4 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
-  [(ASSettingsDataclassConfigurationViewController *)self reloadSpecifier:v4];
+  reAuthenticationButtonSpecifier2 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
+  [(ASSettingsDataclassConfigurationViewController *)self reloadSpecifier:reAuthenticationButtonSpecifier2];
 }
 
 - (void)_disableReAuthenticationButton
 {
-  v3 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
-  [v3 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+  reAuthenticationButtonSpecifier = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
+  [reAuthenticationButtonSpecifier setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
 
-  v4 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
-  [(ASSettingsDataclassConfigurationViewController *)self reloadSpecifier:v4];
+  reAuthenticationButtonSpecifier2 = [(ASSettingsDataclassConfigurationViewController *)self reAuthenticationButtonSpecifier];
+  [(ASSettingsDataclassConfigurationViewController *)self reloadSpecifier:reAuthenticationButtonSpecifier2];
 }
 
-- (BOOL)_storeHasDuplicateForUsername:(id)a3 withoutIdentifier:(id)a4 withAccountType:(id)a5
+- (BOOL)_storeHasDuplicateForUsername:(id)username withoutIdentifier:(id)identifier withAccountType:(id)type
 {
-  v8 = a3;
-  v39 = a4;
-  v9 = a5;
-  v10 = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
-  v11 = [v10 accountsWithAccountType:v9];
+  usernameCopy = username;
+  identifierCopy = identifier;
+  typeCopy = type;
+  accountStore = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
+  v11 = [accountStore accountsWithAccountType:typeCopy];
   v12 = [v11 mutableCopy];
 
-  v13 = [v9 identifier];
+  identifier = [typeCopy identifier];
   v14 = ACAccountTypeIdentifierExchange;
-  v15 = [v13 isEqualToString:ACAccountTypeIdentifierExchange];
+  v15 = [identifier isEqualToString:ACAccountTypeIdentifierExchange];
 
   if (v15)
   {
-    v16 = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
-    v17 = v16;
+    accountStore2 = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
+    v17 = accountStore2;
     v18 = ACAccountTypeIdentifierHotmail;
   }
 
   else
   {
-    v19 = [v9 identifier];
-    v20 = [v19 isEqualToString:ACAccountTypeIdentifierHotmail];
+    identifier2 = [typeCopy identifier];
+    v20 = [identifier2 isEqualToString:ACAccountTypeIdentifierHotmail];
 
     if (!v20)
     {
       goto LABEL_7;
     }
 
-    v16 = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
-    v17 = v16;
+    accountStore2 = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
+    v17 = accountStore2;
     v18 = v14;
   }
 
-  v21 = [v16 accountTypeWithAccountTypeIdentifier:v18];
+  v21 = [accountStore2 accountTypeWithAccountTypeIdentifier:v18];
 
   if (v21)
   {
-    v22 = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
-    v23 = [v22 accountsWithAccountType:v21];
+    accountStore3 = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
+    v23 = [accountStore3 accountsWithAccountType:v21];
     [v12 addObjectsFromArray:v23];
   }
 
@@ -368,7 +368,7 @@ LABEL_7:
   if (v25)
   {
     v26 = v25;
-    v38 = v9;
+    v38 = typeCopy;
     v27 = *v41;
     v28 = kDAAccountEmailAddress;
     while (2)
@@ -381,13 +381,13 @@ LABEL_7:
         }
 
         v30 = *(*(&v40 + 1) + 8 * i);
-        v31 = [v30 identifier];
-        v32 = [v39 compare:v31 options:1];
+        identifier3 = [v30 identifier];
+        v32 = [identifierCopy compare:identifier3 options:1];
 
         if (v32)
         {
-          v33 = [v30 username];
-          if (![v8 compare:v33 options:1])
+          username = [v30 username];
+          if (![usernameCopy compare:username options:1])
           {
 
             v35 = 1;
@@ -396,7 +396,7 @@ LABEL_7:
 
           v34 = [v30 objectForKeyedSubscript:v28];
           v35 = 1;
-          v36 = [v8 compare:v34 options:1];
+          v36 = [usernameCopy compare:v34 options:1];
 
           if (!v36)
           {
@@ -416,7 +416,7 @@ LABEL_7:
 
     v35 = 0;
 LABEL_20:
-    v9 = v38;
+    typeCopy = v38;
   }
 
   else
@@ -427,18 +427,18 @@ LABEL_20:
   return v35;
 }
 
-- (void)handleRedirectURL:(id)a3
+- (void)handleRedirectURL:(id)l
 {
   v53 = a2;
-  v54 = a3;
+  lCopy = l;
   v3 = [NSURLComponents componentsWithURL:"componentsWithURL:resolvingAgainstBaseURL:" resolvingAgainstBaseURL:?];
-  v4 = [v3 queryItems];
+  queryItems = [v3 queryItems];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v4;
+  obj = queryItems;
   v5 = [obj countByEnumeratingWithState:&v62 objects:v71 count:16];
   if (!v5)
   {
@@ -465,53 +465,53 @@ LABEL_20:
       }
 
       v9 = *(*(&v62 + 1) + 8 * i);
-      v10 = [v9 name];
-      v11 = [v10 caseInsensitiveCompare:@"code"] == 0;
+      name = [v9 name];
+      v11 = [name caseInsensitiveCompare:@"code"] == 0;
 
       if (v11)
       {
-        v20 = [v9 value];
+        value = [v9 value];
         v19 = v6;
-        v6 = v20;
+        v6 = value;
       }
 
       else
       {
-        v12 = [v9 name];
-        v13 = [v12 caseInsensitiveCompare:@"state"] == 0;
+        name2 = [v9 name];
+        v13 = [name2 caseInsensitiveCompare:@"state"] == 0;
 
         if (v13)
         {
-          v21 = [v9 value];
+          value2 = [v9 value];
           v19 = v58;
-          v58 = v21;
+          v58 = value2;
         }
 
         else
         {
-          v14 = [v9 name];
-          v15 = [v14 caseInsensitiveCompare:@"error"] == 0;
+          name3 = [v9 name];
+          v15 = [name3 caseInsensitiveCompare:@"error"] == 0;
 
           if (v15)
           {
-            v22 = [v9 value];
+            value3 = [v9 value];
             v19 = v57;
-            v57 = v22;
+            v57 = value3;
           }
 
           else
           {
-            v16 = [v9 name];
-            v17 = [v16 caseInsensitiveCompare:@"error_description"] == 0;
+            name4 = [v9 name];
+            v17 = [name4 caseInsensitiveCompare:@"error_description"] == 0;
 
             if (!v17)
             {
               continue;
             }
 
-            v18 = [v9 value];
+            value4 = [v9 value];
             v19 = v56;
-            v56 = v18;
+            v56 = value4;
           }
         }
       }
@@ -524,19 +524,19 @@ LABEL_20:
 
   if (v6)
   {
-    v23 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
-    v24 = [v23 state];
-    v25 = [v58 isEqualToString:v24];
+    oauthFlowController = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
+    state = [oauthFlowController state];
+    v25 = [v58 isEqualToString:state];
 
     if (v25)
     {
       objc_initWeak(location, self);
-      v26 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
-      v27 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
-      v28 = [v27 challenge];
-      v29 = [v28 codeVerifier];
-      v30 = [(ASSettingsDataclassConfigurationViewController *)self account];
-      v31 = [v30 objectForKeyedSubscript:kESExchangePendingClaimsChallenge];
+      oauthFlowController2 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
+      oauthFlowController3 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
+      challenge = [oauthFlowController3 challenge];
+      codeVerifier = [challenge codeVerifier];
+      account = [(ASSettingsDataclassConfigurationViewController *)self account];
+      v31 = [account objectForKeyedSubscript:kESExchangePendingClaimsChallenge];
       v60[0] = _NSConcreteStackBlock;
       v60[1] = 3221225472;
       v60[2] = sub_16A30;
@@ -544,7 +544,7 @@ LABEL_20:
       objc_copyWeak(v61, location);
       v60[4] = self;
       v61[1] = v53;
-      [v26 exchangeAuthCode:v6 codeVerifier:v29 claims:v31 withCompletion:v60];
+      [oauthFlowController2 exchangeAuthCode:v6 codeVerifier:codeVerifier claims:v31 withCompletion:v60];
 
       objc_destroyWeak(v61);
       objc_destroyWeak(location);
@@ -577,14 +577,14 @@ LABEL_22:
   {
     if (v37)
     {
-      v38 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
-      v39 = [v38 state];
+      oauthFlowController4 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
+      state2 = [oauthFlowController4 state];
       *location = 138412802;
       *&location[4] = v6;
       v67 = 2112;
       v68 = v58;
       v69 = 2112;
-      v70 = v39;
+      v70 = state2;
       _os_log_impl(&dword_0, v35, v36, "DAEASOAuthWebViewController failed with authCode %@, state %@ [self.oauthFlowController state] %@", location, 0x20u);
     }
 
@@ -646,23 +646,23 @@ LABEL_29:
   type = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v4, type))
   {
-    v5 = [(ASSettingsDataclassConfigurationViewController *)self account];
-    v6 = [v5 accountType];
-    v2 = [v6 identifier];
+    account = [(ASSettingsDataclassConfigurationViewController *)self account];
+    accountType = [account accountType];
+    identifier = [accountType identifier];
     *buf = 138412290;
-    v94 = v2;
+    v94 = identifier;
     _os_log_impl(&dword_0, v4, type, "_reAuthenticationButtonTapped for account type: %@.", buf, 0xCu);
   }
 
-  v7 = [(ASSettingsDataclassConfigurationViewController *)self account];
+  account2 = [(ASSettingsDataclassConfigurationViewController *)self account];
   v8 = kESExchangeOAuthSupportedKey;
-  v9 = [v7 objectForKeyedSubscript:kESExchangeOAuthSupportedKey];
-  if (v9 || (-[ASSettingsDataclassConfigurationViewController account](self, "account"), v2 = objc_claimAutoreleasedReturnValue(), [v2 migrationStatus] == &dword_0 + 1))
+  v9 = [account2 objectForKeyedSubscript:kESExchangeOAuthSupportedKey];
+  if (v9 || (-[ASSettingsDataclassConfigurationViewController account](self, "account"), identifier = objc_claimAutoreleasedReturnValue(), [identifier migrationStatus] == &dword_0 + 1))
   {
-    v10 = [(ASSettingsDataclassConfigurationViewController *)self account];
-    v11 = [v10 accountType];
-    v12 = [v11 identifier];
-    v13 = [v12 isEqualToString:ACAccountTypeIdentifierHotmail];
+    account3 = [(ASSettingsDataclassConfigurationViewController *)self account];
+    accountType2 = [account3 accountType];
+    identifier2 = [accountType2 identifier];
+    v13 = [identifier2 isEqualToString:ACAccountTypeIdentifierHotmail];
 
     if (v9)
     {
@@ -674,30 +674,30 @@ LABEL_29:
 
     if ((v13 & 1) == 0)
     {
-      v14 = [(ASSettingsDataclassConfigurationViewController *)self account];
-      v80 = [v14 objectForKeyedSubscript:kESExchangeOAuthURI];
+      account4 = [(ASSettingsDataclassConfigurationViewController *)self account];
+      v80 = [account4 objectForKeyedSubscript:kESExchangeOAuthURI];
 
-      v15 = [(ASSettingsDataclassConfigurationViewController *)self account];
-      v79 = [v15 objectForKeyedSubscript:kESEASEndPointFQDN];
+      account5 = [(ASSettingsDataclassConfigurationViewController *)self account];
+      v79 = [account5 objectForKeyedSubscript:kESEASEndPointFQDN];
 
-      v16 = [(ASSettingsDataclassConfigurationViewController *)self account];
-      v78 = [v16 objectForKeyedSubscript:kESAccountDiscoveredHost];
+      account6 = [(ASSettingsDataclassConfigurationViewController *)self account];
+      v78 = [account6 objectForKeyedSubscript:kESAccountDiscoveredHost];
 
-      v17 = [(ASSettingsDataclassConfigurationViewController *)self account];
-      v81 = [v17 objectForKeyedSubscript:kESExchangeOAuthOnPremKey];
+      account7 = [(ASSettingsDataclassConfigurationViewController *)self account];
+      v81 = [account7 objectForKeyedSubscript:kESExchangeOAuthOnPremKey];
 
       if (v81 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v18 = [v81 BOOLValue];
+        bOOLValue = [v81 BOOLValue];
       }
 
       else
       {
-        v18 = 0;
+        bOOLValue = 0;
       }
 
-      v19 = [(ASSettingsDataclassConfigurationViewController *)self account];
-      v20 = [v19 migrationStatus] == &dword_0 + 1;
+      account8 = [(ASSettingsDataclassConfigurationViewController *)self account];
+      v20 = [account8 migrationStatus] == &dword_0 + 1;
 
       if (v20)
       {
@@ -713,49 +713,49 @@ LABEL_29:
       {
         v22 = v80;
         v77 = v22;
-        if ((v18 & 1) != 0 || ([DAEASOAuthFlowController upgradeAuthorizationEndpoint:v22], v77 = objc_claimAutoreleasedReturnValue(), v22, v77))
+        if ((bOOLValue & 1) != 0 || ([DAEASOAuthFlowController upgradeAuthorizationEndpoint:v22], v77 = objc_claimAutoreleasedReturnValue(), v22, v77))
         {
           v23 = [DAExchangeOAuthFlowController alloc];
-          v24 = [(ASSettingsDataclassConfigurationViewController *)self account];
-          v25 = [v24 username];
-          v26 = [(ASSettingsDataclassConfigurationViewController *)self account];
-          v27 = [v26 identifier];
-          if (v18)
+          account9 = [(ASSettingsDataclassConfigurationViewController *)self account];
+          username = [account9 username];
+          account10 = [(ASSettingsDataclassConfigurationViewController *)self account];
+          identifier3 = [account10 identifier];
+          if (bOOLValue)
           {
             v28 = @"{access_token:{xms_cc:{values:[cp1]}}}";
           }
 
           else
           {
-            v2 = [(ASSettingsDataclassConfigurationViewController *)self account];
-            v28 = [v2 objectForKeyedSubscript:kESExchangePendingClaimsChallenge];
+            identifier = [(ASSettingsDataclassConfigurationViewController *)self account];
+            v28 = [identifier objectForKeyedSubscript:kESExchangePendingClaimsChallenge];
           }
 
-          v39 = [v23 initWithAuthURI:v77 easEndPoint:v79 username:v25 accountId:v27 claims:v28 isOnPrem:v18];
+          v39 = [v23 initWithAuthURI:v77 easEndPoint:v79 username:username accountId:identifier3 claims:v28 isOnPrem:bOOLValue];
           [(ASSettingsDataclassConfigurationViewController *)self setOauthFlowController:v39];
 
-          if ((v18 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
           }
 
-          v40 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
-          v41 = [v40 oauthType];
+          oauthFlowController = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
+          oauthType = [oauthFlowController oauthType];
 
-          v42 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
-          v43 = [DAEASOAuthClient clientRedirectForOAuthType:v41];
-          [v42 setRedirectURI:v43];
+          oauthFlowController2 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
+          v43 = [DAEASOAuthClient clientRedirectForOAuthType:oauthType];
+          [oauthFlowController2 setRedirectURI:v43];
 
-          v44 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
-          v45 = [(ASSettingsDataclassConfigurationViewController *)self account];
-          v46 = [v45 username];
-          if (v18)
+          oauthFlowController3 = [(ASSettingsDataclassConfigurationViewController *)self oauthFlowController];
+          account11 = [(ASSettingsDataclassConfigurationViewController *)self account];
+          username2 = [account11 username];
+          if (bOOLValue)
           {
-            [v44 onPremAuthURLForUsername:v46 originalAuthURL:v22 resource:v79];
+            [oauthFlowController3 onPremAuthURLForUsername:username2 originalAuthURL:v22 resource:v79];
           }
 
           else
           {
-            [v44 authURLForUsername:v46 originalAuthURL:v77];
+            [oauthFlowController3 authURLForUsername:username2 originalAuthURL:v77];
           }
           v47 = ;
 
@@ -764,13 +764,13 @@ LABEL_29:
           v92[2] = sub_18278;
           v92[3] = &unk_30A60;
           v92[4] = self;
-          v92[5] = v41;
+          v92[5] = oauthType;
           v48 = objc_retainBlock(v92);
           v49 = [DAOAuthSafariViewController authenticationSessionWithURL:v47 callbackURLScheme:0 handler:v48];
           [(ASSettingsDataclassConfigurationViewController *)self setWebAuthenticationSession:v49];
 
-          v50 = [(ASSettingsDataclassConfigurationViewController *)self webAuthenticationSession];
-          LODWORD(v49) = v50 == 0;
+          webAuthenticationSession = [(ASSettingsDataclassConfigurationViewController *)self webAuthenticationSession];
+          LODWORD(v49) = webAuthenticationSession == 0;
 
           if (v49)
           {
@@ -792,8 +792,8 @@ LABEL_29:
 
           else
           {
-            v51 = [(ASSettingsDataclassConfigurationViewController *)self webAuthenticationSession];
-            [v51 setPresentationContextProvider:self];
+            webAuthenticationSession2 = [(ASSettingsDataclassConfigurationViewController *)self webAuthenticationSession];
+            [webAuthenticationSession2 setPresentationContextProvider:self];
 
             objc_initWeak(&location, self);
             v52 = +[UIApplication sharedApplication];
@@ -808,9 +808,9 @@ LABEL_29:
             v54 = _CPLog_to_os_log_type[7];
             if (os_log_type_enabled(v53, v54))
             {
-              v55 = [(ASSettingsDataclassConfigurationViewController *)self backgroundTaskID];
+              backgroundTaskID = [(ASSettingsDataclassConfigurationViewController *)self backgroundTaskID];
               *buf = 134217984;
-              v94 = v55;
+              v94 = backgroundTaskID;
               _os_log_impl(&dword_0, v53, v54, "Begin background task %lu", buf, 0xCu);
             }
 
@@ -823,9 +823,9 @@ LABEL_29:
             v56 = DALoggingwithCategory();
             if (os_log_type_enabled(v56, type))
             {
-              v57 = [(ASSettingsDataclassConfigurationViewController *)self redirectHandlerBlock];
-              v58 = objc_retainBlock(v57);
-              v59 = [DAEASOAuthClient clientRedirectForOAuthType:v41];
+              redirectHandlerBlock = [(ASSettingsDataclassConfigurationViewController *)self redirectHandlerBlock];
+              v58 = objc_retainBlock(redirectHandlerBlock);
+              v59 = [DAEASOAuthClient clientRedirectForOAuthType:oauthType];
               *buf = 134218242;
               v94 = v58;
               v95 = 2112;
@@ -834,9 +834,9 @@ LABEL_29:
             }
 
             v60 = +[PSOAuthAccountRedirectURLController sharedInstance];
-            v61 = [DAEASOAuthClient clientRedirectForOAuthType:v41];
-            v62 = [(ASSettingsDataclassConfigurationViewController *)self redirectHandlerBlock];
-            [v60 registerOAuthClientForRedirectURL:v61 redirectHandler:v62];
+            v61 = [DAEASOAuthClient clientRedirectForOAuthType:oauthType];
+            redirectHandlerBlock2 = [(ASSettingsDataclassConfigurationViewController *)self redirectHandlerBlock];
+            [v60 registerOAuthClientForRedirectURL:v61 redirectHandler:redirectHandlerBlock2];
 
             v63 = DALoggingwithCategory();
             if (os_log_type_enabled(v63, type))
@@ -845,8 +845,8 @@ LABEL_29:
               _os_log_impl(&dword_0, v63, type, "Exchange OAuth Setup: Presenting SafariOAuth page for password re-entry.", buf, 2u);
             }
 
-            v64 = [(ASSettingsDataclassConfigurationViewController *)self webAuthenticationSession];
-            [v64 start];
+            webAuthenticationSession3 = [(ASSettingsDataclassConfigurationViewController *)self webAuthenticationSession];
+            [webAuthenticationSession3 start];
 
             objc_destroyWeak(&v88);
             objc_destroyWeak(&v90);
@@ -876,7 +876,7 @@ LABEL_29:
       else
       {
         [(ASSettingsDataclassConfigurationViewController *)self _disableReAuthenticationButton];
-        [(ASSettingsDataclassConfigurationViewController *)self _autodiscoverOAuthAccountIsOnPrem:v18];
+        [(ASSettingsDataclassConfigurationViewController *)self _autodiscoverOAuthAccountIsOnPrem:bOOLValue];
       }
 
       return;
@@ -887,8 +887,8 @@ LABEL_29:
   {
   }
 
-  v29 = [(ASSettingsDataclassConfigurationViewController *)self account];
-  v30 = [v29 objectForKeyedSubscript:v8];
+  account12 = [(ASSettingsDataclassConfigurationViewController *)self account];
+  v30 = [account12 objectForKeyedSubscript:v8];
 
   if (v30)
   {
@@ -909,9 +909,9 @@ LABEL_29:
   objc_copyWeak(&v86, buf);
   v33 = objc_retainBlock(v85);
   v34 = [DAEASOAuthWebViewController alloc];
-  v35 = [(ASSettingsDataclassConfigurationViewController *)self account];
-  v36 = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
-  v37 = [v34 initWithAccount:v35 isFirstTimeSetup:0 accountStore:v36 presentationBlock:v33];
+  account13 = [(ASSettingsDataclassConfigurationViewController *)self account];
+  accountStore = [(ASSettingsDataclassConfigurationViewController *)self accountStore];
+  v37 = [v34 initWithAccount:account13 isFirstTimeSetup:0 accountStore:accountStore presentationBlock:v33];
   v38 = *(&self->_numberOfRetriedFetchingOutOfOfficeCounter + 1);
   *(&self->_numberOfRetriedFetchingOutOfOfficeCounter + 1) = v37;
 
@@ -927,9 +927,9 @@ LABEL_29:
   objc_destroyWeak(buf);
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4
+- (void)_presentAlertWithTitle:(id)title message:(id)message
 {
-  v8 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v8 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:1];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"OK" value:&stru_30C98 table:@"ASAccountSetup"];
   v7 = [UIAlertAction actionWithTitle:v6 style:0 handler:&stru_30B98];
@@ -938,7 +938,7 @@ LABEL_29:
   [(ASSettingsDataclassConfigurationViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)_autodiscoverOAuthAccountIsOnPrem:(BOOL)a3
+- (void)_autodiscoverOAuthAccountIsOnPrem:(BOOL)prem
 {
   v5 = objc_opt_new();
   v6[0] = _NSConcreteStackBlock;
@@ -946,15 +946,15 @@ LABEL_29:
   v6[2] = sub_18A1C;
   v6[3] = &unk_30BE8;
   v6[4] = self;
-  v7 = a3;
+  premCopy = prem;
   [v5 sendRequestForRedirectWithCompletionHandler:v6];
 }
 
-- (BOOL)_isNetworkOfflineError:(id)a3
+- (BOOL)_isNetworkOfflineError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:NSURLErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:NSURLErrorDomain];
 
   if (!v5)
   {
@@ -963,19 +963,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [v3 code];
+  code = [errorCopy code];
   v7 = 1;
-  if (v6 != -1009 && v6 != -1000)
+  if (code != -1009 && code != -1000)
   {
     v8 = DALoggingwithCategory();
     v9 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v8, v9))
     {
-      v10 = [v3 domain];
+      domain2 = [errorCopy domain];
       v12 = 138543618;
-      v13 = v10;
+      v13 = domain2;
       v14 = 2048;
-      v15 = [v3 code];
+      code2 = [errorCopy code];
       _os_log_impl(&dword_0, v8, v9, "AutoDV2 Discovery Failed With Fatal Network Error %{public}@:%ld ", &v12, 0x16u);
     }
 
@@ -987,22 +987,22 @@ LABEL_8:
   return v7;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = ASSettingsDataclassConfigurationViewController;
-  [(ASSettingsDataclassConfigurationViewController *)&v11 handleURL:v4];
+  [(ASSettingsDataclassConfigurationViewController *)&v11 handleURL:lCopy];
   v5 = DALoggingwithCategory();
   v6 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = lCopy;
     _os_log_impl(&dword_0, v5, v6, "Exchange OAuth Setup: Received an action: %@ to present SafariViewController for Re-Entering password.", buf, 0xCu);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"easOAuthAction"];
+  v7 = [lCopy objectForKeyedSubscript:@"easOAuthAction"];
   v8 = [v7 isEqualToString:@"showAuthSheet"];
 
   v9 = DALoggingwithCategory();
@@ -1035,22 +1035,22 @@ LABEL_8:
   v5 = [v4 localizedStringForKey:@"MAIL_PAST_DAYS_STRING" value:&stru_30C98 table:@"ASAccountSetup"];
   v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:"setAccountIntegerProperty:withSpecifier:" get:"accountIntegerPropertyWithSpecifier:" detail:objc_opt_class() cell:2 edit:0];
 
-  v7 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-  v8 = [v7 mailNumberOfPastDaysToSyncUpperLimit];
+  daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+  mailNumberOfPastDaysToSyncUpperLimit = [daAccount mailNumberOfPastDaysToSyncUpperLimit];
 
-  if (v8)
+  if (mailNumberOfPastDaysToSyncUpperLimit)
   {
     v9 = +[NSMutableArray array];
     v10 = +[NSMutableArray array];
     v11 = &off_32630;
-    if (v8 >= 1)
+    if (mailNumberOfPastDaysToSyncUpperLimit >= 1)
     {
       [v9 addObject:&off_32630];
       v12 = [NSBundle bundleForClass:objc_opt_class()];
       v13 = [v12 localizedStringForKey:@"1_DAY" value:&stru_30C98 table:@"ASAccountSetup"];
       [v10 addObject:v13];
 
-      if (v8 >= 3)
+      if (mailNumberOfPastDaysToSyncUpperLimit >= 3)
       {
         v11 = &off_32600;
         [v9 addObject:&off_32600];
@@ -1058,21 +1058,21 @@ LABEL_8:
         v15 = [v14 localizedStringForKey:@"3_DAYS" value:&stru_30C98 table:@"ASAccountSetup"];
         [v10 addObject:v15];
 
-        if (v8 >= 7)
+        if (mailNumberOfPastDaysToSyncUpperLimit >= 7)
         {
           [v9 addObject:&off_32648];
           v16 = [NSBundle bundleForClass:objc_opt_class()];
           v17 = [v16 localizedStringForKey:@"1_WEEK" value:&stru_30C98 table:@"ASAccountSetup"];
           [v10 addObject:v17];
 
-          if (v8 >= 0xE)
+          if (mailNumberOfPastDaysToSyncUpperLimit >= 0xE)
           {
             [v9 addObject:&off_32660];
             v18 = [NSBundle bundleForClass:objc_opt_class()];
             v19 = [v18 localizedStringForKey:@"2_WEEKS" value:&stru_30C98 table:@"ASAccountSetup"];
             [v10 addObject:v19];
 
-            if (v8 >= 0x1F)
+            if (mailNumberOfPastDaysToSyncUpperLimit >= 0x1F)
             {
               [v9 addObject:&off_32678];
               v20 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1128,14 +1128,14 @@ LABEL_8:
   [v3 addObject:v6];
   if (([objc_opt_class() isHotmailAccount] & 1) == 0)
   {
-    v31 = [(ASSettingsDataclassConfigurationViewController *)self isOofSupported];
+    isOofSupported = [(ASSettingsDataclassConfigurationViewController *)self isOofSupported];
 
-    if (v31)
+    if (isOofSupported)
     {
-      v32 = [(ASSettingsDataclassConfigurationViewController *)self isOofSupported];
-      v33 = [v32 BOOLValue];
+      isOofSupported2 = [(ASSettingsDataclassConfigurationViewController *)self isOofSupported];
+      bOOLValue = [isOofSupported2 BOOLValue];
 
-      if ((v33 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         goto LABEL_22;
       }
@@ -1144,20 +1144,20 @@ LABEL_8:
     else
     {
       v34 = +[ESDConnection sharedConnection];
-      v35 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-      v36 = [v35 accountID];
+      daAccount2 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+      accountID = [daAccount2 accountID];
       v73[0] = _NSConcreteStackBlock;
       v73[1] = 3221225472;
       v73[2] = sub_19A24;
       v73[3] = &unk_30C10;
       v73[4] = self;
-      [v34 isOofSettingsSupportedForAccountWithID:v36 completionBlock:v73];
+      [v34 isOofSettingsSupportedForAccountWithID:accountID completionBlock:v73];
     }
 
     v69 = v6;
-    v37 = [(ASSettingsDataclassConfigurationViewController *)self isOofSupported];
+    isOofSupported3 = [(ASSettingsDataclassConfigurationViewController *)self isOofSupported];
 
-    if (v37)
+    if (isOofSupported3)
     {
       [(ASSettingsDataclassConfigurationViewController *)self checkAndFetchOutOfOfficeState];
     }
@@ -1167,19 +1167,19 @@ LABEL_8:
     v40 = [PSSpecifier preferenceSpecifierNamed:v39 target:self set:"saveOutOfOfficeData:" get:"outOfOfficeEnabled:" detail:objc_opt_class() cell:2 edit:0];
     [(ASSettingsDataclassConfigurationViewController *)self setOutOfOfficeSpecifier:v40];
 
-    v41 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+    outOfOfficeSpecifier = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
     v42 = objc_opt_class();
     v43 = NSStringFromClass(v42);
-    [v41 setProperty:v43 forKey:PSSetupCustomClassKey];
+    [outOfOfficeSpecifier setProperty:v43 forKey:PSSetupCustomClassKey];
 
-    v44 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+    outOfOfficeSpecifier2 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
 
-    if (v44)
+    if (outOfOfficeSpecifier2)
     {
       v65 = v9;
       v67 = v10;
       v71 = v3;
-      v45 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+      outOfOfficeSpecifier3 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
       v75[0] = @"outOfOfficeONState";
       v75[1] = @"outOfOfficeOFFState";
       v75[2] = @"outOfOfficeLoadingState";
@@ -1194,23 +1194,23 @@ LABEL_8:
       v52 = [v51 localizedStringForKey:@"OOF_LOADING_STATE" value:&stru_30C98 table:@"ASAccountSetup"];
       v74[2] = v52;
       v53 = [NSArray arrayWithObjects:v74 count:3];
-      [v45 setValues:v46 titles:v53];
+      [outOfOfficeSpecifier3 setValues:v46 titles:v53];
 
-      v54 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
-      [v54 setIdentifier:@"kPSOofSpecifierID"];
+      outOfOfficeSpecifier4 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+      [outOfOfficeSpecifier4 setIdentifier:@"kPSOofSpecifierID"];
 
       if ([(ASSettingsDataclassConfigurationViewController *)self isAccountModificationDisabled])
       {
-        v55 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
-        [v55 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+        outOfOfficeSpecifier5 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+        [outOfOfficeSpecifier5 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
       }
 
       v56 = +[PSSpecifier emptyGroupSpecifier];
       v3 = v71;
       [v71 addObject:v56];
 
-      v57 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
-      [v71 addObject:v57];
+      outOfOfficeSpecifier6 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+      [v71 addObject:outOfOfficeSpecifier6];
 
       v10 = v67;
       v6 = v69;
@@ -1231,59 +1231,59 @@ LABEL_22:
 
   v72.receiver = self;
   v72.super_class = ASSettingsDataclassConfigurationViewController;
-  v60 = [(ESSettingsDataclassConfigurationViewController *)&v72 otherSpecifiers];
-  [v3 addObjectsFromArray:v60];
+  otherSpecifiers = [(ESSettingsDataclassConfigurationViewController *)&v72 otherSpecifiers];
+  [v3 addObjectsFromArray:otherSpecifiers];
 
   return v3;
 }
 
 - (void)updateOutOfOfficeSpecifier
 {
-  v3 = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
+  serverOutOfOfficeInformation = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
 
-  if (v3)
+  if (serverOutOfOfficeInformation)
   {
     v4 = [(ASSettingsDataclassConfigurationViewController *)self specifierForID:@"kPSOofSpecifierID"];
-    v5 = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
-    -[ASSettingsDataclassConfigurationViewController setOutOfOfficeEnabled:](self, "setOutOfOfficeEnabled:", [v5 oofState] != 0);
+    serverOutOfOfficeInformation2 = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
+    -[ASSettingsDataclassConfigurationViewController setOutOfOfficeEnabled:](self, "setOutOfOfficeEnabled:", [serverOutOfOfficeInformation2 oofState] != 0);
 
-    v6 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+    outOfOfficeSpecifier = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
     v29 = @"kPSOofServerData";
-    v7 = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
-    v30 = v7;
+    serverOutOfOfficeInformation3 = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
+    v30 = serverOutOfOfficeInformation3;
     v8 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    [v6 setUserInfo:v8];
+    [outOfOfficeSpecifier setUserInfo:v8];
 
     if (([(ASSettingsDataclassConfigurationViewController *)self isAccountModificationDisabled]& 1) == 0)
     {
-      v9 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
-      [v9 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
+      outOfOfficeSpecifier2 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+      [outOfOfficeSpecifier2 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
     }
 
     v10 = DALoggingwithCategory();
     v11 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v10, v11))
     {
-      v12 = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
-      v13 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-      v14 = [v13 accountID];
+      serverOutOfOfficeInformation4 = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
+      daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+      accountID = [daAccount accountID];
       *buf = 138412546;
-      v26 = v12;
+      v26 = serverOutOfOfficeInformation4;
       v27 = 2112;
-      v28 = v14;
+      v28 = accountID;
       _os_log_impl(&dword_0, v10, v11, "Got out of office data back %@ for account %@", buf, 0x16u);
     }
 
     if (v4)
     {
-      v15 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+      outOfOfficeSpecifier3 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
 
-      if (v15)
+      if (outOfOfficeSpecifier3)
       {
         v24 = v4;
         v16 = [NSArray arrayWithObjects:&v24 count:1];
-        v17 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
-        v23 = v17;
+        outOfOfficeSpecifier4 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+        v23 = outOfOfficeSpecifier4;
         v18 = [NSArray arrayWithObjects:&v23 count:1];
         [(ASSettingsDataclassConfigurationViewController *)self replaceContiguousSpecifiers:v16 withSpecifiers:v18 animated:0];
 
@@ -1302,9 +1302,9 @@ LABEL_22:
       }
     }
 
-    v21 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+    outOfOfficeSpecifier5 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
 
-    if (v21)
+    if (outOfOfficeSpecifier5)
     {
 LABEL_16:
 
@@ -1334,14 +1334,14 @@ LABEL_15:
   [(ASSettingsDataclassConfigurationViewController *)self reloadSpecifiers];
 }
 
-- (void)OAuthAccount:(id)a3 authorizationURI:(id)a4 error:(id)a5
+- (void)OAuthAccount:(id)account authorizationURI:(id)i error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  iCopy = i;
+  errorCopy = error;
   [(ASSettingsDataclassConfigurationViewController *)self _enableReAuthenticationButton];
-  if (!v7 || v8)
+  if (!iCopy || errorCopy)
   {
-    if (v8 && [(ASSettingsDataclassConfigurationViewController *)self _isNetworkOfflineError:v8])
+    if (errorCopy && [(ASSettingsDataclassConfigurationViewController *)self _isNetworkOfflineError:errorCopy])
     {
       v11 = DALoggingwithCategory();
       v12 = _CPLog_to_os_log_type[6];
@@ -1361,15 +1361,15 @@ LABEL_15:
       if (os_log_type_enabled(v13, v14))
       {
         v15 = @"Not Valid";
-        if (v7)
+        if (iCopy)
         {
-          v15 = v7;
+          v15 = iCopy;
         }
 
         v16 = 138543618;
         v17 = v15;
         v18 = 2114;
-        v19 = v8;
+        v19 = errorCopy;
         _os_log_impl(&dword_0, v13, v14, "OAuthURI %{public}@ : Error %{public}@", &v16, 0x16u);
       }
     }
@@ -1384,7 +1384,7 @@ LABEL_15:
     if (os_log_type_enabled(v9, v10))
     {
       v16 = 138543362;
-      v17 = v7;
+      v17 = iCopy;
       _os_log_impl(&dword_0, v9, v10, "AutoDiscover succeeded with OAuthURI : %{public}@", &v16, 0xCu);
     }
 
@@ -1392,35 +1392,35 @@ LABEL_15:
   }
 }
 
-- (void)oofRequestInfo:(id)a3 finishedWithResult:(id)a4 error:(id)a5
+- (void)oofRequestInfo:(id)info finishedWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  [(ASSettingsDataclassConfigurationViewController *)v11 setIsFetchingOutOfOfficeState:0];
-  objc_sync_exit(v11);
+  infoCopy = info;
+  resultCopy = result;
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ASSettingsDataclassConfigurationViewController *)selfCopy setIsFetchingOutOfOfficeState:0];
+  objc_sync_exit(selfCopy);
 
-  if (!v10)
+  if (!errorCopy)
   {
-    if (!v9)
+    if (!resultCopy)
     {
       goto LABEL_11;
     }
 
-    [(ASSettingsDataclassConfigurationViewController *)v11 setServerOutOfOfficeInformation:v9];
-    [(ASSettingsDataclassConfigurationViewController *)v11 performSelectorOnMainThread:"updateOutOfOfficeSpecifier" withObject:0 waitUntilDone:1];
+    [(ASSettingsDataclassConfigurationViewController *)selfCopy setServerOutOfOfficeInformation:resultCopy];
+    [(ASSettingsDataclassConfigurationViewController *)selfCopy performSelectorOnMainThread:"updateOutOfOfficeSpecifier" withObject:0 waitUntilDone:1];
     v12 = DALoggingwithCategory();
     v13 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v12, v13))
     {
-      v14 = [(ESSettingsDataclassConfigurationViewController *)v11 daAccount];
-      v15 = [v14 accountID];
+      daAccount = [(ESSettingsDataclassConfigurationViewController *)selfCopy daAccount];
+      accountID = [daAccount accountID];
       v19 = 138412546;
-      v20 = v15;
+      v20 = accountID;
       v21 = 2112;
-      v22 = v9;
+      v22 = resultCopy;
       _os_log_impl(&dword_0, v12, v13, "Server response for Out of Office Data for account %@ with data %@", &v19, 0x16u);
     }
 
@@ -1429,41 +1429,41 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([(ASSettingsDataclassConfigurationViewController *)v11 numberOfRetriedFetchingOutOfOfficeCounter]> 4)
+  if ([(ASSettingsDataclassConfigurationViewController *)selfCopy numberOfRetriedFetchingOutOfOfficeCounter]> 4)
   {
     v12 = DALoggingwithCategory();
     v16 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v12, v16))
     {
-      v17 = [(ESSettingsDataclassConfigurationViewController *)v11 daAccount];
-      v18 = [v17 accountID];
+      daAccount2 = [(ESSettingsDataclassConfigurationViewController *)selfCopy daAccount];
+      accountID2 = [daAccount2 accountID];
       v19 = 138412546;
-      v20 = v18;
+      v20 = accountID2;
       v21 = 2112;
-      v22 = v10;
+      v22 = errorCopy;
       _os_log_impl(&dword_0, v12, v16, "Failed to get Out Of Office data for account %@: %@", &v19, 0x16u);
     }
 
     goto LABEL_10;
   }
 
-  [(ASSettingsDataclassConfigurationViewController *)v11 setNumberOfRetriedFetchingOutOfOfficeCounter:[(ASSettingsDataclassConfigurationViewController *)v11 numberOfRetriedFetchingOutOfOfficeCounter]+ 1];
-  [(ASSettingsDataclassConfigurationViewController *)v11 checkAndFetchOutOfOfficeState];
+  [(ASSettingsDataclassConfigurationViewController *)selfCopy setNumberOfRetriedFetchingOutOfOfficeCounter:[(ASSettingsDataclassConfigurationViewController *)selfCopy numberOfRetriedFetchingOutOfOfficeCounter]+ 1];
+  [(ASSettingsDataclassConfigurationViewController *)selfCopy checkAndFetchOutOfOfficeState];
 LABEL_11:
 }
 
 - (void)checkAndFetchOutOfOfficeState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ASSettingsDataclassConfigurationViewController *)v2 isFetchingOutOfOfficeState];
-  [(ASSettingsDataclassConfigurationViewController *)v2 setIsFetchingOutOfOfficeState:1];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isFetchingOutOfOfficeState = [(ASSettingsDataclassConfigurationViewController *)selfCopy isFetchingOutOfOfficeState];
+  [(ASSettingsDataclassConfigurationViewController *)selfCopy setIsFetchingOutOfOfficeState:1];
+  objc_sync_exit(selfCopy);
 
-  if ((v3 & 1) == 0)
+  if ((isFetchingOutOfOfficeState & 1) == 0)
   {
 
-    [(ASSettingsDataclassConfigurationViewController *)v2 performSelectorOnMainThread:"fetchingOutOfOfficeState" withObject:0 waitUntilDone:0];
+    [(ASSettingsDataclassConfigurationViewController *)selfCopy performSelectorOnMainThread:"fetchingOutOfOfficeState" withObject:0 waitUntilDone:0];
   }
 }
 
@@ -1472,44 +1472,44 @@ LABEL_11:
   v3 = objc_alloc_init(DAOofSettingsInfo);
   [(ASSettingsDataclassConfigurationViewController *)self setDASettingsInfo:v3];
 
-  v4 = [(ASSettingsDataclassConfigurationViewController *)self DASettingsInfo];
-  [v4 setConsumer:self];
+  dASettingsInfo = [(ASSettingsDataclassConfigurationViewController *)self DASettingsInfo];
+  [dASettingsInfo setConsumer:self];
 
   v5 = +[ESDConnection sharedConnection];
-  v6 = [(ASSettingsDataclassConfigurationViewController *)self DASettingsInfo];
-  v7 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-  v8 = [v7 accountID];
-  [v5 retrieveOofSettingsRequest:v6 forAccountWithID:v8];
+  dASettingsInfo2 = [(ASSettingsDataclassConfigurationViewController *)self DASettingsInfo];
+  daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+  accountID = [daAccount accountID];
+  [v5 retrieveOofSettingsRequest:dASettingsInfo2 forAccountWithID:accountID];
 
   v9 = DALoggingwithCategory();
   v10 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v9, v10))
   {
-    v11 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-    v12 = [v11 accountID];
+    daAccount2 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+    accountID2 = [daAccount2 accountID];
     v13 = 138412290;
-    v14 = v12;
+    v14 = accountID2;
     _os_log_impl(&dword_0, v9, v10, "Fetching Out of Office Data for account %@", &v13, 0xCu);
   }
 }
 
-- (void)saveOutOfOfficeData:(id)a3
+- (void)saveOutOfOfficeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (([objc_opt_class() isHotmailAccount] & 1) == 0)
   {
     v5 = +[ESDConnection sharedConnection];
-    v6 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-    v7 = [v6 accountID];
-    [v5 updateOofSettingsRequest:v4 forAccountWithID:v7];
+    daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+    accountID = [daAccount accountID];
+    [v5 updateOofSettingsRequest:dataCopy forAccountWithID:accountID];
 
-    -[ASSettingsDataclassConfigurationViewController setOutOfOfficeEnabled:](self, "setOutOfOfficeEnabled:", [v4 oofState] != 0);
+    -[ASSettingsDataclassConfigurationViewController setOutOfOfficeEnabled:](self, "setOutOfOfficeEnabled:", [dataCopy oofState] != 0);
     [(ASSettingsDataclassConfigurationViewController *)self setServerOutOfOfficeInformation:0];
-    v8 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
-    [v8 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+    outOfOfficeSpecifier = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+    [outOfOfficeSpecifier setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
 
-    v9 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
-    [(ASSettingsDataclassConfigurationViewController *)self reloadSpecifier:v9];
+    outOfOfficeSpecifier2 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeSpecifier];
+    [(ASSettingsDataclassConfigurationViewController *)self reloadSpecifier:outOfOfficeSpecifier2];
 
     [(ASSettingsDataclassConfigurationViewController *)self checkAndFetchOutOfOfficeState];
   }
@@ -1518,21 +1518,21 @@ LABEL_11:
   v11 = _CPLog_to_os_log_type[6];
   if (os_log_type_enabled(v10, v11))
   {
-    v12 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-    v13 = [v12 accountID];
+    daAccount2 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+    accountID2 = [daAccount2 accountID];
     v14 = 138412546;
-    v15 = v13;
+    v15 = accountID2;
     v16 = 2112;
-    v17 = v4;
+    v17 = dataCopy;
     _os_log_impl(&dword_0, v10, v11, "Saving new out of office Data %@ for account %@", &v14, 0x16u);
   }
 }
 
-- (id)numFoldersToPushString:(id)a3
+- (id)numFoldersToPushString:(id)string
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 folderIdsThatExternalClientsCareAbout];
-  v5 = [v4 count];
+  userInfo = [string userInfo];
+  folderIdsThatExternalClientsCareAbout = [userInfo folderIdsThatExternalClientsCareAbout];
+  v5 = [folderIdsThatExternalClientsCareAbout count];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   if (v5)
@@ -1551,56 +1551,56 @@ LABEL_11:
   return v10;
 }
 
-- (id)accountIntegerPropertyWithSpecifier:(id)a3
+- (id)accountIntegerPropertyWithSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"MAIL_PAST_DAYS"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"MAIL_PAST_DAYS"])
   {
-    v5 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-    v6 = [v5 mailNumberOfPastDaysToSync];
+    daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+    mailNumberOfPastDaysToSync = [daAccount mailNumberOfPastDaysToSync];
   }
 
   else
   {
-    v6 = 0;
+    mailNumberOfPastDaysToSync = 0;
   }
 
-  v7 = [NSNumber numberWithInt:v6];
+  v7 = [NSNumber numberWithInt:mailNumberOfPastDaysToSync];
 
   return v7;
 }
 
-- (void)setAccountIntegerProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountIntegerProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 intValue];
-  v13 = [v6 identifier];
+  specifierCopy = specifier;
+  intValue = [property intValue];
+  identifier = [specifierCopy identifier];
 
-  if ([v13 isEqualToString:@"MAIL_PAST_DAYS"])
+  if ([identifier isEqualToString:@"MAIL_PAST_DAYS"])
   {
-    v8 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-    v9 = [v8 mailNumberOfPastDaysToSync];
-    [v8 setMailNumberOfPastDaysToSync:v7];
+    daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+    mailNumberOfPastDaysToSync = [daAccount mailNumberOfPastDaysToSync];
+    [daAccount setMailNumberOfPastDaysToSync:intValue];
 
-    if (v7 != v9 && ([(ASSettingsDataclassConfigurationViewController *)self isFirstTimeSetup]& 1) == 0)
+    if (intValue != mailNumberOfPastDaysToSync && ([(ASSettingsDataclassConfigurationViewController *)self isFirstTimeSetup]& 1) == 0)
     {
-      v10 = [(ASSettingsDataclassConfigurationViewController *)self accountOperationsHelper];
-      v11 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-      v12 = [v11 backingAccountInfo];
-      [v10 saveAccount:v12 requireVerification:0];
+      accountOperationsHelper = [(ASSettingsDataclassConfigurationViewController *)self accountOperationsHelper];
+      daAccount2 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+      backingAccountInfo = [daAccount2 backingAccountInfo];
+      [accountOperationsHelper saveAccount:backingAccountInfo requireVerification:0];
     }
   }
 }
 
-- (id)outOfOfficeEnabled:(id)a3
+- (id)outOfOfficeEnabled:(id)enabled
 {
-  v4 = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
+  serverOutOfOfficeInformation = [(ASSettingsDataclassConfigurationViewController *)self serverOutOfOfficeInformation];
 
-  if (v4)
+  if (serverOutOfOfficeInformation)
   {
-    v5 = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeEnabled];
+    outOfOfficeEnabled = [(ASSettingsDataclassConfigurationViewController *)self outOfOfficeEnabled];
     v6 = @"outOfOfficeOFFState";
-    if (v5)
+    if (outOfOfficeEnabled)
     {
       v6 = @"outOfOfficeONState";
     }
@@ -1616,12 +1616,12 @@ LABEL_11:
   return v7;
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
-  v3 = [(ASSettingsDataclassConfigurationViewController *)self view];
-  v4 = [v3 window];
+  view = [(ASSettingsDataclassConfigurationViewController *)self view];
+  window = [view window];
 
-  return v4;
+  return window;
 }
 
 @end

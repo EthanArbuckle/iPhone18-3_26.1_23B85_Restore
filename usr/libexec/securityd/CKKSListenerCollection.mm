@@ -1,31 +1,31 @@
 @interface CKKSListenerCollection
-- (CKKSListenerCollection)initWithName:(id)a3;
+- (CKKSListenerCollection)initWithName:(id)name;
 - (id)description;
-- (void)iterateListeners:(id)a3;
-- (void)registerListener:(id)a3;
+- (void)iterateListeners:(id)listeners;
+- (void)registerListener:(id)listener;
 @end
 
 @implementation CKKSListenerCollection
 
-- (void)iterateListeners:(id)a3
+- (void)iterateListeners:(id)listeners
 {
-  v4 = a3;
-  v5 = [(CKKSListenerCollection *)self listeners];
-  objc_sync_enter(v5);
-  v6 = [(CKKSListenerCollection *)self listeners];
-  v7 = [v6 keyEnumerator];
+  listenersCopy = listeners;
+  listeners = [(CKKSListenerCollection *)self listeners];
+  objc_sync_enter(listeners);
+  listeners2 = [(CKKSListenerCollection *)self listeners];
+  keyEnumerator = [listeners2 keyEnumerator];
 
-  for (i = 0; ; i = v9)
+  for (i = 0; ; i = nextObject)
   {
-    v9 = [v7 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v9)
+    if (!nextObject)
     {
       break;
     }
 
-    v10 = [(CKKSListenerCollection *)self listeners];
-    v11 = [v10 objectForKey:v9];
+    listeners3 = [(CKKSListenerCollection *)self listeners];
+    v11 = [listeners3 objectForKey:nextObject];
 
     objc_initWeak(&location, v11);
     if (v11)
@@ -35,8 +35,8 @@
       block[2] = sub_10016A530;
       block[3] = &unk_1003445C0;
       objc_copyWeak(&v14, &location);
-      v13 = v4;
-      dispatch_async(v9, block);
+      v13 = listenersCopy;
+      dispatch_async(nextObject, block);
 
       objc_destroyWeak(&v14);
     }
@@ -44,73 +44,73 @@
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(listeners);
 }
 
-- (void)registerListener:(id)a3
+- (void)registerListener:(id)listener
 {
-  v16 = a3;
-  v4 = [(CKKSListenerCollection *)self listeners];
-  objc_sync_enter(v4);
-  v5 = [(CKKSListenerCollection *)self listeners];
-  v6 = [v5 objectEnumerator];
+  listenerCopy = listener;
+  listeners = [(CKKSListenerCollection *)self listeners];
+  objc_sync_enter(listeners);
+  listeners2 = [(CKKSListenerCollection *)self listeners];
+  objectEnumerator = [listeners2 objectEnumerator];
 
   v7 = 0;
   v8 = 0;
   while (1)
   {
-    v9 = [v6 nextObject];
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v9)
+    if (!nextObject)
     {
       break;
     }
 
-    v8 |= v9 == v16;
-    v7 = v9;
+    v8 |= nextObject == listenerCopy;
+    v7 = nextObject;
   }
 
-  if (!((v16 == 0) | v8 & 1))
+  if (!((listenerCopy == 0) | v8 & 1))
   {
-    v10 = [(CKKSListenerCollection *)self name];
-    v11 = [NSString stringWithFormat:@"%@-%@", v10, v16];
+    name = [(CKKSListenerCollection *)self name];
+    listenerCopy = [NSString stringWithFormat:@"%@-%@", name, listenerCopy];
 
-    v12 = [v11 UTF8String];
+    uTF8String = [listenerCopy UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
 
-    v15 = [(CKKSListenerCollection *)self listeners];
-    [v15 setObject:v16 forKey:v14];
+    listeners3 = [(CKKSListenerCollection *)self listeners];
+    [listeners3 setObject:listenerCopy forKey:v14];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(listeners);
 }
 
 - (id)description
 {
-  v3 = [(CKKSListenerCollection *)self listeners];
-  objc_sync_enter(v3);
-  v4 = [(CKKSListenerCollection *)self name];
-  v5 = [(CKKSListenerCollection *)self listeners];
-  v6 = [v5 objectEnumerator];
-  v7 = [v6 allObjects];
-  v8 = [NSString stringWithFormat:@"<CKKSListenerCollection(%@): %@>", v4, v7];
+  listeners = [(CKKSListenerCollection *)self listeners];
+  objc_sync_enter(listeners);
+  name = [(CKKSListenerCollection *)self name];
+  listeners2 = [(CKKSListenerCollection *)self listeners];
+  objectEnumerator = [listeners2 objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v8 = [NSString stringWithFormat:@"<CKKSListenerCollection(%@): %@>", name, allObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(listeners);
 
   return v8;
 }
 
-- (CKKSListenerCollection)initWithName:(id)a3
+- (CKKSListenerCollection)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = CKKSListenerCollection;
   v6 = [(CKKSListenerCollection *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = +[NSMapTable strongToWeakObjectsMapTable];
     listeners = v7->_listeners;
     v7->_listeners = v8;

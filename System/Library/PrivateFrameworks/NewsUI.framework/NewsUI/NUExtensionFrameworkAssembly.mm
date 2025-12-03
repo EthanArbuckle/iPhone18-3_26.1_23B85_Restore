@@ -1,13 +1,13 @@
 @interface NUExtensionFrameworkAssembly
-- (NUExtensionFrameworkAssembly)initWithExtensionContextProvider:(id)a3;
+- (NUExtensionFrameworkAssembly)initWithExtensionContextProvider:(id)provider;
 @end
 
 @implementation NUExtensionFrameworkAssembly
 
-- (NUExtensionFrameworkAssembly)initWithExtensionContextProvider:(id)a3
+- (NUExtensionFrameworkAssembly)initWithExtensionContextProvider:(id)provider
 {
   v18[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = NUExtensionFrameworkAssembly;
   v5 = [(NUExtensionFrameworkAssembly *)&v17 init];
@@ -15,14 +15,14 @@
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = objc_alloc_init(MEMORY[0x277D55088]);
-    v8 = [v7 assemblies];
-    [(NSArray *)v6 addObjectsFromArray:v8];
+    assemblies = [v7 assemblies];
+    [(NSArray *)v6 addObjectsFromArray:assemblies];
 
     v9 = objc_alloc_init(NUCoreAssembly);
     v18[0] = v9;
     v10 = objc_alloc_init(NUArticleAssembly);
     v18[1] = v10;
-    v11 = [[NUExtensionAssembly alloc] initWithExtensionContextProvider:v4];
+    v11 = [[NUExtensionAssembly alloc] initWithExtensionContextProvider:providerCopy];
     v18[2] = v11;
     v12 = objc_alloc_init(NUManagerAssembly);
     v18[3] = v12;

@@ -1,13 +1,13 @@
 @interface POIPlaceholderSearchResult
-- (POIPlaceholderSearchResult)initWithLabelMarker:(id)a3;
+- (POIPlaceholderSearchResult)initWithLabelMarker:(id)marker;
 @end
 
 @implementation POIPlaceholderSearchResult
 
-- (POIPlaceholderSearchResult)initWithLabelMarker:(id)a3
+- (POIPlaceholderSearchResult)initWithLabelMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [[MKMapItem alloc] _initWithLabelMarker:v4];
+  markerCopy = marker;
+  v5 = [[MKMapItem alloc] _initWithLabelMarker:markerCopy];
 
   v9.receiver = self;
   v9.super_class = POIPlaceholderSearchResult;

@@ -1,59 +1,59 @@
 @interface PGTitleSpecTimeArgument
-+ (id)argumentWithTimeType:(unint64_t)a3;
-- (PGTitleSpecTimeArgument)initWithTimeType:(unint64_t)a3;
-- (id)_anniversaryTitleWithMomentNodes:(id)a3;
-- (id)_birthdayTitleWithMomentNodes:(id)a3;
-- (id)_holidayTitleWithMomentNodes:(id)a3;
-- (id)_resolvedStringWithMomentNodes:(id)a3 argumentEvaluationContext:(id)a4;
-- (id)_yearsAgoStringWithEventNodes:(id)a3 relativeToDateComponents:(id)a4;
++ (id)argumentWithTimeType:(unint64_t)type;
+- (PGTitleSpecTimeArgument)initWithTimeType:(unint64_t)type;
+- (id)_anniversaryTitleWithMomentNodes:(id)nodes;
+- (id)_birthdayTitleWithMomentNodes:(id)nodes;
+- (id)_holidayTitleWithMomentNodes:(id)nodes;
+- (id)_resolvedStringWithMomentNodes:(id)nodes argumentEvaluationContext:(id)context;
+- (id)_yearsAgoStringWithEventNodes:(id)nodes relativeToDateComponents:(id)components;
 - (id)_yearsAgoTitle;
 @end
 
 @implementation PGTitleSpecTimeArgument
 
-- (id)_holidayTitleWithMomentNodes:(id)a3
+- (id)_holidayTitleWithMomentNodes:(id)nodes
 {
-  v3 = [PGCommonTitleUtility dateNodesFromMomentNodes:a3];
+  v3 = [PGCommonTitleUtility dateNodesFromMomentNodes:nodes];
   v4 = [PGCommonTitleUtility holidayNameForDateNodes:v3];
 
   return v4;
 }
 
-- (id)_yearsAgoStringWithEventNodes:(id)a3 relativeToDateComponents:(id)a4
+- (id)_yearsAgoStringWithEventNodes:(id)nodes relativeToDateComponents:(id)components
 {
-  v5 = a3;
-  v6 = a4;
+  nodesCopy = nodes;
+  componentsCopy = components;
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"PGUseOrdinalAge" value:@"PGUseOrdinalAge" table:@"Localizable"];
 
   v9 = v8 && ([v8 isEqualToString:@"1"] & 1) != 0;
-  v10 = [PGTimeTitleUtility numberOfYearsAgoWithMomentNodes:v5 relativeToDateComponents:v6 useOrdinal:v9];
+  v10 = [PGTimeTitleUtility numberOfYearsAgoWithMomentNodes:nodesCopy relativeToDateComponents:componentsCopy useOrdinal:v9];
 
   return v10;
 }
 
-- (id)_birthdayTitleWithMomentNodes:(id)a3
+- (id)_birthdayTitleWithMomentNodes:(id)nodes
 {
-  v4 = a3;
-  if ([v4 count])
+  nodesCopy = nodes;
+  if ([nodesCopy count])
   {
     v5 = [PGGraphMomentNodeCollection alloc];
-    v6 = [v4 anyObject];
-    v7 = [v6 graph];
-    v8 = [(MAElementCollection *)v5 initWithSet:v4 graph:v7];
+    anyObject = [nodesCopy anyObject];
+    graph = [anyObject graph];
+    v8 = [(MAElementCollection *)v5 initWithSet:nodesCopy graph:graph];
 
-    v9 = [(PGGraphMomentNodeCollection *)v8 birthdayPersonNodes];
-    v10 = [v9 temporarySet];
+    birthdayPersonNodes = [(PGGraphMomentNodeCollection *)v8 birthdayPersonNodes];
+    temporarySet = [birthdayPersonNodes temporarySet];
 
-    if ([v10 count] == 1)
+    if ([temporarySet count] == 1)
     {
-      v11 = [v10 anyObject];
-      v12 = [v11 birthdayDateComponents];
-      v13 = [v12 year];
+      anyObject2 = [temporarySet anyObject];
+      birthdayDateComponents = [anyObject2 birthdayDateComponents];
+      year = [birthdayDateComponents year];
       v14 = 0;
-      if (v12 && v13 != 0x7FFFFFFFFFFFFFFFLL)
+      if (birthdayDateComponents && year != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v14 = [(PGTitleSpecTimeArgument *)self _yearsAgoStringWithEventNodes:v4 relativeToDateComponents:v12];
+        v14 = [(PGTitleSpecTimeArgument *)self _yearsAgoStringWithEventNodes:nodesCopy relativeToDateComponents:birthdayDateComponents];
       }
     }
 
@@ -71,16 +71,16 @@
   return v14;
 }
 
-- (id)_anniversaryTitleWithMomentNodes:(id)a3
+- (id)_anniversaryTitleWithMomentNodes:(id)nodes
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nodesCopy = nodes;
   v4 = objc_alloc_init(MEMORY[0x277CCA940]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v3;
+  v5 = nodesCopy;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
@@ -110,27 +110,27 @@
     while (v7);
   }
 
-  v11 = [v4 anyObject];
-  if (v11)
+  anyObject = [v4 anyObject];
+  if (anyObject)
   {
     if ([v4 count] >= 2)
     {
       v12 = +[PGLogging sharedLogging];
-      v13 = [v12 loggingConnection];
+      loggingConnection = [v12 loggingConnection];
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_ERROR, "More than one person with anniversary found for momentNodes. Taking any person.", buf, 2u);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "More than one person with anniversary found for momentNodes. Taking any person.", buf, 2u);
       }
     }
 
-    v14 = [v11 anniversaryDateComponents];
-    v15 = [v14 year];
+    anniversaryDateComponents = [anyObject anniversaryDateComponents];
+    year = [anniversaryDateComponents year];
     v16 = 0;
-    if (v14 && v15 != 0x7FFFFFFFFFFFFFFFLL)
+    if (anniversaryDateComponents && year != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v16 = [(PGTitleSpecTimeArgument *)self _yearsAgoStringWithEventNodes:v5 relativeToDateComponents:v14];
+      v16 = [(PGTitleSpecTimeArgument *)self _yearsAgoStringWithEventNodes:v5 relativeToDateComponents:anniversaryDateComponents];
     }
   }
 
@@ -146,15 +146,15 @@
 
 - (id)_yearsAgoTitle
 {
-  v2 = [(PGTitleSpecArgument *)self inputVariable];
-  v3 = v2;
-  if (v2)
+  inputVariable = [(PGTitleSpecArgument *)self inputVariable];
+  v3 = inputVariable;
+  if (inputVariable)
   {
-    v4 = [v2 integerValue];
+    integerValue = [inputVariable integerValue];
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"PGMemoryTitleFormatWithNumberOfYears %lu" value:@"PGMemoryTitleFormatWithNumberOfYears %lu" table:@"Localizable"];
-    v8 = [v5 localizedStringWithFormat:v7, v4];
+    v8 = [v5 localizedStringWithFormat:v7, integerValue];
   }
 
   else
@@ -165,17 +165,17 @@
   return v8;
 }
 
-- (id)_resolvedStringWithMomentNodes:(id)a3 argumentEvaluationContext:(id)a4
+- (id)_resolvedStringWithMomentNodes:(id)nodes argumentEvaluationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nodesCopy = nodes;
+  contextCopy = context;
   v8 = 0;
   type = self->_type;
   if (type > 1)
   {
     if (type == 3)
     {
-      v10 = [(PGTitleSpecTimeArgument *)self _holidayTitleWithMomentNodes:v6];
+      _yearsAgoTitle = [(PGTitleSpecTimeArgument *)self _holidayTitleWithMomentNodes:nodesCopy];
     }
 
     else
@@ -185,7 +185,7 @@
         goto LABEL_11;
       }
 
-      v10 = [(PGTitleSpecTimeArgument *)self _yearsAgoTitle];
+      _yearsAgoTitle = [(PGTitleSpecTimeArgument *)self _yearsAgoTitle];
     }
   }
 
@@ -196,21 +196,21 @@
       goto LABEL_11;
     }
 
-    v10 = [(PGTitleSpecTimeArgument *)self _anniversaryTitleWithMomentNodes:v6];
+    _yearsAgoTitle = [(PGTitleSpecTimeArgument *)self _anniversaryTitleWithMomentNodes:nodesCopy];
   }
 
   else
   {
-    v10 = [(PGTitleSpecTimeArgument *)self _birthdayTitleWithMomentNodes:v6];
+    _yearsAgoTitle = [(PGTitleSpecTimeArgument *)self _birthdayTitleWithMomentNodes:nodesCopy];
   }
 
-  v8 = v10;
+  v8 = _yearsAgoTitle;
 LABEL_11:
 
   return v8;
 }
 
-- (PGTitleSpecTimeArgument)initWithTimeType:(unint64_t)a3
+- (PGTitleSpecTimeArgument)initWithTimeType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = PGTitleSpecTimeArgument;
@@ -218,16 +218,16 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
-    [(PGTitleSpecArgument *)v4 setRequiresInput:a3 == 2];
+    v4->_type = type;
+    [(PGTitleSpecArgument *)v4 setRequiresInput:type == 2];
   }
 
   return v5;
 }
 
-+ (id)argumentWithTimeType:(unint64_t)a3
++ (id)argumentWithTimeType:(unint64_t)type
 {
-  v3 = [[PGTitleSpecTimeArgument alloc] initWithTimeType:a3];
+  v3 = [[PGTitleSpecTimeArgument alloc] initWithTimeType:type];
 
   return v3;
 }

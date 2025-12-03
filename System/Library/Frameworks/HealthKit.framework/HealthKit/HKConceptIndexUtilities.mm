@@ -1,12 +1,12 @@
 @interface HKConceptIndexUtilities
-+ (BOOL)applyConcepts:(id)a3 toIndexableObject:(id)a4 keyPath:(id)a5 error:(id *)a6;
-+ (BOOL)assignError:(id *)a3 forInvalidKeyPath:(id)a4 inClass:(Class)a5;
-+ (id)conceptsForIndexedConcepts:(id)a3 expectedCount:(int64_t)a4 context:(id)a5 error:(id *)a6;
-+ (id)firstComponentForKeyPath:(id)a3 error:(id *)a4;
-+ (id)indexedCodingsForCodingCollections:(id)a3 context:(id)a4 error:(id *)a5;
-+ (id)keyPathRemovingFirstComponentFromKeyPath:(id)a3 error:(id *)a4;
-+ (id)keyPaths:(id)a3 prefix:(id)a4;
-+ (id)medicalCodingCollectionForIndexableObject:(id)a3 keyPath:(id)a4 error:(id *)a5;
++ (BOOL)applyConcepts:(id)concepts toIndexableObject:(id)object keyPath:(id)path error:(id *)error;
++ (BOOL)assignError:(id *)error forInvalidKeyPath:(id)path inClass:(Class)class;
++ (id)conceptsForIndexedConcepts:(id)concepts expectedCount:(int64_t)count context:(id)context error:(id *)error;
++ (id)firstComponentForKeyPath:(id)path error:(id *)error;
++ (id)indexedCodingsForCodingCollections:(id)collections context:(id)context error:(id *)error;
++ (id)keyPathRemovingFirstComponentFromKeyPath:(id)path error:(id *)error;
++ (id)keyPaths:(id)paths prefix:(id)prefix;
++ (id)medicalCodingCollectionForIndexableObject:(id)object keyPath:(id)path error:(id *)error;
 - (HKConceptIndexUtilities)init;
 @end
 
@@ -22,48 +22,48 @@
   return 0;
 }
 
-+ (id)keyPathRemovingFirstComponentFromKeyPath:(id)a3 error:(id *)a4
++ (id)keyPathRemovingFirstComponentFromKeyPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     +[HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:error:];
   }
 
-  v6 = [v5 rangeOfString:@"."];
+  v6 = [pathCopy rangeOfString:@"."];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:@"No remaining key-path"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"No remaining key-path"];
     v8 = 0;
   }
 
   else
   {
-    v8 = [v5 substringFromIndex:v6 + v7];
+    v8 = [pathCopy substringFromIndex:v6 + v7];
   }
 
   return v8;
 }
 
-+ (id)firstComponentForKeyPath:(id)a3 error:(id *)a4
++ (id)firstComponentForKeyPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
     +[HKConceptIndexUtilities firstComponentForKeyPath:error:];
   }
 
-  if ([v5 length])
+  if ([pathCopy length])
   {
-    v6 = [v5 rangeOfString:@"."];
+    v6 = [pathCopy rangeOfString:@"."];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = v5;
+      v7 = pathCopy;
     }
 
     else
     {
-      v7 = [v5 substringToIndex:v6];
+      v7 = [pathCopy substringToIndex:v6];
     }
 
     v8 = v7;
@@ -71,43 +71,43 @@
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:@"Unable to get first component for empty key-path"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"Unable to get first component for empty key-path"];
     v8 = 0;
   }
 
   return v8;
 }
 
-+ (id)keyPaths:(id)a3 prefix:(id)a4
++ (id)keyPaths:(id)paths prefix:(id)prefix
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  prefixCopy = prefix;
+  v6 = prefixCopy;
+  if (prefixCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __43__HKConceptIndexUtilities_keyPaths_prefix___block_invoke;
     v9[3] = &unk_1E737F808;
-    v10 = v5;
-    v7 = [a3 hk_map:v9];
+    v10 = prefixCopy;
+    v7 = [paths hk_map:v9];
   }
 
   else
   {
-    v7 = [a3 copy];
+    v7 = [paths copy];
   }
 
   return v7;
 }
 
-+ (id)indexedCodingsForCodingCollections:(id)a3 context:(id)a4 error:(id *)a5
++ (id)indexedCodingsForCodingCollections:(id)collections context:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  collectionsCopy = collections;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (collectionsCopy)
   {
-    if (v8)
+    if (contextCopy)
     {
       goto LABEL_3;
     }
@@ -124,7 +124,7 @@
 
   +[HKConceptIndexUtilities indexedCodingsForCodingCollections:context:error:];
 LABEL_3:
-  if ([v7 count] <= 0x7F)
+  if ([collectionsCopy count] <= 0x7F)
   {
     v27 = 0;
     v28 = &v27;
@@ -145,7 +145,7 @@ LABEL_3:
     v20 = &v27;
     v12 = v11;
     v18 = v12;
-    [v7 enumerateObjectsUsingBlock:v17];
+    [collectionsCopy enumerateObjectsUsingBlock:v17];
     if (v28[3])
     {
       v10 = [v12 copy];
@@ -157,10 +157,10 @@ LABEL_3:
       v14 = v13;
       if (v13)
       {
-        if (a5)
+        if (error)
         {
           v15 = v13;
-          *a5 = v14;
+          *error = v14;
         }
 
         else
@@ -178,7 +178,7 @@ LABEL_3:
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:{@"Unable to generate concept index for array of length %lu for context %@", objc_msgSend(v7, "count"), v9}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:{@"Unable to generate concept index for array of length %lu for context %@", objc_msgSend(collectionsCopy, "count"), v9}];
     v10 = 0;
   }
 
@@ -202,11 +202,11 @@ void __76__HKConceptIndexUtilities_indexedCodingsForCodingCollections_context_er
   }
 }
 
-+ (id)conceptsForIndexedConcepts:(id)a3 expectedCount:(int64_t)a4 context:(id)a5 error:(id *)a6
++ (id)conceptsForIndexedConcepts:(id)concepts expectedCount:(int64_t)count context:(id)context error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [HKIndexableObject indexableObjectsByApplyingOutermostIndex:v9 expectedCount:a4 error:a6];
+  conceptsCopy = concepts;
+  contextCopy = context;
+  v11 = [HKIndexableObject indexableObjectsByApplyingOutermostIndex:conceptsCopy expectedCount:count error:error];
   if (v11)
   {
     v29 = 0;
@@ -223,7 +223,7 @@ void __76__HKConceptIndexUtilities_indexedCodingsForCodingCollections_context_er
     v19[1] = 3221225472;
     v19[2] = __82__HKConceptIndexUtilities_conceptsForIndexedConcepts_expectedCount_context_error___block_invoke;
     v19[3] = &unk_1E737F858;
-    v20 = v10;
+    v20 = contextCopy;
     v21 = &v23;
     v22 = &v29;
     v12 = [v11 hk_map:v19];
@@ -239,10 +239,10 @@ void __76__HKConceptIndexUtilities_indexedCodingsForCodingCollections_context_er
       v16 = v15;
       if (v15)
       {
-        if (a6)
+        if (error)
         {
           v17 = v15;
-          *a6 = v16;
+          *error = v16;
         }
 
         else
@@ -290,15 +290,15 @@ id __82__HKConceptIndexUtilities_conceptsForIndexedConcepts_expectedCount_contex
   return v9;
 }
 
-+ (id)medicalCodingCollectionForIndexableObject:(id)a3 keyPath:(id)a4 error:(id *)a5
++ (id)medicalCodingCollectionForIndexableObject:(id)object keyPath:(id)path error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  objectCopy = object;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (v7)
+    if (objectCopy)
     {
-      v9 = [v7 codingsForKeyPath:v8 error:a5];
+      v9 = [objectCopy codingsForKeyPath:pathCopy error:error];
     }
 
     else
@@ -309,28 +309,28 @@ id __82__HKConceptIndexUtilities_conceptsForIndexedConcepts_expectedCount_contex
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a5 code:3 format:@"No remaining key-path"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"No remaining key-path"];
     v9 = 0;
   }
 
   return v9;
 }
 
-+ (BOOL)applyConcepts:(id)a3 toIndexableObject:(id)a4 keyPath:(id)a5 error:(id *)a6
++ (BOOL)applyConcepts:(id)concepts toIndexableObject:(id)object keyPath:(id)path error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  conceptsCopy = concepts;
+  objectCopy = object;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (v10)
+    if (objectCopy)
     {
-      v12 = [v10 applyConcepts:v9 forKeyPath:v11 error:a6];
+      v12 = [objectCopy applyConcepts:conceptsCopy forKeyPath:pathCopy error:error];
     }
 
     else
     {
-      v12 = HKIndexableObjectCheckCardinalityForIndexRestore([v9 count], 0, v11, a6);
+      v12 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 0, pathCopy, error);
     }
 
     v13 = v12;
@@ -338,21 +338,21 @@ id __82__HKConceptIndexUtilities_conceptsForIndexedConcepts_expectedCount_contex
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a6 code:3 format:@"No remaining key-path"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"No remaining key-path"];
     v13 = 0;
   }
 
   return v13;
 }
 
-+ (BOOL)assignError:(id *)a3 forInvalidKeyPath:(id)a4 inClass:(Class)a5
++ (BOOL)assignError:(id *)error forInvalidKeyPath:(id)path inClass:(Class)class
 {
   v7 = MEMORY[0x1E696ABC0];
-  v8 = a4;
-  v9 = NSStringFromClass(a5);
-  LOBYTE(a3) = [v7 hk_assignError:a3 code:3 format:{@"%@ does not support codings for key path %@", v9, v8}];
+  pathCopy = path;
+  v9 = NSStringFromClass(class);
+  LOBYTE(error) = [v7 hk_assignError:error code:3 format:{@"%@ does not support codings for key path %@", v9, pathCopy}];
 
-  return a3;
+  return error;
 }
 
 + (void)keyPathRemovingFirstComponentFromKeyPath:error:.cold.1()

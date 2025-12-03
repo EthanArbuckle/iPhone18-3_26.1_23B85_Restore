@@ -32,10 +32,10 @@ uint64_t __23__CNTCC_sharedInstance__block_invoke()
   }
 
   v3 = accessPreflight_cn_once_object_1;
-  v4 = [(CNTCC *)self tccServices];
-  v5 = [v4 checkAuthorizationStatusOfCurrentProcess];
+  tccServices = [(CNTCC *)self tccServices];
+  checkAuthorizationStatusOfCurrentProcess = [tccServices checkAuthorizationStatusOfCurrentProcess];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:checkAuthorizationStatusOfCurrentProcess];
   v7 = [v3 objectForKeyedSubscript:v6];
 
   LODWORD(v3) = [v7 integerValue];

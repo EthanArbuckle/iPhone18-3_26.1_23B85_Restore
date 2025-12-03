@@ -1,17 +1,17 @@
 @interface NFCISO15693ReadMultipleBlocksConfiguration
 - (NFCISO15693ReadMultipleBlocksConfiguration)initWithRange:(NSRange)range chunkSize:(NSUInteger)chunkSize maximumRetries:(NSUInteger)maximumRetries retryInterval:(NSTimeInterval)retryInterval;
 - (NSRange)range;
-- (id)asNSDataArrayWithUID:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)asNSDataArrayWithUID:(id)d error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NFCISO15693ReadMultipleBlocksConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NFCISO15693ReadMultipleBlocksConfiguration;
-  v4 = [(NFCTagCommandConfiguration *)&v7 copyWithZone:a3];
+  v4 = [(NFCTagCommandConfiguration *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -47,9 +47,9 @@
   return v12;
 }
 
-- (id)asNSDataArrayWithUID:(id)a3 error:(id *)a4
+- (id)asNSDataArrayWithUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   if (self->_chunkSize && (p_range = &self->_range, (v8 = self->_range.length) != 0) && p_range->location <= 0xFF && p_range->location + v8 < 0x101)
   {
     v9 = objc_opt_new();
@@ -64,7 +64,7 @@
         [v12 appendBytes:&flags length:1];
         flags = 35;
         [v12 appendBytes:&flags length:1];
-        [v12 appendData:v6];
+        [v12 appendData:dCopy];
         flags = location;
         [v12 appendBytes:&flags length:1];
         chunkSize = self->_chunkSize;
@@ -109,10 +109,10 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [NFCError errorWithCode:300];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else

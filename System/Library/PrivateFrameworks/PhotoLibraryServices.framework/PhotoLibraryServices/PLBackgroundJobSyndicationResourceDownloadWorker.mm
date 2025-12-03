@@ -1,24 +1,24 @@
 @interface PLBackgroundJobSyndicationResourceDownloadWorker
-- (id)resourceIDsForPrefetchWithLibrary:(id)a3;
-- (id)signalAgainDateWithLibrary:(id)a3;
+- (id)resourceIDsForPrefetchWithLibrary:(id)library;
+- (id)signalAgainDateWithLibrary:(id)library;
 @end
 
 @implementation PLBackgroundJobSyndicationResourceDownloadWorker
 
-- (id)signalAgainDateWithLibrary:(id)a3
+- (id)signalAgainDateWithLibrary:(id)library
 {
   prefetchManager = self->super._prefetchManager;
-  v4 = [a3 managedObjectContext];
-  v5 = [(PLSyndicationResourcePrefetchEngine *)prefetchManager dateOfNextResourceToPrefetchWithManagedObjectContext:v4];
+  managedObjectContext = [library managedObjectContext];
+  v5 = [(PLSyndicationResourcePrefetchEngine *)prefetchManager dateOfNextResourceToPrefetchWithManagedObjectContext:managedObjectContext];
 
   return v5;
 }
 
-- (id)resourceIDsForPrefetchWithLibrary:(id)a3
+- (id)resourceIDsForPrefetchWithLibrary:(id)library
 {
   prefetchManager = self->super._prefetchManager;
-  v4 = [a3 managedObjectContext];
-  v5 = [(PLSyndicationResourcePrefetchEngine *)prefetchManager lowPriorityResourcesForPrefetchWithManagedObjectContext:v4];
+  managedObjectContext = [library managedObjectContext];
+  v5 = [(PLSyndicationResourcePrefetchEngine *)prefetchManager lowPriorityResourcesForPrefetchWithManagedObjectContext:managedObjectContext];
 
   return v5;
 }

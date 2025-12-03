@@ -1,108 +1,108 @@
 @interface SBStartupTransitionContext
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithRebootContext:(id)a3;
-- (id)_initWithRepresentation:(id)a3 loginSession:(BOOL)a4;
-- (id)_initWithRestartRequest:(id)a3 fromLocked:(BOOL)a4 fromApplication:(id)a5;
-- (id)_initWithShutdownContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithRebootContext:(id)context;
+- (id)_initWithRepresentation:(id)representation loginSession:(BOOL)session;
+- (id)_initWithRestartRequest:(id)request fromLocked:(BOOL)locked fromApplication:(id)application;
+- (id)_initWithShutdownContext:(id)context;
 - (id)_representation;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_parseOverlayInfo;
-- (void)_reallyInitFromRepresentation:(id)a3;
+- (void)_reallyInitFromRepresentation:(id)representation;
 @end
 
 @implementation SBStartupTransitionContext
 
-- (id)_initWithRepresentation:(id)a3 loginSession:(BOOL)a4
+- (id)_initWithRepresentation:(id)representation loginSession:(BOOL)session
 {
-  v6 = a3;
+  representationCopy = representation;
   v10.receiver = self;
   v10.super_class = SBStartupTransitionContext;
   v7 = [(SBStartupTransitionContext *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_isLoginSession = a4;
-    [(SBStartupTransitionContext *)v7 _reallyInitFromRepresentation:v6];
+    v7->_isLoginSession = session;
+    [(SBStartupTransitionContext *)v7 _reallyInitFromRepresentation:representationCopy];
   }
 
   return v8;
 }
 
-- (id)_initWithRestartRequest:(id)a3 fromLocked:(BOOL)a4 fromApplication:(id)a5
+- (id)_initWithRestartRequest:(id)request fromLocked:(BOOL)locked fromApplication:(id)application
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  applicationCopy = application;
   v18.receiver = self;
   v18.super_class = SBStartupTransitionContext;
   v10 = [(SBStartupTransitionContext *)&v18 init];
   if (v10)
   {
-    v11 = [v8 reason];
+    reason = [requestCopy reason];
     reason = v10->_reason;
-    v10->_reason = v11;
+    v10->_reason = reason;
 
-    v13 = [v8 applicationLaunchURL];
+    applicationLaunchURL = [requestCopy applicationLaunchURL];
     applicationLaunchURL = v10->_applicationLaunchURL;
-    v10->_applicationLaunchURL = v13;
+    v10->_applicationLaunchURL = applicationLaunchURL;
 
-    v10->_fromLocked = a4;
-    objc_storeStrong(&v10->_fromApplicationBundleID, a5);
-    v15 = [MEMORY[0x277D0AB10] sharedInstance];
-    v16 = [v15 initializationContext];
-    v10->_isDark = [v16 wasBootedDark];
+    v10->_fromLocked = locked;
+    objc_storeStrong(&v10->_fromApplicationBundleID, application);
+    mEMORY[0x277D0AB10] = [MEMORY[0x277D0AB10] sharedInstance];
+    initializationContext = [mEMORY[0x277D0AB10] initializationContext];
+    v10->_isDark = [initializationContext wasBootedDark];
   }
 
   return v10;
 }
 
-- (id)_initWithRebootContext:(id)a3
+- (id)_initWithRebootContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SBStartupTransitionContext;
   v5 = [(SBStartupTransitionContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 reason];
+    reason = [contextCopy reason];
     reason = v5->_reason;
-    v5->_reason = v6;
+    v5->_reason = reason;
 
-    v5->_isDark = [v4 isDark];
+    v5->_isDark = [contextCopy isDark];
   }
 
   return v5;
 }
 
-- (id)_initWithShutdownContext:(id)a3
+- (id)_initWithShutdownContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SBStartupTransitionContext;
   v5 = [(SBStartupTransitionContext *)&v9 init];
   if (v5)
   {
-    v6 = [v4 reason];
+    reason = [contextCopy reason];
     reason = v5->_reason;
-    v5->_reason = v6;
+    v5->_reason = reason;
 
-    v5->_fromUserPowerDown = [v4 fromUserPowerDown];
+    v5->_fromUserPowerDown = [contextCopy fromUserPowerDown];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   isLogin = self->_isLogin;
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __38__SBStartupTransitionContext_isEqual___block_invoke;
   v50[3] = &unk_2783ACE58;
-  v7 = v4;
+  v7 = equalCopy;
   v51 = v7;
   v8 = [v5 appendBool:isLogin counterpart:v50];
   isLogout = self->_isLogout;
@@ -174,15 +174,15 @@
   return v28;
 }
 
-- (void)_reallyInitFromRepresentation:(id)a3
+- (void)_reallyInitFromRepresentation:(id)representation
 {
-  v18 = a3;
-  v4 = [v18 bs_safeObjectForKey:@"__reason" ofType:objc_opt_class()];
+  representationCopy = representation;
+  v4 = [representationCopy bs_safeObjectForKey:@"__reason" ofType:objc_opt_class()];
   reason = self->_reason;
   self->_reason = v4;
 
   self->_fromLocked = 0;
-  v6 = [v18 bs_safeObjectForKey:@"__fromLocked" ofType:objc_opt_class()];
+  v6 = [representationCopy bs_safeObjectForKey:@"__fromLocked" ofType:objc_opt_class()];
   v7 = v6;
   if (v6)
   {
@@ -192,7 +192,7 @@
   applicationLaunchURL = self->_applicationLaunchURL;
   self->_applicationLaunchURL = 0;
 
-  v9 = [v18 objectForKeyedSubscript:@"__appLaunchURL"];
+  v9 = [representationCopy objectForKeyedSubscript:@"__appLaunchURL"];
   if (v9)
   {
     v10 = [MEMORY[0x277CBEBC0] URLWithString:v9];
@@ -200,16 +200,16 @@
     self->_applicationLaunchURL = v10;
   }
 
-  v12 = [v18 objectForKeyedSubscript:@"__fromAppBundleID"];
+  v12 = [representationCopy objectForKeyedSubscript:@"__fromAppBundleID"];
   fromApplicationBundleID = self->_fromApplicationBundleID;
   self->_fromApplicationBundleID = v12;
 
-  v14 = [MEMORY[0x277D0AB10] sharedInstance];
-  v15 = [v14 initializationContext];
-  self->_isDark = [v15 wasBootedDark];
+  mEMORY[0x277D0AB10] = [MEMORY[0x277D0AB10] sharedInstance];
+  initializationContext = [mEMORY[0x277D0AB10] initializationContext];
+  self->_isDark = [initializationContext wasBootedDark];
 
   self->_fromUserPowerDown = 0;
-  v16 = [v18 bs_safeObjectForKey:@"__fromUserPowerDown" ofType:objc_opt_class()];
+  v16 = [representationCopy bs_safeObjectForKey:@"__fromUserPowerDown" ofType:objc_opt_class()];
   v17 = v16;
   if (v16)
   {
@@ -232,8 +232,8 @@
   applicationLaunchURL = self->_applicationLaunchURL;
   if (applicationLaunchURL)
   {
-    v7 = [(NSURL *)applicationLaunchURL absoluteString];
-    [v4 setObject:v7 forKeyedSubscript:@"__appLaunchURL"];
+    absoluteString = [(NSURL *)applicationLaunchURL absoluteString];
+    [v4 setObject:absoluteString forKeyedSubscript:@"__appLaunchURL"];
   }
 
   fromApplicationBundleID = self->_fromApplicationBundleID;
@@ -253,59 +253,59 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBStartupTransitionContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBStartupTransitionContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBStartupTransitionContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBStartupTransitionContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBStartupTransitionContext *)self succinctDescriptionBuilder];
-  [v4 appendString:self->_reason withName:@"restartReason"];
-  v5 = [v4 appendObject:self->_applicationLaunchURL withName:@"applicationLaunchURL" skipIfNil:1];
-  v6 = [v4 appendObject:self->_fromApplicationBundleID withName:@"fromApplication" skipIfNil:1];
-  v7 = [v4 appendBool:self->_fromLocked withName:@"fromLocked"];
-  v8 = [v4 appendBool:self->_fromUserPowerDown withName:@"fromUserPowerDown"];
-  v9 = [v4 appendBool:self->_isDark withName:@"fromDarkBoot"];
-  v10 = [v4 appendBool:self->_isLogin withName:@"isLogin"];
-  v11 = [v4 appendBool:self->_isLogout withName:@"isLogout"];
-  v12 = [v4 appendBool:self->_isLoginSession withName:@"isLoginSession"];
+  succinctDescriptionBuilder = [(SBStartupTransitionContext *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendString:self->_reason withName:@"restartReason"];
+  v5 = [succinctDescriptionBuilder appendObject:self->_applicationLaunchURL withName:@"applicationLaunchURL" skipIfNil:1];
+  v6 = [succinctDescriptionBuilder appendObject:self->_fromApplicationBundleID withName:@"fromApplication" skipIfNil:1];
+  v7 = [succinctDescriptionBuilder appendBool:self->_fromLocked withName:@"fromLocked"];
+  v8 = [succinctDescriptionBuilder appendBool:self->_fromUserPowerDown withName:@"fromUserPowerDown"];
+  v9 = [succinctDescriptionBuilder appendBool:self->_isDark withName:@"fromDarkBoot"];
+  v10 = [succinctDescriptionBuilder appendBool:self->_isLogin withName:@"isLogin"];
+  v11 = [succinctDescriptionBuilder appendBool:self->_isLogout withName:@"isLogout"];
+  v12 = [succinctDescriptionBuilder appendBool:self->_isLoginSession withName:@"isLoginSession"];
   if (self->_overlay)
   {
-    v13 = [v4 activeMultilinePrefix];
+    activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __68__SBStartupTransitionContext_descriptionBuilderWithMultilinePrefix___block_invoke;
     v15[3] = &unk_2783A92D8;
-    v16 = v4;
-    v17 = self;
-    [v16 appendBodySectionWithName:0 multilinePrefix:v13 block:v15];
+    v16 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v16 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v15];
   }
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (void)_parseOverlayInfo
 {
   self->_hasUserSwitchOverlayMismatch = 0;
   v3 = MEMORY[0x277CF05E8];
-  v4 = [MEMORY[0x277CD9E40] mainDisplay];
-  v5 = [v3 existingOverlayForDisplay:v4];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  v5 = [v3 existingOverlayForDisplay:mainDisplay];
 
-  v6 = [v5 name];
-  v7 = [v6 isEqualToString:@"login"];
+  name = [v5 name];
+  v7 = [name isEqualToString:@"login"];
 
-  v8 = [v5 name];
-  v9 = [v8 isEqualToString:@"logout"];
+  name2 = [v5 name];
+  v9 = [name2 isEqualToString:@"logout"];
 
   if (v7 && self->_isLoginSession)
   {

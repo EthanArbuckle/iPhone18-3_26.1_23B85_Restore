@@ -6,14 +6,14 @@
 + (ASCOfferTheme)viewInAppStoreTheme;
 + (ASCOfferTheme)whiteOnGrayTheme;
 + (ASCOfferTheme)whiteTheme;
-+ (id)confirmationForTheme:(id)a3;
-- (ASCOfferTheme)initWithTitleBackgroundColor:(id)a3 titleTextColor:(id)a4 titleTextDisabledColor:(id)a5 subtitleTextColor:(id)a6 iconTintColor:(id)a7 progressColor:(id)a8;
-- (ASCOfferTheme)initWithTitleBackgroundColor:(id)a3 titleTextColor:(id)a4 titleTextDisabledColor:(id)a5 subtitleTextColor:(id)a6 iconTintColor:(id)a7 progressColor:(id)a8 progressLineWidth:(double)a9 progressLineCap:(int)a10 stopIndicatorRatio:(double)a11 stopIndicatorCornerSize:(CGSize)a12 backgroundStyle:(id)a13;
-- (ASCOfferTheme)offerThemeWithBackgroundStyle:(id)a3;
-- (ASCOfferTheme)offerThemeWithProgressLineCap:(int)a3;
-- (ASCOfferTheme)offerThemeWithProgressLineWidth:(double)a3;
-- (ASCOfferTheme)offerThemeWithStopIndicatorRatio:(double)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)confirmationForTheme:(id)theme;
+- (ASCOfferTheme)initWithTitleBackgroundColor:(id)color titleTextColor:(id)textColor titleTextDisabledColor:(id)disabledColor subtitleTextColor:(id)subtitleTextColor iconTintColor:(id)tintColor progressColor:(id)progressColor;
+- (ASCOfferTheme)initWithTitleBackgroundColor:(id)color titleTextColor:(id)textColor titleTextDisabledColor:(id)disabledColor subtitleTextColor:(id)subtitleTextColor iconTintColor:(id)tintColor progressColor:(id)progressColor progressLineWidth:(double)width progressLineCap:(int)self0 stopIndicatorRatio:(double)self1 stopIndicatorCornerSize:(CGSize)self2 backgroundStyle:(id)self3;
+- (ASCOfferTheme)offerThemeWithBackgroundStyle:(id)style;
+- (ASCOfferTheme)offerThemeWithProgressLineCap:(int)cap;
+- (ASCOfferTheme)offerThemeWithProgressLineWidth:(double)width;
+- (ASCOfferTheme)offerThemeWithStopIndicatorRatio:(double)ratio;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)stopIndicatorCornerSize;
 - (id)clone;
 - (id)description;
@@ -126,27 +126,27 @@ void __33__ASCOfferTheme_whiteOnGrayTheme__block_invoke()
   whiteOnGrayTheme_theme = v7;
 }
 
-+ (id)confirmationForTheme:(id)a3
++ (id)confirmationForTheme:(id)theme
 {
-  v3 = a3;
+  themeCopy = theme;
   v4 = [ASCOfferTheme alloc];
-  v5 = [MEMORY[0x277D75348] systemGreenColor];
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  if (v3)
+  systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  if (themeCopy)
   {
-    v7 = [v3 subtitleTextColor];
-    v8 = [v3 iconTintColor];
-    [v3 progressColor];
+    subtitleTextColor = [themeCopy subtitleTextColor];
+    iconTintColor = [themeCopy iconTintColor];
+    [themeCopy progressColor];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D75348] systemGrayColor];
-    v8 = [MEMORY[0x277D75348] systemBlueColor];
+    subtitleTextColor = [MEMORY[0x277D75348] systemGrayColor];
+    iconTintColor = [MEMORY[0x277D75348] systemBlueColor];
     [MEMORY[0x277D75348] systemFillColor];
   }
   v9 = ;
-  v10 = [(ASCOfferTheme *)v4 initWithTitleBackgroundColor:v5 titleTextColor:v6 subtitleTextColor:v7 iconTintColor:v8 progressColor:v9];
+  v10 = [(ASCOfferTheme *)v4 initWithTitleBackgroundColor:systemGreenColor titleTextColor:whiteColor subtitleTextColor:subtitleTextColor iconTintColor:iconTintColor progressColor:v9];
 
   return v10;
 }
@@ -231,32 +231,32 @@ void __36__ASCOfferTheme_viewInAppStoreTheme__block_invoke()
   viewInAppStoreTheme_theme = v5;
 }
 
-- (ASCOfferTheme)initWithTitleBackgroundColor:(id)a3 titleTextColor:(id)a4 titleTextDisabledColor:(id)a5 subtitleTextColor:(id)a6 iconTintColor:(id)a7 progressColor:(id)a8
+- (ASCOfferTheme)initWithTitleBackgroundColor:(id)color titleTextColor:(id)textColor titleTextDisabledColor:(id)disabledColor subtitleTextColor:(id)subtitleTextColor iconTintColor:(id)tintColor progressColor:(id)progressColor
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  progressColorCopy = progressColor;
+  tintColorCopy = tintColor;
+  subtitleTextColorCopy = subtitleTextColor;
+  disabledColorCopy = disabledColor;
+  textColorCopy = textColor;
+  colorCopy = color;
   v20 = +[ASCOfferBackgroundStyle defaultStyle];
   LODWORD(v23) = 0;
-  v21 = [(ASCOfferTheme *)self initWithTitleBackgroundColor:v19 titleTextColor:v18 titleTextDisabledColor:v17 subtitleTextColor:v16 iconTintColor:v15 progressColor:v14 progressLineWidth:2.0 progressLineCap:0.3 stopIndicatorRatio:1.0 stopIndicatorCornerSize:1.0 backgroundStyle:v23, v20];
+  v21 = [(ASCOfferTheme *)self initWithTitleBackgroundColor:colorCopy titleTextColor:textColorCopy titleTextDisabledColor:disabledColorCopy subtitleTextColor:subtitleTextColorCopy iconTintColor:tintColorCopy progressColor:progressColorCopy progressLineWidth:2.0 progressLineCap:0.3 stopIndicatorRatio:1.0 stopIndicatorCornerSize:1.0 backgroundStyle:v23, v20];
 
   return v21;
 }
 
-- (ASCOfferTheme)initWithTitleBackgroundColor:(id)a3 titleTextColor:(id)a4 titleTextDisabledColor:(id)a5 subtitleTextColor:(id)a6 iconTintColor:(id)a7 progressColor:(id)a8 progressLineWidth:(double)a9 progressLineCap:(int)a10 stopIndicatorRatio:(double)a11 stopIndicatorCornerSize:(CGSize)a12 backgroundStyle:(id)a13
+- (ASCOfferTheme)initWithTitleBackgroundColor:(id)color titleTextColor:(id)textColor titleTextDisabledColor:(id)disabledColor subtitleTextColor:(id)subtitleTextColor iconTintColor:(id)tintColor progressColor:(id)progressColor progressLineWidth:(double)width progressLineCap:(int)self0 stopIndicatorRatio:(double)self1 stopIndicatorCornerSize:(CGSize)self2 backgroundStyle:(id)self3
 {
-  height = a12.height;
-  width = a12.width;
-  v24 = a3;
-  v25 = a4;
-  v33 = a5;
-  v32 = a6;
-  v31 = a7;
-  v30 = a8;
-  v26 = a13;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  textColorCopy = textColor;
+  disabledColorCopy = disabledColor;
+  subtitleTextColorCopy = subtitleTextColor;
+  tintColorCopy = tintColor;
+  progressColorCopy = progressColor;
+  styleCopy = style;
   +[ASCEligibility assertCurrentProcessEligibility];
   v34.receiver = self;
   v34.super_class = ASCOfferTheme;
@@ -264,18 +264,18 @@ void __36__ASCOfferTheme_viewInAppStoreTheme__block_invoke()
   v28 = v27;
   if (v27)
   {
-    objc_storeStrong(&v27->_titleBackgroundColor, a3);
-    objc_storeStrong(&v28->_titleTextColor, a4);
-    objc_storeStrong(&v28->_titleTextDisabledColor, a5);
-    objc_storeStrong(&v28->_subtitleTextColor, a6);
-    objc_storeStrong(&v28->_iconTintColor, a7);
-    objc_storeStrong(&v28->_progressColor, a8);
-    v28->_progressLineWidth = a9;
-    v28->_stopIndicatorRatio = a11;
-    v28->_progressLineCap = a10;
+    objc_storeStrong(&v27->_titleBackgroundColor, color);
+    objc_storeStrong(&v28->_titleTextColor, textColor);
+    objc_storeStrong(&v28->_titleTextDisabledColor, disabledColor);
+    objc_storeStrong(&v28->_subtitleTextColor, subtitleTextColor);
+    objc_storeStrong(&v28->_iconTintColor, tintColor);
+    objc_storeStrong(&v28->_progressColor, progressColor);
+    v28->_progressLineWidth = width;
+    v28->_stopIndicatorRatio = ratio;
+    v28->_progressLineCap = cap;
     v28->_stopIndicatorCornerSize.width = width;
     v28->_stopIndicatorCornerSize.height = height;
-    objc_storeStrong(&v28->_backgroundStyle, a13);
+    objc_storeStrong(&v28->_backgroundStyle, style);
   }
 
   return v28;
@@ -284,90 +284,90 @@ void __36__ASCOfferTheme_viewInAppStoreTheme__block_invoke()
 - (id)clone
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(ASCOfferTheme *)self titleBackgroundColor];
-  v5 = [(ASCOfferTheme *)self titleTextColor];
-  v6 = [(ASCOfferTheme *)self titleTextDisabledColor];
-  v7 = [(ASCOfferTheme *)self subtitleTextColor];
-  v8 = [(ASCOfferTheme *)self iconTintColor];
-  v9 = [(ASCOfferTheme *)self progressColor];
+  titleBackgroundColor = [(ASCOfferTheme *)self titleBackgroundColor];
+  titleTextColor = [(ASCOfferTheme *)self titleTextColor];
+  titleTextDisabledColor = [(ASCOfferTheme *)self titleTextDisabledColor];
+  subtitleTextColor = [(ASCOfferTheme *)self subtitleTextColor];
+  iconTintColor = [(ASCOfferTheme *)self iconTintColor];
+  progressColor = [(ASCOfferTheme *)self progressColor];
   [(ASCOfferTheme *)self progressLineWidth];
   v11 = v10;
-  v12 = [(ASCOfferTheme *)self progressLineCap];
+  progressLineCap = [(ASCOfferTheme *)self progressLineCap];
   [(ASCOfferTheme *)self stopIndicatorRatio];
   v14 = v13;
   [(ASCOfferTheme *)self stopIndicatorCornerSize];
   v16 = v15;
   v18 = v17;
-  v19 = [(ASCOfferTheme *)self backgroundStyle];
-  LODWORD(v22) = v12;
-  v20 = [v3 initWithTitleBackgroundColor:v4 titleTextColor:v5 titleTextDisabledColor:v6 subtitleTextColor:v7 iconTintColor:v8 progressColor:v9 progressLineWidth:v11 progressLineCap:v14 stopIndicatorRatio:v16 stopIndicatorCornerSize:v18 backgroundStyle:{v22, v19}];
+  backgroundStyle = [(ASCOfferTheme *)self backgroundStyle];
+  LODWORD(v22) = progressLineCap;
+  v20 = [v3 initWithTitleBackgroundColor:titleBackgroundColor titleTextColor:titleTextColor titleTextDisabledColor:titleTextDisabledColor subtitleTextColor:subtitleTextColor iconTintColor:iconTintColor progressColor:progressColor progressLineWidth:v11 progressLineCap:v14 stopIndicatorRatio:v16 stopIndicatorCornerSize:v18 backgroundStyle:{v22, backgroundStyle}];
 
   return v20;
 }
 
-- (ASCOfferTheme)offerThemeWithProgressLineWidth:(double)a3
+- (ASCOfferTheme)offerThemeWithProgressLineWidth:(double)width
 {
   [(ASCOfferTheme *)self progressLineWidth];
-  if (v5 == a3)
+  if (v5 == width)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(ASCOfferTheme *)self clone];
-    v6->_progressLineWidth = a3;
+    selfCopy = [(ASCOfferTheme *)self clone];
+    selfCopy->_progressLineWidth = width;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ASCOfferTheme)offerThemeWithProgressLineCap:(int)a3
+- (ASCOfferTheme)offerThemeWithProgressLineCap:(int)cap
 {
-  if ([(ASCOfferTheme *)self progressLineCap]== a3)
+  if ([(ASCOfferTheme *)self progressLineCap]== cap)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [(ASCOfferTheme *)self clone];
-    v5->_progressLineCap = a3;
+    selfCopy = [(ASCOfferTheme *)self clone];
+    selfCopy->_progressLineCap = cap;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (ASCOfferTheme)offerThemeWithStopIndicatorRatio:(double)a3
+- (ASCOfferTheme)offerThemeWithStopIndicatorRatio:(double)ratio
 {
   [(ASCOfferTheme *)self stopIndicatorRatio];
-  if (v5 == a3)
+  if (v5 == ratio)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(ASCOfferTheme *)self clone];
-    v6->_stopIndicatorRatio = a3;
+    selfCopy = [(ASCOfferTheme *)self clone];
+    selfCopy->_stopIndicatorRatio = ratio;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (ASCOfferTheme)offerThemeWithBackgroundStyle:(id)a3
+- (ASCOfferTheme)offerThemeWithBackgroundStyle:(id)style
 {
-  v5 = a3;
-  v6 = [(ASCOfferTheme *)self backgroundStyle];
-  v7 = v6;
-  if (v5 && v6)
+  styleCopy = style;
+  backgroundStyle = [(ASCOfferTheme *)self backgroundStyle];
+  v7 = backgroundStyle;
+  if (styleCopy && backgroundStyle)
   {
-    v8 = [v6 isEqual:v5];
+    v8 = [backgroundStyle isEqual:styleCopy];
 
     if (v8)
     {
 LABEL_4:
-      v9 = self;
+      selfCopy = self;
       goto LABEL_7;
     }
   }
@@ -375,39 +375,39 @@ LABEL_4:
   else
   {
 
-    if (v7 == v5)
+    if (v7 == styleCopy)
     {
       goto LABEL_4;
     }
   }
 
-  v9 = [(ASCOfferTheme *)self clone];
-  objc_storeStrong(&v9->_backgroundStyle, a3);
+  selfCopy = [(ASCOfferTheme *)self clone];
+  objc_storeStrong(&selfCopy->_backgroundStyle, style);
 LABEL_7:
 
-  return v9;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCOfferTheme *)self titleBackgroundColor];
-  [(ASCHasher *)v3 combineObject:v4];
+  titleBackgroundColor = [(ASCOfferTheme *)self titleBackgroundColor];
+  [(ASCHasher *)v3 combineObject:titleBackgroundColor];
 
-  v5 = [(ASCOfferTheme *)self titleTextColor];
-  [(ASCHasher *)v3 combineObject:v5];
+  titleTextColor = [(ASCOfferTheme *)self titleTextColor];
+  [(ASCHasher *)v3 combineObject:titleTextColor];
 
-  v6 = [(ASCOfferTheme *)self titleTextDisabledColor];
-  [(ASCHasher *)v3 combineObject:v6];
+  titleTextDisabledColor = [(ASCOfferTheme *)self titleTextDisabledColor];
+  [(ASCHasher *)v3 combineObject:titleTextDisabledColor];
 
-  v7 = [(ASCOfferTheme *)self subtitleTextColor];
-  [(ASCHasher *)v3 combineObject:v7];
+  subtitleTextColor = [(ASCOfferTheme *)self subtitleTextColor];
+  [(ASCHasher *)v3 combineObject:subtitleTextColor];
 
-  v8 = [(ASCOfferTheme *)self iconTintColor];
-  [(ASCHasher *)v3 combineObject:v8];
+  iconTintColor = [(ASCOfferTheme *)self iconTintColor];
+  [(ASCHasher *)v3 combineObject:iconTintColor];
 
-  v9 = [(ASCOfferTheme *)self progressColor];
-  [(ASCHasher *)v3 combineObject:v9];
+  progressColor = [(ASCOfferTheme *)self progressColor];
+  [(ASCHasher *)v3 combineObject:progressColor];
 
   [(ASCOfferTheme *)self progressLineWidth];
   [(ASCHasher *)v3 combineDouble:?];
@@ -418,18 +418,18 @@ LABEL_7:
   [(ASCHasher *)v3 combineDouble:?];
   [(ASCOfferTheme *)self stopIndicatorCornerSize];
   [(ASCHasher *)v3 combineDouble:v10];
-  v11 = [(ASCOfferTheme *)self backgroundStyle];
-  [(ASCHasher *)v3 combineObject:v11];
+  backgroundStyle = [(ASCOfferTheme *)self backgroundStyle];
+  [(ASCHasher *)v3 combineObject:backgroundStyle];
 
-  v12 = [(ASCHasher *)v3 finalizeHash];
-  return v12;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -452,69 +452,69 @@ LABEL_7:
 
   if (v7)
   {
-    v8 = [(ASCOfferTheme *)self titleBackgroundColor];
-    v9 = [v7 titleBackgroundColor];
-    v10 = v9;
-    if (v8 && v9)
+    titleBackgroundColor = [(ASCOfferTheme *)self titleBackgroundColor];
+    titleBackgroundColor2 = [v7 titleBackgroundColor];
+    v10 = titleBackgroundColor2;
+    if (titleBackgroundColor && titleBackgroundColor2)
     {
-      if ([v8 isEqual:v9])
+      if ([titleBackgroundColor isEqual:titleBackgroundColor2])
       {
 LABEL_10:
-        v11 = [(ASCOfferTheme *)self titleTextColor];
-        v12 = [v7 titleTextColor];
-        v13 = v12;
-        if (v11 && v12)
+        titleTextColor = [(ASCOfferTheme *)self titleTextColor];
+        titleTextColor2 = [v7 titleTextColor];
+        v13 = titleTextColor2;
+        if (titleTextColor && titleTextColor2)
         {
-          if ([v11 isEqual:v12])
+          if ([titleTextColor isEqual:titleTextColor2])
           {
 LABEL_13:
-            v14 = [(ASCOfferTheme *)self titleTextDisabledColor];
-            v15 = [v7 titleTextDisabledColor];
-            v16 = v15;
-            if (v14 && v15)
+            titleTextDisabledColor = [(ASCOfferTheme *)self titleTextDisabledColor];
+            titleTextDisabledColor2 = [v7 titleTextDisabledColor];
+            v16 = titleTextDisabledColor2;
+            if (titleTextDisabledColor && titleTextDisabledColor2)
             {
-              if ([v14 isEqual:v15])
+              if ([titleTextDisabledColor isEqual:titleTextDisabledColor2])
               {
 LABEL_16:
-                v17 = [(ASCOfferTheme *)self subtitleTextColor];
-                v18 = [v7 subtitleTextColor];
-                v19 = v18;
-                v59 = v17;
-                if (v17 && v18)
+                subtitleTextColor = [(ASCOfferTheme *)self subtitleTextColor];
+                subtitleTextColor2 = [v7 subtitleTextColor];
+                v19 = subtitleTextColor2;
+                v59 = subtitleTextColor;
+                if (subtitleTextColor && subtitleTextColor2)
                 {
-                  v57 = v14;
+                  v57 = titleTextDisabledColor;
                   v20 = v16;
-                  v21 = v18;
-                  v22 = [v17 isEqual:v18];
+                  v21 = subtitleTextColor2;
+                  v22 = [subtitleTextColor isEqual:subtitleTextColor2];
                   v19 = v21;
                   v16 = v20;
-                  v14 = v57;
+                  titleTextDisabledColor = v57;
                   if (v22)
                   {
 LABEL_19:
                     v55 = v19;
                     v56 = v16;
-                    v23 = [(ASCOfferTheme *)self iconTintColor];
-                    v24 = [v7 iconTintColor];
-                    v25 = v24;
-                    v58 = v23;
-                    if (v23 && v24)
+                    iconTintColor = [(ASCOfferTheme *)self iconTintColor];
+                    iconTintColor2 = [v7 iconTintColor];
+                    v25 = iconTintColor2;
+                    v58 = iconTintColor;
+                    if (iconTintColor && iconTintColor2)
                     {
-                      v26 = v24;
-                      v27 = [v58 isEqual:v24];
+                      v26 = iconTintColor2;
+                      v27 = [v58 isEqual:iconTintColor2];
                       v25 = v26;
                       if (v27)
                       {
 LABEL_22:
                         v53 = v25;
-                        v28 = [(ASCOfferTheme *)self progressColor];
-                        v29 = [v7 progressColor];
-                        v30 = v29;
-                        v54 = v28;
-                        if (v28 && v29)
+                        progressColor = [(ASCOfferTheme *)self progressColor];
+                        progressColor2 = [v7 progressColor];
+                        v30 = progressColor2;
+                        v54 = progressColor;
+                        if (progressColor && progressColor2)
                         {
-                          v31 = v29;
-                          v32 = [v54 isEqual:v29];
+                          v31 = progressColor2;
+                          v32 = [v54 isEqual:progressColor2];
                           v30 = v31;
                           if (v32)
                           {
@@ -535,18 +535,18 @@ LABEL_25:
                                 v30 = v33;
                                 if (v44 == v45)
                                 {
-                                  v48 = [(ASCOfferTheme *)self backgroundStyle];
-                                  v49 = [v7 backgroundStyle];
-                                  v50 = v49;
-                                  v52 = v48;
-                                  if (v48 && v49)
+                                  backgroundStyle = [(ASCOfferTheme *)self backgroundStyle];
+                                  backgroundStyle2 = [v7 backgroundStyle];
+                                  v50 = backgroundStyle2;
+                                  v52 = backgroundStyle;
+                                  if (backgroundStyle && backgroundStyle2)
                                   {
-                                    v46 = [v48 isEqual:v49];
+                                    v46 = [backgroundStyle isEqual:backgroundStyle2];
                                   }
 
                                   else
                                   {
-                                    v46 = v48 == v49;
+                                    v46 = backgroundStyle == backgroundStyle2;
                                   }
 
                                   goto LABEL_47;
@@ -570,7 +570,7 @@ LABEL_47:
                           }
                         }
 
-                        else if (v28 == v29)
+                        else if (progressColor == progressColor2)
                         {
                           goto LABEL_25;
                         }
@@ -580,7 +580,7 @@ LABEL_47:
                       }
                     }
 
-                    else if (v23 == v24)
+                    else if (iconTintColor == iconTintColor2)
                     {
                       goto LABEL_22;
                     }
@@ -594,7 +594,7 @@ LABEL_49:
                   }
                 }
 
-                else if (v17 == v18)
+                else if (subtitleTextColor == subtitleTextColor2)
                 {
                   goto LABEL_19;
                 }
@@ -606,7 +606,7 @@ LABEL_50:
               }
             }
 
-            else if (v14 == v15)
+            else if (titleTextDisabledColor == titleTextDisabledColor2)
             {
               goto LABEL_16;
             }
@@ -618,7 +618,7 @@ LABEL_51:
           }
         }
 
-        else if (v11 == v12)
+        else if (titleTextColor == titleTextColor2)
         {
           goto LABEL_13;
         }
@@ -630,7 +630,7 @@ LABEL_52:
       }
     }
 
-    else if (v8 == v9)
+    else if (titleBackgroundColor == titleBackgroundColor2)
     {
       goto LABEL_10;
     }
@@ -650,23 +650,23 @@ LABEL_54:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCOfferTheme *)self titleBackgroundColor];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"titleBackgroundColor"];
+  titleBackgroundColor = [(ASCOfferTheme *)self titleBackgroundColor];
+  [(ASCDescriber *)v3 addObject:titleBackgroundColor withName:@"titleBackgroundColor"];
 
-  v5 = [(ASCOfferTheme *)self titleTextColor];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"titleTextColor"];
+  titleTextColor = [(ASCOfferTheme *)self titleTextColor];
+  [(ASCDescriber *)v3 addObject:titleTextColor withName:@"titleTextColor"];
 
-  v6 = [(ASCOfferTheme *)self titleTextDisabledColor];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"titleTextDisabledColor"];
+  titleTextDisabledColor = [(ASCOfferTheme *)self titleTextDisabledColor];
+  [(ASCDescriber *)v3 addObject:titleTextDisabledColor withName:@"titleTextDisabledColor"];
 
-  v7 = [(ASCOfferTheme *)self subtitleTextColor];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"subtitleTextColor"];
+  subtitleTextColor = [(ASCOfferTheme *)self subtitleTextColor];
+  [(ASCDescriber *)v3 addObject:subtitleTextColor withName:@"subtitleTextColor"];
 
-  v8 = [(ASCOfferTheme *)self iconTintColor];
-  [(ASCDescriber *)v3 addObject:v8 withName:@"iconTintColor"];
+  iconTintColor = [(ASCOfferTheme *)self iconTintColor];
+  [(ASCDescriber *)v3 addObject:iconTintColor withName:@"iconTintColor"];
 
-  v9 = [(ASCOfferTheme *)self progressColor];
-  [(ASCDescriber *)v3 addObject:v9 withName:@"progressColor"];
+  progressColor = [(ASCOfferTheme *)self progressColor];
+  [(ASCDescriber *)v3 addObject:progressColor withName:@"progressColor"];
 
   [(ASCOfferTheme *)self progressLineWidth];
   [(ASCDescriber *)v3 addDouble:@"progressLineWidth" withName:?];
@@ -677,12 +677,12 @@ LABEL_54:
   [(ASCDescriber *)v3 addDouble:@"stopIndicatorCornerSize.width" withName:?];
   [(ASCOfferTheme *)self stopIndicatorCornerSize];
   [(ASCDescriber *)v3 addDouble:@"stopIndicatorCornerSize.height" withName:v10];
-  v11 = [(ASCOfferTheme *)self backgroundStyle];
-  [(ASCDescriber *)v3 addObject:v11 withName:@"backgroundStyle"];
+  backgroundStyle = [(ASCOfferTheme *)self backgroundStyle];
+  [(ASCDescriber *)v3 addObject:backgroundStyle withName:@"backgroundStyle"];
 
-  v12 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v12;
+  return finalizeDescription;
 }
 
 - (CGSize)stopIndicatorCornerSize

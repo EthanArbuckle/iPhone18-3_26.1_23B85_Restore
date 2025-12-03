@@ -1,10 +1,10 @@
 @interface __RKEntityPlayTimelineAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityPlayTimelineAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityPlayTimelineAction.copy(with:)(v5);

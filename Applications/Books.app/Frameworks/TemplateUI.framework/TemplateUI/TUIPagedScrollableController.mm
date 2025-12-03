@@ -1,8 +1,8 @@
 @interface TUIPagedScrollableController
 - (TUIPagedScrollableController)init;
-- (id)_proxyForIdentifier:(id)a3;
-- (id)registerPagedScrollableWithWithIdentifier:(id)a3 action:(id)a4;
-- (void)unregisterPagedScrollableWithIdentifier:(id)a3;
+- (id)_proxyForIdentifier:(id)identifier;
+- (id)registerPagedScrollableWithWithIdentifier:(id)identifier action:(id)action;
+- (void)unregisterPagedScrollableWithIdentifier:(id)identifier;
 @end
 
 @implementation TUIPagedScrollableController
@@ -22,17 +22,17 @@
   return v2;
 }
 
-- (id)_proxyForIdentifier:(id)a3
+- (id)_proxyForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (v4)
+  if (identifierCopy)
   {
-    v5 = [(NSMapTable *)self->_pagedScrollableMap objectForKey:v4];
+    v5 = [(NSMapTable *)self->_pagedScrollableMap objectForKey:identifierCopy];
     if (!v5)
     {
       v5 = objc_alloc_init(_TUIPagedScrollableProxy);
-      [(NSMapTable *)self->_pagedScrollableMap setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_pagedScrollableMap setObject:v5 forKey:identifierCopy];
     }
   }
 
@@ -44,18 +44,18 @@
   return v5;
 }
 
-- (id)registerPagedScrollableWithWithIdentifier:(id)a3 action:(id)a4
+- (id)registerPagedScrollableWithWithIdentifier:(id)identifier action:(id)action
 {
-  v6 = a4;
-  v7 = [(TUIPagedScrollableController *)self _proxyForIdentifier:a3];
-  [v7 setAction:v6];
+  actionCopy = action;
+  v7 = [(TUIPagedScrollableController *)self _proxyForIdentifier:identifier];
+  [v7 setAction:actionCopy];
 
   return v7;
 }
 
-- (void)unregisterPagedScrollableWithIdentifier:(id)a3
+- (void)unregisterPagedScrollableWithIdentifier:(id)identifier
 {
-  v3 = [(TUIPagedScrollableController *)self _proxyForIdentifier:a3];
+  v3 = [(TUIPagedScrollableController *)self _proxyForIdentifier:identifier];
   [v3 setAction:0];
   [v3 updateWithPageIndices:0x7FFFFFFFFFFFFFFFLL pageCount:{0, 0x7FFFFFFFFFFFFFFFLL}];
 }

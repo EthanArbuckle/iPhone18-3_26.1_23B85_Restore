@@ -1,42 +1,42 @@
 @interface FCCCControlCenterModule
-- (CGRect)_activityPickerExpandedFrameForBounds:(CGRect)a3;
+- (CGRect)_activityPickerExpandedFrameForBounds:(CGRect)bounds;
 - (CGSize)_preferredExpandedContentSize;
-- (FCCCControlCenterModule)initWithNibName:(id)a3 bundle:(id)a4;
+- (FCCCControlCenterModule)initWithNibName:(id)name bundle:(id)bundle;
 - (NSArray)containerViewsForPlatterTreatment;
 - (id)_activityManagerQueue;
 - (void)_invalidateAndAnimateViewLayoutIfAppropriate;
-- (void)_updateActiveActivity:(id)a3;
+- (void)_updateActiveActivity:(id)activity;
 - (void)_updateBackgroundContinuousCornerRadius;
-- (void)_updatePreviouslyActiveActivity:(id)a3;
-- (void)_updateSuggestedActivity:(id)a3;
-- (void)activeActivityDidChangeForManager:(id)a3;
-- (void)activityManager:(id)a3 suggestedActivityDidChangeForLocation:(int64_t)a4;
-- (void)availableActivitiesDidChangeForManager:(id)a3;
-- (void)didTransitionToExpandedContentMode:(BOOL)a3;
-- (void)handleTap:(id)a3;
-- (void)moduleViewController:(id)a3 initialUseView:(id)a4;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)suggestedActivityDidChangeForManager:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_updatePreviouslyActiveActivity:(id)activity;
+- (void)_updateSuggestedActivity:(id)activity;
+- (void)activeActivityDidChangeForManager:(id)manager;
+- (void)activityManager:(id)manager suggestedActivityDidChangeForLocation:(int64_t)location;
+- (void)availableActivitiesDidChangeForManager:(id)manager;
+- (void)didTransitionToExpandedContentMode:(BOOL)mode;
+- (void)handleTap:(id)tap;
+- (void)moduleViewController:(id)controller initialUseView:(id)view;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)suggestedActivityDidChangeForManager:(id)manager;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToExpandedContentMode:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToExpandedContentMode:(BOOL)mode;
 @end
 
 @implementation FCCCControlCenterModule
 
-- (FCCCControlCenterModule)initWithNibName:(id)a3 bundle:(id)a4
+- (FCCCControlCenterModule)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = FCCCControlCenterModule;
-  v4 = [(FCCCControlCenterModule *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(FCCCControlCenterModule *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[FCActivityManager sharedActivityManager];
@@ -56,21 +56,21 @@
   v30.receiver = self;
   v30.super_class = FCCCControlCenterModule;
   [(FCCCControlCenterModule *)&v30 viewDidLoad];
-  v3 = [(FCCCControlCenterModule *)self view];
+  view = [(FCCCControlCenterModule *)self view];
   v4 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTap:"];
   tapGesture = self->_tapGesture;
   self->_tapGesture = v4;
 
-  [v3 addGestureRecognizer:self->_tapGesture];
+  [view addGestureRecognizer:self->_tapGesture];
   [(UITapGestureRecognizer *)self->_tapGesture setEnabled:self->_expanded];
   v6 = [UIView alloc];
-  [v3 bounds];
+  [view bounds];
   v7 = [v6 initWithFrame:?];
   moduleContainerView = self->_moduleContainerView;
   self->_moduleContainerView = v7;
 
   [(UIView *)self->_moduleContainerView setAutoresizingMask:18];
-  [v3 addSubview:self->_moduleContainerView];
+  [view addSubview:self->_moduleContainerView];
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v9 = +[CCUIControlCenterMaterialView controlCenterModuleBackgroundMaterial];
@@ -106,21 +106,21 @@
   v15 = [UIAction actionWithHandler:&v24];
   [(FCCCModuleViewController *)v14 addButtonAction:v15, v24, v25, v26, v27];
 
-  v16 = [(FCCCModuleViewController *)self->_moduleViewController view];
-  [v16 setAccessibilityIdentifier:@"focus-module"];
-  [v3 bounds];
-  [v16 setFrame:?];
-  [v16 setAutoresizingMask:18];
+  view2 = [(FCCCModuleViewController *)self->_moduleViewController view];
+  [view2 setAccessibilityIdentifier:@"focus-module"];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
   v17 = _os_feature_enabled_impl();
   v18 = self->_moduleContainerView;
   if (v17)
   {
-    [(UIView *)v18 addSubview:v16];
+    [(UIView *)v18 addSubview:view2];
   }
 
   else
   {
-    [(UIView *)v18 insertSubview:v16 aboveSubview:self->_backgroundView];
+    [(UIView *)v18 insertSubview:view2 aboveSubview:self->_backgroundView];
   }
 
   v19 = objc_alloc_init(FCUIActivityPickerViewController);
@@ -133,12 +133,12 @@
 
   [(FCCCControlCenterModule *)self addChildViewController:self->_activityPickerViewController];
   [(FCUIActivityPickerViewController *)self->_activityPickerViewController didMoveToParentViewController:self];
-  v23 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
-  [v3 bounds];
-  [v23 setFrame:?];
-  [v3 addSubview:v23];
-  [v23 setHidden:1];
-  [v23 setAlpha:0.0];
+  view3 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
+  [view bounds];
+  [view3 setFrame:?];
+  [view addSubview:view3];
+  [view3 setHidden:1];
+  [view3 setAlpha:0.0];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
@@ -151,16 +151,16 @@
   [(FCCCControlCenterModule *)&v23 viewWillLayoutSubviews];
   if (self->_expanded)
   {
-    v3 = [(FCCCControlCenterModule *)self view];
-    [v3 bounds];
+    view = [(FCCCControlCenterModule *)self view];
+    [view bounds];
     [(FCCCControlCenterModule *)self _activityPickerExpandedFrameForBounds:?];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
-    [(FCActivityDescribing *)v12 setFrame:v5, v7, v9, v11];
+    view2 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
+    [(FCActivityDescribing *)view2 setFrame:v5, v7, v9, v11];
   }
 
   else
@@ -185,15 +185,15 @@
       v16 = self->_activeActivity;
     }
 
-    v12 = v16;
-    [(FCCCModuleViewController *)self->_moduleViewController setActiveActivity:v12];
+    view2 = v16;
+    [(FCCCModuleViewController *)self->_moduleViewController setActiveActivity:view2];
     if (contentRenderingMode == 1 || (suggestedActivity = self->_previouslyActiveActivity) == 0)
     {
       suggestedActivity = self->_suggestedActivity;
     }
 
     v18 = suggestedActivity;
-    v19 = [(FCCCModuleViewController *)self->_moduleViewController suggestedActivity];
+    suggestedActivity = [(FCCCModuleViewController *)self->_moduleViewController suggestedActivity];
     v20 = BSEqualObjects();
 
     if ((v20 & 1) == 0)
@@ -245,11 +245,11 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = FCCCControlCenterModule;
-  [(FCCCControlCenterModule *)&v5 viewWillAppear:a3];
+  [(FCCCControlCenterModule *)&v5 viewWillAppear:appear];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1978;
@@ -258,23 +258,23 @@
   [UIView performWithoutAnimation:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = FCCCControlCenterModule;
-  [(FCCCControlCenterModule *)&v5 viewDidAppear:a3];
+  [(FCCCControlCenterModule *)&v5 viewDidAppear:appear];
   if (self->_hasActiveSuggestion && !self->_previouslyActiveActivity)
   {
-    v4 = [(FCActivityManager *)self->_activityManager suggestedActivityFeedbackReceiver];
-    [v4 userDidSeeSuggestedActivity:self->_suggestedActivity location:0];
+    suggestedActivityFeedbackReceiver = [(FCActivityManager *)self->_activityManager suggestedActivityFeedbackReceiver];
+    [suggestedActivityFeedbackReceiver userDidSeeSuggestedActivity:self->_suggestedActivity location:0];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = FCCCControlCenterModule;
-  [(FCCCControlCenterModule *)&v5 viewDidDisappear:a3];
+  [(FCCCControlCenterModule *)&v5 viewDidDisappear:disappear];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1AC0;
@@ -283,14 +283,14 @@
   [UIView performWithoutAnimation:v4];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = FCCCControlCenterModule;
-  [(FCCCControlCenterModule *)&v15 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(FCCCControlCenterModule *)&v15 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   ++self->_expansionAnimationCount;
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
@@ -301,7 +301,7 @@
   v11[4] = self;
   v13[1] = *&width;
   v13[2] = *&height;
-  v8 = v7;
+  v8 = coordinatorCopy;
   v12 = v8;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -315,58 +315,58 @@
   objc_destroyWeak(&location);
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v4 = a3;
-  if (self->_expanded && self->_activityPickerViewController == v4)
+  containerCopy = container;
+  if (self->_expanded && self->_activityPickerViewController == containerCopy)
   {
-    v7 = v4;
+    v7 = containerCopy;
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-    v4 = v7;
-    if (v6)
+    containerCopy = v7;
+    if (userInterfaceIdiom)
     {
       [(FCCCControlCenterModule *)self _invalidatePreferredExpandedContentSize];
       [(FCCCControlCenterModule *)self _preferredExpandedContentSize];
       [(FCCCControlCenterModule *)self setPreferredContentSize:?];
-      v4 = v7;
+      containerCopy = v7;
     }
   }
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
-  if (self->_compactContinuousCornerRadius != a3)
+  if (self->_compactContinuousCornerRadius != radius)
   {
-    self->_compactContinuousCornerRadius = a3;
+    self->_compactContinuousCornerRadius = radius;
     [(FCCCControlCenterModule *)self _updateBackgroundContinuousCornerRadius];
   }
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
-  if (self->_contentRenderingMode != a3)
+  if (self->_contentRenderingMode != mode)
   {
-    self->_contentRenderingMode = a3;
-    v4 = [(FCCCControlCenterModule *)self viewIfLoaded];
-    [v4 setNeedsLayout];
+    self->_contentRenderingMode = mode;
+    viewIfLoaded = [(FCCCControlCenterModule *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
-  objc_storeStrong(&self->_contentMetrics, a3);
-  v5 = a3;
-  [(FCCCModuleViewController *)self->_moduleViewController setContentMetrics:v5];
+  objc_storeStrong(&self->_contentMetrics, metrics);
+  metricsCopy = metrics;
+  [(FCCCModuleViewController *)self->_moduleViewController setContentMetrics:metricsCopy];
 }
 
 - (NSArray)containerViewsForPlatterTreatment
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(FCCCModuleViewController *)self->_moduleViewController view];
-    v6 = v3;
+    view = [(FCCCModuleViewController *)self->_moduleViewController view];
+    v6 = view;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -378,112 +378,112 @@
   return v4;
 }
 
-- (void)willTransitionToExpandedContentMode:(BOOL)a3
+- (void)willTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
-  self->_expanded = a3;
-  [(FCCCModuleViewController *)self->_moduleViewController beginAppearanceTransition:a3 animated:+[UIView _isInAnimationBlockWithAnimationsEnabled]];
+  modeCopy = mode;
+  self->_expanded = mode;
+  [(FCCCModuleViewController *)self->_moduleViewController beginAppearanceTransition:mode animated:+[UIView _isInAnimationBlockWithAnimationsEnabled]];
   if (objc_opt_respondsToSelector())
   {
     moduleViewController = self->_moduleViewController;
     expanded = self->_expanded;
-    v7 = [(FCCCControlCenterModule *)self transitionCoordinator];
-    [(FCCCModuleViewController *)moduleViewController setExpanded:expanded withTransitionCoordinator:v7];
+    transitionCoordinator = [(FCCCControlCenterModule *)self transitionCoordinator];
+    [(FCCCModuleViewController *)moduleViewController setExpanded:expanded withTransitionCoordinator:transitionCoordinator];
   }
 
   activityPickerViewController = self->_activityPickerViewController;
   v9 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
 
-  [(FCUIActivityPickerViewController *)activityPickerViewController beginAppearanceTransition:v3 animated:v9];
+  [(FCUIActivityPickerViewController *)activityPickerViewController beginAppearanceTransition:modeCopy animated:v9];
 }
 
-- (void)didTransitionToExpandedContentMode:(BOOL)a3
+- (void)didTransitionToExpandedContentMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   [(FCCCModuleViewController *)self->_moduleViewController endAppearanceTransition];
   [(FCUIActivityPickerViewController *)self->_activityPickerViewController endAppearanceTransition];
-  [(UITapGestureRecognizer *)self->_tapGesture setEnabled:v3];
-  if (!v3)
+  [(UITapGestureRecognizer *)self->_tapGesture setEnabled:modeCopy];
+  if (!modeCopy)
   {
 
     [(FCCCControlCenterModule *)self _invalidatePreferredExpandedContentSize];
   }
 }
 
-- (void)availableActivitiesDidChangeForManager:(id)a3
+- (void)availableActivitiesDidChangeForManager:(id)manager
 {
-  v4 = a3;
-  [(FCCCControlCenterModule *)self activeActivityDidChangeForManager:v4];
-  [(FCCCControlCenterModule *)self suggestedActivityDidChangeForManager:v4];
+  managerCopy = manager;
+  [(FCCCControlCenterModule *)self activeActivityDidChangeForManager:managerCopy];
+  [(FCCCControlCenterModule *)self suggestedActivityDidChangeForManager:managerCopy];
 }
 
-- (void)activeActivityDidChangeForManager:(id)a3
+- (void)activeActivityDidChangeForManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   objc_initWeak(&location, self);
-  v5 = [(FCCCControlCenterModule *)self _activityManagerQueue];
+  _activityManagerQueue = [(FCCCControlCenterModule *)self _activityManagerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2788;
   block[3] = &unk_C410;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = managerCopy;
+  v6 = managerCopy;
+  dispatch_async(_activityManagerQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)suggestedActivityDidChangeForManager:(id)a3
+- (void)suggestedActivityDidChangeForManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(FCActivityDescribing *)v5->_suggestedActivity activityUniqueIdentifier];
-  objc_sync_exit(v5);
+  managerCopy = manager;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activityUniqueIdentifier = [(FCActivityDescribing *)selfCopy->_suggestedActivity activityUniqueIdentifier];
+  objc_sync_exit(selfCopy);
 
-  v7 = [(FCCCControlCenterModule *)v5 _activityManagerQueue];
+  _activityManagerQueue = [(FCCCControlCenterModule *)selfCopy _activityManagerQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2958;
   block[3] = &unk_C438;
-  v11 = v4;
-  v12 = v6;
-  v13 = v5;
-  v8 = v6;
-  v9 = v4;
-  dispatch_async(v7, block);
+  v11 = managerCopy;
+  v12 = activityUniqueIdentifier;
+  v13 = selfCopy;
+  v8 = activityUniqueIdentifier;
+  v9 = managerCopy;
+  dispatch_async(_activityManagerQueue, block);
 }
 
-- (void)activityManager:(id)a3 suggestedActivityDidChangeForLocation:(int64_t)a4
+- (void)activityManager:(id)manager suggestedActivityDidChangeForLocation:(int64_t)location
 {
-  v6 = a3;
-  if (!a4)
+  managerCopy = manager;
+  if (!location)
   {
     objc_initWeak(&location, self);
     v7 = self->_previouslyActiveActivity;
-    v8 = [(FCCCControlCenterModule *)self _activityManagerQueue];
+    _activityManagerQueue = [(FCCCControlCenterModule *)self _activityManagerQueue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_2C04;
     v10[3] = &unk_C488;
     objc_copyWeak(&v13, &location);
-    v11 = v6;
+    v11 = managerCopy;
     v12 = v7;
     v9 = v7;
-    dispatch_async(v8, v10);
+    dispatch_async(_activityManagerQueue, v10);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)moduleViewController:(id)a3 initialUseView:(id)a4
+- (void)moduleViewController:(id)controller initialUseView:(id)view
 {
-  v21 = a3;
-  v6 = a4;
-  if (v6)
+  controllerCopy = controller;
+  viewCopy = view;
+  if (viewCopy)
   {
     v7 = [FCUIActivityBaubleDescription alloc];
     v8 = +[UIColor systemIndigoColor];
@@ -501,7 +501,7 @@
 
     v17 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(&off_C868, "count")}];
     objc_initWeak(&location, self);
-    v18 = [(FCCCControlCenterModule *)self _activityManagerQueue];
+    _activityManagerQueue = [(FCCCControlCenterModule *)self _activityManagerQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_2FD4;
@@ -510,10 +510,10 @@
     v23 = &off_C868;
     v24 = v16;
     v25 = v17;
-    v26 = v6;
+    v26 = viewCopy;
     v19 = v17;
     v20 = v16;
-    dispatch_async(v18, block);
+    dispatch_async(_activityManagerQueue, block);
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -522,23 +522,23 @@
 
 - (id)_activityManagerQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_activityManagerQueue)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activityManagerQueue)
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
-    v4 = [v3 bundleIdentifier];
+    bundleIdentifier = [v3 bundleIdentifier];
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v7 = [v4 stringByAppendingFormat:@"%@.activityManager", v6];
+    v7 = [bundleIdentifier stringByAppendingFormat:@"%@.activityManager", v6];
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
-    activityManagerQueue = v2->_activityManagerQueue;
-    v2->_activityManagerQueue = SerialWithQoS;
+    activityManagerQueue = selfCopy->_activityManagerQueue;
+    selfCopy->_activityManagerQueue = SerialWithQoS;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v10 = v2->_activityManagerQueue;
+  v10 = selfCopy->_activityManagerQueue;
 
   return v10;
 }
@@ -553,17 +553,17 @@
     p_preferredExpandedContentSize->width = v4;
     p_preferredExpandedContentSize->height = v5;
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-    if (v7 == &dword_0 + 1)
+    if (userInterfaceIdiom == &dword_0 + 1)
     {
       CCUIDefaultExpandedContentModuleWidth();
       v9 = v8;
-      v10 = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
-      v11 = [(FCCCControlCenterModule *)self parentViewController];
-      v12 = [v11 view];
-      [v12 bounds];
-      [v10 sizeThatFits:{v9, CGRectGetHeight(v18)}];
+      view = [(FCUIActivityPickerViewController *)self->_activityPickerViewController view];
+      parentViewController = [(FCCCControlCenterModule *)self parentViewController];
+      view2 = [parentViewController view];
+      [view2 bounds];
+      [view sizeThatFits:{v9, CGRectGetHeight(v18)}];
       UISizeRoundToScale();
       p_preferredExpandedContentSize->width = v13;
       p_preferredExpandedContentSize->height = v14;
@@ -577,12 +577,12 @@
   return result;
 }
 
-- (CGRect)_activityPickerExpandedFrameForBounds:(CGRect)a3
+- (CGRect)_activityPickerExpandedFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v7 = +[UIDevice currentDevice];
   if (![v7 userInterfaceIdiom])
   {
@@ -610,8 +610,8 @@
 
 - (void)_invalidateAndAnimateViewLayoutIfAppropriate
 {
-  v3 = [(FCCCControlCenterModule *)self viewIfLoaded];
-  [v3 setNeedsLayout];
+  viewIfLoaded = [(FCCCControlCenterModule *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 
   if ([(FCCCControlCenterModule *)self isViewLoaded]&& [(FCCCControlCenterModule *)self bs_isAppearingOrAppeared])
   {
@@ -633,13 +633,13 @@
   }
 }
 
-- (void)_updateActiveActivity:(id)a3
+- (void)_updateActiveActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_activeActivity, a3);
+    objc_storeStrong(&self->_activeActivity, activity);
     v6 = FCUILogModule;
     if (os_log_type_enabled(FCUILogModule, OS_LOG_TYPE_DEFAULT))
     {
@@ -656,21 +656,21 @@
 
     if (self->_hasActiveSuggestion && self->_activeActivity && (BSEqualObjects() & 1) == 0)
     {
-      v8 = [(FCActivityManager *)self->_activityManager suggestedActivityFeedbackReceiver];
-      [v8 userDidRejectSuggestedActivity:self->_suggestedActivity location:0];
+      suggestedActivityFeedbackReceiver = [(FCActivityManager *)self->_activityManager suggestedActivityFeedbackReceiver];
+      [suggestedActivityFeedbackReceiver userDidRejectSuggestedActivity:self->_suggestedActivity location:0];
     }
 
     [(FCCCControlCenterModule *)self _invalidateAndAnimateViewLayoutIfAppropriate];
   }
 }
 
-- (void)_updatePreviouslyActiveActivity:(id)a3
+- (void)_updatePreviouslyActiveActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_previouslyActiveActivity, a3);
+    objc_storeStrong(&self->_previouslyActiveActivity, activity);
     v6 = FCUILogModule;
     if (os_log_type_enabled(FCUILogModule, OS_LOG_TYPE_DEFAULT))
     {
@@ -687,35 +687,35 @@
   }
 }
 
-- (void)_updateSuggestedActivity:(id)a3
+- (void)_updateSuggestedActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v6 = self;
-  objc_sync_enter(v6);
-  objc_storeStrong(&v6->_suggestedActivity, a3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_suggestedActivity, activity);
   v7 = FCUILogModule;
   if (os_log_type_enabled(FCUILogModule, OS_LOG_TYPE_DEFAULT))
   {
-    suggestedActivity = v6->_suggestedActivity;
+    suggestedActivity = selfCopy->_suggestedActivity;
     v10 = 138543362;
     v11 = suggestedActivity;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Updated suggested activity: %{public}@", &v10, 0xCu);
   }
 
-  if (v6->_activeActivity)
+  if (selfCopy->_activeActivity)
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    previouslyActiveActivity = v6->_previouslyActiveActivity;
-    objc_sync_exit(v6);
+    previouslyActiveActivity = selfCopy->_previouslyActiveActivity;
+    objc_sync_exit(selfCopy);
 
     if (!previouslyActiveActivity)
     {
-      [(FCCCControlCenterModule *)v6 _invalidateAndAnimateViewLayoutIfAppropriate];
+      [(FCCCControlCenterModule *)selfCopy _invalidateAndAnimateViewLayoutIfAppropriate];
     }
   }
 }
@@ -736,8 +736,8 @@
   if (_os_feature_enabled_impl())
   {
     [(FCCCModuleViewController *)self->_moduleViewController setContinuousCornerRadius:compactContinuousCornerRadius];
-    v6 = [(FCCCModuleViewController *)self->_moduleViewController view];
-    [v6 _setContinuousCornerRadius:compactContinuousCornerRadius];
+    view = [(FCCCModuleViewController *)self->_moduleViewController view];
+    [view _setContinuousCornerRadius:compactContinuousCornerRadius];
   }
 
   else
@@ -749,9 +749,9 @@
   }
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  if (self->_tapGesture == a3)
+  if (self->_tapGesture == tap)
   {
     [(CCUIContentModuleContext *)self->_contentModuleContext dismissModule];
   }

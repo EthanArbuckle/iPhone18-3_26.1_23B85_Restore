@@ -1,17 +1,17 @@
 @interface MRUMPCMetadataDataSource
 - (MRUMPCMetadataDataSource)init;
-- (MRUMPCMetadataDataSource)initWithEndpointController:(id)a3;
+- (MRUMPCMetadataDataSource)initWithEndpointController:(id)controller;
 - (MRUMetadataDataSourceDelegate)delegate;
 - (id)_stateDumpObject;
 - (id)placeholder;
-- (void)artworkDataSource:(id)a3 didChangeArtwork:(id)a4;
+- (void)artworkDataSource:(id)source didChangeArtwork:(id)artwork;
 - (void)dealloc;
-- (void)setResponse:(id)a3;
-- (void)updateBundleIDWithResponse:(id)a3;
+- (void)setResponse:(id)response;
+- (void)updateBundleIDWithResponse:(id)response;
 - (void)updateData;
-- (void)updateNowPlayingInfoWithResponse:(id)a3;
-- (void)updateTimeControlsWithResponse:(id)a3;
-- (void)updateTransportControlsWithResponse:(id)a3;
+- (void)updateNowPlayingInfoWithResponse:(id)response;
+- (void)updateTimeControlsWithResponse:(id)response;
+- (void)updateTransportControlsWithResponse:(id)response;
 @end
 
 @implementation MRUMPCMetadataDataSource
@@ -76,16 +76,16 @@ id __32__MRUMPCMetadataDataSource_init__block_invoke_2(uint64_t a1, uint64_t a2)
   return v4;
 }
 
-- (MRUMPCMetadataDataSource)initWithEndpointController:(id)a3
+- (MRUMPCMetadataDataSource)initWithEndpointController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [(MRUMPCMetadataDataSource *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpointController, a3);
-    [v5 addObserver:v7];
-    v8 = [[MRUMPCArtworkDataSource alloc] initWithEndpointController:v5];
+    objc_storeStrong(&v6->_endpointController, controller);
+    [controllerCopy addObserver:v7];
+    v8 = [[MRUMPCArtworkDataSource alloc] initWithEndpointController:controllerCopy];
     artworkDataSource = v7->_artworkDataSource;
     v7->_artworkDataSource = v8;
 
@@ -104,19 +104,19 @@ id __32__MRUMPCMetadataDataSource_init__block_invoke_2(uint64_t a1, uint64_t a2)
   [(MRUMPCMetadataDataSource *)&v3 dealloc];
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  objc_storeStrong(&self->_response, a3);
+  objc_storeStrong(&self->_response, response);
 
   [(MRUMPCMetadataDataSource *)self updateData];
 }
 
-- (void)artworkDataSource:(id)a3 didChangeArtwork:(id)a4
+- (void)artworkDataSource:(id)source didChangeArtwork:(id)artwork
 {
-  objc_storeStrong(&self->_artwork, a4);
-  v6 = a4;
+  objc_storeStrong(&self->_artwork, artwork);
+  artworkCopy = artwork;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained metadataDataSource:self didChangeArtwork:v6];
+  [WeakRetained metadataDataSource:self didChangeArtwork:artworkCopy];
 }
 
 - (void)updateData
@@ -128,36 +128,36 @@ id __32__MRUMPCMetadataDataSource_init__block_invoke_2(uint64_t a1, uint64_t a2)
   [(MRUMPCMetadataDataSource *)self updateTransportControlsWithResponse:v3];
 }
 
-- (void)updateBundleIDWithResponse:(id)a3
+- (void)updateBundleIDWithResponse:(id)response
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [(MRUEndpointController *)self->_endpointController endpointController];
-  v5 = [v4 representedBundleID];
-  if (![(NSString *)self->_bundleID isEqualToString:v5])
+  endpointController = [(MRUEndpointController *)self->_endpointController endpointController];
+  representedBundleID = [endpointController representedBundleID];
+  if (![(NSString *)self->_bundleID isEqualToString:representedBundleID])
   {
-    objc_storeStrong(&self->_bundleID, v5);
+    objc_storeStrong(&self->_bundleID, representedBundleID);
     v6 = MCLogCategoryDefault();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543618;
       v9 = objc_opt_class();
       v10 = 2114;
-      v11 = v5;
+      v11 = representedBundleID;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ update bundleID: %{public}@", &v8, 0x16u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained metadataDataSource:self didChangeBundleID:v5];
+    [WeakRetained metadataDataSource:self didChangeBundleID:representedBundleID];
   }
 }
 
-- (void)updateNowPlayingInfoWithResponse:(id)a3
+- (void)updateNowPlayingInfoWithResponse:(id)response
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v5 = [MRUNowPlayingInfo alloc];
-  v6 = [(MRUMPCMetadataDataSource *)self placeholder];
-  v7 = [(MRUNowPlayingInfo *)v5 initWithMPCResponse:v4 placeholder:v6];
+  placeholder = [(MRUMPCMetadataDataSource *)self placeholder];
+  v7 = [(MRUNowPlayingInfo *)v5 initWithMPCResponse:responseCopy placeholder:placeholder];
 
   if (![(MRUNowPlayingInfo *)self->_nowPlayingInfo isEqual:v7])
   {
@@ -177,15 +177,15 @@ id __32__MRUMPCMetadataDataSource_init__block_invoke_2(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)updateTimeControlsWithResponse:(id)a3
+- (void)updateTimeControlsWithResponse:(id)response
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v5 = [MRUTimeControls alloc];
-  v6 = [v4 tracklist];
+  tracklist = [responseCopy tracklist];
 
-  v7 = [v6 playingItem];
-  v8 = [(MRUTimeControls *)v5 initWithResponseItem:v7];
+  playingItem = [tracklist playingItem];
+  v8 = [(MRUTimeControls *)v5 initWithResponseItem:playingItem];
 
   if (![(MRUTimeControls *)self->_timeControls isEqual:v8])
   {
@@ -205,11 +205,11 @@ id __32__MRUMPCMetadataDataSource_init__block_invoke_2(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)updateTransportControlsWithResponse:(id)a3
+- (void)updateTransportControlsWithResponse:(id)response
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[MRUTransportControls alloc] initWithMPCResponse:v4];
+  responseCopy = response;
+  v5 = [[MRUTransportControls alloc] initWithMPCResponse:responseCopy];
 
   objc_storeStrong(&self->_transportControls, v5);
   v6 = MCLogCategoryDefault();
@@ -228,34 +228,34 @@ id __32__MRUMPCMetadataDataSource_init__block_invoke_2(uint64_t a1, uint64_t a2)
 
 - (id)placeholder
 {
-  v2 = [(MRUEndpointController *)self->_endpointController state];
-  if (v2 > 1)
+  state = [(MRUEndpointController *)self->_endpointController state];
+  if (state > 1)
   {
-    if (v2 == 2)
+    if (state == 2)
     {
-      v2 = +[MRUStringsProvider loading];
+      state = +[MRUStringsProvider loading];
     }
 
-    else if (v2 == 3)
+    else if (state == 3)
     {
-      v2 = +[MRUStringsProvider notPlaying];
+      state = +[MRUStringsProvider notPlaying];
     }
   }
 
-  else if (v2 >= 2)
+  else if (state >= 2)
   {
-    if (v2 == -1)
+    if (state == -1)
     {
-      v2 = +[MRUStringsProvider notConnected];
+      state = +[MRUStringsProvider notConnected];
     }
   }
 
   else
   {
-    v2 = +[MRUStringsProvider connecting];
+    state = +[MRUStringsProvider connecting];
   }
 
-  return v2;
+  return state;
 }
 
 - (id)_stateDumpObject

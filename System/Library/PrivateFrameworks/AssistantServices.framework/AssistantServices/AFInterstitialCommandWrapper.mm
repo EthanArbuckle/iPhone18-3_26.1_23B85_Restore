@@ -1,41 +1,41 @@
 @interface AFInterstitialCommandWrapper
-- (AFInterstitialCommandWrapper)initWithCommand:(id)a3 defaultReply:(id)a4 completion:(id)a5;
+- (AFInterstitialCommandWrapper)initWithCommand:(id)command defaultReply:(id)reply completion:(id)completion;
 - (void)dealloc;
-- (void)dispatchCompletionWithReply:(id)a3 error:(id)a4;
+- (void)dispatchCompletionWithReply:(id)reply error:(id)error;
 @end
 
 @implementation AFInterstitialCommandWrapper
 
-- (void)dispatchCompletionWithReply:(id)a3 error:(id)a4
+- (void)dispatchCompletionWithReply:(id)reply error:(id)error
 {
   completion = self->_completion;
   if (completion)
   {
-    completion[2](completion, a3, a4);
+    completion[2](completion, reply, error);
     v6 = self->_completion;
     self->_completion = 0;
   }
 }
 
-- (AFInterstitialCommandWrapper)initWithCommand:(id)a3 defaultReply:(id)a4 completion:(id)a5
+- (AFInterstitialCommandWrapper)initWithCommand:(id)command defaultReply:(id)reply completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  replyCopy = reply;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = AFInterstitialCommandWrapper;
   v11 = [(AFInterstitialCommandWrapper *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [commandCopy copy];
     command = v11->_command;
     v11->_command = v12;
 
-    v14 = [v9 copy];
+    v14 = [replyCopy copy];
     defaultReply = v11->_defaultReply;
     v11->_defaultReply = v14;
 
-    v16 = MEMORY[0x193AFB7B0](v10);
+    v16 = MEMORY[0x193AFB7B0](completionCopy);
     completion = v11->_completion;
     v11->_completion = v16;
   }

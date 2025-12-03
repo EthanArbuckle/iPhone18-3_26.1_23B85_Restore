@@ -1,9 +1,9 @@
 @interface SBBackgroundMultitaskingManager
 + (id)sharedInstance;
 - (SBBackgroundMultitaskingManager)init;
-- (id)_createBackgroundFetchTaskForAppInfo:(id)a3;
-- (void)_appProcessStateDidChange:(id)a3;
-- (void)_backgroundTaskFinished:(id)a3 forAppInfo:(id)a4;
+- (id)_createBackgroundFetchTaskForAppInfo:(id)info;
+- (void)_appProcessStateDidChange:(id)change;
+- (void)_backgroundTaskFinished:(id)finished forAppInfo:(id)info;
 @end
 
 @implementation SBBackgroundMultitaskingManager
@@ -43,25 +43,25 @@ uint64_t __49__SBBackgroundMultitaskingManager_sharedInstance__block_invoke()
     lock_appToBackgroundTasks = v3->_lock_appToBackgroundTasks;
     v3->_lock_appToBackgroundTasks = v4;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel__appProcessStateDidChange_ name:@"SBApplicationProcessStateDidChange" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__appProcessStateDidChange_ name:@"SBApplicationProcessStateDidChange" object:0];
   }
 
   return v3;
 }
 
-- (void)_appProcessStateDidChange:(id)a3
+- (void)_appProcessStateDidChange:(id)change
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  v5 = [v4 processState];
-  if ([v5 visibility] == 2)
+  object = [change object];
+  processState = [object processState];
+  if ([processState visibility] == 2)
   {
     os_unfair_lock_lock(&self->_lock);
     lock_appToBackgroundTasks = self->_lock_appToBackgroundTasks;
-    v7 = [v4 info];
-    v8 = [v7 processIdentity];
-    v9 = [(NSMutableDictionary *)lock_appToBackgroundTasks objectForKey:v8];
+    info = [object info];
+    processIdentity = [info processIdentity];
+    v9 = [(NSMutableDictionary *)lock_appToBackgroundTasks objectForKey:processIdentity];
     v10 = [v9 copy];
 
     os_unfair_lock_unlock(&self->_lock);
@@ -75,49 +75,49 @@ uint64_t __49__SBBackgroundMultitaskingManager_sharedInstance__block_invoke()
   }
 }
 
-- (void)_backgroundTaskFinished:(id)a3 forAppInfo:(id)a4
+- (void)_backgroundTaskFinished:(id)finished forAppInfo:(id)info
 {
-  v12 = a4;
-  v6 = a3;
+  infoCopy = info;
+  finishedCopy = finished;
   os_unfair_lock_lock(&self->_lock);
   lock_appToBackgroundTasks = self->_lock_appToBackgroundTasks;
-  v8 = [v12 processIdentity];
-  v9 = [(NSMutableDictionary *)lock_appToBackgroundTasks objectForKey:v8];
+  processIdentity = [infoCopy processIdentity];
+  v9 = [(NSMutableDictionary *)lock_appToBackgroundTasks objectForKey:processIdentity];
 
-  [v9 removeObjectIdenticalTo:v6];
+  [v9 removeObjectIdenticalTo:finishedCopy];
   if (![v9 count])
   {
     v10 = self->_lock_appToBackgroundTasks;
-    v11 = [v12 processIdentity];
-    [(NSMutableDictionary *)v10 removeObjectForKey:v11];
+    processIdentity2 = [infoCopy processIdentity];
+    [(NSMutableDictionary *)v10 removeObjectForKey:processIdentity2];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_createBackgroundFetchTaskForAppInfo:(id)a3
+- (id)_createBackgroundFetchTaskForAppInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [SBBackgroundFetchTask alloc];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __72__SBBackgroundMultitaskingManager__createBackgroundFetchTaskForAppInfo___block_invoke;
   v17 = &unk_2783C4578;
-  v18 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = infoCopy;
   v19 = v6;
   v7 = [(SBBackgroundFetchTask *)&v5->super.isa initForAppInfo:v6 withCompletion:&v14];
   os_unfair_lock_lock(&self->_lock);
   lock_appToBackgroundTasks = self->_lock_appToBackgroundTasks;
-  v9 = [v6 processIdentity];
-  v10 = [(NSMutableDictionary *)lock_appToBackgroundTasks objectForKey:v9];
+  processIdentity = [v6 processIdentity];
+  v10 = [(NSMutableDictionary *)lock_appToBackgroundTasks objectForKey:processIdentity];
 
   if (!v10)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v11 = self->_lock_appToBackgroundTasks;
-    v12 = [v6 processIdentity];
-    [(NSMutableDictionary *)v11 setObject:v10 forKey:v12];
+    processIdentity2 = [v6 processIdentity];
+    [(NSMutableDictionary *)v11 setObject:v10 forKey:processIdentity2];
   }
 
   [v10 addObject:v7];

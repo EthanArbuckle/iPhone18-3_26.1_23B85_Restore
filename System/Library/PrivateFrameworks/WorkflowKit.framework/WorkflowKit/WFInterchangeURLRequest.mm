@@ -1,12 +1,12 @@
 @interface WFInterchangeURLRequest
-+ (id)requestWithURL:(id)a3;
-+ (id)requestWithURL:(id)a3 fromSourceApplication:(id)a4;
-+ (id)requestWithURL:(id)a3 scheme:(id)a4 userInterface:(id)a5 bundleIdentifier:(id)a6 successHandler:(id)a7 failureHandler:(id)a8;
++ (id)requestWithURL:(id)l;
++ (id)requestWithURL:(id)l fromSourceApplication:(id)application;
++ (id)requestWithURL:(id)l scheme:(id)scheme userInterface:(id)interface bundleIdentifier:(id)identifier successHandler:(id)handler failureHandler:(id)failureHandler;
 - (NSDictionary)parameters;
 - (NSString)action;
 - (NSString)sourceName;
 - (NSString)subAction;
-- (WFInterchangeURLRequest)initWithURL:(id)a3 scheme:(id)a4 userInterface:(id)a5 successHandler:(id)a6 failureHandler:(id)a7 bundleIdentifier:(id)a8;
+- (WFInterchangeURLRequest)initWithURL:(id)l scheme:(id)scheme userInterface:(id)interface successHandler:(id)handler failureHandler:(id)failureHandler bundleIdentifier:(id)identifier;
 - (WFUserInterfaceHost)userInterface;
 - (id)description;
 - (id)opener;
@@ -44,8 +44,8 @@
 
   else
   {
-    v4 = [(WFInterchangeURLRequest *)self parameters];
-    v3 = [v4 objectForKey:@"x-source"];
+    parameters = [(WFInterchangeURLRequest *)self parameters];
+    v3 = [parameters objectForKey:@"x-source"];
   }
 
   return v3;
@@ -57,9 +57,9 @@
   if (!parameters)
   {
     v4 = [(WFInterchangeURLRequest *)self URL];
-    v5 = [v4 dc_queryDictionary];
+    dc_queryDictionary = [v4 dc_queryDictionary];
     v6 = self->_parameters;
-    self->_parameters = v5;
+    self->_parameters = dc_queryDictionary;
 
     parameters = self->_parameters;
   }
@@ -71,25 +71,25 @@
 {
   v15 = [(WFInterchangeURLRequest *)self URL];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [v15 pathComponents];
-  v5 = [v3 initWithArray:v4];
+  pathComponents = [v15 pathComponents];
+  v5 = [v3 initWithArray:pathComponents];
 
   [v5 removeObject:@"/"];
-  v6 = [v15 scheme];
-  if (([v6 isEqualToString:@"http"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"https"))
+  scheme = [v15 scheme];
+  if (([scheme isEqualToString:@"http"] & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"https"))
   {
-    v7 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     v8 = 1;
   }
 
   else
   {
-    v7 = [v15 host];
+    firstObject = [v15 host];
     v8 = 0;
   }
 
   action = self->_action;
-  self->_action = v7;
+  self->_action = firstObject;
 
   if ([v5 count] <= v8)
   {
@@ -171,70 +171,70 @@ void __33__WFInterchangeURLRequest_opener__block_invoke(uint64_t a1, void *a2, v
   [v12 openURL:v10 withBundleIdentifier:v9 userInterface:v11 completionHandler:v8];
 }
 
-- (WFInterchangeURLRequest)initWithURL:(id)a3 scheme:(id)a4 userInterface:(id)a5 successHandler:(id)a6 failureHandler:(id)a7 bundleIdentifier:(id)a8
+- (WFInterchangeURLRequest)initWithURL:(id)l scheme:(id)scheme userInterface:(id)interface successHandler:(id)handler failureHandler:(id)failureHandler bundleIdentifier:(id)identifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  lCopy = l;
+  schemeCopy = scheme;
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  failureHandlerCopy = failureHandler;
+  identifierCopy = identifier;
   v21 = [(WFInterchangeURLRequest *)self init];
   if (v21)
   {
-    v22 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uniqueID = v21->_uniqueID;
-    v21->_uniqueID = v22;
+    v21->_uniqueID = uUID;
 
-    objc_storeStrong(&v21->_URL, a3);
-    objc_storeStrong(&v21->_scheme, a4);
-    objc_storeWeak(&v21->_userInterface, v17);
-    v24 = [v18 copy];
+    objc_storeStrong(&v21->_URL, l);
+    objc_storeStrong(&v21->_scheme, scheme);
+    objc_storeWeak(&v21->_userInterface, interfaceCopy);
+    v24 = [handlerCopy copy];
     successHandler = v21->_successHandler;
     v21->_successHandler = v24;
 
-    v26 = [v19 copy];
+    v26 = [failureHandlerCopy copy];
     failureHandler = v21->_failureHandler;
     v21->_failureHandler = v26;
 
-    v28 = [v20 copy];
+    v28 = [identifierCopy copy];
     bundleIdentifier = v21->_bundleIdentifier;
     v21->_bundleIdentifier = v28;
 
-    v21->_callbackRequest = [v16 isCallbackScheme];
-    v21->_deferCompletionUntilReturn = [v16 isCallbackScheme];
+    v21->_callbackRequest = [schemeCopy isCallbackScheme];
+    v21->_deferCompletionUntilReturn = [schemeCopy isCallbackScheme];
     v30 = v21;
   }
 
   return v21;
 }
 
-+ (id)requestWithURL:(id)a3 scheme:(id)a4 userInterface:(id)a5 bundleIdentifier:(id)a6 successHandler:(id)a7 failureHandler:(id)a8
++ (id)requestWithURL:(id)l scheme:(id)scheme userInterface:(id)interface bundleIdentifier:(id)identifier successHandler:(id)handler failureHandler:(id)failureHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[a1 alloc] initWithURL:v19 scheme:v18 userInterface:v17 successHandler:v15 failureHandler:v14 bundleIdentifier:v16];
+  failureHandlerCopy = failureHandler;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  interfaceCopy = interface;
+  schemeCopy = scheme;
+  lCopy = l;
+  v20 = [[self alloc] initWithURL:lCopy scheme:schemeCopy userInterface:interfaceCopy successHandler:handlerCopy failureHandler:failureHandlerCopy bundleIdentifier:identifierCopy];
 
   return v20;
 }
 
-+ (id)requestWithURL:(id)a3 fromSourceApplication:(id)a4
++ (id)requestWithURL:(id)l fromSourceApplication:(id)application
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithURL:v7 scheme:0 userInterface:0 successHandler:0 failureHandler:0 bundleIdentifier:v6];
+  applicationCopy = application;
+  lCopy = l;
+  v8 = [[self alloc] initWithURL:lCopy scheme:0 userInterface:0 successHandler:0 failureHandler:0 bundleIdentifier:applicationCopy];
 
   return v8;
 }
 
-+ (id)requestWithURL:(id)a3
++ (id)requestWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4 scheme:0 userInterface:0 successHandler:0 failureHandler:0 bundleIdentifier:0];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy scheme:0 userInterface:0 successHandler:0 failureHandler:0 bundleIdentifier:0];
 
   return v5;
 }

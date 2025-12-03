@@ -1,20 +1,20 @@
 @interface MRUDiscoverySessionController
-- (MRUDiscoverySessionController)initWithDeviceFeatures:(unint64_t)a3;
+- (MRUDiscoverySessionController)initWithDeviceFeatures:(unint64_t)features;
 - (MRUDiscoverySessionControllerDelegate)delegate;
-- (id)filterAndSortOutputDevices:(id)a3;
-- (void)availableOutputDevicesChangedNotification:(id)a3;
+- (id)filterAndSortOutputDevices:(id)devices;
+- (void)availableOutputDevicesChangedNotification:(id)notification;
 - (void)dealloc;
 - (void)startDetailedDiscovery;
 - (void)stopDetailedDiscovery;
 - (void)updateDiscoveryMode;
-- (void)updateOutputDevicesForAvailableOutputDevices:(id)a3;
+- (void)updateOutputDevicesForAvailableOutputDevices:(id)devices;
 - (void)updateOutputDevicesIfNeeded;
 - (void)updateOutputDevicesImmediately;
 @end
 
 @implementation MRUDiscoverySessionController
 
-- (MRUDiscoverySessionController)initWithDeviceFeatures:(unint64_t)a3
+- (MRUDiscoverySessionController)initWithDeviceFeatures:(unint64_t)features
 {
   v13.receiver = self;
   v13.super_class = MRUDiscoverySessionController;
@@ -23,9 +23,9 @@
   if (v4)
   {
     v4->_needsUpdate = 0;
-    v6 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     availableOutputDevices = v5->_availableOutputDevices;
-    v5->_availableOutputDevices = v6;
+    v5->_availableOutputDevices = array;
 
     objc_initWeak(&location, v5);
     v8 = dispatch_get_global_queue(-2, 0);
@@ -33,7 +33,7 @@
     block[1] = 3221225472;
     block[2] = __56__MRUDiscoverySessionController_initWithDeviceFeatures___block_invoke;
     block[3] = &unk_1E7664638;
-    v11[1] = a3;
+    v11[1] = features;
     objc_copyWeak(v11, &location);
     dispatch_async(v8, block);
 
@@ -115,7 +115,7 @@ void __56__MRUDiscoverySessionController_initWithDeviceFeatures___block_invoke_3
   [(MRUDiscoverySessionController *)self updateDiscoveryMode];
 }
 
-- (void)availableOutputDevicesChangedNotification:(id)a3
+- (void)availableOutputDevicesChangedNotification:(id)notification
 {
   if (!self->_needsUpdate)
   {
@@ -154,17 +154,17 @@ uint64_t __75__MRUDiscoverySessionController_availableOutputDevicesChangedNotifi
     if (v5)
     {
       v6 = objc_opt_class();
-      v7 = [(AVOutputDeviceDiscoverySession *)self->_outputDeviceDiscoverySession discoveryMode];
+      discoveryMode = [(AVOutputDeviceDiscoverySession *)self->_outputDeviceDiscoverySession discoveryMode];
       v11 = 138543618;
       v12 = v6;
       v13 = 2048;
-      v14 = v7;
+      v14 = discoveryMode;
       _os_log_impl(&dword_1A20FC000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ starting detailed discovery, previous: %li", &v11, 0x16u);
     }
 
     [(AVOutputDeviceDiscoverySession *)self->_outputDeviceDiscoverySession setDiscoveryMode:2];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel_availableOutputDevicesChangedNotification_ name:*MEMORY[0x1E69587A0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_availableOutputDevicesChangedNotification_ name:*MEMORY[0x1E69587A0] object:0];
   }
 
   else
@@ -172,17 +172,17 @@ uint64_t __75__MRUDiscoverySessionController_availableOutputDevicesChangedNotifi
     if (v5)
     {
       v9 = objc_opt_class();
-      v10 = [(AVOutputDeviceDiscoverySession *)self->_outputDeviceDiscoverySession discoveryMode];
+      discoveryMode2 = [(AVOutputDeviceDiscoverySession *)self->_outputDeviceDiscoverySession discoveryMode];
       v11 = 138543618;
       v12 = v9;
       v13 = 2048;
-      v14 = v10;
+      v14 = discoveryMode2;
       _os_log_impl(&dword_1A20FC000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ stoping detailed discovery, previous: %li", &v11, 0x16u);
     }
 
     [(AVOutputDeviceDiscoverySession *)self->_outputDeviceDiscoverySession setDiscoveryMode:0];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 removeObserver:self name:*MEMORY[0x1E69587A0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69587A0] object:0];
   }
 }
 
@@ -230,20 +230,20 @@ LABEL_5:
   }
 }
 
-- (void)updateOutputDevicesForAvailableOutputDevices:(id)a3
+- (void)updateOutputDevicesForAvailableOutputDevices:(id)devices
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRUDiscoverySessionController *)self filterAndSortOutputDevices:v4];
+  devicesCopy = devices;
+  v5 = [(MRUDiscoverySessionController *)self filterAndSortOutputDevices:devicesCopy];
   v6 = _MPAVLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2048;
-    v15 = [v4 count];
+    v15 = [devicesCopy count];
     v16 = 2114;
-    v17 = v4;
+    v17 = devicesCopy;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ received output devices: #%ld %{public}@", buf, 0x20u);
   }
 
@@ -252,7 +252,7 @@ LABEL_5:
   {
     v8 = [v5 count];
     *buf = 138543874;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2048;
     v15 = v8;
     v16 = 2114;
@@ -277,14 +277,14 @@ void __78__MRUDiscoverySessionController_updateOutputDevicesForAvailableOutputDe
   [v2 mirroringDiscoverySessionController:*(a1 + 32) didChangeAvailableOutputDevices:*(a1 + 40)];
 }
 
-- (id)filterAndSortOutputDevices:(id)a3
+- (id)filterAndSortOutputDevices:(id)devices
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __60__MRUDiscoverySessionController_filterAndSortOutputDevices___block_invoke;
   v5[3] = &unk_1E7664660;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [devices sortedArrayUsingComparator:v5];
 
   return v3;
 }

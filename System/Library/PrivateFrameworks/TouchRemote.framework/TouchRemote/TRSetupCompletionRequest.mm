@@ -1,39 +1,39 @@
 @interface TRSetupCompletionRequest
-- (TRSetupCompletionRequest)initWithCoder:(id)a3;
+- (TRSetupCompletionRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRSetupCompletionRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = TRSetupCompletionRequest;
-  [(TRMessage *)&v6 encodeWithCoder:v4];
+  [(TRMessage *)&v6 encodeWithCoder:coderCopy];
   if (self->_completedSuccessfully)
   {
-    [v4 encodeBool:1 forKey:@"cS"];
+    [coderCopy encodeBool:1 forKey:@"cS"];
   }
 
   errorCode = self->_errorCode;
   if (errorCode)
   {
-    [v4 encodeInteger:errorCode forKey:@"eC"];
+    [coderCopy encodeInteger:errorCode forKey:@"eC"];
   }
 }
 
-- (TRSetupCompletionRequest)initWithCoder:(id)a3
+- (TRSetupCompletionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TRSetupCompletionRequest;
-  v5 = [(TRMessage *)&v7 initWithCoder:v4];
+  v5 = [(TRMessage *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_completedSuccessfully = [v4 decodeBoolForKey:@"cS"];
-    v5->_errorCode = [v4 decodeIntegerForKey:@"eC"];
+    v5->_completedSuccessfully = [coderCopy decodeBoolForKey:@"cS"];
+    v5->_errorCode = [coderCopy decodeIntegerForKey:@"eC"];
   }
 
   return v5;

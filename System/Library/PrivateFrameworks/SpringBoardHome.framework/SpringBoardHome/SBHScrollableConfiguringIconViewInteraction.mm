@@ -1,16 +1,16 @@
 @interface SBHScrollableConfiguringIconViewInteraction
-- (void)handleTargetIconViewClipped:(id)a3;
+- (void)handleTargetIconViewClipped:(id)clipped;
 @end
 
 @implementation SBHScrollableConfiguringIconViewInteraction
 
-- (void)handleTargetIconViewClipped:(id)a3
+- (void)handleTargetIconViewClipped:(id)clipped
 {
   v4.receiver = self;
   v4.super_class = SBHScrollableConfiguringIconViewInteraction;
-  v3 = a3;
-  [(SBHScrollableIconViewInteraction *)&v4 handleTargetIconViewClipped:v3];
-  [v3 dismissConfigurationCardImmediately];
+  clippedCopy = clipped;
+  [(SBHScrollableIconViewInteraction *)&v4 handleTargetIconViewClipped:clippedCopy];
+  [clippedCopy dismissConfigurationCardImmediately];
 }
 
 @end

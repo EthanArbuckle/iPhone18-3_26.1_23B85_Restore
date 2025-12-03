@@ -1,117 +1,117 @@
 @interface _SFPBRFFormattedText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSString)text;
-- (_SFPBRFFormattedText)initWithDictionary:(id)a3;
-- (_SFPBRFFormattedText)initWithFacade:(id)a3;
-- (_SFPBRFFormattedText)initWithJSON:(id)a3;
+- (_SFPBRFFormattedText)initWithDictionary:(id)dictionary;
+- (_SFPBRFFormattedText)initWithFacade:(id)facade;
+- (_SFPBRFFormattedText)initWithJSON:(id)n;
 - (_SFPBRFImageElement)inline_image_element;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAttributions:(id)a3;
-- (void)addHighlighted_substrings:(id)a3;
-- (void)setAttributions:(id)a3;
-- (void)setHighlighted_substrings:(id)a3;
-- (void)setInline_image_element:(id)a3;
-- (void)setText:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAttributions:(id)attributions;
+- (void)addHighlighted_substrings:(id)highlighted_substrings;
+- (void)setAttributions:(id)attributions;
+- (void)setHighlighted_substrings:(id)highlighted_substrings;
+- (void)setInline_image_element:(id)inline_image_element;
+- (void)setText:(id)text;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFFormattedText
 
-- (_SFPBRFFormattedText)initWithFacade:(id)a3
+- (_SFPBRFFormattedText)initWithFacade:(id)facade
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFFormattedText *)self init];
   if (v5)
   {
-    if ([v4 hasText])
+    if ([facadeCopy hasText])
     {
-      v6 = [v4 text];
+      text = [facadeCopy text];
 
-      if (v6)
+      if (text)
       {
-        v7 = [v4 text];
-        [(_SFPBRFFormattedText *)v5 setText:v7];
+        text2 = [facadeCopy text];
+        [(_SFPBRFFormattedText *)v5 setText:text2];
       }
     }
 
-    if ([v4 hasInline_image_element])
+    if ([facadeCopy hasInline_image_element])
     {
-      v8 = [v4 inline_image_element];
+      inline_image_element = [facadeCopy inline_image_element];
 
-      if (v8)
+      if (inline_image_element)
       {
         v9 = [_SFPBRFImageElement alloc];
-        v10 = [v4 inline_image_element];
-        v11 = [(_SFPBRFImageElement *)v9 initWithFacade:v10];
+        inline_image_element2 = [facadeCopy inline_image_element];
+        v11 = [(_SFPBRFImageElement *)v9 initWithFacade:inline_image_element2];
         [(_SFPBRFFormattedText *)v5 setInline_image_element:v11];
       }
     }
 
-    v12 = [v4 color];
+    color = [facadeCopy color];
 
-    if (v12)
+    if (color)
     {
       v13 = [_SFPBRFColor alloc];
-      v14 = [v4 color];
-      v15 = [(_SFPBRFColor *)v13 initWithFacade:v14];
+      color2 = [facadeCopy color];
+      v15 = [(_SFPBRFColor *)v13 initWithFacade:color2];
       [(_SFPBRFFormattedText *)v5 setColor:v15];
     }
 
-    v16 = [v4 is_italic];
+    is_italic = [facadeCopy is_italic];
 
-    if (v16)
+    if (is_italic)
     {
       v17 = [_SFPBRFOptionalBool alloc];
-      v18 = [v4 is_italic];
-      v19 = [(_SFPBRFOptionalBool *)v17 initWithFacade:v18];
+      is_italic2 = [facadeCopy is_italic];
+      v19 = [(_SFPBRFOptionalBool *)v17 initWithFacade:is_italic2];
       [(_SFPBRFFormattedText *)v5 setIs_italic:v19];
     }
 
-    v20 = [v4 is_bold];
+    is_bold = [facadeCopy is_bold];
 
-    if (v20)
+    if (is_bold)
     {
       v21 = [_SFPBRFOptionalBool alloc];
-      v22 = [v4 is_bold];
-      v23 = [(_SFPBRFOptionalBool *)v21 initWithFacade:v22];
+      is_bold2 = [facadeCopy is_bold];
+      v23 = [(_SFPBRFOptionalBool *)v21 initWithFacade:is_bold2];
       [(_SFPBRFFormattedText *)v5 setIs_bold:v23];
     }
 
-    v24 = [v4 text_encapsulation];
+    text_encapsulation = [facadeCopy text_encapsulation];
 
-    if (v24)
+    if (text_encapsulation)
     {
       v25 = [_SFPBRFTextEncapsulation alloc];
-      v26 = [v4 text_encapsulation];
-      v27 = [(_SFPBRFTextEncapsulation *)v25 initWithFacade:v26];
+      text_encapsulation2 = [facadeCopy text_encapsulation];
+      v27 = [(_SFPBRFTextEncapsulation *)v25 initWithFacade:text_encapsulation2];
       [(_SFPBRFFormattedText *)v5 setText_encapsulation:v27];
     }
 
-    v28 = [v4 is_highlighted];
+    is_highlighted = [facadeCopy is_highlighted];
 
-    if (v28)
+    if (is_highlighted)
     {
       v29 = [_SFPBRFOptionalBool alloc];
-      v30 = [v4 is_highlighted];
-      v31 = [(_SFPBRFOptionalBool *)v29 initWithFacade:v30];
+      is_highlighted2 = [facadeCopy is_highlighted];
+      v31 = [(_SFPBRFOptionalBool *)v29 initWithFacade:is_highlighted2];
       [(_SFPBRFFormattedText *)v5 setIs_highlighted:v31];
     }
 
-    v32 = [v4 background_color];
+    background_color = [facadeCopy background_color];
 
-    if (v32)
+    if (background_color)
     {
       v33 = [_SFPBRFColor alloc];
-      v34 = [v4 background_color];
-      v35 = [(_SFPBRFColor *)v33 initWithFacade:v34];
+      background_color2 = [facadeCopy background_color];
+      v35 = [(_SFPBRFColor *)v33 initWithFacade:background_color2];
       [(_SFPBRFFormattedText *)v5 setBackground_color:v35];
     }
 
-    v36 = [v4 attributions];
-    if (v36)
+    attributions = [facadeCopy attributions];
+    if (attributions)
     {
       v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -125,8 +125,8 @@
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v38 = [v4 attributions];
-    v39 = [v38 countByEnumeratingWithState:&v71 objects:v76 count:16];
+    attributions2 = [facadeCopy attributions];
+    v39 = [attributions2 countByEnumeratingWithState:&v71 objects:v76 count:16];
     if (v39)
     {
       v40 = v39;
@@ -137,7 +137,7 @@
         {
           if (*v72 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(attributions2);
           }
 
           v43 = [[_SFPBRFAttribution alloc] initWithFacade:*(*(&v71 + 1) + 8 * i)];
@@ -147,15 +147,15 @@
           }
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v71 objects:v76 count:16];
+        v40 = [attributions2 countByEnumeratingWithState:&v71 objects:v76 count:16];
       }
 
       while (v40);
     }
 
     [(_SFPBRFFormattedText *)v5 setAttributions:v37];
-    v44 = [v4 highlighted_substrings];
-    if (v44)
+    highlighted_substrings = [facadeCopy highlighted_substrings];
+    if (highlighted_substrings)
     {
       v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -169,8 +169,8 @@
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v46 = [v4 highlighted_substrings];
-    v47 = [v46 countByEnumeratingWithState:&v67 objects:v75 count:16];
+    highlighted_substrings2 = [facadeCopy highlighted_substrings];
+    v47 = [highlighted_substrings2 countByEnumeratingWithState:&v67 objects:v75 count:16];
     if (v47)
     {
       v48 = v47;
@@ -181,7 +181,7 @@
         {
           if (*v68 != v49)
           {
-            objc_enumerationMutation(v46);
+            objc_enumerationMutation(highlighted_substrings2);
           }
 
           v51 = [[_SFPBRFHighlightedSubstring alloc] initWithFacade:*(*(&v67 + 1) + 8 * j)];
@@ -191,51 +191,51 @@
           }
         }
 
-        v48 = [v46 countByEnumeratingWithState:&v67 objects:v75 count:16];
+        v48 = [highlighted_substrings2 countByEnumeratingWithState:&v67 objects:v75 count:16];
       }
 
       while (v48);
     }
 
     [(_SFPBRFFormattedText *)v5 setHighlighted_substrings:v45];
-    v52 = [v4 font];
+    font = [facadeCopy font];
 
-    if (v52)
+    if (font)
     {
       v53 = [_SFPBRFFont alloc];
-      v54 = [v4 font];
-      v55 = [(_SFPBRFFont *)v53 initWithFacade:v54];
+      font2 = [facadeCopy font];
+      v55 = [(_SFPBRFFont *)v53 initWithFacade:font2];
       [(_SFPBRFFormattedText *)v5 setFont:v55];
     }
 
-    v56 = [v4 is_underlined];
+    is_underlined = [facadeCopy is_underlined];
 
-    if (v56)
+    if (is_underlined)
     {
       v57 = [_SFPBRFOptionalBool alloc];
-      v58 = [v4 is_underlined];
-      v59 = [(_SFPBRFOptionalBool *)v57 initWithFacade:v58];
+      is_underlined2 = [facadeCopy is_underlined];
+      v59 = [(_SFPBRFOptionalBool *)v57 initWithFacade:is_underlined2];
       [(_SFPBRFFormattedText *)v5 setIs_underlined:v59];
     }
 
-    v60 = [v4 engageable];
+    engageable = [facadeCopy engageable];
 
-    if (v60)
+    if (engageable)
     {
       v61 = [_SFPBRFEngageable alloc];
-      v62 = [v4 engageable];
-      v63 = [(_SFPBRFEngageable *)v61 initWithFacade:v62];
+      engageable2 = [facadeCopy engageable];
+      v63 = [(_SFPBRFEngageable *)v61 initWithFacade:engageable2];
       [(_SFPBRFFormattedText *)v5 setEngageable:v63];
     }
 
-    if ([v4 hasWeight])
+    if ([facadeCopy hasWeight])
     {
-      -[_SFPBRFFormattedText setWeight:](v5, "setWeight:", [v4 weight]);
+      -[_SFPBRFFormattedText setWeight:](v5, "setWeight:", [facadeCopy weight]);
     }
 
-    if ([v4 hasDesign])
+    if ([facadeCopy hasDesign])
     {
-      -[_SFPBRFFormattedText setDesign:](v5, "setDesign:", [v4 design]);
+      -[_SFPBRFFormattedText setDesign:](v5, "setDesign:", [facadeCopy design]);
     }
 
     v64 = v5;
@@ -245,16 +245,16 @@
   return v5;
 }
 
-- (_SFPBRFFormattedText)initWithDictionary:(id)a3
+- (_SFPBRFFormattedText)initWithDictionary:(id)dictionary
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v65.receiver = self;
   v65.super_class = _SFPBRFFormattedText;
   v5 = [(_SFPBRFFormattedText *)&v65 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -262,7 +262,7 @@
       [(_SFPBRFFormattedText *)v5 setText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"inlineImageElement"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"inlineImageElement"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -270,7 +270,7 @@
       [(_SFPBRFFormattedText *)v5 setInline_image_element:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"color"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"color"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -278,7 +278,7 @@
       [(_SFPBRFFormattedText *)v5 setColor:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"isItalic"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"isItalic"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -286,7 +286,7 @@
       [(_SFPBRFFormattedText *)v5 setIs_italic:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isBold"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isBold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -294,7 +294,7 @@
       [(_SFPBRFFormattedText *)v5 setIs_bold:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"textEncapsulation"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"textEncapsulation"];
     objc_opt_class();
     v56 = v16;
     if (objc_opt_isKindOfClass())
@@ -303,7 +303,7 @@
       [(_SFPBRFFormattedText *)v5 setText_encapsulation:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"isHighlighted"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isHighlighted"];
     objc_opt_class();
     v55 = v18;
     if (objc_opt_isKindOfClass())
@@ -316,7 +316,7 @@
     v51 = v12;
     v52 = v10;
     v53 = v8;
-    v20 = [v4 objectForKeyedSubscript:@"backgroundColor"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"backgroundColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -325,7 +325,7 @@
     }
 
     v49 = v20;
-    v22 = [v4 objectForKeyedSubscript:@"attributions"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"attributions"];
     objc_opt_class();
     v54 = v22;
     if (objc_opt_isKindOfClass())
@@ -365,7 +365,7 @@
       }
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"highlightedSubstrings"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"highlightedSubstrings"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -404,7 +404,7 @@
       }
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"font"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"font"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -412,7 +412,7 @@
       [(_SFPBRFFormattedText *)v5 setFont:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"isUnderlined"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"isUnderlined"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -420,7 +420,7 @@
       [(_SFPBRFFormattedText *)v5 setIs_underlined:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"engageable"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"engageable"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -428,14 +428,14 @@
       [(_SFPBRFFormattedText *)v5 setEngageable:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"weight"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"weight"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFFormattedText setWeight:](v5, "setWeight:", [v44 intValue]);
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"design"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"design"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -449,30 +449,30 @@
   return v5;
 }
 
-- (_SFPBRFFormattedText)initWithJSON:(id)a3
+- (_SFPBRFFormattedText)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFFormattedText *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFFormattedText *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFFormattedText *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -486,10 +486,10 @@
 - (id)dictionaryRepresentation
 {
   v68 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_attributions count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
@@ -509,16 +509,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v62 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v62 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -528,92 +528,92 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"attributions"];
+    [dictionary setObject:array forKeyedSubscript:@"attributions"];
   }
 
   if (self->_background_color)
   {
-    v12 = [(_SFPBRFFormattedText *)self background_color];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    background_color = [(_SFPBRFFormattedText *)self background_color];
+    dictionaryRepresentation2 = [background_color dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"backgroundColor"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"backgroundColor"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"backgroundColor"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"backgroundColor"];
     }
   }
 
   if (self->_color)
   {
-    v15 = [(_SFPBRFFormattedText *)self color];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    color = [(_SFPBRFFormattedText *)self color];
+    dictionaryRepresentation3 = [color dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"color"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"color"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"color"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"color"];
     }
   }
 
   if (self->_design)
   {
-    v18 = [(_SFPBRFFormattedText *)self design];
-    if (v18 >= 4)
+    design = [(_SFPBRFFormattedText *)self design];
+    if (design >= 4)
     {
-      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v18];
+      v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", design];
     }
 
     else
     {
-      v19 = off_1E7ACE560[v18];
+      v19 = off_1E7ACE560[design];
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"design"];
+    [dictionary setObject:v19 forKeyedSubscript:@"design"];
   }
 
   if (self->_engageable)
   {
-    v20 = [(_SFPBRFFormattedText *)self engageable];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    engageable = [(_SFPBRFFormattedText *)self engageable];
+    dictionaryRepresentation4 = [engageable dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"engageable"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"engageable"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"engageable"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"engageable"];
     }
   }
 
   if (self->_font)
   {
-    v23 = [(_SFPBRFFormattedText *)self font];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    font = [(_SFPBRFFormattedText *)self font];
+    dictionaryRepresentation5 = [font dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"font"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"font"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"font"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"font"];
     }
   }
 
   if ([(NSArray *)self->_highlighted_substrings count])
   {
-    v26 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
@@ -633,16 +633,16 @@
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v58 + 1) + 8 * j) dictionaryRepresentation];
-          if (v32)
+          dictionaryRepresentation6 = [*(*(&v58 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation6)
           {
-            [v26 addObject:v32];
+            [array2 addObject:dictionaryRepresentation6];
           }
 
           else
           {
-            v33 = [MEMORY[0x1E695DFB0] null];
-            [v26 addObject:v33];
+            null6 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null6];
           }
         }
 
@@ -652,131 +652,131 @@
       while (v29);
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"highlightedSubstrings"];
+    [dictionary setObject:array2 forKeyedSubscript:@"highlightedSubstrings"];
   }
 
   if (self->_inline_image_element)
   {
-    v34 = [(_SFPBRFFormattedText *)self inline_image_element];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    inline_image_element = [(_SFPBRFFormattedText *)self inline_image_element];
+    dictionaryRepresentation7 = [inline_image_element dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"inlineImageElement"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"inlineImageElement"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"inlineImageElement"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"inlineImageElement"];
     }
   }
 
   if (self->_is_bold)
   {
-    v37 = [(_SFPBRFFormattedText *)self is_bold];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    is_bold = [(_SFPBRFFormattedText *)self is_bold];
+    dictionaryRepresentation8 = [is_bold dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"isBold"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"isBold"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"isBold"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"isBold"];
     }
   }
 
   if (self->_is_highlighted)
   {
-    v40 = [(_SFPBRFFormattedText *)self is_highlighted];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    is_highlighted = [(_SFPBRFFormattedText *)self is_highlighted];
+    dictionaryRepresentation9 = [is_highlighted dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"isHighlighted"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"isHighlighted"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"isHighlighted"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"isHighlighted"];
     }
   }
 
   if (self->_is_italic)
   {
-    v43 = [(_SFPBRFFormattedText *)self is_italic];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    is_italic = [(_SFPBRFFormattedText *)self is_italic];
+    dictionaryRepresentation10 = [is_italic dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"isItalic"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"isItalic"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"isItalic"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"isItalic"];
     }
   }
 
   if (self->_is_underlined)
   {
-    v46 = [(_SFPBRFFormattedText *)self is_underlined];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    is_underlined = [(_SFPBRFFormattedText *)self is_underlined];
+    dictionaryRepresentation11 = [is_underlined dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"isUnderlined"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"isUnderlined"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"isUnderlined"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"isUnderlined"];
     }
   }
 
   if (self->_text)
   {
-    v49 = [(_SFPBRFFormattedText *)self text];
-    v50 = [v49 copy];
-    [v3 setObject:v50 forKeyedSubscript:@"text"];
+    text = [(_SFPBRFFormattedText *)self text];
+    v50 = [text copy];
+    [dictionary setObject:v50 forKeyedSubscript:@"text"];
   }
 
   if (self->_text_encapsulation)
   {
-    v51 = [(_SFPBRFFormattedText *)self text_encapsulation];
-    v52 = [v51 dictionaryRepresentation];
-    if (v52)
+    text_encapsulation = [(_SFPBRFFormattedText *)self text_encapsulation];
+    dictionaryRepresentation12 = [text_encapsulation dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v52 forKeyedSubscript:@"textEncapsulation"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"textEncapsulation"];
     }
 
     else
     {
-      v53 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v53 forKeyedSubscript:@"textEncapsulation"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"textEncapsulation"];
     }
   }
 
   if (self->_weight)
   {
-    v54 = [(_SFPBRFFormattedText *)self weight];
-    if (v54 >= 0xA)
+    weight = [(_SFPBRFFormattedText *)self weight];
+    if (weight >= 0xA)
     {
-      v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v54];
+      v55 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", weight];
     }
 
     else
     {
-      v55 = off_1E7ACE220[v54];
+      v55 = off_1E7ACE220[weight];
     }
 
-    [v3 setObject:v55 forKeyedSubscript:@"weight"];
+    [dictionary setObject:v55 forKeyedSubscript:@"weight"];
   }
 
   v56 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -796,28 +796,28 @@
   return v14 ^ v15 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(_SFPBRFEngageable *)self->_engageable hash]^ (2654435761 * self->_weight) ^ (2654435761 * self->_design);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_67;
   }
 
-  v5 = [(_SFPBRFFormattedText *)self text];
-  v6 = [v4 text];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v7 = [(_SFPBRFFormattedText *)self text];
-  if (v7)
+  text3 = [(_SFPBRFFormattedText *)self text];
+  if (text3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFFormattedText *)self text];
-    v10 = [v4 text];
-    v11 = [v9 isEqual:v10];
+    v8 = text3;
+    text4 = [(_SFPBRFFormattedText *)self text];
+    text5 = [equalCopy text];
+    v11 = [text4 isEqual:text5];
 
     if (!v11)
     {
@@ -829,20 +829,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self inline_image_element];
-  v6 = [v4 inline_image_element];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self inline_image_element];
+  text2 = [equalCopy inline_image_element];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v12 = [(_SFPBRFFormattedText *)self inline_image_element];
-  if (v12)
+  inline_image_element = [(_SFPBRFFormattedText *)self inline_image_element];
+  if (inline_image_element)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFFormattedText *)self inline_image_element];
-    v15 = [v4 inline_image_element];
-    v16 = [v14 isEqual:v15];
+    v13 = inline_image_element;
+    inline_image_element2 = [(_SFPBRFFormattedText *)self inline_image_element];
+    inline_image_element3 = [equalCopy inline_image_element];
+    v16 = [inline_image_element2 isEqual:inline_image_element3];
 
     if (!v16)
     {
@@ -854,20 +854,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self color];
-  v6 = [v4 color];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self color];
+  text2 = [equalCopy color];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v17 = [(_SFPBRFFormattedText *)self color];
-  if (v17)
+  color = [(_SFPBRFFormattedText *)self color];
+  if (color)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFFormattedText *)self color];
-    v20 = [v4 color];
-    v21 = [v19 isEqual:v20];
+    v18 = color;
+    color2 = [(_SFPBRFFormattedText *)self color];
+    color3 = [equalCopy color];
+    v21 = [color2 isEqual:color3];
 
     if (!v21)
     {
@@ -879,20 +879,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self is_italic];
-  v6 = [v4 is_italic];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self is_italic];
+  text2 = [equalCopy is_italic];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v22 = [(_SFPBRFFormattedText *)self is_italic];
-  if (v22)
+  is_italic = [(_SFPBRFFormattedText *)self is_italic];
+  if (is_italic)
   {
-    v23 = v22;
-    v24 = [(_SFPBRFFormattedText *)self is_italic];
-    v25 = [v4 is_italic];
-    v26 = [v24 isEqual:v25];
+    v23 = is_italic;
+    is_italic2 = [(_SFPBRFFormattedText *)self is_italic];
+    is_italic3 = [equalCopy is_italic];
+    v26 = [is_italic2 isEqual:is_italic3];
 
     if (!v26)
     {
@@ -904,20 +904,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self is_bold];
-  v6 = [v4 is_bold];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self is_bold];
+  text2 = [equalCopy is_bold];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v27 = [(_SFPBRFFormattedText *)self is_bold];
-  if (v27)
+  is_bold = [(_SFPBRFFormattedText *)self is_bold];
+  if (is_bold)
   {
-    v28 = v27;
-    v29 = [(_SFPBRFFormattedText *)self is_bold];
-    v30 = [v4 is_bold];
-    v31 = [v29 isEqual:v30];
+    v28 = is_bold;
+    is_bold2 = [(_SFPBRFFormattedText *)self is_bold];
+    is_bold3 = [equalCopy is_bold];
+    v31 = [is_bold2 isEqual:is_bold3];
 
     if (!v31)
     {
@@ -929,20 +929,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self text_encapsulation];
-  v6 = [v4 text_encapsulation];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self text_encapsulation];
+  text2 = [equalCopy text_encapsulation];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v32 = [(_SFPBRFFormattedText *)self text_encapsulation];
-  if (v32)
+  text_encapsulation = [(_SFPBRFFormattedText *)self text_encapsulation];
+  if (text_encapsulation)
   {
-    v33 = v32;
-    v34 = [(_SFPBRFFormattedText *)self text_encapsulation];
-    v35 = [v4 text_encapsulation];
-    v36 = [v34 isEqual:v35];
+    v33 = text_encapsulation;
+    text_encapsulation2 = [(_SFPBRFFormattedText *)self text_encapsulation];
+    text_encapsulation3 = [equalCopy text_encapsulation];
+    v36 = [text_encapsulation2 isEqual:text_encapsulation3];
 
     if (!v36)
     {
@@ -954,20 +954,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self is_highlighted];
-  v6 = [v4 is_highlighted];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self is_highlighted];
+  text2 = [equalCopy is_highlighted];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v37 = [(_SFPBRFFormattedText *)self is_highlighted];
-  if (v37)
+  is_highlighted = [(_SFPBRFFormattedText *)self is_highlighted];
+  if (is_highlighted)
   {
-    v38 = v37;
-    v39 = [(_SFPBRFFormattedText *)self is_highlighted];
-    v40 = [v4 is_highlighted];
-    v41 = [v39 isEqual:v40];
+    v38 = is_highlighted;
+    is_highlighted2 = [(_SFPBRFFormattedText *)self is_highlighted];
+    is_highlighted3 = [equalCopy is_highlighted];
+    v41 = [is_highlighted2 isEqual:is_highlighted3];
 
     if (!v41)
     {
@@ -979,20 +979,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self background_color];
-  v6 = [v4 background_color];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self background_color];
+  text2 = [equalCopy background_color];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v42 = [(_SFPBRFFormattedText *)self background_color];
-  if (v42)
+  background_color = [(_SFPBRFFormattedText *)self background_color];
+  if (background_color)
   {
-    v43 = v42;
-    v44 = [(_SFPBRFFormattedText *)self background_color];
-    v45 = [v4 background_color];
-    v46 = [v44 isEqual:v45];
+    v43 = background_color;
+    background_color2 = [(_SFPBRFFormattedText *)self background_color];
+    background_color3 = [equalCopy background_color];
+    v46 = [background_color2 isEqual:background_color3];
 
     if (!v46)
     {
@@ -1004,20 +1004,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self attributions];
-  v6 = [v4 attributions];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self attributions];
+  text2 = [equalCopy attributions];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v47 = [(_SFPBRFFormattedText *)self attributions];
-  if (v47)
+  attributions = [(_SFPBRFFormattedText *)self attributions];
+  if (attributions)
   {
-    v48 = v47;
-    v49 = [(_SFPBRFFormattedText *)self attributions];
-    v50 = [v4 attributions];
-    v51 = [v49 isEqual:v50];
+    v48 = attributions;
+    attributions2 = [(_SFPBRFFormattedText *)self attributions];
+    attributions3 = [equalCopy attributions];
+    v51 = [attributions2 isEqual:attributions3];
 
     if (!v51)
     {
@@ -1029,20 +1029,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self highlighted_substrings];
-  v6 = [v4 highlighted_substrings];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self highlighted_substrings];
+  text2 = [equalCopy highlighted_substrings];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v52 = [(_SFPBRFFormattedText *)self highlighted_substrings];
-  if (v52)
+  highlighted_substrings = [(_SFPBRFFormattedText *)self highlighted_substrings];
+  if (highlighted_substrings)
   {
-    v53 = v52;
-    v54 = [(_SFPBRFFormattedText *)self highlighted_substrings];
-    v55 = [v4 highlighted_substrings];
-    v56 = [v54 isEqual:v55];
+    v53 = highlighted_substrings;
+    highlighted_substrings2 = [(_SFPBRFFormattedText *)self highlighted_substrings];
+    highlighted_substrings3 = [equalCopy highlighted_substrings];
+    v56 = [highlighted_substrings2 isEqual:highlighted_substrings3];
 
     if (!v56)
     {
@@ -1054,20 +1054,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self font];
-  v6 = [v4 font];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self font];
+  text2 = [equalCopy font];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v57 = [(_SFPBRFFormattedText *)self font];
-  if (v57)
+  font = [(_SFPBRFFormattedText *)self font];
+  if (font)
   {
-    v58 = v57;
-    v59 = [(_SFPBRFFormattedText *)self font];
-    v60 = [v4 font];
-    v61 = [v59 isEqual:v60];
+    v58 = font;
+    font2 = [(_SFPBRFFormattedText *)self font];
+    font3 = [equalCopy font];
+    v61 = [font2 isEqual:font3];
 
     if (!v61)
     {
@@ -1079,20 +1079,20 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self is_underlined];
-  v6 = [v4 is_underlined];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self is_underlined];
+  text2 = [equalCopy is_underlined];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_66;
   }
 
-  v62 = [(_SFPBRFFormattedText *)self is_underlined];
-  if (v62)
+  is_underlined = [(_SFPBRFFormattedText *)self is_underlined];
+  if (is_underlined)
   {
-    v63 = v62;
-    v64 = [(_SFPBRFFormattedText *)self is_underlined];
-    v65 = [v4 is_underlined];
-    v66 = [v64 isEqual:v65];
+    v63 = is_underlined;
+    is_underlined2 = [(_SFPBRFFormattedText *)self is_underlined];
+    is_underlined3 = [equalCopy is_underlined];
+    v66 = [is_underlined2 isEqual:is_underlined3];
 
     if (!v66)
     {
@@ -1104,22 +1104,22 @@
   {
   }
 
-  v5 = [(_SFPBRFFormattedText *)self engageable];
-  v6 = [v4 engageable];
-  if ((v5 != 0) == (v6 == 0))
+  text = [(_SFPBRFFormattedText *)self engageable];
+  text2 = [equalCopy engageable];
+  if ((text != 0) == (text2 == 0))
   {
 LABEL_66:
 
     goto LABEL_67;
   }
 
-  v67 = [(_SFPBRFFormattedText *)self engageable];
-  if (v67)
+  engageable = [(_SFPBRFFormattedText *)self engageable];
+  if (engageable)
   {
-    v68 = v67;
-    v69 = [(_SFPBRFFormattedText *)self engageable];
-    v70 = [v4 engageable];
-    v71 = [v69 isEqual:v70];
+    v68 = engageable;
+    engageable2 = [(_SFPBRFFormattedText *)self engageable];
+    engageable3 = [equalCopy engageable];
+    v71 = [engageable2 isEqual:engageable3];
 
     if (!v71)
     {
@@ -1132,10 +1132,10 @@ LABEL_66:
   }
 
   weight = self->_weight;
-  if (weight == [v4 weight])
+  if (weight == [equalCopy weight])
   {
     design = self->_design;
-    v72 = design == [v4 design];
+    v72 = design == [equalCopy design];
     goto LABEL_68;
   }
 
@@ -1146,64 +1146,64 @@ LABEL_68:
   return v72;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFFormattedText *)self text];
-  if (v5)
+  toCopy = to;
+  text = [(_SFPBRFFormattedText *)self text];
+  if (text)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBRFFormattedText *)self inline_image_element];
-  if (v6)
+  inline_image_element = [(_SFPBRFFormattedText *)self inline_image_element];
+  if (inline_image_element)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBRFFormattedText *)self color];
-  if (v7)
+  color = [(_SFPBRFFormattedText *)self color];
+  if (color)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_SFPBRFFormattedText *)self is_italic];
-  if (v8)
+  is_italic = [(_SFPBRFFormattedText *)self is_italic];
+  if (is_italic)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_SFPBRFFormattedText *)self is_bold];
-  if (v9)
+  is_bold = [(_SFPBRFFormattedText *)self is_bold];
+  if (is_bold)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_SFPBRFFormattedText *)self text_encapsulation];
-  if (v10)
+  text_encapsulation = [(_SFPBRFFormattedText *)self text_encapsulation];
+  if (text_encapsulation)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(_SFPBRFFormattedText *)self is_highlighted];
-  if (v11)
+  is_highlighted = [(_SFPBRFFormattedText *)self is_highlighted];
+  if (is_highlighted)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_SFPBRFFormattedText *)self background_color];
-  if (v12)
+  background_color = [(_SFPBRFFormattedText *)self background_color];
+  if (background_color)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_SFPBRFFormattedText *)self attributions];
+  attributions = [(_SFPBRFFormattedText *)self attributions];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v14 = [attributions countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1215,7 +1215,7 @@ LABEL_68:
       {
         if (*v34 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(attributions);
         }
 
         v18 = *(*(&v33 + 1) + 8 * v17);
@@ -1224,18 +1224,18 @@ LABEL_68:
       }
 
       while (v15 != v17);
-      v15 = [v13 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v15 = [attributions countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(_SFPBRFFormattedText *)self highlighted_substrings];
+  highlighted_substrings = [(_SFPBRFFormattedText *)self highlighted_substrings];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  v20 = [highlighted_substrings countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1247,7 +1247,7 @@ LABEL_68:
       {
         if (*v30 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(highlighted_substrings);
         }
 
         v24 = *(*(&v29 + 1) + 8 * v23);
@@ -1256,26 +1256,26 @@ LABEL_68:
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v21 = [highlighted_substrings countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v21);
   }
 
-  v25 = [(_SFPBRFFormattedText *)self font];
-  if (v25)
+  font = [(_SFPBRFFormattedText *)self font];
+  if (font)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(_SFPBRFFormattedText *)self is_underlined];
-  if (v26)
+  is_underlined = [(_SFPBRFFormattedText *)self is_underlined];
+  if (is_underlined)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v27 = [(_SFPBRFFormattedText *)self engageable];
-  if (v27)
+  engageable = [(_SFPBRFFormattedText *)self engageable];
+  if (engageable)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1293,54 +1293,54 @@ LABEL_68:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addHighlighted_substrings:(id)a3
+- (void)addHighlighted_substrings:(id)highlighted_substrings
 {
-  v4 = a3;
+  highlighted_substringsCopy = highlighted_substrings;
   highlighted_substrings = self->_highlighted_substrings;
-  v8 = v4;
+  v8 = highlighted_substringsCopy;
   if (!highlighted_substrings)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_highlighted_substrings;
-    self->_highlighted_substrings = v6;
+    self->_highlighted_substrings = array;
 
-    v4 = v8;
+    highlighted_substringsCopy = v8;
     highlighted_substrings = self->_highlighted_substrings;
   }
 
-  [(NSArray *)highlighted_substrings addObject:v4];
+  [(NSArray *)highlighted_substrings addObject:highlighted_substringsCopy];
 }
 
-- (void)setHighlighted_substrings:(id)a3
+- (void)setHighlighted_substrings:(id)highlighted_substrings
 {
-  v4 = [a3 copy];
+  v4 = [highlighted_substrings copy];
   highlighted_substrings = self->_highlighted_substrings;
   self->_highlighted_substrings = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addAttributions:(id)a3
+- (void)addAttributions:(id)attributions
 {
-  v4 = a3;
+  attributionsCopy = attributions;
   attributions = self->_attributions;
-  v8 = v4;
+  v8 = attributionsCopy;
   if (!attributions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_attributions;
-    self->_attributions = v6;
+    self->_attributions = array;
 
-    v4 = v8;
+    attributionsCopy = v8;
     attributions = self->_attributions;
   }
 
-  [(NSArray *)attributions addObject:v4];
+  [(NSArray *)attributions addObject:attributionsCopy];
 }
 
-- (void)setAttributions:(id)a3
+- (void)setAttributions:(id)attributions
 {
-  v4 = [a3 copy];
+  v4 = [attributions copy];
   attributions = self->_attributions;
   self->_attributions = v4;
 
@@ -1362,15 +1362,15 @@ LABEL_68:
   return v3;
 }
 
-- (void)setInline_image_element:(id)a3
+- (void)setInline_image_element:(id)inline_image_element
 {
-  v4 = a3;
+  inline_image_elementCopy = inline_image_element;
   text = self->_text;
   self->_text = 0;
 
-  self->_whichValue = 2 * (v4 != 0);
+  self->_whichValue = 2 * (inline_image_elementCopy != 0);
   inline_image_element = self->_inline_image_element;
-  self->_inline_image_element = v4;
+  self->_inline_image_element = inline_image_elementCopy;
 }
 
 - (NSString)text
@@ -1388,14 +1388,14 @@ LABEL_68:
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   inline_image_element = self->_inline_image_element;
   self->_inline_image_element = 0;
-  v7 = a3;
+  textCopy = text;
 
-  self->_whichValue = v7 != 0;
-  v5 = [v7 copy];
+  self->_whichValue = textCopy != 0;
+  v5 = [textCopy copy];
   text = self->_text;
   self->_text = v5;
 }

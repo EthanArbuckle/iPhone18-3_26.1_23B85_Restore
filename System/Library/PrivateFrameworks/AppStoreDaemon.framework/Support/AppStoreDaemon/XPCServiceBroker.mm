@@ -1,14 +1,14 @@
 @interface XPCServiceBroker
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation XPCServiceBroker
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   catalog = self->_catalog;
-  v6 = a4;
-  v7 = sub_1002A7588(XPCServiceClient, v6, catalog);
+  connectionCopy = connection;
+  v7 = sub_1002A7588(XPCServiceClient, connectionCopy, catalog);
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -19,11 +19,11 @@
   v22 = v9;
   dispatch_async(dispatchQueue, block);
   v10 = +[ASDServiceBroker interface];
-  [v6 setExportedInterface:v10];
+  [connectionCopy setExportedInterface:v10];
 
-  [v6 setExportedObject:v9];
+  [connectionCopy setExportedObject:v9];
   v11 = +[ASDNotificationCenter interface];
-  [v6 setRemoteObjectInterface:v11];
+  [connectionCopy setRemoteObjectInterface:v11];
 
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
@@ -31,9 +31,9 @@
   v18 = &unk_10051B570;
   v12 = v9;
   v19 = v12;
-  v20 = self;
-  [v6 setInvalidationHandler:&v15];
-  [v6 resume];
+  selfCopy = self;
+  [connectionCopy setInvalidationHandler:&v15];
+  [connectionCopy resume];
 
   v13 = sub_100003984();
   sub_1003B854C(v13, v12);

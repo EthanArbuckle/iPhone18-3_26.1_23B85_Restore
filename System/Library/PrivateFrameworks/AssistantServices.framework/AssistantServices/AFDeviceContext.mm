@@ -1,16 +1,16 @@
 @interface AFDeviceContext
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AFDeviceContext
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [AFMutableDeviceContext allocWithZone:a3];
-  v5 = [(AFDeviceContext *)self serializedBackingStore];
-  v6 = [(AFDeviceContext *)self fromLocalDevice];
-  v7 = [(AFDeviceContext *)self contextCollectorSource];
-  v8 = [(AFMutableDeviceContext *)v4 initWithSerializedBackingStore:v5 fromLocalDevice:v6 contextCollectorSource:v7];
+  v4 = [AFMutableDeviceContext allocWithZone:zone];
+  serializedBackingStore = [(AFDeviceContext *)self serializedBackingStore];
+  fromLocalDevice = [(AFDeviceContext *)self fromLocalDevice];
+  contextCollectorSource = [(AFDeviceContext *)self contextCollectorSource];
+  v8 = [(AFMutableDeviceContext *)v4 initWithSerializedBackingStore:serializedBackingStore fromLocalDevice:fromLocalDevice contextCollectorSource:contextCollectorSource];
 
   return v8;
 }

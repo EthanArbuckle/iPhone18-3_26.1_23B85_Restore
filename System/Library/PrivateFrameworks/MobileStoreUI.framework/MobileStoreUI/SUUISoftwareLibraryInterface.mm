@@ -1,22 +1,22 @@
 @interface SUUISoftwareLibraryInterface
-- (BOOL)performActionForLibraryItem:(id)a3;
-- (id)stateForLibraryItem:(id)a3;
-- (void)enumerateStatesForLibraryItems:(id)a3 usingBlock:(id)a4;
+- (BOOL)performActionForLibraryItem:(id)item;
+- (id)stateForLibraryItem:(id)item;
+- (void)enumerateStatesForLibraryItems:(id)items usingBlock:(id)block;
 @end
 
 @implementation SUUISoftwareLibraryInterface
 
-- (void)enumerateStatesForLibraryItems:(id)a3 usingBlock:(id)a4
+- (void)enumerateStatesForLibraryItems:(id)items usingBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  blockCopy = block;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
@@ -32,8 +32,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * v12) storeItemIdentifier];
-        [v7 addObject:v13];
+        storeItemIdentifier = [*(*(&v27 + 1) + 8 * v12) storeItemIdentifier];
+        [v7 addObject:storeItemIdentifier];
 
         ++v12;
       }
@@ -63,8 +63,8 @@
   v21[2] = __74__SUUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBlock___block_invoke_2;
   v21[3] = &unk_2798F7FA0;
   v22 = v17;
-  v23 = v6;
-  v19 = v6;
+  v23 = blockCopy;
+  v19 = blockCopy;
   v20 = v17;
   [v8 enumerateObjectsUsingBlock:v21];
 }
@@ -136,14 +136,14 @@ void __74__SUUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBloc
   objc_autoreleasePoolPop(v3);
 }
 
-- (BOOL)performActionForLibraryItem:(id)a3
+- (BOOL)performActionForLibraryItem:(id)item
 {
-  v3 = [(SUUISoftwareLibraryInterface *)self stateForLibraryItem:a3];
-  v4 = [v3 bundleIdentifier];
-  v5 = v4;
-  if (v4)
+  v3 = [(SUUISoftwareLibraryInterface *)self stateForLibraryItem:item];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v6 = v4;
+    v6 = bundleIdentifier;
     SUUIMetricsLaunchApplicationWithIdentifier(v6, 0);
     CFRelease(v6);
   }
@@ -151,10 +151,10 @@ void __74__SUUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBloc
   return v5 != 0;
 }
 
-- (id)stateForLibraryItem:(id)a3
+- (id)stateForLibraryItem:(id)item
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -163,8 +163,8 @@ void __74__SUUISoftwareLibraryInterface_enumerateStatesForLibraryItems_usingBloc
   v19 = 0;
   v4 = objc_alloc_init(MEMORY[0x277D69C68]);
   v5 = dispatch_semaphore_create(0);
-  v6 = [v3 storeItemIdentifier];
-  v20[0] = v6;
+  storeItemIdentifier = [itemCopy storeItemIdentifier];
+  v20[0] = storeItemIdentifier;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;

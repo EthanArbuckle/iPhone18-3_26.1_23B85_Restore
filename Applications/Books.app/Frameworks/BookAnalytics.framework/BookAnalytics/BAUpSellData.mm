@@ -1,6 +1,6 @@
 @interface BAUpSellData
 - (BAUpSellData)init;
-- (BAUpSellData)initWithLocation:(int64_t)a3 variant:(int64_t)a4 variantVersion:(id)a5;
+- (BAUpSellData)initWithLocation:(int64_t)location variant:(int64_t)variant variantVersion:(id)version;
 - (NSString)variantVersion;
 @end
 
@@ -16,11 +16,11 @@
   return v4;
 }
 
-- (BAUpSellData)initWithLocation:(int64_t)a3 variant:(int64_t)a4 variantVersion:(id)a5
+- (BAUpSellData)initWithLocation:(int64_t)location variant:(int64_t)variant variantVersion:(id)version
 {
   v8 = sub_1E1780();
-  *(self + OBJC_IVAR___BAUpSellData_location) = a3;
-  *(self + OBJC_IVAR___BAUpSellData_variant) = a4;
+  *(self + OBJC_IVAR___BAUpSellData_location) = location;
+  *(self + OBJC_IVAR___BAUpSellData_variant) = variant;
   v9 = (self + OBJC_IVAR___BAUpSellData_variantVersion);
   *v9 = v8;
   v9[1] = v10;

@@ -1,27 +1,27 @@
 @interface KCSharingGroupUpdateRequest
-- (KCSharingGroupUpdateRequest)initWithCoder:(id)a3;
-- (KCSharingGroupUpdateRequest)initWithUpdatedGroup:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (KCSharingGroupUpdateRequest)initWithCoder:(id)coder;
+- (KCSharingGroupUpdateRequest)initWithUpdatedGroup:(id)group;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KCSharingGroupUpdateRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupUpdateRequest *)self group];
-  [v4 encodeObject:v5 forKey:@"group"];
+  coderCopy = coder;
+  group = [(KCSharingGroupUpdateRequest *)self group];
+  [coderCopy encodeObject:group forKey:@"group"];
 }
 
-- (KCSharingGroupUpdateRequest)initWithCoder:(id)a3
+- (KCSharingGroupUpdateRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = KCSharingGroupUpdateRequest;
   v5 = [(KCSharingGroupUpdateRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"group"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"group"];
     group = v5->_group;
     v5->_group = v6;
   }
@@ -29,16 +29,16 @@
   return v5;
 }
 
-- (KCSharingGroupUpdateRequest)initWithUpdatedGroup:(id)a3
+- (KCSharingGroupUpdateRequest)initWithUpdatedGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = KCSharingGroupUpdateRequest;
   v6 = [(KCSharingGroupUpdateRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_group, a3);
+    objc_storeStrong(&v6->_group, group);
   }
 
   return v7;

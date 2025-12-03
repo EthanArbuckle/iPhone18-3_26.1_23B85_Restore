@@ -1,11 +1,11 @@
 @interface FBATargetedSurvey
-+ (void)reportFailureToLaunchFormWithFormIdentifier:(id)a3;
++ (void)reportFailureToLaunchFormWithFormIdentifier:(id)identifier;
 - (_TtC18Feedback_Assistant17FBATargetedSurvey)init;
 @end
 
 @implementation FBATargetedSurvey
 
-+ (void)reportFailureToLaunchFormWithFormIdentifier:(id)a3
++ (void)reportFailureToLaunchFormWithFormIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static FBKSAdmin.reportFailureToLaunchForm(formIdentifier:completion:)();

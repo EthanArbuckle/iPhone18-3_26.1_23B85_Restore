@@ -1,20 +1,20 @@
 @interface ServerPromptData
 - (_TtC14SiriKitRuntime16ServerPromptData)init;
-- (_TtC14SiriKitRuntime16ServerPromptData)initWithSerializedBackingStore:(id)a3;
+- (_TtC14SiriKitRuntime16ServerPromptData)initWithSerializedBackingStore:(id)store;
 - (id)serializedBackingStore;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ServerPromptData
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ServerPromptData.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ServerPromptData.encode(with:)(coderCopy);
 }
 
-- (_TtC14SiriKitRuntime16ServerPromptData)initWithSerializedBackingStore:(id)a3
+- (_TtC14SiriKitRuntime16ServerPromptData)initWithSerializedBackingStore:(id)store
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -24,7 +24,7 @@
 
 - (id)serializedBackingStore
 {
-  v2 = self;
+  selfCopy = self;
   ServerPromptData.serializedBackingStore()(v5);
 
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);

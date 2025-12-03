@@ -1,26 +1,26 @@
 @interface SUCoreConnectMessage
-+ (id)nameForMessageType:(int64_t)a3;
++ (id)nameForMessageType:(int64_t)type;
 - ($115C4C562B26FF47E01F9F4EA65B5887)clientConnectionAuditToken;
 - (BOOL)isBoostable;
-- (SUCoreConnectMessage)initWithCoder:(id)a3;
-- (SUCoreConnectMessage)initWithType:(int64_t)a3 messageName:(id)a4 clientID:(id)a5 version:(id)a6 message:(id)a7;
+- (SUCoreConnectMessage)initWithCoder:(id)coder;
+- (SUCoreConnectMessage)initWithType:(int64_t)type messageName:(id)name clientID:(id)d version:(id)version message:(id)message;
 - (id)description;
 - (id)summary;
 - (id)xpcBoost;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBoostable:(BOOL)a3;
-- (void)setClientConnectionAuditToken:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBoostable:(BOOL)boostable;
+- (void)setClientConnectionAuditToken:(id *)token;
 @end
 
 @implementation SUCoreConnectMessage
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   v52 = *MEMORY[0x277D85DE8];
-  v3 = [(SUCoreConnectMessage *)self message];
+  message = [(SUCoreConnectMessage *)self message];
   v4 = @"[>>>\n";
-  if (!v3)
+  if (!message)
   {
     v4 = 0;
   }
@@ -31,14 +31,14 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = [(SUCoreConnectMessage *)v2 message];
+  obj = [(SUCoreConnectMessage *)selfCopy message];
   v40 = [obj countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v40)
   {
     v6 = 0x277CBE000uLL;
     v7 = *v47;
     v36 = *v47;
-    v37 = v2;
+    v37 = selfCopy;
     do
     {
       for (i = 0; i != v40; ++i)
@@ -49,8 +49,8 @@
         }
 
         v9 = *(*(&v46 + 1) + 8 * i);
-        v10 = [(SUCoreConnectMessage *)v2 message];
-        v11 = [v10 objectForKey:v9];
+        message2 = [(SUCoreConnectMessage *)selfCopy message];
+        v11 = [message2 objectForKey:v9];
 
         v12 = *(v6 + 2752);
         objc_opt_class();
@@ -68,11 +68,11 @@
           {
             v15 = v14;
             v16 = *v43;
-            v17 = @"{\n";
+            message3 = @"{\n";
             do
             {
               v18 = 0;
-              v19 = v17;
+              v19 = message3;
               do
               {
                 if (*v43 != v16)
@@ -82,10 +82,10 @@
 
                 v20 = *(*(&v42 + 1) + 8 * v18);
                 v21 = [v13 objectForKey:v20];
-                v17 = [(__CFString *)v19 stringByAppendingFormat:@"\t\t%@: %@\n", v20, v21];
+                message3 = [(__CFString *)v19 stringByAppendingFormat:@"\t\t%@: %@\n", v20, v21];
 
                 ++v18;
-                v19 = v17;
+                v19 = message3;
               }
 
               while (v15 != v18);
@@ -97,20 +97,20 @@
 
           else
           {
-            v17 = @"{\n";
+            message3 = @"{\n";
           }
 
           v22 = v39;
-          v5 = [(__CFString *)v39 stringByAppendingFormat:@"\t%@: %@\n\t}\n", v9, v17];
+          v5 = [(__CFString *)v39 stringByAppendingFormat:@"\t%@: %@\n\t}\n", v9, message3];
           v7 = v36;
-          v2 = v37;
+          selfCopy = v37;
           v6 = 0x277CBE000;
         }
 
         else
         {
-          v17 = [(SUCoreConnectMessage *)v2 message];
-          v22 = [(__CFString *)v17 objectForKey:v9];
+          message3 = [(SUCoreConnectMessage *)selfCopy message];
+          v22 = [(__CFString *)message3 objectForKey:v9];
           v23 = [(__CFString *)v5 stringByAppendingFormat:@"\t%@: %@\n", v9, v22];
 
           v5 = v23;
@@ -134,14 +134,14 @@
   }
 
   v25 = MEMORY[0x277CCACA8];
-  v26 = [SUCoreConnectMessage nameForMessageType:[(SUCoreConnectMessage *)v2 messageType]];
-  v27 = [(SUCoreConnectMessage *)v2 messageName];
-  v28 = [(SUCoreConnectMessage *)v2 clientID];
-  v29 = [(SUCoreConnectMessage *)v2 clientIDRaw];
-  v30 = [(SUCoreConnectMessage *)v2 clientProcessIdentifier];
-  v31 = [(SUCoreConnectMessage *)v2 version];
-  v32 = [(SUCoreConnectMessage *)v2 error];
-  v33 = [v25 stringWithFormat:@"SUCoreConnectMessage(type:%@|name:%@|clientID:%@|clientIDRaw:%@|clientProcessIdentifier:%d|version:%@|error:%@|message:%@)", v26, v27, v28, v29, v30, v31, v32, v24];
+  v26 = [SUCoreConnectMessage nameForMessageType:[(SUCoreConnectMessage *)selfCopy messageType]];
+  messageName = [(SUCoreConnectMessage *)selfCopy messageName];
+  clientID = [(SUCoreConnectMessage *)selfCopy clientID];
+  clientIDRaw = [(SUCoreConnectMessage *)selfCopy clientIDRaw];
+  clientProcessIdentifier = [(SUCoreConnectMessage *)selfCopy clientProcessIdentifier];
+  version = [(SUCoreConnectMessage *)selfCopy version];
+  error = [(SUCoreConnectMessage *)selfCopy error];
+  v33 = [v25 stringWithFormat:@"SUCoreConnectMessage(type:%@|name:%@|clientID:%@|clientIDRaw:%@|clientProcessIdentifier:%d|version:%@|error:%@|message:%@)", v26, messageName, clientID, clientIDRaw, clientProcessIdentifier, version, error, v24];
 
   v34 = *MEMORY[0x277D85DE8];
 
@@ -151,44 +151,44 @@
 - (id)summary
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUCoreConnectMessage *)self clientID];
+  clientID = [(SUCoreConnectMessage *)self clientID];
   v5 = [SUCoreConnectMessage nameForMessageType:[(SUCoreConnectMessage *)self messageType]];
-  v6 = [(SUCoreConnectMessage *)self messageName];
-  v7 = [v3 stringWithFormat:@"SUCoreConnectMessage(clientID:%@|type:%@|name:%@)", v4, v5, v6];
+  messageName = [(SUCoreConnectMessage *)self messageName];
+  v7 = [v3 stringWithFormat:@"SUCoreConnectMessage(clientID:%@|type:%@|name:%@)", clientID, v5, messageName];
 
   return v7;
 }
 
-- (SUCoreConnectMessage)initWithType:(int64_t)a3 messageName:(id)a4 clientID:(id)a5 version:(id)a6 message:(id)a7
+- (SUCoreConnectMessage)initWithType:(int64_t)type messageName:(id)name clientID:(id)d version:(id)version message:(id)message
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v13)
+  nameCopy = name;
+  dCopy = d;
+  versionCopy = version;
+  messageCopy = message;
+  if (!nameCopy)
   {
-    v26 = [MEMORY[0x277D64428] sharedDiag];
-    v27 = v26;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    v27 = mEMORY[0x277D64428];
     v28 = @"SUCoreConnectMessage requires a non-nil messageName";
 LABEL_10:
-    [v26 trackAnomaly:@"SUCoreConnectMessage" forReason:v28 withResult:8102 withError:0];
+    [mEMORY[0x277D64428] trackAnomaly:@"SUCoreConnectMessage" forReason:v28 withResult:8102 withError:0];
 
-    v25 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
-  if (!v14)
+  if (!dCopy)
   {
-    v26 = [MEMORY[0x277D64428] sharedDiag];
-    v27 = v26;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    v27 = mEMORY[0x277D64428];
     v28 = @"SUCoreConnectMessage requires a non-nil clientID";
     goto LABEL_10;
   }
 
-  if (![SUCoreConnectMessage validateMessageDictionary:v16])
+  if (![SUCoreConnectMessage validateMessageDictionary:messageCopy])
   {
-    v26 = [MEMORY[0x277D64428] sharedDiag];
-    v27 = v26;
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    v27 = mEMORY[0x277D64428];
     v28 = @"SUCoreConnectMessage requires a valid message dictionary";
     goto LABEL_10;
   }
@@ -200,59 +200,59 @@ LABEL_10:
   if (v17)
   {
     v17->_stateLock._os_unfair_lock_opaque = 0;
-    v17->_messageType = a3;
-    objc_storeStrong(&v17->_messageName, a4);
+    v17->_messageType = type;
+    objc_storeStrong(&v17->_messageName, name);
     v19 = MEMORY[0x277CCACA8];
-    v20 = [MEMORY[0x277CCAC38] processInfo];
-    v21 = [v19 stringWithFormat:@"%@.<%d>", v14, objc_msgSend(v20, "processIdentifier")];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v21 = [v19 stringWithFormat:@"%@.<%d>", dCopy, objc_msgSend(processInfo, "processIdentifier")];
     clientID = v18->_clientID;
     v18->_clientID = v21;
 
-    objc_storeStrong(&v18->_clientIDRaw, a5);
-    v23 = [MEMORY[0x277CCAC38] processInfo];
-    v18->_clientProcessIdentifier = [v23 processIdentifier];
+    objc_storeStrong(&v18->_clientIDRaw, d);
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    v18->_clientProcessIdentifier = [processInfo2 processIdentifier];
 
-    objc_storeStrong(&v18->_version, a6);
+    objc_storeStrong(&v18->_version, version);
     error = v18->_error;
     v18->_error = 0;
 
-    objc_storeStrong(&v18->_message, a7);
+    objc_storeStrong(&v18->_message, message);
   }
 
   self = v18;
-  v25 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v25;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SUCoreConnectMessage messageType](self forKey:{"messageType"), @"MessageType"}];
-  v5 = [(SUCoreConnectMessage *)self messageName];
-  [v4 encodeObject:v5 forKey:@"MessageName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SUCoreConnectMessage messageType](self forKey:{"messageType"), @"MessageType"}];
+  messageName = [(SUCoreConnectMessage *)self messageName];
+  [coderCopy encodeObject:messageName forKey:@"MessageName"];
 
-  v6 = [(SUCoreConnectMessage *)self clientID];
-  [v4 encodeObject:v6 forKey:@"ClientID"];
+  clientID = [(SUCoreConnectMessage *)self clientID];
+  [coderCopy encodeObject:clientID forKey:@"ClientID"];
 
-  v7 = [(SUCoreConnectMessage *)self clientIDRaw];
-  [v4 encodeObject:v7 forKey:@"ClientIDRaw"];
+  clientIDRaw = [(SUCoreConnectMessage *)self clientIDRaw];
+  [coderCopy encodeObject:clientIDRaw forKey:@"ClientIDRaw"];
 
-  [v4 encodeInt:-[SUCoreConnectMessage clientProcessIdentifier](self forKey:{"clientProcessIdentifier"), @"ClientProcessIdentifier"}];
-  v8 = [(SUCoreConnectMessage *)self version];
-  [v4 encodeObject:v8 forKey:@"Version"];
+  [coderCopy encodeInt:-[SUCoreConnectMessage clientProcessIdentifier](self forKey:{"clientProcessIdentifier"), @"ClientProcessIdentifier"}];
+  version = [(SUCoreConnectMessage *)self version];
+  [coderCopy encodeObject:version forKey:@"Version"];
 
-  v9 = [(SUCoreConnectMessage *)self error];
-  [v4 encodeObject:v9 forKey:@"Error"];
+  error = [(SUCoreConnectMessage *)self error];
+  [coderCopy encodeObject:error forKey:@"Error"];
 
-  v10 = [(SUCoreConnectMessage *)self message];
-  [v4 encodeObject:v10 forKey:@"Message"];
+  message = [(SUCoreConnectMessage *)self message];
+  [coderCopy encodeObject:message forKey:@"Message"];
 }
 
-- (SUCoreConnectMessage)initWithCoder:(id)a3
+- (SUCoreConnectMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = SUCoreConnectMessage;
   v5 = [(SUCoreConnectMessage *)&v40 init];
@@ -260,25 +260,25 @@ LABEL_11:
   if (v5)
   {
     v5->_stateLock._os_unfair_lock_opaque = 0;
-    v5->_messageType = [v4 decodeIntegerForKey:@"MessageType"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MessageName"];
+    v5->_messageType = [coderCopy decodeIntegerForKey:@"MessageType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MessageName"];
     messageName = v6->_messageName;
     v6->_messageName = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClientID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClientID"];
     clientID = v6->_clientID;
     v6->_clientID = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClientIDRaw"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClientIDRaw"];
     clientIDRaw = v6->_clientIDRaw;
     v6->_clientIDRaw = v11;
 
-    v6->_clientProcessIdentifier = [v4 decodeIntForKey:@"ClientProcessIdentifier"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Version"];
+    v6->_clientProcessIdentifier = [coderCopy decodeIntForKey:@"ClientProcessIdentifier"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Version"];
     version = v6->_version;
     v6->_version = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Error"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Error"];
     error = v6->_error;
     v6->_error = v15;
 
@@ -289,7 +289,7 @@ LABEL_11:
       if (v18)
       {
 LABEL_7:
-        v19 = [v4 decodeObjectOfClasses:v18 forKey:@"Message"];
+        v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"Message"];
         message = v6->_message;
         v6->_message = v19;
 
@@ -297,19 +297,19 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"client policy does not define allowlisted classes for key: %@", v6->_messageName];
-      v35 = [MEMORY[0x277D643F8] sharedCore];
-      v36 = [v35 buildError:8902 underlying:v6->_error description:v25];
+      mEMORY[0x277D64428]2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"client policy does not define allowlisted classes for key: %@", v6->_messageName];
+      mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+      v36 = [mEMORY[0x277D643F8] buildError:8902 underlying:v6->_error description:mEMORY[0x277D64428]2];
       v37 = v6->_error;
       v6->_error = v36;
 
       v38 = v6->_message;
       v6->_message = 0;
 
-      v30 = [MEMORY[0x277D64428] sharedDiag];
-      v31 = v30;
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+      v31 = mEMORY[0x277D64428];
       v32 = v6->_error;
-      v33 = v25;
+      v33 = mEMORY[0x277D64428]2;
       v34 = 8902;
     }
 
@@ -318,16 +318,16 @@ LABEL_13:
       if (messageType != 1)
       {
         v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"no connect policy type could be determined for message with type: %ld", v6->_messageType];
-        v21 = [MEMORY[0x277D643F8] sharedCore];
-        v22 = [v21 buildError:8901 underlying:v6->_error description:v18];
+        mEMORY[0x277D643F8]2 = [MEMORY[0x277D643F8] sharedCore];
+        v22 = [mEMORY[0x277D643F8]2 buildError:8901 underlying:v6->_error description:v18];
         v23 = v6->_error;
         v6->_error = v22;
 
         v24 = v6->_message;
         v6->_message = 0;
 
-        v25 = [MEMORY[0x277D64428] sharedDiag];
-        [v25 trackError:@"SUCoreConnectMessageDecode" forReason:v18 withResult:8901 withError:v6->_error];
+        mEMORY[0x277D64428]2 = [MEMORY[0x277D64428] sharedDiag];
+        [mEMORY[0x277D64428]2 trackError:@"SUCoreConnectMessageDecode" forReason:v18 withResult:8901 withError:v6->_error];
 LABEL_12:
 
         goto LABEL_13;
@@ -339,23 +339,23 @@ LABEL_12:
         goto LABEL_7;
       }
 
-      v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"server policy does not define allowlisted classes for key: %@", v6->_messageName];
-      v26 = [MEMORY[0x277D643F8] sharedCore];
-      v27 = [v26 buildError:8904 underlying:v6->_error description:v25];
+      mEMORY[0x277D64428]2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"server policy does not define allowlisted classes for key: %@", v6->_messageName];
+      mEMORY[0x277D643F8]3 = [MEMORY[0x277D643F8] sharedCore];
+      v27 = [mEMORY[0x277D643F8]3 buildError:8904 underlying:v6->_error description:mEMORY[0x277D64428]2];
       v28 = v6->_error;
       v6->_error = v27;
 
       v29 = v6->_message;
       v6->_message = 0;
 
-      v30 = [MEMORY[0x277D64428] sharedDiag];
-      v31 = v30;
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+      v31 = mEMORY[0x277D64428];
       v32 = v6->_error;
-      v33 = v25;
+      v33 = mEMORY[0x277D64428]2;
       v34 = 8904;
     }
 
-    [v30 trackError:@"SUCoreConnectMessageDecode" forReason:v33 withResult:v34 withError:v32];
+    [mEMORY[0x277D64428] trackError:@"SUCoreConnectMessageDecode" forReason:v33 withResult:v34 withError:v32];
 
     goto LABEL_12;
   }
@@ -365,24 +365,24 @@ LABEL_14:
   return v6;
 }
 
-+ (id)nameForMessageType:(int64_t)a3
++ (id)nameForMessageType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v4 = @"CLIENT_MESSAGE";
+    type = @"CLIENT_MESSAGE";
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    v4 = @"SERVER_MESSAGE";
+    type = @"SERVER_MESSAGE";
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"UNKNOWN_TYPE(%lu)", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"UNKNOWN_TYPE(%lu)", type];
   }
 
-  return v4;
+  return type;
 }
 
 - (BOOL)isBoostable
@@ -393,10 +393,10 @@ LABEL_14:
   return boostable;
 }
 
-- (void)setBoostable:(BOOL)a3
+- (void)setBoostable:(BOOL)boostable
 {
   os_unfair_lock_lock(&self->_stateLock);
-  self->_boostable = a3;
+  self->_boostable = boostable;
 
   os_unfair_lock_unlock(&self->_stateLock);
 }
@@ -428,10 +428,10 @@ LABEL_14:
   return self;
 }
 
-- (void)setClientConnectionAuditToken:(id *)a3
+- (void)setClientConnectionAuditToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_clientConnectionAuditToken.val[4] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_clientConnectionAuditToken.val[4] = *&token->var0[4];
   *self->_clientConnectionAuditToken.val = v3;
 }
 

@@ -4,7 +4,7 @@
 - (WLKSubscriptionStore)init;
 - (id)_connection;
 - (id)cachedSubscriptionData;
-- (void)_setIsSubscriptionSyncInProgress:(BOOL)a3;
+- (void)_setIsSubscriptionSyncInProgress:(BOOL)progress;
 - (void)dealloc;
 - (void)refreshSubscriptionDataIfNeeded;
 @end
@@ -63,10 +63,10 @@ uint64_t __38__WLKSubscriptionStore_sharedInstance__block_invoke()
 
 - (void)refreshSubscriptionDataIfNeeded
 {
-  v3 = [(WLKSubscriptionStore *)self _isSubscriptionSyncInProgress];
+  _isSubscriptionSyncInProgress = [(WLKSubscriptionStore *)self _isSubscriptionSyncInProgress];
   v4 = WLKSubscriptionSyncLogObject();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (_isSubscriptionSyncInProgress)
   {
     if (v5)
     {
@@ -83,8 +83,8 @@ uint64_t __38__WLKSubscriptionStore_sharedInstance__block_invoke()
       _os_log_impl(&dword_272A0F000, v4, OS_LOG_TYPE_DEFAULT, "Start subscription refresh request", v7, 2u);
     }
 
-    v6 = [(WLKSubscriptionStore *)self _connection];
-    v4 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_15];
+    _connection = [(WLKSubscriptionStore *)self _connection];
+    v4 = [_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_15];
 
     [v4 refreshSubscriptionData:0];
   }
@@ -100,41 +100,41 @@ uint64_t __38__WLKSubscriptionStore_sharedInstance__block_invoke()
 
 - (id)_connection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  connection = v2->_connection;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  connection = selfCopy->_connection;
   if (!connection)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.watchlistd.xpc" options:0];
-    v5 = v2->_connection;
-    v2->_connection = v4;
+    v5 = selfCopy->_connection;
+    selfCopy->_connection = v4;
 
-    v6 = v2->_connection;
+    v6 = selfCopy->_connection;
     v7 = WLKConnectionClientInterface();
     [(NSXPCConnection *)v6 setExportedInterface:v7];
 
-    [(NSXPCConnection *)v2->_connection setExportedObject:v2];
-    v8 = v2->_connection;
+    [(NSXPCConnection *)selfCopy->_connection setExportedObject:selfCopy];
+    v8 = selfCopy->_connection;
     v9 = WLKConnectionServerInterface();
     [(NSXPCConnection *)v8 setRemoteObjectInterface:v9];
 
-    [(NSXPCConnection *)v2->_connection setInterruptionHandler:&__block_literal_global_21];
-    objc_initWeak(&location, v2);
-    v10 = v2->_connection;
+    [(NSXPCConnection *)selfCopy->_connection setInterruptionHandler:&__block_literal_global_21];
+    objc_initWeak(&location, selfCopy);
+    v10 = selfCopy->_connection;
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __35__WLKSubscriptionStore__connection__block_invoke_22;
     v16 = &unk_279E5EC50;
     objc_copyWeak(&v17, &location);
     [(NSXPCConnection *)v10 setInvalidationHandler:&v13];
-    [(NSXPCConnection *)v2->_connection resume:v13];
+    [(NSXPCConnection *)selfCopy->_connection resume:v13];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
-    connection = v2->_connection;
+    connection = selfCopy->_connection;
   }
 
   v11 = connection;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
@@ -360,10 +360,10 @@ void __35__WLKSubscriptionStore__connection__block_invoke_22(uint64_t a1)
   }
 }
 
-- (void)_setIsSubscriptionSyncInProgress:(BOOL)a3
+- (void)_setIsSubscriptionSyncInProgress:(BOOL)progress
 {
   os_unfair_lock_lock(&__syncInProgressLock);
-  subscriptionSyncInProgress = a3;
+  subscriptionSyncInProgress = progress;
 
   os_unfair_lock_unlock(&__syncInProgressLock);
 }

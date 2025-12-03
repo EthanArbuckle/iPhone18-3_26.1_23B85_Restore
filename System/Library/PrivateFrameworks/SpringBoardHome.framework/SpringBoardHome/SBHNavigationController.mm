@@ -1,43 +1,43 @@
 @interface SBHNavigationController
 - (id)_backgroundColorForModalFormSheet;
-- (void)setModalPresentedBackgroundColor:(id)a3;
+- (void)setModalPresentedBackgroundColor:(id)color;
 @end
 
 @implementation SBHNavigationController
 
-- (void)setModalPresentedBackgroundColor:(id)a3
+- (void)setModalPresentedBackgroundColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
     v5.receiver = self;
     v5.super_class = SBHNavigationController;
-    v4 = [(SBHNavigationController *)&v5 _backgroundColorForModalFormSheet];
+    colorCopy = [(SBHNavigationController *)&v5 _backgroundColorForModalFormSheet];
   }
 
-  if (([(UIColor *)self->_modalPresentedBackgroundColor isEqual:v4]& 1) == 0)
+  if (([(UIColor *)self->_modalPresentedBackgroundColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_modalPresentedBackgroundColor, v4);
+    objc_storeStrong(&self->_modalPresentedBackgroundColor, colorCopy);
   }
 }
 
 - (id)_backgroundColorForModalFormSheet
 {
-  v3 = [(SBHNavigationController *)self modalPresentedBackgroundColor];
-  v4 = v3;
-  if (v3)
+  modalPresentedBackgroundColor = [(SBHNavigationController *)self modalPresentedBackgroundColor];
+  v4 = modalPresentedBackgroundColor;
+  if (modalPresentedBackgroundColor)
   {
-    v5 = v3;
+    _backgroundColorForModalFormSheet = modalPresentedBackgroundColor;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBHNavigationController;
-    v5 = [(SBHNavigationController *)&v8 _backgroundColorForModalFormSheet];
+    _backgroundColorForModalFormSheet = [(SBHNavigationController *)&v8 _backgroundColorForModalFormSheet];
   }
 
-  v6 = v5;
+  v6 = _backgroundColorForModalFormSheet;
 
   return v6;
 }

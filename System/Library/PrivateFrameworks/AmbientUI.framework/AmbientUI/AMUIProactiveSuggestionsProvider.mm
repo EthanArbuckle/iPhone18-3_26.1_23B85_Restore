@@ -1,60 +1,60 @@
 @interface AMUIProactiveSuggestionsProvider
-- (AMUIProactiveSuggestionsProvider)initWithIconListModel:(id)a3 iconManager:(id)a4 proactiveClient:(id)a5;
+- (AMUIProactiveSuggestionsProvider)initWithIconListModel:(id)model iconManager:(id)manager proactiveClient:(id)client;
 - (AMUIProactiveSuggestionsProviderDelegate)delegate;
-- (id)_iconDataSourceInIcon:(id)a3 withUniqueIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 widgetKind:(id)a6 suggestionSource:(int64_t)a7;
-- (id)_makeDataSourceForAtxWidget:(id)a3;
-- (id)suggestionForStackIdentifier:(id)a3 amongSuggestions:(id)a4;
-- (void)processUpdatedPredictions:(id)a3;
-- (void)suggestionProvider:(id)a3 didUpdateStackSuggestions:(id)a4;
+- (id)_iconDataSourceInIcon:(id)icon withUniqueIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier widgetKind:(id)kind suggestionSource:(int64_t)source;
+- (id)_makeDataSourceForAtxWidget:(id)widget;
+- (id)suggestionForStackIdentifier:(id)identifier amongSuggestions:(id)suggestions;
+- (void)processUpdatedPredictions:(id)predictions;
+- (void)suggestionProvider:(id)provider didUpdateStackSuggestions:(id)suggestions;
 @end
 
 @implementation AMUIProactiveSuggestionsProvider
 
-- (AMUIProactiveSuggestionsProvider)initWithIconListModel:(id)a3 iconManager:(id)a4 proactiveClient:(id)a5
+- (AMUIProactiveSuggestionsProvider)initWithIconListModel:(id)model iconManager:(id)manager proactiveClient:(id)client
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  managerCopy = manager;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = AMUIProactiveSuggestionsProvider;
   v12 = [(AMUIProactiveSuggestionsProvider *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_proactiveClient, a5);
+    objc_storeStrong(&v12->_proactiveClient, client);
     [(ATXAmbientSuggestionProvider *)v13->_proactiveClient setDelegate:v13];
-    objc_storeStrong(&v13->_iconListModel, a3);
-    objc_storeStrong(&v13->_iconManager, a4);
-    v14 = [(ATXAmbientSuggestionProvider *)v13->_proactiveClient stackSuggestions];
-    [(AMUIProactiveSuggestionsProvider *)v13 processUpdatedPredictions:v14];
+    objc_storeStrong(&v13->_iconListModel, model);
+    objc_storeStrong(&v13->_iconManager, manager);
+    stackSuggestions = [(ATXAmbientSuggestionProvider *)v13->_proactiveClient stackSuggestions];
+    [(AMUIProactiveSuggestionsProvider *)v13 processUpdatedPredictions:stackSuggestions];
   }
 
   return v13;
 }
 
-- (void)suggestionProvider:(id)a3 didUpdateStackSuggestions:(id)a4
+- (void)suggestionProvider:(id)provider didUpdateStackSuggestions:(id)suggestions
 {
-  v5 = a4;
+  suggestionsCopy = suggestions;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__AMUIProactiveSuggestionsProvider_suggestionProvider_didUpdateStackSuggestions___block_invoke;
   v7[3] = &unk_278C75DD8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = suggestionsCopy;
+  v6 = suggestionsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (id)suggestionForStackIdentifier:(id)a3 amongSuggestions:(id)a4
+- (id)suggestionForStackIdentifier:(id)identifier amongSuggestions:(id)suggestions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  suggestionsCopy = suggestions;
+  v7 = [suggestionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -64,12 +64,12 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(suggestionsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 stackIdentifier];
-        v12 = [v11 isEqualToString:v5];
+        stackIdentifier = [v10 stackIdentifier];
+        v12 = [stackIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -78,7 +78,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [suggestionsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -95,10 +95,10 @@ LABEL_11:
   return v7;
 }
 
-- (void)processUpdatedPredictions:(id)a3
+- (void)processUpdatedPredictions:(id)predictions
 {
   v38 = *MEMORY[0x277D85DE8];
-  v22 = a3;
+  predictionsCopy = predictions;
   v4 = AMUILogProactive();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,8 +106,8 @@ LABEL_11:
     _os_log_impl(&dword_23F38B000, v4, OS_LOG_TYPE_DEFAULT, "Updating stack predictions", buf, 2u);
   }
 
-  v21 = [(AMUIProactiveSuggestionsProvider *)self currentPredictions];
-  [(AMUIProactiveSuggestionsProvider *)self setCurrentPredictions:v22];
+  currentPredictions = [(AMUIProactiveSuggestionsProvider *)self currentPredictions];
+  [(AMUIProactiveSuggestionsProvider *)self setCurrentPredictions:predictionsCopy];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -130,16 +130,16 @@ LABEL_11:
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
-        v11 = [v10 uniqueIdentifier];
-        v12 = [(AMUIProactiveSuggestionsProvider *)self suggestionForStackIdentifier:v11 amongSuggestions:v22];
-        v13 = [(AMUIProactiveSuggestionsProvider *)self suggestionForStackIdentifier:v11 amongSuggestions:v21];
+        uniqueIdentifier = [v10 uniqueIdentifier];
+        v12 = [(AMUIProactiveSuggestionsProvider *)self suggestionForStackIdentifier:uniqueIdentifier amongSuggestions:predictionsCopy];
+        v13 = [(AMUIProactiveSuggestionsProvider *)self suggestionForStackIdentifier:uniqueIdentifier amongSuggestions:currentPredictions];
         v14 = AMUILogProactive();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v19;
           v34 = v12;
           v35 = 2112;
-          v36 = v11;
+          v36 = uniqueIdentifier;
           _os_log_impl(&dword_23F38B000, v14, OS_LOG_TYPE_DEFAULT, "Suggestion %@ for stack with identifier: %@", buf, 0x16u);
         }
 
@@ -148,12 +148,12 @@ LABEL_11:
         v23[2] = __62__AMUIProactiveSuggestionsProvider_processUpdatedPredictions___block_invoke;
         v23[3] = &unk_278C76040;
         v24 = v12;
-        v25 = self;
+        selfCopy = self;
         v26 = v10;
-        v27 = v11;
+        v27 = uniqueIdentifier;
         v28 = v13;
         v15 = v13;
-        v16 = v11;
+        v16 = uniqueIdentifier;
         v17 = v12;
         [v10 performCoalescedDataSourceUpdate:v23];
       }
@@ -369,13 +369,13 @@ uint64_t __62__AMUIProactiveSuggestionsProvider_processUpdatedPredictions___bloc
   return v4;
 }
 
-- (id)_iconDataSourceInIcon:(id)a3 withUniqueIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 widgetKind:(id)a6 suggestionSource:(int64_t)a7
+- (id)_iconDataSourceInIcon:(id)icon withUniqueIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier widgetKind:(id)kind suggestionSource:(int64_t)source
 {
-  v11 = a5;
-  v12 = a6;
-  if (a4)
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  if (identifier)
   {
-    v13 = [a3 firstIconDataSourceWithUniqueIdentifier:a4];
+    v13 = [icon firstIconDataSourceWithUniqueIdentifier:identifier];
   }
 
   else
@@ -384,10 +384,10 @@ uint64_t __62__AMUIProactiveSuggestionsProvider_processUpdatedPredictions___bloc
     v15[1] = 3221225472;
     v15[2] = __133__AMUIProactiveSuggestionsProvider__iconDataSourceInIcon_withUniqueIdentifier_extensionBundleIdentifier_widgetKind_suggestionSource___block_invoke;
     v15[3] = &unk_278C76068;
-    v18 = a7;
-    v16 = v11;
-    v17 = v12;
-    v13 = [a3 firstWidgetPassingTest:v15];
+    sourceCopy = source;
+    v16 = bundleIdentifierCopy;
+    v17 = kindCopy;
+    v13 = [icon firstWidgetPassingTest:v15];
   }
 
   return v13;
@@ -430,20 +430,20 @@ uint64_t __133__AMUIProactiveSuggestionsProvider__iconDataSourceInIcon_withUniqu
   return v9;
 }
 
-- (id)_makeDataSourceForAtxWidget:(id)a3
+- (id)_makeDataSourceForAtxWidget:(id)widget
 {
   v3 = MEMORY[0x277D66320];
-  v4 = a3;
+  widgetCopy = widget;
   v5 = [v3 alloc];
-  v6 = [v4 identifier];
-  v7 = [v4 chsWidget];
-  v8 = [v7 kind];
-  v9 = [v4 chsWidget];
-  v10 = [v9 extensionBundleIdentifier];
-  v11 = [v4 chsWidget];
+  identifier = [widgetCopy identifier];
+  chsWidget = [widgetCopy chsWidget];
+  kind = [chsWidget kind];
+  chsWidget2 = [widgetCopy chsWidget];
+  extensionBundleIdentifier = [chsWidget2 extensionBundleIdentifier];
+  chsWidget3 = [widgetCopy chsWidget];
 
-  v12 = [v11 containerBundleIdentifier];
-  v13 = [v5 initWithUniqueIdentifier:v6 kind:v8 extensionBundleIdentifier:v10 containerBundleIdentifier:v12];
+  containerBundleIdentifier = [chsWidget3 containerBundleIdentifier];
+  v13 = [v5 initWithUniqueIdentifier:identifier kind:kind extensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier];
 
   v14 = [v13 copyWithSuggestionSource:1];
 

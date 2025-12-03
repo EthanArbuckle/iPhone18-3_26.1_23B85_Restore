@@ -1,33 +1,33 @@
 @interface AMSBagURLParser
-+ (_NSRange)_rangeOfTemplateInURLString:(id)a3;
-+ (_NSRange)_rangeofSubstringWithOpeningTag:(id)a3 closingTag:(id)a4 inString:(id)a5;
-+ (id)URLBySubstitutingVariablesInURLString:(id)a3 usingBlock:(id)a4;
-+ (id)URLBySubstitutingVariablesInURLString:(id)a3 usingPromiseBlock:(id)a4;
-+ (id)_URLBySubstitutingVariablesInURLString:(id)a3 range:(_NSRange)a4 usingPromiseBlock:(id)a5;
-+ (id)_firstVariableInTemplate:(id)a3 includeTags:(BOOL)a4;
++ (_NSRange)_rangeOfTemplateInURLString:(id)string;
++ (_NSRange)_rangeofSubstringWithOpeningTag:(id)tag closingTag:(id)closingTag inString:(id)string;
++ (id)URLBySubstitutingVariablesInURLString:(id)string usingBlock:(id)block;
++ (id)URLBySubstitutingVariablesInURLString:(id)string usingPromiseBlock:(id)block;
++ (id)_URLBySubstitutingVariablesInURLString:(id)string range:(_NSRange)range usingPromiseBlock:(id)block;
++ (id)_firstVariableInTemplate:(id)template includeTags:(BOOL)tags;
 @end
 
 @implementation AMSBagURLParser
 
-+ (id)URLBySubstitutingVariablesInURLString:(id)a3 usingPromiseBlock:(id)a4
++ (id)URLBySubstitutingVariablesInURLString:(id)string usingPromiseBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _rangeOfTemplateInURLString:v7];
-  v10 = [a1 _URLBySubstitutingVariablesInURLString:v7 range:v8 usingPromiseBlock:{v9, v6}];
+  blockCopy = block;
+  stringCopy = string;
+  v8 = [self _rangeOfTemplateInURLString:stringCopy];
+  v10 = [self _URLBySubstitutingVariablesInURLString:stringCopy range:v8 usingPromiseBlock:{v9, blockCopy}];
 
   return v10;
 }
 
-+ (id)_URLBySubstitutingVariablesInURLString:(id)a3 range:(_NSRange)a4 usingPromiseBlock:(id)a5
++ (id)_URLBySubstitutingVariablesInURLString:(id)string range:(_NSRange)range usingPromiseBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  blockCopy = block;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x1E695DFF8] URLWithString:v9];
+    v11 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
     if (v11)
     {
       v12 = [AMSPromise promiseWithResult:v11];
@@ -35,22 +35,22 @@
 
     else
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSURL initializer returned nil. URL string = %@", v9];
-      v19 = AMSError(2, @"Failed to create URL from URL string", v18, 0);
+      stringCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"NSURL initializer returned nil. URL string = %@", stringCopy];
+      v19 = AMSError(2, @"Failed to create URL from URL string", stringCopy, 0);
       v12 = [AMSPromise promiseWithError:v19];
     }
   }
 
   else
   {
-    v13 = [v9 substringWithRange:{location, length}];
-    v11 = [a1 _firstVariableInTemplate:v13 includeTags:0];
+    v13 = [stringCopy substringWithRange:{location, length}];
+    v11 = [self _firstVariableInTemplate:v13 includeTags:0];
     v14 = +[AMSOptional optionalWithNil];
     v15 = [AMSPromise promiseWithResult:v14];
 
     if (v11)
     {
-      v16 = v10[2](v10, v11);
+      v16 = blockCopy[2](blockCopy, v11);
 
       v15 = v16;
     }
@@ -59,12 +59,12 @@
     v21[1] = 3221225472;
     v21[2] = __82__AMSBagURLParser__URLBySubstitutingVariablesInURLString_range_usingPromiseBlock___block_invoke;
     v21[3] = &unk_1E73B4C58;
-    v25 = a1;
+    selfCopy = self;
     v26 = location;
     v27 = length;
-    v22 = v9;
+    v22 = stringCopy;
     v23 = v13;
-    v24 = v10;
+    v24 = blockCopy;
     v17 = v13;
     v12 = [v15 continueWithBlock:v21];
   }
@@ -139,18 +139,18 @@ id __82__AMSBagURLParser__URLBySubstitutingVariablesInURLString_range_usingPromi
   return v22;
 }
 
-+ (id)URLBySubstitutingVariablesInURLString:(id)a3 usingBlock:(id)a4
++ (id)URLBySubstitutingVariablesInURLString:(id)string usingBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  blockCopy = block;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __68__AMSBagURLParser_URLBySubstitutingVariablesInURLString_usingBlock___block_invoke;
   v32[3] = &unk_1E73B4C80;
-  v8 = v7;
+  v8 = blockCopy;
   v33 = v8;
-  v9 = [a1 URLBySubstitutingVariablesInURLString:v6 usingPromiseBlock:v32];
+  v9 = [self URLBySubstitutingVariablesInURLString:stringCopy usingPromiseBlock:v32];
   v31 = 0;
   v10 = [v9 resultWithError:&v31];
   v11 = v31;
@@ -159,16 +159,16 @@ id __82__AMSBagURLParser__URLBySubstitutingVariablesInURLString_range_usingPromi
   {
     v12 = +[AMSUnitTests isRunningUnitTests];
     v13 = +[AMSLogConfig sharedBagConfig];
-    v14 = v13;
+    defaultCenter = v13;
     if (v12)
     {
       if (!v13)
       {
-        v14 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v16 = AMSLogKey();
         v17 = MEMORY[0x1E696AEC0];
@@ -176,42 +176,42 @@ id __82__AMSBagURLParser__URLBySubstitutingVariablesInURLString_range_usingPromi
         v19 = v18;
         if (v16)
         {
-          a1 = AMSLogKey();
-          [v17 stringWithFormat:@"%@: [%@] ", v19, a1];
+          self = AMSLogKey();
+          [v17 stringWithFormat:@"%@: [%@] ", v19, self];
         }
 
         else
         {
           [v17 stringWithFormat:@"%@: ", v18];
         }
-        v20 = ;
+        selfCopy = ;
         v27 = AMSLogableError(v11);
         *buf = 138543618;
-        v35 = v20;
+        v35 = selfCopy;
         v36 = 2114;
         v37 = v27;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@Unexpected error occurred when substituting values into template URL string. Defaulting to original string with no substitution. error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unexpected error occurred when substituting values into template URL string. Defaulting to original string with no substitution. error = %{public}@", buf, 0x16u);
         if (v16)
         {
 
-          v20 = a1;
+          selfCopy = self;
         }
       }
 
-      v14 = [MEMORY[0x1E696AD88] defaultCenter];
-      v21 = +[AMSLogConfig sharedBagConfig];
-      [v14 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v21 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedBagConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v13)
       {
-        v14 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v21 = [v14 OSLogObject];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v22 = AMSLogKey();
         v23 = MEMORY[0x1E696AEC0];
@@ -219,30 +219,30 @@ id __82__AMSBagURLParser__URLBySubstitutingVariablesInURLString_range_usingPromi
         v25 = v24;
         if (v22)
         {
-          a1 = AMSLogKey();
-          [v23 stringWithFormat:@"%@: [%@] ", v25, a1];
+          self = AMSLogKey();
+          [v23 stringWithFormat:@"%@: [%@] ", v25, self];
         }
 
         else
         {
           [v23 stringWithFormat:@"%@: ", v24];
         }
-        v26 = ;
+        selfCopy2 = ;
         v28 = AMSLogableError(v11);
         *buf = 138543618;
-        v35 = v26;
+        v35 = selfCopy2;
         v36 = 2114;
         v37 = v28;
-        _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_FAULT, "%{public}@Unexpected error occurred when substituting values into template URL string. Defaulting to original string with no substitution. error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Unexpected error occurred when substituting values into template URL string. Defaulting to original string with no substitution. error = %{public}@", buf, 0x16u);
         if (v22)
         {
 
-          v26 = a1;
+          selfCopy2 = self;
         }
       }
     }
 
-    v29 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+    v29 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
 
     v10 = v29;
   }
@@ -259,10 +259,10 @@ id __68__AMSBagURLParser_URLBySubstitutingVariablesInURLString_usingBlock___bloc
   return v3;
 }
 
-+ (id)_firstVariableInTemplate:(id)a3 includeTags:(BOOL)a4
++ (id)_firstVariableInTemplate:(id)template includeTags:(BOOL)tags
 {
-  v6 = a3;
-  v7 = [a1 _rangeofSubstringWithOpeningTag:@"$" closingTag:@"$" inString:v6];
+  templateCopy = template;
+  v7 = [self _rangeofSubstringWithOpeningTag:@"$" closingTag:@"$" inString:templateCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -270,9 +270,9 @@ id __68__AMSBagURLParser_URLBySubstitutingVariablesInURLString_usingBlock___bloc
 
   else
   {
-    v10 = [v6 substringWithRange:{v7, v8}];
+    v10 = [templateCopy substringWithRange:{v7, v8}];
     v9 = v10;
-    if (!a4)
+    if (!tags)
     {
       v11 = [v10 stringByReplacingOccurrencesOfString:@"$" withString:&stru_1F071BA78];
 
@@ -283,11 +283,11 @@ id __68__AMSBagURLParser_URLBySubstitutingVariablesInURLString_usingBlock___bloc
   return v9;
 }
 
-+ (_NSRange)_rangeofSubstringWithOpeningTag:(id)a3 closingTag:(id)a4 inString:(id)a5
++ (_NSRange)_rangeofSubstringWithOpeningTag:(id)tag closingTag:(id)closingTag inString:(id)string
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 rangeOfString:a3];
+  closingTagCopy = closingTag;
+  stringCopy = string;
+  v9 = [stringCopy rangeOfString:tag];
   v10 = 0x7FFFFFFFFFFFFFFFLL;
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -297,7 +297,7 @@ id __68__AMSBagURLParser_URLBySubstitutingVariablesInURLString_usingBlock___bloc
   else
   {
     v12 = v9;
-    v13 = [v8 rangeOfString:v7 options:0 range:{v9 + 1, objc_msgSend(v8, "length") - (v9 + 1)}];
+    v13 = [stringCopy rangeOfString:closingTagCopy options:0 range:{v9 + 1, objc_msgSend(stringCopy, "length") - (v9 + 1)}];
     v14 = v13 != 0x7FFFFFFFFFFFFFFFLL && v13 > v12;
     if (v14)
     {
@@ -322,9 +322,9 @@ id __68__AMSBagURLParser_URLBySubstitutingVariablesInURLString_usingBlock___bloc
   return result;
 }
 
-+ (_NSRange)_rangeOfTemplateInURLString:(id)a3
++ (_NSRange)_rangeOfTemplateInURLString:(id)string
 {
-  v3 = [a1 _rangeofSubstringWithOpeningTag:@"{" closingTag:@"}" inString:a3];
+  v3 = [self _rangeofSubstringWithOpeningTag:@"{" closingTag:@"}" inString:string];
   result.length = v4;
   result.location = v3;
   return result;

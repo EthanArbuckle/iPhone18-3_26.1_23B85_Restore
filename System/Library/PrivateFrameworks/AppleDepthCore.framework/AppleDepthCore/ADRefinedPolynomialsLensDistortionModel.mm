@@ -1,60 +1,60 @@
 @interface ADRefinedPolynomialsLensDistortionModel
-- (ADRefinedPolynomialsLensDistortionModel)initWithDistortionCenter:(CGPoint)a3 pixelSize:(float)a4 focalLength:(float)a5 polynomialsBase:(const ADDistortionPolynomials *)a6 polynomialsDynamic:(const ADDistortionPolynomials *)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ADRefinedPolynomialsLensDistortionModel)initWithDistortionCenter:(CGPoint)center pixelSize:(float)size focalLength:(float)length polynomialsBase:(const ADDistortionPolynomials *)base polynomialsDynamic:(const ADDistortionPolynomials *)dynamic;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)distortPixels:(unint64_t)a3 undistortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outDistortedPixels:(CGPoint *)a6;
-- (void)setDynamicFactor:(float)a3;
-- (void)undistortPixels:(unint64_t)a3 distortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outUndistortedPixels:(CGPoint *)a6;
+- (void)distortPixels:(unint64_t)pixels undistortedPixels:(const CGPoint *)undistortedPixels withCameraCalibration:(id)calibration outDistortedPixels:(CGPoint *)distortedPixels;
+- (void)setDynamicFactor:(float)factor;
+- (void)undistortPixels:(unint64_t)pixels distortedPixels:(const CGPoint *)distortedPixels withCameraCalibration:(id)calibration outUndistortedPixels:(CGPoint *)undistortedPixels;
 - (void)updateDynamicFactor;
 @end
 
 @implementation ADRefinedPolynomialsLensDistortionModel
 
-- (void)undistortPixels:(unint64_t)a3 distortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outUndistortedPixels:(CGPoint *)a6
+- (void)undistortPixels:(unint64_t)pixels distortedPixels:(const CGPoint *)distortedPixels withCameraCalibration:(id)calibration outUndistortedPixels:(CGPoint *)undistortedPixels
 {
-  v10 = a5;
+  calibrationCopy = calibration;
   v11 = *(&self->super._dynamicFactor + 1);
-  v15 = v10;
-  [v10 referenceDimensions];
+  v15 = calibrationCopy;
+  [calibrationCopy referenceDimensions];
   v13 = v12;
   LODWORD(v12) = v11;
-  [(ADPolynomialsLensDistortionModel *)self undistortPixels:a3 distortedPixels:a4 withPixelSize:a6 referenceDimensions:v12 outUndistortedPixels:v13, v14];
+  [(ADPolynomialsLensDistortionModel *)self undistortPixels:pixels distortedPixels:distortedPixels withPixelSize:undistortedPixels referenceDimensions:v12 outUndistortedPixels:v13, v14];
 }
 
-- (void)distortPixels:(unint64_t)a3 undistortedPixels:(const CGPoint *)a4 withCameraCalibration:(id)a5 outDistortedPixels:(CGPoint *)a6
+- (void)distortPixels:(unint64_t)pixels undistortedPixels:(const CGPoint *)undistortedPixels withCameraCalibration:(id)calibration outDistortedPixels:(CGPoint *)distortedPixels
 {
-  v10 = a5;
+  calibrationCopy = calibration;
   v11 = *(&self->super._dynamicFactor + 1);
-  v15 = v10;
-  [v10 referenceDimensions];
+  v15 = calibrationCopy;
+  [calibrationCopy referenceDimensions];
   v13 = v12;
   LODWORD(v12) = v11;
-  [(ADPolynomialsLensDistortionModel *)self distortPixels:a3 undistortedPixels:a4 withPixelSize:a6 referenceDimensions:v12 outDistortedPixels:v13, v14];
+  [(ADPolynomialsLensDistortionModel *)self distortPixels:pixels undistortedPixels:undistortedPixels withPixelSize:distortedPixels referenceDimensions:v12 outDistortedPixels:v13, v14];
 }
 
-- (ADRefinedPolynomialsLensDistortionModel)initWithDistortionCenter:(CGPoint)a3 pixelSize:(float)a4 focalLength:(float)a5 polynomialsBase:(const ADDistortionPolynomials *)a6 polynomialsDynamic:(const ADDistortionPolynomials *)a7
+- (ADRefinedPolynomialsLensDistortionModel)initWithDistortionCenter:(CGPoint)center pixelSize:(float)size focalLength:(float)length polynomialsBase:(const ADDistortionPolynomials *)base polynomialsDynamic:(const ADDistortionPolynomials *)dynamic
 {
-  if (!a6 || !a7)
+  if (!base || !dynamic)
   {
-    v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"distortion polynomials cannot be nil" userInfo:{0, a3.x, a3.y}];
+    v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"distortion polynomials cannot be nil" userInfo:{0, center.x, center.y}];
     objc_exception_throw(v11);
   }
 
-  *&v9 = a4 * a5;
+  *&v9 = size * length;
   v12.receiver = self;
   v12.super_class = ADRefinedPolynomialsLensDistortionModel;
-  result = [(ADDynamicPolynomialsLensDistortionModel *)&v12 initWithDistortionCenter:a3.x dynFactor:a3.y polynomialsBase:v9 polynomialsDynamic:?];
+  result = [(ADDynamicPolynomialsLensDistortionModel *)&v12 initWithDistortionCenter:center.x dynFactor:center.y polynomialsBase:v9 polynomialsDynamic:?];
   if (result)
   {
-    result->_pixelSize = a5;
-    *(&result->super._dynamicFactor + 1) = a4;
+    result->_pixelSize = length;
+    *(&result->super._dynamicFactor + 1) = size;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ADRefinedPolynomialsLensDistortionModel alloc];
   [(ADPolynomialsLensDistortionModel *)self distortionCenter];
@@ -62,20 +62,20 @@
   v8 = v7;
   v9 = *(&self->super._dynamicFactor + 1);
   pixelSize = self->_pixelSize;
-  v11 = [(ADDynamicPolynomialsLensDistortionModel *)self distortionPolynomialsBase];
-  v12 = [(ADDynamicPolynomialsLensDistortionModel *)self distortionPolynomialsDynamic];
+  distortionPolynomialsBase = [(ADDynamicPolynomialsLensDistortionModel *)self distortionPolynomialsBase];
+  distortionPolynomialsDynamic = [(ADDynamicPolynomialsLensDistortionModel *)self distortionPolynomialsDynamic];
   LODWORD(v13) = v9;
   *&v14 = pixelSize;
 
-  return [(ADRefinedPolynomialsLensDistortionModel *)v4 initWithDistortionCenter:v11 pixelSize:v12 focalLength:v6 polynomialsBase:v8 polynomialsDynamic:v13, v14];
+  return [(ADRefinedPolynomialsLensDistortionModel *)v4 initWithDistortionCenter:distortionPolynomialsBase pixelSize:distortionPolynomialsDynamic focalLength:v6 polynomialsBase:v8 polynomialsDynamic:v13, v14];
 }
 
-- (void)setDynamicFactor:(float)a3
+- (void)setDynamicFactor:(float)factor
 {
   v5.receiver = self;
   v5.super_class = ADRefinedPolynomialsLensDistortionModel;
   [(ADDynamicPolynomialsLensDistortionModel *)&v5 setDynamicFactor:?];
-  *(&self->super._dynamicFactor + 1) = a3;
+  *(&self->super._dynamicFactor + 1) = factor;
   self->_pixelSize = 1.0;
 }
 
@@ -103,22 +103,22 @@
   return v3 ^ (2 * v6) ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_14;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_16;
   }
 
-  if (([(ADRefinedPolynomialsLensDistortionModel *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  if (([(ADRefinedPolynomialsLensDistortionModel *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
     v6 = v5;
     [(ADPolynomialsLensDistortionModel *)self distortionCenter];

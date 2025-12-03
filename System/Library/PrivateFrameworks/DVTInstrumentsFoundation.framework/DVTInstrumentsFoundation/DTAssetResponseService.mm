@@ -1,23 +1,23 @@
 @interface DTAssetResponseService
-- (id)canContinueServingRequestWithIdentifier:(id)a3;
-- (void)messageReceived:(id)a3;
+- (id)canContinueServingRequestWithIdentifier:(id)identifier;
+- (void)messageReceived:(id)received;
 @end
 
 @implementation DTAssetResponseService
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
-  v3 = a3;
+  receivedCopy = received;
   v4 = +[DTAssetResponseBroker sharedBroker];
-  [v4 forwardMessage:v3];
+  [v4 forwardMessage:receivedCopy];
 }
 
-- (id)canContinueServingRequestWithIdentifier:(id)a3
+- (id)canContinueServingRequestWithIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[DTAssetResponseBroker sharedBroker];
-  v6 = [v5 canContinueServingRequestWithIdentifier:v4];
+  v6 = [v5 canContinueServingRequestWithIdentifier:identifierCopy];
 
   v7 = [v3 numberWithBool:v6];
 

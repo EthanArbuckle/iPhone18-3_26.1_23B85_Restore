@@ -1,13 +1,13 @@
 @interface WBSCertificateBypassManager
 + (WBSCertificateBypassManager)sharedManager;
-- (BOOL)_didCertificatExceptionsApplySuccessfully:(id)a3 protectionSpace:(id)a4;
-- (BOOL)didInvalidCertificateExceptionsApplySuccessfullyForProtectionSpace:(id)a3 inPrivateBrowsing:(BOOL)a4;
+- (BOOL)_didCertificatExceptionsApplySuccessfully:(id)successfully protectionSpace:(id)space;
+- (BOOL)didInvalidCertificateExceptionsApplySuccessfullyForProtectionSpace:(id)space inPrivateBrowsing:(BOOL)browsing;
 - (WBSCertificateBypassManager)init;
-- (id)_hostAndPortForProtectionSpace:(id)a3;
+- (id)_hostAndPortForProtectionSpace:(id)space;
 - (id)_readStateFromStorage;
-- (void)_clearBypassesInRelationToDate:(id)a3 comparison:(int64_t)a4;
-- (void)clearCertificateBypassesForHostIfNecessary:(id)a3 withTrust:(__SecTrust *)a4;
-- (void)rememberCertificateBypassForProtectionSpace:(id)a3 inPrivateBrowsing:(BOOL)a4;
+- (void)_clearBypassesInRelationToDate:(id)date comparison:(int64_t)comparison;
+- (void)clearCertificateBypassesForHostIfNecessary:(id)necessary withTrust:(__SecTrust *)trust;
+- (void)rememberCertificateBypassForProtectionSpace:(id)space inPrivateBrowsing:(BOOL)browsing;
 @end
 
 @implementation WBSCertificateBypassManager
@@ -39,13 +39,13 @@ void __44__WBSCertificateBypassManager_sharedManager__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [(WBSCertificateBypassManager *)v2 _readStateFromStorage];
+    _readStateFromStorage = [(WBSCertificateBypassManager *)v2 _readStateFromStorage];
     bypassedHostsToCertificateExceptions = v3->_bypassedHostsToCertificateExceptions;
-    v3->_bypassedHostsToCertificateExceptions = v4;
+    v3->_bypassedHostsToCertificateExceptions = _readStateFromStorage;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     bypassedHostsToCertificateExceptionsInPrivateBrowsing = v3->_bypassedHostsToCertificateExceptionsInPrivateBrowsing;
-    v3->_bypassedHostsToCertificateExceptionsInPrivateBrowsing = v6;
+    v3->_bypassedHostsToCertificateExceptionsInPrivateBrowsing = dictionary;
 
     objc_initWeak(&location, v3);
     v8 = objc_alloc(MEMORY[0x1E69C8840]);
@@ -76,15 +76,15 @@ void __44__WBSCertificateBypassManager_sharedManager__block_invoke()
     v4 = v3;
     if (v3)
     {
-      v5 = v3;
+      dictionary = v3;
     }
 
     else
     {
-      v5 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v7 = v5;
+    dictionary2 = dictionary;
   }
 
   else
@@ -95,10 +95,10 @@ void __44__WBSCertificateBypassManager_sharedManager__block_invoke()
       [(WBSCertificateBypassManager *)v6 _readStateFromStorage];
     }
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  return v7;
+  return dictionary2;
 }
 
 void *__35__WBSCertificateBypassManager_init__block_invoke(uint64_t a1)
@@ -110,38 +110,38 @@ void *__35__WBSCertificateBypassManager_init__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)didInvalidCertificateExceptionsApplySuccessfullyForProtectionSpace:(id)a3 inPrivateBrowsing:(BOOL)a4
+- (BOOL)didInvalidCertificateExceptionsApplySuccessfullyForProtectionSpace:(id)space inPrivateBrowsing:(BOOL)browsing
 {
-  v6 = a3;
-  v7 = [(WBSCertificateBypassManager *)self _didCertificatExceptionsApplySuccessfully:self->_bypassedHostsToCertificateExceptions protectionSpace:v6];
-  if (v7 || !a4)
+  spaceCopy = space;
+  v7 = [(WBSCertificateBypassManager *)self _didCertificatExceptionsApplySuccessfully:self->_bypassedHostsToCertificateExceptions protectionSpace:spaceCopy];
+  if (v7 || !browsing)
   {
-    v8 = a4 || v7;
+    v8 = browsing || v7;
   }
 
   else
   {
-    v8 = [(WBSCertificateBypassManager *)self _didCertificatExceptionsApplySuccessfully:self->_bypassedHostsToCertificateExceptionsInPrivateBrowsing protectionSpace:v6];
+    v8 = [(WBSCertificateBypassManager *)self _didCertificatExceptionsApplySuccessfully:self->_bypassedHostsToCertificateExceptionsInPrivateBrowsing protectionSpace:spaceCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_didCertificatExceptionsApplySuccessfully:(id)a3 protectionSpace:(id)a4
+- (BOOL)_didCertificatExceptionsApplySuccessfully:(id)successfully protectionSpace:(id)space
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSCertificateBypassManager *)self _hostAndPortForProtectionSpace:v7];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  successfullyCopy = successfully;
+  spaceCopy = space;
+  v8 = [(WBSCertificateBypassManager *)self _hostAndPortForProtectionSpace:spaceCopy];
+  v9 = [successfullyCopy objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [v6 objectForKeyedSubscript:v8];
+    v10 = [successfullyCopy objectForKeyedSubscript:v8];
     v11 = [v10 safari_dataForKey:@"BypassedInvalidCertificateExceptionData"];
 
     if (v11)
     {
-      v12 = SecTrustSetExceptions([v7 serverTrust], v11);
+      v12 = SecTrustSetExceptions([spaceCopy serverTrust], v11);
     }
 
     else
@@ -158,23 +158,23 @@ void *__35__WBSCertificateBypassManager_init__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (void)rememberCertificateBypassForProtectionSpace:(id)a3 inPrivateBrowsing:(BOOL)a4
+- (void)rememberCertificateBypassForProtectionSpace:(id)space inPrivateBrowsing:(BOOL)browsing
 {
-  v4 = a4;
+  browsingCopy = browsing;
   v18[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 serverTrust];
-  if (v7)
+  spaceCopy = space;
+  serverTrust = [spaceCopy serverTrust];
+  if (serverTrust)
   {
-    v8 = SecTrustCopyExceptions(v7);
-    v9 = [(WBSCertificateBypassManager *)self _hostAndPortForProtectionSpace:v6];
-    if (v4)
+    v8 = SecTrustCopyExceptions(serverTrust);
+    v9 = [(WBSCertificateBypassManager *)self _hostAndPortForProtectionSpace:spaceCopy];
+    if (browsingCopy)
     {
       v17[0] = @"BypassedInvalidCertificateExceptionData";
       v17[1] = @"BypassedInvalidCertificateHost";
       v18[0] = v8;
-      v10 = [v6 host];
-      v18[1] = v10;
+      host = [spaceCopy host];
+      v18[1] = host;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
       [(NSMutableDictionary *)self->_bypassedHostsToCertificateExceptionsInPrivateBrowsing setObject:v11 forKeyedSubscript:v9];
     }
@@ -187,8 +187,8 @@ void *__35__WBSCertificateBypassManager_init__block_invoke(uint64_t a1)
       v16[1] = v8;
       v15[1] = @"BypassedInvalidCertificateExceptionData";
       v15[2] = @"BypassedInvalidCertificateHost";
-      v13 = [v6 host];
-      v16[2] = v13;
+      host2 = [spaceCopy host];
+      v16[2] = host2;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:3];
       [(NSMutableDictionary *)self->_bypassedHostsToCertificateExceptions setObject:v14 forKeyedSubscript:v9];
 
@@ -197,10 +197,10 @@ void *__35__WBSCertificateBypassManager_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)clearCertificateBypassesForHostIfNecessary:(id)a3 withTrust:(__SecTrust *)a4
+- (void)clearCertificateBypassesForHostIfNecessary:(id)necessary withTrust:(__SecTrust *)trust
 {
-  v6 = a3;
-  if (a4)
+  necessaryCopy = necessary;
+  if (trust)
   {
     v7 = [(NSMutableDictionary *)self->_bypassedHostsToCertificateExceptions mutableCopy];
     bypassedHostsToCertificateExceptions = self->_bypassedHostsToCertificateExceptions;
@@ -208,8 +208,8 @@ void *__35__WBSCertificateBypassManager_init__block_invoke(uint64_t a1)
     v11[1] = 3221225472;
     v11[2] = __84__WBSCertificateBypassManager_clearCertificateBypassesForHostIfNecessary_withTrust___block_invoke;
     v11[3] = &unk_1E7FB73F0;
-    v14 = a4;
-    v12 = v6;
+    trustCopy = trust;
+    v12 = necessaryCopy;
     v9 = v7;
     v13 = v9;
     [(NSMutableDictionary *)bypassedHostsToCertificateExceptions enumerateKeysAndObjectsUsingBlock:v11];
@@ -235,18 +235,18 @@ void __84__WBSCertificateBypassManager_clearCertificateBypassesForHostIfNecessar
   }
 }
 
-- (void)_clearBypassesInRelationToDate:(id)a3 comparison:(int64_t)a4
+- (void)_clearBypassesInRelationToDate:(id)date comparison:(int64_t)comparison
 {
-  v6 = a3;
+  dateCopy = date;
   v7 = [(NSMutableDictionary *)self->_bypassedHostsToCertificateExceptions mutableCopy];
   bypassedHostsToCertificateExceptions = self->_bypassedHostsToCertificateExceptions;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__WBSCertificateBypassManager__clearBypassesInRelationToDate_comparison___block_invoke;
   v12[3] = &unk_1E7FB73F0;
-  v9 = v6;
+  v9 = dateCopy;
   v13 = v9;
-  v15 = a4;
+  comparisonCopy = comparison;
   v10 = v7;
   v14 = v10;
   [(NSMutableDictionary *)bypassedHostsToCertificateExceptions enumerateKeysAndObjectsUsingBlock:v12];
@@ -268,13 +268,13 @@ void __73__WBSCertificateBypassManager__clearBypassesInRelationToDate_comparison
   }
 }
 
-- (id)_hostAndPortForProtectionSpace:(id)a3
+- (id)_hostAndPortForProtectionSpace:(id)space
 {
-  v3 = a3;
-  v4 = [v3 host];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v3, "port")}];
-  v6 = [v5 stringValue];
-  v7 = [v4 stringByAppendingString:v6];
+  spaceCopy = space;
+  host = [spaceCopy host];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(spaceCopy, "port")}];
+  stringValue = [v5 stringValue];
+  v7 = [host stringByAppendingString:stringValue];
 
   return v7;
 }

@@ -1,7 +1,7 @@
 @interface MSDGetAccountSettingsRequest
 - (BOOL)isValid;
 - (id)getPostData;
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4;
+- (id)parseResponseForError:(id)error andPayload:(id)payload;
 @end
 
 @implementation MSDGetAccountSettingsRequest
@@ -15,8 +15,8 @@
     return 0;
   }
 
-  v3 = [(MSDGetAccountSettingsRequest *)self existingAccounts];
-  v4 = v3 != 0;
+  existingAccounts = [(MSDGetAccountSettingsRequest *)self existingAccounts];
+  v4 = existingAccounts != 0;
 
   return v4;
 }
@@ -24,61 +24,61 @@
 - (id)getPostData
 {
   v8[0] = @"UniqueDeviceID";
-  v3 = [(MSDCommandServerRequest *)self deviceUDID];
+  deviceUDID = [(MSDCommandServerRequest *)self deviceUDID];
   v8[1] = @"ExistingAccounts";
-  v9[0] = v3;
-  v4 = [(MSDGetAccountSettingsRequest *)self existingAccounts];
-  v9[1] = v4;
+  v9[0] = deviceUDID;
+  existingAccounts = [(MSDGetAccountSettingsRequest *)self existingAccounts];
+  v9[1] = existingAccounts;
   v5 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 
-  v6 = [v5 convertToNSData];
+  convertToNSData = [v5 convertToNSData];
 
-  return v6;
+  return convertToNSData;
 }
 
-- (id)parseResponseForError:(id)a3 andPayload:(id)a4
+- (id)parseResponseForError:(id)error andPayload:(id)payload
 {
-  v6 = a3;
+  errorCopy = error;
   v23.receiver = self;
   v23.super_class = MSDGetAccountSettingsRequest;
-  v7 = [(MSDServerRequest *)&v23 parseResponseForError:v6 andPayload:a4];
-  v8 = [v7 error];
+  v7 = [(MSDServerRequest *)&v23 parseResponseForError:errorCopy andPayload:payload];
+  error = [v7 error];
 
-  if (!v8)
+  if (!error)
   {
     v9 = sub_100063A54();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(MSDServerRequest *)self getName];
-      v11 = [v7 data];
+      getName = [(MSDServerRequest *)self getName];
+      data = [v7 data];
       *buf = 138543618;
-      v25 = v10;
+      v25 = getName;
       v26 = 2114;
-      v27 = v11;
+      v27 = data;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: data from server: %{public}@", buf, 0x16u);
     }
 
-    v12 = [v7 data];
-    if (v12 && (v13 = v12, [v7 data], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
+    data2 = [v7 data];
+    if (data2 && (v13 = data2, [v7 data], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
     {
-      v16 = [v7 data];
-      v17 = [NSDictionary dictionaryFromJsonData:v16];
+      data3 = [v7 data];
+      v17 = [NSDictionary dictionaryFromJsonData:data3];
 
       if (!v17)
       {
         v18 = sub_100063A54();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v21 = [(MSDServerRequest *)self getName];
+          getName2 = [(MSDServerRequest *)self getName];
           *buf = 138543362;
-          v25 = v21;
+          v25 = getName2;
           _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}@: failed to convert data to dict", buf, 0xCu);
         }
 
-        v22 = v6;
+        v22 = errorCopy;
         sub_1000C1390(&v22, 3727744512, @"Unexpected server response.");
-        v17 = v6;
-        v6 = v22;
+        v17 = errorCopy;
+        errorCopy = v22;
         goto LABEL_12;
       }
     }
@@ -92,11 +92,11 @@
 LABEL_12:
   }
 
-  v19 = [v7 error];
+  error2 = [v7 error];
 
-  if (!v19)
+  if (!error2)
   {
-    [v7 setError:v6];
+    [v7 setError:errorCopy];
   }
 
   return v7;

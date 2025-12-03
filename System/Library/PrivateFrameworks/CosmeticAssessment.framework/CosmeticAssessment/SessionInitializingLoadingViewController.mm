@@ -1,6 +1,6 @@
 @interface SessionInitializingLoadingViewController
-- (_TtC18CosmeticAssessment40SessionInitializingLoadingViewController)initWithSpinnerText:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC18CosmeticAssessment40SessionInitializingLoadingViewController)initWithSpinnerText:(id)text;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -19,7 +19,7 @@
 
   v6.receiver = self;
   v6.super_class = ObjectType;
-  v4 = self;
+  selfCopy = self;
   [(OBBaseWelcomeController *)&v6 viewDidLoad];
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -27,7 +27,7 @@
   sub_247CC5F14(1, sub_247CE7E64, v5);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -37,11 +37,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_247CE78CC(a3);
+  selfCopy = self;
+  sub_247CE78CC(appear);
 }
 
-- (_TtC18CosmeticAssessment40SessionInitializingLoadingViewController)initWithSpinnerText:(id)a3
+- (_TtC18CosmeticAssessment40SessionInitializingLoadingViewController)initWithSpinnerText:(id)text
 {
   sub_247D1FEA8();
   sub_247D1FE98();

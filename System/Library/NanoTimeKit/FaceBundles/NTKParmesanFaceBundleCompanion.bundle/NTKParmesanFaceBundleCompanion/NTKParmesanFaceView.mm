@@ -1,46 +1,46 @@
 @interface NTKParmesanFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (BOOL)_allowsEditingSliderEditableColorsForSlot:(id)a3;
-- (BOOL)_validateEditOption:(id)a3 forMode:(int64_t)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (BOOL)_allowsEditingSliderEditableColorsForSlot:(id)slot;
+- (BOOL)_validateEditOption:(id)option forMode:(int64_t)mode;
 - (BOOL)isPartiallySupportedNumeralSelected;
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (CGRect)_timeKeylineFrameForFrame:(CGRect)a3;
-- (NTKParmesanFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_contentViewAlphaForEditMode:(int64_t)a3;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (CGRect)_timeKeylineFrameForFrame:(CGRect)frame;
+- (NTKParmesanFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_contentViewAlphaForEditMode:(int64_t)mode;
 - (id)_bottomComplication;
-- (id)_colorStyleKeylineViewWithEditOption:(id)a3 slot:(id)a4;
-- (id)_compositionKeyForCurrentCompositionWithTimeOption:(int64_t)a3 numerals:(unint64_t)a4;
-- (id)_galleryViewWithComposition:(id)a3 timeOption:(int64_t)a4 typeface:(int64_t)a5 numerals:(unint64_t)a6 timePalette:(id)a7 contentEffect:(id)a8;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4 selectedSlot:(id)a5;
-- (id)_paletteForStyle:(unint64_t)a3;
+- (id)_colorStyleKeylineViewWithEditOption:(id)option slot:(id)slot;
+- (id)_compositionKeyForCurrentCompositionWithTimeOption:(int64_t)option numerals:(unint64_t)numerals;
+- (id)_galleryViewWithComposition:(id)composition timeOption:(int64_t)option typeface:(int64_t)typeface numerals:(unint64_t)numerals timePalette:(id)palette contentEffect:(id)effect;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot selectedSlot:(id)selectedSlot;
+- (id)_paletteForStyle:(unint64_t)style;
 - (id)_storedPlaceholderName;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5 refreshHandler:(id)a6;
-- (id)_swatchKeyForStyle:(int64_t)a3 stylePalette:(id)a4 timePalette:(id)a5 typeface:(int64_t)a6 numerals:(unint64_t)a7 time:(int64_t)a8 compositionSwatchKey:(id)a9;
-- (id)_swatchKeyForTypeface:(int64_t)a3 numerals:(unint64_t)a4 palette:(id)a5;
-- (id)_timeLabelWithTypeface:(int64_t)a3 numerals:(unint64_t)a4 palette:(id)a5;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options refreshHandler:(id)handler;
+- (id)_swatchKeyForStyle:(int64_t)style stylePalette:(id)palette timePalette:(id)timePalette typeface:(int64_t)typeface numerals:(unint64_t)numerals time:(int64_t)time compositionSwatchKey:(id)key;
+- (id)_swatchKeyForTypeface:(int64_t)typeface numerals:(unint64_t)numerals palette:(id)palette;
+- (id)_timeLabelWithTypeface:(int64_t)typeface numerals:(unint64_t)numerals palette:(id)palette;
 - (id)_topComplication;
 - (id)createFaceColorPalette;
-- (unint64_t)_complicationVisibilityForEditMode:(int64_t)a3;
+- (unint64_t)_complicationVisibilityForEditMode:(int64_t)mode;
 - (unint64_t)_currentComplicationVisibility;
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (unint64_t)complicationVisibilityWithTopComplication:(id)a3 bottomComplication:(id)a4;
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)complicationVisibilityWithTopComplication:(id)complication bottomComplication:(id)bottomComplication;
 - (void)_applyBreathingAndRubberbanding;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyContentEffectColorTransitionFraction:(double)a3;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyContentEffectColorTransitionFraction:(double)fraction;
 - (void)_applyDataMode;
 - (void)_applyFaceState;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyShowContentForUnadornedSnapshot;
 - (void)_applyTimeEffectStyle;
-- (void)_applyTimeEffectStyleTransitionFraction:(double)a3;
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyTimeEffectStyleTransitionFraction:(double)fraction;
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_createStylePaletteIfNeeded;
 - (void)_createTimePaletteIfNeeded;
 - (void)_faceLibraryDismissed;
@@ -55,42 +55,42 @@
 - (void)_setupTimeView;
 - (void)_teardownGallery;
 - (void)_teardownLibraryDismissedNotification;
-- (void)_transitionContentEffectFromStyle:(int64_t)a3 toStyle:(int64_t)a4 progress:(double)a5;
+- (void)_transitionContentEffectFromStyle:(int64_t)style toStyle:(int64_t)toStyle progress:(double)progress;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateContentEffectWithStyle:(int64_t)a3;
+- (void)_updateContentEffectWithStyle:(int64_t)style;
 - (void)_updateContents;
-- (void)_updateForResourceDirectoryChange:(id)a3;
+- (void)_updateForResourceDirectoryChange:(id)change;
 - (void)layoutSubviews;
 @end
 
 @implementation NTKParmesanFaceView
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v44 = a3;
-  v6 = a4;
+  viewCopy = view;
+  slotCopy = slot;
   v10 = objc_msgSend_parmesanComplicationFactory(self, v7, v8, v9);
-  objc_msgSend_configureComplicationView_forSlot_(v10, v11, v44, v6);
+  objc_msgSend_configureComplicationView_forSlot_(v10, v11, viewCopy, slotCopy);
 
-  if (objc_msgSend_isEqualToString_(v6, v12, *MEMORY[0x277D2BF00], v13))
+  if (objc_msgSend_isEqualToString_(slotCopy, v12, *MEMORY[0x277D2BF00], v13))
   {
-    if (!objc_msgSend_isHidden(v44, v14, v15, v16) || (objc_msgSend_topComplicationVisible(self, v17, v18, v19) & 1) == 0) && ((objc_msgSend_isHidden(v44, v17, v18, v19) & 1) != 0 || (objc_msgSend_topComplicationVisible(self, v20, v21, v22)))
+    if (!objc_msgSend_isHidden(viewCopy, v14, v15, v16) || (objc_msgSend_topComplicationVisible(self, v17, v18, v19) & 1) == 0) && ((objc_msgSend_isHidden(viewCopy, v17, v18, v19) & 1) != 0 || (objc_msgSend_topComplicationVisible(self, v20, v21, v22)))
     {
       goto LABEL_15;
     }
 
-    isHidden = objc_msgSend_isHidden(v44, v17, v18, v19);
+    isHidden = objc_msgSend_isHidden(viewCopy, v17, v18, v19);
     objc_msgSend_setTopComplicationVisible_(self, v24, isHidden ^ 1u, v25);
   }
 
   else
   {
-    if (!objc_msgSend_isEqualToString_(v6, v14, *MEMORY[0x277D2BED0], v16) || (!objc_msgSend_isHidden(v44, v29, v30, v31) || (objc_msgSend_bottomComplicationVisible(self, v32, v33, v34) & 1) == 0) && ((objc_msgSend_isHidden(v44, v32, v33, v34) & 1) != 0 || (objc_msgSend_bottomComplicationVisible(self, v35, v36, v37) & 1) != 0))
+    if (!objc_msgSend_isEqualToString_(slotCopy, v14, *MEMORY[0x277D2BED0], v16) || (!objc_msgSend_isHidden(viewCopy, v29, v30, v31) || (objc_msgSend_bottomComplicationVisible(self, v32, v33, v34) & 1) == 0) && ((objc_msgSend_isHidden(viewCopy, v32, v33, v34) & 1) != 0 || (objc_msgSend_bottomComplicationVisible(self, v35, v36, v37) & 1) != 0))
     {
       goto LABEL_15;
     }
 
-    v38 = objc_msgSend_isHidden(v44, v32, v33, v34);
+    v38 = objc_msgSend_isHidden(viewCopy, v32, v33, v34);
     objc_msgSend_setBottomComplicationVisible_(self, v39, v38 ^ 1u, v40);
   }
 
@@ -119,16 +119,16 @@ LABEL_15:
   objc_msgSend_setComplicationVisibility_(v11, v9, v5, v10);
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot
 {
-  v10 = a5;
-  v11 = a6;
+  toComplicationCopy = toComplication;
+  slotCopy = slot;
   v37.receiver = self;
   v37.super_class = NTKParmesanFaceView;
-  [(NTKParmesanFaceView *)&v37 _applyTransitionFraction:a4 fromComplication:v10 toComplication:v11 slot:a3];
-  if (objc_msgSend_isEqualToString_(v11, v12, *MEMORY[0x277D2BF00], v13))
+  [(NTKParmesanFaceView *)&v37 _applyTransitionFraction:complication fromComplication:toComplicationCopy toComplication:slotCopy slot:fraction];
+  if (objc_msgSend_isEqualToString_(slotCopy, v12, *MEMORY[0x277D2BF00], v13))
   {
-    v17 = v10;
+    v17 = toComplicationCopy;
   }
 
   else
@@ -137,9 +137,9 @@ LABEL_15:
   }
 
   v20 = v17;
-  if (objc_msgSend_isEqualToString_(v11, v18, *MEMORY[0x277D2BED0], v19))
+  if (objc_msgSend_isEqualToString_(slotCopy, v18, *MEMORY[0x277D2BED0], v19))
   {
-    v24 = v10;
+    v24 = toComplicationCopy;
   }
 
   else
@@ -156,11 +156,11 @@ LABEL_15:
   }
 }
 
-- (unint64_t)complicationVisibilityWithTopComplication:(id)a3 bottomComplication:(id)a4
+- (unint64_t)complicationVisibilityWithTopComplication:(id)complication bottomComplication:(id)bottomComplication
 {
-  v5 = a4;
-  isVisible = objc_msgSend_isVisible(a3, v6, v7, v8);
-  v13 = objc_msgSend_isVisible(v5, v10, v11, v12);
+  bottomComplicationCopy = bottomComplication;
+  isVisible = objc_msgSend_isVisible(complication, v6, v7, v8);
+  v13 = objc_msgSend_isVisible(bottomComplicationCopy, v10, v11, v12);
 
   if (isVisible && (v13 & 1) != 0)
   {
@@ -221,46 +221,46 @@ LABEL_15:
   objc_msgSend_cleanupAfterEditing(v6, v7, v8, v9);
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v23.receiver = self;
   v23.super_class = NTKParmesanFaceView;
   [(NTKParmesanFaceView *)&v23 _configureForEditMode:?];
   v8 = objc_msgSend_contentView(self, v5, v6, v7);
-  objc_msgSend__contentViewAlphaForEditMode_(self, v9, a3, v10);
+  objc_msgSend__contentViewAlphaForEditMode_(self, v9, mode, v10);
   objc_msgSend_setAlpha_(v8, v11, v12, v13);
 
-  v16 = objc_msgSend__complicationVisibilityForEditMode_(self, v14, a3, v15);
+  v16 = objc_msgSend__complicationVisibilityForEditMode_(self, v14, mode, v15);
   v20 = objc_msgSend_controller(self, v17, v18, v19);
   objc_msgSend_setComplicationVisibility_(v20, v21, v16, v22);
 }
 
-- (unint64_t)_complicationVisibilityForEditMode:(int64_t)a3
+- (unint64_t)_complicationVisibilityForEditMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 3;
   }
 
   else
   {
-    return objc_msgSend__currentComplicationVisibility(self, a2, a3, v3);
+    return objc_msgSend__currentComplicationVisibility(self, a2, mode, v3);
   }
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v36.receiver = self;
   v36.super_class = NTKParmesanFaceView;
   [NTKParmesanFaceView _configureForTransitionFraction:sel__configureForTransitionFraction_fromEditMode_toEditMode_ fromEditMode:? toEditMode:?];
-  v11 = objc_msgSend__complicationVisibilityForEditMode_(self, v9, a4, v10);
-  v14 = objc_msgSend__complicationVisibilityForEditMode_(self, v12, a5, v13);
+  v11 = objc_msgSend__complicationVisibilityForEditMode_(self, v9, mode, v10);
+  v14 = objc_msgSend__complicationVisibilityForEditMode_(self, v12, editMode, v13);
   v18 = objc_msgSend_controller(self, v15, v16, v17);
-  objc_msgSend_transitionFromComplicationVisibility_toComplicationVisibility_progress_(v18, v19, v11, v14, a3);
+  objc_msgSend_transitionFromComplicationVisibility_toComplicationVisibility_progress_(v18, v19, v11, v14, fraction);
 
-  objc_msgSend__contentViewAlphaForEditMode_(self, v20, a4, v21);
+  objc_msgSend__contentViewAlphaForEditMode_(self, v20, mode, v21);
   v23 = v22;
-  objc_msgSend__contentViewAlphaForEditMode_(self, v24, a5, v25);
+  objc_msgSend__contentViewAlphaForEditMode_(self, v24, editMode, v25);
   v30 = v29;
   if (v23 != v29)
   {
@@ -272,21 +272,21 @@ LABEL_15:
   objc_msgSend_setAlpha_(v32, v33, v34, v35, v30);
 }
 
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication
 {
   v11.receiver = self;
   v11.super_class = NTKParmesanFaceView;
-  [(NTKParmesanFaceView *)&v11 _cleanupAfterTransitionComplicationSlot:a3 selectedComplication:a4];
+  [(NTKParmesanFaceView *)&v11 _cleanupAfterTransitionComplicationSlot:slot selectedComplication:complication];
   v8 = objc_msgSend_delegate(self, v5, v6, v7);
   objc_msgSend_faceViewWantsCustomKeylineFramesReloadedForEditMode_(v8, v9, 10, v10);
 }
 
-- (double)_contentViewAlphaForEditMode:(int64_t)a3
+- (double)_contentViewAlphaForEditMode:(int64_t)mode
 {
-  if ((a3 - 13) >= 2)
+  if ((mode - 13) >= 2)
   {
     result = 1.0;
-    if (a3 == 1)
+    if (mode == 1)
     {
       return *MEMORY[0x277D2BF18];
     }
@@ -294,7 +294,7 @@ LABEL_15:
 
   else
   {
-    isPartiallySupportedNumeralSelected = objc_msgSend_isPartiallySupportedNumeralSelected(self, a2, a3, v3);
+    isPartiallySupportedNumeralSelected = objc_msgSend_isPartiallySupportedNumeralSelected(self, a2, mode, v3);
     result = *MEMORY[0x277D2BF18];
     if (!isPartiallySupportedNumeralSelected)
     {
@@ -315,16 +315,16 @@ LABEL_15:
   return objc_msgSend_isPartiallySupported_(v9, v7, v6, v8);
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v58 = a3;
-  v8 = a5;
-  v12 = v8;
-  if (a4 > 13)
+  optionCopy = option;
+  slotCopy = slot;
+  v12 = slotCopy;
+  if (mode > 13)
   {
-    if (a4 == 14)
+    if (mode == 14)
     {
-      v29 = objc_msgSend_time(v58, v9, v10, v11);
+      v29 = objc_msgSend_time(optionCopy, v9, v10, v11);
       v33 = objc_msgSend_controller(self, v30, v31, v32);
       objc_msgSend_setTimeOption_(v33, v34, v29, v35);
 
@@ -334,42 +334,42 @@ LABEL_15:
       goto LABEL_18;
     }
 
-    if (a4 != 15)
+    if (mode != 15)
     {
-      if (a4 != 19)
+      if (mode != 19)
       {
         goto LABEL_18;
       }
 
-      v20 = objc_msgSend_numeralOption(v58, v9, v10, v11);
+      v20 = objc_msgSend_numeralOption(optionCopy, v9, v10, v11);
       v17 = objc_msgSend_controller(self, v21, v22, v23);
       objc_msgSend_setNumerals_(v17, v24, v20, v25);
       goto LABEL_14;
     }
 
-    v48 = objc_msgSend_style(v58, v9, v10, v11);
+    v48 = objc_msgSend_style(optionCopy, v9, v10, v11);
     objc_msgSend__updateContentEffectWithStyle_(self, v49, v48, v50);
   }
 
   else
   {
-    if (a4 != 10)
+    if (mode != 10)
     {
-      if (a4 == 12)
+      if (mode == 12)
       {
-        v42 = objc_msgSend_content(v58, v9, v10, v11);
+        v42 = objc_msgSend_content(optionCopy, v9, v10, v11);
         v17 = objc_msgSend_controller(self, v43, v44, v45);
         objc_msgSend_setContentOption_(v17, v46, v42, v47);
       }
 
       else
       {
-        if (a4 != 13)
+        if (mode != 13)
         {
           goto LABEL_18;
         }
 
-        v13 = objc_msgSend_typeface(v58, v9, v10, v11);
+        v13 = objc_msgSend_typeface(optionCopy, v9, v10, v11);
         v17 = objc_msgSend_controller(self, v14, v15, v16);
         objc_msgSend_setTypeface_(v17, v18, v13, v19);
       }
@@ -379,7 +379,7 @@ LABEL_14:
       goto LABEL_18;
     }
 
-    if (objc_msgSend_isEqualToString_(v8, v9, @"time-color", v11))
+    if (objc_msgSend_isEqualToString_(slotCopy, v9, @"time-color", v11))
     {
       objc_msgSend__applyTimeEffectStyle(self, v26, v27, v28);
     }
@@ -397,104 +397,104 @@ LABEL_18:
   objc_msgSend__reloadComplicationAppearance(self, v9, v10, v11);
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v116 = a4;
-  v12 = a5;
-  v13 = a7;
-  v17 = v13;
-  if (a6 <= 13)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  v17 = slotCopy;
+  if (mode <= 13)
   {
-    if (a6 != 10)
+    if (mode != 10)
     {
-      if (a6 != 13)
+      if (mode != 13)
       {
         goto LABEL_16;
       }
 
-      v28 = objc_msgSend_typeface(v116, v14, v15, v16);
-      v32 = objc_msgSend_typeface(v12, v29, v30, v31);
+      v28 = objc_msgSend_typeface(optionCopy, v14, v15, v16);
+      v32 = objc_msgSend_typeface(toOptionCopy, v29, v30, v31);
       v26 = objc_msgSend_controller(self, v33, v34, v35);
-      objc_msgSend_transitionFromTypeface_toTypeface_progress_(v26, v36, v28, v32, a3);
+      objc_msgSend_transitionFromTypeface_toTypeface_progress_(v26, v36, v28, v32, fraction);
       goto LABEL_10;
     }
 
-    if (objc_msgSend_isEqualToString_(v13, v14, @"time-color", v16))
+    if (objc_msgSend_isEqualToString_(slotCopy, v14, @"time-color", v16))
     {
       v54 = objc_opt_class();
-      v57 = objc_msgSend_pigmentFromOption_(v54, v55, v116, v56);
+      v57 = objc_msgSend_pigmentFromOption_(v54, v55, optionCopy, v56);
       v61 = objc_msgSend_interpolatedTimePalette(self, v58, v59, v60);
       v65 = objc_msgSend_fromPalette(v61, v62, v63, v64);
       objc_msgSend_setPigmentEditOption_(v65, v66, v57, v67);
 
       v68 = objc_opt_class();
-      v71 = objc_msgSend_pigmentFromOption_(v68, v69, v12, v70);
+      v71 = objc_msgSend_pigmentFromOption_(v68, v69, toOptionCopy, v70);
       v75 = objc_msgSend_interpolatedTimePalette(self, v72, v73, v74);
       v79 = objc_msgSend_toPalette(v75, v76, v77, v78);
       objc_msgSend_setPigmentEditOption_(v79, v80, v71, v81);
 
-      objc_msgSend__applyTimeEffectStyleTransitionFraction_(self, v82, v83, v84, a3);
+      objc_msgSend__applyTimeEffectStyleTransitionFraction_(self, v82, v83, v84, fraction);
     }
 
     else if (objc_msgSend_isEqualToString_(v17, v52, @"style-color", v53))
     {
       v85 = objc_opt_class();
-      v88 = objc_msgSend_pigmentFromOption_(v85, v86, v116, v87);
+      v88 = objc_msgSend_pigmentFromOption_(v85, v86, optionCopy, v87);
       v92 = objc_msgSend_interpolatedStylePalette(self, v89, v90, v91);
       v96 = objc_msgSend_fromPalette(v92, v93, v94, v95);
       objc_msgSend_setPigmentEditOption_(v96, v97, v88, v98);
 
       v99 = objc_opt_class();
-      v102 = objc_msgSend_pigmentFromOption_(v99, v100, v12, v101);
+      v102 = objc_msgSend_pigmentFromOption_(v99, v100, toOptionCopy, v101);
       v106 = objc_msgSend_interpolatedStylePalette(self, v103, v104, v105);
       v110 = objc_msgSend_toPalette(v106, v107, v108, v109);
       objc_msgSend_setPigmentEditOption_(v110, v111, v102, v112);
 
-      objc_msgSend__applyContentEffectColorTransitionFraction_(self, v113, v114, v115, a3);
+      objc_msgSend__applyContentEffectColorTransitionFraction_(self, v113, v114, v115, fraction);
     }
   }
 
   else
   {
-    if (a6 == 19)
+    if (mode == 19)
     {
-      v37 = objc_msgSend_numeralOption(v116, v14, v15, v16);
-      v41 = objc_msgSend_numeralOption(v12, v38, v39, v40);
+      v37 = objc_msgSend_numeralOption(optionCopy, v14, v15, v16);
+      v41 = objc_msgSend_numeralOption(toOptionCopy, v38, v39, v40);
       v26 = objc_msgSend_controller(self, v42, v43, v44);
-      objc_msgSend_transitionFromNumerals_toNumerals_progress_(v26, v45, v37, v41, a3);
+      objc_msgSend_transitionFromNumerals_toNumerals_progress_(v26, v45, v37, v41, fraction);
 LABEL_10:
 
       goto LABEL_16;
     }
 
-    if (a6 != 15)
+    if (mode != 15)
     {
-      if (a6 != 14)
+      if (mode != 14)
       {
         goto LABEL_16;
       }
 
-      v18 = objc_msgSend_time(v116, v14, v15, v16);
-      v22 = objc_msgSend_time(v12, v19, v20, v21);
+      v18 = objc_msgSend_time(optionCopy, v14, v15, v16);
+      v22 = objc_msgSend_time(toOptionCopy, v19, v20, v21);
       v26 = objc_msgSend_controller(self, v23, v24, v25);
-      objc_msgSend_transitionFromTimeOption_toTimeOption_progress_(v26, v27, v18, v22, a3);
+      objc_msgSend_transitionFromTimeOption_toTimeOption_progress_(v26, v27, v18, v22, fraction);
       goto LABEL_10;
     }
 
-    v46 = objc_msgSend_style(v116, v14, v15, v16);
-    v50 = objc_msgSend_style(v12, v47, v48, v49);
-    objc_msgSend__transitionContentEffectFromStyle_toStyle_progress_(self, v51, v46, v50, a3);
+    v46 = objc_msgSend_style(optionCopy, v14, v15, v16);
+    v50 = objc_msgSend_style(toOptionCopy, v47, v48, v49);
+    objc_msgSend__transitionContentEffectFromStyle_toStyle_progress_(self, v51, v46, v50, fraction);
   }
 
 LABEL_16:
 }
 
-- (CGRect)_timeKeylineFrameForFrame:(CGRect)a3
+- (CGRect)_timeKeylineFrameForFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = objc_msgSend_controller(self, a2, v3, v4);
   v13 = objc_msgSend_galleryView(v9, v10, v11, v12);
   objc_msgSend_normalizedKeylineRect(v13, v14, v15, v16);
@@ -514,16 +514,16 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  v9 = v6;
-  if (a3 != 10)
+  slotCopy = slot;
+  v9 = slotCopy;
+  if (mode != 10)
   {
     goto LABEL_7;
   }
 
-  if (!objc_msgSend_isEqualToString_(v6, v7, @"time-color", v8))
+  if (!objc_msgSend_isEqualToString_(slotCopy, v7, @"time-color", v8))
   {
     if (objc_msgSend_isEqualToString_(v9, v10, @"style-color", v11))
     {
@@ -539,7 +539,7 @@ LABEL_16:
 LABEL_7:
     v40.receiver = self;
     v40.super_class = NTKParmesanFaceView;
-    [(NTKParmesanFaceView *)&v40 _relativeKeylineFrameForCustomEditMode:a3 slot:v9];
+    [(NTKParmesanFaceView *)&v40 _relativeKeylineFrameForCustomEditMode:mode slot:v9];
     goto LABEL_8;
   }
 
@@ -567,25 +567,25 @@ LABEL_8:
   return result;
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4 selectedSlot:(id)a5
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot selectedSlot:(id)selectedSlot
 {
-  v8 = a4;
-  v11 = a5;
-  if (a3 != 10)
+  slotCopy = slot;
+  selectedSlotCopy = selectedSlot;
+  if (mode != 10)
   {
 LABEL_6:
     v20.receiver = self;
     v20.super_class = NTKParmesanFaceView;
-    v14 = [(NTKParmesanFaceView *)&v20 _keylineViewForCustomEditMode:a3 slot:v8 selectedSlot:v11];
+    v14 = [(NTKParmesanFaceView *)&v20 _keylineViewForCustomEditMode:mode slot:slotCopy selectedSlot:selectedSlotCopy];
     goto LABEL_7;
   }
 
-  if (!objc_msgSend_isEqualToString_(v8, v9, @"time-color", v10))
+  if (!objc_msgSend_isEqualToString_(slotCopy, v9, @"time-color", v10))
   {
-    if (objc_msgSend_isEqualToString_(v8, v12, @"style-color", v13))
+    if (objc_msgSend_isEqualToString_(slotCopy, v12, @"style-color", v13))
     {
-      v16 = objc_msgSend_optionForCustomEditMode_slot_(self, v15, 10, v11);
-      v18 = objc_msgSend__colorStyleKeylineViewWithEditOption_slot_(self, v17, v16, v8);
+      v16 = objc_msgSend_optionForCustomEditMode_slot_(self, v15, 10, selectedSlotCopy);
+      v18 = objc_msgSend__colorStyleKeylineViewWithEditOption_slot_(self, v17, v16, slotCopy);
 
       goto LABEL_8;
     }
@@ -602,11 +602,11 @@ LABEL_8:
   return v18;
 }
 
-- (id)_colorStyleKeylineViewWithEditOption:(id)a3 slot:(id)a4
+- (id)_colorStyleKeylineViewWithEditOption:(id)option slot:(id)slot
 {
   v33.receiver = self;
   v33.super_class = NTKParmesanFaceView;
-  [(NTKParmesanFaceView *)&v33 _faceViewFrameForEditMode:10 option:a3 slot:a4];
+  [(NTKParmesanFaceView *)&v33 _faceViewFrameForEditMode:10 option:option slot:slot];
   objc_msgSend__timeKeylineFrameForFrame_(self, v5, v6, v7, 0.0, 0.0);
   v9 = v8;
   v11 = v10;
@@ -666,14 +666,14 @@ LABEL_8:
   objc_msgSend_updateTimeEffectStyleWithPalette_(v12, v17, v16, v18);
 }
 
-- (void)_applyTimeEffectStyleTransitionFraction:(double)a3
+- (void)_applyTimeEffectStyleTransitionFraction:(double)fraction
 {
   v24 = objc_msgSend_controller(self, a2, v3, v4);
   v10 = objc_msgSend_interpolatedTimePalette(self, v7, v8, v9);
   v14 = objc_msgSend_fromPalette(v10, v11, v12, v13);
   v18 = objc_msgSend_interpolatedTimePalette(self, v15, v16, v17);
   v22 = objc_msgSend_toPalette(v18, v19, v20, v21);
-  objc_msgSend_transitionTimeEffectFromPalette_toPalette_progress_(v24, v23, v14, v22, a3);
+  objc_msgSend_transitionTimeEffectFromPalette_toPalette_progress_(v24, v23, v14, v22, fraction);
 }
 
 - (void)_createStylePaletteIfNeeded
@@ -698,9 +698,9 @@ LABEL_8:
   }
 }
 
-- (void)_updateContentEffectWithStyle:(int64_t)a3
+- (void)_updateContentEffectWithStyle:(int64_t)style
 {
-  objc_msgSend__createStylePaletteIfNeeded(self, a2, a3, v3);
+  objc_msgSend__createStylePaletteIfNeeded(self, a2, style, v3);
   v26 = objc_msgSend_optionForCustomEditMode_slot_(self, v6, 10, @"style-color");
   if (v26)
   {
@@ -710,12 +710,12 @@ LABEL_8:
 
   v13 = [NTKParmesanGalleryContentEffect alloc];
   v17 = objc_msgSend_stylePalette(self, v14, v15, v16);
-  v19 = objc_msgSend_initWithStyleOption_palette_(v13, v18, a3, v17);
+  v19 = objc_msgSend_initWithStyleOption_palette_(v13, v18, style, v17);
   v23 = objc_msgSend_controller(self, v20, v21, v22);
   objc_msgSend_setContentEffect_(v23, v24, v19, v25);
 }
 
-- (void)_applyContentEffectColorTransitionFraction:(double)a3
+- (void)_applyContentEffectColorTransitionFraction:(double)fraction
 {
   v5 = objc_msgSend_optionForCustomEditMode_slot_(self, a2, 15, 0);
   v9 = objc_msgSend_style(v5, v6, v7, v8);
@@ -731,25 +731,25 @@ LABEL_8:
   v28 = [NTKParmesanGalleryContentEffect alloc];
   v30 = objc_msgSend_initWithStyleOption_palette_(v28, v29, v9, v27);
   v34 = objc_msgSend_controller(self, v31, v32, v33);
-  objc_msgSend_transitionContentEffectFromEffect_toEffect_progress_(v34, v35, v19, v30, a3);
+  objc_msgSend_transitionContentEffectFromEffect_toEffect_progress_(v34, v35, v19, v30, fraction);
 }
 
-- (void)_transitionContentEffectFromStyle:(int64_t)a3 toStyle:(int64_t)a4 progress:(double)a5
+- (void)_transitionContentEffectFromStyle:(int64_t)style toStyle:(int64_t)toStyle progress:(double)progress
 {
-  v23 = objc_msgSend__paletteForStyle_(self, a2, a3, a4);
+  v23 = objc_msgSend__paletteForStyle_(self, a2, style, toStyle);
   v9 = [NTKParmesanGalleryContentEffect alloc];
-  v11 = objc_msgSend_initWithStyleOption_palette_(v9, v10, a3, v23);
-  v14 = objc_msgSend__paletteForStyle_(self, v12, a4, v13);
+  v11 = objc_msgSend_initWithStyleOption_palette_(v9, v10, style, v23);
+  v14 = objc_msgSend__paletteForStyle_(self, v12, toStyle, v13);
   v15 = [NTKParmesanGalleryContentEffect alloc];
-  v17 = objc_msgSend_initWithStyleOption_palette_(v15, v16, a4, v14);
+  v17 = objc_msgSend_initWithStyleOption_palette_(v15, v16, toStyle, v14);
   v21 = objc_msgSend_controller(self, v18, v19, v20);
-  objc_msgSend_transitionContentEffectFromEffect_toEffect_progress_(v21, v22, v11, v17, a5);
+  objc_msgSend_transitionContentEffectFromEffect_toEffect_progress_(v21, v22, v11, v17, progress);
 }
 
-- (BOOL)_allowsEditingSliderEditableColorsForSlot:(id)a3
+- (BOOL)_allowsEditingSliderEditableColorsForSlot:(id)slot
 {
-  v4 = a3;
-  if (objc_msgSend_isEqualToString_(v4, v5, @"style-color", v6) && (objc_msgSend_optionForCustomEditMode_slot_(self, v7, 15, 0), v8 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend_style(v8, v9, v10, v11), v8, (v12 & 0xFFFFFFFFFFFFFFFELL) == 2))
+  slotCopy = slot;
+  if (objc_msgSend_isEqualToString_(slotCopy, v5, @"style-color", v6) && (objc_msgSend_optionForCustomEditMode_slot_(self, v7, 15, 0), v8 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend_style(v8, v9, v10, v11), v8, (v12 & 0xFFFFFFFFFFFFFFFELL) == 2))
   {
     v13 = 0;
   }
@@ -758,17 +758,17 @@ LABEL_8:
   {
     v15.receiver = self;
     v15.super_class = NTKParmesanFaceView;
-    v13 = [(NTKParmesanFaceView *)&v15 _allowsEditingSliderEditableColorsForSlot:v4];
+    v13 = [(NTKParmesanFaceView *)&v15 _allowsEditingSliderEditableColorsForSlot:slotCopy];
   }
 
   return v13;
 }
 
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a4;
-  v9 = v6;
-  if (a3 != 10 || !objc_msgSend_isEqualToString_(v6, v7, @"time-color", v8))
+  slotCopy = slot;
+  v9 = slotCopy;
+  if (mode != 10 || !objc_msgSend_isEqualToString_(slotCopy, v7, @"time-color", v8))
   {
     goto LABEL_6;
   }
@@ -793,7 +793,7 @@ LABEL_8:
 LABEL_6:
     v24.receiver = self;
     v24.super_class = NTKParmesanFaceView;
-    v22 = [(NTKParmesanFaceView *)&v24 _keylineLabelAlignmentForCustomEditMode:a3 slot:v9];
+    v22 = [(NTKParmesanFaceView *)&v24 _keylineLabelAlignmentForCustomEditMode:mode slot:v9];
   }
 
 LABEL_7:
@@ -801,28 +801,28 @@ LABEL_7:
   return v22;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v14.receiver = self;
   v14.super_class = NTKParmesanFaceView;
-  [(NTKParmesanFaceView *)&v14 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 > 0xF || ((1 << a4) & 0x8401) == 0)
+  [(NTKParmesanFaceView *)&v14 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode > 0xF || ((1 << mode) & 0x8401) == 0)
   {
-    objc_msgSend_setBreathingFraction_(self, v8, v9, v10, a3);
+    objc_msgSend_setBreathingFraction_(self, v8, v9, v10, fraction);
     objc_msgSend__applyBreathingAndRubberbanding(self, v11, v12, v13);
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v17.receiver = self;
   v17.super_class = NTKParmesanFaceView;
-  [(NTKParmesanFaceView *)&v17 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 > 0xF || ((1 << a4) & 0x8401) == 0)
+  [(NTKParmesanFaceView *)&v17 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode > 0xF || ((1 << mode) & 0x8401) == 0)
   {
     NTKAlphaForRubberBandingFraction();
     objc_msgSend_setAlpha_(self, v8, v9, v10);
-    objc_msgSend_setRubberbandingFraction_(self, v11, v12, v13, a3);
+    objc_msgSend_setRubberbandingFraction_(self, v11, v12, v13, fraction);
     objc_msgSend__applyBreathingAndRubberbanding(self, v14, v15, v16);
   }
 }
@@ -839,16 +839,16 @@ LABEL_7:
   objc_msgSend_setTransform_(self, v11, &v13, v12);
 }
 
-- (NTKParmesanFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKParmesanFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v17.receiver = self;
   v17.super_class = NTKParmesanFaceView;
-  v9 = [(NTKParmesanFaceView *)&v17 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKParmesanFaceView *)&v17 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     v10 = [NTKParmesanFaceViewComplicationFactory alloc];
-    v12 = objc_msgSend_initWithFaceView_device_(v10, v11, v9, v8);
+    v12 = objc_msgSend_initWithFaceView_device_(v10, v11, v9, deviceCopy);
     v13 = *(v9 + 110);
     *(v9 + 110) = v12;
 
@@ -999,13 +999,13 @@ LABEL_7:
   return v13;
 }
 
-- (void)_updateForResourceDirectoryChange:(id)a3
+- (void)_updateForResourceDirectoryChange:(id)change
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v21.receiver = self;
   v21.super_class = NTKParmesanFaceView;
-  [(NTKParmesanFaceView *)&v21 _updateForResourceDirectoryChange:v4];
+  [(NTKParmesanFaceView *)&v21 _updateForResourceDirectoryChange:changeCopy];
   v8 = objc_msgSend_resourceDirectory(self, v5, v6, v7);
   v9 = NTKEqualStrings();
 
@@ -1016,7 +1016,7 @@ LABEL_7:
     {
       v17 = objc_msgSend_resourceDirectory(self, v14, v15, v16);
       *buf = 138412546;
-      v23 = v4;
+      v23 = changeCopy;
       v24 = 2112;
       v25 = v17;
       _os_log_impl(&dword_23BF0C000, v13, OS_LOG_TYPE_DEFAULT, "_updateForResourceDirectoryChange: change resource directory from %@ to %@", buf, 0x16u);
@@ -1075,24 +1075,24 @@ LABEL_7:
   return v2;
 }
 
-- (id)_paletteForStyle:(unint64_t)a3
+- (id)_paletteForStyle:(unint64_t)style
 {
-  v6 = objc_msgSend_stylePalette(self, a2, a3, v3);
+  v6 = objc_msgSend_stylePalette(self, a2, style, v3);
   v10 = objc_msgSend_copy(v6, v7, v8, v9);
 
   v14 = objc_msgSend_delegate(self, v11, v12, v13);
-  v17 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v15, a3, v16);
+  v17 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v15, style, v16);
   v21 = objc_msgSend_stringValue(v17, v18, v19, v20);
   v24 = objc_msgSend_faceViewDidRequestCustomDataForKey_(v14, v22, v21, v23);
 
   if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_msgSend_pigmentNamed_(MEMORY[0x277D2C0B0], v25, v24, v26), (v29 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v30 = [NTKParmesanPigmentProviderCoordinator alloc];
-    v33 = objc_msgSend_initWithSelectedStyle_(v30, v31, a3, v32);
+    v33 = objc_msgSend_initWithSelectedStyle_(v30, v31, style, v32);
     v29 = objc_msgSend_defaultColorOptionForSlot_(v33, v34, @"style-color", v35);
     v39 = objc_msgSend_JSONObjectRepresentation(v29, v36, v37, v38);
     v43 = objc_msgSend_delegate(self, v40, v41, v42);
-    v46 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v44, a3, v45);
+    v46 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v44, style, v45);
     v50 = objc_msgSend_stringValue(v46, v47, v48, v49);
     objc_msgSend_faceViewDidUpdateCustomData_forKey_(v43, v51, v39, v50);
   }
@@ -1102,29 +1102,29 @@ LABEL_7:
   return v10;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if ((a3 - 12) > 7)
+  if ((options - 12) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_278BA7568[a3 - 12];
+    return qword_278BA7568[options - 12];
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5 refreshHandler:(id)a6
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options refreshHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ((objc_msgSend__needCustomSwatchImageForEditMode_(self, v13, a4, v14) & 1) == 0)
+  optionCopy = option;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ((objc_msgSend__needCustomSwatchImageForEditMode_(self, v13, mode, v14) & 1) == 0)
   {
     v335.receiver = self;
     v335.super_class = NTKParmesanFaceView;
-    v65 = [(NTKParmesanFaceView *)&v335 _swatchImageForEditOption:v10 mode:a4 withSelectedOptions:v11];
+    v65 = [(NTKParmesanFaceView *)&v335 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
 LABEL_12:
     v66 = v65;
     goto LABEL_53;
@@ -1132,18 +1132,18 @@ LABEL_12:
 
   objc_msgSend__setupSwatchRefreshHandlerManagerIfNeeded(self, v15, v16, v17);
   objc_msgSend__setupTimeFormatterIfNeeded(self, v18, v19, v20);
-  if ((objc_msgSend__validateEditOption_forMode_(self, v21, v10, a4) & 1) == 0)
+  if ((objc_msgSend__validateEditOption_forMode_(self, v21, optionCopy, mode) & 1) == 0)
   {
     v334.receiver = self;
     v334.super_class = NTKParmesanFaceView;
-    v65 = [(NTKParmesanFaceView *)&v334 _swatchImageForEditOption:v10 mode:a4 withSelectedOptions:v11 refreshHandler:v12];
+    v65 = [(NTKParmesanFaceView *)&v334 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy refreshHandler:handlerCopy];
     goto LABEL_12;
   }
 
   v25 = 0;
-  if (a4 > 14)
+  if (mode > 14)
   {
-    if (a4 == 15)
+    if (mode == 15)
     {
       v99 = objc_msgSend_controller(self, v22, v23, v24);
       v323 = objc_msgSend_typeface(v99, v100, v101, v102);
@@ -1151,7 +1151,7 @@ LABEL_12:
       v106 = objc_msgSend_controller(self, v103, v104, v105);
       v110 = objc_msgSend_numerals(v106, v107, v108, v109);
 
-      v319 = objc_msgSend_style(v10, v111, v112, v113);
+      v319 = objc_msgSend_style(optionCopy, v111, v112, v113);
       v51 = objc_msgSend__paletteForStyle_(self, v114, v319, v115);
       v119 = objc_msgSend_controller(self, v116, v117, v118);
       v123 = objc_msgSend_timeOption(v119, v120, v121, v122);
@@ -1163,7 +1163,7 @@ LABEL_12:
       goto LABEL_25;
     }
 
-    if (a4 != 19)
+    if (mode != 19)
     {
       goto LABEL_26;
     }
@@ -1171,7 +1171,7 @@ LABEL_12:
     v67 = objc_msgSend_controller(self, v22, v23, v24);
     v71 = objc_msgSend_typeface(v67, v68, v69, v70);
 
-    v75 = objc_msgSend_numeralOption(v10, v72, v73, v74);
+    v75 = objc_msgSend_numeralOption(optionCopy, v72, v73, v74);
     if (objc_msgSend_isPartiallySupported_(NTKParmesanNumeralsEditOption, v76, v75, v77))
     {
       v81 = 0;
@@ -1188,9 +1188,9 @@ LABEL_12:
 
   else
   {
-    if (a4 != 13)
+    if (mode != 13)
     {
-      if (a4 != 14)
+      if (mode != 14)
       {
         goto LABEL_26;
       }
@@ -1206,7 +1206,7 @@ LABEL_12:
       v318 = objc_msgSend_styleOption(v45, v46, v47, v48);
 
       v51 = objc_msgSend__paletteForStyle_(self, v49, v318, v50);
-      v55 = objc_msgSend_time(v10, v52, v53, v54);
+      v55 = objc_msgSend_time(optionCopy, v52, v53, v54);
       if (objc_msgSend_isPartiallySupported_(NTKParmesanNumeralsEditOption, v56, v37, v57))
       {
         v37 = 0;
@@ -1227,7 +1227,7 @@ LABEL_12:
     v83 = objc_msgSend_controller(self, v22, v23, v24);
     v87 = objc_msgSend_numerals(v83, v84, v85, v86);
 
-    v91 = objc_msgSend_typeface(v10, v88, v89, v90);
+    v91 = objc_msgSend_typeface(optionCopy, v88, v89, v90);
     if (objc_msgSend_isPartiallySupported_(NTKParmesanNumeralsEditOption, v92, v87, v93))
     {
       v97 = 0;
@@ -1246,7 +1246,7 @@ LABEL_25:
 
 LABEL_26:
   v131 = objc_msgSend_swatchRefreshHandlerManager(self, v22, v23, v24);
-  v135 = objc_msgSend_copy(v12, v132, v133, v134);
+  v135 = objc_msgSend_copy(handlerCopy, v132, v133, v134);
   objc_msgSend_setHandler_forKey_(v131, v136, v135, v25);
 
   v139 = objc_msgSend_cachedSwatchForKey_(MEMORY[0x277D2C108], v137, v25, v138);
@@ -1254,11 +1254,11 @@ LABEL_26:
   if (!v139)
   {
     objc_msgSend_sizeForSwatchStyle_(MEMORY[0x277D2BFE8], v140, 3, v141);
-    if (a4 > 14)
+    if (mode > 14)
     {
-      if (a4 == 15)
+      if (mode == 15)
       {
-        v321 = v10;
+        v321 = optionCopy;
         v248 = objc_msgSend_style(v321, v245, v246, v247);
         v317 = objc_msgSend__paletteForStyle_(self, v249, v248, v250);
         v254 = objc_msgSend_controller(self, v251, v252, v253);
@@ -1307,10 +1307,10 @@ LABEL_50:
           v331 = v191;
           v332 = v193;
           v327 = v182;
-          v328 = self;
+          selfCopy = self;
           v329 = v25;
           v333 = v244;
-          v330 = v12;
+          v330 = handlerCopy;
           v306 = v182;
           dispatch_async(MEMORY[0x277D85CD0], block);
         }
@@ -1318,12 +1318,12 @@ LABEL_50:
         goto LABEL_52;
       }
 
-      if (a4 != 19)
+      if (mode != 19)
       {
         goto LABEL_52;
       }
 
-      v195 = v10;
+      v195 = optionCopy;
       v199 = objc_msgSend_numeralOption(v195, v196, v197, v198);
       v203 = objc_msgSend_controller(self, v200, v201, v202);
       v207 = objc_msgSend_typeface(v203, v204, v205, v206);
@@ -1344,14 +1344,14 @@ LABEL_50:
 
     else
     {
-      if (a4 != 13)
+      if (mode != 13)
       {
-        if (a4 != 14)
+        if (mode != 14)
         {
           goto LABEL_52;
         }
 
-        v324 = v10;
+        v324 = optionCopy;
         v146 = objc_msgSend_time(v324, v143, v144, v145);
         v150 = objc_msgSend_controller(self, v147, v148, v149);
         v154 = objc_msgSend_numerals(v150, v151, v152, v153);
@@ -1387,7 +1387,7 @@ LABEL_50:
         goto LABEL_49;
       }
 
-      v195 = v10;
+      v195 = optionCopy;
       v219 = objc_msgSend_typeface(v195, v216, v217, v218);
       v223 = objc_msgSend_controller(self, v220, v221, v222);
       v227 = objc_msgSend_numerals(v223, v224, v225, v226);
@@ -1425,10 +1425,10 @@ LABEL_53:
   return v66;
 }
 
-- (id)_compositionKeyForCurrentCompositionWithTimeOption:(int64_t)a3 numerals:(unint64_t)a4
+- (id)_compositionKeyForCurrentCompositionWithTimeOption:(int64_t)option numerals:(unint64_t)numerals
 {
-  v6 = objc_msgSend_controller(self, a2, a3, a4);
-  v8 = objc_msgSend_compositionForCurrentAssetWithTimeOption_numerals_(v6, v7, a3, a4);
+  v6 = objc_msgSend_controller(self, a2, option, numerals);
+  v8 = objc_msgSend_compositionForCurrentAssetWithTimeOption_numerals_(v6, v7, option, numerals);
 
   if (v8)
   {
@@ -1438,51 +1438,51 @@ LABEL_53:
   else
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v9, a3, v11);
+    v14 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v9, option, v11);
     v12 = objc_msgSend_stringWithFormat_(v13, v15, @"empty-composition-%@", v16, v14);
   }
 
   return v12;
 }
 
-- (id)_swatchKeyForTypeface:(int64_t)a3 numerals:(unint64_t)a4 palette:(id)a5
+- (id)_swatchKeyForTypeface:(int64_t)typeface numerals:(unint64_t)numerals palette:(id)palette
 {
   v7 = MEMORY[0x277CCACA8];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a5;
-  v12 = objc_msgSend_numberWithInteger_(v8, v10, a3, v11);
-  v15 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v13, a4, v14);
-  v19 = objc_msgSend_identifier(v9, v16, v17, v18);
+  paletteCopy = palette;
+  v12 = objc_msgSend_numberWithInteger_(v8, v10, typeface, v11);
+  v15 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v13, numerals, v14);
+  v19 = objc_msgSend_identifier(paletteCopy, v16, v17, v18);
 
   v22 = objc_msgSend_stringWithFormat_(v7, v20, @"parmesan-typeface-%@-numerals-%@-palette-%@", v21, v12, v15, v19);
 
   return v22;
 }
 
-- (id)_swatchKeyForStyle:(int64_t)a3 stylePalette:(id)a4 timePalette:(id)a5 typeface:(int64_t)a6 numerals:(unint64_t)a7 time:(int64_t)a8 compositionSwatchKey:(id)a9
+- (id)_swatchKeyForStyle:(int64_t)style stylePalette:(id)palette timePalette:(id)timePalette typeface:(int64_t)typeface numerals:(unint64_t)numerals time:(int64_t)time compositionSwatchKey:(id)key
 {
   v43 = MEMORY[0x277CCACA8];
   v14 = MEMORY[0x277CCABB0];
-  v15 = a9;
-  v16 = a5;
-  v17 = a4;
-  v20 = objc_msgSend_numberWithInteger_(v14, v18, a3, v19);
-  v24 = objc_msgSend_identifier(v17, v21, v22, v23);
+  keyCopy = key;
+  timePaletteCopy = timePalette;
+  paletteCopy = palette;
+  v20 = objc_msgSend_numberWithInteger_(v14, v18, style, v19);
+  v24 = objc_msgSend_identifier(paletteCopy, v21, v22, v23);
 
-  v28 = objc_msgSend_identifier(v16, v25, v26, v27);
+  v28 = objc_msgSend_identifier(timePaletteCopy, v25, v26, v27);
 
-  v31 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v29, a6, v30);
-  v34 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v32, a7, v33);
-  v37 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v35, a8, v36);
-  v40 = objc_msgSend_stringWithFormat_(v43, v38, @"parmesan-%@-%@-%@-%@-%@-%@-%@", v39, v20, v24, v28, v31, v34, v37, v15);
+  v31 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v29, typeface, v30);
+  v34 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v32, numerals, v33);
+  v37 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v35, time, v36);
+  v40 = objc_msgSend_stringWithFormat_(v43, v38, @"parmesan-%@-%@-%@-%@-%@-%@-%@", v39, v20, v24, v28, v31, v34, v37, keyCopy);
 
   return v40;
 }
 
-- (id)_timeLabelWithTypeface:(int64_t)a3 numerals:(unint64_t)a4 palette:(id)a5
+- (id)_timeLabelWithTypeface:(int64_t)typeface numerals:(unint64_t)numerals palette:(id)palette
 {
   v8 = MEMORY[0x277D2BFE8];
-  v9 = a5;
+  paletteCopy = palette;
   objc_msgSend_sizeForSwatchStyle_(v8, v10, 4, v11);
   v13 = v12;
   v15 = v14;
@@ -1501,7 +1501,7 @@ LABEL_53:
   v37 = [NTKParmesanTimeLayout alloc];
   v39 = objc_msgSend_initWithAlignment_scale_(v37, v38, 0, 1);
   v43 = objc_msgSend_device(self, v40, v41, v42);
-  objc_msgSend_prepareForSwatchWithLayout_typeface_complicationVisibility_palette_numerals_device_(v36, v44, v39, a3, 0, v9, a4, v43);
+  objc_msgSend_prepareForSwatchWithLayout_typeface_complicationVisibility_palette_numerals_device_(v36, v44, v39, typeface, 0, paletteCopy, numerals, v43);
 
   v48 = objc_msgSend_swatchTimeFormatter(self, v45, v46, v47);
   v52 = objc_msgSend_timeText(v48, v49, v50, v51);
@@ -1514,11 +1514,11 @@ LABEL_53:
   return v36;
 }
 
-- (id)_galleryViewWithComposition:(id)a3 timeOption:(int64_t)a4 typeface:(int64_t)a5 numerals:(unint64_t)a6 timePalette:(id)a7 contentEffect:(id)a8
+- (id)_galleryViewWithComposition:(id)composition timeOption:(int64_t)option typeface:(int64_t)typeface numerals:(unint64_t)numerals timePalette:(id)palette contentEffect:(id)effect
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a3;
+  effectCopy = effect;
+  paletteCopy = palette;
+  compositionCopy = composition;
   v17 = [NTKParmesanGalleryView alloc];
   objc_msgSend_bounds(self, v18, v19, v20);
   v22 = v21;
@@ -1526,16 +1526,16 @@ LABEL_53:
   v26 = v25;
   v28 = v27;
   v32 = objc_msgSend_device(self, v29, v30, v31);
-  v36 = objc_msgSend_timeLayout(v16, v33, v34, v35);
-  v38 = objc_msgSend_initWithFrame_device_typeface_numerals_timeOption_timeLayout_timePalette_(v17, v37, v32, a5, a6, a4, v36, v15, v22, v24, v26, v28);
+  v36 = objc_msgSend_timeLayout(compositionCopy, v33, v34, v35);
+  v38 = objc_msgSend_initWithFrame_device_typeface_numerals_timeOption_timeLayout_timePalette_(v17, v37, v32, typeface, numerals, option, v36, paletteCopy, v22, v24, v26, v28);
 
   objc_msgSend_setIsGeneratingSwatch_(v38, v39, 1, v40);
   v44 = objc_msgSend_face_timeView(v38, v41, v42, v43);
   v45 = NTKIdealizedDate();
   objc_msgSend_setOverrideDate_duration_(v44, v46, v45, v47, 0.0);
 
-  objc_msgSend_setComposition_(v38, v48, v16, v49);
-  objc_msgSend_setContentEffect_(v38, v50, v14, v51);
+  objc_msgSend_setComposition_(v38, v48, compositionCopy, v49);
+  objc_msgSend_setContentEffect_(v38, v50, effectCopy, v51);
 
   objc_msgSend_setNeedsLayout(v38, v52, v53, v54);
   objc_msgSend_setNeedsDisplay(v38, v55, v56, v57);
@@ -1565,10 +1565,10 @@ LABEL_53:
   }
 }
 
-- (BOOL)_validateEditOption:(id)a3 forMode:(int64_t)a4
+- (BOOL)_validateEditOption:(id)option forMode:(int64_t)mode
 {
-  v5 = a3;
-  if (a4 - 13) <= 6 && ((0x47u >> (a4 - 13)))
+  optionCopy = option;
+  if (mode - 13) <= 6 && ((0x47u >> (mode - 13)))
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();

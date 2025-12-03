@@ -1,14 +1,14 @@
 @interface SBSyncControllerAccessibility
-- (void)_accessibilityWriteOutDataResetForAXSettings:(id)a3;
-- (void)resetService:(id)a3 willBeginDataResetWithMode:(int64_t)a4;
+- (void)_accessibilityWriteOutDataResetForAXSettings:(id)settings;
+- (void)resetService:(id)service willBeginDataResetWithMode:(int64_t)mode;
 @end
 
 @implementation SBSyncControllerAccessibility
 
-- (void)_accessibilityWriteOutDataResetForAXSettings:(id)a3
+- (void)_accessibilityWriteOutDataResetForAXSettings:(id)settings
 {
   v22 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  settingsCopy = settings;
   v4 = AXLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -16,12 +16,12 @@
     _os_log_impl(&dword_29C37A000, v4, OS_LOG_TYPE_DEFAULT, "Begin right out of ax settings data", buf, 2u);
   }
 
-  v5 = [MEMORY[0x29EDB9FB8] defaultManager];
-  if (([v5 fileExistsAtPath:@"/var/mobile/Library/Accessibility/DataResetAccessibilityFeatureReenablement"] & 1) == 0 && (objc_msgSend(v5, "fileExistsAtPath:", @"/var/mobile/Library/Accessibility") & 1) == 0)
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  if (([defaultManager fileExistsAtPath:@"/var/mobile/Library/Accessibility/DataResetAccessibilityFeatureReenablement"] & 1) == 0 && (objc_msgSend(defaultManager, "fileExistsAtPath:", @"/var/mobile/Library/Accessibility") & 1) == 0)
   {
     v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x29EDB9E88], *MEMORY[0x29EDB9E80], 0}];
     v19 = 0;
-    [v5 createDirectoryAtPath:@"/var/mobile/Library/Accessibility" withIntermediateDirectories:1 attributes:v6 error:&v19];
+    [defaultManager createDirectoryAtPath:@"/var/mobile/Library/Accessibility" withIntermediateDirectories:1 attributes:v6 error:&v19];
     v7 = v19;
     v8 = AXLogCommon();
     v9 = v8;
@@ -57,7 +57,7 @@ LABEL_32:
 
     v6 = [MEMORY[0x29EDB8DC0] dictionaryWithObjectsAndKeys:{*MEMORY[0x29EDB9E88], *MEMORY[0x29EDB9E80], 0}];
     v18 = 0;
-    [v5 setAttributes:v6 ofItemAtPath:@"/var/mobile/Library/Accessibility/DataResetAccessibilityFeatureReenablement" error:&v18];
+    [defaultManager setAttributes:v6 ofItemAtPath:@"/var/mobile/Library/Accessibility/DataResetAccessibilityFeatureReenablement" error:&v18];
     v7 = v18;
     if (v7)
     {
@@ -68,7 +68,7 @@ LABEL_32:
       }
     }
 
-    write(v10, [v3 bytes], objc_msgSend(v3, "length"));
+    write(v10, [settingsCopy bytes], objc_msgSend(settingsCopy, "length"));
     fcntl(v10, 51, 0);
     close(v10);
     v13 = opendir([@"/var/mobile/Library/Accessibility" fileSystemRepresentation]);
@@ -117,11 +117,11 @@ LABEL_29:
 LABEL_35:
 }
 
-- (void)resetService:(id)a3 willBeginDataResetWithMode:(int64_t)a4
+- (void)resetService:(id)service willBeginDataResetWithMode:(int64_t)mode
 {
   v32 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  if ((a4 - 3) <= 1)
+  serviceCopy = service;
+  if ((mode - 3) <= 1)
   {
     if (MEMORY[0x29ED37A70](*MEMORY[0x29EDC8530], 0))
     {
@@ -200,7 +200,7 @@ LABEL_35:
 
   v22.receiver = self;
   v22.super_class = SBSyncControllerAccessibility;
-  [(SBSyncControllerAccessibility *)&v22 resetService:v6 willBeginDataResetWithMode:a4];
+  [(SBSyncControllerAccessibility *)&v22 resetService:serviceCopy willBeginDataResetWithMode:mode];
 }
 
 - (void)_accessibilityWriteOutDataResetForAXSettings:.cold.3()

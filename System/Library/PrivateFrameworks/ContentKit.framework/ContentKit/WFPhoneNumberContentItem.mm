@@ -1,33 +1,33 @@
 @interface WFPhoneNumberContentItem
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
 - (WFPhoneNumber)phoneNumber;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 - (id)richListTitle;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
 @end
 
 @implementation WFPhoneNumberContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Phone Numbers", @"Phone Numbers");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Phone Number", @"Phone Number");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -65,26 +65,26 @@
   return v6;
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  if (objc_opt_class() == a5)
+  representationsCopy = representations;
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
-    v11 = [v9 permissionRequestor];
+    permissionRequestor = [optionsCopy permissionRequestor];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __75__WFPhoneNumberContentItem_generateObjectRepresentations_options_forClass___block_invoke;
     v12[3] = &unk_278349D48;
     v12[4] = self;
-    v13 = v8;
-    [v11 allowContactsAccessWithCompletionHandler:v12];
+    v13 = representationsCopy;
+    [permissionRequestor allowContactsAccessWithCompletionHandler:v12];
   }
 
   else
   {
-    v10 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-    (*(v8 + 2))(v8, 0, v10);
+    v10 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+    (*(representationsCopy + 2))(representationsCopy, 0, v10);
   }
 }
 
@@ -187,18 +187,18 @@ LABEL_12:
   return v13;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  v7 = [(WFPhoneNumberContentItem *)self phoneNumber:a3];
-  if (objc_opt_class() == a3)
+  v7 = [(WFPhoneNumberContentItem *)self phoneNumber:class];
+  if (objc_opt_class() == class)
   {
-    v9 = [v7 formattedPhoneNumber];
-    v10 = [(WFContentItem *)self name];
+    formattedPhoneNumber = [v7 formattedPhoneNumber];
+    name = [(WFContentItem *)self name];
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v8 = 0;
       goto LABEL_7;
@@ -206,19 +206,19 @@ LABEL_12:
 
     v11 = MEMORY[0x277CBEBC0];
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v7 string];
-    v14 = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
-    v15 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:v14];
+    string = [v7 string];
+    uRLHostAllowedCharacterSet = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
+    v15 = [string stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
     v16 = [v12 stringWithFormat:@"tel:%@", v15];
-    v9 = [v11 URLWithString:v16];
+    formattedPhoneNumber = [v11 URLWithString:v16];
 
     v17 = MEMORY[0x277CCACA8];
     v18 = WFLocalizedString(@"Call %@");
-    v19 = [v7 formattedPhoneNumber];
-    v10 = [v17 localizedStringWithFormat:v18, v19];
+    formattedPhoneNumber2 = [v7 formattedPhoneNumber];
+    name = [v17 localizedStringWithFormat:v18, formattedPhoneNumber2];
   }
 
-  v8 = [WFObjectRepresentation object:v9 named:v10];
+  v8 = [WFObjectRepresentation object:formattedPhoneNumber named:name];
 
 LABEL_7:
 
@@ -232,19 +232,19 @@ LABEL_7:
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFPhoneNumberContentItem *)self phoneNumber];
-  v6 = [v5 contactName];
+  subtitleCopy = subtitle;
+  phoneNumber = [(WFPhoneNumberContentItem *)self phoneNumber];
+  contactName = [phoneNumber contactName];
 
-  if (v6)
+  if (contactName)
   {
-    if (v4)
+    if (subtitleCopy)
     {
-      v7 = [(WFPhoneNumberContentItem *)self phoneNumber];
-      v8 = [v7 formattedPhoneNumber];
-      v4[2](v4, v8);
+      phoneNumber2 = [(WFPhoneNumberContentItem *)self phoneNumber];
+      formattedPhoneNumber = [phoneNumber2 formattedPhoneNumber];
+      subtitleCopy[2](subtitleCopy, formattedPhoneNumber);
     }
 
     v9 = 1;
@@ -254,23 +254,23 @@ LABEL_7:
   {
     v11.receiver = self;
     v11.super_class = WFPhoneNumberContentItem;
-    v9 = [(WFContentItem *)&v11 getListSubtitle:v4];
+    v9 = [(WFContentItem *)&v11 getListSubtitle:subtitleCopy];
   }
 
   return v9;
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFPhoneNumberContentItem *)self phoneNumber];
-  v6 = [v5 localizedLabel];
+  textCopy = text;
+  phoneNumber = [(WFPhoneNumberContentItem *)self phoneNumber];
+  localizedLabel = [phoneNumber localizedLabel];
 
-  v7 = [v6 length];
+  v7 = [localizedLabel length];
   v8 = v7;
-  if (v4 && v7)
+  if (textCopy && v7)
   {
-    v4[2](v4, v6);
+    textCopy[2](textCopy, localizedLabel);
   }
 
   return v8 != 0;
@@ -278,38 +278,38 @@ LABEL_7:
 
 - (id)richListTitle
 {
-  v3 = [(WFContentItem *)self internalRepresentation];
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v4 = [v3 specifiedName];
-  if (v4)
+  specifiedName = [internalRepresentation specifiedName];
+  if (specifiedName)
   {
 
 LABEL_4:
     v10.receiver = self;
     v10.super_class = WFPhoneNumberContentItem;
-    v5 = [(WFContentItem *)&v10 richListTitle];
+    richListTitle = [(WFContentItem *)&v10 richListTitle];
     goto LABEL_5;
   }
 
-  v7 = [(WFPhoneNumberContentItem *)self phoneNumber];
-  v8 = [v7 contactName];
+  phoneNumber = [(WFPhoneNumberContentItem *)self phoneNumber];
+  contactName = [phoneNumber contactName];
 
-  if (!v8)
+  if (!contactName)
   {
     goto LABEL_4;
   }
 
-  v9 = [(WFPhoneNumberContentItem *)self phoneNumber];
-  v5 = [v9 contactName];
+  phoneNumber2 = [(WFPhoneNumberContentItem *)self phoneNumber];
+  richListTitle = [phoneNumber2 contactName];
 
 LABEL_5:
 
-  return v5;
+  return richListTitle;
 }
 
 @end

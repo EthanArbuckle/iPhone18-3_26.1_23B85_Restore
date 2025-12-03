@@ -1,5 +1,5 @@
 @interface RPRSDDeviceInfo_Internal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)name;
 - (NSUUID)uuid;
 - (int64_t)hash;
@@ -31,17 +31,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_261F9EE24();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_26203A73C();
     swift_unknownObjectRelease();
@@ -50,7 +50,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_261F9EEC0(v8);

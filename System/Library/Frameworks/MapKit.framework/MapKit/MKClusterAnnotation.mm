@@ -1,5 +1,5 @@
 @interface MKClusterAnnotation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)_averageCoordinate;
 - (CLLocationCoordinate2D)coordinate;
 - (MKClusterAnnotation)initWithMemberAnnotations:(NSArray *)memberAnnotations;
@@ -12,15 +12,15 @@
 
 @implementation MKClusterAnnotation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (![a3 _mapkit_isMKClusterAnnotation])
+  if (![equal _mapkit_isMKClusterAnnotation])
   {
     return 0;
   }
 
-  v5 = *(a3 + 1);
+  v5 = *(equal + 1);
   v6 = [(NSArray *)self->_memberAnnotations count];
   if (v6 != [v5 count])
   {
@@ -82,8 +82,8 @@ LABEL_14:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(MKClusterAnnotation *)self memberAnnotations];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  memberAnnotations = [(MKClusterAnnotation *)self memberAnnotations];
+  v4 = [memberAnnotations countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -96,7 +96,7 @@ LABEL_14:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(memberAnnotations);
         }
 
         [*(*(&v18 + 1) + 8 * i) coordinate];
@@ -104,7 +104,7 @@ LABEL_14:
         v7 = v7 + v11;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [memberAnnotations countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -116,10 +116,10 @@ LABEL_14:
     v8 = 0.0;
   }
 
-  v12 = [(MKClusterAnnotation *)self memberAnnotations];
-  v13 = v8 / [v12 count];
-  v14 = [(MKClusterAnnotation *)self memberAnnotations];
-  v15 = CLLocationCoordinate2DMake(v13, v7 / [v14 count]);
+  memberAnnotations2 = [(MKClusterAnnotation *)self memberAnnotations];
+  v13 = v8 / [memberAnnotations2 count];
+  memberAnnotations3 = [(MKClusterAnnotation *)self memberAnnotations];
+  v15 = CLLocationCoordinate2DMake(v13, v7 / [memberAnnotations3 count]);
 
   latitude = v15.latitude;
   longitude = v15.longitude;
@@ -217,13 +217,13 @@ LABEL_14:
 
     else
     {
-      v4 = [(MKClusterAnnotation *)self memberAnnotations];
-      v5 = [v4 firstObject];
+      memberAnnotations = [(MKClusterAnnotation *)self memberAnnotations];
+      firstObject = [memberAnnotations firstObject];
 
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v5 title];
-        v7 = [v6 copy];
+        title = [firstObject title];
+        v7 = [title copy];
         v8 = self->__title;
         self->__title = v7;
       }

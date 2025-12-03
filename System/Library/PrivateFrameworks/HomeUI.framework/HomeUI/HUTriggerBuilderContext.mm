@@ -1,26 +1,26 @@
 @interface HUTriggerBuilderContext
 - (HUTriggerBuilderContext)init;
-- (HUTriggerBuilderContext)initWithTriggerBuilderContext:(id)a3;
+- (HUTriggerBuilderContext)initWithTriggerBuilderContext:(id)context;
 @end
 
 @implementation HUTriggerBuilderContext
 
-- (HUTriggerBuilderContext)initWithTriggerBuilderContext:(id)a3
+- (HUTriggerBuilderContext)initWithTriggerBuilderContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [(HUTriggerBuilderContext *)self init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (contextCopy)
     {
-      v5->_showTriggerEnableSwitch = [v4 showTriggerEnableSwitch];
-      v6->_showTriggerSummary = [v4 showTriggerSummary];
-      v6->_showTriggerDeleteButton = [v4 showTriggerDeleteButton];
-      v6->_showActionSetsInstructions = [v4 showActionSetsInstructions];
-      v6->_showConditionTriggers = [v4 showConditionTriggers];
-      v6->_allowDurationEditing = [v4 allowDurationEditing];
-      allowConvertToShortcut = [v4 allowConvertToShortcut];
+      v5->_showTriggerEnableSwitch = [contextCopy showTriggerEnableSwitch];
+      v6->_showTriggerSummary = [contextCopy showTriggerSummary];
+      v6->_showTriggerDeleteButton = [contextCopy showTriggerDeleteButton];
+      v6->_showActionSetsInstructions = [contextCopy showActionSetsInstructions];
+      v6->_showConditionTriggers = [contextCopy showConditionTriggers];
+      v6->_allowDurationEditing = [contextCopy allowDurationEditing];
+      allowConvertToShortcut = [contextCopy allowConvertToShortcut];
     }
 
     else
@@ -29,124 +29,124 @@
     }
 
     v6->_allowConvertToShortcut = allowConvertToShortcut;
-    v8 = [v4 testActionsInstructionDescription];
-    if (v8)
+    testActionsInstructionDescription = [contextCopy testActionsInstructionDescription];
+    if (testActionsInstructionDescription)
     {
-      [(HUTriggerBuilderContext *)v6 setTestActionsInstructionDescription:v8];
+      [(HUTriggerBuilderContext *)v6 setTestActionsInstructionDescription:testActionsInstructionDescription];
     }
 
     else
     {
-      v9 = [(HUTriggerBuilderContext *)v6 testActionsInstructionDescription];
-      [(HUTriggerBuilderContext *)v6 setTestActionsInstructionDescription:v9];
+      testActionsInstructionDescription2 = [(HUTriggerBuilderContext *)v6 testActionsInstructionDescription];
+      [(HUTriggerBuilderContext *)v6 setTestActionsInstructionDescription:testActionsInstructionDescription2];
     }
 
-    v10 = [v4 serviceActionsInstructionDescription];
-    if (v10)
+    serviceActionsInstructionDescription = [contextCopy serviceActionsInstructionDescription];
+    if (serviceActionsInstructionDescription)
     {
-      [(HUTriggerBuilderContext *)v6 setServiceActionsInstructionDescription:v10];
-    }
-
-    else
-    {
-      v11 = [(HUTriggerBuilderContext *)v6 serviceActionsInstructionDescription];
-      [(HUTriggerBuilderContext *)v6 setServiceActionsInstructionDescription:v11];
-    }
-
-    v12 = [v4 deleteInstructionDescription];
-    if (v12)
-    {
-      [(HUTriggerBuilderContext *)v6 setDeleteInstructionDescription:v12];
+      [(HUTriggerBuilderContext *)v6 setServiceActionsInstructionDescription:serviceActionsInstructionDescription];
     }
 
     else
     {
-      v13 = [(HUTriggerBuilderContext *)v6 deleteInstructionDescription];
-      [(HUTriggerBuilderContext *)v6 setDeleteInstructionDescription:v13];
+      serviceActionsInstructionDescription2 = [(HUTriggerBuilderContext *)v6 serviceActionsInstructionDescription];
+      [(HUTriggerBuilderContext *)v6 setServiceActionsInstructionDescription:serviceActionsInstructionDescription2];
     }
 
-    v14 = [v4 actionEditorInstructionsDescription];
-    if (v14)
+    deleteInstructionDescription = [contextCopy deleteInstructionDescription];
+    if (deleteInstructionDescription)
     {
-      [(HUTriggerBuilderContext *)v6 setActionEditorInstructionsDescription:v14];
-    }
-
-    else
-    {
-      v15 = [(HUTriggerBuilderContext *)v6 actionEditorInstructionsDescription];
-      [(HUTriggerBuilderContext *)v6 setActionEditorInstructionsDescription:v15];
-    }
-
-    v16 = [v4 triggerContextAwareTitle];
-    if (v16)
-    {
-      [(HUTriggerBuilderContext *)v6 setTriggerContextAwareTitle:v16];
+      [(HUTriggerBuilderContext *)v6 setDeleteInstructionDescription:deleteInstructionDescription];
     }
 
     else
     {
-      v17 = [(HUTriggerBuilderContext *)v6 triggerContextAwareTitle];
-      [(HUTriggerBuilderContext *)v6 setTriggerContextAwareTitle:v17];
+      deleteInstructionDescription2 = [(HUTriggerBuilderContext *)v6 deleteInstructionDescription];
+      [(HUTriggerBuilderContext *)v6 setDeleteInstructionDescription:deleteInstructionDescription2];
     }
 
-    v18 = [v4 unsupportedTriggers];
-    if (v18)
+    actionEditorInstructionsDescription = [contextCopy actionEditorInstructionsDescription];
+    if (actionEditorInstructionsDescription)
     {
-      [(HUTriggerBuilderContext *)v6 setUnsupportedTriggers:v18];
-    }
-
-    else
-    {
-      v19 = [(HUTriggerBuilderContext *)v6 unsupportedTriggers];
-      [(HUTriggerBuilderContext *)v6 setUnsupportedTriggers:v19];
-    }
-
-    v20 = [v4 deleteConfirmationAlertTitle];
-    if (v20)
-    {
-      [(HUTriggerBuilderContext *)v6 setDeleteConfirmationAlertTitle:v20];
+      [(HUTriggerBuilderContext *)v6 setActionEditorInstructionsDescription:actionEditorInstructionsDescription];
     }
 
     else
     {
-      v21 = [(HUTriggerBuilderContext *)v6 deleteConfirmationAlertTitle];
-      [(HUTriggerBuilderContext *)v6 setDeleteConfirmationAlertTitle:v21];
+      actionEditorInstructionsDescription2 = [(HUTriggerBuilderContext *)v6 actionEditorInstructionsDescription];
+      [(HUTriggerBuilderContext *)v6 setActionEditorInstructionsDescription:actionEditorInstructionsDescription2];
     }
 
-    v22 = [v4 deleteConfirmationAlertMessage];
-    if (v22)
+    triggerContextAwareTitle = [contextCopy triggerContextAwareTitle];
+    if (triggerContextAwareTitle)
     {
-      [(HUTriggerBuilderContext *)v6 setDeleteConfirmationAlertMessage:v22];
-    }
-
-    else
-    {
-      v23 = [(HUTriggerBuilderContext *)v6 deleteConfirmationAlertMessage];
-      [(HUTriggerBuilderContext *)v6 setDeleteConfirmationAlertMessage:v23];
-    }
-
-    v24 = [v4 doneButtonTitle];
-    if (v24)
-    {
-      [(HUTriggerBuilderContext *)v6 setDoneButtonTitle:v24];
+      [(HUTriggerBuilderContext *)v6 setTriggerContextAwareTitle:triggerContextAwareTitle];
     }
 
     else
     {
-      v25 = [(HUTriggerBuilderContext *)v6 doneButtonTitle];
-      [(HUTriggerBuilderContext *)v6 setDoneButtonTitle:v25];
+      triggerContextAwareTitle2 = [(HUTriggerBuilderContext *)v6 triggerContextAwareTitle];
+      [(HUTriggerBuilderContext *)v6 setTriggerContextAwareTitle:triggerContextAwareTitle2];
     }
 
-    v26 = [v4 suggestionItem];
-    if (v26)
+    unsupportedTriggers = [contextCopy unsupportedTriggers];
+    if (unsupportedTriggers)
     {
-      [(HUTriggerBuilderContext *)v6 setSuggestionItem:v26];
+      [(HUTriggerBuilderContext *)v6 setUnsupportedTriggers:unsupportedTriggers];
     }
 
     else
     {
-      v27 = [(HUTriggerBuilderContext *)v6 suggestionItem];
-      [(HUTriggerBuilderContext *)v6 setSuggestionItem:v27];
+      unsupportedTriggers2 = [(HUTriggerBuilderContext *)v6 unsupportedTriggers];
+      [(HUTriggerBuilderContext *)v6 setUnsupportedTriggers:unsupportedTriggers2];
+    }
+
+    deleteConfirmationAlertTitle = [contextCopy deleteConfirmationAlertTitle];
+    if (deleteConfirmationAlertTitle)
+    {
+      [(HUTriggerBuilderContext *)v6 setDeleteConfirmationAlertTitle:deleteConfirmationAlertTitle];
+    }
+
+    else
+    {
+      deleteConfirmationAlertTitle2 = [(HUTriggerBuilderContext *)v6 deleteConfirmationAlertTitle];
+      [(HUTriggerBuilderContext *)v6 setDeleteConfirmationAlertTitle:deleteConfirmationAlertTitle2];
+    }
+
+    deleteConfirmationAlertMessage = [contextCopy deleteConfirmationAlertMessage];
+    if (deleteConfirmationAlertMessage)
+    {
+      [(HUTriggerBuilderContext *)v6 setDeleteConfirmationAlertMessage:deleteConfirmationAlertMessage];
+    }
+
+    else
+    {
+      deleteConfirmationAlertMessage2 = [(HUTriggerBuilderContext *)v6 deleteConfirmationAlertMessage];
+      [(HUTriggerBuilderContext *)v6 setDeleteConfirmationAlertMessage:deleteConfirmationAlertMessage2];
+    }
+
+    doneButtonTitle = [contextCopy doneButtonTitle];
+    if (doneButtonTitle)
+    {
+      [(HUTriggerBuilderContext *)v6 setDoneButtonTitle:doneButtonTitle];
+    }
+
+    else
+    {
+      doneButtonTitle2 = [(HUTriggerBuilderContext *)v6 doneButtonTitle];
+      [(HUTriggerBuilderContext *)v6 setDoneButtonTitle:doneButtonTitle2];
+    }
+
+    suggestionItem = [contextCopy suggestionItem];
+    if (suggestionItem)
+    {
+      [(HUTriggerBuilderContext *)v6 setSuggestionItem:suggestionItem];
+    }
+
+    else
+    {
+      suggestionItem2 = [(HUTriggerBuilderContext *)v6 suggestionItem];
+      [(HUTriggerBuilderContext *)v6 setSuggestionItem:suggestionItem2];
     }
   }
 

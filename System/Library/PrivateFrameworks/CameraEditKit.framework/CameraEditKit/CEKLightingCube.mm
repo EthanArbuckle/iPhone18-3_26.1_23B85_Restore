@@ -1,23 +1,23 @@
 @interface CEKLightingCube
-- (CEKLightingCube)initWithRotationAngle:(double)a3;
-- (CGPath)centerPathWithSize:(CGSize)a3;
-- (CGPath)centerShadowPathWithSize:(CGSize)a3 width:(double)a4;
-- (CGPath)pathForOutlineWithSize:(CGSize)a3 cornerRadius:(double)a4;
-- (CGPath)pathForPlane:(int64_t)a3 size:(CGSize)a4;
-- (double)intensityForPlane:(int64_t)a3;
+- (CEKLightingCube)initWithRotationAngle:(double)angle;
+- (CGPath)centerPathWithSize:(CGSize)size;
+- (CGPath)centerShadowPathWithSize:(CGSize)size width:(double)width;
+- (CGPath)pathForOutlineWithSize:(CGSize)size cornerRadius:(double)radius;
+- (CGPath)pathForPlane:(int64_t)plane size:(CGSize)size;
+- (double)intensityForPlane:(int64_t)plane;
 @end
 
 @implementation CEKLightingCube
 
-- (CEKLightingCube)initWithRotationAngle:(double)a3
+- (CEKLightingCube)initWithRotationAngle:(double)angle
 {
   v85.receiver = self;
   v85.super_class = CEKLightingCube;
   v4 = [(CEKLightingCube *)&v85 init];
   if (v4)
   {
-    v5 = a3;
-    *v6.i64 = Rotation(v5, 0.0, 1.0);
+    angleCopy = angle;
+    *v6.i64 = Rotation(angleCopy, 0.0, 1.0);
     v83 = v7;
     v84 = v6;
     v81 = v9;
@@ -273,19 +273,19 @@
   return v4;
 }
 
-- (CGPath)pathForOutlineWithSize:(CGSize)a3 cornerRadius:(double)a4
+- (CGPath)pathForOutlineWithSize:(CGSize)size cornerRadius:(double)radius
 {
   v7[12] = *MEMORY[0x1E69E9840];
-  [(CEKLightingCube *)self points:v7 forOutlineWithSize:a3.width, a3.height];
-  RoundedPathForConvexPolygon = CreateRoundedPathForConvexPolygon(v7, 6, a4);
+  [(CEKLightingCube *)self points:v7 forOutlineWithSize:size.width, size.height];
+  RoundedPathForConvexPolygon = CreateRoundedPathForConvexPolygon(v7, 6, radius);
   return CFAutorelease(RoundedPathForConvexPolygon);
 }
 
-- (CGPath)centerShadowPathWithSize:(CGSize)a3 width:(double)a4
+- (CGPath)centerShadowPathWithSize:(CGSize)size width:(double)width
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4 / a3.width;
+  height = size.height;
+  width = size.width;
+  v7 = width / size.width;
   Mutable = CGPathCreateMutable();
   screen = self->_screen;
   v10 = &self->_screen[self->_points[3]];
@@ -405,10 +405,10 @@
   return CFAutorelease(v59);
 }
 
-- (CGPath)centerPathWithSize:(CGSize)a3
+- (CGPath)centerPathWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   Mutable = CGPathCreateMutable();
   screen = self->_screen;
   v8 = &self->_screen[self->_points[3]];
@@ -425,20 +425,20 @@
   return CFAutorelease(v9);
 }
 
-- (CGPath)pathForPlane:(int64_t)a3 size:(CGSize)a4
+- (CGPath)pathForPlane:(int64_t)plane size:(CGSize)size
 {
   v6[8] = *MEMORY[0x1E69E9840];
-  [(CEKLightingCube *)self points:v6 forPlane:a3 size:a4.width, a4.height];
+  [(CEKLightingCube *)self points:v6 forPlane:plane size:size.width, size.height];
   RoundedPathForConvexPolygon = CreateRoundedPathForConvexPolygon(v6, 4, 0.0);
   return CFAutorelease(RoundedPathForConvexPolygon);
 }
 
-- (double)intensityForPlane:(int64_t)a3
+- (double)intensityForPlane:(int64_t)plane
 {
   v3 = vrsqrte_f32(1068373115);
   v4 = vmul_f32(v3, vrsqrts_f32(1068373115, vmul_f32(v3, v3)));
   v5 = vmulq_n_f32(xmmword_1B7EDA080, vmul_f32(v4, vrsqrts_f32(1068373115, vmul_f32(v4, v4))).f32[0]);
-  v6 = *&self->_normals[16 * self->_planes[a3]];
+  v6 = *&self->_normals[16 * self->_planes[plane]];
   v7 = vmulq_f32(v6, v6);
   *&v8 = v7.f32[2] + vaddv_f32(*v7.f32);
   *v7.f32 = vrsqrte_f32(v8);

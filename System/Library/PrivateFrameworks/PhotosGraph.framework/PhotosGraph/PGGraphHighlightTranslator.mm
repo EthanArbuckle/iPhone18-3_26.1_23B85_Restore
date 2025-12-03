@@ -1,7 +1,7 @@
 @interface PGGraphHighlightTranslator
-- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)a3 change:(id)a4 progressBlock:(id)a5;
-- (id)graphChangesForDeletedLocalIdentifiers:(id)a3 progressBlock:(id)a4;
-- (id)graphChangesForInsertedLocalIdentifiers:(id)a3 progressBlock:(id)a4;
+- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)identifier change:(id)change progressBlock:(id)block;
+- (id)graphChangesForDeletedLocalIdentifiers:(id)identifiers progressBlock:(id)block;
+- (id)graphChangesForInsertedLocalIdentifiers:(id)identifiers progressBlock:(id)block;
 - (id)highlightUpdateAssetCountProperties;
 - (id)highlightUpdateDateProperties;
 - (id)highlightUpdateSearchProperties;
@@ -81,12 +81,12 @@
   return v4;
 }
 
-- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)a3 change:(id)a4 progressBlock:(id)a5
+- (id)graphChangesForChangedPropertyNamesByLocalIdentifier:(id)identifier change:(id)change progressBlock:(id)block
 {
   v71 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v40 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  changeCopy = change;
+  blockCopy = block;
   v63 = 0;
   v64 = &v63;
   v65 = 0x2020000000;
@@ -95,33 +95,33 @@
   v60 = &v59;
   v61 = 0x2020000000;
   v62 = 0;
-  v41 = _Block_copy(v8);
+  v41 = _Block_copy(blockCopy);
   if (!v41 || (v9 = CFAbsoluteTimeGetCurrent(), v9 - v60[3] < 0.01) || (v60[3] = v9, v58 = 0, (*(v41 + 2))(v41, &v58, 0.0), v10 = *(v64 + 24) | v58, *(v64 + 24) = v10, (v10 & 1) == 0))
   {
-    v12 = [(PGGraphHighlightTranslator *)self highlightUpdateDateProperties];
-    v13 = [(PGGraphHighlightTranslator *)self highlightUpdateTypeProperties];
-    v14 = [(PGGraphHighlightTranslator *)self highlightUpdateAssetCountProperties];
-    v15 = [(PGGraphHighlightTranslator *)self highlightUpdateSearchProperties];
-    v16 = v8;
-    v17 = [(PGGraphHighlightTranslator *)self momentUpdateTypeByHighlightProperty];
+    highlightUpdateDateProperties = [(PGGraphHighlightTranslator *)self highlightUpdateDateProperties];
+    highlightUpdateTypeProperties = [(PGGraphHighlightTranslator *)self highlightUpdateTypeProperties];
+    highlightUpdateAssetCountProperties = [(PGGraphHighlightTranslator *)self highlightUpdateAssetCountProperties];
+    highlightUpdateSearchProperties = [(PGGraphHighlightTranslator *)self highlightUpdateSearchProperties];
+    v16 = blockCopy;
+    momentUpdateTypeByHighlightProperty = [(PGGraphHighlightTranslator *)self momentUpdateTypeByHighlightProperty];
     v18 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v19 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __104__PGGraphHighlightTranslator_graphChangesForChangedPropertyNamesByLocalIdentifier_change_progressBlock___block_invoke;
     v45[3] = &unk_278887BA0;
-    v36 = v12;
+    v36 = highlightUpdateDateProperties;
     v46 = v36;
-    v37 = v13;
+    v37 = highlightUpdateTypeProperties;
     v47 = v37;
-    v48 = v40;
-    v20 = v15;
+    v48 = changeCopy;
+    v20 = highlightUpdateSearchProperties;
     v49 = v20;
-    v38 = v14;
+    v38 = highlightUpdateAssetCountProperties;
     v50 = v38;
-    v21 = v19;
+    v21 = array;
     v51 = v21;
-    v22 = v17;
+    v22 = momentUpdateTypeByHighlightProperty;
     v52 = v22;
     v23 = v18;
     v53 = v23;
@@ -130,15 +130,15 @@
     v55 = &v59;
     v56 = &v63;
     v57 = 0x3F847AE147AE147BLL;
-    [v39 enumerateKeysAndObjectsUsingBlock:v45];
-    v8 = v16;
+    [identifierCopy enumerateKeysAndObjectsUsingBlock:v45];
+    blockCopy = v16;
     if ([v23 count])
     {
-      v25 = [(PGGraphEntityTranslator *)self photoLibrary];
-      v26 = [v25 librarySpecificFetchOptions];
+      photoLibrary = [(PGGraphEntityTranslator *)self photoLibrary];
+      librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-      v27 = [v23 allKeys];
-      v28 = [MEMORY[0x277CD98F8] fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:v27 options:v26];
+      allKeys = [v23 allKeys];
+      v28 = [MEMORY[0x277CD98F8] fetchMomentUUIDsByPhotosHighlightUUIDForPhotosHighlightUUIDs:allKeys options:librarySpecificFetchOptions];
       if (v41)
       {
         Current = CFAbsoluteTimeGetCurrent();
@@ -384,18 +384,18 @@ void __104__PGGraphHighlightTranslator_graphChangesForChangedPropertyNamesByLoca
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)graphChangesForDeletedLocalIdentifiers:(id)a3 progressBlock:(id)a4
+- (id)graphChangesForDeletedLocalIdentifiers:(id)identifiers progressBlock:(id)block
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v12 = [v4 count];
+    v12 = [identifiersCopy count];
     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Batch Updates - Delete %ld highlights", buf, 0xCu);
   }
 
-  v5 = [objc_opt_class() uuidsFromLocalIdentifiers:v4];
+  v5 = [objc_opt_class() uuidsFromLocalIdentifiers:identifiersCopy];
   v6 = [[PGGraphHighlightsDeletion alloc] initWithHighlightUUIDs:v5];
   v10 = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];
@@ -405,18 +405,18 @@ void __104__PGGraphHighlightTranslator_graphChangesForChangedPropertyNamesByLoca
   return v7;
 }
 
-- (id)graphChangesForInsertedLocalIdentifiers:(id)a3 progressBlock:(id)a4
+- (id)graphChangesForInsertedLocalIdentifiers:(id)identifiers progressBlock:(id)block
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v12 = [v4 count];
+    v12 = [identifiersCopy count];
     _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Batch Updates - Insert %ld new highlights", buf, 0xCu);
   }
 
-  v5 = [objc_opt_class() uuidsFromLocalIdentifiers:v4];
+  v5 = [objc_opt_class() uuidsFromLocalIdentifiers:identifiersCopy];
   v6 = [[PGGraphHighlightsInsertion alloc] initWithHighlightUUIDs:v5];
   v10 = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v10 count:1];

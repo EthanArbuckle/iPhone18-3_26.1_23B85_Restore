@@ -1,49 +1,49 @@
 @interface PHAPrivateFederatedLearningModelValidator
-- (BOOL)_isFingerprintVersionSupported:(int64_t)a3;
-- (BOOL)isValidWithFingerprintVersionName:(id)a3 modelInputName:(id)a4 modelOutputName:(id)a5 labelName:(id)a6 labelPolicyName:(id)a7 lossName:(id)a8 layersToTrain:(id)a9 error:(id *)a10;
-- (PHAPrivateFederatedLearningModelValidator)initWithEspressoModelURL:(id)a3 espressoModelShapeURL:(id)a4;
-- (id)_dictionaryForJSONFileURL:(id)a3 error:(id *)a4;
-- (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4 underlyingError:(id)a5;
-- (id)_layerConfigForLayerName:(id)a3 modelConfig:(id)a4 error:(id *)a5;
-- (id)_layerConfigForName:(id)a3 modelConfig:(id)a4 attributeName:(id)a5 useEquality:(BOOL)a6 error:(id *)a7;
-- (id)_sizeForLayerName:(id)a3 modelShape:(id)a4 error:(id *)a5;
-- (int64_t)_featureVectorSizeForFingerprintVersionName:(id)a3 error:(id *)a4;
+- (BOOL)_isFingerprintVersionSupported:(int64_t)supported;
+- (BOOL)isValidWithFingerprintVersionName:(id)name modelInputName:(id)inputName modelOutputName:(id)outputName labelName:(id)labelName labelPolicyName:(id)policyName lossName:(id)lossName layersToTrain:(id)train error:(id *)self0;
+- (PHAPrivateFederatedLearningModelValidator)initWithEspressoModelURL:(id)l espressoModelShapeURL:(id)rL;
+- (id)_dictionaryForJSONFileURL:(id)l error:(id *)error;
+- (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message underlyingError:(id)error;
+- (id)_layerConfigForLayerName:(id)name modelConfig:(id)config error:(id *)error;
+- (id)_layerConfigForName:(id)name modelConfig:(id)config attributeName:(id)attributeName useEquality:(BOOL)equality error:(id *)error;
+- (id)_sizeForLayerName:(id)name modelShape:(id)shape error:(id *)error;
+- (int64_t)_featureVectorSizeForFingerprintVersionName:(id)name error:(id *)error;
 @end
 
 @implementation PHAPrivateFederatedLearningModelValidator
 
-- (id)_generateErrorWithErrorCode:(int64_t)a3 errorMessage:(id)a4 underlyingError:(id)a5
+- (id)_generateErrorWithErrorCode:(int64_t)code errorMessage:(id)message underlyingError:(id)error
 {
-  v7 = a5;
+  errorCopy = error;
   v8 = MEMORY[0x277CBEB38];
-  v9 = a4;
+  messageCopy = message;
   v10 = objc_alloc_init(v8);
-  [v10 setObject:v9 forKey:*MEMORY[0x277CCA450]];
+  [v10 setObject:messageCopy forKey:*MEMORY[0x277CCA450]];
 
-  if (v7)
+  if (errorCopy)
   {
-    [v10 setObject:v7 forKey:*MEMORY[0x277CCA7E8]];
+    [v10 setObject:errorCopy forKey:*MEMORY[0x277CCA7E8]];
   }
 
-  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningModelValidator" code:a3 userInfo:v10];
+  v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.PhotoAnalysis.PHAPrivateFederatedLearningModelValidator" code:code userInfo:v10];
 
   return v11;
 }
 
-- (BOOL)_isFingerprintVersionSupported:(int64_t)a3
+- (BOOL)_isFingerprintVersionSupported:(int64_t)supported
 {
-  if ((a3 - 201) <= 0x1B && ((1 << (a3 + 55)) & 0xF003F79) != 0)
+  if ((supported - 201) <= 0x1B && ((1 << (supported + 55)) & 0xF003F79) != 0)
   {
     return 0;
   }
 
-  if (a3 <= 0x19 && ((1 << a3) & 0x200F6F3) != 0)
+  if (supported <= 0x19 && ((1 << supported) & 0x200F6F3) != 0)
   {
     return 0;
   }
 
   result = 1;
-  if ((a3 - 101) <= 0x18 && ((1 << (a3 - 101)) & 0x1003F29) != 0)
+  if ((supported - 101) <= 0x18 && ((1 << (supported - 101)) & 0x1003F29) != 0)
   {
     return 0;
   }
@@ -51,21 +51,21 @@
   return result;
 }
 
-- (id)_sizeForLayerName:(id)a3 modelShape:(id)a4 error:(id *)a5
+- (id)_sizeForLayerName:(id)name modelShape:(id)shape error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 objectForKeyedSubscript:@"layer_shapes"];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  nameCopy = name;
+  v9 = [shape objectForKeyedSubscript:@"layer_shapes"];
+  v10 = [v9 objectForKeyedSubscript:nameCopy];
 
   if (v10)
   {
-    v11 = [v10 objectForKeyedSubscript:@"k"];
-    if ([v11 integerValue] <= 0)
+    nameCopy2 = [v10 objectForKeyedSubscript:@"k"];
+    if ([nameCopy2 integerValue] <= 0)
     {
-      if (a5)
+      if (error)
       {
-        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Layer size not found or invalid (%@) for layer name '%@'", v11, v8];
-        *a5 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:9 errorMessage:v13 underlyingError:0];
+        nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Layer size not found or invalid (%@) for layer name '%@'", nameCopy2, nameCopy];
+        *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:9 errorMessage:nameCopy underlyingError:0];
       }
 
       v12 = 0;
@@ -73,18 +73,18 @@
 
     else
     {
-      v11 = v11;
-      v12 = v11;
+      nameCopy2 = nameCopy2;
+      v12 = nameCopy2;
     }
 
     goto LABEL_9;
   }
 
-  if (a5)
+  if (error)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Shape not found for layer name '%@'", v8];
-    [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:8 errorMessage:v11 underlyingError:0];
-    *a5 = v12 = 0;
+    nameCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Shape not found for layer name '%@'", nameCopy];
+    [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:8 errorMessage:nameCopy2 underlyingError:0];
+    *error = v12 = 0;
 LABEL_9:
 
     goto LABEL_10;
@@ -96,18 +96,18 @@ LABEL_10:
   return v12;
 }
 
-- (id)_layerConfigForName:(id)a3 modelConfig:(id)a4 attributeName:(id)a5 useEquality:(BOOL)a6 error:(id *)a7
+- (id)_layerConfigForName:(id)name modelConfig:(id)config attributeName:(id)attributeName useEquality:(BOOL)equality error:(id *)error
 {
-  v8 = a6;
+  equalityCopy = equality;
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = [a4 objectForKeyedSubscript:@"layers"];
+  nameCopy = name;
+  attributeNameCopy = attributeName;
+  v14 = [config objectForKeyedSubscript:@"layers"];
   v15 = v14;
   if (v14)
   {
-    v29 = self;
-    v30 = a7;
+    selfCopy = self;
+    errorCopy = error;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -129,16 +129,16 @@ LABEL_10:
           }
 
           v21 = *(*(&v32 + 1) + 8 * i);
-          v22 = [v21 objectForKeyedSubscript:v13];
+          v22 = [v21 objectForKeyedSubscript:attributeNameCopy];
           v23 = v22;
-          if (v8)
+          if (equalityCopy)
           {
-            v24 = [v22 isEqualToString:v12];
+            v24 = [v22 isEqualToString:nameCopy];
           }
 
           else
           {
-            v24 = [v22 containsString:v12];
+            v24 = [v22 containsString:nameCopy];
           }
 
           v25 = v24;
@@ -161,10 +161,10 @@ LABEL_10:
       }
     }
 
-    if (v30)
+    if (errorCopy)
     {
-      v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to find a layer with attribute '%@' == '%@'", v13, v12];
-      *v30 = [(PHAPrivateFederatedLearningModelValidator *)v29 _generateErrorWithErrorCode:7 errorMessage:v26 underlyingError:0];
+      nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to find a layer with attribute '%@' == '%@'", attributeNameCopy, nameCopy];
+      *errorCopy = [(PHAPrivateFederatedLearningModelValidator *)selfCopy _generateErrorWithErrorCode:7 errorMessage:nameCopy underlyingError:0];
     }
 
     v27 = 0;
@@ -172,10 +172,10 @@ LABEL_17:
     v15 = v31;
   }
 
-  else if (a7)
+  else if (error)
   {
     [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:6 errorMessage:@"Model config does not have layers key" underlyingError:0];
-    *a7 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else
@@ -186,26 +186,26 @@ LABEL_17:
   return v27;
 }
 
-- (id)_layerConfigForLayerName:(id)a3 modelConfig:(id)a4 error:(id *)a5
+- (id)_layerConfigForLayerName:(id)name modelConfig:(id)config error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForName:v8 modelConfig:v9 attributeName:@"name" useEquality:1 error:a5];
+  nameCopy = name;
+  configCopy = config;
+  v10 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForName:nameCopy modelConfig:configCopy attributeName:@"name" useEquality:1 error:error];
   if (!v10)
   {
-    v11 = [v8 stringByReplacingOccurrencesOfString:@"/" withString:@"\\/"];
-    v10 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForName:v11 modelConfig:v9 attributeName:@"name" useEquality:1 error:a5];
+    v11 = [nameCopy stringByReplacingOccurrencesOfString:@"/" withString:@"\\/"];
+    v10 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForName:v11 modelConfig:configCopy attributeName:@"name" useEquality:1 error:error];
   }
 
   return v10;
 }
 
-- (id)_dictionaryForJSONFileURL:(id)a3 error:(id *)a4
+- (id)_dictionaryForJSONFileURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  lCopy = l;
+  if (lCopy)
   {
-    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6];
+    v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
     if (v7)
     {
       v14 = 0;
@@ -216,29 +216,29 @@ LABEL_17:
         v10 = v8;
       }
 
-      else if (a4)
+      else if (error)
       {
-        v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error parsing file %@", v6];
-        *a4 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:5 errorMessage:v12 underlyingError:v9];
+        lCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Error parsing file %@", lCopy];
+        *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:5 errorMessage:lCopy underlyingError:v9];
       }
     }
 
     else
     {
-      if (a4)
+      if (error)
       {
-        v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error reading file %@", v6];
-        *a4 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:4 errorMessage:v11 underlyingError:0];
+        lCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error reading file %@", lCopy];
+        *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:4 errorMessage:lCopy2 underlyingError:0];
       }
 
       v8 = 0;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:3 errorMessage:@"JSON file url is nil." underlyingError:0];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -249,10 +249,10 @@ LABEL_17:
   return v8;
 }
 
-- (int64_t)_featureVectorSizeForFingerprintVersionName:(id)a3 error:(id *)a4
+- (int64_t)_featureVectorSizeForFingerprintVersionName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277D3B908] fingerprintVersionForName:v6];
+  nameCopy = name;
+  v7 = [MEMORY[0x277D3B908] fingerprintVersionForName:nameCopy];
   if ([(PHAPrivateFederatedLearningModelValidator *)self _isFingerprintVersionSupported:v7])
   {
     v8 = MEMORY[0x277D3B908];
@@ -263,8 +263,8 @@ LABEL_17:
 
     if (v10)
     {
-      v12 = [v10 featureNames];
-      v13 = [v12 count];
+      featureNames = [v10 featureNames];
+      v13 = [featureNames count];
 
       if (v13)
       {
@@ -273,17 +273,17 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      if (a4)
+      if (error)
       {
         v14 = @"Feature vector has size 0 for fingerprint version %lu";
         v15 = 2;
 LABEL_11:
         v17 = [MEMORY[0x277CCACA8] stringWithFormat:v14, v7];
-        *a4 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:v15 errorMessage:v17 underlyingError:v11];
+        *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:v15 errorMessage:v17 underlyingError:v11];
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v14 = @"Error getting feature extractor for fingerprint version %lu";
       v15 = 1;
@@ -294,10 +294,10 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  if (a4)
+  if (error)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version %@ is not supported by PFL. If you really want to use it, please disable validation.", v6];
-    *a4 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:15 errorMessage:v16 underlyingError:0];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Fingerprint version %@ is not supported by PFL. If you really want to use it, please disable validation.", nameCopy];
+    *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:15 errorMessage:nameCopy underlyingError:0];
   }
 
   v13 = 0;
@@ -306,85 +306,85 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)isValidWithFingerprintVersionName:(id)a3 modelInputName:(id)a4 modelOutputName:(id)a5 labelName:(id)a6 labelPolicyName:(id)a7 lossName:(id)a8 layersToTrain:(id)a9 error:(id *)a10
+- (BOOL)isValidWithFingerprintVersionName:(id)name modelInputName:(id)inputName modelOutputName:(id)outputName labelName:(id)labelName labelPolicyName:(id)policyName lossName:(id)lossName layersToTrain:(id)train error:(id *)self0
 {
   v79 = *MEMORY[0x277D85DE8];
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [(PHAPrivateFederatedLearningModelValidator *)self _featureVectorSizeForFingerprintVersionName:a3 error:a10];
+  inputNameCopy = inputName;
+  outputNameCopy = outputName;
+  labelNameCopy = labelName;
+  policyNameCopy = policyName;
+  lossNameCopy = lossName;
+  trainCopy = train;
+  v22 = [(PHAPrivateFederatedLearningModelValidator *)self _featureVectorSizeForFingerprintVersionName:name error:error];
   if (v22)
   {
     v23 = v22;
-    v73 = v18;
-    v24 = [(PHAPrivateFederatedLearningModelValidator *)self espressoModelURL];
-    v25 = [(PHAPrivateFederatedLearningModelValidator *)self _dictionaryForJSONFileURL:v24 error:a10];
+    v73 = labelNameCopy;
+    espressoModelURL = [(PHAPrivateFederatedLearningModelValidator *)self espressoModelURL];
+    v25 = [(PHAPrivateFederatedLearningModelValidator *)self _dictionaryForJSONFileURL:espressoModelURL error:error];
 
     if (!v25)
     {
       v46 = 0;
-      v18 = v73;
+      labelNameCopy = v73;
 LABEL_75:
 
       goto LABEL_76;
     }
 
-    v70 = v21;
-    v71 = v16;
-    v26 = v20;
-    v27 = v17;
-    v28 = v19;
-    v29 = [(PHAPrivateFederatedLearningModelValidator *)self espressoModelShapeURL];
-    v30 = [(PHAPrivateFederatedLearningModelValidator *)self _dictionaryForJSONFileURL:v29 error:a10];
+    v70 = trainCopy;
+    v71 = inputNameCopy;
+    v26 = lossNameCopy;
+    v27 = outputNameCopy;
+    v28 = policyNameCopy;
+    espressoModelShapeURL = [(PHAPrivateFederatedLearningModelValidator *)self espressoModelShapeURL];
+    v30 = [(PHAPrivateFederatedLearningModelValidator *)self _dictionaryForJSONFileURL:espressoModelShapeURL error:error];
 
     v72 = v30;
     if (!v30)
     {
       v46 = 0;
-      v18 = v73;
-      v19 = v28;
-      v17 = v27;
-      v20 = v26;
-      v21 = v70;
+      labelNameCopy = v73;
+      policyNameCopy = v28;
+      outputNameCopy = v27;
+      lossNameCopy = v26;
+      trainCopy = v70;
 LABEL_74:
 
       goto LABEL_75;
     }
 
-    v31 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForModelInputName:v16 modelConfig:v25 error:a10];
+    v31 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForModelInputName:inputNameCopy modelConfig:v25 error:error];
     if (!v31)
     {
       v46 = 0;
-      v18 = v73;
-      v19 = v28;
-      v17 = v27;
-      v20 = v26;
-      v21 = v70;
+      labelNameCopy = v73;
+      policyNameCopy = v28;
+      outputNameCopy = v27;
+      lossNameCopy = v26;
+      trainCopy = v70;
 LABEL_73:
 
       goto LABEL_74;
     }
 
     v69 = v31;
-    v32 = [(PHAPrivateFederatedLearningModelValidator *)self _sizeForLayerName:v16 modelShape:v30 error:a10];
+    v32 = [(PHAPrivateFederatedLearningModelValidator *)self _sizeForLayerName:inputNameCopy modelShape:v30 error:error];
     if (v32)
     {
       v68 = v32;
       if ([v32 integerValue] == v23)
       {
-        v33 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForModelOutputName:v27 modelConfig:v25 error:a10];
+        v33 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForModelOutputName:v27 modelConfig:v25 error:error];
         v34 = v33;
-        v19 = v28;
+        policyNameCopy = v28;
         if (!v33)
         {
           v46 = 0;
-          v18 = v73;
-          v17 = v27;
-          v20 = v26;
-          v21 = v70;
+          labelNameCopy = v73;
+          outputNameCopy = v27;
+          lossNameCopy = v26;
+          trainCopy = v70;
 LABEL_70:
 
           goto LABEL_71;
@@ -396,30 +396,30 @@ LABEL_70:
         v60 = v36;
         if ([v36 integerValue] != 1)
         {
-          v17 = v27;
-          if (a10)
+          outputNameCopy = v27;
+          if (error)
           {
             v48 = [MEMORY[0x277CCACA8] stringWithFormat:@"Output layer is not set as an output of the model (%@)", v36];
-            *a10 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:11 errorMessage:v48 underlyingError:0];
+            *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:11 errorMessage:v48 underlyingError:0];
           }
 
           v46 = 0;
-          v18 = v73;
-          v20 = v26;
-          v21 = v70;
-          v16 = v71;
+          labelNameCopy = v73;
+          lossNameCopy = v26;
+          trainCopy = v70;
+          inputNameCopy = v71;
           goto LABEL_69;
         }
 
-        v17 = v27;
-        v37 = [(PHAPrivateFederatedLearningModelValidator *)self _sizeForLayerName:v27 modelShape:v72 error:a10];
+        outputNameCopy = v27;
+        v37 = [(PHAPrivateFederatedLearningModelValidator *)self _sizeForLayerName:v27 modelShape:v72 error:error];
         if (!v37)
         {
           v46 = 0;
-          v18 = v73;
-          v20 = v26;
-          v21 = v70;
-          v16 = v71;
+          labelNameCopy = v73;
+          lossNameCopy = v26;
+          trainCopy = v70;
+          inputNameCopy = v71;
 LABEL_68:
 
 LABEL_69:
@@ -427,11 +427,11 @@ LABEL_69:
         }
 
         v59 = v37;
-        v20 = v26;
+        lossNameCopy = v26;
         v38 = [v26 isEqualToString:@"mse"];
-        v21 = v70;
-        v16 = v71;
-        if (v38 & 1) != 0 || ([v20 isEqualToString:@"cross_entropy"])
+        trainCopy = v70;
+        inputNameCopy = v71;
+        if (v38 & 1) != 0 || ([lossNameCopy isEqualToString:@"cross_entropy"])
         {
 LABEL_12:
           v58 = v34;
@@ -453,13 +453,13 @@ LABEL_12:
                   objc_enumerationMutation(obj);
                 }
 
-                v40 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForLayerName:*(*(&v74 + 1) + 8 * i) modelConfig:v25 error:a10];
+                v40 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForLayerName:*(*(&v74 + 1) + 8 * i) modelConfig:v25 error:error];
 
                 if (!v40)
                 {
 
                   v46 = 0;
-                  v18 = v73;
+                  labelNameCopy = v73;
                   goto LABEL_42;
                 }
               }
@@ -474,7 +474,7 @@ LABEL_12:
             }
           }
 
-          v18 = v73;
+          labelNameCopy = v73;
           v41 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForLabelName:v73 modelConfig:v25 error:0];
           if (!v41)
           {
@@ -486,18 +486,18 @@ LABEL_66:
           }
 
           v66 = v41;
-          v42 = [(PHAPrivateFederatedLearningModelValidator *)self _sizeForLayerName:v73 modelShape:v72 error:a10];
+          v42 = [(PHAPrivateFederatedLearningModelValidator *)self _sizeForLayerName:v73 modelShape:v72 error:error];
           v43 = v42;
           if (v42)
           {
             v63 = v42;
-            v44 = [PHAPrivateFederatedLearningRecipeOptions labelPolicyForLabelPolicyName:v19];
+            v44 = [PHAPrivateFederatedLearningRecipeOptions labelPolicyForLabelPolicyName:policyNameCopy];
             if (v44 == 1)
             {
               v34 = v58;
               if ([v63 integerValue] != 2)
               {
-                if (a10)
+                if (error)
                 {
                   v45 = @"One-hot label policy requires label size to be 2 (%@)";
                   goto LABEL_62;
@@ -519,16 +519,16 @@ LABEL_64:
             {
               if ([v63 integerValue] != 1)
               {
-                if (a10)
+                if (error)
                 {
                   v45 = @"Indexed label policy requires label size to be 1 (%@)";
 LABEL_62:
                   v56 = [MEMORY[0x277CCACA8] stringWithFormat:v45, v63];
-                  *a10 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:14 errorMessage:v56 underlyingError:0];
+                  *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:14 errorMessage:v56 underlyingError:0];
 
                   v43 = v63;
                   v46 = 0;
-                  v18 = v73;
+                  labelNameCopy = v73;
                   goto LABEL_65;
                 }
 
@@ -555,7 +555,7 @@ LABEL_65:
           goto LABEL_66;
         }
 
-        v49 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForModelOutputName:v20 modelConfig:v25 error:a10];
+        v49 = [(PHAPrivateFederatedLearningModelValidator *)self _layerConfigForModelOutputName:lossNameCopy modelConfig:v25 error:error];
         if (v49)
         {
           v64 = v49;
@@ -566,9 +566,9 @@ LABEL_65:
           if ([v67 integerValue] == 1)
           {
             v58 = v34;
-            v52 = [(PHAPrivateFederatedLearningModelValidator *)self _sizeForLayerName:v20 modelShape:v72 error:a10];
+            v52 = [(PHAPrivateFederatedLearningModelValidator *)self _sizeForLayerName:lossNameCopy modelShape:v72 error:error];
             v53 = v52;
-            v18 = v73;
+            labelNameCopy = v73;
             if (v52)
             {
               if ([v52 integerValue] == 1)
@@ -578,12 +578,12 @@ LABEL_65:
                 goto LABEL_12;
               }
 
-              if (a10)
+              if (error)
               {
                 v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loss size (%@) is different than 1", v53];
-                *a10 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:12 errorMessage:v55 underlyingError:0];
+                *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:12 errorMessage:v55 underlyingError:0];
 
-                v18 = v73;
+                labelNameCopy = v73;
               }
             }
 
@@ -593,53 +593,53 @@ LABEL_42:
             goto LABEL_67;
           }
 
-          if (a10)
+          if (error)
           {
             v54 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loss layer is not set as an output of the model (%@)", v67];
-            *a10 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:13 errorMessage:v54 underlyingError:0];
+            *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:13 errorMessage:v54 underlyingError:0];
 
             v51 = v67;
           }
         }
 
         v46 = 0;
-        v18 = v73;
+        labelNameCopy = v73;
 LABEL_67:
         v37 = v59;
         goto LABEL_68;
       }
 
-      v19 = v28;
-      if (!a10)
+      policyNameCopy = v28;
+      if (!error)
       {
         v46 = 0;
-        v18 = v73;
-        v17 = v27;
-        v20 = v26;
-        v21 = v70;
+        labelNameCopy = v73;
+        outputNameCopy = v27;
+        lossNameCopy = v26;
+        trainCopy = v70;
 LABEL_71:
         v32 = v68;
         goto LABEL_72;
       }
 
       v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"Input size (%@) does not match feature vector size (%lu)", v68, v23];
-      *a10 = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:10 errorMessage:v47 underlyingError:0];
+      *error = [(PHAPrivateFederatedLearningModelValidator *)self _generateErrorWithErrorCode:10 errorMessage:v47 underlyingError:0];
 
       v32 = v68;
       v46 = 0;
-      v18 = v73;
+      labelNameCopy = v73;
     }
 
     else
     {
       v46 = 0;
-      v18 = v73;
-      v19 = v28;
+      labelNameCopy = v73;
+      policyNameCopy = v28;
     }
 
-    v17 = v27;
-    v20 = v26;
-    v21 = v70;
+    outputNameCopy = v27;
+    lossNameCopy = v26;
+    trainCopy = v70;
 LABEL_72:
 
     v31 = v69;
@@ -652,18 +652,18 @@ LABEL_76:
   return v46;
 }
 
-- (PHAPrivateFederatedLearningModelValidator)initWithEspressoModelURL:(id)a3 espressoModelShapeURL:(id)a4
+- (PHAPrivateFederatedLearningModelValidator)initWithEspressoModelURL:(id)l espressoModelShapeURL:(id)rL
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v12.receiver = self;
   v12.super_class = PHAPrivateFederatedLearningModelValidator;
   v9 = [(PHAPrivateFederatedLearningModelValidator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_espressoModelURL, a3);
-    objc_storeStrong(&v10->_espressoModelShapeURL, a4);
+    objc_storeStrong(&v9->_espressoModelURL, l);
+    objc_storeStrong(&v10->_espressoModelShapeURL, rL);
   }
 
   return v10;

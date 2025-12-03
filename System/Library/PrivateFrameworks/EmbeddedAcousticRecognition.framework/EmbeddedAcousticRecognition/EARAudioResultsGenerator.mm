@@ -1,11 +1,11 @@
 @interface EARAudioResultsGenerator
 + (void)initialize;
-- (EARAudioResultsGenerator)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6 queue:(id)a7;
+- (EARAudioResultsGenerator)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate queue:(id)queue;
 - (EARAudioResultsGeneratorDelegate)delegate;
 - (id).cxx_construct;
 - (id)audioResultLastVector;
 - (id)audioResultMatrix;
-- (void)addAudio:(id)a3;
+- (void)addAudio:(id)audio;
 - (void)endAudio;
 - (void)resetForNewRequest;
 @end
@@ -14,7 +14,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.ear", "EARAudioResultsGenerator");
     v3 = earARGLog;
@@ -22,13 +22,13 @@
   }
 }
 
-- (EARAudioResultsGenerator)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6 queue:(id)a7
+- (EARAudioResultsGenerator)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate queue:(id)queue
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  fileCopy = file;
+  rootCopy = root;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v33.receiver = self;
   v33.super_class = EARAudioResultsGenerator;
   v16 = [(EARAudioResultsGenerator *)&v33 init];
@@ -38,25 +38,25 @@
     goto LABEL_17;
   }
 
-  v16->_sampleRate = a5;
-  objc_storeStrong(&v16->_configRoot, a4);
-  objc_storeWeak(&v17->_delegate, v14);
-  objc_storeStrong(&v17->_queue, a7);
+  v16->_sampleRate = rate;
+  objc_storeStrong(&v16->_configRoot, root);
+  objc_storeWeak(&v17->_delegate, delegateCopy);
+  objc_storeStrong(&v17->_queue, queue);
   v17->_isAudioSessionLive = 0;
-  v18 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   entireResultMatrix = v17->_entireResultMatrix;
-  v17->_entireResultMatrix = v18;
+  v17->_entireResultMatrix = data;
 
   v17->_sessionFrameCount = 0;
   *&v17->_globalNumVectors = 0u;
-  v20 = [MEMORY[0x1E696AC08] defaultManager];
-  v21 = [v20 fileExistsAtPath:v12];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v21 = [defaultManager fileExistsAtPath:fileCopy];
 
   if (v21)
   {
-    if (v12)
+    if (fileCopy)
     {
-      [v12 ear_toString];
+      [fileCopy ear_toString];
     }
 
     else
@@ -109,7 +109,7 @@ LABEL_17:
   if (os_log_type_enabled(earARGLog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(__p) = 138543362;
-    *(&__p + 4) = v12;
+    *(&__p + 4) = fileCopy;
     v23 = "Config file does not exist at %{public}@";
     v24 = v22;
     v25 = 12;
@@ -287,17 +287,17 @@ uint64_t __49__EARAudioResultsGenerator_audioResultLastVector__block_invoke(void
   return kaldi::Matrix<float>::~Matrix(v8);
 }
 
-- (void)addAudio:(id)a3
+- (void)addAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__EARAudioResultsGenerator_addAudio___block_invoke;
   v7[3] = &unk_1E7C1A5C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = audioCopy;
+  selfCopy = self;
+  v6 = audioCopy;
   dispatch_async(queue, v7);
 }
 

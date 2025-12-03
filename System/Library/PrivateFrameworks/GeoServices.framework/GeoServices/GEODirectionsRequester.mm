@@ -8,7 +8,7 @@
 {
   v3 = objc_opt_class();
 
-  [a1 useProxy:v3];
+  [self useProxy:v3];
 }
 
 @end

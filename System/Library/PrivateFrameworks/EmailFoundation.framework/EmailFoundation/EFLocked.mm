@@ -1,11 +1,11 @@
 @interface EFLocked
-- (EFLocked)initWithObject:(id)a3;
+- (EFLocked)initWithObject:(id)object;
 - (id)debugDescription;
 - (id)description;
 - (id)getObject;
-- (id)replaceObject:(id)a3;
-- (void)performWhileLocked:(id)a3;
-- (void)setObject:(id)a3;
+- (id)replaceObject:(id)object;
+- (void)performWhileLocked:(id)locked;
+- (void)setObject:(id)object;
 @end
 
 @implementation EFLocked
@@ -32,9 +32,9 @@
   return v7;
 }
 
-- (EFLocked)initWithObject:(id)a3
+- (EFLocked)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = EFLocked;
   v6 = [(EFLocked *)&v9 init];
@@ -42,7 +42,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;
@@ -72,33 +72,33 @@
   return v6;
 }
 
-- (void)performWhileLocked:(id)a3
+- (void)performWhileLocked:(id)locked
 {
-  v4 = a3;
+  lockedCopy = locked;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4, self->_object);
+  lockedCopy[2](lockedCopy, self->_object);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
   object = self->_object;
-  self->_object = v4;
+  self->_object = objectCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)replaceObject:(id)a3
+- (id)replaceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_object;
   object = self->_object;
-  self->_object = v4;
-  v7 = v4;
+  self->_object = objectCopy;
+  v7 = objectCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 

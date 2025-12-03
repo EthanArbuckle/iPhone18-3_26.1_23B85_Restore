@@ -1,12 +1,12 @@
 @interface ICImageCollectionViewCell
 + (id)thumbnailCache;
-- (ICImageCollectionViewCell)initWithFrame:(CGRect)a3;
+- (ICImageCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAttachment:(id)a3;
+- (void)setAttachment:(id)attachment;
 - (void)updatePreviewImage;
 @end
 
@@ -17,7 +17,7 @@
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"image" value:&stru_100661CF0 table:0];
 
-  v7 = [(ICBrowseAttachmentsBaseCell *)self itemNumberAccessibilityString];
+  itemNumberAccessibilityString = [(ICBrowseAttachmentsBaseCell *)self itemNumberAccessibilityString];
   v5 = __ICAccessibilityStringForVariables();
 
   return v5;
@@ -25,20 +25,20 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-  v4 = [v3 title];
-  v5 = [v4 length];
+  attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
+  title = [attachment title];
+  v5 = [title length];
 
-  v6 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-  v7 = v6;
+  attachment2 = [(ICBrowseAttachmentsBaseCell *)self attachment];
+  v7 = attachment2;
   if (v5)
   {
-    [v6 title];
+    [attachment2 title];
   }
 
   else
   {
-    [v6 modificationDateForSpeaking];
+    [attachment2 modificationDateForSpeaking];
   }
   v8 = ;
 
@@ -57,13 +57,13 @@
   return v3;
 }
 
-- (ICImageCollectionViewCell)initWithFrame:(CGRect)a3
+- (ICImageCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [[UIImageView alloc] initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = [[UIImageView alloc] initWithFrame:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   if (+[UIDevice ic_isVision])
   {
     v9 = 1;
@@ -77,9 +77,9 @@
   [v8 setContentMode:v9];
   v12.receiver = self;
   v12.super_class = ICImageCollectionViewCell;
-  v10 = [(ICImagesAndMoviesBaseCell *)&v12 initWithThumbnailView:v8 frame:x, y, width, height];
+  height = [(ICImagesAndMoviesBaseCell *)&v12 initWithThumbnailView:v8 frame:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews
@@ -90,13 +90,13 @@
   [(ICImageCollectionViewCell *)self updatePreviewImage];
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
   v5.receiver = self;
   v5.super_class = ICImageCollectionViewCell;
-  v4 = a3;
-  [(ICImagesAndMoviesBaseCell *)&v5 setAttachment:v4];
-  [(ICImageCollectionViewCell *)self ic_annotateWithAttachment:v4, v5.receiver, v5.super_class];
+  attachmentCopy = attachment;
+  [(ICImagesAndMoviesBaseCell *)&v5 setAttachment:attachmentCopy];
+  [(ICImageCollectionViewCell *)self ic_annotateWithAttachment:attachmentCopy, v5.receiver, v5.super_class];
 
   [(ICImageCollectionViewCell *)self updatePreviewImage];
 }
@@ -106,10 +106,10 @@
   v5.receiver = self;
   v5.super_class = ICImageCollectionViewCell;
   [(ICImagesAndMoviesBaseCell *)&v5 didMoveToWindow];
-  v3 = [(ICImagesAndMoviesBaseCell *)self thumbnailView];
-  v4 = [v3 image];
+  thumbnailView = [(ICImagesAndMoviesBaseCell *)self thumbnailView];
+  image = [thumbnailView image];
 
-  if (!v4)
+  if (!image)
   {
     [(ICImageCollectionViewCell *)self updatePreviewImage];
   }
@@ -117,8 +117,8 @@
 
 - (void)updatePreviewImage
 {
-  v3 = [(ICImageCollectionViewCell *)self window];
-  if (v3 && (v32 = v3, [(ICImageCollectionViewCell *)self frame], v3 = v32, v4 > 0.0))
+  window = [(ICImageCollectionViewCell *)self window];
+  if (window && (v32 = window, [(ICImageCollectionViewCell *)self frame], window = v32, v4 > 0.0))
   {
     [(ICImageCollectionViewCell *)self frame];
     v6 = v5;
@@ -126,12 +126,12 @@
     if (v6 > 0.0)
     {
       objc_initWeak(&location, self);
-      v7 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-      v8 = [v7 identifier];
-      v9 = [v8 copy];
+      attachment = [(ICBrowseAttachmentsBaseCell *)self attachment];
+      identifier = [attachment identifier];
+      v9 = [identifier copy];
 
-      v10 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-      v11 = [v10 imageCacheKey];
+      attachment2 = [(ICBrowseAttachmentsBaseCell *)self attachment];
+      imageCacheKey = [attachment2 imageCacheKey];
 
       v34[0] = _NSConcreteStackBlock;
       v34[1] = 3221225472;
@@ -144,14 +144,14 @@
       [(ICImageCollectionViewCell *)self frame];
       v15 = v14;
       v17 = v16;
-      v18 = [(ICImageCollectionViewCell *)self window];
-      v19 = [v18 screen];
-      [v19 scale];
+      window2 = [(ICImageCollectionViewCell *)self window];
+      screen = [window2 screen];
+      [screen scale];
       v21 = v20;
 
-      v22 = [(ICImageCollectionViewCell *)self window];
-      v23 = [v22 screen];
-      [v23 scale];
+      window3 = [(ICImageCollectionViewCell *)self window];
+      screen2 = [window3 screen];
+      [screen2 scale];
       v25 = v24;
       v26 = v15 * fmax(v21, 1.0);
 
@@ -163,10 +163,10 @@
       *&v33[4] = v26;
       *&v33[5] = v27;
       v28 = objc_retainBlock(v33);
-      v29 = [(ICBrowseAttachmentsBaseCell *)self attachment];
-      v30 = [(ICImageCollectionViewCell *)self ic_appearanceInfo];
+      attachment3 = [(ICBrowseAttachmentsBaseCell *)self attachment];
+      ic_appearanceInfo = [(ICImageCollectionViewCell *)self ic_appearanceInfo];
       v31 = +[ICImageCollectionViewCell thumbnailCache];
-      [v29 fetchThumbnailImageWithMinSize:v30 scale:v31 appearanceInfo:v11 cache:v28 cacheKey:v13 processingBlock:0 completionBlock:v26 fallbackBlock:v27 aboutToLoadHandler:{1.0, 0}];
+      [attachment3 fetchThumbnailImageWithMinSize:ic_appearanceInfo scale:v31 appearanceInfo:imageCacheKey cache:v28 cacheKey:v13 processingBlock:0 completionBlock:v26 fallbackBlock:v27 aboutToLoadHandler:{1.0, 0}];
 
       objc_destroyWeak(&v36);
       objc_destroyWeak(&location);
@@ -183,8 +183,8 @@
   v4.receiver = self;
   v4.super_class = ICImageCollectionViewCell;
   [(ICBrowseAttachmentsBaseCell *)&v4 prepareForReuse];
-  v3 = [(ICImagesAndMoviesBaseCell *)self thumbnailView];
-  [v3 setImage:0];
+  thumbnailView = [(ICImagesAndMoviesBaseCell *)self thumbnailView];
+  [thumbnailView setImage:0];
 }
 
 @end

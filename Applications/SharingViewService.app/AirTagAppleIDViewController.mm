@@ -1,5 +1,5 @@
 @interface AirTagAppleIDViewController
-- (_TtC18SharingViewService27AirTagAppleIDViewController)initWithContentView:(id)a3;
+- (_TtC18SharingViewService27AirTagAppleIDViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006A4D4();
 }
 
-- (_TtC18SharingViewService27AirTagAppleIDViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService27AirTagAppleIDViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   v6 = &self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC18SharingViewService27AirTagAppleIDViewController_imageName];
@@ -26,7 +26,7 @@
   swift_unknownObjectWeakInit();
   v11.receiver = self;
   v11.super_class = ObjectType;
-  return [(AirTagAppleIDViewController *)&v11 initWithContentView:a3];
+  return [(AirTagAppleIDViewController *)&v11 initWithContentView:view];
 }
 
 @end

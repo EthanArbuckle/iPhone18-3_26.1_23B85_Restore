@@ -1,57 +1,57 @@
 @interface SICSchemaSICInvocationStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SICSchemaSICInvocationStarted)initWithDictionary:(id)a3;
-- (SICSchemaSICInvocationStarted)initWithJSON:(id)a3;
+- (SICSchemaSICInvocationStarted)initWithDictionary:(id)dictionary;
+- (SICSchemaSICInvocationStarted)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCallAppType:(BOOL)a3;
-- (void)setHasCallState:(BOOL)a3;
-- (void)setHasCallType:(BOOL)a3;
-- (void)setHasParticipantCountBucket:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCallAppType:(BOOL)type;
+- (void)setHasCallState:(BOOL)state;
+- (void)setHasCallType:(BOOL)type;
+- (void)setHasParticipantCountBucket:(BOOL)bucket;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SICSchemaSICInvocationStarted
 
-- (SICSchemaSICInvocationStarted)initWithDictionary:(id)a3
+- (SICSchemaSICInvocationStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SICSchemaSICInvocationStarted;
   v5 = [(SICSchemaSICInvocationStarted *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isMuted"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isMuted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SICSchemaSICInvocationStarted setIsMuted:](v5, "setIsMuted:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"callType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"callType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SICSchemaSICInvocationStarted setCallType:](v5, "setCallType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"callState"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"callState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SICSchemaSICInvocationStarted setCallState:](v5, "setCallState:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"callAppType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"callAppType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SICSchemaSICInvocationStarted setCallAppType:](v5, "setCallAppType:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"participantCountBucket"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"participantCountBucket"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (SICSchemaSICInvocationStarted)initWithJSON:(id)a3
+- (SICSchemaSICInvocationStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SICSchemaSICInvocationStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SICSchemaSICInvocationStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SICSchemaSICInvocationStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,7 +100,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -115,7 +115,7 @@
       v6 = off_1E78E2BB8[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"callAppType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"callAppType"];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -145,7 +145,7 @@ LABEL_3:
     v8 = off_1E78E2BD0[v7];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"callState"];
+  [dictionary setObject:v8 forKeyedSubscript:@"callState"];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -157,7 +157,7 @@ LABEL_4:
 
 LABEL_21:
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[SICSchemaSICInvocationStarted isMuted](self, "isMuted")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isMuted"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isMuted"];
 
     if ((*&self->_has & 0x10) == 0)
     {
@@ -176,19 +176,19 @@ LABEL_22:
       v14 = off_1E78E2BF8[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"participantCountBucket"];
+    [dictionary setObject:v14 forKeyedSubscript:@"participantCountBucket"];
     goto LABEL_26;
   }
 
 LABEL_15:
-  v9 = [(SICSchemaSICInvocationStarted *)self callType];
+  callType = [(SICSchemaSICInvocationStarted *)self callType];
   v10 = @"CALLTYPE_UNKNOWN";
-  if (v9 == 1)
+  if (callType == 1)
   {
     v10 = @"CALLTYPE_AUDIO";
   }
 
-  if (v9 == 2)
+  if (callType == 2)
   {
     v11 = @"CALLTYPE_VIDEO";
   }
@@ -198,7 +198,7 @@ LABEL_15:
     v11 = v10;
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"callType"];
+  [dictionary setObject:v11 forKeyedSubscript:@"callType"];
   has = self->_has;
   if (has)
   {
@@ -212,9 +212,9 @@ LABEL_5:
   }
 
 LABEL_26:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -285,16 +285,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[28];
+  v6 = equalCopy[28];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -303,13 +303,13 @@ LABEL_6:
   if (*&has)
   {
     isMuted = self->_isMuted;
-    if (isMuted != [v4 isMuted])
+    if (isMuted != [equalCopy isMuted])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -321,13 +321,13 @@ LABEL_6:
   if (v8)
   {
     callType = self->_callType;
-    if (callType != [v4 callType])
+    if (callType != [equalCopy callType])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -339,13 +339,13 @@ LABEL_6:
   if (v10)
   {
     callState = self->_callState;
-    if (callState != [v4 callState])
+    if (callState != [equalCopy callState])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[28];
+    v6 = equalCopy[28];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -357,10 +357,10 @@ LABEL_6:
   if (v12)
   {
     callAppType = self->_callAppType;
-    if (callAppType == [v4 callAppType])
+    if (callAppType == [equalCopy callAppType])
     {
       has = self->_has;
-      v6 = v4[28];
+      v6 = equalCopy[28];
       goto LABEL_18;
     }
 
@@ -379,7 +379,7 @@ LABEL_18:
   if (v14)
   {
     participantCountBucket = self->_participantCountBucket;
-    if (participantCountBucket != [v4 participantCountBucket])
+    if (participantCountBucket != [equalCopy participantCountBucket])
     {
       goto LABEL_22;
     }
@@ -391,9 +391,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -454,9 +454,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasParticipantCountBucket:(BOOL)a3
+- (void)setHasParticipantCountBucket:(BOOL)bucket
 {
-  if (a3)
+  if (bucket)
   {
     v3 = 16;
   }
@@ -469,9 +469,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCallAppType:(BOOL)a3
+- (void)setHasCallAppType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -484,9 +484,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCallState:(BOOL)a3
+- (void)setHasCallState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -499,9 +499,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCallType:(BOOL)a3
+- (void)setHasCallType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

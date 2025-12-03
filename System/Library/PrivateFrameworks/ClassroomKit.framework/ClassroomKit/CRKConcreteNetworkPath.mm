@@ -1,21 +1,21 @@
 @interface CRKConcreteNetworkPath
 - (BOOL)isSatisfied;
-- (CRKConcreteNetworkPath)initWithUnderlyingPath:(id)a3;
+- (CRKConcreteNetworkPath)initWithUnderlyingPath:(id)path;
 - (NSArray)interfaces;
 @end
 
 @implementation CRKConcreteNetworkPath
 
-- (CRKConcreteNetworkPath)initWithUnderlyingPath:(id)a3
+- (CRKConcreteNetworkPath)initWithUnderlyingPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = CRKConcreteNetworkPath;
   v6 = [(CRKConcreteNetworkPath *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingPath, a3);
+    objc_storeStrong(&v6->_underlyingPath, path);
   }
 
   return v7;
@@ -23,8 +23,8 @@
 
 - (BOOL)isSatisfied
 {
-  v2 = [(CRKConcreteNetworkPath *)self underlyingPath];
-  status = nw_path_get_status(v2);
+  underlyingPath = [(CRKConcreteNetworkPath *)self underlyingPath];
+  status = nw_path_get_status(underlyingPath);
 
   return ((status - 1) & 0xFFFFFFFD) == 0;
 }

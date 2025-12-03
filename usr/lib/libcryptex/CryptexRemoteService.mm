@@ -1,8 +1,8 @@
 @interface CryptexRemoteService
-- (BOOL)supportsFeature:(const char *)a3;
-- (CryptexRemoteService)initWithDevice:(id)a3 queue:(id)a4 flags:(unint64_t)a5;
+- (BOOL)supportsFeature:(const char *)feature;
+- (CryptexRemoteService)initWithDevice:(id)device queue:(id)queue flags:(unint64_t)flags;
 - (__CFError)initService;
-- (__CFError)sendRequestSync:(id)a3 response:(id *)a4;
+- (__CFError)sendRequestSync:(id)sync response:(id *)response;
 - (id)remote_conn;
 - (void)dealloc;
 - (void)initService;
@@ -10,22 +10,22 @@
 
 @implementation CryptexRemoteService
 
-- (CryptexRemoteService)initWithDevice:(id)a3 queue:(id)a4 flags:(unint64_t)a5
+- (CryptexRemoteService)initWithDevice:(id)device queue:(id)queue flags:(unint64_t)flags
 {
-  v8 = a3;
-  v9 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = CryptexRemoteService;
   v10 = [(CryptexRemoteService *)&v20 init];
   device = v10->_device;
-  v10->_device = v8;
-  v12 = v8;
+  v10->_device = deviceCopy;
+  v12 = deviceCopy;
 
   client_queue = v10->_client_queue;
-  v10->_client_queue = v9;
-  v14 = v9;
+  v10->_client_queue = queueCopy;
+  v14 = queueCopy;
 
-  v10->_flags = a5;
+  v10->_flags = flags;
   v15 = dispatch_queue_create("com.apple.security.libcryptex.remote_service", 0);
   internal_queue = v10->_internal_queue;
   v10->_internal_queue = v15;
@@ -74,7 +74,7 @@
   if (!connection)
   {
     service = self->service;
-    v5 = [(CryptexRemoteService *)self internal_queue];
+    internal_queue = [(CryptexRemoteService *)self internal_queue];
     v6 = xpc_remote_connection_create_with_remote_service();
     v7 = self->connection;
     self->connection = v6;
@@ -147,7 +147,7 @@ LABEL_6:
     [(CryptexRemoteService *)&v23 initService];
   }
 
-  v3 = [(CryptexRemoteService *)self device];
+  device = [(CryptexRemoteService *)self device];
   state = remote_device_get_state();
 
   if (state != 2)
@@ -177,7 +177,7 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v5 = [(CryptexRemoteService *)self device];
+  device2 = [(CryptexRemoteService *)self device];
   v6 = remote_device_copy_service();
   service = self->service;
   self->service = v6;
@@ -262,7 +262,7 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)supportsFeature:(const char *)a3
+- (BOOL)supportsFeature:(const char *)feature
 {
   v15 = *MEMORY[0x29EDCA608];
   service = self->service;
@@ -271,17 +271,17 @@ LABEL_10:
 LABEL_2:
     v6 = *MEMORY[0x29EDCA608];
 
-    return MEMORY[0x2A1C68F00](service, a3);
+    return MEMORY[0x2A1C68F00](service, feature);
   }
 
-  v7 = [(CryptexRemoteService *)self initService];
-  if (!v7)
+  initService = [(CryptexRemoteService *)self initService];
+  if (!initService)
   {
     service = self->service;
     goto LABEL_2;
   }
 
-  v8 = v7;
+  v8 = initService;
   v9 = *__error();
   v10 = _remote_service_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -297,10 +297,10 @@ LABEL_2:
   return 0;
 }
 
-- (__CFError)sendRequestSync:(id)a3 response:(id *)a4
+- (__CFError)sendRequestSync:(id)sync response:(id *)response
 {
   v41 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  syncCopy = sync;
   cf = 0;
   if (self->service || (Error = [(CryptexRemoteService *)self initService]) == 0)
   {
@@ -316,7 +316,7 @@ LABEL_2:
 
     *__error() = v8;
     free(v7);
-    v10 = [(CryptexRemoteService *)self remote_conn];
+    remote_conn = [(CryptexRemoteService *)self remote_conn];
     v11 = xpc_remote_connection_send_message_with_reply_sync();
 
     if (MEMORY[0x29C28F4F0](v11) == MEMORY[0x29EDCAA18])
@@ -434,7 +434,7 @@ LABEL_2:
 
         else
         {
-          *a4 = xpc_copy(v30);
+          *response = xpc_copy(v30);
 
           Error = 0;
         }
@@ -468,10 +468,10 @@ LABEL_2:
 - (void)initService
 {
   v4 = *MEMORY[0x29EDCA608];
-  OUTLINED_FUNCTION_2(a1, a2);
+  OUTLINED_FUNCTION_2(self, a2);
   OUTLINED_FUNCTION_4();
   OUTLINED_FUNCTION_0_0();
-  v3 = *a1;
+  v3 = *self;
   _os_crash_msg();
   __break(1u);
 }

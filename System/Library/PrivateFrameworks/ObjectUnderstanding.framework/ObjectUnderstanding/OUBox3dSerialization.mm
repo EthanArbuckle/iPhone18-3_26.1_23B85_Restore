@@ -1,30 +1,30 @@
 @interface OUBox3dSerialization
-- (OUBox3d)box3dFromDictionary:(SEL)a3;
-- (id)dictionaryFromBox3d:(OUBox3d *)a3;
+- (OUBox3d)box3dFromDictionary:(SEL)dictionary;
+- (id)dictionaryFromBox3d:(OUBox3d *)box3d;
 - (id)dictionaryFromBoxes3d:()vector<OUBox3d;
-- (id)dictionaryFromBoxes3dPointCloud:()vector<OUBox3d pointCloud:(std:(id)a4 :allocator<OUBox3d>> *)a3;
-- (id)pointCloudFromDictionary:(id)a3;
+- (id)dictionaryFromBoxes3dPointCloud:()vector<OUBox3d pointCloud:(std:(id)cloud :allocator<OUBox3d>> *)a3;
+- (id)pointCloudFromDictionary:(id)dictionary;
 - (vector<OUBox3d,)boxes3dFromDictionary:(OUBox3dSerialization *)self;
 @end
 
 @implementation OUBox3dSerialization
 
-- (id)dictionaryFromBox3d:(OUBox3d *)a3
+- (id)dictionaryFromBox3d:(OUBox3d *)box3d
 {
   v41 = *MEMORY[0x277D85DE8];
-  v26 = [MEMORY[0x277CBEB38] dictionary];
-  [v26 setObject:a3[1].var5.var0 forKeyedSubscript:@"type"];
-  v4 = [a3[1].var5.var2 UUIDString];
-  [v26 setObject:v4 forKeyedSubscript:@"identifier"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:box3d[1].var5.var0 forKeyedSubscript:@"type"];
+  uUIDString = [box3d[1].var5.var2 UUIDString];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"identifier"];
 
-  LODWORD(v5) = a3[1].var5.var1;
+  LODWORD(v5) = box3d[1].var5.var1;
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
-  [v26 setObject:v6 forKeyedSubscript:@"confidence"];
+  [dictionary setObject:v6 forKeyedSubscript:@"confidence"];
 
   v27 = 0;
   v28 = 0;
   v29 = 0;
-  std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v27, a3[1].var6.var1, a3[1].var6.var2, (a3[1].var6.var2 - a3[1].var6.var1) >> 2);
+  std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v27, box3d[1].var6.var1, box3d[1].var6.var2, (box3d[1].var6.var2 - box3d[1].var6.var1) >> 2);
   v30 = 0;
   v31 = 0;
   v32 = 0;
@@ -65,7 +65,7 @@
     operator delete(v30);
   }
 
-  [v26 setObject:v12 forKeyedSubscript:@"logits"];
+  [dictionary setObject:v12 forKeyedSubscript:@"logits"];
 
   if (v27)
   {
@@ -73,30 +73,30 @@
     operator delete(v27);
   }
 
-  __p = float3ToNSArray(*&a3->var1);
+  __p = float3ToNSArray(*&box3d->var1);
   v25 = __p;
-  v13 = float3ToNSArray(*&a3->var3);
+  v13 = float3ToNSArray(*&box3d->var3);
   v34 = v13;
-  v14 = float3ToNSArray(*&a3->var5.var0);
+  v14 = float3ToNSArray(*&box3d->var5.var0);
   v35 = v14;
-  v15 = float3ToNSArray(*&a3->var5.var2);
+  v15 = float3ToNSArray(*&box3d->var5.var2);
   v36 = v15;
-  v16 = float3ToNSArray(*&a3->var6.var1);
+  v16 = float3ToNSArray(*&box3d->var6.var1);
   v37 = v16;
-  v17 = float3ToNSArray(*&a3->var7);
+  v17 = float3ToNSArray(*&box3d->var7);
   v38 = v17;
-  v18 = float3ToNSArray(*&a3[1].var1);
+  v18 = float3ToNSArray(*&box3d[1].var1);
   v39 = v18;
-  v19 = float3ToNSArray(*&a3[1].var3);
+  v19 = float3ToNSArray(*&box3d[1].var3);
   v40 = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&__p count:8];
 
-  [v26 setObject:v20 forKeyedSubscript:@"bbox"];
-  [v26 setObject:a3[2].var3 forKeyedSubscript:@"group_type"];
-  v21 = [MEMORY[0x277CCABB0] numberWithShort:SLOWORD(a3[2].var4)];
-  [v26 setObject:v21 forKeyedSubscript:@"group_id"];
+  [dictionary setObject:v20 forKeyedSubscript:@"bbox"];
+  [dictionary setObject:box3d[2].var3 forKeyedSubscript:@"group_type"];
+  v21 = [MEMORY[0x277CCABB0] numberWithShort:SLOWORD(box3d[2].var4)];
+  [dictionary setObject:v21 forKeyedSubscript:@"group_id"];
 
-  v22 = [v26 copy];
+  v22 = [dictionary copy];
   v23 = *MEMORY[0x277D85DE8];
 
   return v22;
@@ -104,7 +104,7 @@
 
 - (id)dictionaryFromBoxes3d:()vector<OUBox3d
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = objc_opt_new();
   begin = a3->__begin_;
   if (a3->__end_ != a3->__begin_)
@@ -136,15 +136,15 @@
     while (0x6DB6DB6DB6DB6DB7 * ((a3->__end_ - a3->__begin_) >> 5) > v9);
   }
 
-  [v5 setObject:v6 forKeyedSubscript:@"boxes"];
-  v11 = [v5 copy];
+  [dictionary setObject:v6 forKeyedSubscript:@"boxes"];
+  v11 = [dictionary copy];
 
   return v11;
 }
 
-- (id)dictionaryFromBoxes3dPointCloud:()vector<OUBox3d pointCloud:(std:(id)a4 :allocator<OUBox3d>> *)a3
+- (id)dictionaryFromBoxes3dPointCloud:()vector<OUBox3d pointCloud:(std:(id)cloud :allocator<OUBox3d>> *)a3
 {
-  v6 = a4;
+  cloudCopy = cloud;
   memset(v12, 0, sizeof(v12));
   std::vector<OUBox3d>::__init_with_size[abi:ne200100]<OUBox3d*,OUBox3d*>(v12, a3->__begin_, a3->__end_, 0x6DB6DB6DB6DB6DB7 * ((a3->__end_ - a3->__begin_) >> 5));
   v7 = [(OUBox3dSerialization *)self dictionaryFromBoxes3d:v12];
@@ -152,7 +152,7 @@
 
   v13 = v12;
   std::vector<OUBox3d>::__destroy_vector::operator()[abi:ne200100](&v13);
-  v9 = OUPointCloudToDictionary(v6);
+  v9 = OUPointCloudToDictionary(cloudCopy);
   [v8 setObject:v9 forKeyedSubscript:@"points"];
 
   v10 = [v8 copy];
@@ -160,7 +160,7 @@
   return v10;
 }
 
-- (OUBox3d)box3dFromDictionary:(SEL)a3
+- (OUBox3d)box3dFromDictionary:(SEL)dictionary
 {
   v5 = a4;
   v6 = [v5 objectForKeyedSubscript:@"type"];
@@ -337,17 +337,17 @@ LABEL_17:
   return result;
 }
 
-- (id)pointCloudFromDictionary:(id)a3
+- (id)pointCloudFromDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 allKeys];
+  allKeys = [dictionaryCopy allKeys];
   v5 = 0;
-  v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = *v17;
@@ -357,21 +357,21 @@ LABEL_17:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         if ([v9 isEqualToString:@"points"])
         {
           v10 = [OUPointCloud alloc];
-          v11 = [v3 objectForKeyedSubscript:v9];
+          v11 = [dictionaryCopy objectForKeyedSubscript:v9];
           v12 = [(OUPointCloud *)v10 initWithDictionary:v11];
 
           v5 = v12;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -395,12 +395,12 @@ LABEL_17:
   v47 = 0u;
   v48 = 0u;
   v30 = v6;
-  v7 = [v6 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v45 objects:v50 count:16];
+  allKeys = [v6 allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v8)
   {
     v9 = *v46;
-    v29 = v7;
+    v29 = allKeys;
     do
     {
       v31 = v8;
@@ -408,7 +408,7 @@ LABEL_17:
       {
         if (*v46 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v45 + 1) + 8 * i);
@@ -498,11 +498,11 @@ LABEL_17:
             while (v13);
           }
 
-          v7 = v29;
+          allKeys = v29;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v45 objects:v50 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v45 objects:v50 count:16];
     }
 
     while (v8);

@@ -1,22 +1,22 @@
 @interface AppleTypeCRetimerFirmwareRequestCreatorBackDeploy
-- (AppleTypeCRetimerFirmwareRequestCreatorBackDeploy)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5;
-- (BOOL)parseOptions:(id)a3;
-- (id)generateHashForSubfile:(id)a3;
+- (AppleTypeCRetimerFirmwareRequestCreatorBackDeploy)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context;
+- (BOOL)parseOptions:(id)options;
+- (id)generateHashForSubfile:(id)subfile;
 - (void)generateRequestDictionary;
 @end
 
 @implementation AppleTypeCRetimerFirmwareRequestCreatorBackDeploy
 
-- (AppleTypeCRetimerFirmwareRequestCreatorBackDeploy)initWithOptions:(id)a3 logFunction:(void *)a4 logContext:(void *)a5
+- (AppleTypeCRetimerFirmwareRequestCreatorBackDeploy)initWithOptions:(id)options logFunction:(void *)function logContext:(void *)context
 {
-  v8 = a3;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = AppleTypeCRetimerFirmwareRequestCreatorBackDeploy;
-  v9 = [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)&v13 initWithOptions:v8 logFunction:a4 logContext:a5];
+  v9 = [(AppleTypeCRetimerRestoreInfoHelperBackDeploy *)&v13 initWithOptions:optionsCopy logFunction:function logContext:context];
   v10 = v9;
   if (v9)
   {
-    if (![(AppleTypeCRetimerFirmwareRequestCreatorBackDeploy *)v9 parseOptions:v8])
+    if (![(AppleTypeCRetimerFirmwareRequestCreatorBackDeploy *)v9 parseOptions:optionsCopy])
     {
       v11 = 0;
       goto LABEL_6;
@@ -31,10 +31,10 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)parseOptions:(id)a3
+- (BOOL)parseOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FirmwareData"];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"FirmwareData"];
   if (!v5)
   {
     v32 = @"Unable to locate firmware data";
@@ -75,7 +75,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"DeviceInfo"];
+  v13 = [optionsCopy objectForKeyedSubscript:@"DeviceInfo"];
   v14 = v13;
   if (v13)
   {
@@ -157,15 +157,15 @@ LABEL_15:
   return v25;
 }
 
-- (id)generateHashForSubfile:(id)a3
+- (id)generateHashForSubfile:(id)subfile
 {
   memset(&v8, 0, sizeof(v8));
-  v3 = a3;
+  subfileCopy = subfile;
   CC_SHA384_Init(&v8);
-  v4 = [v3 dataPointer];
-  v5 = [v3 dataLength];
+  dataPointer = [subfileCopy dataPointer];
+  dataLength = [subfileCopy dataLength];
 
-  CC_SHA384_Update(&v8, v4, v5);
+  CC_SHA384_Update(&v8, dataPointer, dataLength);
   CC_SHA384_Final(md, &v8);
   v6 = [NSData dataWithBytes:md length:48];
 

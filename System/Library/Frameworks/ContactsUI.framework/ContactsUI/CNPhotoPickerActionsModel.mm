@@ -1,16 +1,16 @@
 @interface CNPhotoPickerActionsModel
-+ (id)buttonForActionType:(int64_t)a3 titleOverride:(id)a4 withActionBlock:(id)a5;
-+ (id)localizedTitleForActionType:(int64_t)a3;
-- (BOOL)canPerformActionType:(int64_t)a3;
++ (id)buttonForActionType:(int64_t)type titleOverride:(id)override withActionBlock:(id)block;
++ (id)localizedTitleForActionType:(int64_t)type;
+- (BOOL)canPerformActionType:(int64_t)type;
 - (CNPhotoPickerActionsDelegate)delegate;
-- (CNPhotoPickerActionsModel)initWithProviderItem:(id)a3 assignActionTitleOverride:(id)a4 canDelete:(BOOL)a5 atIndexPath:(id)a6;
+- (CNPhotoPickerActionsModel)initWithProviderItem:(id)item assignActionTitleOverride:(id)override canDelete:(BOOL)delete atIndexPath:(id)path;
 - (id)generateInlineActionButtons;
 - (void)didTapAssignToContact;
 - (void)didTapDelete;
 - (void)didTapDuplicate;
 - (void)didTapEdit;
-- (void)setButtonsDisabled:(BOOL)a3;
-- (void)updateProviderItem:(id)a3;
+- (void)setButtonsDisabled:(BOOL)disabled;
+- (void)updateProviderItem:(id)item;
 @end
 
 @implementation CNPhotoPickerActionsModel
@@ -24,63 +24,63 @@
 
 - (void)didTapDelete
 {
-  v6 = [(CNPhotoPickerActionsModel *)self delegate];
-  v3 = [(CNPhotoPickerActionsModel *)self providerItem];
-  v4 = [(CNPhotoPickerActionsModel *)self indexPath];
-  v5 = [(CNPhotoPickerActionsModel *)self deleteButton];
-  [v6 actionsModel:self didDelete:v3 atIndexPath:v4 withSourceView:v5];
+  delegate = [(CNPhotoPickerActionsModel *)self delegate];
+  providerItem = [(CNPhotoPickerActionsModel *)self providerItem];
+  indexPath = [(CNPhotoPickerActionsModel *)self indexPath];
+  deleteButton = [(CNPhotoPickerActionsModel *)self deleteButton];
+  [delegate actionsModel:self didDelete:providerItem atIndexPath:indexPath withSourceView:deleteButton];
 }
 
 - (void)didTapDuplicate
 {
   [(CNPhotoPickerActionsModel *)self setButtonsDisabled:1];
-  v3 = [(CNPhotoPickerActionsModel *)self delegate];
-  v4 = [(CNPhotoPickerActionsModel *)self providerItem];
-  v5 = [(CNPhotoPickerActionsModel *)self indexPath];
+  delegate = [(CNPhotoPickerActionsModel *)self delegate];
+  providerItem = [(CNPhotoPickerActionsModel *)self providerItem];
+  indexPath = [(CNPhotoPickerActionsModel *)self indexPath];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__CNPhotoPickerActionsModel_didTapDuplicate__block_invoke;
   v6[3] = &unk_1E74E6A88;
   v6[4] = self;
-  [v3 actionsModel:self didDuplicate:v4 atIndexPath:v5 completionBlock:v6];
+  [delegate actionsModel:self didDuplicate:providerItem atIndexPath:indexPath completionBlock:v6];
 }
 
 - (void)didTapEdit
 {
-  v5 = [(CNPhotoPickerActionsModel *)self delegate];
-  v3 = [(CNPhotoPickerActionsModel *)self providerItem];
-  v4 = [(CNPhotoPickerActionsModel *)self indexPath];
-  [v5 actionsModel:self didEdit:v3 atIndexPath:v4];
+  delegate = [(CNPhotoPickerActionsModel *)self delegate];
+  providerItem = [(CNPhotoPickerActionsModel *)self providerItem];
+  indexPath = [(CNPhotoPickerActionsModel *)self indexPath];
+  [delegate actionsModel:self didEdit:providerItem atIndexPath:indexPath];
 }
 
 - (void)didTapAssignToContact
 {
-  v5 = [(CNPhotoPickerActionsModel *)self delegate];
-  v3 = [(CNPhotoPickerActionsModel *)self providerItem];
-  v4 = [(CNPhotoPickerActionsModel *)self indexPath];
-  [v5 actionsModel:self didAssignToContact:v3 atIndexPath:v4];
+  delegate = [(CNPhotoPickerActionsModel *)self delegate];
+  providerItem = [(CNPhotoPickerActionsModel *)self providerItem];
+  indexPath = [(CNPhotoPickerActionsModel *)self indexPath];
+  [delegate actionsModel:self didAssignToContact:providerItem atIndexPath:indexPath];
 }
 
-- (void)updateProviderItem:(id)a3
+- (void)updateProviderItem:(id)item
 {
-  [(CNPhotoPickerActionsModel *)self setProviderItem:a3];
-  v4 = [(CNPhotoPickerActionsModel *)self generateInlineActionButtons];
-  [(CNPhotoPickerActionsModel *)self setCurrentInlineActionButtons:v4];
+  [(CNPhotoPickerActionsModel *)self setProviderItem:item];
+  generateInlineActionButtons = [(CNPhotoPickerActionsModel *)self generateInlineActionButtons];
+  [(CNPhotoPickerActionsModel *)self setCurrentInlineActionButtons:generateInlineActionButtons];
 }
 
-- (void)setButtonsDisabled:(BOOL)a3
+- (void)setButtonsDisabled:(BOOL)disabled
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_buttonsDisabled != a3)
+  if (self->_buttonsDisabled != disabled)
   {
-    v3 = a3;
-    self->_buttonsDisabled = a3;
+    disabledCopy = disabled;
+    self->_buttonsDisabled = disabled;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(CNPhotoPickerActionsModel *)self inlineActionButtons];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    inlineActionButtons = [(CNPhotoPickerActionsModel *)self inlineActionButtons];
+    v5 = [inlineActionButtons countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -92,14 +92,14 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(inlineActionButtons);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) setEnabled:!v3];
+          [*(*(&v9 + 1) + 8 * v8++) setEnabled:!disabledCopy];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [inlineActionButtons countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -109,21 +109,21 @@
 
 - (id)generateInlineActionButtons
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   objc_initWeak(&location, self);
   if ([(CNPhotoPickerActionsModel *)self canPerformActionType:0])
   {
     v4 = objc_opt_class();
-    v5 = [(CNPhotoPickerActionsModel *)self assignActionTitleOverride];
+    assignActionTitleOverride = [(CNPhotoPickerActionsModel *)self assignActionTitleOverride];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __56__CNPhotoPickerActionsModel_generateInlineActionButtons__block_invoke;
     v22[3] = &unk_1E74E6C98;
     objc_copyWeak(&v23, &location);
-    v6 = [v4 buttonForActionType:0 titleOverride:v5 withActionBlock:v22];
+    v6 = [v4 buttonForActionType:0 titleOverride:assignActionTitleOverride withActionBlock:v22];
 
     [v6 setEnabled:{-[CNPhotoPickerActionsModel buttonsDisabled](self, "buttonsDisabled") ^ 1}];
-    [v3 addObject:v6];
+    [array addObject:v6];
 
     objc_destroyWeak(&v23);
   }
@@ -138,7 +138,7 @@
     objc_copyWeak(&v21, &location);
     v8 = [v7 buttonForActionType:1 withActionBlock:v20];
     [v8 setEnabled:{-[CNPhotoPickerActionsModel buttonsDisabled](self, "buttonsDisabled") ^ 1}];
-    [v3 addObject:v8];
+    [array addObject:v8];
 
     objc_destroyWeak(&v21);
   }
@@ -153,7 +153,7 @@
     objc_copyWeak(&v19, &location);
     v10 = [v9 buttonForActionType:2 withActionBlock:v18];
     [v10 setEnabled:{-[CNPhotoPickerActionsModel buttonsDisabled](self, "buttonsDisabled") ^ 1}];
-    [v3 addObject:v10];
+    [array addObject:v10];
 
     objc_destroyWeak(&v19);
   }
@@ -170,18 +170,18 @@
     [(CNPhotoPickerActionsModel *)self setDeleteButton:v12];
 
     LODWORD(v12) = [(CNPhotoPickerActionsModel *)self buttonsDisabled];
-    v13 = [(CNPhotoPickerActionsModel *)self deleteButton];
-    [v13 setEnabled:v12 ^ 1];
+    deleteButton = [(CNPhotoPickerActionsModel *)self deleteButton];
+    [deleteButton setEnabled:v12 ^ 1];
 
-    v14 = [(CNPhotoPickerActionsModel *)self deleteButton];
-    [v3 addObject:v14];
+    deleteButton2 = [(CNPhotoPickerActionsModel *)self deleteButton];
+    [array addObject:deleteButton2];
 
     objc_destroyWeak(&v17);
   }
 
   objc_destroyWeak(&location);
 
-  return v3;
+  return array;
 }
 
 void __56__CNPhotoPickerActionsModel_generateInlineActionButtons__block_invoke(uint64_t a1)
@@ -208,9 +208,9 @@ void __56__CNPhotoPickerActionsModel_generateInlineActionButtons__block_invoke_4
   [WeakRetained didTapDelete];
 }
 
-- (BOOL)canPerformActionType:(int64_t)a3
+- (BOOL)canPerformActionType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
 
     return [(CNPhotoPickerActionsModel *)self canDelete];
@@ -218,45 +218,45 @@ void __56__CNPhotoPickerActionsModel_generateInlineActionButtons__block_invoke_4
 
   else
   {
-    if (a3 != 2 && a3 != 1)
+    if (type != 2 && type != 1)
     {
       return 1;
     }
 
-    v4 = [(CNPhotoPickerActionsModel *)self providerItem];
-    if ([v4 allowsVariants])
+    providerItem = [(CNPhotoPickerActionsModel *)self providerItem];
+    if ([providerItem allowsVariants])
     {
-      v5 = [(CNPhotoPickerActionsModel *)self providerItem];
-      v6 = [v5 allowsEditing];
+      providerItem2 = [(CNPhotoPickerActionsModel *)self providerItem];
+      allowsEditing = [providerItem2 allowsEditing];
     }
 
     else
     {
-      v6 = 0;
+      allowsEditing = 0;
     }
 
-    return v6;
+    return allowsEditing;
   }
 }
 
-- (CNPhotoPickerActionsModel)initWithProviderItem:(id)a3 assignActionTitleOverride:(id)a4 canDelete:(BOOL)a5 atIndexPath:(id)a6
+- (CNPhotoPickerActionsModel)initWithProviderItem:(id)item assignActionTitleOverride:(id)override canDelete:(BOOL)delete atIndexPath:(id)path
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  itemCopy = item;
+  overrideCopy = override;
+  pathCopy = path;
   v20.receiver = self;
   v20.super_class = CNPhotoPickerActionsModel;
   v14 = [(CNPhotoPickerActionsModel *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_providerItem, a3);
-    objc_storeStrong(&v15->_indexPath, a6);
-    v15->_canDelete = a5;
-    objc_storeStrong(&v15->_assignActionTitleOverride, a4);
-    v16 = [(CNPhotoPickerActionsModel *)v15 generateInlineActionButtons];
+    objc_storeStrong(&v14->_providerItem, item);
+    objc_storeStrong(&v15->_indexPath, path);
+    v15->_canDelete = delete;
+    objc_storeStrong(&v15->_assignActionTitleOverride, override);
+    generateInlineActionButtons = [(CNPhotoPickerActionsModel *)v15 generateInlineActionButtons];
     currentInlineActionButtons = v15->_currentInlineActionButtons;
-    v15->_currentInlineActionButtons = v16;
+    v15->_currentInlineActionButtons = generateInlineActionButtons;
 
     v18 = v15;
   }
@@ -264,40 +264,40 @@ void __56__CNPhotoPickerActionsModel_generateInlineActionButtons__block_invoke_4
   return v15;
 }
 
-+ (id)buttonForActionType:(int64_t)a3 titleOverride:(id)a4 withActionBlock:(id)a5
++ (id)buttonForActionType:(int64_t)type titleOverride:(id)override withActionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  overrideCopy = override;
+  blockCopy = block;
+  if (overrideCopy)
   {
-    v10 = v8;
+    v10 = overrideCopy;
   }
 
   else
   {
-    v10 = [a1 localizedTitleForActionType:a3];
+    v10 = [self localizedTitleForActionType:type];
   }
 
   v11 = v10;
-  if ([a1 actionIsDestructive:a3])
+  if ([self actionIsDestructive:type])
   {
-    [CNPhotoPickerActionButton destructiveButtonWithTitle:v11 actionBlock:v9];
+    [CNPhotoPickerActionButton destructiveButtonWithTitle:v11 actionBlock:blockCopy];
   }
 
   else
   {
-    [CNPhotoPickerActionButton defaultButtonWithTitle:v11 actionBlock:v9];
+    [CNPhotoPickerActionButton defaultButtonWithTitle:v11 actionBlock:blockCopy];
   }
   v12 = ;
 
   return v12;
 }
 
-+ (id)localizedTitleForActionType:(int64_t)a3
++ (id)localizedTitleForActionType:(int64_t)type
 {
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    v4 = off_1E74E2048[a3];
+    v4 = off_1E74E2048[type];
     v5 = CNContactsUIBundle();
     v3 = [v5 localizedStringForKey:v4 value:&stru_1F0CE7398 table:@"Localized"];
   }

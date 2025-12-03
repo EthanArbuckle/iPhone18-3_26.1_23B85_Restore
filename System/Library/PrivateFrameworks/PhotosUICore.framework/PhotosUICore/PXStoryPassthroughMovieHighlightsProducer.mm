@@ -1,20 +1,20 @@
 @interface PXStoryPassthroughMovieHighlightsProducer
-- (id)requestMovieHighlightsForAssets:(id)a3 partialCollection:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6;
+- (id)requestMovieHighlightsForAssets:(id)assets partialCollection:(id)collection options:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPassthroughMovieHighlightsProducer
 
-- (id)requestMovieHighlightsForAssets:(id)a3 partialCollection:(id)a4 options:(unint64_t)a5 resultHandler:(id)a6
+- (id)requestMovieHighlightsForAssets:(id)assets partialCollection:(id)collection options:(unint64_t)options resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a6;
+  assetsCopy = assets;
+  handlerCopy = handler;
   v9 = objc_alloc_init(PXStoryMovieHighlightsConcreteMutableCollection);
-  if ([v7 count])
+  if ([assetsCopy count])
   {
     v10 = 0;
     do
     {
-      v11 = [v7 objectAtIndexedSubscript:v10];
+      v11 = [assetsCopy objectAtIndexedSubscript:v10];
       if (([v11 playbackStyle] - 3) <= 2)
       {
         v12 = [PXStoryFallbackMovieHighlightCuration movieHighlightCurationForDisplayAsset:v11];
@@ -24,14 +24,14 @@
       ++v10;
     }
 
-    while (v10 < [v7 count]);
+    while (v10 < [assetsCopy count]);
   }
 
   v13 = [PXStoryProducerResult alloc];
   v14 = [(PXStoryMovieHighlightsConcreteMutableCollection *)v9 copy];
   v15 = [(PXStoryProducerResult *)v13 initWithObject:v14];
 
-  v8[2](v8, v15);
+  handlerCopy[2](handlerCopy, v15);
   return 0;
 }
 

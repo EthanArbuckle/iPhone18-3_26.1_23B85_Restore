@@ -1,32 +1,32 @@
 @interface RTTripSegmentStore
-- (RTTripSegmentStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (id)getTripSegmentsWithOptions:(id)a3;
-- (void)_deleteTripSegmentWithUUID:(id)a3 handler:(id)a4;
-- (void)_fetchTripSegmentsWithOptions:(id)a3 handler:(id)a4;
-- (void)_fetchTripSegmentsWithUUID:(id)a3 handler:(id)a4;
-- (void)_purgeTripSegmentsOnDateInterval:(id)a3 handler:(id)a4;
-- (void)_purgeTripSegmentsPredating:(id)a3 handler:(id)a4;
-- (void)_storeTripSegment:(id)a3 handler:(id)a4;
-- (void)deleteTripSegmentWithDateInterval:(id)a3;
-- (void)deleteTripSegmentWithUUID:(id)a3;
-- (void)deleteTripSegmentWithUUID:(id)a3 handler:(id)a4;
-- (void)fetchTripSegmentsWithOptions:(id)a3 handler:(id)a4;
-- (void)fetchTripSegmentsWithUUID:(id)a3 handler:(id)a4;
-- (void)purgeTripSegmentsOnDateInterval:(id)a3 handler:(id)a4;
-- (void)purgeTripSegmentsPredating:(id)a3 handler:(id)a4;
-- (void)storeTripSegment:(id)a3;
-- (void)storeTripSegment:(id)a3 handler:(id)a4;
+- (RTTripSegmentStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (id)getTripSegmentsWithOptions:(id)options;
+- (void)_deleteTripSegmentWithUUID:(id)d handler:(id)handler;
+- (void)_fetchTripSegmentsWithOptions:(id)options handler:(id)handler;
+- (void)_fetchTripSegmentsWithUUID:(id)d handler:(id)handler;
+- (void)_purgeTripSegmentsOnDateInterval:(id)interval handler:(id)handler;
+- (void)_purgeTripSegmentsPredating:(id)predating handler:(id)handler;
+- (void)_storeTripSegment:(id)segment handler:(id)handler;
+- (void)deleteTripSegmentWithDateInterval:(id)interval;
+- (void)deleteTripSegmentWithUUID:(id)d;
+- (void)deleteTripSegmentWithUUID:(id)d handler:(id)handler;
+- (void)fetchTripSegmentsWithOptions:(id)options handler:(id)handler;
+- (void)fetchTripSegmentsWithUUID:(id)d handler:(id)handler;
+- (void)purgeTripSegmentsOnDateInterval:(id)interval handler:(id)handler;
+- (void)purgeTripSegmentsPredating:(id)predating handler:(id)handler;
+- (void)storeTripSegment:(id)segment;
+- (void)storeTripSegment:(id)segment handler:(id)handler;
 @end
 
 @implementation RTTripSegmentStore
 
-- (RTTripSegmentStore)initWithPersistenceManager:(id)a3
+- (RTTripSegmentStore)initWithPersistenceManager:(id)manager
 {
   v15 = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = RTTripSegmentStore;
-  v4 = [(RTStore *)&v10 initWithPersistenceManager:a3];
+  v4 = [(RTStore *)&v10 initWithPersistenceManager:manager];
   if (v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -46,12 +46,12 @@
   return v4;
 }
 
-- (void)_fetchTripSegmentsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchTripSegmentsWithOptions:(id)options handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -73,9 +73,9 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __60__RTTripSegmentStore__fetchTripSegmentsWithOptions_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v18 = v7;
+    v18 = optionsCopy;
     v20 = a2;
-    v10 = v8;
+    v10 = handlerCopy;
     v19 = v10;
     v11 = _Block_copy(aBlock);
     v15[0] = MEMORY[0x277D85DD0];
@@ -226,29 +226,29 @@ void __60__RTTripSegmentStore__fetchTripSegmentsWithOptions_handler___block_invo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchTripSegmentsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchTripSegmentsWithOptions:(id)options handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  optionsCopy = options;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__RTTripSegmentStore_fetchTripSegmentsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchTripSegmentsWithUUID:(id)a3 handler:(id)a4
+- (void)_fetchTripSegmentsWithUUID:(id)d handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -270,9 +270,9 @@ void __60__RTTripSegmentStore__fetchTripSegmentsWithOptions_handler___block_invo
     aBlock[1] = 3221225472;
     aBlock[2] = __57__RTTripSegmentStore__fetchTripSegmentsWithUUID_handler___block_invoke;
     aBlock[3] = &unk_2788C4FB0;
-    v18 = v7;
+    v18 = dCopy;
     v20 = a2;
-    v10 = v8;
+    v10 = handlerCopy;
     v19 = v10;
     v11 = _Block_copy(aBlock);
     v15[0] = MEMORY[0x277D85DD0];
@@ -375,73 +375,73 @@ void __57__RTTripSegmentStore__fetchTripSegmentsWithUUID_handler___block_invoke(
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchTripSegmentsWithUUID:(id)a3 handler:(id)a4
+- (void)fetchTripSegmentsWithUUID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__RTTripSegmentStore_fetchTripSegmentsWithUUID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storeTripSegment:(id)a3 handler:(id)a4
+- (void)_storeTripSegment:(id)segment handler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  segmentCopy = segment;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v6 description];
+      v10 = [segmentCopy description];
       *buf = 138412290;
       v13 = v10;
       _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "CRTSM,RTTripSegmentStore,storeTripSegment,%@", buf, 0xCu);
     }
   }
 
-  v11 = v6;
+  v11 = segmentCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
-  [(RTStore *)self storeWritableObjects:v9 handler:v7];
+  [(RTStore *)self storeWritableObjects:v9 handler:handlerCopy];
 }
 
-- (void)storeTripSegment:(id)a3 handler:(id)a4
+- (void)storeTripSegment:(id)segment handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  segmentCopy = segment;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTTripSegmentStore_storeTripSegment_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = segmentCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = segmentCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)storeTripSegment:(id)a3
+- (void)storeTripSegment:(id)segment
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  segmentCopy = segment;
   v5 = dispatch_semaphore_create(0);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __39__RTTripSegmentStore_storeTripSegment___block_invoke;
   v31[3] = &unk_2788CB988;
   v31[4] = self;
-  v6 = v4;
+  v6 = segmentCopy;
   v32 = v6;
   v7 = v5;
   v33 = v7;
@@ -456,11 +456,11 @@ void __57__RTTripSegmentStore__fetchTripSegmentsWithUUID_handler___block_invoke(
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_107];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -494,14 +494,14 @@ void __57__RTTripSegmentStore__fetchTripSegmentsWithUUID_handler___block_invoke(
     {
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
-      v29 = [v6 identifier];
-      v30 = [v25 localizedDescription];
+      identifier = [v6 identifier];
+      localizedDescription = [v25 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v28;
       v35 = 2112;
-      v36 = v29;
+      v36 = identifier;
       v37 = 2112;
-      v38 = v30;
+      v38 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "%@,Semaphore error storing tripSegment with UUID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -561,11 +561,11 @@ LABEL_4:
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)_purgeTripSegmentsPredating:(id)a3 handler:(id)a4
+- (void)_purgeTripSegmentsPredating:(id)predating handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  predatingCopy = predating;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -588,31 +588,31 @@ LABEL_4:
   v17 = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
 
-  [(RTStore *)self purgePredating:v7 predicateMappings:v11 purgeLimit:100 handler:v8];
+  [(RTStore *)self purgePredating:predatingCopy predicateMappings:v11 purgeLimit:100 handler:handlerCopy];
 }
 
-- (void)purgeTripSegmentsPredating:(id)a3 handler:(id)a4
+- (void)purgeTripSegmentsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__RTTripSegmentStore_purgeTripSegmentsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_purgeTripSegmentsOnDateInterval:(id)a3 handler:(id)a4
+- (void)_purgeTripSegmentsOnDateInterval:(id)interval handler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  intervalCopy = interval;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -621,29 +621,29 @@ LABEL_4:
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v19 = NSStringFromSelector(a2);
-      v20 = [v7 startDate];
-      v21 = [v7 endDate];
+      startDate = [intervalCopy startDate];
+      endDate = [intervalCopy endDate];
       *buf = 138413058;
       v29 = v18;
       v30 = 2112;
       v31 = v19;
       v32 = 2112;
-      v33 = v20;
+      v33 = startDate;
       v34 = 2112;
-      v35 = v21;
+      v35 = endDate;
       _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "%@ %@ invoked,startDate,%@,endDate,%@", buf, 0x2Au);
     }
   }
 
-  if (v7)
+  if (intervalCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __63__RTTripSegmentStore__purgeTripSegmentsOnDateInterval_handler___block_invoke;
     aBlock[3] = &unk_2788C4F38;
-    v23 = v7;
-    v24 = self;
-    v10 = v8;
+    v23 = intervalCopy;
+    selfCopy = self;
+    v10 = handlerCopy;
     v25 = v10;
     v11 = _Block_copy(aBlock);
     [(RTStore *)self _performBlock:v11 contextType:0 errorHandler:v10];
@@ -670,9 +670,9 @@ LABEL_4:
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v12 = [v14 errorWithDomain:v15 code:7 userInfo:v16];
 
-    if (v8)
+    if (handlerCopy)
     {
-      (*(v8 + 2))(v8, v12);
+      (*(handlerCopy + 2))(handlerCopy, v12);
     }
   }
 }
@@ -715,29 +715,29 @@ void __63__RTTripSegmentStore__purgeTripSegmentsOnDateInterval_handler___block_i
   [*(a1 + 40) executeDeleteRequests:v24 context:v25 handler:*(a1 + 48)];
 }
 
-- (void)purgeTripSegmentsOnDateInterval:(id)a3 handler:(id)a4
+- (void)purgeTripSegmentsOnDateInterval:(id)interval handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__RTTripSegmentStore_purgeTripSegmentsOnDateInterval_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = intervalCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = intervalCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_deleteTripSegmentWithUUID:(id)a3 handler:(id)a4
+- (void)_deleteTripSegmentWithUUID:(id)d handler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -772,23 +772,23 @@ void __63__RTTripSegmentStore__purgeTripSegmentsOnDateInterval_handler___block_i
   v40 = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
 
-  if (v7)
+  if (dCopy)
   {
     if (v12)
     {
-      v13 = [v12 allKeys];
-      if ([v13 count])
+      allKeys = [v12 allKeys];
+      if ([allKeys count])
       {
         v25 = MEMORY[0x277D85DD0];
         v26 = 3221225472;
         v27 = __57__RTTripSegmentStore__deleteTripSegmentWithUUID_handler___block_invoke;
         v28 = &unk_2788C7F10;
-        v13 = v13;
-        v29 = v13;
+        allKeys = allKeys;
+        v29 = allKeys;
         v30 = v12;
-        v31 = v7;
-        v32 = self;
-        v14 = v8;
+        v31 = dCopy;
+        selfCopy = self;
+        v14 = handlerCopy;
         v33 = v14;
         v15 = _Block_copy(&v25);
         [(RTStore *)self _performBlock:v15 contextType:0 errorHandler:v14, v25, v26, v27, v28];
@@ -818,11 +818,11 @@ void __63__RTTripSegmentStore__purgeTripSegmentsOnDateInterval_handler___block_i
   }
 
   v21 = [v18 dictionaryWithObjects:v19 forKeys:v20 count:1];
-  v13 = [v16 errorWithDomain:v17 code:7 userInfo:v21];
+  allKeys = [v16 errorWithDomain:v17 code:7 userInfo:v21];
 
-  if (v8)
+  if (handlerCopy)
   {
-    (*(v8 + 2))(v8, v13);
+    (*(handlerCopy + 2))(handlerCopy, allKeys);
   }
 
 LABEL_17:
@@ -905,34 +905,34 @@ void __57__RTTripSegmentStore__deleteTripSegmentWithUUID_handler___block_invoke(
   [*(a1 + 56) executeDeleteRequests:v3 context:v14 handler:*(a1 + 64)];
 }
 
-- (void)deleteTripSegmentWithUUID:(id)a3 handler:(id)a4
+- (void)deleteTripSegmentWithUUID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__RTTripSegmentStore_deleteTripSegmentWithUUID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)deleteTripSegmentWithDateInterval:(id)a3
+- (void)deleteTripSegmentWithDateInterval:(id)interval
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   v5 = dispatch_semaphore_create(0);
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __56__RTTripSegmentStore_deleteTripSegmentWithDateInterval___block_invoke;
   v30[3] = &unk_2788CB988;
   v30[4] = self;
-  v6 = v4;
+  v6 = intervalCopy;
   v31 = v6;
   v7 = v5;
   v32 = v7;
@@ -947,11 +947,11 @@ void __57__RTTripSegmentStore__deleteTripSegmentWithUUID_handler___block_invoke(
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_107];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -985,13 +985,13 @@ void __57__RTTripSegmentStore__deleteTripSegmentWithUUID_handler___block_invoke(
     {
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
-      v29 = [v25 localizedDescription];
+      localizedDescription = [v25 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v28;
       v34 = 2112;
       v35 = v6;
       v36 = 2112;
-      v37 = v29;
+      v37 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "%@,Semaphore Error deleting tripSegment with dateInterval,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1050,17 +1050,17 @@ LABEL_4:
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)deleteTripSegmentWithUUID:(id)a3
+- (void)deleteTripSegmentWithUUID:(id)d
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_semaphore_create(0);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __48__RTTripSegmentStore_deleteTripSegmentWithUUID___block_invoke;
   v31[3] = &unk_2788CB988;
   v31[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v32 = v6;
   v7 = v5;
   v33 = v7;
@@ -1075,11 +1075,11 @@ LABEL_4:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_107];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -1113,14 +1113,14 @@ LABEL_4:
     {
       v27 = objc_opt_class();
       v28 = NSStringFromClass(v27);
-      v29 = [v6 UUIDString];
-      v30 = [v25 localizedDescription];
+      uUIDString = [v6 UUIDString];
+      localizedDescription = [v25 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v28;
       v35 = 2112;
-      v36 = v29;
+      v36 = uUIDString;
       v37 = 2112;
-      v38 = v30;
+      v38 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "%@,Semaphore Error deleting tripSegment with UUID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1179,10 +1179,10 @@ LABEL_4:
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (id)getTripSegmentsWithOptions:(id)a3
+- (id)getTripSegmentsWithOptions:(id)options
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -1198,7 +1198,7 @@ LABEL_4:
   v32 = &v33;
   v6 = v5;
   v31 = v6;
-  [(RTTripSegmentStore *)self fetchTripSegmentsWithOptions:v4 handler:v30];
+  [(RTTripSegmentStore *)self fetchTripSegmentsWithOptions:optionsCopy handler:v30];
   v7 = v6;
   v8 = [MEMORY[0x277CBEAA8] now];
   v9 = dispatch_time(0, 3600000000000);
@@ -1209,11 +1209,11 @@ LABEL_4:
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_107];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -1246,11 +1246,11 @@ LABEL_4:
     {
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      v27 = [v23 localizedDescription];
+      localizedDescription = [v23 localizedDescription];
       *buf = 138412546;
       *&buf[4] = v26;
       v40 = 2112;
-      v41 = v27;
+      v41 = localizedDescription;
       _os_log_impl(&dword_2304B3000, v24, OS_LOG_TYPE_INFO, "%@,Error,failed to load trip segments,error,%@", buf, 0x16u);
     }
   }
@@ -1304,7 +1304,7 @@ void __49__RTTripSegmentStore_getTripSegmentsWithOptions___block_invoke(uint64_t
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCA9B8];
@@ -1314,10 +1314,10 @@ void __49__RTTripSegmentStore_getTripSegmentsWithOptions___block_invoke(uint64_t
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   v9 = [v6 errorWithDomain:v7 code:7 userInfo:v8];
 
-  if (a5)
+  if (error)
   {
     v10 = v9;
-    *a5 = v9;
+    *error = v9;
   }
 
   return 0;

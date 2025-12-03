@@ -1,139 +1,139 @@
 @interface ADDictationSessionTracker
 - (ADDictationSessionTracker)init;
 - (id)_startedOrStartingSession;
-- (id)startSessionForReason:(id)a3 languageCode:(id)a4 options:(id)a5 speechRequestOptions:(id)a6;
-- (void)_addSession:(id)a3;
-- (void)_beginAudioFileIOTransactionForReason:(id)a3 session:(id)a4;
-- (void)_beginSpeechRecognitionTransactionForReason:(id)a3 session:(id)a4;
-- (void)_endAudioFileIOTransactionForReason:(id)a3 session:(id)a4;
-- (void)_endSessionTransactionForReason:(id)a3 session:(id)a4 isSpeechTransaction:(BOOL)a5;
-- (void)_endSpeechRecognitionTransactionForReason:(id)a3 session:(id)a4;
-- (void)_removeSession:(id)a3;
+- (id)startSessionForReason:(id)reason languageCode:(id)code options:(id)options speechRequestOptions:(id)requestOptions;
+- (void)_addSession:(id)session;
+- (void)_beginAudioFileIOTransactionForReason:(id)reason session:(id)session;
+- (void)_beginSpeechRecognitionTransactionForReason:(id)reason session:(id)session;
+- (void)_endAudioFileIOTransactionForReason:(id)reason session:(id)session;
+- (void)_endSessionTransactionForReason:(id)reason session:(id)session isSpeechTransaction:(BOOL)transaction;
+- (void)_endSpeechRecognitionTransactionForReason:(id)reason session:(id)session;
+- (void)_removeSession:(id)session;
 - (void)_reportSessionAssertion;
-- (void)notifyAudioFileIOTransactionStoppedForReason:(id)a3 sessionUUID:(id)a4;
-- (void)notifySpeechRecognitionTransactionStoppedForReason:(id)a3 sessionUUID:(id)a4;
-- (void)stopSessionForReason:(id)a3;
+- (void)notifyAudioFileIOTransactionStoppedForReason:(id)reason sessionUUID:(id)d;
+- (void)notifySpeechRecognitionTransactionStoppedForReason:(id)reason sessionUUID:(id)d;
+- (void)stopSessionForReason:(id)reason;
 @end
 
 @implementation ADDictationSessionTracker
 
-- (void)_endAudioFileIOTransactionForReason:(id)a3 session:(id)a4
+- (void)_endAudioFileIOTransactionForReason:(id)reason session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  sessionCopy = session;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v7 uuid];
+    uuid = [sessionCopy uuid];
     *buf = 136315394;
     v14 = "[ADDictationSessionTracker _endAudioFileIOTransactionForReason:session:]";
     v15 = 2112;
-    v16 = v10;
+    v16 = uuid;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s sessionUUID = %@", buf, 0x16u);
   }
 
-  v11 = [v7 speechRequestOptions];
-  v12 = [v11 audioFileType];
+  speechRequestOptions = [sessionCopy speechRequestOptions];
+  audioFileType = [speechRequestOptions audioFileType];
 
-  if (v12)
+  if (audioFileType)
   {
-    if (![v7 audioFileIOTransactionState])
+    if (![sessionCopy audioFileIOTransactionState])
     {
-      [NSException raise:NSInternalInconsistencyException format:@"Trying to end a dictation audio file transaction (reason: %@), but the transaction state is stopped", v6];
+      [NSException raise:NSInternalInconsistencyException format:@"Trying to end a dictation audio file transaction (reason: %@), but the transaction state is stopped", reasonCopy];
     }
 
-    [(ADDictationSessionTracker *)self _endSessionTransactionForReason:v6 session:v7 isSpeechTransaction:0];
+    [(ADDictationSessionTracker *)self _endSessionTransactionForReason:reasonCopy session:sessionCopy isSpeechTransaction:0];
   }
 }
 
-- (void)_endSpeechRecognitionTransactionForReason:(id)a3 session:(id)a4
+- (void)_endSpeechRecognitionTransactionForReason:(id)reason session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  sessionCopy = session;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v7 uuid];
+    uuid = [sessionCopy uuid];
     *buf = 136315394;
     v12 = "[ADDictationSessionTracker _endSpeechRecognitionTransactionForReason:session:]";
     v13 = 2112;
-    v14 = v10;
+    v14 = uuid;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s sessionUUID = %@", buf, 0x16u);
   }
 
-  if (![v7 speechRecognitionTransactionState])
+  if (![sessionCopy speechRecognitionTransactionState])
   {
-    [NSException raise:NSInternalInconsistencyException format:@"Trying to end a dictation transcription transaction (reason: %@), but the transaction state is stopped", v6];
+    [NSException raise:NSInternalInconsistencyException format:@"Trying to end a dictation transcription transaction (reason: %@), but the transaction state is stopped", reasonCopy];
   }
 
-  [(ADDictationSessionTracker *)self _endSessionTransactionForReason:v6 session:v7 isSpeechTransaction:1];
+  [(ADDictationSessionTracker *)self _endSessionTransactionForReason:reasonCopy session:sessionCopy isSpeechTransaction:1];
 }
 
-- (void)_endSessionTransactionForReason:(id)a3 session:(id)a4 isSpeechTransaction:(BOOL)a5
+- (void)_endSessionTransactionForReason:(id)reason session:(id)session isSpeechTransaction:(BOOL)transaction
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  transactionCopy = transaction;
+  reasonCopy = reason;
+  sessionCopy = session;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "[ADDictationSessionTracker _endSessionTransactionForReason:session:isSpeechTransaction:]";
     v13 = 2112;
-    v14 = v8;
+    v14 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Ending dictation transcription XPC transaction because %@", &v11, 0x16u);
   }
 
-  if (v5)
+  if (transactionCopy)
   {
-    [v9 _setSpeechRecognitionTransactionState:0];
+    [sessionCopy _setSpeechRecognitionTransactionState:0];
   }
 
   else
   {
-    [v9 _setAudioFileIOTransactionState:0];
+    [sessionCopy _setAudioFileIOTransactionState:0];
   }
 
-  if (![v9 speechRecognitionTransactionState] && !objc_msgSend(v9, "audioFileIOTransactionState"))
+  if (![sessionCopy speechRecognitionTransactionState] && !objc_msgSend(sessionCopy, "audioFileIOTransactionState"))
   {
-    [(ADDictationSessionTracker *)self _removeSession:v9];
+    [(ADDictationSessionTracker *)self _removeSession:sessionCopy];
   }
 }
 
-- (void)_beginAudioFileIOTransactionForReason:(id)a3 session:(id)a4
+- (void)_beginAudioFileIOTransactionForReason:(id)reason session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  sessionCopy = session;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v7 uuid];
+    uuid = [sessionCopy uuid];
     *buf = 136315394;
     v18 = "[ADDictationSessionTracker _beginAudioFileIOTransactionForReason:session:]";
     v19 = 2112;
-    v20 = v10;
+    v20 = uuid;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s sessionUUID = %@", buf, 0x16u);
   }
 
-  v11 = [v7 speechRequestOptions];
-  v12 = [v11 audioFileType];
+  speechRequestOptions = [sessionCopy speechRequestOptions];
+  audioFileType = [speechRequestOptions audioFileType];
 
-  if (v12)
+  if (audioFileType)
   {
     v13 = sub_1002F491C(self->_activeSessions, &stru_10051B0F0);
     v14 = [v13 count];
     if (v14 >= 2)
     {
-      [NSException raise:NSInternalInconsistencyException format:@"Trying to begin a dictation audio file transaction (reason: %@), but found %tu active session(s).", v6, v14];
+      [NSException raise:NSInternalInconsistencyException format:@"Trying to begin a dictation audio file transaction (reason: %@), but found %tu active session(s).", reasonCopy, v14];
     }
 
-    v15 = [v7 audioFileIOTransactionState];
-    if (v15)
+    audioFileIOTransactionState = [sessionCopy audioFileIOTransactionState];
+    if (audioFileIOTransactionState)
     {
-      [NSException raise:NSInternalInconsistencyException format:@"Trying to begin a dictation audio file transaction (reason: %@), but the transaction state is %ld.", v6, v15];
+      [NSException raise:NSInternalInconsistencyException format:@"Trying to begin a dictation audio file transaction (reason: %@), but the transaction state is %ld.", reasonCopy, audioFileIOTransactionState];
     }
 
     v16 = AFSiriLogContextDaemon;
@@ -142,27 +142,27 @@
       *buf = 136315394;
       v18 = "[ADDictationSessionTracker _beginAudioFileIOTransactionForReason:session:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s Beginning dictation audio file XPC transaction because %@", buf, 0x16u);
     }
 
-    [v7 _setAudioFileIOTransactionState:1];
+    [sessionCopy _setAudioFileIOTransactionState:1];
   }
 }
 
-- (void)_beginSpeechRecognitionTransactionForReason:(id)a3 session:(id)a4
+- (void)_beginSpeechRecognitionTransactionForReason:(id)reason session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  sessionCopy = session;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v9 = v8;
-    v10 = [v7 uuid];
+    uuid = [sessionCopy uuid];
     *buf = 136315394;
     v16 = "[ADDictationSessionTracker _beginSpeechRecognitionTransactionForReason:session:]";
     v17 = 2112;
-    v18 = v10;
+    v18 = uuid;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s sessionUUID = %@", buf, 0x16u);
   }
 
@@ -170,13 +170,13 @@
   v12 = [v11 count];
   if (v12 >= 2)
   {
-    [NSException raise:NSInternalInconsistencyException format:@"Trying to begin a dictation transcription transaction (reason: %@), but found %tu active session(s).", v6, v12];
+    [NSException raise:NSInternalInconsistencyException format:@"Trying to begin a dictation transcription transaction (reason: %@), but found %tu active session(s).", reasonCopy, v12];
   }
 
-  v13 = [v7 speechRecognitionTransactionState];
-  if (v13)
+  speechRecognitionTransactionState = [sessionCopy speechRecognitionTransactionState];
+  if (speechRecognitionTransactionState)
   {
-    [NSException raise:NSInternalInconsistencyException format:@"Trying to begin a dictation transcription transaction (reason: %@), but the transaction state is %zd.", v6, v13];
+    [NSException raise:NSInternalInconsistencyException format:@"Trying to begin a dictation transcription transaction (reason: %@), but the transaction state is %zd.", reasonCopy, speechRecognitionTransactionState];
   }
 
   v14 = AFSiriLogContextDaemon;
@@ -185,11 +185,11 @@
     *buf = 136315394;
     v16 = "[ADDictationSessionTracker _beginSpeechRecognitionTransactionForReason:session:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%s Beginning dictation transcription XPC transaction because %@", buf, 0x16u);
   }
 
-  [v7 _setSpeechRecognitionTransactionState:1];
+  [sessionCopy _setSpeechRecognitionTransactionState:1];
 }
 
 - (void)_reportSessionAssertion
@@ -215,57 +215,57 @@
     [NSException raise:NSInternalInconsistencyException format:@"Trying to retrieve the active session, but found %tu active sessions.", v5];
   }
 
-  v6 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-- (void)_removeSession:(id)a3
+- (void)_removeSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [v4 uuid];
+    uuid = [sessionCopy uuid];
     v10 = 136315394;
     v11 = "[ADDictationSessionTracker _removeSession:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = uuid;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Deactivating dictation session with sessionUUID = %@", &v10, 0x16u);
   }
 
-  [(NSMutableArray *)self->_activeSessions removeObject:v4];
+  [(NSMutableArray *)self->_activeSessions removeObject:sessionCopy];
   activeSessionsByUUID = self->_activeSessionsByUUID;
-  v9 = [v4 uuid];
-  [(NSMutableDictionary *)activeSessionsByUUID removeObjectForKey:v9];
+  uuid2 = [sessionCopy uuid];
+  [(NSMutableDictionary *)activeSessionsByUUID removeObjectForKey:uuid2];
 }
 
-- (void)_addSession:(id)a3
+- (void)_addSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [v4 uuid];
+    uuid = [sessionCopy uuid];
     v10 = 136315394;
     v11 = "[ADDictationSessionTracker _addSession:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = uuid;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Activating dictation session with sessionUUID = %@", &v10, 0x16u);
   }
 
-  [(NSMutableArray *)self->_activeSessions addObject:v4];
+  [(NSMutableArray *)self->_activeSessions addObject:sessionCopy];
   activeSessionsByUUID = self->_activeSessionsByUUID;
-  v9 = [v4 uuid];
-  [(NSMutableDictionary *)activeSessionsByUUID setObject:v4 forKey:v9];
+  uuid2 = [sessionCopy uuid];
+  [(NSMutableDictionary *)activeSessionsByUUID setObject:sessionCopy forKey:uuid2];
 }
 
-- (void)notifyAudioFileIOTransactionStoppedForReason:(id)a3 sessionUUID:(id)a4
+- (void)notifyAudioFileIOTransactionStoppedForReason:(id)reason sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  dCopy = d;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -277,21 +277,21 @@
   v11[1] = 3221225472;
   v11[2] = sub_1001B9C7C;
   v11[3] = &unk_100517400;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = reasonCopy;
   v15 = v16;
-  v9 = v6;
-  v10 = v7;
+  v9 = reasonCopy;
+  v10 = dCopy;
   dispatch_async(queue, v11);
 
   _Block_object_dispose(v16, 8);
 }
 
-- (void)notifySpeechRecognitionTransactionStoppedForReason:(id)a3 sessionUUID:(id)a4
+- (void)notifySpeechRecognitionTransactionStoppedForReason:(id)reason sessionUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  dCopy = d;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -303,18 +303,18 @@
   v11[1] = 3221225472;
   v11[2] = sub_1001B9F80;
   v11[3] = &unk_100517400;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = reasonCopy;
   v15 = v16;
-  v9 = v6;
-  v10 = v7;
+  v9 = reasonCopy;
+  v10 = dCopy;
   dispatch_async(queue, v11);
 
   _Block_object_dispose(v16, 8);
 }
 
-- (void)stopSessionForReason:(id)a3
+- (void)stopSessionForReason:(id)reason
 {
   v6[0] = 0;
   v6[1] = v6;
@@ -333,15 +333,15 @@
   _Block_object_dispose(v6, 8);
 }
 
-- (id)startSessionForReason:(id)a3 languageCode:(id)a4 options:(id)a5 speechRequestOptions:(id)a6
+- (id)startSessionForReason:(id)reason languageCode:(id)code options:(id)options speechRequestOptions:(id)requestOptions
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  reasonCopy = reason;
+  codeCopy = code;
+  optionsCopy = options;
+  requestOptionsCopy = requestOptions;
   v14 = mach_absolute_time();
   v15 = +[NSUUID UUID];
-  v16 = [v15 UUIDString];
+  uUIDString = [v15 UUIDString];
 
   v35[0] = 0;
   v35[1] = v35;
@@ -354,19 +354,19 @@
   v26[1] = 3221225472;
   v26[2] = sub_1001BA5AC;
   v26[3] = &unk_100515038;
-  v18 = v16;
+  v18 = uUIDString;
   v27 = v18;
-  v28 = v11;
-  v29 = v12;
-  v30 = v13;
-  v31 = self;
-  v32 = v10;
+  v28 = codeCopy;
+  v29 = optionsCopy;
+  v30 = requestOptionsCopy;
+  selfCopy = self;
+  v32 = reasonCopy;
   v33 = v35;
   v34 = v14;
-  v19 = v10;
-  v20 = v13;
-  v21 = v12;
-  v22 = v11;
+  v19 = reasonCopy;
+  v20 = requestOptionsCopy;
+  v21 = optionsCopy;
+  v22 = codeCopy;
   dispatch_async(queue, v26);
   v23 = v32;
   v24 = v18;

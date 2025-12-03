@@ -1,8 +1,8 @@
 @interface SUUIReportAConcernReasonDataSource
 - (SUUIReportAConcernReasonDataSource)init;
-- (SUUIReportAConcernReasonDataSource)initWithTableView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (SUUIReportAConcernReasonDataSource)initWithTableView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 @end
 
 @implementation SUUIReportAConcernReasonDataSource
@@ -15,44 +15,44 @@
   return v4;
 }
 
-- (SUUIReportAConcernReasonDataSource)initWithTableView:(id)a3
+- (SUUIReportAConcernReasonDataSource)initWithTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SUUIReportAConcernReasonDataSource;
   v6 = [(SUUIReportAConcernReasonDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_tableView, a3);
-    [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"SUUIConcernReasonCell"];
+    objc_storeStrong(&v6->_tableView, view);
+    [viewCopy registerClass:objc_opt_class() forCellReuseIdentifier:@"SUUIConcernReasonCell"];
   }
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(SUUIReportAConcernReasonDataSource *)self reasons:a3];
+  v4 = [(SUUIReportAConcernReasonDataSource *)self reasons:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SUUIReportAConcernReasonDataSource *)self reasons];
-  v9 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  reasons = [(SUUIReportAConcernReasonDataSource *)self reasons];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [reasons objectAtIndexedSubscript:v9];
 
-  v11 = [v7 dequeueReusableCellWithIdentifier:@"SUUIConcernReasonCell"];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:@"SUUIConcernReasonCell"];
 
-  v12 = [v10 name];
-  v13 = [v11 textLabel];
-  [v13 setText:v12];
+  name = [v10 name];
+  textLabel = [v11 textLabel];
+  [textLabel setText:name];
 
   [v11 setAccessoryType:1];
 

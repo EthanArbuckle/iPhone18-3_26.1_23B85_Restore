@@ -1,17 +1,17 @@
 @interface PUTileTree
-- (BOOL)containsObject:(id)a3 withTileIdentifier:(id)a4;
+- (BOOL)containsObject:(id)object withTileIdentifier:(id)identifier;
 - (PUTileTree)init;
-- (PUTileTree)initWithTileTree:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PUTileTree)initWithTileTree:(id)tree;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initUsingUniqueLeafs:(BOOL)a3;
-- (id)objectWithTileIdentifier:(id)a3;
-- (void)addObject:(id)a3 withTileIdentifier:(id)a4;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)enumerateObjectsWithTileIdentifier:(id)a3 usingBlock:(id)a4;
+- (id)initUsingUniqueLeafs:(BOOL)leafs;
+- (id)objectWithTileIdentifier:(id)identifier;
+- (void)addObject:(id)object withTileIdentifier:(id)identifier;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)enumerateObjectsWithTileIdentifier:(id)identifier usingBlock:(id)block;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3 withTileIdentifier:(id)a4;
-- (void)removeObjectWithTileIdentifier:(id)a3;
+- (void)removeObject:(id)object withTileIdentifier:(id)identifier;
+- (void)removeObjectWithTileIdentifier:(id)identifier;
 @end
 
 @implementation PUTileTree
@@ -21,19 +21,19 @@
   v7.receiver = self;
   v7.super_class = PUTileTree;
   v3 = [(PUTileTree *)&v7 description];
-  v4 = [(PUTileTree *)self _objectsByTileIdentifier];
-  v5 = [v3 stringByAppendingFormat:@" objects: %@", v4];
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
+  v5 = [v3 stringByAppendingFormat:@" objects: %@", _objectsByTileIdentifier];
 
   return v5;
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PUTileTree *)self setIsEnumerating:1];
-  v5 = [(PUTileTree *)self useUniqueLeafs];
-  v6 = [(PUTileTree *)self _objectsByTileIdentifier];
-  if (v5)
+  useUniqueLeafs = [(PUTileTree *)self useUniqueLeafs];
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
+  if (useUniqueLeafs)
   {
     v7 = v12;
     v12[0] = MEMORY[0x1E69E9820];
@@ -53,9 +53,9 @@
 
   v7[2] = v9;
   v7[3] = v8;
-  v7[4] = v4;
-  v10 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v7];
+  v7[4] = blockCopy;
+  v10 = blockCopy;
+  [_objectsByTileIdentifier enumerateKeysAndObjectsUsingBlock:v7];
 
   [(PUTileTree *)self setIsEnumerating:0];
 }
@@ -102,14 +102,14 @@ LABEL_3:
   }
 }
 
-- (void)enumerateObjectsWithTileIdentifier:(id)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithTileIdentifier:(id)identifier usingBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   [(PUTileTree *)self setIsEnumerating:1];
-  v8 = [(PUTileTree *)self _objectsByTileIdentifier];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
+  v9 = [_objectsByTileIdentifier objectForKeyedSubscript:identifierCopy];
 
   v19 = 0;
   v15 = 0u;
@@ -131,7 +131,7 @@ LABEL_3:
         objc_enumerationMutation(v10);
       }
 
-      v7[2](v7, *(*(&v15 + 1) + 8 * v14), &v19);
+      blockCopy[2](blockCopy, *(*(&v15 + 1) + 8 * v14), &v19);
       if (v19)
       {
         break;
@@ -153,31 +153,31 @@ LABEL_3:
   [(PUTileTree *)self setIsEnumerating:0, v15];
 }
 
-- (id)objectWithTileIdentifier:(id)a3
+- (id)objectWithTileIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PUTileTree *)self _objectsByTileIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
+  v6 = [_objectsByTileIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)containsObject:(id)a3 withTileIdentifier:(id)a4
+- (BOOL)containsObject:(id)object withTileIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUTileTree *)self useUniqueLeafs];
-  v9 = [(PUTileTree *)self _objectsByTileIdentifier];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  objectCopy = object;
+  useUniqueLeafs = [(PUTileTree *)self useUniqueLeafs];
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
+  v10 = [_objectsByTileIdentifier objectForKeyedSubscript:identifierCopy];
 
-  if (v8)
+  if (useUniqueLeafs)
   {
-    v11 = v10 == v7;
+    v11 = v10 == objectCopy;
   }
 
   else
   {
-    v11 = [v10 containsObject:v7];
+    v11 = [v10 containsObject:objectCopy];
   }
 
   return v11;
@@ -195,116 +195,116 @@ LABEL_3:
     }
   }
 
-  v4 = [(PUTileTree *)self _objectsByTileIdentifier];
-  [v4 removeAllObjects];
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
+  [_objectsByTileIdentifier removeAllObjects];
 }
 
-- (void)removeObjectWithTileIdentifier:(id)a3
+- (void)removeObjectWithTileIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(PUTileTree *)self isEnumerating])
   {
     v5 = PXAssertGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = identifierCopy;
       _os_log_error_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_ERROR, "Attempting to remove object with identifier: %@ while enumerating", &v7, 0xCu);
     }
   }
 
-  v6 = [(PUTileTree *)self _objectsByTileIdentifier];
-  [v6 removeObjectForKey:v4];
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
+  [_objectsByTileIdentifier removeObjectForKey:identifierCopy];
 }
 
-- (void)removeObject:(id)a3 withTileIdentifier:(id)a4
+- (void)removeObject:(id)object withTileIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  identifierCopy = identifier;
   if ([(PUTileTree *)self isEnumerating])
   {
     v8 = PXAssertGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = objectCopy;
       v13 = 2112;
-      v14 = v7;
+      v14 = identifierCopy;
       _os_log_error_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_ERROR, "Attempting to remove object: %@ with identifier: %@ while enumerating", &v11, 0x16u);
     }
   }
 
-  v9 = [(PUTileTree *)self _objectsByTileIdentifier];
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
   if ([(PUTileTree *)self useUniqueLeafs])
   {
-    [v9 removeObjectForKey:v7];
+    [_objectsByTileIdentifier removeObjectForKey:identifierCopy];
   }
 
   else
   {
-    v10 = [v9 objectForKeyedSubscript:v7];
-    [v10 removeObject:v6];
+    v10 = [_objectsByTileIdentifier objectForKeyedSubscript:identifierCopy];
+    [v10 removeObject:objectCopy];
   }
 }
 
-- (void)addObject:(id)a3 withTileIdentifier:(id)a4
+- (void)addObject:(id)object withTileIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  identifierCopy = identifier;
   if ([(PUTileTree *)self isEnumerating])
   {
     v8 = PXAssertGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = v6;
+      v12 = objectCopy;
       v13 = 2112;
-      v14 = v7;
+      v14 = identifierCopy;
       _os_log_error_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_ERROR, "Attempting to add object: %@ with identifier: %@ while enumerating", &v11, 0x16u);
     }
   }
 
-  v9 = [(PUTileTree *)self _objectsByTileIdentifier];
+  _objectsByTileIdentifier = [(PUTileTree *)self _objectsByTileIdentifier];
   if ([(PUTileTree *)self useUniqueLeafs])
   {
-    [v9 setObject:v6 forKeyedSubscript:v7];
+    [_objectsByTileIdentifier setObject:objectCopy forKeyedSubscript:identifierCopy];
   }
 
   else
   {
-    v10 = [v9 objectForKeyedSubscript:v7];
+    v10 = [_objectsByTileIdentifier objectForKeyedSubscript:identifierCopy];
     if (!v10)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [v9 setObject:v10 forKeyedSubscript:v7];
+      [_objectsByTileIdentifier setObject:v10 forKeyedSubscript:identifierCopy];
     }
 
-    [v10 addObject:v6];
+    [v10 addObject:objectCopy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithTileTree:self];
 }
 
-- (PUTileTree)initWithTileTree:(id)a3
+- (PUTileTree)initWithTileTree:(id)tree
 {
-  v4 = a3;
+  treeCopy = tree;
   v18.receiver = self;
   v18.super_class = PUTileTree;
   v5 = [(PUTileTree *)&v18 init];
   if (v5)
   {
-    v6 = [v4 useUniqueLeafs];
-    v5->_useUniqueLeafs = v6;
-    v7 = v4[2];
-    if (v6)
+    useUniqueLeafs = [treeCopy useUniqueLeafs];
+    v5->_useUniqueLeafs = useUniqueLeafs;
+    v7 = treeCopy[2];
+    if (useUniqueLeafs)
     {
       v8 = [v7 mutableCopy];
       objectsByTileIdentifier = v5->__objectsByTileIdentifier;
@@ -339,7 +339,7 @@ void __31__PUTileTree_initWithTileTree___block_invoke(uint64_t a1, uint64_t a2, 
   [v4 setObject:v5 forKey:a2];
 }
 
-- (id)initUsingUniqueLeafs:(BOOL)a3
+- (id)initUsingUniqueLeafs:(BOOL)leafs
 {
   v9.receiver = self;
   v9.super_class = PUTileTree;
@@ -347,7 +347,7 @@ void __31__PUTileTree_initWithTileTree___block_invoke(uint64_t a1, uint64_t a2, 
   v5 = v4;
   if (v4)
   {
-    v4->_useUniqueLeafs = a3;
+    v4->_useUniqueLeafs = leafs;
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     objectsByTileIdentifier = v5->__objectsByTileIdentifier;
     v5->__objectsByTileIdentifier = v6;
@@ -358,8 +358,8 @@ void __31__PUTileTree_initWithTileTree___block_invoke(uint64_t a1, uint64_t a2, 
 
 - (PUTileTree)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUTileTree.m" lineNumber:21 description:@"use designated initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUTileTree.m" lineNumber:21 description:@"use designated initializer"];
 
   return [(PUTileTree *)self initUsingUniqueLeafs:0];
 }

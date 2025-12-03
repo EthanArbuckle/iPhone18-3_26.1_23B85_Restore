@@ -2,61 +2,61 @@
 + (id)imagePool;
 + (id)sharedClient;
 + (id)viewControllerFactory;
-+ (void)setSharedClient:(id)a3;
-- (BOOL)_presentModalViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)composeReviewWithViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)dismissTopViewControllerAnimated:(BOOL)a3;
-- (BOOL)enterAccountFlowWithViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)openExternalURL:(id)a3;
-- (BOOL)openInternalURL:(id)a3;
-- (BOOL)openURL:(id)a3 inClientApplication:(id)a4;
-- (BOOL)sendActionForDialog:(id)a3 button:(id)a4;
++ (void)setSharedClient:(id)client;
+- (BOOL)_presentModalViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)composeReviewWithViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)dismissTopViewControllerAnimated:(BOOL)animated;
+- (BOOL)enterAccountFlowWithViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)openExternalURL:(id)l;
+- (BOOL)openInternalURL:(id)l;
+- (BOOL)openURL:(id)l inClientApplication:(id)application;
+- (BOOL)sendActionForDialog:(id)dialog button:(id)button;
 - (ISURLOperationPool)imagePool;
 - (NSString)searchHintsURLBagKey;
 - (NSString)searchURLBagKey;
-- (SUClient)initWithClientInterface:(id)a3;
+- (SUClient)initWithClientInterface:(id)interface;
 - (SUClientInterface)clientInterface;
 - (SUImageCache)imageCache;
 - (SUScriptExecutionContext)scriptExecutionContext;
-- (id)_newAccountViewControllerForButtonAction:(id)a3;
-- (id)_newComposeReviewViewControllerForButtonAction:(id)a3;
+- (id)_newAccountViewControllerForButtonAction:(id)action;
+- (id)_newComposeReviewViewControllerForButtonAction:(id)action;
 - (id)clientIdentifier;
 - (id)queueSessionManager;
 - (id)viewControllerFactory;
-- (void)_applicationDidEnterBackgroundNotification:(id)a3;
-- (void)_bagDidLoadNotification:(id)a3;
-- (void)_memoryWarningNotification:(id)a3;
+- (void)_applicationDidEnterBackgroundNotification:(id)notification;
+- (void)_bagDidLoadNotification:(id)notification;
+- (void)_memoryWarningNotification:(id)notification;
 - (void)_purgeCaches;
 - (void)_reloadScriptExecutionContext;
 - (void)dealloc;
-- (void)setAssetTypes:(__CFArray *)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setQueueSessionManager:(id)a3;
-- (void)setSearchHintsURLBagKey:(id)a3;
-- (void)setSearchURLBagKey:(id)a3;
-- (void)setViewControllerFactory:(id)a3;
+- (void)setAssetTypes:(__CFArray *)types;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setQueueSessionManager:(id)manager;
+- (void)setSearchHintsURLBagKey:(id)key;
+- (void)setSearchURLBagKey:(id)key;
+- (void)setViewControllerFactory:(id)factory;
 @end
 
 @implementation SUClient
 
-- (SUClient)initWithClientInterface:(id)a3
+- (SUClient)initWithClientInterface:(id)interface
 {
   v8.receiver = self;
   v8.super_class = SUClient;
   v4 = [(SUClient *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (interface)
     {
-      v5 = a3;
+      interfaceCopy = interface;
     }
 
     else
     {
-      v5 = objc_alloc_init(SUClientInterface);
+      interfaceCopy = objc_alloc_init(SUClientInterface);
     }
 
-    v4->_clientInterface = v5;
+    v4->_clientInterface = interfaceCopy;
     v4->_lock = objc_alloc_init(MEMORY[0x1E696AD10]);
     if (![(SUClientInterface *)v4->_clientInterface localStoragePath])
     {
@@ -65,10 +65,10 @@
 
     +[SUDialogManager sharedInstance];
     +[SUNetworkObserver sharedInstance];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v4 selector:sel__bagDidLoadNotification_ name:*MEMORY[0x1E69E4718] object:0];
-    [v6 addObserver:v4 selector:sel__memoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
-    [v6 addObserver:v4 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__bagDidLoadNotification_ name:*MEMORY[0x1E69E4718] object:0];
+    [defaultCenter addObserver:v4 selector:sel__memoryWarningNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
+    [defaultCenter addObserver:v4 selector:sel__applicationDidEnterBackgroundNotification_ name:*MEMORY[0x1E69DDAC8] object:0];
   }
 
   return v4;
@@ -76,10 +76,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69E4718] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69E4718] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAC8] object:0];
   assetTypes = self->_assetTypes;
   if (assetTypes)
   {
@@ -91,13 +91,13 @@
   [(SUClient *)&v5 dealloc];
 }
 
-+ (void)setSharedClient:(id)a3
++ (void)setSharedClient:(id)client
 {
   _os_nospin_lock_lock();
-  if (__SharedClient != a3)
+  if (__SharedClient != client)
   {
 
-    __SharedClient = a3;
+    __SharedClient = client;
   }
 
   _os_nospin_lock_unlock();
@@ -113,16 +113,16 @@
 
 + (id)imagePool
 {
-  v2 = [a1 sharedClient];
+  sharedClient = [self sharedClient];
 
-  return [v2 imagePool];
+  return [sharedClient imagePool];
 }
 
 + (id)viewControllerFactory
 {
-  v2 = [a1 sharedClient];
+  sharedClient = [self sharedClient];
 
-  return [v2 viewControllerFactory];
+  return [sharedClient viewControllerFactory];
 }
 
 - (SUClientInterface)clientInterface
@@ -136,14 +136,14 @@
 - (id)clientIdentifier
 {
   [(NSLock *)self->_lock lock];
-  v3 = [(SUClientInterface *)self->_clientInterface clientIdentifier];
+  clientIdentifier = [(SUClientInterface *)self->_clientInterface clientIdentifier];
   [(NSLock *)self->_lock unlock];
-  return v3;
+  return clientIdentifier;
 }
 
-- (BOOL)composeReviewWithViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)composeReviewWithViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -160,7 +160,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [(SUClientDelegate *)self->_delegate client:self presentComposeReviewViewController:a3 animated:v4];
+  v7 = [(SUClientDelegate *)self->_delegate client:self presentComposeReviewViewController:controller animated:animatedCopy];
   *(v14 + 24) = v7;
   if (v7)
   {
@@ -173,11 +173,11 @@ LABEL_3:
   v11[1] = 3221225472;
   v11[2] = __53__SUClient_composeReviewWithViewController_animated___block_invoke;
   v11[3] = &unk_1E8165060;
-  v11[5] = a3;
+  v11[5] = controller;
   v11[6] = &v13;
   v11[4] = v8;
-  v12 = v4;
-  [a3 prepareWithCompletionBlock:v11];
+  v12 = animatedCopy;
+  [controller prepareWithCompletionBlock:v11];
   v9 = *(v14 + 24);
 LABEL_6:
   _Block_object_dispose(&v13, 8);
@@ -206,15 +206,15 @@ uint64_t __53__SUClient_composeReviewWithViewController_animated___block_invoke(
   return result;
 }
 
-- (BOOL)dismissTopViewControllerAnimated:(BOOL)a3
+- (BOOL)dismissTopViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (objc_opt_respondsToSelector())
   {
     v5 = [(SUClientDelegate *)self->_delegate topViewControllerForClient:self];
     if (v5)
     {
-      [v5 dismissAnimated:v3];
+      [v5 dismissAnimated:animatedCopy];
       LOBYTE(v5) = 1;
     }
   }
@@ -227,17 +227,17 @@ uint64_t __53__SUClient_composeReviewWithViewController_animated___block_invoke(
   return v5;
 }
 
-- (BOOL)enterAccountFlowWithViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)enterAccountFlowWithViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([(SUClientDelegate *)self->_delegate client:self presentAccountViewController:a3 animated:v4]& 1) != 0)
+  animatedCopy = animated;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([(SUClientDelegate *)self->_delegate client:self presentAccountViewController:controller animated:animatedCopy]& 1) != 0)
   {
     return 1;
   }
 
   delegate = self->_delegate;
 
-  return [(SUClientDelegate *)delegate client:self presentModalViewController:a3 animated:v4];
+  return [(SUClientDelegate *)delegate client:self presentModalViewController:controller animated:animatedCopy];
 }
 
 - (SUImageCache)imageCache
@@ -272,38 +272,38 @@ uint64_t __53__SUClient_composeReviewWithViewController_animated___block_invoke(
   return result;
 }
 
-- (BOOL)openExternalURL:(id)a3
+- (BOOL)openExternalURL:(id)l
 {
-  v4 = [(SUClient *)self clientInterface];
+  clientInterface = [(SUClient *)self clientInterface];
 
-  return SUOpenExternalURL(a3, v4);
+  return SUOpenExternalURL(l, clientInterface);
 }
 
-- (BOOL)openInternalURL:(id)a3
+- (BOOL)openInternalURL:(id)l
 {
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([(SUClientDelegate *)self->_delegate client:self openInternalURL:a3]& 1) != 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([(SUClientDelegate *)self->_delegate client:self openInternalURL:l]& 1) != 0)
   {
     return 1;
   }
 
-  v6 = [(SUClient *)self clientInterface];
+  clientInterface = [(SUClient *)self clientInterface];
 
-  return SUOpenExternalURL(a3, v6);
+  return SUOpenExternalURL(l, clientInterface);
 }
 
-- (BOOL)openURL:(id)a3 inClientApplication:(id)a4
+- (BOOL)openURL:(id)l inClientApplication:(id)application
 {
-  v6 = [(SUClient *)self clientInterface];
+  clientInterface = [(SUClient *)self clientInterface];
 
-  return SUOpenURLInClient(a3, a4, v6);
+  return SUOpenURLInClient(l, application, clientInterface);
 }
 
 - (id)queueSessionManager
 {
   [(NSLock *)self->_lock lock];
-  v3 = [(SUClientInterface *)self->_clientInterface queueSessionManager];
+  queueSessionManager = [(SUClientInterface *)self->_clientInterface queueSessionManager];
   [(NSLock *)self->_lock unlock];
-  return v3;
+  return queueSessionManager;
 }
 
 - (SUScriptExecutionContext)scriptExecutionContext
@@ -334,62 +334,62 @@ uint64_t __53__SUClient_composeReviewWithViewController_animated___block_invoke(
   return v3;
 }
 
-- (BOOL)sendActionForDialog:(id)a3 button:(id)a4
+- (BOOL)sendActionForDialog:(id)dialog button:(id)button
 {
-  v6 = [a4 actionType];
+  actionType = [button actionType];
   result = 0;
-  if (v6 <= 4)
+  if (actionType <= 4)
   {
-    if (v6 != 1)
+    if (actionType != 1)
     {
-      if (v6 != 3)
+      if (actionType != 3)
       {
-        if (v6 == 4)
+        if (actionType == 4)
         {
-          v8 = [a4 parameter];
+          parameter = [button parameter];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v8 = [MEMORY[0x1E695DFF8] URLWithString:v8];
+            parameter = [MEMORY[0x1E695DFF8] URLWithString:parameter];
           }
 
-          v9 = [(SUClient *)self clientInterface];
+          clientInterface = [(SUClient *)self clientInterface];
 
-          return SUOpenExternalURL(v8, v9);
+          return SUOpenExternalURL(parameter, clientInterface);
         }
 
         return result;
       }
 
       v15 = objc_alloc_init(MEMORY[0x1E69D4998]);
-      [v15 setBuyParameters:{objc_msgSend(a4, "parameter")}];
-      v16 = [(SUClientInterface *)[(SUClient *)self clientInterface] purchaseManager];
+      [v15 setBuyParameters:{objc_msgSend(button, "parameter")}];
+      purchaseManager = [(SUClientInterface *)[(SUClient *)self clientInterface] purchaseManager];
       v17 = objc_alloc_init(SUPurchaseBatch);
-      [(SUPurchaseBatch *)v17 setPurchaseManager:v16];
+      [(SUPurchaseBatch *)v17 setPurchaseManager:purchaseManager];
       -[SUPurchaseBatch setPurchasesAndContinuationsFromPurchases:](v17, "setPurchasesAndContinuationsFromPurchases:", [MEMORY[0x1E695DEC8] arrayWithObject:v15]);
-      [(SUPurchaseManager *)v16 addPurchaseBatch:v17];
+      [(SUPurchaseManager *)purchaseManager addPurchaseBatch:v17];
 
       return 1;
     }
 
-    v10 = [a4 parameter];
+    parameter2 = [button parameter];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [MEMORY[0x1E695DFF8] URLWithString:v10];
+      parameter2 = [MEMORY[0x1E695DFF8] URLWithString:parameter2];
     }
 
-    v11 = [v10 schemeSwizzledURL];
-    v12 = [a4 urlType];
-    if (v12 != 2)
+    schemeSwizzledURL = [parameter2 schemeSwizzledURL];
+    urlType = [button urlType];
+    if (urlType != 2)
     {
-      if (v12 != 1)
+      if (urlType != 1)
       {
-        [(SUClient *)self openInternalURL:v11];
+        [(SUClient *)self openInternalURL:schemeSwizzledURL];
         return 1;
       }
 
-      v13 = [(SUClient *)self _newAccountViewControllerForButtonAction:a4];
+      v13 = [(SUClient *)self _newAccountViewControllerForButtonAction:button];
       v14 = [(SUClient *)self enterAccountFlowWithViewController:v13 animated:1];
 LABEL_24:
       v18 = v14;
@@ -398,7 +398,7 @@ LABEL_24:
     }
 
     v19 = objc_alloc(MEMORY[0x1E69D4970]);
-    v20 = [v19 initWithURLRequest:{objc_msgSend(MEMORY[0x1E695AC68], "requestWithURL:", v11)}];
+    v20 = [v19 initWithURLRequest:{objc_msgSend(MEMORY[0x1E695AC68], "requestWithURL:", schemeSwizzledURL)}];
     [v20 setITunesStoreRequest:1];
     [v20 setShouldProcessProtocol:1];
     v21 = [objc_alloc(MEMORY[0x1E69D4A00]) initWithRequestProperties:v20];
@@ -407,16 +407,16 @@ LABEL_24:
     return 0;
   }
 
-  if (v6 != 5)
+  if (actionType != 5)
   {
-    if (v6 == 8)
+    if (actionType == 8)
     {
-      v13 = [(SUClient *)self _newComposeReviewViewControllerForButtonAction:a4];
+      v13 = [(SUClient *)self _newComposeReviewViewControllerForButtonAction:button];
       v14 = [(SUClient *)self composeReviewWithViewController:v13 animated:1];
       goto LABEL_24;
     }
 
-    if (v6 != 9)
+    if (actionType != 9)
     {
       return result;
     }
@@ -428,66 +428,66 @@ LABEL_24:
   return [(SUClient *)self dismissTopViewControllerAnimated:1];
 }
 
-- (void)setAssetTypes:(__CFArray *)a3
+- (void)setAssetTypes:(__CFArray *)types
 {
   assetTypes = self->_assetTypes;
-  if (assetTypes != a3)
+  if (assetTypes != types)
   {
     if (assetTypes)
     {
       CFRelease(assetTypes);
     }
 
-    self->_assetTypes = a3;
-    if (a3)
+    self->_assetTypes = types;
+    if (types)
     {
 
-      CFRetain(a3);
+      CFRetain(types);
     }
   }
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
   [(NSLock *)self->_lock lock];
-  [(SUClientInterface *)self->_clientInterface setClientIdentifier:a3];
+  [(SUClientInterface *)self->_clientInterface setClientIdentifier:identifier];
   [(NSLock *)self->_lock unlock];
-  v5 = [MEMORY[0x1E69E4730] currentClient];
+  currentClient = [MEMORY[0x1E69E4730] currentClient];
 
-  [v5 setAppleClientApplication:a3];
+  [currentClient setAppleClientApplication:identifier];
 }
 
-- (void)setQueueSessionManager:(id)a3
+- (void)setQueueSessionManager:(id)manager
 {
   [(NSLock *)self->_lock lock];
-  [(SUClientInterface *)self->_clientInterface setQueueSessionManager:a3];
+  [(SUClientInterface *)self->_clientInterface setQueueSessionManager:manager];
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)setSearchHintsURLBagKey:(id)a3
+- (void)setSearchHintsURLBagKey:(id)key
 {
   [(NSLock *)self->_lock lock];
-  [(SUClientInterface *)self->_clientInterface setURLBagKey:a3 forIdentifier:@"SUURLBagKeySearchHints"];
+  [(SUClientInterface *)self->_clientInterface setURLBagKey:key forIdentifier:@"SUURLBagKeySearchHints"];
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)setSearchURLBagKey:(id)a3
+- (void)setSearchURLBagKey:(id)key
 {
   [(NSLock *)self->_lock lock];
-  [(SUClientInterface *)self->_clientInterface setURLBagKey:a3 forIdentifier:@"SUURLBagKeySearch"];
+  [(SUClientInterface *)self->_clientInterface setURLBagKey:key forIdentifier:@"SUURLBagKeySearch"];
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)setViewControllerFactory:(id)a3
+- (void)setViewControllerFactory:(id)factory
 {
   [(NSLock *)self->_lock lock];
-  [(SUClientInterface *)self->_clientInterface setViewControllerFactory:a3];
+  [(SUClientInterface *)self->_clientInterface setViewControllerFactory:factory];
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
@@ -496,27 +496,27 @@ LABEL_24:
 - (id)viewControllerFactory
 {
   [(NSLock *)self->_lock lock];
-  v3 = [(SUClientInterface *)self->_clientInterface viewControllerFactory];
+  viewControllerFactory = [(SUClientInterface *)self->_clientInterface viewControllerFactory];
   [(NSLock *)self->_lock unlock];
-  return v3;
+  return viewControllerFactory;
 }
 
-- (void)_applicationDidEnterBackgroundNotification:(id)a3
+- (void)_applicationDidEnterBackgroundNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v6 &= 2u;
   }
@@ -541,7 +541,7 @@ LABEL_24:
   [(SUClient *)self _purgeCaches];
 }
 
-- (void)_bagDidLoadNotification:(id)a3
+- (void)_bagDidLoadNotification:(id)notification
 {
   v4 = [MEMORY[0x1E69D49F8] contextWithBagType:0];
   v5 = [objc_msgSend(objc_msgSend(MEMORY[0x1E69E47F8] "sharedCache")];
@@ -557,22 +557,22 @@ LABEL_24:
   [(SUClient *)self _reloadScriptExecutionContext];
 }
 
-- (void)_memoryWarningNotification:(id)a3
+- (void)_memoryWarningNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69D4938] sharedConfig];
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v6 &= 2u;
   }
@@ -597,46 +597,46 @@ LABEL_24:
   [(SUClient *)self _purgeCaches];
 }
 
-- (id)_newAccountViewControllerForButtonAction:(id)a3
+- (id)_newAccountViewControllerForButtonAction:(id)action
 {
   v5 = objc_alloc_init(SUAccountViewController);
   [(SUViewController *)v5 setClientInterface:[(SUClient *)self clientInterface]];
-  v6 = [a3 parameter];
+  parameter = [action parameter];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695DFF8] URLWithString:v6];
+    parameter = [MEMORY[0x1E695DFF8] URLWithString:parameter];
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:{objc_msgSend(v6, "schemeSwizzledURL")}];
+  v7 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:{objc_msgSend(parameter, "schemeSwizzledURL")}];
   [(SUStorePageViewController *)v5 setURLRequestProperties:v7];
 
   return v5;
 }
 
-- (id)_newComposeReviewViewControllerForButtonAction:(id)a3
+- (id)_newComposeReviewViewControllerForButtonAction:(id)action
 {
-  v4 = [a3 parameter];
+  parameter = [action parameter];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+    parameter = [MEMORY[0x1E695DFF8] URLWithString:parameter];
   }
 
-  v5 = [(SUClient *)self clientInterface];
-  v6 = [(SUViewControllerFactory *)[(SUClientInterface *)v5 viewControllerFactory] newComposeReviewViewControllerWithCompositionURL:v4];
+  clientInterface = [(SUClient *)self clientInterface];
+  v6 = [(SUViewControllerFactory *)[(SUClientInterface *)clientInterface viewControllerFactory] newComposeReviewViewControllerWithCompositionURL:parameter];
   if (!v6)
   {
-    v6 = [[SUComposeReviewViewController alloc] initWithCompositionURL:v4];
+    v6 = [[SUComposeReviewViewController alloc] initWithCompositionURL:parameter];
   }
 
-  [(SUViewController *)v6 setClientInterface:v5];
+  [(SUViewController *)v6 setClientInterface:clientInterface];
   return v6;
 }
 
-- (BOOL)_presentModalViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)_presentModalViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
@@ -644,7 +644,7 @@ LABEL_24:
 
   delegate = self->_delegate;
 
-  return [(SUClientDelegate *)delegate client:self presentModalViewController:a3 animated:v4];
+  return [(SUClientDelegate *)delegate client:self presentModalViewController:controller animated:animatedCopy];
 }
 
 - (void)_purgeCaches
@@ -658,10 +658,10 @@ LABEL_24:
 
 - (void)_reloadScriptExecutionContext
 {
-  v3 = [(SUClient *)self clientIdentifier];
-  if (v3)
+  clientIdentifier = [(SUClient *)self clientIdentifier];
+  if (clientIdentifier)
   {
-    v4 = v3;
+    v4 = clientIdentifier;
     v5 = [MEMORY[0x1E69D49F8] contextWithBagType:0];
     v6 = [objc_msgSend(objc_msgSend(MEMORY[0x1E69E47F8] "sharedCache")];
     objc_opt_class();

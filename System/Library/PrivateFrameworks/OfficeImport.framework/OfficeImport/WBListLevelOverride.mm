@@ -1,45 +1,45 @@
 @interface WBListLevelOverride
-+ (void)readFrom:(id)a3 listLevelOverride:(id)a4 formatOverride:(WrdListLevelFormatOverride *)a5 document:(id)a6;
-+ (void)write:(id)a3 listLevelOverride:(id)a4 wrdFormatOverride:(WrdListLevelFormatOverride *)a5;
++ (void)readFrom:(id)from listLevelOverride:(id)override formatOverride:(WrdListLevelFormatOverride *)formatOverride document:(id)document;
++ (void)write:(id)write listLevelOverride:(id)override wrdFormatOverride:(WrdListLevelFormatOverride *)formatOverride;
 @end
 
 @implementation WBListLevelOverride
 
-+ (void)readFrom:(id)a3 listLevelOverride:(id)a4 formatOverride:(WrdListLevelFormatOverride *)a5 document:(id)a6
++ (void)readFrom:(id)from listLevelOverride:(id)override formatOverride:(WrdListLevelFormatOverride *)formatOverride document:(id)document
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = *(a5 + 21);
+  fromCopy = from;
+  overrideCopy = override;
+  documentCopy = document;
+  v11 = *(formatOverride + 21);
   if (v11)
   {
-    [v9 setStartNumber:a5->var2];
-    v11 = *(a5 + 21);
+    [overrideCopy setStartNumber:formatOverride->var2];
+    v11 = *(formatOverride + 21);
   }
 
   if ((v11 & 2) != 0)
   {
-    v12 = [v9 mutableListLevel];
-    [WBListLevel readFrom:v13 listLevel:v12 format:EshDataModelVisitor::getClientVisitor(a5) document:v10];
+    mutableListLevel = [overrideCopy mutableListLevel];
+    [WBListLevel readFrom:fromCopy listLevel:mutableListLevel format:EshDataModelVisitor::getClientVisitor(formatOverride) document:documentCopy];
   }
 }
 
-+ (void)write:(id)a3 listLevelOverride:(id)a4 wrdFormatOverride:(WrdListLevelFormatOverride *)a5
++ (void)write:(id)write listLevelOverride:(id)override wrdFormatOverride:(WrdListLevelFormatOverride *)formatOverride
 {
-  v9 = a3;
-  v7 = a4;
-  if ([v7 isStartNumberOverridden])
+  writeCopy = write;
+  overrideCopy = override;
+  if ([overrideCopy isStartNumberOverridden])
   {
-    *(a5 + 21) |= 1u;
-    a5->var2 = [v7 startNumber];
+    *(formatOverride + 21) |= 1u;
+    formatOverride->var2 = [overrideCopy startNumber];
   }
 
-  a5->var3 = [v7 level];
-  if ([v7 isListLevelOverridden])
+  formatOverride->var3 = [overrideCopy level];
+  if ([overrideCopy isListLevelOverridden])
   {
-    WrdListLevelFormatOverride::setFormatting(a5, 1);
-    v8 = [v7 listLevel];
-    [WBListLevel write:v9 listLevel:v8 format:EshDataModelVisitor::getClientVisitor(a5)];
+    WrdListLevelFormatOverride::setFormatting(formatOverride, 1);
+    listLevel = [overrideCopy listLevel];
+    [WBListLevel write:writeCopy listLevel:listLevel format:EshDataModelVisitor::getClientVisitor(formatOverride)];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface BLSAlwaysOnExplicitEntriesTimeline
-- (BLSAlwaysOnExplicitEntriesTimeline)initWithEntries:(id)a3 identifier:(id)a4 configure:(id)a5;
+- (BLSAlwaysOnExplicitEntriesTimeline)initWithEntries:(id)entries identifier:(id)identifier configure:(id)configure;
 - (id)description;
-- (id)unconfiguredEntriesForDateInterval:(id)a3 previousEntry:(id)a4;
-- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)a3 withPreviousEntry:(id)a4;
+- (id)unconfiguredEntriesForDateInterval:(id)interval previousEntry:(id)entry;
+- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)interval withPreviousEntry:(id)entry;
 @end
 
 @implementation BLSAlwaysOnExplicitEntriesTimeline
 
-- (BLSAlwaysOnExplicitEntriesTimeline)initWithEntries:(id)a3 identifier:(id)a4 configure:(id)a5
+- (BLSAlwaysOnExplicitEntriesTimeline)initWithEntries:(id)entries identifier:(id)identifier configure:(id)configure
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entriesCopy = entries;
+  identifierCopy = identifier;
+  configureCopy = configure;
   v15.receiver = self;
   v15.super_class = BLSAlwaysOnExplicitEntriesTimeline;
-  v11 = [(BLSAlwaysOnTimeline *)&v15 initWithIdentifier:v9 configure:v10];
+  v11 = [(BLSAlwaysOnTimeline *)&v15 initWithIdentifier:identifierCopy configure:configureCopy];
   if (v11)
   {
-    v12 = [v8 sortedArrayUsingComparator:&__block_literal_global_93];
+    v12 = [entriesCopy sortedArrayUsingComparator:&__block_literal_global_93];
     explicitEntries = v11->_explicitEntries;
     v11->_explicitEntries = v12;
   }
@@ -34,7 +34,7 @@
   v10 = &unk_278428B78;
   v4 = v3;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   [v4 appendProem:self block:&v7];
   v5 = [v4 description];
 
@@ -64,15 +64,15 @@ void __49__BLSAlwaysOnExplicitEntriesTimeline_description__block_invoke(uint64_t
   }
 }
 
-- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)a3 withPreviousEntry:(id)a4
+- (int64_t)requestedFidelityForStartEntryInDateInterval:(id)interval withPreviousEntry:(id)entry
 {
   v27 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  intervalCopy = interval;
+  entryCopy = entry;
+  v7 = entryCopy;
+  if (entryCopy)
   {
-    v8 = [v6 requestedFidelity];
+    requestedFidelity = [entryCopy requestedFidelity];
   }
 
   else
@@ -80,10 +80,10 @@ void __49__BLSAlwaysOnExplicitEntriesTimeline_description__block_invoke(uint64_t
     v20 = self->_explicitEntries;
     if ([(NSArray *)v20 count])
     {
-      v9 = [(NSArray *)v20 firstObject];
-      v8 = [v9 requestedFidelity];
+      firstObject = [(NSArray *)v20 firstObject];
+      requestedFidelity = [firstObject requestedFidelity];
 
-      v10 = [v21 startDate];
+      startDate = [intervalCopy startDate];
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
@@ -103,12 +103,12 @@ void __49__BLSAlwaysOnExplicitEntriesTimeline_description__block_invoke(uint64_t
             }
 
             v15 = *(*(&v22 + 1) + 8 * i);
-            v16 = [v15 presentationTime];
-            v17 = [v16 compare:v10];
+            presentationTime = [v15 presentationTime];
+            v17 = [presentationTime compare:startDate];
 
             if (v17 != -1)
             {
-              v8 = [v15 requestedFidelity];
+              requestedFidelity = [v15 requestedFidelity];
               goto LABEL_14;
             }
           }
@@ -128,29 +128,29 @@ LABEL_14:
 
     else
     {
-      v8 = -1;
+      requestedFidelity = -1;
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v8;
+  return requestedFidelity;
 }
 
-- (id)unconfiguredEntriesForDateInterval:(id)a3 previousEntry:(id)a4
+- (id)unconfiguredEntriesForDateInterval:(id)interval previousEntry:(id)entry
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 presentationTime];
-  if (v8 && ([v6 startDate], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "compare:", v8), v9, v10 != 1))
+  intervalCopy = interval;
+  entryCopy = entry;
+  presentationTime = [entryCopy presentationTime];
+  if (presentationTime && ([intervalCopy startDate], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "compare:", presentationTime), v9, v10 != 1))
   {
     v12 = objc_alloc(MEMORY[0x277CCA970]);
-    v13 = [v6 endDate];
-    v14 = [v13 laterDate:v8];
-    v15 = [v12 initWithStartDate:v8 endDate:v14];
+    endDate = [intervalCopy endDate];
+    v14 = [endDate laterDate:presentationTime];
+    v15 = [v12 initWithStartDate:presentationTime endDate:v14];
 
     v11 = 0;
-    v6 = v15;
+    intervalCopy = v15;
   }
 
   else
@@ -159,7 +159,7 @@ LABEL_14:
   }
 
   v16 = self->_explicitEntries;
-  v18 = [BLSAlwaysOnTimeline rangeOfEntries:v16 forDateInterval:v6 shouldIncludePrevious:v11];
+  v18 = [BLSAlwaysOnTimeline rangeOfEntries:v16 forDateInterval:intervalCopy shouldIncludePrevious:v11];
   if (v18 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = 0;
@@ -173,18 +173,18 @@ LABEL_14:
   v20 = bls_timelines_log();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [(BLSAlwaysOnTimeline *)self identifier];
+    identifier = [(BLSAlwaysOnTimeline *)self identifier];
     v24 = [v19 count];
-    v25 = [v6 bls_shortLoggingString];
+    bls_shortLoggingString = [intervalCopy bls_shortLoggingString];
     v26 = [v19 bls_boundedDescriptionWithMax:8 transformer:&__block_literal_global_104];
     v27 = 134219010;
-    v28 = self;
+    selfCopy = self;
     v29 = 2114;
-    v30 = v23;
+    v30 = identifier;
     v31 = 1024;
     v32 = v24;
     v33 = 2114;
-    v34 = v25;
+    v34 = bls_shortLoggingString;
     v35 = 2112;
     v36 = v26;
     _os_log_debug_impl(&dword_21FE25000, v20, OS_LOG_TYPE_DEBUG, "%p:%{public}@ -> %d entries(subset) for %{public}@ : %@", &v27, 0x30u);

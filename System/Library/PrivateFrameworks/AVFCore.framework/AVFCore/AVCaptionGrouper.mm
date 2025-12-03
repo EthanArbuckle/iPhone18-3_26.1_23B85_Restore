@@ -38,7 +38,7 @@
 
 - (NSArray)flushAddedCaptionsIntoGroupsUpToTime:(CMTime *)upToTime
 {
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_captionCollector, "count")}];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_captionCollector, "count")}];
   v14 = v18;
@@ -106,7 +106,7 @@
     v10 = [AVCaptionGroup alloc];
     end = v28;
     v11 = [(AVCaptionGroup *)v10 initWithCaptions:v5 timeRange:&end];
-    [(NSArray *)v15 addObject:v11];
+    [(NSArray *)array addObject:v11];
 
     end = v28;
     CMTimeRangeGetEnd(&time2, &end);
@@ -130,7 +130,7 @@
   _Block_object_dispose(&start, 8);
 LABEL_13:
 
-  return v15;
+  return array;
 }
 
 __n128 __57__AVCaptionGrouper_flushAddedCaptionsIntoGroupsUpToTime___block_invoke(uint64_t a1, void *a2)

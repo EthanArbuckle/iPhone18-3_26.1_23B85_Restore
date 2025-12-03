@@ -7,13 +7,13 @@
 
 - (void)_mapkit_clearMapItemDonationFields
 {
-  v4 = objc_getAssociatedObject(a1, &_MKMapItemUserActivityForwardCountKey);
-  v2 = [v4 integerValue];
-  objc_setAssociatedObject(a1, &_MKMapItemUserActivityForwardCountKey, 0, 0x301);
-  if (v2 >= 1)
+  v4 = objc_getAssociatedObject(self, &_MKMapItemUserActivityForwardCountKey);
+  integerValue = [v4 integerValue];
+  objc_setAssociatedObject(self, &_MKMapItemUserActivityForwardCountKey, 0, 0x301);
+  if (integerValue >= 1)
   {
-    v3 = [a1 _internalUserActivity];
-    [v3 updateForwardToCoreSpotlightIndexer:-v2];
+    _internalUserActivity = [self _internalUserActivity];
+    [_internalUserActivity updateForwardToCoreSpotlightIndexer:-integerValue];
   }
 }
 
@@ -23,8 +23,8 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 contentAttributeSet];
-    v6 = [v5 copy];
+    contentAttributeSet = [self contentAttributeSet];
+    v6 = [contentAttributeSet copy];
 
     if (!v6)
     {
@@ -47,12 +47,12 @@
       v8 = v7;
       _Block_object_dispose(&v36, 8);
       v9 = [v8 alloc];
-      v10 = [a1 activityType];
-      v6 = [v9 initWithItemContentType:v10];
+      activityType = [self activityType];
+      v6 = [v9 initWithItemContentType:activityType];
     }
 
-    v11 = [v4 name];
-    [v6 setNamedLocation:v11];
+    name = [v4 name];
+    [v6 setNamedLocation:name];
 
     v12 = MEMORY[0x1E696AD98];
     [v4 _coordinate];
@@ -64,59 +64,59 @@
     v16 = [v14 numberWithDouble:v15];
     [v6 setLongitude:v16];
 
-    v17 = [v4 phoneNumber];
-    v18 = [v17 length];
+    phoneNumber = [v4 phoneNumber];
+    v18 = [phoneNumber length];
 
     if (v18)
     {
-      v19 = [v6 phoneNumbers];
-      if ([v19 count])
+      phoneNumbers = [v6 phoneNumbers];
+      if ([phoneNumbers count])
       {
-        v20 = [v6 phoneNumbers];
-        v21 = [v4 phoneNumber];
-        v22 = [v20 arrayByAddingObject:v21];
+        phoneNumbers2 = [v6 phoneNumbers];
+        phoneNumber2 = [v4 phoneNumber];
+        v22 = [phoneNumbers2 arrayByAddingObject:phoneNumber2];
         [v6 setPhoneNumbers:v22];
       }
 
       else
       {
-        v20 = [v4 phoneNumber];
-        v40[0] = v20;
-        v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-        [v6 setPhoneNumbers:v21];
+        phoneNumbers2 = [v4 phoneNumber];
+        v40[0] = phoneNumbers2;
+        phoneNumber2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
+        [v6 setPhoneNumbers:phoneNumber2];
       }
     }
 
-    v23 = [v4 placemark];
-    v24 = [v23 thoroughfare];
-    [v6 setThoroughfare:v24];
+    placemark = [v4 placemark];
+    thoroughfare = [placemark thoroughfare];
+    [v6 setThoroughfare:thoroughfare];
 
-    v25 = [v23 subThoroughfare];
-    [v6 setSubThoroughfare:v25];
+    subThoroughfare = [placemark subThoroughfare];
+    [v6 setSubThoroughfare:subThoroughfare];
 
-    v26 = [v23 postalCode];
-    [v6 setPostalCode:v26];
+    postalCode = [placemark postalCode];
+    [v6 setPostalCode:postalCode];
 
-    v27 = [v23 locality];
-    [v6 setCity:v27];
+    locality = [placemark locality];
+    [v6 setCity:locality];
 
-    v28 = [v23 administrativeArea];
-    [v6 setStateOrProvince:v28];
+    administrativeArea = [placemark administrativeArea];
+    [v6 setStateOrProvince:administrativeArea];
 
-    v29 = [v23 country];
-    [v6 setCountry:v29];
+    country = [placemark country];
+    [v6 setCountry:country];
 
-    v30 = [v4 _addressFormattedAsSinglelineAddress];
-    [v6 setFullyFormattedAddress:v30];
+    _addressFormattedAsSinglelineAddress = [v4 _addressFormattedAsSinglelineAddress];
+    [v6 setFullyFormattedAddress:_addressFormattedAsSinglelineAddress];
 
-    [a1 setContentAttributeSet:v6];
-    v31 = objc_getAssociatedObject(a1, &_MKMapItemUserActivityForwardCountKey);
+    [self setContentAttributeSet:v6];
+    v31 = objc_getAssociatedObject(self, &_MKMapItemUserActivityForwardCountKey);
     v32 = [v31 integerValue] + 1;
     v33 = [MEMORY[0x1E696AD98] numberWithInteger:v32];
-    objc_setAssociatedObject(a1, &_MKMapItemUserActivityForwardCountKey, v33, 0x301);
+    objc_setAssociatedObject(self, &_MKMapItemUserActivityForwardCountKey, v33, 0x301);
 
-    v34 = [a1 _internalUserActivity];
-    [v34 updateForwardToCoreSpotlightIndexer:v32];
+    _internalUserActivity = [self _internalUserActivity];
+    [_internalUserActivity updateForwardToCoreSpotlightIndexer:v32];
   }
 }
 

@@ -1,20 +1,20 @@
 @interface CEKSliderTickMarksView
 - (CEKSliderTickMarksDelegate)delegate;
-- (CEKSliderTickMarksView)initWithFrame:(CGRect)a3;
-- (CGRect)_shadowFrameForTickMarkRect:(CGRect)a3;
-- (CGRect)frameForTickMarkAtIndex:(unint64_t)a3;
+- (CEKSliderTickMarksView)initWithFrame:(CGRect)frame;
+- (CGRect)_shadowFrameForTickMarkRect:(CGRect)rect;
+- (CGRect)frameForTickMarkAtIndex:(unint64_t)index;
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)drawRect:(CGRect)a3;
-- (void)tickMarksModelDidChangeWidthForTickMarkCountWithModel:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)tickMarksModelDidChangeWidthForTickMarkCountWithModel:(id)model;
 @end
 
 @implementation CEKSliderTickMarksView
 
-- (CEKSliderTickMarksView)initWithFrame:(CGRect)a3
+- (CEKSliderTickMarksView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CEKSliderTickMarksView;
-  v3 = [(CEKSliderTickMarksView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKSliderTickMarksView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -35,8 +35,8 @@
 {
   [(CEKSliderTickMarksView *)self _shadowWidth];
   v4 = v3;
-  v5 = [(CEKSliderTickMarksView *)self tickMarksModel];
-  if ([v5 useTickMarkLegibilityShadows])
+  tickMarksModel = [(CEKSliderTickMarksView *)self tickMarksModel];
+  if ([tickMarksModel useTickMarkLegibilityShadows])
   {
     v6 = v4;
     v7 = v4;
@@ -62,18 +62,18 @@
   return result;
 }
 
-- (CGRect)frameForTickMarkAtIndex:(unint64_t)a3
+- (CGRect)frameForTickMarkAtIndex:(unint64_t)index
 {
   [(CEKSliderTickMarksView *)self bounds];
   [(CEKSliderTickMarksView *)self alignmentRectForFrame:?];
   v6 = v5;
   v8 = v7;
-  v9 = [(CEKSliderTickMarksView *)self tickMarksModel];
-  [v9 tickMarkWidth];
+  tickMarksModel = [(CEKSliderTickMarksView *)self tickMarksModel];
+  [tickMarksModel tickMarkWidth];
   v11 = v10;
 
-  v12 = [(CEKSliderTickMarksView *)self tickMarksModel];
-  [v12 xOffsetForTickMarkIndex:a3];
+  tickMarksModel2 = [(CEKSliderTickMarksView *)self tickMarksModel];
+  [tickMarksModel2 xOffsetForTickMarkIndex:index];
   v14 = v13;
 
   v15 = v14;
@@ -87,12 +87,12 @@
   return result;
 }
 
-- (CGRect)_shadowFrameForTickMarkRect:(CGRect)a3
+- (CGRect)_shadowFrameForTickMarkRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(CEKSliderTickMarksView *)self _shadowWidth];
   v8 = -v7;
   v9 = x;
@@ -103,22 +103,22 @@
   return CGRectInset(*&v9, v8, v8);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [(CEKSliderTickMarksView *)self tickMarksModel];
-  v6 = [v5 useTickMarkLegibilityShadows];
+  tickMarksModel = [(CEKSliderTickMarksView *)self tickMarksModel];
+  useTickMarkLegibilityShadows = [tickMarksModel useTickMarkLegibilityShadows];
 
-  v7 = [(CEKSliderTickMarksView *)self tickMarksModel];
-  v26 = [v7 mainTickMarkColor];
+  tickMarksModel2 = [(CEKSliderTickMarksView *)self tickMarksModel];
+  mainTickMarkColor = [tickMarksModel2 mainTickMarkColor];
 
-  v8 = [(CEKSliderTickMarksView *)self tickMarksModel];
-  v9 = [v8 secondaryTickMarkColor];
+  tickMarksModel3 = [(CEKSliderTickMarksView *)self tickMarksModel];
+  secondaryTickMarkColor = [tickMarksModel3 secondaryTickMarkColor];
 
-  if (v6)
+  if (useTickMarkLegibilityShadows)
   {
-    v10 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v11 = [v10 colorWithAlphaComponent:0.15];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v11 = [systemBackgroundColor colorWithAlphaComponent:0.15];
   }
 
   else
@@ -126,32 +126,32 @@
     v11 = 0;
   }
 
-  v12 = [(CEKSliderTickMarksView *)self tickMarksModel];
-  v13 = [v12 tickMarksCount];
+  tickMarksModel4 = [(CEKSliderTickMarksView *)self tickMarksModel];
+  tickMarksCount = [tickMarksModel4 tickMarksCount];
 
-  if (v13)
+  if (tickMarksCount)
   {
-    for (i = 0; i != v13; ++i)
+    for (i = 0; i != tickMarksCount; ++i)
     {
-      v15 = [(CEKSliderTickMarksView *)self tickMarksModel];
-      v16 = [v15 isMainTickMarkAtIndex:i];
+      tickMarksModel5 = [(CEKSliderTickMarksView *)self tickMarksModel];
+      v16 = [tickMarksModel5 isMainTickMarkAtIndex:i];
 
       [(CEKSliderTickMarksView *)self frameForTickMarkAtIndex:i];
       v18 = v17;
       v20 = v19;
       v22 = v21;
       v24 = v23;
-      if (v6)
+      if (useTickMarkLegibilityShadows)
       {
         [v11 set];
         [(CEKSliderTickMarksView *)self _shadowFrameForTickMarkRect:v18, v20, v22, v24];
         CGContextFillRect(CurrentContext, v28);
       }
 
-      v25 = v26;
+      v25 = mainTickMarkColor;
       if (!v16)
       {
-        v25 = v9;
+        v25 = secondaryTickMarkColor;
       }
 
       [v25 set];
@@ -164,10 +164,10 @@
   }
 }
 
-- (void)tickMarksModelDidChangeWidthForTickMarkCountWithModel:(id)a3
+- (void)tickMarksModelDidChangeWidthForTickMarkCountWithModel:(id)model
 {
-  v4 = [(CEKSliderTickMarksView *)self delegate];
-  [v4 tickMarksViewDidChangeWidthForTickMarkCount:self];
+  delegate = [(CEKSliderTickMarksView *)self delegate];
+  [delegate tickMarksViewDidChangeWidthForTickMarkCount:self];
 }
 
 - (CEKSliderTickMarksDelegate)delegate

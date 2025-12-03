@@ -1,14 +1,14 @@
 @interface AKPolygonAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKPolygonAnnotation)initWithCoder:(id)a3;
+- (AKPolygonAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (id)displayName;
 - (id)keysForValuesToObserveForAdornments;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKPolygonAnnotation
@@ -16,7 +16,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKPolygonAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -29,7 +29,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKPolygonAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -39,16 +39,16 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"pointCount"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"pointCount"])
   {
     v5 = @"Number of Sides";
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"verticallyFlipped"])
+  if ([keyCopy isEqualToString:@"verticallyFlipped"])
   {
     v5 = @"Bounds";
 LABEL_5:
@@ -61,9 +61,9 @@ LABEL_5:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKPolygonAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_7:
 
   return v7;
@@ -82,8 +82,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKPolygonAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BA968];
 
@@ -95,8 +95,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKPolygonAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BA980];
 
@@ -108,8 +108,8 @@ LABEL_7:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKPolygonAnnotation;
-  v3 = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForAdornments];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForAdornments = [(AKRectangularShapeAnnotation *)&v6 keysForValuesToObserveForAdornments];
+  v4 = [v2 setWithSet:keysForValuesToObserveForAdornments];
 
   [v4 addObjectsFromArray:&unk_2851BA998];
 
@@ -156,26 +156,26 @@ LABEL_7:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = AKPolygonAnnotation;
-  v4 = a3;
-  [(AKRectangularShapeAnnotation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[AKPolygonAnnotation pointCount](self forKey:{"pointCount", v5.receiver, v5.super_class), @"pointCount"}];
-  [v4 encodeBool:-[AKPolygonAnnotation verticallyFlipped](self forKey:{"verticallyFlipped"), @"verticallyFlipped"}];
+  coderCopy = coder;
+  [(AKRectangularShapeAnnotation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[AKPolygonAnnotation pointCount](self forKey:{"pointCount", v5.receiver, v5.super_class), @"pointCount"}];
+  [coderCopy encodeBool:-[AKPolygonAnnotation verticallyFlipped](self forKey:{"verticallyFlipped"), @"verticallyFlipped"}];
 }
 
-- (AKPolygonAnnotation)initWithCoder:(id)a3
+- (AKPolygonAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = AKPolygonAnnotation;
-  v5 = [(AKRectangularShapeAnnotation *)&v7 initWithCoder:v4];
+  v5 = [(AKRectangularShapeAnnotation *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    -[AKPolygonAnnotation setPointCount:](v5, "setPointCount:", [v4 decodeIntegerForKey:@"pointCount"]);
-    -[AKPolygonAnnotation setVerticallyFlipped:](v5, "setVerticallyFlipped:", [v4 decodeBoolForKey:@"verticallyFlipped"]);
+    -[AKPolygonAnnotation setPointCount:](v5, "setPointCount:", [coderCopy decodeIntegerForKey:@"pointCount"]);
+    -[AKPolygonAnnotation setVerticallyFlipped:](v5, "setVerticallyFlipped:", [coderCopy decodeBoolForKey:@"verticallyFlipped"]);
   }
 
   return v5;

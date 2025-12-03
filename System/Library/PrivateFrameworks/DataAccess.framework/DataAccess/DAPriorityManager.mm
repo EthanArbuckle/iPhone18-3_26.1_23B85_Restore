@@ -6,9 +6,9 @@
 - (int)_recalculatePriority;
 - (void)_setNewPriority;
 - (void)_updateForegroundDataclasses;
-- (void)bumpDataclassesToUIPriority:(int64_t)a3;
+- (void)bumpDataclassesToUIPriority:(int64_t)priority;
 - (void)dealloc;
-- (void)requestPriority:(int)a3 forClient:(id)a4 dataclasses:(int64_t)a5;
+- (void)requestPriority:(int)priority forClient:(id)client dataclasses:(int64_t)dataclasses;
 - (void)setupProcessStateMonitor;
 @end
 
@@ -78,14 +78,14 @@ void __40__DAPriorityManager_appIDsToDataclasses__block_invoke()
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(DAPriorityManager *)self appIDsToDataclasses];
+  appIDsToDataclasses = [(DAPriorityManager *)self appIDsToDataclasses];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__DAPriorityManager__updateForegroundDataclasses__block_invoke;
   v6[3] = &unk_278F13A80;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [appIDsToDataclasses enumerateKeysAndObjectsUsingBlock:v6];
 
   v5 = v8[3];
   if (v5 != foregroundDataclasses)
@@ -116,13 +116,13 @@ void __49__DAPriorityManager__updateForegroundDataclasses__block_invoke(uint64_t
   v2 = [(DAPriorityManager *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] mapTableWithWeakToStrongObjects];
+    mapTableWithWeakToStrongObjects = [MEMORY[0x277CCAB00] mapTableWithWeakToStrongObjects];
     clientsToPriorityRequests = v2->_clientsToPriorityRequests;
-    v2->_clientsToPriorityRequests = v3;
+    v2->_clientsToPriorityRequests = mapTableWithWeakToStrongObjects;
 
     v5 = objc_alloc(MEMORY[0x277CBEB38]);
-    v6 = [(DAPriorityManager *)v2 appIDsToDataclasses];
-    v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+    appIDsToDataclasses = [(DAPriorityManager *)v2 appIDsToDataclasses];
+    v7 = [v5 initWithCapacity:{objc_msgSend(appIDsToDataclasses, "count")}];
     cachedAppState = v2->_cachedAppState;
     v2->_cachedAppState = v7;
 
@@ -136,8 +136,8 @@ void __49__DAPriorityManager__updateForegroundDataclasses__block_invoke(uint64_t
     }
 
     notify_register_dispatch(*MEMORY[0x277D67770], &init_notifToken, init_SBLockQueue, &__block_literal_global_34);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel__setNewPriority name:@"SBLockStateChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__setNewPriority name:@"SBLockStateChanged" object:0];
 
     v2->_currentPriority = 0x80000000;
     [(DAPriorityManager *)v2 _setNewPriority];
@@ -164,8 +164,8 @@ void __25__DAPriorityManager_init__block_invoke_2()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBLockStateChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBLockStateChanged" object:0];
 
   [(RBSProcessMonitor *)self->_processMonitor invalidate];
   v4.receiver = self;
@@ -286,95 +286,95 @@ void __45__DAPriorityManager_setupProcessStateMonitor__block_invoke_2(uint64_t a
 
 - (id)stateString
 {
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(DAPriorityManager *)v4 clientsToPriorityRequests];
-  v6 = [v5 count];
+  string = [MEMORY[0x277CCAB68] string];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clientsToPriorityRequests = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+  v6 = [clientsToPriorityRequests count];
 
   if (v6)
   {
-    [v3 appendString:@"------\nDAPriorityManager: \n"];
-    v7 = [(DAPriorityManager *)v4 clientsToPriorityRequests];
-    v8 = [v7 keyEnumerator];
+    [string appendString:@"------\nDAPriorityManager: \n"];
+    clientsToPriorityRequests2 = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+    keyEnumerator = [clientsToPriorityRequests2 keyEnumerator];
     v9 = 0;
     while (1)
     {
 
-      v10 = [v8 nextObject];
+      nextObject = [keyEnumerator nextObject];
 
-      if (!v10)
+      if (!nextObject)
       {
         break;
       }
 
-      v11 = [(DAPriorityManager *)v4 clientsToPriorityRequests];
-      v7 = [v11 objectForKey:v10];
+      clientsToPriorityRequests3 = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+      clientsToPriorityRequests2 = [clientsToPriorityRequests3 objectForKey:nextObject];
 
-      if (([v7 refreshDataclasses] & 0x7F) == 0)
+      if (([clientsToPriorityRequests2 refreshDataclasses] & 0x7F) == 0)
       {
-        v9 = v10;
-        if (([v7 UIDataclasses] & 0x7F) == 0)
+        v9 = nextObject;
+        if (([clientsToPriorityRequests2 UIDataclasses] & 0x7F) == 0)
         {
           continue;
         }
       }
 
-      [v3 appendFormat:@"\t[%@ ", v10];
-      if (([v7 refreshDataclasses] & 0x7F) != 0)
+      [string appendFormat:@"\t[%@ ", nextObject];
+      if (([clientsToPriorityRequests2 refreshDataclasses] & 0x7F) != 0)
       {
-        [v3 appendFormat:@"Refresh: 0x%lx ", objc_msgSend(v7, "refreshDataclasses") & 0x7F];
+        [string appendFormat:@"Refresh: 0x%lx ", objc_msgSend(clientsToPriorityRequests2, "refreshDataclasses") & 0x7F];
       }
 
-      if (([v7 UIDataclasses] & 0x7F) != 0)
+      if (([clientsToPriorityRequests2 UIDataclasses] & 0x7F) != 0)
       {
-        [v3 appendFormat:@"UI: 0x%lx ", objc_msgSend(v7, "UIDataclasses") & 0x7F];
+        [string appendFormat:@"UI: 0x%lx ", objc_msgSend(clientsToPriorityRequests2, "UIDataclasses") & 0x7F];
       }
 
-      [v3 appendFormat:@"]\n"];
-      v9 = v10;
+      [string appendFormat:@"]\n"];
+      v9 = nextObject;
     }
 
-    [v3 appendString:@"------\n"];
+    [string appendString:@"------\n"];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return string;
 }
 
 - (int)_recalculatePriority
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(DAPriorityManager *)v2 clientsToPriorityRequests];
-  v4 = [v3 keyEnumerator];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clientsToPriorityRequests = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+  keyEnumerator = [clientsToPriorityRequests keyEnumerator];
   v5 = 0;
   v6 = 0;
-  for (i = 0; ; i = v8)
+  for (i = 0; ; i = nextObject)
   {
 
-    v8 = [v4 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v8)
+    if (!nextObject)
     {
       break;
     }
 
-    v9 = [(DAPriorityManager *)v2 clientsToPriorityRequests];
-    v3 = [v9 objectForKey:v8];
+    clientsToPriorityRequests2 = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+    clientsToPriorityRequests = [clientsToPriorityRequests2 objectForKey:nextObject];
 
-    v6 |= [v3 refreshDataclasses];
-    v5 |= [v3 UIDataclasses];
+    v6 |= [clientsToPriorityRequests refreshDataclasses];
+    v5 |= [clientsToPriorityRequests UIDataclasses];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (v5)
   {
     return 0;
   }
 
-  if (sDeviceIsLocked || (v2->_foregroundDataclasses & v6) != 0)
+  if (sDeviceIsLocked || (selfCopy->_foregroundDataclasses & v6) != 0)
   {
     return 18;
   }
@@ -385,10 +385,10 @@ void __45__DAPriorityManager_setupProcessStateMonitor__block_invoke_2(uint64_t a
 - (void)_setNewPriority
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(DAPriorityManager *)self _recalculatePriority];
-  if (v3 != self->_currentPriority)
+  _recalculatePriority = [(DAPriorityManager *)self _recalculatePriority];
+  if (_recalculatePriority != self->_currentPriority)
   {
-    v4 = v3;
+    v4 = _recalculatePriority;
     v5 = DALoggingwithCategory();
     v6 = *(MEMORY[0x277D03988] + 6);
     if (os_log_type_enabled(v5, v6))
@@ -405,63 +405,63 @@ void __45__DAPriorityManager_setupProcessStateMonitor__block_invoke_2(uint64_t a
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPriority:(int)a3 forClient:(id)a4 dataclasses:(int64_t)a5
+- (void)requestPriority:(int)priority forClient:(id)client dataclasses:(int64_t)dataclasses
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (!v9)
+  clientCopy = client;
+  if (!clientCopy)
   {
     [DAPriorityManager requestPriority:a2 forClient:self dataclasses:?];
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(DAPriorityManager *)v10 clientsToPriorityRequests];
-  v12 = [v11 objectForKey:v9];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  clientsToPriorityRequests = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+  v12 = [clientsToPriorityRequests objectForKey:clientCopy];
 
   if (!v12)
   {
     v12 = objc_opt_new();
-    [(NSMapTable *)v10->_clientsToPriorityRequests setObject:v12 forKey:v9];
+    [(NSMapTable *)selfCopy->_clientsToPriorityRequests setObject:v12 forKey:clientCopy];
   }
 
   v13 = DALoggingwithCategory();
   v14 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v13, v14))
   {
-    if (a3 > 2)
+    if (priority > 2)
     {
       v15 = @"Unknown";
     }
 
     else
     {
-      v15 = off_278F13B10[a3];
+      v15 = off_278F13B10[priority];
     }
 
     v22 = 138412802;
-    v23 = v9;
+    v23 = clientCopy;
     v24 = 2112;
     v25 = v15;
     v26 = 2048;
-    v27 = a5;
+    dataclassesCopy = dataclasses;
     _os_log_impl(&dword_24844D000, v13, v14, "Client %@ requested priority %@ for dataclasses 0x%lx", &v22, 0x20u);
   }
 
-  switch(a3)
+  switch(priority)
   {
     case 2:
-      v19 = a5 & 0x7F;
+      v19 = dataclasses & 0x7F;
       [v12 setRefreshDataclasses:{objc_msgSend(v12, "refreshDataclasses") & (v19 ^ 0x7F)}];
       v17 = [v12 UIDataclasses] | v19;
       goto LABEL_16;
     case 1:
-      v18 = a5 & 0x7F;
+      v18 = dataclasses & 0x7F;
       [v12 setRefreshDataclasses:{objc_msgSend(v12, "refreshDataclasses") | v18}];
       v17 = [v12 UIDataclasses] & (v18 ^ 0x7F);
       goto LABEL_16;
     case 0:
-      v16 = ~a5 & 0x7F;
+      v16 = ~dataclasses & 0x7F;
       [v12 setRefreshDataclasses:{objc_msgSend(v12, "refreshDataclasses") & v16}];
       v17 = [v12 UIDataclasses] & v16;
 LABEL_16:
@@ -471,51 +471,51 @@ LABEL_16:
 
   if (![v12 refreshDataclasses] && !objc_msgSend(v12, "UIDataclasses"))
   {
-    v20 = [(DAPriorityManager *)v10 clientsToPriorityRequests];
-    [v20 removeObjectForKey:v9];
+    clientsToPriorityRequests2 = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+    [clientsToPriorityRequests2 removeObjectForKey:clientCopy];
   }
 
-  [(DAPriorityManager *)v10 _setNewPriority];
+  [(DAPriorityManager *)selfCopy _setNewPriority];
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)bumpDataclassesToUIPriority:(int64_t)a3
+- (void)bumpDataclassesToUIPriority:(int64_t)priority
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v5, v6))
   {
     v14 = 134217984;
-    v15 = a3;
+    priorityCopy = priority;
     _os_log_impl(&dword_24844D000, v5, v6, "Bumping all client priority requests for dataclasses 0x%lx to UI. Open bar, dude!", &v14, 0xCu);
   }
 
-  v7 = [(DAPriorityManager *)v4 clientsToPriorityRequests];
-  v8 = [v7 keyEnumerator];
+  clientsToPriorityRequests = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+  keyEnumerator = [clientsToPriorityRequests keyEnumerator];
 
-  for (i = 0; ; i = v10)
+  for (i = 0; ; i = nextObject)
   {
-    v10 = [v8 nextObject];
+    nextObject = [keyEnumerator nextObject];
 
-    if (!v10)
+    if (!nextObject)
     {
       break;
     }
 
-    v11 = [(DAPriorityManager *)v4 clientsToPriorityRequests];
-    v12 = [v11 objectForKey:v10];
+    clientsToPriorityRequests2 = [(DAPriorityManager *)selfCopy clientsToPriorityRequests];
+    v12 = [clientsToPriorityRequests2 objectForKey:nextObject];
 
-    [v12 setUIDataclasses:{objc_msgSend(v12, "UIDataclasses") | objc_msgSend(v12, "refreshDataclasses") & a3}];
-    [v12 setRefreshDataclasses:{objc_msgSend(v12, "refreshDataclasses") & ~a3 & 0x7FLL}];
+    [v12 setUIDataclasses:{objc_msgSend(v12, "UIDataclasses") | objc_msgSend(v12, "refreshDataclasses") & priority}];
+    [v12 setRefreshDataclasses:{objc_msgSend(v12, "refreshDataclasses") & ~priority & 0x7FLL}];
   }
 
-  objc_sync_exit(v4);
-  [(DAPriorityManager *)v4 _setNewPriority];
+  objc_sync_exit(selfCopy);
+  [(DAPriorityManager *)selfCopy _setNewPriority];
   v13 = *MEMORY[0x277D85DE8];
 }
 

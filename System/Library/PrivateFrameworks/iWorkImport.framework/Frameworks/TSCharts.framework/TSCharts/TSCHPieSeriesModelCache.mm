@@ -1,29 +1,29 @@
 @interface TSCHPieSeriesModelCache
 - (BOOL)shouldRenderLabel;
 - (TSCHChartSeries)series;
-- (TSCHPieSeriesModelCache)initWithPrior:(id)a3 orChartModel:(id)a4 forSeries:(unint64_t)a5;
-- (id)labelStringForType:(int64_t)a3;
-- (id)labelStringWithValueLabelString:(id)a3 seriesNameLabelString:(id)a4;
+- (TSCHPieSeriesModelCache)initWithPrior:(id)prior orChartModel:(id)model forSeries:(unint64_t)series;
+- (id)labelStringForType:(int64_t)type;
+- (id)labelStringWithValueLabelString:(id)string seriesNameLabelString:(id)labelString;
 @end
 
 @implementation TSCHPieSeriesModelCache
 
-- (TSCHPieSeriesModelCache)initWithPrior:(id)a3 orChartModel:(id)a4 forSeries:(unint64_t)a5
+- (TSCHPieSeriesModelCache)initWithPrior:(id)prior orChartModel:(id)model forSeries:(unint64_t)series
 {
-  v8 = a3;
-  WeakRetained = a4;
+  priorCopy = prior;
+  WeakRetained = model;
   if (!WeakRetained)
   {
-    WeakRetained = objc_loadWeakRetained(v8 + 1);
+    WeakRetained = objc_loadWeakRetained(priorCopy + 1);
   }
 
   v15 = objc_msgSend_chartInfo(WeakRetained, v9, v11, v12, v13);
-  if (v15 && objc_msgSend_numberOfSeries(WeakRetained, v14, v16, v17, v18) > a5)
+  if (v15 && objc_msgSend_numberOfSeries(WeakRetained, v14, v16, v17, v18) > series)
   {
-    if (objc_msgSend_seriesIndex(v8, v19, v20, v21, v22) < a5)
+    if (objc_msgSend_seriesIndex(priorCopy, v19, v20, v21, v22) < series)
     {
 
-      v8 = 0;
+      priorCopy = 0;
     }
 
     v301.receiver = self;
@@ -45,26 +45,26 @@
         v44 = MEMORY[0x277D81150];
         v45 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v40, v41, v42, v43, "[TSCHPieSeriesModelCache initWithPrior:orChartModel:forSeries:]");
         objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v46, v47, v48, v49, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHPieSeriesModelCache.m");
-        v51 = v50 = a5;
+        v51 = v50 = series;
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v44, v52, v53, v54, v55, v45, v51, 66, 0, "invalid nil value for '%{public}s'", "axis");
 
-        a5 = v50;
+        series = v50;
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v56, v57, v58, v59);
       }
 
       objc_storeWeak(&v24->_chartModel, WeakRetained);
       objc_storeWeak(&v24->_chartInfo, v15);
       v296 = v15;
-      if (v8)
+      if (priorCopy)
       {
-        v24->_currentSeriesStartAngle = *(v8 + 11);
-        v24->_numberOfSeries = *(v8 + 5);
-        v24->_totalValue = *(v8 + 6);
-        v60 = objc_loadWeakRetained(v8 + 4);
+        v24->_currentSeriesStartAngle = *(priorCopy + 11);
+        v24->_numberOfSeries = *(priorCopy + 5);
+        v24->_totalValue = *(priorCopy + 6);
+        v60 = objc_loadWeakRetained(priorCopy + 4);
         objc_storeWeak(&v24->_singleCircleSeriesElement, v60);
 
-        v24->_isSingleCircleSpecialCase = v8[24];
-        v64 = *(v8 + 12);
+        v24->_isSingleCircleSpecialCase = priorCopy[24];
+        v64 = *(priorCopy + 12);
         v24->_currentSeriesAngleSweep = v64;
       }
 
@@ -88,18 +88,18 @@
         objc_storeWeak(&v24->_singleCircleSeriesElement, v84);
       }
 
-      p_numberOfSeries = (v8 + 64);
-      v297 = v8;
+      p_numberOfSeries = (priorCopy + 64);
+      v297 = priorCopy;
       v298 = v39;
-      if (!v8)
+      if (!priorCopy)
       {
         p_numberOfSeries = &v24->_numberOfSeries;
       }
 
       v86 = *p_numberOfSeries;
-      if (*p_numberOfSeries > a5)
+      if (*p_numberOfSeries > series)
       {
-        v299 = a5;
+        seriesCopy = series;
         do
         {
           v24->_currentSeriesIndex = --v86;
@@ -134,7 +134,7 @@
               WeakRetained = v141;
               v39 = v298;
 
-              a5 = v299;
+              series = seriesCopy;
               if (v140 == v147)
               {
                 if (v93)
@@ -184,7 +184,7 @@ LABEL_20:
             else
             {
 
-              a5 = v299;
+              series = seriesCopy;
             }
           }
 
@@ -192,7 +192,7 @@ LABEL_20:
 LABEL_33:
         }
 
-        while (v86 > a5);
+        while (v86 > series);
       }
 
       currentSeriesStartAngle = v24->_currentSeriesStartAngle;
@@ -276,7 +276,7 @@ LABEL_33:
 
       v246 = objc_msgSend_groupedShadowsForChartModel_(TSCHStyleUtilities, v242, v243, v244, v245, WeakRetained);
       v24->_groupedShadow = v246;
-      v8 = v297;
+      priorCopy = v297;
       if (v246)
       {
         v251 = objc_msgSend_seriesAtIndex_(WeakRetained, v247, v248, v249, v250, 0);
@@ -317,38 +317,38 @@ LABEL_33:
     }
 
     self = v24;
-    v65 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v65 = 0;
+    selfCopy = 0;
   }
 
-  return v65;
+  return selfCopy;
 }
 
-- (id)labelStringWithValueLabelString:(id)a3 seriesNameLabelString:(id)a4
+- (id)labelStringWithValueLabelString:(id)string seriesNameLabelString:(id)labelString
 {
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_length(v5, v7, v8, v9, v10) && objc_msgSend_length(v6, v11, v12, v13, v14))
+  stringCopy = string;
+  labelStringCopy = labelString;
+  if (objc_msgSend_length(stringCopy, v7, v8, v9, v10) && objc_msgSend_length(labelStringCopy, v11, v12, v13, v14))
   {
-    v15 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v11, v12, v13, v14, @"%@\n%@", v6, v5);
+    v15 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v11, v12, v13, v14, @"%@\n%@", labelStringCopy, stringCopy);
 LABEL_8:
     v20 = v15;
     goto LABEL_9;
   }
 
-  if (objc_msgSend_length(v5, v11, v12, v13, v14))
+  if (objc_msgSend_length(stringCopy, v11, v12, v13, v14))
   {
-    v15 = v5;
+    v15 = stringCopy;
     goto LABEL_8;
   }
 
-  if (objc_msgSend_length(v6, v16, v17, v18, v19))
+  if (objc_msgSend_length(labelStringCopy, v16, v17, v18, v19))
   {
-    v15 = v6;
+    v15 = labelStringCopy;
     goto LABEL_8;
   }
 
@@ -395,11 +395,11 @@ LABEL_9:
   return v40;
 }
 
-- (id)labelStringForType:(int64_t)a3
+- (id)labelStringForType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v7 = objc_msgSend_valueLabelString(self, a2, v3, v4, v5);
     }
@@ -409,7 +409,7 @@ LABEL_9:
       v8 = MEMORY[0x277D81150];
       v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCHPieSeriesModelCache labelStringForType:]");
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHPieSeriesModelCache.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 244, 0, "Invalid label type: %ld", a3);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 244, 0, "Invalid label type: %ld", type);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
       v7 = &stru_288528678;

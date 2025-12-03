@@ -1,9 +1,9 @@
 @interface _SUAutoInstallOperationModel
 - (_SUAutoInstallOperationModel)init;
-- (_SUAutoInstallOperationModel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_SUAutoInstallOperationModel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SUAutoInstallOperationModel
@@ -17,9 +17,9 @@
   if (v2)
   {
     v2->_agreementStatus = 0;
-    v4 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     id = v3->_id;
-    v3->_id = v4;
+    v3->_id = uUID;
   }
 
   return v3;
@@ -31,47 +31,47 @@
   v4 = objc_opt_class();
   forecast = self->_forecast;
   agreementStatus = self->_agreementStatus;
-  v7 = [(NSUUID *)self->_id UUIDString];
-  v8 = [v3 stringWithFormat:@"[<%@:%p>forecast:%@|agreementStatus:%d|id:%@]", v4, self, forecast, agreementStatus, v7];
+  uUIDString = [(NSUUID *)self->_id UUIDString];
+  v8 = [v3 stringWithFormat:@"[<%@:%p>forecast:%@|agreementStatus:%d|id:%@]", v4, self, forecast, agreementStatus, uUIDString];
 
   return v8;
 }
 
-- (_SUAutoInstallOperationModel)initWithCoder:(id)a3
+- (_SUAutoInstallOperationModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _SUAutoInstallOperationModel;
   v5 = [(_SUAutoInstallOperationModel *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"forecast"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"forecast"];
     [(_SUAutoInstallOperationModel *)v5 setForecast:v6];
 
-    -[_SUAutoInstallOperationModel setAgreementStatus:](v5, "setAgreementStatus:", [v4 decodeIntForKey:@"agreementStatus"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+    -[_SUAutoInstallOperationModel setAgreementStatus:](v5, "setAgreementStatus:", [coderCopy decodeIntForKey:@"agreementStatus"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
     [(_SUAutoInstallOperationModel *)v5 setId:v7];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_SUAutoInstallOperationModel *)self forecast];
-  [v4 encodeObject:v5 forKey:@"forecast"];
+  coderCopy = coder;
+  forecast = [(_SUAutoInstallOperationModel *)self forecast];
+  [coderCopy encodeObject:forecast forKey:@"forecast"];
 
-  [v4 encodeInt:-[_SUAutoInstallOperationModel agreementStatus](self forKey:{"agreementStatus"), @"agreementStatus"}];
+  [coderCopy encodeInt:-[_SUAutoInstallOperationModel agreementStatus](self forKey:{"agreementStatus"), @"agreementStatus"}];
   v6 = [(_SUAutoInstallOperationModel *)self id];
-  [v4 encodeObject:v6 forKey:@"id"];
+  [coderCopy encodeObject:v6 forKey:@"id"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_SUAutoInstallOperationModel);
-  v5 = [(_SUAutoInstallOperationModel *)self forecast];
-  [(_SUAutoInstallOperationModel *)v4 setForecast:v5];
+  forecast = [(_SUAutoInstallOperationModel *)self forecast];
+  [(_SUAutoInstallOperationModel *)v4 setForecast:forecast];
 
   [(_SUAutoInstallOperationModel *)v4 setAgreementStatus:[(_SUAutoInstallOperationModel *)self agreementStatus]];
   v6 = [(_SUAutoInstallOperationModel *)self id];

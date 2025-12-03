@@ -1,9 +1,9 @@
 @interface FCPurchaseAccessChecker
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3;
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5;
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item;
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error;
 - (FCPurchaseAccessChecker)init;
-- (FCPurchaseAccessChecker)initWithPaidAccessChecker:(id)a3;
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5;
+- (FCPurchaseAccessChecker)initWithPaidAccessChecker:(id)checker;
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCPurchaseAccessChecker
@@ -34,11 +34,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCPurchaseAccessChecker)initWithPaidAccessChecker:(id)a3
+- (FCPurchaseAccessChecker)initWithPaidAccessChecker:(id)checker
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  checkerCopy = checker;
+  if (!checkerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "paidAccessChecker != nil"];
     *buf = 136315906;
@@ -58,18 +58,18 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paidAccessChecker, a3);
+    objc_storeStrong(&v6->_paidAccessChecker, checker);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -83,18 +83,18 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCPurchaseAccessChecker *)self paidAccessChecker];
-  v6 = [v5 isPreparedForUse];
+  paidAccessChecker = [(FCPurchaseAccessChecker *)self paidAccessChecker];
+  isPreparedForUse = [paidAccessChecker isPreparedForUse];
 
   v7 = *MEMORY[0x1E69E9840];
-  return v6;
+  return isPreparedForUse;
 }
 
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -108,35 +108,35 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v8 = [(FCPurchaseAccessChecker *)self paidAccessChecker];
-  v9 = [v7 isPaid];
-  v10 = [v7 isBundlePaid];
-  v11 = [v7 sourceChannel];
-  v12 = [v8 canGetAccessToItemPaid:v9 bundlePaid:v10 channel:v11];
+  paidAccessChecker = [(FCPurchaseAccessChecker *)self paidAccessChecker];
+  isPaid = [itemCopy isPaid];
+  isBundlePaid = [itemCopy isBundlePaid];
+  sourceChannel = [itemCopy sourceChannel];
+  v12 = [paidAccessChecker canGetAccessToItemPaid:isPaid bundlePaid:isBundlePaid channel:sourceChannel];
 
-  if (a4)
+  if (reason)
   {
     if ((v12 & 1) == 0)
     {
-      *a4 = 4;
+      *reason = 4;
       v13 = FCDefaultLog;
       if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_DEFAULT))
       {
         v14 = v13;
-        v15 = [v7 identifier];
-        v16 = [v7 sourceChannel];
-        v17 = [v16 identifier];
-        v18 = [v7 isBundlePaid];
+        identifier = [itemCopy identifier];
+        sourceChannel2 = [itemCopy sourceChannel];
+        identifier2 = [sourceChannel2 identifier];
+        isBundlePaid2 = [itemCopy isBundlePaid];
         v19 = @"does not have purchasing setup";
         *buf = 138543874;
-        v24 = v15;
+        v24 = identifier;
         v25 = 2114;
-        if (v18)
+        if (isBundlePaid2)
         {
           v19 = @"is not in the bundle";
         }
 
-        v26 = v17;
+        v26 = identifier2;
         v27 = 2114;
         v28[0] = v19;
         _os_log_impl(&dword_1B63EF000, v14, OS_LOG_TYPE_DEFAULT, "item %{public}@ is not purchaseable because its source channel %{public}@ %{public}@", buf, 0x20u);
@@ -148,21 +148,21 @@
   return v12;
 }
 
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(FCPurchaseAccessChecker *)self paidAccessChecker];
+  itemCopy = item;
+  completionCopy = completion;
+  paidAccessChecker = [(FCPurchaseAccessChecker *)self paidAccessChecker];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __77__FCPurchaseAccessChecker_checkAccessToItem_withQualityOfService_completion___block_invoke;
   v12[3] = &unk_1E7C38FF0;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 prepareForUseWithCompletion:v12];
+  v13 = itemCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = itemCopy;
+  [paidAccessChecker prepareForUseWithCompletion:v12];
 }
 
 void __77__FCPurchaseAccessChecker_checkAccessToItem_withQualityOfService_completion___block_invoke(uint64_t a1)

@@ -1,17 +1,17 @@
 @interface NWRemoteConnectionDirector
-- (BOOL)receiveRemoteReply:(id)a3;
-- (NWRemoteConnectionDirector)initWithDelegate:(id)a3;
+- (BOOL)receiveRemoteReply:(id)reply;
+- (NWRemoteConnectionDirector)initWithDelegate:(id)delegate;
 - (NWRemoteConnectionDirectorDelegate)delegate;
-- (id)createCloseConnectionMessageForClientID:(id)a3;
-- (id)createOpenConnectionMessageForClientID:(id)a3 endpoint:(id)a4 parameters:(id)a5;
-- (id)createSendDataMessageForClientID:(id)a3 data:(id)a4 receiveWindow:(unsigned int)a5;
-- (id)createStartBrowseMessageForClientID:(id)a3 descriptor:(id)a4 parameters:(id)a5;
-- (id)createStopBrowseMessageForClientID:(id)a3;
-- (nw_protocol)outputHandlerForFlowID:(id)a3;
-- (unint64_t)dataModeForFlowID:(id)a3;
+- (id)createCloseConnectionMessageForClientID:(id)d;
+- (id)createOpenConnectionMessageForClientID:(id)d endpoint:(id)endpoint parameters:(id)parameters;
+- (id)createSendDataMessageForClientID:(id)d data:(id)data receiveWindow:(unsigned int)window;
+- (id)createStartBrowseMessageForClientID:(id)d descriptor:(id)descriptor parameters:(id)parameters;
+- (id)createStopBrowseMessageForClientID:(id)d;
+- (nw_protocol)outputHandlerForFlowID:(id)d;
+- (unint64_t)dataModeForFlowID:(id)d;
 - (void)dealloc;
-- (void)receiveData:(id)a3 forClient:(id)a4;
-- (void)setOutputProtocolHandler:(nw_protocol *)a3 forFlowID:(id)a4 dataMode:(unint64_t)a5;
+- (void)receiveData:(id)data forClient:(id)client;
+- (void)setOutputProtocolHandler:(nw_protocol *)handler forFlowID:(id)d dataMode:(unint64_t)mode;
 @end
 
 @implementation NWRemoteConnectionDirector
@@ -23,48 +23,48 @@
   return WeakRetained;
 }
 
-- (void)receiveData:(id)a3 forClient:(id)a4
+- (void)receiveData:(id)data forClient:(id)client
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NWRemoteConnectionDirector *)self outputHandlerForFlowID:v7];
+  dataCopy = data;
+  clientCopy = client;
+  v8 = [(NWRemoteConnectionDirector *)self outputHandlerForFlowID:clientCopy];
   if (v8)
   {
     v9 = v8;
-    v10 = self;
-    objc_sync_enter(v10);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     while (1)
     {
-      v11 = [(NWRemoteConnectionDirector *)v10 writeRequests];
-      v12 = [v11 count];
+      writeRequests = [(NWRemoteConnectionDirector *)selfCopy writeRequests];
+      v12 = [writeRequests count];
 
       if (!v12)
       {
         break;
       }
 
-      v13 = [(NWRemoteConnectionDirector *)v10 writeRequests];
-      v14 = [v13 firstObject];
+      writeRequests2 = [(NWRemoteConnectionDirector *)selfCopy writeRequests];
+      firstObject = [writeRequests2 firstObject];
 
-      if (!nw_remote_director_write_request([(NWRemoteConnectionDirector *)v10 directorProtocol], v9, v14))
+      if (!nw_remote_director_write_request([(NWRemoteConnectionDirector *)selfCopy directorProtocol], v9, firstObject))
       {
 
         break;
       }
 
-      v15 = [(NWRemoteConnectionDirector *)v10 writeRequests];
-      [v15 removeObjectAtIndex:0];
+      writeRequests3 = [(NWRemoteConnectionDirector *)selfCopy writeRequests];
+      [writeRequests3 removeObjectAtIndex:0];
     }
 
-    v17 = [[NWRemoteConnectionWriteRequest alloc] initWithData:v6 clientID:v7];
-    if (v12 || !nw_remote_director_write_request([(NWRemoteConnectionDirector *)v10 directorProtocol], v9, v17))
+    v17 = [[NWRemoteConnectionWriteRequest alloc] initWithData:dataCopy clientID:clientCopy];
+    if (v12 || !nw_remote_director_write_request([(NWRemoteConnectionDirector *)selfCopy directorProtocol], v9, v17))
     {
-      v18 = [(NWRemoteConnectionDirector *)v10 writeRequests];
-      [v18 addObject:v17];
+      writeRequests4 = [(NWRemoteConnectionDirector *)selfCopy writeRequests];
+      [writeRequests4 addObject:v17];
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -83,60 +83,60 @@
   }
 }
 
-- (void)setOutputProtocolHandler:(nw_protocol *)a3 forFlowID:(id)a4 dataMode:(unint64_t)a5
+- (void)setOutputProtocolHandler:(nw_protocol *)handler forFlowID:(id)d dataMode:(unint64_t)mode
 {
-  v5 = a5;
+  modeCopy = mode;
   v12[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(NWRemoteConnectionDirector *)self protocolHashTable];
+  dCopy = d;
+  protocolHashTable = [(NWRemoteConnectionDirector *)self protocolHashTable];
   v12[0] = 0;
   v12[1] = 0;
-  [v8 getUUIDBytes:v12];
+  [dCopy getUUIDBytes:v12];
 
-  node = nw_hash_table_get_node(v9, v12, 16);
+  node = nw_hash_table_get_node(protocolHashTable, v12, 16);
   if (node)
   {
-    nw_hash_table_remove_node(v9, node);
+    nw_hash_table_remove_node(protocolHashTable, node);
   }
 
-  if (a3)
+  if (handler)
   {
-    v11 = nw_hash_table_add_object(v9, a3, 0);
+    v11 = nw_hash_table_add_object(protocolHashTable, handler, 0);
     if (v11)
     {
-      *(v11 + 32) = v5;
+      *(v11 + 32) = modeCopy;
     }
   }
 }
 
-- (nw_protocol)outputHandlerForFlowID:(id)a3
+- (nw_protocol)outputHandlerForFlowID:(id)d
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NWRemoteConnectionDirector *)self protocolHashTable];
-  if (nw_hash_table_count(v5, v6) && (v10[0] = 0, v10[1] = 0, [v4 getUUIDBytes:v10], (node = nw_hash_table_get_node(-[NWRemoteConnectionDirector protocolHashTable](self, "protocolHashTable"), v10, 16)) != 0))
+  dCopy = d;
+  protocolHashTable = [(NWRemoteConnectionDirector *)self protocolHashTable];
+  if (nw_hash_table_count(protocolHashTable, v6) && (v10[0] = 0, v10[1] = 0, [dCopy getUUIDBytes:v10], (node = nw_hash_table_get_node(-[NWRemoteConnectionDirector protocolHashTable](self, "protocolHashTable"), v10, 16)) != 0))
   {
-    v8 = *(node + 16);
+    defaultOutputHandler = *(node + 16);
   }
 
   else
   {
-    v8 = [(NWRemoteConnectionDirector *)self defaultOutputHandler];
+    defaultOutputHandler = [(NWRemoteConnectionDirector *)self defaultOutputHandler];
   }
 
-  return v8;
+  return defaultOutputHandler;
 }
 
-- (unint64_t)dataModeForFlowID:(id)a3
+- (unint64_t)dataModeForFlowID:(id)d
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NWRemoteConnectionDirector *)self protocolHashTable];
-  if (nw_hash_table_count(v5, v6))
+  dCopy = d;
+  protocolHashTable = [(NWRemoteConnectionDirector *)self protocolHashTable];
+  if (nw_hash_table_count(protocolHashTable, v6))
   {
     v10[0] = 0;
     v10[1] = 0;
-    [v4 getUUIDBytes:v10];
+    [dCopy getUUIDBytes:v10];
     node = nw_hash_table_get_node([(NWRemoteConnectionDirector *)self protocolHashTable], v10, 16);
     if (node)
     {
@@ -157,27 +157,27 @@
   return v8;
 }
 
-- (BOOL)receiveRemoteReply:(id)a3
+- (BOOL)receiveRemoteReply:(id)reply
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    v5 = [[NWPBCommandMessage alloc] initWithData:v4];
+    v5 = [[NWPBCommandMessage alloc] initWithData:replyCopy];
     v6 = v5;
     if (!v5)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
-      v7 = gLogObj;
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      delegate = gLogObj;
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446466;
         v74 = "[NWRemoteConnectionDirector receiveRemoteReply:]";
         v75 = 2114;
-        v76 = v4;
+        v76 = replyCopy;
         v8 = "%{public}s Could not parse reply: %{public}@";
-        v9 = v7;
+        v9 = delegate;
         v10 = 22;
 LABEL_19:
         _os_log_impl(&dword_181A37000, v9, OS_LOG_TYPE_ERROR, v8, buf, v10);
@@ -191,14 +191,14 @@ LABEL_19:
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
-      v7 = gLogObj;
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      delegate = gLogObj;
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446210;
         v74 = "[NWRemoteConnectionDirector receiveRemoteReply:]";
         v8 = "%{public}s Reply missing command value";
 LABEL_18:
-        v9 = v7;
+        v9 = delegate;
         v10 = 12;
         goto LABEL_19;
       }
@@ -210,8 +210,8 @@ LABEL_18:
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
-      v7 = gLogObj;
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      delegate = gLogObj;
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446210;
         v74 = "[NWRemoteConnectionDirector receiveRemoteReply:]";
@@ -224,7 +224,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(NWRemoteConnectionDirector *)self delegate];
+    delegate = [(NWRemoteConnectionDirector *)self delegate];
     if ((*&v6->_has & 1) == 0)
     {
       goto LABEL_10;
@@ -271,9 +271,9 @@ LABEL_20:
             }
 
             v63 = v40;
-            v64 = v7;
-            v65 = v4;
-            v41 = [MEMORY[0x1E695DF70] array];
+            v64 = delegate;
+            v65 = replyCopy;
+            array = [MEMORY[0x1E695DF70] array];
             v66 = 0u;
             v67 = 0u;
             v68 = 0u;
@@ -293,10 +293,10 @@ LABEL_20:
                     objc_enumerationMutation(v42);
                   }
 
-                  v47 = [*(*(&v66 + 1) + 8 * i) data];
-                  v48 = [NWEndpoint endpointWithProtocolBufferData:v47];
+                  data = [*(*(&v66 + 1) + 8 * i) data];
+                  v48 = [NWEndpoint endpointWithProtocolBufferData:data];
 
-                  [v41 addObject:v48];
+                  [array addObject:v48];
                 }
 
                 v44 = [(objc_class *)v42 countByEnumeratingWithState:&v66 objects:v72 count:16];
@@ -305,20 +305,20 @@ LABEL_20:
               while (v44);
             }
 
-            v7 = v64;
+            delegate = v64;
             v40 = v63;
-            [v64 setDiscoveredEndpoints:v41 forClient:v63];
-            v4 = v65;
+            [v64 setDiscoveredEndpoints:array forClient:v63];
+            replyCopy = v65;
           }
 
           else
           {
-            v41 = __nwlog_obj();
-            if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+            array = __nwlog_obj();
+            if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
             {
               *buf = 136446210;
               v74 = "[NWRemoteConnectionDirector receiveRemoteReply:]";
-              _os_log_impl(&dword_181A37000, v41, OS_LOG_TYPE_ERROR, "%{public}s Update browse message missing client ID", buf, 0xCu);
+              _os_log_impl(&dword_181A37000, array, OS_LOG_TYPE_ERROR, "%{public}s Update browse message missing client ID", buf, 0xCu);
             }
           }
 
@@ -490,33 +490,33 @@ LABEL_60:
         if (v26)
         {
           v27 = v11;
-          v28 = v7;
+          v28 = delegate;
           v29 = v27;
           v30 = v27[1].isa;
-          v31 = [(objc_class *)v30 data];
-          v32 = [NWPath pathWithProtocolBufferData:v31];
+          data2 = [(objc_class *)v30 data];
+          v32 = [NWPath pathWithProtocolBufferData:data2];
 
           v15 = v32 != 0;
           if (v32)
           {
-            v7 = v28;
+            delegate = v28;
             if ([v32 status] == 1)
             {
               v33 = __nwlog_obj();
               if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
               {
-                v34 = [v32 clientID];
+                clientID = [v32 clientID];
                 *buf = 136446466;
                 v74 = "[NWRemoteConnectionDirector receiveRemoteReply:]";
                 v75 = 2114;
-                v76 = v34;
+                v76 = clientID;
                 _os_log_impl(&dword_181A37000, v33, OS_LOG_TYPE_DEBUG, "%{public}s Updated path is satisfied, opening %{public}@", buf, 0x16u);
 
-                v7 = v28;
+                delegate = v28;
               }
 
-              v35 = [v32 clientID];
-              [v7 openClient:v35];
+              clientID2 = [v32 clientID];
+              [delegate openClient:clientID2];
             }
 
             else
@@ -532,30 +532,30 @@ LABEL_60:
               v54 = __nwlog_obj();
               if (os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG))
               {
-                v55 = [v32 clientID];
+                clientID3 = [v32 clientID];
                 *buf = 136446466;
                 v74 = "[NWRemoteConnectionDirector receiveRemoteReply:]";
                 v75 = 2114;
-                v76 = v55;
+                v76 = clientID3;
                 _os_log_impl(&dword_181A37000, v54, OS_LOG_TYPE_DEBUG, "%{public}s Updated path is unsatisfied, closing %{public}@", buf, 0x16u);
 
-                v7 = v28;
+                delegate = v28;
               }
 
-              v35 = [v32 clientID];
-              [v7 closeClient:v35];
+              clientID2 = [v32 clientID];
+              [delegate closeClient:clientID2];
             }
           }
 
           else
           {
-            v35 = __nwlog_obj();
-            v7 = v28;
-            if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+            clientID2 = __nwlog_obj();
+            delegate = v28;
+            if (os_log_type_enabled(clientID2, OS_LOG_TYPE_ERROR))
             {
               *buf = 136446210;
               v74 = "[NWRemoteConnectionDirector receiveRemoteReply:]";
-              _os_log_impl(&dword_181A37000, v35, OS_LOG_TYPE_ERROR, "%{public}s Update path could not parse path", buf, 0xCu);
+              _os_log_impl(&dword_181A37000, clientID2, OS_LOG_TYPE_ERROR, "%{public}s Update path could not parse path", buf, 0xCu);
             }
           }
 
@@ -681,26 +681,26 @@ LABEL_22:
   return v15;
 }
 
-- (id)createSendDataMessageForClientID:(id)a3 data:(id)a4 receiveWindow:(unsigned int)a5
+- (id)createSendDataMessageForClientID:(id)d data:(id)data receiveWindow:(unsigned int)window
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  dataCopy = data;
+  v9 = dataCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (dataCopy)
     {
       v10 = objc_alloc_init(NWPBSendData);
-      v11 = [v7 UUIDString];
-      v12 = v11;
+      uUIDString = [dCopy UUIDString];
+      v12 = uUIDString;
       if (v10)
       {
-        objc_storeStrong(&v10->_clientUUID, v11);
+        objc_storeStrong(&v10->_clientUUID, uUIDString);
 
-        objc_storeStrong(&v10->_messageData, a4);
+        objc_storeStrong(&v10->_messageData, data);
         *&v10->_has |= 1u;
-        v10->_receiveWindow = a5;
+        v10->_receiveWindow = window;
       }
 
       else
@@ -713,16 +713,16 @@ LABEL_22:
       {
         *&v13->_has |= 1u;
         v13->_command = 4;
-        v15 = [(NWPBSendData *)v10 data];
-        objc_storeStrong(p_isa + 2, v15);
+        data = [(NWPBSendData *)v10 data];
+        objc_storeStrong(p_isa + 2, data);
       }
 
       else
       {
-        v15 = [(NWPBSendData *)v10 data];
+        data = [(NWPBSendData *)v10 data];
       }
 
-      v16 = [p_isa data];
+      data2 = [p_isa data];
 
       goto LABEL_8;
     }
@@ -882,23 +882,23 @@ LABEL_39:
     free(v19);
   }
 
-  v16 = 0;
+  data2 = 0;
 LABEL_8:
 
-  return v16;
+  return data2;
 }
 
-- (id)createStopBrowseMessageForClientID:(id)a3
+- (id)createStopBrowseMessageForClientID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = objc_alloc_init(NWPBStopBrowse);
-    v5 = [v3 UUIDString];
+    uUIDString = [dCopy UUIDString];
     if (v4)
     {
-      objc_storeStrong(&v4->_clientUUID, v5);
+      objc_storeStrong(&v4->_clientUUID, uUIDString);
     }
 
     v6 = objc_alloc_init(NWPBCommandMessage);
@@ -907,16 +907,16 @@ LABEL_8:
     {
       *&v6->_has |= 1u;
       v6->_command = 7;
-      v8 = [(NWPBStopBrowse *)v4 data];
-      objc_storeStrong(p_isa + 2, v8);
+      data = [(NWPBStopBrowse *)v4 data];
+      objc_storeStrong(p_isa + 2, data);
     }
 
     else
     {
-      v8 = [(NWPBStopBrowse *)v4 data];
+      data = [(NWPBStopBrowse *)v4 data];
     }
 
-    v9 = [p_isa data];
+    data2 = [p_isa data];
 
     goto LABEL_7;
   }
@@ -998,20 +998,20 @@ LABEL_25:
     free(v12);
   }
 
-  v9 = 0;
+  data2 = 0;
 LABEL_7:
 
-  return v9;
+  return data2;
 }
 
-- (id)createStartBrowseMessageForClientID:(id)a3 descriptor:(id)a4 parameters:(id)a5
+- (id)createStartBrowseMessageForClientID:(id)d descriptor:(id)descriptor parameters:(id)parameters
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  dCopy = d;
+  descriptorCopy = descriptor;
+  parametersCopy = parameters;
+  v10 = parametersCopy;
+  if (!dCopy)
   {
     v21 = __nwlog_obj();
     *buf = 136446210;
@@ -1092,7 +1092,7 @@ LABEL_37:
     goto LABEL_52;
   }
 
-  if (!v8)
+  if (!descriptorCopy)
   {
     v26 = __nwlog_obj();
     *buf = 136446210;
@@ -1166,26 +1166,26 @@ LABEL_37:
     goto LABEL_36;
   }
 
-  if (v9)
+  if (parametersCopy)
   {
     v11 = objc_alloc_init(NWPBStartBrowse);
-    v12 = [v7 UUIDString];
-    v13 = v12;
+    uUIDString = [dCopy UUIDString];
+    v13 = uUIDString;
     if (v11)
     {
-      objc_storeStrong(&v11->_clientUUID, v12);
+      objc_storeStrong(&v11->_clientUUID, uUIDString);
 
-      v14 = [v8 createProtocolBufferObject];
-      objc_storeStrong(&v11->_descriptor, v14);
+      createProtocolBufferObject = [descriptorCopy createProtocolBufferObject];
+      objc_storeStrong(&v11->_descriptor, createProtocolBufferObject);
 
-      v15 = [v10 createProtocolBufferObject];
-      objc_storeStrong(&v11->_parameters, v15);
+      createProtocolBufferObject2 = [v10 createProtocolBufferObject];
+      objc_storeStrong(&v11->_parameters, createProtocolBufferObject2);
     }
 
     else
     {
 
-      v15 = [v10 createProtocolBufferObject];
+      createProtocolBufferObject2 = [v10 createProtocolBufferObject];
     }
 
     v16 = objc_alloc_init(NWPBCommandMessage);
@@ -1194,16 +1194,16 @@ LABEL_37:
     {
       *&v16->_has |= 1u;
       v16->_command = 5;
-      v18 = [(NWPBStartBrowse *)v11 data];
-      objc_storeStrong(p_isa + 2, v18);
+      data = [(NWPBStartBrowse *)v11 data];
+      objc_storeStrong(p_isa + 2, data);
     }
 
     else
     {
-      v18 = [(NWPBStartBrowse *)v11 data];
+      data = [(NWPBStartBrowse *)v11 data];
     }
 
-    v19 = [p_isa data];
+    data2 = [p_isa data];
 
     goto LABEL_9;
   }
@@ -1285,23 +1285,23 @@ LABEL_52:
     free(v22);
   }
 
-  v19 = 0;
+  data2 = 0;
 LABEL_9:
 
-  return v19;
+  return data2;
 }
 
-- (id)createCloseConnectionMessageForClientID:(id)a3
+- (id)createCloseConnectionMessageForClientID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     v4 = objc_alloc_init(NWPBCloseConnection);
-    v5 = [v3 UUIDString];
+    uUIDString = [dCopy UUIDString];
     if (v4)
     {
-      objc_storeStrong(&v4->_clientUUID, v5);
+      objc_storeStrong(&v4->_clientUUID, uUIDString);
     }
 
     v6 = objc_alloc_init(NWPBCommandMessage);
@@ -1310,16 +1310,16 @@ LABEL_9:
     {
       *&v6->_has |= 1u;
       v6->_command = 3;
-      v8 = [(NWPBCloseConnection *)v4 data];
-      objc_storeStrong(p_isa + 2, v8);
+      data = [(NWPBCloseConnection *)v4 data];
+      objc_storeStrong(p_isa + 2, data);
     }
 
     else
     {
-      v8 = [(NWPBCloseConnection *)v4 data];
+      data = [(NWPBCloseConnection *)v4 data];
     }
 
-    v9 = [p_isa data];
+    data2 = [p_isa data];
 
     goto LABEL_7;
   }
@@ -1401,20 +1401,20 @@ LABEL_25:
     free(v12);
   }
 
-  v9 = 0;
+  data2 = 0;
 LABEL_7:
 
-  return v9;
+  return data2;
 }
 
-- (id)createOpenConnectionMessageForClientID:(id)a3 endpoint:(id)a4 parameters:(id)a5
+- (id)createOpenConnectionMessageForClientID:(id)d endpoint:(id)endpoint parameters:(id)parameters
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  dCopy = d;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  v10 = parametersCopy;
+  if (!dCopy)
   {
     v21 = __nwlog_obj();
     *buf = 136446210;
@@ -1495,7 +1495,7 @@ LABEL_37:
     goto LABEL_52;
   }
 
-  if (!v8)
+  if (!endpointCopy)
   {
     v26 = __nwlog_obj();
     *buf = 136446210;
@@ -1569,26 +1569,26 @@ LABEL_37:
     goto LABEL_36;
   }
 
-  if (v9)
+  if (parametersCopy)
   {
     v11 = objc_alloc_init(NWPBOpenConnection);
-    v12 = [v7 UUIDString];
-    v13 = v12;
+    uUIDString = [dCopy UUIDString];
+    v13 = uUIDString;
     if (v11)
     {
-      objc_storeStrong(&v11->_clientUUID, v12);
+      objc_storeStrong(&v11->_clientUUID, uUIDString);
 
-      v14 = [v8 createProtocolBufferObject];
-      objc_storeStrong(&v11->_endpoint, v14);
+      createProtocolBufferObject = [endpointCopy createProtocolBufferObject];
+      objc_storeStrong(&v11->_endpoint, createProtocolBufferObject);
 
-      v15 = [v10 createProtocolBufferObject];
-      objc_storeStrong(&v11->_parameters, v15);
+      createProtocolBufferObject2 = [v10 createProtocolBufferObject];
+      objc_storeStrong(&v11->_parameters, createProtocolBufferObject2);
     }
 
     else
     {
 
-      v15 = [v10 createProtocolBufferObject];
+      createProtocolBufferObject2 = [v10 createProtocolBufferObject];
     }
 
     v16 = objc_alloc_init(NWPBCommandMessage);
@@ -1597,16 +1597,16 @@ LABEL_37:
     {
       *&v16->_has |= 1u;
       v16->_command = 1;
-      v18 = [(NWPBOpenConnection *)v11 data];
-      objc_storeStrong(p_isa + 2, v18);
+      data = [(NWPBOpenConnection *)v11 data];
+      objc_storeStrong(p_isa + 2, data);
     }
 
     else
     {
-      v18 = [(NWPBOpenConnection *)v11 data];
+      data = [(NWPBOpenConnection *)v11 data];
     }
 
-    v19 = [p_isa data];
+    data2 = [p_isa data];
 
     goto LABEL_9;
   }
@@ -1688,10 +1688,10 @@ LABEL_52:
     free(v22);
   }
 
-  v19 = 0;
+  data2 = 0;
 LABEL_9:
 
-  return v19;
+  return data2;
 }
 
 - (void)dealloc
@@ -1704,8 +1704,8 @@ LABEL_9:
 
   if ([(NWRemoteConnectionDirector *)self protocolHashTable]&& [(NWRemoteConnectionDirector *)self protocolHashTable])
   {
-    v3 = [(NWRemoteConnectionDirector *)self protocolHashTable];
-    _nw_hash_table_release(v3, v4);
+    protocolHashTable = [(NWRemoteConnectionDirector *)self protocolHashTable];
+    _nw_hash_table_release(protocolHashTable, v4);
     [(NWRemoteConnectionDirector *)self setProtocolHashTable:0];
   }
 
@@ -1714,11 +1714,11 @@ LABEL_9:
   [(NWRemoteConnectionDirector *)&v5 dealloc];
 }
 
-- (NWRemoteConnectionDirector)initWithDelegate:(id)a3
+- (NWRemoteConnectionDirector)initWithDelegate:(id)delegate
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     v28 = __nwlog_obj();
     *buf = 136446210;
@@ -1887,11 +1887,11 @@ LABEL_75:
   }
 
   self = v5;
-  objc_storeWeak(&v5->_delegate, v4);
+  objc_storeWeak(&v5->_delegate, delegateCopy);
   self->_maximumDataChunkSize = 10240;
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   writeRequests = self->_writeRequests;
-  self->_writeRequests = v6;
+  self->_writeRequests = array;
 
   v8 = malloc_type_calloc(1uLL, 0x40uLL, 0x10A0040C9AB51B7uLL);
   self->_directorProtocol = v8;

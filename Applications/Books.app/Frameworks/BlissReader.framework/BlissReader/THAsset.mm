@@ -1,8 +1,8 @@
 @interface THAsset
-+ (BOOL)asset:(id)a3 isSameAsAsset:(id)a4;
-+ (THAsset)assetWithAsset:(id)a3;
-+ (THAsset)assetWithURL:(id)a3 assetID:(id)a4;
-+ (THAsset)assetWithURL:(id)a3 assetID:(id)a4 type:(id)a5;
++ (BOOL)asset:(id)asset isSameAsAsset:(id)asAsset;
++ (THAsset)assetWithAsset:(id)asset;
++ (THAsset)assetWithURL:(id)l assetID:(id)d;
++ (THAsset)assetWithURL:(id)l assetID:(id)d type:(id)type;
 - (BOOL)isEpub;
 - (BOOL)isManagedBook;
 - (BOOL)isSample;
@@ -11,39 +11,39 @@
 - (NSString)storeID;
 - (NSString)title;
 - (NSURL)storeUrl;
-- (THAsset)initWithURL:(id)a3 assetID:(id)a4 type:(id)a5;
-- (id)p_libraryManagerInfoWithCoordination:(BOOL)a3;
+- (THAsset)initWithURL:(id)l assetID:(id)d type:(id)type;
+- (id)p_libraryManagerInfoWithCoordination:(BOOL)coordination;
 - (void)dealloc;
 @end
 
 @implementation THAsset
 
-- (THAsset)initWithURL:(id)a3 assetID:(id)a4 type:(id)a5
+- (THAsset)initWithURL:(id)l assetID:(id)d type:(id)type
 {
   v10.receiver = self;
   v10.super_class = THAsset;
   v8 = [(THAsset *)&v10 init];
   if (v8)
   {
-    v8->mURL = a3;
-    v8->mAssetID = [a4 copy];
-    v8->mType = [a5 copy];
+    v8->mURL = l;
+    v8->mAssetID = [d copy];
+    v8->mType = [type copy];
     v8->_unfairLock._os_unfair_lock_opaque = 0;
   }
 
   return v8;
 }
 
-+ (THAsset)assetWithURL:(id)a3 assetID:(id)a4 type:(id)a5
++ (THAsset)assetWithURL:(id)l assetID:(id)d type:(id)type
 {
-  v5 = [[a1 alloc] initWithURL:a3 assetID:a4 type:a5];
+  v5 = [[self alloc] initWithURL:l assetID:d type:type];
 
   return v5;
 }
 
-+ (THAsset)assetWithURL:(id)a3 assetID:(id)a4
++ (THAsset)assetWithURL:(id)l assetID:(id)d
 {
-  v4 = [[a1 alloc] initWithURL:a3 assetID:a4];
+  v4 = [[self alloc] initWithURL:l assetID:d];
 
   return v4;
 }
@@ -55,12 +55,12 @@
   [(THAsset *)&v3 dealloc];
 }
 
-+ (BOOL)asset:(id)a3 isSameAsAsset:(id)a4
++ (BOOL)asset:(id)asset isSameAsAsset:(id)asAsset
 {
   result = 0;
-  if (a3 && a4)
+  if (asset && asAsset)
   {
-    return ![objc_msgSend(a3 "assetType")] && objc_msgSend(objc_msgSend(a3, "assetID"), "compare:", objc_msgSend(a4, "assetID")) == 0;
+    return ![objc_msgSend(asset "assetType")] && objc_msgSend(objc_msgSend(asset, "assetID"), "compare:", objc_msgSend(asAsset, "assetID")) == 0;
   }
 
   return result;
@@ -68,22 +68,22 @@
 
 - (BOOL)isEpub
 {
-  v2 = [(NSString *)[(NSURL *)[(THAsset *)self url] pathExtension] lowercaseString];
+  lowercaseString = [(NSString *)[(NSURL *)[(THAsset *)self url] pathExtension] lowercaseString];
 
-  return [@"epub" isEqualToString:v2];
+  return [@"epub" isEqualToString:lowercaseString];
 }
 
-+ (THAsset)assetWithAsset:(id)a3
++ (THAsset)assetWithAsset:(id)asset
 {
-  v4 = [a3 url];
-  v5 = [a3 assetID];
+  v4 = [asset url];
+  assetID = [asset assetID];
 
-  return [THAsset assetWithURL:v4 assetID:v5];
+  return [THAsset assetWithURL:v4 assetID:assetID];
 }
 
-- (id)p_libraryManagerInfoWithCoordination:(BOOL)a3
+- (id)p_libraryManagerInfoWithCoordination:(BOOL)coordination
 {
-  v3 = a3;
+  coordinationCopy = coordination;
   os_unfair_lock_lock(&self->_unfairLock);
   if (!self->_metadata)
   {
@@ -97,9 +97,9 @@
 - (NSURL)storeUrl
 {
   v3 = [+[AEAssetEngine storeMgr](AEAssetEngine "storeMgr")];
-  v4 = [(THAsset *)self storeID];
+  storeID = [(THAsset *)self storeID];
 
-  return [v3 bookUrlForStoreId:v4];
+  return [v3 bookUrlForStoreId:storeID];
 }
 
 - (NSString)author
@@ -152,15 +152,15 @@
 
 - (BOOL)isSample
 {
-  v2 = [(THAsset *)self p_libraryManagerInfo];
-  if (v2)
+  p_libraryManagerInfo = [(THAsset *)self p_libraryManagerInfo];
+  if (p_libraryManagerInfo)
   {
-    v3 = [IMLibraryPlist isSampleFromPlistEntry:v2];
+    v3 = [IMLibraryPlist isSampleFromPlistEntry:p_libraryManagerInfo];
 
-    LOBYTE(v2) = [v3 BOOLValue];
+    LOBYTE(p_libraryManagerInfo) = [v3 BOOLValue];
   }
 
-  return v2;
+  return p_libraryManagerInfo;
 }
 
 - (BOOL)isManagedBook

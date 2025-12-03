@@ -21,7 +21,7 @@
   {
     v4[0] = *task_info_out;
     v4[1] = v7;
-    v2 = [a1 _signingIdentityForAuditToken:v4];
+    v2 = [self _signingIdentityForAuditToken:v4];
   }
 
   return v2;
@@ -30,7 +30,7 @@
 - (id)signingIdentity
 {
   v2 = objc_opt_class();
-  [a1 auditToken];
+  [self auditToken];
   v3 = [v2 _signingIdentityForAuditToken:&v5];
 
   return v3;
@@ -38,10 +38,10 @@
 
 - (uint64_t)hasBooleanEntitlement:()MicroLocationUtilities
 {
-  v1 = [a1 valueForEntitlement:?];
-  v2 = [v1 BOOLValue];
+  v1 = [self valueForEntitlement:?];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 + (id)_signingIdentityForAuditToken:()MicroLocationUtilities

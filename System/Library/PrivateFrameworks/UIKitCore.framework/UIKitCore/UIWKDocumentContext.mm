@@ -1,5 +1,5 @@
 @interface UIWKDocumentContext
-- ($0AC6E346AE4835514AAA8AC86D8F4844)directionalRangeForSelectionRange:(_NSRange)a3;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)directionalRangeForSelectionRange:(_NSRange)range;
 - (NSString)_contextAfterString;
 - (NSString)_contextBeforeString;
 - (NSString)_markedTextString;
@@ -7,16 +7,16 @@
 - (NSString)fullText;
 - (UIWKDocumentContext)init;
 - (_NSRange)markedTextRange;
-- (_NSRange)rangeContainedWithinRect:(CGRect)a3;
+- (_NSRange)rangeContainedWithinRect:(CGRect)rect;
 - (_NSRange)selectedRangeInMarkedText;
 - (_NSRange)selectedTextRange;
-- (id)_textFromDirectionalRange:(id)a3;
-- (id)characterRectsForCharacterRange:(_NSRange)a3;
-- (id)stringContainedWithinRect:(CGRect)a3;
-- (unint64_t)closestCharacterIndexForPoint:(CGPoint)a3;
-- (void)addTextRect:(CGRect)a3 forCharacterRange:(_NSRange)a4;
+- (id)_textFromDirectionalRange:(id)range;
+- (id)characterRectsForCharacterRange:(_NSRange)range;
+- (id)stringContainedWithinRect:(CGRect)rect;
+- (unint64_t)closestCharacterIndexForPoint:(CGPoint)point;
+- (void)addTextRect:(CGRect)rect forCharacterRange:(_NSRange)range;
 - (void)dealloc;
-- (void)enumerateLayoutRectsWithOptions:(unint64_t)a3 characterRange:(_NSRange)a4 block:(id)a5;
+- (void)enumerateLayoutRectsWithOptions:(unint64_t)options characterRange:(_NSRange)range block:(id)block;
 - (void)resetTextRects;
 - (void)sortTextRectsByCharacterRange;
 @end
@@ -177,14 +177,14 @@
   self->_lastRectRange = xmmword_18A678470;
 }
 
-- (void)addTextRect:(CGRect)a3 forCharacterRange:(_NSRange)a4
+- (void)addTextRect:(CGRect)rect forCharacterRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  length = range.length;
+  location = range.location;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (![(UIWKDocumentContext *)self _selectionRects])
   {
     -[UIWKDocumentContext set_selectionRects:](self, "set_selectionRects:", [MEMORY[0x1E695DF88] dataWithCapacity:960]);
@@ -209,21 +209,21 @@
   v18 = *MEMORY[0x1E69E9840];
   if (!self->_rectsAreInCharacterOrder)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __52__UIWKDocumentContext_sortTextRectsByCharacterRange__block_invoke;
     v16[3] = &unk_1E7109070;
-    v16[4] = v3;
+    v16[4] = array;
     [(UIWKDocumentContext *)self enumerateLayoutRects:v16];
-    [v3 sortUsingComparator:&__block_literal_global_238];
+    [array sortUsingComparator:&__block_literal_global_238];
     [(UIWKDocumentContext *)self resetTextRects];
-    -[UIWKDocumentContext set_selectionRects:](self, "set_selectionRects:", [MEMORY[0x1E695DF88] dataWithCapacity:{48 * objc_msgSend(v3, "count")}]);
+    -[UIWKDocumentContext set_selectionRects:](self, "set_selectionRects:", [MEMORY[0x1E695DF88] dataWithCapacity:{48 * objc_msgSend(array, "count")}]);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    v4 = [array countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -235,7 +235,7 @@
         {
           if (*v13 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(array);
           }
 
           v8 = *(*(&v12 + 1) + 8 * v7);
@@ -248,7 +248,7 @@
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v5 = [array countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v5);
@@ -292,7 +292,7 @@ uint64_t __52__UIWKDocumentContext_sortTextRectsByCharacterRange__block_invoke_2
   return -1;
 }
 
-- (unint64_t)closestCharacterIndexForPoint:(CGPoint)a3
+- (unint64_t)closestCharacterIndexForPoint:(CGPoint)point
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -307,7 +307,7 @@ uint64_t __52__UIWKDocumentContext_sortTextRectsByCharacterRange__block_invoke_2
   v5[1] = 3221225472;
   v5[2] = __53__UIWKDocumentContext_closestCharacterIndexForPoint___block_invoke;
   v5[3] = &unk_1E71090B8;
-  v6 = a3;
+  pointCopy = point;
   v5[4] = v12;
   v5[5] = &v7;
   [(UIWKDocumentContext *)self enumerateLayoutRects:v5];
@@ -331,19 +331,19 @@ BOOL __53__UIWKDocumentContext_closestCharacterIndexForPoint___block_invoke(uint
   return result;
 }
 
-- (id)characterRectsForCharacterRange:(_NSRange)a3
+- (id)characterRectsForCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(UIWKDocumentContext *)self sortTextRectsByCharacterRange];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__UIWKDocumentContext_characterRectsForCharacterRange___block_invoke;
   v8[3] = &unk_1E7109070;
-  v8[4] = v6;
+  v8[4] = array;
   [(UIWKDocumentContext *)self enumerateLayoutRectsWithOptions:0 characterRange:location block:length, v8];
-  return v6;
+  return array;
 }
 
 uint64_t __55__UIWKDocumentContext_characterRectsForCharacterRange___block_invoke(uint64_t a1)
@@ -354,7 +354,7 @@ uint64_t __55__UIWKDocumentContext_characterRectsForCharacterRange___block_invok
   return [v1 addObject:v2];
 }
 
-- (_NSRange)rangeContainedWithinRect:(CGRect)a3
+- (_NSRange)rangeContainedWithinRect:(CGRect)rect
 {
   v9 = 0;
   v10 = &v9;
@@ -365,7 +365,7 @@ uint64_t __55__UIWKDocumentContext_characterRectsForCharacterRange___block_invok
   v7[1] = 3221225472;
   v7[2] = __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke;
   v7[3] = &unk_1E71090E0;
-  v8 = a3;
+  rectCopy = rect;
   v7[4] = &v9;
   [(UIWKDocumentContext *)self enumerateLayoutRects:v7];
   v3 = v10[4];
@@ -408,9 +408,9 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
   return v10.location;
 }
 
-- (id)stringContainedWithinRect:(CGRect)a3
+- (id)stringContainedWithinRect:(CGRect)rect
 {
-  v4 = [(UIWKDocumentContext *)self rangeContainedWithinRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UIWKDocumentContext *)self rangeContainedWithinRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -418,18 +418,18 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
 
   v7 = v4;
   v8 = v5;
-  v9 = [(UIWKDocumentContext *)self fullText];
+  fullText = [(UIWKDocumentContext *)self fullText];
 
-  return [(NSString *)v9 substringWithRange:v7, v8];
+  return [(NSString *)fullText substringWithRange:v7, v8];
 }
 
 - (NSString)fullText
 {
-  v3 = [(UIWKDocumentContext *)self _contextBeforeString];
+  _contextBeforeString = [(UIWKDocumentContext *)self _contextBeforeString];
   v4 = &stru_1EFB14550;
-  if (v3)
+  if (_contextBeforeString)
   {
-    v5 = v3;
+    v5 = _contextBeforeString;
   }
 
   else
@@ -437,10 +437,10 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
     v5 = &stru_1EFB14550;
   }
 
-  v6 = [(UIWKDocumentContext *)self _selectedTextString];
-  if (v6)
+  _selectedTextString = [(UIWKDocumentContext *)self _selectedTextString];
+  if (_selectedTextString)
   {
-    v7 = v6;
+    v7 = _selectedTextString;
   }
 
   else
@@ -448,10 +448,10 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
     v7 = &stru_1EFB14550;
   }
 
-  v8 = [(UIWKDocumentContext *)self _markedTextString];
-  if (v8)
+  _markedTextString = [(UIWKDocumentContext *)self _markedTextString];
+  if (_markedTextString)
   {
-    v9 = v8;
+    v9 = _markedTextString;
   }
 
   else
@@ -459,10 +459,10 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
     v9 = &stru_1EFB14550;
   }
 
-  v10 = [(UIWKDocumentContext *)self _contextAfterString];
-  if (v10)
+  _contextAfterString = [(UIWKDocumentContext *)self _contextAfterString];
+  if (_contextAfterString)
   {
-    v4 = v10;
+    v4 = _contextAfterString;
   }
 
   v11 = MEMORY[0x1E696AEC0];
@@ -479,15 +479,15 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
   return [v11 stringWithFormat:@"%@%@%@", v5, v12, v4];
 }
 
-- (id)_textFromDirectionalRange:(id)a3
+- (id)_textFromDirectionalRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = [(UIWKDocumentContext *)self _contextBeforeString];
+  var1 = range.var1;
+  var0 = range.var0;
+  _contextBeforeString = [(UIWKDocumentContext *)self _contextBeforeString];
   v7 = &stru_1EFB14550;
-  if (v6)
+  if (_contextBeforeString)
   {
-    v8 = v6;
+    v8 = _contextBeforeString;
   }
 
   else
@@ -496,28 +496,28 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
   }
 
   [(UIWKDocumentContext *)self _selectedTextString];
-  v9 = [(UIWKDocumentContext *)self _markedTextString];
-  if (v9)
+  _markedTextString = [(UIWKDocumentContext *)self _markedTextString];
+  if (_markedTextString)
   {
-    v7 = v9;
+    v7 = _markedTextString;
   }
 
   [(UIWKDocumentContext *)self _contextAfterString];
   [(__CFString *)v7 length];
   v10 = [(__CFString *)v8 length]+ var0;
-  v11 = [(UIWKDocumentContext *)self fullText];
-  v12 = [(NSString *)v11 length];
+  fullText = [(UIWKDocumentContext *)self fullText];
+  v12 = [(NSString *)fullText length];
   if (v10 < 0 || var1 < 1 || v10 + var1 > v12 || v10 >= v12)
   {
     return &stru_1EFB14550;
   }
 
-  return [(NSString *)v11 substringWithRange:v10, var1];
+  return [(NSString *)fullText substringWithRange:v10, var1];
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)directionalRangeForSelectionRange:(_NSRange)a3
+- ($0AC6E346AE4835514AAA8AC86D8F4844)directionalRangeForSelectionRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
     v4 = 0;
@@ -525,8 +525,8 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
 
   else
   {
-    length = a3.length;
-    v4 = a3.location - [(UIWKDocumentContext *)self selectedTextRange];
+    length = range.length;
+    v4 = range.location - [(UIWKDocumentContext *)self selectedTextRange];
     v3 = length - v6;
   }
 
@@ -535,30 +535,30 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
   return result;
 }
 
-- (void)enumerateLayoutRectsWithOptions:(unint64_t)a3 characterRange:(_NSRange)a4 block:(id)a5
+- (void)enumerateLayoutRectsWithOptions:(unint64_t)options characterRange:(_NSRange)range block:(id)block
 {
-  if (a5)
+  if (block)
   {
-    length = a4.length;
-    location = a4.location;
-    v8 = a3;
-    if (a4.location == 0x7FFFFFFFFFFFFFFFLL || a4.length)
+    length = range.length;
+    location = range.location;
+    optionsCopy = options;
+    if (range.location == 0x7FFFFFFFFFFFFFFFLL || range.length)
     {
-      if (a4.location != 0x7FFFFFFFFFFFFFFFLL)
+      if (range.location != 0x7FFFFFFFFFFFFFFFLL)
       {
         [(UIWKDocumentContext *)self sortTextRectsByCharacterRange];
       }
 
       v10 = [(NSMutableData *)[(UIWKDocumentContext *)self _selectionRects] length];
       v11 = v10 / 0x30;
-      v12 = [(NSMutableData *)[(UIWKDocumentContext *)self _selectionRects] bytes];
+      bytes = [(NSMutableData *)[(UIWKDocumentContext *)self _selectionRects] bytes];
       v31 = 0;
-      if ((v8 & 2) != 0)
+      if ((optionsCopy & 2) != 0)
       {
         if (v10 >= 0x30)
         {
           v23 = 0;
-          v24 = v12 + 48 * v11 - 24;
+          v24 = bytes + 48 * v11 - 24;
           do
           {
             v25 = *(v24 - 24);
@@ -569,7 +569,7 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
             v30 = *(v24 + 16);
             if (location == 0x7FFFFFFFFFFFFFFFLL || (v33.location = location, v33.length = length, NSIntersectionRange(v33, *(v24 + 8)).length))
             {
-              (*(a5 + 2))(a5, v29, v30, &v31, v25, v26, v27, v28);
+              (*(block + 2))(block, v29, v30, &v31, v25, v26, v27, v28);
               v23 = 1;
             }
 
@@ -600,7 +600,7 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
       else if (v10 >= 0x30)
       {
         v13 = 0;
-        v14 = v12 + 24;
+        v14 = bytes + 24;
         v15 = 1;
         do
         {
@@ -612,7 +612,7 @@ NSUInteger __48__UIWKDocumentContext_rangeContainedWithinRect___block_invoke(uin
           v21 = *(v14 + 16);
           if (location == 0x7FFFFFFFFFFFFFFFLL || (v32.location = location, v32.length = length, NSIntersectionRange(v32, *(v14 + 8)).length))
           {
-            (*(a5 + 2))(a5, v20, v21, &v31, v16, v17, v18, v19);
+            (*(block + 2))(block, v20, v21, &v31, v16, v17, v18, v19);
             v13 = 1;
           }
 

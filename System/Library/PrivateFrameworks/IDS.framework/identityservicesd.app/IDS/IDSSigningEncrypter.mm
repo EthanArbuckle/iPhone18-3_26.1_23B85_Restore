@@ -1,72 +1,72 @@
 @interface IDSSigningEncrypter
-- (IDSSigningEncrypter)initWithKeyType:(unsigned int)a3 keyDiversifier:(id)a4 service:(id)a5 serviceController:(id)a6 fullDeviceIdentitySigner:(id)a7;
-- (id)_signData:(id)a3 withType:(int64_t)a4 error:(id *)a5;
-- (id)batchSignDatas:(id)a3 withType:(int64_t)a4 onQueue:(id)a5 error:(id *)a6;
-- (id)signData:(id)a3 withType:(int64_t)a4 onQueue:(id)a5 error:(id *)a6;
+- (IDSSigningEncrypter)initWithKeyType:(unsigned int)type keyDiversifier:(id)diversifier service:(id)service serviceController:(id)controller fullDeviceIdentitySigner:(id)signer;
+- (id)_signData:(id)data withType:(int64_t)type error:(id *)error;
+- (id)batchSignDatas:(id)datas withType:(int64_t)type onQueue:(id)queue error:(id *)error;
+- (id)signData:(id)data withType:(int64_t)type onQueue:(id)queue error:(id *)error;
 - (unsigned)_retrieveKeyIndex;
-- (void)batchSignDatas:(id)a3 withType:(int64_t)a4 onQueue:(id)a5 withCompletion:(id)a6;
-- (void)signData:(id)a3 withType:(int64_t)a4 onQueue:(id)a5 withCompletion:(id)a6;
+- (void)batchSignDatas:(id)datas withType:(int64_t)type onQueue:(id)queue withCompletion:(id)completion;
+- (void)signData:(id)data withType:(int64_t)type onQueue:(id)queue withCompletion:(id)completion;
 @end
 
 @implementation IDSSigningEncrypter
 
-- (IDSSigningEncrypter)initWithKeyType:(unsigned int)a3 keyDiversifier:(id)a4 service:(id)a5 serviceController:(id)a6 fullDeviceIdentitySigner:(id)a7
+- (IDSSigningEncrypter)initWithKeyType:(unsigned int)type keyDiversifier:(id)diversifier service:(id)service serviceController:(id)controller fullDeviceIdentitySigner:(id)signer
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  diversifierCopy = diversifier;
+  serviceCopy = service;
+  controllerCopy = controller;
+  signerCopy = signer;
   v20.receiver = self;
   v20.super_class = IDSSigningEncrypter;
   v17 = [(IDSSigningEncrypter *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_keyType = a3;
-    objc_storeStrong(&v17->_keyDiversifier, a4);
-    objc_storeStrong(&v18->_service, a5);
-    objc_storeStrong(&v18->_serviceController, a6);
+    v17->_keyType = type;
+    objc_storeStrong(&v17->_keyDiversifier, diversifier);
+    objc_storeStrong(&v18->_service, service);
+    objc_storeStrong(&v18->_serviceController, controller);
     v18->_keyIndex = [(IDSSigningEncrypter *)v18 _retrieveKeyIndex];
-    objc_storeStrong(&v18->_fullDeviceIdentitySigner, a7);
+    objc_storeStrong(&v18->_fullDeviceIdentitySigner, signer);
   }
 
   return v18;
 }
 
-- (void)batchSignDatas:(id)a3 withType:(int64_t)a4 onQueue:(id)a5 withCompletion:(id)a6
+- (void)batchSignDatas:(id)datas withType:(int64_t)type onQueue:(id)queue withCompletion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1003D4E88;
   v11[3] = &unk_100BDA5D0;
   v11[4] = self;
-  v12 = a3;
-  v13 = a6;
-  v14 = a4;
-  v9 = v13;
-  v10 = v12;
-  [a5 performAsyncBlock:v11];
+  datasCopy = datas;
+  completionCopy = completion;
+  typeCopy = type;
+  v9 = completionCopy;
+  v10 = datasCopy;
+  [queue performAsyncBlock:v11];
 }
 
-- (void)signData:(id)a3 withType:(int64_t)a4 onQueue:(id)a5 withCompletion:(id)a6
+- (void)signData:(id)data withType:(int64_t)type onQueue:(id)queue withCompletion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1003D507C;
   v11[3] = &unk_100BDA5D0;
   v11[4] = self;
-  v12 = a3;
-  v13 = a6;
-  v14 = a4;
-  v9 = v13;
-  v10 = v12;
-  [a5 performAsyncBlock:v11];
+  dataCopy = data;
+  completionCopy = completion;
+  typeCopy = type;
+  v9 = completionCopy;
+  v10 = dataCopy;
+  [queue performAsyncBlock:v11];
 }
 
-- (id)batchSignDatas:(id)a3 withType:(int64_t)a4 onQueue:(id)a5 error:(id *)a6
+- (id)batchSignDatas:(id)datas withType:(int64_t)type onQueue:(id)queue error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  datasCopy = datas;
+  queueCopy = queue;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -79,11 +79,11 @@
   v15[3] = &unk_100BDA5F8;
   v17 = &v20;
   v15[4] = self;
-  v12 = v10;
+  v12 = datasCopy;
   v16 = v12;
-  v18 = a4;
-  v19 = a6;
-  [v11 performSyncBlock:v15];
+  typeCopy = type;
+  errorCopy = error;
+  [queueCopy performSyncBlock:v15];
   v13 = v21[5];
 
   _Block_object_dispose(&v20, 8);
@@ -91,10 +91,10 @@
   return v13;
 }
 
-- (id)signData:(id)a3 withType:(int64_t)a4 onQueue:(id)a5 error:(id *)a6
+- (id)signData:(id)data withType:(int64_t)type onQueue:(id)queue error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  dataCopy = data;
+  queueCopy = queue;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -113,17 +113,17 @@
   v16[3] = &unk_100BDA620;
   v18 = &v27;
   v16[4] = self;
-  v12 = v10;
+  v12 = dataCopy;
   v19 = &v21;
-  v20 = a4;
+  typeCopy = type;
   v17 = v12;
-  [v11 performSyncBlock:v16];
-  if (a6)
+  [queueCopy performSyncBlock:v16];
+  if (error)
   {
     v13 = v22[5];
     if (v13)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -142,42 +142,42 @@
     return 0;
   }
 
-  v3 = [(IDSSigningEncrypter *)self serviceController];
-  v4 = [(IDSSigningEncrypter *)self service];
-  v5 = [v3 serviceWithIdentifier:v4];
-  v6 = [v5 applicationKeyIndex];
+  serviceController = [(IDSSigningEncrypter *)self serviceController];
+  service = [(IDSSigningEncrypter *)self service];
+  v5 = [serviceController serviceWithIdentifier:service];
+  applicationKeyIndex = [v5 applicationKeyIndex];
 
-  return v6;
+  return applicationKeyIndex;
 }
 
-- (id)_signData:(id)a3 withType:(int64_t)a4 error:(id *)a5
+- (id)_signData:(id)data withType:(int64_t)type error:(id *)error
 {
-  v8 = a3;
-  v9 = [(IDSSigningEncrypter *)self keyType];
-  if (v9 == 1)
+  dataCopy = data;
+  keyType = [(IDSSigningEncrypter *)self keyType];
+  if (keyType == 1)
   {
     if ([(IDSSigningEncrypter *)self keyIndex])
     {
-      v12 = [(IDSSigningEncrypter *)self fullDeviceIdentitySigner];
-      v13 = [(IDSSigningEncrypter *)self keyIndex];
-      v14 = [(IDSSigningEncrypter *)self keyDiversifier];
-      v11 = [v12 signData:v8 usingApplicationKeyIndex:v13 diversifier:v14 error:a5];
+      fullDeviceIdentitySigner = [(IDSSigningEncrypter *)self fullDeviceIdentitySigner];
+      keyIndex = [(IDSSigningEncrypter *)self keyIndex];
+      keyDiversifier = [(IDSSigningEncrypter *)self keyDiversifier];
+      v11 = [fullDeviceIdentitySigner signData:dataCopy usingApplicationKeyIndex:keyIndex diversifier:keyDiversifier error:error];
 
       goto LABEL_9;
     }
 
-    if (a5)
+    if (error)
     {
       [NSError errorWithDomain:IDSSigningErrorDomain code:5 userInfo:0];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_9;
     }
   }
 
-  else if (!v9)
+  else if (!keyType)
   {
-    v10 = [(IDSSigningEncrypter *)self fullDeviceIdentitySigner];
-    v11 = [v10 signData:v8 withSignatureType:a4 error:a5];
+    fullDeviceIdentitySigner2 = [(IDSSigningEncrypter *)self fullDeviceIdentitySigner];
+    v11 = [fullDeviceIdentitySigner2 signData:dataCopy withSignatureType:type error:error];
 
     goto LABEL_9;
   }

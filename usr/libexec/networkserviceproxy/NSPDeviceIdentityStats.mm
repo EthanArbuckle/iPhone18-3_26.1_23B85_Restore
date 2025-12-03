@@ -10,8 +10,8 @@
   v4 = [NSNumber numberWithBool:[(NSPDeviceIdentityStats *)self success]];
   [v3 setObject:v4 forKeyedSubscript:@"Success"];
 
-  v5 = [(NSPDeviceIdentityStats *)self errorDomain];
-  [v3 setObject:v5 forKeyedSubscript:@"ErrorDomain"];
+  errorDomain = [(NSPDeviceIdentityStats *)self errorDomain];
+  [v3 setObject:errorDomain forKeyedSubscript:@"ErrorDomain"];
 
   v6 = [NSNumber numberWithInteger:[(NSPDeviceIdentityStats *)self errorCode]];
   [v3 setObject:v6 forKeyedSubscript:@"ErrorCode"];

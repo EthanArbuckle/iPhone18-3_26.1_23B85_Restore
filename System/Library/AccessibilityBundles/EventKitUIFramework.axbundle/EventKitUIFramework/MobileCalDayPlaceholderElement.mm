@@ -6,8 +6,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(MobileCalDayPlaceholderElement *)self _accessibilityParentView];
-  v3 = [v2 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+  _accessibilityParentView = [(MobileCalDayPlaceholderElement *)self _accessibilityParentView];
+  v3 = [_accessibilityParentView _accessibilityViewAncestorIsKindOf:objc_opt_class()];
   [v3 _accessibilityContentFrame];
   v5 = v4;
   v7 = v6;

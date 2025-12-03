@@ -1,8 +1,8 @@
 @interface PUIFitnessPlusAnalyticsConsentCoordinator
 - (BOOL)fetchAnalyticsConsent;
 - (PUIFitnessPlusAnalyticsConsentCoordinator)init;
-- (void)fetchSubscriptionStatusWithCompletion:(id)a3;
-- (void)setAnalyticsConsent:(BOOL)a3 completion:(id)a4;
+- (void)fetchSubscriptionStatusWithCompletion:(id)completion;
+- (void)setAnalyticsConsent:(BOOL)consent completion:(id)completion;
 @end
 
 @implementation PUIFitnessPlusAnalyticsConsentCoordinator
@@ -38,14 +38,14 @@
   return v6;
 }
 
-- (void)setAnalyticsConsent:(BOOL)a3 completion:(id)a4
+- (void)setAnalyticsConsent:(BOOL)consent completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = objc_alloc(getAMSAcknowledgePrivacyTaskClass());
   v7 = getOBPrivacyImproveFitnessPlusIdentifier();
   v8 = [v6 initWithPrivacyIdentifier:v7];
 
-  if (a3)
+  if (consent)
   {
     [v8 acknowledgePrivacy];
   }
@@ -59,9 +59,9 @@
   v11[1] = 3221225472;
   v11[2] = __76__PUIFitnessPlusAnalyticsConsentCoordinator_setAnalyticsConsent_completion___block_invoke;
   v11[3] = &unk_279BA0F58;
-  v13 = a3;
-  v12 = v5;
-  v10 = v5;
+  consentCopy = consent;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v9 addFinishBlock:v11];
 }
 
@@ -97,9 +97,9 @@ void __76__PUIFitnessPlusAnalyticsConsentCoordinator_setAnalyticsConsent_complet
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSubscriptionStatusWithCompletion:(id)a3
+- (void)fetchSubscriptionStatusWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -118,14 +118,14 @@ void __76__PUIFitnessPlusAnalyticsConsentCoordinator_setAnalyticsConsent_complet
 
   v5 = v4;
   _Block_object_dispose(&v11, 8);
-  v6 = [v4 sharedInstance];
+  sharedInstance = [v4 sharedInstance];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __83__PUIFitnessPlusAnalyticsConsentCoordinator_fetchSubscriptionStatusWithCompletion___block_invoke;
   v8[3] = &unk_279BA0F80;
-  v9 = v3;
-  v7 = v3;
-  [v6 getSubscriptionEntitlementsForSegment:2 ignoreCaches:0 requestingBundleId:@"com.apple.Preferences" withCacheInfoResultHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [sharedInstance getSubscriptionEntitlementsForSegment:2 ignoreCaches:0 requestingBundleId:@"com.apple.Preferences" withCacheInfoResultHandler:v8];
 }
 
 void __83__PUIFitnessPlusAnalyticsConsentCoordinator_fetchSubscriptionStatusWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, int a4, void *a5)

@@ -1,26 +1,26 @@
 @interface CRLLogCatThreadSafeMutableSet
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (CRLLogCatThreadSafeMutableSet)init;
-- (CRLLogCatThreadSafeMutableSet)initWithArray:(id)a3;
+- (CRLLogCatThreadSafeMutableSet)initWithArray:(id)array;
 - (id)allObjects;
 - (id)description;
 - (id)immutableSet;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)removeObject:(id)a3;
+- (void)addObject:(id)object;
+- (void)removeObject:(id)object;
 @end
 
 @implementation CRLLogCatThreadSafeMutableSet
 
-- (CRLLogCatThreadSafeMutableSet)initWithArray:(id)a3
+- (CRLLogCatThreadSafeMutableSet)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = CRLLogCatThreadSafeMutableSet;
   v5 = [(CRLLogCatThreadSafeMutableSet *)&v12 init];
   if (v5)
   {
-    v6 = [[NSMutableSet alloc] initWithArray:v4];
+    v6 = [[NSMutableSet alloc] initWithArray:arrayCopy];
     objects = v5->_objects;
     v5->_objects = v6;
 
@@ -41,9 +41,9 @@
   return v4;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -53,10 +53,10 @@
   block[1] = 3221225472;
   block[2] = sub_100015B20;
   block[3] = &unk_1000A7108;
-  v9 = v4;
+  v9 = objectCopy;
   v10 = &v11;
   block[4] = self;
-  v6 = v4;
+  v6 = objectCopy;
   dispatch_sync(logCatQueue, block);
   LOBYTE(logCatQueue) = *(v12 + 24);
 
@@ -127,31 +127,31 @@
   return v3;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   logCatQueue = self->_logCatQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100015F74;
   v7[3] = &unk_1000A7158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(logCatQueue, v7);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   logCatQueue = self->_logCatQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100016018;
   v7[3] = &unk_1000A7158;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = objectCopy;
+  v6 = objectCopy;
   dispatch_async(logCatQueue, v7);
 }
 

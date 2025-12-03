@@ -1,31 +1,31 @@
 @interface HPdetector_SmartCam_B238Input
-- (HPdetector_SmartCam_B238Input)initWithImageDescriptors:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (HPdetector_SmartCam_B238Input)initWithImageDescriptors:(id)descriptors;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation HPdetector_SmartCam_B238Input
 
-- (HPdetector_SmartCam_B238Input)initWithImageDescriptors:(id)a3
+- (HPdetector_SmartCam_B238Input)initWithImageDescriptors:(id)descriptors
 {
-  v5 = a3;
+  descriptorsCopy = descriptors;
   v9.receiver = self;
   v9.super_class = HPdetector_SmartCam_B238Input;
   v6 = [(HPdetector_SmartCam_B238Input *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageDescriptors, a3);
+    objc_storeStrong(&v6->_imageDescriptors, descriptors);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"imageDescriptors"])
+  if ([name isEqualToString:@"imageDescriptors"])
   {
-    v4 = [(HPdetector_SmartCam_B238Input *)self imageDescriptors];
-    v5 = [MLFeatureValue featureValueWithMultiArray:v4];
+    imageDescriptors = [(HPdetector_SmartCam_B238Input *)self imageDescriptors];
+    v5 = [MLFeatureValue featureValueWithMultiArray:imageDescriptors];
   }
 
   else

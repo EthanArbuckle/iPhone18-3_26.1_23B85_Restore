@@ -1,5 +1,5 @@
 @interface CKRecordZoneID
-+ (int64_t)ic_defaultDatabaseScopeForOwnerName:(id)a3;
++ (int64_t)ic_defaultDatabaseScopeForOwnerName:(id)name;
 - (BOOL)ic_isOwnedByCurrentUser;
 - (id)ic_loggingDescription;
 - (int64_t)rd_ckDatabaseScope;
@@ -7,9 +7,9 @@
 
 @implementation CKRecordZoneID
 
-+ (int64_t)ic_defaultDatabaseScopeForOwnerName:(id)a3
++ (int64_t)ic_defaultDatabaseScopeForOwnerName:(id)name
 {
-  if ([a3 isEqualToString:CKCurrentUserDefaultName])
+  if ([name isEqualToString:CKCurrentUserDefaultName])
   {
     return 2;
   }
@@ -22,24 +22,24 @@
 
 - (id)ic_loggingDescription
 {
-  v3 = [(CKRecordZoneID *)self ownerName];
-  v4 = [v3 isEqualToString:CKCurrentUserDefaultName];
+  ownerName = [(CKRecordZoneID *)self ownerName];
+  v4 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
   if (v4)
   {
-    v5 = [(CKRecordZoneID *)self zoneName];
+    zoneName = [(CKRecordZoneID *)self zoneName];
     [(CKRecordZoneID *)self databaseScope];
-    v6 = CKDatabaseScopeString();
-    v7 = [NSString stringWithFormat:@"<%@ %@>", v5, v6];
+    zoneName2 = CKDatabaseScopeString();
+    v7 = [NSString stringWithFormat:@"<%@ %@>", zoneName, zoneName2];
   }
 
   else
   {
-    v5 = [(CKRecordZoneID *)self ownerName];
-    v6 = [(CKRecordZoneID *)self zoneName];
+    zoneName = [(CKRecordZoneID *)self ownerName];
+    zoneName2 = [(CKRecordZoneID *)self zoneName];
     [(CKRecordZoneID *)self databaseScope];
     v8 = CKDatabaseScopeString();
-    v7 = [NSString stringWithFormat:@"<%@ %@ %@>", v5, v6, v8];
+    v7 = [NSString stringWithFormat:@"<%@ %@ %@>", zoneName, zoneName2, v8];
   }
 
   return v7;
@@ -51,8 +51,8 @@
   if (!result)
   {
     v4 = objc_opt_class();
-    v5 = [(CKRecordZoneID *)self ownerName];
-    v6 = [v4 ic_defaultDatabaseScopeForOwnerName:v5];
+    ownerName = [(CKRecordZoneID *)self ownerName];
+    v6 = [v4 ic_defaultDatabaseScopeForOwnerName:ownerName];
 
     return v6;
   }
@@ -62,8 +62,8 @@
 
 - (BOOL)ic_isOwnedByCurrentUser
 {
-  v2 = [(CKRecordZoneID *)self ownerName];
-  v3 = [v2 isEqualToString:CKCurrentUserDefaultName];
+  ownerName = [(CKRecordZoneID *)self ownerName];
+  v3 = [ownerName isEqualToString:CKCurrentUserDefaultName];
 
   return v3;
 }

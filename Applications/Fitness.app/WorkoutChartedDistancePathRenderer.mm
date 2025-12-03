@@ -1,18 +1,18 @@
 @interface WorkoutChartedDistancePathRenderer
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5;
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context;
 @end
 
 @implementation WorkoutChartedDistancePathRenderer
 
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v8 = a3.var0.var1;
-  v9 = a3.var0.var0;
-  v11 = a5;
-  v12 = self;
-  sub_10028BB5C(v11, v9, v8, var0, var1, a4);
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v8 = rect.var0.var1;
+  v9 = rect.var0.var0;
+  contextCopy = context;
+  selfCopy = self;
+  sub_10028BB5C(contextCopy, v9, v8, var0, var1, scale);
 }
 
 @end

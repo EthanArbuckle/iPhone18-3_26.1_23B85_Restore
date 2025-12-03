@@ -1,24 +1,24 @@
 @interface MapsRadarScreenshotAttachmentHelper
-+ (void)generateScreenshotAttachments:(unint64_t)a3 fromWindow:(id)a4 mapView:(id)a5 withName:(id)a6 radarDraft:(id)a7 completion:(id)a8;
++ (void)generateScreenshotAttachments:(unint64_t)attachments fromWindow:(id)window mapView:(id)view withName:(id)name radarDraft:(id)draft completion:(id)completion;
 @end
 
 @implementation MapsRadarScreenshotAttachmentHelper
 
-+ (void)generateScreenshotAttachments:(unint64_t)a3 fromWindow:(id)a4 mapView:(id)a5 withName:(id)a6 radarDraft:(id)a7 completion:(id)a8
++ (void)generateScreenshotAttachments:(unint64_t)attachments fromWindow:(id)window mapView:(id)view withName:(id)name radarDraft:(id)draft completion:(id)completion
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v18)
+  windowCopy = window;
+  viewCopy = view;
+  nameCopy = name;
+  draftCopy = draft;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v14)
+    if (windowCopy)
     {
-      if (v16)
+      if (nameCopy)
       {
-        v19 = [v15 _mapLayer];
-        v35 = [v19 navCameraDebugFlags];
+        _mapLayer = [viewCopy _mapLayer];
+        navCameraDebugFlags = [_mapLayer navCameraDebugFlags];
 
         if (!qword_10195EE18)
         {
@@ -31,24 +31,24 @@
         }
 
         v22 = +[NSUUID UUID];
-        v23 = [v22 UUIDString];
-        v24 = [v23 stringByAppendingFormat:@"#%lu", qword_10195EE18];
+        uUIDString = [v22 UUIDString];
+        qword_10195EE18 = [uUIDString stringByAppendingFormat:@"#%lu", qword_10195EE18];
 
         ++qword_10195EE18;
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100C96A08;
         block[3] = &unk_10164FE68;
-        v37 = v14;
-        v38 = v24;
-        v43 = a1;
-        v44 = v35;
-        v45 = a3;
-        v39 = v15;
-        v40 = v16;
-        v41 = v17;
-        v42 = v18;
-        v25 = v24;
+        v37 = windowCopy;
+        v38 = qword_10195EE18;
+        selfCopy = self;
+        v44 = navCameraDebugFlags;
+        attachmentsCopy = attachments;
+        v39 = viewCopy;
+        v40 = nameCopy;
+        v41 = draftCopy;
+        v42 = completionCopy;
+        v25 = qword_10195EE18;
         dispatch_async(&_dispatch_main_q, block);
 
 LABEL_12:
@@ -73,7 +73,7 @@ LABEL_12:
       if (!sub_100E03634())
       {
 LABEL_24:
-        v18[2](v18);
+        completionCopy[2](completionCopy);
         goto LABEL_25;
       }
 

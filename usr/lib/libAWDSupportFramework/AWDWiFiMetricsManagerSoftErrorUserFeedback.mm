@@ -1,15 +1,15 @@
 @interface AWDWiFiMetricsManagerSoftErrorUserFeedback
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)softErrorInstanceCountersAtIndex:(unint64_t)a3;
-- (int)softErrorUserConfirmationCountersAtIndex:(unint64_t)a3;
+- (int)softErrorInstanceCountersAtIndex:(unint64_t)index;
+- (int)softErrorUserConfirmationCountersAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerSoftErrorUserFeedback
@@ -23,28 +23,28 @@
   [(AWDWiFiMetricsManagerSoftErrorUserFeedback *)&v3 dealloc];
 }
 
-- (int)softErrorInstanceCountersAtIndex:(unint64_t)a3
+- (int)softErrorInstanceCountersAtIndex:(unint64_t)index
 {
   p_softErrorInstanceCounters = &self->_softErrorInstanceCounters;
   count = self->_softErrorInstanceCounters.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_softErrorInstanceCounters->list[a3];
+  return p_softErrorInstanceCounters->list[index];
 }
 
-- (int)softErrorUserConfirmationCountersAtIndex:(unint64_t)a3
+- (int)softErrorUserConfirmationCountersAtIndex:(unint64_t)index
 {
   p_softErrorUserConfirmationCounters = &self->_softErrorUserConfirmationCounters;
   count = self->_softErrorUserConfirmationCounters.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_softErrorUserConfirmationCounters->list[a3];
+  return p_softErrorUserConfirmationCounters->list[index];
 }
 
 - (id)description
@@ -56,18 +56,18 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"softErrorInstanceCounters"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"softErrorUserConfirmationCounters"];
-  return v3;
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"softErrorInstanceCounters"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"softErrorUserConfirmationCounters"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -103,46 +103,46 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 7) = self->_timestamp;
-    *(a3 + 64) |= 1u;
+    *(to + 7) = self->_timestamp;
+    *(to + 64) |= 1u;
   }
 
   if ([(AWDWiFiMetricsManagerSoftErrorUserFeedback *)self softErrorInstanceCountersCount])
   {
-    [a3 clearSoftErrorInstanceCounters];
-    v5 = [(AWDWiFiMetricsManagerSoftErrorUserFeedback *)self softErrorInstanceCountersCount];
-    if (v5)
+    [to clearSoftErrorInstanceCounters];
+    softErrorInstanceCountersCount = [(AWDWiFiMetricsManagerSoftErrorUserFeedback *)self softErrorInstanceCountersCount];
+    if (softErrorInstanceCountersCount)
     {
-      v6 = v5;
+      v6 = softErrorInstanceCountersCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addSoftErrorInstanceCounters:{-[AWDWiFiMetricsManagerSoftErrorUserFeedback softErrorInstanceCountersAtIndex:](self, "softErrorInstanceCountersAtIndex:", i)}];
+        [to addSoftErrorInstanceCounters:{-[AWDWiFiMetricsManagerSoftErrorUserFeedback softErrorInstanceCountersAtIndex:](self, "softErrorInstanceCountersAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricsManagerSoftErrorUserFeedback *)self softErrorUserConfirmationCountersCount])
   {
-    [a3 clearSoftErrorUserConfirmationCounters];
-    v8 = [(AWDWiFiMetricsManagerSoftErrorUserFeedback *)self softErrorUserConfirmationCountersCount];
-    if (v8)
+    [to clearSoftErrorUserConfirmationCounters];
+    softErrorUserConfirmationCountersCount = [(AWDWiFiMetricsManagerSoftErrorUserFeedback *)self softErrorUserConfirmationCountersCount];
+    if (softErrorUserConfirmationCountersCount)
     {
-      v9 = v8;
+      v9 = softErrorUserConfirmationCountersCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addSoftErrorUserConfirmationCounters:{-[AWDWiFiMetricsManagerSoftErrorUserFeedback softErrorUserConfirmationCountersAtIndex:](self, "softErrorUserConfirmationCountersAtIndex:", j)}];
+        [to addSoftErrorUserConfirmationCounters:{-[AWDWiFiMetricsManagerSoftErrorUserFeedback softErrorUserConfirmationCountersAtIndex:](self, "softErrorUserConfirmationCountersAtIndex:", j)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -155,23 +155,23 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 64);
+  v5 = *(equal + 64);
   if (*&self->_has)
   {
-    if ((*(a3 + 64) & 1) == 0 || self->_timestamp != *(a3 + 7))
+    if ((*(equal + 64) & 1) == 0 || self->_timestamp != *(equal + 7))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 64))
+  else if (*(equal + 64))
   {
     return 0;
   }
@@ -200,31 +200,31 @@
   return v3 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 64))
+  if (*(from + 64))
   {
-    self->_timestamp = *(a3 + 7);
+    self->_timestamp = *(from + 7);
     *&self->_has |= 1u;
   }
 
-  v5 = [a3 softErrorInstanceCountersCount];
-  if (v5)
+  softErrorInstanceCountersCount = [from softErrorInstanceCountersCount];
+  if (softErrorInstanceCountersCount)
   {
-    v6 = v5;
+    v6 = softErrorInstanceCountersCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDWiFiMetricsManagerSoftErrorUserFeedback addSoftErrorInstanceCounters:](self, "addSoftErrorInstanceCounters:", [a3 softErrorInstanceCountersAtIndex:i]);
+      -[AWDWiFiMetricsManagerSoftErrorUserFeedback addSoftErrorInstanceCounters:](self, "addSoftErrorInstanceCounters:", [from softErrorInstanceCountersAtIndex:i]);
     }
   }
 
-  v8 = [a3 softErrorUserConfirmationCountersCount];
-  if (v8)
+  softErrorUserConfirmationCountersCount = [from softErrorUserConfirmationCountersCount];
+  if (softErrorUserConfirmationCountersCount)
   {
-    v9 = v8;
+    v9 = softErrorUserConfirmationCountersCount;
     for (j = 0; j != v9; ++j)
     {
-      -[AWDWiFiMetricsManagerSoftErrorUserFeedback addSoftErrorUserConfirmationCounters:](self, "addSoftErrorUserConfirmationCounters:", [a3 softErrorUserConfirmationCountersAtIndex:j]);
+      -[AWDWiFiMetricsManagerSoftErrorUserFeedback addSoftErrorUserConfirmationCounters:](self, "addSoftErrorUserConfirmationCounters:", [from softErrorUserConfirmationCountersAtIndex:j]);
     }
   }
 }

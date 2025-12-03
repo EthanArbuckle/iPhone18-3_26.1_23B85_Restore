@@ -1,57 +1,57 @@
 @interface _TUIElementSmartSectionBuilder
-- (BOOL)supportAdornmentWithRole:(unint64_t)a3 kind:(unint64_t)a4;
-- (void)addModel:(id)a3;
-- (void)finalizeModelsWithParent:(id)a3;
-- (void)finalizeModelsWithParent:(id)a3 context:(id)a4;
+- (BOOL)supportAdornmentWithRole:(unint64_t)role kind:(unint64_t)kind;
+- (void)addModel:(id)model;
+- (void)finalizeModelsWithParent:(id)parent;
+- (void)finalizeModelsWithParent:(id)parent context:(id)context;
 @end
 
 @implementation _TUIElementSmartSectionBuilder
 
-- (void)addModel:(id)a3
+- (void)addModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   models = self->_models;
-  v8 = v4;
+  v8 = modelCopy;
   if (!models)
   {
     v6 = objc_opt_new();
     v7 = self->_models;
     self->_models = v6;
 
-    v4 = v8;
+    modelCopy = v8;
     models = self->_models;
   }
 
-  [(NSMutableArray *)models addObject:v4];
+  [(NSMutableArray *)models addObject:modelCopy];
 }
 
-- (BOOL)supportAdornmentWithRole:(unint64_t)a3 kind:(unint64_t)a4
+- (BOOL)supportAdornmentWithRole:(unint64_t)role kind:(unint64_t)kind
 {
-  if (a4)
+  if (kind)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = a3 - 3 >= 2;
+    v4 = role - 3 >= 2;
   }
 
   return !v4;
 }
 
-- (void)finalizeModelsWithParent:(id)a3 context:(id)a4
+- (void)finalizeModelsWithParent:(id)parent context:(id)context
 {
-  v5 = a3;
-  v6 = [(_TUIElementSmartSectionBuilder *)self finalizeModels];
-  [v5 updateModelChildren:v6];
+  parentCopy = parent;
+  finalizeModels = [(_TUIElementSmartSectionBuilder *)self finalizeModels];
+  [parentCopy updateModelChildren:finalizeModels];
 }
 
-- (void)finalizeModelsWithParent:(id)a3
+- (void)finalizeModelsWithParent:(id)parent
 {
-  v4 = a3;
-  v5 = [(_TUIElementSmartSectionBuilder *)self finalizeModels];
-  [v4 updateModelChildren:v5];
+  parentCopy = parent;
+  finalizeModels = [(_TUIElementSmartSectionBuilder *)self finalizeModels];
+  [parentCopy updateModelChildren:finalizeModels];
 }
 
 @end

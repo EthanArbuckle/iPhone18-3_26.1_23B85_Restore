@@ -1,14 +1,14 @@
 @interface PLDuetServiceWithAccounting
-+ (id)mapBundleID:(id)a3;
++ (id)mapBundleID:(id)d;
 - (PLDuetServiceWithAccounting)init;
 - (id)energyResponse;
-- (id)eventTransitionsWithEvents:(id)a3;
-- (void)accumulateWithLastCompletedDate:(id)a3 withNow:(id)a4;
-- (void)accumulateWithLastCompletedDate:(id)a3 withNow:(id)a4 withQualificationID:(int)a5;
-- (void)createQualificationEventsWithEventTransitions:(id)a3 withQualificationID:(int)a4;
-- (void)didReceiveEventWithPayload:(id)a3;
+- (id)eventTransitionsWithEvents:(id)events;
+- (void)accumulateWithLastCompletedDate:(id)date withNow:(id)now;
+- (void)accumulateWithLastCompletedDate:(id)date withNow:(id)now withQualificationID:(int)d;
+- (void)createQualificationEventsWithEventTransitions:(id)transitions withQualificationID:(int)d;
+- (void)didReceiveEventWithPayload:(id)payload;
 - (void)energyResponse;
-- (void)initOperatorDependancies:(id)a3;
+- (void)initOperatorDependancies:(id)dependancies;
 @end
 
 @implementation PLDuetServiceWithAccounting
@@ -17,7 +17,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -27,31 +27,31 @@
     v4 = [(PLDuetServiceWithAccounting *)&v6 init];
     [(PLDuetServiceImpl *)v4 setDuetService:0];
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)initOperatorDependancies:(id)a3
+- (void)initOperatorDependancies:(id)dependancies
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dependanciesCopy = dependancies;
   if (!+[PLUtilities isPowerlogHelperd])
   {
     v5 = +[PLUtilities isPerfPowerMetricd];
-    if (v4)
+    if (dependanciesCopy)
     {
       if (!v5)
       {
-        [(PLDuetServiceImpl *)self setDuetService:v4];
+        [(PLDuetServiceImpl *)self setDuetService:dependanciesCopy];
         v6 = objc_alloc(MEMORY[0x277D3F270]);
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __56__PLDuetServiceWithAccounting_initOperatorDependancies___block_invoke;
         v21[3] = &unk_279A5BCB8;
         v21[4] = self;
-        v7 = [v6 initWithOperator:v4 withRegistration:&unk_287148A68 withBlock:v21];
+        v7 = [v6 initWithOperator:dependanciesCopy withRegistration:&unk_287148A68 withBlock:v21];
         [(PLDuetServiceImpl *)self setEventListener:v7];
 
         v8 = objc_alloc(MEMORY[0x277D3F278]);
@@ -60,27 +60,27 @@
         v20[2] = __56__PLDuetServiceWithAccounting_initOperatorDependancies___block_invoke_2;
         v20[3] = &unk_279A5BEC8;
         v20[4] = self;
-        v9 = [v8 initWithOperator:v4 withRegistration:&unk_287148A90 withBlock:v20];
+        v9 = [v8 initWithOperator:dependanciesCopy withRegistration:&unk_287148A90 withBlock:v20];
         [(PLDuetServiceImpl *)self setEnergyResponder:v9];
 
         v10 = [MEMORY[0x277D3F138] timeCriterionWithInterval:21600.0];
         v22[0] = v10;
-        v11 = [MEMORY[0x277D3F130] pluggedInCriterion];
-        v22[1] = v11;
-        v12 = [MEMORY[0x277D3F130] displayOffCriterion];
-        v22[2] = v12;
+        pluggedInCriterion = [MEMORY[0x277D3F130] pluggedInCriterion];
+        v22[1] = pluggedInCriterion;
+        displayOffCriterion = [MEMORY[0x277D3F130] displayOffCriterion];
+        v22[2] = displayOffCriterion;
         v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
 
-        v14 = [MEMORY[0x277D3F140] sharedInstance];
-        v15 = [v4 workQueue];
+        mEMORY[0x277D3F140] = [MEMORY[0x277D3F140] sharedInstance];
+        workQueue = [dependanciesCopy workQueue];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __56__PLDuetServiceWithAccounting_initOperatorDependancies___block_invoke_3;
         v19[3] = &unk_279A5D448;
         v19[4] = self;
-        [v14 scheduleActivityWithIdentifier:@"PLDuetService_duetEnergyAccumulator" withCriteria:v13 withMustRunCriterion:0 withQueue:v15 withInterruptBlock:0 withActivityBlock:v19];
+        [mEMORY[0x277D3F140] scheduleActivityWithIdentifier:@"PLDuetService_duetEnergyAccumulator" withCriteria:v13 withMustRunCriterion:0 withQueue:workQueue withInterruptBlock:0 withActivityBlock:v19];
 
-        if (([v4 isDebugEnabled] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F180], "BOOLForKey:ifNotSet:", @"PLDuetService_test", 0))
+        if (([dependanciesCopy isDebugEnabled] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F180], "BOOLForKey:ifNotSet:", @"PLDuetService_test", 0))
         {
           DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
           CFNotificationCenterAddObserver(DarwinNotifyCenter, self, testLogEvents, @"com.apple.powerlogd.PLDuetService.testLogEvents", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -94,10 +94,10 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveEventWithPayload:(id)a3
+- (void)didReceiveEventWithPayload:(id)payload
 {
   v150 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -113,12 +113,12 @@
 
     if (didReceiveEventWithPayload__classDebugEnabled == 1)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"payload=%@", v4];
+      payloadCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"payload=%@", payloadCopy];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceWithAccounting didReceiveEventWithPayload:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:194];
+      [v7 logMessage:payloadCopy fromFile:lastPathComponent fromFunction:v10 fromLineNumber:194];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -135,7 +135,7 @@
     _os_log_impl(&dword_25EE51000, v12, OS_LOG_TYPE_DEFAULT, "┏ PLDuetService didReceiveEventWithPayload start", buf, 2u);
   }
 
-  if (!v4 || ([v4 objectForKeyedSubscript:@"events"], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  if (!payloadCopy || ([payloadCopy objectForKeyedSubscript:@"events"], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
     v108 = PLLogCommon();
     if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
@@ -147,18 +147,18 @@
   }
 
   v14 = objc_autoreleasePoolPush();
-  v118 = [MEMORY[0x277CBEB18] array];
-  v116 = [MEMORY[0x277CBEB18] array];
-  v15 = [(PLDuetServiceImpl *)self duetService];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  duetService = [(PLDuetServiceImpl *)self duetService];
 
   v16 = PLLogCommon();
   v17 = v16;
-  if (v15)
+  if (duetService)
   {
     context = v14;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v4 objectForKeyedSubscript:@"events"];
+      v18 = [payloadCopy objectForKeyedSubscript:@"events"];
       v19 = [v18 count];
       *buf = 67109120;
       LODWORD(v143) = v19;
@@ -169,14 +169,14 @@
     v140 = 0u;
     v137 = 0u;
     v138 = 0u;
-    v111 = v4;
-    obj = [v4 objectForKeyedSubscript:@"events"];
+    v111 = payloadCopy;
+    obj = [payloadCopy objectForKeyedSubscript:@"events"];
     v114 = [obj countByEnumeratingWithState:&v137 objects:v149 count:16];
     if (v114)
     {
       v113 = *v138;
       v117 = *MEMORY[0x277D3F5D8];
-      v122 = self;
+      selfCopy = self;
       do
       {
         v20 = 0;
@@ -212,12 +212,12 @@
             _os_log_debug_impl(&dword_25EE51000, v29, OS_LOG_TYPE_DEBUG, "┃ ┃ ┏ PLDuetService didReceiveEventWithPayload processing event: %@", buf, 0xCu);
           }
 
-          v30 = [v22 childBundleIDToWeight];
-          if (v30 && (v31 = v30, [v22 childBundleIDToWeight], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "count"), v32, v31, v33))
+          childBundleIDToWeight = [v22 childBundleIDToWeight];
+          if (childBundleIDToWeight && (v31 = childBundleIDToWeight, [v22 childBundleIDToWeight], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "count"), v32, v31, v33))
           {
             v120 = v21;
-            v34 = [v22 bundleID];
-            v35 = [v34 isEqualToString:@"cloudphotod"];
+            bundleID = [v22 bundleID];
+            v35 = [bundleID isEqualToString:@"cloudphotod"];
 
             if (v35)
             {
@@ -229,13 +229,13 @@
               v36 = 0;
             }
 
-            v37 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
             v133 = 0u;
             v134 = 0u;
             v135 = 0u;
             v136 = 0u;
-            v38 = [v22 childBundleIDToWeight];
-            v39 = [v38 countByEnumeratingWithState:&v133 objects:v148 count:16];
+            childBundleIDToWeight2 = [v22 childBundleIDToWeight];
+            v39 = [childBundleIDToWeight2 countByEnumeratingWithState:&v133 objects:v148 count:16];
             if (v39)
             {
               v40 = v39;
@@ -246,25 +246,25 @@
                 {
                   if (*v134 != v41)
                   {
-                    objc_enumerationMutation(v38);
+                    objc_enumerationMutation(childBundleIDToWeight2);
                   }
 
                   v43 = *(*(&v133 + 1) + 8 * i);
-                  v44 = [v22 childBundleIDToWeight];
-                  v45 = [v44 objectForKeyedSubscript:v43];
+                  childBundleIDToWeight3 = [v22 childBundleIDToWeight];
+                  v45 = [childBundleIDToWeight3 objectForKeyedSubscript:v43];
                   v46 = [objc_opt_class() mapBundleID:v43];
-                  [v37 setObject:v45 forKeyedSubscript:v46];
+                  [dictionary setObject:v45 forKeyedSubscript:v46];
                 }
 
-                v40 = [v38 countByEnumeratingWithState:&v133 objects:v148 count:16];
+                v40 = [childBundleIDToWeight2 countByEnumeratingWithState:&v133 objects:v148 count:16];
               }
 
               while (v40);
             }
 
-            [v22 setChildBundleIDToWeight:v37];
+            [v22 setChildBundleIDToWeight:dictionary];
             v21 = v120;
-            self = v122;
+            self = selfCopy;
           }
 
           else
@@ -272,7 +272,7 @@
             v36 = 0;
           }
 
-          v121 = [MEMORY[0x277CBEB18] array];
+          array3 = [MEMORY[0x277CBEB18] array];
           v47 = PLLogCommon();
           if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
           {
@@ -305,14 +305,14 @@
                 v54 = *(*(&v129 + 1) + 8 * j);
                 v55 = objc_opt_new();
                 v56 = [v54 objectForKeyedSubscript:@"startDate"];
-                v57 = [v56 convertFromSystemToMonotonic];
-                [v55 setStartDate:v57];
+                convertFromSystemToMonotonic = [v56 convertFromSystemToMonotonic];
+                [v55 setStartDate:convertFromSystemToMonotonic];
 
                 v58 = [v54 objectForKeyedSubscript:@"endDate"];
-                v59 = [v58 convertFromSystemToMonotonic];
-                [v55 setEndDate:v59];
+                convertFromSystemToMonotonic2 = [v58 convertFromSystemToMonotonic];
+                [v55 setEndDate:convertFromSystemToMonotonic2];
 
-                [v121 addObject:v55];
+                [array3 addObject:v55];
                 v60 = PLLogCommon();
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
                 {
@@ -323,28 +323,28 @@
 
                 if (v36)
                 {
-                  v61 = [MEMORY[0x277D3F0C0] sharedInstance];
-                  v62 = [v22 childBundleIDToWeight];
-                  v63 = [v55 startDate];
-                  v64 = [v55 endDate];
-                  [v61 createDistributionEventIntervalWithDistributionID:v36 withChildNodeNameToWeight:v62 withStartDate:v63 withEndDate:v64];
+                  mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+                  childBundleIDToWeight4 = [v22 childBundleIDToWeight];
+                  startDate = [v55 startDate];
+                  endDate = [v55 endDate];
+                  [mEMORY[0x277D3F0C0] createDistributionEventIntervalWithDistributionID:v36 withChildNodeNameToWeight:childBundleIDToWeight4 withStartDate:startDate withEndDate:endDate];
 
-                  self = v122;
+                  self = selfCopy;
                 }
 
-                v65 = [(PLDuetServiceImpl *)self duetService];
-                if (v65)
+                duetService2 = [(PLDuetServiceImpl *)self duetService];
+                if (duetService2)
                 {
-                  v66 = v65;
-                  v67 = [(PLDuetServiceImpl *)self duetService];
-                  v68 = [v67 isDebugEnabled];
+                  v66 = duetService2;
+                  duetService3 = [(PLDuetServiceImpl *)self duetService];
+                  isDebugEnabled = [duetService3 isDebugEnabled];
 
-                  if (v68)
+                  if (isDebugEnabled)
                   {
                     v69 = [(PLOperator *)PLDuetService entryKeyForType:v117 andName:@"DuetEvents"];
                     v70 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v69];
-                    v71 = [v22 bundleID];
-                    if (v71)
+                    bundleID2 = [v22 bundleID];
+                    if (bundleID2)
                     {
                       [v22 bundleID];
                     }
@@ -359,21 +359,21 @@
                     v73 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v22, "updateType")}];
                     [v70 setObject:v73 forKeyedSubscript:@"UpdateType"];
 
-                    v74 = [v55 startDate];
-                    [v70 setObject:v74 forKeyedSubscript:@"StartDate"];
+                    startDate2 = [v55 startDate];
+                    [v70 setObject:startDate2 forKeyedSubscript:@"StartDate"];
 
-                    v75 = [v55 endDate];
-                    [v70 setObject:v75 forKeyedSubscript:@"EndDate"];
+                    endDate2 = [v55 endDate];
+                    [v70 setObject:endDate2 forKeyedSubscript:@"EndDate"];
 
-                    v76 = [(PLDuetServiceImpl *)v122 duetService];
+                    duetService4 = [(PLDuetServiceImpl *)selfCopy duetService];
 
-                    if (v76)
+                    if (duetService4)
                     {
-                      v77 = [(PLDuetServiceImpl *)v122 duetService];
-                      [v77 logEntry:v70];
+                      duetService5 = [(PLDuetServiceImpl *)selfCopy duetService];
+                      [duetService5 logEntry:v70];
                     }
 
-                    self = v122;
+                    self = selfCopy;
                   }
                 }
               }
@@ -391,20 +391,20 @@
             _os_log_impl(&dword_25EE51000, v78, OS_LOG_TYPE_INFO, "┃ ┃ ┃ ┗ PLDuetService didReceiveEventWithPayload finished processing intervals", buf, 2u);
           }
 
-          [v22 setEventIntervals:v121];
-          v79 = [v22 updateType];
-          v80 = v118;
-          if (v79 == 1 || (v81 = [v22 updateType], v80 = v116, v81 == 2))
+          [v22 setEventIntervals:array3];
+          updateType = [v22 updateType];
+          v80 = array;
+          if (updateType == 1 || (v81 = [v22 updateType], v80 = array2, v81 == 2))
           {
             [v80 addObject:v22];
           }
 
-          v82 = [v22 childBundleIDToWeight];
-          if (v82)
+          childBundleIDToWeight5 = [v22 childBundleIDToWeight];
+          if (childBundleIDToWeight5)
           {
-            v83 = v82;
-            v84 = [v22 childBundleIDToWeight];
-            v85 = [v84 count];
+            v83 = childBundleIDToWeight5;
+            childBundleIDToWeight6 = [v22 childBundleIDToWeight];
+            v85 = [childBundleIDToWeight6 count];
 
             if (v85)
             {
@@ -412,8 +412,8 @@
               v128 = 0u;
               v125 = 0u;
               v126 = 0u;
-              v86 = [v22 childBundleIDToWeight];
-              v87 = [v86 countByEnumeratingWithState:&v125 objects:v146 count:16];
+              childBundleIDToWeight7 = [v22 childBundleIDToWeight];
+              v87 = [childBundleIDToWeight7 countByEnumeratingWithState:&v125 objects:v146 count:16];
               if (v87)
               {
                 v88 = v87;
@@ -424,7 +424,7 @@
                   {
                     if (*v126 != v89)
                     {
-                      objc_enumerationMutation(v86);
+                      objc_enumerationMutation(childBundleIDToWeight7);
                     }
 
                     v91 = *(*(&v125 + 1) + 8 * k);
@@ -432,12 +432,12 @@
                     [v92 setBundleID:v91];
                     [v92 setProcessName:v91];
                     [v92 setUpdateType:{objc_msgSend(v22, "updateType")}];
-                    v93 = [v22 eventIntervals];
-                    [v92 setEventIntervals:v93];
+                    eventIntervals = [v22 eventIntervals];
+                    [v92 setEventIntervals:eventIntervals];
 
-                    v94 = [v92 updateType];
-                    v95 = v118;
-                    if (v94 == 1 || (v96 = [v92 updateType], v95 = v116, v96 == 2))
+                    updateType2 = [v92 updateType];
+                    v95 = array;
+                    if (updateType2 == 1 || (v96 = [v92 updateType], v95 = array2, v96 == 2))
                     {
                       [v95 addObject:v92];
                     }
@@ -451,7 +451,7 @@
                     }
                   }
 
-                  v88 = [v86 countByEnumeratingWithState:&v125 objects:v146 count:16];
+                  v88 = [childBundleIDToWeight7 countByEnumeratingWithState:&v125 objects:v146 count:16];
                 }
 
                 while (v88);
@@ -482,15 +482,15 @@
       _os_log_impl(&dword_25EE51000, v99, OS_LOG_TYPE_DEFAULT, "┃ ┗ PLDuetService didReceiveEventWithPayload processing events completed", buf, 2u);
     }
 
-    v100 = [(PLDuetServiceWithAccounting *)self eventTransitionsWithEvents:v118];
-    v101 = [(PLDuetServiceWithAccounting *)self eventTransitionsWithEvents:v116];
+    v100 = [(PLDuetServiceWithAccounting *)self eventTransitionsWithEvents:array];
+    v101 = [(PLDuetServiceWithAccounting *)self eventTransitionsWithEvents:array2];
     [(PLDuetServiceWithAccounting *)self createQualificationEventsWithEventTransitions:v100 withQualificationID:11];
     v102 = PLLogCommon();
-    v4 = v111;
+    payloadCopy = v111;
     if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
     {
       v103 = [v100 count];
-      v104 = [v118 count];
+      v104 = [array count];
       *buf = 134218240;
       v143 = v103;
       v144 = 2048;
@@ -503,7 +503,7 @@
     if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
     {
       v106 = [v101 count];
-      v107 = [v116 count];
+      v107 = [array2 count];
       *buf = 134218240;
       v143 = v106;
       v144 = 2048;
@@ -542,10 +542,10 @@ uint64_t __58__PLDuetServiceWithAccounting_didReceiveEventWithPayload___block_in
   return result;
 }
 
-- (id)eventTransitionsWithEvents:(id)a3
+- (id)eventTransitionsWithEvents:(id)events
 {
   v76 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = PLLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -553,12 +553,12 @@ uint64_t __58__PLDuetServiceWithAccounting_didReceiveEventWithPayload___block_in
     _os_log_impl(&dword_25EE51000, v4, OS_LOG_TYPE_INFO, "┃ ┏ PLDuetService eventTransitionsWithEvents start", buf, 2u);
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v58 = [obj countByEnumeratingWithState:&v67 objects:v75 count:16];
   if (v58)
   {
@@ -593,9 +593,9 @@ uint64_t __58__PLDuetServiceWithAccounting_didReceiveEventWithPayload___block_in
             v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"event=%@", v7, v55];
             v10 = MEMORY[0x277D3F178];
             v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-            v12 = [v11 lastPathComponent];
+            lastPathComponent = [v11 lastPathComponent];
             v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceWithAccounting eventTransitionsWithEvents:]"];
-            [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:321];
+            [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:321];
 
             v14 = PLLogCommon();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -615,8 +615,8 @@ uint64_t __58__PLDuetServiceWithAccounting_didReceiveEventWithPayload___block_in
           _os_log_debug_impl(&dword_25EE51000, v15, OS_LOG_TYPE_DEBUG, "┃ ┃ ┏ PLDuetService eventTransitionsWithEvents processing event: %@", buf, 0xCu);
         }
 
-        v16 = [v7 eventIntervals];
-        v17 = [v16 count];
+        eventIntervals = [v7 eventIntervals];
+        v17 = [eventIntervals count];
 
         if (v17)
         {
@@ -627,8 +627,8 @@ uint64_t __58__PLDuetServiceWithAccounting_didReceiveEventWithPayload___block_in
           do
           {
             v21 = v19;
-            v22 = [v7 eventIntervals];
-            v19 = [v22 objectAtIndex:v18];
+            eventIntervals2 = [v7 eventIntervals];
+            v19 = [eventIntervals2 objectAtIndex:v18];
 
             v23 = PLLogCommon();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -639,8 +639,8 @@ uint64_t __58__PLDuetServiceWithAccounting_didReceiveEventWithPayload___block_in
             }
 
             LODWORD(v24) = v20 + 1;
-            v25 = [v7 eventIntervals];
-            if ([v25 count] <= (v20 + 1))
+            eventIntervals3 = [v7 eventIntervals];
+            if ([eventIntervals3 count] <= (v20 + 1))
             {
 LABEL_28:
             }
@@ -650,8 +650,8 @@ LABEL_28:
               v24 = v24;
               while (1)
               {
-                v26 = [v7 eventIntervals];
-                v27 = [v26 objectAtIndex:v24];
+                eventIntervals4 = [v7 eventIntervals];
+                v27 = [eventIntervals4 objectAtIndex:v24];
                 v28 = [v19 intersects:v27];
 
                 if (!v28)
@@ -659,8 +659,8 @@ LABEL_28:
                   break;
                 }
 
-                v29 = [v7 eventIntervals];
-                v30 = [v29 objectAtIndex:v24];
+                eventIntervals5 = [v7 eventIntervals];
+                v30 = [eventIntervals5 objectAtIndex:v24];
                 v31 = [v19 joinWithInterval:v30];
 
                 v32 = PLLogCommon();
@@ -678,9 +678,9 @@ LABEL_28:
                 v20 = v24;
 
                 ++v24;
-                v25 = [v7 eventIntervals];
+                eventIntervals3 = [v7 eventIntervals];
                 v19 = v31;
-                if ([v25 count] <= v24)
+                if ([eventIntervals3 count] <= v24)
                 {
                   v19 = v31;
                   goto LABEL_28;
@@ -707,9 +707,9 @@ LABEL_28:
                 v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"eventInterval=%@", v19];
                 v35 = MEMORY[0x277D3F178];
                 v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-                v37 = [v36 lastPathComponent];
+                lastPathComponent2 = [v36 lastPathComponent];
                 v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceWithAccounting eventTransitionsWithEvents:]"];
-                [v35 logMessage:v34 fromFile:v37 fromFunction:v38 fromLineNumber:338];
+                [v35 logMessage:v34 fromFile:lastPathComponent2 fromFunction:v38 fromLineNumber:338];
 
                 v39 = PLLogCommon();
                 if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
@@ -722,14 +722,14 @@ LABEL_28:
             }
 
             v40 = objc_opt_new();
-            v41 = [v19 startDate];
-            [v40 setDate:v41];
+            startDate = [v19 startDate];
+            [v40 setDate:startDate];
 
-            v42 = [v7 bundleID];
-            [v40 setBundleID:v42];
+            bundleID = [v7 bundleID];
+            [v40 setBundleID:bundleID];
 
             [v40 setIsStart:1];
-            [v5 addObject:v40];
+            [array addObject:v40];
             v43 = PLLogCommon();
             if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
             {
@@ -739,14 +739,14 @@ LABEL_28:
             }
 
             v44 = objc_opt_new();
-            v45 = [v19 endDate];
-            [v44 setDate:v45];
+            endDate = [v19 endDate];
+            [v44 setDate:endDate];
 
-            v46 = [v7 bundleID];
-            [v44 setBundleID:v46];
+            bundleID2 = [v7 bundleID];
+            [v44 setBundleID:bundleID2];
 
             [v44 setIsStart:0];
-            [v5 addObject:v44];
+            [array addObject:v44];
             v47 = PLLogCommon();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
             {
@@ -762,8 +762,8 @@ LABEL_28:
             }
 
             v18 = v20;
-            v49 = [v7 eventIntervals];
-            v50 = [v49 count];
+            eventIntervals6 = [v7 eventIntervals];
+            v50 = [eventIntervals6 count];
           }
 
           while (v50 > v20);
@@ -787,7 +787,7 @@ LABEL_28:
     while (v58);
   }
 
-  [v5 sortUsingComparator:&__block_literal_global_20];
+  [array sortUsingComparator:&__block_literal_global_20];
   v52 = PLLogCommon();
   if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
   {
@@ -797,7 +797,7 @@ LABEL_28:
 
   v53 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
 uint64_t __58__PLDuetServiceWithAccounting_eventTransitionsWithEvents___block_invoke(uint64_t a1)
@@ -824,10 +824,10 @@ uint64_t __58__PLDuetServiceWithAccounting_eventTransitionsWithEvents___block_in
   return v7;
 }
 
-- (void)createQualificationEventsWithEventTransitions:(id)a3 withQualificationID:(int)a4
+- (void)createQualificationEventsWithEventTransitions:(id)transitions withQualificationID:(int)d
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transitionsCopy = transitions;
   v5 = PLLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -835,12 +835,12 @@ uint64_t __58__PLDuetServiceWithAccounting_eventTransitionsWithEvents___block_in
     _os_log_impl(&dword_25EE51000, v5, OS_LOG_TYPE_INFO, "┃ ┏ PLDuetService createQualificationEventsWithEventTransitions start", buf, 2u);
   }
 
-  v6 = [v4 firstObject];
+  firstObject = [transitionsCopy firstObject];
   v7 = [MEMORY[0x277CBEB58] set];
   v8 = PLLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v4 count];
+    v9 = [transitionsCopy count];
     *buf = 67109120;
     LODWORD(v62) = v9;
     _os_log_impl(&dword_25EE51000, v8, OS_LOG_TYPE_INFO, "┃ ┃ ┏ PLDuetService createQualificationEventsWithEventTransitions processing %d transitions", buf, 8u);
@@ -850,7 +850,7 @@ uint64_t __58__PLDuetServiceWithAccounting_eventTransitionsWithEvents___block_in
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v4;
+  obj = transitionsCopy;
   v10 = [obj countByEnumeratingWithState:&v57 objects:v67 count:16];
   if (v10)
   {
@@ -887,12 +887,12 @@ uint64_t __58__PLDuetServiceWithAccounting_eventTransitionsWithEvents___block_in
           {
             v17 = v11;
             v18 = v12;
-            v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"lastEventTransition=%@, eventTransition=%@", v6, v15];
+            v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"lastEventTransition=%@, eventTransition=%@", firstObject, v15];
             v20 = MEMORY[0x277D3F178];
             v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-            v22 = [v21 lastPathComponent];
+            lastPathComponent = [v21 lastPathComponent];
             v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceWithAccounting createQualificationEventsWithEventTransitions:withQualificationID:]"];
-            [v20 logMessage:v19 fromFile:v22 fromFunction:v23 fromLineNumber:375];
+            [v20 logMessage:v19 fromFile:lastPathComponent fromFunction:v23 fromLineNumber:375];
 
             v24 = PLLogCommon();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
@@ -924,33 +924,33 @@ uint64_t __58__PLDuetServiceWithAccounting_eventTransitionsWithEvents___block_in
           _os_log_debug_impl(&dword_25EE51000, v26, OS_LOG_TYPE_DEBUG, "┃ ┃ ┃ PLDuetService createQualificationEventsWithEventTransitions current eventElements:%@", buf, 0xCu);
         }
 
-        v27 = [v15 date];
-        v28 = [v6 date];
-        [v27 timeIntervalSinceDate:v28];
+        date = [v15 date];
+        date2 = [firstObject date];
+        [date timeIntervalSinceDate:date2];
         v30 = v29;
 
         if (v30 > v13)
         {
-          v31 = [MEMORY[0x277D3F0C0] sharedInstance];
-          v32 = [v7 allObjects];
-          v33 = [v6 date];
-          v34 = [v15 date];
-          [v31 createQualificationEventIntervalWithQualificationID:a4 withChildNodeNames:v32 withStartDate:v33 withEndDate:v34];
+          mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+          allObjects = [v7 allObjects];
+          date3 = [firstObject date];
+          date4 = [v15 date];
+          [mEMORY[0x277D3F0C0] createQualificationEventIntervalWithQualificationID:d withChildNodeNames:allObjects withStartDate:date3 withEndDate:date4];
 
           v35 = PLLogCommon();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
           {
-            v39 = [v6 date];
-            [v39 timeIntervalSince1970];
+            date5 = [firstObject date];
+            [date5 timeIntervalSince1970];
             v41 = v40;
-            v42 = [v15 date];
-            [v42 timeIntervalSince1970];
+            date6 = [v15 date];
+            [date6 timeIntervalSince1970];
             v44 = v43;
-            v45 = [v15 date];
-            [v6 date];
+            date7 = [v15 date];
+            [firstObject date];
             v46 = v11;
             v12 = v47 = v12;
-            [v45 timeIntervalSinceDate:v12];
+            [date7 timeIntervalSinceDate:v12];
             *buf = 134218496;
             v62 = v41;
             v63 = 2048;
@@ -966,19 +966,19 @@ uint64_t __58__PLDuetServiceWithAccounting_eventTransitionsWithEvents___block_in
 
           v36 = v15;
           v12 = (v12 + 1);
-          v6 = v36;
+          firstObject = v36;
         }
 
-        v37 = [v15 isStart];
-        v38 = [v15 bundleID];
-        if (v37)
+        isStart = [v15 isStart];
+        bundleID = [v15 bundleID];
+        if (isStart)
         {
-          [v7 addObject:v38];
+          [v7 addObject:bundleID];
         }
 
         else
         {
-          [v7 removeObject:v38];
+          [v7 removeObject:bundleID];
         }
 
         ++v14;
@@ -1031,9 +1031,9 @@ uint64_t __97__PLDuetServiceWithAccounting_createQualificationEventsWithEventTra
     _os_log_impl(&dword_25EE51000, v3, OS_LOG_TYPE_DEFAULT, "┏ PLDuetService energyResponse start", buf, 2u);
   }
 
-  v4 = [(PLDuetServiceImpl *)self duetService];
+  duetService = [(PLDuetServiceImpl *)self duetService];
 
-  if (v4)
+  if (duetService)
   {
     v5 = [(PLDuetServiceWithAccounting *)self energyResponseWithQualificationID:11];
     v6 = PLLogCommon();
@@ -1060,14 +1060,14 @@ uint64_t __97__PLDuetServiceWithAccounting_createQualificationEventsWithEventTra
     v38[0] = @"BLMEnergyForDuet";
     v38[1] = @"BLMUUIDForDuet";
     v39[0] = v11;
-    v12 = [(PLDuetServiceImpl *)self duetService];
-    v13 = [v12 storage];
-    v14 = [v13 uuid];
-    v39[1] = v14;
+    duetService2 = [(PLDuetServiceImpl *)self duetService];
+    storage = [duetService2 storage];
+    uuid = [storage uuid];
+    v39[1] = uuid;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
 
-    v16 = [MEMORY[0x277D3F0C0] sharedInstance];
-    v17 = [v16 getLastQualifiedEnergyEventDate];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    getLastQualifiedEnergyEventDate = [mEMORY[0x277D3F0C0] getLastQualifiedEnergyEventDate];
 
     v18 = PLLogCommon();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1075,9 +1075,9 @@ uint64_t __97__PLDuetServiceWithAccounting_createQualificationEventsWithEventTra
       [PLDuetServiceWithAccounting energyResponse];
     }
 
-    if (v17)
+    if (getLastQualifiedEnergyEventDate)
     {
-      v19 = [v17 convertFromMonotonicToSystem];
+      convertFromMonotonicToSystem = [getLastQualifiedEnergyEventDate convertFromMonotonicToSystem];
       v20 = PLLogCommon();
       if (!os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -1085,11 +1085,11 @@ LABEL_25:
 
         v35[0] = v11;
         v28 = [(PLDuetServiceImpl *)self duetService:@"BLMEnergyForDuet"];
-        v29 = [v28 storage];
-        v30 = [v29 uuid];
+        storage2 = [v28 storage];
+        uuid2 = [storage2 uuid];
         v34[2] = @"BLMEnergyResponseTimestamp";
-        v35[1] = v30;
-        v35[2] = v19;
+        v35[1] = uuid2;
+        v35[2] = convertFromMonotonicToSystem;
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:3];
 
         v31 = PLLogCommon();
@@ -1103,14 +1103,14 @@ LABEL_25:
       }
 
       *buf = 138412290;
-      v37 = v19;
+      v37 = convertFromMonotonicToSystem;
       v21 = "After converting to system time, energyResponseTimestamp=%@";
     }
 
     else
     {
-      v23 = [MEMORY[0x277D3F140] sharedInstance];
-      v24 = [v23 lastCompletedDateWithIdentifier:@"PLDuetService_duetEnergyAccumulator"];
+      mEMORY[0x277D3F140] = [MEMORY[0x277D3F140] sharedInstance];
+      v24 = [mEMORY[0x277D3F140] lastCompletedDateWithIdentifier:@"PLDuetService_duetEnergyAccumulator"];
       v25 = [v24 dateByAddingTimeInterval:-3600.0];
 
       v26 = PLLogCommon();
@@ -1121,19 +1121,19 @@ LABEL_25:
         _os_log_impl(&dword_25EE51000, v26, OS_LOG_TYPE_INFO, "lastAccumulatedDate=%@", buf, 0xCu);
       }
 
-      v19 = [v25 convertFromMonotonicToSystem];
+      convertFromMonotonicToSystem = [v25 convertFromMonotonicToSystem];
 
       v27 = PLLogCommon();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v37 = v19;
+        v37 = convertFromMonotonicToSystem;
         _os_log_impl(&dword_25EE51000, v27, OS_LOG_TYPE_INFO, "After converting to system time, lastAccumulatedDate=%@", buf, 0xCu);
       }
 
-      if (!v19)
+      if (!convertFromMonotonicToSystem)
       {
-        v19 = [MEMORY[0x277CBEAA8] distantPast];
+        convertFromMonotonicToSystem = [MEMORY[0x277CBEAA8] distantPast];
       }
 
       v20 = PLLogCommon();
@@ -1143,7 +1143,7 @@ LABEL_25:
       }
 
       *buf = 138412290;
-      v37 = v19;
+      v37 = convertFromMonotonicToSystem;
       v21 = "energyResponse timestamp is lastAccumulatedDate=%@";
     }
 
@@ -1193,10 +1193,10 @@ uint64_t __65__PLDuetServiceWithAccounting_energyResponseWithQualificationID___b
   return result;
 }
 
-- (void)accumulateWithLastCompletedDate:(id)a3 withNow:(id)a4
+- (void)accumulateWithLastCompletedDate:(id)date withNow:(id)now
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  nowCopy = now;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -1212,12 +1212,12 @@ uint64_t __65__PLDuetServiceWithAccounting_energyResponseWithQualificationID___b
 
     if (accumulateWithLastCompletedDate_withNow__classDebugEnabled == 1)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"lastCompletedDate=%@, now=%@", v6, v7];
+      nowCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"lastCompletedDate=%@, now=%@", dateCopy, nowCopy];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceWithAccounting accumulateWithLastCompletedDate:withNow:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:554];
+      [v10 logMessage:nowCopy fromFile:lastPathComponent fromFunction:v13 fromLineNumber:554];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1230,11 +1230,11 @@ uint64_t __65__PLDuetServiceWithAccounting_energyResponseWithQualificationID___b
   v15 = PLLogCommon();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    [PLDuetServiceWithAccounting accumulateWithLastCompletedDate:v6 withNow:v7];
+    [PLDuetServiceWithAccounting accumulateWithLastCompletedDate:dateCopy withNow:nowCopy];
   }
 
-  [(PLDuetServiceWithAccounting *)self accumulateWithLastCompletedDate:v6 withNow:v7 withQualificationID:11];
-  [(PLDuetServiceWithAccounting *)self accumulateWithLastCompletedDate:v6 withNow:v7 withQualificationID:12];
+  [(PLDuetServiceWithAccounting *)self accumulateWithLastCompletedDate:dateCopy withNow:nowCopy withQualificationID:11];
+  [(PLDuetServiceWithAccounting *)self accumulateWithLastCompletedDate:dateCopy withNow:nowCopy withQualificationID:12];
   v16 = PLLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -1249,26 +1249,26 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
   return result;
 }
 
-- (void)accumulateWithLastCompletedDate:(id)a3 withNow:(id)a4 withQualificationID:(int)a5
+- (void)accumulateWithLastCompletedDate:(id)date withNow:(id)now withQualificationID:(int)d
 {
   v124[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  nowCopy = now;
   v9 = PLLogCommon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [PLDuetServiceWithAccounting accumulateWithLastCompletedDate:withNow:withQualificationID:];
   }
 
-  v10 = [(PLDuetServiceImpl *)self duetService];
+  duetService = [(PLDuetServiceImpl *)self duetService];
 
-  if (v10)
+  if (duetService)
   {
-    v95 = self;
+    selfCopy = self;
     v11 = *MEMORY[0x277D3F5B8];
     v12 = [MEMORY[0x277D3F128] entryKeyForType:*MEMORY[0x277D3F5B8] andName:*MEMORY[0x277D3F2F0]];
-    v13 = [v7 dateByAddingTimeInterval:-3600.0];
-    if (!v13)
+    distantPast = [dateCopy dateByAddingTimeInterval:-3600.0];
+    if (!distantPast)
     {
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -1276,18 +1276,18 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
         [PLDuetServiceWithAccounting accumulateWithLastCompletedDate:withNow:withQualificationID:];
       }
 
-      v13 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
     v15 = PLLogCommon();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [PLDuetServiceWithAccounting accumulateWithLastCompletedDate:v13 withNow:? withQualificationID:?];
+      [PLDuetServiceWithAccounting accumulateWithLastCompletedDate:distantPast withNow:? withQualificationID:?];
     }
 
-    v93 = v7;
+    v93 = dateCopy;
 
-    v16 = [v8 dateByAddingTimeInterval:-3600.0];
+    v16 = [nowCopy dateByAddingTimeInterval:-3600.0];
     v17 = PLLogCommon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
@@ -1296,8 +1296,8 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
 
     v18 = objc_alloc(MEMORY[0x277D3F260]);
     v19 = MEMORY[0x277CCABB0];
-    v91 = v13;
-    [v13 timeIntervalSince1970];
+    v91 = distantPast;
+    [distantPast timeIntervalSince1970];
     v20 = [v19 numberWithDouble:?];
     v21 = [v18 initWithKey:@"timestamp" withValue:v20 withComparisonOperation:2];
 
@@ -1310,14 +1310,14 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
 
     v26 = objc_alloc(MEMORY[0x277D3F260]);
     v27 = *MEMORY[0x277D3F308];
-    v28 = [MEMORY[0x277CCABB0] numberWithInt:a5];
+    v28 = [MEMORY[0x277CCABB0] numberWithInt:d];
     v29 = [v26 initWithKey:v27 withValue:v28 withComparisonOperation:0];
 
     v30 = objc_alloc(MEMORY[0x277D3F260]);
     v103 = *MEMORY[0x277D3F300];
     v31 = [v30 initWithKey:? withValue:? withComparisonOperation:?];
-    v32 = [(PLDuetServiceImpl *)v95 duetService];
-    v33 = [v32 storage];
+    duetService2 = [(PLDuetServiceImpl *)selfCopy duetService];
+    storage = [duetService2 storage];
     v88 = v25;
     v89 = v21;
     v124[0] = v21;
@@ -1328,9 +1328,9 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
     v124[3] = v31;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v124 count:4];
     v92 = v12;
-    v35 = [v33 entriesForKey:v12 withComparisons:v34];
+    v35 = [storage entriesForKey:v12 withComparisons:v34];
 
-    v94 = v8;
+    v94 = nowCopy;
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
       v36 = objc_opt_class();
@@ -1349,9 +1349,9 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
         v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"aggregateQualificationEnergyEntries=%@", v35];
         v38 = MEMORY[0x277D3F178];
         v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-        v40 = [v39 lastPathComponent];
+        lastPathComponent = [v39 lastPathComponent];
         v41 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceWithAccounting accumulateWithLastCompletedDate:withNow:withQualificationID:]"];
-        [v38 logMessage:v37 fromFile:v40 fromFunction:v41 fromLineNumber:603];
+        [v38 logMessage:v37 fromFile:lastPathComponent fromFunction:v41 fromLineNumber:603];
 
         v42 = PLLogCommon();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -1367,13 +1367,13 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
       [PLDuetServiceWithAccounting accumulateWithLastCompletedDate:v35 withNow:? withQualificationID:?];
     }
 
-    v44 = [(PLDuetServiceImpl *)v95 duetService];
+    duetService3 = [(PLDuetServiceImpl *)selfCopy duetService];
     v45 = [objc_opt_class() entryKeyForType:v11 andName:@"DuetEnergyAccumulator"];
 
-    v46 = [(PLDuetServiceImpl *)v95 duetService];
-    v47 = [v46 storage];
+    duetService4 = [(PLDuetServiceImpl *)selfCopy duetService];
+    storage2 = [duetService4 storage];
     v102 = v45;
-    v48 = [v47 entriesForKey:v45];
+    v48 = [storage2 entriesForKey:v45];
 
     v111 = 0u;
     v112 = 0u;
@@ -1410,15 +1410,15 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
       while (v50);
     }
 
-    v100 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v105 = 0u;
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
     v96 = v35;
     v55 = [v96 countByEnumeratingWithState:&v105 objects:v122 count:16];
-    v8 = v94;
-    v56 = v95;
+    nowCopy = v94;
+    v56 = selfCopy;
     if (v55)
     {
       v57 = v55;
@@ -1435,10 +1435,10 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
           }
 
           v59 = *(*(&v105 + 1) + 8 * v58);
-          v60 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v102 withDate:v8];
-          v61 = [MEMORY[0x277D3F0D0] sharedInstance];
+          v60 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v102 withDate:nowCopy];
+          mEMORY[0x277D3F0D0] = [MEMORY[0x277D3F0D0] sharedInstance];
           v62 = [v59 objectForKeyedSubscript:v103];
-          v63 = [v61 nodeNameForNodeID:v62];
+          v63 = [mEMORY[0x277D3F0D0] nodeNameForNodeID:v62];
 
           if ([MEMORY[0x277D3F180] debugEnabled])
           {
@@ -1459,9 +1459,9 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
               v65 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               v66 = MEMORY[0x277D3F178];
               v67 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Operators/Services/PLDuetService.m"];
-              v68 = [v67 lastPathComponent];
+              lastPathComponent2 = [v67 lastPathComponent];
               v69 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLDuetServiceWithAccounting accumulateWithLastCompletedDate:withNow:withQualificationID:]"];
-              [v66 logMessage:*&v65 fromFile:v68 fromFunction:v69 fromLineNumber:620];
+              [v66 logMessage:*&v65 fromFile:lastPathComponent2 fromFunction:v69 fromLineNumber:620];
 
               v70 = PLLogCommon();
               if (os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG))
@@ -1471,8 +1471,8 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
                 _os_log_debug_impl(&dword_25EE51000, v70, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
               }
 
-              v8 = v94;
-              v56 = v95;
+              nowCopy = v94;
+              v56 = selfCopy;
             }
           }
 
@@ -1490,13 +1490,13 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
             v121 = v80;
             _os_log_debug_impl(&dword_25EE51000, v71, OS_LOG_TYPE_DEBUG, "┃ ┃ ┏ PLDuetService accumulateWithLastCompletedDate entry for nodeID:%@, bundleID:%@, timestamp:%@", buf, 0x20u);
 
-            v56 = v95;
+            v56 = selfCopy;
           }
 
           if (v63)
           {
             [v60 setObject:v63 forKeyedSubscript:@"BundleID"];
-            v72 = [MEMORY[0x277CCABB0] numberWithInt:a5];
+            v72 = [MEMORY[0x277CCABB0] numberWithInt:d];
             [v60 setObject:v72 forKeyedSubscript:@"QualificationID"];
 
             v73 = [v59 objectForKeyedSubscript:v98];
@@ -1515,7 +1515,7 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
               _os_log_debug_impl(&dword_25EE51000, v78, OS_LOG_TYPE_DEBUG, "┃ ┃ ┗ PLDuetService accumulateWithLastCompletedDate entry energy:%fmWh", buf, 0xCu);
             }
 
-            [v100 addObject:v60];
+            [array addObject:v60];
           }
 
           ++v58;
@@ -1528,17 +1528,17 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
       while (v57);
     }
 
-    if ([v100 count])
+    if ([array count])
     {
-      v81 = [(PLDuetServiceImpl *)v56 duetService];
+      duetService5 = [(PLDuetServiceImpl *)v56 duetService];
 
-      if (v81)
+      if (duetService5)
       {
-        v82 = [(PLDuetServiceImpl *)v56 duetService];
+        duetService6 = [(PLDuetServiceImpl *)v56 duetService];
         v114 = v102;
-        v115 = v100;
+        v115 = array;
         v83 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v115 forKeys:&v114 count:1];
-        [v82 logEntries:v83 withGroupID:v102];
+        [duetService6 logEntries:v83 withGroupID:v102];
       }
     }
 
@@ -1548,7 +1548,7 @@ uint64_t __71__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
       [PLDuetServiceWithAccounting accumulateWithLastCompletedDate:withNow:withQualificationID:];
     }
 
-    v7 = v93;
+    dateCopy = v93;
   }
 
   v85 = *MEMORY[0x277D85DE8];
@@ -1568,16 +1568,16 @@ uint64_t __91__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
   return result;
 }
 
-+ (id)mapBundleID:(id)a3
++ (id)mapBundleID:(id)d
 {
   v3 = mapBundleID__onceToken;
-  v4 = a3;
+  dCopy = d;
   if (v3 != -1)
   {
     +[PLDuetServiceWithAccounting mapBundleID:];
   }
 
-  v5 = [mapBundleID__daemonBundleIDToName objectForKeyedSubscript:v4];
+  v5 = [mapBundleID__daemonBundleIDToName objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -1586,7 +1586,7 @@ uint64_t __91__PLDuetServiceWithAccounting_accumulateWithLastCompletedDate_withN
 
   else
   {
-    v7 = v4;
+    v7 = dCopy;
   }
 
   v8 = v7;

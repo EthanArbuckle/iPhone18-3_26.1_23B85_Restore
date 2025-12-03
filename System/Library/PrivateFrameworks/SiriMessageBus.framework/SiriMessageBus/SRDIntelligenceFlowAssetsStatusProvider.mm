@@ -1,10 +1,10 @@
 @interface SRDIntelligenceFlowAssetsStatusProvider
-- (SRDIntelligenceFlowAssetsStatusProvider)initWithDelegate:(id)a3 locale:(id)a4;
+- (SRDIntelligenceFlowAssetsStatusProvider)initWithDelegate:(id)delegate locale:(id)locale;
 @end
 
 @implementation SRDIntelligenceFlowAssetsStatusProvider
 
-- (SRDIntelligenceFlowAssetsStatusProvider)initWithDelegate:(id)a3 locale:(id)a4
+- (SRDIntelligenceFlowAssetsStatusProvider)initWithDelegate:(id)delegate locale:(id)locale
 {
   v4 = sub_2237B415C();
   v5 = *(*(v4 - 8) + 64);

@@ -1,155 +1,155 @@
 @interface EKObject
-+ (BOOL)_compareIdentityKeysForObject:(id)a3 againstObject:(id)a4 propertiesToIgnore:(id)a5;
-+ (BOOL)_compareMultiValueRelationshipKey:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6;
-+ (BOOL)_compareMultiValueRelationshipKeys:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6;
-+ (BOOL)_compareMutliValueRelationshipKey:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6;
-+ (BOOL)_compareNonIdentityKeys:(id)a3 forObject:(id)a4 againstObject:(id)a5 compareImmutableKeys:(BOOL)a6 propertiesToIgnore:(id)a7;
-+ (BOOL)_compareNonRelationshipKeys:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6;
-+ (BOOL)_compareRelationshipObject1:(id)a3 againstRelationshipObject2:(id)a4 propertiesToIgnore:(id)a5;
-+ (BOOL)_compareRelationshipObject1:(id)a3 againstRelationshipObject2:(id)a4 propertiesToIgnore:(id)a5 relationshipObjectKey:(id)a6;
-+ (BOOL)_compareSingleValueRelationshipKey:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6 ignoreIdentityKeys:(BOOL)a7;
-+ (BOOL)_compareSingleValueRelationshipKeys:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6;
-+ (BOOL)_objects:(id)a3 haveSameMeltedClass:(Class)a4 frozenClass:(Class)a5;
-+ (BOOL)canonicalizedEqualityTestValue1:(id)a3 value2:(id)a4 key:(id)a5 object1:(id)a6 object2:(id)a7;
-+ (BOOL)isMeltedAndNotWeakRelationshipObject:(id)a3 forKey:(id)a4;
-+ (BOOL)isWeakRelationObject:(id)a3 forKey:(id)a4;
-+ (id)_array:(id)a3 intersectedWithSet:(id)a4 minusSet:(id)a5;
-+ (id)_changeSetForDiff:(id)a3;
-+ (id)duplicatedPersistentObjectForObject:(id)a3 alreadyCopiedObjects:(id)a4;
++ (BOOL)_compareIdentityKeysForObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore;
++ (BOOL)_compareMultiValueRelationshipKey:(id)key forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore;
++ (BOOL)_compareMultiValueRelationshipKeys:(id)keys forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore;
++ (BOOL)_compareMutliValueRelationshipKey:(id)key forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore;
++ (BOOL)_compareNonIdentityKeys:(id)keys forObject:(id)object againstObject:(id)againstObject compareImmutableKeys:(BOOL)immutableKeys propertiesToIgnore:(id)ignore;
++ (BOOL)_compareNonRelationshipKeys:(id)keys forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore;
++ (BOOL)_compareRelationshipObject1:(id)object1 againstRelationshipObject2:(id)object2 propertiesToIgnore:(id)ignore;
++ (BOOL)_compareRelationshipObject1:(id)object1 againstRelationshipObject2:(id)object2 propertiesToIgnore:(id)ignore relationshipObjectKey:(id)key;
++ (BOOL)_compareSingleValueRelationshipKey:(id)key forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore ignoreIdentityKeys:(BOOL)keys;
++ (BOOL)_compareSingleValueRelationshipKeys:(id)keys forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore;
++ (BOOL)_objects:(id)_objects haveSameMeltedClass:(Class)class frozenClass:(Class)frozenClass;
++ (BOOL)canonicalizedEqualityTestValue1:(id)value1 value2:(id)value2 key:(id)key object1:(id)object1 object2:(id)object2;
++ (BOOL)isMeltedAndNotWeakRelationshipObject:(id)object forKey:(id)key;
++ (BOOL)isWeakRelationObject:(id)object forKey:(id)key;
++ (id)_array:(id)_array intersectedWithSet:(id)set minusSet:(id)minusSet;
++ (id)_changeSetForDiff:(id)diff;
++ (id)duplicatedPersistentObjectForObject:(id)object alreadyCopiedObjects:(id)objects;
 + (id)knownDerivedAndSingleValueRelationshipKeys;
 + (id)knownRelationshipWeakKeys;
-+ (id)objectsIDsExistingInStoreFromObjects:(id)a3 eventStore:(id)a4;
-+ (void)_addChangesFromObject:(id)a3 toObjects:(id)a4 passingTest:(id)a5 copyingBackingObjects:(BOOL)a6;
-+ (void)addChangesFromObject:(id)a3 toObjects:(id)a4 except:(id)a5;
-+ (void)addChangesFromObject:(id)a3 toObjects:(id)a4 keep:(id)a5;
-- (BOOL)_areOnlyChangedKeys:(id)a3;
-- (BOOL)_hasChangeHelperInKeys:(id)a3 ignoreKeys:(id)a4 checkUnsaved:(BOOL)a5;
++ (id)objectsIDsExistingInStoreFromObjects:(id)objects eventStore:(id)store;
++ (void)_addChangesFromObject:(id)object toObjects:(id)objects passingTest:(id)test copyingBackingObjects:(BOOL)backingObjects;
++ (void)addChangesFromObject:(id)object toObjects:(id)objects except:(id)except;
++ (void)addChangesFromObject:(id)object toObjects:(id)objects keep:(id)keep;
+- (BOOL)_areOnlyChangedKeys:(id)keys;
+- (BOOL)_hasChangeHelperInKeys:(id)keys ignoreKeys:(id)ignoreKeys checkUnsaved:(BOOL)unsaved;
 - (BOOL)_hasChanges;
-- (BOOL)_hasChangesForKey:(id)a3 checkUnsaved:(BOOL)a4;
-- (BOOL)_hasUnsavedChangesInKeys:(id)a3 ignoreKeys:(id)a4;
+- (BOOL)_hasChangesForKey:(id)key checkUnsaved:(BOOL)unsaved;
+- (BOOL)_hasUnsavedChangesInKeys:(id)keys ignoreKeys:(id)ignoreKeys;
 - (BOOL)_isNew;
-- (BOOL)_isOnlyChangedKey:(id)a3;
-- (BOOL)_isPropertyUnavailable:(id)a3 convertToFullObjectIfUnavailable:(BOOL)a4;
+- (BOOL)_isOnlyChangedKey:(id)key;
+- (BOOL)_isPropertyUnavailable:(id)unavailable convertToFullObjectIfUnavailable:(BOOL)ifUnavailable;
 - (BOOL)_refreshCommon;
 - (BOOL)_refreshable;
 - (BOOL)_reset;
 - (BOOL)_resetCommon;
-- (BOOL)_resetIfBackingObjectIsOfClass:(Class)a3 fetchResetFrozenObjectBlock:(id)a4;
+- (BOOL)_resetIfBackingObjectIsOfClass:(Class)class fetchResetFrozenObjectBlock:(id)block;
 - (BOOL)existsInStore;
 - (BOOL)hasNeverBeenCommitted;
 - (BOOL)isDeleted;
 - (BOOL)isDifferentFromCommitted;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSaved;
 - (BOOL)isUndeleted;
-- (BOOL)validate:(id *)a3;
-- (BOOL)validateWithOwner:(id)a3 error:(id *)a4;
+- (BOOL)validate:(id *)validate;
+- (BOOL)validateWithOwner:(id)owner error:(id *)error;
 - (CADGenerationStampedObjectID)CADObjectID;
 - (Class)frozenClass;
 - (EKEventStore)eventStore;
 - (EKObject)init;
-- (EKObject)initWithPersistentObject:(id)a3;
+- (EKObject)initWithPersistentObject:(id)object;
 - (EKObjectID)objectID;
 - (NSString)uniqueIdentifier;
-- (id)_basicSummaryWithDepth:(int64_t)a3;
-- (id)_convertBackingObjectsWithPath:(id)a3 updateBackingObjects:(BOOL)a4 allChangedBackingObjects:(id)a5 eventStore:(id)a6 updatedBackingObjectProvider:(id)a7;
-- (id)_copyWithoutChangesInZone:(_NSZone *)a3;
+- (id)_basicSummaryWithDepth:(int64_t)depth;
+- (id)_convertBackingObjectsWithPath:(id)path updateBackingObjects:(BOOL)objects allChangedBackingObjects:(id)backingObjects eventStore:(id)store updatedBackingObjectProvider:(id)provider;
+- (id)_copyWithoutChangesInZone:(_NSZone *)zone;
 - (id)_multiRelationshipKeysToCheckForChanges;
-- (id)_previousValueForKey:(id)a3;
-- (id)_propertyValueForKey:(id)a3;
-- (id)_recursiveSnapshotCopyWithPropertyAccessor:(id)a3 propertyKeysToCopy:(id)a4 propertyKeysToSkip:(id)a5 recurseOnWeakRelations:(BOOL)a6;
+- (id)_previousValueForKey:(id)key;
+- (id)_propertyValueForKey:(id)key;
+- (id)_recursiveSnapshotCopyWithPropertyAccessor:(id)accessor propertyKeysToCopy:(id)copy propertyKeysToSkip:(id)skip recurseOnWeakRelations:(BOOL)relations;
 - (id)_singleRelationshipKeysToCheckForChanges;
-- (id)_summaryWithDepth:(int64_t)a3;
-- (id)backingObjectOfChildObject:(id)a3 withRelationshipKey:(id)a4;
+- (id)_summaryWithDepth:(int64_t)depth;
+- (id)backingObjectOfChildObject:(id)object withRelationshipKey:(id)key;
 - (id)cachedMeltedChildIdentifierToParentMap;
-- (id)cachedMeltedObjectForSingleValueKey:(id)a3;
-- (id)cachedMeltedObjectsForMultiValueKey:(id)a3;
-- (id)cachedValueForKey:(id)a3 expectingCachedValue:(id)a4 forMasterKey:(id)a5 relatedKeys:(id)a6 populateBlock:(id)a7;
-- (id)cachedValueForKey:(id)a3 populateBlock:(id)a4;
+- (id)cachedMeltedObjectForSingleValueKey:(id)key;
+- (id)cachedMeltedObjectsForMultiValueKey:(id)key;
+- (id)cachedValueForKey:(id)key expectingCachedValue:(id)value forMasterKey:(id)masterKey relatedKeys:(id)keys populateBlock:(id)block;
+- (id)cachedValueForKey:(id)key populateBlock:(id)block;
 - (id)changedKeys;
 - (id)committedCopy;
-- (id)committedValueForKey:(id)a3;
+- (id)committedValueForKey:(id)key;
 - (id)copyMeltedObjectCache;
 - (id)duplicate;
-- (id)duplicateToEventStore:(id)a3;
+- (id)duplicateToEventStore:(id)store;
 - (id)frozenObject;
-- (id)frozenObjectInStore:(id)a3;
-- (id)frozenOrMeltedCachedMultiRelationObjectsForKey:(id)a3;
-- (id)frozenOrMeltedCachedSingleRelationObjectForKey:(id)a3;
-- (id)inverseObjectWithObject:(id)a3 diff:(id *)a4;
-- (id)meltedAndCachedMultiRelationObjectsForKey:(id)a3;
-- (id)meltedAndCachedSingleRelationObjectForKey:(id)a3;
-- (id)meltedObjectInStore:(id)a3;
-- (id)multiChangedObjectValuesForKey:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)prepareReminderKitObjectForSaveWithUpdatedBackingObjectProvider:(id)a3;
+- (id)frozenObjectInStore:(id)store;
+- (id)frozenOrMeltedCachedMultiRelationObjectsForKey:(id)key;
+- (id)frozenOrMeltedCachedSingleRelationObjectForKey:(id)key;
+- (id)inverseObjectWithObject:(id)object diff:(id *)diff;
+- (id)meltedAndCachedMultiRelationObjectsForKey:(id)key;
+- (id)meltedAndCachedSingleRelationObjectForKey:(id)key;
+- (id)meltedObjectInStore:(id)store;
+- (id)multiChangedObjectValuesForKey:(id)key;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)prepareReminderKitObjectForSaveWithUpdatedBackingObjectProvider:(id)provider;
 - (id)previouslySavedCopy;
 - (id)privacyDescription;
 - (id)shallowCopyWithoutChanges;
-- (id)singleChangedValueForKey:(id)a3;
-- (id)snapshotCopyWithPropertyKeysToCopy:(id)a3;
+- (id)singleChangedValueForKey:(id)key;
+- (id)snapshotCopyWithPropertyKeysToCopy:(id)copy;
 - (int)rowID;
 - (os_unfair_lock_s)_lock;
 - (unint64_t)_cachedMeltedObjectsCount;
 - (unint64_t)hash;
-- (unint64_t)meltedAndCachedMultiRelationCountForKey:(id)a3;
-- (void)_addCachedMeltedObject:(id)a3 forMultiValueKey:(id)a4;
-- (void)_addChanges:(id)a3 copyingBackingObjects:(BOOL)a4 objectIdentifierBlock:(id)a5;
-- (void)_addChangesFromObject:(id)a3 ignoringDifferencesFrom:(id)a4 changesToSkip:(id)a5 copyingBackingObjects:(BOOL)a6;
-- (void)_addSummaryWithDepth:(int64_t)a3 toMutableString:(id)a4 indentFirstLine:(BOOL)a5;
-- (void)_applyKnownImmutableValuesFrom:(id)a3;
-- (void)_cachedMeltedChildIdentifierToParentMap:(id)a3;
+- (unint64_t)meltedAndCachedMultiRelationCountForKey:(id)key;
+- (void)_addCachedMeltedObject:(id)object forMultiValueKey:(id)key;
+- (void)_addChanges:(id)changes copyingBackingObjects:(BOOL)objects objectIdentifierBlock:(id)block;
+- (void)_addChangesFromObject:(id)object ignoringDifferencesFrom:(id)from changesToSkip:(id)skip copyingBackingObjects:(BOOL)objects;
+- (void)_addSummaryWithDepth:(int64_t)depth toMutableString:(id)string indentFirstLine:(BOOL)line;
+- (void)_applyKnownImmutableValuesFrom:(id)from;
+- (void)_cachedMeltedChildIdentifierToParentMap:(id)map;
 - (void)_initChangeSetIfNone;
 - (void)_markAsCommittedCommon;
 - (void)_markAsDeletedCommon;
 - (void)_markAsNotNewCommon;
 - (void)_markAsSavedCommon;
 - (void)_markAsUndeletedCommon;
-- (void)_performBlockOnOwnedCachedRelatedObjects:(id)a3;
-- (void)_performWithLock:(id)a3;
-- (void)_removeCachedMeltedObject:(id)a3 forMultiValueKey:(id)a4;
+- (void)_performBlockOnOwnedCachedRelatedObjects:(id)objects;
+- (void)_performWithLock:(id)lock;
+- (void)_removeCachedMeltedObject:(id)object forMultiValueKey:(id)key;
 - (void)_resetAfterUpdatingChangeSetOrBackingObject;
 - (void)_resetMeltedCache;
-- (void)_resetWithFrozenObject:(id)a3;
+- (void)_resetWithFrozenObject:(id)object;
 - (void)_rollbackCommon;
 - (void)_sharedInit;
-- (void)_updateCachedMeltedObjectSetForMultiValueKey:(id)a3 usingBlock:(id)a4;
-- (void)_updatePersistentValueForKey:(id)a3;
-- (void)addCachedMeltedObject:(id)a3 forMultiValueKey:(id)a4;
-- (void)addCoCommitObject:(id)a3;
-- (void)addMultiChangedObjectValue:(id)a3 forKey:(id)a4;
-- (void)addMultiChangedObjectValues:(id)a3 forKey:(id)a4;
-- (void)applyChanges:(id)a3;
-- (void)augmentMeltedObjectCache:(id)a3;
-- (void)clearCachedValueForKey:(id)a3;
-- (void)clearCachedValuesForKeys:(id)a3;
+- (void)_updateCachedMeltedObjectSetForMultiValueKey:(id)key usingBlock:(id)block;
+- (void)_updatePersistentValueForKey:(id)key;
+- (void)addCachedMeltedObject:(id)object forMultiValueKey:(id)key;
+- (void)addCoCommitObject:(id)object;
+- (void)addMultiChangedObjectValue:(id)value forKey:(id)key;
+- (void)addMultiChangedObjectValues:(id)values forKey:(id)key;
+- (void)applyChanges:(id)changes;
+- (void)augmentMeltedObjectCache:(id)cache;
+- (void)clearCachedValueForKey:(id)key;
+- (void)clearCachedValuesForKeys:(id)keys;
 - (void)deletePersistentObject;
 - (void)emptyMeltedCache;
-- (void)emptyMeltedCacheForKey:(id)a3;
-- (void)emptyMeltedCacheForKeys:(id)a3;
+- (void)emptyMeltedCacheForKey:(id)key;
+- (void)emptyMeltedCacheForKeys:(id)keys;
 - (void)insertPersistentObjectIfNeeded;
 - (void)markAsCommitted;
 - (void)markAsNew;
 - (void)markAsNewShallow;
 - (void)markAsUndeleted;
 - (void)rebase;
-- (void)rebaseSkippingRelationProperties:(id)a3;
-- (void)rebaseSkippingRelationProperties:(id)a3 toEventStore:(id)a4;
-- (void)removeCachedMeltedObject:(id)a3 forMultiValueKey:(id)a4;
-- (void)removeMultiChangedObjectValue:(id)a3 forKey:(id)a4;
-- (void)removeMultiChangedObjectValues:(id)a3 forKey:(id)a4;
-- (void)replaceMultiChangedObjectValuesWithObjectValues:(id)a3 forKey:(id)a4;
-- (void)setCachedMeltedObject:(id)a3 forSingleValueKey:(id)a4;
-- (void)setCachedMeltedObjects:(id)a3 forMultiValueKey:(id)a4;
-- (void)setCachedValue:(id)a3 forKey:(id)a4;
-- (void)setSingleChangedValue:(id)a3 forKey:(id)a4;
-- (void)updateAfterApplyingChanges:(id)a3 objectIdentifierBlock:(id)a4;
-- (void)updateMeltedAndCachedMultiRelationObjects:(id)a3 forKey:(id)a4;
-- (void)updateMeltedAndCachedSingleRelationObject:(id)a3 forKey:(id)a4 frozenClass:(Class)a5;
-- (void)updateMeltedCacheForChangeSet:(id)a3 objectIdentifierBlock:(id)a4;
-- (void)updateMultiValueCacheForChangeSet:(id)a3 preservingExistingAdds:(BOOL)a4 objectIdentifierBlock:(id)a5;
-- (void)updatePersistentObjectSkippingProperties:(id)a3;
-- (void)updatePersistentValueForKeyIfNeeded:(id)a3;
+- (void)rebaseSkippingRelationProperties:(id)properties;
+- (void)rebaseSkippingRelationProperties:(id)properties toEventStore:(id)store;
+- (void)removeCachedMeltedObject:(id)object forMultiValueKey:(id)key;
+- (void)removeMultiChangedObjectValue:(id)value forKey:(id)key;
+- (void)removeMultiChangedObjectValues:(id)values forKey:(id)key;
+- (void)replaceMultiChangedObjectValuesWithObjectValues:(id)values forKey:(id)key;
+- (void)setCachedMeltedObject:(id)object forSingleValueKey:(id)key;
+- (void)setCachedMeltedObjects:(id)objects forMultiValueKey:(id)key;
+- (void)setCachedValue:(id)value forKey:(id)key;
+- (void)setSingleChangedValue:(id)value forKey:(id)key;
+- (void)updateAfterApplyingChanges:(id)changes objectIdentifierBlock:(id)block;
+- (void)updateMeltedAndCachedMultiRelationObjects:(id)objects forKey:(id)key;
+- (void)updateMeltedAndCachedSingleRelationObject:(id)object forKey:(id)key frozenClass:(Class)class;
+- (void)updateMeltedCacheForChangeSet:(id)set objectIdentifierBlock:(id)block;
+- (void)updateMultiValueCacheForChangeSet:(id)set preservingExistingAdds:(BOOL)adds objectIdentifierBlock:(id)block;
+- (void)updatePersistentObjectSkippingProperties:(id)properties;
+- (void)updatePersistentValueForKeyIfNeeded:(id)needed;
 @end
 
 @implementation EKObject
@@ -165,53 +165,53 @@
 
 - (EKEventStore)eventStore
 {
-  v2 = [(EKObject *)self persistentObject];
-  v3 = [v2 eventStore];
+  persistentObject = [(EKObject *)self persistentObject];
+  eventStore = [persistentObject eventStore];
 
-  return v3;
+  return eventStore;
 }
 
 - (os_unfair_lock_s)_lock
 {
-  v2 = self;
+  selfCopy = self;
   if (GetSharedLockForIndex_onceToken != -1)
   {
     [EKObject(Shared) _lock];
   }
 
-  return &GetSharedLockForIndex_sharedLocks + ((((v2 >> 4) ^ (v2 >> 7)) ^ (v2 >> 10)) & 7);
+  return &GetSharedLockForIndex_sharedLocks + ((((selfCopy >> 4) ^ (selfCopy >> 7)) ^ (selfCopy >> 10)) & 7);
 }
 
 - (CADGenerationStampedObjectID)CADObjectID
 {
-  v2 = [(EKObject *)self persistentObject];
-  v3 = [v2 CADObjectID];
+  persistentObject = [(EKObject *)self persistentObject];
+  cADObjectID = [persistentObject CADObjectID];
 
-  return v3;
+  return cADObjectID;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(EKObject *)self persistentObject];
-  v3 = [v2 hash];
+  persistentObject = [(EKObject *)self persistentObject];
+  v3 = [persistentObject hash];
 
   return v3;
 }
 
 - (EKObjectID)objectID
 {
-  v2 = [(EKObject *)self persistentObject];
-  v3 = [v2 objectID];
+  persistentObject = [(EKObject *)self persistentObject];
+  objectID = [persistentObject objectID];
 
-  return v3;
+  return objectID;
 }
 
 - (BOOL)_isNew
 {
-  v2 = [(EKObject *)self changeSet];
-  v3 = [v2 isNew];
+  changeSet = [(EKObject *)self changeSet];
+  isNew = [changeSet isNew];
 
-  return v3;
+  return isNew;
 }
 
 - (EKObject)init
@@ -222,9 +222,9 @@
   return v4;
 }
 
-- (EKObject)initWithPersistentObject:(id)a3
+- (EKObject)initWithPersistentObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v10.receiver = self;
   v10.super_class = EKObject;
   v6 = [(EKObject *)&v10 init];
@@ -232,11 +232,11 @@
   {
     EKLogInitIfNeeded();
     [(EKObject *)v6 _sharedInit];
-    objc_storeStrong(&v6->_persistentObject, a3);
+    objc_storeStrong(&v6->_persistentObject, object);
     if ([(EKPersistentObject *)v6->_persistentObject isNew])
     {
-      v7 = [(EKObject *)v6 eventStore];
-      v8 = [v7 isObjectInserted:v6->_persistentObject];
+      eventStore = [(EKObject *)v6 eventStore];
+      v8 = [eventStore isObjectInserted:v6->_persistentObject];
 
       if ((v8 & 1) == 0)
       {
@@ -248,18 +248,18 @@
   return v6;
 }
 
-- (BOOL)_isPropertyUnavailable:(id)a3 convertToFullObjectIfUnavailable:(BOOL)a4
+- (BOOL)_isPropertyUnavailable:(id)unavailable convertToFullObjectIfUnavailable:(BOOL)ifUnavailable
 {
-  v6 = a3;
-  if (a4)
+  unavailableCopy = unavailable;
+  if (ifUnavailable)
   {
     goto LABEL_4;
   }
 
-  v7 = [(EKObject *)self changeSet];
-  v8 = [v7 hasUnsavedChangeForKey:v6];
+  changeSet = [(EKObject *)self changeSet];
+  v8 = [changeSet hasUnsavedChangeForKey:unavailableCopy];
 
-  if ((v8 & 1) != 0 || (-[EKObject additionalFrozenProperties](self, "additionalFrozenProperties"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKeyedSubscript:v6], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+  if ((v8 & 1) != 0 || (-[EKObject additionalFrozenProperties](self, "additionalFrozenProperties"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKeyedSubscript:unavailableCopy], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
 LABEL_4:
     v11 = 0;
@@ -267,8 +267,8 @@ LABEL_4:
 
   else
   {
-    v13 = [(EKObject *)self backingObject];
-    v11 = [v13 isPropertyUnavailable:v6];
+    backingObject = [(EKObject *)self backingObject];
+    v11 = [backingObject isPropertyUnavailable:unavailableCopy];
   }
 
   return v11;
@@ -276,24 +276,24 @@ LABEL_4:
 
 - (NSString)uniqueIdentifier
 {
-  v3 = [(objc_class *)[(EKObject *)self frozenClass] propertyKeyForUniqueIdentifier];
-  v4 = [(EKObject *)self singleChangedValueForKey:v3];
+  propertyKeyForUniqueIdentifier = [(objc_class *)[(EKObject *)self frozenClass] propertyKeyForUniqueIdentifier];
+  v4 = [(EKObject *)self singleChangedValueForKey:propertyKeyForUniqueIdentifier];
 
   return v4;
 }
 
 - (BOOL)hasNeverBeenCommitted
 {
-  v2 = [(EKObject *)self backingObject];
-  v3 = [v2 isNew];
+  backingObject = [(EKObject *)self backingObject];
+  isNew = [backingObject isNew];
 
-  return v3;
+  return isNew;
 }
 
 - (BOOL)isDifferentFromCommitted
 {
-  v3 = [(EKObject *)self committedCopy];
-  v4 = [v3 diffWithObject:self];
+  committedCopy = [(EKObject *)self committedCopy];
+  v4 = [committedCopy diffWithObject:self];
   v5 = [v4 result] != 0;
 
   return v5;
@@ -301,76 +301,76 @@ LABEL_4:
 
 - (id)frozenObject
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [(EKObject *)self frozenObjectInStore:v3];
+  eventStore = [(EKObject *)self eventStore];
+  v4 = [(EKObject *)self frozenObjectInStore:eventStore];
 
   return v4;
 }
 
-- (id)frozenObjectInStore:(id)a3
+- (id)frozenObjectInStore:(id)store
 {
-  v4 = a3;
-  v5 = [(EKObject *)self persistentObject];
-  v6 = [v5 frozenObjectInStore:v4];
+  storeCopy = store;
+  persistentObject = [(EKObject *)self persistentObject];
+  v6 = [persistentObject frozenObjectInStore:storeCopy];
 
   return v6;
 }
 
-+ (BOOL)_compareNonIdentityKeys:(id)a3 forObject:(id)a4 againstObject:(id)a5 compareImmutableKeys:(BOOL)a6 propertiesToIgnore:(id)a7
++ (BOOL)_compareNonIdentityKeys:(id)keys forObject:(id)object againstObject:(id)againstObject compareImmutableKeys:(BOOL)immutableKeys propertiesToIgnore:(id)ignore
 {
-  v11 = a3;
-  v37 = a4;
-  v12 = a5;
-  v13 = a7;
+  keysCopy = keys;
+  objectCopy = object;
+  againstObjectCopy = againstObject;
+  ignoreCopy = ignore;
   v14 = MEMORY[0x1E695DFA8];
-  v15 = [a1 knownRelationshipMultiValueKeys];
-  v16 = [v14 setWithArray:v15];
+  knownRelationshipMultiValueKeys = [self knownRelationshipMultiValueKeys];
+  v16 = [v14 setWithArray:knownRelationshipMultiValueKeys];
 
   v17 = MEMORY[0x1E695DFA8];
-  v18 = [a1 knownRelationshipSingleValueKeys];
-  v19 = [v17 setWithArray:v18];
+  knownRelationshipSingleValueKeys = [self knownRelationshipSingleValueKeys];
+  v19 = [v17 setWithArray:knownRelationshipSingleValueKeys];
 
   v20 = MEMORY[0x1E695DFA8];
-  v21 = [a1 knownSingleValueKeysForComparison];
-  v22 = [v20 setWithArray:v21];
+  knownSingleValueKeysForComparison = [self knownSingleValueKeysForComparison];
+  v22 = [v20 setWithArray:knownSingleValueKeysForComparison];
 
   v23 = MEMORY[0x1E695DFA8];
-  v24 = [a1 knownImmutableKeys];
-  v25 = [v23 setWithArray:v24];
+  knownImmutableKeys = [self knownImmutableKeys];
+  v25 = [v23 setWithArray:knownImmutableKeys];
 
   v38 = v16;
-  if (v11)
+  if (keysCopy)
   {
-    [v16 intersectSet:v11];
-    [v19 intersectSet:v11];
-    [v22 intersectSet:v11];
-    [v25 intersectSet:v11];
+    [v16 intersectSet:keysCopy];
+    [v19 intersectSet:keysCopy];
+    [v22 intersectSet:keysCopy];
+    [v25 intersectSet:keysCopy];
   }
 
-  else if (!a6)
+  else if (!immutableKeys)
   {
 
     v25 = 0;
   }
 
-  v26 = [v19 allObjects];
-  v27 = v37;
-  v28 = [a1 _compareSingleValueRelationshipKeys:v26 forObject:v37 againstObject:v12 propertiesToIgnore:v13];
+  allObjects = [v19 allObjects];
+  v27 = objectCopy;
+  v28 = [self _compareSingleValueRelationshipKeys:allObjects forObject:objectCopy againstObject:againstObjectCopy propertiesToIgnore:ignoreCopy];
 
-  if (!v28 || ([v38 allObjects], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(a1, "_compareMultiValueRelationshipKeys:forObject:againstObject:propertiesToIgnore:", v29, v37, v12, v13), v29, !v30))
+  if (!v28 || ([v38 allObjects], v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(self, "_compareMultiValueRelationshipKeys:forObject:againstObject:propertiesToIgnore:", v29, objectCopy, againstObjectCopy, ignoreCopy), v29, !v30))
   {
     v34 = 0;
     goto LABEL_11;
   }
 
-  v31 = [v22 allObjects];
-  v32 = [a1 _compareNonRelationshipKeys:v31 forObject:v37 againstObject:v12 propertiesToIgnore:v13];
+  allObjects2 = [v22 allObjects];
+  v32 = [self _compareNonRelationshipKeys:allObjects2 forObject:objectCopy againstObject:againstObjectCopy propertiesToIgnore:ignoreCopy];
 
   if (!v32)
   {
     v34 = 0;
 LABEL_14:
-    v27 = v37;
+    v27 = objectCopy;
     goto LABEL_11;
   }
 
@@ -380,37 +380,37 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v33 = [v25 allObjects];
-  v27 = v37;
-  v34 = [a1 _compareNonRelationshipKeys:v33 forObject:v37 againstObject:v12 propertiesToIgnore:v13];
+  allObjects3 = [v25 allObjects];
+  v27 = objectCopy;
+  v34 = [self _compareNonRelationshipKeys:allObjects3 forObject:objectCopy againstObject:againstObjectCopy propertiesToIgnore:ignoreCopy];
 
 LABEL_11:
   return v34 & 1;
 }
 
-+ (BOOL)_compareIdentityKeysForObject:(id)a3 againstObject:(id)a4 propertiesToIgnore:(id)a5
++ (BOOL)_compareIdentityKeysForObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 knownIdentityKeysForComparison];
-  LOBYTE(a1) = [a1 _compareNonRelationshipKeys:v11 forObject:v10 againstObject:v9 propertiesToIgnore:v8];
+  ignoreCopy = ignore;
+  againstObjectCopy = againstObject;
+  objectCopy = object;
+  knownIdentityKeysForComparison = [self knownIdentityKeysForComparison];
+  LOBYTE(self) = [self _compareNonRelationshipKeys:knownIdentityKeysForComparison forObject:objectCopy againstObject:againstObjectCopy propertiesToIgnore:ignoreCopy];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)_compareSingleValueRelationshipKeys:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6
++ (BOOL)_compareSingleValueRelationshipKeys:(id)keys forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keysCopy = keys;
+  objectCopy = object;
+  againstObjectCopy = againstObject;
+  ignoreCopy = ignore;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v10;
+  v14 = keysCopy;
   v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
@@ -425,7 +425,7 @@ LABEL_11:
           objc_enumerationMutation(v14);
         }
 
-        if (![a1 _compareSingleValueRelationshipKey:*(*(&v22 + 1) + 8 * i) forObject:v11 againstObject:v12 propertiesToIgnore:v13 ignoreIdentityKeys:{0, v22}])
+        if (![self _compareSingleValueRelationshipKey:*(*(&v22 + 1) + 8 * i) forObject:objectCopy againstObject:againstObjectCopy propertiesToIgnore:ignoreCopy ignoreIdentityKeys:{0, v22}])
         {
           v19 = 0;
           goto LABEL_11;
@@ -449,18 +449,18 @@ LABEL_11:
   return v19;
 }
 
-+ (BOOL)_compareMultiValueRelationshipKeys:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6
++ (BOOL)_compareMultiValueRelationshipKeys:(id)keys forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keysCopy = keys;
+  objectCopy = object;
+  againstObjectCopy = againstObject;
+  ignoreCopy = ignore;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v10;
+  v14 = keysCopy;
   v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
@@ -475,7 +475,7 @@ LABEL_11:
           objc_enumerationMutation(v14);
         }
 
-        if (![a1 _compareMutliValueRelationshipKey:*(*(&v22 + 1) + 8 * i) forObject:v11 againstObject:v12 propertiesToIgnore:{v13, v22}])
+        if (![self _compareMutliValueRelationshipKey:*(*(&v22 + 1) + 8 * i) forObject:objectCopy againstObject:againstObjectCopy propertiesToIgnore:{ignoreCopy, v22}])
         {
           v19 = 0;
           goto LABEL_11;
@@ -499,43 +499,43 @@ LABEL_11:
   return v19;
 }
 
-+ (BOOL)_compareMutliValueRelationshipKey:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6
++ (BOOL)_compareMutliValueRelationshipKey:(id)key forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore
 {
   v58 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 isPropertyUnavailable:v10] && (objc_msgSend(v12, "isPropertyUnavailable:", v10) & 1) != 0)
+  keyCopy = key;
+  objectCopy = object;
+  againstObjectCopy = againstObject;
+  ignoreCopy = ignore;
+  if ([objectCopy isPropertyUnavailable:keyCopy] && (objc_msgSend(againstObjectCopy, "isPropertyUnavailable:", keyCopy) & 1) != 0)
   {
     v14 = 1;
   }
 
   else
   {
-    v15 = v11;
-    v16 = v12;
-    v17 = [v15 isPartialObject];
-    if (v17 != [v16 isPartialObject])
+    v15 = objectCopy;
+    v16 = againstObjectCopy;
+    isPartialObject = [v15 isPartialObject];
+    if (isPartialObject != [v16 isPartialObject])
     {
-      v18 = [a1 _createNonPartialObjectFromObject:v15 ifPropertyIsUnavailable:v10];
+      v18 = [self _createNonPartialObjectFromObject:v15 ifPropertyIsUnavailable:keyCopy];
 
-      v19 = [a1 _createNonPartialObjectFromObject:v16 ifPropertyIsUnavailable:v10];
+      v19 = [self _createNonPartialObjectFromObject:v16 ifPropertyIsUnavailable:keyCopy];
 
       v16 = v19;
       v15 = v18;
     }
 
-    v20 = [v15 valueForKey:v10];
-    v21 = [v16 valueForKey:v10];
+    v20 = [v15 valueForKey:keyCopy];
+    v21 = [v16 valueForKey:keyCopy];
     v22 = [v20 count];
     if (v22 == [v21 count])
     {
-      v46 = v11;
+      v46 = objectCopy;
       v47 = v21;
       v43 = v15;
       v44 = v16;
-      v45 = v12;
+      v45 = againstObjectCopy;
       v23 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v20, "count")}];
       v52 = 0u;
       v53 = 0u;
@@ -558,10 +558,10 @@ LABEL_11:
             }
 
             v29 = *(*(&v52 + 1) + 8 * i);
-            v30 = [v29 uniqueIdentifier];
-            if (v30)
+            uniqueIdentifier = [v29 uniqueIdentifier];
+            if (uniqueIdentifier)
             {
-              [v23 setObject:v29 forKeyedSubscript:v30];
+              [v23 setObject:v29 forKeyedSubscript:uniqueIdentifier];
             }
           }
 
@@ -580,7 +580,7 @@ LABEL_11:
       if (v32)
       {
         v33 = v32;
-        v41 = v10;
+        v41 = keyCopy;
         v34 = *v49;
         while (2)
         {
@@ -592,9 +592,9 @@ LABEL_11:
             }
 
             v36 = *(*(&v48 + 1) + 8 * j);
-            v37 = [v36 uniqueIdentifier];
-            v38 = [v23 objectForKeyedSubscript:v37];
-            LODWORD(v36) = [a1 _compareRelationshipObject1:v38 againstRelationshipObject2:v36 propertiesToIgnore:v13];
+            uniqueIdentifier2 = [v36 uniqueIdentifier];
+            v38 = [v23 objectForKeyedSubscript:uniqueIdentifier2];
+            LODWORD(v36) = [self _compareRelationshipObject1:v38 againstRelationshipObject2:v36 propertiesToIgnore:ignoreCopy];
 
             if (!v36)
             {
@@ -614,7 +614,7 @@ LABEL_11:
 
         v14 = 1;
 LABEL_27:
-        v10 = v41;
+        keyCopy = v41;
       }
 
       else
@@ -622,8 +622,8 @@ LABEL_27:
         v14 = 1;
       }
 
-      v12 = v45;
-      v11 = v46;
+      againstObjectCopy = v45;
+      objectCopy = v46;
       v15 = v43;
       v16 = v44;
       v20 = v42;
@@ -640,35 +640,35 @@ LABEL_27:
   return v14;
 }
 
-+ (BOOL)_compareRelationshipObject1:(id)a3 againstRelationshipObject2:(id)a4 propertiesToIgnore:(id)a5
++ (BOOL)_compareRelationshipObject1:(id)object1 againstRelationshipObject2:(id)object2 propertiesToIgnore:(id)ignore
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ((v7 == 0) != (v8 == 0))
+  object1Copy = object1;
+  object2Copy = object2;
+  ignoreCopy = ignore;
+  if ((object1Copy == 0) != (object2Copy == 0))
   {
     goto LABEL_5;
   }
 
   v10 = 1;
-  if (v7 && v8)
+  if (object1Copy && object2Copy)
   {
-    v11 = [objc_opt_class() meltedClass];
-    if (v11 != [objc_opt_class() meltedClass])
+    meltedClass = [objc_opt_class() meltedClass];
+    if (meltedClass != [objc_opt_class() meltedClass])
     {
 LABEL_5:
       v10 = 0;
       goto LABEL_6;
     }
 
-    if ([v11 isWeakRelationship])
+    if ([meltedClass isWeakRelationship])
     {
-      v13 = [v11 _compareIdentityKeysForObject:v7 againstObject:v8 propertiesToIgnore:v9];
+      v13 = [meltedClass _compareIdentityKeysForObject:object1Copy againstObject:object2Copy propertiesToIgnore:ignoreCopy];
     }
 
     else
     {
-      v13 = [v7 isEqual:v8 ignoringProperties:v9];
+      v13 = [object1Copy isEqual:object2Copy ignoringProperties:ignoreCopy];
     }
 
     v10 = v13;
@@ -679,15 +679,15 @@ LABEL_6:
   return v10;
 }
 
-+ (BOOL)_objects:(id)a3 haveSameMeltedClass:(Class)a4 frozenClass:(Class)a5
++ (BOOL)_objects:(id)_objects haveSameMeltedClass:(Class)class frozenClass:(Class)frozenClass
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _objectsCopy = _objects;
+  v7 = [_objectsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -698,14 +698,14 @@ LABEL_6:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_objectsCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        [a1 meltedClass];
+        [self meltedClass];
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          [a1 frozenClass];
+          [self frozenClass];
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             v12 = 0;
@@ -714,7 +714,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [_objectsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -731,33 +731,33 @@ LABEL_12:
   return v12;
 }
 
-- (id)meltedObjectInStore:(id)a3
+- (id)meltedObjectInStore:(id)store
 {
-  v5 = a3;
-  v6 = [(EKObject *)self eventStore];
-  v7 = v6;
-  if (v5 && v6 && v6 != v5)
+  storeCopy = store;
+  eventStore = [(EKObject *)self eventStore];
+  v7 = eventStore;
+  if (storeCopy && eventStore && eventStore != storeCopy)
   {
     if ([(EKObject *)self hasChanges])
     {
       [(EKObject *)a2 meltedObjectInStore:?];
     }
 
-    v8 = [(EKObject *)self frozenObjectInStore:v5];
-    v9 = [objc_alloc(objc_opt_class()) initWithPersistentObject:v8 objectForCopy:self];
+    v8 = [(EKObject *)self frozenObjectInStore:storeCopy];
+    selfCopy = [objc_alloc(objc_opt_class()) initWithPersistentObject:v8 objectForCopy:self];
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (Class)frozenClass
 {
-  v2 = [(EKObject *)self persistentObject];
+  persistentObject = [(EKObject *)self persistentObject];
   v3 = objc_opt_class();
 
   return v3;
@@ -765,31 +765,31 @@ LABEL_12:
 
 - (void)rebase
 {
-  v3 = [(EKObject *)self eventStore];
-  [(EKObject *)self rebaseToEventStore:v3];
+  eventStore = [(EKObject *)self eventStore];
+  [(EKObject *)self rebaseToEventStore:eventStore];
 }
 
-- (void)rebaseSkippingRelationProperties:(id)a3
+- (void)rebaseSkippingRelationProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(EKObject *)self eventStore];
-  [(EKObject *)self rebaseSkippingRelationProperties:v4 toEventStore:v5];
+  propertiesCopy = properties;
+  eventStore = [(EKObject *)self eventStore];
+  [(EKObject *)self rebaseSkippingRelationProperties:propertiesCopy toEventStore:eventStore];
 }
 
-- (void)rebaseSkippingRelationProperties:(id)a3 toEventStore:(id)a4
+- (void)rebaseSkippingRelationProperties:(id)properties toEventStore:(id)store
 {
   v67 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  storeCopy = store;
   [(EKObject *)self _initChangeSetIfNone];
-  v8 = [(EKObject *)self persistentObject];
-  v44 = [v8 objectID];
+  persistentObject = [(EKObject *)self persistentObject];
+  objectID = [persistentObject objectID];
 
-  v9 = [(EKObject *)self persistentObject];
-  v10 = [v9 copy];
+  persistentObject2 = [(EKObject *)self persistentObject];
+  v10 = [persistentObject2 copy];
 
-  [v10 _setEventStore:v7];
-  v11 = [(EKObject *)self additionalFrozenProperties];
+  [v10 _setEventStore:storeCopy];
+  additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
   v61[0] = MEMORY[0x1E69E9820];
   v61[1] = 3221225472;
   v61[2] = __58__EKObject_rebaseSkippingRelationProperties_toEventStore___block_invoke;
@@ -797,47 +797,47 @@ LABEL_12:
   v61[4] = self;
   v43 = v10;
   v62 = v43;
-  [v11 enumerateKeysAndObjectsUsingBlock:v61];
+  [additionalFrozenProperties enumerateKeysAndObjectsUsingBlock:v61];
 
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v12 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v13 = [v12 countByEnumeratingWithState:&v57 objects:v66 count:16];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v13 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v58;
-    v45 = v6;
+    v45 = propertiesCopy;
     do
     {
       for (i = 0; i != v14; ++i)
       {
         if (*v58 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v17 = *(*(&v57 + 1) + 8 * i);
-        if (([v6 containsObject:v17] & 1) == 0)
+        if (([propertiesCopy containsObject:v17] & 1) == 0)
         {
           v18 = [(EKObject *)self valueForKey:v17];
           if (v18 && [objc_opt_class() isMeltedAndNotWeakRelationshipObject:v18 forKey:v17])
           {
-            [v18 rebaseToEventStore:v7];
+            [v18 rebaseToEventStore:storeCopy];
             [(EKObject *)self changeSet];
-            v20 = v19 = v12;
-            v21 = [v18 frozenObject];
-            [v20 forceChangeValue:v21 forKey:v17];
+            v20 = v19 = knownRelationshipSingleValueKeys;
+            frozenObject = [v18 frozenObject];
+            [v20 forceChangeValue:frozenObject forKey:v17];
 
-            v12 = v19;
-            v6 = v45;
+            knownRelationshipSingleValueKeys = v19;
+            propertiesCopy = v45;
           }
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v57 objects:v66 count:16];
+      v14 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v57 objects:v66 count:16];
     }
 
     while (v14);
@@ -866,31 +866,31 @@ LABEL_12:
         }
 
         v26 = *(*(&v53 + 1) + 8 * v25);
-        if ([v6 containsObject:v26])
+        if ([propertiesCopy containsObject:v26])
         {
-          v27 = [(EKObject *)self changeSet];
-          v28 = [v27 multiValueRemovals];
-          [v28 setObject:0 forKeyedSubscript:v26];
+          changeSet = [(EKObject *)self changeSet];
+          multiValueRemovals = [changeSet multiValueRemovals];
+          [multiValueRemovals setObject:0 forKeyedSubscript:v26];
         }
 
         else
         {
           v29 = [(EKObject *)self valueForKey:v26];
-          v30 = [(EKObject *)self changeSet];
+          changeSet2 = [(EKObject *)self changeSet];
           v64 = v26;
           v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
-          [v30 rollbackChangesForKeys:v31];
+          [changeSet2 rollbackChangesForKeys:v31];
 
           v51 = 0u;
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
-          v28 = v29;
-          v32 = [v28 countByEnumeratingWithState:&v49 objects:v63 count:16];
+          multiValueRemovals = v29;
+          v32 = [multiValueRemovals countByEnumeratingWithState:&v49 objects:v63 count:16];
           if (v32)
           {
             v33 = v32;
-            v34 = v6;
+            v34 = propertiesCopy;
             v35 = *v50;
             do
             {
@@ -898,31 +898,31 @@ LABEL_12:
               {
                 if (*v50 != v35)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(multiValueRemovals);
                 }
 
                 v37 = *(*(&v49 + 1) + 8 * j);
                 if (v37 && [objc_opt_class() isMeltedAndNotWeakRelationshipObject:v37 forKey:v26])
                 {
-                  [v37 rebaseToEventStore:v7];
-                  v38 = [v37 frozenObject];
-                  [(EKObject *)self addMultiChangedObjectValue:v38 forKey:v26];
+                  [v37 rebaseToEventStore:storeCopy];
+                  frozenObject2 = [v37 frozenObject];
+                  [(EKObject *)self addMultiChangedObjectValue:frozenObject2 forKey:v26];
                 }
               }
 
-              v33 = [v28 countByEnumeratingWithState:&v49 objects:v63 count:16];
+              v33 = [multiValueRemovals countByEnumeratingWithState:&v49 objects:v63 count:16];
             }
 
             while (v33);
-            v27 = v28;
-            v6 = v34;
+            changeSet = multiValueRemovals;
+            propertiesCopy = v34;
             v24 = v46;
             v23 = v47;
           }
 
           else
           {
-            v27 = v28;
+            changeSet = multiValueRemovals;
           }
         }
 
@@ -936,11 +936,11 @@ LABEL_12:
     while (v23);
   }
 
-  v39 = [v43 objectID];
-  [v7 recordObjectRebaseWithOldObjectID:v44 newObjectID:v39];
-  v40 = [(EKObject *)self persistentObject];
-  v41 = [v40 CADObjectID];
-  [v43 setValue:v41 forKey:*MEMORY[0x1E6992B20]];
+  objectID2 = [v43 objectID];
+  [storeCopy recordObjectRebaseWithOldObjectID:objectID newObjectID:objectID2];
+  persistentObject3 = [(EKObject *)self persistentObject];
+  cADObjectID = [persistentObject3 CADObjectID];
+  [v43 setValue:cADObjectID forKey:*MEMORY[0x1E6992B20]];
 
   [(EKObject *)self setPersistentObject:v43];
   v42 = *MEMORY[0x1E69E9840];
@@ -984,40 +984,40 @@ void __58__EKObject_rebaseSkippingRelationProperties_toEventStore___block_invoke
 
 - (int)rowID
 {
-  v2 = [(EKObject *)self objectID];
-  v3 = [v2 rowID];
+  objectID = [(EKObject *)self objectID];
+  rowID = [objectID rowID];
 
-  return v3;
+  return rowID;
 }
 
 - (BOOL)existsInStore
 {
-  v2 = [(EKObject *)self persistentObject];
-  if ([v2 isNew])
+  persistentObject = [(EKObject *)self persistentObject];
+  if ([persistentObject isNew])
   {
-    v3 = 0;
+    existsInStore = 0;
   }
 
   else
   {
-    v3 = [v2 existsInStore];
+    existsInStore = [persistentObject existsInStore];
   }
 
-  return v3;
+  return existsInStore;
 }
 
-+ (id)objectsIDsExistingInStoreFromObjects:(id)a3 eventStore:(id)a4
++ (id)objectsIDsExistingInStoreFromObjects:(id)objects eventStore:(id)store
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  objectsCopy = objects;
+  storeCopy = store;
   v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v5;
+  v9 = objectsCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -1033,14 +1033,14 @@ void __58__EKObject_rebaseSkippingRelationProperties_toEventStore___block_invoke
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 persistentObject];
-        v16 = [v15 isNew];
+        persistentObject = [v14 persistentObject];
+        isNew = [persistentObject isNew];
 
-        if ((v16 & 1) == 0)
+        if ((isNew & 1) == 0)
         {
-          v17 = [v14 CADObjectID];
-          v18 = v17;
-          if (v17 && ([v17 isTemporary] & 1) == 0)
+          cADObjectID = [v14 CADObjectID];
+          v18 = cADObjectID;
+          if (cADObjectID && ([cADObjectID isTemporary] & 1) == 0)
           {
             [v8 addObject:v18];
           }
@@ -1055,15 +1055,15 @@ void __58__EKObject_rebaseSkippingRelationProperties_toEventStore___block_invoke
 
   if ([v8 count])
   {
-    v19 = [v6 connection];
-    v20 = [v19 CADOperationProxySync];
+    connection = [storeCopy connection];
+    cADOperationProxySync = [connection CADOperationProxySync];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __60__EKObject_objectsIDsExistingInStoreFromObjects_eventStore___block_invoke;
     v23[3] = &unk_1E77FD360;
     v24 = v8;
     v25 = v7;
-    [v20 CADObjectsExist:v24 reply:v23];
+    [cADOperationProxySync CADObjectsExist:v24 reply:v23];
   }
 
   v21 = *MEMORY[0x1E69E9840];
@@ -1121,16 +1121,16 @@ void __60__EKObject_objectsIDsExistingInStoreFromObjects_eventStore___block_invo
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v9 = 1;
     goto LABEL_7;
@@ -1140,10 +1140,10 @@ void __60__EKObject_objectsIDsExistingInStoreFromObjects_eventStore___block_invo
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
-    v7 = [(EKObject *)self persistentObject];
-    v8 = [(EKObject *)v6 persistentObject];
+    persistentObject = [(EKObject *)self persistentObject];
+    persistentObject2 = [(EKObject *)v6 persistentObject];
 
-    v9 = [v7 isEqual:v8];
+    v9 = [persistentObject isEqual:persistentObject2];
   }
 
   else
@@ -1157,9 +1157,9 @@ LABEL_7:
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(EKObject *)self _copyWithoutChangesInZone:a3];
+  v4 = [(EKObject *)self _copyWithoutChangesInZone:zone];
   if ([(EKObject *)self hasUnsavedChanges])
   {
     [v4 addChangesFromObject:self copyingBackingObjects:0];
@@ -1175,31 +1175,31 @@ LABEL_7:
   return v2;
 }
 
-- (id)_copyWithoutChangesInZone:(_NSZone *)a3
+- (id)_copyWithoutChangesInZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EKObject *)self persistentObject];
-  v6 = [v4 initWithPersistentObject:v5 objectForCopy:self];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  persistentObject = [(EKObject *)self persistentObject];
+  v6 = [v4 initWithPersistentObject:persistentObject objectForCopy:self];
 
-  v7 = [(EKObject *)self additionalFrozenProperties];
-  [v6 setAdditionalFrozenProperties:v7];
+  additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
+  [v6 setAdditionalFrozenProperties:additionalFrozenProperties];
 
   return v6;
 }
 
 - (id)duplicate
 {
-  v3 = [(EKObject *)self eventStore];
-  v4 = [(EKObject *)self duplicateToEventStore:v3];
+  eventStore = [(EKObject *)self eventStore];
+  v4 = [(EKObject *)self duplicateToEventStore:eventStore];
 
   return v4;
 }
 
-- (id)duplicateToEventStore:(id)a3
+- (id)duplicateToEventStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = [(EKObject *)self copy];
-  [v5 rebaseToEventStore:v4];
+  [v5 rebaseToEventStore:storeCopy];
 
   [v5 markAsNew];
 
@@ -1208,8 +1208,8 @@ LABEL_7:
 
 - (id)committedCopy
 {
-  v3 = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
-  v4 = [(EKObject *)self _recursiveSnapshotCopyWithPropertyAccessor:&__block_literal_global_5 propertyKeysToCopy:0 propertyKeysToSkip:v3 recurseOnWeakRelations:1];
+  defaultPropertyKeysToSkipForRecursiveSnapshotCopies = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
+  v4 = [(EKObject *)self _recursiveSnapshotCopyWithPropertyAccessor:&__block_literal_global_5 propertyKeysToCopy:0 propertyKeysToSkip:defaultPropertyKeysToSkipForRecursiveSnapshotCopies recurseOnWeakRelations:1];
 
   return v4;
 }
@@ -1235,11 +1235,11 @@ id __25__EKObject_committedCopy__block_invoke(uint64_t a1, void *a2, void *a3)
   return v8;
 }
 
-- (id)snapshotCopyWithPropertyKeysToCopy:(id)a3
+- (id)snapshotCopyWithPropertyKeysToCopy:(id)copy
 {
-  v4 = a3;
-  v5 = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
-  v6 = [(EKObject *)self snapshotCopyWithPropertyKeysToCopy:v4 propertyKeysToSkip:v5];
+  copyCopy = copy;
+  defaultPropertyKeysToSkipForRecursiveSnapshotCopies = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
+  v6 = [(EKObject *)self snapshotCopyWithPropertyKeysToCopy:copyCopy propertyKeysToSkip:defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
 
   return v6;
 }
@@ -1270,8 +1270,8 @@ id __66__EKObject_snapshotCopyWithPropertyKeysToCopy_propertyKeysToSkip___block_
   v6[2] = __31__EKObject_previouslySavedCopy__block_invoke;
   v6[3] = &unk_1E77FD3A8;
   v6[4] = self;
-  v3 = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
-  v4 = [(EKObject *)self _recursiveSnapshotCopyWithPropertyAccessor:v6 propertyKeysToCopy:0 propertyKeysToSkip:v3 recurseOnWeakRelations:1];
+  defaultPropertyKeysToSkipForRecursiveSnapshotCopies = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
+  v4 = [(EKObject *)self _recursiveSnapshotCopyWithPropertyAccessor:v6 propertyKeysToCopy:0 propertyKeysToSkip:defaultPropertyKeysToSkipForRecursiveSnapshotCopies recurseOnWeakRelations:1];
 
   return v4;
 }
@@ -1452,59 +1452,59 @@ LABEL_38:
   return v19;
 }
 
-+ (id)_array:(id)a3 intersectedWithSet:(id)a4 minusSet:(id)a5
++ (id)_array:(id)_array intersectedWithSet:(id)set minusSet:(id)minusSet
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8 | v9)
+  _arrayCopy = _array;
+  setCopy = set;
+  minusSetCopy = minusSet;
+  if (setCopy | minusSetCopy)
   {
-    v11 = [MEMORY[0x1E695DFA8] setWithArray:v7];
+    v11 = [MEMORY[0x1E695DFA8] setWithArray:_arrayCopy];
     v12 = v11;
-    if (v8)
+    if (setCopy)
     {
-      [v11 intersectSet:v8];
+      [v11 intersectSet:setCopy];
     }
 
-    if (v9)
+    if (minusSetCopy)
     {
-      [v12 minusSet:v9];
+      [v12 minusSet:minusSetCopy];
     }
 
-    v10 = [v12 allObjects];
+    allObjects = [v12 allObjects];
   }
 
   else
   {
-    v10 = v7;
+    allObjects = _arrayCopy;
   }
 
-  return v10;
+  return allObjects;
 }
 
-- (id)_recursiveSnapshotCopyWithPropertyAccessor:(id)a3 propertyKeysToCopy:(id)a4 propertyKeysToSkip:(id)a5 recurseOnWeakRelations:(BOOL)a6
+- (id)_recursiveSnapshotCopyWithPropertyAccessor:(id)accessor propertyKeysToCopy:(id)copy propertyKeysToSkip:(id)skip recurseOnWeakRelations:(BOOL)relations
 {
-  v101 = a6;
+  relationsCopy = relations;
   v128 = *MEMORY[0x1E69E9840];
-  v102 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessorCopy = accessor;
+  copyCopy = copy;
+  skipCopy = skip;
   context = objc_autoreleasePoolPush();
   v11 = objc_alloc(objc_opt_class());
-  v12 = [(EKObject *)self persistentObject];
-  v88 = [v11 initWithPersistentObject:v12 objectForCopy:self];
+  persistentObject = [(EKObject *)self persistentObject];
+  v88 = [v11 initWithPersistentObject:persistentObject objectForCopy:self];
 
   v96 = objc_opt_new();
-  v13 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v14 = [objc_opt_class() knownRelationshipMultiValueKeys];
-  v15 = [objc_opt_class() knownSingleValueKeysForComparison];
-  v16 = [objc_opt_class() _array:v13 intersectedWithSet:v9 minusSet:v10];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+  knownSingleValueKeysForComparison = [objc_opt_class() knownSingleValueKeysForComparison];
+  v16 = [objc_opt_class() _array:knownRelationshipSingleValueKeys intersectedWithSet:copyCopy minusSet:skipCopy];
 
-  v17 = [objc_opt_class() _array:v14 intersectedWithSet:v9 minusSet:v10];
+  v17 = [objc_opt_class() _array:knownRelationshipMultiValueKeys intersectedWithSet:copyCopy minusSet:skipCopy];
 
-  v98 = v10;
-  v99 = v9;
-  v18 = [objc_opt_class() _array:v15 intersectedWithSet:v9 minusSet:v10];
+  v98 = skipCopy;
+  v99 = copyCopy;
+  v18 = [objc_opt_class() _array:knownSingleValueKeysForComparison intersectedWithSet:copyCopy minusSet:skipCopy];
 
   v19 = [v16 count];
   v20 = [v17 count] + v19;
@@ -1515,10 +1515,10 @@ LABEL_38:
   [v22 addObjectsFromArray:v17];
   v83 = v18;
   [v22 addObjectsFromArray:v18];
-  v103 = self;
-  v23 = [(EKObject *)self persistentObject];
+  selfCopy = self;
+  persistentObject2 = [(EKObject *)self persistentObject];
   v84 = v22;
-  [v23 loadPropertiesIfNeeded:v22];
+  [persistentObject2 loadPropertiesIfNeeded:v22];
 
   v118 = 0u;
   v119 = 0u;
@@ -1544,38 +1544,38 @@ LABEL_38:
 
         v29 = *(*(&v116 + 1) + 8 * v28);
         v30 = objc_autoreleasePoolPush();
-        v31 = v102[2](v102, v103, v29);
+        v31 = accessorCopy[2](accessorCopy, selfCopy, v29);
         if (v31)
         {
           v32 = objc_opt_class();
           if (v32 == objc_opt_class())
           {
-            v37 = [MEMORY[0x1E695DFB0] null];
-            [v96 setObject:v37 forKey:v29];
+            null = [MEMORY[0x1E695DFB0] null];
+            [v96 setObject:null forKey:v29];
 LABEL_19:
 
             v27 = v97;
             goto LABEL_20;
           }
 
-          v33 = [(EKObject *)v103 eventStore];
-          v34 = [v31 frozenObjectInStore:v33];
+          eventStore = [(EKObject *)selfCopy eventStore];
+          v34 = [v31 frozenObjectInStore:eventStore];
           [v96 setObject:v34 forKey:v29];
 
           v35 = [objc_opt_class() isWeakRelationObject:v31 forKey:v29] ^ 1;
-          if ((v35 & 1) != 0 || v101)
+          if ((v35 & 1) != 0 || relationsCopy)
           {
-            v36 = [(EKObject *)v103 eventStore];
-            v37 = [v31 meltedObjectInStore:v36];
+            eventStore2 = [(EKObject *)selfCopy eventStore];
+            null = [v31 meltedObjectInStore:eventStore2];
 
-            v38 = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
+            defaultPropertyKeysToSkipForRecursiveSnapshotCopies = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v39 = v99;
               v40 = v98;
 
-              v38 = v40;
+              defaultPropertyKeysToSkipForRecursiveSnapshotCopies = v40;
             }
 
             else
@@ -1583,10 +1583,10 @@ LABEL_19:
               v39 = 0;
             }
 
-            v41 = [v37 _recursiveSnapshotCopyWithPropertyAccessor:v102 propertyKeysToCopy:v39 propertyKeysToSkip:v38 recurseOnWeakRelations:v35 & v101];
-            if (v41)
+            relationsCopy = [null _recursiveSnapshotCopyWithPropertyAccessor:accessorCopy propertyKeysToCopy:v39 propertyKeysToSkip:defaultPropertyKeysToSkipForRecursiveSnapshotCopies recurseOnWeakRelations:v35 & relationsCopy];
+            if (relationsCopy)
             {
-              [v88 setCachedMeltedObject:v41 forSingleValueKey:v29];
+              [v88 setCachedMeltedObject:relationsCopy forSingleValueKey:v29];
             }
 
             else
@@ -1646,7 +1646,7 @@ LABEL_20:
 
         v49 = *(*(&v112 + 1) + 8 * v48);
         v50 = objc_autoreleasePoolPush();
-        v51 = v102[2](v102, v103, v49);
+        v51 = accessorCopy[2](accessorCopy, selfCopy, v49);
         if (v51)
         {
           v52 = objc_opt_class();
@@ -1688,17 +1688,17 @@ LABEL_20:
                   }
 
                   v60 = *(*(&v108 + 1) + 8 * v59);
-                  v61 = [(EKObject *)v103 eventStore];
-                  v62 = [v60 meltedObjectInStore:v61];
+                  eventStore3 = [(EKObject *)selfCopy eventStore];
+                  v62 = [v60 meltedObjectInStore:eventStore3];
 
-                  v63 = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
+                  defaultPropertyKeysToSkipForRecursiveSnapshotCopies2 = [objc_opt_class() defaultPropertyKeysToSkipForRecursiveSnapshotCopies];
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
                     v64 = v99;
                     v65 = v98;
 
-                    v63 = v65;
+                    defaultPropertyKeysToSkipForRecursiveSnapshotCopies2 = v65;
                   }
 
                   else
@@ -1706,7 +1706,7 @@ LABEL_20:
                     v64 = 0;
                   }
 
-                  v66 = [v62 _recursiveSnapshotCopyWithPropertyAccessor:v102 propertyKeysToCopy:v64 propertyKeysToSkip:v63 recurseOnWeakRelations:v101];
+                  v66 = [v62 _recursiveSnapshotCopyWithPropertyAccessor:accessorCopy propertyKeysToCopy:v64 propertyKeysToSkip:defaultPropertyKeysToSkipForRecursiveSnapshotCopies2 recurseOnWeakRelations:relationsCopy];
                   if (v66)
                   {
                     [v55 addObject:v66];
@@ -1782,7 +1782,7 @@ LABEL_20:
 
         v77 = *(*(&v104 + 1) + 8 * i);
         v78 = objc_autoreleasePoolPush();
-        v79 = v102[2](v102, v103, v77);
+        v79 = accessorCopy[2](accessorCopy, selfCopy, v77);
         if (v79)
         {
           [v96 setObject:v79 forKey:v77];
@@ -1810,34 +1810,34 @@ LABEL_20:
 
 - (BOOL)_reset
 {
-  v3 = [(EKObject *)self persistentObject];
-  [v3 reset];
+  persistentObject = [(EKObject *)self persistentObject];
+  [persistentObject reset];
 
   return [(EKObject *)self _resetCommon];
 }
 
-- (id)committedValueForKey:(id)a3
+- (id)committedValueForKey:(id)key
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKObject *)self _previousValueForKey:v4];
+  keyCopy = key;
+  v5 = [(EKObject *)self _previousValueForKey:keyCopy];
   if (v5)
   {
-    v6 = [objc_opt_class() knownRelationshipSingleValueKeys];
-    v7 = [v6 containsObject:v4];
+    knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+    v7 = [knownRelationshipSingleValueKeys containsObject:keyCopy];
 
     if (v7)
     {
-      v8 = [(EKObject *)self eventStore];
-      v9 = [v5 meltedObjectInStore:v8];
+      eventStore = [(EKObject *)self eventStore];
+      v9 = [v5 meltedObjectInStore:eventStore];
 
       v5 = v9;
     }
 
     else
     {
-      v10 = [objc_opt_class() knownRelationshipMultiValueKeys];
-      v11 = [v10 containsObject:v4];
+      knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+      v11 = [knownRelationshipMultiValueKeys containsObject:keyCopy];
 
       if (v11)
       {
@@ -1863,8 +1863,8 @@ LABEL_20:
               }
 
               v19 = *(*(&v24 + 1) + 8 * i);
-              v20 = [(EKObject *)self eventStore];
-              v21 = [v19 meltedObjectInStore:v20];
+              eventStore2 = [(EKObject *)self eventStore];
+              v21 = [v19 meltedObjectInStore:eventStore2];
 
               [v13 addObject:v21];
             }
@@ -1892,8 +1892,8 @@ LABEL_20:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v3 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v4 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1904,7 +1904,7 @@ LABEL_20:
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
@@ -1913,13 +1913,13 @@ LABEL_20:
           v9 = [(EKObject *)self valueForKey:v8];
           if ([objc_opt_class() isMeltedAndNotWeakRelationshipObject:v9 forKey:v8])
           {
-            v10 = [v9 existingMeltedObject];
-            [v10 markAsNew];
+            existingMeltedObject = [v9 existingMeltedObject];
+            [existingMeltedObject markAsNew];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v5 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v5);
@@ -1969,8 +1969,8 @@ LABEL_20:
                 v21 = *(*(&v25 + 1) + 8 * k);
                 if ([objc_opt_class() isMeltedAndNotWeakRelationshipObject:v21 forKey:v15])
                 {
-                  v22 = [v21 existingMeltedObject];
-                  [v22 markAsNew];
+                  existingMeltedObject2 = [v21 existingMeltedObject];
+                  [existingMeltedObject2 markAsNew];
                 }
               }
 
@@ -1995,11 +1995,11 @@ LABEL_20:
 - (void)markAsNewShallow
 {
   [(EKObject *)self _initChangeSetIfNone];
-  v3 = [(EKObject *)self changeSet];
-  [v3 setIsNew:1];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet setIsNew:1];
 
-  v4 = [(EKObject *)self changeSet];
-  [v4 setIsSaved:0];
+  changeSet2 = [(EKObject *)self changeSet];
+  [changeSet2 setIsSaved:0];
 }
 
 - (void)markAsUndeleted
@@ -2016,16 +2016,16 @@ LABEL_20:
   [(EKObject *)self _performBlockOnOwnedCachedRelatedObjects:&__block_literal_global_29];
 }
 
-- (void)_performBlockOnOwnedCachedRelatedObjects:(id)a3
+- (void)_performBlockOnOwnedCachedRelatedObjects:(id)objects
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v6 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2036,18 +2036,18 @@ LABEL_20:
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
         v11 = [(EKObject *)self cachedMeltedObjectForSingleValueKey:v10];
         if (v11 && [objc_opt_class() isMeltedAndNotWeakRelationshipObject:v11 forKey:v10])
         {
-          v4[2](v4, v11);
+          objectsCopy[2](objectsCopy, v11);
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v7 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v7);
@@ -2094,7 +2094,7 @@ LABEL_20:
               v19 = *(*(&v24 + 1) + 8 * k);
               if (v19 && [objc_opt_class() isMeltedAndNotWeakRelationshipObject:v19 forKey:v13])
               {
-                v4[2](v4, v19);
+                objectsCopy[2](objectsCopy, v19);
               }
             }
 
@@ -2114,51 +2114,51 @@ LABEL_20:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updatePersistentValueForKeyIfNeeded:(id)a3
+- (void)updatePersistentValueForKeyIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   if ([(EKObject *)self _hasChangesForKey:?])
   {
-    [(EKObject *)self _updatePersistentValueForKey:v4];
+    [(EKObject *)self _updatePersistentValueForKey:neededCopy];
   }
 }
 
-- (void)_updatePersistentValueForKey:(id)a3
+- (void)_updatePersistentValueForKey:(id)key
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKObject *)self _propertyValueForKey:v4];
-  v6 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v7 = [v6 containsObject:v4];
+  keyCopy = key;
+  v5 = [(EKObject *)self _propertyValueForKey:keyCopy];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v7 = [knownRelationshipSingleValueKeys containsObject:keyCopy];
 
   if (v7)
   {
     v8 = v5;
-    v9 = [(EKObject *)self persistentObject];
-    v10 = [v8 persistentObject];
-    [v9 setValue:v10 forKey:v4];
+    persistentObject = [(EKObject *)self persistentObject];
+    persistentObject2 = [v8 persistentObject];
+    [persistentObject setValue:persistentObject2 forKey:keyCopy];
 
     [v8 updatePersistentObject];
   }
 
   else
   {
-    v11 = [objc_opt_class() knownRelationshipMultiValueKeys];
-    v12 = [v11 containsObject:v4];
+    knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+    v12 = [knownRelationshipMultiValueKeys containsObject:keyCopy];
 
     if (v12)
     {
       v13 = v5;
-      v14 = [(EKObject *)self persistentObject];
+      persistentObject3 = [(EKObject *)self persistentObject];
       v15 = [v13 valueForKey:@"persistentObject"];
-      [v14 setValue:v15 forKey:v4];
+      [persistentObject3 setValue:v15 forKey:keyCopy];
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v16 = v13;
-      v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      persistentObject4 = v13;
+      v17 = [persistentObject4 countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v17)
       {
         v18 = v17;
@@ -2170,14 +2170,14 @@ LABEL_20:
           {
             if (*v23 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(persistentObject4);
             }
 
             [*(*(&v22 + 1) + 8 * v20++) updatePersistentObject];
           }
 
           while (v18 != v20);
-          v18 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v18 = [persistentObject4 countByEnumeratingWithState:&v22 objects:v26 count:16];
         }
 
         while (v18);
@@ -2186,46 +2186,46 @@ LABEL_20:
 
     else
     {
-      v16 = [(EKObject *)self persistentObject];
-      [v16 setValue:v5 forKey:v4];
+      persistentObject4 = [(EKObject *)self persistentObject];
+      [persistentObject4 setValue:v5 forKey:keyCopy];
     }
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_propertyValueForKey:(id)a3
+- (id)_propertyValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v6 = [knownRelationshipSingleValueKeys containsObject:keyCopy];
 
   if (v6)
   {
-    v7 = [(EKObject *)self meltedAndCachedSingleRelationObjectForKey:v4];
+    v7 = [(EKObject *)self meltedAndCachedSingleRelationObjectForKey:keyCopy];
   }
 
   else
   {
-    v8 = [objc_opt_class() knownRelationshipMultiValueKeys];
-    v9 = [v8 containsObject:v4];
+    knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+    v9 = [knownRelationshipMultiValueKeys containsObject:keyCopy];
 
     if (v9)
     {
-      [(EKObject *)self meltedAndCachedMultiRelationObjectsForKey:v4];
+      [(EKObject *)self meltedAndCachedMultiRelationObjectsForKey:keyCopy];
     }
 
     else
     {
-      [(EKObject *)self singleChangedValueForKey:v4];
+      [(EKObject *)self singleChangedValueForKey:keyCopy];
     }
     v7 = ;
   }
 
   v10 = v7;
-  v11 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v10 == v11)
+  if (v10 == null)
   {
 
     v10 = 0;
@@ -2236,26 +2236,26 @@ LABEL_20:
 
 - (void)insertPersistentObjectIfNeeded
 {
-  v3 = [(EKObject *)self persistentObject];
-  if ([v3 isNew] && (objc_msgSend(v3, "_isPendingInsert") & 1) == 0)
+  persistentObject = [(EKObject *)self persistentObject];
+  if ([persistentObject isNew] && (objc_msgSend(persistentObject, "_isPendingInsert") & 1) == 0)
   {
-    v2 = [v3 eventStore];
-    [v2 _insertObject:v3];
+    eventStore = [persistentObject eventStore];
+    [eventStore _insertObject:persistentObject];
   }
 }
 
-- (void)updatePersistentObjectSkippingProperties:(id)a3
+- (void)updatePersistentObjectSkippingProperties:(id)properties
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKObject *)self changeSet];
-  v6 = [v5 changedKeys];
+  propertiesCopy = properties;
+  changeSet = [(EKObject *)self changeSet];
+  changedKeys = [changeSet changedKeys];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v7 = v6;
+  v7 = changedKeys;
   v8 = [v7 countByEnumeratingWithState:&v46 objects:v53 count:16];
   if (v8)
   {
@@ -2271,7 +2271,7 @@ LABEL_20:
         }
 
         v12 = *(*(&v46 + 1) + 8 * i);
-        if (([v4 containsObject:v12] & 1) == 0)
+        if (([propertiesCopy containsObject:v12] & 1) == 0)
         {
           [(EKObject *)self _updatePersistentValueForKey:v12];
         }
@@ -2283,12 +2283,12 @@ LABEL_20:
     while (v9);
   }
 
-  v13 = [objc_opt_class() knownRelationshipSingleValueKeys];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v14 = [v13 countByEnumeratingWithState:&v42 objects:v52 count:16];
+  v14 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v14)
   {
     v15 = v14;
@@ -2299,46 +2299,46 @@ LABEL_20:
       {
         if (*v43 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v18 = *(*(&v42 + 1) + 8 * j);
-        if (([v4 containsObject:v18] & 1) == 0 && (objc_msgSend(v7, "containsObject:", v18) & 1) == 0 && -[EKObject _hasChangesForKey:](self, "_hasChangesForKey:", v18))
+        if (([propertiesCopy containsObject:v18] & 1) == 0 && (objc_msgSend(v7, "containsObject:", v18) & 1) == 0 && -[EKObject _hasChangesForKey:](self, "_hasChangesForKey:", v18))
         {
           v19 = [(EKObject *)self meltedAndCachedSingleRelationObjectForKey:v18];
           [v19 updatePersistentObject];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v42 objects:v52 count:16];
+      v15 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v42 objects:v52 count:16];
     }
 
     while (v15);
   }
 
-  v32 = v13;
-  v20 = [objc_opt_class() knownRelationshipMultiValueKeys];
+  v32 = knownRelationshipSingleValueKeys;
+  knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v21 = [v20 countByEnumeratingWithState:&v38 objects:v51 count:16];
+  v21 = [knownRelationshipMultiValueKeys countByEnumeratingWithState:&v38 objects:v51 count:16];
   if (v21)
   {
     v22 = v21;
     v23 = *v39;
-    v33 = v20;
+    v33 = knownRelationshipMultiValueKeys;
     do
     {
       for (k = 0; k != v22; ++k)
       {
         if (*v39 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(knownRelationshipMultiValueKeys);
         }
 
         v25 = *(*(&v38 + 1) + 8 * k);
-        if (([v4 containsObject:{v25, v32}] & 1) == 0 && (objc_msgSend(v7, "containsObject:", v25) & 1) == 0 && -[EKObject _hasChangesForKey:](self, "_hasChangesForKey:", v25))
+        if (([propertiesCopy containsObject:{v25, v32}] & 1) == 0 && (objc_msgSend(v7, "containsObject:", v25) & 1) == 0 && -[EKObject _hasChangesForKey:](self, "_hasChangesForKey:", v25))
         {
           v26 = [(EKObject *)self meltedAndCachedMultiRelationObjectsForKey:v25];
           v34 = 0u;
@@ -2368,11 +2368,11 @@ LABEL_20:
             while (v28);
           }
 
-          v20 = v33;
+          knownRelationshipMultiValueKeys = v33;
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v38 objects:v51 count:16];
+      v22 = [knownRelationshipMultiValueKeys countByEnumeratingWithState:&v38 objects:v51 count:16];
     }
 
     while (v22);
@@ -2383,32 +2383,32 @@ LABEL_20:
 
 - (void)deletePersistentObject
 {
-  v3 = [(EKObject *)self persistentObject];
-  v2 = [v3 eventStore];
-  [v2 _deleteObject:v3];
+  persistentObject = [(EKObject *)self persistentObject];
+  eventStore = [persistentObject eventStore];
+  [eventStore _deleteObject:persistentObject];
 }
 
-- (void)addCoCommitObject:(id)a3
+- (void)addCoCommitObject:(id)object
 {
-  v4 = a3;
-  v6 = [(EKObject *)self persistentObject];
-  v5 = [v4 persistentObject];
+  objectCopy = object;
+  persistentObject = [(EKObject *)self persistentObject];
+  persistentObject2 = [objectCopy persistentObject];
 
-  [v6 addCoCommitObject:v5];
+  [persistentObject addCoCommitObject:persistentObject2];
 }
 
-- (id)_basicSummaryWithDepth:(int64_t)a3
+- (id)_basicSummaryWithDepth:(int64_t)depth
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [EKDiff _indentStringAtDepth:a3];
-  v5 = [MEMORY[0x1E696AD60] string];
+  v4 = [EKDiff _indentStringAtDepth:depth];
+  string = [MEMORY[0x1E696AD60] string];
   v20 = v4;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@ <0x%x>", v4, objc_opt_class(), self];
-  [v5 appendString:v6];
+  [string appendString:v6];
 
-  v7 = [objc_opt_class() knownSummaryKeys];
-  v8 = [objc_opt_class() knownIdentityKeysForComparison];
-  v9 = [v7 arrayByAddingObjectsFromArray:v8];
+  knownSummaryKeys = [objc_opt_class() knownSummaryKeys];
+  knownIdentityKeysForComparison = [objc_opt_class() knownIdentityKeysForComparison];
+  v9 = [knownSummaryKeys arrayByAddingObjectsFromArray:knownIdentityKeysForComparison];
 
   v23 = 0u;
   v24 = 0u;
@@ -2434,7 +2434,7 @@ LABEL_20:
         if (v16)
         {
           v17 = [(EKObject *)self valueForKey:v15];
-          [v5 appendFormat:@", %@:%@", v15, v17];
+          [string appendFormat:@", %@:%@", v15, v17];
         }
       }
 
@@ -2446,47 +2446,47 @@ LABEL_20:
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return string;
 }
 
-- (id)_summaryWithDepth:(int64_t)a3
+- (id)_summaryWithDepth:(int64_t)depth
 {
-  v5 = [MEMORY[0x1E696AD60] string];
-  v6 = [(EKObject *)self _basicSummaryWithDepth:a3];
-  [v5 appendString:v6];
+  string = [MEMORY[0x1E696AD60] string];
+  v6 = [(EKObject *)self _basicSummaryWithDepth:depth];
+  [string appendString:v6];
 
-  [(EKObject *)self _addSummaryWithDepth:0 toMutableString:v5 indentFirstLine:0];
+  [(EKObject *)self _addSummaryWithDepth:0 toMutableString:string indentFirstLine:0];
 
-  return v5;
+  return string;
 }
 
-- (void)_addSummaryWithDepth:(int64_t)a3 toMutableString:(id)a4 indentFirstLine:(BOOL)a5
+- (void)_addSummaryWithDepth:(int64_t)depth toMutableString:(id)string indentFirstLine:(BOOL)line
 {
-  v7 = a4;
-  v8 = [objc_opt_class() knownSingleValueKeysForComparison];
-  [EKDiff _addSummaryWithDepth:a3 toMutableString:v7 forSingleValueKeys:v8 firstObject:self secondObject:0];
+  stringCopy = string;
+  knownSingleValueKeysForComparison = [objc_opt_class() knownSingleValueKeysForComparison];
+  [EKDiff _addSummaryWithDepth:depth toMutableString:stringCopy forSingleValueKeys:knownSingleValueKeysForComparison firstObject:self secondObject:0];
 
-  v10 = [objc_opt_class() knownDerivedAndSingleValueRelationshipKeys];
-  [EKDiff _addSummaryWithDepth:a3 toMutableString:v7 forRelationshipSingleValueKeys:v10 firstObject:self secondObject:0];
-  v9 = [objc_opt_class() knownRelationshipMultiValueKeys];
-  [EKDiff _addSummaryWithDepth:a3 toMutableString:v7 forRelationshipMultiValueKeys:v9 firstObject:self secondObject:0];
+  knownDerivedAndSingleValueRelationshipKeys = [objc_opt_class() knownDerivedAndSingleValueRelationshipKeys];
+  [EKDiff _addSummaryWithDepth:depth toMutableString:stringCopy forRelationshipSingleValueKeys:knownDerivedAndSingleValueRelationshipKeys firstObject:self secondObject:0];
+  knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+  [EKDiff _addSummaryWithDepth:depth toMutableString:stringCopy forRelationshipMultiValueKeys:knownRelationshipMultiValueKeys firstObject:self secondObject:0];
 }
 
-- (void)_performWithLock:(id)a3
+- (void)_performWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock([(EKObject *)self _lock]);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
-  v5 = [(EKObject *)self _lock];
+  _lock = [(EKObject *)self _lock];
 
-  os_unfair_lock_unlock(v5);
+  os_unfair_lock_unlock(_lock);
 }
 
-- (id)cachedValueForKey:(id)a3 populateBlock:(id)a4
+- (id)cachedValueForKey:(id)key populateBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  blockCopy = block;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2499,13 +2499,13 @@ LABEL_20:
   v17[3] = &unk_1E77FD688;
   v19 = &v20;
   v17[4] = self;
-  v8 = v6;
+  v8 = keyCopy;
   v18 = v8;
   [(EKObject *)self _performWithLock:v17];
   v9 = v21[5];
-  if (v7 && !v9)
+  if (blockCopy && !v9)
   {
-    v10 = v7[2](v7);
+    v10 = blockCopy[2](blockCopy);
     v11 = v21[5];
     v21[5] = v10;
 
@@ -2558,19 +2558,19 @@ void __52__EKObject_Shared__cachedValueForKey_populateBlock___block_invoke_2(uin
   }
 }
 
-- (void)setCachedValue:(id)a3 forKey:(id)a4
+- (void)setCachedValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__EKObject_Shared__setCachedValue_forKey___block_invoke;
   v10[3] = &unk_1E77FD7C8;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = keyCopy;
+  v12 = valueCopy;
+  v8 = valueCopy;
+  v9 = keyCopy;
   [(EKObject *)self _performWithLock:v10];
 }
 
@@ -2581,16 +2581,16 @@ void __42__EKObject_Shared__setCachedValue_forKey___block_invoke(uint64_t a1)
   [v3 setObject:v2 forKeyedSubscript:*(a1 + 40)];
 }
 
-- (void)clearCachedValueForKey:(id)a3
+- (void)clearCachedValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__EKObject_Shared__clearCachedValueForKey___block_invoke;
   v6[3] = &unk_1E77FD580;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(EKObject *)self _performWithLock:v6];
 }
 
@@ -2600,16 +2600,16 @@ void __43__EKObject_Shared__clearCachedValueForKey___block_invoke(uint64_t a1)
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)clearCachedValuesForKeys:(id)a3
+- (void)clearCachedValuesForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__EKObject_Shared__clearCachedValuesForKeys___block_invoke;
   v6[3] = &unk_1E77FD580;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = keysCopy;
+  selfCopy = self;
+  v5 = keysCopy;
   [(EKObject *)self _performWithLock:v6];
 }
 
@@ -2653,13 +2653,13 @@ void __45__EKObject_Shared__clearCachedValuesForKeys___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cachedValueForKey:(id)a3 expectingCachedValue:(id)a4 forMasterKey:(id)a5 relatedKeys:(id)a6 populateBlock:(id)a7
+- (id)cachedValueForKey:(id)key expectingCachedValue:(id)value forMasterKey:(id)masterKey relatedKeys:(id)keys populateBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keyCopy = key;
+  valueCopy = value;
+  masterKeyCopy = masterKey;
+  keysCopy = keys;
+  blockCopy = block;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -2671,18 +2671,18 @@ void __45__EKObject_Shared__clearCachedValuesForKeys___block_invoke(uint64_t a1)
   v31[2] = __98__EKObject_Shared__cachedValueForKey_expectingCachedValue_forMasterKey_relatedKeys_populateBlock___block_invoke;
   v31[3] = &unk_1E77FF398;
   v31[4] = self;
-  v17 = v14;
+  v17 = masterKeyCopy;
   v32 = v17;
-  v18 = v13;
+  v18 = valueCopy;
   v33 = v18;
   v35 = &v36;
-  v19 = v12;
+  v19 = keyCopy;
   v34 = v19;
   [(EKObject *)self _performWithLock:v31];
   v20 = v37[5];
-  if (v16 && !v20)
+  if (blockCopy && !v20)
   {
-    v21 = v16[2](v16);
+    v21 = blockCopy[2](blockCopy);
     v22 = v37[5];
     v37[5] = v21;
 
@@ -2693,7 +2693,7 @@ void __45__EKObject_Shared__clearCachedValuesForKeys___block_invoke(uint64_t a1)
     v25[4] = self;
     v26 = v17;
     v27 = v18;
-    v28 = v15;
+    v28 = keysCopy;
     v29 = v19;
     v30 = &v36;
     [(EKObject *)self _performWithLock:v25];
@@ -2781,9 +2781,9 @@ void __98__EKObject_Shared__cachedValueForKey_expectingCachedValue_forMasterKey_
 
 + (id)knownDerivedAndSingleValueRelationshipKeys
 {
-  v2 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v3 = [objc_opt_class() knownDerivedRelationshipKeys];
-  v4 = [v2 arrayByAddingObjectsFromArray:v3];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  knownDerivedRelationshipKeys = [objc_opt_class() knownDerivedRelationshipKeys];
+  v4 = [knownRelationshipSingleValueKeys arrayByAddingObjectsFromArray:knownDerivedRelationshipKeys];
 
   return v4;
 }
@@ -2811,14 +2811,14 @@ void __45__EKObject_Shared__knownRelationshipWeakKeys__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isMeltedAndNotWeakRelationshipObject:(id)a3 forKey:(id)a4
++ (BOOL)isMeltedAndNotWeakRelationshipObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ([v6 isFrozen] & 1) == 0)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy && ([objectCopy isFrozen] & 1) == 0)
   {
-    v9 = [v6 existingMeltedObject];
-    v10 = [a1 isWeakRelationObject:v9 forKey:v7];
+    existingMeltedObject = [objectCopy existingMeltedObject];
+    v10 = [self isWeakRelationObject:existingMeltedObject forKey:keyCopy];
 
     v8 = v10 ^ 1;
   }
@@ -2831,9 +2831,9 @@ void __45__EKObject_Shared__knownRelationshipWeakKeys__block_invoke()
   return v8;
 }
 
-+ (BOOL)isWeakRelationObject:(id)a3 forKey:(id)a4
++ (BOOL)isWeakRelationObject:(id)object forKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   if ([objc_msgSend(objc_opt_class() "meltedClass")])
   {
     v6 = 1;
@@ -2841,63 +2841,63 @@ void __45__EKObject_Shared__knownRelationshipWeakKeys__block_invoke()
 
   else
   {
-    v7 = [a1 knownRelationshipWeakKeys];
-    v6 = [v7 containsObject:v5];
+    knownRelationshipWeakKeys = [self knownRelationshipWeakKeys];
+    v6 = [knownRelationshipWeakKeys containsObject:keyCopy];
   }
 
   return v6;
 }
 
-- (BOOL)validate:(id *)a3
+- (BOOL)validate:(id *)validate
 {
   v81 = *MEMORY[0x1E69E9840];
-  v5 = [(EKObject *)self _validationContext];
-  if (!v5)
+  _validationContext = [(EKObject *)self _validationContext];
+  if (!_validationContext)
   {
-    v5 = [[EKObjectValidationContext alloc] initWithRootObject:self];
-    [(EKObject *)self set_validationContext:v5];
+    _validationContext = [[EKObjectValidationContext alloc] initWithRootObject:self];
+    [(EKObject *)self set_validationContext:_validationContext];
   }
 
-  [(EKObjectValidationContext *)v5 setDepth:[(EKObjectValidationContext *)v5 depth]+ 1];
-  if ([(EKObjectValidationContext *)v5 depth]>= 0x33)
+  [(EKObjectValidationContext *)_validationContext setDepth:[(EKObjectValidationContext *)_validationContext depth]+ 1];
+  if ([(EKObjectValidationContext *)_validationContext depth]>= 0x33)
   {
-    [(EKObjectValidationContext *)v5 setReachedMaxDepth:1];
-    v6 = [(EKObjectValidationContext *)v5 rootObject];
+    [(EKObjectValidationContext *)_validationContext setReachedMaxDepth:1];
+    rootObject = [(EKObjectValidationContext *)_validationContext rootObject];
     v7 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKObject(Shared) *)v7 validate:v6];
-      if (!a3)
+      [(EKObject(Shared) *)v7 validate:rootObject];
+      if (!validate)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!a3)
+    else if (!validate)
     {
 LABEL_7:
-      v8 = [(EKObject *)self _validationContext];
-      [v8 faultIfNeededForObject:self];
+      _validationContext2 = [(EKObject *)self _validationContext];
+      [_validationContext2 faultIfNeededForObject:self];
 
       [(EKObject *)self set_validationContext:0];
       v9 = 0;
       goto LABEL_65;
     }
 
-    *a3 = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:5];
+    *validate = [MEMORY[0x1E696ABC0] errorWithEKErrorCode:5];
     goto LABEL_7;
   }
 
-  v53 = a3;
-  v54 = v5;
-  v10 = [objc_opt_class() knownRelationshipWeakKeys];
+  validateCopy = validate;
+  v54 = _validationContext;
+  knownRelationshipWeakKeys = [objc_opt_class() knownRelationshipWeakKeys];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v11 = [objc_opt_class() knownRelationshipSingleValueKeysForValidation];
-  v12 = [v11 countByEnumeratingWithState:&v66 objects:v80 count:16];
-  v55 = v10;
+  knownRelationshipSingleValueKeysForValidation = [objc_opt_class() knownRelationshipSingleValueKeysForValidation];
+  v12 = [knownRelationshipSingleValueKeysForValidation countByEnumeratingWithState:&v66 objects:v80 count:16];
+  v55 = knownRelationshipWeakKeys;
   if (v12)
   {
     v13 = v12;
@@ -2910,11 +2910,11 @@ LABEL_7:
       {
         if (*v67 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(knownRelationshipSingleValueKeysForValidation);
         }
 
         v17 = *(*(&v66 + 1) + 8 * v16);
-        if (([v10 containsObject:v17] & 1) != 0 || -[EKObject isPropertyUnavailable:](self, "isPropertyUnavailable:", v17) && !-[EKObject shouldLoadRelationshipForValidation:](self, "shouldLoadRelationshipForValidation:", v17))
+        if (([knownRelationshipWeakKeys containsObject:v17] & 1) != 0 || -[EKObject isPropertyUnavailable:](self, "isPropertyUnavailable:", v17) && !-[EKObject shouldLoadRelationshipForValidation:](self, "shouldLoadRelationshipForValidation:", v17))
         {
           v18 = 0;
         }
@@ -2926,7 +2926,7 @@ LABEL_7:
           {
             v65 = v14;
             v19 = [v18 validateWithOwner:self error:&v65];
-            v6 = v65;
+            rootObject = v65;
 
             if ((v19 & 1) == 0)
             {
@@ -2935,36 +2935,36 @@ LABEL_7:
               {
                 v44 = v21;
                 v45 = objc_opt_class();
-                v46 = [(EKObject *)self uniqueIdentifier];
+                uniqueIdentifier = [(EKObject *)self uniqueIdentifier];
                 *buf = 138544130;
                 v73 = v45;
                 v74 = 2114;
-                v75 = v46;
+                v75 = uniqueIdentifier;
                 v76 = 2114;
                 v77 = v17;
                 v78 = 2112;
-                v79 = v6;
+                v79 = rootObject;
                 _os_log_error_impl(&dword_1A805E000, v44, OS_LOG_TYPE_ERROR, "Object of type %{public}@ (uniqueIdentifier = %{public}@) failed validation while validating relation %{public}@ with error [%@].", buf, 0x2Au);
               }
 
-              v22 = [(EKObject *)self _validationContext];
-              [v22 faultIfNeededForObject:self];
+              _validationContext3 = [(EKObject *)self _validationContext];
+              [_validationContext3 faultIfNeededForObject:self];
 
               [(EKObject *)self set_validationContext:0];
-              v10 = v55;
-              if (v53 && v6)
+              knownRelationshipWeakKeys = v55;
+              if (validateCopy && rootObject)
               {
-                v23 = v6;
-                *v53 = v6;
+                v23 = rootObject;
+                *validateCopy = rootObject;
               }
 
               v9 = 0;
-              v5 = v54;
+              _validationContext = v54;
               goto LABEL_64;
             }
 
-            v14 = v6;
-            v10 = v55;
+            v14 = rootObject;
+            knownRelationshipWeakKeys = v55;
           }
         }
 
@@ -2972,7 +2972,7 @@ LABEL_7:
       }
 
       while (v13 != v16);
-      v20 = [v11 countByEnumeratingWithState:&v66 objects:v80 count:16];
+      v20 = [knownRelationshipSingleValueKeysForValidation countByEnumeratingWithState:&v66 objects:v80 count:16];
       v13 = v20;
       if (v20)
       {
@@ -2992,13 +2992,13 @@ LABEL_7:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v24 = [objc_opt_class() knownRelationshipMultiValueKeysForValidation];
-  v25 = [v24 countByEnumeratingWithState:&v61 objects:v71 count:16];
+  knownRelationshipMultiValueKeysForValidation = [objc_opt_class() knownRelationshipMultiValueKeysForValidation];
+  v25 = [knownRelationshipMultiValueKeysForValidation countByEnumeratingWithState:&v61 objects:v71 count:16];
   if (v25)
   {
     v26 = v25;
     v27 = *v62;
-    v52 = v24;
+    v52 = knownRelationshipMultiValueKeysForValidation;
     v50 = *v62;
     do
     {
@@ -3008,11 +3008,11 @@ LABEL_7:
       {
         if (*v62 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(knownRelationshipMultiValueKeysForValidation);
         }
 
         v29 = *(*(&v61 + 1) + 8 * v28);
-        if (([v10 containsObject:v29] & 1) == 0 && (!-[EKObject isPropertyUnavailable:](self, "isPropertyUnavailable:", v29) || -[EKObject shouldLoadRelationshipForValidation:](self, "shouldLoadRelationshipForValidation:", v29)))
+        if (([knownRelationshipWeakKeys containsObject:v29] & 1) == 0 && (!-[EKObject isPropertyUnavailable:](self, "isPropertyUnavailable:", v29) || -[EKObject shouldLoadRelationshipForValidation:](self, "shouldLoadRelationshipForValidation:", v29)))
         {
           v59 = 0u;
           v60 = 0u;
@@ -3039,45 +3039,45 @@ LABEL_7:
                   v56 = v14;
                   v36 = v14;
                   v37 = [v35 validateWithOwner:self error:&v56];
-                  v6 = v56;
+                  rootObject = v56;
 
                   if ((v37 & 1) == 0)
                   {
                     v39 = EKLogHandle;
-                    v10 = v55;
+                    knownRelationshipWeakKeys = v55;
                     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
                     {
                       v47 = v39;
                       v48 = objc_opt_class();
-                      v49 = [(EKObject *)self uniqueIdentifier];
+                      uniqueIdentifier2 = [(EKObject *)self uniqueIdentifier];
                       *buf = 138544130;
                       v73 = v48;
                       v74 = 2114;
-                      v75 = v49;
+                      v75 = uniqueIdentifier2;
                       v76 = 2114;
                       v77 = v29;
                       v78 = 2112;
-                      v79 = v6;
+                      v79 = rootObject;
                       _os_log_error_impl(&dword_1A805E000, v47, OS_LOG_TYPE_ERROR, "Object of type %{public}@ (uniqueIdentifier = %{public}@) failed validation while validating relation %{public}@ with error [%@].", buf, 0x2Au);
                     }
 
-                    v40 = [(EKObject *)self _validationContext];
-                    [v40 faultIfNeededForObject:self];
+                    _validationContext4 = [(EKObject *)self _validationContext];
+                    [_validationContext4 faultIfNeededForObject:self];
 
                     [(EKObject *)self set_validationContext:0];
-                    v5 = v54;
-                    if (v53 && v6)
+                    _validationContext = v54;
+                    if (validateCopy && rootObject)
                     {
-                      v41 = v6;
-                      *v53 = v6;
+                      v41 = rootObject;
+                      *validateCopy = rootObject;
                     }
 
                     v9 = 0;
                     goto LABEL_64;
                   }
 
-                  v14 = v6;
-                  v10 = v55;
+                  v14 = rootObject;
+                  knownRelationshipWeakKeys = v55;
                 }
               }
 
@@ -3092,7 +3092,7 @@ LABEL_7:
           }
 
           v26 = v51;
-          v24 = v52;
+          knownRelationshipMultiValueKeysForValidation = v52;
           v27 = v50;
         }
 
@@ -3100,23 +3100,23 @@ LABEL_7:
       }
 
       while (v28 != v26);
-      v26 = [v24 countByEnumeratingWithState:&v61 objects:v71 count:16];
+      v26 = [knownRelationshipMultiValueKeysForValidation countByEnumeratingWithState:&v61 objects:v71 count:16];
     }
 
     while (v26);
   }
 
-  if (v53 && v14)
+  if (validateCopy && v14)
   {
     v38 = v14;
-    *v53 = v14;
+    *validateCopy = v14;
   }
 
-  v5 = v54;
+  _validationContext = v54;
   [(EKObjectValidationContext *)v54 setDepth:[(EKObjectValidationContext *)v54 depth]- 1];
   [(EKObject *)self set_validationContext:0];
   v9 = 1;
-  v6 = v14;
+  rootObject = v14;
 LABEL_64:
 
 LABEL_65:
@@ -3124,19 +3124,19 @@ LABEL_65:
   return v9;
 }
 
-- (BOOL)validateWithOwner:(id)a3 error:(id *)a4
+- (BOOL)validateWithOwner:(id)owner error:(id *)error
 {
-  v6 = [a3 _validationContext];
-  [(EKObject *)self set_validationContext:v6];
+  _validationContext = [owner _validationContext];
+  [(EKObject *)self set_validationContext:_validationContext];
 
-  return [(EKObject *)self validate:a4];
+  return [(EKObject *)self validate:error];
 }
 
 - (void)_initChangeSetIfNone
 {
-  v3 = [(EKObject *)self changeSet];
+  changeSet = [(EKObject *)self changeSet];
 
-  if (!v3)
+  if (!changeSet)
   {
     v4 = objc_alloc_init(EKChangeSet);
     [(EKObject *)self setChangeSet:v4];
@@ -3145,39 +3145,39 @@ LABEL_65:
 
 - (void)_markAsNotNewCommon
 {
-  v2 = [(EKObject *)self changeSet];
-  [v2 setIsNew:0];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet setIsNew:0];
 }
 
 - (void)_markAsDeletedCommon
 {
   [(EKObject *)self _initChangeSetIfNone];
-  v3 = [(EKObject *)self changeSet];
-  [v3 setIsDeleted:1];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet setIsDeleted:1];
 }
 
 - (void)_markAsUndeletedCommon
 {
   [(EKObject *)self markAsNew];
-  v3 = [(EKObject *)self changeSet];
-  [v3 setIsDeleted:0];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet setIsDeleted:0];
 
-  v4 = [(EKObject *)self changeSet];
-  [v4 setIsUndeleted:1];
+  changeSet2 = [(EKObject *)self changeSet];
+  [changeSet2 setIsUndeleted:1];
 }
 
 - (void)_markAsSavedCommon
 {
   v42 = *MEMORY[0x1E69E9840];
-  v25 = [(EKObject *)self frozenObject];
-  v24 = [(EKObject *)self changeSet];
-  [v24 markChangesAsSaved];
+  frozenObject = [(EKObject *)self frozenObject];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet markChangesAsSaved];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v3 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v4 = [v3 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v4 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3188,7 +3188,7 @@ LABEL_65:
       {
         if (*v36 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v8 = *(*(&v35 + 1) + 8 * i);
@@ -3197,13 +3197,13 @@ LABEL_65:
           v9 = [(EKObject *)self valueForKey:v8];
           if ([objc_opt_class() isMeltedAndNotWeakRelationshipObject:v9 forKey:v8])
           {
-            v10 = [v9 existingMeltedObject];
-            [v10 markAsSaved];
+            existingMeltedObject = [v9 existingMeltedObject];
+            [existingMeltedObject markAsSaved];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v5 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v5);
@@ -3253,8 +3253,8 @@ LABEL_65:
                 v21 = *(*(&v27 + 1) + 8 * k);
                 if ([objc_opt_class() isMeltedAndNotWeakRelationshipObject:v21 forKey:v15])
                 {
-                  v22 = [v21 existingMeltedObject];
-                  [v22 markAsSaved];
+                  existingMeltedObject2 = [v21 existingMeltedObject];
+                  [existingMeltedObject2 markAsSaved];
                 }
               }
 
@@ -3272,49 +3272,49 @@ LABEL_65:
     while (v12);
   }
 
-  [(EKObject *)self _resetWithFrozenObject:v25];
-  [(EKObject *)self setChangeSet:v24];
+  [(EKObject *)self _resetWithFrozenObject:frozenObject];
+  [(EKObject *)self setChangeSet:changeSet];
 
   v23 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_markAsCommittedCommon
 {
-  v3 = [(EKObject *)self changeSet];
-  [v3 setIsNew:0];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet setIsNew:0];
 
-  v4 = [(EKObject *)self changeSet];
-  [v4 setIsModified:0];
+  changeSet2 = [(EKObject *)self changeSet];
+  [changeSet2 setIsModified:0];
 }
 
 - (BOOL)isDeleted
 {
-  v2 = [(EKObject *)self changeSet];
-  v3 = [v2 isDeleted];
+  changeSet = [(EKObject *)self changeSet];
+  isDeleted = [changeSet isDeleted];
 
-  return v3;
+  return isDeleted;
 }
 
 - (BOOL)isUndeleted
 {
-  v2 = [(EKObject *)self changeSet];
-  v3 = [v2 isUndeleted];
+  changeSet = [(EKObject *)self changeSet];
+  isUndeleted = [changeSet isUndeleted];
 
-  return v3;
+  return isUndeleted;
 }
 
 - (BOOL)isSaved
 {
-  v3 = [(EKObject *)self changeSet];
-  if ([v3 isSaved])
+  changeSet = [(EKObject *)self changeSet];
+  if ([changeSet isSaved])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(EKObject *)self backingObject];
-    v4 = v5 != 0;
+    backingObject = [(EKObject *)self backingObject];
+    v4 = backingObject != 0;
   }
 
   return v4;
@@ -3322,43 +3322,43 @@ LABEL_65:
 
 - (BOOL)_hasChanges
 {
-  v3 = [(EKObject *)self changeSet];
-  if (v3)
+  changeSet = [(EKObject *)self changeSet];
+  if (changeSet)
   {
   }
 
   else
   {
-    v4 = [(EKObject *)self _cachedMeltedObjectsCount];
-    if (!v4)
+    _cachedMeltedObjectsCount = [(EKObject *)self _cachedMeltedObjectsCount];
+    if (!_cachedMeltedObjectsCount)
     {
-      return v4;
+      return _cachedMeltedObjectsCount;
     }
   }
 
-  v5 = [(EKObject *)self changeSet];
-  v6 = [v5 hasChanges];
+  changeSet2 = [(EKObject *)self changeSet];
+  hasChanges = [changeSet2 hasChanges];
 
-  if (v6)
+  if (hasChanges)
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(_cachedMeltedObjectsCount) = 1;
   }
 
   else
   {
 
-    LOBYTE(v4) = [(EKObject *)self _hasChangeHelperInKeys:0 ignoreKeys:0 checkUnsaved:0];
+    LOBYTE(_cachedMeltedObjectsCount) = [(EKObject *)self _hasChangeHelperInKeys:0 ignoreKeys:0 checkUnsaved:0];
   }
 
-  return v4;
+  return _cachedMeltedObjectsCount;
 }
 
-- (BOOL)_hasUnsavedChangesInKeys:(id)a3 ignoreKeys:(id)a4
+- (BOOL)_hasUnsavedChangesInKeys:(id)keys ignoreKeys:(id)ignoreKeys
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKObject *)self changeSet];
-  if (v8)
+  keysCopy = keys;
+  ignoreKeysCopy = ignoreKeys;
+  changeSet = [(EKObject *)self changeSet];
+  if (changeSet)
   {
   }
 
@@ -3368,9 +3368,9 @@ LABEL_65:
     goto LABEL_17;
   }
 
-  if (v7)
+  if (ignoreKeysCopy)
   {
-    v9 = v7;
+    v9 = ignoreKeysCopy;
   }
 
   else
@@ -3379,9 +3379,9 @@ LABEL_65:
   }
 
   v10 = [MEMORY[0x1E695DFA8] setWithArray:v9];
-  if (v6)
+  if (keysCopy)
   {
-    v11 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+    v11 = [MEMORY[0x1E695DFD8] setWithArray:keysCopy];
   }
 
   else
@@ -3389,18 +3389,18 @@ LABEL_65:
     v11 = 0;
   }
 
-  v12 = [(EKObject *)self changeSet];
-  v13 = [v12 hasUnsavedChanges];
+  changeSet2 = [(EKObject *)self changeSet];
+  hasUnsavedChanges = [changeSet2 hasUnsavedChanges];
 
-  if (!v13)
+  if (!hasUnsavedChanges)
   {
     goto LABEL_15;
   }
 
   v14 = MEMORY[0x1E695DFA8];
-  v15 = [(EKObject *)self changeSet];
-  v16 = [v15 changedKeys];
-  v17 = [v14 setWithSet:v16];
+  changeSet3 = [(EKObject *)self changeSet];
+  changedKeys = [changeSet3 changedKeys];
+  v17 = [v14 setWithSet:changedKeys];
 
   [v17 minusSet:v10];
   if (v11)
@@ -3425,20 +3425,20 @@ LABEL_17:
   return v19;
 }
 
-- (BOOL)_hasChangeHelperInKeys:(id)a3 ignoreKeys:(id)a4 checkUnsaved:(BOOL)a5
+- (BOOL)_hasChangeHelperInKeys:(id)keys ignoreKeys:(id)ignoreKeys checkUnsaved:(BOOL)unsaved
 {
-  v8 = a3;
-  v9 = a4;
+  keysCopy = keys;
+  ignoreKeysCopy = ignoreKeys;
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __67__EKObject_Shared___hasChangeHelperInKeys_ignoreKeys_checkUnsaved___block_invoke;
   v21 = &unk_1E77FF3E8;
-  v25 = a5;
-  v22 = v9;
-  v23 = v8;
-  v24 = self;
-  v10 = v8;
-  v11 = v9;
+  unsavedCopy = unsaved;
+  v22 = ignoreKeysCopy;
+  v23 = keysCopy;
+  selfCopy = self;
+  v10 = keysCopy;
+  v11 = ignoreKeysCopy;
   v12 = _Block_copy(&v18);
   v13 = [(EKObject *)self _singleRelationshipKeysToCheckForChanges:v18];
   v14 = v12[2](v12, v13);
@@ -3450,8 +3450,8 @@ LABEL_17:
 
   else
   {
-    v16 = [(EKObject *)self _multiRelationshipKeysToCheckForChanges];
-    v15 = v12[2](v12, v16);
+    _multiRelationshipKeysToCheckForChanges = [(EKObject *)self _multiRelationshipKeysToCheckForChanges];
+    v15 = v12[2](v12, _multiRelationshipKeysToCheckForChanges);
   }
 
   return v15;
@@ -3511,12 +3511,12 @@ LABEL_16:
 - (id)_singleRelationshipKeysToCheckForChanges
 {
   v2 = MEMORY[0x1E695DFA8];
-  v3 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v4 = [v2 setWithArray:v3];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v4 = [v2 setWithArray:knownRelationshipSingleValueKeys];
 
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [objc_opt_class() knownDerivedRelationshipKeys];
-  v7 = [v5 setWithArray:v6];
+  knownDerivedRelationshipKeys = [objc_opt_class() knownDerivedRelationshipKeys];
+  v7 = [v5 setWithArray:knownDerivedRelationshipKeys];
   [v4 unionSet:v7];
 
   return v4;
@@ -3525,20 +3525,20 @@ LABEL_16:
 - (id)_multiRelationshipKeysToCheckForChanges
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [objc_opt_class() knownRelationshipMultiValueKeys];
-  v4 = [v2 setWithArray:v3];
+  knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+  v4 = [v2 setWithArray:knownRelationshipMultiValueKeys];
 
   return v4;
 }
 
-- (BOOL)_hasChangesForKey:(id)a3 checkUnsaved:(BOOL)a4
+- (BOOL)_hasChangesForKey:(id)key checkUnsaved:(BOOL)unsaved
 {
-  v4 = a4;
+  unsavedCopy = unsaved;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v4 || (-[EKObject changeSet](self, "changeSet"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hasUnsavedChangeForKey:v6], v7, (v8 & 1) == 0))
+  keyCopy = key;
+  if (!unsavedCopy || (-[EKObject changeSet](self, "changeSet"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hasUnsavedChangeForKey:keyCopy], v7, (v8 & 1) == 0))
   {
-    if ([(EKObject *)self isPropertyUnavailable:v6])
+    if ([(EKObject *)self isPropertyUnavailable:keyCopy])
     {
       LOBYTE(v9) = 0;
       goto LABEL_22;
@@ -3548,21 +3548,21 @@ LABEL_16:
     aBlock[1] = 3221225472;
     aBlock[2] = __51__EKObject_Shared___hasChangesForKey_checkUnsaved___block_invoke;
     aBlock[3] = &__block_descriptor_33_e30_B16__0___EKFrozenMeltedPair__8l;
-    v25 = v4;
+    v25 = unsavedCopy;
     v10 = _Block_copy(aBlock);
-    v11 = [(EKObject *)self _singleRelationshipKeysToCheckForChanges];
-    v12 = [v11 containsObject:v6];
+    _singleRelationshipKeysToCheckForChanges = [(EKObject *)self _singleRelationshipKeysToCheckForChanges];
+    v12 = [_singleRelationshipKeysToCheckForChanges containsObject:keyCopy];
 
     if (v12)
     {
-      v13 = [(EKObject *)self cachedMeltedObjectForSingleValueKey:v6];
+      v13 = [(EKObject *)self cachedMeltedObjectForSingleValueKey:keyCopy];
       LOBYTE(v9) = v10[2](v10, v13);
     }
 
     else
     {
-      v14 = [(EKObject *)self _multiRelationshipKeysToCheckForChanges];
-      v15 = [v14 containsObject:v6];
+      _multiRelationshipKeysToCheckForChanges = [(EKObject *)self _multiRelationshipKeysToCheckForChanges];
+      v15 = [_multiRelationshipKeysToCheckForChanges containsObject:keyCopy];
 
       if (!v15)
       {
@@ -3576,7 +3576,7 @@ LABEL_21:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v13 = [(EKObject *)self cachedMeltedObjectsForMultiValueKey:v6, 0];
+      v13 = [(EKObject *)self cachedMeltedObjectsForMultiValueKey:keyCopy, 0];
       v9 = [v13 countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v9)
       {
@@ -3647,33 +3647,33 @@ uint64_t __51__EKObject_Shared___hasChangesForKey_checkUnsaved___block_invoke(ui
   return v5;
 }
 
-- (BOOL)_isOnlyChangedKey:(id)a3
+- (BOOL)_isOnlyChangedKey:(id)key
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithObject:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithObject:key];
   LOBYTE(self) = [(EKObject *)self _areOnlyChangedKeys:v4];
 
   return self;
 }
 
-- (BOOL)_areOnlyChangedKeys:(id)a3
+- (BOOL)_areOnlyChangedKeys:(id)keys
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKObject *)self changeSet];
-  v6 = [v5 hasUnsavedChanges];
+  keysCopy = keys;
+  changeSet = [(EKObject *)self changeSet];
+  hasUnsavedChanges = [changeSet hasUnsavedChanges];
 
-  if (v6)
+  if (hasUnsavedChanges)
   {
-    v7 = [(EKObject *)self changeSet];
-    v8 = [v7 changedKeys];
+    changeSet2 = [(EKObject *)self changeSet];
+    changedKeys = [changeSet2 changedKeys];
   }
 
   else
   {
-    v8 = 0;
+    changedKeys = 0;
   }
 
-  if ([v8 count] && !objc_msgSend(v8, "isSubsetOfSet:", v4))
+  if ([changedKeys count] && !objc_msgSend(changedKeys, "isSubsetOfSet:", keysCopy))
   {
     v20 = 0;
     goto LABEL_28;
@@ -3683,8 +3683,8 @@ uint64_t __51__EKObject_Shared___hasChangesForKey_checkUnsaved___block_invoke(ui
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [(EKObject *)self _singleRelationshipKeysToCheckForChanges];
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  _singleRelationshipKeysToCheckForChanges = [(EKObject *)self _singleRelationshipKeysToCheckForChanges];
+  v10 = [_singleRelationshipKeysToCheckForChanges countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3695,13 +3695,13 @@ LABEL_8:
     {
       if (*v28 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(_singleRelationshipKeysToCheckForChanges);
       }
 
       v14 = *(*(&v27 + 1) + 8 * v13);
       if ([(EKObject *)self _hasChangesForKey:v14])
       {
-        if (![v4 containsObject:v14])
+        if (![keysCopy containsObject:v14])
         {
           break;
         }
@@ -3709,7 +3709,7 @@ LABEL_8:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v11 = [_singleRelationshipKeysToCheckForChanges countByEnumeratingWithState:&v27 objects:v32 count:16];
         if (v11)
         {
           goto LABEL_8;
@@ -3728,8 +3728,8 @@ LABEL_15:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [(EKObject *)self _multiRelationshipKeysToCheckForChanges];
-    v15 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    _singleRelationshipKeysToCheckForChanges = [(EKObject *)self _multiRelationshipKeysToCheckForChanges];
+    v15 = [_singleRelationshipKeysToCheckForChanges countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (!v15)
     {
       v20 = 1;
@@ -3744,13 +3744,13 @@ LABEL_17:
     {
       if (*v24 != v17)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(_singleRelationshipKeysToCheckForChanges);
       }
 
       v19 = *(*(&v23 + 1) + 8 * v18);
       if ([(EKObject *)self _hasChangesForKey:v19])
       {
-        if (![v4 containsObject:v19])
+        if (![keysCopy containsObject:v19])
         {
           break;
         }
@@ -3758,7 +3758,7 @@ LABEL_17:
 
       if (v16 == ++v18)
       {
-        v16 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v16 = [_singleRelationshipKeysToCheckForChanges countByEnumeratingWithState:&v23 objects:v31 count:16];
         v20 = 1;
         if (v16)
         {
@@ -3778,11 +3778,11 @@ LABEL_28:
   return v20;
 }
 
-- (id)_previousValueForKey:(id)a3
+- (id)_previousValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(EKObject *)self additionalFrozenProperties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
+  v6 = [additionalFrozenProperties objectForKeyedSubscript:keyCopy];
 
   v7 = objc_opt_class();
   if (v7 == objc_opt_class())
@@ -3797,8 +3797,8 @@ LABEL_28:
 
   else
   {
-    v9 = [(EKObject *)self backingObject];
-    v8 = [v9 valueForKey:v4];
+    backingObject = [(EKObject *)self backingObject];
+    v8 = [backingObject valueForKey:keyCopy];
   }
 
   return v8;
@@ -3850,31 +3850,31 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addChangesFromObject:(id)a3 ignoringDifferencesFrom:(id)a4 changesToSkip:(id)a5 copyingBackingObjects:(BOOL)a6
+- (void)_addChangesFromObject:(id)object ignoringDifferencesFrom:(id)from changesToSkip:(id)skip copyingBackingObjects:(BOOL)objects
 {
-  v121 = a6;
+  objectsCopy = objects;
   v197 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 != self)
+  objectCopy = object;
+  fromCopy = from;
+  skipCopy = skip;
+  if (objectCopy != self)
   {
-    v120 = v11;
-    v126 = v10;
+    v120 = skipCopy;
+    v126 = fromCopy;
     context = objc_autoreleasePoolPush();
-    v119 = [(EKObject *)v9 changeSet];
-    v118 = [v119 changedSingleValueKeys];
-    v12 = self;
+    changeSet = [(EKObject *)objectCopy changeSet];
+    changedSingleValueKeys = [changeSet changedSingleValueKeys];
+    selfCopy = self;
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v183 = 0u;
     v184 = 0u;
     v185 = 0u;
     v186 = 0u;
-    v131 = v12;
-    v15 = [objc_opt_class() knownRelationshipSingleValueKeys];
-    v16 = [v15 countByEnumeratingWithState:&v183 objects:v196 count:16];
-    v129 = v9;
+    v131 = selfCopy;
+    knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+    v16 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v183 objects:v196 count:16];
+    v129 = objectCopy;
     if (v16)
     {
       v17 = v16;
@@ -3885,28 +3885,28 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
         {
           if (*v184 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(knownRelationshipSingleValueKeys);
           }
 
           v20 = *(*(&v183 + 1) + 8 * i);
-          if (![(EKObject *)v9 isPropertyUnavailable:v20])
+          if (![(EKObject *)objectCopy isPropertyUnavailable:v20])
           {
-            v21 = [(EKObject *)v9 frozenOrMeltedCachedSingleRelationObjectForKey:v20];
+            v21 = [(EKObject *)objectCopy frozenOrMeltedCachedSingleRelationObjectForKey:v20];
             if ([objc_opt_class() isMeltedAndNotWeakRelationshipObject:v21 forKey:v20])
             {
-              v22 = [v21 existingMeltedObject];
-              v23 = [v22 changeSet];
-              if ([v23 hasChanges])
+              existingMeltedObject = [v21 existingMeltedObject];
+              changeSet2 = [existingMeltedObject changeSet];
+              if ([changeSet2 hasChanges])
               {
                 [v14 addObject:v20];
               }
 
-              v9 = v129;
+              objectCopy = v129;
             }
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v183 objects:v196 count:16];
+        v17 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v183 objects:v196 count:16];
       }
 
       while (v17);
@@ -3916,8 +3916,8 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
     v182 = 0u;
     v179 = 0u;
     v180 = 0u;
-    v24 = [objc_opt_class() knownSingleValueKeysForComparison];
-    v25 = [v24 countByEnumeratingWithState:&v179 objects:v195 count:16];
+    knownSingleValueKeysForComparison = [objc_opt_class() knownSingleValueKeysForComparison];
+    v25 = [knownSingleValueKeysForComparison countByEnumeratingWithState:&v179 objects:v195 count:16];
     if (v25)
     {
       v26 = v25;
@@ -3928,17 +3928,17 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
         {
           if (*v180 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(knownSingleValueKeysForComparison);
           }
 
           v29 = *(*(&v179 + 1) + 8 * j);
-          if (([v118 containsObject:v29] & 1) == 0 && (objc_msgSend(v14, "containsObject:", v29) & 1) == 0)
+          if (([changedSingleValueKeys containsObject:v29] & 1) == 0 && (objc_msgSend(v14, "containsObject:", v29) & 1) == 0)
           {
             [v13 addObject:v29];
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v179 objects:v195 count:16];
+        v26 = [knownSingleValueKeysForComparison countByEnumeratingWithState:&v179 objects:v195 count:16];
       }
 
       while (v26);
@@ -3948,8 +3948,8 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
     v178 = 0u;
     v175 = 0u;
     v176 = 0u;
-    v30 = [objc_opt_class() knownDerivedAndSingleValueRelationshipKeys];
-    v31 = [v30 countByEnumeratingWithState:&v175 objects:v194 count:16];
+    knownDerivedAndSingleValueRelationshipKeys = [objc_opt_class() knownDerivedAndSingleValueRelationshipKeys];
+    v31 = [knownDerivedAndSingleValueRelationshipKeys countByEnumeratingWithState:&v175 objects:v194 count:16];
     if (v31)
     {
       v32 = v31;
@@ -3960,24 +3960,24 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
         {
           if (*v176 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(knownDerivedAndSingleValueRelationshipKeys);
           }
 
           v35 = *(*(&v175 + 1) + 8 * k);
-          if (([v118 containsObject:v35] & 1) == 0 && (objc_msgSend(v14, "containsObject:", v35) & 1) == 0)
+          if (([changedSingleValueKeys containsObject:v35] & 1) == 0 && (objc_msgSend(v14, "containsObject:", v35) & 1) == 0)
           {
             [v13 addObject:v35];
           }
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v175 objects:v194 count:16];
+        v32 = [knownDerivedAndSingleValueRelationshipKeys countByEnumeratingWithState:&v175 objects:v194 count:16];
       }
 
       while (v32);
     }
 
-    v36 = [objc_opt_class() knownRelationshipMultiValueKeys];
-    [v13 addObjectsFromArray:v36];
+    knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+    [v13 addObjectsFromArray:knownRelationshipMultiValueKeys];
 
     v173[0] = MEMORY[0x1E69E9820];
     v173[1] = 3221225472;
@@ -3996,8 +3996,8 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
     v171 = v134;
     v39 = v37;
     v172 = v39;
-    v40 = [(EKChangeSet *)v38 initWithChangeSet:v119 filter:v170];
-    v41 = [(EKChangeSet *)v40 multiValueAdditions];
+    v40 = [(EKChangeSet *)v38 initWithChangeSet:changeSet filter:v170];
+    multiValueAdditions = [(EKChangeSet *)v40 multiValueAdditions];
     v167[0] = MEMORY[0x1E69E9820];
     v167[1] = 3221225472;
     v167[2] = __102__EKObject_Shared___addChangesFromObject_ignoringDifferencesFrom_changesToSkip_copyingBackingObjects___block_invoke_4;
@@ -4006,7 +4006,7 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
     v132 = v40;
     v168 = v132;
     v169 = &__block_literal_global_46;
-    [v41 enumerateKeysAndObjectsUsingBlock:v167];
+    [multiValueAdditions enumerateKeysAndObjectsUsingBlock:v167];
 
     v165 = 0u;
     v166 = 0u;
@@ -4014,7 +4014,7 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
     v164 = 0u;
     obj = v14;
     v42 = [obj countByEnumeratingWithState:&v163 objects:v193 count:16];
-    v9 = v129;
+    objectCopy = v129;
     v127 = v39;
     if (v42)
     {
@@ -4030,29 +4030,29 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
           }
 
           v46 = *(*(&v163 + 1) + 8 * m);
-          v47 = [v39 relationshipSingleValueModifies];
-          v48 = [v47 objectForKeyedSubscript:v46];
+          relationshipSingleValueModifies = [v39 relationshipSingleValueModifies];
+          v48 = [relationshipSingleValueModifies objectForKeyedSubscript:v46];
 
           if (!v48)
           {
             v49 = [v126 frozenOrMeltedCachedSingleRelationObjectForKey:v46];
             v50 = [(EKObject *)v131 meltedAndCachedSingleRelationObjectForKey:v46];
-            v51 = [v49 semanticIdentifier];
-            v52 = [v50 semanticIdentifier];
-            v53 = [v51 isEqualToString:v52];
+            semanticIdentifier = [v49 semanticIdentifier];
+            semanticIdentifier2 = [v50 semanticIdentifier];
+            v53 = [semanticIdentifier isEqualToString:semanticIdentifier2];
 
             if (v53)
             {
               v54 = [(EKObject *)v129 frozenOrMeltedCachedSingleRelationObjectForKey:v46];
-              v55 = [v54 existingMeltedObject];
-              if (v55)
+              existingMeltedObject2 = [v54 existingMeltedObject];
+              if (existingMeltedObject2)
               {
-                v56 = [v49 existingMeltedObject];
-                [v50 _addChangesFromObject:v55 ignoringDifferencesFrom:v56 changesToSkip:v134 copyingBackingObjects:v121];
+                existingMeltedObject3 = [v49 existingMeltedObject];
+                [v50 _addChangesFromObject:existingMeltedObject2 ignoringDifferencesFrom:existingMeltedObject3 changesToSkip:v134 copyingBackingObjects:objectsCopy];
               }
             }
 
-            v9 = v129;
+            objectCopy = v129;
             v39 = v127;
           }
         }
@@ -4068,14 +4068,14 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
     v159 = 0u;
     v160 = 0u;
     v57 = v131;
-    v58 = [objc_opt_class() knownRelationshipMultiValueKeys];
-    v59 = [v58 countByEnumeratingWithState:&v159 objects:v192 count:16];
+    knownRelationshipMultiValueKeys2 = [objc_opt_class() knownRelationshipMultiValueKeys];
+    v59 = [knownRelationshipMultiValueKeys2 countByEnumeratingWithState:&v159 objects:v192 count:16];
     if (v59)
     {
       v60 = v59;
       v61 = *v160;
       v122 = *v160;
-      v123 = v58;
+      v123 = knownRelationshipMultiValueKeys2;
       do
       {
         v62 = 0;
@@ -4084,14 +4084,14 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
         {
           if (*v160 != v61)
           {
-            objc_enumerationMutation(v58);
+            objc_enumerationMutation(knownRelationshipMultiValueKeys2);
           }
 
           v63 = *(*(&v159 + 1) + 8 * v62);
-          if (![(EKObject *)v9 isPropertyUnavailable:v63])
+          if (![(EKObject *)objectCopy isPropertyUnavailable:v63])
           {
-            v64 = [objc_opt_class() knownRelationshipWeakKeys];
-            if ([v64 containsObject:v63])
+            knownRelationshipWeakKeys = [objc_opt_class() knownRelationshipWeakKeys];
+            if ([knownRelationshipWeakKeys containsObject:v63])
             {
 
               goto LABEL_110;
@@ -4107,7 +4107,7 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
               v67 = objc_opt_new();
               v68 = objc_opt_new();
               v137 = v65;
-              v69 = [(EKObject *)v9 frozenOrMeltedCachedMultiRelationObjectsForKey:v65];
+              v69 = [(EKObject *)objectCopy frozenOrMeltedCachedMultiRelationObjectsForKey:v65];
               v155 = 0u;
               v156 = 0u;
               v157 = 0u;
@@ -4131,13 +4131,13 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
                   }
 
                   v74 = *(*(&v155 + 1) + 8 * n);
-                  v75 = [(EKObject *)v57 eventStore];
-                  v76 = [v74 meltedObjectInStore:v75];
+                  eventStore = [(EKObject *)v57 eventStore];
+                  v76 = [v74 meltedObjectInStore:eventStore];
 
                   if ([v74 isNew])
                   {
-                    v77 = [v76 semanticIdentifier];
-                    if (!v77)
+                    semanticIdentifier3 = [v76 semanticIdentifier];
+                    if (!semanticIdentifier3)
                     {
                       goto LABEL_69;
                     }
@@ -4145,18 +4145,18 @@ void __92__EKObject_Shared___addChangesFromObject_passingTest_ignoreRelations_co
 
                   else
                   {
-                    v78 = [v76 committedCopy];
-                    v77 = [v78 semanticIdentifier];
+                    committedCopy = [v76 committedCopy];
+                    semanticIdentifier3 = [committedCopy semanticIdentifier];
 
-                    if (!v77)
+                    if (!semanticIdentifier3)
                     {
                       goto LABEL_69;
                     }
                   }
 
-                  if ([v76 hasChanges] && !-[EKObject _multiValueRelatedObject:isAlsoASingleValueRelatedObjectForKey:](v9, "_multiValueRelatedObject:isAlsoASingleValueRelatedObjectForKey:", v76, v137))
+                  if ([v76 hasChanges] && !-[EKObject _multiValueRelatedObject:isAlsoASingleValueRelatedObjectForKey:](objectCopy, "_multiValueRelatedObject:isAlsoASingleValueRelatedObjectForKey:", v76, v137))
                   {
-                    [v136 setObject:v76 forKeyedSubscript:v77];
+                    [v136 setObject:v76 forKeyedSubscript:semanticIdentifier3];
                   }
 
 LABEL_69:
@@ -4190,8 +4190,8 @@ LABEL_71:
                           }
 
                           v85 = *(*(&v151 + 1) + 8 * ii);
-                          v86 = [v85 semanticIdentifier];
-                          [v67 setObject:v85 forKeyedSubscript:v86];
+                          semanticIdentifier4 = [v85 semanticIdentifier];
+                          [v67 setObject:v85 forKeyedSubscript:semanticIdentifier4];
                         }
 
                         v82 = [v135 countByEnumeratingWithState:&v151 objects:v190 count:16];
@@ -4222,8 +4222,8 @@ LABEL_71:
                             objc_enumerationMutation(v130);
                           }
 
-                          v93 = [*(*(&v147 + 1) + 8 * jj) semanticIdentifier];
-                          v94 = [v136 objectForKeyedSubscript:v93];
+                          semanticIdentifier5 = [*(*(&v147 + 1) + 8 * jj) semanticIdentifier];
+                          v94 = [v136 objectForKeyedSubscript:semanticIdentifier5];
 
                           if (v94)
                           {
@@ -4249,14 +4249,14 @@ LABEL_71:
                                   }
 
                                   v100 = *(*(&v143 + 1) + 8 * kk);
-                                  v101 = [v100 semanticIdentifier];
-                                  v102 = [v79 objectForKeyedSubscript:v101];
-                                  v103 = [v67 objectForKeyedSubscript:v101];
+                                  semanticIdentifier6 = [v100 semanticIdentifier];
+                                  v102 = [v79 objectForKeyedSubscript:semanticIdentifier6];
+                                  v103 = [v67 objectForKeyedSubscript:semanticIdentifier6];
                                   v104 = v103;
                                   if (v102)
                                   {
-                                    v105 = [v103 existingMeltedObject];
-                                    [v100 _addChangesFromObject:v102 ignoringDifferencesFrom:v105 changesToSkip:v134 copyingBackingObjects:1];
+                                    existingMeltedObject4 = [v103 existingMeltedObject];
+                                    [v100 _addChangesFromObject:v102 ignoringDifferencesFrom:existingMeltedObject4 changesToSkip:v134 copyingBackingObjects:1];
 
                                     v79 = v136;
                                   }
@@ -4274,7 +4274,7 @@ LABEL_71:
                             v141 = 0u;
                             v142 = 0u;
                             v107 = [v106 countByEnumeratingWithState:&v139 objects:v187 count:16];
-                            v9 = v129;
+                            objectCopy = v129;
                             if (v107)
                             {
                               v108 = v107;
@@ -4289,19 +4289,19 @@ LABEL_71:
                                   }
 
                                   v111 = *(*(&v139 + 1) + 8 * mm);
-                                  v112 = [v111 semanticIdentifier];
-                                  v113 = [v68 containsObject:v112];
+                                  semanticIdentifier7 = [v111 semanticIdentifier];
+                                  v113 = [v68 containsObject:semanticIdentifier7];
 
                                   if (v113)
                                   {
-                                    v114 = [MEMORY[0x1E695DFD8] setWithObject:v111];
-                                    [(EKChangeSet *)v132 removeFromChanges:v114 forMultiValueKey:v137 basedOn:0 and:0 objectIdentifierBlock:&__block_literal_global_46];
+                                    semanticIdentifier8 = [MEMORY[0x1E695DFD8] setWithObject:v111];
+                                    [(EKChangeSet *)v132 removeFromChanges:semanticIdentifier8 forMultiValueKey:v137 basedOn:0 and:0 objectIdentifierBlock:&__block_literal_global_46];
                                   }
 
                                   else
                                   {
-                                    v114 = [v111 semanticIdentifier];
-                                    [v68 addObject:v114];
+                                    semanticIdentifier8 = [v111 semanticIdentifier];
+                                    [v68 addObject:semanticIdentifier8];
                                   }
                                 }
 
@@ -4335,7 +4335,7 @@ LABEL_108:
 
                   v39 = v127;
                   v61 = v122;
-                  v58 = v123;
+                  knownRelationshipMultiValueKeys2 = v123;
                   v60 = v124;
                   v62 = v125;
 
@@ -4350,16 +4350,16 @@ LABEL_110:
         }
 
         while (v62 != v60);
-        v60 = [v58 countByEnumeratingWithState:&v159 objects:v192 count:16];
+        v60 = [knownRelationshipMultiValueKeys2 countByEnumeratingWithState:&v159 objects:v192 count:16];
       }
 
       while (v60);
     }
 
-    [(EKObject *)v57 _addChanges:v132 copyingBackingObjects:v121 objectIdentifierBlock:&__block_literal_global_46];
+    [(EKObject *)v57 _addChanges:v132 copyingBackingObjects:objectsCopy objectIdentifierBlock:&__block_literal_global_46];
     objc_autoreleasePoolPop(context);
-    v11 = v120;
-    v10 = v126;
+    skipCopy = v120;
+    fromCopy = v126;
   }
 
   v115 = *MEMORY[0x1E69E9840];
@@ -4491,19 +4491,19 @@ void __102__EKObject_Shared___addChangesFromObject_ignoringDifferencesFrom_chang
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addChangesFromObject:(id)a3 toObjects:(id)a4 except:(id)a5
++ (void)addChangesFromObject:(id)object toObjects:(id)objects except:(id)except
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 count])
+  objectCopy = object;
+  objectsCopy = objects;
+  exceptCopy = except;
+  if ([exceptCopy count])
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __58__EKObject_Shared__addChangesFromObject_toObjects_except___block_invoke;
     v15 = &unk_1E77FF4D0;
-    v16 = v8;
-    v17 = v10;
+    v16 = objectCopy;
+    v17 = exceptCopy;
     v11 = _Block_copy(&v12);
   }
 
@@ -4512,7 +4512,7 @@ void __102__EKObject_Shared___addChangesFromObject_ignoringDifferencesFrom_chang
     v11 = 0;
   }
 
-  [a1 _addChangesFromObject:v8 toObjects:v9 passingTest:v11 copyingBackingObjects:{1, v12, v13, v14, v15}];
+  [self _addChangesFromObject:objectCopy toObjects:objectsCopy passingTest:v11 copyingBackingObjects:{1, v12, v13, v14, v15}];
 }
 
 uint64_t __58__EKObject_Shared__addChangesFromObject_toObjects_except___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -4528,19 +4528,19 @@ uint64_t __58__EKObject_Shared__addChangesFromObject_toObjects_except___block_in
   }
 }
 
-+ (void)addChangesFromObject:(id)a3 toObjects:(id)a4 keep:(id)a5
++ (void)addChangesFromObject:(id)object toObjects:(id)objects keep:(id)keep
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 count])
+  objectCopy = object;
+  objectsCopy = objects;
+  keepCopy = keep;
+  if ([keepCopy count])
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __56__EKObject_Shared__addChangesFromObject_toObjects_keep___block_invoke;
     v15 = &unk_1E77FF4D0;
-    v16 = v8;
-    v17 = v10;
+    v16 = objectCopy;
+    v17 = keepCopy;
     v11 = _Block_copy(&v12);
   }
 
@@ -4549,7 +4549,7 @@ uint64_t __58__EKObject_Shared__addChangesFromObject_toObjects_except___block_in
     v11 = 0;
   }
 
-  [a1 _addChangesFromObject:v8 toObjects:v9 passingTest:v11 copyingBackingObjects:{1, v12, v13, v14, v15}];
+  [self _addChangesFromObject:objectCopy toObjects:objectsCopy passingTest:v11 copyingBackingObjects:{1, v12, v13, v14, v15}];
 }
 
 uint64_t __56__EKObject_Shared__addChangesFromObject_toObjects_keep___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -4565,20 +4565,20 @@ uint64_t __56__EKObject_Shared__addChangesFromObject_toObjects_keep___block_invo
   }
 }
 
-+ (void)_addChangesFromObject:(id)a3 toObjects:(id)a4 passingTest:(id)a5 copyingBackingObjects:(BOOL)a6
++ (void)_addChangesFromObject:(id)object toObjects:(id)objects passingTest:(id)test copyingBackingObjects:(BOOL)backingObjects
 {
-  v40 = a6;
+  backingObjectsCopy = backingObjects;
   v64 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v38 = a4;
-  v39 = a5;
+  objectCopy = object;
+  objectsCopy = objects;
+  testCopy = test;
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v10 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v11 = [v10 countByEnumeratingWithState:&v56 objects:v63 count:16];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v11 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (v11)
   {
     v12 = v11;
@@ -4589,11 +4589,11 @@ uint64_t __56__EKObject_Shared__addChangesFromObject_toObjects_keep___block_invo
       {
         if (*v57 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v15 = *(*(&v56 + 1) + 8 * i);
-        v16 = [v8 cachedMeltedObjectForSingleValueKey:{v15, v38}];
+        v16 = [objectCopy cachedMeltedObjectForSingleValueKey:{v15, objectsCopy}];
         v17 = v16;
         if (!v16 || ([v16 isNew] & 1) != 0 || (objc_msgSend(v17, "hasChanges") & 1) == 0)
         {
@@ -4601,7 +4601,7 @@ uint64_t __56__EKObject_Shared__addChangesFromObject_toObjects_keep___block_invo
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v56 objects:v63 count:16];
+      v12 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v56 objects:v63 count:16];
     }
 
     while (v12);
@@ -4609,12 +4609,12 @@ uint64_t __56__EKObject_Shared__addChangesFromObject_toObjects_keep___block_invo
 
   v41 = v9;
 
-  v18 = [objc_opt_class() knownRelationshipWeakKeys];
+  knownRelationshipWeakKeys = [objc_opt_class() knownRelationshipWeakKeys];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v42 = v8;
+  v42 = objectCopy;
   obj = [objc_opt_class() knownRelationshipMultiValueKeys];
   v19 = [obj countByEnumeratingWithState:&v52 objects:v62 count:16];
   if (v19)
@@ -4631,9 +4631,9 @@ uint64_t __56__EKObject_Shared__addChangesFromObject_toObjects_keep___block_invo
         }
 
         v23 = *(*(&v52 + 1) + 8 * j);
-        if (([v18 containsObject:{v23, v38}] & 1) == 0)
+        if (([knownRelationshipWeakKeys containsObject:{v23, objectsCopy}] & 1) == 0)
         {
-          v24 = v18;
+          v24 = knownRelationshipWeakKeys;
           v25 = [v42 cachedMeltedObjectsForMultiValueKey:v23];
           v48 = 0u;
           v49 = 0u;
@@ -4675,7 +4675,7 @@ uint64_t __56__EKObject_Shared__addChangesFromObject_toObjects_keep___block_invo
           [v41 addObject:v23];
 LABEL_29:
 
-          v18 = v24;
+          knownRelationshipWeakKeys = v24;
         }
       }
 
@@ -4689,7 +4689,7 @@ LABEL_29:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v32 = v38;
+  v32 = objectsCopy;
   v33 = [v32 countByEnumeratingWithState:&v44 objects:v60 count:16];
   if (v33)
   {
@@ -4704,7 +4704,7 @@ LABEL_29:
           objc_enumerationMutation(v32);
         }
 
-        [*(*(&v44 + 1) + 8 * m) _addChangesFromObject:v42 passingTest:v39 ignoreRelations:v41 copyingBackingObjects:{v40, v38}];
+        [*(*(&v44 + 1) + 8 * m) _addChangesFromObject:v42 passingTest:testCopy ignoreRelations:v41 copyingBackingObjects:{backingObjectsCopy, objectsCopy}];
       }
 
       v34 = [v32 countByEnumeratingWithState:&v44 objects:v60 count:16];
@@ -4716,17 +4716,17 @@ LABEL_29:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addChanges:(id)a3 copyingBackingObjects:(BOOL)a4 objectIdentifierBlock:(id)a5
+- (void)_addChanges:(id)changes copyingBackingObjects:(BOOL)objects objectIdentifierBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  objectsCopy = objects;
+  blockCopy = block;
+  changesCopy = changes;
   [(EKObject *)self _initChangeSetIfNone];
-  if (v5)
+  if (objectsCopy)
   {
     v10 = MEMORY[0x1E695DFD8];
-    v11 = [objc_opt_class() knownRelationshipWeakKeys];
-    v12 = [v10 setWithArray:v11];
+    knownRelationshipWeakKeys = [objc_opt_class() knownRelationshipWeakKeys];
+    v12 = [v10 setWithArray:knownRelationshipWeakKeys];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -4742,28 +4742,28 @@ LABEL_29:
     v14 = &__block_literal_global_51;
   }
 
-  v15 = [(EKObject *)self changeSet];
-  [v15 addChanges:v9 shouldCopyKeyCallback:v14 objectIdentifierBlock:v8];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet addChanges:changesCopy shouldCopyKeyCallback:v14 objectIdentifierBlock:blockCopy];
 
-  v16 = [(EKObject *)self changeSet];
-  [(EKObject *)self updateAfterApplyingChanges:v16 objectIdentifierBlock:v8];
+  changeSet2 = [(EKObject *)self changeSet];
+  [(EKObject *)self updateAfterApplyingChanges:changeSet2 objectIdentifierBlock:blockCopy];
 }
 
-- (void)applyChanges:(id)a3
+- (void)applyChanges:(id)changes
 {
-  v7 = a3;
+  changesCopy = changes;
   v4 = [EKChangeSet alloc];
-  v5 = [objc_opt_class() keysToIgnoreForApplyingChanges];
-  v6 = [(EKChangeSet *)v4 initWithChangeSet:v7 changesToSkip:v5];
+  keysToIgnoreForApplyingChanges = [objc_opt_class() keysToIgnoreForApplyingChanges];
+  v6 = [(EKChangeSet *)v4 initWithChangeSet:changesCopy changesToSkip:keysToIgnoreForApplyingChanges];
   [(EKObject *)self setChangeSet:v6];
 
-  [(EKObject *)self updateAfterApplyingChanges:v7 objectIdentifierBlock:0];
+  [(EKObject *)self updateAfterApplyingChanges:changesCopy objectIdentifierBlock:0];
 }
 
-- (id)singleChangedValueForKey:(id)a3
+- (id)singleChangedValueForKey:(id)key
 {
-  v4 = a3;
-  if ([(EKObject *)self _isPropertyUnavailable:v4 convertToFullObjectIfUnavailable:1])
+  keyCopy = key;
+  if ([(EKObject *)self _isPropertyUnavailable:keyCopy convertToFullObjectIfUnavailable:1])
   {
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
@@ -4775,31 +4775,31 @@ LABEL_29:
 
   else
   {
-    v6 = [(EKObject *)self changeSet];
+    changeSet = [(EKObject *)self changeSet];
 
-    if (v6)
+    if (changeSet)
     {
-      v7 = [(EKObject *)self changeSet];
-      v8 = [(EKObject *)self backingObject];
-      v9 = [(EKObject *)self additionalFrozenProperties];
-      v10 = [v7 valueForSingleValueKey:v4 basedOn:v8 and:v9];
+      changeSet2 = [(EKObject *)self changeSet];
+      backingObject = [(EKObject *)self backingObject];
+      additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
+      v10 = [changeSet2 valueForSingleValueKey:keyCopy basedOn:backingObject and:additionalFrozenProperties];
     }
 
     else
     {
-      v11 = [(EKObject *)self additionalFrozenProperties];
-      v12 = [v11 objectForKeyedSubscript:v4];
+      additionalFrozenProperties2 = [(EKObject *)self additionalFrozenProperties];
+      v12 = [additionalFrozenProperties2 objectForKeyedSubscript:keyCopy];
 
       if (v12)
       {
-        v7 = [(EKObject *)self additionalFrozenProperties];
-        [v7 objectForKeyedSubscript:v4];
+        changeSet2 = [(EKObject *)self additionalFrozenProperties];
+        [changeSet2 objectForKeyedSubscript:keyCopy];
       }
 
       else
       {
-        v7 = [(EKObject *)self backingObject];
-        [v7 valueForKey:v4];
+        changeSet2 = [(EKObject *)self backingObject];
+        [changeSet2 valueForKey:keyCopy];
       }
       v10 = ;
     }
@@ -4819,46 +4819,46 @@ LABEL_29:
   return v5;
 }
 
-- (void)setSingleChangedValue:(id)a3 forKey:(id)a4
+- (void)setSingleChangedValue:(id)value forKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   [(EKObject *)self _initChangeSetIfNone];
-  if (![(EKObject *)self _isPropertyUnavailable:v7 convertToFullObjectIfUnavailable:1])
+  if (![(EKObject *)self _isPropertyUnavailable:keyCopy convertToFullObjectIfUnavailable:1])
   {
-    v9 = [(EKObject *)self changeSet];
-    v11 = [(EKObject *)self backingObject];
-    v10 = [(EKObject *)self additionalFrozenProperties];
-    [v9 changeSingleValue:v6 forKey:v7 basedOn:v11 and:v10];
+    changeSet = [(EKObject *)self changeSet];
+    backingObject = [(EKObject *)self backingObject];
+    additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
+    [changeSet changeSingleValue:valueCopy forKey:keyCopy basedOn:backingObject and:additionalFrozenProperties];
     goto LABEL_5;
   }
 
   v8 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
-    v9 = v8;
-    v10 = [(EKObject *)self backingObject];
-    v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+    changeSet = v8;
+    additionalFrozenProperties = [(EKObject *)self backingObject];
+    backingObject = [MEMORY[0x1E696AF00] callStackSymbols];
     v13 = 138413058;
-    v14 = v6;
+    v14 = valueCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = keyCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = additionalFrozenProperties;
     v19 = 2112;
-    v20 = v11;
-    _os_log_error_impl(&dword_1A805E000, v9, OS_LOG_TYPE_ERROR, "Unable to set single changed value %@. Property %@ was unavailable on backingObject %@. %@", &v13, 0x2Au);
+    v20 = backingObject;
+    _os_log_error_impl(&dword_1A805E000, changeSet, OS_LOG_TYPE_ERROR, "Unable to set single changed value %@. Property %@ was unavailable on backingObject %@. %@", &v13, 0x2Au);
 LABEL_5:
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)multiChangedObjectValuesForKey:(id)a3
+- (id)multiChangedObjectValuesForKey:(id)key
 {
-  v4 = a3;
-  if ([(EKObject *)self _isPropertyUnavailable:v4 convertToFullObjectIfUnavailable:1])
+  keyCopy = key;
+  if ([(EKObject *)self _isPropertyUnavailable:keyCopy convertToFullObjectIfUnavailable:1])
   {
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
@@ -4870,31 +4870,31 @@ LABEL_5:
 
   else
   {
-    v6 = [(EKObject *)self changeSet];
+    changeSet = [(EKObject *)self changeSet];
 
-    if (v6)
+    if (changeSet)
     {
-      v7 = [(EKObject *)self changeSet];
-      v8 = [(EKObject *)self backingObject];
-      v9 = [(EKObject *)self additionalFrozenProperties];
-      v10 = [v7 valuesForMultiValueKey:v4 basedOn:v8 and:v9];
+      changeSet2 = [(EKObject *)self changeSet];
+      backingObject = [(EKObject *)self backingObject];
+      additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
+      v10 = [changeSet2 valuesForMultiValueKey:keyCopy basedOn:backingObject and:additionalFrozenProperties];
     }
 
     else
     {
-      v11 = [(EKObject *)self additionalFrozenProperties];
-      v12 = [v11 objectForKeyedSubscript:v4];
+      additionalFrozenProperties2 = [(EKObject *)self additionalFrozenProperties];
+      v12 = [additionalFrozenProperties2 objectForKeyedSubscript:keyCopy];
 
       if (v12)
       {
-        v7 = [(EKObject *)self additionalFrozenProperties];
-        [v7 objectForKeyedSubscript:v4];
+        changeSet2 = [(EKObject *)self additionalFrozenProperties];
+        [changeSet2 objectForKeyedSubscript:keyCopy];
       }
 
       else
       {
-        v7 = [(EKObject *)self backingObject];
-        [v7 valueForKey:v4];
+        changeSet2 = [(EKObject *)self backingObject];
+        [changeSet2 valueForKey:keyCopy];
       }
       v10 = ;
     }
@@ -4914,111 +4914,111 @@ LABEL_5:
   return v5;
 }
 
-- (void)addMultiChangedObjectValue:(id)a3 forKey:(id)a4
+- (void)addMultiChangedObjectValue:(id)value forKey:(id)key
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [(EKObject *)self addMultiChangedObjectValues:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 setWithObject:value];
+  [(EKObject *)self addMultiChangedObjectValues:v8 forKey:keyCopy];
 }
 
-- (void)addMultiChangedObjectValues:(id)a3 forKey:(id)a4
+- (void)addMultiChangedObjectValues:(id)values forKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  keyCopy = key;
   [(EKObject *)self _initChangeSetIfNone];
-  if (![(EKObject *)self _isPropertyUnavailable:v7 convertToFullObjectIfUnavailable:1])
+  if (![(EKObject *)self _isPropertyUnavailable:keyCopy convertToFullObjectIfUnavailable:1])
   {
-    v9 = [(EKObject *)self changeSet];
-    v11 = [(EKObject *)self backingObject];
-    v10 = [(EKObject *)self additionalFrozenProperties];
-    [v9 addToChanges:v6 forMultiValueKey:v7 basedOn:v11 and:v10];
+    changeSet = [(EKObject *)self changeSet];
+    backingObject = [(EKObject *)self backingObject];
+    additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
+    [changeSet addToChanges:valuesCopy forMultiValueKey:keyCopy basedOn:backingObject and:additionalFrozenProperties];
     goto LABEL_5;
   }
 
   v8 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
-    v9 = v8;
-    v10 = [(EKObject *)self backingObject];
-    v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+    changeSet = v8;
+    additionalFrozenProperties = [(EKObject *)self backingObject];
+    backingObject = [MEMORY[0x1E696AF00] callStackSymbols];
     v13 = 138413058;
-    v14 = v6;
+    v14 = valuesCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = keyCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = additionalFrozenProperties;
     v19 = 2112;
-    v20 = v11;
-    _os_log_error_impl(&dword_1A805E000, v9, OS_LOG_TYPE_ERROR, "Unable to add multi changed object values %@. Property %@ was unavailable on backingObject %@. %@", &v13, 0x2Au);
+    v20 = backingObject;
+    _os_log_error_impl(&dword_1A805E000, changeSet, OS_LOG_TYPE_ERROR, "Unable to add multi changed object values %@. Property %@ was unavailable on backingObject %@. %@", &v13, 0x2Au);
 LABEL_5:
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeMultiChangedObjectValue:(id)a3 forKey:(id)a4
+- (void)removeMultiChangedObjectValue:(id)value forKey:(id)key
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  [(EKObject *)self removeMultiChangedObjectValues:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 setWithObject:value];
+  [(EKObject *)self removeMultiChangedObjectValues:v8 forKey:keyCopy];
 }
 
-- (void)removeMultiChangedObjectValues:(id)a3 forKey:(id)a4
+- (void)removeMultiChangedObjectValues:(id)values forKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  keyCopy = key;
   [(EKObject *)self _initChangeSetIfNone];
-  if (![(EKObject *)self _isPropertyUnavailable:v7 convertToFullObjectIfUnavailable:1])
+  if (![(EKObject *)self _isPropertyUnavailable:keyCopy convertToFullObjectIfUnavailable:1])
   {
-    v9 = [(EKObject *)self changeSet];
-    v11 = [(EKObject *)self backingObject];
-    v10 = [(EKObject *)self additionalFrozenProperties];
-    [v9 removeFromChanges:v6 forMultiValueKey:v7 basedOn:v11 and:v10];
+    changeSet = [(EKObject *)self changeSet];
+    backingObject = [(EKObject *)self backingObject];
+    additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
+    [changeSet removeFromChanges:valuesCopy forMultiValueKey:keyCopy basedOn:backingObject and:additionalFrozenProperties];
     goto LABEL_5;
   }
 
   v8 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
-    v9 = v8;
-    v10 = [(EKObject *)self backingObject];
-    v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+    changeSet = v8;
+    additionalFrozenProperties = [(EKObject *)self backingObject];
+    backingObject = [MEMORY[0x1E696AF00] callStackSymbols];
     v13 = 138413058;
-    v14 = v6;
+    v14 = valuesCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = keyCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = additionalFrozenProperties;
     v19 = 2112;
-    v20 = v11;
-    _os_log_error_impl(&dword_1A805E000, v9, OS_LOG_TYPE_ERROR, "Unable to remove multi changed object values %@. Property %@ was unavailable on backingObject %@. %@", &v13, 0x2Au);
+    v20 = backingObject;
+    _os_log_error_impl(&dword_1A805E000, changeSet, OS_LOG_TYPE_ERROR, "Unable to remove multi changed object values %@. Property %@ was unavailable on backingObject %@. %@", &v13, 0x2Au);
 LABEL_5:
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceMultiChangedObjectValuesWithObjectValues:(id)a3 forKey:(id)a4
+- (void)replaceMultiChangedObjectValuesWithObjectValues:(id)values forKey:(id)key
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(EKObject *)self multiChangedObjectValuesForKey:v6];
-  [(EKObject *)self removeMultiChangedObjectValues:v7 forKey:v6];
+  keyCopy = key;
+  valuesCopy = values;
+  v7 = [(EKObject *)self multiChangedObjectValuesForKey:keyCopy];
+  [(EKObject *)self removeMultiChangedObjectValues:v7 forKey:keyCopy];
 
-  [(EKObject *)self addMultiChangedObjectValues:v8 forKey:v6];
+  [(EKObject *)self addMultiChangedObjectValues:valuesCopy forKey:keyCopy];
 }
 
 - (id)changedKeys
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [(EKObject *)self changeSet];
-  v4 = [v3 isDeleted];
+  changeSet = [(EKObject *)self changeSet];
+  isDeleted = [changeSet isDeleted];
 
-  if (v4)
+  if (isDeleted)
   {
     v5 = 0;
   }
@@ -5026,16 +5026,16 @@ LABEL_5:
   else
   {
     v6 = MEMORY[0x1E695DFA8];
-    v7 = [(EKObject *)self changeSet];
-    v8 = [v7 changedKeys];
-    v5 = [v6 setWithSet:v8];
+    changeSet2 = [(EKObject *)self changeSet];
+    changedKeys = [changeSet2 changedKeys];
+    v5 = [v6 setWithSet:changedKeys];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v9 = [objc_opt_class() knownRelationshipSingleValueKeys];
-    v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+    v10 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -5046,7 +5046,7 @@ LABEL_5:
         {
           if (*v28 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(knownRelationshipSingleValueKeys);
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
@@ -5056,7 +5056,7 @@ LABEL_5:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v11 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v11);
@@ -5066,8 +5066,8 @@ LABEL_5:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v15 = [objc_opt_class() knownRelationshipMultiValueKeys];
-    v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+    v16 = [knownRelationshipMultiValueKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v16)
     {
       v17 = v16;
@@ -5078,7 +5078,7 @@ LABEL_5:
         {
           if (*v24 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(knownRelationshipMultiValueKeys);
           }
 
           v20 = *(*(&v23 + 1) + 8 * j);
@@ -5088,7 +5088,7 @@ LABEL_5:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v17 = [knownRelationshipMultiValueKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v17);
@@ -5103,15 +5103,15 @@ LABEL_5:
 - (void)_rollbackCommon
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(EKObject *)self changeSet];
-  [v3 rollbackChanges];
+  changeSet = [(EKObject *)self changeSet];
+  [changeSet rollbackChanges];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v5 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v5 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5122,7 +5122,7 @@ LABEL_5:
       {
         if (*v35 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v9 = *(*(&v34 + 1) + 8 * i);
@@ -5131,13 +5131,13 @@ LABEL_5:
           v10 = [(EKObject *)self valueForKey:v9];
           if ([objc_opt_class() isMeltedAndNotWeakRelationshipObject:v10 forKey:v9])
           {
-            v11 = [v10 existingMeltedObject];
-            [v11 rollback];
+            existingMeltedObject = [v10 existingMeltedObject];
+            [existingMeltedObject rollback];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v6 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v6);
@@ -5187,8 +5187,8 @@ LABEL_5:
                 v22 = *(*(&v26 + 1) + 8 * k);
                 if ([objc_opt_class() isMeltedAndNotWeakRelationshipObject:v22 forKey:v16])
                 {
-                  v23 = [v22 existingMeltedObject];
-                  [v23 rollback];
+                  existingMeltedObject2 = [v22 existingMeltedObject];
+                  [existingMeltedObject2 rollback];
                 }
               }
 
@@ -5210,18 +5210,18 @@ LABEL_5:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_resetIfBackingObjectIsOfClass:(Class)a3 fetchResetFrozenObjectBlock:(id)a4
+- (BOOL)_resetIfBackingObjectIsOfClass:(Class)class fetchResetFrozenObjectBlock:(id)block
 {
-  v5 = a4;
-  v6 = [(EKObject *)self backingObject];
+  blockCopy = block;
+  backingObject = [(EKObject *)self backingObject];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5[2](v5, v6);
+    v7 = blockCopy[2](blockCopy, backingObject);
     v8 = v7;
     v9 = v7 != 0;
     if (v7)
     {
-      v10 = v7 == v6;
+      v10 = v7 == backingObject;
     }
 
     else
@@ -5246,14 +5246,14 @@ LABEL_5:
 - (BOOL)_resetCommon
 {
   v40 = *MEMORY[0x1E69E9840];
-  v23 = [(EKObject *)self isDeleted];
+  isDeleted = [(EKObject *)self isDeleted];
   [(EKObject *)self setChangeSet:0];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v4 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v4)
   {
     v5 = v4;
@@ -5264,7 +5264,7 @@ LABEL_5:
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v8 = *(*(&v33 + 1) + 8 * i);
@@ -5275,7 +5275,7 @@ LABEL_5:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v5 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v5);
@@ -5341,7 +5341,7 @@ LABEL_5:
   }
 
   [(EKObject *)self _resetAfterUpdatingChangeSetOrBackingObject];
-  if (v23)
+  if (isDeleted)
   {
     [(EKObject *)self markAsDeleted];
   }
@@ -5353,18 +5353,18 @@ LABEL_5:
 - (BOOL)_refreshable
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(EKObject *)self persistentObject];
-  v4 = [v3 isNew];
+  persistentObject = [(EKObject *)self persistentObject];
+  isNew = [persistentObject isNew];
 
-  if (v4)
+  if (isNew)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(EKObject *)self persistentObject];
-    if ([v6 _isPendingUpdate] & 1) != 0 || (objc_msgSend(v6, "_isPendingDelete"))
+    persistentObject2 = [(EKObject *)self persistentObject];
+    if ([persistentObject2 _isPendingUpdate] & 1) != 0 || (objc_msgSend(persistentObject2, "_isPendingDelete"))
     {
       v5 = 0;
     }
@@ -5375,10 +5375,10 @@ LABEL_5:
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = [(EKObject *)self eventStore];
-      v8 = [v7 objectsPendingCommit];
+      eventStore = [(EKObject *)self eventStore];
+      objectsPendingCommit = [eventStore objectsPendingCommit];
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [objectsPendingCommit countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v9)
       {
         v10 = v9;
@@ -5389,13 +5389,13 @@ LABEL_5:
           {
             if (*v20 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(objectsPendingCommit);
             }
 
             v13 = *(*(&v19 + 1) + 8 * i);
-            v14 = [v6 objectID];
-            v15 = [v13 objectID];
-            v16 = [v14 isEqual:v15];
+            objectID = [persistentObject2 objectID];
+            objectID2 = [v13 objectID];
+            v16 = [objectID isEqual:objectID2];
 
             if (v16)
             {
@@ -5404,7 +5404,7 @@ LABEL_5:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v10 = [objectsPendingCommit countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v10)
           {
             continue;
@@ -5425,19 +5425,19 @@ LABEL_16:
 
 - (BOOL)_refreshCommon
 {
-  v2 = self;
+  selfCopy = self;
   v108 = *MEMORY[0x1E69E9840];
-  v3 = [(EKObject *)self changeSet];
-  v65 = [v3 copy];
+  changeSet = [(EKObject *)self changeSet];
+  v65 = [changeSet copy];
 
-  v71 = [MEMORY[0x1E695DF90] dictionary];
-  v62 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v4 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v5 = [v4 countByEnumeratingWithState:&v98 objects:v107 count:16];
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v5 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v98 objects:v107 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5448,28 +5448,28 @@ LABEL_16:
       {
         if (*v99 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v9 = *(*(&v98 + 1) + 8 * i);
-        v10 = [(EKObject *)v2 cachedMeltedObjectForSingleValueKey:v9];
+        v10 = [(EKObject *)selfCopy cachedMeltedObjectForSingleValueKey:v9];
         if (v10)
         {
           if (([objc_opt_class() isWeakRelationObject:v10 forKey:v9] & 1) == 0)
           {
-            v11 = [v10 changeSet];
+            changeSet2 = [v10 changeSet];
 
-            if (v11)
+            if (changeSet2)
             {
-              v12 = [v10 changeSet];
-              v13 = [v12 copy];
-              [v71 setObject:v13 forKeyedSubscript:v9];
+              changeSet3 = [v10 changeSet];
+              v13 = [changeSet3 copy];
+              [dictionary setObject:v13 forKeyedSubscript:v9];
             }
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v98 objects:v107 count:16];
+      v6 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v98 objects:v107 count:16];
     }
 
     while (v6);
@@ -5480,7 +5480,7 @@ LABEL_16:
   v94 = 0u;
   v95 = 0u;
   obj = [objc_opt_class() knownRelationshipMultiValueKeys];
-  v76 = v2;
+  v76 = selfCopy;
   v66 = [obj countByEnumeratingWithState:&v94 objects:v106 count:16];
   if (v66)
   {
@@ -5495,15 +5495,15 @@ LABEL_16:
         }
 
         v15 = *(*(&v94 + 1) + 8 * j);
-        v16 = [(EKObject *)v2 cachedMeltedObjectsForMultiValueKey:v15];
-        v17 = [v65 multiValueAdditions];
-        v18 = [v17 objectForKey:v15];
+        v16 = [(EKObject *)selfCopy cachedMeltedObjectsForMultiValueKey:v15];
+        multiValueAdditions = [v65 multiValueAdditions];
+        v18 = [multiValueAdditions objectForKey:v15];
 
         if (v16)
         {
           v69 = j;
-          v72 = [MEMORY[0x1E695DF90] dictionary];
-          v74 = [MEMORY[0x1E695DF70] array];
+          dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+          array = [MEMORY[0x1E695DF70] array];
           v90 = 0u;
           v91 = 0u;
           v92 = 0u;
@@ -5527,30 +5527,30 @@ LABEL_16:
                 v24 = *(*(&v90 + 1) + 8 * k);
                 if (([objc_opt_class() isWeakRelationObject:v24 forKey:v15] & 1) == 0)
                 {
-                  v25 = [v24 changeSet];
-                  if (v25)
+                  changeSet4 = [v24 changeSet];
+                  if (changeSet4)
                   {
-                    v26 = v25;
-                    v27 = [v24 uniqueIdentifier];
+                    v26 = changeSet4;
+                    uniqueIdentifier = [v24 uniqueIdentifier];
 
-                    if (v27)
+                    if (uniqueIdentifier)
                     {
-                      v28 = [v24 changeSet];
-                      v29 = [v28 copy];
-                      v30 = [v24 uniqueIdentifier];
-                      [v72 setObject:v29 forKeyedSubscript:v30];
+                      changeSet5 = [v24 changeSet];
+                      v29 = [changeSet5 copy];
+                      uniqueIdentifier2 = [v24 uniqueIdentifier];
+                      [dictionary3 setObject:v29 forKeyedSubscript:uniqueIdentifier2];
 
-                      v2 = v76;
+                      selfCopy = v76;
                     }
                   }
                 }
 
-                v31 = [v24 backingObject];
-                v32 = [v18 containsObject:v31];
+                backingObject = [v24 backingObject];
+                v32 = [v18 containsObject:backingObject];
 
                 if (v32)
                 {
-                  [v74 addObject:v24];
+                  [array addObject:v24];
                 }
               }
 
@@ -5560,16 +5560,16 @@ LABEL_16:
             while (v21);
           }
 
-          if ([v72 count])
+          if ([dictionary3 count])
           {
-            [v71 setObject:v72 forKeyedSubscript:v15];
+            [dictionary setObject:dictionary3 forKeyedSubscript:v15];
           }
 
           v16 = v67;
           j = v69;
-          if ([v74 count])
+          if ([array count])
           {
-            [v62 setObject:v74 forKey:v15];
+            [dictionary2 setObject:array forKey:v15];
           }
         }
       }
@@ -5580,24 +5580,24 @@ LABEL_16:
     while (v66);
   }
 
-  v33 = [(EKObject *)v2 _reset];
-  v34 = v33;
-  if (v33)
+  _reset = [(EKObject *)selfCopy _reset];
+  v34 = _reset;
+  if (_reset)
   {
-    v68 = v33;
+    v68 = _reset;
     v89[0] = MEMORY[0x1E69E9820];
     v89[1] = 3221225472;
     v89[2] = __34__EKObject_Shared___refreshCommon__block_invoke;
     v89[3] = &unk_1E77FF540;
-    v89[4] = v2;
-    [v62 enumerateKeysAndObjectsUsingBlock:v89];
-    [(EKObject *)v2 updateMultiValueCacheForChangeSet:v65 preservingExistingAdds:1 objectIdentifierBlock:0];
+    v89[4] = selfCopy;
+    [dictionary2 enumerateKeysAndObjectsUsingBlock:v89];
+    [(EKObject *)selfCopy updateMultiValueCacheForChangeSet:v65 preservingExistingAdds:1 objectIdentifierBlock:0];
     v87 = 0u;
     v88 = 0u;
     v85 = 0u;
     v86 = 0u;
-    v35 = [objc_opt_class() knownRelationshipSingleValueKeys];
-    v36 = [v35 countByEnumeratingWithState:&v85 objects:v104 count:16];
+    knownRelationshipSingleValueKeys2 = [objc_opt_class() knownRelationshipSingleValueKeys];
+    v36 = [knownRelationshipSingleValueKeys2 countByEnumeratingWithState:&v85 objects:v104 count:16];
     if (v36)
     {
       v37 = v36;
@@ -5608,23 +5608,23 @@ LABEL_16:
         {
           if (*v86 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(knownRelationshipSingleValueKeys2);
           }
 
           v40 = *(*(&v85 + 1) + 8 * m);
-          v41 = [v71 objectForKeyedSubscript:v40];
+          v41 = [dictionary objectForKeyedSubscript:v40];
           if (v41)
           {
-            v42 = [(EKObject *)v2 valueForKey:v40];
-            v43 = [(EKObject *)v2 eventStore];
-            v44 = [v42 meltedObjectInStore:v43];
+            v42 = [(EKObject *)selfCopy valueForKey:v40];
+            eventStore = [(EKObject *)selfCopy eventStore];
+            v44 = [v42 meltedObjectInStore:eventStore];
 
             [v44 setChangeSet:v41];
-            [(EKObject *)v2 setValue:v44 forKey:v40];
+            [(EKObject *)selfCopy setValue:v44 forKey:v40];
           }
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v85 objects:v104 count:16];
+        v37 = [knownRelationshipSingleValueKeys2 countByEnumeratingWithState:&v85 objects:v104 count:16];
       }
 
       while (v37);
@@ -5634,8 +5634,8 @@ LABEL_16:
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v70 = [objc_opt_class() knownRelationshipMultiValueKeys];
-    v75 = [v70 countByEnumeratingWithState:&v81 objects:v103 count:16];
+    knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+    v75 = [knownRelationshipMultiValueKeys countByEnumeratingWithState:&v81 objects:v103 count:16];
     if (v75)
     {
       v73 = *v82;
@@ -5645,14 +5645,14 @@ LABEL_16:
         {
           if (*v82 != v73)
           {
-            objc_enumerationMutation(v70);
+            objc_enumerationMutation(knownRelationshipMultiValueKeys);
           }
 
           v46 = *(*(&v81 + 1) + 8 * n);
-          v47 = [v71 objectForKeyedSubscript:v46];
+          v47 = [dictionary objectForKeyedSubscript:v46];
           if ([v47 count])
           {
-            v48 = [(EKObject *)v2 valueForKey:v46];
+            v48 = [(EKObject *)selfCopy valueForKey:v46];
             v77 = 0u;
             v78 = 0u;
             v79 = 0u;
@@ -5672,23 +5672,23 @@ LABEL_16:
                   }
 
                   v53 = *(*(&v77 + 1) + 8 * ii);
-                  v54 = [v53 uniqueIdentifier];
+                  uniqueIdentifier3 = [v53 uniqueIdentifier];
 
-                  if (v54)
+                  if (uniqueIdentifier3)
                   {
                     [v53 uniqueIdentifier];
-                    v56 = v55 = v2;
+                    v56 = v55 = selfCopy;
                     v57 = [v47 objectForKeyedSubscript:v56];
 
-                    v58 = [(EKObject *)v55 eventStore];
-                    v59 = [v53 meltedObjectInStore:v58];
+                    eventStore2 = [(EKObject *)v55 eventStore];
+                    v59 = [v53 meltedObjectInStore:eventStore2];
 
                     if (v57)
                     {
                       [v59 setChangeSet:v57];
                     }
 
-                    v2 = v76;
+                    selfCopy = v76;
                   }
                 }
 
@@ -5700,13 +5700,13 @@ LABEL_16:
           }
         }
 
-        v75 = [v70 countByEnumeratingWithState:&v81 objects:v103 count:16];
+        v75 = [knownRelationshipMultiValueKeys countByEnumeratingWithState:&v81 objects:v103 count:16];
       }
 
       while (v75);
     }
 
-    [(EKObject *)v2 setChangeSet:v65];
+    [(EKObject *)selfCopy setChangeSet:v65];
     v34 = v68;
   }
 
@@ -5751,28 +5751,28 @@ void __34__EKObject_Shared___refreshCommon__block_invoke(uint64_t a1, void *a2, 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_resetWithFrozenObject:(id)a3
+- (void)_resetWithFrozenObject:(id)object
 {
-  v4 = a3;
-  [(EKObject *)self setBackingObject:v4];
+  objectCopy = object;
+  [(EKObject *)self setBackingObject:objectCopy];
   [(EKObject *)self setAdditionalFrozenProperties:0];
-  [(EKObject *)self _applyDefinedAfterFirstSaveFrom:v4];
+  [(EKObject *)self _applyDefinedAfterFirstSaveFrom:objectCopy];
 
   [(EKObject *)self _resetAfterUpdatingChangeSetOrBackingObject];
 }
 
-- (void)_applyKnownImmutableValuesFrom:(id)a3
+- (void)_applyKnownImmutableValuesFrom:(id)from
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  fromCopy = from;
+  if (fromCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [objc_opt_class() knownImmutableKeys];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    knownImmutableKeys = [objc_opt_class() knownImmutableKeys];
+    v6 = [knownImmutableKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (!v6)
     {
       goto LABEL_14;
@@ -5787,12 +5787,12 @@ void __34__EKObject_Shared___refreshCommon__block_invoke(uint64_t a1, void *a2, 
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(knownImmutableKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
-        v11 = [(EKObject *)self additionalFrozenProperties];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        additionalFrozenProperties = [(EKObject *)self additionalFrozenProperties];
+        v12 = [additionalFrozenProperties objectForKeyedSubscript:v10];
         if (v12)
         {
           v13 = v12;
@@ -5800,7 +5800,7 @@ void __34__EKObject_Shared___refreshCommon__block_invoke(uint64_t a1, void *a2, 
 
         else
         {
-          v13 = [v4 valueForKey:v10];
+          v13 = [fromCopy valueForKey:v10];
 
           if (!v13)
           {
@@ -5820,7 +5820,7 @@ LABEL_12:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [knownImmutableKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (!v7)
       {
 LABEL_14:
@@ -5872,11 +5872,11 @@ void __45__EKObject_Shared___cachedMeltedObjectsCount__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 count];
 }
 
-- (void)_updateCachedMeltedObjectSetForMultiValueKey:(id)a3 usingBlock:(id)a4
+- (void)_updateCachedMeltedObjectSetForMultiValueKey:(id)key usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EKObject *)self meltedAndCachedMultiRelationObjectsForKey:v6];
+  keyCopy = key;
+  blockCopy = block;
+  v8 = [(EKObject *)self meltedAndCachedMultiRelationObjectsForKey:keyCopy];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -5889,7 +5889,7 @@ void __45__EKObject_Shared___cachedMeltedObjectsCount__block_invoke(uint64_t a1)
   v14[3] = &unk_1E77FD688;
   v16 = &v17;
   v14[4] = self;
-  v9 = v6;
+  v9 = keyCopy;
   v15 = v9;
   [(EKObject *)self _performWithLock:v14];
   v10 = v18[5];
@@ -5902,7 +5902,7 @@ void __45__EKObject_Shared___cachedMeltedObjectsCount__block_invoke(uint64_t a1)
     v10 = v18[5];
   }
 
-  v13 = v7[2](v7, v10);
+  v13 = blockCopy[2](blockCopy, v10);
   [(EKObject *)self setCachedMeltedObjects:v13 forMultiValueKey:v9];
 
   _Block_object_dispose(&v17, 8);
@@ -5917,55 +5917,55 @@ void __76__EKObject_Shared___updateCachedMeltedObjectSetForMultiValueKey_usingBl
   *(v3 + 40) = v2;
 }
 
-- (void)addCachedMeltedObject:(id)a3 forMultiValueKey:(id)a4
+- (void)addCachedMeltedObject:(id)object forMultiValueKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(EKObject *)self eventStore];
-  v10 = [v7 meltedObjectInStore:v8];
+  keyCopy = key;
+  objectCopy = object;
+  eventStore = [(EKObject *)self eventStore];
+  v10 = [objectCopy meltedObjectInStore:eventStore];
 
-  v9 = [v10 frozenObject];
-  [(EKObject *)self _addCachedMeltedObject:v10 forMultiValueKey:v6];
-  [(EKObject *)self addMultiChangedObjectValue:v9 forKey:v6];
+  frozenObject = [v10 frozenObject];
+  [(EKObject *)self _addCachedMeltedObject:v10 forMultiValueKey:keyCopy];
+  [(EKObject *)self addMultiChangedObjectValue:frozenObject forKey:keyCopy];
 }
 
-- (void)_addCachedMeltedObject:(id)a3 forMultiValueKey:(id)a4
+- (void)_addCachedMeltedObject:(id)object forMultiValueKey:(id)key
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (objectCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __60__EKObject_Shared___addCachedMeltedObject_forMultiValueKey___block_invoke;
     v8[3] = &unk_1E77FF568;
-    v9 = v6;
-    [(EKObject *)self _updateCachedMeltedObjectSetForMultiValueKey:a4 usingBlock:v8];
+    v9 = objectCopy;
+    [(EKObject *)self _updateCachedMeltedObjectSetForMultiValueKey:key usingBlock:v8];
   }
 }
 
-- (void)removeCachedMeltedObject:(id)a3 forMultiValueKey:(id)a4
+- (void)removeCachedMeltedObject:(id)object forMultiValueKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  [(EKObject *)self _removeCachedMeltedObject:v7 forMultiValueKey:v6];
-  v8 = [v7 frozenObject];
+  keyCopy = key;
+  objectCopy = object;
+  [(EKObject *)self _removeCachedMeltedObject:objectCopy forMultiValueKey:keyCopy];
+  frozenObject = [objectCopy frozenObject];
 
-  [(EKObject *)self removeMultiChangedObjectValue:v8 forKey:v6];
+  [(EKObject *)self removeMultiChangedObjectValue:frozenObject forKey:keyCopy];
 }
 
-- (void)_removeCachedMeltedObject:(id)a3 forMultiValueKey:(id)a4
+- (void)_removeCachedMeltedObject:(id)object forMultiValueKey:(id)key
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  objectCopy = object;
+  v7 = objectCopy;
+  if (objectCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __63__EKObject_Shared___removeCachedMeltedObject_forMultiValueKey___block_invoke;
     v8[3] = &unk_1E77FF590;
-    v9 = v6;
-    [(EKObject *)self _updateCachedMeltedObjectSetForMultiValueKey:a4 usingBlock:v8];
+    v9 = objectCopy;
+    [(EKObject *)self _updateCachedMeltedObjectSetForMultiValueKey:key usingBlock:v8];
   }
 }
 
@@ -5978,18 +5978,18 @@ id __63__EKObject_Shared___removeCachedMeltedObject_forMultiValueKey___block_inv
   return v4;
 }
 
-- (void)setCachedMeltedObjects:(id)a3 forMultiValueKey:(id)a4
+- (void)setCachedMeltedObjects:(id)objects forMultiValueKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  keyCopy = key;
+  v7 = [objects copy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__EKObject_Shared__setCachedMeltedObjects_forMultiValueKey___block_invoke;
   v10[3] = &unk_1E77FD7C8;
   v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v13 = keyCopy;
+  v8 = keyCopy;
   v9 = v7;
   [(EKObject *)self _performWithLock:v10];
 }
@@ -6011,9 +6011,9 @@ void __60__EKObject_Shared__setCachedMeltedObjects_forMultiValueKey___block_invo
   }
 }
 
-- (id)cachedMeltedObjectsForMultiValueKey:(id)a3
+- (id)cachedMeltedObjectsForMultiValueKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -6026,7 +6026,7 @@ void __60__EKObject_Shared__setCachedMeltedObjects_forMultiValueKey___block_invo
   v8[3] = &unk_1E77FD688;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   [(EKObject *)self _performWithLock:v8];
   if (v12[5])
@@ -6054,19 +6054,19 @@ void __56__EKObject_Shared__cachedMeltedObjectsForMultiValueKey___block_invoke(u
   *(v4 + 40) = v3;
 }
 
-- (void)setCachedMeltedObject:(id)a3 forSingleValueKey:(id)a4
+- (void)setCachedMeltedObject:(id)object forSingleValueKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__EKObject_Shared__setCachedMeltedObject_forSingleValueKey___block_invoke;
   v10[3] = &unk_1E77FD7C8;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = objectCopy;
+  selfCopy = self;
+  v13 = keyCopy;
+  v8 = keyCopy;
+  v9 = objectCopy;
   [(EKObject *)self _performWithLock:v10];
 }
 
@@ -6087,9 +6087,9 @@ void __60__EKObject_Shared__setCachedMeltedObject_forSingleValueKey___block_invo
   }
 }
 
-- (id)cachedMeltedObjectForSingleValueKey:(id)a3
+- (id)cachedMeltedObjectForSingleValueKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -6102,7 +6102,7 @@ void __60__EKObject_Shared__setCachedMeltedObject_forSingleValueKey___block_invo
   v8[3] = &unk_1E77FD688;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = keyCopy;
   v9 = v5;
   [(EKObject *)self _performWithLock:v8];
   v6 = v12[5];
@@ -6121,10 +6121,10 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
   *(v3 + 40) = v2;
 }
 
-- (id)frozenOrMeltedCachedSingleRelationObjectForKey:(id)a3
+- (id)frozenOrMeltedCachedSingleRelationObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(EKObject *)self cachedMeltedObjectForSingleValueKey:v4];
+  keyCopy = key;
+  v5 = [(EKObject *)self cachedMeltedObjectForSingleValueKey:keyCopy];
   v6 = v5;
   if (v5)
   {
@@ -6133,7 +6133,7 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
 
   else
   {
-    v7 = [(EKObject *)self singleChangedValueForKey:v4];
+    v7 = [(EKObject *)self singleChangedValueForKey:keyCopy];
   }
 
   v8 = v7;
@@ -6141,10 +6141,10 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
   return v8;
 }
 
-- (id)frozenOrMeltedCachedMultiRelationObjectsForKey:(id)a3
+- (id)frozenOrMeltedCachedMultiRelationObjectsForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(EKObject *)self cachedMeltedObjectsForMultiValueKey:v4];
+  keyCopy = key;
+  v5 = [(EKObject *)self cachedMeltedObjectsForMultiValueKey:keyCopy];
   v6 = v5;
   if (v5)
   {
@@ -6153,7 +6153,7 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
 
   else
   {
-    v7 = [(EKObject *)self multiChangedObjectValuesForKey:v4];
+    v7 = [(EKObject *)self multiChangedObjectValuesForKey:keyCopy];
   }
 
   v8 = v7;
@@ -6161,12 +6161,12 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
   return v8;
 }
 
-- (id)meltedAndCachedSingleRelationObjectForKey:(id)a3
+- (id)meltedAndCachedSingleRelationObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(EKObject *)self frozenOrMeltedCachedSingleRelationObjectForKey:v4];
-  v6 = [(EKObject *)self eventStore];
-  v7 = [v5 meltedObjectInStore:v6];
+  keyCopy = key;
+  v5 = [(EKObject *)self frozenOrMeltedCachedSingleRelationObjectForKey:keyCopy];
+  eventStore = [(EKObject *)self eventStore];
+  v7 = [v5 meltedObjectInStore:eventStore];
 
   if (v5 && !v7 && os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
@@ -6175,34 +6175,34 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
 
   if ([v5 isFrozen])
   {
-    [(EKObject *)self setCachedMeltedObject:v7 forSingleValueKey:v4];
+    [(EKObject *)self setCachedMeltedObject:v7 forSingleValueKey:keyCopy];
   }
 
   return v7;
 }
 
-- (void)updateMeltedAndCachedSingleRelationObject:(id)a3 forKey:(id)a4 frozenClass:(Class)a5
+- (void)updateMeltedAndCachedSingleRelationObject:(id)object forKey:(id)key frozenClass:(Class)class
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(EKObject *)self eventStore];
-  v10 = [v8 meltedObjectInStore:v9];
+  keyCopy = key;
+  objectCopy = object;
+  eventStore = [(EKObject *)self eventStore];
+  v10 = [objectCopy meltedObjectInStore:eventStore];
 
-  v11 = [v10 frozenObject];
-  if (v8 && !v10 && os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
+  frozenObject = [v10 frozenObject];
+  if (objectCopy && !v10 && os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
   {
     [EKObject(Shared) meltedAndCachedSingleRelationObjectForKey:];
   }
 
-  [(EKObject *)self setCachedMeltedObject:v10 forSingleValueKey:v7];
-  [(EKObject *)self setSingleChangedValue:v11 forKey:v7];
+  [(EKObject *)self setCachedMeltedObject:v10 forSingleValueKey:keyCopy];
+  [(EKObject *)self setSingleChangedValue:frozenObject forKey:keyCopy];
 }
 
-- (id)meltedAndCachedMultiRelationObjectsForKey:(id)a3
+- (id)meltedAndCachedMultiRelationObjectsForKey:(id)key
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKObject *)self cachedMeltedObjectsForMultiValueKey:v4];
+  keyCopy = key;
+  v5 = [(EKObject *)self cachedMeltedObjectsForMultiValueKey:keyCopy];
   if (v5)
   {
     v6 = v5;
@@ -6210,10 +6210,10 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
 
   else
   {
-    v7 = [(EKObject *)self multiChangedObjectValuesForKey:v4];
+    v7 = [(EKObject *)self multiChangedObjectValuesForKey:keyCopy];
     if (v7)
     {
-      v26 = v4;
+      v26 = keyCopy;
       v8 = [MEMORY[0x1E695DFA8] set];
       v27 = 0u;
       v28 = 0u;
@@ -6237,8 +6237,8 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
             }
 
             v14 = *(*(&v27 + 1) + 8 * v13);
-            v15 = [(EKObject *)self eventStore];
-            v16 = [v14 meltedObjectInStore:v15];
+            eventStore = [(EKObject *)self eventStore];
+            v16 = [v14 meltedObjectInStore:eventStore];
 
             if (v16)
             {
@@ -6251,10 +6251,10 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
               if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
               {
                 v18 = v17;
-                v19 = [(EKObject *)self eventStore];
+                eventStore2 = [(EKObject *)self eventStore];
                 *buf = 138412546;
                 v20 = @"not nil";
-                if (!v19)
+                if (!eventStore2)
                 {
                   v20 = @"nil";
                 }
@@ -6277,7 +6277,7 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
         while (v21);
       }
 
-      v4 = v26;
+      keyCopy = v26;
       [(EKObject *)self setCachedMeltedObjects:v8 forMultiValueKey:v26];
       v22 = [v8 copy];
 
@@ -6297,16 +6297,16 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
   return v6;
 }
 
-- (void)updateMeltedAndCachedMultiRelationObjects:(id)a3 forKey:(id)a4
+- (void)updateMeltedAndCachedMultiRelationObjects:(id)objects forKey:(id)key
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [(EKObject *)self eventStore];
+  objectsCopy = objects;
+  keyCopy = key;
+  v8 = objectsCopy;
+  eventStore = [(EKObject *)self eventStore];
   v10 = 0x1E695D000uLL;
   v11 = v8;
-  if (v9)
+  if (eventStore)
   {
     v54 = 0u;
     v55 = 0u;
@@ -6328,17 +6328,17 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
           }
 
           v17 = *(*(&v52 + 1) + 8 * i);
-          v18 = [v17 eventStore];
-          if (v18)
+          eventStore2 = [v17 eventStore];
+          if (eventStore2)
           {
-            v19 = v18;
-            v20 = [v17 eventStore];
+            v19 = eventStore2;
+            eventStore3 = [v17 eventStore];
 
-            if (v9 != v20)
+            if (eventStore != eventStore3)
             {
-              v40 = self;
+              selfCopy = self;
               v41 = v8;
-              v42 = v7;
+              v42 = keyCopy;
               v21 = v12;
 
               v12 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v12, "count")}];
@@ -6362,7 +6362,7 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
                     }
 
                     v27 = *(*(&v48 + 1) + 8 * j);
-                    v28 = [v27 meltedObjectInStore:v9];
+                    v28 = [v27 meltedObjectInStore:eventStore];
                     if (v28)
                     {
                       [v12 addObject:v28];
@@ -6375,13 +6375,13 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
                       {
                         log = v29;
                         v30 = objc_opt_class();
-                        v31 = [v27 objectID];
+                        objectID = [v27 objectID];
                         *buf = 138412802;
                         v58 = v27;
                         v59 = 2114;
                         v60 = v30;
                         v61 = 2114;
-                        v62 = v31;
+                        v62 = objectID;
                         _os_log_error_impl(&dword_1A805E000, log, OS_LOG_TYPE_ERROR, "Failed to copy %@ (class = %{public}@, objectID = %{public}@) to my event store.", buf, 0x20u);
                       }
                     }
@@ -6395,8 +6395,8 @@ void __56__EKObject_Shared__cachedMeltedObjectForSingleValueKey___block_invoke(u
 
               v11 = [v12 copy];
               v8 = v41;
-              v7 = v42;
-              self = v40;
+              keyCopy = v42;
+              self = selfCopy;
               goto LABEL_24;
             }
           }
@@ -6422,7 +6422,7 @@ LABEL_24:
     }
   }
 
-  [(EKObject *)self setCachedMeltedObjects:v8 forMultiValueKey:v7];
+  [(EKObject *)self setCachedMeltedObjects:v8 forMultiValueKey:keyCopy];
   v32 = [*(v10 + 4008) setWithCapacity:{objc_msgSend(v11, "count")}];
   v44 = 0u;
   v45 = 0u;
@@ -6443,8 +6443,8 @@ LABEL_24:
           objc_enumerationMutation(v33);
         }
 
-        v38 = [*(*(&v44 + 1) + 8 * k) frozenObject];
-        [v32 addObject:v38];
+        frozenObject = [*(*(&v44 + 1) + 8 * k) frozenObject];
+        [v32 addObject:frozenObject];
       }
 
       v35 = [v33 countByEnumeratingWithState:&v44 objects:v56 count:16];
@@ -6453,13 +6453,13 @@ LABEL_24:
     while (v35);
   }
 
-  [(EKObject *)self replaceMultiChangedObjectValuesWithObjectValues:v32 forKey:v7];
+  [(EKObject *)self replaceMultiChangedObjectValuesWithObjectValues:v32 forKey:keyCopy];
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)meltedAndCachedMultiRelationCountForKey:(id)a3
+- (unint64_t)meltedAndCachedMultiRelationCountForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -6472,8 +6472,8 @@ LABEL_24:
   v10 = 3221225472;
   v11 = __60__EKObject_Shared__meltedAndCachedMultiRelationCountForKey___block_invoke;
   v12 = &unk_1E77FF5B8;
-  v13 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = keyCopy;
   v14 = v5;
   v15 = &v21;
   v16 = &v17;
@@ -6485,8 +6485,8 @@ LABEL_24:
 
   else
   {
-    v7 = [(EKObject *)self multiChangedObjectValuesForKey:v5, v9, v10, v11, v12, v13];
-    v6 = [v7 count];
+    selfCopy = [(EKObject *)self multiChangedObjectValuesForKey:v5, v9, v10, v11, v12, selfCopy];
+    v6 = [selfCopy count];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -6509,27 +6509,27 @@ void __60__EKObject_Shared__meltedAndCachedMultiRelationCountForKey___block_invo
   }
 }
 
-- (void)updateAfterApplyingChanges:(id)a3 objectIdentifierBlock:(id)a4
+- (void)updateAfterApplyingChanges:(id)changes objectIdentifierBlock:(id)block
 {
-  [(EKObject *)self updateMeltedCacheForChangeSet:a3 objectIdentifierBlock:a4];
+  [(EKObject *)self updateMeltedCacheForChangeSet:changes objectIdentifierBlock:block];
 
   [(EKObject *)self _resetInternalStateWithForce:0];
 }
 
-- (void)updateMeltedCacheForChangeSet:(id)a3 objectIdentifierBlock:(id)a4
+- (void)updateMeltedCacheForChangeSet:(id)set objectIdentifierBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 changedSingleValueKeys];
+  blockCopy = block;
+  setCopy = set;
+  changedSingleValueKeys = [setCopy changedSingleValueKeys];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock___block_invoke;
   v13 = &unk_1E77FD580;
-  v14 = v8;
-  v15 = self;
-  v9 = v8;
+  v14 = changedSingleValueKeys;
+  selfCopy = self;
+  v9 = changedSingleValueKeys;
   [(EKObject *)self _performWithLock:&v10];
-  [(EKObject *)self updateMultiValueCacheForChangeSet:v7 preservingExistingAdds:0 objectIdentifierBlock:v6, v10, v11, v12, v13];
+  [(EKObject *)self updateMultiValueCacheForChangeSet:setCopy preservingExistingAdds:0 objectIdentifierBlock:blockCopy, v10, v11, v12, v13];
 }
 
 void __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock___block_invoke(uint64_t a1)
@@ -6572,29 +6572,29 @@ void __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateMultiValueCacheForChangeSet:(id)a3 preservingExistingAdds:(BOOL)a4 objectIdentifierBlock:(id)a5
+- (void)updateMultiValueCacheForChangeSet:(id)set preservingExistingAdds:(BOOL)adds objectIdentifierBlock:(id)block
 {
   v80 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
+  setCopy = set;
+  blockCopy = block;
   v8 = &__block_literal_global_63;
   v69 = 0u;
   v70 = 0u;
-  if (v7)
+  if (blockCopy)
   {
-    v8 = v7;
+    v8 = blockCopy;
   }
 
   v43 = v8;
   v71 = 0uLL;
   v72 = 0uLL;
-  obj = [v6 changedMultiValueKeys];
+  obj = [setCopy changedMultiValueKeys];
   v44 = [obj countByEnumeratingWithState:&v69 objects:v79 count:16];
   if (v44)
   {
     v41 = *v70;
     v9 = v43 + 2;
-    v42 = v6;
+    v42 = setCopy;
     do
     {
       v10 = 0;
@@ -6609,14 +6609,14 @@ void __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock_
         v11 = *(*(&v69 + 1) + 8 * v10);
         v12 = [(EKObject *)self meltedAndCachedMultiRelationObjectsForKey:v11];
         v13 = [(EKObject *)self cachedMeltedObjectsForMultiValueKey:v11];
-        v14 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v66[0] = MEMORY[0x1E69E9820];
         v66[1] = 3221225472;
         v66[2] = __99__EKObject_Shared__updateMultiValueCacheForChangeSet_preservingExistingAdds_objectIdentifierBlock___block_invoke_2;
         v66[3] = &unk_1E77FF5E0;
         v15 = v43;
         v68 = v15;
-        v54 = v14;
+        v54 = dictionary;
         v67 = v54;
         v46 = v13;
         [v13 enumerateObjectsUsingBlock:v66];
@@ -6637,7 +6637,7 @@ void __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock_
         v59 = 0u;
         v60 = 0u;
         v53 = v11;
-        v19 = [v6 unsavedMultiValueRemovedObjectsForKey:v11];
+        v19 = [setCopy unsavedMultiValueRemovedObjectsForKey:v11];
         v20 = [v19 countByEnumeratingWithState:&v59 objects:v78 count:16];
         if (v20)
         {
@@ -6673,7 +6673,7 @@ void __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock_
         v58 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v51 = [v6 unsavedMultiValueAddedObjectsForKey:v53];
+        v51 = [setCopy unsavedMultiValueAddedObjectsForKey:v53];
         v26 = [v51 countByEnumeratingWithState:&v55 objects:v77 count:16];
         if (v26)
         {
@@ -6694,22 +6694,22 @@ void __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock_
               if (v31)
               {
                 v32 = [v54 objectForKeyedSubscript:v31];
-                if (v32 && !a4)
+                if (v32 && !adds)
                 {
                   [(EKObject *)self _removeCachedMeltedObject:v32 forMultiValueKey:v53];
                 }
 
                 if (v32)
                 {
-                  v33 = a4;
+                  addsCopy = adds;
                 }
 
                 else
                 {
-                  v33 = 0;
+                  addsCopy = 0;
                 }
 
-                if (!v33)
+                if (!addsCopy)
                 {
                   v34 = v28;
                   v35 = [v49 objectForKeyedSubscript:v31];
@@ -6728,8 +6728,8 @@ void __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock_
                     v35 = v30;
                   }
 
-                  v37 = [(EKObject *)self eventStore];
-                  v38 = [v35 meltedObjectInStore:v37];
+                  eventStore = [(EKObject *)self eventStore];
+                  v38 = [v35 meltedObjectInStore:eventStore];
 
                   [(EKObject *)self _addCachedMeltedObject:v38 forMultiValueKey:v53];
                   v28 = v34;
@@ -6745,7 +6745,7 @@ void __72__EKObject_Shared__updateMeltedCacheForChangeSet_objectIdentifierBlock_
         }
 
         v10 = v47 + 1;
-        v6 = v42;
+        setCopy = v42;
       }
 
       while (v47 + 1 != v44);
@@ -6794,7 +6794,7 @@ void __99__EKObject_Shared__updateMultiValueCacheForChangeSet_preservingExisting
   v82 = 0u;
   obj = [objc_opt_class() knownRelationshipSingleValueKeys];
   v3 = [obj countByEnumeratingWithState:&v79 objects:v87 count:16];
-  v56 = self;
+  selfCopy = self;
   if (v3)
   {
     v4 = v3;
@@ -6813,30 +6813,30 @@ void __99__EKObject_Shared__updateMultiValueCacheForChangeSet_preservingExisting
         v9 = [(EKObject *)self cachedMeltedObjectForSingleValueKey:v7];
         if (v9)
         {
-          v10 = [(EKObject *)self backingObject];
-          v11 = [v10 valueForKey:v7];
+          backingObject = [(EKObject *)self backingObject];
+          v11 = [backingObject valueForKey:v7];
 
-          v12 = [v9 backingObject];
-          v13 = v12;
-          if (v12 == v11)
+          backingObject2 = [v9 backingObject];
+          v13 = backingObject2;
+          if (backingObject2 == v11)
           {
           }
 
           else
           {
-            v14 = [v9 uniqueIdentifier];
+            uniqueIdentifier = [v9 uniqueIdentifier];
             [v11 uniqueIdentifier];
             v15 = v4;
             v17 = v16 = v5;
-            v59 = [v14 isEqualToString:v17];
+            v59 = [uniqueIdentifier isEqualToString:v17];
 
             v5 = v16;
             v4 = v15;
 
-            self = v56;
+            self = selfCopy;
             if (!v59)
             {
-              [(EKObject *)v56 setCachedMeltedObject:0 forSingleValueKey:v7];
+              [(EKObject *)selfCopy setCachedMeltedObject:0 forSingleValueKey:v7];
 LABEL_12:
 
               goto LABEL_13;
@@ -6862,8 +6862,8 @@ LABEL_13:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v53 = [objc_opt_class() knownRelationshipMultiValueKeys];
-  v18 = [v53 countByEnumeratingWithState:&v75 objects:v86 count:16];
+  knownRelationshipMultiValueKeys = [objc_opt_class() knownRelationshipMultiValueKeys];
+  v18 = [knownRelationshipMultiValueKeys countByEnumeratingWithState:&v75 objects:v86 count:16];
   if (v18)
   {
     v19 = v18;
@@ -6877,18 +6877,18 @@ LABEL_13:
       {
         if (*v76 != v20)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(knownRelationshipMultiValueKeys);
         }
 
         v22 = *(*(&v75 + 1) + 8 * v21);
         v23 = objc_autoreleasePoolPush();
         v24 = [(EKObject *)self cachedMeltedObjectsForMultiValueKey:v22];
-        v25 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v73[0] = MEMORY[0x1E69E9820];
         v73[1] = 3221225472;
         v73[2] = __37__EKObject_Shared___resetMeltedCache__block_invoke;
         v73[3] = &unk_1E77FF630;
-        obja = v25;
+        obja = dictionary;
         v74 = obja;
         [v24 enumerateObjectsUsingBlock:v73];
         if (v24)
@@ -6902,8 +6902,8 @@ LABEL_13:
             v70 = 0u;
             v71 = 0u;
             v72 = 0u;
-            v26 = [(EKObject *)self backingObject];
-            v27 = [v26 valueForKey:v22];
+            backingObject3 = [(EKObject *)self backingObject];
+            v27 = [backingObject3 valueForKey:v22];
 
             v28 = v27;
             v29 = [v27 countByEnumeratingWithState:&v69 objects:v85 count:16];
@@ -6923,8 +6923,8 @@ LABEL_13:
                   }
 
                   v35 = *(*(&v69 + 1) + 8 * j);
-                  v36 = [v35 uniqueIdentifier];
-                  v37 = [v31 objectForKeyedSubscript:v36];
+                  uniqueIdentifier2 = [v35 uniqueIdentifier];
+                  v37 = [v31 objectForKeyedSubscript:uniqueIdentifier2];
 
                   if (v37)
                   {
@@ -6934,11 +6934,11 @@ LABEL_13:
 
                   else
                   {
-                    v38 = [(EKObject *)v56 eventStore];
-                    v39 = [v35 meltedObjectInStore:v38];
+                    eventStore = [(EKObject *)selfCopy eventStore];
+                    v39 = [v35 meltedObjectInStore:eventStore];
 
                     v31 = obja;
-                    [(EKObject *)v56 _addCachedMeltedObject:v39 forMultiValueKey:v22];
+                    [(EKObject *)selfCopy _addCachedMeltedObject:v39 forMultiValueKey:v22];
                   }
                 }
 
@@ -6954,7 +6954,7 @@ LABEL_13:
             v66 = 0u;
             v40 = v60;
             v41 = [v40 countByEnumeratingWithState:&v65 objects:v84 count:16];
-            self = v56;
+            self = selfCopy;
             v19 = v52;
             v23 = v54;
             if (v41)
@@ -6970,7 +6970,7 @@ LABEL_13:
                     objc_enumerationMutation(v40);
                   }
 
-                  [(EKObject *)v56 _removeCachedMeltedObject:*(*(&v65 + 1) + 8 * k) forMultiValueKey:v22];
+                  [(EKObject *)selfCopy _removeCachedMeltedObject:*(*(&v65 + 1) + 8 * k) forMultiValueKey:v22];
                 }
 
                 v42 = [v40 countByEnumeratingWithState:&v65 objects:v84 count:16];
@@ -6995,7 +6995,7 @@ LABEL_13:
       }
 
       while (v21 != v19);
-      v19 = [v53 countByEnumeratingWithState:&v75 objects:v86 count:16];
+      v19 = [knownRelationshipMultiValueKeys countByEnumeratingWithState:&v75 objects:v86 count:16];
     }
 
     while (v19);
@@ -7005,8 +7005,8 @@ LABEL_13:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v45 = [objc_opt_class() knownDerivedRelationshipKeys];
-  v46 = [v45 countByEnumeratingWithState:&v61 objects:v83 count:16];
+  knownDerivedRelationshipKeys = [objc_opt_class() knownDerivedRelationshipKeys];
+  v46 = [knownDerivedRelationshipKeys countByEnumeratingWithState:&v61 objects:v83 count:16];
   if (v46)
   {
     v47 = v46;
@@ -7017,13 +7017,13 @@ LABEL_13:
       {
         if (*v62 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(knownDerivedRelationshipKeys);
         }
 
         [(EKObject *)self setCachedMeltedObject:0 forSingleValueKey:*(*(&v61 + 1) + 8 * m)];
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v61 objects:v83 count:16];
+      v47 = [knownDerivedRelationshipKeys countByEnumeratingWithState:&v61 objects:v83 count:16];
     }
 
     while (v47);
@@ -7070,16 +7070,16 @@ void __36__EKObject_Shared__emptyMeltedCache__block_invoke(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-- (void)emptyMeltedCacheForKey:(id)a3
+- (void)emptyMeltedCacheForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__EKObject_Shared__emptyMeltedCacheForKey___block_invoke;
   v6[3] = &unk_1E77FD580;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(EKObject *)self _performWithLock:v6];
 }
 
@@ -7089,16 +7089,16 @@ void __43__EKObject_Shared__emptyMeltedCacheForKey___block_invoke(uint64_t a1)
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)emptyMeltedCacheForKeys:(id)a3
+- (void)emptyMeltedCacheForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__EKObject_Shared__emptyMeltedCacheForKeys___block_invoke;
   v6[3] = &unk_1E77FD580;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = keysCopy;
+  v5 = keysCopy;
   [(EKObject *)self _performWithLock:v6];
 }
 
@@ -7138,17 +7138,17 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)augmentMeltedObjectCache:(id)a3
+- (void)augmentMeltedObjectCache:(id)cache
 {
   v89 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cacheCopy = cache;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v58 = self;
-  v5 = [objc_opt_class() knownRelationshipSingleValueKeys];
-  v6 = [v5 countByEnumeratingWithState:&v79 objects:v88 count:16];
+  selfCopy = self;
+  knownRelationshipSingleValueKeys = [objc_opt_class() knownRelationshipSingleValueKeys];
+  v6 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v79 objects:v88 count:16];
   if (v6)
   {
     v7 = v6;
@@ -7159,25 +7159,25 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
       {
         if (*v80 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(knownRelationshipSingleValueKeys);
         }
 
         v10 = *(*(&v79 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:v10];
+        v11 = [cacheCopy objectForKeyedSubscript:v10];
         if (v11)
         {
-          v12 = [(EKObject *)v58 frozenOrMeltedCachedSingleRelationObjectForKey:v10];
-          v13 = [v12 frozenObject];
-          v14 = [v11 frozenObject];
+          v12 = [(EKObject *)selfCopy frozenOrMeltedCachedSingleRelationObjectForKey:v10];
+          frozenObject = [v12 frozenObject];
+          frozenObject2 = [v11 frozenObject];
 
-          if (v13 == v14)
+          if (frozenObject == frozenObject2)
           {
-            [(EKObject *)v58 setCachedMeltedObject:v11 forSingleValueKey:v10];
+            [(EKObject *)selfCopy setCachedMeltedObject:v11 forSingleValueKey:v10];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v79 objects:v88 count:16];
+      v7 = [knownRelationshipSingleValueKeys countByEnumeratingWithState:&v79 objects:v88 count:16];
     }
 
     while (v7);
@@ -7187,9 +7187,9 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v15 = v58;
+  v15 = selfCopy;
   obj = [objc_opt_class() knownRelationshipMultiValueKeys];
-  v52 = v4;
+  v52 = cacheCopy;
   v54 = [obj countByEnumeratingWithState:&v75 objects:v87 count:16];
   if (v54)
   {
@@ -7204,7 +7204,7 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
         }
 
         v17 = *(*(&v75 + 1) + 8 * j);
-        v18 = [v4 objectForKeyedSubscript:v17];
+        v18 = [cacheCopy objectForKeyedSubscript:v17];
         if ([v18 count])
         {
           v57 = j;
@@ -7231,8 +7231,8 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
                 }
 
                 v26 = *(*(&v71 + 1) + 8 * k);
-                v27 = [v26 objectID];
-                [v20 setObject:v26 forKeyedSubscript:v27];
+                objectID = [v26 objectID];
+                [v20 setObject:v26 forKeyedSubscript:objectID];
               }
 
               v23 = [v21 countByEnumeratingWithState:&v71 objects:v86 count:16];
@@ -7263,13 +7263,13 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
                 }
 
                 v34 = *(*(&v67 + 1) + 8 * m);
-                v35 = [v34 objectID];
-                v36 = [v20 objectForKeyedSubscript:v35];
+                objectID2 = [v34 objectID];
+                v36 = [v20 objectForKeyedSubscript:objectID2];
 
                 if (v36)
                 {
                   [v28 addObject:v34];
-                  [v20 removeObjectForKey:v35];
+                  [v20 removeObjectForKey:objectID2];
                 }
               }
 
@@ -7285,7 +7285,7 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
           v64 = 0u;
           v37 = v20;
           v38 = [v37 countByEnumeratingWithState:&v63 objects:v84 count:16];
-          v15 = v58;
+          v15 = selfCopy;
           if (v38)
           {
             v39 = v38;
@@ -7300,8 +7300,8 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
                 }
 
                 v42 = [v37 objectForKeyedSubscript:*(*(&v63 + 1) + 8 * n)];
-                v43 = [(EKObject *)v58 eventStore];
-                v44 = [v42 meltedObjectInStore:v43];
+                eventStore = [(EKObject *)selfCopy eventStore];
+                v44 = [v42 meltedObjectInStore:eventStore];
 
                 [v28 addObject:v44];
               }
@@ -7312,8 +7312,8 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
             while (v39);
           }
 
-          [(EKObject *)v58 setCachedMeltedObjects:v28 forMultiValueKey:v55];
-          v4 = v52;
+          [(EKObject *)selfCopy setCachedMeltedObjects:v28 forMultiValueKey:v55];
+          cacheCopy = v52;
           v18 = v56;
           j = v57;
         }
@@ -7329,8 +7329,8 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v45 = [objc_opt_class() knownDerivedRelationshipKeys];
-  v46 = [v45 countByEnumeratingWithState:&v59 objects:v83 count:16];
+  knownDerivedRelationshipKeys = [objc_opt_class() knownDerivedRelationshipKeys];
+  v46 = [knownDerivedRelationshipKeys countByEnumeratingWithState:&v59 objects:v83 count:16];
   if (v46)
   {
     v47 = v46;
@@ -7341,13 +7341,13 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
       {
         if (*v60 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(knownDerivedRelationshipKeys);
         }
 
         [(EKObject *)v15 setCachedMeltedObject:0 forSingleValueKey:*(*(&v59 + 1) + 8 * ii)];
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v59 objects:v83 count:16];
+      v47 = [knownDerivedRelationshipKeys countByEnumeratingWithState:&v59 objects:v83 count:16];
     }
 
     while (v47);
@@ -7356,20 +7356,20 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (id)inverseObjectWithObject:(id)a3 diff:(id *)a4
+- (id)inverseObjectWithObject:(id)object diff:(id *)diff
 {
-  v6 = a3;
-  v7 = [(EKObject *)self snapshotCopy];
-  v8 = [v7 diffWithObject:v6];
+  objectCopy = object;
+  snapshotCopy = [(EKObject *)self snapshotCopy];
+  v8 = [snapshotCopy diffWithObject:objectCopy];
   v9 = v8;
-  if (a4)
+  if (diff)
   {
     v10 = v8;
-    *a4 = v9;
+    *diff = v9;
   }
 
   v11 = [objc_opt_class() _changeSetForDiff:v9];
-  [v7 applyChanges:v11];
+  [snapshotCopy applyChanges:v11];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -7391,17 +7391,17 @@ void __41__EKObject_Shared__copyMeltedObjectCache__block_invoke(uint64_t a1)
     v18 = 3221225472;
     v19 = __49__EKObject_Shared__inverseObjectWithObject_diff___block_invoke_2;
     v20 = &unk_1E77FD338;
-    v21 = self;
+    selfCopy = self;
     v14 = v12;
     v22 = v14;
     [v13 enumerateKeysAndObjectsUsingBlock:&v17];
     v15 = [v14 copy];
-    [v7 setAdditionalMeltedObjects:v15];
+    [snapshotCopy setAdditionalMeltedObjects:v15];
   }
 
   _Block_object_dispose(&v24, 8);
 
-  return v7;
+  return snapshotCopy;
 }
 
 void __49__EKObject_Shared__inverseObjectWithObject_diff___block_invoke(uint64_t a1)
@@ -7476,55 +7476,55 @@ void __49__EKObject_Shared__inverseObjectWithObject_diff___block_invoke_2(uint64
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)duplicatedPersistentObjectForObject:(id)a3 alreadyCopiedObjects:(id)a4
++ (id)duplicatedPersistentObjectForObject:(id)object alreadyCopiedObjects:(id)objects
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectID];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  if (!v8)
+  objectCopy = object;
+  objectsCopy = objects;
+  objectID = [objectCopy objectID];
+  backingObject = [objectsCopy objectForKeyedSubscript:objectID];
+  if (!backingObject)
   {
-    v9 = [v5 duplicate];
-    [v9 updatePersistentObject];
-    v8 = [v9 backingObject];
-    [v6 setObject:v8 forKeyedSubscript:v7];
+    duplicate = [objectCopy duplicate];
+    [duplicate updatePersistentObject];
+    backingObject = [duplicate backingObject];
+    [objectsCopy setObject:backingObject forKeyedSubscript:objectID];
   }
 
-  return v8;
+  return backingObject;
 }
 
-+ (id)_changeSetForDiff:(id)a3
++ (id)_changeSetForDiff:(id)diff
 {
-  v4 = [a3 changeSetForDiff];
-  v5 = [v4 singleValueChanges];
-  v6 = [v5 copy];
+  changeSetForDiff = [diff changeSetForDiff];
+  singleValueChanges = [changeSetForDiff singleValueChanges];
+  v6 = [singleValueChanges copy];
 
   v7 = objc_opt_new();
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __38__EKObject_Shared___changeSetForDiff___block_invoke;
   v26[3] = &unk_1E77FF658;
-  v29 = a1;
+  selfCopy = self;
   v8 = v7;
   v27 = v8;
-  v9 = v4;
+  v9 = changeSetForDiff;
   v28 = v9;
   [v6 enumerateKeysAndObjectsUsingBlock:v26];
-  v10 = [v9 multiValueAdditions];
-  v11 = [v10 copy];
+  multiValueAdditions = [v9 multiValueAdditions];
+  v11 = [multiValueAdditions copy];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __38__EKObject_Shared___changeSetForDiff___block_invoke_70;
   v22[3] = &unk_1E77FF6A8;
-  v25 = a1;
+  selfCopy2 = self;
   v23 = v8;
   v12 = v9;
   v24 = v12;
   v13 = v8;
   [v11 enumerateKeysAndObjectsUsingBlock:v22];
-  v14 = [v12 multiValueRemovals];
-  v15 = [v14 copy];
+  multiValueRemovals = [v12 multiValueRemovals];
+  v15 = [multiValueRemovals copy];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -7707,28 +7707,28 @@ LABEL_5:
 LABEL_8:
 }
 
-+ (BOOL)_compareMultiValueRelationshipKey:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6
++ (BOOL)_compareMultiValueRelationshipKey:(id)key forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore
 {
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v10 isPropertyUnavailable:v9] && (objc_msgSend(v11, "isPropertyUnavailable:", v9) & 1) != 0)
+  keyCopy = key;
+  objectCopy = object;
+  againstObjectCopy = againstObject;
+  ignoreCopy = ignore;
+  if ([objectCopy isPropertyUnavailable:keyCopy] && (objc_msgSend(againstObjectCopy, "isPropertyUnavailable:", keyCopy) & 1) != 0)
   {
     v13 = 1;
   }
 
   else
   {
-    v14 = [v10 valueForKey:v9];
-    v15 = [v11 valueForKey:v9];
+    v14 = [objectCopy valueForKey:keyCopy];
+    v15 = [againstObjectCopy valueForKey:keyCopy];
     v16 = [v14 count];
     if (v16 == [v15 count])
     {
-      v37 = v10;
+      v37 = objectCopy;
       v38 = v15;
-      v36 = v11;
+      v36 = againstObjectCopy;
       v17 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v14, "count")}];
       v44 = 0u;
       v45 = 0u;
@@ -7751,10 +7751,10 @@ LABEL_8:
             }
 
             v23 = *(*(&v44 + 1) + 8 * i);
-            v24 = [v23 uniqueIdentifier];
-            if (v24)
+            uniqueIdentifier = [v23 uniqueIdentifier];
+            if (uniqueIdentifier)
             {
-              [v17 setObject:v23 forKeyedSubscript:v24];
+              [v17 setObject:v23 forKeyedSubscript:uniqueIdentifier];
             }
           }
 
@@ -7784,9 +7784,9 @@ LABEL_8:
             }
 
             v30 = *(*(&v40 + 1) + 8 * j);
-            v31 = [v30 uniqueIdentifier];
-            v32 = [v17 objectForKeyedSubscript:v31];
-            LODWORD(v30) = [a1 _compareRelationshipObject1:v32 againstRelationshipObject2:v30 propertiesToIgnore:v12 relationshipObjectKey:v9];
+            uniqueIdentifier2 = [v30 uniqueIdentifier];
+            v32 = [v17 objectForKeyedSubscript:uniqueIdentifier2];
+            LODWORD(v30) = [self _compareRelationshipObject1:v32 againstRelationshipObject2:v30 propertiesToIgnore:ignoreCopy relationshipObjectKey:keyCopy];
 
             if (!v30)
             {
@@ -7808,8 +7808,8 @@ LABEL_8:
       v13 = 1;
 LABEL_25:
 
-      v11 = v36;
-      v10 = v37;
+      againstObjectCopy = v36;
+      objectCopy = v37;
       v14 = v35;
       v15 = v38;
     }
@@ -7824,13 +7824,13 @@ LABEL_25:
   return v13;
 }
 
-+ (BOOL)_compareNonRelationshipKeys:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6
++ (BOOL)_compareNonRelationshipKeys:(id)keys forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v10 == v11)
+  objectCopy = object;
+  againstObjectCopy = againstObject;
+  ignoreCopy = ignore;
+  v13 = ignoreCopy;
+  if (objectCopy == againstObjectCopy)
   {
     v14 = 1;
   }
@@ -7841,11 +7841,11 @@ LABEL_25:
     v16[1] = 3221225472;
     v16[2] = __91__EKObject_Shared___compareNonRelationshipKeys_forObject_againstObject_propertiesToIgnore___block_invoke;
     v16[3] = &unk_1E77FF720;
-    v17 = v12;
-    v18 = v10;
-    v19 = v11;
-    v20 = a1;
-    v14 = [a3 indexOfObjectPassingTest:v16] == 0x7FFFFFFFFFFFFFFFLL;
+    v17 = ignoreCopy;
+    v18 = objectCopy;
+    v19 = againstObjectCopy;
+    selfCopy = self;
+    v14 = [keys indexOfObjectPassingTest:v16] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v14;
@@ -7875,67 +7875,67 @@ uint64_t __91__EKObject_Shared___compareNonRelationshipKeys_forObject_againstObj
   return v7;
 }
 
-+ (BOOL)_compareSingleValueRelationshipKey:(id)a3 forObject:(id)a4 againstObject:(id)a5 propertiesToIgnore:(id)a6 ignoreIdentityKeys:(BOOL)a7
++ (BOOL)_compareSingleValueRelationshipKey:(id)key forObject:(id)object againstObject:(id)againstObject propertiesToIgnore:(id)ignore ignoreIdentityKeys:(BOOL)keys
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if ([v13 isPropertyUnavailable:v12] && (objc_msgSend(v14, "isPropertyUnavailable:", v12) & 1) != 0)
+  keysCopy = keys;
+  keyCopy = key;
+  objectCopy = object;
+  againstObjectCopy = againstObject;
+  ignoreCopy = ignore;
+  if ([objectCopy isPropertyUnavailable:keyCopy] && (objc_msgSend(againstObjectCopy, "isPropertyUnavailable:", keyCopy) & 1) != 0)
   {
     v16 = 1;
   }
 
   else
   {
-    v17 = [v13 valueForKey:v12];
-    v18 = [v14 valueForKey:v12];
-    if (v7)
+    v17 = [objectCopy valueForKey:keyCopy];
+    v18 = [againstObjectCopy valueForKey:keyCopy];
+    if (keysCopy)
     {
-      v19 = [objc_opt_class() knownIdentityKeysForComparison];
-      v20 = [v15 setByAddingObjectsFromArray:v19];
+      knownIdentityKeysForComparison = [objc_opt_class() knownIdentityKeysForComparison];
+      v20 = [ignoreCopy setByAddingObjectsFromArray:knownIdentityKeysForComparison];
 
-      v21 = [objc_opt_class() knownSingleValueKeysToSkipForUIComparison];
-      v15 = [v20 setByAddingObjectsFromArray:v21];
+      knownSingleValueKeysToSkipForUIComparison = [objc_opt_class() knownSingleValueKeysToSkipForUIComparison];
+      ignoreCopy = [v20 setByAddingObjectsFromArray:knownSingleValueKeysToSkipForUIComparison];
     }
 
-    v16 = [a1 _compareRelationshipObject1:v17 againstRelationshipObject2:v18 propertiesToIgnore:v15 relationshipObjectKey:v12];
+    v16 = [self _compareRelationshipObject1:v17 againstRelationshipObject2:v18 propertiesToIgnore:ignoreCopy relationshipObjectKey:keyCopy];
   }
 
   return v16;
 }
 
-+ (BOOL)_compareRelationshipObject1:(id)a3 againstRelationshipObject2:(id)a4 propertiesToIgnore:(id)a5 relationshipObjectKey:(id)a6
++ (BOOL)_compareRelationshipObject1:(id)object1 againstRelationshipObject2:(id)object2 propertiesToIgnore:(id)ignore relationshipObjectKey:(id)key
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ((v9 == 0) != (v10 == 0))
+  object1Copy = object1;
+  object2Copy = object2;
+  ignoreCopy = ignore;
+  keyCopy = key;
+  if ((object1Copy == 0) != (object2Copy == 0))
   {
     goto LABEL_5;
   }
 
   v13 = 1;
-  if (v9 && v10)
+  if (object1Copy && object2Copy)
   {
-    v14 = [objc_opt_class() meltedClass];
-    if (v14 != [objc_opt_class() meltedClass])
+    meltedClass = [objc_opt_class() meltedClass];
+    if (meltedClass != [objc_opt_class() meltedClass])
     {
 LABEL_5:
       v13 = 0;
       goto LABEL_6;
     }
 
-    if (([v14 isWeakRelationship] & 1) != 0 || (objc_msgSend(v14, "knownRelationshipWeakKeys"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "containsObject:", v12), v16, v17))
+    if (([meltedClass isWeakRelationship] & 1) != 0 || (objc_msgSend(meltedClass, "knownRelationshipWeakKeys"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "containsObject:", keyCopy), v16, v17))
     {
-      v18 = [v14 _compareIdentityKeysForObject:v9 againstObject:v10 propertiesToIgnore:v11];
+      v18 = [meltedClass _compareIdentityKeysForObject:object1Copy againstObject:object2Copy propertiesToIgnore:ignoreCopy];
     }
 
     else
     {
-      v18 = [v9 isEqual:v10 ignoringProperties:v11];
+      v18 = [object1Copy isEqual:object2Copy ignoringProperties:ignoreCopy];
     }
 
     v13 = v18;
@@ -7946,11 +7946,11 @@ LABEL_6:
   return v13;
 }
 
-+ (BOOL)canonicalizedEqualityTestValue1:(id)a3 value2:(id)a4 key:(id)a5 object1:(id)a6 object2:(id)a7
++ (BOOL)canonicalizedEqualityTestValue1:(id)value1 value2:(id)value2 key:(id)key object1:(id)object1 object2:(id)object2
 {
-  if (a3 | a4)
+  if (value1 | value2)
   {
-    return [a3 isEqual:a4];
+    return [value1 isEqual:value2];
   }
 
   else
@@ -7963,19 +7963,19 @@ LABEL_6:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKObject *)self uniqueIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@ uniqueIdentifier=[%@]>", v4, v5];
+  uniqueIdentifier = [(EKObject *)self uniqueIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@ uniqueIdentifier=[%@]>", v4, uniqueIdentifier];
 
   return v6;
 }
 
-- (id)_convertBackingObjectsWithPath:(id)a3 updateBackingObjects:(BOOL)a4 allChangedBackingObjects:(id)a5 eventStore:(id)a6 updatedBackingObjectProvider:(id)a7
+- (id)_convertBackingObjectsWithPath:(id)path updateBackingObjects:(BOOL)objects allChangedBackingObjects:(id)backingObjects eventStore:(id)store updatedBackingObjectProvider:(id)provider
 {
   v86 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  pathCopy = path;
+  backingObjectsCopy = backingObjects;
+  storeCopy = store;
+  providerCopy = provider;
   v78 = 0;
   v79 = &v78;
   v80 = 0x3032000000;
@@ -8005,12 +8005,12 @@ LABEL_6:
   v63[1] = 3221225472;
   v63[2] = __137__EKObject_Shared___convertBackingObjectsWithPath_updateBackingObjects_allChangedBackingObjects_eventStore_updatedBackingObjectProvider___block_invoke_3;
   v63[3] = &unk_1E77FF770;
-  v68 = a4;
-  v44 = v12;
+  objectsCopy = objects;
+  v44 = backingObjectsCopy;
   v64 = v44;
-  v45 = v13;
+  v45 = storeCopy;
   v65 = v45;
-  v46 = v14;
+  v46 = providerCopy;
   v66 = v46;
   v69 = 1;
   v47 = v15;
@@ -8046,15 +8046,15 @@ LABEL_6:
 
           v18 = v52;
           v53 = [(EKObject *)self backingObjectOfChildObject:v18 withRelationshipKey:v17];
-          if (v54 && (-[EKObject changeSet](self, "changeSet"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 hasUnsavedChangeForKey:v17], v19, (v20 & 1) == 0))
+          if (pathCopy && (-[EKObject changeSet](self, "changeSet"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 hasUnsavedChangeForKey:v17], v19, (v20 & 1) == 0))
           {
-            v35 = [(EKObject *)self backingObject];
-            v36 = [v35 remObjectID];
+            backingObject = [(EKObject *)self backingObject];
+            remObjectID = [backingObject remObjectID];
 
-            if (v36)
+            if (remObjectID)
             {
-              [v54 addObject:v36];
-              v21 = v54;
+              [pathCopy addObject:remObjectID];
+              v21 = pathCopy;
             }
 
             else
@@ -8069,8 +8069,8 @@ LABEL_6:
           }
 
           v37 = v16[2](v16, v53, v18, v21);
-          v38 = [(EKObject *)self changeSet];
-          v39 = [v38 valueForSingleValueKey:v17 basedOn:0];
+          changeSet = [(EKObject *)self changeSet];
+          v39 = [changeSet valueForSingleValueKey:v17 basedOn:0];
 
           if (v37 && v39)
           {
@@ -8079,15 +8079,15 @@ LABEL_6:
 
           else if (v39 != v53)
           {
-            v40 = [(EKObject *)self changeSet];
-            [v40 forceChangeValue:v53 forKey:v17];
+            changeSet2 = [(EKObject *)self changeSet];
+            [changeSet2 forceChangeValue:v53 forKey:v17];
 
             (*(v47 + 2))(v47, v53, v53);
           }
 
           if (v21)
           {
-            [v54 removeLastObject];
+            [pathCopy removeLastObject];
           }
         }
 
@@ -8114,15 +8114,15 @@ LABEL_6:
 
                 v26 = *(*(&v55 + 1) + 8 * j);
                 v27 = [(EKObject *)self backingObjectOfChildObject:v26 withRelationshipKey:v17];
-                if (v54 && (-[EKObject changeSet](self, "changeSet"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 isUniqueAddedObject:v26 forKey:v17], v28, (v29 & 1) == 0))
+                if (pathCopy && (-[EKObject changeSet](self, "changeSet"), v28 = objc_claimAutoreleasedReturnValue(), v29 = [v28 isUniqueAddedObject:v26 forKey:v17], v28, (v29 & 1) == 0))
                 {
-                  v31 = [(EKObject *)self backingObject];
-                  v32 = [v31 remObjectID];
+                  backingObject2 = [(EKObject *)self backingObject];
+                  remObjectID2 = [backingObject2 remObjectID];
 
-                  if (v32)
+                  if (remObjectID2)
                   {
-                    [v54 addObject:v32];
-                    v30 = v54;
+                    [pathCopy addObject:remObjectID2];
+                    v30 = pathCopy;
                   }
 
                   else
@@ -8139,13 +8139,13 @@ LABEL_6:
                 v33 = v16[2](v16, v27, v26, v30);
                 if (v33)
                 {
-                  v34 = [(EKObject *)self changeSet];
-                  [v34 replaceMultiChangeAddedObject:v27 withObject:v33 forKey:v17];
+                  changeSet3 = [(EKObject *)self changeSet];
+                  [changeSet3 replaceMultiChangeAddedObject:v27 withObject:v33 forKey:v17];
                 }
 
                 if (v30)
                 {
-                  [v54 removeLastObject];
+                  [pathCopy removeLastObject];
                 }
               }
 
@@ -8278,28 +8278,28 @@ id __137__EKObject_Shared___convertBackingObjectsWithPath_updateBackingObjects_a
   return v15;
 }
 
-- (id)backingObjectOfChildObject:(id)a3 withRelationshipKey:(id)a4
+- (id)backingObjectOfChildObject:(id)object withRelationshipKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 backingObject];
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  backingObject = [objectCopy backingObject];
+  if (backingObject)
   {
-    v9 = v8;
+    v9 = backingObject;
   }
 
   else
   {
-    v10 = [(EKObject *)self changeSet];
-    v11 = [v10 singleValueChanges];
-    v9 = [v11 objectForKeyedSubscript:v7];
+    changeSet = [(EKObject *)self changeSet];
+    singleValueChanges = [changeSet singleValueChanges];
+    v9 = [singleValueChanges objectForKeyedSubscript:keyCopy];
 
     if (!v9)
     {
-      v12 = [v6 uniqueIdentifier];
-      v13 = [(EKObject *)self changeSet];
-      v14 = [v13 unsavedMultiValueAddedObjectsForKey:v7];
+      uniqueIdentifier = [objectCopy uniqueIdentifier];
+      changeSet2 = [(EKObject *)self changeSet];
+      v14 = [changeSet2 unsavedMultiValueAddedObjectsForKey:keyCopy];
 
       v25 = 0u;
       v26 = 0u;
@@ -8320,8 +8320,8 @@ id __137__EKObject_Shared___convertBackingObjectsWithPath_updateBackingObjects_a
             }
 
             v18 = *(*(&v23 + 1) + 8 * i);
-            v19 = [v18 uniqueIdentifier];
-            v20 = [v19 isEqualToString:v12];
+            uniqueIdentifier2 = [v18 uniqueIdentifier];
+            v20 = [uniqueIdentifier2 isEqualToString:uniqueIdentifier];
 
             if (v20)
             {
@@ -8349,17 +8349,17 @@ LABEL_14:
   return v9;
 }
 
-- (id)prepareReminderKitObjectForSaveWithUpdatedBackingObjectProvider:(id)a3
+- (id)prepareReminderKitObjectForSaveWithUpdatedBackingObjectProvider:(id)provider
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  providerCopy = provider;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(EKObject *)self eventStore];
-  v9 = [(EKObject *)self _convertBackingObjectsWithPath:v7 updateBackingObjects:1 allChangedBackingObjects:v6 eventStore:v8 updatedBackingObjectProvider:v5];
+  eventStore = [(EKObject *)self eventStore];
+  v9 = [(EKObject *)self _convertBackingObjectsWithPath:v7 updateBackingObjects:1 allChangedBackingObjects:v6 eventStore:eventStore updatedBackingObjectProvider:providerCopy];
 
-  v10 = [(EKObject *)self changeSet];
-  if ([v10 hasUnsavedChanges])
+  changeSet = [(EKObject *)self changeSet];
+  if ([changeSet hasUnsavedChanges])
   {
   }
 
@@ -8373,13 +8373,13 @@ LABEL_14:
     }
   }
 
-  v12 = [(EKObject *)self backingObject];
-  v13 = [(EKObject *)self changeSet];
-  v14 = [v12 updatedFrozenObjectWithChanges:v13 updatedChildren:v9];
+  backingObject = [(EKObject *)self backingObject];
+  changeSet2 = [(EKObject *)self changeSet];
+  v14 = [backingObject updatedFrozenObjectWithChanges:changeSet2 updatedChildren:v9];
 
   [(EKObject *)self setBackingObject:v14];
-  v15 = [(EKObject *)self changeSet];
-  [v15 markChangesAsSaved];
+  changeSet3 = [(EKObject *)self changeSet];
+  [changeSet3 markChangesAsSaved];
 
   [v6 addObject:v14];
 LABEL_5:
@@ -8395,10 +8395,10 @@ LABEL_5:
   return v3;
 }
 
-- (void)_cachedMeltedChildIdentifierToParentMap:(id)a3
+- (void)_cachedMeltedChildIdentifierToParentMap:(id)map
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mapCopy = map;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -8439,8 +8439,8 @@ LABEL_5:
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v6 = v24;
-          v7 = [v6 countByEnumeratingWithState:&v29 objects:v52 count:16];
+          uniqueIdentifier2 = v24;
+          v7 = [uniqueIdentifier2 countByEnumeratingWithState:&v29 objects:v52 count:16];
           if (v7)
           {
             v8 = *v30;
@@ -8450,16 +8450,16 @@ LABEL_5:
               {
                 if (*v30 != v8)
                 {
-                  objc_enumerationMutation(v6);
+                  objc_enumerationMutation(uniqueIdentifier2);
                 }
 
                 v10 = *(*(&v29 + 1) + 8 * j);
                 if (([objc_opt_class() isWeakRelationObject:v10 forKey:v5] & 1) == 0)
                 {
-                  v11 = [v10 uniqueIdentifier];
-                  if (v11)
+                  uniqueIdentifier = [v10 uniqueIdentifier];
+                  if (uniqueIdentifier)
                   {
-                    [v4 setObject:self forKeyedSubscript:v11];
+                    [mapCopy setObject:self forKeyedSubscript:uniqueIdentifier];
                   }
 
                   else
@@ -8469,8 +8469,8 @@ LABEL_5:
                     {
                       v28 = objc_opt_class();
                       v25 = objc_opt_class();
-                      v27 = [v10 frozenObject];
-                      v13 = [v27 REMObject];
+                      frozenObject = [v10 frozenObject];
+                      rEMObject = [frozenObject REMObject];
                       *buf = 138544130;
                       v45 = v28;
                       v46 = 2114;
@@ -8478,17 +8478,17 @@ LABEL_5:
                       v48 = 2114;
                       v49 = v25;
                       v50 = 2112;
-                      v51 = v13;
-                      v26 = v13;
+                      v51 = rEMObject;
+                      v26 = rEMObject;
                       _os_log_fault_impl(&dword_1A805E000, v12, OS_LOG_TYPE_FAULT, "Got a nil unique identifier for object of type %{public}@ for relation key %{public}@ on object of type %{public}@. Backing object of bad object = %@", buf, 0x2Au);
                     }
                   }
 
-                  [v10 _cachedMeltedChildIdentifierToParentMap:v4];
+                  [v10 _cachedMeltedChildIdentifierToParentMap:mapCopy];
                 }
               }
 
-              v7 = [v6 countByEnumeratingWithState:&v29 objects:v52 count:16];
+              v7 = [uniqueIdentifier2 countByEnumeratingWithState:&v29 objects:v52 count:16];
             }
 
             while (v7);
@@ -8502,10 +8502,10 @@ LABEL_5:
             goto LABEL_30;
           }
 
-          v6 = [v24 uniqueIdentifier];
-          if (v6)
+          uniqueIdentifier2 = [v24 uniqueIdentifier];
+          if (uniqueIdentifier2)
           {
-            [v4 setObject:self forKeyedSubscript:v6];
+            [mapCopy setObject:self forKeyedSubscript:uniqueIdentifier2];
           }
 
           else
@@ -8515,8 +8515,8 @@ LABEL_5:
             {
               v15 = objc_opt_class();
               v16 = objc_opt_class();
-              v17 = [v24 frozenObject];
-              v18 = [v17 REMObject];
+              frozenObject2 = [v24 frozenObject];
+              rEMObject2 = [frozenObject2 REMObject];
               *buf = 138544130;
               v45 = v15;
               v46 = 2114;
@@ -8524,12 +8524,12 @@ LABEL_5:
               v48 = 2114;
               v49 = v16;
               v50 = 2112;
-              v51 = v18;
+              v51 = rEMObject2;
               _os_log_fault_impl(&dword_1A805E000, v14, OS_LOG_TYPE_FAULT, "Got a nil unique identifier for object of type %{public}@ for relation key %{public}@ on object of type %{public}@. Backing object of bad object = %@", buf, 0x2Au);
             }
           }
 
-          [v24 _cachedMeltedChildIdentifierToParentMap:v4];
+          [v24 _cachedMeltedChildIdentifierToParentMap:mapCopy];
         }
 
 LABEL_30:

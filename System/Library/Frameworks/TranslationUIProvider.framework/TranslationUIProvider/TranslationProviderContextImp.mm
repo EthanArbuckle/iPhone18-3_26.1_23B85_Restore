@@ -1,15 +1,15 @@
 @interface TranslationProviderContextImp
 - (_TtC21TranslationUIProvider29TranslationProviderContextImp)init;
-- (void)translateWithText:(id)a3 replacementAllowed:(BOOL)a4;
+- (void)translateWithText:(id)text replacementAllowed:(BOOL)allowed;
 @end
 
 @implementation TranslationProviderContextImp
 
-- (void)translateWithText:(id)a3 replacementAllowed:(BOOL)a4
+- (void)translateWithText:(id)text replacementAllowed:(BOOL)allowed
 {
-  v6 = a3;
-  v7 = self;
-  TranslationProviderContextImp.translate(text:replacementAllowed:)(v6, a4);
+  textCopy = text;
+  selfCopy = self;
+  TranslationProviderContextImp.translate(text:replacementAllowed:)(textCopy, allowed);
 }
 
 - (_TtC21TranslationUIProvider29TranslationProviderContextImp)init

@@ -1,44 +1,44 @@
 @interface FHDatabaseClauseFromBuilder
-+ (id)initWithBuilder:(id)a3 logicalOperator:(id)a4;
-- (id)_init:(id)a3 logicalOperator:(id)a4;
++ (id)initWithBuilder:(id)builder logicalOperator:(id)operator;
+- (id)_init:(id)_init logicalOperator:(id)operator;
 - (id)clausesAndOperatorsInOrder;
 - (id)description;
 - (id)expressionFromClausesAndOperators;
-- (void)_extractDeepLinkedClauses:(id)a3 clausesAndOperatorsInReversOrder:(id)a4;
+- (void)_extractDeepLinkedClauses:(id)clauses clausesAndOperatorsInReversOrder:(id)order;
 @end
 
 @implementation FHDatabaseClauseFromBuilder
 
-+ (id)initWithBuilder:(id)a3 logicalOperator:(id)a4
++ (id)initWithBuilder:(id)builder logicalOperator:(id)operator
 {
-  v5 = a4;
-  v6 = a3;
+  operatorCopy = operator;
+  builderCopy = builder;
   v7 = objc_opt_new();
-  v6[2](v6, v7);
+  builderCopy[2](builderCopy, v7);
 
-  v8 = [[FHDatabaseClauseFromBuilder alloc] _init:v7 logicalOperator:v5];
+  v8 = [[FHDatabaseClauseFromBuilder alloc] _init:v7 logicalOperator:operatorCopy];
 
   return v8;
 }
 
-- (id)_init:(id)a3 logicalOperator:(id)a4
+- (id)_init:(id)_init logicalOperator:(id)operator
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  _initCopy = _init;
+  operatorCopy = operator;
   v17.receiver = self;
   v17.super_class = FHDatabaseClauseFromBuilder;
   v8 = [(FHDatabaseClauseFromBuilder *)&v17 init];
   if (v8)
   {
-    v18[0] = v7;
+    v18[0] = operatorCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     clauseList = v8->_clauseList;
     v8->_clauseList = v9;
 
     v11 = v8->_clauseList;
-    v12 = [v6 clauseStack];
-    v13 = [(NSArray *)v11 arrayByAddingObjectsFromArray:v12];
+    clauseStack = [_initCopy clauseStack];
+    v13 = [(NSArray *)v11 arrayByAddingObjectsFromArray:clauseStack];
     v14 = v8->_clauseList;
     v8->_clauseList = v13;
   }
@@ -49,21 +49,21 @@
 
 - (id)expressionFromClausesAndOperators
 {
-  v2 = [(FHDatabaseClauseFromBuilder *)self clausesAndOperatorsInOrder];
+  clausesAndOperatorsInOrder = [(FHDatabaseClauseFromBuilder *)self clausesAndOperatorsInOrder];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if ([v2 count])
+  if ([clausesAndOperatorsInOrder count])
   {
     v4 = 0;
     v5 = 0;
     while (1)
     {
-      v6 = [v2 objectAtIndex:v5];
+      v6 = [clausesAndOperatorsInOrder objectAtIndex:v5];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v6 shortDescription];
-        [v3 addObject:v7];
+        shortDescription = [v6 shortDescription];
+        [v3 addObject:shortDescription];
         v8 = v4;
       }
 
@@ -78,16 +78,16 @@
 
         v9 = MEMORY[0x277CCACA8];
         v10 = [v3 componentsJoinedByString:v8];
-        v7 = [v9 stringWithFormat:@"(%@)", v10];
+        shortDescription = [v9 stringWithFormat:@"(%@)", v10];
 
         [v3 removeAllObjects];
-        [v15 addObject:v7];
+        [v15 addObject:shortDescription];
       }
 
 LABEL_9:
       ++v5;
       v4 = v8;
-      if (v5 >= [v2 count])
+      if (v5 >= [clausesAndOperatorsInOrder count])
       {
         goto LABEL_12;
       }
@@ -107,22 +107,22 @@ LABEL_12:
 {
   v3 = objc_opt_new();
   [(FHDatabaseClauseFromBuilder *)self _extractDeepLinkedClauses:self->_clauseList clausesAndOperatorsInReversOrder:v3];
-  v4 = [v3 reverseObjectEnumerator];
-  v5 = [v4 allObjects];
+  reverseObjectEnumerator = [v3 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v5;
+  return allObjects;
 }
 
-- (void)_extractDeepLinkedClauses:(id)a3 clausesAndOperatorsInReversOrder:(id)a4
+- (void)_extractDeepLinkedClauses:(id)clauses clausesAndOperatorsInReversOrder:(id)order
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clausesCopy = clauses;
+  orderCopy = order;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [clausesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -134,27 +134,27 @@ LABEL_12:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(clausesCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 clauseList];
-          [(FHDatabaseClauseFromBuilder *)self _extractDeepLinkedClauses:v13 clausesAndOperatorsInReversOrder:v7];
+          clauseList = [v12 clauseList];
+          [(FHDatabaseClauseFromBuilder *)self _extractDeepLinkedClauses:clauseList clausesAndOperatorsInReversOrder:orderCopy];
         }
 
         else
         {
-          [v7 addObject:v12];
+          [orderCopy addObject:v12];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [clausesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);

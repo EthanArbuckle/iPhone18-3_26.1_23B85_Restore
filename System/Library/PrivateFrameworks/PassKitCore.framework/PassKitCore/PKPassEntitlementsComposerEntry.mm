@@ -1,38 +1,38 @@
 @interface PKPassEntitlementsComposerEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PKDisplayablePassEntitlement)displayableEntitlement;
-- (id)initWithDisplayableEntitlement:(void *)a3 parentEntitlementComposer:;
+- (id)initWithDisplayableEntitlement:(void *)entitlement parentEntitlementComposer:;
 @end
 
 @implementation PKPassEntitlementsComposerEntry
 
-- (id)initWithDisplayableEntitlement:(void *)a3 parentEntitlementComposer:
+- (id)initWithDisplayableEntitlement:(void *)entitlement parentEntitlementComposer:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  entitlementCopy = entitlement;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = PKPassEntitlementsComposerEntry;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 2, a2);
-      objc_storeWeak(a1 + 1, v7);
+      objc_storeWeak(self + 1, entitlementCopy);
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     sharedEntitlement = self->_sharedEntitlement;
     v7 = v5[3];
     if (sharedEntitlement && v7)

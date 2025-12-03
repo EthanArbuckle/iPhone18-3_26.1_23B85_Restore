@@ -1,52 +1,52 @@
 @interface STManagementState
-- (BOOL)applyDefaultUserPoliciesWithError:(id *)a3;
-- (BOOL)clearRestrictionsPasscodeWithError:(id *)a3;
-- (BOOL)enableRemoteManagementForDSID:(id)a3 error:(id *)a4;
-- (BOOL)enableScreenTimeForDSID:(id)a3 error:(id *)a4;
-- (BOOL)exportDatabaseToURL:(id)a3 error:(id *)a4;
+- (BOOL)applyDefaultUserPoliciesWithError:(id *)error;
+- (BOOL)clearRestrictionsPasscodeWithError:(id *)error;
+- (BOOL)enableRemoteManagementForDSID:(id)d error:(id *)error;
+- (BOOL)enableScreenTimeForDSID:(id)d error:(id *)error;
+- (BOOL)exportDatabaseToURL:(id)l error:(id *)error;
 - (BOOL)isLocalUserManaged;
 - (BOOL)isRestrictionsPasscodeSet;
 - (BOOL)needsToSetRestrictionsPasscode;
-- (BOOL)performMigrationFromMCXSettings:(id)a3 error:(id *)a4;
-- (BOOL)permitWebFilterURL:(id)a3 pageTitle:(id)a4 error:(id *)a5;
+- (BOOL)performMigrationFromMCXSettings:(id)settings error:(id *)error;
+- (BOOL)permitWebFilterURL:(id)l pageTitle:(id)title error:(id *)error;
 - (BOOL)shouldRequestMoreTime;
-- (BOOL)triggerDowngradeMigrationWithOutError:(id *)a3;
+- (BOOL)triggerDowngradeMigrationWithOutError:(id *)error;
 - (STManagementState)init;
-- (id)communicationPoliciesWithError:(id *)a3;
-- (id)isCommunicationSafetyEnabledForUserDSID:(id)a3 error:(id *)a4;
-- (id)managingGuardianAppleIDsForLocalUserWithError:(id *)a3;
-- (id)primaryiCloudCardDAVAccountIdentifierWithError:(id *)a3;
-- (id)restrictionsForUserDSID:(id)a3 error:(id *)a4;
-- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 error:(id *)a4;
-- (id)shouldAllowOneMoreMinuteForWebDomain:(id)a3 error:(id *)a4;
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5;
-- (void)authenticateRestrictionsPasscode:(id)a3 completionHandler:(id)a4;
-- (void)communicationPoliciesForDSID:(id)a3 withCompletionHandler:(id)a4;
-- (void)communicationPoliciesWithCompletionHandler:(id)a3;
-- (void)contactManagementStateForDSID:(id)a3 completionHandler:(id)a4;
+- (id)communicationPoliciesWithError:(id *)error;
+- (id)isCommunicationSafetyEnabledForUserDSID:(id)d error:(id *)error;
+- (id)managingGuardianAppleIDsForLocalUserWithError:(id *)error;
+- (id)primaryiCloudCardDAVAccountIdentifierWithError:(id *)error;
+- (id)restrictionsForUserDSID:(id)d error:(id *)error;
+- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier error:(id *)error;
+- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier error:(id *)error;
+- (id)shouldAllowOneMoreMinuteForWebDomain:(id)domain error:(id *)error;
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler;
+- (void)authenticateRestrictionsPasscode:(id)passcode completionHandler:(id)handler;
+- (void)communicationPoliciesForDSID:(id)d withCompletionHandler:(id)handler;
+- (void)communicationPoliciesWithCompletionHandler:(id)handler;
+- (void)contactManagementStateForDSID:(id)d completionHandler:(id)handler;
 - (void)dealloc;
-- (void)enableWebContentFilterWithCompletionHandler:(id)a3;
-- (void)isContentPrivacyEnabledForDSID:(id)a3 completionHandler:(id)a4;
-- (void)isExplicitContentRestricted:(id)a3;
+- (void)enableWebContentFilterWithCompletionHandler:(id)handler;
+- (void)isContentPrivacyEnabledForDSID:(id)d completionHandler:(id)handler;
+- (void)isExplicitContentRestricted:(id)restricted;
 - (void)isLocalUserManaged;
-- (void)isLocalUserManagedWithCompletionHandler:(id)a3;
-- (void)isLocationSharingModificationAllowedForDSID:(id)a3 completionHandler:(id)a4;
+- (void)isLocalUserManagedWithCompletionHandler:(id)handler;
+- (void)isLocationSharingModificationAllowedForDSID:(id)d completionHandler:(id)handler;
 - (void)isRestrictionsPasscodeSet;
-- (void)isRestrictionsPasscodeSet:(id)a3;
-- (void)isWebContentRestricted:(id)a3;
-- (void)lastCommunicationLimitsModifcationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)lastModifcationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)a3;
-- (void)postNotificationForContext:(id)a3;
-- (void)requestToManageContactsForDSID:(id)a3 completionHandler:(id)a4;
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3;
-- (void)saveExpressIntroductionSettingsDefaults:(id)a3 completionHandler:(id)a4;
-- (void)screenTimeStateWithCompletionHandler:(id)a3;
-- (void)screenTimeSyncStateWithCompletionHandler:(id)a3;
-- (void)setManageContactsEnabled:(BOOL)a3 forDSID:(id)a4 completionHandler:(id)a5;
-- (void)setRestrictionsPasscode:(id)a3 completionHandler:(id)a4;
-- (void)shouldRequestMoreTime:(id)a3;
+- (void)isRestrictionsPasscodeSet:(id)set;
+- (void)isWebContentRestricted:(id)restricted;
+- (void)lastCommunicationLimitsModifcationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)lastModifcationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)handler;
+- (void)postNotificationForContext:(id)context;
+- (void)requestToManageContactsForDSID:(id)d completionHandler:(id)handler;
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler;
+- (void)saveExpressIntroductionSettingsDefaults:(id)defaults completionHandler:(id)handler;
+- (void)screenTimeStateWithCompletionHandler:(id)handler;
+- (void)screenTimeSyncStateWithCompletionHandler:(id)handler;
+- (void)setManageContactsEnabled:(BOOL)enabled forDSID:(id)d completionHandler:(id)handler;
+- (void)setRestrictionsPasscode:(id)passcode completionHandler:(id)handler;
+- (void)shouldRequestMoreTime:(id)time;
 @end
 
 @implementation STManagementState
@@ -87,16 +87,16 @@
   return [(STManagementState *)self isLocalUserManaged];
 }
 
-- (void)shouldRequestMoreTime:(id)a3
+- (void)shouldRequestMoreTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = +[STLog ask];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [STManagementState shouldRequestMoreTime:];
   }
 
-  [(STManagementState *)self isLocalUserManagedWithCompletionHandler:v4];
+  [(STManagementState *)self isLocalUserManagedWithCompletionHandler:timeCopy];
 }
 
 - (BOOL)isLocalUserManaged
@@ -115,7 +115,7 @@
   v12[0] = &v11;
   v12[1] = 0x2020000000;
   v13 = 0;
-  v4 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __39__STManagementState_isLocalUserManaged__block_invoke;
@@ -123,7 +123,7 @@
   v10[4] = self;
   v10[5] = &v11;
   v10[6] = &v14;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -183,24 +183,24 @@ void __39__STManagementState_isLocalUserManaged__block_invoke_4(uint64_t a1, uin
   *(*(*(a1 + 48) + 8) + 24) = v7;
 }
 
-- (void)isLocalUserManagedWithCompletionHandler:(id)a3
+- (void)isLocalUserManagedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[STLog ask];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [STManagementState isLocalUserManagedWithCompletionHandler:];
   }
 
-  v6 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__STManagementState_isLocalUserManagedWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CE7760;
-  v7 = v4;
+  v7 = handlerCopy;
   v12[4] = self;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v12];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v12];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -275,7 +275,7 @@ void __61__STManagementState_isLocalUserManagedWithCompletionHandler___block_inv
   v12[0] = &v11;
   v12[1] = 0x2020000000;
   v13 = 0;
-  v4 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__STManagementState_isRestrictionsPasscodeSet__block_invoke;
@@ -283,7 +283,7 @@ void __61__STManagementState_isLocalUserManagedWithCompletionHandler___block_inv
   v10[4] = self;
   v10[5] = &v11;
   v10[6] = &v14;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -343,7 +343,7 @@ void __46__STManagementState_isRestrictionsPasscodeSet__block_invoke_17(uint64_t
   *(*(*(a1 + 48) + 8) + 24) = v7;
 }
 
-- (BOOL)clearRestrictionsPasscodeWithError:(id *)a3
+- (BOOL)clearRestrictionsPasscodeWithError:(id *)error
 {
   v17 = 0;
   v18[0] = &v17;
@@ -351,13 +351,13 @@ void __46__STManagementState_isRestrictionsPasscodeSet__block_invoke_17(uint64_t
   v18[2] = __Block_byref_object_copy__9;
   v18[3] = __Block_byref_object_dispose__9;
   v19 = 0;
-  v4 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __56__STManagementState_clearRestrictionsPasscodeWithError___block_invoke;
   v16[3] = &unk_1E7CE6BA8;
   v16[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -374,9 +374,9 @@ void __46__STManagementState_isRestrictionsPasscodeSet__block_invoke_17(uint64_t
       [(STManagementState *)v18 clearRestrictionsPasscodeWithError:v7, v8, v9, v10, v11, v12, v13];
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = *(v18[0] + 40);
+      *error = *(v18[0] + 40);
     }
   }
 
@@ -384,24 +384,24 @@ void __46__STManagementState_isRestrictionsPasscodeSet__block_invoke_17(uint64_t
   return v6 == 0;
 }
 
-- (void)isRestrictionsPasscodeSet:(id)a3
+- (void)isRestrictionsPasscodeSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = +[STLog ask];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [STManagementState isRestrictionsPasscodeSet:];
   }
 
-  v6 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __47__STManagementState_isRestrictionsPasscodeSet___block_invoke;
   v12[3] = &unk_1E7CE7760;
-  v7 = v4;
+  v7 = setCopy;
   v12[4] = self;
   v13 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v12];
+  v8 = [connection remoteObjectProxyWithErrorHandler:v12];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -461,8 +461,8 @@ void __47__STManagementState_isRestrictionsPasscodeSet___block_invoke_18(uint64_
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(STManagementState *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_13];
+  connection = [(STManagementState *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_13];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__STManagementState_needsToSetRestrictionsPasscode__block_invoke_19;
@@ -470,9 +470,9 @@ void __47__STManagementState_isRestrictionsPasscodeSet___block_invoke_18(uint64_
   v5[4] = &v6;
   [v3 needsToSetRestrictionsPasscodeWithReplyHandler:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(connection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return connection;
 }
 
 void __51__STManagementState_needsToSetRestrictionsPasscode__block_invoke(uint64_t a1, void *a2)
@@ -503,19 +503,19 @@ void __51__STManagementState_needsToSetRestrictionsPasscode__block_invoke_19(uin
   }
 }
 
-- (void)setRestrictionsPasscode:(id)a3 completionHandler:(id)a4
+- (void)setRestrictionsPasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__STManagementState_setRestrictionsPasscode_completionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v12 = v6;
-  v9 = v6;
-  v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v11];
-  [v10 setRestrictionsPasscode:v7 completionHandler:&__block_literal_global_21];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection synchronousRemoteObjectProxyWithErrorHandler:v11];
+  [v10 setRestrictionsPasscode:passcodeCopy completionHandler:&__block_literal_global_21];
 }
 
 void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -537,18 +537,18 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   }
 }
 
-- (void)authenticateRestrictionsPasscode:(id)a3 completionHandler:(id)a4
+- (void)authenticateRestrictionsPasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  connection = [(STManagementState *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__STManagementState_authenticateRestrictionsPasscode_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__STManagementState_authenticateRestrictionsPasscode_completionHandler___block_invoke_2;
@@ -556,20 +556,20 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 authenticateRestrictionsPasscode:v7 replyHandler:v12];
+  [v10 authenticateRestrictionsPasscode:passcodeCopy replyHandler:v12];
 }
 
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)a3
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __94__STManagementState_restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __94__STManagementState_restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithCompletionHandler___block_invoke_2;
@@ -580,17 +580,17 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   [v7 restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithReplyHandler:v9];
 }
 
-- (void)screenTimeStateWithCompletionHandler:(id)a3
+- (void)screenTimeStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__STManagementState_screenTimeStateWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -602,34 +602,34 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   [v7 screenTimeStateWithCompletionHandler:v9];
 }
 
-- (BOOL)enableScreenTimeForDSID:(id)a3 error:(id *)a4
+- (BOOL)enableScreenTimeForDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__9;
   v18 = __Block_byref_object_dispose__9;
   v19 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__STManagementState_enableScreenTimeForDSID_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v14;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__STManagementState_enableScreenTimeForDSID_error___block_invoke_2;
   v12[3] = &unk_1E7CE6BA8;
   v12[4] = &v14;
-  [v8 enableScreenTimeForDSID:v6 completionHandler:v12];
+  [v8 enableScreenTimeForDSID:dCopy completionHandler:v12];
   v9 = v15[5];
-  if (a4 && v9)
+  if (error && v9)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;
@@ -638,34 +638,34 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   return v10;
 }
 
-- (BOOL)enableRemoteManagementForDSID:(id)a3 error:(id *)a4
+- (BOOL)enableRemoteManagementForDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__9;
   v18 = __Block_byref_object_dispose__9;
   v19 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__STManagementState_enableRemoteManagementForDSID_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v14;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__STManagementState_enableRemoteManagementForDSID_error___block_invoke_2;
   v12[3] = &unk_1E7CE6BA8;
   v12[4] = &v14;
-  [v8 enableRemoteManagementForDSID:v6 completionHandler:v12];
+  [v8 enableRemoteManagementForDSID:dCopy completionHandler:v12];
   v9 = v15[5];
-  if (a4 && v9)
+  if (error && v9)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;
@@ -674,17 +674,17 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   return v10;
 }
 
-- (void)screenTimeSyncStateWithCompletionHandler:(id)a3
+- (void)screenTimeSyncStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__STManagementState_screenTimeSyncStateWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -696,18 +696,18 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   [v7 screenTimeSyncStateWithCompletionHandler:v9];
 }
 
-- (void)isContentPrivacyEnabledForDSID:(id)a3 completionHandler:(id)a4
+- (void)isContentPrivacyEnabledForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STManagementState *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__STManagementState_isContentPrivacyEnabledForDSID_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -716,20 +716,20 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 isContentPrivacyEnabledForDSID:v7 completionHandler:v12];
+  [v10 isContentPrivacyEnabledForDSID:dCopy completionHandler:v12];
 }
 
-- (void)communicationPoliciesWithCompletionHandler:(id)a3
+- (void)communicationPoliciesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__STManagementState_communicationPoliciesWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -741,7 +741,7 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   [v7 communicationPoliciesWithCompletionHandler:v9];
 }
 
-- (id)communicationPoliciesWithError:(id *)a3
+- (id)communicationPoliciesWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -755,13 +755,13 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   v13 = __Block_byref_object_copy__9;
   v14 = __Block_byref_object_dispose__9;
   v15 = 0;
-  v4 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__STManagementState_communicationPoliciesWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v16;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -770,9 +770,9 @@ void __63__STManagementState_setRestrictionsPasscode_completionHandler___block_i
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 communicationPoliciesWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v6 = v11[5];
@@ -809,18 +809,18 @@ void __52__STManagementState_communicationPoliciesWithError___block_invoke_2(uin
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)communicationPoliciesForDSID:(id)a3 withCompletionHandler:(id)a4
+- (void)communicationPoliciesForDSID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STManagementState *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__STManagementState_communicationPoliciesForDSID_withCompletionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -829,28 +829,28 @@ void __52__STManagementState_communicationPoliciesWithError___block_invoke_2(uin
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 communicationPoliciesForDSID:v7 withCompletionHandler:v12];
+  [v10 communicationPoliciesForDSID:dCopy withCompletionHandler:v12];
 }
 
-- (void)setManageContactsEnabled:(BOOL)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)setManageContactsEnabled:(BOOL)enabled forDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(STManagementState *)self connection];
+  enabledCopy = enabled;
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STManagementState *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__STManagementState_setManageContactsEnabled_forDSID_completionHandler___block_invoke;
   v17[3] = &unk_1E7CE6CE8;
-  v11 = v8;
+  v11 = handlerCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
+  v12 = [connection remoteObjectProxyWithErrorHandler:v17];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__STManagementState_setManageContactsEnabled_forDSID_completionHandler___block_invoke_2;
   v15[3] = &unk_1E7CE6BF8;
-  if (v6)
+  if (enabledCopy)
   {
     v13 = 2;
   }
@@ -863,21 +863,21 @@ void __52__STManagementState_communicationPoliciesWithError___block_invoke_2(uin
   v15[4] = self;
   v16 = v11;
   v14 = v11;
-  [v12 setContactManagementState:v13 forDSID:v9 completionHandler:v15];
+  [v12 setContactManagementState:v13 forDSID:dCopy completionHandler:v15];
 }
 
-- (void)requestToManageContactsForDSID:(id)a3 completionHandler:(id)a4
+- (void)requestToManageContactsForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STManagementState *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__STManagementState_requestToManageContactsForDSID_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -886,21 +886,21 @@ void __52__STManagementState_communicationPoliciesWithError___block_invoke_2(uin
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 setContactManagementState:1 forDSID:v7 completionHandler:v12];
+  [v10 setContactManagementState:1 forDSID:dCopy completionHandler:v12];
 }
 
-- (void)contactManagementStateForDSID:(id)a3 completionHandler:(id)a4
+- (void)contactManagementStateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STManagementState *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__STManagementState_contactManagementStateForDSID_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -909,10 +909,10 @@ void __52__STManagementState_communicationPoliciesWithError___block_invoke_2(uin
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 contactManagementStateForDSID:v7 completionHandler:v12];
+  [v10 contactManagementStateForDSID:dCopy completionHandler:v12];
 }
 
-- (id)primaryiCloudCardDAVAccountIdentifierWithError:(id *)a3
+- (id)primaryiCloudCardDAVAccountIdentifierWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -926,13 +926,13 @@ void __52__STManagementState_communicationPoliciesWithError___block_invoke_2(uin
   v13 = __Block_byref_object_copy__9;
   v14 = __Block_byref_object_dispose__9;
   v15 = 0;
-  v4 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___block_invoke;
   v9[3] = &unk_1E7CE6BA8;
   v9[4] = &v16;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -941,9 +941,9 @@ void __52__STManagementState_communicationPoliciesWithError___block_invoke_2(uin
   v8[4] = &v16;
   v8[5] = &v10;
   [v5 primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:v8];
-  if (a3)
+  if (error)
   {
-    *a3 = v17[5];
+    *error = v17[5];
   }
 
   v6 = v11[5];
@@ -976,34 +976,34 @@ void __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___bl
   *(v8 + 40) = v9;
 }
 
-- (BOOL)performMigrationFromMCXSettings:(id)a3 error:(id *)a4
+- (BOOL)performMigrationFromMCXSettings:(id)settings error:(id *)error
 {
-  v6 = a3;
+  settingsCopy = settings;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__9;
   v18 = __Block_byref_object_dispose__9;
   v19 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__STManagementState_performMigrationFromMCXSettings_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v14;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__STManagementState_performMigrationFromMCXSettings_error___block_invoke_2;
   v12[3] = &unk_1E7CE6BA8;
   v12[4] = &v14;
-  [v8 performMigrationFromMCXSettings:v6 completionHandler:v12];
+  [v8 performMigrationFromMCXSettings:settingsCopy completionHandler:v12];
   v9 = v15[5];
-  if (a4 && v9)
+  if (error && v9)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;
@@ -1012,7 +1012,7 @@ void __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___bl
   return v10;
 }
 
-- (BOOL)applyDefaultUserPoliciesWithError:(id *)a3
+- (BOOL)applyDefaultUserPoliciesWithError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -1020,13 +1020,13 @@ void __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___bl
   v14 = __Block_byref_object_copy__9;
   v15 = __Block_byref_object_dispose__9;
   v16 = 0;
-  v4 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__STManagementState_applyDefaultUserPoliciesWithError___block_invoke;
   v10[3] = &unk_1E7CE6BA8;
   v10[4] = &v11;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1035,10 +1035,10 @@ void __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___bl
   v9[4] = &v11;
   [v5 applyDefaultUserPoliciesWithCompletionHandler:v9];
   v6 = v12[5];
-  if (a3 && v6)
+  if (error && v6)
   {
     v6 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   v7 = v6 == 0;
@@ -1047,35 +1047,35 @@ void __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___bl
   return v7;
 }
 
-- (BOOL)permitWebFilterURL:(id)a3 pageTitle:(id)a4 error:(id *)a5
+- (BOOL)permitWebFilterURL:(id)l pageTitle:(id)title error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  titleCopy = title;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__9;
   v21 = __Block_byref_object_dispose__9;
   v22 = 0;
-  v10 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __56__STManagementState_permitWebFilterURL_pageTitle_error___block_invoke;
   v16[3] = &unk_1E7CE6BA8;
   v16[4] = &v17;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v11 = [connection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__STManagementState_permitWebFilterURL_pageTitle_error___block_invoke_2;
   v15[3] = &unk_1E7CE6BA8;
   v15[4] = &v17;
-  [v11 permitWebFilterURL:v8 pageTitle:v9 completionHandler:v15];
+  [v11 permitWebFilterURL:lCopy pageTitle:titleCopy completionHandler:v15];
   v12 = v18[5];
-  if (a5 && v12)
+  if (error && v12)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = v12 == 0;
@@ -1084,9 +1084,9 @@ void __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___bl
   return v13;
 }
 
-- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1099,13 +1099,13 @@ void __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___bl
   v17 = __Block_byref_object_copy__9;
   v18 = __Block_byref_object_dispose__9;
   v19 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__STManagementState_shouldAllowOneMoreMinuteForBundleIdentifier_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v20;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1113,11 +1113,11 @@ void __68__STManagementState_primaryiCloudCardDAVAccountIdentifierWithError___bl
   v12[3] = &unk_1E7CE71A0;
   v12[4] = &v20;
   v12[5] = &v14;
-  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:v6 replyHandler:v12];
+  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:identifierCopy replyHandler:v12];
   v9 = v15[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v9 = v15[5];
   }
 
@@ -1151,9 +1151,9 @@ void __71__STManagementState_shouldAllowOneMoreMinuteForBundleIdentifier_error__
   *(v8 + 40) = v9;
 }
 
-- (id)shouldAllowOneMoreMinuteForWebDomain:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForWebDomain:(id)domain error:(id *)error
 {
-  v6 = a3;
+  domainCopy = domain;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1166,13 +1166,13 @@ void __71__STManagementState_shouldAllowOneMoreMinuteForBundleIdentifier_error__
   v17 = __Block_byref_object_copy__9;
   v18 = __Block_byref_object_dispose__9;
   v19 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__STManagementState_shouldAllowOneMoreMinuteForWebDomain_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v20;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1180,11 +1180,11 @@ void __71__STManagementState_shouldAllowOneMoreMinuteForBundleIdentifier_error__
   v12[3] = &unk_1E7CE71A0;
   v12[4] = &v20;
   v12[5] = &v14;
-  [v8 shouldAllowOneMoreMinuteForWebDomain:v6 replyHandler:v12];
+  [v8 shouldAllowOneMoreMinuteForWebDomain:domainCopy replyHandler:v12];
   v9 = v15[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v9 = v15[5];
   }
 
@@ -1218,9 +1218,9 @@ void __64__STManagementState_shouldAllowOneMoreMinuteForWebDomain_error___block_
   *(v8 + 40) = v9;
 }
 
-- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 error:(id *)a4
+- (id)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -1233,13 +1233,13 @@ void __64__STManagementState_shouldAllowOneMoreMinuteForWebDomain_error___block_
   v17 = __Block_byref_object_copy__9;
   v18 = __Block_byref_object_dispose__9;
   v19 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v20;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1247,11 +1247,11 @@ void __64__STManagementState_shouldAllowOneMoreMinuteForWebDomain_error___block_
   v12[3] = &unk_1E7CE71A0;
   v12[4] = &v20;
   v12[5] = &v14;
-  [v8 shouldAllowOneMoreMinuteForCategoryIdentifier:v6 replyHandler:v12];
+  [v8 shouldAllowOneMoreMinuteForCategoryIdentifier:identifierCopy replyHandler:v12];
   v9 = v15[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v9 = v15[5];
   }
 
@@ -1285,17 +1285,17 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   *(v8 + 40) = v9;
 }
 
-- (void)isExplicitContentRestricted:(id)a3
+- (void)isExplicitContentRestricted:(id)restricted
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
+  restrictedCopy = restricted;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__STManagementState_isExplicitContentRestricted___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = restrictedCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1307,17 +1307,17 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   [v7 isExplicitContentRestrictedWithCompletionHandler:v9];
 }
 
-- (void)isWebContentRestricted:(id)a3
+- (void)isWebContentRestricted:(id)restricted
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
+  restrictedCopy = restricted;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __44__STManagementState_isWebContentRestricted___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = restrictedCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1329,17 +1329,17 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   [v7 isWebContentRestrictedWithCompletionHandler:v9];
 }
 
-- (void)enableWebContentFilterWithCompletionHandler:(id)a3
+- (void)enableWebContentFilterWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__STManagementState_enableWebContentFilterWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1351,18 +1351,18 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   [v7 enableWebContentFilterWithCompletionHandler:v9];
 }
 
-- (void)lastModifcationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastModifcationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STManagementState *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__STManagementState_lastModifcationDateForDSID_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1371,21 +1371,21 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 lastModifcationDateForDSID:v7 completionHandler:v12];
+  [v10 lastModifcationDateForDSID:dCopy completionHandler:v12];
 }
 
-- (void)lastCommunicationLimitsModifcationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastCommunicationLimitsModifcationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  connection = [(STManagementState *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__STManagementState_lastCommunicationLimitsModifcationDateForDSID_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1394,22 +1394,22 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 lastCommunicationLimitsModifcationDateForDSID:v7 completionHandler:v12];
+  [v10 lastCommunicationLimitsModifcationDateForDSID:dCopy completionHandler:v12];
 }
 
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  dCopy = d;
+  modelCopy = model;
+  connection = [(STManagementState *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __70__STManagementState_applyIntroductionModel_forDSID_completionHandler___block_invoke;
   v17[3] = &unk_1E7CE6CE8;
-  v12 = v8;
+  v12 = handlerCopy;
   v18 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v17];
+  v13 = [connection remoteObjectProxyWithErrorHandler:v17];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -1418,27 +1418,27 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   v15[4] = self;
   v16 = v12;
   v14 = v12;
-  [v13 applyIntroductionModel:v10 forDSID:v9 completionHandler:v15];
+  [v13 applyIntroductionModel:modelCopy forDSID:dCopy completionHandler:v15];
 }
 
-- (void)isLocationSharingModificationAllowedForDSID:(id)a3 completionHandler:(id)a4
+- (void)isLocationSharingModificationAllowedForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   v8 = +[STLog ask];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [STManagementState isLocationSharingModificationAllowedForDSID:completionHandler:];
   }
 
-  v9 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __83__STManagementState_isLocationSharingModificationAllowedForDSID_completionHandler___block_invoke;
   v15[3] = &unk_1E7CE6CE8;
-  v10 = v6;
+  v10 = handlerCopy;
   v16 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v15];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v15];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1447,44 +1447,44 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   v13[4] = self;
   v14 = v10;
   v12 = v10;
-  [v11 isLocationSharingModificationAllowedForDSID:v7 completionHandler:v13];
+  [v11 isLocationSharingModificationAllowedForDSID:dCopy completionHandler:v13];
 }
 
-- (void)postNotificationForContext:(id)a3
+- (void)postNotificationForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
-  v6 = [v5 remoteObjectProxy];
+  contextCopy = context;
+  connection = [(STManagementState *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  [v6 postNotificationForContext:v4];
+  [remoteObjectProxy postNotificationForContext:contextCopy];
 }
 
-- (BOOL)triggerDowngradeMigrationWithOutError:(id *)a3
+- (BOOL)triggerDowngradeMigrationWithOutError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:1 userInfo:0];
+    *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:1 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)restrictionsForUserDSID:(id)a3 error:(id *)a4
+- (id)restrictionsForUserDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__9;
   v23 = __Block_byref_object_dispose__9;
   v24 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __51__STManagementState_restrictionsForUserDSID_error___block_invoke;
   v18[3] = &unk_1E7CE6BA8;
   v18[4] = &v19;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v18];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v18];
 
   v12 = 0;
   v13 = &v12;
@@ -1498,8 +1498,8 @@ void __73__STManagementState_shouldAllowOneMoreMinuteForCategoryIdentifier_error
   v11[3] = &unk_1E7CE78F0;
   v11[4] = &v12;
   v11[5] = &v19;
-  [v8 restrictionsForUserDSID:v6 completionHandler:v11];
-  *a4 = v20[5];
+  [v8 restrictionsForUserDSID:dCopy completionHandler:v11];
+  *error = v20[5];
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
 
@@ -1522,22 +1522,22 @@ void __51__STManagementState_restrictionsForUserDSID_error___block_invoke_2(uint
   *(v9 + 40) = v6;
 }
 
-- (id)isCommunicationSafetyEnabledForUserDSID:(id)a3 error:(id *)a4
+- (id)isCommunicationSafetyEnabledForUserDSID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__9;
   v23 = __Block_byref_object_dispose__9;
   v24 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __67__STManagementState_isCommunicationSafetyEnabledForUserDSID_error___block_invoke;
   v18[3] = &unk_1E7CE6BA8;
   v18[4] = &v19;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v18];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v18];
 
   v12 = 0;
   v13 = &v12;
@@ -1551,8 +1551,8 @@ void __51__STManagementState_restrictionsForUserDSID_error___block_invoke_2(uint
   v11[3] = &unk_1E7CE71A0;
   v11[4] = &v12;
   v11[5] = &v19;
-  [v8 isCommunicationSafetyEnabledForUserDSID:v6 completionHandler:v11];
-  *a4 = v20[5];
+  [v8 isCommunicationSafetyEnabledForUserDSID:dCopy completionHandler:v11];
+  *error = v20[5];
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
 
@@ -1575,18 +1575,18 @@ void __67__STManagementState_isCommunicationSafetyEnabledForUserDSID_error___blo
   *(v9 + 40) = v6;
 }
 
-- (void)saveExpressIntroductionSettingsDefaults:(id)a3 completionHandler:(id)a4
+- (void)saveExpressIntroductionSettingsDefaults:(id)defaults completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  defaultsCopy = defaults;
+  connection = [(STManagementState *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__STManagementState_saveExpressIntroductionSettingsDefaults_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE6CE8;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1595,10 +1595,10 @@ void __67__STManagementState_isCommunicationSafetyEnabledForUserDSID_error___blo
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 saveExpressIntroductionSettingsDefaults:v7 completionHandler:v12];
+  [v10 saveExpressIntroductionSettingsDefaults:defaultsCopy completionHandler:v12];
 }
 
-- (id)managingGuardianAppleIDsForLocalUserWithError:(id *)a3
+- (id)managingGuardianAppleIDsForLocalUserWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -1612,13 +1612,13 @@ void __67__STManagementState_isCommunicationSafetyEnabledForUserDSID_error___blo
   v14 = __Block_byref_object_copy__9;
   v15 = __Block_byref_object_dispose__9;
   v16 = 0;
-  v4 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__STManagementState_managingGuardianAppleIDsForLocalUserWithError___block_invoke;
   v10[3] = &unk_1E7CE6BA8;
   v10[4] = &v11;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1627,12 +1627,12 @@ void __67__STManagementState_isCommunicationSafetyEnabledForUserDSID_error___blo
   v9[4] = &v17;
   v9[5] = &v11;
   [v5 managingGuardianAppleIDsForLocalUserWithCompletionHandler:v9];
-  if (a3)
+  if (error)
   {
     v6 = v12[5];
     if (v6)
     {
-      *a3 = v6;
+      *error = v6;
     }
   }
 
@@ -1666,17 +1666,17 @@ void __67__STManagementState_managingGuardianAppleIDsForLocalUserWithError___blo
   *(v8 + 40) = v9;
 }
 
-- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)a3
+- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STManagementState *)self connection];
+  handlerCopy = handler;
+  connection = [(STManagementState *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__STManagementState_managingGuardianAppleIDsForLocalUserWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E7CE6CE8;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1688,22 +1688,22 @@ void __67__STManagementState_managingGuardianAppleIDsForLocalUserWithError___blo
   [v7 managingGuardianAppleIDsForLocalUserWithCompletionHandler:v9];
 }
 
-- (BOOL)exportDatabaseToURL:(id)a3 error:(id *)a4
+- (BOOL)exportDatabaseToURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__9;
   v18 = __Block_byref_object_dispose__9;
   v19 = 0;
-  v7 = [(STManagementState *)self connection];
+  connection = [(STManagementState *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __47__STManagementState_exportDatabaseToURL_error___block_invoke;
   v13[3] = &unk_1E7CE6BA8;
   v13[4] = &v14;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1711,12 +1711,12 @@ void __67__STManagementState_managingGuardianAppleIDsForLocalUserWithError___blo
   v12[3] = &unk_1E7CE7990;
   v12[4] = self;
   v12[5] = &v14;
-  [v8 exportDatabaseToURL:v6 replyHandler:v12];
+  [v8 exportDatabaseToURL:lCopy replyHandler:v12];
   v9 = v15[5];
-  if (a4 && v9)
+  if (error && v9)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   v10 = v9 == 0;
@@ -1728,7 +1728,7 @@ void __67__STManagementState_managingGuardianAppleIDsForLocalUserWithError___blo
 - (void)isLocalUserManaged
 {
   v10 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_6_1(a2, *a1);
+  OUTLINED_FUNCTION_6_1(a2, *self);
   v3 = *(v2 + 24);
   OUTLINED_FUNCTION_4_2();
   OUTLINED_FUNCTION_5_3();
@@ -1781,7 +1781,7 @@ void __61__STManagementState_isLocalUserManagedWithCompletionHandler___block_inv
 - (void)isRestrictionsPasscodeSet
 {
   v10 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_6_1(a2, *a1);
+  OUTLINED_FUNCTION_6_1(a2, *self);
   v3 = *(v2 + 24);
   OUTLINED_FUNCTION_4_2();
   OUTLINED_FUNCTION_5_3();

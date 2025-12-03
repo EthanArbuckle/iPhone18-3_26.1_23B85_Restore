@@ -1,29 +1,29 @@
 @interface OKMediaItem
 + (id)scheme;
-- (BOOL)hasDiskCachedMetadata:(id *)a3;
-- (BOOL)hasDiskCachedThumbnailImage:(id *)a3 forResolution:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (OKMediaItem)initWithUniqueURL:(id)a3;
+- (BOOL)hasDiskCachedMetadata:(id *)metadata;
+- (BOOL)hasDiskCachedThumbnailImage:(id *)image forResolution:(unint64_t)resolution;
+- (BOOL)isEqual:(id)equal;
+- (OKMediaItem)initWithUniqueURL:(id)l;
 - (id)_resourcesDiskCacheManager;
 - (id)avAsset;
-- (id)avAssetWithCompletionHandler:(id)a3;
-- (id)createMetadataWithCompletionHandler:(id)a3;
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5;
-- (id)detectRegionsOfInterestWithCompletionHandler:(id)a3 force:(BOOL)a4 cache:(BOOL)a5 colorSpace:(id)a6;
+- (id)avAssetWithCompletionHandler:(id)handler;
+- (id)createMetadataWithCompletionHandler:(id)handler;
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler;
+- (id)detectRegionsOfInterestWithCompletionHandler:(id)handler force:(BOOL)force cache:(BOOL)cache colorSpace:(id)space;
 - (id)diskCachedMetadata;
-- (id)diskCachedThumbnailImageForResolution:(unint64_t)a3;
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4;
+- (id)diskCachedThumbnailImageForResolution:(unint64_t)resolution;
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler;
 - (id)memoryCachedMetadata;
-- (id)memoryCachedThumbnailImageForResolution:(unint64_t)a3;
-- (id)metadataWithCompletionHandler:(id)a3 force:(BOOL)a4 cache:(BOOL)a5;
-- (id)metadataWithProgress:(id)a3 error:(id *)a4;
-- (id)operationWithBlock:(id)a3 completionHandlerWithObject:(id)a4;
-- (id)prepareCaches:(BOOL)a3 colorSpace:(id)a4 withCompletionHandler:(id)a5;
-- (id)regionsOfInterestWithColorSpace:(id)a3;
+- (id)memoryCachedThumbnailImageForResolution:(unint64_t)resolution;
+- (id)metadataWithCompletionHandler:(id)handler force:(BOOL)force cache:(BOOL)cache;
+- (id)metadataWithProgress:(id)progress error:(id *)error;
+- (id)operationWithBlock:(id)block completionHandlerWithObject:(id)object;
+- (id)prepareCaches:(BOOL)caches colorSpace:(id)space withCompletionHandler:(id)handler;
+- (id)regionsOfInterestWithColorSpace:(id)space;
 - (id)resourceURL;
-- (id)resourceURLWithCompletionHandler:(id)a3;
-- (id)thumbnailImageForResolution:(unint64_t)a3 aspectRatio:(double)a4 scale:(double)a5 quality:(double)a6 colorSpace:(id)a7;
-- (id)thumbnailImageForResolution:(unint64_t)a3 aspectRatio:(double)a4 scale:(double)a5 quality:(double)a6 colorSpace:(id)a7 completionHandler:(id)a8 force:(BOOL)a9 cache:(BOOL)a10;
+- (id)resourceURLWithCompletionHandler:(id)handler;
+- (id)thumbnailImageForResolution:(unint64_t)resolution aspectRatio:(double)ratio scale:(double)scale quality:(double)quality colorSpace:(id)space;
+- (id)thumbnailImageForResolution:(unint64_t)resolution aspectRatio:(double)ratio scale:(double)scale quality:(double)quality colorSpace:(id)space completionHandler:(id)handler force:(BOOL)force cache:(BOOL)self0;
 - (id)uniquePath;
 - (void)dealloc;
 - (void)invalidate;
@@ -31,10 +31,10 @@
 - (void)invalidateDiskCachedThumbnailImages;
 - (void)invalidateMemoryCachedMetadata;
 - (void)invalidateMemoryCachedThumbnailImages;
-- (void)setDiskCachedMetadata:(id)a3;
-- (void)setDiskCachedThumbnailImage:(id)a3 forResolution:(unint64_t)a4;
-- (void)setMemoryCachedMetadata:(id)a3;
-- (void)setMemoryCachedThumbnailImage:(id)a3 forResolution:(unint64_t)a4;
+- (void)setDiskCachedMetadata:(id)metadata;
+- (void)setDiskCachedThumbnailImage:(id)image forResolution:(unint64_t)resolution;
+- (void)setMemoryCachedMetadata:(id)metadata;
+- (void)setMemoryCachedThumbnailImage:(id)image forResolution:(unint64_t)resolution;
 @end
 
 @implementation OKMediaItem
@@ -52,14 +52,14 @@
   return 0;
 }
 
-- (OKMediaItem)initWithUniqueURL:(id)a3
+- (OKMediaItem)initWithUniqueURL:(id)l
 {
   v4 = [(OKMediaItem *)self init];
   v5 = v4;
   if (v4)
   {
     objc_storeWeak(&v4->_presentation, 0);
-    v6 = [a3 copy];
+    v6 = [l copy];
     v5->_uniqueURL = v6;
     v7 = [objc_msgSend(MEMORY[0x277CCACA8] normalizeString:{-[NSURL absoluteString](v6, "absoluteString")), "copy"}];
     v5->_uniqueURLNormalisedString = v7;
@@ -91,18 +91,18 @@
   [(OKMediaItem *)&v5 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = [(OKMediaItem *)self hash];
-  if (v5 != [a3 hash])
+  if (v5 != [equal hash])
   {
     return 0;
   }
 
   uniqueURLNormalisedString = self->_uniqueURLNormalisedString;
-  v7 = [a3 uniqueURLNormalisedString];
+  uniqueURLNormalisedString = [equal uniqueURLNormalisedString];
 
-  return [(NSString *)uniqueURLNormalisedString isEqual:v7];
+  return [(NSString *)uniqueURLNormalisedString isEqual:uniqueURLNormalisedString];
 }
 
 - (id)uniquePath
@@ -119,7 +119,7 @@
   }
 }
 
-- (id)operationWithBlock:(id)a3 completionHandlerWithObject:(id)a4
+- (id)operationWithBlock:(id)block completionHandlerWithObject:(id)object
 {
   v8[0] = 0;
   v8[1] = v8;
@@ -131,13 +131,13 @@
   v7[1] = 3221225472;
   v7[2] = __62__OKMediaItem_operationWithBlock_completionHandlerWithObject___block_invoke;
   v7[3] = &unk_279C8F548;
-  v7[4] = a3;
+  v7[4] = block;
   v7[5] = v8;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__OKMediaItem_operationWithBlock_completionHandlerWithObject___block_invoke_2;
   v6[3] = &unk_279C8F548;
-  v6[4] = a4;
+  v6[4] = object;
   v6[5] = v8;
   v4 = [MEMORY[0x277D627C0] blockOperationWithExecutionBlock:v7 finishBlock:v6 andFinishDelegate:0];
   _Block_object_dispose(v8, 8);
@@ -179,16 +179,16 @@ void __62__OKMediaItem_operationWithBlock_completionHandlerWithObject___block_in
   [(OKMediaItem *)self invalidateMemoryCachedThumbnailImages];
 }
 
-- (id)metadataWithCompletionHandler:(id)a3 force:(BOOL)a4 cache:(BOOL)a5
+- (id)metadataWithCompletionHandler:(id)handler force:(BOOL)force cache:(BOOL)cache
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__OKMediaItem_metadataWithCompletionHandler_force_cache___block_invoke;
   v6[3] = &unk_279C8F598;
-  v7 = a4;
+  forceCopy = force;
   v6[4] = self;
-  v8 = a5;
-  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:a3];
+  cacheCopy = cache;
+  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:handler];
 }
 
 void __57__OKMediaItem_metadataWithCompletionHandler_force_cache___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -291,7 +291,7 @@ id __57__OKMediaItem_metadataWithCompletionHandler_force_cache___block_invoke_2(
   return result;
 }
 
-- (id)metadataWithProgress:(id)a3 error:(id *)a4
+- (id)metadataWithProgress:(id)progress error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -316,7 +316,7 @@ id __57__OKMediaItem_metadataWithCompletionHandler_force_cache___block_invoke_2(
   v10[1] = 3221225472;
   v10[2] = __42__OKMediaItem_metadataWithProgress_error___block_invoke_2;
   v10[3] = &unk_279C8E868;
-  v10[4] = a3;
+  v10[4] = progress;
   if ([v6 performSynchronously:v10])
   {
     v7 = v19[5];
@@ -324,9 +324,9 @@ id __57__OKMediaItem_metadataWithCompletionHandler_force_cache___block_invoke_2(
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = v13[5];
+      *error = v13[5];
     }
 
     v8 = v19[5];
@@ -383,21 +383,21 @@ uint64_t __42__OKMediaItem_metadataWithProgress_error___block_invoke_2(uint64_t 
   return result;
 }
 
-- (id)thumbnailImageForResolution:(unint64_t)a3 aspectRatio:(double)a4 scale:(double)a5 quality:(double)a6 colorSpace:(id)a7 completionHandler:(id)a8 force:(BOOL)a9 cache:(BOOL)a10
+- (id)thumbnailImageForResolution:(unint64_t)resolution aspectRatio:(double)ratio scale:(double)scale quality:(double)quality colorSpace:(id)space completionHandler:(id)handler force:(BOOL)force cache:(BOOL)self0
 {
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __110__OKMediaItem_thumbnailImageForResolution_aspectRatio_scale_quality_colorSpace_completionHandler_force_cache___block_invoke;
   v11[3] = &unk_279C8F638;
-  v11[5] = a7;
-  v11[6] = a3;
-  *&v11[7] = a4;
-  *&v11[8] = a5;
-  *&v11[9] = a6;
-  v12 = a9;
-  v13 = a10;
+  v11[5] = space;
+  v11[6] = resolution;
+  *&v11[7] = ratio;
+  *&v11[8] = scale;
+  *&v11[9] = quality;
+  forceCopy = force;
+  cacheCopy = cache;
   v11[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v11 completionHandlerWithObject:a8];
+  return [(OKMediaItem *)self operationWithBlock:v11 completionHandlerWithObject:handler];
 }
 
 void __110__OKMediaItem_thumbnailImageForResolution_aspectRatio_scale_quality_colorSpace_completionHandler_force_cache___block_invoke(uint64_t a1, void *a2, uint64_t *a3)
@@ -677,7 +677,7 @@ id __110__OKMediaItem_thumbnailImageForResolution_aspectRatio_scale_quality_colo
   return result;
 }
 
-- (id)thumbnailImageForResolution:(unint64_t)a3 aspectRatio:(double)a4 scale:(double)a5 quality:(double)a6 colorSpace:(id)a7
+- (id)thumbnailImageForResolution:(unint64_t)resolution aspectRatio:(double)ratio scale:(double)scale quality:(double)quality colorSpace:(id)space
 {
   v12 = 0;
   v13 = &v12;
@@ -690,7 +690,7 @@ id __110__OKMediaItem_thumbnailImageForResolution_aspectRatio_scale_quality_colo
   v11[2] = __80__OKMediaItem_thumbnailImageForResolution_aspectRatio_scale_quality_colorSpace___block_invoke;
   v11[3] = &unk_279C8EC30;
   v11[4] = &v12;
-  v7 = [-[OKMediaItem thumbnailImageForResolution:aspectRatio:scale:quality:colorSpace:completionHandler:force:cache:](self thumbnailImageForResolution:a3 aspectRatio:a7 scale:v11 quality:0 colorSpace:1 completionHandler:a4 force:a5 cache:{a6), "performSynchronously"}];
+  v7 = [-[OKMediaItem thumbnailImageForResolution:aspectRatio:scale:quality:colorSpace:completionHandler:force:cache:](self thumbnailImageForResolution:resolution aspectRatio:space scale:v11 quality:0 colorSpace:1 completionHandler:ratio force:scale cache:{quality), "performSynchronously"}];
   v8 = v13[5];
   if (v7)
   {
@@ -842,17 +842,17 @@ uint64_t __22__OKMediaItem_avAsset__block_invoke(uint64_t a1, void *a2, void *a3
   return result;
 }
 
-- (id)detectRegionsOfInterestWithCompletionHandler:(id)a3 force:(BOOL)a4 cache:(BOOL)a5 colorSpace:(id)a6
+- (id)detectRegionsOfInterestWithCompletionHandler:(id)handler force:(BOOL)force cache:(BOOL)cache colorSpace:(id)space
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __83__OKMediaItem_detectRegionsOfInterestWithCompletionHandler_force_cache_colorSpace___block_invoke;
   v7[3] = &unk_279C8F688;
-  v8 = a4;
-  v9 = a5;
+  forceCopy = force;
+  cacheCopy = cache;
   v7[4] = self;
-  v7[5] = a6;
-  return [(OKMediaItem *)self operationWithBlock:v7 completionHandlerWithObject:a3];
+  v7[5] = space;
+  return [(OKMediaItem *)self operationWithBlock:v7 completionHandlerWithObject:handler];
 }
 
 void __83__OKMediaItem_detectRegionsOfInterestWithCompletionHandler_force_cache_colorSpace___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1025,7 +1025,7 @@ uint64_t __83__OKMediaItem_detectRegionsOfInterestWithCompletionHandler_force_ca
   return result;
 }
 
-- (id)regionsOfInterestWithColorSpace:(id)a3
+- (id)regionsOfInterestWithColorSpace:(id)space
 {
   v15 = 0;
   v16 = &v15;
@@ -1070,11 +1070,11 @@ LABEL_15:
     v13[2] = __47__OKMediaItem_regionsOfInterestWithColorSpace___block_invoke_2;
     v13[3] = &unk_279C8F570;
     v13[4] = &v15;
-    v10 = [-[OKMediaItem detectRegionsOfInterestWithCompletionHandler:force:cache:colorSpace:](self detectRegionsOfInterestWithCompletionHandler:v13 force:0 cache:1 colorSpace:{a3), "performSynchronously"}];
+    v10 = [-[OKMediaItem detectRegionsOfInterestWithCompletionHandler:force:cache:colorSpace:](self detectRegionsOfInterestWithCompletionHandler:v13 force:0 cache:1 colorSpace:{space), "performSynchronously"}];
     v11 = v16[5];
     if (v10)
     {
-      v7 = [v11 regionsOfInterest];
+      regionsOfInterest = [v11 regionsOfInterest];
       goto LABEL_5;
     }
 
@@ -1087,9 +1087,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v7 = [v16[5] regionsOfInterest];
+  regionsOfInterest = [v16[5] regionsOfInterest];
 LABEL_5:
-  v8 = v7;
+  v8 = regionsOfInterest;
 LABEL_16:
   _Block_object_dispose(&v15, 8);
   return v8;
@@ -1133,16 +1133,16 @@ uint64_t __47__OKMediaItem_regionsOfInterestWithColorSpace___block_invoke_2(uint
   return result;
 }
 
-- (id)prepareCaches:(BOOL)a3 colorSpace:(id)a4 withCompletionHandler:(id)a5
+- (id)prepareCaches:(BOOL)caches colorSpace:(id)space withCompletionHandler:(id)handler
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__OKMediaItem_prepareCaches_colorSpace_withCompletionHandler___block_invoke;
   v6[3] = &unk_279C8F6F8;
-  v7 = a3;
+  cachesCopy = caches;
   v6[4] = self;
-  v6[5] = a4;
-  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:a5];
+  v6[5] = space;
+  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:handler];
 }
 
 void __62__OKMediaItem_prepareCaches_colorSpace_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1313,7 +1313,7 @@ uint64_t __62__OKMediaItem_prepareCaches_colorSpace_withCompletionHandler___bloc
   return [v5 setProgress:v4];
 }
 
-- (id)createMetadataWithCompletionHandler:(id)a3
+- (id)createMetadataWithCompletionHandler:(id)handler
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -1326,7 +1326,7 @@ uint64_t __62__OKMediaItem_prepareCaches_colorSpace_withCompletionHandler___bloc
   return 0;
 }
 
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -1339,7 +1339,7 @@ uint64_t __62__OKMediaItem_prepareCaches_colorSpace_withCompletionHandler___bloc
   return 0;
 }
 
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -1352,7 +1352,7 @@ uint64_t __62__OKMediaItem_prepareCaches_colorSpace_withCompletionHandler___bloc
   return 0;
 }
 
-- (id)resourceURLWithCompletionHandler:(id)a3
+- (id)resourceURLWithCompletionHandler:(id)handler
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -1365,14 +1365,14 @@ uint64_t __62__OKMediaItem_prepareCaches_colorSpace_withCompletionHandler___bloc
   return 0;
 }
 
-- (id)avAssetWithCompletionHandler:(id)a3
+- (id)avAssetWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__OKMediaItem_avAssetWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C8F720;
   v4[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:a3];
+  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:handler];
 }
 
 uint64_t __44__OKMediaItem_avAssetWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1386,9 +1386,9 @@ uint64_t __44__OKMediaItem_avAssetWithCompletionHandler___block_invoke(uint64_t 
 {
   if ([(OKMediaItem *)self wantsTemporaryDiskCache])
   {
-    v3 = [(OKMediaItem *)self presentation];
+    presentation = [(OKMediaItem *)self presentation];
 
-    return [(OKPresentation *)v3 _temporaryDiskCacheManager];
+    return [(OKPresentation *)presentation _temporaryDiskCacheManager];
   }
 
   else
@@ -1400,47 +1400,47 @@ uint64_t __44__OKMediaItem_avAssetWithCompletionHandler___block_invoke(uint64_t 
 
 - (id)memoryCachedMetadata
 {
-  v3 = [(OKMediaItem *)self presentation];
+  presentation = [(OKMediaItem *)self presentation];
 
-  return [(OKPresentation *)v3 metadataInMemoryForMediaItem:self];
+  return [(OKPresentation *)presentation metadataInMemoryForMediaItem:self];
 }
 
-- (void)setMemoryCachedMetadata:(id)a3
+- (void)setMemoryCachedMetadata:(id)metadata
 {
   if ([(OKMediaItem *)self wantsMemoryCachedMetadata])
   {
-    v5 = [(OKMediaItem *)self presentation];
+    presentation = [(OKMediaItem *)self presentation];
 
-    [(OKPresentation *)v5 setMetadataToMemory:a3 forMediaItem:self];
+    [(OKPresentation *)presentation setMetadataToMemory:metadata forMediaItem:self];
   }
 }
 
-- (BOOL)hasDiskCachedMetadata:(id *)a3
+- (BOOL)hasDiskCachedMetadata:(id *)metadata
 {
-  v5 = [(OKMediaItem *)self _resourcesDiskCacheManager];
+  _resourcesDiskCacheManager = [(OKMediaItem *)self _resourcesDiskCacheManager];
 
-  return [v5 hasMetadataForMediaItem:self metadata:a3 error:0];
+  return [_resourcesDiskCacheManager hasMetadataForMediaItem:self metadata:metadata error:0];
 }
 
 - (id)diskCachedMetadata
 {
-  v3 = [(OKMediaItem *)self _resourcesDiskCacheManager];
+  _resourcesDiskCacheManager = [(OKMediaItem *)self _resourcesDiskCacheManager];
 
-  return [v3 metadataForMediaItem:self error:0];
+  return [_resourcesDiskCacheManager metadataForMediaItem:self error:0];
 }
 
-- (void)setDiskCachedMetadata:(id)a3
+- (void)setDiskCachedMetadata:(id)metadata
 {
   if ([(OKMediaItem *)self wantsDiskCachedMetadata])
   {
-    v5 = [(OKMediaItem *)self _resourcesDiskCacheManager];
+    _resourcesDiskCacheManager = [(OKMediaItem *)self _resourcesDiskCacheManager];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __37__OKMediaItem_setDiskCachedMetadata___block_invoke;
     v6[3] = &unk_279C8F748;
-    v6[4] = a3;
+    v6[4] = metadata;
     v6[5] = self;
-    [v5 performAsynchronousResourceAccessUsingBlock:v6];
+    [_resourcesDiskCacheManager performAsynchronousResourceAccessUsingBlock:v6];
   }
 }
 
@@ -1448,9 +1448,9 @@ uint64_t __44__OKMediaItem_avAssetWithCompletionHandler___block_invoke(uint64_t 
 {
   if ([(OKMediaItem *)self wantsMemoryCachedMetadata])
   {
-    v3 = [(OKMediaItem *)self presentation];
+    presentation = [(OKMediaItem *)self presentation];
 
-    [(OKPresentation *)v3 invalidateMetadataMemoryCacheForMediaItem:self];
+    [(OKPresentation *)presentation invalidateMetadataMemoryCacheForMediaItem:self];
   }
 }
 
@@ -1458,64 +1458,64 @@ uint64_t __44__OKMediaItem_avAssetWithCompletionHandler___block_invoke(uint64_t 
 {
   if ([(OKMediaItem *)self wantsDiskCachedMetadata])
   {
-    v3 = [(OKMediaItem *)self _resourcesDiskCacheManager];
+    _resourcesDiskCacheManager = [(OKMediaItem *)self _resourcesDiskCacheManager];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __43__OKMediaItem_invalidateDiskCachedMetadata__block_invoke;
     v4[3] = &unk_279C8F770;
     v4[4] = self;
-    [v3 performAsynchronousResourceAccessUsingBlock:v4];
+    [_resourcesDiskCacheManager performAsynchronousResourceAccessUsingBlock:v4];
   }
 }
 
-- (id)memoryCachedThumbnailImageForResolution:(unint64_t)a3
+- (id)memoryCachedThumbnailImageForResolution:(unint64_t)resolution
 {
-  v5 = [(OKMediaItem *)self presentation];
+  presentation = [(OKMediaItem *)self presentation];
 
-  return [(OKPresentation *)v5 thumbnailImageInMemoryCacheForMediaItem:self andResolution:a3];
+  return [(OKPresentation *)presentation thumbnailImageInMemoryCacheForMediaItem:self andResolution:resolution];
 }
 
-- (void)setMemoryCachedThumbnailImage:(id)a3 forResolution:(unint64_t)a4
+- (void)setMemoryCachedThumbnailImage:(id)image forResolution:(unint64_t)resolution
 {
-  if ([(OKMediaItem *)self wantsMemoryCachedThumbnailForResolution:a4])
+  if ([(OKMediaItem *)self wantsMemoryCachedThumbnailForResolution:resolution])
   {
-    v7 = [(OKMediaItem *)self presentation];
+    presentation = [(OKMediaItem *)self presentation];
 
-    [(OKPresentation *)v7 setThumbnailImageToMemoryCache:a3 forMediaItem:self andResolution:a4];
+    [(OKPresentation *)presentation setThumbnailImageToMemoryCache:image forMediaItem:self andResolution:resolution];
   }
 }
 
-- (BOOL)hasDiskCachedThumbnailImage:(id *)a3 forResolution:(unint64_t)a4
+- (BOOL)hasDiskCachedThumbnailImage:(id *)image forResolution:(unint64_t)resolution
 {
-  v7 = [(OKMediaItem *)self _resourcesDiskCacheManager];
+  _resourcesDiskCacheManager = [(OKMediaItem *)self _resourcesDiskCacheManager];
 
-  return [v7 hasThumbnailForMediaItem:self resolution:a4 thumbnail:a3 error:0];
+  return [_resourcesDiskCacheManager hasThumbnailForMediaItem:self resolution:resolution thumbnail:image error:0];
 }
 
-- (id)diskCachedThumbnailImageForResolution:(unint64_t)a3
+- (id)diskCachedThumbnailImageForResolution:(unint64_t)resolution
 {
   v5 = [-[OKMediaItem _resourcesDiskCacheManager](self "_resourcesDiskCacheManager")];
   if (v5)
   {
-    [(OKMediaItem *)self setMemoryCachedThumbnailImage:v5 forResolution:a3];
+    [(OKMediaItem *)self setMemoryCachedThumbnailImage:v5 forResolution:resolution];
   }
 
   return v5;
 }
 
-- (void)setDiskCachedThumbnailImage:(id)a3 forResolution:(unint64_t)a4
+- (void)setDiskCachedThumbnailImage:(id)image forResolution:(unint64_t)resolution
 {
-  if ([(OKMediaItem *)self wantsDiskCachedThumbnailForResolution:a4])
+  if ([(OKMediaItem *)self wantsDiskCachedThumbnailForResolution:resolution])
   {
-    v7 = [(OKMediaItem *)self _resourcesDiskCacheManager];
+    _resourcesDiskCacheManager = [(OKMediaItem *)self _resourcesDiskCacheManager];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__OKMediaItem_setDiskCachedThumbnailImage_forResolution___block_invoke;
     v8[3] = &unk_279C8F798;
-    v8[4] = a3;
+    v8[4] = image;
     v8[5] = self;
-    v8[6] = a4;
-    [v7 performAsynchronousResourceAccessUsingBlock:v8];
+    v8[6] = resolution;
+    [_resourcesDiskCacheManager performAsynchronousResourceAccessUsingBlock:v8];
   }
 }
 
@@ -1523,9 +1523,9 @@ uint64_t __44__OKMediaItem_avAssetWithCompletionHandler___block_invoke(uint64_t 
 {
   if ([(OKMediaItem *)self wantsMemoryCachedThumbnailForResolution:2048])
   {
-    v3 = [(OKMediaItem *)self presentation];
+    presentation = [(OKMediaItem *)self presentation];
 
-    [(OKPresentation *)v3 invalidateThumbnailsMemoryCacheForMediaItem:self];
+    [(OKPresentation *)presentation invalidateThumbnailsMemoryCacheForMediaItem:self];
   }
 }
 
@@ -1533,13 +1533,13 @@ uint64_t __44__OKMediaItem_avAssetWithCompletionHandler___block_invoke(uint64_t 
 {
   if ([(OKMediaItem *)self wantsDiskCachedThumbnailForResolution:2048])
   {
-    v3 = [(OKMediaItem *)self _resourcesDiskCacheManager];
+    _resourcesDiskCacheManager = [(OKMediaItem *)self _resourcesDiskCacheManager];
     v4[0] = MEMORY[0x277D85DD0];
     v4[1] = 3221225472;
     v4[2] = __50__OKMediaItem_invalidateDiskCachedThumbnailImages__block_invoke;
     v4[3] = &unk_279C8F770;
     v4[4] = self;
-    [v3 performAsynchronousResourceAccessUsingBlock:v4];
+    [_resourcesDiskCacheManager performAsynchronousResourceAccessUsingBlock:v4];
   }
 }
 

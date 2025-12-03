@@ -1,40 +1,40 @@
 @interface MSVVariableIntervalTimer
 - (BOOL)isValid;
-- (MSVVariableIntervalTimer)initWithIntervals:(id)a3 name:(id)a4 queue:(id)a5 block:(id)a6;
+- (MSVVariableIntervalTimer)initWithIntervals:(id)intervals name:(id)name queue:(id)queue block:(id)block;
 - (NSArray)remainingIntervals;
 - (double)currentInterval;
 - (double)timeUntilNextInterval;
-- (void)_processTimerEventWithQueue:(id)a3 block:(id)a4;
+- (void)_processTimerEventWithQueue:(id)queue block:(id)block;
 @end
 
 @implementation MSVVariableIntervalTimer
 
 - (BOOL)isValid
 {
-  v2 = [(MSVVariableIntervalTimer *)self remainingIntervals];
-  v3 = [v2 count] != 0;
+  remainingIntervals = [(MSVVariableIntervalTimer *)self remainingIntervals];
+  v3 = [remainingIntervals count] != 0;
 
   return v3;
 }
 
 - (double)timeUntilNextInterval
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(MSVVariableIntervalTimer *)v2 currentInterval];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MSVVariableIntervalTimer *)selfCopy currentInterval];
   v4 = v3;
-  [(NSDate *)v2->_currentIntervalStartDate timeIntervalSinceNow];
+  [(NSDate *)selfCopy->_currentIntervalStartDate timeIntervalSinceNow];
   v6 = v4 + v5;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (double)currentInterval
 {
-  v2 = [(MSVVariableIntervalTimer *)self remainingIntervals];
-  v3 = [v2 firstObject];
-  [v3 doubleValue];
+  remainingIntervals = [(MSVVariableIntervalTimer *)self remainingIntervals];
+  firstObject = [remainingIntervals firstObject];
+  [firstObject doubleValue];
   v5 = v4;
 
   return v5;
@@ -42,18 +42,18 @@
 
 - (NSArray)remainingIntervals
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_intervals copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_intervals copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_processTimerEventWithQueue:(id)a3 block:(id)a4
+- (void)_processTimerEventWithQueue:(id)queue block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   [(MSVTimer *)self->_timer invalidate];
   timer = self->_timer;
   self->_timer = 0;
@@ -66,16 +66,16 @@
 
     objc_initWeak(&location, self);
     v11 = [MSVTimer alloc];
-    v12 = [(NSMutableArray *)self->_intervals firstObject];
-    [v12 doubleValue];
+    firstObject = [(NSMutableArray *)self->_intervals firstObject];
+    [firstObject doubleValue];
     v14 = v13;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __62__MSVVariableIntervalTimer__processTimerEventWithQueue_block___block_invoke;
     v17[3] = &unk_1E7981818;
     objc_copyWeak(&v20, &location);
-    v19 = v7;
-    v18 = v6;
+    v19 = blockCopy;
+    v18 = queueCopy;
     v15 = [(MSVTimer *)v11 initWithInterval:0 repeats:v18 queue:v17 block:v14];
     v16 = self->_timer;
     self->_timer = v15;
@@ -112,15 +112,15 @@ void __62__MSVVariableIntervalTimer__processTimerEventWithQueue_block___block_in
   }
 }
 
-- (MSVVariableIntervalTimer)initWithIntervals:(id)a3 name:(id)a4 queue:(id)a5 block:(id)a6
+- (MSVVariableIntervalTimer)initWithIntervals:(id)intervals name:(id)name queue:(id)queue block:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (![v10 count])
+  intervalsCopy = intervals;
+  queueCopy = queue;
+  blockCopy = block;
+  if (![intervalsCopy count])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"MSVTimer.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"intervals.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVTimer.m" lineNumber:191 description:{@"Invalid parameter not satisfying: %@", @"intervals.count > 0"}];
   }
 
   v18.receiver = self;
@@ -128,11 +128,11 @@ void __62__MSVVariableIntervalTimer__processTimerEventWithQueue_block___block_in
   v13 = [(MSVVariableIntervalTimer *)&v18 init];
   if (v13)
   {
-    v14 = [v10 mutableCopy];
+    v14 = [intervalsCopy mutableCopy];
     intervals = v13->_intervals;
     v13->_intervals = v14;
 
-    [(MSVVariableIntervalTimer *)v13 _processTimerEventWithQueue:v11 block:v12];
+    [(MSVVariableIntervalTimer *)v13 _processTimerEventWithQueue:queueCopy block:blockCopy];
   }
 
   return v13;

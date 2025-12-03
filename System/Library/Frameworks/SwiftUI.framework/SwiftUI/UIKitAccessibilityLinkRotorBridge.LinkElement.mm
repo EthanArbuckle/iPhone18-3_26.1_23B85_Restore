@@ -4,7 +4,7 @@
 - (NSString)accessibilityIdentifier;
 - (NSString)accessibilityLabel;
 - (_TtCC7SwiftUI33UIKitAccessibilityLinkRotorBridge11LinkElement)init;
-- (_TtCC7SwiftUI33UIKitAccessibilityLinkRotorBridge11LinkElement)initWithAccessibilityContainer:(id)a3;
+- (_TtCC7SwiftUI33UIKitAccessibilityLinkRotorBridge11LinkElement)initWithAccessibilityContainer:(id)container;
 @end
 
 @implementation UIKitAccessibilityLinkRotorBridge.LinkElement
@@ -45,7 +45,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitAccessibilityLinkRotorBridge.LinkElement.accessibilityLabel.getter();
   v5 = v4;
 
@@ -74,7 +74,7 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UIKitAccessibilityLinkRotorBridge.LinkElement.accessibilityActivationPoint.getter();
   v5 = v4;
 
@@ -85,7 +85,7 @@
   return result;
 }
 
-- (_TtCC7SwiftUI33UIKitAccessibilityLinkRotorBridge11LinkElement)initWithAccessibilityContainer:(id)a3
+- (_TtCC7SwiftUI33UIKitAccessibilityLinkRotorBridge11LinkElement)initWithAccessibilityContainer:(id)container
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

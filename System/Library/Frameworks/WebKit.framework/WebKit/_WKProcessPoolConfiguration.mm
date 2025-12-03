@@ -10,15 +10,15 @@
 - (NSString)timeZoneOverride;
 - (NSURL)injectedBundleURL;
 - (_WKProcessPoolConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setAdditionalReadAccessAllowedURLs:(id)a3;
-- (void)setAlwaysRevalidatedURLSchemes:(id)a3;
-- (void)setCachePartitionedURLSchemes:(id)a3;
-- (void)setInjectedBundleURL:(id)a3;
-- (void)setMemoryFootprintNotificationThresholds:(id)a3;
-- (void)setPresentingApplicationProcessToken:(id *)a3;
-- (void)setTimeZoneOverride:(id)a3;
+- (void)setAdditionalReadAccessAllowedURLs:(id)ls;
+- (void)setAlwaysRevalidatedURLSchemes:(id)schemes;
+- (void)setCachePartitionedURLSchemes:(id)schemes;
+- (void)setInjectedBundleURL:(id)l;
+- (void)setMemoryFootprintNotificationThresholds:(id)thresholds;
+- (void)setPresentingApplicationProcessToken:(id *)token;
+- (void)setTimeZoneOverride:(id)override;
 @end
 
 @implementation _WKProcessPoolConfiguration
@@ -32,9 +32,9 @@
   if (v2)
   {
     v4 = API::Object::apiObjectsUnderConstruction(v2);
-    v5 = [(_WKProcessPoolConfiguration *)v3 _apiObject];
+    _apiObject = [(_WKProcessPoolConfiguration *)v3 _apiObject];
     v9 = v3;
-    v10 = v5;
+    v10 = _apiObject;
     WTF::HashMap<API::Object *,void const*,WTF::DefaultHash<API::Object *>,WTF::HashTraits<API::Object *>,WTF::HashTraits<void const*>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::add<void const*>(v4, &v10, &v9, v8);
     API::ProcessPoolConfiguration::ProcessPoolConfiguration([(_WKProcessPoolConfiguration *)v3 _apiObject]);
   }
@@ -84,14 +84,14 @@
   return v6;
 }
 
-- (void)setInjectedBundleURL:(id)a3
+- (void)setInjectedBundleURL:(id)l
 {
-  if (a3 && ([a3 isFileURL] & 1) == 0)
+  if (l && ([l isFileURL] & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Injected Bundle URL must be a file URL"];
   }
 
-  MEMORY[0x19EB02040](&v9, [a3 path]);
+  MEMORY[0x19EB02040](&v9, [l path]);
   v6 = v9;
   if (v9)
   {
@@ -186,12 +186,12 @@ LABEL_12:
   return v4;
 }
 
-- (void)setAdditionalReadAccessAllowedURLs:(id)a3
+- (void)setAdditionalReadAccessAllowedURLs:(id)ls
 {
   v30 = *MEMORY[0x1E69E9840];
   v27 = 0;
   v28 = 0;
-  v5 = [a3 count];
+  v5 = [ls count];
   if (v5)
   {
     if (v5 >> 29)
@@ -208,7 +208,7 @@ LABEL_12:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  v6 = [ls countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v6)
   {
     v7 = *v24;
@@ -220,7 +220,7 @@ LABEL_12:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ls);
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
@@ -229,8 +229,8 @@ LABEL_12:
           [MEMORY[0x1E695DF30] raise:v8 format:{@"%@ is not a file URL", v10}];
         }
 
-        v11 = [v10 fileSystemRepresentation];
-        WTF::String::fromUTF8(&v22, v11, v12);
+        fileSystemRepresentation = [v10 fileSystemRepresentation];
+        WTF::String::fromUTF8(&v22, fileSystemRepresentation, v12);
         LODWORD(v14) = HIDWORD(v28);
         if (HIDWORD(v28) == v28)
         {
@@ -261,7 +261,7 @@ LABEL_12:
       }
 
       while (v6 != v9);
-      v20 = [a3 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v20 = [ls countByEnumeratingWithState:&v23 objects:v29 count:16];
       v6 = v20;
     }
 
@@ -290,11 +290,11 @@ LABEL_12:
   return v2;
 }
 
-- (void)setCachePartitionedURLSchemes:(id)a3
+- (void)setCachePartitionedURLSchemes:(id)schemes
 {
-  v11 = a3;
-  v10 = &v11;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v8, [a3 count], &v10, 0);
+  schemesCopy = schemes;
+  v10 = &schemesCopy;
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v8, [schemes count], &v10, 0);
   v5 = *&self->_processPoolConfiguration.m_storage.data[36];
   if (v5)
   {
@@ -335,11 +335,11 @@ LABEL_12:
   return v2;
 }
 
-- (void)setAlwaysRevalidatedURLSchemes:(id)a3
+- (void)setAlwaysRevalidatedURLSchemes:(id)schemes
 {
-  v11 = a3;
-  v10 = &v11;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v8, [a3 count], &v10, 0);
+  schemesCopy = schemes;
+  v10 = &schemesCopy;
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::Vector<WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc> WTF::makeVector<WTF::String>(NSArray *)::{lambda(unsigned long)#1}>(&v8, [schemes count], &v10, 0);
   v5 = *&self->_anon_38[4];
   if (v5)
   {
@@ -362,10 +362,10 @@ LABEL_12:
   WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::~Vector(&v8, v4);
 }
 
-- (void)setPresentingApplicationProcessToken:(id *)a3
+- (void)setPresentingApplicationProcessToken:(id *)token
 {
-  v3 = *a3->var0;
-  *&self->_anon_38[68] = *&a3->var0[4];
+  v3 = *token->var0;
+  *&self->_anon_38[68] = *&token->var0[4];
   *&self->_anon_38[52] = v3;
   self->_anon_38[84] = 1;
 }
@@ -435,7 +435,7 @@ LABEL_12:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   API::ProcessPoolConfiguration::copy(&self->_processPoolConfiguration, &v8);
   v3 = *(v8 + 1);
@@ -503,9 +503,9 @@ LABEL_7:
   return &v4->isa;
 }
 
-- (void)setTimeZoneOverride:(id)a3
+- (void)setTimeZoneOverride:(id)override
 {
-  MEMORY[0x19EB02040](&v8, a3);
+  MEMORY[0x19EB02040](&v8, override);
   v5 = v8;
   if (v8)
   {
@@ -555,17 +555,17 @@ LABEL_7:
   return v3;
 }
 
-- (void)setMemoryFootprintNotificationThresholds:(id)a3
+- (void)setMemoryFootprintNotificationThresholds:(id)thresholds
 {
   v21 = *MEMORY[0x1E69E9840];
   v18 = 0;
   v19 = 0;
-  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(&v18, [a3 count]);
+  WTF::Vector<WTF::String,0ul,WTF::CrashOnOverflow,16ul,WTF::FastMalloc>::reserveCapacity<(WTF::FailureAction)0>(&v18, [thresholds count]);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  v6 = [thresholds countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -576,11 +576,11 @@ LABEL_7:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(thresholds);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * v8) unsignedLongLongValue];
-        v13 = v9;
+        unsignedLongLongValue = [*(*(&v14 + 1) + 8 * v8) unsignedLongLongValue];
+        v13 = unsignedLongLongValue;
         v10 = HIDWORD(v19);
         if (HIDWORD(v19) == v19)
         {
@@ -591,7 +591,7 @@ LABEL_7:
 
         else
         {
-          *(v18 + 8 * HIDWORD(v19)) = v9;
+          *(v18 + 8 * HIDWORD(v19)) = unsignedLongLongValue;
         }
 
         HIDWORD(v19) = v10 + 1;
@@ -599,7 +599,7 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v6 = [thresholds countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v6);

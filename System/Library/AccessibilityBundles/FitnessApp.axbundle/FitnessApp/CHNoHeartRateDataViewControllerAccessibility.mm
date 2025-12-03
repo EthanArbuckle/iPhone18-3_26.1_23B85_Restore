@@ -1,18 +1,18 @@
 @interface CHNoHeartRateDataViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
 @end
 
 @implementation CHNoHeartRateDataViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHNoHeartRateDataViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CHNoHeartRateDataViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHNoHeartRateDataViewController" hasInstanceMethod:@"linkLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHNoHeartRateDataViewController" hasInstanceMethod:@"linkButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHNoHeartRateDataViewController" hasInstanceMethod:@"loadView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CHNoHeartRateDataViewController" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHNoHeartRateDataViewController" hasInstanceMethod:@"linkLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHNoHeartRateDataViewController" hasInstanceMethod:@"linkButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -21,8 +21,8 @@
   v10.super_class = CHNoHeartRateDataViewControllerAccessibility;
   [(CHNoHeartRateDataViewControllerAccessibility *)&v10 _accessibilityLoadAccessibilityInformation];
   v3 = [(CHNoHeartRateDataViewControllerAccessibility *)self safeValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:UIAccessibilityTraitHeader | v4];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:UIAccessibilityTraitHeader | accessibilityTraits];
   v5 = [(CHNoHeartRateDataViewControllerAccessibility *)self safeValueForKey:@"linkLabel"];
   [v5 setIsAccessibilityElement:0];
 

@@ -1,7 +1,7 @@
 @interface ShortcutCommandHandler
 - (_TtC8NewsFeed22ShortcutCommandHandler)init;
 - (void)dealloc;
-- (void)shortcutList:(id)a3 didAddShortcuts:(id)a4 changedShortcuts:(id)a5 removedShortcuts:(id)a6;
+- (void)shortcutList:(id)list didAddShortcuts:(id)shortcuts changedShortcuts:(id)changedShortcuts removedShortcuts:(id)removedShortcuts;
 @end
 
 @implementation ShortcutCommandHandler
@@ -10,9 +10,9 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC8NewsFeed22ShortcutCommandHandler_shortcutList);
-  v5 = self;
+  selfCopy = self;
   [v4 removeObserver_];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(ShortcutCommandHandler *)&v6 dealloc];
 }
@@ -24,13 +24,13 @@
   return result;
 }
 
-- (void)shortcutList:(id)a3 didAddShortcuts:(id)a4 changedShortcuts:(id)a5 removedShortcuts:(id)a6
+- (void)shortcutList:(id)list didAddShortcuts:(id)shortcuts changedShortcuts:(id)changedShortcuts removedShortcuts:(id)removedShortcuts
 {
   if (swift_unknownObjectWeakLoadStrong())
   {
     swift_getObjectType();
     v7 = qword_1EDF3AAF0;
-    v8 = self;
+    selfCopy = self;
     if (v7 != -1)
     {
       swift_once();

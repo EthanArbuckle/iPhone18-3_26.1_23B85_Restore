@@ -2,14 +2,14 @@
 - (MPSImageSobel)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageSobel)initWithDevice:(id)device;
 - (MPSImageSobel)initWithDevice:(id)device linearGrayColorTransform:(const float *)transform;
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSImageSobel
 
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size
 {
   *&retstr->origin.z = 0u;
   *&retstr->size.height = 0u;
@@ -69,20 +69,20 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v20.receiver = self;
   v20.super_class = MPSImageSobel;
   [(MPSUnaryImageKernel *)&v20 encodeWithCoder:?];
-  v4 = (v4 + 208);
-  LODWORD(v5) = v4->super.super.super.isa;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSImageSobel.transformR", v7, v8, v9, v5);
-  LODWORD(v10) = HIDWORD(v4->super.super.super.isa);
-  objc_msgSend_encodeFloat_forKey_(a3, v11, @"MPSImageSobel.transformG", v12, v13, v14, v10);
-  LODWORD(v15) = v4->super.super._options;
-  objc_msgSend_encodeFloat_forKey_(a3, v16, @"MPSImageSobel.transformB", v17, v18, v19, v15);
+  selfCopy = (selfCopy + 208);
+  LODWORD(v5) = selfCopy->super.super.super.isa;
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSImageSobel.transformR", v7, v8, v9, v5);
+  LODWORD(v10) = HIDWORD(selfCopy->super.super.super.isa);
+  objc_msgSend_encodeFloat_forKey_(coder, v11, @"MPSImageSobel.transformG", v12, v13, v14, v10);
+  LODWORD(v15) = selfCopy->super.super._options;
+  objc_msgSend_encodeFloat_forKey_(coder, v16, @"MPSImageSobel.transformB", v17, v18, v19, v15);
 }
 
 - (MPSImageSobel)initWithCoder:(NSCoder *)aDecoder device:(id)device
@@ -120,11 +120,11 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSImageSobel;
-  result = [(MPSUnaryImageKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 52) = LODWORD(self->_colVec[0]);

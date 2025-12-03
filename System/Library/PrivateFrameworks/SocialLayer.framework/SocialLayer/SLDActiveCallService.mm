@@ -2,8 +2,8 @@
 + (id)sharedService;
 - (UISSlotMachine)activeCallViewSlotMachine;
 - (id)_lookupActiveTUConversation;
-- (id)slotMachineForViewIdentifier:(id)a3;
-- (void)activeCallViewForStyle:(id)a3 maxWidth:(double)a4 layerContextID:(unint64_t)a5 reply:(id)a6;
+- (id)slotMachineForViewIdentifier:(id)identifier;
+- (void)activeCallViewForStyle:(id)style maxWidth:(double)width layerContextID:(unint64_t)d reply:(id)reply;
 @end
 
 @implementation SLDActiveCallService
@@ -46,85 +46,85 @@ uint64_t __37__SLDActiveCallService_sharedService__block_invoke()
   return activeCallViewSlotMachine;
 }
 
-- (void)activeCallViewForStyle:(id)a3 maxWidth:(double)a4 layerContextID:(unint64_t)a5 reply:(id)a6
+- (void)activeCallViewForStyle:(id)style maxWidth:(double)width layerContextID:(unint64_t)d reply:(id)reply
 {
-  v10 = a3;
-  if (a4 <= 0.0)
+  styleCopy = style;
+  if (width <= 0.0)
   {
-    v13 = a6;
+    replyCopy = reply;
     v18 = SLDaemonLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       [SLDActiveCallService activeCallViewForStyle:v18 maxWidth:? layerContextID:? reply:?];
     }
 
-    v13[2](v13, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
     v11 = MEMORY[0x277CCAE80];
-    v12 = a6;
-    v13 = [v11 currentConnection];
-    v14 = [(SLDActiveCallService *)self _lookupActiveTUConversation];
-    v15 = v14;
-    if (v14)
+    replyCopy2 = reply;
+    replyCopy = [v11 currentConnection];
+    _lookupActiveTUConversation = [(SLDActiveCallService *)self _lookupActiveTUConversation];
+    v15 = _lookupActiveTUConversation;
+    if (_lookupActiveTUConversation)
     {
-      v16 = [v14 messagesGroupPhotoData];
-      v17 = [v15 displayName];
+      messagesGroupPhotoData = [_lookupActiveTUConversation messagesGroupPhotoData];
+      displayName = [v15 displayName];
     }
 
     else
     {
-      v16 = 0;
-      v17 = &stru_28468DAB8;
+      messagesGroupPhotoData = 0;
+      displayName = &stru_28468DAB8;
     }
 
-    v24 = v16;
-    v19 = [SLDActiveCallViewSlotTag tagForMaxWidth:v15 != 0 callActive:v16 activeCallGroupPhotoData:v17 activeCallDisplayName:a4];
-    v20 = [v19 resolvedStyleForStyle:v10];
+    v24 = messagesGroupPhotoData;
+    v19 = [SLDActiveCallViewSlotTag tagForMaxWidth:v15 != 0 callActive:messagesGroupPhotoData activeCallGroupPhotoData:displayName activeCallDisplayName:width];
+    v20 = [v19 resolvedStyleForStyle:styleCopy];
     [(SLDRemoteRenderingService *)self _viewIDForStyle:v20 tag:v19];
-    v22 = v21 = v10;
-    [(SLDRemoteRenderingService *)self _connection:v13 onlyNeedsViewWithIdentifier:v22];
-    v23 = [(SLDRemoteRenderingService *)self _remoteContentForViewIdentifier:v22 layerContextID:a5 connection:v13];
-    v12[2](v12, v23);
+    v22 = v21 = styleCopy;
+    [(SLDRemoteRenderingService *)self _connection:replyCopy onlyNeedsViewWithIdentifier:v22];
+    v23 = [(SLDRemoteRenderingService *)self _remoteContentForViewIdentifier:v22 layerContextID:d connection:replyCopy];
+    replyCopy2[2](replyCopy2, v23);
 
     [(SLDRemoteRenderingService *)self _connectionTouchedView:v22];
-    v10 = v21;
+    styleCopy = v21;
   }
 }
 
-- (id)slotMachineForViewIdentifier:(id)a3
+- (id)slotMachineForViewIdentifier:(id)identifier
 {
-  v4 = [a3 tag];
+  v4 = [identifier tag];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(SLDActiveCallService *)self activeCallViewSlotMachine];
+    activeCallViewSlotMachine = [(SLDActiveCallService *)self activeCallViewSlotMachine];
   }
 
   else
   {
-    v6 = 0;
+    activeCallViewSlotMachine = 0;
   }
 
-  return v6;
+  return activeCallViewSlotMachine;
 }
 
 - (id)_lookupActiveTUConversation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6EDF8] sharedInstance];
-  v3 = [v2 conversationManager];
+  mEMORY[0x277D6EDF8] = [MEMORY[0x277D6EDF8] sharedInstance];
+  conversationManager = [mEMORY[0x277D6EDF8] conversationManager];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 activeConversations];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  activeConversations = [conversationManager activeConversations];
+  v5 = [activeConversations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -134,7 +134,7 @@ uint64_t __37__SLDActiveCallService_sharedService__block_invoke()
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeConversations);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -145,7 +145,7 @@ uint64_t __37__SLDActiveCallService_sharedService__block_invoke()
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [activeConversations countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;

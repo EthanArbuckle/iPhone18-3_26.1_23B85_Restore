@@ -21,10 +21,10 @@
 
 - (int)backgroundSessionConnectionPoolLimit
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  backgroundSessionConnectionPoolLimit = v2->_backgroundSessionConnectionPoolLimit;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  backgroundSessionConnectionPoolLimit = selfCopy->_backgroundSessionConnectionPoolLimit;
+  objc_sync_exit(selfCopy);
 
   return backgroundSessionConnectionPoolLimit;
 }
@@ -56,10 +56,10 @@
     objc_msgSend_createActivityGroup_(v9, v12, v11);
   }
 
-  v13 = self;
-  objc_sync_enter(v13);
-  v13->_backgroundSessionConnectionPoolLimit = v6;
-  objc_sync_exit(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_backgroundSessionConnectionPoolLimit = v6;
+  objc_sync_exit(selfCopy);
 
   if (*MEMORY[0x277CBC880] != -1)
   {

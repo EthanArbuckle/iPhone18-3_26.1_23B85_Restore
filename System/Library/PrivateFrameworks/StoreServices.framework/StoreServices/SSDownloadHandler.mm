@@ -1,26 +1,26 @@
 @interface SSDownloadHandler
-- (BOOL)_sendAuthenticationSessionWithMessage:(id)a3;
-- (BOOL)_sendSessionCancelWithMessage:(id)a3;
-- (BOOL)_sendSessionHandleWithMessage:(id)a3;
-- (BOOL)_sendSessionPauseWithMessage:(id)a3;
+- (BOOL)_sendAuthenticationSessionWithMessage:(id)message;
+- (BOOL)_sendSessionCancelWithMessage:(id)message;
+- (BOOL)_sendSessionHandleWithMessage:(id)message;
+- (BOOL)_sendSessionPauseWithMessage:(id)message;
 - (BOOL)sessionsNeedPowerAssertion;
 - (BOOL)sessionsShouldBlockOtherDownloads;
 - (NSArray)downloadPhasesToIgnore;
 - (SSDownloadHandler)init;
 - (SSDownloadHandlerDelegate)delegate;
 - (id)_controlConnection;
-- (id)_newSessionWithMessage:(id)a3;
+- (id)_newSessionWithMessage:(id)message;
 - (id)description;
 - (void)_connectToDaemon;
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4;
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection;
 - (void)_sendDisconnectMessage;
-- (void)_setValue:(id)a3 forProperty:(const char *)a4;
+- (void)_setValue:(id)value forProperty:(const char *)property;
 - (void)dealloc;
 - (void)resetDisavowedSessions;
-- (void)setDelegate:(id)a3;
-- (void)setDownloadPhasesToIgnore:(id)a3;
-- (void)setSessionsNeedPowerAssertion:(BOOL)a3;
-- (void)setSessionsShouldBlockOtherDownloads:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setDownloadPhasesToIgnore:(id)ignore;
+- (void)setSessionsNeedPowerAssertion:(BOOL)assertion;
+- (void)setSessionsShouldBlockOtherDownloads:(BOOL)downloads;
 @end
 
 @implementation SSDownloadHandler
@@ -158,15 +158,15 @@ id __43__SSDownloadHandler_downloadPhasesToIgnore__block_invoke(uint64_t a1)
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -240,7 +240,7 @@ id __43__SSDownloadHandler_downloadPhasesToIgnore__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -248,11 +248,11 @@ id __43__SSDownloadHandler_downloadPhasesToIgnore__block_invoke(uint64_t a1)
   v4[2] = __33__SSDownloadHandler_setDelegate___block_invoke;
   v4[3] = &unk_1E84AC458;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = delegate;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)setDownloadPhasesToIgnore:(id)a3
+- (void)setDownloadPhasesToIgnore:(id)ignore
 {
   dispatchQueue = self->_dispatchQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -260,11 +260,11 @@ id __43__SSDownloadHandler_downloadPhasesToIgnore__block_invoke(uint64_t a1)
   v8[2] = __47__SSDownloadHandler_setDownloadPhasesToIgnore___block_invoke;
   v8[3] = &unk_1E84AC458;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = ignore;
   dispatch_sync(dispatchQueue, v8);
-  if (a3)
+  if (ignore)
   {
-    v6 = SSXPCCreateXPCObjectFromCFObject(a3);
+    v6 = SSXPCCreateXPCObjectFromCFObject(ignore);
   }
 
   else
@@ -291,7 +291,7 @@ uint64_t __47__SSDownloadHandler_setDownloadPhasesToIgnore___block_invoke(uint64
   return result;
 }
 
-- (void)setSessionsNeedPowerAssertion:(BOOL)a3
+- (void)setSessionsNeedPowerAssertion:(BOOL)assertion
 {
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -299,14 +299,14 @@ uint64_t __47__SSDownloadHandler_setDownloadPhasesToIgnore___block_invoke(uint64
   v7[2] = __51__SSDownloadHandler_setSessionsNeedPowerAssertion___block_invoke;
   v7[3] = &unk_1E84AD498;
   v7[4] = self;
-  v8 = a3;
+  assertionCopy = assertion;
   dispatch_sync(dispatchQueue, v7);
-  v6 = xpc_BOOL_create(a3);
+  v6 = xpc_BOOL_create(assertion);
   [(SSDownloadHandler *)self _setValue:v6 forProperty:"0"];
   xpc_release(v6);
 }
 
-- (void)setSessionsShouldBlockOtherDownloads:(BOOL)a3
+- (void)setSessionsShouldBlockOtherDownloads:(BOOL)downloads
 {
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -314,9 +314,9 @@ uint64_t __47__SSDownloadHandler_setDownloadPhasesToIgnore___block_invoke(uint64
   v7[2] = __58__SSDownloadHandler_setSessionsShouldBlockOtherDownloads___block_invoke;
   v7[3] = &unk_1E84AD498;
   v7[4] = self;
-  v8 = a3;
+  downloadsCopy = downloads;
   dispatch_sync(dispatchQueue, v7);
-  v6 = xpc_BOOL_create(a3);
+  v6 = xpc_BOOL_create(downloads);
   [(SSDownloadHandler *)self _setValue:v6 forProperty:"2"];
   xpc_release(v6);
 }
@@ -363,15 +363,15 @@ uint64_t __32__SSDownloadHandler_description__block_invoke(uint64_t a1)
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -432,15 +432,15 @@ uint64_t __32__SSDownloadHandler_description__block_invoke(uint64_t a1)
     v19 = +[SSLogConfig sharedConfig];
   }
 
-  v20 = [v19 shouldLog];
+  shouldLog2 = [v19 shouldLog];
   if ([v19 shouldLogToDisk])
   {
-    v21 = v20 | 2;
+    v21 = shouldLog2 | 2;
   }
 
   else
   {
-    v21 = v20;
+    v21 = shouldLog2;
   }
 
   if (!os_log_type_enabled([v19 OSLogObject], OS_LOG_TYPE_INFO))
@@ -473,9 +473,9 @@ uint64_t __32__SSDownloadHandler_description__block_invoke(uint64_t a1)
   xpc_dictionary_set_BOOL(v33, "3", self->_sessionsShouldBlockOtherDownloads);
   SSXPCDictionarySetCFObject(v33, "4", self->_downloadPhasesToIgnore);
   xpc_dictionary_set_BOOL(v33, "5", self->_sessionsNeedPowerAssertion);
-  v34 = [(SSXPCConnection *)self->_observerConnection createXPCEndpoint];
-  xpc_dictionary_set_value(v33, "2", v34);
-  xpc_release(v34);
+  createXPCEndpoint = [(SSXPCConnection *)self->_observerConnection createXPCEndpoint];
+  xpc_dictionary_set_value(v33, "2", createXPCEndpoint);
+  xpc_release(createXPCEndpoint);
   [(SSXPCConnection *)self->_controlConnection sendMessage:v33];
   xpc_release(v33);
 }
@@ -522,18 +522,18 @@ id __39__SSDownloadHandler__controlConnection__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_handleMessage:(id)a3 fromServerConnection:(id)a4
+- (void)_handleMessage:(id)message fromServerConnection:(id)connection
 {
-  xpc_retain(a3);
-  xpc_retain(a4);
+  xpc_retain(message);
+  xpc_retain(connection);
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__SSDownloadHandler__handleMessage_fromServerConnection___block_invoke;
   block[3] = &unk_1E84AD640;
-  block[4] = a3;
+  block[4] = message;
   block[5] = self;
-  block[6] = a4;
+  block[6] = connection;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -661,23 +661,23 @@ LABEL_11:
   xpc_release(v6);
 }
 
-- (id)_newSessionWithMessage:(id)a3
+- (id)_newSessionWithMessage:(id)message
 {
   v5 = [SSDownloadHandlerSession alloc];
-  v6 = [(SSDownloadHandler *)self _controlConnection];
+  _controlConnection = [(SSDownloadHandler *)self _controlConnection];
 
-  return [(SSDownloadHandlerSession *)v5 _initWithMessage:a3 controlConnection:v6];
+  return [(SSDownloadHandlerSession *)v5 _initWithMessage:message controlConnection:_controlConnection];
 }
 
-- (BOOL)_sendAuthenticationSessionWithMessage:(id)a3
+- (BOOL)_sendAuthenticationSessionWithMessage:(id)message
 {
-  v5 = [(SSDownloadHandler *)self delegate];
+  delegate = [(SSDownloadHandler *)self delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    v7 = [(SSDownloadSession *)[SSDownloadAuthenticationSession alloc] _initWithMessage:a3 controlConnection:[(SSDownloadHandler *)self _controlConnection]];
-    v8 = self;
-    [(SSDownloadHandlerDelegate *)v5 downloadHandler:self handleAuthenticationSession:v7];
+    v7 = [(SSDownloadSession *)[SSDownloadAuthenticationSession alloc] _initWithMessage:message controlConnection:[(SSDownloadHandler *)self _controlConnection]];
+    selfCopy = self;
+    [(SSDownloadHandlerDelegate *)delegate downloadHandler:self handleAuthenticationSession:v7];
   }
 
   return v6 & 1;
@@ -685,59 +685,59 @@ LABEL_11:
 
 - (void)_sendDisconnectMessage
 {
-  v3 = [(SSDownloadHandler *)self delegate];
+  delegate = [(SSDownloadHandler *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = self;
+    selfCopy = self;
 
-    [(SSDownloadHandlerDelegate *)v3 downloadHandlerDidDisconnect:self];
+    [(SSDownloadHandlerDelegate *)delegate downloadHandlerDidDisconnect:self];
   }
 }
 
-- (BOOL)_sendSessionCancelWithMessage:(id)a3
+- (BOOL)_sendSessionCancelWithMessage:(id)message
 {
-  v5 = [(SSDownloadHandler *)self delegate];
+  delegate = [(SSDownloadHandler *)self delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    v7 = [(SSDownloadHandler *)self _newSessionWithMessage:a3];
-    v8 = self;
-    [(SSDownloadHandlerDelegate *)v5 downloadHandler:self cancelSession:v7];
+    v7 = [(SSDownloadHandler *)self _newSessionWithMessage:message];
+    selfCopy = self;
+    [(SSDownloadHandlerDelegate *)delegate downloadHandler:self cancelSession:v7];
   }
 
   return v6 & 1;
 }
 
-- (BOOL)_sendSessionHandleWithMessage:(id)a3
+- (BOOL)_sendSessionHandleWithMessage:(id)message
 {
-  v5 = [(SSDownloadHandler *)self delegate];
+  delegate = [(SSDownloadHandler *)self delegate];
   v6 = objc_opt_respondsToSelector();
   if (v6)
   {
-    v7 = [(SSDownloadHandler *)self _newSessionWithMessage:a3];
-    v8 = self;
-    [(SSDownloadHandlerDelegate *)v5 downloadHandler:self handleSession:v7];
+    v7 = [(SSDownloadHandler *)self _newSessionWithMessage:message];
+    selfCopy = self;
+    [(SSDownloadHandlerDelegate *)delegate downloadHandler:self handleSession:v7];
   }
 
   return v6 & 1;
 }
 
-- (BOOL)_sendSessionPauseWithMessage:(id)a3
+- (BOOL)_sendSessionPauseWithMessage:(id)message
 {
-  v5 = [(SSDownloadHandler *)self delegate];
+  delegate = [(SSDownloadHandler *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  v6 = [(SSDownloadHandler *)self _newSessionWithMessage:a3];
-  v7 = self;
-  v8 = [(SSDownloadHandlerDelegate *)v5 downloadHandler:self pauseSession:v6];
+  v6 = [(SSDownloadHandler *)self _newSessionWithMessage:message];
+  selfCopy = self;
+  v8 = [(SSDownloadHandlerDelegate *)delegate downloadHandler:self pauseSession:v6];
 
   return v8;
 }
 
-- (void)_setValue:(id)a3 forProperty:(const char *)a4
+- (void)_setValue:(id)value forProperty:(const char *)property
 {
   v25 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -748,15 +748,15 @@ LABEL_11:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -789,7 +789,7 @@ LABEL_11:
   xpc_dictionary_set_int64(v20, "0", 31);
   xpc_dictionary_set_int64(v20, "1", self->_handlerID);
   v21 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_value(v21, a4, a3);
+  xpc_dictionary_set_value(v21, property, value);
   xpc_dictionary_set_value(v20, "2", v21);
   xpc_release(v21);
   [(SSXPCConnection *)self->_controlConnection sendMessage:v20];

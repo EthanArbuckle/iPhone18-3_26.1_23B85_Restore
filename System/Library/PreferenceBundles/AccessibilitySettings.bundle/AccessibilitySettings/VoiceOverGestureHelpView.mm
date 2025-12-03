@@ -1,54 +1,54 @@
 @interface VoiceOverGestureHelpView
-- (VoiceOverGestureHelpView)initWithDelegate:(id)a3;
+- (VoiceOverGestureHelpView)initWithDelegate:(id)delegate;
 - (VoiceOverGestureHelpViewController)delegate;
-- (void)_accessibilitySetCurrentGesture:(id)a3;
+- (void)_accessibilitySetCurrentGesture:(id)gesture;
 - (void)hide;
 - (void)layoutSubviews;
-- (void)setTitleText:(id)a3 infoText:(id)a4;
+- (void)setTitleText:(id)text infoText:(id)infoText;
 - (void)show;
 @end
 
 @implementation VoiceOverGestureHelpView
 
-- (VoiceOverGestureHelpView)initWithDelegate:(id)a3
+- (VoiceOverGestureHelpView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v41.receiver = self;
   v41.super_class = VoiceOverGestureHelpView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(VoiceOverGestureHelpView *)&v41 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(VoiceOverGestureHelpView *)&v41 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(VoiceOverGestureHelpView *)v8 setDelegate:v4];
+    [(VoiceOverGestureHelpView *)height setDelegate:delegateCopy];
     v10 = +[UIColor secondarySystemBackgroundColor];
     [(VoiceOverGestureHelpView *)v9 setBackgroundColor:v10];
 
     v11 = objc_alloc_init(VOGestureMat);
     [(VOGestureMat *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(VoiceOverGestureHelpView *)v9 addSubview:v11];
-    v37 = [(VOGestureMat *)v11 topAnchor];
-    v38 = [(VoiceOverGestureHelpView *)v9 safeAreaLayoutGuide];
-    v36 = [v38 topAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    topAnchor = [(VOGestureMat *)v11 topAnchor];
+    safeAreaLayoutGuide = [(VoiceOverGestureHelpView *)v9 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v42[0] = v35;
-    v34 = [(VOGestureMat *)v11 bottomAnchor];
-    v12 = [(VoiceOverGestureHelpView *)v9 bottomAnchor];
-    v13 = [v34 constraintEqualToAnchor:v12];
+    bottomAnchor = [(VOGestureMat *)v11 bottomAnchor];
+    bottomAnchor2 = [(VoiceOverGestureHelpView *)v9 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v42[1] = v13;
     v39 = v11;
-    v14 = [(VOGestureMat *)v11 leadingAnchor];
-    v15 = [(VoiceOverGestureHelpView *)v9 leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    leadingAnchor = [(VOGestureMat *)v11 leadingAnchor];
+    leadingAnchor2 = [(VoiceOverGestureHelpView *)v9 leadingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v42[2] = v16;
-    v17 = [(VOGestureMat *)v11 trailingAnchor];
-    v18 = [(VoiceOverGestureHelpView *)v9 trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    trailingAnchor = [(VOGestureMat *)v11 trailingAnchor];
+    trailingAnchor2 = [(VoiceOverGestureHelpView *)v9 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v42[3] = v19;
     [NSArray arrayWithObjects:v42 count:4];
-    v20 = v40 = v4;
+    v20 = v40 = delegateCopy;
     [NSLayoutConstraint activateConstraints:v20];
 
     v21 = [objc_allocWithZone(UILabel) initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -87,7 +87,7 @@
     v31 = +[UIColor clearColor];
     [(UILabel *)v9->_infoLabel setBackgroundColor:v31];
 
-    v4 = v40;
+    delegateCopy = v40;
     [(VOGestureMat *)v39 addSubview:v9->_infoLabel];
     v32 = v9;
   }
@@ -124,8 +124,8 @@
   v12 = v11;
   v14 = v13;
   v15 = v10 + v13 + 25.0;
-  v16 = [(UILabel *)self->_infoLabel superview];
-  [v16 bounds];
+  superview = [(UILabel *)self->_infoLabel superview];
+  [superview bounds];
   v18 = v17;
   v20 = v19;
 
@@ -148,10 +148,10 @@
   [(UILabel *)self->_titleLabel setFrame:v31.origin.x, v31.origin.y, v31.size.width, v31.size.height];
 }
 
-- (void)_accessibilitySetCurrentGesture:(id)a3
+- (void)_accessibilitySetCurrentGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 count];
+  gestureCopy = gesture;
+  v5 = [gestureCopy count];
   if (v5 < 1)
   {
     v7 = 0;
@@ -159,7 +159,7 @@
   }
 
   v6 = v5;
-  v7 = [v4 objectAtIndex:0];
+  v7 = [gestureCopy objectAtIndex:0];
   if (v6 == &dword_0 + 1)
   {
 LABEL_5:
@@ -167,7 +167,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [v4 objectAtIndex:1];
+  v8 = [gestureCopy objectAtIndex:1];
 LABEL_6:
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -181,12 +181,12 @@ LABEL_6:
   [UIView animateWithDuration:v11 animations:0.0];
 }
 
-- (void)setTitleText:(id)a3 infoText:(id)a4
+- (void)setTitleText:(id)text infoText:(id)infoText
 {
   titleLabel = self->_titleLabel;
-  v7 = a4;
-  [(UILabel *)titleLabel setText:a3];
-  [(UILabel *)self->_infoLabel setText:v7];
+  infoTextCopy = infoText;
+  [(UILabel *)titleLabel setText:text];
+  [(UILabel *)self->_infoLabel setText:infoTextCopy];
 
   [(VoiceOverGestureHelpView *)self layoutSubviews];
 }

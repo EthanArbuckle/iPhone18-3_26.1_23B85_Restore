@@ -1,29 +1,29 @@
 @interface IMCheckInMessageProcessingPipelineComponent
-- (IMCheckInMessageProcessingPipelineComponent)initWithAccount:(id)a3;
-- (id)_getURL:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMCheckInMessageProcessingPipelineComponent)initWithAccount:(id)account;
+- (id)_getURL:(id)l;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMCheckInMessageProcessingPipelineComponent
 
-- (IMCheckInMessageProcessingPipelineComponent)initWithAccount:(id)a3
+- (IMCheckInMessageProcessingPipelineComponent)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = IMCheckInMessageProcessingPipelineComponent;
   v6 = [(IMCheckInMessageProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -34,24 +34,24 @@
     }
   }
 
-  if ([v4 conformsToProtocol:&unk_283F6EB70])
+  if ([inputCopy conformsToProtocol:&unk_283F6EB70])
   {
-    v6 = v4;
-    v7 = [v6 balloonPluginBundleID];
+    v6 = inputCopy;
+    balloonPluginBundleID = [v6 balloonPluginBundleID];
     v8 = *MEMORY[0x277D19708];
     v9 = IMBalloonExtensionIDWithSuffix();
-    v10 = [v7 isEqualToString:v9];
+    v10 = [balloonPluginBundleID isEqualToString:v9];
 
     if (v10)
     {
       v11 = [(IMCheckInMessageProcessingPipelineComponent *)self _getURL:v6];
       if (v11)
       {
-        v12 = [v6 fromIdentifier];
-        v13 = [v12 _stripFZIDPrefix];
+        fromIdentifier = [v6 fromIdentifier];
+        _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
 
-        v14 = [MEMORY[0x277D1AB78] sharedCoordinator];
-        v15 = [v14 shouldDropIncomingCheckInMessageWithURL:v11 senderHandle:v13 isFromMe:{objc_msgSend(v6, "isFromMe")}];
+        mEMORY[0x277D1AB78] = [MEMORY[0x277D1AB78] sharedCoordinator];
+        v15 = [mEMORY[0x277D1AB78] shouldDropIncomingCheckInMessageWithURL:v11 senderHandle:_stripFZIDPrefix isFromMe:{objc_msgSend(v6, "isFromMe")}];
 
         if (v15)
         {
@@ -121,21 +121,21 @@
       }
     }
 
-    v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   }
 
   return v19;
 }
 
-- (id)_getURL:(id)a3
+- (id)_getURL:(id)l
 {
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
+  lCopy = l;
   v5 = IMExtensionPayloadUnarchivingClasses();
-  v6 = [v4 balloonPluginPayload];
+  balloonPluginPayload = [lCopy balloonPluginPayload];
 
   v11 = 0;
-  v7 = [v3 unarchivedObjectOfClasses:v5 fromData:v6 error:&v11];
+  v7 = [v3 unarchivedObjectOfClasses:v5 fromData:balloonPluginPayload error:&v11];
   v8 = v11;
 
   v9 = 0;

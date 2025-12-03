@@ -1,19 +1,19 @@
 @interface CNTUCallProviderManagerDelegate
-- (CNTUCallProviderManagerDelegate)initWithBlock:(id)a3;
-- (void)providersChangedForProviderManager:(id)a3;
+- (CNTUCallProviderManagerDelegate)initWithBlock:(id)block;
+- (void)providersChangedForProviderManager:(id)manager;
 @end
 
 @implementation CNTUCallProviderManagerDelegate
 
-- (CNTUCallProviderManagerDelegate)initWithBlock:(id)a3
+- (CNTUCallProviderManagerDelegate)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = CNTUCallProviderManagerDelegate;
   v5 = [(CNTUCallProviderManagerDelegate *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     block = v5->_block;
     v5->_block = v6;
 
@@ -23,11 +23,11 @@
   return v5;
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(CNTUCallProviderManagerDelegate *)self block];
-  v5[2](v5, v4);
+  managerCopy = manager;
+  block = [(CNTUCallProviderManagerDelegate *)self block];
+  block[2](block, managerCopy);
 }
 
 @end

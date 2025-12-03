@@ -1,49 +1,49 @@
 @interface Result
-+ (Result)resultWithError:(id)a3;
-+ (Result)resultWithValue:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResult:(id)a3;
-- (Result)initWithError:(id)a3;
-- (Result)initWithSuccess:(id)a3;
-- (id)_errorMessageForValue:(BOOL)a3 error:(BOOL)a4;
++ (Result)resultWithError:(id)error;
++ (Result)resultWithValue:(id)value;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResult:(id)result;
+- (Result)initWithError:(id)error;
+- (Result)initWithSuccess:(id)success;
+- (id)_errorMessageForValue:(BOOL)value error:(BOOL)error;
 - (id)description;
-- (id)flatMap:(id)a3;
-- (id)map:(id)a3;
+- (id)flatMap:(id)map;
+- (id)map:(id)map;
 - (unint64_t)hash;
-- (void)withValue:(id)a3 orError:(id)a4;
+- (void)withValue:(id)value orError:(id)error;
 @end
 
 @implementation Result
 
-- (id)flatMap:(id)a3
+- (id)flatMap:(id)map
 {
   if (self->_isSuccess)
   {
-    v3 = (*(a3 + 2))(a3, self->_value);
+    selfCopy = (*(map + 2))(map, self->_value);
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)map:(id)a3
+- (id)map:(id)map
 {
   if (self->_isSuccess)
   {
-    v3 = (*(a3 + 2))(a3, self->_value);
-    v4 = [Result resultWithValue:v3];
+    v3 = (*(map + 2))(map, self->_value);
+    selfCopy = [Result resultWithValue:v3];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -58,11 +58,11 @@
   return [*(&self->super.isa + v3) hash] ^ (2654435761 * isSuccess);
 }
 
-- (BOOL)isEqualToResult:(id)a3
+- (BOOL)isEqualToResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 isSuccess];
-  if (v5 == [(Result *)self isSuccess])
+  resultCopy = result;
+  isSuccess = [resultCopy isSuccess];
+  if (isSuccess == [(Result *)self isSuccess])
   {
     v10 = 0;
     v11 = &v10;
@@ -80,7 +80,7 @@
     v8[3] = &unk_10165E218;
     v8[4] = self;
     v8[5] = &v10;
-    [v4 withValue:v9 orError:v8];
+    [resultCopy withValue:v9 orError:v8];
     v6 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
   }
@@ -93,17 +93,17 @@
   return v6 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
 
-  else if ([(Result *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(Result *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(Result *)self isEqualToResult:v4];
+    v5 = [(Result *)self isEqualToResult:equalCopy];
   }
 
   else
@@ -114,15 +114,15 @@
   return v5;
 }
 
-- (id)_errorMessageForValue:(BOOL)a3 error:(BOOL)a4
+- (id)_errorMessageForValue:(BOOL)value error:(BOOL)error
 {
   v4 = @"value block is nil.";
-  if (a4)
+  if (error)
   {
     v4 = @"both are nil.";
   }
 
-  if (a3)
+  if (value)
   {
     v5 = v4;
   }
@@ -164,14 +164,14 @@
   return v3;
 }
 
-- (void)withValue:(id)a3 orError:(id)a4
+- (void)withValue:(id)value orError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  valueCopy = value;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!valueCopy || !errorCopy)
   {
-    v9 = [(Result *)self _errorMessageForValue:v6 == 0 error:v7 == 0];
+    v9 = [(Result *)self _errorMessageForValue:valueCopy == 0 error:errorCopy == 0];
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -182,9 +182,9 @@
   }
 
   value = self->_value;
-  if (v6 && value)
+  if (valueCopy && value)
   {
-    v6[2](v6, self->_value);
+    valueCopy[2](valueCopy, self->_value);
   }
 
   else
@@ -197,7 +197,7 @@
 
     else
     {
-      if (!v6 && value)
+      if (!valueCopy && value)
       {
         v13 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -222,10 +222,10 @@
   }
 }
 
-- (Result)initWithError:(id)a3
+- (Result)initWithError:(id)error
 {
-  v5 = a3;
-  if (!v5)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [NSException raise:NSInvalidArgumentException format:@"Error cannot be nil"];
   }
@@ -236,17 +236,17 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, a3);
+    objc_storeStrong(&v6->_error, error);
     v7->_isSuccess = 0;
   }
 
   return v7;
 }
 
-- (Result)initWithSuccess:(id)a3
+- (Result)initWithSuccess:(id)success
 {
-  v5 = a3;
-  if (!v5)
+  successCopy = success;
+  if (!successCopy)
   {
     [NSException raise:NSInvalidArgumentException format:@"Value cannot be nil"];
   }
@@ -257,25 +257,25 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, success);
     v7->_isSuccess = 1;
   }
 
   return v7;
 }
 
-+ (Result)resultWithError:(id)a3
++ (Result)resultWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithError:v4];
+  errorCopy = error;
+  v5 = [[self alloc] initWithError:errorCopy];
 
   return v5;
 }
 
-+ (Result)resultWithValue:(id)a3
++ (Result)resultWithValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSuccess:v4];
+  valueCopy = value;
+  v5 = [[self alloc] initWithSuccess:valueCopy];
 
   return v5;
 }

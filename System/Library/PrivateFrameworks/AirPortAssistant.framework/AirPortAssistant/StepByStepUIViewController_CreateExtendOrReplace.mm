@@ -1,10 +1,10 @@
 @interface StepByStepUIViewController_CreateExtendOrReplace
-- (void)handleSelectorChoiceWithTag:(unint64_t)a3;
+- (void)handleSelectorChoiceWithTag:(unint64_t)tag;
 - (void)loadView;
 - (void)setupInitialTableHeaderConfiguration;
 - (void)setupTable;
-- (void)touchInCellAtIndexPath:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)touchInCellAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_CreateExtendOrReplace
@@ -107,9 +107,9 @@ LABEL_6:
   objc_msgSend_setTableView_(self, v19, v18);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   objc_msgSend_setRightNavigationButton_enable_hide_(self, a2, @"kNext", 0, 0);
   objc_msgSend_setupTable(self, v5, v6);
   justTextLabel = self->super.justTextLabel;
@@ -127,36 +127,36 @@ LABEL_6:
   objc_msgSend_syncTopoUIForTarget_andSource_andNetwork_connectionType_(self, v29, v28, 0, 0, 0);
   v30.receiver = self;
   v30.super_class = StepByStepUIViewController_CreateExtendOrReplace;
-  [(StepByStepUIViewController *)&v30 viewWillAppear:v3];
+  [(StepByStepUIViewController *)&v30 viewWillAppear:appearCopy];
 }
 
-- (void)touchInCellAtIndexPath:(id)a3
+- (void)touchInCellAtIndexPath:(id)path
 {
-  v5 = objc_msgSend_tableManager(self, a2, a3);
-  v8 = objc_msgSend_section(a3, v6, v7);
+  v5 = objc_msgSend_tableManager(self, a2, path);
+  v8 = objc_msgSend_section(path, v6, v7);
   v10 = objc_msgSend_tagOfSelectedRowInMenuSection_(v5, v9, v8);
 
   MEMORY[0x2821F9670](self, sel_handleSelectorChoiceWithTag_, v10);
 }
 
-- (void)handleSelectorChoiceWithTag:(unint64_t)a3
+- (void)handleSelectorChoiceWithTag:(unint64_t)tag
 {
-  v5 = objc_msgSend_matrixTagToSelectorChoice_(StepByStepUtilities, a2, a3);
+  v5 = objc_msgSend_matrixTagToSelectorChoice_(StepByStepUtilities, a2, tag);
   outResultsDict = self->super.super._outResultsDict;
   v8 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v7, v5);
   objc_msgSend_setObject_forKey_(outResultsDict, v9, v8, @"kSBSKey_SelectorChoice");
   objc_msgSend_setRightNavigationButton_enable_hide_(self, v10, @"kNext", 1, 0);
   v13 = &stru_285145FE8;
-  if (a3 > 1382379627)
+  if (tag > 1382379627)
   {
-    if (a3 == 1382379628)
+    if (tag == 1382379628)
     {
       ProductLocalizedStringWithFormat = objc_msgSend_getProductLocalizedStringWithFormat_(self, v11, @"ReplaceFooter%@");
     }
 
     else
     {
-      if (a3 != 1382380404)
+      if (tag != 1382380404)
       {
         goto LABEL_11;
       }
@@ -165,14 +165,14 @@ LABEL_6:
     }
   }
 
-  else if (a3 == 1131570529)
+  else if (tag == 1131570529)
   {
     ProductLocalizedStringWithFormat = objc_msgSend_getProductLocalizedStringWithFormat_(self, v11, @"CreateFooter%@");
   }
 
   else
   {
-    if (a3 != 1165522021)
+    if (tag != 1165522021)
     {
       goto LABEL_11;
     }

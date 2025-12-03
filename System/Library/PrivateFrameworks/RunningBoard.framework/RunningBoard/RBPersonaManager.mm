@@ -1,7 +1,7 @@
 @interface RBPersonaManager
-- (BOOL)isConcretePersona:(id)a3;
-- (BOOL)personaForIdentity:(id)a3 context:(id)a4 personaUID:(unsigned int *)a5 personaUniqueString:(id *)a6;
-- (BOOL)personaRequiredForExtensionContext:(id)a3 serviceDict:(id)a4;
+- (BOOL)isConcretePersona:(id)persona;
+- (BOOL)personaForIdentity:(id)identity context:(id)context personaUID:(unsigned int *)d personaUniqueString:(id *)string;
+- (BOOL)personaRequiredForExtensionContext:(id)context serviceDict:(id)dict;
 - (RBPersonaManager)init;
 - (id)personalPersonaUniqueString;
 @end
@@ -42,15 +42,15 @@
       if (!v8)
       {
         v3->_personalPersonaUID = [v6 userPersona_id];
-        v10 = [v7 userPersonaUniqueString];
+        userPersonaUniqueString = [v7 userPersonaUniqueString];
         v11 = v3->_personalPersonaUniqueString;
-        v3->_personalPersonaUniqueString = v10;
+        v3->_personalPersonaUniqueString = userPersonaUniqueString;
       }
 
-      v12 = [MEMORY[0x277D77C00] sharedManager];
-      v13 = [v12 isSharedIPad];
+      mEMORY[0x277D77C00] = [MEMORY[0x277D77C00] sharedManager];
+      isSharedIPad = [mEMORY[0x277D77C00] isSharedIPad];
 
-      if (v13)
+      if (isSharedIPad)
       {
         v14 = "YES";
       }
@@ -91,26 +91,26 @@
   return v3;
 }
 
-- (BOOL)personaForIdentity:(id)a3 context:(id)a4 personaUID:(unsigned int *)a5 personaUniqueString:(id *)a6
+- (BOOL)personaForIdentity:(id)identity context:(id)context personaUID:(unsigned int *)d personaUniqueString:(id *)string
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v30 = v10;
+  identityCopy = identity;
+  contextCopy = context;
+  v30 = identityCopy;
   if (![(RBPersonaManager *)self personasAreSupported])
   {
     v21 = 0;
     goto LABEL_24;
   }
 
-  v29 = a6;
+  stringCopy = string;
   Current = CFAbsoluteTimeGetCurrent();
-  v36 = [v10 personaString];
-  v13 = [v11 managedPersona];
+  personaString = [identityCopy personaString];
+  managedPersona = [contextCopy managedPersona];
   v14 = 0;
   v15 = 0;
-  v16 = &v36;
-  v37[0] = v13;
+  v16 = &personaString;
+  v37[0] = managedPersona;
   personalPersonaUID = -1;
   do
   {
@@ -129,7 +129,7 @@
   }
 
   while ((v20 & 1) == 0);
-  if ([v11 lsPersona])
+  if ([contextCopy lsPersona])
   {
     v35 = 0;
     memset(v34, 0, sizeof(v34));
@@ -153,15 +153,15 @@
 
 LABEL_14:
     v14 = v22;
-    if (a5)
+    if (d)
     {
-      *a5 = personalPersonaUID;
+      *d = personalPersonaUID;
     }
 
-    if (v29)
+    if (stringCopy)
     {
       v23 = v22;
-      *v29 = v22;
+      *stringCopy = v22;
     }
 
     v21 = 1;
@@ -175,7 +175,7 @@ LABEL_19:
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544386;
-    *&buf[4] = v10;
+    *&buf[4] = identityCopy;
     *&buf[12] = 2080;
     *&buf[14] = "[RBPersonaManager personaForIdentity:context:personaUID:personaUniqueString:]";
     *&buf[22] = 2048;
@@ -211,13 +211,13 @@ LABEL_24:
   return v3;
 }
 
-- (BOOL)isConcretePersona:(id)a3
+- (BOOL)isConcretePersona:(id)persona
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  personaCopy = persona;
   if ([(RBPersonaManager *)self personasAreSupported])
   {
-    [v4 UTF8String];
+    [personaCopy UTF8String];
     kpersona_find();
   }
 
@@ -225,14 +225,14 @@ LABEL_24:
   return 0;
 }
 
-- (BOOL)personaRequiredForExtensionContext:(id)a3 serviceDict:(id)a4
+- (BOOL)personaRequiredForExtensionContext:(id)context serviceDict:(id)dict
 {
-  v5 = a4;
-  v6 = [a3 identity];
-  v7 = [v6 personaString];
-  if (v7)
+  dictCopy = dict;
+  identity = [context identity];
+  personaString = [identity personaString];
+  if (personaString)
   {
-    v8 = xpc_dictionary_get_value(v5, "PersonaEnterprise");
+    v8 = xpc_dictionary_get_value(dictCopy, "PersonaEnterprise");
     v9 = v8 == 0;
   }
 

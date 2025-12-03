@@ -1,108 +1,108 @@
 @interface ASDPurchaseResponseItem
-- (ASDPurchaseResponseItem)initWithCoder:(id)a3;
-- (ASDPurchaseResponseItem)initWithResults:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)transactionIdentifierForItemIdentifier:(int64_t)a3;
-- (void)_setBundleID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASDPurchaseResponseItem)initWithCoder:(id)coder;
+- (ASDPurchaseResponseItem)initWithResults:(id)results;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)transactionIdentifierForItemIdentifier:(int64_t)identifier;
+- (void)_setBundleID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDPurchaseResponseItem
 
-- (ASDPurchaseResponseItem)initWithResults:(id)a3
+- (ASDPurchaseResponseItem)initWithResults:(id)results
 {
-  v5 = a3;
+  resultsCopy = results;
   v9.receiver = self;
   v9.super_class = ASDPurchaseResponseItem;
   v6 = [(ASDPurchaseResponseItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_results, a3);
+    objc_storeStrong(&v6->_results, results);
   }
 
   return v7;
 }
 
-- (id)transactionIdentifierForItemIdentifier:(int64_t)a3
+- (id)transactionIdentifierForItemIdentifier:(int64_t)identifier
 {
   v3 = 0;
-  if (a3 >= 1)
+  if (identifier >= 1)
   {
     transationIDs = self->_transationIDs;
     if (transationIDs)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", a3];
-      v3 = [(NSDictionary *)transationIDs objectForKey:v5];
+      identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lld", identifier];
+      v3 = [(NSDictionary *)transationIDs objectForKey:identifier];
     }
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v6 = [(NSString *)self->_bundleID copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
   *(v5 + 9) = self->_cancelsPurchaseBatch;
-  v8 = [(NSError *)self->_error copyWithZone:a3];
+  v8 = [(NSError *)self->_error copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSNumber *)self->_itemID copyWithZone:a3];
+  v10 = [(NSNumber *)self->_itemID copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(ASDPurchase *)self->_purchase copyWithZone:a3];
+  v12 = [(ASDPurchase *)self->_purchase copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSArray *)self->_results copyWithZone:a3];
+  v14 = [(NSArray *)self->_results copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(NSDictionary *)self->_responseMetrics copyWithZone:a3];
+  v16 = [(NSDictionary *)self->_responseMetrics copyWithZone:zone];
   v17 = v5[10];
   v5[10] = v16;
 
   *(v5 + 8) = self->_success;
-  v18 = [(NSDictionary *)self->_transationIDs copyWithZone:a3];
+  v18 = [(NSDictionary *)self->_transationIDs copyWithZone:zone];
   v19 = v5[11];
   v5[11] = v18;
 
   return v5;
 }
 
-- (ASDPurchaseResponseItem)initWithCoder:(id)a3
+- (ASDPurchaseResponseItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASDPurchaseResponseItem *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v6;
 
-    v5->_cancelsPurchaseBatch = [v4 decodeBoolForKey:@"cancelsPurchaseBatch"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v5->_cancelsPurchaseBatch = [coderCopy decodeBoolForKey:@"cancelsPurchaseBatch"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     error = v5->_error;
     v5->_error = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemID"];
     itemID = v5->_itemID;
     v5->_itemID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchase"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchase"];
     purchase = v5->_purchase;
     v5->_purchase = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"results"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"results"];
     results = v5->_results;
     v5->_results = v17;
 
@@ -112,21 +112,21 @@
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v19 setWithObjects:{v20, v21, v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"responseMetrics"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"responseMetrics"];
     responseMetrics = v5->_responseMetrics;
     v5->_responseMetrics = v25;
 
-    [v4 decodeDoubleForKey:@"requestStartTime"];
+    [coderCopy decodeDoubleForKey:@"requestStartTime"];
     v5->_requestStartTime = v27;
-    [v4 decodeDoubleForKey:@"responseEndTime"];
+    [coderCopy decodeDoubleForKey:@"responseEndTime"];
     v5->_responseEndTime = v28;
-    [v4 decodeDoubleForKey:@"responseStartTime"];
+    [coderCopy decodeDoubleForKey:@"responseStartTime"];
     v5->_responseStartTime = v29;
-    v5->_success = [v4 decodeBoolForKey:@"success"];
+    v5->_success = [coderCopy decodeBoolForKey:@"success"];
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"transactionIdentifiers"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"transactionIdentifiers"];
     transationIDs = v5->_transationIDs;
     v5->_transationIDs = v33;
   }
@@ -134,37 +134,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeObject:self->_bundleID forKey:@"bundleID"];
-  [v7 encodeBool:self->_cancelsPurchaseBatch forKey:@"cancelsPurchaseBatch"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_bundleID forKey:@"bundleID"];
+  [coderCopy encodeBool:self->_cancelsPurchaseBatch forKey:@"cancelsPurchaseBatch"];
   error = self->_error;
   if (error)
   {
     v5 = ASDErrorWithSafeUserInfo(error);
-    [v7 encodeObject:v5 forKey:@"error"];
+    [coderCopy encodeObject:v5 forKey:@"error"];
   }
 
   itemID = self->_itemID;
   if (itemID)
   {
-    [v7 encodeObject:itemID forKey:@"itemID"];
+    [coderCopy encodeObject:itemID forKey:@"itemID"];
   }
 
-  [v7 encodeObject:self->_purchase forKey:@"purchase"];
-  [v7 encodeObject:self->_results forKey:@"results"];
-  [v7 encodeDouble:@"requestStartTime" forKey:self->_requestStartTime];
-  [v7 encodeDouble:@"responseEndTime" forKey:self->_responseEndTime];
-  [v7 encodeDouble:@"responseStartTime" forKey:self->_responseStartTime];
-  [v7 encodeObject:self->_responseMetrics forKey:@"responseMetrics"];
-  [v7 encodeBool:self->_success forKey:@"success"];
-  [v7 encodeObject:self->_transationIDs forKey:@"transactionIdentifiers"];
+  [coderCopy encodeObject:self->_purchase forKey:@"purchase"];
+  [coderCopy encodeObject:self->_results forKey:@"results"];
+  [coderCopy encodeDouble:@"requestStartTime" forKey:self->_requestStartTime];
+  [coderCopy encodeDouble:@"responseEndTime" forKey:self->_responseEndTime];
+  [coderCopy encodeDouble:@"responseStartTime" forKey:self->_responseStartTime];
+  [coderCopy encodeObject:self->_responseMetrics forKey:@"responseMetrics"];
+  [coderCopy encodeBool:self->_success forKey:@"success"];
+  [coderCopy encodeObject:self->_transationIDs forKey:@"transactionIdentifiers"];
 }
 
-- (void)_setBundleID:(id)a3
+- (void)_setBundleID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   bundleID = self->_bundleID;
   self->_bundleID = v4;
 

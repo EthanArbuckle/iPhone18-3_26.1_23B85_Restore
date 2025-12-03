@@ -10,17 +10,17 @@
 + (id)entryEventPointDefinitionHomeKitSummary;
 + (id)entryEventPointDefinitions;
 + (void)load;
-- (BOOL)isAllowedMessageType:(id)a3;
+- (BOOL)isAllowedMessageType:(id)type;
 - (PLHomeKitAgent)init;
-- (int64_t)eventTypeStringToEnum:(id)a3;
-- (int64_t)registrationTypeStringToEnum:(id)a3;
+- (int64_t)eventTypeStringToEnum:(id)enum;
+- (int64_t)registrationTypeStringToEnum:(id)enum;
 - (void)initOperatorDependancies;
-- (void)logAggregateIDSPushMessageTypes:(id)a3;
-- (void)logEventForwardCameraConfiguration:(id)a3;
-- (void)logEventForwardHomeConfiguration:(id)a3;
-- (void)logEventPointHomeKitEvents:(id)a3;
-- (void)logEventPointHomeKitRegistration:(id)a3;
-- (void)writeAggregateCounters:(id)a3;
+- (void)logAggregateIDSPushMessageTypes:(id)types;
+- (void)logEventForwardCameraConfiguration:(id)configuration;
+- (void)logEventForwardHomeConfiguration:(id)configuration;
+- (void)logEventPointHomeKitEvents:(id)events;
+- (void)logEventPointHomeKitRegistration:(id)registration;
+- (void)writeAggregateCounters:(id)counters;
 @end
 
 @implementation PLHomeKitAgent
@@ -64,7 +64,7 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLHomeKitAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -73,17 +73,17 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
 {
   v11[4] = *MEMORY[0x277D85DE8];
   v10[0] = @"HomeKitBTLE";
-  v3 = [a1 entryEventPointDefinitionHomeKitAdvt];
-  v11[0] = v3;
+  entryEventPointDefinitionHomeKitAdvt = [self entryEventPointDefinitionHomeKitAdvt];
+  v11[0] = entryEventPointDefinitionHomeKitAdvt;
   v10[1] = @"HomeKitEvents";
-  v4 = [a1 entryEventPointDefinitionHomeKitEvents];
-  v11[1] = v4;
+  entryEventPointDefinitionHomeKitEvents = [self entryEventPointDefinitionHomeKitEvents];
+  v11[1] = entryEventPointDefinitionHomeKitEvents;
   v10[2] = @"HomeKitSummary";
-  v5 = [a1 entryEventPointDefinitionHomeKitSummary];
-  v11[2] = v5;
+  entryEventPointDefinitionHomeKitSummary = [self entryEventPointDefinitionHomeKitSummary];
+  v11[2] = entryEventPointDefinitionHomeKitSummary;
   v10[3] = @"HomeKitRegistration";
-  v6 = [a1 entryEventPointDefinitionHomeKitRegistration];
-  v11[3] = v6;
+  entryEventPointDefinitionHomeKitRegistration = [self entryEventPointDefinitionHomeKitRegistration];
+  v11[3] = entryEventPointDefinitionHomeKitRegistration;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -104,17 +104,17 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"eventType";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v15[0] = commonTypeDict_IntegerFormat;
   v14[1] = @"kHMFPowerLogDeviceIdentiferKey";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v15[1] = commonTypeDict_StringFormat;
   v14[2] = @"accessoryCategory";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v15[2] = commonTypeDict_IntegerFormat2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -137,13 +137,13 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
   v17[0] = v3;
   v16[1] = *MEMORY[0x277D3F540];
   v12[0] = @"kHMFPowerLogEventType";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v12[1] = @"kHMFPowerLogDeviceIdentiferKey";
-  v13[0] = v5;
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v13[1] = v7;
+  v13[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v13[1] = commonTypeDict_StringFormat;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -166,17 +166,17 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"Enabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_BoolFormat];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
+  v15[0] = commonTypeDict_BoolFormat;
   v14[1] = @"BundleID";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat_withBundleID];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v15[1] = commonTypeDict_StringFormat_withBundleID;
   v14[2] = @"RegistrationType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v15[2] = commonTypeDict_IntegerFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -199,49 +199,49 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
   v35[0] = v29;
   v34[1] = *MEMORY[0x277D3F540];
   v30[0] = @"numBTPushes";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v31[0] = v27;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v31[0] = commonTypeDict_IntegerFormat;
   v30[1] = @"numConnections";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v31[1] = v25;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v31[1] = commonTypeDict_IntegerFormat2;
   v30[2] = @"numBTConnections";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v31[2] = v23;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v31[2] = commonTypeDict_IntegerFormat3;
   v30[3] = @"numIPConnections";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_IntegerFormat];
-  v31[3] = v21;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v31[3] = commonTypeDict_IntegerFormat4;
   v30[4] = @"numIPEvents";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v31[4] = v19;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v31[4] = commonTypeDict_IntegerFormat5;
   v30[5] = @"numIDSPushes";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v31[5] = v17;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v31[5] = commonTypeDict_IntegerFormat6;
   v30[6] = @"numCloudPushes";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v31[6] = v15;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v31[6] = commonTypeDict_IntegerFormat7;
   v30[7] = @"numBonjour";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v31[7] = v4;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v31[7] = commonTypeDict_IntegerFormat8;
   v30[8] = @"numBTWakeAdvt";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v31[8] = v6;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v31[8] = commonTypeDict_IntegerFormat9;
   v30[9] = @"numBTWakes";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v31[9] = v8;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat10 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v31[9] = commonTypeDict_IntegerFormat10;
   v30[10] = @"Reason";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v31[10] = v10;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat11 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v31[10] = commonTypeDict_IntegerFormat11;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:11];
   v35[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
@@ -255,11 +255,11 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"HomeConfiguration";
-  v3 = [a1 entryEventForwardDefinitionHomeConfiguration];
+  entryEventForwardDefinitionHomeConfiguration = [self entryEventForwardDefinitionHomeConfiguration];
   v8[1] = @"CameraConfiguration";
-  v9[0] = v3;
-  v4 = [a1 entryEventForwardDefinitionCameraConfiguration];
-  v9[1] = v4;
+  v9[0] = entryEventForwardDefinitionHomeConfiguration;
+  entryEventForwardDefinitionCameraConfiguration = [self entryEventForwardDefinitionCameraConfiguration];
+  v9[1] = entryEventForwardDefinitionCameraConfiguration;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -277,33 +277,33 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
   v26[0] = v20;
   v25[1] = *MEMORY[0x277D3F540];
   v21[0] = @"numHomes";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v22[0] = v18;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v22[0] = commonTypeDict_IntegerFormat;
   v21[1] = @"numNonEmptyHomes";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v22[1] = v16;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v22[1] = commonTypeDict_IntegerFormat2;
   v21[2] = @"numUsers";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v22[2] = v14;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v22[2] = commonTypeDict_IntegerFormat3;
   v21[3] = @"numHAPAccessories";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v22[3] = v3;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v22[3] = commonTypeDict_IntegerFormat4;
   v21[4] = @"numEnabledResidents";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v22[4] = v5;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v22[4] = commonTypeDict_IntegerFormat5;
   v21[5] = @"isCurrentDevicePrimaryResident";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v22[5] = v7;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]6 commonTypeDict_BoolFormat];
+  v22[5] = commonTypeDict_BoolFormat;
   v21[6] = @"HomeHubVersion";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v22[6] = v9;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v22[6] = commonTypeDict_IntegerFormat6;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:7];
   v26[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:2];
@@ -323,29 +323,29 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
   v24[0] = v18;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"numCameras";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v20[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v20[0] = commonTypeDict_IntegerFormat;
   v19[1] = @"numCamerasRecordingEnabled";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v20[1] = v14;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v20[1] = commonTypeDict_IntegerFormat2;
   v19[2] = @"numCamerasSmartBulletinNotificationEnabled";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v20[2] = v3;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v20[2] = commonTypeDict_IntegerFormat3;
   v19[3] = @"numCamerasReachabilityNotificationEnabled";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v20[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v20[3] = commonTypeDict_IntegerFormat4;
   v19[4] = @"numCamerasAnyMotionEventEnabled";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v20[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v20[4] = commonTypeDict_IntegerFormat5;
   v19[5] = @"numCamerasHSVMotionEventEnabled";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v20[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v20[5] = commonTypeDict_IntegerFormat6;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:6];
   v24[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -359,8 +359,8 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"IDSPushMessageTypes";
-  v2 = [a1 entryAggregateDefinitionIDSPushMessageTypes];
-  v7[0] = v2;
+  entryAggregateDefinitionIDSPushMessageTypes = [self entryAggregateDefinitionIDSPushMessageTypes];
+  v7[0] = entryAggregateDefinitionIDSPushMessageTypes;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -378,13 +378,13 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
   v24[0] = v2;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"MessageType";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v19[1] = @"Count";
-  v20[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v20[1] = v6;
+  v20[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v20[1] = commonTypeDict_IntegerFormat;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v24[1] = v7;
   v23[2] = *MEMORY[0x277D3F478];
@@ -497,13 +497,13 @@ void __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_2(uint64_t a1, 
   v20 = v19;
   v21 = objc_alloc(MEMORY[0x277D3F250]);
   v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v20];
-  v23 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_339;
   v26[3] = &unk_278259C40;
   v26[4] = self;
-  v24 = [v21 initWithFireDate:v22 withInterval:1 withTolerance:0 repeats:v23 withUserInfo:v26 withQueue:v20 withBlock:0.0];
+  v24 = [v21 initWithFireDate:v22 withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v26 withQueue:v20 withBlock:0.0];
   runTimeAggregatorTimer = self->_runTimeAggregatorTimer;
   self->_runTimeAggregatorTimer = v24;
 }
@@ -579,45 +579,45 @@ uint64_t __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_339(uint64_
   return result;
 }
 
-- (int64_t)eventTypeStringToEnum:(id)a3
+- (int64_t)eventTypeStringToEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HomeKit BLE Advertisement"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"HomeKit BLE Advertisement"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HomeKit Connection"])
+  else if ([enumCopy isEqualToString:@"HomeKit Connection"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HomeKit IDS Push"])
+  else if ([enumCopy isEqualToString:@"HomeKit IDS Push"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HomeKit Cloud Push"])
+  else if ([enumCopy isEqualToString:@"HomeKit Cloud Push"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HomeKit IP Event"])
+  else if ([enumCopy isEqualToString:@"HomeKit IP Event"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"HomeKit Loxy Event"])
+  else if ([enumCopy isEqualToString:@"HomeKit Loxy Event"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"HomeKit Bonjour"])
+  else if ([enumCopy isEqualToString:@"HomeKit Bonjour"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"HomeKit Disconnection"])
+  else if ([enumCopy isEqualToString:@"HomeKit Disconnection"])
   {
     v4 = 10;
   }
@@ -630,15 +630,15 @@ uint64_t __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_339(uint64_
   return v4;
 }
 
-- (int64_t)registrationTypeStringToEnum:(id)a3
+- (int64_t)registrationTypeStringToEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HomeKit Remote Reachability Registration Event"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"HomeKit Remote Reachability Registration Event"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HomeKit Characteristic Registration Event"])
+  else if ([enumCopy isEqualToString:@"HomeKit Characteristic Registration Event"])
   {
     v4 = 2;
   }
@@ -651,25 +651,25 @@ uint64_t __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_339(uint64_
   return v4;
 }
 
-- (BOOL)isAllowedMessageType:(id)a3
+- (BOOL)isAllowedMessageType:(id)type
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  typeCopy = type;
   v5 = [v3 setWithObjects:{@"HMDFetchHomeDataMessage", @"RemoteEventRouterRequestMessage", @"kModifyCharacterisiticNotificationsRequestKey", @"HMDHouseholdMetricsHomeDataLogEventRequest", @"kEnableAccessoryReachabilityNotificationRequestKey", @"kDisableAccessoryReachabilityNotificationRequestKey", @"kPingInternalRequestKey", @"RemoteEventRouterUpdateMessageName", @"primaryResidentDiscovery", @"kMultipleCharacteristicReadRequestKey", @"kCharacterisiticsChangedInternalNotificationKey", @"kRemoteReachabilityChangedNotificationKey", @"kDeviceMeshUpdateKey", @"kMultipleCharacteristicWriteRequestKey", @"kDeviceMeshUpdateRequestKey", @"mesh.requestCapabilities", @"kHomeLocationUpdatedNotificationKey", @"kElectDeviceForIDSSessionKey", @"kEventTriggerUserPermissionRemoveDialogKey", @"mesh.currentPrimaryUpdate", @"kTakeSnapshotRemoteRequestKey", @"kCurrentHomeChangedNotificationKey", @"mesh.meshInformationRequest", @"HMDRemotePersonDataMessengerPerformCloudPullMessage", @"kTakeSnapshotRemoteReceivedKey", @"HMDMAR.RouteMediaAction", @"HMDUCM.rRepr", @"kStartRecordingSessionRequestKey", @"HMDRemoteCameraReachabilityDidChangeMessage", @"kNegotitateRemoteStreamRequestKey", @"kStopRemoteStreamRequestKey", @"HMAccessoryFetchManagedConfigurationProfilesMessage", @"kStreamStoppedRemoteNotificationKey", @"HMDCloudShareInviteMessage", @"HMDCloudShareRequestInviteMessage", @"kStartRemoteStreamRequestKey", @"HMDMediaProfileSetPowerRequestKey", @"HMDCameraAnalysisStatePublisherStateUpdateMessage", @"kSetAppDataRequestKey", @"kTakeSnapshotSendFailedNotificationKey", @"kRenameAccessoryRequestKey", @"kUpdateRoomForAccessoryRequestKey", @"kMediaPropertiesReadRequestKey", @"kPredicateEvaluatePredicateRequestKey", @"HMDUCM.rsr", @"kReconfigureRemoteStreamRequestKey", @"kRenameServiceRequestKey", @"HMAccessorySettingsUpdateRequestMessage", @"kRemoveAccessoryRequestKey", @"kHomeDataFragmentedSyncRequestKey", @"kSecureClientIDSMessageRequestKey", @"kRemoveTriggerRequestKey", @"HMDHomeQueryResidentReachabilityForAccessoriesMessageKey", @"kRequestForCompanionKeysSyncInternalRequestKey", @"HMDHomeCHIPSendReportMessage", @"HMAccessoryFetchCHIPPairingsMessage", @"kAddRoomRequestKey", @"kSetAssociatedServiceTypeRequestKey", @"HMAccessorySettingsFetchRequestMessage", @"HMDHomeResolveLockNotificationContextIdentifierMessage", @"HMDHomeConfigureAccessoriesWithDeviceCredentialKeyMessage"}];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:typeCopy];
 
   return v6;
 }
 
-- (void)logEventPointHomeKitEvents:(id)a3
+- (void)logEventPointHomeKitEvents:(id)events
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kHMFPowerLogEventType"];
+  eventsCopy = events;
+  v5 = [eventsCopy objectForKeyedSubscript:@"kHMFPowerLogEventType"];
   v6 = [(PLHomeKitAgent *)self eventTypeStringToEnum:v5];
   if (v6 == 2)
   {
-    v7 = [v4 objectForKeyedSubscript:@"kHMFPowerLogLinkTypeKey"];
+    v7 = [eventsCopy objectForKeyedSubscript:@"kHMFPowerLogLinkTypeKey"];
     if ([v7 isEqualToString:@"HomeKitLinkTypeBluetoothLE"])
     {
       v6 = 8;
@@ -702,10 +702,10 @@ uint64_t __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_339(uint64_
   v9 = *MEMORY[0x277D3F5E8];
   v10 = [(PLOperator *)PLHomeKitAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"HomeKitEvents"];
   v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10];
-  v12 = [v4 objectForKeyedSubscript:@"accessoryCategory"];
+  v12 = [eventsCopy objectForKeyedSubscript:@"accessoryCategory"];
   [v11 setObject:v12 forKeyedSubscript:@"accessoryCategory"];
 
-  v13 = [v4 objectForKeyedSubscript:@"kHMFPowerLogDeviceIdentiferKey"];
+  v13 = [eventsCopy objectForKeyedSubscript:@"kHMFPowerLogDeviceIdentiferKey"];
   [v11 setObject:v13 forKeyedSubscript:@"kHMFPowerLogDeviceIdentiferKey"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
@@ -713,7 +713,7 @@ uint64_t __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_339(uint64_
 
   if (v6 == 3)
   {
-    v15 = [v4 objectForKeyedSubscript:@"kHMFPowerLogMessageTypeKey"];
+    v15 = [eventsCopy objectForKeyedSubscript:@"kHMFPowerLogMessageTypeKey"];
     if (v15)
     {
       v16 = v15;
@@ -751,9 +751,9 @@ uint64_t __42__PLHomeKitAgent_initOperatorDependancies__block_invoke_339(uint64_
   if ([(__CFString *)v5 isEqualToString:@"HomeKit BLE Advertisement"])
   {
     v20 = [(PLOperator *)PLHomeKitAgent entryKeyForType:v9 andName:@"HomeKitBTLE"];
-    v21 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v20 withRawData:v4];
-    v22 = [v21 entryDate];
-    [v22 timeIntervalSince1970];
+    v21 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v20 withRawData:eventsCopy];
+    entryDate = [v21 entryDate];
+    [entryDate timeIntervalSince1970];
     v24 = v23;
 
     ++self->_numBTPushes;
@@ -807,7 +807,7 @@ LABEL_30:
 
   v28 = &OBJC_IVAR___PLHomeKitAgent__numBTConnections;
   ++self->_numConnections;
-  v20 = [v4 objectForKeyedSubscript:@"kHMFPowerLogLinkTypeKey"];
+  v20 = [eventsCopy objectForKeyedSubscript:@"kHMFPowerLogLinkTypeKey"];
   if ([v20 isEqualToString:@"HomeKitLinkTypeBluetoothLE"])
   {
     goto LABEL_36;
@@ -826,36 +826,36 @@ LABEL_31:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventPointHomeKitRegistration:(id)a3
+- (void)logEventPointHomeKitRegistration:(id)registration
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kHMFPowerLogEventType"];
+  registrationCopy = registration;
+  v5 = [registrationCopy objectForKeyedSubscript:@"kHMFPowerLogEventType"];
   v6 = [(PLHomeKitAgent *)self registrationTypeStringToEnum:v5];
 
   v11 = [(PLOperator *)PLHomeKitAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"HomeKitRegistration"];
-  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11 withRawData:v4];
+  v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11 withRawData:registrationCopy];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:v6];
   [v7 setObject:v8 forKeyedSubscript:@"RegistrationType"];
 
-  v9 = [v4 objectForKeyedSubscript:@"kHMFPowerLogClientIdentifierKey"];
+  v9 = [registrationCopy objectForKeyedSubscript:@"kHMFPowerLogClientIdentifierKey"];
   [v7 setObject:v9 forKeyedSubscript:@"BundleID"];
 
-  v10 = [v4 objectForKeyedSubscript:@"kHMFPowerLogEnabledKey"];
+  v10 = [registrationCopy objectForKeyedSubscript:@"kHMFPowerLogEnabledKey"];
 
   [v7 setObject:v10 forKeyedSubscript:@"Enabled"];
   [(PLOperator *)self logEntry:v7];
 }
 
-- (void)writeAggregateCounters:(id)a3
+- (void)writeAggregateCounters:(id)counters
 {
   v28[11] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  countersCopy = counters;
   v5 = [(PLOperator *)PLHomeKitAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"HomeKitSummary"];
   if (self->_enablelog)
   {
-    v19 = [v4 isEqualToString:@"btwake"];
+    v19 = [countersCopy isEqualToString:@"btwake"];
     v25 = v5;
-    v26 = v4;
+    v26 = countersCopy;
     if (v19)
     {
       v20 = 0;
@@ -864,7 +864,7 @@ LABEL_31:
 
     else
     {
-      v20 = [v4 isEqualToString:@"sbc"];
+      v20 = [countersCopy isEqualToString:@"sbc"];
       if (v20)
       {
         v6 = 2;
@@ -929,22 +929,22 @@ LABEL_31:
       }
     }
 
-    v4 = v26;
+    countersCopy = v26;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logEventForwardHomeConfiguration:(id)a3
+- (void)logEventForwardHomeConfiguration:(id)configuration
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  configurationCopy = configuration;
   v9 = [(PLOperator *)PLHomeKitAgent entryKeyForType:v4 andName:@"HomeConfiguration"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9 withRawData:v5];
-  v7 = [v5 objectForKeyedSubscript:@"isCurrentDeviceHH2Enabled"];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v9 withRawData:configurationCopy];
+  v7 = [configurationCopy objectForKeyedSubscript:@"isCurrentDeviceHH2Enabled"];
 
-  LODWORD(v5) = [v7 isEqual:MEMORY[0x277CBEC38]];
-  if (v5)
+  LODWORD(configurationCopy) = [v7 isEqual:MEMORY[0x277CBEC38]];
+  if (configurationCopy)
   {
     v8 = &unk_282C0D0C8;
   }
@@ -958,22 +958,22 @@ LABEL_31:
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logEventForwardCameraConfiguration:(id)a3
+- (void)logEventForwardCameraConfiguration:(id)configuration
 {
   v4 = *MEMORY[0x277D3F5D0];
-  v5 = a3;
+  configurationCopy = configuration;
   v7 = [(PLOperator *)PLHomeKitAgent entryKeyForType:v4 andName:@"CameraConfiguration"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:configurationCopy];
 
   [(PLOperator *)self logEntry:v6];
 }
 
-- (void)logAggregateIDSPushMessageTypes:(id)a3
+- (void)logAggregateIDSPushMessageTypes:(id)types
 {
   v4 = *MEMORY[0x277D3F5B8];
-  v5 = a3;
+  typesCopy = types;
   v7 = [(PLOperator *)PLHomeKitAgent entryKeyForType:v4 andName:@"IDSPushMessageTypes"];
-  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:v5];
+  v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v7 withRawData:typesCopy];
 
   [(PLOperator *)self logEntry:v6];
 }

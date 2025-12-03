@@ -1,5 +1,5 @@
 @interface NSFilePresenterOperationRecord
-+ (id)operationRecordWithDescription:(id)a3 reactor:(id)a4;
++ (id)operationRecordWithDescription:(id)description reactor:(id)reactor;
 - (id)_reactorQueue;
 - (id)description;
 - (void)dealloc;
@@ -8,12 +8,12 @@
 
 @implementation NSFilePresenterOperationRecord
 
-+ (id)operationRecordWithDescription:(id)a3 reactor:(id)a4
++ (id)operationRecordWithDescription:(id)description reactor:(id)reactor
 {
   v6 = objc_alloc_init(objc_opt_class());
-  *(v6 + 1) = [a3 copy];
-  objc_storeWeak(v6 + 3, a4);
-  *(v6 + 4) = [+[NSFileAccessArbiterProxy _idForReactor:](NSFileAccessArbiterProxy _idForReactor:{a4), "copy"}];
+  *(v6 + 1) = [description copy];
+  objc_storeWeak(v6 + 3, reactor);
+  *(v6 + 4) = [+[NSFileAccessArbiterProxy _idForReactor:](NSFileAccessArbiterProxy _idForReactor:{reactor), "copy"}];
 
   return v6;
 }
@@ -43,18 +43,18 @@
 {
   [(NSFilePresenterOperationRecord *)self reactor];
   v3 = objc_opt_respondsToSelector();
-  v4 = [(NSFilePresenterOperationRecord *)self reactor];
+  reactor = [(NSFilePresenterOperationRecord *)self reactor];
   if (v3)
   {
 
-    return [v4 presentedItemOperationQueue];
+    return [reactor presentedItemOperationQueue];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v6 = [(NSFilePresenterOperationRecord *)self reactor];
+    reactor2 = [(NSFilePresenterOperationRecord *)self reactor];
 
-    return [v6 _providedItemsOperationQueue];
+    return [reactor2 _providedItemsOperationQueue];
   }
 
   else
@@ -65,30 +65,30 @@
 
 - (id)description
 {
-  v3 = [(NSFilePresenterOperationRecord *)self state];
-  if (v3 > 3)
+  state = [(NSFilePresenterOperationRecord *)self state];
+  if (state > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E69F9690[v3];
+    v4 = off_1E69F9690[state];
   }
 
-  v5 = [(NSFilePresenterOperationRecord *)self reactor];
+  reactor = [(NSFilePresenterOperationRecord *)self reactor];
   reactorID = self->reactorID;
-  v7 = [(NSFilePresenterOperationRecord *)self operationDescription];
-  if (!v5)
+  operationDescription = [(NSFilePresenterOperationRecord *)self operationDescription];
+  if (!reactor)
   {
-    return [NSString stringWithFormat:@"Reactor with ID %@ deallocated in state: %@ %@", reactorID, v4, v7];
+    return [NSString stringWithFormat:@"Reactor with ID %@ deallocated in state: %@ %@", reactorID, v4, operationDescription];
   }
 
-  v8 = [NSString stringWithFormat:@"Reactor %@ with ID %@ %@ %@", v5, reactorID, v4, v7];
-  v9 = [(NSFilePresenterOperationRecord *)self _reactorQueue];
-  if ([v9 isSuspended])
+  v8 = [NSString stringWithFormat:@"Reactor %@ with ID %@ %@ %@", reactor, reactorID, v4, operationDescription];
+  _reactorQueue = [(NSFilePresenterOperationRecord *)self _reactorQueue];
+  if ([_reactorQueue isSuspended])
   {
-    return [(NSString *)v8 stringByAppendingFormat:@" -- Queue is suspended: %@", v9];
+    return [(NSString *)v8 stringByAppendingFormat:@" -- Queue is suspended: %@", _reactorQueue];
   }
 
   else

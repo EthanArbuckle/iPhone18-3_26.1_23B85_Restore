@@ -1,5 +1,5 @@
 @interface PUAssetExplorerReviewScreenAssetsDataSourceAssetReference
-- (PUAssetExplorerReviewScreenAssetsDataSourceAssetReference)initWithOriginalAssetReference:(id)a3 asset:(id)a4 dataSourceIdentifier:(id)a5;
+- (PUAssetExplorerReviewScreenAssetsDataSourceAssetReference)initWithOriginalAssetReference:(id)reference asset:(id)asset dataSourceIdentifier:(id)identifier;
 - (id)description;
 @end
 
@@ -10,26 +10,26 @@
   v7.receiver = self;
   v7.super_class = PUAssetExplorerReviewScreenAssetsDataSourceAssetReference;
   v3 = [(PUAssetReference *)&v7 description];
-  v4 = [(PUAssetExplorerReviewScreenAssetsDataSourceAssetReference *)self originalAssetReference];
-  v5 = [v3 stringByAppendingFormat:@" originalAssetReference:%@", v4];
+  originalAssetReference = [(PUAssetExplorerReviewScreenAssetsDataSourceAssetReference *)self originalAssetReference];
+  v5 = [v3 stringByAppendingFormat:@" originalAssetReference:%@", originalAssetReference];
 
   return v5;
 }
 
-- (PUAssetExplorerReviewScreenAssetsDataSourceAssetReference)initWithOriginalAssetReference:(id)a3 asset:(id)a4 dataSourceIdentifier:(id)a5
+- (PUAssetExplorerReviewScreenAssetsDataSourceAssetReference)initWithOriginalAssetReference:(id)reference asset:(id)asset dataSourceIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 assetCollection];
-  v13 = [v9 indexPath];
+  referenceCopy = reference;
+  identifierCopy = identifier;
+  assetCopy = asset;
+  assetCollection = [referenceCopy assetCollection];
+  indexPath = [referenceCopy indexPath];
   v17.receiver = self;
   v17.super_class = PUAssetExplorerReviewScreenAssetsDataSourceAssetReference;
-  v14 = [(PUAssetReference *)&v17 initWithAsset:v11 assetCollection:v12 indexPath:v13 dataSourceIdentifier:v10];
+  v14 = [(PUAssetReference *)&v17 initWithAsset:assetCopy assetCollection:assetCollection indexPath:indexPath dataSourceIdentifier:identifierCopy];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_originalAssetReference, a3);
+    objc_storeStrong(&v14->_originalAssetReference, reference);
     v15 = v14;
   }
 

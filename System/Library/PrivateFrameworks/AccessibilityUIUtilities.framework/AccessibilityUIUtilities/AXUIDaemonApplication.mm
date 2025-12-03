@@ -15,41 +15,41 @@
     return 1;
   }
 
-  v3 = [MEMORY[0x1E6994660] sharedSystemShellSwitcher];
-  v4 = [v3 isClarityBoardEnabled];
+  mEMORY[0x1E6994660] = [MEMORY[0x1E6994660] sharedSystemShellSwitcher];
+  isClarityBoardEnabled = [mEMORY[0x1E6994660] isClarityBoardEnabled];
 
-  return v4;
+  return isClarityBoardEnabled;
 }
 
 + (id)_systemUIServiceClientSettings
 {
-  v2 = [MEMORY[0x1E69DCCB0] settings];
+  settings = [MEMORY[0x1E69DCCB0] settings];
   [objc_opt_class() preferredWindowLevel];
-  [v2 setPreferredLevel:?];
+  [settings setPreferredLevel:?];
 
-  return v2;
+  return settings;
 }
 
 + (id)_systemUIServiceIdentifier
 {
-  if ([a1 usesScenes])
+  if ([self usesScenes])
   {
-    v2 = 0;
+    bundleIdentifier = 0;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v2 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
   }
 
-  return v2;
+  return bundleIdentifier;
 }
 
 - (int64_t)_frontMostAppOrientation
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v3 = [v2 safeIntegerForKey:@"_interfaceOrientation"];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  v3 = [mainScreen safeIntegerForKey:@"_interfaceOrientation"];
 
   return v3;
 }

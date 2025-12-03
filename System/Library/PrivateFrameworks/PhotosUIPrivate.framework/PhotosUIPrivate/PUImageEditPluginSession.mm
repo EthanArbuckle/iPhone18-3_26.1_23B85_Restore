@@ -1,17 +1,17 @@
 @interface PUImageEditPluginSession
 - (id)imageDataSource;
-- (void)loadItemProviderWithSupportedAdjustmentData:(id)a3 loadHandler:(id)a4;
-- (void)setAllowLivePhotoExtensions:(BOOL)a3;
-- (void)setAllowSpatialPhotoExtensions:(BOOL)a3;
-- (void)shouldLaunchPlugin:(id)a3 completion:(id)a4;
+- (void)loadItemProviderWithSupportedAdjustmentData:(id)data loadHandler:(id)handler;
+- (void)setAllowLivePhotoExtensions:(BOOL)extensions;
+- (void)setAllowSpatialPhotoExtensions:(BOOL)extensions;
+- (void)shouldLaunchPlugin:(id)plugin completion:(id)completion;
 @end
 
 @implementation PUImageEditPluginSession
 
-- (void)loadItemProviderWithSupportedAdjustmentData:(id)a3 loadHandler:(id)a4
+- (void)loadItemProviderWithSupportedAdjustmentData:(id)data loadHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,8 +19,8 @@
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEFAULT, "loadItemProviderWithSupportedAdjustmentData", buf, 2u);
   }
 
-  v9 = [(PUImageEditPluginSession *)self imageDataSource];
-  v10 = [(PUEditPluginSession *)self asset];
+  imageDataSource = [(PUImageEditPluginSession *)self imageDataSource];
+  asset = [(PUEditPluginSession *)self asset];
   v49[0] = 0;
   v49[1] = v49;
   v49[2] = 0x3032000000;
@@ -54,10 +54,10 @@
   v38 = v49;
   v12 = v11;
   v37 = v12;
-  [v9 editPluginSession:self loadPlaceholderImageWithHandler:v36];
-  v13 = [(PUEditPluginSession *)self currentPlugin];
-  v14 = [v13 extension];
-  v15 = [v14 pu_supportsMediaType:1];
+  [imageDataSource editPluginSession:self loadPlaceholderImageWithHandler:v36];
+  currentPlugin = [(PUEditPluginSession *)self currentPlugin];
+  extension = [currentPlugin extension];
+  v15 = [extension pu_supportsMediaType:1];
 
   if (v15 && [(PUImageEditPluginSession *)self allowLivePhotoExtensions])
   {
@@ -69,7 +69,7 @@
     v34 = v45;
     v35 = buf;
     v33 = v12;
-    [v9 editPluginSession:self loadVideoComplementURLWithHandler:v32];
+    [imageDataSource editPluginSession:self loadVideoComplementURLWithHandler:v32];
   }
 
   dispatch_group_enter(v12);
@@ -80,7 +80,7 @@
   v31 = v47;
   v16 = v12;
   v30 = v16;
-  [v9 editPluginSession:self loadDisplaySizeImageWithHandler:v29];
+  [imageDataSource editPluginSession:self loadDisplaySizeImageWithHandler:v29];
   v17 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -91,12 +91,12 @@
   v27 = v49;
   v28 = v47;
   block[4] = self;
-  v22 = v10;
-  v23 = v6;
-  v24 = v7;
-  v18 = v7;
-  v19 = v6;
-  v20 = v10;
+  v22 = asset;
+  v23 = dataCopy;
+  v24 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = dataCopy;
+  v20 = asset;
   dispatch_group_notify(v16, v17, block);
 
   _Block_object_dispose(buf, 8);
@@ -257,19 +257,19 @@ uint64_t __84__PUImageEditPluginSession_loadItemProviderWithSupportedAdjustmentD
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)shouldLaunchPlugin:(id)a3 completion:(id)a4
+- (void)shouldLaunchPlugin:(id)plugin completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  pluginCopy = plugin;
+  completionCopy = completion;
   if ([(PUImageEditPluginSession *)self allowSpatialPhotoExtensions])
   {
     v39 = PULocalizedString(@"PLUGIN_DISABLES_SPATIAL_PHOTO_TITLE_FORMAT");
-    v37 = [v6 title];
+    title = [pluginCopy title];
     v8 = PUStringWithValidatedFormat();
 
     v9 = MEMORY[0x1E69DC650];
     v10 = PULocalizedString(@"PLUGIN_DISABLES_SPATIAL_PHOTO_MESSAGE");
-    v11 = [v9 alertControllerWithTitle:v8 message:v10 preferredStyle:{1, v37}];
+    v11 = [v9 alertControllerWithTitle:v8 message:v10 preferredStyle:{1, title}];
 
     v12 = MEMORY[0x1E69DC648];
     v13 = PULocalizedString(@"OK");
@@ -277,9 +277,9 @@ uint64_t __84__PUImageEditPluginSession_loadItemProviderWithSupportedAdjustmentD
     v47[1] = 3221225472;
     v47[2] = __58__PUImageEditPluginSession_shouldLaunchPlugin_completion___block_invoke;
     v47[3] = &unk_1E7B80980;
-    v14 = v6;
-    v15 = v7;
-    v16 = v7;
+    v14 = pluginCopy;
+    v15 = completionCopy;
+    v16 = completionCopy;
     v48 = v16;
     v17 = [v12 actionWithTitle:v13 style:0 handler:v47];
     [v11 addAction:v17];
@@ -291,8 +291,8 @@ uint64_t __84__PUImageEditPluginSession_loadItemProviderWithSupportedAdjustmentD
     v45[2] = __58__PUImageEditPluginSession_shouldLaunchPlugin_completion___block_invoke_2;
     v45[3] = &unk_1E7B80980;
     v20 = v16;
-    v7 = v15;
-    v6 = v14;
+    completionCopy = v15;
+    pluginCopy = v14;
     v46 = v20;
     v21 = [v18 actionWithTitle:v19 style:1 handler:v45];
     [v11 addAction:v21];
@@ -303,21 +303,21 @@ uint64_t __84__PUImageEditPluginSession_loadItemProviderWithSupportedAdjustmentD
 
   else
   {
-    if (!-[PUImageEditPluginSession allowLivePhotoExtensions](self, "allowLivePhotoExtensions") || ([v6 extension], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "pu_supportsMediaType:", 1), v23, (v24 & 1) != 0))
+    if (!-[PUImageEditPluginSession allowLivePhotoExtensions](self, "allowLivePhotoExtensions") || ([pluginCopy extension], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "pu_supportsMediaType:", 1), v23, (v24 & 1) != 0))
     {
       v40.receiver = self;
       v40.super_class = PUImageEditPluginSession;
-      [(PUEditPluginSession *)&v40 shouldLaunchPlugin:v6 completion:v7];
+      [(PUEditPluginSession *)&v40 shouldLaunchPlugin:pluginCopy completion:completionCopy];
       goto LABEL_7;
     }
 
     v39 = PULocalizedString(@"PLUGIN_DISABLES_LIVE_PHOTO_TITLE_FORMAT");
-    v38 = [v6 title];
+    title2 = [pluginCopy title];
     v8 = PUStringWithValidatedFormat();
 
     v25 = MEMORY[0x1E69DC650];
     v26 = PULocalizedString(@"PLUGIN_DISABLES_LIVE_PHOTO_MESSAGE");
-    v11 = [v25 alertControllerWithTitle:v8 message:v26 preferredStyle:{1, v38}];
+    v11 = [v25 alertControllerWithTitle:v8 message:v26 preferredStyle:{1, title2}];
 
     v27 = MEMORY[0x1E69DC648];
     v28 = PULocalizedString(@"OK");
@@ -325,9 +325,9 @@ uint64_t __84__PUImageEditPluginSession_loadItemProviderWithSupportedAdjustmentD
     v43[1] = 3221225472;
     v43[2] = __58__PUImageEditPluginSession_shouldLaunchPlugin_completion___block_invoke_3;
     v43[3] = &unk_1E7B80980;
-    v29 = v6;
-    v30 = v7;
-    v31 = v7;
+    v29 = pluginCopy;
+    v30 = completionCopy;
+    v31 = completionCopy;
     v44 = v31;
     v32 = [v27 actionWithTitle:v28 style:0 handler:v43];
     [v11 addAction:v32];
@@ -339,8 +339,8 @@ uint64_t __84__PUImageEditPluginSession_loadItemProviderWithSupportedAdjustmentD
     v41[2] = __58__PUImageEditPluginSession_shouldLaunchPlugin_completion___block_invoke_4;
     v41[3] = &unk_1E7B80980;
     v35 = v31;
-    v7 = v30;
-    v6 = v29;
+    completionCopy = v30;
+    pluginCopy = v29;
     v42 = v35;
     v36 = [v33 actionWithTitle:v34 style:1 handler:v41];
     [v11 addAction:v36];
@@ -354,30 +354,30 @@ LABEL_7:
 
 - (id)imageDataSource
 {
-  v4 = [(PUEditPluginSession *)self dataSource];
-  if (([v4 conformsToProtocol:&unk_1F2C63308] & 1) == 0)
+  dataSource = [(PUEditPluginSession *)self dataSource];
+  if (([dataSource conformsToProtocol:&unk_1F2C63308] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUImageEditPluginSession.m" lineNumber:54 description:@"data source must conform to PUImageEditPluginSessionDataSource"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImageEditPluginSession.m" lineNumber:54 description:@"data source must conform to PUImageEditPluginSessionDataSource"];
   }
 
-  return v4;
+  return dataSource;
 }
 
-- (void)setAllowSpatialPhotoExtensions:(BOOL)a3
+- (void)setAllowSpatialPhotoExtensions:(BOOL)extensions
 {
-  if (self->_allowSpatialPhotoExtensions != a3)
+  if (self->_allowSpatialPhotoExtensions != extensions)
   {
-    self->_allowSpatialPhotoExtensions = a3;
+    self->_allowSpatialPhotoExtensions = extensions;
     [(PUEditPluginSession *)self updatePluginManager];
   }
 }
 
-- (void)setAllowLivePhotoExtensions:(BOOL)a3
+- (void)setAllowLivePhotoExtensions:(BOOL)extensions
 {
-  if (self->_allowLivePhotoExtensions != a3)
+  if (self->_allowLivePhotoExtensions != extensions)
   {
-    self->_allowLivePhotoExtensions = a3;
+    self->_allowLivePhotoExtensions = extensions;
     [(PUEditPluginSession *)self updatePluginManager];
   }
 }

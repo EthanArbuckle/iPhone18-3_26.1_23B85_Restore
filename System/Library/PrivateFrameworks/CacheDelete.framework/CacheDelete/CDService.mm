@@ -1,41 +1,41 @@
 @interface CDService
-+ (CDService)serviceWithInfo:(id)a3;
-+ (CDService)serviceWithInfo:(id)a3 endpoint:(id)a4;
-+ (CDService)serviceWithInfo:(id)a3 extension:(id)a4;
++ (CDService)serviceWithInfo:(id)info;
++ (CDService)serviceWithInfo:(id)info endpoint:(id)endpoint;
++ (CDService)serviceWithInfo:(id)info extension:(id)extension;
 - (BOOL)inFlight;
-- (CDService)initWithInfo:(id)a3;
+- (CDService)initWithInfo:(id)info;
 - (NSString)description;
 - (void)drainPurgeQueue;
-- (void)serviceCallback:(id)a3 replyBlock:(id)a4;
-- (void)serviceCancelPurge:(id)a3;
-- (void)serviceNotify:(id)a3 replyBlock:(id)a4;
-- (void)servicePeriodic:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)servicePing:(id)a3;
-- (void)servicePurge:(int)a3 info:(id)a4 replyBlock:(id)a5;
-- (void)servicePurgeable:(int)a3 info:(id)a4 replyBlock:(id)a5;
+- (void)serviceCallback:(id)callback replyBlock:(id)block;
+- (void)serviceCancelPurge:(id)purge;
+- (void)serviceNotify:(id)notify replyBlock:(id)block;
+- (void)servicePeriodic:(int)periodic info:(id)info replyBlock:(id)block;
+- (void)servicePing:(id)ping;
+- (void)servicePurge:(int)purge info:(id)info replyBlock:(id)block;
+- (void)servicePurgeable:(int)purgeable info:(id)info replyBlock:(id)block;
 @end
 
 @implementation CDService
 
 - (BOOL)inFlight
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CDService *)self serviceQueue];
+  serviceQueue = [(CDService *)self serviceQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __21__CDService_inFlight__block_invoke;
   v5[3] = &unk_100060DD0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serviceQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 id __21__CDService_inFlight__block_invoke(uint64_t a1)
@@ -47,32 +47,32 @@ id __21__CDService_inFlight__block_invoke(uint64_t a1)
 
 - (void)drainPurgeQueue
 {
-  v3 = [(CDService *)self serviceQueue];
-  dispatch_assert_queue_V2(v3);
+  serviceQueue = [(CDService *)self serviceQueue];
+  dispatch_assert_queue_V2(serviceQueue);
 
-  v4 = [(CDService *)self purgeQueue];
-  v5 = [v4 count];
+  purgeQueue = [(CDService *)self purgeQueue];
+  v5 = [purgeQueue count];
 
   if (v5)
   {
-    v6 = [(CDService *)self purgeQueue];
-    v7 = [v6 objectAtIndex:0];
+    purgeQueue2 = [(CDService *)self purgeQueue];
+    v7 = [purgeQueue2 objectAtIndex:0];
 
-    v8 = [v7 info];
-    v9 = [v8 objectForKeyedSubscript:@"CACHE_DELETE_QOS"];
+    info = [v7 info];
+    v9 = [info objectForKeyedSubscript:@"CACHE_DELETE_QOS"];
     v10 = evaluateNumberProperty();
 
-    v11 = [(CDService *)self purgeQueue];
-    [v11 removeObjectAtIndex:0];
+    purgeQueue3 = [(CDService *)self purgeQueue];
+    [purgeQueue3 removeObjectAtIndex:0];
 
     if (v10)
     {
-      v12 = [v10 unsignedIntValue];
+      unsignedIntValue = [v10 unsignedIntValue];
     }
 
     else
     {
-      v12 = QOS_CLASS_UTILITY;
+      unsignedIntValue = QOS_CLASS_UTILITY;
     }
 
     v14 = CDGetLogHandle();
@@ -82,7 +82,7 @@ id __21__CDService_inFlight__block_invoke(uint64_t a1)
       *buf = 138412546;
       v25 = v15;
       v26 = 1024;
-      LODWORD(v27) = v12;
+      LODWORD(selfCopy2) = unsignedIntValue;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "drainPurgeQueue %@ QOS: %u", buf, 0x12u);
     }
 
@@ -90,10 +90,10 @@ id __21__CDService_inFlight__block_invoke(uint64_t a1)
     v19 = 3221225472;
     v20 = __28__CDService_drainPurgeQueue__block_invoke;
     v21 = &unk_100060B40;
-    v22 = self;
+    selfCopy = self;
     v23 = v7;
     v13 = v7;
-    v16 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, v12, 0, &v18);
+    v16 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, unsignedIntValue, 0, &v18);
     v17 = [(CDService *)self requestQueue:v18];
     dispatch_async(v17, v16);
 
@@ -107,26 +107,26 @@ id __21__CDService_inFlight__block_invoke(uint64_t a1)
     *buf = 138412546;
     v25 = v13;
     v26 = 2048;
-    v27 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "dequeuePurge %@ [%p] no purges queued", buf, 0x16u);
 LABEL_10:
   }
 }
 
-- (CDService)initWithInfo:(id)a3
+- (CDService)initWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v39.receiver = self;
   v39.super_class = CDService;
   v5 = [(CDService *)&v39 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_ID"];
+    v6 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_ID"];
     if (v6)
     {
       v7 = v6;
       objc_storeStrong(v5 + 3, v6);
-      v8 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_SERVICES"];
+      v8 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_SERVICES"];
       v9 = CDGetLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -167,11 +167,11 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@ doesPurge: %s", buf, 0x16u);
         }
 
-        v14 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_VOLUMES"];
+        v14 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_VOLUMES"];
         v15 = *(v5 + 2);
         *(v5 + 2) = v14;
 
-        v16 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_OPT_OUT_QUOTA_EVENTS"];
+        v16 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_OPT_OUT_QUOTA_EVENTS"];
         *(v5 + 12) = evaluateBoolProperty();
 
         if (*(v5 + 12) == 1)
@@ -186,7 +186,7 @@ LABEL_11:
           }
         }
 
-        v19 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_DO_NOT_QUERY"];
+        v19 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_DO_NOT_QUERY"];
         if (evaluateBoolProperty())
         {
           v20 = 1;
@@ -211,7 +211,7 @@ LABEL_11:
           }
         }
 
-        v23 = [v4 objectForKeyedSubscript:@"CACHE_DELETE_NOTIFICATIONS"];
+        v23 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_NOTIFICATIONS"];
         if (v23)
         {
           objc_opt_class();
@@ -268,7 +268,7 @@ LABEL_11:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v41 = v4;
+        v41 = infoCopy;
         _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "No Service ID! info dictionary: %@", buf, 0xCu);
       }
     }
@@ -327,30 +327,30 @@ id __28__CDService_drainPurgeQueue__block_invoke_62(uint64_t a1, void *a2)
   return [v6 drainPurgeQueue];
 }
 
-- (void)servicePurgeable:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)servicePurgeable:(int)purgeable info:(id)info replyBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CDService *)self serviceQueue];
+  infoCopy = info;
+  blockCopy = block;
+  serviceQueue = [(CDService *)self serviceQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __46__CDService_servicePurgeable_info_replyBlock___block_invoke;
   block[3] = &unk_100060D58;
   block[4] = self;
-  dispatch_sync(v10, block);
+  dispatch_sync(serviceQueue, block);
 
-  v11 = [(CDService *)self requestQueue];
+  requestQueue = [(CDService *)self requestQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __46__CDService_servicePurgeable_info_replyBlock___block_invoke_2;
   v14[3] = &unk_100061D90;
-  v17 = a3;
+  purgeableCopy = purgeable;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, v14);
+  v15 = infoCopy;
+  v16 = blockCopy;
+  v12 = blockCopy;
+  v13 = infoCopy;
+  dispatch_async(requestQueue, v14);
 }
 
 void __46__CDService_servicePurgeable_info_replyBlock___block_invoke_2(uint64_t a1)
@@ -389,23 +389,23 @@ void __46__CDService_servicePurgeable_info_replyBlock___block_invoke_3(uint64_t 
   dispatch_async(v4, block);
 }
 
-- (void)servicePurge:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)servicePurge:(int)purge info:(id)info replyBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  infoCopy = info;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (infoCopy && blockCopy)
   {
-    v11 = [(CDService *)self serviceQueue];
+    serviceQueue = [(CDService *)self serviceQueue];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = __42__CDService_servicePurge_info_replyBlock___block_invoke;
     v14[3] = &unk_100061D90;
     v14[4] = self;
-    v17 = a3;
-    v15 = v8;
+    purgeCopy = purge;
+    v15 = infoCopy;
     v16 = v10;
-    dispatch_sync(v11, v14);
+    dispatch_sync(serviceQueue, v14);
   }
 
   else
@@ -415,7 +415,7 @@ void __46__CDService_servicePurgeable_info_replyBlock___block_invoke_3(uint64_t 
     {
       v13 = objc_retainBlock(v10);
       *buf = 138412546;
-      v19 = v8;
+      v19 = infoCopy;
       v20 = 2112;
       v21 = v13;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Parameter error: info: %@, reply: %@", buf, 0x16u);
@@ -631,22 +631,22 @@ void __42__CDService_servicePurge_info_replyBlock___block_invoke(uint64_t a1)
   }
 }
 
-- (void)servicePeriodic:(int)a3 info:(id)a4 replyBlock:(id)a5
+- (void)servicePeriodic:(int)periodic info:(id)info replyBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CDService *)self requestQueue];
+  infoCopy = info;
+  blockCopy = block;
+  requestQueue = [(CDService *)self requestQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __45__CDService_servicePeriodic_info_replyBlock___block_invoke;
   v13[3] = &unk_100061D90;
-  v16 = a3;
+  periodicCopy = periodic;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = infoCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = infoCopy;
+  dispatch_async(requestQueue, v13);
 }
 
 void __45__CDService_servicePeriodic_info_replyBlock___block_invoke(uint64_t a1)
@@ -676,66 +676,66 @@ void __45__CDService_servicePeriodic_info_replyBlock___block_invoke_2(uint64_t a
   dispatch_async(v2, block);
 }
 
-- (void)serviceCancelPurge:(id)a3
+- (void)serviceCancelPurge:(id)purge
 {
-  v4 = a3;
-  v5 = [(CDService *)self requestQueue];
+  purgeCopy = purge;
+  requestQueue = [(CDService *)self requestQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __32__CDService_serviceCancelPurge___block_invoke;
   v7[3] = &unk_1000612A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = purgeCopy;
+  v6 = purgeCopy;
+  dispatch_async(requestQueue, v7);
 }
 
-- (void)servicePing:(id)a3
+- (void)servicePing:(id)ping
 {
-  v4 = a3;
-  v5 = [(CDService *)self requestQueue];
+  pingCopy = ping;
+  requestQueue = [(CDService *)self requestQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __25__CDService_servicePing___block_invoke;
   v7[3] = &unk_1000612A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = pingCopy;
+  v6 = pingCopy;
+  dispatch_async(requestQueue, v7);
 }
 
-- (void)serviceNotify:(id)a3 replyBlock:(id)a4
+- (void)serviceNotify:(id)notify replyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CDService *)self requestQueue];
+  notifyCopy = notify;
+  blockCopy = block;
+  requestQueue = [(CDService *)self requestQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __38__CDService_serviceNotify_replyBlock___block_invoke;
   block[3] = &unk_100061230;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = notifyCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = notifyCopy;
+  dispatch_async(requestQueue, block);
 }
 
-- (void)serviceCallback:(id)a3 replyBlock:(id)a4
+- (void)serviceCallback:(id)callback replyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CDService *)self requestQueue];
+  callbackCopy = callback;
+  blockCopy = block;
+  requestQueue = [(CDService *)self requestQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __40__CDService_serviceCallback_replyBlock___block_invoke;
   block[3] = &unk_100061230;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = callbackCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = callbackCopy;
+  dispatch_async(requestQueue, block);
 }
 
 - (NSString)description
@@ -754,16 +754,16 @@ void __45__CDService_servicePeriodic_info_replyBlock___block_invoke_2(uint64_t a
     v7 = "NO";
   }
 
-  v8 = [(CDService *)self purgeQueue];
-  v9 = [v3 initWithFormat:@"<%@: %p (%@) = { inFlight=%s, purgeQueueLength=%d }>", v5, self, v6, v7, objc_msgSend(v8, "count")];
+  purgeQueue = [(CDService *)self purgeQueue];
+  v9 = [v3 initWithFormat:@"<%@: %p (%@) = { inFlight=%s, purgeQueueLength=%d }>", v5, self, v6, v7, objc_msgSend(purgeQueue, "count")];
 
   return v9;
 }
 
-+ (CDService)serviceWithInfo:(id)a3
++ (CDService)serviceWithInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"CACHE_DELETE_SERVICE_IS_LOCAL"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"CACHE_DELETE_SERVICE_IS_LOCAL"];
   v5 = evaluateBoolProperty();
 
   v6 = &off_100060768;
@@ -772,33 +772,33 @@ void __45__CDService_servicePeriodic_info_replyBlock___block_invoke_2(uint64_t a
     v6 = off_100060760;
   }
 
-  v7 = [objc_alloc(*v6) initWithInfo:v3];
+  v7 = [objc_alloc(*v6) initWithInfo:infoCopy];
 
   return v7;
 }
 
-+ (CDService)serviceWithInfo:(id)a3 endpoint:(id)a4
++ (CDService)serviceWithInfo:(id)info endpoint:(id)endpoint
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
+  endpointCopy = endpoint;
+  v6 = [info mutableCopy];
   v7 = [v6 objectForKeyedSubscript:@"CACHE_DELETE_ID"];
 
   if (!v7)
   {
-    v8 = [NSString stringWithFormat:@"ANONYMOUS_%p", v5];
-    [v6 setObject:v8 forKeyedSubscript:@"CACHE_DELETE_ID"];
+    endpointCopy = [NSString stringWithFormat:@"ANONYMOUS_%p", endpointCopy];
+    [v6 setObject:endpointCopy forKeyedSubscript:@"CACHE_DELETE_ID"];
   }
 
-  v9 = [[CDAnonymousXPCService alloc] initWithInfo:v6 endpoint:v5];
+  v9 = [[CDAnonymousXPCService alloc] initWithInfo:v6 endpoint:endpointCopy];
 
   return v9;
 }
 
-+ (CDService)serviceWithInfo:(id)a3 extension:(id)a4
++ (CDService)serviceWithInfo:(id)info extension:(id)extension
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CDAppExtensionService alloc] initWithInfo:v6 extension:v5];
+  extensionCopy = extension;
+  infoCopy = info;
+  v7 = [[CDAppExtensionService alloc] initWithInfo:infoCopy extension:extensionCopy];
 
   return v7;
 }

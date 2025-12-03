@@ -1,24 +1,24 @@
 @interface CBSOPFPackageContents
-- (CBSOPFPackageContents)initWithIdentifierType:(id)a3 identifier:(id)a4;
-- (id)cfiWithItemIdentifier:(id)a3 fragment:(id)a4;
-- (id)itemIdentifierForHref:(id)a3 fragment:(id *)a4;
-- (id)urlWithItemIdentifier:(id)a3 fragment:(id)a4;
+- (CBSOPFPackageContents)initWithIdentifierType:(id)type identifier:(id)identifier;
+- (id)cfiWithItemIdentifier:(id)identifier fragment:(id)fragment;
+- (id)itemIdentifierForHref:(id)href fragment:(id *)fragment;
+- (id)urlWithItemIdentifier:(id)identifier fragment:(id)fragment;
 @end
 
 @implementation CBSOPFPackageContents
 
-- (CBSOPFPackageContents)initWithIdentifierType:(id)a3 identifier:(id)a4
+- (CBSOPFPackageContents)initWithIdentifierType:(id)type identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = CBSOPFPackageContents;
   v9 = [(CBSOPFPackageContents *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bookIdentifier, a4);
-    objc_storeStrong(&v10->_bookIdentifierType, a3);
+    objc_storeStrong(&v9->_bookIdentifier, identifier);
+    objc_storeStrong(&v10->_bookIdentifierType, type);
     v11 = objc_opt_new();
     itemPathsByIdentifier = v10->_itemPathsByIdentifier;
     v10->_itemPathsByIdentifier = v11;
@@ -31,24 +31,24 @@
   return v10;
 }
 
-- (id)itemIdentifierForHref:(id)a3 fragment:(id *)a4
+- (id)itemIdentifierForHref:(id)href fragment:(id *)fragment
 {
-  v6 = [NSURL URLWithString:a3];
-  v7 = [v6 path];
+  v6 = [NSURL URLWithString:href];
+  path = [v6 path];
   v8 = +[NSCharacterSet URLPathAllowedCharacterSet];
-  v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+  v9 = [path stringByAddingPercentEncodingWithAllowedCharacters:v8];
 
-  if (a4)
+  if (fragment)
   {
-    *a4 = [v6 fragment];
+    *fragment = [v6 fragment];
   }
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [(CBSOPFPackageContents *)self itemPathsByIdentifier];
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  itemPathsByIdentifier = [(CBSOPFPackageContents *)self itemPathsByIdentifier];
+  v11 = [itemPathsByIdentifier countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -60,12 +60,12 @@
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(itemPathsByIdentifier);
         }
 
         v15 = *(*(&v22 + 1) + 8 * i);
-        v16 = [(CBSOPFPackageContents *)self itemPathsByIdentifier];
-        v17 = [v16 objectForKeyedSubscript:v15];
+        itemPathsByIdentifier2 = [(CBSOPFPackageContents *)self itemPathsByIdentifier];
+        v17 = [itemPathsByIdentifier2 objectForKeyedSubscript:v15];
         v18 = [v17 isEqualToString:v9];
 
         if (v18)
@@ -75,7 +75,7 @@
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v12 = [itemPathsByIdentifier countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v12)
       {
         continue;
@@ -97,12 +97,12 @@ LABEL_13:
   return v19;
 }
 
-- (id)cfiWithItemIdentifier:(id)a3 fragment:(id)a4
+- (id)cfiWithItemIdentifier:(id)identifier fragment:(id)fragment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CBSOPFPackageContents *)self spineItemIdentifiers];
-  v9 = [v8 indexOfObject:v6];
+  identifierCopy = identifier;
+  fragmentCopy = fragment;
+  spineItemIdentifiers = [(CBSOPFPackageContents *)self spineItemIdentifiers];
+  v9 = [spineItemIdentifiers indexOfObject:identifierCopy];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -113,14 +113,14 @@ LABEL_13:
   {
     v11 = [NSNumber numberWithInteger:2 * v9 + 2];
     v12 = v11;
-    if (v7)
+    if (fragmentCopy)
     {
-      [NSString stringWithFormat:@"epubcfi(/6/%@[%@]!/4[%@])", v11, v6, v7];
+      [NSString stringWithFormat:@"epubcfi(/6/%@[%@]!/4[%@])", v11, identifierCopy, fragmentCopy];
     }
 
     else
     {
-      [NSString stringWithFormat:@"epubcfi(/6/%@[%@]!/4)", v11, v6, v14];
+      [NSString stringWithFormat:@"epubcfi(/6/%@[%@]!/4)", v11, identifierCopy, v14];
     }
     v10 = ;
   }
@@ -128,20 +128,20 @@ LABEL_13:
   return v10;
 }
 
-- (id)urlWithItemIdentifier:(id)a3 fragment:(id)a4
+- (id)urlWithItemIdentifier:(id)identifier fragment:(id)fragment
 {
-  v5 = [(CBSOPFPackageContents *)self cfiWithItemIdentifier:a3 fragment:a4];
-  v6 = [(CBSOPFPackageContents *)self bookIdentifierType];
-  v7 = [(CBSOPFPackageContents *)self bookIdentifier];
-  v8 = v7;
+  v5 = [(CBSOPFPackageContents *)self cfiWithItemIdentifier:identifier fragment:fragment];
+  bookIdentifierType = [(CBSOPFPackageContents *)self bookIdentifierType];
+  bookIdentifier = [(CBSOPFPackageContents *)self bookIdentifier];
+  v8 = bookIdentifier;
   if (v5)
   {
-    [NSString stringWithFormat:@"ibooks://%@/%@#%@", v6, v7, v5];
+    [NSString stringWithFormat:@"ibooks://%@/%@#%@", bookIdentifierType, bookIdentifier, v5];
   }
 
   else
   {
-    [NSString stringWithFormat:@"ibooks://%@/%@", v6, v7, v12];
+    [NSString stringWithFormat:@"ibooks://%@/%@", bookIdentifierType, bookIdentifier, v12];
   }
   v9 = ;
   v10 = [NSURL URLWithString:v9];

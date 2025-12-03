@@ -1,7 +1,7 @@
 @interface HFTimerTriggerCalendarEventAdapter
-- (id)createTriggerWithName:(id)a3 timeZone:(id)a4 recurrences:(id)a5;
-- (id)updateTrigger:(id)a3;
-- (void)updateTriggerBuilder:(id)a3 recurrences:(id)a4 inHome:(id)a5;
+- (id)createTriggerWithName:(id)name timeZone:(id)zone recurrences:(id)recurrences;
+- (id)updateTrigger:(id)trigger;
+- (void)updateTriggerBuilder:(id)builder recurrences:(id)recurrences inHome:(id)home;
 @end
 
 @implementation HFTimerTriggerCalendarEventAdapter
@@ -14,25 +14,25 @@ BOOL __72__HFTimerTriggerCalendarEventAdapter_hasWeekdayRecurrenceInRecurrences_
   return v3;
 }
 
-- (id)createTriggerWithName:(id)a3 timeZone:(id)a4 recurrences:(id)a5
+- (id)createTriggerWithName:(id)name timeZone:(id)zone recurrences:(id)recurrences
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
-  v12 = [v11 performValidation];
+  nameCopy = name;
+  zoneCopy = zone;
+  recurrencesCopy = recurrences;
+  eventBuilder = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
+  performValidation = [eventBuilder performValidation];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __81__HFTimerTriggerCalendarEventAdapter_createTriggerWithName_timeZone_recurrences___block_invoke;
   v32[3] = &unk_277DFA5E8;
   v32[4] = self;
-  v13 = v10;
+  v13 = recurrencesCopy;
   v33 = v13;
-  v14 = v8;
+  v14 = nameCopy;
   v34 = v14;
-  v35 = v9;
-  v15 = v9;
-  v16 = [v12 flatMap:v32];
+  v35 = zoneCopy;
+  v15 = zoneCopy;
+  v16 = [performValidation flatMap:v32];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -40,7 +40,7 @@ BOOL __72__HFTimerTriggerCalendarEventAdapter_hasWeekdayRecurrenceInRecurrences_
   v28[3] = &unk_277DF7010;
   v17 = v14;
   v29 = v17;
-  v30 = self;
+  selfCopy = self;
   v18 = v13;
   v31 = v18;
   v19 = [v16 addSuccessBlock:v28];
@@ -49,7 +49,7 @@ BOOL __72__HFTimerTriggerCalendarEventAdapter_hasWeekdayRecurrenceInRecurrences_
   v24[2] = __81__HFTimerTriggerCalendarEventAdapter_createTriggerWithName_timeZone_recurrences___block_invoke_44;
   v24[3] = &unk_277DF6FE8;
   v25 = v17;
-  v26 = self;
+  selfCopy2 = self;
   v27 = v18;
   v20 = v18;
   v21 = v17;
@@ -130,38 +130,38 @@ void __81__HFTimerTriggerCalendarEventAdapter_createTriggerWithName_timeZone_rec
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTriggerBuilder:(id)a3 recurrences:(id)a4 inHome:(id)a5
+- (void)updateTriggerBuilder:(id)builder recurrences:(id)recurrences inHome:(id)home
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
-  v9 = [v8 effectiveFireDate];
-  [v11 setFireDate:v9];
+  builderCopy = builder;
+  recurrencesCopy = recurrences;
+  eventBuilder = [(HFTimerTriggerTimeEventAdapter *)self eventBuilder];
+  effectiveFireDate = [eventBuilder effectiveFireDate];
+  [builderCopy setFireDate:effectiveFireDate];
 
-  if ([objc_opt_class() hasWeekdayRecurrenceInRecurrences:v7])
+  if ([objc_opt_class() hasWeekdayRecurrenceInRecurrences:recurrencesCopy])
   {
-    [v11 setRecurrences:v7];
+    [builderCopy setRecurrences:recurrencesCopy];
   }
 
   else
   {
-    v10 = [v7 firstObject];
+    firstObject = [recurrencesCopy firstObject];
 
-    [v11 setRecurrence:v10];
-    v7 = v10;
+    [builderCopy setRecurrence:firstObject];
+    recurrencesCopy = firstObject;
   }
 }
 
-- (id)updateTrigger:(id)a3
+- (id)updateTrigger:(id)trigger
 {
-  v4 = a3;
+  triggerCopy = trigger;
   v5 = MEMORY[0x277D2C900];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __52__HFTimerTriggerCalendarEventAdapter_updateTrigger___block_invoke;
   v21[3] = &unk_277DF4150;
   v21[4] = self;
-  v6 = v4;
+  v6 = triggerCopy;
   v22 = v6;
   v7 = [v5 futureWithErrorOnlyHandlerAdapterBlock:v21];
   v19[0] = MEMORY[0x277D85DD0];

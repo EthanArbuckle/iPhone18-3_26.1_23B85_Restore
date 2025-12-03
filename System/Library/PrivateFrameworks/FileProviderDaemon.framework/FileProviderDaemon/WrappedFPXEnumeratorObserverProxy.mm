@@ -1,21 +1,21 @@
 @interface WrappedFPXEnumeratorObserverProxy
-- (WrappedFPXEnumeratorObserverProxy)initWithTarget:(id)a3;
-- (void)didUpdateItem:(id)a3;
+- (WrappedFPXEnumeratorObserverProxy)initWithTarget:(id)target;
+- (void)didUpdateItem:(id)item;
 - (void)enumerationResultsDidChange;
 @end
 
 @implementation WrappedFPXEnumeratorObserverProxy
 
-- (WrappedFPXEnumeratorObserverProxy)initWithTarget:(id)a3
+- (WrappedFPXEnumeratorObserverProxy)initWithTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = WrappedFPXEnumeratorObserverProxy;
   v6 = [(WrappedFPXEnumeratorObserverProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_target, a3);
+    objc_storeStrong(&v6->_target, target);
   }
 
   return v7;
@@ -37,12 +37,12 @@ void __64__WrappedFPXEnumeratorObserverProxy_enumerationResultsDidChange__block_
   }
 }
 
-- (void)didUpdateItem:(id)a3
+- (void)didUpdateItem:(id)item
 {
   target = self->_target;
-  v4 = a3;
+  itemCopy = item;
   v5 = [(FPXEnumeratorObserver *)target remoteObjectProxyWithErrorHandler:&__block_literal_global_29];
-  [v5 didUpdateItem:v4];
+  [v5 didUpdateItem:itemCopy];
 }
 
 void __51__WrappedFPXEnumeratorObserverProxy_didUpdateItem___block_invoke(uint64_t a1, void *a2)

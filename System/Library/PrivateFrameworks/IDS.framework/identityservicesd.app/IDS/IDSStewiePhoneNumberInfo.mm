@@ -1,57 +1,57 @@
 @interface IDSStewiePhoneNumberInfo
-- (BOOL)isEqual:(id)a3;
-- (IDSStewiePhoneNumberInfo)initWithCoder:(id)a3;
-- (IDSStewiePhoneNumberInfo)initWithPhoneNumber:(id)a3 uniqueIdentifier:(id)a4 authenticationCertificate:(id)a5 index:(id)a6;
-- (IDSStewiePhoneNumberInfo)initWithUser:(id)a3 authenticationCertificate:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (IDSStewiePhoneNumberInfo)initWithCoder:(id)coder;
+- (IDSStewiePhoneNumberInfo)initWithPhoneNumber:(id)number uniqueIdentifier:(id)identifier authenticationCertificate:(id)certificate index:(id)index;
+- (IDSStewiePhoneNumberInfo)initWithUser:(id)user authenticationCertificate:(id)certificate;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSStewiePhoneNumberInfo
 
-- (IDSStewiePhoneNumberInfo)initWithPhoneNumber:(id)a3 uniqueIdentifier:(id)a4 authenticationCertificate:(id)a5 index:(id)a6
+- (IDSStewiePhoneNumberInfo)initWithPhoneNumber:(id)number uniqueIdentifier:(id)identifier authenticationCertificate:(id)certificate index:(id)index
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  numberCopy = number;
+  identifierCopy = identifier;
+  certificateCopy = certificate;
+  indexCopy = index;
   v18.receiver = self;
   v18.super_class = IDSStewiePhoneNumberInfo;
   v15 = [(IDSStewiePhoneNumberInfo *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_phoneNumber, a3);
-    objc_storeStrong(&v16->_uniqueIdentifier, a4);
-    objc_storeStrong(&v16->_authenticationCertificate, a5);
-    objc_storeStrong(&v16->_index, a6);
+    objc_storeStrong(&v15->_phoneNumber, number);
+    objc_storeStrong(&v16->_uniqueIdentifier, identifier);
+    objc_storeStrong(&v16->_authenticationCertificate, certificate);
+    objc_storeStrong(&v16->_index, index);
   }
 
   return v16;
 }
 
-- (IDSStewiePhoneNumberInfo)initWithUser:(id)a3 authenticationCertificate:(id)a4
+- (IDSStewiePhoneNumberInfo)initWithUser:(id)user authenticationCertificate:(id)certificate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 phoneNumber];
-  v9 = [v7 uniqueIdentifier];
+  certificateCopy = certificate;
+  userCopy = user;
+  phoneNumber = [userCopy phoneNumber];
+  uniqueIdentifier = [userCopy uniqueIdentifier];
 
-  v10 = [(IDSStewiePhoneNumberInfo *)self initWithPhoneNumber:v8 uniqueIdentifier:v9 authenticationCertificate:v6 index:0];
+  v10 = [(IDSStewiePhoneNumberInfo *)self initWithPhoneNumber:phoneNumber uniqueIdentifier:uniqueIdentifier authenticationCertificate:certificateCopy index:0];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v4 authenticationCertificate];
-    v6 = [v5 dataRepresentation];
-    v7 = [(IDSStewiePhoneNumberInfo *)self authenticationCertificate];
-    v8 = [v7 dataRepresentation];
-    v9 = [v6 isEqual:v8];
+    authenticationCertificate = [equalCopy authenticationCertificate];
+    dataRepresentation = [authenticationCertificate dataRepresentation];
+    authenticationCertificate2 = [(IDSStewiePhoneNumberInfo *)self authenticationCertificate];
+    dataRepresentation2 = [authenticationCertificate2 dataRepresentation];
+    v9 = [dataRepresentation isEqual:dataRepresentation2];
   }
 
   else
@@ -64,9 +64,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(IDSStewiePhoneNumberInfo *)self authenticationCertificate];
-  v3 = [v2 dataRepresentation];
-  v4 = [v3 hash];
+  authenticationCertificate = [(IDSStewiePhoneNumberInfo *)self authenticationCertificate];
+  dataRepresentation = [authenticationCertificate dataRepresentation];
+  v4 = [dataRepresentation hash];
 
   return v4;
 }
@@ -74,8 +74,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSStewiePhoneNumberInfo *)self authenticationCertificate];
-  if (v4)
+  authenticationCertificate = [(IDSStewiePhoneNumberInfo *)self authenticationCertificate];
+  if (authenticationCertificate)
   {
     v5 = @"YES";
   }
@@ -85,37 +85,37 @@
     v5 = @"NO";
   }
 
-  v6 = [(IDSStewiePhoneNumberInfo *)self phoneNumber];
-  v7 = [(IDSStewiePhoneNumberInfo *)self index];
-  v8 = [NSString stringWithFormat:@"<%@: %p { sig: %@, pn: %@, index: %@ }>", v3, self, v5, v6, v7];
+  phoneNumber = [(IDSStewiePhoneNumberInfo *)self phoneNumber];
+  index = [(IDSStewiePhoneNumberInfo *)self index];
+  v8 = [NSString stringWithFormat:@"<%@: %p { sig: %@, pn: %@, index: %@ }>", v3, self, v5, phoneNumber, index];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSStewiePhoneNumberInfo *)self phoneNumber];
-  [v4 encodeObject:v5 forKey:@"phoneNumber"];
+  coderCopy = coder;
+  phoneNumber = [(IDSStewiePhoneNumberInfo *)self phoneNumber];
+  [coderCopy encodeObject:phoneNumber forKey:@"phoneNumber"];
 
-  v6 = [(IDSStewiePhoneNumberInfo *)self uniqueIdentifier];
-  [v4 encodeObject:v6 forKey:@"id"];
+  uniqueIdentifier = [(IDSStewiePhoneNumberInfo *)self uniqueIdentifier];
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"id"];
 
-  v7 = [(IDSStewiePhoneNumberInfo *)self authenticationCertificate];
-  v8 = [v7 dataRepresentation];
-  [v4 encodeObject:v8 forKey:@"cert"];
+  authenticationCertificate = [(IDSStewiePhoneNumberInfo *)self authenticationCertificate];
+  dataRepresentation = [authenticationCertificate dataRepresentation];
+  [coderCopy encodeObject:dataRepresentation forKey:@"cert"];
 
-  v9 = [(IDSStewiePhoneNumberInfo *)self index];
-  [v4 encodeObject:v9 forKey:@"index"];
+  index = [(IDSStewiePhoneNumberInfo *)self index];
+  [coderCopy encodeObject:index forKey:@"index"];
 }
 
-- (IDSStewiePhoneNumberInfo)initWithCoder:(id)a3
+- (IDSStewiePhoneNumberInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cert"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"index"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cert"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"index"];
 
   v9 = [[IDSAuthenticationCertificate alloc] initWithDataRepresentation:v7];
   v10 = [(IDSStewiePhoneNumberInfo *)self initWithPhoneNumber:v5 uniqueIdentifier:v6 authenticationCertificate:v9 index:v8];

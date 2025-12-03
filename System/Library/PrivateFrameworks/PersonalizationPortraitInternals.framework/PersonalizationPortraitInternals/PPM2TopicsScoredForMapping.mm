@@ -1,43 +1,43 @@
 @interface PPM2TopicsScoredForMapping
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasExclusionSpec:(BOOL)a3;
-- (void)setHasLimitHit:(BOOL)a3;
-- (void)setHasTimeLimited:(BOOL)a3;
-- (void)setHasTimeSpec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasError:(BOOL)error;
+- (void)setHasExclusionSpec:(BOOL)spec;
+- (void)setHasLimitHit:(BOOL)hit;
+- (void)setHasTimeLimited:(BOOL)limited;
+- (void)setHasTimeSpec:(BOOL)spec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2TopicsScoredForMapping
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PPM2TopicsScoredForMapping *)self setBundleId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PPM2TopicsScoredForMapping *)self setMappingId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if (v5)
   {
-    self->_resultSizeLog10 = *(v4 + 8);
+    self->_resultSizeLog10 = *(fromCopy + 8);
     *&self->_has |= 1u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
     if ((v5 & 0x10) == 0)
     {
 LABEL_7:
@@ -50,14 +50,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 44) & 0x10) == 0)
+  else if ((*(fromCopy + 44) & 0x10) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_timeLimited = *(v4 + 39);
+  self->_timeLimited = *(fromCopy + 39);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -70,9 +70,9 @@ LABEL_8:
   }
 
 LABEL_19:
-  self->_exclusionSpec = *(v4 + 37);
+  self->_exclusionSpec = *(fromCopy + 37);
   *&self->_has |= 4u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -85,9 +85,9 @@ LABEL_9:
   }
 
 LABEL_20:
-  self->_error = *(v4 + 36);
+  self->_error = *(fromCopy + 36);
   *&self->_has |= 2u;
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 0x20) == 0)
   {
 LABEL_10:
@@ -100,20 +100,20 @@ LABEL_10:
   }
 
 LABEL_21:
-  self->_timeSpec = *(v4 + 40);
+  self->_timeSpec = *(fromCopy + 40);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 44) & 8) != 0)
+  if ((*(fromCopy + 44) & 8) != 0)
   {
 LABEL_11:
-    self->_limitHit = *(v4 + 38);
+    self->_limitHit = *(fromCopy + 38);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PPM2TopicsScoredForMapping *)self setActiveTreatments:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -201,16 +201,16 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ [(NSString *)self->_activeTreatments hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   bundleId = self->_bundleId;
-  if (bundleId | *(v4 + 2))
+  if (bundleId | *(equalCopy + 2))
   {
     if (![(NSString *)bundleId isEqual:?])
     {
@@ -219,7 +219,7 @@ LABEL_7:
   }
 
   mappingId = self->_mappingId;
-  if (mappingId | *(v4 + 3))
+  if (mappingId | *(equalCopy + 3))
   {
     if (![(NSString *)mappingId isEqual:?])
     {
@@ -227,131 +227,131 @@ LABEL_7:
     }
   }
 
-  v7 = *(v4 + 44);
+  v7 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_resultSizeLog10 != *(v4 + 8))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_resultSizeLog10 != *(equalCopy + 8))
     {
       goto LABEL_53;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_53;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 44) & 0x10) == 0)
+    if ((*(equalCopy + 44) & 0x10) == 0)
     {
       goto LABEL_53;
     }
 
-    v10 = *(v4 + 39);
+    v10 = *(equalCopy + 39);
     if (self->_timeLimited)
     {
-      if ((*(v4 + 39) & 1) == 0)
+      if ((*(equalCopy + 39) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 39))
+    else if (*(equalCopy + 39))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 44) & 0x10) != 0)
+  else if ((*(equalCopy + 44) & 0x10) != 0)
   {
     goto LABEL_53;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0)
+    if ((*(equalCopy + 44) & 4) == 0)
     {
       goto LABEL_53;
     }
 
-    v11 = *(v4 + 37);
+    v11 = *(equalCopy + 37);
     if (self->_exclusionSpec)
     {
-      if ((*(v4 + 37) & 1) == 0)
+      if ((*(equalCopy + 37) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 37))
+    else if (*(equalCopy + 37))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_53;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_53;
     }
 
-    v12 = *(v4 + 36);
+    v12 = *(equalCopy + 36);
     if (self->_error)
     {
-      if ((*(v4 + 36) & 1) == 0)
+      if ((*(equalCopy + 36) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 36))
+    else if (*(equalCopy + 36))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_53;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 44) & 0x20) == 0)
+    if ((*(equalCopy + 44) & 0x20) == 0)
     {
       goto LABEL_53;
     }
 
-    v13 = *(v4 + 40);
+    v13 = *(equalCopy + 40);
     if (self->_timeSpec)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_53;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_53;
     }
   }
 
-  else if ((*(v4 + 44) & 0x20) != 0)
+  else if ((*(equalCopy + 44) & 0x20) != 0)
   {
     goto LABEL_53;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
       goto LABEL_21;
     }
@@ -361,28 +361,28 @@ LABEL_53:
     goto LABEL_54;
   }
 
-  if ((*(v4 + 44) & 8) == 0)
+  if ((*(equalCopy + 44) & 8) == 0)
   {
     goto LABEL_53;
   }
 
-  v14 = *(v4 + 38);
+  v14 = *(equalCopy + 38);
   if (self->_limitHit)
   {
-    if ((*(v4 + 38) & 1) == 0)
+    if ((*(equalCopy + 38) & 1) == 0)
     {
       goto LABEL_53;
     }
   }
 
-  else if (*(v4 + 38))
+  else if (*(equalCopy + 38))
   {
     goto LABEL_53;
   }
 
 LABEL_21:
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 1))
+  if (activeTreatments | *(equalCopy + 1))
   {
     v9 = [(NSString *)activeTreatments isEqual:?];
   }
@@ -397,14 +397,14 @@ LABEL_54:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleId copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_mappingId copyWithZone:a3];
+  v8 = [(NSString *)self->_mappingId copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -486,34 +486,34 @@ LABEL_7:
   }
 
 LABEL_8:
-  v11 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v11 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v12 = *(v5 + 8);
   *(v5 + 8) = v11;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_bundleId)
   {
-    [v4 setBundleId:?];
-    v4 = v6;
+    [toCopy setBundleId:?];
+    toCopy = v6;
   }
 
   if (self->_mappingId)
   {
     [v6 setMappingId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 8) = self->_resultSizeLog10;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 8) = self->_resultSizeLog10;
+    *(toCopy + 44) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -532,8 +532,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 39) = self->_timeLimited;
-  *(v4 + 44) |= 0x10u;
+  *(toCopy + 39) = self->_timeLimited;
+  *(toCopy + 44) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -547,8 +547,8 @@ LABEL_8:
   }
 
 LABEL_19:
-  *(v4 + 37) = self->_exclusionSpec;
-  *(v4 + 44) |= 4u;
+  *(toCopy + 37) = self->_exclusionSpec;
+  *(toCopy + 44) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -562,8 +562,8 @@ LABEL_9:
   }
 
 LABEL_20:
-  *(v4 + 36) = self->_error;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 36) = self->_error;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -577,37 +577,37 @@ LABEL_10:
   }
 
 LABEL_21:
-  *(v4 + 40) = self->_timeSpec;
-  *(v4 + 44) |= 0x20u;
+  *(toCopy + 40) = self->_timeSpec;
+  *(toCopy + 44) |= 0x20u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    *(v4 + 38) = self->_limitHit;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 38) = self->_limitHit;
+    *(toCopy + 44) |= 8u;
   }
 
 LABEL_12:
   if (self->_activeTreatments)
   {
     [v6 setActiveTreatments:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_mappingId)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -615,7 +615,7 @@ LABEL_12:
   {
     resultSizeLog10 = self->_resultSizeLog10;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -636,7 +636,7 @@ LABEL_7:
 
   timeLimited = self->_timeLimited;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -652,7 +652,7 @@ LABEL_8:
 LABEL_19:
   exclusionSpec = self->_exclusionSpec;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -668,7 +668,7 @@ LABEL_9:
 LABEL_20:
   error = self->_error;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -684,31 +684,31 @@ LABEL_10:
 LABEL_21:
   timeSpec = self->_timeSpec;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     limitHit = self->_limitHit;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_12:
   if (self->_activeTreatments)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   mappingId = self->_mappingId;
@@ -815,15 +815,15 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = PPM2TopicsScoredForMapping;
   v4 = [(PPM2TopicsScoredForMapping *)&v8 description];
-  v5 = [(PPM2TopicsScoredForMapping *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2TopicsScoredForMapping *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasLimitHit:(BOOL)a3
+- (void)setHasLimitHit:(BOOL)hit
 {
-  if (a3)
+  if (hit)
   {
     v3 = 8;
   }
@@ -836,9 +836,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTimeSpec:(BOOL)a3
+- (void)setHasTimeSpec:(BOOL)spec
 {
-  if (a3)
+  if (spec)
   {
     v3 = 32;
   }
@@ -851,9 +851,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 2;
   }
@@ -866,9 +866,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasExclusionSpec:(BOOL)a3
+- (void)setHasExclusionSpec:(BOOL)spec
 {
-  if (a3)
+  if (spec)
   {
     v3 = 4;
   }
@@ -881,9 +881,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimeLimited:(BOOL)a3
+- (void)setHasTimeLimited:(BOOL)limited
 {
-  if (a3)
+  if (limited)
   {
     v3 = 16;
   }

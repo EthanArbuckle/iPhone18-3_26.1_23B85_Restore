@@ -1,11 +1,11 @@
 @interface HKFHIRResourceDownloadRequestResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKFHIRResourceDownloadRequestResult)init;
-- (HKFHIRResourceDownloadRequestResult)initWithCoder:(id)a3;
-- (HKFHIRResourceDownloadRequestResult)initWithError:(id)a3 endStates:(id)a4 refreshResult:(id)a5;
-- (HKFHIRResourceDownloadRequestResult)initWithResourceBundleData:(id)a3 endStates:(id)a4 refreshResult:(id)a5;
+- (HKFHIRResourceDownloadRequestResult)initWithCoder:(id)coder;
+- (HKFHIRResourceDownloadRequestResult)initWithError:(id)error endStates:(id)states refreshResult:(id)result;
+- (HKFHIRResourceDownloadRequestResult)initWithResourceBundleData:(id)data endStates:(id)states refreshResult:(id)result;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRResourceDownloadRequestResult
@@ -20,25 +20,25 @@
   return 0;
 }
 
-- (HKFHIRResourceDownloadRequestResult)initWithResourceBundleData:(id)a3 endStates:(id)a4 refreshResult:(id)a5
+- (HKFHIRResourceDownloadRequestResult)initWithResourceBundleData:(id)data endStates:(id)states refreshResult:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  statesCopy = states;
+  resultCopy = result;
   v19.receiver = self;
   v19.super_class = HKFHIRResourceDownloadRequestResult;
   v11 = [(HKFHIRResourceDownloadRequestResult *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dataCopy copy];
     resourceBundleData = v11->_resourceBundleData;
     v11->_resourceBundleData = v12;
 
-    v14 = [v9 copy];
+    v14 = [statesCopy copy];
     endStates = v11->_endStates;
     v11->_endStates = v14;
 
-    v16 = [v10 copy];
+    v16 = [resultCopy copy];
     refreshResult = v11->_refreshResult;
     v11->_refreshResult = v16;
   }
@@ -46,25 +46,25 @@
   return v11;
 }
 
-- (HKFHIRResourceDownloadRequestResult)initWithError:(id)a3 endStates:(id)a4 refreshResult:(id)a5
+- (HKFHIRResourceDownloadRequestResult)initWithError:(id)error endStates:(id)states refreshResult:(id)result
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  statesCopy = states;
+  resultCopy = result;
   v19.receiver = self;
   v19.super_class = HKFHIRResourceDownloadRequestResult;
   v11 = [(HKFHIRResourceDownloadRequestResult *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [errorCopy copy];
     error = v11->_error;
     v11->_error = v12;
 
-    v14 = [v9 copy];
+    v14 = [statesCopy copy];
     endStates = v11->_endStates;
     v11->_endStates = v14;
 
-    v16 = [v10 copy];
+    v16 = [resultCopy copy];
     refreshResult = v11->_refreshResult;
     v11->_refreshResult = v16;
   }
@@ -72,126 +72,126 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      LOBYTE(v13) = 0;
+      LOBYTE(endStates3) = 0;
 LABEL_42:
 
       goto LABEL_43;
     }
 
     resourceBundleData = self->_resourceBundleData;
-    v9 = [(HKFHIRResourceDownloadRequestResult *)v7 resourceBundleData];
-    if (resourceBundleData != v9)
+    resourceBundleData = [(HKFHIRResourceDownloadRequestResult *)v7 resourceBundleData];
+    if (resourceBundleData != resourceBundleData)
     {
-      v10 = [(HKFHIRResourceDownloadRequestResult *)v7 resourceBundleData];
-      if (!v10)
+      resourceBundleData2 = [(HKFHIRResourceDownloadRequestResult *)v7 resourceBundleData];
+      if (!resourceBundleData2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(endStates3) = 0;
         goto LABEL_41;
       }
 
-      v3 = v10;
+      v3 = resourceBundleData2;
       v11 = self->_resourceBundleData;
-      v12 = [(HKFHIRResourceDownloadRequestResult *)v7 resourceBundleData];
-      if (![(NSData *)v11 isEqual:v12])
+      resourceBundleData3 = [(HKFHIRResourceDownloadRequestResult *)v7 resourceBundleData];
+      if (![(NSData *)v11 isEqual:resourceBundleData3])
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(endStates3) = 0;
 LABEL_40:
 
         goto LABEL_41;
       }
 
-      v41 = v12;
+      v41 = resourceBundleData3;
     }
 
     endStates = self->_endStates;
-    v15 = [(HKFHIRResourceDownloadRequestResult *)v7 endStates];
+    endStates = [(HKFHIRResourceDownloadRequestResult *)v7 endStates];
     v42 = endStates;
-    if (endStates != v15)
+    if (endStates != endStates)
     {
-      v16 = [(HKFHIRResourceDownloadRequestResult *)v7 endStates];
-      if (!v16)
+      endStates2 = [(HKFHIRResourceDownloadRequestResult *)v7 endStates];
+      if (!endStates2)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(endStates3) = 0;
         goto LABEL_38;
       }
 
-      v17 = v16;
+      v17 = endStates2;
       v18 = self->_endStates;
-      v13 = [(HKFHIRResourceDownloadRequestResult *)v7 endStates];
-      if (![(HKFHIRRequestTaskEndStates *)v18 isEqual:v13])
+      endStates3 = [(HKFHIRResourceDownloadRequestResult *)v7 endStates];
+      if (![(HKFHIRRequestTaskEndStates *)v18 isEqual:endStates3])
       {
 
-        LOBYTE(v13) = 0;
+        LOBYTE(endStates3) = 0;
         goto LABEL_39;
       }
 
-      v38 = v13;
+      v38 = endStates3;
       v39 = v17;
     }
 
     refreshResult = self->_refreshResult;
-    v40 = [(HKFHIRResourceDownloadRequestResult *)v7 refreshResult];
-    if (refreshResult == v40)
+    refreshResult = [(HKFHIRResourceDownloadRequestResult *)v7 refreshResult];
+    if (refreshResult == refreshResult)
     {
       v37 = v3;
     }
 
     else
     {
-      v13 = [(HKFHIRResourceDownloadRequestResult *)v7 refreshResult];
-      if (!v13)
+      endStates3 = [(HKFHIRResourceDownloadRequestResult *)v7 refreshResult];
+      if (!endStates3)
       {
         v31 = v38;
         v32 = v39;
-        v30 = v40;
+        v30 = refreshResult;
         goto LABEL_30;
       }
 
       v20 = self->_refreshResult;
-      v21 = [(HKFHIRResourceDownloadRequestResult *)v7 refreshResult];
+      refreshResult2 = [(HKFHIRResourceDownloadRequestResult *)v7 refreshResult];
       v22 = v20;
-      v23 = v21;
-      if (![(HKFHIRCredentialRefreshResult *)v22 isEqual:v21])
+      v23 = refreshResult2;
+      if (![(HKFHIRCredentialRefreshResult *)v22 isEqual:refreshResult2])
       {
 
-        LOBYTE(v13) = 0;
-        v29 = v42 == v15;
+        LOBYTE(endStates3) = 0;
+        v29 = v42 == endStates;
         goto LABEL_33;
       }
 
       v34 = v23;
-      v36 = v13;
+      v36 = endStates3;
       v37 = v3;
     }
 
     error = self->_error;
-    v25 = [(HKFHIRResourceDownloadRequestResult *)v7 error];
-    LOBYTE(v13) = error == v25;
-    if (error != v25)
+    error = [(HKFHIRResourceDownloadRequestResult *)v7 error];
+    LOBYTE(endStates3) = error == error;
+    if (error != error)
     {
-      v26 = [(HKFHIRResourceDownloadRequestResult *)v7 error];
-      if (v26)
+      error2 = [(HKFHIRResourceDownloadRequestResult *)v7 error];
+      if (error2)
       {
-        v27 = v26;
-        v13 = self->_error;
-        v28 = [(HKFHIRResourceDownloadRequestResult *)v7 error];
-        LOBYTE(v13) = [v13 isEqual:v28];
+        v27 = error2;
+        endStates3 = self->_error;
+        error3 = [(HKFHIRResourceDownloadRequestResult *)v7 error];
+        LOBYTE(endStates3) = [endStates3 isEqual:error3];
 
-        if (refreshResult != v40)
+        if (refreshResult != refreshResult)
         {
         }
 
-        v29 = v42 == v15;
+        v29 = v42 == endStates;
         v3 = v37;
 LABEL_33:
         v32 = v39;
@@ -204,8 +204,8 @@ LABEL_37:
 LABEL_38:
 
 LABEL_39:
-        v12 = v41;
-        if (resourceBundleData != v9)
+        resourceBundleData3 = v41;
+        if (resourceBundleData != resourceBundleData)
         {
           goto LABEL_40;
         }
@@ -216,14 +216,14 @@ LABEL_41:
       }
     }
 
-    v30 = v40;
-    if (refreshResult == v40)
+    v30 = refreshResult;
+    if (refreshResult == refreshResult)
     {
 
       v3 = v37;
       v31 = v38;
       v32 = v39;
-      if (v42 == v15)
+      if (v42 == endStates)
       {
         goto LABEL_38;
       }
@@ -238,7 +238,7 @@ LABEL_36:
     v32 = v39;
 LABEL_30:
 
-    if (v42 == v15)
+    if (v42 == endStates)
     {
       goto LABEL_38;
     }
@@ -246,10 +246,10 @@ LABEL_30:
     goto LABEL_36;
   }
 
-  LOBYTE(v13) = 1;
+  LOBYTE(endStates3) = 1;
 LABEL_43:
 
-  return v13;
+  return endStates3;
 }
 
 - (id)description
@@ -267,23 +267,23 @@ LABEL_43:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   resourceBundleData = self->_resourceBundleData;
-  v5 = a3;
-  [v5 encodeObject:resourceBundleData forKey:@"resourceBundleData"];
-  [v5 encodeObject:self->_endStates forKey:@"endStates"];
-  [v5 encodeObject:self->_refreshResult forKey:@"refreshResult"];
-  [v5 encodeObject:self->_error forKey:@"error"];
+  coderCopy = coder;
+  [coderCopy encodeObject:resourceBundleData forKey:@"resourceBundleData"];
+  [coderCopy encodeObject:self->_endStates forKey:@"endStates"];
+  [coderCopy encodeObject:self->_refreshResult forKey:@"refreshResult"];
+  [coderCopy encodeObject:self->_error forKey:@"error"];
 }
 
-- (HKFHIRResourceDownloadRequestResult)initWithCoder:(id)a3
+- (HKFHIRResourceDownloadRequestResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resourceBundleData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"refreshResult"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endStates"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resourceBundleData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"refreshResult"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endStates"];
   if (v5)
   {
     v9 = [(HKFHIRResourceDownloadRequestResult *)self initWithResourceBundleData:v5 endStates:v8 refreshResult:v7];
@@ -293,8 +293,8 @@ LABEL_43:
   {
     if (!v6)
     {
-      [v4 hrs_failWithCocoaInvalidValueError];
-      v10 = 0;
+      [coderCopy hrs_failWithCocoaInvalidValueError];
+      selfCopy = 0;
       goto LABEL_6;
     }
 
@@ -302,10 +302,10 @@ LABEL_43:
   }
 
   self = v9;
-  v10 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v10;
+  return selfCopy;
 }
 
 @end

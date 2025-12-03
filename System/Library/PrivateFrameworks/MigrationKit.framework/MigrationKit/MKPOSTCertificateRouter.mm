@@ -1,36 +1,36 @@
 @interface MKPOSTCertificateRouter
-- (MKPOSTCertificateRouter)initWithSRP:(id)a3;
+- (MKPOSTCertificateRouter)initWithSRP:(id)p;
 - (MKPOSTCertificateRouterDelegate)delegate;
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5;
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response;
 @end
 
 @implementation MKPOSTCertificateRouter
 
-- (MKPOSTCertificateRouter)initWithSRP:(id)a3
+- (MKPOSTCertificateRouter)initWithSRP:(id)p
 {
-  v4 = a3;
+  pCopy = p;
   v8.receiver = self;
   v8.super_class = MKPOSTCertificateRouter;
   v5 = [(MKPOSTCertificateRouter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MKPOSTCertificateRouter *)v5 setSrp:v4];
+    [(MKPOSTCertificateRouter *)v5 setSrp:pCopy];
   }
 
   return v6;
 }
 
-- (void)server:(id)a3 didReceiveRequest:(id)a4 response:(id)a5
+- (void)server:(id)server didReceiveRequest:(id)request response:(id)response
 {
-  v6 = [a4 body];
-  if ([v6 length])
+  body = [request body];
+  if ([body length])
   {
-    v7 = [(MKSRPServer *)self->_srp sharedKey];
-    if (v7)
+    sharedKey = [(MKSRPServer *)self->_srp sharedKey];
+    if (sharedKey)
     {
-      v8 = [[MKCrypto alloc] initWithKey:v7];
-      v9 = [(MKCrypto *)v8 decryptData:v6];
+      v8 = [[MKCrypto alloc] initWithKey:sharedKey];
+      v9 = [(MKCrypto *)v8 decryptData:body];
       if (v9)
       {
         v10 = [[MKCertificate alloc] initWithPEM:v9];
@@ -60,10 +60,10 @@
 
   else
   {
-    v7 = +[MKLog log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    sharedKey = +[MKLog log];
+    if (os_log_type_enabled(sharedKey, OS_LOG_TYPE_ERROR))
     {
-      [(MKPOSTCertificateRouter *)self server:v7 didReceiveRequest:v12 response:v13, v14, v15, v16, v17];
+      [(MKPOSTCertificateRouter *)self server:sharedKey didReceiveRequest:v12 response:v13, v14, v15, v16, v17];
     }
   }
 }

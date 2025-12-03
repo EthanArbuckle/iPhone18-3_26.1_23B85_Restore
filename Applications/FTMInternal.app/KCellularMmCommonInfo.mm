@@ -1,115 +1,115 @@
 @interface KCellularMmCommonInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEplmnList:(id)a3;
-- (void)addRegProvFlaiList:(id)a3;
-- (void)addRegProvFtaiList:(id)a3;
-- (void)addRoamingFlaiList:(id)a3;
-- (void)addRoamingFtaiList:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEplmnList:(id)list;
+- (void)addRegProvFlaiList:(id)list;
+- (void)addRegProvFtaiList:(id)list;
+- (void)addRoamingFlaiList:(id)list;
+- (void)addRoamingFtaiList:(id)list;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularMmCommonInfo
 
-- (void)addEplmnList:(id)a3
+- (void)addEplmnList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   eplmnLists = self->_eplmnLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!eplmnLists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_eplmnLists;
     self->_eplmnLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     eplmnLists = self->_eplmnLists;
   }
 
-  [(NSMutableArray *)eplmnLists addObject:v4];
+  [(NSMutableArray *)eplmnLists addObject:listCopy];
 }
 
-- (void)addRoamingFlaiList:(id)a3
+- (void)addRoamingFlaiList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   roamingFlaiLists = self->_roamingFlaiLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!roamingFlaiLists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_roamingFlaiLists;
     self->_roamingFlaiLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     roamingFlaiLists = self->_roamingFlaiLists;
   }
 
-  [(NSMutableArray *)roamingFlaiLists addObject:v4];
+  [(NSMutableArray *)roamingFlaiLists addObject:listCopy];
 }
 
-- (void)addRegProvFlaiList:(id)a3
+- (void)addRegProvFlaiList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   regProvFlaiLists = self->_regProvFlaiLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!regProvFlaiLists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_regProvFlaiLists;
     self->_regProvFlaiLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     regProvFlaiLists = self->_regProvFlaiLists;
   }
 
-  [(NSMutableArray *)regProvFlaiLists addObject:v4];
+  [(NSMutableArray *)regProvFlaiLists addObject:listCopy];
 }
 
-- (void)addRoamingFtaiList:(id)a3
+- (void)addRoamingFtaiList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   roamingFtaiLists = self->_roamingFtaiLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!roamingFtaiLists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_roamingFtaiLists;
     self->_roamingFtaiLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     roamingFtaiLists = self->_roamingFtaiLists;
   }
 
-  [(NSMutableArray *)roamingFtaiLists addObject:v4];
+  [(NSMutableArray *)roamingFtaiLists addObject:listCopy];
 }
 
-- (void)addRegProvFtaiList:(id)a3
+- (void)addRegProvFtaiList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   regProvFtaiLists = self->_regProvFtaiLists;
-  v8 = v4;
+  v8 = listCopy;
   if (!regProvFtaiLists)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_regProvFtaiLists;
     self->_regProvFtaiLists = v6;
 
-    v4 = v8;
+    listCopy = v8;
     regProvFtaiLists = self->_regProvFtaiLists;
   }
 
-  [(NSMutableArray *)regProvFtaiLists addObject:v4];
+  [(NSMutableArray *)regProvFtaiLists addObject:listCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -127,8 +127,8 @@
   v7.receiver = self;
   v7.super_class = KCellularMmCommonInfo;
   v3 = [(KCellularMmCommonInfo *)&v7 description];
-  v4 = [(KCellularMmCommonInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularMmCommonInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -170,8 +170,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v59 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v59 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v59 objects:v67 count:16];
@@ -205,8 +205,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v55 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v55 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v55 objects:v66 count:16];
@@ -240,8 +240,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v51 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v51 + 1) + 8 * k) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v51 objects:v65 count:16];
@@ -275,8 +275,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v47 + 1) + 8 * m) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation4 = [*(*(&v47 + 1) + 8 * m) dictionaryRepresentation];
+          [v27 addObject:dictionaryRepresentation4];
         }
 
         v30 = [(NSMutableArray *)v28 countByEnumeratingWithState:&v47 objects:v64 count:16];
@@ -310,8 +310,8 @@
             objc_enumerationMutation(v35);
           }
 
-          v40 = [*(*(&v43 + 1) + 8 * n) dictionaryRepresentation];
-          [v34 addObject:v40];
+          dictionaryRepresentation5 = [*(*(&v43 + 1) + 8 * n) dictionaryRepresentation];
+          [v34 addObject:dictionaryRepresentation5];
         }
 
         v37 = [(NSMutableArray *)v35 countByEnumeratingWithState:&v43 objects:v63 count:16];
@@ -332,9 +332,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -513,28 +513,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 68) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 68) |= 1u;
   }
 
-  v25 = v4;
+  v25 = toCopy;
   if (self->_imsi)
   {
-    [v4 setImsi:?];
+    [toCopy setImsi:?];
   }
 
   if ([(KCellularMmCommonInfo *)self eplmnListsCount])
   {
     [v25 clearEplmnLists];
-    v5 = [(KCellularMmCommonInfo *)self eplmnListsCount];
-    if (v5)
+    eplmnListsCount = [(KCellularMmCommonInfo *)self eplmnListsCount];
+    if (eplmnListsCount)
     {
-      v6 = v5;
+      v6 = eplmnListsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(KCellularMmCommonInfo *)self eplmnListAtIndex:i];
@@ -546,10 +546,10 @@
   if ([(KCellularMmCommonInfo *)self roamingFlaiListsCount])
   {
     [v25 clearRoamingFlaiLists];
-    v9 = [(KCellularMmCommonInfo *)self roamingFlaiListsCount];
-    if (v9)
+    roamingFlaiListsCount = [(KCellularMmCommonInfo *)self roamingFlaiListsCount];
+    if (roamingFlaiListsCount)
     {
-      v10 = v9;
+      v10 = roamingFlaiListsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(KCellularMmCommonInfo *)self roamingFlaiListAtIndex:j];
@@ -561,10 +561,10 @@
   if ([(KCellularMmCommonInfo *)self regProvFlaiListsCount])
   {
     [v25 clearRegProvFlaiLists];
-    v13 = [(KCellularMmCommonInfo *)self regProvFlaiListsCount];
-    if (v13)
+    regProvFlaiListsCount = [(KCellularMmCommonInfo *)self regProvFlaiListsCount];
+    if (regProvFlaiListsCount)
     {
-      v14 = v13;
+      v14 = regProvFlaiListsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(KCellularMmCommonInfo *)self regProvFlaiListAtIndex:k];
@@ -576,10 +576,10 @@
   if ([(KCellularMmCommonInfo *)self roamingFtaiListsCount])
   {
     [v25 clearRoamingFtaiLists];
-    v17 = [(KCellularMmCommonInfo *)self roamingFtaiListsCount];
-    if (v17)
+    roamingFtaiListsCount = [(KCellularMmCommonInfo *)self roamingFtaiListsCount];
+    if (roamingFtaiListsCount)
     {
-      v18 = v17;
+      v18 = roamingFtaiListsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(KCellularMmCommonInfo *)self roamingFtaiListAtIndex:m];
@@ -591,10 +591,10 @@
   if ([(KCellularMmCommonInfo *)self regProvFtaiListsCount])
   {
     [v25 clearRegProvFtaiLists];
-    v21 = [(KCellularMmCommonInfo *)self regProvFtaiListsCount];
-    if (v21)
+    regProvFtaiListsCount = [(KCellularMmCommonInfo *)self regProvFtaiListsCount];
+    if (regProvFtaiListsCount)
     {
-      v22 = v21;
+      v22 = regProvFtaiListsCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(KCellularMmCommonInfo *)self regProvFtaiListAtIndex:n];
@@ -610,9 +610,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -620,7 +620,7 @@
     *(v5 + 68) |= 1u;
   }
 
-  v7 = [(NSData *)self->_imsi copyWithZone:a3];
+  v7 = [(NSData *)self->_imsi copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -644,7 +644,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v56 + 1) + 8 * v13) copyWithZone:a3];
+        v14 = [*(*(&v56 + 1) + 8 * v13) copyWithZone:zone];
         [v6 addEplmnList:v14];
 
         v13 = v13 + 1;
@@ -677,7 +677,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v52 + 1) + 8 * v19) copyWithZone:a3];
+        v20 = [*(*(&v52 + 1) + 8 * v19) copyWithZone:zone];
         [v6 addRoamingFlaiList:v20];
 
         v19 = v19 + 1;
@@ -710,7 +710,7 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v48 + 1) + 8 * v25) copyWithZone:a3];
+        v26 = [*(*(&v48 + 1) + 8 * v25) copyWithZone:zone];
         [v6 addRegProvFlaiList:v26];
 
         v25 = v25 + 1;
@@ -743,7 +743,7 @@
           objc_enumerationMutation(v27);
         }
 
-        v32 = [*(*(&v44 + 1) + 8 * v31) copyWithZone:a3];
+        v32 = [*(*(&v44 + 1) + 8 * v31) copyWithZone:zone];
         [v6 addRoamingFtaiList:v32];
 
         v31 = v31 + 1;
@@ -776,7 +776,7 @@
           objc_enumerationMutation(v33);
         }
 
-        v38 = [*(*(&v40 + 1) + 8 * v37) copyWithZone:{a3, v40}];
+        v38 = [*(*(&v40 + 1) + 8 * v37) copyWithZone:{zone, v40}];
         [v6 addRegProvFtaiList:v38];
 
         v37 = v37 + 1;
@@ -798,24 +798,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
 LABEL_23:
     v12 = 0;
@@ -823,13 +823,13 @@ LABEL_23:
   }
 
   imsi = self->_imsi;
-  if (imsi | *(v4 + 3) && ![(NSData *)imsi isEqual:?])
+  if (imsi | *(equalCopy + 3) && ![(NSData *)imsi isEqual:?])
   {
     goto LABEL_23;
   }
 
   eplmnLists = self->_eplmnLists;
-  if (eplmnLists | *(v4 + 2))
+  if (eplmnLists | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)eplmnLists isEqual:?])
     {
@@ -838,7 +838,7 @@ LABEL_23:
   }
 
   roamingFlaiLists = self->_roamingFlaiLists;
-  if (roamingFlaiLists | *(v4 + 6))
+  if (roamingFlaiLists | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)roamingFlaiLists isEqual:?])
     {
@@ -847,7 +847,7 @@ LABEL_23:
   }
 
   regProvFlaiLists = self->_regProvFlaiLists;
-  if (regProvFlaiLists | *(v4 + 4))
+  if (regProvFlaiLists | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)regProvFlaiLists isEqual:?])
     {
@@ -856,7 +856,7 @@ LABEL_23:
   }
 
   roamingFtaiLists = self->_roamingFtaiLists;
-  if (roamingFtaiLists | *(v4 + 7))
+  if (roamingFtaiLists | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)roamingFtaiLists isEqual:?])
     {
@@ -865,7 +865,7 @@ LABEL_23:
   }
 
   regProvFtaiLists = self->_regProvFtaiLists;
-  if (regProvFtaiLists | *(v4 + 5))
+  if (regProvFtaiLists | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)regProvFtaiLists isEqual:?])
     {
@@ -873,10 +873,10 @@ LABEL_23:
     }
   }
 
-  v12 = (*(v4 + 68) & 2) == 0;
+  v12 = (*(equalCopy + 68) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_subsId != *(v4 + 16))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_subsId != *(equalCopy + 16))
     {
       goto LABEL_23;
     }
@@ -920,17 +920,17 @@ LABEL_24:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 68))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 68))
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(KCellularMmCommonInfo *)self setImsi:?];
   }

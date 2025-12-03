@@ -1,37 +1,37 @@
 @interface CKConversationListCollectionViewConversationCell
 + (Class)conversationCellClassForCurrentSizeCategory;
-+ (double)cellHeightForDisplayScale:(double)a3;
-+ (id)identifierForConversation:(id)a3;
++ (double)cellHeightForDisplayScale:(double)scale;
++ (id)identifierForConversation:(id)conversation;
 + (id)reuseIdentifier;
-- (BOOL)avatarView:(id)a3 shouldShowContact:(id)a4;
+- (BOOL)avatarView:(id)view shouldShowContact:(id)contact;
 - (BOOL)shouldHidePreviewSummary;
 - (CKConversationListCollectionViewCellDelegate)delegate;
-- (CKConversationListCollectionViewConversationCell)initWithFrame:(CGRect)a3;
+- (CKConversationListCollectionViewConversationCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)marginInsets;
 - (double)widthForDeterminingAvatarVisibility;
 - (id)avatarView;
 - (id)footer;
 - (id)summaryLabelTextColor;
-- (void)avatarHeaderWasTappedForConversation:(id)a3 inCell:(id)a4;
-- (void)didHoverOverCell:(id)a3;
-- (void)dragStateDidChange:(int64_t)a3;
-- (void)forceUnreadIndicatorVisibility:(BOOL)a3 forConversation:(id)a4 animated:(BOOL)a5;
+- (void)avatarHeaderWasTappedForConversation:(id)conversation inCell:(id)cell;
+- (void)didHoverOverCell:(id)cell;
+- (void)dragStateDidChange:(int64_t)change;
+- (void)forceUnreadIndicatorVisibility:(BOOL)visibility forConversation:(id)conversation animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)selectedDeleteButtonForConversation:(id)a3 inCell:(id)a4;
-- (void)setEditingMode:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setMarginInsets:(UIEdgeInsets)a3;
-- (void)setShouldHidePreviewSummary:(BOOL)a3;
-- (void)updateContentsForConversation:(id)a3;
-- (void)updateContentsForConversation:(id)a3 fastPreview:(BOOL)a4;
+- (void)selectedDeleteButtonForConversation:(id)conversation inCell:(id)cell;
+- (void)setEditingMode:(unint64_t)mode animated:(BOOL)animated;
+- (void)setMarginInsets:(UIEdgeInsets)insets;
+- (void)setShouldHidePreviewSummary:(BOOL)summary;
+- (void)updateContentsForConversation:(id)conversation;
+- (void)updateContentsForConversation:(id)conversation fastPreview:(BOOL)preview;
 @end
 
 @implementation CKConversationListCollectionViewConversationCell
 
 + (id)reuseIdentifier
 {
-  v2 = [a1 conversationCellClassForCurrentSizeCategory];
+  conversationCellClassForCurrentSizeCategory = [self conversationCellClassForCurrentSizeCategory];
 
-  return [v2 reuseIdentifier];
+  return [conversationCellClassForCurrentSizeCategory reuseIdentifier];
 }
 
 + (Class)conversationCellClassForCurrentSizeCategory
@@ -46,17 +46,17 @@
 
 - (id)avatarView
 {
-  v2 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  v3 = [v2 avatarView];
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  avatarView = [embeddedConversationTableViewCell avatarView];
 
-  return v3;
+  return avatarView;
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
   [(CKConversationListCollectionViewConversationCell *)self bounds];
-  [v3 setContainerBounds:?];
+  [embeddedConversationTableViewCell setContainerBounds:?];
 
   v4.receiver = self;
   v4.super_class = CKConversationListCollectionViewConversationCell;
@@ -65,8 +65,8 @@
 
 - (double)widthForDeterminingAvatarVisibility
 {
-  v2 = [(CKConversationListCollectionViewConversationCell *)self delegate];
-  [v2 widthForDeterminingAvatarVisibility];
+  delegate = [(CKConversationListCollectionViewConversationCell *)self delegate];
+  [delegate widthForDeterminingAvatarVisibility];
   v4 = v3;
 
   return v4;
@@ -79,121 +79,121 @@
   return WeakRetained;
 }
 
-+ (id)identifierForConversation:(id)a3
++ (id)identifierForConversation:(id)conversation
 {
   v3 = objc_opt_class();
 
   return NSStringFromClass(v3);
 }
 
-+ (double)cellHeightForDisplayScale:(double)a3
++ (double)cellHeightForDisplayScale:(double)scale
 {
-  v4 = [a1 conversationCellClassForCurrentSizeCategory];
+  conversationCellClassForCurrentSizeCategory = [self conversationCellClassForCurrentSizeCategory];
 
-  [v4 cellHeightForDisplayScale:a3];
+  [conversationCellClassForCurrentSizeCategory cellHeightForDisplayScale:scale];
   return result;
 }
 
 - (BOOL)shouldHidePreviewSummary
 {
-  v2 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  v3 = [v2 shouldHidePreviewSummary];
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  shouldHidePreviewSummary = [embeddedConversationTableViewCell shouldHidePreviewSummary];
 
-  return v3;
+  return shouldHidePreviewSummary;
 }
 
-- (void)setShouldHidePreviewSummary:(BOOL)a3
+- (void)setShouldHidePreviewSummary:(BOOL)summary
 {
-  v3 = a3;
-  v4 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  [v4 setShouldHidePreviewSummary:v3];
+  summaryCopy = summary;
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  [embeddedConversationTableViewCell setShouldHidePreviewSummary:summaryCopy];
 }
 
-- (void)updateContentsForConversation:(id)a3
+- (void)updateContentsForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  [v5 updateContentsForConversation:v4];
+  conversationCopy = conversation;
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  [embeddedConversationTableViewCell updateContentsForConversation:conversationCopy];
 }
 
-- (void)updateContentsForConversation:(id)a3 fastPreview:(BOOL)a4
+- (void)updateContentsForConversation:(id)conversation fastPreview:(BOOL)preview
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  [v7 updateContentsForConversation:v6 fastPreview:v4];
+  previewCopy = preview;
+  conversationCopy = conversation;
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  [embeddedConversationTableViewCell updateContentsForConversation:conversationCopy fastPreview:previewCopy];
 }
 
-- (BOOL)avatarView:(id)a3 shouldShowContact:(id)a4
+- (BOOL)avatarView:(id)view shouldShowContact:(id)contact
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  v9 = [v8 avatarView:v7 shouldShowContact:v6];
+  contactCopy = contact;
+  viewCopy = view;
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  v9 = [embeddedConversationTableViewCell avatarView:viewCopy shouldShowContact:contactCopy];
 
   return v9;
 }
 
-- (void)setEditingMode:(unint64_t)a3 animated:(BOOL)a4
+- (void)setEditingMode:(unint64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v8.receiver = self;
   v8.super_class = CKConversationListCollectionViewConversationCell;
   [CKConversationListEmbeddedCollectionViewCell setEditingMode:sel_setEditingMode_animated_ animated:?];
-  v7 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  [v7 setEditingPins:a3 == 2 animated:v4];
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  [embeddedConversationTableViewCell setEditingPins:mode == 2 animated:animatedCopy];
 }
 
 - (id)footer
 {
-  v2 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  v3 = [v2 footer];
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  footer = [embeddedConversationTableViewCell footer];
 
-  return v3;
+  return footer;
 }
 
-- (void)forceUnreadIndicatorVisibility:(BOOL)a3 forConversation:(id)a4 animated:(BOOL)a5
+- (void)forceUnreadIndicatorVisibility:(BOOL)visibility forConversation:(id)conversation animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a3;
-  v8 = a4;
-  v9 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  [v9 forceUnreadIndicatorVisibility:v6 forConversation:v8 animated:v5];
+  animatedCopy = animated;
+  visibilityCopy = visibility;
+  conversationCopy = conversation;
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  [embeddedConversationTableViewCell forceUnreadIndicatorVisibility:visibilityCopy forConversation:conversationCopy animated:animatedCopy];
 }
 
-- (void)avatarHeaderWasTappedForConversation:(id)a3 inCell:(id)a4
+- (void)avatarHeaderWasTappedForConversation:(id)conversation inCell:(id)cell
 {
-  v5 = a3;
-  v6 = [(CKConversationListCollectionViewConversationCell *)self delegate];
-  [v6 avatarHeaderWasTappedForConversation:v5];
+  conversationCopy = conversation;
+  delegate = [(CKConversationListCollectionViewConversationCell *)self delegate];
+  [delegate avatarHeaderWasTappedForConversation:conversationCopy];
 }
 
-- (void)selectedDeleteButtonForConversation:(id)a3 inCell:(id)a4
+- (void)selectedDeleteButtonForConversation:(id)conversation inCell:(id)cell
 {
-  v5 = a3;
-  v6 = [(CKConversationListCollectionViewConversationCell *)self delegate];
-  [v6 selectedDeleteButtonForConversation:v5 inCell:self];
+  conversationCopy = conversation;
+  delegate = [(CKConversationListCollectionViewConversationCell *)self delegate];
+  [delegate selectedDeleteButtonForConversation:conversationCopy inCell:self];
 }
 
-- (CKConversationListCollectionViewConversationCell)initWithFrame:(CGRect)a3
+- (CKConversationListCollectionViewConversationCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = CKConversationListCollectionViewConversationCell;
-  v3 = [(CKConversationListEmbeddedCollectionViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKConversationListEmbeddedCollectionViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(CKConversationListCollectionViewConversationCell *)v3 embeddedConversationTableViewCell];
-    [v5 setDelegate:v4];
+    embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)v3 embeddedConversationTableViewCell];
+    [embeddedConversationTableViewCell setDelegate:v4];
 
-    v6 = [(CKConversationListCollectionViewConversationCell *)v4 embeddedConversationTableViewCell];
+    embeddedConversationTableViewCell2 = [(CKConversationListCollectionViewConversationCell *)v4 embeddedConversationTableViewCell];
     [(CKConversationListCollectionViewConversationCell *)v4 bounds];
-    [v6 setContainerBounds:?];
+    [embeddedConversationTableViewCell2 setContainerBounds:?];
 
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 showsHoverToDeleteButton];
+    showsHoverToDeleteButton = [v7 showsHoverToDeleteButton];
 
-    if (v8)
+    if (showsHoverToDeleteButton)
     {
       v9 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:v4 action:sel_didHoverOverCell_];
       [(CKConversationListCollectionViewConversationCell *)v4 addGestureRecognizer:v9];
@@ -203,37 +203,37 @@
   return v4;
 }
 
-- (void)didHoverOverCell:(id)a3
+- (void)didHoverOverCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  [v5 didHoverOverCell:v4];
+  cellCopy = cell;
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  [embeddedConversationTableViewCell didHoverOverCell:cellCopy];
 }
 
-- (void)setMarginInsets:(UIEdgeInsets)a3
+- (void)setMarginInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  self->_marginInsets = a3;
-  v7 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  [v7 setMarginInsets:{top, left, bottom, right}];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  self->_marginInsets = insets;
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  [embeddedConversationTableViewCell setMarginInsets:{top, left, bottom, right}];
 }
 
 - (id)summaryLabelTextColor
 {
-  v2 = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
-  v3 = [v2 summaryLabelTextColor];
+  embeddedConversationTableViewCell = [(CKConversationListCollectionViewConversationCell *)self embeddedConversationTableViewCell];
+  summaryLabelTextColor = [embeddedConversationTableViewCell summaryLabelTextColor];
 
-  return v3;
+  return summaryLabelTextColor;
 }
 
-- (void)dragStateDidChange:(int64_t)a3
+- (void)dragStateDidChange:(int64_t)change
 {
   v6.receiver = self;
   v6.super_class = CKConversationListCollectionViewConversationCell;
-  [(CKConversationListCollectionViewConversationCell *)&v6 dragStateDidChange:a3];
+  [(CKConversationListCollectionViewConversationCell *)&v6 dragStateDidChange:change];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = [WeakRetained listCellIsBeingDisplayedAsGhostedCellInPinnedSection:self];
 

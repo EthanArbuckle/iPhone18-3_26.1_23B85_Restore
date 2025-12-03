@@ -1,6 +1,6 @@
 @interface WDClinicalGatewayProxy
 - (WDClinicalGatewayProxy)init;
-- (WDClinicalGatewayProxy)initWithGatewayID:(id)a3 batchID:(id)a4;
+- (WDClinicalGatewayProxy)initWithGatewayID:(id)d batchID:(id)iD;
 @end
 
 @implementation WDClinicalGatewayProxy
@@ -15,20 +15,20 @@
   return 0;
 }
 
-- (WDClinicalGatewayProxy)initWithGatewayID:(id)a3 batchID:(id)a4
+- (WDClinicalGatewayProxy)initWithGatewayID:(id)d batchID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = WDClinicalGatewayProxy;
   v8 = [(WDClinicalGatewayProxy *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     gatewayID = v8->_gatewayID;
     v8->_gatewayID = v9;
 
-    v11 = [v7 copy];
+    v11 = [iDCopy copy];
     batchID = v8->_batchID;
     v8->_batchID = v11;
   }

@@ -1,20 +1,20 @@
 @interface NNMKProtoMessageStatusUpdate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasUpdatedStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasUpdatedStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoMessageStatusUpdate
 
-- (void)setHasUpdatedStatus:(BOOL)a3
+- (void)setHasUpdatedStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoMessageStatusUpdate;
   v4 = [(NNMKProtoMessageStatusUpdate *)&v8 description];
-  v5 = [(NNMKProtoMessageStatusUpdate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoMessageStatusUpdate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   messageId = self->_messageId;
   if (messageId)
   {
-    [v3 setObject:messageId forKey:@"messageId"];
+    [dictionary setObject:messageId forKey:@"messageId"];
   }
 
   has = self->_has;
@@ -67,14 +67,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_messageId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -82,7 +82,7 @@
   {
     updatedStatus = self->_updatedStatus;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -90,39 +90,39 @@
   {
     statusVersion = self->_statusVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_messageId)
   {
-    v6 = v4;
-    [v4 setMessageId:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setMessageId:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = self->_updatedStatus;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 5) = self->_updatedStatus;
+    *(toCopy + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 4) = self->_statusVersion;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 4) = self->_statusVersion;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_messageId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_messageId copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -143,16 +143,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   messageId = self->_messageId;
-  if (messageId | *(v4 + 1))
+  if (messageId | *(equalCopy + 1))
   {
     if (![(NSString *)messageId isEqual:?])
     {
@@ -162,23 +162,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_updatedStatus != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_updatedStatus != *(equalCopy + 5))
     {
       goto LABEL_13;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_statusVersion != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_statusVersion != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
@@ -218,27 +218,27 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NNMKProtoMessageStatusUpdate *)self setMessageId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) != 0)
   {
-    self->_updatedStatus = v4[5];
+    self->_updatedStatus = fromCopy[5];
     *&self->_has |= 2u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
   }
 
   if (v5)
   {
-    self->_statusVersion = v4[4];
+    self->_statusVersion = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

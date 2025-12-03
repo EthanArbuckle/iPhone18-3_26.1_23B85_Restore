@@ -1,14 +1,14 @@
 @interface ASMPeripheralControlServices
 - (ASMPeripheralControlServices)init;
-- (ASMPeripheralControlServices)initWithCoder:(id)a3;
+- (ASMPeripheralControlServices)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
 - (id)description;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)modifyPeripheralConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)writeWithData:(id)a3 characteristic:(id)a4 identifier:(id)a5 completion:(id)a6;
+- (void)modifyPeripheralConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion;
+- (void)writeWithData:(id)data characteristic:(id)characteristic identifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation ASMPeripheralControlServices
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (ASMPeripheralControlServices)initWithCoder:(id)a3
+- (ASMPeripheralControlServices)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASMPeripheralControlServices *)self init];
   if (v5)
   {
@@ -45,12 +45,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientID = self->_clientID;
   if (clientID)
   {
-    [a3 encodeInt64:clientID forKey:@"cid"];
+    [coder encodeInt64:clientID forKey:@"cid"];
   }
 }
 
@@ -195,23 +195,23 @@ uint64_t __42__ASMPeripheralControlServices_invalidate__block_invoke(uint64_t re
   }
 }
 
-- (void)modifyPeripheralConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)modifyPeripheralConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__ASMPeripheralControlServices_modifyPeripheralConfiguration_identifier_completion___block_invoke;
   v15[3] = &unk_278BF7668;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = configurationCopy;
+  v17 = identifierCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = configurationCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -272,26 +272,26 @@ uint64_t __84__ASMPeripheralControlServices_modifyPeripheralConfiguration_identi
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)writeWithData:(id)a3 characteristic:(id)a4 identifier:(id)a5 completion:(id)a6
+- (void)writeWithData:(id)data characteristic:(id)characteristic identifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  characteristicCopy = characteristic;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__ASMPeripheralControlServices_writeWithData_characteristic_identifier_completion___block_invoke;
   block[3] = &unk_278BF7690;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = self;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = dataCopy;
+  v21 = characteristicCopy;
+  v22 = identifierCopy;
+  selfCopy = self;
+  v24 = completionCopy;
+  v15 = completionCopy;
+  v16 = identifierCopy;
+  v17 = characteristicCopy;
+  v18 = dataCopy;
   dispatch_async(dispatchQueue, block);
 }
 

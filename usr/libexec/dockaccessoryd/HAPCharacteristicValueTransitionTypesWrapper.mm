@@ -1,34 +1,34 @@
 @interface HAPCharacteristicValueTransitionTypesWrapper
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueTransitionTypesWrapper)init;
-- (HAPCharacteristicValueTransitionTypesWrapper)initWithValue:(unint64_t)a3;
+- (HAPCharacteristicValueTransitionTypesWrapper)initWithValue:(unint64_t)value;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueTransitionTypesWrapper
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueTransitionTypesWrapper);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueTransitionTypesWrapper *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueTransitionTypesWrapper *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -54,37 +54,37 @@
   return result;
 }
 
-- (HAPCharacteristicValueTransitionTypesWrapper)initWithValue:(unint64_t)a3
+- (HAPCharacteristicValueTransitionTypesWrapper)initWithValue:(unint64_t)value
 {
   v5.receiver = self;
   v5.super_class = HAPCharacteristicValueTransitionTypesWrapper;
   result = [(HAPCharacteristicValueTransitionTypesWrapper *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
-    if (![v6 length])
+    *error = 0;
+    if (![dataCopy length])
     {
       v8 = [NSError errorWithDomain:HMFErrorDomain code:3 userInfo:0];
       v9 = 0;
 LABEL_8:
-      *a4 = v8;
+      *error = v8;
       goto LABEL_11;
     }
   }
 
-  else if (![v6 length])
+  else if (![dataCopy length])
   {
     v9 = 0;
     goto LABEL_11;
@@ -99,7 +99,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (error)
   {
     v8 = sub_100041618(v12);
     goto LABEL_8;
@@ -110,25 +110,25 @@ LABEL_11:
   return v9;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
-  v3 = [(HAPCharacteristicValueTransitionTypesWrapper *)self value];
+  value = [(HAPCharacteristicValueTransitionTypesWrapper *)self value];
 
-  return sub_100021858(v3);
+  return sub_100021858(value);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueTransitionTypesWrapper allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueTransitionTypesWrapper *)self value];
+  v4 = [HAPCharacteristicValueTransitionTypesWrapper allocWithZone:zone];
+  value = [(HAPCharacteristicValueTransitionTypesWrapper *)self value];
 
-  return [(HAPCharacteristicValueTransitionTypesWrapper *)v4 initWithValue:v5];
+  return [(HAPCharacteristicValueTransitionTypesWrapper *)v4 initWithValue:value];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -138,11 +138,11 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPCharacteristicValueTransitionTypesWrapper *)self value];
-      v7 = [(HAPCharacteristicValueTransitionTypesWrapper *)v5 value];
+      v5 = equalCopy;
+      value = [(HAPCharacteristicValueTransitionTypesWrapper *)self value];
+      value2 = [(HAPCharacteristicValueTransitionTypesWrapper *)v5 value];
 
-      v8 = v6 == v7;
+      v8 = value == value2;
     }
 
     else

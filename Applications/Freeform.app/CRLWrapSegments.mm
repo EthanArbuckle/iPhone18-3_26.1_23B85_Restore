@@ -1,12 +1,12 @@
 @interface CRLWrapSegments
 - (CGRect)bounds;
 - (CRLWrapSegments)init;
-- (CRLWrapSegments)initWithPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)wrapSegmentsByApplyingAffineTransform:(CGAffineTransform *)a3;
+- (CRLWrapSegments)initWithPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)wrapSegmentsByApplyingAffineTransform:(CGAffineTransform *)transform;
 - (void)dealloc;
-- (void)p_buildSegmentsForPath:(id)a3;
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3;
+- (void)p_buildSegmentsForPath:(id)path;
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation CRLWrapSegments
@@ -26,26 +26,26 @@
   return result;
 }
 
-- (CRLWrapSegments)initWithPath:(id)a3
+- (CRLWrapSegments)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = CRLWrapSegments;
   v5 = [(CRLWrapSegments *)&v9 init];
   if (v5)
   {
-    if ([v4 isFlat])
+    if ([pathCopy isFlat])
     {
-      v6 = v4;
+      bezierPathByFlatteningPath = pathCopy;
     }
 
     else
     {
-      v6 = [v4 bezierPathByFlatteningPath];
+      bezierPathByFlatteningPath = [pathCopy bezierPathByFlatteningPath];
     }
 
-    v7 = v6;
-    [(CRLWrapSegments *)v5 p_buildSegmentsForPath:v6];
+    v7 = bezierPathByFlatteningPath;
+    [(CRLWrapSegments *)v5 p_buildSegmentsForPath:bezierPathByFlatteningPath];
   }
 
   return v5;
@@ -64,7 +64,7 @@
   [(CRLWrapSegments *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CRLWrapSegments allocWithZone:?]];
   v5 = malloc_type_calloc(self->mSegmentCount, 0x20uLL, 0x1000040E0EAB150uLL);
@@ -90,24 +90,24 @@
   return result;
 }
 
-- (id)wrapSegmentsByApplyingAffineTransform:(CGAffineTransform *)a3
+- (id)wrapSegmentsByApplyingAffineTransform:(CGAffineTransform *)transform
 {
   v4 = [(CRLWrapSegments *)self copy];
-  v5 = *&a3->c;
-  v7[0] = *&a3->a;
+  v5 = *&transform->c;
+  v7[0] = *&transform->a;
   v7[1] = v5;
-  v7[2] = *&a3->tx;
+  v7[2] = *&transform->tx;
   [v4 transformUsingAffineTransform:v7];
 
   return v4;
 }
 
-- (void)transformUsingAffineTransform:(CGAffineTransform *)a3
+- (void)transformUsingAffineTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->c;
-  *&v21.a = *&a3->a;
+  v5 = *&transform->c;
+  *&v21.a = *&transform->a;
   *&v21.c = v5;
-  *&v21.tx = *&a3->tx;
+  *&v21.tx = *&transform->tx;
   if (!CGAffineTransformIsIdentity(&v21))
   {
     mSegmentCount = self->mSegmentCount;
@@ -120,10 +120,10 @@
       v11 = 2.22507386e-308;
       do
       {
-        v12 = *&a3->c;
-        v13 = *&a3->tx;
-        v14 = vaddq_f64(v13, vmlaq_n_f64(vmulq_n_f64(v12, p_var1[-1].y), *&a3->a, p_var1[-1].x));
-        v15 = vaddq_f64(v13, vmlaq_n_f64(vmulq_n_f64(v12, p_var1->y), *&a3->a, p_var1->x));
+        v12 = *&transform->c;
+        v13 = *&transform->tx;
+        v14 = vaddq_f64(v13, vmlaq_n_f64(vmulq_n_f64(v12, p_var1[-1].y), *&transform->a, p_var1[-1].x));
+        v15 = vaddq_f64(v13, vmlaq_n_f64(vmulq_n_f64(v12, p_var1->y), *&transform->a, p_var1->x));
         v16 = vdup_n_s32(*&v14.i64[1] < *&v15.i64[1]);
         v17.i64[0] = v16.u32[0];
         v17.i64[1] = v16.u32[1];
@@ -190,10 +190,10 @@
   }
 }
 
-- (void)p_buildSegmentsForPath:(id)a3
+- (void)p_buildSegmentsForPath:(id)path
 {
-  v4 = a3;
-  if (([v4 isFlat] & 1) == 0)
+  pathCopy = path;
+  if (([pathCopy isFlat] & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -257,10 +257,10 @@
   self->mBounds.size = size;
   *p_mSegments = 0;
   self->mSegmentCount = 0;
-  if ([v4 elementCount] >= 1)
+  if ([pathCopy elementCount] >= 1)
   {
-    *p_mSegments = malloc_type_calloc([v4 elementCount], 0x20uLL, 0x1000040E0EAB150uLL);
-    if ([v4 elementCount] >= 1)
+    *p_mSegments = malloc_type_calloc([pathCopy elementCount], 0x20uLL, 0x1000040E0EAB150uLL);
+    if ([pathCopy elementCount] >= 1)
     {
       v13 = 0;
       v14 = 0;
@@ -277,7 +277,7 @@
       v23 = y;
       while (1)
       {
-        v24 = [v4 elementAtIndex:v15 associatedPoints:{&v59, *&v48}];
+        v24 = [pathCopy elementAtIndex:v15 associatedPoints:{&v59, *&v48}];
         if (v24 == 3)
         {
           if (x == v49 && y == v21)
@@ -525,7 +525,7 @@ LABEL_85:
         }
 
 LABEL_88:
-        if (++v15 >= [v4 elementCount])
+        if (++v15 >= [pathCopy elementCount])
         {
           goto LABEL_91;
         }

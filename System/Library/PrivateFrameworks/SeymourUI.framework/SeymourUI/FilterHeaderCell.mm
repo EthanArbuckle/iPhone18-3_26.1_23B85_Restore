@@ -1,9 +1,9 @@
 @interface FilterHeaderCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)tappedFilterButton:(id)a3;
-- (void)textSizeChanged:(id)a3;
+- (void)tappedFilterButton:(id)button;
+- (void)textSizeChanged:(id)changed;
 - (void)tintColorDidChange;
 @end
 
@@ -16,9 +16,9 @@
   v2 = v5.receiver;
   [(FilterHeaderCell *)&v5 layoutSubviews];
   v3 = OBJC_IVAR____TtC9SeymourUI16FilterHeaderCell_filterButton;
-  v4 = [*&v2[OBJC_IVAR____TtC9SeymourUI16FilterHeaderCell_filterButton] layer];
+  layer = [*&v2[OBJC_IVAR____TtC9SeymourUI16FilterHeaderCell_filterButton] layer];
   [*&v2[v3] bounds];
-  [v4 setCornerRadius_];
+  [layer setCornerRadius_];
 }
 
 - (void)prepareForReuse
@@ -29,25 +29,25 @@
   v6 = type metadata accessor for FilterHeaderCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(FilterHeaderCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI16FilterHeaderCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = [(FilterHeaderCell *)v9 contentView];
-  *&v11 = a4;
-  *&v12 = a5;
-  [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  contentView = [(FilterHeaderCell *)selfCopy contentView];
+  *&v11 = priority;
+  *&v12 = fittingPriority;
+  [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
   v14 = v13;
   v16 = v15;
 
@@ -60,25 +60,25 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BB4B9B4();
 }
 
-- (void)tappedFilterButton:(id)a3
+- (void)tappedFilterButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_20BB4CD94();
 }
 
-- (void)textSizeChanged:(id)a3
+- (void)textSizeChanged:(id)changed
 {
   v4 = sub_20C132614();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1325E4();
-  v8 = self;
+  selfCopy = self;
   sub_20BB4BCAC();
 
   (*(v5 + 8))(v7, v4);

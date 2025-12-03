@@ -1,9 +1,9 @@
 @interface HKStateMachineTransition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKStateMachineState)fromState;
 - (HKStateMachineState)toState;
 - (HKStateMachineTransition)init;
-- (HKStateMachineTransition)initWithEvent:(int64_t)a3 label:(id)a4 from:(id)a5 to:(id)a6;
+- (HKStateMachineTransition)initWithEvent:(int64_t)event label:(id)label from:(id)from to:(id)to;
 - (id)description;
 @end
 
@@ -19,24 +19,24 @@
   return 0;
 }
 
-- (HKStateMachineTransition)initWithEvent:(int64_t)a3 label:(id)a4 from:(id)a5 to:(id)a6
+- (HKStateMachineTransition)initWithEvent:(int64_t)event label:(id)label from:(id)from to:(id)to
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  labelCopy = label;
+  fromCopy = from;
+  toCopy = to;
   v18.receiver = self;
   v18.super_class = HKStateMachineTransition;
   v13 = [(HKStateMachineTransition *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_event = a3;
-    v15 = [v10 copy];
+    v13->_event = event;
+    v15 = [labelCopy copy];
     label = v14->_label;
     v14->_label = v15;
 
-    objc_storeWeak(&v14->_fromState, v11);
-    objc_storeWeak(&v14->_toState, v12);
+    objc_storeWeak(&v14->_fromState, fromCopy);
+    objc_storeWeak(&v14->_toState, toCopy);
   }
 
   return v14;
@@ -54,21 +54,21 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     event = self->_event;
-    if (v4[1] && [(NSString *)self->_label isEqualToString:v4[2]])
+    if (equalCopy[1] && [(NSString *)self->_label isEqualToString:equalCopy[2]])
     {
       WeakRetained = objc_loadWeakRetained(&self->_toState);
-      v7 = objc_loadWeakRetained(v4 + 4);
+      v7 = objc_loadWeakRetained(equalCopy + 4);
       if ([WeakRetained isEqual:v7])
       {
         v8 = objc_loadWeakRetained(&self->_fromState);
-        v9 = objc_loadWeakRetained(v4 + 3);
+        v9 = objc_loadWeakRetained(equalCopy + 3);
         v10 = [v8 isEqual:v9];
       }
 

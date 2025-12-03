@@ -1,10 +1,10 @@
 @interface NTKUltraCubePhoto
-+ (BOOL)validateDictionary:(id)a3;
-+ (id)decodeFromDictionary:(id)a3 forResourceDirectory:(id)a4;
++ (BOOL)validateDictionary:(id)dictionary;
++ (id)decodeFromDictionary:(id)dictionary forResourceDirectory:(id)directory;
 - (CGRect)originalCrop;
 - (NSString)uniqueIdentifier;
 - (NTKUltraCubePhoto)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsDictionary;
 @end
 
@@ -25,23 +25,23 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_localIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_localIdentifier copyWithZone:zone];
   [v5 setLocalIdentifier:v6];
 
-  v7 = [(NSDate *)self->_modificationDate copyWithZone:a3];
+  v7 = [(NSDate *)self->_modificationDate copyWithZone:zone];
   [v5 setModificationDate:v7];
 
   [v5 setOriginalCrop:{self->_originalCrop.origin.x, self->_originalCrop.origin.y, self->_originalCrop.size.width, self->_originalCrop.size.height}];
-  v8 = [(NSURL *)self->_baseImageURL copyWithZone:a3];
+  v8 = [(NSURL *)self->_baseImageURL copyWithZone:zone];
   [v5 setBaseImageURL:v8];
 
-  v9 = [(NSURL *)self->_maskImageURL copyWithZone:a3];
+  v9 = [(NSURL *)self->_maskImageURL copyWithZone:zone];
   [v5 setMaskImageURL:v9];
 
-  v10 = [(NSURL *)self->_backgroundImageURL copyWithZone:a3];
+  v10 = [(NSURL *)self->_backgroundImageURL copyWithZone:zone];
   [v5 setBackgroundImageURL:v10];
 
   [v5 setTimeElementUnitBaseline:self->_timeElementUnitBaseline];
@@ -56,106 +56,106 @@
   return v5;
 }
 
-+ (id)decodeFromDictionary:(id)a3 forResourceDirectory:(id)a4
++ (id)decodeFromDictionary:(id)dictionary forResourceDirectory:(id)directory
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"localIdentifier"];
+  dictionaryCopy = dictionary;
+  directoryCopy = directory;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"localIdentifier"];
   if (v7)
   {
     v8 = v7;
-    v9 = [v5 objectForKeyedSubscript:@"modificationDate"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"modificationDate"];
     if (v9)
     {
       v10 = v9;
-      v11 = [v5 objectForKeyedSubscript:@"baseImageURL"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"baseImageURL"];
 
       if (v11)
       {
         v12 = objc_opt_new();
-        v13 = [v5 objectForKeyedSubscript:@"localIdentifier"];
+        v13 = [dictionaryCopy objectForKeyedSubscript:@"localIdentifier"];
         [v12 setLocalIdentifier:v13];
 
-        v14 = [v5 objectForKeyedSubscript:@"modificationDate"];
+        v14 = [dictionaryCopy objectForKeyedSubscript:@"modificationDate"];
         [v12 setModificationDate:v14];
 
-        v15 = [v5 objectForKeyedSubscript:@"baseImageURL"];
-        v16 = [v6 stringByAppendingPathComponent:v15];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"baseImageURL"];
+        v16 = [directoryCopy stringByAppendingPathComponent:v15];
 
         v17 = [[NSURL alloc] initFileURLWithPath:v16 isDirectory:0];
         [v12 setBaseImageURL:v17];
 
-        v18 = [v5 objectForKeyedSubscript:@"maskImageURL"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"maskImageURL"];
         if (v18)
         {
-          v19 = [v6 stringByAppendingPathComponent:v18];
+          v19 = [directoryCopy stringByAppendingPathComponent:v18];
           v20 = [[NSURL alloc] initFileURLWithPath:v19 isDirectory:0];
           [v12 setMaskImageURL:v20];
         }
 
-        v21 = [v5 objectForKeyedSubscript:@"backgroundImageURL"];
+        v21 = [dictionaryCopy objectForKeyedSubscript:@"backgroundImageURL"];
         if (v21)
         {
-          v22 = [v6 stringByAppendingPathComponent:v21];
+          v22 = [directoryCopy stringByAppendingPathComponent:v21];
           v23 = [[NSURL alloc] initFileURLWithPath:v22 isDirectory:0];
           [v12 setBackgroundImageURL:v23];
         }
 
-        v24 = [v5 objectForKeyedSubscript:@"originalCropX"];
+        v24 = [dictionaryCopy objectForKeyedSubscript:@"originalCropX"];
         [v24 doubleValue];
         v26 = v25;
 
-        v27 = [v5 objectForKeyedSubscript:@"originalCropY"];
+        v27 = [dictionaryCopy objectForKeyedSubscript:@"originalCropY"];
         [v27 doubleValue];
         v29 = v28;
 
-        v30 = [v5 objectForKeyedSubscript:@"originalCropW"];
+        v30 = [dictionaryCopy objectForKeyedSubscript:@"originalCropW"];
         [v30 doubleValue];
         v32 = v31;
 
-        v33 = [v5 objectForKeyedSubscript:@"originalCropH"];
+        v33 = [dictionaryCopy objectForKeyedSubscript:@"originalCropH"];
         [v33 doubleValue];
         v35 = v34;
 
         [v12 setOriginalCrop:{v26, v29, v32, v35}];
-        v36 = [v5 objectForKeyedSubscript:@"timeElementUnitBaseline"];
+        v36 = [dictionaryCopy objectForKeyedSubscript:@"timeElementUnitBaseline"];
         [v36 floatValue];
         [v12 setTimeElementUnitBaseline:v37];
 
-        v38 = [v5 objectForKeyedSubscript:@"timeElementUnitHeight"];
+        v38 = [dictionaryCopy objectForKeyedSubscript:@"timeElementUnitHeight"];
         [v38 floatValue];
         [v12 setTimeElementUnitHeight:v39];
 
-        v40 = [v5 objectForKeyedSubscript:@"baseImageZorder"];
+        v40 = [dictionaryCopy objectForKeyedSubscript:@"baseImageZorder"];
         [v40 floatValue];
         [v12 setBaseImageZorder:v41];
 
-        v42 = [v5 objectForKeyedSubscript:@"maskedImageZorder"];
+        v42 = [dictionaryCopy objectForKeyedSubscript:@"maskedImageZorder"];
         [v42 floatValue];
         [v12 setMaskedImageZorder:v43];
 
-        v44 = [v5 objectForKeyedSubscript:@"timeElementZorder"];
+        v44 = [dictionaryCopy objectForKeyedSubscript:@"timeElementZorder"];
         [v44 floatValue];
         [v12 setTimeElementZorder:v45];
 
-        v46 = [v5 objectForKeyedSubscript:@"imageAOTBrightness"];
+        v46 = [dictionaryCopy objectForKeyedSubscript:@"imageAOTBrightness"];
         [v46 floatValue];
         [v12 setImageAOTBrightness:v47];
 
-        v48 = [v5 objectForKeyedSubscript:@"userAdjusted"];
+        v48 = [dictionaryCopy objectForKeyedSubscript:@"userAdjusted"];
         v49 = v48;
         if (v48)
         {
-          v50 = [v48 BOOLValue];
+          bOOLValue = [v48 BOOLValue];
         }
 
         else
         {
-          v50 = 0;
+          bOOLValue = 0;
         }
 
-        [v12 setUserAdjusted:v50];
-        v52 = [v5 objectForKeyedSubscript:@"parallaxScale"];
+        [v12 setUserAdjusted:bOOLValue];
+        v52 = [dictionaryCopy objectForKeyedSubscript:@"parallaxScale"];
         v53 = v52;
         if (v52)
         {
@@ -169,19 +169,19 @@
         }
 
         [v12 setParallaxScale:v55];
-        v56 = [v5 objectForKeyedSubscript:@"parallaxFlat"];
+        v56 = [dictionaryCopy objectForKeyedSubscript:@"parallaxFlat"];
         v57 = v56;
         if (v56)
         {
-          v58 = [v56 BOOLValue];
+          bOOLValue2 = [v56 BOOLValue];
         }
 
         else
         {
-          v58 = 0;
+          bOOLValue2 = 0;
         }
 
-        [v12 setParallaxFlat:v58];
+        [v12 setParallaxFlat:bOOLValue2];
 
         goto LABEL_22;
       }
@@ -195,7 +195,7 @@
   v51 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
   {
-    sub_29BF0(v5, v51);
+    sub_29BF0(dictionaryCopy, v51);
   }
 
   v12 = 0;
@@ -210,21 +210,21 @@ LABEL_22:
   [v3 setObject:self->_localIdentifier forKeyedSubscript:@"localIdentifier"];
   [v3 setObject:self->_modificationDate forKeyedSubscript:@"modificationDate"];
   v4 = [[NSString alloc] initWithUTF8String:{-[NSURL fileSystemRepresentation](self->_baseImageURL, "fileSystemRepresentation")}];
-  v5 = [v4 lastPathComponent];
-  [v3 setObject:v5 forKeyedSubscript:@"baseImageURL"];
+  lastPathComponent = [v4 lastPathComponent];
+  [v3 setObject:lastPathComponent forKeyedSubscript:@"baseImageURL"];
 
   if (self->_maskImageURL)
   {
     v6 = [[NSString alloc] initWithUTF8String:{-[NSURL fileSystemRepresentation](self->_maskImageURL, "fileSystemRepresentation")}];
-    v7 = [v6 lastPathComponent];
-    [v3 setObject:v7 forKeyedSubscript:@"maskImageURL"];
+    lastPathComponent2 = [v6 lastPathComponent];
+    [v3 setObject:lastPathComponent2 forKeyedSubscript:@"maskImageURL"];
   }
 
   if (self->_backgroundImageURL)
   {
     v8 = [[NSString alloc] initWithUTF8String:{-[NSURL fileSystemRepresentation](self->_backgroundImageURL, "fileSystemRepresentation")}];
-    v9 = [v8 lastPathComponent];
-    [v3 setObject:v9 forKeyedSubscript:@"backgroundImageURL"];
+    lastPathComponent3 = [v8 lastPathComponent];
+    [v3 setObject:lastPathComponent3 forKeyedSubscript:@"backgroundImageURL"];
   }
 
   v10 = [NSNumber numberWithDouble:self->_originalCrop.origin.x];
@@ -284,12 +284,12 @@ LABEL_22:
 
 - (NSString)uniqueIdentifier
 {
-  v3 = [(NTKUltraCubePhoto *)self localIdentifier];
-  v4 = [PHObject uuidFromLocalIdentifier:v3];
+  localIdentifier = [(NTKUltraCubePhoto *)self localIdentifier];
+  localIdentifier2 = [PHObject uuidFromLocalIdentifier:localIdentifier];
 
-  if (!v4)
+  if (!localIdentifier2)
   {
-    v4 = [(NTKUltraCubePhoto *)self localIdentifier];
+    localIdentifier2 = [(NTKUltraCubePhoto *)self localIdentifier];
   }
 
   [(NTKUltraCubePhoto *)self maskedImageZorder];
@@ -298,9 +298,9 @@ LABEL_22:
   v8 = v7;
   [(NTKUltraCubePhoto *)self timeElementUnitBaseline];
   v10 = [NSString stringWithFormat:@"%05.1f-%05.1f-%05.1f", v6, v8, v9];
-  v11 = [(NTKUltraCubePhoto *)self modificationDate];
-  [v11 timeIntervalSince1970];
-  v13 = [NSString stringWithFormat:@"%@-%ld-%@", v4, v12, v10];
+  modificationDate = [(NTKUltraCubePhoto *)self modificationDate];
+  [modificationDate timeIntervalSince1970];
+  v13 = [NSString stringWithFormat:@"%@-%ld-%@", localIdentifier2, v12, v10];
 
   [(NTKUltraCubePhoto *)self originalCrop];
   x = v21.origin.x;
@@ -317,9 +317,9 @@ LABEL_22:
   return v13;
 }
 
-+ (BOOL)validateDictionary:(id)a3
++ (BOOL)validateDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   NTKValidateDictionaryValue();
   objc_opt_class();

@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneIndexSortedSetDocValues
 - (id)termsEnum;
-- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneIndexSortedSetDocValues
 
-- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (int64_t)lookupTermWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   v5 = [(OrgApacheLuceneIndexSortedSetDocValues *)self getValueCount]- 1;
   if (v5 < 0)
@@ -23,7 +23,7 @@
       JreThrowNullPointerException();
     }
 
-    v9 = [v8 compareToWithId:a3];
+    v9 = [v8 compareToWithId:ref];
     if ((v9 & 0x80000000) != 0)
     {
       v6 = v7 + 1;

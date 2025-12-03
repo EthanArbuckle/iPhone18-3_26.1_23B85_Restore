@@ -1,6 +1,6 @@
 @interface MOTrendBundlerPredicateContactTypeTrend
 - (MOTrendBundlerPredicateContactTypeTrend)init;
-- (id)filterEvents:(id)a3;
+- (id)filterEvents:(id)events;
 @end
 
 @implementation MOTrendBundlerPredicateContactTypeTrend
@@ -19,16 +19,16 @@
   return v3;
 }
 
-- (id)filterEvents:(id)a3
+- (id)filterEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v52 = objc_opt_new();
   v46 = objc_opt_new();
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v4 = v3;
+  v4 = eventsCopy;
   v5 = [v4 countByEnumeratingWithState:&v72 objects:v80 count:16];
   v48 = v4;
   if (v5)
@@ -47,25 +47,25 @@
         v9 = *(*(&v72 + 1) + 8 * i);
         if ([v9 category] == 10)
         {
-          v10 = [v9 patterns];
-          v11 = [v10 objectForKeyedSubscript:@"kEventPatternType"];
+          patterns = [v9 patterns];
+          v11 = [patterns objectForKeyedSubscript:@"kEventPatternType"];
           if ([v11 intValue] != 1)
           {
 
             continue;
           }
 
-          v12 = [v9 patterns];
-          v13 = [v12 objectForKeyedSubscript:@"kEventPatternTrendFeatureType"];
-          v14 = [v13 intValue];
-          if (v14 == 1 || ([v9 patterns], v53 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v53, "objectForKeyedSubscript:", @"kEventPatternTrendFeatureType"), v50 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v50, "intValue") == 2))
+          patterns2 = [v9 patterns];
+          v13 = [patterns2 objectForKeyedSubscript:@"kEventPatternTrendFeatureType"];
+          intValue = [v13 intValue];
+          if (intValue == 1 || ([v9 patterns], v53 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v53, "objectForKeyedSubscript:", @"kEventPatternTrendFeatureType"), v50 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v50, "intValue") == 2))
           {
-            v15 = [v9 patterns];
-            [v15 objectForKeyedSubscript:@"kEventPatternTrendSlope"];
-            v57 = v10;
-            obja = v14;
+            patterns3 = [v9 patterns];
+            [patterns3 objectForKeyedSubscript:@"kEventPatternTrendSlope"];
+            v57 = patterns;
+            obja = intValue;
             v16 = v13;
-            v17 = v12;
+            v17 = patterns2;
             v18 = v6;
             v20 = v19 = v7;
             [v20 doubleValue];
@@ -73,11 +73,11 @@
 
             v7 = v19;
             v6 = v18;
-            v12 = v17;
+            patterns2 = v17;
             v13 = v16;
 
             v4 = v48;
-            v10 = v57;
+            patterns = v57;
             if (obja == 1)
             {
 LABEL_15:
@@ -129,8 +129,8 @@ LABEL_15:
             objc_enumerationMutation(obj);
           }
 
-          v29 = [*(*(&v68 + 1) + 8 * j) patterns];
-          v30 = [v29 objectForKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
+          patterns4 = [*(*(&v68 + 1) + 8 * j) patterns];
+          v30 = [patterns4 objectForKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
           [v24 addObject:v30];
         }
 
@@ -183,8 +183,8 @@ LABEL_15:
                 }
 
                 v38 = *(*(&v60 + 1) + 8 * k);
-                v39 = [v38 patterns];
-                v40 = [v39 objectForKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
+                patterns5 = [v38 patterns];
+                v40 = [patterns5 objectForKeyedSubscript:@"kEventPatternInteractionScoredContactIdentifier"];
                 v41 = [v40 isEqualToString:v32];
 
                 if (v41)

@@ -1,12 +1,12 @@
 @interface _HRWDActivityNode
 - (HRWDUserActivityResponder)nextResponder;
 - (HRWDUserActivityResponder)responder;
-- (_HRWDActivityNode)initWithResponder:(id)a3;
+- (_HRWDActivityNode)initWithResponder:(id)responder;
 - (id)_nextNode;
-- (id)changeActivityForResponder:(id)a3 activityDictionary:(id)a4;
+- (id)changeActivityForResponder:(id)responder activityDictionary:(id)dictionary;
 - (id)description;
-- (id)transitionActivityForResponder:(id)a3 newResponder:(id)a4 transitionDictionary:(id)a5;
-- (void)addActivitiesToArray:(id)a3 currentNode:(id)a4;
+- (id)transitionActivityForResponder:(id)responder newResponder:(id)newResponder transitionDictionary:(id)dictionary;
+- (void)addActivitiesToArray:(id)array currentNode:(id)node;
 @end
 
 @implementation _HRWDActivityNode
@@ -14,23 +14,23 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_HRWDActivityNode *)self responder];
-  v5 = [(_HRWDActivityNode *)self nextResponder];
-  v6 = [v3 stringWithFormat:@"Responder: %@ Next Responder: %@ \n", v4, v5];
+  responder = [(_HRWDActivityNode *)self responder];
+  nextResponder = [(_HRWDActivityNode *)self nextResponder];
+  v6 = [v3 stringWithFormat:@"Responder: %@ Next Responder: %@ \n", responder, nextResponder];
 
   return v6;
 }
 
-- (_HRWDActivityNode)initWithResponder:(id)a3
+- (_HRWDActivityNode)initWithResponder:(id)responder
 {
-  v4 = a3;
+  responderCopy = responder;
   v13.receiver = self;
   v13.super_class = _HRWDActivityNode;
   v5 = [(_HRWDActivityNode *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(_HRWDActivityNode *)v5 setResponder:v4];
+    [(_HRWDActivityNode *)v5 setResponder:responderCopy];
     [(_HRWDActivityNode *)v6 setNextResponder:0];
     v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:10];
     responderActivity = v6->_responderActivity;
@@ -47,67 +47,67 @@
   return v6;
 }
 
-- (id)changeActivityForResponder:(id)a3 activityDictionary:(id)a4
+- (id)changeActivityForResponder:(id)responder activityDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_HRWDActivityNode *)self responder];
+  responderCopy = responder;
+  dictionaryCopy = dictionary;
+  responder = [(_HRWDActivityNode *)self responder];
 
-  if (v8 == v6)
+  if (responder == responderCopy)
   {
-    if (v7)
+    if (dictionaryCopy)
     {
-      [(NSMutableDictionary *)self->_responderActivity addEntriesFromDictionary:v7];
+      [(NSMutableDictionary *)self->_responderActivity addEntriesFromDictionary:dictionaryCopy];
     }
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [(_HRWDActivityNode *)self _nextNode];
-    v10 = v9;
-    if (v9)
+    _nextNode = [(_HRWDActivityNode *)self _nextNode];
+    v10 = _nextNode;
+    if (_nextNode)
     {
-      v11 = [v9 changeActivityForResponder:v6 activityDictionary:v7];
+      selfCopy = [_nextNode changeActivityForResponder:responderCopy activityDictionary:dictionaryCopy];
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)transitionActivityForResponder:(id)a3 newResponder:(id)a4 transitionDictionary:(id)a5
+- (id)transitionActivityForResponder:(id)responder newResponder:(id)newResponder transitionDictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_HRWDActivityNode *)self responder];
+  responderCopy = responder;
+  newResponderCopy = newResponder;
+  dictionaryCopy = dictionary;
+  responder = [(_HRWDActivityNode *)self responder];
 
-  if (v11 == v8)
+  if (responder == responderCopy)
   {
-    v14 = [(NSMapTable *)self->_responderTable objectForKey:v9];
+    v14 = [(NSMapTable *)self->_responderTable objectForKey:newResponderCopy];
     if (!v14)
     {
-      v14 = [[_HRWDActivityNode alloc] initWithResponder:v9];
-      [(NSMapTable *)self->_responderTable setObject:v14 forKey:v9];
+      v14 = [[_HRWDActivityNode alloc] initWithResponder:newResponderCopy];
+      [(NSMapTable *)self->_responderTable setObject:v14 forKey:newResponderCopy];
     }
 
-    objc_storeStrong(&self->_nextResponderActivity, a5);
-    [(_HRWDActivityNode *)self setNextResponder:v9];
+    objc_storeStrong(&self->_nextResponderActivity, dictionary);
+    [(_HRWDActivityNode *)self setNextResponder:newResponderCopy];
   }
 
   else
   {
-    v12 = [(_HRWDActivityNode *)self _nextNode];
-    v13 = v12;
-    if (v12)
+    _nextNode = [(_HRWDActivityNode *)self _nextNode];
+    v13 = _nextNode;
+    if (_nextNode)
     {
-      v14 = [v12 transitionActivityForResponder:v8 newResponder:v9 transitionDictionary:v10];
+      v14 = [_nextNode transitionActivityForResponder:responderCopy newResponder:newResponderCopy transitionDictionary:dictionaryCopy];
     }
 
     else
@@ -119,29 +119,29 @@
   return v14;
 }
 
-- (void)addActivitiesToArray:(id)a3 currentNode:(id)a4
+- (void)addActivitiesToArray:(id)array currentNode:(id)node
 {
-  v9 = a3;
-  v6 = a4;
-  [v9 addObject:self->_responderActivity];
-  v7 = [(_HRWDActivityNode *)self _nextNode];
-  v8 = v7;
-  if (self != v6 && v7)
+  arrayCopy = array;
+  nodeCopy = node;
+  [arrayCopy addObject:self->_responderActivity];
+  _nextNode = [(_HRWDActivityNode *)self _nextNode];
+  v8 = _nextNode;
+  if (self != nodeCopy && _nextNode)
   {
-    [v9 addObject:self->_nextResponderActivity];
-    [v8 addActivitiesToArray:v9 currentNode:v6];
+    [arrayCopy addObject:self->_nextResponderActivity];
+    [v8 addActivitiesToArray:arrayCopy currentNode:nodeCopy];
   }
 }
 
 - (id)_nextNode
 {
-  v3 = [(_HRWDActivityNode *)self nextResponder];
+  nextResponder = [(_HRWDActivityNode *)self nextResponder];
 
-  if (v3)
+  if (nextResponder)
   {
     responderTable = self->_responderTable;
-    v5 = [(_HRWDActivityNode *)self nextResponder];
-    v6 = [(NSMapTable *)responderTable objectForKey:v5];
+    nextResponder2 = [(_HRWDActivityNode *)self nextResponder];
+    v6 = [(NSMapTable *)responderTable objectForKey:nextResponder2];
   }
 
   else

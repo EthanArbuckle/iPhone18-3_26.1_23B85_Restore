@@ -1,16 +1,16 @@
 @interface SRSTStateProxy
-- (SRSTStateProxy)initWithState:(id)a3;
+- (SRSTStateProxy)initWithState:(id)state;
 @end
 
 @implementation SRSTStateProxy
 
-- (SRSTStateProxy)initWithState:(id)a3
+- (SRSTStateProxy)initWithState:(id)state
 {
   v6.receiver = self;
   v6.super_class = SRSTStateProxy;
-  v3 = a3;
+  stateCopy = state;
   v4 = [(SRSTStateProxy *)&v6 init];
-  [(SRSTStateProxy *)v4 setState:v3, v6.receiver, v6.super_class];
+  [(SRSTStateProxy *)v4 setState:stateCopy, v6.receiver, v6.super_class];
 
   return v4;
 }

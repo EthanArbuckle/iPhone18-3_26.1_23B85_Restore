@@ -3,30 +3,30 @@
 + (NSAttributedString)attributedStringFromContact:(CNContact *)contact style:(CNContactFormatterStyle)style defaultAttributes:(NSDictionary *)attributes;
 + (NSString)delimiterForContact:(CNContact *)contact;
 + (NSString)stringFromContact:(CNContact *)contact style:(CNContactFormatterStyle)style;
-+ (id)abbreviatedStringFromContact:(id)a3 trimmingWhitespace:(BOOL)a4;
++ (id)abbreviatedStringFromContact:(id)contact trimmingWhitespace:(BOOL)whitespace;
 + (id)descriptorForRequiredKeysForNameOrder;
 + (id)descriptorForRequiredKeysForStyle:(CNContactFormatterStyle)style;
-+ (id)posterNameComponentsForContact:(id)a3;
-+ (id)posterNameComponentsForContact:(id)a3 nameOrder:(int64_t)a4 localeEmphasisStyle:(int64_t)a5 preferNicknames:(BOOL)a6;
-+ (int64_t)nameEmphasisStyleForContact:(id)a3;
-+ (int64_t)nameEmphasisStyleForContact:(id)a3 localeBasedEmphasisStyle:(int64_t)a4 preferNickname:(BOOL)a5;
-+ (int64_t)singleNameStyleForContact:(id)a3;
++ (id)posterNameComponentsForContact:(id)contact;
++ (id)posterNameComponentsForContact:(id)contact nameOrder:(int64_t)order localeEmphasisStyle:(int64_t)style preferNicknames:(BOOL)nicknames;
++ (int64_t)nameEmphasisStyleForContact:(id)contact;
++ (int64_t)nameEmphasisStyleForContact:(id)contact localeBasedEmphasisStyle:(int64_t)style preferNickname:(BOOL)nickname;
++ (int64_t)singleNameStyleForContact:(id)contact;
 - (CNContactFormatter)init;
-- (CNContactFormatter)initWithCoder:(id)a3;
+- (CNContactFormatter)initWithCoder:(id)coder;
 - (NSAttributedString)attributedStringFromContact:(CNContact *)contact defaultAttributes:(NSDictionary *)attributes;
-- (id)attributedStringForObjectValue:(id)a3 withDefaultAttributes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)attributedStringForObjectValue:(id)value withDefaultAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptorForRequiredKeys;
-- (id)fullNameForContact:(void *)a3 attributes:(uint64_t)a4 style:;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromContact:(id)a3 attributes:(id)a4;
-- (id)stringFromPotentiallySuggestedContact:(id)a3 relatedToProperty:(id)a4;
-- (void)appendValue:(void *)a3 derivedFromPropertyName:(void *)a4 toString:(void *)a5 delimiter:(void *)a6 attributes:;
-- (void)appendValueForProperties:(void *)a3 fromContact:(void *)a4 toString:(void *)a5 delimiter:(void *)a6 attributes:(int)a7 fallback:;
-- (void)avatarNameForContact:(void *)a1 attributes:(void *)a2;
-- (void)encodeWithCoder:(id)a3;
+- (id)fullNameForContact:(void *)contact attributes:(uint64_t)attributes style:;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromContact:(id)contact attributes:(id)attributes;
+- (id)stringFromPotentiallySuggestedContact:(id)contact relatedToProperty:(id)property;
+- (void)appendValue:(void *)value derivedFromPropertyName:(void *)name toString:(void *)string delimiter:(void *)delimiter attributes:;
+- (void)appendValueForProperties:(void *)properties fromContact:(void *)contact toString:(void *)string delimiter:(void *)delimiter attributes:(int)attributes fallback:;
+- (void)avatarNameForContact:(void *)contact attributes:(void *)attributes;
+- (void)encodeWithCoder:(id)coder;
 - (void)nameFormatter;
-- (void)shortNameForContact:(void *)a1 attributes:(void *)a2;
+- (void)shortNameForContact:(void *)contact attributes:(void *)attributes;
 @end
 
 @implementation CNContactFormatter
@@ -63,45 +63,45 @@
 
 - (void)nameFormatter
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
-      v4 = [MEMORY[0x1E696ADF8] formatterWithCNContactStyle:{objc_msgSend(a1, "style")}];
-      v5 = v2[2];
-      v2[2] = v4;
+      v4 = [MEMORY[0x1E696ADF8] formatterWithCNContactStyle:{objc_msgSend(self, "style")}];
+      v5 = selfCopy[2];
+      selfCopy[2] = v4;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)posterNameComponentsForContact:(id)a3
++ (id)posterNameComponentsForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = +[CNContactsUserDefaults sharedDefaults];
-  v6 = [a1 posterNameComponentsForContact:v4 nameOrder:0 localeEmphasisStyle:4 preferNicknames:{objc_msgSend(v5, "shortNameFormatPrefersNicknames")}];
+  v6 = [self posterNameComponentsForContact:contactCopy nameOrder:0 localeEmphasisStyle:4 preferNicknames:{objc_msgSend(v5, "shortNameFormatPrefersNicknames")}];
 
   return v6;
 }
 
-+ (id)posterNameComponentsForContact:(id)a3 nameOrder:(int64_t)a4 localeEmphasisStyle:(int64_t)a5 preferNicknames:(BOOL)a6
++ (id)posterNameComponentsForContact:(id)contact nameOrder:(int64_t)order localeEmphasisStyle:(int64_t)style preferNicknames:(BOOL)nicknames
 {
-  v6 = a6;
-  v9 = a3;
+  nicknamesCopy = nicknames;
+  contactCopy = contact;
   v10 = objc_opt_new();
-  v11 = [MEMORY[0x1E696ADF0] componentsForContact:v9];
+  v11 = [MEMORY[0x1E696ADF0] componentsForContact:contactCopy];
   v12 = objc_alloc_init(MEMORY[0x1E696ADF8]);
   [v12 setStyle:2];
-  v13 = [CNContactFormatter nameEmphasisStyleForContact:v9 localeBasedEmphasisStyle:a5 preferNickname:v6];
-  v14 = [CNContactFormatter singleNameStyleForContact:v9];
+  v13 = [CNContactFormatter nameEmphasisStyleForContact:contactCopy localeBasedEmphasisStyle:style preferNickname:nicknamesCopy];
+  v14 = [CNContactFormatter singleNameStyleForContact:contactCopy];
   if (v13 == 2)
   {
     goto LABEL_5;
@@ -109,8 +109,8 @@
 
   if (v13 == 3)
   {
-    v15 = [v9 nickname];
-    [v10 setFirstNameComponent:v15];
+    nickname = [contactCopy nickname];
+    [v10 setFirstNameComponent:nickname];
 
     [v10 setEmphasizedNameComponentIndex:0];
     v16 = 0;
@@ -120,26 +120,26 @@ LABEL_4:
   }
 
   v26 = v14;
-  if (!a4)
+  if (!order)
   {
-    a4 = [v12 _nameOrderWithOverridesForComponents:v11];
+    order = [v12 _nameOrderWithOverridesForComponents:v11];
   }
 
-  if (a4 == 2)
+  if (order == 2)
   {
-    v31 = [v11 familyName];
-    v32 = [v31 length];
+    familyName = [v11 familyName];
+    v32 = [familyName length];
 
     if (!v32)
     {
       goto LABEL_5;
     }
 
-    v33 = [v11 familyName];
-    if ([v33 length])
+    familyName2 = [v11 familyName];
+    if ([familyName2 length])
     {
-      v34 = [v11 familyName];
-      [v10 setFirstNameComponent:v34];
+      familyName3 = [v11 familyName];
+      [v10 setFirstNameComponent:familyName3];
     }
 
     else
@@ -147,11 +147,11 @@ LABEL_4:
       [v10 setFirstNameComponent:&stru_1F094DAB0];
     }
 
-    v37 = [v11 givenName];
-    if ([v37 length])
+    givenName = [v11 givenName];
+    if ([givenName length])
     {
-      v38 = [v11 givenName];
-      [v10 setSecondNameComponent:v38];
+      givenName2 = [v11 givenName];
+      [v10 setSecondNameComponent:givenName2];
     }
 
     else
@@ -180,18 +180,18 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  if (a4 == 1)
+  if (order == 1)
   {
-    v27 = [v11 givenName];
-    v28 = [v27 length];
+    givenName3 = [v11 givenName];
+    v28 = [givenName3 length];
 
     if (v28)
     {
-      v29 = [v11 givenName];
-      if ([v29 length])
+      givenName4 = [v11 givenName];
+      if ([givenName4 length])
       {
-        v30 = [v11 givenName];
-        [v10 setFirstNameComponent:v30];
+        givenName5 = [v11 givenName];
+        [v10 setFirstNameComponent:givenName5];
       }
 
       else
@@ -199,11 +199,11 @@ LABEL_40:
         [v10 setFirstNameComponent:&stru_1F094DAB0];
       }
 
-      v35 = [v11 familyName];
-      if ([v35 length])
+      familyName4 = [v11 familyName];
+      if ([familyName4 length])
       {
-        v36 = [v11 familyName];
-        [v10 setSecondNameComponent:v36];
+        familyName5 = [v11 familyName];
+        [v10 setSecondNameComponent:familyName5];
       }
 
       else
@@ -222,8 +222,8 @@ LABEL_40:
   }
 
 LABEL_5:
-  v17 = [v10 firstNameComponent];
-  v18 = [v17 length];
+  firstNameComponent = [v10 firstNameComponent];
+  v18 = [firstNameComponent length];
 
   if (!v18)
   {
@@ -231,17 +231,17 @@ LABEL_5:
     [v10 setFirstNameComponent:v19];
   }
 
-  v20 = [v10 firstNameComponent];
-  v21 = [v20 length];
+  firstNameComponent2 = [v10 firstNameComponent];
+  v21 = [firstNameComponent2 length];
 
   if (!v21)
   {
-    v22 = [v9 organizationName];
-    [v10 setFirstNameComponent:v22];
+    organizationName = [contactCopy organizationName];
+    [v10 setFirstNameComponent:organizationName];
   }
 
-  v23 = [v10 secondNameComponent];
-  v24 = [v23 length];
+  secondNameComponent = [v10 secondNameComponent];
+  v24 = [secondNameComponent length];
 
   if (!v24)
   {
@@ -254,7 +254,7 @@ LABEL_5:
 + (NSString)stringFromContact:(CNContact *)contact style:(CNContactFormatterStyle)style
 {
   v6 = contact;
-  v7 = objc_alloc_init(a1);
+  v7 = objc_alloc_init(self);
   [v7 setStyle:style];
   v8 = [v7 stringFromContact:v6];
 
@@ -265,27 +265,27 @@ LABEL_5:
 {
   v8 = attributes;
   v9 = contact;
-  v10 = objc_alloc_init(a1);
+  v10 = objc_alloc_init(self);
   [v10 setStyle:style];
   v11 = [v10 attributedStringFromContact:v9 defaultAttributes:v8];
 
   return v11;
 }
 
-+ (id)abbreviatedStringFromContact:(id)a3 trimmingWhitespace:(BOOL)a4
++ (id)abbreviatedStringFromContact:(id)contact trimmingWhitespace:(BOOL)whitespace
 {
-  v4 = a4;
-  v5 = [a3 mutableCopy];
+  whitespaceCopy = whitespace;
+  v5 = [contact mutableCopy];
   v6 = v5;
-  if (v4)
+  if (whitespaceCopy)
   {
-    v7 = [v5 givenName];
-    v8 = [v7 _cn_trimmedString];
-    [v6 setGivenName:v8];
+    givenName = [v5 givenName];
+    _cn_trimmedString = [givenName _cn_trimmedString];
+    [v6 setGivenName:_cn_trimmedString];
 
-    v9 = [v6 familyName];
-    v10 = [v9 _cn_trimmedString];
-    [v6 setFamilyName:v10];
+    familyName = [v6 familyName];
+    _cn_trimmedString2 = [familyName _cn_trimmedString];
+    [v6 setFamilyName:_cn_trimmedString2];
   }
 
   v11 = [objc_opt_class() stringFromContact:v6 style:1002];
@@ -301,7 +301,7 @@ LABEL_5:
     v7[1] = 3221225472;
     v7[2] = __56__CNContactFormatter_descriptorForRequiredKeysForStyle___block_invoke_2;
     v7[3] = &__block_descriptor_48_e5_v8__0l;
-    v7[4] = a1;
+    v7[4] = self;
     v7[5] = 1003;
     if (descriptorForRequiredKeysForStyle__cn_once_token_1 != -1)
     {
@@ -444,57 +444,57 @@ void __59__CNContactFormatter_descriptorForRequiredKeysForNameOrder__block_invok
   v5 = [MEMORY[0x1E696ADF0] componentsForContact:v3];
   v6 = [v4 _nameOrderWithOverridesForComponents:v5 options:0];
 
-  v7 = [MEMORY[0x1E696ADF8] contactsNameOrderFromFoundationNameOrder:v6];
+  newContactDisplayNameOrder = [MEMORY[0x1E696ADF8] contactsNameOrderFromFoundationNameOrder:v6];
   if ([CN isEmptyNameContact:v3 phonetic:0 includingPrefixAndSuffix:1]&& [CN isEmptyNameContact:v3 phonetic:1 includingPrefixAndSuffix:1])
   {
     v8 = +[CNContactsUserDefaults sharedDefaults];
-    v7 = [v8 newContactDisplayNameOrder];
+    newContactDisplayNameOrder = [v8 newContactDisplayNameOrder];
   }
 
-  return v7;
+  return newContactDisplayNameOrder;
 }
 
-+ (int64_t)nameEmphasisStyleForContact:(id)a3
++ (int64_t)nameEmphasisStyleForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = +[CNContactsUserDefaults sharedDefaults];
-  v6 = [a1 nameEmphasisStyleForContact:v4 localeBasedEmphasisStyle:4 preferNickname:{objc_msgSend(v5, "shortNameFormatPrefersNicknames")}];
+  v6 = [self nameEmphasisStyleForContact:contactCopy localeBasedEmphasisStyle:4 preferNickname:{objc_msgSend(v5, "shortNameFormatPrefersNicknames")}];
 
   return v6;
 }
 
-+ (int64_t)nameEmphasisStyleForContact:(id)a3 localeBasedEmphasisStyle:(int64_t)a4 preferNickname:(BOOL)a5
++ (int64_t)nameEmphasisStyleForContact:(id)contact localeBasedEmphasisStyle:(int64_t)style preferNickname:(BOOL)nickname
 {
-  v8 = a3;
-  v9 = [v8 nickname];
-  v10 = [v9 length];
+  contactCopy = contact;
+  nickname = [contactCopy nickname];
+  v10 = [nickname length];
 
-  if (v10 && a5)
+  if (v10 && nickname)
   {
-    a4 = 3;
+    style = 3;
   }
 
-  else if ([CN hasContactChineseJapaneseKoreanName:v8])
+  else if ([CN hasContactChineseJapaneseKoreanName:contactCopy])
   {
-    a4 = 2;
+    style = 2;
   }
 
-  else if (a4 == 4)
+  else if (style == 4)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __90__CNContactFormatter_nameEmphasisStyleForContact_localeBasedEmphasisStyle_preferNickname___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (nameEmphasisStyleForContact_localeBasedEmphasisStyle_preferNickname__onceToken != -1)
     {
       dispatch_once(&nameEmphasisStyleForContact_localeBasedEmphasisStyle_preferNickname__onceToken, block);
     }
 
-    a4 = nameEmphasisStyleForContact_localeBasedEmphasisStyle_preferNickname___localeEmphasisStyle;
+    style = nameEmphasisStyleForContact_localeBasedEmphasisStyle_preferNickname___localeEmphasisStyle;
   }
 
-  return a4;
+  return style;
 }
 
 void __90__CNContactFormatter_nameEmphasisStyleForContact_localeBasedEmphasisStyle_preferNickname___block_invoke()
@@ -509,13 +509,13 @@ void __90__CNContactFormatter_nameEmphasisStyleForContact_localeBasedEmphasisSty
   nameEmphasisStyleForContact_localeBasedEmphasisStyle_preferNickname___localeEmphasisStyle = [v4 integerValue];
 }
 
-+ (int64_t)singleNameStyleForContact:(id)a3
++ (int64_t)singleNameStyleForContact:(id)contact
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__CNContactFormatter_singleNameStyleForContact___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (singleNameStyleForContact__onceToken != -1)
   {
     dispatch_once(&singleNameStyleForContact__onceToken, block);
@@ -561,8 +561,8 @@ void __48__CNContactFormatter_singleNameStyleForContact___block_invoke()
   v6 = attributes;
   v7 = MEMORY[0x1E695DF90];
   v8 = contact;
-  v9 = [v7 dictionary];
-  v10 = [(CNContactFormatter *)self stringFromContact:v8 attributes:v9];
+  dictionary = [v7 dictionary];
+  v10 = [(CNContactFormatter *)self stringFromContact:v8 attributes:dictionary];
 
   if (v10)
   {
@@ -574,7 +574,7 @@ void __48__CNContactFormatter_singleNameStyleForContact___block_invoke()
     v19 = v11;
     v20 = v6;
     v12 = v11;
-    [v9 enumerateKeysAndObjectsUsingBlock:&v15];
+    [dictionary enumerateKeysAndObjectsUsingBlock:&v15];
     v13 = [v12 copy];
   }
 
@@ -679,51 +679,51 @@ LABEL_14:
 LABEL_16:
 }
 
-- (id)stringFromContact:(id)a3 attributes:(id)a4
+- (id)stringFromContact:(id)contact attributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNContactFormatter *)self style];
-  v9 = v8;
+  contactCopy = contact;
+  attributesCopy = attributes;
+  style = [(CNContactFormatter *)self style];
+  v9 = style;
   v10 = 0;
-  if (v8 > 1000)
+  if (style > 1000)
   {
-    if (v8 == 1001 || v8 == 1002)
+    if (style == 1001 || style == 1002)
     {
-      v11 = [CNContactFormatter avatarNameForContact:v6 attributes:?];
+      v11 = [CNContactFormatter avatarNameForContact:contactCopy attributes:?];
       goto LABEL_15;
     }
 
-    if (v8 != 1003)
+    if (style != 1003)
     {
       goto LABEL_16;
     }
 
-    v12 = self;
-    v13 = v6;
-    v14 = v7;
+    selfCopy3 = self;
+    v13 = contactCopy;
+    v14 = attributesCopy;
     v15 = 1003;
 LABEL_13:
-    v11 = [(CNContactFormatter *)v12 fullNameForContact:v13 attributes:v14 style:v15];
+    v11 = [(CNContactFormatter *)selfCopy3 fullNameForContact:v13 attributes:v14 style:v15];
     goto LABEL_15;
   }
 
-  switch(v8)
+  switch(style)
   {
     case 0:
-      v12 = self;
-      v13 = v6;
-      v14 = v7;
+      selfCopy3 = self;
+      v13 = contactCopy;
+      v14 = attributesCopy;
       v15 = 0;
       goto LABEL_13;
     case 1:
-      v12 = self;
-      v13 = v6;
-      v14 = v7;
+      selfCopy3 = self;
+      v13 = contactCopy;
+      v14 = attributesCopy;
       v15 = 1;
       goto LABEL_13;
     case 1000:
-      v11 = [CNContactFormatter shortNameForContact:v6 attributes:?];
+      v11 = [CNContactFormatter shortNameForContact:contactCopy attributes:?];
 LABEL_15:
       v10 = v11;
       break;
@@ -741,7 +741,7 @@ LABEL_16:
         objc_opt_self();
         if ((v9 & 0xFFFFFFFFFFFFFFFELL) == 0x3E8)
         {
-          v19 = [(CNContactFormatter *)self fullNameForContact:v6 attributes:v7 style:0];
+          v19 = [(CNContactFormatter *)self fullNameForContact:contactCopy attributes:attributesCopy style:0];
 
           v10 = v19;
         }
@@ -814,40 +814,40 @@ LABEL_5:
   }
 }
 
-- (CNContactFormatter)initWithCoder:(id)a3
+- (CNContactFormatter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CNContactFormatter;
-  v5 = [(CNContactFormatter *)&v7 initWithCoder:v4];
+  v5 = [(CNContactFormatter *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v5->_ignoresNickname = [v4 decodeBoolForKey:@"ignoresNickname"];
-    v5->_ignoresOrganization = [v4 decodeBoolForKey:@"ignoresOrganization"];
-    v5->_fallbackStyle = [v4 decodeIntegerForKey:@"fallbackStyle"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v5->_ignoresNickname = [coderCopy decodeBoolForKey:@"ignoresNickname"];
+    v5->_ignoresOrganization = [coderCopy decodeBoolForKey:@"ignoresOrganization"];
+    v5->_fallbackStyle = [coderCopy decodeIntegerForKey:@"fallbackStyle"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNContactFormatter;
-  v4 = a3;
-  [(CNContactFormatter *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_style forKey:{@"style", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_ignoresOrganization forKey:@"ignoresOrganization"];
-  [v4 encodeBool:self->_ignoresNickname forKey:@"ignoresNickname"];
-  [v4 encodeInteger:self->_fallbackStyle forKey:@"fallbackStyle"];
+  coderCopy = coder;
+  [(CNContactFormatter *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_style forKey:{@"style", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_ignoresOrganization forKey:@"ignoresOrganization"];
+  [coderCopy encodeBool:self->_ignoresNickname forKey:@"ignoresNickname"];
+  [coderCopy encodeInteger:self->_fallbackStyle forKey:@"fallbackStyle"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CNContactFormatter;
-  v4 = [(CNContactFormatter *)&v6 copyWithZone:a3];
+  v4 = [(CNContactFormatter *)&v6 copyWithZone:zone];
   [v4 setIgnoresNickname:{-[CNContactFormatter ignoresNickname](self, "ignoresNickname")}];
   [v4 setIgnoresOrganization:{-[CNContactFormatter ignoresOrganization](self, "ignoresOrganization")}];
   [v4 setFallbackStyle:{-[CNContactFormatter fallbackStyle](self, "fallbackStyle")}];
@@ -855,13 +855,13 @@ LABEL_5:
   return v4;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CNContactFormatter *)self stringFromContact:v4];
+    v5 = [(CNContactFormatter *)self stringFromContact:valueCopy];
   }
 
   else
@@ -872,14 +872,14 @@ LABEL_5:
   return v5;
 }
 
-- (id)attributedStringForObjectValue:(id)a3 withDefaultAttributes:(id)a4
+- (id)attributedStringForObjectValue:(id)value withDefaultAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  attributesCopy = attributes;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(CNContactFormatter *)self attributedStringFromContact:v6 defaultAttributes:v7];
+    v8 = [(CNContactFormatter *)self attributedStringFromContact:valueCopy defaultAttributes:attributesCopy];
   }
 
   else
@@ -890,14 +890,14 @@ LABEL_5:
   return v8;
 }
 
-- (id)stringFromPotentiallySuggestedContact:(id)a3 relatedToProperty:(id)a4
+- (id)stringFromPotentiallySuggestedContact:(id)contact relatedToProperty:(id)property
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNContactFormatter *)self stringFromContact:v7];
-  v9 = [v7 isSuggested];
+  propertyCopy = property;
+  contactCopy = contact;
+  v8 = [(CNContactFormatter *)self stringFromContact:contactCopy];
+  isSuggested = [contactCopy isSuggested];
 
-  if ((v9 & 1) != 0 || ([v6 labeledValue], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isSuggested"), v10, v11))
+  if ((isSuggested & 1) != 0 || ([propertyCopy labeledValue], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isSuggested"), v10, v11))
   {
     v12 = [MEMORY[0x1E6996750] localizedStringForString:@"MAYBE_FORMAT-%@" class:objc_opt_class() returningNilIfNotFound:0];
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:v12, v8];
@@ -908,14 +908,14 @@ LABEL_5:
   return v8;
 }
 
-- (id)fullNameForContact:(void *)a3 attributes:(uint64_t)a4 style:
+- (id)fullNameForContact:(void *)contact attributes:(uint64_t)attributes style:
 {
   v92[2] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  contactCopy = contact;
+  if (self)
   {
-    if (a4 == 1)
+    if (attributes == 1)
     {
       v9 = [CN localizedPhoneticNameDelimiterForContact:v7];
       v10 = [CN orderForContactPhoneticName:v7];
@@ -924,15 +924,15 @@ LABEL_5:
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v91 count:1];
 
       v86 = v10;
-      v13 = [v10 phoneticNameProperties];
+      phoneticNameProperties = [v10 phoneticNameProperties];
     }
 
     else
     {
       v9 = [CN localizedNameDelimiterForContact:v7];
-      if (a4 == 1003)
+      if (attributes == 1003)
       {
-        v14 = +[CNContactNameOrderImpl orderForSortOrder:](CNContactNameOrderImpl, "orderForSortOrder:", [a1 sortOrder]);
+        v14 = +[CNContactNameOrderImpl orderForSortOrder:](CNContactNameOrderImpl, "orderForSortOrder:", [self sortOrder]);
         v15 = +[CN phoneticOrganizationNameDescription];
         v92[0] = v15;
         v16 = +[CN organizationNameDescription];
@@ -940,7 +940,7 @@ LABEL_5:
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:2];
 
         v86 = v14;
-        v13 = [v14 sortingNameProperties];
+        phoneticNameProperties = [v14 sortingNameProperties];
       }
 
       else
@@ -951,24 +951,24 @@ LABEL_5:
         v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v90 count:1];
 
         v86 = v17;
-        v13 = [v17 nameProperties];
+        phoneticNameProperties = [v17 nameProperties];
       }
     }
 
-    v88 = v13;
-    v19 = [MEMORY[0x1E696AD60] string];
-    v20 = a4 == 1003 || [a1 fallbackStyle] == -1;
-    if (([a1 ignoresOrganization] & 1) == 0 && objc_msgSend(v7, "contactType") == 1)
+    v88 = phoneticNameProperties;
+    string = [MEMORY[0x1E696AD60] string];
+    v20 = attributes == 1003 || [self fallbackStyle] == -1;
+    if (([self ignoresOrganization] & 1) == 0 && objc_msgSend(v7, "contactType") == 1)
     {
       OUTLINED_FUNCTION_0_10();
       [(CNContactFormatter *)v43 appendValueForProperties:v44 fromContact:v45 toString:v46 delimiter:v47 attributes:v48 fallback:v20];
     }
 
     v87 = v12;
-    if ([v19 length])
+    if ([string length])
     {
-      v21 = [v12 firstObject];
-      v22 = [v21 key];
+      firstObject = [v12 firstObject];
+      v22 = [firstObject key];
     }
 
     else
@@ -978,8 +978,8 @@ LABEL_5:
       v22 = 0;
     }
 
-    v23 = [v19 length];
-    if (a4 != 1 && !v23 && ([a1 ignoresNickname] & 1) == 0)
+    v23 = [string length];
+    if (attributes != 1 && !v23 && ([self ignoresNickname] & 1) == 0)
     {
       v49 = +[CN nicknameDescription];
       v89 = v49;
@@ -992,7 +992,7 @@ LABEL_5:
       v22 = v57;
     }
 
-    if (![v19 length] && (objc_msgSend(a1, "ignoresOrganization") & 1) == 0 && objc_msgSend(v7, "contactType") != 1)
+    if (![string length] && (objc_msgSend(self, "ignoresOrganization") & 1) == 0 && objc_msgSend(v7, "contactType") != 1)
     {
       OUTLINED_FUNCTION_0_10();
       [(CNContactFormatter *)v58 appendValueForProperties:v59 fromContact:v60 toString:v61 delimiter:v62 attributes:v63 fallback:v20];
@@ -1001,17 +1001,17 @@ LABEL_5:
       v22 = v64;
     }
 
-    if (![v19 length])
+    if (![string length])
     {
-      v24 = [a1 fallbackStyle];
-      if (a4 != 1 && v24 == -1)
+      fallbackStyle = [self fallbackStyle];
+      if (attributes != 1 && fallbackStyle == -1)
       {
         if ([v7 isKeyAvailable:@"emailAddresses"])
         {
-          v65 = [v7 emailAddresses];
-          v66 = [v65 firstObject];
+          emailAddresses = [v7 emailAddresses];
+          firstObject2 = [emailAddresses firstObject];
 
-          v67 = [v66 value];
+          value = [firstObject2 value];
           OUTLINED_FUNCTION_0_10();
           [(CNContactFormatter *)v68 appendValue:v69 derivedFromPropertyName:v70 toString:v71 delimiter:v72 attributes:v73];
 
@@ -1019,13 +1019,13 @@ LABEL_5:
           v22 = v74;
         }
 
-        if (![v19 length] && objc_msgSend(v7, "isKeyAvailable:", @"phoneNumbers"))
+        if (![string length] && objc_msgSend(v7, "isKeyAvailable:", @"phoneNumbers"))
         {
-          v75 = [v7 phoneNumbers];
-          v76 = [v75 firstObject];
+          phoneNumbers = [v7 phoneNumbers];
+          firstObject3 = [phoneNumbers firstObject];
 
-          v77 = [v76 value];
-          v78 = [v77 formattedStringValue];
+          value2 = [firstObject3 value];
+          formattedStringValue = [value2 formattedStringValue];
           OUTLINED_FUNCTION_0_10();
           [(CNContactFormatter *)v79 appendValue:v80 derivedFromPropertyName:v81 toString:v82 delimiter:v83 attributes:v84];
 
@@ -1035,24 +1035,24 @@ LABEL_5:
       }
     }
 
-    v26 = [a1 emphasizesPrimaryNameComponent];
-    if (!v8 || !v26)
+    emphasizesPrimaryNameComponent = [self emphasizesPrimaryNameComponent];
+    if (!contactCopy || !emphasizesPrimaryNameComponent)
     {
       goto LABEL_52;
     }
 
     v27 = +[CNContactsUserDefaults sharedDefaults];
-    v28 = [v27 sortOrder];
+    sortOrder = [v27 sortOrder];
 
     if (v22)
     {
 LABEL_37:
-      if (__58__CNContactFormatter_fullNameForContact_attributes_style___block_invoke(v29, v22, v8))
+      if (__58__CNContactFormatter_fullNameForContact_attributes_style___block_invoke(v29, v22, contactCopy))
       {
 LABEL_52:
-        if ([v19 length])
+        if ([string length])
         {
-          v41 = [v19 copy];
+          v41 = [string copy];
         }
 
         else
@@ -1077,14 +1077,14 @@ LABEL_47:
         v40 = 0;
       }
 
-      __58__CNContactFormatter_fullNameForContact_attributes_style___block_invoke(v38, v40, v8);
+      __58__CNContactFormatter_fullNameForContact_attributes_style___block_invoke(v38, v40, contactCopy);
 
       goto LABEL_52;
     }
 
     if ([v9 length])
     {
-      if (v28 == 2)
+      if (sortOrder == 2)
       {
         v30 = &CNContactGivenNameKey;
 LABEL_46:
@@ -1098,7 +1098,7 @@ LABEL_46:
         goto LABEL_37;
       }
 
-      if (v28 == 3)
+      if (sortOrder == 3)
       {
         v30 = &CNContactFamilyNameKey;
         goto LABEL_46;
@@ -1115,53 +1115,53 @@ LABEL_56:
   return v41;
 }
 
-- (void)shortNameForContact:(void *)a1 attributes:(void *)a2
+- (void)shortNameForContact:(void *)contact attributes:(void *)attributes
 {
-  v3 = a2;
-  v4 = v3;
-  if (a1)
+  attributesCopy = attributes;
+  v4 = attributesCopy;
+  if (contact)
   {
-    if ([v3 contactType] != 1 || (+[CNContactsUserDefaults sharedDefaults](CNContactsUserDefaults, "sharedDefaults"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "shortNameFormatPrefersNicknames"), v5, v6))
+    if ([attributesCopy contactType] != 1 || (+[CNContactsUserDefaults sharedDefaults](CNContactsUserDefaults, "sharedDefaults"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "shortNameFormatPrefersNicknames"), v5, v6))
     {
-      v8 = [(CNContactFormatter *)a1 nameFormatter];
-      a1 = [v8 stringFromContact:v4];
+      nameFormatter = [(CNContactFormatter *)contact nameFormatter];
+      contact = [nameFormatter stringFromContact:v4];
     }
 
     else
     {
-      a1 = 0;
+      contact = 0;
     }
   }
 
-  return a1;
+  return contact;
 }
 
-- (void)avatarNameForContact:(void *)a1 attributes:(void *)a2
+- (void)avatarNameForContact:(void *)contact attributes:(void *)attributes
 {
-  v2 = a1;
-  if (a1)
+  contactCopy = contact;
+  if (contact)
   {
-    v3 = a2;
-    v4 = [(CNContactFormatter *)v2 nameFormatter];
-    v2 = [v4 stringFromContact:v3];
+    attributesCopy = attributes;
+    nameFormatter = [(CNContactFormatter *)contactCopy nameFormatter];
+    contactCopy = [nameFormatter stringFromContact:attributesCopy];
   }
 
-  return v2;
+  return contactCopy;
 }
 
-- (void)appendValueForProperties:(void *)a3 fromContact:(void *)a4 toString:(void *)a5 delimiter:(void *)a6 attributes:(int)a7 fallback:
+- (void)appendValueForProperties:(void *)properties fromContact:(void *)contact toString:(void *)string delimiter:(void *)delimiter attributes:(int)attributes fallback:
 {
-  HIDWORD(v41) = a7;
+  HIDWORD(v41) = attributes;
   v63 = *MEMORY[0x1E69E9840];
   obj = a2;
-  v43 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v22 = v14;
-  if (a1)
+  propertiesCopy = properties;
+  contactCopy = contact;
+  stringCopy = string;
+  delimiterCopy = delimiter;
+  v22 = delimiterCopy;
+  if (self)
   {
-    v23 = OUTLINED_FUNCTION_1_4(v14, v15, v16, v17, v18, v19, v20, v21, v38, obj, v41, v43, aBlock, v45, v46, v47, v48, v49, v50, v51, v52, v53, 0, 0, 0, 0, 0, 0, 0, 0, v62);
+    v23 = OUTLINED_FUNCTION_1_4(delimiterCopy, v15, v16, v17, v18, v19, v20, v21, v38, obj, v41, propertiesCopy, aBlock, v45, v46, v47, v48, selfCopy, v50, v51, v52, v53, 0, 0, 0, 0, 0, 0, 0, 0, v62);
     if (v23)
     {
       v24 = v23;
@@ -1181,12 +1181,12 @@ LABEL_56:
           v45 = 3221225472;
           v46 = __98__CNContactFormatter_appendValueForProperties_fromContact_toString_delimiter_attributes_fallback___block_invoke;
           v47 = &unk_1E7414BE8;
-          v28 = v43;
+          v28 = propertiesCopy;
           LOBYTE(v53) = BYTE4(v42);
           v48 = v28;
-          v49 = a1;
-          v50 = v12;
-          v51 = v13;
+          selfCopy = self;
+          v50 = contactCopy;
+          v51 = stringCopy;
           v52 = v22;
           v29 = _Block_copy(&aBlock);
           objc_opt_class();
@@ -1204,7 +1204,7 @@ LABEL_56:
         }
 
         while (v24 != v26);
-        v24 = OUTLINED_FUNCTION_1_4(v30, v31, v32, v33, v34, v35, v36, v37, v39, obj, v42, v43, aBlock, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62);
+        v24 = OUTLINED_FUNCTION_1_4(v30, v31, v32, v33, v34, v35, v36, v37, v39, obj, v42, propertiesCopy, aBlock, v45, v46, v47, v48, selfCopy, v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62);
       }
 
       while (v24);
@@ -1212,34 +1212,34 @@ LABEL_56:
   }
 }
 
-- (void)appendValue:(void *)a3 derivedFromPropertyName:(void *)a4 toString:(void *)a5 delimiter:(void *)a6 attributes:
+- (void)appendValue:(void *)value derivedFromPropertyName:(void *)name toString:(void *)string delimiter:(void *)delimiter attributes:
 {
   v17 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (a1 && [v17 length])
+  valueCopy = value;
+  nameCopy = name;
+  stringCopy = string;
+  delimiterCopy = delimiter;
+  if (self && [v17 length])
   {
-    if ([v12 length])
+    if ([nameCopy length])
     {
-      [v12 appendString:v13];
+      [nameCopy appendString:stringCopy];
     }
 
-    if (v14)
+    if (delimiterCopy)
     {
-      v15 = [MEMORY[0x1E696B098] valueWithRange:{objc_msgSend(v12, "length"), objc_msgSend(v17, "length")}];
-      v16 = [v14 objectForKey:v15];
-      if (!v16)
+      v15 = [MEMORY[0x1E696B098] valueWithRange:{objc_msgSend(nameCopy, "length"), objc_msgSend(v17, "length")}];
+      dictionary = [delimiterCopy objectForKey:v15];
+      if (!dictionary)
       {
-        v16 = [MEMORY[0x1E695DF90] dictionary];
-        [v14 setObject:v16 forKey:v15];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [delimiterCopy setObject:dictionary forKey:v15];
       }
 
-      [v16 setObject:v11 forKey:@"contactProperty"];
+      [dictionary setObject:valueCopy forKey:@"contactProperty"];
     }
 
-    [v12 appendString:v17];
+    [nameCopy appendString:v17];
   }
 }
 

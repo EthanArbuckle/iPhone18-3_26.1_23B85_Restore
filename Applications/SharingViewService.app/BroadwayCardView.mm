@@ -1,18 +1,18 @@
 @interface BroadwayCardView
-- (BroadwayCardView)initWithCoder:(id)a3;
+- (BroadwayCardView)initWithCoder:(id)coder;
 - (CGSize)videoSizePoints;
-- (id)materialPropertyWithContents:(id)a3;
-- (id)playerForMovieAtURL:(id)a3 pointsSize:(CGSize *)a4 nominalFrameRate:(float *)a5;
+- (id)materialPropertyWithContents:(id)contents;
+- (id)playerForMovieAtURL:(id)l pointsSize:(CGSize *)size nominalFrameRate:(float *)rate;
 - (void)configureModelGeometry;
 - (void)configureVideo;
 - (void)configureVideoGeometry;
 - (void)dealloc;
-- (void)notifyObserversWithCommandBuffer:(id)a3;
-- (void)renderer:(id)a3 updateAtTime:(double)a4;
-- (void)renderer:(id)a3 willRenderScene:(id)a4 atTime:(double)a5;
-- (void)setModelContents:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setVideoURL:(id)a3 sceneURL:(id)a4;
+- (void)notifyObserversWithCommandBuffer:(id)buffer;
+- (void)renderer:(id)renderer updateAtTime:(double)time;
+- (void)renderer:(id)renderer willRenderScene:(id)scene atTime:(double)time;
+- (void)setModelContents:(id)contents;
+- (void)setPaused:(BOOL)paused;
+- (void)setVideoURL:(id)l sceneURL:(id)rL;
 @end
 
 @implementation BroadwayCardView
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (id)materialPropertyWithContents:(id)a3
+- (id)materialPropertyWithContents:(id)contents
 {
-  v3 = [SCNMaterialProperty materialPropertyWithContents:a3];
+  v3 = [SCNMaterialProperty materialPropertyWithContents:contents];
   [v3 setMipFilter:2];
   [v3 setMinificationFilter:2];
   [v3 setMagnificationFilter:2];
@@ -36,9 +36,9 @@
   return v3;
 }
 
-- (id)playerForMovieAtURL:(id)a3 pointsSize:(CGSize *)a4 nominalFrameRate:(float *)a5
+- (id)playerForMovieAtURL:(id)l pointsSize:(CGSize *)size nominalFrameRate:(float *)rate
 {
-  v7 = [AVURLAsset URLAssetWithURL:a3 options:0];
+  v7 = [AVURLAsset URLAssetWithURL:l options:0];
   v8 = [AVPlayerItem playerItemWithAsset:v7];
   v9 = [AVPlayer playerWithPlayerItem:v8];
   [v9 setAllowsExternalPlayback:0];
@@ -46,9 +46,9 @@
   v10 = +[UIScreen mainScreen];
   [v10 scale];
 
-  v11 = [v9 currentItem];
-  v12 = [v11 asset];
-  v13 = [v12 tracksWithMediaType:AVMediaTypeVideo];
+  currentItem = [v9 currentItem];
+  asset = [currentItem asset];
+  v13 = [asset tracksWithMediaType:AVMediaTypeVideo];
 
   v26 = 0u;
   v27 = 0u;
@@ -70,19 +70,19 @@
         }
 
         v19 = *(*(&v24 + 1) + 8 * i);
-        if (a4)
+        if (size)
         {
           [*(*(&v24 + 1) + 8 * i) naturalSize];
           [v19 naturalSize];
           UISizeRoundToScale();
-          a4->width = v20;
-          a4->height = v21;
+          size->width = v20;
+          size->height = v21;
         }
 
-        if (a5)
+        if (rate)
         {
           [v19 nominalFrameRate];
-          *a5 = v22;
+          *rate = v22;
         }
       }
 
@@ -103,8 +103,8 @@
 
   [(SCNMaterial *)self->_modelMaterial setLightingModelName:SCNLightingModelConstant];
   modelContents = self->_modelContents;
-  v6 = [(SCNMaterial *)self->_modelMaterial diffuse];
-  [v6 setContents:modelContents];
+  diffuse = [(SCNMaterial *)self->_modelMaterial diffuse];
+  [diffuse setContents:modelContents];
 
   [(SCNMaterial *)self->_modelMaterial setTransparency:0.0];
   v8 = self->_modelMaterial;
@@ -153,13 +153,13 @@
   videoOutput = self->_videoOutput;
   self->_videoOutput = v4;
 
-  v6 = [(AVPlayer *)self->_videoPlayer currentItem];
-  [v6 addOutput:self->_videoOutput];
+  currentItem = [(AVPlayer *)self->_videoPlayer currentItem];
+  [currentItem addOutput:self->_videoOutput];
 }
 
-- (void)notifyObserversWithCommandBuffer:(id)a3
+- (void)notifyObserversWithCommandBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   v5 = [(NSHashTable *)self->_animationObservers copy];
   if (!self->_didUpdateForFirstCommandBuffer)
   {
@@ -198,7 +198,7 @@
   v14 = v6;
   v8 = v5;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   dispatch_async(&_dispatch_main_q, block);
   if (!self->_didNotifyLastFrameRendered && self->_videoCurrentFrame == self->_videoFrameCount - 1)
   {
@@ -213,28 +213,28 @@
     v9[2] = sub_1000F7AD8;
     v9[3] = &unk_100194EB0;
     v10 = v8;
-    [v4 addCompletedHandler:v9];
+    [bufferCopy addCompletedHandler:v9];
   }
 }
 
-- (void)renderer:(id)a3 willRenderScene:(id)a4 atTime:(double)a5
+- (void)renderer:(id)renderer willRenderScene:(id)scene atTime:(double)time
 {
-  v7 = a3;
-  v8 = a4;
+  rendererCopy = renderer;
+  sceneCopy = scene;
   sceneView = self->_sceneView;
-  if (sceneView == v7)
+  if (sceneView == rendererCopy)
   {
-    v10 = [(SCNView *)v7 renderer];
+    renderer = [(SCNView *)rendererCopy renderer];
   }
 
   else
   {
-    v10 = v7;
+    renderer = rendererCopy;
   }
 
-  v11 = v10;
-  v12 = [(SCNView *)v10 currentCommandBuffer];
-  v13 = v12;
+  v11 = renderer;
+  currentCommandBuffer = [(SCNView *)renderer currentCommandBuffer];
+  v13 = currentCommandBuffer;
   texture = self->_texture;
   if (texture)
   {
@@ -243,32 +243,32 @@
     v15[2] = sub_1000F7D80;
     v15[3] = &unk_100194E88;
     v15[4] = texture;
-    [v12 addCompletedHandler:v15];
+    [currentCommandBuffer addCompletedHandler:v15];
     self->_texture = 0;
   }
 
-  if (sceneView == v7)
+  if (sceneView == rendererCopy)
   {
     [(BroadwayCardView *)self notifyObserversWithCommandBuffer:v13];
   }
 }
 
-- (void)renderer:(id)a3 updateAtTime:(double)a4
+- (void)renderer:(id)renderer updateAtTime:(double)time
 {
-  v5 = a3;
-  v6 = v5;
+  rendererCopy = renderer;
+  v6 = rendererCopy;
   if (!self->_textureCache)
   {
-    v7 = [v5 device];
-    CVMetalTextureCacheCreate(0, 0, v7, 0, &self->_textureCache);
+    device = [rendererCopy device];
+    CVMetalTextureCacheCreate(0, 0, device, 0, &self->_textureCache);
   }
 
-  v8 = [(AVPlayer *)self->_videoPlayer currentItem];
-  v9 = v8;
+  currentItem = [(AVPlayer *)self->_videoPlayer currentItem];
+  v9 = currentItem;
   memset(&v18[1], 0, sizeof(CMTime));
-  if (v8)
+  if (currentItem)
   {
-    [v8 currentTime];
+    [currentItem currentTime];
   }
 
   videoOutput = self->_videoOutput;
@@ -308,11 +308,11 @@
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  self->_paused = a3;
+  self->_paused = paused;
   LODWORD(v3) = 1.0;
-  if (a3)
+  if (paused)
   {
     *&v3 = 0.0;
   }
@@ -320,26 +320,26 @@
   [(AVPlayer *)self->_videoPlayer setRate:v3];
 }
 
-- (void)setModelContents:(id)a3
+- (void)setModelContents:(id)contents
 {
-  objc_storeStrong(&self->_modelContents, a3);
+  objc_storeStrong(&self->_modelContents, contents);
 
   [(BroadwayCardView *)self configureModelGeometry];
 }
 
-- (void)setVideoURL:(id)a3 sceneURL:(id)a4
+- (void)setVideoURL:(id)l sceneURL:(id)rL
 {
-  v6 = a4;
-  v7 = [(BroadwayCardView *)self playerForMovieAtURL:a3 pointsSize:&self->_videoSizePoints nominalFrameRate:&self->_videoFrameRate];
+  rLCopy = rL;
+  v7 = [(BroadwayCardView *)self playerForMovieAtURL:l pointsSize:&self->_videoSizePoints nominalFrameRate:&self->_videoFrameRate];
   videoPlayer = self->_videoPlayer;
   self->_videoPlayer = v7;
 
-  v9 = [(AVPlayer *)self->_videoPlayer currentItem];
-  v10 = [v9 asset];
-  v11 = v10;
-  if (v10)
+  currentItem = [(AVPlayer *)self->_videoPlayer currentItem];
+  asset = [currentItem asset];
+  v11 = asset;
+  if (asset)
   {
-    [v10 duration];
+    [asset duration];
   }
 
   else
@@ -357,25 +357,25 @@
   v23 = SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase;
   v12 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   v20 = 0;
-  v13 = [SCNScene sceneWithURL:v6 options:v12 error:&v20];
+  v13 = [SCNScene sceneWithURL:rLCopy options:v12 error:&v20];
   v14 = v20;
 
   if (v13)
   {
-    v15 = [v13 background];
-    [v15 setContents:0];
+    background = [v13 background];
+    [background setContents:0];
 
     [v13 setAttribute:&off_10019B0E0 forKey:SCNSceneEndTimeAttributeKey];
     v16 = [NSNumber numberWithDouble:self->_videoDuration];
     [v13 setAttribute:v16 forKey:SCNSceneEndTimeAttributeKey];
 
-    v17 = [v13 rootNode];
+    rootNode = [v13 rootNode];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000F83BC;
     v19[3] = &unk_100194E68;
     v19[4] = self;
-    [v17 enumerateChildNodesUsingBlock:v19];
+    [rootNode enumerateChildNodesUsingBlock:v19];
 
     [(SCNView *)self->_sceneView setScene:v13];
     [(BroadwayCardView *)self configureVideoGeometry];
@@ -384,7 +384,7 @@
 
   else if (dword_1001BE738 <= 90 && (dword_1001BE738 != -1 || _LogCategory_Initialize()))
   {
-    v18 = [v6 path];
+    path = [rLCopy path];
     LogPrintF();
   }
 }
@@ -403,11 +403,11 @@
   [(BroadwayCardView *)&v4 dealloc];
 }
 
-- (BroadwayCardView)initWithCoder:(id)a3
+- (BroadwayCardView)initWithCoder:(id)coder
 {
   v43.receiver = self;
   v43.super_class = BroadwayCardView;
-  v3 = [(BroadwayCardView *)&v43 initWithCoder:a3];
+  v3 = [(BroadwayCardView *)&v43 initWithCoder:coder];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -425,8 +425,8 @@
     [(SCNView *)v3->_sceneView setBackgroundColor:v9];
 
     [(SCNView *)v3->_sceneView setAntialiasingMode:2];
-    v10 = [(SCNView *)v3->_sceneView layer];
-    [v10 setMinificationFilter:kCAFilterTrilinear];
+    layer = [(SCNView *)v3->_sceneView layer];
+    [layer setMinificationFilter:kCAFilterTrilinear];
 
     [(SCNView *)v3->_sceneView setLoops:0];
     [(SCNView *)v3->_sceneView setRendersContinuously:1];
@@ -434,30 +434,30 @@
     [(SCNView *)v3->_sceneView setDelegate:v3];
     [(BroadwayCardView *)v3 addSubview:v3->_sceneView];
     [(SCNView *)v3->_sceneView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(SCNView *)v3->_sceneView topAnchor];
-    v12 = [(BroadwayCardView *)v3 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    topAnchor = [(SCNView *)v3->_sceneView topAnchor];
+    topAnchor2 = [(BroadwayCardView *)v3 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v13 setActive:1];
 
-    v14 = [(SCNView *)v3->_sceneView bottomAnchor];
-    v15 = [(BroadwayCardView *)v3 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [(SCNView *)v3->_sceneView bottomAnchor];
+    bottomAnchor2 = [(BroadwayCardView *)v3 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v16 setActive:1];
 
-    v17 = [(SCNView *)v3->_sceneView leadingAnchor];
-    v18 = [(BroadwayCardView *)v3 leadingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    leadingAnchor = [(SCNView *)v3->_sceneView leadingAnchor];
+    leadingAnchor2 = [(BroadwayCardView *)v3 leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v19 setActive:1];
 
-    v20 = [(SCNView *)v3->_sceneView trailingAnchor];
-    v21 = [(BroadwayCardView *)v3 trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    trailingAnchor = [(SCNView *)v3->_sceneView trailingAnchor];
+    trailingAnchor2 = [(BroadwayCardView *)v3 trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v22 setActive:1];
 
-    v23 = [(SCNView *)v3->_sceneView device];
+    device = [(SCNView *)v3->_sceneView device];
     v24 = [NSBundle bundleForClass:objc_opt_class()];
     v42 = 0;
-    v25 = [v23 newDefaultLibraryWithBundle:v24 error:&v42];
+    v25 = [device newDefaultLibraryWithBundle:v24 error:&v42];
     v26 = v42;
     library = v3->_library;
     v3->_library = v25;
@@ -472,8 +472,8 @@
     v41 = 0x1000000;
     v28 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:70 width:1 height:1 mipmapped:0, v36, v37];
     [v28 setUsage:1];
-    v29 = [(SCNView *)v3->_sceneView device];
-    v30 = [v29 newTextureWithDescriptor:v28];
+    device2 = [(SCNView *)v3->_sceneView device];
+    v30 = [device2 newTextureWithDescriptor:v28];
     blackTexture = v3->_blackTexture;
     v3->_blackTexture = v30;
 

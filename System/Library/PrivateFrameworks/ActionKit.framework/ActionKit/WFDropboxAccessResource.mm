@@ -1,25 +1,25 @@
 @interface WFDropboxAccessResource
-- (WFDropboxAccessResource)initWithDefinition:(id)a3;
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
+- (WFDropboxAccessResource)initWithDefinition:(id)definition;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFDropboxAccessResource
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  interfaceCopy = interface;
+  handlerCopy = handler;
   v8 = +[WFDropboxAccount sessionManager];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __76__WFDropboxAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke;
   v31[3] = &unk_278C1CD98;
-  v9 = v7;
+  v9 = handlerCopy;
   v31[4] = self;
   v32 = v9;
   v10 = [v8 appAuthorizationSessionWithCompletionHandler:v31];
-  v11 = [v10 authorizationURLs];
-  v12 = [v11 mutableCopy];
+  authorizationURLs = [v10 authorizationURLs];
+  v12 = [authorizationURLs mutableCopy];
 
   v25 = 0;
   v26 = &v25;
@@ -35,10 +35,10 @@
   v19 = v13;
   v14 = v12;
   v20 = v14;
-  v15 = v6;
+  v15 = interfaceCopy;
   v21 = v15;
   v16 = v9;
-  v22 = self;
+  selfCopy = self;
   v23 = v16;
   v24 = &v25;
   v17 = [v18 copy];
@@ -155,12 +155,12 @@ uint64_t __76__WFDropboxAccessResource_makeAvailableWithUserInterface_completion
   return [v5 removeHandlerForIncomingRequestsWithAction:0 scheme:v6];
 }
 
-- (WFDropboxAccessResource)initWithDefinition:(id)a3
+- (WFDropboxAccessResource)initWithDefinition:(id)definition
 {
   v45[3] = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = WFDropboxAccessResource;
-  v3 = [(WFAccountAccessResource *)&v36 initWithDefinition:a3];
+  v3 = [(WFAccountAccessResource *)&v36 initWithDefinition:definition];
   if (v3)
   {
     if (!+[(WFAccount *)WFDropboxAccount])
@@ -214,9 +214,9 @@ uint64_t __76__WFDropboxAccessResource_makeAvailableWithUserInterface_completion
             v19 = [v18 objectForKeyedSubscript:@"DBCredentialVersion"];
             v20 = objc_opt_class();
             v21 = WFEnforceClass(v19, v20);
-            v22 = [v21 integerValue];
+            integerValue = [v21 integerValue];
 
-            if (v22 == 3)
+            if (integerValue == 3)
             {
               v23 = [v18 objectForKeyedSubscript:@"kMPOAuthCredentialConsumerKey"];
               v24 = objc_opt_class();

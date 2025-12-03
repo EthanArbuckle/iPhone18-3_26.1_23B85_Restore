@@ -1,21 +1,21 @@
 @interface MOPOICategoryMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOPOICategoryMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOPOICategoryMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOPOICategoryMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 identifier];
-  [(MOPOICategoryMO *)v7 setIdentifier:v8];
+  identifier = [objectCopy identifier];
+  [(MOPOICategoryMO *)v7 setIdentifier:identifier];
 
-  v9 = [v6 category];
+  category = [objectCopy category];
 
-  [(MOPOICategoryMO *)v7 setCategory:v9];
+  [(MOPOICategoryMO *)v7 setCategory:category];
 
   return v7;
 }

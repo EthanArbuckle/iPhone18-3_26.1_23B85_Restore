@@ -1,25 +1,25 @@
 @interface RedoSearchMapState
-- (BOOL)isEqual:(id)a3;
-- (RedoSearchMapState)initWithMapRegion:(id)a3 zoomLevel:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (RedoSearchMapState)initWithMapRegion:(id)region zoomLevel:(double)level;
 @end
 
 @implementation RedoSearchMapState
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(RedoSearchMapState *)self mapRegion];
-    v8 = [(RedoSearchMapState *)v6 mapRegion];
-    if ([v7 isEqual:v8])
+    mapRegion = [(RedoSearchMapState *)self mapRegion];
+    mapRegion2 = [(RedoSearchMapState *)v6 mapRegion];
+    if ([mapRegion isEqual:mapRegion2])
     {
       [(RedoSearchMapState *)self zoomLevel];
       v10 = v9;
@@ -41,17 +41,17 @@
   return v12;
 }
 
-- (RedoSearchMapState)initWithMapRegion:(id)a3 zoomLevel:(double)a4
+- (RedoSearchMapState)initWithMapRegion:(id)region zoomLevel:(double)level
 {
-  v7 = a3;
+  regionCopy = region;
   v11.receiver = self;
   v11.super_class = RedoSearchMapState;
   v8 = [(RedoSearchMapState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mapRegion, a3);
-    v9->_zoomLevel = a4;
+    objc_storeStrong(&v8->_mapRegion, region);
+    v9->_zoomLevel = level;
   }
 
   return v9;

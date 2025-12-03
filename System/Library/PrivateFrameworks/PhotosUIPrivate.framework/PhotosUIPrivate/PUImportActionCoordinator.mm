@@ -1,28 +1,28 @@
 @interface PUImportActionCoordinator
 + (float)lowBatteryLevelThresholdForDevice;
-+ (id)deleteAllConfirmationMessageForItems:(id)a3 importSource:(id)a4;
-+ (int64_t)importBehaviorForBatteryState:(int64_t)a3 batteryLevel:(float)a4;
-+ (void)retrieveBatteryState:(int64_t *)a3 batteryLevel:(float *)a4;
++ (id)deleteAllConfirmationMessageForItems:(id)items importSource:(id)source;
++ (int64_t)importBehaviorForBatteryState:(int64_t)state batteryLevel:(float)level;
++ (void)retrieveBatteryState:(int64_t *)state batteryLevel:(float *)level;
 - (BOOL)someItemsButNotAllAreSelected;
-- (PUImportActionCoordinator)initWithViewController:(id)a3 importController:(id)a4 loggingSource:(int64_t)a5;
+- (PUImportActionCoordinator)initWithViewController:(id)controller importController:(id)importController loggingSource:(int64_t)source;
 - (PUImportActionCoordinatorDelegate)delegate;
 - (UIViewController)viewController;
 - (id)_albumPickerViewController;
 - (id)actionMenuForImportButton;
-- (void)_commitImportingItems:(id)a3;
-- (void)_deleteItems:(id)a3;
-- (void)_handleDiskAvailabilityRequestForItems:(id)a3 withSuccess:(BOOL)a4 numBytesPurged:(int64_t)a5 additionalBytesRequired:(int64_t)a6 error:(id)a7;
-- (void)_importItems:(id)a3 allowDuplicates:(BOOL)a4;
-- (void)_presentInsufficientDiskSpaceAlertForItems:(id)a3;
-- (void)_showAlbumsPickerForAssets:(id)a3;
+- (void)_commitImportingItems:(id)items;
+- (void)_deleteItems:(id)items;
+- (void)_handleDiskAvailabilityRequestForItems:(id)items withSuccess:(BOOL)success numBytesPurged:(int64_t)purged additionalBytesRequired:(int64_t)required error:(id)error;
+- (void)_importItems:(id)items allowDuplicates:(BOOL)duplicates;
+- (void)_presentInsufficientDiskSpaceAlertForItems:(id)items;
+- (void)_showAlbumsPickerForAssets:(id)assets;
 - (void)_showImportDestinationAlbumPicker;
 - (void)_startImportToLibrary;
-- (void)checkBatteryLevelWithCompletion:(id)a3;
-- (void)configureImportActionsForBarButtonItem:(id)a3;
-- (void)deleteItemsFromBarButtonItem:(id)a3 withOneUpHintItems:(id)a4;
+- (void)checkBatteryLevelWithCompletion:(id)completion;
+- (void)configureImportActionsForBarButtonItem:(id)item;
+- (void)deleteItemsFromBarButtonItem:(id)item withOneUpHintItems:(id)items;
 - (void)importAllFromBarButtonItem;
 - (void)notifyDelegateOfImportCancellation;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
 - (void)ppt_beginImportFromBarButtonItem;
 - (void)stopImport;
 @end
@@ -43,10 +43,10 @@
   return WeakRetained;
 }
 
-- (void)_deleteItems:(id)a3
+- (void)_deleteItems:(id)items
 {
-  v4 = a3;
-  if (![v4 count])
+  itemsCopy = items;
+  if (![itemsCopy count])
   {
     _PFAssertContinueHandler();
   }
@@ -57,20 +57,20 @@
     _PFAssertContinueHandler();
   }
 
-  v5 = [(PUImportActionCoordinator *)self delegate];
-  [v5 actionCoordinatorWillBeginDelete:self];
+  delegate = [(PUImportActionCoordinator *)self delegate];
+  [delegate actionCoordinatorWillBeginDelete:self];
 
   objc_initWeak(&location, self);
-  v6 = [(PUImportActionCoordinator *)self importController];
+  importController = [(PUImportActionCoordinator *)self importController];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__PUImportActionCoordinator__deleteItems___block_invoke;
   v9[3] = &unk_1E7B7FA30;
   objc_copyWeak(&v10, &location);
-  [v6 deleteItems:v4 withCompletionHandler:v9];
+  [importController deleteItems:itemsCopy withCompletionHandler:v9];
 
-  v7 = [(PUImportActionCoordinator *)self delegate];
-  [v7 actionCoordinatorDidBeginDelete:self];
+  delegate2 = [(PUImportActionCoordinator *)self delegate];
+  [delegate2 actionCoordinatorDidBeginDelete:self];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -84,28 +84,28 @@ void __42__PUImportActionCoordinator__deleteItems___block_invoke(uint64_t a1)
   [v2 actionCoordinatorDidEndDelete:v3];
 }
 
-- (void)deleteItemsFromBarButtonItem:(id)a3 withOneUpHintItems:(id)a4
+- (void)deleteItemsFromBarButtonItem:(id)item withOneUpHintItems:(id)items
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  itemsCopy = items;
   v8 = _importActionCoordinatorLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(PUImportActionCoordinator *)self loggingPrefix];
+    loggingPrefix = [(PUImportActionCoordinator *)self loggingPrefix];
     *buf = 138543618;
-    v47 = v9;
+    v47 = loggingPrefix;
     v48 = 2048;
-    v49 = [v7 count];
+    v49 = [itemsCopy count];
     _os_log_impl(&dword_1B36F3000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Delete bar button tapped. Hint items: %lu", buf, 0x16u);
   }
 
-  v10 = [v7 count];
-  v11 = [(PUImportActionCoordinator *)self importController];
-  v12 = [v11 selectedItems];
+  v10 = [itemsCopy count];
+  importController = [(PUImportActionCoordinator *)self importController];
+  selectedItems = [importController selectedItems];
 
-  v13 = [v12 count];
-  if (!v7)
+  v13 = [selectedItems count];
+  if (!itemsCopy)
   {
     v21 = _importActionCoordinatorLog();
     v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
@@ -113,34 +113,34 @@ void __42__PUImportActionCoordinator__deleteItems___block_invoke(uint64_t a1)
     {
       if (v22)
       {
-        v38 = [(PUImportActionCoordinator *)self loggingPrefix];
+        loggingPrefix2 = [(PUImportActionCoordinator *)self loggingPrefix];
         *buf = 138543362;
-        v47 = v38;
+        v47 = loggingPrefix2;
         _os_log_impl(&dword_1B36F3000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: Showing 'Delete All' confirmation", buf, 0xCu);
       }
 
       v13 = PLLocalizedFrameworkString();
-      v39 = [(PUImportActionCoordinator *)self importController];
-      v40 = [v39 dataSourceManager];
-      v17 = [v40 unfilteredDataSource];
+      importController2 = [(PUImportActionCoordinator *)self importController];
+      dataSourceManager = [importController2 dataSourceManager];
+      unfilteredDataSource = [dataSourceManager unfilteredDataSource];
 
-      v16 = [v17 allItems];
+      allItems = [unfilteredDataSource allItems];
       v26 = 1;
       goto LABEL_18;
     }
 
     if (v22)
     {
-      v23 = [(PUImportActionCoordinator *)self loggingPrefix];
+      loggingPrefix3 = [(PUImportActionCoordinator *)self loggingPrefix];
       *buf = 138543618;
-      v47 = v23;
+      v47 = loggingPrefix3;
       v48 = 2048;
       v49 = v13;
       _os_log_impl(&dword_1B36F3000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: Showing delete confirmation action sheet for %lu items", buf, 0x16u);
     }
 
-    v16 = v12;
-    v17 = [MEMORY[0x1E69C3610] importAssetsFromModels:v16];
+    allItems = selectedItems;
+    unfilteredDataSource = [MEMORY[0x1E69C3610] importAssetsFromModels:allItems];
     v18 = PXImportSuffixForItems();
     v24 = @"S";
     if (v13 == 1)
@@ -159,9 +159,9 @@ void __42__PUImportActionCoordinator__deleteItems___block_invoke(uint64_t a1)
   v14 = _importActionCoordinatorLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(PUImportActionCoordinator *)self loggingPrefix];
+    loggingPrefix4 = [(PUImportActionCoordinator *)self loggingPrefix];
     *buf = 138543618;
-    v47 = v15;
+    v47 = loggingPrefix4;
     v48 = 2048;
     v49 = v13;
     _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Showing delete confirmation action sheet for %lu hint items", buf, 0x16u);
@@ -169,8 +169,8 @@ void __42__PUImportActionCoordinator__deleteItems___block_invoke(uint64_t a1)
 
   if (v10 == 1)
   {
-    v16 = v7;
-    v17 = [MEMORY[0x1E69C3610] importAssetsFromModels:v16];
+    allItems = itemsCopy;
+    unfilteredDataSource = [MEMORY[0x1E69C3610] importAssetsFromModels:allItems];
     v18 = PXImportSuffixForItems();
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"DELETE_BUTTON_TITLE_THIS_%@", v18];
     v20 = PLServicesLocalizedFrameworkString();
@@ -186,15 +186,15 @@ LABEL_18:
 
   if (v13)
   {
-    v16 = v12;
-    v17 = PULocalizedString(@"DELETE_BUTTON_TITLE_SELECTED_ITEM");
+    allItems = selectedItems;
+    unfilteredDataSource = PULocalizedString(@"DELETE_BUTTON_TITLE_SELECTED_ITEM");
     v41 = v13;
     v13 = PUStringWithValidatedFormat();
     goto LABEL_17;
   }
 
   v26 = 0;
-  v16 = 0;
+  allItems = 0;
 LABEL_19:
   v27 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:{0, v41}];
   v28 = MEMORY[0x1E69DC648];
@@ -210,21 +210,21 @@ LABEL_19:
   v45 = v26;
   v42[4] = self;
   v43 = v13;
-  v44 = v16;
-  v32 = v16;
+  v44 = allItems;
+  v32 = allItems;
   v33 = v13;
   v34 = [v31 actionWithTitle:v33 style:2 handler:v42];
   [v27 addAction:v34];
 
-  v35 = [v27 popoverPresentationController];
-  v36 = v35;
-  if (v35)
+  popoverPresentationController = [v27 popoverPresentationController];
+  v36 = popoverPresentationController;
+  if (popoverPresentationController)
   {
-    [v35 setBarButtonItem:v6];
+    [popoverPresentationController setBarButtonItem:itemCopy];
   }
 
-  v37 = [(PUImportActionCoordinator *)self viewController];
-  [v37 presentViewController:v27 animated:1 completion:0];
+  viewController = [(PUImportActionCoordinator *)self viewController];
+  [viewController presentViewController:v27 animated:1 completion:0];
 }
 
 void __77__PUImportActionCoordinator_deleteItemsFromBarButtonItem_withOneUpHintItems___block_invoke(uint64_t a1, void *a2)
@@ -268,27 +268,27 @@ void __77__PUImportActionCoordinator_deleteItemsFromBarButtonItem_withOneUpHintI
 
 - (void)notifyDelegateOfImportCancellation
 {
-  v3 = [(PUImportActionCoordinator *)self delegate];
-  [v3 actionCoordinatorDidCancelImport:self];
+  delegate = [(PUImportActionCoordinator *)self delegate];
+  [delegate actionCoordinatorDidCancelImport:self];
 }
 
-- (void)_commitImportingItems:(id)a3
+- (void)_commitImportingItems:(id)items
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = _importActionCoordinatorLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PUImportActionCoordinator *)self loggingPrefix];
+    loggingPrefix = [(PUImportActionCoordinator *)self loggingPrefix];
     *buf = 138543618;
-    v16 = v6;
+    v16 = loggingPrefix;
     v17 = 2048;
-    v18 = [v4 count];
+    v18 = [itemsCopy count];
     _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Importing %tu items", buf, 0x16u);
   }
 
-  v7 = [(PUImportActionCoordinator *)self delegate];
-  [v7 actionCoordinatorWillBeginImport:self];
+  delegate = [(PUImportActionCoordinator *)self delegate];
+  [delegate actionCoordinatorWillBeginImport:self];
 
   objc_initWeak(buf, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -296,9 +296,9 @@ void __77__PUImportActionCoordinator_deleteItemsFromBarButtonItem_withOneUpHintI
   aBlock[2] = __51__PUImportActionCoordinator__commitImportingItems___block_invoke;
   aBlock[3] = &unk_1E7B7F820;
   objc_copyWeak(&v14, buf);
-  v8 = v4;
+  v8 = itemsCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v9 = _Block_copy(aBlock);
   v10 = v9;
   if (v9)
@@ -358,15 +358,15 @@ void __51__PUImportActionCoordinator__commitImportingItems___block_invoke_3(uint
   [v7 actionCoordinator:*(a1 + 32) didCompleteWithImportSession:v6 results:v5];
 }
 
-- (void)_presentInsufficientDiskSpaceAlertForItems:(id)a3
+- (void)_presentInsufficientDiskSpaceAlertForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v31 = 0;
-  v5 = [MEMORY[0x1E69C3608] itemsConstrainedByAvailableDiskSpaceFromItems:v4 additionalBytesRequired:&v31];
-  v6 = [MEMORY[0x1E69C3620] sharedInstance];
-  v7 = [v6 simulatedDiskSpace];
+  v5 = [MEMORY[0x1E69C3608] itemsConstrainedByAvailableDiskSpaceFromItems:itemsCopy additionalBytesRequired:&v31];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  simulatedDiskSpace = [mEMORY[0x1E69C3620] simulatedDiskSpace];
 
-  if (v7 != 3)
+  if (simulatedDiskSpace != 3)
   {
     if (![v5 count])
     {
@@ -381,26 +381,26 @@ void __51__PUImportActionCoordinator__commitImportingItems___block_invoke_3(uint
   {
 LABEL_5:
     v8 = [v5 count];
-    v9 = [v4 count];
-    if (v7 == 3 || v8 < v9)
+    v9 = [itemsCopy count];
+    if (simulatedDiskSpace == 3 || v8 < v9)
     {
       goto LABEL_9;
     }
 
 LABEL_10:
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [MEMORY[0x1E69DC938] currentDevice];
-    v22 = [v21 model];
-    v11 = [v20 stringWithFormat:@"NO_SPACE_MESSAGE_%@", v22];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    model = [currentDevice model];
+    v11 = [v20 stringWithFormat:@"NO_SPACE_MESSAGE_%@", model];
 
     v12 = PLLocalizedFrameworkString();
-    v23 = [MEMORY[0x1E69DC938] currentDevice];
-    v28 = [v23 localizedModel];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    localizedModel = [currentDevice2 localizedModel];
     v13 = PUStringWithValidatedFormat();
 
     v24 = MEMORY[0x1E69DC650];
     v25 = PLLocalizedFrameworkString();
-    v16 = [v24 alertControllerWithTitle:v25 message:v13 preferredStyle:{1, v28}];
+    v16 = [v24 alertControllerWithTitle:v25 message:v13 preferredStyle:{1, localizedModel}];
 
     v17 = MEMORY[0x1E69DC648];
     v18 = PLLocalizedFrameworkString();
@@ -433,32 +433,32 @@ LABEL_11:
   v26 = [v17 actionWithTitle:v18 style:1 handler:v19];
   [v16 addAction:v26];
 
-  v27 = [(PUImportActionCoordinator *)self viewController];
-  [v27 presentViewController:v16 animated:1 completion:0];
+  viewController = [(PUImportActionCoordinator *)self viewController];
+  [viewController presentViewController:v16 animated:1 completion:0];
 }
 
-- (void)_handleDiskAvailabilityRequestForItems:(id)a3 withSuccess:(BOOL)a4 numBytesPurged:(int64_t)a5 additionalBytesRequired:(int64_t)a6 error:(id)a7
+- (void)_handleDiskAvailabilityRequestForItems:(id)items withSuccess:(BOOL)success numBytesPurged:(int64_t)purged additionalBytesRequired:(int64_t)required error:(id)error
 {
-  v10 = a4;
+  successCopy = success;
   v55 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
+  itemsCopy = items;
+  errorCopy = error;
   v14 = _importActionCoordinatorLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     [(PUImportActionCoordinator *)self loggingPrefix];
-    v15 = v40 = v12;
+    v15 = v40 = itemsCopy;
     v16 = @"NO";
-    if (v10)
+    if (successCopy)
     {
       v16 = @"YES";
     }
 
     v17 = v16;
-    v18 = [(PUImportActionCoordinator *)self byteCountFormatter];
-    v19 = [v18 stringFromByteCount:a5];
-    v20 = [(PUImportActionCoordinator *)self byteCountFormatter];
-    v21 = [v20 stringFromByteCount:a6];
+    byteCountFormatter = [(PUImportActionCoordinator *)self byteCountFormatter];
+    v19 = [byteCountFormatter stringFromByteCount:purged];
+    byteCountFormatter2 = [(PUImportActionCoordinator *)self byteCountFormatter];
+    v21 = [byteCountFormatter2 stringFromByteCount:required];
     *buf = 138544386;
     v46 = v15;
     v47 = 2114;
@@ -468,15 +468,15 @@ LABEL_11:
     v51 = 2114;
     v52 = v21;
     v53 = 2112;
-    v54 = v13;
+    v54 = errorCopy;
     _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting disk space succeeded: %{public}@. Bytes purged: %{public}@, Additional bytes required: %{public}@, Error: %@", buf, 0x34u);
 
-    v12 = v40;
+    itemsCopy = v40;
   }
 
-  if (v13)
+  if (errorCopy)
   {
-    v22 = [v13 code] != 1;
+    v22 = [errorCopy code] != 1;
   }
 
   else
@@ -484,20 +484,20 @@ LABEL_11:
     v22 = 1;
   }
 
-  v23 = [MEMORY[0x1E69C3620] sharedInstance];
-  v24 = [v23 simulatedDiskSpace];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  simulatedDiskSpace = [mEMORY[0x1E69C3620] simulatedDiskSpace];
 
-  if (v22 && v24)
+  if (v22 && simulatedDiskSpace)
   {
     v25 = _importActionCoordinatorLog();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
-    if (v24 == 4)
+    if (simulatedDiskSpace == 4)
     {
       if (v26)
       {
-        v28 = [(PUImportActionCoordinator *)self loggingPrefix];
+        loggingPrefix = [(PUImportActionCoordinator *)self loggingPrefix];
         *buf = 138543362;
-        v46 = v28;
+        v46 = loggingPrefix;
         _os_log_impl(&dword_1B36F3000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: Simulating failure in Cache Delete", buf, 0xCu);
       }
 
@@ -513,25 +513,25 @@ LABEL_11:
 
     else
     {
-      if (v24 == 1)
+      if (simulatedDiskSpace == 1)
       {
         if (v26)
         {
-          v27 = [(PUImportActionCoordinator *)self loggingPrefix];
+          loggingPrefix2 = [(PUImportActionCoordinator *)self loggingPrefix];
           *buf = 138543362;
-          v46 = v27;
+          v46 = loggingPrefix2;
           _os_log_impl(&dword_1B36F3000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: Simulating disk space ALWAYS available", buf, 0xCu);
         }
 
-        v13 = 0;
+        errorCopy = 0;
         goto LABEL_16;
       }
 
       if (v26)
       {
-        v35 = [(PUImportActionCoordinator *)self loggingPrefix];
+        loggingPrefix3 = [(PUImportActionCoordinator *)self loggingPrefix];
         *buf = 138543362;
-        v46 = v35;
+        v46 = loggingPrefix3;
         _os_log_impl(&dword_1B36F3000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: Simulating insufficient disk space", buf, 0xCu);
       }
 
@@ -547,17 +547,17 @@ LABEL_11:
 
     v38 = [v32 errorWithDomain:v33 code:v34 userInfo:v31];
 
-    v13 = v38;
+    errorCopy = v38;
   }
 
-  else if (v10)
+  else if (successCopy)
   {
 LABEL_16:
-    [(PUImportActionCoordinator *)self _commitImportingItems:v12];
+    [(PUImportActionCoordinator *)self _commitImportingItems:itemsCopy];
     goto LABEL_29;
   }
 
-  if (v13)
+  if (errorCopy)
   {
     v39 = v22;
   }
@@ -569,23 +569,23 @@ LABEL_16:
 
   if (v39)
   {
-    [(PUImportActionCoordinator *)self _presentInsufficientDiskSpaceAlertForItems:v12];
+    [(PUImportActionCoordinator *)self _presentInsufficientDiskSpaceAlertForItems:itemsCopy];
   }
 
 LABEL_29:
 }
 
-- (void)_importItems:(id)a3 allowDuplicates:(BOOL)a4
+- (void)_importItems:(id)items allowDuplicates:(BOOL)duplicates
 {
-  v6 = a3;
+  itemsCopy = items;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__PUImportActionCoordinator__importItems_allowDuplicates___block_invoke;
   v8[3] = &unk_1E7B7DF48;
   v8[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = itemsCopy;
+  duplicatesCopy = duplicates;
+  v7 = itemsCopy;
   [(PUImportActionCoordinator *)self checkBatteryLevelWithCompletion:v8];
 }
 
@@ -893,37 +893,37 @@ LABEL_8:
 
 - (void)stopImport
 {
-  v2 = [(PUImportActionCoordinator *)self importController];
-  [v2 stopImport];
+  importController = [(PUImportActionCoordinator *)self importController];
+  [importController stopImport];
 }
 
-- (void)checkBatteryLevelWithCompletion:(id)a3
+- (void)checkBatteryLevelWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v44 = 0;
   v43 = 0;
   [objc_opt_class() retrieveBatteryState:&v44 batteryLevel:&v43];
   v5 = objc_opt_class();
   LODWORD(v6) = v43;
   v7 = [v5 importBehaviorForBatteryState:v44 batteryLevel:v6];
-  v8 = [MEMORY[0x1E69DC938] currentDevice];
-  v9 = [v8 model];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  model = [currentDevice model];
 
-  if ([(__CFString *)v9 hasPrefix:@"iPod"])
+  if ([(__CFString *)model hasPrefix:@"iPod"])
   {
 
-    v9 = @"iPod";
+    model = @"iPod";
   }
 
-  v10 = [(PUImportActionCoordinator *)self percentageNumberFormatter];
+  percentageNumberFormatter = [(PUImportActionCoordinator *)self percentageNumberFormatter];
   LODWORD(v11) = v43;
   v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
-  v13 = [v10 stringFromNumber:v12];
+  v13 = [percentageNumberFormatter stringFromNumber:v12];
 
   if (v7 == 1)
   {
     v14 = [MEMORY[0x1E696AD60] stringWithString:@"IMPORT_BATTERY_LOW_MESSAGE_"];
-    [v14 appendString:v9];
+    [v14 appendString:model];
     v24 = PLLocalizedFrameworkString();
     v36 = PUStringWithValidatedFormat();
 
@@ -937,7 +937,7 @@ LABEL_8:
     v39[1] = 3221225472;
     v39[2] = __61__PUImportActionCoordinator_checkBatteryLevelWithCompletion___block_invoke_2;
     v39[3] = &unk_1E7B80980;
-    v30 = v4;
+    v30 = completionCopy;
     v40 = v30;
     v31 = [v28 actionWithTitle:v29 style:1 handler:v39];
     [v27 addAction:v31];
@@ -952,8 +952,8 @@ LABEL_8:
     v34 = [v32 actionWithTitle:v33 style:0 handler:v37];
     [v27 addAction:v34];
 
-    v35 = [(PUImportActionCoordinator *)self viewController];
-    [v35 presentViewController:v27 animated:1 completion:0];
+    viewController = [(PUImportActionCoordinator *)self viewController];
+    [viewController presentViewController:v27 animated:1 completion:0];
 
     goto LABEL_7;
   }
@@ -961,7 +961,7 @@ LABEL_8:
   if (v7 == 2)
   {
     v14 = [MEMORY[0x1E696AD60] stringWithString:@"IMPORT_BATTERY_CRITICAL_MESSAGE_"];
-    [v14 appendString:v9];
+    [v14 appendString:model];
     v15 = PLLocalizedFrameworkString();
     v16 = PUStringWithValidatedFormat();
 
@@ -975,20 +975,20 @@ LABEL_8:
     v41[1] = 3221225472;
     v41[2] = __61__PUImportActionCoordinator_checkBatteryLevelWithCompletion___block_invoke;
     v41[3] = &unk_1E7B80980;
-    v42 = v4;
+    v42 = completionCopy;
     v22 = [v20 actionWithTitle:v21 style:1 handler:v41];
     [v19 addAction:v22];
 
-    v23 = [(PUImportActionCoordinator *)self viewController];
-    [v23 presentViewController:v19 animated:1 completion:0];
+    viewController2 = [(PUImportActionCoordinator *)self viewController];
+    [viewController2 presentViewController:v19 animated:1 completion:0];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v4 && !v7)
+  if (completionCopy && !v7)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
 LABEL_8:
@@ -1030,44 +1030,44 @@ uint64_t __61__PUImportActionCoordinator_checkBatteryLevelWithCompletion___block
 - (void)importAllFromBarButtonItem
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [(PUImportActionCoordinator *)self importController];
-  v4 = [v3 dataSourceManager];
-  v5 = [v4 unfilteredDataSource];
+  importController = [(PUImportActionCoordinator *)self importController];
+  dataSourceManager = [importController dataSourceManager];
+  unfilteredDataSource = [dataSourceManager unfilteredDataSource];
 
-  v6 = [v5 numberOfAlreadyImportedItems];
+  numberOfAlreadyImportedItems = [unfilteredDataSource numberOfAlreadyImportedItems];
   objc_initWeak(&location, self);
-  if (v6 < 1)
+  if (numberOfAlreadyImportedItems < 1)
   {
     v16 = _importActionCoordinatorLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(PUImportActionCoordinator *)self loggingPrefix];
+      loggingPrefix = [(PUImportActionCoordinator *)self loggingPrefix];
       *buf = 138543362;
-      v44 = v17;
+      v44 = loggingPrefix;
       _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: No duplicates found, performing Import All...", buf, 0xCu);
     }
 
-    v12 = [v5 allItems];
-    [(PUImportActionCoordinator *)self _importItems:v12 allowDuplicates:0];
+    allItems = [unfilteredDataSource allItems];
+    [(PUImportActionCoordinator *)self _importItems:allItems allowDuplicates:0];
   }
 
   else
   {
-    if ([v5 numberOfNotYetImportedItems])
+    if ([unfilteredDataSource numberOfNotYetImportedItems])
     {
       v7 = _importActionCoordinatorLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(PUImportActionCoordinator *)self loggingPrefix];
+        loggingPrefix2 = [(PUImportActionCoordinator *)self loggingPrefix];
         *buf = 138543362;
-        v44 = v8;
+        v44 = loggingPrefix2;
         _os_log_impl(&dword_1B36F3000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Duplicates found. Presenting alert.", buf, 0xCu);
       }
 
       v9 = MEMORY[0x1E69DC650];
       v10 = PLLocalizedFrameworkString();
       v11 = PLLocalizedFrameworkString();
-      v12 = [v9 alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+      allItems = [v9 alertControllerWithTitle:v10 message:v11 preferredStyle:1];
 
       v13 = MEMORY[0x1E69DC648];
       v14 = PLLocalizedFrameworkString();
@@ -1076,9 +1076,9 @@ uint64_t __61__PUImportActionCoordinator_checkBatteryLevelWithCompletion___block
       v39[2] = __55__PUImportActionCoordinator_importAllFromBarButtonItem__block_invoke;
       v39[3] = &unk_1E7B77670;
       objc_copyWeak(&v41, &location);
-      v40 = v5;
+      v40 = unfilteredDataSource;
       v15 = [v13 actionWithTitle:v14 style:0 handler:v39];
-      [v12 addAction:v15];
+      [allItems addAction:v15];
 
       objc_destroyWeak(&v41);
     }
@@ -1088,16 +1088,16 @@ uint64_t __61__PUImportActionCoordinator_checkBatteryLevelWithCompletion___block
       v18 = _importActionCoordinatorLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(PUImportActionCoordinator *)self loggingPrefix];
+        loggingPrefix3 = [(PUImportActionCoordinator *)self loggingPrefix];
         *buf = 138543362;
-        v44 = v19;
+        v44 = loggingPrefix3;
         _os_log_impl(&dword_1B36F3000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: All items to import are dupes. Presenting alert.", buf, 0xCu);
       }
 
       v20 = MEMORY[0x1E69DC650];
       v21 = PLLocalizedFrameworkString();
       v22 = PLLocalizedFrameworkString();
-      v12 = [v20 alertControllerWithTitle:v21 message:v22 preferredStyle:1];
+      allItems = [v20 alertControllerWithTitle:v21 message:v22 preferredStyle:1];
     }
 
     v23 = MEMORY[0x1E69DC648];
@@ -1107,10 +1107,10 @@ uint64_t __61__PUImportActionCoordinator_checkBatteryLevelWithCompletion___block
     v36[2] = __55__PUImportActionCoordinator_importAllFromBarButtonItem__block_invoke_275;
     v36[3] = &unk_1E7B77670;
     objc_copyWeak(&v38, &location);
-    v25 = v5;
+    v25 = unfilteredDataSource;
     v37 = v25;
     v26 = [v23 actionWithTitle:v24 style:0 handler:v36];
-    [v12 addAction:v26];
+    [allItems addAction:v26];
 
     v27 = MEMORY[0x1E69DC648];
     v28 = PLLocalizedFrameworkString();
@@ -1120,18 +1120,18 @@ uint64_t __61__PUImportActionCoordinator_checkBatteryLevelWithCompletion___block
     v34 = &unk_1E7B7FC80;
     objc_copyWeak(&v35, &location);
     v29 = [v27 actionWithTitle:v28 style:1 handler:&v31];
-    [v12 addAction:{v29, v31, v32, v33, v34}];
+    [allItems addAction:{v29, v31, v32, v33, v34}];
 
     if ([(PUImportActionCoordinator *)self ppt_alwaysImportDuplicatesNoPrompt])
     {
-      v30 = [v25 allItems];
-      [(PUImportActionCoordinator *)self _importItems:v30 allowDuplicates:1];
+      allItems2 = [v25 allItems];
+      [(PUImportActionCoordinator *)self _importItems:allItems2 allowDuplicates:1];
     }
 
     else
     {
-      v30 = [(PUImportActionCoordinator *)self viewController];
-      [v30 presentViewController:v12 animated:1 completion:0];
+      allItems2 = [(PUImportActionCoordinator *)self viewController];
+      [allItems2 presentViewController:allItems animated:1 completion:0];
     }
 
     objc_destroyWeak(&v35);
@@ -1187,10 +1187,10 @@ void __55__PUImportActionCoordinator_importAllFromBarButtonItem__block_invoke_27
 {
   if ([(PUImportActionCoordinator *)self someItemsButNotAllAreSelected])
   {
-    v3 = [(PUImportActionCoordinator *)self importController];
-    v4 = [v3 selectedItems];
+    importController = [(PUImportActionCoordinator *)self importController];
+    selectedItems = [importController selectedItems];
 
-    [(PUImportActionCoordinator *)self _importItems:v4 allowDuplicates:1];
+    [(PUImportActionCoordinator *)self _importItems:selectedItems allowDuplicates:1];
   }
 
   else
@@ -1202,17 +1202,17 @@ void __55__PUImportActionCoordinator_importAllFromBarButtonItem__block_invoke_27
 
 - (BOOL)someItemsButNotAllAreSelected
 {
-  v3 = [(PUImportActionCoordinator *)self importController];
-  v4 = [v3 selectedItems];
+  importController = [(PUImportActionCoordinator *)self importController];
+  selectedItems = [importController selectedItems];
 
-  v5 = [(PUImportActionCoordinator *)self importController];
-  v6 = [v5 dataSourceManager];
-  v7 = [v6 unfilteredDataSource];
+  importController2 = [(PUImportActionCoordinator *)self importController];
+  dataSourceManager = [importController2 dataSourceManager];
+  unfilteredDataSource = [dataSourceManager unfilteredDataSource];
 
-  if ([v4 count])
+  if ([selectedItems count])
   {
-    v8 = [v7 numberOfItems];
-    v9 = v8 != [v4 count];
+    numberOfItems = [unfilteredDataSource numberOfItems];
+    v9 = numberOfItems != [selectedItems count];
   }
 
   else
@@ -1223,18 +1223,18 @@ void __55__PUImportActionCoordinator_importAllFromBarButtonItem__block_invoke_27
   return v9;
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v5 = a4;
-  v6 = [(PUImportActionCoordinator *)self viewController];
+  pickingCopy = picking;
+  viewController = [(PUImportActionCoordinator *)self viewController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__PUImportActionCoordinator_picker_didFinishPicking___block_invoke;
   v8[3] = &unk_1E7B80C38;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  [v6 dismissViewControllerAnimated:1 completion:v8];
+  v9 = pickingCopy;
+  selfCopy = self;
+  v7 = pickingCopy;
+  [viewController dismissViewControllerAnimated:1 completion:v8];
 }
 
 void __53__PUImportActionCoordinator_picker_didFinishPicking___block_invoke(uint64_t a1)
@@ -1292,9 +1292,9 @@ void __53__PUImportActionCoordinator_picker_didFinishPicking___block_invoke(uint
 
 - (id)_albumPickerViewController
 {
-  v3 = [(PUImportActionCoordinator *)self importController];
-  v4 = [v3 photoLibrary];
-  v5 = [PUPickerUtilities pickerConfigurationForAlbumPickerForPhotoLibrary:v4];
+  importController = [(PUImportActionCoordinator *)self importController];
+  photoLibrary = [importController photoLibrary];
+  v5 = [PUPickerUtilities pickerConfigurationForAlbumPickerForPhotoLibrary:photoLibrary];
 
   v6 = [objc_alloc(MEMORY[0x1E69790F8]) initWithConfiguration:v5];
   [v6 setDelegate:self];
@@ -1304,56 +1304,56 @@ void __53__PUImportActionCoordinator_picker_didFinishPicking___block_invoke(uint
   return v7;
 }
 
-- (void)_showAlbumsPickerForAssets:(id)a3
+- (void)_showAlbumsPickerForAssets:(id)assets
 {
-  v4 = [(PUImportActionCoordinator *)self _albumPickerViewController];
-  if (v4)
+  _albumPickerViewController = [(PUImportActionCoordinator *)self _albumPickerViewController];
+  if (_albumPickerViewController)
   {
-    v5 = [(PUImportActionCoordinator *)self viewController];
-    [v5 presentViewController:v4 animated:1 completion:0];
+    viewController = [(PUImportActionCoordinator *)self viewController];
+    [viewController presentViewController:_albumPickerViewController animated:1 completion:0];
   }
 
   else
   {
-    v5 = PLUIGetLog();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    viewController = PLUIGetLog();
+    if (os_log_type_enabled(viewController, OS_LOG_TYPE_ERROR))
     {
       *v6 = 0;
-      _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_ERROR, "Import: Failed to create album picker for adding assets to album.", v6, 2u);
+      _os_log_impl(&dword_1B36F3000, viewController, OS_LOG_TYPE_ERROR, "Import: Failed to create album picker for adding assets to album.", v6, 2u);
     }
   }
 }
 
 - (void)_showImportDestinationAlbumPicker
 {
-  v3 = [(PUImportActionCoordinator *)self importController];
-  v8 = [v3 selectedItems];
+  importController = [(PUImportActionCoordinator *)self importController];
+  selectedItems = [importController selectedItems];
 
-  if ([v8 count])
+  if ([selectedItems count])
   {
-    v4 = v8;
+    allItems = selectedItems;
   }
 
   else
   {
-    v5 = [(PUImportActionCoordinator *)self importController];
-    v6 = [v5 dataSourceManager];
-    v7 = [v6 unfilteredDataSource];
+    importController2 = [(PUImportActionCoordinator *)self importController];
+    dataSourceManager = [importController2 dataSourceManager];
+    unfilteredDataSource = [dataSourceManager unfilteredDataSource];
 
-    v4 = [v7 allItems];
+    allItems = [unfilteredDataSource allItems];
   }
 
-  [(PUImportActionCoordinator *)self _showAlbumsPickerForAssets:v4];
+  [(PUImportActionCoordinator *)self _showAlbumsPickerForAssets:allItems];
 }
 
 - (void)_startImportToLibrary
 {
-  v3 = [(PUImportActionCoordinator *)self importController];
-  v4 = [v3 selectedItems];
+  importController = [(PUImportActionCoordinator *)self importController];
+  selectedItems = [importController selectedItems];
 
-  if ([v4 count])
+  if ([selectedItems count])
   {
-    [(PUImportActionCoordinator *)self _importItems:v4 allowDuplicates:1];
+    [(PUImportActionCoordinator *)self _importItems:selectedItems allowDuplicates:1];
   }
 
   else
@@ -1366,13 +1366,13 @@ void __53__PUImportActionCoordinator_picker_didFinishPicking___block_invoke(uint
 {
   v67[2] = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
-  v3 = [(PUImportActionCoordinator *)self someItemsButNotAllAreSelected];
+  someItemsButNotAllAreSelected = [(PUImportActionCoordinator *)self someItemsButNotAllAreSelected];
   if (MEMORY[0x1B8C6D660]())
   {
     v4 = MEMORY[0x1E69C3A08];
-    v5 = [(PUImportActionCoordinator *)self importController];
-    v6 = [v5 photoLibrary];
-    v49 = [v4 sharedLibraryStatusProviderWithPhotoLibrary:v6];
+    importController = [(PUImportActionCoordinator *)self importController];
+    photoLibrary = [importController photoLibrary];
+    v49 = [v4 sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
 
     if ([v49 hasSharedLibraryOrPreview])
     {
@@ -1420,7 +1420,7 @@ void __53__PUImportActionCoordinator_picker_didFinishPicking___block_invoke(uint
     else
     {
       v31 = @"IMPORT_ALL_TO_LIBRARY";
-      if (v3)
+      if (someItemsButNotAllAreSelected)
       {
         v31 = @"IMPORT_SELECTED_TO_LIBRARY";
       }
@@ -1456,10 +1456,10 @@ void __53__PUImportActionCoordinator_picker_didFinishPicking___block_invoke(uint
     }
   }
 
-  else if (v3)
+  else if (someItemsButNotAllAreSelected)
   {
-    v19 = [(PUImportActionCoordinator *)self importActionsMenu];
-    v20 = v19 == 0;
+    importActionsMenu = [(PUImportActionCoordinator *)self importActionsMenu];
+    v20 = importActionsMenu == 0;
 
     if (v20)
     {
@@ -1493,10 +1493,10 @@ void __53__PUImportActionCoordinator_picker_didFinishPicking___block_invoke(uint
     }
   }
 
-  v43 = [(PUImportActionCoordinator *)self importActionsMenu];
+  importActionsMenu2 = [(PUImportActionCoordinator *)self importActionsMenu];
   objc_destroyWeak(&location);
 
-  return v43;
+  return importActionsMenu2;
 }
 
 void __54__PUImportActionCoordinator_actionMenuForImportButton__block_invoke(uint64_t a1)
@@ -1604,14 +1604,14 @@ void __54__PUImportActionCoordinator_actionMenuForImportButton__block_invoke_252
   }
 }
 
-- (void)configureImportActionsForBarButtonItem:(id)a3
+- (void)configureImportActionsForBarButtonItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PUImportActionCoordinator *)self actionMenuForImportButton];
-  if (v5)
+  itemCopy = item;
+  actionMenuForImportButton = [(PUImportActionCoordinator *)self actionMenuForImportButton];
+  if (actionMenuForImportButton)
   {
-    [v4 setMenu:v5];
-    if (MEMORY[0x1B8C6D660]([v4 setPrimaryAction:0]))
+    [itemCopy setMenu:actionMenuForImportButton];
+    if (MEMORY[0x1B8C6D660]([itemCopy setPrimaryAction:0]))
     {
       [(PUImportActionCoordinator *)self someItemsButNotAllAreSelected];
       v16 = PLLocalizedFrameworkString();
@@ -1620,18 +1620,18 @@ void __54__PUImportActionCoordinator_actionMenuForImportButton__block_invoke_252
     else
     {
       v16 = PLLocalizedFrameworkString();
-      [v4 setTitle:v16];
+      [itemCopy setTitle:v16];
     }
 
-    [v4 setTitle:v16];
+    [itemCopy setTitle:v16];
   }
 
   else
   {
-    [v4 setMenu:0];
-    v6 = [(PUImportActionCoordinator *)self importAllAction];
+    [itemCopy setMenu:0];
+    importAllAction = [(PUImportActionCoordinator *)self importAllAction];
 
-    if (!v6)
+    if (!importAllAction)
     {
       objc_initWeak(&location, self);
       v7 = MEMORY[0x1E69DC628];
@@ -1648,17 +1648,17 @@ void __54__PUImportActionCoordinator_actionMenuForImportButton__block_invoke_252
       objc_destroyWeak(&location);
     }
 
-    v10 = [(PUImportActionCoordinator *)self importController];
-    v11 = [v10 selectionManager];
-    v12 = [v11 selectionSnapshot];
-    [v12 isAnyItemSelected];
+    importController = [(PUImportActionCoordinator *)self importController];
+    selectionManager = [importController selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
+    [selectionSnapshot isAnyItemSelected];
 
     v13 = PLLocalizedFrameworkString();
-    v14 = [(PUImportActionCoordinator *)self importAllAction];
-    [v14 setTitle:v13];
+    importAllAction2 = [(PUImportActionCoordinator *)self importAllAction];
+    [importAllAction2 setTitle:v13];
 
-    v15 = [(PUImportActionCoordinator *)self importAllAction];
-    [v4 setPrimaryAction:v15];
+    importAllAction3 = [(PUImportActionCoordinator *)self importAllAction];
+    [itemCopy setPrimaryAction:importAllAction3];
   }
 }
 
@@ -1679,20 +1679,20 @@ void __68__PUImportActionCoordinator_configureImportActionsForBarButtonItem___bl
   [v5 importAllFromBarButtonItem];
 }
 
-- (PUImportActionCoordinator)initWithViewController:(id)a3 importController:(id)a4 loggingSource:(int64_t)a5
+- (PUImportActionCoordinator)initWithViewController:(id)controller importController:(id)importController loggingSource:(int64_t)source
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  importControllerCopy = importController;
   v18.receiver = self;
   v18.super_class = PUImportActionCoordinator;
   v10 = [(PUImportActionCoordinator *)&v18 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_viewController, v8);
-    objc_storeStrong(&v11->_importController, a4);
-    v11->_loggingSource = a5;
-    if (a5)
+    objc_storeWeak(&v10->_viewController, controllerCopy);
+    objc_storeStrong(&v11->_importController, importController);
+    v11->_loggingSource = source;
+    if (source)
     {
       v12 = @"OneUp";
     }
@@ -1718,17 +1718,17 @@ void __68__PUImportActionCoordinator_configureImportActionsForBarButtonItem___bl
   return v11;
 }
 
-+ (id)deleteAllConfirmationMessageForItems:(id)a3 importSource:(id)a4
++ (id)deleteAllConfirmationMessageForItems:(id)items importSource:(id)source
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  sourceCopy = source;
   v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"IMPORT_CONFIRM_DELETE_ALL_"];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v5;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   v10 = @"PHOTOS_";
   if (v9)
@@ -1746,8 +1746,8 @@ void __68__PUImportActionCoordinator_configureImportActionsForBarButtonItem___bl
           objc_enumerationMutation(v8);
         }
 
-        v16 = [*(*(&v23 + 1) + 8 * i) importAsset];
-        if ([v16 isImage])
+        importAsset = [*(*(&v23 + 1) + 8 * i) importAsset];
+        if ([importAsset isImage])
         {
           v13 = 0;
         }
@@ -1755,7 +1755,7 @@ void __68__PUImportActionCoordinator_configureImportActionsForBarButtonItem___bl
         else
         {
           v14 = 0;
-          v13 &= [v16 isMovie];
+          v13 &= [importAsset isMovie];
         }
 
         if ((v14 & 1) == 0 && !v13)
@@ -1792,11 +1792,11 @@ LABEL_19:
   }
 
   [v7 appendString:v10];
-  v18 = [v6 productKind];
-  v19 = [v6 name];
-  if (([v18 isEqualToString:@"Camera"] & 1) != 0 || !objc_msgSend(v19, "length"))
+  productKind = [sourceCopy productKind];
+  name = [sourceCopy name];
+  if (([productKind isEqualToString:@"Camera"] & 1) != 0 || !objc_msgSend(name, "length"))
   {
-    [v7 appendString:v18];
+    [v7 appendString:productKind];
     v21 = PLLocalizedFrameworkString();
   }
 
@@ -1810,12 +1810,12 @@ LABEL_19:
   return v21;
 }
 
-+ (int64_t)importBehaviorForBatteryState:(int64_t)a3 batteryLevel:(float)a4
++ (int64_t)importBehaviorForBatteryState:(int64_t)state batteryLevel:(float)level
 {
-  v5 = (a3 & 0xFFFFFFFFFFFFFFFELL) != 2;
+  v5 = (state & 0xFFFFFFFFFFFFFFFELL) != 2;
   [objc_opt_class() lowBatteryLevelThresholdForDevice];
-  v7 = v6 >= a4 && v5;
-  if (v5 && a4 <= 0.05)
+  v7 = v6 >= level && v5;
+  if (v5 && level <= 0.05)
   {
     return 2;
   }
@@ -1826,24 +1826,24 @@ LABEL_19:
   }
 }
 
-+ (void)retrieveBatteryState:(int64_t *)a3 batteryLevel:(float *)a4
++ (void)retrieveBatteryState:(int64_t *)state batteryLevel:(float *)level
 {
-  v13 = [MEMORY[0x1E69DC938] currentDevice];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
   v6 = 1;
-  [v13 setBatteryMonitoringEnabled:1];
-  v7 = [v13 batteryState];
-  [v13 batteryLevel];
+  [currentDevice setBatteryMonitoringEnabled:1];
+  batteryState = [currentDevice batteryState];
+  [currentDevice batteryLevel];
   v9 = v8;
-  [v13 setBatteryMonitoringEnabled:0];
-  v10 = [MEMORY[0x1E69C3620] sharedInstance];
-  v11 = [v10 simulatedBatteryLevel];
+  [currentDevice setBatteryMonitoringEnabled:0];
+  mEMORY[0x1E69C3620] = [MEMORY[0x1E69C3620] sharedInstance];
+  simulatedBatteryLevel = [mEMORY[0x1E69C3620] simulatedBatteryLevel];
 
-  if (v11 == 2)
+  if (simulatedBatteryLevel == 2)
   {
     v9 = 1028443341;
   }
 
-  else if (v11 == 1)
+  else if (simulatedBatteryLevel == 1)
   {
     [objc_opt_class() lowBatteryLevelThresholdForDevice];
     v9 = v12;
@@ -1852,11 +1852,11 @@ LABEL_19:
 
   else
   {
-    v6 = v7;
+    v6 = batteryState;
   }
 
-  *a3 = v6;
-  *a4 = v9;
+  *state = v6;
+  *level = v9;
 }
 
 + (float)lowBatteryLevelThresholdForDevice

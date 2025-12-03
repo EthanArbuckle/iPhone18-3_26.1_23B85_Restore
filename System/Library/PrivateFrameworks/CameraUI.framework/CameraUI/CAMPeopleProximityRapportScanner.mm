@@ -1,32 +1,32 @@
 @interface CAMPeopleProximityRapportScanner
-- (CAMPeopleProximityRapportScanner)initWithQueue:(id)a3 delegate:(id)a4;
+- (CAMPeopleProximityRapportScanner)initWithQueue:(id)queue delegate:(id)delegate;
 - (CAMPeopleProximityScannerDelegate)delegate;
-- (void)_queue_discoveryActivatedWithError:(id)a3 timeout:(double)a4 peopleDiscoverySessionID:(unsigned int)a5;
-- (void)_queue_discoveryInterruptedWithPeopleDiscoverySessionID:(unsigned int)a3;
-- (void)_queue_discoveryInvalidatedWithPeopleDiscoverySessionID:(unsigned int)a3;
-- (void)_queue_discoveryPersonChanged:(id)a3 withChangeFlags:(unsigned int)a4 peopleDiscoverySessionID:(unsigned int)a5;
-- (void)_queue_discoveryPersonFound:(id)a3 peopleDiscoverySessionID:(unsigned int)a4;
-- (void)_queue_discoveryPersonLost:(id)a3 peopleDiscoverySessionID:(unsigned int)a4;
-- (void)_queue_discoveryTimeoutForSessionID:(unsigned int)a3;
+- (void)_queue_discoveryActivatedWithError:(id)error timeout:(double)timeout peopleDiscoverySessionID:(unsigned int)d;
+- (void)_queue_discoveryInterruptedWithPeopleDiscoverySessionID:(unsigned int)d;
+- (void)_queue_discoveryInvalidatedWithPeopleDiscoverySessionID:(unsigned int)d;
+- (void)_queue_discoveryPersonChanged:(id)changed withChangeFlags:(unsigned int)flags peopleDiscoverySessionID:(unsigned int)d;
+- (void)_queue_discoveryPersonFound:(id)found peopleDiscoverySessionID:(unsigned int)d;
+- (void)_queue_discoveryPersonLost:(id)lost peopleDiscoverySessionID:(unsigned int)d;
+- (void)_queue_discoveryTimeoutForSessionID:(unsigned int)d;
 - (void)dealloc;
-- (void)startDiscoveryWithScanRate:(unint64_t)a3 timeout:(double)a4;
+- (void)startDiscoveryWithScanRate:(unint64_t)rate timeout:(double)timeout;
 - (void)stopDiscovery;
 @end
 
 @implementation CAMPeopleProximityRapportScanner
 
-- (CAMPeopleProximityRapportScanner)initWithQueue:(id)a3 delegate:(id)a4
+- (CAMPeopleProximityRapportScanner)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CAMPeopleProximityRapportScanner;
   v9 = [(CAMPeopleProximityRapportScanner *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v10->__queue_peopleDiscoverySessionID = 1;
   }
 
@@ -56,7 +56,7 @@
   [(CAMPeopleProximityRapportScanner *)&v6 dealloc];
 }
 
-- (void)startDiscoveryWithScanRate:(unint64_t)a3 timeout:(double)a4
+- (void)startDiscoveryWithScanRate:(unint64_t)rate timeout:(double)timeout
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->__queue_peopleDiscovery)
@@ -139,7 +139,7 @@
     v16[2] = __71__CAMPeopleProximityRapportScanner_startDiscoveryWithScanRate_timeout___block_invoke_6;
     v16[3] = &unk_1E76F87B8;
     objc_copyWeak(v17, location);
-    v17[1] = *&a4;
+    v17[1] = *&timeout;
     v18 = queue_peopleDiscoverySessionID;
     [(RPPeopleDiscovery *)v15 activateWithCompletion:v16];
     objc_destroyWeak(v17);
@@ -218,25 +218,25 @@ void __71__CAMPeopleProximityRapportScanner_startDiscoveryWithScanRate_timeout__
     self->__queue_discoveredIdentities = 0;
 
     ++self->__queue_peopleDiscoverySessionID;
-    v8 = [(CAMPeopleProximityRapportScanner *)self delegate];
-    [v8 peopleProximityScannerDidStopDiscovery:self];
+    delegate = [(CAMPeopleProximityRapportScanner *)self delegate];
+    [delegate peopleProximityScannerDidStopDiscovery:self];
   }
 }
 
-- (void)_queue_discoveryActivatedWithError:(id)a3 timeout:(double)a4 peopleDiscoverySessionID:(unsigned int)a5
+- (void)_queue_discoveryActivatedWithError:(id)error timeout:(double)timeout peopleDiscoverySessionID:(unsigned int)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_peopleDiscoverySessionID == a5)
+  if (self->__queue_peopleDiscoverySessionID == d)
   {
     v9 = os_log_create("com.apple.camera", "SharedLibrary");
     v10 = v9;
-    if (v8)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [CAMPeopleProximityRapportScanner _queue_discoveryActivatedWithError:v8 timeout:v10 peopleDiscoverySessionID:?];
+        [CAMPeopleProximityRapportScanner _queue_discoveryActivatedWithError:errorCopy timeout:v10 peopleDiscoverySessionID:?];
       }
 
       [(CAMPeopleProximityRapportScanner *)self stopDiscovery];
@@ -247,26 +247,26 @@ void __71__CAMPeopleProximityRapportScanner_startDiscoveryWithScanRate_timeout__
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 67109120;
-        HIDWORD(buf) = a5;
+        HIDWORD(buf) = d;
         _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityRapportScanner] People discovery activated ID %u", &buf, 8u);
       }
 
       objc_initWeak(&buf, self);
-      v11 = dispatch_time(0, (a4 * 1000000000.0));
-      v12 = [(CAMPeopleProximityRapportScanner *)self queue];
+      v11 = dispatch_time(0, (timeout * 1000000000.0));
+      queue = [(CAMPeopleProximityRapportScanner *)self queue];
       v13 = MEMORY[0x1E69E9820];
       v14 = 3221225472;
       v15 = __104__CAMPeopleProximityRapportScanner__queue_discoveryActivatedWithError_timeout_peopleDiscoverySessionID___block_invoke;
       v16 = &unk_1E76F8790;
       objc_copyWeak(&v17, &buf);
-      v18 = a5;
-      dispatch_after(v11, v12, &v13);
+      dCopy = d;
+      dispatch_after(v11, queue, &v13);
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&buf);
     }
 
-    CAMSignpostWithIDAndArgs(79, 0xEEEEB0B5B2B2EEEELL, a5, [v8 code], 0, 0);
+    CAMSignpostWithIDAndArgs(79, 0xEEEEB0B5B2B2EEEELL, d, [errorCopy code], 0, 0);
   }
 }
 
@@ -276,17 +276,17 @@ void __104__CAMPeopleProximityRapportScanner__queue_discoveryActivatedWithError_
   [WeakRetained _queue_discoveryTimeoutForSessionID:*(a1 + 40)];
 }
 
-- (void)_queue_discoveryInvalidatedWithPeopleDiscoverySessionID:(unsigned int)a3
+- (void)_queue_discoveryInvalidatedWithPeopleDiscoverySessionID:(unsigned int)d
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_peopleDiscoverySessionID == a3)
+  if (self->__queue_peopleDiscoverySessionID == d)
   {
     v5 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = d;
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityRapportScanner] People discovery invalidated ID %u", v6, 8u);
     }
 
@@ -294,17 +294,17 @@ void __104__CAMPeopleProximityRapportScanner__queue_discoveryActivatedWithError_
   }
 }
 
-- (void)_queue_discoveryInterruptedWithPeopleDiscoverySessionID:(unsigned int)a3
+- (void)_queue_discoveryInterruptedWithPeopleDiscoverySessionID:(unsigned int)d
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_peopleDiscoverySessionID == a3)
+  if (self->__queue_peopleDiscoverySessionID == d)
   {
     v5 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = d;
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityRapportScanner] People discovery interrupted ID %u", v6, 8u);
     }
 
@@ -312,35 +312,35 @@ void __104__CAMPeopleProximityRapportScanner__queue_discoveryActivatedWithError_
   }
 }
 
-- (void)_queue_discoveryPersonFound:(id)a3 peopleDiscoverySessionID:(unsigned int)a4
+- (void)_queue_discoveryPersonFound:(id)found peopleDiscoverySessionID:(unsigned int)d
 {
-  v15 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_peopleDiscoverySessionID == a4)
+  if (self->__queue_peopleDiscoverySessionID == d)
   {
-    v6 = [CAMLibrarySelectionIdentity identityWithPerson:v15];
-    v7 = [(CAMPeopleProximityRapportScanner *)self delegate];
-    v8 = [v7 peopleProximityScanner:self shouldDiscoverIdentity:v6];
+    v6 = [CAMLibrarySelectionIdentity identityWithPerson:foundCopy];
+    delegate = [(CAMPeopleProximityRapportScanner *)self delegate];
+    v8 = [delegate peopleProximityScanner:self shouldDiscoverIdentity:v6];
 
-    if (v8 && [(CAMPeopleProximityRapportScanner *)self _queue_shouldAdvertisePerson:v15])
+    if (v8 && [(CAMPeopleProximityRapportScanner *)self _queue_shouldAdvertisePerson:foundCopy])
     {
-      v9 = [v15 identifier];
-      [(NSMutableDictionary *)self->__queue_discoveredPersons setObject:v15 forKeyedSubscript:v9];
-      [(NSMutableDictionary *)self->__queue_discoveredIdentities setObject:v6 forKeyedSubscript:v9];
-      v10 = [v15 proximity];
+      identifier = [foundCopy identifier];
+      [(NSMutableDictionary *)self->__queue_discoveredPersons setObject:foundCopy forKeyedSubscript:identifier];
+      [(NSMutableDictionary *)self->__queue_discoveredIdentities setObject:v6 forKeyedSubscript:identifier];
+      proximity = [foundCopy proximity];
       v11 = 20;
       v12 = 10;
-      if (v10 != 10)
+      if (proximity != 10)
       {
         v12 = 0;
       }
 
-      if (v10 != 20)
+      if (proximity != 20)
       {
         v11 = v12;
       }
 
-      if (v10 == 30)
+      if (proximity == 30)
       {
         v13 = 30;
       }
@@ -350,33 +350,33 @@ void __104__CAMPeopleProximityRapportScanner__queue_discoveryActivatedWithError_
         v13 = v11;
       }
 
-      v14 = [(CAMPeopleProximityRapportScanner *)self delegate];
-      [v14 peopleProximityScanner:self didDiscoverIdentity:v6 distance:v13 rssi:0];
+      delegate2 = [(CAMPeopleProximityRapportScanner *)self delegate];
+      [delegate2 peopleProximityScanner:self didDiscoverIdentity:v6 distance:v13 rssi:0];
     }
   }
 }
 
-- (void)_queue_discoveryPersonChanged:(id)a3 withChangeFlags:(unsigned int)a4 peopleDiscoverySessionID:(unsigned int)a5
+- (void)_queue_discoveryPersonChanged:(id)changed withChangeFlags:(unsigned int)flags peopleDiscoverySessionID:(unsigned int)d
 {
-  v5 = *&a5;
-  v6 = a4;
-  v8 = a3;
+  v5 = *&d;
+  flagsCopy = flags;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_queue);
   if (self->__queue_peopleDiscoverySessionID == v5)
   {
-    v9 = [v8 identifier];
-    v10 = [(NSMutableDictionary *)self->__queue_discoveredPersons objectForKeyedSubscript:v9];
+    identifier = [changedCopy identifier];
+    v10 = [(NSMutableDictionary *)self->__queue_discoveredPersons objectForKeyedSubscript:identifier];
     if (v10)
     {
       v11 = os_log_create("com.apple.camera", "SharedLibrary");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [CAMPeopleProximityRapportScanner _queue_discoveryPersonChanged:v8 withChangeFlags:v6 peopleDiscoverySessionID:v11];
+        [CAMPeopleProximityRapportScanner _queue_discoveryPersonChanged:changedCopy withChangeFlags:flagsCopy peopleDiscoverySessionID:v11];
       }
 
-      [(NSMutableDictionary *)self->__queue_discoveredPersons setObject:v8 forKeyedSubscript:v9];
-      v12 = [v8 proximity];
-      switch(v12)
+      [(NSMutableDictionary *)self->__queue_discoveredPersons setObject:changedCopy forKeyedSubscript:identifier];
+      proximity = [changedCopy proximity];
+      switch(proximity)
       {
         case 30:
           v13 = 30;
@@ -392,8 +392,8 @@ void __104__CAMPeopleProximityRapportScanner__queue_discoveryActivatedWithError_
           break;
       }
 
-      v14 = [v10 proximity];
-      switch(v14)
+      proximity2 = [v10 proximity];
+      switch(proximity2)
       {
         case 30:
           v15 = 30;
@@ -411,28 +411,28 @@ void __104__CAMPeopleProximityRapportScanner__queue_discoveryActivatedWithError_
 
       if (v13 != v15)
       {
-        v16 = [(NSMutableDictionary *)self->__queue_discoveredIdentities objectForKeyedSubscript:v9];
-        v17 = [(CAMPeopleProximityRapportScanner *)self delegate];
-        [v17 peopleProximityScanner:self didDiscoverIdentity:v16 distance:v13 rssi:0];
+        v16 = [(NSMutableDictionary *)self->__queue_discoveredIdentities objectForKeyedSubscript:identifier];
+        delegate = [(CAMPeopleProximityRapportScanner *)self delegate];
+        [delegate peopleProximityScanner:self didDiscoverIdentity:v16 distance:v13 rssi:0];
       }
     }
 
     else
     {
-      [(CAMPeopleProximityRapportScanner *)self _queue_discoveryPersonFound:v8 peopleDiscoverySessionID:v5];
+      [(CAMPeopleProximityRapportScanner *)self _queue_discoveryPersonFound:changedCopy peopleDiscoverySessionID:v5];
     }
   }
 }
 
-- (void)_queue_discoveryPersonLost:(id)a3 peopleDiscoverySessionID:(unsigned int)a4
+- (void)_queue_discoveryPersonLost:(id)lost peopleDiscoverySessionID:(unsigned int)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_peopleDiscoverySessionID == a4)
+  if (self->__queue_peopleDiscoverySessionID == d)
   {
-    v7 = [v6 identifier];
-    v8 = [(NSMutableDictionary *)self->__queue_discoveredPersons objectForKeyedSubscript:v7];
+    identifier = [lostCopy identifier];
+    v8 = [(NSMutableDictionary *)self->__queue_discoveredPersons objectForKeyedSubscript:identifier];
 
     if (v8)
     {
@@ -440,34 +440,34 @@ void __104__CAMPeopleProximityRapportScanner__queue_discoveryActivatedWithError_
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138477827;
-        v13 = v6;
+        v13 = lostCopy;
         _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityRapportScanner] Lost %{private}@", &v12, 0xCu);
       }
 
-      v10 = [(NSMutableDictionary *)self->__queue_discoveredIdentities objectForKeyedSubscript:v7];
+      v10 = [(NSMutableDictionary *)self->__queue_discoveredIdentities objectForKeyedSubscript:identifier];
       if (v10)
       {
-        v11 = [(CAMPeopleProximityRapportScanner *)self delegate];
-        [v11 peopleProximityScanner:self didLoseIdentity:v10];
+        delegate = [(CAMPeopleProximityRapportScanner *)self delegate];
+        [delegate peopleProximityScanner:self didLoseIdentity:v10];
       }
 
-      [(NSMutableDictionary *)self->__queue_discoveredPersons removeObjectForKey:v7];
-      [(NSMutableDictionary *)self->__queue_discoveredIdentities removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->__queue_discoveredPersons removeObjectForKey:identifier];
+      [(NSMutableDictionary *)self->__queue_discoveredIdentities removeObjectForKey:identifier];
     }
   }
 }
 
-- (void)_queue_discoveryTimeoutForSessionID:(unsigned int)a3
+- (void)_queue_discoveryTimeoutForSessionID:(unsigned int)d
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_peopleDiscoverySessionID == a3)
+  if (self->__queue_peopleDiscoverySessionID == d)
   {
     v5 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = d;
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityRapportScanner] Discovery timeout sessionID:%u", v6, 8u);
     }
 

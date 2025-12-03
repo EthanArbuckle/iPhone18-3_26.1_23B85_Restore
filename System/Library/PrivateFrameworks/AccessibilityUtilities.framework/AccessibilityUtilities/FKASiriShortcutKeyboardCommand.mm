@@ -1,60 +1,60 @@
 @interface FKASiriShortcutKeyboardCommand
-+ (id)commandWithSiriShortcutIdentifier:(id)a3;
++ (id)commandWithSiriShortcutIdentifier:(id)identifier;
 - (AXSiriShortcut)shortcut;
-- (BOOL)isEqualToCommand:(id)a3;
-- (FKASiriShortcutKeyboardCommand)initWithCoder:(id)a3;
-- (FKASiriShortcutKeyboardCommand)initWithSiriShortcutIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToCommand:(id)command;
+- (FKASiriShortcutKeyboardCommand)initWithCoder:(id)coder;
+- (FKASiriShortcutKeyboardCommand)initWithSiriShortcutIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)localizedName;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)perform;
 @end
 
 @implementation FKASiriShortcutKeyboardCommand
 
-+ (id)commandWithSiriShortcutIdentifier:(id)a3
++ (id)commandWithSiriShortcutIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSiriShortcutIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithSiriShortcutIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (FKASiriShortcutKeyboardCommand)initWithSiriShortcutIdentifier:(id)a3
+- (FKASiriShortcutKeyboardCommand)initWithSiriShortcutIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = FKASiriShortcutKeyboardCommand;
   v6 = [(AXSSKeyboardCommand *)&v9 initWithType:@"SiriShortcut"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_siriShortcutIdentifier, a3);
+    objc_storeStrong(&v6->_siriShortcutIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (FKASiriShortcutKeyboardCommand)initWithCoder:(id)a3
+- (FKASiriShortcutKeyboardCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = FKASiriShortcutKeyboardCommand;
-  v5 = [(AXSSKeyboardCommand *)&v14 initWithCoder:v4];
+  v5 = [(AXSSKeyboardCommand *)&v14 initWithCoder:coderCopy];
   v6 = v5;
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v7 = [(AXSSKeyboardCommand *)v5 type];
-  v8 = [v7 isEqualToString:@"SiriShortcut"];
+  type = [(AXSSKeyboardCommand *)v5 type];
+  v8 = [type isEqualToString:@"SiriShortcut"];
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"siriShortcut"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"siriShortcut"];
     siriShortcutIdentifier = v6->_siriShortcutIdentifier;
     v6->_siriShortcutIdentifier = v9;
 
@@ -75,21 +75,21 @@ LABEL_8:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FKASiriShortcutKeyboardCommand;
-  v4 = a3;
-  [(AXSSKeyboardCommand *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(AXSSKeyboardCommand *)&v6 encodeWithCoder:coderCopy];
   v5 = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"siriShortcut"];
+  [coderCopy encodeObject:v5 forKey:@"siriShortcut"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
-  v6 = [v4 initWithSiriShortcutIdentifier:v5];
+  siriShortcutIdentifier = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
+  v6 = [v4 initWithSiriShortcutIdentifier:siriShortcutIdentifier];
 
   return v6;
 }
@@ -97,29 +97,29 @@ LABEL_8:
 - (AXSiriShortcut)shortcut
 {
   v3 = +[AXSiriShortcutsManager sharedManager];
-  v4 = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
-  v5 = [v3 shortcutForIdentifier:v4];
+  siriShortcutIdentifier = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
+  v5 = [v3 shortcutForIdentifier:siriShortcutIdentifier];
 
   return v5;
 }
 
 - (id)localizedName
 {
-  v2 = [(FKASiriShortcutKeyboardCommand *)self shortcut];
-  v3 = [v2 shortcutName];
+  shortcut = [(FKASiriShortcutKeyboardCommand *)self shortcut];
+  shortcutName = [shortcut shortcutName];
 
-  return v3;
+  return shortcutName;
 }
 
-- (BOOL)isEqualToCommand:(id)a3
+- (BOOL)isEqualToCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 siriShortcutIdentifier];
-    v6 = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    siriShortcutIdentifier = [commandCopy siriShortcutIdentifier];
+    siriShortcutIdentifier2 = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
+    v7 = [siriShortcutIdentifier isEqualToString:siriShortcutIdentifier2];
   }
 
   else
@@ -135,8 +135,8 @@ LABEL_8:
   v7.receiver = self;
   v7.super_class = FKASiriShortcutKeyboardCommand;
   v3 = [(AXSSKeyboardCommand *)&v7 hash];
-  v4 = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
-  v5 = [v4 hash];
+  siriShortcutIdentifier = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
+  v5 = [siriShortcutIdentifier hash];
 
   return v5 ^ v3;
 }
@@ -146,8 +146,8 @@ LABEL_8:
   v7.receiver = self;
   v7.super_class = FKASiriShortcutKeyboardCommand;
   v3 = [(AXSSKeyboardCommand *)&v7 description];
-  v4 = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
-  v5 = [v3 stringByAppendingFormat:@", shortcut identifier: %@", v4];
+  siriShortcutIdentifier = [(FKASiriShortcutKeyboardCommand *)self siriShortcutIdentifier];
+  v5 = [v3 stringByAppendingFormat:@", shortcut identifier: %@", siriShortcutIdentifier];
 
   return v5;
 }
@@ -155,8 +155,8 @@ LABEL_8:
 - (void)perform
 {
   v4 = +[AXSiriShortcutsManager sharedManager];
-  v3 = [(FKASiriShortcutKeyboardCommand *)self shortcut];
-  [v4 performShortcut:v3];
+  shortcut = [(FKASiriShortcutKeyboardCommand *)self shortcut];
+  [v4 performShortcut:shortcut];
 }
 
 - (void)initWithCoder:(void *)a1 .cold.1(void *a1, NSObject *a2)

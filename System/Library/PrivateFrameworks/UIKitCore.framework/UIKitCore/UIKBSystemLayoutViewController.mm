@@ -1,5 +1,5 @@
 @interface UIKBSystemLayoutViewController
-+ (id)systemLayoutViewControllerWithViewController:(id)a3;
++ (id)systemLayoutViewControllerWithViewController:(id)controller;
 - (CGSize)centeredOffsets;
 - (UIEdgeInsets)minimumInsets;
 - (void)updateViewConstraints;
@@ -7,24 +7,24 @@
 
 @implementation UIKBSystemLayoutViewController
 
-+ (id)systemLayoutViewControllerWithViewController:(id)a3
++ (id)systemLayoutViewControllerWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithNibName:0 bundle:0];
-  v6 = [v5 view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controllerCopy = controller;
+  v5 = [[self alloc] initWithNibName:0 bundle:0];
+  view = [v5 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v5[125] = 1;
   v5[126] = 1;
-  [v5 addChildViewController:v4];
-  v7 = [v5 view];
-  v8 = [v4 view];
-  [v7 addSubview:v8];
+  [v5 addChildViewController:controllerCopy];
+  view2 = [v5 view];
+  view3 = [controllerCopy view];
+  [view2 addSubview:view3];
 
-  [v4 didMoveToParentViewController:v5];
-  v9 = [v4 view];
+  [controllerCopy didMoveToParentViewController:v5];
+  view4 = [controllerCopy view];
 
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 updateViewConstraints];
 
   return v5;
@@ -36,25 +36,25 @@
   v45.receiver = self;
   v45.super_class = UIKBSystemLayoutViewController;
   [(UIViewController *)&v45 updateViewConstraints];
-  v3 = [(UIViewController *)self view];
-  [v3 removeConstraints:self->_constraints];
+  view = [(UIViewController *)self view];
+  [view removeConstraints:self->_constraints];
 
   [(NSMutableArray *)self->_constraints removeAllObjects];
-  v4 = [(UIViewController *)self view];
-  v5 = [v4 subviews];
-  v6 = [v5 firstObject];
+  view2 = [(UIViewController *)self view];
+  subviews = [view2 subviews];
+  firstObject = [subviews firstObject];
 
-  [v6 frame];
+  [firstObject frame];
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [(UIKBSystemLayoutViewController *)self horizontalLayoutType];
+  array = [MEMORY[0x1E695DF70] array];
+  horizontalLayoutType = [(UIKBSystemLayoutViewController *)self horizontalLayoutType];
   v13 = 0;
-  if (v12 <= 1)
+  if (horizontalLayoutType <= 1)
   {
-    if (v12)
+    if (horizontalLayoutType)
     {
-      if (v12 != 1)
+      if (horizontalLayoutType != 1)
       {
         goto LABEL_14;
       }
@@ -71,16 +71,16 @@
 
   else
   {
-    if (v12 == 2)
+    if (horizontalLayoutType == 2)
     {
       v13 = 0;
     }
 
     else
     {
-      if (v12 != 3)
+      if (horizontalLayoutType != 3)
       {
-        if (v12 != 4)
+        if (horizontalLayoutType != 4)
         {
           goto LABEL_14;
         }
@@ -88,22 +88,22 @@
         v13 = v8 > 0.0;
       }
 
-      [v11 addObject:&unk_1EFE30F58];
+      [array addObject:&unk_1EFE30F58];
     }
 
     v14 = &unk_1EFE30F88;
   }
 
-  [v11 addObject:v14];
+  [array addObject:v14];
 LABEL_14:
-  v15 = [(UIKBSystemLayoutViewController *)self verticalLayoutType];
+  verticalLayoutType = [(UIKBSystemLayoutViewController *)self verticalLayoutType];
   v16 = 0;
   v39 = v13;
-  if (v15 <= 1)
+  if (verticalLayoutType <= 1)
   {
-    if (v15)
+    if (verticalLayoutType)
     {
-      if (v15 != 1)
+      if (verticalLayoutType != 1)
       {
         goto LABEL_27;
       }
@@ -120,16 +120,16 @@ LABEL_14:
 
   else
   {
-    if (v15 == 2)
+    if (verticalLayoutType == 2)
     {
       v16 = 0;
     }
 
     else
     {
-      if (v15 != 3)
+      if (verticalLayoutType != 3)
       {
-        if (v15 != 4)
+        if (verticalLayoutType != 4)
         {
           goto LABEL_27;
         }
@@ -137,18 +137,18 @@ LABEL_14:
         v16 = v10 > 0.0;
       }
 
-      [v11 addObject:&unk_1EFE30FA0];
+      [array addObject:&unk_1EFE30FA0];
     }
 
     v17 = &unk_1EFE30FD0;
   }
 
-  [v11 addObject:v17];
+  [array addObject:v17];
 LABEL_27:
   v38 = v16;
   if (!self->_constraints)
   {
-    v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
+    v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(array, "count")}];
     constraints = self->_constraints;
     self->_constraints = v18;
   }
@@ -157,7 +157,7 @@ LABEL_27:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v11;
+  obj = array;
   v20 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v20)
   {
@@ -172,12 +172,12 @@ LABEL_27:
           objc_enumerationMutation(obj);
         }
 
-        v24 = [*(*(&v41 + 1) + 8 * i) integerValue];
-        v25 = v24;
+        integerValue = [*(*(&v41 + 1) + 8 * i) integerValue];
+        v25 = integerValue;
         v26 = 0.0;
-        if (v24 > 3)
+        if (integerValue > 3)
         {
-          switch(v24)
+          switch(integerValue)
           {
             case 10:
               v27 = &OBJC_IVAR___UIKBSystemLayoutViewController__centeredOffsets;
@@ -202,27 +202,27 @@ LABEL_47:
         }
 
         v27 = &OBJC_IVAR___UIKBSystemLayoutViewController__minimumInsets;
-        if (v24 == 1)
+        if (integerValue == 1)
         {
           goto LABEL_44;
         }
 
-        if (v24 == 2)
+        if (integerValue == 2)
         {
           p_responderFlags = &self->super._view;
           goto LABEL_47;
         }
 
         p_responderFlags = self;
-        if (v24 == 3)
+        if (integerValue == 3)
         {
           goto LABEL_47;
         }
 
 LABEL_48:
         v29 = MEMORY[0x1E69977A0];
-        v30 = [(UIViewController *)self view];
-        v31 = [v29 constraintWithItem:v30 attribute:v25 relatedBy:0 toItem:v6 attribute:v25 multiplier:1.0 constant:v26];
+        view3 = [(UIViewController *)self view];
+        v31 = [v29 constraintWithItem:view3 attribute:v25 relatedBy:0 toItem:firstObject attribute:v25 multiplier:1.0 constant:v26];
 
         LODWORD(v32) = 1148846080;
         [v31 setPriority:v32];
@@ -238,19 +238,19 @@ LABEL_48:
   if (v38)
   {
     v33 = self->_constraints;
-    v34 = [MEMORY[0x1E69977A0] constraintWithItem:v6 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v10];
+    v34 = [MEMORY[0x1E69977A0] constraintWithItem:firstObject attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v10];
     [(NSMutableArray *)v33 addObject:v34];
   }
 
   if (v39)
   {
     v35 = self->_constraints;
-    v36 = [MEMORY[0x1E69977A0] constraintWithItem:v6 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v8];
+    v36 = [MEMORY[0x1E69977A0] constraintWithItem:firstObject attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v8];
     [(NSMutableArray *)v35 addObject:v36];
   }
 
-  v37 = [(UIViewController *)self view];
-  [v37 addConstraints:self->_constraints];
+  view4 = [(UIViewController *)self view];
+  [view4 addConstraints:self->_constraints];
 }
 
 - (UIEdgeInsets)minimumInsets

@@ -1,5 +1,5 @@
 @interface PXPhotosGridToggleSharedLibraryBadgeActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
 - (id)menuElement;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
@@ -9,14 +9,14 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v5 = [v3 libraryFilterState];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
 
-  [v5 setSharedLibraryBadgeEnabled:{objc_msgSend(v5, "isSharedLibraryBadgeEnabled") ^ 1}];
-  v4 = [(PXActionPerformer *)self delegate];
+  [libraryFilterState setSharedLibraryBadgeEnabled:{objc_msgSend(libraryFilterState, "isSharedLibraryBadgeEnabled") ^ 1}];
+  delegate = [(PXActionPerformer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 photosGridActionPerformer:self libraryFilterStateChanged:v5];
+    [delegate photosGridActionPerformer:self libraryFilterStateChanged:libraryFilterState];
   }
 
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:1 error:0];
@@ -24,49 +24,49 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self viewModel];
-  v3 = [v2 libraryFilterState];
-  v4 = [v3 isSharedLibraryBadgeEnabled];
+  viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+  libraryFilterState = [viewModel libraryFilterState];
+  isSharedLibraryBadgeEnabled = [libraryFilterState isSharedLibraryBadgeEnabled];
 
-  return v4;
+  return isSharedLibraryBadgeEnabled;
 }
 
 - (id)menuElement
 {
   v10.receiver = self;
   v10.super_class = PXPhotosGridToggleSharedLibraryBadgeActionPerformer;
-  v4 = [(PXActionPerformer *)&v10 menuElement];
-  if (v4)
+  menuElement = [(PXActionPerformer *)&v10 menuElement];
+  if (menuElement)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 px_descriptionForAssertionMessage];
-      [v6 handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleSharedLibraryBadgeActionPerformer.m" lineNumber:44 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[super menuElement]", v8, v9}];
+      px_descriptionForAssertionMessage = [menuElement px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleSharedLibraryBadgeActionPerformer.m" lineNumber:44 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[super menuElement]", v8, px_descriptionForAssertionMessage}];
     }
   }
 
-  [v4 setAttributes:{objc_msgSend(v4, "attributes") | 8}];
+  [menuElement setAttributes:{objc_msgSend(menuElement, "attributes") | 8}];
 
-  return v4;
+  return menuElement;
 }
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v4 = a4;
-  v5 = [v4 sharedLibraryStatusProvider];
-  v6 = [v5 hasSharedLibraryOrPreview];
+  modelCopy = model;
+  sharedLibraryStatusProvider = [modelCopy sharedLibraryStatusProvider];
+  hasSharedLibraryOrPreview = [sharedLibraryStatusProvider hasSharedLibraryOrPreview];
 
-  if (v6)
+  if (hasSharedLibraryOrPreview)
   {
-    v7 = [v4 dataSourceManager];
-    v8 = [v7 dataSource];
-    v9 = [v8 containerCollection];
+    dataSourceManager = [modelCopy dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
+    containerCollection = [dataSource containerCollection];
 
-    v10 = [v9 px_isSharedAlbum] ^ 1;
+    v10 = [containerCollection px_isSharedAlbum] ^ 1;
   }
 
   else

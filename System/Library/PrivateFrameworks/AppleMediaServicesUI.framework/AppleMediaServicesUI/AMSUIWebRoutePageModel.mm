@@ -1,6 +1,6 @@
 @interface AMSUIWebRoutePageModel
 - (AMSUIWebClientContext)context;
-- (AMSUIWebRoutePageModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebRoutePageModel)initWithJSObject:(id)object context:(id)context;
 - (CGSize)windowSize;
 - (NSString)description;
 - (id)_webPageViewController;
@@ -8,23 +8,23 @@
 
 @implementation AMSUIWebRoutePageModel
 
-- (AMSUIWebRoutePageModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebRoutePageModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = AMSUIWebRoutePageModel;
   v8 = [(AMSUIWebRoutePageModel *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_context, v7);
-    v10 = [v6 objectForKeyedSubscript:@"account"];
-    v11 = [v7 iTunesAccountFromJSAccount:v10];
+    objc_storeWeak(&v8->_context, contextCopy);
+    v10 = [objectCopy objectForKeyedSubscript:@"account"];
+    v11 = [contextCopy iTunesAccountFromJSAccount:v10];
     account = v9->_account;
     v9->_account = v11;
 
-    v13 = [v6 objectForKeyedSubscript:@"url"];
+    v13 = [objectCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
     URL = v9->_URL;
     v9->_URL = v17;
 
-    v19 = [v6 objectForKeyedSubscript:@"clientOptions"];
+    v19 = [objectCopy objectForKeyedSubscript:@"clientOptions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
     clientOptions = v9->_clientOptions;
     v9->_clientOptions = v20;
 
-    v22 = [v6 objectForKeyedSubscript:@"headers"];
+    v22 = [objectCopy objectForKeyedSubscript:@"headers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,10 +79,10 @@
     headers = v9->_headers;
     v9->_headers = v23;
 
-    v25 = [v6 objectForKeyedSubscript:@"loadUsingWebKit"];
+    v25 = [objectCopy objectForKeyedSubscript:@"loadUsingWebKit"];
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v6 objectForKeyedSubscript:@"loadUsingWebKit"];
+      v26 = [objectCopy objectForKeyedSubscript:@"loadUsingWebKit"];
       v9->_loadUsingWebKit = [v26 BOOLValue];
     }
 
@@ -99,9 +99,9 @@
 {
   v22[3] = *MEMORY[0x1E69E9840];
   v21[0] = @"disableReappearPlaceholder";
-  v3 = [(AMSUIWebRoutePageModel *)self disableReappearPlaceholder];
+  disableReappearPlaceholder = [(AMSUIWebRoutePageModel *)self disableReappearPlaceholder];
   v4 = @"false";
-  if (v3)
+  if (disableReappearPlaceholder)
   {
     v4 = @"true";
   }
@@ -109,8 +109,8 @@
   v22[0] = v4;
   v21[1] = @"URL";
   v5 = [(AMSUIWebRoutePageModel *)self URL];
-  v6 = [v5 absoluteString];
-  v22[1] = v6;
+  absoluteString = [v5 absoluteString];
+  v22[1] = absoluteString;
   v21[2] = @"windowSize";
   [(AMSUIWebRoutePageModel *)self windowSize];
   v7 = NSStringFromCGSize(v24);
@@ -118,36 +118,36 @@
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
   v9 = [v8 mutableCopy];
 
-  v10 = [(AMSUIWebRoutePageModel *)self backgroundColor];
+  backgroundColor = [(AMSUIWebRoutePageModel *)self backgroundColor];
 
-  if (v10)
+  if (backgroundColor)
   {
-    v11 = [(AMSUIWebRoutePageModel *)self backgroundColor];
-    [v9 setObject:v11 forKey:@"backgroundColor"];
+    backgroundColor2 = [(AMSUIWebRoutePageModel *)self backgroundColor];
+    [v9 setObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v12 = [(AMSUIWebRoutePageModel *)self clientOptions];
+  clientOptions = [(AMSUIWebRoutePageModel *)self clientOptions];
 
-  if (v12)
+  if (clientOptions)
   {
-    v13 = [(AMSUIWebRoutePageModel *)self clientOptions];
-    [v9 setObject:v13 forKey:@"clientOptions"];
+    clientOptions2 = [(AMSUIWebRoutePageModel *)self clientOptions];
+    [v9 setObject:clientOptions2 forKey:@"clientOptions"];
   }
 
-  v14 = [(AMSUIWebRoutePageModel *)self impressionEvent];
+  impressionEvent = [(AMSUIWebRoutePageModel *)self impressionEvent];
 
-  if (v14)
+  if (impressionEvent)
   {
-    v15 = [(AMSUIWebRoutePageModel *)self impressionEvent];
-    [v9 setObject:v15 forKey:@"impressionEvent"];
+    impressionEvent2 = [(AMSUIWebRoutePageModel *)self impressionEvent];
+    [v9 setObject:impressionEvent2 forKey:@"impressionEvent"];
   }
 
-  v16 = [(AMSUIWebRoutePageModel *)self navigationBar];
+  navigationBar = [(AMSUIWebRoutePageModel *)self navigationBar];
 
-  if (v16)
+  if (navigationBar)
   {
-    v17 = [(AMSUIWebRoutePageModel *)self navigationBar];
-    [v9 setObject:v17 forKey:@"navigationBar"];
+    navigationBar2 = [(AMSUIWebRoutePageModel *)self navigationBar];
+    [v9 setObject:navigationBar2 forKey:@"navigationBar"];
   }
 
   v18 = [v9 description];
@@ -159,38 +159,38 @@
 
 - (id)_webPageViewController
 {
-  v3 = [(AMSUIWebRoutePageModel *)self viewController];
+  viewController = [(AMSUIWebRoutePageModel *)self viewController];
 
-  if (v3)
+  if (viewController)
   {
-    v4 = [(AMSUIWebRoutePageModel *)self viewController];
+    viewController2 = [(AMSUIWebRoutePageModel *)self viewController];
   }
 
   else
   {
     v5 = AMSSetLogKey();
     v6 = [AMSUIWebWrapperViewController alloc];
-    v7 = [(AMSUIWebRoutePageModel *)self context];
-    v8 = [(AMSUIWebRoutePageModel *)self account];
-    v4 = [(AMSUIWebWrapperViewController *)v6 initWithContext:v7 account:v8];
+    context = [(AMSUIWebRoutePageModel *)self context];
+    account = [(AMSUIWebRoutePageModel *)self account];
+    viewController2 = [(AMSUIWebWrapperViewController *)v6 initWithContext:context account:account];
 
-    v9 = [(AMSUIWebRoutePageModel *)self context];
-    v10 = [v9 metricsOverlay];
-    [(AMSUIWebViewController *)v4 setMetricsOverlay:v10];
+    context2 = [(AMSUIWebRoutePageModel *)self context];
+    metricsOverlay = [context2 metricsOverlay];
+    [(AMSUIWebViewController *)viewController2 setMetricsOverlay:metricsOverlay];
 
-    v11 = [(AMSUIWebRoutePageModel *)self clientOptions];
-    [(AMSUIWebViewController *)v4 setClientOptions:v11];
+    clientOptions = [(AMSUIWebRoutePageModel *)self clientOptions];
+    [(AMSUIWebViewController *)viewController2 setClientOptions:clientOptions];
 
-    [(AMSUIWebViewController *)v4 setLoadUsingWebKit:[(AMSUIWebRoutePageModel *)self loadUsingWebKit]];
+    [(AMSUIWebViewController *)viewController2 setLoadUsingWebKit:[(AMSUIWebRoutePageModel *)self loadUsingWebKit]];
     v12 = objc_alloc(MEMORY[0x1E696AD68]);
     v13 = [(AMSUIWebRoutePageModel *)self URL];
     v14 = [v12 initWithURL:v13];
 
-    v15 = [(AMSUIWebRoutePageModel *)self headers];
-    v16 = v15;
-    if (v15)
+    headers = [(AMSUIWebRoutePageModel *)self headers];
+    v16 = headers;
+    if (headers)
     {
-      v17 = v15;
+      v17 = headers;
     }
 
     else
@@ -200,11 +200,11 @@
 
     [v14 setAllHTTPHeaderFields:v17];
 
-    v18 = [(AMSUIWebViewController *)v4 loadRequest:v14];
-    [(AMSUIWebRoutePageModel *)self setViewController:v4];
+    v18 = [(AMSUIWebViewController *)viewController2 loadRequest:v14];
+    [(AMSUIWebRoutePageModel *)self setViewController:viewController2];
   }
 
-  return v4;
+  return viewController2;
 }
 
 - (CGSize)windowSize

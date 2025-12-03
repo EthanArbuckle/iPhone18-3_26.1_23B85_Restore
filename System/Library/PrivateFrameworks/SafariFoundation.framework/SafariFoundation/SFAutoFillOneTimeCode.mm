@@ -1,35 +1,35 @@
 @interface SFAutoFillOneTimeCode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresAuthentication;
 - (NSDate)timestamp;
 - (NSString)code;
 - (NSString)detectedCode;
 - (NSURL)_domainBoundEmbeddedURL;
-- (SFAutoFillOneTimeCode)initWithCoder:(id)a3;
-- (SFAutoFillOneTimeCode)initWithIMCoreDictionary:(id)a3;
-- (SFAutoFillOneTimeCode)initWithMailOneTimeCode:(id)a3 timestamp:(id)a4 messageID:(int64_t)a5;
-- (SFAutoFillOneTimeCode)initWithNotificationOneTimeCode:(id)a3 displayCode:(id)a4 timestamp:(id)a5 sourceAppName:(id)a6 sourceAppApplicationIdentifer:(id)a7;
-- (SFAutoFillOneTimeCode)initWithTOTPGenerator:(id)a3 user:(id)a4 highLevelDomain:(id)a5 lastUsedDateOfAssociatedSavedAccount:(id)a6;
-- (id)_embeddedDomainArrayFromIMCoreEmbeddedDomains:(id)a3;
-- (id)_secureURLForDomain:(id)a3;
-- (id)_stringForSource:(int64_t)a3;
+- (SFAutoFillOneTimeCode)initWithCoder:(id)coder;
+- (SFAutoFillOneTimeCode)initWithIMCoreDictionary:(id)dictionary;
+- (SFAutoFillOneTimeCode)initWithMailOneTimeCode:(id)code timestamp:(id)timestamp messageID:(int64_t)d;
+- (SFAutoFillOneTimeCode)initWithNotificationOneTimeCode:(id)code displayCode:(id)displayCode timestamp:(id)timestamp sourceAppName:(id)name sourceAppApplicationIdentifer:(id)identifer;
+- (SFAutoFillOneTimeCode)initWithTOTPGenerator:(id)generator user:(id)user highLevelDomain:(id)domain lastUsedDateOfAssociatedSavedAccount:(id)account;
+- (id)_embeddedDomainArrayFromIMCoreEmbeddedDomains:(id)domains;
+- (id)_secureURLForDomain:(id)domain;
+- (id)_stringForSource:(int64_t)source;
 - (id)description;
-- (id)localizedSubtitleForContext:(int64_t)a3;
-- (id)localizedTitleForContext:(int64_t)a3;
-- (int64_t)_matchBoundDomainAndEmbeddedDomainWithFrameURLs:(id)a3;
-- (int64_t)_matchBoundDomainAndEmbeddedDomainsWithFrameURLs:(id)a3;
-- (int64_t)_matchURL:(id)a3 withBoundDomainURL:(id)a4 strict:(BOOL)a5;
-- (int64_t)matchBoundDomainsWithFrameURLs:(id)a3;
-- (int64_t)matchDomainWithURL:(id)a3;
+- (id)localizedSubtitleForContext:(int64_t)context;
+- (id)localizedTitleForContext:(int64_t)context;
+- (int64_t)_matchBoundDomainAndEmbeddedDomainWithFrameURLs:(id)ls;
+- (int64_t)_matchBoundDomainAndEmbeddedDomainsWithFrameURLs:(id)ls;
+- (int64_t)_matchURL:(id)l withBoundDomainURL:(id)rL strict:(BOOL)strict;
+- (int64_t)matchBoundDomainsWithFrameURLs:(id)ls;
+- (int64_t)matchDomainWithURL:(id)l;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAutoFillOneTimeCode
 
-- (SFAutoFillOneTimeCode)initWithIMCoreDictionary:(id)a3
+- (SFAutoFillOneTimeCode)initWithIMCoreDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v68.receiver = self;
   v68.super_class = SFAutoFillOneTimeCode;
   v5 = [(SFAutoFillOneTimeCode *)&v68 init];
@@ -63,7 +63,7 @@
     }
 
     v10 = *v7;
-    v11 = [v4 objectForKeyedSubscript:v10];
+    v11 = [dictionaryCopy objectForKeyedSubscript:v10];
     timestamp = v6->_timestamp;
     v6->_timestamp = v11;
 
@@ -93,7 +93,7 @@
     }
 
     v16 = *v13;
-    v17 = [v4 objectForKeyedSubscript:v16];
+    v17 = [dictionaryCopy objectForKeyedSubscript:v16];
     GUID = v6->_GUID;
     v6->_GUID = v17;
 
@@ -123,7 +123,7 @@
     }
 
     v22 = *v19;
-    v23 = [v4 objectForKeyedSubscript:v22];
+    v23 = [dictionaryCopy objectForKeyedSubscript:v22];
     detectedCode = v6->_detectedCode;
     v6->_detectedCode = v23;
 
@@ -153,7 +153,7 @@
     }
 
     v28 = *v25;
-    v29 = [v4 objectForKeyedSubscript:v28];
+    v29 = [dictionaryCopy objectForKeyedSubscript:v28];
     displayCode = v6->_displayCode;
     v6->_displayCode = v29;
 
@@ -183,7 +183,7 @@
     }
 
     v34 = *v31;
-    v35 = [v4 objectForKeyedSubscript:v34];
+    v35 = [dictionaryCopy objectForKeyedSubscript:v34];
     handle = v6->_handle;
     v6->_handle = v35;
 
@@ -213,7 +213,7 @@
     }
 
     v40 = *v37;
-    v41 = [v4 objectForKeyedSubscript:v40];
+    v41 = [dictionaryCopy objectForKeyedSubscript:v40];
     machineReadableCode = v6->_machineReadableCode;
     v6->_machineReadableCode = v41;
 
@@ -243,7 +243,7 @@
     }
 
     v46 = *v43;
-    v47 = [v4 objectForKeyedSubscript:v46];
+    v47 = [dictionaryCopy objectForKeyedSubscript:v46];
     domain = v6->_domain;
     v6->_domain = v47;
 
@@ -273,7 +273,7 @@
     }
 
     v52 = *v49;
-    v53 = [v4 objectForKeyedSubscript:v52];
+    v53 = [dictionaryCopy objectForKeyedSubscript:v52];
     embeddedDomain = v6->_embeddedDomain;
     v6->_embeddedDomain = v53;
 
@@ -302,7 +302,7 @@
       [SFAutoFillOneTimeCode initWithIMCoreDictionary:];
     }
 
-    v58 = [v4 objectForKeyedSubscript:*v55];
+    v58 = [dictionaryCopy objectForKeyedSubscript:*v55];
     v6->_domainStrictMatch = [v58 BOOLValue];
 
     v74 = 0;
@@ -331,7 +331,7 @@
     }
 
     v62 = *v59;
-    v63 = [v4 objectForKeyedSubscript:v62];
+    v63 = [dictionaryCopy objectForKeyedSubscript:v62];
     v64 = [(SFAutoFillOneTimeCode *)v6 _embeddedDomainArrayFromIMCoreEmbeddedDomains:v63];
     embeddedDomains = v6->_embeddedDomains;
     v6->_embeddedDomains = v64;
@@ -342,10 +342,10 @@
   return v6;
 }
 
-- (SFAutoFillOneTimeCode)initWithMailOneTimeCode:(id)a3 timestamp:(id)a4 messageID:(int64_t)a5
+- (SFAutoFillOneTimeCode)initWithMailOneTimeCode:(id)code timestamp:(id)timestamp messageID:(int64_t)d
 {
-  v9 = a3;
-  v10 = a4;
+  codeCopy = code;
+  timestampCopy = timestamp;
   v17.receiver = self;
   v17.super_class = SFAutoFillOneTimeCode;
   v11 = [(SFAutoFillOneTimeCode *)&v17 init];
@@ -353,10 +353,10 @@
   if (v11)
   {
     v11->_source = 1;
-    objc_storeStrong(&v11->_detectedCode, a3);
-    objc_storeStrong(&v12->_displayCode, a3);
-    objc_storeStrong(&v12->_timestamp, a4);
-    v12->_messageID = a5;
+    objc_storeStrong(&v11->_detectedCode, code);
+    objc_storeStrong(&v12->_displayCode, code);
+    objc_storeStrong(&v12->_timestamp, timestamp);
+    v12->_messageID = d;
     GUID = v12->_GUID;
     v12->_GUID = &stru_2875FD420;
 
@@ -369,13 +369,13 @@
   return v12;
 }
 
-- (SFAutoFillOneTimeCode)initWithNotificationOneTimeCode:(id)a3 displayCode:(id)a4 timestamp:(id)a5 sourceAppName:(id)a6 sourceAppApplicationIdentifer:(id)a7
+- (SFAutoFillOneTimeCode)initWithNotificationOneTimeCode:(id)code displayCode:(id)displayCode timestamp:(id)timestamp sourceAppName:(id)name sourceAppApplicationIdentifer:(id)identifer
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  codeCopy = code;
+  displayCodeCopy = displayCode;
+  timestampCopy = timestamp;
+  nameCopy = name;
+  identiferCopy = identifer;
   v31.receiver = self;
   v31.super_class = SFAutoFillOneTimeCode;
   v17 = [(SFAutoFillOneTimeCode *)&v31 init];
@@ -383,20 +383,20 @@
   if (v17)
   {
     v17->_source = 2;
-    v19 = [v12 copy];
+    v19 = [codeCopy copy];
     detectedCode = v18->_detectedCode;
     v18->_detectedCode = v19;
 
-    v21 = [v13 copy];
+    v21 = [displayCodeCopy copy];
     displayCode = v18->_displayCode;
     v18->_displayCode = v21;
 
-    objc_storeStrong(&v18->_timestamp, a5);
-    v23 = [v15 copy];
+    objc_storeStrong(&v18->_timestamp, timestamp);
+    v23 = [nameCopy copy];
     sourceAppName = v18->_sourceAppName;
     v18->_sourceAppName = v23;
 
-    v25 = [v16 copy];
+    v25 = [identiferCopy copy];
     sourceApplicationIdentifier = v18->_sourceApplicationIdentifier;
     v18->_sourceApplicationIdentifier = v25;
 
@@ -412,12 +412,12 @@
   return v18;
 }
 
-- (SFAutoFillOneTimeCode)initWithTOTPGenerator:(id)a3 user:(id)a4 highLevelDomain:(id)a5 lastUsedDateOfAssociatedSavedAccount:(id)a6
+- (SFAutoFillOneTimeCode)initWithTOTPGenerator:(id)generator user:(id)user highLevelDomain:(id)domain lastUsedDateOfAssociatedSavedAccount:(id)account
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  generatorCopy = generator;
+  userCopy = user;
+  domainCopy = domain;
+  accountCopy = account;
   v23.receiver = self;
   v23.super_class = SFAutoFillOneTimeCode;
   v15 = [(SFAutoFillOneTimeCode *)&v23 init];
@@ -425,16 +425,16 @@
   if (v15)
   {
     v15->_source = 3;
-    objc_storeStrong(&v15->_totpGenerator, a3);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_totpGenerator, generator);
+    v17 = [userCopy copy];
     user = v16->_user;
     v16->_user = v17;
 
-    v19 = [v13 copy];
+    v19 = [domainCopy copy];
     domain = v16->_domain;
     v16->_domain = v19;
 
-    objc_storeStrong(&v16->_lastUseDateOfAssociatedSavedAccount, a6);
+    objc_storeStrong(&v16->_lastUseDateOfAssociatedSavedAccount, account);
     v21 = v16;
   }
 
@@ -449,8 +449,8 @@
     if (source == 3)
     {
       totpGenerator = self->_totpGenerator;
-      v6 = [MEMORY[0x277CBEAA8] date];
-      v4 = [(WBSTOTPGenerator *)totpGenerator codeForDate:v6];
+      date = [MEMORY[0x277CBEAA8] date];
+      v4 = [(WBSTOTPGenerator *)totpGenerator codeForDate:date];
     }
 
     else
@@ -473,10 +473,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v30 = 1;
   }
@@ -486,7 +486,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_source != v5->_source)
       {
         goto LABEL_18;
@@ -605,8 +605,8 @@ LABEL_18:
     v10 = objc_opt_class();
     v6 = [(SFAutoFillOneTimeCode *)self _stringForSource:self->_source];
     totpGenerator = self->_totpGenerator;
-    v12 = [MEMORY[0x277CBEAA8] date];
-    v13 = [(WBSTOTPGenerator *)totpGenerator codeForDate:v12];
+    date = [MEMORY[0x277CBEAA8] date];
+    v13 = [(WBSTOTPGenerator *)totpGenerator codeForDate:date];
     v8 = [v9 stringWithFormat:@"<%@: %p source=%@; code=<promised>%@; generator=%p; user=%@; domain=%@>", v10, self, v6, v13, self->_totpGenerator, self->_user, self->_domain];;
   }
 
@@ -657,8 +657,8 @@ LABEL_7:
     if (source == 3)
     {
       totpGenerator = self->_totpGenerator;
-      v5 = [MEMORY[0x277CBEAA8] date];
-      v3 = [(WBSTOTPGenerator *)totpGenerator codeForDate:v5];
+      date = [MEMORY[0x277CBEAA8] date];
+      v3 = [(WBSTOTPGenerator *)totpGenerator codeForDate:date];
     }
 
     else
@@ -675,16 +675,16 @@ LABEL_7:
   return v3;
 }
 
-- (int64_t)matchDomainWithURL:(id)a3
+- (int64_t)matchDomainWithURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
+  lCopy = l;
+  v5 = lCopy;
   if (self->_domain)
   {
-    if (v4 && self->_machineReadableCode)
+    if (lCopy && self->_machineReadableCode)
     {
-      v6 = [(SFAutoFillOneTimeCode *)self _domainBoundTopLevelURL];
-      v7 = [(SFAutoFillOneTimeCode *)self _matchURL:v5 withBoundDomainURL:v6 strict:self->_domainStrictMatch];
+      _domainBoundTopLevelURL = [(SFAutoFillOneTimeCode *)self _domainBoundTopLevelURL];
+      v7 = [(SFAutoFillOneTimeCode *)self _matchURL:v5 withBoundDomainURL:_domainBoundTopLevelURL strict:self->_domainStrictMatch];
     }
 
     else
@@ -701,9 +701,9 @@ LABEL_7:
   return v7;
 }
 
-- (int64_t)matchBoundDomainsWithFrameURLs:(id)a3
+- (int64_t)matchBoundDomainsWithFrameURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   if (!self->_domain && ![(NSArray *)self->_embeddedDomains count]&& !self->_embeddedDomain)
   {
     v7 = 2;
@@ -715,15 +715,15 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  v5 = [v4 count];
+  v5 = [lsCopy count];
   domain = self->_domain;
   if (v5 == 1)
   {
     if (domain && !self->_embeddedDomain && ![(NSArray *)self->_embeddedDomains count])
     {
-      v8 = [v4 firstObject];
-      v9 = [(SFAutoFillOneTimeCode *)self _domainBoundTopLevelURL];
-      v7 = [(SFAutoFillOneTimeCode *)self _matchURL:v8 withBoundDomainURL:v9 strict:self->_domainStrictMatch];
+      firstObject = [lsCopy firstObject];
+      _domainBoundTopLevelURL = [(SFAutoFillOneTimeCode *)self _domainBoundTopLevelURL];
+      v7 = [(SFAutoFillOneTimeCode *)self _matchURL:firstObject withBoundDomainURL:_domainBoundTopLevelURL strict:self->_domainStrictMatch];
 
       goto LABEL_22;
     }
@@ -737,7 +737,7 @@ LABEL_7:
     {
       if ([(NSArray *)self->_embeddedDomains count])
       {
-        v10 = [(SFAutoFillOneTimeCode *)self _matchBoundDomainAndEmbeddedDomainsWithFrameURLs:v4];
+        v10 = [(SFAutoFillOneTimeCode *)self _matchBoundDomainAndEmbeddedDomainsWithFrameURLs:lsCopy];
 LABEL_20:
         v7 = v10;
         goto LABEL_22;
@@ -745,7 +745,7 @@ LABEL_20:
 
       if (self->_embeddedDomain)
       {
-        v10 = [(SFAutoFillOneTimeCode *)self _matchBoundDomainAndEmbeddedDomainWithFrameURLs:v4];
+        v10 = [(SFAutoFillOneTimeCode *)self _matchBoundDomainAndEmbeddedDomainWithFrameURLs:lsCopy];
         goto LABEL_20;
       }
     }
@@ -766,14 +766,14 @@ LABEL_22:
   return v7;
 }
 
-- (int64_t)_matchBoundDomainAndEmbeddedDomainWithFrameURLs:(id)a3
+- (int64_t)_matchBoundDomainAndEmbeddedDomainWithFrameURLs:(id)ls
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SFAutoFillOneTimeCode *)self _domainBoundTopLevelURL];
-  v6 = [(SFAutoFillOneTimeCode *)self _domainBoundEmbeddedURL];
-  v7 = [v4 firstObject];
-  v8 = [(SFAutoFillOneTimeCode *)self _matchURL:v7 withBoundDomainURL:v6 strict:0];
+  lsCopy = ls;
+  _domainBoundTopLevelURL = [(SFAutoFillOneTimeCode *)self _domainBoundTopLevelURL];
+  _domainBoundEmbeddedURL = [(SFAutoFillOneTimeCode *)self _domainBoundEmbeddedURL];
+  firstObject = [lsCopy firstObject];
+  v8 = [(SFAutoFillOneTimeCode *)self _matchURL:firstObject withBoundDomainURL:_domainBoundEmbeddedURL strict:0];
 
   if (v8)
   {
@@ -781,12 +781,12 @@ LABEL_22:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = v4;
+    v9 = lsCopy;
     v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
-      v23 = v4;
+      v23 = lsCopy;
       v12 = *v25;
       v13 = 2;
       while (2)
@@ -799,13 +799,13 @@ LABEL_22:
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [(SFAutoFillOneTimeCode *)self _matchURL:v15 withBoundDomainURL:v5 strict:0];
-          v17 = [(SFAutoFillOneTimeCode *)self _matchURL:v15 withBoundDomainURL:v6 strict:0];
+          v16 = [(SFAutoFillOneTimeCode *)self _matchURL:v15 withBoundDomainURL:_domainBoundTopLevelURL strict:0];
+          v17 = [(SFAutoFillOneTimeCode *)self _matchURL:v15 withBoundDomainURL:_domainBoundEmbeddedURL strict:0];
           if (!(v16 | v17))
           {
 
             v13 = 0;
-            v4 = v23;
+            lsCopy = v23;
             goto LABEL_21;
           }
 
@@ -824,7 +824,7 @@ LABEL_22:
         break;
       }
 
-      v4 = v23;
+      lsCopy = v23;
     }
 
     else
@@ -833,8 +833,8 @@ LABEL_22:
       v13 = 2;
     }
 
-    v19 = [v9 lastObject];
-    v20 = [(SFAutoFillOneTimeCode *)self _matchURL:v19 withBoundDomainURL:v5 strict:0];
+    lastObject = [v9 lastObject];
+    v20 = [(SFAutoFillOneTimeCode *)self _matchURL:lastObject withBoundDomainURL:_domainBoundTopLevelURL strict:0];
 
     if (v20 <= 1)
     {
@@ -853,17 +853,17 @@ LABEL_21:
   return v13;
 }
 
-- (int64_t)_matchBoundDomainAndEmbeddedDomainsWithFrameURLs:(id)a3
+- (int64_t)_matchBoundDomainAndEmbeddedDomainsWithFrameURLs:(id)ls
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v34 = [(SFAutoFillOneTimeCode *)self _domainBoundTopLevelURL];
-  v5 = [(NSArray *)self->_embeddedDomains firstObject];
-  v6 = [v5 domain];
-  v7 = [(SFAutoFillOneTimeCode *)self _secureURLForDomain:v6];
+  lsCopy = ls;
+  _domainBoundTopLevelURL = [(SFAutoFillOneTimeCode *)self _domainBoundTopLevelURL];
+  firstObject = [(NSArray *)self->_embeddedDomains firstObject];
+  domain = [firstObject domain];
+  v7 = [(SFAutoFillOneTimeCode *)self _secureURLForDomain:domain];
 
-  v8 = [v4 firstObject];
-  v9 = -[SFAutoFillOneTimeCode _matchURL:withBoundDomainURL:strict:](self, "_matchURL:withBoundDomainURL:strict:", v8, v7, [v5 strict]);
+  firstObject2 = [lsCopy firstObject];
+  v9 = -[SFAutoFillOneTimeCode _matchURL:withBoundDomainURL:strict:](self, "_matchURL:withBoundDomainURL:strict:", firstObject2, v7, [firstObject strict]);
 
   if (v9)
   {
@@ -871,16 +871,16 @@ LABEL_21:
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v10 = v4;
+    v10 = lsCopy;
     v33 = [v10 countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v33)
     {
       v28 = v7;
-      v29 = v5;
+      v29 = firstObject;
       obj = v10;
       v32 = *v43;
       v9 = 2;
-      v30 = v4;
+      v30 = lsCopy;
       while (2)
       {
         v11 = 0;
@@ -894,7 +894,7 @@ LABEL_21:
 
           v35 = v11;
           v12 = *(*(&v42 + 1) + 8 * v11);
-          v37 = [(SFAutoFillOneTimeCode *)self _matchURL:v12 withBoundDomainURL:v34 strict:self->_domainStrictMatch, v28, v29];
+          v37 = [(SFAutoFillOneTimeCode *)self _matchURL:v12 withBoundDomainURL:_domainBoundTopLevelURL strict:self->_domainStrictMatch, v28, v29];
           v38 = 0u;
           v39 = 0u;
           v40 = 0u;
@@ -916,8 +916,8 @@ LABEL_21:
                 }
 
                 v19 = *(*(&v38 + 1) + 8 * i);
-                v20 = [v19 domain];
-                v21 = [(SFAutoFillOneTimeCode *)self _secureURLForDomain:v20];
+                domain2 = [v19 domain];
+                v21 = [(SFAutoFillOneTimeCode *)self _secureURLForDomain:domain2];
                 v22 = -[SFAutoFillOneTimeCode _matchURL:withBoundDomainURL:strict:](self, "_matchURL:withBoundDomainURL:strict:", v12, v21, [v19 strict]);
 
                 if (v22 > v16)
@@ -941,8 +941,8 @@ LABEL_21:
           {
 
             v9 = 0;
-            v5 = v29;
-            v4 = v30;
+            firstObject = v29;
+            lsCopy = v30;
             v7 = v28;
             goto LABEL_31;
           }
@@ -958,7 +958,7 @@ LABEL_21:
         }
 
         while (v35 + 1 != v33);
-        v4 = v30;
+        lsCopy = v30;
         v33 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
         if (v33)
         {
@@ -971,7 +971,7 @@ LABEL_21:
       v10 = obj;
 
       v7 = v28;
-      v5 = v29;
+      firstObject = v29;
     }
 
     else
@@ -980,8 +980,8 @@ LABEL_21:
       v9 = 2;
     }
 
-    v24 = [v10 lastObject];
-    v25 = [(SFAutoFillOneTimeCode *)self _matchURL:v24 withBoundDomainURL:v34 strict:self->_domainStrictMatch];
+    lastObject = [v10 lastObject];
+    v25 = [(SFAutoFillOneTimeCode *)self _matchURL:lastObject withBoundDomainURL:_domainBoundTopLevelURL strict:self->_domainStrictMatch];
 
     if (v25 <= 1)
     {
@@ -995,18 +995,18 @@ LABEL_31:
   return v9;
 }
 
-- (int64_t)_matchURL:(id)a3 withBoundDomainURL:(id)a4 strict:(BOOL)a5
+- (int64_t)_matchURL:(id)l withBoundDomainURL:(id)rL strict:(BOOL)strict
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 safari_hasSameOriginAsURL:v7])
+  lCopy = l;
+  rLCopy = rL;
+  if ([rLCopy safari_hasSameOriginAsURL:lCopy])
   {
     v9 = 2;
   }
 
   else
   {
-    v9 = !a5 && ([v8 safari_hasSameSiteAsURL:v7] & 1) != 0;
+    v9 = !strict && ([rLCopy safari_hasSameSiteAsURL:lCopy] & 1) != 0;
   }
 
   return v9;
@@ -1016,9 +1016,9 @@ LABEL_31:
 {
   if ([(NSArray *)self->_embeddedDomains count])
   {
-    v3 = [(NSArray *)self->_embeddedDomains firstObject];
-    v4 = [v3 domain];
-    v5 = [(SFAutoFillOneTimeCode *)self _secureURLForDomain:v4];
+    firstObject = [(NSArray *)self->_embeddedDomains firstObject];
+    domain = [firstObject domain];
+    v5 = [(SFAutoFillOneTimeCode *)self _secureURLForDomain:domain];
   }
 
   else
@@ -1029,15 +1029,15 @@ LABEL_31:
   return v5;
 }
 
-- (id)_secureURLForDomain:(id)a3
+- (id)_secureURLForDomain:(id)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = MEMORY[0x277CCACE0];
-    v4 = a3;
+    domainCopy = domain;
     v5 = objc_alloc_init(v3);
     [v5 setScheme:@"https"];
-    [v5 setHost:v4];
+    [v5 setHost:domainCopy];
 
     v6 = [v5 URL];
   }
@@ -1050,36 +1050,36 @@ LABEL_31:
   return v6;
 }
 
-- (id)_stringForSource:(int64_t)a3
+- (id)_stringForSource:(int64_t)source
 {
-  if ((a3 - 1) > 2)
+  if ((source - 1) > 2)
   {
     return @"Messages";
   }
 
   else
   {
-    return off_279B61780[a3 - 1];
+    return off_279B61780[source - 1];
   }
 }
 
-- (id)_embeddedDomainArrayFromIMCoreEmbeddedDomains:(id)a3
+- (id)_embeddedDomainArrayFromIMCoreEmbeddedDomains:(id)domains
 {
-  v3 = a3;
-  if ([v3 count])
+  domainsCopy = domains;
+  if ([domainsCopy count])
   {
     v10 = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    if ([v3 count])
+    array = [MEMORY[0x277CBEB18] array];
+    if ([domainsCopy count])
     {
       v5 = 0;
       while (1)
       {
-        v6 = [v3 objectAtIndexedSubscript:v5];
+        v6 = [domainsCopy objectAtIndexedSubscript:v5];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -1087,7 +1087,7 @@ LABEL_31:
         }
 
         v7 = v5 + 1;
-        v8 = [v3 objectAtIndexedSubscript:v7];
+        v8 = [domainsCopy objectAtIndexedSubscript:v7];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -1098,10 +1098,10 @@ LABEL_31:
         v9 = objc_alloc_init(SFAutoFillOneTimeCodeEmbeddedDomainPair);
         [(SFAutoFillOneTimeCodeEmbeddedDomainPair *)v9 setDomain:v6];
         -[SFAutoFillOneTimeCodeEmbeddedDomainPair setStrict:](v9, "setStrict:", [v8 BOOLValue]);
-        [v4 addObject:v9];
+        [array addObject:v9];
 
         v5 = v7 + 1;
-        if (v5 >= [v3 count])
+        if (v5 >= [domainsCopy count])
         {
           goto LABEL_7;
         }
@@ -1113,14 +1113,14 @@ LABEL_31:
     else
     {
 LABEL_7:
-      v10 = v4;
+      v10 = array;
     }
   }
 
   return v10;
 }
 
-- (id)localizedTitleForContext:(int64_t)a3
+- (id)localizedTitleForContext:(int64_t)context
 {
   source = self->_source;
   v5 = &stru_2875FD420;
@@ -1133,21 +1133,21 @@ LABEL_7:
         goto LABEL_28;
       }
 
-      if ((a3 - 2) >= 2)
+      if ((context - 2) >= 2)
       {
-        if (a3 != 1)
+        if (context != 1)
         {
-          if (!a3)
+          if (!context)
           {
             goto LABEL_26;
           }
 
 LABEL_10:
           v6 = +[SFCredentialProviderExtensionManager sharedManager];
-          v7 = [v6 atLeastOneEnabledExtensionSupportsOneTimeCodes];
+          atLeastOneEnabledExtensionSupportsOneTimeCodes = [v6 atLeastOneEnabledExtensionSupportsOneTimeCodes];
 
           domain = self->_domain;
-          if (v7)
+          if (atLeastOneEnabledExtensionSupportsOneTimeCodes)
           {
             if (domain)
             {
@@ -1175,11 +1175,11 @@ LABEL_26:
       }
     }
 
-    else if ((a3 - 2) >= 2)
+    else if ((context - 2) >= 2)
     {
-      if (a3 != 1)
+      if (context != 1)
       {
-        if (!a3)
+        if (!context)
         {
           goto LABEL_26;
         }
@@ -1203,21 +1203,21 @@ LABEL_26:
     goto LABEL_10;
   }
 
-  if ((a3 - 2) < 2)
+  if ((context - 2) < 2)
   {
 LABEL_21:
     v10 = self->_displayCode;
     goto LABEL_27;
   }
 
-  if (a3 == 1)
+  if (context == 1)
   {
 LABEL_25:
     v10 = fillCodeString(self->_displayCode);
     goto LABEL_27;
   }
 
-  if (a3)
+  if (context)
   {
     goto LABEL_10;
   }
@@ -1230,7 +1230,7 @@ LABEL_28:
   return v5;
 }
 
-- (id)localizedSubtitleForContext:(int64_t)a3
+- (id)localizedSubtitleForContext:(int64_t)context
 {
   source = self->_source;
   v5 = &stru_2875FD420;
@@ -1238,13 +1238,13 @@ LABEL_28:
   {
     if (source == 2)
     {
-      if ((a3 - 1) < 3)
+      if ((context - 1) < 3)
       {
         v5 = fromAppNameString(self->_sourceAppName);
         goto LABEL_24;
       }
 
-      if (!a3)
+      if (!context)
       {
         if (![(SFAutoFillOneTimeCode *)self requiresAuthentication])
         {
@@ -1281,12 +1281,12 @@ LABEL_9:
       goto LABEL_24;
     }
 
-    if ((a3 - 1) < 3)
+    if ((context - 1) < 3)
     {
       goto LABEL_23;
     }
 
-    if (!a3)
+    if (!context)
     {
       if ([(SFAutoFillOneTimeCode *)self requiresAuthentication])
       {
@@ -1299,9 +1299,9 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if ((a3 - 1) >= 3)
+  if ((context - 1) >= 3)
   {
-    if (!a3)
+    if (!context)
     {
       if ([(SFAutoFillOneTimeCode *)self requiresAuthentication])
       {
@@ -1339,94 +1339,94 @@ LABEL_24:
       sourceApplicationIdentifier = @"com.apple.MobileSMS";
 LABEL_7:
       v5 = [v3 applicationWithBundleIdentifier:sourceApplicationIdentifier];
-      v6 = [v5 isLocked];
+      isLocked = [v5 isLocked];
 
-      return v6;
+      return isLocked;
   }
 
   return 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   source = self->_source;
-  v5 = a3;
-  [v5 encodeInteger:source forKey:@"source"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_GUID forKey:@"GUID"];
-  [v5 encodeObject:self->_detectedCode forKey:@"detectedCode"];
-  [v5 encodeObject:self->_displayCode forKey:@"displayCode"];
-  [v5 encodeObject:self->_handle forKey:@"handle"];
-  [v5 encodeObject:self->_machineReadableCode forKey:@"machineReadableCode"];
-  [v5 encodeObject:self->_domain forKey:@"domain"];
-  [v5 encodeBool:self->_domainStrictMatch forKey:@"domainStrictMatch"];
-  [v5 encodeObject:self->_embeddedDomain forKey:@"embeddedDomain"];
-  [v5 encodeObject:self->_embeddedDomains forKey:@"embeddedDomains"];
-  [v5 encodeObject:self->_user forKey:@"user"];
-  [v5 encodeObject:self->_totpGenerator forKey:@"totpGenerator"];
-  [v5 encodeObject:self->_sourceAppName forKey:@"sourceAppName"];
-  [v5 encodeObject:self->_sourceApplicationIdentifier forKey:@"sourceApplicationIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:source forKey:@"source"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_GUID forKey:@"GUID"];
+  [coderCopy encodeObject:self->_detectedCode forKey:@"detectedCode"];
+  [coderCopy encodeObject:self->_displayCode forKey:@"displayCode"];
+  [coderCopy encodeObject:self->_handle forKey:@"handle"];
+  [coderCopy encodeObject:self->_machineReadableCode forKey:@"machineReadableCode"];
+  [coderCopy encodeObject:self->_domain forKey:@"domain"];
+  [coderCopy encodeBool:self->_domainStrictMatch forKey:@"domainStrictMatch"];
+  [coderCopy encodeObject:self->_embeddedDomain forKey:@"embeddedDomain"];
+  [coderCopy encodeObject:self->_embeddedDomains forKey:@"embeddedDomains"];
+  [coderCopy encodeObject:self->_user forKey:@"user"];
+  [coderCopy encodeObject:self->_totpGenerator forKey:@"totpGenerator"];
+  [coderCopy encodeObject:self->_sourceAppName forKey:@"sourceAppName"];
+  [coderCopy encodeObject:self->_sourceApplicationIdentifier forKey:@"sourceApplicationIdentifier"];
 }
 
-- (SFAutoFillOneTimeCode)initWithCoder:(id)a3
+- (SFAutoFillOneTimeCode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v34.receiver = self;
   v34.super_class = SFAutoFillOneTimeCode;
   v5 = [(SFAutoFillOneTimeCode *)&v34 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totpGenerator"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totpGenerator"];
     totpGenerator = v5->_totpGenerator;
     v5->_totpGenerator = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user"];
     user = v5->_user;
     v5->_user = v8;
 
-    v5->_source = [v4 decodeIntegerForKey:@"source"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"source"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
     GUID = v5->_GUID;
     v5->_GUID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"detectedCode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"detectedCode"];
     detectedCode = v5->_detectedCode;
     v5->_detectedCode = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayCode"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayCode"];
     displayCode = v5->_displayCode;
     v5->_displayCode = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     handle = v5->_handle;
     v5->_handle = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"machineReadableCode"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"machineReadableCode"];
     machineReadableCode = v5->_machineReadableCode;
     v5->_machineReadableCode = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
     domain = v5->_domain;
     v5->_domain = v22;
 
-    v5->_domainStrictMatch = [v4 decodeBoolForKey:@"domainStrictMatch"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"embeddedDomain"];
+    v5->_domainStrictMatch = [coderCopy decodeBoolForKey:@"domainStrictMatch"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"embeddedDomain"];
     embeddedDomain = v5->_embeddedDomain;
     v5->_embeddedDomain = v24;
 
-    v26 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"embeddedDomains"];
+    v26 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"embeddedDomains"];
     embeddedDomains = v5->_embeddedDomains;
     v5->_embeddedDomains = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppName"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceAppName"];
     sourceAppName = v5->_sourceAppName;
     v5->_sourceAppName = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationIdentifier"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationIdentifier"];
     sourceApplicationIdentifier = v5->_sourceApplicationIdentifier;
     v5->_sourceApplicationIdentifier = v30;
 

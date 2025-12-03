@@ -1,63 +1,63 @@
 @interface _PSInteractionPredictor
-+ (BOOL)cloneAdaptableModelURL:(id)a3 toFilePathURL:(id)a4;
-+ (BOOL)removeMlmodelcFolderAtPath:(id)a3;
-+ (id)clustersArchiveFileForDate:(id)a3 modelName:(id)a4;
++ (BOOL)cloneAdaptableModelURL:(id)l toFilePathURL:(id)rL;
++ (BOOL)removeMlmodelcFolderAtPath:(id)path;
++ (id)clustersArchiveFileForDate:(id)date modelName:(id)name;
 + (id)defaultClustersArchiveDirectory;
-+ (id)getIntermediateModelURLForModelName:(id)a3;
-+ (id)getModelURLfromName:(id)a3;
-+ (id)loadModelFromUrl:(id)a3;
-+ (void)deleteArchiveFileAtDate:(id)a3 modelName:(id)a4;
++ (id)getIntermediateModelURLForModelName:(id)name;
++ (id)getModelURLfromName:(id)name;
++ (id)loadModelFromUrl:(id)url;
++ (void)deleteArchiveFileAtDate:(id)date modelName:(id)name;
 + (void)deleteArchiveFiles;
-- (_PSInteractionPredictor)initWithInteractionStore:(id)a3 atDate:(id)a4 withModelName:(id)a5 modelConfiguration:(id)a6;
-- (double)getMinDistanceForPt:(id)a3 toClusters:(id)a4;
-- (double)timeSinceLastContactTo:(id)a3 FromDate:(id)a4 inTrainArray:(id)a5;
-- (id)convertLogToClusterPointArray:(id)a3;
-- (id)createMLArrayProviderFromTrainArray:(id)a3;
-- (id)findLatestArchiveDateBefore:(id)a3 modelName:(id)a4;
-- (id)getClusterDictionaryFromTrainArray:(id)a3 usingDBSCANParamsMinPts:(int)a4 andEps:(double)a5;
-- (id)getClusteringResultsForPoint:(id)a3 usingClusterDictionary:(id)a4;
-- (id)getConversationIDFromInteraction:(id)a3;
-- (id)getConversationIDLogFromTrainArray:(id)a3;
-- (id)getDateNumDays:(int)a3 AfterDate:(id)a4;
-- (id)getDictionaryFromClustersArchiveAtPath:(id)a3;
-- (id)getLastContactedDictionaryFromTrainArray:(id)a3;
-- (id)getOrMakeClusterDictionaryAtDate:(id)a3;
-- (id)getRecencyResultsShowingNumValues:(int)a3 fromTrainArray:(id)a4;
-- (id)getTrainArrayToDate:(id)a3 withStartDateAnchor:(id)a4;
-- (id)rankedZkwSuggestionsFromPredictionArray:(id)a3 forBundleID:(id)a4;
-- (void)printModelWeights:(id)a3;
-- (void)trainAtDate:(id)a3 usingCompiledModelURL:(id)a4 andSaveToURL:(id)a5;
-- (void)writeArchive:(id)a3 toFilePath:(id)a4;
-- (void)writeClusterArchiveFromClusterDict:(id)a3 withDate:(id)a4;
+- (_PSInteractionPredictor)initWithInteractionStore:(id)store atDate:(id)date withModelName:(id)name modelConfiguration:(id)configuration;
+- (double)getMinDistanceForPt:(id)pt toClusters:(id)clusters;
+- (double)timeSinceLastContactTo:(id)to FromDate:(id)date inTrainArray:(id)array;
+- (id)convertLogToClusterPointArray:(id)array;
+- (id)createMLArrayProviderFromTrainArray:(id)array;
+- (id)findLatestArchiveDateBefore:(id)before modelName:(id)name;
+- (id)getClusterDictionaryFromTrainArray:(id)array usingDBSCANParamsMinPts:(int)pts andEps:(double)eps;
+- (id)getClusteringResultsForPoint:(id)point usingClusterDictionary:(id)dictionary;
+- (id)getConversationIDFromInteraction:(id)interaction;
+- (id)getConversationIDLogFromTrainArray:(id)array;
+- (id)getDateNumDays:(int)days AfterDate:(id)date;
+- (id)getDictionaryFromClustersArchiveAtPath:(id)path;
+- (id)getLastContactedDictionaryFromTrainArray:(id)array;
+- (id)getOrMakeClusterDictionaryAtDate:(id)date;
+- (id)getRecencyResultsShowingNumValues:(int)values fromTrainArray:(id)array;
+- (id)getTrainArrayToDate:(id)date withStartDateAnchor:(id)anchor;
+- (id)rankedZkwSuggestionsFromPredictionArray:(id)array forBundleID:(id)d;
+- (void)printModelWeights:(id)weights;
+- (void)trainAtDate:(id)date usingCompiledModelURL:(id)l andSaveToURL:(id)rL;
+- (void)writeArchive:(id)archive toFilePath:(id)path;
+- (void)writeClusterArchiveFromClusterDict:(id)dict withDate:(id)date;
 @end
 
 @implementation _PSInteractionPredictor
 
 + (id)defaultClustersArchiveDirectory
 {
-  v2 = [MEMORY[0x1E6997910] modelDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"InteractionModelClusters/"];
+  modelDirectory = [MEMORY[0x1E6997910] modelDirectory];
+  v3 = [modelDirectory stringByAppendingPathComponent:@"InteractionModelClusters/"];
 
   return v3;
 }
 
-+ (id)clustersArchiveFileForDate:(id)a3 modelName:(id)a4
++ (id)clustersArchiveFileForDate:(id)date modelName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v6 = MEMORY[0x1E696AB78];
-  v7 = a3;
+  dateCopy = date;
   v8 = objc_alloc_init(v6);
   [v8 setDateFormat:@"MM-dd-yyyy"];
-  v9 = [v8 stringFromDate:v7];
+  v9 = [v8 stringFromDate:dateCopy];
 
   if (v9)
   {
     v10 = [MEMORY[0x1E696AD60] stringWithString:v9];
     v11 = v10;
-    if (v5)
+    if (nameCopy)
     {
       [v10 appendString:@"_"];
-      [v11 appendString:v5];
+      [v11 appendString:nameCopy];
     }
 
     [v11 appendString:@".archive"];
@@ -73,33 +73,33 @@
   return v13;
 }
 
-+ (id)getModelURLfromName:(id)a3
++ (id)getModelURLfromName:(id)name
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 URLForResource:v4 withExtension:@"mlmodelc"];
+  v6 = [v5 URLForResource:nameCopy withExtension:@"mlmodelc"];
 
   return v6;
 }
 
-+ (id)getIntermediateModelURLForModelName:(id)a3
++ (id)getIntermediateModelURLForModelName:(id)name
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [@"/var/tmp/" stringByAppendingString:a3];
+  v4 = [@"/var/tmp/" stringByAppendingString:name];
   v5 = [v4 stringByAppendingString:@".mlmodelc/"];
   v6 = [v3 fileURLWithPath:v5];
 
   return v6;
 }
 
-+ (id)loadModelFromUrl:(id)a3
++ (id)loadModelFromUrl:(id)url
 {
-  v3 = a3;
+  urlCopy = url;
   v4 = +[_PSLogging generalChannel];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(_PSInteractionPredictor *)v3 loadModelFromUrl:v4];
+    [(_PSInteractionPredictor *)urlCopy loadModelFromUrl:v4];
   }
 
   v15 = 0;
@@ -123,7 +123,7 @@
   v6 = v5;
   _Block_object_dispose(&v15, 8);
   v13[0] = 0;
-  v7 = [v5 modelWithContentsOfURL:v3 error:v13];
+  v7 = [v5 modelWithContentsOfURL:urlCopy error:v13];
   v8 = v13[0];
   v9 = +[_PSLogging generalChannel];
   v10 = v9;
@@ -131,7 +131,7 @@
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [_PSInteractionPredictor loadModelFromUrl:v3];
+      [_PSInteractionPredictor loadModelFromUrl:urlCopy];
     }
 
     v11 = 0;
@@ -150,46 +150,46 @@
   return v11;
 }
 
-- (id)getConversationIDFromInteraction:(id)a3
+- (id)getConversationIDFromInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  interactionCopy = interaction;
+  v5 = interactionCopy;
+  if (!interactionCopy)
   {
     goto LABEL_14;
   }
 
-  v6 = [v4 bundleId];
+  bundleId = [interactionCopy bundleId];
   v7 = +[_PSConstants mobileFacetimeBundleId];
-  if ([v6 isEqualToString:v7])
+  if ([bundleId isEqualToString:v7])
   {
 
     goto LABEL_5;
   }
 
-  v8 = [v5 bundleId];
+  bundleId2 = [v5 bundleId];
   v9 = +[_PSConstants macFacetimeBundleId];
-  v10 = [v8 isEqualToString:v9];
+  v10 = [bundleId2 isEqualToString:v9];
 
   if (!v10)
   {
-    v17 = [v5 bundleId];
+    bundleId3 = [v5 bundleId];
     v18 = +[_PSConstants mobileMessagesBundleId];
-    if ([v17 isEqualToString:v18])
+    if ([bundleId3 isEqualToString:v18])
     {
 
       goto LABEL_11;
     }
 
-    v19 = [v5 bundleId];
+    bundleId4 = [v5 bundleId];
     v20 = +[_PSConstants macMessagesBundleId];
-    v21 = [v19 isEqualToString:v20];
+    v21 = [bundleId4 isEqualToString:v20];
 
     if (v21)
     {
 LABEL_11:
-      v13 = [v5 domainIdentifier];
-      if (!v13)
+      domainIdentifier = [v5 domainIdentifier];
+      if (!domainIdentifier)
       {
         goto LABEL_15;
       }
@@ -197,9 +197,9 @@ LABEL_11:
       goto LABEL_6;
     }
 
-    v22 = [v5 bundleId];
+    bundleId5 = [v5 bundleId];
     v23 = +[_PSConstants mobilePhoneBundleId];
-    v24 = [v22 isEqualToString:v23];
+    v24 = [bundleId5 isEqualToString:v23];
 
     if (v24)
     {
@@ -207,53 +207,53 @@ LABEL_11:
     }
 
 LABEL_14:
-    v13 = 0;
+    domainIdentifier = 0;
     goto LABEL_15;
   }
 
 LABEL_5:
   v11 = MEMORY[0x1E69978D0];
-  v12 = [v5 recipients];
-  v13 = [v11 generateConversationIdFromInteractionRecipients:v12];
+  recipients = [v5 recipients];
+  domainIdentifier = [v11 generateConversationIdFromInteractionRecipients:recipients];
 
-  if (!v13)
+  if (!domainIdentifier)
   {
     goto LABEL_15;
   }
 
 LABEL_6:
-  v14 = [(_PSInteractionPredictor *)self conversationIDMap];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  conversationIDMap = [(_PSInteractionPredictor *)self conversationIDMap];
+  v15 = [conversationIDMap objectForKeyedSubscript:domainIdentifier];
 
   if (!v15)
   {
-    v16 = [(_PSInteractionPredictor *)self conversationIDMap];
-    [v16 setObject:v5 forKeyedSubscript:v13];
+    conversationIDMap2 = [(_PSInteractionPredictor *)self conversationIDMap];
+    [conversationIDMap2 setObject:v5 forKeyedSubscript:domainIdentifier];
   }
 
 LABEL_15:
 
-  return v13;
+  return domainIdentifier;
 }
 
-- (id)findLatestArchiveDateBefore:(id)a3 modelName:(id)a4
+- (id)findLatestArchiveDateBefore:(id)before modelName:(id)name
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  beforeCopy = before;
+  nameCopy = name;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v8 = +[_PSInteractionPredictor defaultClustersArchiveDirectory];
-  v9 = [v7 enumeratorAtPath:v8];
+  v9 = [defaultManager enumeratorAtPath:v8];
 
   v10 = [MEMORY[0x1E696AD60] stringWithString:@"MM-dd-yyyy"];
   v11 = v10;
-  if (v6)
+  if (nameCopy)
   {
     [v10 appendString:@"_"];
-    [v11 appendString:v6];
+    [v11 appendString:nameCopy];
   }
 
-  [v11 appendString:{@".archive", v6}];
+  [v11 appendString:{@".archive", nameCopy}];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -298,7 +298,7 @@ LABEL_15:
         v25 = objc_alloc_init(MEMORY[0x1E696AB78]);
         [v25 setDateFormat:@"MM-dd-yyyy"];
         v26 = [v25 dateFromString:v24];
-        [v5 timeIntervalSinceDate:v26];
+        [beforeCopy timeIntervalSinceDate:v26];
         if (v27 >= 0.0)
         {
           if (v14)
@@ -335,22 +335,22 @@ LABEL_15:
   return v14;
 }
 
-- (_PSInteractionPredictor)initWithInteractionStore:(id)a3 atDate:(id)a4 withModelName:(id)a5 modelConfiguration:(id)a6
+- (_PSInteractionPredictor)initWithInteractionStore:(id)store atDate:(id)date withModelName:(id)name modelConfiguration:(id)configuration
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  dateCopy = date;
+  nameCopy = name;
+  configurationCopy = configuration;
   v27.receiver = self;
   v27.super_class = _PSInteractionPredictor;
   v15 = [(_PSInteractionPredictor *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_interactionStore, a3);
-    objc_storeStrong(&v16->_modelConfiguration, a6);
-    v17 = [(_PSKNNModelConfiguration *)v16->_modelConfiguration modelName];
-    v18 = [(_PSInteractionPredictor *)v16 findLatestArchiveDateBefore:v12 modelName:v17];
+    objc_storeStrong(&v15->_interactionStore, store);
+    objc_storeStrong(&v16->_modelConfiguration, configuration);
+    modelName = [(_PSKNNModelConfiguration *)v16->_modelConfiguration modelName];
+    v18 = [(_PSInteractionPredictor *)v16 findLatestArchiveDateBefore:dateCopy modelName:modelName];
 
     if (v18)
     {
@@ -359,14 +359,14 @@ LABEL_15:
 
     else
     {
-      v19 = v12;
+      v19 = dateCopy;
     }
 
     v20 = [(_PSInteractionPredictor *)v16 getOrMakeClusterDictionaryAtDate:v19];
     currentClusterDictionary = v16->_currentClusterDictionary;
     v16->_currentClusterDictionary = v20;
 
-    v22 = [_PSInteractionPredictor getModelURLfromName:v13];
+    v22 = [_PSInteractionPredictor getModelURLfromName:nameCopy];
     compiledModelURL = v16->_compiledModelURL;
     v16->_compiledModelURL = v22;
 
@@ -378,30 +378,30 @@ LABEL_15:
   return v16;
 }
 
-- (id)getDateNumDays:(int)a3 AfterDate:(id)a4
+- (id)getDateNumDays:(int)days AfterDate:(id)date
 {
   v5 = MEMORY[0x1E695DF10];
-  v6 = a4;
+  dateCopy = date;
   v7 = objc_alloc_init(v5);
-  [v7 setDay:a3];
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v8 dateByAddingComponents:v7 toDate:v6 options:0];
+  [v7 setDay:days];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar dateByAddingComponents:v7 toDate:dateCopy options:0];
 
   return v9;
 }
 
-- (id)getTrainArrayToDate:(id)a3 withStartDateAnchor:(id)a4
+- (id)getTrainArrayToDate:(id)date withStartDateAnchor:(id)anchor
 {
   v61 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  v41 = a4;
+  dateCopy = date;
+  anchorCopy = anchor;
   v6 = objc_opt_new();
-  v7 = [(_PSInteractionPredictor *)self modelConfiguration];
-  v8 = [v7 shouldExcludeInteractionBlock];
+  modelConfiguration = [(_PSInteractionPredictor *)self modelConfiguration];
+  shouldExcludeInteractionBlock = [modelConfiguration shouldExcludeInteractionBlock];
 
-  v9 = [(_PSInteractionPredictor *)self modelConfiguration];
-  v10 = [v9 interactionMechanisms];
-  v11 = [v10 count];
+  modelConfiguration2 = [(_PSInteractionPredictor *)self modelConfiguration];
+  interactionMechanisms = [modelConfiguration2 interactionMechanisms];
+  v11 = [interactionMechanisms count];
 
   if (v11)
   {
@@ -409,14 +409,14 @@ LABEL_15:
     do
     {
       context = objc_autoreleasePoolPush();
-      v13 = [(_PSInteractionPredictor *)self modelConfiguration];
-      v14 = [v13 interactionHistoryRelativeStartDates];
-      v15 = [v14 objectAtIndexedSubscript:v12];
-      v16 = [v15 intValue];
+      modelConfiguration3 = [(_PSInteractionPredictor *)self modelConfiguration];
+      interactionHistoryRelativeStartDates = [modelConfiguration3 interactionHistoryRelativeStartDates];
+      v15 = [interactionHistoryRelativeStartDates objectAtIndexedSubscript:v12];
+      intValue = [v15 intValue];
 
-      if (v16)
+      if (intValue)
       {
-        v52 = [(_PSInteractionPredictor *)self getDateNumDays:v16 AfterDate:v41];
+        v52 = [(_PSInteractionPredictor *)self getDateNumDays:intValue AfterDate:anchorCopy];
       }
 
       else
@@ -424,20 +424,20 @@ LABEL_15:
         v52 = 0;
       }
 
-      v51 = [(_PSInteractionPredictor *)self interactionStore];
-      v48 = [(_PSInteractionPredictor *)self modelConfiguration];
-      v47 = [v48 interactionMechanisms];
-      v43 = [v47 objectAtIndexedSubscript:v12];
-      v46 = [(_PSInteractionPredictor *)self modelConfiguration];
-      v44 = [v46 bundleIds];
-      v17 = [v44 objectAtIndexedSubscript:v12];
+      interactionStore = [(_PSInteractionPredictor *)self interactionStore];
+      modelConfiguration4 = [(_PSInteractionPredictor *)self modelConfiguration];
+      interactionMechanisms2 = [modelConfiguration4 interactionMechanisms];
+      v43 = [interactionMechanisms2 objectAtIndexedSubscript:v12];
+      modelConfiguration5 = [(_PSInteractionPredictor *)self modelConfiguration];
+      bundleIds = [modelConfiguration5 bundleIds];
+      v17 = [bundleIds objectAtIndexedSubscript:v12];
       v18 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F2D8BF70];
-      v19 = [(_PSInteractionPredictor *)self modelConfiguration];
-      v20 = [v19 interactionCountMaxDepths];
+      modelConfiguration6 = [(_PSInteractionPredictor *)self modelConfiguration];
+      interactionCountMaxDepths = [modelConfiguration6 interactionCountMaxDepths];
       v50 = v12;
-      v21 = [v20 objectAtIndexedSubscript:v12];
+      v21 = [interactionCountMaxDepths objectAtIndexedSubscript:v12];
       LOBYTE(v40) = 0;
-      v45 = +[_PSInteractionStoreUtils interactionsFromStore:startDate:tillDate:withMechanisms:withAccount:withBundleIds:withTargetBundleIds:withDirections:singleRecipient:fetchLimit:](_PSInteractionStoreUtils, "interactionsFromStore:startDate:tillDate:withMechanisms:withAccount:withBundleIds:withTargetBundleIds:withDirections:singleRecipient:fetchLimit:", v51, v52, v42, v43, 0, v17, 0, v18, v40, [v21 intValue]);
+      v45 = +[_PSInteractionStoreUtils interactionsFromStore:startDate:tillDate:withMechanisms:withAccount:withBundleIds:withTargetBundleIds:withDirections:singleRecipient:fetchLimit:](_PSInteractionStoreUtils, "interactionsFromStore:startDate:tillDate:withMechanisms:withAccount:withBundleIds:withTargetBundleIds:withDirections:singleRecipient:fetchLimit:", interactionStore, v52, dateCopy, v43, 0, v17, 0, v18, v40, [v21 intValue]);
 
       v55 = 0u;
       v56 = 0u;
@@ -459,7 +459,7 @@ LABEL_15:
             }
 
             v27 = *(*(&v53 + 1) + 8 * i);
-            if (v8 && v8[2](v8, *(*(&v53 + 1) + 8 * i)))
+            if (shouldExcludeInteractionBlock && shouldExcludeInteractionBlock[2](shouldExcludeInteractionBlock, *(*(&v53 + 1) + 8 * i)))
             {
               v28 = +[_PSLogging generalChannel];
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -487,17 +487,17 @@ LABEL_15:
 
       objc_autoreleasePoolPop(context);
       v12 = v50 + 1;
-      v29 = [(_PSInteractionPredictor *)self modelConfiguration];
-      v30 = [v29 interactionMechanisms];
-      v31 = [v30 count];
+      modelConfiguration7 = [(_PSInteractionPredictor *)self modelConfiguration];
+      interactionMechanisms3 = [modelConfiguration7 interactionMechanisms];
+      v31 = [interactionMechanisms3 count];
     }
 
     while (v31 > v50 + 1);
   }
 
-  v32 = [(_PSInteractionPredictor *)self modelConfiguration];
-  v33 = [v32 interactionMechanisms];
-  v34 = [v33 count];
+  modelConfiguration8 = [(_PSInteractionPredictor *)self modelConfiguration];
+  interactionMechanisms4 = [modelConfiguration8 interactionMechanisms];
+  v34 = [interactionMechanisms4 count];
 
   if (v34 <= 1)
   {
@@ -517,16 +517,16 @@ LABEL_15:
   return v37;
 }
 
-- (id)getConversationIDLogFromTrainArray:(id)a3
+- (id)getConversationIDLogFromTrainArray:(id)array
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
@@ -545,18 +545,18 @@ LABEL_15:
         v12 = [(_PSInteractionPredictor *)self getConversationIDFromInteraction:v11];
         if (v12)
         {
-          v13 = [v11 startDate];
+          startDate = [v11 startDate];
           v14 = [v5 objectForKey:v12];
 
           if (v14)
           {
             v15 = [v5 objectForKeyedSubscript:v12];
-            [v15 addObject:v13];
+            [v15 addObject:startDate];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DF70] arrayWithObject:v13];
+            v15 = [MEMORY[0x1E695DF70] arrayWithObject:startDate];
             [v5 setValue:v15 forKey:v12];
           }
         }
@@ -568,14 +568,14 @@ LABEL_15:
     while (v8);
   }
 
-  v16 = [v5 allKeys];
+  allKeys = [v5 allKeys];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __62___PSInteractionPredictor_getConversationIDLogFromTrainArray___block_invoke;
   v27[3] = &unk_1E7C23B38;
   v17 = v5;
   v28 = v17;
-  v18 = [v16 sortedArrayUsingComparator:v27];
+  v18 = [allKeys sortedArrayUsingComparator:v27];
   v19 = objc_opt_new();
   if ([v18 count])
   {
@@ -604,16 +604,16 @@ LABEL_15:
   return v19;
 }
 
-- (id)convertLogToClusterPointArray:(id)a3
+- (id)convertLogToClusterPointArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = [MEMORY[0x1E695DFA8] set];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -640,19 +640,19 @@ LABEL_15:
     while (v7);
   }
 
-  v13 = [v4 allObjects];
-  v14 = [v13 mutableCopy];
+  allObjects = [v4 allObjects];
+  v14 = [allObjects mutableCopy];
 
   v15 = *MEMORY[0x1E69E9840];
 
   return v14;
 }
 
-- (id)getClusterDictionaryFromTrainArray:(id)a3 usingDBSCANParamsMinPts:(int)a4 andEps:(double)a5
+- (id)getClusterDictionaryFromTrainArray:(id)array usingDBSCANParamsMinPts:(int)pts andEps:(double)eps
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = [(_PSInteractionPredictor *)self getConversationIDLogFromTrainArray:a3];
-  v9 = [[_PSDBSCAN alloc] initWithMinimumPointsForClustering:a4 MaxNeighborDistance:a5];
+  v8 = [(_PSInteractionPredictor *)self getConversationIDLogFromTrainArray:array];
+  v9 = [[_PSDBSCAN alloc] initWithMinimumPointsForClustering:pts MaxNeighborDistance:eps];
   v10 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
@@ -679,8 +679,8 @@ LABEL_15:
         v18 = [(_PSInteractionPredictor *)self convertLogToClusterPointArray:v17];
         [(_PSDBSCAN *)v9 fitData:v18];
 
-        v19 = [(_PSDBSCAN *)v9 clusters];
-        v20 = [v19 copy];
+        clusters = [(_PSDBSCAN *)v9 clusters];
+        v20 = [clusters copy];
         [v10 setValue:v20 forKey:v16];
       }
 
@@ -695,16 +695,16 @@ LABEL_15:
   return v10;
 }
 
-- (double)getMinDistanceForPt:(id)a3 toClusters:(id)a4
+- (double)getMinDistanceForPt:(id)pt toClusters:(id)clusters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  ptCopy = pt;
+  clustersCopy = clusters;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [clustersCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -716,11 +716,11 @@ LABEL_15:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(clustersCopy);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) convexHull];
-        [v5 distanceToHull:v12];
+        convexHull = [*(*(&v17 + 1) + 8 * i) convexHull];
+        [ptCopy distanceToHull:convexHull];
         v14 = v13;
 
         if (v14 < v10)
@@ -729,7 +729,7 @@ LABEL_15:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [clustersCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -744,17 +744,17 @@ LABEL_15:
   return v10;
 }
 
-- (double)timeSinceLastContactTo:(id)a3 FromDate:(id)a4 inTrainArray:(id)a5
+- (double)timeSinceLastContactTo:(id)to FromDate:(id)date inTrainArray:(id)array
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  toCopy = to;
+  dateCopy = date;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = a5;
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  arrayCopy = array;
+  v11 = [arrayCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   v12 = 4320.0;
   if (v11)
   {
@@ -766,27 +766,27 @@ LABEL_15:
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
         v17 = [(_PSInteractionPredictor *)self getConversationIDFromInteraction:v16, v25];
-        v18 = [v17 isEqualToString:v8];
+        v18 = [v17 isEqualToString:toCopy];
 
         if (v18)
         {
-          v19 = [MEMORY[0x1E695DEE8] currentCalendar];
-          v20 = [v16 startDate];
-          v21 = [v19 components:192 fromDate:v20 toDate:v9 options:0];
+          currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+          startDate = [v16 startDate];
+          v21 = [currentCalendar components:192 fromDate:startDate toDate:dateCopy options:0];
 
-          v22 = [v21 minute];
-          v12 = [v21 second] / 60.0 + v22;
+          minute = [v21 minute];
+          v12 = [v21 second] / 60.0 + minute;
 
           goto LABEL_11;
         }
       }
 
-      v13 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v13 = [arrayCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v13)
       {
         continue;
@@ -802,25 +802,25 @@ LABEL_11:
   return v12;
 }
 
-- (id)getLastContactedDictionaryFromTrainArray:(id)a3
+- (id)getLastContactedDictionaryFromTrainArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
-  v6 = [v4 count];
+  v6 = [arrayCopy count];
   if (v6 - 1 >= 0)
   {
     v7 = v6;
     do
     {
-      v8 = [v4 objectAtIndexedSubscript:--v7];
+      v8 = [arrayCopy objectAtIndexedSubscript:--v7];
       v9 = [(_PSInteractionPredictor *)self getConversationIDFromInteraction:v8];
 
       if (v9)
       {
-        v10 = [v4 objectAtIndexedSubscript:v7];
-        v11 = [v10 startDate];
+        v10 = [arrayCopy objectAtIndexedSubscript:v7];
+        startDate = [v10 startDate];
 
-        [v5 setObject:v11 forKeyedSubscript:v9];
+        [v5 setObject:startDate forKeyedSubscript:v9];
       }
     }
 
@@ -830,21 +830,21 @@ LABEL_11:
   return v5;
 }
 
-- (void)writeArchive:(id)a3 toFilePath:(id)a4
+- (void)writeArchive:(id)archive toFilePath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (a3 && v5)
+  pathCopy = path;
+  v6 = pathCopy;
+  if (archive && pathCopy)
   {
     v17 = 0;
-    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v17];
+    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:archive requiringSecureCoding:1 error:&v17];
     v8 = v17;
     if (v8)
     {
       v9 = v8;
-      v10 = +[_PSLogging generalChannel];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      stringByDeletingLastPathComponent = +[_PSLogging generalChannel];
+      if (os_log_type_enabled(stringByDeletingLastPathComponent, OS_LOG_TYPE_ERROR))
       {
         [_PSInteractionPredictor writeArchive:toFilePath:];
       }
@@ -852,10 +852,10 @@ LABEL_11:
 
     else
     {
-      v10 = [v6 stringByDeletingLastPathComponent];
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
+      stringByDeletingLastPathComponent = [v6 stringByDeletingLastPathComponent];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v16 = 0;
-      [v11 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v16];
+      [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v16];
       v9 = v16;
 
       if (v9)
@@ -910,23 +910,23 @@ LABEL_11:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)writeClusterArchiveFromClusterDict:(id)a3 withDate:(id)a4
+- (void)writeClusterArchiveFromClusterDict:(id)dict withDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [[_PSClustersArchive alloc] initWithClustersDictionary:v7 archiveDate:v6];
+  dateCopy = date;
+  dictCopy = dict;
+  v11 = [[_PSClustersArchive alloc] initWithClustersDictionary:dictCopy archiveDate:dateCopy];
 
-  v8 = [(_PSInteractionPredictor *)self modelConfiguration];
-  v9 = [v8 modelName];
-  v10 = [_PSInteractionPredictor clustersArchiveFileForDate:v6 modelName:v9];
+  modelConfiguration = [(_PSInteractionPredictor *)self modelConfiguration];
+  modelName = [modelConfiguration modelName];
+  v10 = [_PSInteractionPredictor clustersArchiveFileForDate:dateCopy modelName:modelName];
 
   [(_PSInteractionPredictor *)self writeArchive:v11 toFilePath:v10];
 }
 
-- (id)getDictionaryFromClustersArchiveAtPath:(id)a3
+- (id)getDictionaryFromClustersArchiveAtPath:(id)path
 {
   v13 = 0;
-  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:a3 options:2 error:&v13];
+  v4 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:path options:2 error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -938,7 +938,7 @@ LABEL_11:
     }
 
 LABEL_8:
-    v9 = 0;
+    clustersDictionary = 0;
     goto LABEL_9;
   }
 
@@ -956,26 +956,26 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v11 = [v7 archiveDate];
-  [(_PSInteractionPredictor *)self setCurrentArchiveDate:v11];
+  archiveDate = [v7 archiveDate];
+  [(_PSInteractionPredictor *)self setCurrentArchiveDate:archiveDate];
 
-  v9 = [v7 clustersDictionary];
+  clustersDictionary = [v7 clustersDictionary];
 LABEL_9:
 
-  return v9;
+  return clustersDictionary;
 }
 
-- (id)getOrMakeClusterDictionaryAtDate:(id)a3
+- (id)getOrMakeClusterDictionaryAtDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_PSInteractionPredictor *)self modelConfiguration];
-  v6 = [v5 modelName];
-  v7 = [_PSInteractionPredictor clustersArchiveFileForDate:v4 modelName:v6];
+  dateCopy = date;
+  modelConfiguration = [(_PSInteractionPredictor *)self modelConfiguration];
+  modelName = [modelConfiguration modelName];
+  v7 = [_PSInteractionPredictor clustersArchiveFileForDate:dateCopy modelName:modelName];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  LODWORD(v6) = [v8 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LODWORD(modelName) = [defaultManager fileExistsAtPath:v7];
 
-  if (v6)
+  if (modelName)
   {
     v9 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -989,10 +989,10 @@ LABEL_9:
 
   else
   {
-    v11 = [(_PSInteractionPredictor *)self getTrainArrayToDate:v4 withStartDateAnchor:v4];
+    v11 = [(_PSInteractionPredictor *)self getTrainArrayToDate:dateCopy withStartDateAnchor:dateCopy];
     v10 = [(_PSInteractionPredictor *)self getClusterDictionaryFromTrainArray:v11 usingDBSCANParamsMinPts:3 andEps:1.2];
-    [(_PSInteractionPredictor *)self writeClusterArchiveFromClusterDict:v10 withDate:v4];
-    [(_PSInteractionPredictor *)self setCurrentArchiveDate:v4];
+    [(_PSInteractionPredictor *)self writeClusterArchiveFromClusterDict:v10 withDate:dateCopy];
+    [(_PSInteractionPredictor *)self setCurrentArchiveDate:dateCopy];
     v12 = +[_PSLogging generalChannel];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1004,28 +1004,28 @@ LABEL_9:
   return v10;
 }
 
-- (id)getRecencyResultsShowingNumValues:(int)a3 fromTrainArray:(id)a4
+- (id)getRecencyResultsShowingNumValues:(int)values fromTrainArray:(id)array
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  if (a3 >= 1)
+  arrayCopy = array;
+  array = [MEMORY[0x1E695DF70] array];
+  if (values >= 1)
   {
     v8 = 0;
     while (1)
     {
-      if ([v6 count] <= v8)
+      if ([arrayCopy count] <= v8)
       {
         goto LABEL_10;
       }
 
-      v9 = [v6 objectAtIndexedSubscript:v8];
+      v9 = [arrayCopy objectAtIndexedSubscript:v8];
       v10 = [(_PSInteractionPredictor *)self getConversationIDFromInteraction:v9];
       if (!v10)
       {
         goto LABEL_8;
       }
 
-      if (![v7 containsObject:v10])
+      if (![array containsObject:v10])
       {
         break;
       }
@@ -1033,34 +1033,34 @@ LABEL_9:
       ++v8;
 LABEL_9:
 
-      if (a3 <= 0)
+      if (values <= 0)
       {
         goto LABEL_10;
       }
     }
 
-    [v7 addObject:v10];
+    [array addObject:v10];
 LABEL_8:
-    --a3;
+    --values;
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return v7;
+  return array;
 }
 
-- (id)getClusteringResultsForPoint:(id)a3 usingClusterDictionary:(id)a4
+- (id)getClusteringResultsForPoint:(id)point usingClusterDictionary:(id)dictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  pointCopy = point;
+  dictionaryCopy = dictionary;
+  array = [MEMORY[0x1E695DF70] array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = v6;
+  v8 = dictionaryCopy;
   v24 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v24)
   {
@@ -1095,8 +1095,8 @@ LABEL_10:
                 objc_enumerationMutation(v12);
               }
 
-              v17 = [*(*(&v25 + 1) + 8 * j) convexHull];
-              [v5 distanceToHull:v17];
+              convexHull = [*(*(&v25 + 1) + 8 * j) convexHull];
+              [pointCopy distanceToHull:convexHull];
               v19 = v18;
 
               [(_PSAlter *)v11 distanceToCluster];
@@ -1112,7 +1112,7 @@ LABEL_10:
           while (v14);
         }
 
-        [v7 addObject:v11];
+        [array addObject:v11];
       }
 
       v24 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -1121,22 +1121,22 @@ LABEL_10:
     while (v24);
   }
 
-  [v7 sortUsingComparator:&__block_literal_global];
+  [array sortUsingComparator:&__block_literal_global];
   v21 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return array;
 }
 
-+ (BOOL)removeMlmodelcFolderAtPath:(id)a3
++ (BOOL)removeMlmodelcFolderAtPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v12 = 0;
   v4 = objc_alloc_init(MEMORY[0x1E696AC08]);
-  if ([v4 fileExistsAtPath:v3 isDirectory:&v12] && v12 == 1)
+  if ([v4 fileExistsAtPath:pathCopy isDirectory:&v12] && v12 == 1)
   {
     v11 = 0;
-    [v4 removeItemAtPath:v3 error:&v11];
+    [v4 removeItemAtPath:pathCopy error:&v11];
     v5 = v11;
     v6 = v5 == 0;
     v7 = +[_PSLogging generalChannel];
@@ -1154,7 +1154,7 @@ LABEL_10:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v14 = v3;
+        v14 = pathCopy;
         _os_log_impl(&dword_1B5ED1000, v8, OS_LOG_TYPE_INFO, "Remove file succeeded at path:%@", buf, 0xCu);
       }
 
@@ -1171,19 +1171,19 @@ LABEL_10:
   return v6;
 }
 
-+ (BOOL)cloneAdaptableModelURL:(id)a3 toFilePathURL:(id)a4
++ (BOOL)cloneAdaptableModelURL:(id)l toFilePathURL:(id)rL
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 path];
-  v8 = [_PSInteractionPredictor removeMlmodelcFolderAtPath:v7];
+  lCopy = l;
+  rLCopy = rL;
+  path = [rLCopy path];
+  v8 = [_PSInteractionPredictor removeMlmodelcFolderAtPath:path];
 
   if (v8)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AC08]);
     v17 = 0;
-    v10 = [v9 copyItemAtURL:v5 toURL:v6 error:&v17];
+    v10 = [v9 copyItemAtURL:lCopy toURL:rLCopy error:&v17];
     v11 = v17;
     v12 = (v11 == 0) & v10;
     v13 = +[_PSLogging generalChannel];
@@ -1193,9 +1193,9 @@ LABEL_10:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v19 = v5;
+        v19 = lCopy;
         v20 = 2112;
-        v21 = v6;
+        v21 = rLCopy;
         _os_log_impl(&dword_1B5ED1000, v14, OS_LOG_TYPE_INFO, "copying folder from path:%@ to path:%@ success.", buf, 0x16u);
       }
     }
@@ -1203,9 +1203,9 @@ LABEL_10:
     else if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v19 = v5;
+      v19 = lCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = rLCopy;
       v22 = 2112;
       v23 = v11;
       _os_log_error_impl(&dword_1B5ED1000, v14, OS_LOG_TYPE_ERROR, "While cloning adaptable model, copying folder from path:%@ to path:%@ failed with error：%@", buf, 0x20u);
@@ -1227,11 +1227,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)createMLArrayProviderFromTrainArray:(id)a3
+- (id)createMLArrayProviderFromTrainArray:(id)array
 {
-  v4 = a3;
-  v58 = [MEMORY[0x1E695DF70] array];
-  v5 = [v4 count];
+  arrayCopy = array;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [arrayCopy count];
   if (v5 - 1 >= 0)
   {
     v6 = v5;
@@ -1241,11 +1241,11 @@ LABEL_10:
     v64 = 0;
     v69 = 0;
     v59 = 0;
-    v60 = v4;
+    v60 = arrayCopy;
     while (1)
     {
       v8 = v6 - 1;
-      v9 = [v4 objectAtIndexedSubscript:v6 - 1];
+      v9 = [arrayCopy objectAtIndexedSubscript:v6 - 1];
       v10 = [(_PSInteractionPredictor *)self getConversationIDFromInteraction:v9];
       if (v10)
       {
@@ -1262,18 +1262,18 @@ LABEL_39:
     }
 
     v70 = v6 - 1;
-    v11 = [v9 startDate];
-    v12 = [v11 dateByAddingTimeInterval:-1.0];
-    v13 = [(_PSInteractionPredictor *)self getTrainArrayToDate:v12 withStartDateAnchor:v11];
+    startDate = [v9 startDate];
+    v12 = [startDate dateByAddingTimeInterval:-1.0];
+    v13 = [(_PSInteractionPredictor *)self getTrainArrayToDate:v12 withStartDateAnchor:startDate];
 
     v71 = v13;
-    if (v6 == [v4 count])
+    if (v6 == [arrayCopy count])
     {
       v67 = [(_PSInteractionPredictor *)self getLastContactedDictionaryFromTrainArray:v13];
 
-      v14 = [(_PSInteractionPredictor *)self modelConfiguration];
-      v15 = [v14 modelName];
-      v16 = [(_PSInteractionPredictor *)self findLatestArchiveDateBefore:v11 modelName:v15];
+      modelConfiguration = [(_PSInteractionPredictor *)self modelConfiguration];
+      modelName = [modelConfiguration modelName];
+      v16 = [(_PSInteractionPredictor *)self findLatestArchiveDateBefore:startDate modelName:modelName];
 
       if (v16)
       {
@@ -1282,17 +1282,17 @@ LABEL_39:
 
       else
       {
-        v17 = v11;
+        v17 = startDate;
       }
 
       v18 = [(_PSInteractionPredictor *)self getOrMakeClusterDictionaryAtDate:v17];
 
-      v19 = [v11 dateByAddingTimeInterval:86400.0];
-      v20 = [(_PSInteractionPredictor *)self modelConfiguration];
-      v21 = [v20 modelName];
-      v22 = [(_PSInteractionPredictor *)self findLatestArchiveDateBefore:v19 modelName:v21];
+      v19 = [startDate dateByAddingTimeInterval:86400.0];
+      modelConfiguration2 = [(_PSInteractionPredictor *)self modelConfiguration];
+      modelName2 = [modelConfiguration2 modelName];
+      v22 = [(_PSInteractionPredictor *)self findLatestArchiveDateBefore:v19 modelName:modelName2];
 
-      v4 = v60;
+      arrayCopy = v60;
       v23 = [(_PSInteractionPredictor *)self getOrMakeClusterDictionaryAtDate:v22];
 
       v69 = v22;
@@ -1304,7 +1304,7 @@ LABEL_39:
 
     if ([v9 direction] != 1)
     {
-      [v7 setObject:v11 forKey:v10];
+      [v7 setObject:startDate forKey:v10];
 LABEL_38:
 
       v8 = v70;
@@ -1313,25 +1313,25 @@ LABEL_38:
 
     v63 = [(_PSInteractionPredictor *)self getRecencyResultsShowingNumValues:5 fromTrainArray:v71];
     v24 = [v63 containsObject:v10];
-    [v11 timeIntervalSinceDate:v69];
+    [startDate timeIntervalSinceDate:v69];
     v68 = v7;
     if (v25 >= 0.0)
     {
-      v27 = [(_PSInteractionPredictor *)self currentArchiveDate];
-      [v11 timeIntervalSinceDate:v27];
+      currentArchiveDate = [(_PSInteractionPredictor *)self currentArchiveDate];
+      [startDate timeIntervalSinceDate:currentArchiveDate];
       v29 = v28;
 
       if (v29 >= 0.0)
       {
-        v30 = [(_PSInteractionPredictor *)self currentClusterDictionary];
+        currentClusterDictionary = [(_PSInteractionPredictor *)self currentClusterDictionary];
 LABEL_17:
-        v31 = v30;
-        v32 = [v30 objectForKey:v10];
+        v31 = currentClusterDictionary;
+        v32 = [currentClusterDictionary objectForKey:v10];
 
         v62 = v31;
         if (v32)
         {
-          v33 = [[_PSClusterPoint alloc] initWithDate:v11];
+          v33 = [[_PSClusterPoint alloc] initWithDate:startDate];
           v34 = [v31 objectForKeyedSubscript:v10];
           [(_PSInteractionPredictor *)self getMinDistanceForPt:v33 toClusters:v34];
           v36 = v35;
@@ -1347,7 +1347,7 @@ LABEL_17:
         if (v37)
         {
           v39 = [v68 objectForKeyedSubscript:v10];
-          [v11 timeIntervalSinceDate:v39];
+          [startDate timeIntervalSinceDate:v39];
           v38 = v40 / 60.0;
         }
 
@@ -1401,9 +1401,9 @@ LABEL_31:
               v7 = v68;
             }
 
-            [v58 addObject:v50];
+            [array addObject:v50];
 
-            v4 = v60;
+            arrayCopy = v60;
             goto LABEL_37;
           }
 
@@ -1422,7 +1422,7 @@ LABEL_31:
         }
 
 LABEL_37:
-        [v7 setObject:v11 forKey:v10];
+        [v7 setObject:startDate forKey:v10];
 
         goto LABEL_38;
       }
@@ -1435,7 +1435,7 @@ LABEL_37:
       v26 = v66;
     }
 
-    v30 = v26;
+    currentClusterDictionary = v26;
     goto LABEL_17;
   }
 
@@ -1467,15 +1467,15 @@ LABEL_42:
 
   v54 = v52;
   _Block_object_dispose(&v79, 8);
-  v55 = [[v52 alloc] initWithFeatureProviderArray:v58];
+  v55 = [[v52 alloc] initWithFeatureProviderArray:array];
   v56 = [[_PSMLArrayProvider alloc] initWithProvider:v55 clusteringCount:HIDWORD(v59) recencyCount:v59];
 
   return v56;
 }
 
-- (void)printModelWeights:(id)a3
+- (void)printModelWeights:(id)weights
 {
-  v3 = a3;
+  weightsCopy = weights;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -1496,11 +1496,11 @@ LABEL_42:
 
   v5 = v4;
   _Block_object_dispose(&v14, 8);
-  v6 = [v4 weights];
-  v7 = [v6 scopedTo:@"dense_1"];
+  weights = [v4 weights];
+  v7 = [weights scopedTo:@"dense_1"];
 
   v12[0] = 0;
-  v8 = [v3 parameterValueForKey:v7 error:v12];
+  v8 = [weightsCopy parameterValueForKey:v7 error:v12];
   v9 = v12[0];
   v10 = +[_PSLogging generalChannel];
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
@@ -1518,11 +1518,11 @@ LABEL_42:
   }
 }
 
-- (void)trainAtDate:(id)a3 usingCompiledModelURL:(id)a4 andSaveToURL:(id)a5
+- (void)trainAtDate:(id)date usingCompiledModelURL:(id)l andSaveToURL:(id)rL
 {
-  v8 = a3;
-  v27 = a4;
-  v9 = a5;
+  dateCopy = date;
+  lCopy = l;
+  rLCopy = rL;
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x3032000000;
@@ -1535,12 +1535,12 @@ LABEL_42:
   v38 = __Block_byref_object_copy_;
   v39 = __Block_byref_object_dispose_;
   v40 = dispatch_semaphore_create(0);
-  v10 = [(_PSInteractionPredictor *)self getTrainArrayToDate:v8 withStartDateAnchor:v8];
+  v10 = [(_PSInteractionPredictor *)self getTrainArrayToDate:dateCopy withStartDateAnchor:dateCopy];
   v11 = [(_PSInteractionPredictor *)self getClusterDictionaryFromTrainArray:v10 usingDBSCANParamsMinPts:3 andEps:1.2];
-  [(_PSInteractionPredictor *)self writeClusterArchiveFromClusterDict:v11 withDate:v8];
+  [(_PSInteractionPredictor *)self writeClusterArchiveFromClusterDict:v11 withDate:dateCopy];
 
   v12 = [(_PSInteractionPredictor *)self createMLArrayProviderFromTrainArray:v10];
-  v26 = [v12 MLArrayProvider];
+  mLArrayProvider = [v12 MLArrayProvider];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __74___PSInteractionPredictor_trainAtDate_usingCompiledModelURL_andSaveToURL___block_invoke;
@@ -1551,9 +1551,9 @@ LABEL_42:
   v29[1] = 3221225472;
   v29[2] = __74___PSInteractionPredictor_trainAtDate_usingCompiledModelURL_andSaveToURL___block_invoke_145;
   v29[3] = &unk_1E7C23BA8;
-  v14 = v9;
+  v14 = rLCopy;
   v30 = v14;
-  v31 = self;
+  selfCopy = self;
   v32 = v41;
   v33 = &v35;
   v15 = MEMORY[0x1B8C8C060](v29);
@@ -1603,7 +1603,7 @@ LABEL_42:
     v22 = v20;
     _Block_object_dispose(&v48, 8);
     v28 = 0;
-    v23 = [v20 updateTaskForModelAtURL:v27 trainingData:v26 progressHandlers:v19 error:&v28];
+    v23 = [v20 updateTaskForModelAtURL:lCopy trainingData:mLArrayProvider progressHandlers:v19 error:&v28];
     v24 = v28;
     if (v24)
     {
@@ -1629,34 +1629,34 @@ LABEL_42:
   _Block_object_dispose(v41, 8);
 }
 
-- (id)rankedZkwSuggestionsFromPredictionArray:(id)a3 forBundleID:(id)a4
+- (id)rankedZkwSuggestionsFromPredictionArray:(id)array forBundleID:(id)d
 {
   v73 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v55 = a4;
-  v54 = [MEMORY[0x1E695DF70] array];
-  v7 = [(_PSInteractionPredictor *)self modelConfiguration];
-  v8 = [v7 modelName];
+  arrayCopy = array;
+  dCopy = d;
+  array = [MEMORY[0x1E695DF70] array];
+  modelConfiguration = [(_PSInteractionPredictor *)self modelConfiguration];
+  modelName = [modelConfiguration modelName];
 
-  if (v8)
+  if (modelName)
   {
-    v9 = [(_PSInteractionPredictor *)self modelConfiguration];
-    v10 = [v9 modelType];
+    modelConfiguration2 = [(_PSInteractionPredictor *)self modelConfiguration];
+    modelType = [modelConfiguration2 modelType];
 
-    if (v10 > 2)
+    if (modelType > 2)
     {
       v11 = &stru_1F2D6CE98;
     }
 
     else
     {
-      v11 = off_1E7C23C48[v10];
+      v11 = off_1E7C23C48[modelType];
     }
 
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [(_PSInteractionPredictor *)self modelConfiguration];
-    v14 = [v13 modelName];
-    v53 = [v12 stringWithFormat:@"%@%@", v14, v11];
+    modelConfiguration3 = [(_PSInteractionPredictor *)self modelConfiguration];
+    modelName2 = [modelConfiguration3 modelName];
+    v53 = [v12 stringWithFormat:@"%@%@", modelName2, v11];
   }
 
   else
@@ -1668,12 +1668,12 @@ LABEL_42:
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v6;
+  obj = arrayCopy;
   v58 = [obj countByEnumeratingWithState:&v67 objects:v72 count:16];
   if (v58)
   {
     v56 = *v68;
-    v57 = self;
+    selfCopy = self;
     do
     {
       v15 = 0;
@@ -1685,23 +1685,23 @@ LABEL_42:
         }
 
         v16 = *(*(&v67 + 1) + 8 * v15);
-        v17 = [(_PSInteractionPredictor *)self conversationIDMap];
-        v18 = [v17 objectForKey:v16];
+        conversationIDMap = [(_PSInteractionPredictor *)self conversationIDMap];
+        v18 = [conversationIDMap objectForKey:v16];
 
         if (v18)
         {
           v60 = v15;
-          v19 = [(_PSInteractionPredictor *)self conversationIDMap];
+          conversationIDMap2 = [(_PSInteractionPredictor *)self conversationIDMap];
           v62 = v16;
-          v20 = [v19 objectForKeyedSubscript:v16];
-          v21 = [v20 recipients];
+          v20 = [conversationIDMap2 objectForKeyedSubscript:v16];
+          recipients = [v20 recipients];
 
           v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
           v63 = 0u;
           v64 = 0u;
           v65 = 0u;
           v66 = 0u;
-          v23 = v21;
+          v23 = recipients;
           v24 = [v23 countByEnumeratingWithState:&v63 objects:v71 count:16];
           if (v24)
           {
@@ -1718,10 +1718,10 @@ LABEL_42:
 
                 v28 = *(*(&v63 + 1) + 8 * i);
                 v29 = [_PSRecipient alloc];
-                v30 = [v28 identifier];
-                v31 = [v28 handle];
-                v32 = [v28 displayName];
-                v33 = [(_PSRecipient *)v29 initWithIdentifier:v30 handle:v31 displayName:v32 contact:0];
+                identifier = [v28 identifier];
+                handle = [v28 handle];
+                displayName = [v28 displayName];
+                v33 = [(_PSRecipient *)v29 initWithIdentifier:identifier handle:handle displayName:displayName contact:0];
 
                 [v22 addObject:v33];
               }
@@ -1733,11 +1733,11 @@ LABEL_42:
           }
 
           v34 = [_PSSuggestion alloc];
-          self = v57;
-          v35 = [(_PSInteractionPredictor *)v57 conversationIDMap];
-          v36 = [v35 objectForKeyedSubscript:v62];
-          v37 = [v36 groupName];
-          v59 = [(_PSSuggestion *)v34 initWithBundleID:v55 conversationIdentifier:v62 groupName:v37 recipients:v22 reason:v53 reasonType:0];
+          self = selfCopy;
+          conversationIDMap3 = [(_PSInteractionPredictor *)selfCopy conversationIDMap];
+          v36 = [conversationIDMap3 objectForKeyedSubscript:v62];
+          groupName = [v36 groupName];
+          v59 = [(_PSSuggestion *)v34 initWithBundleID:dCopy conversationIdentifier:v62 groupName:groupName recipients:v22 reason:v53 reasonType:0];
 
           if (rankedZkwSuggestionsFromPredictionArray_forBundleID___pasOnceToken46 != -1)
           {
@@ -1745,29 +1745,29 @@ LABEL_42:
           }
 
           v38 = rankedZkwSuggestionsFromPredictionArray_forBundleID___pasExprOnceResult;
-          v39 = [(_PSInteractionPredictor *)v57 conversationIDMap];
-          v40 = [v39 objectForKeyedSubscript:v62];
-          v41 = [v40 bundleId];
-          if (v41)
+          conversationIDMap4 = [(_PSInteractionPredictor *)selfCopy conversationIDMap];
+          v40 = [conversationIDMap4 objectForKeyedSubscript:v62];
+          bundleId = [v40 bundleId];
+          if (bundleId)
           {
-            v42 = v41;
-            v43 = [(_PSInteractionPredictor *)v57 conversationIDMap];
-            v44 = [v43 objectForKeyedSubscript:v62];
+            v42 = bundleId;
+            conversationIDMap5 = [(_PSInteractionPredictor *)selfCopy conversationIDMap];
+            v44 = [conversationIDMap5 objectForKeyedSubscript:v62];
             [v44 bundleId];
             v45 = v61 = v38;
             v46 = [v61 containsObject:v45];
 
             v38 = v61;
-            self = v57;
+            self = selfCopy;
 
             v47 = v59;
             v15 = v60;
             if (v46)
             {
-              v39 = [(_PSInteractionPredictor *)v57 conversationIDMap];
-              v40 = [v39 objectForKeyedSubscript:v62];
-              v48 = [v40 account];
-              [(_PSSuggestion *)v59 setMessagesGroupIdentifier:v48];
+              conversationIDMap4 = [(_PSInteractionPredictor *)selfCopy conversationIDMap];
+              v40 = [conversationIDMap4 objectForKeyedSubscript:v62];
+              account = [v40 account];
+              [(_PSSuggestion *)v59 setMessagesGroupIdentifier:account];
 
               v38 = v61;
               goto LABEL_26;
@@ -1781,7 +1781,7 @@ LABEL_42:
 LABEL_26:
           }
 
-          [v54 addObject:v47];
+          [array addObject:v47];
         }
 
         ++v15;
@@ -1794,24 +1794,24 @@ LABEL_26:
     while (v58);
   }
 
-  v49 = [v54 copy];
+  v49 = [array copy];
   v50 = *MEMORY[0x1E69E9840];
 
   return v49;
 }
 
-+ (void)deleteArchiveFileAtDate:(id)a3 modelName:(id)a4
++ (void)deleteArchiveFileAtDate:(id)date modelName:(id)name
 {
   v5 = MEMORY[0x1E696AC08];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 defaultManager];
-  v9 = [_PSInteractionPredictor clustersArchiveFileForDate:v7 modelName:v6];
+  nameCopy = name;
+  dateCopy = date;
+  defaultManager = [v5 defaultManager];
+  v9 = [_PSInteractionPredictor clustersArchiveFileForDate:dateCopy modelName:nameCopy];
 
-  if ([v8 fileExistsAtPath:v9])
+  if ([defaultManager fileExistsAtPath:v9])
   {
     v13 = 0;
-    [v8 removeItemAtPath:v9 error:&v13];
+    [defaultManager removeItemAtPath:v9 error:&v13];
     v10 = v13;
     v11 = +[_PSLogging generalChannel];
     v12 = v11;
@@ -1842,9 +1842,9 @@ LABEL_26:
 + (void)deleteArchiveFiles
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = +[_PSInteractionPredictor defaultClustersArchiveDirectory];
-  v4 = [v2 contentsOfDirectoryAtPath:v3 error:0];
+  v4 = [defaultManager contentsOfDirectoryAtPath:v3 error:0];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1868,7 +1868,7 @@ LABEL_26:
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = [v3 stringByAppendingPathComponent:{v10, v16}];
         v17 = 0;
-        [v2 removeItemAtPath:v11 error:&v17];
+        [defaultManager removeItemAtPath:v11 error:&v17];
         v12 = v17;
 
         v13 = +[_PSLogging generalChannel];

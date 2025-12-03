@@ -1,10 +1,10 @@
 @interface CSAdjunctListModel
 - (CSAdjunctListModel)init;
 - (CSAdjunctListModelDelegate)delegate;
-- (void)_reallyAddOrUpdateItem:(id)a3;
+- (void)_reallyAddOrUpdateItem:(id)item;
 - (void)_replayPendingChanges;
-- (void)addOrUpdateItem:(id)a3;
-- (void)removeItemForIdentifier:(id)a3;
+- (void)addOrUpdateItem:(id)item;
+- (void)removeItemForIdentifier:(id)identifier;
 @end
 
 @implementation CSAdjunctListModel
@@ -18,9 +18,9 @@
   if (v2)
   {
     v2->_suspended = 1;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     identifiersToItems = v3->_identifiersToItems;
-    v3->_identifiersToItems = v4;
+    v3->_identifiersToItems = dictionary;
 
     v6 = [MEMORY[0x277CBEB58] set];
     pendingItems = v3->_pendingItems;
@@ -30,38 +30,38 @@
   return v3;
 }
 
-- (void)addOrUpdateItem:(id)a3
+- (void)addOrUpdateItem:(id)item
 {
   if (self->_suspended)
   {
-    [(NSMutableSet *)self->_pendingItems addObject:a3];
+    [(NSMutableSet *)self->_pendingItems addObject:item];
   }
 
   else
   {
-    [(CSAdjunctListModel *)self _reallyAddOrUpdateItem:a3];
+    [(CSAdjunctListModel *)self _reallyAddOrUpdateItem:item];
   }
 }
 
-- (void)removeItemForIdentifier:(id)a3
+- (void)removeItemForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     pendingItems = self->_pendingItems;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __46__CSAdjunctListModel_removeItemForIdentifier___block_invoke;
     v12[3] = &unk_27838DA30;
-    v7 = v4;
+    v7 = identifierCopy;
     v13 = v7;
     v8 = [(NSMutableSet *)pendingItems objectsPassingTest:v12];
-    v9 = [v8 anyObject];
+    anyObject = [v8 anyObject];
 
-    if (v9)
+    if (anyObject)
     {
-      [(NSMutableSet *)self->_pendingItems removeObject:v9];
+      [(NSMutableSet *)self->_pendingItems removeObject:anyObject];
     }
 
     v10 = [(NSMutableDictionary *)self->_identifiersToItems objectForKey:v7];
@@ -82,21 +82,21 @@ uint64_t __46__CSAdjunctListModel_removeItemForIdentifier___block_invoke(uint64_
   return v4;
 }
 
-- (void)_reallyAddOrUpdateItem:(id)a3
+- (void)_reallyAddOrUpdateItem:(id)item
 {
-  v4 = a3;
-  v7 = [v4 identifier];
-  v5 = [(NSMutableDictionary *)self->_identifiersToItems objectForKeyedSubscript:v7];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  v5 = [(NSMutableDictionary *)self->_identifiersToItems objectForKeyedSubscript:identifier];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [(NSMutableDictionary *)self->_identifiersToItems setObject:v4 forKey:v7];
+  [(NSMutableDictionary *)self->_identifiersToItems setObject:itemCopy forKey:identifier];
   if (v5)
   {
-    [WeakRetained adjunctListModel:self didUpdateItem:v5 withItem:v4];
+    [WeakRetained adjunctListModel:self didUpdateItem:v5 withItem:itemCopy];
   }
 
   else
   {
-    [WeakRetained adjunctListModel:self didAddItem:v4];
+    [WeakRetained adjunctListModel:self didAddItem:itemCopy];
   }
 }
 

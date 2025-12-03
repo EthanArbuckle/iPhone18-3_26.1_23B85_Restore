@@ -4,18 +4,18 @@
 - (BOOL)isUnderThirteen;
 - (NSString)dsid;
 - (_TtC27AppStoreComponentsDaemonKit12JSUserObject)init;
-- (id)accountCachedServerDataBoolForKey:(id)a3;
-- (id)accountCachedServerDataIntForKey:(id)a3;
-- (id)accountCachedServerDataStringForKey:(id)a3;
-- (id)cookieForUrlWithName:(id)a3 :(id)a4;
-- (id)cookiesForUrl:(id)a3;
+- (id)accountCachedServerDataBoolForKey:(id)key;
+- (id)accountCachedServerDataIntForKey:(id)key;
+- (id)accountCachedServerDataStringForKey:(id)key;
+- (id)cookieForUrlWithName:(id)name :(id)a4;
+- (id)cookiesForUrl:(id)url;
 @end
 
 @implementation JSUserObject
 
 - (NSString)dsid
 {
-  v2 = self;
+  selfCopy = self;
   sub_2226C25A4();
   v4 = v3;
 
@@ -40,7 +40,7 @@
   v6 = &v13[-v5];
   v7 = *&self->accounts[OBJC_IVAR____TtC27AppStoreComponentsDaemonKit12JSUserObject_accounts + 24];
   __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR____TtC27AppStoreComponentsDaemonKit12JSUserObject_accounts), *&self->accounts[OBJC_IVAR____TtC27AppStoreComponentsDaemonKit12JSUserObject_accounts + 16]);
-  v8 = self;
+  selfCopy = self;
   sub_2227384EC();
   v9 = sub_222738CFC();
   v10 = *(v9 - 8);
@@ -65,7 +65,7 @@
 
 - (BOOL)isUnderThirteen
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2226C295C();
 
   return v3 & 1;
@@ -73,16 +73,16 @@
 
 - (BOOL)isFitnessAppInstallationAllowed
 {
-  v2 = self;
-  v3 = sub_2226C2BA8(v2);
+  selfCopy = self;
+  v3 = sub_2226C2BA8(selfCopy);
 
   return v3 & 1;
 }
 
-- (id)cookiesForUrl:(id)a3
+- (id)cookiesForUrl:(id)url
 {
   sub_22273919C();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_2226C2FE0();
 
   if (v5)
@@ -99,41 +99,41 @@
   return v6;
 }
 
-- (id)cookieForUrlWithName:(id)a3 :(id)a4
+- (id)cookieForUrlWithName:(id)name :(id)a4
 {
   v5 = sub_22273919C();
   v7 = v6;
   v8 = sub_22273919C();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12 = sub_2226C3498(v5, v7, v8, v10);
 
   return v12;
 }
 
-- (id)accountCachedServerDataStringForKey:(id)a3
+- (id)accountCachedServerDataStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2226C7848(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_2226C7848(keyCopy);
 
   return v6;
 }
 
-- (id)accountCachedServerDataBoolForKey:(id)a3
+- (id)accountCachedServerDataBoolForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2226C7F0C(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_2226C7F0C(keyCopy);
 
   return v6;
 }
 
-- (id)accountCachedServerDataIntForKey:(id)a3
+- (id)accountCachedServerDataIntForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_2226C85D0(v4);
+  keyCopy = key;
+  selfCopy = self;
+  v6 = sub_2226C85D0(keyCopy);
 
   return v6;
 }

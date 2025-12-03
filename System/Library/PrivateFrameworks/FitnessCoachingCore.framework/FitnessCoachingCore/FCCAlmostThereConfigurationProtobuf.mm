@@ -1,22 +1,22 @@
 @interface FCCAlmostThereConfigurationProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCoalescingRules:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGoalType:(BOOL)a3;
-- (void)setHasMinimumPercentageComplete:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCoalescingRules:(id)rules;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGoalType:(BOOL)type;
+- (void)setHasMinimumPercentageComplete:(BOOL)complete;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FCCAlmostThereConfigurationProtobuf
 
-- (void)setHasMinimumPercentageComplete:(BOOL)a3
+- (void)setHasMinimumPercentageComplete:(BOOL)complete
 {
-  if (a3)
+  if (complete)
   {
     v3 = 2;
   }
@@ -29,27 +29,27 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addCoalescingRules:(id)a3
+- (void)addCoalescingRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   coalescingRules = self->_coalescingRules;
-  v8 = v4;
+  v8 = rulesCopy;
   if (!coalescingRules)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_coalescingRules;
     self->_coalescingRules = v6;
 
-    v4 = v8;
+    rulesCopy = v8;
     coalescingRules = self->_coalescingRules;
   }
 
-  [(NSMutableArray *)coalescingRules addObject:v4];
+  [(NSMutableArray *)coalescingRules addObject:rulesCopy];
 }
 
-- (void)setHasGoalType:(BOOL)a3
+- (void)setHasGoalType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = FCCAlmostThereConfigurationProtobuf;
   v4 = [(FCCAlmostThereConfigurationProtobuf *)&v8 description];
-  v5 = [(FCCAlmostThereConfigurationProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(FCCAlmostThereConfigurationProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,12 +77,12 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -122,8 +122,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -138,8 +138,8 @@
   timeOfDayRule = self->_timeOfDayRule;
   if (timeOfDayRule)
   {
-    v17 = [(FCCTimeOfDayRuleProtobuf *)timeOfDayRule dictionaryRepresentation];
-    [v4 setObject:v17 forKey:@"timeOfDayRule"];
+    dictionaryRepresentation2 = [(FCCTimeOfDayRuleProtobuf *)timeOfDayRule dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"timeOfDayRule"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -153,10 +153,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -219,37 +219,37 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v10;
+    [toCopy setIdentifier:?];
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_minimumPercentageComplete;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 2) = *&self->_minimumPercentageComplete;
+    *(toCopy + 56) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 1) = *&self->_goalBufferPercentage;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_goalBufferPercentage;
+    *(toCopy + 56) |= 1u;
   }
 
   if ([(FCCAlmostThereConfigurationProtobuf *)self coalescingRulesCount])
   {
     [v10 clearCoalescingRules];
-    v6 = [(FCCAlmostThereConfigurationProtobuf *)self coalescingRulesCount];
-    if (v6)
+    coalescingRulesCount = [(FCCAlmostThereConfigurationProtobuf *)self coalescingRulesCount];
+    if (coalescingRulesCount)
     {
-      v7 = v6;
+      v7 = coalescingRulesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(FCCAlmostThereConfigurationProtobuf *)self coalescingRulesAtIndex:i];
@@ -270,11 +270,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -311,7 +311,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v14 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v5 addCoalescingRules:v14];
       }
 
@@ -321,7 +321,7 @@
     while (v11);
   }
 
-  v15 = [(FCCTimeOfDayRuleProtobuf *)self->_timeOfDayRule copyWithZone:a3];
+  v15 = [(FCCTimeOfDayRuleProtobuf *)self->_timeOfDayRule copyWithZone:zone];
   v16 = *(v5 + 48);
   *(v5 + 48) = v15;
 
@@ -335,16 +335,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -352,16 +352,16 @@
     }
   }
 
-  v6 = *(v4 + 56);
+  v6 = *(equalCopy + 56);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_minimumPercentageComplete != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_minimumPercentageComplete != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
 LABEL_22:
     v9 = 0;
@@ -370,25 +370,25 @@ LABEL_22:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_goalBufferPercentage != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_goalBufferPercentage != *(equalCopy + 1))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_22;
   }
 
   coalescingRules = self->_coalescingRules;
-  if (coalescingRules | *(v4 + 3) && ![(NSMutableArray *)coalescingRules isEqual:?])
+  if (coalescingRules | *(equalCopy + 3) && ![(NSMutableArray *)coalescingRules isEqual:?])
   {
     goto LABEL_22;
   }
 
   timeOfDayRule = self->_timeOfDayRule;
-  if (timeOfDayRule | *(v4 + 6))
+  if (timeOfDayRule | *(equalCopy + 6))
   {
     if (![(FCCTimeOfDayRuleProtobuf *)timeOfDayRule isEqual:?])
     {
@@ -396,10 +396,10 @@ LABEL_22:
     }
   }
 
-  v9 = (*(v4 + 56) & 4) == 0;
+  v9 = (*(equalCopy + 56) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_goalType != *(v4 + 8))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_goalType != *(equalCopy + 8))
     {
       goto LABEL_22;
     }
@@ -497,26 +497,26 @@ LABEL_23:
   return v6 ^ v3 ^ v10 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(FCCAlmostThereConfigurationProtobuf *)self setIdentifier:?];
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if ((v5 & 2) != 0)
   {
-    self->_minimumPercentageComplete = *(v4 + 2);
+    self->_minimumPercentageComplete = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
   }
 
   if (v5)
   {
-    self->_goalBufferPercentage = *(v4 + 1);
+    self->_goalBufferPercentage = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -524,7 +524,7 @@ LABEL_23:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -549,7 +549,7 @@ LABEL_23:
   }
 
   timeOfDayRule = self->_timeOfDayRule;
-  v12 = *(v4 + 6);
+  v12 = *(fromCopy + 6);
   if (timeOfDayRule)
   {
     if (v12)
@@ -563,9 +563,9 @@ LABEL_23:
     [(FCCAlmostThereConfigurationProtobuf *)self setTimeOfDayRule:?];
   }
 
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
-    self->_goalType = *(v4 + 8);
+    self->_goalType = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 

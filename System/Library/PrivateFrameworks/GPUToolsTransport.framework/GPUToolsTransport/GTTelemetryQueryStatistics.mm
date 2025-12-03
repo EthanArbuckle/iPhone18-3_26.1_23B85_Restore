@@ -1,15 +1,15 @@
 @interface GTTelemetryQueryStatistics
-- (GTTelemetryQueryStatistics)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTTelemetryQueryStatistics)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTTelemetryQueryStatistics
 
-- (GTTelemetryQueryStatistics)initWithCoder:(id)a3
+- (GTTelemetryQueryStatistics)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = GTTelemetryQueryStatistics;
-  v3 = [(GTTelemetryRequest *)&v7 initWithCoder:a3];
+  v3 = [(GTTelemetryRequest *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -19,11 +19,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = GTTelemetryQueryStatistics;
-  [(GTTelemetryRequest *)&v3 encodeWithCoder:a3];
+  [(GTTelemetryRequest *)&v3 encodeWithCoder:coder];
 }
 
 @end

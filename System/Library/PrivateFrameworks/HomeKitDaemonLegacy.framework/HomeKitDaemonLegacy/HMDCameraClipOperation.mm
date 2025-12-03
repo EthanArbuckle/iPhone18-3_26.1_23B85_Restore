@@ -2,16 +2,16 @@
 + (id)logCategory;
 + (id)shortDescription;
 + (unint64_t)cameraClipOperationType;
-- (HMDCameraClipOperation)initWithClipModelID:(id)a3 localZone:(id)a4;
-- (HMDCameraClipOperation)initWithClipModelID:(id)a3 localZone:(id)a4 dataSource:(id)a5;
+- (HMDCameraClipOperation)initWithClipModelID:(id)d localZone:(id)zone;
+- (HMDCameraClipOperation)initWithClipModelID:(id)d localZone:(id)zone dataSource:(id)source;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (double)executionDuration;
 - (double)queuedDuration;
 - (id)fetchClipModel;
-- (id)updateClipModel:(id)a3;
+- (id)updateClipModel:(id)model;
 - (void)_markEndDateAndSubmitUploadOperationEvent;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)finish;
 - (void)main;
 @end
@@ -26,12 +26,12 @@
   [v3 setMaximumFractionDigits:3];
   [v3 setNotANumberSymbol:@"0.000"];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v23 = [(HMDCameraClipOperation *)self logIdentifier];
-  v22 = [v4 initWithName:@"ID" value:v23];
+  logIdentifier = [(HMDCameraClipOperation *)self logIdentifier];
+  v22 = [v4 initWithName:@"ID" value:logIdentifier];
   v24[0] = v22;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v6 = [(HMDCameraClipOperation *)self creationDate];
-  v7 = [v5 initWithName:@"Created" value:v6];
+  creationDate = [(HMDCameraClipOperation *)self creationDate];
+  v7 = [v5 initWithName:@"Created" value:creationDate];
   v24[1] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
   v9 = MEMORY[0x277CCABB0];
@@ -66,48 +66,48 @@
 
 - (void)_markEndDateAndSubmitUploadOperationEvent
 {
-  v3 = [(HMDCameraClipOperation *)self endDate];
+  endDate = [(HMDCameraClipOperation *)self endDate];
 
-  if (!v3)
+  if (!endDate)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(HMDCameraClipOperation *)self setEndDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HMDCameraClipOperation *)self setEndDate:date];
   }
 
   [(HMDCameraClipOperation *)self executionDuration];
   v6 = v5;
-  v7 = [(HMDCameraClipOperation *)self uploadOperationEvent];
-  [v7 setRunTime:v6];
+  uploadOperationEvent = [(HMDCameraClipOperation *)self uploadOperationEvent];
+  [uploadOperationEvent setRunTime:v6];
 
-  v8 = [(HMFOperation *)self error];
-  v9 = [(HMDCameraClipOperation *)self uploadOperationEvent];
-  [v9 setError:v8];
+  error = [(HMFOperation *)self error];
+  uploadOperationEvent2 = [(HMDCameraClipOperation *)self uploadOperationEvent];
+  [uploadOperationEvent2 setError:error];
 
-  v11 = [(HMDCameraClipOperation *)self dataSource];
-  v10 = [(HMDCameraClipOperation *)self uploadOperationEvent];
-  [v11 submitOperationEvent:v10];
+  dataSource = [(HMDCameraClipOperation *)self dataSource];
+  uploadOperationEvent3 = [(HMDCameraClipOperation *)self uploadOperationEvent];
+  [dataSource submitOperationEvent:uploadOperationEvent3];
 }
 
 - (double)executionDuration
 {
-  v3 = [(HMDCameraClipOperation *)self startDate];
-  if (v3)
+  startDate = [(HMDCameraClipOperation *)self startDate];
+  if (startDate)
   {
-    v4 = [(HMDCameraClipOperation *)self endDate];
-    v5 = v4;
-    if (v4)
+    endDate = [(HMDCameraClipOperation *)self endDate];
+    v5 = endDate;
+    if (endDate)
     {
-      v6 = v4;
+      date = endDate;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v8 = v6;
+    v8 = date;
 
-    [v8 timeIntervalSinceDate:v3];
+    [v8 timeIntervalSinceDate:startDate];
     v7 = v9;
   }
 
@@ -119,34 +119,34 @@
   return v7;
 }
 
-- (id)updateClipModel:(id)a3
+- (id)updateClipModel:(id)model
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 videoStreamingAsset];
+  modelCopy = model;
+  videoStreamingAsset = [modelCopy videoStreamingAsset];
 
-  if (v5)
+  if (videoStreamingAsset)
   {
     v6 = objc_alloc(MEMORY[0x277D17108]);
-    v7 = [(HMDCameraClipOperation *)self shortDescription];
-    v8 = [v6 initWithLabel:v7];
+    shortDescription = [(HMDCameraClipOperation *)self shortDescription];
+    v8 = [v6 initWithLabel:shortDescription];
 
     [v8 setDisallowsCellularAccessForMirrorOutput:1];
     [v8 setQualityOfService:-1];
-    v9 = [(HMDCameraClipOperation *)self localZone];
-    v10 = [MEMORY[0x277CBEB98] setWithObject:v4];
-    v11 = [v9 addModels:v10 options:v8];
+    localZone = [(HMDCameraClipOperation *)self localZone];
+    v10 = [MEMORY[0x277CBEB98] setWithObject:modelCopy];
+    v11 = [localZone addModels:v10 options:v8];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v4 debugDescription];
+      v16 = [modelCopy debugDescription];
       v21 = 138543618;
       v22 = v15;
       v23 = 2112;
@@ -168,10 +168,10 @@
 - (id)fetchClipModel
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraClipOperation *)self localZone];
-  v4 = [(HMDCameraClipOperation *)self clipModelID];
+  localZone = [(HMDCameraClipOperation *)self localZone];
+  clipModelID = [(HMDCameraClipOperation *)self clipModelID];
   v18 = 0;
-  v5 = [v3 fetchModelWithModelID:v4 ofType:objc_opt_class() error:&v18];
+  v5 = [localZone fetchModelWithModelID:clipModelID ofType:objc_opt_class() error:&v18];
   v6 = v18;
 
   if (v5)
@@ -183,16 +183,16 @@ LABEL_7:
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v11 = HMFGetLogIdentifier();
-    v12 = [(HMDCameraClipOperation *)v9 clipModelID];
+    clipModelID2 = [(HMDCameraClipOperation *)selfCopy clipModelID];
     *buf = 138543874;
     v20 = v11;
     v21 = 2112;
-    v22 = v12;
+    v22 = clipModelID2;
     v23 = 2112;
     v24 = v6;
     _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch local clip model with ID %@: %@", buf, 0x20u);
@@ -215,21 +215,21 @@ LABEL_8:
   return v14;
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = HMDCameraClipOperation;
-  [(HMFOperation *)&v11 cancelWithError:v4];
+  [(HMFOperation *)&v11 cancelWithError:errorCopy];
   [(HMDCameraClipOperation *)self _markEndDateAndSubmitUploadOperationEvent];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    [(HMDCameraClipOperation *)v6 executionDuration];
+    [(HMDCameraClipOperation *)selfCopy executionDuration];
     *buf = 138543618;
     v13 = v8;
     v14 = 2048;
@@ -249,12 +249,12 @@ LABEL_8:
   [(HMFOperation *)&v9 finish];
   [(HMDCameraClipOperation *)self _markEndDateAndSubmitUploadOperationEvent];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    [(HMDCameraClipOperation *)v4 executionDuration];
+    [(HMDCameraClipOperation *)selfCopy executionDuration];
     *buf = 138543618;
     v11 = v6;
     v12 = 2048;
@@ -268,107 +268,107 @@ LABEL_8:
 
 - (void)main
 {
-  v3 = [(HMDCameraClipOperation *)self startDate];
+  startDate = [(HMDCameraClipOperation *)self startDate];
 
-  if (!v3)
+  if (!startDate)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(HMDCameraClipOperation *)self setStartDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HMDCameraClipOperation *)self setStartDate:date];
   }
 }
 
 - (double)queuedDuration
 {
-  v3 = [(HMDCameraClipOperation *)self startDate];
-  v4 = v3;
-  if (v3)
+  startDate = [(HMDCameraClipOperation *)self startDate];
+  v4 = startDate;
+  if (startDate)
   {
-    v5 = v3;
+    date = startDate;
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  v6 = v5;
+  v6 = date;
 
-  v7 = [(HMDCameraClipOperation *)self creationDate];
-  [v6 timeIntervalSinceDate:v7];
+  creationDate = [(HMDCameraClipOperation *)self creationDate];
+  [v6 timeIntervalSinceDate:creationDate];
   v9 = v8;
 
   return v9;
 }
 
-- (HMDCameraClipOperation)initWithClipModelID:(id)a3 localZone:(id)a4 dataSource:(id)a5
+- (HMDCameraClipOperation)initWithClipModelID:(id)d localZone:(id)zone dataSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  zoneCopy = zone;
+  sourceCopy = source;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!zoneCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = sourceCopy;
+  if (!sourceCopy)
   {
 LABEL_9:
     v29 = _HMFPreconditionFailure();
     return [(HMDCameraClipOperation *)v29 initWithClipModelID:v30 localZone:v31, v32];
   }
 
-  [v11 operationTimeout];
+  [sourceCopy operationTimeout];
   v35.receiver = self;
   v35.super_class = HMDCameraClipOperation;
   v13 = [(HMFOperation *)&v35 initWithTimeout:?];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_clipModelID, a3);
-    objc_storeStrong(&v14->_localZone, a4);
-    objc_storeStrong(&v14->_dataSource, a5);
-    v15 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v13->_clipModelID, d);
+    objc_storeStrong(&v14->_localZone, zone);
+    objc_storeStrong(&v14->_dataSource, source);
+    date = [MEMORY[0x277CBEAA8] date];
     creationDate = v14->_creationDate;
-    v14->_creationDate = v15;
+    v14->_creationDate = date;
 
-    v17 = [[HMDCameraRecordingUploadOperationEvent alloc] initWithClipModelID:v9 operation:v14];
+    v17 = [[HMDCameraRecordingUploadOperationEvent alloc] initWithClipModelID:dCopy operation:v14];
     uploadOperationEvent = v14->_uploadOperationEvent;
     v14->_uploadOperationEvent = v17;
 
     v33 = MEMORY[0x277CCACA8];
-    v34 = [(HMDCameraClipOperation *)v14 name];
-    v19 = [v34 componentsSeparatedByString:@"-"];
-    v20 = [v19 lastObject];
-    v21 = [(HMDCameraClipOperation *)v14 clipModelID];
-    [v21 UUIDString];
-    v23 = v22 = v10;
+    name = [(HMDCameraClipOperation *)v14 name];
+    v19 = [name componentsSeparatedByString:@"-"];
+    lastObject = [v19 lastObject];
+    clipModelID = [(HMDCameraClipOperation *)v14 clipModelID];
+    [clipModelID UUIDString];
+    v23 = v22 = zoneCopy;
     v24 = [v23 componentsSeparatedByString:@"-"];
-    v25 = [v24 lastObject];
-    v26 = [v33 stringWithFormat:@"%@/%@", v20, v25];
+    lastObject2 = [v24 lastObject];
+    v26 = [v33 stringWithFormat:@"%@/%@", lastObject, lastObject2];
     logIdentifier = v14->_logIdentifier;
     v14->_logIdentifier = v26;
 
-    v10 = v22;
+    zoneCopy = v22;
   }
 
   return v14;
 }
 
-- (HMDCameraClipOperation)initWithClipModelID:(id)a3 localZone:(id)a4
+- (HMDCameraClipOperation)initWithClipModelID:(id)d localZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
+  zoneCopy = zone;
+  dCopy = d;
   v8 = objc_alloc_init(HMDCameraClipOperationDataSource);
-  v9 = [(HMDCameraClipOperation *)self initWithClipModelID:v7 localZone:v6 dataSource:v8];
+  v9 = [(HMDCameraClipOperation *)self initWithClipModelID:dCopy localZone:zoneCopy dataSource:v8];
 
   return v9;
 }

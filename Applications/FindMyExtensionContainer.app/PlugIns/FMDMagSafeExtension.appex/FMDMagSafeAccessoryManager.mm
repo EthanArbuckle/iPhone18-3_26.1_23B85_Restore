@@ -1,19 +1,19 @@
 @interface FMDMagSafeAccessoryManager
 + (id)sharedInstance;
 - (FMDMagSafeAccessoryManager)init;
-- (id)connectdAccessoryWithSerialNumber:(id)a3;
+- (id)connectdAccessoryWithSerialNumber:(id)number;
 - (id)getAllAccessories;
 - (id)getFindMyEnabledAccessories;
-- (id)styleFor:(id)a3;
-- (void)accessoryDidConnect:(id)a3;
-- (void)accessoryDidDisconnect:(id)a3;
-- (void)accessoryDidUpdate:(id)a3;
-- (void)conncetionStatusFor:(id)a3 withCompletion:(id)a4;
-- (void)launchSetupModuleWithInfo2:(id)a3 withCompletion:(id)a4;
-- (void)launchSetupModuleWithInfo:(id)a3 withCompletion:(id)a4;
-- (void)removeAccesoryWithSerialNumber:(id)a3 completion:(id)a4;
-- (void)setPhoneNumberForAccessoryId:(id)a3 phoneNumber:(id)a4 completion:(id)a5;
-- (void)updateCompletedFor:(id)a3 withCompletion:(id)a4;
+- (id)styleFor:(id)for;
+- (void)accessoryDidConnect:(id)connect;
+- (void)accessoryDidDisconnect:(id)disconnect;
+- (void)accessoryDidUpdate:(id)update;
+- (void)conncetionStatusFor:(id)for withCompletion:(id)completion;
+- (void)launchSetupModuleWithInfo2:(id)info2 withCompletion:(id)completion;
+- (void)launchSetupModuleWithInfo:(id)info withCompletion:(id)completion;
+- (void)removeAccesoryWithSerialNumber:(id)number completion:(id)completion;
+- (void)setPhoneNumberForAccessoryId:(id)id phoneNumber:(id)number completion:(id)completion;
+- (void)updateCompletedFor:(id)for withCompletion:(id)completion;
 @end
 
 @implementation FMDMagSafeAccessoryManager
@@ -44,9 +44,9 @@
     accessoriesLock = v2->_accessoriesLock;
     v2->_accessoriesLock = v4;
 
-    v6 = [(FMDMagSafeAccessoryManager *)v2 getFindMyEnabledAccessories];
+    getFindMyEnabledAccessories = [(FMDMagSafeAccessoryManager *)v2 getFindMyEnabledAccessories];
     [(NSLock *)v2->_accessoriesLock lock];
-    [(FMDMagSafeAccessoryManager *)v2 setAllAccessories:v6];
+    [(FMDMagSafeAccessoryManager *)v2 setAllAccessories:getFindMyEnabledAccessories];
     [(NSLock *)v2->_accessoriesLock unlock];
     v7 = objc_alloc_init(NSLock);
     groupLock = v2->_groupLock;
@@ -66,15 +66,15 @@
     v12 = dispatch_group_create();
     [(FMDMagSafeAccessoryManager *)v2 setCaGroup:v12];
 
-    v13 = [(FMDMagSafeAccessoryManager *)v2 caGroup];
-    dispatch_group_enter(v13);
+    caGroup = [(FMDMagSafeAccessoryManager *)v2 caGroup];
+    dispatch_group_enter(caGroup);
 
     v14 = [[FMDCoreAccessoryManager alloc] initWithDelegate:v2];
     [(FMDMagSafeAccessoryManager *)v2 setCaAccessoryManager:v14];
 
-    v15 = [(FMDMagSafeAccessoryManager *)v2 caGroup];
+    caGroup2 = [(FMDMagSafeAccessoryManager *)v2 caGroup];
     v16 = dispatch_time(0, 1000000000);
-    v17 = dispatch_group_wait(v15, v16);
+    v17 = dispatch_group_wait(caGroup2, v16);
 
     if (v17)
     {
@@ -91,15 +91,15 @@
 
 - (id)getFindMyEnabledAccessories
 {
-  v2 = [(FMDMagSafeAccessoryManager *)self dataSource];
-  v3 = [v2 readAllAccessoriesFromDisk];
+  dataSource = [(FMDMagSafeAccessoryManager *)self dataSource];
+  readAllAccessoriesFromDisk = [dataSource readAllAccessoriesFromDisk];
 
   v4 = objc_alloc_init(NSMutableDictionary);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = readAllAccessoriesFromDisk;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -133,29 +133,29 @@
 
 - (id)getAllAccessories
 {
-  v3 = [(FMDMagSafeAccessoryManager *)self getFindMyEnabledAccessories];
+  getFindMyEnabledAccessories = [(FMDMagSafeAccessoryManager *)self getFindMyEnabledAccessories];
   [(NSLock *)self->_accessoriesLock lock];
-  [(FMDMagSafeAccessoryManager *)self setAllAccessories:v3];
+  [(FMDMagSafeAccessoryManager *)self setAllAccessories:getFindMyEnabledAccessories];
   [(NSLock *)self->_accessoriesLock unlock];
-  v4 = [(FMDMagSafeAccessoryManager *)self allAccessories];
+  allAccessories = [(FMDMagSafeAccessoryManager *)self allAccessories];
 
-  return v4;
+  return allAccessories;
 }
 
-- (void)conncetionStatusFor:(id)a3 withCompletion:(id)a4
+- (void)conncetionStatusFor:(id)for withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  completionCopy = completion;
   [(NSLock *)self->_accessoriesLock lock];
-  v8 = [(FMDMagSafeAccessoryManager *)self allAccessories];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  allAccessories = [(FMDMagSafeAccessoryManager *)self allAccessories];
+  v9 = [allAccessories objectForKeyedSubscript:forCopy];
 
   if (v9)
   {
-    v10 = [(FMDMagSafeAccessoryManager *)self allAccessories];
-    v11 = [v10 objectForKeyedSubscript:v6];
-    v12 = [v11 serialNumbers];
-    v13 = [v12 objectForKeyedSubscript:@"systemSerialNumber"];
+    allAccessories2 = [(FMDMagSafeAccessoryManager *)self allAccessories];
+    v11 = [allAccessories2 objectForKeyedSubscript:forCopy];
+    serialNumbers = [v11 serialNumbers];
+    v13 = [serialNumbers objectForKeyedSubscript:@"systemSerialNumber"];
 
     [(NSLock *)self->_accessoriesLock unlock];
   }
@@ -170,27 +170,27 @@
     }
 
     v15 = [NSError errorWithMessage:@"accessory not found"];
-    v7[2](v7, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
 
     v13 = 0;
   }
 
   v16 = [(FMDMagSafeAccessoryManager *)self connectdAccessoryWithSerialNumber:v13];
-  (v7)[2](v7, v16 != 0, 0);
+  (completionCopy)[2](completionCopy, v16 != 0, 0);
 }
 
-- (id)styleFor:(id)a3
+- (id)styleFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   [(NSLock *)self->_accessoriesLock lock];
-  v5 = [(FMDMagSafeAccessoryManager *)self allAccessories];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  allAccessories = [(FMDMagSafeAccessoryManager *)self allAccessories];
+  v6 = [allAccessories objectForKeyedSubscript:forCopy];
 
   if (v6)
   {
-    v7 = [(FMDMagSafeAccessoryManager *)self allAccessories];
-    v8 = [v7 objectForKeyedSubscript:v4];
-    v9 = [v8 style];
+    allAccessories2 = [(FMDMagSafeAccessoryManager *)self allAccessories];
+    v8 = [allAccessories2 objectForKeyedSubscript:forCopy];
+    style = [v8 style];
   }
 
   else
@@ -201,28 +201,28 @@
       sub_100015838();
     }
 
-    v9 = 0;
+    style = 0;
   }
 
   [(NSLock *)self->_accessoriesLock unlock];
 
-  return v9;
+  return style;
 }
 
-- (void)removeAccesoryWithSerialNumber:(id)a3 completion:(id)a4
+- (void)removeAccesoryWithSerialNumber:(id)number completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  completionCopy = completion;
   v8 = sub_100004FC8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = numberCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Removing accessory with serialnumber %@", buf, 0xCu);
   }
 
-  [FMPreferencesUtil removeKey:v6 inDomain:kFMDNotBackedUpMagSafePrefDomain];
-  v9 = [(FMDMagSafeAccessoryManager *)self connectdAccessoryWithSerialNumber:v6];
+  [FMPreferencesUtil removeKey:numberCopy inDomain:kFMDNotBackedUpMagSafePrefDomain];
+  v9 = [(FMDMagSafeAccessoryManager *)self connectdAccessoryWithSerialNumber:numberCopy];
   v10 = sub_100004FC8();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if (v9)
@@ -238,9 +238,9 @@
     v18[2] = sub_10000C59C;
     v18[3] = &unk_1000255D8;
     v18[4] = self;
-    v19 = v6;
-    v20 = v7;
-    v12 = v7;
+    v19 = numberCopy;
+    v20 = completionCopy;
+    numberCopy = completionCopy;
     [v9 removeKeysWithCompletion:v18];
   }
 
@@ -252,41 +252,41 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Accessory not connected removing keys from device", buf, 2u);
     }
 
-    v12 = [NSString stringWithFormat:@"com.apple.accessoryd.mfi4.userPublicKey.%@", v6];
+    numberCopy = [NSString stringWithFormat:@"com.apple.accessoryd.mfi4.userPublicKey.%@", numberCopy];
     v13 = sub_100004FC8();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v12;
+      v22 = numberCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "handle_NVMEraseResponse: featureTag: %@", buf, 0xCu);
     }
 
     MFi4AuthFeatureGroup();
     DeleteSynchronizableKeyForAuthFeature();
-    v14 = [(FMDMagSafeAccessoryManager *)self dataSource];
+    dataSource = [(FMDMagSafeAccessoryManager *)self dataSource];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10000C84C;
     v16[3] = &unk_1000255B0;
     v16[4] = self;
-    v17 = v7;
-    v15 = v7;
-    [v14 removeAccessoryWithSerialNumber:v6 withCompletion:v16];
+    v17 = completionCopy;
+    v15 = completionCopy;
+    [dataSource removeAccessoryWithSerialNumber:numberCopy withCompletion:v16];
   }
 }
 
-- (id)connectdAccessoryWithSerialNumber:(id)a3
+- (id)connectdAccessoryWithSerialNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(FMDMagSafeAccessoryManager *)self caAccessoryManager];
-  v6 = [v5 accessoryRawInfo];
-  v7 = [v6 allValues];
+  caAccessoryManager = [(FMDMagSafeAccessoryManager *)self caAccessoryManager];
+  accessoryRawInfo = [caAccessoryManager accessoryRawInfo];
+  allValues = [accessoryRawInfo allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = *v19;
@@ -296,20 +296,20 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
         v12 = +[FMDAccessoryTypeValidator sharedInstance];
-        v13 = [v11 accessoryType];
-        if ([v12 isAllowedAccessoryWithType:v13] && objc_msgSend(v11, "isMF4i"))
+        accessoryType = [v11 accessoryType];
+        if ([v12 isAllowedAccessoryWithType:accessoryType] && objc_msgSend(v11, "isMF4i"))
         {
-          v14 = [v11 authPassed];
+          authPassed = [v11 authPassed];
 
-          if (v14)
+          if (authPassed)
           {
-            v15 = [v11 serialNumber];
-            v16 = [v4 isEqualToString:v15];
+            serialNumber = [v11 serialNumber];
+            v16 = [numberCopy isEqualToString:serialNumber];
 
             if (v16)
             {
@@ -324,7 +324,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -335,9 +335,9 @@ LABEL_14:
   return v8;
 }
 
-- (void)setPhoneNumberForAccessoryId:(id)a3 phoneNumber:(id)a4 completion:(id)a5
+- (void)setPhoneNumberForAccessoryId:(id)id phoneNumber:(id)number completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = sub_100004FC8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -346,61 +346,61 @@ LABEL_14:
   }
 
   v7 = [NSError errorWithMessage:@"Not supported"];
-  v5[2](v5, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)launchSetupModuleWithInfo:(id)a3 withCompletion:(id)a4
+- (void)launchSetupModuleWithInfo:(id)info withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDMagSafeAccessoryManager *)self serialQueue];
+  infoCopy = info;
+  completionCopy = completion;
+  serialQueue = [(FMDMagSafeAccessoryManager *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000CD00;
   block[3] = &unk_100024930;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = infoCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = infoCopy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)launchSetupModuleWithInfo2:(id)a3 withCompletion:(id)a4
+- (void)launchSetupModuleWithInfo2:(id)info2 withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  info2Copy = info2;
+  completionCopy = completion;
   v8 = sub_100001508();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = info2Copy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "### get asked to launch setup module with info = %@", buf, 0xCu);
   }
 
-  v9 = [(FMDMagSafeAccessoryManager *)self serialQueue];
+  serialQueue = [(FMDMagSafeAccessoryManager *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D1A4;
   block[3] = &unk_100024930;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = info2Copy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = info2Copy;
+  dispatch_async(serialQueue, block);
 }
 
-- (void)updateCompletedFor:(id)a3 withCompletion:(id)a4
+- (void)updateCompletedFor:(id)for withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMDMagSafeAccessoryManager *)self connectdAccessoryWithSerialNumber:v6];
+  forCopy = for;
+  completionCopy = completion;
+  v8 = [(FMDMagSafeAccessoryManager *)self connectdAccessoryWithSerialNumber:forCopy];
   v9 = sub_1000011D8();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = forCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "### setting keysUpdated for %@", buf, 0xCu);
   }
 
@@ -411,8 +411,8 @@ LABEL_14:
     v11[2] = sub_10000E8AC;
     v11[3] = &unk_100025720;
     v12 = v8;
-    v13 = v6;
-    v14 = v7;
+    v13 = forCopy;
+    v14 = completionCopy;
     [v12 getPairingDataWithCompletion:v11];
   }
 
@@ -425,73 +425,73 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "### accessory not connected storing the operation", buf, 2u);
     }
 
-    [FMPreferencesUtil setBool:1 forKey:v6 inDomain:kFMDNotBackedUpMagSafePrefDomain];
+    [FMPreferencesUtil setBool:1 forKey:forCopy inDomain:kFMDNotBackedUpMagSafePrefDomain];
   }
 }
 
-- (void)accessoryDidConnect:(id)a3
+- (void)accessoryDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = sub_100004FC8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[FMDMagSafeAccessoryManager accessoryDidConnect:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = connectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
   [(NSLock *)self->_groupLock lock];
-  v6 = [(FMDMagSafeAccessoryManager *)self caGroup];
+  caGroup = [(FMDMagSafeAccessoryManager *)self caGroup];
 
-  if (v6)
+  if (caGroup)
   {
-    v7 = [(FMDMagSafeAccessoryManager *)self caGroup];
-    dispatch_group_leave(v7);
+    caGroup2 = [(FMDMagSafeAccessoryManager *)self caGroup];
+    dispatch_group_leave(caGroup2);
 
     [(FMDMagSafeAccessoryManager *)self setCaGroup:0];
   }
 
   [(NSLock *)self->_groupLock unlock];
-  v8 = [(FMDMagSafeAccessoryManager *)self connectdAccessoryWithSerialNumber:v4];
+  v8 = [(FMDMagSafeAccessoryManager *)self connectdAccessoryWithSerialNumber:connectCopy];
   [(FMDMagSafeAccessoryManager *)self setConnectedAccessory:v8];
 
-  v9 = [(FMDMagSafeAccessoryManager *)self serialQueue];
+  serialQueue = [(FMDMagSafeAccessoryManager *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000EC34;
   block[3] = &unk_1000248E0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)accessoryDidDisconnect:(id)a3
+- (void)accessoryDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100004FC8();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[FMDMagSafeAccessoryManager accessoryDidDisconnect:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v6, 0x16u);
   }
 
   [(FMDMagSafeAccessoryManager *)self setConnectedAccessory:0];
 }
 
-- (void)accessoryDidUpdate:(id)a3
+- (void)accessoryDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v4 = sub_100004FC8();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[FMDMagSafeAccessoryManager accessoryDidUpdate:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = updateCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s %@", &v5, 0x16u);
   }
 }

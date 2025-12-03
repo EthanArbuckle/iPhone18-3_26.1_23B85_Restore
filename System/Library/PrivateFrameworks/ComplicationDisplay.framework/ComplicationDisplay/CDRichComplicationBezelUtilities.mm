@@ -1,21 +1,21 @@
 @interface CDRichComplicationBezelUtilities
-+ (CGRect)hitTestCarveOutWithDialCenter:(CGPoint)a3 leftSide:(BOOL)a4 forDevice:(id)a5;
++ (CGRect)hitTestCarveOutWithDialCenter:(CGPoint)center leftSide:(BOOL)side forDevice:(id)device;
 @end
 
 @implementation CDRichComplicationBezelUtilities
 
-+ (CGRect)hitTestCarveOutWithDialCenter:(CGPoint)a3 leftSide:(BOOL)a4 forDevice:(id)a5
++ (CGRect)hitTestCarveOutWithDialCenter:(CGPoint)center leftSide:(BOOL)side forDevice:(id)device
 {
-  v5 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a5;
-  v9 = CDGraphicSubdialComplicationDiameter(v8);
+  sideCopy = side;
+  y = center.y;
+  x = center.x;
+  deviceCopy = device;
+  v9 = CDGraphicSubdialComplicationDiameter(deviceCopy);
   v10 = v9 * 0.5;
-  v11 = CDGraphicSubdialComplicationDistanceFromCenter(v8);
+  v11 = CDGraphicSubdialComplicationDistanceFromCenter(deviceCopy);
 
   v12 = 1.0;
-  if (v5)
+  if (sideCopy)
   {
     v12 = -1.0;
   }

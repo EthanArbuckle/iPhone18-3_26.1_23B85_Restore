@@ -8,48 +8,48 @@
 - (CGRect)onScreen;
 - (CGRect)snapshotFrame;
 - (CGRect)startingRect;
-- (double)transitionDuration:(id)a3;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)animationCompleteWithFinished:(BOOL)a3;
+- (double)transitionDuration:(id)duration;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (void)animateTransition:(id)transition;
+- (void)animationCompleteWithFinished:(BOOL)finished;
 - (void)createAnimator;
 - (void)initalizeAnimation;
-- (void)setStartingTransform:(CGAffineTransform *)a3;
-- (void)setTargetTransform:(CGAffineTransform *)a3;
+- (void)setStartingTransform:(CGAffineTransform *)transform;
+- (void)setTargetTransform:(CGAffineTransform *)transform;
 - (void)setup;
 - (void)updateAnimator;
 @end
 
 @implementation BCCardSetCustomNavigationTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = [(BCCardSetCustomNavigationTransition *)self interruptibleAnimatorForTransition:a3];
+  v3 = [(BCCardSetCustomNavigationTransition *)self interruptibleAnimatorForTransition:transition];
   [v3 startAnimation];
 }
 
 - (void)initalizeAnimation
 {
-  v3 = [(BCCardSetCustomNavigationTransition *)self transitioningContext];
-  v4 = [v3 viewForKey:UITransitionContextFromViewKey];
+  transitioningContext = [(BCCardSetCustomNavigationTransition *)self transitioningContext];
+  v4 = [transitioningContext viewForKey:UITransitionContextFromViewKey];
   [(BCCardSetCustomNavigationTransition *)self setFromView:v4];
 
-  v5 = [v3 viewForKey:UITransitionContextToViewKey];
+  v5 = [transitioningContext viewForKey:UITransitionContextToViewKey];
   [(BCCardSetCustomNavigationTransition *)self setToView:v5];
 
-  v6 = [v3 viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [transitioningContext viewControllerForKey:UITransitionContextToViewControllerKey];
   [(BCCardSetCustomNavigationTransition *)self setToViewController:v6];
 
-  v7 = [v3 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  [v3 initialFrameForViewController:v7];
+  v7 = [transitioningContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+  [transitioningContext initialFrameForViewController:v7];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   [(BCCardSetCustomNavigationTransition *)self setOnScreen:?];
   v144 = v7;
-  v16 = [v7 traitCollection];
-  v17 = [v16 layoutDirection];
+  traitCollection = [v7 traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
   v164.origin.x = v9;
   v164.origin.y = v11;
@@ -63,8 +63,8 @@
   Width = CGRectGetWidth(v165);
   v20 = MinX - Width + -1.0;
   v21 = MinX + Width + 1.0;
-  v142 = v17;
-  if (v17 == &dword_0 + 1)
+  v142 = layoutDirection;
+  if (layoutDirection == &dword_0 + 1)
   {
     v22 = v20;
   }
@@ -94,12 +94,12 @@
   [(BCCardSetCustomNavigationTransition *)self setSnapshotContainerView:v25];
 
   [(BCCardSetCustomNavigationTransition *)self setup];
-  v26 = [v3 containerView];
-  v27 = [(BCCardSetCustomNavigationTransition *)self toView];
-  [v26 addSubview:v27];
+  containerView = [transitioningContext containerView];
+  toView = [(BCCardSetCustomNavigationTransition *)self toView];
+  [containerView addSubview:toView];
 
-  v28 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
-  [v28 frame];
+  viewToSnapshot = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
+  [viewToSnapshot frame];
   v30 = v29;
   v32 = v31;
   v34 = v33;
@@ -110,11 +110,11 @@
   v40 = v39;
   v42 = v41;
   v44 = v43;
-  v45 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
-  [v45 setFrame:{v38, v40, v42, v44}];
+  viewToSnapshot2 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
+  [viewToSnapshot2 setFrame:{v38, v40, v42, v44}];
 
   objc_opt_class();
-  v46 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
+  viewToSnapshot3 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
   v47 = BUDynamicCast();
 
   [v47 contentOffset];
@@ -122,50 +122,50 @@
   v51 = v50;
   y = CGPointZero.y;
   [v47 setContentOffset:{CGPointZero.x, y}];
-  v53 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
-  v54 = [v53 snapshotViewAfterScreenUpdates:{-[BCCardSetCustomNavigationTransition afterScreenUpdates](self, "afterScreenUpdates")}];
+  viewToSnapshot4 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
+  v54 = [viewToSnapshot4 snapshotViewAfterScreenUpdates:{-[BCCardSetCustomNavigationTransition afterScreenUpdates](self, "afterScreenUpdates")}];
 
-  v55 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
-  v56 = [v55 layer];
-  v57 = [v56 flipsHorizontalAxis];
-  v58 = [v54 layer];
-  [v58 setFlipsHorizontalAxis:v57];
+  viewToSnapshot5 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
+  layer = [viewToSnapshot5 layer];
+  flipsHorizontalAxis = [layer flipsHorizontalAxis];
+  layer2 = [v54 layer];
+  [layer2 setFlipsHorizontalAxis:flipsHorizontalAxis];
 
   v143 = v47;
   [v47 setContentOffset:{v49, v51}];
-  v59 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
-  [v59 setFrame:{v30, v32, v34, v36}];
+  viewToSnapshot6 = [(BCCardSetCustomNavigationTransition *)self viewToSnapshot];
+  [viewToSnapshot6 setFrame:{v30, v32, v34, v36}];
 
-  v60 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-  v61 = [v60 currentCardViewController];
+  cardSetViewController = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+  currentCardViewController = [cardSetViewController currentCardViewController];
 
-  v62 = [v61 auxiliaryNavigationBarView];
-  [v62 setHidden:1];
+  auxiliaryNavigationBarView = [currentCardViewController auxiliaryNavigationBarView];
+  [auxiliaryNavigationBarView setHidden:1];
 
   v63 = +[UIColor bc_booksBackground];
   [v54 setBackgroundColor:v63];
 
-  v64 = [v61 auxiliaryNavigationBarViewForAnimation];
-  if (v64)
+  auxiliaryNavigationBarViewForAnimation = [currentCardViewController auxiliaryNavigationBarViewForAnimation];
+  if (auxiliaryNavigationBarViewForAnimation)
   {
-    [v54 addSubview:v64];
-    [v61 anchorAuxiliaryNavigationBarView:v64 toView:v54];
+    [v54 addSubview:auxiliaryNavigationBarViewForAnimation];
+    [currentCardViewController anchorAuxiliaryNavigationBarView:auxiliaryNavigationBarViewForAnimation toView:v54];
     [(BCCardSetCustomNavigationTransition *)self gripperStartingAlpha];
-    [v64 setAlpha:?];
+    [auxiliaryNavigationBarViewForAnimation setAlpha:?];
   }
 
-  v65 = [(BCCardSetCustomNavigationTransition *)self viewToHide];
-  [v65 setAlpha:0.0];
+  viewToHide = [(BCCardSetCustomNavigationTransition *)self viewToHide];
+  [viewToHide setAlpha:0.0];
 
-  v66 = [(BCCardSetCustomNavigationTransition *)self viewToSlide];
+  viewToSlide = [(BCCardSetCustomNavigationTransition *)self viewToSlide];
   v67 = [UIView alloc];
   [(BCCardSetCustomNavigationTransition *)self startingRect];
   v68 = [v67 initWithFrame:?];
   [v68 bounds];
-  [v66 setFrame:?];
+  [viewToSlide setFrame:?];
   v140 = v68;
-  v141 = v66;
-  [v68 addSubview:v66];
+  v141 = viewToSlide;
+  [v68 addSubview:viewToSlide];
   v69 = *&CGAffineTransformIdentity.c;
   v161 = *&CGAffineTransformIdentity.a;
   v162 = v69;
@@ -177,75 +177,75 @@
     [(BCCardSetCustomNavigationTransition *)self snapshotAnchorPoint];
     v73 = v72;
     v75 = v74;
-    v76 = [v54 layer];
-    [v76 setAnchorPoint:{v73, v75}];
+    layer3 = [v54 layer];
+    [layer3 setAnchorPoint:{v73, v75}];
   }
 
   [(BCCardSetCustomNavigationTransition *)self snapshotFrame];
   [v54 setFrame:?];
-  [v61 setRoundedCorners:1];
-  v77 = [v61 cardView];
-  [v54 bc_applyCornerRadiusFromView:v77];
+  [currentCardViewController setRoundedCorners:1];
+  cardView = [currentCardViewController cardView];
+  [v54 bc_applyCornerRadiusFromView:cardView];
 
   [v54 setClipsToBounds:1];
   [(BCCardSetCustomNavigationTransition *)self startingTransform];
-  v78 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
+  snapshotContainerView = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
   v161 = v158;
   v162 = v159;
   v163 = v160;
-  [v78 setTransform:&v161];
+  [snapshotContainerView setTransform:&v161];
 
-  v79 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
-  [v79 addSubview:v54];
+  snapshotContainerView2 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
+  [snapshotContainerView2 addSubview:v54];
 
-  v80 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-  v81 = [v80 focusedIndex];
+  cardSetViewController2 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+  focusedIndex = [cardSetViewController2 focusedIndex];
 
-  v82 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-  v83 = [v82 cardCount];
+  cardSetViewController3 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+  cardCount = [cardSetViewController3 cardCount];
 
-  if (v81)
+  if (focusedIndex)
   {
-    v84 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-    v85 = [v84 cardViewControllerAtIndex:v81 - 1];
-    v86 = [v85 cardView];
+    cardSetViewController4 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+    v85 = [cardSetViewController4 cardViewControllerAtIndex:focusedIndex - 1];
+    cardView2 = [v85 cardView];
   }
 
   else
   {
-    v86 = 0;
+    cardView2 = 0;
   }
 
-  if (v81 >= v83)
+  if (focusedIndex >= cardCount)
   {
-    v89 = 0;
+    cardView3 = 0;
   }
 
   else
   {
-    v87 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-    v88 = [v87 cardViewControllerAtIndex:v81 + 1];
-    v89 = [v88 cardView];
+    cardSetViewController5 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+    v88 = [cardSetViewController5 cardViewControllerAtIndex:focusedIndex + 1];
+    cardView3 = [v88 cardView];
   }
 
   if (v142 == &dword_0 + 1)
   {
-    v90 = v86;
+    v90 = cardView2;
   }
 
   else
   {
-    v90 = v89;
+    v90 = cardView3;
   }
 
   if (v142 == &dword_0 + 1)
   {
-    v91 = v89;
+    v91 = cardView3;
   }
 
   else
   {
-    v91 = v86;
+    v91 = cardView2;
   }
 
   if (v91)
@@ -258,13 +258,13 @@
     v100 = v99;
     [(BCCardSetCustomNavigationTransition *)self snapshotFrame];
     v102 = v101;
-    v103 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-    [v103 _cardSeparation];
+    cardSetViewController6 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+    [cardSetViewController6 _cardSeparation];
     v105 = v94 - (v102 + v104);
 
     [v92 setFrame:{v105, v96, v98, v100}];
-    v106 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
-    [v106 addSubview:v92];
+    snapshotContainerView3 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
+    [snapshotContainerView3 addSubview:v92];
   }
 
   if (v90)
@@ -277,80 +277,80 @@
     v115 = v114;
     [(BCCardSetCustomNavigationTransition *)self snapshotFrame];
     v117 = v116;
-    v118 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-    [v118 _cardSeparation];
+    cardSetViewController7 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+    [cardSetViewController7 _cardSeparation];
     v120 = v109 + v117 + v119;
 
     [v107 setFrame:{v120, v111, v113, v115}];
-    v121 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
-    [v121 addSubview:v107];
+    snapshotContainerView4 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
+    [snapshotContainerView4 addSubview:v107];
   }
 
-  v122 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-  v123 = [v122 navigationSkrimView];
-  [v123 removeFromSuperview];
+  cardSetViewController8 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+  navigationSkrimView = [cardSetViewController8 navigationSkrimView];
+  [navigationSkrimView removeFromSuperview];
 
-  v124 = [v3 containerView];
-  v125 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
-  [v124 addSubview:v125];
+  containerView2 = [transitioningContext containerView];
+  snapshotContainerView5 = [(BCCardSetCustomNavigationTransition *)self snapshotContainerView];
+  [containerView2 addSubview:snapshotContainerView5];
 
-  v126 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-  v127 = [v126 navigationSkrimView];
-  [v124 addSubview:v127];
+  cardSetViewController9 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+  navigationSkrimView2 = [cardSetViewController9 navigationSkrimView];
+  [containerView2 addSubview:navigationSkrimView2];
 
-  [v124 addSubview:v140];
-  v128 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-  v129 = [v128 delegate];
+  [containerView2 addSubview:v140];
+  cardSetViewController10 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+  delegate = [cardSetViewController10 delegate];
   [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
   v130 = v139 = v90;
-  [v129 cardSetViewController:v130 prepareForNavigationTransitionWithContext:v3];
+  [delegate cardSetViewController:v130 prepareForNavigationTransitionWithContext:transitioningContext];
 
   [(BCCardSetCustomNavigationTransition *)self updateAnimator];
   v163 = 0u;
   v162 = 0u;
   v161 = 0u;
   [(BCCardSetCustomNavigationTransition *)self targetTransform];
-  v131 = [(BCCardSetCustomNavigationTransition *)self animator];
+  animator = [(BCCardSetCustomNavigationTransition *)self animator];
   v151[0] = _NSConcreteStackBlock;
   v151[1] = 3221225472;
   v151[2] = sub_99ECC;
   v151[3] = &unk_2CBF98;
   v132 = v140;
   v152 = v132;
-  v153 = self;
+  selfCopy = self;
   v155 = v161;
   v156 = v162;
   v157 = v163;
-  v154 = v64;
-  v133 = v64;
-  [v131 addAnimations:v151];
+  v154 = auxiliaryNavigationBarViewForAnimation;
+  v133 = auxiliaryNavigationBarViewForAnimation;
+  [animator addAnimations:v151];
   v145[0] = _NSConcreteStackBlock;
   v145[1] = 3221225472;
   v145[2] = sub_99F44;
   v145[3] = &unk_2CBFC0;
   v145[4] = self;
-  v146 = v124;
+  v146 = containerView2;
   v147 = v141;
   v148 = v132;
-  v149 = v3;
-  v150 = v61;
-  v134 = v61;
-  v135 = v3;
+  v149 = transitioningContext;
+  v150 = currentCardViewController;
+  v134 = currentCardViewController;
+  v135 = transitioningContext;
   v136 = v132;
   v137 = v141;
-  v138 = v124;
-  [v131 addCompletion:v145];
+  v138 = containerView2;
+  [animator addCompletion:v145];
   [(BCCardSetCustomNavigationTransition *)self setAnimatorInitialized:1];
 }
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(BCCardSetCustomNavigationTransition *)self animator];
+  transitionCopy = transition;
+  animator = [(BCCardSetCustomNavigationTransition *)self animator];
 
-  if (!v5)
+  if (!animator)
   {
-    [(BCCardSetCustomNavigationTransition *)self setTransitioningContext:v4];
+    [(BCCardSetCustomNavigationTransition *)self setTransitioningContext:transitionCopy];
     [(BCCardSetCustomNavigationTransition *)self createAnimator];
   }
 
@@ -359,16 +359,16 @@
     [(BCCardSetCustomNavigationTransition *)self initalizeAnimation];
   }
 
-  v6 = [(BCCardSetCustomNavigationTransition *)self animator];
+  animator2 = [(BCCardSetCustomNavigationTransition *)self animator];
 
-  return v6;
+  return animator2;
 }
 
 - (void)createAnimator
 {
-  v3 = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
-  v4 = [v3 percentDrivenInteractiveTransition];
-  if (v4)
+  cardSetViewController = [(BCCardSetCustomNavigationTransition *)self cardSetViewController];
+  percentDrivenInteractiveTransition = [cardSetViewController percentDrivenInteractiveTransition];
+  if (percentDrivenInteractiveTransition)
   {
     v5 = [[UICubicTimingParameters alloc] initWithAnimationCurve:3];
   }
@@ -384,19 +384,19 @@
   [(BCCardSetCustomNavigationTransition *)self setAnimator:v6];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v4 = a3;
-  v5 = [(BCCardSetCustomNavigationTransition *)self animator];
+  durationCopy = duration;
+  animator = [(BCCardSetCustomNavigationTransition *)self animator];
 
-  if (!v5)
+  if (!animator)
   {
-    [(BCCardSetCustomNavigationTransition *)self setTransitioningContext:v4];
+    [(BCCardSetCustomNavigationTransition *)self setTransitioningContext:durationCopy];
     [(BCCardSetCustomNavigationTransition *)self createAnimator];
   }
 
-  v6 = [(BCCardSetCustomNavigationTransition *)self animator];
-  [v6 duration];
+  animator2 = [(BCCardSetCustomNavigationTransition *)self animator];
+  [animator2 duration];
   v8 = v7;
 
   return v8;
@@ -411,7 +411,7 @@
   objc_exception_throw(v3);
 }
 
-- (void)animationCompleteWithFinished:(BOOL)a3
+- (void)animationCompleteWithFinished:(BOOL)finished
 {
   v3 = [NSString stringWithFormat:@"must override %s", "[BCCardSetCustomNavigationTransition animationCompleteWithFinished:]"];
   v4 = [NSException exceptionWithName:@"abstract base class" reason:v3 userInfo:0];
@@ -519,11 +519,11 @@
   return self;
 }
 
-- (void)setStartingTransform:(CGAffineTransform *)a3
+- (void)setStartingTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_startingTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_startingTransform.c = *&transform->c;
   *&self->_startingTransform.tx = v4;
   *&self->_startingTransform.a = v3;
 }
@@ -537,11 +537,11 @@
   return self;
 }
 
-- (void)setTargetTransform:(CGAffineTransform *)a3
+- (void)setTargetTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_targetTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_targetTransform.c = *&transform->c;
   *&self->_targetTransform.tx = v4;
   *&self->_targetTransform.a = v3;
 }

@@ -2,29 +2,29 @@
 - (MTAWorldClockTableViewController)init;
 - (id)addViewController;
 - (id)noItemsText;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
 - (int64_t)numberOfItems;
-- (void)addCityWithoutUserInteraction:(id)a3;
-- (void)addClockViewController:(id)a3 addCity:(id)a4;
+- (void)addCityWithoutUserInteraction:(id)interaction;
+- (void)addClockViewController:(id)controller addCity:(id)city;
 - (void)dealloc;
-- (void)deleteRowAtIndexPath:(id)a3;
-- (void)finishAddViewControllerDismissal:(BOOL)a3;
-- (void)handleTextSizeChange:(id)a3;
+- (void)deleteRowAtIndexPath:(id)path;
+- (void)finishAddViewControllerDismissal:(BOOL)dismissal;
+- (void)handleTextSizeChange:(id)change;
 - (void)reloadState;
-- (void)removeCityAtIndexPath:(id)a3;
-- (void)removeCityWithoutUserInteraction:(id)a3;
+- (void)removeCityAtIndexPath:(id)path;
+- (void)removeCityWithoutUserInteraction:(id)interaction;
 - (void)saveScrollPoint;
-- (void)scrollToCityAtIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupForTest:(id)a3 options:(id)a4;
+- (void)scrollToCityAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setupForTest:(id)test options:(id)options;
 - (void)showAddView;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTAWorldClockTableViewController
@@ -37,22 +37,22 @@
   if (v2)
   {
     v3 = [UIImage systemImageNamed:@"globe"];
-    v4 = [(MTAWorldClockTableViewController *)v2 tabBarItem];
-    [v4 setImage:v3];
+    tabBarItem = [(MTAWorldClockTableViewController *)v2 tabBarItem];
+    [tabBarItem setImage:v3];
 
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"WORLD_CLOCK" value:&stru_1000AEF10 table:0];
     [(MTAWorldClockTableViewController *)v2 setTitle:v6];
 
-    v7 = [(MTAWorldClockTableViewController *)v2 title];
-    v8 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.worldclock" title:v7];
+    title = [(MTAWorldClockTableViewController *)v2 title];
+    v8 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.worldclock" title:title];
     userActivity = v2->_userActivity;
     v2->_userActivity = v8;
 
     v10 = +[UIScreen mainScreen];
-    v11 = [v10 _defaultTraitCollection];
-    v12 = [v11 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+    _defaultTraitCollection = [v10 _defaultTraitCollection];
+    preferredContentSizeCategory = [_defaultTraitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v2->_shouldStackViewsInCell = IsAccessibilityCategory;
     v14 = +[NSNotificationCenter defaultCenter];
@@ -71,11 +71,11 @@
   v5.receiver = self;
   v5.super_class = MTAWorldClockTableViewController;
   [(MTATableViewController *)&v5 viewDidLoad];
-  v3 = [(MTAWorldClockTableViewController *)self tableView];
-  [v3 setLayoutMarginsFollowReadableWidth:1];
+  tableView = [(MTAWorldClockTableViewController *)self tableView];
+  [tableView setLayoutMarginsFollowReadableWidth:1];
 
-  v4 = [(MTAWorldClockTableViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"MTWorldClockCell"];
+  tableView2 = [(MTAWorldClockTableViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"MTWorldClockCell"];
 }
 
 - (void)dealloc
@@ -87,29 +87,29 @@
   [(MTATableViewController *)&v4 dealloc];
 }
 
-- (void)handleTextSizeChange:(id)a3
+- (void)handleTextSizeChange:(id)change
 {
   v4 = +[UIScreen mainScreen];
-  v5 = [v4 _defaultTraitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  _defaultTraitCollection = [v4 _defaultTraitCollection];
+  preferredContentSizeCategory = [_defaultTraitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   self->_shouldStackViewsInCell = IsAccessibilityCategory;
   [(MTAWorldClockTableViewController *)self itemsTableRowHeight];
   v9 = v8;
-  v10 = [(MTAWorldClockTableViewController *)self tableView];
-  [v10 setRowHeight:v9];
+  tableView = [(MTAWorldClockTableViewController *)self tableView];
+  [tableView setRowHeight:v9];
 
-  v11 = [(MTAWorldClockTableViewController *)self tableView];
-  [v11 reloadData];
+  tableView2 = [(MTAWorldClockTableViewController *)self tableView];
+  [tableView2 reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = +[WorldClockManager sharedManager];
-  v6 = [v5 cities];
-  if (v6)
+  cities = [v5 cities];
+  if (cities)
   {
   }
 
@@ -120,7 +120,7 @@
 
   v21.receiver = self;
   v21.super_class = MTAWorldClockTableViewController;
-  [(MTATableViewController *)&v21 viewWillAppear:v3];
+  [(MTATableViewController *)&v21 viewWillAppear:appearCopy];
   v7 = +[NSUserDefaults standardUserDefaults];
   v8 = [v7 objectForKey:@"WorldClockTableScrollPoint"];
   v9 = v8;
@@ -130,14 +130,14 @@
     if (v10 >= 0.0)
     {
       v11 = v10;
-      v12 = [(MTAWorldClockTableViewController *)self tableView];
-      [v12 contentSize];
+      tableView = [(MTAWorldClockTableViewController *)self tableView];
+      [tableView contentSize];
       v14 = v13;
 
       if (v14 > v11)
       {
-        v15 = [(MTAWorldClockTableViewController *)self tableView];
-        [v15 setContentOffset:{0.0, v11}];
+        tableView2 = [(MTAWorldClockTableViewController *)self tableView];
+        [tableView2 setContentOffset:{0.0, v11}];
       }
     }
 
@@ -146,71 +146,71 @@
     [v16 postNotificationName:@"com.apple.mobiletimer.user-preferences-dirty" object:0];
   }
 
-  v17 = [(MTAWorldClockTableViewController *)self deferAddedCity];
+  deferAddedCity = [(MTAWorldClockTableViewController *)self deferAddedCity];
 
-  if (v17)
+  if (deferAddedCity)
   {
-    v18 = [(MTAWorldClockTableViewController *)self deferAddedCity];
-    [(MTAWorldClockTableViewController *)self addCityWithoutUserInteraction:v18];
+    deferAddedCity2 = [(MTAWorldClockTableViewController *)self deferAddedCity];
+    [(MTAWorldClockTableViewController *)self addCityWithoutUserInteraction:deferAddedCity2];
 
     [(MTAWorldClockTableViewController *)self setDeferAddedCity:0];
   }
 
-  v19 = [(MTAWorldClockTableViewController *)self deferRemovedCity];
+  deferRemovedCity = [(MTAWorldClockTableViewController *)self deferRemovedCity];
 
-  if (v19)
+  if (deferRemovedCity)
   {
-    v20 = [(MTAWorldClockTableViewController *)self deferRemovedCity];
-    [(MTAWorldClockTableViewController *)self removeCityWithoutUserInteraction:v20];
+    deferRemovedCity2 = [(MTAWorldClockTableViewController *)self deferRemovedCity];
+    [(MTAWorldClockTableViewController *)self removeCityWithoutUserInteraction:deferRemovedCity2];
 
     [(MTAWorldClockTableViewController *)self setDeferRemovedCity:0];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v6 = [(MTAWorldClockTableViewController *)self traitCollection];
-  v7 = [v6 horizontalSizeClass];
-  v8 = [v5 horizontalSizeClass];
+  collectionCopy = collection;
+  traitCollection = [(MTAWorldClockTableViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  horizontalSizeClass2 = [collectionCopy horizontalSizeClass];
 
-  if (v7 != v8)
+  if (horizontalSizeClass != horizontalSizeClass2)
   {
 
     [(MTATableViewController *)self dismissAddViewController:0];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = MTAWorldClockTableViewController;
-  [(MTATableViewController *)&v10 viewDidAppear:a3];
+  [(MTATableViewController *)&v10 viewDidAppear:appear];
   v4 = +[WorldClockManager sharedManager];
-  v5 = [(NSUserActivity *)self->_userActivity keywords];
-  v6 = v5;
-  if (!v5)
+  keywords = [(NSUserActivity *)self->_userActivity keywords];
+  v6 = keywords;
+  if (!keywords)
   {
     v6 = +[NSSet set];
   }
 
-  v7 = [v4 cities];
-  v8 = [v7 na_map:&stru_1000AE2B0];
+  cities = [v4 cities];
+  v8 = [cities na_map:&stru_1000AE2B0];
   v9 = [v6 setByAddingObjectsFromArray:v8];
   [(NSUserActivity *)self->_userActivity setKeywords:v9];
 
-  if (!v5)
+  if (!keywords)
   {
   }
 
   [(NSUserActivity *)self->_userActivity becomeCurrent];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = MTAWorldClockTableViewController;
-  [(MTAWorldClockTableViewController *)&v5 viewWillDisappear:a3];
+  [(MTAWorldClockTableViewController *)&v5 viewWillDisappear:disappear];
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -230,9 +230,9 @@
   [(MTATableViewController *)&v4 reloadState];
 }
 
-- (void)setupForTest:(id)a3 options:(id)a4
+- (void)setupForTest:(id)test options:(id)options
 {
-  v5 = [ALCityManager sharedManager:a3];
+  v5 = [ALCityManager sharedManager:test];
   v6 = objc_opt_new();
   v7 = 1;
   do
@@ -242,8 +242,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v5 defaultCitiesShownInWorldClock];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    defaultCitiesShownInWorldClock = [v5 defaultCitiesShownInWorldClock];
+    v10 = [defaultCitiesShownInWorldClock countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -254,14 +254,14 @@
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(defaultCitiesShownInWorldClock);
           }
 
           v14 = [[WorldClockCity alloc] initWithALCity:*(*(&v17 + 1) + 8 * i)];
           [v6 addObject:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [defaultCitiesShownInWorldClock countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
@@ -291,16 +291,16 @@
   pptTestCities = self->_pptTestCities;
   if (pptTestCities)
   {
-    v3 = pptTestCities;
+    cities = pptTestCities;
   }
 
   else
   {
     v4 = +[WorldClockManager sharedManager];
-    v3 = [v4 cities];
+    cities = [v4 cities];
   }
 
-  v5 = [(NSArray *)v3 count];
+  v5 = [(NSArray *)cities count];
 
   return v5;
 }
@@ -309,8 +309,8 @@
 {
   if ([(MTAWorldClockTableViewController *)self isViewLoaded])
   {
-    v3 = [(MTAWorldClockTableViewController *)self tableView];
-    [v3 contentOffset];
+    tableView = [(MTAWorldClockTableViewController *)self tableView];
+    [tableView contentOffset];
     *&v5 = v4;
     v7 = [NSNumber numberWithFloat:v5];
 
@@ -322,9 +322,9 @@
 - (void)showAddView
 {
   v3 = +[WorldClockManager sharedManager];
-  v4 = [v3 canAddCity];
+  canAddCity = [v3 canAddCity];
 
-  if (v4)
+  if (canAddCity)
   {
     v13.receiver = self;
     v13.super_class = MTAWorldClockTableViewController;
@@ -358,19 +358,19 @@
   return v4;
 }
 
-- (void)addCityWithoutUserInteraction:(id)a3
+- (void)addCityWithoutUserInteraction:(id)interaction
 {
-  [(MTAWorldClockTableViewController *)self addClockViewController:0 addCity:a3];
+  [(MTAWorldClockTableViewController *)self addClockViewController:0 addCity:interaction];
 
   [(MTAWorldClockTableViewController *)self finishAddViewControllerDismissal:0];
 }
 
-- (void)removeCityWithoutUserInteraction:(id)a3
+- (void)removeCityWithoutUserInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   v5 = +[WorldClockManager sharedManager];
-  v6 = [v5 cities];
-  v7 = [v6 indexOfObject:v4];
+  cities = [v5 cities];
+  v7 = [cities indexOfObject:interactionCopy];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -379,27 +379,27 @@
   }
 }
 
-- (void)addClockViewController:(id)a3 addCity:(id)a4
+- (void)addClockViewController:(id)controller addCity:(id)city
 {
-  v5 = a4;
+  cityCopy = city;
   v6 = +[WorldClockManager sharedManager];
-  v7 = [v6 cities];
-  v8 = [v7 count];
+  cities = [v6 cities];
+  v8 = [cities count];
 
-  v9 = [v6 addCity:v5];
+  v9 = [v6 addCity:cityCopy];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = [NSIndexPath indexPathForRow:v9 inSection:0];
-    v11 = [v6 cities];
-    v12 = [v11 count];
+    cities2 = [v6 cities];
+    v12 = [cities2 count];
 
     if (v8 != v12)
     {
       [v6 saveCities];
-      v13 = [(MTAWorldClockTableViewController *)self tableView];
+      tableView = [(MTAWorldClockTableViewController *)self tableView];
       v15 = v10;
       v14 = [NSArray arrayWithObjects:&v15 count:1];
-      [v13 insertRowsAtIndexPaths:v14 withRowAnimation:5];
+      [tableView insertRowsAtIndexPaths:v14 withRowAnimation:5];
 
       [MTAnalytics incrementEventCount:kMTCAWorldClockAdds];
     }
@@ -408,14 +408,14 @@
   }
 }
 
-- (void)scrollToCityAtIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)scrollToCityAtIndex:(int64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   pptTestCities = self->_pptTestCities;
   if (pptTestCities)
   {
-    v12 = pptTestCities;
-    if (a3 < 0)
+    cities = pptTestCities;
+    if (index < 0)
     {
       goto LABEL_10;
     }
@@ -424,45 +424,45 @@
   else
   {
     v8 = +[WorldClockManager sharedManager];
-    v12 = [v8 cities];
+    cities = [v8 cities];
 
-    if (a3 < 0)
+    if (index < 0)
     {
       goto LABEL_10;
     }
   }
 
-  if ([(NSArray *)v12 count]> a3 && v12 != 0)
+  if ([(NSArray *)cities count]> index && cities != 0)
   {
-    v10 = [NSIndexPath indexPathForRow:a3 inSection:0];
-    v11 = [(MTAWorldClockTableViewController *)self tableView];
-    [v11 scrollToRowAtIndexPath:v10 atScrollPosition:3 animated:v4];
+    v10 = [NSIndexPath indexPathForRow:index inSection:0];
+    tableView = [(MTAWorldClockTableViewController *)self tableView];
+    [tableView scrollToRowAtIndexPath:v10 atScrollPosition:3 animated:animatedCopy];
   }
 
 LABEL_10:
 }
 
-- (void)finishAddViewControllerDismissal:(BOOL)a3
+- (void)finishAddViewControllerDismissal:(BOOL)dismissal
 {
   v5.receiver = self;
   v5.super_class = MTAWorldClockTableViewController;
-  [(MTATableViewController *)&v5 finishAddViewControllerDismissal:a3];
+  [(MTATableViewController *)&v5 finishAddViewControllerDismissal:dismissal];
   v3 = +[MTAStateStore shared];
   v4 = [MTAStateStoreEvent eventWithType:4];
   [v3 pushEvent:v4];
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10002F4DC;
   v14[3] = &unk_1000ADA20;
   objc_copyWeak(&v16, &location);
-  v8 = v7;
+  v8 = pathCopy;
   v15 = v8;
   v9 = [UIContextualAction contextualActionWithStyle:1 title:0 handler:v14];
   v10 = [UIImage systemImageNamed:@"trash"];
@@ -478,41 +478,41 @@ LABEL_10:
   return v12;
 }
 
-- (void)deleteRowAtIndexPath:(id)a3
+- (void)deleteRowAtIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     [(MTAWorldClockTableViewController *)self removeCityAtIndexPath:?];
   }
 }
 
-- (void)removeCityAtIndexPath:(id)a3
+- (void)removeCityAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = +[WorldClockManager sharedManager];
-  [v5 removeCityAtIndex:{objc_msgSend(v4, "row")}];
-  v6 = [(MTAWorldClockTableViewController *)self tableView];
-  v8 = v4;
+  [v5 removeCityAtIndex:{objc_msgSend(pathCopy, "row")}];
+  tableView = [(MTAWorldClockTableViewController *)self tableView];
+  v8 = pathCopy;
   v7 = [NSArray arrayWithObjects:&v8 count:1];
-  [v6 deleteRowsAtIndexPaths:v7 withRowAnimation:100];
+  [tableView deleteRowsAtIndexPaths:v7 withRowAnimation:100];
 
   [(MTATableViewController *)self _reloadUI:0];
   [v5 saveCities];
   [MTAnalytics incrementEventCount:kMTCAWorldClockRemoves];
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   if (!self->_pptTestCities)
   {
-    v7 = a5;
-    v8 = a4;
+    indexPathCopy = indexPath;
+    pathCopy = path;
     v14 = +[WorldClockManager sharedManager];
-    v9 = [v14 cities];
-    v10 = [v9 count];
+    cities = [v14 cities];
+    v10 = [cities count];
 
-    v11 = [v8 row];
-    v12 = [v7 row];
+    v11 = [pathCopy row];
+    v12 = [indexPathCopy row];
 
     if (v11 != v12 && v11 < v10 && v12 < v10)
     {
@@ -522,42 +522,42 @@ LABEL_10:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   pptTestCities = self->_pptTestCities;
   if (pptTestCities)
   {
-    v9 = pptTestCities;
+    cities = pptTestCities;
   }
 
   else
   {
     v10 = +[WorldClockManager sharedManager];
-    v9 = [v10 cities];
+    cities = [v10 cities];
   }
 
-  v11 = [v6 dequeueReusableCellWithIdentifier:@"MTWorldClockCell" forIndexPath:v7];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:@"MTWorldClockCell" forIndexPath:pathCopy];
   [v11 updateShouldStackViewInCell:self->_shouldStackViewsInCell];
-  v12 = -[NSArray objectAtIndex:](v9, "objectAtIndex:", [v7 row]);
+  v12 = -[NSArray objectAtIndex:](cities, "objectAtIndex:", [pathCopy row]);
   [v11 setCity:v12];
 
-  v13 = [v11 city];
-  v14 = [v13 name];
-  [v11 setAccessibilityIdentifier:v14];
+  city = [v11 city];
+  name = [city name];
+  [v11 setAccessibilityIdentifier:name];
 
   return v11;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a3;
+  editingCopy = editing;
   v8.receiver = self;
   v8.super_class = MTAWorldClockTableViewController;
-  [(MTAWorldClockTableViewController *)&v8 setEditing:a3 animated:a4];
+  [(MTAWorldClockTableViewController *)&v8 setEditing:editing animated:animated];
   v5 = +[MTAStateStore shared];
-  if (v4)
+  if (editingCopy)
   {
     v6 = 5;
   }

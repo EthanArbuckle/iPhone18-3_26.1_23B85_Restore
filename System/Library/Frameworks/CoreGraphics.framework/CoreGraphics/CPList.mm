@@ -1,8 +1,8 @@
 @interface CPList
-- (BOOL)containsParagraph:(id)a3;
+- (BOOL)containsParagraph:(id)paragraph;
 - (CGRect)spacer;
 - (CPList)init;
-- (void)addItem:(id)a3;
+- (void)addItem:(id)item;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
@@ -23,43 +23,43 @@
   return result;
 }
 
-- (BOOL)containsParagraph:(id)a3
+- (BOOL)containsParagraph:(id)paragraph
 {
-  v4 = [a3 listItem];
-  if (v4)
+  listItem = [paragraph listItem];
+  if (listItem)
   {
-    v5 = v4;
+    v5 = listItem;
     do
     {
-      v6 = [v5 list];
-      LOBYTE(v4) = v6 == self;
-      if (v6 == self)
+      list = [v5 list];
+      LOBYTE(listItem) = list == self;
+      if (list == self)
       {
         break;
       }
 
-      v7 = [(CPList *)v6 parentItem];
-      LOBYTE(v4) = 0;
-      if (!v7)
+      parentItem = [(CPList *)list parentItem];
+      LOBYTE(listItem) = 0;
+      if (!parentItem)
       {
         break;
       }
 
-      v8 = v7 == v5;
-      v5 = v7;
+      v8 = parentItem == v5;
+      v5 = parentItem;
     }
 
     while (!v8);
   }
 
-  return v4;
+  return listItem;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  CFArrayAppendValue(self->items, a3);
+  CFArrayAppendValue(self->items, item);
 
-  [a3 setList:self];
+  [item setList:self];
 }
 
 - (void)dealloc

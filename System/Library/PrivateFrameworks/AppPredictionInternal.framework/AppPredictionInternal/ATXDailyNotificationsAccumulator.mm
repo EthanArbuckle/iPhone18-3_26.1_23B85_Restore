@@ -11,15 +11,15 @@
   v3 = objc_opt_new();
   v4 = objc_alloc(MEMORY[0x277CBEB58]);
   v5 = +[_ATXAppIconState sharedInstance];
-  v6 = [v5 allInstalledAppsKnownToSpringBoard];
-  v7 = [v4 initWithArray:v6];
+  allInstalledAppsKnownToSpringBoard = [v5 allInstalledAppsKnownToSpringBoard];
+  v7 = [v4 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v9 = BiomeLibrary();
-  v10 = [v9 Notification];
-  v11 = [v10 Usage];
+  notification = [v9 Notification];
+  usage = [notification Usage];
 
-  v12 = [v11 atx_publisherWithStartDate:v8 endDate:0 maxEvents:0 lastN:0 reversed:0];
+  v12 = [usage atx_publisherWithStartDate:v8 endDate:0 maxEvents:0 lastN:0 reversed:0];
   v24 = 0;
   v25[0] = &v24;
   v25[1] = 0x3032000000;
@@ -136,7 +136,7 @@ LABEL_7:
 - (void)successfullyAccumulatedNotificationEvents
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 136315394;
   v5 = "[ATXDailyNotificationsAccumulator successfullyAccumulatedNotificationEvents]";
   v6 = 2112;

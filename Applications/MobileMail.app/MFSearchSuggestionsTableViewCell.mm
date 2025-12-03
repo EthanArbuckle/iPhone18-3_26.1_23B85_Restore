@@ -1,25 +1,25 @@
 @interface MFSearchSuggestionsTableViewCell
-+ (id)_defaultLabelAttributesWithFont:(id)a3;
-- (MFSearchSuggestionsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (id)_defaultLabelAttributesWithFont:(id)font;
+- (MFSearchSuggestionsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)_glyphCenterXConstant;
 - (double)_interLabelBaselineConstant;
 - (double)_titleLeadingConstant;
 - (id)_subtitleFont;
 - (id)_titleFont;
-- (void)_preferredContentSizeCategoryDidChange:(id)a3;
-- (void)setSuggestion:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)_preferredContentSizeCategoryDidChange:(id)change;
+- (void)setSuggestion:(id)suggestion;
+- (void)updateConfigurationUsingState:(id)state;
 - (void)updateConstraints;
 @end
 
 @implementation MFSearchSuggestionsTableViewCell
 
-+ (id)_defaultLabelAttributesWithFont:(id)a3
++ (id)_defaultLabelAttributesWithFont:(id)font
 {
-  v3 = a3;
+  fontCopy = font;
   v4 = objc_alloc_init(NSMutableParagraphStyle);
-  v5 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -36,18 +36,18 @@
   v10[0] = NSParagraphStyleAttributeName;
   v10[1] = NSFontAttributeName;
   v11[0] = v4;
-  v11[1] = v3;
+  v11[1] = fontCopy;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   return v8;
 }
 
-- (MFSearchSuggestionsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MFSearchSuggestionsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v77.receiver = self;
   v77.super_class = MFSearchSuggestionsTableViewCell;
-  v74 = a4;
-  v5 = [(MFSearchSuggestionsTableViewCell *)&v77 initWithStyle:a3 reuseIdentifier:?];
+  identifierCopy = identifier;
+  v5 = [(MFSearchSuggestionsTableViewCell *)&v77 initWithStyle:style reuseIdentifier:?];
   if (v5)
   {
     v6 = [UIImageView alloc];
@@ -66,17 +66,17 @@
     subtitle = v5->_subtitle;
     v5->_subtitle = v14;
 
-    v16 = [(MFSearchSuggestionsTableViewCell *)v5 _titleFont];
-    [(UILabel *)v5->_title setFont:v16];
+    _titleFont = [(MFSearchSuggestionsTableViewCell *)v5 _titleFont];
+    [(UILabel *)v5->_title setFont:_titleFont];
 
     [(UILabel *)v5->_title setTextAlignment:4];
-    v17 = [(MFSearchSuggestionsTableViewCell *)v5 _subtitleFont];
-    [(UILabel *)v5->_subtitle setFont:v17];
+    _subtitleFont = [(MFSearchSuggestionsTableViewCell *)v5 _subtitleFont];
+    [(UILabel *)v5->_subtitle setFont:_subtitleFont];
 
     [(UILabel *)v5->_subtitle setLineBreakMode:5];
     [(UILabel *)v5->_subtitle setTextAlignment:4];
-    v18 = [UIApp preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v18);
+    preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     v20 = v5->_title;
     if (IsAccessibilityCategory)
@@ -110,82 +110,82 @@
     v26 = +[UIColor labelColor];
     [(UIImageView *)v5->_glyph setTintColor:v26];
 
-    v76 = [(MFSearchSuggestionsTableViewCell *)v5 contentView];
-    [v76 addSubview:v5->_glyph];
-    [v76 addSubview:v5->_title];
-    [v76 addSubview:v5->_subtitle];
-    v75 = [v76 layoutMarginsGuide];
-    v27 = [(UIImageView *)v5->_glyph centerXAnchor];
-    v28 = [v75 leadingAnchor];
+    contentView = [(MFSearchSuggestionsTableViewCell *)v5 contentView];
+    [contentView addSubview:v5->_glyph];
+    [contentView addSubview:v5->_title];
+    [contentView addSubview:v5->_subtitle];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    centerXAnchor = [(UIImageView *)v5->_glyph centerXAnchor];
+    leadingAnchor = [layoutMarginsGuide leadingAnchor];
     [(MFSearchSuggestionsTableViewCell *)v5 _glyphCenterXConstant];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:?];
+    v29 = [centerXAnchor constraintEqualToAnchor:leadingAnchor constant:?];
     [(MFSearchSuggestionsTableViewCell *)v5 setGlyphCenterXConstraint:v29];
 
-    v30 = [(UILabel *)v5->_title leadingAnchor];
-    v31 = [v75 leadingAnchor];
+    leadingAnchor2 = [(UILabel *)v5->_title leadingAnchor];
+    leadingAnchor3 = [layoutMarginsGuide leadingAnchor];
     [(MFSearchSuggestionsTableViewCell *)v5 _titleLeadingConstant];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:?];
+    v32 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:?];
     [(MFSearchSuggestionsTableViewCell *)v5 setTitleLeadingConstraint:v32];
 
-    v70 = [(MFSearchSuggestionsTableViewCell *)v5 glyphCenterXConstraint];
-    v80[0] = v70;
-    v69 = [(MFSearchSuggestionsTableViewCell *)v5 titleLeadingConstraint];
-    v80[1] = v69;
-    v72 = [(UILabel *)v5->_title trailingAnchor];
-    v68 = [v75 trailingAnchor];
-    v67 = [v72 constraintEqualToAnchor:?];
+    glyphCenterXConstraint = [(MFSearchSuggestionsTableViewCell *)v5 glyphCenterXConstraint];
+    v80[0] = glyphCenterXConstraint;
+    titleLeadingConstraint = [(MFSearchSuggestionsTableViewCell *)v5 titleLeadingConstraint];
+    v80[1] = titleLeadingConstraint;
+    trailingAnchor = [(UILabel *)v5->_title trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v67 = [trailingAnchor constraintEqualToAnchor:?];
     v80[2] = v67;
-    v33 = [(UILabel *)v5->_subtitle leadingAnchor];
-    v34 = [(UILabel *)v5->_title leadingAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    leadingAnchor4 = [(UILabel *)v5->_subtitle leadingAnchor];
+    leadingAnchor5 = [(UILabel *)v5->_title leadingAnchor];
+    v35 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v80[3] = v35;
-    v36 = [(UILabel *)v5->_subtitle trailingAnchor];
-    v37 = [(UILabel *)v5->_title trailingAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    trailingAnchor3 = [(UILabel *)v5->_subtitle trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v5->_title trailingAnchor];
+    v38 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v80[4] = v38;
     v39 = [NSArray arrayWithObjects:v80 count:5];
     [(MFSearchSuggestionsTableViewCell *)v5 setDefaultConstraints:v39];
 
-    v40 = [(UIImageView *)v5->_glyph centerYAnchor];
-    v41 = [(UILabel *)v5->_title firstBaselineAnchor];
-    v42 = [(UILabel *)v5->_title font];
-    [v42 capHeight];
-    v44 = [v40 constraintEqualToAnchor:v41 constant:v43 * -0.5];
+    centerYAnchor = [(UIImageView *)v5->_glyph centerYAnchor];
+    firstBaselineAnchor = [(UILabel *)v5->_title firstBaselineAnchor];
+    font = [(UILabel *)v5->_title font];
+    [font capHeight];
+    v44 = [centerYAnchor constraintEqualToAnchor:firstBaselineAnchor constant:v43 * -0.5];
     [(MFSearchSuggestionsTableViewCell *)v5 setGlyphVerticalConstraint:v44];
 
-    v45 = [(MFSearchSuggestionsTableViewCell *)v5 glyphVerticalConstraint];
-    [v45 setActive:1];
+    glyphVerticalConstraint = [(MFSearchSuggestionsTableViewCell *)v5 glyphVerticalConstraint];
+    [glyphVerticalConstraint setActive:1];
 
-    v73 = [(UILabel *)v5->_title topAnchor];
-    v71 = [v76 topAnchor];
-    v46 = [v73 constraintEqualToAnchor:10.0 constant:?];
+    topAnchor = [(UILabel *)v5->_title topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:10.0 constant:?];
     v79[0] = v46;
-    v47 = [v76 bottomAnchor];
-    v48 = [(UILabel *)v5->_title bottomAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48 constant:10.0];
+    bottomAnchor = [contentView bottomAnchor];
+    bottomAnchor2 = [(UILabel *)v5->_title bottomAnchor];
+    v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:10.0];
     v79[1] = v49;
-    v50 = [(UILabel *)v5->_subtitle centerYAnchor];
-    v51 = [(UILabel *)v5->_title centerYAnchor];
-    v52 = [v50 constraintEqualToAnchor:v51];
+    centerYAnchor2 = [(UILabel *)v5->_subtitle centerYAnchor];
+    centerYAnchor3 = [(UILabel *)v5->_title centerYAnchor];
+    v52 = [centerYAnchor2 constraintEqualToAnchor:centerYAnchor3];
     v79[2] = v52;
     v53 = [NSArray arrayWithObjects:v79 count:3];
     [(MFSearchSuggestionsTableViewCell *)v5 setTitleOnlyConstraints:v53];
 
-    v54 = [(UILabel *)v5->_subtitle firstBaselineAnchor];
-    v55 = [(UILabel *)v5->_title lastBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)v5->_subtitle firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v5->_title lastBaselineAnchor];
     [(MFSearchSuggestionsTableViewCell *)v5 _interLabelBaselineConstant];
-    v56 = [v54 constraintEqualToAnchor:v55 constant:?];
+    v56 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
     [(MFSearchSuggestionsTableViewCell *)v5 setInterLabelBaselineConstraint:v56];
 
-    v57 = [(UILabel *)v5->_title topAnchor];
-    v58 = [v76 topAnchor];
-    v59 = [v57 constraintEqualToAnchor:v58 constant:10.0];
+    topAnchor3 = [(UILabel *)v5->_title topAnchor];
+    topAnchor4 = [contentView topAnchor];
+    v59 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:10.0];
     v78[0] = v59;
-    v60 = [(MFSearchSuggestionsTableViewCell *)v5 interLabelBaselineConstraint];
-    v78[1] = v60;
-    v61 = [v76 bottomAnchor];
-    v62 = [(UILabel *)v5->_subtitle bottomAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62 constant:10.0];
+    interLabelBaselineConstraint = [(MFSearchSuggestionsTableViewCell *)v5 interLabelBaselineConstraint];
+    v78[1] = interLabelBaselineConstraint;
+    bottomAnchor3 = [contentView bottomAnchor];
+    bottomAnchor4 = [(UILabel *)v5->_subtitle bottomAnchor];
+    v63 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:10.0];
     v78[2] = v63;
     v64 = [NSArray arrayWithObjects:v78 count:3];
     [(MFSearchSuggestionsTableViewCell *)v5 setSubtitleConstraints:v64];
@@ -197,9 +197,9 @@
   return v5;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  if ([a3 isFocused])
+  if ([state isFocused])
   {
     v5 = +[UIColor systemWhiteColor];
     [(UILabel *)self->_title setTextColor:?];
@@ -271,8 +271,8 @@
   v13.receiver = self;
   v13.super_class = MFSearchSuggestionsTableViewCell;
   [(MFSearchSuggestionsTableViewCell *)&v13 updateConstraints];
-  v3 = [(UILabel *)self->_subtitle text];
-  v4 = [v3 length] == 0;
+  text = [(UILabel *)self->_subtitle text];
+  v4 = [text length] == 0;
 
   if (v4)
   {
@@ -294,26 +294,26 @@
 
   v9 = v6;
   v10 = *(&self->super.super.super.super.isa + *v7);
-  v11 = [v10 ef_flatten];
-  [NSLayoutConstraint deactivateConstraints:v11];
+  ef_flatten = [v10 ef_flatten];
+  [NSLayoutConstraint deactivateConstraints:ef_flatten];
 
-  v12 = [v9 ef_flatten];
-  [NSLayoutConstraint activateConstraints:v12];
+  ef_flatten2 = [v9 ef_flatten];
+  [NSLayoutConstraint activateConstraints:ef_flatten2];
 }
 
-- (void)_preferredContentSizeCategoryDidChange:(id)a3
+- (void)_preferredContentSizeCategoryDidChange:(id)change
 {
   v16 = +[MFFontMetricCache sharedFontMetricCache];
   [v16 ensureCacheIsValid];
 
-  v17 = [(MFSearchSuggestionsTableViewCell *)self _titleFont];
+  _titleFont = [(MFSearchSuggestionsTableViewCell *)self _titleFont];
   [(UILabel *)self->_title setFont:?];
 
-  v18 = [(MFSearchSuggestionsTableViewCell *)self _subtitleFont];
+  _subtitleFont = [(MFSearchSuggestionsTableViewCell *)self _subtitleFont];
   [(UILabel *)self->_subtitle setFont:?];
 
-  v19 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v19);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v5 = !IsAccessibilityCategory;
   if (IsAccessibilityCategory)
@@ -330,71 +330,71 @@
   [(UILabel *)self->_title setLineBreakMode:v6];
   [(UILabel *)self->_subtitle setLineBreakMode:v6];
   [(UILabel *)self->_subtitle setNumberOfLines:v5];
-  v20 = [(UILabel *)self->_title font];
-  [v20 capHeight];
+  font = [(UILabel *)self->_title font];
+  [font capHeight];
   v8 = v7;
-  v9 = [(MFSearchSuggestionsTableViewCell *)self glyphVerticalConstraint];
-  [v9 setConstant:v8 * -0.5];
+  glyphVerticalConstraint = [(MFSearchSuggestionsTableViewCell *)self glyphVerticalConstraint];
+  [glyphVerticalConstraint setConstant:v8 * -0.5];
 
   [(MFSearchSuggestionsTableViewCell *)self _glyphCenterXConstant];
   v11 = v10;
-  v21 = [(MFSearchSuggestionsTableViewCell *)self glyphCenterXConstraint];
-  [v21 setConstant:v11];
+  glyphCenterXConstraint = [(MFSearchSuggestionsTableViewCell *)self glyphCenterXConstraint];
+  [glyphCenterXConstraint setConstant:v11];
 
   [(MFSearchSuggestionsTableViewCell *)self _titleLeadingConstant];
   v13 = v12;
-  v22 = [(MFSearchSuggestionsTableViewCell *)self titleLeadingConstraint];
-  [v22 setConstant:v13];
+  titleLeadingConstraint = [(MFSearchSuggestionsTableViewCell *)self titleLeadingConstraint];
+  [titleLeadingConstraint setConstant:v13];
 
   [(MFSearchSuggestionsTableViewCell *)self _interLabelBaselineConstant];
   v15 = v14;
-  v23 = [(MFSearchSuggestionsTableViewCell *)self interLabelBaselineConstraint];
-  [v23 setConstant:v15];
+  interLabelBaselineConstraint = [(MFSearchSuggestionsTableViewCell *)self interLabelBaselineConstraint];
+  [interLabelBaselineConstraint setConstant:v15];
 }
 
-- (void)setSuggestion:(id)a3
+- (void)setSuggestion:(id)suggestion
 {
-  v6 = a3;
-  if (self->_suggestion != v6)
+  suggestionCopy = suggestion;
+  if (self->_suggestion != suggestionCopy)
   {
-    v19 = v6;
-    objc_storeStrong(&self->_suggestion, a3);
-    v7 = [(MUISearchAtomSuggestion *)v19 image];
-    [(UIImageView *)self->_glyph setImage:v7];
+    v19 = suggestionCopy;
+    objc_storeStrong(&self->_suggestion, suggestion);
+    image = [(MUISearchAtomSuggestion *)v19 image];
+    [(UIImageView *)self->_glyph setImage:image];
 
-    v8 = [(MUISearchAtomSuggestion *)v19 tintColor];
-    [(UIImageView *)self->_glyph setTintColor:v8];
+    tintColor = [(MUISearchAtomSuggestion *)v19 tintColor];
+    [(UIImageView *)self->_glyph setTintColor:tintColor];
 
-    v9 = [(MFSearchSuggestionsTableViewCell *)self _titleFont];
-    v10 = [MFSearchSuggestionsTableViewCell _defaultLabelAttributesWithFont:v9];
+    _titleFont = [(MFSearchSuggestionsTableViewCell *)self _titleFont];
+    v10 = [MFSearchSuggestionsTableViewCell _defaultLabelAttributesWithFont:_titleFont];
 
-    v11 = [(MUISearchAtomSuggestion *)v19 title];
-    if (v11)
+    title = [(MUISearchAtomSuggestion *)v19 title];
+    if (title)
     {
       v12 = [NSAttributedString alloc];
-      v3 = [(MUISearchAtomSuggestion *)v19 title];
-      v13 = [v12 initWithString:v3 attributes:v10];
+      title2 = [(MUISearchAtomSuggestion *)v19 title];
+      subtitle2 = [v12 initWithString:title2 attributes:v10];
     }
 
     else
     {
-      v13 = 0;
+      subtitle2 = 0;
     }
 
-    [(UILabel *)self->_title setAttributedText:v13];
-    if (v11)
+    [(UILabel *)self->_title setAttributedText:subtitle2];
+    if (title)
     {
     }
 
-    v14 = [(MFSearchSuggestionsTableViewCell *)self _subtitleFont];
-    v15 = [MFSearchSuggestionsTableViewCell _defaultLabelAttributesWithFont:v14];
+    _subtitleFont = [(MFSearchSuggestionsTableViewCell *)self _subtitleFont];
+    v15 = [MFSearchSuggestionsTableViewCell _defaultLabelAttributesWithFont:_subtitleFont];
 
-    v16 = [(MUISearchAtomSuggestion *)v19 subtitle];
-    if (v16)
+    subtitle = [(MUISearchAtomSuggestion *)v19 subtitle];
+    if (subtitle)
     {
       v17 = [NSAttributedString alloc];
-      v13 = [(MUISearchAtomSuggestion *)v19 subtitle];
-      v18 = [v17 initWithString:v13 attributes:v15];
+      subtitle2 = [(MUISearchAtomSuggestion *)v19 subtitle];
+      v18 = [v17 initWithString:subtitle2 attributes:v15];
     }
 
     else
@@ -403,12 +403,12 @@
     }
 
     [(UILabel *)self->_subtitle setAttributedText:v18];
-    if (v16)
+    if (subtitle)
     {
     }
 
     [(MFSearchSuggestionsTableViewCell *)self setNeedsUpdateConstraints];
-    v6 = v19;
+    suggestionCopy = v19;
   }
 }
 

@@ -1,14 +1,14 @@
 @interface DBSmartWidgetLiveActivitySource
 + (id)predictionClasses;
 + (void)load;
-- (DBSmartWidgetLiveActivitySource)initWithDelegate:(id)a3 resourceProvider:(id)a4;
+- (DBSmartWidgetLiveActivitySource)initWithDelegate:(id)delegate resourceProvider:(id)provider;
 - (id)freshPredictions;
-- (id)liveActivityBundleIdentifierWithDescriptor:(id)a3;
-- (id)liveActivityIdentifierWithDescriptor:(id)a3;
-- (id)liveActivityNameWithDescriptor:(id)a3;
+- (id)liveActivityBundleIdentifierWithDescriptor:(id)descriptor;
+- (id)liveActivityIdentifierWithDescriptor:(id)descriptor;
+- (id)liveActivityNameWithDescriptor:(id)descriptor;
 - (void)dealloc;
-- (void)didUpdateAlertingLiveActivityWithActivityDescriptor:(id)a3;
-- (void)didUpdateLiveActivitiesWithActivityDescriptors:(id)a3;
+- (void)didUpdateAlertingLiveActivityWithActivityDescriptor:(id)descriptor;
+- (void)didUpdateLiveActivitiesWithActivityDescriptors:(id)descriptors;
 - (void)disabledLiveActivities;
 @end
 
@@ -31,7 +31,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___DBSmartWidgetLiveActivitySource;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -45,21 +45,21 @@
   return v2;
 }
 
-- (DBSmartWidgetLiveActivitySource)initWithDelegate:(id)a3 resourceProvider:(id)a4
+- (DBSmartWidgetLiveActivitySource)initWithDelegate:(id)delegate resourceProvider:(id)provider
 {
-  v6 = a4;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = DBSmartWidgetLiveActivitySource;
-  v7 = [(DBSmartWidgetSource *)&v13 initWithDelegate:a3 resourceProvider:v6];
+  v7 = [(DBSmartWidgetSource *)&v13 initWithDelegate:delegate resourceProvider:providerCopy];
   v8 = v7;
   if (v7)
   {
     activityPredictions = v7->_activityPredictions;
     v7->_activityPredictions = MEMORY[0x277CBEBF8];
 
-    v10 = [v6 liveActivityMonitor];
+    liveActivityMonitor = [providerCopy liveActivityMonitor];
     liveActivityMonitor = v8->_liveActivityMonitor;
-    v8->_liveActivityMonitor = v10;
+    v8->_liveActivityMonitor = liveActivityMonitor;
 
     [(DBLiveActivityMonitor *)v8->_liveActivityMonitor addObserver:v8];
   }
@@ -83,16 +83,16 @@
   [(DBSmartWidgetSource *)self refreshPredictions];
 }
 
-- (void)didUpdateLiveActivitiesWithActivityDescriptors:(id)a3
+- (void)didUpdateLiveActivitiesWithActivityDescriptors:(id)descriptors
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = descriptorsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -129,10 +129,10 @@
   [(DBSmartWidgetSource *)self refreshPredictions];
 }
 
-- (void)didUpdateAlertingLiveActivityWithActivityDescriptor:(id)a3
+- (void)didUpdateAlertingLiveActivityWithActivityDescriptor:(id)descriptor
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -150,7 +150,7 @@ LABEL_13:
     }
 
     v16 = [(NSArray *)self->_activityPredictions mutableCopy];
-    v17 = [[DBSmartWidgetLiveActivityPrediction alloc] initWithActivityDescriptor:v4 delegate:self];
+    v17 = [[DBSmartWidgetLiveActivityPrediction alloc] initWithActivityDescriptor:descriptorCopy delegate:self];
     [(DBSmartWidgetLiveActivityPrediction *)v17 setAlertingWidget:1];
     [(NSArray *)v16 insertObject:v17 atIndex:0];
     activityPredictions = self->_activityPredictions;
@@ -172,11 +172,11 @@ LABEL_13:
       }
 
       v11 = *(*(&v19 + 1) + 8 * i);
-      v12 = [v11 activityDescriptor];
-      v13 = v12;
-      if (v12)
+      activityDescriptor = [v11 activityDescriptor];
+      v13 = activityDescriptor;
+      if (activityDescriptor)
       {
-        v14 = [v12 isEqualToData:v4];
+        v14 = [activityDescriptor isEqualToData:descriptorCopy];
         v8 |= v14;
         [v11 setAlertingWidget:v14];
       }
@@ -196,29 +196,29 @@ LABEL_16:
   [(DBSmartWidgetSource *)self refreshPredictions];
 }
 
-- (id)liveActivityNameWithDescriptor:(id)a3
+- (id)liveActivityNameWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetLiveActivitySource *)self liveActivityMonitor];
-  v6 = [v5 liveActivityNameWith:v4];
+  descriptorCopy = descriptor;
+  liveActivityMonitor = [(DBSmartWidgetLiveActivitySource *)self liveActivityMonitor];
+  v6 = [liveActivityMonitor liveActivityNameWith:descriptorCopy];
 
   return v6;
 }
 
-- (id)liveActivityBundleIdentifierWithDescriptor:(id)a3
+- (id)liveActivityBundleIdentifierWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetLiveActivitySource *)self liveActivityMonitor];
-  v6 = [v5 liveActivityBundleIdentiferWith:v4];
+  descriptorCopy = descriptor;
+  liveActivityMonitor = [(DBSmartWidgetLiveActivitySource *)self liveActivityMonitor];
+  v6 = [liveActivityMonitor liveActivityBundleIdentiferWith:descriptorCopy];
 
   return v6;
 }
 
-- (id)liveActivityIdentifierWithDescriptor:(id)a3
+- (id)liveActivityIdentifierWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(DBSmartWidgetLiveActivitySource *)self liveActivityMonitor];
-  v6 = [v5 liveActivityIdentifierWith:v4];
+  descriptorCopy = descriptor;
+  liveActivityMonitor = [(DBSmartWidgetLiveActivitySource *)self liveActivityMonitor];
+  v6 = [liveActivityMonitor liveActivityIdentifierWith:descriptorCopy];
 
   return v6;
 }

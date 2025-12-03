@@ -6,10 +6,10 @@
 
 - (id)childViewControllerForRepresentedItem
 {
-  v1 = [a1 viewControllers];
-  v2 = [v1 firstObject];
+  viewControllers = [self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 @end

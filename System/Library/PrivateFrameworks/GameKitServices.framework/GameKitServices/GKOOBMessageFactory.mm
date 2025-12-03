@@ -1,17 +1,17 @@
 @interface GKOOBMessageFactory
-+ (id)newMessageFromData:(id)a3;
++ (id)newMessageFromData:(id)data;
 @end
 
 @implementation GKOOBMessageFactory
 
-+ (id)newMessageFromData:(id)a3
++ (id)newMessageFromData:(id)data
 {
-  if (!a3 || [a3 length] < 2)
+  if (!data || [data length] < 2)
   {
     return 0;
   }
 
-  if (*[a3 bytes] == 16390)
+  if (*[data bytes] == 16390)
   {
     v5 = &off_2796828B0;
   }
@@ -22,10 +22,10 @@
   }
 
   v6 = objc_alloc(*v5);
-  v7 = [a3 bytes];
-  v8 = [a3 length];
+  bytes = [data bytes];
+  v8 = [data length];
 
-  return [v6 initWithBytes:v7 length:v8];
+  return [v6 initWithBytes:bytes length:v8];
 }
 
 @end

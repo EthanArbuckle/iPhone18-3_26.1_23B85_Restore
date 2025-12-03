@@ -1,20 +1,20 @@
 @interface TSSPropertySetChangeDetails
-- (TSSPropertySetChangeDetails)initWithChangedProperties:(id)a3;
+- (TSSPropertySetChangeDetails)initWithChangedProperties:(id)properties;
 @end
 
 @implementation TSSPropertySetChangeDetails
 
-- (TSSPropertySetChangeDetails)initWithChangedProperties:(id)a3
+- (TSSPropertySetChangeDetails)initWithChangedProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = TSSPropertySetChangeDetails;
   v7 = [(TSSPropertySetChangeDetails *)&v11 init];
   if (v7)
   {
-    if (v4)
+    if (propertiesCopy)
     {
-      v8 = objc_msgSend_mutableCopy(v4, v5, v6);
+      v8 = objc_msgSend_mutableCopy(propertiesCopy, v5, v6);
     }
 
     else

@@ -4,7 +4,7 @@
 - (BOOL)startService;
 - (BOOL)stopService;
 - (MXPowerlogService)init;
-- (id)getMetricsForClient:(id)a3;
+- (id)getMetricsForClient:(id)client;
 - (void)unarchivePowerlogData;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __42__MXPowerlogService_sharedPowerlogService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedPowerlogService_onceToken != -1)
   {
     dispatch_once(&sharedPowerlogService_onceToken, block);
@@ -120,12 +120,12 @@ uint64_t __42__MXPowerlogService_sharedPowerlogService__block_invoke(uint64_t a1
 {
   v21 = *MEMORY[0x277D85DE8];
   [(NSMutableArray *)self->_powerlogDataPaths removeAllObjects];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = +[MXUtilities containerPath];
   v5 = [&unk_286A1CB30 objectAtIndexedSubscript:2];
   v6 = [v4 stringByAppendingPathComponent:v5];
   v18 = 0;
-  v7 = [v3 contentsOfDirectoryAtPath:v6 error:&v18];
+  v7 = [defaultManager contentsOfDirectoryAtPath:v6 error:&v18];
   v8 = v18;
 
   if (v8)
@@ -159,24 +159,24 @@ uint64_t __42__MXPowerlogService_sharedPowerlogService__block_invoke(uint64_t a1
   return v8 == 0;
 }
 
-- (id)getMetricsForClient:(id)a3
+- (id)getMetricsForClient:(id)client
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v27 = self;
+  selfCopy = self;
   unarchivedPowerlogData = self->_unarchivedPowerlogData;
   if (!unarchivedPowerlogData)
   {
     MXPowerLogServiceLogHandle = self->_MXPowerLogServiceLogHandle;
-    if (os_log_type_enabled(v27->_MXPowerLogServiceLogHandle, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(selfCopy->_MXPowerLogServiceLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       _os_log_impl(&dword_258D95000, MXPowerLogServiceLogHandle, OS_LOG_TYPE_DEFAULT, "Unarchived powerlog data not yet set, running unarchive.", buf, 2u);
     }
 
-    [(MXPowerlogService *)v27 unarchivePowerlogData];
-    unarchivedPowerlogData = v27->_unarchivedPowerlogData;
+    [(MXPowerlogService *)selfCopy unarchivePowerlogData];
+    unarchivedPowerlogData = selfCopy->_unarchivedPowerlogData;
   }
 
   v30 = 0u;
@@ -199,18 +199,18 @@ uint64_t __42__MXPowerlogService_sharedPowerlogService__block_invoke(uint64_t a1
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        v14 = [v13 metrics];
-        v15 = [v14 objectForKey:v4];
+        metrics = [v13 metrics];
+        v15 = [metrics objectForKey:clientCopy];
 
         if (v15)
         {
           v16 = +[MXUtilities getServicesDateFormatter];
-          v17 = [v13 datestamp];
-          v18 = [v16 stringFromDate:v17];
+          datestamp = [v13 datestamp];
+          v18 = [v16 stringFromDate:datestamp];
 
-          v19 = [v13 metrics];
-          v20 = [v19 objectForKey:v4];
-          v21 = [(MXService *)v27 pruneSourceData:v20];
+          metrics2 = [v13 metrics];
+          v20 = [metrics2 objectForKey:clientCopy];
+          v21 = [(MXService *)selfCopy pruneSourceData:v20];
           [v5 setObject:v21 forKeyedSubscript:v18];
         }
       }
@@ -229,11 +229,11 @@ uint64_t __42__MXPowerlogService_sharedPowerlogService__block_invoke(uint64_t a1
 
   else
   {
-    v24 = v27->_MXPowerLogServiceLogHandle;
+    v24 = selfCopy->_MXPowerLogServiceLogHandle;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v4;
+      v33 = clientCopy;
       _os_log_impl(&dword_258D95000, v24, OS_LOG_TYPE_DEFAULT, "No data for client: %@", buf, 0xCu);
     }
 
@@ -281,12 +281,12 @@ uint64_t __42__MXPowerlogService_sharedPowerlogService__block_invoke(uint64_t a1
           _os_log_impl(&dword_258D95000, MXPowerLogServiceLogHandle, OS_LOG_TYPE_DEFAULT, "Found log file: %@", buf, 0xCu);
         }
 
-        v9 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v10 = +[MXUtilities containerPath];
         v11 = [&unk_286A1CB48 objectAtIndexedSubscript:2];
         v12 = [v10 stringByAppendingPathComponent:v11];
         v13 = [v12 stringByAppendingPathComponent:v7];
-        v14 = [v9 contentsAtPath:v13];
+        v14 = [defaultManager contentsAtPath:v13];
 
         if (v14)
         {
@@ -308,10 +308,10 @@ uint64_t __42__MXPowerlogService_sharedPowerlogService__block_invoke(uint64_t a1
 
           else
           {
-            v21 = [v17 sourceID];
-            v22 = [(MXService *)self sourceID];
+            sourceID = [v17 sourceID];
+            sourceID2 = [(MXService *)self sourceID];
             v23 = self->_MXPowerLogServiceLogHandle;
-            if (v21 == v22)
+            if (sourceID == sourceID2)
             {
               if (os_log_type_enabled(self->_MXPowerLogServiceLogHandle, OS_LOG_TYPE_DEBUG))
               {
@@ -324,12 +324,12 @@ uint64_t __42__MXPowerlogService_sharedPowerlogService__block_invoke(uint64_t a1
             else if (os_log_type_enabled(self->_MXPowerLogServiceLogHandle, OS_LOG_TYPE_ERROR))
             {
               v24 = v23;
-              v25 = [v17 sourceID];
-              v26 = [(MXService *)self sourceID];
+              sourceID3 = [v17 sourceID];
+              sourceID4 = [(MXService *)self sourceID];
               *buf = v28;
-              v40 = v25;
+              v40 = sourceID3;
               v41 = 2048;
-              v42 = v26;
+              v42 = sourceID4;
               _os_log_error_impl(&dword_258D95000, v24, OS_LOG_TYPE_ERROR, "Bad source type: (%ld, expected %ld)", buf, 0x16u);
             }
           }

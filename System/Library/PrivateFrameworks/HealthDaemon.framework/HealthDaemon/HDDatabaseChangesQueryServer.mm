@@ -1,27 +1,27 @@
 @interface HDDatabaseChangesQueryServer
-- (BOOL)validateConfiguration:(id *)a3;
-- (HDDatabaseChangesQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (BOOL)validateConfiguration:(id *)configuration;
+- (HDDatabaseChangesQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (id)_authorizedObjectTypes;
 - (id)objectTypes;
-- (void)_queue_deliverQueryAnchor:(void *)a3 sampleTypeChanges:;
+- (void)_queue_deliverQueryAnchor:(void *)anchor sampleTypeChanges:;
 - (void)_queue_start;
-- (void)didAddSamplesOfTypes:(id)a3 anchor:(id)a4;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
+- (void)didAddSamplesOfTypes:(id)types anchor:(id)anchor;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
 @end
 
 @implementation HDDatabaseChangesQueryServer
 
-- (HDDatabaseChangesQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDDatabaseChangesQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = HDDatabaseChangesQueryServer;
-  v11 = [(HDQueryServer *)&v16 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v16 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 anchor];
-    v13 = [v12 copy];
+    anchor = [configurationCopy anchor];
+    v13 = [anchor copy];
     anchor = v11->_anchor;
     v11->_anchor = v13;
   }
@@ -29,21 +29,21 @@
   return v11;
 }
 
-- (BOOL)validateConfiguration:(id *)a3
+- (BOOL)validateConfiguration:(id *)configuration
 {
-  v5 = [(HDDatabaseChangesQueryServer *)self objectTypes];
-  v6 = [v5 count];
+  objectTypes = [(HDDatabaseChangesQueryServer *)self objectTypes];
+  v6 = [objectTypes count];
 
   if (v6)
   {
     v8.receiver = self;
     v8.super_class = HDDatabaseChangesQueryServer;
-    return [(HDQueryServer *)&v8 validateConfiguration:a3];
+    return [(HDQueryServer *)&v8 validateConfiguration:configuration];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:@"Must provide at least one object type"];
+    [MEMORY[0x277CCA9B8] hk_assignError:configuration code:3 format:@"Must provide at least one object type"];
     return 0;
   }
 }
@@ -52,17 +52,17 @@
 {
   if (self)
   {
-    v2 = [(HDQueryServer *)self configuration];
+    configuration = [(HDQueryServer *)self configuration];
   }
 
   else
   {
-    v2 = 0;
+    configuration = 0;
   }
 
-  v3 = [v2 sampleTypes];
+  sampleTypes = [configuration sampleTypes];
 
-  return v3;
+  return sampleTypes;
 }
 
 - (void)_queue_start
@@ -77,16 +77,16 @@
   v30 = __Block_byref_object_dispose__100;
   v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v3 = self->_anchor;
-  v4 = [(HKQueryAnchor *)v3 _rowid];
+  _rowid = [(HKQueryAnchor *)v3 _rowid];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__100;
   v24 = __Block_byref_object_dispose__100;
   v25 = 0;
-  v5 = [(HDQueryServer *)self profile];
-  v6 = [v5 database];
-  v18[7] = v4;
+  profile = [(HDQueryServer *)self profile];
+  database = [profile database];
+  v18[7] = _rowid;
   v19 = 0;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -95,7 +95,7 @@
   v18[5] = &v20;
   v18[6] = &v26;
   v18[4] = self;
-  v7 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:v6 error:&v19 block:v18];
+  v7 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:database error:&v19 block:v18];
   v8 = v19;
 
   detailsQueryDateIndexSQL = self->_detailsQueryDateIndexSQL;
@@ -110,16 +110,16 @@
     v12 = v21[5];
     if (v12)
     {
-      v13 = [v12 _rowid];
+      _rowid2 = [v12 _rowid];
       v11 = v21;
-      if (v13 > v4)
+      if (_rowid2 > _rowid)
       {
-        -[HDQueryServer setDataCount:](self, "setDataCount:", [v21[5] _rowid] - v4);
+        -[HDQueryServer setDataCount:](self, "setDataCount:", [v21[5] _rowid] - _rowid);
         v11 = v21;
       }
     }
 
-    if ([v11[5] _rowid] > v4 || !self->_hasDeliveredInitialResults)
+    if ([v11[5] _rowid] > _rowid || !self->_hasDeliveredInitialResults)
     {
       [(HDDatabaseChangesQueryServer *)&self->super.super.isa _queue_deliverQueryAnchor:v27[5] sampleTypeChanges:?];
       self->_hasDeliveredInitialResults = 1;
@@ -129,12 +129,12 @@
   else
   {
     v14 = v8;
-    v15 = [(HDQueryServer *)self queryQueue];
-    dispatch_assert_queue_V2(v15);
+    queryQueue = [(HDQueryServer *)self queryQueue];
+    dispatch_assert_queue_V2(queryQueue);
 
-    v16 = [(HDQueryServer *)self clientProxy];
-    v17 = [(HDQueryServer *)self queryUUID];
-    [v16 client_deliverError:v14 forQuery:v17];
+    clientProxy = [(HDQueryServer *)self clientProxy];
+    queryUUID = [(HDQueryServer *)self queryUUID];
+    [clientProxy client_deliverError:v14 forQuery:queryUUID];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -580,36 +580,36 @@ LABEL_78:
   return v8;
 }
 
-- (void)_queue_deliverQueryAnchor:(void *)a3 sampleTypeChanges:
+- (void)_queue_deliverQueryAnchor:(void *)anchor sampleTypeChanges:
 {
   v10 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = a3;
-    v7 = [a1 queryQueue];
-    dispatch_assert_queue_V2(v7);
+    anchorCopy = anchor;
+    queryQueue = [self queryQueue];
+    dispatch_assert_queue_V2(queryQueue);
 
-    v8 = [a1 clientProxy];
-    v9 = [a1 queryUUID];
-    [v8 client_deliverQueryAnchor:v10 sampleTypeChanges:v6 queryUUID:v9];
+    clientProxy = [self clientProxy];
+    queryUUID = [self queryUUID];
+    [clientProxy client_deliverQueryAnchor:v10 sampleTypeChanges:anchorCopy queryUUID:queryUUID];
 
-    objc_storeStrong(a1 + 27, a2);
+    objc_storeStrong(self + 27, a2);
   }
 }
 
 - (id)_authorizedObjectTypes
 {
-  v1 = a1;
+  selfCopy = self;
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 objectTypes];
-    if ([v2 count])
+    objectTypes = [self objectTypes];
+    if ([objectTypes count])
     {
-      v3 = [v1 client];
-      v4 = [v3 authorizationOracle];
+      client = [selfCopy client];
+      authorizationOracle = [client authorizationOracle];
       v11 = 0;
-      v5 = [v4 authorizationStatusRecordsForTypes:v2 error:&v11];
+      v5 = [authorizationOracle authorizationStatusRecordsForTypes:objectTypes error:&v11];
       v6 = v11;
 
       if (v5)
@@ -624,7 +624,7 @@ LABEL_78:
         if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v13 = v1;
+          v13 = selfCopy;
           v14 = 2114;
           v15 = v6;
           _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Error reading authorization statuses: %{public}@", buf, 0x16u);
@@ -633,18 +633,18 @@ LABEL_78:
         v7 = [MEMORY[0x277CBEB98] set];
       }
 
-      v1 = v7;
+      selfCopy = v7;
     }
 
     else
     {
-      v1 = [MEMORY[0x277CBEB98] set];
+      selfCopy = [MEMORY[0x277CBEB98] set];
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return selfCopy;
 }
 
 uint64_t __83__HDDatabaseChangesQueryServer__queue_changesByTypeWithDatabase_sinceAnchor_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)
@@ -771,19 +771,19 @@ uint64_t __128__HDDatabaseChangesQueryServer__queue_detailedChangeUsingDateIndex
   return 1;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  addedCopy = added;
+  anchorCopy = anchor;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__HDDatabaseChangesQueryServer_samplesAdded_anchor___block_invoke;
   v10[3] = &unk_278613830;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = anchorCopy;
+  selfCopy = self;
+  v13 = addedCopy;
+  v8 = addedCopy;
+  v9 = anchorCopy;
   [(HDQueryServer *)self onQueue:v10];
 }
 
@@ -873,16 +873,16 @@ void __52__HDDatabaseChangesQueryServer_samplesAdded_anchor___block_invoke(uint6
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didAddSamplesOfTypes:(id)a3 anchor:(id)a4
+- (void)didAddSamplesOfTypes:(id)types anchor:(id)anchor
 {
-  v5 = a4;
+  anchorCopy = anchor;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HDDatabaseChangesQueryServer_didAddSamplesOfTypes_anchor___block_invoke;
   v7[3] = &unk_278613920;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = anchorCopy;
+  selfCopy = self;
+  v6 = anchorCopy;
   [(HDQueryServer *)self onQueue:v7];
 }
 
@@ -912,19 +912,19 @@ void __60__HDDatabaseChangesQueryServer_didAddSamplesOfTypes_anchor___block_invo
   }
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  removedCopy = removed;
+  anchorCopy = anchor;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__HDDatabaseChangesQueryServer_samplesOfTypesWereRemoved_anchor___block_invoke;
   v10[3] = &unk_278613830;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = anchorCopy;
+  selfCopy = self;
+  v13 = removedCopy;
+  v8 = removedCopy;
+  v9 = anchorCopy;
   [(HDQueryServer *)self onQueue:v10];
 }
 

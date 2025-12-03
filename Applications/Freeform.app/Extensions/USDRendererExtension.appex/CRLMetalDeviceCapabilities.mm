@@ -1,6 +1,6 @@
 @interface CRLMetalDeviceCapabilities
-- (BOOL)supportsGPUFamily:(int64_t)a3;
-- (CRLMetalDeviceCapabilities)initWithDevice:(id)a3;
+- (BOOL)supportsGPUFamily:(int64_t)family;
+- (CRLMetalDeviceCapabilities)initWithDevice:(id)device;
 - (MTLDevice)device;
 - (int64_t)p_deviceGPUFamily;
 - (void)p_assignFeatureSet;
@@ -8,15 +8,15 @@
 
 @implementation CRLMetalDeviceCapabilities
 
-- (CRLMetalDeviceCapabilities)initWithDevice:(id)a3
+- (CRLMetalDeviceCapabilities)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = CRLMetalDeviceCapabilities;
   v5 = [(CRLMetalDeviceCapabilities *)&v10 init];
   if (v5)
   {
-    if (!v4)
+    if (!deviceCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (CRLAssertCat_init_token != -1)
@@ -45,7 +45,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:20 isFatal:0 description:"invalid nil value for '%{public}s'", "device"];
     }
 
-    objc_storeWeak(&v5->_device, v4);
+    objc_storeWeak(&v5->_device, deviceCopy);
     v5->_deviceGPUFamily = [(CRLMetalDeviceCapabilities *)v5 p_deviceGPUFamily];
     [(CRLMetalDeviceCapabilities *)v5 p_assignFeatureSet];
   }
@@ -93,11 +93,11 @@
   return v13;
 }
 
-- (BOOL)supportsGPUFamily:(int64_t)a3
+- (BOOL)supportsGPUFamily:(int64_t)family
 {
-  if ((a3 - 6) > 0xFFFFFFFFFFFFFFFALL)
+  if ((family - 6) > 0xFFFFFFFFFFFFFFFALL)
   {
-    return self->_deviceGPUFamily >= a3;
+    return self->_deviceGPUFamily >= family;
   }
 
   +[CRLAssertionHandler _atomicIncrementAssertCount];

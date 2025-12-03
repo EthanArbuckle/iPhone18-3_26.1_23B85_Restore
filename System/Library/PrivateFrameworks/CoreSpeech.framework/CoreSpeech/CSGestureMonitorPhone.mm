@@ -2,8 +2,8 @@
 - (CSGestureMonitorPhone)init;
 - (void)_didReceiveSleepGesture;
 - (void)_didReceiveWakeGesture;
-- (void)_startMonitoringWithQueue:(id)a3;
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4;
+- (void)_startMonitoringWithQueue:(id)queue;
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture;
 @end
 
 @implementation CSGestureMonitorPhone
@@ -32,10 +32,10 @@
   [(CSGestureMonitorPhone *)&v2 enumerateObserversInQueue:v3];
 }
 
-- (void)wakeGestureManager:(id)a3 didUpdateWakeGesture:(int64_t)a4
+- (void)wakeGestureManager:(id)manager didUpdateWakeGesture:(int64_t)gesture
 {
-  v6 = a3;
-  if (a4 == 3)
+  managerCopy = manager;
+  if (gesture == 3)
   {
     v8 = mach_absolute_time();
     v9.receiver = self;
@@ -44,7 +44,7 @@
     [(CSGestureMonitorPhone *)self _didReceiveSleepGesture];
   }
 
-  else if (a4 == 1)
+  else if (gesture == 1)
   {
     v7 = mach_absolute_time();
     v10.receiver = self;
@@ -54,7 +54,7 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   [(CMWakeGestureManager *)self->_gestureManager setDelegate:self];
   [(CMWakeGestureManager *)self->_gestureManager startWakeGestureUpdates];
@@ -74,9 +74,9 @@
   v2 = [(CSGestureMonitorPhone *)&v6 init];
   if (v2 && [sub_1000C858C() isWakeGestureAvailable])
   {
-    v3 = [sub_1000C858C() sharedManager];
+    sharedManager = [sub_1000C858C() sharedManager];
     gestureManager = v2->_gestureManager;
-    v2->_gestureManager = v3;
+    v2->_gestureManager = sharedManager;
   }
 
   return v2;

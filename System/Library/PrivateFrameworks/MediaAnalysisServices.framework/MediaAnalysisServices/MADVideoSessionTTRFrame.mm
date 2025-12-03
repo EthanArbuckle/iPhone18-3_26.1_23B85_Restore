@@ -1,15 +1,15 @@
 @interface MADVideoSessionTTRFrame
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timestamp;
-- (MADVideoSessionTTRFrame)initWithCoder:(id)a3;
-- (MADVideoSessionTTRFrame)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 orientation:(unsigned int)a5;
+- (MADVideoSessionTTRFrame)initWithCoder:(id)coder;
+- (MADVideoSessionTTRFrame)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp orientation:(unsigned int)orientation;
 - (__CVBuffer)pixelBuffer;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVideoSessionTTRFrame
 
-- (MADVideoSessionTTRFrame)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 orientation:(unsigned int)a5
+- (MADVideoSessionTTRFrame)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp orientation:(unsigned int)orientation
 {
   v15.receiver = self;
   v15.super_class = MADVideoSessionTTRFrame;
@@ -19,7 +19,7 @@
     goto LABEL_4;
   }
 
-  v14 = CFRetain(a3);
+  v14 = CFRetain(buffer);
   CF<CGImage *>::operator=(v8 + 2, &v14);
   CF<CGColorSpace *>::~CF(&v14);
   v9 = CVPixelBufferGetIOSurface(*(v8 + 2));
@@ -28,10 +28,10 @@
 
   if (*(v8 + 1))
   {
-    v11 = *&a4->var0;
-    *(v8 + 44) = a4->var3;
+    v11 = *&timestamp->var0;
+    *(v8 + 44) = timestamp->var3;
     *(v8 + 28) = v11;
-    *(v8 + 6) = a5;
+    *(v8 + 6) = orientation;
 LABEL_4:
     v12 = v8;
     goto LABEL_8;
@@ -70,21 +70,21 @@ LABEL_8:
   return result;
 }
 
-- (MADVideoSessionTTRFrame)initWithCoder:(id)a3
+- (MADVideoSessionTTRFrame)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MADVideoSessionTTRFrame;
   v5 = [(MADVideoSessionTTRFrame *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Surface"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Surface"];
     v7 = *(v5 + 1);
     *(v5 + 1) = v6;
 
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCMTimeForKey:@"Timestamp"];
+      [coderCopy decodeCMTimeForKey:@"Timestamp"];
     }
 
     else
@@ -95,36 +95,36 @@ LABEL_8:
 
     *(v5 + 28) = v9;
     *(v5 + 44) = v10;
-    *(v5 + 6) = [v4 decodeInt32ForKey:@"Orientation"];
+    *(v5 + 6) = [coderCopy decodeInt32ForKey:@"Orientation"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_surface forKey:@"Surface"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_surface forKey:@"Surface"];
   v5 = *(&self->_orientation + 1);
   v6 = *&self->_timestamp.flags;
-  [v4 encodeCMTime:&v5 forKey:@"Timestamp"];
-  [v4 encodeInt32:self->_orientation forKey:@"Orientation"];
+  [coderCopy encodeCMTime:&v5 forKey:@"Timestamp"];
+  [coderCopy encodeInt32:self->_orientation forKey:@"Orientation"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"surface: %@", self->_surface];
+  [string appendFormat:@"surface: %@", self->_surface];
   *&time.value = *(&self->_orientation + 1);
   time.epoch = *&self->_timestamp.flags;
-  [v3 appendFormat:@"timestamp: %.4f", CMTimeGetSeconds(&time)];
-  [v3 appendFormat:@"orientation: %u>", self->_orientation];
+  [string appendFormat:@"timestamp: %.4f", CMTimeGetSeconds(&time)];
+  [string appendFormat:@"orientation: %u>", self->_orientation];
 
-  return v3;
+  return string;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timestamp

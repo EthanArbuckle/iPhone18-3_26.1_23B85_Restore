@@ -1,7 +1,7 @@
 @interface SBCaptureButtonDispatchingDeferrer
-- (SBCaptureButtonDispatchingDeferrer)initWithZStackResolver:(id)a3 restrictionCoordinator:(id)a4;
-- (void)_deferCaptureButtonEventsToSceneWithIdentityToken:(id)a3 PID:(int)a4;
-- (void)_processZStackParticipantSettings:(id)a3;
+- (SBCaptureButtonDispatchingDeferrer)initWithZStackResolver:(id)resolver restrictionCoordinator:(id)coordinator;
+- (void)_deferCaptureButtonEventsToSceneWithIdentityToken:(id)token PID:(int)d;
+- (void)_processZStackParticipantSettings:(id)settings;
 - (void)_stopDeferringCaptureButtonEvents;
 - (void)_updateCaptureButtonDispatchingDeferringTarget;
 - (void)dealloc;
@@ -9,25 +9,25 @@
 
 @implementation SBCaptureButtonDispatchingDeferrer
 
-- (SBCaptureButtonDispatchingDeferrer)initWithZStackResolver:(id)a3 restrictionCoordinator:(id)a4
+- (SBCaptureButtonDispatchingDeferrer)initWithZStackResolver:(id)resolver restrictionCoordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  resolverCopy = resolver;
+  coordinatorCopy = coordinator;
   v16.receiver = self;
   v16.super_class = SBCaptureButtonDispatchingDeferrer;
   v9 = [(SBCaptureButtonDispatchingDeferrer *)&v16 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CF0668] sharedInstance];
+    mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
     deliveryManager = v9->_deliveryManager;
-    v9->_deliveryManager = v10;
+    v9->_deliveryManager = mEMORY[0x277CF0668];
 
-    objc_storeStrong(&v9->_zStackResolver, a3);
-    v12 = [v8 addObserver:v9];
+    objc_storeStrong(&v9->_zStackResolver, resolver);
+    v12 = [coordinatorCopy addObserver:v9];
     inhibitionObservation = v9->_inhibitionObservation;
     v9->_inhibitionObservation = v12;
 
-    v9->_inhibitedDueToRestrictionCoordinator = [v8 isCaptureButtonActionInhibited:0];
+    v9->_inhibitedDueToRestrictionCoordinator = [coordinatorCopy isCaptureButtonActionInhibited:0];
     v14 = [(SBFZStackResolver *)v9->_zStackResolver addObserver:v9 ofParticipantWithIdentifier:29];
     [(SBCaptureButtonDispatchingDeferrer *)v9 _processZStackParticipantSettings:v14];
     [(SBCaptureButtonDispatchingDeferrer *)v9 _updateCaptureButtonDispatchingDeferringTarget];
@@ -47,14 +47,14 @@
   [(SBCaptureButtonDispatchingDeferrer *)&v4 dealloc];
 }
 
-- (void)_processZStackParticipantSettings:(id)a3
+- (void)_processZStackParticipantSettings:(id)settings
 {
-  v6 = [a3 captureButtonFullFidelityEventRequestingScenes];
-  v4 = [v6 lastObject];
+  captureButtonFullFidelityEventRequestingScenes = [settings captureButtonFullFidelityEventRequestingScenes];
+  lastObject = [captureButtonFullFidelityEventRequestingScenes lastObject];
   if ((BSEqualObjects() & 1) == 0)
   {
     [(FBScene *)self->_targetScene removeObserver:self];
-    objc_storeStrong(&self->_targetScene, v4);
+    objc_storeStrong(&self->_targetScene, lastObject);
     targetScene = self->_targetScene;
     if (targetScene)
     {
@@ -68,17 +68,17 @@
 - (void)_updateCaptureButtonDispatchingDeferringTarget
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 40);
+  v2 = *(self + 40);
   v3 = 138412290;
   v4 = v2;
   _os_log_debug_impl(&dword_21ED4E000, a2, OS_LOG_TYPE_DEBUG, "Selected scene requesting full-fidelity capture button events: %@", &v3, 0xCu);
 }
 
-- (void)_deferCaptureButtonEventsToSceneWithIdentityToken:(id)a3 PID:(int)a4
+- (void)_deferCaptureButtonEventsToSceneWithIdentityToken:(id)token PID:(int)d
 {
-  v4 = *&a4;
+  v4 = *&d;
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  tokenCopy = token;
   if (self->_currentDeferralTargetPid != v4)
   {
     v8 = SBLogCameraCaptureOverlay();
@@ -95,13 +95,13 @@
     self->_deferringRuleAssertion = 0;
 
     v11 = objc_opt_new();
-    v12 = [MEMORY[0x277CF0628] ui_cameraCaptureButtonEnvironment];
-    [v11 setEnvironment:v12];
+    ui_cameraCaptureButtonEnvironment = [MEMORY[0x277CF0628] ui_cameraCaptureButtonEnvironment];
+    [v11 setEnvironment:ui_cameraCaptureButtonEnvironment];
     v13 = objc_opt_new();
     [v13 setPid:v4];
     v14 = MEMORY[0x277CF0650];
-    v15 = [v7 stringRepresentation];
-    v16 = [v14 tokenForString:v15];
+    stringRepresentation = [tokenCopy stringRepresentation];
+    v16 = [v14 tokenForString:stringRepresentation];
 
     if (v16)
     {
@@ -113,7 +113,7 @@
     self->_deferringRuleAssertion = v17;
 
     self->_currentDeferralTargetPid = v4;
-    objc_storeStrong(&self->_currentDeferralSceneIdentityToken, a3);
+    objc_storeStrong(&self->_currentDeferralSceneIdentityToken, token);
   }
 }
 

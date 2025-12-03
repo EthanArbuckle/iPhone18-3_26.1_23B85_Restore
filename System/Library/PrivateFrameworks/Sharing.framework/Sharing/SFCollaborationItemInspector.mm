@@ -1,5 +1,5 @@
 @interface SFCollaborationItemInspector
-+ (id)_collaborationItemForFileURL:(id)a3 itemProvider:(id)a4 activityItem:(id)a5 service:(id)a6 managedFileURL:(id)a7;
++ (id)_collaborationItemForFileURL:(id)l itemProvider:(id)provider activityItem:(id)item service:(id)service managedFileURL:(id)rL;
 @end
 
 @implementation SFCollaborationItemInspector
@@ -10,18 +10,18 @@ void __135__SFCollaborationItemInspector_inspectActivityItemValue_activityItem_s
   [*(a1 + 32) setCanAddPeople:v4];
 }
 
-+ (id)_collaborationItemForFileURL:(id)a3 itemProvider:(id)a4 activityItem:(id)a5 service:(id)a6 managedFileURL:(id)a7
++ (id)_collaborationItemForFileURL:(id)l itemProvider:(id)provider activityItem:(id)item service:(id)service managedFileURL:(id)rL
 {
   v39 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v11 isFileURL])
+  lCopy = l;
+  providerCopy = provider;
+  itemCopy = item;
+  serviceCopy = service;
+  rLCopy = rL;
+  if ([lCopy isFileURL])
   {
     v16 = gelato_sharing_log();
-    v17 = os_signpost_id_make_with_pointer(v16, v11);
+    v17 = os_signpost_id_make_with_pointer(v16, lCopy);
 
     v18 = gelato_sharing_log();
     v19 = v18;
@@ -35,13 +35,13 @@ void __135__SFCollaborationItemInspector_inspectActivityItemValue_activityItem_s
     *(&buf + 1) = &buf;
     v37 = 0x2020000000;
     v38 = 1;
-    if (([v11 isiWorkDocument] & 1) == 0)
+    if (([lCopy isiWorkDocument] & 1) == 0)
     {
       v20 = share_sheet_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *v32 = 138412290;
-        v33 = v11;
+        v33 = lCopy;
         _os_log_impl(&dword_1A9662000, v20, OS_LOG_TYPE_DEFAULT, "request default share mode for URL:%@", v32, 0xCu);
       }
 
@@ -51,9 +51,9 @@ void __135__SFCollaborationItemInspector_inspectActivityItemValue_activityItem_s
         v29[1] = 3221225472;
         v29[2] = __110__SFCollaborationItemInspector__collaborationItemForFileURL_itemProvider_activityItem_service_managedFileURL___block_invoke;
         v29[3] = &unk_1E788CCD8;
-        v30 = v11;
+        v30 = lCopy;
         p_buf = &buf;
-        [v14 requestDefaultShareModeCollaborationForURL:v30 completionHandler:v29];
+        [serviceCopy requestDefaultShareModeCollaborationForURL:v30 completionHandler:v29];
       }
     }
 
@@ -71,13 +71,13 @@ void __135__SFCollaborationItemInspector_inspectActivityItemValue_activityItem_s
       }
 
       *v32 = 138412546;
-      v33 = v11;
+      v33 = lCopy;
       v34 = 2112;
       v35 = v22;
       _os_log_impl(&dword_1A9662000, v21, OS_LOG_TYPE_DEFAULT, "defaultShareModeCollaboration for fileURL:%@ = %@", v32, 0x16u);
     }
 
-    v23 = [SFCollaborationItem collaborationItemForFileURL:v11 itemProvider:v12 activityItem:v13 defaultCollaboration:*(*(&buf + 1) + 24) managedFileURL:v15];
+    v23 = [SFCollaborationItem collaborationItemForFileURL:lCopy itemProvider:providerCopy activityItem:itemCopy defaultCollaboration:*(*(&buf + 1) + 24) managedFileURL:rLCopy];
     v24 = gelato_sharing_log();
     v25 = v24;
     if (v17 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v24))
@@ -95,7 +95,7 @@ void __135__SFCollaborationItemInspector_inspectActivityItemValue_activityItem_s
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138739971;
-      *(&buf + 4) = v11;
+      *(&buf + 4) = lCopy;
       _os_log_impl(&dword_1A9662000, v26, OS_LOG_TYPE_DEFAULT, "URL is not a fileURL: %{sensitive}@", &buf, 0xCu);
     }
 

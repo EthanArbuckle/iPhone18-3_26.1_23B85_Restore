@@ -1,5 +1,5 @@
 @interface SKUIProductImageDataConsumer
-+ (SKUIProductImageDataConsumer)consumerWithSize:(CGSize)a3;
++ (SKUIProductImageDataConsumer)consumerWithSize:(CGSize)size;
 + (id)cardConsumer;
 + (id)chartsConsumer;
 + (id)giftComposeConsumer;
@@ -10,7 +10,7 @@
 + (id)giftThemeLetterboxConsumer;
 + (id)giftThemePosterConsumer;
 + (id)gridConsumer;
-+ (id)lockupConsumerWithSize:(int64_t)a3 itemKind:(int64_t)a4;
++ (id)lockupConsumerWithSize:(int64_t)size itemKind:(int64_t)kind;
 + (id)productPageConsumer;
 + (id)purchasedConsumer;
 + (id)smartBannerConsumer;
@@ -19,18 +19,18 @@
 + (id)wishlistConsumer;
 - (CGSize)iconSize;
 - (CGSize)imageSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)imageForColor:(id)a3;
-- (id)imageForColor:(id)a3 size:(CGSize)a4;
-- (id)imageForImage:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)imageForColor:(id)color;
+- (id)imageForColor:(id)color size:(CGSize)size;
+- (id)imageForImage:(id)image;
 @end
 
 @implementation SKUIProductImageDataConsumer
 
-+ (SKUIProductImageDataConsumer)consumerWithSize:(CGSize)a3
++ (SKUIProductImageDataConsumer)consumerWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -43,16 +43,16 @@
     }
   }
 
-  v14 = [a1 consumer];
-  v14[2] = width;
-  v14[3] = height;
+  consumer = [self consumer];
+  consumer[2] = width;
+  consumer[3] = height;
 
-  return v14;
+  return consumer;
 }
 
 + (id)gridConsumer
 {
-  v2 = [a1 consumer];
+  consumer = [self consumer];
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -65,12 +65,12 @@
     }
   }
 
-  v2[1] = vdupq_n_s64(0x4052C00000000000uLL);
+  consumer[1] = vdupq_n_s64(0x4052C00000000000uLL);
 
-  return v2;
+  return consumer;
 }
 
-+ (id)lockupConsumerWithSize:(int64_t)a3 itemKind:(int64_t)a4
++ (id)lockupConsumerWithSize:(int64_t)size itemKind:(int64_t)kind
 {
   if (os_variant_has_internal_content())
   {
@@ -84,11 +84,11 @@
     }
   }
 
-  v15 = [a1 consumer];
-  *(v15 + 16) = SKUILockupImageSizeForLockupSize(a3, a4);
-  *(v15 + 24) = v16;
+  consumer = [self consumer];
+  *(consumer + 16) = SKUILockupImageSizeForLockupSize(size, kind);
+  *(consumer + 24) = v16;
 
-  return v15;
+  return consumer;
 }
 
 + (id)cardConsumer
@@ -105,20 +105,20 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 64.0;
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v14 = 72.0;
   }
 
-  v11[2] = v14;
-  v11[3] = v14;
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)chartsConsumer
@@ -135,20 +135,20 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 64.0;
-  if (v13 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v14 = 67.0;
   }
 
-  v11[2] = v14;
-  v11[3] = v14;
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)updatesConsumer
@@ -165,20 +165,20 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 57.0;
-  if (v13 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v14 = 72.0;
   }
 
-  v11[2] = v14;
-  v11[3] = v14;
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)purchasedConsumer
@@ -195,20 +195,20 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 57.0;
-  if (v13 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v14 = 72.0;
   }
 
-  v11[2] = v14;
-  v11[3] = v14;
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)productPageConsumer
@@ -225,20 +225,20 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 100.0;
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v14 = 170.0;
   }
 
-  v11[2] = v14;
-  v11[3] = v14;
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)swooshConsumer
@@ -255,20 +255,20 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 72.0;
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v14 = 90.0;
   }
 
-  v11[2] = v14;
-  v11[3] = v14;
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)giftComposeConsumer
@@ -285,10 +285,10 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v11[1] = vdupq_n_s64(0x4052C00000000000uLL);
+  consumer = [self consumer];
+  consumer[1] = vdupq_n_s64(0x4052C00000000000uLL);
 
-  return v11;
+  return consumer;
 }
 
 + (id)giftComposeLetterboxConsumer
@@ -305,10 +305,10 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v11[1] = xmmword_215F40630;
+  consumer = [self consumer];
+  consumer[1] = xmmword_215F40630;
 
-  return v11;
+  return consumer;
 }
 
 + (id)giftComposePosterConsumer
@@ -325,15 +325,15 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v14 = qword_215F40640[(v13 & 0xFFFFFFFFFFFFFFFBLL) == 1];
-  v11[2] = v14;
-  v11[3] = v14;
+  v14 = qword_215F40640[(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)giftThemeConsumer
@@ -350,10 +350,10 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v11[1] = vdupq_n_s64(0x404C800000000000uLL);
+  consumer = [self consumer];
+  consumer[1] = vdupq_n_s64(0x404C800000000000uLL);
 
-  return v11;
+  return consumer;
 }
 
 + (id)giftThemeLetterboxConsumer
@@ -370,10 +370,10 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v11[1] = xmmword_215F40650;
+  consumer = [self consumer];
+  consumer[1] = xmmword_215F40650;
 
-  return v11;
+  return consumer;
 }
 
 + (id)giftThemePosterConsumer
@@ -390,10 +390,10 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v11[1] = vdupq_n_s64(0x404C800000000000uLL);
+  consumer = [self consumer];
+  consumer[1] = vdupq_n_s64(0x404C800000000000uLL);
 
-  return v11;
+  return consumer;
 }
 
 + (id)giftResultConsumer
@@ -410,20 +410,20 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 72.0;
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v14 = 144.0;
   }
 
-  v11[2] = v14;
-  v11[3] = v14;
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)smartBannerConsumer
@@ -440,20 +440,20 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  consumer = [self consumer];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v14 = 64.0;
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v14 = 75.0;
   }
 
-  v11[2] = v14;
-  v11[3] = v14;
+  consumer[2] = v14;
+  consumer[3] = v14;
 
-  return v11;
+  return consumer;
 }
 
 + (id)wishlistConsumer
@@ -470,10 +470,10 @@
     }
   }
 
-  v11 = [a1 consumer];
-  v11[1] = vdupq_n_s64(0x4050000000000000uLL);
+  consumer = [self consumer];
+  consumer[1] = vdupq_n_s64(0x4050000000000000uLL);
 
-  return v11;
+  return consumer;
 }
 
 - (CGSize)imageSize
@@ -497,9 +497,9 @@
   return result;
 }
 
-- (id)imageForColor:(id)a3
+- (id)imageForColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -512,15 +512,15 @@
     }
   }
 
-  v13 = [(SKUIProductImageDataConsumer *)self imageForColor:v4 size:self->_iconSize.width, self->_iconSize.height];
+  v13 = [(SKUIProductImageDataConsumer *)self imageForColor:colorCopy size:self->_iconSize.width, self->_iconSize.height];
 
   return v13;
 }
 
-- (id)imageForColor:(id)a3 size:(CGSize)a4
+- (id)imageForColor:(id)color size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v39[2] = *MEMORY[0x277D85DE8];
   if (os_variant_has_internal_content())
   {
@@ -552,17 +552,17 @@
     v39[0] = [v17 CGColor];
     v39[1] = [v18 CGColor];
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
-    v21 = [MEMORY[0x277CD9EB0] layer];
-    [v21 setBounds:{v36, v37}];
-    [v21 setColors:v20];
-    [v21 setLocations:&unk_2828D2FD8];
-    v22 = [MEMORY[0x277D75568] preferredFormat];
-    v23 = [MEMORY[0x277D759A0] mainScreen];
-    [v23 scale];
-    [v22 setScale:?];
+    layer = [MEMORY[0x277CD9EB0] layer];
+    [layer setBounds:{v36, v37}];
+    [layer setColors:v20];
+    [layer setLocations:&unk_2828D2FD8];
+    preferredFormat = [MEMORY[0x277D75568] preferredFormat];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    [preferredFormat setScale:?];
 
     v24 = objc_alloc(MEMORY[0x277D75560]);
-    v25 = [v24 initWithSize:v22 format:v38];
+    v25 = [v24 initWithSize:preferredFormat format:v38];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __51__SKUIProductImageDataConsumer_imageForColor_size___block_invoke;
@@ -571,8 +571,8 @@
     v31 = v36;
     v32 = v37;
     v28[4] = self;
-    v29 = v21;
-    v26 = v21;
+    v29 = layer;
+    v26 = layer;
     v15 = [v25 imageWithActions:v28];
   }
 
@@ -595,9 +595,9 @@ void __51__SKUIProductImageDataConsumer_imageForColor_size___block_invoke(uint64
   [*(a1 + 40) renderInContext:{objc_msgSend(v6, "CGContext")}];
 }
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -614,15 +614,15 @@ void __51__SKUIProductImageDataConsumer_imageForColor_size___block_invoke(uint64
   v26.height = 0.0;
   v24 = 0u;
   v25 = 0u;
-  [v4 size];
+  [imageCopy size];
   SKUIIconFrameForIconSize(&v26.width, &v24, v13, v14, self->_iconSize.width, self->_iconSize.height, 0.0);
   colorScheme = self->_colorScheme;
   v23 = 0;
   SKUIIconColorsForColorScheme(colorScheme, 0, 0, &v23);
   v16 = v23;
   v17 = self->_backgroundColor != 0;
-  v18 = [MEMORY[0x277D759A0] mainScreen];
-  [v18 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   UIGraphicsBeginImageContextWithOptions(v26, v17, v19);
 
   backgroundColor = self->_backgroundColor;
@@ -636,14 +636,14 @@ void __51__SKUIProductImageDataConsumer_imageForColor_size___block_invoke(uint64
     UIRectFill(v28);
   }
 
-  [v4 drawInRect:{v24, v25}];
+  [imageCopy drawInRect:{v24, v25}];
   v21 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (os_variant_has_internal_content())
   {
@@ -657,7 +657,7 @@ void __51__SKUIProductImageDataConsumer_imageForColor_size___block_invoke(uint64
     }
   }
 
-  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v13 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v13 + 8), self->_backgroundColor);
   objc_storeStrong((v13 + 32), self->_colorScheme);
   *(v13 + 16) = self->_iconSize;

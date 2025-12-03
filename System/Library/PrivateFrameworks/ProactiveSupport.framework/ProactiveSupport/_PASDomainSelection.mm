@@ -1,17 +1,17 @@
 @interface _PASDomainSelection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDomainSelection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDomainSelection:(id)selection;
 - (_PASDomainSelection)init;
-- (_PASDomainSelection)initWithCoder:(id)a3;
-- (_PASDomainSelection)initWithDomain:(id)a3;
-- (_PASDomainSelection)initWithDomainsFromArray:(id)a3;
-- (_PASDomainSelection)initWithDomainsFromSet:(id)a3;
-- (id)_initWithNonOverlappingDomainSet:(id)a3;
+- (_PASDomainSelection)initWithCoder:(id)coder;
+- (_PASDomainSelection)initWithDomain:(id)domain;
+- (_PASDomainSelection)initWithDomainsFromArray:(id)array;
+- (_PASDomainSelection)initWithDomainsFromSet:(id)set;
+- (id)_initWithNonOverlappingDomainSet:(id)set;
 - (id)description;
 - (id)globPatterns;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)count;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PASDomainSelection
@@ -30,8 +30,8 @@
     return 0;
   }
 
-  v4 = [(_PASDomainSelection *)self allDomains];
-  v5 = [v4 count];
+  allDomains = [(_PASDomainSelection *)self allDomains];
+  v5 = [allDomains count];
 
   return v5;
 }
@@ -41,14 +41,14 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = [(_PASDomainSelection *)self count];
-  v6 = [(_PASDomainSelection *)self isEmpty];
-  v7 = [(_PASDomainSelection *)self allDomains];
+  isEmpty = [(_PASDomainSelection *)self isEmpty];
+  allDomains = [(_PASDomainSelection *)self allDomains];
   if (description__pasOnceToken6 != -1)
   {
     dispatch_once(&description__pasOnceToken6, &__block_literal_global_2527);
   }
 
-  if (v6)
+  if (isEmpty)
   {
     v8 = &stru_1F1B24B60;
   }
@@ -58,30 +58,30 @@
     v8 = @": ";
   }
 
-  v9 = [v7 sortedArrayUsingDescriptors:description__pasExprOnceResult];
+  v9 = [allDomains sortedArrayUsingDescriptors:description__pasExprOnceResult];
   v10 = [v9 _pas_componentsJoinedByString:{@", "}];
   v11 = [v3 initWithFormat:@"%@ (count=%tu%@%@)", v4, v5, v8, v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_PASDomainSelection *)self allDomains];
-  [v4 encodeObject:v5 forKey:@"d"];
+  coderCopy = coder;
+  allDomains = [(_PASDomainSelection *)self allDomains];
+  [coderCopy encodeObject:allDomains forKey:@"d"];
 }
 
-- (_PASDomainSelection)initWithCoder:(id)a3
+- (_PASDomainSelection)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"d"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"d"];
 
   if (!v9)
   {
@@ -92,10 +92,10 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"_PASDomainSelectionErrorDomain" code:1 userInfo:0];
-    [v4 failWithError:v20];
+    [coderCopy failWithError:v20];
 
 LABEL_16:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
@@ -124,9 +124,9 @@ LABEL_16:
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"_PASDomainSelectionErrorDomain" code:1 userInfo:0];
-          [v4 failWithError:v17];
+          [coderCopy failWithError:v17];
 
-          v16 = 0;
+          selfCopy = 0;
           goto LABEL_13;
         }
 
@@ -145,19 +145,19 @@ LABEL_16:
   }
 
   self = [(_PASDomainSelection *)self _initWithNonOverlappingDomainSet:v10];
-  v16 = self;
+  selfCopy = self;
 LABEL_13:
 
 LABEL_14:
   v18 = *MEMORY[0x1E69E9840];
-  return v16;
+  return selfCopy;
 }
 
-- (BOOL)isEqualToDomainSelection:(id)a3
+- (BOOL)isEqualToDomainSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    return [a3 isEmpty];
+    return [selection isEmpty];
   }
 
   else
@@ -166,24 +166,24 @@ LABEL_14:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_PASDomainSelection *)self isEqualToDomainSelection:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_PASDomainSelection *)self isEqualToDomainSelection:v5];
   }
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 addDomainsFromSelection:self];
@@ -199,13 +199,13 @@ LABEL_14:
     goto LABEL_52;
   }
 
-  v4 = [(_PASDomainSelection *)self allDomains];
-  v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{2 * objc_msgSend(v4, "count")}];
+  allDomains = [(_PASDomainSelection *)self allDomains];
+  v3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{2 * objc_msgSend(allDomains, "count")}];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obj = v4;
+  obj = allDomains;
   v43 = [obj countByEnumeratingWithState:&v58 objects:v62 count:16];
   if (!v43)
   {
@@ -407,53 +407,53 @@ LABEL_52:
   return v3;
 }
 
-- (_PASDomainSelection)initWithDomainsFromSet:(id)a3
+- (_PASDomainSelection)initWithDomainsFromSet:(id)set
 {
-  v4 = a3;
-  if ([v4 count] > 1)
+  setCopy = set;
+  if ([setCopy count] > 1)
   {
-    v6 = objc_opt_new();
-    [(_PASDomainSelection *)v6 addDomainsFromSet:v4];
+    selfCopy = objc_opt_new();
+    [(_PASDomainSelection *)selfCopy addDomainsFromSet:setCopy];
   }
 
   else
   {
-    v5 = [v4 copy];
+    v5 = [setCopy copy];
     self = [(_PASDomainSelection *)self _initWithNonOverlappingDomainSet:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (_PASDomainSelection)initWithDomainsFromArray:(id)a3
+- (_PASDomainSelection)initWithDomainsFromArray:(id)array
 {
-  v4 = a3;
-  if ([v4 count] > 1)
+  arrayCopy = array;
+  if ([arrayCopy count] > 1)
   {
-    v6 = objc_opt_new();
-    [(_PASDomainSelection *)v6 addDomainsFromArray:v4];
+    selfCopy = objc_opt_new();
+    [(_PASDomainSelection *)selfCopy addDomainsFromArray:arrayCopy];
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v4];
+    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:arrayCopy];
 
     self = [(_PASDomainSelection *)self _initWithNonOverlappingDomainSet:v5];
-    v4 = v5;
-    v6 = self;
+    arrayCopy = v5;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (_PASDomainSelection)initWithDomain:(id)a3
+- (_PASDomainSelection)initWithDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v7 = [v4 copy];
+  v7 = [domainCopy copy];
   v8 = [v6 initWithObjects:{v7, 0}];
 
   objc_autoreleasePoolPop(v5);
@@ -462,12 +462,12 @@ LABEL_52:
   return v9;
 }
 
-- (id)_initWithNonOverlappingDomainSet:(id)a3
+- (id)_initWithNonOverlappingDomainSet:(id)set
 {
-  v4 = a3;
-  if ([v4 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    v5 = [[_PASImmutableDomainSelection alloc] _initWithNonOverlappingDomainSet:v4];
+    v5 = [[_PASImmutableDomainSelection alloc] _initWithNonOverlappingDomainSet:setCopy];
   }
 
   else

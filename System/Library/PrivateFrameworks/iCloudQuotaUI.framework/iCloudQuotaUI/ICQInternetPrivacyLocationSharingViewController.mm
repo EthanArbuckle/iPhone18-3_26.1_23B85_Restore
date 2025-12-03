@@ -2,8 +2,8 @@
 - (ICQInternetPrivacyLocationSharingViewController)init;
 - (id)specifiers;
 - (void)_setupNavigationBar;
-- (void)reloadSpecifiersForProvider:(id)a3 oldSpecifiers:(id)a4 animated:(BOOL)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)reloadSpecifiersForProvider:(id)provider oldSpecifiers:(id)specifiers animated:(BOOL)animated;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ICQInternetPrivacyLocationSharingViewController
@@ -25,19 +25,19 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ICQInternetPrivacyLocationSharingViewController;
-  [(ICQInternetPrivacyLocationSharingViewController *)&v4 viewWillAppear:a3];
+  [(ICQInternetPrivacyLocationSharingViewController *)&v4 viewWillAppear:appear];
   [(ICQInternetPrivacyLocationSharingViewController *)self _setupNavigationBar];
 }
 
 - (void)_setupNavigationBar
 {
-  v4 = [(ICQInternetPrivacyLocationSharingViewController *)self navigationItem];
-  v3 = [(ICQInternetPrivacyViewModel *)self->_viewModel IPAddressLocationSettingsTitle];
-  [v4 setTitle:v3];
+  navigationItem = [(ICQInternetPrivacyLocationSharingViewController *)self navigationItem];
+  iPAddressLocationSettingsTitle = [(ICQInternetPrivacyViewModel *)self->_viewModel IPAddressLocationSettingsTitle];
+  [navigationItem setTitle:iPAddressLocationSettingsTitle];
 }
 
 - (id)specifiers
@@ -54,9 +54,9 @@
     }
 
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [(ICQInternetPrivacyLocationSharingViewController *)self specifierProvider];
-    v7 = [v6 specifiers];
-    [v5 addObjectsFromArray:v7];
+    specifierProvider = [(ICQInternetPrivacyLocationSharingViewController *)self specifierProvider];
+    specifiers = [specifierProvider specifiers];
+    [v5 addObjectsFromArray:specifiers];
 
     v8 = *(&self->super.super.super.super.super.isa + v3);
     *(&self->super.super.super.super.super.isa + v3) = v5;
@@ -76,15 +76,15 @@
   return v11;
 }
 
-- (void)reloadSpecifiersForProvider:(id)a3 oldSpecifiers:(id)a4 animated:(BOOL)a5
+- (void)reloadSpecifiersForProvider:(id)provider oldSpecifiers:(id)specifiers animated:(BOOL)animated
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  providerCopy = provider;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v6;
+    v9 = providerCopy;
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "Reloading specifiers for provider %@", &v8, 0xCu);
   }
 

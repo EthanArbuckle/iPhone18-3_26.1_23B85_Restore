@@ -13,78 +13,78 @@
 + (CRLColorFill)redColor;
 + (CRLColorFill)whiteColor;
 + (CRLColorFill)yellowColor;
-+ (id)colorWithCGColor:(CGColor *)a3;
-+ (id)colorWithColor:(id)a3;
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-+ (id)colorWithUIColor:(id)a3;
-+ (id)colorWithWhite:(double)a3 alpha:(double)a4;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)colorWithCGColor:(CGColor *)color;
++ (id)colorWithColor:(id)color;
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
++ (id)colorWithUIColor:(id)color;
++ (id)colorWithWhite:(double)white alpha:(double)alpha;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNearlyWhite;
-- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)a3;
+- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)appearance;
 - (CGColor)CGColor;
-- (CRLColorFill)initWithCGColor:(CGColor *)a3;
-- (CRLColorFill)initWithColor:(id)a3;
-- (CRLColorFill)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (CRLColorFill)initWithUIColor:(id)a3;
-- (CRLColorFill)initWithWhite:(double)a3 alpha:(double)a4;
+- (CRLColorFill)initWithCGColor:(CGColor *)color;
+- (CRLColorFill)initWithColor:(id)color;
+- (CRLColorFill)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (CRLColorFill)initWithUIColor:(id)color;
+- (CRLColorFill)initWithWhite:(double)white alpha:(double)alpha;
 - (UIColor)UIColor;
 - (double)luminance;
 - (double)opacity;
-- (double)p_hsbComponentWithIndex:(unint64_t)a3;
+- (double)p_hsbComponentWithIndex:(unint64_t)index;
 - (id)grayscaleColor;
 - (id)invertedColor;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)applyToRenderable:(id)a3 withScale:(double)a4;
-- (void)i_setColor:(id)a3;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)applyToRenderable:(id)renderable withScale:(double)scale;
+- (void)i_setColor:(id)color;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
 @end
 
 @implementation CRLColorFill
 
-+ (id)colorWithColor:(id)a3
++ (id)colorWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithColor:v4];
+  colorCopy = color;
+  v5 = [[self alloc] initWithColor:colorCopy];
 
   return v5;
 }
 
-+ (id)colorWithCGColor:(CGColor *)a3
++ (id)colorWithCGColor:(CGColor *)color
 {
-  v3 = [[a1 alloc] initWithCGColor:a3];
+  v3 = [[self alloc] initWithCGColor:color];
 
   return v3;
 }
 
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v6 = [[self alloc] initWithRed:red green:green blue:blue alpha:alpha];
 
   return v6;
 }
 
-+ (id)colorWithWhite:(double)a3 alpha:(double)a4
++ (id)colorWithWhite:(double)white alpha:(double)alpha
 {
-  v4 = [[a1 alloc] initWithWhite:a3 alpha:a4];
+  v4 = [[self alloc] initWithWhite:white alpha:alpha];
 
   return v4;
 }
 
-+ (id)colorWithUIColor:(id)a3
++ (id)colorWithUIColor:(id)color
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithUIColor:v4];
+  colorCopy = color;
+  v5 = [[self alloc] initWithUIColor:colorCopy];
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CRLMutableColorFill alloc];
-  v5 = [(CRLColorFill *)self color];
-  v6 = [(CRLColorFill *)v4 initWithColor:v5];
+  color = [(CRLColorFill *)self color];
+  v6 = [(CRLColorFill *)v4 initWithColor:color];
 
   return v6;
 }
@@ -215,12 +215,12 @@
   return v4;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = [CRLColor objectWithItemProviderData:a3 typeIdentifier:a4 error:a5];
+  v6 = [CRLColor objectWithItemProviderData:data typeIdentifier:identifier error:error];
   if (v6)
   {
-    v7 = [[a1 alloc] initWithColor:v6];
+    v7 = [[self alloc] initWithColor:v6];
   }
 
   else
@@ -231,10 +231,10 @@
   return v7;
 }
 
-- (CRLColorFill)initWithColor:(id)a3
+- (CRLColorFill)initWithColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -268,7 +268,7 @@
   v8 = [(CRLColorFill *)&v12 init];
   if (v8)
   {
-    v9 = [v4 copy];
+    v9 = [colorCopy copy];
     color = v8->_color;
     v8->_color = v9;
   }
@@ -276,34 +276,34 @@
   return v8;
 }
 
-- (CRLColorFill)initWithCGColor:(CGColor *)a3
+- (CRLColorFill)initWithCGColor:(CGColor *)color
 {
-  v4 = [CRLColor colorWithCGColor:a3];
+  v4 = [CRLColor colorWithCGColor:color];
   v5 = [(CRLColorFill *)self initWithColor:v4];
 
   return v5;
 }
 
-- (CRLColorFill)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (CRLColorFill)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v7 = [CRLColor colorWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v7 = [CRLColor colorWithRed:red green:green blue:blue alpha:alpha];
   v8 = [(CRLColorFill *)self initWithColor:v7];
 
   return v8;
 }
 
-- (CRLColorFill)initWithWhite:(double)a3 alpha:(double)a4
+- (CRLColorFill)initWithWhite:(double)white alpha:(double)alpha
 {
-  v5 = [CRLColor colorWithWhite:a3 alpha:a4];
+  v5 = [CRLColor colorWithWhite:white alpha:alpha];
   v6 = [(CRLColorFill *)self initWithColor:v5];
 
   return v6;
 }
 
-- (CRLColorFill)initWithUIColor:(id)a3
+- (CRLColorFill)initWithUIColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -332,23 +332,23 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:170 isFatal:0 description:"invalid nil value for '%{public}s'", "uiColor"];
   }
 
-  v8 = [CRLColor colorWithUIColor:v4];
+  v8 = [CRLColor colorWithUIColor:colorCopy];
   v9 = [(CRLColorFill *)self initWithColor:v8];
 
   return v9;
 }
 
-- (void)i_setColor:(id)a3
+- (void)i_setColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   color = self->_color;
   self->_color = v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -356,13 +356,13 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = sub_100014370(v5, v4);
+    v6 = sub_100014370(v5, equalCopy);
     if (v6)
     {
       v7 = v6;
-      v8 = [(CRLColorFill *)self color];
-      v9 = [v7 color];
-      v10 = [v8 isEqual:v9];
+      color = [(CRLColorFill *)self color];
+      color2 = [v7 color];
+      v10 = [color isEqual:color2];
     }
 
     else
@@ -376,65 +376,65 @@
 
 - (UIColor)UIColor
 {
-  v2 = [(CRLColorFill *)self color];
-  v3 = [v2 UIColor];
+  color = [(CRLColorFill *)self color];
+  uIColor = [color UIColor];
 
-  return v3;
+  return uIColor;
 }
 
 - (id)grayscaleColor
 {
-  v2 = [(CRLColorFill *)self color];
-  v3 = [v2 grayscaleColor];
-  v4 = [CRLColorFill colorWithColor:v3];
+  color = [(CRLColorFill *)self color];
+  grayscaleColor = [color grayscaleColor];
+  v4 = [CRLColorFill colorWithColor:grayscaleColor];
 
   return v4;
 }
 
 - (id)invertedColor
 {
-  v2 = [(CRLColorFill *)self color];
-  v3 = [v2 invertedColor];
-  v4 = [CRLColorFill colorWithColor:v3];
+  color = [(CRLColorFill *)self color];
+  invertedColor = [color invertedColor];
+  v4 = [CRLColorFill colorWithColor:invertedColor];
 
   return v4;
 }
 
 - (BOOL)isNearlyWhite
 {
-  v2 = [(CRLColorFill *)self color];
-  v3 = [v2 isNearlyWhite];
+  color = [(CRLColorFill *)self color];
+  isNearlyWhite = [color isNearlyWhite];
 
-  return v3;
+  return isNearlyWhite;
 }
 
-- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)a3
+- (BOOL)requiresOutlineOnBackgroundWithAppearance:(unint64_t)appearance
 {
-  v4 = [(CRLColorFill *)self color];
-  LOBYTE(a3) = [v4 requiresOutlineOnBackgroundWithAppearance:a3];
+  color = [(CRLColorFill *)self color];
+  LOBYTE(appearance) = [color requiresOutlineOnBackgroundWithAppearance:appearance];
 
-  return a3;
+  return appearance;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(CRLColorFill *)self color];
-  [v9 paintRect:a4 inContext:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  color = [(CRLColorFill *)self color];
+  [color paintRect:context inContext:{x, y, width, height}];
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  v6 = [(CRLColorFill *)self color];
-  [v6 paintPath:a3 inContext:a4];
+  color = [(CRLColorFill *)self color];
+  [color paintPath:path inContext:context];
 }
 
-- (void)applyToRenderable:(id)a3 withScale:(double)a4
+- (void)applyToRenderable:(id)renderable withScale:(double)scale
 {
-  v5 = a3;
+  renderableCopy = renderable;
   if (![(CRLColorFill *)self canApplyToRenderable])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -464,38 +464,38 @@
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:259 isFatal:0 description:"Applying color fill with unsupported properties to CRLCanvasRenderable"];
   }
 
-  [v5 setContents:0];
-  v9 = [(CRLColorFill *)self isClear];
-  v10 = 0;
-  if ((v9 & 1) == 0)
+  [renderableCopy setContents:0];
+  isClear = [(CRLColorFill *)self isClear];
+  cGColor = 0;
+  if ((isClear & 1) == 0)
   {
-    v10 = [(CRLColorFill *)self CGColor];
+    cGColor = [(CRLColorFill *)self CGColor];
   }
 
-  [v5 setBackgroundColor:v10];
+  [renderableCopy setBackgroundColor:cGColor];
 }
 
-- (double)p_hsbComponentWithIndex:(unint64_t)a3
+- (double)p_hsbComponentWithIndex:(unint64_t)index
 {
   v4 = [(CRLColorFill *)self color:0];
-  v5 = [v4 UIColor];
-  [v5 getHue:&v7 saturation:&v7 + 8 brightness:&v8 alpha:&v8 + 8];
+  uIColor = [v4 UIColor];
+  [uIColor getHue:&v7 saturation:&v7 + 8 brightness:&v8 alpha:&v8 + 8];
 
-  return *(&v7 + a3);
+  return *(&v7 + index);
 }
 
 - (CGColor)CGColor
 {
-  v2 = [(CRLColorFill *)self color];
-  v3 = [v2 CGColor];
+  color = [(CRLColorFill *)self color];
+  cGColor = [color CGColor];
 
-  return v3;
+  return cGColor;
 }
 
 - (double)opacity
 {
-  v2 = [(CRLColorFill *)self color];
-  [v2 alphaComponent];
+  color = [(CRLColorFill *)self color];
+  [color alphaComponent];
   v4 = v3;
 
   return v4;

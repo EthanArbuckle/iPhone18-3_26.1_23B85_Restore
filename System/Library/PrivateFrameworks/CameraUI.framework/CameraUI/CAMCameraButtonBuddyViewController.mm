@@ -1,9 +1,9 @@
 @interface CAMCameraButtonBuddyViewController
 - (CAMCameraButtonBuddyViewController)init;
 - (CAMCameraButtonBuddyViewControllerDelegate)delegate;
-- (void)cameraButtonBuddyViewControllerDidFinish:(id)a3;
+- (void)cameraButtonBuddyViewControllerDidFinish:(id)finish;
 - (void)composeInterface;
-- (void)loadAssetsWithCompletion:(id)a3;
+- (void)loadAssetsWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -58,65 +58,65 @@ void __49__CAMCameraButtonBuddyViewController_viewDidLoad__block_invoke(uint64_t
 
 - (void)composeInterface
 {
-  v3 = [(CAMCameraButtonBuddyViewController *)self _onboardingManager];
-  v22 = [v3 createViewControllerWithDelegate:self];
+  _onboardingManager = [(CAMCameraButtonBuddyViewController *)self _onboardingManager];
+  v22 = [_onboardingManager createViewControllerWithDelegate:self];
 
-  v4 = [v22 view];
+  view = [v22 view];
   [(CAMCameraButtonBuddyViewController *)self addChildViewController:v22];
-  v5 = [(CAMCameraButtonBuddyViewController *)self view];
-  [v5 addSubview:v4];
+  view2 = [(CAMCameraButtonBuddyViewController *)self view];
+  [view2 addSubview:view];
 
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [v4 topAnchor];
-  v7 = [(CAMCameraButtonBuddyViewController *)self view];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  topAnchor = [view topAnchor];
+  view3 = [(CAMCameraButtonBuddyViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [v4 leadingAnchor];
-  v11 = [(CAMCameraButtonBuddyViewController *)self view];
-  v12 = [v11 leadingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  leadingAnchor = [view leadingAnchor];
+  view4 = [(CAMCameraButtonBuddyViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v13 setActive:1];
 
-  v14 = [v4 trailingAnchor];
-  v15 = [(CAMCameraButtonBuddyViewController *)self view];
-  v16 = [v15 trailingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  trailingAnchor = [view trailingAnchor];
+  view5 = [(CAMCameraButtonBuddyViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v17 setActive:1];
 
-  v18 = [v4 bottomAnchor];
-  v19 = [(CAMCameraButtonBuddyViewController *)self view];
-  v20 = [v19 bottomAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(CAMCameraButtonBuddyViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v21 setActive:1];
 
   [v22 didMoveToParentViewController:self];
   [(CAMCameraButtonBuddyViewController *)self set_contentViewController:v22];
 }
 
-- (void)loadAssetsWithCompletion:(id)a3
+- (void)loadAssetsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAMCameraButtonBuddyViewController *)self _onboardingManager];
-  v6 = [v5 modelLoadingStatus];
+  completionCopy = completion;
+  _onboardingManager = [(CAMCameraButtonBuddyViewController *)self _onboardingManager];
+  modelLoadingStatus = [_onboardingManager modelLoadingStatus];
 
-  if (v6 == 2)
+  if (modelLoadingStatus == 2)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v7 = [(CAMCameraButtonBuddyViewController *)self _onboardingManager];
+    _onboardingManager2 = [(CAMCameraButtonBuddyViewController *)self _onboardingManager];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __63__CAMCameraButtonBuddyViewController_loadAssetsWithCompletion___block_invoke;
     v8[3] = &unk_1E76F85A8;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
-    [v7 createViewModel:v8];
+    v9 = completionCopy;
+    [_onboardingManager2 createViewModel:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -139,10 +139,10 @@ uint64_t __63__CAMCameraButtonBuddyViewController_loadAssetsWithCompletion___blo
   return result;
 }
 
-- (void)cameraButtonBuddyViewControllerDidFinish:(id)a3
+- (void)cameraButtonBuddyViewControllerDidFinish:(id)finish
 {
-  v4 = [(CAMCameraButtonBuddyViewController *)self delegate];
-  [v4 cameraButtonBuddyViewControllerDidFinish:self];
+  delegate = [(CAMCameraButtonBuddyViewController *)self delegate];
+  [delegate cameraButtonBuddyViewControllerDidFinish:self];
 }
 
 - (CAMCameraButtonBuddyViewControllerDelegate)delegate

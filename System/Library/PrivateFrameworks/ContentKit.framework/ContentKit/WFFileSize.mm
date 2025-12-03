@@ -1,33 +1,33 @@
 @interface WFFileSize
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
 - (NSString)formattedString;
-- (WFFileSize)initWithByteCount:(int64_t)a3;
-- (WFFileSize)initWithCoder:(id)a3;
+- (WFFileSize)initWithByteCount:(int64_t)count;
+- (WFFileSize)initWithCoder:(id)coder;
 - (id)wfSerializedRepresentation;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFileSize
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   byteCount = self->_byteCount;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithLongLong:byteCount];
-  [v5 encodeObject:v6 forKey:@"byteCount"];
+  [coderCopy encodeObject:v6 forKey:@"byteCount"];
 }
 
-- (WFFileSize)initWithCoder:(id)a3
+- (WFFileSize)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"byteCount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"byteCount"];
 
-  v6 = [v5 longLongValue];
+  longLongValue = [v5 longLongValue];
 
-  return [(WFFileSize *)self initWithByteCount:v6];
+  return [(WFFileSize *)self initWithByteCount:longLongValue];
 }
 
 - (id)wfSerializedRepresentation
@@ -44,24 +44,24 @@
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  compareCopy = compare;
   v6 = [v4 numberWithLongLong:{-[WFFileSize byteCount](self, "byteCount")}];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v5 byteCount];
+  byteCount = [compareCopy byteCount];
 
-  v9 = [v7 numberWithLongLong:v8];
+  v9 = [v7 numberWithLongLong:byteCount];
   v10 = [v6 compare:v9];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -71,8 +71,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFFileSize *)self byteCount];
-      v6 = v5 == [(WFFileSize *)v4 byteCount];
+      byteCount = [(WFFileSize *)self byteCount];
+      v6 = byteCount == [(WFFileSize *)equalCopy byteCount];
     }
 
     else
@@ -87,12 +87,12 @@
 - (NSString)formattedString
 {
   v2 = MEMORY[0x277CCA8E8];
-  v3 = [(WFFileSize *)self byteCount];
+  byteCount = [(WFFileSize *)self byteCount];
 
-  return [v2 stringFromByteCount:v3 countStyle:0];
+  return [v2 stringFromByteCount:byteCount countStyle:0];
 }
 
-- (WFFileSize)initWithByteCount:(int64_t)a3
+- (WFFileSize)initWithByteCount:(int64_t)count
 {
   v8.receiver = self;
   v8.super_class = WFFileSize;
@@ -100,22 +100,22 @@
   v5 = v4;
   if (v4)
   {
-    v4->_byteCount = a3;
+    v4->_byteCount = count;
     v6 = v4;
   }
 
   return v5;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.filesize"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.filesize"];
 
   v6 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"byteCount"];
-  v7 = [v6 longLongValue];
+  longLongValue = [v6 longLongValue];
 
-  v8 = [[a1 alloc] initWithByteCount:v7];
+  v8 = [[self alloc] initWithByteCount:longLongValue];
 
   return v8;
 }

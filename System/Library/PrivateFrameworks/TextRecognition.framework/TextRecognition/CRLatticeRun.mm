@@ -1,24 +1,24 @@
 @interface CRLatticeRun
 - (CGRect)rect;
-- (CRLatticeRun)initWithRect:(CGRect)a3;
+- (CRLatticeRun)initWithRect:(CGRect)rect;
 @end
 
 @implementation CRLatticeRun
 
-- (CRLatticeRun)initWithRect:(CGRect)a3
+- (CRLatticeRun)initWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11.receiver = self;
   v11.super_class = CRLatticeRun;
   v7 = [(CRLatticeRun *)&v11 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     mutablePaths = v7->_mutablePaths;
-    v7->_mutablePaths = v8;
+    v7->_mutablePaths = array;
 
     v7->_rect.origin.x = x;
     v7->_rect.origin.y = y;

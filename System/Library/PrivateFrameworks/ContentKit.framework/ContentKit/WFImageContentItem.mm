@@ -1,20 +1,20 @@
 @interface WFImageContentItem
 + (id)imageTypes;
-+ (id)itemWithFile:(id)a3 preferredFileType:(id)a4;
-+ (id)itemWithImage:(id)a3 named:(id)a4 preferredFileType:(id)a5;
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)itemWithFile:(id)file preferredFileType:(id)type;
++ (id)itemWithImage:(id)image named:(id)named preferredFileType:(id)type;
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedPasteboardTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
 + (void)initialize;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)canGenerateRepresentationForType:(id)type;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (BOOL)imageIsAnimated;
 - (BOOL)isObjectBacked;
 - (BOOL)isScreenshot;
@@ -22,10 +22,10 @@
 - (CLLocation)location;
 - (WFFileType)preferredFileType;
 - (WFImage)image;
-- (WFImageContentItem)initWithCoder:(id)a3;
+- (WFImageContentItem)initWithCoder:(id)coder;
 - (id)dateTaken;
-- (id)generateImageFileForType:(id)a3 includingMetadata:(BOOL)a4 compressionQuality:(id)a5 error:(id *)a6;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateImageFileForType:(id)type includingMetadata:(BOOL)metadata compressionQuality:(id)quality error:(id *)error;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 - (id)height;
 - (id)imageFile;
 - (id)make;
@@ -33,16 +33,16 @@
 - (id)model;
 - (id)orientation;
 - (id)width;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class;
 @end
 
 @implementation WFImageContentItem
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = MEMORY[0x277CBEB70];
     v3 = objc_opt_class();
@@ -63,43 +63,43 @@
   preferredFileType = self->_preferredFileType;
   if (preferredFileType)
   {
-    v3 = preferredFileType;
+    preferredFileType = preferredFileType;
   }
 
   else if ([(WFImageContentItem *)self imageIsAnimated])
   {
-    v3 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1D88]];
+    preferredFileType = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1D88]];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = WFImageContentItem;
-    v3 = [(WFContentItem *)&v6 preferredFileType];
+    preferredFileType = [(WFContentItem *)&v6 preferredFileType];
   }
 
-  return v3;
+  return preferredFileType;
 }
 
 - (BOOL)imageIsAnimated
 {
   if ([(WFImageContentItem *)self isObjectBacked])
   {
-    v3 = [(WFImageContentItem *)self image];
-    if (![v3 allowsAnimated])
+    image = [(WFImageContentItem *)self image];
+    if (![image allowsAnimated])
     {
       IsAnimatedGIF = 0;
       goto LABEL_8;
     }
 
-    v4 = [v3 data];
+    data = [image data];
   }
 
   else
   {
-    v5 = [(WFContentItem *)self internalRepresentationType];
+    internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
     v6 = *MEMORY[0x277CE1D88];
-    v7 = [v5 conformsToUTType:*MEMORY[0x277CE1D88]];
+    v7 = [internalRepresentationType conformsToUTType:*MEMORY[0x277CE1D88]];
 
     if (!v7)
     {
@@ -107,23 +107,23 @@
     }
 
     v8 = [MEMORY[0x277D79F68] typeWithUTType:v6];
-    v3 = [(WFContentItem *)self fileRepresentationForType:v8];
+    image = [(WFContentItem *)self fileRepresentationForType:v8];
 
-    v4 = [v3 mappedData];
+    data = [image mappedData];
   }
 
-  v9 = v4;
-  IsAnimatedGIF = WFImageDataIsAnimatedGIF(v4);
+  v9 = data;
+  IsAnimatedGIF = WFImageDataIsAnimatedGIF(data);
 
 LABEL_8:
   return IsAnimatedGIF;
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = [MEMORY[0x277D79F68] typeWithString:@"com.ilm.openexr-image"];
-  v6 = [v4 conformsToType:v5];
+  v6 = [typeCopy conformsToType:v5];
 
   if (v6)
   {
@@ -134,37 +134,37 @@ LABEL_8:
   {
     v9.receiver = self;
     v9.super_class = WFImageContentItem;
-    v7 = [(WFGenericFileContentItem *)&v9 canGenerateRepresentationForType:v4];
+    v7 = [(WFGenericFileContentItem *)&v9 canGenerateRepresentationForType:typeCopy];
   }
 
   return v7;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  v8 = a4;
+  optionsCopy = options;
   v9 = [WFObjectType typeWithClassName:@"UIImage" frameworkName:@"UIKit" location:2];
-  v10 = [v9 isEqualToClass:a3];
+  v10 = [v9 isEqualToClass:class];
 
   if (v10)
   {
-    v11 = [(WFImageContentItem *)self image];
-    v12 = [v11 platformImage];
+    image = [(WFImageContentItem *)self image];
+    platformImage = [image platformImage];
 LABEL_3:
-    v13 = [(WFContentItem *)self name];
-    v14 = [WFObjectRepresentation object:v12 named:v13];
+    name = [(WFContentItem *)self name];
+    v14 = [WFObjectRepresentation object:platformImage named:name];
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  if (objc_opt_class() != a3)
+  if (objc_opt_class() != class)
   {
-    if (objc_opt_class() == a3)
+    if (objc_opt_class() == class)
     {
-      v20 = [(WFImageContentItem *)self preferredFileType];
-      v21 = [(WFContentItem *)self getRepresentationsForType:v20 error:a5];
-      v22 = [v21 firstObject];
+      preferredFileType = [(WFImageContentItem *)self preferredFileType];
+      v21 = [(WFContentItem *)self getRepresentationsForType:preferredFileType error:error];
+      firstObject = [v21 firstObject];
 
       v44 = 0;
       v45 = &v44;
@@ -185,28 +185,28 @@ LABEL_4:
       v24 = v23;
       _Block_object_dispose(&v44, 8);
       v25 = [v23 alloc];
-      v26 = [v22 data];
-      v27 = [v22 wfType];
-      v28 = [v27 string];
-      v29 = [v25 initWithData:v26 ofType:v28];
+      data = [firstObject data];
+      wfType = [firstObject wfType];
+      string = [wfType string];
+      v29 = [v25 initWithData:data ofType:string];
 
       v30 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v29];
-      v31 = [v22 wfName];
-      v14 = [WFObjectRepresentation object:v30 named:v31];
+      wfName = [firstObject wfName];
+      v14 = [WFObjectRepresentation object:v30 named:wfName];
     }
 
     else
     {
-      v16 = NSStringFromClass(a3);
+      v16 = NSStringFromClass(class);
       v17 = [@"CLLocation" isEqualToString:v16];
 
       if (v17)
       {
-        v11 = [(WFImageContentItem *)self location];
-        if (v11)
+        image = [(WFImageContentItem *)self location];
+        if (image)
         {
-          v18 = [(WFContentItem *)self name];
-          v14 = [WFObjectRepresentation object:v11 named:v18];
+          name2 = [(WFContentItem *)self name];
+          v14 = [WFObjectRepresentation object:image named:name2];
         }
 
         else
@@ -217,7 +217,7 @@ LABEL_4:
         goto LABEL_4;
       }
 
-      if (objc_opt_class() != a3)
+      if (objc_opt_class() != class)
       {
         v14 = 0;
         goto LABEL_5;
@@ -225,15 +225,15 @@ LABEL_4:
 
       if ([(WFImageContentItem *)self isObjectBacked])
       {
-        v38 = [(WFImageContentItem *)self image];
-        v39 = [v38 PNGRepresentation];
-        v14 = CGImageSourceCreateWithData(v39, 0);
+        image2 = [(WFImageContentItem *)self image];
+        pNGRepresentation = [image2 PNGRepresentation];
+        v14 = CGImageSourceCreateWithData(pNGRepresentation, 0);
       }
 
       else
       {
-        v38 = [(WFImageContentItem *)self imageFile];
-        v14 = WFImageSourceCreateFromFile(v38, 0);
+        image2 = [(WFImageContentItem *)self imageFile];
+        v14 = WFImageSourceCreateFromFile(image2, 0);
       }
 
       if (!v14)
@@ -241,12 +241,12 @@ LABEL_4:
         goto LABEL_5;
       }
 
-      v22 = CGImageSourceCopyPropertiesAtIndex(v14, 0, 0);
+      firstObject = CGImageSourceCopyPropertiesAtIndex(v14, 0, 0);
       CFRelease(v14);
-      if (v22)
+      if (firstObject)
       {
         v41 = WFLocalizedContentPropertyNameMarker(@"Metadata");
-        v14 = [WFObjectRepresentation object:v22 named:v41];
+        v14 = [WFObjectRepresentation object:firstObject named:v41];
       }
 
       else
@@ -261,15 +261,15 @@ LABEL_4:
   if ([(WFImageContentItem *)self isObjectBacked])
   {
     v19 = [WFObjectType typeWithClassName:@"UIImage" frameworkName:@"UIKit" location:2];
-    v11 = -[WFContentItem objectForClass:](self, "objectForClass:", [v19 objectClass]);
+    image = -[WFContentItem objectForClass:](self, "objectForClass:", [v19 objectClass]);
 
-    v12 = [objc_alloc(MEMORY[0x277D79FC8]) initWithPlatformImage:v11];
+    platformImage = [objc_alloc(MEMORY[0x277D79FC8]) initWithPlatformImage:image];
     goto LABEL_3;
   }
 
-  v32 = [(WFImageContentItem *)self imageFile];
+  imageFile = [(WFImageContentItem *)self imageFile];
   v42 = 0;
-  v33 = [v32 mappedDataWithError:&v42];
+  v33 = [imageFile mappedDataWithError:&v42];
   v34 = v42;
   v35 = v34;
   if (v33)
@@ -277,8 +277,8 @@ LABEL_4:
     v36 = [MEMORY[0x277D79FC8] imageWithData:v33];
     if (v36)
     {
-      v37 = [(WFContentItem *)self name];
-      v14 = [WFObjectRepresentation object:v36 named:v37];
+      name3 = [(WFContentItem *)self name];
+      v14 = [WFObjectRepresentation object:v36 named:name3];
     }
 
     else
@@ -291,7 +291,7 @@ LABEL_4:
   {
     v40 = v34;
     v14 = 0;
-    *a5 = v35;
+    *error = v35;
   }
 
 LABEL_5:
@@ -299,11 +299,11 @@ LABEL_5:
   return v14;
 }
 
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = NSStringFromClass(a5);
+  representationCopy = representation;
+  optionsCopy = options;
+  v10 = NSStringFromClass(class);
   v11 = [@"UIPrintFormatter" isEqualToString:v10];
 
   if (v11)
@@ -312,17 +312,17 @@ LABEL_5:
     v14[1] = 3221225472;
     v14[2] = __68__WFImageContentItem_generateObjectRepresentation_options_forClass___block_invoke;
     v14[3] = &unk_278349FC8;
-    v17 = v8;
-    v15 = v9;
-    v16 = self;
+    v17 = representationCopy;
+    v15 = optionsCopy;
+    selfCopy = self;
     v12 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1E08]];
     [(WFContentItem *)self getFileRepresentation:v14 forType:v12];
   }
 
   else
   {
-    v13 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-    (*(v8 + 2))(v8, 0, 0, v13);
+    v13 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+    (*(representationCopy + 2))(representationCopy, 0, 0, v13);
   }
 }
 
@@ -358,25 +358,25 @@ void __68__WFImageContentItem_generateObjectRepresentation_options_forClass___bl
   (*(v3 + 16))(v3, v5, v4, 0);
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v8 conformsToUTType:*MEMORY[0x277CE1DF0]])
+  representationCopy = representation;
+  typeCopy = type;
+  if ([typeCopy conformsToUTType:*MEMORY[0x277CE1DF0]])
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __65__WFImageContentItem_generateFileRepresentation_options_forType___block_invoke;
     v11[3] = &unk_278349F78;
-    v12 = v7;
+    v12 = representationCopy;
     v9 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1D88]];
     [(WFContentItem *)self getFileRepresentation:v11 forType:v9];
   }
 
   else
   {
-    v10 = [objc_opt_class() badCoercionErrorForType:v8];
-    (*(v7 + 2))(v7, 0, v10);
+    v10 = [objc_opt_class() badCoercionErrorForType:typeCopy];
+    (*(representationCopy + 2))(representationCopy, 0, v10);
   }
 }
 
@@ -387,33 +387,33 @@ void __65__WFImageContentItem_generateFileRepresentation_options_forType___block
   v4 = WFGenerateVideoFromGIF(v5, v3, 1, *(a1 + 32));
 }
 
-- (id)generateImageFileForType:(id)a3 includingMetadata:(BOOL)a4 compressionQuality:(id)a5 error:(id *)a6
+- (id)generateImageFileForType:(id)type includingMetadata:(BOOL)metadata compressionQuality:(id)quality error:(id *)error
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  if (!v10 || (v12 = *MEMORY[0x277CE1DB0], ([v10 isEqualToUTType:*MEMORY[0x277CE1DB0]] & 1) != 0) || (objc_msgSend(v10, "utType"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "conformsToType:", v13), v13, v14))
+  metadataCopy = metadata;
+  typeCopy = type;
+  qualityCopy = quality;
+  if (!typeCopy || (v12 = *MEMORY[0x277CE1DB0], ([typeCopy isEqualToUTType:*MEMORY[0x277CE1DB0]] & 1) != 0) || (objc_msgSend(typeCopy, "utType"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "conformsToType:", v13), v13, v14))
   {
-    v15 = [(WFImageContentItem *)self preferredFileType];
+    preferredFileType = [(WFImageContentItem *)self preferredFileType];
 
-    v10 = v15;
+    typeCopy = preferredFileType;
   }
 
-  if (-[WFImageContentItem isObjectBacked](self, "isObjectBacked") && (v16 = *MEMORY[0x277CE1D88], [v10 conformsToUTType:*MEMORY[0x277CE1D88]]) && -[WFImageContentItem imageIsAnimated](self, "imageIsAnimated"))
+  if (-[WFImageContentItem isObjectBacked](self, "isObjectBacked") && (v16 = *MEMORY[0x277CE1D88], [typeCopy conformsToUTType:*MEMORY[0x277CE1D88]]) && -[WFImageContentItem imageIsAnimated](self, "imageIsAnimated"))
   {
-    v17 = [(WFImageContentItem *)self image];
-    v18 = [v17 UIImage];
-    v19 = WFUIImageAnimatedGIFRepresentationAndOptions(v18, 0, a6, 0.0);
+    image = [(WFImageContentItem *)self image];
+    uIImage = [image UIImage];
+    v19 = WFUIImageAnimatedGIFRepresentationAndOptions(uIImage, 0, error, 0.0);
 
     v20 = [MEMORY[0x277D79F68] typeWithUTType:v16];
-    v21 = [(WFContentItem *)self name];
-    v22 = [WFFileRepresentation fileWithData:v19 ofType:v20 proposedFilename:v21];
+    name = [(WFContentItem *)self name];
+    v22 = [WFFileRepresentation fileWithData:v19 ofType:v20 proposedFilename:name];
   }
 
   else
   {
-    v23 = [objc_opt_class() imageTypes];
-    v24 = [v23 containsObject:v10];
+    imageTypes = [objc_opt_class() imageTypes];
+    v24 = [imageTypes containsObject:typeCopy];
 
     if (!v24)
     {
@@ -421,29 +421,29 @@ void __65__WFImageContentItem_generateFileRepresentation_options_forType___block
       goto LABEL_25;
     }
 
-    v25 = [(WFContentItem *)self name];
-    v19 = [WFFileRepresentation proposedFilenameForFile:v25 ofType:v10];
+    name2 = [(WFContentItem *)self name];
+    v19 = [WFFileRepresentation proposedFilenameForFile:name2 ofType:typeCopy];
 
     v20 = [WFTemporaryFileManager createTemporaryFileWithFilename:v19];
-    v26 = [(WFContentItem *)self name];
-    v21 = [WFFileRepresentation fileWithURL:v20 options:1 ofType:v10 proposedFilename:v26];
+    name3 = [(WFContentItem *)self name];
+    name = [WFFileRepresentation fileWithURL:v20 options:1 ofType:typeCopy proposedFilename:name3];
 
-    v27 = [v10 utType];
-    v28 = [v27 identifier];
-    v29 = CGImageDestinationCreateWithURL(v20, v28, 1uLL, 0);
+    utType = [typeCopy utType];
+    identifier = [utType identifier];
+    v29 = CGImageDestinationCreateWithURL(v20, identifier, 1uLL, 0);
 
     if (v29)
     {
-      v30 = [(WFImageContentItem *)self isObjectBacked];
+      isObjectBacked = [(WFImageContentItem *)self isObjectBacked];
       v31 = objc_opt_new();
       v32 = v31;
-      if (v8)
+      if (metadataCopy)
       {
-        v33 = [(WFImageContentItem *)self metadata];
-        [v32 addEntriesFromDictionary:v33];
+        metadata = [(WFImageContentItem *)self metadata];
+        [v32 addEntriesFromDictionary:metadata];
       }
 
-      else if (!v30)
+      else if (!isObjectBacked)
       {
         v34 = *MEMORY[0x277CBEEE8];
         [v31 setObject:*MEMORY[0x277CBEEE8] forKey:*MEMORY[0x277CD3490]];
@@ -464,24 +464,24 @@ void __65__WFImageContentItem_generateFileRepresentation_options_forType___block
         [v32 setObject:v34 forKey:*MEMORY[0x277CD33B0]];
       }
 
-      if (v11)
+      if (qualityCopy)
       {
-        [v32 setObject:v11 forKey:*MEMORY[0x277CD2D48]];
+        [v32 setObject:qualityCopy forKey:*MEMORY[0x277CD2D48]];
       }
 
-      if (v30)
+      if (isObjectBacked)
       {
-        v35 = [(WFImageContentItem *)self image];
-        v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v35, "orientation")}];
+        image2 = [(WFImageContentItem *)self image];
+        v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(image2, "orientation")}];
         [v32 setObject:v36 forKey:*MEMORY[0x277CD3410]];
 
-        CGImageDestinationAddImage(v29, [v35 CGImage], v32);
+        CGImageDestinationAddImage(v29, [image2 CGImage], v32);
       }
 
       else
       {
-        v37 = [(WFImageContentItem *)self imageFile];
-        v38 = WFImageSourceCreateFromFile(v37, 0);
+        imageFile = [(WFImageContentItem *)self imageFile];
+        v38 = WFImageSourceCreateFromFile(imageFile, 0);
 
         if (v38)
         {
@@ -492,9 +492,9 @@ void __65__WFImageContentItem_generateFileRepresentation_options_forType___block
 
       CGImageDestinationFinalize(v29);
       CFRelease(v29);
-      v21 = v21;
+      name = name;
 
-      v22 = v21;
+      v22 = name;
     }
 
     else
@@ -510,8 +510,8 @@ LABEL_25:
 
 - (id)imageFile
 {
-  v3 = [(WFContentItem *)self internalRepresentationType];
-  v4 = [(WFContentItem *)self fileRepresentationForType:v3];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+  v4 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType];
 
   return v4;
 }
@@ -520,15 +520,15 @@ LABEL_25:
 {
   v3 = [WFObjectType typeWithClass:objc_opt_class()];
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
 - (BOOL)isObjectBacked
 {
-  v2 = [(WFContentItem *)self internalRepresentation];
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -552,17 +552,17 @@ LABEL_25:
 {
   if ([(WFImageContentItem *)self isObjectBacked])
   {
-    v3 = [(WFImageContentItem *)self image];
-    v4 = [v3 orientation];
+    image = [(WFImageContentItem *)self image];
+    orientation = [image orientation];
   }
 
   else
   {
-    v3 = [(WFImageContentItem *)self metadata];
-    v4 = WFImageOrientationFromMetadata(v3);
+    image = [(WFImageContentItem *)self metadata];
+    orientation = WFImageOrientationFromMetadata(image);
   }
 
-  v5 = v4;
+  v5 = orientation;
 
   v6 = WFImageStringFromOrientation(v5);
   v7 = v6;
@@ -583,8 +583,8 @@ LABEL_25:
 
 - (CLLocation)location
 {
-  v2 = [(WFImageContentItem *)self metadata];
-  v3 = WFImageLocationTakenFromMetadata(v2);
+  metadata = [(WFImageContentItem *)self metadata];
+  v3 = WFImageLocationTakenFromMetadata(metadata);
 
   return v3;
 }
@@ -607,24 +607,24 @@ LABEL_25:
 
 - (id)model
 {
-  v2 = [(WFImageContentItem *)self metadata];
-  v3 = WFImageModelFromMetadata(v2);
+  metadata = [(WFImageContentItem *)self metadata];
+  v3 = WFImageModelFromMetadata(metadata);
 
   return v3;
 }
 
 - (id)make
 {
-  v2 = [(WFImageContentItem *)self metadata];
-  v3 = WFImageMakeFromMetadata(v2);
+  metadata = [(WFImageContentItem *)self metadata];
+  v3 = WFImageMakeFromMetadata(metadata);
 
   return v3;
 }
 
 - (id)dateTaken
 {
-  v2 = [(WFImageContentItem *)self metadata];
-  v3 = WFImageDateTakenFromMetadata(v2);
+  metadata = [(WFImageContentItem *)self metadata];
+  v3 = WFImageDateTakenFromMetadata(metadata);
 
   return v3;
 }
@@ -633,14 +633,14 @@ LABEL_25:
 {
   if ([(WFImageContentItem *)self isObjectBacked])
   {
-    v3 = [(WFImageContentItem *)self image];
-    [v3 sizeInPixels];
+    image = [(WFImageContentItem *)self image];
+    [image sizeInPixels];
   }
 
   else
   {
-    v3 = [(WFImageContentItem *)self metadata];
-    WFImageSizeFromMetadata(v3);
+    image = [(WFImageContentItem *)self metadata];
+    WFImageSizeFromMetadata(image);
   }
 
   v6 = v4;
@@ -657,62 +657,62 @@ LABEL_25:
 {
   v3 = [WFObjectType typeWithClass:objc_opt_class()];
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = WFImageContentItem;
-  [(WFContentItem *)&v7 encodeWithCoder:v4];
+  [(WFContentItem *)&v7 encodeWithCoder:coderCopy];
   v5 = [@"WFImageContentItem" stringByAppendingString:@"preferredFileType"];
-  [v4 encodeObject:self->_preferredFileType forKey:v5];
+  [coderCopy encodeObject:self->_preferredFileType forKey:v5];
   if (self->_isScreenshot)
   {
     v6 = [@"WFImageContentItem" stringByAppendingString:@"isScreenshot"];
-    [v4 encodeBool:1 forKey:v6];
+    [coderCopy encodeBool:1 forKey:v6];
   }
 }
 
-- (WFImageContentItem)initWithCoder:(id)a3
+- (WFImageContentItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = WFImageContentItem;
-  v5 = [(WFContentItem *)&v12 initWithCoder:v4];
+  v5 = [(WFContentItem *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [@"WFImageContentItem" stringByAppendingString:@"preferredFileType"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:v6];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:v6];
     preferredFileType = v5->_preferredFileType;
     v5->_preferredFileType = v7;
 
     v9 = [@"WFImageContentItem" stringByAppendingString:@"isScreenshot"];
-    v5->_isScreenshot = [v4 decodeBoolForKey:v9];
+    v5->_isScreenshot = [coderCopy decodeBoolForKey:v9];
     v10 = v5;
   }
 
   return v5;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Images", @"Images");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Image (singular)", @"Image");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -747,8 +747,8 @@ LABEL_25:
   v6 = [WFObjectType typeWithClassName:@"UIImage" frameworkName:@"UIKit" location:2];
   [v5 addObject:v6];
 
-  v7 = [a1 imageTypes];
-  [v5 unionOrderedSet:v7];
+  imageTypes = [self imageTypes];
+  [v5 unionOrderedSet:imageTypes];
 
   v8 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1DB0]];
   [v5 addObject:v8];
@@ -775,7 +775,7 @@ LABEL_25:
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Name"];
+  v2 = [self propertyForName:@"Name"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
@@ -907,64 +907,64 @@ void __38__WFImageContentItem_propertyBuilders__block_invoke_2(uint64_t a1, uint
   (a4)[2](v5, v6);
 }
 
-+ (id)itemWithFile:(id)a3 preferredFileType:(id)a4
++ (id)itemWithFile:(id)file preferredFileType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  fileCopy = file;
+  typeCopy = type;
+  if (!fileCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"WFImageContentItem.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"fileRepresentation"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImageContentItem.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"fileRepresentation"}];
   }
 
-  v9 = [a1 itemWithFile:v7];
+  v9 = [self itemWithFile:fileCopy];
   v10 = v9[7];
-  v9[7] = v8;
+  v9[7] = typeCopy;
 
   return v9;
 }
 
-+ (id)itemWithImage:(id)a3 named:(id)a4 preferredFileType:(id)a5
++ (id)itemWithImage:(id)image named:(id)named preferredFileType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  imageCopy = image;
+  namedCopy = named;
+  typeCopy = type;
+  if (!imageCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"WFImageContentItem.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"image"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFImageContentItem.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"image"}];
   }
 
-  v12 = [a1 itemWithObject:v9 named:v10];
+  v12 = [self itemWithObject:imageCopy named:namedCopy];
   v13 = v12[7];
-  v12[7] = v11;
+  v12[7] = typeCopy;
 
   return v12;
 }
 
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  itemCopy = item;
+  namedCopy = named;
+  setCopy = set;
+  identifierCopy = identifier;
   v14 = objc_alloc(MEMORY[0x277CBEB40]);
-  v51 = v10;
-  v15 = [v10 allKeys];
-  v16 = [v14 initWithArray:v15];
+  v51 = itemCopy;
+  allKeys = [itemCopy allKeys];
+  v16 = [v14 initWithArray:allKeys];
 
   v17 = *MEMORY[0x277CE1DA8];
-  v18 = [*MEMORY[0x277CE1DA8] identifier];
-  v19 = [v16 containsObject:v18];
+  identifier = [*MEMORY[0x277CE1DA8] identifier];
+  v19 = [v16 containsObject:identifier];
 
   if (v19)
   {
-    v20 = [v17 identifier];
-    [v16 removeObject:v20];
+    identifier2 = [v17 identifier];
+    [v16 removeObject:identifier2];
 
-    v21 = [v17 identifier];
-    [v16 addObject:v21];
+    identifier3 = [v17 identifier];
+    [v16 addObject:identifier3];
   }
 
   v54 = 0u;
@@ -978,11 +978,11 @@ void __38__WFImageContentItem_propertyBuilders__block_invoke_2(uint64_t a1, uint
     goto LABEL_30;
   }
 
-  v47 = v11;
-  v48 = v13;
-  v46 = v12;
+  v47 = namedCopy;
+  v48 = identifierCopy;
+  v46 = setCopy;
   v23 = *v53;
-  v24 = a1;
+  selfCopy2 = self;
   while (2)
   {
     for (i = 0; i != v22; i = (i + 1))
@@ -994,15 +994,15 @@ void __38__WFImageContentItem_propertyBuilders__block_invoke_2(uint64_t a1, uint
 
       v26 = *(*(&v52 + 1) + 8 * i);
       v27 = [MEMORY[0x277D79F68] typeWithString:{v26, v46}];
-      v28 = [v24 ownedTypes];
-      if ([v28 containsObject:v27])
+      ownedTypes = [selfCopy2 ownedTypes];
+      if ([ownedTypes containsObject:v27])
       {
       }
 
       else
       {
-        v29 = [v24 ownedPasteboardTypes];
-        v30 = [v29 containsObject:v27];
+        ownedPasteboardTypes = [selfCopy2 ownedPasteboardTypes];
+        v30 = [ownedPasteboardTypes containsObject:v27];
 
         if (!v30)
         {
@@ -1017,9 +1017,9 @@ void __38__WFImageContentItem_propertyBuilders__block_invoke_2(uint64_t a1, uint
 
       if (v34)
       {
-        v12 = v46;
-        v11 = v47;
-        v22 = [a1 itemWithObject:v31 named:v47 attributionSet:v46 cachingIdentifier:v13];
+        setCopy = v46;
+        namedCopy = v47;
+        v22 = [self itemWithObject:v31 named:v47 attributionSet:v46 cachingIdentifier:identifierCopy];
         v35 = *MEMORY[0x277CE1DB0];
         if (![v27 conformsToUTType:*MEMORY[0x277CE1DB0]])
         {
@@ -1053,20 +1053,20 @@ LABEL_29:
       {
         v38 = [v51 objectForKey:v26];
         v39 = +[WFApplicationContext sharedContext];
-        v40 = [v39 provider];
+        provider = [v39 provider];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v11 = v47;
+          namedCopy = v47;
           v42 = [WFFileRepresentation proposedFilenameForFile:v47 ofType:v27];
           v43 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:v42];
-          v12 = v46;
+          setCopy = v46;
           if ([v38 writeToURL:v43 atomically:0])
           {
             v44 = [WFFileRepresentation fileWithURL:v43 options:1];
-            v22 = [a1 itemWithFile:v44 attributionSet:v46 cachingIdentifier:v48];
+            v22 = [self itemWithFile:v44 attributionSet:v46 cachingIdentifier:v48];
           }
 
           else
@@ -1074,21 +1074,21 @@ LABEL_29:
             v22 = 0;
           }
 
-          v13 = v48;
+          identifierCopy = v48;
         }
 
         else
         {
-          v11 = v47;
+          namedCopy = v47;
           v42 = [WFFileRepresentation fileWithData:v38 ofType:v27 proposedFilename:v47];
-          v12 = v46;
-          v22 = [a1 itemWithFile:v42 attributionSet:v46 cachingIdentifier:v13];
+          setCopy = v46;
+          v22 = [self itemWithFile:v42 attributionSet:v46 cachingIdentifier:identifierCopy];
         }
 
         goto LABEL_28;
       }
 
-      v24 = a1;
+      selfCopy2 = self;
 LABEL_14:
     }
 
@@ -1101,24 +1101,24 @@ LABEL_14:
     break;
   }
 
-  v12 = v46;
-  v11 = v47;
+  setCopy = v46;
+  namedCopy = v47;
 LABEL_30:
 
   return v22;
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __53__WFImageContentItem_ChooseFromList__getListAltText___block_invoke;
     v7[3] = &unk_278349780;
-    v8 = v4;
+    v8 = textCopy;
     [(WFContentItem *)self getPreferredFileSize:v7];
   }
 
@@ -1139,17 +1139,17 @@ void __53__WFImageContentItem_ChooseFromList__getListAltText___block_invoke(uint
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subtitleCopy = subtitle;
+  v5 = subtitleCopy;
+  if (subtitleCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __54__WFImageContentItem_ChooseFromList__getListSubtitle___block_invoke;
     v7[3] = &unk_278349F78;
-    v8 = v4;
+    v8 = subtitleCopy;
     [(WFContentItem *)self getFileRepresentation:v7 forType:0];
   }
 
@@ -1187,19 +1187,19 @@ void __54__WFImageContentItem_ChooseFromList__getListSubtitle___block_invoke(uin
   }
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  v8 = thumbnailCopy;
+  if (thumbnailCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __63__WFImageContentItem_ChooseFromList__getListThumbnail_forSize___block_invoke;
     v10[3] = &unk_278347B10;
-    v11 = v7;
+    v11 = thumbnailCopy;
     v12 = width;
     v13 = height;
     [(WFContentItem *)self getFileRepresentation:v10 forType:0];

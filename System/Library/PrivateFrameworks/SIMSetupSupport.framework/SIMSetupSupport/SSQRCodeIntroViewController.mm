@@ -1,27 +1,27 @@
 @interface SSQRCodeIntroViewController
-+ (id)getDetail:(id)a3;
-- (SSQRCodeIntroViewController)initWithPlans:(id)a3 withBackButton:(BOOL)a4;
++ (id)getDetail:(id)detail;
+- (SSQRCodeIntroViewController)initWithPlans:(id)plans withBackButton:(BOOL)button;
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)_configureNavigationItem;
-- (void)_laterButtonTapped:(id)a3;
-- (void)_otherButtonTapped:(id)a3;
-- (void)_scanButtonTapped:(id)a3;
+- (void)_laterButtonTapped:(id)tapped;
+- (void)_otherButtonTapped:(id)tapped;
+- (void)_scanButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation SSQRCodeIntroViewController
 
-+ (id)getDetail:(id)a3
++ (id)getDetail:(id)detail
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  detailCopy = detail;
   v4 = [MEMORY[0x277CBEB58] set];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = MEMORY[0x277CBEBF8];
   if (isKindOfClass)
   {
-    v6 = v3;
+    v6 = detailCopy;
   }
 
   v7 = v6;
@@ -50,10 +50,10 @@
           v13 = v12;
           if ([v13 transferCapability] != 15)
           {
-            v14 = [v13 carrierName];
-            if ([v14 length])
+            carrierName = [v13 carrierName];
+            if ([carrierName length])
             {
-              [v4 addObject:v14];
+              [v4 addObject:carrierName];
             }
           }
         }
@@ -69,8 +69,8 @@
   {
     if ([v4 count] == 1)
     {
-      v15 = [v4 allObjects];
-      v16 = [v15 objectAtIndexedSubscript:0];
+      allObjects = [v4 allObjects];
+      v16 = [allObjects objectAtIndexedSubscript:0];
     }
 
     else
@@ -95,24 +95,24 @@
   return v17;
 }
 
-- (SSQRCodeIntroViewController)initWithPlans:(id)a3 withBackButton:(BOOL)a4
+- (SSQRCodeIntroViewController)initWithPlans:(id)plans withBackButton:(BOOL)button
 {
-  v6 = a3;
-  v7 = [v6 filteredPlansForQRCodeBucket];
-  v8 = [v6 filteredPlansForNonQRCodeBucket];
+  plansCopy = plans;
+  filteredPlansForQRCodeBucket = [plansCopy filteredPlansForQRCodeBucket];
+  filteredPlansForNonQRCodeBucket = [plansCopy filteredPlansForNonQRCodeBucket];
 
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"SET_UP_CELLULAR" value:&stru_28753DF48 table:@"Localizable"];
 
-  v11 = [SSQRCodeIntroViewController getDetail:v7];
+  v11 = [SSQRCodeIntroViewController getDetail:filteredPlansForQRCodeBucket];
   v12 = [v11 mutableCopy];
 
-  if ([v8 count])
+  if ([filteredPlansForNonQRCodeBucket count])
   {
     [v12 appendString:@"\n\n"];
     v19 = 0;
     v20 = 0;
-    [v8 getCombinedTitleAndDetailsForNonTransferablePlans:&v20 details:&v19];
+    [filteredPlansForNonQRCodeBucket getCombinedTitleAndDetailsForNonTransferablePlans:&v20 details:&v19];
     v13 = v20;
     v14 = v19;
     [v12 appendString:v14];
@@ -124,7 +124,7 @@
   v16 = v15;
   if (v15)
   {
-    v15->_withBackButton = a4;
+    v15->_withBackButton = button;
   }
 
   return v16;
@@ -138,11 +138,11 @@
   v4 = [v3 localizedStringForKey:@"SCAN_QR_CODE" value:&stru_28753DF48 table:@"Localizable"];
   [v14 setTitle:v4 forState:0];
 
-  v5 = [(SSQRCodeIntroViewController *)self buttonTray];
-  [v5 addButton:v14];
+  buttonTray = [(SSQRCodeIntroViewController *)self buttonTray];
+  [buttonTray addButton:v14];
 
   v6 = +[TSUtilities inBuddy];
-  v7 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = v8;
   if (v6)
@@ -166,11 +166,11 @@
   }
 
   v12 = [v8 localizedStringForKey:v10 value:&stru_28753DF48 table:@"Localizable"];
-  [v7 setTitle:v12 forState:0];
+  [linkButton setTitle:v12 forState:0];
 
-  [v7 addTarget:self action:*v11 forControlEvents:64];
-  v13 = [(SSQRCodeIntroViewController *)self buttonTray];
-  [v13 addButton:v7];
+  [linkButton addTarget:self action:*v11 forControlEvents:64];
+  buttonTray2 = [(SSQRCodeIntroViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 }
 
 - (void)_configureNavigationItem
@@ -183,30 +183,30 @@
 
   else
   {
-    v3 = [(SSQRCodeIntroViewController *)self delegate];
-    [v3 setCancelNavigationBarItems:self];
+    delegate = [(SSQRCodeIntroViewController *)self delegate];
+    [delegate setCancelNavigationBarItems:self];
   }
 }
 
-- (void)_scanButtonTapped:(id)a3
+- (void)_scanButtonTapped:(id)tapped
 {
   self->_isScanButtonTapped = 1;
-  v4 = [(SSQRCodeIntroViewController *)self delegate];
-  [v4 viewControllerDidComplete:self];
+  delegate = [(SSQRCodeIntroViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 }
 
-- (void)_laterButtonTapped:(id)a3
+- (void)_laterButtonTapped:(id)tapped
 {
-  v3 = [(SSQRCodeIntroViewController *)self delegate];
-  [v3 userDidTapCancel];
+  delegate = [(SSQRCodeIntroViewController *)self delegate];
+  [delegate userDidTapCancel];
 }
 
-- (void)_otherButtonTapped:(id)a3
+- (void)_otherButtonTapped:(id)tapped
 {
   self->_isOtherButtonTapped = 1;
   self->_entryPoint = 1;
-  v4 = [(SSQRCodeIntroViewController *)self delegate];
-  [v4 restartWith:self];
+  delegate = [(SSQRCodeIntroViewController *)self delegate];
+  [delegate restartWith:self];
 }
 
 - (TSSIMSetupFlowDelegate)delegate

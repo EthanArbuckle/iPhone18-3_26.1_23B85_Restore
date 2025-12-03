@@ -3,13 +3,13 @@
 - (NSString)description;
 - (id)_currentConfiguration;
 - (void)dealloc;
-- (void)invalidateSceneForReason:(unint64_t)a3 explanation:(id)a4;
-- (void)requestSceneWithConfiguration:(id)a3 completionBlock:(id)a4;
-- (void)scene:(id)a3 clientDidConnect:(id)a4;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)sceneContentStateDidChange:(id)a3;
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4;
-- (void)updateSceneViewWithConfiguration:(id)a3;
+- (void)invalidateSceneForReason:(unint64_t)reason explanation:(id)explanation;
+- (void)requestSceneWithConfiguration:(id)configuration completionBlock:(id)block;
+- (void)scene:(id)scene clientDidConnect:(id)connect;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)sceneContentStateDidChange:(id)change;
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context;
+- (void)updateSceneViewWithConfiguration:(id)configuration;
 @end
 
 @implementation AFUISceneController
@@ -24,8 +24,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(FBScene *)self->_scene identifier];
-  v5 = [v3 stringWithFormat:@"AFUISceneController(%p): <Scene (sceneID: %@, sceneState: %zd) (%@)>", self, v4, -[FBScene contentState](self->_scene, "contentState"), self->_scene];
+  identifier = [(FBScene *)self->_scene identifier];
+  v5 = [v3 stringWithFormat:@"AFUISceneController(%p): <Scene (sceneID: %@, sceneState: %zd) (%@)>", self, identifier, -[FBScene contentState](self->_scene, "contentState"), self->_scene];
 
   return v5;
 }
@@ -42,12 +42,12 @@
   [(AFUISceneController *)&v3 dealloc];
 }
 
-- (void)requestSceneWithConfiguration:(id)a3 completionBlock:(id)a4
+- (void)requestSceneWithConfiguration:(id)configuration completionBlock:(id)block
 {
   v61 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  configurationCopy = configuration;
+  blockCopy = block;
+  if (!blockCopy)
   {
     [AFUISceneController requestSceneWithConfiguration:a2 completionBlock:self];
   }
@@ -56,22 +56,22 @@
   scene = self->_scene;
   if (scene)
   {
-    v11 = [(FBScene *)scene settings];
-    v12 = [v11 displayIdentity];
-    v13 = [v7 sceneParameters];
-    v14 = [v13 settings];
-    v15 = [v14 displayIdentity];
-    v16 = [v12 isEqual:v15];
+    settings = [(FBScene *)scene settings];
+    displayIdentity = [settings displayIdentity];
+    sceneParameters = [configurationCopy sceneParameters];
+    settings2 = [sceneParameters settings];
+    displayIdentity2 = [settings2 displayIdentity];
+    v16 = [displayIdentity isEqual:displayIdentity2];
 
     if ((v16 & 1) == 0)
     {
       v17 = objc_alloc(MEMORY[0x277CCACA8]);
-      v18 = [(FBScene *)*p_scene settings];
-      v19 = [v18 displayIdentity];
-      v20 = [v7 sceneParameters];
-      v21 = [v20 settings];
-      v22 = [v21 displayIdentity];
-      v23 = [v17 initWithFormat:@"#sceneHosting Invalidating scene because displayIdentity changed from %@ to %@ for _scene:%@", v19, v22, 0];
+      settings3 = [(FBScene *)*p_scene settings];
+      displayIdentity3 = [settings3 displayIdentity];
+      sceneParameters2 = [configurationCopy sceneParameters];
+      settings4 = [sceneParameters2 settings];
+      displayIdentity4 = [settings4 displayIdentity];
+      v23 = [v17 initWithFormat:@"#sceneHosting Invalidating scene because displayIdentity changed from %@ to %@ for _scene:%@", displayIdentity3, displayIdentity4, 0];
 
       v24 = *MEMORY[0x277CEF098];
       if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -96,30 +96,30 @@
     {
       v27 = *p_scene;
       v28 = v26;
-      v29 = [(FBScene *)v27 identifier];
+      identifier = [(FBScene *)v27 identifier];
       *buf = 136315650;
       v56 = "[AFUISceneController requestSceneWithConfiguration:completionBlock:]";
       v57 = 2112;
-      v58 = v29;
+      v58 = identifier;
       v59 = 2112;
-      v60 = v7;
+      v60 = configurationCopy;
       _os_log_impl(&dword_241432000, v28, OS_LOG_TYPE_DEFAULT, "%s #sceneHosting Starting scene update for %@ with configuration %@", buf, 0x20u);
     }
   }
 
   else
   {
-    v30 = [v7 sceneDefinition];
-    v31 = [MEMORY[0x277D0AAD8] sharedInstance];
+    sceneDefinition = [configurationCopy sceneDefinition];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __69__AFUISceneController_requestSceneWithConfiguration_completionBlock___block_invoke;
     v52[3] = &unk_278CD6200;
-    v32 = v30;
+    v32 = sceneDefinition;
     v53 = v32;
-    v33 = v7;
+    v33 = configurationCopy;
     v54 = v33;
-    v34 = [v31 createScene:v52];
+    v34 = [mEMORY[0x277D0AAD8] createScene:v52];
 
     [v34 addObserver:self];
     objc_storeStrong(&self->_scene, v34);
@@ -127,11 +127,11 @@
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v36 = v35;
-      v37 = [v34 identifier];
+      identifier2 = [v34 identifier];
       *buf = 136315650;
       v56 = "[AFUISceneController requestSceneWithConfiguration:completionBlock:]";
       v57 = 2112;
-      v58 = v37;
+      v58 = identifier2;
       v59 = 2112;
       v60 = v33;
       _os_log_impl(&dword_241432000, v36, OS_LOG_TYPE_DEFAULT, "%s #sceneHosting Starting scene request for %@ with configuration %@", buf, 0x20u);
@@ -139,14 +139,14 @@
   }
 
   v38 = objc_alloc_init(MEMORY[0x277D0AAA8]);
-  [v38 setLaunchIntent:{objc_msgSend(v7, "launchIntent")}];
+  [v38 setLaunchIntent:{objc_msgSend(configurationCopy, "launchIntent")}];
   objc_initWeak(&location, self);
   v39 = self->_scene;
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __69__AFUISceneController_requestSceneWithConfiguration_completionBlock___block_invoke_78;
   v48[3] = &unk_278CD6228;
-  v40 = v7;
+  v40 = configurationCopy;
   v49 = v40;
   v41 = v38;
   v50 = v41;
@@ -156,7 +156,7 @@
   v44[3] = &unk_278CD6250;
   objc_copyWeak(&v46, &location);
   v47 = v25 == 0;
-  v42 = v8;
+  v42 = blockCopy;
   v45 = v42;
   [(FBScene *)v39 performUpdate:v48 withCompletion:v44];
   v43 = *MEMORY[0x277CEF098];
@@ -270,10 +270,10 @@ void __69__AFUISceneController_requestSceneWithConfiguration_completionBlock___b
   }
 }
 
-- (void)updateSceneViewWithConfiguration:(id)a3
+- (void)updateSceneViewWithConfiguration:(id)configuration
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = MEMORY[0x277CEF098];
   v6 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -284,7 +284,7 @@ void __69__AFUISceneController_requestSceneWithConfiguration_completionBlock___b
     v25 = 2112;
     v26 = scene;
     v27 = 2112;
-    v28 = v4;
+    v28 = configurationCopy;
     _os_log_impl(&dword_241432000, v6, OS_LOG_TYPE_DEFAULT, "%s #sceneHosting updating scene (%@) with configuration %@", buf, 0x20u);
   }
 
@@ -293,8 +293,8 @@ void __69__AFUISceneController_requestSceneWithConfiguration_completionBlock___b
   {
     if ([(FBScene *)v8 isActive])
     {
-      v9 = [(FBScene *)self->_scene settings];
-      v10 = [AFUISceneConfiguration shouldFenceConfigurationChange:v4 fromCurrentSceneSettings:v9];
+      settings = [(FBScene *)self->_scene settings];
+      v10 = [AFUISceneConfiguration shouldFenceConfigurationChange:configurationCopy fromCurrentSceneSettings:settings];
 
       v11 = *v5;
       if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
@@ -313,7 +313,7 @@ void __69__AFUISceneController_requestSceneWithConfiguration_completionBlock___b
       v20[1] = 3221225472;
       v20[2] = __56__AFUISceneController_updateSceneViewWithConfiguration___block_invoke;
       v20[3] = &unk_278CD6278;
-      v21 = v4;
+      v21 = configurationCopy;
       v22 = v10;
       [(FBScene *)v14 performUpdate:v20];
       v15 = v21;
@@ -326,7 +326,7 @@ void __69__AFUISceneController_requestSceneWithConfiguration_completionBlock___b
       v18[1] = 3221225472;
       v18[2] = __56__AFUISceneController_updateSceneViewWithConfiguration___block_invoke_2;
       v18[3] = &unk_278CD61B0;
-      v19 = v4;
+      v19 = configurationCopy;
       [(FBScene *)v17 updateSettings:v18];
       v15 = v19;
     }
@@ -358,38 +358,38 @@ void __56__AFUISceneController_updateSceneViewWithConfiguration___block_invoke(u
   }
 }
 
-- (void)invalidateSceneForReason:(unint64_t)a3 explanation:(id)a4
+- (void)invalidateSceneForReason:(unint64_t)reason explanation:(id)explanation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  explanationCopy = explanation;
   if ([(FBScene *)self->_scene isActive])
   {
-    self->_invalidationReason = a3;
+    self->_invalidationReason = reason;
     v7 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [AFUISceneConfiguration stringForInvalidationReason:a3];
+      v9 = [AFUISceneConfiguration stringForInvalidationReason:reason];
       v16 = 136315650;
       v17 = "[AFUISceneController invalidateSceneForReason:explanation:]";
       v18 = 2112;
       v19 = v9;
       v20 = 2112;
-      v21 = v6;
+      v21 = explanationCopy;
       _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s #xpcSiriApp #sceneHosting %@: %@", &v16, 0x20u);
     }
 
-    v10 = [(AFUISceneController *)self delegate];
-    if (v10)
+    delegate = [(AFUISceneController *)self delegate];
+    if (delegate)
     {
-      v11 = v10;
-      v12 = [(AFUISceneController *)self delegate];
+      v11 = delegate;
+      delegate2 = [(AFUISceneController *)self delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [(AFUISceneController *)self delegate];
-        [v14 sceneController:self willInvalidateScene:self->_scene forReason:self->_invalidationReason];
+        delegate3 = [(AFUISceneController *)self delegate];
+        [delegate3 sceneController:self willInvalidateScene:self->_scene forReason:self->_invalidationReason];
       }
     }
 
@@ -402,115 +402,115 @@ void __56__AFUISceneController_updateSceneViewWithConfiguration___block_invoke(u
 
 - (id)_currentConfiguration
 {
-  v2 = [(AFUISceneController *)self delegate];
-  v3 = [v2 sceneConfigurationForDelegate];
+  delegate = [(AFUISceneController *)self delegate];
+  sceneConfigurationForDelegate = [delegate sceneConfigurationForDelegate];
 
-  return v3;
+  return sceneConfigurationForDelegate;
 }
 
-- (void)sceneContentStateDidChange:(id)a3
+- (void)sceneContentStateDidChange:(id)change
 {
-  v4 = a3;
-  if (self->_scene == v4)
+  changeCopy = change;
+  if (self->_scene == changeCopy)
   {
-    v6 = v4;
-    v5 = [(AFUISceneController *)self delegate];
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+    v6 = changeCopy;
+    delegate = [(AFUISceneController *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v5 sceneController:self sceneContentStateDidChange:v6];
+      [delegate sceneController:self sceneContentStateDidChange:v6];
     }
 
-    v4 = v6;
+    changeCopy = v6;
   }
 }
 
-- (void)sceneDidInvalidate:(id)a3 withContext:(id)a4
+- (void)sceneDidInvalidate:(id)invalidate withContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  invalidateCopy = invalidate;
+  contextCopy = context;
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v12 = 136315394;
     v13 = "[AFUISceneController sceneDidInvalidate:withContext:]";
     v14 = 2112;
-    v15 = v6;
+    v15 = invalidateCopy;
     _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s #sceneHosting scene: %@", &v12, 0x16u);
   }
 
   scene = self->_scene;
-  if (scene == v6)
+  if (scene == invalidateCopy)
   {
     [(FBScene *)scene removeObserver:self];
     v10 = self->_scene;
     self->_scene = 0;
 
-    v11 = [(AFUISceneController *)self delegate];
-    if (v11 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(AFUISceneController *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v11 sceneController:self sceneWasInvalidated:v6 forReason:self->_invalidationReason];
+      [delegate sceneController:self sceneWasInvalidated:invalidateCopy forReason:self->_invalidationReason];
     }
 
     self->_invalidationReason = 0;
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v5 = a3;
-  if (self->_scene == v5)
+  sceneCopy = scene;
+  if (self->_scene == sceneCopy)
   {
-    v9 = v5;
-    v6 = [(FBScene *)v5 uiClientSettings];
+    v9 = sceneCopy;
+    uiClientSettings = [(FBScene *)sceneCopy uiClientSettings];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(FBScene *)v9 uiClientSettings];
+      uiClientSettings2 = [(FBScene *)v9 uiClientSettings];
 
-      v5 = v9;
-      if (!v7)
+      sceneCopy = v9;
+      if (!uiClientSettings2)
       {
         goto LABEL_10;
       }
 
-      v8 = [(AFUISceneController *)self delegate];
-      if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+      delegate = [(AFUISceneController *)self delegate];
+      if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v8 sceneController:self sceneDidUpdateClientSettings:v7];
+        [delegate sceneController:self sceneDidUpdateClientSettings:uiClientSettings2];
       }
     }
 
     else
     {
-      v7 = v6;
+      uiClientSettings2 = uiClientSettings;
     }
 
-    v5 = v9;
+    sceneCopy = v9;
   }
 
 LABEL_10:
 }
 
-- (void)scene:(id)a3 clientDidConnect:(id)a4
+- (void)scene:(id)scene clientDidConnect:(id)connect
 {
-  v6 = a4;
-  if (self->_scene == a3)
+  connectCopy = connect;
+  if (self->_scene == scene)
   {
-    v13 = v6;
-    v7 = [a3 settings];
-    v8 = [v7 isForeground];
+    v13 = connectCopy;
+    settings = [scene settings];
+    isForeground = [settings isForeground];
 
-    v6 = v13;
-    if ((v8 & 1) == 0)
+    connectCopy = v13;
+    if ((isForeground & 1) == 0)
     {
       v9 = objc_alloc(MEMORY[0x277CEEEA8]);
-      v10 = [v13 processHandle];
-      v11 = [v9 initWithPID:objc_msgSend(v10 flags:"pid") reason:13 name:7 withHandler:{@"siri prewarming", &__block_literal_global_4}];
+      processHandle = [v13 processHandle];
+      v11 = [v9 initWithPID:objc_msgSend(processHandle flags:"pid") reason:13 name:7 withHandler:{@"siri prewarming", &__block_literal_global_4}];
       backgroundRunningAssertion = self->_backgroundRunningAssertion;
       self->_backgroundRunningAssertion = v11;
 
-      v6 = v13;
+      connectCopy = v13;
     }
   }
 }

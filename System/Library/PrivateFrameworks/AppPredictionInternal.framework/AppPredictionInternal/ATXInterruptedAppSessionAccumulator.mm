@@ -1,12 +1,12 @@
 @interface ATXInterruptedAppSessionAccumulator
 - (ATXInterruptedAppSessionAccumulator)init;
-- (BOOL)_doesLaunchInterruptPreviousLaunch:(id)a3;
-- (id)_getSummaryMetricForDimensions:(id)a3;
+- (BOOL)_doesLaunchInterruptPreviousLaunch:(id)launch;
+- (id)_getSummaryMetricForDimensions:(id)dimensions;
 - (id)countedSetContainingInterruptingAppBundleIds;
 - (unint64_t)numberOfInterruptingAppSessions;
 - (void)handleEndOfStream;
-- (void)handleNextAppLaunch:(id)a3 dimensionSet:(id)a4;
-- (void)handleNotificationEvent:(id)a3;
+- (void)handleNextAppLaunch:(id)launch dimensionSet:(id)set;
+- (void)handleNotificationEvent:(id)event;
 - (void)logToCoreAnalytics;
 @end
 
@@ -39,83 +39,83 @@
   return v3;
 }
 
-- (void)handleNotificationEvent:(id)a3
+- (void)handleNotificationEvent:(id)event
 {
-  v10 = a3;
-  v4 = [v10 notification];
-  v5 = [v4 bundleID];
-  if (!v5)
+  eventCopy = event;
+  notification = [eventCopy notification];
+  bundleID = [notification bundleID];
+  if (!bundleID)
   {
     goto LABEL_7;
   }
 
-  v6 = v5;
-  if (![v10 eventType])
+  v6 = bundleID;
+  if (![eventCopy eventType])
   {
 
     goto LABEL_6;
   }
 
-  v7 = [v10 eventType];
+  eventType = [eventCopy eventType];
 
-  if (v7 == 16)
+  if (eventType == 16)
   {
 LABEL_6:
     recentNotifications = self->_recentNotifications;
-    v4 = [v10 notification];
-    v9 = [v4 bundleID];
-    [(NSMutableDictionary *)recentNotifications setObject:v10 forKeyedSubscript:v9];
+    notification = [eventCopy notification];
+    bundleID2 = [notification bundleID];
+    [(NSMutableDictionary *)recentNotifications setObject:eventCopy forKeyedSubscript:bundleID2];
 
 LABEL_7:
   }
 }
 
-- (void)handleNextAppLaunch:(id)a3 dimensionSet:(id)a4
+- (void)handleNextAppLaunch:(id)launch dimensionSet:(id)set
 {
-  v22 = a3;
-  v7 = a4;
-  v8 = v7;
+  launchCopy = launch;
+  setCopy = set;
+  v8 = setCopy;
   if (self->_previousLaunch && self->_previousDimensions)
   {
-    v21 = v7;
+    v21 = setCopy;
     v9 = [(ATXInterruptedAppSessionAccumulator *)self _getSummaryMetricForDimensions:?];
     [v9 setTotalAppSessions:{objc_msgSend(v9, "totalAppSessions") + 1}];
-    if ([(ATXInterruptedAppSessionAccumulator *)self _doesLaunchInterruptPreviousLaunch:v22])
+    if ([(ATXInterruptedAppSessionAccumulator *)self _doesLaunchInterruptPreviousLaunch:launchCopy])
     {
       [v9 setInterruptedAppSessions:{objc_msgSend(v9, "interruptedAppSessions") + 1}];
     }
 
-    v10 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionEndTime];
-    v11 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionStartTime];
-    [v10 timeIntervalSinceDate:v11];
+    appSessionEndTime = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionEndTime];
+    appSessionStartTime = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionStartTime];
+    [appSessionEndTime timeIntervalSinceDate:appSessionStartTime];
     v13 = v12;
 
-    v14 = [(ATXInterruptedAppSessionAccumulator *)self _doesLaunchInterruptPreviousLaunch:v22];
+    v14 = [(ATXInterruptedAppSessionAccumulator *)self _doesLaunchInterruptPreviousLaunch:launchCopy];
     v15 = [ATXAppSessionEventMetric alloc];
     previousDimensions = self->_previousDimensions;
-    v17 = [(ATXAppInFocusEventSession *)self->_previousLaunch bundleID];
+    bundleID = [(ATXAppInFocusEventSession *)self->_previousLaunch bundleID];
     if (v14)
     {
-      v18 = [v22 bundleID];
-      v19 = [(ATXAppSessionEventMetric *)v15 initWithDimensions:previousDimensions bundleId:v17 interruptingAppBundleId:v18 duration:v13];
+      bundleID2 = [launchCopy bundleID];
+      v19 = [(ATXAppSessionEventMetric *)v15 initWithDimensions:previousDimensions bundleId:bundleID interruptingAppBundleId:bundleID2 duration:v13];
     }
 
     else
     {
-      v19 = [(ATXAppSessionEventMetric *)v15 initWithDimensions:previousDimensions bundleId:v17 interruptingAppBundleId:0 duration:v13];
+      v19 = [(ATXAppSessionEventMetric *)v15 initWithDimensions:previousDimensions bundleId:bundleID interruptingAppBundleId:0 duration:v13];
     }
 
     v8 = v21;
 
     [(NSMutableArray *)self->_appSessions addObject:v19];
-    objc_storeStrong(&self->_previousLaunch, a3);
-    objc_storeStrong(&self->_previousDimensions, a4);
+    objc_storeStrong(&self->_previousLaunch, launch);
+    objc_storeStrong(&self->_previousDimensions, set);
     [(NSMutableDictionary *)self->_recentNotifications removeAllObjects];
   }
 
   else
   {
-    objc_storeStrong(&self->_previousLaunch, a3);
+    objc_storeStrong(&self->_previousLaunch, launch);
     v20 = v8;
     v9 = self->_previousDimensions;
     self->_previousDimensions = v20;
@@ -130,11 +130,11 @@ LABEL_7:
     [v9 setTotalAppSessions:{objc_msgSend(v9, "totalAppSessions") + 1}];
     v3 = [ATXAppSessionEventMetric alloc];
     previousDimensions = self->_previousDimensions;
-    v5 = [(ATXAppInFocusEventSession *)self->_previousLaunch bundleID];
-    v6 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionEndTime];
-    v7 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionStartTime];
-    [v6 timeIntervalSinceDate:v7];
-    v8 = [(ATXAppSessionEventMetric *)v3 initWithDimensions:previousDimensions bundleId:v5 interruptingAppBundleId:0 duration:?];
+    bundleID = [(ATXAppInFocusEventSession *)self->_previousLaunch bundleID];
+    appSessionEndTime = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionEndTime];
+    appSessionStartTime = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionStartTime];
+    [appSessionEndTime timeIntervalSinceDate:appSessionStartTime];
+    v8 = [(ATXAppSessionEventMetric *)v3 initWithDimensions:previousDimensions bundleId:bundleID interruptingAppBundleId:0 duration:?];
 
     [(NSMutableArray *)self->_appSessions addObject:v8];
   }
@@ -209,12 +209,12 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_doesLaunchInterruptPreviousLaunch:(id)a3
+- (BOOL)_doesLaunchInterruptPreviousLaunch:(id)launch
 {
-  v4 = a3;
-  v5 = [(ATXAppInFocusEventSession *)self->_previousLaunch bundleID];
-  v6 = [v4 bundleID];
-  v7 = [v5 isEqualToString:v6];
+  launchCopy = launch;
+  bundleID = [(ATXAppInFocusEventSession *)self->_previousLaunch bundleID];
+  bundleID2 = [launchCopy bundleID];
+  v7 = [bundleID isEqualToString:bundleID2];
 
   if (v7)
   {
@@ -223,32 +223,32 @@ LABEL_7:
 
   else
   {
-    v9 = [v4 appSessionStartTime];
-    v10 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionEndTime];
-    [v9 timeIntervalSinceDate:v10];
+    appSessionStartTime = [launchCopy appSessionStartTime];
+    appSessionEndTime = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionEndTime];
+    [appSessionStartTime timeIntervalSinceDate:appSessionEndTime];
     v8 = v11 <= 5.0;
   }
 
   recentNotifications = self->_recentNotifications;
-  v13 = [v4 bundleID];
-  v14 = [(NSMutableDictionary *)recentNotifications objectForKeyedSubscript:v13];
+  bundleID3 = [launchCopy bundleID];
+  v14 = [(NSMutableDictionary *)recentNotifications objectForKeyedSubscript:bundleID3];
 
   v15 = 0;
   if (v8 && v14)
   {
-    v16 = [v4 appSessionStartTime];
+    appSessionStartTime2 = [launchCopy appSessionStartTime];
     v17 = MEMORY[0x277CBEAA8];
     [v14 timestamp];
     v18 = [v17 dateWithTimeIntervalSinceReferenceDate:?];
-    [v16 timeIntervalSinceDate:v18];
+    [appSessionStartTime2 timeIntervalSinceDate:v18];
     v20 = v19;
 
     if (v20 <= 30.0)
     {
       v21 = objc_alloc(MEMORY[0x277CCA970]);
-      v22 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionStartTime];
-      v23 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionEndTime];
-      v24 = [v21 initWithStartDate:v22 endDate:v23];
+      appSessionStartTime3 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionStartTime];
+      appSessionEndTime2 = [(ATXAppInFocusEventSession *)self->_previousLaunch appSessionEndTime];
+      v24 = [v21 initWithStartDate:appSessionStartTime3 endDate:appSessionEndTime2];
       v25 = MEMORY[0x277CBEAA8];
       [v14 timestamp];
       v26 = [v25 dateWithTimeIntervalSinceReferenceDate:?];
@@ -264,18 +264,18 @@ LABEL_7:
   return v15;
 }
 
-- (id)_getSummaryMetricForDimensions:(id)a3
+- (id)_getSummaryMetricForDimensions:(id)dimensions
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_summaryMetrics objectForKeyedSubscript:v4];
+  dimensionsCopy = dimensions;
+  v5 = [(NSMutableDictionary *)self->_summaryMetrics objectForKeyedSubscript:dimensionsCopy];
 
   if (!v5)
   {
-    v6 = [[ATXInterruptedAppSessionSummaryMetrics alloc] initWithDimensions:v4];
-    [(NSMutableDictionary *)self->_summaryMetrics setObject:v6 forKeyedSubscript:v4];
+    v6 = [[ATXInterruptedAppSessionSummaryMetrics alloc] initWithDimensions:dimensionsCopy];
+    [(NSMutableDictionary *)self->_summaryMetrics setObject:v6 forKeyedSubscript:dimensionsCopy];
   }
 
-  v7 = [(NSMutableDictionary *)self->_summaryMetrics objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_summaryMetrics objectForKeyedSubscript:dimensionsCopy];
 
   return v7;
 }
@@ -320,12 +320,12 @@ BOOL __70__ATXInterruptedAppSessionAccumulator_numberOfInterruptingAppSessions__
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 interruptingAppBundleId];
+        interruptingAppBundleId = [v9 interruptingAppBundleId];
 
-        if (v10)
+        if (interruptingAppBundleId)
         {
-          v11 = [v9 interruptingAppBundleId];
-          [v3 addObject:v11];
+          interruptingAppBundleId2 = [v9 interruptingAppBundleId];
+          [v3 addObject:interruptingAppBundleId2];
         }
       }
 

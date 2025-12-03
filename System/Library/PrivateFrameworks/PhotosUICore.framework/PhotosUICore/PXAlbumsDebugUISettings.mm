@@ -1,6 +1,6 @@
 @interface PXAlbumsDebugUISettings
 + (PXAlbumsDebugUISettings)sharedInstance;
-+ (id)_predicateValidatorUsingInternalPredicate:(BOOL)a3;
++ (id)_predicateValidatorUsingInternalPredicate:(BOOL)predicate;
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
 @end
@@ -22,13 +22,13 @@
   [(PXAlbumsDebugUISettings *)self setCustomDebugPredicate:0];
 }
 
-+ (id)_predicateValidatorUsingInternalPredicate:(BOOL)a3
++ (id)_predicateValidatorUsingInternalPredicate:(BOOL)predicate
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PXAlbumsDebugUISettings_UI___predicateValidatorUsingInternalPredicate___block_invoke;
   aBlock[3] = &__block_descriptor_33_e28___NSString_16__0__NSString_8l;
-  v7 = a3;
+  predicateCopy = predicate;
   v3 = _Block_copy(aBlock);
   v4 = _Block_copy(v3);
 
@@ -83,21 +83,21 @@ id __73__PXAlbumsDebugUISettings_UI___predicateValidatorUsingInternalPredicate__
   v13 = [v12 condition:v9];
   v29[1] = v13;
   v14 = MEMORY[0x1E69C6628];
-  v15 = [a1 _predicateValidatorUsingInternalPredicate:0];
+  v15 = [self _predicateValidatorUsingInternalPredicate:0];
   v16 = [v14 px_rowWithTitle:@"Predicate" valueKeyPath:@"customDebugPredicate" alertTitle:@"Custom Album" alertMessage:@"Enter a predicate for this album." textPlaceholder:@"Predicate" textValidator:v15 condition:v9];
   v29[2] = v16;
   v17 = MEMORY[0x1E69C6628];
-  v18 = [a1 _predicateValidatorUsingInternalPredicate:1];
+  v18 = [self _predicateValidatorUsingInternalPredicate:1];
   v19 = [v17 px_rowWithTitle:@"Internal Predicate" valueKeyPath:@"customDebugInternalPredicate" alertTitle:@"Custom Album" alertMessage:@"Enter an internal predicate for this album." textPlaceholder:@"Internal Predicate" textValidator:v18 condition:v9];
   v29[3] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
   v21 = [v10 sectionWithRows:v20 title:@"Custom Internal Album"];
 
-  v22 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v23 = MEMORY[0x1E69C6638];
   v28[0] = v27;
   v28[1] = v21;
-  v28[2] = v22;
+  v28[2] = px_restoreDefaultsSection;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
   v25 = [v23 moduleWithTitle:@"Albums Debug UI" contents:v24];
 

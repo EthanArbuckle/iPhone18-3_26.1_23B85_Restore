@@ -1,9 +1,9 @@
 @interface BLSValidWhenBacklightInactiveAttributeEntry
-+ (id)activateForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5 attributeHandler:(id)a6;
++ (id)activateForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service attributeHandler:(id)handler;
 - (BLSAssertionServiceResponding)assertion;
 - (BLSAttribute)attribute;
 - (BLSHAssertionAttributeHandlerService)service;
-- (id)initForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5;
+- (id)initForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service;
 @end
 
 @implementation BLSValidWhenBacklightInactiveAttributeEntry
@@ -15,11 +15,11 @@
   return WeakRetained;
 }
 
-+ (id)activateForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5 attributeHandler:(id)a6
++ (id)activateForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service attributeHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  attributeCopy = attribute;
+  serviceCopy = service;
+  assertionCopy = assertion;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v12 = &off_27841E058;
@@ -28,25 +28,25 @@
     v12 = off_27841DE28;
   }
 
-  v13 = [objc_alloc(*v12) initForAttribute:v8 fromAssertion:v10 forService:v9];
+  v13 = [objc_alloc(*v12) initForAttribute:attributeCopy fromAssertion:assertionCopy forService:serviceCopy];
 
   return v13;
 }
 
-- (id)initForAttribute:(id)a3 fromAssertion:(id)a4 forService:(id)a5
+- (id)initForAttribute:(id)attribute fromAssertion:(id)assertion forService:(id)service
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attributeCopy = attribute;
+  assertionCopy = assertion;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = BLSValidWhenBacklightInactiveAttributeEntry;
   v11 = [(BLSValidWhenBacklightInactiveAttributeEntry *)&v14 init];
   p_isa = &v11->super.isa;
   if (v11)
   {
-    objc_storeWeak(&v11->_attribute, v8);
-    objc_storeWeak(p_isa + 2, v9);
-    objc_storeWeak(p_isa + 3, v10);
+    objc_storeWeak(&v11->_attribute, attributeCopy);
+    objc_storeWeak(p_isa + 2, assertionCopy);
+    objc_storeWeak(p_isa + 3, serviceCopy);
   }
 
   return p_isa;

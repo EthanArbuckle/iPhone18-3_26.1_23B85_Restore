@@ -3,7 +3,7 @@
 - (BOOL)_isIdentity;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation CISmartColorFilter
@@ -106,9 +106,9 @@
   [(CIFilter *)&v3 dealloc];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  if (([a4 isEqualToString:@"inputImage"] & 1) == 0)
+  if (([key isEqualToString:@"inputImage"] & 1) == 0)
   {
 
     self->_cubeImage = 0;
@@ -116,7 +116,7 @@
 
   v7.receiver = self;
   v7.super_class = CISmartColorFilter;
-  [(CISmartColorFilter *)&v7 setValue:a3 forKey:a4];
+  [(CISmartColorFilter *)&v7 setValue:value forKey:key];
 }
 
 - (id)outputImage
@@ -136,18 +136,18 @@ LABEL_19:
     return v8;
   }
 
-  v5 = [(NSNumber *)[(CISmartColorFilter *)self inputUseCube] intValue];
+  intValue = [(NSNumber *)[(CISmartColorFilter *)self inputUseCube] intValue];
   if (CI_SMART_COLOR_USE_CUBE(void)::didCheck != -1)
   {
     [CISmartColorFilter outputImage];
   }
 
-  if ((CI_SMART_COLOR_USE_CUBE(void)::v & 0x80000000) == 0 && (v5 & 0x80000000) == 0)
+  if ((CI_SMART_COLOR_USE_CUBE(void)::v & 0x80000000) == 0 && (intValue & 0x80000000) == 0)
   {
-    v5 = CI_SMART_COLOR_USE_CUBE(void)::v;
+    intValue = CI_SMART_COLOR_USE_CUBE(void)::v;
   }
 
-  if (v5 < 1)
+  if (intValue < 1)
   {
     [(NSNumber *)self->inputVibrancy doubleValue];
     v10 = fmin(fmax(v9, -1.0), 2.0);
@@ -168,24 +168,24 @@ LABEL_19:
         v15 = v10 * 3.0 + 1.0;
       }
 
-      v16 = [result imageByUnpremultiplyingAlpha];
+      imageByUnpremultiplyingAlpha = [result imageByUnpremultiplyingAlpha];
       if (v15 >= 1.0)
       {
-        v17 = [(CISmartColorFilter *)self _kernelV_gt1];
+        _kernelV_gt1 = [(CISmartColorFilter *)self _kernelV_gt1];
       }
 
       else
       {
-        v17 = [(CISmartColorFilter *)self _kernelV_lt1];
+        _kernelV_gt1 = [(CISmartColorFilter *)self _kernelV_lt1];
       }
 
-      v23 = v17;
-      [v16 extent];
+      v23 = _kernelV_gt1;
+      [imageByUnpremultiplyingAlpha extent];
       v25 = v24;
       v27 = v26;
       v29 = v28;
       v31 = v30;
-      v84[0] = v16;
+      v84[0] = imageByUnpremultiplyingAlpha;
       v84[1] = [MEMORY[0x1E696AD98] numberWithDouble:v15];
       result = [objc_msgSend(v23 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v84, 2), v25, v27, v29, v31), "imageByPremultiplyingAlpha"}];
     }
@@ -194,13 +194,13 @@ LABEL_19:
     if (fabs(v12) >= 1.0e-10)
     {
       v33 = v12 + v12;
-      v34 = [result imageByUnpremultiplyingAlpha];
+      imageByUnpremultiplyingAlpha2 = [result imageByUnpremultiplyingAlpha];
       if (v12 + v12 <= 0.0)
       {
         v81 = @"inputAmount";
         v82 = [MEMORY[0x1E696AD98] numberWithDouble:{fmax(v33 / 6.0, -0.4)}];
-        v45 = [v34 imageByApplyingFilter:@"CIVibrance" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v82, &v81, 1)}];
-        v35 = [(CISmartColorFilter *)self _kernelCNeg];
+        v45 = [imageByUnpremultiplyingAlpha2 imageByApplyingFilter:@"CIVibrance" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v82, &v81, 1)}];
+        _kernelCNeg = [(CISmartColorFilter *)self _kernelCNeg];
         [v45 extent];
         v37 = v46;
         v39 = v47;
@@ -213,18 +213,18 @@ LABEL_19:
 
       else
       {
-        v35 = [(CISmartColorFilter *)self _kernelCPos];
-        [v34 extent];
+        _kernelCNeg = [(CISmartColorFilter *)self _kernelCPos];
+        [imageByUnpremultiplyingAlpha2 extent];
         v37 = v36;
         v39 = v38;
         v41 = v40;
         v43 = v42;
-        v83[0] = v34;
+        v83[0] = imageByUnpremultiplyingAlpha2;
         v83[1] = [MEMORY[0x1E696AD98] numberWithDouble:v12 + v12];
         v44 = v83;
       }
 
-      result = [objc_msgSend(v35 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v44, 2), v37, v39, v41, v43), "imageByPremultiplyingAlpha"}];
+      result = [objc_msgSend(_kernelCNeg applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v44, 2), v37, v39, v41, v43), "imageByPremultiplyingAlpha"}];
     }
 
     if (fabs(v32) < 1.0e-10)
@@ -263,14 +263,14 @@ LABEL_43:
 LABEL_49:
         v65 = v54.f64[1];
         v66 = v54.f64[0];
-        v67 = [result imageByUnpremultiplyingAlpha];
-        v68 = [(CISmartColorFilter *)self _kernelCast];
-        [v67 extent];
+        imageByUnpremultiplyingAlpha3 = [result imageByUnpremultiplyingAlpha];
+        _kernelCast = [(CISmartColorFilter *)self _kernelCast];
+        [imageByUnpremultiplyingAlpha3 extent];
         v70 = v69;
         v72 = v71;
         v74 = v73;
         v76 = v75;
-        v79[0] = v67;
+        v79[0] = imageByUnpremultiplyingAlpha3;
         v79[1] = &unk_1F1084B08;
         *&v69 = v66;
         v79[2] = [MEMORY[0x1E696AD98] numberWithFloat:v69];
@@ -278,7 +278,7 @@ LABEL_49:
         v79[3] = [MEMORY[0x1E696AD98] numberWithFloat:v77];
         *&v78 = v55;
         v79[4] = [MEMORY[0x1E696AD98] numberWithFloat:v78];
-        return [objc_msgSend(v68 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v79, 5), v70, v72, v74, v76), "imageByPremultiplyingAlpha"}];
+        return [objc_msgSend(_kernelCast applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v79, 5), v70, v72, v74, v76), "imageByPremultiplyingAlpha"}];
       }
 
       v58 = v32 + -0.5 + v32 + -0.5;
@@ -294,17 +294,17 @@ LABEL_49:
     goto LABEL_49;
   }
 
-  if (v5 >= 0x20)
+  if (intValue >= 0x20)
   {
     v6 = 32;
   }
 
   else
   {
-    v6 = v5;
+    v6 = intValue;
   }
 
-  if (v5 == 1)
+  if (intValue == 1)
   {
     v7 = 32;
   }
@@ -328,10 +328,10 @@ LABEL_49:
   v85 = v18;
   v20 = [v19 createColorCubeDataForFilters:objc_msgSend(MEMORY[0x1E695DEC8] dimension:{"arrayWithObjects:count:", &v85, 1), v7}];
 
-  v21 = [(CISmartColorFilter *)self inputUseCubeColorSpace];
-  if (v21)
+  inputUseCubeColorSpace = [(CISmartColorFilter *)self inputUseCubeColorSpace];
+  if (inputUseCubeColorSpace)
   {
-    DeviceRGB = CGColorSpaceRetain(v21);
+    DeviceRGB = CGColorSpaceRetain(inputUseCubeColorSpace);
   }
 
   else

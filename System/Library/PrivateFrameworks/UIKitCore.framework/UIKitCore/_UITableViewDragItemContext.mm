@@ -1,22 +1,22 @@
 @interface _UITableViewDragItemContext
 - (UITableView)tableView;
-- (_UITableViewDragItemContext)initWithIndexPath:(id)a3 forTableView:(id)a4;
+- (_UITableViewDragItemContext)initWithIndexPath:(id)path forTableView:(id)view;
 @end
 
 @implementation _UITableViewDragItemContext
 
-- (_UITableViewDragItemContext)initWithIndexPath:(id)a3 forTableView:(id)a4
+- (_UITableViewDragItemContext)initWithIndexPath:(id)path forTableView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = _UITableViewDragItemContext;
   v9 = [(_UITableViewDragItemContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_tableView, v8);
-    objc_storeStrong(&v10->_indexPath, a3);
+    objc_storeWeak(&v9->_tableView, viewCopy);
+    objc_storeStrong(&v10->_indexPath, path);
   }
 
   return v10;

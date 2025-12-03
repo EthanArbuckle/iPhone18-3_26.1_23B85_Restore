@@ -1,14 +1,14 @@
 @interface SKGPhoneEdge
-+ (id)edgeFromPhone:(id)a3 toNode:(id)a4;
++ (id)edgeFromPhone:(id)phone toNode:(id)node;
 @end
 
 @implementation SKGPhoneEdge
 
-+ (id)edgeFromPhone:(id)a3 toNode:(id)a4
++ (id)edgeFromPhone:(id)phone toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGPhoneEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  phoneCopy = phone;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGPhoneEdge alloc] initWithSourceNode:phoneCopy targetNode:nodeCopy];
 
   return v7;
 }

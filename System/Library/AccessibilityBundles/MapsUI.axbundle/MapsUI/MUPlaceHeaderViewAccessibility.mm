@@ -1,5 +1,5 @@
 @interface MUPlaceHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)automationElements;
 - (unint64_t)accessibilityTraits;
@@ -7,18 +7,18 @@
 
 @implementation MUPlaceHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_titleLabel" withType:"MUFadingMarqueeLabel"];
-  [v3 validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_secondaryTitleLabel" withType:"UILabel"];
-  [v3 validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_verifiedLabel" withType:"UILabel"];
-  [v3 validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_containmentLabel" withType:"MULinkView"];
-  [v3 validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_heroImageView" withType:"MUImageView"];
-  [v3 validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_transitInfoLabelView" withType:"MKTransitInfoLabelView"];
-  [v3 validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_verifiedBusinessCoverPhotoImageView" withType:"MUPlaceHeaderCoverPhotoView"];
-  [v3 validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_verifiedBusinessLogoImageView" withType:"MUVerifiedLogoImageView"];
-  [v3 validateClass:@"MUCardButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_titleLabel" withType:"MUFadingMarqueeLabel"];
+  [validationsCopy validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_secondaryTitleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_verifiedLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_containmentLabel" withType:"MULinkView"];
+  [validationsCopy validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_heroImageView" withType:"MUImageView"];
+  [validationsCopy validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_transitInfoLabelView" withType:"MKTransitInfoLabelView"];
+  [validationsCopy validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_verifiedBusinessCoverPhotoImageView" withType:"MUPlaceHeaderCoverPhotoView"];
+  [validationsCopy validateClass:@"MUPlaceHeaderView" hasInstanceVariable:@"_verifiedBusinessLogoImageView" withType:"MUVerifiedLogoImageView"];
+  [validationsCopy validateClass:@"MUCardButton"];
 }
 
 - (unint64_t)accessibilityTraits

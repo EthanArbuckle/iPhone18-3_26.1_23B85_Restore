@@ -1,18 +1,18 @@
 @interface LSSPerformanceTestProvider
-- (LSSPerformanceTestProvider)initWithQueue:(id)a3 delegate:(id)a4;
+- (LSSPerformanceTestProvider)initWithQueue:(id)queue delegate:(id)delegate;
 - (LSSProviderDelegate)delegate;
 - (void)invalidate;
 @end
 
 @implementation LSSPerformanceTestProvider
 
-- (LSSPerformanceTestProvider)initWithQueue:(id)a3 delegate:(id)a4
+- (LSSPerformanceTestProvider)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   if (!LSSHasInternalUI())
   {
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -27,12 +27,12 @@
       if (!os_log_type_enabled(_MergedGlobals_8, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_6:
-        objc_storeStrong(v9 + 1, a3);
+        objc_storeStrong(v9 + 1, queue);
         v11 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(v9 + 1));
         v12 = *(v9 + 2);
         *(v9 + 2) = v11;
 
-        objc_storeWeak(v9 + 3, v8);
+        objc_storeWeak(v9 + 3, delegateCopy);
         v13 = LSSMediaTime();
         objc_initWeak(buf, v9);
         v14 = +[LSSSettings currentSettings];
@@ -75,10 +75,10 @@ LABEL_6:
 
 LABEL_7:
   self = v9;
-  v19 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v19;
+  return selfCopy;
 }
 
 void __53__LSSPerformanceTestProvider_initWithQueue_delegate___block_invoke(uint64_t a1)

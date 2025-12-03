@@ -1,40 +1,40 @@
 @interface BWStereoFusionNode
-- (id)_initWithTelephotoSensorIDDictionary:(id)a3 cameraInfoByPortType:(id)a4 sbpCreationFunction:(void *)a5 treatSoftErrorsAsHardErrors:(BOOL)a6;
-- (uint64_t)_processSampleBufferInSampleBufferProcessor:(void *)a3 metadataDictionary:;
+- (id)_initWithTelephotoSensorIDDictionary:(id)dictionary cameraInfoByPortType:(id)type sbpCreationFunction:(void *)function treatSoftErrorsAsHardErrors:(BOOL)errors;
+- (uint64_t)_processSampleBufferInSampleBufferProcessor:(void *)processor metadataDictionary:;
 - (uint64_t)_processSequenceInSampleBufferProcessor;
 - (uint64_t)_receivedExpectedNumberOfFramesOrErrors;
-- (uint64_t)_sampleBufferProcessorOutputReady:(const void *)a3 sampleBuffer:;
+- (uint64_t)_sampleBufferProcessorOutputReady:(const void *)ready sampleBuffer:;
 - (uint64_t)_setExpectedInputFramesWithResolvedCaptureSettings:(uint64_t)result;
-- (uint64_t)_setPropertyOnSampleBufferProcessorWithKey:(uint64_t)a3 value:;
+- (uint64_t)_setPropertyOnSampleBufferProcessorWithKey:(uint64_t)key value:;
 - (uint64_t)_setupSampleBufferProcessor;
 - (uint64_t)sbpOptionsDictionary;
 - (void)_clearCaptureRequestState;
 - (void)_endSequence;
-- (void)_handleError:(uint64_t)a3 forSampleBuffer:(uint64_t)a4 input:(uint64_t)a5 metadata:;
-- (void)_setZoomRectangleOnSampleBufferProcessorIfNecessaryBasedOnMetadata:(uint64_t)a1 captureType:(void *)a2;
-- (void)_setZoomRectangleOnSampleBufferProcessorWithRectangle:(double)a3;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_handleError:(uint64_t)error forSampleBuffer:(uint64_t)buffer input:(uint64_t)input metadata:;
+- (void)_setZoomRectangleOnSampleBufferProcessorIfNecessaryBasedOnMetadata:(uint64_t)metadata captureType:(void *)type;
+- (void)_setZoomRectangleOnSampleBufferProcessorWithRectangle:(double)rectangle;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStereoFusionNode
 
-- (id)_initWithTelephotoSensorIDDictionary:(id)a3 cameraInfoByPortType:(id)a4 sbpCreationFunction:(void *)a5 treatSoftErrorsAsHardErrors:(BOOL)a6
+- (id)_initWithTelephotoSensorIDDictionary:(id)dictionary cameraInfoByPortType:(id)type sbpCreationFunction:(void *)function treatSoftErrorsAsHardErrors:(BOOL)errors
 {
   v16.receiver = self;
   v16.super_class = BWStereoFusionNode;
-  v9 = [(BWNode *)&v16 init:a3];
+  v9 = [(BWNode *)&v16 init:dictionary];
   v10 = v9;
   if (v9)
   {
-    v9->_createSampleBufferProcessorFunction = a5;
-    v9->_telephotoSensorIDDictionary = a3;
-    v10->_cameraInfoByPortType = [a4 copy];
+    v9->_createSampleBufferProcessorFunction = function;
+    v9->_telephotoSensorIDDictionary = dictionary;
+    v10->_cameraInfoByPortType = [type copy];
     v10->_wideInput = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v10 index:0];
     v11 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWVideoFormatRequirements *)v11 setSupportedPixelFormats:&unk_1F2248AF0];
@@ -115,17 +115,17 @@
   [(BWNode *)&v9 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   v6 = objc_alloc_init(BWVideoFormatRequirements);
-  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a3, "pixelFormat")}];
+  v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(format, "pixelFormat")}];
   -[BWVideoFormatRequirements setSupportedPixelFormats:](v6, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1]);
-  -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [a3 width]);
-  -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", [a3 height]);
+  -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", [format width]);
+  -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", [format height]);
   [(BWVideoFormatRequirements *)v6 setSupportedCacheModes:+[BWVideoFormatRequirements cacheModesForOptimizedHWAccess]];
-  if ([a3 colorSpaceProperties])
+  if ([format colorSpaceProperties])
   {
-    v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a3, "colorSpaceProperties")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(format, "colorSpaceProperties")}];
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
   }
 
@@ -139,8 +139,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(BWNode *)self outputs];
-  v9 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v13 count:16];
+  outputs = [(BWNode *)self outputs];
+  v9 = [(NSArray *)outputs countByEnumeratingWithState:&v14 objects:v13 count:16];
   if (v9)
   {
     v10 = v9;
@@ -152,14 +152,14 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(outputs);
         }
 
         [*(*(&v14 + 1) + 8 * v12++) setFormatRequirements:v6];
       }
 
       while (v10 != v12);
-      v10 = [(NSArray *)v8 countByEnumeratingWithState:&v14 objects:v13 count:16];
+      v10 = [(NSArray *)outputs countByEnumeratingWithState:&v14 objects:v13 count:16];
     }
 
     while (v10);
@@ -175,8 +175,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(BWNode *)self inputs];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  inputs = [(BWNode *)self inputs];
+  v4 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -187,7 +187,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inputs);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -197,7 +197,7 @@
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [(NSArray *)inputs countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);
@@ -212,16 +212,16 @@
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([(BWNode *)self allInputsHaveReachedState:1, a4, a5])
+  if ([(BWNode *)self allInputsHaveReachedState:1, format, input])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(BWNode *)self outputs];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    outputs = [(BWNode *)self outputs];
+    v7 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
     if (v7)
     {
       v8 = v7;
@@ -233,14 +233,14 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v12 + 1) + 8 * v10++) makeConfiguredFormatLive];
         }
 
         while (v8 != v10);
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v12 objects:v11 count:16];
+        v8 = [(NSArray *)outputs countByEnumeratingWithState:&v12 objects:v11 count:16];
       }
 
       while (v8);
@@ -248,7 +248,7 @@
   }
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   if ([(BWNode *)self allInputsHaveReachedState:0])
   {
@@ -256,8 +256,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(BWNode *)self outputs];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+    outputs = [(BWNode *)self outputs];
+    v5 = [(NSArray *)outputs countByEnumeratingWithState:&v10 objects:v9 count:16];
     if (v5)
     {
       v6 = v5;
@@ -269,14 +269,14 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(outputs);
           }
 
           [*(*(&v10 + 1) + 8 * v8++) markEndOfLiveOutput];
         }
 
         while (v6 != v8);
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v10 objects:v9 count:16];
+        v6 = [(NSArray *)outputs countByEnumeratingWithState:&v10 objects:v9 count:16];
       }
 
       while (v6);
@@ -284,9 +284,9 @@
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
-  if (self->_wideInput == a4)
+  if (self->_wideInput == input)
   {
     v6 = 224;
   }
@@ -304,8 +304,8 @@
     *v7 = v8;
   }
 
-  [v8 addObject:a3];
-  if ((self->_currentStillImageSettings || ([(BWStereoFusionNode *)a3 handleNodeError:self forInput:?]& 1) != 0) && [(BWStereoFusionNode *)self _receivedExpectedNumberOfFramesOrErrors])
+  [v8 addObject:error];
+  if ((self->_currentStillImageSettings || ([(BWStereoFusionNode *)error handleNodeError:self forInput:?]& 1) != 0) && [(BWStereoFusionNode *)self _receivedExpectedNumberOfFramesOrErrors])
   {
 
     [(BWStereoFusionNode *)self _endSequence];
@@ -314,34 +314,34 @@
 
 - (void)_clearCaptureRequestState
 {
-  if (a1)
+  if (self)
   {
 
-    *(a1 + 160) = 0;
-    *(a1 + 200) = 0;
-    *(a1 + 201) = 0;
-    *(a1 + 202) = 0;
-    *(a1 + 203) = 0;
-    *(a1 + 204) = 0;
+    *(self + 160) = 0;
+    *(self + 200) = 0;
+    *(self + 201) = 0;
+    *(self + 202) = 0;
+    *(self + 203) = 0;
+    *(self + 204) = 0;
 
-    *(a1 + 208) = 0;
-    *(a1 + 216) = 0;
+    *(self + 208) = 0;
+    *(self + 216) = 0;
 
-    *(a1 + 224) = 0;
-    *(a1 + 232) = 0;
+    *(self + 224) = 0;
+    *(self + 232) = 0;
   }
 }
 
 - (uint64_t)_setupSampleBufferProcessor
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v9 = 0;
-  v2 = [(BWStereoFusionNode *)a1 sbpOptionsDictionary];
-  if (!v2 || (v3 = *(a1 + 128)) == 0)
+  sbpOptionsDictionary = [(BWStereoFusionNode *)self sbpOptionsDictionary];
+  if (!sbpOptionsDictionary || (v3 = *(self + 128)) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_2_33();
@@ -349,7 +349,7 @@
     return 0;
   }
 
-  v4 = v3(*MEMORY[0x1E695E480], @"StereoFusion", v2, &v9);
+  v4 = v3(*MEMORY[0x1E695E480], @"StereoFusion", sbpOptionsDictionary, &v9);
   if (v4)
   {
     v7 = v4;
@@ -361,11 +361,11 @@
   else
   {
     v5 = v9;
-    *(a1 + 136) = v9;
+    *(self + 136) = v9;
     v6 = *(*(CMBaseObjectGetVTable() + 16) + 8);
     if (v6)
     {
-      return v6(v5, sfn_processorOutputReadyCallback, a1);
+      return v6(v5, sfn_processorOutputReadyCallback, self);
     }
 
     else
@@ -377,9 +377,9 @@
   return v7;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (!a3)
+  if (!buffer)
   {
     FigCaptureGetFrameworkRadarComponent();
     v19 = OUTLINED_FUNCTION_2_67();
@@ -410,7 +410,7 @@
     goto LABEL_47;
   }
 
-  v10 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v10 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v10)
   {
     FigCaptureGetFrameworkRadarComponent();
@@ -444,7 +444,7 @@ LABEL_47:
     v11 = 0;
 LABEL_52:
     free(v4);
-    [(BWStereoFusionNode *)self _handleError:v49 forSampleBuffer:a4 input:v11 metadata:?];
+    [(BWStereoFusionNode *)self _handleError:v49 forSampleBuffer:input input:v11 metadata:?];
     goto LABEL_20;
   }
 
@@ -483,7 +483,7 @@ LABEL_52:
   }
 
   v13 = v12;
-  v14 = CMGetAttachment(a3, @"StillSettings", 0);
+  v14 = CMGetAttachment(buffer, @"StillSettings", 0);
   if (!v14)
   {
     FigCaptureGetFrameworkRadarComponent();
@@ -522,8 +522,8 @@ LABEL_52:
     goto LABEL_9;
   }
 
-  v16 = [v14 settingsID];
-  if (v16 != [(BWStillImageSettings *)self->_currentStillImageSettings settingsID])
+  settingsID = [v14 settingsID];
+  if (settingsID != [(BWStillImageSettings *)self->_currentStillImageSettings settingsID])
   {
     [(BWStereoFusionNode *)self _setPropertyOnSampleBufferProcessorWithKey:*MEMORY[0x1E695E4D0] value:?];
     [(BWStereoFusionNode *)self _clearCaptureRequestState];
@@ -539,10 +539,10 @@ LABEL_9:
 
   if (((self->_masterInput == 0) & v13) == 1)
   {
-    self->_masterInput = a4;
+    self->_masterInput = input;
   }
 
-  if (self->_wideInput == a4)
+  if (self->_wideInput == input)
   {
     p_receivedWideFrame = &self->_receivedWideFrame;
     if (self->_receivedWideFrame)
@@ -563,12 +563,12 @@ LABEL_9:
   *p_receivedWideFrame = 1;
   if (self->_performSBPProcessing)
   {
-    [(BWStereoFusionNode *)self _processSampleBufferInSampleBufferProcessor:a3 metadataDictionary:v11];
+    [(BWStereoFusionNode *)self _processSampleBufferInSampleBufferProcessor:buffer metadataDictionary:v11];
   }
 
   else if ([objc_msgSend(v15 "requestedSettings")])
   {
-    [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+    [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
   }
 
 LABEL_20:
@@ -578,7 +578,7 @@ LABEL_20:
   }
 }
 
-- (uint64_t)_setPropertyOnSampleBufferProcessorWithKey:(uint64_t)a3 value:
+- (uint64_t)_setPropertyOnSampleBufferProcessorWithKey:(uint64_t)key value:
 {
   if (result)
   {
@@ -587,7 +587,7 @@ LABEL_20:
     if (v6)
     {
 
-      return v6(FigBaseObject, a2, a3);
+      return v6(FigBaseObject, a2, key);
     }
 
     else
@@ -615,13 +615,13 @@ LABEL_20:
   return result;
 }
 
-- (uint64_t)_processSampleBufferInSampleBufferProcessor:(void *)a3 metadataDictionary:
+- (uint64_t)_processSampleBufferInSampleBufferProcessor:(void *)processor metadataDictionary:
 {
   if (result)
   {
     v5 = result;
     [objc_msgSend(*(result + 160) "captureSettings")];
-    [BWStereoFusionNode _setZoomRectangleOnSampleBufferProcessorIfNecessaryBasedOnMetadata:v5 captureType:a3];
+    [BWStereoFusionNode _setZoomRectangleOnSampleBufferProcessorIfNecessaryBasedOnMetadata:v5 captureType:processor];
     v6 = *(v5 + 136);
     VTable = CMBaseObjectGetVTable();
     v8 = *(VTable + 16);
@@ -637,13 +637,13 @@ LABEL_20:
   return result;
 }
 
-- (void)_handleError:(uint64_t)a3 forSampleBuffer:(uint64_t)a4 input:(uint64_t)a5 metadata:
+- (void)_handleError:(uint64_t)error forSampleBuffer:(uint64_t)buffer input:(uint64_t)input metadata:
 {
-  if (a1)
+  if (self)
   {
-    v7 = [BWNodeError newError:a2 sourceNode:a1 stillImageSettings:*(a1 + 160) metadata:a5];
+    v7 = [BWNodeError newError:a2 sourceNode:self stillImageSettings:*(self + 160) metadata:input];
     v10 = v7;
-    if (*(a1 + 168) == a4)
+    if (*(self + 168) == buffer)
     {
       v8 = &OBJC_IVAR___BWStereoFusionNode__nodeErrorsForWide;
     }
@@ -653,11 +653,11 @@ LABEL_20:
       v8 = &OBJC_IVAR___BWStereoFusionNode__nodeErrorsForTelephoto;
     }
 
-    v9 = *(a1 + *v8);
+    v9 = *(self + *v8);
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      *(a1 + *v8) = v9;
+      *(self + *v8) = v9;
       v7 = v10;
     }
 
@@ -667,20 +667,20 @@ LABEL_20:
 
 - (uint64_t)_receivedExpectedNumberOfFramesOrErrors
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (!*(a1 + 160))
+  if (!*(self + 160))
   {
     return 1;
   }
 
-  v2 = *(a1 + 200) != 1 || (*(a1 + 201) & 1) != 0 || [*(a1 + 224) count] == 1;
-  if (*(a1 + 202) == 1)
+  v2 = *(self + 200) != 1 || (*(self + 201) & 1) != 0 || [*(self + 224) count] == 1;
+  if (*(self + 202) == 1)
   {
-    v3 = (*(a1 + 203) & 1) != 0 || [*(a1 + 232) count] == 1;
+    v3 = (*(self + 203) & 1) != 0 || [*(self + 232) count] == 1;
     return v2 & v3;
   }
 
@@ -689,39 +689,39 @@ LABEL_20:
 
 - (void)_endSequence
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if ((*(a1 + 201) & 1) == 0 && (*(a1 + 203) & 1) == 0)
+  if ((*(self + 201) & 1) == 0 && (*(self + 203) & 1) == 0)
   {
-    v2 = *(a1 + 216);
+    v2 = *(self + 216);
     if (!v2)
     {
-      v3 = [*(a1 + 224) count];
-      v4 = [*(a1 + 232) count];
+      v3 = [*(self + 224) count];
+      v4 = [*(self + 232) count];
       v5 = &OBJC_IVAR___BWStereoFusionNode__wideInput;
       if (v3 < v4)
       {
         v5 = &OBJC_IVAR___BWStereoFusionNode__telephotoInput;
       }
 
-      v2 = *(a1 + *v5);
-      *(a1 + 216) = v2;
+      v2 = *(self + *v5);
+      *(self + 216) = v2;
     }
 
-    if (v2 == *(a1 + 168) && [*(a1 + 224) count] == 1)
+    if (v2 == *(self + 168) && [*(self + 224) count] == 1)
     {
       v6 = 224;
     }
 
     else
     {
-      if (*(a1 + 216) != *(a1 + 176) || [*(a1 + 232) count] != 1)
+      if (*(self + 216) != *(self + 176) || [*(self + 232) count] != 1)
       {
         v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v8 = [BWNodeError newError:4294954516 sourceNode:a1 stillImageSettings:*(a1 + 160) metadata:0];
+        v8 = [BWNodeError newError:4294954516 sourceNode:self stillImageSettings:*(self + 160) metadata:0];
         if (v8)
         {
           [v7 addObject:v8];
@@ -733,21 +733,21 @@ LABEL_20:
       v6 = 232;
     }
 
-    v7 = *(a1 + v6);
-    *(a1 + v6) = 0;
+    v7 = *(self + v6);
+    *(self + v6) = 0;
 LABEL_18:
-    v9 = [objc_msgSend(*(a1 + 160) "captureSettings")];
+    v9 = [objc_msgSend(*(self + 160) "captureSettings")];
     v17 = &OBJC_IVAR___BWStereoFusionNode__defaultOutput;
     if (v9 == 3)
     {
-      v9 = [objc_msgSend(*(a1 + 160) "captureSettings")];
+      v9 = [objc_msgSend(*(self + 160) "captureSettings")];
       if ((v9 & 0x400) != 0)
       {
         v17 = &OBJC_IVAR___BWStereoFusionNode__stereoHDROutput;
       }
     }
 
-    v18 = *(a1 + *v17);
+    v18 = *(self + *v17);
     v19 = OUTLINED_FUNCTION_1_3(v9, v10, v11, v12, v13, v14, v15, v16, v31, v33, v35, v37, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, 0);
     if (v19)
     {
@@ -772,12 +772,12 @@ LABEL_18:
     }
   }
 
-  if (*(a1 + 204) == 1 && ((*(a1 + 201) & 1) != 0 || *(a1 + 203) == 1))
+  if (*(self + 204) == 1 && ((*(self + 201) & 1) != 0 || *(self + 203) == 1))
   {
-    [(BWStereoFusionNode *)a1 _processSequenceInSampleBufferProcessor];
+    [(BWStereoFusionNode *)self _processSequenceInSampleBufferProcessor];
   }
 
-  [(BWStereoFusionNode *)a1 _clearCaptureRequestState];
+  [(BWStereoFusionNode *)self _clearCaptureRequestState];
 }
 
 - (uint64_t)sbpOptionsDictionary
@@ -828,11 +828,11 @@ LABEL_18:
   return result;
 }
 
-- (void)_setZoomRectangleOnSampleBufferProcessorIfNecessaryBasedOnMetadata:(uint64_t)a1 captureType:(void *)a2
+- (void)_setZoomRectangleOnSampleBufferProcessorIfNecessaryBasedOnMetadata:(uint64_t)metadata captureType:(void *)type
 {
-  if (a1 && [objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}])
+  if (metadata && [objc_msgSend(type objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}])
   {
-    if ([objc_msgSend(a2 objectForKeyedSubscript:{*off_1E798B540), "isEqualToString:", *off_1E798A0C0}])
+    if ([objc_msgSend(type objectForKeyedSubscript:{*off_1E798B540), "isEqualToString:", *off_1E798A0C0}])
     {
       v9.origin = *MEMORY[0x1E695F050];
       v9.size = *(MEMORY[0x1E695F050] + 16);
@@ -864,15 +864,15 @@ LABEL_18:
     height = 1.0;
     x = 0.0;
 LABEL_10:
-    [(BWStereoFusionNode *)a1 _setZoomRectangleOnSampleBufferProcessorWithRectangle:y, width, height];
+    [(BWStereoFusionNode *)metadata _setZoomRectangleOnSampleBufferProcessorWithRectangle:y, width, height];
   }
 }
 
-- (void)_setZoomRectangleOnSampleBufferProcessorWithRectangle:(double)a3
+- (void)_setZoomRectangleOnSampleBufferProcessorWithRectangle:(double)rectangle
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 208))
+    if (*(self + 208))
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_2_33();
@@ -881,7 +881,7 @@ LABEL_10:
     }
 
     DictionaryRepresentation = CGRectCreateDictionaryRepresentation(*&a2);
-    if ([(BWStereoFusionNode *)a1 _setPropertyOnSampleBufferProcessorWithKey:DictionaryRepresentation value:?])
+    if ([(BWStereoFusionNode *)self _setPropertyOnSampleBufferProcessorWithKey:DictionaryRepresentation value:?])
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_2_33();
@@ -894,7 +894,7 @@ LABEL_10:
 
     else
     {
-      *(a1 + 208) = [(__CFDictionary *)DictionaryRepresentation copy];
+      *(self + 208) = [(__CFDictionary *)DictionaryRepresentation copy];
       if (!DictionaryRepresentation)
       {
         return;
@@ -905,7 +905,7 @@ LABEL_10:
   }
 }
 
-- (uint64_t)_sampleBufferProcessorOutputReady:(const void *)a3 sampleBuffer:
+- (uint64_t)_sampleBufferProcessorOutputReady:(const void *)ready sampleBuffer:
 {
   if (result)
   {
@@ -927,7 +927,7 @@ LABEL_10:
     }
 
     v10 = *(v6 + *v7);
-    if (a3)
+    if (ready)
     {
       v11 = 0;
     }
@@ -937,13 +937,13 @@ LABEL_10:
       v11 = a2;
     }
 
-    v12 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v12 = CMGetAttachment(ready, *off_1E798A3C8, 0);
     v13 = v12;
     if (v12 && ([objc_msgSend(v12 objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}] & 1) == 0)
     {
       if ((v9 & 1) != 0 && ![objc_msgSend(v13 objectForKeyedSubscript:{*off_1E798B558), "BOOLValue"}])
       {
-        CMSetAttachment(a3, @"StereoFusionFailed", *MEMORY[0x1E695E4D0], 0);
+        CMSetAttachment(ready, @"StereoFusionFailed", *MEMORY[0x1E695E4D0], 0);
       }
 
       else
@@ -982,24 +982,24 @@ LABEL_10:
           v34 = v17;
           v18 = [objc_msgSend(*(v6 + 160) "requestedSettings")];
           v19 = v17 / v18;
-          v20 = [OUTLINED_FUNCTION_12_32() width];
-          v21 = [OUTLINED_FUNCTION_12_32() height];
-          FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(v20, v21, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, v19);
+          width = [OUTLINED_FUNCTION_12_32() width];
+          height = [OUTLINED_FUNCTION_12_32() height];
+          FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(width, height, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, v19);
           v23 = v22;
           v25 = v24;
           v27 = v26;
           v29 = v28;
-          LODWORD(v20) = [OUTLINED_FUNCTION_12_32() width];
-          v30 = [OUTLINED_FUNCTION_12_32() height];
-          FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v13, v20 | (v30 << 32), v34 | (v18 << 32), v23, v25, v27, v29, *v15, v15[1], v15[2], v15[3]);
+          LODWORD(width) = [OUTLINED_FUNCTION_12_32() width];
+          height2 = [OUTLINED_FUNCTION_12_32() height];
+          FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v13, width | (height2 << 32), v34 | (v18 << 32), v23, v25, v27, v29, *v15, v15[1], v15[2], v15[3]);
           FigCaptureMetadataUtilitiesPreventFurtherCropping(v13, v31);
         }
       }
 
-      CMRemoveAttachment(a3, *off_1E798A448);
-      CMSetAttachment(a3, @"HasUnreliableBracketingMetadata", MEMORY[0x1E695E118], 1u);
+      CMRemoveAttachment(ready, *off_1E798A448);
+      CMSetAttachment(ready, @"HasUnreliableBracketingMetadata", MEMORY[0x1E695E118], 1u);
 
-      [v10 emitSampleBuffer:a3];
+      [v10 emitSampleBuffer:ready];
     }
 
     return [+[BWAggdDataReporter sharedInstance](BWAggdDataReporter reportStereoFusionSampleBufferProcessorProcessingStatus:"reportStereoFusionSampleBufferProcessorProcessingStatus:", a2];

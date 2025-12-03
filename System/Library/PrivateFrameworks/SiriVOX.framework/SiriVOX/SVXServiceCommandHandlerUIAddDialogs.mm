@@ -1,41 +1,41 @@
 @interface SVXServiceCommandHandlerUIAddDialogs
-- (BOOL)isCommandUUFR:(id)a3;
-- (BOOL)shouldDependOnCommand:(id)a3;
-- (SVXServiceCommandHandlerUIAddDialogs)initWithHandlers:(id)a3 dialogTransformer:(id)a4;
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6;
-- (void)prepareToHandleCommand:(id)a3 completion:(id)a4;
+- (BOOL)isCommandUUFR:(id)r;
+- (BOOL)shouldDependOnCommand:(id)command;
+- (SVXServiceCommandHandlerUIAddDialogs)initWithHandlers:(id)handlers dialogTransformer:(id)transformer;
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion;
+- (void)prepareToHandleCommand:(id)command completion:(id)completion;
 @end
 
 @implementation SVXServiceCommandHandlerUIAddDialogs
 
-- (void)handleCommand:(id)a3 withContext:(id)a4 taskTracker:(id)a5 completion:(id)a6
+- (void)handleCommand:(id)command withContext:(id)context taskTracker:(id)tracker completion:(id)completion
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v45 = a5;
-  v12 = a6;
+  commandCopy = command;
+  contextCopy = context;
+  trackerCopy = tracker;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v40 = [MEMORY[0x277CCA890] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIAddDialogs.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIAddDialogs class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIAddDialogs.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIAddDialogs class]]"}];
   }
 
   objc_opt_class();
-  v41 = v12;
-  v42 = v10;
+  v41 = completionCopy;
+  v42 = commandCopy;
   if (objc_opt_isKindOfClass())
   {
-    v13 = v11;
+    array = contextCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v14 = v13;
+  v14 = array;
   v15 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
   {
@@ -47,7 +47,7 @@
     _os_log_debug_impl(&dword_2695B9000, v39, OS_LOG_TYPE_DEBUG, "%s AddDialogs handler retrieved %tu command/context pairs from context", buf, 0x16u);
   }
 
-  v43 = v11;
+  v43 = contextCopy;
   v16 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v14, "count")}];
   v17 = dispatch_group_create();
   v56 = 0u;
@@ -70,7 +70,7 @@
         }
 
         v22 = *(*(&v56 + 1) + 8 * i);
-        v23 = [v22 command];
+        command = [v22 command];
         handlersByCommandType = self->_handlersByCommandType;
         v25 = objc_opt_class();
         v26 = NSStringFromClass(v25);
@@ -85,21 +85,21 @@
             *buf = 136315394;
             v61 = "[SVXServiceCommandHandlerUIAddDialogs handleCommand:withContext:taskTracker:completion:]";
             v62 = 2112;
-            v63 = v23;
+            v63 = command;
             _os_log_debug_impl(&dword_2695B9000, v28, OS_LOG_TYPE_DEBUG, "%s AddDialogs handler delegating command handling for command %@", buf, 0x16u);
           }
 
           dispatch_group_enter(v17);
-          v30 = [v22 context];
+          context = [v22 context];
           v52[0] = MEMORY[0x277D85DD0];
           v52[1] = 3221225472;
           v52[2] = __89__SVXServiceCommandHandlerUIAddDialogs_handleCommand_withContext_taskTracker_completion___block_invoke;
           v52[3] = &unk_279C67508;
           v53 = v16;
-          v31 = v23;
+          v31 = command;
           v54 = v31;
           v55 = v17;
-          [v27 handleCommand:v31 withContext:v30 taskTracker:v45 completion:v52];
+          [v27 handleCommand:v31 withContext:context taskTracker:trackerCopy completion:v52];
 
           v32 = v53;
         }
@@ -112,7 +112,7 @@
             *buf = 136315650;
             v61 = "[SVXServiceCommandHandlerUIAddDialogs handleCommand:withContext:taskTracker:completion:]";
             v62 = 2112;
-            v63 = v23;
+            v63 = command;
             v64 = 2112;
             v65 = v33;
             _os_log_error_impl(&dword_2695B9000, v28, OS_LOG_TYPE_ERROR, "%s AddDialogs could not find an handler for command: %@ with handlers: %@", buf, 0x20u);
@@ -192,20 +192,20 @@ void __89__SVXServiceCommandHandlerUIAddDialogs_handleCommand_withContext_taskTr
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareToHandleCommand:(id)a3 completion:(id)a4
+- (void)prepareToHandleCommand:(id)command completion:(id)completion
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v29 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIAddDialogs.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIAddDialogs class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIAddDialogs.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIAddDialogs class]]"}];
   }
 
-  v30 = v7;
-  v8 = [(SVXDialogTransformer *)self->_dialogTransformer transformAddDialogs:v7];
+  v30 = commandCopy;
+  v8 = [(SVXDialogTransformer *)self->_dialogTransformer transformAddDialogs:commandCopy];
   v9 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEBUG))
   {
@@ -217,7 +217,7 @@ void __89__SVXServiceCommandHandlerUIAddDialogs_handleCommand_withContext_taskTr
   }
 
   v33 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   group = dispatch_group_create();
   v42 = 0u;
   v43 = 0u;
@@ -239,7 +239,7 @@ LABEL_7:
       }
 
       v15 = *(*(&v42 + 1) + 8 * v14);
-      if ([v10 count])
+      if ([array count])
       {
         break;
       }
@@ -270,7 +270,7 @@ LABEL_7:
           v38[3] = &unk_279C674E0;
           v38[4] = v15;
           v39 = v33;
-          v40 = v10;
+          v40 = array;
           v41 = group;
           [v19 prepareToHandleCommand:v15 completion:v38];
         }
@@ -297,7 +297,7 @@ LABEL_7:
           _os_log_error_impl(&dword_2695B9000, v21, OS_LOG_TYPE_ERROR, "%s AddDialogs could not find an handler for command: %@ with handlers: %@", buf, 0x20u);
         }
 
-        [v10 addObject:v15];
+        [array addObject:v15];
       }
 
       if (v12 == ++v14)
@@ -318,10 +318,10 @@ LABEL_7:
   block[2] = __74__SVXServiceCommandHandlerUIAddDialogs_prepareToHandleCommand_completion___block_invoke_39;
   block[3] = &unk_279C68EA8;
   v35 = v33;
-  v36 = v10;
-  v37 = v29;
-  v24 = v29;
-  v25 = v10;
+  v36 = array;
+  v37 = completionCopy;
+  v24 = completionCopy;
+  v25 = array;
   v26 = v33;
   dispatch_group_notify(group, MEMORY[0x277D85CD0], block);
 
@@ -403,18 +403,18 @@ void __74__SVXServiceCommandHandlerUIAddDialogs_prepareToHandleCommand_completio
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isCommandUUFR:(id)a3
+- (BOOL)isCommandUUFR:(id)r
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  rCopy = r;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIAddDialogs.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIAddDialogs class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SVXServiceCommandHandlerUIAddDialogs.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"[command isKindOfClass:[SAUIAddDialogs class]]"}];
   }
 
-  [(SVXDialogTransformer *)self->_dialogTransformer transformAddDialogs:v5];
+  [(SVXDialogTransformer *)self->_dialogTransformer transformAddDialogs:rCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -464,9 +464,9 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)shouldDependOnCommand:(id)a3
+- (BOOL)shouldDependOnCommand:(id)command
 {
-  v3 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -482,30 +482,30 @@ LABEL_15:
   return isKindOfClass & 1;
 }
 
-- (SVXServiceCommandHandlerUIAddDialogs)initWithHandlers:(id)a3 dialogTransformer:(id)a4
+- (SVXServiceCommandHandlerUIAddDialogs)initWithHandlers:(id)handlers dialogTransformer:(id)transformer
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlersCopy = handlers;
+  transformerCopy = transformer;
   v32.receiver = self;
   v32.super_class = SVXServiceCommandHandlerUIAddDialogs;
   v8 = [(SVXServiceCommandHandlerUIAddDialogs *)&v32 init];
   if (v8)
   {
-    v27 = v7;
+    v27 = transformerCopy;
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [objc_opt_class() supportedCommandClass];
-    v11 = NSStringFromClass(v10);
+    supportedCommandClass = [objc_opt_class() supportedCommandClass];
+    v11 = NSStringFromClass(supportedCommandClass);
     v12 = [v9 initWithFormat:@"com.apple.SiriVOXService.service-command.%@", v11];
     identifier = v8->_identifier;
     v8->_identifier = v12;
 
-    v14 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+    v14 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(handlersCopy, "count")}];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v15 = v6;
+    v15 = handlersCopy;
     v16 = [v15 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v16)
     {
@@ -522,8 +522,8 @@ LABEL_15:
           }
 
           v20 = *(*(&v28 + 1) + 8 * v19);
-          v21 = [objc_opt_class() supportedCommandClass];
-          v22 = NSStringFromClass(v21);
+          supportedCommandClass2 = [objc_opt_class() supportedCommandClass];
+          v22 = NSStringFromClass(supportedCommandClass2);
           [v14 setObject:v20 forKey:v22];
 
           ++v19;
@@ -540,8 +540,8 @@ LABEL_15:
     handlersByCommandType = v8->_handlersByCommandType;
     v8->_handlersByCommandType = v23;
 
-    objc_storeStrong(&v8->_dialogTransformer, a4);
-    v7 = v27;
+    objc_storeStrong(&v8->_dialogTransformer, transformer);
+    transformerCopy = v27;
   }
 
   v25 = *MEMORY[0x277D85DE8];

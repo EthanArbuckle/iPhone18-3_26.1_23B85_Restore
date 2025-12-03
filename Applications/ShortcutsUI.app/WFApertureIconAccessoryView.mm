@@ -1,7 +1,7 @@
 @interface WFApertureIconAccessoryView
 - (BOOL)isRunningFromActionButton;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
-- (WFApertureIconAccessoryView)initWithIcon:(id)a3 runningContext:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
+- (WFApertureIconAccessoryView)initWithIcon:(id)icon runningContext:(id)context;
 - (void)layoutSubviews;
 - (void)openShortcutInEditor;
 @end
@@ -10,19 +10,19 @@
 
 - (BOOL)isRunningFromActionButton
 {
-  v2 = [(WFApertureIconAccessoryView *)self runningContext];
-  v3 = [v2 runSource];
-  v4 = [v3 isEqualToString:WFWorkflowRunSourceActionButton];
+  runningContext = [(WFApertureIconAccessoryView *)self runningContext];
+  runSource = [runningContext runSource];
+  v4 = [runSource isEqualToString:WFWorkflowRunSourceActionButton];
 
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(WFApertureIconAccessoryView *)self awaitingIconOwnershipSwap];
-  if (a4 == 4 || !v8)
+  height = fits.height;
+  width = fits.width;
+  awaitingIconOwnershipSwap = [(WFApertureIconAccessoryView *)self awaitingIconOwnershipSwap];
+  if (mode == 4 || !awaitingIconOwnershipSwap)
   {
     v11.receiver = self;
     v11.super_class = WFApertureIconAccessoryView;
@@ -42,14 +42,14 @@
 
 - (void)openShortcutInEditor
 {
-  v3 = [(WFApertureIconAccessoryView *)self runningContext];
-  v4 = [v3 workflowIdentifier];
+  runningContext = [(WFApertureIconAccessoryView *)self runningContext];
+  workflowIdentifier = [runningContext workflowIdentifier];
 
-  if (v4)
+  if (workflowIdentifier)
   {
-    v5 = [(WFApertureIconAccessoryView *)self runningContext];
-    v6 = [v5 workflowIdentifier];
-    v7 = [NSString stringWithFormat:@"shortcuts://open-shortcut?id=%@", v6];
+    runningContext2 = [(WFApertureIconAccessoryView *)self runningContext];
+    workflowIdentifier2 = [runningContext2 workflowIdentifier];
+    v7 = [NSString stringWithFormat:@"shortcuts://open-shortcut?id=%@", workflowIdentifier2];
     v9 = [NSURL URLWithString:v7];
 
     v8 = +[WFApplicationContext sharedContext];
@@ -89,21 +89,21 @@
 
   else
   {
-    v7 = [(WFApertureIconAccessoryView *)self systemApertureElementContext];
-    [v7 setElementNeedsUpdate];
+    systemApertureElementContext = [(WFApertureIconAccessoryView *)self systemApertureElementContext];
+    [systemApertureElementContext setElementNeedsUpdate];
   }
 }
 
-- (WFApertureIconAccessoryView)initWithIcon:(id)a3 runningContext:(id)a4
+- (WFApertureIconAccessoryView)initWithIcon:(id)icon runningContext:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = WFApertureIconAccessoryView;
-  v8 = [(WFApertureIconAccessoryView *)&v13 initWithIcon:a3];
+  v8 = [(WFApertureIconAccessoryView *)&v13 initWithIcon:icon];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_runningContext, a4);
+    objc_storeStrong(&v8->_runningContext, context);
     v9->_awaitingIconOwnershipSwap = [(WFApertureIconAccessoryView *)v9 isRunningFromActionButton];
     v10 = [[UITapGestureRecognizer alloc] initWithTarget:v9 action:"openShortcutInEditor"];
     [(WFApertureIconAccessoryView *)v9 addGestureRecognizer:v10];

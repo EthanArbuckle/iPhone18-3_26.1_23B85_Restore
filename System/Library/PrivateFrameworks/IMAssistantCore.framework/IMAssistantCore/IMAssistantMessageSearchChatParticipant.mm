@@ -1,21 +1,21 @@
 @interface IMAssistantMessageSearchChatParticipant
-- (BOOL)matchesPerson:(id)a3 withUnifiedContactIdentifiers:(id)a4;
-- (IMAssistantMessageSearchChatParticipant)initWithHandle:(id)a3 contactIdentifiers:(id)a4 isMe:(BOOL)a5;
+- (BOOL)matchesPerson:(id)person withUnifiedContactIdentifiers:(id)identifiers;
+- (IMAssistantMessageSearchChatParticipant)initWithHandle:(id)handle contactIdentifiers:(id)identifiers isMe:(BOOL)me;
 @end
 
 @implementation IMAssistantMessageSearchChatParticipant
 
-- (IMAssistantMessageSearchChatParticipant)initWithHandle:(id)a3 contactIdentifiers:(id)a4 isMe:(BOOL)a5
+- (IMAssistantMessageSearchChatParticipant)initWithHandle:(id)handle contactIdentifiers:(id)identifiers isMe:(BOOL)me
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  identifiersCopy = identifiers;
   v20.receiver = self;
   v20.super_class = IMAssistantMessageSearchChatParticipant;
   v10 = [(IMAssistantMessageSearchChatParticipant *)&v20 init];
   if (v10)
   {
-    v11 = v8;
+    v11 = handleCopy;
     if (MEMORY[0x259C19130]() || IMStringIsEmail())
     {
       v12 = IMCanonicalizeFormattedString();
@@ -42,32 +42,32 @@
     handle = v10->_handle;
     v10->_handle = v14;
 
-    v16 = [v9 copy];
+    v16 = [identifiersCopy copy];
     contactIdentifiers = v10->_contactIdentifiers;
     v10->_contactIdentifiers = v16;
 
-    v10->_isMe = a5;
+    v10->_isMe = me;
   }
 
   v18 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (BOOL)matchesPerson:(id)a3 withUnifiedContactIdentifiers:(id)a4
+- (BOOL)matchesPerson:(id)person withUnifiedContactIdentifiers:(id)identifiers
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!self->_isMe || ([v6 isMe] & 1) == 0)
+  personCopy = person;
+  identifiersCopy = identifiers;
+  if (!self->_isMe || ([personCopy isMe] & 1) == 0)
   {
-    v9 = [v6 __im_assistant_allContactIdentifiers];
-    if ([v9 count])
+    __im_assistant_allContactIdentifiers = [personCopy __im_assistant_allContactIdentifiers];
+    if ([__im_assistant_allContactIdentifiers count])
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v10 = v9;
+      v10 = __im_assistant_allContactIdentifiers;
       v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v11)
       {
@@ -101,13 +101,13 @@ LABEL_7:
       }
     }
 
-    if ([v7 count])
+    if ([identifiersCopy count])
     {
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v10 = v7;
+      v10 = identifiersCopy;
       v15 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v15)
       {
@@ -141,8 +141,8 @@ LABEL_17:
       }
     }
 
-    v19 = [v6 personHandle];
-    v20 = [v19 value];
+    personHandle = [personCopy personHandle];
+    value = [personHandle value];
     if (MEMORY[0x259C19130]() || IMStringIsEmail())
     {
       v21 = IMCanonicalizeFormattedString();
@@ -150,18 +150,18 @@ LABEL_17:
 
     else
     {
-      if (!MEMORY[0x259C19110](v20))
+      if (!MEMORY[0x259C19110](value))
       {
         v22 = IMLogHandleForCategory();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v36 = v20;
+          v36 = value;
           _os_log_impl(&dword_25479E000, v22, OS_LOG_TYPE_INFO, "Could not canonicalize handle %@ because it is neither a phone number nor an email address.", buf, 0xCu);
         }
       }
 
-      v21 = v20;
+      v21 = value;
     }
 
     v10 = v21;

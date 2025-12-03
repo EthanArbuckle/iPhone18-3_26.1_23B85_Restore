@@ -1,15 +1,15 @@
 @interface ATXDeviceScreenLockStateStream
-- (void)_enumerateEventsForLockedState:(BOOL)a3 startDate:(id)a4 endDate:(id)a5 filterBlock:(id)a6 limit:(unint64_t)a7 ascending:(BOOL)a8 block:(id)a9;
+- (void)_enumerateEventsForLockedState:(BOOL)state startDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending block:(id)a9;
 @end
 
 @implementation ATXDeviceScreenLockStateStream
 
-- (void)_enumerateEventsForLockedState:(BOOL)a3 startDate:(id)a4 endDate:(id)a5 filterBlock:(id)a6 limit:(unint64_t)a7 ascending:(BOOL)a8 block:(id)a9
+- (void)_enumerateEventsForLockedState:(BOOL)state startDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit ascending:(BOOL)ascending block:(id)a9
 {
-  v9 = a8;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  ascendingCopy = ascending;
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
   v18 = a9;
   v30[0] = 0;
   v30[1] = v30;
@@ -17,16 +17,16 @@
   v30[3] = __Block_byref_object_copy__6;
   v30[4] = __Block_byref_object_dispose__6;
   v31 = 0;
-  v19 = !v9;
-  v20 = [(ATXDeviceScreenLockStateStream *)self _deviceScreenLockedPublisherWithStartDate:v15 endDate:v16 limit:a7 shouldReverse:!v9];
+  v19 = !ascendingCopy;
+  v20 = [(ATXDeviceScreenLockStateStream *)self _deviceScreenLockedPublisherWithStartDate:dateCopy endDate:endDateCopy limit:limit shouldReverse:!ascendingCopy];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __117__ATXDeviceScreenLockStateStream__enumerateEventsForLockedState_startDate_endDate_filterBlock_limit_ascending_block___block_invoke_11;
   v24[3] = &unk_2785907E0;
   v28 = v19;
-  v29 = a3;
+  stateCopy = state;
   v27 = v30;
-  v21 = v17;
+  v21 = blockCopy;
   v25 = v21;
   v22 = v18;
   v26 = v22;

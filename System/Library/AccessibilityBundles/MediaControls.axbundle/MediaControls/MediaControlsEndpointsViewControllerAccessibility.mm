@@ -1,18 +1,18 @@
 @interface MediaControlsEndpointsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MediaControlsEndpointsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MediaControlsEndpointsViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"MediaControlsEndpointsViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MediaControlsEndpointsViewController" isKindOfClass:@"MediaControlsCollectionViewController"];
-  [v3 validateClass:@"MediaControlsCollectionViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MediaControlsEndpointsViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"MediaControlsEndpointsViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MediaControlsEndpointsViewController" isKindOfClass:@"MediaControlsCollectionViewController"];
+  [validationsCopy validateClass:@"MediaControlsCollectionViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -40,24 +40,24 @@
   v7 = 3221225472;
   v8 = __79__MediaControlsEndpointsViewControllerAccessibility_accessibilityPerformEscape__block_invoke;
   v9 = &unk_29F2CF208;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
   AXPerformSafeBlock();
   if (v13[3])
   {
-    v3 = 1;
+    accessibilityPerformEscape = 1;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MediaControlsEndpointsViewControllerAccessibility;
-    v3 = [(MediaControlsEndpointsViewControllerAccessibility *)&v5 accessibilityPerformEscape];
-    *(v13 + 24) = v3;
+    accessibilityPerformEscape = [(MediaControlsEndpointsViewControllerAccessibility *)&v5 accessibilityPerformEscape];
+    *(v13 + 24) = accessibilityPerformEscape;
   }
 
   _Block_object_dispose(&v12, 8);
-  return v3;
+  return accessibilityPerformEscape;
 }
 
 void __79__MediaControlsEndpointsViewControllerAccessibility_accessibilityPerformEscape__block_invoke(uint64_t a1)

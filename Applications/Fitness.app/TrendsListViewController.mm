@@ -1,17 +1,17 @@
 @interface TrendsListViewController
-- (_TtC10FitnessApp24TrendsListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC10FitnessApp24TrendsListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (uint64_t)tapToRadar;
 - (void)dealloc;
-- (void)reloadForFontSizeChangeWithNote:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)reloadForFontSizeChangeWithNote:(id)note;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)wheelchairUseDidChangeWithNote:(id)a3;
+- (void)wheelchairUseDidChangeWithNote:(id)note;
 @end
 
 @implementation TrendsListViewController
@@ -20,30 +20,30 @@
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp24TrendsListViewController_dataProvider);
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
   v5 = v3;
-  sub_100559A44(0, 0, v4);
+  sub_100559A44(0, 0, selfCopy);
   swift_endAccess();
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for TrendsListViewController();
   [(TrendsListViewController *)&v6 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003B1AF0();
 }
 
-- (void)wheelchairUseDidChangeWithNote:(id)a3
+- (void)wheelchairUseDidChangeWithNote:(id)note
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1003B2228();
 
   (*(v5 + 8))(v7, v4);
@@ -51,23 +51,23 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003B2414();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003B25BC(a3);
+  selfCopy = self;
+  sub_1003B25BC(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1003B2878(a3);
+  selfCopy = self;
+  sub_1003B2878(appear);
 }
 
-- (void)reloadForFontSizeChangeWithNote:(id)a3
+- (void)reloadForFontSizeChangeWithNote:(id)note
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -76,15 +76,15 @@
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
   if (*(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp24TrendsListViewController_dataDidLoad) == 1)
   {
-    v8 = self;
+    selfCopy = self;
     sub_1003B30BC();
-    v9 = [(TrendsListViewController *)v8 view];
-    if (v9)
+    view = [(TrendsListViewController *)selfCopy view];
+    if (view)
     {
-      v10 = v9;
-      [v9 setNeedsLayout];
+      v10 = view;
+      [view setNeedsLayout];
 
-      [*(&v8->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp24TrendsListViewController_tableView) reloadData];
+      [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp24TrendsListViewController_tableView) reloadData];
       (*(v5 + 8))(v7, v4);
     }
 
@@ -100,53 +100,53 @@
   }
 }
 
-- (_TtC10FitnessApp24TrendsListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp24TrendsListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1003B7060(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1003B7060(section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_1003B5718(v10, v9);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_1003B5718(viewCopy, v9);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1003B5A98(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1003B5A98(viewCopy, section);
 
   return v8;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
   v8 = 0.0;
-  if ([(TrendsListViewController *)v7 tableView:v6 numberOfRowsInSection:a4]>= 1 && (a4 | 4) != 4)
+  if ([(TrendsListViewController *)selfCopy tableView:viewCopy numberOfRowsInSection:section]>= 1 && (section | 4) != 4)
   {
     v8 = UITableViewAutomaticDimension;
   }
@@ -171,10 +171,10 @@
   }
 
   (*(v4 + 32))(v6, v2, v3);
-  v8 = [objc_opt_self() defaultWorkspace];
-  if (v8)
+  defaultWorkspace = [objc_opt_self() defaultWorkspace];
+  if (defaultWorkspace)
   {
-    v10 = v8;
+    v10 = defaultWorkspace;
     URL._bridgeToObjectiveC()(v9);
     v12 = v11;
     [v10 openURL:v11 configuration:0 completionHandler:0];

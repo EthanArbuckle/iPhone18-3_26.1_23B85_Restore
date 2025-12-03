@@ -1,36 +1,36 @@
 @interface SFBrowserDocumentTrackerInfo
 + (BOOL)trackingPreventionEnabled;
-- (SFBrowserDocumentTrackerInfo)initWithDocument:(id)a3;
+- (SFBrowserDocumentTrackerInfo)initWithDocument:(id)document;
 - (_SFBrowserDocument)document;
 - (void)_flushKnownTrackingThirdParties;
 - (void)_resetKnownTrackingThirdParties;
-- (void)_updateKnownTrackingThirdPartiesWithCompletionHandler:(id)a3;
+- (void)_updateKnownTrackingThirdPartiesWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)documentDidCommitNavigation;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateKnownTrackingThirdPartiesWithCompletionHandler:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateKnownTrackingThirdPartiesWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFBrowserDocumentTrackerInfo
 
-- (SFBrowserDocumentTrackerInfo)initWithDocument:(id)a3
+- (SFBrowserDocumentTrackerInfo)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v12.receiver = self;
   v12.super_class = SFBrowserDocumentTrackerInfo;
   v5 = [(SFBrowserDocumentTrackerInfo *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_document, v4);
+    objc_storeWeak(&v5->_document, documentCopy);
     v6->_cachedTrackingPreventionEnabled = +[SFBrowserDocumentTrackerInfo trackingPreventionEnabled];
     v7 = objc_alloc_init(MEMORY[0x1E69C8FF0]);
     queryParameterFilteringDataQueue = v6->_queryParameterFilteringDataQueue;
     v6->_queryParameterFilteringDataQueue = v7;
 
     [(SFBrowserDocumentTrackerInfo *)v6 _resetKnownTrackingThirdParties];
-    v9 = [MEMORY[0x1E695E000] webui_defaults];
-    [v9 addObserver:v6 forKeyPath:*MEMORY[0x1E69E30E0] options:0 context:kvoContext];
+    webui_defaults = [MEMORY[0x1E695E000] webui_defaults];
+    [webui_defaults addObserver:v6 forKeyPath:*MEMORY[0x1E69E30E0] options:0 context:kvoContext];
 
     v10 = v6;
   }
@@ -40,28 +40,28 @@
 
 + (BOOL)trackingPreventionEnabled
 {
-  v2 = [MEMORY[0x1E695AC00] sharedHTTPCookieStorage];
-  v3 = [v2 webui_trackerProtectionEnabled];
+  mEMORY[0x1E695AC00] = [MEMORY[0x1E695AC00] sharedHTTPCookieStorage];
+  webui_trackerProtectionEnabled = [mEMORY[0x1E695AC00] webui_trackerProtectionEnabled];
 
-  return v3;
+  return webui_trackerProtectionEnabled;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E695E000] webui_defaults];
-  [v3 removeObserver:self forKeyPath:*MEMORY[0x1E69E30E0] context:kvoContext];
+  webui_defaults = [MEMORY[0x1E695E000] webui_defaults];
+  [webui_defaults removeObserver:self forKeyPath:*MEMORY[0x1E69E30E0] context:kvoContext];
 
   v4.receiver = self;
   v4.super_class = SFBrowserDocumentTrackerInfo;
   [(SFBrowserDocumentTrackerInfo *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (kvoContext == a6 && [v10 isEqualToString:*MEMORY[0x1E69E30E0]])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (kvoContext == context && [pathCopy isEqualToString:*MEMORY[0x1E69E30E0]])
   {
     [(SFBrowserDocumentTrackerInfo *)self _flushKnownTrackingThirdParties];
   }
@@ -70,22 +70,22 @@
   {
     v13.receiver = self;
     v13.super_class = SFBrowserDocumentTrackerInfo;
-    [(SFBrowserDocumentTrackerInfo *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SFBrowserDocumentTrackerInfo *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)updateKnownTrackingThirdPartiesWithCompletionHandler:(id)a3
+- (void)updateKnownTrackingThirdPartiesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   self->_cachedTrackingPreventionEnabled = +[SFBrowserDocumentTrackerInfo trackingPreventionEnabled];
-  [(SFBrowserDocumentTrackerInfo *)self _updateKnownTrackingThirdPartiesWithCompletionHandler:v4];
+  [(SFBrowserDocumentTrackerInfo *)self _updateKnownTrackingThirdPartiesWithCompletionHandler:handlerCopy];
 }
 
 - (void)documentDidCommitNavigation
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastNavigationCommitDate = self->_lastNavigationCommitDate;
-  self->_lastNavigationCommitDate = v3;
+  self->_lastNavigationCommitDate = date;
 
   [(SFBrowserDocumentTrackerInfo *)self _resetKnownTrackingThirdParties];
   queryParameterFilteringDataQueue = self->_queryParameterFilteringDataQueue;
@@ -93,24 +93,24 @@
   [(WBSQueryParameterFilteringDataQueue *)queryParameterFilteringDataQueue commitPendingData];
 }
 
-- (void)_updateKnownTrackingThirdPartiesWithCompletionHandler:(id)a3
+- (void)_updateKnownTrackingThirdPartiesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   cachedTrackingPreventionEnabled = self->_cachedTrackingPreventionEnabled;
   v6 = MEMORY[0x1E69C9810];
   WeakRetained = objc_loadWeakRetained(&self->_document);
-  v8 = [WeakRetained webView];
+  webView = [WeakRetained webView];
   lastNavigationCommitDate = self->_lastNavigationCommitDate;
-  v10 = [MEMORY[0x1E695DF00] distantFuture];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__SFBrowserDocumentTrackerInfo__updateKnownTrackingThirdPartiesWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E8490F40;
   v14 = cachedTrackingPreventionEnabled;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
-  [v6 getKnownTrackingDomainsForWebView:v8 after:lastNavigationCommitDate before:v10 completionHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [v6 getKnownTrackingDomainsForWebView:webView after:lastNavigationCommitDate before:distantFuture completionHandler:v12];
 }
 
 void __86__SFBrowserDocumentTrackerInfo__updateKnownTrackingThirdPartiesWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

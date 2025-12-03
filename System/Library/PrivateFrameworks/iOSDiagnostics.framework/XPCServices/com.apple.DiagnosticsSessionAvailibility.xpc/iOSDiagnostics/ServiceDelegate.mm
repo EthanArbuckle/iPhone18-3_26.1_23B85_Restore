@@ -1,20 +1,20 @@
 @interface ServiceDelegate
-- (BOOL)_auditToken:(id *)a3 hasEntitlement:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_auditToken:(id *)token hasEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   v13 = 0u;
   v14 = 0u;
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   v9 = [(ServiceDelegate *)self _auditToken:&v13 hasEntitlement:@"com.apple.DiagnosticsSessionAvailability.client"];
@@ -33,10 +33,10 @@
   return v9;
 }
 
-- (BOOL)_auditToken:(id *)a3 hasEntitlement:(id)a4
+- (BOOL)_auditToken:(id *)token hasEntitlement:(id)entitlement
 {
-  v4 = a4;
-  [v4 UTF8String];
+  entitlementCopy = entitlement;
+  [entitlementCopy UTF8String];
   v5 = xpc_copy_entitlement_for_token();
   v6 = v5;
   if (v5)
@@ -52,7 +52,7 @@
       sub_10000B78C(v8);
     }
 
-    v9 = [NSError errorWithDomain:v4 code:0 userInfo:0];
+    v9 = [NSError errorWithDomain:entitlementCopy code:0 userInfo:0];
     [DSAnalytics sendAnalyticsWithEvent:5 error:v9];
 
     value = 0;

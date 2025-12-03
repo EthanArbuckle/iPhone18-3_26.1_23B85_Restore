@@ -1,31 +1,31 @@
 @interface BKUIFingerprintEnrollViewController
-- (BKUIFingerprintEnrollViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BKUIFingerprintEnrollViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (BOOL)_shouldHideUnlockMessage;
 - (BOOL)_topTouchButtonIpad;
 - (BOOL)_useAlertHud;
-- (BOOL)didTapInValidRectForAlertInstructingWhereToTouch:(id)a3;
+- (BOOL)didTapInValidRectForAlertInstructingWhereToTouch:(id)touch;
 - (BOOL)followUPEnrollmentUpSell;
 - (BOOL)isModalInPresentation;
 - (CGSize)preferredContentSize;
-- (id)_deviceAwareLocalizedStringForKey:(id)a3;
+- (id)_deviceAwareLocalizedStringForKey:(id)key;
 - (id)_liftFingerString;
 - (id)_placeFingerString;
 - (id)_readyString;
 - (id)_subtitleFont;
 - (unint64_t)_bkDeviceIdentityCount;
 - (unint64_t)_bkIdentityCount;
-- (void)_animateHeaderTitle:(id)a3;
+- (void)_animateHeaderTitle:(id)title;
 - (void)_bkIdentityCount;
 - (void)_cancelActiveEnrollOperation;
-- (void)_cancelEnrollmentAndRestart:(BOOL)a3;
+- (void)_cancelEnrollmentAndRestart:(BOOL)restart;
 - (void)_cancelEnrollmentMatch;
-- (void)_enrollHapticFeedback:(id)a3;
+- (void)_enrollHapticFeedback:(id)feedback;
 - (void)_finishEnrollmentPhaseTwo;
 - (void)_messageTimeout;
 - (void)_requestNewAuthToken;
-- (void)_resetUIWithTransitionToTutorial:(BOOL)a3;
+- (void)_resetUIWithTransitionToTutorial:(BOOL)tutorial;
 - (void)_restartEnrollment;
-- (void)_setTapRecognizer:(id)a3;
+- (void)_setTapRecognizer:(id)recognizer;
 - (void)_showDirtOnSensorAlertView;
 - (void)_showLiftYourFinger;
 - (void)_showSkipEnrollmentAlert;
@@ -33,51 +33,51 @@
 - (void)_skipEnrollment;
 - (void)_startEnrollOperation;
 - (void)_startExtendEnrollOperation;
-- (void)_startMessageTimer:(double)a3;
+- (void)_startMessageTimer:(double)timer;
 - (void)_stopBiometricOperations;
 - (void)_stopMessageTimer;
 - (void)_stopTutorialTransitionToEnrollView;
-- (void)_transitionPromptMessage:(id)a3;
+- (void)_transitionPromptMessage:(id)message;
 - (void)_tutorialContinueButtonPressed;
-- (void)applicationWillResignActive:(id)a3;
+- (void)applicationWillResignActive:(id)active;
 - (void)cancelEnroll;
 - (void)constructAlertView;
 - (void)createEnrollUI;
 - (void)dealloc;
-- (void)didSelectPrimaryButton:(id)a3;
-- (void)didSelectSecondaryButton:(id)a3;
+- (void)didSelectPrimaryButton:(id)button;
+- (void)didSelectSecondaryButton:(id)button;
 - (void)enrollDoneContinueButtonPressed;
-- (void)enrollOperation:(id)a3 failedWithReason:(int64_t)a4;
-- (void)enrollOperation:(id)a3 finishedWithIdentity:(id)a4;
-- (void)enrollOperation:(id)a3 percentCompleted:(int64_t)a4;
-- (void)enrollOperation:(id)a3 progressedWithTouchIDInfo:(id)a4;
-- (void)enrollProgress:(id)a3;
-- (void)extendEnroll:(id)a3 hasUpdated:(BOOL)a4;
-- (void)fingerprintCaptureOperation:(id)a3 encounteredCaptureError:(int64_t)a4;
-- (void)handleProgress:(unsigned int)a3;
+- (void)enrollOperation:(id)operation failedWithReason:(int64_t)reason;
+- (void)enrollOperation:(id)operation finishedWithIdentity:(id)identity;
+- (void)enrollOperation:(id)operation percentCompleted:(int64_t)completed;
+- (void)enrollOperation:(id)operation progressedWithTouchIDInfo:(id)info;
+- (void)enrollProgress:(id)progress;
+- (void)extendEnroll:(id)enroll hasUpdated:(BOOL)updated;
+- (void)fingerprintCaptureOperation:(id)operation encounteredCaptureError:(int64_t)error;
+- (void)handleProgress:(unsigned int)progress;
 - (void)homeButtonPressed;
 - (void)initPromptMessage;
 - (void)loadView;
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4;
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4;
-- (void)operation:(id)a3 stateChanged:(int64_t)a4;
-- (void)respondToTapGesture:(id)a3;
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason;
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed;
+- (void)operation:(id)operation stateChanged:(int64_t)changed;
+- (void)respondToTapGesture:(id)gesture;
 - (void)restartEnroll;
-- (void)restartEnrollPressed:(id)a3;
+- (void)restartEnrollPressed:(id)pressed;
 - (void)showSecondFingerEnrollmentUpSell;
-- (void)skipEnrollmentPressed:(id)a3;
-- (void)transitionToEnrollView:(BOOL)a3;
-- (void)transitionToTutorialView:(BOOL)a3 completion:(id)a4;
+- (void)skipEnrollmentPressed:(id)pressed;
+- (void)transitionToEnrollView:(BOOL)view;
+- (void)transitionToTutorialView:(BOOL)view completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation BKUIFingerprintEnrollViewController
 
-- (BKUIFingerprintEnrollViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKUIFingerprintEnrollViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v12.receiver = self;
   v12.super_class = BKUIFingerprintEnrollViewController;
-  v4 = [(BKUIFingerprintEnrollViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v4 = [(BKUIFingerprintEnrollViewController *)&v12 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = os_log_create("com.apple.biometrickitui", "ResultDelegate");
@@ -99,9 +99,9 @@
 - (BOOL)isModalInPresentation
 {
   currentProgress = self->_currentProgress;
-  v3 = [(BKUIFingerprintEnrollViewController *)self bkIdentity];
+  bkIdentity = [(BKUIFingerprintEnrollViewController *)self bkIdentity];
 
-  return currentProgress != 0.0 || v3 != 0;
+  return currentProgress != 0.0 || bkIdentity != 0;
 }
 
 - (void)dealloc
@@ -118,9 +118,9 @@
   v5.receiver = self;
   v5.super_class = BKUIFingerprintEnrollViewController;
   [(BKUIFingerprintEnrollViewController *)&v5 loadView];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(BKUIFingerprintEnrollViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(BKUIFingerprintEnrollViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(BKUIFingerprintEnrollViewController *)self setEdgesForExtendedLayout:15];
 }
@@ -183,19 +183,19 @@
       alertHudView = self->_alertHudView;
       self->_alertHudView = v13;
 
-      v15 = [MEMORY[0x277D75348] clearColor];
-      [(UIView *)self->_alertHudView setBackgroundColor:v15];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIView *)self->_alertHudView setBackgroundColor:clearColor];
 
       [(UIView *)self->_alertHudView setTranslatesAutoresizingMaskIntoConstraints:0];
       alertHudCorners = self->_alertHudCorners;
-      v17 = [(UIView *)self->_alertHudView layer];
-      [v17 setCornerRadius:alertHudCorners];
+      layer = [(UIView *)self->_alertHudView layer];
+      [layer setCornerRadius:alertHudCorners];
 
-      v18 = [(UIView *)self->_alertHudView layer];
-      [v18 setMasksToBounds:1];
+      layer2 = [(UIView *)self->_alertHudView layer];
+      [layer2 setMasksToBounds:1];
 
-      v19 = [(BKUIFingerprintEnrollViewController *)self view];
-      [v19 addSubview:self->_alertHudView];
+      view = [(BKUIFingerprintEnrollViewController *)self view];
+      [view addSubview:self->_alertHudView];
 
       [(UIView *)self->_alertHudView setHidden:1];
       v20 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -204,8 +204,8 @@
 
       [(UILabel *)self->_alertHudText setTranslatesAutoresizingMaskIntoConstraints:0];
       v22 = self->_alertHudText;
-      v23 = [(BKUIFingerprintEnrollViewController *)self _subtitleFont];
-      [(UILabel *)v22 setFont:v23];
+      _subtitleFont = [(BKUIFingerprintEnrollViewController *)self _subtitleFont];
+      [(UILabel *)v22 setFont:_subtitleFont];
 
       [(UILabel *)self->_alertHudText setNumberOfLines:0];
       [(UILabel *)self->_alertHudText setTextAlignment:1];
@@ -217,23 +217,23 @@
     v24 = self->_alertHudView;
     if (v24)
     {
-      v25 = [(UIView *)v24 widthAnchor];
-      v26 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v27 = [v26 contentView];
-      v28 = [v27 widthAnchor];
-      v29 = [v25 constraintEqualToAnchor:v28];
+      widthAnchor = [(UIView *)v24 widthAnchor];
+      enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      contentView = [enrollmentControlller contentView];
+      widthAnchor2 = [contentView widthAnchor];
+      v29 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       [v29 setActive:1];
 
-      v30 = [(BKUIFingerprintEnrollViewController *)self view];
+      view2 = [(BKUIFingerprintEnrollViewController *)self view];
       v31 = MEMORY[0x277CCAAD0];
       v32 = self->_alertHudView;
-      v33 = [(BKUIFingerprintEnrollViewController *)self view];
-      v34 = [v31 constraintWithItem:v32 attribute:9 relatedBy:0 toItem:v33 attribute:9 multiplier:1.0 constant:0.0];
-      [v30 addConstraint:v34];
+      view3 = [(BKUIFingerprintEnrollViewController *)self view];
+      v34 = [v31 constraintWithItem:v32 attribute:9 relatedBy:0 toItem:view3 attribute:9 multiplier:1.0 constant:0.0];
+      [view2 addConstraint:v34];
 
-      v35 = [(BKUIFingerprintEnrollViewController *)self view];
+      view4 = [(BKUIFingerprintEnrollViewController *)self view];
       v36 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_alertHudView attribute:10 relatedBy:0 toItem:self->_mesaFirstEnrollView attribute:10 multiplier:1.0 constant:0.0];
-      [v35 addConstraint:v36];
+      [view4 addConstraint:v36];
 
       v37 = self->_alertHudView;
       v38 = MEMORY[0x277CCAAD0];
@@ -249,9 +249,9 @@
       v44 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_alertHudText attribute:10 relatedBy:0 toItem:v43 attribute:10 multiplier:1.0 constant:0.0];
       [(UIView *)v43 addConstraint:v44];
 
-      v46 = [(BKUIFingerprintEnrollViewController *)self view];
+      view5 = [(BKUIFingerprintEnrollViewController *)self view];
       v45 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_alertHudView attribute:8 relatedBy:0 toItem:self->_alertHudText attribute:8 multiplier:1.0 constant:self->_alertHudBorder];
-      [v46 addConstraint:v45];
+      [view5 addConstraint:v45];
     }
   }
 }
@@ -259,61 +259,61 @@
 - (void)createEnrollUI
 {
   v110[8] = *MEMORY[0x277D85DE8];
-  v3 = [(BKUIFingerprintEnrollViewController *)self parentViewController];
+  parentViewController = [(BKUIFingerprintEnrollViewController *)self parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
-    v4 = [(BKUIFingerprintEnrollViewController *)self view];
-    [v4 layoutIfNeeded];
+    view = [(BKUIFingerprintEnrollViewController *)self view];
+    [view layoutIfNeeded];
   }
 
-  v5 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  if (v5)
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  if (tutorialController)
   {
     v6 = *MEMORY[0x277D85DE8];
   }
 
   else
   {
-    v7 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
 
-    if (!v7)
+    if (!enrollmentControlller)
     {
       v8 = [BKUIFingerPrintEnrollTutorialViewController alloc];
       inBuddy = self->_inBuddy;
-      v10 = [(BKUIFingerprintEnrollViewController *)self parentViewController];
-      v11 = [v10 view];
-      [v11 bounds];
+      parentViewController2 = [(BKUIFingerprintEnrollViewController *)self parentViewController];
+      view2 = [parentViewController2 view];
+      [view2 bounds];
       v12 = [(BKUIFingerPrintEnrollTutorialViewController *)v8 initInBuddy:inBuddy displayRect:?];
       [(BKUIFingerprintEnrollViewController *)self setTutorialController:v12];
 
-      v13 = [(BKUIFingerprintEnrollViewController *)self followUPEnrollmentUpSell];
-      v14 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      [v14 setShowFollowUpEnrollmentUpSellContent:v13];
+      followUPEnrollmentUpSell = [(BKUIFingerprintEnrollViewController *)self followUPEnrollmentUpSell];
+      tutorialController2 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      [tutorialController2 setShowFollowUpEnrollmentUpSellContent:followUPEnrollmentUpSell];
 
-      v15 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v16 = [v15 view];
-      [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+      tutorialController3 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view3 = [tutorialController3 view];
+      [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v17 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      [(BKUIFingerprintEnrollViewController *)self addChildViewController:v17];
+      tutorialController4 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      [(BKUIFingerprintEnrollViewController *)self addChildViewController:tutorialController4];
 
-      v18 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v19 = [v18 view];
-      v20 = [(BKUIFingerprintEnrollViewController *)self view];
-      [v20 bounds];
-      [v19 setFrame:?];
+      tutorialController5 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view4 = [tutorialController5 view];
+      view5 = [(BKUIFingerprintEnrollViewController *)self view];
+      [view5 bounds];
+      [view4 setFrame:?];
 
-      v21 = [(BKUIFingerprintEnrollViewController *)self view];
-      v22 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v23 = [v22 view];
-      [v21 addSubview:v23];
+      view6 = [(BKUIFingerprintEnrollViewController *)self view];
+      tutorialController6 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view7 = [tutorialController6 view];
+      [view6 addSubview:view7];
 
-      v24 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      [v24 didMoveToParentViewController:self];
+      tutorialController7 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      [tutorialController7 didMoveToParentViewController:self];
 
-      v25 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      [v25 setDelegate:self];
+      tutorialController8 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      [tutorialController8 setDelegate:self];
 
       v26 = objc_alloc_init(BKUICurvesView);
       mesaFirstEnrollView = self->_mesaFirstEnrollView;
@@ -339,101 +339,101 @@
       [(BKUICurvesView *)self->_mesaSecondEnrollView setSpeed:&unk_2853CCBA0];
       v35 = [BKUIFingerPrintEnrollmentPhaseViewController alloc];
       v36 = self->_inBuddy;
-      v37 = [(BKUIFingerprintEnrollViewController *)self _shouldHideUnlockMessage];
-      v38 = [(BKUIFingerprintEnrollViewController *)self followUPEnrollmentUpSell];
-      v39 = [(BKUIFingerprintEnrollViewController *)self _placeFingerString];
-      v40 = [(BKUIFingerPrintEnrollmentPhaseViewController *)v35 initInBuddy:v36 hideUnlockMessage:v37 showFollowUpSell:v38 headerTitle:v39 firstEnrollView:self->_mesaFirstEnrollView secondEnrollView:self->_mesaSecondEnrollView];
+      _shouldHideUnlockMessage = [(BKUIFingerprintEnrollViewController *)self _shouldHideUnlockMessage];
+      followUPEnrollmentUpSell2 = [(BKUIFingerprintEnrollViewController *)self followUPEnrollmentUpSell];
+      _placeFingerString = [(BKUIFingerprintEnrollViewController *)self _placeFingerString];
+      v40 = [(BKUIFingerPrintEnrollmentPhaseViewController *)v35 initInBuddy:v36 hideUnlockMessage:_shouldHideUnlockMessage showFollowUpSell:followUPEnrollmentUpSell2 headerTitle:_placeFingerString firstEnrollView:self->_mesaFirstEnrollView secondEnrollView:self->_mesaSecondEnrollView];
       [(BKUIFingerprintEnrollViewController *)self setEnrollmentControlller:v40];
 
-      v41 = [(BKUIFingerprintEnrollViewController *)self followUPEnrollmentUpSell];
-      v42 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      [v42 setShouldShowFollowupFingerEnrollmentUpSell:v41];
+      followUPEnrollmentUpSell3 = [(BKUIFingerprintEnrollViewController *)self followUPEnrollmentUpSell];
+      enrollmentControlller2 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      [enrollmentControlller2 setShouldShowFollowupFingerEnrollmentUpSell:followUPEnrollmentUpSell3];
 
-      v43 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v44 = [v43 view];
-      [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+      enrollmentControlller3 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view8 = [enrollmentControlller3 view];
+      [view8 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v45 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      [(BKUIFingerprintEnrollViewController *)self addChildViewController:v45];
+      enrollmentControlller4 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      [(BKUIFingerprintEnrollViewController *)self addChildViewController:enrollmentControlller4];
 
-      v46 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v47 = [v46 view];
-      v48 = [(BKUIFingerprintEnrollViewController *)self view];
-      [v48 bounds];
-      [v47 setFrame:?];
+      enrollmentControlller5 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view9 = [enrollmentControlller5 view];
+      view10 = [(BKUIFingerprintEnrollViewController *)self view];
+      [view10 bounds];
+      [view9 setFrame:?];
 
-      v49 = [(BKUIFingerprintEnrollViewController *)self view];
-      v50 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v51 = [v50 view];
-      [v49 addSubview:v51];
+      view11 = [(BKUIFingerprintEnrollViewController *)self view];
+      enrollmentControlller6 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view12 = [enrollmentControlller6 view];
+      [view11 addSubview:view12];
 
-      v52 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      [v52 didMoveToParentViewController:self];
+      enrollmentControlller7 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      [enrollmentControlller7 didMoveToParentViewController:self];
 
-      v53 = [(BKUIFingerprintEnrollViewController *)self view];
-      v54 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v55 = [v54 view];
-      [v53 bringSubviewToFront:v55];
+      view13 = [(BKUIFingerprintEnrollViewController *)self view];
+      tutorialController9 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view14 = [tutorialController9 view];
+      [view13 bringSubviewToFront:view14];
 
-      v56 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      [v56 setDelegate:self];
+      enrollmentControlller8 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      [enrollmentControlller8 setDelegate:self];
 
       v88 = MEMORY[0x277CCAAD0];
-      v108 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v107 = [v108 view];
-      v105 = [v107 leadingAnchor];
-      v106 = [(BKUIFingerprintEnrollViewController *)self view];
-      v104 = [v106 leadingAnchor];
-      v103 = [v105 constraintEqualToAnchor:v104];
+      enrollmentControlller9 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view15 = [enrollmentControlller9 view];
+      leadingAnchor = [view15 leadingAnchor];
+      view16 = [(BKUIFingerprintEnrollViewController *)self view];
+      leadingAnchor2 = [view16 leadingAnchor];
+      v103 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v110[0] = v103;
-      v102 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v101 = [v102 view];
-      v99 = [v101 trailingAnchor];
-      v100 = [(BKUIFingerprintEnrollViewController *)self view];
-      v98 = [v100 trailingAnchor];
-      v97 = [v99 constraintEqualToAnchor:v98];
+      enrollmentControlller10 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view17 = [enrollmentControlller10 view];
+      trailingAnchor = [view17 trailingAnchor];
+      view18 = [(BKUIFingerprintEnrollViewController *)self view];
+      trailingAnchor2 = [view18 trailingAnchor];
+      v97 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v110[1] = v97;
-      v96 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v95 = [v96 view];
-      v93 = [v95 topAnchor];
-      v94 = [(BKUIFingerprintEnrollViewController *)self view];
-      v92 = [v94 topAnchor];
-      v91 = [v93 constraintEqualToAnchor:v92];
+      enrollmentControlller11 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view19 = [enrollmentControlller11 view];
+      topAnchor = [view19 topAnchor];
+      view20 = [(BKUIFingerprintEnrollViewController *)self view];
+      topAnchor2 = [view20 topAnchor];
+      v91 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v110[2] = v91;
-      v90 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v89 = [v90 view];
-      v86 = [v89 bottomAnchor];
-      v87 = [(BKUIFingerprintEnrollViewController *)self view];
-      v85 = [v87 bottomAnchor];
-      v84 = [v86 constraintEqualToAnchor:v85];
+      enrollmentControlller12 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view21 = [enrollmentControlller12 view];
+      bottomAnchor = [view21 bottomAnchor];
+      view22 = [(BKUIFingerprintEnrollViewController *)self view];
+      bottomAnchor2 = [view22 bottomAnchor];
+      v84 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v110[3] = v84;
-      v83 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v82 = [v83 view];
-      v80 = [v82 leadingAnchor];
-      v81 = [(BKUIFingerprintEnrollViewController *)self view];
-      v79 = [v81 leadingAnchor];
-      v78 = [v80 constraintEqualToAnchor:v79];
+      tutorialController10 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view23 = [tutorialController10 view];
+      leadingAnchor3 = [view23 leadingAnchor];
+      view24 = [(BKUIFingerprintEnrollViewController *)self view];
+      leadingAnchor4 = [view24 leadingAnchor];
+      v78 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v110[4] = v78;
-      v77 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v76 = [v77 view];
-      v74 = [v76 trailingAnchor];
-      v75 = [(BKUIFingerprintEnrollViewController *)self view];
-      v73 = [v75 trailingAnchor];
-      v72 = [v74 constraintEqualToAnchor:v73];
+      tutorialController11 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view25 = [tutorialController11 view];
+      trailingAnchor3 = [view25 trailingAnchor];
+      view26 = [(BKUIFingerprintEnrollViewController *)self view];
+      trailingAnchor4 = [view26 trailingAnchor];
+      v72 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v110[5] = v72;
-      v71 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v70 = [v71 view];
-      v68 = [v70 topAnchor];
-      v69 = [(BKUIFingerprintEnrollViewController *)self view];
-      v57 = [v69 topAnchor];
-      v58 = [v68 constraintEqualToAnchor:v57];
+      tutorialController12 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view27 = [tutorialController12 view];
+      topAnchor3 = [view27 topAnchor];
+      view28 = [(BKUIFingerprintEnrollViewController *)self view];
+      topAnchor4 = [view28 topAnchor];
+      v58 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
       v110[6] = v58;
-      v59 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v60 = [v59 view];
-      v61 = [v60 bottomAnchor];
-      v62 = [(BKUIFingerprintEnrollViewController *)self view];
-      v63 = [v62 bottomAnchor];
-      v64 = [v61 constraintEqualToAnchor:v63];
+      tutorialController13 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view29 = [tutorialController13 view];
+      bottomAnchor3 = [view29 bottomAnchor];
+      view30 = [(BKUIFingerprintEnrollViewController *)self view];
+      bottomAnchor4 = [view30 bottomAnchor];
+      v64 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v110[7] = v64;
       v65 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:8];
       [v88 activateConstraints:v65];
@@ -441,8 +441,8 @@
       [(BKUIFingerprintEnrollViewController *)self constructAlertView];
       if (self->_alertHudView)
       {
-        v66 = [(BKUIFingerprintEnrollViewController *)self view];
-        [v66 bringSubviewToFront:self->_alertHudView];
+        view31 = [(BKUIFingerprintEnrollViewController *)self view];
+        [view31 bringSubviewToFront:self->_alertHudView];
       }
     }
 
@@ -456,12 +456,12 @@
   v26.receiver = self;
   v26.super_class = BKUIFingerprintEnrollViewController;
   [(BKUIFingerprintEnrollViewController *)&v26 viewDidLoad];
-  v3 = [MEMORY[0x277CF1BC0] availableDevices];
+  availableDevices = [MEMORY[0x277CF1BC0] availableDevices];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v29 count:16];
+  v4 = [availableDevices countByEnumeratingWithState:&v22 objects:v29 count:16];
   if (v4)
   {
     v6 = v4;
@@ -475,7 +475,7 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableDevices);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
@@ -508,7 +508,7 @@
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v22 objects:v29 count:16];
+      v6 = [availableDevices countByEnumeratingWithState:&v22 objects:v29 count:16];
     }
 
     while (v6);
@@ -525,12 +525,12 @@
 
   if (![BKUIBundleSettings BOOLForUserDefaultsKey:@"hideEnrollTapScreenMessage"])
   {
-    v16 = [(BKUIFingerprintEnrollViewController *)self view];
-    [(BKUIFingerprintEnrollViewController *)self _setTapRecognizer:v16];
+    view = [(BKUIFingerprintEnrollViewController *)self view];
+    [(BKUIFingerprintEnrollViewController *)self _setTapRecognizer:view];
   }
 
-  v17 = [(BKUIFingerprintEnrollViewController *)self navigationItem];
-  [v17 setRightBarButtonItem:0];
+  navigationItem = [(BKUIFingerprintEnrollViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 
   self->_mesaEnrollCompactContainer = 0;
   self->_displayingFirstTitle = 1;
@@ -541,9 +541,9 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)respondToTapGesture:(id)a3
+- (void)respondToTapGesture:(id)gesture
 {
-  v11 = a3;
+  gestureCopy = gesture;
   if (!self->_enrollInProgress && !self->_matchInProgress || ![(BKUIAlertView *)self->_alertView isAlertHidden])
   {
     goto LABEL_11;
@@ -551,7 +551,7 @@
 
   if (!self->_enrollmentPhaseTwo)
   {
-    if (![(BKUIFingerprintEnrollViewController *)self didTapInValidRectForAlertInstructingWhereToTouch:v11])
+    if (![(BKUIFingerprintEnrollViewController *)self didTapInValidRectForAlertInstructingWhereToTouch:gestureCopy])
     {
       goto LABEL_11;
     }
@@ -559,27 +559,27 @@
     goto LABEL_9;
   }
 
-  v4 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v5 = [v4 view];
-  if (([v5 isHidden] & 1) == 0)
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view = [tutorialController view];
+  if (([view isHidden] & 1) == 0)
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v6 = [(BKUIFingerprintEnrollViewController *)self didTapInValidRectForAlertInstructingWhereToTouch:v11];
+  v6 = [(BKUIFingerprintEnrollViewController *)self didTapInValidRectForAlertInstructingWhereToTouch:gestureCopy];
 
   if (v6)
   {
 LABEL_9:
     alertView = self->_alertView;
-    v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v4 localizedStringForKey:@"SET_UP_MESA" value:&stru_2853BB280 table:@"BiometricKitUI"];
+    tutorialController = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    view = [tutorialController localizedStringForKey:@"SET_UP_MESA" value:&stru_2853BB280 table:@"BiometricKitUI"];
     v8 = [(BKUIFingerprintEnrollViewController *)self _deviceAwareLocalizedStringForKey:@"TOUCH_AND_COVER"];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"OK" value:&stru_2853BB280 table:@"BiometricKitUI"];
-    [(BKUIAlertView *)alertView show:v5 message:v8 cancelButtonTitle:v10 viewController:self];
+    [(BKUIAlertView *)alertView show:view message:v8 cancelButtonTitle:v10 viewController:self];
 
     goto LABEL_10;
   }
@@ -587,19 +587,19 @@ LABEL_9:
 LABEL_11:
 }
 
-- (BOOL)didTapInValidRectForAlertInstructingWhereToTouch:(id)a3
+- (BOOL)didTapInValidRectForAlertInstructingWhereToTouch:(id)touch
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v6 = [v5 view];
-  v7 = [v6 isHidden];
+  touchCopy = touch;
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view = [tutorialController view];
+  isHidden = [view isHidden];
 
-  v8 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  v9 = [v8 view];
-  v10 = [v9 isHidden];
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  view2 = [enrollmentControlller view];
+  isHidden2 = [view2 isHidden];
 
-  if (v7)
+  if (isHidden)
   {
     [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
   }
@@ -609,23 +609,23 @@ LABEL_11:
     [(BKUIFingerprintEnrollViewController *)self tutorialController];
   }
   v11 = ;
-  v12 = [v11 buttonTray];
-  [v12 frame];
+  buttonTray = [v11 buttonTray];
+  [buttonTray frame];
   v14 = v13;
 
-  v15 = [(BKUIFingerprintEnrollViewController *)self view];
-  [v15 frame];
+  view3 = [(BKUIFingerprintEnrollViewController *)self view];
+  [view3 frame];
   v17 = v16 - v14;
 
-  v18 = [v4 view];
-  [v4 locationInView:v18];
+  view4 = [touchCopy view];
+  [touchCopy locationInView:view4];
   v20 = v19;
 
   v21 = _BKUILoggingFacility();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [MEMORY[0x277CCABB0] numberWithBool:v7];
-    v23 = [MEMORY[0x277CCABB0] numberWithBool:v10];
+    v22 = [MEMORY[0x277CCABB0] numberWithBool:isHidden];
+    v23 = [MEMORY[0x277CCABB0] numberWithBool:isHidden2];
     v24 = [MEMORY[0x277CCABB0] numberWithBool:v20 < v17];
     v27 = 138413314;
     v28 = v22;
@@ -652,12 +652,12 @@ LABEL_11:
   return result;
 }
 
-- (void)didSelectPrimaryButton:(id)a3
+- (void)didSelectPrimaryButton:(id)button
 {
-  v4 = a3;
-  v5 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  buttonCopy = button;
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
 
-  if (v5 == v4)
+  if (tutorialController == buttonCopy)
   {
 
     [(BKUIFingerprintEnrollViewController *)self tutorialContinueButtonPressed:self];
@@ -665,8 +665,8 @@ LABEL_11:
 
   else
   {
-    v6 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    if ([v6 enrollViewState] == 3)
+    enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    if ([enrollmentControlller enrollViewState] == 3)
     {
 
 LABEL_8:
@@ -677,10 +677,10 @@ LABEL_8:
       return;
     }
 
-    v7 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v8 = [v7 enrollViewState];
+    enrollmentControlller2 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    enrollViewState = [enrollmentControlller2 enrollViewState];
 
-    if (v8 == 4)
+    if (enrollViewState == 4)
     {
       goto LABEL_8;
     }
@@ -688,8 +688,8 @@ LABEL_8:
     if (-[BKUIFingerprintEnrollViewController followUPEnrollmentUpSell](self, "followUPEnrollmentUpSell") && (-[BKUIFingerprintEnrollViewController enrollmentControlller](self, "enrollmentControlller"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 shouldShowFollowupFingerEnrollmentUpSell], v9, v10))
     {
       [(BKUIFingerprintEnrollViewController *)self showSecondFingerEnrollmentUpSell];
-      v11 = [(BKUIFingerprintEnrollViewController *)self bkIdentity];
-      [(BKUIFingerprintEnrollViewController *)self setFirstFollowUpIdentity:v11];
+      bkIdentity = [(BKUIFingerprintEnrollViewController *)self bkIdentity];
+      [(BKUIFingerprintEnrollViewController *)self setFirstFollowUpIdentity:bkIdentity];
     }
 
     else
@@ -702,17 +702,17 @@ LABEL_8:
 
 - (void)showSecondFingerEnrollmentUpSell
 {
-  v3 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  [v3 setIsSecondEnrollment:1];
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  [tutorialController setIsSecondEnrollment:1];
 
-  v4 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  [v4 setShouldShowFollowupFingerEnrollmentUpSell:0];
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  [enrollmentControlller setShouldShowFollowupFingerEnrollmentUpSell:0];
 
-  v5 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  [v5 setIsSecondEnrollment:1];
+  enrollmentControlller2 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  [enrollmentControlller2 setIsSecondEnrollment:1];
 
-  v6 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  [v6 setEnrollViewState:0];
+  tutorialController2 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  [tutorialController2 setEnrollViewState:0];
 
   [(BKUIFingerprintEnrollViewController *)self _requestNewAuthToken];
   v7[0] = MEMORY[0x277D85DD0];
@@ -746,17 +746,17 @@ void __71__BKUIFingerprintEnrollViewController_showSecondFingerEnrollmentUpSell_
   [v3 setEnrollViewState:0];
 }
 
-- (void)didSelectSecondaryButton:(id)a3
+- (void)didSelectSecondaryButton:(id)button
 {
   if ([(BKUIFingerprintEnrollViewController *)self followUPEnrollmentUpSell])
   {
-    v4 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-    if ([v4 showFollowUpEnrollmentUpSellContent])
+    tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+    if ([tutorialController showFollowUpEnrollmentUpSellContent])
     {
-      v5 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v6 = [v5 isSecondEnrollment];
+      tutorialController2 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      isSecondEnrollment = [tutorialController2 isSecondEnrollment];
 
-      if (v6)
+      if (isSecondEnrollment)
       {
 
         [(BKUIFingerprintEnrollViewController *)self enrollDoneContinueButtonPressed];
@@ -772,9 +772,9 @@ void __71__BKUIFingerprintEnrollViewController_showSecondFingerEnrollmentUpSell_
   [(BKUIFingerprintEnrollViewController *)self tutorialSkipButtonPressed:self];
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   if (os_log_type_enabled(self->bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEBUG))
   {
     [BKUIFingerprintEnrollViewController applicationWillResignActive:];
@@ -789,28 +789,28 @@ void __71__BKUIFingerprintEnrollViewController_showSecondFingerEnrollmentUpSell_
   [(BKUIFingerprintEnrollViewController *)self _stopBiometricOperations];
   if (self->_bkIdentity)
   {
-    v5 = [(BKUIFingerprintEnrollViewController *)self bkDevice];
+    bkDevice = [(BKUIFingerprintEnrollViewController *)self bkDevice];
     bkIdentity = self->_bkIdentity;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __67__BKUIFingerprintEnrollViewController_applicationWillResignActive___block_invoke;
     v11[3] = &unk_278D09F60;
     v11[4] = self;
-    [v5 removeIdentity:bkIdentity reply:v11];
+    [bkDevice removeIdentity:bkIdentity reply:v11];
   }
 
-  v7 = [(BKUIFingerprintEnrollViewController *)self firstFollowUpIdentity];
+  firstFollowUpIdentity = [(BKUIFingerprintEnrollViewController *)self firstFollowUpIdentity];
 
-  if (v7)
+  if (firstFollowUpIdentity)
   {
-    v8 = [(BKUIFingerprintEnrollViewController *)self bkDevice];
-    v9 = [(BKUIFingerprintEnrollViewController *)self firstFollowUpIdentity];
+    bkDevice2 = [(BKUIFingerprintEnrollViewController *)self bkDevice];
+    firstFollowUpIdentity2 = [(BKUIFingerprintEnrollViewController *)self firstFollowUpIdentity];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __67__BKUIFingerprintEnrollViewController_applicationWillResignActive___block_invoke_100;
     v10[3] = &unk_278D09F60;
     v10[4] = self;
-    [v8 removeIdentity:v9 reply:v10];
+    [bkDevice2 removeIdentity:firstFollowUpIdentity2 reply:v10];
   }
 }
 
@@ -868,24 +868,24 @@ void __67__BKUIFingerprintEnrollViewController_applicationWillResignActive___blo
   }
 }
 
-- (void)enrollProgress:(id)a3
+- (void)enrollProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   bkui_biometric_kit_delegate_log = self->bkui_biometric_kit_delegate_log;
   if (os_log_type_enabled(bkui_biometric_kit_delegate_log, OS_LOG_TYPE_DEBUG))
   {
-    [(BKUIFingerprintEnrollViewController *)bkui_biometric_kit_delegate_log enrollProgress:v4];
+    [(BKUIFingerprintEnrollViewController *)bkui_biometric_kit_delegate_log enrollProgress:progressCopy];
   }
 
-  if (self->_didDisappear || [v4 progress] > 254)
+  if (self->_didDisappear || [progressCopy progress] > 254)
   {
     goto LABEL_20;
   }
 
-  if ([v4 message] == 1)
+  if ([progressCopy message] == 1)
   {
-    v6 = [v4 messageDetails];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277CF1C20]];
+    messageDetails = [progressCopy messageDetails];
+    v7 = [messageDetails objectForKeyedSubscript:*MEMORY[0x277CF1C20]];
     if ([v7 integerValue])
     {
       v8 = [BKUIBundleSettings BOOLForUserDefaultsKey:@"hideEnrollNewComponentMessage"];
@@ -908,8 +908,8 @@ void __67__BKUIFingerprintEnrollViewController_applicationWillResignActive___blo
 LABEL_18:
               *p_movedFingerAlertShown = 1;
               v17 = *p_alertView;
-              v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-              v15 = [v14 localizedStringForKey:v13 value:&stru_2853BB280 table:@"BiometricKitUI"];
+              messageDetails2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+              v15 = [messageDetails2 localizedStringForKey:v13 value:&stru_2853BB280 table:@"BiometricKitUI"];
               v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v19 = [v18 localizedStringForKey:v12 value:&stru_2853BB280 table:@"BiometricKitUI"];
               v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -931,8 +931,8 @@ LABEL_18:
   }
 
   self->_movedFingerCount = 0;
-  v14 = [v4 messageDetails];
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277CF1C28]];
+  messageDetails2 = [progressCopy messageDetails];
+  v15 = [messageDetails2 objectForKeyedSubscript:*MEMORY[0x277CF1C28]];
   if ([v15 integerValue] != 1)
   {
 LABEL_19:
@@ -958,18 +958,18 @@ LABEL_19:
   }
 
 LABEL_20:
-  [(BKUIFingerprintEnrollViewController *)self _enrollHapticFeedback:v4];
+  [(BKUIFingerprintEnrollViewController *)self _enrollHapticFeedback:progressCopy];
 }
 
-- (void)_enrollHapticFeedback:(id)a3
+- (void)_enrollHapticFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   if (!+[BKUIBundleSettings isFpEnrollHapticFeedbackDisabled])
   {
-    v3 = [v4 message];
-    if (v3 <= 3)
+    message = [feedbackCopy message];
+    if (message <= 3)
     {
-      [BKUIUtils vibrateForBiometricEvent:(0xEu >> (v3 & 0xF)) & 1];
+      [BKUIUtils vibrateForBiometricEvent:(0xEu >> (message & 0xF)) & 1];
     }
   }
 }
@@ -1001,9 +1001,9 @@ LABEL_20:
   }
 }
 
-- (void)handleProgress:(unsigned int)a3
+- (void)handleProgress:(unsigned int)progress
 {
-  v4 = (a3 - 100) / 255.0;
+  v4 = (progress - 100) / 255.0;
   if (v4 == 1.0)
   {
     self->_currentProgress = 1.0;
@@ -1015,17 +1015,17 @@ LABEL_20:
     self->_currentProgress = v5;
   }
 
-  v7 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
   *&v6 = self->_currentProgress;
-  [v7 setEnrollProgress:self->_mesaFirstEnrollView enrollView:v6];
+  [enrollmentControlller setEnrollProgress:self->_mesaFirstEnrollView enrollView:v6];
 }
 
-- (void)_cancelEnrollmentAndRestart:(BOOL)a3
+- (void)_cancelEnrollmentAndRestart:(BOOL)restart
 {
   bkui_fingerprint_enroll_view_controller_log = self->bkui_fingerprint_enroll_view_controller_log;
   if (os_log_type_enabled(bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEBUG))
   {
-    [(BKUIFingerprintEnrollViewController *)a3 _cancelEnrollmentAndRestart:?];
+    [(BKUIFingerprintEnrollViewController *)restart _cancelEnrollmentAndRestart:?];
   }
 
   [(BKUIFingerprintEnrollViewController *)self _stopMessageTimer];
@@ -1035,7 +1035,7 @@ LABEL_20:
     self->_enrollInProgress = 0;
   }
 
-  self->_restartRequest = a3;
+  self->_restartRequest = restart;
 }
 
 - (void)_restartEnrollment
@@ -1060,13 +1060,13 @@ LABEL_20:
   [(BKUIFingerprintEnrollViewController *)self _startEnrollOperation];
 }
 
-- (void)_setTapRecognizer:(id)a3
+- (void)_setTapRecognizer:(id)recognizer
 {
   v4 = MEMORY[0x277D75B80];
-  v5 = a3;
+  recognizerCopy = recognizer;
   v6 = [[v4 alloc] initWithTarget:self action:sel_respondToTapGesture_];
   [v6 setCancelsTouchesInView:0];
-  [v5 addGestureRecognizer:v6];
+  [recognizerCopy addGestureRecognizer:v6];
 }
 
 - (void)enrollDoneContinueButtonPressed
@@ -1087,7 +1087,7 @@ LABEL_20:
   [(BKUIFingerprintEnrollViewController *)self _sendEnrollResult:4 identity:0];
 }
 
-- (void)skipEnrollmentPressed:(id)a3
+- (void)skipEnrollmentPressed:(id)pressed
 {
   bkui_fingerprint_enroll_view_controller_log = self->bkui_fingerprint_enroll_view_controller_log;
   if (os_log_type_enabled(bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEFAULT))
@@ -1102,11 +1102,11 @@ LABEL_20:
 - (void)_skipEnrollment
 {
   [(BKUIFingerprintEnrollViewController *)self _sendEnrollResult:3 identity:self->_bkIdentity];
-  v3 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  [v3 removeTouchIndicator];
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  [enrollmentControlller removeTouchIndicator];
 }
 
-- (void)restartEnrollPressed:(id)a3
+- (void)restartEnrollPressed:(id)pressed
 {
   [(BKUIFingerprintEnrollViewController *)self _sendEnrollResult:9 identity:self->_bkIdentity];
 
@@ -1144,25 +1144,25 @@ LABEL_20:
     alertView = self->_alertView;
     v6 = bkui_fingerprint_enroll_view_controller_log;
     LODWORD(alertView) = [(BKUIAlertView *)alertView isAlertHidden];
-    v7 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-    v8 = [v7 view];
+    tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+    view = [tutorialController view];
     v27[0] = 67109632;
     v27[1] = didDisappear;
     v28 = 1024;
     v29 = alertView;
     v30 = 1024;
-    v31 = [v8 isHidden];
+    isHidden = [view isHidden];
     _os_log_impl(&dword_241B0A000, v6, OS_LOG_TYPE_DEFAULT, "BiometricKitUI: WillDisappear %d, alerthidden %d, tutorialhidden %d", v27, 0x14u);
   }
 
   if (self->_inBuddy && [(BKUIFingerprintEnrollViewController *)self _topTouchButtonIpad])
   {
-    v9 = [(BKUIFingerprintEnrollViewController *)self menuAction];
+    menuAction = [(BKUIFingerprintEnrollViewController *)self menuAction];
 
-    if (v9)
+    if (menuAction)
     {
-      v10 = [(BKUIFingerprintEnrollViewController *)self menuAction];
-      v10[2]();
+      menuAction2 = [(BKUIFingerprintEnrollViewController *)self menuAction];
+      menuAction2[2]();
 LABEL_13:
     }
   }
@@ -1171,16 +1171,16 @@ LABEL_13:
   {
     if ([(BKUIAlertView *)self->_alertView isAlertHidden])
     {
-      v11 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v12 = [v11 view];
-      v13 = [v12 isHidden];
+      tutorialController2 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view2 = [tutorialController2 view];
+      isHidden2 = [view2 isHidden];
 
-      if (v13)
+      if (isHidden2)
       {
         v14 = MGGetBoolAnswer();
         v15 = self->_alertView;
         v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v10 = v16;
+        menuAction2 = v16;
         if (v14)
         {
           v17 = [v16 localizedStringForKey:@"TOUCH_LIGHT" value:&stru_2853BB280 table:@"BiometricKitUI-SSHB"];
@@ -1264,15 +1264,15 @@ LABEL_13:
   if (self->_showLiftYourFingerMsg)
   {
     self->_showLiftYourFingerMsg = 0;
-    v4 = [(BKUIFingerprintEnrollViewController *)self _liftFingerString];
-    [(BKUIFingerprintEnrollViewController *)self _animateHeaderTitle:v4];
+    _liftFingerString = [(BKUIFingerprintEnrollViewController *)self _liftFingerString];
+    [(BKUIFingerprintEnrollViewController *)self _animateHeaderTitle:_liftFingerString];
   }
 }
 
 - (id)_subtitleFont
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  if ([v3 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v4 = MEMORY[0x277D74300];
     if (self->_inBuddy)
@@ -1303,8 +1303,8 @@ LABEL_6:
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"SKIP_ENROLLMENT_TITLE" value:&stru_2853BB280 table:@"BiometricKitUI"];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v7 = [v19 uppercaseString];
-  v8 = [@"SKIP_ENROLLMENT_DESCRIPTION_" stringByAppendingString:v7];
+  uppercaseString = [v19 uppercaseString];
+  v8 = [@"SKIP_ENROLLMENT_DESCRIPTION_" stringByAppendingString:uppercaseString];
   v9 = [v6 localizedStringForKey:v8 value:&stru_2853BB280 table:@"BiometricKitUI"];
   v10 = [v3 alertControllerWithTitle:v5 message:v9 preferredStyle:1];
 
@@ -1344,13 +1344,13 @@ void __63__BKUIFingerprintEnrollViewController__showSkipEnrollmentAlert__block_i
 
 - (void)_requestNewAuthToken
 {
-  v3 = [(BiometricKitUIEnrollViewController *)self delegate];
+  delegate = [(BiometricKitUIEnrollViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(BiometricKitUIEnrollViewController *)self delegate];
-    [v5 generateAuthToken];
+    delegate2 = [(BiometricKitUIEnrollViewController *)self delegate];
+    [delegate2 generateAuthToken];
   }
 }
 
@@ -1370,31 +1370,31 @@ void __63__BKUIFingerprintEnrollViewController__showSkipEnrollmentAlert__block_i
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrollOperation:(id)a3 progressedWithTouchIDInfo:(id)a4
+- (void)enrollOperation:(id)operation progressedWithTouchIDInfo:(id)info
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  infoCopy = info;
   bkui_biometric_kit_delegate_log = self->bkui_biometric_kit_delegate_log;
   if (os_log_type_enabled(bkui_biometric_kit_delegate_log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = bkui_biometric_kit_delegate_log;
     *buf = 134218240;
-    v28 = [v7 progress];
+    progress = [infoCopy progress];
     v29 = 1024;
-    v30 = [v7 message];
+    message = [infoCopy message];
     _os_log_impl(&dword_241B0A000, v9, OS_LOG_TYPE_DEFAULT, "BiometricKitUI: Enroll progress: %li and message: %u", buf, 0x12u);
   }
 
-  if (self->_didDisappear || [v7 progress] > 254)
+  if (self->_didDisappear || [infoCopy progress] > 254)
   {
     goto LABEL_20;
   }
 
-  if ([v7 message] == 1)
+  if ([infoCopy message] == 1)
   {
-    v10 = [v7 messageDetails];
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CF1C20]];
+    messageDetails = [infoCopy messageDetails];
+    v11 = [messageDetails objectForKeyedSubscript:*MEMORY[0x277CF1C20]];
     if ([v11 integerValue])
     {
       v12 = [BKUIBundleSettings BOOLForUserDefaultsKey:@"hideEnrollNewComponentMessage"];
@@ -1417,8 +1417,8 @@ void __63__BKUIFingerprintEnrollViewController__showSkipEnrollmentAlert__block_i
 LABEL_18:
               *p_movedFingerAlertShown = 1;
               v26 = *p_alertView;
-              v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-              v19 = [v18 localizedStringForKey:v17 value:&stru_2853BB280 table:@"BiometricKitUI"];
+              messageDetails2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+              v19 = [messageDetails2 localizedStringForKey:v17 value:&stru_2853BB280 table:@"BiometricKitUI"];
               v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
               v22 = [v21 localizedStringForKey:v16 value:&stru_2853BB280 table:@"BiometricKitUI"];
               v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1440,8 +1440,8 @@ LABEL_18:
   }
 
   self->_movedFingerCount = 0;
-  v18 = [v7 messageDetails];
-  v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277CF1C28]];
+  messageDetails2 = [infoCopy messageDetails];
+  v19 = [messageDetails2 objectForKeyedSubscript:*MEMORY[0x277CF1C28]];
   if ([v19 integerValue] != 1)
   {
 LABEL_19:
@@ -1467,58 +1467,58 @@ LABEL_19:
   }
 
 LABEL_20:
-  [(BKUIFingerprintEnrollViewController *)self _enrollHapticFeedback:v7];
+  [(BKUIFingerprintEnrollViewController *)self _enrollHapticFeedback:infoCopy];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrollOperation:(id)a3 percentCompleted:(int64_t)a4
+- (void)enrollOperation:(id)operation percentCompleted:(int64_t)completed
 {
-  self->_bkProgress = a4;
-  v6 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  self->_bkProgress = completed;
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
   v5 = self->_bkProgress / 100.0;
   *&v5 = v5;
-  [v6 setEnrollProgress:self->_mesaFirstEnrollView enrollView:v5];
+  [enrollmentControlller setEnrollProgress:self->_mesaFirstEnrollView enrollView:v5];
 }
 
-- (void)enrollOperation:(id)a3 finishedWithIdentity:(id)a4
+- (void)enrollOperation:(id)operation finishedWithIdentity:(id)identity
 {
-  v5 = a4;
+  identityCopy = identity;
   self->_enrollInProgress = 0;
   [(BKUIFingerprintEnrollViewController *)self _cancelEnrollmentAndRestart:0];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   enrollmentEndTime = self->_enrollmentEndTime;
-  self->_enrollmentEndTime = v6;
+  self->_enrollmentEndTime = date;
 
   self->_enrollmentPhaseTwo = 1;
   self->_currentProgress = 0.0;
   bkIdentity = self->_bkIdentity;
-  self->_bkIdentity = v5;
-  v9 = v5;
+  self->_bkIdentity = identityCopy;
+  v9 = identityCopy;
 
   [(BKUIAlertView *)self->_alertView hideAnimated:1];
-  v10 = [(BKUIFingerprintEnrollViewController *)self bioStreamEventHelper];
-  [v10 sendSuccessfulEnrollEvent];
+  bioStreamEventHelper = [(BKUIFingerprintEnrollViewController *)self bioStreamEventHelper];
+  [bioStreamEventHelper sendSuccessfulEnrollEvent];
 
   [(BKUIFingerprintEnrollViewController *)self _sendEnrollResult:1 identity:v9];
   [(BKUIFingerprintEnrollViewController *)self _startTutorial:1];
-  v11 = [(BKUIFingerprintEnrollViewController *)self bkDevice];
+  bkDevice = [(BKUIFingerprintEnrollViewController *)self bkDevice];
 
-  if (v11)
+  if (bkDevice)
   {
 
     [(BKUIFingerprintEnrollViewController *)self _startExtendEnrollOperation];
   }
 }
 
-- (void)enrollOperation:(id)a3 failedWithReason:(int64_t)a4
+- (void)enrollOperation:(id)operation failedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  if (a4 != 1)
+  operationCopy = operation;
+  if (reason != 1)
   {
-    if (a4 == 2)
+    if (reason == 2)
     {
-      v13 = v6;
+      v13 = operationCopy;
       [(BKUIFingerprintEnrollViewController *)self _cancelEnrollmentAndRestart:0];
       v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v8 = v7;
@@ -1527,12 +1527,12 @@ LABEL_20:
 
     else
     {
-      if (a4 != 3)
+      if (reason != 3)
       {
         goto LABEL_8;
       }
 
-      v13 = v6;
+      v13 = operationCopy;
       [(BKUIFingerprintEnrollViewController *)self _cancelEnrollmentAndRestart:0];
       v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v8 = v7;
@@ -1540,23 +1540,23 @@ LABEL_20:
     }
 
     v10 = [v7 localizedStringForKey:v9 value:&stru_2853BB280 table:@"BiometricKitUI"];
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2;
     goto LABEL_7;
   }
 
   if (!self->_cancelForRestart)
   {
-    v13 = v6;
+    v13 = operationCopy;
     [(BKUIFingerprintEnrollViewController *)self _cancelEnrollmentAndRestart:0];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v8 localizedStringForKey:@"CANCELED" value:&stru_2853BB280 table:@"BiometricKitUI"];
-    v11 = self;
+    selfCopy2 = self;
     v12 = 3;
 LABEL_7:
-    [(BKUIFingerprintEnrollViewController *)v11 _failEnrollment:v12 withMessage:v10];
+    [(BKUIFingerprintEnrollViewController *)selfCopy2 _failEnrollment:v12 withMessage:v10];
 
-    v6 = v13;
+    operationCopy = v13;
     goto LABEL_8;
   }
 
@@ -1564,13 +1564,13 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)fingerprintCaptureOperation:(id)a3 encounteredCaptureError:(int64_t)a4
+- (void)fingerprintCaptureOperation:(id)operation encounteredCaptureError:(int64_t)error
 {
-  v6 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v7 = [v6 view];
-  v8 = [v7 isHidden];
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view = [tutorialController view];
+  isHidden = [view isHidden];
 
-  if (!v8)
+  if (!isHidden)
   {
     return;
   }
@@ -1580,11 +1580,11 @@ LABEL_8:
     [BKUIFingerprintEnrollViewController fingerprintCaptureOperation:encounteredCaptureError:];
   }
 
-  if (a4 > 2)
+  if (error > 2)
   {
-    if ((a4 - 3) >= 4)
+    if ((error - 3) >= 4)
     {
-      if (a4 == 7)
+      if (error == 7)
       {
         [(BKUIFingerprintEnrollViewController *)self _showDirtOnSensorAlertView];
       }
@@ -1595,7 +1595,7 @@ LABEL_8:
     goto LABEL_6;
   }
 
-  if (a4 == 1)
+  if (error == 1)
   {
 LABEL_6:
     if (self->_enrollmentPhaseTwo)
@@ -1613,7 +1613,7 @@ LABEL_8:
     return;
   }
 
-  if (a4 == 2)
+  if (error == 2)
   {
     if (!self->_smallCoverageMessage)
     {
@@ -1642,17 +1642,17 @@ LABEL_8:
   }
 }
 
-- (void)extendEnroll:(id)a3 hasUpdated:(BOOL)a4
+- (void)extendEnroll:(id)enroll hasUpdated:(BOOL)updated
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v7 = [v6 view];
-  v8 = [v7 isHidden];
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view = [tutorialController view];
+  isHidden = [view isHidden];
 
-  if (v8)
+  if (isHidden)
   {
     [(BKUIFingerprintEnrollViewController *)self _hapticFeedback:1];
-    self->_currentProgress = self->_currentProgress + (1.0 / (self->_mesaEnrollSecondPhaseSteps << !a4));
+    self->_currentProgress = self->_currentProgress + (1.0 / (self->_mesaEnrollSecondPhaseSteps << !updated));
     bkui_biometric_kit_delegate_log = self->bkui_biometric_kit_delegate_log;
     if (os_log_type_enabled(bkui_biometric_kit_delegate_log, OS_LOG_TYPE_INFO))
     {
@@ -1669,9 +1669,9 @@ LABEL_8:
     }
 
     self->_currentProgress = v11;
-    v12 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
     *&v13 = self->_currentProgress;
-    [v12 setEnrollProgress:self->_mesaSecondEnrollView enrollView:v13];
+    [enrollmentControlller setEnrollProgress:self->_mesaSecondEnrollView enrollView:v13];
 
     if (self->_currentProgress == 1.0)
     {
@@ -1682,7 +1682,7 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operation:(id)a3 finishedWithReason:(int64_t)a4
+- (void)operation:(id)operation finishedWithReason:(int64_t)reason
 {
   if (!self->_enrollmentPhaseTwo)
   {
@@ -1691,20 +1691,20 @@ LABEL_8:
 
   self->_showLiftYourFingerMsg = 0;
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__showLiftYourFinger object:0];
-  if ((a4 - 3) < 2)
+  if ((reason - 3) < 2)
   {
     [(BKUIFingerprintEnrollViewController *)self _cancelEnrollmentMatch];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v9 localizedStringForKey:@"FAILED" value:&stru_2853BB280 table:@"BiometricKitUI"];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 2;
 LABEL_4:
-    [(BKUIFingerprintEnrollViewController *)v7 _failEnrollment:v8 withMessage:v6];
+    [(BKUIFingerprintEnrollViewController *)selfCopy2 _failEnrollment:v8 withMessage:v6];
 
     return;
   }
 
-  if (a4 != 2)
+  if (reason != 2)
   {
     return;
   }
@@ -1720,7 +1720,7 @@ LABEL_4:
     [(BKUIFingerprintEnrollViewController *)self _cancelEnrollmentMatch];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = [v9 localizedStringForKey:@"CANCELED" value:&stru_2853BB280 table:@"BiometricKitUI"];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 3;
     goto LABEL_4;
   }
@@ -1728,32 +1728,32 @@ LABEL_4:
   [(BKUIFingerprintEnrollViewController *)self _finishEnrollmentPhaseTwo];
 }
 
-- (void)operation:(id)a3 stateChanged:(int64_t)a4
+- (void)operation:(id)operation stateChanged:(int64_t)changed
 {
-  if (a4 == 5)
+  if (changed == 5)
   {
     [(BKUIFingerprintEnrollViewController *)self _showLiftYourFingerWithDelay];
   }
 
-  else if (a4 == 2 && self->_cancelForRestart)
+  else if (changed == 2 && self->_cancelForRestart)
   {
     self->_cancelForRestart = 0;
   }
 }
 
-- (void)operation:(id)a3 presenceStateChanged:(BOOL)a4
+- (void)operation:(id)operation presenceStateChanged:(BOOL)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   +[BKUIUtils resetScreenDimming];
-  if (v4)
+  if (changedCopy)
   {
     if (self->_enrollmentPhaseTwo)
     {
-      v6 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v7 = [v6 view];
-      v8 = [v7 isHidden];
+      tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view = [tutorialController view];
+      isHidden = [view isHidden];
 
-      if (v8)
+      if (isHidden)
       {
         mesaSecondEnrollView = self->_mesaSecondEnrollView;
         *&v9 = 1.0 / self->_mesaEnrollSecondPhaseSteps;
@@ -1788,11 +1788,11 @@ LABEL_15:
 
   if (self->_enrollmentPhaseTwo)
   {
-    v11 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-    v12 = [v11 view];
-    v13 = [v12 isHidden];
+    tutorialController2 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+    view2 = [tutorialController2 view];
+    isHidden2 = [view2 isHidden];
 
-    if (v13)
+    if (isHidden2)
     {
 
       [(BKUIFingerprintEnrollViewController *)self initPromptMessage];
@@ -1817,9 +1817,9 @@ LABEL_15:
   [(BKUIBundleEnrollViewController *)&v14 afterStatusMessage:64];
 }
 
-- (void)_resetUIWithTransitionToTutorial:(BOOL)a3
+- (void)_resetUIWithTransitionToTutorial:(BOOL)tutorial
 {
-  v3 = a3;
+  tutorialCopy = tutorial;
   if (os_log_type_enabled(self->bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEBUG))
   {
     [BKUIFingerprintEnrollViewController _resetUIWithTransitionToTutorial:];
@@ -1903,40 +1903,40 @@ LABEL_15:
     self->_movedFingerThr = v22;
   }
 
-  v23 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  [v23 setEnrollProgress:self->_mesaSecondEnrollView enrollView:0.0];
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  [enrollmentControlller setEnrollProgress:self->_mesaSecondEnrollView enrollView:0.0];
 
-  v24 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  [v24 setEnrollProgress:self->_mesaFirstEnrollView enrollView:0.0];
+  enrollmentControlller2 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  [enrollmentControlller2 setEnrollProgress:self->_mesaFirstEnrollView enrollView:0.0];
 
-  v25 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  [v25 setEnrollViewState:0];
+  enrollmentControlller3 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  [enrollmentControlller3 setEnrollViewState:0];
 
-  v26 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  [v26 setEnrollViewState:0];
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  [tutorialController setEnrollViewState:0];
 
-  v27 = [(BKUIFingerprintEnrollViewController *)self view];
-  v28 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v29 = [v28 view];
-  [v27 bringSubviewToFront:v29];
+  view = [(BKUIFingerprintEnrollViewController *)self view];
+  tutorialController2 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view2 = [tutorialController2 view];
+  [view bringSubviewToFront:view2];
 
-  v30 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  v31 = [v30 view];
-  [v31 setHidden:1];
+  enrollmentControlller4 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  view3 = [enrollmentControlller4 view];
+  [view3 setHidden:1];
 
-  v32 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  v33 = [v32 view];
-  [v33 setNeedsLayout];
+  enrollmentControlller5 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  view4 = [enrollmentControlller5 view];
+  [view4 setNeedsLayout];
 
-  v34 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v35 = [v34 view];
-  [v35 setHidden:0];
+  tutorialController3 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view5 = [tutorialController3 view];
+  [view5 setHidden:0];
 
-  v36 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v37 = [v36 view];
-  [v37 setNeedsLayout];
+  tutorialController4 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view6 = [tutorialController4 view];
+  [view6 setNeedsLayout];
 
-  if (v3)
+  if (tutorialCopy)
   {
     [(BKUIFingerprintEnrollViewController *)self _startInitialTutorialAnimated:0];
   }
@@ -1954,15 +1954,15 @@ LABEL_15:
   [(BKUIAlertView *)self->_alertView hideAnimated:1];
   [(BKUIFingerprintEnrollViewController *)self _stopMessageTimer];
   v3 = [(BiometricKitUIEnrollViewController *)self propertyForKey:@"BMKUI_TACTILE_CONTINUE"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     self->_matchInProgress = 0;
     self->_waitInProgress = 1;
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     enrollmentEndTime = self->_enrollmentEndTime;
-    self->_enrollmentEndTime = v5;
+    self->_enrollmentEndTime = date;
   }
 
   else
@@ -1971,11 +1971,11 @@ LABEL_15:
   }
 
   [(BKUIFingerprintEnrollViewController *)self _sendEnrollResult:8 identity:0];
-  v7 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  [v7 setEnrollViewState:2];
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  [enrollmentControlller setEnrollViewState:2];
 
-  v8 = [(BKUIFingerprintEnrollViewController *)self _readyString];
-  [(BKUIFingerprintEnrollViewController *)self _animateHeaderTitle:v8];
+  _readyString = [(BKUIFingerprintEnrollViewController *)self _readyString];
+  [(BKUIFingerprintEnrollViewController *)self _animateHeaderTitle:_readyString];
 }
 
 - (BOOL)_useAlertHud
@@ -1989,17 +1989,17 @@ LABEL_15:
 - (BOOL)_shouldHideUnlockMessage
 {
   v2 = [(BiometricKitUIEnrollViewController *)self propertyForKey:@"BMKUI_HIDE_UNLOCK_MSG"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)_bkIdentityCount
 {
-  v3 = [(BKUIFingerprintEnrollViewController *)self bkDevice];
+  bkDevice = [(BKUIFingerprintEnrollViewController *)self bkDevice];
   userid = self->_userid;
   v10 = 0;
-  v5 = [v3 identitiesForUser:userid error:&v10];
+  v5 = [bkDevice identitiesForUser:userid error:&v10];
   v6 = v10;
 
   if (v6)
@@ -2046,11 +2046,11 @@ LABEL_15:
     [BKUIFingerprintEnrollViewController _stopTutorialTransitionToEnrollView];
   }
 
-  v3 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v4 = [v3 view];
-  v5 = [v4 isHidden];
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view = [tutorialController view];
+  isHidden = [view isHidden];
 
-  if ((v5 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     enrollmentPhaseTwo = self->_enrollmentPhaseTwo;
     v7 = os_log_type_enabled(self->bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEBUG);
@@ -2061,8 +2061,8 @@ LABEL_15:
         [BKUIFingerprintEnrollViewController _stopTutorialTransitionToEnrollView];
       }
 
-      v8 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      [v8 setEnrollViewState:1];
+      enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      [enrollmentControlller setEnrollViewState:1];
 
       [(BKUIFingerprintEnrollViewController *)self initPromptMessage];
     }
@@ -2074,8 +2074,8 @@ LABEL_15:
         [BKUIFingerprintEnrollViewController _stopTutorialTransitionToEnrollView];
       }
 
-      v9 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      [v9 setEnrollViewState:0];
+      enrollmentControlller2 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      [enrollmentControlller2 setEnrollViewState:0];
 
       if (self->_inBuddy)
       {
@@ -2087,9 +2087,9 @@ LABEL_15:
   }
 }
 
-- (void)transitionToEnrollView:(BOOL)a3
+- (void)transitionToEnrollView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v60 = *MEMORY[0x277D85DE8];
   bkui_fingerprint_enroll_view_controller_log = self->bkui_fingerprint_enroll_view_controller_log;
   if (os_log_type_enabled(bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEFAULT))
@@ -2098,59 +2098,59 @@ LABEL_15:
     _os_log_impl(&dword_241B0A000, bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEFAULT, "BiometricKitUI: transition To Enroll View", buf, 2u);
   }
 
-  v6 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  v7 = [v6 view];
-  v8 = [v7 isHidden];
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  view = [enrollmentControlller view];
+  isHidden = [view isHidden];
 
-  if ((v8 & 1) != 0 || !v3)
+  if ((isHidden & 1) != 0 || !viewCopy)
   {
-    v9 = [(BKUIFingerprintEnrollViewController *)self view];
-    v10 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v11 = [v10 view];
-    [v9 bringSubviewToFront:v11];
+    view2 = [(BKUIFingerprintEnrollViewController *)self view];
+    enrollmentControlller2 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    view3 = [enrollmentControlller2 view];
+    [view2 bringSubviewToFront:view3];
 
-    v12 = [(BKUIFingerprintEnrollViewController *)self view];
-    [v12 bounds];
+    view4 = [(BKUIFingerprintEnrollViewController *)self view];
+    [view4 bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    LODWORD(v10) = [v21 bkui_isRTL];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    LODWORD(enrollmentControlller2) = [currentDevice bkui_isRTL];
 
-    v22 = [(BKUIFingerprintEnrollViewController *)self view];
-    [v22 bounds];
+    view5 = [(BKUIFingerprintEnrollViewController *)self view];
+    [view5 bounds];
     v24 = v23;
 
     v25 = -v24;
-    if (!v10)
+    if (!enrollmentControlller2)
     {
       v25 = v24;
     }
 
     v26 = v14 + v25;
-    v27 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v28 = [v27 view];
-    [v28 setHidden:0];
+    enrollmentControlller3 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    view6 = [enrollmentControlller3 view];
+    [view6 setHidden:0];
 
-    v29 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v30 = [v29 view];
-    [v30 setFrame:{v26, v16, v18, v20}];
+    enrollmentControlller4 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    view7 = [enrollmentControlller4 view];
+    [view7 setFrame:{v26, v16, v18, v20}];
 
-    v31 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v32 = [v31 view];
-    [v32 setAlpha:1.0];
+    enrollmentControlller5 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    view8 = [enrollmentControlller5 view];
+    [view8 setAlpha:1.0];
 
-    v33 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v34 = [v33 view];
-    [v34 setNeedsLayout];
+    enrollmentControlller6 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    view9 = [enrollmentControlller6 view];
+    [view9 setNeedsLayout];
 
-    v35 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v36 = [v35 view];
-    [v36 layoutIfNeeded];
+    enrollmentControlller7 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    view10 = [enrollmentControlller7 view];
+    [view10 layoutIfNeeded];
 
-    if (v3)
+    if (viewCopy)
     {
       v53[0] = MEMORY[0x277D85DD0];
       v53[1] = 3221225472;
@@ -2167,25 +2167,25 @@ LABEL_15:
 
     else
     {
-      v37 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v38 = [v37 view];
-      v39 = [(BKUIFingerprintEnrollViewController *)self view];
-      [v39 bounds];
-      [v38 setFrame:?];
+      enrollmentControlller8 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view11 = [enrollmentControlller8 view];
+      view12 = [(BKUIFingerprintEnrollViewController *)self view];
+      [view12 bounds];
+      [view11 setFrame:?];
 
-      v40 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v41 = [v40 view];
-      [v41 layoutIfNeeded];
+      enrollmentControlller9 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view13 = [enrollmentControlller9 view];
+      [view13 layoutIfNeeded];
 
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v42 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v43 = [v42 contentView];
-      v44 = [v43 subviews];
+      enrollmentControlller10 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      contentView = [enrollmentControlller10 contentView];
+      subviews = [contentView subviews];
 
-      v45 = [v44 countByEnumeratingWithState:&v54 objects:v59 count:16];
+      v45 = [subviews countByEnumeratingWithState:&v54 objects:v59 count:16];
       if (v45)
       {
         v46 = v45;
@@ -2196,21 +2196,21 @@ LABEL_15:
           {
             if (*v55 != v47)
             {
-              objc_enumerationMutation(v44);
+              objc_enumerationMutation(subviews);
             }
 
             [*(*(&v54 + 1) + 8 * i) setHidden:0];
           }
 
-          v46 = [v44 countByEnumeratingWithState:&v54 objects:v59 count:16];
+          v46 = [subviews countByEnumeratingWithState:&v54 objects:v59 count:16];
         }
 
         while (v46);
       }
 
-      v49 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v50 = [v49 view];
-      [v50 setHidden:1];
+      tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view14 = [tutorialController view];
+      [view14 setHidden:1];
     }
   }
 
@@ -2245,10 +2245,10 @@ void __62__BKUIFingerprintEnrollViewController_transitionToEnrollView___block_in
   [v4 setHidden:0];
 }
 
-- (void)transitionToTutorialView:(BOOL)a3 completion:(id)a4
+- (void)transitionToTutorialView:(BOOL)view completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   bkui_fingerprint_enroll_view_controller_log = self->bkui_fingerprint_enroll_view_controller_log;
   if (os_log_type_enabled(bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEFAULT))
   {
@@ -2256,55 +2256,55 @@ void __62__BKUIFingerprintEnrollViewController_transitionToEnrollView___block_in
     _os_log_impl(&dword_241B0A000, bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEFAULT, "BiometricKitUI: transition To Tutorail View", buf, 2u);
   }
 
-  v8 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-  v9 = [v8 view];
-  v10 = [v9 isHidden];
+  tutorialController = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+  view = [tutorialController view];
+  isHidden = [view isHidden];
 
-  if ((v10 & 1) != 0 || !v4)
+  if ((isHidden & 1) != 0 || !viewCopy)
   {
-    v11 = [(BKUIFingerprintEnrollViewController *)self view];
-    v12 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-    v13 = [v12 view];
-    [v11 bringSubviewToFront:v13];
+    view2 = [(BKUIFingerprintEnrollViewController *)self view];
+    tutorialController2 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+    view3 = [tutorialController2 view];
+    [view2 bringSubviewToFront:view3];
 
-    v14 = [(BKUIFingerprintEnrollViewController *)self view];
-    [v14 bounds];
+    view4 = [(BKUIFingerprintEnrollViewController *)self view];
+    [view4 bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
 
-    v23 = [MEMORY[0x277D75418] currentDevice];
-    LODWORD(v12) = [v23 bkui_isRTL];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    LODWORD(tutorialController2) = [currentDevice bkui_isRTL];
 
-    v24 = [(BKUIFingerprintEnrollViewController *)self view];
-    [v24 bounds];
+    view5 = [(BKUIFingerprintEnrollViewController *)self view];
+    [view5 bounds];
     v26 = v25;
 
     v27 = -v26;
-    if (!v12)
+    if (!tutorialController2)
     {
       v27 = v26;
     }
 
     v28 = v16 + v27;
-    v29 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-    v30 = [v29 view];
-    [v30 setFrame:{v28, v18, v20, v22}];
+    tutorialController3 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+    view6 = [tutorialController3 view];
+    [view6 setFrame:{v28, v18, v20, v22}];
 
-    v31 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-    v32 = [v31 view];
-    [v32 layoutIfNeeded];
+    tutorialController4 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+    view7 = [tutorialController4 view];
+    [view7 layoutIfNeeded];
 
-    v33 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-    v34 = [v33 view];
-    [v34 setAlpha:1.0];
+    tutorialController5 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+    view8 = [tutorialController5 view];
+    [view8 setAlpha:1.0];
 
-    v35 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-    v36 = [v35 view];
-    [v36 setHidden:0];
+    tutorialController6 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+    view9 = [tutorialController6 view];
+    [view9 setHidden:0];
 
-    if (v4)
+    if (viewCopy)
     {
       v37 = MEMORY[0x277D75D18];
       v47[0] = MEMORY[0x277D85DD0];
@@ -2317,25 +2317,25 @@ void __62__BKUIFingerprintEnrollViewController_transitionToEnrollView___block_in
       v45[2] = __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_completion___block_invoke_2;
       v45[3] = &unk_278D0A000;
       v45[4] = self;
-      v46 = v6;
+      v46 = completionCopy;
       [v37 animateWithDuration:v47 animations:v45 completion:0.3];
     }
 
     else
     {
-      v38 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v39 = [v38 view];
-      v40 = [(BKUIFingerprintEnrollViewController *)self view];
-      [v40 bounds];
-      [v39 setFrame:?];
+      tutorialController7 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view10 = [tutorialController7 view];
+      view11 = [(BKUIFingerprintEnrollViewController *)self view];
+      [view11 bounds];
+      [view10 setFrame:?];
 
-      v41 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
-      v42 = [v41 view];
-      [v42 layoutIfNeeded];
+      tutorialController8 = [(BKUIFingerprintEnrollViewController *)self tutorialController];
+      view12 = [tutorialController8 view];
+      [view12 layoutIfNeeded];
 
-      v43 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-      v44 = [v43 view];
-      [v44 setHidden:1];
+      enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+      view13 = [enrollmentControlller view];
+      [view13 setHidden:1];
     }
   }
 }
@@ -2380,17 +2380,17 @@ uint64_t __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_comp
 
 - (void)initPromptMessage
 {
-  v3 = [(BKUIFingerprintEnrollViewController *)self _placeFingerString];
-  [(BKUIFingerprintEnrollViewController *)self _animateHeaderTitle:v3];
+  _placeFingerString = [(BKUIFingerprintEnrollViewController *)self _placeFingerString];
+  [(BKUIFingerprintEnrollViewController *)self _animateHeaderTitle:_placeFingerString];
 }
 
-- (void)_animateHeaderTitle:(id)a3
+- (void)_animateHeaderTitle:(id)title
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  titleCopy = title;
   if ([(NSTimer *)self->_messageTimer isValid])
   {
-    objc_storeStrong(&self->_lastPromptMessage, a3);
+    objc_storeStrong(&self->_lastPromptMessage, title);
   }
 
   else
@@ -2398,9 +2398,9 @@ uint64_t __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_comp
     lastPromptMessage = self->_lastPromptMessage;
     self->_lastPromptMessage = 0;
 
-    v7 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v8 = [v7 headerTitle];
-    v9 = [v8 isEqualToString:v5];
+    enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    headerTitle = [enrollmentControlller headerTitle];
+    v9 = [headerTitle isEqualToString:titleCopy];
 
     if (v9)
     {
@@ -2413,11 +2413,11 @@ uint64_t __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_comp
       if (os_log_type_enabled(bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v5;
+        v14 = titleCopy;
         _os_log_impl(&dword_241B0A000, bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEFAULT, "BiometricKitUI: Current title set to: %@", &v13, 0xCu);
       }
 
-      [(BKUIFingerprintEnrollViewController *)self _transitionPromptMessage:v5];
+      [(BKUIFingerprintEnrollViewController *)self _transitionPromptMessage:titleCopy];
       msgShowTimeout = self->_msgTransLength + self->_msgShowTimeout;
     }
 
@@ -2427,7 +2427,7 @@ uint64_t __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_comp
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startMessageTimer:(double)a3
+- (void)_startMessageTimer:(double)timer
 {
   [(BKUIFingerprintEnrollViewController *)self _stopMessageTimer];
   if (os_log_type_enabled(self->bkui_fingerprint_enroll_view_controller_log, OS_LOG_TYPE_DEBUG))
@@ -2435,7 +2435,7 @@ uint64_t __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_comp
     [BKUIFingerprintEnrollViewController _startMessageTimer:];
   }
 
-  v5 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__messageTimeout selector:0 userInfo:0 repeats:a3];
+  v5 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__messageTimeout selector:0 userInfo:0 repeats:timer];
   messageTimer = self->_messageTimer;
   self->_messageTimer = v5;
 }
@@ -2472,15 +2472,15 @@ uint64_t __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_comp
   }
 }
 
-- (void)_transitionPromptMessage:(id)a3
+- (void)_transitionPromptMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  v6 = [v5 view];
-  v7 = [v6 isHidden];
+  messageCopy = message;
+  enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  view = [enrollmentControlller view];
+  isHidden = [view isHidden];
 
-  v8 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-  [v8 updateHeaderWithTitle:v4 animated:v7 ^ 1u heightDifference:0];
+  enrollmentControlller2 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+  [enrollmentControlller2 updateHeaderWithTitle:messageCopy animated:isHidden ^ 1u heightDifference:0];
 }
 
 - (id)_liftFingerString
@@ -2498,10 +2498,10 @@ uint64_t __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_comp
 
   if ([(BKUIFingerprintEnrollViewController *)self followUPEnrollmentUpSell])
   {
-    v5 = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
-    v6 = [v5 enrollViewState];
+    enrollmentControlller = [(BKUIFingerprintEnrollViewController *)self enrollmentControlller];
+    enrollViewState = [enrollmentControlller enrollViewState];
 
-    if (v6 == 1)
+    if (enrollViewState == 1)
     {
       v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v8 = [v7 localizedStringForKey:@"PLACE_YOUR_FINGER_FOLLOW_UP" value:&stru_2853BB280 table:@"Mesa-j307"];
@@ -2561,23 +2561,23 @@ uint64_t __75__BKUIFingerprintEnrollViewController_transitionToTutorialView_comp
   return MGGetSInt32Answer() == 2;
 }
 
-- (id)_deviceAwareLocalizedStringForKey:(id)a3
+- (id)_deviceAwareLocalizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BKUIFingerprintEnrollViewController *)self _topTouchButtonIpad];
+  keyCopy = key;
+  _topTouchButtonIpad = [(BKUIFingerprintEnrollViewController *)self _topTouchButtonIpad];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = v6;
-  if (v5)
+  if (_topTouchButtonIpad)
   {
-    v8 = [v4 stringByAppendingString:@"_FOLLOW_UP"];
+    v8 = [keyCopy stringByAppendingString:@"_FOLLOW_UP"];
 
     v9 = [v7 localizedStringForKey:v8 value:&stru_2853BB280 table:@"Mesa-j307"];
-    v4 = v8;
+    keyCopy = v8;
   }
 
   else
   {
-    v9 = [v6 localizedStringForKey:v4 value:&stru_2853BB280 table:@"BiometricKitUI"];
+    v9 = [v6 localizedStringForKey:keyCopy value:&stru_2853BB280 table:@"BiometricKitUI"];
   }
 
   return v9;
@@ -2627,8 +2627,8 @@ void __67__BKUIFingerprintEnrollViewController_applicationWillResignActive___blo
 - (void)_bkIdentityCount
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = a1;
-  v3 = [OUTLINED_FUNCTION_5() localizedDescription];
+  selfCopy = self;
+  localizedDescription = [OUTLINED_FUNCTION_5() localizedDescription];
   OUTLINED_FUNCTION_2_0();
   OUTLINED_FUNCTION_4();
   _os_log_error_impl(v4, v5, OS_LOG_TYPE_ERROR, v6, v7, 0xCu);

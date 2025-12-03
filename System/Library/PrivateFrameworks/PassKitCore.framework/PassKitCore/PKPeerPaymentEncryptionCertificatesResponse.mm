@@ -1,23 +1,23 @@
 @interface PKPeerPaymentEncryptionCertificatesResponse
-- (PKPeerPaymentEncryptionCertificatesResponse)initWithData:(id)a3;
+- (PKPeerPaymentEncryptionCertificatesResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentEncryptionCertificatesResponse
 
-- (PKPeerPaymentEncryptionCertificatesResponse)initWithData:(id)a3
+- (PKPeerPaymentEncryptionCertificatesResponse)initWithData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = PKPeerPaymentEncryptionCertificatesResponse;
-  v3 = [(PKWebServiceResponse *)&v12 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v12 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [[PKPeerPaymentEncryptionCertificate alloc] initWithDictionary:v6];
 
       p_super = &v4->_certificate->super;

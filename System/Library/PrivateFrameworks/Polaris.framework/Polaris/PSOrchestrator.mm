@@ -1,36 +1,36 @@
 @interface PSOrchestrator
-- (id)applyPolicyConstraints:(id)a3 withDesiredStride:(id)a4;
+- (id)applyPolicyConstraints:(id)constraints withDesiredStride:(id)stride;
 - (id)evaluateInputDrivenGraphPolicy;
-- (void)addedGraphs:(id)a3 removedGraphs:(id)a4;
-- (void)dumpStateToXPCDictionary:(id)a3;
+- (void)addedGraphs:(id)graphs removedGraphs:(id)removedGraphs;
+- (void)dumpStateToXPCDictionary:(id)dictionary;
 - (void)evaluateAllPolicies;
-- (void)execSessionRemoved:(id)a3;
-- (void)frameIdUpdate:(id)a3 frameId:(id)a4;
-- (void)producibleStridesHaveChanged:(id)a3;
+- (void)execSessionRemoved:(id)removed;
+- (void)frameIdUpdate:(id)update frameId:(id)id;
+- (void)producibleStridesHaveChanged:(id)changed;
 - (void)refreshState;
-- (void)resolvedDomainForGraphs:(id)a3;
-- (void)resourceStateUpdate:(id)a3;
-- (void)scheduleLivenessResetForFrameID:(unint64_t)a3 forTargetStride:(unint64_t)a4 forGraphID:(id)a5;
-- (void)setPolicies:(unsigned __int8)a3 accessoryTrackingActive:(BOOL)a4;
-- (void)setResourceStridesForGraph:(id)a3;
-- (void)setupSupportedCadences:(id)a3;
-- (void)setupSupportedStridesForLocalReplay:(id)a3;
+- (void)resolvedDomainForGraphs:(id)graphs;
+- (void)resourceStateUpdate:(id)update;
+- (void)scheduleLivenessResetForFrameID:(unint64_t)d forTargetStride:(unint64_t)stride forGraphID:(id)iD;
+- (void)setPolicies:(unsigned __int8)policies accessoryTrackingActive:(BOOL)active;
+- (void)setResourceStridesForGraph:(id)graph;
+- (void)setupSupportedCadences:(id)cadences;
+- (void)setupSupportedStridesForLocalReplay:(id)replay;
 - (void)updateGraphDesiredState;
-- (void)updateGraphTargetState:(id)a3 fromPolicy:(id)a4;
+- (void)updateGraphTargetState:(id)state fromPolicy:(id)policy;
 - (void)updateResourceDesiredState;
 @end
 
 @implementation PSOrchestrator
 
-- (void)frameIdUpdate:(id)a3 frameId:(id)a4
+- (void)frameIdUpdate:(id)update frameId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  idCopy = id;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [updateCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -42,23 +42,23 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(updateCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
-        v13 = [(PSOrchestrator *)self resourceState];
-        v14 = [v12 resourceKey];
-        v15 = [v13 objectForKeyedSubscript:v14];
+        resourceState = [(PSOrchestrator *)self resourceState];
+        resourceKey = [v12 resourceKey];
+        v15 = [resourceState objectForKeyedSubscript:resourceKey];
 
-        v16 = [v12 stride];
-        [v15 setProviderStride:v16];
+        stride = [v12 stride];
+        [v15 setProviderStride:stride];
 
-        [v15 setStrideChangeFrameID:v7];
+        [v15 setStrideChangeFrameID:idCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [updateCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -67,14 +67,14 @@
   [(PSOrchestrator *)self updateGraphDesiredState];
 }
 
-- (void)resolvedDomainForGraphs:(id)a3
+- (void)resolvedDomainForGraphs:(id)graphs
 {
-  v4 = a3;
+  graphsCopy = graphs;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [graphsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -85,37 +85,37 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(graphsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v4 objectForKey:v9];
-        v11 = [(PSOrchestrator *)self graphState];
-        v12 = [v11 objectForKeyedSubscript:v9];
+        v10 = [graphsCopy objectForKey:v9];
+        graphState = [(PSOrchestrator *)self graphState];
+        v12 = [graphState objectForKeyedSubscript:v9];
         [v12 setDomain:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [graphsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)producibleStridesHaveChanged:(id)a3
+- (void)producibleStridesHaveChanged:(id)changed
 {
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = a3;
+  obj = changed;
   v4 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v34;
     v25 = *v34;
-    v26 = self;
+    selfCopy = self;
     do
     {
       v7 = 0;
@@ -128,26 +128,26 @@
         }
 
         v8 = *(*(&v33 + 1) + 8 * v7);
-        v9 = [(PSOrchestrator *)self resourceState];
-        v10 = [v8 resourceKey];
-        v11 = [v9 objectForKeyedSubscript:v10];
+        resourceState = [(PSOrchestrator *)self resourceState];
+        resourceKey = [v8 resourceKey];
+        v11 = [resourceState objectForKeyedSubscript:resourceKey];
 
-        v12 = [v8 strides];
-        v13 = [v12 sortedArrayUsingSelector:"compare:"];
+        strides = [v8 strides];
+        v13 = [strides sortedArrayUsingSelector:"compare:"];
         [v11 setProducibleStrides:v13];
 
-        v14 = [v11 producibleStrides];
-        v15 = [v11 providerStride];
-        LOBYTE(v10) = [v14 containsObject:v15];
+        producibleStrides = [v11 producibleStrides];
+        providerStride = [v11 providerStride];
+        LOBYTE(resourceKey) = [producibleStrides containsObject:providerStride];
 
-        if ((v10 & 1) == 0)
+        if ((resourceKey & 1) == 0)
         {
           v31 = 0u;
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v16 = [v11 producibleStrides];
-          v17 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          producibleStrides2 = [v11 producibleStrides];
+          v17 = [producibleStrides2 countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v17)
           {
             v18 = v17;
@@ -158,22 +158,22 @@
               {
                 if (*v30 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(producibleStrides2);
                 }
 
                 v21 = *(*(&v29 + 1) + 8 * i);
-                v22 = [v11 providerStride];
-                v23 = [v22 unsignedLongValue];
-                v24 = [v21 unsignedLongValue];
+                providerStride2 = [v11 providerStride];
+                unsignedLongValue = [providerStride2 unsignedLongValue];
+                unsignedLongValue2 = [v21 unsignedLongValue];
 
-                if (v23 <= v24)
+                if (unsignedLongValue <= unsignedLongValue2)
                 {
                   [v11 setProviderStride:v21];
                   goto LABEL_17;
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v18 = [producibleStrides2 countByEnumeratingWithState:&v29 objects:v37 count:16];
               if (v18)
               {
                 continue;
@@ -186,7 +186,7 @@
 LABEL_17:
 
           v6 = v25;
-          self = v26;
+          self = selfCopy;
           v5 = v27;
         }
 
@@ -203,9 +203,9 @@ LABEL_17:
   [(PSOrchestrator *)self updateGraphDesiredState];
 }
 
-- (void)setupSupportedStridesForLocalReplay:(id)a3
+- (void)setupSupportedStridesForLocalReplay:(id)replay
 {
-  v4 = xpc_dictionary_get_value(a3, "resource_info_array");
+  v4 = xpc_dictionary_get_value(replay, "resource_info_array");
   applier[0] = _NSConcreteStackBlock;
   applier[1] = 3221225472;
   applier[2] = sub_100005178;
@@ -214,22 +214,22 @@ LABEL_17:
   xpc_array_apply(v4, applier);
 }
 
-- (void)dumpStateToXPCDictionary:(id)a3
+- (void)dumpStateToXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v6 = [(PSOrchestrator *)self statisticsDelegate];
-  v5 = [v6 statistics];
-  xpc_dictionary_set_value(v4, "orchestrator_statistics", v5);
+  dictionaryCopy = dictionary;
+  statisticsDelegate = [(PSOrchestrator *)self statisticsDelegate];
+  statistics = [statisticsDelegate statistics];
+  xpc_dictionary_set_value(dictionaryCopy, "orchestrator_statistics", statistics);
 }
 
-- (void)setupSupportedCadences:(id)a3
+- (void)setupSupportedCadences:(id)cadences
 {
-  v4 = a3;
+  cadencesCopy = cadences;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v5 = [cadencesCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
@@ -241,62 +241,62 @@ LABEL_17:
       {
         if (*v27 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cadencesCopy);
         }
 
         v9 = *(*(&v26 + 1) + 8 * v8);
-        v10 = [(PSOrchestrator *)self resourceState];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        resourceState = [(PSOrchestrator *)self resourceState];
+        v11 = [resourceState objectForKeyedSubscript:v9];
 
         if (v11)
         {
-          v12 = [v4 objectForKeyedSubscript:v9];
-          v13 = [v12 supportedCadences];
-          v14 = [(PSOrchestrator *)self resourceState];
-          v15 = [v14 objectForKeyedSubscript:v9];
-          [v15 setSupportedStrides:v13];
+          v12 = [cadencesCopy objectForKeyedSubscript:v9];
+          supportedCadences = [v12 supportedCadences];
+          resourceState2 = [(PSOrchestrator *)self resourceState];
+          v15 = [resourceState2 objectForKeyedSubscript:v9];
+          [v15 setSupportedStrides:supportedCadences];
 
-          v16 = [v4 objectForKeyedSubscript:v9];
-          v17 = [v16 defaultStride];
-          v18 = [(PSOrchestrator *)self resourceState];
-          v19 = [v18 objectForKeyedSubscript:v9];
-          [v19 setDefaultStride:v17];
+          v16 = [cadencesCopy objectForKeyedSubscript:v9];
+          defaultStride = [v16 defaultStride];
+          resourceState3 = [(PSOrchestrator *)self resourceState];
+          v19 = [resourceState3 objectForKeyedSubscript:v9];
+          [v19 setDefaultStride:defaultStride];
         }
 
         else
         {
           v20 = [PSResourceState alloc];
-          v16 = [v4 objectForKeyedSubscript:v9];
-          v17 = [(PSResourceState *)v20 init:v9 withConfig:v16];
-          v18 = [(PSOrchestrator *)self resourceState];
-          [v18 setObject:v17 forKeyedSubscript:v9];
+          v16 = [cadencesCopy objectForKeyedSubscript:v9];
+          defaultStride = [(PSResourceState *)v20 init:v9 withConfig:v16];
+          resourceState3 = [(PSOrchestrator *)self resourceState];
+          [resourceState3 setObject:defaultStride forKeyedSubscript:v9];
         }
 
-        v21 = [v4 objectForKeyedSubscript:v9];
-        v22 = [v21 supportedCadences];
-        v23 = [v22 allKeys];
-        v24 = [(PSOrchestrator *)self resourceState];
-        v25 = [v24 objectForKeyedSubscript:v9];
-        [v25 setProducibleStrides:v23];
+        v21 = [cadencesCopy objectForKeyedSubscript:v9];
+        supportedCadences2 = [v21 supportedCadences];
+        allKeys = [supportedCadences2 allKeys];
+        resourceState4 = [(PSOrchestrator *)self resourceState];
+        v25 = [resourceState4 objectForKeyedSubscript:v9];
+        [v25 setProducibleStrides:allKeys];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v6 = [cadencesCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)resourceStateUpdate:(id)a3
+- (void)resourceStateUpdate:(id)update
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a3;
+  obj = update;
   v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
@@ -313,20 +313,20 @@ LABEL_17:
         }
 
         v8 = *(*(&v18 + 1) + 8 * v7);
-        v9 = [(PSOrchestrator *)self resourceState];
-        v10 = [v8 resourceName];
-        v11 = [v9 objectForKeyedSubscript:v10];
+        resourceState = [(PSOrchestrator *)self resourceState];
+        resourceName = [v8 resourceName];
+        v11 = [resourceState objectForKeyedSubscript:resourceName];
 
         [v11 setState:{objc_msgSend(v8, "state")}];
-        v12 = [v11 guaranteedStrideChangeNotification];
-        v13 = [v8 stride];
-        v14 = [v12 objectForKeyedSubscript:v13];
+        guaranteedStrideChangeNotification = [v11 guaranteedStrideChangeNotification];
+        stride = [v8 stride];
+        v14 = [guaranteedStrideChangeNotification objectForKeyedSubscript:stride];
         v15 = [NSNumber numberWithBool:0];
 
         if (v14 == v15)
         {
-          v16 = [v8 stride];
-          [v11 setProviderStride:v16];
+          stride2 = [v8 stride];
+          [v11 setProviderStride:stride2];
 
           [v11 setStrideChangeFrameID:0];
         }
@@ -344,16 +344,16 @@ LABEL_17:
   [(PSOrchestrator *)self updateGraphDesiredState];
 }
 
-- (void)execSessionRemoved:(id)a3
+- (void)execSessionRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(PSOrchestrator *)self builder];
-  v6 = [v5 graphsForExecSession:v4];
+  removedCopy = removed;
+  builder = [(PSOrchestrator *)self builder];
+  v6 = [builder graphsForExecSession:removedCopy];
 
   [(PSOrchestrator *)self addedGraphs:0 removedGraphs:v6];
-  v7 = [(PSOrchestrator *)self builder];
+  builder2 = [(PSOrchestrator *)self builder];
   v13 = 0;
-  v8 = [v7 removeGraphsWithIDs:v6 error:&v13];
+  v8 = [builder2 removeGraphsWithIDs:v6 error:&v13];
   v9 = v13;
 
   if ((v8 & 1) == 0)
@@ -370,23 +370,23 @@ LABEL_17:
     }
   }
 
-  v12 = [(PSOrchestrator *)self gstManager];
-  [v12 removeGraphs:v6];
+  gstManager = [(PSOrchestrator *)self gstManager];
+  [gstManager removeGraphs:v6];
 
   [(PSOrchestrator *)self flushAddedRemovedGraphs];
 }
 
-- (void)setPolicies:(unsigned __int8)a3 accessoryTrackingActive:(BOOL)a4
+- (void)setPolicies:(unsigned __int8)policies accessoryTrackingActive:(BOOL)active
 {
-  v7 = [(PSOrchestrator *)self queue];
+  queue = [(PSOrchestrator *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100005C80;
   v8[3] = &unk_100028C18;
-  v9 = a3;
+  policiesCopy = policies;
   v8[4] = self;
-  v10 = a4;
-  dispatch_sync(v7, v8);
+  activeCopy = active;
+  dispatch_sync(queue, v8);
 }
 
 - (id)evaluateInputDrivenGraphPolicy
@@ -432,16 +432,16 @@ LABEL_17:
 
               v9 = *(*(&v21 + 1) + 8 * i);
               v10 = objc_alloc_init(PSGraphState);
-              v11 = [v9 session];
-              [(PSGraphState *)v10 setSessionName:v11];
+              session = [v9 session];
+              [(PSGraphState *)v10 setSessionName:session];
 
-              v12 = [v9 name];
-              [(PSGraphState *)v10 setGraphName:v12];
+              name = [v9 name];
+              [(PSGraphState *)v10 setGraphName:name];
 
-              v13 = [(PSOrchestrator *)self resourceState];
-              v14 = [v13 objectForKeyedSubscript:v4];
-              v15 = [v14 providerStride];
-              [(PSGraphState *)v10 setTargetStride:v15];
+              resourceState = [(PSOrchestrator *)self resourceState];
+              v14 = [resourceState objectForKeyedSubscript:v4];
+              providerStride = [v14 providerStride];
+              [(PSGraphState *)v10 setTargetStride:providerStride];
 
               [v2 setObject:v10 forKey:v9];
             }
@@ -465,11 +465,11 @@ LABEL_17:
   return v2;
 }
 
-- (void)setResourceStridesForGraph:(id)a3
+- (void)setResourceStridesForGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [(PSOrchestrator *)self builder];
-  v6 = [v5 resourcesForGraph:v4];
+  graphCopy = graph;
+  builder = [(PSOrchestrator *)self builder];
+  v6 = [builder resourcesForGraph:graphCopy];
 
   v23 = 0u;
   v24 = 0u;
@@ -491,28 +491,28 @@ LABEL_17:
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [(PSOrchestrator *)self builder];
-        v14 = [v13 isWaitInput:v12 forGraph:v4];
+        builder2 = [(PSOrchestrator *)self builder];
+        v14 = [builder2 isWaitInput:v12 forGraph:graphCopy];
 
         if (v14)
         {
-          v15 = [(PSOrchestrator *)self graphState];
-          v16 = [v15 objectForKeyedSubscript:v4];
+          graphState = [(PSOrchestrator *)self graphState];
+          v16 = [graphState objectForKeyedSubscript:graphCopy];
           [v16 targetStride];
         }
 
         else
         {
-          v15 = [(PSOrchestrator *)self resourceState];
-          v16 = [v15 objectForKeyedSubscript:v12];
+          graphState = [(PSOrchestrator *)self resourceState];
+          v16 = [graphState objectForKeyedSubscript:v12];
           [v16 defaultStride];
         }
         v17 = ;
 
-        v18 = [(PSOrchestrator *)self resourceState];
-        v19 = [v18 objectForKeyedSubscript:v12];
-        v20 = [v19 consumersForStride];
-        [v20 setObject:v17 forKeyedSubscript:v4];
+        resourceState = [(PSOrchestrator *)self resourceState];
+        v19 = [resourceState objectForKeyedSubscript:v12];
+        consumersForStride = [v19 consumersForStride];
+        [consumersForStride setObject:v17 forKeyedSubscript:graphCopy];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -522,25 +522,25 @@ LABEL_17:
   }
 }
 
-- (void)updateGraphTargetState:(id)a3 fromPolicy:(id)a4
+- (void)updateGraphTargetState:(id)state fromPolicy:(id)policy
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSOrchestrator *)self graphState];
-  v42 = v7;
-  v9 = [v7 evaluatePolicy:v8];
+  stateCopy = state;
+  policyCopy = policy;
+  graphState = [(PSOrchestrator *)self graphState];
+  v42 = policyCopy;
+  v9 = [policyCopy evaluatePolicy:graphState];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
   v10 = v9;
-  v11 = v6;
+  v11 = stateCopy;
   obj = v10;
   v45 = [v10 countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v45)
   {
-    v43 = v6;
+    v43 = stateCopy;
     v44 = *v50;
     do
     {
@@ -553,28 +553,28 @@ LABEL_17:
 
         v13 = *(*(&v49 + 1) + 8 * i);
         v14 = [obj objectForKeyedSubscript:v13];
-        v15 = [v14 lowerBoundStride];
-        if (v15)
+        lowerBoundStride = [v14 lowerBoundStride];
+        if (lowerBoundStride)
         {
-          v16 = [v14 lowerBoundStride];
-          v47 = [v16 unsignedIntegerValue];
+          lowerBoundStride2 = [v14 lowerBoundStride];
+          unsignedIntegerValue = [lowerBoundStride2 unsignedIntegerValue];
         }
 
         else
         {
-          v47 = 0;
+          unsignedIntegerValue = 0;
         }
 
-        v17 = [v14 upperBoundStride];
-        if (v17)
+        upperBoundStride = [v14 upperBoundStride];
+        if (upperBoundStride)
         {
-          v18 = [v14 upperBoundStride];
-          v19 = [v18 unsignedIntegerValue];
+          upperBoundStride2 = [v14 upperBoundStride];
+          unsignedIntegerValue2 = [upperBoundStride2 unsignedIntegerValue];
         }
 
         else
         {
-          v19 = -1;
+          unsignedIntegerValue2 = -1;
         }
 
         v20 = [v11 objectForKeyedSubscript:v13];
@@ -582,45 +582,45 @@ LABEL_17:
         if (v20)
         {
           v21 = [v11 objectForKeyedSubscript:v13];
-          v22 = [v21 lowerBoundStride];
-          if (v22)
+          lowerBoundStride3 = [v21 lowerBoundStride];
+          if (lowerBoundStride3)
           {
             v23 = [v11 objectForKeyedSubscript:v13];
-            v24 = [v23 lowerBoundStride];
-            v25 = [v24 unsignedIntegerValue];
+            lowerBoundStride4 = [v23 lowerBoundStride];
+            unsignedIntegerValue3 = [lowerBoundStride4 unsignedIntegerValue];
 
             v11 = v43;
           }
 
           else
           {
-            v25 = 0;
+            unsignedIntegerValue3 = 0;
           }
 
           v27 = [v11 objectForKeyedSubscript:v13];
-          v28 = [v27 upperBoundStride];
-          if (v28)
+          upperBoundStride3 = [v27 upperBoundStride];
+          if (upperBoundStride3)
           {
             v29 = [v11 objectForKeyedSubscript:v13];
-            v30 = [v29 upperBoundStride];
-            v26 = [v30 unsignedIntegerValue];
+            upperBoundStride4 = [v29 upperBoundStride];
+            unsignedIntegerValue4 = [upperBoundStride4 unsignedIntegerValue];
 
             v11 = v43;
           }
 
           else
           {
-            v26 = -1;
+            unsignedIntegerValue4 = -1;
           }
 
           v31 = [v11 objectForKeyedSubscript:v13];
-          v32 = [v31 targetStride];
-          if (v32)
+          targetStride = [v31 targetStride];
+          if (targetStride)
           {
-            v33 = v32;
-            v34 = [v14 targetStride];
+            v33 = targetStride;
+            targetStride2 = [v14 targetStride];
 
-            if (v34)
+            if (targetStride2)
             {
               sub_100017568(&v48);
             }
@@ -633,28 +633,28 @@ LABEL_17:
 
         else
         {
-          v25 = 0;
-          v26 = -1;
+          unsignedIntegerValue3 = 0;
+          unsignedIntegerValue4 = -1;
         }
 
-        if (v47 <= v25)
+        if (unsignedIntegerValue <= unsignedIntegerValue3)
         {
-          v35 = v25;
-        }
-
-        else
-        {
-          v35 = v47;
-        }
-
-        if (v19 >= v26)
-        {
-          v36 = v26;
+          v35 = unsignedIntegerValue3;
         }
 
         else
         {
-          v36 = v19;
+          v35 = unsignedIntegerValue;
+        }
+
+        if (unsignedIntegerValue2 >= unsignedIntegerValue4)
+        {
+          v36 = unsignedIntegerValue4;
+        }
+
+        else
+        {
+          v36 = unsignedIntegerValue2;
         }
 
         v37 = [NSNumber numberWithUnsignedInteger:v35];
@@ -663,13 +663,13 @@ LABEL_17:
         v38 = [NSNumber numberWithUnsignedInteger:v36];
         [v14 setUpperBoundStride:v38];
 
-        v39 = [v14 targetStride];
+        targetStride3 = [v14 targetStride];
 
-        if (!v39)
+        if (!targetStride3)
         {
           v40 = [v11 objectForKeyedSubscript:v13];
-          v41 = [v40 targetStride];
-          [v14 setTargetStride:v41];
+          targetStride4 = [v40 targetStride];
+          [v14 setTargetStride:targetStride4];
         }
 
         [v11 setObject:v14 forKey:v13];
@@ -682,58 +682,58 @@ LABEL_17:
   }
 }
 
-- (id)applyPolicyConstraints:(id)a3 withDesiredStride:(id)a4
+- (id)applyPolicyConstraints:(id)constraints withDesiredStride:(id)stride
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  constraintsCopy = constraints;
+  strideCopy = stride;
+  v7 = strideCopy;
+  if (constraintsCopy)
   {
-    v8 = [v5 targetStride];
+    targetStride = [constraintsCopy targetStride];
 
-    if (v8)
+    if (targetStride)
     {
-      v9 = [v5 targetStride];
-      v10 = [v9 unsignedIntegerValue];
+      targetStride2 = [constraintsCopy targetStride];
+      unsignedIntegerValue = [targetStride2 unsignedIntegerValue];
     }
 
     else
     {
-      v10 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
     }
 
-    v12 = [v5 lowerBoundStride];
+    lowerBoundStride = [constraintsCopy lowerBoundStride];
 
-    if (v12)
+    if (lowerBoundStride)
     {
-      v13 = [v5 lowerBoundStride];
-      v14 = [v13 unsignedIntegerValue];
+      lowerBoundStride2 = [constraintsCopy lowerBoundStride];
+      unsignedIntegerValue2 = [lowerBoundStride2 unsignedIntegerValue];
 
-      if (v14 > v10)
+      if (unsignedIntegerValue2 > unsignedIntegerValue)
       {
-        v10 = v14;
+        unsignedIntegerValue = unsignedIntegerValue2;
       }
     }
 
-    v15 = [v5 upperBoundStride];
+    upperBoundStride = [constraintsCopy upperBoundStride];
 
-    if (v15)
+    if (upperBoundStride)
     {
-      v16 = [v5 upperBoundStride];
-      v17 = [v16 unsignedIntegerValue];
+      upperBoundStride2 = [constraintsCopy upperBoundStride];
+      unsignedIntegerValue3 = [upperBoundStride2 unsignedIntegerValue];
 
-      if (v17 < v10)
+      if (unsignedIntegerValue3 < unsignedIntegerValue)
       {
-        v10 = v17;
+        unsignedIntegerValue = unsignedIntegerValue3;
       }
     }
 
-    v11 = [NSNumber numberWithUnsignedInteger:v10];
+    v11 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue];
   }
 
   else
   {
-    v11 = v6;
+    v11 = strideCopy;
   }
 
   v18 = v11;
@@ -748,8 +748,8 @@ LABEL_17:
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v3 = [(PSOrchestrator *)self policyRequests];
-  v4 = [v3 countByEnumeratingWithState:&v72 objects:v79 count:16];
+  policyRequests = [(PSOrchestrator *)self policyRequests];
+  v4 = [policyRequests countByEnumeratingWithState:&v72 objects:v79 count:16];
   if (v4)
   {
     v5 = v4;
@@ -760,30 +760,30 @@ LABEL_17:
       {
         if (*v73 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(policyRequests);
         }
 
         v8 = *(*(&v72 + 1) + 8 * i);
-        v9 = [(PSOrchestrator *)self policyRequests];
-        v10 = [v9 objectForKeyedSubscript:v8];
+        policyRequests2 = [(PSOrchestrator *)self policyRequests];
+        v10 = [policyRequests2 objectForKeyedSubscript:v8];
 
         [(PSOrchestrator *)self updateGraphTargetState:v58 fromPolicy:v10];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v72 objects:v79 count:16];
+      v5 = [policyRequests countByEnumeratingWithState:&v72 objects:v79 count:16];
     }
 
     while (v5);
   }
 
-  v49 = [(PSOrchestrator *)self evaluateInputDrivenGraphPolicy];
+  evaluateInputDrivenGraphPolicy = [(PSOrchestrator *)self evaluateInputDrivenGraphPolicy];
   [v58 addEntriesFromDictionary:?];
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v11 = [(PSOrchestrator *)self graphState];
-  v12 = [v11 countByEnumeratingWithState:&v68 objects:v78 count:16];
+  graphState = [(PSOrchestrator *)self graphState];
+  v12 = [graphState countByEnumeratingWithState:&v68 objects:v78 count:16];
   if (v12)
   {
     v13 = v12;
@@ -794,34 +794,34 @@ LABEL_17:
       {
         if (*v69 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(graphState);
         }
 
         v16 = *(*(&v68 + 1) + 8 * j);
-        v17 = [(PSOrchestrator *)self graphState];
-        v18 = [v17 objectForKeyedSubscript:v16];
+        graphState2 = [(PSOrchestrator *)self graphState];
+        v18 = [graphState2 objectForKeyedSubscript:v16];
         [v18 setTargetStride:0];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v68 objects:v78 count:16];
+      v13 = [graphState countByEnumeratingWithState:&v68 objects:v78 count:16];
     }
 
     while (v13);
   }
 
-  v19 = [(PSOrchestrator *)self builder];
-  v20 = [v19 allStrideDependentGraphs];
+  builder = [(PSOrchestrator *)self builder];
+  allStrideDependentGraphs = [builder allStrideDependentGraphs];
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v20;
+  obj = allStrideDependentGraphs;
   v51 = [obj countByEnumeratingWithState:&v64 objects:v77 count:16];
   if (v51)
   {
     v50 = *v65;
-    v55 = self;
+    selfCopy = self;
     do
     {
       v21 = 0;
@@ -835,16 +835,16 @@ LABEL_17:
         v53 = v21;
         v22 = *(*(&v64 + 1) + 8 * v21);
         v23 = [v58 objectForKeyedSubscript:v22];
-        v24 = [(PSOrchestrator *)self graphState];
-        v25 = [v24 objectForKeyedSubscript:v22];
-        v26 = [v25 requestedStride];
-        v27 = [(PSOrchestrator *)self applyPolicyConstraints:v23 withDesiredStride:v26];
-        v28 = [(PSOrchestrator *)v55 graphState];
-        v29 = [v28 objectForKeyedSubscript:v22];
+        graphState3 = [(PSOrchestrator *)self graphState];
+        v25 = [graphState3 objectForKeyedSubscript:v22];
+        requestedStride = [v25 requestedStride];
+        v27 = [(PSOrchestrator *)self applyPolicyConstraints:v23 withDesiredStride:requestedStride];
+        graphState4 = [(PSOrchestrator *)selfCopy graphState];
+        v29 = [graphState4 objectForKeyedSubscript:v22];
         [v29 setTargetStride:v27];
 
-        self = v55;
-        [(PSOrchestrator *)v55 setResourceStridesForGraph:v22];
+        self = selfCopy;
+        [(PSOrchestrator *)selfCopy setResourceStridesForGraph:v22];
         v57 = v22;
         v30 = [obj objectForKeyedSubscript:v22];
         v60 = 0u;
@@ -866,39 +866,39 @@ LABEL_17:
               }
 
               v32 = *(*(&v60 + 1) + 8 * k);
-              v33 = [(PSOrchestrator *)self graphState];
-              v34 = [v33 objectForKeyedSubscript:v57];
-              v35 = [v34 targetStride];
-              v36 = [v35 unsignedIntegerValue];
+              graphState5 = [(PSOrchestrator *)self graphState];
+              v34 = [graphState5 objectForKeyedSubscript:v57];
+              targetStride = [v34 targetStride];
+              unsignedIntegerValue = [targetStride unsignedIntegerValue];
 
-              v37 = [(PSOrchestrator *)self graphState];
-              v38 = [v37 objectForKeyedSubscript:v32];
-              v39 = [v38 targetStride];
-              if (v39)
+              graphState6 = [(PSOrchestrator *)self graphState];
+              v38 = [graphState6 objectForKeyedSubscript:v32];
+              targetStride2 = [v38 targetStride];
+              if (targetStride2)
               {
-                v40 = [(PSOrchestrator *)self graphState];
-                v41 = [v40 objectForKeyedSubscript:v32];
-                v42 = [v41 targetStride];
-                v43 = [v42 unsignedIntegerValue];
+                graphState7 = [(PSOrchestrator *)self graphState];
+                v41 = [graphState7 objectForKeyedSubscript:v32];
+                targetStride3 = [v41 targetStride];
+                unsignedIntegerValue2 = [targetStride3 unsignedIntegerValue];
 
-                self = v55;
+                self = selfCopy;
               }
 
               else
               {
-                v43 = -1;
+                unsignedIntegerValue2 = -1;
               }
 
-              if (v36 < v43)
+              if (unsignedIntegerValue < unsignedIntegerValue2)
               {
-                v43 = v36;
+                unsignedIntegerValue2 = unsignedIntegerValue;
               }
 
               v44 = [v58 objectForKeyedSubscript:v32];
-              v45 = [NSNumber numberWithUnsignedInteger:v43];
+              v45 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue2];
               v46 = [(PSOrchestrator *)self applyPolicyConstraints:v44 withDesiredStride:v45];
-              v47 = [(PSOrchestrator *)self graphState];
-              v48 = [v47 objectForKeyedSubscript:v32];
+              graphState8 = [(PSOrchestrator *)self graphState];
+              v48 = [graphState8 objectForKeyedSubscript:v32];
               [v48 setTargetStride:v46];
 
               [(PSOrchestrator *)self setResourceStridesForGraph:v32];
@@ -921,14 +921,14 @@ LABEL_17:
   }
 }
 
-- (void)addedGraphs:(id)a3 removedGraphs:(id)a4
+- (void)addedGraphs:(id)graphs removedGraphs:(id)removedGraphs
 {
-  v31 = a3;
+  graphsCopy = graphs;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = a4;
+  obj = removedGraphs;
   v34 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v34)
   {
@@ -944,8 +944,8 @@ LABEL_17:
         }
 
         v7 = *(*(&v43 + 1) + 8 * v6);
-        v8 = [(PSOrchestrator *)self builder];
-        v9 = [v8 resourcesForGraph:v7];
+        builder = [(PSOrchestrator *)self builder];
+        v9 = [builder resourcesForGraph:v7];
 
         v41 = 0u;
         v42 = 0u;
@@ -968,10 +968,10 @@ LABEL_17:
               }
 
               v15 = *(*(&v39 + 1) + 8 * v14);
-              v16 = [(PSOrchestrator *)self resourceState];
-              v17 = [v16 objectForKeyedSubscript:v15];
-              v18 = [v17 consumersForStride];
-              [v18 removeObjectForKey:v7];
+              resourceState = [(PSOrchestrator *)self resourceState];
+              v17 = [resourceState objectForKeyedSubscript:v15];
+              consumersForStride = [v17 consumersForStride];
+              [consumersForStride removeObjectForKey:v7];
 
               v14 = v14 + 1;
             }
@@ -983,8 +983,8 @@ LABEL_17:
           while (v12);
         }
 
-        v19 = [(PSOrchestrator *)self graphState];
-        [v19 removeObjectForKey:v7];
+        graphState = [(PSOrchestrator *)self graphState];
+        [graphState removeObjectForKey:v7];
 
         v6 = v6 + 1;
       }
@@ -1000,7 +1000,7 @@ LABEL_17:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v20 = v31;
+  v20 = graphsCopy;
   v21 = [v20 countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v21)
   {
@@ -1018,17 +1018,17 @@ LABEL_17:
 
         v25 = *(*(&v35 + 1) + 8 * v24);
         v26 = objc_alloc_init(PSGraphState);
-        v27 = [v25 name];
-        [(PSGraphState *)v26 setGraphName:v27];
+        name = [v25 name];
+        [(PSGraphState *)v26 setGraphName:name];
 
-        v28 = [v25 session];
-        [(PSGraphState *)v26 setSessionName:v28];
+        session = [v25 session];
+        [(PSGraphState *)v26 setSessionName:session];
 
         v29 = [v20 objectForKey:v25];
         [(PSGraphState *)v26 setRequestedStride:v29];
 
-        v30 = [(PSOrchestrator *)self graphState];
-        [v30 setObject:v26 forKeyedSubscript:v25];
+        graphState2 = [(PSOrchestrator *)self graphState];
+        [graphState2 setObject:v26 forKeyedSubscript:v25];
 
         v24 = v24 + 1;
       }
@@ -1048,8 +1048,8 @@ LABEL_17:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(PSOrchestrator *)self resourceState];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  resourceState = [(PSOrchestrator *)self resourceState];
+  v5 = [resourceState countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1061,26 +1061,26 @@ LABEL_17:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resourceState);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
-        v10 = [(PSOrchestrator *)self resourceState];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        resourceState2 = [(PSOrchestrator *)self resourceState];
+        v11 = [resourceState2 objectForKeyedSubscript:v9];
 
-        v12 = [v11 computeDesiredStride];
-        v13 = [v11 requestedStrideToProvider];
+        computeDesiredStride = [v11 computeDesiredStride];
+        requestedStrideToProvider = [v11 requestedStrideToProvider];
 
-        if (v12 != v13)
+        if (computeDesiredStride != requestedStrideToProvider)
         {
-          [v11 setRequestedStrideToProvider:v12];
+          [v11 setRequestedStrideToProvider:computeDesiredStride];
           [v11 setStrideChangeFrameID:0];
           v14 = objc_alloc_init(PSResourceDesiredState);
-          v15 = [v11 resourceName];
-          [(PSResourceDesiredState *)v14 setResourceName:v15];
+          resourceName = [v11 resourceName];
+          [(PSResourceDesiredState *)v14 setResourceName:resourceName];
 
-          [(PSResourceDesiredState *)v14 setDesiredStride:v12];
-          [(PSResourceDesiredState *)v14 setWantedByConsumers:v12 != 0];
+          [(PSResourceDesiredState *)v14 setDesiredStride:computeDesiredStride];
+          [(PSResourceDesiredState *)v14 setWantedByConsumers:computeDesiredStride != 0];
           [v3 addObject:v14];
         }
 
@@ -1088,7 +1088,7 @@ LABEL_17:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [resourceState countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -1096,26 +1096,26 @@ LABEL_17:
 
   if (!-[PSOrchestrator isSessionForLocalReplay](self, "isSessionForLocalReplay") && [v3 count])
   {
-    v16 = [(PSOrchestrator *)self notifier];
-    (v16)[2](v16, v3);
+    notifier = [(PSOrchestrator *)self notifier];
+    (notifier)[2](notifier, v3);
   }
 }
 
 - (void)refreshState
 {
-  v3 = [(PSOrchestrator *)self statisticsDelegate];
-  [v3 willStartOrchestration];
+  statisticsDelegate = [(PSOrchestrator *)self statisticsDelegate];
+  [statisticsDelegate willStartOrchestration];
 
   [(PSOrchestrator *)self evaluateAllPolicies];
   [(PSOrchestrator *)self updateResourceDesiredState];
   [(PSOrchestrator *)self updateGraphDesiredState];
-  v4 = [(PSOrchestrator *)self statisticsDelegate];
-  [v4 didEndOrchestration];
+  statisticsDelegate2 = [(PSOrchestrator *)self statisticsDelegate];
+  [statisticsDelegate2 didEndOrchestration];
 }
 
 - (void)updateGraphDesiredState
 {
-  v2 = self;
+  selfCopy = self;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
@@ -1125,7 +1125,7 @@ LABEL_17:
   if (v57)
   {
     v56 = *v77;
-    v63 = v2;
+    v63 = selfCopy;
     do
     {
       for (i = 0; i != v57; i = i + 1)
@@ -1136,10 +1136,10 @@ LABEL_17:
         }
 
         v4 = *(*(&v76 + 1) + 8 * i);
-        v5 = [(PSOrchestrator *)v2 graphState];
-        v6 = [v5 objectForKeyedSubscript:v4];
+        graphState = [(PSOrchestrator *)selfCopy graphState];
+        v6 = [graphState objectForKeyedSubscript:v4];
 
-        v7 = [(PSBuilderProtocol *)v2->_builder waitResourcesForGraph:v4 isSessionLocal:[(PSOrchestrator *)v2 isSessionForLocalReplay]];
+        v7 = [(PSBuilderProtocol *)selfCopy->_builder waitResourcesForGraph:v4 isSessionLocal:[(PSOrchestrator *)selfCopy isSessionForLocalReplay]];
         if (![v7 count])
         {
           v22 = &off_100029928;
@@ -1171,15 +1171,15 @@ LABEL_17:
               }
 
               v14 = *(*(&v72 + 1) + 8 * j);
-              v15 = [(PSOrchestrator *)v2 resourceState];
-              v16 = [v15 objectForKeyedSubscript:v14];
+              resourceState = [(PSOrchestrator *)selfCopy resourceState];
+              v16 = [resourceState objectForKeyedSubscript:v14];
 
               if ([v16 state])
               {
-                v17 = [v16 requestedStrideToProvider];
-                v18 = [v17 unsignedLongValue];
-                v19 = [v16 providerStride];
-                if (v18 <= [v19 unsignedLongValue])
+                requestedStrideToProvider = [v16 requestedStrideToProvider];
+                unsignedLongValue = [requestedStrideToProvider unsignedLongValue];
+                providerStride = [v16 providerStride];
+                if (unsignedLongValue <= [providerStride unsignedLongValue])
                 {
                   [v16 providerStride];
                 }
@@ -1196,10 +1196,10 @@ LABEL_17:
                 v20 = &off_100029940;
               }
 
-              v21 = [v20 unsignedLongValue];
-              if (v11 <= v21)
+              unsignedLongValue2 = [v20 unsignedLongValue];
+              if (v11 <= unsignedLongValue2)
               {
-                v11 = v21;
+                v11 = unsignedLongValue2;
               }
             }
 
@@ -1215,23 +1215,23 @@ LABEL_17:
         }
 
         v6 = v60;
-        v23 = [v60 targetStride];
-        v24 = [v23 unsignedLongValue];
+        targetStride = [v60 targetStride];
+        unsignedLongValue3 = [targetStride unsignedLongValue];
 
-        if (v24 <= v11)
+        if (unsignedLongValue3 <= v11)
         {
           v25 = v11;
         }
 
         else
         {
-          v25 = v24;
+          v25 = unsignedLongValue3;
         }
 
-        v26 = [v60 currentStride];
-        v27 = [v26 unsignedLongValue];
+        currentStride = [v60 currentStride];
+        unsignedLongValue4 = [currentStride unsignedLongValue];
 
-        if (v27 == v25)
+        if (unsignedLongValue4 == v25)
         {
           v22 = &off_100029928;
 LABEL_56:
@@ -1263,25 +1263,25 @@ LABEL_56:
               }
 
               v31 = *(*(&v68 + 1) + 8 * k);
-              v32 = [(PSOrchestrator *)v63 resourceState];
-              v33 = [v32 objectForKeyedSubscript:v31];
+              resourceState2 = [(PSOrchestrator *)v63 resourceState];
+              v33 = [resourceState2 objectForKeyedSubscript:v31];
 
-              v34 = [v33 strideChangeFrameID];
-              v35 = v34 != 0;
+              strideChangeFrameID = [v33 strideChangeFrameID];
+              v35 = strideChangeFrameID != 0;
 
               v66 = v35 & v29;
-              v36 = [v33 strideChangeFrameID];
-              v37 = [v36 unsignedLongValue];
+              strideChangeFrameID2 = [v33 strideChangeFrameID];
+              unsignedLongValue5 = [strideChangeFrameID2 unsignedLongValue];
 
-              if (v28 <= v37)
+              if (v28 <= unsignedLongValue5)
               {
-                v28 = v37;
+                v28 = unsignedLongValue5;
               }
 
-              v38 = [v33 supportedStrides];
+              supportedStrides = [v33 supportedStrides];
               v39 = [NSNumber numberWithUnsignedLong:v64];
-              v40 = [v38 objectForKeyedSubscript:v39];
-              v41 = [v33 supportedStrides];
+              v40 = [supportedStrides objectForKeyedSubscript:v39];
+              supportedStrides2 = [v33 supportedStrides];
               if (v40)
               {
                 v42 = v64;
@@ -1293,7 +1293,7 @@ LABEL_56:
               }
 
               v43 = [NSNumber numberWithUnsignedLong:v42];
-              v44 = [v41 objectForKeyedSubscript:v43];
+              v44 = [supportedStrides2 objectForKeyedSubscript:v43];
 
               if (v44)
               {
@@ -1322,7 +1322,7 @@ LABEL_56:
 
         if (![(PSOrchestrator *)v63 shouldSkipCadenceChangeForStride:v64 isReplay:[(PSOrchestrator *)v63 isSessionForLocalReplay]])
         {
-          v45 = [v22 unsignedLongValue];
+          unsignedLongValue6 = [v22 unsignedLongValue];
           v6 = v60;
           [v60 domain];
           v47 = v46 = v29;
@@ -1335,7 +1335,7 @@ LABEL_56:
 
           else
           {
-            v49 = v45;
+            v49 = unsignedLongValue6;
           }
 
           gstManager = v63->_gstManager;
@@ -1353,12 +1353,12 @@ LABEL_56:
           v53 = [NSNumber numberWithUnsignedLong:v64];
           [v60 setCurrentStride:v53];
 
-          v2 = v63;
+          selfCopy = v63;
           [(PSOrchestrator *)v63 scheduleLivenessResetForFrameID:v52 forTargetStride:v64 forGraphID:v55];
           goto LABEL_56;
         }
 
-        v2 = v63;
+        selfCopy = v63;
         i = v59;
         v6 = v60;
 LABEL_57:
@@ -1373,27 +1373,27 @@ LABEL_58:
   }
 }
 
-- (void)scheduleLivenessResetForFrameID:(unint64_t)a3 forTargetStride:(unint64_t)a4 forGraphID:(id)a5
+- (void)scheduleLivenessResetForFrameID:(unint64_t)d forTargetStride:(unint64_t)stride forGraphID:(id)iD
 {
-  v8 = a5;
-  v9 = [v8 name];
-  [v9 UTF8String];
-  v10 = [v8 session];
+  iDCopy = iD;
+  name = [iDCopy name];
+  [name UTF8String];
+  session = [iDCopy session];
 
-  [v10 UTF8String];
+  [session UTF8String];
   session_node_by_name = ps_liveness_get_session_node_by_name();
 
-  if (a4)
+  if (stride)
   {
-    if (a3 != -1 && session_node_by_name != -1)
+    if (d != -1 && session_node_by_name != -1)
     {
-      v12 = [(PSOrchestrator *)self systemPulseRate];
-      v13 = [v12 unsignedLongLongValue] / a4;
+      systemPulseRate = [(PSOrchestrator *)self systemPulseRate];
+      v13 = [systemPulseRate unsignedLongLongValue] / stride;
 
       if (v13 > 0.0)
       {
 
-        _ps_liveness_schedule_reset_deadline_at_frameid(session_node_by_name, a3, v13, (1000000000.0 / v13));
+        _ps_liveness_schedule_reset_deadline_at_frameid(session_node_by_name, d, v13, (1000000000.0 / v13));
       }
     }
   }

@@ -5,13 +5,13 @@
 + (TSSPropertySet)nonEmphasisCharacterProperties;
 + (TSSPropertySet)properties;
 + (TSSPropertySet)propertiesAllowingNSNull;
-+ (id)nullStyleWithContext:(id)a3;
-- (id)archivableRepresentationOfChangeSet:(id)a3;
++ (id)nullStyleWithContext:(id)context;
+- (id)archivableRepresentationOfChangeSet:(id)set;
 - (int)writingDirection;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPCharacterStyle
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = sub_276D42340;
   block[3] = &unk_27A6F3D70;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A58060 != -1)
   {
     dispatch_once(&qword_280A58060, block);
@@ -83,28 +83,28 @@
 
 + (NSString)nullStyleName
 {
-  v3 = sub_276E32640(a1, a2, v2);
+  v3 = sub_276E32640(self, a2, v2);
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"None", &stru_28860A0F0, @"TSText");
 
   return v5;
 }
 
-+ (id)nullStyleWithContext:(id)a3
++ (id)nullStyleWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_nullStyleName(a1, v6, v7);
-  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v5, v9, v4, v8, 0, 0);
+  v8 = objc_msgSend_nullStyleName(self, v6, v7);
+  isVariation = objc_msgSend_initWithContext_name_overridePropertyMap_isVariation_(v5, v9, contextCopy, v8, 0, 0);
 
   return isVariation;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 3))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -114,20 +114,20 @@
 
   v15.receiver = self;
   v15.super_class = TSWPCharacterStyle;
-  [(TSWPCharacterStyle *)&v15 loadFromArchive:v7 unarchiver:v6];
-  v8 = *(a3 + 10);
+  [(TSWPCharacterStyle *)&v15 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  v8 = *(archive + 10);
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277D80AB8]);
     v12 = objc_msgSend_initWithCapacity_(v9, v10, v8);
-    if (*(a3 + 4))
+    if (*(archive + 4))
     {
-      objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, *(a3 + 4), v6);
+      objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, *(archive + 4), unarchiverCopy);
     }
 
     else
     {
-      objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, &TSWP::_CharacterStylePropertiesArchive_default_instance_, v6);
+      objc_msgSend_loadCharacterStylePropertiesIntoPropertyMap_fromArchive_unarchiver_(self, v11, v12, &TSWP::_CharacterStylePropertiesArchive_default_instance_, unarchiverCopy);
     }
 
     v13 = *MEMORY[0x277D80AF0];
@@ -159,35 +159,35 @@
   return v3;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[28]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[28]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
-  *(a3 + 4) |= 1u;
-  v7 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v7 = *(archive + 3);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = MEMORY[0x277CA3260](v8);
-    *(a3 + 3) = v7;
+    *(archive + 3) = v7;
   }
 
   v24.receiver = self;
   v24.super_class = TSWPCharacterStyle;
-  [(TSWPCharacterStyle *)&v24 saveToArchive:v7 archiver:v6];
+  [(TSWPCharacterStyle *)&v24 saveToArchive:v7 archiver:archiverCopy];
   v11 = objc_msgSend_overrideCount(self, v9, v10);
   if (v11)
   {
@@ -202,34 +202,34 @@
       LODWORD(v11) = -1;
     }
 
-    *(a3 + 4) |= 4u;
-    *(a3 + 10) = v11;
+    *(archive + 4) |= 4u;
+    *(archive + 10) = v11;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = sub_276D42AEC;
     v21[3] = &unk_27A6F3E30;
     v21[4] = self;
-    v23 = a3;
-    v22 = v6;
-    objc_msgSend_pushScopeForField_message_usingBlock_(v22, v13, 11, a3, v21);
+    archiveCopy = archive;
+    v22 = archiverCopy;
+    objc_msgSend_pushScopeForField_message_usingBlock_(v22, v13, 11, archive, v21);
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_276D42CCC, off_2812DC408[28]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_276D42CCC, off_2812DC408[28]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (id)archivableRepresentationOfChangeSet:(id)a3
+- (id)archivableRepresentationOfChangeSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [TSWPStyleDiff alloc];
   v8 = objc_msgSend_context(self, v6, v7);
-  v10 = objc_msgSend_initWithContext_changeSet_(v5, v9, v8, v4);
+  v10 = objc_msgSend_initWithContext_changeSet_(v5, v9, v8, setCopy);
 
   return v10;
 }

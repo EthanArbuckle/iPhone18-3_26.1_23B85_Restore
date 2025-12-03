@@ -1,22 +1,22 @@
 @interface FIDSNode_FPProvider
-+ (id)makeWithCoder:(id)a3;
++ (id)makeWithCoder:(id)coder;
 - (BOOL)isFPv2;
 - (BOOL)isUsingFPFS;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FIDSNode_FPProvider
 
-+ (id)makeWithCoder:(id)a3
++ (id)makeWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"FI Domain"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FI Domain"];
   v5 = static_objc_cast<NSString,objc_object * {__strong}>(v4);
 
-  v6 = [v5 identifier];
-  if ([v6 length])
+  identifier = [v5 identifier];
+  if ([identifier length])
   {
-    v7 = v6;
+    v7 = identifier;
     v12.fString.fRef = &stru_1F5F42870;
     CFRetain(&stru_1F5F42870);
     TString::SetStringRefAsImmutable(&v12, v7);
@@ -37,33 +37,33 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = FIDSNode_FPProvider;
-  [(FIDSNode *)&v6 encodeWithCoder:v4];
-  v5 = [(FIDSNode *)self fpDomain];
-  if (v5)
+  [(FIDSNode *)&v6 encodeWithCoder:coderCopy];
+  fpDomain = [(FIDSNode *)self fpDomain];
+  if (fpDomain)
   {
-    [v4 encodeObject:v5 forKey:@"FI Domain"];
+    [coderCopy encodeObject:fpDomain forKey:@"FI Domain"];
   }
 }
 
 - (BOOL)isUsingFPFS
 {
-  v2 = [(FIDSNode *)self fiDomain];
-  v3 = [v2 isUsingFPFS];
+  fiDomain = [(FIDSNode *)self fiDomain];
+  isUsingFPFS = [fiDomain isUsingFPFS];
 
-  return v3;
+  return isUsingFPFS;
 }
 
 - (BOOL)isFPv2
 {
-  v2 = [(FIDSNode *)self fiDomain];
-  v3 = [v2 isFPv2];
+  fiDomain = [(FIDSNode *)self fiDomain];
+  isFPv2 = [fiDomain isFPv2];
 
-  return v3;
+  return isFPv2;
 }
 
 @end

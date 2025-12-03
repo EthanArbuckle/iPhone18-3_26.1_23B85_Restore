@@ -8,15 +8,15 @@
 {
   v6.receiver = self;
   v6.super_class = MSApplication;
-  v2 = [(MSApplication *)&v6 preferredContentSizeCategory];
-  if (UIContentSizeCategoryIsAccessibilityCategory(v2))
+  preferredContentSizeCategory = [(MSApplication *)&v6 preferredContentSizeCategory];
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
     v3 = UIContentSizeCategoryExtraExtraExtraLarge;
   }
 
   else
   {
-    v3 = v2;
+    v3 = preferredContentSizeCategory;
   }
 
   v4 = v3;

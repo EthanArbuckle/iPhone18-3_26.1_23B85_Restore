@@ -1,21 +1,21 @@
 @interface STWrappingTitleValueCell
-- (STWrappingTitleValueCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STWrappingTitleValueCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)layoutSubviews;
 @end
 
 @implementation STWrappingTitleValueCell
 
-- (STWrappingTitleValueCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STWrappingTitleValueCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = STWrappingTitleValueCell;
-  v5 = [(PSTableCell *)&v9 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v9 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PSTableCell *)v5 valueLabel];
-    [v7 setNumberOfLines:2];
-    [v7 setLineBreakMode:4];
+    valueLabel = [(PSTableCell *)v5 valueLabel];
+    [valueLabel setNumberOfLines:2];
+    [valueLabel setLineBreakMode:4];
   }
 
   return v6;
@@ -26,12 +26,12 @@
   v11.receiver = self;
   v11.super_class = STWrappingTitleValueCell;
   [(PSTableCell *)&v11 layoutSubviews];
-  v3 = [(PSTableCell *)self valueLabel];
-  [v3 frame];
+  valueLabel = [(PSTableCell *)self valueLabel];
+  [valueLabel frame];
   MidY = CGRectGetMidY(v12);
 
-  v5 = [(PSTableCell *)self titleLabel];
-  [v5 frame];
+  titleLabel = [(PSTableCell *)self titleLabel];
+  [titleLabel frame];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -39,7 +39,7 @@
   v10 = MidY - CGRectGetMidY(v13);
   if (v10 > 0.00000011920929)
   {
-    [v5 setFrame:{x, y + v10, width, height}];
+    [titleLabel setFrame:{x, y + v10, width, height}];
   }
 }
 

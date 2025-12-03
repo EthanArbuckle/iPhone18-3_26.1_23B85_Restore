@@ -1,14 +1,14 @@
 @interface CarPlayController
-- (void)templateWillAppear:(id)a3 animated:(BOOL)a4;
+- (void)templateWillAppear:(id)appear animated:(BOOL)animated;
 @end
 
 @implementation CarPlayController
 
-- (void)templateWillAppear:(id)a3 animated:(BOOL)a4
+- (void)templateWillAppear:(id)appear animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_1001CCFEC(v5);
+  appearCopy = appear;
+  selfCopy = self;
+  sub_1001CCFEC(appearCopy);
 }
 
 @end

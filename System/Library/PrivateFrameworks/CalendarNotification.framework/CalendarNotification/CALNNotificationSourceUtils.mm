@@ -1,53 +1,53 @@
 @interface CALNNotificationSourceUtils
-+ (id)displayNameForJunkIdentity:(id)a3;
-+ (void)updateSubtitleAndThreadIdentifierOnNotificationContent:(id)a3 forDelegateSourceWithTitle:(id)a4 identifier:(id)a5;
++ (id)displayNameForJunkIdentity:(id)identity;
++ (void)updateSubtitleAndThreadIdentifierOnNotificationContent:(id)content forDelegateSourceWithTitle:(id)title identifier:(id)identifier;
 @end
 
 @implementation CALNNotificationSourceUtils
 
-+ (id)displayNameForJunkIdentity:(id)a3
++ (id)displayNameForJunkIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [v3 emailAddress];
+  identityCopy = identity;
+  emailAddress = [identityCopy emailAddress];
 
-  if (v4)
+  if (emailAddress)
   {
-    v5 = [v3 emailAddress];
+    emailAddress2 = [identityCopy emailAddress];
   }
 
   else
   {
-    v6 = [v3 phoneNumber];
+    phoneNumber = [identityCopy phoneNumber];
 
-    if (v6)
+    if (phoneNumber)
     {
-      v7 = [MEMORY[0x277CF7CB8] sharedGenerator];
-      v8 = [v3 phoneNumber];
-      v5 = [v7 formattedStringForPhoneNumber:v8];
+      mEMORY[0x277CF7CB8] = [MEMORY[0x277CF7CB8] sharedGenerator];
+      phoneNumber2 = [identityCopy phoneNumber];
+      emailAddress2 = [mEMORY[0x277CF7CB8] formattedStringForPhoneNumber:phoneNumber2];
     }
 
     else
     {
-      v7 = [v3 URL];
-      v5 = [v7 absoluteString];
+      mEMORY[0x277CF7CB8] = [identityCopy URL];
+      emailAddress2 = [mEMORY[0x277CF7CB8] absoluteString];
     }
   }
 
-  return v5;
+  return emailAddress2;
 }
 
-+ (void)updateSubtitleAndThreadIdentifierOnNotificationContent:(id)a3 forDelegateSourceWithTitle:(id)a4 identifier:(id)a5
++ (void)updateSubtitleAndThreadIdentifierOnNotificationContent:(id)content forDelegateSourceWithTitle:(id)title identifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  titleCopy = title;
+  contentCopy = content;
   v10 = +[CALNBundle bundle];
   v12 = [v10 localizedStringForKey:@"For %@" value:&stru_28551FB98 table:0];
 
-  v11 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v12, v8];
+  titleCopy = [MEMORY[0x277CCACA8] localizedStringWithFormat:v12, titleCopy];
 
-  [v9 setSubtitle:v11];
-  [v9 setThreadIdentifier:v7];
+  [contentCopy setSubtitle:titleCopy];
+  [contentCopy setThreadIdentifier:identifierCopy];
 }
 
 @end

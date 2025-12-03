@@ -1,23 +1,23 @@
 @interface LTUIHostedDownloadViewBridge
-+ (id)personalTranslatorViewControllerWithAnimatedHeaderFor:(id)a3;
-+ (void)presentLanguageDownloadViewInSettingContextWithTraitCollection:(id)a3 specifier:(id)a4;
++ (id)personalTranslatorViewControllerWithAnimatedHeaderFor:(id)for;
++ (void)presentLanguageDownloadViewInSettingContextWithTraitCollection:(id)collection specifier:(id)specifier;
 - (LTUIHostedDownloadViewBridge)init;
 @end
 
 @implementation LTUIHostedDownloadViewBridge
 
-+ (id)personalTranslatorViewControllerWithAnimatedHeaderFor:(id)a3
++ (id)personalTranslatorViewControllerWithAnimatedHeaderFor:(id)for
 {
-  v3 = a3;
-  v4 = _s13TranslationUI24HostedDownloadViewBridgeC018personalTranslatorE28ControllerWithAnimatedHeader3forSo06UIViewI0CAG_tFZ_0(v3);
+  forCopy = for;
+  v4 = _s13TranslationUI24HostedDownloadViewBridgeC018personalTranslatorE28ControllerWithAnimatedHeader3forSo06UIViewI0CAG_tFZ_0(forCopy);
 
   return v4;
 }
 
-+ (void)presentLanguageDownloadViewInSettingContextWithTraitCollection:(id)a3 specifier:(id)a4
++ (void)presentLanguageDownloadViewInSettingContextWithTraitCollection:(id)collection specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  collectionCopy = collection;
+  specifierCopy = specifier;
   _s13TranslationUI24HostedDownloadViewBridgeC015presentLanguagedE35InSettingContextWithTraitCollection_9specifierySo07UITraitN0C_So11PSSpecifierCtFZ_0();
 }
 

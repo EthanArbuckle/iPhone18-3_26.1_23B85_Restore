@@ -1,24 +1,24 @@
 @interface ADAttributionRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDownloadType:(id)a3;
-- (int)StringAsRunState:(id)a3;
+- (int)StringAsDownloadType:(id)type;
+- (int)StringAsRunState:(id)state;
 - (int)downloadType;
 - (int)runState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAttributedByiTunes:(BOOL)a3;
-- (void)setHasDownloadType:(BOOL)a3;
-- (void)setHasIAdConversionTimestamp:(BOOL)a3;
-- (void)setHasIAdImpressionTimestamp:(BOOL)a3;
-- (void)setHasPurchaseTimestamp:(BOOL)a3;
-- (void)setHasRunState:(BOOL)a3;
-- (void)setHasSearchAdClickTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAttributedByiTunes:(BOOL)tunes;
+- (void)setHasDownloadType:(BOOL)type;
+- (void)setHasIAdConversionTimestamp:(BOOL)timestamp;
+- (void)setHasIAdImpressionTimestamp:(BOOL)timestamp;
+- (void)setHasPurchaseTimestamp:(BOOL)timestamp;
+- (void)setHasRunState:(BOOL)state;
+- (void)setHasSearchAdClickTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ADAttributionRequest
@@ -41,9 +41,9 @@ void __31__ADAttributionRequest_options__block_invoke()
   options_sOptions = &unk_285104BF0;
 }
 
-- (void)setHasPurchaseTimestamp:(BOOL)a3
+- (void)setHasPurchaseTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -56,9 +56,9 @@ void __31__ADAttributionRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIAdConversionTimestamp:(BOOL)a3
+- (void)setHasIAdConversionTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -71,9 +71,9 @@ void __31__ADAttributionRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIAdImpressionTimestamp:(BOOL)a3
+- (void)setHasIAdImpressionTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -86,9 +86,9 @@ void __31__ADAttributionRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAttributedByiTunes:(BOOL)a3
+- (void)setHasAttributedByiTunes:(BOOL)tunes
 {
-  if (a3)
+  if (tunes)
   {
     v3 = 0x80;
   }
@@ -114,9 +114,9 @@ void __31__ADAttributionRequest_options__block_invoke()
   }
 }
 
-- (void)setHasRunState:(BOOL)a3
+- (void)setHasRunState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 64;
   }
@@ -129,20 +129,20 @@ void __31__ADAttributionRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (int)StringAsRunState:(id)a3
+- (int)StringAsRunState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Simulator"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Simulator"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DevelopmentDevice"])
+  else if ([stateCopy isEqualToString:@"DevelopmentDevice"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConsumerDevice"])
+  else if ([stateCopy isEqualToString:@"ConsumerDevice"])
   {
     v4 = 2;
   }
@@ -155,9 +155,9 @@ void __31__ADAttributionRequest_options__block_invoke()
   return v4;
 }
 
-- (void)setHasSearchAdClickTimestamp:(BOOL)a3
+- (void)setHasSearchAdClickTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -183,9 +183,9 @@ void __31__ADAttributionRequest_options__block_invoke()
   }
 }
 
-- (void)setHasDownloadType:(BOOL)a3
+- (void)setHasDownloadType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -198,20 +198,20 @@ void __31__ADAttributionRequest_options__block_invoke()
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (int)StringAsDownloadType:(id)a3
+- (int)StringAsDownloadType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NoDownload"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"NoDownload"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Download"])
+  else if ([typeCopy isEqualToString:@"Download"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Redownload"])
+  else if ([typeCopy isEqualToString:@"Redownload"])
   {
     v4 = 2;
   }
@@ -230,20 +230,20 @@ void __31__ADAttributionRequest_options__block_invoke()
   v8.receiver = self;
   v8.super_class = ADAttributionRequest;
   v4 = [(ADAttributionRequest *)&v8 description];
-  v5 = [(ADAttributionRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ADAttributionRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   iAdID = self->_iAdID;
   if (iAdID)
   {
-    [v3 setObject:iAdID forKey:@"iAdID"];
+    [dictionary setObject:iAdID forKey:@"iAdID"];
   }
 
   tiltID = self->_tiltID;
@@ -395,32 +395,32 @@ LABEL_23:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v15 = v4;
+  toCopy = to;
+  v15 = toCopy;
   if (self->_iAdID)
   {
     PBDataWriterWriteDataField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_tiltID)
   {
     PBDataWriterWriteDataField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_anonymousDemandiAdID)
   {
     PBDataWriterWriteDataField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_bundleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   has = self->_has;
@@ -428,7 +428,7 @@ LABEL_23:
   {
     purchaseTimestamp = self->_purchaseTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v15;
+    toCopy = v15;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -449,7 +449,7 @@ LABEL_11:
 
   iAdConversionTimestamp = self->_iAdConversionTimestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -465,7 +465,7 @@ LABEL_12:
 LABEL_32:
   iAdImpressionTimestamp = self->_iAdImpressionTimestamp;
   PBDataWriterWriteDoubleField();
-  v4 = v15;
+  toCopy = v15;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -481,39 +481,39 @@ LABEL_13:
 LABEL_33:
   attributedByiTunes = self->_attributedByiTunes;
   PBDataWriterWriteBOOLField();
-  v4 = v15;
+  toCopy = v15;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_14:
     runState = self->_runState;
     PBDataWriterWriteInt32Field();
-    v4 = v15;
+    toCopy = v15;
   }
 
 LABEL_15:
   if (self->_toroID)
   {
     PBDataWriterWriteDataField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_dPID)
   {
     PBDataWriterWriteDataField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     searchAdClickTimestamp = self->_searchAdClickTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   if (self->_adMetadata)
   {
     PBDataWriterWriteStringField();
-    v4 = v15;
+    toCopy = v15;
   }
 
   v8 = self->_has;
@@ -521,7 +521,7 @@ LABEL_15:
   {
     downloadClickTimestamp = self->_downloadClickTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v15;
+    toCopy = v15;
     v8 = self->_has;
   }
 
@@ -529,43 +529,43 @@ LABEL_15:
   {
     downloadType = self->_downloadType;
     PBDataWriterWriteInt32Field();
-    v4 = v15;
+    toCopy = v15;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_iAdID)
   {
-    [v4 setIAdID:?];
-    v4 = v7;
+    [toCopy setIAdID:?];
+    toCopy = v7;
   }
 
   if (self->_tiltID)
   {
     [v7 setTiltID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_anonymousDemandiAdID)
   {
     [v7 setAnonymousDemandiAdID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_bundleID)
   {
     [v7 setBundleID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 4) = *&self->_purchaseTimestamp;
-    *(v4 + 124) |= 8u;
+    *(toCopy + 4) = *&self->_purchaseTimestamp;
+    *(toCopy + 124) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -584,8 +584,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 2) = *&self->_iAdConversionTimestamp;
-  *(v4 + 124) |= 2u;
+  *(toCopy + 2) = *&self->_iAdConversionTimestamp;
+  *(toCopy + 124) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -599,8 +599,8 @@ LABEL_12:
   }
 
 LABEL_32:
-  *(v4 + 3) = *&self->_iAdImpressionTimestamp;
-  *(v4 + 124) |= 4u;
+  *(toCopy + 3) = *&self->_iAdImpressionTimestamp;
+  *(toCopy + 124) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -614,71 +614,71 @@ LABEL_13:
   }
 
 LABEL_33:
-  *(v4 + 120) = self->_attributedByiTunes;
-  *(v4 + 124) |= 0x80u;
+  *(toCopy + 120) = self->_attributedByiTunes;
+  *(toCopy + 124) |= 0x80u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_14:
-    *(v4 + 24) = self->_runState;
-    *(v4 + 124) |= 0x40u;
+    *(toCopy + 24) = self->_runState;
+    *(toCopy + 124) |= 0x40u;
   }
 
 LABEL_15:
   if (self->_toroID)
   {
     [v7 setToroID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_dPID)
   {
     [v7 setDPID:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 5) = *&self->_searchAdClickTimestamp;
-    *(v4 + 124) |= 0x10u;
+    *(toCopy + 5) = *&self->_searchAdClickTimestamp;
+    *(toCopy + 124) |= 0x10u;
   }
 
   if (self->_adMetadata)
   {
     [v7 setAdMetadata:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    *(v4 + 1) = *&self->_downloadClickTimestamp;
-    *(v4 + 124) |= 1u;
+    *(toCopy + 1) = *&self->_downloadClickTimestamp;
+    *(toCopy + 124) |= 1u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x20) != 0)
   {
-    *(v4 + 20) = self->_downloadType;
-    *(v4 + 124) |= 0x20u;
+    *(toCopy + 20) = self->_downloadType;
+    *(toCopy + 124) |= 0x20u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_iAdID copyWithZone:zone];
   v7 = *(v5 + 88);
   *(v5 + 88) = v6;
 
-  v8 = [(NSData *)self->_tiltID copyWithZone:a3];
+  v8 = [(NSData *)self->_tiltID copyWithZone:zone];
   v9 = *(v5 + 104);
   *(v5 + 104) = v8;
 
-  v10 = [(NSData *)self->_anonymousDemandiAdID copyWithZone:a3];
+  v10 = [(NSData *)self->_anonymousDemandiAdID copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v12 = [(NSString *)self->_bundleID copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
@@ -745,11 +745,11 @@ LABEL_6:
   }
 
 LABEL_7:
-  v15 = [(NSData *)self->_toroID copyWithZone:a3];
+  v15 = [(NSData *)self->_toroID copyWithZone:zone];
   v16 = *(v5 + 112);
   *(v5 + 112) = v15;
 
-  v17 = [(NSData *)self->_dPID copyWithZone:a3];
+  v17 = [(NSData *)self->_dPID copyWithZone:zone];
   v18 = *(v5 + 72);
   *(v5 + 72) = v17;
 
@@ -759,7 +759,7 @@ LABEL_7:
     *(v5 + 124) |= 0x10u;
   }
 
-  v19 = [(NSString *)self->_adMetadata copyWithZone:a3];
+  v19 = [(NSString *)self->_adMetadata copyWithZone:zone];
   v20 = *(v5 + 48);
   *(v5 + 48) = v19;
 
@@ -780,16 +780,16 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_60;
   }
 
   iAdID = self->_iAdID;
-  if (iAdID | *(v4 + 11))
+  if (iAdID | *(equalCopy + 11))
   {
     if (![(NSData *)iAdID isEqual:?])
     {
@@ -798,7 +798,7 @@ LABEL_7:
   }
 
   tiltID = self->_tiltID;
-  if (tiltID | *(v4 + 13))
+  if (tiltID | *(equalCopy + 13))
   {
     if (![(NSData *)tiltID isEqual:?])
     {
@@ -807,7 +807,7 @@ LABEL_7:
   }
 
   anonymousDemandiAdID = self->_anonymousDemandiAdID;
-  if (anonymousDemandiAdID | *(v4 + 7))
+  if (anonymousDemandiAdID | *(equalCopy + 7))
   {
     if (![(NSData *)anonymousDemandiAdID isEqual:?])
     {
@@ -816,7 +816,7 @@ LABEL_7:
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 8))
+  if (bundleID | *(equalCopy + 8))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -824,94 +824,94 @@ LABEL_7:
     }
   }
 
-  v9 = *(v4 + 124);
+  v9 = *(equalCopy + 124);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 124) & 8) == 0 || self->_purchaseTimestamp != *(v4 + 4))
+    if ((*(equalCopy + 124) & 8) == 0 || self->_purchaseTimestamp != *(equalCopy + 4))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 124) & 8) != 0)
+  else if ((*(equalCopy + 124) & 8) != 0)
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 124) & 2) == 0 || self->_iAdConversionTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 124) & 2) == 0 || self->_iAdConversionTimestamp != *(equalCopy + 2))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 124) & 2) != 0)
+  else if ((*(equalCopy + 124) & 2) != 0)
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 124) & 4) == 0 || self->_iAdImpressionTimestamp != *(v4 + 3))
+    if ((*(equalCopy + 124) & 4) == 0 || self->_iAdImpressionTimestamp != *(equalCopy + 3))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 124) & 4) != 0)
+  else if ((*(equalCopy + 124) & 4) != 0)
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 0x80) != 0)
   {
-    if ((*(v4 + 124) & 0x80) == 0)
+    if ((*(equalCopy + 124) & 0x80) == 0)
     {
       goto LABEL_60;
     }
 
-    v10 = *(v4 + 120);
+    v10 = *(equalCopy + 120);
     if (self->_attributedByiTunes)
     {
-      if ((*(v4 + 120) & 1) == 0)
+      if ((*(equalCopy + 120) & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (*(v4 + 120))
+    else if (*(equalCopy + 120))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 124) & 0x80) != 0)
+  else if ((*(equalCopy + 124) & 0x80) != 0)
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 124) & 0x40) == 0 || self->_runState != *(v4 + 24))
+    if ((*(equalCopy + 124) & 0x40) == 0 || self->_runState != *(equalCopy + 24))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 124) & 0x40) != 0)
+  else if ((*(equalCopy + 124) & 0x40) != 0)
   {
     goto LABEL_60;
   }
 
   toroID = self->_toroID;
-  if (toroID | *(v4 + 14) && ![(NSData *)toroID isEqual:?])
+  if (toroID | *(equalCopy + 14) && ![(NSData *)toroID isEqual:?])
   {
     goto LABEL_60;
   }
 
   dPID = self->_dPID;
-  if (dPID | *(v4 + 9))
+  if (dPID | *(equalCopy + 9))
   {
     if (![(NSData *)dPID isEqual:?])
     {
@@ -920,22 +920,22 @@ LABEL_7:
   }
 
   has = self->_has;
-  v14 = *(v4 + 124);
+  v14 = *(equalCopy + 124);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 124) & 0x10) == 0 || self->_searchAdClickTimestamp != *(v4 + 5))
+    if ((*(equalCopy + 124) & 0x10) == 0 || self->_searchAdClickTimestamp != *(equalCopy + 5))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 124) & 0x10) != 0)
+  else if ((*(equalCopy + 124) & 0x10) != 0)
   {
     goto LABEL_60;
   }
 
   adMetadata = self->_adMetadata;
-  if (adMetadata | *(v4 + 6))
+  if (adMetadata | *(equalCopy + 6))
   {
     if ([(NSString *)adMetadata isEqual:?])
     {
@@ -951,20 +951,20 @@ LABEL_60:
 LABEL_50:
   if (has)
   {
-    if ((*(v4 + 124) & 1) == 0 || self->_downloadClickTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 124) & 1) == 0 || self->_downloadClickTimestamp != *(equalCopy + 1))
     {
       goto LABEL_60;
     }
   }
 
-  else if (*(v4 + 124))
+  else if (*(equalCopy + 124))
   {
     goto LABEL_60;
   }
 
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 124) & 0x20) == 0 || self->_downloadType != *(v4 + 20))
+    if ((*(equalCopy + 124) & 0x20) == 0 || self->_downloadType != *(equalCopy + 20))
     {
       goto LABEL_60;
     }
@@ -974,7 +974,7 @@ LABEL_50:
 
   else
   {
-    v16 = (*(v4 + 124) & 0x20) == 0;
+    v16 = (*(equalCopy + 124) & 0x20) == 0;
   }
 
 LABEL_61:
@@ -1193,40 +1193,40 @@ LABEL_30:
   return v38 ^ v39 ^ v37 ^ v36 ^ v5 ^ v9 ^ v13 ^ v35 ^ v17 ^ v18 ^ v19 ^ v22 ^ v26 ^ v29 ^ v33;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 11))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 11))
   {
     [(ADAttributionRequest *)self setIAdID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(ADAttributionRequest *)self setTiltID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ADAttributionRequest *)self setAnonymousDemandiAdID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(ADAttributionRequest *)self setBundleID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 124);
+  v5 = *(fromCopy + 124);
   if ((v5 & 8) != 0)
   {
-    self->_purchaseTimestamp = *(v4 + 4);
+    self->_purchaseTimestamp = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 124);
+    v5 = *(fromCopy + 124);
     if ((v5 & 2) == 0)
     {
 LABEL_11:
@@ -1239,14 +1239,14 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 124) & 2) == 0)
+  else if ((*(fromCopy + 124) & 2) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_iAdConversionTimestamp = *(v4 + 2);
+  self->_iAdConversionTimestamp = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 124);
+  v5 = *(fromCopy + 124);
   if ((v5 & 4) == 0)
   {
 LABEL_12:
@@ -1259,9 +1259,9 @@ LABEL_12:
   }
 
 LABEL_32:
-  self->_iAdImpressionTimestamp = *(v4 + 3);
+  self->_iAdImpressionTimestamp = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 124);
+  v5 = *(fromCopy + 124);
   if ((v5 & 0x80) == 0)
   {
 LABEL_13:
@@ -1274,51 +1274,51 @@ LABEL_13:
   }
 
 LABEL_33:
-  self->_attributedByiTunes = *(v4 + 120);
+  self->_attributedByiTunes = *(fromCopy + 120);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 124) & 0x40) != 0)
+  if ((*(fromCopy + 124) & 0x40) != 0)
   {
 LABEL_14:
-    self->_runState = *(v4 + 24);
+    self->_runState = *(fromCopy + 24);
     *&self->_has |= 0x40u;
   }
 
 LABEL_15:
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(ADAttributionRequest *)self setToroID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ADAttributionRequest *)self setDPID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 124) & 0x10) != 0)
+  if ((*(fromCopy + 124) & 0x10) != 0)
   {
-    self->_searchAdClickTimestamp = *(v4 + 5);
+    self->_searchAdClickTimestamp = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ADAttributionRequest *)self setAdMetadata:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 124);
+  v6 = *(fromCopy + 124);
   if (v6)
   {
-    self->_downloadClickTimestamp = *(v4 + 1);
+    self->_downloadClickTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 124);
+    v6 = *(fromCopy + 124);
   }
 
   if ((v6 & 0x20) != 0)
   {
-    self->_downloadType = *(v4 + 20);
+    self->_downloadType = *(fromCopy + 20);
     *&self->_has |= 0x20u;
   }
 }

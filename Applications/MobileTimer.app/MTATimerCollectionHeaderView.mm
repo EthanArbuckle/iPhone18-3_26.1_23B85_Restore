@@ -1,16 +1,16 @@
 @interface MTATimerCollectionHeaderView
-- (MTATimerCollectionHeaderView)initWithFrame:(CGRect)a3;
+- (MTATimerCollectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)setupConstraints;
 - (void)setupHeaderTitle;
 @end
 
 @implementation MTATimerCollectionHeaderView
 
-- (MTATimerCollectionHeaderView)initWithFrame:(CGRect)a3
+- (MTATimerCollectionHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MTATimerCollectionHeaderView;
-  v3 = [(MTATimerCollectionHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTATimerCollectionHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,40 +26,40 @@
   v3 = objc_opt_new();
   [(MTATimerCollectionHeaderView *)self setHeaderTitle:v3];
 
-  v4 = [(MTATimerCollectionHeaderView *)self headerTitle];
+  headerTitle = [(MTATimerCollectionHeaderView *)self headerTitle];
   v5 = [UIFont systemFontOfSize:18.0 weight:UIFontWeightMedium];
-  [v4 setFont:v5];
+  [headerTitle setFont:v5];
 
-  v6 = [(MTATimerCollectionHeaderView *)self headerTitle];
+  headerTitle2 = [(MTATimerCollectionHeaderView *)self headerTitle];
   v7 = +[UIColor whiteColor];
-  [v6 setTextColor:v7];
+  [headerTitle2 setTextColor:v7];
 
-  v8 = [(MTATimerCollectionHeaderView *)self headerTitle];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerTitle3 = [(MTATimerCollectionHeaderView *)self headerTitle];
+  [headerTitle3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(MTATimerCollectionHeaderView *)self headerTitle];
-  [(MTATimerCollectionHeaderView *)self addSubview:v9];
+  headerTitle4 = [(MTATimerCollectionHeaderView *)self headerTitle];
+  [(MTATimerCollectionHeaderView *)self addSubview:headerTitle4];
 }
 
 - (void)setupConstraints
 {
   v15 = objc_opt_new();
-  v3 = [(MTATimerCollectionHeaderView *)self headerTitle];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MTATimerCollectionHeaderView *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:16.0];
+  headerTitle = [(MTATimerCollectionHeaderView *)self headerTitle];
+  leadingAnchor = [headerTitle leadingAnchor];
+  leadingAnchor2 = [(MTATimerCollectionHeaderView *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v15 addObject:v6];
 
-  v7 = [(MTATimerCollectionHeaderView *)self headerTitle];
-  v8 = [v7 trailingAnchor];
-  v9 = [(MTATimerCollectionHeaderView *)self trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:-16.0];
+  headerTitle2 = [(MTATimerCollectionHeaderView *)self headerTitle];
+  trailingAnchor = [headerTitle2 trailingAnchor];
+  trailingAnchor2 = [(MTATimerCollectionHeaderView *)self trailingAnchor];
+  v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   [v15 addObject:v10];
 
-  v11 = [(MTATimerCollectionHeaderView *)self headerTitle];
-  v12 = [v11 bottomAnchor];
-  v13 = [(MTATimerCollectionHeaderView *)self bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13 constant:-16.0];
+  headerTitle3 = [(MTATimerCollectionHeaderView *)self headerTitle];
+  bottomAnchor = [headerTitle3 bottomAnchor];
+  bottomAnchor2 = [(MTATimerCollectionHeaderView *)self bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   [v15 addObject:v14];
 
   [NSLayoutConstraint activateConstraints:v15];

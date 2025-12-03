@@ -1,9 +1,9 @@
 @interface VKImageAnalysis
-+ (id)analysisWithDocumentObservation:(id)a3 imageSize:(CGSize)a4;
-+ (id)analysisWithDocumentObservation:(id)a3 request:(id)a4;
++ (id)analysisWithDocumentObservation:(id)observation imageSize:(CGSize)size;
++ (id)analysisWithDocumentObservation:(id)observation request:(id)request;
 - (BOOL)_hasVisualSearchElements;
-- (BOOL)hasResultsForAnalysisTypes:(unint64_t)a3;
-- (BOOL)writeSecureCodedArchiveToURL:(id)a3 error:(id *)a4;
+- (BOOL)hasResultsForAnalysisTypes:(unint64_t)types;
+- (BOOL)writeSecureCodedArchiveToURL:(id)l error:(id *)error;
 - (CGRect)rectForMrcActionInPresentingViewController;
 - (NSArray)filteredNormalizedRectangleQuads;
 - (NSArray)formRegions;
@@ -11,65 +11,65 @@
 - (NSArray)rectangleObservations;
 - (NSDictionary)localeMap;
 - (NSString)transcript;
-- (VKImageAnalysis)initWithAnalysisResult:(id)a3;
-- (VKImageAnalysis)initWithCoder:(id)a3;
-- (id)_attributedStringForRange:(_NSRange)a3;
+- (VKImageAnalysis)initWithAnalysisResult:(id)result;
+- (VKImageAnalysis)initWithCoder:(id)coder;
+- (id)_attributedStringForRange:(_NSRange)range;
 - (id)allLines;
 - (id)barcodeActions;
-- (id)formRegionsExcluding:(id)a3 updateExcludedFields:(BOOL)a4;
+- (id)formRegionsExcluding:(id)excluding updateExcludedFields:(BOOL)fields;
 - (id)mrcMenu;
 - (id)presentingViewControllerForMrcAction;
-- (id)proposedFormRegionForPoint:(CGPoint)a3 existingFields:(id)a4 formSize:(CGSize)a5;
+- (id)proposedFormRegionForPoint:(CGPoint)point existingFields:(id)fields formSize:(CGSize)size;
 - (id)textDataDetectors;
 - (id)visualSearchResultItems;
 - (int)analysisRequestID;
-- (unint64_t)countOfDataDetectorsWithTypes:(unint64_t)a3;
+- (unint64_t)countOfDataDetectorsWithTypes:(unint64_t)types;
 - (unint64_t)recognitionConfidence;
-- (void)checkForTranslationResultsWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateDataDetectorInfoWithTypes:(unint64_t)a3 unfiltered:(BOOL)a4;
-- (void)setPresentingViewControllerForMrcAction:(id)a3;
-- (void)setRectForMrcActionInPresentingViewController:(CGRect)a3;
-- (void)translateFrom:(id)a3 to:(id)a4 withCompletion:(id)a5;
+- (void)checkForTranslationResultsWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateDataDetectorInfoWithTypes:(unint64_t)types unfiltered:(BOOL)unfiltered;
+- (void)setPresentingViewControllerForMrcAction:(id)action;
+- (void)setRectForMrcActionInPresentingViewController:(CGRect)controller;
+- (void)translateFrom:(id)from to:(id)to withCompletion:(id)completion;
 @end
 
 @implementation VKImageAnalysis
 
-+ (id)analysisWithDocumentObservation:(id)a3 imageSize:(CGSize)a4
++ (id)analysisWithDocumentObservation:(id)observation imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  v7 = [[VKCImageAnalysisResult alloc] initWithDocumentObservation:v6 mrcDataDetectors:0 imageSize:width, height];
+  height = size.height;
+  width = size.width;
+  observationCopy = observation;
+  height = [[VKCImageAnalysisResult alloc] initWithDocumentObservation:observationCopy mrcDataDetectors:0 imageSize:width, height];
 
-  v8 = [(VKImageAnalysis *)[VKCImageAnalysis alloc] initWithAnalysisResult:v7];
+  v8 = [(VKImageAnalysis *)[VKCImageAnalysis alloc] initWithAnalysisResult:height];
 
   return v8;
 }
 
-+ (id)analysisWithDocumentObservation:(id)a3 request:(id)a4
++ (id)analysisWithDocumentObservation:(id)observation request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 imageSize];
-  v8 = [a1 analysisWithDocumentObservation:v7 imageSize:?];
+  requestCopy = request;
+  observationCopy = observation;
+  [requestCopy imageSize];
+  v8 = [self analysisWithDocumentObservation:observationCopy imageSize:?];
 
-  v9 = [v8 imageAnalysisResult];
-  [v9 setRequest:v6];
+  imageAnalysisResult = [v8 imageAnalysisResult];
+  [imageAnalysisResult setRequest:requestCopy];
 
   return v8;
 }
 
-- (VKImageAnalysis)initWithAnalysisResult:(id)a3
+- (VKImageAnalysis)initWithAnalysisResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = VKImageAnalysis;
   v6 = [(VKImageAnalysis *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageAnalysisResult, a3);
+    objc_storeStrong(&v6->_imageAnalysisResult, result);
     [(VKImageAnalysis *)v7 setFeedbackProvider:0];
   }
 
@@ -78,12 +78,12 @@
 
 - (NSString)transcript
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 text];
-  v4 = v3;
-  if (v3)
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  text = [imageAnalysisResult text];
+  v4 = text;
+  if (text)
   {
-    v5 = v3;
+    v5 = text;
   }
 
   else
@@ -98,71 +98,71 @@
 
 - (NSDictionary)localeMap
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 localeMap];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  localeMap = [imageAnalysisResult localeMap];
 
-  return v3;
+  return localeMap;
 }
 
 - (int)analysisRequestID
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 analysisRequestID];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  analysisRequestID = [imageAnalysisResult analysisRequestID];
 
-  return v3;
+  return analysisRequestID;
 }
 
-- (BOOL)hasResultsForAnalysisTypes:(unint64_t)a3
+- (BOOL)hasResultsForAnalysisTypes:(unint64_t)types
 {
-  v6 = a3;
-  v8 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v9 = v8;
-  if (v6)
+  typesCopy = types;
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  v9 = imageAnalysisResult;
+  if (typesCopy)
   {
-    v3 = [v8 text];
-    if ([v3 length])
+    text = [imageAnalysisResult text];
+    if ([text length])
     {
-      v10 = 1;
+      _hasVisualSearchElements = 1;
 LABEL_22:
 
       goto LABEL_23;
     }
   }
 
-  if ((v6 & 2) != 0)
+  if ((typesCopy & 2) != 0)
   {
-    v4 = [v9 textDataDetectorElements];
-    if ([v4 count])
+    textDataDetectorElements = [v9 textDataDetectorElements];
+    if ([textDataDetectorElements count])
     {
 
-      v10 = 1;
+      _hasVisualSearchElements = 1;
       goto LABEL_21;
     }
   }
 
-  if ((v6 & 4) != 0)
+  if ((typesCopy & 4) != 0)
   {
-    v5 = [v9 mrcDataDetectorElements];
-    if ([v5 count])
+    mrcDataDetectorElements = [v9 mrcDataDetectorElements];
+    if ([mrcDataDetectorElements count])
     {
-      v10 = 1;
+      _hasVisualSearchElements = 1;
 LABEL_18:
 
       goto LABEL_19;
     }
   }
 
-  if ((v6 & 8) != 0)
+  if ((typesCopy & 8) != 0)
   {
-    v11 = [v9 appClipDataDetectorElements];
-    v12 = [v11 count];
-    v10 = v12 != 0;
-    if (!v12 && (v6 & 0x10) != 0)
+    appClipDataDetectorElements = [v9 appClipDataDetectorElements];
+    v12 = [appClipDataDetectorElements count];
+    _hasVisualSearchElements = v12 != 0;
+    if (!v12 && (typesCopy & 0x10) != 0)
     {
-      v10 = [(VKImageAnalysis *)self _hasVisualSearchElements];
+      _hasVisualSearchElements = [(VKImageAnalysis *)self _hasVisualSearchElements];
     }
 
-    if ((v6 & 4) == 0)
+    if ((typesCopy & 4) == 0)
     {
       goto LABEL_19;
     }
@@ -170,10 +170,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ((v6 & 0x10) != 0)
+  if ((typesCopy & 0x10) != 0)
   {
-    v10 = [(VKImageAnalysis *)self _hasVisualSearchElements];
-    if ((v6 & 4) != 0)
+    _hasVisualSearchElements = [(VKImageAnalysis *)self _hasVisualSearchElements];
+    if ((typesCopy & 4) != 0)
     {
       goto LABEL_18;
     }
@@ -181,73 +181,73 @@ LABEL_18:
 
   else
   {
-    v10 = 0;
-    if ((v6 & 4) != 0)
+    _hasVisualSearchElements = 0;
+    if ((typesCopy & 4) != 0)
     {
       goto LABEL_18;
     }
   }
 
 LABEL_19:
-  if ((v6 & 2) != 0)
+  if ((typesCopy & 2) != 0)
   {
   }
 
 LABEL_21:
-  if (v6)
+  if (typesCopy)
   {
     goto LABEL_22;
   }
 
 LABEL_23:
 
-  return v10;
+  return _hasVisualSearchElements;
 }
 
 - (BOOL)_hasVisualSearchElements
 {
-  v3 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v4 = [v3 visualSearchResult];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  visualSearchResult = [imageAnalysisResult visualSearchResult];
 
-  if (!v4)
+  if (!visualSearchResult)
   {
     return 0;
   }
 
-  v5 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v6 = [v5 visualSearchResult];
-  v7 = [v6 resultItems];
-  v8 = [v7 count] != 0;
+  imageAnalysisResult2 = [(VKImageAnalysis *)self imageAnalysisResult];
+  visualSearchResult2 = [imageAnalysisResult2 visualSearchResult];
+  resultItems = [visualSearchResult2 resultItems];
+  v8 = [resultItems count] != 0;
 
   return v8;
 }
 
 - (id)visualSearchResultItems
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 visualSearchResultItems];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  visualSearchResultItems = [imageAnalysisResult visualSearchResultItems];
 
-  return v3;
+  return visualSearchResultItems;
 }
 
-- (unint64_t)countOfDataDetectorsWithTypes:(unint64_t)a3
+- (unint64_t)countOfDataDetectorsWithTypes:(unint64_t)types
 {
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v11[3] = 0;
-  v5 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v6 = [v5 dataDetectors];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  dataDetectors = [imageAnalysisResult dataDetectors];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__VKImageAnalysis_countOfDataDetectorsWithTypes___block_invoke;
   v10[3] = &unk_1E7BE7978;
   v10[4] = v11;
-  v10[5] = a3;
-  [v6 enumerateObjectsUsingBlock:v10];
+  v10[5] = types;
+  [dataDetectors enumerateObjectsUsingBlock:v10];
 
-  v7 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v8 = [v7 countOfDataDetectorsWithTypes:a3];
+  imageAnalysisResult2 = [(VKImageAnalysis *)self imageAnalysisResult];
+  v8 = [imageAnalysisResult2 countOfDataDetectorsWithTypes:types];
 
   _Block_object_dispose(v11, 8);
   return v8;
@@ -264,33 +264,33 @@ uint64_t __49__VKImageAnalysis_countOfDataDetectorsWithTypes___block_invoke(uint
   return result;
 }
 
-- (id)_attributedStringForRange:(_NSRange)a3
+- (id)_attributedStringForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v6 = [v5 text];
-  v7 = [v6 vk_range];
-  v9 = VKMClampRange(location, length, v7, v8);
+  length = range.length;
+  location = range.location;
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  text = [imageAnalysisResult text];
+  vk_range = [text vk_range];
+  v9 = VKMClampRange(location, length, vk_range, v8);
   v11 = v10;
 
   v12 = [VKTextRange rangeWithNSRange:v9, v11];
-  v13 = [v5 convertPlainTextRangeToAttributedRange:v12];
-  v14 = [v13 nsRange];
+  v13 = [imageAnalysisResult convertPlainTextRangeToAttributedRange:v12];
+  nsRange = [v13 nsRange];
   v16 = v15;
 
-  v17 = [v5 attributedText];
-  v18 = [v17 vk_attributedSubstringFromRange:{v14, v16}];
+  attributedText = [imageAnalysisResult attributedText];
+  v18 = [attributedText vk_attributedSubstringFromRange:{nsRange, v16}];
 
   return v18;
 }
 
-- (void)checkForTranslationResultsWithCompletion:(id)a3
+- (void)checkForTranslationResultsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (vk_isSeedBuild() && ([MEMORY[0x1E695E000] standardUserDefaults], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "BOOLForKey:", @"DebugVisionKitCatalystTranslation"), v5, !v6))
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -313,43 +313,43 @@ uint64_t __49__VKImageAnalysis_countOfDataDetectorsWithTypes___block_invoke(uint
 
     v8 = v7;
     _Block_object_dispose(&v13, 8);
-    v9 = [(VKImageAnalysis *)self allLines];
+    allLines = [(VKImageAnalysis *)self allLines];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __60__VKImageAnalysis_checkForTranslationResultsWithCompletion___block_invoke;
     v10[3] = &unk_1E7BE4988;
-    v11 = v4;
-    [v7 isTranslatable:v9 completion:v10];
+    v11 = completionCopy;
+    [v7 isTranslatable:allLines completion:v10];
   }
 }
 
-- (BOOL)writeSecureCodedArchiveToURL:(id)a3 error:(id *)a4
+- (BOOL)writeSecureCodedArchiveToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:a4];
+  lCopy = l;
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:error];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v6 URLByDeletingLastPathComponent];
-    v10 = [v9 path];
-    v11 = [v8 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+    path = [uRLByDeletingLastPathComponent path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     if ((v11 & 1) == 0)
     {
-      [v8 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:a4];
+      [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
     }
 
-    [v7 writeToURL:v6 options:1 error:a4];
+    [v7 writeToURL:lCopy options:1 error:error];
   }
 
-  return a4 != 0;
+  return error != 0;
 }
 
 - (id)textDataDetectors
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 textDataDetectorElements];
-  v4 = [v3 vk_map:&__block_literal_global_44];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  textDataDetectorElements = [imageAnalysisResult textDataDetectorElements];
+  v4 = [textDataDetectorElements vk_map:&__block_literal_global_44];
 
   return v4;
 }
@@ -372,10 +372,10 @@ VKWKDataDetectorInfo *__36__VKImageAnalysis_textDataDetectors__block_invoke(uint
 
 - (id)allLines
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 sourceVNDocument];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  sourceVNDocument = [imageAnalysisResult sourceVNDocument];
 
-  v4 = [v3 blocksWithTypes:8 inRegion:{0.0, 0.0, 1.0, 1.0}];
+  v4 = [sourceVNDocument blocksWithTypes:8 inRegion:{0.0, 0.0, 1.0, 1.0}];
   v5 = [v4 vk_map:&__block_literal_global_236];
 
   return v5;
@@ -424,61 +424,61 @@ VKWKTextInfo *__27__VKImageAnalysis_allLines__block_invoke_2(uint64_t a1, void *
 
 - (NSArray)rectangleObservations
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 rectangleObservations];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  rectangleObservations = [imageAnalysisResult rectangleObservations];
 
-  return v3;
+  return rectangleObservations;
 }
 
 - (NSArray)filteredNormalizedRectangleQuads
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 filteredNormalizedRectangleQuads];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  filteredNormalizedRectangleQuads = [imageAnalysisResult filteredNormalizedRectangleQuads];
 
-  return v3;
+  return filteredNormalizedRectangleQuads;
 }
 
 - (NSArray)layoutComponents
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 layoutComponents];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  layoutComponents = [imageAnalysisResult layoutComponents];
 
-  return v3;
+  return layoutComponents;
 }
 
-- (void)generateDataDetectorInfoWithTypes:(unint64_t)a3 unfiltered:(BOOL)a4
+- (void)generateDataDetectorInfoWithTypes:(unint64_t)types unfiltered:(BOOL)unfiltered
 {
-  v5 = [VKCDataDetectorInfo dataDetectorInfoFromAnalysis:self dataDetectorTypes:a3 unfiltered:a4];
+  v5 = [VKCDataDetectorInfo dataDetectorInfoFromAnalysis:self dataDetectorTypes:types unfiltered:unfiltered];
   [(VKImageAnalysis *)self setDataDetectorInfo:v5];
 }
 
 - (id)mrcMenu
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 mrcMenu];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  mrcMenu = [imageAnalysisResult mrcMenu];
 
-  return v3;
+  return mrcMenu;
 }
 
 - (id)presentingViewControllerForMrcAction
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 presentingViewControllerForMrcAction];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  presentingViewControllerForMrcAction = [imageAnalysisResult presentingViewControllerForMrcAction];
 
-  return v3;
+  return presentingViewControllerForMrcAction;
 }
 
-- (void)setPresentingViewControllerForMrcAction:(id)a3
+- (void)setPresentingViewControllerForMrcAction:(id)action
 {
-  v4 = a3;
-  v5 = [(VKImageAnalysis *)self imageAnalysisResult];
-  [v5 setPresentingViewControllerForMrcAction:v4];
+  actionCopy = action;
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  [imageAnalysisResult setPresentingViewControllerForMrcAction:actionCopy];
 }
 
 - (CGRect)rectForMrcActionInPresentingViewController
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  [v2 rectForMrcActionInPresentingViewController];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  [imageAnalysisResult rectForMrcActionInPresentingViewController];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -495,33 +495,33 @@ VKWKTextInfo *__27__VKImageAnalysis_allLines__block_invoke_2(uint64_t a1, void *
   return result;
 }
 
-- (void)setRectForMrcActionInPresentingViewController:(CGRect)a3
+- (void)setRectForMrcActionInPresentingViewController:(CGRect)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(VKImageAnalysis *)self imageAnalysisResult];
-  [v7 setRectForMrcActionInPresentingViewController:{x, y, width, height}];
+  height = controller.size.height;
+  width = controller.size.width;
+  y = controller.origin.y;
+  x = controller.origin.x;
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  [imageAnalysisResult setRectForMrcActionInPresentingViewController:{x, y, width, height}];
 }
 
 - (id)barcodeActions
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 barcodeActions];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  barcodeActions = [imageAnalysisResult barcodeActions];
 
-  return v3;
+  return barcodeActions;
 }
 
-- (void)translateFrom:(id)a3 to:(id)a4 withCompletion:(id)a5
+- (void)translateFrom:(id)from to:(id)to withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v12 = [v11 sourceVNDocument];
+  fromCopy = from;
+  toCopy = to;
+  completionCopy = completion;
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  sourceVNDocument = [imageAnalysisResult sourceVNDocument];
 
-  v13 = [v12 blocksWithTypes:2 inRegion:{0.0, 0.0, 1.0, 1.0}];
+  v13 = [sourceVNDocument blocksWithTypes:2 inRegion:{0.0, 0.0, 1.0, 1.0}];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2050000000;
@@ -545,14 +545,14 @@ VKWKTextInfo *__27__VKImageAnalysis_allLines__block_invoke_2(uint64_t a1, void *
   v23 = 3221225472;
   v24 = __51__VKImageAnalysis_translateFrom_to_withCompletion___block_invoke;
   v25 = &unk_1E7BE7A00;
-  v17 = v10;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(&v22);
-  if (v8 && v9)
+  if (fromCopy && toCopy)
   {
     v19 = objc_alloc(MEMORY[0x1E695DF58]);
-    v20 = [v19 initWithLocaleIdentifier:{v8, v22, v23, v24, v25}];
-    v21 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:v9];
+    v20 = [v19 initWithLocaleIdentifier:{fromCopy, v22, v23, v24, v25}];
+    v21 = [objc_alloc(MEMORY[0x1E695DF58]) initWithLocaleIdentifier:toCopy];
     if (objc_opt_respondsToSelector())
     {
       [v16 translate:v13 sourceLocale:v20 targetLocale:v21 completion:v18];
@@ -630,12 +630,12 @@ void __51__VKImageAnalysis_translateFrom_to_withCompletion___block_invoke(uint64
 
 - (NSArray)formRegions
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 formRegions];
-  v4 = v3;
-  if (v3)
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  formRegions = [imageAnalysisResult formRegions];
+  v4 = formRegions;
+  if (formRegions)
   {
-    v5 = v3;
+    v5 = formRegions;
   }
 
   else
@@ -650,46 +650,46 @@ void __51__VKImageAnalysis_translateFrom_to_withCompletion___block_invoke(uint64
 
 - (unint64_t)recognitionConfidence
 {
-  v2 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v3 = [v2 recognitionConfidence];
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  recognitionConfidence = [imageAnalysisResult recognitionConfidence];
 
-  return v3;
+  return recognitionConfidence;
 }
 
-- (id)formRegionsExcluding:(id)a3 updateExcludedFields:(BOOL)a4
+- (id)formRegionsExcluding:(id)excluding updateExcludedFields:(BOOL)fields
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v8 = [v7 formRegionsExcluding:v6 updateExcludedFields:v4];
+  fieldsCopy = fields;
+  excludingCopy = excluding;
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  v8 = [imageAnalysisResult formRegionsExcluding:excludingCopy updateExcludedFields:fieldsCopy];
 
   return v8;
 }
 
-- (id)proposedFormRegionForPoint:(CGPoint)a3 existingFields:(id)a4 formSize:(CGSize)a5
+- (id)proposedFormRegionForPoint:(CGPoint)point existingFields:(id)fields formSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a3.y;
-  x = a3.x;
-  v10 = a4;
-  v11 = [(VKImageAnalysis *)self imageAnalysisResult];
-  v12 = [v11 proposedFormRegionForPoint:v10 existingFields:x formSize:{y, width, height}];
+  height = size.height;
+  width = size.width;
+  y = point.y;
+  x = point.x;
+  fieldsCopy = fields;
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  v12 = [imageAnalysisResult proposedFormRegionForPoint:fieldsCopy existingFields:x formSize:{y, width, height}];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(VKImageAnalysis *)self imageAnalysisResult];
-  [v4 encodeObject:v5 forKey:@"Result"];
+  coderCopy = coder;
+  imageAnalysisResult = [(VKImageAnalysis *)self imageAnalysisResult];
+  [coderCopy encodeObject:imageAnalysisResult forKey:@"Result"];
 }
 
-- (VKImageAnalysis)initWithCoder:(id)a3
+- (VKImageAnalysis)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Result"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Result"];
 
   v6 = [(VKImageAnalysis *)self initWithAnalysisResult:v5];
   return v6;

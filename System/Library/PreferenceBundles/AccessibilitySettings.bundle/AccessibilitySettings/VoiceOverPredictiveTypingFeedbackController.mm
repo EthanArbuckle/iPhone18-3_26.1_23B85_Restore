@@ -1,6 +1,6 @@
 @interface VoiceOverPredictiveTypingFeedbackController
-- (id)inlineTextCompletionAppearanceFeedbackString:(id)a3;
-- (id)inlineTextCompletionInsertionFeedback:(id)a3;
+- (id)inlineTextCompletionAppearanceFeedbackString:(id)string;
+- (id)inlineTextCompletionInsertionFeedback:(id)feedback;
 - (id)specifiers;
 - (void)viewDidLoad;
 @end
@@ -125,7 +125,7 @@ int64_t __57__VoiceOverPredictiveTypingFeedbackController_specifiers__block_invo
   return v2;
 }
 
-- (id)inlineTextCompletionAppearanceFeedbackString:(id)a3
+- (id)inlineTextCompletionAppearanceFeedbackString:(id)string
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverInlineTextCompletionAppearanceFeedback]);
@@ -134,7 +134,7 @@ int64_t __57__VoiceOverPredictiveTypingFeedbackController_specifiers__block_invo
   return v5;
 }
 
-- (id)inlineTextCompletionInsertionFeedback:(id)a3
+- (id)inlineTextCompletionInsertionFeedback:(id)feedback
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 voiceOverInlineTextCompletionInsertionFeedback]);

@@ -1,22 +1,22 @@
 @interface _SFDownloadsIconView
 - (CGSize)intrinsicContentSize;
-- (_SFDownloadsIconView)initWithFrame:(CGRect)a3;
-- (id)_makeSpringAnimationWithDelay:(double)a3 offset:(double)a4;
+- (_SFDownloadsIconView)initWithFrame:(CGRect)frame;
+- (id)_makeSpringAnimationWithDelay:(double)delay offset:(double)offset;
 - (void)_finishedPulsing;
 - (void)_setUp;
 - (void)_updateSuppressesPixelAlignment;
 - (void)layoutSubviews;
 - (void)pulse;
-- (void)setCircleImage:(id)a3;
+- (void)setCircleImage:(id)image;
 @end
 
 @implementation _SFDownloadsIconView
 
-- (_SFDownloadsIconView)initWithFrame:(CGRect)a3
+- (_SFDownloadsIconView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _SFDownloadsIconView;
-  v3 = [(_SFDownloadsIconView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SFDownloadsIconView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -62,7 +62,7 @@
   v20.receiver = self;
   v20.super_class = _SFDownloadsIconView;
   [(_SFDownloadsIconView *)&v20 layoutSubviews];
-  v3 = [(UIImageView *)self->_circleImageView image];
+  image = [(UIImageView *)self->_circleImageView image];
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
   [(UIImageView *)self->_circleImageView sizeThatFits:*MEMORY[0x1E695F060], v5];
@@ -70,15 +70,15 @@
   v9 = v8;
   [(UIView *)self->_circleContainerView setFrame:0.0, 0.0, v6, v8];
   [(UIImageView *)self->_circleImageView setFrame:0.0, 0.0, v7, v9];
-  v10 = [(UIImageView *)self->_arrowImageView image];
+  image2 = [(UIImageView *)self->_arrowImageView image];
   [(UIImageView *)self->_arrowImageView sizeThatFits:v4, v5];
   v12 = v11;
   v14 = v13;
   _SFRoundFloatToPixels();
   v16 = v15;
-  [v3 baselineOffsetFromBottom];
+  [image baselineOffsetFromBottom];
   v18 = v9 - v17;
-  [v10 baselineOffsetFromBottom];
+  [image2 baselineOffsetFromBottom];
   [(UIView *)self->_arrowContainerView setFrame:v16, v18 + v19 - v14, v12, v14];
   [(UIImageView *)self->_arrowImageView setFrame:0.0, 0.0, v12, v14];
 }
@@ -109,17 +109,17 @@
     v5 = [(_SFDownloadsIconView *)self _makeSpringAnimationWithDelay:0.135 offset:3.0];
     [v4 addAnimation:v5 forKey:@"pulse"];
 
-    v6 = [(UIImageView *)self->_circleImageView layer];
+    layer = [(UIImageView *)self->_circleImageView layer];
     v7 = [(_SFDownloadsIconView *)self _makeSpringAnimationWithDelay:0.345 offset:-3.0];
-    [v6 addAnimation:v7 forKey:@"pulse"];
+    [layer addAnimation:v7 forKey:@"pulse"];
 
-    v8 = [(UIView *)self->_arrowContainerView layer];
+    layer2 = [(UIView *)self->_arrowContainerView layer];
     v9 = [(_SFDownloadsIconView *)self _makeSpringAnimationWithDelay:0.0 offset:5.0];
-    [v8 addAnimation:v9 forKey:@"pulse"];
+    [layer2 addAnimation:v9 forKey:@"pulse"];
 
-    v10 = [(UIImageView *)self->_arrowImageView layer];
+    layer3 = [(UIImageView *)self->_arrowImageView layer];
     v11 = [(_SFDownloadsIconView *)self _makeSpringAnimationWithDelay:0.215 offset:-5.0];
-    [v10 addAnimation:v11 forKey:@"pulse"];
+    [layer3 addAnimation:v11 forKey:@"pulse"];
 
     [MEMORY[0x1E6979518] commit];
     objc_destroyWeak(&v16);
@@ -130,44 +130,44 @@
 - (void)_finishedPulsing
 {
   [(_SFDownloadsIconView *)self _setPulsing:0];
-  v3 = [(UIView *)self->_circleContainerView layer];
-  [v3 removeAnimationForKey:@"pulse"];
+  layer = [(UIView *)self->_circleContainerView layer];
+  [layer removeAnimationForKey:@"pulse"];
 
-  v4 = [(UIImageView *)self->_circleImageView layer];
-  [v4 removeAnimationForKey:@"pulse"];
+  layer2 = [(UIImageView *)self->_circleImageView layer];
+  [layer2 removeAnimationForKey:@"pulse"];
 
-  v5 = [(UIView *)self->_arrowContainerView layer];
-  [v5 removeAnimationForKey:@"pulse"];
+  layer3 = [(UIView *)self->_arrowContainerView layer];
+  [layer3 removeAnimationForKey:@"pulse"];
 
-  v6 = [(UIImageView *)self->_arrowImageView layer];
-  [v6 removeAnimationForKey:@"pulse"];
+  layer4 = [(UIImageView *)self->_arrowImageView layer];
+  [layer4 removeAnimationForKey:@"pulse"];
 }
 
-- (id)_makeSpringAnimationWithDelay:(double)a3 offset:(double)a4
+- (id)_makeSpringAnimationWithDelay:(double)delay offset:(double)offset
 {
-  v5 = [MEMORY[0x1E69794A8] animation];
-  [v5 setKeyPath:@"position.y"];
-  [v5 setFromValue:&unk_1F50231D0];
+  animation = [MEMORY[0x1E69794A8] animation];
+  [animation setKeyPath:@"position.y"];
+  [animation setFromValue:&unk_1F50231D0];
   v6 = MEMORY[0x1E696AD98];
   _SFRoundFloatToPixels();
   v7 = [v6 numberWithDouble:?];
-  [v5 setToValue:v7];
+  [animation setToValue:v7];
 
-  [v5 setAdditive:1];
-  [v5 setMass:2.0];
-  [v5 setStiffness:350.0];
-  [v5 setDamping:25.0];
-  [v5 setDuration:0.8];
-  [v5 setBeginTime:CACurrentMediaTime() + a3];
-  [v5 setFillMode:*MEMORY[0x1E69797E0]];
-  [v5 setRemovedOnCompletion:0];
+  [animation setAdditive:1];
+  [animation setMass:2.0];
+  [animation setStiffness:350.0];
+  [animation setDamping:25.0];
+  [animation setDuration:0.8];
+  [animation setBeginTime:CACurrentMediaTime() + delay];
+  [animation setFillMode:*MEMORY[0x1E69797E0]];
+  [animation setRemovedOnCompletion:0];
 
-  return v5;
+  return animation;
 }
 
-- (void)setCircleImage:(id)a3
+- (void)setCircleImage:(id)image
 {
-  [(UIImageView *)self->_circleImageView setImage:a3];
+  [(UIImageView *)self->_circleImageView setImage:image];
 
   [(_SFDownloadsIconView *)self setNeedsLayout];
 }
@@ -180,17 +180,17 @@
     pulsing = self->_pulsing;
   }
 
-  v4 = [(UIImageView *)self->_circleImageView layer];
-  [v4 setContentsAlignsToPixels:!pulsing];
+  layer = [(UIImageView *)self->_circleImageView layer];
+  [layer setContentsAlignsToPixels:!pulsing];
 
-  v5 = [(UIImageView *)self->_circleImageView layer];
-  [v5 setAllowsEdgeAntialiasing:pulsing];
+  layer2 = [(UIImageView *)self->_circleImageView layer];
+  [layer2 setAllowsEdgeAntialiasing:pulsing];
 
-  v6 = [(UIImageView *)self->_arrowImageView layer];
-  [v6 setContentsAlignsToPixels:!pulsing];
+  layer3 = [(UIImageView *)self->_arrowImageView layer];
+  [layer3 setContentsAlignsToPixels:!pulsing];
 
-  v7 = [(UIImageView *)self->_arrowImageView layer];
-  [v7 setAllowsEdgeAntialiasing:pulsing];
+  layer4 = [(UIImageView *)self->_arrowImageView layer];
+  [layer4 setAllowsEdgeAntialiasing:pulsing];
 }
 
 @end

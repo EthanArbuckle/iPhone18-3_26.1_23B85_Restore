@@ -1,10 +1,10 @@
 @interface KNShimmerEffect
 - (KNAnimationRandomGenerator)randomGenerator;
-- (KNShimmerEffect)initWithAnimationContext:(id)a3 texture:(id)a4 destinationRect:(CGRect)a5 translate:(CATransform3D *)a6 duration:(double)a7 direction:(unint64_t)a8 buildType:(int)a9 metalContext:(id)a10 randomGenerator:(id)a11;
-- (id)objectSystemForTR:(id)a3 slideRect:(CGRect)a4 duration:(double)a5;
-- (id)particleSystemForTR:(id)a3 slideRect:(CGRect)a4 duration:(double)a5;
-- (unint64_t)p_numberOfParticlesForTR:(id)a3 slideRect:(CGRect)a4 duration:(double)a5;
-- (void)p_renderEffectAtPercent:(double)a3 withContext:(id)a4;
+- (KNShimmerEffect)initWithAnimationContext:(id)context texture:(id)texture destinationRect:(CGRect)rect translate:(CATransform3D *)translate duration:(double)duration direction:(unint64_t)direction buildType:(int)type metalContext:(id)self0 randomGenerator:(id)self1;
+- (id)objectSystemForTR:(id)r slideRect:(CGRect)rect duration:(double)duration;
+- (id)particleSystemForTR:(id)r slideRect:(CGRect)rect duration:(double)duration;
+- (unint64_t)p_numberOfParticlesForTR:(id)r slideRect:(CGRect)rect duration:(double)duration;
+- (void)p_renderEffectAtPercent:(double)percent withContext:(id)context;
 - (void)setupEffectIfNecessary;
 - (void)setupMetalEffectIfNecessary;
 - (void)teardown;
@@ -24,7 +24,7 @@
 {
   if (!self->_isSetup)
   {
-    v3 = [(TSDMetalContext *)self->_metalContext device];
+    device = [(TSDMetalContext *)self->_metalContext device];
     v4 = KNBundle();
     v5 = [v4 pathForResource:@"KNBuildShimmer" ofType:@"png"];
 
@@ -38,8 +38,8 @@
     self->_shimmerTexturedRect = v9;
 
     v11 = self->_shimmerTexturedRect;
-    v12 = [(TSDMetalContext *)self->_metalContext device];
-    [(TSDTexturedRectangle *)v11 setupMetalTextureForDevice:v12];
+    device2 = [(TSDMetalContext *)self->_metalContext device];
+    [(TSDTexturedRectangle *)v11 setupMetalTextureForDevice:device2];
 
     CGImageRelease(v8);
     v39 = vcvt_hight_f32_f64(vcvt_f32_f64(*&self->_translate.m11), *&self->_translate.m13);
@@ -51,7 +51,7 @@
     [v13 setBlendingEnabled:1];
     [v13 setDestinationRGBBlendFactor:5];
     [v13 setDestinationAlphaBlendFactor:5];
-    v14 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildShimmerObjectVertexShader" fragmentShader:@"buildShimmerFragmentShader" device:v3 library:@"KeynoteMetalLibrary" colorAttachment:v13];
+    v14 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildShimmerObjectVertexShader" fragmentShader:@"buildShimmerFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v13];
     objectSystemMetalShader = self->_objectSystemMetalShader;
     self->_objectSystemMetalShader = v14;
 
@@ -102,7 +102,7 @@
     [(KNShimmerObjectSystem *)v19 setVertexUniforms:&v42, *&v33, *&v35, *&v37, *&v39];
     if ([(KNShimmerObjectSystem *)self->_objectSystem shouldDraw])
     {
-      v20 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildShimmerParticleVertexShader" fragmentShader:@"buildShimmerFragmentShader" device:v3 library:@"KeynoteMetalLibrary" colorAttachment:v13];
+      v20 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildShimmerParticleVertexShader" fragmentShader:@"buildShimmerFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v13];
       particleSystemMetalShader = self->_particleSystemMetalShader;
       self->_particleSystemMetalShader = v20;
 
@@ -175,7 +175,7 @@
       [(KNShimmerParticleSystem *)v25 setVertexUniforms:v41];
     }
 
-    v26 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityShaderWithDevice:v3 colorAttachment:v13];
+    v26 = [[TSDMetalShader alloc] initDefaultTextureAndOpacityShaderWithDevice:device colorAttachment:v13];
     objectMetalShader = self->_objectMetalShader;
     self->_objectMetalShader = v26;
 
@@ -187,7 +187,7 @@
     *&self->_anon_190[32] = v29;
     *&self->_anon_190[48] = v30;
     [(TSDTexturedRectangle *)self->_texture frame];
-    v31 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v3 textureRect:CGPointZero.x device:CGPointZero.y];
+    v31 = [TSDGPUDataBuffer newDataBufferWithVertexRect:device textureRect:CGPointZero.x device:CGPointZero.y];
     objectMTLDataBuffer = self->_objectMTLDataBuffer;
     self->_objectMTLDataBuffer = v31;
 
@@ -195,68 +195,68 @@
   }
 }
 
-- (unint64_t)p_numberOfParticlesForTR:(id)a3 slideRect:(CGRect)a4 duration:(double)a5
+- (unint64_t)p_numberOfParticlesForTR:(id)r slideRect:(CGRect)rect duration:(double)duration
 {
   width = self->_destinationRect.size.width;
   height = self->_destinationRect.size.height;
-  v7 = width / a4.size.width * height / a4.size.height;
-  v8 = a3;
-  [v8 size];
+  v7 = width / rect.size.width * height / rect.size.height;
+  rCopy = r;
+  [rCopy size];
   v10 = v9 / width;
-  [v8 size];
+  [rCopy size];
   v12 = v11;
 
   return fmin(v7 * (v10 * v12 / height) * 2000.0, 3276.0);
 }
 
-- (id)objectSystemForTR:(id)a3 slideRect:(CGRect)a4 duration:(double)a5
+- (id)objectSystemForTR:(id)r slideRect:(CGRect)rect duration:(double)duration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = [(KNShimmerEffect *)self p_numberOfParticlesForTR:v11 slideRect:x duration:y, width, height, a5];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  rCopy = r;
+  duration = [(KNShimmerEffect *)self p_numberOfParticlesForTR:rCopy slideRect:x duration:y, width, height, duration];
   if (self->_metalContext)
   {
-    v13 = v12;
-    [v11 size];
+    v13 = duration;
+    [rCopy size];
     v15 = v14;
     v17 = v16;
     direction = self->_direction;
-    v19 = [(KNShimmerEffect *)self randomGenerator];
-    v20 = [KNShimmerObjectSystem newParticleSystemWithNumberOfParticles:v13 objectSize:direction slideSize:v19 duration:self->_objectSystemMetalShader direction:self->_metalContext randomGenerator:v15 shader:v17 metalContext:width, height, a5];
+    randomGenerator = [(KNShimmerEffect *)self randomGenerator];
+    duration2 = [KNShimmerObjectSystem newParticleSystemWithNumberOfParticles:v13 objectSize:direction slideSize:randomGenerator duration:self->_objectSystemMetalShader direction:self->_metalContext randomGenerator:v15 shader:v17 metalContext:width, height, duration];
   }
 
   else
   {
-    v20 = 0;
+    duration2 = 0;
   }
 
-  v21 = [(KNAnimationContext *)self->_animationContext capabilities];
-  [v20 setupWithTexture:v11 particleTextureSize:0 reverseDrawOrder:v21 capabilities:{CGSizeZero.width, CGSizeZero.height}];
+  capabilities = [(KNAnimationContext *)self->_animationContext capabilities];
+  [duration2 setupWithTexture:rCopy particleTextureSize:0 reverseDrawOrder:capabilities capabilities:{CGSizeZero.width, CGSizeZero.height}];
 
-  return v20;
+  return duration2;
 }
 
-- (id)particleSystemForTR:(id)a3 slideRect:(CGRect)a4 duration:(double)a5
+- (id)particleSystemForTR:(id)r slideRect:(CGRect)rect duration:(double)duration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = [(KNShimmerEffect *)self p_numberOfParticlesForTR:v11 slideRect:x duration:y, width, height, a5];
-  v13 = [(KNShimmerObjectSystem *)self->_objectSystem visibleParticleCount];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  rCopy = r;
+  duration = [(KNShimmerEffect *)self p_numberOfParticlesForTR:rCopy slideRect:x duration:y, width, height, duration];
+  visibleParticleCount = [(KNShimmerObjectSystem *)self->_objectSystem visibleParticleCount];
   if (self->_metalContext)
   {
-    v14 = v12 / 0x28;
-    if (v12 / 0x28 <= 2)
+    v14 = duration / 0x28;
+    if (duration / 0x28 <= 2)
     {
       v14 = 2;
     }
 
-    v15 = v14 + 2 * v13;
+    v15 = v14 + 2 * visibleParticleCount;
     if (v15 >= 0xCCC)
     {
       v16 = 3276;
@@ -271,11 +271,11 @@
     v18 = v17;
     v20 = v19;
     v21 = v16;
-    [v11 size];
+    [rCopy size];
     v23 = v22;
     v25 = v24;
-    v26 = [(KNShimmerEffect *)self randomGenerator];
-    v27 = [KNShimmerParticleSystem newParticleSystemWithParticleSize:0 particleSystemSize:v26 objectSize:self->_particleSystemMetalShader slideSize:self->_metalContext duration:v18 direction:v20 randomGenerator:v21 shader:1.0 metalContext:v23, v25, width, height, *&a5];
+    randomGenerator = [(KNShimmerEffect *)self randomGenerator];
+    v27 = [KNShimmerParticleSystem newParticleSystemWithParticleSize:0 particleSystemSize:randomGenerator objectSize:self->_particleSystemMetalShader slideSize:self->_metalContext duration:v18 direction:v20 randomGenerator:v21 shader:1.0 metalContext:v23, v25, width, height, *&duration];
   }
 
   else
@@ -295,20 +295,20 @@
   }
 
   [v27 setObjectSystem:objectSystem];
-  v32 = [(KNShimmerObjectSystem *)self->_objectSystem dataBuffer];
-  v33 = [v32 vertexAttributeNamed:kTSDGPUShaderAttributeColor];
+  dataBuffer = [(KNShimmerObjectSystem *)self->_objectSystem dataBuffer];
+  v33 = [dataBuffer vertexAttributeNamed:kTSDGPUShaderAttributeColor];
   [v27 setObjectDataBufferAttributeColor:v33];
 
-  v34 = [(KNShimmerObjectSystem *)self->_objectSystem dataBuffer];
-  v35 = [v34 vertexAttributeNamed:kTSDGPUShaderAttributePosition];
+  dataBuffer2 = [(KNShimmerObjectSystem *)self->_objectSystem dataBuffer];
+  v35 = [dataBuffer2 vertexAttributeNamed:kTSDGPUShaderAttributePosition];
   [v27 setObjectDataBufferAttributePosition:v35];
 
-  v36 = [(KNShimmerObjectSystem *)self->_objectSystem dataBuffer];
-  v37 = [v36 vertexAttributeNamed:kTSDGPUShaderAttributeSpeed];
+  dataBuffer3 = [(KNShimmerObjectSystem *)self->_objectSystem dataBuffer];
+  v37 = [dataBuffer3 vertexAttributeNamed:kTSDGPUShaderAttributeSpeed];
   [v27 setObjectDataBufferAttributeSpeed:v37];
 
-  v38 = [(KNShimmerObjectSystem *)self->_objectSystem dataBuffer];
-  v39 = [v38 vertexAttributeNamed:kTSDGPUShaderAttributeColorTexCoord];
+  dataBuffer4 = [(KNShimmerObjectSystem *)self->_objectSystem dataBuffer];
+  v39 = [dataBuffer4 vertexAttributeNamed:kTSDGPUShaderAttributeColorTexCoord];
   [v27 setObjectDataBufferAttributeColorTexCoord:v39];
 
   shimmerTexturedRect = self->_shimmerTexturedRect;
@@ -325,7 +325,7 @@
 
   if (self->_metalContext)
   {
-    v43 = v11;
+    v43 = rCopy;
   }
 
   else
@@ -338,55 +338,55 @@
   return v27;
 }
 
-- (KNShimmerEffect)initWithAnimationContext:(id)a3 texture:(id)a4 destinationRect:(CGRect)a5 translate:(CATransform3D *)a6 duration:(double)a7 direction:(unint64_t)a8 buildType:(int)a9 metalContext:(id)a10 randomGenerator:(id)a11
+- (KNShimmerEffect)initWithAnimationContext:(id)context texture:(id)texture destinationRect:(CGRect)rect translate:(CATransform3D *)translate duration:(double)duration direction:(unint64_t)direction buildType:(int)type metalContext:(id)self0 randomGenerator:(id)self1
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v41 = a3;
-  v23 = a4;
-  v24 = a10;
-  v25 = a11;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  contextCopy = context;
+  textureCopy = texture;
+  metalContextCopy = metalContext;
+  generatorCopy = generator;
   v42.receiver = self;
   v42.super_class = KNShimmerEffect;
   v26 = [(KNShimmerEffect *)&v42 init];
   v27 = v26;
   if (v26)
   {
-    v26->_texture = v23;
+    v26->_texture = textureCopy;
     v26->_destinationRect.origin.x = x;
     v26->_destinationRect.origin.y = y;
     v26->_destinationRect.size.width = width;
     v26->_destinationRect.size.height = height;
-    v26->_duration = a7;
-    v26->_direction = a8;
-    v26->_buildType = a9;
-    v28 = *&a6->m11;
-    v29 = *&a6->m13;
-    v30 = *&a6->m23;
-    *&v26->_translate.m21 = *&a6->m21;
+    v26->_duration = duration;
+    v26->_direction = direction;
+    v26->_buildType = type;
+    v28 = *&translate->m11;
+    v29 = *&translate->m13;
+    v30 = *&translate->m23;
+    *&v26->_translate.m21 = *&translate->m21;
     *&v26->_translate.m23 = v30;
     *&v26->_translate.m11 = v28;
     *&v26->_translate.m13 = v29;
-    v31 = *&a6->m31;
-    v32 = *&a6->m33;
-    v33 = *&a6->m43;
-    *&v26->_translate.m41 = *&a6->m41;
+    v31 = *&translate->m31;
+    v32 = *&translate->m33;
+    v33 = *&translate->m43;
+    *&v26->_translate.m41 = *&translate->m41;
     *&v26->_translate.m43 = v33;
     *&v26->_translate.m31 = v31;
     *&v26->_translate.m33 = v32;
-    objc_storeStrong(&v26->_animationContext, a3);
-    if (!v24)
+    objc_storeStrong(&v26->_animationContext, context);
+    if (!metalContextCopy)
     {
       v34 = +[TSUAssertionHandler currentHandler];
       v35 = [NSString stringWithUTF8String:"[KNShimmerEffect initWithAnimationContext:texture:destinationRect:translate:duration:direction:buildType:metalContext:randomGenerator:]"];
       v36 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildShimmer.m"];
-      [v34 handleFailureInFunction:v35 file:v36 lineNumber:429 description:{@"invalid nil value for '%s'", "metalContext", v41}];
+      [v34 handleFailureInFunction:v35 file:v36 lineNumber:429 description:{@"invalid nil value for '%s'", "metalContext", contextCopy}];
     }
 
-    objc_storeStrong(&v27->_metalContext, a10);
-    if (!v25)
+    objc_storeStrong(&v27->_metalContext, metalContext);
+    if (!generatorCopy)
     {
       v37 = +[TSUAssertionHandler currentHandler];
       v38 = [NSString stringWithUTF8String:"[KNShimmerEffect initWithAnimationContext:texture:destinationRect:translate:duration:direction:buildType:metalContext:randomGenerator:]"];
@@ -394,66 +394,66 @@
       [v37 handleFailureInFunction:v38 file:v39 lineNumber:431 description:{@"invalid nil value for '%s'", "randomGenerator"}];
     }
 
-    objc_storeStrong(&v27->_randomGenerator, a11);
+    objc_storeStrong(&v27->_randomGenerator, generator);
     [(KNShimmerEffect *)v27 setupMetalEffectIfNecessary];
   }
 
   return v27;
 }
 
-- (void)p_renderEffectAtPercent:(double)a3 withContext:(id)a4
+- (void)p_renderEffectAtPercent:(double)percent withContext:(id)context
 {
-  v22 = a4;
+  contextCopy = context;
   v6 = self->_texture;
   buildType = self->_buildType;
   if (buildType == 2)
   {
-    v8 = 1.0 - a3;
+    percentCopy = 1.0 - percent;
   }
 
   else
   {
-    v8 = a3;
+    percentCopy = percent;
   }
 
   TSUReverseSquare();
   if (buildType == 1)
   {
-    v10 = (v8 + v9 * self->_duration) * 1.57079633;
+    v10 = (percentCopy + v9 * self->_duration) * 1.57079633;
   }
 
   else
   {
-    v10 = -((v8 + v9 * self->_duration) * 1.57079633);
+    v10 = -((percentCopy + v9 * self->_duration) * 1.57079633);
   }
 
   TSUClamp();
   TSUSineMap();
   v12 = v11;
   [(TSDTexturedRectangle *)v6 singleTextureOpacity];
-  if (v22)
+  if (contextCopy)
   {
     v14 = v13;
     v15 = [(TSDTexturedRectangle *)v6 metalTextureWithContext:?];
     if (v15)
     {
-      v16 = (1.0 - v8) * (1.0 - v8);
-      v17 = [v22 renderEncoder];
-      [(TSDMetalShader *)self->_objectMetalShader setPipelineStateWithEncoder:v17 vertexBytes:self->_anon_190 fragmentBytes:&self->_objectFragmentUniforms];
-      [v17 setFragmentTexture:v15 atIndex:0];
-      [(TSDMTLDataBuffer *)self->_objectMTLDataBuffer drawWithEncoder:v17 atIndex:0];
-      [(TSDMetalShader *)self->_objectSystemMetalShader setPipelineStateWithEncoder:v17];
-      [(KNShimmerObjectSystem *)self->_objectSystem drawWithPercent:buildType == 1 opacity:0 rotation:v22 clockwise:v16 texture:v12 * v14 context:v10];
+      v16 = (1.0 - percentCopy) * (1.0 - percentCopy);
+      renderEncoder = [contextCopy renderEncoder];
+      [(TSDMetalShader *)self->_objectMetalShader setPipelineStateWithEncoder:renderEncoder vertexBytes:self->_anon_190 fragmentBytes:&self->_objectFragmentUniforms];
+      [renderEncoder setFragmentTexture:v15 atIndex:0];
+      [(TSDMTLDataBuffer *)self->_objectMTLDataBuffer drawWithEncoder:renderEncoder atIndex:0];
+      [(TSDMetalShader *)self->_objectSystemMetalShader setPipelineStateWithEncoder:renderEncoder];
+      [(KNShimmerObjectSystem *)self->_objectSystem drawWithPercent:buildType == 1 opacity:0 rotation:contextCopy clockwise:v16 texture:v12 * v14 context:v10];
       if ([(KNShimmerObjectSystem *)self->_objectSystem shouldDraw])
       {
         v18 = buildType == 1;
-        [(TSDMetalShader *)self->_particleSystemMetalShader setPipelineStateWithEncoder:v17];
-        v19 = [(TSDTexturedRectangle *)self->_shimmerTexturedRect metalTexture];
-        [v17 setFragmentTexture:v19 atIndex:0];
+        [(TSDMetalShader *)self->_particleSystemMetalShader setPipelineStateWithEncoder:renderEncoder];
+        metalTexture = [(TSDTexturedRectangle *)self->_shimmerTexturedRect metalTexture];
+        [renderEncoder setFragmentTexture:metalTexture atIndex:0];
 
         particleSystem = self->_particleSystem;
         [(TSDTexturedRectangle *)v6 singleTextureOpacity];
-        [(KNShimmerParticleSystem *)particleSystem drawWithPercent:v18 opacity:self->_texture rotation:v22 clockwise:v16 texture:v21 * 0.5 context:v10];
+        [(KNShimmerParticleSystem *)particleSystem drawWithPercent:v18 opacity:self->_texture rotation:contextCopy clockwise:v16 texture:v21 * 0.5 context:v10];
       }
     }
   }

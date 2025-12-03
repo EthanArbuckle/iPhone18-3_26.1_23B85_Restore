@@ -3,7 +3,7 @@
 - (id)_appLayoutSpecifiers;
 - (id)_appViewSpecifiers;
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -17,9 +17,9 @@
   if (v2)
   {
     v3 = +[PDRRegistry sharedInstance];
-    v4 = [v3 getActivePairedDevice];
+    getActivePairedDevice = [v3 getActivePairedDevice];
 
-    v2->_supportsSilverAppView = [v4 supportsCapability:1853271121];
+    v2->_supportsSilverAppView = [getActivePairedDevice supportsCapability:1853271121];
     v5 = objc_alloc_init(CSLPRFLauncherViewModeSetting);
     setting = v2->_setting;
     v2->_setting = v5;
@@ -41,8 +41,8 @@
   [(CSLUIAppViewListViewController *)&v4 viewDidLoad];
   if (self->_supportsSilverAppView)
   {
-    v3 = [(CSLUIAppViewListViewController *)self table];
-    [v3 setSeparatorStyle:0];
+    table = [(CSLUIAppViewListViewController *)self table];
+    [table setSeparatorStyle:0];
   }
 }
 
@@ -119,28 +119,28 @@
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (!self->_supportsSilverAppView)
   {
     v8 = OBJC_IVAR___PSListController__specifiers;
     v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] specifierForID:@"APP_LAYOUT_GROUP_ID"];
-    v10 = [*&self->PSListController_opaque[v8] objectAtIndex:{-[CSLUIAppViewListViewController indexForIndexPath:](self, "indexForIndexPath:", v7)}];
+    v10 = [*&self->PSListController_opaque[v8] objectAtIndex:{-[CSLUIAppViewListViewController indexForIndexPath:](self, "indexForIndexPath:", pathCopy)}];
     v11 = cslprf_dock_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 identifier];
+      identifier = [v10 identifier];
       *buf = 138412546;
-      v21 = v12;
+      v21 = identifier;
       v22 = 2112;
       v23 = v9;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "%@ selected, layoutRadioGroup = %@", buf, 0x16u);
     }
 
-    v13 = [v10 identifier];
-    v14 = [v13 isEqualToString:@"APP_GRID_VIEW_ID"];
+    identifier2 = [v10 identifier];
+    v14 = [identifier2 isEqualToString:@"APP_GRID_VIEW_ID"];
 
     if (v14)
     {
@@ -149,14 +149,14 @@
 
     else
     {
-      v16 = [v10 identifier];
-      v17 = [v16 isEqualToString:@"APP_LIST_VIEW_ID"];
+      identifier3 = [v10 identifier];
+      v17 = [identifier3 isEqualToString:@"APP_LIST_VIEW_ID"];
 
       if ((v17 & 1) == 0)
       {
         v18.receiver = self;
         v18.super_class = CSLUIAppViewListViewController;
-        [(CSLUIAppViewListViewController *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
+        [(CSLUIAppViewListViewController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
         goto LABEL_11;
       }
 
@@ -167,7 +167,7 @@
     [v9 setProperty:v10 forKey:PSRadioGroupCheckedSpecifierKey];
     v18.receiver = self;
     v18.super_class = CSLUIAppViewListViewController;
-    [(CSLUIAppViewListViewController *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(CSLUIAppViewListViewController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     [(CSLUIAppViewListViewController *)self reloadSpecifiers];
 LABEL_11:
 
@@ -176,7 +176,7 @@ LABEL_11:
 
   v19.receiver = self;
   v19.super_class = CSLUIAppViewListViewController;
-  [(CSLUIAppViewListViewController *)&v19 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(CSLUIAppViewListViewController *)&v19 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 LABEL_12:
 }
 

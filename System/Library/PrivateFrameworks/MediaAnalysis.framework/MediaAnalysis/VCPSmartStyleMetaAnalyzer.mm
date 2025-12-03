@@ -1,21 +1,21 @@
 @interface VCPSmartStyleMetaAnalyzer
-- (VCPSmartStyleMetaAnalyzer)initWithRequestAnalyses:(unint64_t)a3 formatDescription:(opaqueCMFormatDescription *)a4;
+- (VCPSmartStyleMetaAnalyzer)initWithRequestAnalyses:(unint64_t)analyses formatDescription:(opaqueCMFormatDescription *)description;
 - (id)privateResults;
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4;
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags;
 @end
 
 @implementation VCPSmartStyleMetaAnalyzer
 
-- (VCPSmartStyleMetaAnalyzer)initWithRequestAnalyses:(unint64_t)a3 formatDescription:(opaqueCMFormatDescription *)a4
+- (VCPSmartStyleMetaAnalyzer)initWithRequestAnalyses:(unint64_t)analyses formatDescription:(opaqueCMFormatDescription *)description
 {
   v10.receiver = self;
   v10.super_class = VCPSmartStyleMetaAnalyzer;
-  v4 = [(VCPSmartStyleMetaAnalyzer *)&v10 init:a3];
+  v4 = [(VCPSmartStyleMetaAnalyzer *)&v10 init:analyses];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     results = v4->_results;
-    v4->_results = v5;
+    v4->_results = array;
 
     if (v4->_results)
     {
@@ -38,18 +38,18 @@
   return v8;
 }
 
-- (int)processMetadataGroup:(id)a3 flags:(unint64_t *)a4
+- (int)processMetadataGroup:(id)group flags:(unint64_t *)flags
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v18 = v4;
-  if (v4)
+  groupCopy = group;
+  v18 = groupCopy;
+  if (groupCopy)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    obj = [v4 items];
+    obj = [groupCopy items];
     v5 = [obj countByEnumeratingWithState:&v22 objects:v31 count:16];
     if (v5)
     {
@@ -64,17 +64,17 @@
           }
 
           v8 = *(*(&v22 + 1) + 8 * i);
-          v9 = [v8 dataType];
-          v10 = [v9 isEqualToString:@"com.apple.metadata.datatype.raw-data"];
+          dataType = [v8 dataType];
+          v10 = [dataType isEqualToString:@"com.apple.metadata.datatype.raw-data"];
 
           if (v10)
           {
             results = self->_results;
             v29 = @"attributes";
             v27[0] = @"MetaSSInfoResults";
-            v12 = [v8 value];
+            value = [v8 value];
             v27[1] = @"MetaPresentationTimeResults";
-            v28[0] = v12;
+            v28[0] = value;
             if (v8)
             {
               [v8 time];

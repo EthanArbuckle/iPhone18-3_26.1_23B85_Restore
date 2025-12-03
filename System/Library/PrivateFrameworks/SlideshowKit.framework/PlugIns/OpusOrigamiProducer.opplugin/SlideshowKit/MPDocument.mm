@@ -1,130 +1,130 @@
 @interface MPDocument
 + (void)initialize;
 - (BOOL)detectFacesInBackground;
-- (BOOL)isAudioAtPath:(id)a3;
-- (BOOL)isImageAtPath:(id)a3;
+- (BOOL)isAudioAtPath:(id)path;
+- (BOOL)isImageAtPath:(id)path;
 - (BOOL)isLive;
-- (BOOL)isMovieAtPath:(id)a3;
-- (BOOL)isSupportedMovieForAssetAtPath:(id)a3;
+- (BOOL)isMovieAtPath:(id)path;
+- (BOOL)isSupportedMovieForAssetAtPath:(id)path;
 - (CGColor)backgroundCGColor;
-- (CGImage)CGImageForAssetAtPath:(id)a3 andSize:(CGSize)a4 orientation:(char *)a5 thumbnailIfPossible:(BOOL)a6 now:(BOOL)a7;
-- (CGImage)thumbnailCGImageForAssetAtPath:(id)a3 andSize:(CGSize)a4;
-- (CGPoint)latLongPointForMap:(id)a3 withAttributes:(id)a4;
-- (CGPoint)pointForMap:(id)a3 withAttributes:(id)a4;
-- (CGSize)resolutionForAssetAtPath:(id)a3;
-- (CGSize)resolutionForPath:(id)a3;
+- (CGImage)CGImageForAssetAtPath:(id)path andSize:(CGSize)size orientation:(char *)orientation thumbnailIfPossible:(BOOL)possible now:(BOOL)now;
+- (CGImage)thumbnailCGImageForAssetAtPath:(id)path andSize:(CGSize)size;
+- (CGPoint)latLongPointForMap:(id)map withAttributes:(id)attributes;
+- (CGPoint)pointForMap:(id)map withAttributes:(id)attributes;
+- (CGSize)resolutionForAssetAtPath:(id)path;
+- (CGSize)resolutionForPath:(id)path;
 - (MPDocument)init;
 - (double)aspectRatio;
-- (double)aspectRatioDidChange:(double)a3 atTime:(double)a4;
+- (double)aspectRatioDidChange:(double)change atTime:(double)time;
 - (double)duration;
-- (double)durationForPath:(id)a3;
+- (double)durationForPath:(id)path;
 - (double)numberOfLoops;
 - (double)posterTime;
-- (double)startTimeForAssetAtPath:(id)a3;
-- (double)startTimeForPath:(id)a3;
-- (double)stopTimeForAssetAtPath:(id)a3;
-- (double)stopTimeForPath:(id)a3;
+- (double)startTimeForAssetAtPath:(id)path;
+- (double)startTimeForPath:(id)path;
+- (double)stopTimeForAssetAtPath:(id)path;
+- (double)stopTimeForPath:(id)path;
 - (double)videoDuration;
-- (double)volumeForPath:(id)a3;
-- (id)absolutePathForAssetAtPath:(id)a3;
-- (id)absolutePathForAssetAtPath:(id)a3 andSize:(CGSize)a4;
-- (id)absolutePathForStillAssetAtPath:(id)a3 andSize:(CGSize)a4;
+- (double)volumeForPath:(id)path;
+- (id)absolutePathForAssetAtPath:(id)path;
+- (id)absolutePathForAssetAtPath:(id)path andSize:(CGSize)size;
+- (id)absolutePathForStillAssetAtPath:(id)path andSize:(CGSize)size;
 - (id)absoluteVideoPaths;
-- (id)actionableObjectForID:(id)a3;
+- (id)actionableObjectForID:(id)d;
 - (id)allEffectContainers;
 - (id)allEffects;
 - (id)allElements;
-- (id)allSlides:(BOOL)a3;
+- (id)allSlides:(BOOL)slides;
 - (id)allSongs;
-- (id)altitudeForPath:(id)a3;
-- (id)areaForPath:(id)a3;
+- (id)altitudeForPath:(id)path;
+- (id)areaForPath:(id)path;
 - (id)audioPaths;
 - (id)audioPlaylist;
-- (id)authoringOptionForKey:(id)a3;
-- (id)avAssetForAssetAtPath:(id)a3;
-- (id)cachedAbsolutePathFromPath:(id)a3;
-- (id)cachedAbsoluteStillPathFromPath:(id)a3;
-- (id)captionForPath:(id)a3;
-- (id)cityForPath:(id)a3;
-- (id)countryForPath:(id)a3;
-- (id)creationDateForPath:(id)a3;
+- (id)authoringOptionForKey:(id)key;
+- (id)avAssetForAssetAtPath:(id)path;
+- (id)cachedAbsolutePathFromPath:(id)path;
+- (id)cachedAbsoluteStillPathFromPath:(id)path;
+- (id)captionForPath:(id)path;
+- (id)cityForPath:(id)path;
+- (id)countryForPath:(id)path;
+- (id)creationDateForPath:(id)path;
 - (id)currentStyle;
-- (id)dataForAssetAtPath:(id)a3 andSize:(CGSize)a4;
-- (id)definedPlaceNameForPath:(id)a3;
+- (id)dataForAssetAtPath:(id)path andSize:(CGSize)size;
+- (id)definedPlaceNameForPath:(id)path;
 - (id)description;
-- (id)documentAttributeForKey:(id)a3;
-- (id)flightPlanFrom:(CGPoint)a3 to:(CGPoint)a4;
-- (id)keywordsForPath:(id)a3;
-- (id)latitudeForPath:(id)a3;
+- (id)documentAttributeForKey:(id)key;
+- (id)flightPlanFrom:(CGPoint)from to:(CGPoint)to;
+- (id)keywordsForPath:(id)path;
+- (id)latitudeForPath:(id)path;
 - (id)layers;
-- (id)longitudeForPath:(id)a3;
+- (id)longitudeForPath:(id)path;
 - (id)mainLayers;
-- (id)neighborhoodForPath:(id)a3;
-- (id)objectInLayersAtIndex:(int64_t)a3;
-- (id)oceanForPath:(id)a3;
+- (id)neighborhoodForPath:(id)path;
+- (id)objectInLayersAtIndex:(int64_t)index;
+- (id)oceanForPath:(id)path;
 - (id)orderedVideoPaths;
 - (id)organizedRandomTransitions;
 - (id)outroEffect;
-- (id)placeForPath:(id)a3;
-- (id)propertiesForMediaPath:(id)a3;
-- (id)propertiesForMediaPathAndCreateIfNeeded:(id)a3 withValue:(id)a4 forKey:(id)a5;
-- (id)regionsOfInterestForPath:(id)a3 detect:(BOOL)a4;
-- (id)stateForPath:(id)a3;
+- (id)placeForPath:(id)path;
+- (id)propertiesForMediaPath:(id)path;
+- (id)propertiesForMediaPathAndCreateIfNeeded:(id)needed withValue:(id)value forKey:(id)key;
+- (id)regionsOfInterestForPath:(id)path detect:(BOOL)detect;
+- (id)stateForPath:(id)path;
 - (id)styleID;
-- (id)tiledMapPathsForAttributes:(id)a3;
+- (id)tiledMapPathsForAttributes:(id)attributes;
 - (id)titleEffect;
-- (id)valueInLayersWithName:(id)a3;
+- (id)valueInLayersWithName:(id)name;
 - (id)videoPaths;
 - (int64_t)antialiasLevel;
 - (int64_t)countOfLayers;
-- (int64_t)mapLevelForPath:(id)a3;
-- (int64_t)mediaTypeForPath:(id)a3;
-- (unint64_t)applyStyle:(id)a3;
+- (int64_t)mapLevelForPath:(id)path;
+- (int64_t)mediaTypeForPath:(id)path;
+- (unint64_t)applyStyle:(id)style;
 - (unint64_t)loopingMode;
-- (void)addAudioPath:(id)a3;
-- (void)addAudioPaths:(id)a3;
-- (void)addLayer:(id)a3;
-- (void)addLayers:(id)a3;
-- (void)addVideoPath:(id)a3;
-- (void)addVideoPaths:(id)a3;
+- (void)addAudioPath:(id)path;
+- (void)addAudioPaths:(id)paths;
+- (void)addLayer:(id)layer;
+- (void)addLayers:(id)layers;
+- (void)addVideoPath:(id)path;
+- (void)addVideoPaths:(id)paths;
 - (void)beginBatchModify;
 - (void)cleanup;
 - (void)configureActions;
 - (void)dealloc;
 - (void)endBatchModify;
-- (void)insertLayers:(id)a3 atIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inLayersAtIndex:(int64_t)a4;
-- (void)moveLayersFromIndices:(id)a3 toIndex:(int64_t)a4;
+- (void)insertLayers:(id)layers atIndex:(int64_t)index;
+- (void)insertObject:(id)object inLayersAtIndex:(int64_t)index;
+- (void)moveLayersFromIndices:(id)indices toIndex:(int64_t)index;
 - (void)organizeRandomTransitions;
 - (void)reconnectAllTransitions;
 - (void)removeAllAudioPaths;
 - (void)removeAllLayers;
 - (void)removeAllVideoPaths;
-- (void)removeLayerForKey:(id)a3;
-- (void)removeLayersAtIndices:(id)a3;
-- (void)removeObjectFromLayersAtIndex:(int64_t)a3;
-- (void)removePath:(id)a3;
-- (void)removePaths:(id)a3;
-- (void)removePropertiesForMediaPath:(id)a3;
-- (void)replaceObjectInLayersAtIndex:(int64_t)a3 withObject:(id)a4;
-- (void)setAbsolutePath:(id)a3 forKey:(id)a4;
-- (void)setAbsoluteStillPath:(id)a3 forKey:(id)a4;
-- (void)setAssetKeyDelegate:(id)a3;
-- (void)setAudioPaths:(id)a3;
-- (void)setAudioPlaylist:(id)a3;
-- (void)setAuthoringOption:(id)a3 forKey:(id)a4;
-- (void)setBackgroundCGColor:(CGColor *)a3;
-- (void)setDocumentAttribute:(id)a3 forKey:(id)a4;
-- (void)setDocumentLayerGroup:(id)a3;
-- (void)setLayer:(id)a3 forKey:(id)a4;
-- (void)setLoopingMode:(unint64_t)a3;
-- (void)setMediaProperties:(id)a3;
-- (void)setMontage:(id)a3;
-- (void)setNumberOfLoops:(double)a3;
-- (void)setProperties:(id)a3 forMediaPath:(id)a4;
-- (void)setStyleID:(id)a3;
-- (void)setTemporarilyCacheAbsolutePaths:(BOOL)a3;
-- (void)setVideoPaths:(id)a3;
+- (void)removeLayerForKey:(id)key;
+- (void)removeLayersAtIndices:(id)indices;
+- (void)removeObjectFromLayersAtIndex:(int64_t)index;
+- (void)removePath:(id)path;
+- (void)removePaths:(id)paths;
+- (void)removePropertiesForMediaPath:(id)path;
+- (void)replaceObjectInLayersAtIndex:(int64_t)index withObject:(id)object;
+- (void)setAbsolutePath:(id)path forKey:(id)key;
+- (void)setAbsoluteStillPath:(id)path forKey:(id)key;
+- (void)setAssetKeyDelegate:(id)delegate;
+- (void)setAudioPaths:(id)paths;
+- (void)setAudioPlaylist:(id)playlist;
+- (void)setAuthoringOption:(id)option forKey:(id)key;
+- (void)setBackgroundCGColor:(CGColor *)color;
+- (void)setDocumentAttribute:(id)attribute forKey:(id)key;
+- (void)setDocumentLayerGroup:(id)group;
+- (void)setLayer:(id)layer forKey:(id)key;
+- (void)setLoopingMode:(unint64_t)mode;
+- (void)setMediaProperties:(id)properties;
+- (void)setMontage:(id)montage;
+- (void)setNumberOfLoops:(double)loops;
+- (void)setProperties:(id)properties forMediaPath:(id)path;
+- (void)setStyleID:(id)d;
+- (void)setTemporarilyCacheAbsolutePaths:(BOOL)paths;
+- (void)setVideoPaths:(id)paths;
 - (void)setupDocumentLayerGroup;
 - (void)setupLayerGroups;
 - (void)upgradeDocument;
@@ -135,7 +135,7 @@
 + (void)initialize
 {
   +[MPEffectManager sharedManager];
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___MPDocument;
   objc_msgSendSuper2(&v3, "initialize");
 }
@@ -185,11 +185,11 @@
     v2->_preserveMedia = 0;
     [(MPDocument *)v2 setUndoManager:0];
     v2->_montage = 0;
-    v16 = [[MCMontage alloc] initFromScratch];
-    v17 = v16;
-    if (v16)
+    initFromScratch = [[MCMontage alloc] initFromScratch];
+    v17 = initFromScratch;
+    if (initFromScratch)
     {
-      [objc_msgSend(v16 "rootPlug")];
+      [objc_msgSend(initFromScratch "rootPlug")];
     }
 
     [(MPDocument *)v2 setMontage:v17];
@@ -235,35 +235,35 @@
 
 - (id)currentStyle
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 styleID];
+  return [(MPLayerGroup *)documentLayerGroup styleID];
 }
 
-- (unint64_t)applyStyle:(id)a3
+- (unint64_t)applyStyle:(id)style
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
-  v5 = v4;
-  v6 = [(MPLayerGroup *)v4 setStyleID:a3];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  v5 = documentLayerGroup;
+  v6 = [(MPLayerGroup *)documentLayerGroup setStyleID:style];
 
   return v6;
 }
 
-- (id)documentAttributeForKey:(id)a3
+- (id)documentAttributeForKey:(id)key
 {
-  if ([a3 isEqualToString:kMPDocumentAuthoringOptions])
+  if ([key isEqualToString:kMPDocumentAuthoringOptions])
   {
-    v5 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+    documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-    return [(MPLayerGroup *)v5 authoringOptions];
+    return [(MPLayerGroup *)documentLayerGroup authoringOptions];
   }
 
   else
   {
-    result = [(NSMutableDictionary *)self->_documentAttributes objectForKey:a3];
+    result = [(NSMutableDictionary *)self->_documentAttributes objectForKey:key];
     if (!result)
     {
-      if ([a3 isEqualToString:kMPDocumentNameAttribute])
+      if ([key isEqualToString:kMPDocumentNameAttribute])
       {
 
         return [(MPDocument *)self displayName];
@@ -279,29 +279,29 @@
   return result;
 }
 
-- (void)setDocumentAttribute:(id)a3 forKey:(id)a4
+- (void)setDocumentAttribute:(id)attribute forKey:(id)key
 {
-  if ([a4 isEqualToString:kMPDocumentAuthoringOptions])
+  if ([key isEqualToString:kMPDocumentAuthoringOptions])
   {
-    v7 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+    documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-    [(MPLayerGroup *)v7 setAuthoringOptions:a3];
+    [(MPLayerGroup *)documentLayerGroup setAuthoringOptions:attribute];
   }
 
   else
   {
     documentAttributes = self->_documentAttributes;
-    if (a3)
+    if (attribute)
     {
-      [(NSMutableDictionary *)documentAttributes setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)documentAttributes setObject:attribute forKey:key];
     }
 
     else
     {
-      [(NSMutableDictionary *)documentAttributes removeObjectForKey:a4];
+      [(NSMutableDictionary *)documentAttributes removeObjectForKey:key];
     }
 
-    if ([a4 isEqualToString:kMPDocumentRandomTransitionList])
+    if ([key isEqualToString:kMPDocumentRandomTransitionList])
     {
 
       [(MPDocument *)self organizeRandomTransitions];
@@ -309,7 +309,7 @@
   }
 }
 
-- (void)setMediaProperties:(id)a3
+- (void)setMediaProperties:(id)properties
 {
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] lock];
   fileProperties = self->_fileProperties;
@@ -322,7 +322,7 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -333,15 +333,15 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(properties);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [objc_msgSend(a3 objectForKey:{v10), "mutableCopy"}];
+        v11 = [objc_msgSend(properties objectForKey:{v10), "mutableCopy"}];
         [(NSMutableDictionary *)self->_fileProperties setObject:v11 forKey:v10];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [properties countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -350,19 +350,19 @@
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] unlock];
 }
 
-- (id)propertiesForMediaPath:(id)a3
+- (id)propertiesForMediaPath:(id)path
 {
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] lock];
-  v5 = [(NSMutableDictionary *)self->_fileProperties objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_fileProperties objectForKey:path];
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] unlock];
 
   return v5;
 }
 
-- (void)setProperties:(id)a3 forMediaPath:(id)a4
+- (void)setProperties:(id)properties forMediaPath:(id)path
 {
-  v7 = [a3 mutableCopy];
-  v8 = [a3 objectForKey:kMPMetaDataRegionOfInterestRectangles];
+  v7 = [properties mutableCopy];
+  v8 = [properties objectForKey:kMPMetaDataRegionOfInterestRectangles];
   if (v8)
   {
     v9 = v8;
@@ -406,7 +406,7 @@
   }
 
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] lock];
-  [(NSMutableDictionary *)self->_fileProperties setObject:v7 forKey:a4];
+  [(NSMutableDictionary *)self->_fileProperties setObject:v7 forKey:path];
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] unlock];
   if (![(MPDocument *)self assetKeyDelegate])
   {
@@ -414,73 +414,73 @@
   }
 }
 
-- (void)removePropertiesForMediaPath:(id)a3
+- (void)removePropertiesForMediaPath:(id)path
 {
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] lock];
-  [(NSMutableDictionary *)self->_fileProperties removeObjectForKey:a3];
-  v5 = [(MPDocumentInternal *)self->_internal propertiesLock];
+  [(NSMutableDictionary *)self->_fileProperties removeObjectForKey:path];
+  propertiesLock = [(MPDocumentInternal *)self->_internal propertiesLock];
 
-  [(NSRecursiveLock *)v5 unlock];
+  [(NSRecursiveLock *)propertiesLock unlock];
 }
 
-- (id)authoringOptionForKey:(id)a3
+- (id)authoringOptionForKey:(id)key
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v4 authoringOptionForKey:a3];
+  return [(MPLayerGroup *)documentLayerGroup authoringOptionForKey:key];
 }
 
-- (void)setAuthoringOption:(id)a3 forKey:(id)a4
+- (void)setAuthoringOption:(id)option forKey:(id)key
 {
-  v6 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v6 setAuthoringOption:a3 forKey:a4];
+  [(MPLayerGroup *)documentLayerGroup setAuthoringOption:option forKey:key];
 }
 
 - (unint64_t)loopingMode
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 loopingMode];
+  return [(MPLayerGroup *)documentLayerGroup loopingMode];
 }
 
-- (void)setLoopingMode:(unint64_t)a3
+- (void)setLoopingMode:(unint64_t)mode
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 setLoopingMode:a3];
+  [(MPLayerGroup *)documentLayerGroup setLoopingMode:mode];
 }
 
 - (double)numberOfLoops
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v2 numberOfLoops];
+  [(MPLayerGroup *)documentLayerGroup numberOfLoops];
   return result;
 }
 
-- (void)setNumberOfLoops:(double)a3
+- (void)setNumberOfLoops:(double)loops
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 setNumberOfLoops:a3];
+  [(MPLayerGroup *)documentLayerGroup setNumberOfLoops:loops];
 }
 
-- (void)setAssetKeyDelegate:(id)a3
+- (void)setAssetKeyDelegate:(id)delegate
 {
   if ([(MPDocument *)self assetKeyDelegate])
   {
     objc_storeWeak(&self->_assetKeyDelegate, 0);
   }
 
-  if (a3)
+  if (delegate)
   {
-    objc_storeWeak(&self->_assetKeyDelegate, a3);
+    objc_storeWeak(&self->_assetKeyDelegate, delegate);
     if ([(MPDocumentInternal *)self->_internal documentLayerGroup])
     {
-      v5 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+      documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-      [(MPLayerGroup *)v5 cachePaths];
+      [(MPLayerGroup *)documentLayerGroup cachePaths];
     }
   }
 }
@@ -516,14 +516,14 @@
   }
 }
 
-- (id)allSlides:(BOOL)a3
+- (id)allSlides:(BOOL)slides
 {
-  v3 = a3;
+  slidesCopy = slides;
   if ([(MPDocumentInternal *)self->_internal documentLayerGroup])
   {
-    v5 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+    documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-    return [(MPLayerGroup *)v5 allSlides:v3];
+    return [(MPLayerGroup *)documentLayerGroup allSlides:slidesCopy];
   }
 
   else
@@ -548,7 +548,7 @@
             objc_enumerationMutation(layerGroups);
           }
 
-          [v7 addObjectsFromArray:{objc_msgSend(-[NSMutableDictionary objectForKey:](self->_layerGroups, "objectForKey:", *(*(&v13 + 1) + 8 * i)), "allSlides:", v3)}];
+          [v7 addObjectsFromArray:{objc_msgSend(-[NSMutableDictionary objectForKey:](self->_layerGroups, "objectForKey:", *(*(&v13 + 1) + 8 * i)), "allSlides:", slidesCopy)}];
         }
 
         v10 = [(NSMutableDictionary *)layerGroups countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -568,22 +568,22 @@
     return 0;
   }
 
-  v3 = [(MPDocument *)self documentLayerGroup];
-  if ([v3 countOfLayers] < 2)
+  documentLayerGroup = [(MPDocument *)self documentLayerGroup];
+  if ([documentLayerGroup countOfLayers] < 2)
   {
     return 0;
   }
 
   v4 = +[NSMutableArray array];
-  v6 = [objc_msgSend(v3 "layers")];
-  v7 = [objc_msgSend(v3 "layers")];
+  v6 = [objc_msgSend(documentLayerGroup "layers")];
+  v7 = [objc_msgSend(documentLayerGroup "layers")];
   obj = +[NSMutableArray array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = [v6 effectContainers];
-  v9 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  effectContainers = [v6 effectContainers];
+  v9 = [effectContainers countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v9)
   {
     v10 = v9;
@@ -594,7 +594,7 @@
       {
         if (*v30 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(effectContainers);
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
@@ -604,7 +604,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v10 = [effectContainers countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v10);
@@ -678,8 +678,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(NSMutableDictionary *)self->_layerGroups allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_layerGroups allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -691,7 +691,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v8 + 1) + 8 * v7) cleanup];
@@ -699,7 +699,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -712,137 +712,137 @@
 
 - (double)posterTime
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v2 posterTime];
+  [(MPLayerGroup *)documentLayerGroup posterTime];
   return result;
 }
 
-- (void)addVideoPath:(id)a3
+- (void)addVideoPath:(id)path
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 addVideoPath:a3];
+  [(MPLayerGroup *)documentLayerGroup addVideoPath:path];
 }
 
-- (void)addVideoPaths:(id)a3
+- (void)addVideoPaths:(id)paths
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 addVideoPaths:a3];
+  [(MPLayerGroup *)documentLayerGroup addVideoPaths:paths];
 }
 
-- (void)addAudioPath:(id)a3
+- (void)addAudioPath:(id)path
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 addAudioPath:a3];
+  [(MPLayerGroup *)documentLayerGroup addAudioPath:path];
 }
 
-- (void)addAudioPaths:(id)a3
+- (void)addAudioPaths:(id)paths
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 addAudioPaths:a3];
+  [(MPLayerGroup *)documentLayerGroup addAudioPaths:paths];
 }
 
-- (void)removePath:(id)a3
+- (void)removePath:(id)path
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 removePath:a3];
+  [(MPLayerGroup *)documentLayerGroup removePath:path];
 }
 
-- (void)removePaths:(id)a3
+- (void)removePaths:(id)paths
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 removePaths:a3];
+  [(MPLayerGroup *)documentLayerGroup removePaths:paths];
 }
 
 - (id)videoPaths
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 videoPaths];
+  return [(MPLayerGroup *)documentLayerGroup videoPaths];
 }
 
 - (id)orderedVideoPaths
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 orderedVideoPaths];
+  return [(MPLayerGroup *)documentLayerGroup orderedVideoPaths];
 }
 
-- (void)setVideoPaths:(id)a3
+- (void)setVideoPaths:(id)paths
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 setVideoPaths:a3];
+  [(MPLayerGroup *)documentLayerGroup setVideoPaths:paths];
 }
 
 - (id)audioPaths
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 audioPaths];
+  return [(MPLayerGroup *)documentLayerGroup audioPaths];
 }
 
-- (void)setAudioPaths:(id)a3
+- (void)setAudioPaths:(id)paths
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 setAudioPaths:a3];
+  [(MPLayerGroup *)documentLayerGroup setAudioPaths:paths];
 }
 
 - (void)removeAllVideoPaths
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v2 removeAllVideoPaths];
+  [(MPLayerGroup *)documentLayerGroup removeAllVideoPaths];
 }
 
 - (void)removeAllAudioPaths
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v2 removeAllAudioPaths];
+  [(MPLayerGroup *)documentLayerGroup removeAllAudioPaths];
 }
 
 - (id)layers
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 layers];
+  return [(MPLayerGroup *)documentLayerGroup layers];
 }
 
-- (void)addLayer:(id)a3
+- (void)addLayer:(id)layer
 {
-  v4 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v4 = [[NSArray alloc] initWithObjects:{layer, 0}];
   [(MPDocument *)self insertLayers:v4 atIndex:[(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] countOfLayers]];
 }
 
-- (void)addLayers:(id)a3
+- (void)addLayers:(id)layers
 {
-  v5 = [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] countOfLayers];
+  countOfLayers = [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] countOfLayers];
 
-  [(MPDocument *)self insertLayers:a3 atIndex:v5];
+  [(MPDocument *)self insertLayers:layers atIndex:countOfLayers];
 }
 
-- (void)insertLayers:(id)a3 atIndex:(int64_t)a4
+- (void)insertLayers:(id)layers atIndex:(int64_t)index
 {
-  v6 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v6 insertLayers:a3 atIndex:a4];
+  [(MPLayerGroup *)documentLayerGroup insertLayers:layers atIndex:index];
 }
 
 - (void)removeAllLayers
 {
   if ([(MPDocumentInternal *)self->_internal documentLayerGroup])
   {
-    v3 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+    documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-    [(MPLayerGroup *)v3 removeAllLayers];
+    [(MPLayerGroup *)documentLayerGroup removeAllLayers];
   }
 
   else
@@ -851,8 +851,8 @@
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(NSMutableDictionary *)self->_layerGroups allKeys];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allKeys = [(NSMutableDictionary *)self->_layerGroups allKeys];
+    v5 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -864,7 +864,7 @@
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           [(MPDocument *)self removeLayerForKey:*(*(&v9 + 1) + 8 * v8)];
@@ -872,7 +872,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -880,49 +880,49 @@
   }
 }
 
-- (void)removeLayersAtIndices:(id)a3
+- (void)removeLayersAtIndices:(id)indices
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 removeLayersAtIndices:a3];
+  [(MPLayerGroup *)documentLayerGroup removeLayersAtIndices:indices];
 }
 
-- (void)moveLayersFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveLayersFromIndices:(id)indices toIndex:(int64_t)index
 {
-  v6 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v6 moveLayersFromIndices:a3 toIndex:a4];
+  [(MPLayerGroup *)documentLayerGroup moveLayersFromIndices:indices toIndex:index];
 }
 
-- (void)setLayer:(id)a3 forKey:(id)a4
+- (void)setLayer:(id)layer forKey:(id)key
 {
   [(MPDocument *)self setupLayerGroups];
-  if ([(MPDocument *)self layerForKey:a4])
+  if ([(MPDocument *)self layerForKey:key])
   {
-    [(MPDocument *)self removeLayerForKey:a4];
+    [(MPDocument *)self removeLayerForKey:key];
   }
 
-  v7 = [(MCPlug *)[(MCMontage *)self->_montage rootPlug] container];
-  [a3 setParent:self];
-  [MPUtilities createPlugInContainer:v7 forLayer:a3 key:a4 inDocument:self];
+  container = [(MCPlug *)[(MCMontage *)self->_montage rootPlug] container];
+  [layer setParent:self];
+  [MPUtilities createPlugInContainer:container forLayer:layer key:key inDocument:self];
   if (objc_opt_respondsToSelector())
   {
-    [a3 resetDuration];
+    [layer resetDuration];
   }
 
-  [(NSMutableDictionary *)self->_layerGroups setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)self->_layerGroups setObject:layer forKey:key];
 
   [(MPDocument *)self configureActions];
 }
 
-- (void)removeLayerForKey:(id)a3
+- (void)removeLayerForKey:(id)key
 {
   v5 = [(NSMutableDictionary *)self->_layerGroups objectForKey:?];
-  v6 = [(MCPlug *)[(MCMontage *)self->_montage rootPlug] container];
-  v7 = [v5 plug];
-  if (v7)
+  container = [(MCPlug *)[(MCMontage *)self->_montage rootPlug] container];
+  plug = [v5 plug];
+  if (plug)
   {
-    [(MCContainer *)v6 removePlug:v7];
+    [(MCContainer *)container removePlug:plug];
   }
 
   [v5 setPlug:0];
@@ -930,58 +930,58 @@
   [v5 setParent:0];
   layerGroups = self->_layerGroups;
 
-  [(NSMutableDictionary *)layerGroups removeObjectForKey:a3];
+  [(NSMutableDictionary *)layerGroups removeObjectForKey:key];
 }
 
 - (CGColor)backgroundCGColor
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 backgroundCGColor];
+  return [(MPLayerGroup *)documentLayerGroup backgroundCGColor];
 }
 
-- (void)setBackgroundCGColor:(CGColor *)a3
+- (void)setBackgroundCGColor:(CGColor *)color
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 setBackgroundCGColor:a3];
+  [(MPLayerGroup *)documentLayerGroup setBackgroundCGColor:color];
 }
 
 - (double)duration
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v2 duration];
+  [(MPLayerGroup *)documentLayerGroup duration];
   return result;
 }
 
 - (double)videoDuration
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v2 videoDuration];
+  [(MPLayerGroup *)documentLayerGroup videoDuration];
   return result;
 }
 
 - (id)audioPlaylist
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 audioPlaylist];
+  return [(MPLayerGroup *)documentLayerGroup audioPlaylist];
 }
 
-- (void)setAudioPlaylist:(id)a3
+- (void)setAudioPlaylist:(id)playlist
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 setAudioPlaylist:a3];
+  [(MPLayerGroup *)documentLayerGroup setAudioPlaylist:playlist];
 }
 
 - (id)mainLayers
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 mainLayers];
+  return [(MPLayerGroup *)documentLayerGroup mainLayers];
 }
 
 - (id)titleEffect
@@ -1002,8 +1002,8 @@
 
   v19 = 0uLL;
   v20 = 0uLL;
-  v6 = [(MPDocument *)self layers];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  layers = [(MPDocument *)self layers];
+  v7 = [layers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1014,7 +1014,7 @@ LABEL_6:
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(layers);
       }
 
       v11 = *(*(&v17 + 1) + 8 * v10);
@@ -1025,7 +1025,7 @@ LABEL_6:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [layers countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           goto LABEL_6;
@@ -1111,25 +1111,25 @@ LABEL_3:
 
 - (id)allEffectContainers
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 allEffectContainers];
+  return [(MPLayerGroup *)documentLayerGroup allEffectContainers];
 }
 
 - (id)allEffects
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 allEffects];
+  return [(MPLayerGroup *)documentLayerGroup allEffects];
 }
 
 - (id)allSongs
 {
   if ([(MPDocumentInternal *)self->_internal documentLayerGroup])
   {
-    v3 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+    documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-    return [(MPLayerGroup *)v3 allSongs];
+    return [(MPLayerGroup *)documentLayerGroup allSongs];
   }
 
   else
@@ -1170,9 +1170,9 @@ LABEL_3:
 - (int64_t)antialiasLevel
 {
   v3 = +[MPStyleManager sharedManager];
-  v4 = [(MPDocument *)self styleID];
+  styleID = [(MPDocument *)self styleID];
 
-  return [v3 antialiasLevelForStyleID:v4];
+  return [v3 antialiasLevelForStyleID:styleID];
 }
 
 - (void)reconnectAllTransitions
@@ -1218,9 +1218,9 @@ LABEL_3:
   }
 }
 
-- (CGSize)resolutionForPath:(id)a3
+- (CGSize)resolutionForPath:(id)path
 {
-  if (NSStringHasPrefix(a3, "map"))
+  if (NSStringHasPrefix(path, "map"))
   {
     height = 2048.0;
     width = 2048.0;
@@ -1228,7 +1228,7 @@ LABEL_3:
 
   else
   {
-    v7 = [(MPDocument *)self propertiesForMediaPath:a3];
+    v7 = [(MPDocument *)self propertiesForMediaPath:path];
     v8 = [v7 objectForKey:kMPMetaDataResolution];
     if (v8)
     {
@@ -1237,11 +1237,11 @@ LABEL_3:
       height = v9.height;
     }
 
-    else if (-[MPDocument assetKeyDelegate](self, "assetKeyDelegate") && (-[MPDocument assetKeyDelegate](self, "assetKeyDelegate"), (objc_opt_respondsToSelector() & 1) != 0) && (([-[MPDocument assetKeyDelegate](self "assetKeyDelegate")], width = v11, height = v10, v11 == CGSizeZero.width) ? (v12 = v10 == CGSizeZero.height) : (v12 = 0), !v12) || ((objc_msgSend(+[MPAssetManager sharedManager](MPAssetManager, "sharedManager"), "resolutionForAssetAtPath:", -[MPDocument absolutePathForAssetAtPath:](self, "absolutePathForAssetAtPath:", a3)), width = v14, height = v13, v14 == CGSizeZero.width) ? (v15 = v13 == CGSizeZero.height) : (v15 = 0), !v15))
+    else if (-[MPDocument assetKeyDelegate](self, "assetKeyDelegate") && (-[MPDocument assetKeyDelegate](self, "assetKeyDelegate"), (objc_opt_respondsToSelector() & 1) != 0) && (([-[MPDocument assetKeyDelegate](self "assetKeyDelegate")], width = v11, height = v10, v11 == CGSizeZero.width) ? (v12 = v10 == CGSizeZero.height) : (v12 = 0), !v12) || ((objc_msgSend(+[MPAssetManager sharedManager](MPAssetManager, "sharedManager"), "resolutionForAssetAtPath:", -[MPDocument absolutePathForAssetAtPath:](self, "absolutePathForAssetAtPath:", path)), width = v14, height = v13, v14 == CGSizeZero.width) ? (v15 = v13 == CGSizeZero.height) : (v15 = 0), !v15))
     {
       v18.width = width;
       v18.height = height;
-      [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:NSStringFromCGSize(v18) forKey:kMPMetaDataResolution];
+      [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:NSStringFromCGSize(v18) forKey:kMPMetaDataResolution];
     }
   }
 
@@ -1252,7 +1252,7 @@ LABEL_3:
   return result;
 }
 
-- (double)startTimeForPath:(id)a3
+- (double)startTimeForPath:(id)path
 {
   v5 = 0.0;
   if ([(MPDocument *)self isImageAtPath:?])
@@ -1260,14 +1260,14 @@ LABEL_3:
     return v5;
   }
 
-  v6 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v6 = [(MPDocument *)self propertiesForMediaPath:path];
   v7 = [v6 objectForKey:kMPMetaDataStartTime];
   if (!v7)
   {
     [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
     v5 = v9;
     v10 = [NSNumber numberWithDouble:?];
-    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v10 forKey:kMPMetaDataStartTime];
+    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v10 forKey:kMPMetaDataStartTime];
     return v5;
   }
 
@@ -1275,7 +1275,7 @@ LABEL_3:
   return result;
 }
 
-- (double)stopTimeForPath:(id)a3
+- (double)stopTimeForPath:(id)path
 {
   v5 = 0.0;
   if ([(MPDocument *)self isImageAtPath:?])
@@ -1283,14 +1283,14 @@ LABEL_3:
     return v5;
   }
 
-  v6 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v6 = [(MPDocument *)self propertiesForMediaPath:path];
   v7 = [v6 objectForKey:kMPMetaDataStopTime];
   if (!v7)
   {
     [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
     v5 = v9;
     v10 = [NSNumber numberWithDouble:?];
-    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v10 forKey:kMPMetaDataStopTime];
+    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v10 forKey:kMPMetaDataStopTime];
     return v5;
   }
 
@@ -1298,7 +1298,7 @@ LABEL_3:
   return result;
 }
 
-- (double)durationForPath:(id)a3
+- (double)durationForPath:(id)path
 {
   v5 = 0.0;
   if ([(MPDocument *)self isImageAtPath:?])
@@ -1306,14 +1306,14 @@ LABEL_3:
     return v5;
   }
 
-  v6 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v6 = [(MPDocument *)self propertiesForMediaPath:path];
   v7 = [v6 objectForKey:kMPMetaDataDuration];
   if (!v7)
   {
     [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
     v5 = v9;
     v10 = [NSNumber numberWithDouble:?];
-    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v10 forKey:kMPMetaDataDuration];
+    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v10 forKey:kMPMetaDataDuration];
     return v5;
   }
 
@@ -1321,49 +1321,49 @@ LABEL_3:
   return result;
 }
 
-- (int64_t)mediaTypeForPath:(id)a3
+- (int64_t)mediaTypeForPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   v6 = [v5 objectForKey:kMPMetaDataMediaType];
-  if (v6 || (-[MPDocument assetKeyDelegate](self, "assetKeyDelegate"), (objc_opt_respondsToSelector() & 1) != 0) && (v8 = -[MPDocument assetKeyDelegate](self, "assetKeyDelegate"), (v6 = [v8 attributeForKey:kMPMetaDataMediaType forAssetKey:a3 withOptions:0]) != 0))
+  if (v6 || (-[MPDocument assetKeyDelegate](self, "assetKeyDelegate"), (objc_opt_respondsToSelector() & 1) != 0) && (v8 = -[MPDocument assetKeyDelegate](self, "assetKeyDelegate"), (v6 = [v8 attributeForKey:kMPMetaDataMediaType forAssetKey:path withOptions:0]) != 0))
   {
 
     return [v6 integerValue];
   }
 
-  else if ([(MPDocument *)self isImageAtPath:a3])
+  else if ([(MPDocument *)self isImageAtPath:path])
   {
     return 2;
   }
 
-  else if ([(MPDocument *)self isMovieAtPath:a3])
+  else if ([(MPDocument *)self isMovieAtPath:path])
   {
     return 3;
   }
 
   else
   {
-    return [(MPDocument *)self isAudioAtPath:a3];
+    return [(MPDocument *)self isAudioAtPath:path];
   }
 }
 
-- (id)propertiesForMediaPathAndCreateIfNeeded:(id)a3 withValue:(id)a4 forKey:(id)a5
+- (id)propertiesForMediaPathAndCreateIfNeeded:(id)needed withValue:(id)value forKey:(id)key
 {
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] lock];
-  v9 = [(NSMutableDictionary *)self->_fileProperties objectForKey:a3];
+  v9 = [(NSMutableDictionary *)self->_fileProperties objectForKey:needed];
   v10 = v9;
-  if (a3 && !v9)
+  if (needed && !v9)
   {
     v10 = +[NSMutableDictionary dictionary];
-    [(NSMutableDictionary *)self->_fileProperties setObject:v10 forKey:a3];
+    [(NSMutableDictionary *)self->_fileProperties setObject:v10 forKey:needed];
   }
 
-  [v10 setObject:a4 forKey:a5];
+  [v10 setObject:value forKey:key];
   [(NSRecursiveLock *)[(MPDocumentInternal *)self->_internal propertiesLock] unlock];
   return v10;
 }
 
-- (void)setDocumentLayerGroup:(id)a3
+- (void)setDocumentLayerGroup:(id)group
 {
   if ([(MPDocumentInternal *)self->_internal documentLayerGroup])
   {
@@ -1374,7 +1374,7 @@ LABEL_3:
     [(MPDocumentInternal *)self->_internal setDocumentLayerGroup:0];
   }
 
-  if (a3)
+  if (group)
   {
     v5 = [-[NSMutableDictionary allKeys](self->_layerGroups "allKeys")];
     v10 = 0u;
@@ -1407,7 +1407,7 @@ LABEL_3:
       while (v7);
     }
 
-    [(MPDocumentInternal *)self->_internal setDocumentLayerGroup:a3];
+    [(MPDocumentInternal *)self->_internal setDocumentLayerGroup:group];
     [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] setIsDocumentLayerGroup:1];
     [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] setParent:self];
     [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] setContainer:[(MCPlug *)[(MCMontage *)self->_montage rootPlug] container]];
@@ -1467,23 +1467,23 @@ LABEL_3:
     [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] setPlug:0];
     [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] setParent:0];
     [(MPDocumentInternal *)self->_internal setDocumentLayerGroup:0];
-    v3 = [(MCMontage *)self->_montage rootPlug];
+    rootPlug = [(MCMontage *)self->_montage rootPlug];
 
-    [(MCPlug *)v3 setLoopDuration:10000000.0];
+    [(MCPlug *)rootPlug setLoopDuration:10000000.0];
   }
 }
 
-- (id)actionableObjectForID:(id)a3
+- (id)actionableObjectForID:(id)d
 {
-  if (![(MPDocumentInternal *)self->_internal cachedActionableLayers]|| (v5 = [(NSMutableDictionary *)[(MPDocumentInternal *)self->_internal cachedActionableLayers] objectForKey:a3]) == 0)
+  if (![(MPDocumentInternal *)self->_internal cachedActionableLayers]|| (v5 = [(NSMutableDictionary *)[(MPDocumentInternal *)self->_internal cachedActionableLayers] objectForKey:d]) == 0)
   {
     v6 = objc_autoreleasePoolPush();
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NSMutableDictionary *)self->_layerGroups allValues];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allValues = [(NSMutableDictionary *)self->_layerGroups allValues];
+    v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1495,10 +1495,10 @@ LABEL_3:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * v11) actionableObjectForID:a3];
+          v12 = [*(*(&v14 + 1) + 8 * v11) actionableObjectForID:d];
           if (v12)
           {
             v5 = v12;
@@ -1509,7 +1509,7 @@ LABEL_3:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           continue;
@@ -1541,8 +1541,8 @@ LABEL_13:
         v18 = 0u;
         v15 = 0u;
         v16 = 0u;
-        v5 = [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] layers];
-        v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        layers = [(MPLayerGroup *)[(MPDocumentInternal *)self->_internal documentLayerGroup] layers];
+        v6 = [layers countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v6)
         {
           v7 = v6;
@@ -1554,20 +1554,20 @@ LABEL_13:
             {
               if (*v16 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(layers);
               }
 
               v10 = *(*(&v15 + 1) + 8 * v9);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v11 = [v10 effectContainers];
-                if ([v11 count] == &dword_0 + 1)
+                effectContainers = [v10 effectContainers];
+                if ([effectContainers count] == &dword_0 + 1)
                 {
-                  v12 = [v11 lastObject];
-                  if ([v12 transition])
+                  lastObject = [effectContainers lastObject];
+                  if ([lastObject transition])
                   {
-                    [v12 setTransition:0];
+                    [lastObject setTransition:0];
                   }
                 }
               }
@@ -1576,7 +1576,7 @@ LABEL_13:
             }
 
             while (v7 != v9);
-            v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+            v7 = [layers countByEnumeratingWithState:&v15 objects:v19 count:16];
           }
 
           while (v7);
@@ -1591,31 +1591,31 @@ LABEL_13:
   }
 }
 
-- (void)setMontage:(id)a3
+- (void)setMontage:(id)montage
 {
   montage = self->_montage;
   if (montage)
   {
   }
 
-  self->_montage = a3;
+  self->_montage = montage;
 }
 
 - (id)absoluteVideoPaths
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 absoluteVideoPaths];
+  return [(MPLayerGroup *)documentLayerGroup absoluteVideoPaths];
 }
 
-- (double)volumeForPath:(id)a3
+- (double)volumeForPath:(id)path
 {
   if ([(MPDocument *)self isImageAtPath:?])
   {
     return 1.0;
   }
 
-  v5 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v5 = [(MPDocument *)self propertiesForMediaPath:path];
   v6 = [v5 objectForKey:kMPMetaDataVolume];
   if (!v6)
   {
@@ -1626,69 +1626,69 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isImageAtPath:(id)a3
+- (BOOL)isImageAtPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   v6 = [v5 objectForKey:kMPMetaDataMediaType];
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
-    v8 = [NSNumber numberWithInteger:v7];
-    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v8 forKey:kMPMetaDataMediaType];
+    integerValue = [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
+    v8 = [NSNumber numberWithInteger:integerValue];
+    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v8 forKey:kMPMetaDataMediaType];
   }
 
-  return v7 == &dword_0 + 2;
+  return integerValue == &dword_0 + 2;
 }
 
-- (BOOL)isMovieAtPath:(id)a3
+- (BOOL)isMovieAtPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   v6 = [v5 objectForKey:kMPMetaDataMediaType];
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
-    v8 = [NSNumber numberWithInteger:v7];
-    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v8 forKey:kMPMetaDataMediaType];
+    integerValue = [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
+    v8 = [NSNumber numberWithInteger:integerValue];
+    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v8 forKey:kMPMetaDataMediaType];
   }
 
-  return v7 == &dword_0 + 3;
+  return integerValue == &dword_0 + 3;
 }
 
-- (BOOL)isAudioAtPath:(id)a3
+- (BOOL)isAudioAtPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   v6 = [v5 objectForKey:kMPMetaDataMediaType];
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
-    v8 = [NSNumber numberWithInteger:v7];
-    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v8 forKey:kMPMetaDataMediaType];
+    integerValue = [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
+    v8 = [NSNumber numberWithInteger:integerValue];
+    [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v8 forKey:kMPMetaDataMediaType];
   }
 
-  return v7 == &dword_0 + 1;
+  return integerValue == &dword_0 + 1;
 }
 
-- (id)regionsOfInterestForPath:(id)a3 detect:(BOOL)a4
+- (id)regionsOfInterestForPath:(id)path detect:(BOOL)detect
 {
-  v4 = a4;
+  detectCopy = detect;
   if (![(MPDocument *)self propertiesForMediaPath:?])
   {
-    if (!v4)
+    if (!detectCopy)
     {
       return 0;
     }
@@ -1696,7 +1696,7 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v7 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v7 = [(MPDocument *)self propertiesForMediaPath:path];
   v8 = [v7 objectForKey:kMPMetaDataRegionOfInterestRectangles];
   if (!v8)
   {
@@ -1740,17 +1740,17 @@ LABEL_13:
     while (v12);
   }
 
-  [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v10 forKey:kMPMetaDataRegionOfInterestRectangles];
+  [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v10 forKey:kMPMetaDataRegionOfInterestRectangles];
   if (!v10)
   {
 LABEL_16:
-    if (!v4)
+    if (!detectCopy)
     {
       return v10;
     }
 
 LABEL_17:
-    v15 = [(MPDocument *)self absolutePathForAssetAtPath:a3];
+    v15 = [(MPDocument *)self absolutePathForAssetAtPath:path];
     [(MPDocument *)self assetKeyDelegate];
     if (objc_opt_respondsToSelector())
     {
@@ -1771,13 +1771,13 @@ LABEL_17:
     v10 = v16;
     if (v16)
     {
-      [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v16 forKey:kMPMetaDataRegionOfInterestRectangles];
+      [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v16 forKey:kMPMetaDataRegionOfInterestRectangles];
     }
 
     else
     {
       v17 = +[NSArray array];
-      [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:a3 withValue:v17 forKey:kMPMetaDataRegionOfInterestRectangles];
+      [(MPDocument *)self propertiesForMediaPathAndCreateIfNeeded:path withValue:v17 forKey:kMPMetaDataRegionOfInterestRectangles];
       return +[NSArray array];
     }
   }
@@ -1785,14 +1785,14 @@ LABEL_17:
   return v10;
 }
 
-- (id)creationDateForPath:(id)a3
+- (id)creationDateForPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   result = [v5 objectForKey:kMPMetaDataCreationDate];
   if (!result)
   {
     v7 = +[MPAssetManager sharedManager];
-    v8 = [(MPDocument *)self absolutePathForAssetAtPath:a3];
+    v8 = [(MPDocument *)self absolutePathForAssetAtPath:path];
 
     return [v7 creationDateForAssetAtPath:v8];
   }
@@ -1800,14 +1800,14 @@ LABEL_17:
   return result;
 }
 
-- (id)keywordsForPath:(id)a3
+- (id)keywordsForPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   result = [v5 objectForKey:kMPMetaDataKeywords];
   if (!result)
   {
     v7 = +[MPAssetManager sharedManager];
-    v8 = [(MPDocument *)self absolutePathForAssetAtPath:a3];
+    v8 = [(MPDocument *)self absolutePathForAssetAtPath:path];
 
     return [v7 keywordsForAssetAtPath:v8];
   }
@@ -1815,15 +1815,15 @@ LABEL_17:
   return result;
 }
 
-- (id)captionForPath:(id)a3
+- (id)captionForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataCaption;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)latitudeForPath:(id)a3
+- (id)latitudeForPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   result = [v5 objectForKey:kMPMetaDataLatitude];
@@ -1837,7 +1837,7 @@ LABEL_17:
   return result;
 }
 
-- (id)longitudeForPath:(id)a3
+- (id)longitudeForPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   result = [v5 objectForKey:kMPMetaDataLongitude];
@@ -1851,71 +1851,71 @@ LABEL_17:
   return result;
 }
 
-- (id)countryForPath:(id)a3
+- (id)countryForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataCountry;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)oceanForPath:(id)a3
+- (id)oceanForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataOcean;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)stateForPath:(id)a3
+- (id)stateForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataStateOrProvince;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)cityForPath:(id)a3
+- (id)cityForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataCity;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)placeForPath:(id)a3
+- (id)placeForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataPlace;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)areaForPath:(id)a3
+- (id)areaForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataArea;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)neighborhoodForPath:(id)a3
+- (id)neighborhoodForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataNeighborhood;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)definedPlaceNameForPath:(id)a3
+- (id)definedPlaceNameForPath:(id)path
 {
-  v3 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v3 = [(MPDocument *)self propertiesForMediaPath:path];
   v4 = kMPMetaDataDefinedPlaceName;
 
   return [v3 objectForKey:v4];
 }
 
-- (id)altitudeForPath:(id)a3
+- (id)altitudeForPath:(id)path
 {
   v5 = [(MPDocument *)self propertiesForMediaPath:?];
   result = [v5 objectForKey:kMPMetaDataAltitude];
@@ -1929,12 +1929,12 @@ LABEL_17:
   return result;
 }
 
-- (id)tiledMapPathsForAttributes:(id)a3
+- (id)tiledMapPathsForAttributes:(id)attributes
 {
   [(MPDocument *)self assetKeyDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0 || (result = [-[MPDocument assetKeyDelegate](self "assetKeyDelegate")]) == 0)
   {
-    v6 = [a3 objectForKey:kMPAssetMapInset];
+    v6 = [attributes objectForKey:kMPAssetMapInset];
     if (v6)
     {
       [v6 CGSizeValue];
@@ -1952,7 +1952,7 @@ LABEL_17:
       v8 = CGSizeZero.width;
     }
 
-    v13 = [a3 objectForKey:kMPAssetMapLatLongPoints];
+    v13 = [attributes objectForKey:kMPAssetMapLatLongPoints];
     v14 = [-[MPDocument assetKeyDelegate](self "assetKeyDelegate")];
     v24 = 0u;
     v25 = 0u;
@@ -2010,10 +2010,10 @@ LABEL_20:
   return result;
 }
 
-- (CGPoint)latLongPointForMap:(id)a3 withAttributes:(id)a4
+- (CGPoint)latLongPointForMap:(id)map withAttributes:(id)attributes
 {
-  [objc_msgSend(a4 objectForKey:{kMPAssetOptionMapPoint), "CGPointValue"}];
-  if (a3 && (v8 = v6, v9 = v7, [(MPDocument *)self assetKeyDelegate], (objc_opt_respondsToSelector() & 1) != 0))
+  [objc_msgSend(attributes objectForKey:{kMPAssetOptionMapPoint), "CGPointValue"}];
+  if (map && (v8 = v6, v9 = v7, [(MPDocument *)self assetKeyDelegate], (objc_opt_respondsToSelector() & 1) != 0))
   {
     [objc_msgSend(-[MPDocument assetKeyDelegate](self "assetKeyDelegate")];
   }
@@ -2029,15 +2029,15 @@ LABEL_20:
   return result;
 }
 
-- (CGPoint)pointForMap:(id)a3 withAttributes:(id)a4
+- (CGPoint)pointForMap:(id)map withAttributes:(id)attributes
 {
   [(MPDocument *)self assetKeyDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    [objc_msgSend(a4 objectForKey:{kMPAssetOptionMapLatLong), "CGPointValue"}];
+    [objc_msgSend(attributes objectForKey:{kMPAssetOptionMapLatLong), "CGPointValue"}];
     v12 = v11;
     v14 = v13;
-    if (a3 && ([(MPDocument *)self assetKeyDelegate], (objc_opt_respondsToSelector() & 1) != 0))
+    if (map && ([(MPDocument *)self assetKeyDelegate], (objc_opt_respondsToSelector() & 1) != 0))
     {
       v15 = [-[MPDocument assetKeyDelegate](self "assetKeyDelegate")];
     }
@@ -2050,18 +2050,18 @@ LABEL_20:
         goto LABEL_28;
       }
 
-      v16 = [a4 objectForKey:kMPAssetMapLatLongPoints];
-      v17 = [(MPDocument *)self assetKeyDelegate];
+      v16 = [attributes objectForKey:kMPAssetMapLatLongPoints];
+      assetKeyDelegate = [(MPDocument *)self assetKeyDelegate];
       width = CGSizeZero.width;
       height = CGSizeZero.height;
-      v20 = [v17 mapTileCenteredAt:v16 size:4096.0 inset:{4096.0, CGSizeZero.width, height}];
+      v20 = [assetKeyDelegate mapTileCenteredAt:v16 size:4096.0 inset:{4096.0, CGSizeZero.width, height}];
       if (!v20)
       {
         goto LABEL_28;
       }
 
       v21 = v20;
-      v22 = [a4 objectForKey:kMPAssetMapInset];
+      v22 = [attributes objectForKey:kMPAssetMapInset];
       if (v22)
       {
         [v22 CGSizeValue];
@@ -2126,8 +2126,8 @@ LABEL_25:
     goto LABEL_29;
   }
 
-  v7 = [(MPDocument *)self assetKeyDelegate];
-  v8 = [v7 attributeForKey:kMPAssetAttributeMapPoint forAssetKey:a3 withOptions:a4];
+  assetKeyDelegate2 = [(MPDocument *)self assetKeyDelegate];
+  v8 = [assetKeyDelegate2 attributeForKey:kMPAssetAttributeMapPoint forAssetKey:map withOptions:attributes];
   if (!v8)
   {
 LABEL_28:
@@ -2143,7 +2143,7 @@ LABEL_29:
   return result;
 }
 
-- (int64_t)mapLevelForPath:(id)a3
+- (int64_t)mapLevelForPath:(id)path
 {
   [(MPDocument *)self assetKeyDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -2151,42 +2151,42 @@ LABEL_29:
     return 0;
   }
 
-  v5 = [(MPDocument *)self assetKeyDelegate];
-  v6 = [v5 attributeForKey:kMPAssetAttributeMapLevel forAssetKey:a3 withOptions:0];
+  assetKeyDelegate = [(MPDocument *)self assetKeyDelegate];
+  v6 = [assetKeyDelegate attributeForKey:kMPAssetAttributeMapLevel forAssetKey:path withOptions:0];
 
   return [v6 integerValue];
 }
 
-- (id)flightPlanFrom:(CGPoint)a3 to:(CGPoint)a4
+- (id)flightPlanFrom:(CGPoint)from to:(CGPoint)to
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = to.y;
+  x = to.x;
+  v6 = from.y;
+  v7 = from.x;
   [(MPDocument *)self assetKeyDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  v9 = [(MPDocument *)self assetKeyDelegate];
+  assetKeyDelegate = [(MPDocument *)self assetKeyDelegate];
 
-  return [v9 flightPlanFrom:v7 to:{v6, x, y}];
+  return [assetKeyDelegate flightPlanFrom:v7 to:{v6, x, y}];
 }
 
 - (void)organizeRandomTransitions
 {
   v3 = [(MPDocument *)self documentAttributeForKey:kMPDocumentRandomTransitionList];
-  v4 = [(MPDocumentInternal *)self->_internal orderedRandomTransitions];
+  orderedRandomTransitions = [(MPDocumentInternal *)self->_internal orderedRandomTransitions];
   obj = v3;
   if (v3)
   {
-    if (!v4)
+    if (!orderedRandomTransitions)
     {
       [(MPDocumentInternal *)self->_internal setOrderedRandomTransitions:+[NSMutableDictionary dictionary]];
     }
 
-    v30 = self;
+    selfCopy = self;
     [(NSMutableDictionary *)[(MPDocumentInternal *)self->_internal orderedRandomTransitions] removeAllObjects];
     v5 = +[NSMutableDictionary dictionary];
     v43 = 0u;
@@ -2331,10 +2331,10 @@ LABEL_29:
       while (v18);
     }
 
-    [(NSMutableDictionary *)[(MPDocumentInternal *)v30->_internal orderedRandomTransitions] setObject:v16 forKey:@"transitionPresetIDs"];
+    [(NSMutableDictionary *)[(MPDocumentInternal *)selfCopy->_internal orderedRandomTransitions] setObject:v16 forKey:@"transitionPresetIDs"];
   }
 
-  else if (v4)
+  else if (orderedRandomTransitions)
   {
     internal = self->_internal;
 
@@ -2356,8 +2356,8 @@ LABEL_29:
 
 - (double)aspectRatio
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
-  v3 = [(MPLayerGroup *)v2 authoringOptionForKey:kMPAuthoringAspectRatio];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  v3 = [(MPLayerGroup *)documentLayerGroup authoringOptionForKey:kMPAuthoringAspectRatio];
   if (!v3)
   {
     return 1.77777779;
@@ -2367,19 +2367,19 @@ LABEL_29:
   return v4;
 }
 
-- (double)aspectRatioDidChange:(double)a3 atTime:(double)a4
+- (double)aspectRatioDidChange:(double)change atTime:(double)time
 {
-  v6 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v6 aspectRatioDidChange:a3 atTime:a4];
+  [(MPLayerGroup *)documentLayerGroup aspectRatioDidChange:change atTime:time];
   return result;
 }
 
 - (BOOL)detectFacesInBackground
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 detectFacesInBackground];
+  return [(MPLayerGroup *)documentLayerGroup detectFacesInBackground];
 }
 
 - (BOOL)isLive
@@ -2394,68 +2394,68 @@ LABEL_29:
   return v2;
 }
 
-- (id)cachedAbsolutePathFromPath:(id)a3
+- (id)cachedAbsolutePathFromPath:(id)path
 {
   [(NSLock *)[(MPDocumentInternal *)self->_internal cachedPathLock] lock];
-  v5 = [(NSMutableDictionary *)[(MPDocumentInternal *)self->_internal cachedAbsolutePaths] objectForKey:a3];
+  v5 = [(NSMutableDictionary *)[(MPDocumentInternal *)self->_internal cachedAbsolutePaths] objectForKey:path];
   [(NSLock *)[(MPDocumentInternal *)self->_internal cachedPathLock] unlock];
   return v5;
 }
 
-- (void)setAbsolutePath:(id)a3 forKey:(id)a4
+- (void)setAbsolutePath:(id)path forKey:(id)key
 {
   [(NSLock *)[(MPDocumentInternal *)self->_internal cachedPathLock] lock];
-  v7 = [(MPDocumentInternal *)self->_internal cachedAbsolutePaths];
-  if (a3)
+  cachedAbsolutePaths = [(MPDocumentInternal *)self->_internal cachedAbsolutePaths];
+  if (path)
   {
-    -[NSMutableDictionary setObject:forKey:](v7, "setObject:forKey:", [a3 copy], a4);
+    -[NSMutableDictionary setObject:forKey:](cachedAbsolutePaths, "setObject:forKey:", [path copy], key);
   }
 
   else
   {
-    [(NSMutableDictionary *)v7 removeObjectForKey:a4];
+    [(NSMutableDictionary *)cachedAbsolutePaths removeObjectForKey:key];
   }
 
-  v8 = [(MPDocumentInternal *)self->_internal cachedPathLock];
+  cachedPathLock = [(MPDocumentInternal *)self->_internal cachedPathLock];
 
-  [(NSLock *)v8 unlock];
+  [(NSLock *)cachedPathLock unlock];
 }
 
-- (id)cachedAbsoluteStillPathFromPath:(id)a3
+- (id)cachedAbsoluteStillPathFromPath:(id)path
 {
   [(NSLock *)[(MPDocumentInternal *)self->_internal cachedPathLock] lock];
-  v5 = [(NSMutableDictionary *)[(MPDocumentInternal *)self->_internal cachedAbsoluteStillPaths] objectForKey:a3];
+  v5 = [(NSMutableDictionary *)[(MPDocumentInternal *)self->_internal cachedAbsoluteStillPaths] objectForKey:path];
   [(NSLock *)[(MPDocumentInternal *)self->_internal cachedPathLock] unlock];
   return v5;
 }
 
-- (void)setAbsoluteStillPath:(id)a3 forKey:(id)a4
+- (void)setAbsoluteStillPath:(id)path forKey:(id)key
 {
   [(NSLock *)[(MPDocumentInternal *)self->_internal cachedPathLock] lock];
-  v7 = [(MPDocumentInternal *)self->_internal cachedAbsoluteStillPaths];
-  if (a3)
+  cachedAbsoluteStillPaths = [(MPDocumentInternal *)self->_internal cachedAbsoluteStillPaths];
+  if (path)
   {
-    -[NSMutableDictionary setObject:forKey:](v7, "setObject:forKey:", [a3 copy], a4);
+    -[NSMutableDictionary setObject:forKey:](cachedAbsoluteStillPaths, "setObject:forKey:", [path copy], key);
   }
 
   else
   {
-    [(NSMutableDictionary *)v7 removeObjectForKey:a4];
+    [(NSMutableDictionary *)cachedAbsoluteStillPaths removeObjectForKey:key];
   }
 
-  v8 = [(MPDocumentInternal *)self->_internal cachedPathLock];
+  cachedPathLock = [(MPDocumentInternal *)self->_internal cachedPathLock];
 
-  [(NSLock *)v8 unlock];
+  [(NSLock *)cachedPathLock unlock];
 }
 
-- (void)setTemporarilyCacheAbsolutePaths:(BOOL)a3
+- (void)setTemporarilyCacheAbsolutePaths:(BOOL)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   if (([-[NSMutableDictionary objectForKey:](self->_documentAttributes objectForKey:{kMPDocumentCacheAbsolutePaths), "BOOLValue"}] & 1) == 0)
   {
     internal = self->_internal;
 
-    [(MPDocumentInternal *)internal setCacheAbsolutePathOverride:v3];
+    [(MPDocumentInternal *)internal setCacheAbsolutePathOverride:pathsCopy];
   }
 }
 
@@ -2474,8 +2474,8 @@ LABEL_29:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(NSMutableDictionary *)self->_layerGroups allValues];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    allValues = [(NSMutableDictionary *)self->_layerGroups allValues];
+    v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2486,13 +2486,13 @@ LABEL_29:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v9 + 1) + 8 * i) configureActions];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -2502,70 +2502,70 @@ LABEL_29:
 
 - (int64_t)countOfLayers
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 countOfLayers];
+  return [(MPLayerGroup *)documentLayerGroup countOfLayers];
 }
 
-- (id)objectInLayersAtIndex:(int64_t)a3
+- (id)objectInLayersAtIndex:(int64_t)index
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v4 objectInLayersAtIndex:a3];
+  return [(MPLayerGroup *)documentLayerGroup objectInLayersAtIndex:index];
 }
 
-- (id)valueInLayersWithName:(id)a3
+- (id)valueInLayersWithName:(id)name
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v4 valueInLayersWithName:a3];
+  return [(MPLayerGroup *)documentLayerGroup valueInLayersWithName:name];
 }
 
-- (void)insertObject:(id)a3 inLayersAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inLayersAtIndex:(int64_t)index
 {
-  v6 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v6 insertObject:a3 inLayersAtIndex:a4];
+  [(MPLayerGroup *)documentLayerGroup insertObject:object inLayersAtIndex:index];
 }
 
-- (void)removeObjectFromLayersAtIndex:(int64_t)a3
+- (void)removeObjectFromLayersAtIndex:(int64_t)index
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 removeObjectFromLayersAtIndex:a3];
+  [(MPLayerGroup *)documentLayerGroup removeObjectFromLayersAtIndex:index];
 }
 
-- (void)replaceObjectInLayersAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInLayersAtIndex:(int64_t)index withObject:(id)object
 {
-  v6 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v6 replaceObjectInLayersAtIndex:a3 withObject:a4];
+  [(MPLayerGroup *)documentLayerGroup replaceObjectInLayersAtIndex:index withObject:object];
 }
 
 - (id)styleID
 {
-  v2 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  return [(MPLayerGroup *)v2 styleID];
+  return [(MPLayerGroup *)documentLayerGroup styleID];
 }
 
-- (void)setStyleID:(id)a3
+- (void)setStyleID:(id)d
 {
-  v4 = [(MPDocumentInternal *)self->_internal documentLayerGroup];
+  documentLayerGroup = [(MPDocumentInternal *)self->_internal documentLayerGroup];
 
-  [(MPLayerGroup *)v4 setStyleID:a3];
+  [(MPLayerGroup *)documentLayerGroup setStyleID:d];
 }
 
-- (id)absolutePathForAssetAtPath:(id)a3
+- (id)absolutePathForAssetAtPath:(id)path
 {
-  if (![(MPDocumentInternal *)self->_internal alwaysLookupAbsolutePaths]&& ![MPUtilities pathIsRelative:a3])
+  if (![(MPDocumentInternal *)self->_internal alwaysLookupAbsolutePaths]&& ![MPUtilities pathIsRelative:path])
   {
-    return a3;
+    return path;
   }
 
-  if (NSStringHasPrefix(a3, "mtg"))
+  if (NSStringHasPrefix(path, "mtg"))
   {
-    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%@", [a3 substringFromIndex:6]);
+    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%@", [path substringFromIndex:6]);
     v6 = [objc_msgSend(-[MPDocument fileURL](self "fileURL")];
     v7 = [v6 stringByAppendingPathComponent:v5];
     v8 = [NSArray arrayWithObjects:@"2048", @"1024", @"768", @"512", @"384", @"256", 0];
@@ -2574,7 +2574,7 @@ LABEL_29:
       v9 = 0;
       do
       {
-        v7 = [v6 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%d-%@", objc_msgSend(-[NSArray objectAtIndex:](v8, "objectAtIndex:", v9), "intValue"), objc_msgSend(a3, "substringFromIndex:", 6))}];
+        v7 = [v6 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%d-%@", objc_msgSend(-[NSArray objectAtIndex:](v8, "objectAtIndex:", v9), "intValue"), objc_msgSend(path, "substringFromIndex:", 6))}];
         if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
         {
           break;
@@ -2591,7 +2591,7 @@ LABEL_29:
 
   if (-[MPDocumentInternal cacheAbsolutePathOverride](self->_internal, "cacheAbsolutePathOverride") || [-[NSMutableDictionary objectForKey:](self->_documentAttributes objectForKey:{kMPDocumentCacheAbsolutePaths), "BOOLValue"}])
   {
-    v7 = [(MPDocument *)self cachedAbsolutePathFromPath:a3];
+    v7 = [(MPDocument *)self cachedAbsolutePathFromPath:path];
     if (v7)
     {
       return v7;
@@ -2604,26 +2604,26 @@ LABEL_29:
     if (v10)
     {
       v7 = v10;
-      [(MPDocument *)self setAbsolutePath:v10 forKey:a3];
+      [(MPDocument *)self setAbsolutePath:v10 forKey:path];
       return v7;
     }
   }
 
   v12 = +[MPAssetManager sharedManager];
 
-  return [v12 absolutePathFromPath:a3];
+  return [v12 absolutePathFromPath:path];
 }
 
-- (id)absolutePathForAssetAtPath:(id)a3 andSize:(CGSize)a4
+- (id)absolutePathForAssetAtPath:(id)path andSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (![(MPDocumentInternal *)self->_internal alwaysLookupAbsolutePaths]&& ![MPUtilities pathIsRelative:a3])
+  height = size.height;
+  width = size.width;
+  if (![(MPDocumentInternal *)self->_internal alwaysLookupAbsolutePaths]&& ![MPUtilities pathIsRelative:path])
   {
-    return a3;
+    return path;
   }
 
-  if (NSStringHasPrefix(a3, "mtg"))
+  if (NSStringHasPrefix(path, "mtg"))
   {
     v8 = [NSArray arrayWithObjects:@"256", @"384", @"512", @"768", @"1024", @"2048", 0];
     v9 = [objc_msgSend(-[MPDocument fileURL](self "fileURL")];
@@ -2645,10 +2645,10 @@ LABEL_6:
           objc_enumerationMutation(v8);
         }
 
-        v14 = [*(*(&v25 + 1) + 8 * v13) integerValue];
-        if (width < v14)
+        integerValue = [*(*(&v25 + 1) + 8 * v13) integerValue];
+        if (width < integerValue)
         {
-          v15 = [v9 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%d-%@", v14, objc_msgSend(a3, "substringFromIndex:", 6))}];
+          v15 = [v9 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%d-%@", integerValue, objc_msgSend(path, "substringFromIndex:", 6))}];
           if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
           {
             break;
@@ -2674,7 +2674,7 @@ LABEL_6:
     }
 
 LABEL_20:
-    v17 = [v9 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%@", objc_msgSend(a3, "substringFromIndex:", 6))}];
+    v17 = [v9 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%@", objc_msgSend(path, "substringFromIndex:", 6))}];
     if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
     {
       v22 = 0;
@@ -2687,7 +2687,7 @@ LABEL_20:
       do
       {
         v20 = v19;
-        v17 = [v9 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%d-%@", objc_msgSend(-[NSArray objectAtIndex:](v8, "objectAtIndex:", -[NSArray count](v8, "count") + v19), "intValue"), objc_msgSend(a3, "substringFromIndex:", 6))}];
+        v17 = [v9 stringByAppendingPathComponent:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"media/%d-%@", objc_msgSend(-[NSArray objectAtIndex:](v8, "objectAtIndex:", -[NSArray count](v8, "count") + v19), "intValue"), objc_msgSend(path, "substringFromIndex:", 6))}];
         if ([+[NSFileManager fileExistsAtPath:"fileExistsAtPath:"]
         {
           break;
@@ -2713,7 +2713,7 @@ LABEL_20:
     }
   }
 
-  v15 = [(MPDocument *)self cachedAbsolutePathFromPath:a3];
+  v15 = [(MPDocument *)self cachedAbsolutePathFromPath:path];
   if (v15)
   {
     return v15;
@@ -2725,49 +2725,49 @@ LABEL_20:
     if (v16)
     {
       v15 = v16;
-      [(MPDocument *)self setAbsolutePath:v16 forKey:a3];
+      [(MPDocument *)self setAbsolutePath:v16 forKey:path];
       return v15;
     }
   }
 
   v24 = +[MPAssetManager sharedManager];
 
-  return [v24 absolutePathFromPath:a3];
+  return [v24 absolutePathFromPath:path];
 }
 
-- (id)absolutePathForStillAssetAtPath:(id)a3 andSize:(CGSize)a4
+- (id)absolutePathForStillAssetAtPath:(id)path andSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8 = [(MPDocument *)self cachedAbsoluteStillPathFromPath:?];
   if ([(MPDocument *)self assetKeyDelegate])
   {
     v8 = [-[MPDocument assetKeyDelegate](self "assetKeyDelegate")];
     if (v8)
     {
-      [(MPDocument *)self setAbsoluteStillPath:v8 forKey:a3];
+      [(MPDocument *)self setAbsoluteStillPath:v8 forKey:path];
     }
   }
 
   return v8;
 }
 
-- (CGImage)CGImageForAssetAtPath:(id)a3 andSize:(CGSize)a4 orientation:(char *)a5 thumbnailIfPossible:(BOOL)a6 now:(BOOL)a7
+- (CGImage)CGImageForAssetAtPath:(id)path andSize:(CGSize)size orientation:(char *)orientation thumbnailIfPossible:(BOOL)possible now:(BOOL)now
 {
-  v7 = a7;
-  v8 = a6;
-  height = a4.height;
-  width = a4.width;
-  v13 = [(MPDocument *)self assetKeyDelegate];
-  if (!v13)
+  nowCopy = now;
+  possibleCopy = possible;
+  height = size.height;
+  width = size.width;
+  assetKeyDelegate = [(MPDocument *)self assetKeyDelegate];
+  if (!assetKeyDelegate)
   {
     return 0;
   }
 
-  v14 = v13;
+  v14 = assetKeyDelegate;
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v14 retainedCGImageForAssetKey:a3 andSize:a5 orientation:v8 thumbnailIfPossible:v7 now:{width, height}];
+    v15 = [v14 retainedCGImageForAssetKey:path andSize:orientation orientation:possibleCopy thumbnailIfPossible:nowCopy now:{width, height}];
 LABEL_8:
 
     return v15;
@@ -2775,34 +2775,34 @@ LABEL_8:
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v14 retainedCGImageForAssetKey:a3 andSize:a5 orientation:{width, height}];
+    v15 = [v14 retainedCGImageForAssetKey:path andSize:orientation orientation:{width, height}];
     goto LABEL_8;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v14 retainedCGImageForAssetKey:a3 andSize:{width, height}];
+    v15 = [v14 retainedCGImageForAssetKey:path andSize:{width, height}];
     goto LABEL_8;
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (possibleCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v15 = [v14 retainedThumbnailCGImageForAssetKey:a3 andSize:{width, height}];
+      v15 = [v14 retainedThumbnailCGImageForAssetKey:path andSize:{width, height}];
       goto LABEL_8;
     }
 
     return 0;
   }
 
-  return [v14 cgImageForAssetKey:a3 andSize:{width, height}];
+  return [v14 cgImageForAssetKey:path andSize:{width, height}];
 }
 
-- (CGImage)thumbnailCGImageForAssetAtPath:(id)a3 andSize:(CGSize)a4
+- (CGImage)thumbnailCGImageForAssetAtPath:(id)path andSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   [(MPDocument *)self assetKeyDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -2814,7 +2814,7 @@ LABEL_8:
   return v8;
 }
 
-- (id)avAssetForAssetAtPath:(id)a3
+- (id)avAssetForAssetAtPath:(id)path
 {
   if (![(MPDocument *)self assetKeyDelegate])
   {
@@ -2827,15 +2827,15 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(MPDocument *)self assetKeyDelegate];
+  assetKeyDelegate = [(MPDocument *)self assetKeyDelegate];
 
-  return [v5 avAssetForAssetKey:a3];
+  return [assetKeyDelegate avAssetForAssetKey:path];
 }
 
-- (id)dataForAssetAtPath:(id)a3 andSize:(CGSize)a4
+- (id)dataForAssetAtPath:(id)path andSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   if (![(MPDocument *)self assetKeyDelegate])
   {
     return 0;
@@ -2847,36 +2847,36 @@ LABEL_8:
     return 0;
   }
 
-  v8 = [(MPDocument *)self assetKeyDelegate];
+  assetKeyDelegate = [(MPDocument *)self assetKeyDelegate];
 
-  return [v8 imageDataForAssetKey:a3 andSize:{width, height}];
+  return [assetKeyDelegate imageDataForAssetKey:path andSize:{width, height}];
 }
 
-- (BOOL)isSupportedMovieForAssetAtPath:(id)a3
+- (BOOL)isSupportedMovieForAssetAtPath:(id)path
 {
-  if (NSStringHasPrefix(a3, "map"))
+  if (NSStringHasPrefix(path, "map"))
   {
     return 0;
   }
 
-  v6 = [(MPDocument *)self propertiesForMediaPath:a3];
+  v6 = [(MPDocument *)self propertiesForMediaPath:path];
   v7 = [v6 objectForKey:kMPMetaDataMediaType];
   if (v7)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
+    integerValue = [+[MPAssetManager sharedManager](MPAssetManager "sharedManager")];
   }
 
-  return v8 == &dword_0 + 3;
+  return integerValue == &dword_0 + 3;
 }
 
-- (CGSize)resolutionForAssetAtPath:(id)a3
+- (CGSize)resolutionForAssetAtPath:(id)path
 {
-  if (NSStringHasPrefix(a3, "map"))
+  if (NSStringHasPrefix(path, "map"))
   {
     width = 2048.0;
     height = 2048.0;
@@ -2884,7 +2884,7 @@ LABEL_8:
 
   else
   {
-    v7 = [(MPDocument *)self propertiesForMediaPath:a3];
+    v7 = [(MPDocument *)self propertiesForMediaPath:path];
     v8 = [v7 objectForKey:kMPMetaDataResolution];
     if (v8)
     {
@@ -2897,7 +2897,7 @@ LABEL_8:
     else
     {
 
-      [(MPDocument *)self resolutionForPath:a3];
+      [(MPDocument *)self resolutionForPath:path];
     }
   }
 
@@ -2906,25 +2906,25 @@ LABEL_8:
   return result;
 }
 
-- (double)startTimeForAssetAtPath:(id)a3
+- (double)startTimeForAssetAtPath:(id)path
 {
   if ([(MPDocumentInternal *)self->_internal assetLogging])
   {
-    NSLog(@"startTimeForAssetAtPath: %@", a3);
+    NSLog(@"startTimeForAssetAtPath: %@", path);
   }
 
-  [(MPDocument *)self startTimeForPath:a3];
+  [(MPDocument *)self startTimeForPath:path];
   return result;
 }
 
-- (double)stopTimeForAssetAtPath:(id)a3
+- (double)stopTimeForAssetAtPath:(id)path
 {
   if ([(MPDocumentInternal *)self->_internal assetLogging])
   {
-    NSLog(@"stopTimeForAssetAtPath: %@", a3);
+    NSLog(@"stopTimeForAssetAtPath: %@", path);
   }
 
-  [(MPDocument *)self stopTimeForPath:a3];
+  [(MPDocument *)self stopTimeForPath:path];
   return result;
 }
 

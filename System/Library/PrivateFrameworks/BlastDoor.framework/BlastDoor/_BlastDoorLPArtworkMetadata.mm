@@ -1,9 +1,9 @@
 @interface _BlastDoorLPArtworkMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_BlastDoorLPArtworkMetadata)init;
-- (_BlastDoorLPArtworkMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_BlastDoorLPArtworkMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPArtworkMetadata
@@ -25,22 +25,22 @@
   return v3;
 }
 
-- (_BlastDoorLPArtworkMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPArtworkMetadata)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _BlastDoorLPArtworkMetadata;
   v5 = [(_BlastDoorLPArtworkMetadata *)&v14 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
     v8 = objc_opt_class();
-    v9 = [v4 _bd_lp_strictlyDecodeDictionaryOfObjectsWithKeysOfClass:v8 andObjectsOfClass:objc_opt_class() forKey:@"colors"];
+    v9 = [coderCopy _bd_lp_strictlyDecodeDictionaryOfObjectsWithKeysOfClass:v8 andObjectsOfClass:objc_opt_class() forKey:@"colors"];
     colors = v5->_colors;
     v5->_colors = v9;
 
@@ -51,26 +51,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInt32:version forKey:@"version"];
-  [v5 _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_colors forKey:@"colors"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:version forKey:@"version"];
+  [coderCopy _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_colors forKey:@"colors"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPArtworkMetadata allocWithZone:a3];
+  v4 = [_BlastDoorLPArtworkMetadata allocWithZone:zone];
   if (v4)
   {
     v4->_version = [(_BlastDoorLPArtworkMetadata *)self version];
     v5 = [(_BlastDoorLPArtworkMetadata *)self URL];
     [(_BlastDoorLPArtworkMetadata *)v4 setURL:v5];
 
-    v6 = [(_BlastDoorLPArtworkMetadata *)self colors];
-    [(_BlastDoorLPArtworkMetadata *)v4 setColors:v6];
+    colors = [(_BlastDoorLPArtworkMetadata *)self colors];
+    [(_BlastDoorLPArtworkMetadata *)v4 setColors:colors];
 
     v7 = v4;
   }
@@ -78,13 +78,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _BlastDoorLPArtworkMetadata;
-  if ([(_BlastDoorLPArtworkMetadata *)&v12 isEqual:v4])
+  if ([(_BlastDoorLPArtworkMetadata *)&v12 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -94,7 +94,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && ((v8 = v6[2], !(v8 | self->_URL)) || [v8 isEqual:?]))
       {

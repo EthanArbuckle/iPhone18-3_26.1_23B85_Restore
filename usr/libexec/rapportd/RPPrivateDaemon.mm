@@ -1,24 +1,24 @@
 @interface RPPrivateDaemon
 + (id)sharedPrivateDaemon;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RPPrivateDaemon)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_processAnnouncementPtr:(const char *)a3 end:(const char *)a4;
-- (void)_processAnswerPtr:(const char *)a3 end:(const char *)a4;
-- (void)_processPacketPtr:(const char *)a3 end:(const char *)a4;
-- (void)_processProbePtr:(const char *)a3 end:(const char *)a4;
-- (void)_processQueryPtr:(const char *)a3 end:(const char *)a4;
-- (void)_processResponsePtr:(const char *)a3 end:(const char *)a4;
+- (void)_processAnnouncementPtr:(const char *)ptr end:(const char *)end;
+- (void)_processAnswerPtr:(const char *)ptr end:(const char *)end;
+- (void)_processPacketPtr:(const char *)ptr end:(const char *)end;
+- (void)_processProbePtr:(const char *)ptr end:(const char *)end;
+- (void)_processQueryPtr:(const char *)ptr end:(const char *)end;
+- (void)_processResponsePtr:(const char *)ptr end:(const char *)end;
 - (void)_update;
-- (void)_xpcConnectionInvalidated:(id)a3;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
 - (void)activate;
-- (void)addAdvertiser:(id)a3 completion:(id)a4;
-- (void)addDiscovery:(id)a3 completion:(id)a4;
+- (void)addAdvertiser:(id)advertiser completion:(id)completion;
+- (void)addDiscovery:(id)discovery completion:(id)completion;
 - (void)invalidate;
-- (void)removeAdvertiser:(id)a3 completion:(id)a4;
-- (void)removeDiscovery:(id)a3 completion:(id)a4;
+- (void)removeAdvertiser:(id)advertiser completion:(id)completion;
+- (void)removeDiscovery:(id)discovery completion:(id)completion;
 @end
 
 @implementation RPPrivateDaemon
@@ -51,7 +51,7 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v24 = 0;
   v17 = [(NSMutableSet *)self->_xpcConnections count];
@@ -85,28 +85,28 @@
 
         else
         {
-          v11 = [v9 xpcCnx];
-          v18 = [v11 processIdentifier];
+          xpcCnx = [v9 xpcCnx];
+          processIdentifier = [xpcCnx processIdentifier];
           NSAppendPrintF();
           v10 = v4;
 
-          v4 = v11;
+          v4 = xpcCnx;
         }
 
-        v12 = [v9 activatedAdvertiser];
-        if (v12)
+        activatedAdvertiser = [v9 activatedAdvertiser];
+        if (activatedAdvertiser)
         {
-          v18 = CUDescriptionWithLevel();
+          processIdentifier = CUDescriptionWithLevel();
           NSAppendPrintF();
           v13 = v10;
 
           v10 = v13;
         }
 
-        v14 = [v9 activatedDiscovery];
-        if (v14)
+        activatedDiscovery = [v9 activatedDiscovery];
+        if (activatedDiscovery)
         {
-          v18 = CUDescriptionWithLevel();
+          processIdentifier = CUDescriptionWithLevel();
           NSAppendPrintF();
           v15 = v10;
 
@@ -192,16 +192,16 @@
   }
 }
 
-- (void)_processPacketPtr:(const char *)a3 end:(const char *)a4
+- (void)_processPacketPtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 <= 0)
+  if (end - ptr <= 0)
   {
     sub_100126B10();
     return;
   }
 
-  v5 = *a3;
-  v4 = a3 + 1;
+  v5 = *ptr;
+  v4 = ptr + 1;
   v6 = v5 & 0x1F;
   if (v6 <= 2)
   {
@@ -250,21 +250,21 @@ LABEL_23:
   }
 }
 
-- (void)_processProbePtr:(const char *)a3 end:(const char *)a4
+- (void)_processProbePtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 <= 31 || a4 - a3 - 32 <= 3)
+  if (end - ptr <= 31 || end - ptr - 32 <= 3)
   {
     sub_100126BD0();
   }
 
-  else if (a4 - (a3 + 36) <= 63)
+  else if (end - (ptr + 36) <= 63)
   {
     sub_100126B70();
   }
 
   else if (dword_1001D4A70 <= 30)
   {
-    v4 = *(a3 + 8);
+    v4 = *(ptr + 8);
     if (dword_1001D4A70 != -1 || _LogCategory_Initialize())
     {
       LogPrintF();
@@ -272,14 +272,14 @@ LABEL_23:
   }
 }
 
-- (void)_processResponsePtr:(const char *)a3 end:(const char *)a4
+- (void)_processResponsePtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 <= 31)
+  if (end - ptr <= 31)
   {
     sub_100126C90();
   }
 
-  else if (a4 - (a3 + 32) <= 95)
+  else if (end - (ptr + 32) <= 95)
   {
     sub_100126C30();
   }
@@ -290,21 +290,21 @@ LABEL_23:
   }
 }
 
-- (void)_processAnnouncementPtr:(const char *)a3 end:(const char *)a4
+- (void)_processAnnouncementPtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 <= 31 || a4 - a3 - 32 <= 3)
+  if (end - ptr <= 31 || end - ptr - 32 <= 3)
   {
     sub_100126D50();
   }
 
-  else if (a4 - (a3 + 36) <= 63)
+  else if (end - (ptr + 36) <= 63)
   {
     sub_100126CF0();
   }
 
   else if (dword_1001D4A70 <= 30)
   {
-    v4 = *(a3 + 8);
+    v4 = *(ptr + 8);
     if (dword_1001D4A70 != -1 || _LogCategory_Initialize())
     {
       LogPrintF();
@@ -312,9 +312,9 @@ LABEL_23:
   }
 }
 
-- (void)_processQueryPtr:(const char *)a3 end:(const char *)a4
+- (void)_processQueryPtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 <= 31)
+  if (end - ptr <= 31)
   {
     sub_100126DB0(dword_1001D4A70 < 31, dword_1001D4A70);
   }
@@ -325,9 +325,9 @@ LABEL_23:
   }
 }
 
-- (void)_processAnswerPtr:(const char *)a3 end:(const char *)a4
+- (void)_processAnswerPtr:(const char *)ptr end:(const char *)end
 {
-  if (a4 - a3 <= 31)
+  if (end - ptr <= 31)
   {
     sub_100126E04(dword_1001D4A70 < 31, dword_1001D4A70);
   }
@@ -338,81 +338,81 @@ LABEL_23:
   }
 }
 
-- (void)addAdvertiser:(id)a3 completion:(id)a4
+- (void)addAdvertiser:(id)advertiser completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  advertiserCopy = advertiser;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A44A4;
   block[3] = &unk_1001AEC08;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = advertiserCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = advertiserCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)removeAdvertiser:(id)a3 completion:(id)a4
+- (void)removeAdvertiser:(id)advertiser completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  advertiserCopy = advertiser;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A4628;
   block[3] = &unk_1001AEC08;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = advertiserCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = advertiserCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)addDiscovery:(id)a3 completion:(id)a4
+- (void)addDiscovery:(id)discovery completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  discoveryCopy = discovery;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A4848;
   block[3] = &unk_1001AEC08;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = discoveryCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = discoveryCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)removeDiscovery:(id)a3 completion:(id)a4
+- (void)removeDiscovery:(id)discovery completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  discoveryCopy = discovery;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A49CC;
   block[3] = &unk_1001AEC08;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = discoveryCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = discoveryCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = objc_alloc_init(RPPrivateXPCConnection);
   [(RPPrivateXPCConnection *)v6 setDaemon:self];
   [(RPPrivateXPCConnection *)v6 setDispatchQueue:self->_dispatchQueue];
-  [(RPPrivateXPCConnection *)v6 setXpcCnx:v5];
+  [(RPPrivateXPCConnection *)v6 setXpcCnx:connectionCopy];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
   {
@@ -424,44 +424,44 @@ LABEL_23:
   }
 
   [(NSMutableSet *)xpcConnections addObject:v6];
-  [v5 _setQueue:self->_dispatchQueue];
+  [connectionCopy _setQueue:self->_dispatchQueue];
   v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RPPrivateDiscoveryXPCDaemonInterface];
-  [v5 setExportedInterface:v10];
+  [connectionCopy setExportedInterface:v10];
 
-  [v5 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000A4CD0;
   v13[3] = &unk_1001AB488;
   v13[4] = self;
   v13[5] = v6;
-  [v5 setInvalidationHandler:v13];
+  [connectionCopy setInvalidationHandler:v13];
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___RPPrivateDiscoveryXPCClientInterface];
-  [v5 setRemoteObjectInterface:v11];
+  [connectionCopy setRemoteObjectInterface:v11];
 
-  [v5 resume];
+  [connectionCopy resume];
   if (dword_1001D4A70 <= 20 && (dword_1001D4A70 != -1 || _LogCategory_Initialize()))
   {
-    sub_100126E58(v5);
+    sub_100126E58(connectionCopy);
   }
 
   return 1;
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v6 = v4;
+  invalidatedCopy = invalidated;
+  v6 = invalidatedCopy;
   if (dword_1001D4A70 <= 20)
   {
-    if (dword_1001D4A70 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_1001D4A70 != -1 || (v5 = _LogCategory_Initialize(), invalidatedCopy = v6, v5))
     {
-      sub_100126E9C(v4);
-      v4 = v6;
+      sub_100126E9C(invalidatedCopy);
+      invalidatedCopy = v6;
     }
   }
 
-  [v4 xpcConnectionInvalidated];
+  [invalidatedCopy xpcConnectionInvalidated];
   [(NSMutableSet *)self->_xpcConnections removeObject:v6];
   [(RPPrivateDaemon *)self _update];
 }

@@ -1,18 +1,18 @@
 @interface TTRAddTasksIntentHandler
 - (_TtC25RemindersIntentsFramework24TTRAddTasksIntentHandler)init;
-- (void)resolveTaskTitlesForAddTasks:(id)a3 withCompletion:(id)a4;
+- (void)resolveTaskTitlesForAddTasks:(id)tasks withCompletion:(id)completion;
 @end
 
 @implementation TTRAddTasksIntentHandler
 
-- (void)resolveTaskTitlesForAddTasks:(id)a3 withCompletion:(id)a4
+- (void)resolveTaskTitlesForAddTasks:(id)tasks withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_261D5B910(v8, sub_261D647EC, v7);
+  tasksCopy = tasks;
+  selfCopy = self;
+  sub_261D5B910(tasksCopy, sub_261D647EC, v7);
 }
 
 - (_TtC25RemindersIntentsFramework24TTRAddTasksIntentHandler)init

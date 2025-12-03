@@ -5,30 +5,30 @@
 - (BOOL)isHDRForHDREV0Pair;
 - (BOOL)isUnfilteredImageForFilteredPair;
 - (BOOL)representsFinalProcessedStillImage;
-- (CAMCaptureCoordinationInfo)initWithIdentifier:(id)a3 allExpectedResultSpecifiers:(id)a4 resultSpecifiers:(unint64_t)a5;
+- (CAMCaptureCoordinationInfo)initWithIdentifier:(id)identifier allExpectedResultSpecifiers:(id)specifiers resultSpecifiers:(unint64_t)resultSpecifiers;
 - (id)description;
 @end
 
 @implementation CAMCaptureCoordinationInfo
 
-- (CAMCaptureCoordinationInfo)initWithIdentifier:(id)a3 allExpectedResultSpecifiers:(id)a4 resultSpecifiers:(unint64_t)a5
+- (CAMCaptureCoordinationInfo)initWithIdentifier:(id)identifier allExpectedResultSpecifiers:(id)specifiers resultSpecifiers:(unint64_t)resultSpecifiers
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  specifiersCopy = specifiers;
   v17.receiver = self;
   v17.super_class = CAMCaptureCoordinationInfo;
   v10 = [(CAMCaptureCoordinationInfo *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    v13 = [v9 copy];
+    v13 = [specifiersCopy copy];
     allExpectedResultSpecifiers = v10->_allExpectedResultSpecifiers;
     v10->_allExpectedResultSpecifiers = v13;
 
-    v10->_resultSpecifiers = a5;
+    v10->_resultSpecifiers = resultSpecifiers;
     v15 = v10;
   }
 
@@ -41,9 +41,9 @@
   v13.receiver = self;
   v13.super_class = CAMCaptureCoordinationInfo;
   v4 = [(CAMCaptureCoordinationInfo *)&v13 description];
-  v5 = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
-  v6 = v5;
-  if ((v5 & 2) != 0)
+  resultSpecifiers = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
+  v6 = resultSpecifiers;
+  if ((resultSpecifiers & 2) != 0)
   {
     v7 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
     if ((v6 & 1) == 0)
@@ -55,7 +55,7 @@
   }
 
   v7 = &stru_1F1660A30;
-  if (v5)
+  if (resultSpecifiers)
   {
 LABEL_5:
     v8 = [(__CFString *)v7 stringByAppendingString:@"HDR"];
@@ -70,7 +70,7 @@ LABEL_6:
     v7 = @"None";
   }
 
-  v9 = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
+  allExpectedResultSpecifiers = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -82,7 +82,7 @@ LABEL_6:
   v14[2] = __CAMDebugStringForCaptureResultSpecifiersSet_block_invoke;
   v14[3] = &unk_1E76F8BA0;
   v14[4] = &v15;
-  [v9 enumerateObjectsUsingBlock:v14];
+  [allExpectedResultSpecifiers enumerateObjectsUsingBlock:v14];
   v10 = v16[5];
   _Block_object_dispose(&v15, 8);
 
@@ -93,9 +93,9 @@ LABEL_6:
 
 - (BOOL)isUnfilteredImageForFilteredPair
 {
-  v3 = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
-  v4 = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
-  if (v4 == (v4 | 2))
+  allExpectedResultSpecifiers = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
+  resultSpecifiers = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
+  if (resultSpecifiers == (resultSpecifiers | 2))
   {
     v5 = 0;
   }
@@ -103,7 +103,7 @@ LABEL_6:
   else
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-    v5 = [v3 containsObject:v6];
+    v5 = [allExpectedResultSpecifiers containsObject:v6];
   }
 
   return v5;
@@ -111,9 +111,9 @@ LABEL_6:
 
 - (BOOL)isFilteredImageForFilteredPair
 {
-  v3 = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
-  v4 = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
-  if (v4 == (v4 & 0xFFFFFFFFFFFFFFFDLL))
+  allExpectedResultSpecifiers = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
+  resultSpecifiers = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
+  if (resultSpecifiers == (resultSpecifiers & 0xFFFFFFFFFFFFFFFDLL))
   {
     v5 = 0;
   }
@@ -121,7 +121,7 @@ LABEL_6:
   else
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-    v5 = [v3 containsObject:v6];
+    v5 = [allExpectedResultSpecifiers containsObject:v6];
   }
 
   return v5;
@@ -129,9 +129,9 @@ LABEL_6:
 
 - (BOOL)isEV0ForHDREV0Pair
 {
-  v3 = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
-  v4 = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
-  if (v4 == (v4 | 1))
+  allExpectedResultSpecifiers = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
+  resultSpecifiers = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
+  if (resultSpecifiers == (resultSpecifiers | 1))
   {
     v5 = 0;
   }
@@ -139,7 +139,7 @@ LABEL_6:
   else
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-    v5 = [v3 containsObject:v6];
+    v5 = [allExpectedResultSpecifiers containsObject:v6];
   }
 
   return v5;
@@ -147,9 +147,9 @@ LABEL_6:
 
 - (BOOL)isHDRForHDREV0Pair
 {
-  v3 = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
-  v4 = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
-  if (v4 == (v4 & 0xFFFFFFFFFFFFFFFELL))
+  allExpectedResultSpecifiers = [(CAMCaptureCoordinationInfo *)self allExpectedResultSpecifiers];
+  resultSpecifiers = [(CAMCaptureCoordinationInfo *)self resultSpecifiers];
+  if (resultSpecifiers == (resultSpecifiers & 0xFFFFFFFFFFFFFFFELL))
   {
     v5 = 0;
   }
@@ -157,7 +157,7 @@ LABEL_6:
   else
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-    v5 = [v3 containsObject:v6];
+    v5 = [allExpectedResultSpecifiers containsObject:v6];
   }
 
   return v5;

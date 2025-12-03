@@ -1,21 +1,21 @@
 @interface WFDatabaseObjectDescriptor
-+ (id)mockWithIdentifier:(id)a3 objectType:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (WFDatabaseObjectDescriptor)initWithCoder:(id)a3;
-- (WFDatabaseObjectDescriptor)initWithDictionaryRepresentation:(id)a3;
-- (WFDatabaseObjectDescriptor)initWithIdentifier:(id)a3 objectType:(unint64_t)a4;
++ (id)mockWithIdentifier:(id)identifier objectType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (WFDatabaseObjectDescriptor)initWithCoder:(id)coder;
+- (WFDatabaseObjectDescriptor)initWithDictionaryRepresentation:(id)representation;
+- (WFDatabaseObjectDescriptor)initWithIdentifier:(id)identifier objectType:(unint64_t)type;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFDatabaseObjectDescriptor
 
 - (unint64_t)hash
 {
-  v3 = [(WFDatabaseObjectDescriptor *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(WFDatabaseObjectDescriptor *)self identifier];
+  v4 = [identifier hash];
   v5 = [(WFDatabaseObjectDescriptor *)self objectType]^ 0xABCD1234;
 
   return v4 ^ v5;
@@ -28,8 +28,8 @@
   v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[WFDatabaseObjectDescriptor objectType](self, "objectType")}];
   v8[1] = @"identifier";
   v9[0] = v3;
-  v4 = [(WFDatabaseObjectDescriptor *)self identifier];
-  v9[1] = v4;
+  identifier = [(WFDatabaseObjectDescriptor *)self identifier];
+  v9[1] = identifier;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -37,60 +37,60 @@
   return v5;
 }
 
-- (WFDatabaseObjectDescriptor)initWithDictionaryRepresentation:(id)a3
+- (WFDatabaseObjectDescriptor)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"objectType"];
-  v6 = [v5 unsignedIntegerValue];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"objectType"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"identifier"];
+  v7 = [representationCopy objectForKeyedSubscript:@"identifier"];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    self = [(WFDatabaseObjectDescriptor *)self initWithIdentifier:v7 objectType:v6];
-    v8 = self;
+    self = [(WFDatabaseObjectDescriptor *)self initWithIdentifier:v7 objectType:unsignedIntegerValue];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(WFDatabaseObjectDescriptor *)self identifier];
-  [v5 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFDatabaseObjectDescriptor *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v5 encodeInteger:-[WFDatabaseObjectDescriptor objectType](self forKey:{"objectType"), @"objectType"}];
+  [coderCopy encodeInteger:-[WFDatabaseObjectDescriptor objectType](self forKey:{"objectType"), @"objectType"}];
 }
 
-- (WFDatabaseObjectDescriptor)initWithCoder:(id)a3
+- (WFDatabaseObjectDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFDatabaseObjectDescriptor;
   v5 = [(WFDatabaseObjectDescriptor *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_objectType = [v4 decodeIntegerForKey:@"objectType"];
+    v5->_objectType = [coderCopy decodeIntegerForKey:@"objectType"];
     v8 = v5;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -100,9 +100,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFDatabaseObjectDescriptor *)v4 identifier];
-      v6 = [(WFDatabaseObjectDescriptor *)self identifier];
-      v7 = [v5 isEqualToString:v6];
+      identifier = [(WFDatabaseObjectDescriptor *)equalCopy identifier];
+      identifier2 = [(WFDatabaseObjectDescriptor *)self identifier];
+      v7 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -119,37 +119,37 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFDatabaseObjectDescriptor *)self identifier];
-  v7 = [(WFDatabaseObjectDescriptor *)self objectType];
-  if (v7 > 0xC)
+  identifier = [(WFDatabaseObjectDescriptor *)self identifier];
+  objectType = [(WFDatabaseObjectDescriptor *)self objectType];
+  if (objectType > 0xC)
   {
     v8 = @"Unknown";
   }
 
   else
   {
-    v8 = off_1E7B025D8[v7];
+    v8 = off_1E7B025D8[objectType];
   }
 
   v9 = v8;
-  v10 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, objectType: %@>", v5, self, v6, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p, identifier: %@, objectType: %@>", v5, self, identifier, v9];
 
   return v10;
 }
 
-- (WFDatabaseObjectDescriptor)initWithIdentifier:(id)a3 objectType:(unint64_t)a4
+- (WFDatabaseObjectDescriptor)initWithIdentifier:(id)identifier objectType:(unint64_t)type
 {
-  v7 = a3;
-  if (!v7)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFDatabaseObjectDescriptor.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDatabaseObjectDescriptor.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
-  if (a4 == 12)
+  if (type == 12)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFDatabaseObjectDescriptor.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"objectType != WFDatabaseObjectTypeOther"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDatabaseObjectDescriptor.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"objectType != WFDatabaseObjectTypeOther"}];
   }
 
   v15.receiver = self;
@@ -157,21 +157,21 @@
   v8 = [(WFDatabaseObjectDescriptor *)&v15 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v8->_objectType = a4;
+    v8->_objectType = type;
     v11 = v8;
   }
 
   return v8;
 }
 
-+ (id)mockWithIdentifier:(id)a3 objectType:(unint64_t)a4
++ (id)mockWithIdentifier:(id)identifier objectType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:v5 objectType:a4];
+  identifierCopy = identifier;
+  v6 = [[WFDatabaseObjectDescriptor alloc] initWithIdentifier:identifierCopy objectType:type];
 
   return v6;
 }

@@ -1,36 +1,36 @@
 @interface INFERENCESchemaINFERENCEBackgroundContactSignalSet
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEBackgroundContactSignalSet)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEBackgroundContactSignalSet)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEBackgroundContactSignalSet)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEBackgroundContactSignalSet)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addHandlesWithBgPrivacySignals:(id)a3;
-- (void)setHasPeopleSuggesterScoreSumForContact:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addHandlesWithBgPrivacySignals:(id)signals;
+- (void)setHasPeopleSuggesterScoreSumForContact:(BOOL)contact;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEBackgroundContactSignalSet
 
-- (INFERENCESchemaINFERENCEBackgroundContactSignalSet)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEBackgroundContactSignalSet)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = INFERENCESchemaINFERENCEBackgroundContactSignalSet;
   v5 = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isMatchWithRelationName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isMatchWithRelationName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEBackgroundContactSignalSet setIsMatchWithRelationName:](v5, "setIsMatchWithRelationName:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"peopleSuggesterScoreSumForContact"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"peopleSuggesterScoreSumForContact"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)v5 setPeopleSuggesterScoreSumForContact:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"handlesWithBgPrivacySignals"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"handlesWithBgPrivacySignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,30 +92,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEBackgroundContactSignalSet)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEBackgroundContactSignalSet)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -129,10 +129,10 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_handlesWithBgPrivacySignals count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -152,16 +152,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -171,14 +171,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"handlesWithBgPrivacySignals"];
+    [dictionary setObject:array forKeyedSubscript:@"handlesWithBgPrivacySignals"];
   }
 
   has = self->_has;
   if (has)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEBackgroundContactSignalSet isMatchWithRelationName](self, "isMatchWithRelationName")}];
-    [v3 setObject:v13 forKeyedSubscript:@"isMatchWithRelationName"];
+    [dictionary setObject:v13 forKeyedSubscript:@"isMatchWithRelationName"];
 
     has = self->_has;
   }
@@ -188,12 +188,12 @@
     v14 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self peopleSuggesterScoreSumForContact];
     v15 = [v14 numberWithFloat:?];
-    [v3 setObject:v15 forKeyedSubscript:@"peopleSuggesterScoreSumForContact"];
+    [dictionary setObject:v15 forKeyedSubscript:@"peopleSuggesterScoreSumForContact"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v17];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v17];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -251,16 +251,16 @@ LABEL_3:
   return v13 ^ v8 ^ [(NSArray *)self->_handlesWithBgPrivacySignals hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -269,27 +269,27 @@ LABEL_3:
   if (*&has)
   {
     isMatchWithRelationName = self->_isMatchWithRelationName;
-    if (isMatchWithRelationName != [v4 isMatchWithRelationName])
+    if (isMatchWithRelationName != [equalCopy isMatchWithRelationName])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (peopleSuggesterScoreSumForContact = self->_peopleSuggesterScoreSumForContact, [v4 peopleSuggesterScoreSumForContact], peopleSuggesterScoreSumForContact == v10))
+    if (!v8 || (peopleSuggesterScoreSumForContact = self->_peopleSuggesterScoreSumForContact, [equalCopy peopleSuggesterScoreSumForContact], peopleSuggesterScoreSumForContact == v10))
     {
-      v11 = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self handlesWithBgPrivacySignals];
-      v12 = [v4 handlesWithBgPrivacySignals];
-      v13 = v12;
-      if ((v11 != 0) != (v12 == 0))
+      handlesWithBgPrivacySignals = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self handlesWithBgPrivacySignals];
+      handlesWithBgPrivacySignals2 = [equalCopy handlesWithBgPrivacySignals];
+      v13 = handlesWithBgPrivacySignals2;
+      if ((handlesWithBgPrivacySignals != 0) != (handlesWithBgPrivacySignals2 == 0))
       {
-        v14 = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self handlesWithBgPrivacySignals];
-        if (!v14)
+        handlesWithBgPrivacySignals3 = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self handlesWithBgPrivacySignals];
+        if (!handlesWithBgPrivacySignals3)
         {
 
 LABEL_17:
@@ -297,10 +297,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v15 = v14;
-        v16 = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self handlesWithBgPrivacySignals];
-        v17 = [v4 handlesWithBgPrivacySignals];
-        v18 = [v16 isEqual:v17];
+        v15 = handlesWithBgPrivacySignals3;
+        handlesWithBgPrivacySignals4 = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self handlesWithBgPrivacySignals];
+        handlesWithBgPrivacySignals5 = [equalCopy handlesWithBgPrivacySignals];
+        v18 = [handlesWithBgPrivacySignals4 isEqual:handlesWithBgPrivacySignals5];
 
         if (v18)
         {
@@ -321,10 +321,10 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -366,27 +366,27 @@ LABEL_15:
   }
 }
 
-- (void)addHandlesWithBgPrivacySignals:(id)a3
+- (void)addHandlesWithBgPrivacySignals:(id)signals
 {
-  v4 = a3;
+  signalsCopy = signals;
   handlesWithBgPrivacySignals = self->_handlesWithBgPrivacySignals;
-  v8 = v4;
+  v8 = signalsCopy;
   if (!handlesWithBgPrivacySignals)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_handlesWithBgPrivacySignals;
-    self->_handlesWithBgPrivacySignals = v6;
+    self->_handlesWithBgPrivacySignals = array;
 
-    v4 = v8;
+    signalsCopy = v8;
     handlesWithBgPrivacySignals = self->_handlesWithBgPrivacySignals;
   }
 
-  [(NSArray *)handlesWithBgPrivacySignals addObject:v4];
+  [(NSArray *)handlesWithBgPrivacySignals addObject:signalsCopy];
 }
 
-- (void)setHasPeopleSuggesterScoreSumForContact:(BOOL)a3
+- (void)setHasPeopleSuggesterScoreSumForContact:(BOOL)contact
 {
-  if (a3)
+  if (contact)
   {
     v3 = 2;
   }
@@ -399,14 +399,14 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = INFERENCESchemaINFERENCEBackgroundContactSignalSet;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self handlesWithBgPrivacySignals:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(INFERENCESchemaINFERENCEBackgroundContactSignalSet *)self setHandlesWithBgPrivacySignals:v7];
 

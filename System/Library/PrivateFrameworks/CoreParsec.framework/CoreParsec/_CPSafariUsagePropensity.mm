@@ -1,7 +1,7 @@
 @interface _CPSafariUsagePropensity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSafariUsagePropensity
@@ -126,153 +126,153 @@
   return *&veor_s8(*v79.i8, *&vextq_s8(v79, v79, 8uLL)) ^ v74 ^ v75 ^ v77 ^ v78 ^ v76;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   localGoto = self->_localGoto;
-  [v4 localGoto];
+  [equalCopy localGoto];
   if (localGoto != v6)
   {
     goto LABEL_31;
   }
 
   localTap = self->_localTap;
-  [v4 localTap];
+  [equalCopy localTap];
   if (localTap != v8)
   {
     goto LABEL_31;
   }
 
   parsecGoto = self->_parsecGoto;
-  [v4 parsecGoto];
+  [equalCopy parsecGoto];
   if (parsecGoto != v10)
   {
     goto LABEL_31;
   }
 
   parsecTap = self->_parsecTap;
-  [v4 parsecTap];
+  [equalCopy parsecTap];
   if (parsecTap != v12)
   {
     goto LABEL_31;
   }
 
   thirdPartyGoto = self->_thirdPartyGoto;
-  [v4 thirdPartyGoto];
+  [equalCopy thirdPartyGoto];
   if (thirdPartyGoto != v14)
   {
     goto LABEL_31;
   }
 
   thirdPartyTap = self->_thirdPartyTap;
-  [v4 thirdPartyTap];
+  [equalCopy thirdPartyTap];
   if (thirdPartyTap != v16)
   {
     goto LABEL_31;
   }
 
   thirdPartyCompletionOrRecentSearch = self->_thirdPartyCompletionOrRecentSearch;
-  [v4 thirdPartyCompletionOrRecentSearch];
+  [equalCopy thirdPartyCompletionOrRecentSearch];
   if (thirdPartyCompletionOrRecentSearch != v18)
   {
     goto LABEL_31;
   }
 
   goToSite = self->_goToSite;
-  [v4 goToSite];
+  [equalCopy goToSite];
   if (goToSite != v20)
   {
     goto LABEL_31;
   }
 
   other = self->_other;
-  [v4 other];
+  [equalCopy other];
   if (other != v22)
   {
     goto LABEL_31;
   }
 
   parsecWeb = self->_parsecWeb;
-  [v4 parsecWeb];
+  [equalCopy parsecWeb];
   if (parsecWeb != v24)
   {
     goto LABEL_31;
   }
 
   parsecAppStore = self->_parsecAppStore;
-  [v4 parsecAppStore];
+  [equalCopy parsecAppStore];
   if (parsecAppStore != v26)
   {
     goto LABEL_31;
   }
 
   parsecMaps = self->_parsecMaps;
-  [v4 parsecMaps];
+  [equalCopy parsecMaps];
   if (parsecMaps != v28)
   {
     goto LABEL_31;
   }
 
   parsecWiki = self->_parsecWiki;
-  [v4 parsecWiki];
+  [equalCopy parsecWiki];
   if (parsecWiki != v30)
   {
     goto LABEL_31;
   }
 
   parsecNews = self->_parsecNews;
-  [v4 parsecNews];
+  [equalCopy parsecNews];
   if (parsecNews != v32)
   {
     goto LABEL_31;
   }
 
   parsecStocks = self->_parsecStocks;
-  [v4 parsecStocks];
+  [equalCopy parsecStocks];
   if (parsecStocks != v34)
   {
     goto LABEL_31;
   }
 
   parsecWeather = self->_parsecWeather;
-  [v4 parsecWeather];
+  [equalCopy parsecWeather];
   if (parsecWeather != v36)
   {
     goto LABEL_31;
   }
 
   parsecOther = self->_parsecOther;
-  [v4 parsecOther];
+  [equalCopy parsecOther];
   if (parsecOther != v38)
   {
     goto LABEL_31;
   }
 
   totalEngagements = self->_totalEngagements;
-  if (totalEngagements != [v4 totalEngagements])
+  if (totalEngagements != [equalCopy totalEngagements])
   {
     goto LABEL_31;
   }
 
-  v40 = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
-  v41 = [v4 topHitTriggerRatio];
-  if ((v40 != 0) == (v41 == 0))
+  topHitTriggerRatio = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
+  topHitTriggerRatio2 = [equalCopy topHitTriggerRatio];
+  if ((topHitTriggerRatio != 0) == (topHitTriggerRatio2 == 0))
   {
     goto LABEL_30;
   }
 
-  v42 = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
-  if (v42)
+  topHitTriggerRatio3 = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
+  if (topHitTriggerRatio3)
   {
-    v43 = v42;
-    v44 = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
-    v45 = [v4 topHitTriggerRatio];
-    v46 = [v44 isEqual:v45];
+    v43 = topHitTriggerRatio3;
+    topHitTriggerRatio4 = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
+    topHitTriggerRatio5 = [equalCopy topHitTriggerRatio];
+    v46 = [topHitTriggerRatio4 isEqual:topHitTriggerRatio5];
 
     if (!v46)
     {
@@ -285,22 +285,22 @@
   }
 
   totalTopHitEngagements = self->_totalTopHitEngagements;
-  if (totalTopHitEngagements != [v4 totalTopHitEngagements])
+  if (totalTopHitEngagements != [equalCopy totalTopHitEngagements])
   {
     goto LABEL_31;
   }
 
-  v40 = [(_CPSafariUsagePropensity *)self engagementShareRatio];
-  v41 = [v4 engagementShareRatio];
-  if ((v40 != 0) == (v41 == 0))
+  topHitTriggerRatio = [(_CPSafariUsagePropensity *)self engagementShareRatio];
+  topHitTriggerRatio2 = [equalCopy engagementShareRatio];
+  if ((topHitTriggerRatio != 0) == (topHitTriggerRatio2 == 0))
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v48 = [(_CPSafariUsagePropensity *)self engagementShareRatio];
-  if (!v48)
+  engagementShareRatio = [(_CPSafariUsagePropensity *)self engagementShareRatio];
+  if (!engagementShareRatio)
   {
 
 LABEL_34:
@@ -308,10 +308,10 @@ LABEL_34:
     goto LABEL_32;
   }
 
-  v49 = v48;
-  v50 = [(_CPSafariUsagePropensity *)self engagementShareRatio];
-  v51 = [v4 engagementShareRatio];
-  v52 = [v50 isEqual:v51];
+  v49 = engagementShareRatio;
+  engagementShareRatio2 = [(_CPSafariUsagePropensity *)self engagementShareRatio];
+  engagementShareRatio3 = [equalCopy engagementShareRatio];
+  v52 = [engagementShareRatio2 isEqual:engagementShareRatio3];
 
   if (v52)
   {
@@ -325,9 +325,9 @@ LABEL_32:
   return v53;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v45 = a3;
+  toCopy = to;
   [(_CPSafariUsagePropensity *)self localGoto];
   if (v4 != 0.0)
   {
@@ -453,11 +453,11 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v39 = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
+  topHitTriggerRatio = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
 
-  if (v39)
+  if (topHitTriggerRatio)
   {
-    v40 = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
+    topHitTriggerRatio2 = [(_CPSafariUsagePropensity *)self topHitTriggerRatio];
     PBDataWriterWriteSubmessage();
   }
 
@@ -467,15 +467,15 @@ LABEL_32:
     PBDataWriterWriteInt32Field();
   }
 
-  v42 = [(_CPSafariUsagePropensity *)self engagementShareRatio];
+  engagementShareRatio = [(_CPSafariUsagePropensity *)self engagementShareRatio];
 
-  v43 = v45;
-  if (v42)
+  v43 = toCopy;
+  if (engagementShareRatio)
   {
-    v44 = [(_CPSafariUsagePropensity *)self engagementShareRatio];
+    engagementShareRatio2 = [(_CPSafariUsagePropensity *)self engagementShareRatio];
     PBDataWriterWriteSubmessage();
 
-    v43 = v45;
+    v43 = toCopy;
   }
 }
 

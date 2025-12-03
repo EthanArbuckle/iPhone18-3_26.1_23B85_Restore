@@ -1,22 +1,22 @@
 @interface _UIFieldEditorLayoutManager
-- (CGRect)_boundingBoxForBulletAtCharIndex:(int64_t)a3 inUnobscuredRange:(_NSRange)a4;
-- (int64_t)_generateBulletGlyphs:(const unsigned __int16 *)a3 properties:(const int64_t *)a4 characterIndexes:(const unint64_t *)a5 font:(id)a6 forGlyphRange:(_NSRange)a7 unobscuredRange:(_NSRange)a8;
-- (void)_completeBulletRenderingForTextContainer:(id)a3;
+- (CGRect)_boundingBoxForBulletAtCharIndex:(int64_t)index inUnobscuredRange:(_NSRange)range;
+- (int64_t)_generateBulletGlyphs:(const unsigned __int16 *)glyphs properties:(const int64_t *)properties characterIndexes:(const unint64_t *)indexes font:(id)font forGlyphRange:(_NSRange)range unobscuredRange:(_NSRange)unobscuredRange;
+- (void)_completeBulletRenderingForTextContainer:(id)container;
 - (void)resetFontForExtraBulletRendering;
-- (void)showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(int64_t)a5 font:(id)a6 textMatrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)c;
-- (void)useFontForExtraBulletRendering:(id)a3;
+- (void)showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(int64_t)count font:(id)font textMatrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)c;
+- (void)useFontForExtraBulletRendering:(id)rendering;
 @end
 
 @implementation _UIFieldEditorLayoutManager
 
-- (void)useFontForExtraBulletRendering:(id)a3
+- (void)useFontForExtraBulletRendering:(id)rendering
 {
-  v5 = a3;
-  if (v5)
+  renderingCopy = rendering;
+  if (renderingCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fontForExtraBulletRendering, a3);
-    v5 = v6;
+    v6 = renderingCopy;
+    objc_storeStrong(&self->_fontForExtraBulletRendering, rendering);
+    renderingCopy = v6;
   }
 }
 
@@ -26,50 +26,50 @@
   self->_fontForExtraBulletRendering = 0;
 }
 
-- (void)showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(int64_t)a5 font:(id)a6 textMatrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)c
+- (void)showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(int64_t)count font:(id)font textMatrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)c
 {
   v36 = *MEMORY[0x1E69E9840];
-  v26 = a6;
-  v15 = a8;
+  fontCopy = font;
+  attributesCopy = attributes;
   v16 = self->_fontForExtraBulletRendering;
-  if (a5 >= 1)
+  if (count >= 1)
   {
     v17 = 0;
     v35 = 0;
-    v18 = &a3[a5];
+    v18 = &glyphs[count];
     memset(__b, 0, sizeof(__b));
     v19 = &classRef_UITextDraggableGeometrySameViewDropOperationResult;
-    v20 = a3;
+    glyphsCopy = glyphs;
     v28 = v18;
     do
     {
-      if (a3 == v18 && v20 < a3 || v16 && a3 < v18 && !*a3)
+      if (glyphs == v18 && glyphsCopy < glyphs || v16 && glyphs < v18 && !*glyphs)
       {
-        if (v20 < a3)
+        if (glyphsCopy < glyphs)
         {
-          v21 = a3 - v20;
+          v21 = glyphs - glyphsCopy;
           v22 = v19[152];
           v33.receiver = self;
           v33.super_class = v22;
-          v23 = *&a7->c;
-          __pattern4 = *&a7->a;
+          v23 = *&matrix->c;
+          __pattern4 = *&matrix->a;
           v31 = v23;
-          v32 = *&a7->tx;
+          v32 = *&matrix->tx;
           [_UIFieldEditorLayoutManager showCGGlyphs:sel_showCGGlyphs_positions_count_font_textMatrix_attributes_inContext_ positions:c count:? font:? textMatrix:? attributes:? inContext:?];
           v19 = &classRef_UITextDraggableGeometrySameViewDropOperationResult;
           v18 = v28;
-          a4 = (a4 + 8 * v21);
+          positions = (positions + 8 * v21);
         }
 
         ++v17;
-        v20 = ++a3;
+        glyphsCopy = ++glyphs;
       }
 
       else
       {
         if (v17)
         {
-          v27 = v20;
+          v27 = glyphsCopy;
           if (!LOWORD(__b[0]))
           {
             LOWORD(__pattern4) = [(UIFont *)v16 _bulletGlyph];
@@ -93,12 +93,12 @@
 
             v29.receiver = self;
             v29.super_class = _UIFieldEditorLayoutManager;
-            v25 = *&a7->c;
-            __pattern4 = *&a7->a;
+            v25 = *&matrix->c;
+            __pattern4 = *&matrix->a;
             v31 = v25;
-            v32 = *&a7->tx;
-            [(_UIFieldEditorLayoutManager *)&v29 showCGGlyphs:__b positions:a4 count:v24 font:v16 textMatrix:&__pattern4 attributes:v15 inContext:c];
-            a4 += v24;
+            v32 = *&matrix->tx;
+            [(_UIFieldEditorLayoutManager *)&v29 showCGGlyphs:__b positions:positions count:v24 font:v16 textMatrix:&__pattern4 attributes:attributesCopy inContext:c];
+            positions += v24;
             v17 -= v24;
           }
 
@@ -106,39 +106,39 @@
           CGContextRestoreGState(c);
           v19 = &classRef_UITextDraggableGeometrySameViewDropOperationResult;
           v18 = v28;
-          v20 = v27;
+          glyphsCopy = v27;
         }
 
         v17 = 0;
-        ++a3;
+        ++glyphs;
       }
     }
 
-    while (a3 <= v18);
+    while (glyphs <= v18);
   }
 }
 
-- (int64_t)_generateBulletGlyphs:(const unsigned __int16 *)a3 properties:(const int64_t *)a4 characterIndexes:(const unint64_t *)a5 font:(id)a6 forGlyphRange:(_NSRange)a7 unobscuredRange:(_NSRange)a8
+- (int64_t)_generateBulletGlyphs:(const unsigned __int16 *)glyphs properties:(const int64_t *)properties characterIndexes:(const unint64_t *)indexes font:(id)font forGlyphRange:(_NSRange)range unobscuredRange:(_NSRange)unobscuredRange
 {
-  length = a7.length;
-  location = a7.location;
+  length = range.length;
+  location = range.location;
   v40 = *MEMORY[0x1E69E9840];
-  v14 = a6;
-  if (a8.location == *a5 && a8.length == a5[length - 1] - *a5 + 1)
+  fontCopy = font;
+  if (unobscuredRange.location == *indexes && unobscuredRange.length == indexes[length - 1] - *indexes + 1)
   {
     v31 = 0;
   }
 
   else
   {
-    v35 = self;
-    v16 = [(_UIFieldEditorLayoutManager *)self textStorage];
-    v17 = [v16 attribute:*off_1E70EC978 atIndex:*a5 effectiveRange:0];
+    selfCopy = self;
+    textStorage = [(_UIFieldEditorLayoutManager *)self textStorage];
+    v17 = [textStorage attribute:*off_1E70EC978 atIndex:*indexes effectiveRange:0];
 
-    v36 = v14;
+    v36 = fontCopy;
     v37 = 0;
     v33 = v17;
-    v18 = [v14 _bulletGlyphWithOriginalFont:v17 fontForBulletRendering:&v37];
+    v18 = [fontCopy _bulletGlyphWithOriginalFont:v17 fontForBulletRendering:&v37];
     v19 = v37;
     v34 = length;
     v20 = location + length;
@@ -169,11 +169,11 @@
 
         v23 = v39;
         v24 = v38;
-        v25 = a3;
-        v26 = a5;
+        glyphsCopy = glyphs;
+        indexesCopy = indexes;
         do
         {
-          v28 = *v25++;
+          v28 = *glyphsCopy++;
           v27 = v28;
           v29 = *v24;
           if ((*v24 & 1) == 0)
@@ -186,7 +186,7 @@
 
             else
             {
-              if (*v26 >= a8.location && *v26 - a8.location < a8.length)
+              if (*indexesCopy >= unobscuredRange.location && *indexesCopy - unobscuredRange.location < unobscuredRange.length)
               {
                 goto LABEL_22;
               }
@@ -206,7 +206,7 @@
 
 LABEL_22:
           *v23++ = v27;
-          ++v26;
+          ++indexesCopy;
           ++v24;
           --v22;
         }
@@ -214,28 +214,28 @@ LABEL_22:
         while (v22);
       }
 
-      [(_UIFieldEditorLayoutManager *)v35 setGlyphs:v39 properties:v38 characterIndexes:a5 font:v36 forGlyphRange:location, v21];
-      a3 += v21;
-      a4 += v21;
+      [(_UIFieldEditorLayoutManager *)selfCopy setGlyphs:v39 properties:v38 characterIndexes:indexes font:v36 forGlyphRange:location, v21];
+      glyphs += v21;
+      properties += v21;
       location += v21;
-      a5 += v21;
+      indexes += v21;
     }
 
-    [(_UIFieldEditorLayoutManager *)v35 useFontForExtraBulletRendering:v19];
+    [(_UIFieldEditorLayoutManager *)selfCopy useFontForExtraBulletRendering:v19];
 
     v31 = v34;
-    v14 = v36;
+    fontCopy = v36;
   }
 
   return v31;
 }
 
-- (CGRect)_boundingBoxForBulletAtCharIndex:(int64_t)a3 inUnobscuredRange:(_NSRange)a4
+- (CGRect)_boundingBoxForBulletAtCharIndex:(int64_t)index inUnobscuredRange:(_NSRange)range
 {
   v4 = *(MEMORY[0x1E695F058] + 16);
   v12 = *MEMORY[0x1E695F058];
   v13 = v4;
-  if (a3 < a4.location || a3 - a4.location >= a4.length)
+  if (index < range.location || index - range.location >= range.length)
   {
     fontForExtraBulletRendering = self->_fontForExtraBulletRendering;
     if (fontForExtraBulletRendering)
@@ -257,12 +257,12 @@ LABEL_22:
   return result;
 }
 
-- (void)_completeBulletRenderingForTextContainer:(id)a3
+- (void)_completeBulletRenderingForTextContainer:(id)container
 {
   v20 = *MEMORY[0x1E69E9840];
   if (self->_fontForExtraBulletRendering)
   {
-    v4 = [(_UIFieldEditorLayoutManager *)self glyphRangeForTextContainer:a3];
+    v4 = [(_UIFieldEditorLayoutManager *)self glyphRangeForTextContainer:container];
     v16 = v4 + v5;
     if (v4 < v4 + v5)
     {
@@ -292,10 +292,10 @@ LABEL_22:
             v9 += 8;
             if ((v11 & 2) != 0)
             {
-              v12 = [MEMORY[0x1E696AB08] controlCharacterSet];
-              v13 = [(_UIFieldEditorLayoutManager *)self textStorage];
-              v14 = [v13 string];
-              v15 = [v12 characterIsMember:{objc_msgSend(v14, "characterAtIndex:", *v8)}];
+              controlCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
+              textStorage = [(_UIFieldEditorLayoutManager *)self textStorage];
+              string = [textStorage string];
+              v15 = [controlCharacterSet characterIsMember:{objc_msgSend(string, "characterAtIndex:", *v8)}];
 
               if ((v15 & 1) == 0)
               {

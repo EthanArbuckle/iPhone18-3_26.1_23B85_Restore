@@ -1,45 +1,45 @@
 @interface TBTileItemDescriptor
-+ (id)tileItemDescriptorWithKey:(id)a3;
-- (TBTileItemDescriptor)initWithKey:(id)a3 etag:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)tileItemDescriptorWithKey:(id)key;
+- (TBTileItemDescriptor)initWithKey:(id)key etag:(id)etag;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TBTileItemDescriptor
 
-+ (id)tileItemDescriptorWithKey:(id)a3
++ (id)tileItemDescriptorWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithKey:v4 etag:0];
+  keyCopy = key;
+  v5 = [[self alloc] initWithKey:keyCopy etag:0];
 
   return v5;
 }
 
-- (TBTileItemDescriptor)initWithKey:(id)a3 etag:(id)a4
+- (TBTileItemDescriptor)initWithKey:(id)key etag:(id)etag
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  etagCopy = etag;
   v13.receiver = self;
   v13.super_class = TBTileItemDescriptor;
   v8 = [(TBTileItemDescriptor *)&v13 init];
   key = v8->_key;
-  v8->_key = v6;
-  v10 = v6;
+  v8->_key = keyCopy;
+  v10 = keyCopy;
 
   etag = v8->_etag;
-  v8->_etag = v7;
+  v8->_etag = etagCopy;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(TBTileItemDescriptor *)self etag];
-  v7 = [v6 copyWithZone:a3];
+  etag = [(TBTileItemDescriptor *)self etag];
+  v7 = [etag copyWithZone:zone];
   [v5 setEtag:v7];
 
   v8 = [(TBTileItemDescriptor *)self key];
-  v9 = [v8 copyWithZone:a3];
+  v9 = [v8 copyWithZone:zone];
   [v5 setKey:v9];
 
   return v5;

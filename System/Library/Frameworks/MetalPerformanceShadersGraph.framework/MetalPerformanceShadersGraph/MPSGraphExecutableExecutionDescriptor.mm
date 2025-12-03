@@ -1,23 +1,23 @@
 @interface MPSGraphExecutableExecutionDescriptor
 - (MPSGraphExecutableExecutionDescriptor)init;
-- (MPSGraphExecutableExecutionDescriptor)initWithGraphExecutionDescriptor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)requestProfilingStatsWithDictionary:(id)a3 profilingCallback:(id)a4;
+- (MPSGraphExecutableExecutionDescriptor)initWithGraphExecutionDescriptor:(id)descriptor;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)requestProfilingStatsWithDictionary:(id)dictionary profilingCallback:(id)callback;
 - (void)signalEvent:(id)event atExecutionEvent:(MPSGraphExecutionStage)executionStage value:(uint64_t)value;
-- (void)waitForANEPrePowerUpEvent:(id)a3 value:(unint64_t)a4;
+- (void)waitForANEPrePowerUpEvent:(id)event value:(unint64_t)value;
 - (void)waitForEvent:(id)event value:(uint64_t)value;
 @end
 
 @implementation MPSGraphExecutableExecutionDescriptor
 
-- (void)requestProfilingStatsWithDictionary:(id)a3 profilingCallback:(id)a4
+- (void)requestProfilingStatsWithDictionary:(id)dictionary profilingCallback:(id)callback
 {
-  v13 = a3;
-  v6 = MEMORY[0x1E12E6580](a4);
+  dictionaryCopy = dictionary;
+  v6 = MEMORY[0x1E12E6580](callback);
   profilingCallback = self->_profilingCallback;
   self->_profilingCallback = v6;
 
-  v8 = [v13 mutableCopy];
+  v8 = [dictionaryCopy mutableCopy];
   profilingDictionary = self->_profilingDictionary;
   self->_profilingDictionary = v8;
 
@@ -101,39 +101,39 @@
   return v2;
 }
 
-- (MPSGraphExecutableExecutionDescriptor)initWithGraphExecutionDescriptor:(id)a3
+- (MPSGraphExecutableExecutionDescriptor)initWithGraphExecutionDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = [(MPSGraphExecutableExecutionDescriptor *)self init];
-  v5->_waitUntilCompleted = [v4 waitUntilCompleted];
+  v5->_waitUntilCompleted = [descriptorCopy waitUntilCompleted];
   completionHandler = v5->_completionHandler;
   v5->_completionHandler = 0;
 
   scheduledHandler = v5->_scheduledHandler;
   v5->_scheduledHandler = 0;
 
-  v8 = [v4 scheduledHandler];
+  scheduledHandler = [descriptorCopy scheduledHandler];
   scheduledGraphHandler = v5->_scheduledGraphHandler;
-  v5->_scheduledGraphHandler = v8;
+  v5->_scheduledGraphHandler = scheduledHandler;
 
-  v10 = [v4 completionHandler];
+  completionHandler = [descriptorCopy completionHandler];
   completionGraphHandler = v5->_completionGraphHandler;
-  v5->_completionGraphHandler = v10;
+  v5->_completionGraphHandler = completionHandler;
 
-  v5->_enableCommitAndContinue = [v4 enableCommitAndContinue];
-  v5->_enableProfilingOpNames = [v4 enableProfilingOpNames];
-  v5->_briefProfilingOpNames = [v4 briefProfilingOpNames];
-  v5->_simulateANECompileFailure = [v4 simulateANECompileFailure];
-  v5->_simulateANELoadModelFailure = [v4 simulateANELoadModelFailure];
-  v5->_breakUpMetalEncoders = [v4 breakUpMetalEncoders];
-  v5->_generateRuntimeExecutionReport = [v4 generateRuntimeExecutionReport];
-  objc_storeStrong(&v5->_waitEvents, v4[1]);
-  objc_storeStrong(&v5->_anePowerWaitEvents, v4[3]);
-  objc_storeStrong(&v5->_signalEvents, v4[2]);
-  v5->_maximumNumberOfEncodingThreads = [v4 maximumNumberOfEncodingThreads];
-  v5->_disableSynchronizeResults = [v4 disableSynchronizeResults];
-  v5->_disableANECaching = [v4 disableANECaching];
-  v5->_disableANEFallback = [v4 disableANEFallback];
+  v5->_enableCommitAndContinue = [descriptorCopy enableCommitAndContinue];
+  v5->_enableProfilingOpNames = [descriptorCopy enableProfilingOpNames];
+  v5->_briefProfilingOpNames = [descriptorCopy briefProfilingOpNames];
+  v5->_simulateANECompileFailure = [descriptorCopy simulateANECompileFailure];
+  v5->_simulateANELoadModelFailure = [descriptorCopy simulateANELoadModelFailure];
+  v5->_breakUpMetalEncoders = [descriptorCopy breakUpMetalEncoders];
+  v5->_generateRuntimeExecutionReport = [descriptorCopy generateRuntimeExecutionReport];
+  objc_storeStrong(&v5->_waitEvents, descriptorCopy[1]);
+  objc_storeStrong(&v5->_anePowerWaitEvents, descriptorCopy[3]);
+  objc_storeStrong(&v5->_signalEvents, descriptorCopy[2]);
+  v5->_maximumNumberOfEncodingThreads = [descriptorCopy maximumNumberOfEncodingThreads];
+  v5->_disableSynchronizeResults = [descriptorCopy disableSynchronizeResults];
+  v5->_disableANECaching = [descriptorCopy disableANECaching];
+  v5->_disableANEFallback = [descriptorCopy disableANEFallback];
   entryFunctionName = v5->_entryFunctionName;
   v5->_entryFunctionName = 0;
 
@@ -143,7 +143,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MPSGraphExecutableExecutionDescriptor alloc];
   [(MPSGraphExecutableExecutionDescriptor *)v4 setCompletionHandler:self->_completionHandler];
@@ -222,9 +222,9 @@
   [(NSMutableArray *)signalEvents addObject:v8];
 }
 
-- (void)waitForANEPrePowerUpEvent:(id)a3 value:(unint64_t)a4
+- (void)waitForANEPrePowerUpEvent:(id)event value:(unint64_t)value
 {
-  v10 = a3;
+  eventCopy = event;
   anePowerWaitEvents = self->_anePowerWaitEvents;
   if (!anePowerWaitEvents)
   {
@@ -241,7 +241,7 @@
     MTLReportFailure();
   }
 
-  v9 = [[MPSGraphWaitEvent alloc] initWithEvent:v10 value:a4];
+  v9 = [[MPSGraphWaitEvent alloc] initWithEvent:eventCopy value:value];
   [(NSMutableArray *)self->_anePowerWaitEvents addObject:v9];
 }
 

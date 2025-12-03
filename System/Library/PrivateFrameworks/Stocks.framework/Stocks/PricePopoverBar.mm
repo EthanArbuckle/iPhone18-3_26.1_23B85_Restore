@@ -1,19 +1,19 @@
 @interface PricePopoverBar
-- (PricePopoverBar)initWithBackgroundImage:(id)a3;
-- (void)drawRect:(CGRect)a3;
+- (PricePopoverBar)initWithBackgroundImage:(id)image;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setChangeImage:(id)a3;
-- (void)setImageMaskColor:(id)a3;
-- (void)setPercentChange:(id)a3;
-- (void)setPriceString:(id)a3;
+- (void)setChangeImage:(id)image;
+- (void)setImageMaskColor:(id)color;
+- (void)setPercentChange:(id)change;
+- (void)setPriceString:(id)string;
 - (void)sizeToFit;
 @end
 
 @implementation PricePopoverBar
 
-- (PricePopoverBar)initWithBackgroundImage:(id)a3
+- (PricePopoverBar)initWithBackgroundImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v31.receiver = self;
   v31.super_class = PricePopoverBar;
   v6 = [(PricePopoverBar *)&v31 init];
@@ -29,12 +29,12 @@
     [(UILabel *)v9 setFont:v11];
 
     v12 = v6->_priceLabel;
-    v13 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v12 setTextColor:v13];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v12 setTextColor:whiteColor];
 
     v14 = v6->_priceLabel;
-    v15 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v14 setBackgroundColor:v15];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v14 setBackgroundColor:clearColor];
 
     [(PricePopoverBar *)v6 addSubview:v6->_priceLabel];
     v16 = objc_opt_new();
@@ -47,12 +47,12 @@
     [(UILabel *)v18 setFont:v20];
 
     v21 = v6->_percentChangeLabel;
-    v22 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v21 setTextColor:v22];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v21 setTextColor:whiteColor2];
 
     v23 = v6->_percentChangeLabel;
-    v24 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v23 setBackgroundColor:v24];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v23 setBackgroundColor:clearColor2];
 
     [(PricePopoverBar *)v6 addSubview:v6->_percentChangeLabel];
     v25 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -65,9 +65,9 @@
     v6->_percentChangeSignView = v27;
 
     [(PricePopoverBar *)v6 addSubview:v6->_percentChangeSignView];
-    objc_storeStrong(&v6->_backgroundImage, a3);
-    v29 = [MEMORY[0x277D75348] clearColor];
-    [(PricePopoverBar *)v6 setBackgroundColor:v29];
+    objc_storeStrong(&v6->_backgroundImage, image);
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(PricePopoverBar *)v6 setBackgroundColor:clearColor3];
   }
 
   return v6;
@@ -77,14 +77,14 @@
 {
   [(UIImageView *)self->_priceChangeSignView sizeToFit];
   [(UIImageView *)self->_percentChangeSignView sizeToFit];
-  v3 = [(UILabel *)self->_priceLabel text];
-  v4 = [v3 length];
+  text = [(UILabel *)self->_priceLabel text];
+  v4 = [text length];
 
   if (v4)
   {
     [(UILabel *)self->_priceLabel sizeToFit];
-    v5 = [(UIImageView *)self->_priceChangeSignView image];
-    if (v5)
+    image = [(UIImageView *)self->_priceChangeSignView image];
+    if (image)
     {
       [(UIImageView *)self->_priceChangeSignView bounds];
       v7 = v6 + 4.0;
@@ -97,14 +97,14 @@
 
     [(UILabel *)self->_priceLabel bounds];
     v8 = v7 + v9 + 16.0;
-    v10 = [(UILabel *)self->_percentChangeLabel text];
-    v11 = [v10 length];
+    text2 = [(UILabel *)self->_percentChangeLabel text];
+    v11 = [text2 length];
 
     if (v11)
     {
       [(UILabel *)self->_percentChangeLabel sizeToFit];
-      v12 = [(UIImageView *)self->_percentChangeSignView image];
-      if (v12)
+      image2 = [(UIImageView *)self->_percentChangeSignView image];
+      if (image2)
       {
         [(UIImageView *)self->_percentChangeSignView bounds];
         v14 = v13 + 4.0 + 15.0;
@@ -136,7 +136,7 @@
   [(PricePopoverBar *)self setBounds:0.0, 0.0, v8, v17];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   [(PricePopoverBar *)self bounds];
@@ -157,8 +157,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(UILabel *)self->_priceLabel text];
-  v4 = [v3 length];
+  text = [(UILabel *)self->_priceLabel text];
+  v4 = [text length];
 
   if (v4)
   {
@@ -166,7 +166,7 @@
     [(PricePopoverBar *)self bounds];
     v6 = v5;
     v7 = +[StocksPreferences sharedPreferences];
-    v8 = [v7 textAttachmentDirectionIsRightToLeft];
+    textAttachmentDirectionIsRightToLeft = [v7 textAttachmentDirectionIsRightToLeft];
 
     [(UIImageView *)self->_priceChangeSignView frame];
     v10 = v9;
@@ -177,7 +177,7 @@
     v52 = v6;
     v17 = (v6 - v15) * 0.5;
     v18 = floorf(v17);
-    if (v8)
+    if (textAttachmentDirectionIsRightToLeft)
     {
       v19 = 8.0;
       v53 = 8.0;
@@ -194,9 +194,9 @@
     else
     {
       v21 = v14;
-      v28 = [(UIImageView *)self->_priceChangeSignView image];
+      image = [(UIImageView *)self->_priceChangeSignView image];
       v22 = 8.0;
-      if (v28)
+      if (image)
       {
         v55.origin.x = 8.0;
         v55.origin.y = v13;
@@ -217,8 +217,8 @@
     MaxX = CGRectGetMaxX(*(&v23 - 1));
     [(UILabel *)self->_priceLabel setFrame:v53, v18, v21, v16];
     [(UIImageView *)self->_priceChangeSignView setFrame:v27, v13, v10, v26];
-    v31 = [(UILabel *)self->_percentChangeLabel text];
-    v32 = [v31 length];
+    text2 = [(UILabel *)self->_percentChangeLabel text];
+    v32 = [text2 length];
 
     if (v32)
     {
@@ -232,7 +232,7 @@
       v42 = (v52 - v39) * 0.5;
       v43 = floorf(v42);
       v44 = MaxX + 15.0;
-      if (v8)
+      if (textAttachmentDirectionIsRightToLeft)
       {
         v45 = MaxX + 15.0;
         v46 = v43;
@@ -247,9 +247,9 @@
         v56.size.width = v34;
         v56.size.height = v36;
         v48 = CGRectGetMaxX(v56);
-        v49 = [(UIImageView *)self->_percentChangeSignView image];
+        image2 = [(UIImageView *)self->_percentChangeSignView image];
         v50 = 4.0;
-        if (!v49)
+        if (!image2)
         {
           v50 = 0.0;
         }
@@ -265,36 +265,36 @@
   }
 }
 
-- (void)setPriceString:(id)a3
+- (void)setPriceString:(id)string
 {
-  [(UILabel *)self->_priceLabel setText:a3];
+  [(UILabel *)self->_priceLabel setText:string];
 
   [(PricePopoverBar *)self setNeedsLayout];
 }
 
-- (void)setPercentChange:(id)a3
+- (void)setPercentChange:(id)change
 {
-  [(UILabel *)self->_percentChangeLabel setText:a3];
+  [(UILabel *)self->_percentChangeLabel setText:change];
 
   [(PricePopoverBar *)self setNeedsLayout];
 }
 
-- (void)setImageMaskColor:(id)a3
+- (void)setImageMaskColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_imageMaskColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_imageMaskColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_imageMaskColor, a3);
+    objc_storeStrong(&self->_imageMaskColor, color);
     [(PricePopoverBar *)self setNeedsDisplay];
   }
 }
 
-- (void)setChangeImage:(id)a3
+- (void)setChangeImage:(id)image
 {
   priceChangeSignView = self->_priceChangeSignView;
-  v5 = a3;
-  [(UIImageView *)priceChangeSignView setImage:v5];
-  [(UIImageView *)self->_percentChangeSignView setImage:v5];
+  imageCopy = image;
+  [(UIImageView *)priceChangeSignView setImage:imageCopy];
+  [(UIImageView *)self->_percentChangeSignView setImage:imageCopy];
 
   [(PricePopoverBar *)self setNeedsLayout];
 }

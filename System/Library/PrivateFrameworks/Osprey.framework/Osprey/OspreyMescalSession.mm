@@ -1,8 +1,8 @@
 @interface OspreyMescalSession
-- (BOOL)completeWithHandshakeResponse:(id)a3 error:(id *)a4;
+- (BOOL)completeWithHandshakeResponse:(id)response error:(id *)error;
 - (OspreyMescalSession)init;
-- (id)_exchangeData:(id)a3 error:(id *)a4;
-- (id)signData:(id)a3 error:(id *)a4;
+- (id)_exchangeData:(id)data error:(id *)error;
+- (id)signData:(id)data error:(id *)error;
 - (void)dealloc;
 - (void)init;
 - (void)invalidate;
@@ -79,15 +79,15 @@
   [(OspreyMescalSession *)&v3 dealloc];
 }
 
-- (BOOL)completeWithHandshakeResponse:(id)a3 error:(id *)a4
+- (BOOL)completeWithHandshakeResponse:(id)response error:(id *)error
 {
-  v4 = [(OspreyMescalSession *)self _exchangeData:a3 error:a4];
+  v4 = [(OspreyMescalSession *)self _exchangeData:response error:error];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (id)_exchangeData:(id)a3 error:(id *)a4
+- (id)_exchangeData:(id)data error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   fairplayContext = self->_fairplayContext;
@@ -102,12 +102,12 @@ LABEL_8:
   v21 = 0;
   v20 = 0;
   v19 = -1;
-  v8 = a3;
-  v9 = a3;
-  v10 = [v9 bytes];
-  v11 = [v9 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v11 = [dataCopy2 length];
 
-  Mib5yocT(200, &self->_hardwareInfo, fairplayContext, v10, v11, &v21, &v20, &v19);
+  Mib5yocT(200, &self->_hardwareInfo, fairplayContext, bytes, v11, &v21, &v20, &v19);
   if (v12)
   {
     v13 = v12;
@@ -124,11 +124,11 @@ LABEL_8:
 
     [(OspreyMescalSession *)self invalidate];
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"OspreyDeviceAuthenticationErrorDomain" code:v13 userInfo:&unk_286FA6D60];
-    if (a4)
+    if (error)
     {
       v15 = v15;
       v16 = 0;
-      *a4 = v15;
+      *error = v15;
       goto LABEL_15;
     }
 
@@ -155,7 +155,7 @@ LABEL_15:
   return v16;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
   fairplayContext = self->_fairplayContext;
   if (!fairplayContext)
@@ -165,12 +165,12 @@ LABEL_15:
 
   v15 = 0;
   v14 = 0;
-  v7 = a3;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v10 = [dataCopy2 length];
 
-  Fc3vhtJDvr(fairplayContext, v9, v10, &v15, &v14);
+  Fc3vhtJDvr(fairplayContext, bytes, v10, &v15, &v14);
   if (!v11)
   {
     fairplayContext = [MEMORY[0x277CBEA90] dataWithBytes:v15 length:v14];
@@ -180,11 +180,11 @@ LABEL_6:
   }
 
   v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"OspreyDeviceAuthenticationErrorDomain" code:v11 userInfo:&unk_286FA6D88];
-  if (a4)
+  if (error)
   {
     v12 = v12;
     fairplayContext = 0;
-    *a4 = v12;
+    *error = v12;
   }
 
   else

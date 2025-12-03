@@ -1,25 +1,25 @@
 @interface _INPBCallMetricsValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBCallMetricsValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBCallMetricsValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasTimeToEstablish:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasTimeToEstablish:(BOOL)establish;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBCallMetricsValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBCallMetricsValue *)self hasCallDuration])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBCallMetricsValue *)self callDuration];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"callDuration"];
+    [dictionary setObject:v5 forKeyedSubscript:@"callDuration"];
   }
 
   if ([(_INPBCallMetricsValue *)self hasTimeToEstablish])
@@ -27,10 +27,10 @@
     v6 = MEMORY[0x1E696AD98];
     [(_INPBCallMetricsValue *)self timeToEstablish];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"timeToEstablish"];
+    [dictionary setObject:v7 forKeyedSubscript:@"timeToEstablish"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -104,21 +104,21 @@
   return v14 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBCallMetricsValue *)self hasCallDuration];
-    if (v5 == [v4 hasCallDuration])
+    hasCallDuration = [(_INPBCallMetricsValue *)self hasCallDuration];
+    if (hasCallDuration == [equalCopy hasCallDuration])
     {
-      if (!-[_INPBCallMetricsValue hasCallDuration](self, "hasCallDuration") || ![v4 hasCallDuration] || (callDuration = self->_callDuration, objc_msgSend(v4, "callDuration"), callDuration == v7))
+      if (!-[_INPBCallMetricsValue hasCallDuration](self, "hasCallDuration") || ![equalCopy hasCallDuration] || (callDuration = self->_callDuration, objc_msgSend(equalCopy, "callDuration"), callDuration == v7))
       {
-        v8 = [(_INPBCallMetricsValue *)self hasTimeToEstablish];
-        if (v8 == [v4 hasTimeToEstablish])
+        hasTimeToEstablish = [(_INPBCallMetricsValue *)self hasTimeToEstablish];
+        if (hasTimeToEstablish == [equalCopy hasTimeToEstablish])
         {
-          if (!-[_INPBCallMetricsValue hasTimeToEstablish](self, "hasTimeToEstablish") || ![v4 hasTimeToEstablish] || (timeToEstablish = self->_timeToEstablish, objc_msgSend(v4, "timeToEstablish"), timeToEstablish == v12))
+          if (!-[_INPBCallMetricsValue hasTimeToEstablish](self, "hasTimeToEstablish") || ![equalCopy hasTimeToEstablish] || (timeToEstablish = self->_timeToEstablish, objc_msgSend(equalCopy, "timeToEstablish"), timeToEstablish == v12))
           {
             v9 = 1;
           }
@@ -130,7 +130,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBCallMetricsValue allocWithZone:?]];
   if ([(_INPBCallMetricsValue *)self hasCallDuration])
@@ -148,33 +148,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBCallMetricsValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBCallMetricsValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBCallMetricsValue)initWithCoder:(id)a3
+- (_INPBCallMetricsValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBCallMetricsValue *)self initWithData:v6];
+    self = [(_INPBCallMetricsValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_INPBCallMetricsValue *)self hasCallDuration])
   {
     callDuration = self->_callDuration;
@@ -188,9 +188,9 @@
   }
 }
 
-- (void)setHasTimeToEstablish:(BOOL)a3
+- (void)setHasTimeToEstablish:(BOOL)establish
 {
-  if (a3)
+  if (establish)
   {
     v3 = 2;
   }

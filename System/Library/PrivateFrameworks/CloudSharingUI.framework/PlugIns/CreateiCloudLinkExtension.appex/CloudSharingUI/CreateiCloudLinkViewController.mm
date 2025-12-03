@@ -1,21 +1,21 @@
 @interface CreateiCloudLinkViewController
-- (_TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController)initWithCoder:(id)a3;
-- (_TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (_TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController)initWithCoder:(id)coder;
+- (_TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation CreateiCloudLinkViewController
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_100001850(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_100001850(contextCopy);
 }
 
-- (_TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_100009440();
     v7 = v6;
@@ -31,7 +31,7 @@
   v9 = sub_100009320();
   (*(*(v9 - 8) + 56))(self + v8, 1, 1, v9);
   *(&self->super.super.super.isa + OBJC_IVAR____TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController_createiCloudLinkViewModel) = 0;
-  v10 = a4;
+  bundleCopy = bundle;
   if (v7)
   {
     v11 = sub_100009430();
@@ -44,12 +44,12 @@
 
   v14.receiver = self;
   v14.super_class = type metadata accessor for CreateiCloudLinkViewController();
-  v12 = [(CreateiCloudLinkViewController *)&v14 initWithNibName:v11 bundle:a4];
+  v12 = [(CreateiCloudLinkViewController *)&v14 initWithNibName:v11 bundle:bundle];
 
   return v12;
 }
 
-- (_TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController)initWithCoder:(id)a3
+- (_TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController_optionsGroups) = _swiftEmptyArrayStorage;
   v5 = OBJC_IVAR____TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController_fileUrl;
@@ -58,8 +58,8 @@
   *(&self->super.super.super.isa + OBJC_IVAR____TtC25CreateiCloudLinkExtension30CreateiCloudLinkViewController_createiCloudLinkViewModel) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for CreateiCloudLinkViewController();
-  v7 = a3;
-  v8 = [(CreateiCloudLinkViewController *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(CreateiCloudLinkViewController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

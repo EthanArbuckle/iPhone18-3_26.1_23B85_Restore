@@ -1,27 +1,27 @@
 @interface VOSCommandManager
-- (id)_actualPresentationControllerForController:(id)a3;
-- (void)applyAction:(int64_t)a3 toCommand:(id)a4 withGesture:(id)a5 keyboardShortcut:(id)a6 resolver:(id)a7 presentationController:(id)a8 completion:(id)a9;
+- (id)_actualPresentationControllerForController:(id)controller;
+- (void)applyAction:(int64_t)action toCommand:(id)command withGesture:(id)gesture keyboardShortcut:(id)shortcut resolver:(id)resolver presentationController:(id)controller completion:(id)completion;
 @end
 
 @implementation VOSCommandManager
 
-- (void)applyAction:(int64_t)a3 toCommand:(id)a4 withGesture:(id)a5 keyboardShortcut:(id)a6 resolver:(id)a7 presentationController:(id)a8 completion:(id)a9
+- (void)applyAction:(int64_t)action toCommand:(id)command withGesture:(id)gesture keyboardShortcut:(id)shortcut resolver:(id)resolver presentationController:(id)controller completion:(id)completion
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  commandCopy = command;
+  gestureCopy = gesture;
+  shortcutCopy = shortcut;
+  resolverCopy = resolver;
+  controllerCopy = controller;
+  completionCopy = completion;
   v86 = 0;
   v87 = &v86;
   v88 = 0x3032000000;
   v89 = __Block_byref_object_copy__5;
   v90 = __Block_byref_object_dispose__5;
   v91 = 0;
-  if ((a3 - 3) < 3)
+  if ((action - 3) < 3)
   {
-    if (!v17)
+    if (!shortcutCopy)
     {
       v21 = @"No keychord provided for action add/remove";
       goto LABEL_16;
@@ -30,29 +30,29 @@
     goto LABEL_6;
   }
 
-  if (a3 > 2)
+  if (action > 2)
   {
-    v58 = v15;
+    v58 = commandCopy;
     v28 = 0;
     v27 = 0;
     v34 = 0;
 LABEL_29:
 
-    v15 = v58;
+    commandCopy = v58;
     goto LABEL_30;
   }
 
-  if (v16)
+  if (gestureCopy)
   {
 LABEL_6:
-    v57 = v19;
-    v58 = v15;
-    v56 = v18;
-    if (a3 > 2)
+    v57 = controllerCopy;
+    v58 = commandCopy;
+    v56 = resolverCopy;
+    if (action > 2)
     {
-      if (a3 != 3)
+      if (action != 3)
       {
-        if (a3 == 4)
+        if (action == 4)
         {
           v35 = v83;
           v83[0] = _NSConcreteStackBlock;
@@ -60,10 +60,10 @@ LABEL_6:
           v83[2] = __146__VOSCommandManager_VoiceOverCustomCommandsExtras__applyAction_toCommand_withGesture_keyboardShortcut_resolver_presentationController_completion___block_invoke_7;
           v83[3] = &unk_258E60;
           v83[4] = self;
-          v83[5] = v17;
-          v83[6] = v15;
-          v83[7] = v18;
-          v83[8] = v20;
+          v83[5] = shortcutCopy;
+          v83[6] = commandCopy;
+          v83[7] = resolverCopy;
+          v83[8] = completionCopy;
           v36 = objc_retainBlock(v83);
           v37 = [v36 copy];
         }
@@ -76,10 +76,10 @@ LABEL_6:
           v82[2] = __146__VOSCommandManager_VoiceOverCustomCommandsExtras__applyAction_toCommand_withGesture_keyboardShortcut_resolver_presentationController_completion___block_invoke_10;
           v82[3] = &unk_258E60;
           v82[4] = self;
-          v82[5] = v17;
-          v82[6] = v15;
-          v82[7] = v18;
-          v82[8] = v20;
+          v82[5] = shortcutCopy;
+          v82[6] = commandCopy;
+          v82[7] = resolverCopy;
+          v82[8] = completionCopy;
           v36 = objc_retainBlock(v82);
           v37 = [v36 copy];
         }
@@ -87,20 +87,20 @@ LABEL_6:
         goto LABEL_24;
       }
 
-      v47 = v18;
+      v47 = resolverCopy;
       v41 = v84;
       v84[0] = _NSConcreteStackBlock;
       v84[1] = 3221225472;
       v84[2] = __146__VOSCommandManager_VoiceOverCustomCommandsExtras__applyAction_toCommand_withGesture_keyboardShortcut_resolver_presentationController_completion___block_invoke_4;
       v84[3] = &unk_258E60;
       v84[4] = self;
-      v48 = v17;
+      v48 = shortcutCopy;
       v84[5] = v48;
-      v49 = v15;
+      v49 = commandCopy;
       v84[6] = v49;
       v50 = v47;
       v84[7] = v50;
-      v84[8] = v20;
+      v84[8] = completionCopy;
       v51 = objc_retainBlock(v84);
       v34 = [v51 copy];
 
@@ -109,22 +109,22 @@ LABEL_6:
 
     else
     {
-      if (a3)
+      if (action)
       {
-        if (a3 == 1)
+        if (action == 1)
         {
           v77[0] = _NSConcreteStackBlock;
           v77[1] = 3221225472;
           v77[2] = __146__VOSCommandManager_VoiceOverCustomCommandsExtras__applyAction_toCommand_withGesture_keyboardShortcut_resolver_presentationController_completion___block_invoke_2_297;
           v77[3] = &unk_258E60;
           v77[4] = self;
-          v22 = v16;
+          v22 = gestureCopy;
           v78 = v22;
-          v23 = v15;
+          v23 = commandCopy;
           v79 = v23;
-          v24 = v18;
+          v24 = resolverCopy;
           v80 = v24;
-          v25 = v20;
+          v25 = completionCopy;
           v81 = v25;
           v26 = objc_retainBlock(v77);
           v27 = [v26 copy];
@@ -169,10 +169,10 @@ LABEL_27:
         v76[2] = __146__VOSCommandManager_VoiceOverCustomCommandsExtras__applyAction_toCommand_withGesture_keyboardShortcut_resolver_presentationController_completion___block_invoke_5_300;
         v76[3] = &unk_258E60;
         v76[4] = self;
-        v76[5] = v16;
-        v76[6] = v15;
-        v76[7] = v18;
-        v76[8] = v20;
+        v76[5] = gestureCopy;
+        v76[6] = commandCopy;
+        v76[7] = resolverCopy;
+        v76[8] = completionCopy;
         v36 = objc_retainBlock(v76);
         v37 = [v36 copy];
 LABEL_24:
@@ -185,20 +185,20 @@ LABEL_25:
         goto LABEL_28;
       }
 
-      v40 = v18;
+      v40 = resolverCopy;
       v41 = v85;
       v85[0] = _NSConcreteStackBlock;
       v85[1] = 3221225472;
       v85[2] = __146__VOSCommandManager_VoiceOverCustomCommandsExtras__applyAction_toCommand_withGesture_keyboardShortcut_resolver_presentationController_completion___block_invoke;
       v85[3] = &unk_258E60;
       v85[4] = self;
-      v42 = v16;
+      v42 = gestureCopy;
       v85[5] = v42;
-      v43 = v15;
+      v43 = commandCopy;
       v85[6] = v43;
       v44 = v40;
       v85[7] = v44;
-      v85[8] = v20;
+      v85[8] = completionCopy;
       v45 = objc_retainBlock(v85);
       v34 = [v45 copy];
 
@@ -217,15 +217,15 @@ LABEL_25:
       v28 = v28;
       v68[0] = v28;
       v68[1] = self;
-      v69 = v16;
+      v69 = gestureCopy;
       v70 = v56;
       v53 = v57;
       v71 = v53;
       v34 = v34;
       v73 = v34;
-      v54 = v20;
+      v54 = completionCopy;
       v74 = v54;
-      v72 = v17;
+      v72 = shortcutCopy;
       v75 = &v86;
       [v52 setUserAcceptedValidationResolutionBlock:v67];
       v64[0] = _NSConcreteStackBlock;
@@ -247,8 +247,8 @@ LABEL_25:
     v34[2](v34);
     v27 = 0;
 LABEL_28:
-    v18 = v56;
-    v19 = v57;
+    resolverCopy = v56;
+    controllerCopy = v57;
     goto LABEL_29;
   }
 
@@ -258,7 +258,7 @@ LABEL_16:
   v39 = v87[5];
   v87[5] = v38;
 
-  (*(v20 + 2))(v20, v87[5]);
+  (*(completionCopy + 2))(completionCopy, v87[5]);
 LABEL_30:
   _Block_object_dispose(&v86, 8);
 }
@@ -545,31 +545,31 @@ uint64_t __146__VOSCommandManager_VoiceOverCustomCommandsExtras__applyAction_toC
   return v5();
 }
 
-- (id)_actualPresentationControllerForController:(id)a3
+- (id)_actualPresentationControllerForController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 presentedViewController];
+  controllerCopy = controller;
+  presentedViewController = [controllerCopy presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     do
     {
-      v5 = [v3 presentedViewController];
+      presentedViewController2 = [controllerCopy presentedViewController];
 
-      v6 = [v5 presentedViewController];
+      v5PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v3 = v5;
+      controllerCopy = presentedViewController2;
     }
 
-    while (v6);
+    while (v5PresentedViewController);
   }
 
   else
   {
-    v5 = v3;
+    presentedViewController2 = controllerCopy;
   }
 
-  return v5;
+  return presentedViewController2;
 }
 
 @end

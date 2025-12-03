@@ -1,21 +1,21 @@
 @interface UIStatusBarCarPlayDockAppItemButton
 - (BOOL)itemHasBundleIdentifier;
 - (BOOL)shouldShowBadge;
-- (UIStatusBarCarPlayDockAppItemButton)initWithFrame:(CGRect)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_buttonPressed:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)setActive:(BOOL)a3;
-- (void)setBadgeHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setCharge:(float)a3;
+- (UIStatusBarCarPlayDockAppItemButton)initWithFrame:(CGRect)frame;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_buttonPressed:(id)pressed;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)setActive:(BOOL)active;
+- (void)setBadgeHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setCharge:(float)charge;
 @end
 
 @implementation UIStatusBarCarPlayDockAppItemButton
 
-- (UIStatusBarCarPlayDockAppItemButton)initWithFrame:(CGRect)a3
+- (UIStatusBarCarPlayDockAppItemButton)initWithFrame:(CGRect)frame
 {
   v50[12] = *MEMORY[0x1E69E9840];
   v49.receiver = self;
@@ -52,53 +52,53 @@
     [(UIView *)v7 setUserInteractionEnabled:1];
     LODWORD(v14) = -1102263091;
     [(UIStatusBarCarPlayDockAppItemButton *)v7 setCharge:v14];
-    v15 = [(UIView *)v7->_iconImageView widthAnchor];
-    v16 = [v15 constraintEqualToConstant:23.0];
+    widthAnchor = [(UIView *)v7->_iconImageView widthAnchor];
+    v16 = [widthAnchor constraintEqualToConstant:23.0];
     widthConstraint = v7->_widthConstraint;
     v7->_widthConstraint = v16;
 
-    v18 = [(UIView *)v7->_iconImageView heightAnchor];
-    v19 = [v18 constraintEqualToConstant:23.0];
+    heightAnchor = [(UIView *)v7->_iconImageView heightAnchor];
+    v19 = [heightAnchor constraintEqualToConstant:23.0];
     heightConstraint = v7->_heightConstraint;
     v7->_heightConstraint = v19;
 
     v50[0] = v7->_widthConstraint;
     v50[1] = v7->_heightConstraint;
-    v48 = [(UIView *)v7->_iconImageView centerXAnchor];
-    v47 = [(UIView *)v7 centerXAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    centerXAnchor = [(UIView *)v7->_iconImageView centerXAnchor];
+    centerXAnchor2 = [(UIView *)v7 centerXAnchor];
+    v46 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v50[2] = v46;
-    v45 = [(UIView *)v7->_iconImageView centerYAnchor];
-    v44 = [(UIView *)v7 centerYAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    centerYAnchor = [(UIView *)v7->_iconImageView centerYAnchor];
+    centerYAnchor2 = [(UIView *)v7 centerYAnchor];
+    v43 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v50[3] = v43;
-    v42 = [(UIView *)v7->_iconHighlightImageView widthAnchor];
-    v41 = [v42 constraintEqualToConstant:31.0];
+    widthAnchor2 = [(UIView *)v7->_iconHighlightImageView widthAnchor];
+    v41 = [widthAnchor2 constraintEqualToConstant:31.0];
     v50[4] = v41;
-    v40 = [(UIView *)v7->_iconHighlightImageView heightAnchor];
-    v39 = [v40 constraintEqualToConstant:31.0];
+    heightAnchor2 = [(UIView *)v7->_iconHighlightImageView heightAnchor];
+    v39 = [heightAnchor2 constraintEqualToConstant:31.0];
     v50[5] = v39;
-    v38 = [(UIView *)v7->_iconHighlightImageView centerXAnchor];
-    v37 = [(UIView *)v7 centerXAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    centerXAnchor3 = [(UIView *)v7->_iconHighlightImageView centerXAnchor];
+    centerXAnchor4 = [(UIView *)v7 centerXAnchor];
+    v36 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v50[6] = v36;
-    v35 = [(UIView *)v7->_iconHighlightImageView centerYAnchor];
-    v34 = [(UIView *)v7 centerYAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    centerYAnchor3 = [(UIView *)v7->_iconHighlightImageView centerYAnchor];
+    centerYAnchor4 = [(UIView *)v7 centerYAnchor];
+    v33 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v50[7] = v33;
-    v32 = [(UIView *)v7->_badgeView widthAnchor];
-    v21 = [v32 constraintEqualToConstant:9.0];
+    widthAnchor3 = [(UIView *)v7->_badgeView widthAnchor];
+    v21 = [widthAnchor3 constraintEqualToConstant:9.0];
     v50[8] = v21;
-    v22 = [(UIView *)v7->_badgeView heightAnchor];
-    v23 = [v22 constraintEqualToConstant:9.0];
+    heightAnchor3 = [(UIView *)v7->_badgeView heightAnchor];
+    v23 = [heightAnchor3 constraintEqualToConstant:9.0];
     v50[9] = v23;
-    v24 = [(UIView *)v7->_badgeView centerXAnchor];
-    v25 = [(UIView *)v7->_iconImageView trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:-1.0];
+    centerXAnchor5 = [(UIView *)v7->_badgeView centerXAnchor];
+    trailingAnchor = [(UIView *)v7->_iconImageView trailingAnchor];
+    v26 = [centerXAnchor5 constraintEqualToAnchor:trailingAnchor constant:-1.0];
     v50[10] = v26;
-    v27 = [(UIView *)v7->_badgeView centerYAnchor];
-    v28 = [(UIView *)v7->_iconImageView topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:1.0];
+    centerYAnchor5 = [(UIView *)v7->_badgeView centerYAnchor];
+    topAnchor = [(UIView *)v7->_iconImageView topAnchor];
+    v29 = [centerYAnchor5 constraintEqualToAnchor:topAnchor constant:1.0];
     v50[11] = v29;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:12];
 
@@ -108,39 +108,39 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UIStatusBarCarPlayDockAppItemButton alloc];
   v5 = [(UIStatusBarCarPlayDockAppItemButton *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v6 = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier];
-  [(UIStatusBarCarPlayDockAppItemButton *)v5 setBundleIdentifier:v6];
+  bundleIdentifier = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier];
+  [(UIStatusBarCarPlayDockAppItemButton *)v5 setBundleIdentifier:bundleIdentifier];
 
-  v7 = [(UIStatusBarCarPlayDockAppItemButton *)self iconImageView];
-  v8 = [v7 image];
-  v9 = [(UIStatusBarCarPlayDockAppItemButton *)v5 iconImageView];
-  [v9 setImage:v8];
+  iconImageView = [(UIStatusBarCarPlayDockAppItemButton *)self iconImageView];
+  image = [iconImageView image];
+  iconImageView2 = [(UIStatusBarCarPlayDockAppItemButton *)v5 iconImageView];
+  [iconImageView2 setImage:image];
 
-  v10 = [(UIStatusBarCarPlayDockAppItemButton *)self iconHighlightImageView];
-  v11 = [v10 image];
-  v12 = [(UIStatusBarCarPlayDockAppItemButton *)v5 iconHighlightImageView];
-  [v12 setImage:v11];
+  iconHighlightImageView = [(UIStatusBarCarPlayDockAppItemButton *)self iconHighlightImageView];
+  image2 = [iconHighlightImageView image];
+  iconHighlightImageView2 = [(UIStatusBarCarPlayDockAppItemButton *)v5 iconHighlightImageView];
+  [iconHighlightImageView2 setImage:image2];
 
   [(UIStatusBarCarPlayDockAppItemButton *)v5 setActive:[(UIStatusBarCarPlayDockAppItemButton *)self isActive]];
-  v13 = [(UIStatusBarCarPlayDockAppItemButton *)self iconHighlightImageView];
-  v14 = [v13 isHidden];
-  v15 = [(UIStatusBarCarPlayDockAppItemButton *)v5 iconHighlightImageView];
-  [v15 setHidden:v14];
+  iconHighlightImageView3 = [(UIStatusBarCarPlayDockAppItemButton *)self iconHighlightImageView];
+  isHidden = [iconHighlightImageView3 isHidden];
+  iconHighlightImageView4 = [(UIStatusBarCarPlayDockAppItemButton *)v5 iconHighlightImageView];
+  [iconHighlightImageView4 setHidden:isHidden];
 
   [(UIStatusBarCarPlayDockAppItemButton *)v5 setHasBadge:[(UIStatusBarCarPlayDockAppItemButton *)self hasBadge]];
-  v16 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
-  v17 = [v16 image];
-  v18 = [(UIStatusBarCarPlayDockAppItemButton *)v5 badgeView];
-  [v18 setImage:v17];
+  badgeView = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
+  image3 = [badgeView image];
+  badgeView2 = [(UIStatusBarCarPlayDockAppItemButton *)v5 badgeView];
+  [badgeView2 setImage:image3];
 
   return v5;
 }
 
-- (void)setCharge:(float)a3
+- (void)setCharge:(float)charge
 {
   v4.receiver = self;
   v4.super_class = UIStatusBarCarPlayDockAppItemButton;
@@ -150,21 +150,21 @@
 
 - (BOOL)itemHasBundleIdentifier
 {
-  v2 = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier];
-  v3 = v2 != 0;
+  bundleIdentifier = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier];
+  v3 = bundleIdentifier != 0;
 
   return v3;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
     v13 = v7;
     v14 = v3;
-    self->_active = a3;
+    self->_active = active;
     widthConstraint = self->_widthConstraint;
-    if (a3)
+    if (active)
     {
       v11 = 29.0;
     }
@@ -183,46 +183,46 @@
 
 - (BOOL)shouldShowBadge
 {
-  v3 = [(UIStatusBarCarPlayDockAppItemButton *)self hasBadge];
-  if (v3)
+  hasBadge = [(UIStatusBarCarPlayDockAppItemButton *)self hasBadge];
+  if (hasBadge)
   {
     if ([(UIView *)self isFocused])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(hasBadge) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(UIStatusBarCarPlayDockAppItemButton *)self isActive];
+      LOBYTE(hasBadge) = ![(UIStatusBarCarPlayDockAppItemButton *)self isActive];
     }
   }
 
-  return v3;
+  return hasBadge;
 }
 
-- (void)setBadgeHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setBadgeHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
-  v8 = [v7 isHidden];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  badgeView = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
+  isHidden = [badgeView isHidden];
 
-  if (v8 != v5)
+  if (isHidden != hiddenCopy)
   {
-    v9 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
-    [v9 setHidden:v5];
+    badgeView2 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
+    [badgeView2 setHidden:hiddenCopy];
 
-    if (v4)
+    if (animatedCopy)
     {
-      if (v5)
+      if (hiddenCopy)
       {
         v10 = [UIImageView alloc];
-        v11 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
-        v12 = [v11 image];
-        v13 = [(UIImageView *)v10 initWithImage:v12];
+        badgeView3 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
+        image = [badgeView3 image];
+        v13 = [(UIImageView *)v10 initWithImage:image];
 
-        v14 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
-        [v14 frame];
+        badgeView4 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
+        [badgeView4 frame];
         [(UIImageView *)v13 setFrame:?];
 
         [(UIView *)self addSubview:v13];
@@ -242,9 +242,9 @@
 
       else
       {
-        v16 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
+        badgeView5 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
         CGAffineTransformMakeScale(&v18, 0.01, 0.01);
-        [v16 setTransform:&v18];
+        [badgeView5 setTransform:&v18];
 
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
@@ -274,34 +274,34 @@ void __63__UIStatusBarCarPlayDockAppItemButton_setBadgeHidden_animated___block_i
   [v1 setTransform:v3];
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = UIStatusBarCarPlayDockAppItemButton;
-  v6 = a3;
-  [(UIResponder *)&v9 pressesBegan:v6 withEvent:a4];
-  LODWORD(a4) = _UIPressesContainsPressType(v6, 4);
+  beganCopy = began;
+  [(UIResponder *)&v9 pressesBegan:beganCopy withEvent:event];
+  LODWORD(event) = _UIPressesContainsPressType(beganCopy, 4);
 
-  if (a4)
+  if (event)
   {
     if ([(UIView *)self isUserInteractionEnabled:v9.receiver])
     {
-      v7 = [(UIView *)self layer];
+      layer = [(UIView *)self layer];
       LODWORD(v8) = 1058642330;
-      [v7 setOpacity:v8];
+      [layer setOpacity:v8];
     }
   }
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = UIStatusBarCarPlayDockAppItemButton;
-  v6 = a3;
-  [(UIResponder *)&v9 pressesChanged:v6 withEvent:a4];
-  LODWORD(a4) = _UIPressesContainsPressType(v6, 4);
+  cancelledCopy = cancelled;
+  [(UIResponder *)&v9 pressesChanged:cancelledCopy withEvent:event];
+  LODWORD(event) = _UIPressesContainsPressType(cancelledCopy, 4);
 
-  if (a4)
+  if (event)
   {
     v7 = [(UIView *)self layer:v9.receiver];
     LODWORD(v8) = 1.0;
@@ -309,15 +309,15 @@ void __63__UIStatusBarCarPlayDockAppItemButton_setBadgeHidden_animated___block_i
   }
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = UIStatusBarCarPlayDockAppItemButton;
-  v6 = a3;
-  [(UIResponder *)&v9 pressesEnded:v6 withEvent:a4];
-  LODWORD(a4) = _UIPressesContainsPressType(v6, 4);
+  endedCopy = ended;
+  [(UIResponder *)&v9 pressesEnded:endedCopy withEvent:event];
+  LODWORD(event) = _UIPressesContainsPressType(endedCopy, 4);
 
-  if (a4)
+  if (event)
   {
     v7 = [(UIView *)self layer:v9.receiver];
     LODWORD(v8) = 1.0;
@@ -325,56 +325,56 @@ void __63__UIStatusBarCarPlayDockAppItemButton_setBadgeHidden_animated___block_i
   }
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = *(__UILogGetCategoryCachedImpl("UIStatusBar", &_buttonPressed____s_category) + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
     v5 = v4;
-    v6 = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier];
+    bundleIdentifier = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier];
     *buf = 138543362;
-    v14 = v6;
+    v14 = bundleIdentifier;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_ERROR, "CarPlayDock item pressed; bundleIdentifier: %{public}@", buf, 0xCu);
   }
 
-  v7 = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier];
+  bundleIdentifier2 = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier];
 
-  if (v7)
+  if (bundleIdentifier2)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9 = [(UIStatusBarCarPlayDockAppItemButton *)self bundleIdentifier:0x1EFB19190];
     v12[2] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:3];
-    [v8 postNotificationName:0x1EFB9C690 object:self userInfo:v10];
+    [defaultCenter postNotificationName:0x1EFB9C690 object:self userInfo:v10];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedItem];
+  nextFocusedItem = [context nextFocusedItem];
 
-  v6 = [(UIStatusBarCarPlayDockAppItemButton *)self iconHighlightImageView];
-  v7 = v6;
-  if (v5 == self)
+  iconHighlightImageView = [(UIStatusBarCarPlayDockAppItemButton *)self iconHighlightImageView];
+  v7 = iconHighlightImageView;
+  if (nextFocusedItem == self)
   {
-    [v6 setHidden:0];
+    [iconHighlightImageView setHidden:0];
 
-    v9 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
-    v10 = v9;
+    badgeView = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
+    badgeView2 = badgeView;
     v8 = 1;
   }
 
   else
   {
-    [v6 setHidden:1];
+    [iconHighlightImageView setHidden:1];
 
-    v10 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
+    badgeView2 = [(UIStatusBarCarPlayDockAppItemButton *)self badgeView];
     v8 = [(UIStatusBarCarPlayDockAppItemButton *)self shouldShowBadge]^ 1;
-    v9 = v10;
+    badgeView = badgeView2;
   }
 
-  [v9 setHidden:v8];
+  [badgeView setHidden:v8];
 }
 
 @end

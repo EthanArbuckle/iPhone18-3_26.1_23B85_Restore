@@ -1,39 +1,39 @@
 @interface APOdmlAssetManager
-- (APOdmlAssetManager)initWithNamespace:(id)a3 andClient:(id)a4;
+- (APOdmlAssetManager)initWithNamespace:(id)namespace andClient:(id)client;
 - (NSCache)modelCache;
 - (NSString)experimentID;
 - (NSString)odmlNamespace;
 - (NSString)treatmentID;
-- (id)BOOLeanValueForFactor:(id)a3;
+- (id)BOOLeanValueForFactor:(id)factor;
 - (id)currentMLModel;
-- (id)doubleValueForFactor:(id)a3;
-- (id)featureForName:(id)a3;
-- (id)featuresForName:(id)a3;
-- (id)longValueForFactor:(id)a3;
-- (id)pathForFactor:(id)a3 isDirectory:(BOOL)a4;
-- (id)saveFeatureFromObject:(id)a3 withName:(id)a4;
-- (id)stringValueForFactor:(id)a3;
+- (id)doubleValueForFactor:(id)factor;
+- (id)featureForName:(id)name;
+- (id)featuresForName:(id)name;
+- (id)longValueForFactor:(id)factor;
+- (id)pathForFactor:(id)factor isDirectory:(BOOL)directory;
+- (id)saveFeatureFromObject:(id)object withName:(id)name;
+- (id)stringValueForFactor:(id)factor;
 - (int)deploymentID;
-- (void)deleteExpiredFeaturesForName:(id)a3 lookbackWindow:(id)a4;
+- (void)deleteExpiredFeaturesForName:(id)name lookbackWindow:(id)window;
 @end
 
 @implementation APOdmlAssetManager
 
-- (APOdmlAssetManager)initWithNamespace:(id)a3 andClient:(id)a4
+- (APOdmlAssetManager)initWithNamespace:(id)namespace andClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  namespaceCopy = namespace;
+  clientCopy = client;
   v32.receiver = self;
   v32.super_class = APOdmlAssetManager;
   v9 = [(APOdmlAssetManager *)&v32 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_trialNamespace, a3);
-    if (v8)
+    objc_storeStrong(&v9->_trialNamespace, namespace);
+    if (clientCopy)
     {
-      objc_storeStrong(&v10->_trialClient, a4);
-      v12 = objc_msgSend_experimentIdentifiersWithNamespaceName_(v8, v11, v7);
+      objc_storeStrong(&v10->_trialClient, client);
+      v12 = objc_msgSend_experimentIdentifiersWithNamespaceName_(clientCopy, v11, namespaceCopy);
       trialIdentifiers = v10->_trialIdentifiers;
       v10->_trialIdentifiers = v12;
 
@@ -41,7 +41,7 @@
       v17 = objc_msgSend_experimentId(v10->_trialIdentifiers, v15, v16);
       v20 = objc_msgSend_treatmentId(v10->_trialIdentifiers, v18, v19);
       v23 = objc_msgSend_deploymentId(v10->_trialIdentifiers, v21, v22);
-      v25 = objc_msgSend_initWithExperimentID_treatmentID_deploymentID_trialNamespace_(v14, v24, v17, v20, v23, v7);
+      v25 = objc_msgSend_initWithExperimentID_treatmentID_deploymentID_trialNamespace_(v14, v24, v17, v20, v23, namespaceCopy);
       featureStorage = v10->_featureStorage;
       v10->_featureStorage = v25;
 
@@ -325,22 +325,22 @@ LABEL_18:
   return v15;
 }
 
-- (id)pathForFactor:(id)a3 isDirectory:(BOOL)a4
+- (id)pathForFactor:(id)factor isDirectory:(BOOL)directory
 {
-  v4 = a4;
+  directoryCopy = directory;
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  factorCopy = factor;
   v9 = objc_msgSend_trialClient(self, v7, v8);
 
   if (v9)
   {
     v12 = objc_msgSend_trialClient(self, v10, v11);
     v15 = objc_msgSend_trialNamespace(self, v13, v14);
-    v17 = objc_msgSend_levelForFactor_withNamespaceName_(v12, v16, v6, v15);
+    v17 = objc_msgSend_levelForFactor_withNamespaceName_(v12, v16, factorCopy, v15);
 
     if (v17)
     {
-      if (v4)
+      if (directoryCopy)
       {
         objc_msgSend_directoryValue(v17, v18, v19);
       }
@@ -376,7 +376,7 @@ LABEL_18:
           v51 = 138413058;
           v52 = v39;
           v53 = 2112;
-          v54 = v6;
+          v54 = factorCopy;
           v55 = 2112;
           v56 = v43;
           v57 = 2112;
@@ -396,7 +396,7 @@ LABEL_18:
           v51 = 138412802;
           v52 = v44;
           v53 = 2112;
-          v54 = v6;
+          v54 = factorCopy;
           v55 = 2112;
           v56 = v48;
           _os_log_impl(&dword_260ECB000, v38, OS_LOG_TYPE_ERROR, "[%@] File not found for level %@ in namespace %@", &v51, 0x20u);
@@ -417,7 +417,7 @@ LABEL_18:
         v51 = 138412802;
         v52 = v26;
         v53 = 2112;
-        v54 = v6;
+        v54 = factorCopy;
         v55 = 2112;
         v56 = v30;
         _os_log_impl(&dword_260ECB000, v25, OS_LOG_TYPE_ERROR, "[%@] Level not found for factor %@ in namespace %@", &v51, 0x20u);
@@ -435,7 +435,7 @@ LABEL_18:
       v51 = 138412546;
       v52 = objc_opt_class();
       v53 = 2112;
-      v54 = v6;
+      v54 = factorCopy;
       v23 = v52;
       _os_log_impl(&dword_260ECB000, v17, OS_LOG_TYPE_ERROR, "[%@] Nil value for Trial client, cannot complete request for %@", &v51, 0x16u);
     }
@@ -448,17 +448,17 @@ LABEL_18:
   return v24;
 }
 
-- (id)doubleValueForFactor:(id)a3
+- (id)doubleValueForFactor:(id)factor
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  factorCopy = factor;
   v7 = objc_msgSend_trialClient(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_trialClient(self, v8, v9);
     v13 = objc_msgSend_trialNamespace(self, v11, v12);
-    v15 = objc_msgSend_levelForFactor_withNamespaceName_(v10, v14, v4, v13);
+    v15 = objc_msgSend_levelForFactor_withNamespaceName_(v10, v14, factorCopy, v13);
 
     if (v15)
     {
@@ -474,7 +474,7 @@ LABEL_18:
         v36 = 138413058;
         v37 = v23;
         v38 = 2112;
-        v39 = v4;
+        v39 = factorCopy;
         v40 = 2112;
         v41 = v27;
         v42 = 2112;
@@ -494,7 +494,7 @@ LABEL_18:
         v36 = 138412802;
         v37 = v29;
         v38 = 2112;
-        v39 = v4;
+        v39 = factorCopy;
         v40 = 2112;
         v41 = v33;
         _os_log_impl(&dword_260ECB000, v22, OS_LOG_TYPE_ERROR, "[%@] Level not found for factor %@ in namespace %@", &v36, 0x20u);
@@ -512,7 +512,7 @@ LABEL_18:
       v36 = 138412546;
       v37 = objc_opt_class();
       v38 = 2112;
-      v39 = v4;
+      v39 = factorCopy;
       v28 = v37;
       _os_log_impl(&dword_260ECB000, v15, OS_LOG_TYPE_ERROR, "[%@] Nil value for Trial client, cannot complete request for %@", &v36, 0x16u);
     }
@@ -525,17 +525,17 @@ LABEL_18:
   return v21;
 }
 
-- (id)longValueForFactor:(id)a3
+- (id)longValueForFactor:(id)factor
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  factorCopy = factor;
   v7 = objc_msgSend_trialClient(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_trialClient(self, v8, v9);
     v13 = objc_msgSend_trialNamespace(self, v11, v12);
-    v15 = objc_msgSend_levelForFactor_withNamespaceName_(v10, v14, v4, v13);
+    v15 = objc_msgSend_levelForFactor_withNamespaceName_(v10, v14, factorCopy, v13);
 
     if (v15)
     {
@@ -551,7 +551,7 @@ LABEL_18:
         v36 = 138413058;
         v37 = v23;
         v38 = 2112;
-        v39 = v4;
+        v39 = factorCopy;
         v40 = 2112;
         v41 = v27;
         v42 = 2112;
@@ -571,7 +571,7 @@ LABEL_18:
         v36 = 138412802;
         v37 = v29;
         v38 = 2112;
-        v39 = v4;
+        v39 = factorCopy;
         v40 = 2112;
         v41 = v33;
         _os_log_impl(&dword_260ECB000, v22, OS_LOG_TYPE_ERROR, "[%@] Level not found for factor %@ in namespace %@", &v36, 0x20u);
@@ -589,7 +589,7 @@ LABEL_18:
       v36 = 138412546;
       v37 = objc_opt_class();
       v38 = 2112;
-      v39 = v4;
+      v39 = factorCopy;
       v28 = v37;
       _os_log_impl(&dword_260ECB000, v15, OS_LOG_TYPE_ERROR, "[%@] Nil value for Trial client, cannot complete request for %@", &v36, 0x16u);
     }
@@ -602,17 +602,17 @@ LABEL_18:
   return v21;
 }
 
-- (id)BOOLeanValueForFactor:(id)a3
+- (id)BOOLeanValueForFactor:(id)factor
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  factorCopy = factor;
   v7 = objc_msgSend_trialClient(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_trialClient(self, v8, v9);
     v13 = objc_msgSend_trialNamespace(self, v11, v12);
-    v15 = objc_msgSend_levelForFactor_withNamespaceName_(v10, v14, v4, v13);
+    v15 = objc_msgSend_levelForFactor_withNamespaceName_(v10, v14, factorCopy, v13);
 
     if (v15)
     {
@@ -628,7 +628,7 @@ LABEL_18:
         v36 = 138413058;
         v37 = v23;
         v38 = 2112;
-        v39 = v4;
+        v39 = factorCopy;
         v40 = 2112;
         v41 = v27;
         v42 = 2112;
@@ -648,7 +648,7 @@ LABEL_18:
         v36 = 138412802;
         v37 = v29;
         v38 = 2112;
-        v39 = v4;
+        v39 = factorCopy;
         v40 = 2112;
         v41 = v33;
         _os_log_impl(&dword_260ECB000, v22, OS_LOG_TYPE_ERROR, "[%@] Level not found for factor %@ in namespace %@", &v36, 0x20u);
@@ -666,7 +666,7 @@ LABEL_18:
       v36 = 138412546;
       v37 = objc_opt_class();
       v38 = 2112;
-      v39 = v4;
+      v39 = factorCopy;
       v28 = v37;
       _os_log_impl(&dword_260ECB000, v15, OS_LOG_TYPE_ERROR, "[%@] Nil value for Trial client, cannot complete request for %@", &v36, 0x16u);
     }
@@ -679,10 +679,10 @@ LABEL_18:
   return v21;
 }
 
-- (id)stringValueForFactor:(id)a3
+- (id)stringValueForFactor:(id)factor
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  factorCopy = factor;
   v7 = objc_msgSend_trialClient(self, v5, v6);
 
   if (!v7)
@@ -698,7 +698,7 @@ LABEL_11:
     v36 = 138412546;
     v37 = objc_opt_class();
     v38 = 2112;
-    v39 = v4;
+    v39 = factorCopy;
     v17 = v37;
     _os_log_impl(&dword_260ECB000, v15, OS_LOG_TYPE_ERROR, "[%@] Nil value for Trial client, cannot complete request for %@", &v36, 0x16u);
 LABEL_10:
@@ -708,7 +708,7 @@ LABEL_10:
 
   v10 = objc_msgSend_trialClient(self, v8, v9);
   v13 = objc_msgSend_trialNamespace(self, v11, v12);
-  v15 = objc_msgSend_levelForFactor_withNamespaceName_(v10, v14, v4, v13);
+  v15 = objc_msgSend_levelForFactor_withNamespaceName_(v10, v14, factorCopy, v13);
 
   v16 = OdmlLogForCategory(0);
   v17 = v16;
@@ -722,7 +722,7 @@ LABEL_10:
       v36 = 138412802;
       v37 = v29;
       v38 = 2112;
-      v39 = v4;
+      v39 = factorCopy;
       v40 = 2112;
       v41 = v33;
       _os_log_impl(&dword_260ECB000, v17, OS_LOG_TYPE_ERROR, "[%@] Level not found for factor %@ in namespace %@", &v36, 0x20u);
@@ -740,7 +740,7 @@ LABEL_10:
     v36 = 138413058;
     v37 = v18;
     v38 = 2112;
-    v39 = v4;
+    v39 = factorCopy;
     v40 = 2112;
     v41 = v22;
     v42 = 2112;
@@ -756,17 +756,17 @@ LABEL_12:
   return v28;
 }
 
-- (id)saveFeatureFromObject:(id)a3 withName:(id)a4
+- (id)saveFeatureFromObject:(id)object withName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  nameCopy = name;
   v10 = objc_msgSend_featureStorage(self, v8, v9);
 
   if (v10)
   {
     v13 = objc_msgSend_featureStorage(self, v11, v12);
-    v15 = objc_msgSend_saveFeatureFromObject_withName_(v13, v14, v6, v7);
+    v15 = objc_msgSend_saveFeatureFromObject_withName_(v13, v14, objectCopy, nameCopy);
   }
 
   else
@@ -777,7 +777,7 @@ LABEL_12:
       v21 = 138412546;
       v22 = objc_opt_class();
       v23 = 2112;
-      v24 = v7;
+      v24 = nameCopy;
       v17 = v22;
       _os_log_impl(&dword_260ECB000, v16, OS_LOG_TYPE_ERROR, "[%@] Nil value for FeatureStorage, cannot save feature %@", &v21, 0x16u);
     }
@@ -790,16 +790,16 @@ LABEL_12:
   return v15;
 }
 
-- (id)featureForName:(id)a3
+- (id)featureForName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_featureStorage(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_featureStorage(self, v8, v9);
-    v12 = objc_msgSend_featureForName_(v10, v11, v4);
+    v12 = objc_msgSend_featureForName_(v10, v11, nameCopy);
   }
 
   else
@@ -810,7 +810,7 @@ LABEL_12:
       v17 = 138412546;
       v18 = objc_opt_class();
       v19 = 2112;
-      v20 = v4;
+      v20 = nameCopy;
       v14 = v18;
       _os_log_impl(&dword_260ECB000, v13, OS_LOG_TYPE_ERROR, "[%@] Nil value for FeatureStorage, cannot retrieve feature %@", &v17, 0x16u);
     }
@@ -823,17 +823,17 @@ LABEL_12:
   return v12;
 }
 
-- (id)featuresForName:(id)a3
+- (id)featuresForName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_featureStorage(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_featureStorage(self, v8, v9);
     v12 = objc_msgSend_doubleValueForFactor_(self, v11, @"LookbackWindow");
-    v14 = objc_msgSend_vectorsForName_lookbackWindow_(v10, v13, v4, v12);
+    v14 = objc_msgSend_vectorsForName_lookbackWindow_(v10, v13, nameCopy, v12);
   }
 
   else
@@ -844,7 +844,7 @@ LABEL_12:
       v19 = 138412546;
       v20 = objc_opt_class();
       v21 = 2112;
-      v22 = v4;
+      v22 = nameCopy;
       v16 = v20;
       _os_log_impl(&dword_260ECB000, v15, OS_LOG_TYPE_ERROR, "[%@] Nil value for FeatureStorage, cannot retrieve feature %@", &v19, 0x16u);
     }
@@ -857,16 +857,16 @@ LABEL_12:
   return v14;
 }
 
-- (void)deleteExpiredFeaturesForName:(id)a3 lookbackWindow:(id)a4
+- (void)deleteExpiredFeaturesForName:(id)name lookbackWindow:(id)window
 {
-  v14 = a3;
-  v6 = a4;
+  nameCopy = name;
+  windowCopy = window;
   v9 = objc_msgSend_featureStorage(self, v7, v8);
 
   if (v9)
   {
     v12 = objc_msgSend_featureStorage(self, v10, v11);
-    objc_msgSend_deleteExpiredFeaturesForName_lookbackWindow_(v12, v13, v14, v6);
+    objc_msgSend_deleteExpiredFeaturesForName_lookbackWindow_(v12, v13, nameCopy, windowCopy);
   }
 }
 

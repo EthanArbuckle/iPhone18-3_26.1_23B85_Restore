@@ -7,18 +7,18 @@
 
 - (void)addNavigationEventForSystemSettings:()DeepLinking
 {
-  v4 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
-  [v4 addNavigationEventForSystemSettings:location[0] andRelativeLinkToSoftwareUpdate:0];
+  [selfCopy addNavigationEventForSystemSettings:location[0] andRelativeLinkToSoftwareUpdate:0];
   objc_storeStrong(location, 0);
 }
 
 - (void)addNavigationEventForSystemSettings:()DeepLinking andRelativeLinkToSoftwareUpdate:
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -43,20 +43,20 @@
     MEMORY[0x277D82BD8](v16);
   }
 
-  v7 = v20;
+  v7 = selfCopy;
   v6 = objc_alloc(MEMORY[0x277CCAEB8]);
   v5 = location[0];
-  v12 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v10 = [v11 bundleURL];
-  v9 = [v6 initWithKey:v5 table:0 locale:v12 bundleURL:?];
+  bundleURL = [v11 bundleURL];
+  v9 = [v6 initWithKey:v5 table:0 locale:currentLocale bundleURL:?];
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v17];
   [v7 pe_emitNavigationEventForSystemSettingsWithGraphicIconIdentifier:@"com.apple.graphic-icon.software-update" title:v9 localizedNavigationComponents:MEMORY[0x277CBEBF8] deepLink:?];
   MEMORY[0x277D82BD8](v8);
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](bundleURL);
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](currentLocale);
   v14 = _SUSUILoggingFacility();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {

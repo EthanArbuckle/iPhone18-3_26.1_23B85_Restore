@@ -2,22 +2,22 @@
 - (BOOL)anyChildHasRemoteGuardians;
 - (BOOL)currentUserIsU13;
 - (BOOL)familyHasU13Member;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFAFamilyCircle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFAFamilyCircle:(id)circle;
 - (FAFamilyCircle)init;
-- (FAFamilyCircle)initWithCoder:(id)a3;
-- (FAFamilyCircle)initWithServerResponse:(id)a3;
+- (FAFamilyCircle)initWithCoder:(id)coder;
+- (FAFamilyCircle)initWithServerResponse:(id)response;
 - (FAFamilyMember)me;
 - (FAFamilyMember)remoteGuardian;
 - (NSArray)firstNames;
 - (NSArray)invites;
 - (NSArray)pendingMembers;
 - (NSArray)pendingMembersWithAllStatues;
-- (id)memberForAltDSID:(id)a3;
-- (id)memberForDSID:(id)a3;
-- (id)memberForPhoneNumber:(id)a3;
+- (id)memberForAltDSID:(id)d;
+- (id)memberForDSID:(id)d;
+- (id)memberForPhoneNumber:(id)number;
 - (id)pendingInvitesOnly;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FAFamilyCircle
@@ -29,9 +29,9 @@
   v2 = [(FAFamilyCircle *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     v4 = *(v2 + 3);
-    *(v2 + 3) = v3;
+    *(v2 + 3) = array;
 
     *(v2 + 11) = -1;
     *(v2 + 4) = 0;
@@ -151,11 +151,11 @@ void __32__FAFamilyCircle_pendingMembers__block_invoke(uint64_t a1)
 
 - (id)pendingInvitesOnly
 {
-  v2 = [(FAFamilyCircle *)self invites];
-  if (v2)
+  invites = [(FAFamilyCircle *)self invites];
+  if (invites)
   {
     v3 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_5];
-    v4 = [v2 filteredArrayUsingPredicate:v3];
+    v4 = [invites filteredArrayUsingPredicate:v3];
   }
 
   else
@@ -289,10 +289,10 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (FAFamilyCircle)initWithServerResponse:(id)a3
+- (FAFamilyCircle)initWithServerResponse:(id)response
 {
   v120 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  responseCopy = response;
   v111.receiver = self;
   v111.super_class = FAFamilyCircle;
   v6 = [(FAFamilyCircle *)&v111 init];
@@ -300,22 +300,22 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
   if (v6)
   {
     *(v6 + 9) = 257;
-    objc_storeStrong(v6 + 20, a3);
-    v8 = [v5 objectForKeyedSubscript:@"family-id"];
+    objc_storeStrong(v6 + 20, response);
+    v8 = [responseCopy objectForKeyedSubscript:@"family-id"];
 
     if (v8)
     {
-      v9 = [v5 objectForKeyedSubscript:@"family-id"];
+      v9 = [responseCopy objectForKeyedSubscript:@"family-id"];
       familyID = v7->_familyID;
       v7->_familyID = v9;
     }
 
     v98 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"memberSortOrder" ascending:1];
-    v11 = [v5 objectForKeyedSubscript:@"family-members"];
+    v11 = [responseCopy objectForKeyedSubscript:@"family-members"];
     v12 = v11;
     if (v11 && [v11 count])
     {
-      v13 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
@@ -336,7 +336,7 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
             }
 
             v19 = [[FAFamilyMember alloc] initWithDictionaryRepresentation:*(*(&v107 + 1) + 8 * i)];
-            [v13 addObject:v19];
+            [array addObject:v19];
           }
 
           v16 = [v14 countByEnumeratingWithState:&v107 objects:v119 count:16];
@@ -347,9 +347,9 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
 
       v118 = v98;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v118 count:1];
-      [v13 sortUsingDescriptors:v20];
+      [array sortUsingDescriptors:v20];
 
-      v21 = [v13 copy];
+      v21 = [array copy];
       members = v7->_members;
       v7->_members = v21;
     }
@@ -357,7 +357,7 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
     v97 = v12;
     if (_os_feature_enabled_impl())
     {
-      v23 = [v5 objectForKeyedSubscript:@"person-info"];
+      v23 = [responseCopy objectForKeyedSubscript:@"person-info"];
       v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
       if (v23 && [v23 count])
       {
@@ -382,8 +382,8 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
               }
 
               v30 = [[FAFamilyMember alloc] initWithDictionaryRepresentation:*(*(&v103 + 1) + 8 * j)];
-              v31 = [(FAFamilyMember *)v30 dsid];
-              [v24 setObject:v30 forKeyedSubscript:v31];
+              dsid = [(FAFamilyMember *)v30 dsid];
+              [v24 setObject:v30 forKeyedSubscript:dsid];
             }
 
             v27 = [v25 countByEnumeratingWithState:&v103 objects:v117 count:16];
@@ -425,7 +425,7 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
 
       if (![(NSArray *)v7->_members count])
       {
-        v37 = [v5 objectForKeyedSubscript:@"member-guardian"];
+        v37 = [responseCopy objectForKeyedSubscript:@"member-guardian"];
         if (v37)
         {
           v38 = _FALogSystem();
@@ -443,9 +443,9 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
         }
       }
 
-      v41 = [(FAFamilyCircle *)v7 remoteGuardian];
+      remoteGuardian = [(FAFamilyCircle *)v7 remoteGuardian];
 
-      if (v23 && !v41)
+      if (v23 && !remoteGuardian)
       {
         v42 = _FALogSystem();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -455,11 +455,11 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
       }
     }
 
-    v43 = [v5 objectForKeyedSubscript:@"ck-handles"];
+    v43 = [responseCopy objectForKeyedSubscript:@"ck-handles"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v44 = [v5 objectForKeyedSubscript:@"ck-handles"];
+      v44 = [responseCopy objectForKeyedSubscript:@"ck-handles"];
     }
 
     else
@@ -471,11 +471,11 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
     cloudKitProperties = v7->_cloudKitProperties;
     v7->_cloudKitProperties = v45;
 
-    v47 = [v5 objectForKeyedSubscript:@"family-recommendation-info"];
+    v47 = [responseCopy objectForKeyedSubscript:@"family-recommendation-info"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v48 = [v5 objectForKeyedSubscript:@"family-recommendation-info"];
+      v48 = [responseCopy objectForKeyedSubscript:@"family-recommendation-info"];
     }
 
     else
@@ -487,11 +487,11 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
     eligibilityRequirements = v7->_eligibilityRequirements;
     v7->_eligibilityRequirements = v49;
 
-    v51 = [v5 objectForKeyedSubscript:@"show-location-splash-screen"];
+    v51 = [responseCopy objectForKeyedSubscript:@"show-location-splash-screen"];
 
     if (v51)
     {
-      v52 = [v5 objectForKeyedSubscript:@"show-location-splash-screen"];
+      v52 = [responseCopy objectForKeyedSubscript:@"show-location-splash-screen"];
       v7->_showLocationSplashScreen = [v52 BOOLValue];
     }
 
@@ -500,7 +500,7 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
       v7->_showLocationSplashScreen = 0;
     }
 
-    v53 = [v5 objectForKeyedSubscript:@"age-category"];
+    v53 = [responseCopy objectForKeyedSubscript:@"age-category"];
     if ([v53 isEqualToString:@"ADULT"])
     {
       v7->_ageCategory = 0;
@@ -537,11 +537,11 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
       _os_log_impl(&dword_1B70B0000, v55, OS_LOG_TYPE_DEFAULT, "Current user age category is %@, FAMemberType %ld", buf, 0x16u);
     }
 
-    v57 = [v5 objectForKeyedSubscript:@"age-category-enum"];
-    v58 = [v57 intValue];
+    v57 = [responseCopy objectForKeyedSubscript:@"age-category-enum"];
+    intValue = [v57 intValue];
 
-    v7->_ageCategoryEnum = v58;
-    v59 = [v5 objectForKey:@"family-meta-info"];
+    v7->_ageCategoryEnum = intValue;
+    v59 = [responseCopy objectForKey:@"family-meta-info"];
     if (v59)
     {
       objc_opt_class();
@@ -667,7 +667,7 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
       }
     }
 
-    v88 = [v5 objectForKey:@"child-bot-details"];
+    v88 = [responseCopy objectForKey:@"child-bot-details"];
     if (v88)
     {
       objc_opt_class();
@@ -738,8 +738,8 @@ void __25__FAFamilyCircle_invites__block_invoke(uint64_t a1)
           v9 = *(*(&v14 + 1) + 8 * i);
           if ([v9 isMe])
           {
-            v10 = [v9 remoteChildren];
-            v11 = [v10 count];
+            remoteChildren = [v9 remoteChildren];
+            v11 = [remoteChildren count];
 
             if (v11)
             {
@@ -792,8 +792,8 @@ LABEL_14:
             objc_enumerationMutation(v3);
           }
 
-          v7 = [*(*(&v11 + 1) + 8 * i) remoteGuardians];
-          v8 = [v7 count];
+          remoteGuardians = [*(*(&v11 + 1) + 8 * i) remoteGuardians];
+          v8 = [remoteGuardians count];
 
           if (v8)
           {
@@ -824,11 +824,11 @@ LABEL_13:
   return v4;
 }
 
-- (id)memberForAltDSID:(id)a3
+- (id)memberForAltDSID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -841,7 +841,7 @@ LABEL_13:
     v9[1] = 3221225472;
     v9[2] = __35__FAFamilyCircle_memberForAltDSID___block_invoke;
     v9[3] = &unk_1E7CA49D0;
-    v10 = v4;
+    v10 = dCopy;
     v11 = &v12;
     [(NSArray *)members enumerateObjectsUsingBlock:v9];
     v7 = v13[5];
@@ -870,11 +870,11 @@ void __35__FAFamilyCircle_memberForAltDSID___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (id)memberForDSID:(id)a3
+- (id)memberForDSID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 intValue])
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && [dCopy intValue])
   {
     v12 = 0;
     v13 = &v12;
@@ -917,25 +917,25 @@ void __32__FAFamilyCircle_memberForDSID___block_invoke(uint64_t a1, void *a2, ui
   }
 }
 
-- (id)memberForPhoneNumber:(id)a3
+- (id)memberForPhoneNumber:(id)number
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695CF50]) initWithStringValue:v4];
-  v6 = [v5 fullyQualifiedDigits];
+  numberCopy = number;
+  v5 = [objc_alloc(MEMORY[0x1E695CF50]) initWithStringValue:numberCopy];
+  fullyQualifiedDigits = [v5 fullyQualifiedDigits];
 
-  if (v6)
+  if (fullyQualifiedDigits)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = [(FAFamilyCircle *)self members];
-    v24 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    members = [(FAFamilyCircle *)self members];
+    v24 = [members countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v24)
     {
       v8 = *v31;
-      v25 = v7;
+      v25 = members;
       v23 = *v31;
       do
       {
@@ -943,12 +943,12 @@ void __32__FAFamilyCircle_memberForDSID___block_invoke(uint64_t a1, void *a2, ui
         {
           if (*v31 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(members);
           }
 
           v10 = *(*(&v30 + 1) + 8 * i);
-          v11 = [v10 memberPhoneNumbers];
-          v12 = [v11 componentsSeparatedByString:{@", "}];
+          memberPhoneNumbers = [v10 memberPhoneNumbers];
+          v12 = [memberPhoneNumbers componentsSeparatedByString:{@", "}];
 
           v28 = 0u;
           v29 = 0u;
@@ -977,7 +977,7 @@ void __32__FAFamilyCircle_memberForDSID___block_invoke(uint64_t a1, void *a2, ui
                   {
                     v20 = v10;
 
-                    v7 = v25;
+                    members = v25;
                     goto LABEL_23;
                   }
                 }
@@ -993,7 +993,7 @@ void __32__FAFamilyCircle_memberForDSID___block_invoke(uint64_t a1, void *a2, ui
             }
           }
 
-          v7 = v25;
+          members = v25;
           v8 = v23;
         }
 
@@ -1025,8 +1025,8 @@ LABEL_23:
 - (NSArray)firstNames
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(FAFamilyCircle *)self members];
-  v4 = [v3 count];
+  members = [(FAFamilyCircle *)self members];
+  v4 = [members count];
 
   if (v4)
   {
@@ -1035,8 +1035,8 @@ LABEL_23:
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [(FAFamilyCircle *)self members];
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    members2 = [(FAFamilyCircle *)self members];
+    v7 = [members2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (!v7)
     {
       goto LABEL_16;
@@ -1050,27 +1050,27 @@ LABEL_23:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(members2);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
         if (([v11 isMe] & 1) == 0)
         {
-          v12 = [v11 contact];
-          v13 = [v12 givenName];
+          contact = [v11 contact];
+          givenName = [contact givenName];
 
-          v14 = [v11 firstName];
-          if ([v13 length])
+          firstName = [v11 firstName];
+          if ([givenName length])
           {
             v15 = v5;
-            v16 = v13;
+            v16 = givenName;
             goto LABEL_12;
           }
 
-          if (v14)
+          if (firstName)
           {
             v15 = v5;
-            v16 = v14;
+            v16 = firstName;
 LABEL_12:
             [v15 addObject:v16];
           }
@@ -1079,7 +1079,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [members2 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (!v8)
       {
 LABEL_16:
@@ -1244,15 +1244,15 @@ void __20__FAFamilyCircle_me__block_invoke_2(uint64_t a1, void *a2, uint64_t a3,
   if (v3)
   {
     v4 = [(FAFamilyCircle *)self me];
-    v5 = [v4 isChildAccount];
+    isChildAccount = [v4 isChildAccount];
   }
 
   else
   {
-    v5 = 0;
+    isChildAccount = 0;
   }
 
-  return v5;
+  return isChildAccount;
 }
 
 - (BOOL)familyHasU13Member
@@ -1299,37 +1299,37 @@ LABEL_11:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   members = self->_members;
-  v5 = a3;
-  [v5 encodeObject:members forKey:@"_members"];
-  [v5 encodeObject:self->_cloudKitProperties forKey:@"_cloudKitProperties"];
-  [v5 encodeObject:self->__serverResponse forKey:@"__serverResponse"];
-  [v5 encodeObject:self->_childCutOffAge forKey:@"_childCutOffAge"];
-  [v5 encodeBool:self->_canAddMembers forKey:@"_canAddMembers"];
-  [v5 encodeObject:self->_addMemberButtonLabel forKey:@"_addMemberButtonLabel"];
-  [v5 encodeObject:self->_eligibilityRequirements forKey:@"family-recommendation-info"];
-  [v5 encodeObject:self->_familyMembersFooterLabel forKey:@"_familyMembersFooterLabel"];
-  [v5 encodeObject:self->_allowedSubscriptions forKey:@"_allowedSubscriptions"];
-  [v5 encodeBool:self->_showAddMemberButton forKey:@"_showAddMemberButton"];
-  [v5 encodeBool:self->_shouldShowInvites forKey:@"_shouldShowInvites"];
-  [v5 encodeBool:self->_showLocationSplashScreen forKey:@"_showLocationSplashScreen"];
-  [v5 encodeBool:self->_showRUIPages forKey:@"_showRUIPages"];
-  [v5 encodeObject:self->_familyID forKey:@"_familyID"];
-  [v5 encodeInteger:self->_ageCategory forKey:@"_ageCategory"];
-  [v5 encodeBool:self->_sharedPayementEnabled forKey:@"_sharedPayementEnabled"];
-  [v5 encodeObject:self->_checklistRankingBucketType forKey:@"_checklistRankingBucketType"];
-  [v5 encodeObject:self->_checklistRankingVersion forKey:@"_checklistRankingVersion"];
-  [v5 encodeBool:self->_shouldBadgeOrganizer forKey:@"_shouldBadgeOrganizer"];
-  [v5 encodeBool:self->_shouldBadgeInvitee forKey:@"_shouldBadgeInvitee"];
-  [v5 encodeObject:self->_childBotAllowlistedParents forKey:@"_childBotAllowlistedParents"];
-  [v5 encodeObject:self->_parentAllowlistedChildBots forKey:@"_parentAllowlistedChildBots"];
+  coderCopy = coder;
+  [coderCopy encodeObject:members forKey:@"_members"];
+  [coderCopy encodeObject:self->_cloudKitProperties forKey:@"_cloudKitProperties"];
+  [coderCopy encodeObject:self->__serverResponse forKey:@"__serverResponse"];
+  [coderCopy encodeObject:self->_childCutOffAge forKey:@"_childCutOffAge"];
+  [coderCopy encodeBool:self->_canAddMembers forKey:@"_canAddMembers"];
+  [coderCopy encodeObject:self->_addMemberButtonLabel forKey:@"_addMemberButtonLabel"];
+  [coderCopy encodeObject:self->_eligibilityRequirements forKey:@"family-recommendation-info"];
+  [coderCopy encodeObject:self->_familyMembersFooterLabel forKey:@"_familyMembersFooterLabel"];
+  [coderCopy encodeObject:self->_allowedSubscriptions forKey:@"_allowedSubscriptions"];
+  [coderCopy encodeBool:self->_showAddMemberButton forKey:@"_showAddMemberButton"];
+  [coderCopy encodeBool:self->_shouldShowInvites forKey:@"_shouldShowInvites"];
+  [coderCopy encodeBool:self->_showLocationSplashScreen forKey:@"_showLocationSplashScreen"];
+  [coderCopy encodeBool:self->_showRUIPages forKey:@"_showRUIPages"];
+  [coderCopy encodeObject:self->_familyID forKey:@"_familyID"];
+  [coderCopy encodeInteger:self->_ageCategory forKey:@"_ageCategory"];
+  [coderCopy encodeBool:self->_sharedPayementEnabled forKey:@"_sharedPayementEnabled"];
+  [coderCopy encodeObject:self->_checklistRankingBucketType forKey:@"_checklistRankingBucketType"];
+  [coderCopy encodeObject:self->_checklistRankingVersion forKey:@"_checklistRankingVersion"];
+  [coderCopy encodeBool:self->_shouldBadgeOrganizer forKey:@"_shouldBadgeOrganizer"];
+  [coderCopy encodeBool:self->_shouldBadgeInvitee forKey:@"_shouldBadgeInvitee"];
+  [coderCopy encodeObject:self->_childBotAllowlistedParents forKey:@"_childBotAllowlistedParents"];
+  [coderCopy encodeObject:self->_parentAllowlistedChildBots forKey:@"_parentAllowlistedChildBots"];
 }
 
-- (FAFamilyCircle)initWithCoder:(id)a3
+- (FAFamilyCircle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = FAFamilyCircle;
   v5 = [(FAFamilyCircle *)&v49 init];
@@ -1338,11 +1338,11 @@ LABEL_11:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_members"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_members"];
     members = v5->_members;
     v5->_members = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cloudKitProperties"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cloudKitProperties"];
     cloudKitProperties = v5->_cloudKitProperties;
     v5->_cloudKitProperties = v11;
 
@@ -1352,11 +1352,11 @@ LABEL_11:
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v18 = [v13 setWithObjects:{v14, v15, v16, v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"__serverResponse"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"__serverResponse"];
     serverResponse = v5->__serverResponse;
     v5->__serverResponse = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"family-recommendation-info"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"family-recommendation-info"];
     v22 = v21;
     if (v21)
     {
@@ -1371,44 +1371,44 @@ LABEL_11:
     eligibilityRequirements = v5->_eligibilityRequirements;
     v5->_eligibilityRequirements = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_childCutOffAge"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_childCutOffAge"];
     childCutOffAge = v5->_childCutOffAge;
     v5->_childCutOffAge = v25;
 
-    v5->_canAddMembers = [v4 decodeBoolForKey:@"_canAddMembers"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_addMemberButtonLabel"];
+    v5->_canAddMembers = [coderCopy decodeBoolForKey:@"_canAddMembers"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_addMemberButtonLabel"];
     addMemberButtonLabel = v5->_addMemberButtonLabel;
     v5->_addMemberButtonLabel = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_familyMembersFooterLabel"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_familyMembersFooterLabel"];
     familyMembersFooterLabel = v5->_familyMembersFooterLabel;
     v5->_familyMembersFooterLabel = v29;
 
-    v31 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_allowedSubscriptions"];
+    v31 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_allowedSubscriptions"];
     allowedSubscriptions = v5->_allowedSubscriptions;
     v5->_allowedSubscriptions = v31;
 
-    v5->_showAddMemberButton = [v4 decodeBoolForKey:@"_showAddMemberButton"];
-    v5->_shouldShowInvites = [v4 decodeBoolForKey:@"_shouldShowInvites"];
-    v5->_showLocationSplashScreen = [v4 decodeBoolForKey:@"_showLocationSplashScreen"];
-    v5->_showRUIPages = [v4 decodeBoolForKey:@"_showRUIPages"];
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_familyID"];
+    v5->_showAddMemberButton = [coderCopy decodeBoolForKey:@"_showAddMemberButton"];
+    v5->_shouldShowInvites = [coderCopy decodeBoolForKey:@"_shouldShowInvites"];
+    v5->_showLocationSplashScreen = [coderCopy decodeBoolForKey:@"_showLocationSplashScreen"];
+    v5->_showRUIPages = [coderCopy decodeBoolForKey:@"_showRUIPages"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_familyID"];
     familyID = v5->_familyID;
     v5->_familyID = v33;
 
-    v5->_ageCategory = [v4 decodeIntegerForKey:@"_ageCategory"];
-    v5->_sharedPayementEnabled = [v4 decodeBoolForKey:@"_sharedPayementEnabled"];
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_checklistRankingBucketType"];
+    v5->_ageCategory = [coderCopy decodeIntegerForKey:@"_ageCategory"];
+    v5->_sharedPayementEnabled = [coderCopy decodeBoolForKey:@"_sharedPayementEnabled"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_checklistRankingBucketType"];
     checklistRankingBucketType = v5->_checklistRankingBucketType;
     v5->_checklistRankingBucketType = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_checklistRankingVersion"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_checklistRankingVersion"];
     checklistRankingVersion = v5->_checklistRankingVersion;
     v5->_checklistRankingVersion = v37;
 
-    if ([v4 containsValueForKey:@"_shouldBadgeOrganizer"])
+    if ([coderCopy containsValueForKey:@"_shouldBadgeOrganizer"])
     {
-      v39 = [v4 decodeBoolForKey:@"_shouldBadgeOrganizer"];
+      v39 = [coderCopy decodeBoolForKey:@"_shouldBadgeOrganizer"];
     }
 
     else
@@ -1417,9 +1417,9 @@ LABEL_11:
     }
 
     v5->_shouldBadgeOrganizer = v39;
-    if ([v4 containsValueForKey:@"_shouldBadgeInvitee"])
+    if ([coderCopy containsValueForKey:@"_shouldBadgeInvitee"])
     {
-      v40 = [v4 decodeBoolForKey:@"_shouldBadgeInvitee"];
+      v40 = [coderCopy decodeBoolForKey:@"_shouldBadgeInvitee"];
     }
 
     else
@@ -1428,11 +1428,11 @@ LABEL_11:
     }
 
     v5->_shouldBadgeInvitee = v40;
-    v41 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_childBotAllowlistedParents"];
+    v41 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_childBotAllowlistedParents"];
     childBotAllowlistedParents = v5->_childBotAllowlistedParents;
     v5->_childBotAllowlistedParents = v41;
 
-    v43 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_parentAllowlistedChildBots"];
+    v43 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_parentAllowlistedChildBots"];
     parentAllowlistedChildBots = v5->_parentAllowlistedChildBots;
     v5->_parentAllowlistedChildBots = v43;
 
@@ -1445,10 +1445,10 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -1456,20 +1456,20 @@ LABEL_11:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(FAFamilyCircle *)self isEqualToFAFamilyCircle:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(FAFamilyCircle *)self isEqualToFAFamilyCircle:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToFAFamilyCircle:(id)a3
+- (BOOL)isEqualToFAFamilyCircle:(id)circle
 {
-  v4 = a3;
-  v5 = [(FAFamilyCircle *)self _serverResponse];
-  v6 = [v4 _serverResponse];
+  circleCopy = circle;
+  _serverResponse = [(FAFamilyCircle *)self _serverResponse];
+  _serverResponse2 = [circleCopy _serverResponse];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(circleCopy) = [_serverResponse isEqual:_serverResponse2];
+  return circleCopy;
 }
 
 @end

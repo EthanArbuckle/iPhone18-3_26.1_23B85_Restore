@@ -1,11 +1,11 @@
 @interface IMSenderIdentityManager
-+ (BOOL)isTUSenderIdentity:(id)a3 equalToSubscriptionContext:(id)a4;
++ (BOOL)isTUSenderIdentity:(id)identity equalToSubscriptionContext:(id)context;
 + (id)sharedInstance;
 - (IMSenderIdentityManager)init;
-- (id)bestSenderIdentityForGeminiHandle:(id)a3 contact:(id)a4;
-- (id)bestSenderIdentityForHandleID:(id)a3 contact:(id)a4;
-- (id)bestSenderIdentityForHandleIDs:(id)a3;
-- (id)contactPreferredSenderIdentityForHandleID:(id)a3 contact:(id)a4;
+- (id)bestSenderIdentityForGeminiHandle:(id)handle contact:(id)contact;
+- (id)bestSenderIdentityForHandleID:(id)d contact:(id)contact;
+- (id)bestSenderIdentityForHandleIDs:(id)ds;
+- (id)contactPreferredSenderIdentityForHandleID:(id)d contact:(id)contact;
 @end
 
 @implementation IMSenderIdentityManager
@@ -42,16 +42,16 @@
   return v2;
 }
 
-- (id)bestSenderIdentityForHandleIDs:(id)a3
+- (id)bestSenderIdentityForHandleIDs:(id)ds
 {
   v27 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = a3;
+  dsCopy = ds;
   v5 = 0;
-  v6 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v6 = [dsCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v6)
   {
     v7 = *v19;
@@ -63,7 +63,7 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dsCopy);
         }
 
         v10 = [(IMSenderIdentityManager *)self bestSenderIdentityForHandleID:*(*(&v18 + 1) + 8 * v8) contact:0, v18];
@@ -72,9 +72,9 @@
         {
           if (v10)
           {
-            v11 = [v10 accountUUID];
-            v12 = [v9 accountUUID];
-            v13 = [v11 isEqual:v12];
+            accountUUID = [v10 accountUUID];
+            accountUUID2 = [v9 accountUUID];
+            v13 = [accountUUID isEqual:accountUUID2];
 
             if ((v13 & 1) == 0)
             {
@@ -102,7 +102,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v6 = [dsCopy countByEnumeratingWithState:&v18 objects:v26 count:16];
       if (v6)
       {
         continue;
@@ -120,7 +120,7 @@
       *buf = 138412546;
       v23 = v5;
       v24 = 2112;
-      v25 = v4;
+      v25 = dsCopy;
       _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Best sender identity :%@ for handleIDs :%@", buf, 0x16u);
     }
   }
@@ -132,15 +132,15 @@ LABEL_21:
   return v15;
 }
 
-- (id)bestSenderIdentityForHandleID:(id)a3 contact:(id)a4
+- (id)bestSenderIdentityForHandleID:(id)d contact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
-  if (v7 || v8)
+  dCopy = d;
+  contactCopy = contact;
+  v8 = [dCopy length];
+  if (contactCopy || v8)
   {
-    v11 = [[qword_1EB3096C8 alloc] initWithString:v6 type:-1];
-    v10 = [(IMSenderIdentityManager *)self bestSenderIdentityForGeminiHandle:v11 contact:v7];
+    v11 = [[qword_1EB3096C8 alloc] initWithString:dCopy type:-1];
+    v10 = [(IMSenderIdentityManager *)self bestSenderIdentityForGeminiHandle:v11 contact:contactCopy];
   }
 
   else
@@ -161,23 +161,23 @@ LABEL_21:
   return v10;
 }
 
-- (id)contactPreferredSenderIdentityForHandleID:(id)a3 contact:(id)a4
+- (id)contactPreferredSenderIdentityForHandleID:(id)d contact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
-  if (v7 || v8)
+  dCopy = d;
+  contactCopy = contact;
+  v8 = [dCopy length];
+  if (contactCopy || v8)
   {
-    v11 = [(IMSenderIdentityManager *)self geminiManager];
+    geminiManager = [(IMSenderIdentityManager *)self geminiManager];
     v18 = 0;
-    v12 = [v11 geminiResultForContact:v7 error:&v18];
+    v12 = [geminiManager geminiResultForContact:contactCopy error:&v18];
     v13 = v18;
 
     if ([v12 usage] == 1)
     {
-      v14 = [(IMSenderIdentityManager *)self geminiManager];
+      geminiManager2 = [(IMSenderIdentityManager *)self geminiManager];
       v17 = v13;
-      v10 = [v14 bestSenderIdentityForContact:v7 error:&v17];
+      v10 = [geminiManager2 bestSenderIdentityForContact:contactCopy error:&v17];
       v15 = v17;
 
       v13 = v15;
@@ -207,23 +207,23 @@ LABEL_21:
   return v10;
 }
 
-- (id)bestSenderIdentityForGeminiHandle:(id)a3 contact:(id)a4
+- (id)bestSenderIdentityForGeminiHandle:(id)handle contact:(id)contact
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([IMContactStore isCNContactAKnownContact:v7])
+  handleCopy = handle;
+  contactCopy = contact;
+  if ([IMContactStore isCNContactAKnownContact:contactCopy])
   {
-    v8 = [(IMSenderIdentityManager *)self geminiManager];
+    geminiManager = [(IMSenderIdentityManager *)self geminiManager];
     v32 = 0;
-    v9 = [v8 bestSenderIdentityForContact:v7 error:&v32];
+    firstObject = [geminiManager bestSenderIdentityForContact:contactCopy error:&v32];
     v10 = v32;
 
     goto LABEL_12;
   }
 
-  v11 = [v6 stringValue];
-  v12 = [v11 length];
+  stringValue = [handleCopy stringValue];
+  v12 = [stringValue length];
 
   v13 = IMOSLoggingEnabled();
   if (v12)
@@ -234,17 +234,17 @@ LABEL_21:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v34 = v6;
+        v34 = handleCopy;
         v35 = 2112;
-        v36 = v6;
+        v36 = handleCopy;
         _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "bestSenderIdentityForGeminiHandle:contact: called with handle that has nil contact: %@. Attempting to find with TU handle %@.", buf, 0x16u);
       }
     }
 
-    v15 = [(IMSenderIdentityManager *)self geminiManager];
+    geminiManager2 = [(IMSenderIdentityManager *)self geminiManager];
     v16 = objc_alloc_init(qword_1ED8CA2A8);
     v31 = 0;
-    v9 = [v15 bestSenderIdentityForHandle:v6 contactStore:v16 error:&v31];
+    firstObject = [geminiManager2 bestSenderIdentityForHandle:handleCopy contactStore:v16 error:&v31];
     v10 = v31;
 
     if (IMOSLoggingEnabled())
@@ -252,10 +252,10 @@ LABEL_21:
       v17 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = [v9 handle];
-        v19 = [v18 value];
+        handle = [firstObject handle];
+        value = [handle value];
         *buf = 138412290;
-        v34 = v19;
+        v34 = value;
         _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "bestSenderIdentityForGeminiHandle:contact: returned handle %@.", buf, 0xCu);
       }
     }
@@ -272,7 +272,7 @@ LABEL_12:
       }
     }
 
-    if (v9)
+    if (firstObject)
     {
       goto LABEL_40;
     }
@@ -308,12 +308,12 @@ LABEL_24:
     goto LABEL_35;
   }
 
-  v23 = [v22 sharedInstance];
-  v24 = [v23 providerManager];
-  v25 = [v24 telephonyProvider];
+  sharedInstance = [v22 sharedInstance];
+  providerManager = [sharedInstance providerManager];
+  telephonyProvider = [providerManager telephonyProvider];
 
-  v26 = [v25 prioritizedSenderIdentities];
-  v9 = [v26 firstObject];
+  prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
+  firstObject = [prioritizedSenderIdentities firstObject];
 
   if (IMOSLoggingEnabled())
   {
@@ -321,12 +321,12 @@ LABEL_24:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v34 = v9;
+      v34 = firstObject;
       _os_log_impl(&dword_1A85E5000, v27, OS_LOG_TYPE_INFO, "TUCallProvider provided prioritized sender identity: %@", buf, 0xCu);
     }
   }
 
-  if (!v9)
+  if (!firstObject)
   {
 LABEL_35:
     if (IMOSLoggingEnabled())
@@ -339,28 +339,28 @@ LABEL_35:
       }
     }
 
-    v9 = 0;
+    firstObject = 0;
   }
 
 LABEL_40:
 
-  return v9;
+  return firstObject;
 }
 
-+ (BOOL)isTUSenderIdentity:(id)a3 equalToSubscriptionContext:(id)a4
++ (BOOL)isTUSenderIdentity:(id)identity equalToSubscriptionContext:(id)context
 {
-  if (!a3 || !a4)
+  if (!identity || !context)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = [a3 accountUUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 labelID];
+  contextCopy = context;
+  accountUUID = [identity accountUUID];
+  uUIDString = [accountUUID UUIDString];
+  labelID = [contextCopy labelID];
 
-  LOBYTE(v5) = [v7 isEqualToString:v8];
-  return v5;
+  LOBYTE(contextCopy) = [uUIDString isEqualToString:labelID];
+  return contextCopy;
 }
 
 @end

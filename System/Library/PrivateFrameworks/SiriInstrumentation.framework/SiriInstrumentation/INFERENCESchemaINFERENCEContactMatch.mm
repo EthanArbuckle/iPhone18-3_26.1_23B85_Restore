@@ -1,27 +1,27 @@
 @interface INFERENCESchemaINFERENCEContactMatch
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEContactMatch)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEContactMatch)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEContactMatch)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEContactMatch)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsShownToUser:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsShownToUser:(BOOL)user;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEContactMatch
 
-- (INFERENCESchemaINFERENCEContactMatch)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEContactMatch)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = INFERENCESchemaINFERENCEContactMatch;
   v5 = [(INFERENCESchemaINFERENCEContactMatch *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contactValue"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contactValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(INFERENCESchemaINFERENCEContactMatch *)v5 setContactValue:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"contactSignalSet"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"contactSignalSet"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(INFERENCESchemaINFERENCEContactMatch *)v5 setContactSignalSet:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"backgroundSignalSet"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"backgroundSignalSet"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(INFERENCESchemaINFERENCEContactMatch *)v5 setBackgroundSignalSet:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"featureSet"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"featureSet"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(INFERENCESchemaINFERENCEContactMatch *)v5 setFeatureSet:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"score"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(INFERENCESchemaINFERENCEContactMatch *)v5 setScore:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isShownToUser"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isShownToUser"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,30 +74,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEContactMatch)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEContactMatch)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEContactMatch *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEContactMatch *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEContactMatch *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -110,68 +110,68 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundSignalSet)
   {
-    v4 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    backgroundSignalSet = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
+    dictionaryRepresentation = [backgroundSignalSet dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"backgroundSignalSet"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundSignalSet"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"backgroundSignalSet"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundSignalSet"];
     }
   }
 
   if (self->_contactSignalSet)
   {
-    v7 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    contactSignalSet = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
+    dictionaryRepresentation2 = [contactSignalSet dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"contactSignalSet"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contactSignalSet"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"contactSignalSet"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"contactSignalSet"];
     }
   }
 
   if (self->_contactValue)
   {
-    v10 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    contactValue = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
+    dictionaryRepresentation3 = [contactValue dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"contactValue"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"contactValue"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"contactValue"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"contactValue"];
     }
   }
 
   if (self->_featureSet)
   {
-    v13 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    featureSet = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
+    dictionaryRepresentation4 = [featureSet dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"featureSet"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"featureSet"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"featureSet"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"featureSet"];
     }
   }
 
@@ -179,7 +179,7 @@
   if ((v16 & 2) != 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactMatch isShownToUser](self, "isShownToUser")}];
-    [v3 setObject:v17 forKeyedSubscript:@"isShownToUser"];
+    [dictionary setObject:v17 forKeyedSubscript:@"isShownToUser"];
 
     v16 = *(&self->_isShownToUser + 1);
   }
@@ -189,12 +189,12 @@
     v18 = MEMORY[0x1E696AD98];
     [(INFERENCESchemaINFERENCEContactMatch *)self score];
     v19 = [v18 numberWithFloat:?];
-    [v3 setObject:v19 forKeyedSubscript:@"score"];
+    [dictionary setObject:v19 forKeyedSubscript:@"score"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -254,28 +254,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
-  v6 = [v4 contactValue];
-  if ((v5 != 0) == (v6 == 0))
+  contactValue = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
+  contactValue2 = [equalCopy contactValue];
+  if ((contactValue != 0) == (contactValue2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
-  if (v7)
+  contactValue3 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
+  if (contactValue3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
-    v10 = [v4 contactValue];
-    v11 = [v9 isEqual:v10];
+    v8 = contactValue3;
+    contactValue4 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
+    contactValue5 = [equalCopy contactValue];
+    v11 = [contactValue4 isEqual:contactValue5];
 
     if (!v11)
     {
@@ -287,20 +287,20 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
-  v6 = [v4 contactSignalSet];
-  if ((v5 != 0) == (v6 == 0))
+  contactValue = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
+  contactValue2 = [equalCopy contactSignalSet];
+  if ((contactValue != 0) == (contactValue2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
-  if (v12)
+  contactSignalSet = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
+  if (contactSignalSet)
   {
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
-    v15 = [v4 contactSignalSet];
-    v16 = [v14 isEqual:v15];
+    v13 = contactSignalSet;
+    contactSignalSet2 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
+    contactSignalSet3 = [equalCopy contactSignalSet];
+    v16 = [contactSignalSet2 isEqual:contactSignalSet3];
 
     if (!v16)
     {
@@ -312,20 +312,20 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
-  v6 = [v4 backgroundSignalSet];
-  if ((v5 != 0) == (v6 == 0))
+  contactValue = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
+  contactValue2 = [equalCopy backgroundSignalSet];
+  if ((contactValue != 0) == (contactValue2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
-  if (v17)
+  backgroundSignalSet = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
+  if (backgroundSignalSet)
   {
-    v18 = v17;
-    v19 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
-    v20 = [v4 backgroundSignalSet];
-    v21 = [v19 isEqual:v20];
+    v18 = backgroundSignalSet;
+    backgroundSignalSet2 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
+    backgroundSignalSet3 = [equalCopy backgroundSignalSet];
+    v21 = [backgroundSignalSet2 isEqual:backgroundSignalSet3];
 
     if (!v21)
     {
@@ -337,22 +337,22 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
-  v6 = [v4 featureSet];
-  if ((v5 != 0) == (v6 == 0))
+  contactValue = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
+  contactValue2 = [equalCopy featureSet];
+  if ((contactValue != 0) == (contactValue2 == 0))
   {
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  v22 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
-  if (v22)
+  featureSet = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
+  if (featureSet)
   {
-    v23 = v22;
-    v24 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
-    v25 = [v4 featureSet];
-    v26 = [v24 isEqual:v25];
+    v23 = featureSet;
+    featureSet2 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
+    featureSet3 = [equalCopy featureSet];
+    v26 = [featureSet2 isEqual:featureSet3];
 
     if (!v26)
     {
@@ -365,26 +365,26 @@ LABEL_21:
   }
 
   v29 = *(&self->_isShownToUser + 1);
-  v30 = v4[45];
+  v30 = equalCopy[45];
   if ((v29 & 1) == (v30 & 1))
   {
     if (v29)
     {
       score = self->_score;
-      [v4 score];
+      [equalCopy score];
       if (score != v32)
       {
         goto LABEL_22;
       }
 
       v29 = *(&self->_isShownToUser + 1);
-      v30 = v4[45];
+      v30 = equalCopy[45];
     }
 
     v33 = (v29 >> 1) & 1;
     if (v33 == ((v30 >> 1) & 1))
     {
-      if (!v33 || (isShownToUser = self->_isShownToUser, isShownToUser == [v4 isShownToUser]))
+      if (!v33 || (isShownToUser = self->_isShownToUser, isShownToUser == [equalCopy isShownToUser]))
       {
         v27 = 1;
         goto LABEL_23;
@@ -399,38 +399,38 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
+  toCopy = to;
+  contactValue = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
 
-  if (v4)
+  if (contactValue)
   {
-    v5 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
+    contactValue2 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
+  contactSignalSet = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
 
-  if (v6)
+  if (contactSignalSet)
   {
-    v7 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
+    contactSignalSet2 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
+  backgroundSignalSet = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
 
-  if (v8)
+  if (backgroundSignalSet)
   {
-    v9 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
+    backgroundSignalSet2 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
+  featureSet = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
 
-  if (v10)
+  if (featureSet)
   {
-    v11 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
+    featureSet2 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
     PBDataWriterWriteSubmessage();
   }
 
@@ -441,17 +441,17 @@ LABEL_23:
     v12 = *(&self->_isShownToUser + 1);
   }
 
-  v13 = v14;
+  v13 = toCopy;
   if ((v12 & 2) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v13 = v14;
+    v13 = toCopy;
   }
 }
 
-- (void)setHasIsShownToUser:(BOOL)a3
+- (void)setHasIsShownToUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 2;
   }
@@ -464,44 +464,44 @@ LABEL_23:
   *(&self->_isShownToUser + 1) = *(&self->_isShownToUser + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = INFERENCESchemaINFERENCEContactMatch;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  contactValue = [(INFERENCESchemaINFERENCEContactMatch *)self contactValue];
+  v7 = [contactValue applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEContactMatch *)self deleteContactValue];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  contactSignalSet = [(INFERENCESchemaINFERENCEContactMatch *)self contactSignalSet];
+  v10 = [contactSignalSet applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEContactMatch *)self deleteContactSignalSet];
   }
 
-  v12 = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  backgroundSignalSet = [(INFERENCESchemaINFERENCEContactMatch *)self backgroundSignalSet];
+  v13 = [backgroundSignalSet applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(INFERENCESchemaINFERENCEContactMatch *)self deleteBackgroundSignalSet];
   }
 
-  v15 = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  featureSet = [(INFERENCESchemaINFERENCEContactMatch *)self featureSet];
+  v16 = [featureSet applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(INFERENCESchemaINFERENCEContactMatch *)self deleteFeatureSet];
   }

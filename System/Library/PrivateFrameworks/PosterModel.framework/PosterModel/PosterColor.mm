@@ -1,15 +1,15 @@
 @interface PosterColor
 - (_TtC11PosterModel11PosterColor)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PosterColor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_25EDB784C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_25EDB784C(coderCopy);
 }
 
 - (_TtC11PosterModel11PosterColor)init

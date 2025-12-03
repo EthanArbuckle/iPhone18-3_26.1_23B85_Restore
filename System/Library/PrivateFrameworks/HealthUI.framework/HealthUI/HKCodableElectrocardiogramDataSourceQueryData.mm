@@ -1,21 +1,21 @@
 @interface HKCodableElectrocardiogramDataSourceQueryData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSamples:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSamples:(id)samples;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableElectrocardiogramDataSourceQueryData
 
-- (void)setHasCount:(BOOL)a3
+- (void)setHasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -28,22 +28,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addSamples:(id)a3
+- (void)addSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   samples = self->_samples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!samples)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_samples;
     self->_samples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     samples = self->_samples;
   }
 
-  [(NSMutableArray *)samples addObject:v4];
+  [(NSMutableArray *)samples addObject:samplesCopy];
 }
 
 - (id)description
@@ -52,8 +52,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableElectrocardiogramDataSourceQueryData;
   v4 = [(HKCodableElectrocardiogramDataSourceQueryData *)&v8 description];
-  v5 = [(HKCodableElectrocardiogramDataSourceQueryData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableElectrocardiogramDataSourceQueryData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -61,11 +61,11 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_count];
-    [v3 setObject:v4 forKey:@"count"];
+    [dictionary setObject:v4 forKey:@"count"];
   }
 
   if ([(NSMutableArray *)self->_samples count])
@@ -90,8 +90,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -100,22 +100,22 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"samples"];
+    [dictionary setObject:v5 forKey:@"samples"];
   }
 
   if (*&self->_has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_activeAlgorithmVersionRawValue];
-    [v3 setObject:v12 forKey:@"activeAlgorithmVersionRawValue"];
+    [dictionary setObject:v12 forKey:@"activeAlgorithmVersionRawValue"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
@@ -158,23 +158,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_count;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = self->_count;
+    *(toCopy + 32) |= 2u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(HKCodableElectrocardiogramDataSourceQueryData *)self samplesCount])
   {
     [v9 clearSamples];
-    v5 = [(HKCodableElectrocardiogramDataSourceQueryData *)self samplesCount];
-    if (v5)
+    samplesCount = [(HKCodableElectrocardiogramDataSourceQueryData *)self samplesCount];
+    if (samplesCount)
     {
-      v6 = v5;
+      v6 = samplesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(HKCodableElectrocardiogramDataSourceQueryData *)self samplesAtIndex:i];
@@ -190,10 +190,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -221,7 +221,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addSamples:v12];
 
         ++v11;
@@ -243,10 +243,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
@@ -254,19 +254,19 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_count != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_count != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   samples = self->_samples;
-  if (samples | *(v4 + 3))
+  if (samples | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)samples isEqual:?])
     {
@@ -278,10 +278,10 @@ LABEL_14:
     has = self->_has;
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_activeAlgorithmVersionRawValue != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_activeAlgorithmVersionRawValue != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
@@ -320,14 +320,14 @@ LABEL_15:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 32) & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_count = *(v4 + 2);
+    self->_count = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -335,7 +335,7 @@ LABEL_15:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

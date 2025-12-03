@@ -1,5 +1,5 @@
 @interface OSLogCurrentProcessEnumerator
-- (OSLogCurrentProcessEnumerator)initWithOptions:(unint64_t)a3 predicate:(id)a4 position:(id)a5;
+- (OSLogCurrentProcessEnumerator)initWithOptions:(unint64_t)options predicate:(id)predicate position:(id)position;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -49,10 +49,10 @@ void __43__OSLogCurrentProcessEnumerator_nextObject__block_invoke(uint64_t a1, u
   [(OSLogCurrentProcessEnumerator *)&v3 dealloc];
 }
 
-- (OSLogCurrentProcessEnumerator)initWithOptions:(unint64_t)a3 predicate:(id)a4 position:(id)a5
+- (OSLogCurrentProcessEnumerator)initWithOptions:(unint64_t)options predicate:(id)predicate position:(id)position
 {
-  v7 = a4;
-  v8 = a5;
+  predicateCopy = predicate;
+  positionCopy = position;
   v23.receiver = self;
   v23.super_class = OSLogCurrentProcessEnumerator;
   v9 = [(OSLogCurrentProcessEnumerator *)&v23 init];
@@ -78,7 +78,7 @@ void __43__OSLogCurrentProcessEnumerator_nextObject__block_invoke(uint64_t a1, u
     v16[2] = __68__OSLogCurrentProcessEnumerator_initWithOptions_predicate_position___block_invoke_37;
     v16[3] = &unk_278B46368;
     v16[4] = &v17;
-    [v13 setUpWithPredicate:v7 reply:v16];
+    [v13 setUpWithPredicate:predicateCopy reply:v16];
 
     if (v18[5])
     {

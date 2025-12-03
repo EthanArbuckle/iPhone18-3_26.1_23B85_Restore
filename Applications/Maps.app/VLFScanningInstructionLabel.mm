@@ -5,18 +5,18 @@
 - (double)_minimumLinesOverridePointSizeThreshold;
 - (double)contentHeight;
 - (id)_defaultFont;
-- (id)initForSizing:(BOOL)a3;
-- (unint64_t)_maximumNumberOfLinesWithMinimumOverride:(BOOL)a3;
+- (id)initForSizing:(BOOL)sizing;
+- (unint64_t)_maximumNumberOfLinesWithMinimumOverride:(BOOL)override;
 - (void)_updateContentHeight;
-- (void)_updateFontWithMinimumOverride:(BOOL)a3;
-- (void)addFontObserver:(id)a3;
+- (void)_updateFontWithMinimumOverride:(BOOL)override;
+- (void)addFontObserver:(id)observer;
 - (void)layoutSubviews;
-- (void)removeFontObserver:(id)a3;
-- (void)setCurrentLayout:(unint64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateFont:(id)a3;
+- (void)removeFontObserver:(id)observer;
+- (void)setCurrentLayout:(unint64_t)layout;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateFont:(id)font;
 @end
 
 @implementation VLFScanningInstructionLabel
@@ -28,46 +28,46 @@
     [(VLFScanningInstructionLabel *)self _updateFont];
     [(VLFScanningInstructionLabel *)self contentHeight];
     v4 = v3;
-    v5 = [(VLFScanningInstructionLabel *)self heightConstraint];
-    [v5 setConstant:v4];
+    heightConstraint = [(VLFScanningInstructionLabel *)self heightConstraint];
+    [heightConstraint setConstant:v4];
 
-    v8 = [(VLFScanningInstructionLabel *)self fontObservers];
-    v6 = [(VLFScanningInstructionLabel *)self label];
-    v7 = [v6 font];
-    [v8 updateFont:v7];
+    fontObservers = [(VLFScanningInstructionLabel *)self fontObservers];
+    label = [(VLFScanningInstructionLabel *)self label];
+    font = [label font];
+    [fontObservers updateFont:font];
   }
 }
 
-- (void)_updateFontWithMinimumOverride:(BOOL)a3
+- (void)_updateFontWithMinimumOverride:(BOOL)override
 {
-  v3 = a3;
-  v5 = [(VLFScanningInstructionLabel *)self _defaultFont];
-  v6 = [(VLFScanningInstructionLabel *)self label];
-  [v6 setFont:v5];
+  overrideCopy = override;
+  _defaultFont = [(VLFScanningInstructionLabel *)self _defaultFont];
+  label = [(VLFScanningInstructionLabel *)self label];
+  [label setFont:_defaultFont];
 
-  v7 = [(VLFScanningInstructionLabel *)self label];
+  label2 = [(VLFScanningInstructionLabel *)self label];
   [(VLFScanningInstructionLabel *)self bounds];
-  [v7 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0}];
+  [label2 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0}];
   v9 = v8;
 
-  v10 = [(VLFScanningInstructionLabel *)self label];
-  v11 = [v10 font];
-  [v11 leading];
+  label3 = [(VLFScanningInstructionLabel *)self label];
+  font = [label3 font];
+  [font leading];
   v13 = v12 + v9;
-  v14 = [(VLFScanningInstructionLabel *)self label];
-  v15 = [v14 font];
-  [v15 lineHeight];
+  label4 = [(VLFScanningInstructionLabel *)self label];
+  font2 = [label4 font];
+  [font2 lineHeight];
   v17 = v16;
-  v18 = [(VLFScanningInstructionLabel *)self label];
-  v19 = [v18 font];
-  [v19 leading];
+  label5 = [(VLFScanningInstructionLabel *)self label];
+  font3 = [label5 font];
+  [font3 leading];
   v21 = v13 / (v20 + v17);
 
   v22 = v21;
-  if ([(VLFScanningInstructionLabel *)self _maximumNumberOfLinesWithMinimumOverride:v3]< v21)
+  if ([(VLFScanningInstructionLabel *)self _maximumNumberOfLinesWithMinimumOverride:overrideCopy]< v21)
   {
     v23 = @"NO";
-    if (v3)
+    if (overrideCopy)
     {
       v23 = @"YES";
     }
@@ -78,30 +78,30 @@
       v24 = sub_100CCB3A4();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        v80 = [(VLFScanningInstructionLabel *)self label];
-        [v80 text];
+        label6 = [(VLFScanningInstructionLabel *)self label];
+        [label6 text];
         v25 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-        v79 = [(VLFScanningInstructionLabel *)self label];
-        v26 = [v79 font];
-        v78 = [(VLFScanningInstructionLabel *)self label];
-        v77 = [v78 font];
-        [v77 pointSize];
+        label7 = [(VLFScanningInstructionLabel *)self label];
+        font4 = [label7 font];
+        label8 = [(VLFScanningInstructionLabel *)self label];
+        font5 = [label8 font];
+        [font5 pointSize];
         v28 = v27;
-        v76 = [(VLFScanningInstructionLabel *)self label];
-        v74 = [v76 font];
-        [v74 lineHeight];
+        label9 = [(VLFScanningInstructionLabel *)self label];
+        font6 = [label9 font];
+        [font6 lineHeight];
         v30 = v29;
-        v31 = [(VLFScanningInstructionLabel *)self label];
-        v32 = [v31 font];
-        [v32 leading];
+        label10 = [(VLFScanningInstructionLabel *)self label];
+        font7 = [label10 font];
+        [font7 leading];
         v34 = v33;
-        v35 = v3;
-        v36 = [(VLFScanningInstructionLabel *)self _maximumNumberOfLinesWithMinimumOverride:v3];
+        v35 = overrideCopy;
+        v36 = [(VLFScanningInstructionLabel *)self _maximumNumberOfLinesWithMinimumOverride:overrideCopy];
         v75 = v73;
         *buf = 138414338;
         v82 = v25;
         v83 = 2112;
-        v84 = v26;
+        v84 = font4;
         v85 = 2048;
         v86 = v28;
         v87 = 2048;
@@ -114,26 +114,26 @@
         v94 = v9;
         v95 = 2048;
         v96 = v36;
-        v3 = v35;
+        overrideCopy = v35;
         v97 = 2112;
         v98 = v73;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Text: (%@) with font: (%@), pointSize: (%f), line height: (%f), and leading: (%f) renders as: (%lu) lines in: (%f) height which is higher than the limit: (%lu) with minimumOverride: %@", buf, 0x5Cu);
       }
 
-      v37 = [(VLFScanningInstructionLabel *)self label];
-      v38 = [v37 font];
-      [v38 pointSize];
+      label11 = [(VLFScanningInstructionLabel *)self label];
+      font8 = [label11 font];
+      [font8 pointSize];
       v40 = 0.0;
       if (v39 + -1.0 > 0.0)
       {
-        v41 = [(VLFScanningInstructionLabel *)self label];
-        v42 = [v41 font];
-        [v42 pointSize];
+        label12 = [(VLFScanningInstructionLabel *)self label];
+        font9 = [label12 font];
+        [font9 pointSize];
         v40 = v43 + -1.0;
       }
 
       [(VLFScanningInstructionLabel *)self _minimumLinesOverridePointSizeThreshold];
-      if (v40 < v44 && !v3)
+      if (v40 < v44 && !overrideCopy)
       {
         break;
       }
@@ -144,10 +144,10 @@
       {
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
-          v68 = [(VLFScanningInstructionLabel *)self label];
-          [v68 text];
+          label13 = [(VLFScanningInstructionLabel *)self label];
+          [label13 text];
           v69 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-          v70 = [(VLFScanningInstructionLabel *)self _maximumNumberOfLinesWithMinimumOverride:v3];
+          v70 = [(VLFScanningInstructionLabel *)self _maximumNumberOfLinesWithMinimumOverride:overrideCopy];
           *buf = 138412546;
           v82 = v69;
           v83 = 2048;
@@ -155,9 +155,9 @@
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "Text (%@) was too large to shrink to fit on (%lu) lines; using default font", buf, 0x16u);
         }
 
-        v71 = [(VLFScanningInstructionLabel *)self _defaultFont];
-        v72 = [(VLFScanningInstructionLabel *)self label];
-        [v72 setFont:v71];
+        _defaultFont2 = [(VLFScanningInstructionLabel *)self _defaultFont];
+        label14 = [(VLFScanningInstructionLabel *)self label];
+        [label14 setFont:_defaultFont2];
 
         return;
       }
@@ -169,33 +169,33 @@
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEBUG, "Trying again with pointSize: %f", buf, 0xCu);
       }
 
-      v47 = [(VLFScanningInstructionLabel *)self label];
-      v48 = [v47 font];
-      v49 = [v48 fontDescriptor];
-      v50 = [UIFont fontWithDescriptor:v49 size:v40];
-      v51 = [(VLFScanningInstructionLabel *)self label];
-      [v51 setFont:v50];
+      label15 = [(VLFScanningInstructionLabel *)self label];
+      font10 = [label15 font];
+      fontDescriptor = [font10 fontDescriptor];
+      v50 = [UIFont fontWithDescriptor:fontDescriptor size:v40];
+      label16 = [(VLFScanningInstructionLabel *)self label];
+      [label16 setFont:v50];
 
-      v52 = [(VLFScanningInstructionLabel *)self label];
+      label17 = [(VLFScanningInstructionLabel *)self label];
       [(VLFScanningInstructionLabel *)self bounds];
-      [v52 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0}];
+      [label17 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0}];
       v9 = v53;
 
-      v54 = [(VLFScanningInstructionLabel *)self label];
-      v55 = [v54 font];
-      [v55 leading];
+      label18 = [(VLFScanningInstructionLabel *)self label];
+      font11 = [label18 font];
+      [font11 leading];
       v57 = v56 + v9;
-      v58 = [(VLFScanningInstructionLabel *)self label];
-      v59 = [v58 font];
-      [v59 lineHeight];
+      label19 = [(VLFScanningInstructionLabel *)self label];
+      font12 = [label19 font];
+      [font12 lineHeight];
       v61 = v60;
-      v62 = [(VLFScanningInstructionLabel *)self label];
-      v63 = [v62 font];
-      [v63 leading];
+      label20 = [(VLFScanningInstructionLabel *)self label];
+      font13 = [label20 font];
+      [font13 leading];
       v65 = v57 / (v64 + v61);
 
       v22 = v65;
-      if ([(VLFScanningInstructionLabel *)self _maximumNumberOfLinesWithMinimumOverride:v3]>= v65)
+      if ([(VLFScanningInstructionLabel *)self _maximumNumberOfLinesWithMinimumOverride:overrideCopy]>= v65)
       {
         return;
       }
@@ -216,15 +216,15 @@
 
 - (id)_defaultFont
 {
-  v3 = [(VLFScanningInstructionLabel *)self traitCollection];
-  v4 = [(VLFScanningInstructionLabel *)self currentLayout];
+  traitCollection = [(VLFScanningInstructionLabel *)self traitCollection];
+  currentLayout = [(VLFScanningInstructionLabel *)self currentLayout];
   v5 = &UIContentSizeCategoryAccessibilityMedium;
-  if (v4 != 2)
+  if (currentLayout != 2)
   {
     v5 = &UIContentSizeCategoryLarge;
   }
 
-  v6 = [v3 _maps_traitCollectionWithMaximumContentSizeCategory:*v5];
+  v6 = [traitCollection _maps_traitCollectionWithMaximumContentSizeCategory:*v5];
 
   v7 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleTitle1 compatibleWithTraitCollection:v6];
   v16 = UIFontDescriptorTraitsAttribute;
@@ -241,20 +241,20 @@
   return v12;
 }
 
-- (unint64_t)_maximumNumberOfLinesWithMinimumOverride:(BOOL)a3
+- (unint64_t)_maximumNumberOfLinesWithMinimumOverride:(BOOL)override
 {
-  v3 = a3;
+  overrideCopy = override;
   if ([(VLFScanningInstructionLabel *)self currentLayout]== 2)
   {
-    v5 = [(VLFScanningInstructionLabel *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = sub_10008FB5C(v6, UIContentSizeCategoryLarge);
+    traitCollection = [(VLFScanningInstructionLabel *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v7 = sub_10008FB5C(preferredContentSizeCategory, UIContentSizeCategoryLarge);
 
     if (v7 == 1)
     {
-      v8 = [(VLFScanningInstructionLabel *)self traitCollection];
-      v9 = [v8 preferredContentSizeCategory];
-      v10 = sub_10008FB5C(v9, UIContentSizeCategoryExtraExtraExtraLarge);
+      traitCollection2 = [(VLFScanningInstructionLabel *)self traitCollection];
+      preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+      v10 = sub_10008FB5C(preferredContentSizeCategory2, UIContentSizeCategoryExtraExtraExtraLarge);
 
       if (v10 == 1)
       {
@@ -267,7 +267,7 @@
       }
     }
 
-    else if (v3)
+    else if (overrideCopy)
     {
       return 4;
     }
@@ -280,14 +280,14 @@
 
   else
   {
-    v12 = [(VLFScanningInstructionLabel *)self isRunningOnBigPhone];
+    isRunningOnBigPhone = [(VLFScanningInstructionLabel *)self isRunningOnBigPhone];
     v13 = 3;
-    if (v3)
+    if (overrideCopy)
     {
       v13 = 4;
     }
 
-    if (v12)
+    if (isRunningOnBigPhone)
     {
       return v13;
     }
@@ -301,9 +301,9 @@
 
 - (double)_minimumLinesOverridePointSizeThreshold
 {
-  v2 = [(VLFScanningInstructionLabel *)self currentLayout];
+  currentLayout = [(VLFScanningInstructionLabel *)self currentLayout];
   result = 20.0;
-  if (v2 == 2)
+  if (currentLayout == 2)
   {
     return 25.0;
   }
@@ -311,10 +311,10 @@
   return result;
 }
 
-- (void)removeFontObserver:(id)a3
+- (void)removeFontObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -343,14 +343,14 @@
     }
   }
 
-  v5 = [(VLFScanningInstructionLabel *)self fontObservers];
-  [v5 unregisterObserver:v4];
+  fontObservers = [(VLFScanningInstructionLabel *)self fontObservers];
+  [fontObservers unregisterObserver:observerCopy];
 }
 
-- (void)addFontObserver:(id)a3
+- (void)addFontObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v6 = sub_10006D178();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -379,13 +379,13 @@
     }
   }
 
-  v5 = [(VLFScanningInstructionLabel *)self fontObservers];
-  [v5 registerObserver:v4];
+  fontObservers = [(VLFScanningInstructionLabel *)self fontObservers];
+  [fontObservers registerObserver:observerCopy];
 }
 
-- (void)updateFont:(id)a3
+- (void)updateFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   if ([(VLFScanningInstructionLabel *)self isForSizing])
   {
     v6 = sub_10006D178();
@@ -417,85 +417,85 @@
 
   if ([(VLFScanningInstructionLabel *)self isForSizing])
   {
-    v5 = sub_100CCB3A4();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    label = sub_100CCB3A4();
+    if (os_log_type_enabled(label, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v9) = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Only non-sizing labels can be font providers", &v9, 2u);
+      _os_log_impl(&_mh_execute_header, label, OS_LOG_TYPE_ERROR, "Only non-sizing labels can be font providers", &v9, 2u);
     }
   }
 
   else
   {
-    v5 = [(VLFScanningInstructionLabel *)self label];
-    [v5 setFont:v4];
+    label = [(VLFScanningInstructionLabel *)self label];
+    [label setFont:fontCopy];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(VLFScanningInstructionLabel *)self label];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  label = [(VLFScanningInstructionLabel *)self label];
+  [label setTextColor:colorCopy];
 }
 
 - (UIColor)textColor
 {
-  v2 = [(VLFScanningInstructionLabel *)self label];
-  v3 = [v2 textColor];
+  label = [(VLFScanningInstructionLabel *)self label];
+  textColor = [label textColor];
 
-  return v3;
+  return textColor;
 }
 
 - (UIFont)font
 {
-  v2 = [(VLFScanningInstructionLabel *)self label];
-  v3 = [v2 font];
+  label = [(VLFScanningInstructionLabel *)self label];
+  font = [label font];
 
-  return v3;
+  return font;
 }
 
-- (void)setCurrentLayout:(unint64_t)a3
+- (void)setCurrentLayout:(unint64_t)layout
 {
-  if (self->_currentLayout != a3)
+  if (self->_currentLayout != layout)
   {
-    self->_currentLayout = a3;
+    self->_currentLayout = layout;
     [(VLFScanningInstructionLabel *)self _updateContentHeight];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(VLFScanningInstructionLabel *)self label];
-  [v5 setText:v4];
+  textCopy = text;
+  label = [(VLFScanningInstructionLabel *)self label];
+  [label setText:textCopy];
 
   [(VLFScanningInstructionLabel *)self _updateContentHeight];
 }
 
 - (NSString)text
 {
-  v2 = [(VLFScanningInstructionLabel *)self label];
-  v3 = [v2 text];
+  label = [(VLFScanningInstructionLabel *)self label];
+  text = [label text];
 
-  return v3;
+  return text;
 }
 
 - (double)contentHeight
 {
-  v3 = [(VLFScanningInstructionLabel *)self label];
+  label = [(VLFScanningInstructionLabel *)self label];
   [(VLFScanningInstructionLabel *)self bounds];
-  [v3 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0}];
+  [label textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0}];
   v5 = v4;
 
   return v5;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = VLFScanningInstructionLabel;
-  [(VLFScanningInstructionLabel *)&v4 traitCollectionDidChange:a3];
+  [(VLFScanningInstructionLabel *)&v4 traitCollectionDidChange:change];
   [(VLFScanningInstructionLabel *)self _updateContentHeight];
 }
 
@@ -506,25 +506,25 @@
   [(VLFScanningInstructionLabel *)&v6 layoutSubviews];
   [(VLFScanningInstructionLabel *)self bounds];
   v4 = v3;
-  v5 = [(VLFScanningInstructionLabel *)self label];
-  [v5 setPreferredMaxLayoutWidth:v4];
+  label = [(VLFScanningInstructionLabel *)self label];
+  [label setPreferredMaxLayoutWidth:v4];
 
   [(VLFScanningInstructionLabel *)self _updateContentHeight];
 }
 
-- (id)initForSizing:(BOOL)a3
+- (id)initForSizing:(BOOL)sizing
 {
   v34.receiver = self;
   v34.super_class = VLFScanningInstructionLabel;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(VLFScanningInstructionLabel *)&v34 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v8 = v7;
-  if (v7)
+  height = [(VLFScanningInstructionLabel *)&v34 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v8 = height;
+  if (height)
   {
-    v7->_currentLayout = 2;
-    v7->_forSizing = a3;
+    height->_currentLayout = 2;
+    height->_forSizing = sizing;
     v9 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___VLFLabelFontObserver queue:&_dispatch_main_q];
     fontObservers = v8->_fontObservers;
     v8->_fontObservers = v9;
@@ -545,33 +545,33 @@
     [(UILabel *)v8->_label setLineBreakMode:2];
     [(UILabel *)v8->_label setNumberOfLines:0];
     [(UILabel *)v8->_label _setDrawsDebugBaselines:v8->_forSizing];
-    v16 = [(VLFScanningInstructionLabel *)v8 _defaultFont];
-    [(UILabel *)v8->_label setFont:v16];
+    _defaultFont = [(VLFScanningInstructionLabel *)v8 _defaultFont];
+    [(UILabel *)v8->_label setFont:_defaultFont];
 
     [(VLFScanningInstructionLabel *)v8 addSubview:v8->_label];
-    v33 = [(UILabel *)v8->_label leadingAnchor];
-    v32 = [(VLFScanningInstructionLabel *)v8 leadingAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    leadingAnchor = [(UILabel *)v8->_label leadingAnchor];
+    leadingAnchor2 = [(VLFScanningInstructionLabel *)v8 leadingAnchor];
+    v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[0] = v31;
-    v30 = [(UILabel *)v8->_label trailingAnchor];
-    v29 = [(VLFScanningInstructionLabel *)v8 trailingAnchor];
-    v17 = [v30 constraintEqualToAnchor:v29];
+    trailingAnchor = [(UILabel *)v8->_label trailingAnchor];
+    trailingAnchor2 = [(VLFScanningInstructionLabel *)v8 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[1] = v17;
-    v18 = [(UILabel *)v8->_label topAnchor];
-    v19 = [(VLFScanningInstructionLabel *)v8 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor = [(UILabel *)v8->_label topAnchor];
+    topAnchor2 = [(VLFScanningInstructionLabel *)v8 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[2] = v20;
-    v21 = [(UILabel *)v8->_label bottomAnchor];
-    v22 = [(VLFScanningInstructionLabel *)v8 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor = [(UILabel *)v8->_label bottomAnchor];
+    bottomAnchor2 = [(VLFScanningInstructionLabel *)v8 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[3] = v23;
     v24 = [NSArray arrayWithObjects:v35 count:4];
     [NSLayoutConstraint activateConstraints:v24];
 
     if (v8->_forSizing)
     {
-      v25 = [(UILabel *)v8->_label heightAnchor];
-      v26 = [v25 constraintEqualToConstant:0.0];
+      heightAnchor = [(UILabel *)v8->_label heightAnchor];
+      v26 = [heightAnchor constraintEqualToConstant:0.0];
       heightConstraint = v8->_heightConstraint;
       v8->_heightConstraint = v26;
 

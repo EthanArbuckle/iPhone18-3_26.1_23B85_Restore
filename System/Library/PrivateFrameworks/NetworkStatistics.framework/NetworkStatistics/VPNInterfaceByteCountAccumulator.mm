@@ -1,7 +1,7 @@
 @interface VPNInterfaceByteCountAccumulator
 - (VPNInterfaceByteCountAccumulator)init;
-- (void)addBytesToAttributeToVPNProviderFromSnapshot:(id)a3;
-- (void)subtractBytesAttributedToVPNProviderFromSnapshot:(id)a3;
+- (void)addBytesToAttributeToVPNProviderFromSnapshot:(id)snapshot;
+- (void)subtractBytesAttributedToVPNProviderFromSnapshot:(id)snapshot;
 @end
 
 @implementation VPNInterfaceByteCountAccumulator
@@ -22,77 +22,77 @@
   return result;
 }
 
-- (void)addBytesToAttributeToVPNProviderFromSnapshot:(id)a3
+- (void)addBytesToAttributeToVPNProviderFromSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   rxCellularBytes = self->_currentVPNInterfaceByteCounts.rxCellularBytes;
-  v29 = v4;
-  v6 = [v4 deltaAccountingRxCellularBytes];
-  v7 = rxCellularBytes + v6;
-  if (__CFADD__(rxCellularBytes, v6))
+  v29 = snapshotCopy;
+  deltaAccountingRxCellularBytes = [snapshotCopy deltaAccountingRxCellularBytes];
+  v7 = rxCellularBytes + deltaAccountingRxCellularBytes;
+  if (__CFADD__(rxCellularBytes, deltaAccountingRxCellularBytes))
   {
     v7 = -1;
   }
 
   self->_currentVPNInterfaceByteCounts.rxCellularBytes = v7;
   rxWiFiInfraBytes = self->_currentVPNInterfaceByteCounts.rxWiFiInfraBytes;
-  v9 = [v29 deltaAccountingRxWiFiInfraBytes];
-  v10 = rxWiFiInfraBytes + v9;
-  if (__CFADD__(rxWiFiInfraBytes, v9))
+  deltaAccountingRxWiFiInfraBytes = [v29 deltaAccountingRxWiFiInfraBytes];
+  v10 = rxWiFiInfraBytes + deltaAccountingRxWiFiInfraBytes;
+  if (__CFADD__(rxWiFiInfraBytes, deltaAccountingRxWiFiInfraBytes))
   {
     v10 = -1;
   }
 
   self->_currentVPNInterfaceByteCounts.rxWiFiInfraBytes = v10;
   rxWiFiNonInfraBytes = self->_currentVPNInterfaceByteCounts.rxWiFiNonInfraBytes;
-  v12 = [v29 deltaAccountingRxWiFiNonInfraBytes];
-  v13 = rxWiFiNonInfraBytes + v12;
-  if (__CFADD__(rxWiFiNonInfraBytes, v12))
+  deltaAccountingRxWiFiNonInfraBytes = [v29 deltaAccountingRxWiFiNonInfraBytes];
+  v13 = rxWiFiNonInfraBytes + deltaAccountingRxWiFiNonInfraBytes;
+  if (__CFADD__(rxWiFiNonInfraBytes, deltaAccountingRxWiFiNonInfraBytes))
   {
     v13 = -1;
   }
 
   self->_currentVPNInterfaceByteCounts.rxWiFiNonInfraBytes = v13;
   rxWiredBytes = self->_currentVPNInterfaceByteCounts.rxWiredBytes;
-  v15 = [v29 deltaAccountingRxWiredBytes];
-  v16 = rxWiredBytes + v15;
-  if (__CFADD__(rxWiredBytes, v15))
+  deltaAccountingRxWiredBytes = [v29 deltaAccountingRxWiredBytes];
+  v16 = rxWiredBytes + deltaAccountingRxWiredBytes;
+  if (__CFADD__(rxWiredBytes, deltaAccountingRxWiredBytes))
   {
     v16 = -1;
   }
 
   self->_currentVPNInterfaceByteCounts.rxWiredBytes = v16;
   txCellularBytes = self->_currentVPNInterfaceByteCounts.txCellularBytes;
-  v18 = [v29 deltaAccountingTxCellularBytes];
-  v19 = txCellularBytes + v18;
-  if (__CFADD__(txCellularBytes, v18))
+  deltaAccountingTxCellularBytes = [v29 deltaAccountingTxCellularBytes];
+  v19 = txCellularBytes + deltaAccountingTxCellularBytes;
+  if (__CFADD__(txCellularBytes, deltaAccountingTxCellularBytes))
   {
     v19 = -1;
   }
 
   self->_currentVPNInterfaceByteCounts.txCellularBytes = v19;
   txWiFiInfraBytes = self->_currentVPNInterfaceByteCounts.txWiFiInfraBytes;
-  v21 = [v29 deltaAccountingTxWiFiInfraBytes];
-  v22 = txWiFiInfraBytes + v21;
-  if (__CFADD__(txWiFiInfraBytes, v21))
+  deltaAccountingTxWiFiInfraBytes = [v29 deltaAccountingTxWiFiInfraBytes];
+  v22 = txWiFiInfraBytes + deltaAccountingTxWiFiInfraBytes;
+  if (__CFADD__(txWiFiInfraBytes, deltaAccountingTxWiFiInfraBytes))
   {
     v22 = -1;
   }
 
   self->_currentVPNInterfaceByteCounts.txWiFiInfraBytes = v22;
   txWiFiNonInfraBytes = self->_currentVPNInterfaceByteCounts.txWiFiNonInfraBytes;
-  v24 = [v29 deltaAccountingTxWiFiNonInfraBytes];
-  v25 = txWiFiNonInfraBytes + v24;
-  if (__CFADD__(txWiFiNonInfraBytes, v24))
+  deltaAccountingTxWiFiNonInfraBytes = [v29 deltaAccountingTxWiFiNonInfraBytes];
+  v25 = txWiFiNonInfraBytes + deltaAccountingTxWiFiNonInfraBytes;
+  if (__CFADD__(txWiFiNonInfraBytes, deltaAccountingTxWiFiNonInfraBytes))
   {
     v25 = -1;
   }
 
   self->_currentVPNInterfaceByteCounts.txWiFiNonInfraBytes = v25;
   txWiredBytes = self->_currentVPNInterfaceByteCounts.txWiredBytes;
-  v27 = [v29 deltaAccountingTxWiredBytes];
-  v28 = txWiredBytes + v27;
-  if (__CFADD__(txWiredBytes, v27))
+  deltaAccountingTxWiredBytes = [v29 deltaAccountingTxWiredBytes];
+  v28 = txWiredBytes + deltaAccountingTxWiredBytes;
+  if (__CFADD__(txWiredBytes, deltaAccountingTxWiredBytes))
   {
     v28 = -1;
   }
@@ -100,63 +100,63 @@
   self->_currentVPNInterfaceByteCounts.txWiredBytes = v28;
 }
 
-- (void)subtractBytesAttributedToVPNProviderFromSnapshot:(id)a3
+- (void)subtractBytesAttributedToVPNProviderFromSnapshot:(id)snapshot
 {
-  v53 = a3;
-  v4 = [v53 deltaAccountingRxCellularBytes];
+  snapshotCopy = snapshot;
+  deltaAccountingRxCellularBytes = [snapshotCopy deltaAccountingRxCellularBytes];
   rxCellularBytes = self->_currentVPNInterfaceByteCounts.rxCellularBytes;
-  if (v4 < rxCellularBytes)
+  if (deltaAccountingRxCellularBytes < rxCellularBytes)
   {
-    rxCellularBytes = [v53 deltaAccountingRxCellularBytes];
+    rxCellularBytes = [snapshotCopy deltaAccountingRxCellularBytes];
   }
 
-  v6 = [v53 deltaAccountingRxWiFiInfraBytes];
+  deltaAccountingRxWiFiInfraBytes = [snapshotCopy deltaAccountingRxWiFiInfraBytes];
   rxWiFiInfraBytes = self->_currentVPNInterfaceByteCounts.rxWiFiInfraBytes;
-  if (v6 < rxWiFiInfraBytes)
+  if (deltaAccountingRxWiFiInfraBytes < rxWiFiInfraBytes)
   {
-    rxWiFiInfraBytes = [v53 deltaAccountingRxWiFiInfraBytes];
+    rxWiFiInfraBytes = [snapshotCopy deltaAccountingRxWiFiInfraBytes];
   }
 
-  v8 = [v53 deltaAccountingRxWiFiNonInfraBytes];
+  deltaAccountingRxWiFiNonInfraBytes = [snapshotCopy deltaAccountingRxWiFiNonInfraBytes];
   rxWiFiNonInfraBytes = self->_currentVPNInterfaceByteCounts.rxWiFiNonInfraBytes;
-  if (v8 < rxWiFiNonInfraBytes)
+  if (deltaAccountingRxWiFiNonInfraBytes < rxWiFiNonInfraBytes)
   {
-    rxWiFiNonInfraBytes = [v53 deltaAccountingRxWiFiNonInfraBytes];
+    rxWiFiNonInfraBytes = [snapshotCopy deltaAccountingRxWiFiNonInfraBytes];
   }
 
-  v10 = [v53 deltaAccountingRxWiredBytes];
+  deltaAccountingRxWiredBytes = [snapshotCopy deltaAccountingRxWiredBytes];
   rxWiredBytes = self->_currentVPNInterfaceByteCounts.rxWiredBytes;
-  if (v10 < rxWiredBytes)
+  if (deltaAccountingRxWiredBytes < rxWiredBytes)
   {
-    rxWiredBytes = [v53 deltaAccountingRxWiredBytes];
+    rxWiredBytes = [snapshotCopy deltaAccountingRxWiredBytes];
   }
 
-  v12 = [v53 deltaAccountingTxCellularBytes];
+  deltaAccountingTxCellularBytes = [snapshotCopy deltaAccountingTxCellularBytes];
   txCellularBytes = self->_currentVPNInterfaceByteCounts.txCellularBytes;
-  if (v12 < txCellularBytes)
+  if (deltaAccountingTxCellularBytes < txCellularBytes)
   {
-    txCellularBytes = [v53 deltaAccountingTxCellularBytes];
+    txCellularBytes = [snapshotCopy deltaAccountingTxCellularBytes];
   }
 
-  v14 = [v53 deltaAccountingTxWiFiInfraBytes];
+  deltaAccountingTxWiFiInfraBytes = [snapshotCopy deltaAccountingTxWiFiInfraBytes];
   txWiFiInfraBytes = self->_currentVPNInterfaceByteCounts.txWiFiInfraBytes;
-  if (v14 < txWiFiInfraBytes)
+  if (deltaAccountingTxWiFiInfraBytes < txWiFiInfraBytes)
   {
-    txWiFiInfraBytes = [v53 deltaAccountingTxWiFiInfraBytes];
+    txWiFiInfraBytes = [snapshotCopy deltaAccountingTxWiFiInfraBytes];
   }
 
-  v16 = [v53 deltaAccountingTxWiFiNonInfraBytes];
+  deltaAccountingTxWiFiNonInfraBytes = [snapshotCopy deltaAccountingTxWiFiNonInfraBytes];
   txWiFiNonInfraBytes = self->_currentVPNInterfaceByteCounts.txWiFiNonInfraBytes;
-  if (v16 < txWiFiNonInfraBytes)
+  if (deltaAccountingTxWiFiNonInfraBytes < txWiFiNonInfraBytes)
   {
-    txWiFiNonInfraBytes = [v53 deltaAccountingTxWiFiNonInfraBytes];
+    txWiFiNonInfraBytes = [snapshotCopy deltaAccountingTxWiFiNonInfraBytes];
   }
 
-  v18 = [v53 deltaAccountingTxWiredBytes];
+  deltaAccountingTxWiredBytes = [snapshotCopy deltaAccountingTxWiredBytes];
   txWiredBytes = self->_currentVPNInterfaceByteCounts.txWiredBytes;
-  if (v18 < txWiredBytes)
+  if (deltaAccountingTxWiredBytes < txWiredBytes)
   {
-    txWiredBytes = [v53 deltaAccountingTxWiredBytes];
+    txWiredBytes = [snapshotCopy deltaAccountingTxWiredBytes];
   }
 
   v20 = self->_currentVPNInterfaceByteCounts.rxCellularBytes;
@@ -231,15 +231,15 @@
   }
 
   self->_currentVPNInterfaceByteCounts.txWiredBytes = v36;
-  v37 = [v53 _details_adjustment_bytes];
-  v38 = *v37 + rxCellularBytes;
-  if (__CFADD__(*v37, rxCellularBytes))
+  _details_adjustment_bytes = [snapshotCopy _details_adjustment_bytes];
+  v38 = *_details_adjustment_bytes + rxCellularBytes;
+  if (__CFADD__(*_details_adjustment_bytes, rxCellularBytes))
   {
     v38 = -1;
   }
 
-  *v37 = v38;
-  v39 = v37[1];
+  *_details_adjustment_bytes = v38;
+  v39 = _details_adjustment_bytes[1];
   v21 = __CFADD__(v39, rxWiFiInfraBytes);
   v40 = v39 + rxWiFiInfraBytes;
   if (v21)
@@ -247,8 +247,8 @@
     v40 = -1;
   }
 
-  v37[1] = v40;
-  v41 = v37[2];
+  _details_adjustment_bytes[1] = v40;
+  v41 = _details_adjustment_bytes[2];
   v21 = __CFADD__(v41, rxWiFiNonInfraBytes);
   v42 = v41 + rxWiFiNonInfraBytes;
   if (v21)
@@ -256,8 +256,8 @@
     v42 = -1;
   }
 
-  v37[2] = v42;
-  v43 = v37[3];
+  _details_adjustment_bytes[2] = v42;
+  v43 = _details_adjustment_bytes[3];
   v21 = __CFADD__(v43, rxWiredBytes);
   v44 = v43 + rxWiredBytes;
   if (v21)
@@ -265,8 +265,8 @@
     v44 = -1;
   }
 
-  v37[3] = v44;
-  v45 = v37[6];
+  _details_adjustment_bytes[3] = v44;
+  v45 = _details_adjustment_bytes[6];
   v21 = __CFADD__(v45, txCellularBytes);
   v46 = v45 + txCellularBytes;
   if (v21)
@@ -274,8 +274,8 @@
     v46 = -1;
   }
 
-  v37[6] = v46;
-  v47 = v37[7];
+  _details_adjustment_bytes[6] = v46;
+  v47 = _details_adjustment_bytes[7];
   v21 = __CFADD__(v47, txWiFiInfraBytes);
   v48 = v47 + txWiFiInfraBytes;
   if (v21)
@@ -283,8 +283,8 @@
     v48 = -1;
   }
 
-  v37[7] = v48;
-  v49 = v37[8];
+  _details_adjustment_bytes[7] = v48;
+  v49 = _details_adjustment_bytes[8];
   v21 = __CFADD__(v49, txWiFiNonInfraBytes);
   v50 = v49 + txWiFiNonInfraBytes;
   if (v21)
@@ -292,8 +292,8 @@
     v50 = -1;
   }
 
-  v37[8] = v50;
-  v51 = v37[9];
+  _details_adjustment_bytes[8] = v50;
+  v51 = _details_adjustment_bytes[9];
   v21 = __CFADD__(v51, txWiredBytes);
   v52 = v51 + txWiredBytes;
   if (v21)
@@ -301,7 +301,7 @@
     v52 = -1;
   }
 
-  v37[9] = v52;
+  _details_adjustment_bytes[9] = v52;
 }
 
 @end

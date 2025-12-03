@@ -1,10 +1,10 @@
 @interface SAAppSizeBreakdown
 - (SAAppSizeBreakdown)init;
 - (id)generateDictionary;
-- (void)addPath:(id)a3 fixedPath:(BOOL)a4 size:(unint64_t)a5;
-- (void)mergeWithAppSizeBreakdown:(id)a3;
-- (void)updatePath:(id)a3 cacheSize:(unint64_t)a4;
-- (void)updatePath:(id)a3 cloneSize:(unint64_t)a4;
+- (void)addPath:(id)path fixedPath:(BOOL)fixedPath size:(unint64_t)size;
+- (void)mergeWithAppSizeBreakdown:(id)breakdown;
+- (void)updatePath:(id)path cacheSize:(unint64_t)size;
+- (void)updatePath:(id)path cloneSize:(unint64_t)size;
 @end
 
 @implementation SAAppSizeBreakdown
@@ -32,22 +32,22 @@
   return v2;
 }
 
-- (void)addPath:(id)a3 fixedPath:(BOOL)a4 size:(unint64_t)a5
+- (void)addPath:(id)path fixedPath:(BOOL)fixedPath size:(unint64_t)size
 {
-  v6 = a4;
+  fixedPathCopy = fixedPath;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a3;
-  v10 = [v8 numberWithUnsignedLongLong:a5];
+  pathCopy = path;
+  v10 = [v8 numberWithUnsignedLongLong:size];
   v11 = 8;
-  if (v6)
+  if (fixedPathCopy)
   {
     v11 = 16;
   }
 
-  [*(&self->super.isa + v11) setObject:v10 forKeyedSubscript:v9];
+  [*(&self->super.isa + v11) setObject:v10 forKeyedSubscript:pathCopy];
 
   maxPathLength = self->_maxPathLength;
-  v13 = [v9 length];
+  v13 = [pathCopy length];
 
   if (maxPathLength <= v13)
   {
@@ -62,50 +62,50 @@
   self->_maxPathLength = v14;
 }
 
-- (void)updatePath:(id)a3 cacheSize:(unint64_t)a4
+- (void)updatePath:(id)path cacheSize:(unint64_t)size
 {
-  v9 = a3;
+  pathCopy = path;
   v6 = [(NSMutableDictionary *)self->_dataPathsSizes objectForKeyedSubscript:?];
   v7 = v6;
   if (v6)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "unsignedLongLongValue") - a4}];
-    [(NSMutableDictionary *)self->_dataPathsSizes setObject:v8 forKeyedSubscript:v9];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "unsignedLongLongValue") - size}];
+    [(NSMutableDictionary *)self->_dataPathsSizes setObject:v8 forKeyedSubscript:pathCopy];
   }
 }
 
-- (void)updatePath:(id)a3 cloneSize:(unint64_t)a4
+- (void)updatePath:(id)path cloneSize:(unint64_t)size
 {
-  v9 = a3;
+  pathCopy = path;
   v6 = [(NSMutableDictionary *)self->_dataPathsSizes objectForKeyedSubscript:?];
   v7 = v6;
   if (v6)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "unsignedLongLongValue") + a4}];
-    [(NSMutableDictionary *)self->_dataPathsSizes setObject:v8 forKeyedSubscript:v9];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "unsignedLongLongValue") + size}];
+    [(NSMutableDictionary *)self->_dataPathsSizes setObject:v8 forKeyedSubscript:pathCopy];
   }
 }
 
-- (void)mergeWithAppSizeBreakdown:(id)a3
+- (void)mergeWithAppSizeBreakdown:(id)breakdown
 {
   dataPathsSizes = self->_dataPathsSizes;
-  v5 = a3;
-  v6 = [v5 dataPathsSizes];
-  [(NSMutableDictionary *)dataPathsSizes addEntriesFromDictionary:v6];
+  breakdownCopy = breakdown;
+  dataPathsSizes = [breakdownCopy dataPathsSizes];
+  [(NSMutableDictionary *)dataPathsSizes addEntriesFromDictionary:dataPathsSizes];
 
   fixedPathsSizes = self->_fixedPathsSizes;
-  v8 = [v5 fixedPathsSizes];
-  [(NSMutableDictionary *)fixedPathsSizes addEntriesFromDictionary:v8];
+  fixedPathsSizes = [breakdownCopy fixedPathsSizes];
+  [(NSMutableDictionary *)fixedPathsSizes addEntriesFromDictionary:fixedPathsSizes];
 
-  self->_tagsSize += [v5 tagsSize];
-  v9 = [v5 pluginCacheSize];
+  self->_tagsSize += [breakdownCopy tagsSize];
+  pluginCacheSize = [breakdownCopy pluginCacheSize];
   maxPathLength = self->_maxPathLength;
-  self->_pluginCacheSize += v9;
-  v11 = [v5 maxPathLength];
+  self->_pluginCacheSize += pluginCacheSize;
+  maxPathLength = [breakdownCopy maxPathLength];
 
-  if (maxPathLength <= v11)
+  if (maxPathLength <= maxPathLength)
   {
-    v12 = v11;
+    v12 = maxPathLength;
   }
 
   else

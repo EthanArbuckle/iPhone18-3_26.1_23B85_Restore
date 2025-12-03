@@ -1,20 +1,20 @@
 @interface PedestrianARSessionMapsSkyMonitor
 - (NSString)debugDescription;
-- (PedestrianARSessionMapsSkyMonitor)initWithObserver:(id)a3;
+- (PedestrianARSessionMapsSkyMonitor)initWithObserver:(id)observer;
 - (void)dealloc;
 - (void)updateState;
-- (void)valueChangedForMapsFeature:(id)a3 enabled:(BOOL)a4;
+- (void)valueChangedForMapsFeature:(id)feature enabled:(BOOL)enabled;
 @end
 
 @implementation PedestrianARSessionMapsSkyMonitor
 
-- (void)valueChangedForMapsFeature:(id)a3 enabled:(BOOL)a4
+- (void)valueChangedForMapsFeature:(id)feature enabled:(BOOL)enabled
 {
   v5 = sub_100E08CC0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] One of the Pedestrian AR flags changed; updating state", &v6, 0xCu);
   }
 
@@ -23,7 +23,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = [objc_opt_class() friendlyName];
+  friendlyName = [objc_opt_class() friendlyName];
   if (MapsFeature_IsAvailable_PedestrianAR())
   {
     v3 = @"YES";
@@ -45,7 +45,7 @@
     v5 = @"NO";
   }
 
-  v6 = [NSString stringWithFormat:@"%@\nMapsSky authorized: %@\nPedestrian AR enabled: %@\n", v2, v4, v5];
+  v6 = [NSString stringWithFormat:@"%@\nMapsSky authorized: %@\nPedestrian AR enabled: %@\n", friendlyName, v4, v5];
 
   return v6;
 }
@@ -80,7 +80,7 @@
 
     v9 = v8;
     v10 = 134349570;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
     v13 = v7;
     v14 = 2114;
@@ -97,7 +97,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -107,11 +107,11 @@
   [(PedestrianARSessionMonitor *)&v4 dealloc];
 }
 
-- (PedestrianARSessionMapsSkyMonitor)initWithObserver:(id)a3
+- (PedestrianARSessionMapsSkyMonitor)initWithObserver:(id)observer
 {
   v6.receiver = self;
   v6.super_class = PedestrianARSessionMapsSkyMonitor;
-  v3 = [(PedestrianARSessionMonitor *)&v6 initWithObserver:a3];
+  v3 = [(PedestrianARSessionMonitor *)&v6 initWithObserver:observer];
   if (v3)
   {
     v4 = sub_100E08CC0();

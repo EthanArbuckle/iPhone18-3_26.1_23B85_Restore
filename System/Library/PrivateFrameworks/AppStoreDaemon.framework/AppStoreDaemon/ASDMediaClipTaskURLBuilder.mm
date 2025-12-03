@@ -1,73 +1,73 @@
 @interface ASDMediaClipTaskURLBuilder
 - (id)build;
-- (id)initWithBundleID:(void *)a3 bag:;
-- (void)setExternalVersionID:(uint64_t)a1;
+- (id)initWithBundleID:(void *)d bag:;
+- (void)setExternalVersionID:(uint64_t)d;
 @end
 
 @implementation ASDMediaClipTaskURLBuilder
 
-- (id)initWithBundleID:(void *)a3 bag:
+- (id)initWithBundleID:(void *)d bag:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = ASDMediaClipTaskURLBuilder;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, d);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)build
 {
-  v1 = a1;
+  selfCopy = self;
   v20[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1[2] URLForKey:0x1F301A770];
-    v3 = [v2 valuePromise];
+    v2 = [self[2] URLForKey:0x1F301A770];
+    valuePromise = [v2 valuePromise];
 
-    v4 = [v1[2] stringForKey:0x1F301A7B0];
-    v5 = [v4 valuePromise];
+    v4 = [selfCopy[2] stringForKey:0x1F301A7B0];
+    valuePromise2 = [v4 valuePromise];
 
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __42__ASDMediaClipTaskURLBuilder__pathPromise__block_invoke;
     v18 = &unk_1E7CDC478;
-    v19 = v1;
-    v6 = [v5 thenWithBlock:&v15];
+    v19 = selfCopy;
+    v6 = [valuePromise2 thenWithBlock:&v15];
 
-    v7 = [v1[2] stringForKey:0x1F301A790];
-    v8 = [v7 valuePromise];
+    v7 = [selfCopy[2] stringForKey:0x1F301A790];
+    valuePromise3 = [v7 valuePromise];
 
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __43__ASDMediaClipTaskURLBuilder__queryPromise__block_invoke;
     v18 = &unk_1E7CDC478;
-    v19 = v1;
-    v9 = [v8 thenWithBlock:&v15];
+    v19 = selfCopy;
+    v9 = [valuePromise3 thenWithBlock:&v15];
 
     v10 = MEMORY[0x1E698CAD0];
-    v20[0] = v3;
+    v20[0] = valuePromise;
     v20[1] = v6;
     v20[2] = v9;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
     v12 = [v10 promiseWithAll:v11];
 
-    v1 = [v12 thenWithBlock:&__block_literal_global_7];
+    selfCopy = [v12 thenWithBlock:&__block_literal_global_7];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v1;
+  return selfCopy;
 }
 
 id __35__ASDMediaClipTaskURLBuilder_build__block_invoke(uint64_t a1, void *a2)
@@ -217,11 +217,11 @@ id __43__ASDMediaClipTaskURLBuilder__queryPromise__block_invoke(uint64_t a1, voi
   return v21;
 }
 
-- (void)setExternalVersionID:(uint64_t)a1
+- (void)setExternalVersionID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((d + 24), a2);
   }
 }
 

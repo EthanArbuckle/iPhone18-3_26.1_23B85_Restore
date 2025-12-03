@@ -1,43 +1,43 @@
 @interface ICCloudContentTasteUpdateOperation
 - (ICCloudContentTasteUpdateOperation)init;
-- (ICCloudContentTasteUpdateOperation)initWithContentTasteUpdateItem:(id)a3 invalidateLocalCache:(BOOL)a4 configuration:(id)a5 operationIdentifier:(id)a6;
-- (id)_contentTasteUpdateResponseWithServerResponse:(id)a3 expirationDate:(id)a4 revisionID:(unint64_t)a5 isCachedResponse:(BOOL)a6;
-- (id)_prepareCachedResponseFromResponse:(id)a3 byAddingResponseTimeIntervalKey:(BOOL)a4 withResponseTimeInterval:(id)a5;
-- (void)_getPBData:(id *)a3 includedContentTasteItemUpdates:(id *)a4 fromContentTasteUpdateItems:(id)a5;
-- (void)_getStoreAdamIDLikedState:(id *)a3 playlistGlobalIDLikedState:(id *)a4 artistStoreAdamIDLikedState:(id *)a5;
-- (void)_prepareContentTasteResponse:(id *)a3 withContentTasteItems:(id *)a4 fromCachedContentTasteResponseItems:(id)a5 includedContentTasteItems:(id)a6;
-- (void)_setCachedContentTasteResponse:(id)a3;
-- (void)_updateContentTasteForAlbumArtistItems:(id)a3 musicLibrary:(id)a4 mediaLibrary:(id)a5 withCompletion:(id)a6;
-- (void)_updateContentTasteForGlobalPlaylists:(id)a3 musicLibrary:(id)a4 mediaLibrary:(id)a5 withCompletion:(id)a6;
-- (void)_updateContentTasteForMediaItems:(id)a3 musicLibrary:(id)a4 mediaLibrary:(id)a5 withCompletion:(id)a6;
+- (ICCloudContentTasteUpdateOperation)initWithContentTasteUpdateItem:(id)item invalidateLocalCache:(BOOL)cache configuration:(id)configuration operationIdentifier:(id)identifier;
+- (id)_contentTasteUpdateResponseWithServerResponse:(id)response expirationDate:(id)date revisionID:(unint64_t)d isCachedResponse:(BOOL)cachedResponse;
+- (id)_prepareCachedResponseFromResponse:(id)response byAddingResponseTimeIntervalKey:(BOOL)key withResponseTimeInterval:(id)interval;
+- (void)_getPBData:(id *)data includedContentTasteItemUpdates:(id *)updates fromContentTasteUpdateItems:(id)items;
+- (void)_getStoreAdamIDLikedState:(id *)state playlistGlobalIDLikedState:(id *)likedState artistStoreAdamIDLikedState:(id *)dLikedState;
+- (void)_prepareContentTasteResponse:(id *)response withContentTasteItems:(id *)items fromCachedContentTasteResponseItems:(id)responseItems includedContentTasteItems:(id)tasteItems;
+- (void)_setCachedContentTasteResponse:(id)response;
+- (void)_updateContentTasteForAlbumArtistItems:(id)items musicLibrary:(id)library mediaLibrary:(id)mediaLibrary withCompletion:(id)completion;
+- (void)_updateContentTasteForGlobalPlaylists:(id)playlists musicLibrary:(id)library mediaLibrary:(id)mediaLibrary withCompletion:(id)completion;
+- (void)_updateContentTasteForMediaItems:(id)items musicLibrary:(id)library mediaLibrary:(id)mediaLibrary withCompletion:(id)completion;
 - (void)main;
 @end
 
 @implementation ICCloudContentTasteUpdateOperation
 
-- (void)_updateContentTasteForGlobalPlaylists:(id)a3 musicLibrary:(id)a4 mediaLibrary:(id)a5 withCompletion:(id)a6
+- (void)_updateContentTasteForGlobalPlaylists:(id)playlists musicLibrary:(id)library mediaLibrary:(id)mediaLibrary withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  playlistsCopy = playlists;
+  libraryCopy = library;
+  mediaLibraryCopy = mediaLibrary;
+  completionCopy = completion;
   v14 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v61 = [v10 count];
+    v61 = [playlistsCopy count];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Updating content taste for %lu global playlists", buf, 0xCu);
   }
 
-  if ([v10 count])
+  if ([playlistsCopy count])
   {
-    v36 = self;
-    v38 = v12;
-    v15 = [v10 allKeys];
-    v16 = COERCE_DOUBLE([v15 mutableCopy]);
+    selfCopy = self;
+    v38 = mediaLibraryCopy;
+    allKeys = [playlistsCopy allKeys];
+    v16 = COERCE_DOUBLE([allKeys mutableCopy]);
 
-    v39 = v11;
-    v43 = [v11 checkoutReaderConnection];
+    v39 = libraryCopy;
+    checkoutReaderConnection = [libraryCopy checkoutReaderConnection];
     +[NSDate timeIntervalSinceReferenceDate];
     v18 = v17;
     v40 = +[ML3DatabaseStatementRenderer defaultRenderer];
@@ -50,7 +50,7 @@
       v20 = v19;
       do
       {
-        v21 = v10;
+        v21 = playlistsCopy;
         if (v20 >= 0xFA)
         {
           *&v22 = 250;
@@ -73,14 +73,14 @@
 
         v24 = [v40 statementWithPrefix:@"SELECT container_pid inParameterCount:{liked_state, cloud_global_id FROM container WHERE cloud_global_id", *&v22}];
         v25 = [*&v16 subarrayWithRange:{objc_msgSend(*&v16, "count") - v20, *&v22}];
-        v26 = [v43 executeQuery:v24 withParameters:v25];
+        v26 = [checkoutReaderConnection executeQuery:v24 withParameters:v25];
 
         v55[0] = _NSConcreteStackBlock;
         v55[1] = 3221225472;
         v55[2] = sub_100129A10;
         v55[3] = &unk_1001DF1B0;
         v56 = *&v16;
-        v10 = v21;
+        playlistsCopy = v21;
         v57 = v21;
         v58 = v42;
         v59 = v41;
@@ -91,23 +91,23 @@
       while (*&v20 != 0.0);
     }
 
-    v11 = v39;
-    [v39 checkInDatabaseConnection:v43];
-    if ([(ICCloudContentTasteUpdateOperation *)v36 isCancelled])
+    libraryCopy = v39;
+    [v39 checkInDatabaseConnection:checkoutReaderConnection];
+    if ([(ICCloudContentTasteUpdateOperation *)selfCopy isCancelled])
     {
       v27 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
       v28 = v37;
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v61 = v36;
+        v61 = selfCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%{public}@ is cancelled", buf, 0xCu);
       }
 
-      v12 = v38;
-      if (v13)
+      mediaLibraryCopy = v38;
+      if (completionCopy)
       {
-        (*(v13 + 2))(v13, 0, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0);
       }
     }
 
@@ -117,12 +117,12 @@
       v51[1] = 3221225472;
       v51[2] = sub_100129C18;
       v51[3] = &unk_1001DF1D8;
-      v29 = v10;
+      v29 = playlistsCopy;
       v52 = v29;
       v28 = v37;
       v30 = v37;
       v53 = v30;
-      v54 = v36;
+      v54 = selfCopy;
       [*&v16 enumerateObjectsUsingBlock:v51];
       [*&v16 removeObjectsInArray:v30];
       v31 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
@@ -142,14 +142,14 @@
         v44[1] = 3221225472;
         v44[2] = sub_100129D44;
         v44[3] = &unk_1001DF2F0;
-        v49 = v13;
-        v44[4] = v36;
+        v49 = completionCopy;
+        v44[4] = selfCopy;
         v45 = v29;
         v46 = v42;
         v47 = v41;
         v48 = *&v16;
         v50 = v18;
-        v12 = v38;
+        mediaLibraryCopy = v38;
         [v38 addNonLibraryOwnedPlaylistsWithGlobalIDs:v48 completion:v44];
       }
 
@@ -167,42 +167,42 @@
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Finished loading content taste for %lu playlists in %3f seconds", buf, 0x16u);
         }
 
-        v12 = v38;
-        if (v13)
+        mediaLibraryCopy = v38;
+        if (completionCopy)
         {
-          (*(v13 + 2))(v13, v42, v41, 0);
+          (*(completionCopy + 2))(completionCopy, v42, v41, 0);
         }
       }
     }
   }
 
-  else if (v13)
+  else if (completionCopy)
   {
-    (*(v13 + 2))(v13, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0);
   }
 }
 
-- (void)_updateContentTasteForMediaItems:(id)a3 musicLibrary:(id)a4 mediaLibrary:(id)a5 withCompletion:(id)a6
+- (void)_updateContentTasteForMediaItems:(id)items musicLibrary:(id)library mediaLibrary:(id)mediaLibrary withCompletion:(id)completion
 {
-  v61 = a3;
-  v50 = a4;
-  v46 = a5;
-  v49 = a6;
+  itemsCopy = items;
+  libraryCopy = library;
+  mediaLibraryCopy = mediaLibrary;
+  completionCopy = completion;
   v9 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v61 count];
+    *(&buf + 4) = [itemsCopy count];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Updating content taste for %lu items", &buf, 0xCu);
   }
 
-  if ([v61 count])
+  if ([itemsCopy count])
   {
-    v60 = [v50 checkoutReaderConnection];
+    checkoutReaderConnection = [libraryCopy checkoutReaderConnection];
     +[NSDate timeIntervalSinceReferenceDate];
     v11 = v10;
-    v12 = [v61 allKeys];
-    v13 = [v12 mutableCopy];
+    allKeys = [itemsCopy allKeys];
+    v13 = [allKeys mutableCopy];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -216,7 +216,7 @@
     v51 = +[NSMutableArray array];
     v52 = +[NSMutableArray array];
     v59 = +[ML3DatabaseStatementRenderer defaultRenderer];
-    v48 = [v50 valueForDatabaseProperty:@"NonMediaItemStoreAdamIds"];
+    v48 = [libraryCopy valueForDatabaseProperty:@"NonMediaItemStoreAdamIds"];
     if ([v48 length])
     {
       v14 = [v48 componentsSeparatedByString:@"$"];
@@ -284,14 +284,14 @@
 
             v25 = [v59 statementWithPrefix:j inParameterCount:v23];
             v26 = [v13 subarrayWithRange:{objc_msgSend(v13, "count") - v21, v23}];
-            v27 = [v60 executeQuery:v25 withParameters:v26];
+            v27 = [checkoutReaderConnection executeQuery:v25 withParameters:v26];
             v84[0] = _NSConcreteStackBlock;
             v84[1] = 3221225472;
             v84[2] = sub_10012ADFC;
             v84[3] = &unk_1001DF278;
             v84[4] = v20;
             v85 = v13;
-            v86 = v61;
+            v86 = itemsCopy;
             v87 = v57;
             v88 = v58;
             [v27 enumerateRowsWithBlock:v84];
@@ -328,20 +328,20 @@
 
       v31 = [v59 statementWithPrefix:@"SELECT album_pid inParameterCount:{liked_state, store_playlist_id, item_store.item_pid, item_store.store_saga_id, item_store.is_subscription FROM album JOIN item_store ON (album.representative_item_pid == item_store.ROWID) WHERE item_store.store_playlist_id", v29}];
       v32 = [v13 subarrayWithRange:{objc_msgSend(v13, "count") - k, v29}];
-      v33 = [v60 executeQuery:v31 withParameters:v32];
+      v33 = [checkoutReaderConnection executeQuery:v31 withParameters:v32];
 
       v79[0] = _NSConcreteStackBlock;
       v79[1] = 3221225472;
       v79[2] = sub_10012B210;
       v79[3] = &unk_1001DF1B0;
       v80 = v13;
-      v81 = v61;
+      v81 = itemsCopy;
       v82 = v51;
       v83 = v52;
       [v33 enumerateRowsWithBlock:v79];
     }
 
-    [v50 checkInDatabaseConnection:v60];
+    [libraryCopy checkInDatabaseConnection:checkoutReaderConnection];
     if ([(ICCloudContentTasteUpdateOperation *)self isCancelled])
     {
       v34 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
@@ -352,9 +352,9 @@
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%{public}@ is cancelled", v93, 0xCu);
       }
 
-      if (v49)
+      if (completionCopy)
       {
-        (*(v49 + 2))(v49, 0, 0, 0, 0, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, 0, 0);
       }
     }
 
@@ -364,11 +364,11 @@
       v75[1] = 3221225472;
       v75[2] = sub_10012B554;
       v75[3] = &unk_1001DF1D8;
-      v35 = v61;
+      v35 = itemsCopy;
       v76 = v35;
       v36 = v45;
       v77 = v36;
-      v78 = self;
+      selfCopy = self;
       [v13 enumerateObjectsUsingBlock:v75];
       [v13 removeObjectsInArray:v36];
       v37 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
@@ -402,18 +402,18 @@
         v62[2] = sub_10012B680;
         v62[3] = &unk_1001DF2A0;
         v63 = v13;
-        v71 = v49;
+        v71 = completionCopy;
         v64 = v57;
         v65 = v58;
         v66 = v51;
         v67 = v52;
-        v68 = self;
-        v69 = v50;
+        selfCopy2 = self;
+        v69 = libraryCopy;
         v70 = v35;
         p_buf = &buf;
         v73 = v93;
         v74 = v11;
-        [v46 addStoreItemIDs:v63 andAddTracksToCloudLibrary:0 withCompletion:v62];
+        [mediaLibraryCopy addStoreItemIDs:v63 andAddTracksToCloudLibrary:0 withCompletion:v62];
 
         _Block_object_dispose(v93, 8);
         objc_autoreleasePoolPop(v41);
@@ -433,9 +433,9 @@
           _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Finished loading content taste for %lu items/albums in %3f seconds", v93, 0x16u);
         }
 
-        if (v49)
+        if (completionCopy)
         {
-          (*(v49 + 2))(v49, v57, v58, v51, v52, 0, 0);
+          (*(completionCopy + 2))(completionCopy, v57, v58, v51, v52, 0, 0);
         }
       }
     }
@@ -443,19 +443,19 @@
     _Block_object_dispose(&buf, 8);
   }
 
-  else if (v49)
+  else if (completionCopy)
   {
-    (*(v49 + 2))(v49, 0, 0, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, 0, 0);
   }
 }
 
-- (void)_updateContentTasteForAlbumArtistItems:(id)a3 musicLibrary:(id)a4 mediaLibrary:(id)a5 withCompletion:(id)a6
+- (void)_updateContentTasteForAlbumArtistItems:(id)items musicLibrary:(id)library mediaLibrary:(id)mediaLibrary withCompletion:(id)completion
 {
-  v9 = a3;
-  v50 = a4;
-  v45 = a5;
-  v49 = a6;
-  v10 = [v9 count];
+  itemsCopy = items;
+  libraryCopy = library;
+  mediaLibraryCopy = mediaLibrary;
+  completionCopy = completion;
+  v10 = [itemsCopy count];
   v11 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -468,9 +468,9 @@
   {
     +[NSDate timeIntervalSinceReferenceDate];
     v13 = v12;
-    v53 = [v50 checkoutReaderConnection];
-    v14 = [v9 allKeys];
-    v15 = [v14 mutableCopy];
+    checkoutReaderConnection = [libraryCopy checkoutReaderConnection];
+    allKeys = [itemsCopy allKeys];
+    v15 = [allKeys mutableCopy];
 
     v44 = +[NSMutableArray array];
     v52 = +[NSMutableArray array];
@@ -481,7 +481,7 @@
     v83 = sub_10012ADE4;
     v84 = sub_10012ADF4;
     v85 = 0;
-    v46 = [v50 valueForDatabaseProperty:@"ArtistsMatchingDifferentStoreAdamIds"];
+    v46 = [libraryCopy valueForDatabaseProperty:@"ArtistsMatchingDifferentStoreAdamIds"];
     if ([v46 length])
     {
       v16 = [NSSet alloc];
@@ -509,7 +509,7 @@
         goto LABEL_13;
       }
 
-      [v50 databaseConnectionAllowingWrites:1 withBlock:&stru_1001DF188];
+      [libraryCopy databaseConnectionAllowingWrites:1 withBlock:&stru_1001DF188];
     }
 
     v48 = 0;
@@ -541,13 +541,13 @@ LABEL_13:
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "processing album artists with pendingItemCount: %lu, currentBatchCount: %lu", v86, 0x16u);
         }
 
-        v26 = [v53 executeQuery:v23 withParameters:v24];
+        v26 = [checkoutReaderConnection executeQuery:v23 withParameters:v24];
         v72[0] = _NSConcreteStackBlock;
         v72[1] = 3221225472;
         v72[2] = sub_10012C974;
         v72[3] = &unk_1001DF1B0;
         v73 = v15;
-        v74 = v9;
+        v74 = itemsCopy;
         v75 = v52;
         v76 = v51;
         [v26 enumerateRowsWithBlock:v72];
@@ -559,7 +559,7 @@ LABEL_13:
       while (!v27);
     }
 
-    [v50 checkInDatabaseConnection:v53];
+    [libraryCopy checkInDatabaseConnection:checkoutReaderConnection];
     if ([(ICCloudContentTasteUpdateOperation *)self isCancelled])
     {
       v28 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
@@ -570,9 +570,9 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ is cancelled", v86, 0xCu);
       }
 
-      if (v49)
+      if (completionCopy)
       {
-        (*(v49 + 2))(v49, 0, 0, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
       }
     }
 
@@ -582,11 +582,11 @@ LABEL_13:
       v68[1] = 3221225472;
       v68[2] = sub_10012CC30;
       v68[3] = &unk_1001DF1D8;
-      v29 = v9;
+      v29 = itemsCopy;
       v69 = v29;
       v30 = v44;
       v70 = v30;
-      v71 = self;
+      selfCopy = self;
       [v15 enumerateObjectsUsingBlock:v68];
       [v15 removeObjectsInArray:v30];
       v31 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
@@ -635,9 +635,9 @@ LABEL_13:
         v54[3] = &unk_1001DF250;
         v38 = v34;
         v55 = v38;
-        v63 = v49;
-        v56 = self;
-        v57 = v50;
+        v63 = completionCopy;
+        selfCopy2 = self;
+        v57 = libraryCopy;
         v58 = v29;
         v59 = v52;
         v60 = v51;
@@ -645,7 +645,7 @@ LABEL_13:
         v65 = v13;
         v62 = v48;
         p_buf = &buf;
-        [v45 performStoreAlbumArtistLibraryImport:v37 withCompletion:v54];
+        [mediaLibraryCopy performStoreAlbumArtistLibraryImport:v37 withCompletion:v54];
 
         objc_autoreleasePoolPop(v33);
       }
@@ -672,9 +672,9 @@ LABEL_13:
           *(*(&buf + 1) + 40) = v42;
         }
 
-        if (v49)
+        if (completionCopy)
         {
-          (*(v49 + 2))(v49, v52, v51, *(*(&buf + 1) + 40), 0);
+          (*(completionCopy + 2))(completionCopy, v52, v51, *(*(&buf + 1) + 40), 0);
         }
       }
     }
@@ -683,18 +683,18 @@ LABEL_13:
     goto LABEL_40;
   }
 
-  if (v49)
+  if (completionCopy)
   {
-    (*(v49 + 2))(v49, 0, 0, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0);
   }
 
 LABEL_40:
 }
 
-- (void)_prepareContentTasteResponse:(id *)a3 withContentTasteItems:(id *)a4 fromCachedContentTasteResponseItems:(id)a5 includedContentTasteItems:(id)a6
+- (void)_prepareContentTasteResponse:(id *)response withContentTasteItems:(id *)items fromCachedContentTasteResponseItems:(id)responseItems includedContentTasteItems:(id)tasteItems
 {
-  v7 = a5;
-  v8 = a6;
+  responseItemsCopy = responseItems;
+  tasteItemsCopy = tasteItems;
   v9 = objc_alloc_init(NSMutableArray);
   v10 = objc_alloc_init(NSMutableArray);
   v11 = objc_alloc_init(NSMutableSet);
@@ -711,7 +711,7 @@ LABEL_40:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v13 = v8;
+  v13 = tasteItemsCopy;
   v14 = [v13 countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (v14)
   {
@@ -744,7 +744,7 @@ LABEL_40:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v19 = v7;
+  v19 = responseItemsCopy;
   v20 = [v19 countByEnumeratingWithState:&v35 objects:v46 count:16];
   if (v20)
   {
@@ -777,37 +777,37 @@ LABEL_40:
   [(ICCloudContentTasteUpdateOperation *)self _getPBData:&v34 includedContentTasteItemUpdates:0 fromContentTasteUpdateItems:v10];
   v25 = v34;
   v26 = v25;
-  if (a3)
+  if (response)
   {
     v27 = v25;
-    *a3 = v26;
+    *response = v26;
   }
 
-  if (a4)
+  if (items)
   {
     v28 = v10;
-    *a4 = v10;
+    *items = v10;
   }
 }
 
-- (id)_prepareCachedResponseFromResponse:(id)a3 byAddingResponseTimeIntervalKey:(BOOL)a4 withResponseTimeInterval:(id)a5
+- (id)_prepareCachedResponseFromResponse:(id)response byAddingResponseTimeIntervalKey:(BOOL)key withResponseTimeInterval:(id)interval
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 userInfo];
-  v10 = [v9 mutableCopy];
+  keyCopy = key;
+  intervalCopy = interval;
+  responseCopy = response;
+  userInfo = [responseCopy userInfo];
+  v10 = [userInfo mutableCopy];
 
-  if (v5)
+  if (keyCopy)
   {
-    if (v7)
+    if (intervalCopy)
     {
       if (!v10)
       {
         v10 = [[NSMutableDictionary alloc] initWithCapacity:1];
       }
 
-      [v10 setObject:v7 forKey:@"_MediaContentTasteUpdateResponseTimeIntervalSinceReferenceDate"];
+      [v10 setObject:intervalCopy forKey:@"_MediaContentTasteUpdateResponseTimeIntervalSinceReferenceDate"];
     }
   }
 
@@ -822,23 +822,23 @@ LABEL_40:
   }
 
   v11 = [NSCachedURLResponse alloc];
-  v12 = [v8 response];
-  v13 = [v8 data];
-  v14 = [v8 storagePolicy];
+  response = [responseCopy response];
+  data = [responseCopy data];
+  storagePolicy = [responseCopy storagePolicy];
 
-  v15 = [v11 initWithResponse:v12 data:v13 userInfo:v10 storagePolicy:v14];
+  v15 = [v11 initWithResponse:response data:data userInfo:v10 storagePolicy:storagePolicy];
 
   return v15;
 }
 
-- (void)_setCachedContentTasteResponse:(id)a3
+- (void)_setCachedContentTasteResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = +[ICCloudContentTasteResponseCacheManager sharedCloudContentTasteResponseCacheManager];
-  [v5 setCachedContentTasteUpdateResponse:v4 forConnectionConfiguration:self->_configuration];
+  [v5 setCachedContentTasteUpdateResponse:responseCopy forConnectionConfiguration:self->_configuration];
 }
 
-- (void)_getStoreAdamIDLikedState:(id *)a3 playlistGlobalIDLikedState:(id *)a4 artistStoreAdamIDLikedState:(id *)a5
+- (void)_getStoreAdamIDLikedState:(id *)state playlistGlobalIDLikedState:(id *)likedState artistStoreAdamIDLikedState:(id *)dLikedState
 {
   v31 = +[NSMutableDictionary dictionary];
   v29 = +[NSMutableDictionary dictionary];
@@ -847,9 +847,9 @@ LABEL_40:
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v28 = self;
-  v6 = [(ICCloudContentTasteUpdateResponse *)self->_contentTasteUpdateResponse contentTasteItems];
-  v7 = [v6 countByEnumeratingWithState:&v32 objects:v43 count:16];
+  selfCopy = self;
+  contentTasteItems = [(ICCloudContentTasteUpdateResponse *)self->_contentTasteUpdateResponse contentTasteItems];
+  v7 = [contentTasteItems countByEnumeratingWithState:&v32 objects:v43 count:16];
   if (v7)
   {
     v8 = v7;
@@ -860,20 +860,20 @@ LABEL_40:
       {
         if (*v33 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(contentTasteItems);
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 storeID];
-        v13 = [v11 contentTasteType];
-        v14 = v13;
+        storeID = [v11 storeID];
+        contentTasteType = [v11 contentTasteType];
+        v14 = contentTasteType;
         v15 = 1;
-        if (v13 == 1)
+        if (contentTasteType == 1)
         {
           v15 = 2;
         }
 
-        if (v13 == 2)
+        if (contentTasteType == 2)
         {
           v16 = 3;
         }
@@ -883,32 +883,32 @@ LABEL_40:
           v16 = v15;
         }
 
-        v17 = [v11 updateActionTimeStamp];
-        if (!v12)
+        updateActionTimeStamp = [v11 updateActionTimeStamp];
+        if (!storeID)
         {
-          v18 = [v11 globalPlaylistID];
-          if (![v18 length])
+          globalPlaylistID = [v11 globalPlaylistID];
+          if (![globalPlaylistID length])
           {
             goto LABEL_22;
           }
 
           v19 = [NSNumber numberWithInteger:v16];
           v36[0] = v19;
-          v36[1] = v17;
+          v36[1] = updateActionTimeStamp;
           v20 = [NSArray arrayWithObjects:v36 count:2];
           v21 = v30;
           v22 = v20;
-          v23 = v18;
+          v23 = globalPlaylistID;
           goto LABEL_21;
         }
 
         if ([v11 contentTasteItem] != 8)
         {
-          v18 = [NSNumber numberWithInteger:v16];
-          v37[0] = v18;
-          v37[1] = v17;
+          globalPlaylistID = [NSNumber numberWithInteger:v16];
+          v37[0] = globalPlaylistID;
+          v37[1] = updateActionTimeStamp;
           v19 = [NSArray arrayWithObjects:v37 count:2];
-          v20 = [NSNumber numberWithLongLong:v12];
+          v20 = [NSNumber numberWithLongLong:storeID];
           v21 = v31;
 LABEL_20:
           v22 = v19;
@@ -921,58 +921,58 @@ LABEL_21:
 
         if (v14 != 1)
         {
-          v18 = [NSNumber numberWithInteger:v16];
-          v38[0] = v18;
-          v38[1] = v17;
+          globalPlaylistID = [NSNumber numberWithInteger:v16];
+          v38[0] = globalPlaylistID;
+          v38[1] = updateActionTimeStamp;
           v19 = [NSArray arrayWithObjects:v38 count:2];
-          v20 = [NSNumber numberWithLongLong:v12];
+          v20 = [NSNumber numberWithLongLong:storeID];
           v21 = v29;
           goto LABEL_20;
         }
 
-        v18 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        globalPlaylistID = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
+        if (os_log_type_enabled(globalPlaylistID, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v40 = v28;
+          v40 = selfCopy;
           v41 = 2114;
           v42 = v11;
-          _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Skip setting tasteType for content taste item=%{public}@", buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, globalPlaylistID, OS_LOG_TYPE_DEFAULT, "%{public}@ Skip setting tasteType for content taste item=%{public}@", buf, 0x16u);
         }
 
 LABEL_22:
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v32 objects:v43 count:16];
+      v8 = [contentTasteItems countByEnumeratingWithState:&v32 objects:v43 count:16];
     }
 
     while (v8);
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = v31;
+    *state = v31;
   }
 
-  if (a4)
+  if (likedState)
   {
-    *a4 = v30;
+    *likedState = v30;
   }
 
-  if (a5)
+  if (dLikedState)
   {
     v24 = v29;
-    *a5 = v29;
+    *dLikedState = v29;
   }
 }
 
-- (id)_contentTasteUpdateResponseWithServerResponse:(id)a3 expirationDate:(id)a4 revisionID:(unint64_t)a5 isCachedResponse:(BOOL)a6
+- (id)_contentTasteUpdateResponseWithServerResponse:(id)response expirationDate:(id)date revisionID:(unint64_t)d isCachedResponse:(BOOL)cachedResponse
 {
-  v36 = a6;
-  v8 = a3;
-  v38 = a4;
-  v9 = [[ICCloudContentTastePBFusePreferences alloc] initWithData:v8];
-  v37 = a5;
+  cachedResponseCopy = cachedResponse;
+  responseCopy = response;
+  dateCopy = date;
+  v9 = [[ICCloudContentTastePBFusePreferences alloc] initWithData:responseCopy];
+  dCopy = d;
   v35 = v9;
   if (!v9)
   {
@@ -1142,36 +1142,36 @@ LABEL_46:
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544386;
-    v45 = self;
+    selfCopy = self;
     v46 = 2114;
     v47 = v12;
     v48 = 2114;
-    v49 = v38;
+    v49 = dateCopy;
     v50 = 2048;
-    v51 = v37;
+    v51 = dCopy;
     v52 = 1024;
-    v53 = v36;
+    v53 = cachedResponseCopy;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ prepared %{public}@ content taste update items with expiration date %{public}@, revisionID %llu, isCached %d from server response", buf, 0x30u);
   }
 
   v32 = objc_alloc_init(ICCloudContentTasteUpdateResponse);
   [(ICCloudContentTasteUpdateResponse *)v32 setContentTasteItems:v12];
-  [(ICCloudContentTasteUpdateResponse *)v32 setExpirationDate:v38];
-  [(ICCloudContentTasteUpdateResponse *)v32 setCachedResponse:v36];
-  [(ICCloudContentTasteUpdateResponse *)v32 setResponseRevisionID:v37];
+  [(ICCloudContentTasteUpdateResponse *)v32 setExpirationDate:dateCopy];
+  [(ICCloudContentTasteUpdateResponse *)v32 setCachedResponse:cachedResponseCopy];
+  [(ICCloudContentTasteUpdateResponse *)v32 setResponseRevisionID:dCopy];
 
   return v32;
 }
 
-- (void)_getPBData:(id *)a3 includedContentTasteItemUpdates:(id *)a4 fromContentTasteUpdateItems:(id)a5
+- (void)_getPBData:(id *)data includedContentTasteItemUpdates:(id *)updates fromContentTasteUpdateItems:(id)items
 {
-  v33 = a3;
-  v6 = a5;
-  v7 = v6;
-  v34 = a4;
-  if (v6 && [v6 count])
+  dataCopy = data;
+  itemsCopy = items;
+  v7 = itemsCopy;
+  updatesCopy = updates;
+  if (itemsCopy && [itemsCopy count])
   {
-    if (a4)
+    if (updates)
     {
       v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
     }
@@ -1212,17 +1212,17 @@ LABEL_46:
 
         v14 = *(*(&v37 + 1) + 8 * v13);
         v15 = objc_alloc_init(ICCloudContentTastePBFuseItemPreference);
-        v16 = [v14 storeID];
+        storeID = [v14 storeID];
         if (v15)
         {
           *&v15->_has |= 2u;
-          v15->_adamId = v16;
-          v17 = [v14 globalPlaylistID];
-          objc_storeStrong(&v15->_externalId, v17);
+          v15->_adamId = storeID;
+          globalPlaylistID = [v14 globalPlaylistID];
+          objc_storeStrong(&v15->_externalId, globalPlaylistID);
 
-          v18 = [v14 contentTasteType];
-          v19 = v18 == 1;
-          if (v18 == 2)
+          contentTasteType = [v14 contentTasteType];
+          v19 = contentTasteType == 1;
+          if (contentTasteType == 2)
           {
             v19 = 2;
           }
@@ -1239,8 +1239,8 @@ LABEL_46:
           [v14 contentTasteType];
         }
 
-        v20 = [v14 updateActionTimeStamp];
-        [v20 timeIntervalSinceNow];
+        updateActionTimeStamp = [v14 updateActionTimeStamp];
+        [updateActionTimeStamp timeIntervalSinceNow];
         v22 = v21;
 
         if (v15)
@@ -1249,8 +1249,8 @@ LABEL_46:
           v15->_createdOffsetMillis = 1000 * fmax(-v22, 0.0);
         }
 
-        v23 = [v14 updateActionTimeStamp];
-        [v23 timeIntervalSince1970];
+        updateActionTimeStamp2 = [v14 updateActionTimeStamp];
+        [updateActionTimeStamp2 timeIntervalSince1970];
         v25 = v24;
 
         if (v15)
@@ -1273,7 +1273,7 @@ LABEL_46:
           }
 
           *buf = 138543874;
-          v42 = self;
+          selfCopy = self;
           v43 = 2114;
           v44 = v14;
           v45 = 2048;
@@ -1295,13 +1295,13 @@ LABEL_46:
     while (v28);
   }
 
-  v29 = v33;
-  if (v33)
+  v29 = dataCopy;
+  if (dataCopy)
   {
     if (![v9 count])
     {
-      *v33 = 0;
-      if (!v34)
+      *dataCopy = 0;
+      if (!updatesCopy)
       {
         goto LABEL_37;
       }
@@ -1319,11 +1319,11 @@ LABEL_46:
     *v29 = [(ICCloudContentTastePBFusePreferences *)v31 data];
   }
 
-  if (v34)
+  if (updatesCopy)
   {
 LABEL_36:
     v32 = v8;
-    *v34 = v8;
+    *updatesCopy = v8;
   }
 
 LABEL_37:
@@ -1342,25 +1342,25 @@ LABEL_37:
 
   else
   {
-    v5 = [(ICConnectionConfiguration *)self->_configuration userIdentity];
+    userIdentity = [(ICConnectionConfiguration *)self->_configuration userIdentity];
     v6 = [ICStoreRequestContext alloc];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10012ECA0;
     v23[3] = &unk_1001DEFB8;
-    v7 = v5;
+    v7 = userIdentity;
     v24 = v7;
     v8 = [v6 initWithBlock:v23];
     v9 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:v7];
-    v10 = [v9 privacyAcknowledgementRequiredForMusic];
+    privacyAcknowledgementRequiredForMusic = [v9 privacyAcknowledgementRequiredForMusic];
 
-    if (v10)
+    if (privacyAcknowledgementRequiredForMusic)
     {
       v11 = os_log_create("com.apple.amp.itunescloudd", "ContentTaste");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v26 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Skipping content tast update because privacy acknowledgement is required", buf, 0xCu);
       }
 
@@ -1378,7 +1378,7 @@ LABEL_37:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v26 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting content taste update for media entities", buf, 0xCu);
       }
 
@@ -1399,21 +1399,21 @@ LABEL_37:
   }
 }
 
-- (ICCloudContentTasteUpdateOperation)initWithContentTasteUpdateItem:(id)a3 invalidateLocalCache:(BOOL)a4 configuration:(id)a5 operationIdentifier:(id)a6
+- (ICCloudContentTasteUpdateOperation)initWithContentTasteUpdateItem:(id)item invalidateLocalCache:(BOOL)cache configuration:(id)configuration operationIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  itemCopy = item;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = ICCloudContentTasteUpdateOperation;
   v14 = [(ICCloudContentTasteUpdateOperation *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_contentTasteItem, a3);
-    v15->_invalidateLocalCache = a4;
-    objc_storeStrong(&v15->_configuration, a5);
-    objc_storeStrong(&v15->_operationIdentifier, a6);
+    objc_storeStrong(&v14->_contentTasteItem, item);
+    v15->_invalidateLocalCache = cache;
+    objc_storeStrong(&v15->_configuration, configuration);
+    objc_storeStrong(&v15->_operationIdentifier, identifier);
     v16 = objc_alloc_init(NSOperationQueue);
     operationQueue = v15->_operationQueue;
     v15->_operationQueue = v16;

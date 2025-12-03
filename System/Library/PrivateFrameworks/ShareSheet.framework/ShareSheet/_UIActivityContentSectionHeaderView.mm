@@ -1,15 +1,15 @@
 @interface _UIActivityContentSectionHeaderView
-- (_UIActivityContentSectionHeaderView)initWithFrame:(CGRect)a3;
+- (_UIActivityContentSectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
 @end
 
 @implementation _UIActivityContentSectionHeaderView
 
-- (_UIActivityContentSectionHeaderView)initWithFrame:(CGRect)a3
+- (_UIActivityContentSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = _UIActivityContentSectionHeaderView;
-  v3 = [(_UIActivityContentSectionHeaderView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UIActivityContentSectionHeaderView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -20,8 +20,8 @@
     [(UILabel *)v3->_titleLabel setFont:v6];
 
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_titleLabel setTextColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)v3->_titleLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v3->_titleLabel setNumberOfLines:0];
@@ -29,37 +29,37 @@
     LODWORD(v8) = 1148846080;
     [(UILabel *)v3->_titleLabel setContentCompressionResistancePriority:0 forAxis:v8];
     [(UILabel *)v3->_titleLabel setAccessibilityIdentifier:@"header.titleLabel"];
-    v9 = [(_UIActivityContentSectionHeaderView *)v3 titleLabel];
-    [(_UIActivityContentSectionHeaderView *)v3 addSubview:v9];
+    titleLabel = [(_UIActivityContentSectionHeaderView *)v3 titleLabel];
+    [(_UIActivityContentSectionHeaderView *)v3 addSubview:titleLabel];
 
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = [(UILabel *)v3->_titleLabel topAnchor];
-    v12 = [(_UIActivityContentSectionHeaderView *)v3 layoutMarginsGuide];
-    v13 = [v12 topAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13 constant:10.0];
+    array = [MEMORY[0x1E695DF70] array];
+    topAnchor = [(UILabel *)v3->_titleLabel topAnchor];
+    layoutMarginsGuide = [(_UIActivityContentSectionHeaderView *)v3 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     titleLabelTopConstraint = v3->_titleLabelTopConstraint;
     v3->_titleLabelTopConstraint = v14;
 
-    [v10 addObject:v3->_titleLabelTopConstraint];
-    v16 = [(UILabel *)v3->_titleLabel bottomAnchor];
-    v17 = [(_UIActivityContentSectionHeaderView *)v3 layoutMarginsGuide];
-    v18 = [v17 bottomAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
-    [v10 addObject:v19];
+    [array addObject:v3->_titleLabelTopConstraint];
+    bottomAnchor = [(UILabel *)v3->_titleLabel bottomAnchor];
+    layoutMarginsGuide2 = [(_UIActivityContentSectionHeaderView *)v3 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide2 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    [array addObject:v19];
 
-    v20 = [(UILabel *)v3->_titleLabel leadingAnchor];
-    v21 = [(_UIActivityContentSectionHeaderView *)v3 layoutMarginsGuide];
-    v22 = [v21 leadingAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
-    [v10 addObject:v23];
+    leadingAnchor = [(UILabel *)v3->_titleLabel leadingAnchor];
+    layoutMarginsGuide3 = [(_UIActivityContentSectionHeaderView *)v3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide3 leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    [array addObject:v23];
 
-    v24 = [(UILabel *)v3->_titleLabel trailingAnchor];
-    v25 = [(_UIActivityContentSectionHeaderView *)v3 layoutMarginsGuide];
-    v26 = [v25 trailingAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
-    [v10 addObject:v27];
+    trailingAnchor = [(UILabel *)v3->_titleLabel trailingAnchor];
+    layoutMarginsGuide4 = [(_UIActivityContentSectionHeaderView *)v3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide4 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    [array addObject:v27];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v10];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   return v3;

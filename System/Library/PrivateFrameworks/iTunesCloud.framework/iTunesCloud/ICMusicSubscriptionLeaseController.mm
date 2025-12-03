@@ -5,11 +5,11 @@
 - (void)_handlePlaybackLeaseDidEndPushNotification;
 - (void)dealloc;
 - (void)didMigratePlaybackSession;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)getLastKnownHouseholdIDWithCompletion:(id)a3;
-- (void)getLeaseSessionWithRequestContext:(id)a3 completionHandler:(id)a4;
-- (void)musicLeaseSession:(id)a3 didFinishPlaybackRequest:(id)a4 withPlaybackResponse:(id)a5 responseError:(id)a6 updatedFairPlayKeyStatusList:(id)a7 completionHandler:(id)a8;
-- (void)musicLeaseSession:(id)a3 requestsFairPlayKeyStatusUpdateWithCompletion:(id)a4;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)getLastKnownHouseholdIDWithCompletion:(id)completion;
+- (void)getLeaseSessionWithRequestContext:(id)context completionHandler:(id)handler;
+- (void)musicLeaseSession:(id)session didFinishPlaybackRequest:(id)request withPlaybackResponse:(id)response responseError:(id)error updatedFairPlayKeyStatusList:(id)list completionHandler:(id)handler;
+- (void)musicLeaseSession:(id)session requestsFairPlayKeyStatusUpdateWithCompletion:(id)completion;
 - (void)receivedUserInteractionEvent;
 @end
 
@@ -22,8 +22,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMutableDictionary *)self->_cacheKeyToLeaseSession allValues];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  allValues = [(NSMutableDictionary *)self->_cacheKeyToLeaseSession allValues];
+  v3 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -35,14 +35,14 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) _handlePlaybackLeaseDidEndPushNotification];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -166,37 +166,37 @@ void __66__ICMusicSubscriptionLeaseController_receivedUserInteractionEvent__bloc
   *(v3 + 40) = v2;
 }
 
-- (void)getLeaseSessionWithRequestContext:(id)a3 completionHandler:(id)a4
+- (void)getLeaseSessionWithRequestContext:(id)context completionHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identity];
-  v9 = [v6 identityStore];
-  v10 = v9;
-  if (v8 && v9)
+  contextCopy = context;
+  handlerCopy = handler;
+  identity = [contextCopy identity];
+  identityStore = [contextCopy identityStore];
+  v10 = identityStore;
+  if (identity && identityStore)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __90__ICMusicSubscriptionLeaseController_getLeaseSessionWithRequestContext_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF9070;
     v14[4] = self;
-    v18 = v7;
-    v15 = v6;
+    v18 = handlerCopy;
+    v15 = contextCopy;
     v16 = v10;
-    v17 = v8;
+    v17 = identity;
     [v16 getPropertiesForUserIdentity:v17 completionHandler:v14];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
     v19 = *MEMORY[0x1E696A278];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to get lease session [missing user identity or user identity store] - userIdentity=%@ - userIdentityStore=%@", v8, v9];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to get lease session [missing user identity or user identity store] - userIdentity=%@ - userIdentityStore=%@", identity, identityStore];
     v20[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7400 userInfo:v12];
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
   }
 }
 
@@ -592,11 +592,11 @@ uint64_t __90__ICMusicSubscriptionLeaseController_getLeaseSessionWithRequestCont
   return result;
 }
 
-- (void)getLastKnownHouseholdIDWithCompletion:(id)a3
+- (void)getLastKnownHouseholdIDWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     accessQueue = self->_accessQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -604,7 +604,7 @@ uint64_t __90__ICMusicSubscriptionLeaseController_getLeaseSessionWithRequestCont
     v7[2] = __76__ICMusicSubscriptionLeaseController_getLastKnownHouseholdIDWithCompletion___block_invoke;
     v7[3] = &unk_1E7BF9EC8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(accessQueue, v7);
   }
 }
@@ -624,16 +624,16 @@ void __76__ICMusicSubscriptionLeaseController_getLastKnownHouseholdIDWithComplet
   dispatch_async(v3, v6);
 }
 
-- (void)musicLeaseSession:(id)a3 requestsFairPlayKeyStatusUpdateWithCompletion:(id)a4
+- (void)musicLeaseSession:(id)session requestsFairPlayKeyStatusUpdateWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "[Lease] - %{public}@ - musicLeaseSession:requestsFairPlayKeyStatusUpdateWithCompletion:", buf, 0xCu);
   }
 
@@ -643,10 +643,10 @@ void __76__ICMusicSubscriptionLeaseController_getLastKnownHouseholdIDWithComplet
   v12[2] = __102__ICMusicSubscriptionLeaseController_musicLeaseSession_requestsFairPlayKeyStatusUpdateWithCompletion___block_invoke;
   v12[3] = &unk_1E7BF8F58;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = sessionCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = sessionCopy;
   [v9 getKeyStatusListWithCompletionHandler:v12];
 }
 
@@ -873,34 +873,34 @@ uint64_t __102__ICMusicSubscriptionLeaseController_musicLeaseSession_requestsFai
   return (*(a1[6] + 16))();
 }
 
-- (void)musicLeaseSession:(id)a3 didFinishPlaybackRequest:(id)a4 withPlaybackResponse:(id)a5 responseError:(id)a6 updatedFairPlayKeyStatusList:(id)a7 completionHandler:(id)a8
+- (void)musicLeaseSession:(id)session didFinishPlaybackRequest:(id)request withPlaybackResponse:(id)response responseError:(id)error updatedFairPlayKeyStatusList:(id)list completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  sessionCopy = session;
+  requestCopy = request;
+  responseCopy = response;
+  errorCopy = error;
+  listCopy = list;
+  handlerCopy = handler;
   v20 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v37 = self;
+    selfCopy = self;
     v38 = 2048;
-    v39 = v16;
+    v39 = responseCopy;
     v40 = 1024;
-    v41 = [v18 count];
+    v41 = [listCopy count];
     v42 = 2114;
-    v43 = v17;
+    v43 = errorCopy;
     _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_DEFAULT, "[Lease] - %{public}@ - musicLeaseSession:didFinishPlaybackRequest:withPlaybackResponse: finshed with response=%p, updatedFairPlayKeyStatusList(count)=%d, error=%{public}@...", buf, 0x26u);
   }
 
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
-  if (v16)
+  if (responseCopy)
   {
-    v22 = v17 == 0;
+    v22 = errorCopy == 0;
   }
 
   else
@@ -914,16 +914,16 @@ uint64_t __102__ICMusicSubscriptionLeaseController_musicLeaseSession_requestsFai
   v23 = v22;
   v35 = v23;
   block[4] = self;
-  v30 = v16;
-  v31 = v18;
-  v32 = v14;
-  v33 = v15;
-  v34 = v19;
-  v24 = v19;
-  v25 = v15;
-  v26 = v14;
-  v27 = v18;
-  v28 = v16;
+  v30 = responseCopy;
+  v31 = listCopy;
+  v32 = sessionCopy;
+  v33 = requestCopy;
+  v34 = handlerCopy;
+  v24 = handlerCopy;
+  v25 = requestCopy;
+  v26 = sessionCopy;
+  v27 = listCopy;
+  v28 = responseCopy;
   dispatch_barrier_sync(accessQueue, block);
 }
 
@@ -1278,17 +1278,17 @@ uint64_t __163__ICMusicSubscriptionLeaseController_musicLeaseSession_didFinishPl
   return result;
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
+  reachabilityCopy = reachability;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __85__ICMusicSubscriptionLeaseController_environmentMonitorDidChangeNetworkReachability___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = reachabilityCopy;
+  selfCopy = self;
+  v6 = reachabilityCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -1417,9 +1417,9 @@ uint64_t __58__ICMusicSubscriptionLeaseController_lastKnownHouseholdID__block_in
     [v9 registerObserver:v3];
     v3->_isServerReachable = v3->_isRemoteServerLikelyReachable;
     v10 = +[ICDefaults standardDefaults];
-    v11 = [v10 lastKnownHouseholdID];
+    lastKnownHouseholdID = [v10 lastKnownHouseholdID];
     lastKnownHouseholdID = v3->_lastKnownHouseholdID;
-    v3->_lastKnownHouseholdID = v11;
+    v3->_lastKnownHouseholdID = lastKnownHouseholdID;
 
     v13 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     leaseSessionPreparationOperationQueue = v3->_leaseSessionPreparationOperationQueue;

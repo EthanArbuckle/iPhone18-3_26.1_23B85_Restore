@@ -1,60 +1,60 @@
 @interface MapsAppTestPlacecardAnimation
 - (BOOL)runTest;
-- (void)_startTestPresentWithSearchResult:(id)a3;
+- (void)_startTestPresentWithSearchResult:(id)result;
 @end
 
 @implementation MapsAppTestPlacecardAnimation
 
-- (void)_startTestPresentWithSearchResult:(id)a3
+- (void)_startTestPresentWithSearchResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   [(MapsAppTest *)self startedTest];
-  v5 = [(MapsAppTest *)self testName];
+  testName = [(MapsAppTest *)self testName];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1009F0380;
   v8[3] = &unk_101661A90;
   v8[4] = self;
-  v9 = v4;
+  v9 = resultCopy;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1009F03D8;
   v7[3] = &unk_101661B18;
   v7[4] = self;
-  v6 = v4;
-  [(MapsAppTest *)self presentDismissTrayTestAndSubTestsWithPrefix:v5 presenter:v8 completion:v7];
+  v6 = resultCopy;
+  [(MapsAppTest *)self presentDismissTrayTestAndSubTestsWithPrefix:testName presenter:v8 completion:v7];
 }
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 _mapstest_location];
+  options = [(MapsAppTest *)self options];
+  _mapstest_location = [options _mapstest_location];
 
-  if (v4)
+  if (_mapstest_location)
   {
     [(MapsAppTest *)self setupForVKTest];
-    v5 = [(MapsAppTest *)self options];
-    [v5 _mapstest_jumpPoint];
+    options2 = [(MapsAppTest *)self options];
+    [options2 _mapstest_jumpPoint];
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(MapsAppTest *)self options];
-    [v12 _mapstest_pitch];
+    options3 = [(MapsAppTest *)self options];
+    [options3 _mapstest_pitch];
     v14 = v13;
 
-    v15 = [(MapsAppTest *)self options];
-    [v15 _mapstest_yaw];
+    options4 = [(MapsAppTest *)self options];
+    [options4 _mapstest_yaw];
     v17 = v16;
 
-    v18 = [(MapsAppTest *)self options];
-    v19 = [v18 _mapstest_mapType];
+    options5 = [(MapsAppTest *)self options];
+    _mapstest_mapType = [options5 _mapstest_mapType];
 
-    [(MapsAppTest *)self switchToMapType:v19];
-    v20 = [(MapsAppTest *)self mainVKMapView];
-    [v20 _mapstest_jumpToCoords:1 pitch:v7 yaw:v9 altitudeIsRegionSize:{v11, v14, v17}];
+    [(MapsAppTest *)self switchToMapType:_mapstest_mapType];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    [mainVKMapView _mapstest_jumpToCoords:1 pitch:v7 yaw:v9 altitudeIsRegionSize:{v11, v14, v17}];
 
-    v21 = [[MKMapItem alloc] initWithCLLocation:v4];
+    v21 = [[MKMapItem alloc] initWithCLLocation:_mapstest_location];
     v22 = [[SearchResult alloc] initWithMapItem:v21];
     objc_initWeak(&location, self);
     v25[0] = _NSConcreteStackBlock;
@@ -70,7 +70,7 @@
     objc_destroyWeak(&location);
   }
 
-  return v4 != 0;
+  return _mapstest_location != 0;
 }
 
 @end

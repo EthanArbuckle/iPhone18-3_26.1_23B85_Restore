@@ -1,13 +1,13 @@
 @interface _NSLexiconMorphunDictionary
-- (_NSLexiconMorphunDictionary)initWithLanguage:(id)a3;
-- (id)allPossibleWordAttributesForWord:(id)a3;
-- (id)preferredPronoun:(id)a3 forTermOfAddress:(id)a4 morphology:(id)a5 dependency:(id)a6;
+- (_NSLexiconMorphunDictionary)initWithLanguage:(id)language;
+- (id)allPossibleWordAttributesForWord:(id)word;
+- (id)preferredPronoun:(id)pronoun forTermOfAddress:(id)address morphology:(id)morphology dependency:(id)dependency;
 - (void)dealloc;
 @end
 
 @implementation _NSLexiconMorphunDictionary
 
-- (_NSLexiconMorphunDictionary)initWithLanguage:(id)a3
+- (_NSLexiconMorphunDictionary)initWithLanguage:(id)language
 {
   v23 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
@@ -20,7 +20,7 @@
       dispatch_once(&qword_1ED43F908, &__block_literal_global_30);
     }
 
-    if (!off_1ED43F7D8 || !_NSRequiresMorphunInflectionForLanguageIdentifier(a3))
+    if (!off_1ED43F7D8 || !_NSRequiresMorphunInflectionForLanguageIdentifier(language))
     {
       goto LABEL_49;
     }
@@ -46,7 +46,7 @@
       goto LABEL_49;
     }
 
-    v6 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:a3];
+    v6 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:language];
     if (v6)
     {
       cf = 0;
@@ -62,7 +62,7 @@
         if (os_log_type_enabled(_NSInflectionLog_log, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v20 = a3;
+          languageCopy4 = language;
           v21 = 2114;
           v22 = cf;
           _os_log_error_impl(&dword_18075C000, v8, OS_LOG_TYPE_ERROR, "Cannot use inflection engine for language %{public}@ (Getting analyzer from factory): %{public}@", buf, 0x16u);
@@ -86,7 +86,7 @@
           if (os_log_type_enabled(_NSInflectionLog_log, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v20 = a3;
+            languageCopy4 = language;
             v21 = 2114;
             v22 = cf;
             _os_log_error_impl(&dword_18075C000, v10, OS_LOG_TYPE_ERROR, "Cannot use inflection engine for language %{public}@ (Creating a tokenizer): %{public}@", buf, 0x16u);
@@ -108,7 +108,7 @@
           if (os_log_type_enabled(_NSInflectionLog_log, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v20 = a3;
+            languageCopy4 = language;
             v21 = 2114;
             v22 = cf;
             _os_log_error_impl(&dword_18075C000, v11, OS_LOG_TYPE_ERROR, "Cannot use inflection engine for language %{public}@ (Setting the tokenizer to use the unmodified style): %{public}@", buf, 0x16u);
@@ -137,7 +137,7 @@
               if (os_log_type_enabled(_NSInflectionLog_log, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                v20 = a3;
+                languageCopy4 = language;
                 v21 = 2114;
                 v22 = cf;
                 _os_log_error_impl(&dword_18075C000, v15, OS_LOG_TYPE_ERROR, "Cannot use inflection engine for language %{public}@ (Getting the dictionary for this locale): %{public}@", buf, 0x16u);
@@ -173,7 +173,7 @@ LABEL_44:
     v14 = 0;
     v13 = 0;
 LABEL_45:
-    v4->_languageCode = [objc_msgSend(a3 "lowercaseString")];
+    v4->_languageCode = [objc_msgSend(language "lowercaseString")];
     if (v12 && v14 && v13)
     {
       v4->_analyzer = v7;
@@ -205,7 +205,7 @@ LABEL_49:
   [(_NSLexiconMorphunDictionary *)&v4 dealloc];
 }
 
-- (id)allPossibleWordAttributesForWord:(id)a3
+- (id)allPossibleWordAttributesForWord:(id)word
 {
   v14 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -221,7 +221,7 @@ LABEL_49:
   v7[3] = &unk_1E69F5090;
   v7[4] = self;
   v7[5] = &v8;
-  _NSLexiconIterateFormsOfWord(a3, appropriateLocale, v7);
+  _NSLexiconIterateFormsOfWord(word, appropriateLocale, v7);
   v4 = v9[5];
   if (v4)
   {
@@ -237,7 +237,7 @@ LABEL_49:
   return v5;
 }
 
-- (id)preferredPronoun:(id)a3 forTermOfAddress:(id)a4 morphology:(id)a5 dependency:(id)a6
+- (id)preferredPronoun:(id)pronoun forTermOfAddress:(id)address morphology:(id)morphology dependency:(id)dependency
 {
   v110 = *MEMORY[0x1E69E9840];
   if (qword_1ED43F908 != -1)
@@ -343,7 +343,7 @@ LABEL_10:
     }
 
     cf = 0;
-    v19 = off_1ED43F8A8(v17, a3, &cf);
+    v19 = off_1ED43F8A8(v17, pronoun, &cf);
     if (cf)
     {
       if (_NSInflectionLog_onceToken != -1)
@@ -404,10 +404,10 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v81 = a3;
+    pronounCopy = pronoun;
     v82 = v12;
     v89 = v21;
-    if ([a4 isEqual:{+[NSTermOfAddress feminine](NSTermOfAddress, "feminine")}])
+    if ([address isEqual:{+[NSTermOfAddress feminine](NSTermOfAddress, "feminine")}])
     {
       cf = 0;
       off_1ED43F8B8(v26, @"gender", @"feminine", &cf);
@@ -437,7 +437,7 @@ LABEL_66:
       v80 = 0;
       theArray = 0;
       v83 = 0;
-      if (!a5)
+      if (!morphology)
       {
         goto LABEL_80;
       }
@@ -447,8 +447,8 @@ LABEL_67:
       v95 = 0u;
       v92 = 0u;
       v93 = 0u;
-      v29 = [a5 _morphunConstraints];
-      v30 = [v29 countByEnumeratingWithState:&v92 objects:v91 count:16];
+      _morphunConstraints = [morphology _morphunConstraints];
+      v30 = [_morphunConstraints countByEnumeratingWithState:&v92 objects:v91 count:16];
       if (v30)
       {
         v31 = v30;
@@ -460,11 +460,11 @@ LABEL_67:
           {
             if (*v93 != v32)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(_morphunConstraints);
             }
 
             v34 = *(*(&v92 + 1) + 8 * v33);
-            v35 = [objc_msgSend(a5 "_morphunConstraints")];
+            v35 = [objc_msgSend(morphology "_morphunConstraints")];
             cf = 0;
             off_1ED43F8B8(v89, v34, v35, &cf);
             if (cf)
@@ -491,7 +491,7 @@ LABEL_67:
           }
 
           while (v31 != v33);
-          v31 = [v29 countByEnumeratingWithState:&v92 objects:v91 count:16];
+          v31 = [_morphunConstraints countByEnumeratingWithState:&v92 objects:v91 count:16];
         }
 
         while (v31);
@@ -531,10 +531,10 @@ LABEL_189:
         goto LABEL_189;
       }
 
-      if (a6)
+      if (dependency)
       {
         cf = 0;
-        v39 = off_1ED43F7F0(a6, &cf);
+        v39 = off_1ED43F7F0(dependency, &cf);
         if (cf)
         {
           if (_NSInflectionLog_onceToken != -1)
@@ -716,7 +716,7 @@ LABEL_188:
         v75 = v56;
         if (v56)
         {
-          if (v83 && ![a4 _containsPronoun:v56 withGrammemes:v80])
+          if (v83 && ![address _containsPronoun:v56 withGrammemes:v80])
           {
             v75 = 0;
             v15 = 0;
@@ -724,17 +724,17 @@ LABEL_188:
 
           else
           {
-            if ([v81 isEqualToString:{objc_msgSend(v81, "lowercaseStringWithLocale:", v82, v78)}])
+            if ([pronounCopy isEqualToString:{objc_msgSend(pronounCopy, "lowercaseStringWithLocale:", v82, v78)}])
             {
               v76 = [v75 lowercaseStringWithLocale:v82];
             }
 
-            else if ([v81 isEqualToString:{objc_msgSend(v81, "uppercaseStringWithLocale:", v82)}])
+            else if ([pronounCopy isEqualToString:{objc_msgSend(pronounCopy, "uppercaseStringWithLocale:", v82)}])
             {
               v76 = [v75 uppercaseStringWithLocale:v82];
             }
 
-            else if ([v81 isEqualToString:{objc_msgSend(v81, "capitalizedStringWithLocale:", v82)}])
+            else if ([pronounCopy isEqualToString:{objc_msgSend(pronounCopy, "capitalizedStringWithLocale:", v82)}])
             {
               v76 = [v75 capitalizedStringWithLocale:v82];
             }
@@ -777,7 +777,7 @@ LABEL_42:
 
     v84 = v20;
     v88 = v18;
-    if ([a4 isEqual:{+[NSTermOfAddress masculine](NSTermOfAddress, "masculine")}])
+    if ([address isEqual:{+[NSTermOfAddress masculine](NSTermOfAddress, "masculine")}])
     {
       cf = 0;
       off_1ED43F8B8(v26, @"gender", @"masculine", &cf);
@@ -804,7 +804,7 @@ LABEL_42:
       goto LABEL_181;
     }
 
-    if ([a4 isEqual:{+[NSTermOfAddress neutral](NSTermOfAddress, "neutral")}])
+    if ([address isEqual:{+[NSTermOfAddress neutral](NSTermOfAddress, "neutral")}])
     {
       cf = 0;
       off_1ED43F8C0(v26, @"gender", &cf);
@@ -840,17 +840,17 @@ LABEL_115:
       goto LABEL_42;
     }
 
-    if (![objc_msgSend(a4 "pronouns")])
+    if (![objc_msgSend(address "pronouns")])
     {
       goto LABEL_66;
     }
 
-    theArray = CFArrayCreateMutable(0, [objc_msgSend(a4 "pronouns")], &_DisplayValueArrayCallbacks);
+    theArray = CFArrayCreateMutable(0, [objc_msgSend(address "pronouns")], &_DisplayValueArrayCallbacks);
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
-    obj = [a4 pronouns];
+    obj = [address pronouns];
     v40 = [obj countByEnumeratingWithState:&v102 objects:v101 count:16];
     if (v40)
     {
@@ -867,9 +867,9 @@ LABEL_115:
           }
 
           v44 = *(*(&v102 + 1) + 8 * v43);
-          v45 = [v44 _morphunConstraints];
+          _morphunConstraints2 = [v44 _morphunConstraints];
           cf = 0;
-          v46 = (off_1ED43F8C8)(v88, [v44 pronoun], v45, &cf);
+          v46 = (off_1ED43F8C8)(v88, [v44 pronoun], _morphunConstraints2, &cf);
           if (v46)
           {
             v47 = v46;
@@ -1036,7 +1036,7 @@ LABEL_176:
         {
 LABEL_178:
           v89 = v79;
-          if (!a5)
+          if (!morphology)
           {
             goto LABEL_80;
           }

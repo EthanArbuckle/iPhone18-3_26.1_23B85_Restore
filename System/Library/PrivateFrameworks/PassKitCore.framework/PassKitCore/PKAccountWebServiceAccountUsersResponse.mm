@@ -1,31 +1,31 @@
 @interface PKAccountWebServiceAccountUsersResponse
-- (PKAccountWebServiceAccountUsersResponse)initWithData:(id)a3;
+- (PKAccountWebServiceAccountUsersResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceAccountUsersResponse
 
-- (PKAccountWebServiceAccountUsersResponse)initWithData:(id)a3
+- (PKAccountWebServiceAccountUsersResponse)initWithData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = PKAccountWebServiceAccountUsersResponse;
-  v3 = [(PKWebServiceResponse *)&v18 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v18 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKSetContaining:objc_opt_class() forKey:@"users"];
+    v6 = [jSONObject PKSetContaining:objc_opt_class() forKey:@"users"];
     v7 = [v6 pk_setByApplyingBlock:&__block_literal_global_617];
     users = v4->_users;
     v4->_users = v7;
 
-    v9 = [v5 PKDateForKey:@"lastUpdated"];
+    v9 = [jSONObject PKDateForKey:@"lastUpdated"];
     lastUpdated = v4->_lastUpdated;
     v4->_lastUpdated = v9;
 

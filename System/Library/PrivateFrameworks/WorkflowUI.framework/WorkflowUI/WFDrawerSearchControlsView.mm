@@ -1,5 +1,5 @@
 @interface WFDrawerSearchControlsView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2749583BC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  sub_2749589A4(v3);
+  selfCopy = self;
+  sub_2749589A4(selfCopy);
   v5 = v4;
   v7 = v6;
 

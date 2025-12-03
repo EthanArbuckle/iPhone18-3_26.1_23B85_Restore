@@ -2,63 +2,63 @@
 + (BOOL)brushStrokeUsesMetal;
 + (id)p_metalShaderQueue;
 + (id)p_metalTextureQueue;
-+ (void)p_drawColor:(id)a3 intoContext:(CGContext *)a4 usingImageAsMask:(CGImage *)a5 withRect:(CGRect)a6;
++ (void)p_drawColor:(id)color intoContext:(CGContext *)context usingImageAsMask:(CGImage *)mask withRect:(CGRect)rect;
 - (BOOL)needsToExtendJoinsForBoundsCalculation;
-- (BOOL)p_isDrawingRasterizedIntoPDFWithContext:(CGContext *)a3;
+- (BOOL)p_isDrawingRasterizedIntoPDFWithContext:(CGContext *)context;
 - (BOOL)p_isFreehandDrawingStrokeWithFixedTileWidth;
-- (BOOL)p_prefersRasterRenderingInContext:(CGContext *)a3;
-- (BOOL)p_shouldDrawAsVectorInContext:(CGContext *)a3;
-- (TSDBrushStroke)initWithArchive:(const StrokeArchive *)a3 unarchiver:(id)a4;
-- (TSDBrushStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(int)a6 join:(int)a7 pattern:(id)a8 miterLimit:(double)a9;
+- (BOOL)p_prefersRasterRenderingInContext:(CGContext *)context;
+- (BOOL)p_shouldDrawAsVectorInContext:(CGContext *)context;
+- (TSDBrushStroke)initWithArchive:(const StrokeArchive *)archive unarchiver:(id)unarchiver;
+- (TSDBrushStroke)initWithName:(id)name color:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit;
 - (double)horizontalMarginForSwatch;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)p_metalBrushShaderForPixelFormat:(unint64_t)a3 andDevice:(id)a4;
-- (id)p_metalOpacityShaderForPixelFormat:(unint64_t)a3 andDevice:(id)a4;
-- (id)p_metalTextureForCurrentStrokeAndDevice:(id)a3;
-- (id)strokeLineEnd:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)p_metalBrushShaderForPixelFormat:(unint64_t)format andDevice:(id)device;
+- (id)p_metalOpacityShaderForPixelFormat:(unint64_t)format andDevice:(id)device;
+- (id)p_metalTextureForCurrentStrokeAndDevice:(id)device;
+- (id)strokeLineEnd:(id)end;
 - (int)cap;
-- (int64_t)p_fastElementPercentage:(double *)a3 forOverallPercentage:(double)a4 onPath:(id)a5 withCachedCurrentElementPercentage:(id *)a6;
-- (void)i_setCap:(int)a3;
-- (void)p_brushPath:(CGPath *)a3 inContext:(CGContext *)a4 orDirectly:(id)a5 parameterized:(BOOL)a6 drawRasterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8 withLayoutOptions:(id)a9;
-- (void)p_brushPath:(id)a3 withScaling:(id)a4 inElementRange:(_NSRange)a5 intoPath:(id)a6 orIntoVector:(void *)a7 sectionIndex:(unint64_t *)a8 viewScale:(double)a9 withLayoutOptions:(id)a10 currentSubpathIndex:(unint64_t)a11 cachedCurrentElementPercentage:(id *)a12;
-- (void)p_brushSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 inElementRange:(_NSRange)a6 intoPath:(id)a7 orIntoVector:(void *)a8 viewScale:(double)a9 strokeTileLayout:(id)a10 cachedCurrentElementPercentage:(id *)a11;
-- (void)p_finishMetalRenderInContext:(CGContext *)a3 orDirectly:(id)a4 pathVertexData:(void *)a5 parameterized:(BOOL)a6 shouldReverseDrawOrder:(BOOL)a7 withLayoutOptions:(id)a8;
-- (void)p_rasterBrushPath:(CGPath *)a3 inContext:(CGContext *)a4 orDirectly:(id)a5 parameterized:(BOOL)a6 shouldReverseDrawOrder:(BOOL)a7 withLayoutOptions:(id)a8;
-- (void)p_rasterRenderSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 inElementRange:(_NSRange)a6 into:(void *)a7 viewScale:(double)a8 strokeTileLayout:(id)a9 cachedCurrentElementPercentage:(id *)a10;
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8;
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8 withLayoutOptions:(id)a9;
+- (int64_t)p_fastElementPercentage:(double *)percentage forOverallPercentage:(double)overallPercentage onPath:(id)path withCachedCurrentElementPercentage:(id *)elementPercentage;
+- (void)i_setCap:(int)cap;
+- (void)p_brushPath:(CGPath *)path inContext:(CGContext *)context orDirectly:(id)directly parameterized:(BOOL)parameterized drawRasterized:(BOOL)rasterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options;
+- (void)p_brushPath:(id)path withScaling:(id)scaling inElementRange:(_NSRange)range intoPath:(id)intoPath orIntoVector:(void *)vector sectionIndex:(unint64_t *)index viewScale:(double)scale withLayoutOptions:(id)self0 currentSubpathIndex:(unint64_t)self1 cachedCurrentElementPercentage:(id *)self2;
+- (void)p_brushSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path inElementRange:(_NSRange)range intoPath:(id)intoPath orIntoVector:(void *)vector viewScale:(double)scale strokeTileLayout:(id)self0 cachedCurrentElementPercentage:(id *)self1;
+- (void)p_finishMetalRenderInContext:(CGContext *)context orDirectly:(id)directly pathVertexData:(void *)data parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options;
+- (void)p_rasterBrushPath:(CGPath *)path inContext:(CGContext *)context orDirectly:(id)directly parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options;
+- (void)p_rasterRenderSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path inElementRange:(_NSRange)range into:(void *)into viewScale:(double)scale strokeTileLayout:(id)layout cachedCurrentElementPercentage:(id *)self0;
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order;
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options;
 @end
 
 @implementation TSDBrushStroke
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSDMutableBrushStroke alloc];
-  v5 = [(TSDSmartStroke *)self strokeName];
-  v6 = [(TSDStroke *)self color];
+  strokeName = [(TSDSmartStroke *)self strokeName];
+  color = [(TSDStroke *)self color];
   [(TSDStroke *)self width];
   v8 = v7;
   v9 = [(TSDBrushStroke *)self cap];
-  v10 = [(TSDStroke *)self join];
-  v11 = [(TSDStroke *)self pattern];
+  join = [(TSDStroke *)self join];
+  pattern = [(TSDStroke *)self pattern];
   [(TSDStroke *)self miterLimit];
-  v13 = [(TSDBrushStroke *)v4 initWithName:v5 color:v6 width:v9 cap:v10 join:v11 pattern:v8 miterLimit:v12];
+  v13 = [(TSDBrushStroke *)v4 initWithName:strokeName color:color width:v9 cap:join join:pattern pattern:v8 miterLimit:v12];
 
   return v13;
 }
 
-- (TSDBrushStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(int)a6 join:(int)a7 pattern:(id)a8 miterLimit:(double)a9
+- (TSDBrushStroke)initWithName:(id)name color:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit
 {
-  v11 = *&a7;
-  v12 = *&a6;
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
+  v11 = *&join;
+  v12 = *&cap;
+  nameCopy = name;
+  colorCopy = color;
+  patternCopy = pattern;
   v22.receiver = self;
   v22.super_class = TSDBrushStroke;
-  v19 = [(TSDSmartStroke *)&v22 initWithName:v16 color:v17 width:v12 cap:v11 join:v18 pattern:a5 miterLimit:a9];
+  v19 = [(TSDSmartStroke *)&v22 initWithName:nameCopy color:colorCopy width:v12 cap:v11 join:patternCopy pattern:width miterLimit:limit];
   v20 = v19;
   if (v19)
   {
@@ -68,12 +68,12 @@
   return v20;
 }
 
-- (TSDBrushStroke)initWithArchive:(const StrokeArchive *)a3 unarchiver:(id)a4
+- (TSDBrushStroke)initWithArchive:(const StrokeArchive *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v10.receiver = self;
   v10.super_class = TSDBrushStroke;
-  v7 = [(TSDBrushStroke *)&v10 initWithArchive:a3 unarchiver:v6];
+  v7 = [(TSDBrushStroke *)&v10 initWithArchive:archive unarchiver:unarchiverCopy];
   v8 = v7;
   if (v7)
   {
@@ -88,9 +88,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TSDSmartStroke *)self strokeName];
+  strokeName = [(TSDSmartStroke *)self strokeName];
   [(TSDStroke *)self width];
-  v8 = [v3 stringWithFormat:@"<%@ %p strokeName='%@' width=%f>", v5, self, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@ %p strokeName='%@' width=%f>", v5, self, strokeName, v7];
 
   return v8;
 }
@@ -98,26 +98,26 @@
 + (BOOL)brushStrokeUsesMetal
 {
   v2 = +[TSDCapabilities currentCapabilities];
-  v3 = [v2 isMetalCapable];
+  isMetalCapable = [v2 isMetalCapable];
 
-  return v3;
+  return isMetalCapable;
 }
 
 - (int)cap
 {
-  v2 = [(TSDStroke *)self i_cap];
-  if (v2 != 1)
+  i_cap = [(TSDStroke *)self i_cap];
+  if (i_cap != 1)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke cap]"];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-    [v3 handleFailureInFunction:v4 file:v5 lineNumber:295 description:@"TSDBrushStroke should only ever have a round cap."];
+    [currentHandler handleFailureInFunction:v4 file:v5 lineNumber:295 description:@"TSDBrushStroke should only ever have a round cap."];
   }
 
-  return v2;
+  return i_cap;
 }
 
-- (void)i_setCap:(int)a3
+- (void)i_setCap:(int)cap
 {
   v3.receiver = self;
   v3.super_class = TSDBrushStroke;
@@ -130,8 +130,8 @@
   v8.super_class = TSDBrushStroke;
   [(TSDStroke *)&v8 horizontalMarginForSwatch];
   v4 = v3;
-  v5 = [(TSDSmartStroke *)self strokeName];
-  v6 = [v5 isEqualToString:@"Pen"];
+  strokeName = [(TSDSmartStroke *)self strokeName];
+  v6 = [strokeName isEqualToString:@"Pen"];
 
   result = 7.0;
   if (!v6)
@@ -145,138 +145,138 @@
 - (BOOL)needsToExtendJoinsForBoundsCalculation
 {
   v3 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-  v4 = [(TSDSmartStroke *)self strokeName];
-  v5 = [v3 optionsForStroke:v4];
+  strokeName = [(TSDSmartStroke *)self strokeName];
+  v5 = [v3 optionsForStroke:strokeName];
   v6 = [v5 objectForKeyedSubscript:@"split-at-sharp-angles"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (id)strokeLineEnd:(id)a3
+- (id)strokeLineEnd:(id)end
 {
-  v4 = a3;
-  if ([v4 isNone])
+  endCopy = end;
+  if ([endCopy isNone])
   {
-    v5 = v4;
+    v5 = endCopy;
   }
 
   else
   {
-    v6 = [v4 identifier];
-    v7 = [v6 rangeOfString:@":"];
+    identifier = [endCopy identifier];
+    v7 = [identifier rangeOfString:@":"];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v6 substringFromIndex:v7 + v8];
+      v9 = [identifier substringFromIndex:v7 + v8];
 
-      v6 = v9;
+      identifier = v9;
     }
 
     v10 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-    v11 = [(TSDSmartStroke *)self strokeName];
-    v5 = [v10 lineEnd:v6 forStroke:v11];
+    strokeName = [(TSDSmartStroke *)self strokeName];
+    v5 = [v10 lineEnd:identifier forStroke:strokeName];
   }
 
   return v5;
 }
 
-- (void)paintLineEnd:(id)a3 atPoint:(CGPoint)a4 atAngle:(double)a5 withScale:(double)a6 inContext:(CGContext *)a7 useFastDrawing:(BOOL)a8
+- (void)paintLineEnd:(id)end atPoint:(CGPoint)point atAngle:(double)angle withScale:(double)scale inContext:(CGContext *)context useFastDrawing:(BOOL)drawing
 {
-  v8 = a8;
-  y = a4.y;
-  x = a4.x;
-  v15 = a3;
-  v16 = v15;
-  if (v8)
+  drawingCopy = drawing;
+  y = point.y;
+  x = point.x;
+  endCopy = end;
+  v16 = endCopy;
+  if (drawingCopy)
   {
-    v17 = [v15 identifier];
-    v18 = [v17 rangeOfString:@":"];
+    identifier = [endCopy identifier];
+    v18 = [identifier rangeOfString:@":"];
     if (v18 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v20 = [v17 substringFromIndex:v18 + v19];
+      v20 = [identifier substringFromIndex:v18 + v19];
 
       v21 = [TSDLineEnd lineEndWithIdentifier:v20];
 
-      v17 = v20;
+      identifier = v20;
       v16 = v21;
     }
 
     v24.receiver = self;
     v24.super_class = TSDBrushStroke;
-    [(TSDStroke *)&v24 paintLineEnd:v16 atPoint:a7 atAngle:1 withScale:x inContext:y useFastDrawing:a5, a6];
+    [(TSDStroke *)&v24 paintLineEnd:v16 atPoint:context atAngle:1 withScale:x inContext:y useFastDrawing:angle, scale];
   }
 
   else
   {
-    v22 = [(TSDBrushStroke *)self strokeLineEnd:v15];
+    v22 = [(TSDBrushStroke *)self strokeLineEnd:endCopy];
 
     v23.receiver = self;
     v23.super_class = TSDBrushStroke;
     v16 = v22;
-    [(TSDStroke *)&v23 paintLineEnd:v22 atPoint:a7 atAngle:0 withScale:x inContext:y useFastDrawing:a5, a6];
+    [(TSDStroke *)&v23 paintLineEnd:v22 atPoint:context atAngle:0 withScale:x inContext:y useFastDrawing:angle, scale];
   }
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v12 = a4;
+  orderCopy = order;
+  parameterizedCopy = parameterized;
+  drawingCopy = drawing;
+  strokeCopy = stroke;
   v15 = objc_alloc_init(TSDBrushStrokeLayoutOptions);
-  [(TSDBrushStroke *)self paintPath:a3 wantsInteriorStroke:v12 inContext:a5 useFastDrawing:v10 parameterized:v9 shouldReverseDrawOrder:v8 withLayoutOptions:v15];
+  [(TSDBrushStroke *)self paintPath:path wantsInteriorStroke:strokeCopy inContext:context useFastDrawing:drawingCopy parameterized:parameterizedCopy shouldReverseDrawOrder:orderCopy withLayoutOptions:v15];
 }
 
-- (void)paintPath:(CGPath *)a3 wantsInteriorStroke:(BOOL)a4 inContext:(CGContext *)a5 useFastDrawing:(BOOL)a6 parameterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8 withLayoutOptions:(id)a9
+- (void)paintPath:(CGPath *)path wantsInteriorStroke:(BOOL)stroke inContext:(CGContext *)context useFastDrawing:(BOOL)drawing parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options
 {
-  v9 = a8;
-  v10 = a7;
-  v11 = a6;
-  v13 = a4;
-  v16 = a9;
-  if (v11)
+  orderCopy = order;
+  parameterizedCopy = parameterized;
+  drawingCopy = drawing;
+  strokeCopy = stroke;
+  optionsCopy = options;
+  if (drawingCopy)
   {
     v17.receiver = self;
     v17.super_class = TSDBrushStroke;
-    [(TSDStroke *)&v17 paintPath:a3 wantsInteriorStroke:v13 inContext:a5 useFastDrawing:1 parameterized:v10 shouldReverseDrawOrder:v9];
+    [(TSDStroke *)&v17 paintPath:path wantsInteriorStroke:strokeCopy inContext:context useFastDrawing:1 parameterized:parameterizedCopy shouldReverseDrawOrder:orderCopy];
   }
 
   else if ([(TSDStroke *)self shouldRender])
   {
-    if ([(TSDBrushStroke *)self p_shouldDrawAsVectorInContext:a5])
+    if ([(TSDBrushStroke *)self p_shouldDrawAsVectorInContext:context])
     {
-      [(TSDBrushStroke *)self p_brushPath:a3 inContext:a5 orDirectly:0 parameterized:v10 drawRasterized:0 shouldReverseDrawOrder:0 withLayoutOptions:v16];
+      [(TSDBrushStroke *)self p_brushPath:path inContext:context orDirectly:0 parameterized:parameterizedCopy drawRasterized:0 shouldReverseDrawOrder:0 withLayoutOptions:optionsCopy];
     }
 
     else
     {
-      [(TSDBrushStroke *)self p_rasterBrushPath:a3 inContext:a5 orDirectly:0 parameterized:v10 shouldReverseDrawOrder:v9 withLayoutOptions:v16];
+      [(TSDBrushStroke *)self p_rasterBrushPath:path inContext:context orDirectly:0 parameterized:parameterizedCopy shouldReverseDrawOrder:orderCopy withLayoutOptions:optionsCopy];
     }
   }
 }
 
-- (void)p_brushPath:(CGPath *)a3 inContext:(CGContext *)a4 orDirectly:(id)a5 parameterized:(BOOL)a6 drawRasterized:(BOOL)a7 shouldReverseDrawOrder:(BOOL)a8 withLayoutOptions:(id)a9
+- (void)p_brushPath:(CGPath *)path inContext:(CGContext *)context orDirectly:(id)directly parameterized:(BOOL)parameterized drawRasterized:(BOOL)rasterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options
 {
-  v9 = a7;
-  v10 = a6;
+  rasterizedCopy = rasterized;
+  parameterizedCopy = parameterized;
   v98 = *MEMORY[0x277D85DE8];
-  v88 = a5;
-  v92 = a9;
-  v83 = v10;
-  v87 = v9;
-  if (v10 && !v9)
+  directlyCopy = directly;
+  optionsCopy = options;
+  v83 = parameterizedCopy;
+  v87 = rasterizedCopy;
+  if (parameterizedCopy && !rasterizedCopy)
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_brushPath:inContext:orDirectly:parameterized:drawRasterized:shouldReverseDrawOrder:withLayoutOptions:]"];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-    [v12 handleFailureInFunction:v13 file:v14 lineNumber:394 description:@"Parameterized strokes must draw rasterized."];
+    [currentHandler handleFailureInFunction:v13 file:v14 lineNumber:394 description:@"Parameterized strokes must draw rasterized."];
 
-    v9 = v87;
+    rasterizedCopy = v87;
   }
 
-  if (v92)
+  if (optionsCopy)
   {
-    v15 = !v9;
+    v15 = !rasterizedCopy;
   }
 
   else
@@ -284,9 +284,9 @@
     v15 = 1;
   }
 
-  if (v15 || ([v92 strokeEnd], v16 > 0.0))
+  if (v15 || ([optionsCopy strokeEnd], v16 > 0.0))
   {
-    v17 = [TSDBezierPath bezierPathWithCGPath:a3];
+    v17 = [TSDBezierPath bezierPathWithCGPath:path];
     [v17 length];
     if (v18 == 0.0)
     {
@@ -301,9 +301,9 @@ LABEL_76:
 
       if ([v19 isEffectivelyClosed] && (objc_msgSend(v19, "isClockwise") & 1) == 0)
       {
-        v20 = [v19 bezierPathByReversingPath];
+        bezierPathByReversingPath = [v19 bezierPathByReversingPath];
 
-        v17 = v20;
+        v17 = bezierPathByReversingPath;
       }
 
       else
@@ -316,16 +316,16 @@ LABEL_76:
     [v17 setLineWidth:?];
     [(TSDStroke *)self miterLimit];
     [v17 setMiterLimit:?];
-    if (v88)
+    if (directlyCopy)
     {
-      [v88 transform];
+      [directlyCopy transform];
       v21 = TSDTransformScale(&v96.a);
-      [v88 contentsScale];
+      [directlyCopy contentsScale];
     }
 
     else
     {
-      if (!a4)
+      if (!context)
       {
         v23 = 0.0;
         goto LABEL_18;
@@ -337,9 +337,9 @@ LABEL_76:
         goto LABEL_19;
       }
 
-      CGContextGetCTM(&v96, a4);
+      CGContextGetCTM(&v96, context);
       v21 = TSDTransformScale(&v96.a);
-      v22 = TSDCGContextAssociatedScreenScale(a4);
+      v22 = TSDCGContextAssociatedScreenScale(context);
     }
 
     v23 = v21 / v22;
@@ -359,19 +359,19 @@ LABEL_19:
     [v17 length];
     v26 = v25;
     v27 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-    v28 = [(TSDSmartStroke *)self strokeName];
-    v29 = [v27 optionsForStroke:v28];
+    strokeName = [(TSDSmartStroke *)self strokeName];
+    v29 = [v27 optionsForStroke:strokeName];
     v30 = [v29 objectForKeyedSubscript:@"split-at-sharp-angles"];
-    v90 = [v30 BOOLValue];
+    bOOLValue = [v30 BOOLValue];
 
     v31 = *MEMORY[0x277CBF348];
     v32 = *(MEMORY[0x277CBF348] + 8);
     v94 = *MEMORY[0x277CBF348];
-    v33 = [v17 elementCount];
+    elementCount = [v17 elementCount];
     v93[0] = 0;
     v93[1] = 1;
     v93[2] = 0;
-    if (v33 >= 1)
+    if (elementCount >= 1)
     {
       v89 = 0;
       v34 = 0;
@@ -392,7 +392,7 @@ LABEL_19:
             *&v96.c = v94;
             break;
           case 2:
-            if (v90)
+            if (bOOLValue)
             {
               v42 = v31;
               v84 = v38 + v41;
@@ -433,7 +433,7 @@ LABEL_19:
 
                 else
                 {
-                  [(TSDBrushStroke *)self p_brushPath:v17 withScaling:v34 inElementRange:v35 - v34 intoPath:v24 orIntoVector:0 sectionIndex:&v95 viewScale:v36 withLayoutOptions:v38 - v36 currentSubpathIndex:v85 cachedCurrentElementPercentage:v92, v89, v93];
+                  [(TSDBrushStroke *)self p_brushPath:v17 withScaling:v34 inElementRange:v35 - v34 intoPath:v24 orIntoVector:0 sectionIndex:&v95 viewScale:v36 withLayoutOptions:v38 - v36 currentSubpathIndex:v85 cachedCurrentElementPercentage:optionsCopy, v89, v93];
                   v34 = v35 - 1;
                 }
               }
@@ -456,19 +456,19 @@ LABEL_19:
 
               else
               {
-                v59 = [v92 patternOffsetsBySubpath];
-                v60 = v59 == 0;
+                patternOffsetsBySubpath = [optionsCopy patternOffsetsBySubpath];
+                v60 = patternOffsetsBySubpath == 0;
 
                 if (!v60)
                 {
-                  v61 = [MEMORY[0x277D6C290] currentHandler];
+                  currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
                   v62 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_brushPath:inContext:orDirectly:parameterized:drawRasterized:shouldReverseDrawOrder:withLayoutOptions:]"];
                   v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-                  [v61 handleFailureInFunction:v62 file:v63 lineNumber:475 description:{@"If there is a patternOffsetsBySubpath array, this should be a freehand drawing stroke."}];
+                  [currentHandler2 handleFailureInFunction:v62 file:v63 lineNumber:475 description:{@"If there is a patternOffsetsBySubpath array, this should be a freehand drawing stroke."}];
                 }
               }
 
-              [(TSDBrushStroke *)self p_brushPath:v17 withScaling:v34 inElementRange:v35 - v34 intoPath:v24 orIntoVector:0 sectionIndex:&v95 viewScale:v36 withLayoutOptions:v37 - v36 currentSubpathIndex:v85 cachedCurrentElementPercentage:v92, v89++, v93];
+              [(TSDBrushStroke *)self p_brushPath:v17 withScaling:v34 inElementRange:v35 - v34 intoPath:v24 orIntoVector:0 sectionIndex:&v95 viewScale:v36 withLayoutOptions:v37 - v36 currentSubpathIndex:v85 cachedCurrentElementPercentage:optionsCopy, v89++, v93];
               v36 = v37;
               v34 = v35;
             }
@@ -478,7 +478,7 @@ LABEL_19:
             goto LABEL_59;
         }
 
-        if (!v90)
+        if (!bOOLValue)
         {
           break;
         }
@@ -498,14 +498,14 @@ LABEL_19:
           goto LABEL_42;
         }
 
-        [(TSDBrushStroke *)self p_brushPath:v17 withScaling:v34 inElementRange:v35 - v34 intoPath:v24 orIntoVector:0 sectionIndex:&v95 viewScale:v36 withLayoutOptions:v38 - v36 currentSubpathIndex:v85 cachedCurrentElementPercentage:v92, v89, v93];
+        [(TSDBrushStroke *)self p_brushPath:v17 withScaling:v34 inElementRange:v35 - v34 intoPath:v24 orIntoVector:0 sectionIndex:&v95 viewScale:v36 withLayoutOptions:v38 - v36 currentSubpathIndex:v85 cachedCurrentElementPercentage:optionsCopy, v89, v93];
         v34 = v35 - 1;
 LABEL_43:
         *&v96.a = *&v96.c;
         v32 = v57;
         v36 = v38;
 LABEL_59:
-        if (v33 == ++v35)
+        if (elementCount == ++v35)
         {
           goto LABEL_67;
         }
@@ -517,13 +517,13 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    v33 = 0;
+    elementCount = 0;
     v34 = 0;
     v89 = 0;
     v37 = 0.0;
     v36 = 0.0;
 LABEL_67:
-    if ((v33 + ~v34) >= 1)
+    if ((elementCount + ~v34) >= 1)
     {
       if ([(TSDBrushStroke *)self p_isFreehandDrawingStrokeWithFixedTileWidth])
       {
@@ -532,77 +532,77 @@ LABEL_67:
 
       else
       {
-        v72 = [v92 patternOffsetsBySubpath];
-        v73 = v72 == 0;
+        patternOffsetsBySubpath2 = [optionsCopy patternOffsetsBySubpath];
+        v73 = patternOffsetsBySubpath2 == 0;
 
         if (!v73)
         {
-          v74 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
           v75 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_brushPath:inContext:orDirectly:parameterized:drawRasterized:shouldReverseDrawOrder:withLayoutOptions:]"];
           v76 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-          [v74 handleFailureInFunction:v75 file:v76 lineNumber:549 description:{@"If there is a patternOffsetsBySubpath array, this should be a freehand drawing stroke."}];
+          [currentHandler3 handleFailureInFunction:v75 file:v76 lineNumber:549 description:{@"If there is a patternOffsetsBySubpath array, this should be a freehand drawing stroke."}];
         }
       }
 
-      [(TSDBrushStroke *)self p_brushPath:v17 withScaling:v34 inElementRange:v33 + ~v34 intoPath:v24 orIntoVector:0 sectionIndex:&v95 viewScale:v36 withLayoutOptions:v37 - v36 currentSubpathIndex:v85 cachedCurrentElementPercentage:v92, v89, v93];
+      [(TSDBrushStroke *)self p_brushPath:v17 withScaling:v34 inElementRange:elementCount + ~v34 intoPath:v24 orIntoVector:0 sectionIndex:&v95 viewScale:v36 withLayoutOptions:v37 - v36 currentSubpathIndex:v85 cachedCurrentElementPercentage:optionsCopy, v89, v93];
     }
 
     v77 = v24;
     if (!v24)
     {
-      v78 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
       v79 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_brushPath:inContext:orDirectly:parameterized:drawRasterized:shouldReverseDrawOrder:withLayoutOptions:]"];
       v80 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-      [v78 handleFailureInFunction:v79 file:v80 lineNumber:567 description:{@"invalid nil value for '%s'", "resultPath"}];
+      [currentHandler4 handleFailureInFunction:v79 file:v80 lineNumber:567 description:{@"invalid nil value for '%s'", "resultPath"}];
 
       v77 = 0;
     }
 
-    CGContextAddPath(a4, [v77 CGPath]);
-    v81 = [(TSDStroke *)self color];
-    CGContextSetFillColorWithColor(a4, [v81 CGColor]);
+    CGContextAddPath(context, [v77 CGPath]);
+    color = [(TSDStroke *)self color];
+    CGContextSetFillColorWithColor(context, [color CGColor]);
 
-    CGContextFillPath(a4);
+    CGContextFillPath(context);
     goto LABEL_76;
   }
 
 LABEL_77:
 }
 
-- (void)p_brushPath:(id)a3 withScaling:(id)a4 inElementRange:(_NSRange)a5 intoPath:(id)a6 orIntoVector:(void *)a7 sectionIndex:(unint64_t *)a8 viewScale:(double)a9 withLayoutOptions:(id)a10 currentSubpathIndex:(unint64_t)a11 cachedCurrentElementPercentage:(id *)a12
+- (void)p_brushPath:(id)path withScaling:(id)scaling inElementRange:(_NSRange)range intoPath:(id)intoPath orIntoVector:(void *)vector sectionIndex:(unint64_t *)index viewScale:(double)scale withLayoutOptions:(id)self0 currentSubpathIndex:(unint64_t)self1 cachedCurrentElementPercentage:(id *)self2
 {
-  length = a5.length;
-  location = a5.location;
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v101 = a3;
-  v20 = a6;
-  v99 = a10;
-  if ([v101 elementCount] >= 2)
+  length = range.length;
+  location = range.location;
+  var1 = scaling.var1;
+  var0 = scaling.var0;
+  pathCopy = path;
+  intoPathCopy = intoPath;
+  optionsCopy = options;
+  if ([pathCopy elementCount] >= 2)
   {
-    v21 = [v99 patternOffsetsBySubpath];
-    if (v21)
+    patternOffsetsBySubpath = [optionsCopy patternOffsetsBySubpath];
+    if (patternOffsetsBySubpath)
     {
-      v22 = [(TSDBrushStroke *)self p_isFreehandDrawingStrokeWithFixedTileWidth];
+      p_isFreehandDrawingStrokeWithFixedTileWidth = [(TSDBrushStroke *)self p_isFreehandDrawingStrokeWithFixedTileWidth];
 
-      if (!v22)
+      if (!p_isFreehandDrawingStrokeWithFixedTileWidth)
       {
-        v23 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_brushPath:withScaling:inElementRange:intoPath:orIntoVector:sectionIndex:viewScale:withLayoutOptions:currentSubpathIndex:cachedCurrentElementPercentage:]"];
         v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-        [v23 handleFailureInFunction:v24 file:v25 lineNumber:579 description:@"We only know how to adjust the pattern of constant width layout brush strokes."];
+        [currentHandler handleFailureInFunction:v24 file:v25 lineNumber:579 description:@"We only know how to adjust the pattern of constant width layout brush strokes."];
       }
     }
 
-    [v101 lineWidth];
+    [pathCopy lineWidth];
     v27 = v26;
     v28 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-    v29 = [(TSDSmartStroke *)self strokeName];
-    v98 = [v28 pathsForStroke:v29];
+    strokeName = [(TSDSmartStroke *)self strokeName];
+    v98 = [v28 pathsForStroke:strokeName];
 
     v30 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-    v31 = [(TSDSmartStroke *)self strokeName];
-    v96 = [v30 boundsForStroke:v31];
+    strokeName2 = [(TSDSmartStroke *)self strokeName];
+    v96 = [v30 boundsForStroke:strokeName2];
 
     v97 = [v98 objectForKey:@"middle"];
     v32 = [v98 objectForKey:@"start"];
@@ -642,20 +642,20 @@ LABEL_77:
     }
 
     v92 = v27;
-    [v101 length];
+    [pathCopy length];
     v94 = v39;
     v40 = var0 + var1;
     if (v34)
     {
       v41 = [v96 objectForKeyedSubscript:@"start"];
-      v42 = [v41 lastObject];
-      [v42 CGRectValue];
+      lastObject = [v41 lastObject];
+      [lastObject CGRectValue];
       v44 = v43;
       v46 = v45;
 
       v47 = [v96 objectForKeyedSubscript:@"end"];
-      v48 = [v47 lastObject];
-      [v48 CGRectValue];
+      lastObject2 = [v47 lastObject];
+      [lastObject2 CGRectValue];
       v50 = v49;
       v52 = v51;
       v53 = v92 * (v44 / v46);
@@ -663,9 +663,9 @@ LABEL_77:
       v55 = fmin(v53, v54);
 
       v56 = var0 + v55 / v94;
-      [(TSDBrushStroke *)self p_brushSection:@"start" sectionIndex:0 ontoPath:v101 inElementRange:location intoPath:length orIntoVector:v20 viewScale:a9 strokeTileLayout:var0 cachedCurrentElementPercentage:v56, 0.0, 1.0, a7, a12];
+      [(TSDBrushStroke *)self p_brushSection:@"start" sectionIndex:0 ontoPath:pathCopy inElementRange:location intoPath:length orIntoVector:intoPathCopy viewScale:scale strokeTileLayout:var0 cachedCurrentElementPercentage:v56, 0.0, 1.0, vector, percentage];
       v57 = v40 - fmin(v92 * (v50 / v52), v54) / v94;
-      [(TSDBrushStroke *)self p_brushSection:@"end" sectionIndex:0 ontoPath:v101 inElementRange:location intoPath:length orIntoVector:v20 viewScale:a9 strokeTileLayout:v57 cachedCurrentElementPercentage:v40, 0.0, 1.0, a7, a12];
+      [(TSDBrushStroke *)self p_brushSection:@"end" sectionIndex:0 ontoPath:pathCopy inElementRange:location intoPath:length orIntoVector:intoPathCopy viewScale:scale strokeTileLayout:v57 cachedCurrentElementPercentage:v40, 0.0, 1.0, vector, percentage];
       v40 = v57;
     }
 
@@ -681,8 +681,8 @@ LABEL_77:
     }
 
     v59 = [v96 objectForKeyedSubscript:v38];
-    v60 = [v59 lastObject];
-    [v60 CGRectValue];
+    lastObject3 = [v59 lastObject];
+    [lastObject3 CGRectValue];
     v62 = v61;
     v64 = v63;
 
@@ -697,9 +697,9 @@ LABEL_77:
     }
 
     v93 = v69;
-    v70 = [v99 patternOffsetsBySubpath];
+    patternOffsetsBySubpath2 = [optionsCopy patternOffsetsBySubpath];
 
-    if (!v70)
+    if (!patternOffsetsBySubpath2)
     {
       v76 = 0.0;
 LABEL_30:
@@ -708,7 +708,7 @@ LABEL_30:
         v79 = v66 * (v68 / v67);
         if (v76 > 0.0 && v76 > v79)
         {
-          v80 = *a8;
+          v80 = *index;
           do
           {
             v76 = v76 - v79;
@@ -725,7 +725,7 @@ LABEL_30:
           }
 
           while (v76 > 0.0 && v76 > v79);
-          *a8 = v80;
+          *index = v80;
         }
       }
 
@@ -738,10 +738,10 @@ LABEL_30:
       {
         do
         {
-          v82 = [(TSDBrushStroke *)self p_isFreehandDrawingStrokeWithFixedTileWidth];
+          p_isFreehandDrawingStrokeWithFixedTileWidth2 = [(TSDBrushStroke *)self p_isFreehandDrawingStrokeWithFixedTileWidth];
           v83 = fmin(v40, v79 + v56);
           v84 = 0.0;
-          if (v82)
+          if (p_isFreehandDrawingStrokeWithFixedTileWidth2)
           {
             if (v76 > 0.0)
             {
@@ -751,7 +751,7 @@ LABEL_30:
             }
 
             v86 = v79 * (1.0 - v84);
-            v87 = a12;
+            percentageCopy2 = percentage;
             if (v83 - v56 > v86)
             {
               v83 = v83 - (v83 - v56 - v86);
@@ -760,22 +760,22 @@ LABEL_30:
 
           else
           {
-            v87 = a12;
+            percentageCopy2 = percentage;
           }
 
-          [(TSDBrushStroke *)self p_brushSection:v38 sectionIndex:*a8 % v58 ontoPath:v101 inElementRange:location intoPath:length orIntoVector:v20 viewScale:a9 strokeTileLayout:v56 cachedCurrentElementPercentage:v83, a7, v87];
-          v88 = 1664525 * *a8 + 1013904223;
-          if (v88 % v58 == *a8 % v58)
+          [(TSDBrushStroke *)self p_brushSection:v38 sectionIndex:*index % v58 ontoPath:pathCopy inElementRange:location intoPath:length orIntoVector:intoPathCopy viewScale:scale strokeTileLayout:v56 cachedCurrentElementPercentage:v83, vector, percentageCopy2];
+          v88 = 1664525 * *index + 1013904223;
+          if (v88 % v58 == *index % v58)
           {
             v89 = v88 + 1;
           }
 
           else
           {
-            v89 = 1664525 * *a8 + 1013904223;
+            v89 = 1664525 * *index + 1013904223;
           }
 
-          *a8 = v89;
+          *index = v89;
           v56 = v83;
         }
 
@@ -787,36 +787,36 @@ LABEL_54:
       goto LABEL_55;
     }
 
-    v71 = [v99 patternOffsetsBySubpath];
-    v72 = [v71 count];
+    patternOffsetsBySubpath3 = [optionsCopy patternOffsetsBySubpath];
+    v72 = [patternOffsetsBySubpath3 count];
 
-    if (v72 <= a11)
+    if (v72 <= subpathIndex)
     {
-      v77 = [v99 patternOffsetsBySubpath];
-      v78 = [v77 count];
+      patternOffsetsBySubpath4 = [optionsCopy patternOffsetsBySubpath];
+      v78 = [patternOffsetsBySubpath4 count];
 
       if (v78 != 1)
       {
-        v91 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v74 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_brushPath:withScaling:inElementRange:intoPath:orIntoVector:sectionIndex:viewScale:withLayoutOptions:currentSubpathIndex:cachedCurrentElementPercentage:]"];
         v95 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-        v73 = v91;
-        v90 = [v99 patternOffsetsBySubpath];
-        [v91 handleFailureInFunction:v74 file:v95 lineNumber:686 description:{@"Not enough pattern offsets for each subpath. Got %zi for index %zi", objc_msgSend(v90, "count"), a11}];
+        patternOffsetsBySubpath6 = currentHandler2;
+        patternOffsetsBySubpath5 = [optionsCopy patternOffsetsBySubpath];
+        [currentHandler2 handleFailureInFunction:v74 file:v95 lineNumber:686 description:{@"Not enough pattern offsets for each subpath. Got %zi for index %zi", objc_msgSend(patternOffsetsBySubpath5, "count"), subpathIndex}];
 
         v76 = 0.0;
         goto LABEL_29;
       }
 
-      v73 = [v99 patternOffsetsBySubpath];
-      v74 = [v73 objectAtIndexedSubscript:0];
+      patternOffsetsBySubpath6 = [optionsCopy patternOffsetsBySubpath];
+      v74 = [patternOffsetsBySubpath6 objectAtIndexedSubscript:0];
       [v74 tsu_CGFloatValue];
     }
 
     else
     {
-      v73 = [v99 patternOffsetsBySubpath];
-      v74 = [v73 objectAtIndexedSubscript:a11];
+      patternOffsetsBySubpath6 = [optionsCopy patternOffsetsBySubpath];
+      v74 = [patternOffsetsBySubpath6 objectAtIndexedSubscript:subpathIndex];
       [v74 tsu_CGFloatValue];
     }
 
@@ -829,119 +829,119 @@ LABEL_29:
 LABEL_55:
 }
 
-- (void)p_brushSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 inElementRange:(_NSRange)a6 intoPath:(id)a7 orIntoVector:(void *)a8 viewScale:(double)a9 strokeTileLayout:(id)a10 cachedCurrentElementPercentage:(id *)a11
+- (void)p_brushSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path inElementRange:(_NSRange)range intoPath:(id)intoPath orIntoVector:(void *)vector viewScale:(double)scale strokeTileLayout:(id)self0 cachedCurrentElementPercentage:(id *)self1
 {
-  var3 = a10.var3;
-  var2 = a10.var2;
-  var1 = a10.var1;
-  var0 = a10.var0;
-  length = a6.length;
-  location = a6.location;
-  v38 = a3;
-  v22 = a5;
-  v23 = a7;
-  v24 = v23;
-  if (a8)
+  var3 = layout.var3;
+  var2 = layout.var2;
+  var1 = layout.var1;
+  var0 = layout.var0;
+  length = range.length;
+  location = range.location;
+  sectionCopy = section;
+  pathCopy = path;
+  intoPathCopy = intoPath;
+  v24 = intoPathCopy;
+  if (vector)
   {
-    if (v23)
+    if (intoPathCopy)
     {
       v25 = length;
-      v26 = [MEMORY[0x277D6C290] currentHandler];
-      v37 = v22;
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
+      v37 = pathCopy;
       v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_brushSection:sectionIndex:ontoPath:inElementRange:intoPath:orIntoVector:viewScale:strokeTileLayout:cachedCurrentElementPercentage:]"];
       v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-      [v26 handleFailureInFunction:v27 file:v28 lineNumber:743 description:{@"expected nil value for '%s'", "resultPath"}];
+      [currentHandler handleFailureInFunction:v27 file:v28 lineNumber:743 description:{@"expected nil value for '%s'", "resultPath"}];
 
       length = v25;
-      v22 = v37;
+      pathCopy = v37;
     }
 
-    [(TSDBrushStroke *)self p_rasterRenderSection:v38 sectionIndex:a4 ontoPath:v22 inElementRange:location into:length viewScale:a8 strokeTileLayout:a9 cachedCurrentElementPercentage:var0, var1, var2, var3, a11];
+    [(TSDBrushStroke *)self p_rasterRenderSection:sectionCopy sectionIndex:index ontoPath:pathCopy inElementRange:location into:length viewScale:vector strokeTileLayout:scale cachedCurrentElementPercentage:var0, var1, var2, var3, percentage];
   }
 
   else
   {
-    if (v23)
+    if (intoPathCopy)
     {
       v29 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-      v30 = [(TSDSmartStroke *)self strokeName];
-      v31 = [v29 pathsForStroke:v30];
+      strokeName = [(TSDSmartStroke *)self strokeName];
+      currentHandler2 = [v29 pathsForStroke:strokeName];
 
-      v32 = [v31 objectForKeyedSubscript:v38];
-      v33 = [v32 objectAtIndexedSubscript:a4];
+      v32 = [currentHandler2 objectForKeyedSubscript:sectionCopy];
+      v33 = [v32 objectAtIndexedSubscript:index];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v22 lineWidth];
+        [pathCopy lineWidth];
         v35 = [v33 objectAtIndexedSubscript:v34 < 15.0];
 
         v33 = v35;
       }
 
-      [v33 recursiveSubdivideOntoPath:v22 withScaling:location inElementRange:length into:{v24, var0, var1 - var0}];
+      [v33 recursiveSubdivideOntoPath:pathCopy withScaling:location inElementRange:length into:{v24, var0, var1 - var0}];
     }
 
     else
     {
-      v31 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_brushSection:sectionIndex:ontoPath:inElementRange:intoPath:orIntoVector:viewScale:strokeTileLayout:cachedCurrentElementPercentage:]"];
       v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-      [v31 handleFailureInFunction:v33 file:v36 lineNumber:755 description:@"resultPath and resultVector are both nil!"];
+      [currentHandler2 handleFailureInFunction:v33 file:v36 lineNumber:755 description:@"resultPath and resultVector are both nil!"];
     }
   }
 }
 
-- (void)p_rasterBrushPath:(CGPath *)a3 inContext:(CGContext *)a4 orDirectly:(id)a5 parameterized:(BOOL)a6 shouldReverseDrawOrder:(BOOL)a7 withLayoutOptions:(id)a8
+- (void)p_rasterBrushPath:(CGPath *)path inContext:(CGContext *)context orDirectly:(id)directly parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a5;
-  v15 = a8;
-  if (v14)
+  orderCopy = order;
+  parameterizedCopy = parameterized;
+  directlyCopy = directly;
+  optionsCopy = options;
+  if (directlyCopy)
   {
-    [v14 transform];
+    [directlyCopy transform];
   }
 
   else
   {
-    CGContextGetCTM(&v19, a4);
+    CGContextGetCTM(&v19, context);
   }
 
   v16 = sqrt(v19.b * v19.b + v19.a * v19.a);
-  if (a4 && [(TSDBrushStroke *)self p_isDrawingRasterizedIntoPDFWithContext:a4])
+  if (context && [(TSDBrushStroke *)self p_isDrawingRasterizedIntoPDFWithContext:context])
   {
     v16 = 3.0;
   }
 
-  if (v14 || v10 || ([(TSDStroke *)self width], v17 > 0.5 / v16))
+  if (directlyCopy || parameterizedCopy || ([(TSDStroke *)self width], v17 > 0.5 / v16))
   {
-    [(TSDBrushStroke *)self p_brushPath:a3 inContext:a4 orDirectly:v14 parameterized:v10 drawRasterized:1 shouldReverseDrawOrder:v9 withLayoutOptions:v15];
+    [(TSDBrushStroke *)self p_brushPath:path inContext:context orDirectly:directlyCopy parameterized:parameterizedCopy drawRasterized:1 shouldReverseDrawOrder:orderCopy withLayoutOptions:optionsCopy];
   }
 
-  else if (a4)
+  else if (context)
   {
     v18.receiver = self;
     v18.super_class = TSDBrushStroke;
-    [(TSDStroke *)&v18 paintPath:a3 wantsInteriorStroke:0 inContext:a4 useFastDrawing:0 parameterized:0 shouldReverseDrawOrder:0];
+    [(TSDStroke *)&v18 paintPath:path wantsInteriorStroke:0 inContext:context useFastDrawing:0 parameterized:0 shouldReverseDrawOrder:0];
   }
 }
 
-- (void)p_rasterRenderSection:(id)a3 sectionIndex:(unint64_t)a4 ontoPath:(id)a5 inElementRange:(_NSRange)a6 into:(void *)a7 viewScale:(double)a8 strokeTileLayout:(id)a9 cachedCurrentElementPercentage:(id *)a10
+- (void)p_rasterRenderSection:(id)section sectionIndex:(unint64_t)index ontoPath:(id)path inElementRange:(_NSRange)range into:(void *)into viewScale:(double)scale strokeTileLayout:(id)layout cachedCurrentElementPercentage:(id *)self0
 {
-  length = a6.length;
-  location = a6.location;
-  var3 = a9.var3;
-  var2 = a9.var2;
-  var0 = a9.var0;
-  var1 = a9.var1;
+  length = range.length;
+  location = range.location;
+  var3 = layout.var3;
+  var2 = layout.var2;
+  var0 = layout.var0;
+  var1 = layout.var1;
   v148 = *MEMORY[0x277D85DE8];
-  v124 = a3;
-  v14 = a5;
+  sectionCopy = section;
+  pathCopy = path;
   v15 = location + length;
-  while (location < [v14 elementCount])
+  while (location < [pathCopy elementCount])
   {
-    [v14 lengthOfElement:location];
+    [pathCopy lengthOfElement:location];
     if (v16 != 0.0)
     {
       break;
@@ -952,7 +952,7 @@ LABEL_55:
 
   while (v15 > location)
   {
-    [v14 lengthOfElement:v15];
+    [pathCopy lengthOfElement:v15];
     if (v17 != 0.0)
     {
       break;
@@ -965,9 +965,9 @@ LABEL_55:
   {
     v142 = 0.0;
     v143 = 0.0;
-    v123 = v14;
-    v133 = [(TSDBrushStroke *)self p_fastElementPercentage:&v143 forOverallPercentage:v14 onPath:a10 withCachedCurrentElementPercentage:var0];
-    v18 = [(TSDBrushStroke *)self p_fastElementPercentage:&v142 forOverallPercentage:v14 onPath:a10 withCachedCurrentElementPercentage:var1];
+    v123 = pathCopy;
+    v133 = [(TSDBrushStroke *)self p_fastElementPercentage:&v143 forOverallPercentage:pathCopy onPath:percentage withCachedCurrentElementPercentage:var0];
+    v18 = [(TSDBrushStroke *)self p_fastElementPercentage:&v142 forOverallPercentage:pathCopy onPath:percentage withCachedCurrentElementPercentage:var1];
     if (v133 < location)
     {
       v143 = 0.0;
@@ -998,16 +998,16 @@ LABEL_55:
     }
 
     v20 = +[TSDBezierPath bezierPath];
-    [v20 appendBezierPath:v14 fromSegment:v133 t:v132 toSegment:0 t:v143 withoutMove:v142];
-    CGAffineTransformMakeScale(&v147, a8, a8);
+    [v20 appendBezierPath:pathCopy fromSegment:v133 t:v132 toSegment:0 t:v143 withoutMove:v142];
+    CGAffineTransformMakeScale(&v147, scale, scale);
     [v20 transformUsingAffineTransform:&v147];
     v131 = [v20 bezierPathByFlatteningPathWithFlatness:0.1];
 
-    CGAffineTransformMakeScale(&v147, 1.0 / a8, 1.0 / a8);
+    CGAffineTransformMakeScale(&v147, 1.0 / scale, 1.0 / scale);
     [v131 transformUsingAffineTransform:&v147];
     [(TSDStroke *)self width];
-    v21 = 0.5 / a8;
-    if (v22 > 0.5 / a8)
+    v21 = 0.5 / scale;
+    if (v22 > 0.5 / scale)
     {
       [(TSDStroke *)self width];
       v21 = v23;
@@ -1018,12 +1018,12 @@ LABEL_55:
     v140 = 0;
     v141 = 0;
     v138 = *MEMORY[0x277CBF348];
-    v24 = [v131 elementCount];
-    v25 = v24;
-    if (v24)
+    elementCount = [v131 elementCount];
+    v25 = elementCount;
+    if (elementCount)
     {
       v26 = 0;
-      v134 = v24 - 1;
+      v134 = elementCount - 1;
       v27 = MEMORY[0x277D6C3C0];
       v28 = 0.000000999999997;
       while (1)
@@ -1046,10 +1046,10 @@ LABEL_55:
             goto LABEL_28;
           }
 
-          v31 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_rasterRenderSection:sectionIndex:ontoPath:inElementRange:into:viewScale:strokeTileLayout:cachedCurrentElementPercentage:]"];
           v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-          [v31 handleFailureInFunction:v32 file:v33 lineNumber:854 description:@"Path should be flat by now."];
+          [currentHandler handleFailureInFunction:v32 file:v33 lineNumber:854 description:@"Path should be flat by now."];
 
           if (!v30)
           {
@@ -1064,7 +1064,7 @@ LABEL_28:
         }
 
         v34 = v140;
-        v35 = TSDDistanceSquared(*&v137, *(&v137 + 1), *(v140 - 2), *(v140 - 1)) * a8 * a8;
+        v35 = TSDDistanceSquared(*&v137, *(&v137 + 1), *(v140 - 2), *(v140 - 1)) * scale * scale;
         if (v35 > v28 && v35 <= 1.0)
         {
           if (v26 == v134 || (v144 = *v27, v145 = v144, v146 = v144, [v131 elementAtIndex:v26 + 1 associatedPoints:&v144]) && (v34 = v140, TSUSubtractPoints(), v39 = TSDNormalizePoint(v37, v38), v40 = v28, v41 = var3, v43 = v42, TSUSubtractPoints(), v46 = TSDNormalizePoint(v44, v45), v48 = v47, v49 = v43, var3 = v41, v28 = v40, TSDDotPoints(v39, v49, v46, v48) < 0.99))
@@ -1072,10 +1072,10 @@ LABEL_28:
 LABEL_39:
             if ((v30 | 2) != 3)
             {
-              v50 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
               v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_rasterRenderSection:sectionIndex:ontoPath:inElementRange:into:viewScale:strokeTileLayout:cachedCurrentElementPercentage:]"];
               v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-              [v50 handleFailureInFunction:v51 file:v52 lineNumber:897 description:@"Should only have line and close elements by now."];
+              [currentHandler2 handleFailureInFunction:v51 file:v52 lineNumber:897 description:@"Should only have line and close elements by now."];
 
               v34 = v140;
             }
@@ -1133,20 +1133,20 @@ LABEL_47:
     if (v65 >= 2)
     {
       v66 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-      v67 = [(TSDSmartStroke *)self strokeName];
-      v68 = [v66 textureIndexForStroke:v67];
-      v69 = [v68 objectForKeyedSubscript:v124];
-      v70 = [v69 objectAtIndexedSubscript:a4];
+      strokeName = [(TSDSmartStroke *)self strokeName];
+      v68 = [v66 textureIndexForStroke:strokeName];
+      v69 = [v68 objectForKeyedSubscript:sectionCopy];
+      v70 = [v69 objectAtIndexedSubscript:index];
       [v70 unsignedIntegerValue];
 
       v71 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-      v72 = [(TSDSmartStroke *)self strokeName];
-      v73 = [v71 textureIndexForStroke:v72];
+      strokeName2 = [(TSDSmartStroke *)self strokeName];
+      v73 = [v71 textureIndexForStroke:strokeName2];
       v74 = [v73 objectForKeyedSubscript:@"section-count"];
       [v74 unsignedIntegerValue];
 
       v75 = log2(64.0) - 1;
-      log2((v129 + v129) * a8);
+      log2((v129 + v129) * scale);
       TSUClamp();
       v77 = (v75 - v76);
       exp2f(-v77);
@@ -1169,10 +1169,10 @@ LABEL_47:
       v85 = *(MEMORY[0x277CBF3A0] + 16);
       v86 = *(MEMORY[0x277CBF3A0] + 24);
       v87 = +[TSDBrushStrokeLoader brushStrokeLoaderForCurrentThread];
-      v88 = [(TSDSmartStroke *)self strokeName];
-      v89 = [v87 pathsForStroke:v88];
-      v90 = [v89 objectForKeyedSubscript:v124];
-      v135 = [v90 objectAtIndexedSubscript:a4];
+      strokeName3 = [(TSDSmartStroke *)self strokeName];
+      v89 = [v87 pathsForStroke:strokeName3];
+      v90 = [v89 objectForKeyedSubscript:sectionCopy];
+      v135 = [v90 objectAtIndexedSubscript:index];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -1189,8 +1189,8 @@ LABEL_47:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v95 = [v135 firstObject];
-          [v95 bounds];
+          firstObject = [v135 firstObject];
+          [firstObject bounds];
           v83 = v96;
           v84 = v97;
           v85 = v98;
@@ -1199,7 +1199,7 @@ LABEL_47:
 
         else
         {
-          v95 = [MEMORY[0x277D6C290] currentHandler];
+          firstObject = [MEMORY[0x277D6C290] currentHandler];
           v100 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_rasterRenderSection:sectionIndex:ontoPath:inElementRange:into:viewScale:strokeTileLayout:cachedCurrentElementPercentage:]"];
           v101 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
         }
@@ -1247,31 +1247,31 @@ LABEL_47:
       operator delete(__p);
     }
 
-    v14 = v123;
+    pathCopy = v123;
   }
 }
 
-- (void)p_finishMetalRenderInContext:(CGContext *)a3 orDirectly:(id)a4 pathVertexData:(void *)a5 parameterized:(BOOL)a6 shouldReverseDrawOrder:(BOOL)a7 withLayoutOptions:(id)a8
+- (void)p_finishMetalRenderInContext:(CGContext *)context orDirectly:(id)directly pathVertexData:(void *)data parameterized:(BOOL)parameterized shouldReverseDrawOrder:(BOOL)order withLayoutOptions:(id)options
 {
-  v149 = a6;
+  parameterizedCopy = parameterized;
   v189 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v148 = a8;
+  directlyCopy = directly;
+  optionsCopy = options;
   context = objc_autoreleasePoolPush();
-  v158 = a5;
-  v155 = v10;
-  if (*(a5 + 1) == *a5)
+  dataCopy = data;
+  v155 = directlyCopy;
+  if (*(data + 1) == *data)
   {
     goto LABEL_70;
   }
 
-  if (v10)
+  if (directlyCopy)
   {
-    [v10 frame];
+    [directlyCopy frame];
     TSURectWithSize();
     v12 = v11;
     v14 = v13;
-    [v10 transform];
+    [directlyCopy transform];
     m11 = transform.m11;
     m12 = transform.m12;
     v186 = *&transform.m13;
@@ -1283,11 +1283,11 @@ LABEL_47:
       goto LABEL_70;
     }
 
-    v143 = [(TSDStroke *)self color];
+    color = [(TSDStroke *)self color];
 LABEL_13:
     [(TSDStroke *)self width];
     v23 = v22;
-    [v143 alphaComponent];
+    [color alphaComponent];
     v25 = sqrt(m12 * m12 + m11 * m11);
     v26 = 1.0 / v25;
     v27 = v23 * v25 * v24;
@@ -1296,7 +1296,7 @@ LABEL_13:
       v24 = v27;
     }
 
-    if (v149)
+    if (parameterizedCopy)
     {
       v28 = 1.0;
     }
@@ -1306,7 +1306,7 @@ LABEL_13:
       v28 = v24;
     }
 
-    if (v10)
+    if (directlyCopy)
     {
       v139 = 0;
       v131 = 0;
@@ -1318,17 +1318,17 @@ LABEL_13:
 
     else
     {
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       v179.m11 = m11;
       v179.m12 = m12;
       *&v179.m13 = v184;
       *&v179.m21 = v185;
       CGAffineTransformInvert(&transform, &v179);
-      CGContextConcatCTM(a3, &transform);
+      CGContextConcatCTM(context, &transform);
       v31 = *(MEMORY[0x277CBF2C0] + 32);
       v184 = *(MEMORY[0x277CBF2C0] + 16);
       v185 = v31;
-      ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+      ClipBoundingBox = CGContextGetClipBoundingBox(context);
       v192 = CGRectIntegral(ClipBoundingBox);
       x = v192.origin.x;
       y = v192.origin.y;
@@ -1339,22 +1339,22 @@ LABEL_13:
     }
 
     v157 = TSDMetalDevicePreferringLowPower();
-    if (v10)
+    if (directlyCopy)
     {
-      v32 = [v10 metalDeviceOverride];
-      v33 = v32 == 0;
+      metalDeviceOverride = [directlyCopy metalDeviceOverride];
+      v33 = metalDeviceOverride == 0;
 
       if (!v33)
       {
-        v34 = [v155 metalDeviceOverride];
+        metalDeviceOverride2 = [v155 metalDeviceOverride];
 
-        v157 = v34;
+        v157 = metalDeviceOverride2;
       }
     }
 
-    v35 = [MEMORY[0x277CBEB18] array];
-    v172 = [MEMORY[0x277CBEB18] array];
-    v36 = v158[1] - *v158;
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    v36 = dataCopy[1] - *dataCopy;
     if (v36)
     {
       v37 = 0;
@@ -1366,7 +1366,7 @@ LABEL_13:
         v41 = v37;
         do
         {
-          if (*(*v158 + v40) == 1)
+          if (*(*dataCopy + v40) == 1)
           {
             if (v39)
             {
@@ -1402,23 +1402,23 @@ LABEL_35:
     if (!v155)
     {
       v47 = 70;
-      v48 = v139;
-      v49 = v131;
+      height2 = v139;
+      width2 = v131;
 LABEL_51:
       v60 = +[TSDCapabilities currentCapabilities];
       [v60 maximumMetalTextureSizeForDevice:v157];
       v62 = v61;
       v64 = v63;
 
-      v65 = v48;
-      v66 = v49;
-      if (!v149)
+      v65 = height2;
+      v66 = width2;
+      if (!parameterizedCopy)
       {
-        v67 = v49 + v49;
-        v68 = v48 + v48;
+        v67 = width2 + width2;
+        v68 = height2 + height2;
         v69 = v67 > v62 || v68 > v64;
-        v65 = v48;
-        v66 = v49;
+        v65 = height2;
+        v66 = width2;
         if (!v69)
         {
           v66 = v67;
@@ -1430,13 +1430,13 @@ LABEL_51:
       [v167 setUsage:5];
       [v167 setStorageMode:2];
       v162 = [v157 newTextureWithDescriptor:v167];
-      v171 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v47 width:v49 height:v48 mipmapped:0];
+      v171 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v47 width:width2 height:height2 mipmapped:0];
       [v171 setUsage:5];
       [v171 setStorageMode:0];
       if (v155)
       {
-        v70 = [v155 surface];
-        v163 = [v157 newTextureWithDescriptor:v171 iosurface:v70 plane:0];
+        surface = [v155 surface];
+        v163 = [v157 newTextureWithDescriptor:v171 iosurface:surface plane:0];
       }
 
       else
@@ -1444,9 +1444,9 @@ LABEL_51:
         v163 = [v157 newTextureWithDescriptor:v171];
       }
 
-      v160 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-      v71 = [v160 colorAttachments];
-      v135 = [v71 objectAtIndexedSubscript:0];
+      renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+      colorAttachments = [renderPassDescriptor colorAttachments];
+      v135 = [colorAttachments objectAtIndexedSubscript:0];
 
       [v135 setTexture:v162];
       [v135 setStoreAction:1];
@@ -1454,16 +1454,16 @@ LABEL_51:
       [v135 setClearColor:{0.0, 0.0, 0.0, 0.0}];
       v72 = [(TSDBrushStroke *)self p_metalBrushShaderForPixelFormat:v47 andDevice:v157];
       v166 = [(TSDBrushStroke *)self p_metalOpacityShaderForPixelFormat:v47 andDevice:v157];
-      v73 = [v163 width];
-      v74 = [v163 height];
-      v159 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v157 textureRect:0.0 device:0.0, v73, v74, *MEMORY[0x277D6C3C8], *(MEMORY[0x277D6C3C8] + 8), *(MEMORY[0x277D6C3C8] + 16), *(MEMORY[0x277D6C3C8] + 24)];
-      v181[0] = v149;
-      Components = CGColorGetComponents([v143 CGColor]);
+      width = [v163 width];
+      height = [v163 height];
+      v159 = [TSDGPUDataBuffer newDataBufferWithVertexRect:v157 textureRect:0.0 device:0.0, width, height, *MEMORY[0x277D6C3C8], *(MEMORY[0x277D6C3C8] + 8), *(MEMORY[0x277D6C3C8] + 16), *(MEMORY[0x277D6C3C8] + 24)];
+      v181[0] = parameterizedCopy;
+      Components = CGColorGetComponents([color CGColor]);
       *&v76 = vcvt_f32_f64(*Components);
       *&v77 = Components[1].f64[0];
       *(&v76 + 1) = __PAIR64__(1.0, v77);
       v182 = v76;
-      [v148 strokeEnd];
+      [optionsCopy strokeEnd];
       *&v78 = v78;
       v183 = LODWORD(v78);
       v161 = [(TSDBrushStroke *)self p_metalTextureForCurrentStrokeAndDevice:v157];
@@ -1523,8 +1523,8 @@ LABEL_51:
         v169 = *&transform.m43;
         v151 = *&transform.m41;
         v154 = *&transform.m23;
-        v90 = [v156 commandBuffer];
-        v91 = [v90 renderCommandEncoderWithDescriptor:v160];
+        commandBuffer = [v156 commandBuffer];
+        v91 = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
         transform.m12 = 0.0;
         transform.m11 = 0.0;
         transform.m13 = [v167 width];
@@ -1541,7 +1541,7 @@ LABEL_51:
         v177 = 0u;
         v174 = 0u;
         v175 = 0u;
-        v92 = v35;
+        v92 = array;
         v93 = [v92 countByEnumeratingWithState:&v174 objects:v188 count:16];
         if (v93)
         {
@@ -1565,15 +1565,15 @@ LABEL_51:
         }
 
         [v91 endEncoding];
-        v96 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-        v97 = [v96 colorAttachments];
-        v98 = [v97 objectAtIndexedSubscript:0];
+        renderPassDescriptor2 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+        colorAttachments2 = [renderPassDescriptor2 colorAttachments];
+        v98 = [colorAttachments2 objectAtIndexedSubscript:0];
 
         [v98 setTexture:v163];
         [v98 setStoreAction:1];
         [v98 setLoadAction:2];
         [v98 setClearColor:{0.0, 0.0, 0.0, 0.0}];
-        v99 = [v90 renderCommandEncoderWithDescriptor:v96];
+        v99 = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor2];
         transform.m12 = 0.0;
         transform.m11 = 0.0;
         transform.m13 = [v171 width];
@@ -1591,9 +1591,9 @@ LABEL_51:
         [v166 setPipelineStateWithEncoder:v99 vertexBytes:&m fragmentBytes:&transform];
         [v159 drawWithEncoder:v99 atIndex:{objc_msgSend(v166, "bufferIndex")}];
         [v99 endEncoding];
-        [v90 enqueue];
-        [v90 commit];
-        [v90 waitUntilCompleted];
+        [commandBuffer enqueue];
+        [commandBuffer commit];
+        [commandBuffer waitUntilCompleted];
       }
 
       else
@@ -1634,13 +1634,13 @@ LABEL_51:
                 CATransform3DConcat(&v179, &m, &v173);
                 v107 = 0;
                 transform = v179;
-                while (v107 < [v35 count])
+                while (v107 < [array count])
                 {
-                  v170 = [v156 commandBuffer];
+                  commandBuffer2 = [v156 commandBuffer];
                   v108 = 0;
-                  while (v107 < [v35 count] && v108 <= 8)
+                  while (v107 < [array count] && v108 <= 8)
                   {
-                    v109 = [v170 renderCommandEncoderWithDescriptor:v160];
+                    v109 = [commandBuffer2 renderCommandEncoderWithDescriptor:renderPassDescriptor];
                     v179.m12 = 0.0;
                     v179.m11 = 0.0;
                     v179.m13 = [v167 width];
@@ -1657,24 +1657,24 @@ LABEL_51:
                     v110 = v107;
                     do
                     {
-                      if (v110 >= [v35 count])
+                      if (v110 >= [array count])
                       {
                         break;
                       }
 
-                      v111 = [v35 objectAtIndexedSubscript:v110];
+                      v111 = [array objectAtIndexedSubscript:v110];
                       [v111 drawWithEncoder:v109 atIndex:{objc_msgSend(v72, "bufferIndex")}];
-                      v112 = [v172 objectAtIndexedSubscript:v110];
-                      v113 = [v112 BOOLValue];
+                      v112 = [array2 objectAtIndexedSubscript:v110];
+                      bOOLValue = [v112 BOOLValue];
 
                       ++v110;
                     }
 
-                    while ((v113 & 1) == 0);
+                    while ((bOOLValue & 1) == 0);
                     [v109 endEncoding];
-                    v114 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-                    v115 = [v114 colorAttachments];
-                    v116 = [v115 objectAtIndexedSubscript:0];
+                    renderPassDescriptor3 = [MEMORY[0x277CD6F50] renderPassDescriptor];
+                    colorAttachments3 = [renderPassDescriptor3 colorAttachments];
+                    v116 = [colorAttachments3 objectAtIndexedSubscript:0];
 
                     [v116 setTexture:v163];
                     [v116 setStoreAction:1];
@@ -1689,7 +1689,7 @@ LABEL_51:
                       [v116 setClearColor:{0.0, 0.0, 0.0, 0.0}];
                     }
 
-                    v117 = [v170 renderCommandEncoderWithDescriptor:v114];
+                    v117 = [commandBuffer2 renderCommandEncoderWithDescriptor:renderPassDescriptor3];
                     v179.m12 = 0.0;
                     v179.m11 = 0.0;
                     v179.m13 = [v171 width];
@@ -1710,37 +1710,37 @@ LABEL_51:
                     v107 = v110;
                   }
 
-                  if (v107 > [v35 count])
+                  if (v107 > [array count])
                   {
-                    v118 = [MEMORY[0x277D6C290] currentHandler];
+                    currentHandler = [MEMORY[0x277D6C290] currentHandler];
                     v119 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_finishMetalRenderInContext:orDirectly:pathVertexData:parameterized:shouldReverseDrawOrder:withLayoutOptions:]"];
                     v120 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-                    [v118 handleFailureInFunction:v119 file:v120 lineNumber:1524 description:@"The buffer index should not be greater than the number of buffers."];
+                    [currentHandler handleFailureInFunction:v119 file:v120 lineNumber:1524 description:@"The buffer index should not be greater than the number of buffers."];
                   }
 
-                  v121 = [v35 count];
-                  [v170 enqueue];
-                  [v170 commit];
+                  v121 = [array count];
+                  [commandBuffer2 enqueue];
+                  [commandBuffer2 commit];
                   if (v107 >= v121)
                   {
-                    [v170 waitUntilCompleted];
+                    [commandBuffer2 waitUntilCompleted];
                   }
                 }
 
                 CGImageFromTexture = TSDMetalCreateCGImageFromTexture(v163);
-                if (v149)
+                if (parameterizedCopy)
                 {
                   v193.origin.x = (x + (v126 << 10));
                   v193.origin.y = (y + (v142 << 10));
                   v193.size.height = v128;
                   v193.size.width = v129;
-                  CGContextDrawImage(a3, v193, CGImageFromTexture);
+                  CGContextDrawImage(context, v193, CGImageFromTexture);
                 }
 
                 else
                 {
-                  v123 = [v143 colorWithAlphaComponent:1.0];
-                  [objc_opt_class() p_drawColor:v123 intoContext:a3 usingImageAsMask:CGImageFromTexture withRect:{v105, v106, v129, v128}];
+                  v123 = [color colorWithAlphaComponent:1.0];
+                  [objc_opt_class() p_drawColor:v123 intoContext:context usingImageAsMask:CGImageFromTexture withRect:{v105, v106, v129, v128}];
                 }
 
                 CGImageRelease(CGImageFromTexture);
@@ -1757,19 +1757,19 @@ LABEL_51:
           while (v126 != v125);
         }
 
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(context);
       }
 
       goto LABEL_70;
     }
 
-    v42 = [v155 surface];
-    v43 = [v42 pixelFormat] == 1380411457;
+    surface2 = [v155 surface];
+    v43 = [surface2 pixelFormat] == 1380411457;
 
     if (v43)
     {
-      v44 = [v155 surface];
-      v45 = [v44 bytesPerElement] == 8;
+      surface3 = [v155 surface];
+      v45 = [surface3 bytesPerElement] == 8;
 
       if (v45)
       {
@@ -1778,8 +1778,8 @@ LABEL_51:
 LABEL_44:
         if ([v155 destinationColorSpaceOverride])
         {
-          v53 = [v155 destinationColorSpaceOverride];
-          if (!v53)
+          destinationColorSpaceOverride = [v155 destinationColorSpaceOverride];
+          if (!destinationColorSpaceOverride)
           {
             v54 = MEMORY[0x277CBF430];
             if (!v46)
@@ -1788,28 +1788,28 @@ LABEL_44:
             }
 
             v55 = CGColorSpaceCreateWithName(*v54);
-            v53 = CFAutorelease(v55);
+            destinationColorSpaceOverride = CFAutorelease(v55);
           }
 
-          CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v53, kCGRenderingIntentDefault, [v143 CGColor], 0);
+          CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(destinationColorSpaceOverride, kCGRenderingIntentDefault, [color CGColor], 0);
           v57 = [MEMORY[0x277D6C2A8] colorWithCGColor:CFAutorelease(CopyByMatchingToColorSpace)];
 
-          v143 = v57;
+          color = v57;
         }
 
-        v58 = [v155 surface];
-        v49 = [v58 width];
+        surface4 = [v155 surface];
+        width2 = [surface4 width];
 
-        v59 = [v155 surface];
-        v48 = [v59 height];
+        surface5 = [v155 surface];
+        height2 = [surface5 height];
 
         goto LABEL_51;
       }
 
-      v50 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
       v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_finishMetalRenderInContext:orDirectly:pathVertexData:parameterized:shouldReverseDrawOrder:withLayoutOptions:]"];
       v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-      [v50 handleFailureInFunction:v51 file:v52 lineNumber:1298 description:@"Half float precision requires 8 bytes per element."];
+      [currentHandler2 handleFailureInFunction:v51 file:v52 lineNumber:1298 description:@"Half float precision requires 8 bytes per element."];
     }
 
     v46 = 0;
@@ -1817,15 +1817,15 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v190 = CGContextGetClipBoundingBox(a3);
+  v190 = CGContextGetClipBoundingBox(context);
   v17 = v190.size.width;
   v18 = v190.size.height;
-  CGContextGetCTM(&transform, a3);
+  CGContextGetCTM(&transform, context);
   m11 = transform.m11;
   m12 = transform.m12;
   v186 = *&transform.m13;
   v187 = *&transform.m21;
-  if ([(TSDBrushStroke *)self p_isDrawingRasterizedIntoPDFWithContext:a3])
+  if ([(TSDBrushStroke *)self p_isDrawingRasterizedIntoPDFWithContext:context])
   {
     v179.m11 = m11;
     v179.m12 = m12;
@@ -1842,20 +1842,20 @@ LABEL_44:
   v185 = v187;
   if (v17 > 0.0 && v18 > 0.0)
   {
-    if (a3)
+    if (context)
     {
-      v143 = [(TSDStroke *)self colorForCGContext:?];
+      color = [(TSDStroke *)self colorForCGContext:?];
     }
 
     else
     {
-      v19 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_finishMetalRenderInContext:orDirectly:pathVertexData:parameterized:shouldReverseDrawOrder:withLayoutOptions:]"];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-      [v19 handleFailureInFunction:v20 file:v21 lineNumber:1162 description:@"Should have either a direct context or a CGContext."];
+      [currentHandler3 handleFailureInFunction:v20 file:v21 lineNumber:1162 description:@"Should have either a direct context or a CGContext."];
 
-      v143 = 0;
-      v10 = v155;
+      color = 0;
+      directlyCopy = v155;
     }
 
     goto LABEL_13;
@@ -1952,25 +1952,25 @@ void __128__TSDBrushStroke_p_finishMetalRenderInContext_orDirectly_pathVertexDat
   }
 }
 
-+ (void)p_drawColor:(id)a3 intoContext:(CGContext *)a4 usingImageAsMask:(CGImage *)a5 withRect:(CGRect)a6
++ (void)p_drawColor:(id)color intoContext:(CGContext *)context usingImageAsMask:(CGImage *)mask withRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  CGContextSaveGState(a4);
-  v13 = CGImageGetWidth(a5);
-  CGImageGetHeight(a5);
+  colorCopy = color;
+  CGContextSaveGState(context);
+  v13 = CGImageGetWidth(mask);
+  CGImageGetHeight(mask);
   v14 = TSDBitmapContextCreate(2, v13);
-  v15 = CGImageGetWidth(a5);
-  v16 = CGImageGetHeight(a5);
+  v15 = CGImageGetWidth(mask);
+  v16 = CGImageGetHeight(mask);
   v36.size.width = v15;
   v36.size.height = v16;
   v36.origin.x = 0.0;
   v36.origin.y = 0.0;
-  CGContextDrawImage(v14, v36, a5);
+  CGContextDrawImage(v14, v36, mask);
   Image = CGBitmapContextCreateImage(v14);
   CGContextRelease(v14);
   v34 = xmmword_26CA65140;
@@ -1983,14 +1983,14 @@ void __128__TSDBrushStroke_p_finishMetalRenderInContext_orDirectly_pathVertexDat
   ShouldInterpolate = CGImageGetShouldInterpolate(Image);
   v25 = CGImageMaskCreate(v18, v19, BitsPerComponent, BitsPerPixel, BytesPerRow, DataProvider, &v34, ShouldInterpolate);
   CGImageRelease(Image);
-  IsPDFContext = TSDCGContextIsPDFContext(a4);
+  IsPDFContext = TSDCGContextIsPDFContext(context);
   if (IsPDFContext)
   {
-    v27 = CGImageGetWidth(a5);
-    CGImageGetHeight(a5);
-    v28 = TSDBitmapContextCreate(3, v27);
-    v29 = CGImageGetWidth(a5);
-    v30 = CGImageGetHeight(a5);
+    v27 = CGImageGetWidth(mask);
+    CGImageGetHeight(mask);
+    contextCopy = TSDBitmapContextCreate(3, v27);
+    v29 = CGImageGetWidth(mask);
+    v30 = CGImageGetHeight(mask);
     v31 = 0.0;
     v32 = 0.0;
   }
@@ -2001,53 +2001,53 @@ void __128__TSDBrushStroke_p_finishMetalRenderInContext_orDirectly_pathVertexDat
     v32 = y;
     v29 = width;
     v30 = height;
-    v28 = a4;
+    contextCopy = context;
   }
 
   v37.origin.x = v31;
   v37.origin.y = v32;
   v37.size.width = v29;
   v37.size.height = v30;
-  CGContextClipToMask(v28, v37, v25);
+  CGContextClipToMask(contextCopy, v37, v25);
   CGImageRelease(v25);
-  CGContextSetFillColorWithColor(v28, [v12 CGColor]);
+  CGContextSetFillColorWithColor(contextCopy, [colorCopy CGColor]);
   v38.origin.x = v31;
   v38.origin.y = v32;
   v38.size.width = v29;
   v38.size.height = v30;
-  CGContextFillRect(v28, v38);
+  CGContextFillRect(contextCopy, v38);
   if (IsPDFContext)
   {
-    v33 = CGBitmapContextCreateImage(v28);
-    CGContextRelease(v28);
+    v33 = CGBitmapContextCreateImage(contextCopy);
+    CGContextRelease(contextCopy);
     v39.origin.x = x;
     v39.origin.y = y;
     v39.size.width = width;
     v39.size.height = height;
-    CGContextDrawImage(a4, v39, v33);
+    CGContextDrawImage(context, v39, v33);
     CGImageRelease(v33);
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (BOOL)p_shouldDrawAsVectorInContext:(CGContext *)a3
+- (BOOL)p_shouldDrawAsVectorInContext:(CGContext *)context
 {
-  if (a3)
+  if (context)
   {
-    IsPDFContext = TSDCGContextIsPDFContext(a3);
+    IsPDFContext = TSDCGContextIsPDFContext(context);
     if (IsPDFContext)
     {
-      LOBYTE(IsPDFContext) = ![(TSDBrushStroke *)self p_prefersRasterRenderingInContext:a3];
+      LOBYTE(IsPDFContext) = ![(TSDBrushStroke *)self p_prefersRasterRenderingInContext:context];
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_shouldDrawAsVectorInContext:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:1638 description:{@"invalid nil value for '%s'", "ctx"}];
+    [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:1638 description:{@"invalid nil value for '%s'", "ctx"}];
 
     LOBYTE(IsPDFContext) = 0;
   }
@@ -2055,50 +2055,50 @@ void __128__TSDBrushStroke_p_finishMetalRenderInContext_orDirectly_pathVertexDat
   return IsPDFContext;
 }
 
-- (BOOL)p_prefersRasterRenderingInContext:(CGContext *)a3
+- (BOOL)p_prefersRasterRenderingInContext:(CGContext *)context
 {
-  if (!a3)
+  if (!context)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_prefersRasterRenderingInContext:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:1647 description:{@"invalid nil value for '%s'", "ctx"}];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:1647 description:{@"invalid nil value for '%s'", "ctx"}];
   }
 
-  if (TSDCGContextPrefersRasterRendering(a3))
+  if (TSDCGContextPrefersRasterRendering(context))
   {
     return 1;
   }
 
-  v9 = [(TSDSmartStroke *)self strokeName];
-  if ([v9 isEqualToString:@"Pencil"])
+  strokeName = [(TSDSmartStroke *)self strokeName];
+  if ([strokeName isEqualToString:@"Pencil"])
   {
     v8 = 1;
   }
 
   else
   {
-    v10 = [(TSDSmartStroke *)self strokeName];
-    v8 = [v10 isEqualToString:@"Crayon"];
+    strokeName2 = [(TSDSmartStroke *)self strokeName];
+    v8 = [strokeName2 isEqualToString:@"Crayon"];
   }
 
   return v8;
 }
 
-- (BOOL)p_isDrawingRasterizedIntoPDFWithContext:(CGContext *)a3
+- (BOOL)p_isDrawingRasterizedIntoPDFWithContext:(CGContext *)context
 {
-  if (!a3)
+  if (!context)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDBrushStroke p_isDrawingRasterizedIntoPDFWithContext:]"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDBrushStroke.mm"];
-    [v5 handleFailureInFunction:v6 file:v7 lineNumber:1652 description:{@"invalid nil value for '%s'", "ctx"}];
+    [currentHandler handleFailureInFunction:v6 file:v7 lineNumber:1652 description:{@"invalid nil value for '%s'", "ctx"}];
   }
 
-  IsPDFContext = TSDCGContextIsPDFContext(a3);
+  IsPDFContext = TSDCGContextIsPDFContext(context);
   if (IsPDFContext)
   {
-    LOBYTE(IsPDFContext) = ![(TSDBrushStroke *)self p_shouldDrawAsVectorInContext:a3];
+    LOBYTE(IsPDFContext) = ![(TSDBrushStroke *)self p_shouldDrawAsVectorInContext:context];
   }
 
   return IsPDFContext;
@@ -2106,29 +2106,29 @@ void __128__TSDBrushStroke_p_finishMetalRenderInContext_orDirectly_pathVertexDat
 
 - (BOOL)p_isFreehandDrawingStrokeWithFixedTileWidth
 {
-  v3 = [(TSDSmartStroke *)self strokeName];
-  if ([v3 isEqualToString:@"Pencil"])
+  strokeName = [(TSDSmartStroke *)self strokeName];
+  if ([strokeName isEqualToString:@"Pencil"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TSDSmartStroke *)self strokeName];
-    v4 = [v5 isEqualToString:@"Crayon"];
+    strokeName2 = [(TSDSmartStroke *)self strokeName];
+    v4 = [strokeName2 isEqualToString:@"Crayon"];
   }
 
   return v4;
 }
 
-- (int64_t)p_fastElementPercentage:(double *)a3 forOverallPercentage:(double)a4 onPath:(id)a5 withCachedCurrentElementPercentage:(id *)a6
+- (int64_t)p_fastElementPercentage:(double *)percentage forOverallPercentage:(double)overallPercentage onPath:(id)path withCachedCurrentElementPercentage:(id *)elementPercentage
 {
-  v10 = a5;
-  [v10 length];
+  pathCopy = path;
+  [pathCopy length];
   var2 = 0.0;
-  if (a6->var0 == v10 && a6->var2 <= v11 * a4)
+  if (elementPercentage->var0 == pathCopy && elementPercentage->var2 <= v11 * overallPercentage)
   {
-    var1 = a6->var1;
+    var1 = elementPercentage->var1;
     if (var1 <= 1)
     {
       var2 = 0.0;
@@ -2136,7 +2136,7 @@ void __128__TSDBrushStroke_p_finishMetalRenderInContext_orDirectly_pathVertexDat
 
     else
     {
-      var2 = a6->var2;
+      var2 = elementPercentage->var2;
     }
 
     if (var1 <= 1)
@@ -2146,7 +2146,7 @@ void __128__TSDBrushStroke_p_finishMetalRenderInContext_orDirectly_pathVertexDat
 
     else
     {
-      v13 = a6->var1;
+      v13 = elementPercentage->var1;
     }
   }
 
@@ -2155,20 +2155,20 @@ void __128__TSDBrushStroke_p_finishMetalRenderInContext_orDirectly_pathVertexDat
     v13 = 1;
   }
 
-  v14 = [v10 elementPercentage:a3 forOverallPercentage:v13 startingElementIndex:a4 lengthToStartingElement:var2];
+  v14 = [pathCopy elementPercentage:percentage forOverallPercentage:v13 startingElementIndex:overallPercentage lengthToStartingElement:var2];
   if (v14 > v13)
   {
     do
     {
-      [v10 lengthOfElement:v13];
+      [pathCopy lengthOfElement:v13];
       var2 = var2 + v15;
       ++v13;
     }
 
     while (v14 != v13);
-    objc_storeStrong(&a6->var0, a5);
-    a6->var1 = v14;
-    a6->var2 = var2;
+    objc_storeStrong(&elementPercentage->var0, path);
+    elementPercentage->var1 = v14;
+    elementPercentage->var2 = var2;
   }
 
   return v14;
@@ -2212,9 +2212,9 @@ uint64_t __36__TSDBrushStroke_p_metalShaderQueue__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)p_metalTextureForCurrentStrokeAndDevice:(id)a3
+- (id)p_metalTextureForCurrentStrokeAndDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -2231,10 +2231,10 @@ uint64_t __36__TSDBrushStroke_p_metalShaderQueue__block_invoke()
   block[1] = 3221225472;
   block[2] = __58__TSDBrushStroke_p_metalTextureForCurrentStrokeAndDevice___block_invoke_2;
   block[3] = &unk_279D49040;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_sync(v5, block);
 
   v7 = v14[5];
@@ -2305,9 +2305,9 @@ void __58__TSDBrushStroke_p_metalTextureForCurrentStrokeAndDevice___block_invoke
   }
 }
 
-- (id)p_metalBrushShaderForPixelFormat:(unint64_t)a3 andDevice:(id)a4
+- (id)p_metalBrushShaderForPixelFormat:(unint64_t)format andDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2324,10 +2324,10 @@ void __58__TSDBrushStroke_p_metalTextureForCurrentStrokeAndDevice___block_invoke
   block[1] = 3221225472;
   block[2] = __61__TSDBrushStroke_p_metalBrushShaderForPixelFormat_andDevice___block_invoke_2;
   block[3] = &unk_279D49068;
-  v11 = v5;
+  v11 = deviceCopy;
   v12 = &v14;
-  v13 = a3;
-  v7 = v5;
+  formatCopy = format;
+  v7 = deviceCopy;
   dispatch_sync(v6, block);
 
   v8 = v15[5];
@@ -2376,9 +2376,9 @@ void __61__TSDBrushStroke_p_metalBrushShaderForPixelFormat_andDevice___block_inv
   }
 }
 
-- (id)p_metalOpacityShaderForPixelFormat:(unint64_t)a3 andDevice:(id)a4
+- (id)p_metalOpacityShaderForPixelFormat:(unint64_t)format andDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2395,10 +2395,10 @@ void __61__TSDBrushStroke_p_metalBrushShaderForPixelFormat_andDevice___block_inv
   block[1] = 3221225472;
   block[2] = __63__TSDBrushStroke_p_metalOpacityShaderForPixelFormat_andDevice___block_invoke_2;
   block[3] = &unk_279D49068;
-  v11 = v5;
+  v11 = deviceCopy;
   v12 = &v14;
-  v13 = a3;
-  v7 = v5;
+  formatCopy = format;
+  v7 = deviceCopy;
   dispatch_sync(v6, block);
 
   v8 = v15[5];

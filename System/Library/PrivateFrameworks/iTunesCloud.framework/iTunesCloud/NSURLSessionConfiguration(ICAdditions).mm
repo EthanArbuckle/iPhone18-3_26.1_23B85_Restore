@@ -6,37 +6,37 @@
 
 + (id)ic_defaultSessionConfiguration
 {
-  v0 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-  [v0 setHTTPShouldUsePipelining:1];
-  [v0 set_tlsTrustPinningPolicyName:*MEMORY[0x1E697B2A8]];
+  defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+  [defaultSessionConfiguration setHTTPShouldUsePipelining:1];
+  [defaultSessionConfiguration set_tlsTrustPinningPolicyName:*MEMORY[0x1E697B2A8]];
   v1 = +[ICDeviceInfo currentDeviceInfo];
   if ([v1 isInternalBuild])
   {
     v2 = +[ICDefaults standardDefaults];
-    [v0 set_alwaysPerformDefaultTrustEvaluation:{objc_msgSend(v2, "ignoreExtendedCertificateValidation") ^ 1}];
+    [defaultSessionConfiguration set_alwaysPerformDefaultTrustEvaluation:{objc_msgSend(v2, "ignoreExtendedCertificateValidation") ^ 1}];
   }
 
   else
   {
-    [v0 set_alwaysPerformDefaultTrustEvaluation:1];
+    [defaultSessionConfiguration set_alwaysPerformDefaultTrustEvaluation:1];
   }
 
   v3 = +[ICDeviceInfo currentDeviceInfo];
-  v4 = [v3 isWatch];
+  isWatch = [v3 isWatch];
 
-  if (v4)
+  if (isWatch)
   {
-    v5 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
-    v6 = [v5 bundleIdentifier];
+    bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+    bundleIdentifier = [bundleRecordForCurrentProcess bundleIdentifier];
 
-    if ([v6 isEqualToString:@"com.apple.SessionTrackerApp"])
+    if ([bundleIdentifier isEqualToString:@"com.apple.SessionTrackerApp"])
     {
       v7 = ICBundleIdentifierForSystemApplicationType(0);
-      [v0 set_sourceApplicationBundleIdentifier:v7];
+      [defaultSessionConfiguration set_sourceApplicationBundleIdentifier:v7];
     }
   }
 
-  return v0;
+  return defaultSessionConfiguration;
 }
 
 @end

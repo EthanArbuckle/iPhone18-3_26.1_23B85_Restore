@@ -1,6 +1,6 @@
 @interface SBButtonConsumerClient
 - (BOOL)canReceiveEvents;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -14,9 +14,9 @@
   v6 = [v3 appendBool:self->_application withName:@"application"];
   v7 = [v3 appendBool:self->_runningVisible withName:@"runningVisible"];
   v8 = [v3 appendBool:self->_suspended withName:@"suspended"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (BOOL)canReceiveEvents
@@ -32,11 +32,11 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   systemServiceClient = self->_systemServiceClient;
-  v4 = [a3 systemServiceClient];
-  LOBYTE(systemServiceClient) = [(FBSServiceFacilityClientHandle *)systemServiceClient isEqual:v4];
+  systemServiceClient = [equal systemServiceClient];
+  LOBYTE(systemServiceClient) = [(FBSServiceFacilityClientHandle *)systemServiceClient isEqual:systemServiceClient];
 
   return systemServiceClient;
 }

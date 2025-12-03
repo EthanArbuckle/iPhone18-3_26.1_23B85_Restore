@@ -1,7 +1,7 @@
 @interface WFCustomSymbolToolbarButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)setSymbolName:(id)a3 pointSizeToWidthRatio:(double)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)setSymbolName:(id)name pointSizeToWidthRatio:(double)ratio;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateImage;
 @end
 
@@ -9,10 +9,10 @@
 
 - (void)updateImage
 {
-  v3 = [(WFCustomSymbolToolbarButton *)self symbolName];
-  if (v3)
+  symbolName = [(WFCustomSymbolToolbarButton *)self symbolName];
+  if (symbolName)
   {
-    v4 = v3;
+    v4 = symbolName;
     [(WFCustomSymbolToolbarButton *)self pointSizeToWidthRatio];
     v6 = v5;
 
@@ -20,36 +20,36 @@
     {
       v11 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918]];
       v7 = MEMORY[0x277D755B8];
-      v8 = [(WFCustomSymbolToolbarButton *)self symbolName];
-      v9 = [v7 systemImageNamed:v8 withConfiguration:v11];
+      symbolName2 = [(WFCustomSymbolToolbarButton *)self symbolName];
+      v9 = [v7 systemImageNamed:symbolName2 withConfiguration:v11];
 
       [(WFCustomSymbolToolbarButton *)self setImage:v9 forState:0];
-      v10 = [(WFCustomSymbolToolbarButton *)self imageView];
-      [v10 setContentMode:4];
+      imageView = [(WFCustomSymbolToolbarButton *)self imageView];
+      [imageView setContentMode:4];
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = WFCustomSymbolToolbarButton;
-  v4 = a3;
-  [(WFCustomSymbolToolbarButton *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WFCustomSymbolToolbarButton *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(WFCustomSymbolToolbarButton *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  if (v6 != v7)
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
     [(WFCustomSymbolToolbarButton *)self updateImage];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v6 pointSize];
   v8 = v7;
@@ -66,10 +66,10 @@
   return result;
 }
 
-- (void)setSymbolName:(id)a3 pointSizeToWidthRatio:(double)a4
+- (void)setSymbolName:(id)name pointSizeToWidthRatio:(double)ratio
 {
-  [(WFCustomSymbolToolbarButton *)self setSymbolName:a3];
-  [(WFCustomSymbolToolbarButton *)self setPointSizeToWidthRatio:a4];
+  [(WFCustomSymbolToolbarButton *)self setSymbolName:name];
+  [(WFCustomSymbolToolbarButton *)self setPointSizeToWidthRatio:ratio];
 
   [(WFCustomSymbolToolbarButton *)self updateImage];
 }

@@ -1,41 +1,41 @@
 @interface LAUIHorizontalArrowView
 - (CGSize)maximumLineSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LAUIHorizontalArrowView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LAUIHorizontalArrowView)initWithFrame:(CGRect)frame;
 - (id).cxx_construct;
-- (void)_layoutIfNeededAnimated:(BOOL)a3;
+- (void)_layoutIfNeededAnimated:(BOOL)animated;
 - (void)_updateAnimatingAnimated:;
-- (void)_updateAnimatingAnimated:(BOOL)a3;
+- (void)_updateAnimatingAnimated:(BOOL)animated;
 - (void)_updateDirectionTransform;
 - (void)_updateFont;
 - (void)_updateLabelSize;
-- (void)_updatePulsingWithDelay:(double)a3;
+- (void)_updatePulsingWithDelay:(double)delay;
 - (void)_updateViewsWithColor;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
-- (void)setDirection:(int64_t)a3;
-- (void)setDisplacement:(double)a3;
-- (void)setMaximumLineSize:(CGSize)a3;
-- (void)setText:(id)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setDirection:(int64_t)direction;
+- (void)setDisplacement:(double)displacement;
+- (void)setMaximumLineSize:(CGSize)size;
+- (void)setText:(id)text;
 - (void)tintColorDidChange;
 @end
 
 @implementation LAUIHorizontalArrowView
 
-- (LAUIHorizontalArrowView)initWithFrame:(CGRect)a3
+- (LAUIHorizontalArrowView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = LAUIHorizontalArrowView;
-  v3 = [(LAUIHorizontalArrowView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LAUIHorizontalArrowView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_direction = 0;
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     color = v4->_color;
-    v4->_color = v5;
+    v4->_color = whiteColor;
 
     v7 = objc_alloc(MEMORY[0x277D75D18]);
     v8 = MEMORY[0x277CBF3A0];
@@ -51,23 +51,23 @@
     tail_container = v4->_tail_container;
     v4->_tail_container = v13;
 
-    v15 = [(UIView *)v4->_tail_container layer];
-    [v15 setAnchorPoint:{0.0, 0.5}];
+    layer = [(UIView *)v4->_tail_container layer];
+    [layer setAnchorPoint:{0.0, 0.5}];
 
     [(UIView *)v4->_tail_container setClipsToBounds:1];
     v16 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
     head = v4->_head;
     v4->_head = v16;
 
-    v18 = [(UIImageView *)v4->_head layer];
-    [v18 setAnchorPoint:{0.0, 0.5}];
+    layer2 = [(UIImageView *)v4->_head layer];
+    [layer2 setAnchorPoint:{0.0, 0.5}];
 
     v19 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:0];
     tail = v4->_tail;
     v4->_tail = v19;
 
-    v21 = [(UIImageView *)v4->_tail layer];
-    [v21 setAnchorPoint:{1.0, 0.5}];
+    layer3 = [(UIImageView *)v4->_tail layer];
+    [layer3 setAnchorPoint:{1.0, 0.5}];
 
     v22 = objc_alloc_init(MEMORY[0x277D756B8]);
     label = v4->_label;
@@ -75,8 +75,8 @@
 
     [(UILabel *)v4->_label setNumberOfLines:3];
     v24 = v4->_label;
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v24 setBackgroundColor:v25];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v24 setBackgroundColor:clearColor];
 
     [(LAUIHorizontalArrowView *)v4 addSubview:v4->_container];
     [(UIView *)v4->_container addSubview:v4->_arrow_container];
@@ -89,9 +89,9 @@
     [(LAUIHorizontalArrowView *)v4 _updateAnimatingAnimated:0];
     [(LAUIHorizontalArrowView *)v4 _updateDirectionTransform];
     [(LAUIHorizontalArrowView *)v4 _updateFont];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v4 selector:sel_boldTextStatusDidChange_ name:*MEMORY[0x277D76448] object:0];
-    [v26 addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_boldTextStatusDidChange_ name:*MEMORY[0x277D76448] object:0];
+    [defaultCenter addObserver:v4 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
   }
 
   return v4;
@@ -99,8 +99,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = LAUIHorizontalArrowView;
@@ -112,11 +112,11 @@
   v7.receiver = self;
   v7.super_class = LAUIHorizontalArrowView;
   [(LAUIHorizontalArrowView *)&v7 tintColorDidChange];
-  v3 = [(LAUIHorizontalArrowView *)self tintColor];
+  tintColor = [(LAUIHorizontalArrowView *)self tintColor];
   color = self->_color;
-  if (color != v3 && (!v3 || !color || ([(UIColor *)color isEqual:v3]& 1) == 0))
+  if (color != tintColor && (!tintColor || !color || ([(UIColor *)color isEqual:tintColor]& 1) == 0))
   {
-    v5 = [(UIColor *)v3 copy];
+    v5 = [(UIColor *)tintColor copy];
     v6 = self->_color;
     self->_color = v5;
 
@@ -129,9 +129,9 @@
   v5.receiver = self;
   v5.super_class = LAUIHorizontalArrowView;
   [(LAUIHorizontalArrowView *)&v5 didMoveToWindow];
-  v3 = [(LAUIHorizontalArrowView *)self window];
+  window = [(LAUIHorizontalArrowView *)self window];
 
-  if (v3)
+  if (window)
   {
     animating = self->_animating;
     if (animating == self->_effective_animating)
@@ -157,7 +157,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   resting_height = self->_resting_height;
   v4 = 52.0;
@@ -166,9 +166,9 @@
   return result;
 }
 
-- (void)_layoutIfNeededAnimated:(BOOL)a3
+- (void)_layoutIfNeededAnimated:(BOOL)animated
 {
-  self->_animated = a3;
+  self->_animated = animated;
   [(LAUIHorizontalArrowView *)self layoutIfNeeded];
   self->_animated = 0;
 }
@@ -179,8 +179,8 @@
   v119.receiver = self;
   v119.super_class = LAUIHorizontalArrowView;
   [(LAUIHorizontalArrowView *)&v119 layoutSubviews];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v112 = v4;
 
   [(LAUIHorizontalArrowView *)self bounds];
@@ -273,15 +273,15 @@
     [(UIImageView *)self->_head frame:displacement];
     v25 = v24;
     v27 = v26;
-    v28 = [(UIImageView *)self->_head layer];
-    [(CALayer *)v28 anchorPoint];
+    layer = [(UIImageView *)self->_head layer];
+    [(CALayer *)layer anchorPoint];
     v30 = v29;
     v31 = LAUI_CA_utilities::spring_factory::create_animation(v115, &cfstr_PositionX.isa);
     v32 = [MEMORY[0x277CCABB0] numberWithDouble:v25 + v30 * v27 - (v23 + v30 * v18)];
     [(CAAnimation *)v31 setFromValue:v32];
 
     [(CAAnimation *)v31 setToValue:&unk_28682F840];
-    v33 = LAUILayerAddAdditiveAnimation(v28, &cfstr_Position.isa, v31);
+    v33 = LAUILayerAddAdditiveAnimation(layer, &cfstr_Position.isa, v31);
   }
 
   v34 = v111;
@@ -304,8 +304,8 @@
     [(UIView *)self->_tail_container frame];
     v40 = v39;
     v42 = v41;
-    v43 = [(UIView *)self->_tail_container layer];
-    [(CALayer *)v43 anchorPoint];
+    layer2 = [(UIView *)self->_tail_container layer];
+    [(CALayer *)layer2 anchorPoint];
     v45 = v44;
     v46 = LAUI_CA_utilities::spring_factory::create_animation(v115, &cfstr_PositionX.isa);
     [MEMORY[0x277CCABB0] numberWithDouble:v40 + v45 * v42 - (v36 + v45 * v38)];
@@ -313,12 +313,12 @@
     [(CAAnimation *)v46 setFromValue:v47];
 
     [(CAAnimation *)v46 setToValue:&unk_28682F840];
-    v48 = LAUILayerAddAdditiveAnimation(v43, &cfstr_Position.isa, v46);
+    v48 = LAUILayerAddAdditiveAnimation(layer2, &cfstr_Position.isa, v46);
   }
 
   [(UIView *)self->_tail_container setFrame:v36, v34, v38, v20];
-  v49 = [(UIImageView *)self->_tail image];
-  [v49 size];
+  image = [(UIImageView *)self->_tail image];
+  [image size];
   v51 = v50;
   v53 = v52;
 
@@ -365,8 +365,8 @@
     [(UIImageView *)self->_tail frame];
     v67 = v66;
     v69 = v68;
-    v70 = [(UIImageView *)self->_tail layer];
-    [(CALayer *)v70 anchorPoint];
+    layer3 = [(UIImageView *)self->_tail layer];
+    [(CALayer *)layer3 anchorPoint];
     v72 = v67 + v71 * v69;
     v73 = v65 + v71 * v62;
     if (v72 != v73)
@@ -409,7 +409,7 @@
       {
         [(CAAnimation *)v74 setFillMode:*MEMORY[0x277CDA228]];
         [(CAAnimation *)v74 setBeginTime:0.34];
-        v88 = LAUILayerAddAdditiveAnimation(v70, &cfstr_Position.isa, v74);
+        v88 = LAUILayerAddAdditiveAnimation(layer3, &cfstr_Position.isa, v74);
       }
     }
   }
@@ -423,8 +423,8 @@
   v129.size.width = 55.0;
   v129.size.height = rect2;
   v93 = CGRectGetMaxX(v129);
-  v94 = [(UILabel *)self->_label layer];
-  [(CALayer *)v94 anchorPoint];
+  layer4 = [(UILabel *)self->_label layer];
+  [(CALayer *)layer4 anchorPoint];
   v97 = v96;
   v98 = v113 + (rect2 - v92) * 0.5;
   if (v112 == 0.0)
@@ -446,7 +446,7 @@
   v101 = v100 + v95 * v90;
   if (self->_animated)
   {
-    [(CALayer *)v94 position];
+    [(CALayer *)layer4 position];
     v103 = v102;
     LAUI_CA_utilities::spring_factory::spring_factory(&v120, 3.0, 200.0, 38.0, 0.0, 0);
     animation = LAUI_CA_utilities::spring_factory::create_animation(&v120, &cfstr_PositionX.isa);
@@ -454,14 +454,14 @@
     [animation setFillMode:*MEMORY[0x277CDA228]];
     [animation setBeginTime:0.05];
     v105 = animation;
-    v106 = [MEMORY[0x277CCABB0] numberWithDouble:v103 - v101];
-    [(CAAnimation *)v105 setFromValue:v106];
+    v101 = [MEMORY[0x277CCABB0] numberWithDouble:v103 - v101];
+    [(CAAnimation *)v105 setFromValue:v101];
 
     [(CAAnimation *)v105 setToValue:&unk_28682F840];
-    v107 = LAUILayerAddAdditiveAnimation(v94, &cfstr_Position.isa, v105);
+    v107 = LAUILayerAddAdditiveAnimation(layer4, &cfstr_Position.isa, v105);
   }
 
-  [(CALayer *)v94 setPosition:v101, v99 + v97 * v92];
+  [(CALayer *)layer4 setPosition:v101, v99 + v97 * v92];
   v108 = 0.7514;
   if (!self->_animated)
   {
@@ -533,22 +533,22 @@
   [(LAUIHorizontalArrowView *)self setNeedsLayout];
 }
 
-- (void)_updateAnimatingAnimated:(BOOL)a3
+- (void)_updateAnimatingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v20 = a3;
+  animatedCopy = animated;
+  animatedCopy2 = animated;
   [(LAUIHorizontalArrowView *)self layoutIfNeeded];
   v5 = !self->_effective_animating && self->_dismissal_animation_count == 0;
   animating = self->_animating;
   self->_effective_animating = animating;
   v19 = animating;
-  v7 = v3 & ~animating;
+  v7 = animatedCopy & ~animating;
   v18 = animating;
   if (v7 == 1)
   {
     ++self->_dismissal_animation_count;
     v15 = &v18;
-    v16 = &v20;
+    v16 = &animatedCopy2;
     v17 = &v19;
     [MEMORY[0x277CD9FF0] begin];
     objc_initWeak(&location, self);
@@ -569,7 +569,7 @@
   else
   {
     v15 = &v18;
-    v16 = &v20;
+    v16 = &animatedCopy2;
     v17 = &v19;
   }
 
@@ -593,7 +593,7 @@
   }
 
   [(LAUIHorizontalArrowView *)self setNeedsLayout];
-  [(LAUIHorizontalArrowView *)self _layoutIfNeededAnimated:v20];
+  [(LAUIHorizontalArrowView *)self _layoutIfNeededAnimated:animatedCopy2];
 }
 
 void __52__LAUIHorizontalArrowView__updateAnimatingAnimated___block_invoke(uint64_t a1)
@@ -617,34 +617,34 @@ void __52__LAUIHorizontalArrowView__updateAnimatingAnimated___block_invoke(uint6
   if (v5)
   {
     v26 = v5;
-    v6 = [v5 layer];
-    [v6 opacity];
-    if (**a1 != v7)
+    layer = [v5 layer];
+    [layer opacity];
+    if (**self != v7)
     {
-      [v6 removeAnimationForKey:@"opacity"];
-      v8 = **a1;
+      [layer removeAnimationForKey:@"opacity"];
+      v8 = **self;
       *&v8 = v8;
-      [v6 setOpacity:v8];
-      if (*a1[1] == 1)
+      [layer setOpacity:v8];
+      if (*self[1] == 1)
       {
-        v9 = [v6 presentationLayer];
-        v10 = v9;
-        if (v9)
+        presentationLayer = [layer presentationLayer];
+        v10 = presentationLayer;
+        if (presentationLayer)
         {
-          v11 = v9;
+          v11 = presentationLayer;
         }
 
         else
         {
-          v11 = v6;
+          v11 = layer;
         }
 
         v12 = v11;
 
         [v12 opacity];
         v14 = v13;
-        v15 = **a1;
-        v16 = *a1[2];
+        v15 = **self;
+        v16 = *self[2];
         v17 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
         [v17 setAdditive:1];
         [v17 setBeginTimeMode:*MEMORY[0x277CDA080]];
@@ -673,12 +673,12 @@ void __52__LAUIHorizontalArrowView__updateAnimatingAnimated___block_invoke(uint6
           [v24 setBeginTime:a3];
         }
 
-        [v6 addAnimation:v24 forKey:@"opacity"];
+        [layer addAnimation:v24 forKey:@"opacity"];
       }
 
       else
       {
-        [v6 removeAnimationForKey:@"opacity"];
+        [layer removeAnimationForKey:@"opacity"];
       }
     }
 
@@ -718,7 +718,7 @@ void __52__LAUIHorizontalArrowView__updateAnimatingAnimated___block_invoke(uint6
   [(UILabel *)label setTransform3D:&v9];
 }
 
-- (void)_updatePulsingWithDelay:(double)a3
+- (void)_updatePulsingWithDelay:(double)delay
 {
   if (self->_effective_animating)
   {
@@ -742,20 +742,20 @@ LABEL_7:
     v11 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v8 :0.0 :v9 :v10];
     [(CAAnimation *)v15 setTimingFunction:v11];
 
-    [(CAAnimation *)v15 setBeginTime:a3];
+    [(CAAnimation *)v15 setBeginTime:delay];
     [(CAAnimation *)v15 setFromValue:&unk_28682F840];
     [(CAAnimation *)v15 setToValue:&unk_28682FCD8];
     [(CAAnimation *)v15 setAutoreverses:1];
-    v12 = [(UIImageView *)self->_head layer];
-    LAUI_CA_utilities::periodic_animation_state::attach_animation(&self->_head_pulse, v12, v15, &cfstr_Pulse.isa);
+    layer = [(UIImageView *)self->_head layer];
+    LAUI_CA_utilities::periodic_animation_state::attach_animation(&self->_head_pulse, layer, v15, &cfstr_Pulse.isa);
 
-    v13 = [(UIView *)self->_tail_container layer];
-    LAUI_CA_utilities::periodic_animation_state::attach_animation(&self->_tail_container_pulse, v13, v15, &cfstr_Pulse.isa);
+    layer2 = [(UIView *)self->_tail_container layer];
+    LAUI_CA_utilities::periodic_animation_state::attach_animation(&self->_tail_container_pulse, layer2, v15, &cfstr_Pulse.isa);
 
     [(CAAnimation *)v15 setFromValue:&unk_28682F840];
     [(CAAnimation *)v15 setToValue:&unk_28682FCE8];
-    v14 = [(UIImageView *)self->_tail layer];
-    LAUI_CA_utilities::periodic_animation_state::attach_animation(&self->_tail_counter_pulse, v14, v15, &cfstr_Pulse.isa);
+    layer3 = [(UIImageView *)self->_tail layer];
+    LAUI_CA_utilities::periodic_animation_state::attach_animation(&self->_tail_counter_pulse, layer3, v15, &cfstr_Pulse.isa);
 
     [MEMORY[0x277CD9FF0] commit];
 
@@ -788,8 +788,8 @@ LABEL_7:
   v17 = [v3 fontDescriptorWithSymbolicTraits:{objc_msgSend(v3, "symbolicTraits") | 2}];
 
   v4 = [MEMORY[0x277D74300] fontWithDescriptor:v17 size:0.0];
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = v6;
 
   [v4 lineHeight];
@@ -818,16 +818,16 @@ LABEL_7:
   [(LAUIHorizontalArrowView *)self setNeedsLayout];
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (self->_animating != a3)
+  if (self->_animating != animating)
   {
-    self->_animating = a3;
-    v4 = [(LAUIHorizontalArrowView *)self window];
+    self->_animating = animating;
+    window = [(LAUIHorizontalArrowView *)self window];
 
     animating = self->_animating;
     v6 = !animating;
-    if (v4)
+    if (window)
     {
       v6 = 1;
     }
@@ -835,58 +835,58 @@ LABEL_7:
     if (self->_effective_animating != animating && v6 != 0)
     {
 
-      [(LAUIHorizontalArrowView *)self _updateAnimatingAnimated:v4 != 0];
+      [(LAUIHorizontalArrowView *)self _updateAnimatingAnimated:window != 0];
     }
   }
 }
 
-- (void)setDirection:(int64_t)a3
+- (void)setDirection:(int64_t)direction
 {
-  if (self->_direction != a3)
+  if (self->_direction != direction)
   {
-    self->_direction = a3;
+    self->_direction = direction;
     [(LAUIHorizontalArrowView *)self _updateDirectionTransform];
   }
 }
 
-- (void)setDisplacement:(double)a3
+- (void)setDisplacement:(double)displacement
 {
-  if (self->_displacement != a3)
+  if (self->_displacement != displacement)
   {
-    self->_displacement = a3;
+    self->_displacement = displacement;
     [(LAUIHorizontalArrowView *)self setNeedsLayout];
   }
 }
 
-- (void)setMaximumLineSize:(CGSize)a3
+- (void)setMaximumLineSize:(CGSize)size
 {
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.79769313e308;
+    size.width = 1.79769313e308;
   }
 
-  if (a3.height <= 0.0)
+  if (size.height <= 0.0)
   {
-    a3.height = 1.79769313e308;
+    size.height = 1.79769313e308;
   }
 
-  if (self->_maximum_line_size.width != a3.width || self->_maximum_line_size.height != a3.height)
+  if (self->_maximum_line_size.width != size.width || self->_maximum_line_size.height != size.height)
   {
-    self->_maximum_line_size = a3;
+    self->_maximum_line_size = size;
     [(LAUIHorizontalArrowView *)self _updateFont];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  if (!v4)
+  textCopy = text;
+  if (!textCopy)
   {
     goto LABEL_5;
   }
 
-  v9 = v4;
-  if (![v4 length])
+  v9 = textCopy;
+  if (![textCopy length])
   {
 
 LABEL_5:

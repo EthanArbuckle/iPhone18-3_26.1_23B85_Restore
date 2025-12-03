@@ -1,77 +1,77 @@
 @interface CNAutocompleteContactsOnVisionSuggestionsController
-- (CNAutocompleteContactsOnVisionSuggestionsController)initWithSuggestions:(id)a3;
+- (CNAutocompleteContactsOnVisionSuggestionsController)initWithSuggestions:(id)suggestions;
 - (CNAutocompleteContactsOnVisionSuggestionsControllerDelegate)delegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CNAutocompleteContactsOnVisionSuggestionsController
 
-- (CNAutocompleteContactsOnVisionSuggestionsController)initWithSuggestions:(id)a3
+- (CNAutocompleteContactsOnVisionSuggestionsController)initWithSuggestions:(id)suggestions
 {
-  v5 = a3;
+  suggestionsCopy = suggestions;
   v23.receiver = self;
   v23.super_class = CNAutocompleteContactsOnVisionSuggestionsController;
   v6 = [(CNAutocompleteContactsOnVisionSuggestionsController *)&v23 initWithStyle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestions, a3);
+    objc_storeStrong(&v6->_suggestions, suggestions);
     v8 = [CNAutocompleteContactsOnVisionSuggestionsTableView alloc];
     v9 = [(CNAutocompleteContactsOnVisionSuggestionsTableView *)v8 initWithFrame:0 style:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 setTableView:v9];
 
-    v10 = [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 tableView];
-    [v10 setSeparatorStyle:1];
+    tableView = [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 tableView];
+    [tableView setSeparatorStyle:1];
 
-    v11 = [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 tableView];
-    [v11 setSeparatorInset:{0.0, 12.0, 0.0, 12.0}];
+    tableView2 = [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 tableView];
+    [tableView2 setSeparatorInset:{0.0, 12.0, 0.0, 12.0}];
 
     v12 = objc_alloc_init(MEMORY[0x1E69DD050]);
-    v13 = [v12 defaultContentConfiguration];
+    defaultContentConfiguration = [v12 defaultContentConfiguration];
     v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"CONTACTS_ON_VISION" value:&stru_1F3002C60 table:@"Localized"];
-    [v13 setText:v15];
+    [defaultContentConfiguration setText:v15];
 
-    [v12 setContentConfiguration:v13];
-    v16 = [v13 textProperties];
-    v17 = [v16 font];
-    [v17 lineHeight];
-    v18 = [v13 textProperties];
-    v19 = [v18 font];
-    [v19 capHeight];
+    [v12 setContentConfiguration:defaultContentConfiguration];
+    textProperties = [defaultContentConfiguration textProperties];
+    font = [textProperties font];
+    [font lineHeight];
+    textProperties2 = [defaultContentConfiguration textProperties];
+    font2 = [textProperties2 font];
+    [font2 capHeight];
 
-    v20 = [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 tableView];
-    [v20 frame];
+    tableView3 = [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 tableView];
+    [tableView3 frame];
     [v12 setFrame:{0.0, 0.0}];
 
-    v21 = [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 tableView];
-    [v21 setTableHeaderView:v12];
+    tableView4 = [(CNAutocompleteContactsOnVisionSuggestionsController *)v7 tableView];
+    [tableView4 setTableHeaderView:v12];
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNAutocompleteContactsOnVisionSuggestionsController *)self suggestions];
-  v7 = [v5 row];
+  pathCopy = path;
+  suggestions = [(CNAutocompleteContactsOnVisionSuggestionsController *)self suggestions];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [suggestions objectAtIndexedSubscript:v7];
 
   v9 = [[CNAutocompleteContactsOnVisionTableViewCell alloc] initWithSuggestion:v8];
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  if (v5 && UIContentSizeCategoryCompareToCategory(v5, *MEMORY[0x1E69DDC50]) == NSOrderedDescending)
+  if (preferredContentSizeCategory && UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]) == NSOrderedDescending)
   {
     v6 = 0x4059000000000000;
   }
@@ -86,15 +86,15 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(CNAutocompleteContactsOnVisionSuggestionsController *)self delegate];
-  v6 = [(CNAutocompleteContactsOnVisionSuggestionsController *)self suggestions];
-  v7 = [v5 row];
+  pathCopy = path;
+  delegate = [(CNAutocompleteContactsOnVisionSuggestionsController *)self delegate];
+  suggestions = [(CNAutocompleteContactsOnVisionSuggestionsController *)self suggestions];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
-  [v9 visionSuggestionsController:self didSelectRecipient:v8];
+  v8 = [suggestions objectAtIndexedSubscript:v7];
+  [delegate visionSuggestionsController:self didSelectRecipient:v8];
 }
 
 - (CNAutocompleteContactsOnVisionSuggestionsControllerDelegate)delegate

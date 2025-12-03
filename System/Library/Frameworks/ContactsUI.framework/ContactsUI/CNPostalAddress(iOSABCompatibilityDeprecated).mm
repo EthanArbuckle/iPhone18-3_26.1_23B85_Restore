@@ -6,9 +6,9 @@
 
 + (id)localizedAddressFormatDictionaryForCountryCode:()iOSABCompatibilityDeprecated
 {
-  v3 = [a3 lowercaseString];
-  v4 = [MEMORY[0x1E69967B8] addressFormats];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  lowercaseString = [a3 lowercaseString];
+  addressFormats = [MEMORY[0x1E69967B8] addressFormats];
+  v5 = [addressFormats objectForKeyedSubscript:lowercaseString];
 
   return v5;
 }

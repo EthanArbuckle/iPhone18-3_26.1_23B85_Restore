@@ -1,40 +1,40 @@
 @interface PPPBLabeledSocialProfile
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBLabeledSocialProfile
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(PPPBLabeledSocialProfile *)self setLabel:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(PPPBLabeledSocialProfile *)self setUrlString:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(PPPBLabeledSocialProfile *)self setUsername:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(PPPBLabeledSocialProfile *)self setUserIdentifier:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(PPPBLabeledSocialProfile *)self setService:?];
   }
@@ -49,13 +49,13 @@
   return v6 ^ [(NSString *)self->_service hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((label = self->_label, !(label | v4[1])) || -[NSString isEqual:](label, "isEqual:")) && ((urlString = self->_urlString, !(urlString | v4[3])) || -[NSString isEqual:](urlString, "isEqual:")) && ((username = self->_username, !(username | v4[5])) || -[NSString isEqual:](username, "isEqual:")) && ((userIdentifier = self->_userIdentifier, !(userIdentifier | v4[4])) || -[NSString isEqual:](userIdentifier, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((label = self->_label, !(label | equalCopy[1])) || -[NSString isEqual:](label, "isEqual:")) && ((urlString = self->_urlString, !(urlString | equalCopy[3])) || -[NSString isEqual:](urlString, "isEqual:")) && ((username = self->_username, !(username | equalCopy[5])) || -[NSString isEqual:](username, "isEqual:")) && ((userIdentifier = self->_userIdentifier, !(userIdentifier | equalCopy[4])) || -[NSString isEqual:](userIdentifier, "isEqual:")))
   {
     service = self->_service;
-    if (service | v4[2])
+    if (service | equalCopy[2])
     {
       v10 = [(NSString *)service isEqual:?];
     }
@@ -74,110 +74,110 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_urlString copyWithZone:a3];
+  v8 = [(NSString *)self->_urlString copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_username copyWithZone:a3];
+  v10 = [(NSString *)self->_username copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSString *)self->_userIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_userIdentifier copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_service copyWithZone:a3];
+  v14 = [(NSString *)self->_service copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_label)
   {
-    [v4 setLabel:?];
-    v4 = v5;
+    [toCopy setLabel:?];
+    toCopy = v5;
   }
 
   if (self->_urlString)
   {
     [v5 setUrlString:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_username)
   {
     [v5 setUsername:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userIdentifier)
   {
     [v5 setUserIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_service)
   {
     [v5 setService:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_label)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_urlString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_username)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_service)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   urlString = self->_urlString;
@@ -213,8 +213,8 @@
   v8.receiver = self;
   v8.super_class = PPPBLabeledSocialProfile;
   v4 = [(PPPBLabeledSocialProfile *)&v8 description];
-  v5 = [(PPPBLabeledSocialProfile *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBLabeledSocialProfile *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

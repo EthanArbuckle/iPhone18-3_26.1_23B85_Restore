@@ -1,25 +1,25 @@
 @interface ASCViewRender
 + (NSSet)requiredFieldNames;
 + (OS_os_log)log;
-+ (void)bootstrapDidBeginWithTag:(unint64_t)a3;
-+ (void)bootstrapDidEndWithTag:(unint64_t)a3;
-+ (void)jsCallDidBeginWithTag:(unint64_t)a3;
-+ (void)jsCallDidEndWithTag:(unint64_t)a3;
-+ (void)jsStackBootstrapDidBeginWithTag:(unint64_t)a3;
-+ (void)jsStackBootstrapDidEndWithTag:(unint64_t)a3;
-+ (void)launchCorrelationKeyWithTag:(unint64_t)a3 withString:(id)a4;
-+ (void)modelPrefetchDidBeginWithTag:(unint64_t)a3;
-+ (void)modelPrefetchDidEndWithTag:(unint64_t)a3;
-+ (void)overlayRequestedWithTag:(unint64_t)a3;
-+ (void)pageRequestedWithTag:(unint64_t)a3;
-+ (void)pageUserReadyWithTag:(unint64_t)a3;
-+ (void)requestDidBeginWithTag:(unint64_t)a3;
-+ (void)requestDidEndWithTag:(unint64_t)a3;
-+ (void)resourceRequestDidBeginWithTag:(unint64_t)a3;
-+ (void)resourceRequestDidEndWithTag:(unint64_t)a3;
-+ (void)rootViewModelParseDidBeginWithTag:(unint64_t)a3;
-+ (void)rootViewModelParseDidEndWithTag:(unint64_t)a3;
-+ (void)rootViewModelPresentWithTag:(unint64_t)a3;
++ (void)bootstrapDidBeginWithTag:(unint64_t)tag;
++ (void)bootstrapDidEndWithTag:(unint64_t)tag;
++ (void)jsCallDidBeginWithTag:(unint64_t)tag;
++ (void)jsCallDidEndWithTag:(unint64_t)tag;
++ (void)jsStackBootstrapDidBeginWithTag:(unint64_t)tag;
++ (void)jsStackBootstrapDidEndWithTag:(unint64_t)tag;
++ (void)launchCorrelationKeyWithTag:(unint64_t)tag withString:(id)string;
++ (void)modelPrefetchDidBeginWithTag:(unint64_t)tag;
++ (void)modelPrefetchDidEndWithTag:(unint64_t)tag;
++ (void)overlayRequestedWithTag:(unint64_t)tag;
++ (void)pageRequestedWithTag:(unint64_t)tag;
++ (void)pageUserReadyWithTag:(unint64_t)tag;
++ (void)requestDidBeginWithTag:(unint64_t)tag;
++ (void)requestDidEndWithTag:(unint64_t)tag;
++ (void)resourceRequestDidBeginWithTag:(unint64_t)tag;
++ (void)resourceRequestDidEndWithTag:(unint64_t)tag;
++ (void)rootViewModelParseDidBeginWithTag:(unint64_t)tag;
++ (void)rootViewModelParseDidEndWithTag:(unint64_t)tag;
++ (void)rootViewModelPresentWithTag:(unint64_t)tag;
 @end
 
 @implementation ASCViewRender
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __20__ASCViewRender_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -59,234 +59,234 @@ void __20__ASCViewRender_log__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (void)overlayRequestedWithTag:(unint64_t)a3
++ (void)overlayRequestedWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:0 withName:@"overlayRequested"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:0 withName:@"overlayRequested"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_EVENT, a3, "overlayRequested", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_EVENT, tag, "overlayRequested", "", v7, 2u);
   }
 }
 
-+ (void)modelPrefetchDidBeginWithTag:(unint64_t)a3
++ (void)modelPrefetchDidBeginWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"modelPrefetchStart"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"modelPrefetchStart"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "modelPrefetch", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, tag, "modelPrefetch", "", v7, 2u);
   }
 }
 
-+ (void)modelPrefetchDidEndWithTag:(unint64_t)a3
++ (void)modelPrefetchDidEndWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"modelPrefetchEnd"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"modelPrefetchEnd"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, a3, "modelPrefetch", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, tag, "modelPrefetch", "", v7, 2u);
   }
 }
 
-+ (void)pageRequestedWithTag:(unint64_t)a3
++ (void)pageRequestedWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:0 withName:@"pageRequested"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:0 withName:@"pageRequested"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_EVENT, a3, "pageRequested", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_EVENT, tag, "pageRequested", "", v7, 2u);
   }
 }
 
-+ (void)bootstrapDidBeginWithTag:(unint64_t)a3
++ (void)bootstrapDidBeginWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"bootstrapStart"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"bootstrapStart"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "bootstrap", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, tag, "bootstrap", "", v7, 2u);
   }
 }
 
-+ (void)bootstrapDidEndWithTag:(unint64_t)a3
++ (void)bootstrapDidEndWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"bootstrapEnd"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"bootstrapEnd"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, a3, "bootstrap", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, tag, "bootstrap", "", v7, 2u);
   }
 }
 
-+ (void)launchCorrelationKeyWithTag:(unint64_t)a3 withString:(id)a4
++ (void)launchCorrelationKeyWithTag:(unint64_t)tag withString:(id)string
 {
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  [a1 willEmitSignpostOfType:1 withName:@"launchCorrelationKey"];
-  v7 = [a1 log];
+  stringCopy = string;
+  [self willEmitSignpostOfType:1 withName:@"launchCorrelationKey"];
+  v7 = [self log];
   v8 = v7;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     v9 = 138412290;
-    v10 = v6;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v8, OS_SIGNPOST_EVENT, a3, "launchCorrelationKey", "String=%{signpost.description:attribute}@", &v9, 0xCu);
+    v10 = stringCopy;
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v8, OS_SIGNPOST_EVENT, tag, "launchCorrelationKey", "String=%{signpost.description:attribute}@", &v9, 0xCu);
   }
 }
 
-+ (void)requestDidBeginWithTag:(unint64_t)a3
++ (void)requestDidBeginWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"requestStart"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"requestStart"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "request", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, tag, "request", "", v7, 2u);
   }
 }
 
-+ (void)requestDidEndWithTag:(unint64_t)a3
++ (void)requestDidEndWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"requestEnd"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"requestEnd"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, a3, "request", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, tag, "request", "", v7, 2u);
   }
 }
 
-+ (void)jsStackBootstrapDidBeginWithTag:(unint64_t)a3
++ (void)jsStackBootstrapDidBeginWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"jsStackBootstrapStart"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"jsStackBootstrapStart"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "jsStackBootstrap", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, tag, "jsStackBootstrap", "", v7, 2u);
   }
 }
 
-+ (void)jsStackBootstrapDidEndWithTag:(unint64_t)a3
++ (void)jsStackBootstrapDidEndWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"jsStackBootstrapEnd"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"jsStackBootstrapEnd"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, a3, "jsStackBootstrap", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, tag, "jsStackBootstrap", "", v7, 2u);
   }
 }
 
-+ (void)jsCallDidBeginWithTag:(unint64_t)a3
++ (void)jsCallDidBeginWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"jsCallStart"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"jsCallStart"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "jsCall", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, tag, "jsCall", "", v7, 2u);
   }
 }
 
-+ (void)jsCallDidEndWithTag:(unint64_t)a3
++ (void)jsCallDidEndWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"jsCallEnd"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"jsCallEnd"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, a3, "jsCall", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, tag, "jsCall", "", v7, 2u);
   }
 }
 
-+ (void)rootViewModelParseDidBeginWithTag:(unint64_t)a3
++ (void)rootViewModelParseDidBeginWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"rootViewModelParseStart"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"rootViewModelParseStart"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "rootViewModelParse", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, tag, "rootViewModelParse", "", v7, 2u);
   }
 }
 
-+ (void)rootViewModelParseDidEndWithTag:(unint64_t)a3
++ (void)rootViewModelParseDidEndWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"rootViewModelParseEnd"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"rootViewModelParseEnd"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, a3, "rootViewModelParse", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, tag, "rootViewModelParse", "", v7, 2u);
   }
 }
 
-+ (void)rootViewModelPresentWithTag:(unint64_t)a3
++ (void)rootViewModelPresentWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:0 withName:@"rootViewModelPresent"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:0 withName:@"rootViewModelPresent"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_EVENT, a3, "rootViewModelPresent", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_EVENT, tag, "rootViewModelPresent", "", v7, 2u);
   }
 }
 
-+ (void)resourceRequestDidBeginWithTag:(unint64_t)a3
++ (void)resourceRequestDidBeginWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"resourceRequestStart"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"resourceRequestStart"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, a3, "resourceRequest", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_BEGIN, tag, "resourceRequest", "", v7, 2u);
   }
 }
 
-+ (void)resourceRequestDidEndWithTag:(unint64_t)a3
++ (void)resourceRequestDidEndWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:3 withName:@"resourceRequestEnd"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:3 withName:@"resourceRequestEnd"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, a3, "resourceRequest", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_INTERVAL_END, tag, "resourceRequest", "", v7, 2u);
   }
 }
 
-+ (void)pageUserReadyWithTag:(unint64_t)a3
++ (void)pageUserReadyWithTag:(unint64_t)tag
 {
-  [a1 willEmitSignpostOfType:0 withName:@"pageUserReady"];
-  v5 = [a1 log];
+  [self willEmitSignpostOfType:0 withName:@"pageUserReady"];
+  v5 = [self log];
   v6 = v5;
-  if (a3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
+  if (tag - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *v7 = 0;
-    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_EVENT, a3, "pageUserReady", "", v7, 2u);
+    _os_signpost_emit_with_name_impl(&dword_21571A000, v6, OS_SIGNPOST_EVENT, tag, "pageUserReady", "", v7, 2u);
   }
 }
 

@@ -1,14 +1,14 @@
 @interface ConfusionPairAligner
-- (ConfusionPairAligner)initWithUttId:(id)a3 recognizedText:(id)a4 correctedText:(id)a5 errorType:(int64_t)a6 editMethod:(int64_t)a7;
+- (ConfusionPairAligner)initWithUttId:(id)id recognizedText:(id)text correctedText:(id)correctedText errorType:(int64_t)type editMethod:(int64_t)method;
 @end
 
 @implementation ConfusionPairAligner
 
-- (ConfusionPairAligner)initWithUttId:(id)a3 recognizedText:(id)a4 correctedText:(id)a5 errorType:(int64_t)a6 editMethod:(int64_t)a7
+- (ConfusionPairAligner)initWithUttId:(id)id recognizedText:(id)text correctedText:(id)correctedText errorType:(int64_t)type editMethod:(int64_t)method
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  idCopy = id;
+  textCopy = text;
+  correctedTextCopy = correctedText;
   v56.receiver = self;
   v56.super_class = ConfusionPairAligner;
   v15 = [(ConfusionPairAligner *)&v56 init];
@@ -41,7 +41,7 @@ LABEL_31:
     v43[3] = &unk_100038920;
     v43[4] = &v50;
     v43[5] = &v44;
-    [(ConfusionPairAligner *)v16 editAlignmentWithRefText:v14 hypText:v13 placeholderSymbol:@"~" caseInsensitive:0 removeWordSense:1 completion:v43];
+    [(ConfusionPairAligner *)v16 editAlignmentWithRefText:correctedTextCopy hypText:textCopy placeholderSymbol:@"~" caseInsensitive:0 removeWordSense:1 completion:v43];
     v18 = v51[5];
     if (!v18 || !v45[5] || (v19 = [v18 count], v19 != objc_msgSend(v45[5], "count")))
     {
@@ -53,8 +53,8 @@ LABEL_31:
     }
 
     v20 = objc_alloc_init(NSMutableArray);
-    v39 = a7;
-    v40 = a6;
+    methodCopy = method;
+    typeCopy = type;
     confusionPairs = v15->_confusionPairs;
     v15->_confusionPairs = v20;
 
@@ -83,8 +83,8 @@ LABEL_31:
           }
         }
 
-        v41 = v12;
-        v28 = [[ConfusionPair alloc] initWithUttId:v12];
+        v41 = idCopy;
+        v28 = [[ConfusionPair alloc] initWithUttId:idCopy];
         if (v24 >= v22)
         {
           v37 = 0;
@@ -117,15 +117,15 @@ LABEL_31:
         }
 
 LABEL_19:
-        v38 = [(ConfusionPair *)v28 placeholderCount];
-        v31 = [(ConfusionPair *)v28 recognizedTokens];
-        if ([v31 count])
+        placeholderCount = [(ConfusionPair *)v28 placeholderCount];
+        recognizedTokens = [(ConfusionPair *)v28 recognizedTokens];
+        if ([recognizedTokens count])
         {
           break;
         }
 
-        v32 = [(ConfusionPair *)v28 correctedTokens];
-        v36 = [v32 count];
+        correctedTokens = [(ConfusionPair *)v28 correctedTokens];
+        v36 = [correctedTokens count];
 
         if (v36)
         {
@@ -134,10 +134,10 @@ LABEL_19:
 
 LABEL_28:
 
-        v12 = v41;
+        idCopy = v41;
         if (v23 < v22)
         {
-          v42 += v38;
+          v42 += placeholderCount;
           if (v24 < v22)
           {
             continue;
@@ -168,8 +168,8 @@ LABEL_22:
       [(ConfusionPair *)v28 setIndex:v24 - v42, v36];
       [(ConfusionPair *)v28 setLeftContext:v33];
       [(ConfusionPair *)v28 setRightContext:v34];
-      [(ConfusionPair *)v28 setErrorType:v40];
-      [(ConfusionPair *)v28 setEditMethod:v39];
+      [(ConfusionPair *)v28 setErrorType:typeCopy];
+      [(ConfusionPair *)v28 setEditMethod:methodCopy];
       [(NSMutableArray *)v15->_confusionPairs addObject:v28];
 
       goto LABEL_28;

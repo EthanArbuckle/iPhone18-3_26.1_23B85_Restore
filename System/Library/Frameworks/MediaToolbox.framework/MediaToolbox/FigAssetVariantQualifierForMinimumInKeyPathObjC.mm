@@ -1,21 +1,21 @@
 @interface FigAssetVariantQualifierForMinimumInKeyPathObjC
-- (FigAssetVariantQualifierForMinimumInKeyPathObjC)initWithCoder:(id)a3;
-- (FigAssetVariantQualifierForMinimumInKeyPathObjC)initWithKeyPath:(id)a3;
+- (FigAssetVariantQualifierForMinimumInKeyPathObjC)initWithCoder:(id)coder;
+- (FigAssetVariantQualifierForMinimumInKeyPathObjC)initWithKeyPath:(id)path;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FigAssetVariantQualifierForMinimumInKeyPathObjC
 
-- (FigAssetVariantQualifierForMinimumInKeyPathObjC)initWithKeyPath:(id)a3
+- (FigAssetVariantQualifierForMinimumInKeyPathObjC)initWithKeyPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = FigAssetVariantQualifierForMinimumInKeyPathObjC;
   v4 = [(FigAssetVariantQualifierForMinimumInKeyPathObjC *)&v6 init];
   if (v4)
   {
-    v4->_keyPath = a3;
+    v4->_keyPath = path;
   }
 
   return v4;
@@ -35,22 +35,22 @@
   [(FigAssetVariantQualifierForMinimumInKeyPathObjC *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FigAssetVariantQualifierForMinimumInKeyPathObjC;
   [(FigAssetVariantQualifierObjC *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_keyPath forKey:@"keyPath"];
+  [coder encodeObject:self->_keyPath forKey:@"keyPath"];
 }
 
-- (FigAssetVariantQualifierForMinimumInKeyPathObjC)initWithCoder:(id)a3
+- (FigAssetVariantQualifierForMinimumInKeyPathObjC)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FigAssetVariantQualifierForMinimumInKeyPathObjC;
   v4 = [(FigAssetVariantQualifierObjC *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_keyPath = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"];
+    v4->_keyPath = [coder decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"];
   }
 
   return v4;

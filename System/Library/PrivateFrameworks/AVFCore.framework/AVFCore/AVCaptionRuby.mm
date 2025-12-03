@@ -1,14 +1,14 @@
 @interface AVCaptionRuby
 - (AVCaptionRuby)init;
-- (AVCaptionRuby)initWithCoder:(id)a3;
-- (AVCaptionRuby)initWithFigCaptionData:(OpaqueFigCaptionData *)a3;
+- (AVCaptionRuby)initWithCoder:(id)coder;
+- (AVCaptionRuby)initWithFigCaptionData:(OpaqueFigCaptionData *)data;
 - (AVCaptionRuby)initWithText:(NSString *)text;
 - (AVCaptionRuby)initWithText:(NSString *)text position:(AVCaptionRubyPosition)position alignment:(AVCaptionRubyAlignment)alignment;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OpaqueFigCaptionData)copyFigCaptionData;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVCaptionRuby
@@ -61,15 +61,15 @@
   return result;
 }
 
-- (AVCaptionRuby)initWithCoder:(id)a3
+- (AVCaptionRuby)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRubyArchiveKeyText"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"AVCaptionRubyArchiveKeyText"];
   if (v5)
   {
     v6 = v5;
-    if ([a3 containsValueForKey:@"AVCaptionRubyArchiveKeyPosition"])
+    if ([coder containsValueForKey:@"AVCaptionRubyArchiveKeyPosition"])
     {
-      v7 = [a3 decodeIntegerForKey:@"AVCaptionRubyArchiveKeyPosition"];
+      v7 = [coder decodeIntegerForKey:@"AVCaptionRubyArchiveKeyPosition"];
     }
 
     else
@@ -77,9 +77,9 @@
       v7 = 0;
     }
 
-    if ([a3 containsValueForKey:@"AVCaptionRubyArchiveKeyAlignment"])
+    if ([coder containsValueForKey:@"AVCaptionRubyArchiveKeyAlignment"])
     {
-      v9 = [a3 decodeIntegerForKey:@"AVCaptionRubyArchiveKeyAlignment"];
+      v9 = [coder decodeIntegerForKey:@"AVCaptionRubyArchiveKeyAlignment"];
     }
 
     else
@@ -97,7 +97,7 @@
   }
 }
 
-- (AVCaptionRuby)initWithFigCaptionData:(OpaqueFigCaptionData *)a3
+- (AVCaptionRuby)initWithFigCaptionData:(OpaqueFigCaptionData *)data
 {
   v16 = 0;
   v17 = 0;
@@ -178,14 +178,14 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:2 forKey:@"AVCaptionRubyArchiveKeyVersion"];
-  [a3 encodeObject:-[AVCaptionRuby text](self forKey:{"text"), @"AVCaptionRubyArchiveKeyText"}];
-  [a3 encodeInteger:-[AVCaptionRuby position](self forKey:{"position"), @"AVCaptionRubyArchiveKeyPosition"}];
-  v5 = [(AVCaptionRuby *)self alignment];
+  [coder encodeInteger:2 forKey:@"AVCaptionRubyArchiveKeyVersion"];
+  [coder encodeObject:-[AVCaptionRuby text](self forKey:{"text"), @"AVCaptionRubyArchiveKeyText"}];
+  [coder encodeInteger:-[AVCaptionRuby position](self forKey:{"position"), @"AVCaptionRubyArchiveKeyPosition"}];
+  alignment = [(AVCaptionRuby *)self alignment];
 
-  [a3 encodeInteger:v5 forKey:@"AVCaptionRubyArchiveKeyAlignment"];
+  [coder encodeInteger:alignment forKey:@"AVCaptionRubyArchiveKeyAlignment"];
 }
 
 - (void)dealloc
@@ -203,9 +203,9 @@
   [(AVCaptionRuby *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -214,13 +214,13 @@
   result = 0;
   if (objc_opt_isKindOfClass())
   {
-    if (-[NSString isEqual:](-[AVCaptionRuby text](self, "text"), "isEqual:", [a3 text]))
+    if (-[NSString isEqual:](-[AVCaptionRuby text](self, "text"), "isEqual:", [equal text]))
     {
-      v5 = [(AVCaptionRuby *)self position];
-      if (v5 == [a3 position])
+      position = [(AVCaptionRuby *)self position];
+      if (position == [equal position])
       {
-        v6 = [(AVCaptionRuby *)self alignment];
-        if (v6 == [a3 alignment])
+        alignment = [(AVCaptionRuby *)self alignment];
+        if (alignment == [equal alignment])
         {
           return 1;
         }

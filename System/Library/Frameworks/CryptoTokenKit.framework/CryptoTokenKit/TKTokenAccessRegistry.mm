@@ -1,29 +1,29 @@
 @interface TKTokenAccessRegistry
-- (BOOL)_shouldAutomaticallyAllowRequest:(id)a3;
-- (BOOL)evaluateRequest:(id)a3 error:(id *)a4;
+- (BOOL)_shouldAutomaticallyAllowRequest:(id)request;
+- (BOOL)evaluateRequest:(id)request error:(id *)error;
 - (TKTokenAccessRegistry)init;
-- (TKTokenAccessRegistry)initWithAccessDB:(id)a3 userPrompt:(id)a4;
-- (id)getInstallationIDFromBundleID:(id)a3;
-- (int64_t)_fetchAccessForRequest:(id)a3;
-- (int64_t)_promptUserToEvaluateRequest:(id)a3 error:(id *)a4;
-- (void)_storeAccess:(int64_t)a3 forRequest:(id)a4;
-- (void)_storeInstallationID:(id)a3 forBundleID:(id)a4;
+- (TKTokenAccessRegistry)initWithAccessDB:(id)b userPrompt:(id)prompt;
+- (id)getInstallationIDFromBundleID:(id)d;
+- (int64_t)_fetchAccessForRequest:(id)request;
+- (int64_t)_promptUserToEvaluateRequest:(id)request error:(id *)error;
+- (void)_storeAccess:(int64_t)access forRequest:(id)request;
+- (void)_storeInstallationID:(id)d forBundleID:(id)iD;
 @end
 
 @implementation TKTokenAccessRegistry
 
-- (TKTokenAccessRegistry)initWithAccessDB:(id)a3 userPrompt:(id)a4
+- (TKTokenAccessRegistry)initWithAccessDB:(id)b userPrompt:(id)prompt
 {
-  v7 = a3;
-  v8 = a4;
+  bCopy = b;
+  promptCopy = prompt;
   v12.receiver = self;
   v12.super_class = TKTokenAccessRegistry;
   v9 = [(TKTokenAccessRegistry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accessDB, a3);
-    objc_storeStrong(&v10->_prompt, a4);
+    objc_storeStrong(&v9->_accessDB, b);
+    objc_storeStrong(&v10->_prompt, prompt);
   }
 
   return v10;
@@ -38,28 +38,28 @@
   return v5;
 }
 
-- (BOOL)evaluateRequest:(id)a3 error:(id *)a4
+- (BOOL)evaluateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  if ([(TKTokenAccessRegistry *)self _shouldAutomaticallyAllowRequest:v6])
+  requestCopy = request;
+  if ([(TKTokenAccessRegistry *)self _shouldAutomaticallyAllowRequest:requestCopy])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(TKTokenAccessRegistry *)self _fetchAccessForRequest:v6];
+    v8 = [(TKTokenAccessRegistry *)self _fetchAccessForRequest:requestCopy];
     if (!v8)
     {
-      v8 = [(TKTokenAccessRegistry *)self _promptUserToEvaluateRequest:v6 error:a4];
-      [(TKTokenAccessRegistry *)self _storeAccess:v8 forRequest:v6];
-      v9 = [v6 clientBundleID];
-      v10 = [(TKTokenAccessRegistry *)self getInstallationIDFromBundleID:v9];
+      v8 = [(TKTokenAccessRegistry *)self _promptUserToEvaluateRequest:requestCopy error:error];
+      [(TKTokenAccessRegistry *)self _storeAccess:v8 forRequest:requestCopy];
+      clientBundleID = [requestCopy clientBundleID];
+      v10 = [(TKTokenAccessRegistry *)self getInstallationIDFromBundleID:clientBundleID];
 
       if (v10 && [v10 length])
       {
-        v11 = [v6 clientBundleID];
-        [(TKTokenAccessRegistry *)self _storeInstallationID:v10 forBundleID:v11];
+        clientBundleID2 = [requestCopy clientBundleID];
+        [(TKTokenAccessRegistry *)self _storeInstallationID:v10 forBundleID:clientBundleID2];
       }
     }
 
@@ -69,9 +69,9 @@
   return v7;
 }
 
-- (BOOL)_shouldAutomaticallyAllowRequest:(id)a3
+- (BOOL)_shouldAutomaticallyAllowRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([(TKTokenAccessRegistry *)self _platformAllowsAllRequests])
   {
     v5 = TK_LOG_token_access_registry();
@@ -81,7 +81,7 @@
     }
   }
 
-  else if ([v4 clientHasAccessTokenEntitlement])
+  else if ([requestCopy clientHasAccessTokenEntitlement])
   {
     v5 = TK_LOG_token_access_registry();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -92,9 +92,9 @@
 
   else
   {
-    v6 = [v4 clientBundleID];
+    clientBundleID = [requestCopy clientBundleID];
 
-    if (!v6)
+    if (!clientBundleID)
     {
       v5 = TK_LOG_token_access_registry();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -105,11 +105,11 @@
       goto LABEL_21;
     }
 
-    v7 = [v4 clientBundleID];
-    if ([v7 hasPrefix:@"com.apple"])
+    clientBundleID2 = [requestCopy clientBundleID];
+    if ([clientBundleID2 hasPrefix:@"com.apple"])
     {
-      v8 = [v4 clientBundleID];
-      v9 = [v8 isEqualToString:@"com.apple.sear.SampleToken"];
+      clientBundleID3 = [requestCopy clientBundleID];
+      v9 = [clientBundleID3 isEqualToString:@"com.apple.sear.SampleToken"];
 
       if ((v9 & 1) == 0)
       {
@@ -127,9 +127,9 @@
     {
     }
 
-    v10 = [v4 tokenID];
-    v11 = [v10 classID];
-    v12 = [v11 isEqualToString:*MEMORY[0x1E697AED8]];
+    tokenID = [requestCopy tokenID];
+    classID = [tokenID classID];
+    v12 = [classID isEqualToString:*MEMORY[0x1E697AED8]];
 
     if (v12)
     {
@@ -142,9 +142,9 @@
 
     else
     {
-      v13 = [v4 tokenID];
-      v14 = [v13 classID];
-      v15 = [v14 isEqualToString:*MEMORY[0x1E697AEE0]];
+      tokenID2 = [requestCopy tokenID];
+      classID2 = [tokenID2 classID];
+      v15 = [classID2 isEqualToString:*MEMORY[0x1E697AEE0]];
 
       if (!v15)
       {
@@ -168,14 +168,14 @@ LABEL_22:
   return v16;
 }
 
-- (int64_t)_promptUserToEvaluateRequest:(id)a3 error:(id *)a4
+- (int64_t)_promptUserToEvaluateRequest:(id)request error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(TKTokenAccessUserPrompt *)self->_prompt preflightStatus];
-  if (v8)
+  requestCopy = request;
+  preflightStatus = [(TKTokenAccessUserPrompt *)self->_prompt preflightStatus];
+  if (preflightStatus)
   {
-    if (v8 == 1)
+    if (preflightStatus == 1)
     {
       v10 = TK_LOG_token_access_registry();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -186,7 +186,7 @@ LABEL_22:
       v4 = 1;
     }
 
-    else if (v8 == 2)
+    else if (preflightStatus == 2)
     {
       v9 = TK_LOG_token_access_registry();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -194,7 +194,7 @@ LABEL_22:
         [TKTokenAccessRegistry _promptUserToEvaluateRequest:error:];
       }
 
-      v4 = [(TKTokenAccessUserPrompt *)self->_prompt promptUserToEvaluateRequest:v7 error:a4];
+      v4 = [(TKTokenAccessUserPrompt *)self->_prompt promptUserToEvaluateRequest:requestCopy error:error];
     }
   }
 
@@ -206,13 +206,13 @@ LABEL_22:
       [TKTokenAccessRegistry _promptUserToEvaluateRequest:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x1E696ABC0];
       v16 = *MEMORY[0x1E696A278];
       v17[0] = @"Operation not supported in this platform";
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-      *a4 = [v12 errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v13];
+      *error = [v12 errorWithDomain:@"CryptoTokenKit" code:-7 userInfo:v13];
     }
 
     v4 = 2;
@@ -222,12 +222,12 @@ LABEL_22:
   return v4;
 }
 
-- (int64_t)_fetchAccessForRequest:(id)a3
+- (int64_t)_fetchAccessForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([(TKTokenAccessRegistry *)self _isPersistenceEnabled])
   {
-    v5 = [(TKTokenAccessDB *)self->_accessDB fetchAccessForRequest:v4];
+    v5 = [(TKTokenAccessDB *)self->_accessDB fetchAccessForRequest:requestCopy];
   }
 
   else
@@ -244,27 +244,27 @@ LABEL_22:
   return v5;
 }
 
-- (void)_storeAccess:(int64_t)a3 forRequest:(id)a4
+- (void)_storeAccess:(int64_t)access forRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   if (![(TKTokenAccessRegistry *)self _isPersistenceEnabled])
   {
     goto LABEL_5;
   }
 
-  v7 = [v6 clientBundleID];
-  if (!v7)
+  clientBundleID = [requestCopy clientBundleID];
+  if (!clientBundleID)
   {
     goto LABEL_5;
   }
 
-  v8 = v7;
-  v9 = [v6 clientBundleID];
-  v10 = [v9 length];
+  v8 = clientBundleID;
+  clientBundleID2 = [requestCopy clientBundleID];
+  v10 = [clientBundleID2 length];
 
   if (v10)
   {
-    [(TKTokenAccessDB *)self->_accessDB storeAccess:a3 forRequest:v6];
+    [(TKTokenAccessDB *)self->_accessDB storeAccess:access forRequest:requestCopy];
   }
 
   else
@@ -278,50 +278,50 @@ LABEL_5:
   }
 }
 
-- (void)_storeInstallationID:(id)a3 forBundleID:(id)a4
+- (void)_storeInstallationID:(id)d forBundleID:(id)iD
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(TKTokenAccessRegistry *)self _isPersistenceEnabled];
-  if (v6)
+  dCopy = d;
+  iDCopy = iD;
+  _isPersistenceEnabled = [(TKTokenAccessRegistry *)self _isPersistenceEnabled];
+  if (iDCopy)
   {
-    if (v7)
+    if (_isPersistenceEnabled)
     {
-      v8 = [v6 length];
-      if (v9)
+      v8 = [iDCopy length];
+      if (dCopy)
       {
-        if (v8 && [v9 length])
+        if (v8 && [dCopy length])
         {
-          [(TKTokenAccessDB *)self->_accessDB storeInstallationID:v9 forBundleID:v6];
+          [(TKTokenAccessDB *)self->_accessDB storeInstallationID:dCopy forBundleID:iDCopy];
         }
       }
     }
   }
 }
 
-- (id)getInstallationIDFromBundleID:(id)a3
+- (id)getInstallationIDFromBundleID:(id)d
 {
-  v3 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:a3 allowPlaceholder:0 error:0];
+  v3 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:d allowPlaceholder:0 error:0];
   if (v3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 containingBundleRecord];
+      containingBundleRecord = [v3 containingBundleRecord];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = containingBundleRecord;
       }
 
       else
       {
         v8 = objc_alloc(MEMORY[0x1E69635F8]);
-        v9 = [v4 bundleIdentifier];
-        v5 = [v8 initWithBundleIdentifier:v9 allowPlaceholder:0 error:0];
+        bundleIdentifier = [containingBundleRecord bundleIdentifier];
+        v5 = [v8 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
       }
 
-      v7 = [v5 installSessionIdentifier];
+      installSessionIdentifier = [v5 installSessionIdentifier];
     }
 
     else
@@ -329,16 +329,16 @@ LABEL_5:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v3 installSessionIdentifier];
+        installSessionIdentifier = [v3 installSessionIdentifier];
       }
 
       else
       {
-        v7 = 0;
+        installSessionIdentifier = 0;
       }
     }
 
-    v6 = [v7 base64EncodedStringWithOptions:0];
+    v6 = [installSessionIdentifier base64EncodedStringWithOptions:0];
   }
 
   else

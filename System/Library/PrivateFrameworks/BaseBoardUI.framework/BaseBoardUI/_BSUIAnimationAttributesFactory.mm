@@ -1,16 +1,16 @@
 @interface _BSUIAnimationAttributesFactory
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation _BSUIAnimationAttributesFactory
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v6 = [(_UIViewAnimationAttributes *)self->_attributes isEqual:v4[3]];
+    v6 = [(_UIViewAnimationAttributes *)self->_attributes isEqual:equalCopy[3]];
   }
 
   else

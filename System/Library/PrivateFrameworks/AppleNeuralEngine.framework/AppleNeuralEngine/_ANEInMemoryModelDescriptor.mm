@@ -1,22 +1,22 @@
 @interface _ANEInMemoryModelDescriptor
-+ (id)modelWithMILText:(id)a3 weights:(id)a4 optionsPlist:(id)a5;
-+ (id)modelWithNetworkDescription:(id)a3 weights:(id)a4 optionsPlist:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInMemoryModelDescriptor:(id)a3;
-- (_ANEInMemoryModelDescriptor)initWithNetworkText:(id)a3 weights:(id)a4 optionsPlist:(id)a5 isMILModel:(BOOL)a6;
++ (id)modelWithMILText:(id)text weights:(id)weights optionsPlist:(id)plist;
++ (id)modelWithNetworkDescription:(id)description weights:(id)weights optionsPlist:(id)plist;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInMemoryModelDescriptor:(id)descriptor;
+- (_ANEInMemoryModelDescriptor)initWithNetworkText:(id)text weights:(id)weights optionsPlist:(id)plist isMILModel:(BOOL)model;
 - (id)hexStringIdentifier;
 - (unint64_t)hash;
 @end
 
 @implementation _ANEInMemoryModelDescriptor
 
-- (_ANEInMemoryModelDescriptor)initWithNetworkText:(id)a3 weights:(id)a4 optionsPlist:(id)a5 isMILModel:(BOOL)a6
+- (_ANEInMemoryModelDescriptor)initWithNetworkText:(id)text weights:(id)weights optionsPlist:(id)plist isMILModel:(BOOL)model
 {
   v60 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (v11 && v12)
+  textCopy = text;
+  weightsCopy = weights;
+  plistCopy = plist;
+  if (textCopy && weightsCopy)
   {
     v50.receiver = self;
     v50.super_class = _ANEInMemoryModelDescriptor;
@@ -24,10 +24,10 @@
     if (self)
     {
       v42 = a2;
-      v43 = a6;
-      v44 = v13;
-      v45 = v11;
-      v14 = [v11 copy];
+      modelCopy = model;
+      v44 = plistCopy;
+      v45 = textCopy;
+      v14 = [textCopy copy];
       networkText = self->_networkText;
       self->_networkText = v14;
 
@@ -35,10 +35,10 @@
       networkTextHash = self->_networkTextHash;
       self->_networkTextHash = v16;
 
-      objc_storeStrong(&self->_weights, a4);
+      objc_storeStrong(&self->_weights, weights);
       v18 = [MEMORY[0x1E695E0F0] mutableCopy];
-      v19 = [v12 allKeys];
-      v20 = [v19 sortedArrayUsingComparator:&__block_literal_global_7];
+      allKeys = [weightsCopy allKeys];
+      v20 = [allKeys sortedArrayUsingComparator:&__block_literal_global_7];
 
       v48 = 0u;
       v49 = 0u;
@@ -60,7 +60,7 @@
             }
 
             v26 = *(*(&v46 + 1) + 8 * i);
-            v27 = [v12 objectForKeyedSubscript:v26];
+            v27 = [weightsCopy objectForKeyedSubscript:v26];
             if (![v27 count])
             {
               v38 = +[_ANELog framework];
@@ -69,16 +69,16 @@
                 [_ANEInMemoryModelDescriptor initWithNetworkText:v42 weights:v26 optionsPlist:v38 isMILModel:?];
               }
 
-              v36 = 0;
-              v13 = v44;
-              v11 = v45;
+              selfCopy = 0;
+              plistCopy = v44;
+              textCopy = v45;
               goto LABEL_20;
             }
 
-            v28 = [v27 allValues];
-            v29 = [v28 firstObject];
+            allValues = [v27 allValues];
+            firstObject = [allValues firstObject];
 
-            [v18 addObject:v29];
+            [v18 addObject:firstObject];
           }
 
           v23 = [v21 countByEnumeratingWithState:&v46 objects:v51 count:16];
@@ -95,7 +95,7 @@
       weightsHash = self->_weightsHash;
       self->_weightsHash = v30;
 
-      v13 = v44;
+      plistCopy = v44;
       v32 = [v44 copy];
       optionsPlist = self->_optionsPlist;
       self->_optionsPlist = v32;
@@ -104,12 +104,12 @@
       optionsPlistHash = self->_optionsPlistHash;
       self->_optionsPlistHash = v34;
 
-      self->_isMILModel = v43;
-      v11 = v45;
+      self->_isMILModel = modelCopy;
+      textCopy = v45;
     }
 
     self = self;
-    v36 = self;
+    selfCopy = self;
   }
 
   else
@@ -121,39 +121,39 @@
       *buf = 138413058;
       v53 = v41;
       v54 = 2112;
-      v55 = v11;
+      v55 = textCopy;
       v56 = 2112;
-      v57 = v12;
+      v57 = weightsCopy;
       v58 = 2112;
-      v59 = v13;
+      v59 = plistCopy;
       _os_log_error_impl(&dword_1AD246000, v37, OS_LOG_TYPE_ERROR, "%@: Invalid arguments. networkText=%@ : weights=%@ : optionsPlist=%@", buf, 0x2Au);
     }
 
-    v36 = 0;
+    selfCopy = 0;
   }
 
 LABEL_20:
 
   v39 = *MEMORY[0x1E69E9840];
-  return v36;
+  return selfCopy;
 }
 
-+ (id)modelWithNetworkDescription:(id)a3 weights:(id)a4 optionsPlist:(id)a5
++ (id)modelWithNetworkDescription:(id)description weights:(id)weights optionsPlist:(id)plist
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithNetworkText:v10 weights:v9 optionsPlist:v8 isMILModel:0];
+  plistCopy = plist;
+  weightsCopy = weights;
+  descriptionCopy = description;
+  v11 = [[self alloc] initWithNetworkText:descriptionCopy weights:weightsCopy optionsPlist:plistCopy isMILModel:0];
 
   return v11;
 }
 
-+ (id)modelWithMILText:(id)a3 weights:(id)a4 optionsPlist:(id)a5
++ (id)modelWithMILText:(id)text weights:(id)weights optionsPlist:(id)plist
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithNetworkText:v10 weights:v9 optionsPlist:v8 isMILModel:1];
+  plistCopy = plist;
+  weightsCopy = weights;
+  textCopy = text;
+  v11 = [[self alloc] initWithNetworkText:textCopy weights:weightsCopy optionsPlist:plistCopy isMILModel:1];
 
   return v11;
 }
@@ -161,49 +161,49 @@ LABEL_20:
 - (id)hexStringIdentifier
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_ANEInMemoryModelDescriptor *)self networkTextHash];
-  v5 = [(_ANEInMemoryModelDescriptor *)self weightsHash];
-  v6 = [(_ANEInMemoryModelDescriptor *)self optionsPlistHash];
-  v7 = [v3 stringWithFormat:@"%@_%@_%@", v4, v5, v6];
+  networkTextHash = [(_ANEInMemoryModelDescriptor *)self networkTextHash];
+  weightsHash = [(_ANEInMemoryModelDescriptor *)self weightsHash];
+  optionsPlistHash = [(_ANEInMemoryModelDescriptor *)self optionsPlistHash];
+  v7 = [v3 stringWithFormat:@"%@_%@_%@", networkTextHash, weightsHash, optionsPlistHash];
 
   return v7;
 }
 
-- (BOOL)isEqualToInMemoryModelDescriptor:(id)a3
+- (BOOL)isEqualToInMemoryModelDescriptor:(id)descriptor
 {
-  if (!a3)
+  if (!descriptor)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(_ANEInMemoryModelDescriptor *)self networkTextHash];
-  v6 = [v4 networkTextHash];
-  v7 = [v5 isEqual:v6];
+  descriptorCopy = descriptor;
+  networkTextHash = [(_ANEInMemoryModelDescriptor *)self networkTextHash];
+  networkTextHash2 = [descriptorCopy networkTextHash];
+  v7 = [networkTextHash isEqual:networkTextHash2];
 
-  v8 = [(_ANEInMemoryModelDescriptor *)self weightsHash];
-  v9 = [v4 weightsHash];
-  v10 = [v8 isEqual:v9];
+  weightsHash = [(_ANEInMemoryModelDescriptor *)self weightsHash];
+  weightsHash2 = [descriptorCopy weightsHash];
+  v10 = [weightsHash isEqual:weightsHash2];
 
-  v11 = [(_ANEInMemoryModelDescriptor *)self optionsPlistHash];
-  v12 = [v4 optionsPlistHash];
+  optionsPlistHash = [(_ANEInMemoryModelDescriptor *)self optionsPlistHash];
+  optionsPlistHash2 = [descriptorCopy optionsPlistHash];
 
-  LOBYTE(v4) = [v11 isEqual:v12];
-  return v7 & v10 & v4;
+  LOBYTE(descriptorCopy) = [optionsPlistHash isEqual:optionsPlistHash2];
+  return v7 & v10 & descriptorCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_ANEInMemoryModelDescriptor *)self isEqualToInMemoryModelDescriptor:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_ANEInMemoryModelDescriptor *)self isEqualToInMemoryModelDescriptor:v5];
   }
 
   return v6;
@@ -211,12 +211,12 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(_ANEInMemoryModelDescriptor *)self networkTextHash];
-  v4 = [v3 hash];
-  v5 = [(_ANEInMemoryModelDescriptor *)self weightsHash];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(_ANEInMemoryModelDescriptor *)self optionsPlistHash];
-  v8 = [v7 hash];
+  networkTextHash = [(_ANEInMemoryModelDescriptor *)self networkTextHash];
+  v4 = [networkTextHash hash];
+  weightsHash = [(_ANEInMemoryModelDescriptor *)self weightsHash];
+  v6 = [weightsHash hash] ^ v4;
+  optionsPlistHash = [(_ANEInMemoryModelDescriptor *)self optionsPlistHash];
+  v8 = [optionsPlistHash hash];
 
   return v6 ^ v8;
 }

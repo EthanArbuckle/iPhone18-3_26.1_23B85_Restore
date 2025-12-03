@@ -1,14 +1,14 @@
 @interface FCCKDatabaseZoneMigrationOperation
 - (BOOL)validateOperation;
-- (void)_continueGatheringRecordsWithPreviousServerChangeToken:(void *)a3 recordsAlreadyFetched:(void *)a4 completionHandler:;
-- (void)_migrateAndUpdateRecords:(void *)a3 completion:;
-- (void)_saveMigratedRecords:(void *)a3 completion:;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)_continueGatheringRecordsWithPreviousServerChangeToken:(void *)token recordsAlreadyFetched:(void *)fetched completionHandler:;
+- (void)_migrateAndUpdateRecords:(void *)records completion:;
+- (void)_saveMigratedRecords:(void *)records completion:;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
-- (void)setDatabase:(uint64_t)a1;
-- (void)setMigrator:(uint64_t)a1;
-- (void)setPruningAssistant:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
+- (void)setMigrator:(uint64_t)migrator;
+- (void)setPruningAssistant:(uint64_t)assistant;
 @end
 
 @implementation FCCKDatabaseZoneMigrationOperation
@@ -107,22 +107,22 @@ LABEL_17:
     objc_storeStrong(&self->_createdZones, v3);
   }
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self)
   {
-    objc_storeStrong(&self->_resultZoneIDsEligibleForDeletion, v4);
+    objc_storeStrong(&self->_resultZoneIDsEligibleForDeletion, array);
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = v5;
+  array2 = [MEMORY[0x1E695DF70] array];
+  v6 = array2;
   if (self)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_resultRecordIDsEligibleForDeletion, v5);
+    v7 = array2;
+    objc_storeStrong(&self->_resultRecordIDsEligibleForDeletion, array2);
     v6 = v7;
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](array2, v6);
 }
 
 - (void)performOperation
@@ -131,7 +131,7 @@ LABEL_17:
   v3 = FCPrivateDataEncryptionLog;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if (self)
     {
       v5 = self->_database;
@@ -147,7 +147,7 @@ LABEL_17:
     }
 
     *buf = 138543874;
-    *&buf[4] = v4;
+    *&buf[4] = shortOperationDescription;
     *&buf[12] = 2114;
     *&buf[14] = v5;
     *&buf[22] = 2114;
@@ -174,8 +174,8 @@ LABEL_17:
   }
 
   v11 = v10;
-  v12 = [(CKRecordZoneID *)v11 zoneName];
-  v13 = [(FCCKDatabaseMigrator *)v9 databaseMigrationShouldMigrateEntireZone:v12];
+  zoneName = [(CKRecordZoneID *)v11 zoneName];
+  v13 = [(FCCKDatabaseMigrator *)v9 databaseMigrationShouldMigrateEntireZone:zoneName];
 
   if (v13)
   {
@@ -188,14 +188,14 @@ LABEL_17:
       v40 = __78__FCCKDatabaseZoneMigrationOperation__migrateEntireZoneWithCompletionHandler___block_invoke;
       v41 = &unk_1E7C3C498;
       v16 = v14;
-      v42 = self;
+      selfCopy3 = self;
       v43 = v16;
       v17 = &v38;
       *buf = MEMORY[0x1E69E9820];
       *&buf[8] = 3221225472;
       *&buf[16] = __83__FCCKDatabaseZoneMigrationOperation__gatherRecordsToMigrateWithCompletionHandler___block_invoke;
       v47 = &unk_1E7C40A70;
-      v48 = self;
+      selfCopy4 = self;
       v18 = v17;
       v49 = v18;
       [(FCCKDatabaseZoneMigrationOperation *)self _continueGatheringRecordsWithPreviousServerChangeToken:0 recordsAlreadyFetched:buf completionHandler:?];
@@ -210,7 +210,7 @@ LABEL_17:
       migrator = self->_migrator;
       v20 = self->_recordZoneID;
       v21 = migrator;
-      v22 = [(CKRecordZoneID *)v20 zoneName];
+      zoneName2 = [(CKRecordZoneID *)v20 zoneName];
       v23 = self->_database;
       v24 = v23;
       if (v23)
@@ -235,7 +235,7 @@ LABEL_17:
         currentVersion = 0;
       }
 
-      v29 = [(FCCKDatabaseMigrator *)v21 databaseMigrationRecordNamesToMigrateInZone:v22 fromVersion:migratingFromVersion toVersion:currentVersion];
+      v29 = [(FCCKDatabaseMigrator *)v21 databaseMigrationRecordNamesToMigrateInZone:zoneName2 fromVersion:migratingFromVersion toVersion:currentVersion];
 
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
@@ -247,7 +247,7 @@ LABEL_17:
       v39 = 3221225472;
       v40 = __85__FCCKDatabaseZoneMigrationOperation__migrateIndividualRecordsWithCompletionHandler___block_invoke_2;
       v41 = &unk_1E7C40A48;
-      v42 = self;
+      selfCopy3 = self;
       v43 = v30;
       v44 = v15;
       v31 = v30;
@@ -260,7 +260,7 @@ LABEL_17:
       *&buf[8] = 3221225472;
       *&buf[16] = __74__FCCKDatabaseZoneMigrationOperation__migrateRecordIDs_completionHandler___block_invoke;
       v47 = &unk_1E7C378E8;
-      v48 = self;
+      selfCopy4 = self;
       v34 = v31;
       v49 = v34;
       v35 = v32;
@@ -274,20 +274,20 @@ LABEL_17:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     migrationCompletionHandler = self->_migrationCompletionHandler;
     if (migrationCompletionHandler)
     {
-      v8 = v4;
+      v8 = errorCopy;
       v6 = migrationCompletionHandler;
       v7 = self->_resultZoneIDsEligibleForDeletion;
       v6[2](v6, v7, self->_resultRecordIDsEligibleForDeletion, v8);
 
-      v4 = v8;
+      errorCopy = v8;
     }
   }
 }
@@ -347,13 +347,13 @@ void __78__FCCKDatabaseZoneMigrationOperation__migrateEntireZoneWithCompletionHa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_migrateAndUpdateRecords:(void *)a3 completion:
+- (void)_migrateAndUpdateRecords:(void *)records completion:
 {
   v94[2] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v73 = a1;
-  if (!a1)
+  recordsCopy = records;
+  selfCopy = self;
+  if (!self)
   {
     goto LABEL_29;
   }
@@ -366,10 +366,10 @@ void __78__FCCKDatabaseZoneMigrationOperation__migrateEntireZoneWithCompletionHa
     if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v73 shortOperationDescription];
+      shortOperationDescription = [selfCopy shortOperationDescription];
       v12 = [v5 count];
       *buf = 138543618;
-      v86 = v11;
+      v86 = shortOperationDescription;
       v87 = 2048;
       v88 = v12 - [v7 count];
       _os_log_impl(&dword_1B63EF000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ removed %lu duplicates before migration", buf, 0x16u);
@@ -380,9 +380,9 @@ void __78__FCCKDatabaseZoneMigrationOperation__migrateEntireZoneWithCompletionHa
   v74[1] = 3221225472;
   v75 = __74__FCCKDatabaseZoneMigrationOperation__migrateAndUpdateRecords_completion___block_invoke_32;
   v76 = &unk_1E7C3FEB8;
-  v77 = v73;
+  v77 = selfCopy;
   v78 = v7;
-  v79 = v6;
+  v79 = recordsCopy;
   v13 = v7;
   v67 = v74;
   v72 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -398,7 +398,7 @@ void __78__FCCKDatabaseZoneMigrationOperation__migrateEntireZoneWithCompletionHa
     goto LABEL_28;
   }
 
-  v65 = v6;
+  v65 = recordsCopy;
   v66 = v5;
   v70 = *v81;
   v68 = *MEMORY[0x1E696A578];
@@ -415,17 +415,17 @@ void __78__FCCKDatabaseZoneMigrationOperation__migrateEntireZoneWithCompletionHa
       }
 
       v16 = *(*(&v80 + 1) + 8 * v15);
-      v17 = *(v73 + 384);
-      v18 = *(v73 + 368);
+      v17 = *(selfCopy + 384);
+      v18 = *(selfCopy + 368);
       v84 = 0;
       v19 = v18;
       v20 = v17;
       v21 = [v20 databaseMigrationMigrateRecord:v16 database:v19 error:&v84];
       v22 = v84;
 
-      v23 = [v21 recordID];
-      v24 = [v16 recordID];
-      v25 = [v23 isEqual:v24];
+      recordID = [v21 recordID];
+      recordID2 = [v16 recordID];
+      v25 = [recordID isEqual:recordID2];
 
       if (v25 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -444,50 +444,50 @@ void __78__FCCKDatabaseZoneMigrationOperation__migrateEntireZoneWithCompletionHa
         {
 LABEL_13:
           v26 = objc_alloc(MEMORY[0x1E695BA60]);
-          v27 = [v21 recordType];
-          v28 = [v21 recordID];
-          v29 = [v26 initWithRecordType:v27 recordID:v28];
+          recordType = [v21 recordType];
+          recordID3 = [v21 recordID];
+          v29 = [v26 initWithRecordType:recordType recordID:recordID3];
 
-          v30 = [v21 creationDate];
-          [v29 setCreationDate:v30];
+          creationDate = [v21 creationDate];
+          [v29 setCreationDate:creationDate];
 
-          v31 = [v21 modificationDate];
-          [v29 setModificationDate:v31];
+          modificationDate = [v21 modificationDate];
+          [v29 setModificationDate:modificationDate];
 
-          v32 = [v21 creatorUserRecordID];
-          [v29 setCreatorUserRecordID:v32];
+          creatorUserRecordID = [v21 creatorUserRecordID];
+          [v29 setCreatorUserRecordID:creatorUserRecordID];
 
-          v33 = [v21 lastModifiedUserRecordID];
-          [v29 setLastModifiedUserRecordID:v33];
+          lastModifiedUserRecordID = [v21 lastModifiedUserRecordID];
+          [v29 setLastModifiedUserRecordID:lastModifiedUserRecordID];
 
-          v34 = [v21 modifiedByDevice];
-          [v29 setModifiedByDevice:v34];
+          modifiedByDevice = [v21 modifiedByDevice];
+          [v29 setModifiedByDevice:modifiedByDevice];
 
-          v35 = [v21 valueStore];
-          v36 = [v35 values];
-          v37 = [v36 mutableCopy];
-          v38 = [v29 valueStore];
-          [v38 setValues:v37];
+          valueStore = [v21 valueStore];
+          values = [valueStore values];
+          v37 = [values mutableCopy];
+          valueStore2 = [v29 valueStore];
+          [valueStore2 setValues:v37];
 
           v39 = MEMORY[0x1E695DFA8];
-          v40 = [v21 valueStore];
-          v41 = [v40 allKeys];
-          v42 = [v39 setWithArray:v41];
-          v43 = [v29 valueStore];
-          [v43 setChangedKeysSet:v42];
+          valueStore3 = [v21 valueStore];
+          allKeys = [valueStore3 allKeys];
+          v42 = [v39 setWithArray:allKeys];
+          valueStore4 = [v29 valueStore];
+          [valueStore4 setChangedKeysSet:v42];
 
-          v44 = [v21 encryptedValueStore];
-          v45 = [v44 values];
-          v46 = [v45 mutableCopy];
-          v47 = [v29 encryptedValueStore];
-          [v47 setValues:v46];
+          encryptedValueStore = [v21 encryptedValueStore];
+          values2 = [encryptedValueStore values];
+          v46 = [values2 mutableCopy];
+          encryptedValueStore2 = [v29 encryptedValueStore];
+          [encryptedValueStore2 setValues:v46];
 
           v48 = MEMORY[0x1E695DFA8];
-          v49 = [v21 encryptedValueStore];
-          v50 = [v49 allKeys];
-          v51 = [v48 setWithArray:v50];
-          v52 = [v29 encryptedValueStore];
-          [v52 setChangedKeysSet:v51];
+          encryptedValueStore3 = [v21 encryptedValueStore];
+          allKeys2 = [encryptedValueStore3 allKeys];
+          v51 = [v48 setWithArray:allKeys2];
+          encryptedValueStore4 = [v29 encryptedValueStore];
+          [encryptedValueStore4 setChangedKeysSet:v51];
 
           goto LABEL_14;
         }
@@ -502,11 +502,11 @@ LABEL_13:
       if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_ERROR))
       {
         v57 = v54;
-        v58 = [v73 shortOperationDescription];
-        v59 = *(v73 + 384);
+        shortOperationDescription2 = [selfCopy shortOperationDescription];
+        v59 = *(selfCopy + 384);
         v60 = objc_opt_class();
         *v90 = v64;
-        *&v90[4] = v58;
+        *&v90[4] = shortOperationDescription2;
         v91 = 2112;
         v92 = v60;
         v93 = 2112;
@@ -559,7 +559,7 @@ LABEL_19:
   while (v62);
   v56 = 0;
 LABEL_26:
-  v6 = v65;
+  recordsCopy = v65;
   v5 = v66;
 LABEL_28:
 
@@ -679,15 +679,15 @@ void __83__FCCKDatabaseZoneMigrationOperation__gatherRecordsToMigrateWithComplet
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_continueGatheringRecordsWithPreviousServerChangeToken:(void *)a3 recordsAlreadyFetched:(void *)a4 completionHandler:
+- (void)_continueGatheringRecordsWithPreviousServerChangeToken:(void *)token recordsAlreadyFetched:(void *)fetched completionHandler:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  tokenCopy = token;
+  fetchedCopy = fetched;
+  if (self)
   {
     v9 = a2;
     v10 = objc_alloc_init(FCCKPrivateFetchRecordZoneChangesOperation);
-    [(FCCKPrivateFetchRecordZoneChangesOperation *)v10 setRecordZoneID:a1[47]];
+    [(FCCKPrivateFetchRecordZoneChangesOperation *)v10 setRecordZoneID:self[47]];
     [(FCCKPrivateFetchRecordZoneChangesOperation *)v10 setPreviousServerChangeToken:v9];
 
     [(FCCKPrivateDatabaseOperation *)v10 setSkipPreflight:1];
@@ -697,12 +697,12 @@ void __83__FCCKDatabaseZoneMigrationOperation__gatherRecordsToMigrateWithComplet
     v11[1] = 3221225472;
     v11[2] = __133__FCCKDatabaseZoneMigrationOperation__continueGatheringRecordsWithPreviousServerChangeToken_recordsAlreadyFetched_completionHandler___block_invoke;
     v11[3] = &unk_1E7C40A98;
-    v11[4] = a1;
-    v13 = v8;
-    v12 = v7;
+    v11[4] = self;
+    v13 = fetchedCopy;
+    v12 = tokenCopy;
     [(FCCKPrivateFetchRecordZoneChangesOperation *)v10 setFetchRecordZoneChangesCompletionBlock:v11];
-    [a1 associateChildOperation:v10];
-    [(FCCKPrivateDatabase *)a1[46] addOperation:v10];
+    [self associateChildOperation:v10];
+    [(FCCKPrivateDatabase *)self[46] addOperation:v10];
   }
 }
 
@@ -1188,12 +1188,12 @@ void __74__FCCKDatabaseZoneMigrationOperation__migrateAndUpdateRecords_completio
   }
 }
 
-- (void)_saveMigratedRecords:(void *)a3 completion:
+- (void)_saveMigratedRecords:(void *)records completion:
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  recordsCopy = records;
+  if (self)
   {
     if ([v5 count])
     {
@@ -1201,16 +1201,16 @@ void __74__FCCKDatabaseZoneMigrationOperation__migrateAndUpdateRecords_completio
       if (os_log_type_enabled(FCPrivateDataEncryptionLog, OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [a1 shortOperationDescription];
+        shortOperationDescription = [self shortOperationDescription];
         *buf = 138543618;
-        v25 = v9;
+        v25 = shortOperationDescription;
         v26 = 2048;
         v27 = [v5 count];
         _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ attempting to write %lu records", buf, 0x16u);
       }
 
       v10 = objc_alloc_init(FCCKPrivateBatchedSaveRecordsOperation);
-      [(FCCKPrivateBatchedSaveRecordsOperation *)v10 setDatabase:a1[46]];
+      [(FCCKPrivateBatchedSaveRecordsOperation *)v10 setDatabase:self[46]];
       [(FCCKPrivateBatchedSaveRecordsOperation *)v10 setRecordsToSave:v5];
       [(FCCKPrivateBatchedSaveRecordsOperation *)v10 setSavePolicy:0];
       [(FCCKPrivateBatchedSaveRecordsOperation *)v10 setSkipPreflight:1];
@@ -1219,11 +1219,11 @@ void __74__FCCKDatabaseZoneMigrationOperation__migrateAndUpdateRecords_completio
       v13 = 3221225472;
       v14 = __70__FCCKDatabaseZoneMigrationOperation__saveMigratedRecords_completion___block_invoke_35;
       v15 = &unk_1E7C3FEB8;
-      v16 = a1;
+      selfCopy = self;
       v17 = v5;
-      v18 = v6;
+      v18 = recordsCopy;
       [(FCCKPrivateBatchedSaveRecordsOperation *)v10 setSaveRecordsCompletionBlock:&v12];
-      [a1 associateChildOperation:{v10, v12, v13, v14, v15, v16}];
+      [self associateChildOperation:{v10, v12, v13, v14, v15, selfCopy}];
       [(FCOperation *)v10 start];
     }
 
@@ -1233,7 +1233,7 @@ void __74__FCCKDatabaseZoneMigrationOperation__migrateAndUpdateRecords_completio
       v20 = 3221225472;
       v21 = __70__FCCKDatabaseZoneMigrationOperation__saveMigratedRecords_completion___block_invoke;
       v22 = &unk_1E7C379C8;
-      v23 = v6;
+      v23 = recordsCopy;
       (v23->super.super._iop.__nextOp)(v23, 0);
       v10 = v23;
     }
@@ -1293,27 +1293,27 @@ void __70__FCCKDatabaseZoneMigrationOperation__saveMigratedRecords_completion___
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 368), a2);
+    objc_storeStrong((database + 368), a2);
   }
 }
 
-- (void)setMigrator:(uint64_t)a1
+- (void)setMigrator:(uint64_t)migrator
 {
-  if (a1)
+  if (migrator)
   {
-    objc_storeStrong((a1 + 384), a2);
+    objc_storeStrong((migrator + 384), a2);
   }
 }
 
-- (void)setPruningAssistant:(uint64_t)a1
+- (void)setPruningAssistant:(uint64_t)assistant
 {
-  if (a1)
+  if (assistant)
   {
-    objc_storeStrong((a1 + 392), a2);
+    objc_storeStrong((assistant + 392), a2);
   }
 }
 

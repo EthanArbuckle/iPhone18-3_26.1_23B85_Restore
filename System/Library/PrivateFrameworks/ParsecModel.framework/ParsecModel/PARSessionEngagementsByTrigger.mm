@@ -1,13 +1,13 @@
 @interface PARSessionEngagementsByTrigger
-- (PARSessionEngagementsByTrigger)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (PARSessionEngagementsByTrigger)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation PARSessionEngagementsByTrigger
 
-- (PARSessionEngagementsByTrigger)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (PARSessionEngagementsByTrigger)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  contextCopy = context;
   return PARSessionEngagementsByTrigger.init(entity:insertInto:)();
 }
 

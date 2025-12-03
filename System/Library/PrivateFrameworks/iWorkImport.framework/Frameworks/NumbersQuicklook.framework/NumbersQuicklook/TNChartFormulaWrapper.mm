@@ -1,58 +1,58 @@
 @interface TNChartFormulaWrapper
-+ (id)chartFormulaForCategoryRef:(id)a3;
-+ (id)chartFormulaForCellReference:(TSCECellRef *)a3;
-+ (id)chartFormulaForCellRegion:(id)a3 inTable:(id)a4;
-+ (id)chartFormulaForRangeReference:(TSCERangeRef *)a3;
-+ (id)chartFormulaForString:(id)a3;
-+ (id)chartFormulaForTractAsRangeReferences:(id)a3;
-+ (id)chartFormulaForTractReference:(id)a3;
-+ (id)chartFormulaForViewTractRef:(id)a3;
-+ (id)chartFormulaWithFormulaObject:(id)a3;
++ (id)chartFormulaForCategoryRef:(id)ref;
++ (id)chartFormulaForCellReference:(TSCECellRef *)reference;
++ (id)chartFormulaForCellRegion:(id)region inTable:(id)table;
++ (id)chartFormulaForRangeReference:(TSCERangeRef *)reference;
++ (id)chartFormulaForString:(id)string;
++ (id)chartFormulaForTractAsRangeReferences:(id)references;
++ (id)chartFormulaForTractReference:(id)reference;
++ (id)chartFormulaForViewTractRef:(id)ref;
++ (id)chartFormulaWithFormulaObject:(id)object;
 + (id)emptyChartFormula;
 + (id)emptyFormula;
-+ (id)newEvaluationContextWith:(id)a3 inChart:(const TSKUIDStruct *)a4 forSummaryChart:(BOOL)a5;
-- (BOOL)formulaIsEqualTo:(id)a3;
-- (BOOL)isAllStaticValuesWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4;
-- (BOOL)isEqual:(id)a3;
-- (TNChartFormulaWrapper)initWithFormulaObject:(id)a3;
-- (TSCERangeRef)rangeCircumscribingPrecedentsWithCalcEngine:(SEL)a3 inOwner:(id)a4;
++ (id)newEvaluationContextWith:(id)with inChart:(const TSKUIDStruct *)chart forSummaryChart:(BOOL)summaryChart;
+- (BOOL)formulaIsEqualTo:(id)to;
+- (BOOL)isAllStaticValuesWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner;
+- (BOOL)isEqual:(id)equal;
+- (TNChartFormulaWrapper)initWithFormulaObject:(id)object;
+- (TSCERangeRef)rangeCircumscribingPrecedentsWithCalcEngine:(SEL)engine inOwner:(id)owner;
 - (id).cxx_construct;
-- (id)argumentCollectionWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4;
-- (id)argumentCollectionWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4 storeBadRef:(BOOL)a5;
+- (id)argumentCollectionWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart;
+- (id)argumentCollectionWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart storeBadRef:(BOOL)ref;
 - (id)description;
-- (id)formulaByBakingValuesWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4;
-- (id)formulaByProcessingArgumentsWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingBlock:(id)a5;
-- (id)formulaByRewriting:(BOOL)a3 withCalcEngine:(id)a4 andHostUID:(const TSKUIDStruct *)a5;
-- (id)formulaByTrimmingCategoryLabels:(unint64_t)a3 plotByRow:(BOOL)a4 calcEngine:(id)a5 inChart:(TSKUIDStruct *)a6;
-- (id)gridLabelValueAtIndex:(unint64_t)a3 withEvaluationContext:(id)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6;
-- (id)outputGrid:(id)a3 shouldSkipHiddenData:(BOOL)a4;
-- (id)outputGridVectorForSeries:(unint64_t)a3 withContext:(id)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6;
-- (id)outputValue:(id)a3 shouldSkipHiddenData:(BOOL)a4;
-- (id)outputValue:(id)a3 shouldSkipHiddenData:(BOOL)a4 requiresChromeCoords:(BOOL)a5;
-- (id)plotwiseLabelValuesWithEvaluationContext:(id)a3 byRow:(BOOL)a4 shouldSkipHiddenData:(BOOL)a5;
-- (id)stringValueForFormulaWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4;
-- (unint64_t)numberOfGridValuesWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6;
-- (unint64_t)numberOfTotalPlotwiseLabelValuesWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6;
-- (unint64_t)numberOfValuesWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4 shouldSkipHiddenData:(BOOL)a5;
-- (vector<std::pair<TSCEValue)outputVectorValuesWithChromeCoords:(std:(TSUCellCoord>>> *__return_ptr)retstr :(TNChartFormulaWrapper *)self allocator<std:(SEL)a3 :(id)a4 pair<TSCEValue *) shouldSkipHiddenData:(BOOL)a5;
-- (void)clearCacheForCalculationEngine:(id)a3;
-- (void)enumerateOutputGridForSeries:(unint64_t)a3 withContext:(id)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6 withBlock:(id)a7;
+- (id)formulaByBakingValuesWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner;
+- (id)formulaByProcessingArgumentsWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner usingBlock:(id)block;
+- (id)formulaByRewriting:(BOOL)rewriting withCalcEngine:(id)engine andHostUID:(const TSKUIDStruct *)d;
+- (id)formulaByTrimmingCategoryLabels:(unint64_t)labels plotByRow:(BOOL)row calcEngine:(id)engine inChart:(TSKUIDStruct *)chart;
+- (id)gridLabelValueAtIndex:(unint64_t)index withEvaluationContext:(id)context byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data;
+- (id)outputGrid:(id)grid shouldSkipHiddenData:(BOOL)data;
+- (id)outputGridVectorForSeries:(unint64_t)series withContext:(id)context byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data;
+- (id)outputValue:(id)value shouldSkipHiddenData:(BOOL)data;
+- (id)outputValue:(id)value shouldSkipHiddenData:(BOOL)data requiresChromeCoords:(BOOL)coords;
+- (id)plotwiseLabelValuesWithEvaluationContext:(id)context byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data;
+- (id)stringValueForFormulaWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner;
+- (unint64_t)numberOfGridValuesWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data;
+- (unint64_t)numberOfTotalPlotwiseLabelValuesWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data;
+- (unint64_t)numberOfValuesWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart shouldSkipHiddenData:(BOOL)data;
+- (vector<std::pair<TSCEValue)outputVectorValuesWithChromeCoords:(std:(TSUCellCoord>>> *__return_ptr)retstr :(TNChartFormulaWrapper *)self allocator<std:(SEL)std :(id)a4 pair<TSCEValue *) shouldSkipHiddenData:(BOOL)data;
+- (void)clearCacheForCalculationEngine:(id)engine;
+- (void)enumerateOutputGridForSeries:(unint64_t)series withContext:(id)context byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data withBlock:(id)block;
 @end
 
 @implementation TNChartFormulaWrapper
 
-- (TNChartFormulaWrapper)initWithFormulaObject:(id)a3
+- (TNChartFormulaWrapper)initWithFormulaObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = TNChartFormulaWrapper;
   v5 = [(TNChartFormulaWrapper *)&v15 init];
   v8 = v5;
   if (v5)
   {
-    if (v4)
+    if (objectCopy)
     {
-      v9 = objc_msgSend_copy(v4, v6, v7);
+      v9 = objc_msgSend_copy(objectCopy, v6, v7);
       formulaObject = v8->_formulaObject;
       v8->_formulaObject = v9;
 
@@ -80,11 +80,11 @@
   return v8;
 }
 
-+ (id)chartFormulaWithFormulaObject:(id)a3
++ (id)chartFormulaWithFormulaObject:(id)object
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v7 = objc_msgSend_initWithFormulaObject_(v5, v6, v4);
+  objectCopy = object;
+  v5 = [self alloc];
+  v7 = objc_msgSend_initWithFormulaObject_(v5, v6, objectCopy);
 
   return v7;
 }
@@ -113,11 +113,11 @@
   return v8;
 }
 
-+ (id)chartFormulaForString:(id)a3
++ (id)chartFormulaForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = __C();
-  TSCEASTStringElement::appendStringElement(v4, v3, v5);
+  TSCEASTStringElement::appendStringElement(v4, stringCopy, v5);
   TSCEASTFunctionElement::appendFunctionElement(v4, 0xAF, 1, 0, v6);
   v7 = objc_alloc(MEMORY[0x277D80C60]);
   v9 = objc_msgSend_initWithNodeArray_(v7, v8, v4);
@@ -127,20 +127,20 @@
   return v11;
 }
 
-+ (id)chartFormulaForRangeReference:(TSCERangeRef *)a3
++ (id)chartFormulaForRangeReference:(TSCERangeRef *)reference
 {
-  if (a3->range._topLeft.column == a3->range._bottomRight.column && a3->range._topLeft.row == a3->range._bottomRight.row)
+  if (reference->range._topLeft.column == reference->range._bottomRight.column && reference->range._topLeft.row == reference->range._bottomRight.row)
   {
-    v12.var0 = a3->range._topLeft;
-    v12.var1 = a3->_tableUID;
-    v4 = objc_msgSend_chartFormulaForCellReference_(a1, a2, &v12);
+    v12.var0 = reference->range._topLeft;
+    v12.var1 = reference->_tableUID;
+    v4 = objc_msgSend_chartFormulaForCellReference_(self, a2, &v12);
   }
 
   else
   {
     v5 = __C();
     memset(&v12, 0, sizeof(v12));
-    TSCEASTNodeArray::appendRangeReference(v5, a3, 0, &v12);
+    TSCEASTNodeArray::appendRangeReference(v5, reference, 0, &v12);
     TSCEASTFunctionElement::appendFunctionElement(v5, 0xAF, 1, 0, v6);
     v7 = objc_alloc(MEMORY[0x277D80C60]);
     v9 = objc_msgSend_initWithNodeArray_(v7, v8, v5);
@@ -151,11 +151,11 @@
   return v4;
 }
 
-+ (id)chartFormulaForCellReference:(TSCECellRef *)a3
++ (id)chartFormulaForCellReference:(TSCECellRef *)reference
 {
   v4 = __C();
   memset(&v12, 0, sizeof(v12));
-  TSCEASTNodeArray::appendReference(v4, a3, 0, &v12);
+  TSCEASTNodeArray::appendReference(v4, reference, 0, &v12);
   TSCEASTFunctionElement::appendFunctionElement(v4, 0xAF, 1, 0, v5);
   v6 = objc_alloc(MEMORY[0x277D80C60]);
   v8 = objc_msgSend_initWithNodeArray_(v6, v7, v4);
@@ -165,11 +165,11 @@
   return v10;
 }
 
-+ (id)chartFormulaForCategoryRef:(id)a3
++ (id)chartFormulaForCategoryRef:(id)ref
 {
-  v3 = a3;
+  refCopy = ref;
   v4 = objc_alloc(MEMORY[0x277D80C60]);
-  TSCEFormulaCreationMagic::categoryRef(&v11, v3, v5);
+  TSCEFormulaCreationMagic::categoryRef(&v11, refCopy, v5);
   TSCEFormulaCreationMagic::function_1arg();
   v7 = objc_msgSend_initWithCreator_(v4, v6, &v12);
 
@@ -178,11 +178,11 @@
   return v9;
 }
 
-+ (id)chartFormulaForViewTractRef:(id)a3
++ (id)chartFormulaForViewTractRef:(id)ref
 {
-  v3 = a3;
+  refCopy = ref;
   v4 = objc_alloc(MEMORY[0x277D80C60]);
-  TSCEFormulaCreationMagic::viewTractRef(&v11, v3, v5);
+  TSCEFormulaCreationMagic::viewTractRef(&v11, refCopy, v5);
   TSCEFormulaCreationMagic::function_1arg();
   v7 = objc_msgSend_initWithCreator_(v4, v6, &v12);
 
@@ -191,16 +191,16 @@
   return v9;
 }
 
-+ (id)chartFormulaForTractAsRangeReferences:(id)a3
++ (id)chartFormulaForTractAsRangeReferences:(id)references
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && (objc_msgSend_isValid(v4, v5, v6) & 1) != 0)
+  referencesCopy = references;
+  v7 = referencesCopy;
+  if (referencesCopy && (objc_msgSend_isValid(referencesCopy, v5, v6) & 1) != 0)
   {
     if (objc_msgSend_isRectangularRange(v7, v8, v9))
     {
       objc_msgSend_boundingRangeRef(v7, v10, v11);
-      v13 = objc_msgSend_chartFormulaForRangeReference_(a1, v12, &v27);
+      v13 = objc_msgSend_chartFormulaForRangeReference_(self, v12, &v27);
     }
 
     else
@@ -246,11 +246,11 @@
   return v13;
 }
 
-+ (id)chartFormulaForTractReference:(id)a3
++ (id)chartFormulaForTractReference:(id)reference
 {
-  v3 = a3;
+  referenceCopy = reference;
   v4 = __C();
-  TSCEFormulaCreationMagic::absColonTractRef(&v13, v3, &unk_275F5EE50, v5);
+  TSCEFormulaCreationMagic::absColonTractRef(&v13, referenceCopy, &unk_275F5EE50, v5);
   TSCEFormulaCreator::operator()();
   TSCEASTFunctionElement::appendFunctionElement(v4, 0xAF, 1, 0, v6);
   v7 = objc_alloc(MEMORY[0x277D80C60]);
@@ -261,24 +261,24 @@
   return v11;
 }
 
-+ (id)chartFormulaForCellRegion:(id)a3 inTable:(id)a4
++ (id)chartFormulaForCellRegion:(id)region inTable:(id)table
 {
-  v6 = a3;
-  v7 = a4;
-  v10 = v7;
+  regionCopy = region;
+  tableCopy = table;
+  v10 = tableCopy;
   v11 = 0;
-  if (v6 && v7)
+  if (regionCopy && tableCopy)
   {
-    if (objc_msgSend_cellCount(v6, v8, v9))
+    if (objc_msgSend_cellCount(regionCopy, v8, v9))
     {
-      if (objc_msgSend_isRectangle(v6, v12, v13))
+      if (objc_msgSend_isRectangle(regionCopy, v12, v13))
       {
-        objc_msgSend_boundingCellRange(v6, v14, v15);
+        objc_msgSend_boundingCellRange(regionCopy, v14, v15);
         v32 = __C();
         v33 = v17;
         v34 = objc_msgSend_tableUID(v10, v17, v16);
         v35 = v18;
-        v11 = objc_msgSend_chartFormulaForRangeReference_(a1, v18, &v32);
+        v11 = objc_msgSend_chartFormulaForRangeReference_(self, v18, &v32);
       }
 
       else
@@ -295,7 +295,7 @@
         v30 = &v32;
         v31 = v19;
         v29 = v10;
-        objc_msgSend_enumerateCellRangesUsingBlock_(v6, v20, v28);
+        objc_msgSend_enumerateCellRangesUsingBlock_(regionCopy, v20, v28);
         v22 = *(v33 + 6);
         if (v22)
         {
@@ -325,12 +325,12 @@
   return v11;
 }
 
-+ (id)newEvaluationContextWith:(id)a3 inChart:(const TSKUIDStruct *)a4 forSummaryChart:(BOOL)a5
++ (id)newEvaluationContextWith:(id)with inChart:(const TSKUIDStruct *)chart forSummaryChart:(BOOL)summaryChart
 {
-  v5 = a5;
-  v6 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_(MEMORY[0x277D80C58], a2, a3, a4, 0);
+  summaryChartCopy = summaryChart;
+  v6 = objc_msgSend_contextForCalcEngine_containingTable_containingCell_(MEMORY[0x277D80C58], a2, with, chart, 0);
   v8 = v6;
-  if (v5)
+  if (summaryChartCopy)
   {
     objc_msgSend_setPivotRefsReturnsValueGrid_(v6, v7, 1);
     objc_msgSend_setIsForChartFormulas_(v8, v9, 1);
@@ -341,13 +341,13 @@
   return v8;
 }
 
-- (BOOL)formulaIsEqualTo:(id)a3
+- (BOOL)formulaIsEqualTo:(id)to
 {
-  v6 = a3;
-  if (v6)
+  toCopy = to;
+  if (toCopy)
   {
     v7 = objc_msgSend_formulaObject(self, v4, v5);
-    v10 = objc_msgSend_formulaObject(v6, v8, v9);
+    v10 = objc_msgSend_formulaObject(toCopy, v8, v9);
     v12 = v10;
     if (v7 == v10)
     {
@@ -373,7 +373,7 @@
   return isEqualToFormula;
 }
 
-- (void)clearCacheForCalculationEngine:(id)a3
+- (void)clearCacheForCalculationEngine:(id)engine
 {
   cachedOutputValueVector = self->_cachedOutputValueVector;
   self->_cachedOutputValueVector = 0;
@@ -390,18 +390,18 @@
   self->_cachedValueGrid = 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     isEqualToFormula = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       v6 = TSUDynamicCast();
@@ -506,27 +506,27 @@ LABEL_22:
   return v6;
 }
 
-- (id)outputValue:(id)a3 shouldSkipHiddenData:(BOOL)a4
+- (id)outputValue:(id)value shouldSkipHiddenData:(BOOL)data
 {
-  v4 = objc_msgSend_outputValue_shouldSkipHiddenData_requiresChromeCoords_(self, a2, a3, a4, 0);
+  v4 = objc_msgSend_outputValue_shouldSkipHiddenData_requiresChromeCoords_(self, a2, value, data, 0);
 
   return v4;
 }
 
-- (id)outputValue:(id)a3 shouldSkipHiddenData:(BOOL)a4 requiresChromeCoords:(BOOL)a5
+- (id)outputValue:(id)value shouldSkipHiddenData:(BOOL)data requiresChromeCoords:(BOOL)coords
 {
-  LODWORD(lower) = a5;
-  v185 = a4;
+  LODWORD(lower) = coords;
+  dataCopy = data;
   v209 = *MEMORY[0x277D85DE8];
-  v188 = a3;
+  valueCopy = value;
   cachedOutputValueVector = self->_cachedOutputValueVector;
-  if (cachedOutputValueVector && self->_cachedSkipHiddenData == v185 && (!lower || self->_cachedChromeCoordsRealized))
+  if (cachedOutputValueVector && self->_cachedSkipHiddenData == dataCopy && (!lower || self->_cachedChromeCoordsRealized))
   {
     v10 = cachedOutputValueVector;
     goto LABEL_90;
   }
 
-  v184 = self;
+  selfCopy = self;
   if (!self->_formulaObject)
   {
     v11 = MEMORY[0x277D81150];
@@ -543,8 +543,8 @@ LABEL_22:
   }
 
   v18 = objc_msgSend_formulaObject(self, v7, v8);
-  v21 = objc_msgSend_containingTable(v188, v19, v20);
-  v24 = objc_msgSend_calcEngine(v188, v22, v23);
+  v21 = objc_msgSend_containingTable(valueCopy, v19, v20);
+  v24 = objc_msgSend_calcEngine(valueCopy, v22, v23);
   v26 = objc_msgSend_evalArgumentCollectionFromFormula_inOwner_usingCalcEngine_(TNChartFormulaArgumentCollection, v25, v18, v21, v24);
 
   v204 = 0;
@@ -610,7 +610,7 @@ LABEL_28:
           v51 = MEMORY[0x277D80D40];
           var0 = v191.var0;
           lower = v191.var1._lower;
-          v53 = objc_msgSend_calcEngine(v188, v38, v39);
+          v53 = objc_msgSend_calcEngine(valueCopy, v38, v39);
           v55 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(v51, v54, var0, lower, v53);
           LOBYTE(lower) = objc_msgSend_isCategorized(v55, v56, v57);
         }
@@ -649,7 +649,7 @@ LABEL_19:
           lower = MEMORY[0x277D80D40];
           v58 = objc_msgSend_tableUID(v42, v43, v44);
           v60 = v59;
-          v62 = objc_msgSend_calcEngine(v188, v59, v61);
+          v62 = objc_msgSend_calcEngine(valueCopy, v59, v61);
           v64 = objc_msgSend_tableInfoForTableUID_withCalcEngine_(lower, v63, v58, v60, v62);
           LOBYTE(lower) = objc_msgSend_isCategorized(v64, v65, v66);
         }
@@ -690,7 +690,7 @@ LABEL_32:
         v45 = v97;
         if (v97)
         {
-          v101 = objc_msgSend_deepType_(v97, v98, v188);
+          v101 = objc_msgSend_deepType_(v97, v98, valueCopy);
           if (v101 > 4)
           {
             if (v101 == 5)
@@ -705,7 +705,7 @@ LABEL_32:
 
             if (v101 == 7)
             {
-              v110 = objc_msgSend_locale(v188, v99, v100);
+              v110 = objc_msgSend_locale(valueCopy, v99, v100);
               v112 = objc_msgSend_asStringWithLocale_(v45, v111, v110);
               TSCEASTStringElement::appendStringElement(v33, v112, v113);
 
@@ -753,25 +753,25 @@ LABEL_36:
       v73 = objc_alloc(MEMORY[0x277D80C60]);
       v75 = objc_msgSend_initWithNodeArray_(v73, v74, v33);
       TSCEASTNodeArray::freeNodeArray();
-      v77 = objc_msgSend_evaluateWithContextGridResult_(v75, v76, v188);
+      v77 = objc_msgSend_evaluateWithContextGridResult_(v75, v76, valueCopy);
       v195 = 0;
-      v79 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v77, v78, v188, v187, 0, 0, &v195);
+      v79 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v77, v78, valueCopy, v187, 0, 0, &v195);
       v82 = v195;
       if (!v82)
       {
         memset(&__p, 0, 24);
         if (lower)
         {
-          v83 = sub_275F11AF0(v79, v188, v185, &__p);
+          v83 = sub_275F11AF0(v79, valueCopy, dataCopy, &__p);
 
           v79 = v83;
         }
 
         else
         {
-          if (v185)
+          if (dataCopy)
           {
-            v84 = sub_275F125F4(v79, v188);
+            v84 = sub_275F125F4(v79, valueCopy);
 
             topLeft = __p.range._topLeft;
             v79 = v84;
@@ -864,7 +864,7 @@ LABEL_75:
     *&v190._topLeft.column = 1;
     isFlattened_dimensions = objc_msgSend_initWithValues_gridKind_isFlattened_dimensions_(v129, v130, &v204, 1, 0, &v190);
     v133 = objc_msgSend_gridValue_(MEMORY[0x277D80C80], v132, isFlattened_dimensions);
-    v190._topLeft = v188;
+    v190._topLeft = valueCopy;
     v190._bottomRight = v187;
     v191.var0 = 0;
     v191.var1._lower = 0x10000000000;
@@ -893,16 +893,16 @@ LABEL_75:
     v140 = MEMORY[0x277D81150];
     v141 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v139, "[TNChartFormulaWrapper outputValue:shouldSkipHiddenData:requiresChromeCoords:]");
     v143 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v142, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/numbers/Classes/TNChartFormulaWrapper.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v140, v144, v141, v143, 499, 0, "We were not able to generate a value vector for this formula %{public}@", v184);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v140, v144, v141, v143, 499, 0, "We were not able to generate a value vector for this formula %{public}@", selfCopy);
 
     v138 = 0;
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v145, v146);
     goto LABEL_80;
   }
 
-  isFlattened_dimensions = objc_msgSend_evaluateWithContextGridResult_(v184->_formulaObject, v139, v188);
+  isFlattened_dimensions = objc_msgSend_evaluateWithContextGridResult_(selfCopy->_formulaObject, v139, valueCopy);
   v189 = 0;
-  v166 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(isFlattened_dimensions, v165, v188, v187, 0, 0, &v189);
+  v166 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(isFlattened_dimensions, v165, valueCopy, v187, 0, 0, &v189);
   v133 = v189;
   if (v133)
   {
@@ -928,19 +928,19 @@ LABEL_98:
 
 LABEL_77:
 LABEL_80:
-  objc_storeStrong(&v184->_cachedOutputValueVector, v138);
-  v10 = v184->_cachedOutputValueVector;
-  if (&v184->_cachedChromeCoords != &v201)
+  objc_storeStrong(&selfCopy->_cachedOutputValueVector, v138);
+  v10 = selfCopy->_cachedOutputValueVector;
+  if (&selfCopy->_cachedChromeCoords != &v201)
   {
-    sub_275F163D0(&v184->_cachedChromeCoords.__begin_, v201, __dst, (__dst - v201) >> 3);
+    sub_275F163D0(&selfCopy->_cachedChromeCoords.__begin_, v201, __dst, (__dst - v201) >> 3);
   }
 
-  v184->_cachedSkipHiddenData = v185;
-  v184->_cachedChromeCoordsRealized = lower & 1;
-  v151 = objc_msgSend_vector(v184->_cachedOutputValueVector, v147, v148);
+  selfCopy->_cachedSkipHiddenData = dataCopy;
+  selfCopy->_cachedChromeCoordsRealized = lower & 1;
+  v151 = objc_msgSend_vector(selfCopy->_cachedOutputValueVector, v147, v148);
   if (v151)
   {
-    v152 = objc_msgSend_vector(v184->_cachedOutputValueVector, v149, v150);
+    v152 = objc_msgSend_vector(selfCopy->_cachedOutputValueVector, v149, v150);
     v155 = objc_msgSend_count(v152, v153, v154);
   }
 
@@ -949,12 +949,12 @@ LABEL_80:
     v155 = 0;
   }
 
-  if (v155 != v184->_cachedChromeCoords.__end_ - v184->_cachedChromeCoords.__begin_)
+  if (v155 != selfCopy->_cachedChromeCoords.__end_ - selfCopy->_cachedChromeCoords.__begin_)
   {
     v157 = MEMORY[0x277D81150];
     v158 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v156, "[TNChartFormulaWrapper outputValue:shouldSkipHiddenData:requiresChromeCoords:]");
     v160 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v159, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/numbers/Classes/TNChartFormulaWrapper.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v157, v161, v158, v160, 509, 0, "Chart formula evaluation # cache values vs # of chrome coordinates don't match: %lu vs %lu", v155, v184->_cachedChromeCoords.__end_ - v184->_cachedChromeCoords.__begin_);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v157, v161, v158, v160, 509, 0, "Chart formula evaluation # cache values vs # of chrome coordinates don't match: %lu vs %lu", v155, selfCopy->_cachedChromeCoords.__end_ - selfCopy->_cachedChromeCoords.__begin_);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v162, v163);
   }
@@ -973,12 +973,12 @@ LABEL_90:
   return v10;
 }
 
-- (id)outputGrid:(id)a3 shouldSkipHiddenData:(BOOL)a4
+- (id)outputGrid:(id)grid shouldSkipHiddenData:(BOOL)data
 {
-  v4 = a4;
-  v7 = a3;
+  dataCopy = data;
+  gridCopy = grid;
   cachedValueGrid = self->_cachedValueGrid;
-  if (cachedValueGrid && self->_cachedSkipHiddenData == v4)
+  if (cachedValueGrid && self->_cachedSkipHiddenData == dataCopy)
   {
     v9 = cachedValueGrid;
   }
@@ -988,18 +988,18 @@ LABEL_90:
     formulaObject = self->_formulaObject;
     if (formulaObject || (v11 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TNChartFormulaWrapper outputGrid:shouldSkipHiddenData:]"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/numbers/Classes/TNChartFormulaWrapper.mm"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v15, v12, v14, 523, 0, "invalid nil value for '%{public}s'", "_formulaObject"), v14, v12, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17), (formulaObject = self->_formulaObject) != 0))
     {
-      if (v4)
+      if (dataCopy)
       {
-        objc_msgSend_setHidingActionMask_(v7, v6, 19);
+        objc_msgSend_setHidingActionMask_(gridCopy, v6, 19);
         formulaObject = self->_formulaObject;
       }
 
-      v18 = objc_msgSend_evaluateWithContextGridResult_(formulaObject, v6, v7);
+      v18 = objc_msgSend_evaluateWithContextGridResult_(formulaObject, v6, gridCopy);
       if (objc_msgSend_isValueGridValue(v18, v19, v20))
       {
         v9 = objc_msgSend_valueGrid(v18, v21, v22);
         objc_storeStrong(&self->_cachedValueGrid, v9);
-        self->_cachedSkipHiddenData = v4;
+        self->_cachedSkipHiddenData = dataCopy;
       }
 
       else
@@ -1017,12 +1017,12 @@ LABEL_90:
   return v9;
 }
 
-- (id)gridLabelValueAtIndex:(unint64_t)a3 withEvaluationContext:(id)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6
+- (id)gridLabelValueAtIndex:(unint64_t)index withEvaluationContext:(id)context byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = a4;
-  v11 = objc_msgSend_outputGrid_shouldSkipHiddenData_(self, v10, v9, v6);
+  dataCopy = data;
+  rowCopy = row;
+  contextCopy = context;
+  v11 = objc_msgSend_outputGrid_shouldSkipHiddenData_(self, v10, contextCopy, dataCopy);
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1031,7 +1031,7 @@ LABEL_90:
   v31 = objc_msgSend_string(MEMORY[0x277CCAB68], v12, v13);
   if (v11)
   {
-    if (v7)
+    if (rowCopy)
     {
       objc_msgSend_populatedRows(v11, v14, v15);
       v16 = TSUIndexSet::nthIndex(v25);
@@ -1041,7 +1041,7 @@ LABEL_90:
       v24[1] = 3221225472;
       v24[2] = sub_275F12E30;
       v24[3] = &unk_27A6A2BC0;
-      v24[4] = v9;
+      v24[4] = contextCopy;
       v24[5] = &v26;
       objc_msgSend_enumerateValuesForRow_usingBlock_(v11, v18, v16, v24);
     }
@@ -1056,7 +1056,7 @@ LABEL_90:
       v23[1] = 3221225472;
       v23[2] = sub_275F12F14;
       v23[3] = &unk_27A6A2BC0;
-      v23[4] = v9;
+      v23[4] = contextCopy;
       v23[5] = &v26;
       objc_msgSend_enumerateValuesForColumn_usingBlock_(v11, v20, v19, v23);
     }
@@ -1068,12 +1068,12 @@ LABEL_90:
   return v21;
 }
 
-- (id)outputGridVectorForSeries:(unint64_t)a3 withContext:(id)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6
+- (id)outputGridVectorForSeries:(unint64_t)series withContext:(id)context byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data
 {
-  v6 = a5;
-  v8 = objc_msgSend_outputGrid_shouldSkipHiddenData_(self, a2, a4, a6);
+  rowCopy = row;
+  v8 = objc_msgSend_outputGrid_shouldSkipHiddenData_(self, a2, context, data);
   v10 = v8;
-  if (v8 && (objc_msgSend_populatedSliceByIndex_byRow_(v8, v9, a3, v6), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v8 && (objc_msgSend_populatedSliceByIndex_byRow_(v8, v9, series, rowCopy), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = objc_alloc(MEMORY[0x277D80C50]);
     v14 = objc_msgSend_initWithValueGrid_(v12, v13, v11);
@@ -1090,16 +1090,16 @@ LABEL_90:
   return v19;
 }
 
-- (void)enumerateOutputGridForSeries:(unint64_t)a3 withContext:(id)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6 withBlock:(id)a7
+- (void)enumerateOutputGridForSeries:(unint64_t)series withContext:(id)context byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data withBlock:(id)block
 {
-  v7 = a6;
-  v8 = a5;
-  v11 = a7;
-  v13 = objc_msgSend_outputGrid_shouldSkipHiddenData_(self, v12, a4, v7);
+  dataCopy = data;
+  rowCopy = row;
+  blockCopy = block;
+  v13 = objc_msgSend_outputGrid_shouldSkipHiddenData_(self, v12, context, dataCopy);
   v16 = v13;
   if (v13)
   {
-    if (v8)
+    if (rowCopy)
     {
       objc_msgSend_populatedRows(v13, v14, v15);
       v17 = TSUIndexSet::nthIndex(v24);
@@ -1109,7 +1109,7 @@ LABEL_90:
       v23[1] = 3221225472;
       v23[2] = sub_275F132E8;
       v23[3] = &unk_27A6A2BE8;
-      v23[4] = v11;
+      v23[4] = blockCopy;
       objc_msgSend_enumerateValuesForRow_usingBlock_(v16, v19, v17, v23);
     }
 
@@ -1123,22 +1123,22 @@ LABEL_90:
       v22[1] = 3221225472;
       v22[2] = sub_275F13300;
       v22[3] = &unk_27A6A2BE8;
-      v22[4] = v11;
+      v22[4] = blockCopy;
       objc_msgSend_enumerateValuesForColumn_usingBlock_(v16, v21, v20, v22);
     }
   }
 }
 
-- (unint64_t)numberOfGridValuesWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6
+- (unint64_t)numberOfGridValuesWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, a2, a3, a4, 1);
-  v11 = objc_msgSend_outputGrid_shouldSkipHiddenData_(self, v10, v9, v6);
+  dataCopy = data;
+  rowCopy = row;
+  v9 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, a2, engine, chart, 1);
+  v11 = objc_msgSend_outputGrid_shouldSkipHiddenData_(self, v10, v9, dataCopy);
   v14 = v11;
   if (v11)
   {
-    if (v7)
+    if (rowCopy)
     {
       v15 = objc_msgSend_numberOfPopulatedRows(v11, v12, v13);
     }
@@ -1159,19 +1159,19 @@ LABEL_90:
   return v16;
 }
 
-- (vector<std::pair<TSCEValue)outputVectorValuesWithChromeCoords:(std:(TSUCellCoord>>> *__return_ptr)retstr :(TNChartFormulaWrapper *)self allocator<std:(SEL)a3 :(id)a4 pair<TSCEValue *) shouldSkipHiddenData:(BOOL)a5
+- (vector<std::pair<TSCEValue)outputVectorValuesWithChromeCoords:(std:(TSUCellCoord>>> *__return_ptr)retstr :(TNChartFormulaWrapper *)self allocator<std:(SEL)std :(id)a4 pair<TSCEValue *) shouldSkipHiddenData:(BOOL)data
 {
-  v5 = a5;
+  dataCopy = data;
   v8 = a4;
   retstr->var1 = 0;
   retstr->var2 = 0;
   retstr->var0 = 0;
-  v10 = objc_msgSend_outputValue_shouldSkipHiddenData_requiresChromeCoords_(self, v9, v8, v5, 1);
+  v10 = objc_msgSend_outputValue_shouldSkipHiddenData_requiresChromeCoords_(self, v9, v8, dataCopy, 1);
   v13 = objc_msgSend_vector(v10, v11, v12);
 
   if (v13)
   {
-    if (self->_cachedSkipHiddenData != v5)
+    if (self->_cachedSkipHiddenData != dataCopy)
     {
       v15 = MEMORY[0x277D81150];
       v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "[TNChartFormulaWrapper outputVectorValuesWithChromeCoords:shouldSkipHiddenData:]");
@@ -1273,15 +1273,15 @@ LABEL_90:
   return result;
 }
 
-- (id)plotwiseLabelValuesWithEvaluationContext:(id)a3 byRow:(BOOL)a4 shouldSkipHiddenData:(BOOL)a5
+- (id)plotwiseLabelValuesWithEvaluationContext:(id)context byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data
 {
-  v5 = a5;
-  v6 = a4;
-  v37 = a3;
+  dataCopy = data;
+  rowCopy = row;
+  contextCopy = context;
   cachedPlotwiseLabels = self->_cachedPlotwiseLabels;
   if (cachedPlotwiseLabels)
   {
-    if (self->_cachedLabelsByRow == v6 && self->_cachedSkipHiddenData == v5)
+    if (self->_cachedLabelsByRow == rowCopy && self->_cachedSkipHiddenData == dataCopy)
     {
       v11 = cachedPlotwiseLabels;
       goto LABEL_35;
@@ -1291,19 +1291,19 @@ LABEL_90:
   }
 
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9);
-  objc_msgSend_outputVectorValuesWithChromeCoords_shouldSkipHiddenData_(self, v12, v37, v5);
+  objc_msgSend_outputVectorValuesWithChromeCoords_shouldSkipHiddenData_(self, v12, contextCopy, dataCopy);
   v13 = v38;
   if (v38 == v39)
   {
     goto LABEL_34;
   }
 
-  v35 = self;
+  selfCopy = self;
   v36 = v11;
   v14 = 0;
   v15 = 0;
   v16 = 0;
-  if (v6)
+  if (rowCopy)
   {
     v17 = *(v38 + 8);
   }
@@ -1313,7 +1313,7 @@ LABEL_90:
     v17 = *(v38 + 12);
   }
 
-  if (v6)
+  if (rowCopy)
   {
     v18 = 0x7FFFFFFF;
   }
@@ -1331,7 +1331,7 @@ LABEL_90:
     LODWORD(v21) = *(v21 + 8);
     v22 = v19;
     v25 = v22;
-    if (v6)
+    if (rowCopy)
     {
       v21 = v21;
     }
@@ -1344,7 +1344,7 @@ LABEL_90:
     v28 = &stru_2884F65E0;
     if ((objc_msgSend_isNil(v22, v23, v24) & 1) == 0)
     {
-      v28 = objc_msgSend_coercedStringWithContext_(v25, v26, v37);
+      v28 = objc_msgSend_coercedStringWithContext_(v25, v26, contextCopy);
       if (!v28)
       {
         goto LABEL_30;
@@ -1392,10 +1392,10 @@ LABEL_30:
     objc_msgSend_addObject_(v36, v33, v16);
   }
 
-  self = v35;
+  self = selfCopy;
 LABEL_34:
   objc_storeStrong(&self->_cachedPlotwiseLabels, v11);
-  self->_cachedLabelsByRow = v6;
+  self->_cachedLabelsByRow = rowCopy;
   v40 = &v38;
   sub_275F164FC(&v40);
 LABEL_35:
@@ -1403,15 +1403,15 @@ LABEL_35:
   return v11;
 }
 
-- (unint64_t)numberOfValuesWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4 shouldSkipHiddenData:(BOOL)a5
+- (unint64_t)numberOfValuesWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart shouldSkipHiddenData:(BOOL)data
 {
-  v5 = a5;
-  v9 = a3;
+  dataCopy = data;
+  engineCopy = engine;
   cachedNumberOfValues = self->_cachedNumberOfValues;
   if (cachedNumberOfValues == -1)
   {
-    v11 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, v8, v9, a4, 0);
-    v13 = objc_msgSend_outputValue_shouldSkipHiddenData_(self, v12, v11, v5);
+    v11 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, v8, engineCopy, chart, 0);
+    v13 = objc_msgSend_outputValue_shouldSkipHiddenData_(self, v12, v11, dataCopy);
     v16 = objc_msgSend_vector(v13, v14, v15);
 
     if (!v16 || (v19 = objc_msgSend_count(v16, v17, v18), cachedNumberOfValues = v19, v19 < 0))
@@ -1428,12 +1428,12 @@ LABEL_35:
   return cachedNumberOfValues;
 }
 
-- (unint64_t)numberOfTotalPlotwiseLabelValuesWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4 byRow:(BOOL)a5 shouldSkipHiddenData:(BOOL)a6
+- (unint64_t)numberOfTotalPlotwiseLabelValuesWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart byRow:(BOOL)row shouldSkipHiddenData:(BOOL)data
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, a2, a3, a4, 0);
-  v11 = objc_msgSend_plotwiseLabelValuesWithEvaluationContext_byRow_shouldSkipHiddenData_(self, v10, v9, v7, v6);
+  dataCopy = data;
+  rowCopy = row;
+  v9 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, a2, engine, chart, 0);
+  v11 = objc_msgSend_plotwiseLabelValuesWithEvaluationContext_byRow_shouldSkipHiddenData_(self, v10, v9, rowCopy, dataCopy);
   v14 = v11;
   if (v11)
   {
@@ -1448,10 +1448,10 @@ LABEL_35:
   return v15;
 }
 
-- (id)argumentCollectionWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4
+- (id)argumentCollectionWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart
 {
-  v7 = a3;
-  if (!v7)
+  engineCopy = engine;
+  if (!engineCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TNChartFormulaWrapper argumentCollectionWithCalcEngine:inChart:]");
@@ -1461,16 +1461,16 @@ LABEL_35:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
-  v15 = objc_msgSend_argumentCollectionFromFormula_inOwner_usingCalcEngine_(TNChartFormulaArgumentCollection, v6, self->_formulaObject, a4, v7);
+  v15 = objc_msgSend_argumentCollectionFromFormula_inOwner_usingCalcEngine_(TNChartFormulaArgumentCollection, v6, self->_formulaObject, chart, engineCopy);
 
   return v15;
 }
 
-- (id)argumentCollectionWithCalcEngine:(id)a3 inChart:(const TSKUIDStruct *)a4 storeBadRef:(BOOL)a5
+- (id)argumentCollectionWithCalcEngine:(id)engine inChart:(const TSKUIDStruct *)chart storeBadRef:(BOOL)ref
 {
-  v5 = a5;
-  v9 = a3;
-  if (!v9)
+  refCopy = ref;
+  engineCopy = engine;
+  if (!engineCopy)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TNChartFormulaWrapper argumentCollectionWithCalcEngine:inChart:storeBadRef:]");
@@ -1480,18 +1480,18 @@ LABEL_35:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
 
-  v17 = objc_msgSend_argumentCollectionFromFormula_inOwner_usingCalcEngine_storeBadRef_(TNChartFormulaArgumentCollection, v8, self->_formulaObject, a4, v9, v5);
+  v17 = objc_msgSend_argumentCollectionFromFormula_inOwner_usingCalcEngine_storeBadRef_(TNChartFormulaArgumentCollection, v8, self->_formulaObject, chart, engineCopy, refCopy);
 
   return v17;
 }
 
-- (id)stringValueForFormulaWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4
+- (id)stringValueForFormulaWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner
 {
-  v40 = a3;
+  engineCopy = engine;
   v7 = objc_msgSend_functionSpecForFunctionIndex_(MEMORY[0x277D80C78], v6, 175);
   v41 = v7;
   v39 = objc_msgSend_formulaObject(self, v8, v9);
-  v11 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, v10, v40, a4, 0);
+  v11 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, v10, engineCopy, owner, 0);
   objc_msgSend_evaluateWithContextGridResult_(v39, v12, v11);
   v38 = v48 = 0;
   v14 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v38, v13, v11, v7, 0, 0, &v48);
@@ -1559,12 +1559,12 @@ LABEL_35:
   return v24;
 }
 
-- (TSCERangeRef)rangeCircumscribingPrecedentsWithCalcEngine:(SEL)a3 inOwner:(id)a4
+- (TSCERangeRef)rangeCircumscribingPrecedentsWithCalcEngine:(SEL)engine inOwner:(id)owner
 {
   v56 = *MEMORY[0x277D85DE8];
-  v46 = a4;
+  ownerCopy = owner;
   v10 = objc_msgSend_formulaObject(self, v8, v9);
-  v12 = objc_msgSend_argumentCollectionFromFormula_inOwner_usingCalcEngine_(TNChartFormulaArgumentCollection, v11, v10, a5, v46);
+  v12 = objc_msgSend_argumentCollectionFromFormula_inOwner_usingCalcEngine_(TNChartFormulaArgumentCollection, v11, v10, a5, ownerCopy);
 
   v53 = 0u;
   v54 = 0u;
@@ -1620,7 +1620,7 @@ LABEL_3:
           v45[1].i64[0] = 0;
           v45[1].i64[1] = 0;
 
-          v43 = v46;
+          v43 = ownerCopy;
           goto LABEL_78;
         }
 
@@ -1804,7 +1804,7 @@ LABEL_72:
   v22 = 0x7FFF7FFFFFFFLL;
 LABEL_77:
 
-  v43 = v46;
+  v43 = ownerCopy;
   v45->i64[0] = v22;
   v45->i64[1] = v17;
   v45[1].i64[0] = v18;
@@ -1814,10 +1814,10 @@ LABEL_78:
   return result;
 }
 
-- (BOOL)isAllStaticValuesWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4
+- (BOOL)isAllStaticValuesWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner
 {
   v18 = *MEMORY[0x277D85DE8];
-  objc_msgSend_argumentCollectionWithCalcEngine_inChart_(self, a2, a3, a4);
+  objc_msgSend_argumentCollectionWithCalcEngine_inChart_(self, a2, engine, owner);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -1858,21 +1858,21 @@ LABEL_11:
   return v11;
 }
 
-- (id)formulaByProcessingArgumentsWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4 usingBlock:(id)a5
+- (id)formulaByProcessingArgumentsWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner usingBlock:(id)block
 {
   v73 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  v64 = v9;
-  v60 = v10;
-  v61 = v8;
-  if (!v9)
+  engineCopy = engine;
+  blockCopy = block;
+  selfCopy = self;
+  v64 = blockCopy;
+  v60 = selfCopy;
+  v61 = engineCopy;
+  if (!blockCopy)
   {
     goto LABEL_42;
   }
 
-  objc_msgSend_argumentCollectionWithCalcEngine_inChart_(v10, v11, v8, a4);
+  objc_msgSend_argumentCollectionWithCalcEngine_inChart_(selfCopy, v11, engineCopy, owner);
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
@@ -2015,15 +2015,15 @@ LABEL_42:
   return v60;
 }
 
-- (id)formulaByRewriting:(BOOL)a3 withCalcEngine:(id)a4 andHostUID:(const TSKUIDStruct *)a5
+- (id)formulaByRewriting:(BOOL)rewriting withCalcEngine:(id)engine andHostUID:(const TSKUIDStruct *)d
 {
-  v5 = a3;
+  rewritingCopy = rewriting;
   v17 = 0;
-  v18 = *a5;
-  MEMORY[0x277C90920](v19, a4, &v17);
+  v18 = *d;
+  MEMORY[0x277C90920](v19, engine, &v17);
   v9 = objc_msgSend_formulaObject(self, v7, v8);
   v11 = v9;
-  if (v5)
+  if (rewritingCopy)
   {
     v12 = objc_msgSend_copyByRewritingReferencesToUidForm_(v9, v10, v19);
   }
@@ -2040,12 +2040,12 @@ LABEL_42:
   return v15;
 }
 
-- (id)formulaByBakingValuesWithCalcEngine:(id)a3 inOwner:(const TSKUIDStruct *)a4
+- (id)formulaByBakingValuesWithCalcEngine:(id)engine inOwner:(const TSKUIDStruct *)owner
 {
-  v6 = a3;
+  engineCopy = engine;
   v8 = objc_msgSend_functionSpecForFunctionIndex_(MEMORY[0x277D80C78], v7, 175);
   v42 = objc_msgSend_formulaObject(self, v9, v10);
-  v12 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, v11, v6, a4, 0);
+  v12 = objc_msgSend_newEvaluationContextWith_inChart_forSummaryChart_(TNChartFormulaWrapper, v11, engineCopy, owner, 0);
   objc_msgSend_evaluateWithContextGridResult_(v42, v13, v12);
   v41 = v49 = 0;
   v15 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v41, v14, v12, v8, 0, 0, &v49);
@@ -2077,7 +2077,7 @@ LABEL_42:
     for (i = 0; i != v18; ++i)
     {
       v25 = objc_msgSend_valueAtIndexNoThrow_index_(v15, v20, v43, i, v39, v40);
-      v23 += sub_275F152D8(v22, v25, v6);
+      v23 += sub_275F152D8(v22, v25, engineCopy);
     }
 
     v8 = v39;
@@ -2108,11 +2108,11 @@ LABEL_42:
   return v37;
 }
 
-- (id)formulaByTrimmingCategoryLabels:(unint64_t)a3 plotByRow:(BOOL)a4 calcEngine:(id)a5 inChart:(TSKUIDStruct *)a6
+- (id)formulaByTrimmingCategoryLabels:(unint64_t)labels plotByRow:(BOOL)row calcEngine:(id)engine inChart:(TSKUIDStruct *)chart
 {
-  v7 = a4;
-  v10 = a5;
-  shouldSkipHiddenData = objc_msgSend_numberOfTotalPlotwiseLabelValuesWithCalcEngine_inChart_byRow_shouldSkipHiddenData_(self, v11, v10, a6, !v7, 0);
+  rowCopy = row;
+  engineCopy = engine;
+  shouldSkipHiddenData = objc_msgSend_numberOfTotalPlotwiseLabelValuesWithCalcEngine_inChart_byRow_shouldSkipHiddenData_(self, v11, engineCopy, chart, !rowCopy, 0);
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -2122,11 +2122,11 @@ LABEL_42:
   v17[2] = sub_275F154A4;
   v17[3] = &unk_27A6A2C10;
   v19 = v22;
-  v20 = shouldSkipHiddenData - a3;
-  v13 = v10;
+  v20 = shouldSkipHiddenData - labels;
+  v13 = engineCopy;
   v18 = v13;
-  v21 = v7;
-  v15 = objc_msgSend_formulaByProcessingArgumentsWithCalcEngine_inOwner_usingBlock_(self, v14, v13, a6, v17);
+  v21 = rowCopy;
+  v15 = objc_msgSend_formulaByProcessingArgumentsWithCalcEngine_inOwner_usingBlock_(self, v14, v13, chart, v17);
 
   _Block_object_dispose(v22, 8);
 

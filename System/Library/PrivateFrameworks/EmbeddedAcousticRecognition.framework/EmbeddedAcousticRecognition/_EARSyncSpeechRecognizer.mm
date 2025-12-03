@@ -1,13 +1,13 @@
 @interface _EARSyncSpeechRecognizer
 + (void)initialize;
-- (_EARSyncSpeechRecognizer)initWithConfiguration:(id)a3 memoryLock:(BOOL)a4;
+- (_EARSyncSpeechRecognizer)initWithConfiguration:(id)configuration memoryLock:(BOOL)lock;
 - (id).cxx_construct;
-- (id)getSpeechRecognitionResultFromTokens:()vector<std:(std:(id)a4 :allocator<std::vector<quasar::Token>>> *)a3 :vector<quasar::Token> taskName:;
-- (id)resultsWithAddedAudio:(id)a3 numberOfSamples:(unint64_t)a4 taskName:(id)a5;
-- (id)resultsWithAddedFloatAudio:(id)a3 numberOfSamples:(unint64_t)a4 taskName:(id)a5;
+- (id)getSpeechRecognitionResultFromTokens:()vector<std:(std:(id)std :allocator<std::vector<quasar::Token>>> *)a3 :vector<quasar::Token> taskName:;
+- (id)resultsWithAddedAudio:(id)audio numberOfSamples:(unint64_t)samples taskName:(id)name;
+- (id)resultsWithAddedFloatAudio:(id)audio numberOfSamples:(unint64_t)samples taskName:(id)name;
 - (id)resultsWithEndedAudio;
-- (void)resetWithSamplingRate:(unsigned int)a3 language:(id)a4 taskType:(id)a5 userId:(id)a6 sessionId:(id)a7 deviceId:(id)a8 farField:(BOOL)a9 atypicalSpeech:(BOOL)a10 maxAudioBufferSizeSeconds:(unsigned int)a11;
-- (void)resetWithSamplingRate:(unsigned int)a3 language:(id)a4 taskType:(id)a5 userId:(id)a6 sessionId:(id)a7 deviceId:(id)a8 farField:(BOOL)a9 audioSource:(id)a10 maxAudioBufferSizeSeconds:(unsigned int)a11;
+- (void)resetWithSamplingRate:(unsigned int)rate language:(id)language taskType:(id)type userId:(id)id sessionId:(id)sessionId deviceId:(id)deviceId farField:(BOOL)field atypicalSpeech:(BOOL)self0 maxAudioBufferSizeSeconds:(unsigned int)self1;
+- (void)resetWithSamplingRate:(unsigned int)rate language:(id)language taskType:(id)type userId:(id)id sessionId:(id)sessionId deviceId:(id)deviceId farField:(BOOL)field audioSource:(id)self0 maxAudioBufferSizeSeconds:(unsigned int)self1;
 @end
 
 @implementation _EARSyncSpeechRecognizer
@@ -15,16 +15,16 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EARSyncSpeechRecognizer)initWithConfiguration:(id)a3 memoryLock:(BOOL)a4
+- (_EARSyncSpeechRecognizer)initWithConfiguration:(id)configuration memoryLock:(BOOL)lock
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = _EARSyncSpeechRecognizer;
   v6 = [(_EARSyncSpeechRecognizer *)&v11 init];
@@ -34,7 +34,7 @@
     formatterQueue = v6->_formatterQueue;
     v6->_formatterQueue = v7;
 
-    [v5 fileSystemRepresentation];
+    [configurationCopy fileSystemRepresentation];
     operator new();
   }
 
@@ -43,20 +43,20 @@
   return v9;
 }
 
-- (void)resetWithSamplingRate:(unsigned int)a3 language:(id)a4 taskType:(id)a5 userId:(id)a6 sessionId:(id)a7 deviceId:(id)a8 farField:(BOOL)a9 audioSource:(id)a10 maxAudioBufferSizeSeconds:(unsigned int)a11
+- (void)resetWithSamplingRate:(unsigned int)rate language:(id)language taskType:(id)type userId:(id)id sessionId:(id)sessionId deviceId:(id)deviceId farField:(BOOL)field audioSource:(id)self0 maxAudioBufferSizeSeconds:(unsigned int)self1
 {
-  v15 = *&a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a10;
+  v15 = *&rate;
+  languageCopy = language;
+  typeCopy = type;
+  idCopy = id;
+  sessionIdCopy = sessionId;
+  deviceIdCopy = deviceId;
+  sourceCopy = source;
   ptr = self->_syncRecognizer.__ptr_;
-  if (v17)
+  if (languageCopy)
   {
-    [v17 ear_toString];
-    if (v18)
+    [languageCopy ear_toString];
+    if (typeCopy)
     {
       goto LABEL_3;
     }
@@ -67,11 +67,11 @@
     v32[0] = 0;
     v32[1] = 0;
     v33 = 0;
-    if (v18)
+    if (typeCopy)
     {
 LABEL_3:
-      [v18 ear_toString];
-      if (v19)
+      [typeCopy ear_toString];
+      if (idCopy)
       {
         goto LABEL_4;
       }
@@ -83,11 +83,11 @@ LABEL_3:
   v30[0] = 0;
   v30[1] = 0;
   v31 = 0;
-  if (v19)
+  if (idCopy)
   {
 LABEL_4:
-    [v19 ear_toString];
-    if (v20)
+    [idCopy ear_toString];
+    if (sessionIdCopy)
     {
       goto LABEL_5;
     }
@@ -96,7 +96,7 @@ LABEL_10:
     v26[0] = 0;
     v26[1] = 0;
     v27 = 0;
-    if (v21)
+    if (deviceIdCopy)
     {
       goto LABEL_6;
     }
@@ -108,17 +108,17 @@ LABEL_9:
   v28[0] = 0;
   v28[1] = 0;
   v29 = 0;
-  if (!v20)
+  if (!sessionIdCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  [v20 ear_toString];
-  if (v21)
+  [sessionIdCopy ear_toString];
+  if (deviceIdCopy)
   {
 LABEL_6:
-    [v21 ear_toString];
+    [deviceIdCopy ear_toString];
     goto LABEL_12;
   }
 
@@ -127,7 +127,7 @@ LABEL_11:
   __p[1] = 0;
   v25 = 0;
 LABEL_12:
-  (*(*ptr + 24))(ptr, v15, v32, v30, v28, v26, __p, a9, 0);
+  (*(*ptr + 24))(ptr, v15, v32, v30, v28, v26, __p, field, 0);
   if (SHIBYTE(v25) < 0)
   {
     operator delete(__p[0]);
@@ -154,19 +154,19 @@ LABEL_12:
   }
 }
 
-- (void)resetWithSamplingRate:(unsigned int)a3 language:(id)a4 taskType:(id)a5 userId:(id)a6 sessionId:(id)a7 deviceId:(id)a8 farField:(BOOL)a9 atypicalSpeech:(BOOL)a10 maxAudioBufferSizeSeconds:(unsigned int)a11
+- (void)resetWithSamplingRate:(unsigned int)rate language:(id)language taskType:(id)type userId:(id)id sessionId:(id)sessionId deviceId:(id)deviceId farField:(BOOL)field atypicalSpeech:(BOOL)self0 maxAudioBufferSizeSeconds:(unsigned int)self1
 {
-  v15 = *&a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
+  v15 = *&rate;
+  languageCopy = language;
+  typeCopy = type;
+  idCopy = id;
+  sessionIdCopy = sessionId;
+  deviceIdCopy = deviceId;
   ptr = self->_syncRecognizer.__ptr_;
-  if (v17)
+  if (languageCopy)
   {
-    [v17 ear_toString];
-    if (v18)
+    [languageCopy ear_toString];
+    if (typeCopy)
     {
       goto LABEL_3;
     }
@@ -177,11 +177,11 @@ LABEL_12:
     v31[0] = 0;
     v31[1] = 0;
     v32 = 0;
-    if (v18)
+    if (typeCopy)
     {
 LABEL_3:
-      [v18 ear_toString];
-      if (v19)
+      [typeCopy ear_toString];
+      if (idCopy)
       {
         goto LABEL_4;
       }
@@ -193,11 +193,11 @@ LABEL_3:
   v29[0] = 0;
   v29[1] = 0;
   v30 = 0;
-  if (v19)
+  if (idCopy)
   {
 LABEL_4:
-    [v19 ear_toString];
-    if (v20)
+    [idCopy ear_toString];
+    if (sessionIdCopy)
     {
       goto LABEL_5;
     }
@@ -206,7 +206,7 @@ LABEL_10:
     v25[0] = 0;
     v25[1] = 0;
     v26 = 0;
-    if (v21)
+    if (deviceIdCopy)
     {
       goto LABEL_6;
     }
@@ -218,17 +218,17 @@ LABEL_9:
   v27[0] = 0;
   v27[1] = 0;
   v28 = 0;
-  if (!v20)
+  if (!sessionIdCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
-  [v20 ear_toString];
-  if (v21)
+  [sessionIdCopy ear_toString];
+  if (deviceIdCopy)
   {
 LABEL_6:
-    [v21 ear_toString];
+    [deviceIdCopy ear_toString];
     goto LABEL_12;
   }
 
@@ -237,7 +237,7 @@ LABEL_11:
   __p[1] = 0;
   v24 = 0;
 LABEL_12:
-  (*(*ptr + 24))(ptr, v15, v31, v29, v27, v25, __p, a9, a10);
+  (*(*ptr + 24))(ptr, v15, v31, v29, v27, v25, __p, field, speech);
   if (SHIBYTE(v24) < 0)
   {
     operator delete(__p[0]);
@@ -264,11 +264,11 @@ LABEL_12:
   }
 }
 
-- (id)getSpeechRecognitionResultFromTokens:()vector<std:(std:(id)a4 :allocator<std::vector<quasar::Token>>> *)a3 :vector<quasar::Token> taskName:
+- (id)getSpeechRecognitionResultFromTokens:()vector<std:(std:(id)std :allocator<std::vector<quasar::Token>>> *)a3 :vector<quasar::Token> taskName:
 {
-  v6 = a4;
+  stdCopy = std;
   v7 = self->_formatter;
-  v33 = v6;
+  v33 = stdCopy;
   memset(v44, 0, sizeof(v44));
   memset(v43, 0, sizeof(v43));
   begin = a3->__begin_;
@@ -360,21 +360,21 @@ LABEL_12:
   std::vector<std::vector<quasar::Token>>::__destroy_vector::operator()[abi:ne200100](__p);
 
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v20 = [v19 recognition];
-  v21 = [v20 nBest];
+  recognition = [v19 recognition];
+  nBest = [recognition nBest];
 
-  v22 = [v19 preITNRecognition];
-  v23 = [v22 nBest];
+  preITNRecognition = [v19 preITNRecognition];
+  nBest2 = [preITNRecognition nBest];
 
-  v24 = [v21 count];
-  if (v24 >= [v23 count])
+  v24 = [nBest count];
+  if (v24 >= [nBest2 count])
   {
-    v25 = v23;
+    v25 = nBest2;
   }
 
   else
   {
-    v25 = v21;
+    v25 = nBest;
   }
 
   v26 = [v25 count];
@@ -383,9 +383,9 @@ LABEL_12:
     for (i = 0; i != v26; ++i)
     {
       v28 = [_EARSpeechRecognitionResult alloc];
-      v29 = [v21 objectAtIndex:i];
+      v29 = [nBest objectAtIndex:i];
       EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(v29, v36);
-      v30 = [v23 objectAtIndex:i];
+      v30 = [nBest2 objectAtIndex:i];
       EARHelpers::QuasarResultFromEARSpeechRecognitionTokens(v30, v35);
       v31 = [(_EARSpeechRecognitionResult *)v28 _initWithTokens:v36 preITNTokens:v35];
       __p[0] = v35;
@@ -401,11 +401,11 @@ LABEL_12:
   return v34;
 }
 
-- (id)resultsWithAddedAudio:(id)a3 numberOfSamples:(unint64_t)a4 taskName:(id)a5
+- (id)resultsWithAddedAudio:(id)audio numberOfSamples:(unint64_t)samples taskName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
-  [v7 bytes];
+  audioCopy = audio;
+  nameCopy = name;
+  [audioCopy bytes];
   (*(*self->_syncRecognizer.__ptr_ + 32))(&v12);
   v15 = 0;
   v16 = 0;
@@ -418,7 +418,7 @@ LABEL_12:
 
   memset(v11, 0, sizeof(v11));
   std::vector<std::vector<quasar::Token>>::__init_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(v11, v14, v15, 0xAAAAAAAAAAAAAAABLL * ((v15 - v14) >> 3));
-  v9 = [(_EARSyncSpeechRecognizer *)self getSpeechRecognitionResultFromTokens:v11 taskName:v8];
+  v9 = [(_EARSyncSpeechRecognizer *)self getSpeechRecognitionResultFromTokens:v11 taskName:nameCopy];
   v12 = v11;
   std::vector<std::vector<quasar::Token>>::__destroy_vector::operator()[abi:ne200100](&v12);
   v12 = &v14;
@@ -427,16 +427,16 @@ LABEL_12:
   return v9;
 }
 
-- (id)resultsWithAddedFloatAudio:(id)a3 numberOfSamples:(unint64_t)a4 taskName:(id)a5
+- (id)resultsWithAddedFloatAudio:(id)audio numberOfSamples:(unint64_t)samples taskName:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  audioCopy = audio;
+  nameCopy = name;
   v17 = 0;
   v18 = 0;
   v19 = 0;
-  if ([v8 length] >= 4 * a4)
+  if ([audioCopy length] >= 4 * samples)
   {
-    [v8 bytes];
+    [audioCopy bytes];
     (*(*self->_syncRecognizer.__ptr_ + 48))(&v15);
     if (&v17 != v15)
     {
@@ -460,7 +460,7 @@ LABEL_12:
 
   memset(v14, 0, sizeof(v14));
   std::vector<std::vector<quasar::Token>>::__init_with_size[abi:ne200100]<std::vector<quasar::Token>*,std::vector<quasar::Token>*>(v14, v11, v10, 0xAAAAAAAAAAAAAAABLL * ((v10 - v11) >> 3));
-  v12 = [(_EARSyncSpeechRecognizer *)self getSpeechRecognitionResultFromTokens:v14 taskName:v9];
+  v12 = [(_EARSyncSpeechRecognizer *)self getSpeechRecognitionResultFromTokens:v14 taskName:nameCopy];
   v15 = v14;
   std::vector<std::vector<quasar::Token>>::__destroy_vector::operator()[abi:ne200100](&v15);
   v15 = &v17;

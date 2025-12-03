@@ -1,11 +1,11 @@
 @interface EDMessageTransformer
 + (OS_os_log)log;
-+ (id)mailboxesForPersistedMessage:(id)a3 mailboxProvider:(id)a4;
-- (EDMessageTransformer)initWithMailboxProvider:(id)a3 userProfileProvider:(id)a4 blockedSenderManager:(id)a5 vipReader:(id)a6;
-- (id)_transformBaseMessage:(id)a3 messageObjectID:(id)a4 duplicateInfo:(id)a5 additionalBuilder:(id)a6;
-- (id)_transformPersistedMessage:(id)a3 mailboxScope:(id)a4 duplicateInfo:(id)a5 additionalBuilder:(id)a6;
-- (id)transformBaseMessage:(id)a3 mailboxScope:(id)a4 loaderBlock:(id)a5;
-- (id)transformPersistedMessages:(id)a3 mailboxScope:(id)a4;
++ (id)mailboxesForPersistedMessage:(id)message mailboxProvider:(id)provider;
+- (EDMessageTransformer)initWithMailboxProvider:(id)provider userProfileProvider:(id)profileProvider blockedSenderManager:(id)manager vipReader:(id)reader;
+- (id)_transformBaseMessage:(id)message messageObjectID:(id)d duplicateInfo:(id)info additionalBuilder:(id)builder;
+- (id)_transformPersistedMessage:(id)message mailboxScope:(id)scope duplicateInfo:(id)info additionalBuilder:(id)builder;
+- (id)transformBaseMessage:(id)message mailboxScope:(id)scope loaderBlock:(id)block;
+- (id)transformPersistedMessages:(id)messages mailboxScope:(id)scope;
 @end
 
 @implementation EDMessageTransformer
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __27__EDMessageTransformer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_68 != -1)
   {
     dispatch_once(&log_onceToken_68, block);
@@ -35,67 +35,67 @@ void __27__EDMessageTransformer_log__block_invoke(uint64_t a1)
   log_log_68 = v1;
 }
 
-- (EDMessageTransformer)initWithMailboxProvider:(id)a3 userProfileProvider:(id)a4 blockedSenderManager:(id)a5 vipReader:(id)a6
+- (EDMessageTransformer)initWithMailboxProvider:(id)provider userProfileProvider:(id)profileProvider blockedSenderManager:(id)manager vipReader:(id)reader
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  profileProviderCopy = profileProvider;
+  managerCopy = manager;
+  readerCopy = reader;
   v18.receiver = self;
   v18.super_class = EDMessageTransformer;
   v15 = [(EDMessageTransformer *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_mailboxProvider, a3);
-    objc_storeStrong(&v16->_userProfileProvider, a4);
-    objc_storeStrong(&v16->_blockedSenderManager, a5);
-    objc_storeStrong(&v16->_vipReader, a6);
+    objc_storeStrong(&v15->_mailboxProvider, provider);
+    objc_storeStrong(&v16->_userProfileProvider, profileProvider);
+    objc_storeStrong(&v16->_blockedSenderManager, manager);
+    objc_storeStrong(&v16->_vipReader, reader);
   }
 
   return v16;
 }
 
-- (id)transformBaseMessage:(id)a3 mailboxScope:(id)a4 loaderBlock:(id)a5
+- (id)transformBaseMessage:(id)message mailboxScope:(id)scope loaderBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  scopeCopy = scope;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__EDMessageTransformer_transformBaseMessage_mailboxScope_loaderBlock___block_invoke;
   aBlock[3] = &unk_1E8255A28;
-  v11 = v10;
+  v11 = blockCopy;
   v18 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [v8 persistentID];
+  persistentID = [messageCopy persistentID];
 
-  if (v13)
+  if (persistentID)
   {
-    v14 = [(EDMessageTransformer *)self _transformPersistedMessage:v8 mailboxScope:v9 duplicateInfo:0 additionalBuilder:v12];
+    v14 = [(EDMessageTransformer *)self _transformPersistedMessage:messageCopy mailboxScope:scopeCopy duplicateInfo:0 additionalBuilder:v12];
   }
 
   else
   {
     v15 = objc_alloc_init(MEMORY[0x1E699ADA8]);
-    v14 = [(EDMessageTransformer *)self _transformBaseMessage:v8 messageObjectID:v15 duplicateInfo:0 additionalBuilder:v12];
+    v14 = [(EDMessageTransformer *)self _transformBaseMessage:messageCopy messageObjectID:v15 duplicateInfo:0 additionalBuilder:v12];
   }
 
   return v14;
 }
 
-- (id)transformPersistedMessages:(id)a3 mailboxScope:(id)a4
+- (id)transformPersistedMessages:(id)messages mailboxScope:(id)scope
 {
   v34 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v22 = a4;
+  messagesCopy = messages;
+  scopeCopy = scope;
   v26 = objc_opt_new();
   v24 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v23;
+  obj = messagesCopy;
   v6 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v6)
   {
@@ -111,8 +111,8 @@ void __27__EDMessageTransformer_log__block_invoke(uint64_t a1)
 
         v9 = *(*(&v29 + 1) + 8 * i);
         v10 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v9, "globalMessageID")}];
-        v11 = [(EDMessageTransformer *)self mailboxProvider];
-        v12 = [EDMessageTransformer mailboxesForPersistedMessage:v9 mailboxProvider:v11];
+        mailboxProvider = [(EDMessageTransformer *)self mailboxProvider];
+        v12 = [EDMessageTransformer mailboxesForPersistedMessage:v9 mailboxProvider:mailboxProvider];
         v13 = [v12 count];
 
         if (v13)
@@ -127,8 +127,8 @@ void __27__EDMessageTransformer_log__block_invoke(uint64_t a1)
           else
           {
             v16 = [_EDMessageDuplicateInfo alloc];
-            v17 = [(EDMessageTransformer *)self mailboxProvider];
-            v15 = [(_EDMessageDuplicateInfo *)v16 initWithMailboxProvider:v17];
+            mailboxProvider2 = [(EDMessageTransformer *)self mailboxProvider];
+            v15 = [(_EDMessageDuplicateInfo *)v16 initWithMailboxProvider:mailboxProvider2];
 
             [(_EDMessageDuplicateInfo *)v15 addMessage:v9];
             [v26 setObject:v15 forKeyedSubscript:v10];
@@ -148,7 +148,7 @@ void __27__EDMessageTransformer_log__block_invoke(uint64_t a1)
   v27[2] = __64__EDMessageTransformer_transformPersistedMessages_mailboxScope___block_invoke;
   v27[3] = &unk_1E8255A50;
   v27[4] = self;
-  v18 = v22;
+  v18 = scopeCopy;
   v28 = v18;
   v19 = [v24 ef_compactMap:v27];
 
@@ -189,65 +189,65 @@ id __64__EDMessageTransformer_transformPersistedMessages_mailboxScope___block_in
   return v7;
 }
 
-- (id)_transformPersistedMessage:(id)a3 mailboxScope:(id)a4 duplicateInfo:(id)a5 additionalBuilder:(id)a6
+- (id)_transformPersistedMessage:(id)message mailboxScope:(id)scope duplicateInfo:(id)info additionalBuilder:(id)builder
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v33 = v12;
-  v14 = [v12 combinedMailboxes];
-  if (!v14)
+  messageCopy = message;
+  scopeCopy = scope;
+  infoCopy = info;
+  builderCopy = builder;
+  v33 = infoCopy;
+  combinedMailboxes = [infoCopy combinedMailboxes];
+  if (!combinedMailboxes)
   {
-    v15 = [(EDMessageTransformer *)self mailboxProvider];
-    v14 = [EDMessageTransformer mailboxesForPersistedMessage:v10 mailboxProvider:v15];
+    mailboxProvider = [(EDMessageTransformer *)self mailboxProvider];
+    combinedMailboxes = [EDMessageTransformer mailboxesForPersistedMessage:messageCopy mailboxProvider:mailboxProvider];
   }
 
-  v34 = v14;
-  if (![v14 count])
+  v34 = combinedMailboxes;
+  if (![combinedMailboxes count])
   {
     v16 = +[EDMessageTransformer log];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [v10 persistentID];
+      [messageCopy persistentID];
       objc_claimAutoreleasedReturnValue();
       [EDMessageTransformer _transformPersistedMessage:mailboxScope:duplicateInfo:additionalBuilder:];
     }
   }
 
-  v17 = [MEMORY[0x1E699AD28] noMailboxesScope];
-  v18 = v17 == v11;
+  noMailboxesScope = [MEMORY[0x1E699AD28] noMailboxesScope];
+  v18 = noMailboxesScope == scopeCopy;
 
   if (v18)
   {
     v19 = MEMORY[0x1E699AD28];
-    v20 = [v14 ef_mapSelector:sel_objectID];
+    v20 = [combinedMailboxes ef_mapSelector:sel_objectID];
     v21 = [v19 mailboxScopeForMailboxObjectIDs:v20 forExclusion:0];
 
-    v11 = v21;
+    scopeCopy = v21;
   }
 
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __96__EDMessageTransformer__transformPersistedMessage_mailboxScope_duplicateInfo_additionalBuilder___block_invoke;
   v41[3] = &unk_1E8253370;
-  v22 = v11;
+  v22 = scopeCopy;
   v42 = v22;
-  v23 = [v14 ef_filter:v41];
-  v24 = +[EDConversationPersistence conversationNotificationLevelForConversationFlags:](EDConversationPersistence, "conversationNotificationLevelForConversationFlags:", [v10 conversationFlags]);
-  v25 = [objc_alloc(MEMORY[0x1E699ADA8]) initWithGlobalMessageID:objc_msgSend(v10 mailboxScope:{"globalMessageID"), v22}];
+  v23 = [combinedMailboxes ef_filter:v41];
+  v24 = +[EDConversationPersistence conversationNotificationLevelForConversationFlags:](EDConversationPersistence, "conversationNotificationLevelForConversationFlags:", [messageCopy conversationFlags]);
+  v25 = [objc_alloc(MEMORY[0x1E699ADA8]) initWithGlobalMessageID:objc_msgSend(messageCopy mailboxScope:{"globalMessageID"), v22}];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __96__EDMessageTransformer__transformPersistedMessage_mailboxScope_duplicateInfo_additionalBuilder___block_invoke_2;
   v35[3] = &unk_1E8255A78;
-  v26 = v10;
+  v26 = messageCopy;
   v36 = v26;
   v37 = v25;
   v27 = v23;
   v38 = v27;
   v40 = v24;
-  v28 = v13;
+  v28 = builderCopy;
   v39 = v28;
   v29 = v25;
   v30 = [(EDMessageTransformer *)self _transformBaseMessage:v26 messageObjectID:v29 duplicateInfo:v33 additionalBuilder:v35];
@@ -323,25 +323,25 @@ void __96__EDMessageTransformer__transformPersistedMessage_mailboxScope_duplicat
   }
 }
 
-- (id)_transformBaseMessage:(id)a3 messageObjectID:(id)a4 duplicateInfo:(id)a5 additionalBuilder:(id)a6
+- (id)_transformBaseMessage:(id)message messageObjectID:(id)d duplicateInfo:(id)info additionalBuilder:(id)builder
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  dCopy = d;
+  infoCopy = info;
+  builderCopy = builder;
   v14 = objc_alloc(MEMORY[0x1E699AD30]);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __94__EDMessageTransformer__transformBaseMessage_messageObjectID_duplicateInfo_additionalBuilder___block_invoke;
   v20[3] = &unk_1E8255AA0;
-  v15 = v12;
+  v15 = infoCopy;
   v21 = v15;
-  v16 = v10;
+  v16 = messageCopy;
   v22 = v16;
-  v23 = self;
-  v17 = v13;
+  selfCopy = self;
+  v17 = builderCopy;
   v24 = v17;
-  v18 = [v14 initWithObjectID:v11 builder:v20];
+  v18 = [v14 initWithObjectID:dCopy builder:v20];
 
   return v18;
 }
@@ -491,41 +491,41 @@ LABEL_34:
 LABEL_35:
 }
 
-+ (id)mailboxesForPersistedMessage:(id)a3 mailboxProvider:(id)a4
++ (id)mailboxesForPersistedMessage:(id)message mailboxProvider:(id)provider
 {
   v23[6] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 labels];
-  v8 = [v7 count];
+  messageCopy = message;
+  providerCopy = provider;
+  labels = [messageCopy labels];
+  v8 = [labels count];
 
   if (v8)
   {
-    v9 = [v5 labels];
-    v10 = [v9 ef_compactMap:&__block_literal_global_73_0];
-    v11 = [v10 allObjects];
+    labels2 = [messageCopy labels];
+    v10 = [labels2 ef_compactMap:&__block_literal_global_73_0];
+    allObjects = [v10 allObjects];
   }
 
   else
   {
-    v12 = [v5 mailbox];
-    if (!v12)
+    mailbox = [messageCopy mailbox];
+    if (!mailbox)
     {
       v13 = +[EDMessageTransformer log];
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [v5 persistentID];
+        [messageCopy persistentID];
         objc_claimAutoreleasedReturnValue();
         +[EDMessageTransformer mailboxesForPersistedMessage:mailboxProvider:];
       }
     }
 
-    v14 = [v12 URL];
+    v14 = [mailbox URL];
     v15 = v14;
     if (v14)
     {
       v23[0] = v14;
-      v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
+      allObjects = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     }
 
     else
@@ -533,12 +533,12 @@ LABEL_35:
       v16 = +[EDMessageTransformer log];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [v5 persistentID];
+        [messageCopy persistentID];
         objc_claimAutoreleasedReturnValue();
         +[EDMessageTransformer mailboxesForPersistedMessage:mailboxProvider:];
       }
 
-      v11 = MEMORY[0x1E695E0F0];
+      allObjects = MEMORY[0x1E695E0F0];
     }
   }
 
@@ -546,9 +546,9 @@ LABEL_35:
   v21[1] = 3221225472;
   v21[2] = __69__EDMessageTransformer_mailboxesForPersistedMessage_mailboxProvider___block_invoke_75;
   v21[3] = &unk_1E8255AE8;
-  v17 = v6;
+  v17 = providerCopy;
   v22 = v17;
-  v18 = [v11 ef_compactMap:v21];
+  v18 = [allObjects ef_compactMap:v21];
 
   v19 = *MEMORY[0x1E69E9840];
 

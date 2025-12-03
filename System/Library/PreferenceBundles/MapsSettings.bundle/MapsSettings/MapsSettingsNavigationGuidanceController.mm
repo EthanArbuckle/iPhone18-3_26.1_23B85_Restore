@@ -1,12 +1,12 @@
 @interface MapsSettingsNavigationGuidanceController
-- (id)_pauseSpokenAudio:(id)a3;
-- (id)_specifierIDForVoiceVolume:(id)a3;
-- (id)_useHFP:(id)a3;
+- (id)_pauseSpokenAudio:(id)audio;
+- (id)_specifierIDForVoiceVolume:(id)volume;
+- (id)_useHFP:(id)p;
 - (id)specifiers;
-- (void)_setPauseSpokenAudio:(id)a3 specifier:(id)a4;
-- (void)_setUseHFP:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_setPauseSpokenAudio:(id)audio specifier:(id)specifier;
+- (void)_setUseHFP:(id)p specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -23,11 +23,11 @@
   [(MapsSettingsNavigationGuidanceController *)self setTitle:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = MapsSettingsNavigationGuidanceController;
-  [(MapsSettingsNavigationGuidanceController *)&v9 viewDidAppear:a3];
+  [(MapsSettingsNavigationGuidanceController *)&v9 viewDidAppear:appear];
   v4 = MapsSettingsSpokenDirectionsTitle();
   v5 = AppsSettingsTitle();
   v10[0] = v5;
@@ -98,7 +98,7 @@
     sub_3B5AC();
   }
 
-  v26 = [qword_96D00 path];
+  path = [qword_96D00 path];
   v27 = _CFPreferencesCopyAppValueWithContainer();
 
   if (v27)
@@ -162,7 +162,7 @@
     sub_3B5AC();
   }
 
-  v45 = [qword_96D00 path];
+  path2 = [qword_96D00 path];
   v46 = _CFPreferencesCopyAppValueWithContainer();
 
   if (v46)
@@ -177,15 +177,15 @@
     [v47 homeDirectory];
     _CFPreferencesSetValueWithContainer();
 
-    v48 = [v46 BOOLValue];
+    bOOLValue = [v46 BOOLValue];
   }
 
   else
   {
-    v48 = GEOConfigGetBOOL();
+    bOOLValue = GEOConfigGetBOOL();
   }
 
-  v49 = v48;
+  v49 = bOOLValue;
 
   v50 = [NSNumber numberWithBool:v49];
   [v44 setProperty:v50 forKey:v64];
@@ -204,15 +204,15 @@
   return v63;
 }
 
-- (id)_useHFP:(id)a3
+- (id)_useHFP:(id)p
 {
-  v3 = a3;
+  pCopy = p;
   if (qword_96D08 != -1)
   {
     sub_3B5AC();
   }
 
-  v4 = [qword_96D00 path];
+  path = [qword_96D00 path];
   v5 = _CFPreferencesCopyAppValueWithContainer();
 
   if (v5)
@@ -242,22 +242,22 @@
   return v9;
 }
 
-- (void)_setUseHFP:(id)a3 specifier:(id)a4
+- (void)_setUseHFP:(id)p specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [p BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (id)_pauseSpokenAudio:(id)a3
+- (id)_pauseSpokenAudio:(id)audio
 {
-  v3 = a3;
+  audioCopy = audio;
   if (qword_96D08 != -1)
   {
     sub_3B5AC();
   }
 
-  v4 = [qword_96D00 path];
+  path = [qword_96D00 path];
   v5 = _CFPreferencesCopyAppValueWithContainer();
 
   if (v5)
@@ -287,23 +287,23 @@
   return v9;
 }
 
-- (void)_setPauseSpokenAudio:(id)a3 specifier:(id)a4
+- (void)_setPauseSpokenAudio:(id)audio specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [audio BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (id)_specifierIDForVoiceVolume:(id)a3
+- (id)_specifierIDForVoiceVolume:(id)volume
 {
-  v3 = [a3 integerValue];
+  integerValue = [volume integerValue];
   v4 = @"NavigationVoiceVolumeNormalID";
-  if (v3 == &dword_0 + 2)
+  if (integerValue == &dword_0 + 2)
   {
     v4 = @"NavigationVoiceVolumeLoudID";
   }
 
-  if (v3)
+  if (integerValue)
   {
     return v4;
   }
@@ -314,19 +314,19 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = MapsSettingsNavigationGuidanceController;
-  [(MapsSettingsNavigationGuidanceController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(MapsSettingsNavigationGuidanceController *)self indexForIndexPath:v6];
+  [(MapsSettingsNavigationGuidanceController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(MapsSettingsNavigationGuidanceController *)self indexForIndexPath:pathCopy];
   v8 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndexedSubscript:v7];
   v9 = [v8 propertyForKey:PSValueKey];
   if ([*(&self->super + 1) containsObject:v8])
   {
     [MapsSettings setValue:v9 forDefaultsKey:@"NavVolumeSettingSpokenVoiceVolume" bundleID:0 syncToNano:0];
-    [v6 row];
+    [pathCopy row];
     GEOConfigSetInteger();
   }
 }

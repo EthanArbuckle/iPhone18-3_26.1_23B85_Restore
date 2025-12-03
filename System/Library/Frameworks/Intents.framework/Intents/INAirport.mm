@@ -1,13 +1,13 @@
 @interface INAirport
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INAirport)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INAirport)initWithCoder:(id)coder;
 - (INAirport)initWithName:(NSString *)name iataCode:(NSString *)iataCode icaoCode:(NSString *)icaoCode;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INAirport
@@ -17,31 +17,31 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"name";
   name = self->_name;
-  v4 = name;
+  null = name;
   if (!name)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"iataCode";
   iataCode = self->_iataCode;
-  v6 = iataCode;
+  null2 = iataCode;
   if (!iataCode)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"icaoCode";
   icaoCode = self->_icaoCode;
-  v8 = icaoCode;
+  null3 = icaoCode;
   if (!icaoCode)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (icaoCode)
   {
@@ -79,72 +79,72 @@ LABEL_10:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INAirport;
   v6 = [(INAirport *)&v11 description];
-  v7 = [(INAirport *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INAirport *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_name];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"name"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_name];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"name"];
 
-  v9 = [v6 encodeObject:self->_iataCode];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"iataCode"];
+  v9 = [encoderCopy encodeObject:self->_iataCode];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"iataCode"];
 
-  v10 = [v6 encodeObject:self->_icaoCode];
+  v10 = [encoderCopy encodeObject:self->_icaoCode];
 
-  [v7 if_setObjectIfNonNil:v10 forKey:@"icaoCode"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"icaoCode"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_iataCode forKey:@"iataCode"];
-  [v5 encodeObject:self->_icaoCode forKey:@"icaoCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_iataCode forKey:@"iataCode"];
+  [coderCopy encodeObject:self->_icaoCode forKey:@"icaoCode"];
 }
 
-- (INAirport)initWithCoder:(id)a3
+- (INAirport)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"name"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"name"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"iataCode"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"iataCode"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v5 decodeObjectOfClasses:v15 forKey:@"icaoCode"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"icaoCode"];
 
   v17 = [(INAirport *)self initWithName:v8 iataCode:v12 icaoCode:v16];
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -154,7 +154,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       name = self->_name;
       v9 = 0;
       if (name == v5->_name || [(NSString *)name isEqual:?])
@@ -213,16 +213,16 @@ LABEL_10:
   return v11;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v6 = a5;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"name"];
-    v8 = [v6 objectForKeyedSubscript:@"iataCode"];
-    v9 = [v6 objectForKeyedSubscript:@"icaoCode"];
-    v10 = [[a1 alloc] initWithName:v7 iataCode:v8 icaoCode:v9];
+    v7 = [fromCopy objectForKeyedSubscript:@"name"];
+    v8 = [fromCopy objectForKeyedSubscript:@"iataCode"];
+    v9 = [fromCopy objectForKeyedSubscript:@"icaoCode"];
+    v10 = [[self alloc] initWithName:v7 iataCode:v8 icaoCode:v9];
   }
 
   else

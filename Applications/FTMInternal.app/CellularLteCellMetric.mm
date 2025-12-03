@@ -1,25 +1,25 @@
 @interface CellularLteCellMetric
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLteMetrics:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationSeconds:(BOOL)a3;
-- (void)setHasMcc:(BOOL)a3;
-- (void)setHasMnc:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLteMetrics:(id)metrics;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationSeconds:(BOOL)seconds;
+- (void)setHasMcc:(BOOL)mcc;
+- (void)setHasMnc:(BOOL)mnc;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLteCellMetric
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasDurationSeconds:(BOOL)a3
+- (void)setHasDurationSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMcc:(BOOL)a3
+- (void)setHasMcc:(BOOL)mcc
 {
-  if (a3)
+  if (mcc)
   {
     v3 = 4;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMnc:(BOOL)a3
+- (void)setHasMnc:(BOOL)mnc
 {
-  if (a3)
+  if (mnc)
   {
     v3 = 8;
   }
@@ -92,22 +92,22 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addLteMetrics:(id)a3
+- (void)addLteMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   lteMetrics = self->_lteMetrics;
-  v8 = v4;
+  v8 = metricsCopy;
   if (!lteMetrics)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_lteMetrics;
     self->_lteMetrics = v6;
 
-    v4 = v8;
+    metricsCopy = v8;
     lteMetrics = self->_lteMetrics;
   }
 
-  [(NSMutableArray *)lteMetrics addObject:v4];
+  [(NSMutableArray *)lteMetrics addObject:metricsCopy];
 }
 
 - (id)description
@@ -115,8 +115,8 @@
   v7.receiver = self;
   v7.super_class = CellularLteCellMetric;
   v3 = [(CellularLteCellMetric *)&v7 description];
-  v4 = [(CellularLteCellMetric *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLteCellMetric *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -213,8 +213,8 @@ LABEL_7:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -235,9 +235,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -337,14 +337,14 @@ LABEL_7:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -363,8 +363,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 10) = self->_version;
-  *(v4 + 48) |= 0x10u;
+  *(toCopy + 10) = self->_version;
+  *(toCopy + 48) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -378,8 +378,8 @@ LABEL_4:
   }
 
 LABEL_17:
-  *(v4 + 4) = self->_durationSeconds;
-  *(v4 + 48) |= 2u;
+  *(toCopy + 4) = self->_durationSeconds;
+  *(toCopy + 48) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -390,8 +390,8 @@ LABEL_5:
     }
 
 LABEL_19:
-    *(v4 + 9) = self->_mnc;
-    *(v4 + 48) |= 8u;
+    *(toCopy + 9) = self->_mnc;
+    *(toCopy + 48) |= 8u;
     if ((*&self->_has & 0x20) == 0)
     {
       goto LABEL_8;
@@ -401,8 +401,8 @@ LABEL_19:
   }
 
 LABEL_18:
-  *(v4 + 8) = self->_mcc;
-  *(v4 + 48) |= 4u;
+  *(toCopy + 8) = self->_mcc;
+  *(toCopy + 48) |= 4u;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -413,19 +413,19 @@ LABEL_6:
   if ((has & 0x20) != 0)
   {
 LABEL_7:
-    *(v4 + 11) = self->_subsId;
-    *(v4 + 48) |= 0x20u;
+    *(toCopy + 11) = self->_subsId;
+    *(toCopy + 48) |= 0x20u;
   }
 
 LABEL_8:
-  v10 = v4;
+  v10 = toCopy;
   if ([(CellularLteCellMetric *)self lteMetricsCount])
   {
     [v10 clearLteMetrics];
-    v6 = [(CellularLteCellMetric *)self lteMetricsCount];
-    if (v6)
+    lteMetricsCount = [(CellularLteCellMetric *)self lteMetricsCount];
+    if (lteMetricsCount)
     {
-      v7 = v6;
+      v7 = lteMetricsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularLteCellMetric *)self lteMetricsAtIndex:i];
@@ -435,9 +435,9 @@ LABEL_8:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -536,7 +536,7 @@ LABEL_8:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v6 addLteMetrics:v13];
       }
 
@@ -549,24 +549,24 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_34:
     v7 = 0;
@@ -575,71 +575,71 @@ LABEL_34:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 48) & 0x10) == 0 || self->_version != *(v4 + 10))
+    if ((*(equalCopy + 48) & 0x10) == 0 || self->_version != *(equalCopy + 10))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 48) & 0x10) != 0)
+  else if ((*(equalCopy + 48) & 0x10) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_durationSeconds != *(v4 + 4))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_durationSeconds != *(equalCopy + 4))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_mcc != *(v4 + 8))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_mcc != *(equalCopy + 8))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_mnc != *(v4 + 9))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_mnc != *(equalCopy + 9))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 48) & 0x20) == 0 || self->_subsId != *(v4 + 11))
+    if ((*(equalCopy + 48) & 0x20) == 0 || self->_subsId != *(equalCopy + 11))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 48) & 0x20) != 0)
+  else if ((*(equalCopy + 48) & 0x20) != 0)
   {
     goto LABEL_34;
   }
 
   lteMetrics = self->_lteMetrics;
-  if (lteMetrics | *(v4 + 3))
+  if (lteMetrics | *(equalCopy + 3))
   {
     v7 = [(NSMutableArray *)lteMetrics isEqual:?];
   }
@@ -736,16 +736,16 @@ LABEL_7:
   return v7 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSMutableArray *)self->_lteMetrics hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 48);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 48);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
     if ((v6 & 0x10) == 0)
     {
 LABEL_3:
@@ -758,14 +758,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 0x10) == 0)
+  else if ((*(fromCopy + 48) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_version = *(v4 + 10);
+  self->_version = *(fromCopy + 10);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 48);
+  v6 = *(fromCopy + 48);
   if ((v6 & 2) == 0)
   {
 LABEL_4:
@@ -778,9 +778,9 @@ LABEL_4:
   }
 
 LABEL_18:
-  self->_durationSeconds = *(v4 + 4);
+  self->_durationSeconds = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v6 = *(v4 + 48);
+  v6 = *(fromCopy + 48);
   if ((v6 & 4) == 0)
   {
 LABEL_5:
@@ -793,9 +793,9 @@ LABEL_5:
   }
 
 LABEL_19:
-  self->_mcc = *(v4 + 8);
+  self->_mcc = *(fromCopy + 8);
   *&self->_has |= 4u;
-  v6 = *(v4 + 48);
+  v6 = *(fromCopy + 48);
   if ((v6 & 8) == 0)
   {
 LABEL_6:
@@ -808,12 +808,12 @@ LABEL_6:
   }
 
 LABEL_20:
-  self->_mnc = *(v4 + 9);
+  self->_mnc = *(fromCopy + 9);
   *&self->_has |= 8u;
-  if ((*(v4 + 48) & 0x20) != 0)
+  if ((*(fromCopy + 48) & 0x20) != 0)
   {
 LABEL_7:
-    self->_subsId = *(v4 + 11);
+    self->_subsId = *(fromCopy + 11);
     *&self->_has |= 0x20u;
   }
 
@@ -822,7 +822,7 @@ LABEL_8:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

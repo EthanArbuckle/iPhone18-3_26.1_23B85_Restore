@@ -7,12 +7,12 @@
 - (void)_gkInGameUIUnavailableAlertWithRestrictionMode:()GKRestrictionAlerts dismissHandler:
 {
   v6 = a4;
-  v7 = [MEMORY[0x277D0C138] localPlayer];
-  v8 = [MEMORY[0x277D0C1D8] shared];
-  v9 = [MEMORY[0x277D0C1D8] shared];
-  v10 = [v9 multiplayerAllowedPlayerType];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  mEMORY[0x277D0C1D8]2 = [MEMORY[0x277D0C1D8] shared];
+  multiplayerAllowedPlayerType = [mEMORY[0x277D0C1D8]2 multiplayerAllowedPlayerType];
 
-  if (![v8 isGameCenterRestricted] && !objc_msgSend(v8, "lockedDown") && (a3 != 2 || v10) && (a3 == 3 || (objc_msgSend(v7, "isAuthenticated") & 1) != 0))
+  if (![mEMORY[0x277D0C1D8] isGameCenterRestricted] && !objc_msgSend(mEMORY[0x277D0C1D8], "lockedDown") && (a3 != 2 || multiplayerAllowedPlayerType) && (a3 == 3 || (objc_msgSend(localPlayer, "isAuthenticated") & 1) != 0))
   {
     v12 = 0;
     v14 = 0;
@@ -35,10 +35,10 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a1 setNavigationBarHidden:1];
+    [self setNavigationBarHidden:1];
   }
 
-  [a1 setModalPresentationStyle:17];
+  [self setModalPresentationStyle:17];
   v15 = [MEMORY[0x277D75110] alertControllerWithTitle:v12 message:v14 preferredStyle:1];
   [v15 setModalPresentationStyle:17];
   v16 = MEMORY[0x277D750F8];

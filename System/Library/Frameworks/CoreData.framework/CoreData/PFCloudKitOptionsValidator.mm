@@ -1,5 +1,5 @@
 @interface PFCloudKitOptionsValidator
-- (BOOL)validateOptions:(void *)a3 andStoreOptions:(uint64_t *)a4 error:;
+- (BOOL)validateOptions:(void *)options andStoreOptions:(uint64_t *)storeOptions error:;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
   [(PFCloudKitOptionsValidator *)&v3 dealloc];
 }
 
-- (BOOL)validateOptions:(void *)a3 andStoreOptions:(uint64_t *)a4 error:
+- (BOOL)validateOptions:(void *)options andStoreOptions:(uint64_t *)storeOptions error:
 {
   v78[1] = *MEMORY[0x1E69E9840];
   if (!result)
@@ -72,13 +72,13 @@
     v69 = 2112;
     v70 = a2;
     v71 = 2112;
-    v72 = a3;
+    optionsCopy = options;
     _os_log_impl(&dword_18565F000, v9, v12, "CoreData+CloudKit: %s(%d): Validating options: %@\nstoreOptions: %@", buf, 0x26u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = [a2 containerIdentifier];
-  if (!v13)
+  containerIdentifier = [a2 containerIdentifier];
+  if (!containerIdentifier)
   {
     v27 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A250];
@@ -90,8 +90,8 @@
     goto LABEL_33;
   }
 
-  v14 = v13;
-  if (![v13 isNSString])
+  v14 = containerIdentifier;
+  if (![containerIdentifier isNSString])
   {
     v27 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A250];
@@ -144,7 +144,7 @@ LABEL_33:
     goto LABEL_58;
   }
 
-  if (![a3 objectForKey:@"NSPersistentHistoryTrackingKey"])
+  if (![options objectForKey:@"NSPersistentHistoryTrackingKey"])
   {
     v40 = MEMORY[0x1E696ABC0];
     v41 = *MEMORY[0x1E696A250];
@@ -179,10 +179,10 @@ LABEL_33:
     goto LABEL_58;
   }
 
-  v15 = [a2 containerOptions];
-  if (v15)
+  containerOptions = [a2 containerOptions];
+  if (containerOptions)
   {
-    v16 = v15;
+    v16 = containerOptions;
     getCloudKitCKContainerOptionsClass();
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -224,11 +224,11 @@ LABEL_33:
     }
   }
 
-  v17 = [a2 ckAssetThresholdBytes];
-  if (v17)
+  ckAssetThresholdBytes = [a2 ckAssetThresholdBytes];
+  if (ckAssetThresholdBytes)
   {
-    v18 = v17;
-    if ([v17 isNSNumber])
+    v18 = ckAssetThresholdBytes;
+    if ([ckAssetThresholdBytes isNSNumber])
     {
       if ([v18 integerValue] > 99)
       {
@@ -287,17 +287,17 @@ LABEL_33:
   }
 
 LABEL_26:
-  v19 = [a2 operationMemoryThresholdBytes];
-  if (!v19)
+  operationMemoryThresholdBytes = [a2 operationMemoryThresholdBytes];
+  if (!operationMemoryThresholdBytes)
   {
     goto LABEL_72;
   }
 
-  v20 = v19;
-  if ([v19 isNSNumber])
+  v20 = operationMemoryThresholdBytes;
+  if ([operationMemoryThresholdBytes isNSNumber])
   {
-    v21 = [&unk_1EF435E30 longLongValue];
-    if ([v20 longLongValue] < v21)
+    longLongValue = [&unk_1EF435E30 longLongValue];
+    if ([v20 longLongValue] < longLongValue)
     {
       v22 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A250];
@@ -309,8 +309,8 @@ LABEL_26:
       goto LABEL_60;
     }
 
-    v61 = [v20 longLongValue];
-    if (v61 > [objc_msgSend(a2 "ckAssetThresholdBytes")])
+    longLongValue2 = [v20 longLongValue];
+    if (longLongValue2 > [objc_msgSend(a2 "ckAssetThresholdBytes")])
     {
 LABEL_72:
       result = 1;
@@ -372,10 +372,10 @@ LABEL_58:
 LABEL_37:
   if (v34)
   {
-    if (a4)
+    if (storeOptions)
     {
       result = 0;
-      *a4 = v34;
+      *storeOptions = v34;
       goto LABEL_45;
     }
 

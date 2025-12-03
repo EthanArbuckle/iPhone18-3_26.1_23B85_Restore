@@ -1,23 +1,23 @@
 @interface SUIBTypingSessionStarted
-- (SUIBTypingSessionStarted)initWithBuilder:(id)a3;
-- (SUIBTypingSessionStarted)initWithCoder:(id)a3;
+- (SUIBTypingSessionStarted)initWithBuilder:(id)builder;
+- (SUIBTypingSessionStarted)initWithCoder:(id)coder;
 @end
 
 @implementation SUIBTypingSessionStarted
 
-- (SUIBTypingSessionStarted)initWithBuilder:(id)a3
+- (SUIBTypingSessionStarted)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v12.receiver = self;
   v12.super_class = SUIBTypingSessionStarted;
   v5 = [(SUIBTypingSessionStarted *)&v12 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = objc_alloc_init(SUIBTypingSessionStartedMutation);
-    v4[2](v4, v7);
-    v8 = [(SUIBTypingSessionStartedMutation *)v7 typingSessionId];
-    v9 = [v8 copy];
+    builderCopy[2](builderCopy, v7);
+    typingSessionId = [(SUIBTypingSessionStartedMutation *)v7 typingSessionId];
+    v9 = [typingSessionId copy];
     typingSessionId = v6->_typingSessionId;
     v6->_typingSessionId = v9;
   }
@@ -25,10 +25,10 @@
   return v6;
 }
 
-- (SUIBTypingSessionStarted)initWithCoder:(id)a3
+- (SUIBTypingSessionStarted)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SUIBTypingSessionStarted::typingSessionId"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SUIBTypingSessionStarted::typingSessionId"];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;

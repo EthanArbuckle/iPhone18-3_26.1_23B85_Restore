@@ -1,12 +1,12 @@
 @interface EKPredicateMonitor
-- (EKPredicateMonitor)initWithEventStore:(id)a3 predicate:(id)a4 filterChanges:(unint64_t)a5 options:(unint64_t)a6 queue:(id)a7 resultsBlock:(id)a8;
+- (EKPredicateMonitor)initWithEventStore:(id)store predicate:(id)predicate filterChanges:(unint64_t)changes options:(unint64_t)options queue:(id)queue resultsBlock:(id)block;
 - (void)_start;
 - (void)_validatePredicateSupportsEfficientMonitoring;
 - (void)disconnected;
-- (void)receivedBatchResultsFromServer:(id)a3 finished:(BOOL)a4;
+- (void)receivedBatchResultsFromServer:(id)server finished:(BOOL)finished;
 - (void)start;
 - (void)stop;
-- (void)updatePredicate:(id)a3 completion:(id)a4;
+- (void)updatePredicate:(id)predicate completion:(id)completion;
 @end
 
 @implementation EKPredicateMonitor
@@ -27,10 +27,10 @@
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Predicate monitor %p started multiple times", self}];
   }
 
-  v3 = [(EKEventStore *)self->_store connection];
-  self->_token = [v3 addCancellableRemoteOperation:self];
-  v4 = [(EKEventStore *)self->_store connection];
-  v5 = [v4 CADOperationProxy];
+  connection = [(EKEventStore *)self->_store connection];
+  self->_token = [connection addCancellableRemoteOperation:self];
+  connection2 = [(EKEventStore *)self->_store connection];
+  cADOperationProxy = [connection2 CADOperationProxy];
   predicate = self->_predicate;
   v7 = [EKPredicateMonitor convertPropertyFilter:self->_propertyFilter];
   v8 = [EKPredicateMonitor convertOptions:self->_options];
@@ -40,13 +40,13 @@
   v10[2] = __28__EKPredicateMonitor__start__block_invoke;
   v10[3] = &unk_1E77FFD10;
   v10[4] = self;
-  [v5 CADDatabaseMonitorResultsForPredicate:predicate propertyFilter:v7 options:v8 identifier:token reply:v10];
+  [cADOperationProxy CADDatabaseMonitorResultsForPredicate:predicate propertyFilter:v7 options:v8 identifier:token reply:v10];
 }
 
 - (void)_validatePredicateSupportsEfficientMonitoring
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_fault_impl(&dword_1A805E000, a2, OS_LOG_TYPE_FAULT, "You are using a predicate monitor with a predicate %@ that doesn't support monitoring efficiently. If you need to monitor the results of this predicate, please file a radar and request that it be supported.", &v4, 0xCu);
@@ -76,14 +76,14 @@ void __28__EKPredicateMonitor__start__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (EKPredicateMonitor)initWithEventStore:(id)a3 predicate:(id)a4 filterChanges:(unint64_t)a5 options:(unint64_t)a6 queue:(id)a7 resultsBlock:(id)a8
+- (EKPredicateMonitor)initWithEventStore:(id)store predicate:(id)predicate filterChanges:(unint64_t)changes options:(unint64_t)options queue:(id)queue resultsBlock:(id)block
 {
   v39 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  [v15 _validateEventPredicate:v16];
+  storeCopy = store;
+  predicateCopy = predicate;
+  queueCopy = queue;
+  blockCopy = block;
+  [storeCopy _validateEventPredicate:predicateCopy];
   v34.receiver = self;
   v34.super_class = EKPredicateMonitor;
   v19 = [(EKPredicateMonitor *)&v34 init];
@@ -91,13 +91,13 @@ void __28__EKPredicateMonitor__start__block_invoke(uint64_t a1, uint64_t a2)
   if (v19)
   {
     v19->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v19->_store, a3);
-    objc_storeStrong(&v20->_predicate, a4);
-    v20->_propertyFilter = a5;
-    v20->_options = a6;
-    if (v17)
+    objc_storeStrong(&v19->_store, store);
+    objc_storeStrong(&v20->_predicate, predicate);
+    v20->_propertyFilter = changes;
+    v20->_options = options;
+    if (queueCopy)
     {
-      v21 = v17;
+      v21 = queueCopy;
       queue = v20->_queue;
       v20->_queue = v21;
     }
@@ -110,7 +110,7 @@ void __28__EKPredicateMonitor__start__block_invoke(uint64_t a1, uint64_t a2)
       v20->_queue = v23;
     }
 
-    v25 = _Block_copy(v18);
+    v25 = _Block_copy(blockCopy);
     block = v20->_block;
     v20->_block = v25;
 
@@ -122,11 +122,11 @@ void __28__EKPredicateMonitor__start__block_invoke(uint64_t a1, uint64_t a2)
     {
       if (v29)
       {
-        v30 = [v16 concisePublicDescription];
+        concisePublicDescription = [predicateCopy concisePublicDescription];
         *buf = 134218242;
         v36 = v20;
         v37 = 2114;
-        v38 = v30;
+        v38 = concisePublicDescription;
         v31 = "%p Created with predicate: %{public}@";
 LABEL_10:
         _os_log_impl(&dword_1A805E000, v28, OS_LOG_TYPE_DEFAULT, v31, buf, 0x16u);
@@ -135,11 +135,11 @@ LABEL_10:
 
     else if (v29)
     {
-      v30 = [v16 predicateFormat];
+      concisePublicDescription = [predicateCopy predicateFormat];
       *buf = 134218242;
       v36 = v20;
       v37 = 2112;
-      v38 = v30;
+      v38 = concisePublicDescription;
       v31 = "%p Created with predicate: %@";
       goto LABEL_10;
     }
@@ -149,14 +149,14 @@ LABEL_10:
   return v20;
 }
 
-- (void)updatePredicate:(id)a3 completion:(id)a4
+- (void)updatePredicate:(id)predicate completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [(EKEventStore *)self->_store _validateEventPredicate:v7];
+  predicateCopy = predicate;
+  completionCopy = completion;
+  [(EKEventStore *)self->_store _validateEventPredicate:predicateCopy];
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_predicate, a3);
+  objc_storeStrong(&self->_predicate, predicate);
   v9 = (self->_predicateGeneration + 1);
   self->_predicateGeneration = v9;
   v10 = objc_opt_respondsToSelector();
@@ -169,13 +169,13 @@ LABEL_10:
       goto LABEL_7;
     }
 
-    v13 = [v7 concisePublicDescription];
+    concisePublicDescription = [predicateCopy concisePublicDescription];
     *buf = 134218498;
-    v36 = self;
+    selfCopy2 = self;
     v37 = 1024;
     v38 = v9;
     v39 = 2114;
-    v40 = v13;
+    v40 = concisePublicDescription;
     v14 = "%p Updating predicate generation %i: %{public}@";
   }
 
@@ -186,13 +186,13 @@ LABEL_10:
       goto LABEL_7;
     }
 
-    v13 = [v7 predicateFormat];
+    concisePublicDescription = [predicateCopy predicateFormat];
     *buf = 134218498;
-    v36 = self;
+    selfCopy2 = self;
     v37 = 1024;
     v38 = v9;
     v39 = 2112;
-    v40 = v13;
+    v40 = concisePublicDescription;
     v14 = "%p Updating predicate generation %i: %@";
   }
 
@@ -203,9 +203,9 @@ LABEL_7:
   aBlock[1] = 3221225472;
   aBlock[2] = __49__EKPredicateMonitor_updatePredicate_completion___block_invoke;
   aBlock[3] = &unk_1E7800598;
-  v33 = self;
+  selfCopy3 = self;
   v34 = v9;
-  v15 = v8;
+  v15 = completionCopy;
   v32 = v15;
   v16 = _Block_copy(aBlock);
   if (!self->_predicateUpdateCompletionCallbackBlocks)
@@ -220,8 +220,8 @@ LABEL_7:
   v21 = [MEMORY[0x1E696AD98] numberWithInt:v9];
   [(NSMutableDictionary *)v20 setObject:v19 forKeyedSubscript:v21];
 
-  v22 = [(EKEventStore *)self->_store connection];
-  v23 = [v22 CADOperationProxy];
+  connection = [(EKEventStore *)self->_store connection];
+  cADOperationProxy = [connection CADOperationProxy];
   predicate = self->_predicate;
   v25 = [EKPredicateMonitor convertPropertyFilter:self->_propertyFilter];
   v26 = [EKPredicateMonitor convertOptions:self->_options];
@@ -232,7 +232,7 @@ LABEL_7:
   v29[3] = &unk_1E78005C0;
   v29[4] = self;
   v30 = v9;
-  [v23 CADDatabaseMonitorUpdatePredicate:predicate propertyFilter:v25 options:v26 identifier:token generation:v9 reply:v29];
+  [cADOperationProxy CADDatabaseMonitorUpdatePredicate:predicate propertyFilter:v25 options:v26 identifier:token generation:v9 reply:v29];
 
   [(EKPredicateMonitor *)self _validatePredicateSupportsEfficientMonitoring];
   os_unfair_lock_unlock(&self->_lock);
@@ -286,11 +286,11 @@ void __49__EKPredicateMonitor_updatePredicate_completion___block_invoke_16(uint6
   token = self->_token;
   self->_token = 0;
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(EKEventStore *)self->_store connection];
-  v4 = [v5 CADOperationProxy];
-  [v4 CADDatabaseStopMonitoringPredicate:token];
+  connection = [(EKEventStore *)self->_store connection];
+  cADOperationProxy = [connection CADOperationProxy];
+  [cADOperationProxy CADDatabaseStopMonitoringPredicate:token];
 
-  [v5 removeCancellableRemoteOperation:token];
+  [connection removeCancellableRemoteOperation:token];
 }
 
 - (void)disconnected
@@ -300,15 +300,15 @@ void __49__EKPredicateMonitor_updatePredicate_completion___block_invoke_16(uint6
   {
     if (self->_options)
     {
-      v3 = [(NSMutableDictionary *)self->_predicateUpdateCompletionCallbackBlocks allValues];
+      allValues = [(NSMutableDictionary *)self->_predicateUpdateCompletionCallbackBlocks allValues];
       [(NSMutableDictionary *)self->_predicateUpdateCompletionCallbackBlocks removeAllObjects];
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __34__EKPredicateMonitor_disconnected__block_invoke;
       v5[3] = &unk_1E77FD580;
       v5[4] = self;
-      v6 = v3;
-      v4 = v3;
+      v6 = allValues;
+      v4 = allValues;
       [(EKPredicateMonitor *)self performAsyncOnQueue:v5];
     }
 
@@ -360,44 +360,44 @@ void __34__EKPredicateMonitor_disconnected__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receivedBatchResultsFromServer:(id)a3 finished:(BOOL)a4
+- (void)receivedBatchResultsFromServer:(id)server finished:(BOOL)finished
 {
   v97 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"reset"];
-  v7 = [v6 BOOLValue];
+  serverCopy = server;
+  v6 = [serverCopy objectForKeyedSubscript:@"reset"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v5 objectForKeyedSubscript:@"new"];
-  v59 = [v5 objectForKeyedSubscript:@"removed"];
-  v9 = [v5 objectForKeyedSubscript:@"removalsByDB"];
-  v10 = [v5 objectForKeyedSubscript:@"generation"];
-  v11 = [v10 intValue];
+  v8 = [serverCopy objectForKeyedSubscript:@"new"];
+  v59 = [serverCopy objectForKeyedSubscript:@"removed"];
+  v9 = [serverCopy objectForKeyedSubscript:@"removalsByDB"];
+  v10 = [serverCopy objectForKeyedSubscript:@"generation"];
+  intValue = [v10 intValue];
 
   os_unfair_lock_lock(&self->_lock);
   v12 = self->_predicate;
   os_unfair_lock_unlock(&self->_lock);
-  v63 = [(NSPredicate *)v12 defaultPropertiesToLoad];
+  defaultPropertiesToLoad = [(NSPredicate *)v12 defaultPropertiesToLoad];
   v64 = v9;
-  v56 = v5;
+  v56 = serverCopy;
   v57 = v12;
-  v55 = __PAIR64__(v7, v11);
+  v55 = __PAIR64__(bOOLValue, intValue);
   if (v8)
   {
     v58 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
     if ([(EKEventStore *)self->_store showsIntegrations]&& (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v67 = [(NSPredicate *)v12 excludeSkippedReminders];
+      excludeSkippedReminders = [(NSPredicate *)v12 excludeSkippedReminders];
     }
 
     else
     {
-      v67 = 0;
+      excludeSkippedReminders = 0;
     }
   }
 
   else
   {
-    v67 = 0;
+    excludeSkippedReminders = 0;
     v58 = 0;
   }
 
@@ -421,24 +421,24 @@ void __34__EKPredicateMonitor_disconnected__block_invoke(uint64_t a1)
         }
 
         v17 = *(*(&v82 + 1) + 8 * i);
-        v18 = [v17 loadedValues];
-        v19 = [v17 objectID];
-        v20 = [EKObjectID objectIDWithCADObjectID:v19];
+        loadedValues = [v17 loadedValues];
+        objectID = [v17 objectID];
+        v20 = [EKObjectID objectIDWithCADObjectID:objectID];
 
-        v21 = [(EKEventStore *)self->_store registerFetchedObjectWithID:v20 withDefaultLoadedPropertyKeys:v63 values:v18];
+        v21 = [(EKEventStore *)self->_store registerFetchedObjectWithID:v20 withDefaultLoadedPropertyKeys:defaultPropertiesToLoad values:loadedValues];
         if (v21)
         {
-          v22 = [v17 occurrenceDate];
-          v23 = [[EKEvent alloc] initWithPersistentObject:v21 occurrenceDate:v22];
+          occurrenceDate = [v17 occurrenceDate];
+          v23 = [[EKEvent alloc] initWithPersistentObject:v21 occurrenceDate:occurrenceDate];
           if (v23)
           {
-            v24 = [v17 nextReminderOccurrenceDate];
-            if (v24)
+            nextReminderOccurrenceDate = [v17 nextReminderOccurrenceDate];
+            if (nextReminderOccurrenceDate)
             {
-              [(EKEvent *)v23 _setNextCachedReminderOccurrenceDate:v24];
+              [(EKEvent *)v23 _setNextCachedReminderOccurrenceDate:nextReminderOccurrenceDate];
             }
 
-            if (!v67 || ![(EKEvent *)v23 isReminderIntegrationEvent]|| [(EKEvent *)v23 reminderOccurrenceType]!= 1)
+            if (!excludeSkippedReminders || ![(EKEvent *)v23 isReminderIntegrationEvent]|| [(EKEvent *)v23 reminderOccurrenceType]!= 1)
             {
               [v58 addObject:v23];
             }
@@ -447,16 +447,16 @@ void __34__EKPredicateMonitor_disconnected__block_invoke(uint64_t a1)
 
         else
         {
-          v22 = +[EKLogSubsystem predicateMonitor];
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+          occurrenceDate = +[EKLogSubsystem predicateMonitor];
+          if (os_log_type_enabled(occurrenceDate, OS_LOG_TYPE_ERROR))
           {
             v25 = objc_opt_class();
             *buf = 138412546;
-            v87 = v25;
+            selfCopy3 = v25;
             v88 = 2112;
             v89 = v20;
             v26 = v25;
-            _os_log_error_impl(&dword_1A805E000, v22, OS_LOG_TYPE_ERROR, "%@: failed to register result object with objectID: %@", buf, 0x16u);
+            _os_log_error_impl(&dword_1A805E000, occurrenceDate, OS_LOG_TYPE_ERROR, "%@: failed to register result object with objectID: %@", buf, 0x16u);
           }
         }
       }
@@ -478,7 +478,7 @@ void __34__EKPredicateMonitor_disconnected__block_invoke(uint64_t a1)
   if (v65)
   {
     v61 = *v79;
-    v62 = self;
+    selfCopy = self;
     do
     {
       v29 = 0;
@@ -491,7 +491,7 @@ void __34__EKPredicateMonitor_disconnected__block_invoke(uint64_t a1)
 
         v68 = v29;
         v30 = *(*(&v78 + 1) + 8 * v29);
-        v31 = [v30 intValue];
+        intValue2 = [v30 intValue];
         if (!v28)
         {
           v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v59, "count")}];
@@ -517,11 +517,11 @@ void __34__EKPredicateMonitor_disconnected__block_invoke(uint64_t a1)
               }
 
               v37 = *(*(&v74 + 1) + 8 * j);
-              v38 = [v37 rowID];
-              v39 = [v37 removedDates];
-              v27 += [v39 count];
-              v40 = [EKObjectID objectIDWithEntityType:2 rowID:v38 databaseID:v31];
-              v41 = [[EKEventOccurrences alloc] initWithObjectID:v40 dates:v39];
+              rowID = [v37 rowID];
+              removedDates = [v37 removedDates];
+              v27 += [removedDates count];
+              v40 = [EKObjectID objectIDWithEntityType:2 rowID:rowID databaseID:intValue2];
+              v41 = [[EKEventOccurrences alloc] initWithObjectID:v40 dates:removedDates];
               [v28 addObject:v41];
             }
 
@@ -532,7 +532,7 @@ void __34__EKPredicateMonitor_disconnected__block_invoke(uint64_t a1)
         }
 
         v29 = v68 + 1;
-        self = v62;
+        self = selfCopy;
       }
 
       while (v68 + 1 != v65);
@@ -552,7 +552,7 @@ void __34__EKPredicateMonitor_disconnected__block_invoke(uint64_t a1)
     {
       v46 = [v58 count];
       *buf = 134218240;
-      v87 = self;
+      selfCopy3 = self;
       v88 = 2048;
       v89 = v46;
       v47 = "%p Received reset with %lu new events";
@@ -572,7 +572,7 @@ LABEL_47:
       v50 = [v58 count];
       v51 = [v28 count];
       *buf = 134218752;
-      v87 = self;
+      selfCopy3 = self;
       v88 = 2048;
       v89 = v50;
       v90 = 2048;

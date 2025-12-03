@@ -1,7 +1,7 @@
 @interface CRTest_8185
-- (BOOL)shouldRun:(id)a3;
+- (BOOL)shouldRun:(id)run;
 - (CRTest_8185)init;
-- (void)run:(id)a3 withContext:(id)a4;
+- (void)run:(id)run withContext:(id)context;
 @end
 
 @implementation CRTest_8185
@@ -19,8 +19,8 @@
     if (os_variant_has_internal_content())
     {
       v4 = [[CRUserDefaults alloc] initWithSuiteName:@"com.apple.corerepaird.test"];
-      v5 = [(CRTest *)v3 name];
-      v6 = [v4 dictionaryForKey:v5];
+      name = [(CRTest *)v3 name];
+      v6 = [v4 dictionaryForKey:name];
       [(CRTest *)v3 setOverrides:v6];
     }
   }
@@ -28,15 +28,15 @@
   return v3;
 }
 
-- (BOOL)shouldRun:(id)a3
+- (BOOL)shouldRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v8.receiver = self;
   v8.super_class = CRTest_8185;
-  if ([(CRTest *)&v8 shouldRun:v4])
+  if ([(CRTest *)&v8 shouldRun:runCopy])
   {
-    v5 = [v4 partSPC];
-    v6 = v5 != 0;
+    partSPC = [runCopy partSPC];
+    v6 = partSPC != 0;
   }
 
   else
@@ -47,82 +47,82 @@
   return v6;
 }
 
-- (void)run:(id)a3 withContext:(id)a4
+- (void)run:(id)run withContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  runCopy = run;
   v8 = objc_opt_new();
   [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"skipStageEAN"];
   [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"ignoreStagedData"];
-  v9 = [v6 serialNumber];
+  serialNumber = [contextCopy serialNumber];
 
-  if (v9)
+  if (serialNumber)
   {
-    v10 = [v6 serialNumber];
-    [v8 setObject:v10 forKeyedSubscript:@"KGBSerialNumber"];
+    serialNumber2 = [contextCopy serialNumber];
+    [v8 setObject:serialNumber2 forKeyedSubscript:@"KGBSerialNumber"];
   }
 
-  v11 = [v6 partSPC];
-  if (v11)
+  partSPC = [contextCopy partSPC];
+  if (partSPC)
   {
-    v12 = v11;
-    v13 = [v6 partSPC];
-    v14 = [v13 count];
+    v12 = partSPC;
+    partSPC2 = [contextCopy partSPC];
+    v14 = [partSPC2 count];
 
     if (v14)
     {
-      v15 = [v6 partSPC];
-      v16 = [v15 componentsJoinedByString:{@", "}];
+      partSPC3 = [contextCopy partSPC];
+      v16 = [partSPC3 componentsJoinedByString:{@", "}];
       [v8 setObject:v16 forKeyedSubscript:@"partSPC"];
     }
   }
 
-  v17 = [v6 rik];
+  v17 = [contextCopy rik];
 
   if (v17)
   {
-    v18 = [v6 rik];
+    v18 = [contextCopy rik];
     [v8 setObject:v18 forKeyedSubscript:@"keyBlob"];
   }
 
-  v19 = [v6 PrCL];
+  prCL = [contextCopy PrCL];
 
-  if (v19)
+  if (prCL)
   {
     v33 = @"PrCL";
-    v20 = [v6 PrCL];
-    v34 = v20;
+    prCL2 = [contextCopy PrCL];
+    v34 = prCL2;
     v21 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     [v8 setObject:v21 forKeyedSubscript:@"updateProperties"];
   }
 
-  v22 = [v6 patchItems];
-  if (v22)
+  patchItems = [contextCopy patchItems];
+  if (patchItems)
   {
-    v23 = v22;
-    v24 = [v6 patchItems];
-    v25 = [v24 count];
+    v23 = patchItems;
+    patchItems2 = [contextCopy patchItems];
+    v25 = [patchItems2 count];
 
     if (v25)
     {
-      v26 = [v6 patchItems];
-      [v8 setObject:v26 forKeyedSubscript:@"patchItems"];
+      patchItems3 = [contextCopy patchItems];
+      [v8 setObject:patchItems3 forKeyedSubscript:@"patchItems"];
     }
   }
 
-  v27 = [(CRTest *)self overrides];
+  overrides = [(CRTest *)self overrides];
 
-  if (v27)
+  if (overrides)
   {
-    v28 = [(CRTest *)self overrides];
-    [v8 addEntriesFromDictionary:v28];
+    overrides2 = [(CRTest *)self overrides];
+    [v8 addEntriesFromDictionary:overrides2];
   }
 
   v31 = @"parameters";
   v32 = v8;
   v29 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-  v30 = [(CRTest *)self testId];
-  [v7 startTest:v30 parameters:v29];
+  testId = [(CRTest *)self testId];
+  [runCopy startTest:testId parameters:v29];
 }
 
 @end

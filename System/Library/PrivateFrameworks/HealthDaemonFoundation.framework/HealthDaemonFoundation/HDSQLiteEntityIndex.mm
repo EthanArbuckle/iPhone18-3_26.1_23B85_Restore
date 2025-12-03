@@ -1,5 +1,5 @@
 @interface HDSQLiteEntityIndex
-- (HDSQLiteEntityIndex)initWithEntity:(Class)a3 name:(id)a4 columns:(id)a5 collationForColumn:(id)a6 unique:(BOOL)a7 predicateString:(id)a8;
+- (HDSQLiteEntityIndex)initWithEntity:(Class)entity name:(id)name columns:(id)columns collationForColumn:(id)column unique:(BOOL)unique predicateString:(id)string;
 - (NSString)disambiguatedName;
 - (id)creationSQL;
 - (void)_columnsAndCollations;
@@ -7,33 +7,33 @@
 
 @implementation HDSQLiteEntityIndex
 
-- (HDSQLiteEntityIndex)initWithEntity:(Class)a3 name:(id)a4 columns:(id)a5 collationForColumn:(id)a6 unique:(BOOL)a7 predicateString:(id)a8
+- (HDSQLiteEntityIndex)initWithEntity:(Class)entity name:(id)name columns:(id)columns collationForColumn:(id)column unique:(BOOL)unique predicateString:(id)string
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  nameCopy = name;
+  columnsCopy = columns;
+  columnCopy = column;
+  stringCopy = string;
   v29.receiver = self;
   v29.super_class = HDSQLiteEntityIndex;
   v18 = [(HDSQLiteEntityIndex *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_entityClass, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_entityClass, entity);
+    v20 = [nameCopy copy];
     name = v19->_name;
     v19->_name = v20;
 
-    v19->_unique = a7;
-    v22 = [v16 copy];
+    v19->_unique = unique;
+    v22 = [columnCopy copy];
     collationColumnMapping = v19->_collationColumnMapping;
     v19->_collationColumnMapping = v22;
 
-    v24 = [v15 copy];
+    v24 = [columnsCopy copy];
     columns = v19->_columns;
     v19->_columns = v24;
 
-    v26 = [v17 copy];
+    v26 = [stringCopy copy];
     predicateString = v19->_predicateString;
     v19->_predicateString = v26;
   }
@@ -43,19 +43,19 @@
 
 - (NSString)disambiguatedName
 {
-  v3 = [(objc_class *)self->_entityClass databaseName];
+  databaseName = [(objc_class *)self->_entityClass databaseName];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(objc_class *)self->_entityClass databaseTable];
-  v6 = v5;
+  databaseTable = [(objc_class *)self->_entityClass databaseTable];
+  v6 = databaseTable;
   name = self->_name;
-  if (v3)
+  if (databaseName)
   {
-    [v4 stringWithFormat:@"%@.%@_%@", v3, v5, name];
+    [v4 stringWithFormat:@"%@.%@_%@", databaseName, databaseTable, name];
   }
 
   else
   {
-    [v4 stringWithFormat:@"%@_%@", v5, name, v10];
+    [v4 stringWithFormat:@"%@_%@", databaseTable, name, v10];
   }
   v8 = ;
 
@@ -72,11 +72,11 @@
   }
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(HDSQLiteEntityIndex *)self disambiguatedName];
-  v7 = [(objc_class *)self->_entityClass databaseTable];
-  v8 = [(HDSQLiteEntityIndex *)self _columnsAndCollations];
-  v9 = [v8 componentsJoinedByString:{@", "}];
-  v10 = [v5 stringWithFormat:@"INDEX IF NOT EXISTS %@ ON %@ (%@)", v6, v7, v9];
+  disambiguatedName = [(HDSQLiteEntityIndex *)self disambiguatedName];
+  databaseTable = [(objc_class *)self->_entityClass databaseTable];
+  _columnsAndCollations = [(HDSQLiteEntityIndex *)self _columnsAndCollations];
+  v9 = [_columnsAndCollations componentsJoinedByString:{@", "}];
+  v10 = [v5 stringWithFormat:@"INDEX IF NOT EXISTS %@ ON %@ (%@)", disambiguatedName, databaseTable, v9];
   [v4 appendString:v10];
 
   if (self->_predicateString)
@@ -123,24 +123,24 @@ void __44__HDSQLiteEntityIndex__columnsAndCollations__block_invoke(uint64_t a1, 
 
 - (void)_columnsAndCollations
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v3 = v1[4];
+    v3 = selfCopy[4];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __44__HDSQLiteEntityIndex__columnsAndCollations__block_invoke;
     v7[3] = &unk_2796BE5A0;
-    v7[4] = v1;
+    v7[4] = selfCopy;
     v4 = v2;
     v8 = v4;
     [v3 enumerateObjectsUsingBlock:v7];
     v5 = v8;
-    v1 = v4;
+    selfCopy = v4;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

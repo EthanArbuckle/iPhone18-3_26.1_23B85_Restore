@@ -1,39 +1,39 @@
 @interface PXFileBackedUIMediaProvider
-- (PXFileBackedUIMediaProvider)initWithCachingEnabled:(BOOL)a3 directCGImageLoadingEnabled:(BOOL)a4;
-- (id)_createImageForKey:(id)a3 error:(id *)a4;
-- (id)_resizeImageAtURL:(id)a3 imageUTI:(id)a4 targetSize:(CGSize)a5 preferHDR:(BOOL)a6 bakeInOrientation:(BOOL)a7 error:(id *)a8;
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)_handleImageCreated:(id)a3 imageKey:(id)a4;
+- (PXFileBackedUIMediaProvider)initWithCachingEnabled:(BOOL)enabled directCGImageLoadingEnabled:(BOOL)loadingEnabled;
+- (id)_createImageForKey:(id)key error:(id *)error;
+- (id)_resizeImageAtURL:(id)l imageUTI:(id)i targetSize:(CGSize)size preferHDR:(BOOL)r bakeInOrientation:(BOOL)orientation error:(id *)error;
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)_handleImageCreated:(id)created imageKey:(id)key;
 @end
 
 @implementation PXFileBackedUIMediaProvider
 
-- (void)_handleImageCreated:(id)a3 imageKey:(id)a4
+- (void)_handleImageCreated:(id)created imageKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 && [(PXFileBackedUIMediaProvider *)self isCachingEnabled])
+  createdCopy = created;
+  keyCopy = key;
+  if (createdCopy && [(PXFileBackedUIMediaProvider *)self isCachingEnabled])
   {
-    [(NSCache *)self->_cache setObject:v7 forKey:v6];
+    [(NSCache *)self->_cache setObject:createdCopy forKey:keyCopy];
   }
 }
 
-- (id)_resizeImageAtURL:(id)a3 imageUTI:(id)a4 targetSize:(CGSize)a5 preferHDR:(BOOL)a6 bakeInOrientation:(BOOL)a7 error:(id *)a8
+- (id)_resizeImageAtURL:(id)l imageUTI:(id)i targetSize:(CGSize)size preferHDR:(BOOL)r bakeInOrientation:(BOOL)orientation error:(id *)error
 {
-  v9 = a7;
-  v10 = a6;
-  height = a5.height;
-  width = a5.width;
+  orientationCopy = orientation;
+  rCopy = r;
+  height = size.height;
+  width = size.width;
   v30[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = v15;
-  if (v15)
+  lCopy = l;
+  iCopy = i;
+  v16 = iCopy;
+  if (iCopy)
   {
     v29 = *MEMORY[0x1E696E118];
-    v30[0] = v15;
+    v30[0] = iCopy;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   }
 
@@ -42,11 +42,11 @@
     v17 = 0;
   }
 
-  v18 = CGImageSourceCreateWithURL(v14, v17);
+  v18 = CGImageSourceCreateWithURL(lCopy, v17);
   if (!v18)
   {
     v27 = 0;
-    if (!a8)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -71,10 +71,10 @@
   [v22 setObject:v23 forKeyedSubscript:*MEMORY[0x1E696E100]];
 
   [v22 setObject:*MEMORY[0x1E695E4D0] forKeyedSubscript:*MEMORY[0x1E696DFE8]];
-  v24 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v24 = [MEMORY[0x1E696AD98] numberWithBool:orientationCopy];
   [v22 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696E000]];
 
-  if (v10)
+  if (rCopy)
   {
     [v22 setObject:*MEMORY[0x1E696E028] forKeyedSubscript:*MEMORY[0x1E696E018]];
   }
@@ -94,12 +94,12 @@
 
   CFRelease(v19);
 
-  if (a8)
+  if (error)
   {
 LABEL_16:
     if (!v27)
     {
-      *a8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PXFileBackedUIMediaProviderErrorDomain" code:-100 userInfo:0];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PXFileBackedUIMediaProviderErrorDomain" code:-100 userInfo:0];
     }
   }
 
@@ -108,16 +108,16 @@ LABEL_18:
   return v27;
 }
 
-- (id)_createImageForKey:(id)a3 error:(id *)a4
+- (id)_createImageForKey:(id)key error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 url];
-  v7 = [v6 pathExtension];
-  if (v7)
+  keyCopy = key;
+  v6 = [keyCopy url];
+  pathExtension = [v6 pathExtension];
+  if (pathExtension)
   {
     v8 = MEMORY[0x1E6982C40];
-    v9 = [v6 pathExtension];
-    v10 = [v8 typeWithFilenameExtension:v9];
+    pathExtension2 = [v6 pathExtension];
+    v10 = [v8 typeWithFilenameExtension:pathExtension2];
   }
 
   else
@@ -125,32 +125,32 @@ LABEL_18:
     v10 = 0;
   }
 
-  v11 = [v10 identifier];
-  [v5 size];
-  v14 = -[PXFileBackedUIMediaProvider _resizeImageAtURL:imageUTI:targetSize:preferHDR:bakeInOrientation:error:](self, "_resizeImageAtURL:imageUTI:targetSize:preferHDR:bakeInOrientation:error:", v6, v11, [v5 preferHDR], 1, 0, v12, v13);
+  identifier = [v10 identifier];
+  [keyCopy size];
+  v14 = -[PXFileBackedUIMediaProvider _resizeImageAtURL:imageUTI:targetSize:preferHDR:bakeInOrientation:error:](self, "_resizeImageAtURL:imageUTI:targetSize:preferHDR:bakeInOrientation:error:", v6, identifier, [keyCopy preferHDR], 1, 0, v12, v13);
 
-  [(PXFileBackedUIMediaProvider *)self _handleImageCreated:v14 imageKey:v5];
+  [(PXFileBackedUIMediaProvider *)self _handleImageCreated:v14 imageKey:keyCopy];
 
   return v14;
 }
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = v12;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v15 = assetCopy;
   v16 = [PXFileBackedImageKey alloc];
   v17 = [v15 url];
-  v18 = -[PXFileBackedImageKey initWithUrl:size:preferHDR:](v16, "initWithUrl:size:preferHDR:", v17, [v13 preferHDR], width, height);
+  v18 = -[PXFileBackedImageKey initWithUrl:size:preferHDR:](v16, "initWithUrl:size:preferHDR:", v17, [optionsCopy preferHDR], width, height);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __97__PXFileBackedUIMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7BB79E8;
-  v19 = v14;
+  v19 = handlerCopy;
   v37 = v19;
   v20 = _Block_copy(aBlock);
   v21 = [(NSCache *)self->_cache objectForKey:v18];
@@ -159,7 +159,7 @@ LABEL_18:
     v20[2](v20, v21, 0);
   }
 
-  else if ([v13 isSynchronous])
+  else if ([optionsCopy isSynchronous])
   {
     v35 = 0;
     v22 = [(PXFileBackedUIMediaProvider *)self _createImageForKey:v18 error:&v35];
@@ -169,12 +169,12 @@ LABEL_18:
 
   else
   {
-    v24 = [v15 previewImage];
+    previewImage = [v15 previewImage];
 
-    if (v24)
+    if (previewImage)
     {
-      v25 = [v15 previewImage];
-      v20[2](v20, v25, 0);
+      previewImage2 = [v15 previewImage];
+      v20[2](v20, previewImage2, 0);
     }
 
     objc_initWeak(&location, self);
@@ -185,7 +185,7 @@ LABEL_18:
     v29[3] = &unk_1E7BB7A38;
     objc_copyWeak(&v33, &location);
     v30 = v18;
-    v31 = v13;
+    v31 = optionsCopy;
     v32 = v20;
     v27 = [v26 blockOperationWithBlock:v29];
     [(NSOperationQueue *)self->_queue addOperation:v27];
@@ -266,28 +266,28 @@ void __97__PXFileBackedUIMediaProvider_requestImageForAsset_targetSize_contentMo
   }
 }
 
-- (int64_t)requestCGImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestCGImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (![(PXFileBackedUIMediaProvider *)self isDirectCGImageLoadingEnabled])
   {
     v35.receiver = self;
     v35.super_class = PXFileBackedUIMediaProvider;
-    v24 = [(PXUIMediaProvider *)&v35 requestCGImageForAsset:v14 targetSize:a5 contentMode:v15 options:v16 resultHandler:width, height];
+    height = [(PXUIMediaProvider *)&v35 requestCGImageForAsset:assetCopy targetSize:mode contentMode:optionsCopy options:handlerCopy resultHandler:width, height];
     goto LABEL_9;
   }
 
-  v17 = v14;
+  v17 = assetCopy;
   if (!v17)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    [v26 handleFailureInMethod:a2 object:self file:@"PXFileBackedUIMediaProvider.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v28}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFileBackedUIMediaProvider.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v28}];
 LABEL_12:
 
     goto LABEL_4;
@@ -296,11 +296,11 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v29 = objc_opt_class();
     v28 = NSStringFromClass(v29);
-    v30 = [v17 px_descriptionForAssertionMessage];
-    [v26 handleFailureInMethod:a2 object:self file:@"PXFileBackedUIMediaProvider.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v28, v30}];
+    px_descriptionForAssertionMessage = [v17 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFileBackedUIMediaProvider.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v28, px_descriptionForAssertionMessage}];
 
     goto LABEL_12;
   }
@@ -311,19 +311,19 @@ LABEL_4:
 
   ImageAtIndex = CGImageSourceCreateImageAtIndex(v19, 0, 0);
   CFRelease(v19);
-  v21 = [v15 resultHandlerQueue];
+  resultHandlerQueue = [optionsCopy resultHandlerQueue];
 
-  if (v21)
+  if (resultHandlerQueue)
   {
-    v22 = [v15 resultHandlerQueue];
+    resultHandlerQueue2 = [optionsCopy resultHandlerQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __99__PXFileBackedUIMediaProvider_requestCGImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
     block[3] = &unk_1E7BB88F8;
     v23 = v34;
-    v34[0] = v16;
+    v34[0] = handlerCopy;
     v34[1] = ImageAtIndex;
-    dispatch_async(v22, block);
+    dispatch_async(resultHandlerQueue2, block);
   }
 
   else
@@ -333,15 +333,15 @@ LABEL_4:
     v31[2] = __99__PXFileBackedUIMediaProvider_requestCGImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke_2;
     v31[3] = &unk_1E7BB88F8;
     v23 = v32;
-    v32[0] = v16;
+    v32[0] = handlerCopy;
     v32[1] = ImageAtIndex;
     px_dispatch_on_main_queue(v31);
   }
 
-  v24 = 0;
+  height = 0;
 LABEL_9:
 
-  return v24;
+  return height;
 }
 
 void __99__PXFileBackedUIMediaProvider_requestCGImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke(uint64_t a1)
@@ -360,21 +360,21 @@ void __99__PXFileBackedUIMediaProvider_requestCGImageForAsset_targetSize_content
   CGImageRelease(v2);
 }
 
-- (int64_t)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int64_t)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v6 = MEMORY[0x1E69880B0];
-  v7 = a5;
-  v8 = a3;
+  handlerCopy = handler;
+  videoCopy = video;
   v9 = [v6 alloc];
-  v10 = [v8 url];
+  v10 = [videoCopy url];
 
   v11 = [v9 initWithURL:v10];
-  v7[2](v7, v11, 0);
+  handlerCopy[2](handlerCopy, v11, 0);
 
   return 0;
 }
 
-- (PXFileBackedUIMediaProvider)initWithCachingEnabled:(BOOL)a3 directCGImageLoadingEnabled:(BOOL)a4
+- (PXFileBackedUIMediaProvider)initWithCachingEnabled:(BOOL)enabled directCGImageLoadingEnabled:(BOOL)loadingEnabled
 {
   v12.receiver = self;
   v12.super_class = PXFileBackedUIMediaProvider;
@@ -391,8 +391,8 @@ void __99__PXFileBackedUIMediaProvider_requestCGImageForAsset_targetSize_content
     cache = v6->_cache;
     v6->_cache = v9;
 
-    v6->_cachingEnabled = a3;
-    v6->_directCGImageLoadingEnabled = a4;
+    v6->_cachingEnabled = enabled;
+    v6->_directCGImageLoadingEnabled = loadingEnabled;
   }
 
   return v6;

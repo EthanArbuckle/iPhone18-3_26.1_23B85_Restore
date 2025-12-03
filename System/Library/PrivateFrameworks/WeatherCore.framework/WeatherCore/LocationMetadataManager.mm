@@ -1,10 +1,10 @@
 @interface LocationMetadataManager
-- (void)handleCountryConfigurationChange:(id)a3;
+- (void)handleCountryConfigurationChange:(id)change;
 @end
 
 @implementation LocationMetadataManager
 
-- (void)handleCountryConfigurationChange:(id)a3
+- (void)handleCountryConfigurationChange:(id)change
 {
   swift_unknownObjectRetain();
   sub_1C96A3D04();

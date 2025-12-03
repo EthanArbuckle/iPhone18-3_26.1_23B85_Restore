@@ -1,43 +1,43 @@
 @interface HKOverlayRoomViewControllerLastQuantityContext
-- (BOOL)isEqual:(id)a3;
-- (HKOverlayRoomViewControllerLastQuantityContext)initWithOverlayChartController:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 attenuated:(BOOL)a6;
-- (id)_buildContextWithTime:(id)a3 value:(id)a4 isUnitIncludedInValue:(BOOL)a5;
-- (id)_buildFullTitle:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKOverlayRoomViewControllerLastQuantityContext)initWithOverlayChartController:(id)controller applicationItems:(id)items mode:(int64_t)mode attenuated:(BOOL)attenuated;
+- (id)_buildContextWithTime:(id)time value:(id)value isUnitIncludedInValue:(BOOL)inValue;
+- (id)_buildFullTitle:(id)title;
 - (id)_buildLastQuantityDisplayType;
-- (id)_buildLastValueDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5;
-- (id)_colorForDisplayType:(id)a3;
-- (id)_stringValueFromQuantity:(id)a3 unit:(id)a4 isUnitIncludedInValue:(BOOL *)a5;
+- (id)_buildLastValueDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store;
+- (id)_colorForDisplayType:(id)type;
+- (id)_stringValueFromQuantity:(id)quantity unit:(id)unit isUnitIncludedInValue:(BOOL *)value;
 - (id)sampleTypeForDateRangeUpdates;
 - (void)invalidateContextItem;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation HKOverlayRoomViewControllerLastQuantityContext
 
-- (HKOverlayRoomViewControllerLastQuantityContext)initWithOverlayChartController:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 attenuated:(BOOL)a6
+- (HKOverlayRoomViewControllerLastQuantityContext)initWithOverlayChartController:(id)controller applicationItems:(id)items mode:(int64_t)mode attenuated:(BOOL)attenuated
 {
-  v11 = a3;
-  v12 = a4;
+  controllerCopy = controller;
+  itemsCopy = items;
   v27.receiver = self;
   v27.super_class = HKOverlayRoomViewControllerLastQuantityContext;
   v13 = [(HKOverlayRoomViewControllerLastQuantityContext *)&v27 init];
   v14 = v13;
   if (v13)
   {
-    v13->_attenuated = a6;
-    objc_storeStrong(&v13->_overlayChartController, a3);
-    objc_storeStrong(&v14->_applicationItems, a4);
-    v15 = [v12 unitController];
-    v16 = [v11 primaryDisplayType];
-    v17 = [v12 healthStore];
-    v18 = [(HKOverlayRoomViewControllerLastQuantityContext *)v14 _buildLastValueDataSourceWithUnitController:v15 displayType:v16 healthStore:v17];
+    v13->_attenuated = attenuated;
+    objc_storeStrong(&v13->_overlayChartController, controller);
+    objc_storeStrong(&v14->_applicationItems, items);
+    unitController = [itemsCopy unitController];
+    primaryDisplayType = [controllerCopy primaryDisplayType];
+    healthStore = [itemsCopy healthStore];
+    v18 = [(HKOverlayRoomViewControllerLastQuantityContext *)v14 _buildLastValueDataSourceWithUnitController:unitController displayType:primaryDisplayType healthStore:healthStore];
     cacheDataSource = v14->_cacheDataSource;
     v14->_cacheDataSource = v18;
 
-    v14->_overlayMode = a5;
-    v20 = [(HKOverlayRoomViewControllerLastQuantityContext *)v14 _buildLastQuantityDisplayType];
+    v14->_overlayMode = mode;
+    _buildLastQuantityDisplayType = [(HKOverlayRoomViewControllerLastQuantityContext *)v14 _buildLastQuantityDisplayType];
     overlayDisplayType = v14->_overlayDisplayType;
-    v14->_overlayDisplayType = v20;
+    v14->_overlayDisplayType = _buildLastQuantityDisplayType;
 
     v22 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v23 = [v22 localizedStringForKey:@"NO_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -51,14 +51,14 @@
 
 - (id)sampleTypeForDateRangeUpdates
 {
-  v2 = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
-  v3 = [v2 primaryDisplayType];
-  v4 = [v3 objectType];
+  overlayChartController = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
+  primaryDisplayType = [overlayChartController primaryDisplayType];
+  objectType = [primaryDisplayType objectType];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectType;
   }
 
   else
@@ -69,33 +69,33 @@
   return v5;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v8 = a7;
-  v9 = [(HKOverlayRoomViewControllerLastQuantityContext *)self sampleTypeForDateRangeUpdates];
-  v10 = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
-  v11 = [v10 healthStore];
+  completionCopy = completion;
+  sampleTypeForDateRangeUpdates = [(HKOverlayRoomViewControllerLastQuantityContext *)self sampleTypeForDateRangeUpdates];
+  applicationItems = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
+  healthStore = [applicationItems healthStore];
 
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __133__HKOverlayRoomViewControllerLastQuantityContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
   v21 = &unk_1E81B5FF8;
-  v12 = v8;
-  v22 = self;
+  v12 = completionCopy;
+  selfCopy = self;
   v23 = v12;
   v13 = _Block_copy(&v18);
-  if (self->_attenuated && ([v9 identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = *MEMORY[0x1E696BD08], v14, v14 == v15))
+  if (self->_attenuated && ([sampleTypeForDateRangeUpdates identifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = *MEMORY[0x1E696BD08], v14, v14 == v15))
   {
-    v16 = [MEMORY[0x1E696C1C0] queryForMostRecentAttenuatedEAEQuantityWithHealthStore:v11 completion:v13];
+    v16 = [MEMORY[0x1E696C1C0] queryForMostRecentAttenuatedEAEQuantityWithHealthStore:healthStore completion:v13];
   }
 
   else
   {
-    v16 = [MEMORY[0x1E696C1C0] queryForMostRecentQuantityOfType:v9 healthStore:v11 predicate:0 completion:{v13, v18, v19, v20, v21}];
+    v16 = [MEMORY[0x1E696C1C0] queryForMostRecentQuantityOfType:sampleTypeForDateRangeUpdates healthStore:healthStore predicate:0 completion:{v13, v18, v19, v20, v21}];
   }
 
   v17 = v16;
-  [v11 executeQuery:v16];
+  [healthStore executeQuery:v16];
 }
 
 void __133__HKOverlayRoomViewControllerLastQuantityContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4)
@@ -146,19 +146,19 @@ void __133__HKOverlayRoomViewControllerLastQuantityContext_updateContextItemForD
 
 - (void)invalidateContextItem
 {
-  v3 = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
-  v4 = [v3 unitController];
-  v5 = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
-  v6 = [v5 primaryDisplayType];
-  v7 = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
-  v8 = [v7 healthStore];
-  v9 = [(HKOverlayRoomViewControllerLastQuantityContext *)self _buildLastValueDataSourceWithUnitController:v4 displayType:v6 healthStore:v8];
+  applicationItems = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
+  unitController = [applicationItems unitController];
+  overlayChartController = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
+  primaryDisplayType = [overlayChartController primaryDisplayType];
+  applicationItems2 = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
+  healthStore = [applicationItems2 healthStore];
+  v9 = [(HKOverlayRoomViewControllerLastQuantityContext *)self _buildLastValueDataSourceWithUnitController:unitController displayType:primaryDisplayType healthStore:healthStore];
   cacheDataSource = self->_cacheDataSource;
   self->_cacheDataSource = v9;
 
-  v11 = [(HKOverlayRoomViewControllerLastQuantityContext *)self _buildLastQuantityDisplayType];
+  _buildLastQuantityDisplayType = [(HKOverlayRoomViewControllerLastQuantityContext *)self _buildLastQuantityDisplayType];
   overlayDisplayType = self->_overlayDisplayType;
-  self->_overlayDisplayType = v11;
+  self->_overlayDisplayType = _buildLastQuantityDisplayType;
 
   v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v13 = [v16 localizedStringForKey:@"NO_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -169,50 +169,50 @@ void __133__HKOverlayRoomViewControllerLastQuantityContext_updateContextItemForD
 
 - (id)_buildLastQuantityDisplayType
 {
-  v3 = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
-  v4 = [v3 primaryDisplayType];
+  overlayChartController = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
+  primaryDisplayType = [overlayChartController primaryDisplayType];
 
-  v5 = [v4 objectType];
-  v6 = [v5 identifier];
+  objectType = [primaryDisplayType objectType];
+  identifier = [objectType identifier];
 
-  v7 = [(HKOverlayRoomViewControllerLastQuantityContext *)self _colorForDisplayType:v4];
-  v8 = [v4 hk_interactiveChartsFormatterForTimeScope:5];
+  v7 = [(HKOverlayRoomViewControllerLastQuantityContext *)self _colorForDisplayType:primaryDisplayType];
+  v8 = [primaryDisplayType hk_interactiveChartsFormatterForTimeScope:5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v8 setOverrideStatFormatterItemOptions:&unk_1F4381060];
   }
 
-  v9 = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
-  v10 = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
-  v11 = [v10 displayTypeController];
-  v12 = [v9 displayTypeForQuantityIdentifier:v6 timeScope:5 displayTypeController:v11 overlayColor:v7 cacheDataSource:self->_cacheDataSource alternateLineSeries:0 alternateFormatter:v8 seriesOptions:9];
+  overlayChartController2 = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
+  applicationItems = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
+  displayTypeController = [applicationItems displayTypeController];
+  v12 = [overlayChartController2 displayTypeForQuantityIdentifier:identifier timeScope:5 displayTypeController:displayTypeController overlayColor:v7 cacheDataSource:self->_cacheDataSource alternateLineSeries:0 alternateFormatter:v8 seriesOptions:9];
 
   return v12;
 }
 
-- (id)_buildLastValueDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5
+- (id)_buildLastValueDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  typeCopy = type;
+  storeCopy = store;
   v11 = [HKMostRecentValueQuantityTypeDataSource alloc];
-  v12 = [(HKInteractiveChartViewController *)self->_overlayChartController currentCalendar];
-  v13 = [(HKMostRecentValueQuantityTypeDataSource *)v11 initWithUnitController:v8 displayType:v9 healthStore:v10 currentCalendar:v12 attenuated:self->_attenuated];
+  currentCalendar = [(HKInteractiveChartViewController *)self->_overlayChartController currentCalendar];
+  v13 = [(HKMostRecentValueQuantityTypeDataSource *)v11 initWithUnitController:controllerCopy displayType:typeCopy healthStore:storeCopy currentCalendar:currentCalendar attenuated:self->_attenuated];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __118__HKOverlayRoomViewControllerLastQuantityContext__buildLastValueDataSourceWithUnitController_displayType_healthStore___block_invoke;
   v22[3] = &unk_1E81B6020;
-  v23 = v8;
-  v24 = v9;
-  v14 = v9;
-  v15 = v8;
+  v23 = controllerCopy;
+  v24 = typeCopy;
+  v14 = typeCopy;
+  v15 = controllerCopy;
   [(HKQuantityTypeDataSource *)v13 setUserInfoCreationBlock:v22];
   v16 = MEMORY[0x1E696AEC0];
-  v17 = [v14 objectType];
-  v18 = [v17 identifier];
-  v19 = [v16 stringWithFormat:@"LAST_QUANTITY_CONTEXT_%@", v18];
+  objectType = [v14 objectType];
+  identifier = [objectType identifier];
+  v19 = [v16 stringWithFormat:@"LAST_QUANTITY_CONTEXT_%@", identifier];
 
   v20 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v13 named:v19 withContextTitleForTimeScope:0];
 
@@ -239,18 +239,18 @@ HKInteractiveChartSinglePointData *__118__HKOverlayRoomViewControllerLastQuantit
   return v6;
 }
 
-- (id)_buildContextWithTime:(id)a3 value:(id)a4 isUnitIncludedInValue:(BOOL)a5
+- (id)_buildContextWithTime:(id)time value:(id)value isUnitIncludedInValue:(BOOL)inValue
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
-  v11 = [v10 primaryDisplayType];
+  inValueCopy = inValue;
+  timeCopy = time;
+  valueCopy = value;
+  overlayChartController = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
+  primaryDisplayType = [overlayChartController primaryDisplayType];
 
   v12 = objc_alloc_init(HKDisplayTypeContextItem);
-  if ([v8 length])
+  if ([timeCopy length])
   {
-    v13 = [(HKOverlayRoomViewControllerLastQuantityContext *)self _buildFullTitle:v8];
+    v13 = [(HKOverlayRoomViewControllerLastQuantityContext *)self _buildFullTitle:timeCopy];
     [(HKDisplayTypeContextItem *)v12 setTitle:v13];
   }
 
@@ -265,89 +265,89 @@ HKInteractiveChartSinglePointData *__118__HKOverlayRoomViewControllerLastQuantit
   [(HKDisplayTypeContextItem *)v12 setAccessibilityIdentifier:v15];
 
   [(HKDisplayTypeContextItem *)v12 setInfoHidden:1];
-  v16 = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
-  v17 = [v16 unitController];
-  v18 = [v17 localizedDisplayNameForDisplayType:v11];
+  applicationItems = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
+  unitController = [applicationItems unitController];
+  v18 = [unitController localizedDisplayNameForDisplayType:primaryDisplayType];
   [(HKDisplayTypeContextItem *)v12 setUnit:v18];
 
-  -[HKDisplayTypeContextItem setUseTightSpacingBetweenValueAndUnit:](v12, "setUseTightSpacingBetweenValueAndUnit:", [v11 contextItemShouldUseTightSpacingBetweenValueAndUnit]);
-  [(HKDisplayTypeContextItem *)v12 setIsUnitIncludedInValue:v5];
-  [(HKDisplayTypeContextItem *)v12 setValue:v9];
+  -[HKDisplayTypeContextItem setUseTightSpacingBetweenValueAndUnit:](v12, "setUseTightSpacingBetweenValueAndUnit:", [primaryDisplayType contextItemShouldUseTightSpacingBetweenValueAndUnit]);
+  [(HKDisplayTypeContextItem *)v12 setIsUnitIncludedInValue:inValueCopy];
+  [(HKDisplayTypeContextItem *)v12 setValue:valueCopy];
 
   v19 = [HKOverlayContextUtilities defaultMetricColorsForOverlayMode:[(HKOverlayRoomViewControllerLastQuantityContext *)self overlayMode]];
   [(HKDisplayTypeContextItem *)v12 setMetricColors:v19];
 
-  v20 = +[HKOverlayContextUtilities selectedMetricColorsForCategory:](HKOverlayContextUtilities, "selectedMetricColorsForCategory:", [v11 categoryIdentifier]);
+  v20 = +[HKOverlayContextUtilities selectedMetricColorsForCategory:](HKOverlayContextUtilities, "selectedMetricColorsForCategory:", [primaryDisplayType categoryIdentifier]);
   [(HKDisplayTypeContextItem *)v12 setSelectedMetricColors:v20];
 
   return v12;
 }
 
-- (id)_buildFullTitle:(id)a3
+- (id)_buildFullTitle:(id)title
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = MEMORY[0x1E696AAE8];
-  v5 = a3;
+  titleCopy = title;
   v6 = [v4 bundleWithIdentifier:@"com.apple.HealthUI"];
   v7 = [v6 localizedStringForKey:@"LATEST_WITH_TIME" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v8 = [v3 stringWithFormat:v7, v5];
+  titleCopy = [v3 stringWithFormat:v7, titleCopy];
 
-  return v8;
+  return titleCopy;
 }
 
-- (id)_colorForDisplayType:(id)a3
+- (id)_colorForDisplayType:(id)type
 {
-  v3 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [a3 categoryIdentifier]);
-  v4 = [v3 color];
+  v3 = +[HKDisplayCategory categoryWithID:](HKDisplayCategory, "categoryWithID:", [type categoryIdentifier]);
+  color = [v3 color];
 
-  return v4;
+  return color;
 }
 
-- (id)_stringValueFromQuantity:(id)a3 unit:(id)a4 isUnitIncludedInValue:(BOOL *)a5
+- (id)_stringValueFromQuantity:(id)quantity unit:(id)unit isUnitIncludedInValue:(BOOL *)value
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  quantityCopy = quantity;
+  unitCopy = unit;
+  if (quantityCopy)
   {
-    v10 = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
-    v11 = [v10 primaryDisplayType];
+    overlayChartController = [(HKOverlayRoomViewControllerLastQuantityContext *)self overlayChartController];
+    primaryDisplayType = [overlayChartController primaryDisplayType];
 
-    v12 = [v11 presentation];
+    presentation = [primaryDisplayType presentation];
     v13 = MEMORY[0x1E696AD98];
-    [v8 doubleValueForUnit:v9];
+    [quantityCopy doubleValueForUnit:unitCopy];
     v14 = [v13 numberWithDouble:?];
-    v15 = [v12 adjustedValueForDaemonValue:v14];
+    v15 = [presentation adjustedValueForDaemonValue:v14];
 
-    v16 = [v11 hk_valueFormatterForUnit:v9];
-    v17 = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
-    v18 = [v17 unitController];
-    v19 = [v16 stringFromValue:v15 displayType:v11 unitController:v18];
+    v16 = [primaryDisplayType hk_valueFormatterForUnit:unitCopy];
+    applicationItems = [(HKOverlayRoomViewControllerLastQuantityContext *)self applicationItems];
+    unitController = [applicationItems unitController];
+    v19 = [v16 stringFromValue:v15 displayType:primaryDisplayType unitController:unitController];
 
-    if (a5)
+    if (value)
     {
-      *a5 = 1;
+      *value = 1;
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v19 = [v11 localizedStringForKey:@"NO_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+    primaryDisplayType = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
+    v19 = [primaryDisplayType localizedStringForKey:@"NO_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

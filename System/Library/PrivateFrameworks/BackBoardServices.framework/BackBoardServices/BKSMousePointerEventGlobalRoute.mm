@@ -1,49 +1,49 @@
 @interface BKSMousePointerEventGlobalRoute
-+ (id)build:(id)a3;
++ (id)build:(id)build;
 + (id)new;
 - (BKSMousePointerEventGlobalRoute)init;
-- (BKSMousePointerEventGlobalRoute)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSMousePointerEventGlobalRoute)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
-- (id)_initWithCopyOf:(id *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithCopyOf:(id *)of;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSMousePointerEventGlobalRoute
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v6 = a3;
-  v4 = [v6 appendUInt64:self->_contextID withName:@"contextID" format:1];
-  v5 = [v6 appendObject:self->_options withName:@"options"];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendUInt64:self->_contextID withName:@"contextID" format:1];
+  v5 = [formatterCopy appendObject:self->_options withName:@"options"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMutableMousePointerEventGlobalRoute alloc];
 
   return [(BKSMousePointerEventGlobalRoute *)&v4->super.super.isa _initWithCopyOf:?];
 }
 
-- (id)_initWithCopyOf:(id *)a1
+- (id)_initWithCopyOf:(id *)of
 {
   v3 = a2;
-  if (a1)
+  if (of)
   {
-    v4 = [(BKSMousePointerEventGlobalRoute *)a1 _init];
-    a1 = v4;
-    if (v4)
+    _init = [(BKSMousePointerEventGlobalRoute *)of _init];
+    of = _init;
+    if (_init)
     {
-      *(v4 + 2) = *(v3 + 2);
-      objc_storeStrong(v4 + 2, *(v3 + 2));
+      *(_init + 2) = *(v3 + 2);
+      objc_storeStrong(_init + 2, *(v3 + 2));
     }
   }
 
-  return a1;
+  return of;
 }
 
 - (id)_init
@@ -95,20 +95,20 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKSMousePointerEventGlobalRoute alloc];
 
   return [(BKSMousePointerEventGlobalRoute *)&v4->super.isa _initWithCopyOf:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && *(v4 + 2) == self->_contextID)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && *(equalCopy + 2) == self->_contextID)
   {
-    v5 = v4[2];
+    v5 = equalCopy[2];
     options = self->_options;
     v7 = BSEqualObjects();
   }
@@ -131,25 +131,25 @@
   return v6 ^ (v6 >> 31);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt32:self->_contextID forKey:@"contextID"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:self->_contextID forKey:@"contextID"];
   options = self->_options;
   if (options)
   {
-    [v5 encodeObject:options forKey:@"options"];
+    [coderCopy encodeObject:options forKey:@"options"];
   }
 }
 
-- (BKSMousePointerEventGlobalRoute)initWithCoder:(id)a3
+- (BKSMousePointerEventGlobalRoute)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = BKSMousePointerEventGlobalRoute;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(BKSMousePointerEventGlobalRoute *)&v8 init];
-  v4->_contextID = [v3 decodeInt32ForKey:{@"contextID", v8.receiver, v8.super_class}];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+  v4->_contextID = [coderCopy decodeInt32ForKey:{@"contextID", v8.receiver, v8.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
 
   options = v4->_options;
   v4->_options = v5;
@@ -203,13 +203,13 @@
   return result;
 }
 
-+ (id)build:(id)a3
++ (id)build:(id)build
 {
-  v3 = a3;
-  v4 = [(BKSMousePointerEventGlobalRoute *)[BKSMutableMousePointerEventGlobalRoute alloc] _init];
-  v3[2](v3, v4);
+  buildCopy = build;
+  _init = [(BKSMousePointerEventGlobalRoute *)[BKSMutableMousePointerEventGlobalRoute alloc] _init];
+  buildCopy[2](buildCopy, _init);
 
-  v5 = [v4 copy];
+  v5 = [_init copy];
 
   return v5;
 }

@@ -10,50 +10,50 @@
 - (UISPasteSharingToken)pasteSharingToken;
 - (double)execTime;
 - (double)userLaunchEventTime;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (int64_t)statusBarAnimation;
 - (unint64_t)signpostID;
-- (void)setClickAttribution:(id)a3;
-- (void)setDisableTouchCancellationOnRotation:(BOOL)a3;
-- (void)setExecTime:(double)a3;
-- (void)setForTesting:(BOOL)a3;
-- (void)setLaunchMetricsPayload:(id)a3;
-- (void)setPasteSharingToken:(id)a3;
-- (void)setPayload:(id)a3;
-- (void)setSafeMode:(BOOL)a3;
-- (void)setShouldTakeKeyboardFocus:(BOOL)a3;
-- (void)setSignpostID:(unint64_t)a3;
-- (void)setStatusBarAnimation:(int64_t)a3;
-- (void)setUserLaunchEventTime:(double)a3;
-- (void)setWaitForBackgroundTaskCompletion:(BOOL)a3;
+- (void)setClickAttribution:(id)attribution;
+- (void)setDisableTouchCancellationOnRotation:(BOOL)rotation;
+- (void)setExecTime:(double)time;
+- (void)setForTesting:(BOOL)testing;
+- (void)setLaunchMetricsPayload:(id)payload;
+- (void)setPasteSharingToken:(id)token;
+- (void)setPayload:(id)payload;
+- (void)setSafeMode:(BOOL)mode;
+- (void)setShouldTakeKeyboardFocus:(BOOL)focus;
+- (void)setSignpostID:(unint64_t)d;
+- (void)setStatusBarAnimation:(int64_t)animation;
+- (void)setUserLaunchEventTime:(double)time;
+- (void)setWaitForBackgroundTaskCompletion:(BOOL)completion;
 @end
 
 @implementation UIApplicationSceneTransitionContext
 
 - (OS_xpc_object)launchMetricsPayload
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:7];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:7];
 
   return v3;
 }
 
 - (BOOL)safeMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:3];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:3];
 
   return v3;
 }
 
 - (NSDictionary)payload
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  v4 = [v3 objectForSetting:1];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [otherSettings objectForSetting:1];
 
-  v5 = [(UIApplicationSceneTransitionContext *)self clickAttribution];
-  if (v5)
+  clickAttribution = [(UIApplicationSceneTransitionContext *)self clickAttribution];
+  if (clickAttribution)
   {
     v6 = [(NSDictionary *)v4 mutableCopy];
     v7 = v6;
@@ -69,7 +69,7 @@
 
     v9 = v8;
 
-    [(NSDictionary *)v9 setObject:v5 forKey:@"UIApplicationLaunchOptionsEventAttributionKey"];
+    [(NSDictionary *)v9 setObject:clickAttribution forKey:@"UIApplicationLaunchOptionsEventAttributionKey"];
   }
 
   else
@@ -77,8 +77,8 @@
     v9 = 0;
   }
 
-  v10 = [(UIApplicationSceneTransitionContext *)self pasteSharingToken];
-  if (v10)
+  pasteSharingToken = [(UIApplicationSceneTransitionContext *)self pasteSharingToken];
+  if (pasteSharingToken)
   {
     if (!v9)
     {
@@ -97,7 +97,7 @@
       v9 = v13;
     }
 
-    [(NSDictionary *)v9 setObject:v10 forKey:@"UIApplicationLaunchOptionsPasteSharingTokenKey"];
+    [(NSDictionary *)v9 setObject:pasteSharingToken forKey:@"UIApplicationLaunchOptionsPasteSharingTokenKey"];
   }
 
   if (v9)
@@ -118,8 +118,8 @@
 - (UISClickAttribution)clickAttribution
 {
   v2 = MEMORY[0x1E69DEBD0];
-  v3 = [(FBSSettings *)self otherSettings];
-  v4 = [v3 objectForSetting:12];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [otherSettings objectForSetting:12];
   v5 = [v2 bs_secureDecodedFromData:v4];
 
   return v5;
@@ -128,8 +128,8 @@
 - (UISPasteSharingToken)pasteSharingToken
 {
   v2 = MEMORY[0x1E69DEBF8];
-  v3 = [(FBSSettings *)self otherSettings];
-  v4 = [v3 objectForSetting:13];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [otherSettings objectForSetting:13];
   v5 = [v2 bs_secureDecodedFromData:v4];
 
   return v5;
@@ -137,50 +137,50 @@
 
 - (BOOL)disableTouchCancellationOnRotation
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:11];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:11];
 
   return v3;
 }
 
 - (int64_t)statusBarAnimation
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:10];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:10];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)shouldTakeKeyboardFocus
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:8];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:8];
 
   return v3;
 }
 
 - (BOOL)forTesting
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:2];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:2];
 
   return v3;
 }
 
 - (unint64_t)signpostID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:6];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:6];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (double)userLaunchEventTime
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:5];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:5];
   [v3 doubleValue];
   v5 = v4;
 
@@ -189,21 +189,21 @@
 
 - (double)execTime
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"UIApplicationLaunchOptionsEventAttributionKey"];
+  payloadCopy = payload;
+  v5 = [payloadCopy objectForKey:@"UIApplicationLaunchOptionsEventAttributionKey"];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [payloadCopy mutableCopy];
     [v6 removeObjectForKey:@"UIApplicationLaunchOptionsEventAttributionKey"];
     [(UIApplicationSceneTransitionContext *)self setClickAttribution:v5];
   }
@@ -214,12 +214,12 @@
   }
 
   v7 = *MEMORY[0x1E69DECF0];
-  v8 = [v4 objectForKey:*MEMORY[0x1E69DECF0]];
+  v8 = [payloadCopy objectForKey:*MEMORY[0x1E69DECF0]];
   if (v8)
   {
     if (!v6)
     {
-      v6 = [v4 mutableCopy];
+      v6 = [payloadCopy mutableCopy];
     }
 
     [v6 removeObjectForKey:v7];
@@ -233,141 +233,141 @@
 
   else
   {
-    v9 = v4;
+    v9 = payloadCopy;
   }
 
   v11 = v9;
 
-  v10 = [(FBSSettings *)self otherSettings];
-  [v10 setObject:v11 forSetting:1];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:v11 forSetting:1];
 }
 
-- (void)setForTesting:(BOOL)a3
+- (void)setForTesting:(BOOL)testing
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:2];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:2];
 }
 
-- (void)setSafeMode:(BOOL)a3
+- (void)setSafeMode:(BOOL)mode
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:3];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:3];
 }
 
-- (void)setUserLaunchEventTime:(double)a3
+- (void)setUserLaunchEventTime:(double)time
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:5];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:time];
+  [otherSettings setObject:v4 forSetting:5];
 }
 
-- (void)setSignpostID:(unint64_t)a3
+- (void)setSignpostID:(unint64_t)d
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
-  [v5 setObject:v4 forSetting:6];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
+  [otherSettings setObject:v4 forSetting:6];
 }
 
-- (void)setLaunchMetricsPayload:(id)a3
+- (void)setLaunchMetricsPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:7];
+  payloadCopy = payload;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:payloadCopy forSetting:7];
 }
 
-- (void)setExecTime:(double)a3
+- (void)setExecTime:(double)time
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:4];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:time];
+  [otherSettings setObject:v4 forSetting:4];
 }
 
-- (void)setShouldTakeKeyboardFocus:(BOOL)a3
+- (void)setShouldTakeKeyboardFocus:(BOOL)focus
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:8];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:8];
 }
 
 - (BOOL)waitForBackgroundTaskCompletion
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:9];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:9];
 
   return v3;
 }
 
-- (void)setWaitForBackgroundTaskCompletion:(BOOL)a3
+- (void)setWaitForBackgroundTaskCompletion:(BOOL)completion
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:9];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:9];
 }
 
-- (void)setStatusBarAnimation:(int64_t)a3
+- (void)setStatusBarAnimation:(int64_t)animation
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:10];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:animation];
+  [otherSettings setObject:v4 forSetting:10];
 }
 
-- (void)setDisableTouchCancellationOnRotation:(BOOL)a3
+- (void)setDisableTouchCancellationOnRotation:(BOOL)rotation
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:11];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:11];
 }
 
-- (void)setClickAttribution:(id)a3
+- (void)setClickAttribution:(id)attribution
 {
-  v4 = a3;
-  v6 = [(FBSSettings *)self otherSettings];
-  v5 = [v4 bs_secureEncoded];
+  attributionCopy = attribution;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  bs_secureEncoded = [attributionCopy bs_secureEncoded];
 
-  [v6 setObject:v5 forSetting:12];
+  [otherSettings setObject:bs_secureEncoded forSetting:12];
 }
 
-- (void)setPasteSharingToken:(id)a3
+- (void)setPasteSharingToken:(id)token
 {
-  v4 = a3;
-  v6 = [(FBSSettings *)self otherSettings];
-  v5 = [v4 bs_secureEncoded];
+  tokenCopy = token;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  bs_secureEncoded = [tokenCopy bs_secureEncoded];
 
-  [v6 setObject:v5 forSetting:13];
+  [otherSettings setObject:bs_secureEncoded forSetting:13];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 1 > 0xB)
+  if (setting - 1 > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return off_1E710A958[a3 - 1];
+    return off_1E710A958[setting - 1];
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v6 = a4;
-  v7 = v6;
+  objectCopy = object;
+  v7 = objectCopy;
   v8 = 0;
-  if (a5 <= 0xB)
+  if (setting <= 0xB)
   {
-    if (((1 << a5) & 0x30C) != 0)
+    if (((1 << setting) & 0x30C) != 0)
     {
       goto LABEL_3;
     }
 
-    if (a5 == 10)
+    if (setting == 10)
     {
-      v11 = [v6 integerValue];
+      integerValue = [objectCopy integerValue];
       v12 = @"none";
-      if (v11 == 1)
+      if (integerValue == 1)
       {
         v12 = @"fade";
       }
 
-      if (v11 == 2)
+      if (integerValue == 2)
       {
         v12 = @"slide";
       }
@@ -376,7 +376,7 @@
       goto LABEL_4;
     }
 
-    if (a5 == 11)
+    if (setting == 11)
     {
 LABEL_3:
       BSSettingFlagIsYes();

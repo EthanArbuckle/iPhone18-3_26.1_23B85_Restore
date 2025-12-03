@@ -1,9 +1,9 @@
 @interface PKMultiSelectIndicatorView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKMultiSelectIndicatorView)init;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation PKMultiSelectIndicatorView
@@ -26,10 +26,10 @@
   return v2;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  self->_selected = a3;
-  if (a3)
+  self->_selected = selected;
+  if (selected)
   {
     v4 = @"checkmark.circle.fill";
   }
@@ -40,13 +40,13 @@
   }
 
   v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:v4];
-  v5 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v5 && _UISolariumFeatureFlagEnabled())
+  if (image && _UISolariumFeatureFlagEnabled())
   {
     v6 = MEMORY[0x1E6982288];
-    v7 = [MEMORY[0x1E6982288] transition];
-    v8 = [v6 magicTransitionWithFallback:v7];
+    transition = [MEMORY[0x1E6982288] transition];
+    v8 = [v6 magicTransitionWithFallback:transition];
 
     [(UIImageView *)self->_imageView setSymbolImage:v9 withContentTransition:v8];
   }
@@ -57,7 +57,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 22.0;
   v4 = 22.0;

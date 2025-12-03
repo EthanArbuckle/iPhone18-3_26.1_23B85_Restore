@@ -1,16 +1,16 @@
 @interface HUClipScrubberTimeController
 - (BOOL)isAtMinimumZoom;
 - (HUClipScrubberTimeController)init;
-- (double)_numberOfPosterFrameUnitsForEvent:(id)a3 timeScale:(double)a4;
-- (double)clampGestureScale:(double)a3;
+- (double)_numberOfPosterFrameUnitsForEvent:(id)event timeScale:(double)scale;
+- (double)clampGestureScale:(double)scale;
 - (double)maximumGestureScale;
-- (double)numberOfPosterFrameUnitsForEvent:(id)a3;
+- (double)numberOfPosterFrameUnitsForEvent:(id)event;
 - (double)posterFrameWidthFromCameraLiveSource;
-- (double)timelineWidthForEvent:(id)a3;
-- (double)updateTimeScaleForGestureScale:(double)a3;
+- (double)timelineWidthForEvent:(id)event;
+- (double)updateTimeScaleForGestureScale:(double)scale;
 - (void)dealloc;
 - (void)expandTimelineToMaximumZoom;
-- (void)recalculateMaximumPosterFrameDuration:(id)a3;
+- (void)recalculateMaximumPosterFrameDuration:(id)duration;
 - (void)shrinkTimelineToMinimumZoom;
 - (void)updateTimeScaleIfNeeded;
 @end
@@ -30,12 +30,12 @@
   return result;
 }
 
-- (void)recalculateMaximumPosterFrameDuration:(id)a3
+- (void)recalculateMaximumPosterFrameDuration:(id)duration
 {
-  v4 = a3;
-  [(HUClipScrubberTimeController *)self _numberOfPosterFrameUnitsForEvent:v4 timeScale:10.0];
+  durationCopy = duration;
+  [(HUClipScrubberTimeController *)self _numberOfPosterFrameUnitsForEvent:durationCopy timeScale:10.0];
   v6 = v5;
-  [v4 duration];
+  [durationCopy duration];
   v8 = v7;
 
   v9 = v8 / v6;
@@ -80,12 +80,12 @@
   return v4 / v5;
 }
 
-- (double)clampGestureScale:(double)a3
+- (double)clampGestureScale:(double)scale
 {
   [(HUClipScrubberTimeController *)self maximumGestureScale];
-  if (result > a3)
+  if (result > scale)
   {
-    result = a3;
+    result = scale;
   }
 
   if (result < 1.0)
@@ -96,10 +96,10 @@
   return result;
 }
 
-- (double)updateTimeScaleForGestureScale:(double)a3
+- (double)updateTimeScaleForGestureScale:(double)scale
 {
   [(HUClipScrubberTimeController *)self maximumPosterFrameDuration];
-  v6 = v5 / a3;
+  v6 = v5 / scale;
   [(HUClipScrubberTimeController *)self minimumPosterFrameDuration];
   if (v6 >= v7)
   {
@@ -112,30 +112,30 @@
   return result;
 }
 
-- (double)numberOfPosterFrameUnitsForEvent:(id)a3
+- (double)numberOfPosterFrameUnitsForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(HUClipScrubberTimeController *)self timeScale];
-  [(HUClipScrubberTimeController *)self _numberOfPosterFrameUnitsForEvent:v4 timeScale:?];
+  [(HUClipScrubberTimeController *)self _numberOfPosterFrameUnitsForEvent:eventCopy timeScale:?];
   v6 = v5;
 
   return v6;
 }
 
-- (double)_numberOfPosterFrameUnitsForEvent:(id)a3 timeScale:(double)a4
+- (double)_numberOfPosterFrameUnitsForEvent:(id)event timeScale:(double)scale
 {
-  v6 = a3;
-  [v6 duration];
+  eventCopy = event;
+  [eventCopy duration];
   v8 = v7;
   [(HUClipScrubberTimeController *)self timeScale];
   if (fabs(v9 + -10.0) >= 0.00000011920929)
   {
-    v11 = v8 / a4;
+    v11 = v8 / scale;
   }
 
   else
   {
-    [v6 duration];
+    [eventCopy duration];
     v11 = sqrt(v10);
   }
 
@@ -150,12 +150,12 @@
   return v13;
 }
 
-- (double)timelineWidthForEvent:(id)a3
+- (double)timelineWidthForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(HUClipScrubberTimeController *)self posterFrameWidth];
   v6 = v5;
-  [(HUClipScrubberTimeController *)self numberOfPosterFrameUnitsForEvent:v4];
+  [(HUClipScrubberTimeController *)self numberOfPosterFrameUnitsForEvent:eventCopy];
   v8 = v7;
 
   return v6 * v8;
@@ -163,9 +163,9 @@
 
 - (double)posterFrameWidthFromCameraLiveSource
 {
-  v2 = [(HUClipScrubberTimeController *)self portraitMode];
+  portraitMode = [(HUClipScrubberTimeController *)self portraitMode];
   result = 58.0;
-  if (v2)
+  if (portraitMode)
   {
     return 33.0;
   }

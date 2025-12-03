@@ -1,31 +1,31 @@
 @interface NRUnarchivedObjectVerifier
-+ (void)unarchivingVerifyObjectClasses:(id)a3 name:(id)a4 classes:(id)a5 owner:(id)a6;
-+ (void)unarchivingVerifyObjectIsNotNil:(id)a3 name:(id)a4 owner:(id)a5;
++ (void)unarchivingVerifyObjectClasses:(id)classes name:(id)name classes:(id)a5 owner:(id)owner;
++ (void)unarchivingVerifyObjectIsNotNil:(id)nil name:(id)name owner:(id)owner;
 @end
 
 @implementation NRUnarchivedObjectVerifier
 
-+ (void)unarchivingVerifyObjectIsNotNil:(id)a3 name:(id)a4 owner:(id)a5
++ (void)unarchivingVerifyObjectIsNotNil:(id)nil name:(id)name owner:(id)owner
 {
-  if (!a3)
+  if (!nil)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = a4;
+    nameCopy = name;
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = [v6 stringWithFormat:@"failure unarchiving %@", v9];
 
-    [MEMORY[0x1E695DF30] raise:v10 format:{@"%@ is nil", v7}];
+    [MEMORY[0x1E695DF30] raise:v10 format:{@"%@ is nil", nameCopy}];
   }
 }
 
-+ (void)unarchivingVerifyObjectClasses:(id)a3 name:(id)a4 classes:(id)a5 owner:(id)a6
++ (void)unarchivingVerifyObjectClasses:(id)classes name:(id)name classes:(id)a5 owner:(id)owner
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  classesCopy = classes;
+  nameCopy = name;
   v11 = a5;
-  v12 = a6;
+  ownerCopy = owner;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -75,7 +75,7 @@
   v23 = MEMORY[0x1E695DF30];
   v24 = objc_opt_class();
   v25 = NSStringFromClass(v24);
-  [v23 raise:v22 format:{@"%@ is class %@ expected one of %@", v10, v25, v13}];
+  [v23 raise:v22 format:{@"%@ is class %@ expected one of %@", nameCopy, v25, v13}];
 
 LABEL_11:
   v26 = *MEMORY[0x1E69E9840];

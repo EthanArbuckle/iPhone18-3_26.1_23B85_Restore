@@ -1,59 +1,59 @@
 @interface GAXOptionsDoneButton
-+ (id)optionsDoneButtonWithTitle:(id)a3 styleProvider:(id)a4;
-- (GAXOptionsDoneButton)initWithTitle:(id)a3 styleProvider:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
++ (id)optionsDoneButtonWithTitle:(id)title styleProvider:(id)provider;
+- (GAXOptionsDoneButton)initWithTitle:(id)title styleProvider:(id)provider;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation GAXOptionsDoneButton
 
-+ (id)optionsDoneButtonWithTitle:(id)a3 styleProvider:(id)a4
++ (id)optionsDoneButtonWithTitle:(id)title styleProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:v7 styleProvider:v6];
+  providerCopy = provider;
+  titleCopy = title;
+  v8 = [[self alloc] initWithTitle:titleCopy styleProvider:providerCopy];
 
   return v8;
 }
 
-- (GAXOptionsDoneButton)initWithTitle:(id)a3 styleProvider:(id)a4
+- (GAXOptionsDoneButton)initWithTitle:(id)title styleProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  providerCopy = provider;
   v8 = [(GAXOptionsDoneButton *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v8)
   {
-    v9 = [v7 optionsDoneButtonBackgroundColor];
-    [(GAXOptionsDoneButton *)v8 setBackgroundColor:v9];
+    optionsDoneButtonBackgroundColor = [providerCopy optionsDoneButtonBackgroundColor];
+    [(GAXOptionsDoneButton *)v8 setBackgroundColor:optionsDoneButtonBackgroundColor];
 
-    v10 = [v7 optionsDoneButtonFont];
-    v11 = [(GAXOptionsDoneButton *)v8 titleLabel];
-    [v11 setFont:v10];
+    optionsDoneButtonFont = [providerCopy optionsDoneButtonFont];
+    titleLabel = [(GAXOptionsDoneButton *)v8 titleLabel];
+    [titleLabel setFont:optionsDoneButtonFont];
 
-    [(GAXOptionsDoneButton *)v8 setTitle:v6 forState:0];
-    v12 = [(GAXOptionsDoneButton *)v8 tintColor];
-    [(GAXOptionsDoneButton *)v8 setTitleColor:v12 forState:0];
+    [(GAXOptionsDoneButton *)v8 setTitle:titleCopy forState:0];
+    tintColor = [(GAXOptionsDoneButton *)v8 tintColor];
+    [(GAXOptionsDoneButton *)v8 setTitleColor:tintColor forState:0];
 
-    [(GAXOptionsDoneButton *)v8 setStyleProvider:v7];
+    [(GAXOptionsDoneButton *)v8 setStyleProvider:providerCopy];
   }
 
   return v8;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v8.receiver = self;
   v8.super_class = GAXOptionsDoneButton;
   [(GAXOptionsDoneButton *)&v8 setHighlighted:?];
-  v5 = [(GAXOptionsDoneButton *)self styleProvider];
-  v6 = v5;
-  if (a3)
+  styleProvider = [(GAXOptionsDoneButton *)self styleProvider];
+  v6 = styleProvider;
+  if (highlighted)
   {
-    [v5 optionsDoneButtonBackgroundHighlightedColor];
+    [styleProvider optionsDoneButtonBackgroundHighlightedColor];
   }
 
   else
   {
-    [v5 optionsDoneButtonBackgroundColor];
+    [styleProvider optionsDoneButtonBackgroundColor];
   }
   v7 = ;
   [(GAXOptionsDoneButton *)self setBackgroundColor:v7];

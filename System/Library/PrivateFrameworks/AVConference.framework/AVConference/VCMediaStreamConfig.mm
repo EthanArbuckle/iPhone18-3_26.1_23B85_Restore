@@ -2,20 +2,20 @@
 - (NSDictionary)allRxPayloadMap;
 - (NSDictionary)allTxPayloadMap;
 - (VCMediaStreamConfig)init;
-- (VCMediaStreamConfig)initWithClientDictionary:(id)a3 xpcDictionary:(id)a4;
+- (VCMediaStreamConfig)initWithClientDictionary:(id)dictionary xpcDictionary:(id)xpcDictionary;
 - (id)description;
-- (int)jitterBufferModeFromAVCJitterBufferMode:(unsigned int)a3;
+- (int)jitterBufferModeFromAVCJitterBufferMode:(unsigned int)mode;
 - (int64_t)primaryTxCodecType;
 - (unsigned)defaultRemoteSSRC;
-- (void)addRxPayloadType:(int)a3 networkPayload:(unsigned int)a4;
-- (void)addTxPayloadType:(int)a3 networkPayload:(unsigned int)a4;
-- (void)applyMediaStreamClientDictionary:(id)a3;
-- (void)applyMediaStreamClientXPCDictionary:(id)a3;
+- (void)addRxPayloadType:(int)type networkPayload:(unsigned int)payload;
+- (void)addTxPayloadType:(int)type networkPayload:(unsigned int)payload;
+- (void)applyMediaStreamClientDictionary:(id)dictionary;
+- (void)applyMediaStreamClientXPCDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)extractRemoteEndpointsAndSSRC:(id)a3;
-- (void)setDefaultRemoteSSRC:(unsigned int)a3;
-- (void)setJbTargetEstimatorSynchronizer:(tagVCJBTargetEstimatorSynchronizer *)a3;
-- (void)setSecurityKeyHolder:(tagVCSecurityKeyHolder *)a3;
+- (void)extractRemoteEndpointsAndSSRC:(id)c;
+- (void)setDefaultRemoteSSRC:(unsigned int)c;
+- (void)setJbTargetEstimatorSynchronizer:(tagVCJBTargetEstimatorSynchronizer *)synchronizer;
+- (void)setSecurityKeyHolder:(tagVCSecurityKeyHolder *)holder;
 - (void)setupMediaStreamConfig;
 @end
 
@@ -24,10 +24,10 @@
 - (NSDictionary)allTxPayloadMap
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:{-[VCMediaStreamConfig txPayloadMap](self, "txPayloadMap")}];
-  v4 = [(VCMediaStreamConfig *)self multiwayConfig];
-  if (v4)
+  multiwayConfig = [(VCMediaStreamConfig *)self multiwayConfig];
+  if (multiwayConfig)
   {
-    [v3 addEntriesFromDictionary:{-[VCMediaStreamMultiwayConfig txPayloadMap](v4, "txPayloadMap")}];
+    [v3 addEntriesFromDictionary:{-[VCMediaStreamMultiwayConfig txPayloadMap](multiwayConfig, "txPayloadMap")}];
   }
 
   return v3;
@@ -36,10 +36,10 @@
 - (NSDictionary)allRxPayloadMap
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:{-[VCMediaStreamConfig rxPayloadMap](self, "rxPayloadMap")}];
-  v4 = [(VCMediaStreamConfig *)self multiwayConfig];
-  if (v4)
+  multiwayConfig = [(VCMediaStreamConfig *)self multiwayConfig];
+  if (multiwayConfig)
   {
-    [v3 addEntriesFromDictionary:{-[VCMediaStreamMultiwayConfig rxPayloadMap](v4, "rxPayloadMap")}];
+    [v3 addEntriesFromDictionary:{-[VCMediaStreamMultiwayConfig rxPayloadMap](multiwayConfig, "rxPayloadMap")}];
   }
 
   return v3;
@@ -60,7 +60,7 @@
   return v3;
 }
 
-- (VCMediaStreamConfig)initWithClientDictionary:(id)a3 xpcDictionary:(id)a4
+- (VCMediaStreamConfig)initWithClientDictionary:(id)dictionary xpcDictionary:(id)xpcDictionary
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -70,27 +70,27 @@
   if (v6)
   {
     [(VCMediaStreamConfig *)v6 setupMediaStreamConfig];
-    if (a3)
+    if (dictionary)
     {
-      [(VCMediaStreamConfig *)v7 applyMediaStreamClientDictionary:a3];
+      [(VCMediaStreamConfig *)v7 applyMediaStreamClientDictionary:dictionary];
     }
 
-    if (a4)
+    if (xpcDictionary)
     {
-      [(VCMediaStreamConfig *)v7 applyMediaStreamClientXPCDictionary:a4];
+      [(VCMediaStreamConfig *)v7 applyMediaStreamClientXPCDictionary:xpcDictionary];
     }
   }
 
   return v7;
 }
 
-- (void)setSecurityKeyHolder:(tagVCSecurityKeyHolder *)a3
+- (void)setSecurityKeyHolder:(tagVCSecurityKeyHolder *)holder
 {
   securityKeyHolder = self->_securityKeyHolder;
-  self->_securityKeyHolder = a3;
-  if (a3)
+  self->_securityKeyHolder = holder;
+  if (holder)
   {
-    CFRetain(a3);
+    CFRetain(holder);
   }
 
   if (securityKeyHolder)
@@ -129,20 +129,20 @@
   return [v3 stringWithFormat:@"%@ (%p)", NSStringFromClass(v4), self];
 }
 
-- (void)addRxPayloadType:(int)a3 networkPayload:(unsigned int)a4
+- (void)addRxPayloadType:(int)type networkPayload:(unsigned int)payload
 {
-  v4 = *&a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v4 = *&type;
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
   rxPayloadMap = self->_rxPayloadMap;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
 
   [(NSMutableDictionary *)rxPayloadMap setObject:v6 forKeyedSubscript:v8];
 }
 
-- (void)addTxPayloadType:(int)a3 networkPayload:(unsigned int)a4
+- (void)addTxPayloadType:(int)type networkPayload:(unsigned int)payload
 {
-  v4 = *&a3;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4];
+  v4 = *&type;
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
   txPayloadMap = self->_txPayloadMap;
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
 
@@ -156,8 +156,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMutableDictionary *)self->_txPayloadMap allKeys];
-  result = [v2 countByEnumeratingWithState:&v8 objects:v7 count:16];
+  allKeys = [(NSMutableDictionary *)self->_txPayloadMap allKeys];
+  result = [allKeys countByEnumeratingWithState:&v8 objects:v7 count:16];
   if (result)
   {
     v4 = result;
@@ -168,7 +168,7 @@ LABEL_3:
     {
       if (*v9 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(allKeys);
       }
 
       if ([*(*(&v8 + 1) + 8 * v6) integerValue] != 20)
@@ -182,7 +182,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        result = [v2 countByEnumeratingWithState:&v8 objects:v7 count:16];
+        result = [allKeys countByEnumeratingWithState:&v8 objects:v7 count:16];
         v4 = result;
         if (result)
         {
@@ -210,10 +210,10 @@ LABEL_3:
   self->_networkClockID = *MEMORY[0x1E69DA108];
 }
 
-- (void)applyMediaStreamClientXPCDictionary:(id)a3
+- (void)applyMediaStreamClientXPCDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  value = xpc_dictionary_get_value(a3, "vcMediaStreamRemoteAVCEndpointsXpcArgs");
+  value = xpc_dictionary_get_value(dictionary, "vcMediaStreamRemoteAVCEndpointsXpcArgs");
   if (value)
   {
     v5 = value;
@@ -321,7 +321,7 @@ LABEL_3:
               v27 = 2112;
               v28 = v16;
               v29 = 2048;
-              v30 = self;
+              selfCopy = self;
               v31 = 1024;
               v32 = v7;
               _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create the AVCEndpoint for index=%d", buf, 0x36u);
@@ -343,19 +343,19 @@ LABEL_3:
   }
 }
 
-- (void)setDefaultRemoteSSRC:(unsigned int)a3
+- (void)setDefaultRemoteSSRC:(unsigned int)c
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&c];
   remoteSSRCs = self->_remoteSSRCs;
 
   [(NSMutableArray *)remoteSSRCs setObject:v4 atIndexedSubscript:0];
 }
 
-- (void)applyMediaStreamClientDictionary:(id)a3
+- (void)applyMediaStreamClientDictionary:(id)dictionary
 {
-  -[VCNetworkAddress setIp:](self->_remoteAddress, "setIp:", [a3 objectForKeyedSubscript:@"vcMediaStreamDestIp"]);
-  -[VCNetworkAddress setPort:](self->_remoteAddress, "setPort:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDestPort", "shortValue"}]);
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDestIsIPv6", "BOOLValue"}])
+  -[VCNetworkAddress setIp:](self->_remoteAddress, "setIp:", [dictionary objectForKeyedSubscript:@"vcMediaStreamDestIp"]);
+  -[VCNetworkAddress setPort:](self->_remoteAddress, "setPort:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDestPort", "shortValue"}]);
+  if ([objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDestIsIPv6", "BOOLValue"}])
   {
     v5 = 6;
   }
@@ -366,10 +366,10 @@ LABEL_3:
   }
 
   [(VCNetworkAddress *)self->_remoteAddress setIpVersion:v5];
-  -[NSMutableArray setObject:atIndexedSubscript:](self->_remoteSSRCs, "setObject:atIndexedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objc_msgSend(a3, "objectForKeyedSubscript:", @"vcMediaStreamRemoteSSRC", "integerValue")}], 0);
-  -[VCNetworkAddress setIp:](self->_localAddress, "setIp:", [a3 objectForKeyedSubscript:@"vcMediaStreamSourceIP"]);
-  -[VCNetworkAddress setPort:](self->_localAddress, "setPort:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamSourcePort", "shortValue"}]);
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamSourceIsIPv6", "BOOLValue"}])
+  -[NSMutableArray setObject:atIndexedSubscript:](self->_remoteSSRCs, "setObject:atIndexedSubscript:", [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(objc_msgSend(dictionary, "objectForKeyedSubscript:", @"vcMediaStreamRemoteSSRC", "integerValue")}], 0);
+  -[VCNetworkAddress setIp:](self->_localAddress, "setIp:", [dictionary objectForKeyedSubscript:@"vcMediaStreamSourceIP"]);
+  -[VCNetworkAddress setPort:](self->_localAddress, "setPort:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamSourcePort", "shortValue"}]);
+  if ([objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamSourceIsIPv6", "BOOLValue"}])
   {
     v6 = 6;
   }
@@ -380,65 +380,65 @@ LABEL_3:
   }
 
   [(VCNetworkAddress *)self->_localAddress setIpVersion:v6];
-  -[VCNetworkAddress setInterfaceName:](self->_localAddress, "setInterfaceName:", [a3 objectForKeyedSubscript:@"vcMediaStreamSourceInterfaceName"]);
-  self->_localSSRC = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamLocalSSRC", "integerValue"}];
-  self->_cName = [a3 objectForKeyedSubscript:@"vcMediaStreamCName"];
-  self->_recommendedMTU = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRecommendedMTU", "integerValue"}];
-  self->_direction = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDirection", "integerValue"}];
-  self->_rateAdaptationEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRateAdaptationEnabled", "BOOLValue"}];
-  self->_rtpTimeOutEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRTPTimeoutEnabled", "BOOLValue"}];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRTPTimeoutInterval", "doubleValue"}];
+  -[VCNetworkAddress setInterfaceName:](self->_localAddress, "setInterfaceName:", [dictionary objectForKeyedSubscript:@"vcMediaStreamSourceInterfaceName"]);
+  self->_localSSRC = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamLocalSSRC", "integerValue"}];
+  self->_cName = [dictionary objectForKeyedSubscript:@"vcMediaStreamCName"];
+  self->_recommendedMTU = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRecommendedMTU", "integerValue"}];
+  self->_direction = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDirection", "integerValue"}];
+  self->_rateAdaptationEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRateAdaptationEnabled", "BOOLValue"}];
+  self->_rtpTimeOutEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRTPTimeoutEnabled", "BOOLValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRTPTimeoutInterval", "doubleValue"}];
   self->_rtpTimeOutInterval = v7;
-  self->_decryptionTimeOutEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDecryptionTimeoutEnabled", "BOOLValue"}];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDecryptionTimeoutInterval", "doubleValue"}];
+  self->_decryptionTimeOutEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDecryptionTimeoutEnabled", "BOOLValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDecryptionTimeoutInterval", "doubleValue"}];
   self->_decryptionTimeOutInterval = v8;
-  self->_SRTPCipherSuite = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamSRTPCipherSuite", "integerValue"}];
-  self->_rtcpEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRTCPEnabled", "BOOLValue"}];
-  self->_rtcpXREnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRTCPXREnabled", "BOOLValue"}];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRTCPSendInterval", "doubleValue"}];
+  self->_SRTPCipherSuite = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamSRTPCipherSuite", "integerValue"}];
+  self->_rtcpEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRTCPEnabled", "BOOLValue"}];
+  self->_rtcpXREnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRTCPXREnabled", "BOOLValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRTCPSendInterval", "doubleValue"}];
   self->_rtcpSendInterval = v9;
-  self->_rtcpRemotePort = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRTCPRemotePort", "integerValue"}];
-  self->_rtcpTimeOutEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRTCPTimeoutEnabled", "BOOLValue"}];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamRTCPTimeoutInterval", "doubleValue"}];
+  self->_rtcpRemotePort = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRTCPRemotePort", "integerValue"}];
+  self->_rtcpTimeOutEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRTCPTimeoutEnabled", "BOOLValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamRTCPTimeoutInterval", "doubleValue"}];
   self->_rtcpTimeOutInterval = v10;
-  self->_SRTCPCipherSuite = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamSRTCPCipherSuite", "integerValue"}];
-  self->_sendMediaKey = [a3 objectForKeyedSubscript:@"vcMediaStreamSRTPSendMediaKey"];
-  self->_receiveMediaKey = [a3 objectForKeyedSubscript:@"vcMediaStreamSRTPReceiveMediaKey"];
-  self->_captureSource = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamCaptureSource", "integerValue"}];
-  self->_streamInputID = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamStreamInputID", "integerValue"}];
-  if ([a3 objectForKeyedSubscript:@"vcMediaStreamNetworkClockID"])
+  self->_SRTCPCipherSuite = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamSRTCPCipherSuite", "integerValue"}];
+  self->_sendMediaKey = [dictionary objectForKeyedSubscript:@"vcMediaStreamSRTPSendMediaKey"];
+  self->_receiveMediaKey = [dictionary objectForKeyedSubscript:@"vcMediaStreamSRTPReceiveMediaKey"];
+  self->_captureSource = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamCaptureSource", "integerValue"}];
+  self->_streamInputID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamStreamInputID", "integerValue"}];
+  if ([dictionary objectForKeyedSubscript:@"vcMediaStreamNetworkClockID"])
   {
-    self->_networkClockID = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamNetworkClockID", "unsignedLongLongValue"}];
+    self->_networkClockID = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamNetworkClockID", "unsignedLongLongValue"}];
   }
 
-  self->_jitterBufferMode = -[VCMediaStreamConfig jitterBufferModeFromAVCJitterBufferMode:](self, "jitterBufferModeFromAVCJitterBufferMode:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamJitterBufferMode", "unsignedIntValue"}]);
-  self->_fixedJitterBufferSize = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamFixedJitterBufferSize", "unsignedLongValue"}];
-  self->_outOfProcessCodecsEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamOutOfProcessCodecsEnabled", "BOOLValue"}];
-  self->_accessNetworkType = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamAccessNetworkType", "integerValue"}];
-  self->_dscpTag = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamDSCPTag", "unsignedCharValue"}];
-  self->_packetExpirationTime = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamPacketExpirationTime", "unsignedIntegerValue"}];
-  v11 = [a3 objectForKeyedSubscript:@"vcMediaStreamConnectionClientID"];
+  self->_jitterBufferMode = -[VCMediaStreamConfig jitterBufferModeFromAVCJitterBufferMode:](self, "jitterBufferModeFromAVCJitterBufferMode:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamJitterBufferMode", "unsignedIntValue"}]);
+  self->_fixedJitterBufferSize = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamFixedJitterBufferSize", "unsignedLongValue"}];
+  self->_outOfProcessCodecsEnabled = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamOutOfProcessCodecsEnabled", "BOOLValue"}];
+  self->_accessNetworkType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamAccessNetworkType", "integerValue"}];
+  self->_dscpTag = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamDSCPTag", "unsignedCharValue"}];
+  self->_packetExpirationTime = [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcMediaStreamPacketExpirationTime", "unsignedIntegerValue"}];
+  v11 = [dictionary objectForKeyedSubscript:@"vcMediaStreamConnectionClientID"];
   self->_rtpNWConnectionClientID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v11];
-  v12 = [a3 objectForKeyedSubscript:@"vcMediaStreamRTCPConnectionClientID"];
+  v12 = [dictionary objectForKeyedSubscript:@"vcMediaStreamRTCPConnectionClientID"];
   self->_rtcpNWConnectionClientID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v12];
 
-  [(VCMediaStreamConfig *)self extractRemoteEndpointsAndSSRC:a3];
+  [(VCMediaStreamConfig *)self extractRemoteEndpointsAndSSRC:dictionary];
 }
 
-- (int)jitterBufferModeFromAVCJitterBufferMode:(unsigned int)a3
+- (int)jitterBufferModeFromAVCJitterBufferMode:(unsigned int)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 3;
   }
 
   else
   {
-    return a3 == 0;
+    return mode == 0;
   }
 }
 
-- (void)setJbTargetEstimatorSynchronizer:(tagVCJBTargetEstimatorSynchronizer *)a3
+- (void)setJbTargetEstimatorSynchronizer:(tagVCJBTargetEstimatorSynchronizer *)synchronizer
 {
   jbTargetEstimatorSynchronizer = self->_jbTargetEstimatorSynchronizer;
   if (jbTargetEstimatorSynchronizer)
@@ -446,11 +446,11 @@ LABEL_3:
     CFRelease(jbTargetEstimatorSynchronizer);
   }
 
-  self->_jbTargetEstimatorSynchronizer = a3;
-  if (a3)
+  self->_jbTargetEstimatorSynchronizer = synchronizer;
+  if (synchronizer)
   {
 
-    CFRetain(a3);
+    CFRetain(synchronizer);
   }
 }
 
@@ -465,11 +465,11 @@ LABEL_3:
   return [v3 unsignedIntValue];
 }
 
-- (void)extractRemoteEndpointsAndSSRC:(id)a3
+- (void)extractRemoteEndpointsAndSSRC:(id)c
 {
-  if ([a3 objectForKeyedSubscript:@"vcMediaStreamRemoteAVCEndpoints"])
+  if ([c objectForKeyedSubscript:@"vcMediaStreamRemoteAVCEndpoints"])
   {
-    v5 = [a3 objectForKeyedSubscript:@"vcMediaStreamRemoteAVCEndpoints"];
+    v5 = [c objectForKeyedSubscript:@"vcMediaStreamRemoteAVCEndpoints"];
     v6 = [v5 count];
     if (v6 >= 1)
     {

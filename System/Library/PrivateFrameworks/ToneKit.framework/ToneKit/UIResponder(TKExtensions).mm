@@ -6,19 +6,19 @@
 
 - (id)tk_firstViewControllerInResponderChain
 {
-  v1 = [a1 nextResponder];
+  nextResponder = [self nextResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    tk_firstViewControllerInResponderChain = nextResponder;
   }
 
   else
   {
-    v2 = [v1 tk_firstViewControllerInResponderChain];
+    tk_firstViewControllerInResponderChain = [nextResponder tk_firstViewControllerInResponderChain];
   }
 
-  v3 = v2;
+  v3 = tk_firstViewControllerInResponderChain;
 
   return v3;
 }

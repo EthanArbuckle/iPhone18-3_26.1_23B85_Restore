@@ -1,40 +1,40 @@
 @interface ASCSInterface
-- (ASCSInterface)initWithPeripheral:(id)a3 service:(id)a4;
+- (ASCSInterface)initWithPeripheral:(id)peripheral service:(id)service;
 - (AcceptorInterface)acceptor;
-- (BOOL)allASEInSameState:(unsigned __int8)a3 forSinkASE:(id)a4 forSourceASE:(id)a5;
-- (id)aseReasonCodeToString:(unsigned __int8)a3;
-- (id)aseResponseCodeToString:(unsigned __int8)a3;
-- (id)audioContextToString:(unsigned __int16)a3;
+- (BOOL)allASEInSameState:(unsigned __int8)state forSinkASE:(id)e forSourceASE:(id)sE;
+- (id)aseReasonCodeToString:(unsigned __int8)string;
+- (id)aseResponseCodeToString:(unsigned __int8)string;
+- (id)audioContextToString:(unsigned __int16)string;
 - (id)getAudioStreamEndpoints;
 - (id)getConfiguredASEInfo;
-- (id)sampleFreqString:(unsigned int)a3;
-- (unsigned)determineChannelCountForASE:(unsigned int)a3;
-- (unsigned)getLowestBitSet:(unsigned int)a3;
-- (unsigned)sendConfigQoSRequestForDirection:(BOOL)a3 OptionalASE:(id *)a4 withLTVData:(id *)a5;
-- (unsigned)sendDisableRequestForASE:(BOOL)a3 OptionalASE:(id *)a4 withLTVData:(id *)a5;
-- (unsigned)sendEnableRequestForDirection:(BOOL)a3 OptionalASE:(id *)a4 withLTVData:(id *)a5;
-- (unsigned)sendReceiverStartReadyRequestOptionalASE:(id *)a3 withLTVData:(id *)a4 withEnabledSinkASE:(char *)a5;
-- (unsigned)sendReceiverStopReadyRequestOptionalASE:(id *)a3 withLTVData:(id *)a4;
-- (unsigned)sendReleaseRequestForASE:(BOOL)a3 OptionalASE:(id *)a4 withLTVData:(id *)a5;
-- (unsigned)sendUpdateMetadataRequestForDirection:(BOOL)a3 OptionalASE:(id)a4 withMetadata:(id)a5 withLTVData:(id *)a6;
-- (void)handleASEUpdate:(id)a3 withType:(BOOL)a4;
-- (void)handleCodecConfiguredForAse:(id)a3 dataStream:(id)a4;
+- (id)sampleFreqString:(unsigned int)string;
+- (unsigned)determineChannelCountForASE:(unsigned int)e;
+- (unsigned)getLowestBitSet:(unsigned int)set;
+- (unsigned)sendConfigQoSRequestForDirection:(BOOL)direction OptionalASE:(id *)e withLTVData:(id *)data;
+- (unsigned)sendDisableRequestForASE:(BOOL)e OptionalASE:(id *)sE withLTVData:(id *)data;
+- (unsigned)sendEnableRequestForDirection:(BOOL)direction OptionalASE:(id *)e withLTVData:(id *)data;
+- (unsigned)sendReceiverStartReadyRequestOptionalASE:(id *)e withLTVData:(id *)data withEnabledSinkASE:(char *)sE;
+- (unsigned)sendReceiverStopReadyRequestOptionalASE:(id *)e withLTVData:(id *)data;
+- (unsigned)sendReleaseRequestForASE:(BOOL)e OptionalASE:(id *)sE withLTVData:(id *)data;
+- (unsigned)sendUpdateMetadataRequestForDirection:(BOOL)direction OptionalASE:(id)e withMetadata:(id)metadata withLTVData:(id *)data;
+- (void)handleASEUpdate:(id)update withType:(BOOL)type;
+- (void)handleCodecConfiguredForAse:(id)ase dataStream:(id)stream;
 - (void)handleControlPointUpdate;
-- (void)handleDisablingStateForASE:(id)a3;
-- (void)handleEnablingResponseForAse:(id)a3 dataStream:(id)a4;
-- (void)handleIdleStateForASE:(id)a3;
-- (void)handleQoSConfiguredForAse:(id)a3 dataStream:(id)a4;
-- (void)handleReleasingStateForASE:(id)a3;
-- (void)handleStreamingStateForASE:(id)a3;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)readSinkASE:(unsigned __int8)a3;
-- (void)readSourceASE:(unsigned __int8)a3;
-- (void)registerASEUpdateHandler:(id)a3;
-- (void)registerControlPointHandler:(id)a3;
-- (void)requestRemoveDataPathForASE:(id)a3;
-- (void)sendControlPointOperation:(id)a3;
+- (void)handleDisablingStateForASE:(id)e;
+- (void)handleEnablingResponseForAse:(id)ase dataStream:(id)stream;
+- (void)handleIdleStateForASE:(id)e;
+- (void)handleQoSConfiguredForAse:(id)ase dataStream:(id)stream;
+- (void)handleReleasingStateForASE:(id)e;
+- (void)handleStreamingStateForASE:(id)e;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)readSinkASE:(unsigned __int8)e;
+- (void)readSourceASE:(unsigned __int8)e;
+- (void)registerASEUpdateHandler:(id)handler;
+- (void)registerControlPointHandler:(id)handler;
+- (void)requestRemoveDataPathForASE:(id)e;
+- (void)sendControlPointOperation:(id)operation;
 - (void)start;
 - (void)stop;
 - (void)writeASEControlPoint;
@@ -42,11 +42,11 @@
 
 @implementation ASCSInterface
 
-- (ASCSInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (ASCSInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
   v21.receiver = self;
   v21.super_class = ASCSInterface;
-  v4 = [(ServiceInterface *)&v21 initWithPeripheral:a3 service:a4];
+  v4 = [(ServiceInterface *)&v21 initWithPeripheral:peripheral service:service];
   v5 = v4;
   if (v4)
   {
@@ -85,18 +85,18 @@
   return v5;
 }
 
-- (void)registerControlPointHandler:(id)a3
+- (void)registerControlPointHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   controlPointHandler = self->_controlPointHandler;
   self->_controlPointHandler = v4;
 
   _objc_release_x1();
 }
 
-- (void)registerASEUpdateHandler:(id)a3
+- (void)registerASEUpdateHandler:(id)handler
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(handler);
   aseUpdateHandler = self->_aseUpdateHandler;
   self->_aseUpdateHandler = v4;
 
@@ -116,9 +116,9 @@
   v10[2] = v5;
   v6 = [NSArray arrayWithObjects:v10 count:3];
 
-  v7 = [(ServiceInterface *)self peripheral];
-  v8 = [(ServiceInterface *)self service];
-  [v7 discoverCharacteristics:v6 forService:v8];
+  peripheral = [(ServiceInterface *)self peripheral];
+  service = [(ServiceInterface *)self service];
+  [peripheral discoverCharacteristics:v6 forService:service];
 }
 
 - (void)stop
@@ -128,25 +128,25 @@
   [(ServiceInterface *)&v2 stop];
 }
 
-- (void)sendControlPointOperation:(id)a3
+- (void)sendControlPointOperation:(id)operation
 {
-  v4 = a3;
-  v6 = [(ServiceInterface *)self peripheral];
-  v5 = [(ASCSInterface *)self ASEControlPointCharacteristic];
-  [v6 writeValue:v4 forCharacteristic:v5 type:1];
+  operationCopy = operation;
+  peripheral = [(ServiceInterface *)self peripheral];
+  aSEControlPointCharacteristic = [(ASCSInterface *)self ASEControlPointCharacteristic];
+  [peripheral writeValue:operationCopy forCharacteristic:aSEControlPointCharacteristic type:1];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  if (!a5)
+  peripheralCopy = peripheral;
+  if (!error)
   {
-    v32 = v8;
+    v32 = peripheralCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = [a4 characteristics];
+    obj = [service characteristics];
     v9 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (!v9)
     {
@@ -168,24 +168,24 @@
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
-        v15 = [v14 UUID];
+        uUID = [v14 UUID];
         v16 = [CBUUID UUIDWithString:v12];
-        v17 = [v15 isEqual:v16];
+        v17 = [uUID isEqual:v16];
 
         if (v17)
         {
-          v18 = [(ASCSInterface *)self sinkASECharacteristic];
-          v19 = [v18 count];
+          sinkASECharacteristic = [(ASCSInterface *)self sinkASECharacteristic];
+          v19 = [sinkASECharacteristic count];
 
           if (v19 > 3)
           {
             continue;
           }
 
-          v20 = [(ASCSInterface *)self sinkASECharacteristic];
+          sinkASECharacteristic2 = [(ASCSInterface *)self sinkASECharacteristic];
 LABEL_13:
-          v26 = v20;
-          [v20 addObject:v14];
+          v26 = sinkASECharacteristic2;
+          [sinkASECharacteristic2 addObject:v14];
 
           if (([v14 properties] & 0x10) != 0)
           {
@@ -196,34 +196,34 @@ LABEL_13:
           continue;
         }
 
-        v21 = [v14 UUID];
+        uUID2 = [v14 UUID];
         v22 = [CBUUID UUIDWithString:v33];
-        v23 = [v21 isEqual:v22];
+        v23 = [uUID2 isEqual:v22];
 
         if (v23)
         {
-          v24 = [(ASCSInterface *)self sourceASECharacteristic];
-          v25 = [v24 count];
+          sourceASECharacteristic = [(ASCSInterface *)self sourceASECharacteristic];
+          v25 = [sourceASECharacteristic count];
 
           if (v25 > 3)
           {
             continue;
           }
 
-          v20 = [(ASCSInterface *)self sourceASECharacteristic];
+          sinkASECharacteristic2 = [(ASCSInterface *)self sourceASECharacteristic];
           goto LABEL_13;
         }
 
-        v27 = [(ASCSInterface *)self ASEControlPointCharacteristic];
-        if (v27)
+        aSEControlPointCharacteristic = [(ASCSInterface *)self ASEControlPointCharacteristic];
+        if (aSEControlPointCharacteristic)
         {
         }
 
         else
         {
-          v28 = [v14 UUID];
+          uUID3 = [v14 UUID];
           v29 = [CBUUID UUIDWithString:v31];
-          v30 = [v28 isEqual:v29];
+          v30 = [uUID3 isEqual:v29];
 
           if (v30)
           {
@@ -242,29 +242,29 @@ LABEL_13:
 LABEL_23:
 
         [(ServiceInterface *)self notifyDidStart];
-        v8 = v32;
+        peripheralCopy = v32;
         break;
       }
     }
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v11 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005A38C(v11);
-    if (v10)
+    if (errorCopy)
     {
       goto LABEL_24;
     }
   }
 
-  else if (v10)
+  else if (errorCopy)
   {
     goto LABEL_24;
   }
@@ -273,8 +273,8 @@ LABEL_23:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [(ASCSInterface *)self sinkASECharacteristic];
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  sinkASECharacteristic = [(ASCSInterface *)self sinkASECharacteristic];
+  v13 = [sinkASECharacteristic countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v13)
   {
     v14 = v13;
@@ -285,20 +285,20 @@ LABEL_23:
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(sinkASECharacteristic);
         }
 
-        if (*(*(&v27 + 1) + 8 * i) == v9)
+        if (*(*(&v27 + 1) + 8 * i) == characteristicCopy)
         {
-          v22 = self;
+          selfCopy2 = self;
 LABEL_23:
-          [ASCSInterface handleASEUpdate:v22 withType:"handleASEUpdate:withType:"];
+          [ASCSInterface handleASEUpdate:selfCopy2 withType:"handleASEUpdate:withType:"];
 
           goto LABEL_24;
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v14 = [sinkASECharacteristic countByEnumeratingWithState:&v27 objects:v32 count:16];
       if (v14)
       {
         continue;
@@ -312,8 +312,8 @@ LABEL_23:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [(ASCSInterface *)self sourceASECharacteristic];
-  v17 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  sinkASECharacteristic = [(ASCSInterface *)self sourceASECharacteristic];
+  v17 = [sinkASECharacteristic countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v17)
   {
     v18 = v17;
@@ -324,17 +324,17 @@ LABEL_23:
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(sinkASECharacteristic);
         }
 
-        if (*(*(&v23 + 1) + 8 * j) == v9)
+        if (*(*(&v23 + 1) + 8 * j) == characteristicCopy)
         {
-          v22 = self;
+          selfCopy2 = self;
           goto LABEL_23;
         }
       }
 
-      v18 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v18 = [sinkASECharacteristic countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v18)
       {
         continue;
@@ -344,9 +344,9 @@ LABEL_23:
     }
   }
 
-  v21 = [(ASCSInterface *)self ASEControlPointCharacteristic];
+  aSEControlPointCharacteristic = [(ASCSInterface *)self ASEControlPointCharacteristic];
 
-  if (v21 == v9)
+  if (aSEControlPointCharacteristic == characteristicCopy)
   {
     [(ASCSInterface *)self handleControlPointUpdate];
   }
@@ -357,13 +357,13 @@ LABEL_24:
 - (id)getAudioStreamEndpoints
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(ASCSInterface *)self sinkASEMap];
-  v5 = [v4 allValues];
-  [v3 addObjectsFromArray:v5];
+  sinkASEMap = [(ASCSInterface *)self sinkASEMap];
+  allValues = [sinkASEMap allValues];
+  [v3 addObjectsFromArray:allValues];
 
-  v6 = [(ASCSInterface *)self sourceASEMap];
-  v7 = [v6 allValues];
-  [v3 addObjectsFromArray:v7];
+  sourceASEMap = [(ASCSInterface *)self sourceASEMap];
+  allValues2 = [sourceASEMap allValues];
+  [v3 addObjectsFromArray:allValues2];
 
   return v3;
 }
@@ -377,8 +377,8 @@ LABEL_24:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [(ASCSInterface *)self sinkASEMap];
-  v5 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  sinkASEMap = [(ASCSInterface *)self sinkASEMap];
+  v5 = [sinkASEMap countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v5)
   {
     v6 = v5;
@@ -389,12 +389,12 @@ LABEL_24:
       {
         if (*v30 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sinkASEMap);
         }
 
         v9 = *(*(&v29 + 1) + 8 * i);
-        v10 = [(ASCSInterface *)self sinkASEMap];
-        v11 = [v10 objectForKey:v9];
+        sinkASEMap2 = [(ASCSInterface *)self sinkASEMap];
+        v11 = [sinkASEMap2 objectForKey:v9];
 
         if ([v11 state])
         {
@@ -403,7 +403,7 @@ LABEL_24:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v6 = [sinkASEMap countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v6);
@@ -413,8 +413,8 @@ LABEL_24:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = [(ASCSInterface *)self sourceASEMap];
-  v14 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  sourceASEMap = [(ASCSInterface *)self sourceASEMap];
+  v14 = [sourceASEMap countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v14)
   {
     v15 = v14;
@@ -425,12 +425,12 @@ LABEL_24:
       {
         if (*v26 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(sourceASEMap);
         }
 
         v18 = *(*(&v25 + 1) + 8 * j);
-        v19 = [(ASCSInterface *)self sourceASEMap];
-        v20 = [v19 objectForKey:v18];
+        sourceASEMap2 = [(ASCSInterface *)self sourceASEMap];
+        v20 = [sourceASEMap2 objectForKey:v18];
 
         if ([v20 state])
         {
@@ -439,7 +439,7 @@ LABEL_24:
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v15 = [sourceASEMap countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v15);
@@ -451,46 +451,46 @@ LABEL_24:
   return v23;
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
   v6 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [a4 description];
+    v8 = [characteristic description];
     v9 = 138412290;
     v10 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "didWriteValueForCharacteristic: %@", &v9, 0xCu);
   }
 }
 
-- (unsigned)sendConfigQoSRequestForDirection:(BOOL)a3 OptionalASE:(id *)a4 withLTVData:(id *)a5
+- (unsigned)sendConfigQoSRequestForDirection:(BOOL)direction OptionalASE:(id *)e withLTVData:(id *)data
 {
-  v7 = a3;
-  if (a3)
+  directionCopy = direction;
+  if (direction)
   {
-    v9 = [(ASCSInterface *)self sinkASEMap];
+    sinkASEMap = [(ASCSInterface *)self sinkASEMap];
     [(ASCSInterface *)self pendingSinkASEList];
   }
 
   else
   {
-    v9 = [(ASCSInterface *)self sourceASEMap];
+    sinkASEMap = [(ASCSInterface *)self sourceASEMap];
     [(ASCSInterface *)self pendingSourceASEList];
   }
   v46 = ;
-  if ([*a4 count])
+  if ([*e count])
   {
-    v10 = *a4;
+    v10 = *e;
   }
 
   else
   {
-    v11 = [v9 allKeys];
-    v10 = [v11 mutableCopy];
+    allKeys = [sinkASEMap allKeys];
+    v10 = [allKeys mutableCopy];
   }
 
-  v44 = *a5;
+  v44 = *data;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
@@ -508,7 +508,7 @@ LABEL_24:
   v47 = 0;
   v15 = *v58;
   v16 = @"Sink";
-  if (!v7)
+  if (!directionCopy)
   {
     v16 = @"Source";
   }
@@ -529,7 +529,7 @@ LABEL_24:
 
       v19 = *(*(&v57 + 1) + 8 * v18);
       v20 = [DataOutputStream outputStreamWithByteOrder:1, v42];
-      v21 = [v9 objectForKeyedSubscript:v19];
+      v21 = [sinkASEMap objectForKeyedSubscript:v19];
       v22 = v21;
       if (v21 && [v21 state])
       {
@@ -578,49 +578,49 @@ LABEL_39:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "ASE ID %@ added to %@ pending list", buf, 0x16u);
         }
 
-        v56 = [v19 intValue];
-        [v20 writeBytes:&v56 length:1];
-        v55 = [v22 cigID];
-        [v20 writeBytes:&v55 length:1];
-        v54 = [v22 cisID];
-        [v20 writeBytes:&v54 length:1];
-        v53 = [v22 clientSduInterval];
-        [v20 writeBytes:&v53 length:3];
+        intValue = [v19 intValue];
+        [v20 writeBytes:&intValue length:1];
+        cigID = [v22 cigID];
+        [v20 writeBytes:&cigID length:1];
+        cisID = [v22 cisID];
+        [v20 writeBytes:&cisID length:1];
+        clientSduInterval = [v22 clientSduInterval];
+        [v20 writeBytes:&clientSduInterval length:3];
         if (![v22 clientFraming] && (objc_msgSend(v22, "framing") & 1) != 0)
         {
           v36 = qword_1000A9FE0;
           if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
           {
             v37 = v36;
-            v38 = [v22 framing];
-            v39 = [v22 clientFraming];
+            framing = [v22 framing];
+            clientFraming = [v22 clientFraming];
             *buf = v42;
-            *v62 = v38;
+            *v62 = framing;
             *&v62[4] = 1024;
-            *&v62[6] = v39;
+            *&v62[6] = clientFraming;
             _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Frame Value Error. Server Frame: 0x%x Frame Value 0x%x", buf, 0xEu);
           }
         }
 
         else
         {
-          v52 = [v22 clientFraming];
-          [v20 writeBytes:&v52 length:1];
+          clientFraming2 = [v22 clientFraming];
+          [v20 writeBytes:&clientFraming2 length:1];
           v51 = 2;
           [v20 writeBytes:&v51 length:1];
-          v50 = [v22 clientMaxSdu];
-          [v20 writeBytes:&v50 length:2];
-          v49 = [v22 clientRetransmissionNumber];
-          [v20 writeBytes:&v49 length:1];
-          v48 = [v22 clientMaxTransportLatency];
-          [v20 writeBytes:&v48 length:2];
-          v24 = [v22 maxSupportedPresentationDelay];
-          if (v24 >= [v22 clientPresentationDelay] || (v25 = objc_msgSend(v22, "minSupportedPresentationDelay"), v25 <= objc_msgSend(v22, "clientPresentationDelay")))
+          clientMaxSdu = [v22 clientMaxSdu];
+          [v20 writeBytes:&clientMaxSdu length:2];
+          clientRetransmissionNumber = [v22 clientRetransmissionNumber];
+          [v20 writeBytes:&clientRetransmissionNumber length:1];
+          clientMaxTransportLatency = [v22 clientMaxTransportLatency];
+          [v20 writeBytes:&clientMaxTransportLatency length:2];
+          maxSupportedPresentationDelay = [v22 maxSupportedPresentationDelay];
+          if (maxSupportedPresentationDelay >= [v22 clientPresentationDelay] || (v25 = objc_msgSend(v22, "minSupportedPresentationDelay"), v25 <= objc_msgSend(v22, "clientPresentationDelay")))
           {
             *buf = [v22 clientPresentationDelay];
             [v20 writeBytes:buf length:3];
-            v35 = [v20 data];
-            [v44 writeData:v35];
+            data = [v20 data];
+            [v44 writeData:data];
 
             ++v47;
           }
@@ -631,15 +631,15 @@ LABEL_39:
             if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
             {
               v27 = v26;
-              v28 = [v22 maxSupportedPresentationDelay];
-              v29 = [v22 minSupportedPresentationDelay];
-              v30 = [v22 clientPresentationDelay];
+              maxSupportedPresentationDelay2 = [v22 maxSupportedPresentationDelay];
+              minSupportedPresentationDelay = [v22 minSupportedPresentationDelay];
+              clientPresentationDelay = [v22 clientPresentationDelay];
               *buf = 67109632;
-              *v62 = v28;
+              *v62 = maxSupportedPresentationDelay2;
               *&v62[4] = 1024;
-              *&v62[6] = v29;
+              *&v62[6] = minSupportedPresentationDelay;
               LOWORD(v63) = 1024;
-              *(&v63 + 2) = v30;
+              *(&v63 + 2) = clientPresentationDelay;
               _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Pres Delay Error: Max Pres. Delay: %u Min Pres. Delay: %u                         Client Pres. Delay: %u", buf, 0x14u);
             }
           }
@@ -664,33 +664,33 @@ LABEL_43:
   return v47;
 }
 
-- (unsigned)sendEnableRequestForDirection:(BOOL)a3 OptionalASE:(id *)a4 withLTVData:(id *)a5
+- (unsigned)sendEnableRequestForDirection:(BOOL)direction OptionalASE:(id *)e withLTVData:(id *)data
 {
-  v49 = a3;
-  if (a3)
+  directionCopy = direction;
+  if (direction)
   {
-    v55 = [(ASCSInterface *)self sinkASEMap];
+    sinkASEMap = [(ASCSInterface *)self sinkASEMap];
     [(ASCSInterface *)self pendingSinkASEList];
   }
 
   else
   {
-    v55 = [(ASCSInterface *)self sourceASEMap];
+    sinkASEMap = [(ASCSInterface *)self sourceASEMap];
     [(ASCSInterface *)self pendingSourceASEList];
   }
   v53 = ;
-  if ([*a4 count])
+  if ([*e count])
   {
-    v8 = *a4;
+    v8 = *e;
   }
 
   else
   {
-    v9 = [v55 allKeys];
-    v8 = [v9 mutableCopy];
+    allKeys = [sinkASEMap allKeys];
+    v8 = [allKeys mutableCopy];
   }
 
-  v10 = *a5;
+  v10 = *data;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -702,7 +702,7 @@ LABEL_43:
     v13 = v11;
     v14 = 0;
     v15 = *v62;
-    if (v49)
+    if (directionCopy)
     {
       v16 = @"Sink";
     }
@@ -715,7 +715,7 @@ LABEL_43:
     v48 = v16;
     *&v12 = 138412546;
     v47 = v12;
-    v17 = v55;
+    v17 = sinkASEMap;
     v56 = v10;
     v52 = *v62;
     do
@@ -746,16 +746,16 @@ LABEL_43:
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "ASE ID %@ added to %@ pending list", buf, 0x16u);
           }
 
-          v60 = [v19 intValue];
-          [v10 writeBytes:&v60 length:1];
+          intValue = [v19 intValue];
+          [v10 writeBytes:&intValue length:1];
           v59 = 0;
-          v23 = [v21 metadata];
-          if (v23)
+          metadata = [v21 metadata];
+          if (metadata)
           {
-            v24 = [v21 metadata];
-            v25 = [v24 contextType];
-            v26 = v25;
-            v27 = v25 >> 8;
+            metadata2 = [v21 metadata];
+            contextType = [metadata2 contextType];
+            v26 = contextType;
+            v27 = contextType >> 8;
           }
 
           else
@@ -770,13 +770,13 @@ LABEL_43:
             v59 += 4;
           }
 
-          v29 = [v21 metadata];
-          if (v29)
+          metadata3 = [v21 metadata];
+          if (metadata3)
           {
-            v30 = v29;
-            v31 = [v21 metadata];
-            v32 = [v31 ccidList];
-            v33 = [v32 count];
+            v30 = metadata3;
+            metadata4 = [v21 metadata];
+            ccidList = [metadata4 ccidList];
+            v33 = [ccidList count];
 
             if (v33)
             {
@@ -793,7 +793,7 @@ LABEL_43:
             }
 
             v28 = v26 | (v27 << 8);
-            v17 = v55;
+            v17 = sinkASEMap;
           }
 
           else
@@ -829,9 +829,9 @@ LABEL_43:
               v41 = v33;
               do
               {
-                v42 = [v21 metadata];
-                v43 = [v42 ccidList];
-                v44 = [v43 objectAtIndexedSubscript:v40];
+                metadata5 = [v21 metadata];
+                ccidList2 = [metadata5 ccidList];
+                v44 = [ccidList2 objectAtIndexedSubscript:v40];
                 v39[v40 + 2] = [v44 unsignedCharValue];
 
                 ++v40;
@@ -843,7 +843,7 @@ LABEL_43:
             v10 = v56;
             [v56 writeBytes:v39 length:v36 + 1];
             free(v39);
-            v17 = v55;
+            v17 = sinkASEMap;
             v28 = v51;
             v35 = v50;
           }
@@ -852,13 +852,13 @@ LABEL_43:
           if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109888;
-            *v66 = v60;
+            *v66 = intValue;
             *&v66[4] = 1024;
             *&v66[6] = v28;
             LOWORD(v67) = 1024;
             *(&v67 + 2) = v35;
             HIWORD(v67) = 1024;
-            v68 = v49;
+            v68 = directionCopy;
             _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "ASE ID %d contextTypes: 0x%02X CCID size: %d isSink: %d", buf, 0x1Au);
           }
 
@@ -880,46 +880,46 @@ LABEL_43:
   else
   {
     LOBYTE(v14) = 0;
-    v17 = v55;
+    v17 = sinkASEMap;
   }
 
   return v14;
 }
 
-- (unsigned)sendUpdateMetadataRequestForDirection:(BOOL)a3 OptionalASE:(id)a4 withMetadata:(id)a5 withLTVData:(id *)a6
+- (unsigned)sendUpdateMetadataRequestForDirection:(BOOL)direction OptionalASE:(id)e withMetadata:(id)metadata withLTVData:(id *)data
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v72 = v8;
-  if (v8)
+  directionCopy = direction;
+  eCopy = e;
+  metadataCopy = metadata;
+  v72 = directionCopy;
+  if (directionCopy)
   {
-    v12 = [(ASCSInterface *)self sinkASEMap];
+    sinkASEMap = [(ASCSInterface *)self sinkASEMap];
     [(ASCSInterface *)self pendingSinkASEList];
   }
 
   else
   {
-    v12 = [(ASCSInterface *)self sourceASEMap];
+    sinkASEMap = [(ASCSInterface *)self sourceASEMap];
     [(ASCSInterface *)self pendingSourceASEList];
   }
   v13 = ;
-  if ([v10 count])
+  if ([eCopy count])
   {
-    v14 = v10;
+    v14 = eCopy;
   }
 
   else
   {
-    v15 = [v12 allKeys];
-    v14 = [v15 mutableCopy];
+    allKeys = [sinkASEMap allKeys];
+    v14 = [allKeys mutableCopy];
   }
 
-  v16 = *a6;
+  v16 = *data;
   v17 = [v14 count];
   v18 = v14;
-  v67 = v10;
-  if (v17 != [v11 count])
+  v67 = eCopy;
+  if (v17 != [metadataCopy count])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
     {
@@ -948,15 +948,15 @@ LABEL_40:
   v66 = v23;
   *&v19 = 67109378;
   v65 = v19;
-  v70 = v12;
-  v71 = v11;
+  v70 = sinkASEMap;
+  v71 = metadataCopy;
   v68 = v18;
   v69 = v13;
   v75 = v16;
   do
   {
     v24 = [v18 objectAtIndexedSubscript:{v20, v65, v66, v67}];
-    v25 = [v12 objectForKeyedSubscript:v24];
+    v25 = [sinkASEMap objectForKeyedSubscript:v24];
 
     if (v25 && [v25 state])
     {
@@ -970,49 +970,49 @@ LABEL_40:
         if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
         {
           v28 = v27;
-          v29 = [v25 ASE_ID];
+          aSE_ID = [v25 ASE_ID];
           *buf = v65;
-          v79 = v29;
+          v79 = aSE_ID;
           v80 = 2112;
           *v81 = v66;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "ASE ID %u added to %@ pending list", buf, 0x12u);
         }
 
-        v77 = [v25 ASE_ID];
-        [v16 writeBytes:&v77 length:1];
+        aSE_ID2 = [v25 ASE_ID];
+        [v16 writeBytes:&aSE_ID2 length:1];
         v76 = 0;
-        v30 = [v11 objectAtIndexedSubscript:v20];
-        v31 = [v30 contextType];
-        v32 = [v25 metadata];
-        [v32 setContextType:v31];
+        v30 = [metadataCopy objectAtIndexedSubscript:v20];
+        contextType = [v30 contextType];
+        metadata = [v25 metadata];
+        [metadata setContextType:contextType];
 
-        v33 = [v25 metadata];
-        v34 = [v33 ccidList];
-        [v34 removeAllObjects];
+        metadata2 = [v25 metadata];
+        ccidList = [metadata2 ccidList];
+        [ccidList removeAllObjects];
 
-        v35 = [v25 metadata];
-        v36 = [v35 ccidList];
-        v37 = [v11 objectAtIndexedSubscript:v20];
-        v38 = [v37 ccidList];
-        [v36 addObjectsFromArray:v38];
+        metadata3 = [v25 metadata];
+        ccidList2 = [metadata3 ccidList];
+        v37 = [metadataCopy objectAtIndexedSubscript:v20];
+        ccidList3 = [v37 ccidList];
+        [ccidList2 addObjectsFromArray:ccidList3];
 
-        v39 = [v25 metadata];
-        v40 = [v39 contextType];
+        metadata4 = [v25 metadata];
+        contextType2 = [metadata4 contextType];
 
-        if (v40)
+        if (contextType2)
         {
           v76 += 4;
         }
 
-        v41 = [v25 metadata];
-        v42 = [v41 ccidList];
-        v43 = [v42 count];
+        metadata5 = [v25 metadata];
+        ccidList4 = [metadata5 ccidList];
+        v43 = [ccidList4 count];
 
         if (v43)
         {
-          v44 = [v25 metadata];
-          v45 = [v44 ccidList];
-          v46 = [v45 count];
+          metadata6 = [v25 metadata];
+          ccidList5 = [metadata6 ccidList];
+          v46 = [ccidList5 count];
           v74 = v46 + 1;
 
           v76 += v46 + 2;
@@ -1024,25 +1024,25 @@ LABEL_40:
         }
 
         [v75 writeBytes:&v76 length:1];
-        if (v40)
+        if (contextType2)
         {
           *buf = 515;
-          *&buf[2] = v40;
+          *&buf[2] = contextType2;
           [v75 writeBytes:buf length:4];
         }
 
-        v47 = [v25 metadata];
-        v48 = [v47 ccidList];
-        v49 = [v48 count];
+        metadata7 = [v25 metadata];
+        ccidList6 = [metadata7 ccidList];
+        v49 = [ccidList6 count];
 
         if (v49)
         {
           v50 = malloc_type_malloc(v74 + 1, 0x7100B1A9uLL);
           *v50 = v74;
           v50[1] = 5;
-          v51 = [v25 metadata];
-          v52 = [v51 ccidList];
-          v53 = [v52 count];
+          metadata8 = [v25 metadata];
+          ccidList7 = [metadata8 ccidList];
+          v53 = [ccidList7 count];
 
           if (v53)
           {
@@ -1050,15 +1050,15 @@ LABEL_40:
             v55 = 0;
             do
             {
-              v56 = [v25 metadata];
-              v57 = [v56 ccidList];
-              v58 = [v57 objectAtIndexedSubscript:v54];
+              metadata9 = [v25 metadata];
+              ccidList8 = [metadata9 ccidList];
+              v58 = [ccidList8 objectAtIndexedSubscript:v54];
               v50[v54 + 2] = [v58 unsignedCharValue];
 
               v54 = ++v55;
-              v59 = [v25 metadata];
-              v60 = [v59 ccidList];
-              v61 = [v60 count];
+              metadata10 = [v25 metadata];
+              ccidList9 = [metadata10 ccidList];
+              v61 = [ccidList9 count];
             }
 
             while (v61 > v55);
@@ -1066,8 +1066,8 @@ LABEL_40:
 
           [v75 writeBytes:v50 length:v74 + 1];
           free(v50);
-          v12 = v70;
-          v11 = v71;
+          sinkASEMap = v70;
+          metadataCopy = v71;
           v18 = v68;
           v13 = v69;
         }
@@ -1076,9 +1076,9 @@ LABEL_40:
         if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109888;
-          v79 = v77;
+          v79 = aSE_ID2;
           v80 = 1024;
-          *v81 = v40;
+          *v81 = contextType2;
           *&v81[4] = 1024;
           *&v81[6] = v74;
           v82 = 1024;
@@ -1111,21 +1111,21 @@ LABEL_41:
   return v21;
 }
 
-- (unsigned)sendReceiverStartReadyRequestOptionalASE:(id *)a3 withLTVData:(id *)a4 withEnabledSinkASE:(char *)a5
+- (unsigned)sendReceiverStartReadyRequestOptionalASE:(id *)e withLTVData:(id *)data withEnabledSinkASE:(char *)sE
 {
-  if ([*a3 count])
+  if ([*e count])
   {
-    v9 = *a3;
+    v9 = *e;
   }
 
   else
   {
-    v10 = [(ASCSInterface *)self sourceASEMap];
-    v11 = [v10 allKeys];
-    v9 = [v11 mutableCopy];
+    sourceASEMap = [(ASCSInterface *)self sourceASEMap];
+    allKeys = [sourceASEMap allKeys];
+    v9 = [allKeys mutableCopy];
   }
 
-  v12 = *a4;
+  v12 = *data;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
@@ -1148,23 +1148,23 @@ LABEL_41:
         }
 
         v18 = *(*(&v45 + 1) + 8 * i);
-        v19 = [(ASCSInterface *)self sourceASEMap];
-        v20 = [v19 objectForKeyedSubscript:v18];
+        sourceASEMap2 = [(ASCSInterface *)self sourceASEMap];
+        v20 = [sourceASEMap2 objectForKeyedSubscript:v18];
 
         if (v20 && [v20 state])
         {
           if ([v20 state] == 3)
           {
-            v21 = [(ASCSInterface *)self pendingSourceASEList];
-            [v21 addObject:v18];
+            pendingSourceASEList = [(ASCSInterface *)self pendingSourceASEList];
+            [pendingSourceASEList addObject:v18];
 
             v22 = qword_1000A9FE0;
             if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
             {
               v23 = v22;
-              v24 = [v20 ASE_ID];
+              aSE_ID = [v20 ASE_ID];
               *buf = 67109120;
-              LODWORD(v51) = v24;
+              LODWORD(v51) = aSE_ID;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "ASE ID %u added to Source pending list", buf, 8u);
             }
 
@@ -1206,8 +1206,8 @@ LABEL_41:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v26 = [(ASCSInterface *)self sinkASEMap];
-  v27 = [v26 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  sinkASEMap = [(ASCSInterface *)self sinkASEMap];
+  v27 = [sinkASEMap countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v27)
   {
     v28 = v27;
@@ -1218,23 +1218,23 @@ LABEL_41:
       {
         if (*v42 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(sinkASEMap);
         }
 
         v31 = *(*(&v41 + 1) + 8 * j);
-        v32 = [(ASCSInterface *)self sinkASEMap];
-        v33 = [v32 objectForKeyedSubscript:v31];
-        v34 = [v33 state];
+        sinkASEMap2 = [(ASCSInterface *)self sinkASEMap];
+        v33 = [sinkASEMap2 objectForKeyedSubscript:v31];
+        state = [v33 state];
 
-        if (v34 == 3)
+        if (state == 3)
         {
-          ++*a5;
-          v35 = [(ASCSInterface *)self pendingSinkASEList];
-          [v35 addObject:v31];
+          ++*sE;
+          pendingSinkASEList = [(ASCSInterface *)self pendingSinkASEList];
+          [pendingSinkASEList addObject:v31];
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v28 = [sinkASEMap countByEnumeratingWithState:&v41 objects:v49 count:16];
     }
 
     while (v28);
@@ -1243,21 +1243,21 @@ LABEL_41:
   return v40;
 }
 
-- (unsigned)sendReceiverStopReadyRequestOptionalASE:(id *)a3 withLTVData:(id *)a4
+- (unsigned)sendReceiverStopReadyRequestOptionalASE:(id *)e withLTVData:(id *)data
 {
-  if ([*a3 count])
+  if ([*e count])
   {
-    v7 = *a3;
+    v7 = *e;
   }
 
   else
   {
-    v8 = [(ASCSInterface *)self sourceASEMap];
-    v9 = [v8 allKeys];
-    v7 = [v9 mutableCopy];
+    sourceASEMap = [(ASCSInterface *)self sourceASEMap];
+    allKeys = [sourceASEMap allKeys];
+    v7 = [allKeys mutableCopy];
   }
 
-  v27 = *a4;
+  v27 = *data;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -1281,23 +1281,23 @@ LABEL_41:
         }
 
         v17 = *(*(&v28 + 1) + 8 * i);
-        v18 = [(ASCSInterface *)self sourceASEMap];
-        v19 = [v18 objectForKeyedSubscript:v17];
+        sourceASEMap2 = [(ASCSInterface *)self sourceASEMap];
+        v19 = [sourceASEMap2 objectForKeyedSubscript:v17];
 
         if (v19 && [v19 state])
         {
           if ([v19 state] == 5)
           {
-            v20 = [(ASCSInterface *)self pendingSourceASEList];
-            [v20 addObject:v17];
+            pendingSourceASEList = [(ASCSInterface *)self pendingSourceASEList];
+            [pendingSourceASEList addObject:v17];
 
             v21 = qword_1000A9FE0;
             if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
             {
               v22 = v21;
-              v23 = [v19 ASE_ID];
+              aSE_ID = [v19 ASE_ID];
               *buf = 67109120;
-              LODWORD(v33) = v23;
+              LODWORD(v33) = aSE_ID;
               _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "ASE ID %u added to Source pending list for Rx Stop Ready request", buf, 8u);
             }
 
@@ -1335,10 +1335,10 @@ LABEL_41:
   return v14;
 }
 
-- (unsigned)sendDisableRequestForASE:(BOOL)a3 OptionalASE:(id *)a4 withLTVData:(id *)a5
+- (unsigned)sendDisableRequestForASE:(BOOL)e OptionalASE:(id *)sE withLTVData:(id *)data
 {
-  v7 = a3;
-  if (a3)
+  eCopy = e;
+  if (e)
   {
     [(ASCSInterface *)self sinkASEMap];
   }
@@ -1348,18 +1348,18 @@ LABEL_41:
     [(ASCSInterface *)self sourceASEMap];
   }
   v9 = ;
-  if ([*a4 count])
+  if ([*sE count])
   {
-    v10 = *a4;
+    v10 = *sE;
   }
 
   else
   {
-    v11 = [v9 allKeys];
-    v10 = [v11 mutableCopy];
+    allKeys = [v9 allKeys];
+    v10 = [allKeys mutableCopy];
   }
 
-  if (v7)
+  if (eCopy)
   {
     [(ASCSInterface *)self pendingSinkASEList];
   }
@@ -1369,7 +1369,7 @@ LABEL_41:
     [(ASCSInterface *)self pendingSourceASEList];
   }
   v29 = ;
-  v12 = *a5;
+  v12 = *data;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -1382,7 +1382,7 @@ LABEL_41:
     v17 = 0;
     v18 = *v32;
     v19 = @"Sink";
-    if (!v7)
+    if (!eCopy)
     {
       v19 = @"Source";
     }
@@ -1406,8 +1406,8 @@ LABEL_41:
         {
           if ([v23 state] == 4 || objc_msgSend(v23, "state") == 3)
           {
-            v30 = [v21 intValue];
-            [v12 writeBytes:&v30 length:1];
+            intValue = [v21 intValue];
+            [v12 writeBytes:&intValue length:1];
             [v29 addObject:v21];
             v24 = qword_1000A9FE0;
             if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -1451,10 +1451,10 @@ LABEL_41:
   return v17;
 }
 
-- (unsigned)sendReleaseRequestForASE:(BOOL)a3 OptionalASE:(id *)a4 withLTVData:(id *)a5
+- (unsigned)sendReleaseRequestForASE:(BOOL)e OptionalASE:(id *)sE withLTVData:(id *)data
 {
-  v7 = a3;
-  if (a3)
+  eCopy = e;
+  if (e)
   {
     [(ASCSInterface *)self sinkASEMap];
   }
@@ -1464,18 +1464,18 @@ LABEL_41:
     [(ASCSInterface *)self sourceASEMap];
   }
   v9 = ;
-  if ([*a4 count])
+  if ([*sE count])
   {
-    v10 = *a4;
+    v10 = *sE;
   }
 
   else
   {
-    v11 = [v9 allKeys];
-    v10 = [v11 mutableCopy];
+    allKeys = [v9 allKeys];
+    v10 = [allKeys mutableCopy];
   }
 
-  if (v7)
+  if (eCopy)
   {
     [(ASCSInterface *)self pendingSinkASEList];
   }
@@ -1485,7 +1485,7 @@ LABEL_41:
     [(ASCSInterface *)self pendingSourceASEList];
   }
   v29 = ;
-  v28 = *a5;
+  v28 = *data;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -1498,7 +1498,7 @@ LABEL_41:
     v16 = 0;
     v17 = *v32;
     v18 = @"Sink";
-    if (!v7)
+    if (!eCopy)
     {
       v18 = @"Source";
     }
@@ -1535,8 +1535,8 @@ LABEL_41:
 
           else
           {
-            v30 = [v20 intValue];
-            [v28 writeBytes:&v30 length:1];
+            intValue = [v20 intValue];
+            [v28 writeBytes:&intValue length:1];
             [v29 addObject:v20];
             v24 = qword_1000A9FE0;
             if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -1567,12 +1567,12 @@ LABEL_41:
   return v16;
 }
 
-- (unsigned)determineChannelCountForASE:(unsigned int)a3
+- (unsigned)determineChannelCountForASE:(unsigned int)e
 {
-  v3.i32[0] = a3;
+  v3.i32[0] = e;
   v4 = vcnt_s8(v3);
   v4.i16[0] = vaddlv_u8(v4);
-  if (a3)
+  if (e)
   {
     return v4.i32[0];
   }
@@ -1583,10 +1583,10 @@ LABEL_41:
   }
 }
 
-- (void)handleASEUpdate:(id)a3 withType:(BOOL)a4
+- (void)handleASEUpdate:(id)update withType:(BOOL)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  updateCopy = update;
   v7 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
@@ -1594,13 +1594,13 @@ LABEL_41:
   }
 
   v8 = &OBJC_IVAR___ASCSInterface__sourceASEMap;
-  if (v4)
+  if (typeCopy)
   {
     v8 = &OBJC_IVAR___ASCSInterface__sinkASEMap;
   }
 
   v9 = *(&self->super.super.isa + *v8);
-  if (v4)
+  if (typeCopy)
   {
     [(ASCSInterface *)self pendingSinkASEList];
   }
@@ -1610,15 +1610,15 @@ LABEL_41:
     [(ASCSInterface *)self pendingSourceASEList];
   }
   v10 = ;
-  v11 = [v6 value];
-  v12 = [DataInputStream inputStreamWithData:v11 byteOrder:1];
+  value = [updateCopy value];
+  v12 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v50 = 0;
   if ([v12 readUint8:&v50])
   {
     v13 = [NSNumber numberWithInt:v50];
-    v14 = [v9 allKeys];
-    v15 = [v14 containsObject:v13];
+    allKeys = [v9 allKeys];
+    v15 = [allKeys containsObject:v13];
 
     v47 = v13;
     v48 = v10;
@@ -1639,12 +1639,12 @@ LABEL_41:
         v20 = v18;
         v21 = v50;
         v22 = v19;
-        v23 = [(AudioStreamEndpoint *)v17 ASE_ID];
+        aSE_ID = [(AudioStreamEndpoint *)v17 ASE_ID];
         *buf = 67109376;
         *v52 = v21;
         v18 = v20;
         *&v52[4] = 1024;
-        *&v52[6] = v23;
+        *&v52[6] = aSE_ID;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Pulled ASE ID %d out of ASE Map and that has ase.ASE_ID %d", buf, 0xEu);
       }
     }
@@ -1652,10 +1652,10 @@ LABEL_41:
     else
     {
       v24 = [AudioStreamEndpoint alloc];
-      v17 = [(AudioStreamEndpoint *)v24 initWithAudioEnpointType:!v4 aseID:v50];
-      v25 = [(ServiceInterface *)self peripheral];
-      v26 = [v25 identifier];
-      [(AudioStreamEndpoint *)v17 setPeripheralID:v26];
+      v17 = [(AudioStreamEndpoint *)v24 initWithAudioEnpointType:!typeCopy aseID:v50];
+      peripheral = [(ServiceInterface *)self peripheral];
+      identifier = [peripheral identifier];
+      [(AudioStreamEndpoint *)v17 setPeripheralID:identifier];
 
       v27 = [NSNumber numberWithInt:v50];
       [v9 setObject:v17 forKey:v27];
@@ -1665,11 +1665,11 @@ LABEL_41:
       {
         v29 = v50;
         v30 = v28;
-        v31 = [(AudioStreamEndpoint *)v17 ASE_ID];
+        aSE_ID2 = [(AudioStreamEndpoint *)v17 ASE_ID];
         *buf = 67109376;
         *v52 = v29;
         *&v52[4] = 1024;
-        *&v52[6] = v31;
+        *&v52[6] = aSE_ID2;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Creating ASE with ID %d and the ase.ASE_ID is %d", buf, 0xEu);
       }
 
@@ -1680,7 +1680,7 @@ LABEL_41:
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v33 = @"Source";
-      if (v4)
+      if (typeCopy)
       {
         v33 = @"Sink";
       }
@@ -1769,24 +1769,24 @@ LABEL_38:
         [(AudioStreamEndpoint *)v17 setState:3];
         [(ASCSInterface *)self handleEnablingResponseForAse:v17 dataStream:v12];
 LABEL_45:
-        v41 = [(ASCSInterface *)self aseUpdateHandler];
+        aseUpdateHandler = [(ASCSInterface *)self aseUpdateHandler];
 
-        if (v41)
+        if (aseUpdateHandler)
         {
-          v42 = [(ASCSInterface *)self pendingSinkASEList];
-          if ([v42 count])
+          pendingSinkASEList = [(ASCSInterface *)self pendingSinkASEList];
+          if ([pendingSinkASEList count])
           {
             v43 = 0;
           }
 
           else
           {
-            v44 = [(ASCSInterface *)self pendingSourceASEList];
-            v43 = [v44 count] == 0;
+            pendingSourceASEList = [(ASCSInterface *)self pendingSourceASEList];
+            v43 = [pendingSourceASEList count] == 0;
           }
 
-          v45 = [(ASCSInterface *)self aseUpdateHandler];
-          (v45)[2](v45, [(AudioStreamEndpoint *)v17 state], [(AudioStreamEndpoint *)v17 previousState], v43, [(AudioStreamEndpoint *)v17 type]== 0);
+          aseUpdateHandler2 = [(ASCSInterface *)self aseUpdateHandler];
+          (aseUpdateHandler2)[2](aseUpdateHandler2, [(AudioStreamEndpoint *)v17 state], [(AudioStreamEndpoint *)v17 previousState], v43, [(AudioStreamEndpoint *)v17 type]== 0);
         }
 
 LABEL_50:
@@ -1827,70 +1827,70 @@ LABEL_50:
 LABEL_51:
 }
 
-- (void)handleIdleStateForASE:(id)a3
+- (void)handleIdleStateForASE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ServiceInterface *)self peripheral];
-    v8 = [v7 identifier];
+    peripheral = [(ServiceInterface *)self peripheral];
+    identifier = [peripheral identifier];
     v9 = 138412546;
-    v10 = v8;
+    v10 = identifier;
     v11 = 1024;
-    v12 = [v4 ASE_ID];
+    aSE_ID = [eCopy ASE_ID];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "handleIdleStateForASE for peripheral %@ ASE ID: %u", &v9, 0x12u);
   }
 
-  [v4 setCisID:255];
-  [v4 setCigID:255];
-  [v4 setInUse:0];
-  if ([v4 previousState])
+  [eCopy setCisID:255];
+  [eCopy setCigID:255];
+  [eCopy setInUse:0];
+  if ([eCopy previousState])
   {
-    [v4 description];
+    [eCopy description];
   }
 }
 
-- (void)handleCodecConfiguredForAse:(id)a3 dataStream:(id)a4
+- (void)handleCodecConfiguredForAse:(id)ase dataStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  aseCopy = ase;
+  streamCopy = stream;
   v8 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(ServiceInterface *)self peripheral];
-    v11 = [v10 identifier];
+    peripheral = [(ServiceInterface *)self peripheral];
+    identifier = [peripheral identifier];
     *buf = 138412802;
-    *&buf[4] = v11;
+    *&buf[4] = identifier;
     *&buf[12] = 1024;
-    v34 = [v6 ASE_ID];
+    aSE_ID = [aseCopy ASE_ID];
     v35 = 1024;
-    v36 = [v6 cisID];
+    cisID = [aseCopy cisID];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "handleCodecConfiguredForAse for peripheral %@ ASE ID: %u with CIS ID %d", buf, 0x18u);
   }
 
-  [v6 setCisID:255];
-  [v6 setCigID:255];
-  if ([v6 previousState] == 6)
+  [aseCopy setCisID:255];
+  [aseCopy setCigID:255];
+  if ([aseCopy previousState] == 6)
   {
-    [v6 setInUse:0];
+    [aseCopy setInUse:0];
   }
 
   v32 = 0;
-  if ([v7 readUint8:&v32])
+  if ([streamCopy readUint8:&v32])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
       sub_10005A654(&v32);
     }
 
-    [v6 setFraming:v32];
+    [aseCopy setFraming:v32];
   }
 
   v31 = 0;
-  if ([v7 readUint8:&v31])
+  if ([streamCopy readUint8:&v31])
   {
     v12 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
@@ -1898,7 +1898,7 @@ LABEL_51:
       sub_10005A6BC(&v31, v12);
     }
 
-    [v6 setPreferredPhy:v31];
+    [aseCopy setPreferredPhy:v31];
     v13 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
@@ -1907,14 +1907,14 @@ LABEL_51:
   }
 
   v30 = 0;
-  if ([v7 readUint8:&v30])
+  if ([streamCopy readUint8:&v30])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
       sub_10005A824(&v30);
     }
 
-    [v6 setPreferredRetransmissionNumber:v30];
+    [aseCopy setPreferredRetransmissionNumber:v30];
     v14 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
@@ -1923,14 +1923,14 @@ LABEL_51:
   }
 
   v29 = 0;
-  if ([v7 readUint16:&v29])
+  if ([streamCopy readUint16:&v29])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
       sub_10005A91C(&v29);
     }
 
-    [v6 setMaxTransportLatency:v29];
+    [aseCopy setMaxTransportLatency:v29];
     v15 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
@@ -1938,114 +1938,114 @@ LABEL_51:
     }
   }
 
-  v28 = 0;
-  if ([v7 readUint24:&v28])
+  clientPresentationDelay = 0;
+  if ([streamCopy readUint24:&clientPresentationDelay])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
-      sub_10005AA18(&v28);
+      sub_10005AA18(&clientPresentationDelay);
     }
 
-    [v6 setMinSupportedPresentationDelay:v28];
+    [aseCopy setMinSupportedPresentationDelay:clientPresentationDelay];
   }
 
-  if ([v7 readUint24:&v28])
+  if ([streamCopy readUint24:&clientPresentationDelay])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
-      sub_10005AA80(&v28);
+      sub_10005AA80(&clientPresentationDelay);
     }
 
-    [v6 setMaxSupportedPresentationDelay:v28];
+    [aseCopy setMaxSupportedPresentationDelay:clientPresentationDelay];
   }
 
-  if ([v7 readUint24:&v28])
+  if ([streamCopy readUint24:&clientPresentationDelay])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
-      sub_10005AAE8(&v28);
+      sub_10005AAE8(&clientPresentationDelay);
     }
 
-    [v6 setMinPreferredPresentationDelay:v28];
+    [aseCopy setMinPreferredPresentationDelay:clientPresentationDelay];
   }
 
-  if ([v7 readUint24:&v28])
+  if ([streamCopy readUint24:&clientPresentationDelay])
   {
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
     {
-      sub_10005AB50(&v28);
+      sub_10005AB50(&clientPresentationDelay);
     }
 
-    [v6 setMaxPreferredPresentationDelay:v28];
+    [aseCopy setMaxPreferredPresentationDelay:clientPresentationDelay];
   }
 
-  v28 = [v6 clientPresentationDelay];
-  if (v28 >= [v6 minSupportedPresentationDelay])
+  clientPresentationDelay = [aseCopy clientPresentationDelay];
+  if (clientPresentationDelay >= [aseCopy minSupportedPresentationDelay])
   {
-    v16 = v28;
+    minSupportedPresentationDelay = clientPresentationDelay;
   }
 
   else
   {
-    v16 = [v6 minSupportedPresentationDelay];
-    v28 = v16;
+    minSupportedPresentationDelay = [aseCopy minSupportedPresentationDelay];
+    clientPresentationDelay = minSupportedPresentationDelay;
   }
 
-  if (v16 > [v6 maxSupportedPresentationDelay])
+  if (minSupportedPresentationDelay > [aseCopy maxSupportedPresentationDelay])
   {
-    v28 = [v6 maxSupportedPresentationDelay];
+    clientPresentationDelay = [aseCopy maxSupportedPresentationDelay];
   }
 
-  v17 = [v6 clientPresentationDelay];
-  if (v17 != v28)
+  clientPresentationDelay2 = [aseCopy clientPresentationDelay];
+  if (clientPresentationDelay2 != clientPresentationDelay)
   {
-    [v6 setClientPresentationDelay:?];
+    [aseCopy setClientPresentationDelay:?];
     v18 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = v28;
+      v19 = clientPresentationDelay;
       v20 = v18;
-      v21 = [v6 ASE_ID];
+      aSE_ID2 = [aseCopy ASE_ID];
       *buf = 67109376;
       *&buf[4] = v19;
       *&buf[8] = 1024;
-      *&buf[10] = v21;
+      *&buf[10] = aSE_ID2;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Presentation Delay changed to: %u for ASE ID: %d", buf, 0xEu);
     }
   }
 
   *buf = 0;
-  if ([v7 readUint40:buf])
+  if ([streamCopy readUint40:buf])
   {
-    [v6 setCodecID:*buf];
+    [aseCopy setCodecID:*buf];
   }
 
   v27 = 0;
-  if ([v7 readUint8:&v27] && v27)
+  if ([streamCopy readUint8:&v27] && v27)
   {
     v22 = 0;
     do
     {
       v26 = 0;
-      [v7 readUint8:&v26];
+      [streamCopy readUint8:&v26];
       v25 = 0;
-      [v7 readUint8:&v25];
+      [streamCopy readUint8:&v25];
       v23 = v22 + 2;
       if (v25 <= 2u)
       {
         if (v25 == 1)
         {
           LOBYTE(v24) = 0;
-          [v7 readUint8:&v24];
-          [v6 setSamplingFrequency:v24];
+          [streamCopy readUint8:&v24];
+          [aseCopy setSamplingFrequency:v24];
           goto LABEL_64;
         }
 
         if (v25 == 2)
         {
           LOBYTE(v24) = 0;
-          [v7 readUint8:&v24];
-          [v6 setFrameDuration:v24];
+          [streamCopy readUint8:&v24];
+          [aseCopy setFrameDuration:v24];
           goto LABEL_64;
         }
       }
@@ -2056,18 +2056,18 @@ LABEL_51:
         {
           case 3u:
             v24 = 0;
-            [v7 readUint32:&v24];
-            [v6 setAudioChanAllocMask:v24];
+            [streamCopy readUint32:&v24];
+            [aseCopy setAudioChanAllocMask:v24];
             goto LABEL_64;
           case 4u:
             LOWORD(v24) = 0;
-            [v7 readUint16:&v24];
-            [v6 setOctetsPerCodecFrame:v24];
+            [streamCopy readUint16:&v24];
+            [aseCopy setOctetsPerCodecFrame:v24];
             goto LABEL_64;
           case 5u:
             LOBYTE(v24) = 0;
-            [v7 readUint8:&v24];
-            [v6 setCodecFramePerSdu:v24];
+            [streamCopy readUint8:&v24];
+            [aseCopy setCodecFramePerSdu:v24];
 LABEL_64:
             v23 = v22 + v26 + 3;
             break;
@@ -2080,31 +2080,31 @@ LABEL_64:
     while (v27 > v23);
   }
 
-  [v6 description];
+  [aseCopy description];
 }
 
-- (void)handleQoSConfiguredForAse:(id)a3 dataStream:(id)a4
+- (void)handleQoSConfiguredForAse:(id)ase dataStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  aseCopy = ase;
+  streamCopy = stream;
   v8 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(ServiceInterface *)self peripheral];
-    v11 = [v10 identifier];
+    peripheral = [(ServiceInterface *)self peripheral];
+    identifier = [peripheral identifier];
     *buf = 138412546;
-    v23 = v11;
+    v23 = identifier;
     v24 = 1024;
-    v25 = [v6 ASE_ID];
+    aSE_ID = [aseCopy ASE_ID];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "handleQoSConfiguredForAse for peripheral %@ ASE ID: %u", buf, 0x12u);
   }
 
-  v12 = [v6 type];
-  v13 = [v6 previousState];
-  if (v12 == 1)
+  type = [aseCopy type];
+  previousState = [aseCopy previousState];
+  if (type == 1)
   {
-    if (v13 != 5)
+    if (previousState != 5)
     {
       goto LABEL_9;
     }
@@ -2112,323 +2112,323 @@ LABEL_64:
     goto LABEL_8;
   }
 
-  if (v13 == 3 || [v6 previousState] == 4)
+  if (previousState == 3 || [aseCopy previousState] == 4)
   {
 LABEL_8:
-    [(ASCSInterface *)self requestRemoveDataPathForASE:v6];
+    [(ASCSInterface *)self requestRemoveDataPathForASE:aseCopy];
   }
 
 LABEL_9:
   v21 = 0;
-  if ([v7 readUint8:&v21] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint8:&v21] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005ABB8(&v21);
   }
 
   v20 = 0;
-  if ([v7 readUint8:&v20] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint8:&v20] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005AC20(&v20);
   }
 
   *buf = 0;
-  if ([v7 readUint24:buf] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint24:buf] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005AC88();
   }
 
   v19 = 0;
-  if ([v7 readUint8:&v19] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint8:&v19] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005AD20();
   }
 
   v18 = 0;
-  if ([v7 readUint8:&v18] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint8:&v18] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005ADB8();
   }
 
   v17 = 0;
-  if ([v7 readUint16:&v17] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint16:&v17] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005AE50();
   }
 
   v16 = 0;
-  if ([v7 readUint8:&v16] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint8:&v16] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005AEE8();
   }
 
   v15 = 0;
-  if ([v7 readUint16:&v15] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint16:&v15] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005AF80();
   }
 
   v14 = 0;
-  if ([v7 readUint24:&v14] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
+  if ([streamCopy readUint24:&v14] && os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEBUG))
   {
     sub_10005B018();
   }
 
-  [v6 description];
+  [aseCopy description];
 }
 
-- (void)handleEnablingResponseForAse:(id)a3 dataStream:(id)a4
+- (void)handleEnablingResponseForAse:(id)ase dataStream:(id)stream
 {
-  v6 = a3;
-  v7 = a4;
+  aseCopy = ase;
+  streamCopy = stream;
   v8 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(ServiceInterface *)self peripheral];
-    v11 = [v10 identifier];
+    peripheral = [(ServiceInterface *)self peripheral];
+    identifier = [peripheral identifier];
     *buf = 138412546;
-    v21 = v11;
+    v21 = identifier;
     v22 = 1024;
-    v23 = [v6 ASE_ID];
+    aSE_ID = [aseCopy ASE_ID];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "handleEnablingForAse for peripheral %@ ASE ID: %u", buf, 0x12u);
   }
 
   buf[0] = 0;
-  if ([v7 readUint8:buf])
+  if ([streamCopy readUint8:buf])
   {
-    [v6 setCigID:buf[0]];
+    [aseCopy setCigID:buf[0]];
   }
 
   v19 = 0;
-  if ([v7 readUint8:&v19])
+  if ([streamCopy readUint8:&v19])
   {
-    [v6 setCisID:v19];
+    [aseCopy setCisID:v19];
   }
 
-  if ([v6 type] == 1)
+  if ([aseCopy type] == 1)
   {
-    v12 = [v6 associatedCIS];
-    if (![v12 established])
+    associatedCIS = [aseCopy associatedCIS];
+    if (![associatedCIS established])
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v13 = [v6 associatedCIS];
-    v14 = [v13 outputDataPathCreated];
+    associatedCIS2 = [aseCopy associatedCIS];
+    outputDataPathCreated = [associatedCIS2 outputDataPathCreated];
 
-    if ((v14 & 1) == 0)
+    if ((outputDataPathCreated & 1) == 0)
     {
-      v12 = objc_alloc_init(NSMutableDictionary);
+      associatedCIS = objc_alloc_init(NSMutableDictionary);
       v15 = [NSNumber numberWithBool:0];
-      [v12 setValue:v15 forKey:@"kLEAudioXPCMsgArgDirection"];
+      [associatedCIS setValue:v15 forKey:@"kLEAudioXPCMsgArgDirection"];
 
       v16 = [NSNumber numberWithUnsignedInt:buf[0]];
-      [v12 setValue:v16 forKey:@"kLEAudioXPCMsgArgCigID"];
+      [associatedCIS setValue:v16 forKey:@"kLEAudioXPCMsgArgCigID"];
 
       v17 = [NSNumber numberWithUnsignedInt:v19];
-      [v12 setValue:v17 forKey:@"kLEAudioXPCMsgArgCisID"];
+      [associatedCIS setValue:v17 forKey:@"kLEAudioXPCMsgArgCisID"];
 
-      v18 = [(ServiceInterface *)self serviceEventHandler];
-      (v18)[2](v18, 2, v12);
+      serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler)[2](serviceEventHandler, 2, associatedCIS);
 
       goto LABEL_11;
     }
   }
 
 LABEL_12:
-  [v6 description];
+  [aseCopy description];
 }
 
-- (void)handleStreamingStateForASE:(id)a3
+- (void)handleStreamingStateForASE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ServiceInterface *)self peripheral];
-    v8 = [v7 identifier];
+    peripheral = [(ServiceInterface *)self peripheral];
+    identifier = [peripheral identifier];
     v16 = 136315394;
     v17 = "[ASCSInterface handleStreamingStateForASE:]";
     v18 = 2112;
-    v19 = v8;
+    v19 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s for peripherial %@", &v16, 0x16u);
   }
 
-  if (![v4 type])
+  if (![eCopy type])
   {
-    v9 = [v4 associatedCIS];
-    if (![v9 established])
+    associatedCIS = [eCopy associatedCIS];
+    if (![associatedCIS established])
     {
 LABEL_7:
 
       goto LABEL_8;
     }
 
-    v10 = [v4 associatedCIS];
-    v11 = [v10 inputDataPathCreated];
+    associatedCIS2 = [eCopy associatedCIS];
+    inputDataPathCreated = [associatedCIS2 inputDataPathCreated];
 
-    if ((v11 & 1) == 0)
+    if ((inputDataPathCreated & 1) == 0)
     {
-      v9 = objc_alloc_init(NSMutableDictionary);
+      associatedCIS = objc_alloc_init(NSMutableDictionary);
       v12 = [NSNumber numberWithBool:1];
-      [v9 setValue:v12 forKey:@"kLEAudioXPCMsgArgDirection"];
+      [associatedCIS setValue:v12 forKey:@"kLEAudioXPCMsgArgDirection"];
 
-      v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 cigID]);
-      [v9 setValue:v13 forKey:@"kLEAudioXPCMsgArgCigID"];
+      v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [eCopy cigID]);
+      [associatedCIS setValue:v13 forKey:@"kLEAudioXPCMsgArgCigID"];
 
-      v14 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 cisID]);
-      [v9 setValue:v14 forKey:@"kLEAudioXPCMsgArgCisID"];
+      v14 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [eCopy cisID]);
+      [associatedCIS setValue:v14 forKey:@"kLEAudioXPCMsgArgCisID"];
 
-      v15 = [(ServiceInterface *)self serviceEventHandler];
-      (v15)[2](v15, 2, v9);
+      serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler)[2](serviceEventHandler, 2, associatedCIS);
 
       goto LABEL_7;
     }
   }
 
 LABEL_8:
-  [v4 description];
+  [eCopy description];
 }
 
-- (void)handleDisablingStateForASE:(id)a3
+- (void)handleDisablingStateForASE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ServiceInterface *)self peripheral];
-    v8 = [v7 identifier];
+    peripheral = [(ServiceInterface *)self peripheral];
+    identifier = [peripheral identifier];
     v9 = 136315394;
     v10 = "[ASCSInterface handleDisablingStateForASE:]";
     v11 = 2112;
-    v12 = v8;
+    v12 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s for peripherial %@", &v9, 0x16u);
   }
 
-  [v4 description];
+  [eCopy description];
 }
 
-- (void)handleReleasingStateForASE:(id)a3
+- (void)handleReleasingStateForASE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ServiceInterface *)self peripheral];
-    v8 = [v7 identifier];
+    peripheral = [(ServiceInterface *)self peripheral];
+    identifier = [peripheral identifier];
     v9 = 136315394;
     v10 = "[ASCSInterface handleReleasingStateForASE:]";
     v11 = 2112;
-    v12 = v8;
+    v12 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s going to remove ISO Path for peripheral %@", &v9, 0x16u);
   }
 
-  [(ASCSInterface *)self requestRemoveDataPathForASE:v4];
-  [v4 description];
+  [(ASCSInterface *)self requestRemoveDataPathForASE:eCopy];
+  [eCopy description];
 }
 
-- (void)requestRemoveDataPathForASE:(id)a3
+- (void)requestRemoveDataPathForASE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(ServiceInterface *)self peripheral];
-    v8 = [v7 identifier];
+    peripheral = [(ServiceInterface *)self peripheral];
+    identifier = [peripheral identifier];
     v29 = 136315394;
     v30 = "[ASCSInterface requestRemoveDataPathForASE:]";
     v31 = 2112;
-    v32 = v8;
+    v32 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s for peripheral %@", &v29, 0x16u);
   }
 
   v9 = objc_alloc_init(NSMutableDictionary);
-  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 cigID]);
+  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [eCopy cigID]);
   [v9 setValue:v10 forKey:@"kLEAudioXPCMsgArgCigID"];
 
-  v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 cisID]);
+  v11 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [eCopy cisID]);
   [v9 setValue:v11 forKey:@"kLEAudioXPCMsgArgCisID"];
 
-  v12 = [v4 associatedCIS];
-  v13 = [v12 sourceASE];
-  v14 = v13;
-  if (v13 == v4)
+  associatedCIS = [eCopy associatedCIS];
+  sourceASE = [associatedCIS sourceASE];
+  v14 = sourceASE;
+  if (sourceASE == eCopy)
   {
   }
 
   else
   {
-    v15 = [v12 sinkASE];
+    sinkASE = [associatedCIS sinkASE];
 
-    if (v15 != v4)
+    if (sinkASE != eCopy)
     {
       goto LABEL_25;
     }
   }
 
-  if ([v12 inputDataPathCreated])
+  if ([associatedCIS inputDataPathCreated])
   {
-    v16 = [v12 sinkASE];
+    sinkASE2 = [associatedCIS sinkASE];
 
-    if (v16 == v4)
+    if (sinkASE2 == eCopy)
     {
       v17 = [NSNumber numberWithBool:1];
       [v9 setValue:v17 forKey:@"kLEAudioXPCMsgArgDirection"];
 
-      [v12 setInputDataPathCreated:0];
+      [associatedCIS setInputDataPathCreated:0];
     }
   }
 
-  if ([v12 outputDataPathCreated])
+  if ([associatedCIS outputDataPathCreated])
   {
-    v18 = [v12 sourceASE];
+    sourceASE2 = [associatedCIS sourceASE];
 
-    if (v18 == v4)
+    if (sourceASE2 == eCopy)
     {
       v19 = [NSNumber numberWithBool:0];
       [v9 setValue:v19 forKey:@"kLEAudioXPCMsgArgDirection"];
 
-      [v12 setOutputDataPathCreated:0];
+      [associatedCIS setOutputDataPathCreated:0];
     }
   }
 
-  v20 = [(ServiceInterface *)self serviceEventHandler];
-  if (v20)
+  serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
+  if (serviceEventHandler)
   {
-    v21 = v20;
+    v21 = serviceEventHandler;
     v22 = [v9 objectForKey:@"kLEAudioXPCMsgArgDirection"];
 
     if (v22)
     {
-      v23 = [(ServiceInterface *)self serviceEventHandler];
-      (v23)[2](v23, 3, v9);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 3, v9);
     }
   }
 
-  if ([v12 established] && (objc_msgSend(v4, "state") == 1 || objc_msgSend(v4, "state") == 6) && (objc_msgSend(v12, "inputDataPathCreated") & 1) == 0 && (objc_msgSend(v12, "outputDataPathCreated") & 1) == 0)
+  if ([associatedCIS established] && (objc_msgSend(eCopy, "state") == 1 || objc_msgSend(eCopy, "state") == 6) && (objc_msgSend(associatedCIS, "inputDataPathCreated") & 1) == 0 && (objc_msgSend(associatedCIS, "outputDataPathCreated") & 1) == 0)
   {
     v24 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v25 = v24;
-      v26 = [v4 cisID];
+      cisID = [eCopy cisID];
       v29 = 67109120;
-      LODWORD(v30) = v26;
+      LODWORD(v30) = cisID;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Disconnecting CIS %u", &v29, 8u);
     }
 
-    v27 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler3 = [(ServiceInterface *)self serviceEventHandler];
 
-    if (v27)
+    if (serviceEventHandler3)
     {
-      v28 = [(ServiceInterface *)self serviceEventHandler];
-      (v28)[2](v28, 4, v9);
+      serviceEventHandler4 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler4)[2](serviceEventHandler4, 4, v9);
     }
   }
 
@@ -2443,9 +2443,9 @@ LABEL_25:
     sub_10005B0B0(v3, self);
   }
 
-  v4 = [(ASCSInterface *)self ASEControlPointCharacteristic];
-  v5 = [v4 value];
-  v6 = [DataInputStream inputStreamWithData:v5];
+  aSEControlPointCharacteristic = [(ASCSInterface *)self ASEControlPointCharacteristic];
+  value = [aSEControlPointCharacteristic value];
+  v6 = [DataInputStream inputStreamWithData:value];
 
   v33 = 0;
   [v6 readUint8:&v33 + 1];
@@ -2481,21 +2481,21 @@ LABEL_25:
 
       else
       {
-        v11 = [(ASCSInterface *)self sinkASEMap];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        sinkASEMap = [(ASCSInterface *)self sinkASEMap];
+        v12 = [sinkASEMap objectForKeyedSubscript:v10];
 
         if (v12)
         {
-          v13 = [(ASCSInterface *)self sinkASEMap];
-          v14 = [v13 objectForKeyedSubscript:v10];
+          sinkASEMap2 = [(ASCSInterface *)self sinkASEMap];
+          v14 = [sinkASEMap2 objectForKeyedSubscript:v10];
 
-          v15 = [(ASCSInterface *)self pendingSinkASEList];
+          pendingSinkASEList = [(ASCSInterface *)self pendingSinkASEList];
         }
 
         else
         {
-          v16 = [(ASCSInterface *)self sourceASEMap];
-          v17 = [v16 objectForKeyedSubscript:v10];
+          sourceASEMap = [(ASCSInterface *)self sourceASEMap];
+          v17 = [sourceASEMap objectForKeyedSubscript:v10];
 
           if (!v17)
           {
@@ -2507,13 +2507,13 @@ LABEL_25:
             goto LABEL_25;
           }
 
-          v18 = [(ASCSInterface *)self sourceASEMap];
-          v14 = [v18 objectForKeyedSubscript:v10];
+          sourceASEMap2 = [(ASCSInterface *)self sourceASEMap];
+          v14 = [sourceASEMap2 objectForKeyedSubscript:v10];
 
-          v15 = [(ASCSInterface *)self pendingSourceASEList];
+          pendingSinkASEList = [(ASCSInterface *)self pendingSourceASEList];
         }
 
-        v19 = v15;
+        v19 = pendingSinkASEList;
 
         v8 = v19;
       }
@@ -2528,14 +2528,14 @@ LABEL_25:
         if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_ERROR))
         {
           log = v21;
-          v30 = [(ServiceInterface *)self peripheral];
-          v28 = [v30 identifier];
-          v22 = [v28 UUIDString];
+          peripheral = [(ServiceInterface *)self peripheral];
+          identifier = [peripheral identifier];
+          uUIDString = [identifier UUIDString];
           v25 = HIBYTE(v32);
           v27 = [(ASCSInterface *)self aseResponseCodeToString:v32];
           v26 = [(ASCSInterface *)self aseReasonCodeToString:v31];
           *buf = 138413058;
-          v35 = v22;
+          v35 = uUIDString;
           v36 = 1024;
           v37 = v25;
           v38 = 2112;
@@ -2560,20 +2560,20 @@ LABEL_25:
 
   v8 = 0;
 LABEL_23:
-  v23 = [(ASCSInterface *)self controlPointHandler];
+  controlPointHandler = [(ASCSInterface *)self controlPointHandler];
 
-  if (v23)
+  if (controlPointHandler)
   {
-    v24 = [(ASCSInterface *)self controlPointHandler];
-    v24[2](v24, HIBYTE(v33), v7);
+    controlPointHandler2 = [(ASCSInterface *)self controlPointHandler];
+    controlPointHandler2[2](controlPointHandler2, HIBYTE(v33), v7);
   }
 
 LABEL_25:
 }
 
-- (unsigned)getLowestBitSet:(unsigned int)a3
+- (unsigned)getLowestBitSet:(unsigned int)set
 {
-  if (!a3)
+  if (!set)
   {
     return 0;
   }
@@ -2585,20 +2585,20 @@ LABEL_25:
     v3 *= 2;
   }
 
-  while ((result & a3) == 0);
+  while ((result & set) == 0);
   return result;
 }
 
-- (BOOL)allASEInSameState:(unsigned __int8)a3 forSinkASE:(id)a4 forSourceASE:(id)a5
+- (BOOL)allASEInSameState:(unsigned __int8)state forSinkASE:(id)e forSourceASE:(id)sE
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  stateCopy = state;
+  eCopy = e;
+  sECopy = sE;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v8;
+  v10 = eCopy;
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v11)
   {
@@ -2614,11 +2614,11 @@ LABEL_25:
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        v16 = [(ASCSInterface *)self sinkASEMap];
-        v17 = [v16 objectForKeyedSubscript:v15];
-        v18 = [v17 state];
+        sinkASEMap = [(ASCSInterface *)self sinkASEMap];
+        v17 = [sinkASEMap objectForKeyedSubscript:v15];
+        state = [v17 state];
 
-        if (v18 != v6)
+        if (state != stateCopy)
         {
           v28 = 0;
           v19 = v10;
@@ -2640,12 +2640,12 @@ LABEL_25:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v19 = v9;
+  v19 = sECopy;
   v20 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v20)
   {
     v21 = v20;
-    v30 = v9;
+    v30 = sECopy;
     v22 = *v32;
     while (2)
     {
@@ -2657,11 +2657,11 @@ LABEL_25:
         }
 
         v24 = *(*(&v31 + 1) + 8 * j);
-        v25 = [(ASCSInterface *)self sourceASEMap];
-        v26 = [v25 objectForKeyedSubscript:v24];
-        v27 = [v26 state];
+        sourceASEMap = [(ASCSInterface *)self sourceASEMap];
+        v26 = [sourceASEMap objectForKeyedSubscript:v24];
+        state2 = [v26 state];
 
-        if (v27 != v6)
+        if (state2 != stateCopy)
         {
           v28 = 0;
           goto LABEL_20;
@@ -2679,7 +2679,7 @@ LABEL_25:
     }
 
 LABEL_20:
-    v9 = v30;
+    sECopy = v30;
   }
 
   else
@@ -2692,79 +2692,79 @@ LABEL_22:
   return v28;
 }
 
-- (void)readSinkASE:(unsigned __int8)a3
+- (void)readSinkASE:(unsigned __int8)e
 {
-  v3 = a3;
-  v5 = [(ASCSInterface *)self sinkASECharacteristic];
-  v6 = [v5 count];
+  eCopy = e;
+  sinkASECharacteristic = [(ASCSInterface *)self sinkASECharacteristic];
+  v6 = [sinkASECharacteristic count];
 
-  if (v6 > v3)
+  if (v6 > eCopy)
   {
-    v7 = [(ASCSInterface *)self sinkASECharacteristic];
-    v9 = [v7 objectAtIndex:v3];
+    sinkASECharacteristic2 = [(ASCSInterface *)self sinkASECharacteristic];
+    v9 = [sinkASECharacteristic2 objectAtIndex:eCopy];
 
     if (v9)
     {
-      v8 = [(ServiceInterface *)self peripheral];
-      [v8 readValueForCharacteristic:v9];
+      peripheral = [(ServiceInterface *)self peripheral];
+      [peripheral readValueForCharacteristic:v9];
     }
   }
 }
 
-- (void)readSourceASE:(unsigned __int8)a3
+- (void)readSourceASE:(unsigned __int8)e
 {
-  v3 = a3;
-  v5 = [(ASCSInterface *)self sourceASECharacteristic];
-  v6 = [v5 count];
+  eCopy = e;
+  sourceASECharacteristic = [(ASCSInterface *)self sourceASECharacteristic];
+  v6 = [sourceASECharacteristic count];
 
-  if (v6 > v3)
+  if (v6 > eCopy)
   {
-    v7 = [(ASCSInterface *)self sourceASECharacteristic];
-    v9 = [v7 objectAtIndex:v3];
+    sourceASECharacteristic2 = [(ASCSInterface *)self sourceASECharacteristic];
+    v9 = [sourceASECharacteristic2 objectAtIndex:eCopy];
 
     if (v9)
     {
-      v8 = [(ServiceInterface *)self peripheral];
-      [v8 readValueForCharacteristic:v9];
+      peripheral = [(ServiceInterface *)self peripheral];
+      [peripheral readValueForCharacteristic:v9];
     }
   }
 }
 
 - (void)writeASEControlPoint
 {
-  v3 = [(ASCSInterface *)self ASEControlPointCharacteristic];
+  aSEControlPointCharacteristic = [(ASCSInterface *)self ASEControlPointCharacteristic];
 
-  if (v3)
+  if (aSEControlPointCharacteristic)
   {
     v6 = [DataOutputStream outputStreamWithByteOrder:1];
     [v6 writeUint8:1];
-    v4 = [v6 data];
-    v5 = [v4 mutableCopy];
+    data = [v6 data];
+    v5 = [data mutableCopy];
 
     [(ASCSInterface *)self sendControlPointOperation:v5];
   }
 }
 
-- (id)sampleFreqString:(unsigned int)a3
+- (id)sampleFreqString:(unsigned int)string
 {
-  if (a3 - 1 > 0xC)
+  if (string - 1 > 0xC)
   {
     return @"Unknown Sample Freq";
   }
 
   else
   {
-    return *(&off_100094958 + a3 - 1);
+    return *(&off_100094958 + string - 1);
   }
 }
 
-- (id)audioContextToString:(unsigned __int16)a3
+- (id)audioContextToString:(unsigned __int16)string
 {
-  if (a3 <= 31)
+  if (string <= 31)
   {
-    if (a3 > 3)
+    if (string > 3)
     {
-      switch(a3)
+      switch(string)
       {
         case 4u:
           return @"Media";
@@ -2777,7 +2777,7 @@ LABEL_22:
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 0u:
           return @"Prohibited";
@@ -2789,9 +2789,9 @@ LABEL_22:
     }
   }
 
-  else if (a3 <= 255)
+  else if (string <= 255)
   {
-    switch(a3)
+    switch(string)
     {
       case 0x20u:
         return @"Voice Assistant";
@@ -2802,14 +2802,14 @@ LABEL_22:
     }
   }
 
-  else if (a3 > 1023)
+  else if (string > 1023)
   {
-    if (a3 == 1024)
+    if (string == 1024)
     {
       return @"Alert";
     }
 
-    if (a3 == 2048)
+    if (string == 2048)
     {
       return @"Emergency Alarm";
     }
@@ -2817,12 +2817,12 @@ LABEL_22:
 
   else
   {
-    if (a3 == 256)
+    if (string == 256)
     {
       return @"Notification";
     }
 
-    if (a3 == 512)
+    if (string == 512)
     {
       return @"Ringtone";
     }
@@ -2831,29 +2831,29 @@ LABEL_22:
   return @"Unknown Context";
 }
 
-- (id)aseResponseCodeToString:(unsigned __int8)a3
+- (id)aseResponseCodeToString:(unsigned __int8)string
 {
-  if (a3 > 0xEu)
+  if (string > 0xEu)
   {
     return @"Unknown Response Code";
   }
 
   else
   {
-    return *(&off_1000949C0 + a3);
+    return *(&off_1000949C0 + string);
   }
 }
 
-- (id)aseReasonCodeToString:(unsigned __int8)a3
+- (id)aseReasonCodeToString:(unsigned __int8)string
 {
-  if (a3 > 0xAu)
+  if (string > 0xAu)
   {
     return @"Unknown Reason Code";
   }
 
   else
   {
-    return *(&off_100094A38 + a3);
+    return *(&off_100094A38 + string);
   }
 }
 

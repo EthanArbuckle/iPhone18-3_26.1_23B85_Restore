@@ -1,15 +1,15 @@
 @interface FMIconPlatterButton
 - (NSString)accessibilityLabel;
 - (_TtC6FindMy19FMIconPlatterButton)init;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMIconPlatterButton
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000D1CDC();
   v4 = v3;
 
@@ -26,22 +26,22 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_10000905C(0, &qword_1006B0C30);
   sub_1000D5BCC();
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   isa = Set._bridgeToObjectiveC()().super.isa;
 
-  v14.receiver = v7;
+  v14.receiver = selfCopy;
   v14.super_class = type metadata accessor for FMIconPlatterButton();
-  [(FMPlatterButton *)&v14 touchesBegan:isa withEvent:v6];
+  [(FMPlatterButton *)&v14 touchesBegan:isa withEvent:eventCopy];
 
   v9 = objc_opt_self();
   v10 = swift_allocObject();
-  *(v10 + 16) = v7;
+  *(v10 + 16) = selfCopy;
   v13[4] = sub_1000D5C8C;
   v13[5] = v10;
   v13[0] = _NSConcreteStackBlock;
@@ -49,20 +49,20 @@
   v13[2] = sub_100004AE4;
   v13[3] = &unk_1006259A8;
   v11 = _Block_copy(v13);
-  v12 = v7;
+  v12 = selfCopy;
 
   [v9 animateWithDuration:v11 animations:0.25];
 
   _Block_release(v11);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = type metadata accessor for FMIconPlatterButton();
-  v4 = a3;
+  changeCopy = change;
   v5 = v11.receiver;
-  [(FMPlatterButton *)&v11 traitCollectionDidChange:v4];
+  [(FMPlatterButton *)&v11 traitCollectionDidChange:changeCopy];
   sub_1000D3C9C();
   v6 = objc_opt_self();
   v7 = swift_allocObject();

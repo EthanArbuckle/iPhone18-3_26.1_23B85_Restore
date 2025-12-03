@@ -1,17 +1,17 @@
 @interface CVPixelBufferCoder
 + (void)initialize;
-- (CVPixelBufferCoder)initWithCVPixelBuffer:(__CVBuffer *)a3;
-- (CVPixelBufferCoder)initWithCoder:(id)a3;
-- (__CVBuffer)_createPixelBufferForImage:(id)a3 fillWidth:(int64_t)a4 fillHeight:(int64_t)a5;
+- (CVPixelBufferCoder)initWithCVPixelBuffer:(__CVBuffer *)buffer;
+- (CVPixelBufferCoder)initWithCoder:(id)coder;
+- (__CVBuffer)_createPixelBufferForImage:(id)image fillWidth:(int64_t)width fillHeight:(int64_t)height;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CVPixelBufferCoder
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -34,9 +34,9 @@
   [(CVPixelBufferCoder *)&v4 dealloc];
 }
 
-- (CVPixelBufferCoder)initWithCoder:(id)a3
+- (CVPixelBufferCoder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v40.receiver = self;
   v40.super_class = CVPixelBufferCoder;
   v5 = [(CVPixelBufferCoder *)&v40 init];
@@ -49,11 +49,11 @@
   v6 = v5;
   blockBufferOut = 0;
   pixelBufferOut = 0;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PixelBufferSourceMediaName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PixelBufferSourceMediaName"];
   mediaName = v6->_mediaName;
   v6->_mediaName = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PixelBufferSourceMedia"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PixelBufferSourceMedia"];
   if (v9)
   {
     v10 = [MEMORY[0x277CBF758] imageWithData:v9];
@@ -66,7 +66,7 @@
   {
     v6->_transferSourceMedia = 0;
     dataLength = 0;
-    v12 = [v4 decodeBytesForKey:@"PixelBufferAtomData" returnedLength:&dataLength];
+    v12 = [coderCopy decodeBytesForKey:@"PixelBufferAtomData" returnedLength:&dataLength];
     if (v12)
     {
       if (CMBlockBufferCreateWithMemoryBlock(*MEMORY[0x277CBECE8], v12, dataLength, *MEMORY[0x277CBED00], 0, 0, dataLength, 0, &blockBufferOut) || FigRemote_CreatePixelBufferFromSerializedAtomDataBlockBuffer())
@@ -80,9 +80,9 @@
 
     else
     {
-      v14 = [v4 decodeInt64ForKey:@"PixelBufferWidth"];
-      v15 = [v4 decodeInt64ForKey:@"PixelBufferHeight"];
-      v16 = [v4 decodeInt32ForKey:@"PixelBufferFormat"];
+      v14 = [coderCopy decodeInt64ForKey:@"PixelBufferWidth"];
+      v15 = [coderCopy decodeInt64ForKey:@"PixelBufferHeight"];
+      v16 = [coderCopy decodeInt32ForKey:@"PixelBufferFormat"];
       v17 = *MEMORY[0x277CC4DE8];
       v35[0] = *MEMORY[0x277CC4DE0];
       v35[1] = v17;
@@ -102,13 +102,13 @@
       {
         v32 = v13;
         v41 = 0;
-        v33 = [v4 decodeBytesForKey:@"PixelBufferData" returnedLength:&v41];
+        v33 = [coderCopy decodeBytesForKey:@"PixelBufferData" returnedLength:&v41];
         if (v33)
         {
           v34 = v41;
           if (v41)
           {
-            v18 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PixelBufferLayout"];
+            v18 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"PixelBufferLayout"];
             v19 = [v18 count] >> 1;
             if (CVPixelBufferGetPlaneCount(pixelBufferOut) == v19)
             {
@@ -119,46 +119,46 @@
                 while (1)
                 {
                   v21 = [v18 objectAtIndexedSubscript:2 * v20];
-                  v22 = [v21 unsignedIntegerValue];
+                  unsignedIntegerValue = [v21 unsignedIntegerValue];
 
                   v23 = [v18 objectAtIndexedSubscript:(2 * (v20 & 0x3FFFFFFFFFFFFFFFLL)) | 1];
-                  v24 = [v23 unsignedIntegerValue];
+                  unsignedIntegerValue2 = [v23 unsignedIntegerValue];
 
                   BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBufferOut, v20);
                   BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(pixelBufferOut, v20);
                   HeightOfPlane = CVPixelBufferGetHeightOfPlane(pixelBufferOut, v20);
-                  if (v22 < 1)
+                  if (unsignedIntegerValue < 1)
                   {
                     break;
                   }
 
-                  if (v22 > v34)
+                  if (unsignedIntegerValue > v34)
                   {
                     break;
                   }
 
                   v28 = HeightOfPlane;
-                  v29 = (v33 + v22);
-                  if (&v29[HeightOfPlane * v24] > v33 + v34)
+                  v29 = (v33 + unsignedIntegerValue);
+                  if (&v29[HeightOfPlane * unsignedIntegerValue2] > v33 + v34)
                   {
                     break;
                   }
 
-                  if (v24 == BytesPerRowOfPlane)
+                  if (unsignedIntegerValue2 == BytesPerRowOfPlane)
                   {
-                    memcpy(BaseAddressOfPlane, v29, HeightOfPlane * v24);
+                    memcpy(BaseAddressOfPlane, v29, HeightOfPlane * unsignedIntegerValue2);
                   }
 
                   else
                   {
-                    if (v24 >= BytesPerRowOfPlane)
+                    if (unsignedIntegerValue2 >= BytesPerRowOfPlane)
                     {
                       v30 = BytesPerRowOfPlane;
                     }
 
                     else
                     {
-                      v30 = v24;
+                      v30 = unsignedIntegerValue2;
                     }
 
                     if (HeightOfPlane)
@@ -167,7 +167,7 @@
                       {
                         memcpy(BaseAddressOfPlane, v29, v30);
                         BaseAddressOfPlane += BytesPerRowOfPlane;
-                        v29 += v24;
+                        v29 += unsignedIntegerValue2;
                         --v28;
                       }
 
@@ -222,22 +222,22 @@ LABEL_38:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = CMGetAttachment(self->_pixelBuffer, @"preference-image-url", 0);
   v6 = v5;
   mediaName = self->_mediaName;
   if (mediaName)
   {
-    v8 = mediaName;
+    lastPathComponent = mediaName;
 LABEL_4:
-    [v4 encodeObject:v8 forKey:@"PixelBufferSourceMediaName"];
+    [coderCopy encodeObject:lastPathComponent forKey:@"PixelBufferSourceMediaName"];
     goto LABEL_5;
   }
 
-  v8 = [v5 lastPathComponent];
-  if (v8)
+  lastPathComponent = [v5 lastPathComponent];
+  if (lastPathComponent)
   {
     goto LABEL_4;
   }
@@ -249,7 +249,7 @@ LABEL_5:
     v10 = v9;
     if (v9 && [v9 length])
     {
-      [v4 encodeObject:v10 forKey:@"PixelBufferSourceMedia"];
+      [coderCopy encodeObject:v10 forKey:@"PixelBufferSourceMedia"];
 
       goto LABEL_21;
     }
@@ -269,7 +269,7 @@ LABEL_17:
       dataPointerOut = 0;
       if (!CMBlockBufferGetDataPointer(v14, 0, 0, &v15, &dataPointerOut))
       {
-        [v4 encodeBytes:dataPointerOut length:v15 forKey:@"PixelBufferAtomData"];
+        [coderCopy encodeBytes:dataPointerOut length:v15 forKey:@"PixelBufferAtomData"];
       }
 
       goto LABEL_19;
@@ -298,16 +298,16 @@ LABEL_19:
 LABEL_21:
 }
 
-- (CVPixelBufferCoder)initWithCVPixelBuffer:(__CVBuffer *)a3
+- (CVPixelBufferCoder)initWithCVPixelBuffer:(__CVBuffer *)buffer
 {
   v8.receiver = self;
   v8.super_class = CVPixelBufferCoder;
   v4 = [(CVPixelBufferCoder *)&v8 init];
   v5 = v4;
   v6 = 0;
-  if (a3 && v4)
+  if (buffer && v4)
   {
-    v4->_pixelBuffer = CFRetain(a3);
+    v4->_pixelBuffer = CFRetain(buffer);
     v5->_transferSourceMedia = 1;
     v6 = v5;
   }
@@ -315,24 +315,24 @@ LABEL_21:
   return v6;
 }
 
-- (__CVBuffer)_createPixelBufferForImage:(id)a3 fillWidth:(int64_t)a4 fillHeight:(int64_t)a5
+- (__CVBuffer)_createPixelBufferForImage:(id)image fillWidth:(int64_t)width fillHeight:(int64_t)height
 {
-  v7 = a3;
-  v8 = v7;
+  imageCopy = image;
+  v8 = imageCopy;
   pixelBufferOut = 0;
-  if (!v7)
+  if (!imageCopy)
   {
     goto LABEL_11;
   }
 
-  [(__CVBuffer *)v7 extent];
+  [(__CVBuffer *)imageCopy extent];
   v10 = v9;
   [(__CVBuffer *)v8 extent];
   v12 = v11;
-  v13 = a5 / v10;
-  if (a4 / v12 >= v13)
+  v13 = height / v10;
+  if (width / v12 >= v13)
   {
-    v13 = a4 / v12;
+    v13 = width / v12;
   }
 
   if (v13 >= 1.0)
@@ -349,7 +349,7 @@ LABEL_21:
   *&v32.c = v16;
   *&v32.tx = v16;
   *&v32.a = v16;
-  CGAffineTransformMakeScale(&v32, a4 / v12, a5 / (v14 + v14));
+  CGAffineTransformMakeScale(&v32, width / v12, height / (v14 + v14));
   v31 = v32;
   v17 = [(__CVBuffer *)v8 imageByApplyingTransform:&v31];
 

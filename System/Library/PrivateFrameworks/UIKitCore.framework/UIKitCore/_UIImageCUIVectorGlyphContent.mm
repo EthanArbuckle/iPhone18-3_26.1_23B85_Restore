@@ -1,29 +1,29 @@
 @interface _UIImageCUIVectorGlyphContent
-- (BOOL)containsNamedColorStyle:(id)a3;
+- (BOOL)containsNamedColorStyle:(id)style;
 - (BOOL)containsNamedColorStyles;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGImage)CGImage;
-- (CGImage)_provideCGImageWithSize:(CGSize)a3 scale:(double)a4;
-- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)a3 scale:(double)a4 hierarchicalColorResolver:(id)a5;
-- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)a3 scale:(double)a4 namedColorResolver:(id)a5;
-- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)a3 scale:(double)a4 paletteColors:(id)a5;
-- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)a3 scale:(double)a4 templateColor:(id)a5;
+- (CGImage)_provideCGImageWithSize:(CGSize)size scale:(double)scale;
+- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)size scale:(double)scale hierarchicalColorResolver:(id)resolver;
+- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)size scale:(double)scale namedColorResolver:(id)resolver;
+- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)size scale:(double)scale paletteColors:(id)colors;
+- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)size scale:(double)scale templateColor:(id)color;
 - (CGSize)sizeInPixels;
-- (_UIImageCUIVectorGlyphContent)contentWithCGImage:(CGImage *)a3;
-- (_UIImageCUIVectorGlyphContent)contentWithVariableValue:(double)a3;
-- (_UIImageCUIVectorGlyphContent)initWithCUIVectorGlyph:(id)a3 scale:(double)a4;
-- (_UIImageCUIVectorGlyphContent)initWithScale:(double)a3;
+- (_UIImageCUIVectorGlyphContent)contentWithCGImage:(CGImage *)image;
+- (_UIImageCUIVectorGlyphContent)contentWithVariableValue:(double)value;
+- (_UIImageCUIVectorGlyphContent)initWithCUIVectorGlyph:(id)glyph scale:(double)scale;
+- (_UIImageCUIVectorGlyphContent)initWithScale:(double)scale;
 - (id)_automaticSymbolConfiguration;
 - (id)description;
 - (id)outlinePath;
 - (unint64_t)numberOfHierarchyLayers;
 - (unint64_t)numberOfPaletteLayers;
-- (void)_drawVectorGlyphWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 hierarchicalColorResolver:(id)a6;
-- (void)_drawVectorGlyphWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 namedColorResolver:(id)a6;
-- (void)_drawVectorGlyphWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 paletteColors:(id)a6;
-- (void)_drawVectorGlyphWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 templateColor:(id)a6;
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6;
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5;
+- (void)_drawVectorGlyphWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context hierarchicalColorResolver:(id)resolver;
+- (void)_drawVectorGlyphWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context namedColorResolver:(id)resolver;
+- (void)_drawVectorGlyphWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context paletteColors:(id)colors;
+- (void)_drawVectorGlyphWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context templateColor:(id)color;
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext;
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context;
 - (void)dealloc;
 @end
 
@@ -31,14 +31,14 @@
 
 - (id)_automaticSymbolConfiguration
 {
-  v3 = [(CUINamedVectorGlyph *)self->_vectorGlyph preferredRenderingMode];
-  switch(v3)
+  preferredRenderingMode = [(CUINamedVectorGlyph *)self->_vectorGlyph preferredRenderingMode];
+  switch(preferredRenderingMode)
   {
     case 1:
-      v6 = +[UIImageSymbolConfiguration configurationPreferringMonochrome];
+      _automaticSymbolConfiguration = +[UIImageSymbolConfiguration configurationPreferringMonochrome];
       break;
     case 2:
-      v6 = +[UIImageSymbolConfiguration configurationPreferringMulticolor];
+      _automaticSymbolConfiguration = +[UIImageSymbolConfiguration configurationPreferringMulticolor];
       break;
     case 3:
       v4 = +[UIColor tintColor];
@@ -68,11 +68,11 @@
 
       v10.receiver = self;
       v10.super_class = _UIImageCUIVectorGlyphContent;
-      v6 = [(_UIImageContent *)&v10 _automaticSymbolConfiguration];
+      _automaticSymbolConfiguration = [(_UIImageContent *)&v10 _automaticSymbolConfiguration];
       break;
   }
 
-  v5 = v6;
+  v5 = _automaticSymbolConfiguration;
 LABEL_12:
 
   return v5;
@@ -162,25 +162,25 @@ LABEL_12:
   return v6;
 }
 
-- (_UIImageCUIVectorGlyphContent)initWithCUIVectorGlyph:(id)a3 scale:(double)a4
+- (_UIImageCUIVectorGlyphContent)initWithCUIVectorGlyph:(id)glyph scale:(double)scale
 {
-  v8 = a3;
+  glyphCopy = glyph;
   v19.receiver = self;
   v19.super_class = _UIImageCUIVectorGlyphContent;
-  v9 = [(_UIImageContent *)&v19 initWithScale:a4];
+  v9 = [(_UIImageContent *)&v19 initWithScale:scale];
   if (v9)
   {
-    if (!v8)
+    if (!glyphCopy)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v9 file:@"_UIImageContent.m" lineNumber:1987 description:@"Need a valid vector glyph!"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"_UIImageContent.m" lineNumber:1987 description:@"Need a valid vector glyph!"];
     }
 
-    [v8 pointSize];
+    [glyphCopy pointSize];
     v11 = v10;
-    [v8 referencePointSize];
+    [glyphCopy referencePointSize];
     v9->_glyphScaleFactor = v11 / v12;
-    objc_storeStrong(&v9->_vectorGlyph, a3);
+    objc_storeStrong(&v9->_vectorGlyph, glyph);
     [(_UIImageContent *)v9 scale];
     v14 = v13;
     [(CUINamedVectorGlyph *)v9->_vectorGlyph alignmentRect];
@@ -194,31 +194,31 @@ LABEL_12:
   return v9;
 }
 
-- (_UIImageCUIVectorGlyphContent)initWithScale:(double)a3
+- (_UIImageCUIVectorGlyphContent)initWithScale:(double)scale
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:2006 description:@"You need to use -initWithCGImage:CUIVectorGlyph:scale:"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:2006 description:@"You need to use -initWithCGImage:CUIVectorGlyph:scale:"];
 
   return 0;
 }
 
 - (id)outlinePath
 {
-  v2 = [(CUINamedVectorGlyph *)self->_vectorGlyph CGPath];
-  if (v2)
+  cGPath = [(CUINamedVectorGlyph *)self->_vectorGlyph CGPath];
+  if (cGPath)
   {
-    v2 = [UIBezierPath bezierPathWithCGPath:v2];
+    cGPath = [UIBezierPath bezierPathWithCGPath:cGPath];
   }
 
-  return v2;
+  return cGPath;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([_UIImageContent content:v4 isEqualToContent:?])
+  equalCopy = equal;
+  if ([_UIImageContent content:equalCopy isEqualToContent:?])
   {
-    v5 = v4[5];
+    v5 = equalCopy[5];
     v6 = self->_vectorGlyph;
     v7 = v5;
     v8 = v7;
@@ -259,25 +259,25 @@ LABEL_12:
   return v10;
 }
 
-- (_UIImageCUIVectorGlyphContent)contentWithCGImage:(CGImage *)a3
+- (_UIImageCUIVectorGlyphContent)contentWithCGImage:(CGImage *)image
 {
   v5 = [_UIImageCUIVectorGlyphContent alloc];
   vectorGlyph = self->_vectorGlyph;
   [(_UIImageContent *)self scale];
   v7 = [(_UIImageCUIVectorGlyphContent *)v5 initWithCUIVectorGlyph:vectorGlyph scale:?];
-  v7->_overrideImageRef = CGImageRetain(a3);
+  v7->_overrideImageRef = CGImageRetain(image);
 
   return v7;
 }
 
-- (_UIImageCUIVectorGlyphContent)contentWithVariableValue:(double)a3
+- (_UIImageCUIVectorGlyphContent)contentWithVariableValue:(double)value
 {
   [(_UIImageCUIVectorGlyphContent *)self variableValue];
-  if (v5 == a3)
+  if (v5 == value)
   {
     v11.receiver = self;
     v11.super_class = _UIImageCUIVectorGlyphContent;
-    v8 = [(_UIImageContent *)&v11 contentWithVariableValue:a3];
+    v8 = [(_UIImageContent *)&v11 contentWithVariableValue:value];
   }
 
   else
@@ -287,16 +287,16 @@ LABEL_12:
     [(_UIImageContent *)self scale];
     v8 = [(_UIImageCUIVectorGlyphContent *)v6 initWithCUIVectorGlyph:v7 scale:?];
 
-    v9 = [(_UIImageCUIVectorGlyphContent *)v8 vectorGlyph];
-    [v9 setVariableMaxValue:a3];
+    vectorGlyph = [(_UIImageCUIVectorGlyphContent *)v8 vectorGlyph];
+    [vectorGlyph setVariableMaxValue:value];
   }
 
   return v8;
 }
 
-- (BOOL)containsNamedColorStyle:(id)a3
+- (BOOL)containsNamedColorStyle:(id)style
 {
-  v4 = [(CUINamedVectorGlyph *)self->_vectorGlyph containsNamedColorStyle:a3];
+  v4 = [(CUINamedVectorGlyph *)self->_vectorGlyph containsNamedColorStyle:style];
   if (v4)
   {
     atomic_store(MEMORY[0x1E695E118], &self->_isMultiColor);
@@ -305,50 +305,50 @@ LABEL_12:
   return v4;
 }
 
-- (void)_prepareForDrawingWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5
+- (void)_prepareForDrawingWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context
 {
-  height = a3.height;
-  width = a3.width;
-  [(_UIImageContent *)self size:a3.width];
+  height = size.height;
+  width = size.width;
+  [(_UIImageContent *)self size:size.width];
   v9 = width / v8;
   v11 = height / v10;
 
-  CGContextScaleCTM(a5, v9, v11);
+  CGContextScaleCTM(context, v9, v11);
 }
 
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext
 {
-  if (a3.width > 0.0 && a3.height > 0.0)
+  if (size.width > 0.0 && size.height > 0.0)
   {
-    [(CUINamedVectorGlyph *)self->_vectorGlyph drawInContext:a5, a6];
+    [(CUINamedVectorGlyph *)self->_vectorGlyph drawInContext:context, renditionContext];
   }
 }
 
-- (CGImage)_provideCGImageWithSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_provideCGImageWithSize:(CGSize)size scale:(double)scale
 {
   v4 = 0;
-  if (a3.width > 0.0)
+  if (size.width > 0.0)
   {
-    height = a3.height;
-    if (a3.height > 0.0)
+    height = size.height;
+    if (size.height > 0.0)
     {
-      width = a3.width;
+      width = size.width;
       [(_UIImageContent *)self size];
       v11 = width == v10 && height == v9;
-      if (v11 && ([(_UIImageContent *)self scale], v12 == a4))
+      if (v11 && ([(_UIImageContent *)self scale], v12 == scale))
       {
-        v13 = CGImageRetain([(_UIImageCUIVectorGlyphContent *)self CGImage]);
+        height = CGImageRetain([(_UIImageCUIVectorGlyphContent *)self CGImage]);
       }
 
       else
       {
-        v13 = [(CUINamedVectorGlyph *)self->_vectorGlyph rasterizeImageUsingScaleFactor:a4 forTargetSize:width, height];
+        height = [(CUINamedVectorGlyph *)self->_vectorGlyph rasterizeImageUsingScaleFactor:scale forTargetSize:width, height];
       }
 
-      v4 = v13;
-      if (v13)
+      v4 = height;
+      if (height)
       {
-        CFAutorelease(v13);
+        CFAutorelease(height);
       }
     }
   }
@@ -356,19 +356,19 @@ LABEL_12:
   return v4;
 }
 
-- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)a3 scale:(double)a4 namedColorResolver:(id)a5
+- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)size scale:(double)scale namedColorResolver:(id)resolver
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  height = size.height;
+  width = size.width;
+  resolverCopy = resolver;
+  v10 = resolverCopy;
+  if (resolverCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __93___UIImageCUIVectorGlyphContent__provideVectorGlyphCGImageWithSize_scale_namedColorResolver___block_invoke;
     aBlock[3] = &unk_1E7106F10;
-    v20 = v9;
+    v20 = resolverCopy;
     v11 = _Block_copy(aBlock);
   }
 
@@ -381,16 +381,16 @@ LABEL_12:
   if (width > 0.0 && height > 0.0)
   {
     [(_UIImageContent *)self size];
-    if (width == v14 && height == v13 && ([(_UIImageContent *)self scale], v15 == a4))
+    if (width == v14 && height == v13 && ([(_UIImageContent *)self scale], v15 == scale))
     {
       if (v11)
       {
-        v16 = [(CUINamedVectorGlyph *)self->_vectorGlyph imageWithColorResolver:v11];
+        height = [(CUINamedVectorGlyph *)self->_vectorGlyph imageWithColorResolver:v11];
       }
 
       else
       {
-        v16 = CGImageRetain([(_UIImageCUIVectorGlyphContent *)self CGImage]);
+        height = CGImageRetain([(_UIImageCUIVectorGlyphContent *)self CGImage]);
       }
     }
 
@@ -399,32 +399,32 @@ LABEL_12:
       vectorGlyph = self->_vectorGlyph;
       if (v11)
       {
-        v16 = [(CUINamedVectorGlyph *)vectorGlyph rasterizeImageUsingScaleFactor:v11 forTargetSize:a4 withColorResolver:width, height];
+        height = [(CUINamedVectorGlyph *)vectorGlyph rasterizeImageUsingScaleFactor:v11 forTargetSize:scale withColorResolver:width, height];
       }
 
       else
       {
-        v16 = [(CUINamedVectorGlyph *)vectorGlyph rasterizeImageUsingScaleFactor:a4 forTargetSize:width, height];
+        height = [(CUINamedVectorGlyph *)vectorGlyph rasterizeImageUsingScaleFactor:scale forTargetSize:width, height];
       }
     }
 
-    v12 = v16;
-    if (v16)
+    v12 = height;
+    if (height)
     {
-      CFAutorelease(v16);
+      CFAutorelease(height);
     }
   }
 
   return v12;
 }
 
-- (void)_drawVectorGlyphWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 namedColorResolver:(id)a6
+- (void)_drawVectorGlyphWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context namedColorResolver:(id)resolver
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a6;
-  v11 = v10;
-  if (!v10)
+  height = size.height;
+  width = size.width;
+  resolverCopy = resolver;
+  v11 = resolverCopy;
+  if (!resolverCopy)
   {
     v12 = 0;
     if (width <= 0.0 || height <= 0.0)
@@ -433,7 +433,7 @@ LABEL_12:
     }
 
 LABEL_11:
-    [(CUINamedVectorGlyph *)self->_vectorGlyph drawInContext:a5];
+    [(CUINamedVectorGlyph *)self->_vectorGlyph drawInContext:context];
     v12 = 0;
     goto LABEL_12;
   }
@@ -442,7 +442,7 @@ LABEL_11:
   aBlock[1] = 3221225472;
   aBlock[2] = __93___UIImageCUIVectorGlyphContent__drawVectorGlyphWithSize_scale_inContext_namedColorResolver___block_invoke;
   aBlock[3] = &unk_1E7106F10;
-  v15 = v10;
+  v15 = resolverCopy;
   v12 = _Block_copy(aBlock);
 
   if (width <= 0.0 || height <= 0.0)
@@ -460,7 +460,7 @@ LABEL_11:
     v13 = 0;
     do
     {
-      [(CUINamedVectorGlyph *)self->_vectorGlyph drawMulticolorLayerAtIndex:v13++ inContext:a5 withColorResolver:v12];
+      [(CUINamedVectorGlyph *)self->_vectorGlyph drawMulticolorLayerAtIndex:v13++ inContext:context withColorResolver:v12];
     }
 
     while (v13 < [(CUINamedVectorGlyph *)self->_vectorGlyph numberOfMulticolorLayers]);
@@ -469,19 +469,19 @@ LABEL_11:
 LABEL_12:
 }
 
-- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)a3 scale:(double)a4 hierarchicalColorResolver:(id)a5
+- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)size scale:(double)scale hierarchicalColorResolver:(id)resolver
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  height = size.height;
+  width = size.width;
+  resolverCopy = resolver;
+  v10 = resolverCopy;
+  if (resolverCopy)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __100___UIImageCUIVectorGlyphContent__provideVectorGlyphCGImageWithSize_scale_hierarchicalColorResolver___block_invoke;
     aBlock[3] = &unk_1E7106F38;
-    v20 = v9;
+    v20 = resolverCopy;
     v11 = _Block_copy(aBlock);
   }
 
@@ -494,16 +494,16 @@ LABEL_12:
   if (width > 0.0 && height > 0.0)
   {
     [(_UIImageContent *)self size];
-    if (width == v14 && height == v13 && ([(_UIImageContent *)self scale], v15 == a4))
+    if (width == v14 && height == v13 && ([(_UIImageContent *)self scale], v15 == scale))
     {
       if (v11)
       {
-        v16 = [(CUINamedVectorGlyph *)self->_vectorGlyph imageWithHierarchyColorResolver:v11];
+        height = [(CUINamedVectorGlyph *)self->_vectorGlyph imageWithHierarchyColorResolver:v11];
       }
 
       else
       {
-        v16 = CGImageRetain([(_UIImageCUIVectorGlyphContent *)self CGImage]);
+        height = CGImageRetain([(_UIImageCUIVectorGlyphContent *)self CGImage]);
       }
     }
 
@@ -512,32 +512,32 @@ LABEL_12:
       vectorGlyph = self->_vectorGlyph;
       if (v11)
       {
-        v16 = [(CUINamedVectorGlyph *)vectorGlyph rasterizeImageUsingScaleFactor:v11 forTargetSize:a4 withHierarchyColorResolver:width, height];
+        height = [(CUINamedVectorGlyph *)vectorGlyph rasterizeImageUsingScaleFactor:v11 forTargetSize:scale withHierarchyColorResolver:width, height];
       }
 
       else
       {
-        v16 = [(CUINamedVectorGlyph *)vectorGlyph rasterizeImageUsingScaleFactor:a4 forTargetSize:width, height];
+        height = [(CUINamedVectorGlyph *)vectorGlyph rasterizeImageUsingScaleFactor:scale forTargetSize:width, height];
       }
     }
 
-    v12 = v16;
-    if (v16)
+    v12 = height;
+    if (height)
     {
-      CFAutorelease(v16);
+      CFAutorelease(height);
     }
   }
 
   return v12;
 }
 
-- (void)_drawVectorGlyphWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 hierarchicalColorResolver:(id)a6
+- (void)_drawVectorGlyphWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context hierarchicalColorResolver:(id)resolver
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a6;
-  v11 = v10;
-  if (!v10)
+  height = size.height;
+  width = size.width;
+  resolverCopy = resolver;
+  v11 = resolverCopy;
+  if (!resolverCopy)
   {
     v12 = 0;
     if (width <= 0.0 || height <= 0.0)
@@ -546,7 +546,7 @@ LABEL_12:
     }
 
 LABEL_11:
-    [(CUINamedVectorGlyph *)self->_vectorGlyph drawInContext:a5];
+    [(CUINamedVectorGlyph *)self->_vectorGlyph drawInContext:context];
     v12 = 0;
     goto LABEL_12;
   }
@@ -555,7 +555,7 @@ LABEL_11:
   aBlock[1] = 3221225472;
   aBlock[2] = __100___UIImageCUIVectorGlyphContent__drawVectorGlyphWithSize_scale_inContext_hierarchicalColorResolver___block_invoke;
   aBlock[3] = &unk_1E7106F38;
-  v15 = v10;
+  v15 = resolverCopy;
   v12 = _Block_copy(aBlock);
 
   if (width <= 0.0 || height <= 0.0)
@@ -573,7 +573,7 @@ LABEL_11:
     v13 = 0;
     do
     {
-      [(CUINamedVectorGlyph *)self->_vectorGlyph drawHierarchyLayerAtIndex:v13++ inContext:a5 withColorResolver:v12];
+      [(CUINamedVectorGlyph *)self->_vectorGlyph drawHierarchyLayerAtIndex:v13++ inContext:context withColorResolver:v12];
     }
 
     while (v13 < [(CUINamedVectorGlyph *)self->_vectorGlyph numberOfHierarchyLayers]);
@@ -582,21 +582,21 @@ LABEL_11:
 LABEL_12:
 }
 
-- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)a3 scale:(double)a4 paletteColors:(id)a5
+- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)size scale:(double)scale paletteColors:(id)colors
 {
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
     return 0;
   }
 
-  height = a3.height;
-  if (a3.height <= 0.0)
+  height = size.height;
+  if (size.height <= 0.0)
   {
     return 0;
   }
 
-  width = a3.width;
-  v9 = [a5 mutableCopy];
+  width = size.width;
+  v9 = [colors mutableCopy];
   if ([v9 count])
   {
     v10 = 0;
@@ -612,17 +612,17 @@ LABEL_12:
   }
 
   [(_UIImageContent *)self size];
-  if (width == v13 && height == v12 && ([(_UIImageContent *)self scale], v14 == a4))
+  if (width == v13 && height == v12 && ([(_UIImageContent *)self scale], v14 == scale))
   {
-    v15 = [(CUINamedVectorGlyph *)self->_vectorGlyph imageWithPaletteColors:v9];
+    height = [(CUINamedVectorGlyph *)self->_vectorGlyph imageWithPaletteColors:v9];
   }
 
   else
   {
-    v15 = [(CUINamedVectorGlyph *)self->_vectorGlyph rasterizeImageUsingScaleFactor:v9 forTargetSize:a4 withPaletteColors:width, height];
+    height = [(CUINamedVectorGlyph *)self->_vectorGlyph rasterizeImageUsingScaleFactor:v9 forTargetSize:scale withPaletteColors:width, height];
   }
 
-  v16 = v15;
+  v16 = height;
 
   if (!v16)
   {
@@ -632,11 +632,11 @@ LABEL_12:
   return CFAutorelease(v16);
 }
 
-- (void)_drawVectorGlyphWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 paletteColors:(id)a6
+- (void)_drawVectorGlyphWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context paletteColors:(id)colors
 {
-  if (a3.width > 0.0 && a3.height > 0.0)
+  if (size.width > 0.0 && size.height > 0.0)
   {
-    v11 = [a6 mutableCopy];
+    v11 = [colors mutableCopy];
     if ([v11 count])
     {
       v9 = 0;
@@ -651,27 +651,27 @@ LABEL_12:
       while ([v11 count] > v9);
     }
 
-    [(CUINamedVectorGlyph *)self->_vectorGlyph drawInContext:a5 withPaletteColors:v11];
+    [(CUINamedVectorGlyph *)self->_vectorGlyph drawInContext:context withPaletteColors:v11];
   }
 }
 
-- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)a3 scale:(double)a4 templateColor:(id)a5
+- (CGImage)_provideVectorGlyphCGImageWithSize:(CGSize)size scale:(double)scale templateColor:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
-  v11 = v10;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  v11 = colorCopy;
   v12 = 0;
   if (width > 0.0 && height > 0.0)
   {
-    if (!v10)
+    if (!colorCopy)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:2324 description:@"templateColor cannot be nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:2324 description:@"templateColor cannot be nil"];
     }
 
     [(_UIImageContent *)self size];
-    if (width == v14 && height == v13 && ([(_UIImageContent *)self scale], v15 == a4))
+    if (width == v14 && height == v13 && ([(_UIImageContent *)self scale], v15 == scale))
     {
       v16 = -[CUINamedVectorGlyph imageWithTintColor:](self->_vectorGlyph, "imageWithTintColor:", [v11 CGColor]);
       if (!v16)
@@ -684,7 +684,7 @@ LABEL_9:
 
     else
     {
-      v16 = -[CUINamedVectorGlyph rasterizeImageWithTintColor:usingScaleFactor:forTargetSize:](self->_vectorGlyph, "rasterizeImageWithTintColor:usingScaleFactor:forTargetSize:", [v11 CGColor], a4, width, height);
+      v16 = -[CUINamedVectorGlyph rasterizeImageWithTintColor:usingScaleFactor:forTargetSize:](self->_vectorGlyph, "rasterizeImageWithTintColor:usingScaleFactor:forTargetSize:", [v11 CGColor], scale, width, height);
       if (!v16)
       {
         goto LABEL_9;
@@ -699,24 +699,24 @@ LABEL_12:
   return v12;
 }
 
-- (void)_drawVectorGlyphWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 templateColor:(id)a6
+- (void)_drawVectorGlyphWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context templateColor:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   if (width > 0.0 && height > 0.0)
   {
-    v15 = v11;
-    if (!v11)
+    v15 = colorCopy;
+    if (!colorCopy)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:2343 description:@"templateColor cannot be nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:2343 description:@"templateColor cannot be nil"];
     }
 
     vectorGlyph = self->_vectorGlyph;
     v13 = v15;
-    -[CUINamedVectorGlyph drawWithTintColor:inContext:](vectorGlyph, "drawWithTintColor:inContext:", [v15 CGColor], a5);
-    v11 = v15;
+    -[CUINamedVectorGlyph drawWithTintColor:inContext:](vectorGlyph, "drawWithTintColor:inContext:", [v15 CGColor], context);
+    colorCopy = v15;
   }
 }
 

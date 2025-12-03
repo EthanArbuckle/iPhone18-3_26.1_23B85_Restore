@@ -1,18 +1,18 @@
 @interface PKPassFaceBadgesCollectionView
-- (CGSize)sizeForBoundingSize:(CGSize)a3 limitedToNumberOfLines:(unint64_t)a4;
+- (CGSize)sizeForBoundingSize:(CGSize)size limitedToNumberOfLines:(unint64_t)lines;
 - (NSDirectionalEdgeInsets)badgesTextPadding;
 - (NSDirectionalEdgeInsets)contentInsets;
 - (PKPassFaceBadgesCollectionView)init;
 - (void)_updateRowContent;
 - (void)layoutSubviews;
-- (void)setBadgesBackgroundColor:(id)a3;
-- (void)setBadgesFont:(id)a3;
-- (void)setBadgesTextColor:(id)a3;
-- (void)setBadgesTextPadding:(NSDirectionalEdgeInsets)a3;
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setFields:(id)a3;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setNumberOfLines:(unint64_t)a3;
+- (void)setBadgesBackgroundColor:(id)color;
+- (void)setBadgesFont:(id)font;
+- (void)setBadgesTextColor:(id)color;
+- (void)setBadgesTextPadding:(NSDirectionalEdgeInsets)padding;
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setFields:(id)fields;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setNumberOfLines:(unint64_t)lines;
 @end
 
 @implementation PKPassFaceBadgesCollectionView
@@ -151,24 +151,24 @@ LABEL_22:
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 index];
-        v10 = [v8 changeType];
-        if (v10)
+        index = [v8 index];
+        changeType = [v8 changeType];
+        if (changeType)
         {
-          if (v10 != 1)
+          if (changeType != 1)
           {
             continue;
           }
 
-          v11 = [(NSMutableArray *)self->_badgeViews objectAtIndexedSubscript:v9];
-          [(NSMutableArray *)self->_badgeViews removeObjectAtIndex:v9];
+          v11 = [(NSMutableArray *)self->_badgeViews objectAtIndexedSubscript:index];
+          [(NSMutableArray *)self->_badgeViews removeObjectAtIndex:index];
           [(PKPassFaceBadgeView *)v11 removeFromSuperview];
         }
 
         else
         {
           v11 = objc_alloc_init(PKPassFaceBadgeView);
-          [(NSMutableArray *)self->_badgeViews insertObject:v11 atIndex:v9];
+          [(NSMutableArray *)self->_badgeViews insertObject:v11 atIndex:index];
           [(PKPassFaceBadgesCollectionView *)self insertSubview:v11 atIndex:0];
         }
       }
@@ -201,37 +201,37 @@ LABEL_22:
   [(PKPassFaceBadgesCollectionView *)self setNeedsLayout];
 }
 
-- (CGSize)sizeForBoundingSize:(CGSize)a3 limitedToNumberOfLines:(unint64_t)a4
+- (CGSize)sizeForBoundingSize:(CGSize)size limitedToNumberOfLines:(unint64_t)lines
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   numberOfLines = self->_numberOfLines;
-  if (a4 && numberOfLines)
+  if (lines && numberOfLines)
   {
-    if (numberOfLines >= a4)
+    if (numberOfLines >= lines)
     {
-      v9 = a4;
+      linesCopy2 = lines;
     }
 
     else
     {
-      v9 = self->_numberOfLines;
+      linesCopy2 = self->_numberOfLines;
     }
   }
 
-  else if (numberOfLines <= a4)
+  else if (numberOfLines <= lines)
   {
-    v9 = a4;
+    linesCopy2 = lines;
   }
 
   else
   {
-    v9 = self->_numberOfLines;
+    linesCopy2 = self->_numberOfLines;
   }
 
   v10 = *(MEMORY[0x1E695F060] + 8);
   v36 = *MEMORY[0x1E695F060];
-  if (v10 <= a3.height)
+  if (v10 <= size.height)
   {
     v11 = 0;
     v12 = 0.0;
@@ -270,11 +270,11 @@ LABEL_33:
         v36 = v32;
         v10 = v10 + v14;
         v14 = 0.0;
-        if (v9)
+        if (linesCopy2)
         {
           ++v13;
           v12 = 0.0;
-          if (v13 > v9)
+          if (v13 > linesCopy2)
           {
             goto LABEL_33;
           }
@@ -314,63 +314,63 @@ LABEL_33:
   }
 
 LABEL_34:
-  a3.width = v36;
-  a3.height = v10;
+  size.width = v36;
+  size.height = v10;
 
-  PKSizeCeilToPixel(a3, *&a3.height, v4);
+  PKSizeCeilToPixel(size, *&size.height, v4);
   result.height = v35;
   result.width = v34;
   return result;
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
-  if (self->_layoutDirection != a3)
+  if (self->_layoutDirection != direction)
   {
-    self->_layoutDirection = a3;
+    self->_layoutDirection = direction;
     [(PKPassFaceBadgesCollectionView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentInsets:(NSDirectionalEdgeInsets)a3
+- (void)setContentInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInsets.top, v3), vceqq_f64(*&self->_contentInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInsets = a3;
+    self->_contentInsets = insets;
     [(PKPassFaceBadgesCollectionView *)self setNeedsLayout];
   }
 }
 
-- (void)setNumberOfLines:(unint64_t)a3
+- (void)setNumberOfLines:(unint64_t)lines
 {
-  if (self->_numberOfLines != a3)
+  if (self->_numberOfLines != lines)
   {
-    self->_numberOfLines = a3;
+    self->_numberOfLines = lines;
     [(PKPassFaceBadgesCollectionView *)self setNeedsLayout];
   }
 }
 
-- (void)setFields:(id)a3
+- (void)setFields:(id)fields
 {
-  v5 = a3;
+  fieldsCopy = fields;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_fields, a3);
+    objc_storeStrong(&self->_fields, fields);
     [(PKPassFaceBadgesCollectionView *)self _updateRowContent];
   }
 }
 
-- (void)setBadgesBackgroundColor:(id)a3
+- (void)setBadgesBackgroundColor:(id)color
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!CGColorEqualToColor(-[UIColor CGColor](self->_badgesBackgroundColor, "CGColor"), [v5 CGColor]))
+  colorCopy = color;
+  if (!CGColorEqualToColor(-[UIColor CGColor](self->_badgesBackgroundColor, "CGColor"), [colorCopy CGColor]))
   {
-    objc_storeStrong(&self->_badgesBackgroundColor, a3);
+    objc_storeStrong(&self->_badgesBackgroundColor, color);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -391,7 +391,7 @@ LABEL_34:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setBackgroundColor:{v5, v11}];
+          [*(*(&v11 + 1) + 8 * v10++) setBackgroundColor:{colorCopy, v11}];
         }
 
         while (v8 != v10);
@@ -403,13 +403,13 @@ LABEL_34:
   }
 }
 
-- (void)setBadgesTextColor:(id)a3
+- (void)setBadgesTextColor:(id)color
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!CGColorEqualToColor(-[UIColor CGColor](self->_badgesTextColor, "CGColor"), [v5 CGColor]))
+  colorCopy = color;
+  if (!CGColorEqualToColor(-[UIColor CGColor](self->_badgesTextColor, "CGColor"), [colorCopy CGColor]))
   {
-    objc_storeStrong(&self->_badgesTextColor, a3);
+    objc_storeStrong(&self->_badgesTextColor, color);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -430,7 +430,7 @@ LABEL_34:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setTextColor:{v5, v11}];
+          [*(*(&v11 + 1) + 8 * v10++) setTextColor:{colorCopy, v11}];
         }
 
         while (v8 != v10);
@@ -442,13 +442,13 @@ LABEL_34:
   }
 }
 
-- (void)setBadgesFont:(id)a3
+- (void)setBadgesFont:(id)font
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_badgesFont != v5)
+  fontCopy = font;
+  if (self->_badgesFont != fontCopy)
   {
-    objc_storeStrong(&self->_badgesFont, a3);
+    objc_storeStrong(&self->_badgesFont, font);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -469,7 +469,7 @@ LABEL_34:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setFont:{v5, v11}];
+          [*(*(&v11 + 1) + 8 * v10++) setFont:{fontCopy, v11}];
         }
 
         while (v8 != v10);
@@ -483,20 +483,20 @@ LABEL_34:
   }
 }
 
-- (void)setBadgesTextPadding:(NSDirectionalEdgeInsets)a3
+- (void)setBadgesTextPadding:(NSDirectionalEdgeInsets)padding
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.leading;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_badgesTextPadding.top, v3), vceqq_f64(*&self->_badgesTextPadding.bottom, v4)))) & 1) == 0)
   {
-    v11 = *&a3.top;
-    v12 = *&a3.leading;
-    self->_badgesTextPadding = a3;
-    v13 = *&a3.bottom;
-    v14 = *&a3.trailing;
+    v11 = *&padding.top;
+    v12 = *&padding.leading;
+    self->_badgesTextPadding = padding;
+    v13 = *&padding.bottom;
+    v14 = *&padding.trailing;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;

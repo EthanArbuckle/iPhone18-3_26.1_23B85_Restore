@@ -1,8 +1,8 @@
 @interface BKPersonalizationEventDonor
 - (BKPersonalizationEventDonor)init;
-- (BKPersonalizationEventDonor)initWithType:(id)a3;
-- (void)donateWithConfiguration:(id)a3 context:(id)a4 donationCompleteBlock:(id)a5;
-- (void)setupWithLibraryManager:(id)a3;
+- (BKPersonalizationEventDonor)initWithType:(id)type;
+- (void)donateWithConfiguration:(id)configuration context:(id)context donationCompleteBlock:(id)block;
+- (void)setupWithLibraryManager:(id)manager;
 @end
 
 @implementation BKPersonalizationEventDonor
@@ -18,7 +18,7 @@
   return v4;
 }
 
-- (BKPersonalizationEventDonor)initWithType:(id)a3
+- (BKPersonalizationEventDonor)initWithType:(id)type
 {
   v3 = sub_1007A2254();
   v5 = v4;
@@ -31,26 +31,26 @@
   return v8;
 }
 
-- (void)setupWithLibraryManager:(id)a3
+- (void)setupWithLibraryManager:(id)manager
 {
   v8[3] = sub_10000A7C4(0, &qword_100AD9BD0);
   v8[4] = &off_100A300A0;
-  v8[0] = a3;
+  v8[0] = manager;
   v5 = OBJC_IVAR___BKPersonalizationEventDonor_libraryAssetProvider;
   swift_beginAccess();
-  v6 = a3;
-  v7 = self;
+  managerCopy = manager;
+  selfCopy = self;
   sub_100492D88(v8, &self->BMBaseDonor_opaque[v5]);
   swift_endAccess();
 }
 
-- (void)donateWithConfiguration:(id)a3 context:(id)a4 donationCompleteBlock:(id)a5
+- (void)donateWithConfiguration:(id)configuration context:(id)context donationCompleteBlock:(id)block
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(block);
+  if (context)
   {
     v9 = sub_1007A2254();
-    a4 = v10;
+    context = v10;
   }
 
   else
@@ -59,9 +59,9 @@
   }
 
   _Block_copy(v8);
-  v11 = a3;
-  v12 = self;
-  sub_100491F5C(v11, v9, a4, v12, v8);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_100491F5C(configurationCopy, v9, context, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }

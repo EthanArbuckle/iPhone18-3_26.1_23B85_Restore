@@ -1,10 +1,10 @@
 @interface OITSUSharedLocale
 + (id)_singletonAlloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)sharedLocale;
 - (OITSUSharedLocale)init;
 - (__CFLocale)currentLocale;
-- (void)datePreferencesChanged:(id)a3;
+- (void)datePreferencesChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
 
 + (id)_singletonAlloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___OITSUSharedLocale;
   return objc_msgSendSuper2(&v3, sel_allocWithZone_, 0);
 }
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __33__OITSUSharedLocale_sharedLocale__block_invoke;
   block[3] = &unk_2799C60B0;
-  block[4] = a1;
+  block[4] = self;
   if (sharedLocale_sOnceToken != -1)
   {
     dispatch_once(&sharedLocale_sOnceToken, block);
@@ -47,7 +47,7 @@ uint64_t __33__OITSUSharedLocale_sharedLocale__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[OITSUSharedLocale allocWithZone:]"];
   +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v3, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSULocale.m"], 1129, 0, "Don't alloc a singleton");
@@ -130,25 +130,25 @@ uint64_t __34__OITSUSharedLocale_currentLocale__block_invoke(uint64_t a1, uint64
   return [v3 datePreferencesChanged:a2];
 }
 
-- (void)datePreferencesChanged:(id)a3
+- (void)datePreferencesChanged:(id)changed
 {
-  v3 = self;
+  selfCopy = self;
   mCurrentLocale = self->mCurrentLocale;
-  v3->mCurrentLocale = 0;
+  selfCopy->mCurrentLocale = 0;
   __dmb(0xBu);
-  v6 = v3;
+  v6 = selfCopy;
   if (mCurrentLocale)
   {
     CFRelease(mCurrentLocale);
-    v3 = v6;
+    selfCopy = v6;
   }
 
-  mObserverObjects = v3->mObserverObjects;
+  mObserverObjects = selfCopy->mObserverObjects;
   if (mObserverObjects)
   {
     TSURemoveLocaleChangeObserver(mObserverObjects);
 
-    v3 = v6;
+    selfCopy = v6;
     v6->mObserverObjects = 0;
   }
 }

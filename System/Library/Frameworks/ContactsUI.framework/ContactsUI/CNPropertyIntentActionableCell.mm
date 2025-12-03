@@ -3,36 +3,36 @@
 - (id)defaultContext;
 - (id)transportsMapping;
 - (void)performDefaultAction;
-- (void)transportButton1Clicked:(id)a3;
-- (void)transportButton2Clicked:(id)a3;
-- (void)transportButton3Clicked:(id)a3;
+- (void)transportButton1Clicked:(id)clicked;
+- (void)transportButton2Clicked:(id)clicked;
+- (void)transportButton3Clicked:(id)clicked;
 - (void)updateTransportButtons;
 @end
 
 @implementation CNPropertyIntentActionableCell
 
-- (void)transportButton3Clicked:(id)a3
+- (void)transportButton3Clicked:(id)clicked
 {
-  v7 = [(CNPropertyIntentActionableCell *)self actions];
-  v4 = [v7 objectAtIndexedSubscript:2];
-  v5 = [(CNPropertyIntentActionableCell *)self defaultContext];
-  v6 = [v4 performActionWithContext:v5];
+  actions = [(CNPropertyIntentActionableCell *)self actions];
+  v4 = [actions objectAtIndexedSubscript:2];
+  defaultContext = [(CNPropertyIntentActionableCell *)self defaultContext];
+  v6 = [v4 performActionWithContext:defaultContext];
 }
 
-- (void)transportButton2Clicked:(id)a3
+- (void)transportButton2Clicked:(id)clicked
 {
-  v7 = [(CNPropertyIntentActionableCell *)self actions];
-  v4 = [v7 objectAtIndexedSubscript:1];
-  v5 = [(CNPropertyIntentActionableCell *)self defaultContext];
-  v6 = [v4 performActionWithContext:v5];
+  actions = [(CNPropertyIntentActionableCell *)self actions];
+  v4 = [actions objectAtIndexedSubscript:1];
+  defaultContext = [(CNPropertyIntentActionableCell *)self defaultContext];
+  v6 = [v4 performActionWithContext:defaultContext];
 }
 
-- (void)transportButton1Clicked:(id)a3
+- (void)transportButton1Clicked:(id)clicked
 {
-  v7 = [(CNPropertyIntentActionableCell *)self actions];
-  v4 = [v7 objectAtIndexedSubscript:0];
-  v5 = [(CNPropertyIntentActionableCell *)self defaultContext];
-  v6 = [v4 performActionWithContext:v5];
+  actions = [(CNPropertyIntentActionableCell *)self actions];
+  v4 = [actions objectAtIndexedSubscript:0];
+  defaultContext = [(CNPropertyIntentActionableCell *)self defaultContext];
+  v6 = [v4 performActionWithContext:defaultContext];
 }
 
 - (id)transportsMapping
@@ -65,46 +65,46 @@ void __51__CNPropertyIntentActionableCell_transportsMapping__block_invoke()
 
 - (void)updateTransportButtons
 {
-  v3 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-  [v3 setTransportType:0];
+  transportIcon1 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+  [transportIcon1 setTransportType:0];
 
-  v4 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-  [v4 setTransportType:0];
+  transportIcon2 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+  [transportIcon2 setTransportType:0];
 
-  v5 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-  [v5 setTransportType:0];
+  transportIcon3 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+  [transportIcon3 setTransportType:0];
 
   if ([(CNPropertySimpleTransportCell *)self allowsActions]&& ![(CNPropertyCell *)self isSuggested])
   {
-    v6 = [(CNPropertyCell *)self delegate];
-    v7 = [v6 sharedActionsDataSource];
-    v8 = [(CNPropertyCell *)self propertyItem];
-    v9 = [v8 contactProperty];
-    v10 = [v7 thirdPartyActionsForContactProperty:v9];
+    delegate = [(CNPropertyCell *)self delegate];
+    sharedActionsDataSource = [delegate sharedActionsDataSource];
+    propertyItem = [(CNPropertyCell *)self propertyItem];
+    contactProperty = [propertyItem contactProperty];
+    v10 = [sharedActionsDataSource thirdPartyActionsForContactProperty:contactProperty];
     v17 = 0;
     v11 = [v10 result:&v17];
     v12 = v17;
     [(CNPropertyIntentActionableCell *)self setActions:v11];
 
-    v13 = [(CNPropertyIntentActionableCell *)self actions];
-    if ([v13 count])
+    actions = [(CNPropertyIntentActionableCell *)self actions];
+    if ([actions count])
     {
-      v14 = [(CNPropertySimpleTransportCell *)self shouldShowTransportButtons];
+      shouldShowTransportButtons = [(CNPropertySimpleTransportCell *)self shouldShowTransportButtons];
 
-      if (!v14)
+      if (!shouldShowTransportButtons)
       {
 LABEL_7:
 
         goto LABEL_8;
       }
 
-      v13 = [(CNPropertyIntentActionableCell *)self actions];
+      actions = [(CNPropertyIntentActionableCell *)self actions];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __56__CNPropertyIntentActionableCell_updateTransportButtons__block_invoke;
       v16[3] = &unk_1E74E3F18;
       v16[4] = self;
-      [v13 enumerateObjectsUsingBlock:v16];
+      [actions enumerateObjectsUsingBlock:v16];
     }
 
     goto LABEL_7;
@@ -181,49 +181,49 @@ void __56__CNPropertyIntentActionableCell_updateTransportButtons__block_invoke(u
     return;
   }
 
-  v3 = [(CNPropertyIntentActionableCell *)self actions];
-  v4 = [v3 count];
+  actions = [(CNPropertyIntentActionableCell *)self actions];
+  v4 = [actions count];
 
-  v5 = [(CNPropertyIntentActionableCell *)self actions];
-  v10 = v5;
+  actions2 = [(CNPropertyIntentActionableCell *)self actions];
+  propertyItem = actions2;
   if (v4 == 1)
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [(CNPropertyIntentActionableCell *)self defaultContext];
-    v8 = [v6 performActionWithContext:v7];
+    v6 = [actions2 objectAtIndexedSubscript:0];
+    defaultContext = [(CNPropertyIntentActionableCell *)self defaultContext];
+    v8 = [v6 performActionWithContext:defaultContext];
   }
 
   else
   {
-    v9 = [v5 count];
+    v9 = [actions2 count];
 
     if (v9)
     {
       return;
     }
 
-    v10 = [(CNPropertyCell *)self propertyItem];
-    [CNPropertyAction performDefaultActionForItem:v10 sender:self];
+    propertyItem = [(CNPropertyCell *)self propertyItem];
+    [CNPropertyAction performDefaultActionForItem:propertyItem sender:self];
   }
 }
 
 - (BOOL)shouldPerformDefaultAction
 {
-  v3 = [(CNPropertyIntentActionableCell *)self actions];
-  v4 = [v3 count] == 1 || -[CNPropertyCell isSuggested](self, "isSuggested");
+  actions = [(CNPropertyIntentActionableCell *)self actions];
+  v4 = [actions count] == 1 || -[CNPropertyCell isSuggested](self, "isSuggested");
 
   return v4;
 }
 
 - (id)defaultContext
 {
-  v2 = [(CNPropertyCell *)self delegate];
-  v3 = [v2 contactViewCache];
-  v4 = [v3 contactStore];
+  delegate = [(CNPropertyCell *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
 
   v5 = objc_alloc(MEMORY[0x1E6996BD0]);
   v6 = objc_alloc_init(MEMORY[0x1E6996A98]);
-  v7 = [v5 initWithContactStore:v4 applicationWorkspace:v6];
+  v7 = [v5 initWithContactStore:contactStore applicationWorkspace:v6];
 
   return v7;
 }

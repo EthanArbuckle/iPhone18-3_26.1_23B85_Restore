@@ -1,47 +1,47 @@
 @interface SKUISearchBarPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
 - (UIEdgeInsets)sectionContentInset;
 - (id)_searchBarController;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
 - (int64_t)numberOfCells;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
 - (void)numberOfCells;
-- (void)willAppearInContext:(id)a3;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SKUISearchBarPageSection
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v7 viewElement];
-  [v5 addItemViewElement:v6];
+  sessionCopy = session;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
-  v7 = [v6 style];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  style = [viewElement style];
 
-  v8 = [v7 ikBackgroundColor];
-  v9 = [v8 color];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v9)
+  if (color)
   {
-    v10 = v9;
+    v10 = color;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SKUISearchBarPageSection;
-    v10 = [(SKUIStorePageSection *)&v13 backgroundColorForIndexPath:v4];
+    v10 = [(SKUIStorePageSection *)&v13 backgroundColorForIndexPath:pathCopy];
   }
 
   v11 = v10;
@@ -49,38 +49,38 @@
   return v11;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISearchBarPageSection cellForIndexPath:];
   }
 
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SKUISearchBarReuseIdentifier" forIndexPath:v4];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUISearchBarReuseIdentifier" forIndexPath:pathCopy];
 
-  v8 = [(SKUISearchBarPageSection *)self _searchBarController];
-  v9 = [v8 searchBar];
+  _searchBarController = [(SKUISearchBarPageSection *)self _searchBarController];
+  searchBar = [_searchBarController searchBar];
 
-  [v9 setContentInset:{0.0, 15.0, 0.0, 15.0}];
-  [v7 setContentChildView:v9];
+  [searchBar setContentInset:{0.0, 15.0, 0.0, 15.0}];
+  [v7 setContentChildView:searchBar];
   [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SKUIStorePageSection *)self context];
-  [v4 activePageWidth];
+  context = [(SKUIStorePageSection *)self context];
+  [context activePageWidth];
   v6 = v5;
 
-  v7 = [(SKUISearchBarPageSection *)self _searchBarController];
-  v8 = [v7 searchBar];
+  _searchBarController = [(SKUISearchBarPageSection *)self _searchBarController];
+  searchBar = [_searchBarController searchBar];
 
-  [v8 sizeThatFits:{v6, 1.79769313e308}];
+  [searchBar sizeThatFits:{v6, 1.79769313e308}];
   v10 = v9;
 
   v11 = v6;
@@ -90,34 +90,34 @@
   return result;
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SKUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SKUISearchBarPageSection;
-  [(SKUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 endActiveImpressionForViewElement:v6];
+  context = [(SKUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SKUISearchBarPageSection;
-  [(SKUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
 - (int64_t)numberOfCells
@@ -143,14 +143,14 @@
   return result;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUISearchBarReuseIdentifier"];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUISearchBarReuseIdentifier"];
   v6.receiver = self;
   v6.super_class = SKUISearchBarPageSection;
-  [(SKUIStorePageSection *)&v6 willAppearInContext:v4];
+  [(SKUIStorePageSection *)&v6 willAppearInContext:contextCopy];
 }
 
 - (id)_searchBarController
@@ -159,29 +159,29 @@
   searchBarController = self->_searchBarController;
   if (!searchBarController)
   {
-    v4 = [(SKUIStorePageSection *)self pageComponent];
-    v5 = [v4 viewElement];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    viewElement = [pageComponent viewElement];
 
-    v6 = [[SKUISearchBarController alloc] initWithSearchBarViewElement:v5];
+    v6 = [[SKUISearchBarController alloc] initWithSearchBarViewElement:viewElement];
     v7 = self->_searchBarController;
     self->_searchBarController = v6;
 
-    v8 = [(SKUIStorePageSection *)self context];
-    v9 = [v8 parentViewController];
+    context = [(SKUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
 
     v10 = self->_searchBarController;
-    v11 = [v9 clientContext];
-    [(SKUISearchBarController *)v10 setClientContext:v11];
+    clientContext = [parentViewController clientContext];
+    [(SKUISearchBarController *)v10 setClientContext:clientContext];
 
-    v12 = v9;
-    v13 = [v12 navigationController];
-    v14 = [v13 viewControllers];
+    v12 = parentViewController;
+    navigationController = [v12 navigationController];
+    viewControllers = [navigationController viewControllers];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v15 = v14;
+    v15 = viewControllers;
     v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
     v17 = v12;
     if (v16)

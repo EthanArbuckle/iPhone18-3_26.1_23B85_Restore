@@ -1,11 +1,11 @@
 @interface HKFHIRResource
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKFHIRResource)init;
-- (HKFHIRResource)initWithCoder:(id)a3;
-- (HKFHIRResource)initWithResourceType:(id)a3 identifier:(id)a4 FHIRVersion:(id)a5 data:(id)a6 sourceURL:(id)a7 lastUpdatedDate:(id)a8;
+- (HKFHIRResource)initWithCoder:(id)coder;
+- (HKFHIRResource)initWithResourceType:(id)type identifier:(id)identifier FHIRVersion:(id)version data:(id)data sourceURL:(id)l lastUpdatedDate:(id)date;
 - (NSString)sourceString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKFHIRResource
@@ -20,17 +20,17 @@
   return 0;
 }
 
-- (HKFHIRResource)initWithResourceType:(id)a3 identifier:(id)a4 FHIRVersion:(id)a5 data:(id)a6 sourceURL:(id)a7 lastUpdatedDate:(id)a8
+- (HKFHIRResource)initWithResourceType:(id)type identifier:(id)identifier FHIRVersion:(id)version data:(id)data sourceURL:(id)l lastUpdatedDate:(id)date
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v16)
+  typeCopy = type;
+  identifierCopy = identifier;
+  versionCopy = version;
+  dataCopy = data;
+  lCopy = l;
+  dateCopy = date;
+  if (versionCopy)
   {
-    if (v14)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
@@ -39,10 +39,10 @@
   else
   {
     [HKFHIRResource initWithResourceType:identifier:FHIRVersion:data:sourceURL:lastUpdatedDate:];
-    if (v14)
+    if (typeCopy)
     {
 LABEL_3:
-      if (v15)
+      if (identifierCopy)
       {
         goto LABEL_4;
       }
@@ -52,17 +52,17 @@ LABEL_3:
   }
 
   [HKFHIRResource initWithResourceType:identifier:FHIRVersion:data:sourceURL:lastUpdatedDate:];
-  if (v15)
+  if (identifierCopy)
   {
 LABEL_4:
-    if (v17)
+    if (dataCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
     [HKFHIRResource initWithResourceType:identifier:FHIRVersion:data:sourceURL:lastUpdatedDate:];
-    if (v19)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
@@ -72,13 +72,13 @@ LABEL_12:
 
 LABEL_11:
   [HKFHIRResource initWithResourceType:identifier:FHIRVersion:data:sourceURL:lastUpdatedDate:];
-  if (!v17)
+  if (!dataCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  if (v19)
+  if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -91,27 +91,27 @@ LABEL_6:
   v20 = [(HKFHIRResource *)&v34 init];
   if (v20)
   {
-    v21 = [v16 copy];
+    v21 = [versionCopy copy];
     FHIRVersion = v20->_FHIRVersion;
     v20->_FHIRVersion = v21;
 
-    v23 = [v14 copy];
+    v23 = [typeCopy copy];
     resourceType = v20->_resourceType;
     v20->_resourceType = v23;
 
-    v25 = [v15 copy];
+    v25 = [identifierCopy copy];
     identifier = v20->_identifier;
     v20->_identifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [dataCopy copy];
     data = v20->_data;
     v20->_data = v27;
 
-    v29 = [v18 copy];
+    v29 = [lCopy copy];
     sourceURL = v20->_sourceURL;
     v20->_sourceURL = v29;
 
-    v31 = [v19 copy];
+    v31 = [dateCopy copy];
     lastUpdatedDate = v20->_lastUpdatedDate;
     v20->_lastUpdatedDate = v31;
   }
@@ -122,34 +122,34 @@ LABEL_6:
 - (NSString)sourceString
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(HKFHIRResource *)self data];
-  v4 = [v2 hk_stringForDisplayFromFHIRData:v3];
+  data = [(HKFHIRResource *)self data];
+  v4 = [v2 hk_stringForDisplayFromFHIRData:data];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HKFHIRResource *)self resourceType];
-  v4 = [v3 hash];
-  v5 = [(HKFHIRResource *)self identifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HKFHIRResource *)self FHIRVersion];
-  v8 = [v7 hash];
-  v9 = [(HKFHIRResource *)self data];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HKFHIRResource *)self sourceURL];
-  v12 = [v11 hash];
-  v13 = [(HKFHIRResource *)self lastUpdatedDate];
-  v14 = v12 ^ [v13 hash];
+  resourceType = [(HKFHIRResource *)self resourceType];
+  v4 = [resourceType hash];
+  identifier = [(HKFHIRResource *)self identifier];
+  v6 = [identifier hash] ^ v4;
+  fHIRVersion = [(HKFHIRResource *)self FHIRVersion];
+  v8 = [fHIRVersion hash];
+  data = [(HKFHIRResource *)self data];
+  v10 = v6 ^ v8 ^ [data hash];
+  sourceURL = [(HKFHIRResource *)self sourceURL];
+  v12 = [sourceURL hash];
+  lastUpdatedDate = [(HKFHIRResource *)self lastUpdatedDate];
+  v14 = v12 ^ [lastUpdatedDate hash];
 
   return v10 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -159,26 +159,26 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKFHIRResource *)self FHIRVersion];
-      v7 = [(HKFHIRResource *)v5 FHIRVersion];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      fHIRVersion = [(HKFHIRResource *)self FHIRVersion];
+      fHIRVersion2 = [(HKFHIRResource *)v5 FHIRVersion];
+      v8 = fHIRVersion2;
+      if (fHIRVersion == fHIRVersion2)
       {
       }
 
       else
       {
-        v9 = [(HKFHIRResource *)v5 FHIRVersion];
-        if (!v9)
+        fHIRVersion3 = [(HKFHIRResource *)v5 FHIRVersion];
+        if (!fHIRVersion3)
         {
           goto LABEL_34;
         }
 
-        v10 = v9;
-        v11 = [(HKFHIRResource *)self FHIRVersion];
-        v12 = [(HKFHIRResource *)v5 FHIRVersion];
-        v13 = [v11 isEqual:v12];
+        v10 = fHIRVersion3;
+        fHIRVersion4 = [(HKFHIRResource *)self FHIRVersion];
+        fHIRVersion5 = [(HKFHIRResource *)v5 FHIRVersion];
+        v13 = [fHIRVersion4 isEqual:fHIRVersion5];
 
         if (!v13)
         {
@@ -186,25 +186,25 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKFHIRResource *)self resourceType];
-      v15 = [(HKFHIRResource *)v5 resourceType];
-      v8 = v15;
-      if (v6 == v15)
+      fHIRVersion = [(HKFHIRResource *)self resourceType];
+      resourceType = [(HKFHIRResource *)v5 resourceType];
+      v8 = resourceType;
+      if (fHIRVersion == resourceType)
       {
       }
 
       else
       {
-        v16 = [(HKFHIRResource *)v5 resourceType];
-        if (!v16)
+        resourceType2 = [(HKFHIRResource *)v5 resourceType];
+        if (!resourceType2)
         {
           goto LABEL_34;
         }
 
-        v17 = v16;
-        v18 = [(HKFHIRResource *)self resourceType];
-        v19 = [(HKFHIRResource *)v5 resourceType];
-        v20 = [v18 isEqual:v19];
+        v17 = resourceType2;
+        resourceType3 = [(HKFHIRResource *)self resourceType];
+        resourceType4 = [(HKFHIRResource *)v5 resourceType];
+        v20 = [resourceType3 isEqual:resourceType4];
 
         if (!v20)
         {
@@ -212,25 +212,25 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKFHIRResource *)self identifier];
-      v21 = [(HKFHIRResource *)v5 identifier];
-      v8 = v21;
-      if (v6 == v21)
+      fHIRVersion = [(HKFHIRResource *)self identifier];
+      identifier = [(HKFHIRResource *)v5 identifier];
+      v8 = identifier;
+      if (fHIRVersion == identifier)
       {
       }
 
       else
       {
-        v22 = [(HKFHIRResource *)v5 identifier];
-        if (!v22)
+        identifier2 = [(HKFHIRResource *)v5 identifier];
+        if (!identifier2)
         {
           goto LABEL_34;
         }
 
-        v23 = v22;
-        v24 = [(HKFHIRResource *)self identifier];
-        v25 = [(HKFHIRResource *)v5 identifier];
-        v26 = [v24 isEqual:v25];
+        v23 = identifier2;
+        identifier3 = [(HKFHIRResource *)self identifier];
+        identifier4 = [(HKFHIRResource *)v5 identifier];
+        v26 = [identifier3 isEqual:identifier4];
 
         if (!v26)
         {
@@ -238,25 +238,25 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKFHIRResource *)self data];
-      v27 = [(HKFHIRResource *)v5 data];
-      v8 = v27;
-      if (v6 == v27)
+      fHIRVersion = [(HKFHIRResource *)self data];
+      data = [(HKFHIRResource *)v5 data];
+      v8 = data;
+      if (fHIRVersion == data)
       {
       }
 
       else
       {
-        v28 = [(HKFHIRResource *)v5 data];
-        if (!v28)
+        data2 = [(HKFHIRResource *)v5 data];
+        if (!data2)
         {
           goto LABEL_34;
         }
 
-        v29 = v28;
-        v30 = [(HKFHIRResource *)self data];
-        v31 = [(HKFHIRResource *)v5 data];
-        v32 = [v30 isEqual:v31];
+        v29 = data2;
+        data3 = [(HKFHIRResource *)self data];
+        data4 = [(HKFHIRResource *)v5 data];
+        v32 = [data3 isEqual:data4];
 
         if (!v32)
         {
@@ -264,25 +264,25 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKFHIRResource *)self sourceURL];
-      v33 = [(HKFHIRResource *)v5 sourceURL];
-      v8 = v33;
-      if (v6 == v33)
+      fHIRVersion = [(HKFHIRResource *)self sourceURL];
+      sourceURL = [(HKFHIRResource *)v5 sourceURL];
+      v8 = sourceURL;
+      if (fHIRVersion == sourceURL)
       {
       }
 
       else
       {
-        v34 = [(HKFHIRResource *)v5 sourceURL];
-        if (!v34)
+        sourceURL2 = [(HKFHIRResource *)v5 sourceURL];
+        if (!sourceURL2)
         {
           goto LABEL_34;
         }
 
-        v35 = v34;
-        v36 = [(HKFHIRResource *)self sourceURL];
-        v37 = [(HKFHIRResource *)v5 sourceURL];
-        v38 = [v36 isEqual:v37];
+        v35 = sourceURL2;
+        sourceURL3 = [(HKFHIRResource *)self sourceURL];
+        sourceURL4 = [(HKFHIRResource *)v5 sourceURL];
+        v38 = [sourceURL3 isEqual:sourceURL4];
 
         if (!v38)
         {
@@ -290,10 +290,10 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKFHIRResource *)self lastUpdatedDate];
-      v39 = [(HKFHIRResource *)v5 lastUpdatedDate];
-      v8 = v39;
-      if (v6 == v39)
+      fHIRVersion = [(HKFHIRResource *)self lastUpdatedDate];
+      lastUpdatedDate = [(HKFHIRResource *)v5 lastUpdatedDate];
+      v8 = lastUpdatedDate;
+      if (fHIRVersion == lastUpdatedDate)
       {
 
 LABEL_39:
@@ -301,13 +301,13 @@ LABEL_39:
         goto LABEL_36;
       }
 
-      v40 = [(HKFHIRResource *)v5 lastUpdatedDate];
-      if (v40)
+      lastUpdatedDate2 = [(HKFHIRResource *)v5 lastUpdatedDate];
+      if (lastUpdatedDate2)
       {
-        v41 = v40;
-        v42 = [(HKFHIRResource *)self lastUpdatedDate];
-        v43 = [(HKFHIRResource *)v5 lastUpdatedDate];
-        v44 = [v42 isEqual:v43];
+        v41 = lastUpdatedDate2;
+        lastUpdatedDate3 = [(HKFHIRResource *)self lastUpdatedDate];
+        lastUpdatedDate4 = [(HKFHIRResource *)v5 lastUpdatedDate];
+        v44 = [lastUpdatedDate3 isEqual:lastUpdatedDate4];
 
         if (v44)
         {
@@ -334,10 +334,10 @@ LABEL_37:
   return v14;
 }
 
-- (HKFHIRResource)initWithCoder:(id)a3
+- (HKFHIRResource)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
   if (!v5)
   {
     v14 = xmmword_191DCD6B0;
@@ -345,14 +345,14 @@ LABEL_37:
     v5 = [[HKFHIRVersion alloc] initWithSemanticVersion:&v14];
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ResourceType"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ResourceType"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Identifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DFF8] URLWithString:v9];
-    if (!v10)
+    selfCopy = [MEMORY[0x1E695DFF8] URLWithString:v9];
+    if (!selfCopy)
     {
       goto LABEL_8;
     }
@@ -360,47 +360,47 @@ LABEL_37:
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   v11 = MEMORY[0x1E695DF00];
-  [v4 decodeDoubleForKey:@"LastUpdatedDate"];
+  [coderCopy decodeDoubleForKey:@"LastUpdatedDate"];
   v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
-  self = [(HKFHIRResource *)self initWithResourceType:v6 identifier:v7 FHIRVersion:v5 data:v8 sourceURL:v10 lastUpdatedDate:v12];
+  self = [(HKFHIRResource *)self initWithResourceType:v6 identifier:v7 FHIRVersion:v5 data:v8 sourceURL:selfCopy lastUpdatedDate:v12];
 
-  v10 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(HKFHIRResource *)self FHIRVersion];
-  [v12 encodeObject:v4 forKey:@"FHIRVersion"];
+  coderCopy = coder;
+  fHIRVersion = [(HKFHIRResource *)self FHIRVersion];
+  [coderCopy encodeObject:fHIRVersion forKey:@"FHIRVersion"];
 
-  v5 = [(HKFHIRResource *)self resourceType];
-  [v12 encodeObject:v5 forKey:@"ResourceType"];
+  resourceType = [(HKFHIRResource *)self resourceType];
+  [coderCopy encodeObject:resourceType forKey:@"ResourceType"];
 
-  v6 = [(HKFHIRResource *)self identifier];
-  [v12 encodeObject:v6 forKey:@"Identifier"];
+  identifier = [(HKFHIRResource *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"Identifier"];
 
-  v7 = [(HKFHIRResource *)self data];
-  [v12 encodeObject:v7 forKey:@"Data"];
+  data = [(HKFHIRResource *)self data];
+  [coderCopy encodeObject:data forKey:@"Data"];
 
-  v8 = [(HKFHIRResource *)self sourceURL];
+  sourceURL = [(HKFHIRResource *)self sourceURL];
 
-  if (v8)
+  if (sourceURL)
   {
-    v9 = [(HKFHIRResource *)self sourceURL];
-    v10 = [v9 absoluteString];
-    [v12 encodeObject:v10 forKey:@"SourceURL"];
+    sourceURL2 = [(HKFHIRResource *)self sourceURL];
+    absoluteString = [sourceURL2 absoluteString];
+    [coderCopy encodeObject:absoluteString forKey:@"SourceURL"];
   }
 
-  v11 = [(HKFHIRResource *)self lastUpdatedDate];
-  [v11 timeIntervalSinceReferenceDate];
-  [v12 encodeDouble:@"LastUpdatedDate" forKey:?];
+  lastUpdatedDate = [(HKFHIRResource *)self lastUpdatedDate];
+  [lastUpdatedDate timeIntervalSinceReferenceDate];
+  [coderCopy encodeDouble:@"LastUpdatedDate" forKey:?];
 }
 
 - (void)initWithResourceType:identifier:FHIRVersion:data:sourceURL:lastUpdatedDate:.cold.1()

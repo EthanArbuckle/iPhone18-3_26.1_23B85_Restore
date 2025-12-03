@@ -1,16 +1,16 @@
 @interface FactoryApplicationRepair
-+ (BOOL)shouldAttemptToRepairApplication:(id)a3 options:(id)a4 logKey:(id)a5;
++ (BOOL)shouldAttemptToRepairApplication:(id)application options:(id)options logKey:(id)key;
 - (ApplicationRepairDelegate)delegate;
 - (FactoryApplicationRepair)init;
 - (NSArray)repairedBundleIDs;
 - (_TtC9appstored6LogKey)logKey;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)repairApplication:(id)a3 completionHandler:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setLogKey:(id)a3;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)repairApplication:(id)application completionHandler:(id)handler;
+- (void)setDelegate:(id)delegate;
+- (void)setLogKey:(id)key;
 @end
 
 @implementation FactoryApplicationRepair
@@ -54,17 +54,17 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1002621CC;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   sub_100379C5C(lock, v7);
 }
 
@@ -90,17 +90,17 @@
   return v3;
 }
 
-- (void)setLogKey:(id)a3
+- (void)setLogKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100262394;
   v7[3] = &unk_10051B570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   sub_100379C5C(lock, v7);
 }
 
@@ -126,17 +126,17 @@
   return v3;
 }
 
-+ (BOOL)shouldAttemptToRepairApplication:(id)a3 options:(id)a4 logKey:(id)a5
++ (BOOL)shouldAttemptToRepairApplication:(id)application options:(id)options logKey:(id)key
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = sub_1003D0F60(v7);
+  applicationCopy = application;
+  keyCopy = key;
+  v9 = sub_1003D0F60(applicationCopy);
 
   if (v9)
   {
-    if (v7)
+    if (applicationCopy)
     {
-      Property = objc_getProperty(v7, v10, 120, 1);
+      Property = objc_getProperty(applicationCopy, v10, 120, 1);
     }
 
     else
@@ -145,8 +145,8 @@
     }
 
     v12 = Property;
-    v13 = [v8 prependingCategory:@"Claim"];
-    v14 = sub_1002626F8(a1, v12, v13);
+    v13 = [keyCopy prependingCategory:@"Claim"];
+    v14 = sub_1002626F8(self, v12, v13);
   }
 
   else
@@ -157,20 +157,20 @@
   return v14;
 }
 
-- (void)repairApplication:(id)a3 completionHandler:(id)a4
+- (void)repairApplication:(id)application completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = +[ACAccountStore ams_sharedAccountStore];
-  v7 = [v6 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v6 ams_activeiTunesAccount];
 
-  if (!v7 && self && (v17 = 0, v18 = &v17, v19 = 0x2020000000, v20 = 0, lock = self->_lock, *&buf = _NSConcreteStackBlock, *(&buf + 1) = 3221225472, v22 = sub_100261FA0, v23 = &unk_10051B638, v24 = self, v25 = &v17, sub_100379C5C(lock, &buf), v9 = *(v18 + 24), _Block_object_dispose(&v17, 8), v9 == 1))
+  if (!ams_activeiTunesAccount && self && (v17 = 0, v18 = &v17, v19 = 0x2020000000, v20 = 0, lock = self->_lock, *&buf = _NSConcreteStackBlock, *(&buf + 1) = 3221225472, v22 = sub_100261FA0, v23 = &unk_10051B638, v24 = self, v25 = &v17, sub_100379C5C(lock, &buf), v9 = *(v18 + 24), _Block_object_dispose(&v17, 8), v9 == 1))
   {
     v10 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(FactoryApplicationRepair *)self logKey];
+      logKey = [(FactoryApplicationRepair *)self logKey];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v11;
+      *(&buf + 4) = logKey;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%@] Prompting to request authentication to establish an active account", &buf, 0xCu);
     }
 
@@ -186,59 +186,59 @@
     v15[2] = sub_100262E54;
     v15[3] = &unk_10051E040;
     v15[4] = self;
-    v16 = v5;
+    v16 = handlerCopy;
     sub_10026394C(self, v14, v15);
   }
 
   else
   {
-    sub_100263020(self, v7, v5);
+    sub_100263020(self, ams_activeiTunesAccount, handlerCopy);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(FactoryApplicationRepair *)self logKey];
+    logKey = [(FactoryApplicationRepair *)self logKey];
     *buf = 138412546;
-    v20 = v11;
+    v20 = logKey;
     v21 = 2114;
-    v22 = v8;
+    v22 = requestCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%@] Presenting dialog request: %{public}@", buf, 0x16u);
   }
 
   v12 = ASDErrorWithDescription();
-  v13 = [(FactoryApplicationRepair *)self delegate];
-  [v13 repair:self needsToReleaseBlockingCallerWithReason:v12];
+  delegate = [(FactoryApplicationRepair *)self delegate];
+  [delegate repair:self needsToReleaseBlockingCallerWithReason:v12];
 
-  v14 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v8];
-  v15 = [v14 present];
+  v14 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
+  present = [v14 present];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100265260;
   v17[3] = &unk_10051E068;
   v17[4] = self;
-  v18 = v9;
-  v16 = v9;
-  [v15 resultWithCompletion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [present resultWithCompletion:v17];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(FactoryApplicationRepair *)self logKey];
+    logKey = [(FactoryApplicationRepair *)self logKey];
     *buf = 138412546;
-    v16 = v11;
+    v16 = logKey;
     v17 = 2114;
-    v18 = v8;
+    v18 = requestCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%@] Presenting authentication request: %{public}@", buf, 0x16u);
   }
 
@@ -247,61 +247,61 @@
   v13[2] = sub_1002654D0;
   v13[3] = &unk_10051E040;
   v13[4] = self;
-  v14 = v9;
-  v12 = v9;
-  sub_10026394C(self, v8, v13);
+  v14 = completionCopy;
+  v12 = completionCopy;
+  sub_10026394C(self, requestCopy, v13);
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a6;
+  requestCopy = request;
+  completionCopy = completion;
   v10 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(FactoryApplicationRepair *)self logKey];
+    logKey = [(FactoryApplicationRepair *)self logKey];
     *buf = 138412546;
-    v18 = v11;
+    v18 = logKey;
     v19 = 2114;
-    v20 = v8;
+    v20 = requestCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%@] Presenting engagement request: %{public}@", buf, 0x16u);
   }
 
-  v12 = [[AMSSystemEngagementTask alloc] initWithRequest:v8];
+  v12 = [[AMSSystemEngagementTask alloc] initWithRequest:requestCopy];
   [v12 setClientInfo:self->_clientInfo];
-  v13 = [v12 present];
+  present = [v12 present];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100265774;
   v15[3] = &unk_10051F1C8;
   v15[4] = self;
-  v16 = v9;
-  v14 = v9;
-  [v13 resultWithCompletion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [present resultWithCompletion:v15];
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Starting dialog task", buf, 0xCu);
   }
 
-  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v8];
-  v11 = [v10 present];
+  v10 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
+  present = [v10 present];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1002659E8;
   v13[3] = &unk_10051E068;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v11 addFinishBlock:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [present addFinishBlock:v13];
 }
 
 @end

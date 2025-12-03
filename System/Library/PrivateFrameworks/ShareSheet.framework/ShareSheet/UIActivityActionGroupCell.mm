@@ -1,10 +1,10 @@
 @interface UIActivityActionGroupCell
-- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)a3;
-- (UIActivityActionGroupCell)initWithFrame:(CGRect)a3;
+- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)insets;
+- (UIActivityActionGroupCell)initWithFrame:(CGRect)frame;
 - (id)badgeView;
 - (id)statusImageView;
 - (id)subtitleLabel;
-- (void)_updateBadgeWithText:(id)a3 textColor:(id)a4 backgroundColor:(id)a5;
+- (void)_updateBadgeWithText:(id)text textColor:(id)color backgroundColor:(id)backgroundColor;
 - (void)_updateContentTintColor;
 - (void)_updateImageView;
 - (void)_updateStatusImageView;
@@ -12,32 +12,32 @@
 - (void)_updateTitleHeight;
 - (void)_updateTitleView;
 - (void)prepareForReuse;
-- (void)setContentTintColor:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
-- (void)setImageSlotID:(unsigned int)a3;
-- (void)setPlatterTextHeight:(double)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setStatusImage:(id)a3;
-- (void)setStatusImageTintColor:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleSlotID:(unsigned int)a3;
+- (void)setContentTintColor:(id)color;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
+- (void)setImageSlotID:(unsigned int)d;
+- (void)setPlatterTextHeight:(double)height;
+- (void)setSelected:(BOOL)selected;
+- (void)setStatusImage:(id)image;
+- (void)setStatusImageTintColor:(id)color;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setTitleSlotID:(unsigned int)d;
 @end
 
 @implementation UIActivityActionGroupCell
 
-- (UIActivityActionGroupCell)initWithFrame:(CGRect)a3
+- (UIActivityActionGroupCell)initWithFrame:(CGRect)frame
 {
   v160.receiver = self;
   v160.super_class = UIActivityActionGroupCell;
-  v3 = [(UIActivityActionCell *)&v160 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIActivityActionCell *)&v160 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_UIActivityActionCellTitleLabel);
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [(_UIActivityActionCellTitleLabel *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(_UIActivityActionCellTitleLabel *)v4 setBackgroundColor:clearColor];
 
     [(_UIActivityActionCellTitleLabel *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_UIActivityActionCellTitleLabel *)v4 setLineBreakMode:4];
@@ -72,22 +72,22 @@
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
     v155 = v10;
     [(UIActivityActionGroupCell *)v3 setImageStackView:v10];
-    v11 = [(UIActivityActionGroupCell *)v3 contentView];
+    contentView = [(UIActivityActionGroupCell *)v3 contentView];
     v12 = MEMORY[0x1E69DB878];
     v13 = *MEMORY[0x1E69DDCF8];
     v14 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8] addingSymbolicTraits:0x8000 options:0];
     v15 = [v12 fontWithDescriptor:v14 size:0.0];
 
-    v16 = [(UIActivityActionGroupCell *)v3 traitCollection];
-    v17 = [v16 preferredContentSizeCategory];
+    traitCollection = [(UIActivityActionGroupCell *)v3 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    [(UIActivityActionGroupCell *)v3 _legacyIconSizeForContentSizeCategory:v17];
+    [(UIActivityActionGroupCell *)v3 _legacyIconSizeForContentSizeCategory:preferredContentSizeCategory];
     v19 = v18;
-    v153 = v17;
-    if (UIContentSizeCategoryIsAccessibilityCategory(v17))
+    v153 = preferredContentSizeCategory;
+    if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
     {
       v20 = MEMORY[0x1E69DB880];
-      v21 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:{*MEMORY[0x1E69DDC40], v17}];
+      v21 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:{*MEMORY[0x1E69DDC40], preferredContentSizeCategory}];
       v22 = [v20 preferredFontDescriptorWithTextStyle:v13 compatibleWithTraitCollection:v21];
 
       v23 = [v22 fontDescriptorWithSymbolicTraits:0x8000];
@@ -97,247 +97,247 @@
       v15 = v24;
     }
 
-    v25 = [(UIActivityActionGroupCell *)v3 titleStackView];
-    v26 = [(UIActivityActionGroupCell *)v3 titleLabel];
-    [v25 addArrangedSubview:v26];
+    titleStackView = [(UIActivityActionGroupCell *)v3 titleStackView];
+    titleLabel = [(UIActivityActionGroupCell *)v3 titleLabel];
+    [titleStackView addArrangedSubview:titleLabel];
 
-    v27 = [(UIActivityActionGroupCell *)v3 imageStackView];
-    v28 = [(UIActivityActionGroupCell *)v3 activityImageView];
-    [v27 addArrangedSubview:v28];
+    imageStackView = [(UIActivityActionGroupCell *)v3 imageStackView];
+    activityImageView = [(UIActivityActionGroupCell *)v3 activityImageView];
+    [imageStackView addArrangedSubview:activityImageView];
 
-    v29 = [(UIActivityActionGroupCell *)v3 titleStackView];
-    [v11 addSubview:v29];
+    titleStackView2 = [(UIActivityActionGroupCell *)v3 titleStackView];
+    [contentView addSubview:titleStackView2];
 
-    v30 = [(UIActivityActionGroupCell *)v3 imageStackView];
-    [v11 addSubview:v30];
+    imageStackView2 = [(UIActivityActionGroupCell *)v3 imageStackView];
+    [contentView addSubview:imageStackView2];
 
-    v31 = [(UIActivityActionGroupCell *)v3 activitySlotView];
-    [v11 addSubview:v31];
+    activitySlotView = [(UIActivityActionGroupCell *)v3 activitySlotView];
+    [contentView addSubview:activitySlotView];
 
-    v32 = [(UIActivityActionGroupCell *)v3 titleSlotView];
-    [v11 addSubview:v32];
+    titleSlotView = [(UIActivityActionGroupCell *)v3 titleSlotView];
+    [contentView addSubview:titleSlotView];
 
-    v33 = [MEMORY[0x1E695DF70] array];
-    v34 = [v11 heightAnchor];
-    v35 = [(UIActivityActionGroupCell *)v3 titleLabel];
-    v36 = [v35 heightAnchor];
-    v37 = [v34 constraintGreaterThanOrEqualToAnchor:v36 constant:30.0];
-    [v33 addObject:v37];
+    array = [MEMORY[0x1E695DF70] array];
+    heightAnchor = [contentView heightAnchor];
+    titleLabel2 = [(UIActivityActionGroupCell *)v3 titleLabel];
+    heightAnchor2 = [titleLabel2 heightAnchor];
+    v37 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2 constant:30.0];
+    [array addObject:v37];
 
-    v38 = [(UIActivityActionGroupCell *)v3 titleSlotView];
-    v39 = [v38 widthAnchor];
-    v40 = [(UIActivityActionGroupCell *)v3 titleLabel];
-    v41 = [v40 widthAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41];
-    [v33 addObject:v42];
+    titleSlotView2 = [(UIActivityActionGroupCell *)v3 titleSlotView];
+    widthAnchor = [titleSlotView2 widthAnchor];
+    titleLabel3 = [(UIActivityActionGroupCell *)v3 titleLabel];
+    widthAnchor2 = [titleLabel3 widthAnchor];
+    v42 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    [array addObject:v42];
 
-    v43 = [(UIActivityActionGroupCell *)v3 titleSlotView];
-    v44 = [v43 heightAnchor];
-    v45 = [(UIActivityActionGroupCell *)v3 titleLabel];
-    v46 = [v45 heightAnchor];
-    v47 = [v44 constraintEqualToAnchor:v46];
-    [v33 addObject:v47];
+    titleSlotView3 = [(UIActivityActionGroupCell *)v3 titleSlotView];
+    heightAnchor3 = [titleSlotView3 heightAnchor];
+    titleLabel4 = [(UIActivityActionGroupCell *)v3 titleLabel];
+    heightAnchor4 = [titleLabel4 heightAnchor];
+    v47 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
+    [array addObject:v47];
 
-    v48 = [(UIActivityActionGroupCell *)v3 titleSlotView];
-    v49 = [v48 centerYAnchor];
-    v50 = [(UIActivityActionGroupCell *)v3 titleLabel];
-    v51 = [v50 centerYAnchor];
-    v52 = [v49 constraintEqualToAnchor:v51];
-    [v33 addObject:v52];
+    titleSlotView4 = [(UIActivityActionGroupCell *)v3 titleSlotView];
+    centerYAnchor = [titleSlotView4 centerYAnchor];
+    titleLabel5 = [(UIActivityActionGroupCell *)v3 titleLabel];
+    centerYAnchor2 = [titleLabel5 centerYAnchor];
+    v52 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v52];
 
-    v53 = [(UIActivityActionGroupCell *)v3 titleSlotView];
-    v54 = [v53 centerXAnchor];
-    v55 = [(UIActivityActionGroupCell *)v3 titleLabel];
-    v56 = [v55 centerXAnchor];
-    v57 = [v54 constraintEqualToAnchor:v56];
-    [v33 addObject:v57];
+    titleSlotView5 = [(UIActivityActionGroupCell *)v3 titleSlotView];
+    centerXAnchor = [titleSlotView5 centerXAnchor];
+    titleLabel6 = [(UIActivityActionGroupCell *)v3 titleLabel];
+    centerXAnchor2 = [titleLabel6 centerXAnchor];
+    v57 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+    [array addObject:v57];
 
-    v58 = [(UIActivityActionGroupCell *)v3 imageStackView];
-    v59 = [v58 heightAnchor];
-    v60 = [v59 constraintEqualToConstant:v19];
-    [v33 addObject:v60];
+    imageStackView3 = [(UIActivityActionGroupCell *)v3 imageStackView];
+    heightAnchor5 = [imageStackView3 heightAnchor];
+    v60 = [heightAnchor5 constraintEqualToConstant:v19];
+    [array addObject:v60];
 
-    v61 = [(UIActivityActionGroupCell *)v3 activityImageView];
-    v62 = [v61 widthAnchor];
-    v63 = [v62 constraintEqualToConstant:v19];
-    [v33 addObject:v63];
+    activityImageView2 = [(UIActivityActionGroupCell *)v3 activityImageView];
+    widthAnchor3 = [activityImageView2 widthAnchor];
+    v63 = [widthAnchor3 constraintEqualToConstant:v19];
+    [array addObject:v63];
 
-    v64 = [(UIActivityActionGroupCell *)v3 activityImageView];
-    v65 = [v64 heightAnchor];
-    v66 = [v65 constraintEqualToConstant:v19];
-    [v33 addObject:v66];
+    activityImageView3 = [(UIActivityActionGroupCell *)v3 activityImageView];
+    heightAnchor6 = [activityImageView3 heightAnchor];
+    v66 = [heightAnchor6 constraintEqualToConstant:v19];
+    [array addObject:v66];
 
-    v67 = [(UIActivityActionGroupCell *)v3 activitySlotView];
-    v68 = [v67 centerXAnchor];
-    v69 = [(UIActivityActionGroupCell *)v3 activityImageView];
-    v70 = [v69 centerXAnchor];
-    v71 = [v68 constraintEqualToAnchor:v70];
-    [v33 addObject:v71];
+    activitySlotView2 = [(UIActivityActionGroupCell *)v3 activitySlotView];
+    centerXAnchor3 = [activitySlotView2 centerXAnchor];
+    activityImageView4 = [(UIActivityActionGroupCell *)v3 activityImageView];
+    centerXAnchor4 = [activityImageView4 centerXAnchor];
+    v71 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
+    [array addObject:v71];
 
-    v72 = [(UIActivityActionGroupCell *)v3 activitySlotView];
-    v73 = [v72 centerYAnchor];
-    v74 = [v11 centerYAnchor];
-    v75 = [v73 constraintEqualToAnchor:v74];
-    [v33 addObject:v75];
+    activitySlotView3 = [(UIActivityActionGroupCell *)v3 activitySlotView];
+    centerYAnchor3 = [activitySlotView3 centerYAnchor];
+    centerYAnchor4 = [contentView centerYAnchor];
+    v75 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    [array addObject:v75];
 
-    v76 = [(UIActivityActionGroupCell *)v3 activitySlotView];
-    v77 = [v76 widthAnchor];
-    v78 = [v77 constraintEqualToConstant:v19];
-    [v33 addObject:v78];
+    activitySlotView4 = [(UIActivityActionGroupCell *)v3 activitySlotView];
+    widthAnchor4 = [activitySlotView4 widthAnchor];
+    v78 = [widthAnchor4 constraintEqualToConstant:v19];
+    [array addObject:v78];
 
-    v79 = [(UIActivityActionGroupCell *)v3 activitySlotView];
-    v80 = [v79 heightAnchor];
-    v81 = [v80 constraintEqualToConstant:v19];
-    [v33 addObject:v81];
+    activitySlotView5 = [(UIActivityActionGroupCell *)v3 activitySlotView];
+    heightAnchor7 = [activitySlotView5 heightAnchor];
+    v81 = [heightAnchor7 constraintEqualToConstant:v19];
+    [array addObject:v81];
 
     if (_ShareSheetSolariumEnabled())
     {
-      v82 = [(UIActivityActionGroupCell *)v3 imageStackView];
-      v83 = [v82 leadingAnchor];
-      v84 = [v11 layoutMarginsGuide];
-      v85 = [v84 leadingAnchor];
-      v86 = [v83 constraintEqualToAnchor:v85];
-      [v33 addObject:v86];
+      imageStackView4 = [(UIActivityActionGroupCell *)v3 imageStackView];
+      leadingAnchor = [imageStackView4 leadingAnchor];
+      layoutMarginsGuide = [contentView layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v86 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+      [array addObject:v86];
 
-      v87 = [(UIActivityActionGroupCell *)v3 imageStackView];
-      v88 = [v87 centerYAnchor];
-      v89 = [v11 centerYAnchor];
-      v90 = [v88 constraintEqualToAnchor:v89];
-      [v33 addObject:v90];
+      imageStackView5 = [(UIActivityActionGroupCell *)v3 imageStackView];
+      centerYAnchor5 = [imageStackView5 centerYAnchor];
+      centerYAnchor6 = [contentView centerYAnchor];
+      v90 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
+      [array addObject:v90];
 
-      v91 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v92 = [v91 leadingAnchor];
-      v93 = [(UIActivityActionGroupCell *)v3 imageStackView];
-      v94 = [v93 trailingAnchor];
-      v95 = [v92 constraintEqualToAnchor:v94 constant:8.0];
-      [v33 addObject:v95];
+      titleStackView3 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      leadingAnchor3 = [titleStackView3 leadingAnchor];
+      imageStackView6 = [(UIActivityActionGroupCell *)v3 imageStackView];
+      trailingAnchor = [imageStackView6 trailingAnchor];
+      v95 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
+      [array addObject:v95];
 
-      v96 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v97 = [v96 topAnchor];
-      v98 = [v11 topAnchor];
-      v99 = [v97 constraintGreaterThanOrEqualToAnchor:v98 constant:4.0];
-      [v33 addObject:v99];
+      titleStackView4 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      topAnchor = [titleStackView4 topAnchor];
+      topAnchor2 = [contentView topAnchor];
+      v99 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:4.0];
+      [array addObject:v99];
 
-      v100 = [v11 bottomAnchor];
-      v101 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v102 = [v101 bottomAnchor];
-      v103 = [v100 constraintGreaterThanOrEqualToAnchor:v102 constant:4.0];
-      [v33 addObject:v103];
+      bottomAnchor = [contentView bottomAnchor];
+      titleStackView5 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      bottomAnchor2 = [titleStackView5 bottomAnchor];
+      v103 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:4.0];
+      [array addObject:v103];
 
-      v104 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v105 = [v104 centerYAnchor];
-      v106 = [v11 centerYAnchor];
-      v107 = [v105 constraintEqualToAnchor:v106];
-      [v33 addObject:v107];
+      titleStackView6 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      centerYAnchor7 = [titleStackView6 centerYAnchor];
+      centerYAnchor8 = [contentView centerYAnchor];
+      v107 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
+      [array addObject:v107];
 
-      v108 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v109 = [v108 trailingAnchor];
-      v110 = [v11 layoutMarginsGuide];
-      v111 = [v110 trailingAnchor];
-      v112 = [v109 constraintEqualToAnchor:v111];
-      [v33 addObject:v112];
+      titleStackView7 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      trailingAnchor2 = [titleStackView7 trailingAnchor];
+      layoutMarginsGuide2 = [contentView layoutMarginsGuide];
+      trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+      v112 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
+      [array addObject:v112];
     }
 
     else
     {
-      v113 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v114 = [v113 leadingAnchor];
-      v115 = [v11 layoutMarginsGuide];
-      v116 = [v115 leadingAnchor];
-      v117 = [v114 constraintEqualToAnchor:v116];
-      [v33 addObject:v117];
+      titleStackView8 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      leadingAnchor4 = [titleStackView8 leadingAnchor];
+      layoutMarginsGuide3 = [contentView layoutMarginsGuide];
+      leadingAnchor5 = [layoutMarginsGuide3 leadingAnchor];
+      v117 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
+      [array addObject:v117];
 
-      v118 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v119 = [v118 topAnchor];
-      v120 = [v11 topAnchor];
-      v121 = [v119 constraintGreaterThanOrEqualToAnchor:v120 constant:4.0];
-      [v33 addObject:v121];
+      titleStackView9 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      topAnchor3 = [titleStackView9 topAnchor];
+      topAnchor4 = [contentView topAnchor];
+      v121 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:4.0];
+      [array addObject:v121];
 
-      v122 = [v11 bottomAnchor];
-      v123 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v124 = [v123 bottomAnchor];
-      v125 = [v122 constraintGreaterThanOrEqualToAnchor:v124 constant:4.0];
-      [v33 addObject:v125];
+      bottomAnchor3 = [contentView bottomAnchor];
+      titleStackView10 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      bottomAnchor4 = [titleStackView10 bottomAnchor];
+      v125 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4 constant:4.0];
+      [array addObject:v125];
 
-      v126 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v127 = [v126 centerYAnchor];
-      v128 = [v11 centerYAnchor];
-      v129 = [v127 constraintEqualToAnchor:v128];
-      [v33 addObject:v129];
+      titleStackView11 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      centerYAnchor9 = [titleStackView11 centerYAnchor];
+      centerYAnchor10 = [contentView centerYAnchor];
+      v129 = [centerYAnchor9 constraintEqualToAnchor:centerYAnchor10];
+      [array addObject:v129];
 
-      v130 = [(UIActivityActionGroupCell *)v3 imageStackView];
-      v131 = [v130 leadingAnchor];
-      v132 = [(UIActivityActionGroupCell *)v3 titleStackView];
-      v133 = [v132 trailingAnchor];
-      v134 = [v131 constraintEqualToAnchor:v133 constant:16.0];
-      [v33 addObject:v134];
+      imageStackView7 = [(UIActivityActionGroupCell *)v3 imageStackView];
+      leadingAnchor6 = [imageStackView7 leadingAnchor];
+      titleStackView12 = [(UIActivityActionGroupCell *)v3 titleStackView];
+      trailingAnchor4 = [titleStackView12 trailingAnchor];
+      v134 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4 constant:16.0];
+      [array addObject:v134];
 
-      v135 = [v11 trailingAnchor];
-      v136 = [(UIActivityActionGroupCell *)v3 imageStackView];
-      v137 = [v136 trailingAnchor];
+      trailingAnchor5 = [contentView trailingAnchor];
+      imageStackView8 = [(UIActivityActionGroupCell *)v3 imageStackView];
+      trailingAnchor6 = [imageStackView8 trailingAnchor];
       [v15 lineHeight];
-      v139 = [v135 constraintEqualToAnchor:v137 constant:v138 + 6.0 + v19 * -0.5];
-      [v33 addObject:v139];
+      v139 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:v138 + 6.0 + v19 * -0.5];
+      [array addObject:v139];
 
-      v140 = [(UIActivityActionGroupCell *)v3 imageStackView];
-      v141 = [v140 centerYAnchor];
-      v142 = [v11 centerYAnchor];
-      v143 = [v141 constraintEqualToAnchor:v142];
-      [v33 addObject:v143];
+      imageStackView9 = [(UIActivityActionGroupCell *)v3 imageStackView];
+      centerYAnchor11 = [imageStackView9 centerYAnchor];
+      centerYAnchor12 = [contentView centerYAnchor];
+      v143 = [centerYAnchor11 constraintEqualToAnchor:centerYAnchor12];
+      [array addObject:v143];
 
-      v108 = [v11 trailingAnchor];
-      v109 = [(UIActivityActionGroupCell *)v3 activitySlotView];
-      v110 = [v109 centerXAnchor];
+      titleStackView7 = [contentView trailingAnchor];
+      trailingAnchor2 = [(UIActivityActionGroupCell *)v3 activitySlotView];
+      layoutMarginsGuide2 = [trailingAnchor2 centerXAnchor];
       [v15 lineHeight];
-      v111 = [v108 constraintEqualToAnchor:v110 constant:v144 + 6.0];
-      [v33 addObject:v111];
+      trailingAnchor3 = [titleStackView7 constraintEqualToAnchor:layoutMarginsGuide2 constant:v144 + 6.0];
+      [array addObject:trailingAnchor3];
     }
 
-    v145 = [(UIActivityActionGroupCell *)v3 titleLabel];
-    v146 = [v145 heightAnchor];
-    v147 = [v146 constraintGreaterThanOrEqualToConstant:0.0];
+    titleLabel7 = [(UIActivityActionGroupCell *)v3 titleLabel];
+    heightAnchor8 = [titleLabel7 heightAnchor];
+    v147 = [heightAnchor8 constraintGreaterThanOrEqualToConstant:0.0];
     titleLabelHeightAnchor = v3->_titleLabelHeightAnchor;
     v3->_titleLabelHeightAnchor = v147;
 
     [(NSLayoutConstraint *)v3->_titleLabelHeightAnchor setActive:0];
-    [v33 addObject:v3->_titleLabelHeightAnchor];
-    v149 = [v11 heightAnchor];
-    v150 = [v149 constraintEqualToConstant:0.0];
+    [array addObject:v3->_titleLabelHeightAnchor];
+    heightAnchor9 = [contentView heightAnchor];
+    v150 = [heightAnchor9 constraintEqualToConstant:0.0];
 
     LODWORD(v151) = 1132068864;
     [v150 setPriority:v151];
-    [v33 addObject:v150];
-    [MEMORY[0x1E696ACD8] activateConstraints:v33];
+    [array addObject:v150];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   return v3;
 }
 
-- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)a3
+- (NSDirectionalEdgeInsets)_preferredSeparatorInsetsForProposedInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
   if (_ShareSheetSolariumEnabled())
   {
     [(UIActivityActionGroupCell *)self layoutIfNeeded];
-    v8 = [(UIActivityActionGroupCell *)self traitCollection];
-    v9 = [v8 layoutDirection];
+    traitCollection = [(UIActivityActionGroupCell *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
-    if (v9 == 1)
+    if (layoutDirection == 1)
     {
       [(UIActivityActionGroupCell *)self bounds];
       Width = CGRectGetWidth(v16);
-      v11 = [(UIActivityActionGroupCell *)self titleStackView];
-      [v11 frame];
+      titleStackView = [(UIActivityActionGroupCell *)self titleStackView];
+      [titleStackView frame];
       leading = Width - CGRectGetMaxX(v17);
     }
 
     else
     {
-      v11 = [(UIActivityActionGroupCell *)self titleStackView];
-      [v11 frame];
+      titleStackView = [(UIActivityActionGroupCell *)self titleStackView];
+      [titleStackView frame];
       leading = CGRectGetMinX(v18);
     }
   }
@@ -355,17 +355,17 @@
 
 - (id)subtitleLabel
 {
-  v3 = [(UIActivityActionGroupCell *)self subtitleLabelIfLoaded];
+  subtitleLabelIfLoaded = [(UIActivityActionGroupCell *)self subtitleLabelIfLoaded];
 
-  if (!v3)
+  if (!subtitleLabelIfLoaded)
   {
     v4 = objc_alloc_init(_UIActivityActionCellTitleLabel);
     [(_UIActivityActionCellTitleLabel *)v4 setTextStyle:*MEMORY[0x1E69DDD80]];
-    v5 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(_UIActivityActionCellTitleLabel *)v4 setTextColor:v5];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(_UIActivityActionCellTitleLabel *)v4 setTextColor:secondaryLabelColor];
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(_UIActivityActionCellTitleLabel *)v4 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(_UIActivityActionCellTitleLabel *)v4 setBackgroundColor:clearColor];
 
     [(_UIActivityActionCellTitleLabel *)v4 setLineBreakMode:4];
     [(_UIActivityActionCellTitleLabel *)v4 setAlpha:0.0];
@@ -379,15 +379,15 @@
 
 - (id)badgeView
 {
-  v3 = [(UIActivityActionGroupCell *)self badgeViewIfLoaded];
+  badgeViewIfLoaded = [(UIActivityActionGroupCell *)self badgeViewIfLoaded];
 
-  if (!v3)
+  if (!badgeViewIfLoaded)
   {
     v4 = objc_alloc_init(_UIActivityActionCellBadgeView);
     [(_UIActivityActionCellBadgeView *)v4 setAlpha:0.0];
     [(_UIActivityActionCellBadgeView *)v4 setHidden:1];
-    v5 = [(UIActivityActionGroupCell *)self imageStackView];
-    [v5 insertArrangedSubview:v4 atIndex:0];
+    imageStackView = [(UIActivityActionGroupCell *)self imageStackView];
+    [imageStackView insertArrangedSubview:v4 atIndex:0];
 
     [(UIActivityActionGroupCell *)self setBadgeViewIfLoaded:v4];
   }
@@ -397,9 +397,9 @@
 
 - (id)statusImageView
 {
-  v3 = [(UIActivityActionGroupCell *)self statusImageViewIfLoaded];
+  statusImageViewIfLoaded = [(UIActivityActionGroupCell *)self statusImageViewIfLoaded];
 
-  if (!v3)
+  if (!statusImageViewIfLoaded)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     v5 = [MEMORY[0x1E69DCAD8] configurationWithScale:1];
@@ -410,9 +410,9 @@
     [v4 setHidden:1];
     LODWORD(v6) = 1144766464;
     [v4 setContentHuggingPriority:0 forAxis:v6];
-    v7 = [(UIActivityActionGroupCell *)self imageStackView];
-    v8 = [(UIActivityActionGroupCell *)self badgeViewIfLoaded];
-    [v7 insertArrangedSubview:v4 atIndex:v8 != 0];
+    imageStackView = [(UIActivityActionGroupCell *)self imageStackView];
+    badgeViewIfLoaded = [(UIActivityActionGroupCell *)self badgeViewIfLoaded];
+    [imageStackView insertArrangedSubview:v4 atIndex:badgeViewIfLoaded != 0];
 
     [(UIActivityActionGroupCell *)self setStatusImageViewIfLoaded:v4];
   }
@@ -425,63 +425,63 @@
   v4.receiver = self;
   v4.super_class = UIActivityActionGroupCell;
   [(UIActivityActionCell *)&v4 prepareForReuse];
-  v3 = [(UIActivityActionGroupCell *)self imageStackView];
-  [v3 setNeedsLayout];
+  imageStackView = [(UIActivityActionGroupCell *)self imageStackView];
+  [imageStackView setNeedsLayout];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(UIActivityActionGroupCell *)self activitySlotView];
-  v6 = [v5 layer];
-  v7 = [v6 contents];
+  highlightedCopy = highlighted;
+  activitySlotView = [(UIActivityActionGroupCell *)self activitySlotView];
+  layer = [activitySlotView layer];
+  contents = [layer contents];
 
-  v8 = [(UIActivityActionGroupCell *)self titleSlotView];
-  v9 = [v8 layer];
-  v10 = [v9 contents];
+  titleSlotView = [(UIActivityActionGroupCell *)self titleSlotView];
+  layer2 = [titleSlotView layer];
+  contents2 = [layer2 contents];
 
   v15.receiver = self;
   v15.super_class = UIActivityActionGroupCell;
-  [(UIActivityActionCell *)&v15 setHighlighted:v3];
-  v11 = [(UIActivityActionGroupCell *)self activitySlotView];
-  v12 = [v11 layer];
-  [v12 setContents:v7];
+  [(UIActivityActionCell *)&v15 setHighlighted:highlightedCopy];
+  activitySlotView2 = [(UIActivityActionGroupCell *)self activitySlotView];
+  layer3 = [activitySlotView2 layer];
+  [layer3 setContents:contents];
 
-  v13 = [(UIActivityActionGroupCell *)self titleSlotView];
-  v14 = [v13 layer];
-  [v14 setContents:v10];
+  titleSlotView2 = [(UIActivityActionGroupCell *)self titleSlotView];
+  layer4 = [titleSlotView2 layer];
+  [layer4 setContents:contents2];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  v5 = [(UIActivityActionGroupCell *)self activitySlotView];
-  v6 = [v5 layer];
-  v7 = [v6 contents];
+  selectedCopy = selected;
+  activitySlotView = [(UIActivityActionGroupCell *)self activitySlotView];
+  layer = [activitySlotView layer];
+  contents = [layer contents];
 
-  v8 = [(UIActivityActionGroupCell *)self titleSlotView];
-  v9 = [v8 layer];
-  v10 = [v9 contents];
+  titleSlotView = [(UIActivityActionGroupCell *)self titleSlotView];
+  layer2 = [titleSlotView layer];
+  contents2 = [layer2 contents];
 
   v15.receiver = self;
   v15.super_class = UIActivityActionGroupCell;
-  [(UIActivityActionGroupCell *)&v15 setSelected:v3];
-  v11 = [(UIActivityActionGroupCell *)self activitySlotView];
-  v12 = [v11 layer];
-  [v12 setContents:v7];
+  [(UIActivityActionGroupCell *)&v15 setSelected:selectedCopy];
+  activitySlotView2 = [(UIActivityActionGroupCell *)self activitySlotView];
+  layer3 = [activitySlotView2 layer];
+  [layer3 setContents:contents];
 
-  v13 = [(UIActivityActionGroupCell *)self titleSlotView];
-  v14 = [v13 layer];
-  [v14 setContents:v10];
+  titleSlotView2 = [(UIActivityActionGroupCell *)self titleSlotView];
+  layer4 = [titleSlotView2 layer];
+  [layer4 setContents:contents2];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v10.receiver = self;
   v10.super_class = UIActivityActionGroupCell;
   [(UIActivityActionCell *)&v10 setDisabled:?];
-  if (v3)
+  if (disabledCopy)
   {
     v5 = 0.4;
   }
@@ -491,180 +491,180 @@
     v5 = 1.0;
   }
 
-  v6 = [(UIActivityActionGroupCell *)self titleStackView];
-  [v6 setAlpha:v5];
+  titleStackView = [(UIActivityActionGroupCell *)self titleStackView];
+  [titleStackView setAlpha:v5];
 
-  v7 = [(UIActivityActionGroupCell *)self imageStackView];
-  [v7 setAlpha:v5];
+  imageStackView = [(UIActivityActionGroupCell *)self imageStackView];
+  [imageStackView setAlpha:v5];
 
-  v8 = [(UIActivityActionGroupCell *)self activitySlotView];
-  [v8 setAlpha:v5];
+  activitySlotView = [(UIActivityActionGroupCell *)self activitySlotView];
+  [activitySlotView setAlpha:v5];
 
-  v9 = [(UIActivityActionGroupCell *)self titleSlotView];
-  [v9 setAlpha:v5];
+  titleSlotView = [(UIActivityActionGroupCell *)self titleSlotView];
+  [titleSlotView setAlpha:v5];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   title = self->_title;
-  v9 = v5;
-  v7 = title;
-  if (v7 == v9)
+  v9 = titleCopy;
+  titleCopy2 = title;
+  if (titleCopy2 == v9)
   {
 
     goto LABEL_8;
   }
 
-  if ((v9 != 0) == (v7 == 0))
+  if ((v9 != 0) == (titleCopy2 == 0))
   {
 
     goto LABEL_7;
   }
 
-  v8 = [(NSString *)v9 isEqual:v7];
+  v8 = [(NSString *)v9 isEqual:titleCopy2];
 
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(UIActivityActionGroupCell *)self _updateTitleView];
   }
 
 LABEL_8:
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
+  subtitleCopy = subtitle;
   subtitle = self->_subtitle;
-  v9 = v5;
-  v7 = subtitle;
-  if (v7 == v9)
+  v9 = subtitleCopy;
+  subtitleCopy2 = subtitle;
+  if (subtitleCopy2 == v9)
   {
 
     goto LABEL_8;
   }
 
-  if ((v9 != 0) == (v7 == 0))
+  if ((v9 != 0) == (subtitleCopy2 == 0))
   {
 
     goto LABEL_7;
   }
 
-  v8 = [(NSString *)v9 isEqual:v7];
+  v8 = [(NSString *)v9 isEqual:subtitleCopy2];
 
   if ((v8 & 1) == 0)
   {
 LABEL_7:
-    objc_storeStrong(&self->_subtitle, a3);
+    objc_storeStrong(&self->_subtitle, subtitle);
     [(UIActivityActionGroupCell *)self _updateSubtitleLabel];
   }
 
 LABEL_8:
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(UIActivityActionGroupCell *)self _updateImageView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setStatusImage:(id)a3
+- (void)setStatusImage:(id)image
 {
-  v5 = a3;
-  if (self->_statusImage != v5)
+  imageCopy = image;
+  if (self->_statusImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_statusImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_statusImage, image);
     [(UIActivityActionGroupCell *)self _updateStatusImageView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setStatusImageTintColor:(id)a3
+- (void)setStatusImageTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_statusImageTintColor != v5)
+  colorCopy = color;
+  if (self->_statusImageTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_statusImageTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_statusImageTintColor, color);
     [(UIActivityActionGroupCell *)self _updateStatusImageView];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setImageSlotID:(unsigned int)a3
+- (void)setImageSlotID:(unsigned int)d
 {
-  if (self->_imageSlotID != a3)
+  if (self->_imageSlotID != d)
   {
-    self->_imageSlotID = a3;
+    self->_imageSlotID = d;
     [(UIActivityActionGroupCell *)self _updateImageView];
   }
 }
 
-- (void)setTitleSlotID:(unsigned int)a3
+- (void)setTitleSlotID:(unsigned int)d
 {
-  if (self->_titleSlotID != a3)
+  if (self->_titleSlotID != d)
   {
-    self->_titleSlotID = a3;
+    self->_titleSlotID = d;
     [(UIActivityActionGroupCell *)self _updateTitleView];
   }
 }
 
-- (void)setPlatterTextHeight:(double)a3
+- (void)setPlatterTextHeight:(double)height
 {
-  if (self->_platterTextHeight != a3)
+  if (self->_platterTextHeight != height)
   {
-    self->_platterTextHeight = a3;
+    self->_platterTextHeight = height;
     [(UIActivityActionGroupCell *)self _updateTitleHeight];
   }
 }
 
-- (void)setContentTintColor:(id)a3
+- (void)setContentTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_contentTintColor != v5)
+  colorCopy = color;
+  if (self->_contentTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_contentTintColor, color);
     [(UIActivityActionGroupCell *)self _updateContentTintColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
 - (void)_updateContentTintColor
 {
-  v3 = [(UIActivityActionGroupCell *)self contentTintColor];
-  v4 = [(UIActivityActionGroupCell *)self titleLabel];
-  [v4 setTextColor:v3];
+  contentTintColor = [(UIActivityActionGroupCell *)self contentTintColor];
+  titleLabel = [(UIActivityActionGroupCell *)self titleLabel];
+  [titleLabel setTextColor:contentTintColor];
 
-  v5 = [(UIActivityActionGroupCell *)self contentTintColor];
-  v6 = [(UIActivityActionGroupCell *)self activityImageView];
-  [v6 setTintColor:v5];
+  contentTintColor2 = [(UIActivityActionGroupCell *)self contentTintColor];
+  activityImageView = [(UIActivityActionGroupCell *)self activityImageView];
+  [activityImageView setTintColor:contentTintColor2];
 
-  v11 = [(UIActivityActionGroupCell *)self contentTintColor];
-  v7 = v11;
-  v8 = [v11 CGColor];
-  v9 = [(UIActivityActionGroupCell *)self activitySlotView];
-  v10 = [v9 layer];
-  [v10 setContentsMultiplyColor:v8];
+  contentTintColor3 = [(UIActivityActionGroupCell *)self contentTintColor];
+  v7 = contentTintColor3;
+  cGColor = [contentTintColor3 CGColor];
+  activitySlotView = [(UIActivityActionGroupCell *)self activitySlotView];
+  layer = [activitySlotView layer];
+  [layer setContentsMultiplyColor:cGColor];
 }
 
 - (void)_updateSubtitleLabel
 {
-  v3 = [(UIActivityActionGroupCell *)self subtitle];
-  v4 = [v3 length];
+  subtitle = [(UIActivityActionGroupCell *)self subtitle];
+  v4 = [subtitle length];
 
-  v5 = [(UIActivityActionGroupCell *)self subtitle];
-  v6 = [(UIActivityActionGroupCell *)self subtitleLabel];
-  [v6 setText:v5];
+  subtitle2 = [(UIActivityActionGroupCell *)self subtitle];
+  subtitleLabel = [(UIActivityActionGroupCell *)self subtitleLabel];
+  [subtitleLabel setText:subtitle2];
 
   v7 = v4 == 0;
   if (v4)
@@ -677,29 +677,29 @@ LABEL_8:
     v8 = 0.0;
   }
 
-  v9 = [(UIActivityActionGroupCell *)self subtitleLabel];
-  [v9 setAlpha:v8];
+  subtitleLabel2 = [(UIActivityActionGroupCell *)self subtitleLabel];
+  [subtitleLabel2 setAlpha:v8];
 
-  v10 = [(UIActivityActionGroupCell *)self subtitleLabel];
-  [v10 setHidden:v7];
+  subtitleLabel3 = [(UIActivityActionGroupCell *)self subtitleLabel];
+  [subtitleLabel3 setHidden:v7];
 }
 
-- (void)_updateBadgeWithText:(id)a3 textColor:(id)a4 backgroundColor:(id)a5
+- (void)_updateBadgeWithText:(id)text textColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 length];
-  v12 = [(UIActivityActionGroupCell *)self badgeView];
-  v13 = [v12 titleLabel];
-  [v13 setText:v10];
+  backgroundColorCopy = backgroundColor;
+  colorCopy = color;
+  textCopy = text;
+  v11 = [textCopy length];
+  badgeView = [(UIActivityActionGroupCell *)self badgeView];
+  titleLabel = [badgeView titleLabel];
+  [titleLabel setText:textCopy];
 
-  v14 = [(UIActivityActionGroupCell *)self badgeView];
-  v15 = [v14 titleLabel];
-  [v15 setTextColor:v9];
+  badgeView2 = [(UIActivityActionGroupCell *)self badgeView];
+  titleLabel2 = [badgeView2 titleLabel];
+  [titleLabel2 setTextColor:colorCopy];
 
-  v16 = [(UIActivityActionGroupCell *)self badgeView];
-  [v16 setBackgroundColor:v8];
+  badgeView3 = [(UIActivityActionGroupCell *)self badgeView];
+  [badgeView3 setBackgroundColor:backgroundColorCopy];
 
   v17 = v11 == 0;
   if (v11)
@@ -712,22 +712,22 @@ LABEL_8:
     v18 = 0.0;
   }
 
-  v19 = [(UIActivityActionGroupCell *)self badgeView];
-  [v19 setAlpha:v18];
+  badgeView4 = [(UIActivityActionGroupCell *)self badgeView];
+  [badgeView4 setAlpha:v18];
 
-  v20 = [(UIActivityActionGroupCell *)self badgeView];
-  [v20 setHidden:v17];
+  badgeView5 = [(UIActivityActionGroupCell *)self badgeView];
+  [badgeView5 setHidden:v17];
 }
 
 - (void)_updateImageView
 {
-  v3 = [(UIActivityActionGroupCell *)self image];
+  image = [(UIActivityActionGroupCell *)self image];
 
-  v4 = [(UIActivityActionGroupCell *)self image];
-  v5 = [(UIActivityActionGroupCell *)self activityImageView];
-  [v5 setImage:v4];
+  image2 = [(UIActivityActionGroupCell *)self image];
+  activityImageView = [(UIActivityActionGroupCell *)self activityImageView];
+  [activityImageView setImage:image2];
 
-  if (v3)
+  if (image)
   {
     v6 = 1.0;
   }
@@ -737,31 +737,31 @@ LABEL_8:
     v6 = 0.0;
   }
 
-  v7 = [(UIActivityActionGroupCell *)self activityImageView];
-  [v7 setAlpha:v6];
+  activityImageView2 = [(UIActivityActionGroupCell *)self activityImageView];
+  [activityImageView2 setAlpha:v6];
 
-  v8 = [(UIActivityActionGroupCell *)self imageSlotID];
-  if (v8)
+  imageSlotID = [(UIActivityActionGroupCell *)self imageSlotID];
+  if (imageSlotID)
   {
-    v9 = [MEMORY[0x1E6979320] objectForSlot:{-[UIActivityActionGroupCell imageSlotID](self, "imageSlotID")}];
+    activitySlotView3 = [MEMORY[0x1E6979320] objectForSlot:{-[UIActivityActionGroupCell imageSlotID](self, "imageSlotID")}];
     v10 = *MEMORY[0x1E6979DE0];
-    v11 = [(UIActivityActionGroupCell *)self activitySlotView];
-    v12 = [v11 layer];
-    [v12 setContentsGravity:v10];
+    activitySlotView = [(UIActivityActionGroupCell *)self activitySlotView];
+    layer = [activitySlotView layer];
+    [layer setContentsGravity:v10];
 
-    v13 = [(UIActivityActionGroupCell *)self activitySlotView];
-    v14 = [v13 layer];
-    [v14 setContents:v9];
+    activitySlotView2 = [(UIActivityActionGroupCell *)self activitySlotView];
+    layer2 = [activitySlotView2 layer];
+    [layer2 setContents:activitySlotView3];
   }
 
   else
   {
-    v9 = [(UIActivityActionGroupCell *)self activitySlotView];
-    v13 = [v9 layer];
-    [v13 setContents:0];
+    activitySlotView3 = [(UIActivityActionGroupCell *)self activitySlotView];
+    activitySlotView2 = [activitySlotView3 layer];
+    [activitySlotView2 setContents:0];
   }
 
-  if (v8)
+  if (imageSlotID)
   {
     v15 = 1.0;
   }
@@ -771,20 +771,20 @@ LABEL_8:
     v15 = 0.0;
   }
 
-  v16 = [(UIActivityActionGroupCell *)self activitySlotView];
-  [v16 setAlpha:v15];
+  activitySlotView4 = [(UIActivityActionGroupCell *)self activitySlotView];
+  [activitySlotView4 setAlpha:v15];
 }
 
 - (void)_updateStatusImageView
 {
-  v3 = [(UIActivityActionGroupCell *)self statusImage];
+  statusImage = [(UIActivityActionGroupCell *)self statusImage];
 
-  v4 = [(UIActivityActionGroupCell *)self statusImage];
-  v5 = [(UIActivityActionGroupCell *)self statusImageView];
-  [v5 setImage:v4];
+  statusImage2 = [(UIActivityActionGroupCell *)self statusImage];
+  statusImageView = [(UIActivityActionGroupCell *)self statusImageView];
+  [statusImageView setImage:statusImage2];
 
-  v6 = v3 == 0;
-  v7 = v3 == 0;
+  v6 = statusImage == 0;
+  v7 = statusImage == 0;
   if (v6)
   {
     v8 = 0.0;
@@ -795,25 +795,25 @@ LABEL_8:
     v8 = 1.0;
   }
 
-  v9 = [(UIActivityActionGroupCell *)self statusImageView];
-  [v9 setAlpha:v8];
+  statusImageView2 = [(UIActivityActionGroupCell *)self statusImageView];
+  [statusImageView2 setAlpha:v8];
 
-  v10 = [(UIActivityActionGroupCell *)self statusImageView];
-  [v10 setHidden:v7];
+  statusImageView3 = [(UIActivityActionGroupCell *)self statusImageView];
+  [statusImageView3 setHidden:v7];
 
-  v12 = [(UIActivityActionGroupCell *)self statusImageTintColor];
-  v11 = [(UIActivityActionGroupCell *)self statusImageView];
-  [v11 setTintColor:v12];
+  statusImageTintColor = [(UIActivityActionGroupCell *)self statusImageTintColor];
+  statusImageView4 = [(UIActivityActionGroupCell *)self statusImageView];
+  [statusImageView4 setTintColor:statusImageTintColor];
 }
 
 - (void)_updateTitleView
 {
-  v3 = [(UIActivityActionGroupCell *)self title];
-  v4 = [v3 length];
+  title = [(UIActivityActionGroupCell *)self title];
+  v4 = [title length];
 
-  v5 = [(UIActivityActionGroupCell *)self title];
-  v6 = [(UIActivityActionGroupCell *)self titleLabel];
-  [v6 setText:v5];
+  title2 = [(UIActivityActionGroupCell *)self title];
+  titleLabel = [(UIActivityActionGroupCell *)self titleLabel];
+  [titleLabel setText:title2];
 
   if (v4)
   {
@@ -825,51 +825,51 @@ LABEL_8:
     v7 = 0.0;
   }
 
-  v8 = [(UIActivityActionGroupCell *)self titleLabel];
-  [v8 setAlpha:v7];
+  titleLabel2 = [(UIActivityActionGroupCell *)self titleLabel];
+  [titleLabel2 setAlpha:v7];
 
-  v9 = [(UIActivityActionGroupCell *)self titleSlotID];
-  if (v9)
+  titleSlotID = [(UIActivityActionGroupCell *)self titleSlotID];
+  if (titleSlotID)
   {
-    v10 = [(UIActivityActionGroupCell *)self traitCollection];
-    v11 = [v10 layoutDirection];
+    traitCollection = [(UIActivityActionGroupCell *)self traitCollection];
+    layoutDirection = [traitCollection layoutDirection];
 
     v12 = MEMORY[0x1E6979DF8];
-    if (v11 != 1)
+    if (layoutDirection != 1)
     {
       v12 = MEMORY[0x1E6979DD8];
     }
 
     v13 = MEMORY[0x1E6979320];
     v14 = *v12;
-    v15 = [v13 objectForSlot:{-[UIActivityActionGroupCell titleSlotID](self, "titleSlotID")}];
+    titleSlotView5 = [v13 objectForSlot:{-[UIActivityActionGroupCell titleSlotID](self, "titleSlotID")}];
     v16 = _ShareSheetDeviceScreenScale();
-    v17 = [(UIActivityActionGroupCell *)self titleSlotView];
-    v18 = [v17 layer];
-    [v18 setContentsScale:v16];
+    titleSlotView = [(UIActivityActionGroupCell *)self titleSlotView];
+    layer = [titleSlotView layer];
+    [layer setContentsScale:v16];
 
     v19 = _ShareSheetDeviceScreenScale();
-    v20 = [(UIActivityActionGroupCell *)self titleSlotView];
-    v21 = [v20 layer];
-    [v21 setRasterizationScale:v19];
+    titleSlotView2 = [(UIActivityActionGroupCell *)self titleSlotView];
+    layer2 = [titleSlotView2 layer];
+    [layer2 setRasterizationScale:v19];
 
-    v22 = [(UIActivityActionGroupCell *)self titleSlotView];
-    v23 = [v22 layer];
-    [v23 setContentsGravity:v14];
+    titleSlotView3 = [(UIActivityActionGroupCell *)self titleSlotView];
+    layer3 = [titleSlotView3 layer];
+    [layer3 setContentsGravity:v14];
 
-    v24 = [(UIActivityActionGroupCell *)self titleSlotView];
-    v25 = [v24 layer];
-    [v25 setContents:v15];
+    titleSlotView4 = [(UIActivityActionGroupCell *)self titleSlotView];
+    layer4 = [titleSlotView4 layer];
+    [layer4 setContents:titleSlotView5];
   }
 
   else
   {
-    v15 = [(UIActivityActionGroupCell *)self titleSlotView];
-    v24 = [v15 layer];
-    [v24 setContents:0];
+    titleSlotView5 = [(UIActivityActionGroupCell *)self titleSlotView];
+    titleSlotView4 = [titleSlotView5 layer];
+    [titleSlotView4 setContents:0];
   }
 
-  if (v9)
+  if (titleSlotID)
   {
     v26 = 1.0;
   }
@@ -879,8 +879,8 @@ LABEL_8:
     v26 = 0.0;
   }
 
-  v27 = [(UIActivityActionGroupCell *)self titleSlotView];
-  [v27 setAlpha:v26];
+  titleSlotView6 = [(UIActivityActionGroupCell *)self titleSlotView];
+  [titleSlotView6 setAlpha:v26];
 }
 
 - (void)_updateTitleHeight

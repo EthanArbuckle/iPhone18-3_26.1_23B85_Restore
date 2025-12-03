@@ -1,5 +1,5 @@
 @interface ShelfHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)updateConfiguration;
@@ -9,18 +9,18 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100675B14();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = type metadata accessor for ShelfHeaderLayout(0);
   __chkstk_darwin(v4 - 8);
   v6 = &v14 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(ShelfHeaderView *)v7 traitCollection];
-  v9 = ShelfHeaderLayout.measure(toFit:with:)(v8);
+  selfCopy = self;
+  traitCollection = [(ShelfHeaderView *)selfCopy traitCollection];
+  v9 = ShelfHeaderLayout.measure(toFit:with:)(traitCollection);
   v11 = v10;
 
   sub_100678670(v6, type metadata accessor for ShelfHeaderLayout);
@@ -39,21 +39,21 @@
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = self;
+  selfCopy = self;
   [(ShelfHeaderView *)&v10 layoutSubviews];
-  v8 = *(&v7->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore15ShelfHeaderView_containerView);
-  [(ShelfHeaderView *)v7 bounds];
+  v8 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore15ShelfHeaderView_containerView);
+  [(ShelfHeaderView *)selfCopy bounds];
   [v8 setFrame:?];
-  [(ShelfHeaderView *)v7 bounds];
-  v9 = [(ShelfHeaderView *)v7 traitCollection];
-  ShelfHeaderLayout.place(at:with:)(v9);
+  [(ShelfHeaderView *)selfCopy bounds];
+  traitCollection = [(ShelfHeaderView *)selfCopy traitCollection];
+  ShelfHeaderLayout.place(at:with:)(traitCollection);
 
   sub_100678670(v6, type metadata accessor for ShelfHeaderLayout);
 }
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_100674B50();
 }
 

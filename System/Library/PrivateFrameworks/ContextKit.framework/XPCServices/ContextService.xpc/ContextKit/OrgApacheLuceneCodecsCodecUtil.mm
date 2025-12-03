@@ -1,28 +1,28 @@
 @interface OrgApacheLuceneCodecsCodecUtil
-+ (int)headerLengthWithNSString:(id)a3;
-+ (int)indexHeaderLengthWithNSString:(id)a3 withNSString:(id)a4;
++ (int)headerLengthWithNSString:(id)string;
++ (int)indexHeaderLengthWithNSString:(id)string withNSString:(id)sString;
 @end
 
 @implementation OrgApacheLuceneCodecsCodecUtil
 
-+ (int)headerLengthWithNSString:(id)a3
++ (int)headerLengthWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 length] + 9;
+  return [string length] + 9;
 }
 
-+ (int)indexHeaderLengthWithNSString:(id)a3 withNSString:(id)a4
++ (int)indexHeaderLengthWithNSString:(id)string withNSString:(id)sString
 {
-  if (!a3 || (v5 = [a3 length], !a4))
+  if (!string || (v5 = [string length], !sString))
   {
     JreThrowNullPointerException();
   }
 
-  return v5 + [a4 length] + 26;
+  return v5 + [sString length] + 26;
 }
 
 @end

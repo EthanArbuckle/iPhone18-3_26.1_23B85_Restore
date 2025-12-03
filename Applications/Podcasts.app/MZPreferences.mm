@@ -1,12 +1,12 @@
 @interface MZPreferences
 + (id)storeBookkeeperPreferences;
 - (MZPreferences)init;
-- (id)objectForKey:(id)a3 withDefaultValue:(id)a4;
+- (id)objectForKey:(id)key withDefaultValue:(id)value;
 - (void)_preferencesDidChange;
 - (void)dealloc;
-- (void)registerDefaultsIfKeyNotSet:(id)a3 registrationBlock:(id)a4;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)registerDefaultsIfKeyNotSet:(id)set registrationBlock:(id)block;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation MZPreferences
@@ -52,43 +52,43 @@
   [v3 postNotificationName:@"MZPreferencesDidChangeNotification" object:self userInfo:0];
 }
 
-- (void)registerDefaultsIfKeyNotSet:(id)a3 registrationBlock:(id)a4
+- (void)registerDefaultsIfKeyNotSet:(id)set registrationBlock:(id)block
 {
-  v6 = a4;
-  v7 = [@"_didRegister-" stringByAppendingString:a3];
+  blockCopy = block;
+  v7 = [@"_didRegister-" stringByAppendingString:set];
   if (![(MZPreferences *)self BOOLForKey:?])
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
     [(MZPreferences *)self setBool:1 forKey:v7];
     CFPreferencesAppSynchronize(@"com.apple.storebookkeeper");
   }
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  CFPreferencesSetAppValue(a4, a3, @"com.apple.storebookkeeper");
+  CFPreferencesSetAppValue(key, object, @"com.apple.storebookkeeper");
 
   CFPreferencesAppSynchronize(@"com.apple.storebookkeeper");
 }
 
-- (id)objectForKey:(id)a3 withDefaultValue:(id)a4
+- (id)objectForKey:(id)key withDefaultValue:(id)value
 {
-  v5 = a4;
-  v6 = CFPreferencesCopyAppValue(a3, @"com.apple.storebookkeeper");
+  valueCopy = value;
+  v6 = CFPreferencesCopyAppValue(key, @"com.apple.storebookkeeper");
   if (!v6)
   {
-    v6 = v5;
+    v6 = valueCopy;
   }
 
   return v6;
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [NSNumber numberWithBool:v4];
-  CFPreferencesSetAppValue(v5, v6, @"com.apple.storebookkeeper");
+  boolCopy = bool;
+  keyCopy = key;
+  v6 = [NSNumber numberWithBool:boolCopy];
+  CFPreferencesSetAppValue(keyCopy, v6, @"com.apple.storebookkeeper");
 
   CFPreferencesAppSynchronize(@"com.apple.storebookkeeper");
 }

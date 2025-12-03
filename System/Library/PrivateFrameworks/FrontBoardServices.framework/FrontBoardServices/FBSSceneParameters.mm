@@ -1,35 +1,35 @@
 @interface FBSSceneParameters
-+ (id)parametersForSpecification:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)parametersForSpecification:(id)specification;
+- (BOOL)isEqual:(id)equal;
 - (FBSSceneParameters)init;
-- (FBSSceneParameters)initWithParameters:(id)a3;
-- (FBSSceneParameters)initWithSpecification:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (FBSSceneParameters)initWithParameters:(id)parameters;
+- (FBSSceneParameters)initWithSpecification:(id)specification;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setClientSettings:(id)a3;
-- (void)setSettings:(id)a3;
-- (void)updateSettingsWithBlock:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setClientSettings:(id)settings;
+- (void)setSettings:(id)settings;
+- (void)updateSettingsWithBlock:(id)block;
 @end
 
 @implementation FBSSceneParameters
 
-+ (id)parametersForSpecification:(id)a3
++ (id)parametersForSpecification:(id)specification
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSpecification:v4];
+  specificationCopy = specification;
+  v5 = [[self alloc] initWithSpecification:specificationCopy];
 
   return v5;
 }
 
-- (FBSSceneParameters)initWithSpecification:(id)a3
+- (FBSSceneParameters)initWithSpecification:(id)specification
 {
-  v6 = a3;
+  specificationCopy = specification;
   NSClassFromString(&cfstr_Fbsscenespecif.isa);
-  if (!v6)
+  if (!specificationCopy)
   {
     [FBSSceneParameters initWithSpecification:a2];
   }
@@ -45,12 +45,12 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_specification, a3);
-    v9 = objc_alloc_init([v6 settingsClass]);
+    objc_storeStrong(&v7->_specification, specification);
+    v9 = objc_alloc_init([specificationCopy settingsClass]);
     settings = v8->_settings;
     v8->_settings = v9;
 
-    v11 = objc_alloc_init([v6 clientSettingsClass]);
+    v11 = objc_alloc_init([specificationCopy clientSettingsClass]);
     clientSettings = v8->_clientSettings;
     v8->_clientSettings = v11;
   }
@@ -58,11 +58,11 @@
   return v8;
 }
 
-- (FBSSceneParameters)initWithParameters:(id)a3
+- (FBSSceneParameters)initWithParameters:(id)parameters
 {
-  v5 = a3;
-  v6 = [v5 specification];
-  v7 = v6;
+  parametersCopy = parameters;
+  specification = [parametersCopy specification];
+  v7 = specification;
   NSClassFromString(&cfstr_Fbsscenespecif.isa);
   if (!v7)
   {
@@ -80,14 +80,14 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_specification, v6);
-    v10 = [v5 settings];
-    v11 = [v10 copy];
+    objc_storeStrong(&v8->_specification, specification);
+    settings = [parametersCopy settings];
+    v11 = [settings copy];
     settings = v9->_settings;
     v9->_settings = v11;
 
-    v13 = [v5 clientSettings];
-    v14 = [v13 copy];
+    clientSettings = [parametersCopy clientSettings];
+    v14 = [clientSettings copy];
     clientSettings = v9->_clientSettings;
     v9->_clientSettings = v14;
   }
@@ -103,15 +103,15 @@
   return v4;
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  v4 = a3;
-  if (self->_settings != v4)
+  settingsCopy = settings;
+  if (self->_settings != settingsCopy)
   {
-    v7 = v4;
-    if (v4)
+    v7 = settingsCopy;
+    if (settingsCopy)
     {
-      v5 = [(FBSSceneSettings *)v4 copy];
+      v5 = [(FBSSceneSettings *)settingsCopy copy];
     }
 
     else
@@ -122,19 +122,19 @@
     settings = self->_settings;
     self->_settings = v5;
 
-    v4 = v7;
+    settingsCopy = v7;
   }
 }
 
-- (void)setClientSettings:(id)a3
+- (void)setClientSettings:(id)settings
 {
-  v4 = a3;
-  if (self->_clientSettings != v4)
+  settingsCopy = settings;
+  if (self->_clientSettings != settingsCopy)
   {
-    v7 = v4;
-    if (v4)
+    v7 = settingsCopy;
+    if (settingsCopy)
     {
-      v5 = [(FBSSceneClientSettings *)v4 copy];
+      v5 = [(FBSSceneClientSettings *)settingsCopy copy];
     }
 
     else
@@ -145,66 +145,66 @@
     clientSettings = self->_clientSettings;
     self->_clientSettings = v5;
 
-    v4 = v7;
+    settingsCopy = v7;
   }
 }
 
-- (void)updateSettingsWithBlock:(id)a3
+- (void)updateSettingsWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
-    v5 = [(FBSSceneParameters *)self settings];
-    v6 = [v5 mutableCopy];
+    blockCopy = block;
+    settings = [(FBSSceneParameters *)self settings];
+    v6 = [settings mutableCopy];
 
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
     [(FBSSceneParameters *)self setSettings:v6];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [FBSMutableSceneParameters allocWithZone:a3];
+  v4 = [FBSMutableSceneParameters allocWithZone:zone];
 
   return [(FBSSceneParameters *)v4 initWithParameters:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
   else
   {
-    v5 = [off_1E76BC9C0 builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-    v6 = [(FBSSceneParameters *)self specification];
+    v5 = [off_1E76BC9C0 builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+    specification = [(FBSSceneParameters *)self specification];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __30__FBSSceneParameters_isEqual___block_invoke;
     v20[3] = &unk_1E76BDA18;
-    v7 = v4;
+    v7 = equalCopy;
     v21 = v7;
-    v8 = [v5 appendObject:v6 counterpart:v20];
+    v8 = [v5 appendObject:specification counterpart:v20];
 
-    v9 = [(FBSSceneParameters *)self settings];
+    settings = [(FBSSceneParameters *)self settings];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __30__FBSSceneParameters_isEqual___block_invoke_2;
     v18[3] = &unk_1E76BDA18;
     v10 = v7;
     v19 = v10;
-    v11 = [v5 appendObject:v9 counterpart:v18];
+    v11 = [v5 appendObject:settings counterpart:v18];
 
-    v12 = [(FBSSceneParameters *)self clientSettings];
+    clientSettings = [(FBSSceneParameters *)self clientSettings];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __30__FBSSceneParameters_isEqual___block_invoke_3;
     v16[3] = &unk_1E76BDA18;
     v17 = v10;
-    v13 = [v5 appendObject:v12 counterpart:v16];
+    v13 = [v5 appendObject:clientSettings counterpart:v16];
 
     v14 = [v5 isEqual];
   }
@@ -214,50 +214,50 @@
 
 - (unint64_t)hash
 {
-  v3 = [off_1E76BC9C8 builder];
-  v4 = [(FBSSceneParameters *)self specification];
-  v5 = [v3 appendObject:v4];
+  builder = [off_1E76BC9C8 builder];
+  specification = [(FBSSceneParameters *)self specification];
+  v5 = [builder appendObject:specification];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(FBSSceneParameters *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSSceneParameters *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSSceneParameters *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSSceneParameters *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSSceneParameters *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSSceneParameters *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__FBSSceneParameters_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E76BCD60;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_class();
   NSStringFromClass(v4);
   objc_claimAutoreleasedReturnValue();

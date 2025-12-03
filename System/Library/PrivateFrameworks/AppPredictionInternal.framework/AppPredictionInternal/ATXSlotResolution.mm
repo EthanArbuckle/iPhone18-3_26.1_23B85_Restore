@@ -1,33 +1,33 @@
 @interface ATXSlotResolution
-+ (BOOL)isNotLaunchedWithinShortTimeSpan:(id)a3;
-+ (double)exponentialDecay:(double)a3 withHalflife:(double)a4;
-+ (id)yearMonthDayComponentsForDate:(id)a3;
-+ (void)setDistributionBasedScoreInputsForDayOfWeekForItem:(ATXPredictionItem *)a3 withLaunchDistribution:(id)a4;
-+ (void)setDistributionBasedScoreInputsForItem:(ATXPredictionItem *)a3 withGeoHashResolution:(unint64_t)a4 withLaunchCounts:(id)a5;
-+ (void)setDistributionBasedScoreInputsForTimeOfDayForItem:(ATXPredictionItem *)a3 withLaunchDistribution:(id)a4;
-+ (void)setSlotLogProbabilityForCandidateActionPredictions:(id)a3;
-+ (void)setSlotResolutionPredictionItemForTopUpcomingMediaActionContainer:(id)a3 appActionPredictionItem:(const ATXPredictionItem *)a4 appActionLogProbability:(double)a5;
++ (BOOL)isNotLaunchedWithinShortTimeSpan:(id)span;
++ (double)exponentialDecay:(double)decay withHalflife:(double)halflife;
++ (id)yearMonthDayComponentsForDate:(id)date;
++ (void)setDistributionBasedScoreInputsForDayOfWeekForItem:(ATXPredictionItem *)item withLaunchDistribution:(id)distribution;
++ (void)setDistributionBasedScoreInputsForItem:(ATXPredictionItem *)item withGeoHashResolution:(unint64_t)resolution withLaunchCounts:(id)counts;
++ (void)setDistributionBasedScoreInputsForTimeOfDayForItem:(ATXPredictionItem *)item withLaunchDistribution:(id)distribution;
++ (void)setSlotLogProbabilityForCandidateActionPredictions:(id)predictions;
++ (void)setSlotResolutionPredictionItemForTopUpcomingMediaActionContainer:(id)container appActionPredictionItem:(const ATXPredictionItem *)item appActionLogProbability:(double)probability;
 - (ATXSlotResolution)init;
-- (ATXSlotResolution)initWithDataStore:(id)a3;
-- (id)actionPredictionsForStatistics:(id)a3;
-- (id)actionPredictionsForStatistics:(id)a3 appActionPredictionItem:(const ATXPredictionItem *)a4 appActionLogProbability:(double)a5 scoreLogger:(id)a6 currentDate:(id)a7;
-- (id)fastStatisticsOnSlotsForBundleId:(id)a3 actionType:(id)a4 currentDate:(id)a5 previousLocationUUID:(id)a6 currentLocationUUID:(id)a7 currentMotionType:(int64_t)a8 currentGeohash:(int64_t)a9 currentCoarseGeohash:(int64_t)a10;
-- (id)statisticsForActionKey:(id)a3;
-- (id)statisticsForActionKey:(id)a3 context:(id)a4;
-- (id)statisticsForActionKey:(id)a3 currentDate:(id)a4 previousLocationUUID:(id)a5 currentLocationUUID:(id)a6 currentMotionType:(int64_t)a7 currentGeohash:(int64_t)a8 currentCoarseGeohash:(int64_t)a9;
-- (id)updateStatisticsWithFeedbackForBundleId:(id)a3 actionType:(id)a4 statistics:(id)a5 currentDate:(id)a6 currentGeohash:(int64_t)a7 currentCoarseGeohash:(int64_t)a8;
-- (id)updateStatisticsWithHigherLevelFeaturesForStatistics:(id)a3;
+- (ATXSlotResolution)initWithDataStore:(id)store;
+- (id)actionPredictionsForStatistics:(id)statistics;
+- (id)actionPredictionsForStatistics:(id)statistics appActionPredictionItem:(const ATXPredictionItem *)item appActionLogProbability:(double)probability scoreLogger:(id)logger currentDate:(id)date;
+- (id)fastStatisticsOnSlotsForBundleId:(id)id actionType:(id)type currentDate:(id)date previousLocationUUID:(id)d currentLocationUUID:(id)iD currentMotionType:(int64_t)motionType currentGeohash:(int64_t)geohash currentCoarseGeohash:(int64_t)self0;
+- (id)statisticsForActionKey:(id)key;
+- (id)statisticsForActionKey:(id)key context:(id)context;
+- (id)statisticsForActionKey:(id)key currentDate:(id)date previousLocationUUID:(id)d currentLocationUUID:(id)iD currentMotionType:(int64_t)type currentGeohash:(int64_t)geohash currentCoarseGeohash:(int64_t)coarseGeohash;
+- (id)updateStatisticsWithFeedbackForBundleId:(id)id actionType:(id)type statistics:(id)statistics currentDate:(id)date currentGeohash:(int64_t)geohash currentCoarseGeohash:(int64_t)coarseGeohash;
+- (id)updateStatisticsWithHigherLevelFeaturesForStatistics:(id)statistics;
 @end
 
 @implementation ATXSlotResolution
 
-- (ATXSlotResolution)initWithDataStore:(id)a3
+- (ATXSlotResolution)initWithDataStore:(id)store
 {
-  v6 = a3;
-  if (!v6)
+  storeCopy = store;
+  if (!storeCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ATXSlotResolution.mm" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"dataStore"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXSlotResolution.mm" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"dataStore"}];
   }
 
   v14.receiver = self;
@@ -36,7 +36,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dataStore, a3);
+    objc_storeStrong(&v7->_dataStore, store);
     v9 = +[ATXScoreInterpreterCache sharedInstance];
     v10 = [v9 scoreInterpreterForConsumerSubType:25];
     slotResolutionInterpreter = v8->_slotResolutionInterpreter;
@@ -54,49 +54,49 @@
   return v4;
 }
 
-+ (id)yearMonthDayComponentsForDate:(id)a3
++ (id)yearMonthDayComponentsForDate:(id)date
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [v4 components:28 fromDate:v3];
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = [currentCalendar components:28 fromDate:dateCopy];
 
   return v5;
 }
 
-+ (double)exponentialDecay:(double)a3 withHalflife:(double)a4
++ (double)exponentialDecay:(double)decay withHalflife:(double)halflife
 {
-  if (a4 <= 0.0)
+  if (halflife <= 0.0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"ATXSlotResolution.mm" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"halflife > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ATXSlotResolution.mm" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"halflife > 0"}];
   }
 
-  return exp(-0.693147181 / a4 * a3);
+  return exp(-0.693147181 / halflife * decay);
 }
 
-- (id)fastStatisticsOnSlotsForBundleId:(id)a3 actionType:(id)a4 currentDate:(id)a5 previousLocationUUID:(id)a6 currentLocationUUID:(id)a7 currentMotionType:(int64_t)a8 currentGeohash:(int64_t)a9 currentCoarseGeohash:(int64_t)a10
+- (id)fastStatisticsOnSlotsForBundleId:(id)id actionType:(id)type currentDate:(id)date previousLocationUUID:(id)d currentLocationUUID:(id)iD currentMotionType:(int64_t)motionType currentGeohash:(int64_t)geohash currentCoarseGeohash:(int64_t)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v60 = v16;
-  v61 = v15;
-  v58 = a6;
-  v59 = v17;
-  v57 = a7;
-  v56 = [_ATXActionUtils timeOfDayAndDayOfWeekForDate:v17 timeZone:0];
-  v18 = [v56 first];
-  v19 = [v18 integerValue];
+  idCopy = id;
+  typeCopy = type;
+  dateCopy = date;
+  v60 = typeCopy;
+  v61 = idCopy;
+  dCopy = d;
+  v59 = dateCopy;
+  iDCopy = iD;
+  v56 = [_ATXActionUtils timeOfDayAndDayOfWeekForDate:dateCopy timeZone:0];
+  first = [v56 first];
+  integerValue = [first integerValue];
 
-  v20 = [v56 second];
-  v21 = [v20 integerValue];
+  second = [v56 second];
+  integerValue2 = [second integerValue];
 
-  v55 = [MEMORY[0x277CBEA80] currentCalendar];
-  LODWORD(v20) = [v55 isDateInWeekend:v17];
-  v54 = [ATXSlotResolution yearMonthDayComponentsForDate:v17];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  LODWORD(second) = [currentCalendar isDateInWeekend:dateCopy];
+  v54 = [ATXSlotResolution yearMonthDayComponentsForDate:dateCopy];
   v22 = +[_ATXGlobals sharedInstance];
   v23 = [ATXSlotResolutionStatistics alloc];
-  v24 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:v15 actionType:v16];
+  v24 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:idCopy actionType:typeCopy];
   v25 = [(ATXSlotResolutionStatistics *)v23 initWithActionKey:v24];
 
   v196[0] = 0;
@@ -335,28 +335,28 @@
   v62[3] = &unk_27859A7C0;
   v72 = v196;
   v73 = v195;
-  v125 = v19;
+  v125 = integerValue;
   v74 = v194;
   v75 = v193;
   v76 = v192;
   v77 = v191;
   v78 = v190;
   v79 = v188;
-  v126 = v21;
-  v51 = v55;
+  v126 = integerValue2;
+  v51 = currentCalendar;
   v63 = v51;
   v80 = v158;
   v81 = v182;
-  v50 = v57;
+  v50 = iDCopy;
   v64 = v50;
   v82 = v186;
-  v127 = v20;
+  v127 = second;
   v83 = v185;
   v84 = v184;
-  v128 = a8;
+  motionTypeCopy = motionType;
   v85 = v180;
   v86 = v178;
-  v41 = v58;
+  v41 = dCopy;
   v87 = v177;
   v88 = v176;
   v89 = v174;
@@ -366,13 +366,13 @@
   v93 = v168;
   v94 = v166;
   v65 = v41;
-  v66 = self;
-  v130 = a9;
+  selfCopy = self;
+  geohashCopy = geohash;
   v95 = v162;
   v96 = v160;
   v97 = v165;
   v98 = v164;
-  v129 = a10;
+  coarseGeohashCopy = coarseGeohash;
   v99 = v157;
   v42 = v59;
   v100 = v156;
@@ -1392,23 +1392,23 @@ LABEL_197:
   return 1;
 }
 
-- (id)updateStatisticsWithFeedbackForBundleId:(id)a3 actionType:(id)a4 statistics:(id)a5 currentDate:(id)a6 currentGeohash:(int64_t)a7 currentCoarseGeohash:(int64_t)a8
+- (id)updateStatisticsWithFeedbackForBundleId:(id)id actionType:(id)type statistics:(id)statistics currentDate:(id)date currentGeohash:(int64_t)geohash currentCoarseGeohash:(int64_t)coarseGeohash
 {
-  v39 = a3;
-  v38 = a4;
-  v14 = a5;
-  v15 = a6;
-  v37 = v14;
-  v40 = [MEMORY[0x277CBEA80] currentCalendar];
+  idCopy = id;
+  typeCopy = type;
+  statisticsCopy = statistics;
+  dateCopy = date;
+  v37 = statisticsCopy;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v16 = +[_ATXGlobals sharedInstance];
-  v36 = [_ATXActionUtils timeOfDayAndDayOfWeekForDate:v15 timeZone:0];
-  v17 = [v36 first];
-  v18 = [v17 integerValue];
+  v36 = [_ATXActionUtils timeOfDayAndDayOfWeekForDate:dateCopy timeZone:0];
+  first = [v36 first];
+  integerValue = [first integerValue];
 
-  v19 = [v36 second];
-  v20 = [v19 integerValue];
+  second = [v36 second];
+  integerValue2 = [second integerValue];
 
-  LODWORD(v19) = [v40 isDateInWeekend:v15];
+  LODWORD(second) = [currentCalendar isDateInWeekend:dateCopy];
   v65[0] = 0;
   v65[1] = v65;
   v65[2] = 0x2020000000;
@@ -1449,28 +1449,28 @@ LABEL_197:
   v41[1] = 3221225472;
   v41[2] = __131__ATXSlotResolution_updateStatisticsWithFeedbackForBundleId_actionType_statistics_currentDate_currentGeohash_currentCoarseGeohash___block_invoke;
   v41[3] = &unk_27859A7E8;
-  v54 = v18;
-  v55 = v20;
-  v29 = v40;
+  v54 = integerValue;
+  v55 = integerValue2;
+  v29 = currentCalendar;
   v42 = v29;
-  v43 = self;
-  v57 = a8;
-  v58 = a7;
+  selfCopy = self;
+  coarseGeohashCopy = coarseGeohash;
+  geohashCopy = geohash;
   v47 = v65;
   v48 = v64;
   v49 = v63;
   v50 = v62;
   v51 = v61;
   v52 = v60;
-  v56 = v19;
+  v56 = second;
   v53 = v59;
   v30 = v37;
   v44 = v30;
-  v31 = v15;
+  v31 = dateCopy;
   v45 = v31;
   v32 = v16;
   v46 = v32;
-  [(_ATXDataStore *)dataStore enumerateFeedbackForActionOfType:v38 bundleId:v39 block:v41];
+  [(_ATXDataStore *)dataStore enumerateFeedbackForActionOfType:typeCopy bundleId:idCopy block:v41];
   v33 = v46;
   v34 = v30;
 
@@ -1917,15 +1917,15 @@ LABEL_98:
   return 1;
 }
 
-- (id)updateStatisticsWithHigherLevelFeaturesForStatistics:(id)a3
+- (id)updateStatisticsWithHigherLevelFeaturesForStatistics:(id)statistics
 {
-  v3 = a3;
-  v4 = v3[2];
+  statisticsCopy = statistics;
+  v4 = statisticsCopy[2];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__ATXSlotResolution_updateStatisticsWithHigherLevelFeaturesForStatistics___block_invoke;
   v7[3] = &unk_27859A810;
-  v5 = v3;
+  v5 = statisticsCopy;
   v8 = v5;
   [v4 enumerateKeysAndObjectsUsingBlock:v7];
 
@@ -1996,71 +1996,71 @@ void __74__ATXSlotResolution_updateStatisticsWithHigherLevelFeaturesForStatistic
   [v5 _updateTimeOfDayBudgetStatisticsForNewTimeOfDayBudget:v5[79]];
 }
 
-- (id)statisticsForActionKey:(id)a3
+- (id)statisticsForActionKey:(id)key
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D41BF8] sharedInstance];
-  v6 = [v5 previousLOIAndCurrentLOI];
+  keyCopy = key;
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
+  previousLOIAndCurrentLOI = [mEMORY[0x277D41BF8] previousLOIAndCurrentLOI];
 
-  v7 = [v6 first];
-  v8 = [v7 uuid];
+  first = [previousLOIAndCurrentLOI first];
+  uuid = [first uuid];
 
-  v9 = [v6 second];
-  v10 = [v9 uuid];
+  second = [previousLOIAndCurrentLOI second];
+  uuid2 = [second uuid];
 
-  v11 = [MEMORY[0x277D41C38] sharedInstance];
-  v12 = [v11 getCurrentActivity];
+  mEMORY[0x277D41C38] = [MEMORY[0x277D41C38] sharedInstance];
+  getCurrentActivity = [mEMORY[0x277D41C38] getCurrentActivity];
 
-  v13 = [MEMORY[0x277D41BF8] sharedInstance];
-  v14 = [v13 getCurrentLocation];
+  mEMORY[0x277D41BF8]2 = [MEMORY[0x277D41BF8] sharedInstance];
+  getCurrentLocation = [mEMORY[0x277D41BF8]2 getCurrentLocation];
 
-  v15 = [MEMORY[0x277D41BF8] sharedInstance];
-  v16 = [v15 locationEnabled];
+  mEMORY[0x277D41BF8]3 = [MEMORY[0x277D41BF8] sharedInstance];
+  locationEnabled = [mEMORY[0x277D41BF8]3 locationEnabled];
 
-  v17 = [ATXPrivacyPreservingLocationHash privacyPreservingGeohashForLocation:v14 locationEnabled:v16];
-  v18 = [ATXPrivacyPreservingLocationHash privacyPreservingCoarseGeohashForLocation:v14 locationEnabled:v16];
+  v17 = [ATXPrivacyPreservingLocationHash privacyPreservingGeohashForLocation:getCurrentLocation locationEnabled:locationEnabled];
+  v18 = [ATXPrivacyPreservingLocationHash privacyPreservingCoarseGeohashForLocation:getCurrentLocation locationEnabled:locationEnabled];
   v19 = objc_opt_new();
-  v20 = -[ATXSlotResolution statisticsForActionKey:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:](self, "statisticsForActionKey:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:", v4, v19, v8, v10, [v12 motiontype], v17, v18);
+  v20 = -[ATXSlotResolution statisticsForActionKey:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:](self, "statisticsForActionKey:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:", keyCopy, v19, uuid, uuid2, [getCurrentActivity motiontype], v17, v18);
 
   return v20;
 }
 
-- (id)statisticsForActionKey:(id)a3 context:(id)a4
+- (id)statisticsForActionKey:(id)key context:(id)context
 {
-  v22 = a3;
-  v5 = a4;
-  v20 = [v5 timeContext];
-  v21 = [v20 date];
-  v19 = [v5 locationMotionContext];
-  v17 = [v19 previousLOI];
-  v18 = [v17 uuid];
-  v16 = [v5 locationMotionContext];
-  v15 = [v16 currentLOI];
-  v6 = [v15 uuid];
-  v7 = [v5 locationMotionContext];
-  v8 = [v7 motionType];
-  v9 = [v5 locationMotionContext];
-  v10 = [v9 geohash];
-  v11 = [v5 locationMotionContext];
-  v12 = -[ATXSlotResolution statisticsForActionKey:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:](self, "statisticsForActionKey:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:", v22, v21, v18, v6, v8, v10, [v11 coarseGeohash]);
+  keyCopy = key;
+  contextCopy = context;
+  timeContext = [contextCopy timeContext];
+  date = [timeContext date];
+  locationMotionContext = [contextCopy locationMotionContext];
+  previousLOI = [locationMotionContext previousLOI];
+  uuid = [previousLOI uuid];
+  locationMotionContext2 = [contextCopy locationMotionContext];
+  currentLOI = [locationMotionContext2 currentLOI];
+  uuid2 = [currentLOI uuid];
+  locationMotionContext3 = [contextCopy locationMotionContext];
+  motionType = [locationMotionContext3 motionType];
+  locationMotionContext4 = [contextCopy locationMotionContext];
+  geohash = [locationMotionContext4 geohash];
+  locationMotionContext5 = [contextCopy locationMotionContext];
+  v12 = -[ATXSlotResolution statisticsForActionKey:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:](self, "statisticsForActionKey:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:", keyCopy, date, uuid, uuid2, motionType, geohash, [locationMotionContext5 coarseGeohash]);
 
   return v12;
 }
 
-- (id)statisticsForActionKey:(id)a3 currentDate:(id)a4 previousLocationUUID:(id)a5 currentLocationUUID:(id)a6 currentMotionType:(int64_t)a7 currentGeohash:(int64_t)a8 currentCoarseGeohash:(int64_t)a9
+- (id)statisticsForActionKey:(id)key currentDate:(id)date previousLocationUUID:(id)d currentLocationUUID:(id)iD currentMotionType:(int64_t)type currentGeohash:(int64_t)geohash currentCoarseGeohash:(int64_t)coarseGeohash
 {
   v37 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v34 = a4;
-  v33 = a5;
-  v15 = a6;
-  v16 = [_ATXActionUtils getBundleIdAndActionTypeFromActionKey:v14];
-  v17 = [v16 first];
-  v18 = [v16 second];
-  v19 = v18;
-  if (v17)
+  keyCopy = key;
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  v16 = [_ATXActionUtils getBundleIdAndActionTypeFromActionKey:keyCopy];
+  first = [v16 first];
+  second = [v16 second];
+  v19 = second;
+  if (first)
   {
-    v20 = v18 == 0;
+    v20 = second == 0;
   }
 
   else
@@ -2071,31 +2071,31 @@ void __74__ATXSlotResolution_updateStatisticsWithHigherLevelFeaturesForStatistic
   if (v20)
   {
     v21 = __atxlog_handle_action_prediction();
-    v29 = v34;
+    v29 = dateCopy;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v36 = v14;
+      v36 = keyCopy;
       _os_log_impl(&dword_2263AA000, v21, OS_LOG_TYPE_DEFAULT, "Error parsing '%@'", buf, 0xCu);
     }
 
-    v27 = [[ATXSlotResolutionStatistics alloc] initWithActionKey:v14];
+    v27 = [[ATXSlotResolutionStatistics alloc] initWithActionKey:keyCopy];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v15;
+    v23 = iDCopy;
     v24 = v22;
     v32 = v23;
-    v25 = [ATXSlotResolution fastStatisticsOnSlotsForBundleId:"fastStatisticsOnSlotsForBundleId:actionType:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:" actionType:v17 currentDate:v19 previousLocationUUID:v34 currentLocationUUID:v33 currentMotionType:a8 currentGeohash:a9 currentCoarseGeohash:?];
-    v26 = [(ATXSlotResolution *)self updateStatisticsWithFeedbackForBundleId:v17 actionType:v19 statistics:v25 currentDate:v34 currentGeohash:a8 currentCoarseGeohash:a9];
+    v25 = [ATXSlotResolution fastStatisticsOnSlotsForBundleId:"fastStatisticsOnSlotsForBundleId:actionType:currentDate:previousLocationUUID:currentLocationUUID:currentMotionType:currentGeohash:currentCoarseGeohash:" actionType:first currentDate:v19 previousLocationUUID:dateCopy currentLocationUUID:dCopy currentMotionType:geohash currentGeohash:coarseGeohash currentCoarseGeohash:?];
+    v26 = [(ATXSlotResolution *)self updateStatisticsWithFeedbackForBundleId:first actionType:v19 statistics:v25 currentDate:dateCopy currentGeohash:geohash currentCoarseGeohash:coarseGeohash];
 
     v27 = [(ATXSlotResolution *)self updateStatisticsWithHigherLevelFeaturesForStatistics:v26];
 
     v28 = v24;
-    v15 = v32;
-    v29 = v34;
+    iDCopy = v32;
+    v29 = dateCopy;
     objc_autoreleasePoolPop(v28);
   }
 
@@ -2104,16 +2104,16 @@ void __74__ATXSlotResolution_updateStatisticsWithHigherLevelFeaturesForStatistic
   return v27;
 }
 
-- (id)actionPredictionsForStatistics:(id)a3
+- (id)actionPredictionsForStatistics:(id)statistics
 {
-  v4 = a3;
+  statisticsCopy = statistics;
   v5 = objc_opt_new();
-  v6 = [(ATXSlotResolution *)self actionPredictionsForStatistics:v4 appActionPredictionItem:0 appActionLogProbability:0 scoreLogger:v5 currentDate:0.0];
+  v6 = [(ATXSlotResolution *)self actionPredictionsForStatistics:statisticsCopy appActionPredictionItem:0 appActionLogProbability:0 scoreLogger:v5 currentDate:0.0];
 
   return v6;
 }
 
-- (id)actionPredictionsForStatistics:(id)a3 appActionPredictionItem:(const ATXPredictionItem *)a4 appActionLogProbability:(double)a5 scoreLogger:(id)a6 currentDate:(id)a7
+- (id)actionPredictionsForStatistics:(id)statistics appActionPredictionItem:(const ATXPredictionItem *)item appActionLogProbability:(double)probability scoreLogger:(id)logger currentDate:(id)date
 {
   v7 = MEMORY[0x28223BE20](self, a2);
   v9 = v8;
@@ -2673,61 +2673,61 @@ LABEL_9:
   v87 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setDistributionBasedScoreInputsForTimeOfDayForItem:(ATXPredictionItem *)a3 withLaunchDistribution:(id)a4
++ (void)setDistributionBasedScoreInputsForTimeOfDayForItem:(ATXPredictionItem *)item withLaunchDistribution:(id)distribution
 {
-  v12 = a4;
+  distributionCopy = distribution;
   for (i = 0; i != 25; ++i)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = [_ATXScoreTypes mappingForTimeOfDayDistributionSignals:i forScoreInputCategory:1];
     v8 = [MEMORY[0x277CCABB0] numberWithInt:i];
-    v9 = [v12 objectForKeyedSubscript:v8];
+    v9 = [distributionCopy objectForKeyedSubscript:v8];
     [v9 doubleValue];
     v11 = v10;
 
-    ATXSetInput(a3, v7, v11);
+    ATXSetInput(item, v7, v11);
     objc_autoreleasePoolPop(v6);
   }
 }
 
-+ (void)setDistributionBasedScoreInputsForDayOfWeekForItem:(ATXPredictionItem *)a3 withLaunchDistribution:(id)a4
++ (void)setDistributionBasedScoreInputsForDayOfWeekForItem:(ATXPredictionItem *)item withLaunchDistribution:(id)distribution
 {
-  v12 = a4;
+  distributionCopy = distribution;
   for (i = 0; i != 7; ++i)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = [_ATXScoreTypes mappingForDayOfWeekDistributionSignals:i forScoreInputCategory:1];
     v8 = [MEMORY[0x277CCABB0] numberWithInt:i];
-    v9 = [v12 objectForKeyedSubscript:v8];
+    v9 = [distributionCopy objectForKeyedSubscript:v8];
     [v9 doubleValue];
     v11 = v10;
 
-    ATXSetInput(a3, v7, v11);
+    ATXSetInput(item, v7, v11);
     objc_autoreleasePoolPop(v6);
   }
 }
 
-+ (void)setDistributionBasedScoreInputsForItem:(ATXPredictionItem *)a3 withGeoHashResolution:(unint64_t)a4 withLaunchCounts:(id)a5
++ (void)setDistributionBasedScoreInputsForItem:(ATXPredictionItem *)item withGeoHashResolution:(unint64_t)resolution withLaunchCounts:(id)counts
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v21 = a5;
+  countsCopy = counts;
   v8 = 0;
-  if (a4 <= 1)
+  if (resolution <= 1)
   {
-    if (a4)
+    if (resolution)
     {
-      if (a4 != 1)
+      if (resolution != 1)
       {
         goto LABEL_11;
       }
 
-      *&v7 = ATXSetInput(a3, 0x28BuLL, [v21 count]);
+      *&v7 = ATXSetInput(item, 0x28BuLL, [countsCopy count]);
       v9 = &kATXActionNumberOfScoreInputsForCoarseGeoHash;
     }
 
     else
     {
-      *&v7 = ATXSetInput(a3, 0x28AuLL, [v21 count]);
+      *&v7 = ATXSetInput(item, 0x28AuLL, [countsCopy count]);
       v9 = &kATXActionNumberOfScoreInputsForSpecificGeoHash;
     }
 
@@ -2736,7 +2736,7 @@ LABEL_11:
     v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:{0, v7}];
     v22[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-    v12 = [v21 sortedArrayUsingDescriptors:v11];
+    v12 = [countsCopy sortedArrayUsingDescriptors:v11];
 
     for (i = 0; ; ++i)
     {
@@ -2748,10 +2748,10 @@ LABEL_11:
       }
 
       v16 = objc_autoreleasePoolPush();
-      v17 = [_ATXScoreTypes mappingForTopRankedGeoHashSignalsWithResolution:a4 withRank:i forScoreInputCategory:1];
+      v17 = [_ATXScoreTypes mappingForTopRankedGeoHashSignalsWithResolution:resolution withRank:i forScoreInputCategory:1];
       v18 = [v12 objectAtIndex:i];
       [v18 doubleValue];
-      ATXSetInput(a3, v17, v19);
+      ATXSetInput(item, v17, v19);
 
       objc_autoreleasePoolPop(v16);
     }
@@ -2759,7 +2759,7 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  if (a4 == 2)
+  if (resolution == 2)
   {
     v10 = __atxlog_handle_action_prediction();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2770,7 +2770,7 @@ LABEL_11:
 
   else
   {
-    if (a4 != 0xFFFFFFFF)
+    if (resolution != 0xFFFFFFFF)
     {
       goto LABEL_11;
     }
@@ -2787,18 +2787,18 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isNotLaunchedWithinShortTimeSpan:(id)a3
++ (BOOL)isNotLaunchedWithinShortTimeSpan:(id)span
 {
-  v3 = a3;
+  spanCopy = span;
   if (+[ATXSlotResolution isNotLaunchedWithinShortTimeSpan:]::onceToken != -1)
   {
     +[ATXSlotResolution isNotLaunchedWithinShortTimeSpan:];
   }
 
   v6 = 1;
-  if (v3[6])
+  if (spanCopy[6])
   {
-    v4 = v3[7];
+    v4 = spanCopy[7];
     if (v4)
     {
       [v4 timeIntervalSinceDate:?];
@@ -2818,9 +2818,9 @@ void __54__ATXSlotResolution_isNotLaunchedWithinShortTimeSpan___block_invoke()
   +[ATXSlotResolution isNotLaunchedWithinShortTimeSpan:]::minimumTimespanForOnceOffActions = [v0 minimumTimespanForOnceOffActions];
 }
 
-+ (void)setSlotResolutionPredictionItemForTopUpcomingMediaActionContainer:(id)a3 appActionPredictionItem:(const ATXPredictionItem *)a4 appActionLogProbability:(double)a5
++ (void)setSlotResolutionPredictionItemForTopUpcomingMediaActionContainer:(id)container appActionPredictionItem:(const ATXPredictionItem *)item appActionLogProbability:(double)probability
 {
-  v5 = MEMORY[0x28223BE20](a1, a2);
+  v5 = MEMORY[0x28223BE20](self, a2);
   v7 = v6;
   v9 = v8;
   if (v7)
@@ -2843,9 +2843,9 @@ void __54__ATXSlotResolution_isNotLaunchedWithinShortTimeSpan___block_invoke()
   }
 }
 
-+ (void)setSlotLogProbabilityForCandidateActionPredictions:(id)a3
++ (void)setSlotLogProbabilityForCandidateActionPredictions:(id)predictions
 {
-  MEMORY[0x28223BE20](a1, a2);
+  MEMORY[0x28223BE20](self, a2);
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;

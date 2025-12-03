@@ -9,16 +9,16 @@
   v19 = *MEMORY[0x29EDCA608];
   v17.receiver = self;
   v17.super_class = SafariUIDimmingViewAccessibility;
-  v3 = [(SafariUIDimmingViewAccessibility *)&v17 passthroughViews];
+  passthroughViews = [(SafariUIDimmingViewAccessibility *)&v17 passthroughViews];
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     NSClassFromString(&cfstr_Browsertoolbar.isa);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = passthroughViews;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v6)
     {
@@ -36,7 +36,7 @@
           v10 = *(*(&v13 + 1) + 8 * i);
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            [v4 addObject:{v10, v13}];
+            [array addObject:{v10, v13}];
           }
         }
 
@@ -46,17 +46,17 @@
       while (v7);
     }
 
-    [(SafariUIDimmingViewAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:@"axPassthroughViews"];
+    [(SafariUIDimmingViewAccessibility *)self _accessibilitySetRetainedValue:array forKey:@"axPassthroughViews"];
   }
 
   else
   {
-    v4 = v3;
+    array = passthroughViews;
   }
 
   v11 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return array;
 }
 
 @end

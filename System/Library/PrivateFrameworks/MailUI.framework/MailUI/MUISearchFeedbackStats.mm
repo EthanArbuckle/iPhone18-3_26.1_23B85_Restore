@@ -1,16 +1,16 @@
 @interface MUISearchFeedbackStats
-- (MUISearchFeedbackStats)initWithDictionaryRepresentation:(id)a3;
+- (MUISearchFeedbackStats)initWithDictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
-- (void)incrementCountForFailure:(BOOL)a3 forDay:(int64_t)a4;
+- (void)incrementCountForFailure:(BOOL)failure forDay:(int64_t)day;
 - (void)resetStats;
 @end
 
 @implementation MUISearchFeedbackStats
 
-- (MUISearchFeedbackStats)initWithDictionaryRepresentation:(id)a3
+- (MUISearchFeedbackStats)initWithDictionaryRepresentation:(id)representation
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   v36.receiver = self;
   v36.super_class = MUISearchFeedbackStats;
   v5 = [(MUISearchFeedbackStats *)&v36 init];
@@ -18,17 +18,17 @@
   {
     v6 = 0x277CBE000uLL;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 count] == 7)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [representationCopy count] == 7)
     {
-      v7 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       daysOfWeek = v5->_daysOfWeek;
-      v5->_daysOfWeek = v7;
+      v5->_daysOfWeek = dictionary;
 
       v34 = 0u;
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v9 = v4;
+      v9 = representationCopy;
       v10 = [v9 countByEnumeratingWithState:&v32 objects:v39 count:16];
       if (v10)
       {
@@ -69,7 +69,7 @@
 LABEL_14:
     }
 
-    v31 = v4;
+    v31 = representationCopy;
     v17 = v5->_daysOfWeek;
     if (!v17 || [(NSMutableDictionary *)v17 count]!= 7)
     {
@@ -100,23 +100,23 @@ LABEL_14:
     }
 
     v5->_lastReset = [MEMORY[0x277CBEAA8] date];
-    v4 = v31;
+    representationCopy = v31;
   }
 
   return v5;
 }
 
-- (void)incrementCountForFailure:(BOOL)a3 forDay:(int64_t)a4
+- (void)incrementCountForFailure:(BOOL)failure forDay:(int64_t)day
 {
-  v5 = a3;
+  failureCopy = failure;
   v7 = MEMORY[0x277CCABB0];
   daysOfWeek = self->_daysOfWeek;
   v21 = DayToStringMap();
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:day];
   v10 = [v21 objectForKeyedSubscript:v9];
   v11 = [(NSMutableDictionary *)daysOfWeek objectForKeyedSubscript:v10];
   v12 = v11;
-  if (v5)
+  if (failureCopy)
   {
     v13 = @"failure";
   }
@@ -130,7 +130,7 @@ LABEL_14:
   v15 = [v7 numberWithInteger:{objc_msgSend(v14, "integerValue") + 1}];
   v16 = self->_daysOfWeek;
   v17 = DayToStringMap();
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:day];
   v19 = [v17 objectForKeyedSubscript:v18];
   v20 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v19];
   [v20 setObject:v15 forKeyedSubscript:v13];

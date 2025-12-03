@@ -1,23 +1,23 @@
 @interface CaptureMTL4Compiler
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTL4Compiler)initWithBaseObject:(id)a3 captureDevice:(id)a4 descriptor:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTL4Compiler)initWithBaseObject:(id)object captureDevice:(id)device descriptor:(id)descriptor;
 - (NSString)description;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6;
-- (id)newDynamicLibrary:(id)a3 completionHandler:(id)a4;
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 completionHandler:(id)a4;
-- (id)newDynamicLibraryWithURL:(id)a3 error:(id *)a4;
-- (id)newLibraryWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (id)newLibraryWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newMachineLearningPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (id)newMachineLearningPipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newDynamicLibrary:(id)library completionHandler:(id)handler;
+- (id)newDynamicLibrary:(id)library error:(id *)error;
+- (id)newDynamicLibraryWithURL:(id)l completionHandler:(id)handler;
+- (id)newDynamicLibraryWithURL:(id)l error:(id *)error;
+- (id)newLibraryWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (id)newLibraryWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newMachineLearningPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (id)newMachineLearningPipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error;
 - (unint64_t)streamReference;
 - (void)cancel;
 - (void)dealloc;
@@ -26,13 +26,13 @@
 
 @implementation CaptureMTL4Compiler
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v11;
-  v14 = v12;
+  descriptorCopy = descriptor;
+  linkingDescriptorCopy = linkingDescriptor;
+  optionsCopy = options;
+  v13 = linkingDescriptorCopy;
+  v14 = optionsCopy;
   v45 = 0u;
   v46 = 0u;
   v44 = 0u;
@@ -50,15 +50,15 @@
   *(&v46 + 11) = 0;
   HIBYTE(v46) = 0;
   baseObject = self->_baseObject;
-  v20 = unwrapMTL4PipelineDescriptor(v10);
+  v20 = unwrapMTL4PipelineDescriptor(descriptorCopy);
   v21 = unwrapMTL4RenderPipelineDynamicLinkingDescriptor(v13);
   v43 = v14;
   v22 = [v14 copy];
-  v23 = [(MTL4CompilerSPI *)baseObject newRenderPipelineStateWithDescriptor:v20 dynamicLinkingDescriptor:v21 compilerTaskOptions:v22 error:a6];
+  v23 = [(MTL4CompilerSPI *)baseObject newRenderPipelineStateWithDescriptor:v20 dynamicLinkingDescriptor:v21 compilerTaskOptions:v22 error:error];
 
   if (v23)
   {
-    v24 = [[CaptureMTLRenderPipelineState alloc] initWithBaseObject:v23 descriptor:v10 dynamicLinkingDescriptor:v13 captureCompiler:self];
+    v24 = [[CaptureMTLRenderPipelineState alloc] initWithBaseObject:v23 descriptor:descriptorCopy dynamicLinkingDescriptor:v13 captureCompiler:self];
   }
 
   else
@@ -70,7 +70,7 @@
   v25 = v45;
   *(v45 + 8) = -14867;
   v26 = BYTE9(v46);
-  v27 = v10;
+  v27 = descriptorCopy;
   if (BYTE9(v46) > 0x20uLL)
   {
     v29 = *(*(&v44 + 1) + 24);
@@ -78,7 +78,7 @@
     ++BYTE10(v46);
     v28 = GTTraceMemPool_allocateBytes(v29, *(&v45 + 1), v30 | 0x2000000000) + 16;
     v26 = v30;
-    v10 = v27;
+    descriptorCopy = v27;
   }
 
   else
@@ -88,11 +88,11 @@
   }
 
   *(v25 + 13) = v26;
-  SaveMTLPipelineReflectionMTL4(&v44, v23, v10, v13);
-  v31 = [(CaptureMTL4Compiler *)self traceStream];
-  if (v31)
+  SaveMTLPipelineReflectionMTL4(&v44, v23, descriptorCopy, v13);
+  traceStream = [(CaptureMTL4Compiler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v31->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -101,10 +101,10 @@
   }
 
   v33 = v13;
-  v34 = [(CaptureMTLRenderPipelineState *)v24 traceStream];
-  if (v34)
+  traceStream2 = [(CaptureMTLRenderPipelineState *)v24 traceStream];
+  if (traceStream2)
   {
-    v35 = v34->var0;
+    v35 = traceStream2->var0;
   }
 
   else
@@ -112,9 +112,9 @@
     v35 = 0;
   }
 
-  if (a6)
+  if (error)
   {
-    v36 = *a6;
+    v36 = *error;
   }
 
   else
@@ -141,29 +141,29 @@
   return v24;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  descriptorCopy = descriptor;
+  linkingDescriptorCopy = linkingDescriptor;
+  optionsCopy = options;
+  handlerCopy = handler;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __123__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_dynamicLinkingDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v27[3] = &unk_2F23D0;
-  v14 = self;
-  v28 = v14;
-  v15 = v10;
+  selfCopy = self;
+  v28 = selfCopy;
+  v15 = descriptorCopy;
   v29 = v15;
-  v16 = v11;
+  v16 = linkingDescriptorCopy;
   v30 = v16;
-  v31 = v14;
-  v17 = v12;
+  v31 = selfCopy;
+  v17 = optionsCopy;
   v32 = v17;
-  v26 = v13;
+  v26 = handlerCopy;
   v33 = v26;
   v18 = objc_retainBlock(v27);
-  baseObject = v14->_baseObject;
+  baseObject = selfCopy->_baseObject;
   v20 = unwrapMTL4PipelineDescriptor(v15);
   v21 = unwrapMTL4RenderPipelineDynamicLinkingDescriptor(v16);
   v22 = [v17 copy];
@@ -171,7 +171,7 @@
 
   if (v23)
   {
-    v24 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v23 captureContext:v14->_traceContext captureCompiler:v14];
+    v24 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v23 captureContext:selfCopy->_traceContext captureCompiler:selfCopy];
   }
 
   else
@@ -273,10 +273,10 @@ void __123__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_dynamicLink
   (*(*(a1 + 72) + 16))();
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -294,13 +294,13 @@ void __123__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_dynamicLink
   *(&v36 + 11) = 0;
   HIBYTE(v36) = 0;
   baseObject = self->_baseObject;
-  v16 = unwrapMTL4PipelineDescriptor(v8);
-  v17 = [v9 copy];
-  v18 = [(MTL4CompilerSPI *)baseObject newRenderPipelineStateWithDescriptor:v16 compilerTaskOptions:v17 error:a5];
+  v16 = unwrapMTL4PipelineDescriptor(descriptorCopy);
+  v17 = [optionsCopy copy];
+  v18 = [(MTL4CompilerSPI *)baseObject newRenderPipelineStateWithDescriptor:v16 compilerTaskOptions:v17 error:error];
 
   if (v18)
   {
-    v19 = [[CaptureMTLRenderPipelineState alloc] initWithBaseObject:v18 descriptor:v8 captureCompiler:self];
+    v19 = [[CaptureMTLRenderPipelineState alloc] initWithBaseObject:v18 descriptor:descriptorCopy captureCompiler:self];
   }
 
   else
@@ -328,11 +328,11 @@ void __123__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_dynamicLink
   }
 
   *(v20 + 13) = v21;
-  SaveMTLPipelineReflectionMTL4(&v34, v18, v8, 0);
-  v25 = [(CaptureMTL4Compiler *)self traceStream];
-  if (v25)
+  SaveMTLPipelineReflectionMTL4(&v34, v18, descriptorCopy, 0);
+  traceStream = [(CaptureMTL4Compiler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -340,11 +340,11 @@ void __123__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_dynamicLink
     var0 = 0;
   }
 
-  v27 = [(CaptureMTLRenderPipelineState *)v19 traceStream];
-  if (!v27)
+  traceStream2 = [(CaptureMTLRenderPipelineState *)v19 traceStream];
+  if (!traceStream2)
   {
     v28 = 0;
-    if (a5)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -354,17 +354,17 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v28 = v27->var0;
-  if (!a5)
+  v28 = traceStream2->var0;
+  if (!error)
   {
     goto LABEL_14;
   }
 
 LABEL_12:
-  v29 = *a5;
+  v29 = *error;
 LABEL_15:
-  v30 = SaveMTL4PipelineDescriptor(&v34, v8);
-  v31 = SaveMTL4CompilerTaskOptions(&v34, v9);
+  v30 = SaveMTL4PipelineDescriptor(&v34, descriptorCopy);
+  v31 = SaveMTL4CompilerTaskOptions(&v34, optionsCopy);
   *v22 = var0;
   *(v22 + 1) = v28;
   *(v22 + 2) = v29;
@@ -380,33 +380,33 @@ LABEL_15:
   return v19;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
+  handlerCopy = handler;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = __98__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v22[3] = &unk_2F23A8;
-  v11 = self;
-  v23 = v11;
-  v12 = v8;
+  selfCopy = self;
+  v23 = selfCopy;
+  v12 = descriptorCopy;
   v24 = v12;
-  v25 = v11;
-  v13 = v9;
+  v25 = selfCopy;
+  v13 = optionsCopy;
   v26 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v27 = v14;
   v15 = objc_retainBlock(v22);
-  baseObject = v11->_baseObject;
+  baseObject = selfCopy->_baseObject;
   v17 = unwrapMTL4PipelineDescriptor(v12);
   v18 = [v13 copy];
   v19 = [(MTL4CompilerSPI *)baseObject newRenderPipelineStateWithDescriptor:v17 compilerTaskOptions:v18 completionHandler:v15];
 
   if (v19)
   {
-    v20 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v19 captureContext:v11->_traceContext captureCompiler:v11];
+    v20 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v19 captureContext:selfCopy->_traceContext captureCompiler:selfCopy];
   }
 
   else
@@ -506,9 +506,9 @@ void __98__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_compilerTask
   (*(*(a1 + 64) + 16))();
 }
 
-- (id)newMachineLearningPipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newMachineLearningPipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -526,12 +526,12 @@ void __98__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_compilerTask
   *(&v30 + 11) = 0;
   HIBYTE(v30) = 0;
   baseObject = self->_baseObject;
-  v13 = unwrapMTL4MachineLearningPipelineDescriptor(v6);
-  v14 = [(MTL4CompilerSPI *)baseObject newMachineLearningPipelineStateWithDescriptor:v13 error:a4];
+  v13 = unwrapMTL4MachineLearningPipelineDescriptor(descriptorCopy);
+  v14 = [(MTL4CompilerSPI *)baseObject newMachineLearningPipelineStateWithDescriptor:v13 error:error];
 
   if (v14)
   {
-    v15 = [[CaptureMTL4MachineLearningPipelineState alloc] initWithBaseObject:v14 descriptor:v6 captureCompiler:self];
+    v15 = [[CaptureMTL4MachineLearningPipelineState alloc] initWithBaseObject:v14 descriptor:descriptorCopy captureCompiler:self];
   }
 
   else
@@ -560,10 +560,10 @@ void __98__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_compilerTask
 
   *(v16 + 13) = v17;
   SaveMTL4MachineLearningPipelineReflection(&v28, v14);
-  v21 = [(CaptureMTL4Compiler *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTL4Compiler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -571,11 +571,11 @@ void __98__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_compilerTask
     var0 = 0;
   }
 
-  v23 = [(CaptureMTL4MachineLearningPipelineState *)v15 traceStream];
-  if (!v23)
+  traceStream2 = [(CaptureMTL4MachineLearningPipelineState *)v15 traceStream];
+  if (!traceStream2)
   {
     v24 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -583,18 +583,18 @@ void __98__CaptureMTL4Compiler_newRenderPipelineStateWithDescriptor_compilerTask
     goto LABEL_12;
   }
 
-  v24 = v23->var0;
-  if (a4)
+  v24 = traceStream2->var0;
+  if (error)
   {
 LABEL_12:
-    a4 = *a4;
+    error = *error;
   }
 
 LABEL_13:
-  v25 = SaveMTL4PipelineDescriptor(&v28, v6);
+  v25 = SaveMTL4PipelineDescriptor(&v28, descriptorCopy);
   *v18 = var0;
   *(v18 + 1) = v24;
-  *(v18 + 2) = a4;
+  *(v18 + 2) = error;
   v18[24] = v25;
   *(v18 + 25) = 0;
   *(v18 + 7) = 0;
@@ -606,29 +606,29 @@ LABEL_13:
   return v15;
 }
 
-- (id)newMachineLearningPipelineStateWithDescriptor:(id)a3 completionHandler:(id)a4
+- (id)newMachineLearningPipelineStateWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = __87__CaptureMTL4Compiler_newMachineLearningPipelineStateWithDescriptor_completionHandler___block_invoke;
   v20 = &unk_2F2380;
-  v8 = self;
-  v21 = v8;
-  v9 = v6;
+  selfCopy = self;
+  v21 = selfCopy;
+  v9 = descriptorCopy;
   v22 = v9;
-  v23 = v8;
-  v10 = v7;
+  v23 = selfCopy;
+  v10 = handlerCopy;
   v24 = v10;
   v11 = objc_retainBlock(&v17);
-  baseObject = v8->_baseObject;
+  baseObject = selfCopy->_baseObject;
   v13 = unwrapMTL4MachineLearningPipelineDescriptor(v9);
   v14 = [(MTL4CompilerSPI *)baseObject newMachineLearningPipelineStateWithDescriptor:v13 completionHandler:v11, v17, v18, v19, v20];
 
   if (v14)
   {
-    v15 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v14 captureContext:v8->_traceContext captureCompiler:v8];
+    v15 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v14 captureContext:selfCopy->_traceContext captureCompiler:selfCopy];
   }
 
   else
@@ -726,9 +726,9 @@ void __87__CaptureMTL4Compiler_newMachineLearningPipelineStateWithDescriptor_com
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)newLibraryWithDescriptor:(id)a3 error:(id *)a4
+- (id)newLibraryWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
@@ -746,8 +746,8 @@ void __87__CaptureMTL4Compiler_newMachineLearningPipelineStateWithDescriptor_com
   *(&v30 + 11) = 0;
   HIBYTE(v30) = 0;
   baseObject = self->_baseObject;
-  v13 = unwrapMTL4LibraryDescriptor(v6);
-  v14 = [(MTL4CompilerSPI *)baseObject newLibraryWithDescriptor:v13 error:a4];
+  v13 = unwrapMTL4LibraryDescriptor(descriptorCopy);
+  v14 = [(MTL4CompilerSPI *)baseObject newLibraryWithDescriptor:v13 error:error];
 
   if (v14)
   {
@@ -780,10 +780,10 @@ void __87__CaptureMTL4Compiler_newMachineLearningPipelineStateWithDescriptor_com
 
   *(v16 + 13) = v17;
   SaveMTLLibraryInfoWithPath(&v28, v14, 0);
-  v21 = [(CaptureMTL4Compiler *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTL4Compiler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -791,11 +791,11 @@ void __87__CaptureMTL4Compiler_newMachineLearningPipelineStateWithDescriptor_com
     var0 = 0;
   }
 
-  v23 = [(CaptureMTLLibrary *)v15 traceStream];
-  if (!v23)
+  traceStream2 = [(CaptureMTLLibrary *)v15 traceStream];
+  if (!traceStream2)
   {
     v24 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -803,18 +803,18 @@ void __87__CaptureMTL4Compiler_newMachineLearningPipelineStateWithDescriptor_com
     goto LABEL_12;
   }
 
-  v24 = v23->var0;
-  if (a4)
+  v24 = traceStream2->var0;
+  if (error)
   {
 LABEL_12:
-    a4 = *a4;
+    error = *error;
   }
 
 LABEL_13:
-  v25 = SaveMTL4LibraryDescriptor(&v28, v6);
+  v25 = SaveMTL4LibraryDescriptor(&v28, descriptorCopy);
   *v18 = var0;
   *(v18 + 1) = v24;
-  *(v18 + 2) = a4;
+  *(v18 + 2) = error;
   v18[24] = v25;
   *(v18 + 25) = 0;
   *(v18 + 7) = 0;
@@ -826,29 +826,29 @@ LABEL_13:
   return v15;
 }
 
-- (id)newLibraryWithDescriptor:(id)a3 completionHandler:(id)a4
+- (id)newLibraryWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = __66__CaptureMTL4Compiler_newLibraryWithDescriptor_completionHandler___block_invoke;
   v20 = &unk_2F2358;
-  v8 = self;
-  v21 = v8;
-  v22 = v8;
-  v9 = v6;
+  selfCopy = self;
+  v21 = selfCopy;
+  v22 = selfCopy;
+  v9 = descriptorCopy;
   v23 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v24 = v10;
   v11 = objc_retainBlock(&v17);
-  baseObject = v8->_baseObject;
+  baseObject = selfCopy->_baseObject;
   v13 = unwrapMTL4LibraryDescriptor(v9);
   v14 = [(MTL4CompilerSPI *)baseObject newLibraryWithDescriptor:v13 completionHandler:v11, v17, v18, v19, v20];
 
   if (v14)
   {
-    v15 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v14 captureContext:v8->_traceContext captureCompiler:v8];
+    v15 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v14 captureContext:selfCopy->_traceContext captureCompiler:selfCopy];
   }
 
   else
@@ -946,9 +946,9 @@ void __66__CaptureMTL4Compiler_newLibraryWithDescriptor_completionHandler___bloc
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 error:(id *)a4
+- (id)newDynamicLibraryWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
@@ -965,7 +965,7 @@ void __66__CaptureMTL4Compiler_newLibraryWithDescriptor_completionHandler___bloc
   *(&v28 + 9) = 16400;
   *(&v28 + 11) = 0;
   HIBYTE(v28) = 0;
-  v12 = [(MTL4CompilerSPI *)self->_baseObject newDynamicLibraryWithURL:v6 error:a4];
+  v12 = [(MTL4CompilerSPI *)self->_baseObject newDynamicLibraryWithURL:lCopy error:error];
   if (v12)
   {
     v13 = [[CaptureMTLDynamicLibrary alloc] initWithBaseObject:v12 captureCompiler:self];
@@ -997,10 +997,10 @@ void __66__CaptureMTL4Compiler_newLibraryWithDescriptor_completionHandler___bloc
 
   *(v14 + 13) = v15;
   SaveMTLDynamicLibraryInfo(&v26, v12);
-  v19 = [(CaptureMTL4Compiler *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTL4Compiler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1008,11 +1008,11 @@ void __66__CaptureMTL4Compiler_newLibraryWithDescriptor_completionHandler___bloc
     var0 = 0;
   }
 
-  v21 = [(CaptureMTLDynamicLibrary *)v13 traceStream];
-  if (!v21)
+  traceStream2 = [(CaptureMTLDynamicLibrary *)v13 traceStream];
+  if (!traceStream2)
   {
     v22 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1020,18 +1020,18 @@ void __66__CaptureMTL4Compiler_newLibraryWithDescriptor_completionHandler___bloc
     goto LABEL_12;
   }
 
-  v22 = v21->var0;
-  if (a4)
+  v22 = traceStream2->var0;
+  if (error)
   {
 LABEL_12:
-    a4 = *a4;
+    error = *error;
   }
 
 LABEL_13:
-  v23 = SaveNSURL(&v26, v6);
+  v23 = SaveNSURL(&v26, lCopy);
   *v16 = var0;
   *(v16 + 1) = v22;
-  *(v16 + 2) = a4;
+  *(v16 + 2) = error;
   v16[24] = v23;
   *(v16 + 25) = 0;
   *(v16 + 7) = 0;
@@ -1043,26 +1043,26 @@ LABEL_13:
   return v13;
 }
 
-- (id)newDynamicLibraryWithURL:(id)a3 completionHandler:(id)a4
+- (id)newDynamicLibraryWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = __66__CaptureMTL4Compiler_newDynamicLibraryWithURL_completionHandler___block_invoke;
   v18 = &unk_2F2330;
-  v8 = self;
-  v19 = v8;
-  v20 = v8;
-  v9 = v6;
+  selfCopy = self;
+  v19 = selfCopy;
+  v20 = selfCopy;
+  v9 = lCopy;
   v21 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v22 = v10;
   v11 = objc_retainBlock(&v15);
-  v12 = [(MTL4CompilerSPI *)v8->_baseObject newDynamicLibraryWithURL:v9 completionHandler:v11, v15, v16, v17, v18];
+  v12 = [(MTL4CompilerSPI *)selfCopy->_baseObject newDynamicLibraryWithURL:v9 completionHandler:v11, v15, v16, v17, v18];
   if (v12)
   {
-    v13 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v12 captureContext:v8->_traceContext captureCompiler:v8];
+    v13 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v12 captureContext:selfCopy->_traceContext captureCompiler:selfCopy];
   }
 
   else
@@ -1160,9 +1160,9 @@ void __66__CaptureMTL4Compiler_newDynamicLibraryWithURL_completionHandler___bloc
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)newDynamicLibrary:(id)a3 error:(id *)a4
+- (id)newDynamicLibrary:(id)library error:(id *)error
 {
-  v6 = a3;
+  libraryCopy = library;
   v31 = 0u;
   v32 = 0u;
   v30 = 0u;
@@ -1180,12 +1180,12 @@ void __66__CaptureMTL4Compiler_newDynamicLibraryWithURL_completionHandler___bloc
   *(&v32 + 11) = 0;
   HIBYTE(v32) = 0;
   baseObject = self->_baseObject;
-  v13 = [v6 baseObject];
-  v14 = [(MTL4CompilerSPI *)baseObject newDynamicLibrary:v13 error:a4];
+  baseObject = [libraryCopy baseObject];
+  v14 = [(MTL4CompilerSPI *)baseObject newDynamicLibrary:baseObject error:error];
 
   if (v14)
   {
-    v15 = [[CaptureMTLDynamicLibrary alloc] initWithBaseObject:v14 captureCompiler:self captureLibrary:v6];
+    v15 = [[CaptureMTLDynamicLibrary alloc] initWithBaseObject:v14 captureCompiler:self captureLibrary:libraryCopy];
   }
 
   else
@@ -1214,10 +1214,10 @@ void __66__CaptureMTL4Compiler_newDynamicLibraryWithURL_completionHandler___bloc
 
   *(v16 + 13) = v17;
   SaveMTLDynamicLibraryInfo(&v30, v14);
-  v21 = [(CaptureMTL4Compiler *)self traceStream];
-  if (v21)
+  traceStream = [(CaptureMTL4Compiler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v21->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1225,10 +1225,10 @@ void __66__CaptureMTL4Compiler_newDynamicLibraryWithURL_completionHandler___bloc
     var0 = 0;
   }
 
-  v23 = [(CaptureMTLDynamicLibrary *)v15 traceStream];
-  if (v23)
+  traceStream2 = [(CaptureMTLDynamicLibrary *)v15 traceStream];
+  if (traceStream2)
   {
-    v24 = v23->var0;
+    v24 = traceStream2->var0;
   }
 
   else
@@ -1236,11 +1236,11 @@ void __66__CaptureMTL4Compiler_newDynamicLibraryWithURL_completionHandler___bloc
     v24 = 0;
   }
 
-  v25 = [v6 traceStream];
-  if (!v25)
+  traceStream3 = [libraryCopy traceStream];
+  if (!traceStream3)
   {
     v26 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -1250,14 +1250,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v26 = *v25;
-  if (!a4)
+  v26 = *traceStream3;
+  if (!error)
   {
     goto LABEL_17;
   }
 
 LABEL_15:
-  v27 = *a4;
+  v27 = *error;
 LABEL_18:
   *v18 = var0;
   *(v18 + 1) = v24;
@@ -1271,29 +1271,29 @@ LABEL_18:
   return v15;
 }
 
-- (id)newDynamicLibrary:(id)a3 completionHandler:(id)a4
+- (id)newDynamicLibrary:(id)library completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  handlerCopy = handler;
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invoke;
   v20 = &unk_2F2330;
-  v8 = self;
-  v21 = v8;
-  v22 = v8;
-  v9 = v6;
+  selfCopy = self;
+  v21 = selfCopy;
+  v22 = selfCopy;
+  v9 = libraryCopy;
   v23 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v24 = v10;
   v11 = objc_retainBlock(&v17);
-  baseObject = v8->_baseObject;
-  v13 = [v9 baseObject];
-  v14 = [(MTL4CompilerSPI *)baseObject newDynamicLibrary:v13 completionHandler:v11];
+  baseObject = selfCopy->_baseObject;
+  baseObject = [v9 baseObject];
+  v14 = [(MTL4CompilerSPI *)baseObject newDynamicLibrary:baseObject completionHandler:v11];
 
   if (v14)
   {
-    v15 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v14 captureContext:v8->_traceContext captureCompiler:v8];
+    v15 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v14 captureContext:selfCopy->_traceContext captureCompiler:selfCopy];
   }
 
   else
@@ -1399,13 +1399,13 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 error:(id *)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v11;
-  v14 = v12;
+  descriptorCopy = descriptor;
+  linkingDescriptorCopy = linkingDescriptor;
+  optionsCopy = options;
+  v13 = linkingDescriptorCopy;
+  v14 = optionsCopy;
   v45 = 0u;
   v46 = 0u;
   v44 = 0u;
@@ -1423,15 +1423,15 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
   *(&v46 + 11) = 0;
   HIBYTE(v46) = 0;
   baseObject = self->_baseObject;
-  v20 = unwrapMTL4ComputePipelineDescriptor(v10);
+  v20 = unwrapMTL4ComputePipelineDescriptor(descriptorCopy);
   v21 = unwrapMTL4PipelineStageDynamicLinkingDescriptor(v13);
   v43 = v14;
   v22 = [v14 copy];
-  v23 = [(MTL4CompilerSPI *)baseObject newComputePipelineStateWithDescriptor:v20 dynamicLinkingDescriptor:v21 compilerTaskOptions:v22 error:a6];
+  v23 = [(MTL4CompilerSPI *)baseObject newComputePipelineStateWithDescriptor:v20 dynamicLinkingDescriptor:v21 compilerTaskOptions:v22 error:error];
 
   if (v23)
   {
-    v24 = [[CaptureMTLComputePipelineState alloc] initWithBaseObject:v23 descriptor:v10 dynamicLinkingDescriptor:v13 captureCompiler:self];
+    v24 = [[CaptureMTLComputePipelineState alloc] initWithBaseObject:v23 descriptor:descriptorCopy dynamicLinkingDescriptor:v13 captureCompiler:self];
   }
 
   else
@@ -1443,7 +1443,7 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
   v25 = v45;
   *(v45 + 8) = -14870;
   v26 = BYTE9(v46);
-  v27 = v10;
+  v27 = descriptorCopy;
   if (BYTE9(v46) > 0x20uLL)
   {
     v29 = *(*(&v44 + 1) + 24);
@@ -1451,7 +1451,7 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
     ++BYTE10(v46);
     v28 = GTTraceMemPool_allocateBytes(v29, *(&v45 + 1), v30 | 0x2000000000) + 16;
     v26 = v30;
-    v10 = v27;
+    descriptorCopy = v27;
   }
 
   else
@@ -1461,11 +1461,11 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
   }
 
   *(v25 + 13) = v26;
-  SaveMTLComputePipelineReflectionMTL4(&v44, v23, v10, v13);
-  v31 = [(CaptureMTL4Compiler *)self traceStream];
-  if (v31)
+  SaveMTLComputePipelineReflectionMTL4(&v44, v23, descriptorCopy, v13);
+  traceStream = [(CaptureMTL4Compiler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v31->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1474,10 +1474,10 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
   }
 
   v33 = v13;
-  v34 = [(CaptureMTLComputePipelineState *)v24 traceStream];
-  if (v34)
+  traceStream2 = [(CaptureMTLComputePipelineState *)v24 traceStream];
+  if (traceStream2)
   {
-    v35 = v34->var0;
+    v35 = traceStream2->var0;
   }
 
   else
@@ -1485,9 +1485,9 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
     v35 = 0;
   }
 
-  if (a6)
+  if (error)
   {
-    v36 = *a6;
+    v36 = *error;
   }
 
   else
@@ -1514,29 +1514,29 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
   return v24;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 compilerTaskOptions:(id)a5 completionHandler:(id)a6
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  descriptorCopy = descriptor;
+  linkingDescriptorCopy = linkingDescriptor;
+  optionsCopy = options;
+  handlerCopy = handler;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = __124__CaptureMTL4Compiler_newComputePipelineStateWithDescriptor_dynamicLinkingDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v27[3] = &unk_2F2308;
-  v14 = self;
-  v28 = v14;
-  v15 = v10;
+  selfCopy = self;
+  v28 = selfCopy;
+  v15 = descriptorCopy;
   v29 = v15;
-  v16 = v11;
+  v16 = linkingDescriptorCopy;
   v30 = v16;
-  v31 = v14;
-  v17 = v12;
+  v31 = selfCopy;
+  v17 = optionsCopy;
   v32 = v17;
-  v26 = v13;
+  v26 = handlerCopy;
   v33 = v26;
   v18 = objc_retainBlock(v27);
-  baseObject = v14->_baseObject;
+  baseObject = selfCopy->_baseObject;
   v20 = unwrapMTL4ComputePipelineDescriptor(v15);
   v21 = unwrapMTL4PipelineStageDynamicLinkingDescriptor(v16);
   v22 = [v17 copy];
@@ -1544,7 +1544,7 @@ void __59__CaptureMTL4Compiler_newDynamicLibrary_completionHandler___block_invok
 
   if (v23)
   {
-    v24 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v23 captureContext:v14->_traceContext captureCompiler:v14];
+    v24 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v23 captureContext:selfCopy->_traceContext captureCompiler:selfCopy];
   }
 
   else
@@ -1646,10 +1646,10 @@ void __124__CaptureMTL4Compiler_newComputePipelineStateWithDescriptor_dynamicLin
   (*(*(a1 + 72) + 16))();
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 error:(id *)a5
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
@@ -1667,13 +1667,13 @@ void __124__CaptureMTL4Compiler_newComputePipelineStateWithDescriptor_dynamicLin
   *(&v36 + 11) = 0;
   HIBYTE(v36) = 0;
   baseObject = self->_baseObject;
-  v16 = unwrapMTL4ComputePipelineDescriptor(v8);
-  v17 = [v9 copy];
-  v18 = [(MTL4CompilerSPI *)baseObject newComputePipelineStateWithDescriptor:v16 compilerTaskOptions:v17 error:a5];
+  v16 = unwrapMTL4ComputePipelineDescriptor(descriptorCopy);
+  v17 = [optionsCopy copy];
+  v18 = [(MTL4CompilerSPI *)baseObject newComputePipelineStateWithDescriptor:v16 compilerTaskOptions:v17 error:error];
 
   if (v18)
   {
-    v19 = [[CaptureMTLComputePipelineState alloc] initWithBaseObject:v18 descriptor:v8 captureCompiler:self];
+    v19 = [[CaptureMTLComputePipelineState alloc] initWithBaseObject:v18 descriptor:descriptorCopy captureCompiler:self];
   }
 
   else
@@ -1701,11 +1701,11 @@ void __124__CaptureMTL4Compiler_newComputePipelineStateWithDescriptor_dynamicLin
   }
 
   *(v20 + 13) = v21;
-  SaveMTLComputePipelineReflectionMTL4(&v34, v18, v8, 0);
-  v25 = [(CaptureMTL4Compiler *)self traceStream];
-  if (v25)
+  SaveMTLComputePipelineReflectionMTL4(&v34, v18, descriptorCopy, 0);
+  traceStream = [(CaptureMTL4Compiler *)self traceStream];
+  if (traceStream)
   {
-    var0 = v25->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1713,11 +1713,11 @@ void __124__CaptureMTL4Compiler_newComputePipelineStateWithDescriptor_dynamicLin
     var0 = 0;
   }
 
-  v27 = [(CaptureMTLComputePipelineState *)v19 traceStream];
-  if (!v27)
+  traceStream2 = [(CaptureMTLComputePipelineState *)v19 traceStream];
+  if (!traceStream2)
   {
     v28 = 0;
-    if (a5)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -1727,17 +1727,17 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v28 = v27->var0;
-  if (!a5)
+  v28 = traceStream2->var0;
+  if (!error)
   {
     goto LABEL_14;
   }
 
 LABEL_12:
-  v29 = *a5;
+  v29 = *error;
 LABEL_15:
-  v30 = SaveMTL4PipelineDescriptor(&v34, v8);
-  v31 = SaveMTL4CompilerTaskOptions(&v34, v9);
+  v30 = SaveMTL4PipelineDescriptor(&v34, descriptorCopy);
+  v31 = SaveMTL4CompilerTaskOptions(&v34, optionsCopy);
   *v22 = var0;
   *(v22 + 1) = v28;
   *(v22 + 2) = v29;
@@ -1753,33 +1753,33 @@ LABEL_15:
   return v19;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 compilerTaskOptions:(id)a4 completionHandler:(id)a5
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor compilerTaskOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  optionsCopy = options;
+  handlerCopy = handler;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = __99__CaptureMTL4Compiler_newComputePipelineStateWithDescriptor_compilerTaskOptions_completionHandler___block_invoke;
   v22[3] = &unk_2F22E0;
-  v11 = self;
-  v23 = v11;
-  v12 = v8;
+  selfCopy = self;
+  v23 = selfCopy;
+  v12 = descriptorCopy;
   v24 = v12;
-  v25 = v11;
-  v13 = v9;
+  v25 = selfCopy;
+  v13 = optionsCopy;
   v26 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v27 = v14;
   v15 = objc_retainBlock(v22);
-  baseObject = v11->_baseObject;
+  baseObject = selfCopy->_baseObject;
   v17 = unwrapMTL4ComputePipelineDescriptor(v12);
   v18 = [v13 copy];
   v19 = [(MTL4CompilerSPI *)baseObject newComputePipelineStateWithDescriptor:v17 compilerTaskOptions:v18 completionHandler:v15];
 
   if (v19)
   {
-    v20 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v19 captureContext:v11->_traceContext captureCompiler:v11];
+    v20 = [[CaptureMTL4CompilerTask alloc] initWithBaseObject:v19 captureContext:selfCopy->_traceContext captureCompiler:selfCopy];
   }
 
   else
@@ -1895,13 +1895,13 @@ void __99__CaptureMTL4Compiler_newComputePipelineStateWithDescriptor_compilerTas
   [(MTL4CompilerSPI *)baseObject cancel];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTL4CompilerSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTL4CompilerSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -1956,27 +1956,27 @@ void __99__CaptureMTL4Compiler_newComputePipelineStateWithDescriptor_compilerTas
   }
 }
 
-- (CaptureMTL4Compiler)initWithBaseObject:(id)a3 captureDevice:(id)a4 descriptor:(id)a5
+- (CaptureMTL4Compiler)initWithBaseObject:(id)object captureDevice:(id)device descriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
   v19.receiver = self;
   v19.super_class = CaptureMTL4Compiler;
   v12 = [(CaptureMTL4Compiler *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_captureDevice, a4);
-    v14 = [v11 pipelineDataSetSerializer];
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_captureDevice, device);
+    pipelineDataSetSerializer = [descriptorCopy pipelineDataSetSerializer];
     capturePipelineDataSetSerializer = v13->_capturePipelineDataSetSerializer;
-    v13->_capturePipelineDataSetSerializer = v14;
+    v13->_capturePipelineDataSetSerializer = pipelineDataSetSerializer;
 
-    v16 = [v10 traceContext];
-    v13->_traceContext = v16;
-    v17 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v16, v17, v13);
+    traceContext = [deviceCopy traceContext];
+    v13->_traceContext = traceContext;
+    v17 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v17, v13);
   }
 
   return v13;

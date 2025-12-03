@@ -1,95 +1,95 @@
 @interface SUCoreUpdateParam
-+ (id)targetPhaseName:(int64_t)a3;
-+ (id)targetRollbackPhaseName:(int64_t)a3;
-- (SUCoreUpdateParam)initWithCoder:(id)a3;
-- (SUCoreUpdateParam)initWithError:(id)a3;
-- (SUCoreUpdateParam)initWithRollback:(id)a3 withError:(id)a4;
++ (id)targetPhaseName:(int64_t)name;
++ (id)targetRollbackPhaseName:(int64_t)name;
+- (SUCoreUpdateParam)initWithCoder:(id)coder;
+- (SUCoreUpdateParam)initWithError:(id)error;
+- (SUCoreUpdateParam)initWithRollback:(id)rollback withError:(id)error;
 - (id)copy;
 - (id)description;
-- (id)initTargetPhase:(int64_t)a3 policy:(id)a4 downloadProgress:(id)a5 prepareProgress:(id)a6 applyProgress:(id)a7 rollback:(id)a8 resultCode:(int64_t)a9 error:(id)a10;
+- (id)initTargetPhase:(int64_t)phase policy:(id)policy downloadProgress:(id)progress prepareProgress:(id)prepareProgress applyProgress:(id)applyProgress rollback:(id)rollback resultCode:(int64_t)code error:(id)self0;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreUpdateParam
 
-- (SUCoreUpdateParam)initWithError:(id)a3
+- (SUCoreUpdateParam)initWithError:(id)error
 {
-  v4 = a3;
-  v5 = -[SUCoreUpdateParam initTargetPhase:policy:downloadProgress:prepareProgress:applyProgress:rollback:resultCode:error:](self, "initTargetPhase:policy:downloadProgress:prepareProgress:applyProgress:rollback:resultCode:error:", 0, 0, 0, 0, 0, 0, [v4 code], v4);
+  errorCopy = error;
+  v5 = -[SUCoreUpdateParam initTargetPhase:policy:downloadProgress:prepareProgress:applyProgress:rollback:resultCode:error:](self, "initTargetPhase:policy:downloadProgress:prepareProgress:applyProgress:rollback:resultCode:error:", 0, 0, 0, 0, 0, 0, [errorCopy code], errorCopy);
 
   return v5;
 }
 
-- (SUCoreUpdateParam)initWithRollback:(id)a3 withError:(id)a4
+- (SUCoreUpdateParam)initWithRollback:(id)rollback withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[SUCoreUpdateParam initTargetPhase:policy:downloadProgress:prepareProgress:applyProgress:rollback:resultCode:error:](self, "initTargetPhase:policy:downloadProgress:prepareProgress:applyProgress:rollback:resultCode:error:", 11, 0, 0, 0, 0, v7, [v6 code], v6);
+  errorCopy = error;
+  rollbackCopy = rollback;
+  v8 = -[SUCoreUpdateParam initTargetPhase:policy:downloadProgress:prepareProgress:applyProgress:rollback:resultCode:error:](self, "initTargetPhase:policy:downloadProgress:prepareProgress:applyProgress:rollback:resultCode:error:", 11, 0, 0, 0, 0, rollbackCopy, [errorCopy code], errorCopy);
 
   return v8;
 }
 
-- (id)initTargetPhase:(int64_t)a3 policy:(id)a4 downloadProgress:(id)a5 prepareProgress:(id)a6 applyProgress:(id)a7 rollback:(id)a8 resultCode:(int64_t)a9 error:(id)a10
+- (id)initTargetPhase:(int64_t)phase policy:(id)policy downloadProgress:(id)progress prepareProgress:(id)prepareProgress applyProgress:(id)applyProgress rollback:(id)rollback resultCode:(int64_t)code error:(id)self0
 {
-  v16 = a4;
-  v17 = a5;
-  v25 = a6;
-  v24 = a7;
-  v23 = a8;
-  v18 = a10;
+  policyCopy = policy;
+  progressCopy = progress;
+  prepareProgressCopy = prepareProgress;
+  applyProgressCopy = applyProgress;
+  rollbackCopy = rollback;
+  errorCopy = error;
   v26.receiver = self;
   v26.super_class = SUCoreUpdateParam;
   v19 = [(SUCoreUpdateParam *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    v19->_targetPhase = a3;
-    objc_storeStrong(&v19->_policy, a4);
-    objc_storeStrong(&v20->_downloadProgress, a5);
-    objc_storeStrong(&v20->_prepareProgress, a6);
-    objc_storeStrong(&v20->_applyProgress, a7);
-    objc_storeStrong(&v20->_rollback, a8);
-    v20->_resultCode = a9;
-    objc_storeStrong(&v20->_error, a10);
+    v19->_targetPhase = phase;
+    objc_storeStrong(&v19->_policy, policy);
+    objc_storeStrong(&v20->_downloadProgress, progress);
+    objc_storeStrong(&v20->_prepareProgress, prepareProgress);
+    objc_storeStrong(&v20->_applyProgress, applyProgress);
+    objc_storeStrong(&v20->_rollback, rollback);
+    v20->_resultCode = code;
+    objc_storeStrong(&v20->_error, error);
   }
 
   return v20;
 }
 
-- (SUCoreUpdateParam)initWithCoder:(id)a3
+- (SUCoreUpdateParam)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = SUCoreUpdateParam;
   v5 = [(SUCoreUpdateParam *)&v21 init];
   if (v5)
   {
-    v5->_targetPhase = [v4 decodeInt64ForKey:@"TargetPhase"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Policy"];
+    v5->_targetPhase = [coderCopy decodeInt64ForKey:@"TargetPhase"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Policy"];
     policy = v5->_policy;
     v5->_policy = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DownloadProgress"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DownloadProgress"];
     downloadProgress = v5->_downloadProgress;
     v5->_downloadProgress = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrepareProgress"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrepareProgress"];
     prepareProgress = v5->_prepareProgress;
     v5->_prepareProgress = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ApplyProgress"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ApplyProgress"];
     applyProgress = v5->_applyProgress;
     v5->_applyProgress = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Rollback"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Rollback"];
     rollback = v5->_rollback;
     v5->_rollback = v14;
 
-    v5->_resultCode = [v4 decodeInt64ForKey:@"ResultCode"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ErrorString"];
-    v17 = [MEMORY[0x277D643F8] sharedCore];
-    v18 = [v17 buildError:v5->_resultCode underlying:0 description:v16];
+    v5->_resultCode = [coderCopy decodeInt64ForKey:@"ResultCode"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ErrorString"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v18 = [mEMORY[0x277D643F8] buildError:v5->_resultCode underlying:0 description:v16];
     error = v5->_error;
     v5->_error = v18;
   }
@@ -97,55 +97,55 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SUCoreUpdateParam targetPhase](self forKey:{"targetPhase"), @"TargetPhase"}];
-  v5 = [(SUCoreUpdateParam *)self policy];
-  [v4 encodeObject:v5 forKey:@"Policy"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SUCoreUpdateParam targetPhase](self forKey:{"targetPhase"), @"TargetPhase"}];
+  policy = [(SUCoreUpdateParam *)self policy];
+  [coderCopy encodeObject:policy forKey:@"Policy"];
 
-  v6 = [(SUCoreUpdateParam *)self downloadProgress];
-  [v4 encodeObject:v6 forKey:@"DownloadProgress"];
+  downloadProgress = [(SUCoreUpdateParam *)self downloadProgress];
+  [coderCopy encodeObject:downloadProgress forKey:@"DownloadProgress"];
 
-  v7 = [(SUCoreUpdateParam *)self prepareProgress];
-  [v4 encodeObject:v7 forKey:@"PrepareProgress"];
+  prepareProgress = [(SUCoreUpdateParam *)self prepareProgress];
+  [coderCopy encodeObject:prepareProgress forKey:@"PrepareProgress"];
 
-  v8 = [(SUCoreUpdateParam *)self applyProgress];
-  [v4 encodeObject:v8 forKey:@"ApplyProgress"];
+  applyProgress = [(SUCoreUpdateParam *)self applyProgress];
+  [coderCopy encodeObject:applyProgress forKey:@"ApplyProgress"];
 
-  v9 = [(SUCoreUpdateParam *)self rollback];
-  [v4 encodeObject:v9 forKey:@"Rollback"];
+  rollback = [(SUCoreUpdateParam *)self rollback];
+  [coderCopy encodeObject:rollback forKey:@"Rollback"];
 
-  [v4 encodeInt64:-[SUCoreUpdateParam resultCode](self forKey:{"resultCode"), @"ResultCode"}];
+  [coderCopy encodeInt64:-[SUCoreUpdateParam resultCode](self forKey:{"resultCode"), @"ResultCode"}];
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
-  v11 = [(SUCoreUpdateParam *)self error];
-  v12 = [v10 initWithFormat:@"%@", v11];
+  error = [(SUCoreUpdateParam *)self error];
+  v12 = [v10 initWithFormat:@"%@", error];
 
-  [v4 encodeObject:v12 forKey:@"ErrorString"];
+  [coderCopy encodeObject:v12 forKey:@"ErrorString"];
 }
 
 - (id)copy
 {
   v3 = objc_alloc_init(SUCoreUpdateParam);
   [(SUCoreUpdateParam *)v3 setTargetPhase:[(SUCoreUpdateParam *)self targetPhase]];
-  v4 = [(SUCoreUpdateParam *)self policy];
-  [(SUCoreUpdateParam *)v3 setPolicy:v4];
+  policy = [(SUCoreUpdateParam *)self policy];
+  [(SUCoreUpdateParam *)v3 setPolicy:policy];
 
-  v5 = [(SUCoreUpdateParam *)self downloadProgress];
-  [(SUCoreUpdateParam *)v3 setDownloadProgress:v5];
+  downloadProgress = [(SUCoreUpdateParam *)self downloadProgress];
+  [(SUCoreUpdateParam *)v3 setDownloadProgress:downloadProgress];
 
-  v6 = [(SUCoreUpdateParam *)self prepareProgress];
-  [(SUCoreUpdateParam *)v3 setPrepareProgress:v6];
+  prepareProgress = [(SUCoreUpdateParam *)self prepareProgress];
+  [(SUCoreUpdateParam *)v3 setPrepareProgress:prepareProgress];
 
-  v7 = [(SUCoreUpdateParam *)self applyProgress];
-  [(SUCoreUpdateParam *)v3 setApplyProgress:v7];
+  applyProgress = [(SUCoreUpdateParam *)self applyProgress];
+  [(SUCoreUpdateParam *)v3 setApplyProgress:applyProgress];
 
-  v8 = [(SUCoreUpdateParam *)self rollback];
-  [(SUCoreUpdateParam *)v3 setRollback:v8];
+  rollback = [(SUCoreUpdateParam *)self rollback];
+  [(SUCoreUpdateParam *)v3 setRollback:rollback];
 
   [(SUCoreUpdateParam *)v3 setResultCode:[(SUCoreUpdateParam *)self resultCode]];
-  v9 = [(SUCoreUpdateParam *)self error];
-  [(SUCoreUpdateParam *)v3 setError:v9];
+  error = [(SUCoreUpdateParam *)self error];
+  [(SUCoreUpdateParam *)v3 setError:error];
 
   return v3;
 }
@@ -154,34 +154,34 @@
 {
   v15 = objc_alloc(MEMORY[0x277CCACA8]);
   v14 = [SUCoreUpdateParam targetPhaseName:[(SUCoreUpdateParam *)self targetPhase]];
-  v18 = [(SUCoreUpdateParam *)self policy];
-  v3 = [v18 summary];
-  v17 = [(SUCoreUpdateParam *)self downloadProgress];
-  v4 = [v17 summary];
-  v5 = [(SUCoreUpdateParam *)self prepareProgress];
-  v6 = [v5 summary];
-  v7 = [(SUCoreUpdateParam *)self applyProgress];
-  v8 = [v7 summary];
-  v9 = [(SUCoreUpdateParam *)self rollback];
-  v10 = [v9 summary];
-  v11 = [(SUCoreUpdateParam *)self resultCode];
-  v12 = [(SUCoreUpdateParam *)self error];
-  v16 = [v15 initWithFormat:@"\n[>>>\n        targetPhase: %@\n             policy: %@\n   downloadProgress: %@\n    prepareProgress: %@\n      applyProgress: %@\n           rollback: %@\n         resultCode: %ld\n              error: %@\n<<<]", v14, v3, v4, v6, v8, v10, v11, v12];
+  policy = [(SUCoreUpdateParam *)self policy];
+  summary = [policy summary];
+  downloadProgress = [(SUCoreUpdateParam *)self downloadProgress];
+  summary2 = [downloadProgress summary];
+  prepareProgress = [(SUCoreUpdateParam *)self prepareProgress];
+  summary3 = [prepareProgress summary];
+  applyProgress = [(SUCoreUpdateParam *)self applyProgress];
+  summary4 = [applyProgress summary];
+  rollback = [(SUCoreUpdateParam *)self rollback];
+  summary5 = [rollback summary];
+  resultCode = [(SUCoreUpdateParam *)self resultCode];
+  error = [(SUCoreUpdateParam *)self error];
+  v16 = [v15 initWithFormat:@"\n[>>>\n        targetPhase: %@\n             policy: %@\n   downloadProgress: %@\n    prepareProgress: %@\n      applyProgress: %@\n           rollback: %@\n         resultCode: %ld\n              error: %@\n<<<]", v14, summary, summary2, summary3, summary4, summary5, resultCode, error];
 
   return v16;
 }
 
 - (id)summary
 {
-  v3 = [(SUCoreUpdateParam *)self error];
+  error = [(SUCoreUpdateParam *)self error];
 
-  if (v3)
+  if (error)
   {
     v4 = objc_alloc(MEMORY[0x277CCACA8]);
-    v5 = [(SUCoreUpdateParam *)self resultCode];
-    v6 = [(SUCoreUpdateParam *)self error];
-    v7 = [v6 description];
-    v8 = [v4 initWithFormat:@"resultCode:%ld, errorDesc:%@", v5, v7];
+    resultCode = [(SUCoreUpdateParam *)self resultCode];
+    error2 = [(SUCoreUpdateParam *)self error];
+    v7 = [error2 description];
+    v8 = [v4 initWithFormat:@"resultCode:%ld, errorDesc:%@", resultCode, v7];
 
     goto LABEL_13;
   }
@@ -189,46 +189,46 @@
   if ([(SUCoreUpdateParam *)self targetPhase])
   {
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [SUCoreUpdateParam targetPhaseName:[(SUCoreUpdateParam *)self targetPhase]];
-    v8 = [v9 initWithFormat:@"target:%@", v10];
+    downloadProgress2 = [SUCoreUpdateParam targetPhaseName:[(SUCoreUpdateParam *)self targetPhase]];
+    v8 = [v9 initWithFormat:@"target:%@", downloadProgress2];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v11 = [(SUCoreUpdateParam *)self downloadProgress];
+  downloadProgress = [(SUCoreUpdateParam *)self downloadProgress];
 
-  if (v11)
+  if (downloadProgress)
   {
     v12 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [(SUCoreUpdateParam *)self downloadProgress];
-    v13 = [v10 summary];
-    v14 = [v12 initWithFormat:@"downloadProg:%@", v13];
+    downloadProgress2 = [(SUCoreUpdateParam *)self downloadProgress];
+    summary = [downloadProgress2 summary];
+    v14 = [v12 initWithFormat:@"downloadProg:%@", summary];
 LABEL_11:
     v8 = v14;
 
     goto LABEL_12;
   }
 
-  v15 = [(SUCoreUpdateParam *)self prepareProgress];
+  prepareProgress = [(SUCoreUpdateParam *)self prepareProgress];
 
-  if (v15)
+  if (prepareProgress)
   {
     v16 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [(SUCoreUpdateParam *)self prepareProgress];
-    v13 = [v10 summary];
-    v14 = [v16 initWithFormat:@"prepareProg:%@", v13];
+    downloadProgress2 = [(SUCoreUpdateParam *)self prepareProgress];
+    summary = [downloadProgress2 summary];
+    v14 = [v16 initWithFormat:@"prepareProg:%@", summary];
     goto LABEL_11;
   }
 
-  v17 = [(SUCoreUpdateParam *)self applyProgress];
+  applyProgress = [(SUCoreUpdateParam *)self applyProgress];
 
   v18 = objc_alloc(MEMORY[0x277CCACA8]);
-  if (v17)
+  if (applyProgress)
   {
-    v10 = [(SUCoreUpdateParam *)self applyProgress];
-    v13 = [v10 summary];
-    v14 = [v18 initWithFormat:@"applyProg:%@", v13];
+    downloadProgress2 = [(SUCoreUpdateParam *)self applyProgress];
+    summary = [downloadProgress2 summary];
+    v14 = [v18 initWithFormat:@"applyProg:%@", summary];
     goto LABEL_11;
   }
 
@@ -238,31 +238,31 @@ LABEL_13:
   return v8;
 }
 
-+ (id)targetPhaseName:(int64_t)a3
++ (id)targetPhaseName:(int64_t)name
 {
-  if (a3 > 0xB)
+  if (name > 0xB)
   {
     v4 = @"UNKNOWN";
   }
 
   else
   {
-    v4 = kSUCoreUpdateTargetPhaseName[a3];
+    v4 = kSUCoreUpdateTargetPhaseName[name];
   }
 
   return v4;
 }
 
-+ (id)targetRollbackPhaseName:(int64_t)a3
++ (id)targetRollbackPhaseName:(int64_t)name
 {
-  if (a3 > 8)
+  if (name > 8)
   {
     v4 = @"UNKNOWN";
   }
 
   else
   {
-    v4 = kSUCoreRollbackTargetPhaseName[a3];
+    v4 = kSUCoreRollbackTargetPhaseName[name];
   }
 
   return v4;

@@ -1,7 +1,7 @@
 @interface PGTripHighlightTitleGenerator
-- (PGTripHighlightTitleGenerator)initWithCollection:(id)a3 titleGenerationContext:(id)a4;
+- (PGTripHighlightTitleGenerator)initWithCollection:(id)collection titleGenerationContext:(id)context;
 - (id)_locationTitle;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGTripHighlightTitleGenerator
@@ -14,17 +14,17 @@
   v13 = __Block_byref_object_copy__63124;
   v14 = __Block_byref_object_dispose__63125;
   v15 = 0;
-  v3 = [(PGTitleGenerator *)self momentNodes];
-  v4 = [(PGTitleGenerator *)self lineBreakBehavior];
-  v5 = [(PGTitleGenerator *)self titleGenerationContext];
-  v6 = [v5 locationHelper];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  lineBreakBehavior = [(PGTitleGenerator *)self lineBreakBehavior];
+  titleGenerationContext = [(PGTitleGenerator *)self titleGenerationContext];
+  locationHelper = [titleGenerationContext locationHelper];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__PGTripHighlightTitleGenerator__locationTitle__block_invoke;
   v9[3] = &unk_278888460;
   v9[4] = self;
   v9[5] = &v10;
-  [PGLocationTitleUtility generateHighlightLocationTitleForTripWithMomentNodes:v3 lineBreakBehavior:v4 locationHelper:v6 result:v9];
+  [PGLocationTitleUtility generateHighlightLocationTitleForTripWithMomentNodes:momentNodes lineBreakBehavior:lineBreakBehavior locationHelper:locationHelper result:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -40,19 +40,19 @@ void __47__PGTripHighlightTitleGenerator__locationTitle__block_invoke(uint64_t a
   [*(a1 + 32) setUsedLocationNodes:v7];
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [(PGTripHighlightTitleGenerator *)self collection];
-  v6 = [v5 isTrip];
+  resultCopy = result;
+  collection = [(PGTripHighlightTitleGenerator *)self collection];
+  isTrip = [collection isTrip];
 
-  if (v6)
+  if (isTrip)
   {
-    v7 = [(PGTripHighlightTitleGenerator *)self _locationTitle];
-    if (v7)
+    _locationTitle = [(PGTripHighlightTitleGenerator *)self _locationTitle];
+    if (_locationTitle)
     {
-      v8 = [PGTitle titleWithString:v7 category:4];
-      if (!v4)
+      v8 = [PGTitle titleWithString:_locationTitle category:4];
+      if (!resultCopy)
       {
         goto LABEL_12;
       }
@@ -61,50 +61,50 @@ void __47__PGTripHighlightTitleGenerator__locationTitle__block_invoke(uint64_t a
     }
 
     v8 = 0;
-    if (v4)
+    if (resultCopy)
     {
 LABEL_11:
-      v4[2](v4, v8, 0);
+      resultCopy[2](resultCopy, v8, 0);
     }
   }
 
   else
   {
     v9 = +[PGLogging sharedLogging];
-    v10 = [v9 loggingConnection];
+    loggingConnection = [v9 loggingConnection];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       v11[0] = 0;
-      _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "Collection is not a trip, can't use trip collection title generator", v11, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Collection is not a trip, can't use trip collection title generator", v11, 2u);
     }
 
-    if (v4)
+    if (resultCopy)
     {
-      v4[2](v4, 0, 0);
+      resultCopy[2](resultCopy, 0, 0);
     }
 
-    v7 = 0;
+    _locationTitle = 0;
     v8 = 0;
   }
 
 LABEL_12:
 }
 
-- (PGTripHighlightTitleGenerator)initWithCollection:(id)a3 titleGenerationContext:(id)a4
+- (PGTripHighlightTitleGenerator)initWithCollection:(id)collection titleGenerationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 eventEnrichmentMomentNodes];
-  v10 = [v9 temporarySet];
+  collectionCopy = collection;
+  contextCopy = context;
+  eventEnrichmentMomentNodes = [collectionCopy eventEnrichmentMomentNodes];
+  temporarySet = [eventEnrichmentMomentNodes temporarySet];
 
   v13.receiver = self;
   v13.super_class = PGTripHighlightTitleGenerator;
-  v11 = [(PGTitleGenerator *)&v13 initWithMomentNodes:v10 type:0 titleGenerationContext:v8];
+  v11 = [(PGTitleGenerator *)&v13 initWithMomentNodes:temporarySet type:0 titleGenerationContext:contextCopy];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_collection, a3);
+    objc_storeStrong(&v11->_collection, collection);
   }
 
   return v11;

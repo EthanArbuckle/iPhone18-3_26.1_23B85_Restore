@@ -1,10 +1,10 @@
 @interface ATXHeuristicAlarmUtilities
-+ (BOOL)isValidNonRecentlyModifiedAlarm:(id)a3 duringInterval:(id)a4;
-+ (id)alarmDataWithAlarmDict:(id)a3;
++ (BOOL)isValidNonRecentlyModifiedAlarm:(id)alarm duringInterval:(id)interval;
++ (id)alarmDataWithAlarmDict:(id)dict;
 + (id)alarmTrigger;
-+ (id)fireDateWithAlarmDict:(id)a3;
-+ (id)firstFiringAmongAlarms:(id)a3;
-+ (id)localizedTimeWithAlarmDict:(id)a3;
++ (id)fireDateWithAlarmDict:(id)dict;
++ (id)firstFiringAmongAlarms:(id)alarms;
++ (id)localizedTimeWithAlarmDict:(id)dict;
 @end
 
 @implementation ATXHeuristicAlarmUtilities
@@ -20,9 +20,9 @@
   return v4;
 }
 
-+ (id)localizedTimeWithAlarmDict:(id)a3
++ (id)localizedTimeWithAlarmDict:(id)dict
 {
-  v3 = [a1 fireDateWithAlarmDict:a3];
+  v3 = [self fireDateWithAlarmDict:dict];
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateStyle:0];
   [v4 setTimeStyle:1];
@@ -31,20 +31,20 @@
   return v5;
 }
 
-+ (BOOL)isValidNonRecentlyModifiedAlarm:(id)a3 duringInterval:(id)a4
++ (BOOL)isValidNonRecentlyModifiedAlarm:(id)alarm duringInterval:(id)interval
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"playsOnThisDevice"];
-  v8 = [v5 objectForKeyedSubscript:@"lastModifiedTS"];
-  v9 = [v6 startDate];
-  [v9 timeIntervalSinceReferenceDate];
+  alarmCopy = alarm;
+  intervalCopy = interval;
+  v7 = [alarmCopy objectForKeyedSubscript:@"playsOnThisDevice"];
+  v8 = [alarmCopy objectForKeyedSubscript:@"lastModifiedTS"];
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v11 = v10;
 
-  v12 = [v6 endDate];
+  endDate = [intervalCopy endDate];
 
-  [v12 timeIntervalSinceReferenceDate];
+  [endDate timeIntervalSinceReferenceDate];
   v14 = v13;
 
   [v8 doubleValue];
@@ -62,7 +62,7 @@
   v18 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [ATXHeuristicAlarmUtilities localizedTimeWithAlarmDict:v5];
+    v19 = [ATXHeuristicAlarmUtilities localizedTimeWithAlarmDict:alarmCopy];
     v20 = MEMORY[0x277CBEAA8];
     [v8 doubleValue];
     v21 = [v20 dateWithTimeIntervalSinceReferenceDate:?];
@@ -85,20 +85,20 @@
     _os_log_impl(&dword_23E3EA000, v18, OS_LOG_TYPE_DEFAULT, "ATXHeuristicAlarmUtilities: alarm at %@ was modified at %@ recently? %{BOOL}d", &v26, 0x1Cu);
   }
 
-  v23 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
   v24 = *MEMORY[0x277D85DE8];
-  return v23 & !v16;
+  return bOOLValue & !v16;
 }
 
-+ (id)firstFiringAmongAlarms:(id)a3
++ (id)firstFiringAmongAlarms:(id)alarms
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  alarmsCopy = alarms;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [alarmsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -111,7 +111,7 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(alarmsCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -136,7 +136,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [alarmsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -153,20 +153,20 @@
   return v7;
 }
 
-+ (id)fireDateWithAlarmDict:(id)a3
++ (id)fireDateWithAlarmDict:(id)dict
 {
-  v3 = [a3 objectForKeyedSubscript:@"MTAlarm"];
-  v4 = [v3 nextFireDate];
+  v3 = [dict objectForKeyedSubscript:@"MTAlarm"];
+  nextFireDate = [v3 nextFireDate];
 
-  return v4;
+  return nextFireDate;
 }
 
-+ (id)alarmDataWithAlarmDict:(id)a3
++ (id)alarmDataWithAlarmDict:(id)dict
 {
-  v3 = [a3 objectForKeyedSubscript:@"MTAlarm"];
-  v4 = [v3 intentAlarm];
+  v3 = [dict objectForKeyedSubscript:@"MTAlarm"];
+  intentAlarm = [v3 intentAlarm];
   v5 = objc_alloc_init(MEMORY[0x277CD3D68]);
-  v6 = [v5 encodeObject:v4];
+  v6 = [v5 encodeObject:intentAlarm];
 
   return v6;
 }

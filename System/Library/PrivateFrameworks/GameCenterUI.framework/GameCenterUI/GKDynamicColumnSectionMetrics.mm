@@ -1,20 +1,20 @@
 @interface GKDynamicColumnSectionMetrics
-+ (id)dynamicColumnSectionMetricsWithColumnsInPortrait:(unint64_t)a3 columnsInLandscape:(unint64_t)a4;
-+ (id)dynamicColumnSectionMetricsWithColumnsInPortrait:(unint64_t)a3 columnsInLandscape:(unint64_t)a4 forIdiom:(int64_t)a5;
-- (CGSize)itemSizeForCollectionView:(id)a3;
-- (GKDynamicColumnSectionMetrics)initWithIdiom:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)updateColumnsInPortrait:(unint64_t)a3 columnsInLandscape:(unint64_t)a4;
++ (id)dynamicColumnSectionMetricsWithColumnsInPortrait:(unint64_t)portrait columnsInLandscape:(unint64_t)landscape;
++ (id)dynamicColumnSectionMetricsWithColumnsInPortrait:(unint64_t)portrait columnsInLandscape:(unint64_t)landscape forIdiom:(int64_t)idiom;
+- (CGSize)itemSizeForCollectionView:(id)view;
+- (GKDynamicColumnSectionMetrics)initWithIdiom:(int64_t)idiom;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)updateColumnsInPortrait:(unint64_t)portrait columnsInLandscape:(unint64_t)landscape;
 @end
 
 @implementation GKDynamicColumnSectionMetrics
 
-+ (id)dynamicColumnSectionMetricsWithColumnsInPortrait:(unint64_t)a3 columnsInLandscape:(unint64_t)a4 forIdiom:(int64_t)a5
++ (id)dynamicColumnSectionMetricsWithColumnsInPortrait:(unint64_t)portrait columnsInLandscape:(unint64_t)landscape forIdiom:(int64_t)idiom
 {
-  v7 = [objc_alloc(objc_opt_class()) initWithIdiom:a5];
-  if (a3)
+  v7 = [objc_alloc(objc_opt_class()) initWithIdiom:idiom];
+  if (portrait)
   {
-    if (a4)
+    if (landscape)
     {
       goto LABEL_3;
     }
@@ -25,11 +25,11 @@
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayoutMetrics.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = [v9 stringWithFormat:@"%@ (portraitColumnCount > 0)\n[%s (%s:%d)]", v10, "+[GKDynamicColumnSectionMetrics dynamicColumnSectionMetricsWithColumnsInPortrait:columnsInLandscape:forIdiom:]", objc_msgSend(v12, "UTF8String"), 637];
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = [v9 stringWithFormat:@"%@ (portraitColumnCount > 0)\n[%s (%s:%d)]", v10, "+[GKDynamicColumnSectionMetrics dynamicColumnSectionMetricsWithColumnsInPortrait:columnsInLandscape:forIdiom:]", objc_msgSend(lastPathComponent, "UTF8String"), 637];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v13}];
-    if (a4)
+    if (landscape)
     {
       goto LABEL_3;
     }
@@ -38,21 +38,21 @@
   v14 = MEMORY[0x277CCACA8];
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayoutMetrics.m"];
-  v17 = [v16 lastPathComponent];
-  v18 = [v14 stringWithFormat:@"%@ (landscapeColumnCount > 0)\n[%s (%s:%d)]", v15, "+[GKDynamicColumnSectionMetrics dynamicColumnSectionMetricsWithColumnsInPortrait:columnsInLandscape:forIdiom:]", objc_msgSend(v17, "UTF8String"), 638];
+  lastPathComponent2 = [v16 lastPathComponent];
+  v18 = [v14 stringWithFormat:@"%@ (landscapeColumnCount > 0)\n[%s (%s:%d)]", v15, "+[GKDynamicColumnSectionMetrics dynamicColumnSectionMetricsWithColumnsInPortrait:columnsInLandscape:forIdiom:]", objc_msgSend(lastPathComponent2, "UTF8String"), 638];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v18}];
 LABEL_3:
-  [v7 setColumnsInPortrait:a3];
-  [v7 setColumnsInLandscape:a4];
+  [v7 setColumnsInPortrait:portrait];
+  [v7 setColumnsInLandscape:landscape];
 
   return v7;
 }
 
-+ (id)dynamicColumnSectionMetricsWithColumnsInPortrait:(unint64_t)a3 columnsInLandscape:(unint64_t)a4
++ (id)dynamicColumnSectionMetricsWithColumnsInPortrait:(unint64_t)portrait columnsInLandscape:(unint64_t)landscape
 {
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (*MEMORY[0x277D0C258])
   {
@@ -64,7 +64,7 @@ LABEL_3:
     v9 = 1;
   }
 
-  if (v8 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v10 = v9;
   }
@@ -74,10 +74,10 @@ LABEL_3:
     v10 = 0;
   }
 
-  return [a1 dynamicColumnSectionMetricsWithColumnsInPortrait:a3 columnsInLandscape:a4 forIdiom:v10];
+  return [self dynamicColumnSectionMetricsWithColumnsInPortrait:portrait columnsInLandscape:landscape forIdiom:v10];
 }
 
-- (GKDynamicColumnSectionMetrics)initWithIdiom:(int64_t)a3
+- (GKDynamicColumnSectionMetrics)initWithIdiom:(int64_t)idiom
 {
   v6.receiver = self;
   v6.super_class = GKDynamicColumnSectionMetrics;
@@ -86,7 +86,7 @@ LABEL_3:
   {
     result->_columnsInLandscape = 2;
     v5 = 1;
-    if (a3 == 1)
+    if (idiom == 1)
     {
       v5 = 2;
     }
@@ -97,11 +97,11 @@ LABEL_3:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = GKDynamicColumnSectionMetrics;
-  v4 = [(GKSectionMetrics *)&v7 copyWithZone:a3];
+  v4 = [(GKSectionMetrics *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -112,15 +112,15 @@ LABEL_3:
   return v5;
 }
 
-- (CGSize)itemSizeForCollectionView:(id)a3
+- (CGSize)itemSizeForCollectionView:(id)view
 {
   v18.receiver = self;
   v18.super_class = GKDynamicColumnSectionMetrics;
-  v4 = a3;
-  [(GKSectionMetrics *)&v18 itemSizeForCollectionView:v4];
+  viewCopy = view;
+  [(GKSectionMetrics *)&v18 itemSizeForCollectionView:viewCopy];
   v6 = v5;
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v8 = [v7 statusBarOrientation] - 3;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v8 = [mEMORY[0x277D75128] statusBarOrientation] - 3;
 
   v9 = &OBJC_IVAR___GKDynamicColumnSectionMetrics__columnsInPortrait;
   if (v8 < 2)
@@ -129,7 +129,7 @@ LABEL_3:
   }
 
   v10 = *(&self->super.super.super.isa + *v9);
-  [v4 bounds];
+  [viewCopy bounds];
   v12 = v11;
 
   [(GKSectionMetrics *)self padding];
@@ -141,11 +141,11 @@ LABEL_3:
   return result;
 }
 
-- (void)updateColumnsInPortrait:(unint64_t)a3 columnsInLandscape:(unint64_t)a4
+- (void)updateColumnsInPortrait:(unint64_t)portrait columnsInLandscape:(unint64_t)landscape
 {
-  [(GKDynamicColumnSectionMetrics *)self setColumnsInLandscape:a4];
+  [(GKDynamicColumnSectionMetrics *)self setColumnsInLandscape:landscape];
 
-  [(GKDynamicColumnSectionMetrics *)self setColumnsInPortrait:a3];
+  [(GKDynamicColumnSectionMetrics *)self setColumnsInPortrait:portrait];
 }
 
 @end

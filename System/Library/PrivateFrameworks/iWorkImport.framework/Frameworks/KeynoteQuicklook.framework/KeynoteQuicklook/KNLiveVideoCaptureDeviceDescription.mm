@@ -1,26 +1,26 @@
 @interface KNLiveVideoCaptureDeviceDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)defaultVideoResolution;
-- (KNLiveVideoCaptureDeviceDescription)initWithIdentifier:(id)a3 defaultVideoResolution:(CGSize)a4;
-- (KNLiveVideoCaptureDeviceDescription)initWithMessage:(const void *)a3 unarchiver:(id)a4;
+- (KNLiveVideoCaptureDeviceDescription)initWithIdentifier:(id)identifier defaultVideoResolution:(CGSize)resolution;
+- (KNLiveVideoCaptureDeviceDescription)initWithMessage:(const void *)message unarchiver:(id)unarchiver;
 - (id)description;
 - (unint64_t)hash;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation KNLiveVideoCaptureDeviceDescription
 
-- (KNLiveVideoCaptureDeviceDescription)initWithIdentifier:(id)a3 defaultVideoResolution:(CGSize)a4
+- (KNLiveVideoCaptureDeviceDescription)initWithIdentifier:(id)identifier defaultVideoResolution:(CGSize)resolution
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = resolution.height;
+  width = resolution.width;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = KNLiveVideoCaptureDeviceDescription;
   v10 = [(KNLiveVideoCaptureDeviceDescription *)&v14 init];
   if (v10)
   {
-    v11 = objc_msgSend_copy(v7, v8, v9);
+    v11 = objc_msgSend_copy(identifierCopy, v8, v9);
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
@@ -42,10 +42,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -73,9 +73,9 @@
   return v10;
 }
 
-- (KNLiveVideoCaptureDeviceDescription)initWithMessage:(const void *)a3 unarchiver:(id)a4
+- (KNLiveVideoCaptureDeviceDescription)initWithMessage:(const void *)message unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v72.receiver = self;
   v72.super_class = KNLiveVideoCaptureDeviceDescription;
   v8 = [(KNLiveVideoCaptureDeviceDescription *)&v72 init];
@@ -84,11 +84,11 @@
     goto LABEL_22;
   }
 
-  v71 = v6;
-  if (*(a3 + 16))
+  v71 = unarchiverCopy;
+  if (*(message + 16))
   {
     v18 = objc_alloc(MEMORY[0x277CCACA8]);
-    v17 = objc_msgSend_tsp_initWithProtobufString_(v18, v19, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v17 = objc_msgSend_tsp_initWithProtobufString_(v18, v19, *(message + 3) & 0xFFFFFFFFFFFFFFFELL);
   }
 
   else
@@ -101,10 +101,10 @@
     v17 = &stru_2884D8E20;
   }
 
-  if ((*(a3 + 16) & 8) != 0)
+  if ((*(message + 16) & 8) != 0)
   {
     v29 = objc_alloc(MEMORY[0x277CCACA8]);
-    v28 = objc_msgSend_tsp_initWithProtobufString_(v29, v30, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
+    v28 = objc_msgSend_tsp_initWithProtobufString_(v29, v30, *(message + 6) & 0xFFFFFFFFFFFFFFFELL);
   }
 
   else
@@ -117,10 +117,10 @@
     v28 = &stru_2884D8E20;
   }
 
-  v31 = *(a3 + 4);
+  v31 = *(message + 4);
   if ((v31 & 0x20) != 0)
   {
-    v44 = *(a3 + 16);
+    v44 = *(message + 16);
     if (v44 == 2)
     {
       v39 = 2;
@@ -152,19 +152,19 @@ LABEL_15:
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v37, v38);
   v39 = 0;
-  if ((*(a3 + 4) & 2) == 0)
+  if ((*(message + 4) & 2) == 0)
   {
     goto LABEL_15;
   }
 
 LABEL_10:
   v40 = objc_alloc(MEMORY[0x277CCACA8]);
-  v43 = objc_msgSend_tsp_initWithProtobufString_(v40, v41, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
+  v43 = objc_msgSend_tsp_initWithProtobufString_(v40, v41, *(message + 4) & 0xFFFFFFFFFFFFFFFELL);
 LABEL_16:
-  if ((*(a3 + 16) & 4) != 0)
+  if ((*(message + 16) & 4) != 0)
   {
     v60 = objc_alloc(MEMORY[0x277CCACA8]);
-    v59 = objc_msgSend_tsp_initWithProtobufString_(v60, v61, *(a3 + 5) & 0xFFFFFFFFFFFFFFFELL);
+    v59 = objc_msgSend_tsp_initWithProtobufString_(v60, v61, *(message + 5) & 0xFFFFFFFFFFFFFFFELL);
   }
 
   else
@@ -177,35 +177,35 @@ LABEL_16:
     v59 = &stru_2884D8E20;
   }
 
-  v62 = *(a3 + 4);
-  v63 = *(a3 + 68);
+  v62 = *(message + 4);
+  v63 = *(message + 68);
   v64 = [KNLiveVideoCaptureDeviceIdentifier alloc];
   isIOSScreenRecordingDevice = objc_msgSend_initWithUniqueID_modelID_underlyingPosition_underlyingDeviceType_localizedName_isIOSScreenRecordingDevice_(v64, v65, v17, v28, v39, v43, v59, *&v63 & ((v62 & 0x40) >> 6));
   identifier = v8->_identifier;
   v8->_identifier = isIOSScreenRecordingDevice;
 
-  if ((*(a3 + 16) & 0x10) != 0)
+  if ((*(message + 16) & 0x10) != 0)
   {
-    TSPCGSizeCreateFromMessage(*(a3 + 7));
+    TSPCGSizeCreateFromMessage(*(message + 7));
     v8->_defaultVideoResolution.width = v68;
     v8->_defaultVideoResolution.height = v69;
   }
 
-  v6 = v71;
+  unarchiverCopy = v71;
 LABEL_22:
 
   return v8;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  v8 = a4;
+  archiverCopy = archiver;
   identifier = self->_identifier;
   if (identifier)
   {
     v10 = objc_msgSend_uniqueID(identifier, v6, v7);
     v13 = objc_msgSend_tsp_protobufString(v10, v11, v12);
-    *(a3 + 4) |= 1u;
+    *(message + 4) |= 1u;
     sub_275D55B98(__p, v13);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v45 < 0)
@@ -215,7 +215,7 @@ LABEL_22:
 
     v16 = objc_msgSend_modelID(self->_identifier, v14, v15);
     v19 = objc_msgSend_tsp_protobufString(v16, v17, v18);
-    *(a3 + 4) |= 8u;
+    *(message + 4) |= 8u;
     sub_275D55B98(__p, v19);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v45 < 0)
@@ -234,11 +234,11 @@ LABEL_22:
       v25 = v22 == 1;
     }
 
-    *(a3 + 4) |= 0x20u;
-    *(a3 + 16) = v25;
+    *(message + 4) |= 0x20u;
+    *(message + 16) = v25;
     v26 = objc_msgSend_underlyingDeviceType(self->_identifier, v23, v24);
     v29 = objc_msgSend_tsp_protobufString(v26, v27, v28);
-    *(a3 + 4) |= 2u;
+    *(message + 4) |= 2u;
     sub_275D55B98(__p, v29);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v45 < 0)
@@ -248,7 +248,7 @@ LABEL_22:
 
     v32 = objc_msgSend_localizedName(self->_identifier, v30, v31);
     v35 = objc_msgSend_tsp_protobufString(v32, v33, v34);
-    *(a3 + 4) |= 4u;
+    *(message + 4) |= 4u;
     sub_275D55B98(__p, v35);
     google::protobuf::internal::ArenaStringPtr::Set();
     if (v45 < 0)
@@ -257,30 +257,30 @@ LABEL_22:
     }
 
     isIOSScreenRecordingDevice = objc_msgSend_isIOSScreenRecordingDevice(self->_identifier, v36, v37);
-    v39 = *(a3 + 4) | 0x40;
-    *(a3 + 4) = v39;
-    *(a3 + 68) = isIOSScreenRecordingDevice;
+    v39 = *(message + 4) | 0x40;
+    *(message + 4) = v39;
+    *(message + 68) = isIOSScreenRecordingDevice;
   }
 
   else
   {
-    v39 = *(a3 + 4);
+    v39 = *(message + 4);
   }
 
   width = self->_defaultVideoResolution.width;
   height = self->_defaultVideoResolution.height;
-  *(a3 + 4) = v39 | 0x10;
-  v42 = *(a3 + 7);
+  *(message + 4) = v39 | 0x10;
+  v42 = *(message + 7);
   if (!v42)
   {
-    v43 = *(a3 + 1);
+    v43 = *(message + 1);
     if (v43)
     {
       v43 = *(v43 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v42 = MEMORY[0x277C8EFF0](v43);
-    *(a3 + 7) = v42;
+    *(message + 7) = v42;
   }
 
   v46.width = width;

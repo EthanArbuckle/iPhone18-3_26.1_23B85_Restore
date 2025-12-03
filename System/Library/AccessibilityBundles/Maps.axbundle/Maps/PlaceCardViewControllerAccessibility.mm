@@ -1,5 +1,5 @@
 @interface PlaceCardViewControllerAccessibility
-- (void)headerViewDidLayoutSubviews:(id)a3;
+- (void)headerViewDidLayoutSubviews:(id)subviews;
 - (void)updateContent;
 @end
 
@@ -13,15 +13,15 @@
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   v3 = *MEMORY[0x29EDC7F10];
-  v4 = [v2 _accessibilityFirstNonGrabberElement];
-  UIAccessibilityPostNotification(v3, v4);
+  _accessibilityFirstNonGrabberElement = [v2 _accessibilityFirstNonGrabberElement];
+  UIAccessibilityPostNotification(v3, _accessibilityFirstNonGrabberElement);
 }
 
-- (void)headerViewDidLayoutSubviews:(id)a3
+- (void)headerViewDidLayoutSubviews:(id)subviews
 {
   v3.receiver = self;
   v3.super_class = PlaceCardViewControllerAccessibility;
-  [(PlaceCardViewControllerAccessibility *)&v3 headerViewDidLayoutSubviews:a3];
+  [(PlaceCardViewControllerAccessibility *)&v3 headerViewDidLayoutSubviews:subviews];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 

@@ -1,13 +1,13 @@
 @interface CAMShutterUtilities
 + (id)spinnerAnimation;
-+ (id)spinnerViewForLayoutStyle:(int64_t)a3;
++ (id)spinnerViewForLayoutStyle:(int64_t)style;
 @end
 
 @implementation CAMShutterUtilities
 
-+ (id)spinnerViewForLayoutStyle:(int64_t)a3
++ (id)spinnerViewForLayoutStyle:(int64_t)style
 {
-  if (a3 == 3)
+  if (style == 3)
   {
     v3 = @"CAMShutterButtonSpinner-d22";
   }

@@ -1,5 +1,5 @@
 @interface TSCHChartPolarAngleGridlineAxisLayoutItem
-- (id)renderersWithRep:(id)a3;
+- (id)renderersWithRep:(id)rep;
 - (void)buildSubTree;
 @end
 
@@ -26,12 +26,12 @@
   [(TSCHChartLayoutItem *)&v20 buildSubTree];
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  repCopy = rep;
   v5 = [TSCHChartPolarAngleGridlineAxisRenderer alloc];
-  v10 = objc_msgSend_initWithChartRep_layoutItem_(v5, v6, v7, v8, v9, v4, self);
+  v10 = objc_msgSend_initWithChartRep_layoutItem_(v5, v6, v7, v8, v9, repCopy, self);
 
   v17[0] = v10;
   v15 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v11, v12, v13, v14, v17, 1);

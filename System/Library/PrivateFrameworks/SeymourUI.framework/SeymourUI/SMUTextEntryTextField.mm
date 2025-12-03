@@ -1,19 +1,19 @@
 @interface SMUTextEntryTextField
-- (SMUTextEntryTextField)initWithFrame:(CGRect)a3;
-- (_NSRange)_filteredRangeForText:(id)a3;
+- (SMUTextEntryTextField)initWithFrame:(CGRect)frame;
+- (_NSRange)_filteredRangeForText:(id)text;
 - (id)text;
-- (void)insertText:(id)a3;
-- (void)setMaxLength:(unint64_t)a3;
-- (void)setText:(id)a3;
+- (void)insertText:(id)text;
+- (void)setMaxLength:(unint64_t)length;
+- (void)setText:(id)text;
 @end
 
 @implementation SMUTextEntryTextField
 
-- (SMUTextEntryTextField)initWithFrame:(CGRect)a3
+- (SMUTextEntryTextField)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SMUTextEntryTextField;
-  result = [(SMUTextEntryTextField *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SMUTextEntryTextField *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_allowsFocus = 0;
@@ -22,16 +22,16 @@
   return result;
 }
 
-- (void)setMaxLength:(unint64_t)a3
+- (void)setMaxLength:(unint64_t)length
 {
-  if (self->_maxLength != a3)
+  if (self->_maxLength != length)
   {
     v11 = v3;
     v12 = v4;
-    self->_maxLength = a3;
-    v6 = [(SMUTextEntryTextField *)self text];
-    v7 = [(SMUTextEntryTextField *)self _filteredRangeForText:v6];
-    v9 = [v6 substringWithRange:{v7, v8}];
+    self->_maxLength = length;
+    text = [(SMUTextEntryTextField *)self text];
+    v7 = [(SMUTextEntryTextField *)self _filteredRangeForText:text];
+    v9 = [text substringWithRange:{v7, v8}];
     v10.receiver = self;
     v10.super_class = SMUTextEntryTextField;
     [(SMUTextEntryTextField *)&v10 setText:v9];
@@ -44,7 +44,7 @@
   {
     v8.receiver = self;
     v8.super_class = SMUTextEntryTextField;
-    v3 = [(SMUTextEntryTextField *)&v8 text];
+    text = [(SMUTextEntryTextField *)&v8 text];
   }
 
   else
@@ -58,48 +58,48 @@
 
     v9.receiver = self;
     v9.super_class = SMUTextEntryTextField;
-    v6 = [(SMUTextEntryTextField *)&v9 text];
-    v3 = [v6 stringByTrimmingCharactersInSet:text_tabCharacterSet];
+    text2 = [(SMUTextEntryTextField *)&v9 text];
+    text = [text2 stringByTrimmingCharactersInSet:text_tabCharacterSet];
   }
 
-  return v3;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(SMUTextEntryTextField *)self _filteredRangeForText:v4];
-  v7 = [v4 substringWithRange:{v5, v6}];
+  textCopy = text;
+  v5 = [(SMUTextEntryTextField *)self _filteredRangeForText:textCopy];
+  v7 = [textCopy substringWithRange:{v5, v6}];
 
   v8.receiver = self;
   v8.super_class = SMUTextEntryTextField;
   [(SMUTextEntryTextField *)&v8 setText:v7];
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v5 = [(SMUTextEntryTextField *)self _filteredRangeForText:v4];
-  v7 = [v4 substringWithRange:{v5, v6}];
+  textCopy = text;
+  v5 = [(SMUTextEntryTextField *)self _filteredRangeForText:textCopy];
+  v7 = [textCopy substringWithRange:{v5, v6}];
 
   v8.receiver = self;
   v8.super_class = SMUTextEntryTextField;
   [(SMUTextEntryTextField *)&v8 insertText:v7];
 }
 
-- (_NSRange)_filteredRangeForText:(id)a3
+- (_NSRange)_filteredRangeForText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 length];
-  v6 = [(SMUTextEntryTextField *)self text];
+  textCopy = text;
+  v5 = [textCopy length];
+  text = [(SMUTextEntryTextField *)self text];
   if ([(SMUTextEntryTextField *)self maxLength])
   {
-    v7 = [v6 length];
-    v8 = [v4 length] + v7;
+    v7 = [text length];
+    v8 = [textCopy length] + v7;
     if (v8 > [(SMUTextEntryTextField *)self maxLength])
     {
-      v9 = [(SMUTextEntryTextField *)self maxLength];
-      v5 = v9 - [v6 length];
+      maxLength = [(SMUTextEntryTextField *)self maxLength];
+      v5 = maxLength - [text length];
     }
   }
 

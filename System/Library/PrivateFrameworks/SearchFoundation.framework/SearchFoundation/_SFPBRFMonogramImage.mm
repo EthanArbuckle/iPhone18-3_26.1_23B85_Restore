@@ -1,33 +1,33 @@
 @interface _SFPBRFMonogramImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFMonogramImage)initWithDictionary:(id)a3;
-- (_SFPBRFMonogramImage)initWithFacade:(id)a3;
-- (_SFPBRFMonogramImage)initWithJSON:(id)a3;
+- (_SFPBRFMonogramImage)initWithDictionary:(id)dictionary;
+- (_SFPBRFMonogramImage)initWithFacade:(id)facade;
+- (_SFPBRFMonogramImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setLetters:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLetters:(id)letters;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFMonogramImage
 
-- (_SFPBRFMonogramImage)initWithFacade:(id)a3
+- (_SFPBRFMonogramImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFMonogramImage *)self init];
   if (v5)
   {
-    v6 = [v4 letters];
+    letters = [facadeCopy letters];
 
-    if (v6)
+    if (letters)
     {
-      v7 = [v4 letters];
-      [(_SFPBRFMonogramImage *)v5 setLetters:v7];
+      letters2 = [facadeCopy letters];
+      [(_SFPBRFMonogramImage *)v5 setLetters:letters2];
     }
 
-    if ([v4 hasImage_style])
+    if ([facadeCopy hasImage_style])
     {
-      -[_SFPBRFMonogramImage setImage_style:](v5, "setImage_style:", [v4 image_style]);
+      -[_SFPBRFMonogramImage setImage_style:](v5, "setImage_style:", [facadeCopy image_style]);
     }
 
     v8 = v5;
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (_SFPBRFMonogramImage)initWithDictionary:(id)a3
+- (_SFPBRFMonogramImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBRFMonogramImage;
   v5 = [(_SFPBRFMonogramImage *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"letters"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"letters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(_SFPBRFMonogramImage *)v5 setLetters:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"imageStyle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"imageStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (_SFPBRFMonogramImage)initWithJSON:(id)a3
+- (_SFPBRFMonogramImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFMonogramImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFMonogramImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFMonogramImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,57 +101,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_image_style)
   {
-    v4 = [(_SFPBRFMonogramImage *)self image_style];
-    if (v4 < 0x2A && ((0x3FFDFFFFFFFuLL >> v4) & 1) != 0)
+    image_style = [(_SFPBRFMonogramImage *)self image_style];
+    if (image_style < 0x2A && ((0x3FFDFFFFFFFuLL >> image_style) & 1) != 0)
     {
-      v5 = off_1E7ACE270[v4];
+      v5 = off_1E7ACE270[image_style];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", image_style];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"imageStyle"];
+    [dictionary setObject:v5 forKeyedSubscript:@"imageStyle"];
   }
 
   if (self->_letters)
   {
-    v6 = [(_SFPBRFMonogramImage *)self letters];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"letters"];
+    letters = [(_SFPBRFMonogramImage *)self letters];
+    v7 = [letters copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"letters"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRFMonogramImage *)self letters];
-    v6 = [v4 letters];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    letters = [(_SFPBRFMonogramImage *)self letters];
+    letters2 = [equalCopy letters];
+    v7 = letters2;
+    if ((letters != 0) != (letters2 == 0))
     {
-      v8 = [(_SFPBRFMonogramImage *)self letters];
-      if (!v8)
+      letters3 = [(_SFPBRFMonogramImage *)self letters];
+      if (!letters3)
       {
 
 LABEL_10:
         image_style = self->_image_style;
-        v13 = image_style == [v4 image_style];
+        v13 = image_style == [equalCopy image_style];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRFMonogramImage *)self letters];
-      v11 = [v4 letters];
-      v12 = [v10 isEqual:v11];
+      v9 = letters3;
+      letters4 = [(_SFPBRFMonogramImage *)self letters];
+      letters5 = [equalCopy letters];
+      v12 = [letters4 isEqual:letters5];
 
       if (v12)
       {
@@ -170,11 +170,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBRFMonogramImage *)self letters];
-  if (v4)
+  toCopy = to;
+  letters = [(_SFPBRFMonogramImage *)self letters];
+  if (letters)
   {
     PBDataWriterWriteStringField();
   }
@@ -185,9 +185,9 @@ LABEL_8:
   }
 }
 
-- (void)setLetters:(id)a3
+- (void)setLetters:(id)letters
 {
-  v4 = [a3 copy];
+  v4 = [letters copy];
   letters = self->_letters;
   self->_letters = v4;
 

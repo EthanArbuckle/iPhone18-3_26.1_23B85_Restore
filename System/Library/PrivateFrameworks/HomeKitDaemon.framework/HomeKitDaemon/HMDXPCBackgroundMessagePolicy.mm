@@ -1,15 +1,15 @@
 @interface HMDXPCBackgroundMessagePolicy
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDXPCBackgroundMessagePolicy)init;
-- (id)__initWithEntitlementRequirement:(BOOL)a3;
+- (id)__initWithEntitlementRequirement:(BOOL)requirement;
 @end
 
 @implementation HMDXPCBackgroundMessagePolicy
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v8) = 1;
   }
@@ -19,7 +19,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -30,8 +30,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDXPCBackgroundMessagePolicy *)self requiresEntitlement];
-      v8 = v7 ^ [(HMDXPCBackgroundMessagePolicy *)v6 requiresEntitlement]^ 1;
+      requiresEntitlement = [(HMDXPCBackgroundMessagePolicy *)self requiresEntitlement];
+      v8 = requiresEntitlement ^ [(HMDXPCBackgroundMessagePolicy *)v6 requiresEntitlement]^ 1;
     }
 
     else
@@ -43,14 +43,14 @@
   return v8;
 }
 
-- (id)__initWithEntitlementRequirement:(BOOL)a3
+- (id)__initWithEntitlementRequirement:(BOOL)requirement
 {
   v5.receiver = self;
   v5.super_class = HMDXPCBackgroundMessagePolicy;
   result = [(HMDXPCBackgroundMessagePolicy *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = requirement;
   }
 
   return result;

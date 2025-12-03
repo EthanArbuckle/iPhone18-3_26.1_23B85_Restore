@@ -1,28 +1,28 @@
 @interface DADataHandler
-+ (id)newDataHandlerForDataclass:(int64_t)a3 container:(void *)a4 changeTrackingID:(id)a5;
-- (BOOL)closeDBAndSave:(BOOL)a3;
++ (id)newDataHandlerForDataclass:(int64_t)dataclass container:(void *)container changeTrackingID:(id)d;
+- (BOOL)closeDBAndSave:(BOOL)save;
 - (BOOL)saveContainer;
 - (BOOL)wipeServerIds;
-- (DADataHandler)initWithContainer:(void *)a3 changeTrackingID:(id)a4;
+- (DADataHandler)initWithContainer:(void *)container changeTrackingID:(id)d;
 - (id)copyOfAllLocalObjectsInContainer;
-- (id)getDAExceptionObjectWithLocalItem:(void *)a3 originalEvent:(id)a4 account:(id)a5;
-- (id)getDAObjectWithLocalItem:(void *)a3 serverId:(id)a4 account:(id)a5;
-- (int)getIdFromLocalObject:(void *)a3;
+- (id)getDAExceptionObjectWithLocalItem:(void *)item originalEvent:(id)event account:(id)account;
+- (id)getDAObjectWithLocalItem:(void *)item serverId:(id)id account:(id)account;
+- (int)getIdFromLocalObject:(void *)object;
 - (int64_t)dataclass;
-- (void)copyLocalObjectFromId:(int)a3;
+- (void)copyLocalObjectFromId:(int)id;
 - (void)dealloc;
 - (void)drainContainer;
 - (void)drainSuperfluousChanges;
 - (void)openDB;
-- (void)setContainer:(void *)a3;
+- (void)setContainer:(void *)container;
 @end
 
 @implementation DADataHandler
 
-- (DADataHandler)initWithContainer:(void *)a3 changeTrackingID:(id)a4
+- (DADataHandler)initWithContainer:(void *)container changeTrackingID:(id)d
 {
-  v7 = a4;
-  if (!v7)
+  dCopy = d;
+  if (!dCopy)
   {
     [DADataHandler initWithContainer:a2 changeTrackingID:self];
   }
@@ -32,12 +32,12 @@
   v8 = [(DADataHandler *)&v12 init];
   if (v8)
   {
-    if (a3)
+    if (container)
     {
-      v8->_container = CFRetain(a3);
+      v8->_container = CFRetain(container);
     }
 
-    v9 = [v7 copy];
+    v9 = [dCopy copy];
     changeTrackingID = v8->_changeTrackingID;
     v8->_changeTrackingID = v9;
   }
@@ -45,10 +45,10 @@
   return v8;
 }
 
-- (void)setContainer:(void *)a3
+- (void)setContainer:(void *)container
 {
   container = self->_container;
-  if (container != a3)
+  if (container != container)
   {
     if (container)
     {
@@ -56,12 +56,12 @@
       self->_container = 0;
     }
 
-    if (a3)
+    if (container)
     {
-      CFRetain(a3);
+      CFRetain(container);
     }
 
-    self->_container = a3;
+    self->_container = container;
   }
 }
 
@@ -95,7 +95,7 @@
   return 0;
 }
 
-- (int)getIdFromLocalObject:(void *)a3
+- (int)getIdFromLocalObject:(void *)object
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
@@ -111,7 +111,7 @@
   return 0;
 }
 
-- (void)copyLocalObjectFromId:(int)a3
+- (void)copyLocalObjectFromId:(int)id
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
@@ -220,7 +220,7 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)closeDBAndSave:(BOOL)a3
+- (BOOL)closeDBAndSave:(BOOL)save
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = DALoggingwithCategory();
@@ -236,7 +236,7 @@
   return 0;
 }
 
-+ (id)newDataHandlerForDataclass:(int64_t)a3 container:(void *)a4 changeTrackingID:(id)a5
++ (id)newDataHandlerForDataclass:(int64_t)dataclass container:(void *)container changeTrackingID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
   v6 = DALoggingwithCategory();
@@ -252,7 +252,7 @@
   return 0;
 }
 
-- (id)getDAObjectWithLocalItem:(void *)a3 serverId:(id)a4 account:(id)a5
+- (id)getDAObjectWithLocalItem:(void *)item serverId:(id)id account:(id)account
 {
   v12 = *MEMORY[0x277D85DE8];
   v6 = DALoggingwithCategory();
@@ -268,7 +268,7 @@
   return 0;
 }
 
-- (id)getDAExceptionObjectWithLocalItem:(void *)a3 originalEvent:(id)a4 account:(id)a5
+- (id)getDAExceptionObjectWithLocalItem:(void *)item originalEvent:(id)event account:(id)account
 {
   v12 = *MEMORY[0x277D85DE8];
   v6 = DALoggingwithCategory();

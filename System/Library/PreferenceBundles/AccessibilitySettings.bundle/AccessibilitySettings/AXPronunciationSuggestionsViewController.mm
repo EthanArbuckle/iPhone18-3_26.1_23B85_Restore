@@ -1,24 +1,24 @@
 @interface AXPronunciationSuggestionsViewController
-- (AXPronunciationSuggestionsViewController)initWithSuggestions:(id)a3;
+- (AXPronunciationSuggestionsViewController)initWithSuggestions:(id)suggestions;
 - (AXPronunciationSuggestionsViewControllerDelegate)delegate;
 - (id)specifiers;
 - (void)cleanupSynthesizer;
 - (void)dealloc;
-- (void)handleCancelButtonTapped:(id)a3;
-- (void)handleDoneButtonTapped:(id)a3;
-- (void)speakPhonemes:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)handleCancelButtonTapped:(id)tapped;
+- (void)handleDoneButtonTapped:(id)tapped;
+- (void)speakPhonemes:(id)phonemes;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AXPronunciationSuggestionsViewController
 
-- (AXPronunciationSuggestionsViewController)initWithSuggestions:(id)a3
+- (AXPronunciationSuggestionsViewController)initWithSuggestions:(id)suggestions
 {
-  v4 = a3;
-  if (![v4 count])
+  suggestionsCopy = suggestions;
+  if (![suggestionsCopy count])
   {
     _AXAssert();
   }
@@ -28,62 +28,62 @@
   v5 = [(AXPronunciationSuggestionsViewController *)&v13 init];
   if (v5)
   {
-    v6 = [NSSet setWithArray:v4];
-    v7 = [v6 allObjects];
-    [(AXPronunciationSuggestionsViewController *)v5 setSuggestions:v7];
+    v6 = [NSSet setWithArray:suggestionsCopy];
+    allObjects = [v6 allObjects];
+    [(AXPronunciationSuggestionsViewController *)v5 setSuggestions:allObjects];
 
     v8 = objc_alloc_init(TTSSpeechManager);
     [(AXPronunciationSuggestionsViewController *)v5 setSpeechManager:v8];
 
-    v9 = [(AXPronunciationSuggestionsViewController *)v5 speechManager];
-    [v9 setUsesAuxiliarySession:1];
+    speechManager = [(AXPronunciationSuggestionsViewController *)v5 speechManager];
+    [speechManager setUsesAuxiliarySession:1];
 
-    v10 = [(AXPronunciationSuggestionsViewController *)v5 speechManager];
-    v11 = [v10 audioSession];
-    [v11 setCategory:AVAudioSessionCategoryVoiceOver withOptions:2 error:0];
+    speechManager2 = [(AXPronunciationSuggestionsViewController *)v5 speechManager];
+    audioSession = [speechManager2 audioSession];
+    [audioSession setCategory:AVAudioSessionCategoryVoiceOver withOptions:2 error:0];
   }
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = AXPronunciationSuggestionsViewController;
-  [(AXPronunciationSuggestionsViewController *)&v12 viewWillAppear:a3];
+  [(AXPronunciationSuggestionsViewController *)&v12 viewWillAppear:appear];
   v4 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"handleCancelButtonTapped:"];
-  v5 = [(AXPronunciationSuggestionsViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:v4];
+  navigationItem = [(AXPronunciationSuggestionsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v4];
 
-  v6 = [(AXPronunciationSuggestionsViewController *)self navigationItem];
-  v7 = [v6 leftBarButtonItem];
-  [v7 setEnabled:1];
+  navigationItem2 = [(AXPronunciationSuggestionsViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setEnabled:1];
 
   v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"handleDoneButtonTapped:"];
-  v9 = [(AXPronunciationSuggestionsViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem3 = [(AXPronunciationSuggestionsViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v8];
 
-  v10 = [(AXPronunciationSuggestionsViewController *)self navigationItem];
-  v11 = [v10 rightBarButtonItem];
-  [v11 setEnabled:1];
+  navigationItem4 = [(AXPronunciationSuggestionsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem4 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 }
 
 - (void)cleanupSynthesizer
 {
-  v3 = [(AXPronunciationSuggestionsViewController *)self speechManager];
-  [v3 stopSpeaking];
+  speechManager = [(AXPronunciationSuggestionsViewController *)self speechManager];
+  [speechManager stopSpeaking];
 
-  v4 = [(AXPronunciationSuggestionsViewController *)self speechManager];
-  [v4 tearDown];
+  speechManager2 = [(AXPronunciationSuggestionsViewController *)self speechManager];
+  [speechManager2 tearDown];
 
   [(AXPronunciationSuggestionsViewController *)self setSpeechManager:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = AXPronunciationSuggestionsViewController;
-  [(AXPronunciationSuggestionsViewController *)&v4 viewWillDisappear:a3];
+  [(AXPronunciationSuggestionsViewController *)&v4 viewWillDisappear:disappear];
   [(AXPronunciationSuggestionsViewController *)self cleanupSynthesizer];
 }
 
@@ -150,92 +150,92 @@
   return v3;
 }
 
-- (void)speakPhonemes:(id)a3
+- (void)speakPhonemes:(id)phonemes
 {
-  v4 = a3;
+  phonemesCopy = phonemes;
   v5 = objc_alloc_init(TTSSpeechAction);
   [v5 setShouldQueue:1];
-  v6 = [(AXPronunciationSuggestionsViewController *)self language];
-  [v5 setLanguage:v6];
+  language = [(AXPronunciationSuggestionsViewController *)self language];
+  [v5 setLanguage:language];
 
-  v7 = [(AXPronunciationSuggestionsViewController *)self voiceId];
-  [v5 setVoiceIdentifier:v7];
+  voiceId = [(AXPronunciationSuggestionsViewController *)self voiceId];
+  [v5 setVoiceIdentifier:voiceId];
 
   v8 = [NSAttributedString alloc];
   v12 = AVSpeechSynthesisIPANotationAttribute;
-  v13 = v4;
+  v13 = phonemesCopy;
   v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
 
   v10 = [v8 initWithString:@"_" attributes:v9];
   [v5 setAttributedString:v10];
-  v11 = [(AXPronunciationSuggestionsViewController *)self speechManager];
-  [v11 dispatchSpeechAction:v5];
+  speechManager = [(AXPronunciationSuggestionsViewController *)self speechManager];
+  [speechManager dispatchSpeechAction:v5];
 }
 
-- (void)handleCancelButtonTapped:(id)a3
+- (void)handleCancelButtonTapped:(id)tapped
 {
-  v4 = [(AXPronunciationSuggestionsViewController *)self delegate];
+  delegate = [(AXPronunciationSuggestionsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AXPronunciationSuggestionsViewController *)self delegate];
-    [v6 pronunciationSuggestionsViewController:self didSelectPhonemes:0];
+    delegate2 = [(AXPronunciationSuggestionsViewController *)self delegate];
+    [delegate2 pronunciationSuggestionsViewController:self didSelectPhonemes:0];
   }
 }
 
-- (void)handleDoneButtonTapped:(id)a3
+- (void)handleDoneButtonTapped:(id)tapped
 {
-  v4 = [(AXPronunciationSuggestionsViewController *)self delegate];
+  delegate = [(AXPronunciationSuggestionsViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v7 = [(AXPronunciationSuggestionsViewController *)self delegate];
-    v6 = [(AXPronunciationSuggestionsViewController *)self selectedPhonemes];
-    [v7 pronunciationSuggestionsViewController:self didSelectPhonemes:v6];
+    delegate2 = [(AXPronunciationSuggestionsViewController *)self delegate];
+    selectedPhonemes = [(AXPronunciationSuggestionsViewController *)self selectedPhonemes];
+    [delegate2 pronunciationSuggestionsViewController:self didSelectPhonemes:selectedPhonemes];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = AXPronunciationSuggestionsViewController;
-  v6 = a4;
-  [(AXPronunciationSuggestionsViewController *)&v13 tableView:a3 didSelectRowAtIndexPath:v6];
-  [(AXPronunciationSuggestionsViewController *)self updateTableCheckedSelection:v6, v13.receiver, v13.super_class];
-  v7 = [(AXPronunciationSuggestionsViewController *)self specifierForIndexPath:v6];
+  pathCopy = path;
+  [(AXPronunciationSuggestionsViewController *)&v13 tableView:view didSelectRowAtIndexPath:pathCopy];
+  [(AXPronunciationSuggestionsViewController *)self updateTableCheckedSelection:pathCopy, v13.receiver, v13.super_class];
+  v7 = [(AXPronunciationSuggestionsViewController *)self specifierForIndexPath:pathCopy];
 
   v8 = [v7 objectForKeyedSubscript:@"phonemes"];
   [(AXPronunciationSuggestionsViewController *)self setSelectedPhonemes:v8];
 
-  v9 = [(AXPronunciationSuggestionsViewController *)self selectedPhonemes];
-  [(AXPronunciationSuggestionsViewController *)self speakPhonemes:v9];
+  selectedPhonemes = [(AXPronunciationSuggestionsViewController *)self selectedPhonemes];
+  [(AXPronunciationSuggestionsViewController *)self speakPhonemes:selectedPhonemes];
 
   v10 = [(AXPronunciationSuggestionsViewController *)self cellForSpecifier:v7];
   [v10 setAccessoryType:3];
-  v11 = [(AXPronunciationSuggestionsViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  [v12 setEnabled:1];
+  navigationItem = [(AXPronunciationSuggestionsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [(AXPronunciationSuggestionsViewController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v8 = [(AXPronunciationSuggestionsViewController *)self specifierForIndexPath:path];
   v9 = [v8 objectForKeyedSubscript:@"phonemes"];
-  v10 = [(AXPronunciationSuggestionsViewController *)self specifier];
-  v11 = [v10 name];
-  v12 = [AXAttributedString axAttributedStringWithString:v11];
+  specifier = [(AXPronunciationSuggestionsViewController *)self specifier];
+  name = [specifier name];
+  v12 = [AXAttributedString axAttributedStringWithString:name];
 
   v16 = UIAccessibilitySpeechAttributeIPANotation;
   v17 = v9;
   v13 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   [v12 setAttributes:v13];
 
-  [v7 setAccessibilityLabel:v12];
-  v14 = [(AXPronunciationSuggestionsViewController *)self selectedPhonemes];
-  LODWORD(v13) = [v9 isEqualToString:v14];
+  [cellCopy setAccessibilityLabel:v12];
+  selectedPhonemes = [(AXPronunciationSuggestionsViewController *)self selectedPhonemes];
+  LODWORD(v13) = [v9 isEqualToString:selectedPhonemes];
 
   if (v13)
   {
@@ -247,7 +247,7 @@
     v15 = 0;
   }
 
-  [v7 setAccessoryType:v15];
+  [cellCopy setAccessoryType:v15];
 }
 
 - (AXPronunciationSuggestionsViewControllerDelegate)delegate

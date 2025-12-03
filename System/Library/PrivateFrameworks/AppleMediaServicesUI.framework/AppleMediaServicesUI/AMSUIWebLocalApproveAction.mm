@@ -1,19 +1,19 @@
 @interface AMSUIWebLocalApproveAction
-- (AMSUIWebLocalApproveAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebLocalApproveAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebLocalApproveAction
 
-- (AMSUIWebLocalApproveAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebLocalApproveAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebLocalApproveAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"itemIdentifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"itemIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,20 +37,20 @@
   v31 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = AMSUIWebLocalApproveAction;
-  v3 = [(AMSUIWebAction *)&v23 runAction];
-  v4 = [(AMSUIWebLocalApproveAction *)self itemIdentifier];
-  v5 = v4 == 0;
+  runAction = [(AMSUIWebAction *)&v23 runAction];
+  itemIdentifier = [(AMSUIWebLocalApproveAction *)self itemIdentifier];
+  v5 = itemIdentifier == 0;
 
   if (v5)
   {
-    v14 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v14)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v14 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -58,7 +58,7 @@
       *&buf[4] = v16;
       *&buf[12] = 2114;
       *&buf[14] = v17;
-      _os_log_impl(&dword_1BB036000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No itemIdentifier found", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No itemIdentifier found", buf, 0x16u);
     }
 
     v18 = MEMORY[0x1E698CAD0];
@@ -87,7 +87,7 @@
 
     v8 = v7;
     _Block_object_dispose(&v24, 8);
-    v9 = [(AMSUIWebLocalApproveAction *)self itemIdentifier];
+    itemIdentifier2 = [(AMSUIWebLocalApproveAction *)self itemIdentifier];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __39__AMSUIWebLocalApproveAction_runAction__block_invoke;
@@ -95,7 +95,7 @@
     v21[4] = self;
     v10 = v6;
     v22 = v10;
-    [v7 localApproveRequestWithItemIdentifier:v9 completion:v21];
+    [v7 localApproveRequestWithItemIdentifier:itemIdentifier2 completion:v21];
 
     v11 = v22;
     v12 = v10;

@@ -1,13 +1,13 @@
 @interface STUIStatusBarDisplayItemPlacementIndicatorsGroup
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4 bluetoothPaddingInset:(double)a5;
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority bluetoothPaddingInset:(double)inset;
 @end
 
 @implementation STUIStatusBarDisplayItemPlacementIndicatorsGroup
 
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4 bluetoothPaddingInset:(double)a5
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority bluetoothPaddingInset:(double)inset
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v6 = a3 - a4;
+  v6 = priority - lowPriority;
   v7 = +[(STUIStatusBarItem *)STUIStatusBarBluetoothItem];
   v8 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v7 priority:3];
 
@@ -18,7 +18,7 @@
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:1];
   v49 = [v10 requiringAllPlacements:v11];
 
-  v12 = [STUIStatusBarDisplayItemPlacement spacerPlacementWithSize:1 priority:-a5, 0.0];
+  v12 = [STUIStatusBarDisplayItemPlacement spacerPlacementWithSize:1 priority:-inset, 0.0];
   v53[0] = v8;
   v53[1] = v49;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
@@ -59,13 +59,13 @@
   v52[12] = v49;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:13];
 
-  v24 = [objc_opt_class() activityItemDisplayIdentifier];
-  v25 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v24 priority:11];
+  activityItemDisplayIdentifier = [objc_opt_class() activityItemDisplayIdentifier];
+  v25 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:activityItemDisplayIdentifier priority:11];
   v51 = v25;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
 
   v27 = [v26 arrayByAddingObjectsFromArray:v23];
-  v28 = [a1 groupWithPriority:a4 placements:v27];
+  v28 = [self groupWithPriority:lowPriority placements:v27];
   v29 = v28[4];
   v28[4] = v23;
   v30 = v23;

@@ -1,26 +1,26 @@
 @interface BKSMutableMousePointerEventGlobalRoute
-- (void)setOptions:(id)a3;
+- (void)setOptions:(id)options;
 @end
 
 @implementation BKSMutableMousePointerEventGlobalRoute
 
-- (void)setOptions:(id)a3
+- (void)setOptions:(id)options
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  optionsCopy = options;
+  if (optionsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [(BKSMousePointerGlobalContextOptions *)v5 classForCoder];
-      if (!v9)
+      classForCoder = [(BKSMousePointerGlobalContextOptions *)optionsCopy classForCoder];
+      if (!classForCoder)
       {
-        v9 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v10 = NSStringFromClass(v9);
+      v10 = NSStringFromClass(classForCoder);
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
       v13 = [v8 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"options", v10, v12];
@@ -35,7 +35,7 @@
         v19 = 2114;
         v20 = v16;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 2114;
         v24 = @"BKSMousePointerEventGlobalRoute.m";
         v25 = 1024;
@@ -53,7 +53,7 @@
   }
 
   options = self->super._options;
-  self->super._options = v5;
+  self->super._options = optionsCopy;
   v7 = *MEMORY[0x1E69E9840];
 }
 

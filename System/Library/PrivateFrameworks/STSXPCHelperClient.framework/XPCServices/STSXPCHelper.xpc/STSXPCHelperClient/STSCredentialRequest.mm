@@ -1,23 +1,23 @@
 @interface STSCredentialRequest
-- (STSCredentialRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STSCredentialRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCredentialRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_credentialIdentifier forKey:@"credentialIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_credentialIdentifier forKey:@"credentialIdentifier"];
 }
 
-- (STSCredentialRequest)initWithCoder:(id)a3
+- (STSCredentialRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_type = [v4 decodeIntegerForKey:@"type"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentifier"];
+  coderCopy = coder;
+  self->_type = [coderCopy decodeIntegerForKey:@"type"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialIdentifier"];
 
   credentialIdentifier = self->_credentialIdentifier;
   self->_credentialIdentifier = v5;

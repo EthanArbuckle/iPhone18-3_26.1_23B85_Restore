@@ -3,20 +3,20 @@
 - (CGRect)scrollableAreaBounds;
 - (void)hideScrollIndicators;
 - (void)layoutSubviews;
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4;
-- (void)setContentOffset:(CGPoint)a3;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated;
+- (void)setContentOffset:(CGPoint)offset;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated completionBlock:(id)block;
 @end
 
 @implementation TSKScrollView
 
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  animatedCopy = animated;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
   v10 = *MEMORY[0x277CBF3A0];
   v11 = *(MEMORY[0x277CBF3A0] + 8);
   [(TSKScrollView *)self contentSize];
@@ -360,7 +360,7 @@ LABEL_16:
     v61 = v70 - (v56 - v57);
   }
 
-  [(TSKScrollView *)self setContentOffset:v4 animated:v72, v61];
+  [(TSKScrollView *)self setContentOffset:animatedCopy animated:v72, v61];
 }
 
 - (BOOL)isScrolling
@@ -373,11 +373,11 @@ LABEL_16:
   return [(TSKScrollView *)self isDecelerating];
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated completionBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4)
+  y = offset.y;
+  x = offset.x;
+  if (animated)
   {
     [(TSKScrollView *)self contentOffset];
     v11 = y != v10 || x != v9;
@@ -412,9 +412,9 @@ LABEL_16:
   v14 = __59__TSKScrollView_setContentOffset_animated_completionBlock___block_invoke_2;
   v15 = &unk_279D47A38;
   v19 = v11;
-  v16 = self;
+  selfCopy = self;
   v17 = v12;
-  v18 = a5;
+  blockCopy = block;
   if (v11)
   {
     [MEMORY[0x277D75D18] animateWithDuration:4 delay:v20 options:v13 animations:0.200000003 completion:0.0];
@@ -477,10 +477,10 @@ LABEL_11:
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   [(TSKScrollView *)self delegate];
   if (objc_opt_respondsToSelector())
   {

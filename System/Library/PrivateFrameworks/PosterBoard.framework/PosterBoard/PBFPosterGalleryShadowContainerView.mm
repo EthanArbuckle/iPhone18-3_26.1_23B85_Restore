@@ -1,33 +1,33 @@
 @interface PBFPosterGalleryShadowContainerView
 - (CGAffineTransform)contentTransform;
 - (CGAffineTransform)shadowSupplementalTransform;
-- (PBFPosterGalleryShadowContainerView)initWithContentView:(id)a3 shadowView:(id)a4 perspectiveEnabled:(BOOL)a5;
+- (PBFPosterGalleryShadowContainerView)initWithContentView:(id)view shadowView:(id)shadowView perspectiveEnabled:(BOOL)enabled;
 - (void)_layoutShadowView;
 - (void)_updateShadowView;
 - (void)_updateZPositions;
 - (void)layoutSubviews;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setContentView:(id)a3;
-- (void)setPerspectiveEnabled:(BOOL)a3;
-- (void)setShadowSupplementalTransform:(CGAffineTransform *)a3;
-- (void)setShadowView:(id)a3;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setContentView:(id)view;
+- (void)setPerspectiveEnabled:(BOOL)enabled;
+- (void)setShadowSupplementalTransform:(CGAffineTransform *)transform;
+- (void)setShadowView:(id)view;
 @end
 
 @implementation PBFPosterGalleryShadowContainerView
 
-- (PBFPosterGalleryShadowContainerView)initWithContentView:(id)a3 shadowView:(id)a4 perspectiveEnabled:(BOOL)a5
+- (PBFPosterGalleryShadowContainerView)initWithContentView:(id)view shadowView:(id)shadowView perspectiveEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  enabledCopy = enabled;
+  viewCopy = view;
+  shadowViewCopy = shadowView;
   v19.receiver = self;
   v19.super_class = PBFPosterGalleryShadowContainerView;
   v10 = [(PBFPosterGalleryShadowContainerView *)&v19 init];
   v11 = v10;
   if (v10)
   {
-    [(PBFPosterGalleryShadowContainerView *)v10 setContentView:v8];
-    [(PBFPosterGalleryShadowContainerView *)v11 setShadowView:v9];
+    [(PBFPosterGalleryShadowContainerView *)v10 setContentView:viewCopy];
+    [(PBFPosterGalleryShadowContainerView *)v11 setShadowView:shadowViewCopy];
     v14 = *(MEMORY[0x277CBF2C0] + 16);
     v16 = *MEMORY[0x277CBF2C0];
     v15 = v16;
@@ -39,7 +39,7 @@
     v17 = v14;
     v18 = v13;
     [(PBFPosterGalleryShadowContainerView *)v11 setShadowSupplementalTransform:&v16];
-    [(PBFPosterGalleryShadowContainerView *)v11 setPerspectiveEnabled:v5];
+    [(PBFPosterGalleryShadowContainerView *)v11 setPerspectiveEnabled:enabledCopy];
     [(PBFPosterGalleryShadowContainerView *)v11 pui_setGlassGroupBackground];
   }
 
@@ -71,22 +71,22 @@
   [(PBFPosterGalleryShadowContainerView *)self bringSubviewToFront:self->_contentView];
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
   p_contentTransform = &self->_contentTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_contentTransform.c;
   *&v10.a = *&self->_contentTransform.a;
   *&v10.c = v7;
   *&v10.tx = *&self->_contentTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_contentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_contentTransform->c = *&transform->c;
     *&p_contentTransform->tx = v9;
     *&p_contentTransform->a = v8;
     [(PBFPosterGalleryShadowContainerView *)self setNeedsLayout];
@@ -97,22 +97,22 @@
   }
 }
 
-- (void)setShadowSupplementalTransform:(CGAffineTransform *)a3
+- (void)setShadowSupplementalTransform:(CGAffineTransform *)transform
 {
   p_shadowSupplementalTransform = &self->_shadowSupplementalTransform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_shadowSupplementalTransform.c;
   *&v10.a = *&self->_shadowSupplementalTransform.a;
   *&v10.c = v7;
   *&v10.tx = *&self->_shadowSupplementalTransform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_shadowSupplementalTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_shadowSupplementalTransform->c = *&transform->c;
     *&p_shadowSupplementalTransform->tx = v9;
     *&p_shadowSupplementalTransform->a = v8;
     [(PBFPosterGalleryShadowContainerView *)self setNeedsLayout];
@@ -123,26 +123,26 @@
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(PBFPosterGalleryShadowContainerView *)self addSubview:self->_contentView];
     [(PBFPosterGalleryShadowContainerView *)self _updateZPositions];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setShadowView:(id)a3
+- (void)setShadowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   shadowView = self->_shadowView;
-  if (shadowView != v5)
+  if (shadowView != viewCopy)
   {
     [(PBFShadowMetricsProviding *)shadowView removeFromSuperview];
     v7 = self->_shadowView;
@@ -151,18 +151,18 @@
     v9[1] = v8;
     v9[2] = *(MEMORY[0x277CBF2C0] + 32);
     [(PBFShadowMetricsProviding *)v7 setTransform:v9];
-    objc_storeStrong(&self->_shadowView, a3);
+    objc_storeStrong(&self->_shadowView, view);
     [(PBFPosterGalleryShadowContainerView *)self addSubview:self->_shadowView];
     [(PBFPosterGalleryShadowContainerView *)self _updateShadowView];
     [(PBFPosterGalleryShadowContainerView *)self _updateZPositions];
   }
 }
 
-- (void)setPerspectiveEnabled:(BOOL)a3
+- (void)setPerspectiveEnabled:(BOOL)enabled
 {
-  if (self->_perspectiveEnabled != a3)
+  if (self->_perspectiveEnabled != enabled)
   {
-    self->_perspectiveEnabled = a3;
+    self->_perspectiveEnabled = enabled;
     [(PBFPosterGalleryShadowContainerView *)self _updateZPositions];
   }
 
@@ -216,8 +216,8 @@
   v3 = MEMORY[0x277CD9DE8];
   v4 = *(MEMORY[0x277CD9DE8] + 88);
   perspectiveEnabled = self->_perspectiveEnabled;
-  v6 = [(PBFShadowMetricsProviding *)self->_shadowView layer];
-  v7 = v6;
+  layer = [(PBFShadowMetricsProviding *)self->_shadowView layer];
+  v7 = layer;
   v8 = -80.0;
   if (perspectiveEnabled)
   {
@@ -235,12 +235,12 @@
     v4 = -0.002;
   }
 
-  [v6 setZPosition:v8];
+  [layer setZPosition:v8];
 
-  v10 = [(UIView *)self->_contentView layer];
-  [v10 setZPosition:v9];
+  layer2 = [(UIView *)self->_contentView layer];
+  [layer2 setZPosition:v9];
 
-  v11 = [(PBFPosterGalleryShadowContainerView *)self layer];
+  layer3 = [(PBFPosterGalleryShadowContainerView *)self layer];
   v12 = *(v3 + 48);
   v15[2] = *(v3 + 32);
   v15[3] = v12;
@@ -253,7 +253,7 @@
   v14 = *(v3 + 112);
   v18 = *(v3 + 96);
   v19 = v14;
-  [v11 setTransform:v15];
+  [layer3 setTransform:v15];
 
   [(PBFPosterGalleryShadowContainerView *)self setNeedsLayout];
 }

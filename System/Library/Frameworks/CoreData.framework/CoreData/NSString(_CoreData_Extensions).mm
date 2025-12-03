@@ -6,9 +6,9 @@
 
 - (uint64_t)_caseInsensitiveNumericCompare:()_CoreData_Extensions
 {
-  v5 = [a1 length];
+  v5 = [self length];
 
-  return [a1 compare:a3 options:65 range:{0, v5}];
+  return [self compare:a3 options:65 range:{0, v5}];
 }
 
 @end

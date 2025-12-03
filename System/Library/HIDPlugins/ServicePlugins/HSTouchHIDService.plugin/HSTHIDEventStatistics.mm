@@ -1,9 +1,9 @@
 @interface HSTHIDEventStatistics
 - (HSTHIDEventStatistics)init;
 - (id)stats;
-- (void)_doUpdateStat:(id)a3;
+- (void)_doUpdateStat:(id)stat;
 - (void)_drainCurrentWindow;
-- (void)handleHIDEvents:(id)a3;
+- (void)handleHIDEvents:(id)events;
 @end
 
 @implementation HSTHIDEventStatistics
@@ -89,11 +89,11 @@
   return v2;
 }
 
-- (void)handleHIDEvents:(id)a3
+- (void)handleHIDEvents:(id)events
 {
-  v16 = a3;
-  v5 = v16[1];
-  for (i = v16[2]; v5 != i; ++v5)
+  eventsCopy = events;
+  v5 = eventsCopy[1];
+  for (i = eventsCopy[2]; v5 != i; ++v5)
   {
     v6 = *v5;
     objc_opt_class();
@@ -138,17 +138,17 @@
   }
 }
 
-- (void)_doUpdateStat:(id)a3
+- (void)_doUpdateStat:(id)stat
 {
-  v4 = a3;
-  v5 = [v4 type];
-  ++self->_eventCount[v5];
+  statCopy = stat;
+  type = [statCopy type];
+  ++self->_eventCount[type];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v4 children];
-  v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [statCopy children];
+  v7 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
     v8 = *v11;
@@ -159,7 +159,7 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         [(HSTHIDEventStatistics *)self _doUpdateStat:*(*(&v10 + 1) + 8 * v9)];
@@ -167,7 +167,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

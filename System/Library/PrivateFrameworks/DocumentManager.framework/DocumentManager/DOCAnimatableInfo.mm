@@ -1,15 +1,15 @@
 @interface DOCAnimatableInfo
 - (CGRect)sourceFrame;
-- (DOCAnimatableInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DOCAnimatableInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DOCAnimatableInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -24,22 +24,22 @@
   return v5;
 }
 
-- (DOCAnimatableInfo)initWithCoder:(id)a3
+- (DOCAnimatableInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = DOCAnimatableInfo;
   v5 = [(DOCAnimatableInfo *)&v18 init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_sourceContextId);
-    v5->_sourceContextId = [v4 decodeInt32ForKey:v6];
+    v5->_sourceContextId = [coderCopy decodeInt32ForKey:v6];
 
     v7 = NSStringFromSelector(sel_sourceLayerRenderId);
-    v5->_sourceLayerRenderId = [v4 decodeInt64ForKey:v7];
+    v5->_sourceLayerRenderId = [coderCopy decodeInt64ForKey:v7];
 
     v8 = NSStringFromSelector(sel_sourceFrame);
-    [v4 decodeCGRectForKey:v8];
+    [coderCopy decodeCGRectForKey:v8];
     v5->_sourceFrame.origin.x = v9;
     v5->_sourceFrame.origin.y = v10;
     v5->_sourceFrame.size.width = v11;
@@ -47,7 +47,7 @@
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector(sel_sourcePath);
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     sourcePath = v5->_sourcePath;
     v5->_sourcePath = v15;
   }
@@ -55,23 +55,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceContextId = self->_sourceContextId;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_sourceContextId);
-  [v5 encodeInt32:sourceContextId forKey:v6];
+  [coderCopy encodeInt32:sourceContextId forKey:v6];
 
   sourceLayerRenderId = self->_sourceLayerRenderId;
   v8 = NSStringFromSelector(sel_sourceLayerRenderId);
-  [v5 encodeInt64:sourceLayerRenderId forKey:v8];
+  [coderCopy encodeInt64:sourceLayerRenderId forKey:v8];
 
   v9 = NSStringFromSelector(sel_sourceFrame);
-  [v5 encodeCGRect:v9 forKey:{self->_sourceFrame.origin.x, self->_sourceFrame.origin.y, self->_sourceFrame.size.width, self->_sourceFrame.size.height}];
+  [coderCopy encodeCGRect:v9 forKey:{self->_sourceFrame.origin.x, self->_sourceFrame.origin.y, self->_sourceFrame.size.width, self->_sourceFrame.size.height}];
 
   sourcePath = self->_sourcePath;
   v11 = NSStringFromSelector(sel_sourcePath);
-  [v5 encodeObject:sourcePath forKey:v11];
+  [coderCopy encodeObject:sourcePath forKey:v11];
 }
 
 - (CGRect)sourceFrame

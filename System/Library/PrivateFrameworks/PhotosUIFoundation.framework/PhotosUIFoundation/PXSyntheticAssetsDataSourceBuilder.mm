@@ -2,61 +2,61 @@
 - (NSArray)assetCollections;
 - (NSArray)assetsBySection;
 - (PXSyntheticAssetsDataSourceBuilder)init;
-- (void)appendDisplayAssetSectionWithCount:(int64_t)a3 assetCollection:(id)a4 assetBlock:(id)a5;
-- (void)appendDisplayAssetsWithCount:(int64_t)a3 assetBlock:(id)a4;
+- (void)appendDisplayAssetSectionWithCount:(int64_t)count assetCollection:(id)collection assetBlock:(id)block;
+- (void)appendDisplayAssetsWithCount:(int64_t)count assetBlock:(id)block;
 @end
 
 @implementation PXSyntheticAssetsDataSourceBuilder
 
-- (void)appendDisplayAssetsWithCount:(int64_t)a3 assetBlock:(id)a4
+- (void)appendDisplayAssetsWithCount:(int64_t)count assetBlock:(id)block
 {
-  v15 = a4;
-  if (a3 <= 0)
+  blockCopy = block;
+  if (count <= 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSyntheticAssetsDataSourceBuilder.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSyntheticAssetsDataSourceBuilder.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"count > 0"}];
   }
 
-  v7 = [(NSMutableArray *)self->_mutableAssetsBySection lastObject];
-  if (!v7)
+  lastObject = [(NSMutableArray *)self->_mutableAssetsBySection lastObject];
+  if (!lastObject)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXSyntheticAssetsDataSourceBuilder.m" lineNumber:51 description:@"Append may not be called before there are any sections"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSyntheticAssetsDataSourceBuilder.m" lineNumber:51 description:@"Append may not be called before there are any sections"];
   }
 
   v8 = [(NSMutableArray *)self->_mutableAssetsBySection count];
-  v9 = [v7 count];
-  if (a3 >= 1)
+  v9 = [lastObject count];
+  if (count >= 1)
   {
     v10 = v9;
     v11 = v8 - 1;
     do
     {
-      v12 = v15[2](v15, v11, v10);
-      [v7 addObject:v12];
+      v12 = blockCopy[2](blockCopy, v11, v10);
+      [lastObject addObject:v12];
 
       ++v10;
-      --a3;
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 }
 
-- (void)appendDisplayAssetSectionWithCount:(int64_t)a3 assetCollection:(id)a4 assetBlock:(id)a5
+- (void)appendDisplayAssetSectionWithCount:(int64_t)count assetCollection:(id)collection assetBlock:(id)block
 {
-  v18 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 && !v9)
+  collectionCopy = collection;
+  blockCopy = block;
+  v10 = blockCopy;
+  if (count && !blockCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXSyntheticAssetsDataSourceBuilder.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"assetBlock != nil || count == 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSyntheticAssetsDataSourceBuilder.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"assetBlock != nil || count == 0"}];
   }
 
   v11 = [(NSMutableArray *)self->_mutableAssetsBySection count];
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
-  if (a3 >= 1)
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count];
+  if (count >= 1)
   {
     v13 = 0;
     do
@@ -67,12 +67,12 @@
       ++v13;
     }
 
-    while (a3 != v13);
+    while (count != v13);
   }
 
   [(NSMutableArray *)self->_mutableAssetsBySection addObject:v12];
   mutableAssetCollections = self->_mutableAssetCollections;
-  v16 = [v18 copyWithZone:0];
+  v16 = [collectionCopy copyWithZone:0];
   [(NSMutableArray *)mutableAssetCollections addObject:v16];
 }
 

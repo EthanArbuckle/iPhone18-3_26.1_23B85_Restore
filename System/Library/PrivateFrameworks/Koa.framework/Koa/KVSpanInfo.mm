@@ -1,10 +1,10 @@
 @interface KVSpanInfo
-+ (id)spanInfoFromEncodedString:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSpanInfo:(id)a3;
-- (KVSpanInfo)initWithSpanInfo:(id)a3;
++ (id)spanInfoFromEncodedString:(id)string error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSpanInfo:(id)info;
+- (KVSpanInfo)initWithSpanInfo:(id)info;
 - (_NSRange)spanRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)getAliasTypesArray;
 @end
 
@@ -41,15 +41,15 @@
   return v7;
 }
 
-- (BOOL)isEqualToSpanInfo:(id)a3
+- (BOOL)isEqualToSpanInfo:(id)info
 {
-  v5 = a3;
-  v11 = v5;
+  infoCopy = info;
+  v11 = infoCopy;
   spanInfo = self->_spanInfo;
   v13 = spanInfo;
   if (!spanInfo)
   {
-    v3 = objc_msgSend_spanInfo(v5, v6, v7, v8, v9, v10);
+    v3 = objc_msgSend_spanInfo(infoCopy, v6, v7, v8, v9, v10);
     if (!v3)
     {
       isEqual = 1;
@@ -74,16 +74,16 @@ LABEL_8:
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToSpanInfo = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToSpanInfo = objc_msgSend_isEqualToSpanInfo_(self, v6, v5, v7, v8, v9);
   }
@@ -96,11 +96,11 @@ LABEL_8:
   return isEqualToSpanInfo;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9);
-  v15 = objc_msgSend_copyWithZone_(self->_spanInfo, v11, a3, v12, v13, v14);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9);
+  v15 = objc_msgSend_copyWithZone_(self->_spanInfo, v11, zone, v12, v13, v14);
   v16 = v10[1];
   v10[1] = v15;
 
@@ -115,24 +115,24 @@ LABEL_8:
   return result;
 }
 
-- (KVSpanInfo)initWithSpanInfo:(id)a3
+- (KVSpanInfo)initWithSpanInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = KVSpanInfo;
   v6 = [(KVSpanInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_spanInfo, a3);
+    objc_storeStrong(&v6->_spanInfo, info);
   }
 
   return v7;
 }
 
-+ (id)spanInfoFromEncodedString:(id)a3 error:(id *)a4
++ (id)spanInfoFromEncodedString:(id)string error:(id *)error
 {
-  v6 = objc_msgSend_spanInfoFromEncodedString_error_(KVEncodedSpanInfo, a2, a3, a4, v4, v5);
+  v6 = objc_msgSend_spanInfoFromEncodedString_error_(KVEncodedSpanInfo, a2, string, error, v4, v5);
 
   return v6;
 }

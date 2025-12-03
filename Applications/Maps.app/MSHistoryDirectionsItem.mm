@@ -8,16 +8,16 @@
 - (NSArray)waypoints;
 - (id)routeInformationSource;
 - (int64_t)transportType;
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6;
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item;
 @end
 
 @implementation MSHistoryDirectionsItem
 
-- (void)ifSearch:(id)a3 ifRoute:(id)a4 ifPlaceDisplay:(id)a5 ifTransitLineItem:(id)a6
+- (void)ifSearch:(id)search ifRoute:(id)route ifPlaceDisplay:(id)display ifTransitLineItem:(id)item
 {
-  if (a4)
+  if (route)
   {
-    (*(a4 + 2))(a4, self);
+    (*(route + 2))(route, self);
   }
 }
 
@@ -30,90 +30,90 @@
 
 - (GEOCyclingOptions)cyclingOptions
 {
-  v2 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-  v3 = [v2 cyclingOptions];
+  routeRequestStorage = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+  cyclingOptions = [routeRequestStorage cyclingOptions];
 
-  return v3;
+  return cyclingOptions;
 }
 
 - (GEOWalkingOptions)walkingOptions
 {
-  v2 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-  v3 = [v2 walkingOptions];
+  routeRequestStorage = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+  walkingOptions = [routeRequestStorage walkingOptions];
 
-  return v3;
+  return walkingOptions;
 }
 
 - (GEOTransitOptions)transitOptions
 {
-  v2 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-  v3 = [v2 transitOptions];
+  routeRequestStorage = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+  transitOptions = [routeRequestStorage transitOptions];
 
-  return v3;
+  return transitOptions;
 }
 
 - (GEOAutomobileOptions)automobileOptions
 {
-  v2 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-  v3 = [v2 automobileOptions];
+  routeRequestStorage = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+  automobileOptions = [routeRequestStorage automobileOptions];
 
-  return v3;
+  return automobileOptions;
 }
 
 - (NSArray)waypoints
 {
-  v2 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-  v3 = [v2 waypoints];
+  routeRequestStorage = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+  waypoints = [routeRequestStorage waypoints];
 
-  return v3;
+  return waypoints;
 }
 
 - (GEOComposedWaypoint)endWaypoint
 {
-  v3 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-  v4 = [v3 destinationRouteData];
+  routeRequestStorage = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+  destinationRouteData = [routeRequestStorage destinationRouteData];
 
-  if (v4)
+  if (destinationRouteData)
   {
-    v5 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:v4];
-    v6 = [v5 buildRoute];
+    v5 = [[GEORouteBuilder_PersistentData alloc] initWithPersistentData:destinationRouteData];
+    buildRoute = [v5 buildRoute];
 
-    v7 = [[GEOComposedWaypointToRoute alloc] initWithRoute:v6];
+    lastObject = [[GEOComposedWaypointToRoute alloc] initWithRoute:buildRoute];
   }
 
   else
   {
-    v6 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-    v8 = [v6 waypoints];
-    v7 = [v8 lastObject];
+    buildRoute = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+    waypoints = [buildRoute waypoints];
+    lastObject = [waypoints lastObject];
   }
 
-  return v7;
+  return lastObject;
 }
 
 - (GEOComposedWaypoint)startWaypoint
 {
-  v3 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-  v4 = [v3 waypoints];
-  if ([v4 count] == 2)
+  routeRequestStorage = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+  waypoints = [routeRequestStorage waypoints];
+  if ([waypoints count] == 2)
   {
-    v5 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-    v6 = [v5 waypoints];
-    v7 = [v6 firstObject];
+    routeRequestStorage2 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+    waypoints2 = [routeRequestStorage2 waypoints];
+    firstObject = [waypoints2 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
 - (int64_t)transportType
 {
-  v2 = [(MSHistoryDirectionsItem *)self routeRequestStorage];
-  v3 = [v2 transportType] - 1;
+  routeRequestStorage = [(MSHistoryDirectionsItem *)self routeRequestStorage];
+  v3 = [routeRequestStorage transportType] - 1;
   if (v3 > 5)
   {
     v4 = 1;

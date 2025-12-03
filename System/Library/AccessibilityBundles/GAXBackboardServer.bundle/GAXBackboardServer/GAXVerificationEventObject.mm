@@ -6,13 +6,13 @@
 
 - (NSString)eventName
 {
-  v3 = [(GAXVerificationEventObject *)self event];
-  switch(v3)
+  event = [(GAXVerificationEventObject *)self event];
+  switch(event)
   {
     case 0uLL:
       [(GAXVerificationEventObject *)self event];
       _AXAssert();
-      v3 = 0;
+      event = 0;
       break;
     case 1uLL:
       v4 = GAXVerificationEventRelaunchAppForGuidedAccessInitObject;
@@ -71,13 +71,13 @@
     case 0x13uLL:
       v4 = GAXVerificationEventDidStartAutonomousSingleAppModeObject;
 LABEL_22:
-      v3 = v4;
+      event = v4;
       break;
     default:
       break;
   }
 
-  return v3;
+  return event;
 }
 
 @end

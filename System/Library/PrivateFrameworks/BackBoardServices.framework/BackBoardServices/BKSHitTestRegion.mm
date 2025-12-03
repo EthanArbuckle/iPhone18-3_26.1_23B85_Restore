@@ -1,16 +1,16 @@
 @interface BKSHitTestRegion
-- (BKSHitTestRegion)initWithCoder:(id)a3;
-- (BKSHitTestRegion)initWithRect:(CGRect)a3 exclusiveTouchSubRect:(CGRect)a4;
-- (BOOL)isEqual:(id)a3;
+- (BKSHitTestRegion)initWithCoder:(id)coder;
+- (BKSHitTestRegion)initWithRect:(CGRect)rect exclusiveTouchSubRect:(CGRect)subRect;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)_exclusiveTouchNormalizedSubRectInReferenceSpace;
 - (CGRect)exclusiveTouchNormalizedSubRect;
 - (CGRect)rect;
-- (id)_initWithRect:(CGRect)a3 exclusiveTouchNormalizedSubRect:(CGRect)a4;
-- (int64_t)hitTestRegionLocationForPoint:(CGPoint)a3;
+- (id)_initWithRect:(CGRect)rect exclusiveTouchNormalizedSubRect:(CGRect)subRect;
+- (int64_t)hitTestRegionLocationForPoint:(CGPoint)point;
 - (unint64_t)hash;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setExclusiveTouchNormalizedSubRect:(CGRect)a3;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithCoder:(id)coder;
+- (void)setExclusiveTouchNormalizedSubRect:(CGRect)rect;
 @end
 
 @implementation BKSHitTestRegion
@@ -65,17 +65,17 @@
   return result;
 }
 
-- (BKSHitTestRegion)initWithCoder:(id)a3
+- (BKSHitTestRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_rect"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_rect"];
   [v5 bs_CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_exclusiveTouchNormalizedSubRect"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_exclusiveTouchNormalizedSubRect"];
 
   [v14 bs_CGRectValue];
   v16 = v15;
@@ -86,31 +86,31 @@
   return [(BKSHitTestRegion *)self _initWithRect:v7 exclusiveTouchNormalizedSubRect:v9, v11, v13, v16, v18, v20, v22];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696B098];
   x = self->_rect.origin.x;
   y = self->_rect.origin.y;
   width = self->_rect.size.width;
   height = self->_rect.size.height;
-  v9 = a3;
+  coderCopy = coder;
   v10 = [v4 bs_valueWithCGRect:{x, y, width, height}];
-  [v9 encodeObject:v10 forKey:@"_rect"];
+  [coderCopy encodeObject:v10 forKey:@"_rect"];
 
   v11 = [MEMORY[0x1E696B098] bs_valueWithCGRect:{self->_exclusiveTouchNormalizedSubRect.origin.x, self->_exclusiveTouchNormalizedSubRect.origin.y, self->_exclusiveTouchNormalizedSubRect.size.width, self->_exclusiveTouchNormalizedSubRect.size.height}];
-  [v9 encodeObject:v11 forKey:@"_exclusiveTouchNormalizedSubRect"];
+  [coderCopy encodeObject:v11 forKey:@"_exclusiveTouchNormalizedSubRect"];
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E6F47C78;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 
@@ -144,23 +144,23 @@ id __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke(uint64_t a1)
   return [v4 appendRect:v12 withName:{v8, v9, v10, v11}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && CGRectEqualToRect(self->_rect, *(v4 + 8)) && CGRectEqualToRect(self->_exclusiveTouchNormalizedSubRect, *(v4 + 40));
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && CGRectEqualToRect(self->_rect, *(equalCopy + 8)) && CGRectEqualToRect(self->_exclusiveTouchNormalizedSubRect, *(equalCopy + 40));
 
   return v5;
 }
 
-- (void)setExclusiveTouchNormalizedSubRect:(CGRect)a3
+- (void)setExclusiveTouchNormalizedSubRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v42 = *MEMORY[0x1E69E9840];
-  if (!CGRectEqualToRect(a3, self->_exclusiveTouchNormalizedSubRect))
+  if (!CGRectEqualToRect(rect, self->_exclusiveTouchNormalizedSubRect))
   {
     if (!BSFloatGreaterThanOrEqualToFloat() || (BSFloatLessThanOrEqualToFloat() & 1) == 0)
     {
@@ -175,7 +175,7 @@ id __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke(uint64_t a1)
         v32 = 2114;
         v33 = v17;
         v34 = 2048;
-        v35 = self;
+        selfCopy4 = self;
         v36 = 2114;
         v37 = @"BKSHitTestRegion.m";
         v38 = 1024;
@@ -204,7 +204,7 @@ id __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke(uint64_t a1)
         v32 = 2114;
         v33 = v21;
         v34 = 2048;
-        v35 = self;
+        selfCopy4 = self;
         v36 = 2114;
         v37 = @"BKSHitTestRegion.m";
         v38 = 1024;
@@ -233,7 +233,7 @@ id __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke(uint64_t a1)
         v32 = 2114;
         v33 = v25;
         v34 = 2048;
-        v35 = self;
+        selfCopy4 = self;
         v36 = 2114;
         v37 = @"BKSHitTestRegion.m";
         v38 = 1024;
@@ -262,7 +262,7 @@ id __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke(uint64_t a1)
         v32 = 2114;
         v33 = v29;
         v34 = 2048;
-        v35 = self;
+        selfCopy4 = self;
         v36 = 2114;
         v37 = @"BKSHitTestRegion.m";
         v38 = 1024;
@@ -295,11 +295,11 @@ id __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)hitTestRegionLocationForPoint:(CGPoint)a3
+- (int64_t)hitTestRegionLocationForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  if (!CGRectContainsPoint(self->_rect, a3))
+  y = point.y;
+  x = point.x;
+  if (!CGRectContainsPoint(self->_rect, point))
   {
     return 0;
   }
@@ -317,16 +317,16 @@ id __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_initWithRect:(CGRect)a3 exclusiveTouchNormalizedSubRect:(CGRect)a4
+- (id)_initWithRect:(CGRect)rect exclusiveTouchNormalizedSubRect:(CGRect)subRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = subRect.size.height;
+  width = subRect.size.width;
+  y = subRect.origin.y;
+  x = subRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   v15.receiver = self;
   v15.super_class = BKSHitTestRegion;
   v12 = [(BKSHitTestRegion *)&v15 init];
@@ -343,16 +343,16 @@ id __46__BKSHitTestRegion_appendDescriptionToStream___block_invoke(uint64_t a1)
   return v13;
 }
 
-- (BKSHitTestRegion)initWithRect:(CGRect)a3 exclusiveTouchSubRect:(CGRect)a4
+- (BKSHitTestRegion)initWithRect:(CGRect)rect exclusiveTouchSubRect:(CGRect)subRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = subRect.size.height;
+  width = subRect.size.width;
+  y = subRect.origin.y;
+  x = subRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v11 = rect.origin.x;
   v15.receiver = self;
   v15.super_class = BKSHitTestRegion;
   v12 = [(BKSHitTestRegion *)&v15 init];

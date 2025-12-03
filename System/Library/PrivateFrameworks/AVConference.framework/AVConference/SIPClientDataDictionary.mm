@@ -1,8 +1,8 @@
 @interface SIPClientDataDictionary
 - (SIPClientDataDictionary)init;
-- (id)copyObjectForKey:(id)a3 p2pID:(unsigned int)a4;
+- (id)copyObjectForKey:(id)key p2pID:(unsigned int)d;
 - (void)dealloc;
-- (void)setObject:(id)a3 forKey:(id)a4 forP2PID:(unsigned int)a5;
+- (void)setObject:(id)object forKey:(id)key forP2PID:(unsigned int)d;
 @end
 
 @implementation SIPClientDataDictionary
@@ -47,21 +47,21 @@
   [(SIPClientDataDictionary *)&v5 dealloc];
 }
 
-- (id)copyObjectForKey:(id)a3 p2pID:(unsigned int)a4
+- (id)copyObjectForKey:(id)key p2pID:(unsigned int)d
 {
-  v4 = *&a4;
+  v4 = *&d;
   objc_sync_enter(self);
   v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v4];
-  v8 = [-[NSMutableDictionary objectForKeyedSubscript:](self->allCalls objectForKeyedSubscript:{v7), "objectForKeyedSubscript:", a3}];
+  v8 = [-[NSMutableDictionary objectForKeyedSubscript:](self->allCalls objectForKeyedSubscript:{v7), "objectForKeyedSubscript:", key}];
 
   v9 = v8;
   objc_sync_exit(self);
   return v8;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 forP2PID:(unsigned int)a5
+- (void)setObject:(id)object forKey:(id)key forP2PID:(unsigned int)d
 {
-  v5 = *&a5;
+  v5 = *&d;
   objc_sync_enter(self);
   v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:v5];
   v10 = [(NSMutableDictionary *)self->allCalls objectForKeyedSubscript:v9];
@@ -71,14 +71,14 @@
     [(NSMutableDictionary *)self->allCalls setObject:v10 forKeyedSubscript:v9];
   }
 
-  if (a3)
+  if (object)
   {
-    [v10 setObject:a3 forKeyedSubscript:a4];
+    [v10 setObject:object forKeyedSubscript:key];
   }
 
   else
   {
-    [v10 removeObjectForKey:a4];
+    [v10 removeObjectForKey:key];
   }
 
   objc_sync_exit(self);

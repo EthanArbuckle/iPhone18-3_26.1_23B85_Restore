@@ -1,47 +1,47 @@
 @interface REBayesianMLModel
-- (BOOL)_loadModelFromURL:(id)a3 error:(id *)a4;
-- (BOOL)_saveModelToURL:(id)a3 includeDebugData:(BOOL)a4 error:(id *)a5;
-- (REBayesianMLModel)initWithFeatureSet:(id)a3 priorMean:(float)a4 modelVarianceEpsilon:(float)a5;
+- (BOOL)_loadModelFromURL:(id)l error:(id *)error;
+- (BOOL)_saveModelToURL:(id)l includeDebugData:(BOOL)data error:(id *)error;
+- (REBayesianMLModel)initWithFeatureSet:(id)set priorMean:(float)mean modelVarianceEpsilon:(float)epsilon;
 - (REExportedTable)content;
-- (id)_predictWithFeatures:(id)a3;
+- (id)_predictWithFeatures:(id)features;
 - (void)_clearModel;
-- (void)_loadFeatureVector:(void *)a3 fromFeatureMap:(id)a4;
-- (void)_trainWithFeatures:(id)a3 positiveEvent:(id)a4;
+- (void)_loadFeatureVector:(void *)vector fromFeatureMap:(id)map;
+- (void)_trainWithFeatures:(id)features positiveEvent:(id)event;
 - (void)logCoreAnalyticsMetrics;
 @end
 
 @implementation REBayesianMLModel
 
-- (REBayesianMLModel)initWithFeatureSet:(id)a3 priorMean:(float)a4 modelVarianceEpsilon:(float)a5
+- (REBayesianMLModel)initWithFeatureSet:(id)set priorMean:(float)mean modelVarianceEpsilon:(float)epsilon
 {
-  v8 = a3;
+  setCopy = set;
   v19.receiver = self;
   v19.super_class = REBayesianMLModel;
-  *&v9 = a4;
-  *&v10 = a5;
-  v11 = [(REMLModel *)&v19 initWithFeatureSet:v8 priorMean:v9 modelVarianceEpsilon:v10];
+  *&v9 = mean;
+  *&v10 = epsilon;
+  v11 = [(REMLModel *)&v19 initWithFeatureSet:setCopy priorMean:v9 modelVarianceEpsilon:v10];
   if (v11)
   {
-    v12 = [v8 count];
+    v12 = [setCopy count];
     v13 = v12;
     v11->_numberOfFeatures = v12;
     [(REMLModel *)v11 priorMean];
     v15 = v14;
-    v16 = [(REBayesianMLModel *)v11 _maxFeatureCoordinates];
+    _maxFeatureCoordinates = [(REBayesianMLModel *)v11 _maxFeatureCoordinates];
     [(REMLModel *)v11 varianceEpsilon];
-    BayesianModel::InitializeFeatures(&v11->_model, 12585182, v13, v15, v16, v17);
+    BayesianModel::InitializeFeatures(&v11->_model, 12585182, v13, v15, _maxFeatureCoordinates, v17);
   }
 
   return v11;
 }
 
-- (void)_trainWithFeatures:(id)a3 positiveEvent:(id)a4
+- (void)_trainWithFeatures:(id)features positiveEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  featuresCopy = features;
+  eventCopy = event;
   std::vector<unsigned long long>::vector[abi:ne200100](&__p, self->_numberOfFeatures);
-  [(REBayesianMLModel *)self _loadFeatureVector:&__p fromFeatureMap:v6];
-  if (!BayesianModel::Train(&self->_model, &__p, [v7 BOOLValue]))
+  [(REBayesianMLModel *)self _loadFeatureVector:&__p fromFeatureMap:featuresCopy];
+  if (!BayesianModel::Train(&self->_model, &__p, [eventCopy BOOLValue]))
   {
     v8 = RELogForDomain(4);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -53,9 +53,9 @@
     v9 = v16;
     [(REMLModel *)self priorMean];
     v12 = v11;
-    v13 = [(REBayesianMLModel *)self _maxFeatureCoordinates];
+    _maxFeatureCoordinates = [(REBayesianMLModel *)self _maxFeatureCoordinates];
     [(REMLModel *)self varianceEpsilon];
-    BayesianModel::InitializeFeatures(&self->_model, 12585182, (v9 - v10) >> 3, v12, v13, v14);
+    BayesianModel::InitializeFeatures(&self->_model, 12585182, (v9 - v10) >> 3, v12, _maxFeatureCoordinates, v14);
   }
 
   if (__p)
@@ -65,18 +65,18 @@
   }
 }
 
-- (id)_predictWithFeatures:(id)a3
+- (id)_predictWithFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   std::vector<unsigned long long>::vector[abi:ne200100](&v48, self->_numberOfFeatures);
-  [(REBayesianMLModel *)self _loadFeatureVector:&v48 fromFeatureMap:v4];
+  [(REBayesianMLModel *)self _loadFeatureVector:&v48 fromFeatureMap:featuresCopy];
   v47 = 0;
   v45 = 0u;
   v46 = 0u;
   BayesianModel::Predict(&self->_model, &v48, &v45, 0.5);
-  v5 = [(REMLModel *)self metricsRecorder];
-  v6 = [(REMLModel *)self metricsInteraction];
-  RESubmitBayesianModelPredicted(&v45, v5, v6);
+  metricsRecorder = [(REMLModel *)self metricsRecorder];
+  metricsInteraction = [(REMLModel *)self metricsInteraction];
+  RESubmitBayesianModelPredicted(&v45, metricsRecorder, metricsInteraction);
 
   v7 = v45;
   if ([(REMLModel *)self allowsExploreExploit])
@@ -123,7 +123,7 @@
     v39[4] = self;
     v40 = v17;
     v18 = v17;
-    [v4 enumerateInt64FeaturesUsingIndexedBlock:v18 emptyFeatureBlock:v39];
+    [featuresCopy enumerateInt64FeaturesUsingIndexedBlock:v18 emptyFeatureBlock:v39];
 
     if (v42)
     {
@@ -166,7 +166,7 @@
     v23[3] = &unk_2785FDED0;
     v24 = v20;
     v21 = v20;
-    [v4 enumerateInt64FeaturesUsingIndexedBlock:v23 emptyFeatureBlock:v21];
+    [featuresCopy enumerateInt64FeaturesUsingIndexedBlock:v23 emptyFeatureBlock:v21];
 
     if (__p)
     {
@@ -258,21 +258,21 @@ uint64_t __42__REBayesianMLModel__predictWithFeatures___block_invoke_2(uint64_t 
   return MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)_loadFeatureVector:(void *)a3 fromFeatureMap:(id)a4
+- (void)_loadFeatureVector:(void *)vector fromFeatureMap:(id)map
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__REBayesianMLModel__loadFeatureVector_fromFeatureMap___block_invoke;
   v5[3] = &unk_2785FDEF8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = vector;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __55__REBayesianMLModel__loadFeatureVector_fromFeatureMap___block_invoke_2;
   v4[3] = &unk_2785FDF20;
   v4[4] = self;
-  v4[5] = a3;
-  [a4 enumerateInt64FeaturesUsingIndexedBlock:v5 emptyFeatureBlock:v4];
+  v4[5] = vector;
+  [map enumerateInt64FeaturesUsingIndexedBlock:v5 emptyFeatureBlock:v4];
 }
 
 void __55__REBayesianMLModel__loadFeatureVector_fromFeatureMap___block_invoke(uint64_t a1, void *a2, unint64_t a3, unint64_t a4)
@@ -328,15 +328,15 @@ void __55__REBayesianMLModel__loadFeatureVector_fromFeatureMap___block_invoke_2(
   }
 }
 
-- (BOOL)_saveModelToURL:(id)a3 includeDebugData:(BOOL)a4 error:(id *)a5
+- (BOOL)_saveModelToURL:(id)l includeDebugData:(BOOL)data error:(id *)error
 {
-  v5 = a4;
+  dataCopy = data;
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  lCopy = l;
   MEMORY[0x22AABBC00](__sb);
-  v8 = [v7 path];
-  v9 = v8;
-  [v8 UTF8String];
+  path = [lCopy path];
+  v9 = path;
+  [path UTF8String];
   std::filebuf::open();
 
   v10 = v18;
@@ -348,7 +348,7 @@ void __55__REBayesianMLModel__loadFeatureVector_fromFeatureMap___block_invoke_2(
     std::ios_base::init(&v14, __sb);
     v15 = 0;
     v16 = -1;
-    BayesianModel::SaveModel(&self->_model, &v13, v5);
+    BayesianModel::SaveModel(&self->_model, &v13, dataCopy);
     std::ostream::flush();
     std::ostream::~ostream();
   }
@@ -360,15 +360,15 @@ void __55__REBayesianMLModel__loadFeatureVector_fromFeatureMap___block_invoke_2(
   return v10 != 0;
 }
 
-- (BOOL)_loadModelFromURL:(id)a3 error:(id *)a4
+- (BOOL)_loadModelFromURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:v6 encoding:4 error:a4];
+  lCopy = l;
+  v7 = [MEMORY[0x277CCACA8] stringWithContentsOfURL:lCopy encoding:4 error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 UTF8String];
-    v10 = strlen(v9);
+    uTF8String = [v7 UTF8String];
+    v10 = strlen(uTF8String);
     if (v10 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -383,7 +383,7 @@ void __55__REBayesianMLModel__loadFeatureVector_fromFeatureMap___block_invoke_2(
     *(&__dst.__r_.__value_.__s + 23) = v10;
     if (v10)
     {
-      memmove(&__dst, v9, v10);
+      memmove(&__dst, uTF8String, v10);
     }
 
     __dst.__r_.__value_.__s.__data_[v11] = 0;
@@ -407,17 +407,17 @@ void __55__REBayesianMLModel__loadFeatureVector_fromFeatureMap___block_invoke_2(
   numberOfFeatures = self->_numberOfFeatures;
   [(REMLModel *)self priorMean];
   v5 = v4;
-  v6 = [(REBayesianMLModel *)self _maxFeatureCoordinates];
+  _maxFeatureCoordinates = [(REBayesianMLModel *)self _maxFeatureCoordinates];
   [(REMLModel *)self varianceEpsilon];
 
-  BayesianModel::InitializeFeatures(&self->_model, 12585182, numberOfFeatures, v5, v6, v7);
+  BayesianModel::InitializeFeatures(&self->_model, 12585182, numberOfFeatures, v5, _maxFeatureCoordinates, v7);
 }
 
 - (void)logCoreAnalyticsMetrics
 {
-  v4 = [(REMLModel *)self metricsRecorder];
-  v3 = [(REMLModel *)self metricsInteraction];
-  RESubmitBayesianModelTrained(&self->_model, v4, v3);
+  metricsRecorder = [(REMLModel *)self metricsRecorder];
+  metricsInteraction = [(REMLModel *)self metricsInteraction];
+  RESubmitBayesianModelTrained(&self->_model, metricsRecorder, metricsInteraction);
 }
 
 - (REExportedTable)content

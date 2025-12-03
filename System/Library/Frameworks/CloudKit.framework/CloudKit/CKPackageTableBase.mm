@@ -1,8 +1,8 @@
 @interface CKPackageTableBase
-- (id)entryWithIndex:(unint64_t)a3 error:(id *)a4;
-- (id)fetchEntryBatchWithStartingIndex:(unint64_t)a3 error:(id *)a4;
+- (id)entryWithIndex:(unint64_t)index error:(id *)error;
+- (id)fetchEntryBatchWithStartingIndex:(unint64_t)index error:(id *)error;
 - (id)finishInitializing;
-- (id)insertObject:(id)a3;
+- (id)insertObject:(id)object;
 @end
 
 @implementation CKPackageTableBase
@@ -41,9 +41,9 @@
   return v10;
 }
 
-- (id)insertObject:(id)a3
+- (id)insertObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_primaryKey(self, v5, v6);
   v8 = objc_opt_class();
   v10 = objc_msgSend_propertyInfo_(v8, v9, v7);
@@ -54,19 +54,19 @@
   v16[4] = self;
   v17 = v7;
   v19 = v10;
-  v18 = v4;
-  v11 = v4;
+  v18 = objectCopy;
+  v11 = objectCopy;
   v12 = v7;
   v14 = objc_msgSend_performInTransaction_(self, v13, v16);
 
   return v14;
 }
 
-- (id)entryWithIndex:(unint64_t)a3 error:(id *)a4
+- (id)entryWithIndex:(unint64_t)index error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v23 = @"ENTRYINDEX";
-  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, a3);
+  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, index);
   v24[0] = v6;
   v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v7, v24, &v23, 1);
 
@@ -83,10 +83,10 @@
   v16 = v15;
   if (v15)
   {
-    if (a4)
+    if (error)
     {
       v17 = v15;
-      *a4 = v16;
+      *error = v16;
     }
 
     v14 = 0;
@@ -97,7 +97,7 @@
   return v14;
 }
 
-- (id)fetchEntryBatchWithStartingIndex:(unint64_t)a3 error:(id *)a4
+- (id)fetchEntryBatchWithStartingIndex:(unint64_t)index error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -107,7 +107,7 @@
   v25 = sub_1883EF578;
   v26 = 0;
   v27 = @"STARTINDEX";
-  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, a3);
+  v6 = objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x1E696AD98], a2, index);
   v28[0] = v6;
   v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v7, v28, &v27, 1);
 
@@ -121,10 +121,10 @@
   v20 = &v21;
   v11 = objc_msgSend_performInTransaction_(self, v10, v18);
   v12 = v11;
-  if (a4 && v11)
+  if (error && v11)
   {
     v13 = v11;
-    *a4 = v12;
+    *error = v12;
     v14 = v22[5];
     v22[5] = 0;
   }

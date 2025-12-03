@@ -2,26 +2,26 @@
 - (id)description;
 - (id)expressionAsString;
 - (id)valueAsString;
-- (void)setKey:(id)a3;
-- (void)setStringValue:(id)a3;
+- (void)setKey:(id)key;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation IKCSSMediaQueryExpression
 
-- (void)setKey:(id)a3
+- (void)setKey:(id)key
 {
-  v4 = [a3 ik_sharedInstance];
+  ik_sharedInstance = [key ik_sharedInstance];
   key = self->_key;
-  self->_key = v4;
+  self->_key = ik_sharedInstance;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v4 = [a3 ik_sharedInstance];
+  ik_sharedInstance = [value ik_sharedInstance];
   stringValue = self->_stringValue;
-  self->_stringValue = v4;
+  self->_stringValue = ik_sharedInstance;
 
   MEMORY[0x2821F96F8]();
 }
@@ -37,8 +37,8 @@
   {
     v3 = MEMORY[0x277CCACA8];
     key = self->_key;
-    v5 = [(IKCSSMediaQueryExpression *)self valueAsString];
-    v2 = [v3 stringWithFormat:@"%@:%@", key, v5];
+    valueAsString = [(IKCSSMediaQueryExpression *)self valueAsString];
+    v2 = [v3 stringWithFormat:@"%@:%@", key, valueAsString];
   }
 
   return v2;

@@ -1,39 +1,39 @@
 @interface FPUIActionExtensionViewController
-- (void)_configureWithDomainIdentifier:(id)a3;
-- (void)_prepareAuthenticationUsingServerURL:(id)a3;
-- (void)_prepareAuthenticationUsingURL:(id)a3;
-- (void)_prepareForActionWithIdentifier:(id)a3 items:(id)a4;
-- (void)_prepareForError:(id)a3;
+- (void)_configureWithDomainIdentifier:(id)identifier;
+- (void)_prepareAuthenticationUsingServerURL:(id)l;
+- (void)_prepareAuthenticationUsingURL:(id)l;
+- (void)_prepareForActionWithIdentifier:(id)identifier items:(id)items;
+- (void)_prepareForError:(id)error;
 - (void)_prepareForServerCreation;
-- (void)_setBrowserUserInterfaceStyle:(unint64_t)a3;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)prepareAuthenticationUsingServerURL:(id)a3;
+- (void)_setBrowserUserInterfaceStyle:(unint64_t)style;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)prepareAuthenticationUsingServerURL:(id)l;
 @end
 
 @implementation FPUIActionExtensionViewController
 
-- (void)_setBrowserUserInterfaceStyle:(unint64_t)a3
+- (void)_setBrowserUserInterfaceStyle:(unint64_t)style
 {
-  if (self->_browserUserInterfaceStyle != a3)
+  if (self->_browserUserInterfaceStyle != style)
   {
-    self->_browserUserInterfaceStyle = a3;
+    self->_browserUserInterfaceStyle = style;
     [(FPUIActionExtensionViewController *)self _browserUserInterfaceStyleDidChange];
   }
 }
 
-- (void)_prepareForActionWithIdentifier:(id)a3 items:(id)a4
+- (void)_prepareForActionWithIdentifier:(id)identifier items:(id)items
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  itemsCopy = items;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__FPUIActionExtensionViewController__prepareForActionWithIdentifier_items___block_invoke;
   v10[3] = &unk_278A514B0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = itemsCopy;
+  v8 = itemsCopy;
+  v9 = identifierCopy;
   CallBlockOnMainThread(v10);
 }
 
@@ -47,42 +47,42 @@
   CallBlockOnMainThread(v2);
 }
 
-- (void)_prepareAuthenticationUsingURL:(id)a3
+- (void)_prepareAuthenticationUsingURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__FPUIActionExtensionViewController__prepareAuthenticationUsingURL___block_invoke;
   v6[3] = &unk_278A512D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = lCopy;
+  v5 = lCopy;
   CallBlockOnMainThread(v6);
 }
 
-- (void)_prepareAuthenticationUsingServerURL:(id)a3
+- (void)_prepareAuthenticationUsingServerURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __74__FPUIActionExtensionViewController__prepareAuthenticationUsingServerURL___block_invoke;
   v6[3] = &unk_278A512D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = lCopy;
+  v5 = lCopy;
   CallBlockOnMainThread(v6);
 }
 
-- (void)_configureWithDomainIdentifier:(id)a3
+- (void)_configureWithDomainIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__FPUIActionExtensionViewController__configureWithDomainIdentifier___block_invoke;
   v6[3] = &unk_278A512D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   CallBlockOnMainThread(v6);
 }
 
@@ -93,16 +93,16 @@ void __68__FPUIActionExtensionViewController__configureWithDomainIdentifier___bl
   [v2 setDomainIdentifier:v1];
 }
 
-- (void)_prepareForError:(id)a3
+- (void)_prepareForError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__FPUIActionExtensionViewController__prepareForError___block_invoke;
   v6[3] = &unk_278A512D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   CallBlockOnMainThread(v6);
 }
 
@@ -124,16 +124,16 @@ uint64_t __54__FPUIActionExtensionViewController__prepareForError___block_invoke
   }
 }
 
-- (void)prepareAuthenticationUsingServerURL:(id)a3
+- (void)prepareAuthenticationUsingServerURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__FPUIActionExtensionViewController_prepareAuthenticationUsingServerURL___block_invoke;
   v6[3] = &unk_278A512D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = lCopy;
+  v5 = lCopy;
   CallBlockOnMainThread(v6);
 }
 
@@ -144,14 +144,14 @@ void __73__FPUIActionExtensionViewController_prepareAuthenticationUsingServerURL
   [v2 setInitialURL:v1];
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6.receiver = self;
   v6.super_class = FPUIActionExtensionViewController;
-  [(FPUIActionExtensionViewController *)&v6 beginRequestWithExtensionContext:v4];
+  [(FPUIActionExtensionViewController *)&v6 beginRequestWithExtensionContext:contextCopy];
   v5 = gExtensionContext;
-  gExtensionContext = v4;
+  gExtensionContext = contextCopy;
 }
 
 @end

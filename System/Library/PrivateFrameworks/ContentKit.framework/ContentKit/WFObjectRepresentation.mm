@@ -1,45 +1,45 @@
 @interface WFObjectRepresentation
-+ (id)object:(id)a3 named:(id)a4;
-+ (id)objects:(id)a3 named:(id)a4;
++ (id)object:(id)object named:(id)named;
++ (id)objects:(id)objects named:(id)named;
 - (BOOL)isEncodable;
 - (NSString)wfName;
-- (WFObjectRepresentation)initWithCoder:(id)a3;
-- (WFObjectRepresentation)initWithObject:(id)a3 named:(id)a4;
+- (WFObjectRepresentation)initWithCoder:(id)coder;
+- (WFObjectRepresentation)initWithObject:(id)object named:(id)named;
 - (WFObjectType)wfType;
-- (id)copyWithName:(id)a3 zone:(_NSZone *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithName:(id)name zone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFObjectRepresentation
 
-+ (id)objects:(id)a3 named:(id)a4
++ (id)objects:(id)objects named:(id)named
 {
-  v6 = a4;
+  namedCopy = named;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__WFObjectRepresentation_objects_named___block_invoke;
   v10[3] = &unk_278344F08;
-  v11 = v6;
-  v12 = a1;
-  v7 = v6;
-  v8 = [a3 if_map:v10];
+  v11 = namedCopy;
+  selfCopy = self;
+  v7 = namedCopy;
+  v8 = [objects if_map:v10];
 
   return v8;
 }
 
-+ (id)object:(id)a3 named:(id)a4
++ (id)object:(id)object named:(id)named
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithObject:v7 named:v6];
+  namedCopy = named;
+  objectCopy = object;
+  v8 = [[self alloc] initWithObject:objectCopy named:namedCopy];
 
   return v8;
 }
 
 - (BOOL)isEncodable
 {
-  v2 = [(WFObjectRepresentation *)self object];
-  if ([v2 conformsToProtocol:&unk_282F7EDE0] && objc_msgSend(objc_opt_class(), "supportsSecureCoding"))
+  object = [(WFObjectRepresentation *)self object];
+  if ([object conformsToProtocol:&unk_282F7EDE0] && objc_msgSend(objc_opt_class(), "supportsSecureCoding"))
   {
     v3 = objc_opt_class();
     v4 = v3 != objc_opt_class();
@@ -53,48 +53,48 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   if ([(WFObjectRepresentation *)self isEncodable])
   {
     wfName = self->_wfName;
     if (wfName)
     {
-      [v6 encodeObject:wfName forKey:@"wfName"];
+      [coderCopy encodeObject:wfName forKey:@"wfName"];
     }
 
-    v5 = [(WFObjectRepresentation *)self object];
-    [v6 encodeObject:v5 forKey:@"object"];
+    object = [(WFObjectRepresentation *)self object];
+    [coderCopy encodeObject:object forKey:@"object"];
   }
 }
 
-- (WFObjectRepresentation)initWithCoder:(id)a3
+- (WFObjectRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 allowedClasses];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"object"];
+  coderCopy = coder;
+  allowedClasses = [coderCopy allowedClasses];
+  v6 = [coderCopy decodeObjectOfClasses:allowedClasses forKey:@"object"];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"wfName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wfName"];
 
   v8 = [(WFObjectRepresentation *)self initWithObject:v6 named:v7];
   return v8;
 }
 
-- (id)copyWithName:(id)a3 zone:(_NSZone *)a4
+- (id)copyWithName:(id)name zone:(_NSZone *)zone
 {
-  v6 = a3;
-  v7 = [objc_opt_class() allocWithZone:a4];
-  v8 = [(WFObjectRepresentation *)self object];
-  if (v6)
+  nameCopy = name;
+  v7 = [objc_opt_class() allocWithZone:zone];
+  object = [(WFObjectRepresentation *)self object];
+  if (nameCopy)
   {
-    v9 = [v7 initWithObject:v8 named:v6];
+    v9 = [v7 initWithObject:object named:nameCopy];
   }
 
   else
   {
-    v10 = [(WFObjectRepresentation *)self wfName];
-    v9 = [v7 initWithObject:v8 named:v10];
+    wfName = [(WFObjectRepresentation *)self wfName];
+    v9 = [v7 initWithObject:object named:wfName];
   }
 
   return v9;
@@ -102,10 +102,10 @@
 
 - (WFObjectType)wfType
 {
-  v2 = [(WFObjectRepresentation *)self object];
-  v3 = [v2 wfType];
+  object = [(WFObjectRepresentation *)self object];
+  wfType = [object wfType];
 
-  return v3;
+  return wfType;
 }
 
 - (NSString)wfName
@@ -113,26 +113,26 @@
   wfName = self->_wfName;
   if (wfName)
   {
-    v3 = wfName;
+    wfName = wfName;
   }
 
   else
   {
-    v4 = [(WFObjectRepresentation *)self object];
-    v3 = [v4 wfName];
+    object = [(WFObjectRepresentation *)self object];
+    wfName = [object wfName];
   }
 
-  return v3;
+  return wfName;
 }
 
-- (WFObjectRepresentation)initWithObject:(id)a3 named:(id)a4
+- (WFObjectRepresentation)initWithObject:(id)object named:(id)named
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  objectCopy = object;
+  namedCopy = named;
+  if (!objectCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFObjectRepresentation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"object"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFObjectRepresentation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"object"}];
   }
 
   v10 = [(WFObjectRepresentation *)self init];
@@ -142,11 +142,11 @@
     if (objc_opt_isKindOfClass())
     {
 
-      v9 = 0;
+      namedCopy = 0;
     }
 
-    objc_storeStrong(&v10->_object, a3);
-    v11 = [v9 copy];
+    objc_storeStrong(&v10->_object, object);
+    v11 = [namedCopy copy];
     wfName = v10->_wfName;
     v10->_wfName = v11;
 

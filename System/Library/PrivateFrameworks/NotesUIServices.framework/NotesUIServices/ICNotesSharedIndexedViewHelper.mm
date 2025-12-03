@@ -1,17 +1,17 @@
 @interface ICNotesSharedIndexedViewHelper
-+ (id)makeNoteSearchResultViewWithNote:(id)a3 attachmentURL:(id)a4;
++ (id)makeNoteSearchResultViewWithNote:(id)note attachmentURL:(id)l;
 - (ICNotesSharedIndexedViewHelper)init;
 @end
 
 @implementation ICNotesSharedIndexedViewHelper
 
-+ (id)makeNoteSearchResultViewWithNote:(id)a3 attachmentURL:(id)a4
++ (id)makeNoteSearchResultViewWithNote:(id)note attachmentURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FC15070, &qword_25C7AB768);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  if (a4)
+  if (l)
   {
     sub_25C7AA4EC();
     v9 = sub_25C7AA4FC();

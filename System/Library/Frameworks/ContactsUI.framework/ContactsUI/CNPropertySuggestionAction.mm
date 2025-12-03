@@ -1,12 +1,12 @@
 @interface CNPropertySuggestionAction
-- (BOOL)_confirmOrReject:(BOOL)a3;
-- (BOOL)_confirmOrRejectDonation:(BOOL)a3;
-- (BOOL)_confirmOrRejectSuggestion:(BOOL)a3;
-- (id)dataSourceWithPropertyItem:(id)a3;
+- (BOOL)_confirmOrReject:(BOOL)reject;
+- (BOOL)_confirmOrRejectDonation:(BOOL)donation;
+- (BOOL)_confirmOrRejectSuggestion:(BOOL)suggestion;
+- (id)dataSourceWithPropertyItem:(id)item;
 - (void)confirm;
-- (void)performActionForItem:(id)a3 sender:(id)a4;
+- (void)performActionForItem:(id)item sender:(id)sender;
 - (void)reject;
-- (void)setSelectedChoice:(int64_t)a3;
+- (void)setSelectedChoice:(int64_t)choice;
 @end
 
 @implementation CNPropertySuggestionAction
@@ -14,31 +14,31 @@
 - (void)reject
 {
   [(CNPropertySuggestionAction *)self _confirmOrReject:0];
-  v3 = [(CNPropertyAction *)self propertyItem];
-  [v3 rejectSuggestion];
+  propertyItem = [(CNPropertyAction *)self propertyItem];
+  [propertyItem rejectSuggestion];
 }
 
 - (void)confirm
 {
   [(CNPropertySuggestionAction *)self _confirmOrReject:1];
-  v3 = [(CNPropertyAction *)self propertyItem];
-  [v3 confirmSuggestion];
+  propertyItem = [(CNPropertyAction *)self propertyItem];
+  [propertyItem confirmSuggestion];
 }
 
-- (BOOL)_confirmOrRejectDonation:(BOOL)a3
+- (BOOL)_confirmOrRejectDonation:(BOOL)donation
 {
   v4 = objc_alloc_init(MEMORY[0x1E6996448]);
   v5 = objc_alloc_init(MEMORY[0x1E69967D0]);
-  v6 = [(CNPropertyAction *)self propertyItem];
-  v7 = [v6 labeledValue];
-  v8 = [v7 valueOrigin];
-  v9 = [v8 donationIdentifier];
-  v10 = [v5 errorOnlyCompletionHandlerAdapter];
-  [v4 rejectValueWithDonationIdentifier:v9 completionHandler:v10];
+  propertyItem = [(CNPropertyAction *)self propertyItem];
+  labeledValue = [propertyItem labeledValue];
+  valueOrigin = [labeledValue valueOrigin];
+  donationIdentifier = [valueOrigin donationIdentifier];
+  errorOnlyCompletionHandlerAdapter = [v5 errorOnlyCompletionHandlerAdapter];
+  [v4 rejectValueWithDonationIdentifier:donationIdentifier completionHandler:errorOnlyCompletionHandlerAdapter];
 
-  v11 = [v5 future];
+  future = [v5 future];
   v19 = 0;
-  v12 = [v11 result:&v19];
+  v12 = [future result:&v19];
   v13 = v19;
 
   if (v13)
@@ -49,28 +49,28 @@
   return v13 == 0;
 }
 
-- (BOOL)_confirmOrRejectSuggestion:(BOOL)a3
+- (BOOL)_confirmOrRejectSuggestion:(BOOL)suggestion
 {
-  v3 = a3;
-  v5 = [(CNContactAction *)self delegate];
-  v6 = [v5 contactViewCache];
-  v7 = [v6 contactStore];
+  suggestionCopy = suggestion;
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
 
   v8 = objc_alloc_init(MEMORY[0x1E695CFA8]);
-  v9 = [(CNPropertyAction *)self propertyItem];
-  v10 = [v9 labeledValue];
-  if (v3)
+  propertyItem = [(CNPropertyAction *)self propertyItem];
+  labeledValue = [propertyItem labeledValue];
+  if (suggestionCopy)
   {
-    [v8 confirmSuggestion:v10];
+    [v8 confirmSuggestion:labeledValue];
   }
 
   else
   {
-    [v8 rejectSuggestion:v10];
+    [v8 rejectSuggestion:labeledValue];
   }
 
   v19 = 0;
-  v11 = [v7 executeSaveRequest:v8 error:&v19];
+  v11 = [contactStore executeSaveRequest:v8 error:&v19];
   v12 = v19;
   v17 = v12;
   if ((v11 & 1) == 0)
@@ -81,49 +81,49 @@
   return v11;
 }
 
-- (BOOL)_confirmOrReject:(BOOL)a3
+- (BOOL)_confirmOrReject:(BOOL)reject
 {
-  v3 = a3;
-  v5 = [(CNPropertyAction *)self propertyItem];
-  v6 = [v5 labeledValue];
-  v7 = [v6 valueOrigin];
+  rejectCopy = reject;
+  propertyItem = [(CNPropertyAction *)self propertyItem];
+  labeledValue = [propertyItem labeledValue];
+  valueOrigin = [labeledValue valueOrigin];
 
-  if (v7)
+  if (valueOrigin)
   {
 
-    return [(CNPropertySuggestionAction *)self _confirmOrRejectDonation:v3];
+    return [(CNPropertySuggestionAction *)self _confirmOrRejectDonation:rejectCopy];
   }
 
   else
   {
 
-    return [(CNPropertySuggestionAction *)self _confirmOrRejectSuggestion:v3];
+    return [(CNPropertySuggestionAction *)self _confirmOrRejectSuggestion:rejectCopy];
   }
 }
 
-- (void)setSelectedChoice:(int64_t)a3
+- (void)setSelectedChoice:(int64_t)choice
 {
-  self->_selectedChoice = a3;
-  v4 = [(CNContactAction *)self delegate];
-  [v4 actionDidFinish:self];
+  self->_selectedChoice = choice;
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 
-  v5 = [(CNPropertySuggestionAction *)self suggestionViewController];
-  v6 = [v5 navigationController];
-  v7 = [v6 popViewControllerAnimated:1];
+  suggestionViewController = [(CNPropertySuggestionAction *)self suggestionViewController];
+  navigationController = [suggestionViewController navigationController];
+  v7 = [navigationController popViewControllerAnimated:1];
 
   self->_selectedChoice = 0;
 }
 
-- (id)dataSourceWithPropertyItem:(id)a3
+- (id)dataSourceWithPropertyItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNContactAction *)self delegate];
-  v6 = [v5 contactViewCache];
-  v7 = [v6 contactStore];
+  itemCopy = item;
+  delegate = [(CNContactAction *)self delegate];
+  contactViewCache = [delegate contactViewCache];
+  contactStore = [contactViewCache contactStore];
 
-  v8 = [v4 labeledValue];
+  labeledValue = [itemCopy labeledValue];
   v19 = 0;
-  v9 = [v7 originForSuggestion:v8 error:&v19];
+  v9 = [contactStore originForSuggestion:labeledValue error:&v19];
   v10 = v19;
 
   if (v10)
@@ -139,22 +139,22 @@
   else
   {
     v16 = [CNContactSuggestionViewControllerLabeledValueDataSource alloc];
-    v17 = [v4 labeledValue];
-    v15 = [(CNContactSuggestionViewControllerLabeledValueDataSource *)v16 initWithLabeledValue:v17];
+    labeledValue2 = [itemCopy labeledValue];
+    v15 = [(CNContactSuggestionViewControllerLabeledValueDataSource *)v16 initWithLabeledValue:labeledValue2];
   }
 
   return v15;
 }
 
-- (void)performActionForItem:(id)a3 sender:(id)a4
+- (void)performActionForItem:(id)item sender:(id)sender
 {
-  v5 = a3;
-  v6 = [(CNPropertySuggestionAction *)self dataSourceWithPropertyItem:v5];
+  itemCopy = item;
+  v6 = [(CNPropertySuggestionAction *)self dataSourceWithPropertyItem:itemCopy];
   v7 = [CNContactSuggestionViewController viewControllerWithDataSource:v6];
   [(CNPropertySuggestionAction *)self setSuggestionViewController:v7];
 
-  v8 = [(CNContactAction *)self delegate];
-  v13 = [v8 action:self cellForPropertyItem:v5 sender:self];
+  delegate = [(CNContactAction *)self delegate];
+  v13 = [delegate action:self cellForPropertyItem:itemCopy sender:self];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -162,15 +162,15 @@
     [v13 setShouldShowTransportButtons:1];
   }
 
-  v9 = [(CNPropertySuggestionAction *)self suggestionViewController];
-  [v9 setPropertyCell:v13];
+  suggestionViewController = [(CNPropertySuggestionAction *)self suggestionViewController];
+  [suggestionViewController setPropertyCell:v13];
 
-  v10 = [(CNPropertySuggestionAction *)self suggestionViewController];
-  [v10 setAction:self];
+  suggestionViewController2 = [(CNPropertySuggestionAction *)self suggestionViewController];
+  [suggestionViewController2 setAction:self];
 
-  v11 = [(CNContactAction *)self delegate];
-  v12 = [(CNPropertySuggestionAction *)self suggestionViewController];
-  [v11 action:self pushViewController:v12 sender:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  suggestionViewController3 = [(CNPropertySuggestionAction *)self suggestionViewController];
+  [delegate2 action:self pushViewController:suggestionViewController3 sender:self];
 }
 
 @end

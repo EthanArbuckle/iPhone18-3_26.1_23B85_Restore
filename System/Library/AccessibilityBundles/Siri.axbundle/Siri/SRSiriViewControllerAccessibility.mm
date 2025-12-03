@@ -1,33 +1,33 @@
 @interface SRSiriViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)siriDidDeactivateWithCompletion:(id)a3;
-- (void)siriSessionDidTransitionFromState:(int64_t)a3 toState:(int64_t)a4 event:(int64_t)a5 machAbsoluteTransitionTime:(double)a6;
-- (void)speechSynthesisDidStartSpeakingWithIdentifier:(id)a3;
-- (void)speechSynthesisDidStopSpeakingWithIdentifier:(id)a3 queueIsEmpty:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)siriDidDeactivateWithCompletion:(id)completion;
+- (void)siriSessionDidTransitionFromState:(int64_t)state toState:(int64_t)toState event:(int64_t)event machAbsoluteTransitionTime:(double)time;
+- (void)speechSynthesisDidStartSpeakingWithIdentifier:(id)identifier;
+- (void)speechSynthesisDidStopSpeakingWithIdentifier:(id)identifier queueIsEmpty:(BOOL)empty;
 @end
 
 @implementation SRSiriViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SRSiriViewController" hasInstanceMethod:@"speechSynthesisDidStopSpeakingWithIdentifier:queueIsEmpty:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"SRSiriViewController" hasInstanceMethod:@"speechSynthesisDidStartSpeakingWithIdentifier:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SRSiriViewController" hasInstanceMethod:@"siriDidDeactivateWithCompletion:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"SRSiriViewController" hasInstanceMethod:@"siriSessionDidTransitionFromState:toState:event:machAbsoluteTransitionTime:" withFullSignature:{"v", "q", "q", "q", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SRSiriViewController" hasInstanceMethod:@"speechSynthesisDidStopSpeakingWithIdentifier:queueIsEmpty:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"SRSiriViewController" hasInstanceMethod:@"speechSynthesisDidStartSpeakingWithIdentifier:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SRSiriViewController" hasInstanceMethod:@"siriDidDeactivateWithCompletion:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"SRSiriViewController" hasInstanceMethod:@"siriSessionDidTransitionFromState:toState:event:machAbsoluteTransitionTime:" withFullSignature:{"v", "q", "q", "q", "d", 0}];
 }
 
-- (void)siriDidDeactivateWithCompletion:(id)a3
+- (void)siriDidDeactivateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __69__SRSiriViewControllerAccessibility_siriDidDeactivateWithCompletion___block_invoke;
   v7[3] = &unk_29F2F8968;
-  v8 = v4;
+  v8 = completionCopy;
   v6.receiver = self;
   v6.super_class = SRSiriViewControllerAccessibility;
-  v5 = v4;
+  v5 = completionCopy;
   [(SRSiriViewControllerAccessibility *)&v6 siriDidDeactivateWithCompletion:v7];
 }
 
@@ -46,39 +46,39 @@ void __69__SRSiriViewControllerAccessibility_siriDidDeactivateWithCompletion___b
   UIAccessibilityPostNotification(v3, 0);
 }
 
-- (void)speechSynthesisDidStartSpeakingWithIdentifier:(id)a3
+- (void)speechSynthesisDidStartSpeakingWithIdentifier:(id)identifier
 {
   v3.receiver = self;
   v3.super_class = SRSiriViewControllerAccessibility;
-  [(SRSiriViewControllerAccessibility *)&v3 speechSynthesisDidStartSpeakingWithIdentifier:a3];
+  [(SRSiriViewControllerAccessibility *)&v3 speechSynthesisDidStartSpeakingWithIdentifier:identifier];
   UIAccessibilityPostNotification(0x1644u, 0);
 }
 
-- (void)speechSynthesisDidStopSpeakingWithIdentifier:(id)a3 queueIsEmpty:(BOOL)a4
+- (void)speechSynthesisDidStopSpeakingWithIdentifier:(id)identifier queueIsEmpty:(BOOL)empty
 {
-  v4 = a4;
+  emptyCopy = empty;
   v5.receiver = self;
   v5.super_class = SRSiriViewControllerAccessibility;
-  [(SRSiriViewControllerAccessibility *)&v5 speechSynthesisDidStopSpeakingWithIdentifier:a3 queueIsEmpty:?];
-  if (v4)
+  [(SRSiriViewControllerAccessibility *)&v5 speechSynthesisDidStopSpeakingWithIdentifier:identifier queueIsEmpty:?];
+  if (emptyCopy)
   {
     UIAccessibilityPostNotification(0x1645u, 0);
   }
 }
 
-- (void)siriSessionDidTransitionFromState:(int64_t)a3 toState:(int64_t)a4 event:(int64_t)a5 machAbsoluteTransitionTime:(double)a6
+- (void)siriSessionDidTransitionFromState:(int64_t)state toState:(int64_t)toState event:(int64_t)event machAbsoluteTransitionTime:(double)time
 {
   v9.receiver = self;
   v9.super_class = SRSiriViewControllerAccessibility;
-  [(SRSiriViewControllerAccessibility *)&v9 siriSessionDidTransitionFromState:a3 toState:a4 event:a5 machAbsoluteTransitionTime:a6];
-  if (a4 == 1)
+  [(SRSiriViewControllerAccessibility *)&v9 siriSessionDidTransitionFromState:state toState:toState event:event machAbsoluteTransitionTime:time];
+  if (toState == 1)
   {
     v8 = 5702;
   }
 
   else
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }

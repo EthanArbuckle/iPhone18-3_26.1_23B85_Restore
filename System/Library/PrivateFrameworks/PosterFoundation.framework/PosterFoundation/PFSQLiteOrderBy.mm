@@ -1,27 +1,27 @@
 @interface PFSQLiteOrderBy
 - (PFSQLiteOrderBy)init;
-- (PFSQLiteOrderBy)initWithColumn:(id)a3 comparison:(int64_t)a4;
-- (id)orderByColumn:(id)a3 comparison:(int64_t)a4;
-- (id)pf_toSQLWithBindings:(unint64_t *)a3;
-- (int64_t)comparisonForColumn:(id)a3;
+- (PFSQLiteOrderBy)initWithColumn:(id)column comparison:(int64_t)comparison;
+- (id)orderByColumn:(id)column comparison:(int64_t)comparison;
+- (id)pf_toSQLWithBindings:(unint64_t *)bindings;
+- (int64_t)comparisonForColumn:(id)column;
 @end
 
 @implementation PFSQLiteOrderBy
 
-- (PFSQLiteOrderBy)initWithColumn:(id)a3 comparison:(int64_t)a4
+- (PFSQLiteOrderBy)initWithColumn:(id)column comparison:(int64_t)comparison
 {
-  v7 = a3;
-  if (!v7)
+  columnCopy = column;
+  if (!columnCopy)
   {
     [PFSQLiteOrderBy initWithColumn:a2 comparison:?];
   }
 
-  if (!a4)
+  if (!comparison)
   {
     [PFSQLiteOrderBy initWithColumn:a2 comparison:?];
   }
 
-  v8 = v7;
+  v8 = columnCopy;
   v17.receiver = self;
   v17.super_class = PFSQLiteOrderBy;
   v9 = [(PFSQLiteOrderBy *)&v17 init];
@@ -32,7 +32,7 @@
     v9->_columns = v10;
 
     v12 = MEMORY[0x1E695DFA0];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:comparison];
     v14 = [v12 orderedSetWithObject:v13];
     comparison = v9->_comparison;
     v9->_comparison = v14;
@@ -48,41 +48,41 @@
   return 0;
 }
 
-- (int64_t)comparisonForColumn:(id)a3
+- (int64_t)comparisonForColumn:(id)column
 {
-  v3 = [(NSMutableOrderedSet *)self->_comparison objectAtIndex:[(NSMutableOrderedSet *)self->_columns indexOfObject:a3]];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSMutableOrderedSet *)self->_comparison objectAtIndex:[(NSMutableOrderedSet *)self->_columns indexOfObject:column]];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)orderByColumn:(id)a3 comparison:(int64_t)a4
+- (id)orderByColumn:(id)column comparison:(int64_t)comparison
 {
-  v7 = a3;
-  if (!v7)
+  columnCopy = column;
+  if (!columnCopy)
   {
     [PFSQLiteOrderBy orderByColumn:a2 comparison:?];
   }
 
-  if (!a4)
+  if (!comparison)
   {
     [PFSQLiteOrderBy orderByColumn:a2 comparison:?];
   }
 
-  v8 = v7;
-  [(NSMutableOrderedSet *)self->_columns addObject:v7];
+  v8 = columnCopy;
+  [(NSMutableOrderedSet *)self->_columns addObject:columnCopy];
   comparison = self->_comparison;
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:comparison];
   [(NSMutableOrderedSet *)comparison addObject:v10];
 
   return self;
 }
 
-- (id)pf_toSQLWithBindings:(unint64_t *)a3
+- (id)pf_toSQLWithBindings:(unint64_t *)bindings
 {
-  if (a3)
+  if (bindings)
   {
-    *a3 = 0;
+    *bindings = 0;
   }
 
   v4 = [MEMORY[0x1E696AD60] stringWithString:@"ORDER BY "];

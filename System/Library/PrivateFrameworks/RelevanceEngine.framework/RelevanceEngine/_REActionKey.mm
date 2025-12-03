@@ -1,32 +1,32 @@
 @interface _REActionKey
-- (BOOL)isEqual:(id)a3;
-- (_REActionKey)initWithIdentifier:(id)a3 actionType:(id)a4 relevanceProvidersHash:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (_REActionKey)initWithIdentifier:(id)identifier actionType:(id)type relevanceProvidersHash:(unint64_t)hash;
 @end
 
 @implementation _REActionKey
 
-- (_REActionKey)initWithIdentifier:(id)a3 actionType:(id)a4 relevanceProvidersHash:(unint64_t)a5
+- (_REActionKey)initWithIdentifier:(id)identifier actionType:(id)type relevanceProvidersHash:(unint64_t)hash
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = _REActionKey;
   v11 = [(_REActionKey *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_actionType, a4);
-    v12->_relevanceProvidersHash = a5;
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_actionType, type);
+    v12->_relevanceProvidersHash = hash;
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = v5->_identifier;
       v7 = self->_identifier;
       v8 = v7;

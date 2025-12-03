@@ -1,18 +1,18 @@
 @interface RAPRouteFeedbackDataSource
-+ (Class)_cellClassForItemType:(unint64_t)a3;
++ (Class)_cellClassForItemType:(unint64_t)type;
 - (NSArray)allItems;
 - (NSString)description;
-- (RAPRouteFeedbackDataSource)initWithRecording:(id)a3 traitCollection:(id)a4 delegate:(id)a5;
-- (id)_buildDataSourceForRoute:(id)a3 displayedStepIndices:(id)a4 missedStepIndex:(unint64_t)a5 includeOrigin:(BOOL)a6 includeDestination:(BOOL)a7;
+- (RAPRouteFeedbackDataSource)initWithRecording:(id)recording traitCollection:(id)collection delegate:(id)delegate;
+- (id)_buildDataSourceForRoute:(id)route displayedStepIndices:(id)indices missedStepIndex:(unint64_t)index includeOrigin:(BOOL)origin includeDestination:(BOOL)destination;
 - (id)_buildStepItems;
-- (id)_routeForStepItem:(id)a3;
-- (id)_stepItemForIndexPath:(id)a3;
-- (id)_userPathForStepItem:(id)a3;
+- (id)_routeForStepItem:(id)item;
+- (id)_stepItemForIndexPath:(id)path;
+- (id)_userPathForStepItem:(id)item;
 - (void)_setNeedsUpdateData;
 - (void)_setupRoutes;
 - (void)_updateData;
-- (void)setTraitCollection:(id)a3;
-- (void)setVehicle:(id)a3;
+- (void)setTraitCollection:(id)collection;
+- (void)setVehicle:(id)vehicle;
 @end
 
 @implementation RAPRouteFeedbackDataSource
@@ -48,14 +48,14 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(RAPDirectionsRecording *)self->_recording userPaths];
-  v5 = v4;
-  if (v4)
+  userPaths = [(RAPDirectionsRecording *)self->_recording userPaths];
+  v5 = userPaths;
+  if (userPaths)
   {
-    if ([v4 count])
+    if ([userPaths count])
     {
       v44 = v3;
-      v48 = self;
+      selfCopy = self;
       v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
       v49 = 0u;
       v50 = 0u;
@@ -126,7 +126,7 @@ LABEL_20:
           v20 = [NSString stringWithFormat:@"<%p> [%@]", v7, v19];
 
           v5 = v46;
-          self = v48;
+          self = selfCopy;
           v3 = v44;
           goto LABEL_23;
         }
@@ -143,11 +143,11 @@ LABEL_20:
 
 LABEL_23:
 
-  v21 = [(RAPRouteFeedbackDataSource *)self allItems];
-  v22 = v21;
-  if (v21)
+  allItems = [(RAPRouteFeedbackDataSource *)self allItems];
+  v22 = allItems;
+  if (allItems)
   {
-    if ([v21 count])
+    if ([allItems count])
     {
       v43 = v20;
       v45 = v3;
@@ -241,23 +241,23 @@ LABEL_42:
 LABEL_45:
 
   vehicle = self->_vehicle;
-  v39 = [(RAPRouteFeedbackDataSource *)self traitCollection];
-  v40 = [NSString stringWithFormat:@"<%@ %p: userPaths='%@', allItems='%@', vehicle: %@, traitCollection: %@>", v3, self, v20, v37, vehicle, v39];
+  traitCollection = [(RAPRouteFeedbackDataSource *)self traitCollection];
+  v40 = [NSString stringWithFormat:@"<%@ %p: userPaths='%@', allItems='%@', vehicle: %@, traitCollection: %@>", v3, self, v20, v37, vehicle, traitCollection];
 
   return v40;
 }
 
-- (id)_stepItemForIndexPath:(id)a3
+- (id)_stepItemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 != 1)
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section != 1)
   {
-    if (!v5)
+    if (!section)
     {
-      v6 = [(NSArray *)self->_concatenatedStepItems lastObject];
+      lastObject = [(NSArray *)self->_concatenatedStepItems lastObject];
 LABEL_6:
-      v8 = v6;
+      v8 = lastObject;
       goto LABEL_34;
     }
 
@@ -265,19 +265,19 @@ LABEL_6:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v36 = v4;
+      v36 = pathCopy;
       v37 = 2112;
-      v38 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "_stepItemForIndexPath: called with invalid section: %lu, dataSource: %@", buf, 0x16u);
     }
 
     goto LABEL_33;
   }
 
-  v7 = [v4 row];
+  v7 = [pathCopy row];
   if (v7 < [(NSArray *)self->_concatenatedStepItems count])
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_concatenatedStepItems, "objectAtIndexedSubscript:", [v4 row]);
+    lastObject = -[NSArray objectAtIndexedSubscript:](self->_concatenatedStepItems, "objectAtIndexedSubscript:", [pathCopy row]);
     goto LABEL_6;
   }
 
@@ -291,7 +291,7 @@ LABEL_6:
       if ([(NSArray *)v10 count])
       {
         v29 = v9;
-        v30 = v4;
+        v30 = pathCopy;
         v12 = [NSMutableArray arrayWithCapacity:[(NSArray *)v11 count]];
         v31 = 0u;
         v32 = 0u;
@@ -362,7 +362,7 @@ LABEL_29:
             v26 = [NSString stringWithFormat:@"<%p> [%@]", v13, v25];
 
             v9 = v29;
-            v4 = v30;
+            pathCopy = v30;
             v11 = v28;
             goto LABEL_32;
           }
@@ -380,9 +380,9 @@ LABEL_29:
 LABEL_32:
 
     *buf = 138412546;
-    v36 = v4;
+    v36 = pathCopy;
     v37 = 2112;
-    v38 = v26;
+    selfCopy = v26;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "_stepItemForIndexPath: called with invalid indexPath: %@, _concatenatedStepItems: %@", buf, 0x16u);
   }
 
@@ -416,8 +416,8 @@ LABEL_34:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) items];
-        [v3 addObjectsFromArray:v9];
+        items = [*(*(&v16 + 1) + 8 * i) items];
+        [v3 addObjectsFromArray:items];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -433,28 +433,28 @@ LABEL_34:
   v15 = v3;
   v10 = v3;
   [v10 enumerateObjectsUsingBlock:v14];
-  v11 = [v10 lastObject];
-  [v11 setShowsHairline:0];
+  lastObject = [v10 lastObject];
+  [lastObject setShowsHairline:0];
 
   v12 = [v10 copy];
 
   return v12;
 }
 
-- (void)setVehicle:(id)a3
+- (void)setVehicle:(id)vehicle
 {
-  v5 = a3;
+  vehicleCopy = vehicle;
   vehicle = self->_vehicle;
-  v7 = v5;
-  v8 = vehicle;
-  if (v7 | v8)
+  v7 = vehicleCopy;
+  vehicleCopy2 = vehicle;
+  if (v7 | vehicleCopy2)
   {
-    v9 = v8;
-    v10 = [v7 isEqual:v8];
+    v9 = vehicleCopy2;
+    v10 = [v7 isEqual:vehicleCopy2];
 
     if ((v10 & 1) == 0)
     {
-      objc_storeStrong(&self->_vehicle, a3);
+      objc_storeStrong(&self->_vehicle, vehicle);
       dataSources = self->_dataSources;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -466,11 +466,11 @@ LABEL_34:
   }
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   traitCollection = self->_traitCollection;
-  v7 = v5;
+  v7 = collectionCopy;
   v8 = traitCollection;
   if (v7 | v8)
   {
@@ -479,7 +479,7 @@ LABEL_34:
 
     if ((v10 & 1) == 0)
     {
-      objc_storeStrong(&self->_traitCollection, a3);
+      objc_storeStrong(&self->_traitCollection, collection);
       dataSources = self->_dataSources;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -496,9 +496,9 @@ LABEL_34:
   concatenatedStepItems = self->_concatenatedStepItems;
   if (!concatenatedStepItems)
   {
-    v4 = [(RAPRouteFeedbackDataSource *)self _buildStepItems];
+    _buildStepItems = [(RAPRouteFeedbackDataSource *)self _buildStepItems];
     v5 = self->_concatenatedStepItems;
-    self->_concatenatedStepItems = v4;
+    self->_concatenatedStepItems = _buildStepItems;
 
     concatenatedStepItems = self->_concatenatedStepItems;
   }
@@ -506,9 +506,9 @@ LABEL_34:
   return concatenatedStepItems;
 }
 
-- (id)_routeForStepItem:(id)a3
+- (id)_routeForStepItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -533,8 +533,8 @@ LABEL_34:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = [v10 items];
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v28 count:16];
+        items = [v10 items];
+        v12 = [items countByEnumeratingWithState:&v18 objects:v28 count:16];
         if (v12)
         {
           v13 = v12;
@@ -545,18 +545,18 @@ LABEL_34:
             {
               if (*v19 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(items);
               }
 
-              if (*(*(&v18 + 1) + 8 * j) == v4)
+              if (*(*(&v18 + 1) + 8 * j) == itemCopy)
               {
-                v16 = [v10 route];
+                route = [v10 route];
 
                 goto LABEL_20;
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v18 objects:v28 count:16];
+            v13 = [items countByEnumeratingWithState:&v18 objects:v28 count:16];
             if (v13)
             {
               continue;
@@ -577,23 +577,23 @@ LABEL_34:
   if (os_log_type_enabled(&v5->super, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v27 = v4;
+    v27 = itemCopy;
     _os_log_impl(&_mh_execute_header, &v5->super, OS_LOG_TYPE_FAULT, "Failed to find route for stepItem: %@", buf, 0xCu);
   }
 
-  v16 = 0;
+  route = 0;
 LABEL_20:
 
-  return v16;
+  return route;
 }
 
-- (id)_userPathForStepItem:(id)a3
+- (id)_userPathForStepItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = itemCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -607,7 +607,7 @@ LABEL_20:
 
     v7 = v6;
 
-    v8 = [v7 step];
+    step = [v7 step];
   }
 
   else
@@ -620,7 +620,7 @@ LABEL_24:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         LODWORD(v33) = 138412290;
-        *(&v33 + 4) = v4;
+        *(&v33 + 4) = itemCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to find a userPath for stepItem: %@", &v33, 0xCu);
       }
 
@@ -628,7 +628,7 @@ LABEL_24:
       goto LABEL_29;
     }
 
-    v9 = v4;
+    v9 = itemCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -642,10 +642,10 @@ LABEL_24:
 
     v7 = v10;
 
-    v8 = [v7 arrivalStep];
+    step = [v7 arrivalStep];
   }
 
-  v11 = v8;
+  v11 = step;
 
   if (!v11)
   {
@@ -669,8 +669,8 @@ LABEL_24:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [(RAPDirectionsRecording *)self->_recording userPaths];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v32 count:16];
+  userPaths = [(RAPDirectionsRecording *)self->_recording userPaths];
+  v15 = [userPaths countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v15)
   {
     v16 = *v24;
@@ -680,15 +680,15 @@ LABEL_24:
       {
         if (*v24 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(userPaths);
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
-        v19 = [v18 routeIndex];
-        if (*(*(&v33 + 1) + 24) == v19)
+        routeIndex = [v18 routeIndex];
+        if (*(*(&v33 + 1) + 24) == routeIndex)
         {
-          v20 = [v18 stepIndex];
-          if ([v13 stepIndex]== v20)
+          stepIndex = [v18 stepIndex];
+          if ([v13 stepIndex]== stepIndex)
           {
             v21 = v18;
             goto LABEL_28;
@@ -696,7 +696,7 @@ LABEL_24:
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v23 objects:v32 count:16];
+      v15 = [userPaths countByEnumeratingWithState:&v23 objects:v32 count:16];
       if (v15)
       {
         continue;
@@ -706,12 +706,12 @@ LABEL_24:
     }
   }
 
-  v14 = sub_100798874();
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+  userPaths = sub_100798874();
+  if (os_log_type_enabled(userPaths, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v31 = v4;
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_FAULT, "Failed to find selected userPath for stepItem: %@", buf, 0xCu);
+    v31 = itemCopy;
+    _os_log_impl(&_mh_execute_header, userPaths, OS_LOG_TYPE_FAULT, "Failed to find selected userPath for stepItem: %@", buf, 0xCu);
   }
 
   v21 = 0;
@@ -723,18 +723,18 @@ LABEL_29:
   return v21;
 }
 
-- (id)_buildDataSourceForRoute:(id)a3 displayedStepIndices:(id)a4 missedStepIndex:(unint64_t)a5 includeOrigin:(BOOL)a6 includeDestination:(BOOL)a7
+- (id)_buildDataSourceForRoute:(id)route displayedStepIndices:(id)indices missedStepIndex:(unint64_t)index includeOrigin:(BOOL)origin includeDestination:(BOOL)destination
 {
-  v7 = a3;
-  if (a3)
+  routeCopy = route;
+  if (route)
   {
     v10 = 66;
-    if (a6)
+    if (origin)
     {
       v10 = 67;
     }
 
-    if (a7)
+    if (destination)
     {
       v11 = v10 | 4;
     }
@@ -744,27 +744,27 @@ LABEL_29:
       v11 = v10;
     }
 
-    v12 = a4;
-    v13 = v7;
+    indicesCopy = indices;
+    v13 = routeCopy;
     v14 = [RouteStepListDataSource alloc];
-    v15 = [(RAPRouteFeedbackDataSource *)self traitCollection];
+    traitCollection = [(RAPRouteFeedbackDataSource *)self traitCollection];
     v16 = +[RouteStepListMetrics rapMetrics];
-    v7 = [(RouteStepListDataSource *)v14 initWithTraitCollection:v15 options:v11 metrics:v16 context:2];
+    routeCopy = [(RouteStepListDataSource *)v14 initWithTraitCollection:traitCollection options:v11 metrics:v16 context:2];
 
-    v17 = [(RAPRouteFeedbackDataSource *)self traitCollection];
-    [(RouteStepListDataSource *)v7 setTraitCollection:v17];
+    traitCollection2 = [(RAPRouteFeedbackDataSource *)self traitCollection];
+    [(RouteStepListDataSource *)routeCopy setTraitCollection:traitCollection2];
 
-    [(RouteStepListDataSource *)v7 setRoute:v13];
-    [(RouteStepListDataSource *)v7 setAllowedStepIndices:v12];
+    [(RouteStepListDataSource *)routeCopy setRoute:v13];
+    [(RouteStepListDataSource *)routeCopy setAllowedStepIndices:indicesCopy];
 
-    [(RouteStepListDataSource *)v7 setMissedStepIndex:a5];
-    v18 = [(RAPRouteFeedbackDataSource *)self vehicle];
-    [(RouteStepListDataSource *)v7 setVehicle:v18];
+    [(RouteStepListDataSource *)routeCopy setMissedStepIndex:index];
+    vehicle = [(RAPRouteFeedbackDataSource *)self vehicle];
+    [(RouteStepListDataSource *)routeCopy setVehicle:vehicle];
 
-    [(RouteStepListDataSource *)v7 setDelegate:self];
+    [(RouteStepListDataSource *)routeCopy setDelegate:self];
   }
 
-  return v7;
+  return routeCopy;
 }
 
 - (void)_setupRoutes
@@ -772,16 +772,16 @@ LABEL_29:
   recording = self->_recording;
   if (recording)
   {
-    v4 = [(RAPDirectionsRecording *)recording userPaths];
+    userPaths = [(RAPDirectionsRecording *)recording userPaths];
 
-    if (v4)
+    if (userPaths)
     {
       v5 = objc_opt_new();
       v6 = objc_opt_new();
       v7 = +[NSMapTable strongToStrongObjectsMapTable];
       v8 = +[NSMapTable strongToStrongObjectsMapTable];
-      v9 = [(RAPDirectionsRecording *)self->_recording userPaths];
-      v10 = [v9 sortedArrayUsingComparator:&stru_101622350];
+      userPaths2 = [(RAPDirectionsRecording *)self->_recording userPaths];
+      v10 = [userPaths2 sortedArrayUsingComparator:&stru_101622350];
 
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
@@ -789,14 +789,14 @@ LABEL_29:
       v35[3] = &unk_101622378;
       v11 = v6;
       v36 = v11;
-      v37 = self;
+      selfCopy = self;
       v12 = v7;
       v38 = v12;
       v13 = v8;
       v39 = v13;
       [v10 enumerateObjectsUsingBlock:v35];
-      v14 = [v11 allKeys];
-      v15 = [v14 sortedArrayUsingComparator:&stru_101622398];
+      allKeys = [v11 allKeys];
+      v15 = [allKeys sortedArrayUsingComparator:&stru_101622398];
 
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
@@ -805,7 +805,7 @@ LABEL_29:
       v29 = v11;
       v30 = v12;
       v31 = v13;
-      v32 = self;
+      selfCopy2 = self;
       v33 = v15;
       v34 = v5;
       v16 = v5;
@@ -871,24 +871,24 @@ LABEL_29:
   }
 }
 
-- (RAPRouteFeedbackDataSource)initWithRecording:(id)a3 traitCollection:(id)a4 delegate:(id)a5
+- (RAPRouteFeedbackDataSource)initWithRecording:(id)recording traitCollection:(id)collection delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  recordingCopy = recording;
+  collectionCopy = collection;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = RAPRouteFeedbackDataSource;
   v12 = [(RAPRouteFeedbackDataSource *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v11);
-    objc_storeStrong(&v13->_recording, a3);
-    objc_storeStrong(&v13->_traitCollection, a4);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_recording, recording);
+    objc_storeStrong(&v13->_traitCollection, collection);
     v14 = [MKMapItem alloc];
-    v15 = [(RAPDirectionsRecording *)v13->_recording endWaypoint];
-    v16 = [v15 placeMapItemStorage];
-    v17 = [v14 initWithGeoMapItem:v16 isPlaceHolderPlace:0];
+    endWaypoint = [(RAPDirectionsRecording *)v13->_recording endWaypoint];
+    placeMapItemStorage = [endWaypoint placeMapItemStorage];
+    v17 = [v14 initWithGeoMapItem:placeMapItemStorage isPlaceHolderPlace:0];
     [(RAPRouteFeedbackDataSource *)v13 setEndWaypointMapItem:v17];
 
     [(RAPRouteFeedbackDataSource *)v13 _setupRoutes];
@@ -897,9 +897,9 @@ LABEL_29:
   return v13;
 }
 
-+ (Class)_cellClassForItemType:(unint64_t)a3
++ (Class)_cellClassForItemType:(unint64_t)type
 {
-  if (a3 > 1)
+  if (type > 1)
   {
     v4 = 0;
   }

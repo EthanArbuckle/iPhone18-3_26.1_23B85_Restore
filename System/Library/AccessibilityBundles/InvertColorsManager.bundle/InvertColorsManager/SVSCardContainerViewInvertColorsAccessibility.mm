@@ -7,10 +7,10 @@
 
 - (void)_accessibilityLoadInvertColors
 {
-  v16 = self;
-  [(SVSCardContainerViewInvertColorsAccessibility *)v16 setAccessibilityIgnoresInvertColors:1];
+  selfCopy = self;
+  [(SVSCardContainerViewInvertColorsAccessibility *)selfCopy setAccessibilityIgnoresInvertColors:1];
   IsInvertColorsEnabled = UIAccessibilityIsInvertColorsEnabled();
-  v3 = [(SVSCardContainerViewInvertColorsAccessibility *)v16 viewWithTag:5728595];
+  v3 = [(SVSCardContainerViewInvertColorsAccessibility *)selfCopy viewWithTag:5728595];
   v4 = v3;
   if (IsInvertColorsEnabled)
   {
@@ -21,16 +21,16 @@
     }
 
     v5 = [UIView alloc];
-    [(SVSCardContainerViewInvertColorsAccessibility *)v16 bounds];
+    [(SVSCardContainerViewInvertColorsAccessibility *)selfCopy bounds];
     v4 = [v5 initWithFrame:?];
     [v4 setTag:5728595];
     v6 = [UIColor colorWithWhite:0.25 alpha:0.75];
     [v4 setBackgroundColor:v6];
 
-    [(SVSCardContainerViewInvertColorsAccessibility *)v16 _continuousCornerRadius];
+    [(SVSCardContainerViewInvertColorsAccessibility *)selfCopy _continuousCornerRadius];
     [v4 _setContinuousCornerRadius:?];
     [v4 setUserInteractionEnabled:0];
-    [(SVSCardContainerViewInvertColorsAccessibility *)v16 insertSubview:v4 atIndex:0];
+    [(SVSCardContainerViewInvertColorsAccessibility *)selfCopy insertSubview:v4 atIndex:0];
   }
 
   else
@@ -39,10 +39,10 @@
   }
 
 LABEL_6:
-  v7 = [(SVSCardContainerViewInvertColorsAccessibility *)v16 superview];
-  if (v7)
+  superview = [(SVSCardContainerViewInvertColorsAccessibility *)selfCopy superview];
+  if (superview)
   {
-    v8 = v7;
+    v8 = superview;
     do
     {
       AXSafeClassFromString();
@@ -72,12 +72,12 @@ LABEL_13:
         }
       }
 
-      v15 = [v8 superview];
+      superview2 = [v8 superview];
 
-      v8 = v15;
+      v8 = superview2;
     }
 
-    while (v15);
+    while (superview2);
   }
 }
 

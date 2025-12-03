@@ -1,15 +1,15 @@
 @interface DragAndDropAnchorView
 - (CGSize)intrinsicContentSize;
-- (DragAndDropAnchorView)initWithDragAndDropMapItem:(id)a3 previewTraitCollection:(id)a4;
+- (DragAndDropAnchorView)initWithDragAndDropMapItem:(id)item previewTraitCollection:(id)collection;
 - (DragAndDropAnchorViewContentUpdateDelegate)contentUpdateDelegate;
 - (double)bottomToSubtitleLabelConstant;
 - (double)subtitleLabelBaselineToTitleLabelBaselineConstant;
 - (double)titleLabelBaselineToTopConstant;
 - (id)_effectiveTraitCollection;
 - (void)addSubviews;
-- (void)setTitle:(id)a3 subtitle:(id)a4;
-- (void)updateWithInitialObject:(id)a3;
-- (void)updateWithResolvedMapItem:(id)a3;
+- (void)setTitle:(id)title subtitle:(id)subtitle;
+- (void)updateWithInitialObject:(id)object;
+- (void)updateWithResolvedMapItem:(id)item;
 @end
 
 @implementation DragAndDropAnchorView
@@ -24,43 +24,43 @@
 - (id)_effectiveTraitCollection
 {
   previewTraitCollection = self->_previewTraitCollection;
-  v3 = [(DragAndDropAnchorView *)self _maximumContentSizeCategory];
-  v4 = [(UITraitCollection *)previewTraitCollection _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:v3];
+  _maximumContentSizeCategory = [(DragAndDropAnchorView *)self _maximumContentSizeCategory];
+  v4 = [(UITraitCollection *)previewTraitCollection _maps_traitCollectionByClampingContentSizeCategoryWithMinimumContentSizeCategory:0 maximumContentSizeCategory:_maximumContentSizeCategory];
 
   return v4;
 }
 
-- (void)setTitle:(id)a3 subtitle:(id)a4
+- (void)setTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DragAndDropAnchorView *)self titleLabel];
-  [v8 setText:v7];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  titleLabel = [(DragAndDropAnchorView *)self titleLabel];
+  [titleLabel setText:titleCopy];
 
-  v9 = [(DragAndDropAnchorView *)self subtitleLabel];
-  [v9 setText:v6];
+  subtitleLabel = [(DragAndDropAnchorView *)self subtitleLabel];
+  [subtitleLabel setText:subtitleCopy];
 
   [(DragAndDropAnchorView *)self setNeedsLayout];
-  v10 = [(DragAndDropAnchorView *)self contentUpdateDelegate];
-  [v10 dragAndDropAnchorViewCellDidUpdateContent:self];
+  contentUpdateDelegate = [(DragAndDropAnchorView *)self contentUpdateDelegate];
+  [contentUpdateDelegate dragAndDropAnchorViewCellDidUpdateContent:self];
 }
 
-- (void)updateWithResolvedMapItem:(id)a3
+- (void)updateWithResolvedMapItem:(id)item
 {
-  objc_storeStrong(&self->_mapItem, a3);
-  v5 = a3;
-  v7 = [v5 name];
-  v6 = [v5 _addressFormattedAsShortenedAddress];
+  objc_storeStrong(&self->_mapItem, item);
+  itemCopy = item;
+  name = [itemCopy name];
+  _addressFormattedAsShortenedAddress = [itemCopy _addressFormattedAsShortenedAddress];
 
-  [(DragAndDropAnchorView *)self setTitle:v7 subtitle:v6];
+  [(DragAndDropAnchorView *)self setTitle:name subtitle:_addressFormattedAsShortenedAddress];
 }
 
-- (void)updateWithInitialObject:(id)a3
+- (void)updateWithInitialObject:(id)object
 {
   mapItem = self->_mapItem;
   if (!mapItem)
   {
-    mapItem = a3;
+    mapItem = object;
   }
 
   v10 = mapItem;
@@ -68,10 +68,10 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v10;
-    v6 = [v5 name];
-    v7 = [v5 _addressFormattedAsShortenedAddress];
+    name = [v5 name];
+    _addressFormattedAsShortenedAddress = [v5 _addressFormattedAsShortenedAddress];
 LABEL_12:
-    v9 = v7;
+    v9 = _addressFormattedAsShortenedAddress;
 
     goto LABEL_13;
   }
@@ -82,23 +82,23 @@ LABEL_12:
     v5 = v10;
     if ([v5 isMeCard])
     {
-      v8 = [v5 localizedLabel];
-      v6 = [v8 capitalizedString];
+      localizedLabel = [v5 localizedLabel];
+      name = [localizedLabel capitalizedString];
     }
 
     else
     {
-      v6 = [v5 compositeName];
+      name = [v5 compositeName];
     }
 
-    v7 = [v5 shortAddress];
+    _addressFormattedAsShortenedAddress = [v5 shortAddress];
     goto LABEL_12;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v10 address];
+    name = [v10 address];
     v9 = 0;
     goto LABEL_13;
   }
@@ -107,22 +107,22 @@ LABEL_12:
   if (objc_opt_isKindOfClass())
   {
     v5 = v10;
-    v6 = [v5 title];
-    v7 = [v5 locationDisplayString];
+    name = [v5 title];
+    _addressFormattedAsShortenedAddress = [v5 locationDisplayString];
     goto LABEL_12;
   }
 
   v9 = 0;
-  v6 = 0;
+  name = 0;
 LABEL_13:
-  [(DragAndDropAnchorView *)self setTitle:v6 subtitle:v9];
+  [(DragAndDropAnchorView *)self setTitle:name subtitle:v9];
 }
 
 - (double)bottomToSubtitleLabelConstant
 {
-  v2 = [(DragAndDropAnchorView *)self titleLabel];
-  v3 = [v2 font];
-  [v3 _scaledValueForValue:14.0];
+  titleLabel = [(DragAndDropAnchorView *)self titleLabel];
+  font = [titleLabel font];
+  [font _scaledValueForValue:14.0];
   v5 = v4;
 
   return v5;
@@ -130,9 +130,9 @@ LABEL_13:
 
 - (double)subtitleLabelBaselineToTitleLabelBaselineConstant
 {
-  v2 = [(DragAndDropAnchorView *)self titleLabel];
-  v3 = [v2 font];
-  [v3 _scaledValueForValue:16.0];
+  titleLabel = [(DragAndDropAnchorView *)self titleLabel];
+  font = [titleLabel font];
+  [font _scaledValueForValue:16.0];
   v5 = v4;
 
   return v5;
@@ -140,9 +140,9 @@ LABEL_13:
 
 - (double)titleLabelBaselineToTopConstant
 {
-  v2 = [(DragAndDropAnchorView *)self titleLabel];
-  v3 = [v2 font];
-  [v3 _scaledValueForValue:22.0];
+  titleLabel = [(DragAndDropAnchorView *)self titleLabel];
+  font = [titleLabel font];
+  [font _scaledValueForValue:22.0];
   v5 = v4;
 
   return v5;
@@ -181,128 +181,128 @@ LABEL_13:
     v3 = +[UIColor systemBackgroundColor];
     [(DragAndDropAnchorView *)self setBackgroundColor:v3];
 
-    v4 = [(MKMapItem *)self->_mapItem _styleAttributes];
+    _styleAttributes = [(MKMapItem *)self->_mapItem _styleAttributes];
     [(UITraitCollection *)self->_previewTraitCollection displayScale];
     v6 = v5;
     LOBYTE(v59) = [(UITraitCollection *)self->_previewTraitCollection userInterfaceStyle]== 2;
-    v7 = [MKIconManager imageForStyle:v4 size:3 forScale:0 format:0 transparent:0 transitMode:0 interactive:v6 nightMode:v59];
+    v7 = [MKIconManager imageForStyle:_styleAttributes size:3 forScale:0 format:0 transparent:0 transitMode:0 interactive:v6 nightMode:v59];
 
     if (v7)
     {
       v8 = [[UIImageView alloc] initWithImage:v7];
       [(DragAndDropAnchorView *)self setImageView:v8];
 
-      v9 = [(DragAndDropAnchorView *)self imageView];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      imageView = [(DragAndDropAnchorView *)self imageView];
+      [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v10 = [(DragAndDropAnchorView *)self imageView];
-      [(DragAndDropAnchorView *)self addSubview:v10];
+      imageView2 = [(DragAndDropAnchorView *)self imageView];
+      [(DragAndDropAnchorView *)self addSubview:imageView2];
 
-      v103 = [(DragAndDropAnchorView *)self imageView];
-      v101 = [v103 leadingAnchor];
-      v98 = [(DragAndDropAnchorView *)self leadingAnchor];
-      v96 = [v101 constraintEqualToAnchor:v98 constant:14.0];
+      imageView3 = [(DragAndDropAnchorView *)self imageView];
+      leadingAnchor = [imageView3 leadingAnchor];
+      leadingAnchor2 = [(DragAndDropAnchorView *)self leadingAnchor];
+      v96 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:14.0];
       v108[0] = v96;
-      v93 = [(DragAndDropAnchorView *)self imageView];
-      v90 = [v93 centerYAnchor];
-      v87 = [(DragAndDropAnchorView *)self centerYAnchor];
-      v11 = [v90 constraintEqualToAnchor:v87];
+      imageView4 = [(DragAndDropAnchorView *)self imageView];
+      centerYAnchor = [imageView4 centerYAnchor];
+      centerYAnchor2 = [(DragAndDropAnchorView *)self centerYAnchor];
+      v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v108[1] = v11;
-      v12 = [(DragAndDropAnchorView *)self imageView];
-      v13 = [v12 heightAnchor];
-      v14 = [v13 constraintEqualToConstant:20.0];
+      imageView5 = [(DragAndDropAnchorView *)self imageView];
+      heightAnchor = [imageView5 heightAnchor];
+      v14 = [heightAnchor constraintEqualToConstant:20.0];
       v108[2] = v14;
-      v15 = [(DragAndDropAnchorView *)self imageView];
-      v16 = [v15 widthAnchor];
-      v17 = [v16 constraintEqualToConstant:20.0];
+      imageView6 = [(DragAndDropAnchorView *)self imageView];
+      widthAnchor = [imageView6 widthAnchor];
+      v17 = [widthAnchor constraintEqualToConstant:20.0];
       v108[3] = v17;
       v18 = [NSArray arrayWithObjects:v108 count:4];
       [v105 addObjectsFromArray:v18];
     }
   }
 
-  v19 = [(DragAndDropAnchorView *)self _effectiveTraitCollection];
+  _effectiveTraitCollection = [(DragAndDropAnchorView *)self _effectiveTraitCollection];
   v20 = objc_alloc_init(UILabel);
   [(DragAndDropAnchorView *)self setTitleLabel:v20];
 
-  v21 = [(DragAndDropAnchorView *)self titleLabel];
-  [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(DragAndDropAnchorView *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v22 = +[UIColor labelColor];
-  v23 = [(DragAndDropAnchorView *)self titleLabel];
-  [v23 setTextColor:v22];
+  titleLabel2 = [(DragAndDropAnchorView *)self titleLabel];
+  [titleLabel2 setTextColor:v22];
 
-  v24 = [UIFont system13SemiboldCompatibleWithTraitCollection:v19];
-  v25 = [(DragAndDropAnchorView *)self titleLabel];
-  [v25 setFont:v24];
+  v24 = [UIFont system13SemiboldCompatibleWithTraitCollection:_effectiveTraitCollection];
+  titleLabel3 = [(DragAndDropAnchorView *)self titleLabel];
+  [titleLabel3 setFont:v24];
 
-  v26 = [(DragAndDropAnchorView *)self titleLabel];
-  [(DragAndDropAnchorView *)self addSubview:v26];
+  titleLabel4 = [(DragAndDropAnchorView *)self titleLabel];
+  [(DragAndDropAnchorView *)self addSubview:titleLabel4];
 
   if (sub_10000FA08(self) != 5)
   {
     v27 = objc_alloc_init(UILabel);
     [(DragAndDropAnchorView *)self setSubtitleLabel:v27];
 
-    v28 = [(DragAndDropAnchorView *)self subtitleLabel];
-    [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
+    subtitleLabel = [(DragAndDropAnchorView *)self subtitleLabel];
+    [subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v29 = +[UIColor secondaryLabelColor];
-    v30 = [(DragAndDropAnchorView *)self subtitleLabel];
-    [v30 setTextColor:v29];
+    subtitleLabel2 = [(DragAndDropAnchorView *)self subtitleLabel];
+    [subtitleLabel2 setTextColor:v29];
 
-    v31 = [UIFont system13CompatibleWithTraitCollection:v19];
-    v32 = [(DragAndDropAnchorView *)self subtitleLabel];
-    [v32 setFont:v31];
+    v31 = [UIFont system13CompatibleWithTraitCollection:_effectiveTraitCollection];
+    subtitleLabel3 = [(DragAndDropAnchorView *)self subtitleLabel];
+    [subtitleLabel3 setFont:v31];
 
-    v33 = [(DragAndDropAnchorView *)self subtitleLabel];
-    [(DragAndDropAnchorView *)self addSubview:v33];
+    subtitleLabel4 = [(DragAndDropAnchorView *)self subtitleLabel];
+    [(DragAndDropAnchorView *)self addSubview:subtitleLabel4];
   }
 
-  v104 = v19;
+  v104 = _effectiveTraitCollection;
   if (sub_10000FA08(self) == 5)
   {
-    v34 = [(DragAndDropAnchorView *)self titleLabel];
-    v35 = [v34 leadingAnchor];
-    v99 = [(DragAndDropAnchorView *)self imageView];
-    if (v99)
+    titleLabel5 = [(DragAndDropAnchorView *)self titleLabel];
+    leadingAnchor3 = [titleLabel5 leadingAnchor];
+    imageView7 = [(DragAndDropAnchorView *)self imageView];
+    if (imageView7)
     {
-      v97 = [(DragAndDropAnchorView *)self imageView];
-      v36 = [v97 trailingAnchor];
+      imageView8 = [(DragAndDropAnchorView *)self imageView];
+      trailingAnchor = [imageView8 trailingAnchor];
     }
 
     else
     {
-      v36 = [(DragAndDropAnchorView *)self leadingAnchor];
-      v97 = v36;
+      trailingAnchor = [(DragAndDropAnchorView *)self leadingAnchor];
+      imageView8 = trailingAnchor;
     }
 
-    v92 = [(DragAndDropAnchorView *)self imageView];
-    v95 = v36;
+    imageView9 = [(DragAndDropAnchorView *)self imageView];
+    v95 = trailingAnchor;
     v49 = 8.0;
-    if (!v92)
+    if (!imageView9)
     {
       v49 = 14.0;
     }
 
-    v102 = v35;
-    v89 = [v35 constraintEqualToAnchor:v36 constant:v49];
+    v102 = leadingAnchor3;
+    v89 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:v49];
     v107[0] = v89;
-    v50 = [(DragAndDropAnchorView *)self titleLabel];
-    v51 = [v50 trailingAnchor];
-    v52 = [(DragAndDropAnchorView *)self trailingAnchor];
-    v53 = [v51 constraintEqualToAnchor:v52 constant:-14.0];
+    titleLabel6 = [(DragAndDropAnchorView *)self titleLabel];
+    trailingAnchor2 = [titleLabel6 trailingAnchor];
+    trailingAnchor3 = [(DragAndDropAnchorView *)self trailingAnchor];
+    v53 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-14.0];
     v107[1] = v53;
-    v54 = [(DragAndDropAnchorView *)self titleLabel];
-    v55 = [v54 centerYAnchor];
-    v56 = [(DragAndDropAnchorView *)self centerYAnchor];
-    v57 = [v55 constraintEqualToAnchor:v56];
+    titleLabel7 = [(DragAndDropAnchorView *)self titleLabel];
+    centerYAnchor3 = [titleLabel7 centerYAnchor];
+    centerYAnchor4 = [(DragAndDropAnchorView *)self centerYAnchor];
+    v57 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v107[2] = v57;
     v58 = [NSArray arrayWithObjects:v107 count:3];
     [v105 addObjectsFromArray:v58];
 
-    v47 = v99;
-    if (v99)
+    v47 = imageView7;
+    if (imageView7)
     {
       v48 = v104;
     }
@@ -315,96 +315,96 @@ LABEL_13:
 
   else
   {
-    v34 = objc_alloc_init(UILayoutGuide);
-    [(DragAndDropAnchorView *)self addLayoutGuide:v34];
-    v37 = [v34 leadingAnchor];
-    v100 = [(DragAndDropAnchorView *)self leadingAnchor];
-    v102 = v37;
-    v97 = [v37 constraintEqualToAnchor:v100 constant:14.0];
-    v106[0] = v97;
-    v94 = [v34 trailingAnchor];
-    v91 = [(DragAndDropAnchorView *)self trailingAnchor];
-    v88 = [v94 constraintEqualToAnchor:v91 constant:-14.0];
+    titleLabel5 = objc_alloc_init(UILayoutGuide);
+    [(DragAndDropAnchorView *)self addLayoutGuide:titleLabel5];
+    leadingAnchor4 = [titleLabel5 leadingAnchor];
+    leadingAnchor5 = [(DragAndDropAnchorView *)self leadingAnchor];
+    v102 = leadingAnchor4;
+    imageView8 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:14.0];
+    v106[0] = imageView8;
+    trailingAnchor4 = [titleLabel5 trailingAnchor];
+    trailingAnchor5 = [(DragAndDropAnchorView *)self trailingAnchor];
+    v88 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5 constant:-14.0];
     v106[1] = v88;
-    v86 = [v34 topAnchor];
-    v85 = [(DragAndDropAnchorView *)self topAnchor];
-    v84 = [v86 constraintEqualToAnchor:v85];
+    topAnchor = [titleLabel5 topAnchor];
+    topAnchor2 = [(DragAndDropAnchorView *)self topAnchor];
+    v84 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v106[2] = v84;
-    v83 = [v34 bottomAnchor];
-    v82 = [(DragAndDropAnchorView *)self bottomAnchor];
-    v81 = [v83 constraintEqualToAnchor:v82];
+    bottomAnchor = [titleLabel5 bottomAnchor];
+    bottomAnchor2 = [(DragAndDropAnchorView *)self bottomAnchor];
+    v81 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v106[3] = v81;
-    v80 = [(DragAndDropAnchorView *)self titleLabel];
-    v79 = [v80 firstBaselineAnchor];
-    v78 = [v34 topAnchor];
+    titleLabel8 = [(DragAndDropAnchorView *)self titleLabel];
+    firstBaselineAnchor = [titleLabel8 firstBaselineAnchor];
+    topAnchor3 = [titleLabel5 topAnchor];
     [(DragAndDropAnchorView *)self titleLabelBaselineToTopConstant];
-    v77 = [v79 constraintEqualToAnchor:v78 constant:?];
+    v77 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:?];
     v106[4] = v77;
-    v76 = [(DragAndDropAnchorView *)self titleLabel];
-    v75 = [v76 leadingAnchor];
-    v74 = [v34 leadingAnchor];
-    v73 = [v75 constraintEqualToAnchor:v74];
+    titleLabel9 = [(DragAndDropAnchorView *)self titleLabel];
+    leadingAnchor6 = [titleLabel9 leadingAnchor];
+    leadingAnchor7 = [titleLabel5 leadingAnchor];
+    v73 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v106[5] = v73;
-    v72 = [(DragAndDropAnchorView *)self titleLabel];
-    v71 = [v72 trailingAnchor];
-    v70 = [v34 trailingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    titleLabel10 = [(DragAndDropAnchorView *)self titleLabel];
+    trailingAnchor6 = [titleLabel10 trailingAnchor];
+    trailingAnchor7 = [titleLabel5 trailingAnchor];
+    v69 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
     v106[6] = v69;
-    v68 = [(DragAndDropAnchorView *)self subtitleLabel];
-    v66 = [v68 firstBaselineAnchor];
-    v67 = [(DragAndDropAnchorView *)self titleLabel];
-    v65 = [v67 lastBaselineAnchor];
+    subtitleLabel5 = [(DragAndDropAnchorView *)self subtitleLabel];
+    firstBaselineAnchor2 = [subtitleLabel5 firstBaselineAnchor];
+    titleLabel11 = [(DragAndDropAnchorView *)self titleLabel];
+    lastBaselineAnchor = [titleLabel11 lastBaselineAnchor];
     [(DragAndDropAnchorView *)self subtitleLabelBaselineToTitleLabelBaselineConstant];
-    v64 = [v66 constraintEqualToAnchor:v65 constant:?];
+    v64 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
     v106[7] = v64;
-    v63 = [(DragAndDropAnchorView *)self subtitleLabel];
-    v62 = [v63 leadingAnchor];
-    v61 = [v34 leadingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    subtitleLabel6 = [(DragAndDropAnchorView *)self subtitleLabel];
+    leadingAnchor8 = [subtitleLabel6 leadingAnchor];
+    leadingAnchor9 = [titleLabel5 leadingAnchor];
+    v60 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
     v106[8] = v60;
-    v38 = [(DragAndDropAnchorView *)self subtitleLabel];
-    v39 = [v38 trailingAnchor];
-    v40 = [v34 trailingAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    subtitleLabel7 = [(DragAndDropAnchorView *)self subtitleLabel];
+    trailingAnchor8 = [subtitleLabel7 trailingAnchor];
+    trailingAnchor9 = [titleLabel5 trailingAnchor];
+    v41 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
     v106[9] = v41;
-    v42 = [v34 bottomAnchor];
-    v43 = [(DragAndDropAnchorView *)self subtitleLabel];
-    v44 = [v43 lastBaselineAnchor];
+    bottomAnchor3 = [titleLabel5 bottomAnchor];
+    subtitleLabel8 = [(DragAndDropAnchorView *)self subtitleLabel];
+    lastBaselineAnchor2 = [subtitleLabel8 lastBaselineAnchor];
     [(DragAndDropAnchorView *)self bottomToSubtitleLabelConstant];
-    v45 = [v42 constraintEqualToAnchor:v44 constant:?];
+    v45 = [bottomAnchor3 constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
     v106[10] = v45;
     v46 = [NSArray arrayWithObjects:v106 count:11];
     [v105 addObjectsFromArray:v46];
 
-    v47 = v100;
+    v47 = leadingAnchor5;
     v48 = v104;
   }
 
   [NSLayoutConstraint activateConstraints:v105];
 }
 
-- (DragAndDropAnchorView)initWithDragAndDropMapItem:(id)a3 previewTraitCollection:(id)a4
+- (DragAndDropAnchorView)initWithDragAndDropMapItem:(id)item previewTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  collectionCopy = collection;
   v16.receiver = self;
   v16.super_class = DragAndDropAnchorView;
   v8 = [(DragAndDropAnchorView *)&v16 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v8)
   {
-    v9 = [v6 presentationObject];
+    presentationObject = [itemCopy presentationObject];
     v10 = sub_10000FA08(v8);
-    v11 = [v6 resolvedMapItem];
-    v12 = v11;
+    resolvedMapItem = [itemCopy resolvedMapItem];
+    v12 = resolvedMapItem;
     if (v10 == 5)
     {
-      v13 = v11;
-      if (!v11)
+      originalMapItem = resolvedMapItem;
+      if (!resolvedMapItem)
       {
-        v13 = [v6 originalMapItem];
+        originalMapItem = [itemCopy originalMapItem];
       }
 
-      objc_storeStrong(&v8->_mapItem, v13);
+      objc_storeStrong(&v8->_mapItem, originalMapItem);
       if (!v12)
       {
       }
@@ -413,13 +413,13 @@ LABEL_13:
     else
     {
       mapItem = v8->_mapItem;
-      v8->_mapItem = v11;
+      v8->_mapItem = resolvedMapItem;
       v12 = mapItem;
     }
 
-    objc_storeStrong(&v8->_previewTraitCollection, a4);
+    objc_storeStrong(&v8->_previewTraitCollection, collection);
     [(DragAndDropAnchorView *)v8 addSubviews];
-    [(DragAndDropAnchorView *)v8 updateWithInitialObject:v9];
+    [(DragAndDropAnchorView *)v8 updateWithInitialObject:presentationObject];
   }
 
   return v8;

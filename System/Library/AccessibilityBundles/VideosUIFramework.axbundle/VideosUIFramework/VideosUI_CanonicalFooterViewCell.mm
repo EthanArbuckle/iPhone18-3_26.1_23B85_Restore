@@ -1,17 +1,17 @@
 @interface VideosUI_CanonicalFooterViewCell
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation VideosUI_CanonicalFooterViewCell
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUIFramework.CanonicalFooterViewCell" hasSwiftField:@"sectionViews" withSwiftType:"Optional<Array<CanonicalFooterSectionView>>"];
-  [v3 validateClass:@"CanonicalFooterSectionView"];
-  [v3 validateClass:@"VideosUIFramework.CanonicalFooterSectionView" hasSwiftField:@"headerView" withSwiftType:"Optional<VUILabel>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUIFramework.CanonicalFooterViewCell" hasSwiftField:@"sectionViews" withSwiftType:"Optional<Array<CanonicalFooterSectionView>>"];
+  [validationsCopy validateClass:@"CanonicalFooterSectionView"];
+  [validationsCopy validateClass:@"VideosUIFramework.CanonicalFooterSectionView" hasSwiftField:@"headerView" withSwiftType:"Optional<VUILabel>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

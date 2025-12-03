@@ -1,54 +1,54 @@
 @interface BKHIDEventDeliveryManagerServer
-- (BKHIDEventDeliveryManagerServer)initWithDeliveryManagerProvider:(id)a3 ruleChangeAuthority:(id)a4;
-- (BKHIDEventDeliveryManagerServer)initWithIncomingServiceConnectionHandler:(id)a3 ruleChangeAuthority:(id)a4;
-- (__CFString)_performDescriptionRetrieval:(void *)a3 forConnection:;
-- (id)_deliveryManagerForEstablishedConnection:(uint64_t)a1;
-- (id)connectionDescriptionForDeferringRuleIdentity:(id)a3;
+- (BKHIDEventDeliveryManagerServer)initWithDeliveryManagerProvider:(id)provider ruleChangeAuthority:(id)authority;
+- (BKHIDEventDeliveryManagerServer)initWithIncomingServiceConnectionHandler:(id)handler ruleChangeAuthority:(id)authority;
+- (__CFString)_performDescriptionRetrieval:(void *)retrieval forConnection:;
+- (id)_deliveryManagerForEstablishedConnection:(uint64_t)connection;
+- (id)connectionDescriptionForDeferringRuleIdentity:(id)identity;
 - (id)deliveryChainsDescription;
 - (id)deliveryGraphDescription;
-- (id)resolutionDescriptionForEventDescriptor:(id)a3 senderDescriptor:(id)a4;
-- (id)resolutionDescriptionForKeyCommand:(id)a3 senderDescriptor:(id)a4;
-- (void)acceptIncomingServiceConnection:(id)a3 mappedObject:(id)a4;
-- (void)connectionDidTerminate:(id)a3;
-- (void)handleIncomingServiceConnection:(id)a3;
-- (void)rejectIncomingServiceConnection:(id)a3;
-- (void)submitRuleChanges:(id)a3;
+- (id)resolutionDescriptionForEventDescriptor:(id)descriptor senderDescriptor:(id)senderDescriptor;
+- (id)resolutionDescriptionForKeyCommand:(id)command senderDescriptor:(id)descriptor;
+- (void)acceptIncomingServiceConnection:(id)connection mappedObject:(id)object;
+- (void)connectionDidTerminate:(id)terminate;
+- (void)handleIncomingServiceConnection:(id)connection;
+- (void)rejectIncomingServiceConnection:(id)connection;
+- (void)submitRuleChanges:(id)changes;
 @end
 
 @implementation BKHIDEventDeliveryManagerServer
 
-- (id)resolutionDescriptionForKeyCommand:(id)a3 senderDescriptor:(id)a4
+- (id)resolutionDescriptionForKeyCommand:(id)command senderDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  descriptorCopy = descriptor;
   v14 = MEMORY[0x277D85DD0];
-  v15 = v6;
-  v16 = v7;
+  v15 = commandCopy;
+  v16 = descriptorCopy;
   v8 = MEMORY[0x277CF3280];
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 currentContext];
-  v12 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:v11 forConnection:?];
+  v9 = descriptorCopy;
+  v10 = commandCopy;
+  currentContext = [v8 currentContext];
+  v12 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:currentContext forConnection:?];
 
   return v12;
 }
 
-- (__CFString)_performDescriptionRetrieval:(void *)a3 forConnection:
+- (__CFString)_performDescriptionRetrieval:(void *)retrieval forConnection:
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  retrievalCopy = retrieval;
+  v7 = retrievalCopy;
+  if (self)
   {
-    v8 = [v6 remoteToken];
-    v9 = v8;
-    if (v8 && ![v8 isInvalid])
+    remoteToken = [retrievalCopy remoteToken];
+    v9 = remoteToken;
+    if (remoteToken && ![remoteToken isInvalid])
     {
       if ([v9 hasEntitlement:@"com.apple.backboardd.eventResolution"])
       {
-        os_unfair_lock_lock(a1 + 4);
-        v14 = [(BKHIDEventDeliveryManagerServer *)a1 _deliveryManagerForEstablishedConnection:v7];
+        os_unfair_lock_lock(self + 4);
+        v14 = [(BKHIDEventDeliveryManagerServer *)self _deliveryManagerForEstablishedConnection:v7];
         if (!v14)
         {
           v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"deliveryManager"];
@@ -62,7 +62,7 @@
             v22 = 2114;
             v23 = v19;
             v24 = 2048;
-            v25 = a1;
+            selfCopy = self;
             v26 = 2114;
             v27 = @"BKHIDEventDeliveryManagerServer.m";
             v28 = 1024;
@@ -80,7 +80,7 @@
 
         v15 = v14;
         v11 = v5[2](v5, v14);
-        os_unfair_lock_unlock(a1 + 4);
+        os_unfair_lock_unlock(self + 4);
 
         goto LABEL_8;
       }
@@ -111,13 +111,13 @@ LABEL_9:
   return v11;
 }
 
-- (id)_deliveryManagerForEstablishedConnection:(uint64_t)a1
+- (id)_deliveryManagerForEstablishedConnection:(uint64_t)connection
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (connection)
   {
-    v4 = [*(a1 + 8) userInfoForConnection:v3];
+    v4 = [*(connection + 8) userInfoForConnection:v3];
     if (!v4)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to find delivery manager for established connection: %@", v3];
@@ -131,7 +131,7 @@ LABEL_9:
         v13 = 2114;
         v14 = v10;
         v15 = 2048;
-        v16 = a1;
+        connectionCopy = connection;
         v17 = 2114;
         v18 = @"BKHIDEventDeliveryManagerServer.m";
         v19 = 1024;
@@ -158,64 +158,64 @@ LABEL_9:
   return v4;
 }
 
-- (id)resolutionDescriptionForEventDescriptor:(id)a3 senderDescriptor:(id)a4
+- (id)resolutionDescriptionForEventDescriptor:(id)descriptor senderDescriptor:(id)senderDescriptor
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  senderDescriptorCopy = senderDescriptor;
   v14 = MEMORY[0x277D85DD0];
-  v15 = v6;
-  v16 = v7;
+  v15 = descriptorCopy;
+  v16 = senderDescriptorCopy;
   v8 = MEMORY[0x277CF3280];
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 currentContext];
-  v12 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:v11 forConnection:?];
+  v9 = senderDescriptorCopy;
+  v10 = descriptorCopy;
+  currentContext = [v8 currentContext];
+  v12 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:currentContext forConnection:?];
 
   return v12;
 }
 
-- (id)connectionDescriptionForDeferringRuleIdentity:(id)a3
+- (id)connectionDescriptionForDeferringRuleIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__BKHIDEventDeliveryManagerServer_connectionDescriptionForDeferringRuleIdentity___block_invoke;
   v10[3] = &unk_2784F6C98;
-  v11 = v4;
+  v11 = identityCopy;
   v5 = MEMORY[0x277CF3280];
-  v6 = v4;
-  v7 = [v5 currentContext];
-  v8 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:v10 forConnection:v7];
+  v6 = identityCopy;
+  currentContext = [v5 currentContext];
+  v8 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:v10 forConnection:currentContext];
 
   return v8;
 }
 
 - (id)deliveryChainsDescription
 {
-  v3 = [MEMORY[0x277CF3280] currentContext];
-  v4 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:v3 forConnection:?];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v4 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:currentContext forConnection:?];
 
   return v4;
 }
 
 - (id)deliveryGraphDescription
 {
-  v3 = [MEMORY[0x277CF3280] currentContext];
-  v4 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:v3 forConnection:?];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v4 = [(BKHIDEventDeliveryManagerServer *)self _performDescriptionRetrieval:currentContext forConnection:?];
 
   return v4;
 }
 
-- (void)submitRuleChanges:(id)a3
+- (void)submitRuleChanges:(id)changes
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BKHIDDomainServiceServer *)self->_server currentConnection];
-  v6 = [v5 remoteToken];
+  changesCopy = changes;
+  currentConnection = [(BKHIDDomainServiceServer *)self->_server currentConnection];
+  remoteToken = [currentConnection remoteToken];
 
-  if (v6 && ![v6 isInvalid])
+  if (remoteToken && ![remoteToken isInvalid])
   {
-    v9 = [v6 pid];
+    v9 = [remoteToken pid];
     if (v9 <= 0)
     {
       v7 = BKLogEventDelivery();
@@ -234,11 +234,11 @@ LABEL_27:
       goto LABEL_4;
     }
 
-    v10 = [(BKHIDEventDeliveryManagerServerRuleChangeAuthority *)self->_ruleChangeAuthority permittedRuleChangeMaskForAuditToken:v6];
-    v11 = [v4 contentsMask];
-    v12 = v11;
-    v13 = v11 & v10;
-    if ((v11 & v10) != v11)
+    v10 = [(BKHIDEventDeliveryManagerServerRuleChangeAuthority *)self->_ruleChangeAuthority permittedRuleChangeMaskForAuditToken:remoteToken];
+    contentsMask = [changesCopy contentsMask];
+    v12 = contentsMask;
+    v13 = contentsMask & v10;
+    if ((contentsMask & v10) != contentsMask)
     {
       v14 = BKLogEventDelivery();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -257,9 +257,9 @@ LABEL_27:
     }
 
     os_unfair_lock_lock(&self->_lock);
-    v15 = [(BKHIDDomainServiceServer *)self->_server currentConnection];
-    v16 = v4;
-    v17 = v15;
+    currentConnection2 = [(BKHIDDomainServiceServer *)self->_server currentConnection];
+    v16 = changesCopy;
+    v17 = currentConnection2;
     v18 = [(BKHIDEventDeliveryManagerServer *)self _deliveryManagerForEstablishedConnection:v17];
     if (!v18)
     {
@@ -274,7 +274,7 @@ LABEL_27:
         v56 = 2114;
         *v57 = v49;
         *&v57[8] = 2048;
-        v58 = self;
+        selfCopy2 = self;
         v59 = 2114;
         v60 = @"BKHIDEventDeliveryManagerServer.m";
         v61 = 1024;
@@ -291,8 +291,8 @@ LABEL_27:
     }
 
     v19 = v18;
-    v20 = [v17 remoteToken];
-    v21 = [v20 pid];
+    remoteToken2 = [v17 remoteToken];
+    v21 = [remoteToken2 pid];
 
     if (!v21)
     {
@@ -307,7 +307,7 @@ LABEL_27:
         v56 = 2114;
         *v57 = v53;
         *&v57[8] = 2048;
-        v58 = self;
+        selfCopy2 = self;
         v59 = 2114;
         v60 = @"BKHIDEventDeliveryManagerServer.m";
         v61 = 1024;
@@ -325,10 +325,10 @@ LABEL_27:
 
     if (v12)
     {
-      v25 = [v16 discreteDispatchingRules];
-      if (v25)
+      discreteDispatchingRules = [v16 discreteDispatchingRules];
+      if (discreteDispatchingRules)
       {
-        [v19 setDispatchingRoots:v25 forClientWithPID:v21];
+        [v19 setDispatchingRoots:discreteDispatchingRules forClientWithPID:v21];
       }
 
       else
@@ -359,10 +359,10 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    v27 = [v16 keyCommandDispatchingRules];
-    if (v27)
+    keyCommandDispatchingRules = [v16 keyCommandDispatchingRules];
+    if (keyCommandDispatchingRules)
     {
-      [v19 setKeyCommandRoots:v27 forClientWithPID:v21];
+      [v19 setKeyCommandRoots:keyCommandDispatchingRules forClientWithPID:v21];
     }
 
     else
@@ -388,10 +388,10 @@ LABEL_16:
     }
 
 LABEL_38:
-    v29 = [v16 deferringRules];
-    if (v29)
+    deferringRules = [v16 deferringRules];
+    if (deferringRules)
     {
-      [v19 setDeferringRules:v29 forClientWithPID:v21];
+      [v19 setDeferringRules:deferringRules forClientWithPID:v21];
     }
 
     else
@@ -418,8 +418,8 @@ LABEL_17:
 
 LABEL_44:
     v31 = MEMORY[0x277CBEB98];
-    v32 = [v16 keyCommandsRegistrations];
-    v33 = [v31 setWithArray:v32];
+    keyCommandsRegistrations = [v16 keyCommandsRegistrations];
+    v33 = [v31 setWithArray:keyCommandsRegistrations];
 
     if (v33)
     {
@@ -450,8 +450,8 @@ LABEL_18:
 
 LABEL_50:
     v35 = MEMORY[0x277CBEB98];
-    v36 = [v16 bufferingPredicates];
-    v37 = [v35 setWithArray:v36];
+    bufferingPredicates = [v16 bufferingPredicates];
+    v37 = [v35 setWithArray:bufferingPredicates];
 
     if (v37)
     {
@@ -481,10 +481,10 @@ LABEL_19:
     }
 
 LABEL_56:
-    v39 = [v16 constraintAssertions];
-    if (v39)
+    constraintAssertions = [v16 constraintAssertions];
+    if (constraintAssertions)
     {
-      [v19 setConstraintAssertions:v39 forClientWithPID:v21];
+      [v19 setConstraintAssertions:constraintAssertions forClientWithPID:v21];
     }
 
     else
@@ -510,10 +510,10 @@ LABEL_74:
       }
 
 LABEL_68:
-      v43 = [v16 selectionRequests];
-      if (v43)
+      selectionRequests = [v16 selectionRequests];
+      if (selectionRequests)
       {
-        [v19 requestSelectionChanges:v43 forClientWithPID:v21];
+        [v19 requestSelectionChanges:selectionRequests forClientWithPID:v21];
       }
 
       else
@@ -531,10 +531,10 @@ LABEL_68:
     }
 
 LABEL_62:
-    v41 = [v16 modalityAssertions];
-    if (v41)
+    modalityAssertions = [v16 modalityAssertions];
+    if (modalityAssertions)
     {
-      [v19 setModalityAssertions:v41 forClientWithPID:v21];
+      [v19 setModalityAssertions:modalityAssertions forClientWithPID:v21];
     }
 
     else
@@ -560,7 +560,7 @@ LABEL_62:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v55 = v6;
+    v55 = remoteToken;
     v22 = "invalid remote audit token: %{public}@";
     v23 = v7;
     v24 = 12;
@@ -573,14 +573,14 @@ LABEL_5:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)connectionDidTerminate:(id)a3
+- (void)connectionDidTerminate:(id)terminate
 {
   v27 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v5 = [v14 remoteToken];
-  v6 = [v5 pid];
+  terminateCopy = terminate;
+  remoteToken = [terminateCopy remoteToken];
+  v6 = [remoteToken pid];
 
-  v7 = [(BKHIDEventDeliveryManagerServer *)self _deliveryManagerForEstablishedConnection:v14];
+  v7 = [(BKHIDEventDeliveryManagerServer *)self _deliveryManagerForEstablishedConnection:terminateCopy];
   if (!v7)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"deliveryManager"];
@@ -594,7 +594,7 @@ LABEL_5:
       v17 = 2114;
       v18 = v13;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"BKHIDEventDeliveryManagerServer.m";
       v23 = 1024;
@@ -616,19 +616,19 @@ LABEL_5:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rejectIncomingServiceConnection:(id)a3
+- (void)rejectIncomingServiceConnection:(id)connection
 {
-  v3 = [a3 domainIncomingServiceConnection];
-  [v3 rejectConnection];
+  domainIncomingServiceConnection = [connection domainIncomingServiceConnection];
+  [domainIncomingServiceConnection rejectConnection];
 }
 
-- (void)acceptIncomingServiceConnection:(id)a3 mappedObject:(id)a4
+- (void)acceptIncomingServiceConnection:(id)connection mappedObject:(id)object
 {
   v33 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  objectCopy = object;
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = objectCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -651,7 +651,7 @@ LABEL_5:
 
   if (!v11)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to provide delivery manager for incoming connection: %@", v20];
+    connectionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to provide delivery manager for incoming connection: %@", connectionCopy];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v17 = NSStringFromSelector(a2);
@@ -662,35 +662,35 @@ LABEL_5:
       v23 = 2114;
       v24 = v19;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = @"BKHIDEventDeliveryManagerServer.m";
       v29 = 1024;
       v30 = 105;
       v31 = 2114;
-      v32 = v16;
+      v32 = connectionCopy;
       _os_log_error_impl(&dword_223CBE000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failure in %{public}@ of <%{public}@:%p> (%{public}@:%i) : %{public}@", buf, 0x3Au);
     }
 
-    [v16 UTF8String];
+    [connectionCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x223CDECC8);
   }
 
-  v12 = [v20 domainIncomingServiceConnection];
+  domainIncomingServiceConnection = [connectionCopy domainIncomingServiceConnection];
   server = self->_server;
-  v14 = [v12 connection];
-  [(BKHIDDomainServiceServer *)server setUserInfo:v11 forConnection:v14];
+  connection = [domainIncomingServiceConnection connection];
+  [(BKHIDDomainServiceServer *)server setUserInfo:v11 forConnection:connection];
 
-  [v12 acceptConnection];
+  [domainIncomingServiceConnection acceptConnection];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIncomingServiceConnection:(id)a3
+- (void)handleIncomingServiceConnection:(id)connection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  connectionCopy = connection;
   if (!self->_incomingServiceConnectionHandler)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"_incomingServiceConnectionHandler"];
@@ -704,7 +704,7 @@ LABEL_5:
       v14 = 2114;
       v15 = v10;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2114;
       v19 = @"BKHIDEventDeliveryManagerServer.m";
       v20 = 1024;
@@ -720,21 +720,21 @@ LABEL_5:
     JUMPOUT(0x223CDEE7CLL);
   }
 
-  v5 = [[BKHIDIncomingServiceConnection alloc] initWithIncomingServiceConnection:v11 debugMappedObjectName:@"delivery manager"];
+  v5 = [[BKHIDIncomingServiceConnection alloc] initWithIncomingServiceConnection:connectionCopy debugMappedObjectName:@"delivery manager"];
   [(BKHIDIncomingServiceConnection *)v5 setHandler:self];
   [(BKHIDEventDeliveryManagerIncomingServiceConnectionHandler *)self->_incomingServiceConnectionHandler handleIncomingDeliveryManagerConnection:v5];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BKHIDEventDeliveryManagerServer)initWithIncomingServiceConnectionHandler:(id)a3 ruleChangeAuthority:(id)a4
+- (BKHIDEventDeliveryManagerServer)initWithIncomingServiceConnectionHandler:(id)handler ruleChangeAuthority:(id)authority
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  handlerCopy = handler;
+  authorityCopy = authority;
+  v10 = authorityCopy;
+  if (handlerCopy)
   {
-    if (v9)
+    if (authorityCopy)
     {
       goto LABEL_3;
     }
@@ -742,8 +742,8 @@ LABEL_5:
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"BKHIDEventDeliveryManagerServer.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"incomingServiceConnectionHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKHIDEventDeliveryManagerServer.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"incomingServiceConnectionHandler"}];
 
     if (v10)
     {
@@ -751,8 +751,8 @@ LABEL_5:
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"BKHIDEventDeliveryManagerServer.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"authority"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"BKHIDEventDeliveryManagerServer.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"authority"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -762,8 +762,8 @@ LABEL_3:
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v11->_incomingServiceConnectionHandler, a3);
-    objc_storeStrong(&v12->_ruleChangeAuthority, a4);
+    objc_storeStrong(&v11->_incomingServiceConnectionHandler, handler);
+    objc_storeStrong(&v12->_ruleChangeAuthority, authority);
     v13 = [BKHIDDomainServiceServer alloc];
     v14 = *MEMORY[0x277CF0590];
     v15 = BKLogEventDelivery();
@@ -775,27 +775,27 @@ LABEL_3:
   return v12;
 }
 
-- (BKHIDEventDeliveryManagerServer)initWithDeliveryManagerProvider:(id)a3 ruleChangeAuthority:(id)a4
+- (BKHIDEventDeliveryManagerServer)initWithDeliveryManagerProvider:(id)provider ruleChangeAuthority:(id)authority
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  providerCopy = provider;
+  authorityCopy = authority;
+  if (providerCopy)
   {
     v9 = [_BKHIDDeliveryManagerDeprecatedIncomingConnectionHandler alloc];
-    v10 = v7;
+    v10 = providerCopy;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"BKHIDEventDeliveryManagerServer.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"deliveryManagerProvider"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKHIDEventDeliveryManagerServer.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"deliveryManagerProvider"}];
 
     v9 = [_BKHIDDeliveryManagerDeprecatedIncomingConnectionHandler alloc];
     v10 = 0;
   }
 
   v11 = [(_BKHIDDeliveryManagerDeprecatedIncomingConnectionHandler *)v9 initWithDeliveryManagerProvider:v10];
-  v12 = [(BKHIDEventDeliveryManagerServer *)self initWithIncomingServiceConnectionHandler:v11 ruleChangeAuthority:v8];
+  v12 = [(BKHIDEventDeliveryManagerServer *)self initWithIncomingServiceConnectionHandler:v11 ruleChangeAuthority:authorityCopy];
 
   return v12;
 }

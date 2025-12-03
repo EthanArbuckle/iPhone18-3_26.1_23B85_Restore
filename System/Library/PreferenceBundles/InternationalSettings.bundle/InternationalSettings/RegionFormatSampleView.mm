@@ -1,10 +1,10 @@
 @interface RegionFormatSampleView
-- (CGSize)sizeForLabel:(id)a3 maxWidth:(double)a4;
-- (RegionFormatSampleView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
+- (CGSize)sizeForLabel:(id)label maxWidth:(double)width;
+- (RegionFormatSampleView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
 - (id)generateRegionSampleLabel;
 - (void)layoutSubviews;
-- (void)setTextForRegionExample:(id)a3;
+- (void)setTextForRegionExample:(id)example;
 @end
 
 @implementation RegionFormatSampleView
@@ -21,16 +21,16 @@
   return v3;
 }
 
-- (void)setTextForRegionExample:(id)a3
+- (void)setTextForRegionExample:(id)example
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"example-time"];
+  exampleCopy = example;
+  v5 = [exampleCopy propertyForKey:@"example-time"];
   [(UILabel *)self->_labels[1] setText:v5];
 
-  v6 = [v4 propertyForKey:@"example-date"];
+  v6 = [exampleCopy propertyForKey:@"example-date"];
   [(UILabel *)self->_labels[2] setText:v6];
 
-  v7 = [v4 propertyForKey:@"example-money-and-number"];
+  v7 = [exampleCopy propertyForKey:@"example-money-and-number"];
 
   [(UILabel *)self->_labels[3] setText:v7];
   self->_sized = 0.0;
@@ -40,9 +40,9 @@
   [(RegionFormatSampleView *)self setNeedsLayout];
 }
 
-- (RegionFormatSampleView)initWithSpecifier:(id)a3
+- (RegionFormatSampleView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v15.receiver = self;
   v15.super_class = RegionFormatSampleView;
   v5 = [(RegionFormatSampleView *)&v15 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -50,10 +50,10 @@
   {
     for (i = 0; i != 4; ++i)
     {
-      v7 = [(RegionFormatSampleView *)v5 generateRegionSampleLabel];
+      generateRegionSampleLabel = [(RegionFormatSampleView *)v5 generateRegionSampleLabel];
       labels = v5->_labels;
       v9 = v5->_labels[i];
-      v5->_labels[i] = v7;
+      v5->_labels[i] = generateRegionSampleLabel;
     }
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
@@ -66,7 +66,7 @@
       [labels[j] setTextAlignment:1];
     }
 
-    [(RegionFormatSampleView *)v5 setTextForRegionExample:v4];
+    [(RegionFormatSampleView *)v5 setTextForRegionExample:specifierCopy];
     v13 = +[UIColor clearColor];
     [(RegionFormatSampleView *)v5 setBackgroundColor:v13];
   }
@@ -74,13 +74,13 @@
   return v5;
 }
 
-- (CGSize)sizeForLabel:(id)a3 maxWidth:(double)a4
+- (CGSize)sizeForLabel:(id)label maxWidth:(double)width
 {
-  v6 = a3;
+  labelCopy = label;
   [(RegionFormatSampleView *)self layoutMargins];
   v8 = v7;
   [(RegionFormatSampleView *)self layoutMargins];
-  [v6 sizeThatFits:{a4 - (v8 + v9), INFINITY}];
+  [labelCopy sizeThatFits:{width - (v8 + v9), INFINITY}];
   v11 = v10;
   v13 = v12;
 
@@ -91,19 +91,19 @@
   return result;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   labels = self->_labels;
-  v6 = [(UILabel *)self->_labels[0] font];
-  [v6 ascender];
+  font = [(UILabel *)self->_labels[0] font];
+  [font ascender];
   PSRoundToPixel();
   v8 = v7;
 
   self->_labelTopPadding[0] = fmax(v8, 0.0);
-  v9 = [labels[1] font];
-  [v9 ascender];
-  v10 = [*labels font];
-  [v10 descender];
+  font2 = [labels[1] font];
+  [font2 ascender];
+  font3 = [*labels font];
+  [font3 descender];
   PSRoundToPixel();
   v12 = v11;
 
@@ -117,7 +117,7 @@
   {
     [labels[v13] sizeToFit];
     v19 = self->_labelTopPadding[v13];
-    [(RegionFormatSampleView *)self sizeForLabel:labels[v13] maxWidth:a3];
+    [(RegionFormatSampleView *)self sizeForLabel:labels[v13] maxWidth:width];
     result = self->_sized + v19 + v20;
     self->_sized = result;
     ++v13;

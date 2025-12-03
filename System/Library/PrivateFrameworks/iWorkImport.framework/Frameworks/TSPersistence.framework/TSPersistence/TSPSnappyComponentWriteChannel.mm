@@ -1,16 +1,16 @@
 @interface TSPSnappyComponentWriteChannel
-- (TSPSnappyComponentWriteChannel)initWithWriteChannel:(id)a3;
+- (TSPSnappyComponentWriteChannel)initWithWriteChannel:(id)channel;
 - (void)close;
 - (void)dealloc;
 - (void)writeBlock;
-- (void)writeData:(id)a3;
+- (void)writeData:(id)data;
 @end
 
 @implementation TSPSnappyComponentWriteChannel
 
-- (TSPSnappyComponentWriteChannel)initWithWriteChannel:(id)a3
+- (TSPSnappyComponentWriteChannel)initWithWriteChannel:(id)channel
 {
-  v5 = a3;
+  channelCopy = channel;
   v11.receiver = self;
   v11.super_class = TSPSnappyComponentWriteChannel;
   v6 = [(TSPSnappyComponentWriteChannel *)&v11 init];
@@ -21,7 +21,7 @@
     writeQueue = v6->_writeQueue;
     v6->_writeQueue = v8;
 
-    objc_storeStrong(&v6->_writeChannel, a3);
+    objc_storeStrong(&v6->_writeChannel, channel);
   }
 
   return v6;
@@ -44,17 +44,17 @@
   [(TSPSnappyComponentWriteChannel *)&v10 dealloc];
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   writeQueue = self->_writeQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276AFA02C;
   v7[3] = &unk_27A6E2898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_sync(writeQueue, v7);
 }
 

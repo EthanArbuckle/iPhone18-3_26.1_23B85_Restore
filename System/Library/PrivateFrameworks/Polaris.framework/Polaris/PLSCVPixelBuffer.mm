@@ -1,32 +1,32 @@
 @interface PLSCVPixelBuffer
-+ (void)copyISPBufferWithInput:(__CVBuffer *)a3 output:(__CVBuffer *)a4;
-- (PLSCVPixelBuffer)initWithKey:(id)a3 PixelBufferAttributes:(__CFDictionary *)a4;
++ (void)copyISPBufferWithInput:(__CVBuffer *)input output:(__CVBuffer *)output;
+- (PLSCVPixelBuffer)initWithKey:(id)key PixelBufferAttributes:(__CFDictionary *)attributes;
 - (__n128)cameraIntrinsics;
-- (__n128)setCameraIntrinsics:(__n128)a3;
-- (id)initFromIOSurface:(__IOSurface *)a3 WithKey:(id)a4;
+- (__n128)setCameraIntrinsics:(__n128)intrinsics;
+- (id)initFromIOSurface:(__IOSurface *)surface WithKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation PLSCVPixelBuffer
 
-- (PLSCVPixelBuffer)initWithKey:(id)a3 PixelBufferAttributes:(__CFDictionary *)a4
+- (PLSCVPixelBuffer)initWithKey:(id)key PixelBufferAttributes:(__CFDictionary *)attributes
 {
-  v6 = a3;
+  keyCopy = key;
   v16.receiver = self;
   v16.super_class = PLSCVPixelBuffer;
   v7 = [(PLSCVPixelBuffer *)&v16 init];
   if (v7)
   {
-    v8 = [CFDictionaryGetValue(a4 *MEMORY[0x277CC4EC8])];
-    v9 = [CFDictionaryGetValue(a4 *MEMORY[0x277CC4DD8])];
-    v10 = +[PLSCVPixelBuffer getIOSurfacePropertiesWidth:height:pixelFormat:](PLSCVPixelBuffer, "getIOSurfacePropertiesWidth:height:pixelFormat:", v8, v9, [CFDictionaryGetValue(a4 *MEMORY[0x277CC4E30])]);
+    v8 = [CFDictionaryGetValue(attributes *MEMORY[0x277CC4EC8])];
+    v9 = [CFDictionaryGetValue(attributes *MEMORY[0x277CC4DD8])];
+    v10 = +[PLSCVPixelBuffer getIOSurfacePropertiesWidth:height:pixelFormat:](PLSCVPixelBuffer, "getIOSurfacePropertiesWidth:height:pixelFormat:", v8, v9, [CFDictionaryGetValue(attributes *MEMORY[0x277CC4E30])]);
     v11 = IOSurfaceCreate(v10);
     if (v11)
     {
       v12 = CVPixelBufferCreateWithIOSurface(*MEMORY[0x277CBECE8], v11, 0, &v7->pixelBufferRef);
       if (v12)
       {
-        NSLog(&cfstr_FailedToCreate.isa, v6, v12);
+        NSLog(&cfstr_FailedToCreate.isa, keyCopy, v12);
       }
 
       else
@@ -34,7 +34,7 @@
         v13 = objc_alloc_init(MEMORY[0x277CBEB28]);
         [(PLSCVPixelBuffer *)v7 setMetadata:v13];
 
-        [(PLSCVPixelBuffer *)v7 setKey:v6];
+        [(PLSCVPixelBuffer *)v7 setKey:keyCopy];
         [(PLSCVPixelBuffer *)v7 setTimestamp:0];
         [(PLSCVPixelBuffer *)v7 setResourceType:0];
         [(PLSCVPixelBuffer *)v7 setSurfaceRef:v11];
@@ -45,7 +45,7 @@
 
     else
     {
-      NSLog(&cfstr_FailedToAlloca.isa, v6);
+      NSLog(&cfstr_FailedToAlloca.isa, keyCopy);
     }
 
     v14 = v7;
@@ -54,26 +54,26 @@
   return v7;
 }
 
-- (id)initFromIOSurface:(__IOSurface *)a3 WithKey:(id)a4
+- (id)initFromIOSurface:(__IOSurface *)surface WithKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = PLSCVPixelBuffer;
   v7 = [(PLSCVPixelBuffer *)&v11 init];
   if (v7)
   {
-    v8 = CVPixelBufferCreateWithIOSurface(*MEMORY[0x277CBECE8], a3, 0, &v7->pixelBufferRef);
+    v8 = CVPixelBufferCreateWithIOSurface(*MEMORY[0x277CBECE8], surface, 0, &v7->pixelBufferRef);
     if (!v8)
     {
-      [(PLSCVPixelBuffer *)v7 setKey:v6];
+      [(PLSCVPixelBuffer *)v7 setKey:keyCopy];
       [(PLSCVPixelBuffer *)v7 setTimestamp:0];
       [(PLSCVPixelBuffer *)v7 setResourceType:0];
-      [(PLSCVPixelBuffer *)v7 setSurfaceRef:a3];
+      [(PLSCVPixelBuffer *)v7 setSurfaceRef:surface];
       v9 = v7;
       goto LABEL_6;
     }
 
-    NSLog(&cfstr_FailedToCreate.isa, v6, v8);
+    NSLog(&cfstr_FailedToCreate.isa, keyCopy, v8);
   }
 
   v9 = 0;
@@ -95,11 +95,11 @@ LABEL_6:
   [(PLSCVPixelBuffer *)&v4 dealloc];
 }
 
-+ (void)copyISPBufferWithInput:(__CVBuffer *)a3 output:(__CVBuffer *)a4
++ (void)copyISPBufferWithInput:(__CVBuffer *)input output:(__CVBuffer *)output
 {
-  CVPixelBufferLockBaseAddress(a3, 0);
-  CVPixelBufferLockBaseAddress(a4, 0);
-  PlaneCount = CVPixelBufferGetPlaneCount(a4);
+  CVPixelBufferLockBaseAddress(input, 0);
+  CVPixelBufferLockBaseAddress(output, 0);
+  PlaneCount = CVPixelBufferGetPlaneCount(output);
   v7 = 0;
   if (PlaneCount <= 1)
   {
@@ -113,8 +113,8 @@ LABEL_6:
 
   do
   {
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a4, v7);
-    v10 = CVPixelBufferGetHeightOfPlane(a3, v7);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(output, v7);
+    v10 = CVPixelBufferGetHeightOfPlane(input, v7);
     if (HeightOfPlane >= v10)
     {
       v11 = v10;
@@ -125,10 +125,10 @@ LABEL_6:
       v11 = HeightOfPlane;
     }
 
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, v7);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, v7);
-    v14 = CVPixelBufferGetBaseAddressOfPlane(a4, v7);
-    v15 = CVPixelBufferGetBytesPerRowOfPlane(a4, v7);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(input, v7);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(input, v7);
+    v14 = CVPixelBufferGetBaseAddressOfPlane(output, v7);
+    v15 = CVPixelBufferGetBytesPerRowOfPlane(output, v7);
     if (BytesPerRowOfPlane >= v15)
     {
       v16 = v15;
@@ -157,23 +157,23 @@ LABEL_6:
   }
 
   while (v7 != v8);
-  CVPixelBufferUnlockBaseAddress(a4, 0);
+  CVPixelBufferUnlockBaseAddress(output, 0);
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(input, 0);
 }
 
 - (__n128)cameraIntrinsics
 {
-  result = *(a1 + 80);
-  v2 = *(a1 + 96);
-  v3 = *(a1 + 112);
+  result = *(self + 80);
+  v2 = *(self + 96);
+  v3 = *(self + 112);
   return result;
 }
 
-- (__n128)setCameraIntrinsics:(__n128)a3
+- (__n128)setCameraIntrinsics:(__n128)intrinsics
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = intrinsics;
   result[7] = a4;
   return result;
 }

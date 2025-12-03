@@ -5,41 +5,41 @@
 - (NSString)description;
 - (NSURL)appStoreURL;
 - (VSAppSettingsViewModel)init;
-- (VSAppSettingsViewModel)initWithAppDescription:(id)a3 privacyVoucher:(id)a4 restrictionsCenter:(id)a5 privacyFacade:(id)a6;
-- (VSAppSettingsViewModel)initWithApplicationWorkspace:(id)a3;
-- (VSAppSettingsViewModel)initWithBundle:(id)a3 restrictionsCenter:(id)a4 privacyFacade:(id)a5;
-- (VSAppSettingsViewModel)initWithBundle:(id)a3 restrictionsCenter:(id)a4 privacyFacade:(id)a5 adamID:(id)a6;
+- (VSAppSettingsViewModel)initWithAppDescription:(id)description privacyVoucher:(id)voucher restrictionsCenter:(id)center privacyFacade:(id)facade;
+- (VSAppSettingsViewModel)initWithApplicationWorkspace:(id)workspace;
+- (VSAppSettingsViewModel)initWithBundle:(id)bundle restrictionsCenter:(id)center privacyFacade:(id)facade;
+- (VSAppSettingsViewModel)initWithBundle:(id)bundle restrictionsCenter:(id)center privacyFacade:(id)facade adamID:(id)d;
 - (id)appAdamIDs;
 - (id)appBundleIDs;
-- (id)iconURLForSize:(CGSize)a3;
+- (id)iconURLForSize:(CGSize)size;
 - (void)_denyPrivacyAccess;
 - (void)_grantPrivacyAccess;
 - (void)_updatePrivacyState;
-- (void)applicationsDidFailToInstall:(id)a3;
-- (void)applicationsDidFailToUninstall:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillInstall:(id)a3;
-- (void)applicationsWillUninstall:(id)a3;
+- (void)applicationsDidFailToInstall:(id)install;
+- (void)applicationsDidFailToUninstall:(id)uninstall;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillInstall:(id)install;
+- (void)applicationsWillUninstall:(id)uninstall;
 - (void)dealloc;
 - (void)installApp;
 - (void)launchApp;
 - (void)revokeVoucher;
-- (void)setAccessGranted:(BOOL)a3;
+- (void)setAccessGranted:(BOOL)granted;
 @end
 
 @implementation VSAppSettingsViewModel
 
-- (VSAppSettingsViewModel)initWithApplicationWorkspace:(id)a3
+- (VSAppSettingsViewModel)initWithApplicationWorkspace:(id)workspace
 {
-  v5 = a3;
+  workspaceCopy = workspace;
   v20.receiver = self;
   v20.super_class = VSAppSettingsViewModel;
   v6 = [(VSAppSettingsViewModel *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workspace, a3);
+    objc_storeStrong(&v6->_workspace, workspace);
     displayName = v7->_displayName;
     v7->_displayName = &stru_2880B8BB0;
 
@@ -53,7 +53,7 @@
     voucher = v7->_voucher;
     v7->_voucher = v11;
 
-    [v5 addObserver:v7];
+    [workspaceCopy addObserver:v7];
     objc_initWeak(&location, v7);
     v13 = MEMORY[0x277D85CD0];
     v14 = MEMORY[0x277D85CD0];
@@ -95,40 +95,40 @@ void __55__VSAppSettingsViewModel_initWithApplicationWorkspace___block_invoke(ui
 
 - (VSAppSettingsViewModel)init
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v4 = [(VSAppSettingsViewModel *)self initWithApplicationWorkspace:v3];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v4 = [(VSAppSettingsViewModel *)self initWithApplicationWorkspace:defaultWorkspace];
 
   return v4;
 }
 
-- (VSAppSettingsViewModel)initWithBundle:(id)a3 restrictionsCenter:(id)a4 privacyFacade:(id)a5 adamID:(id)a6
+- (VSAppSettingsViewModel)initWithBundle:(id)bundle restrictionsCenter:(id)center privacyFacade:(id)facade adamID:(id)d
 {
-  v11 = a6;
-  v12 = [(VSAppSettingsViewModel *)self initWithBundle:a3 restrictionsCenter:a4 privacyFacade:a5];
+  dCopy = d;
+  v12 = [(VSAppSettingsViewModel *)self initWithBundle:bundle restrictionsCenter:center privacyFacade:facade];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_adamID, a6);
+    objc_storeStrong(&v12->_adamID, d);
   }
 
   return v13;
 }
 
-- (VSAppSettingsViewModel)initWithBundle:(id)a3 restrictionsCenter:(id)a4 privacyFacade:(id)a5
+- (VSAppSettingsViewModel)initWithBundle:(id)bundle restrictionsCenter:(id)center privacyFacade:(id)facade
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  bundleCopy = bundle;
+  centerCopy = center;
+  facadeCopy = facade;
+  if (bundleCopy)
   {
-    if (v10)
+    if (centerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The restrictionsCenter parameter must not be nil."];
-    if (v11)
+    if (facadeCopy)
     {
       goto LABEL_4;
     }
@@ -137,13 +137,13 @@ LABEL_14:
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The bundle parameter must not be nil."];
-  if (!v10)
+  if (!centerCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (v11)
+  if (facadeCopy)
   {
     goto LABEL_4;
   }
@@ -154,28 +154,28 @@ LABEL_4:
   v12 = [(VSAppSettingsViewModel *)self init];
   if (v12)
   {
-    v13 = [v9 bundleIdentifier];
+    bundleIdentifier = [bundleCopy bundleIdentifier];
 
-    if (!v13)
+    if (!bundleIdentifier)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [bundle bundleIdentifier] parameter must not be nil."];
     }
 
-    v14 = [v9 bundleIdentifier];
-    commonInit_0(v12, v10, v11, v14);
-    objc_storeStrong(&v12->_bundle, a3);
+    bundleIdentifier2 = [bundleCopy bundleIdentifier];
+    commonInit_0(v12, centerCopy, facadeCopy, bundleIdentifier2);
+    objc_storeStrong(&v12->_bundle, bundle);
     v12->_installState = 4;
     v12->_decided = 1;
-    v15 = VSIconForBundleWithIdentifier(v14);
+    v15 = VSIconForBundleWithIdentifier(bundleIdentifier2);
     icon = v12->_icon;
     v12->_icon = v15;
 
-    v17 = [v11 knownAppBundles];
-    v18 = [v17 containsObject:v9];
+    knownAppBundles = [facadeCopy knownAppBundles];
+    v18 = [knownAppBundles containsObject:bundleCopy];
 
     if (v18)
     {
-      v19 = [v11 isAccessGrantedForBundleID:v14];
+      v19 = [facadeCopy isAccessGrantedForBundleID:bundleIdentifier2];
       v20 = 1;
       if (!v19)
       {
@@ -188,31 +188,31 @@ LABEL_4:
     v21 = [MEMORY[0x277CC1E70] vs_applicationRecordWithBundleIdentifier:v12->_bundleID];
     v22 = [[VSAppInstallMetadata alloc] initWithApplicationRecord:v21];
     v12->_installSource = [(VSAppInstallMetadata *)v22 installSource];
-    v23 = [v21 iTunesMetadata];
-    v24 = [v23 artistName];
+    iTunesMetadata = [v21 iTunesMetadata];
+    artistName = [iTunesMetadata artistName];
     artistName = v12->_artistName;
-    v12->_artistName = v24;
+    v12->_artistName = artistName;
   }
 
   return v12;
 }
 
-- (VSAppSettingsViewModel)initWithAppDescription:(id)a3 privacyVoucher:(id)a4 restrictionsCenter:(id)a5 privacyFacade:(id)a6
+- (VSAppSettingsViewModel)initWithAppDescription:(id)description privacyVoucher:(id)voucher restrictionsCenter:(id)center privacyFacade:(id)facade
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  descriptionCopy = description;
+  voucherCopy = voucher;
+  centerCopy = center;
+  facadeCopy = facade;
+  if (descriptionCopy)
   {
-    if (v13)
+    if (centerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_11:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The restrictionsCenter parameter must not be nil."];
-    if (v14)
+    if (facadeCopy)
     {
       goto LABEL_4;
     }
@@ -221,13 +221,13 @@ LABEL_11:
   }
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The appDescription parameter must not be nil."];
-  if (!v13)
+  if (!centerCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (v14)
+  if (facadeCopy)
   {
     goto LABEL_4;
   }
@@ -239,39 +239,39 @@ LABEL_4:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_appDescription, a3);
-    v17 = [objc_alloc(MEMORY[0x277CE2298]) initWithObject:v12];
+    objc_storeStrong(&v15->_appDescription, description);
+    v17 = [objc_alloc(MEMORY[0x277CE2298]) initWithObject:voucherCopy];
     voucher = v16->_voucher;
     v16->_voucher = v17;
 
-    v19 = [v11 icon];
+    icon = [descriptionCopy icon];
     icon = v16->_icon;
-    v16->_icon = v19;
+    v16->_icon = icon;
 
-    v21 = [v11 sellerName];
-    v22 = [v21 copy];
+    sellerName = [descriptionCopy sellerName];
+    v22 = [sellerName copy];
     storeName = v16->_storeName;
     v16->_storeName = v22;
 
-    v24 = [v11 shortenedDisplayName];
-    v25 = [v24 copy];
+    shortenedDisplayName = [descriptionCopy shortenedDisplayName];
+    v25 = [shortenedDisplayName copy];
     displayName = v16->_displayName;
     v16->_displayName = v25;
 
-    v27 = [v11 adamID];
-    v28 = [v27 stringValue];
-    v29 = [v28 copy];
+    adamID = [descriptionCopy adamID];
+    stringValue = [adamID stringValue];
+    v29 = [stringValue copy];
     adamID = v16->_adamID;
     v16->_adamID = v29;
 
-    v31 = [v11 bundleID];
-    v32 = v31;
-    if (v31 && [v31 length])
+    bundleID = [descriptionCopy bundleID];
+    v32 = bundleID;
+    if (bundleID && [bundleID length])
     {
       v33 = v32;
-      commonInit_0(v16, v13, v14, v33);
-      v34 = [(VSAppSettingsViewModel *)v16 workspace];
-      v35 = [v34 applicationIsInstalled:v33];
+      commonInit_0(v16, centerCopy, facadeCopy, v33);
+      workspace = [(VSAppSettingsViewModel *)v16 workspace];
+      v35 = [workspace applicationIsInstalled:v33];
 
       if (v35)
       {
@@ -287,9 +287,9 @@ LABEL_4:
 
       else
       {
-        v41 = [v11 buyParams];
-        bundle = v41;
-        if (v41 && [(NSBundle *)v41 length])
+        buyParams = [descriptionCopy buyParams];
+        bundle = buyParams;
+        if (buyParams && [(NSBundle *)buyParams length])
         {
           v42 = [(NSBundle *)bundle copy];
           buyParams = v16->_buyParams;
@@ -331,24 +331,24 @@ LABEL_4:
 
 - (void)_updatePrivacyState
 {
-  v10 = [(VSAppSettingsViewModel *)self privacyFacade];
-  v3 = [(VSAppSettingsViewModel *)self bundle];
-  if (v3)
+  privacyFacade = [(VSAppSettingsViewModel *)self privacyFacade];
+  bundle = [(VSAppSettingsViewModel *)self bundle];
+  if (bundle)
   {
-    v4 = [v10 knownAppBundles];
-    v5 = [v4 containsObject:v3];
+    knownAppBundles = [privacyFacade knownAppBundles];
+    v5 = [knownAppBundles containsObject:bundle];
 
     if (v5)
     {
-      v6 = [v3 bundleIdentifier];
+      bundleIdentifier = [bundle bundleIdentifier];
 
-      if (!v6)
+      if (!bundleIdentifier)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The [bundle bundleIdentifier] parameter must not be nil."];
       }
 
-      v7 = [v3 bundleIdentifier];
-      v8 = [v10 isAccessGrantedForBundleID:v7];
+      bundleIdentifier2 = [bundle bundleIdentifier];
+      v8 = [privacyFacade isAccessGrantedForBundleID:bundleIdentifier2];
 
       if (v8)
       {
@@ -367,52 +367,52 @@ LABEL_4:
 
 - (NSURL)appStoreURL
 {
-  v2 = [(VSAppSettingsViewModel *)self appDescription];
-  v3 = [v2 appStoreURL];
+  appDescription = [(VSAppSettingsViewModel *)self appDescription];
+  appStoreURL = [appDescription appStoreURL];
 
-  return v3;
+  return appStoreURL;
 }
 
-- (id)iconURLForSize:(CGSize)a3
+- (id)iconURLForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(VSAppSettingsViewModel *)self appDescription];
-  v6 = [v5 iconURLForSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  appDescription = [(VSAppSettingsViewModel *)self appDescription];
+  v6 = [appDescription iconURLForSize:{width, height}];
 
   return v6;
 }
 
 - (BOOL)canRevokeVoucher
 {
-  v2 = [(VSAppSettingsViewModel *)self voucher];
-  v3 = [v2 object];
+  voucher = [(VSAppSettingsViewModel *)self voucher];
+  object = [voucher object];
 
-  return v3 != 0;
+  return object != 0;
 }
 
 - (void)revokeVoucher
 {
-  v3 = [(VSAppSettingsViewModel *)self privacyFacade];
-  v6 = [v3 voucherLockbox];
+  privacyFacade = [(VSAppSettingsViewModel *)self privacyFacade];
+  voucherLockbox = [privacyFacade voucherLockbox];
 
-  v4 = [(VSAppSettingsViewModel *)self voucher];
-  v5 = [v4 forceUnwrapObject];
-  [v6 redeemVoucher:v5];
+  voucher = [(VSAppSettingsViewModel *)self voucher];
+  forceUnwrapObject = [voucher forceUnwrapObject];
+  [voucherLockbox redeemVoucher:forceUnwrapObject];
 }
 
 - (void)installApp
 {
-  v3 = [(VSAppSettingsViewModel *)self buyParams];
-  if (![v3 length])
+  buyParams = [(VSAppSettingsViewModel *)self buyParams];
+  if (![buyParams length])
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Attempt to install an app without buy params."];
   }
 
-  v4 = [(VSAppSettingsViewModel *)self installState];
-  if (v4 <= 5 && ((0x3Bu >> v4) & 1) != 0)
+  installState = [(VSAppSettingsViewModel *)self installState];
+  if (installState <= 5 && ((0x3Bu >> installState) & 1) != 0)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:off_279E19B00[v4]];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:off_279E19B00[installState]];
   }
 
   [(VSAppSettingsViewModel *)self setInstallState:3];
@@ -442,9 +442,9 @@ void __36__VSAppSettingsViewModel_installApp__block_invoke(uint64_t a1)
 
 - (void)launchApp
 {
-  v3 = [(VSAppSettingsViewModel *)self installState];
+  installState = [(VSAppSettingsViewModel *)self installState];
   v4 = MEMORY[0x277CBE660];
-  if (v3 != 4)
+  if (installState != 4)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Attempt to launch app that is not installed."];
   }
@@ -454,9 +454,9 @@ void __36__VSAppSettingsViewModel_installApp__block_invoke(uint64_t a1)
     [MEMORY[0x277CBEAD8] raise:*v4 format:@"Attempt to launch app with a decided privacy access state."];
   }
 
-  v5 = [(VSAppSettingsViewModel *)self workspace];
-  v6 = [(VSAppSettingsViewModel *)self bundleID];
-  v7 = [v5 openApplicationWithBundleID:v6];
+  workspace = [(VSAppSettingsViewModel *)self workspace];
+  bundleID = [(VSAppSettingsViewModel *)self bundleID];
+  v7 = [workspace openApplicationWithBundleID:bundleID];
 
   if (v7)
   {
@@ -480,11 +480,11 @@ void __36__VSAppSettingsViewModel_installApp__block_invoke(uint64_t a1)
 
 - (BOOL)canChangePrivacyAccess
 {
-  v3 = [(VSAppSettingsViewModel *)self restrictionsCenter];
-  if ([v3 isAcountModificationAllowed])
+  restrictionsCenter = [(VSAppSettingsViewModel *)self restrictionsCenter];
+  if ([restrictionsCenter isAcountModificationAllowed])
   {
-    v4 = [(VSAppSettingsViewModel *)self bundle];
-    v5 = v4 != 0;
+    bundle = [(VSAppSettingsViewModel *)self bundle];
+    v5 = bundle != 0;
   }
 
   else
@@ -523,9 +523,9 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
   return v1;
 }
 
-- (void)setAccessGranted:(BOOL)a3
+- (void)setAccessGranted:(BOOL)granted
 {
-  if (a3)
+  if (granted)
   {
     [(VSAppSettingsViewModel *)self _grantPrivacyAccess];
   }
@@ -538,9 +538,9 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
 
 - (void)_grantPrivacyAccess
 {
-  v3 = [(VSAppSettingsViewModel *)self installState];
+  installState = [(VSAppSettingsViewModel *)self installState];
   v4 = MEMORY[0x277CBE660];
-  if (v3 != 4)
+  if (installState != 4)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Attempt to grant privacy access to an app that is not installed."];
   }
@@ -555,28 +555,28 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
     [MEMORY[0x277CBEAD8] raise:*v4 format:@"Attempt to grant access to an app when access cannot be changed."];
   }
 
-  v5 = [(VSAppSettingsViewModel *)self privacyFacade];
-  v6 = [(VSAppSettingsViewModel *)self bundle];
-  v7 = [v6 bundleIdentifier];
+  privacyFacade = [(VSAppSettingsViewModel *)self privacyFacade];
+  bundle = [(VSAppSettingsViewModel *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  if (!v7)
+  if (!bundleIdentifier)
   {
     [MEMORY[0x277CBEAD8] raise:*v4 format:@"The [[self bundle] bundleIdentifier] parameter must not be nil."];
   }
 
-  v8 = [(VSAppSettingsViewModel *)self bundle];
-  v9 = [v8 bundleIdentifier];
+  bundle2 = [(VSAppSettingsViewModel *)self bundle];
+  bundleIdentifier2 = [bundle2 bundleIdentifier];
 
-  [v5 setAccessGranted:1 forBundleID:v9];
+  [privacyFacade setAccessGranted:1 forBundleID:bundleIdentifier2];
 
   [(VSAppSettingsViewModel *)self setPrivacyState:1];
 }
 
 - (void)_denyPrivacyAccess
 {
-  v3 = [(VSAppSettingsViewModel *)self installState];
+  installState = [(VSAppSettingsViewModel *)self installState];
   v4 = MEMORY[0x277CBE660];
-  if (v3 != 4)
+  if (installState != 4)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Attempt to deny privacy access to an app that is not installed."];
   }
@@ -591,32 +591,32 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
     [MEMORY[0x277CBEAD8] raise:*v4 format:@"Attempt to deny access to an app when access cannot be changed."];
   }
 
-  v5 = [(VSAppSettingsViewModel *)self privacyFacade];
-  v6 = [(VSAppSettingsViewModel *)self bundle];
-  v7 = [v6 bundleIdentifier];
+  privacyFacade = [(VSAppSettingsViewModel *)self privacyFacade];
+  bundle = [(VSAppSettingsViewModel *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  if (!v7)
+  if (!bundleIdentifier)
   {
     [MEMORY[0x277CBEAD8] raise:*v4 format:@"The [[self bundle] bundleIdentifier] parameter must not be nil."];
   }
 
-  v8 = [(VSAppSettingsViewModel *)self bundle];
-  v9 = [v8 bundleIdentifier];
+  bundle2 = [(VSAppSettingsViewModel *)self bundle];
+  bundleIdentifier2 = [bundle2 bundleIdentifier];
 
-  [v5 setAccessGranted:0 forBundleID:v9];
+  [privacyFacade setAccessGranted:0 forBundleID:bundleIdentifier2];
 
   [(VSAppSettingsViewModel *)self setPrivacyState:2];
 }
 
-- (void)applicationsWillInstall:(id)a3
+- (void)applicationsWillInstall:(id)install
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -627,12 +627,12 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        v10 = [(VSAppSettingsViewModel *)self bundleID];
-        v11 = [v9 isEqual:v10];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        bundleID = [(VSAppSettingsViewModel *)self bundleID];
+        v11 = [bundleIdentifier isEqual:bundleID];
 
         if (v11)
         {
@@ -640,7 +640,7 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -649,15 +649,15 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -669,12 +669,12 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v18 + 1) + 8 * v8) bundleIdentifier];
-        v10 = [(VSAppSettingsViewModel *)self bundleID];
-        v11 = [v9 isEqual:v10];
+        bundleIdentifier = [*(*(&v18 + 1) + 8 * v8) bundleIdentifier];
+        bundleID = [(VSAppSettingsViewModel *)self bundleID];
+        v11 = [bundleIdentifier isEqual:bundleID];
 
         if (v11)
         {
@@ -682,7 +682,7 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
           v14 = 3221225472;
           v15 = __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke;
           v16 = &unk_279E19848;
-          v17 = v9;
+          v17 = bundleIdentifier;
           VSPerformBlockOnMainThread();
         }
 
@@ -690,7 +690,7 @@ id __65__VSAppSettingsViewModel_keyPathsForValuesAffectingAccessGranted__block_i
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -710,15 +710,15 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
   [*(a1 + 40) setInstallState:4];
 }
 
-- (void)applicationsDidFailToInstall:(id)a3
+- (void)applicationsDidFailToInstall:(id)install
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installCopy = install;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [installCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -729,12 +729,12 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        v10 = [(VSAppSettingsViewModel *)self bundleID];
-        v11 = [v9 isEqual:v10];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        bundleID = [(VSAppSettingsViewModel *)self bundleID];
+        v11 = [bundleIdentifier isEqual:bundleID];
 
         if (v11)
         {
@@ -742,7 +742,7 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -751,15 +751,15 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsWillUninstall:(id)a3
+- (void)applicationsWillUninstall:(id)uninstall
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -770,12 +770,12 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        v10 = [(VSAppSettingsViewModel *)self bundleID];
-        v11 = [v9 isEqual:v10];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        bundleID = [(VSAppSettingsViewModel *)self bundleID];
+        v11 = [bundleIdentifier isEqual:bundleID];
 
         if (v11)
         {
@@ -783,7 +783,7 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -792,15 +792,15 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -811,12 +811,12 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        v10 = [(VSAppSettingsViewModel *)self bundleID];
-        v11 = [v9 isEqual:v10];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        bundleID = [(VSAppSettingsViewModel *)self bundleID];
+        v11 = [bundleIdentifier isEqual:bundleID];
 
         if (v11)
         {
@@ -824,7 +824,7 @@ void __49__VSAppSettingsViewModel_applicationsDidInstall___block_invoke(uint64_t
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -841,15 +841,15 @@ uint64_t __51__VSAppSettingsViewModel_applicationsDidUninstall___block_invoke(ui
   return [v2 setBundle:0];
 }
 
-- (void)applicationsDidFailToUninstall:(id)a3
+- (void)applicationsDidFailToUninstall:(id)uninstall
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uninstallCopy = uninstall;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [uninstallCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -860,12 +860,12 @@ uint64_t __51__VSAppSettingsViewModel_applicationsDidUninstall___block_invoke(ui
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(uninstallCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
-        v10 = [(VSAppSettingsViewModel *)self bundleID];
-        v11 = [v9 isEqual:v10];
+        bundleIdentifier = [*(*(&v13 + 1) + 8 * i) bundleIdentifier];
+        bundleID = [(VSAppSettingsViewModel *)self bundleID];
+        v11 = [bundleIdentifier isEqual:bundleID];
 
         if (v11)
         {
@@ -873,7 +873,7 @@ uint64_t __51__VSAppSettingsViewModel_applicationsDidUninstall___block_invoke(ui
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [uninstallCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -886,23 +886,23 @@ uint64_t __51__VSAppSettingsViewModel_applicationsDidUninstall___block_invoke(ui
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(VSAppSettingsViewModel *)self adamID];
-  v6 = [v4 stringWithFormat:@"%@ = %@", @"adamID", v5];
+  adamID = [(VSAppSettingsViewModel *)self adamID];
+  v6 = [v4 stringWithFormat:@"%@ = %@", @"adamID", adamID];
   [v3 addObject:v6];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(VSAppSettingsViewModel *)self bundleID];
-  v9 = [v7 stringWithFormat:@"%@ = %@", @"bundleID", v8];
+  bundleID = [(VSAppSettingsViewModel *)self bundleID];
+  v9 = [v7 stringWithFormat:@"%@ = %@", @"bundleID", bundleID];
   [v3 addObject:v9];
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(VSAppSettingsViewModel *)self displayName];
-  v12 = [v10 stringWithFormat:@"%@ = %@", @"displayName", v11];
+  displayName = [(VSAppSettingsViewModel *)self displayName];
+  v12 = [v10 stringWithFormat:@"%@ = %@", @"displayName", displayName];
   [v3 addObject:v12];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(VSAppSettingsViewModel *)self voucher];
-  v15 = [v13 stringWithFormat:@"%@ = %@", @"voucher", v14];
+  voucher = [(VSAppSettingsViewModel *)self voucher];
+  v15 = [v13 stringWithFormat:@"%@ = %@", @"voucher", voucher];
   [v3 addObject:v15];
 
   v16 = MEMORY[0x277CCACA8];
@@ -918,8 +918,8 @@ uint64_t __51__VSAppSettingsViewModel_applicationsDidUninstall___block_invoke(ui
 - (id)appBundleIDs
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(VSAppSettingsViewModel *)self bundleID];
-  v6[0] = v2;
+  bundleID = [(VSAppSettingsViewModel *)self bundleID];
+  v6[0] = bundleID;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -930,8 +930,8 @@ uint64_t __51__VSAppSettingsViewModel_applicationsDidUninstall___block_invoke(ui
 - (id)appAdamIDs
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(VSAppSettingsViewModel *)self adamID];
-  v6[0] = v2;
+  adamID = [(VSAppSettingsViewModel *)self adamID];
+  v6[0] = adamID;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];

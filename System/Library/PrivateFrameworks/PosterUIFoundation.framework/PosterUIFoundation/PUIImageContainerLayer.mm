@@ -1,9 +1,9 @@
 @interface PUIImageContainerLayer
 + (id)layer;
 - (PUIImageContainerLayer)init;
-- (PUIImageContainerLayer)initWithCoder:(id)a3;
-- (PUIImageContainerLayer)initWithLayer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PUIImageContainerLayer)initWithCoder:(id)coder;
+- (PUIImageContainerLayer)initWithLayer:(id)layer;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSublayers;
 @end
 
@@ -16,15 +16,15 @@
   return v2;
 }
 
-- (PUIImageContainerLayer)initWithCoder:(id)a3
+- (PUIImageContainerLayer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PUIImageContainerLayer;
-  v5 = [(PUIImageContainerLayer *)&v9 initWithCoder:v4];
+  v5 = [(PUIImageContainerLayer *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageLayer"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageLayer"];
     imageLayer = v5->_imageLayer;
     v5->_imageLayer = v6;
 
@@ -34,20 +34,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PUIImageContainerLayer;
-  v4 = a3;
-  [(PUIImageContainerLayer *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_imageLayer forKey:{@"imageLayer", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PUIImageContainerLayer *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_imageLayer forKey:{@"imageLayer", v5.receiver, v5.super_class}];
 }
 
-- (PUIImageContainerLayer)initWithLayer:(id)a3
+- (PUIImageContainerLayer)initWithLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = PUIImageContainerLayer;
-  return [(PUIImageContainerLayer *)&v4 initWithLayer:a3];
+  return [(PUIImageContainerLayer *)&v4 initWithLayer:layer];
 }
 
 - (PUIImageContainerLayer)init
@@ -57,9 +57,9 @@
   v2 = [(PUIImageContainerLayer *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     imageLayer = v2->_imageLayer;
-    v2->_imageLayer = v3;
+    v2->_imageLayer = layer;
 
     [(CALayer *)v2->_imageLayer setName:@"Image Layer"];
     [(CALayer *)v2->_imageLayer setContentsGravity:*MEMORY[0x1E6979DE0]];
@@ -82,8 +82,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(PUIImageContainerLayer *)self sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  sublayers = [(PUIImageContainerLayer *)self sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -95,7 +95,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -108,7 +108,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);

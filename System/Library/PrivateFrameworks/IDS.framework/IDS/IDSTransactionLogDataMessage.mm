@@ -1,35 +1,35 @@
 @interface IDSTransactionLogDataMessage
-- (IDSTransactionLogDataMessage)initWithData:(id)a3 accountUniqueID:(id)a4 fromID:(id)a5 loginID:(id)a6 serviceName:(id)a7;
-- (IDSTransactionLogDataMessage)initWithDictionaryRepresentation:(id)a3;
+- (IDSTransactionLogDataMessage)initWithData:(id)data accountUniqueID:(id)d fromID:(id)iD loginID:(id)loginID serviceName:(id)name;
+- (IDSTransactionLogDataMessage)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IDSTransactionLogDataMessage
 
-- (IDSTransactionLogDataMessage)initWithData:(id)a3 accountUniqueID:(id)a4 fromID:(id)a5 loginID:(id)a6 serviceName:(id)a7
+- (IDSTransactionLogDataMessage)initWithData:(id)data accountUniqueID:(id)d fromID:(id)iD loginID:(id)loginID serviceName:(id)name
 {
-  v13 = a3;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = IDSTransactionLogDataMessage;
-  v14 = [(IDSTransactionLogMessage *)&v17 _initWithAccountUniqueID:a4 fromID:a5 loginID:a6 serviceName:a7];
+  v14 = [(IDSTransactionLogMessage *)&v17 _initWithAccountUniqueID:d fromID:iD loginID:loginID serviceName:name];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(v14 + 5, a3);
+    objc_storeStrong(v14 + 5, data);
   }
 
   return v15;
 }
 
-- (IDSTransactionLogDataMessage)initWithDictionaryRepresentation:(id)a3
+- (IDSTransactionLogDataMessage)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = IDSTransactionLogDataMessage;
-  v5 = [(IDSTransactionLogMessage *)&v9 initWithDictionaryRepresentation:v4];
+  v5 = [(IDSTransactionLogMessage *)&v9 initWithDictionaryRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"IDSTransactionLogMessageDataValueKey"];
+    v6 = [representationCopy objectForKeyedSubscript:@"IDSTransactionLogMessageDataValueKey"];
     dataValue = v5->_dataValue;
     v5->_dataValue = v6;
   }
@@ -39,16 +39,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(IDSTransactionLogMessage *)self _dictionaryRepresentation];
-  v4 = [(IDSTransactionLogDataMessage *)self dataValue];
+  _dictionaryRepresentation = [(IDSTransactionLogMessage *)self _dictionaryRepresentation];
+  dataValue = [(IDSTransactionLogDataMessage *)self dataValue];
 
-  if (v4)
+  if (dataValue)
   {
-    v5 = [(IDSTransactionLogDataMessage *)self dataValue];
-    [v3 setObject:v5 forKeyedSubscript:@"IDSTransactionLogMessageDataValueKey"];
+    dataValue2 = [(IDSTransactionLogDataMessage *)self dataValue];
+    [_dictionaryRepresentation setObject:dataValue2 forKeyedSubscript:@"IDSTransactionLogMessageDataValueKey"];
   }
 
-  return v3;
+  return _dictionaryRepresentation;
 }
 
 @end

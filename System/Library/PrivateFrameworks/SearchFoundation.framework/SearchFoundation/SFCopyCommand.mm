@@ -1,12 +1,12 @@
 @interface SFCopyCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCopyCommand)initWithCoder:(id)a3;
-- (SFCopyCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCopyCommand)initWithCoder:(id)coder;
+- (SFCopyCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCopyCommand
@@ -16,34 +16,34 @@
   v9.receiver = self;
   v9.super_class = SFCopyCommand;
   v3 = [(SFCommand *)&v9 hash];
-  v4 = [(SFCopyCommand *)self copyableItem];
-  v5 = [v4 hash];
-  v6 = [(SFCopyCommand *)self copyableItems];
-  v7 = v5 ^ [v6 hash];
+  copyableItem = [(SFCopyCommand *)self copyableItem];
+  v5 = [copyableItem hash];
+  copyableItems = [(SFCopyCommand *)self copyableItems];
+  v7 = v5 ^ [copyableItems hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFCopyCommand *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFCopyCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = SFCopyCommand;
-      if ([(SFCommand *)&v22 isEqual:v5])
+      if ([(SFCommand *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFCopyCommand *)self copyableItem];
-        v8 = [(SFCopyCommand *)v6 copyableItem];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        copyableItem = [(SFCopyCommand *)self copyableItem];
+        copyableItem2 = [(SFCopyCommand *)v6 copyableItem];
+        if ((copyableItem != 0) == (copyableItem2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -51,12 +51,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(SFCopyCommand *)self copyableItem];
-        if (v9)
+        copyableItem3 = [(SFCopyCommand *)self copyableItem];
+        if (copyableItem3)
         {
-          v3 = [(SFCopyCommand *)self copyableItem];
-          v10 = [(SFCopyCommand *)v6 copyableItem];
-          if (![v3 isEqual:v10])
+          copyableItem4 = [(SFCopyCommand *)self copyableItem];
+          copyableItem5 = [(SFCopyCommand *)v6 copyableItem];
+          if (![copyableItem4 isEqual:copyableItem5])
           {
             v11 = 0;
 LABEL_18:
@@ -65,13 +65,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = copyableItem5;
         }
 
-        v12 = [(SFCopyCommand *)self copyableItems];
-        v13 = [(SFCopyCommand *)v6 copyableItems];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        copyableItems = [(SFCopyCommand *)self copyableItems];
+        copyableItems2 = [(SFCopyCommand *)v6 copyableItems];
+        v14 = copyableItems2;
+        if ((copyableItems != 0) == (copyableItems2 == 0))
         {
 
           v11 = 0;
@@ -79,16 +79,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(SFCopyCommand *)self copyableItems];
-          if (v15)
+          copyableItems3 = [(SFCopyCommand *)self copyableItems];
+          if (copyableItems3)
           {
-            v16 = v15;
-            v19 = [(SFCopyCommand *)self copyableItems];
+            v16 = copyableItems3;
+            copyableItems4 = [(SFCopyCommand *)self copyableItems];
             [(SFCopyCommand *)v6 copyableItems];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = copyableItem4;
+            v11 = [copyableItems4 isEqual:v17];
 
-            v3 = v20;
+            copyableItem4 = v20;
           }
 
           else
@@ -98,8 +98,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        copyableItem5 = v21;
+        if (!copyableItem3)
         {
           goto LABEL_19;
         }
@@ -116,17 +116,17 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SFCopyCommand;
-  v4 = [(SFCommand *)&v10 copyWithZone:a3];
-  v5 = [(SFCopyCommand *)self copyableItem];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v10 copyWithZone:zone];
+  copyableItem = [(SFCopyCommand *)self copyableItem];
+  v6 = [copyableItem copy];
   [v4 setCopyableItem:v6];
 
-  v7 = [(SFCopyCommand *)self copyableItems];
-  v8 = [v7 copy];
+  copyableItems = [(SFCopyCommand *)self copyableItems];
+  v8 = [copyableItems copy];
   [v4 setCopyableItems:v8];
 
   return v4;
@@ -135,80 +135,80 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCopyCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCopyCommand *)v2 jsonData];
+  jsonData = [(_SFPBCopyCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCopyCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCopyCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCopyCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFCopyCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFCopyCommand)initWithCoder:(id)a3
+- (SFCopyCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCopyCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 copyableItem];
-    [(SFCopyCommand *)v5 setCopyableItem:v9];
+    copyableItem = [(SFCommand *)v8 copyableItem];
+    [(SFCopyCommand *)v5 setCopyableItem:copyableItem];
 
-    v10 = [(SFCommand *)v8 copyableItems];
-    [(SFCopyCommand *)v5 setCopyableItems:v10];
+    copyableItems = [(SFCommand *)v8 copyableItems];
+    [(SFCopyCommand *)v5 setCopyableItems:copyableItems];
 
-    v11 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v11];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v12 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v12];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v13 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v13];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v14 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v14];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFCopyCommand)initWithProtobuf:(id)a3
+- (SFCopyCommand)initWithProtobuf:(id)protobuf
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v25.receiver = self;
   v25.super_class = SFCopyCommand;
   v5 = [(SFCopyCommand *)&v25 init];
   if (v5)
   {
-    v6 = [v4 copyableItem];
+    copyableItem = [protobufCopy copyableItem];
 
-    if (v6)
+    if (copyableItem)
     {
       v7 = [SFCopyItem alloc];
-      v8 = [v4 copyableItem];
-      v9 = [(SFCopyItem *)v7 initWithProtobuf:v8];
+      copyableItem2 = [protobufCopy copyableItem];
+      v9 = [(SFCopyItem *)v7 initWithProtobuf:copyableItem2];
       [(SFCopyCommand *)v5 setCopyableItem:v9];
     }
 
-    v10 = [v4 copyableItems];
-    if (v10)
+    copyableItems = [protobufCopy copyableItems];
+    if (copyableItems)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -222,8 +222,8 @@ LABEL_21:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v4 copyableItems];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    copyableItems2 = [protobufCopy copyableItems];
+    v13 = [copyableItems2 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -234,7 +234,7 @@ LABEL_21:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(copyableItems2);
           }
 
           v17 = [[SFCopyItem alloc] initWithProtobuf:*(*(&v21 + 1) + 8 * i)];
@@ -244,7 +244,7 @@ LABEL_21:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v14 = [copyableItems2 countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v14);

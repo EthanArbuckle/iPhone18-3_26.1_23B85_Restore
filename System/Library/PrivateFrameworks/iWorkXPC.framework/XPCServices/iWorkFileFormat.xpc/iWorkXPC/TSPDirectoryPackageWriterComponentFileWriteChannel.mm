@@ -1,25 +1,25 @@
 @interface TSPDirectoryPackageWriterComponentFileWriteChannel
-- (TSPDirectoryPackageWriterComponentFileWriteChannel)initWithURL:(id)a3 handler:(id)a4;
+- (TSPDirectoryPackageWriterComponentFileWriteChannel)initWithURL:(id)l handler:(id)handler;
 - (void)close;
-- (void)writeData:(id)a3;
+- (void)writeData:(id)data;
 @end
 
 @implementation TSPDirectoryPackageWriterComponentFileWriteChannel
 
-- (TSPDirectoryPackageWriterComponentFileWriteChannel)initWithURL:(id)a3 handler:(id)a4
+- (TSPDirectoryPackageWriterComponentFileWriteChannel)initWithURL:(id)l handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = TSPDirectoryPackageWriterComponentFileWriteChannel;
   v8 = [(TSPDirectoryPackageWriterComponentFileWriteChannel *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     URL = v8->_URL;
     v8->_URL = v9;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     handler = v8->_handler;
     v8->_handler = v11;
 
@@ -37,9 +37,9 @@
   return v8;
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = atomic_load(&self->_isClosed);
   if (v5)
   {
@@ -69,7 +69,7 @@
   v16[2] = sub_100020808;
   v16[3] = &unk_1001C6B58;
   v16[4] = self;
-  [(TSUFileIOChannel *)writeChannel writeData:v4 handler:v16];
+  [(TSUFileIOChannel *)writeChannel writeData:dataCopy handler:v16];
 }
 
 - (void)close

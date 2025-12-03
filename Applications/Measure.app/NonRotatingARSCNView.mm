@@ -1,25 +1,25 @@
 @interface NonRotatingARSCNView
 - (void)layoutSubviews;
 - (void)lockRendererOrientation;
-- (void)setLockedOrientation:(int64_t)a3;
-- (void)windowWillAnimateRotateNotification:(id)a3;
+- (void)setLockedOrientation:(int64_t)orientation;
+- (void)windowWillAnimateRotateNotification:(id)notification;
 @end
 
 @implementation NonRotatingARSCNView
 
-- (void)setLockedOrientation:(int64_t)a3
+- (void)setLockedOrientation:(int64_t)orientation
 {
-  self->_lockedOrientation = a3;
+  self->_lockedOrientation = orientation;
   [(NonRotatingARSCNView *)self lockRendererOrientation];
   v5 = +[NSNotificationCenter defaultCenter];
-  v4 = [(NonRotatingARSCNView *)self renderer];
-  [v5 removeObserver:v4 name:UIApplicationDidChangeStatusBarOrientationNotification object:0];
+  renderer = [(NonRotatingARSCNView *)self renderer];
+  [v5 removeObserver:renderer name:UIApplicationDidChangeStatusBarOrientationNotification object:0];
 }
 
-- (void)windowWillAnimateRotateNotification:(id)a3
+- (void)windowWillAnimateRotateNotification:(id)notification
 {
-  v4 = [(NonRotatingARSCNView *)self renderer];
-  [v4 _setInterfaceOrientation:{-[NonRotatingARSCNView lockedOrientation](self, "lockedOrientation")}];
+  renderer = [(NonRotatingARSCNView *)self renderer];
+  [renderer _setInterfaceOrientation:{-[NonRotatingARSCNView lockedOrientation](self, "lockedOrientation")}];
 }
 
 - (void)layoutSubviews
@@ -34,8 +34,8 @@
 
 - (void)lockRendererOrientation
 {
-  v3 = [(NonRotatingARSCNView *)self renderer];
-  [v3 _setInterfaceOrientation:{-[NonRotatingARSCNView lockedOrientation](self, "lockedOrientation")}];
+  renderer = [(NonRotatingARSCNView *)self renderer];
+  [renderer _setInterfaceOrientation:{-[NonRotatingARSCNView lockedOrientation](self, "lockedOrientation")}];
 }
 
 @end

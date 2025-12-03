@@ -1,7 +1,7 @@
 @interface PXContentSyndicationItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXAssetCollectionActionManager)assetCollectionActionManager;
-- (PXContentSyndicationItem)initWithAssetCollection:(id)a3;
+- (PXContentSyndicationItem)initWithAssetCollection:(id)collection;
 @end
 
 @implementation PXContentSyndicationItem
@@ -13,10 +13,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -26,11 +26,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXContentSyndicationItem *)self assetCollection];
-      v7 = [(PXContentSyndicationItem *)v5 assetCollection];
+      v5 = equalCopy;
+      assetCollection = [(PXContentSyndicationItem *)self assetCollection];
+      assetCollection2 = [(PXContentSyndicationItem *)v5 assetCollection];
 
-      v8 = v6 == v7;
+      v8 = assetCollection == assetCollection2;
     }
 
     else
@@ -42,16 +42,16 @@
   return v8;
 }
 
-- (PXContentSyndicationItem)initWithAssetCollection:(id)a3
+- (PXContentSyndicationItem)initWithAssetCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = PXContentSyndicationItem;
   v6 = [(PXContentSyndicationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetCollection, a3);
+    objc_storeStrong(&v6->_assetCollection, collection);
   }
 
   return v7;

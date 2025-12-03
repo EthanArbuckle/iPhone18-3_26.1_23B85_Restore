@@ -1,42 +1,42 @@
 @interface IRNearbyDeviceMO
-+ (id)nearbyDeviceMOWithNearbyDeviceDO:(id)a3 nearbyDeviceContainer:(id)a4 inManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfnearbyDeviceMO:(id)a3 withNearbyDeviceDO:(id)a4;
++ (id)nearbyDeviceMOWithNearbyDeviceDO:(id)o nearbyDeviceContainer:(id)container inManagedObjectContext:(id)context;
++ (void)setPropertiesOfnearbyDeviceMO:(id)o withNearbyDeviceDO:(id)dO;
 - (id)convert;
 @end
 
 @implementation IRNearbyDeviceMO
 
-+ (id)nearbyDeviceMOWithNearbyDeviceDO:(id)a3 nearbyDeviceContainer:(id)a4 inManagedObjectContext:(id)a5
++ (id)nearbyDeviceMOWithNearbyDeviceDO:(id)o nearbyDeviceContainer:(id)container inManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRNearbyDeviceMO alloc] initWithContext:v7];
+  contextCopy = context;
+  containerCopy = container;
+  oCopy = o;
+  v10 = [[IRNearbyDeviceMO alloc] initWithContext:contextCopy];
 
-  [(IRNearbyDeviceMO *)v10 setNearbyDeviceContainer:v8];
-  [IRNearbyDeviceMO setPropertiesOfnearbyDeviceMO:v10 withNearbyDeviceDO:v9];
+  [(IRNearbyDeviceMO *)v10 setNearbyDeviceContainer:containerCopy];
+  [IRNearbyDeviceMO setPropertiesOfnearbyDeviceMO:v10 withNearbyDeviceDO:oCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfnearbyDeviceMO:(id)a3 withNearbyDeviceDO:(id)a4
++ (void)setPropertiesOfnearbyDeviceMO:(id)o withNearbyDeviceDO:(id)dO
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 range];
-  [v6 setRange:?];
-  v7 = [v5 idsIdentifier];
-  [v6 setIdsIdentifier:v7];
+  dOCopy = dO;
+  oCopy = o;
+  [dOCopy range];
+  [oCopy setRange:?];
+  idsIdentifier = [dOCopy idsIdentifier];
+  [oCopy setIdsIdentifier:idsIdentifier];
 
-  v8 = [v5 measurementDate];
-  [v6 setMeasurementDate:v8];
+  measurementDate = [dOCopy measurementDate];
+  [oCopy setMeasurementDate:measurementDate];
 
-  v9 = [v5 mediaRemoteIdentifier];
-  [v6 setMediaRemoteIdentifier:v9];
+  mediaRemoteIdentifier = [dOCopy mediaRemoteIdentifier];
+  [oCopy setMediaRemoteIdentifier:mediaRemoteIdentifier];
 
-  v10 = [v5 proximityType];
+  proximityType = [dOCopy proximityType];
 
-  [v6 setProximityType:v10];
+  [oCopy setProximityType:proximityType];
 }
 
 - (id)convert
@@ -44,11 +44,11 @@
   v3 = [IRNearbyDeviceDO alloc];
   [(IRNearbyDeviceMO *)self range];
   v5 = v4;
-  v6 = [(IRNearbyDeviceMO *)self idsIdentifier];
-  v7 = [(IRNearbyDeviceMO *)self mediaRemoteIdentifier];
-  v8 = [(IRNearbyDeviceMO *)self proximityType];
-  v9 = [(IRNearbyDeviceMO *)self measurementDate];
-  v10 = [(IRNearbyDeviceDO *)v3 initWithRange:v6 idsIdentifier:v7 mediaRemoteIdentifier:v8 proximityType:v9 measurementDate:v5];
+  idsIdentifier = [(IRNearbyDeviceMO *)self idsIdentifier];
+  mediaRemoteIdentifier = [(IRNearbyDeviceMO *)self mediaRemoteIdentifier];
+  proximityType = [(IRNearbyDeviceMO *)self proximityType];
+  measurementDate = [(IRNearbyDeviceMO *)self measurementDate];
+  v10 = [(IRNearbyDeviceDO *)v3 initWithRange:idsIdentifier idsIdentifier:mediaRemoteIdentifier mediaRemoteIdentifier:proximityType proximityType:measurementDate measurementDate:v5];
 
   return v10;
 }

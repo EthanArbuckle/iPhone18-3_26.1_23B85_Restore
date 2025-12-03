@@ -35,16 +35,16 @@
 
 - (uint64_t)itk_CGPath
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 CGPath];
+  return [selfCopy CGPath];
 }
 
 - (void)itk_appendRect:()ITKUtilities
 {
   v3 = [ITKQuad quadFromCGRect:?];
-  v2 = [v3 path];
-  [a1 itk_appendBezierPath:v2];
+  path = [v3 path];
+  [self itk_appendBezierPath:path];
 }
 
 - (void)itk_appendBezierPath:()ITKUtilities
@@ -52,14 +52,14 @@
   v4 = a3;
   if (v4 && ([v4 isEmpty] & 1) == 0)
   {
-    [a1 appendPath:v4];
+    [self appendPath:v4];
   }
 }
 
 - (double)itk_centroid
 {
-  v1 = [a1 itk_allPoints];
-  v2 = [v1 count];
+  itk_allPoints = [self itk_allPoints];
+  v2 = [itk_allPoints count];
   v3 = v2;
   v4 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
@@ -70,7 +70,7 @@
     v8 = 0.0;
     do
     {
-      v9 = [v1 objectAtIndexedSubscript:v6];
+      v9 = [itk_allPoints objectAtIndexedSubscript:v6];
       [v9 itk_pointValue];
       v11 = v10;
       v13 = v12;
@@ -85,7 +85,7 @@
         v14 = v6 + 1;
       }
 
-      v15 = [v1 objectAtIndexedSubscript:v14];
+      v15 = [itk_allPoints objectAtIndexedSubscript:v14];
       [v15 itk_pointValue];
       v17 = v16;
       v19 = v18;
@@ -133,7 +133,7 @@
   v5[4] = __Block_byref_object_dispose_;
   v5[5] = &unk_254C2D841;
   v6 = *MEMORY[0x277D1C0D8];
-  v1 = [a1 itk_CGPath];
+  itk_CGPath = [self itk_CGPath];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__UIBezierPath_ITKUtilities__itk_lengthIgnoringCurves__block_invoke;
@@ -141,7 +141,7 @@
   block[4] = v5;
   block[5] = v7;
   block[6] = &v9;
-  CGPathApplyWithBlock(v1, block);
+  CGPathApplyWithBlock(itk_CGPath, block);
   v2 = v10[3];
   _Block_object_dispose(v5, 8);
   _Block_object_dispose(v7, 8);
@@ -152,9 +152,9 @@
 - (uint64_t)itk_allPoints
 {
   v2 = objc_opt_class();
-  v3 = [a1 itk_CGPath];
+  itk_CGPath = [self itk_CGPath];
 
-  return [v2 itk_allPointsFromCGPath:v3];
+  return [v2 itk_allPointsFromCGPath:itk_CGPath];
 }
 
 + (id)itk_allPointsFromCGPath:()ITKUtilities
@@ -177,13 +177,13 @@
   v5[0] = *a3;
   v5[1] = v3;
   v5[2] = a3[2];
-  return [a1 applyTransform:v5];
+  return [self applyTransform:v5];
 }
 
 - (id)itk_pathFromFlippingInRect:()ITKUtilities
 {
   v10 = objc_alloc_init(MEMORY[0x277D75208]);
-  v11 = [a1 itk_CGPath];
+  itk_CGPath = [self itk_CGPath];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__UIBezierPath_ITKUtilities__itk_pathFromFlippingInRect___block_invoke;
@@ -194,40 +194,40 @@
   v17 = a3;
   v18 = a4;
   v19 = a5;
-  CGPathApplyWithBlock(v11, block);
+  CGPathApplyWithBlock(itk_CGPath, block);
 
   return v12;
 }
 
 - (id)debugQuickLookObject
 {
-  v1 = a1;
-  [v1 bounds];
+  selfCopy = self;
+  [selfCopy bounds];
   if (v2 >= 2.0)
   {
-    [v1 bounds];
+    [selfCopy bounds];
     if (v3 < 20.0)
     {
       CGAffineTransformMakeScale(&v5, 20.0, 20.0);
-      [v1 itk_applyTransform:&v5];
+      [selfCopy itk_applyTransform:&v5];
     }
   }
 
   else
   {
     CGAffineTransformMakeScale(&v5, 150.0, 150.0);
-    [v1 itk_applyTransform:&v5];
+    [selfCopy itk_applyTransform:&v5];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)itk_subpathArray
 {
   v2 = objc_opt_class();
-  v3 = [a1 itk_CGPath];
+  itk_CGPath = [self itk_CGPath];
 
-  return [v2 itk_subpathArrayFromCGPath:v3];
+  return [v2 itk_subpathArrayFromCGPath:itk_CGPath];
 }
 
 + (id)itk_subpathArrayFromCGPath:()ITKUtilities
@@ -257,7 +257,7 @@
 
 - (id)itk_pathByFittingToRect:()ITKUtilities
 {
-  [a1 bounds];
+  [self bounds];
   ITKCenterOfRect();
   v3 = v2;
   v5 = v4;
@@ -277,7 +277,7 @@
   CGAffineTransformMakeTranslation(&t2, v7, v9);
   CGAffineTransformConcat(&v18, &t1, &t2);
   v19 = v18;
-  v14 = [a1 copy];
+  v14 = [self copy];
   v18 = v19;
   [v14 itk_applyTransform:&v18];
   [v14 bounds];
@@ -295,7 +295,7 @@
   v5 = v4;
   if (v4 && ([v4 isEmpty] & 1) == 0)
   {
-    v6 = [a1 _itk_flattenWithPath:v5 clipType:1];
+    v6 = [self _itk_flattenWithPath:v5 clipType:1];
   }
 
   else
@@ -312,7 +312,7 @@
   v5 = v4;
   if (v4 && ([v4 isEmpty] & 1) == 0)
   {
-    v6 = [a1 _itk_flattenWithPath:v5 clipType:0];
+    v6 = [self _itk_flattenWithPath:v5 clipType:0];
   }
 
   else
@@ -329,14 +329,14 @@
   v4 = a3;
   memset(v10, 0, sizeof(v10));
   ClipperLib::Clipper::Clipper(&v11, 0);
-  v5 = a1;
+  selfCopy = self;
   if (v4 && ([v4 isEmpty] & 1) == 0)
   {
     memset(&v9, 0, sizeof(v9));
     CGAffineTransformMakeScale(&v9, 10000.0, 10000.0);
-    if (([v5 isEmpty] & 1) == 0)
+    if (([selfCopy isEmpty] & 1) == 0)
     {
-      v6 = MEMORY[0x259C27E10]([v5 itk_CGPath], &v9);
+      v6 = MEMORY[0x259C27E10]([selfCopy itk_CGPath], &v9);
       ITKClipperPathsFromCGPath(v6, 1.0);
     }
 
@@ -367,15 +367,15 @@
   v11 = v10;
   std::vector<std::vector<ClipperLib::IntPoint>>::__destroy_vector::operator()[abi:ne200100](&v11);
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)itk_expandWithOffset:()ITKUtilities
 {
-  v1 = [a1 itk_CGPath];
-  if (([objc_opt_class() itk_cgPathcontainsAnyCurveToPoints:v1] & 1) == 0)
+  itk_CGPath = [self itk_CGPath];
+  if (([objc_opt_class() itk_cgPathcontainsAnyCurveToPoints:itk_CGPath] & 1) == 0)
   {
-    ITKClipperPathsFromCGPath(v1, 1.0);
+    ITKClipperPathsFromCGPath(itk_CGPath, 1.0);
   }
 
   return 0;
@@ -389,7 +389,7 @@
   v9[1] = 3221225472;
   v9[2] = __67__UIBezierPath_ITKUtilities__itk_groupAndRoundPaths_radius_offset___block_invoke;
   v9[3] = &__block_descriptor_40_e29_B32__0__UIBezierPath_8Q16_B24l;
-  v9[4] = a1;
+  v9[4] = self;
   if (([v4 itk_containsObjectPassingTest:v9] & 1) == 0)
   {
     memset(v8, 0, sizeof(v8));
@@ -472,8 +472,8 @@
 {
   v6 = a4;
   v7 = [v6 mutableCopy];
-  [a1 _processPointsForRounding:v7 withRadius:a2];
-  [a1 _processPointsForNarrowAngles:v7];
+  [self _processPointsForRounding:v7 withRadius:a2];
+  [self _processPointsForNarrowAngles:v7];
   v8 = v7;
 
   Mutable = CGPathCreateMutable();
@@ -597,7 +597,7 @@
   v10[0] = MEMORY[0x277D85DD0];
   v10[2] = __67__UIBezierPath_ITKUtilities___processPointsForRounding_withRadius___block_invoke;
   v10[3] = &unk_2797B02C0;
-  *&v10[6] = a1 / 3.0;
+  *&v10[6] = self / 3.0;
   v10[4] = v17;
   v10[5] = &v11;
   [v6 enumerateObjectsUsingBlock:v10];
@@ -607,10 +607,10 @@
     [v5 removeObjectsAtIndexes:?];
   }
 
-  v7 = [v5 firstObject];
-  [v7 itk_pointValue];
-  v8 = [v5 lastObject];
-  [v8 itk_pointValue];
+  firstObject = [v5 firstObject];
+  [firstObject itk_pointValue];
+  lastObject = [v5 lastObject];
+  [lastObject itk_pointValue];
   v9 = ITKNearlyEqualPointsWithThreshold();
 
   if (v9)
@@ -626,7 +626,7 @@
 + (id)itk_shiftLinePerpendicularlyFromPoint:()ITKUtilities to:radius:
 {
   v8 = objc_alloc_init(MEMORY[0x277D1C0F8]);
-  if (a1 != a3 && a2 != a4)
+  if (self != a3 && a2 != a4)
   {
     ITKSlopeOfLine();
     v10 = atan(fabs(v9));
@@ -643,7 +643,7 @@
 
 + (uint64_t)itk_signForRadiusWithVectorStart:()ITKUtilities end:otherPoint:
 {
-  if (a1 != a3)
+  if (self != a3)
   {
     return ITKSlopeOfLine();
   }
@@ -653,7 +653,7 @@
 
 + (void)itk_calculateCenterForPoints:()ITKUtilities p2:p3:radius:
 {
-  [a1 itk_signForRadiusWithVectorStart:? end:? otherPoint:?];
+  [self itk_signForRadiusWithVectorStart:? end:? otherPoint:?];
   v16 = [MEMORY[0x277D75208] itk_shiftLinePerpendicularlyFromPoint:a2 to:a3 radius:{a4, a5, v15 * a8}];
   [MEMORY[0x277D75208] itk_signForRadiusWithVectorStart:a6 end:a7 otherPoint:{a4, a5, a2, a3}];
   v18 = [MEMORY[0x277D75208] itk_shiftLinePerpendicularlyFromPoint:a6 to:a7 radius:{a4, a5, v17 * a8}];
@@ -672,7 +672,7 @@
   {
     if (a4 == a6)
     {
-      return a1;
+      return self;
     }
 
     else
@@ -684,7 +684,7 @@
       [v12 setB:a4 - v11 * v6];
       v13 = objc_alloc_init(MEMORY[0x277D1C0F0]);
       [v13 setA:-1.0 / v11];
-      [v13 setB:a2 + 1.0 / v11 * a1];
+      [v13 setB:a2 + 1.0 / v11 * self];
       ITKIntersectsLine();
 
       return *&v15;
@@ -751,21 +751,21 @@
     v10 = 0.0;
   }
 
-  return v10 / v6 * a1;
+  return v10 / v6 * self;
 }
 
 + (id)mapPaths:()ITKUtilities toQuads:
 {
   v5 = a3;
   v6 = a4;
-  v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v8 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v6];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __47__UIBezierPath_ITKUtilities__mapPaths_toQuads___block_invoke;
   v14[3] = &unk_2797B0360;
   v15 = v8;
-  v9 = v7;
+  v9 = strongToStrongObjectsMapTable;
   v16 = v9;
   v10 = v8;
   [v5 enumerateObjectsUsingBlock:v14];

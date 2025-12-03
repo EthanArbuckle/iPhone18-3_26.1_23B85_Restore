@@ -1,7 +1,7 @@
 @interface MCDeviceCapabilities
 + (id)currentDevice;
 - (BOOL)_mediaDiskIsEncrypted;
-- (BOOL)validateCapabilitiesRequiredByRestrictions:(id)a3 localizedIncompatibilityMessage:(id)a4 outError:(id *)a5;
+- (BOOL)validateCapabilitiesRequiredByRestrictions:(id)restrictions localizedIncompatibilityMessage:(id)message outError:(id *)error;
 - (MCDeviceCapabilities)init;
 @end
 
@@ -84,13 +84,13 @@ uint64_t __37__MCDeviceCapabilities_currentDevice__block_invoke()
   return v3;
 }
 
-- (BOOL)validateCapabilitiesRequiredByRestrictions:(id)a3 localizedIncompatibilityMessage:(id)a4 outError:(id *)a5
+- (BOOL)validateCapabilitiesRequiredByRestrictions:(id)restrictions localizedIncompatibilityMessage:(id)message outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([MCRestrictionManager BOOLSettingForFeature:@"requireBlockLevelEncryption" withUserSettingDictionary:v8]== 1 && !self->_supportsBlockLevelEncryption)
+  restrictionsCopy = restrictions;
+  messageCopy = message;
+  if ([MCRestrictionManager BOOLSettingForFeature:@"requireBlockLevelEncryption" withUserSettingDictionary:restrictionsCopy]== 1 && !self->_supportsBlockLevelEncryption)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -98,16 +98,16 @@ uint64_t __37__MCDeviceCapabilities_currentDevice__block_invoke()
     v10 = 26000;
 LABEL_10:
     v11 = MEMORY[0x1E696ABC0];
-    v12 = MCErrorArrayFromLocalizedDescription(v9);
-    *a5 = [v11 MCErrorWithDomain:@"MCDeviceCapabilitiesErrorDomain" code:v10 descriptionArray:v12 errorType:@"MCFatalError"];
+    v12 = MCErrorArrayFromLocalizedDescription(messageCopy);
+    *error = [v11 MCErrorWithDomain:@"MCDeviceCapabilitiesErrorDomain" code:v10 descriptionArray:v12 errorType:@"MCFatalError"];
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  if ([MCRestrictionManager BOOLSettingForFeature:@"requireFileLevelEncryption" withUserSettingDictionary:v8]== 1 && !self->_supportsFileLevelEncryption)
+  if ([MCRestrictionManager BOOLSettingForFeature:@"requireFileLevelEncryption" withUserSettingDictionary:restrictionsCopy]== 1 && !self->_supportsFileLevelEncryption)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -116,10 +116,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
 LABEL_11:
 
-  return a5;
+  return error;
 }
 
 @end

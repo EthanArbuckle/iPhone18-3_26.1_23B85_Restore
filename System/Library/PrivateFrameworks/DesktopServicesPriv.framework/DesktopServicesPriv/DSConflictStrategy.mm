@@ -1,8 +1,8 @@
 @interface DSConflictStrategy
 - (DSConflictStrategy)init;
-- (id)localizedAlertMessageForSourceFileURL:(id)a3;
-- (id)localizedTitleForResolution:(unint64_t)a3;
-- (void)setLocalizedTitle:(id)a3 forResolution:(unint64_t)a4;
+- (id)localizedAlertMessageForSourceFileURL:(id)l;
+- (id)localizedTitleForResolution:(unint64_t)resolution;
+- (void)setLocalizedTitle:(id)title forResolution:(unint64_t)resolution;
 - (void)validate;
 @end
 
@@ -15,39 +15,39 @@
   v2 = [(DSConflictStrategy *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     localizedTitlesByResolution = v2->_localizedTitlesByResolution;
-    v2->_localizedTitlesByResolution = v3;
+    v2->_localizedTitlesByResolution = dictionary;
   }
 
   return v2;
 }
 
-- (void)setLocalizedTitle:(id)a3 forResolution:(unint64_t)a4
+- (void)setLocalizedTitle:(id)title forResolution:(unint64_t)resolution
 {
-  v8 = a3;
+  titleCopy = title;
   localizedTitlesByResolution = self->_localizedTitlesByResolution;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)localizedTitlesByResolution setObject:v8 forKeyedSubscript:v7];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resolution];
+  [(NSMutableDictionary *)localizedTitlesByResolution setObject:titleCopy forKeyedSubscript:v7];
 }
 
-- (id)localizedTitleForResolution:(unint64_t)a3
+- (id)localizedTitleForResolution:(unint64_t)resolution
 {
   localizedTitlesByResolution = self->_localizedTitlesByResolution;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:resolution];
   v5 = [(NSMutableDictionary *)localizedTitlesByResolution objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)localizedAlertMessageForSourceFileURL:(id)a3
+- (id)localizedAlertMessageForSourceFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [(DSConflictStrategy *)self localizedAlertMessageFormat];
-  if ([v5 length])
+  lCopy = l;
+  localizedAlertMessageFormat = [(DSConflictStrategy *)self localizedAlertMessageFormat];
+  if ([localizedAlertMessageFormat length])
   {
-    v6 = [v4 lastPathComponent];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:v5, v6];
+    lastPathComponent = [lCopy lastPathComponent];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:localizedAlertMessageFormat, lastPathComponent];
   }
 
   else

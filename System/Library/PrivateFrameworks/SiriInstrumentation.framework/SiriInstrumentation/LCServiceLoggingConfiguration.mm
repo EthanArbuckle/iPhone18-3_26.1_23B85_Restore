@@ -1,31 +1,31 @@
 @interface LCServiceLoggingConfiguration
-- (BOOL)isEqual:(id)a3;
-- (LCServiceLoggingConfiguration)initWithDictionary:(id)a3;
-- (LCServiceLoggingConfiguration)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LCServiceLoggingConfiguration)initWithDictionary:(id)dictionary;
+- (LCServiceLoggingConfiguration)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)denyListedCategoriesAtIndex:(unint64_t)a3;
+- (int)denyListedCategoriesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addApplications:(id)a3;
-- (void)addBlacklistedBundleIdentifiers:(id)a3;
-- (void)addDenyListedCategories:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addApplications:(id)applications;
+- (void)addBlacklistedBundleIdentifiers:(id)identifiers;
+- (void)addDenyListedCategories:(int)categories;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LCServiceLoggingConfiguration
 
-- (LCServiceLoggingConfiguration)initWithDictionary:(id)a3
+- (LCServiceLoggingConfiguration)initWithDictionary:(id)dictionary
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v48.receiver = self;
   v48.super_class = LCServiceLoggingConfiguration;
   v5 = [(LCServiceLoggingConfiguration *)&v48 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"defaultParameters"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"defaultParameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(LCServiceLoggingConfiguration *)v5 setDefaultParameters:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"configurationVersion"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"configurationVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,7 +41,7 @@
     }
 
     v34 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"applications"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"applications"];
     objc_opt_class();
     v35 = v9;
     if (objc_opt_isKindOfClass())
@@ -81,7 +81,7 @@
       }
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"blacklistedBundleIdentifiers"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"blacklistedBundleIdentifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,7 +120,7 @@
       }
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"denyListedCategories"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"denyListedCategories"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -164,30 +164,30 @@
   return v5;
 }
 
-- (LCServiceLoggingConfiguration)initWithJSON:(id)a3
+- (LCServiceLoggingConfiguration)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LCServiceLoggingConfiguration *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LCServiceLoggingConfiguration *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LCServiceLoggingConfiguration *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -201,10 +201,10 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_applications count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -224,16 +224,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -243,48 +243,48 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"applications"];
+    [dictionary setObject:array forKeyedSubscript:@"applications"];
   }
 
   if (self->_blacklistedBundleIdentifiers)
   {
-    v12 = [(LCServiceLoggingConfiguration *)self blacklistedBundleIdentifiers];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"blacklistedBundleIdentifiers"];
+    blacklistedBundleIdentifiers = [(LCServiceLoggingConfiguration *)self blacklistedBundleIdentifiers];
+    v13 = [blacklistedBundleIdentifiers copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"blacklistedBundleIdentifiers"];
   }
 
   if (*&self->_has)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithInt:{-[LCServiceLoggingConfiguration configurationVersion](self, "configurationVersion")}];
-    [v3 setObject:v14 forKeyedSubscript:@"configurationVersion"];
+    [dictionary setObject:v14 forKeyedSubscript:@"configurationVersion"];
   }
 
   if (self->_defaultParameters)
   {
-    v15 = [(LCServiceLoggingConfiguration *)self defaultParameters];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    defaultParameters = [(LCServiceLoggingConfiguration *)self defaultParameters];
+    dictionaryRepresentation2 = [defaultParameters dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"defaultParameters"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"defaultParameters"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"defaultParameters"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"defaultParameters"];
     }
   }
 
   if ([(NSArray *)self->_denyListedCategories count])
   {
-    v18 = [(LCServiceLoggingConfiguration *)self denyListedCategories];
-    v19 = [v18 copy];
-    [v3 setObject:v19 forKeyedSubscript:@"denyListedCategories"];
+    denyListedCategories = [(LCServiceLoggingConfiguration *)self denyListedCategories];
+    v19 = [denyListedCategories copy];
+    [dictionary setObject:v19 forKeyedSubscript:@"denyListedCategories"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -306,28 +306,28 @@
   return v7 ^ [(NSArray *)self->_denyListedCategories hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = [(LCServiceLoggingConfiguration *)self defaultParameters];
-  v6 = [v4 defaultParameters];
-  if ((v5 != 0) == (v6 == 0))
+  defaultParameters = [(LCServiceLoggingConfiguration *)self defaultParameters];
+  defaultParameters2 = [equalCopy defaultParameters];
+  if ((defaultParameters != 0) == (defaultParameters2 == 0))
   {
     goto LABEL_24;
   }
 
-  v7 = [(LCServiceLoggingConfiguration *)self defaultParameters];
-  if (v7)
+  defaultParameters3 = [(LCServiceLoggingConfiguration *)self defaultParameters];
+  if (defaultParameters3)
   {
-    v8 = v7;
-    v9 = [(LCServiceLoggingConfiguration *)self defaultParameters];
-    v10 = [v4 defaultParameters];
-    v11 = [v9 isEqual:v10];
+    v8 = defaultParameters3;
+    defaultParameters4 = [(LCServiceLoggingConfiguration *)self defaultParameters];
+    defaultParameters5 = [equalCopy defaultParameters];
+    v11 = [defaultParameters4 isEqual:defaultParameters5];
 
     if (!v11)
     {
@@ -339,7 +339,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_25;
   }
@@ -347,26 +347,26 @@
   if (*&self->_has)
   {
     configurationVersion = self->_configurationVersion;
-    if (configurationVersion != [v4 configurationVersion])
+    if (configurationVersion != [equalCopy configurationVersion])
     {
       goto LABEL_25;
     }
   }
 
-  v5 = [(LCServiceLoggingConfiguration *)self applications];
-  v6 = [v4 applications];
-  if ((v5 != 0) == (v6 == 0))
+  defaultParameters = [(LCServiceLoggingConfiguration *)self applications];
+  defaultParameters2 = [equalCopy applications];
+  if ((defaultParameters != 0) == (defaultParameters2 == 0))
   {
     goto LABEL_24;
   }
 
-  v13 = [(LCServiceLoggingConfiguration *)self applications];
-  if (v13)
+  applications = [(LCServiceLoggingConfiguration *)self applications];
+  if (applications)
   {
-    v14 = v13;
-    v15 = [(LCServiceLoggingConfiguration *)self applications];
-    v16 = [v4 applications];
-    v17 = [v15 isEqual:v16];
+    v14 = applications;
+    applications2 = [(LCServiceLoggingConfiguration *)self applications];
+    applications3 = [equalCopy applications];
+    v17 = [applications2 isEqual:applications3];
 
     if (!v17)
     {
@@ -378,20 +378,20 @@
   {
   }
 
-  v5 = [(LCServiceLoggingConfiguration *)self blacklistedBundleIdentifiers];
-  v6 = [v4 blacklistedBundleIdentifiers];
-  if ((v5 != 0) == (v6 == 0))
+  defaultParameters = [(LCServiceLoggingConfiguration *)self blacklistedBundleIdentifiers];
+  defaultParameters2 = [equalCopy blacklistedBundleIdentifiers];
+  if ((defaultParameters != 0) == (defaultParameters2 == 0))
   {
     goto LABEL_24;
   }
 
-  v18 = [(LCServiceLoggingConfiguration *)self blacklistedBundleIdentifiers];
-  if (v18)
+  blacklistedBundleIdentifiers = [(LCServiceLoggingConfiguration *)self blacklistedBundleIdentifiers];
+  if (blacklistedBundleIdentifiers)
   {
-    v19 = v18;
-    v20 = [(LCServiceLoggingConfiguration *)self blacklistedBundleIdentifiers];
-    v21 = [v4 blacklistedBundleIdentifiers];
-    v22 = [v20 isEqual:v21];
+    v19 = blacklistedBundleIdentifiers;
+    blacklistedBundleIdentifiers2 = [(LCServiceLoggingConfiguration *)self blacklistedBundleIdentifiers];
+    blacklistedBundleIdentifiers3 = [equalCopy blacklistedBundleIdentifiers];
+    v22 = [blacklistedBundleIdentifiers2 isEqual:blacklistedBundleIdentifiers3];
 
     if (!v22)
     {
@@ -403,12 +403,12 @@
   {
   }
 
-  v5 = [(LCServiceLoggingConfiguration *)self denyListedCategories];
-  v6 = [v4 denyListedCategories];
-  if ((v5 != 0) != (v6 == 0))
+  defaultParameters = [(LCServiceLoggingConfiguration *)self denyListedCategories];
+  defaultParameters2 = [equalCopy denyListedCategories];
+  if ((defaultParameters != 0) != (defaultParameters2 == 0))
   {
-    v23 = [(LCServiceLoggingConfiguration *)self denyListedCategories];
-    if (!v23)
+    denyListedCategories = [(LCServiceLoggingConfiguration *)self denyListedCategories];
+    if (!denyListedCategories)
     {
 
 LABEL_28:
@@ -416,10 +416,10 @@ LABEL_28:
       goto LABEL_26;
     }
 
-    v24 = v23;
-    v25 = [(LCServiceLoggingConfiguration *)self denyListedCategories];
-    v26 = [v4 denyListedCategories];
-    v27 = [v25 isEqual:v26];
+    v24 = denyListedCategories;
+    denyListedCategories2 = [(LCServiceLoggingConfiguration *)self denyListedCategories];
+    denyListedCategories3 = [equalCopy denyListedCategories];
+    v27 = [denyListedCategories2 isEqual:denyListedCategories3];
 
     if (v27)
     {
@@ -439,15 +439,15 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(LCServiceLoggingConfiguration *)self defaultParameters];
+  toCopy = to;
+  defaultParameters = [(LCServiceLoggingConfiguration *)self defaultParameters];
 
-  if (v5)
+  if (defaultParameters)
   {
-    v6 = [(LCServiceLoggingConfiguration *)self defaultParameters];
+    defaultParameters2 = [(LCServiceLoggingConfiguration *)self defaultParameters];
     PBDataWriterWriteSubmessage();
   }
 
@@ -551,23 +551,23 @@ LABEL_26:
   }
 }
 
-- (int)denyListedCategoriesAtIndex:(unint64_t)a3
+- (int)denyListedCategoriesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_denyListedCategories objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_denyListedCategories objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addDenyListedCategories:(int)a3
+- (void)addDenyListedCategories:(int)categories
 {
-  v3 = *&a3;
+  v3 = *&categories;
   denyListedCategories = self->_denyListedCategories;
   if (!denyListedCategories)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_denyListedCategories;
-    self->_denyListedCategories = v6;
+    self->_denyListedCategories = array;
 
     denyListedCategories = self->_denyListedCategories;
   }
@@ -576,59 +576,59 @@ LABEL_26:
   [(NSArray *)denyListedCategories addObject:v8];
 }
 
-- (void)addBlacklistedBundleIdentifiers:(id)a3
+- (void)addBlacklistedBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   blacklistedBundleIdentifiers = self->_blacklistedBundleIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!blacklistedBundleIdentifiers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_blacklistedBundleIdentifiers;
-    self->_blacklistedBundleIdentifiers = v6;
+    self->_blacklistedBundleIdentifiers = array;
 
-    v4 = v8;
+    identifiersCopy = v8;
     blacklistedBundleIdentifiers = self->_blacklistedBundleIdentifiers;
   }
 
-  [(NSArray *)blacklistedBundleIdentifiers addObject:v4];
+  [(NSArray *)blacklistedBundleIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addApplications:(id)a3
+- (void)addApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   applications = self->_applications;
-  v8 = v4;
+  v8 = applicationsCopy;
   if (!applications)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_applications;
-    self->_applications = v6;
+    self->_applications = array;
 
-    v4 = v8;
+    applicationsCopy = v8;
     applications = self->_applications;
   }
 
-  [(NSArray *)applications addObject:v4];
+  [(NSArray *)applications addObject:applicationsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v12.receiver = self;
   v12.super_class = LCServiceLoggingConfiguration;
-  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:v4];
-  v6 = [(LCServiceLoggingConfiguration *)self defaultParameters];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v12 applySensitiveConditionsPolicy:policyCopy];
+  defaultParameters = [(LCServiceLoggingConfiguration *)self defaultParameters];
+  v7 = [defaultParameters applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(LCServiceLoggingConfiguration *)self deleteDefaultParameters];
   }
 
-  v9 = [(LCServiceLoggingConfiguration *)self applications];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  applications = [(LCServiceLoggingConfiguration *)self applications];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:applications underConditions:policyCopy];
   [(LCServiceLoggingConfiguration *)self setApplications:v10];
 
   return v5;

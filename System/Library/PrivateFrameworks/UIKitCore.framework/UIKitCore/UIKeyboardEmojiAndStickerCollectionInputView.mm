@@ -1,169 +1,169 @@
 @interface UIKeyboardEmojiAndStickerCollectionInputView
-- (BOOL)_handleBaseKeySelectionEvent:(id)a3;
-- (BOOL)_handleInitialSelectionEvent:(id)a3;
-- (BOOL)_handleVariantSelectionEvent:(id)a3;
+- (BOOL)_handleBaseKeySelectionEvent:(id)event;
+- (BOOL)_handleInitialSelectionEvent:(id)event;
+- (BOOL)_handleVariantSelectionEvent:(id)event;
 - (BOOL)_userHasSelectedSkinToneEmoji;
-- (BOOL)baseStringIsCoupleEmoji:(id)a3;
-- (BOOL)cellShouldScrollWhenSelectedAtIndexPath:(id)a3;
+- (BOOL)baseStringIsCoupleEmoji:(id)emoji;
+- (BOOL)cellShouldScrollWhenSelectedAtIndexPath:(id)path;
 - (BOOL)datasourceIsReady;
 - (BOOL)doesShowMemoji;
 - (BOOL)doesShowStickers;
-- (BOOL)genderEmojiBaseStringNeedVariantSelector:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)handleKeyEvent:(id)a3;
-- (BOOL)handleKeyInputForCollectionViewNavigation:(id)a3;
-- (BOOL)handleKeyInputForFamilySelector:(id)a3;
-- (BOOL)handleKeyInputForVariantSelector:(id)a3;
-- (BOOL)handleSelectionEvent:(id)a3;
-- (BOOL)isCellMostlyOffscreen:(CGRect)a3;
-- (BOOL)isEmojiCategory:(int64_t)a3;
-- (BOOL)isMemojiCategory:(int64_t)a3;
-- (BOOL)isRecentCategory:(int64_t)a3;
-- (BOOL)isSearchCategory:(int64_t)a3;
-- (BOOL)isStickersCategory:(int64_t)a3;
-- (BOOL)keySupportsVariants:(id)a3;
-- (BOOL)skinToneWasUsedForEmoji:(id)a3;
-- (CGRect)cellRectToRevealFullCell:(CGRect)a3;
-- (CGRect)targetRectForIndexPath:(id)a3 atScrollPosition:(unint64_t)a4;
-- (CGRect)targetRectForSectionIndex:(int64_t)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)genderEmojiBaseStringNeedVariantSelector:(id)selector;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)handleKeyEvent:(id)event;
+- (BOOL)handleKeyInputForCollectionViewNavigation:(id)navigation;
+- (BOOL)handleKeyInputForFamilySelector:(id)selector;
+- (BOOL)handleKeyInputForVariantSelector:(id)selector;
+- (BOOL)handleSelectionEvent:(id)event;
+- (BOOL)isCellMostlyOffscreen:(CGRect)offscreen;
+- (BOOL)isEmojiCategory:(int64_t)category;
+- (BOOL)isMemojiCategory:(int64_t)category;
+- (BOOL)isRecentCategory:(int64_t)category;
+- (BOOL)isSearchCategory:(int64_t)category;
+- (BOOL)isStickersCategory:(int64_t)category;
+- (BOOL)keySupportsVariants:(id)variants;
+- (BOOL)skinToneWasUsedForEmoji:(id)emoji;
+- (CGRect)cellRectToRevealFullCell:(CGRect)cell;
+- (CGRect)targetRectForIndexPath:(id)path atScrollPosition:(unint64_t)position;
+- (CGRect)targetRectForSectionIndex:(int64_t)index;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (NSIndexPath)tappedSkinToneEmoji;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (UIKBEmojiHitTestResponder)hitTestResponder;
-- (UIKeyboardEmojiAndStickerCollectionInputView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 screenTraits:(id)a6;
+- (UIKeyboardEmojiAndStickerCollectionInputView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key screenTraits:(id)traits;
 - (UIKeyboardEmojiCategory)category;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5;
-- (double)distanceInScrollingDirection:(CGSize)a3;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index;
+- (double)distanceInScrollingDirection:(CGSize)direction;
 - (double)emojiKeyWidth;
-- (double)pointInScrollingDirection:(CGPoint)a3;
+- (double)pointInScrollingDirection:(CGPoint)direction;
 - (double)scrollingEndPoint;
 - (double)scrollingStartPoint;
-- (id)_usageSourceFromSection:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)_usageSourceFromSection:(int64_t)section;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)currentlyFocusedIndexPath;
-- (id)emojiBaseFirstCharacterString:(id)a3;
-- (id)emojiBaseString:(id)a3;
-- (id)itemInRect:(CGRect)a3;
+- (id)emojiBaseFirstCharacterString:(id)string;
+- (id)emojiBaseString:(id)string;
+- (id)itemInRect:(CGRect)rect;
 - (id)recentsIndexPath;
-- (id)selectedChildSkinToneEmoji:(id)a3;
-- (id)stickerCellForIndexPath:(id)a3;
-- (id)subTreeHitTest:(CGPoint)a3;
-- (id)treeForCell:(id)a3;
-- (id)treeForStickerCell:(id)a3;
+- (id)selectedChildSkinToneEmoji:(id)emoji;
+- (id)stickerCellForIndexPath:(id)path;
+- (id)subTreeHitTest:(CGPoint)test;
+- (id)treeForCell:(id)cell;
+- (id)treeForStickerCell:(id)cell;
 - (id)trulyVisibleIndexPaths;
-- (id)verticalNeighborForIndexPath:(id)a3 up:(BOOL)a4 byPage:(BOOL)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)verticalNeighborForIndexPath:(id)path up:(BOOL)up byPage:(BOOL)page;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (int64_t)currentlyFocusedSectionIndex;
-- (int64_t)didInputSubTree:(id)a3;
-- (int64_t)emojiCategoryTypeForSection:(int64_t)a3;
+- (int64_t)didInputSubTree:(id)tree;
+- (int64_t)emojiCategoryTypeForSection:(int64_t)section;
 - (int64_t)emojiSectionIndex;
-- (int64_t)indexForPrettyCategoryDisplay:(id)a3;
-- (int64_t)keyCodeForCurrentEnvironmentFromKeyCode:(int64_t)a3;
+- (int64_t)indexForPrettyCategoryDisplay:(id)display;
+- (int64_t)keyCodeForCurrentEnvironmentFromKeyCode:(int64_t)code;
 - (int64_t)memojiSectionIndex;
 - (int64_t)numberOfPrefixCategories;
 - (int64_t)numberOfPrefixSections;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (int64_t)recentSectionIndex;
-- (int64_t)rowsInSection:(int64_t)a3;
-- (int64_t)sectionForCategoryType:(int64_t)a3;
+- (int64_t)rowsInSection:(int64_t)section;
+- (int64_t)sectionForCategoryType:(int64_t)type;
 - (int64_t)stickersSectionIndex;
-- (int64_t)translatedEmojiCategoryForSection:(int64_t)a3;
-- (int64_t)updateToCategoryWithOffsetPercentage:(double)a3;
-- (void)_addDelegate:(id)a3;
-- (void)_handleLongPress:(id)a3;
-- (void)_handleTap:(id)a3;
-- (void)_notifyDelegatesRearrangeModeChanged:(BOOL)a3;
-- (void)_removeDelegate:(id)a3;
-- (void)_setRearrangeMode:(BOOL)a3;
-- (void)_setUserHasSelectedSkinToneEmoji:(BOOL)a3;
+- (int64_t)translatedEmojiCategoryForSection:(int64_t)section;
+- (int64_t)updateToCategoryWithOffsetPercentage:(double)percentage;
+- (void)_addDelegate:(id)delegate;
+- (void)_handleLongPress:(id)press;
+- (void)_handleTap:(id)tap;
+- (void)_notifyDelegatesRearrangeModeChanged:(BOOL)changed;
+- (void)_removeDelegate:(id)delegate;
+- (void)_setRearrangeMode:(BOOL)mode;
+- (void)_setUserHasSelectedSkinToneEmoji:(BOOL)emoji;
 - (void)_setupLongPressGestureRecognizer;
 - (void)_setupTapGestureRecognizer;
-- (void)_updateRearrangeModeForCell:(id)a3 atIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)_updateRearrangeModeForCell:(id)cell atIndexPath:(id)path;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)configureDataSource;
 - (void)dealloc;
-- (void)deleteImageGlyph:(id)a3 atPath:(id)a4;
-- (void)didDismissCardForKeyboardMediaController:(id)a3;
-- (void)didInsertMediaForKeyboardMediaController:(id)a3;
+- (void)deleteImageGlyph:(id)glyph atPath:(id)path;
+- (void)didDismissCardForKeyboardMediaController:(id)controller;
+- (void)didInsertMediaForKeyboardMediaController:(id)controller;
 - (void)didMoveToWindow;
-- (void)didPresentCardForKeyboardMediaController:(id)a3;
-- (void)didTearDownRecentsViewForKeyboardMediaController:(id)a3;
+- (void)didPresentCardForKeyboardMediaController:(id)controller;
+- (void)didTearDownRecentsViewForKeyboardMediaController:(id)controller;
 - (void)didUpdateImageGlyphPermissions;
-- (void)dimKeys:(id)a3;
-- (void)emojiSearchTextFieldDidBecomeActive:(id)a3;
-- (void)emojiSearchTextFieldDidBecomeInactive:(id)a3;
-- (void)emojiSearchTextFieldDidReset:(id)a3;
-- (void)emojiSearchTextFieldWillBecomeActive:(id)a3;
-- (void)emojiSearchTextFieldWillBecomeInactive:(id)a3;
-- (void)emojiSearchTextFieldWillClear:(id)a3;
-- (void)handleScrollViewDynamicPagination:(id)a3;
-- (void)insertImageGlyph:(id)a3 dismiss:(BOOL)a4;
-- (void)insertSelectedEmoji:(id)a3 shouldDismissPopover:(BOOL)a4;
-- (void)rearrangeStateChanged:(BOOL)a3;
+- (void)dimKeys:(id)keys;
+- (void)emojiSearchTextFieldDidBecomeActive:(id)active;
+- (void)emojiSearchTextFieldDidBecomeInactive:(id)inactive;
+- (void)emojiSearchTextFieldDidReset:(id)reset;
+- (void)emojiSearchTextFieldWillBecomeActive:(id)active;
+- (void)emojiSearchTextFieldWillBecomeInactive:(id)inactive;
+- (void)emojiSearchTextFieldWillClear:(id)clear;
+- (void)handleScrollViewDynamicPagination:(id)pagination;
+- (void)insertImageGlyph:(id)glyph dismiss:(BOOL)dismiss;
+- (void)insertSelectedEmoji:(id)emoji shouldDismissPopover:(BOOL)popover;
+- (void)rearrangeStateChanged:(BOOL)changed;
 - (void)resetSelectionIfNeeded;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setContentScaleFactor:(double)a3;
-- (void)setHitTestResponder:(id)a3;
-- (void)setSearchResults:(id)a3;
-- (void)shouldDismissModalDisplayView:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setContentScaleFactor:(double)factor;
+- (void)setHitTestResponder:(id)responder;
+- (void)setSearchResults:(id)results;
+- (void)shouldDismissModalDisplayView:(id)view;
 - (void)updateDataSourceSnapshot;
-- (void)updateDataSourceSnapshotAnimated:(BOOL)a3;
-- (void)updateDataSourceWithSnapshot:(id)a3 animated:(BOOL)a4;
-- (void)updateHighlightForIndexPath:(id)a3 scrollIfNeeded:(BOOL)a4 animateScroll:(BOOL)a5;
-- (void)updateLastSeenItemForIndexPath:(id)a3;
-- (void)updateOffsetForSearchResultsAnimated:(BOOL)a3;
-- (void)updatePreferencesForSelectedEmoji:(id)a3;
-- (void)updateToCategory:(int64_t)a3;
-- (void)updateToIndexPath:(id)a3;
-- (void)willDisplayModalActionView:(id)a3 withSubTreeKeyView:(id)a4 completion:(id)a5;
+- (void)updateDataSourceSnapshotAnimated:(BOOL)animated;
+- (void)updateDataSourceWithSnapshot:(id)snapshot animated:(BOOL)animated;
+- (void)updateHighlightForIndexPath:(id)path scrollIfNeeded:(BOOL)needed animateScroll:(BOOL)scroll;
+- (void)updateLastSeenItemForIndexPath:(id)path;
+- (void)updateOffsetForSearchResultsAnimated:(BOOL)animated;
+- (void)updatePreferencesForSelectedEmoji:(id)emoji;
+- (void)updateToCategory:(int64_t)category;
+- (void)updateToIndexPath:(id)path;
+- (void)willDisplayModalActionView:(id)view withSubTreeKeyView:(id)keyView completion:(id)completion;
 @end
 
 @implementation UIKeyboardEmojiAndStickerCollectionInputView
 
-- (UIKeyboardEmojiAndStickerCollectionInputView)initWithFrame:(CGRect)a3 keyplane:(id)a4 key:(id)a5 screenTraits:(id)a6
+- (UIKeyboardEmojiAndStickerCollectionInputView)initWithFrame:(CGRect)frame keyplane:(id)keyplane key:(id)key screenTraits:(id)traits
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v15 orientation];
-  if (v15)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  keyplaneCopy = keyplane;
+  keyCopy = key;
+  traitsCopy = traits;
+  orientation = [traitsCopy orientation];
+  if (traitsCopy)
   {
-    v17 = v16;
+    interfaceOrientation = orientation;
   }
 
   else
   {
     v18 = +[UIKeyboard activeKeyboard];
-    v17 = [v18 interfaceOrientation];
+    interfaceOrientation = [v18 interfaceOrientation];
 
     v19 = +[UIKeyboardImpl keyboardScreen];
-    v15 = [UIKBScreenTraits traitsWithScreen:v19 orientation:v17];
+    traitsCopy = [UIKBScreenTraits traitsWithScreen:v19 orientation:interfaceOrientation];
   }
 
-  v20 = (v17 - 3) <= 1 && [v15 idiom] != 1;
+  v20 = (interfaceOrientation - 3) <= 1 && [traitsCopy idiom] != 1;
   self->_useWideAnimojiCell = v20;
   v58.receiver = self;
   v58.super_class = UIKeyboardEmojiAndStickerCollectionInputView;
-  v21 = [(UIView *)&v58 initWithFrame:x, y, width, height];
-  if (!v21)
+  height = [(UIView *)&v58 initWithFrame:x, y, width, height];
+  if (!height)
   {
     goto LABEL_22;
   }
 
   v22 = os_log_create("com.apple.uikit", "StickerCollectionInputView");
-  logger = v21->_logger;
-  v21->_logger = v22;
+  logger = height->_logger;
+  height->_logger = v22;
 
   v61 = 0;
   v62 = &v61;
@@ -188,74 +188,74 @@
   _Block_object_dispose(&v61, 8);
   if (v24)
   {
-    v27 = [v24 sharedInstance];
-    imageGlyphDataSource = v21->_imageGlyphDataSource;
-    v21->_imageGlyphDataSource = v27;
+    sharedInstance = [v24 sharedInstance];
+    imageGlyphDataSource = height->_imageGlyphDataSource;
+    height->_imageGlyphDataSource = sharedInstance;
 
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v21 selector:sel_updateDataSourceSnapshot name:@"com.apple.stickerkit.ImageGlyphDataSourceDidUpdate" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:height selector:sel_updateDataSourceSnapshot name:@"com.apple.stickerkit.ImageGlyphDataSourceDidUpdate" object:0];
 
     if (objc_opt_respondsToSelector())
     {
-      v30 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v30 addObserver:v21 selector:sel_didUpdateImageGlyphPermissions name:@"com.apple.stickerkit.ImageGlyphPermissionsDidChange" object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:height selector:sel_didUpdateImageGlyphPermissions name:@"com.apple.stickerkit.ImageGlyphPermissionsDidChange" object:0];
 
-      v21->_didAcceptRestrictedDistributionTerms = [(STKImageGlyphDataSource *)v21->_imageGlyphDataSource didAcceptRestrictedDistributionTerms];
+      height->_didAcceptRestrictedDistributionTerms = [(STKImageGlyphDataSource *)height->_imageGlyphDataSource didAcceptRestrictedDistributionTerms];
     }
   }
 
   else
   {
-    v31 = v21->_imageGlyphDataSource;
-    v21->_imageGlyphDataSource = 0;
+    v31 = height->_imageGlyphDataSource;
+    height->_imageGlyphDataSource = 0;
 
-    v21->_didAcceptRestrictedDistributionTerms = 1;
+    height->_didAcceptRestrictedDistributionTerms = 1;
   }
 
-  [UIKeyboardEmojiCategory setDoesShowStickers:[(UIKeyboardEmojiAndStickerCollectionInputView *)v21 doesShowStickers]];
-  v21->_frameInset = 0.0;
-  v32 = [UIKeyboardEmojiGraphicsTraits emojiGraphicsTraitsWithScreenTraits:v15];
-  emojiGraphicsTraits = v21->_emojiGraphicsTraits;
-  v21->_emojiGraphicsTraits = v32;
+  [UIKeyboardEmojiCategory setDoesShowStickers:[(UIKeyboardEmojiAndStickerCollectionInputView *)height doesShowStickers]];
+  height->_frameInset = 0.0;
+  v32 = [UIKeyboardEmojiGraphicsTraits emojiGraphicsTraitsWithScreenTraits:traitsCopy];
+  emojiGraphicsTraits = height->_emojiGraphicsTraits;
+  height->_emojiGraphicsTraits = v32;
 
   v34 = +[UIColor clearColor];
-  [(UIView *)v21 setBackgroundColor:v34];
+  [(UIView *)height setBackgroundColor:v34];
 
-  [(UIView *)v21 setOpaque:0];
-  [(UIKBKeyView *)v21 updateForKeyplane:v13 key:v14];
-  v21->_isDraggingInputView = 0;
-  unavailableLaunchPath = v21->_unavailableLaunchPath;
-  v21->_unavailableLaunchPath = 0;
+  [(UIView *)height setOpaque:0];
+  [(UIKBKeyView *)height updateForKeyplane:keyplaneCopy key:keyCopy];
+  height->_isDraggingInputView = 0;
+  unavailableLaunchPath = height->_unavailableLaunchPath;
+  height->_unavailableLaunchPath = 0;
 
   v36 = objc_alloc_init(UIKeyboardEmojiLayout);
-  flowLayout = v21->_flowLayout;
-  v21->_flowLayout = &v36->super;
+  flowLayout = height->_flowLayout;
+  height->_flowLayout = &v36->super;
 
-  [(UICollectionViewFlowLayout *)v21->_flowLayout setMinimumInteritemSpacing:0.0];
-  [(UICollectionViewFlowLayout *)v21->_flowLayout setMinimumLineSpacing:0.0];
-  -[UICollectionViewFlowLayout setScrollDirection:](v21->_flowLayout, "setScrollDirection:", [v15 isEmojiScrollingDirectionVertical] ^ 1);
-  v38 = v21->_flowLayout;
+  [(UICollectionViewFlowLayout *)height->_flowLayout setMinimumInteritemSpacing:0.0];
+  [(UICollectionViewFlowLayout *)height->_flowLayout setMinimumLineSpacing:0.0];
+  -[UICollectionViewFlowLayout setScrollDirection:](height->_flowLayout, "setScrollDirection:", [traitsCopy isEmojiScrollingDirectionVertical] ^ 1);
+  v38 = height->_flowLayout;
   if (objc_opt_respondsToSelector())
   {
-    v39 = [(STKImageGlyphDataSource *)v21->_imageGlyphDataSource imageGlyphCompositionalLayout];
+    imageGlyphCompositionalLayout = [(STKImageGlyphDataSource *)height->_imageGlyphDataSource imageGlyphCompositionalLayout];
 LABEL_18:
 
-    v38 = v39;
+    v38 = imageGlyphCompositionalLayout;
     goto LABEL_19;
   }
 
   if (objc_opt_respondsToSelector())
   {
     v40 = objc_alloc_init(UICollectionViewCompositionalLayoutConfiguration);
-    -[UICollectionViewCompositionalLayoutConfiguration setScrollDirection:](v40, "setScrollDirection:", [v15 isEmojiScrollingDirectionVertical] ^ 1);
-    objc_initWeak(location, v21);
+    -[UICollectionViewCompositionalLayoutConfiguration setScrollDirection:](v40, "setScrollDirection:", [traitsCopy isEmojiScrollingDirectionVertical] ^ 1);
+    objc_initWeak(location, height);
     v41 = [UICollectionViewCompositionalLayout alloc];
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __88__UIKeyboardEmojiAndStickerCollectionInputView_initWithFrame_keyplane_key_screenTraits___block_invoke;
     v56[3] = &unk_1E711BBD8;
     objc_copyWeak(&v57, location);
-    v39 = [(UICollectionViewCompositionalLayout *)v41 initWithSectionProvider:v56 configuration:v40];
+    imageGlyphCompositionalLayout = [(UICollectionViewCompositionalLayout *)v41 initWithSectionProvider:v56 configuration:v40];
 
     objc_destroyWeak(&v57);
     objc_destroyWeak(location);
@@ -265,57 +265,57 @@ LABEL_18:
 
 LABEL_19:
   v42 = [UIKeyboardEmojiAndStickerCollectionView alloc];
-  [(UIView *)v21 bounds];
-  v43 = [(UIKeyboardEmojiAndStickerCollectionView *)v42 initWithFrame:v38 collectionViewLayout:v21->_emojiGraphicsTraits emojiGraphicsTraits:?];
-  collectionView = v21->_collectionView;
-  v21->_collectionView = v43;
+  [(UIView *)height bounds];
+  v43 = [(UIKeyboardEmojiAndStickerCollectionView *)v42 initWithFrame:v38 collectionViewLayout:height->_emojiGraphicsTraits emojiGraphicsTraits:?];
+  collectionView = height->_collectionView;
+  height->_collectionView = v43;
 
-  [(UICollectionView *)v21->_collectionView setPrefetchingEnabled:1];
-  v45 = v21->_collectionView;
+  [(UICollectionView *)height->_collectionView setPrefetchingEnabled:1];
+  v45 = height->_collectionView;
   v46 = +[UIColor clearColor];
   [(UICollectionView *)v45 setBackgroundColor:v46];
 
-  [(UIView *)v21->_collectionView setAutoresizingMask:18];
-  [(UIView *)v21 contentScaleFactor];
-  [(UIView *)v21->_collectionView setContentScaleFactor:?];
-  [(UICollectionView *)v21->_collectionView setDelegate:v21];
-  [(UIScrollView *)v21->_collectionView setShowsHorizontalScrollIndicator:0];
-  [(UIScrollView *)v21->_collectionView setShowsVerticalScrollIndicator:0];
-  v47 = [(UIScrollView *)v21->_collectionView panGestureRecognizer];
-  [v47 setMaximumNumberOfTouches:1];
+  [(UIView *)height->_collectionView setAutoresizingMask:18];
+  [(UIView *)height contentScaleFactor];
+  [(UIView *)height->_collectionView setContentScaleFactor:?];
+  [(UICollectionView *)height->_collectionView setDelegate:height];
+  [(UIScrollView *)height->_collectionView setShowsHorizontalScrollIndicator:0];
+  [(UIScrollView *)height->_collectionView setShowsVerticalScrollIndicator:0];
+  panGestureRecognizer = [(UIScrollView *)height->_collectionView panGestureRecognizer];
+  [panGestureRecognizer setMaximumNumberOfTouches:1];
 
-  v48 = [(UIScrollView *)v21->_collectionView panGestureRecognizer];
-  [v48 setMinimumNumberOfTouches:1];
+  panGestureRecognizer2 = [(UIScrollView *)height->_collectionView panGestureRecognizer];
+  [panGestureRecognizer2 setMinimumNumberOfTouches:1];
 
-  v49 = [(UIScrollView *)v21->_collectionView panGestureRecognizer];
-  [v49 setFailsPastMaxTouches:1];
+  panGestureRecognizer3 = [(UIScrollView *)height->_collectionView panGestureRecognizer];
+  [panGestureRecognizer3 setFailsPastMaxTouches:1];
 
-  [(UICollectionView *)v21->_collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"UICollectionElementKindSectionHeader" withReuseIdentifier:@"kEmojiCategoryTitleIdentifier"];
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)v21 configureDataSource];
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)v21 updateDataSourceSnapshotAnimated:0];
-  v21->_hasCompletedInitialDisplay = 0;
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)v21 supportsDatasourceIsReady])
+  [(UICollectionView *)height->_collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"UICollectionElementKindSectionHeader" withReuseIdentifier:@"kEmojiCategoryTitleIdentifier"];
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)height configureDataSource];
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)height updateDataSourceSnapshotAnimated:0];
+  height->_hasCompletedInitialDisplay = 0;
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)height supportsDatasourceIsReady])
   {
-    [(UIView *)v21->_collectionView setHidden:1];
+    [(UIView *)height->_collectionView setHidden:1];
   }
 
   v50 = +[UIKeyboardImpl activeInstance];
-  v21->_inputDelegateCanSupportAnimoji = [v50 canPasteImage];
+  height->_inputDelegateCanSupportAnimoji = [v50 canPasteImage];
 
-  v51 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v52 = [v51 valueForKey:@"com.apple.Animoji.StickerRecents.SplashVersion"];
-  v21->_hasShownAnimojiFirstTimeExperience = v52 != 0;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v52 = [standardUserDefaults valueForKey:@"com.apple.Animoji.StickerRecents.SplashVersion"];
+  height->_hasShownAnimojiFirstTimeExperience = v52 != 0;
 
-  v21->_shouldRetryFetchingAnimojiRecents = 0;
-  [(UIView *)v21 addSubview:v21->_collectionView];
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)v21 _setupLongPressGestureRecognizer];
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)v21 _setupTapGestureRecognizer];
-  v53 = [[UIKeyboardEmojiAndStickerCollectionInputViewKeylineView alloc] initWithSuperview:v21];
-  keylineView = v21->_keylineView;
-  v21->_keylineView = v53;
+  height->_shouldRetryFetchingAnimojiRecents = 0;
+  [(UIView *)height addSubview:height->_collectionView];
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)height _setupLongPressGestureRecognizer];
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)height _setupTapGestureRecognizer];
+  v53 = [[UIKeyboardEmojiAndStickerCollectionInputViewKeylineView alloc] initWithSuperview:height];
+  keylineView = height->_keylineView;
+  height->_keylineView = v53;
 
 LABEL_22:
-  return v21;
+  return height;
 }
 
 id __88__UIKeyboardEmojiAndStickerCollectionInputView_initWithFrame_keyplane_key_screenTraits___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -336,49 +336,49 @@ id __88__UIKeyboardEmojiAndStickerCollectionInputView_initWithFrame_keyplane_key
   return v8;
 }
 
-- (void)_addDelegate:(id)a3
+- (void)_addDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
     delegates = self->_delegates;
-    v8 = v4;
+    v8 = delegateCopy;
     if (!delegates)
     {
-      v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v7 = self->_delegates;
-      self->_delegates = v6;
+      self->_delegates = weakObjectsHashTable;
 
       delegates = self->_delegates;
     }
 
     [(NSHashTable *)delegates addObject:v8];
-    v4 = v8;
+    delegateCopy = v8;
   }
 }
 
-- (void)_removeDelegate:(id)a3
+- (void)_removeDelegate:(id)delegate
 {
-  v4 = a3;
-  if (v4)
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    v7 = v4;
-    [(NSHashTable *)self->_delegates removeObject:v4];
+    v7 = delegateCopy;
+    [(NSHashTable *)self->_delegates removeObject:delegateCopy];
     v5 = [(NSHashTable *)self->_delegates count];
-    v4 = v7;
+    delegateCopy = v7;
     if (!v5)
     {
       delegates = self->_delegates;
       self->_delegates = 0;
 
-      v4 = v7;
+      delegateCopy = v7;
     }
   }
 }
 
-- (void)_notifyDelegatesRearrangeModeChanged:(BOOL)a3
+- (void)_notifyDelegatesRearrangeModeChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
@@ -403,7 +403,7 @@ id __88__UIKeyboardEmojiAndStickerCollectionInputView_initWithFrame_keyplane_key
         v9 = *(*(&v10 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          [v9 rearrangeStateChanged:v3];
+          [v9 rearrangeStateChanged:changedCopy];
         }
 
         ++v8;
@@ -417,19 +417,19 @@ id __88__UIKeyboardEmojiAndStickerCollectionInputView_initWithFrame_keyplane_key
   }
 }
 
-- (void)rearrangeStateChanged:(BOOL)a3
+- (void)rearrangeStateChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v7 = *MEMORY[0x1E69E9840];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = changedCopy;
     _os_log_impl(&dword_188A29000, logger, OS_LOG_TYPE_DEFAULT, "Rearrange state changed to: %{BOOL}d", v6, 8u);
   }
 
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self _setRearrangeMode:v3];
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self _setRearrangeMode:changedCopy];
 }
 
 - (void)_setupLongPressGestureRecognizer
@@ -451,16 +451,16 @@ id __88__UIKeyboardEmojiAndStickerCollectionInputView_initWithFrame_keyplane_key
   [(UIView *)collectionView addGestureRecognizer:v6];
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v4 = a3;
-  if (self->_longPressRecognizer == v4 && self->_isRearranging)
+  pressCopy = press;
+  if (self->_longPressRecognizer == pressCopy && self->_isRearranging)
   {
-    v19 = v4;
-    v5 = [(UIGestureRecognizer *)v4 state];
-    if (v5 <= 2)
+    v19 = pressCopy;
+    state = [(UIGestureRecognizer *)pressCopy state];
+    if (state <= 2)
     {
-      if (v5 == 1)
+      if (state == 1)
       {
         collectionView = self->_collectionView;
         [(UILongPressGestureRecognizer *)v19 locationInView:collectionView];
@@ -495,8 +495,8 @@ id __88__UIKeyboardEmojiAndStickerCollectionInputView_initWithFrame_keyplane_key
 
       else
       {
-        v6 = v5 == 2;
-        v4 = v19;
+        v6 = state == 2;
+        pressCopy = v19;
         if (!v6)
         {
           goto LABEL_21;
@@ -507,18 +507,18 @@ id __88__UIKeyboardEmojiAndStickerCollectionInputView_initWithFrame_keyplane_key
       }
 
 LABEL_20:
-      v4 = v19;
+      pressCopy = v19;
       goto LABEL_21;
     }
 
-    if (v5 == 3)
+    if (state == 3)
     {
       [(UICollectionView *)self->_collectionView endInteractiveMovement];
       goto LABEL_20;
     }
 
-    v6 = v5 == 4;
-    v4 = v19;
+    v6 = state == 4;
+    pressCopy = v19;
     if (v6)
     {
       [(UICollectionView *)self->_collectionView cancelInteractiveMovement];
@@ -548,28 +548,28 @@ LABEL_21:
   [(UIView *)collectionView addGestureRecognizer:v6];
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  v4 = a3;
-  if (self->_tapRecognizer == v4 && self->_isRearranging)
+  tapCopy = tap;
+  if (self->_tapRecognizer == tapCopy && self->_isRearranging)
   {
     collectionView = self->_collectionView;
-    v7 = v4;
-    [(UITapGestureRecognizer *)v4 locationInView:collectionView];
+    v7 = tapCopy;
+    [(UITapGestureRecognizer *)tapCopy locationInView:collectionView];
     v6 = [(UICollectionView *)collectionView indexPathForItemAtPoint:?];
     if (!-[UIKeyboardEmojiAndStickerCollectionInputView isStickersCategory:](self, "isStickersCategory:", [v6 section]) && -[UIGestureRecognizer state](v7, "state") == UIGestureRecognizerStateEnded)
     {
       [(UIKeyboardEmojiAndStickerCollectionInputView *)self _setRearrangeMode:0];
     }
 
-    v4 = v7;
+    tapCopy = v7;
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -599,10 +599,10 @@ LABEL_21:
   return v9 & 1;
 }
 
-- (id)_usageSourceFromSection:(int64_t)a3
+- (id)_usageSourceFromSection:(int64_t)section
 {
   v5 = +[_UISignalAnalytics getIAPayloadValueGenmojiUsageSourceEmojiKeyboardPicker];
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isRecentCategory:a3])
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isRecentCategory:section])
   {
     v6 = +[_UISignalAnalytics getIAPayloadValueGenmojiUsageSourceRecentsTab];
 
@@ -612,19 +612,19 @@ LABEL_21:
   return v5;
 }
 
-- (void)_setRearrangeMode:(BOOL)a3
+- (void)_setRearrangeMode:(BOOL)mode
 {
-  v3 = a3;
-  if (self->_isRearranging != a3)
+  modeCopy = mode;
+  if (self->_isRearranging != mode)
   {
-    self->_isRearranging = a3;
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)self _notifyDelegatesRearrangeModeChanged:a3];
+    self->_isRearranging = mode;
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)self _notifyDelegatesRearrangeModeChanged:mode];
   }
 
-  if (v3)
+  if (modeCopy)
   {
-    v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-    [v5 deactivateActiveKey];
+    hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+    [hitTestResponder deactivateActiveKey];
   }
 
   else
@@ -632,18 +632,18 @@ LABEL_21:
     [(UICollectionView *)self->_collectionView endInteractiveMovement];
   }
 
-  [(UIGestureRecognizer *)self->_tapRecognizer setEnabled:v3];
+  [(UIGestureRecognizer *)self->_tapRecognizer setEnabled:modeCopy];
   longPressRecognizer = self->_longPressRecognizer;
 
-  [(UIGestureRecognizer *)longPressRecognizer setEnabled:v3];
+  [(UIGestureRecognizer *)longPressRecognizer setEnabled:modeCopy];
 }
 
-- (void)_updateRearrangeModeForCell:(id)a3 atIndexPath:(id)a4
+- (void)_updateRearrangeModeForCell:(id)cell atIndexPath:(id)path
 {
-  v6 = a3;
-  LODWORD(a4) = -[UIKeyboardEmojiAndStickerCollectionInputView isStickersCategory:](self, "isStickersCategory:", [a4 section]);
-  v7 = v6;
-  if (a4)
+  cellCopy = cell;
+  LODWORD(path) = -[UIKeyboardEmojiAndStickerCollectionInputView isStickersCategory:](self, "isStickersCategory:", [path section]);
+  v7 = cellCopy;
+  if (path)
   {
     [v7 setDelegate:self];
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self _addDelegate:v7];
@@ -708,16 +708,16 @@ LABEL_21:
   v23[2] = __67__UIKeyboardEmojiAndStickerCollectionInputView_configureDataSource__block_invoke_8;
   v23[3] = &unk_1E711BD00;
   objc_copyWeak(&v24, location);
-  v19 = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
-  [v19 setCanReorderItemHandler:v23];
+  reorderingHandlers = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
+  [reorderingHandlers setCanReorderItemHandler:v23];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __67__UIKeyboardEmojiAndStickerCollectionInputView_configureDataSource__block_invoke_156;
   v21[3] = &unk_1E711BD28;
   objc_copyWeak(&v22, location);
-  v20 = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
-  [v20 setDidReorderHandler:v21];
+  reorderingHandlers2 = [(UICollectionViewDiffableDataSource *)self->_dataSource reorderingHandlers];
+  [reorderingHandlers2 setDidReorderHandler:v21];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&v24);
@@ -1001,53 +1001,53 @@ void __78__UIKeyboardEmojiAndStickerCollectionInputView_didUpdateImageGlyphPermi
   }
 }
 
-- (void)updateDataSourceSnapshotAnimated:(BOOL)a3
+- (void)updateDataSourceSnapshotAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching])
   {
-    v5 = [(STKImageGlyphDataSource *)self->_imageGlyphDataSource snapshot];
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateDataSourceWithSnapshot:v5 animated:v3];
+    snapshot = [(STKImageGlyphDataSource *)self->_imageGlyphDataSource snapshot];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateDataSourceWithSnapshot:snapshot animated:animatedCopy];
   }
 }
 
-- (void)updateDataSourceWithSnapshot:(id)a3 animated:(BOOL)a4
+- (void)updateDataSourceWithSnapshot:(id)snapshot animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  snapshotCopy = snapshot;
   if (pthread_main_np() == 1)
   {
     if (self->_unavailableLaunchPath)
     {
       if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self supportsDatasourceIsReady])
       {
-        v7 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self datasourceIsReady];
+        datasourceIsReady = [(UIKeyboardEmojiAndStickerCollectionInputView *)self datasourceIsReady];
       }
 
       else
       {
-        v7 = 0;
+        datasourceIsReady = 0;
       }
 
       unavailableLaunchPath = self->_unavailableLaunchPath;
       if (unavailableLaunchPath)
       {
-        v9 = [(NSIndexPath *)unavailableLaunchPath section];
-        if ([v6 numberOfSections] <= v9 || (objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v9), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v6, "numberOfItemsInSection:", v10), v12 = -[NSIndexPath item](self->_unavailableLaunchPath, "item"), v10, v11 <= v12))
+        section = [(NSIndexPath *)unavailableLaunchPath section];
+        if ([snapshotCopy numberOfSections] <= section || (objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", section), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(snapshotCopy, "numberOfItemsInSection:", v10), v12 = -[NSIndexPath item](self->_unavailableLaunchPath, "item"), v10, v11 <= v12))
         {
           v17 = 0;
         }
 
         else
         {
-          v13 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-          v14 = -[UIKeyboardEmojiAndStickerCollectionInputView sectionForCategoryType:](self, "sectionForCategoryType:", [v13 categoryType]);
+          category = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+          v14 = -[UIKeyboardEmojiAndStickerCollectionInputView sectionForCategoryType:](self, "sectionForCategoryType:", [category categoryType]);
 
           v15 = MEMORY[0x1E696AC88];
-          v16 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-          v17 = [v15 indexPathForItem:-[UIKeyboardEmojiAndStickerCollectionInputView indexForPrettyCategoryDisplay:](self inSection:{"indexForPrettyCategoryDisplay:", v16), v14}];
+          category2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+          v17 = [v15 indexPathForItem:-[UIKeyboardEmojiAndStickerCollectionInputView indexForPrettyCategoryDisplay:](self inSection:{"indexForPrettyCategoryDisplay:", category2), v14}];
 
-          v4 = 0;
+          animatedCopy = 0;
         }
 
         v18 = self->_unavailableLaunchPath;
@@ -1059,7 +1059,7 @@ void __78__UIKeyboardEmojiAndStickerCollectionInputView_didUpdateImageGlyphPermi
 
     else
     {
-      v7 = 0;
+      datasourceIsReady = 0;
     }
 
     v17 = 0;
@@ -1073,8 +1073,8 @@ LABEL_15:
     objc_copyWeak(&v27, &location);
     v20 = v17;
     v26 = v20;
-    v28 = v7;
-    [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:v6 animatingDifferences:v4 completion:v25];
+    v28 = datasourceIsReady;
+    [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:snapshotCopy animatingDifferences:animatedCopy completion:v25];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -1088,8 +1088,8 @@ LABEL_15:
   block[2] = __86__UIKeyboardEmojiAndStickerCollectionInputView_updateDataSourceWithSnapshot_animated___block_invoke_2;
   block[3] = &unk_1E7108F18;
   objc_copyWeak(&v23, &location);
-  v22 = v6;
-  v24 = v4;
+  v22 = snapshotCopy;
+  v24 = animatedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v23);
@@ -1174,30 +1174,30 @@ void __86__UIKeyboardEmojiAndStickerCollectionInputView_updateDataSourceWithSnap
   [(UIKBKeyView *)&v5 dealloc];
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
   v5.receiver = self;
   v5.super_class = UIKeyboardEmojiAndStickerCollectionInputView;
   [(UIView *)&v5 setContentScaleFactor:?];
-  [(UIView *)self->_collectionView setContentScaleFactor:a3];
+  [(UIView *)self->_collectionView setContentScaleFactor:factor];
 }
 
-- (void)dimKeys:(id)a3
+- (void)dimKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v7.receiver = self;
   v7.super_class = UIKeyboardEmojiAndStickerCollectionInputView;
-  [(UIKBKeyView *)&v7 dimKeys:v4];
-  v5 = [(UIView *)self subviews];
+  [(UIKBKeyView *)&v7 dimKeys:keysCopy];
+  subviews = [(UIView *)self subviews];
 
-  if (v5)
+  if (subviews)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __56__UIKeyboardEmojiAndStickerCollectionInputView_dimKeys___block_invoke;
     v6[3] = &unk_1E7100338;
     v6[4] = self;
-    [v4 enumerateKeysAndObjectsUsingBlock:v6];
+    [keysCopy enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
 
@@ -1212,21 +1212,21 @@ void __56__UIKeyboardEmojiAndStickerCollectionInputView_dimKeys___block_invoke(u
   }
 }
 
-- (void)setHitTestResponder:(id)a3
+- (void)setHitTestResponder:(id)responder
 {
-  v4 = a3;
-  objc_storeWeak(&self->_hitTestResponder, v4);
-  [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView setHitTestResponder:v4];
+  responderCopy = responder;
+  objc_storeWeak(&self->_hitTestResponder, responderCopy);
+  [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView setHitTestResponder:responderCopy];
 }
 
 - (BOOL)_userHasSelectedSkinToneEmoji
 {
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 isEmojiPopoverPresented];
+  isEmojiPopoverPresented = [v3 isEmojiPopoverPresented];
 
   v5 = +[UIKeyboardEmojiPreferences sharedInstance];
   isFirstPartyStickers = 1;
-  if (([v5 hasDisplayedSkinToneHelp] & 1) == 0 && (v4 & 1) == 0)
+  if (([v5 hasDisplayedSkinToneHelp] & 1) == 0 && (isEmojiPopoverPresented & 1) == 0)
   {
     emojiGraphicsTraits = self->_emojiGraphicsTraits;
     if (emojiGraphicsTraits)
@@ -1243,36 +1243,36 @@ void __56__UIKeyboardEmojiAndStickerCollectionInputView_dimKeys___block_invoke(u
   return isFirstPartyStickers & 1;
 }
 
-- (void)_setUserHasSelectedSkinToneEmoji:(BOOL)a3
+- (void)_setUserHasSelectedSkinToneEmoji:(BOOL)emoji
 {
-  if (a3)
+  if (emoji)
   {
     v3 = +[UIKeyboardEmojiPreferences sharedInstance];
     [v3 didDisplaySkinToneHelp];
   }
 }
 
-- (id)emojiBaseFirstCharacterString:(id)a3
+- (id)emojiBaseFirstCharacterString:(id)string
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 _firstLongCharacter];
+  _firstLongCharacter = [string _firstLongCharacter];
 
-  return [v3 _stringWithUnichar:v4];
+  return [v3 _stringWithUnichar:_firstLongCharacter];
 }
 
-- (id)emojiBaseString:(id)a3
+- (id)emojiBaseString:(id)string
 {
-  v3 = a3;
-  v4 = [getEMFStringUtilitiesClass_0() _baseStringForEmojiString:v3];
+  stringCopy = string;
+  v4 = [getEMFStringUtilitiesClass_0() _baseStringForEmojiString:stringCopy];
 
   return v4;
 }
 
-- (BOOL)skinToneWasUsedForEmoji:(id)a3
+- (BOOL)skinToneWasUsedForEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-  v6 = [v5 hasLastUsedVariantForEmojiString:v4];
+  emojiCopy = emoji;
+  emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+  v6 = [emojiKeyManager hasLastUsedVariantForEmojiString:emojiCopy];
 
   if (v6)
   {
@@ -1296,19 +1296,19 @@ void __56__UIKeyboardEmojiAndStickerCollectionInputView_dimKeys___block_invoke(u
   return v8 & 1;
 }
 
-- (BOOL)baseStringIsCoupleEmoji:(id)a3
+- (BOOL)baseStringIsCoupleEmoji:(id)emoji
 {
-  v3 = a3;
-  v4 = [getEMFStringUtilitiesClass_0() _baseStringForEmojiString:v3];
+  emojiCopy = emoji;
+  v4 = [getEMFStringUtilitiesClass_0() _baseStringForEmojiString:emojiCopy];
 
-  LOBYTE(v3) = [getEMFEmojiCategoryClass_2() _isCoupleMultiSkinToneEmoji:v4];
-  return v3;
+  LOBYTE(emojiCopy) = [getEMFEmojiCategoryClass_2() _isCoupleMultiSkinToneEmoji:v4];
+  return emojiCopy;
 }
 
-- (id)subTreeHitTest:(CGPoint)a3
+- (id)subTreeHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   if (![(UIView *)self pointInside:0 withEvent:?]|| self->_isRearranging)
   {
     v6 = 0;
@@ -1350,13 +1350,13 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isCellMostlyOffscreen:(CGRect)a3
+- (BOOL)isCellMostlyOffscreen:(CGRect)offscreen
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  height = offscreen.size.height;
+  width = offscreen.size.width;
+  y = offscreen.origin.y;
+  x = offscreen.origin.x;
+  MidX = CGRectGetMidX(offscreen);
   [(UIView *)self frame];
   if (MidX < CGRectGetMinX(v13))
   {
@@ -1394,17 +1394,17 @@ LABEL_15:
   return v12 > CGRectGetMaxY(v19);
 }
 
-- (CGRect)cellRectToRevealFullCell:(CGRect)a3
+- (CGRect)cellRectToRevealFullCell:(CGRect)cell
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = cell.size.height;
+  width = cell.size.width;
+  y = cell.origin.y;
+  x = cell.origin.x;
   collectionView = self->_collectionView;
-  v9 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
   v125 = x;
   v126 = y;
-  [(UIView *)collectionView convertRect:v9 toView:x, y, width, height];
+  [(UIView *)collectionView convertRect:superview toView:x, y, width, height];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1418,8 +1418,8 @@ LABEL_15:
   if (!v18)
   {
     MaxX = CGRectGetMaxX(*&v19);
-    v51 = [(UIView *)self superview];
-    [v51 frame];
+    superview2 = [(UIView *)self superview];
+    [superview2 frame];
     v52 = CGRectGetMaxX(v134);
 
     if (MaxX <= v52)
@@ -1429,8 +1429,8 @@ LABEL_15:
       v149.size.width = v15;
       v149.size.height = v17;
       MinX = CGRectGetMinX(v149);
-      v97 = [(UIView *)self superview];
-      [v97 frame];
+      superview3 = [(UIView *)self superview];
+      [superview3 frame];
       v98 = CGRectGetMinX(v150);
 
       if (MinX >= v98)
@@ -1446,8 +1446,8 @@ LABEL_15:
       v151.size.width = v15;
       v151.size.height = v17;
       v102 = CGRectGetMinX(v151);
-      v103 = [(UIView *)self superview];
-      [v103 frame];
+      superview4 = [(UIView *)self superview];
+      [superview4 frame];
       v104 = v102 - CGRectGetMinX(v152);
 
       v105 = -v104;
@@ -1466,8 +1466,8 @@ LABEL_15:
       v153.size.width = v15;
       v153.size.height = v17;
       v109 = CGRectGetMinX(v153);
-      v110 = [(UIView *)self superview];
-      [v110 frame];
+      superview5 = [(UIView *)self superview];
+      [superview5 frame];
       v111 = v109 - CGRectGetMinX(v154);
 
       if (v111 >= 0.0)
@@ -1482,8 +1482,8 @@ LABEL_15:
       v155.size.width = v15;
       v155.size.height = v17;
       v114 = CGRectGetMinX(v155);
-      v115 = [(UIView *)self superview];
-      [v115 frame];
+      superview6 = [(UIView *)self superview];
+      [superview6 frame];
       v116 = v114 + CGRectGetMinX(v156);
 
       if (v116 < 0.0)
@@ -1507,8 +1507,8 @@ LABEL_15:
       v135.size.width = v15;
       v135.size.height = v17;
       v56 = CGRectGetMaxX(v135);
-      v57 = [(UIView *)self superview];
-      [v57 frame];
+      superview7 = [(UIView *)self superview];
+      [superview7 frame];
       v58 = v56 - CGRectGetMaxX(v136);
 
       if (v58 < 0.0)
@@ -1525,8 +1525,8 @@ LABEL_15:
       v137.size.width = v15;
       v137.size.height = v17;
       v61 = CGRectGetMaxX(v137);
-      v62 = [(UIView *)self superview];
-      [v62 frame];
+      superview8 = [(UIView *)self superview];
+      [superview8 frame];
       v63 = v61 - CGRectGetMaxX(v138);
 
       if (v63 < 0.0)
@@ -1541,8 +1541,8 @@ LABEL_15:
       v139.size.width = v15;
       v139.size.height = v17;
       v66 = CGRectGetMaxX(v139);
-      v67 = [(UIView *)self superview];
-      [v67 frame];
+      superview9 = [(UIView *)self superview];
+      [superview9 frame];
       v68 = v66 - CGRectGetMaxX(v140);
 
       if (v68 < 0.0)
@@ -1562,8 +1562,8 @@ LABEL_15:
   }
 
   MaxY = CGRectGetMaxY(*&v19);
-  v24 = [(UIView *)self superview];
-  [v24 frame];
+  superview10 = [(UIView *)self superview];
+  [superview10 frame];
   v25 = CGRectGetMaxY(v127);
 
   if (MaxY <= v25)
@@ -1573,8 +1573,8 @@ LABEL_15:
     v141.size.width = v15;
     v141.size.height = v17;
     MinY = CGRectGetMinY(v141);
-    v73 = [(UIView *)self superview];
-    [v73 frame];
+    superview11 = [(UIView *)self superview];
+    [superview11 frame];
     v74 = CGRectGetMinY(v142);
 
     if (MinY < v74)
@@ -1590,8 +1590,8 @@ LABEL_15:
       v143.size.height = v17;
       v124 = height;
       v79 = CGRectGetMinY(v143);
-      v80 = [(UIView *)self superview];
-      [v80 frame];
+      superview12 = [(UIView *)self superview];
+      [superview12 frame];
       v81 = CGRectGetMinY(v144);
 
       v82 = 0.0;
@@ -1608,8 +1608,8 @@ LABEL_15:
       v145.size.width = v15;
       v145.size.height = v17;
       v85 = CGRectGetMinY(v145);
-      v86 = [(UIView *)self superview];
-      [v86 frame];
+      superview13 = [(UIView *)self superview];
+      [superview13 frame];
       v87 = CGRectGetMinY(v146);
 
       if (v85 >= v87)
@@ -1629,8 +1629,8 @@ LABEL_15:
       v147.size.width = v15;
       v147.size.height = v17;
       v91 = CGRectGetMinY(v147);
-      v92 = [(UIView *)self superview];
-      [v92 frame];
+      superview14 = [(UIView *)self superview];
+      [superview14 frame];
       v93 = CGRectGetMinY(v148);
 
       if (v91 >= v93)
@@ -1669,8 +1669,8 @@ LABEL_38:
   v30 = width;
   v31 = height;
   v32 = CGRectGetMaxY(v128);
-  v33 = [(UIView *)self superview];
-  [v33 frame];
+  superview15 = [(UIView *)self superview];
+  [superview15 frame];
   v34 = v32 - CGRectGetMaxY(v129);
 
   if (v34 < 0.0)
@@ -1688,8 +1688,8 @@ LABEL_38:
   v130.size.width = v15;
   v130.size.height = v17;
   v38 = CGRectGetMaxY(v130);
-  v39 = [(UIView *)self superview];
-  [v39 frame];
+  superview16 = [(UIView *)self superview];
+  [superview16 frame];
   v40 = v38 - CGRectGetMaxY(v131);
 
   if (v40 < 0.0)
@@ -1704,8 +1704,8 @@ LABEL_38:
   v132.size.width = v15;
   v132.size.height = v17;
   v43 = CGRectGetMaxY(v132);
-  v44 = [(UIView *)self superview];
-  [v44 frame];
+  superview17 = [(UIView *)self superview];
+  [superview17 frame];
   v45 = v43 - CGRectGetMaxY(v133);
 
   if (v45 < 0.0)
@@ -1730,37 +1730,37 @@ LABEL_39:
   return result;
 }
 
-- (id)treeForStickerCell:(id)a3
+- (id)treeForStickerCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   collectionView = self->_collectionView;
-  [v4 frame];
+  [cellCopy frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(UIView *)self superview];
-  [(UIView *)collectionView convertRect:v14 toView:v7, v9, v11, v13];
+  superview = [(UIView *)self superview];
+  [(UIView *)collectionView convertRect:superview toView:v7, v9, v11, v13];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  if (!-[UIKeyboardEmojiAndStickerCollectionInputView isCellMostlyOffscreen:](self, "isCellMostlyOffscreen:", v16, v18, v20, v22) && [v4 allowsDistribution] && (objc_msgSend(v4, "frame"), -[UIKeyboardEmojiAndStickerCollectionInputView cellRectToRevealFullCell:](self, "cellRectToRevealFullCell:"), v4))
+  if (!-[UIKeyboardEmojiAndStickerCollectionInputView isCellMostlyOffscreen:](self, "isCellMostlyOffscreen:", v16, v18, v20, v22) && [cellCopy allowsDistribution] && (objc_msgSend(cellCopy, "frame"), -[UIKeyboardEmojiAndStickerCollectionInputView cellRectToRevealFullCell:](self, "cellRectToRevealFullCell:"), cellCopy))
   {
     v27 = v23;
     v28 = v24;
     v29 = v25;
     v30 = v26;
-    v31 = [v4 contentView];
+    contentView = [cellCopy contentView];
     v32 = [UIGraphicsImageRenderer alloc];
-    [v31 bounds];
+    [contentView bounds];
     v35 = [(UIGraphicsImageRenderer *)v32 initWithSize:v33, v34];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __67__UIKeyboardEmojiAndStickerCollectionInputView_treeForStickerCell___block_invoke;
     v57[3] = &unk_1E70F6970;
-    v36 = v31;
+    v36 = contentView;
     v58 = v36;
     v37 = [(UIGraphicsImageRenderer *)v35 imageWithActions:v57];
     v38 = [UIKBTree treeOfType:8];
@@ -1775,8 +1775,8 @@ LABEL_39:
     }
 
     v39 = self->_collectionView;
-    v40 = [(UIView *)self superview];
-    [(UIView *)v39 convertRect:v40 toView:v27, v28, v29, v30];
+    superview2 = [(UIView *)self superview];
+    [(UIView *)v39 convertRect:superview2 toView:v27, v28, v29, v30];
     v42 = v41;
     v44 = v43;
     v46 = v45;
@@ -1803,8 +1803,8 @@ LABEL_39:
     v54 = [(UIKBKeyView *)self key];
     [v38 setParentKey:v54];
 
-    v55 = [v4 imageGlyph];
-    [v38 setObject:v55 forProperty:@"UIKBAssociatedImageGlyph"];
+    imageGlyph = [cellCopy imageGlyph];
+    [v38 setObject:imageGlyph forProperty:@"UIKBAssociatedImageGlyph"];
   }
 
   else
@@ -1823,35 +1823,35 @@ uint64_t __67__UIKeyboardEmojiAndStickerCollectionInputView_treeForStickerCell__
   return [v1 drawViewHierarchyInRect:0 afterScreenUpdates:?];
 }
 
-- (id)treeForCell:(id)a3
+- (id)treeForCell:(id)cell
 {
   v143 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cellCopy = cell;
   collectionView = self->_collectionView;
-  v122 = v4;
-  [v4 frame];
+  v122 = cellCopy;
+  [cellCopy frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v123 = self;
-  v14 = [(UIView *)self superview];
-  [(UIView *)collectionView convertRect:v14 toView:v7, v9, v11, v13];
+  selfCopy = self;
+  superview = [(UIView *)self superview];
+  [(UIView *)collectionView convertRect:superview toView:v7, v9, v11, v13];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  if (![(UIKeyboardEmojiAndStickerCollectionInputView *)v123 isCellMostlyOffscreen:v16, v18, v20, v22])
+  if (![(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy isCellMostlyOffscreen:v16, v18, v20, v22])
   {
     [v122 frame];
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 cellRectToRevealFullCell:?];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy cellRectToRevealFullCell:?];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    v32 = [(UICollectionView *)v123->_collectionView indexPathForCell:v122];
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 setTappedSkinToneEmoji:v32];
+    v32 = [(UICollectionView *)selfCopy->_collectionView indexPathForCell:v122];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy setTappedSkinToneEmoji:v32];
 
     v33 = v122;
     if (!v122)
@@ -1860,26 +1860,26 @@ uint64_t __67__UIKeyboardEmojiAndStickerCollectionInputView_treeForStickerCell__
       goto LABEL_60;
     }
 
-    v121 = [v122 emoji];
+    emoji = [v122 emoji];
     v23 = [UIKBTree treeOfType:8];
     [v23 setState:2];
     [v23 setName:@"EmojiPopupKey"];
-    v119 = [v121 emojiString];
-    [v23 setDisplayString:v119];
-    [v23 setRepresentedString:v119];
+    emojiString = [emoji emojiString];
+    [v23 setDisplayString:emojiString];
+    [v23 setRepresentedString:emojiString];
     [v23 setDisplayType:0];
     [v23 setInteractionType:2];
-    if (v123->_selectedPopupKey)
+    if (selfCopy->_selectedPopupKey)
     {
-      [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 resetSelectionIfNeeded];
+      [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy resetSelectionIfNeeded];
     }
 
     if (+[UIDictationController isRunning])
     {
       v34 = +[UIDictationController sharedInstance];
-      v35 = [v34 dictationTipController];
-      v36 = [v121 emojiString];
-      [v35 signalDictationInsertionTip:v36];
+      dictationTipController = [v34 dictationTipController];
+      emojiString2 = [emoji emojiString];
+      [dictationTipController signalDictationInsertionTip:emojiString2];
     }
 
     v138 = 0;
@@ -1900,21 +1900,21 @@ uint64_t __67__UIKeyboardEmojiAndStickerCollectionInputView_treeForStickerCell__
 
     v38 = v37;
     _Block_object_dispose(&v138, 8);
-    v39 = [v121 emojiString];
-    v120 = [v37 emojiTokenWithString:v39 localeData:0];
+    emojiString3 = [emoji emojiString];
+    v120 = [v37 emojiTokenWithString:emojiString3 localeData:0];
 
     if (![v120 supportsSkinToneVariants])
     {
       goto LABEL_47;
     }
 
-    v40 = [v120 _skinToneVariantStrings];
-    v124 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v40, "count") + 1}];
+    _skinToneVariantStrings = [v120 _skinToneVariantStrings];
+    v124 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(_skinToneVariantStrings, "count") + 1}];
     v131 = 0u;
     v132 = 0u;
     v129 = 0u;
     v130 = 0u;
-    obj = v40;
+    obj = _skinToneVariantStrings;
     v41 = [obj countByEnumeratingWithState:&v129 objects:v142 count:16];
     if (v41)
     {
@@ -1931,29 +1931,29 @@ uint64_t __67__UIKeyboardEmojiAndStickerCollectionInputView_treeForStickerCell__
           v44 = *(*(&v129 + 1) + 8 * i);
           v45 = [v23 copy];
           [v45 setRepresentedString:v44];
-          v46 = [v45 representedString];
-          [v45 setDisplayString:v46];
+          representedString = [v45 representedString];
+          [v45 setDisplayString:representedString];
 
           [v45 setDisplayType:0];
           v47 = MEMORY[0x1E696AEC0];
-          v48 = [v23 name];
-          v49 = [v45 representedString];
-          v50 = [v47 stringWithFormat:@"%@/%@", v48, v49];
+          name = [v23 name];
+          representedString2 = [v45 representedString];
+          v50 = [v47 stringWithFormat:@"%@/%@", name, representedString2];
           [v45 setName:v50];
 
           [v45 setOverrideDisplayString:0];
           [v124 addObject:v45];
-          v51 = [obj firstObject];
-          LODWORD(v49) = [v51 isEqualToString:v44];
+          firstObject = [obj firstObject];
+          LODWORD(representedString2) = [firstObject isEqualToString:v44];
 
-          if (v49)
+          if (representedString2)
           {
             v52 = [UIKBTree treeOfType:8];
             [v52 setDisplayType:50];
             [v52 setInteractionType:0];
             v53 = MEMORY[0x1E696AEC0];
-            v54 = [v23 name];
-            v55 = [v53 stringWithFormat:@"%@/Divider", v54];
+            name2 = [v23 name];
+            v55 = [v53 stringWithFormat:@"%@/Divider", name2];
             [v52 setName:v55];
 
             [v52 setState:1];
@@ -1967,33 +1967,33 @@ uint64_t __67__UIKeyboardEmojiAndStickerCollectionInputView_treeForStickerCell__
       while (v41);
     }
 
-    v56 = [v121 emojiString];
-    v57 = [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 baseStringIsCoupleEmoji:v56];
+    emojiString4 = [emoji emojiString];
+    v57 = [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy baseStringIsCoupleEmoji:emojiString4];
 
     if (v57)
     {
       v58 = [v23 copy];
       EMFStringUtilitiesClass_0 = getEMFStringUtilitiesClass_0();
-      v60 = [v121 emojiString];
-      v61 = [EMFStringUtilitiesClass_0 _baseStringForEmojiString:v60];
+      emojiString5 = [emoji emojiString];
+      v61 = [EMFStringUtilitiesClass_0 _baseStringForEmojiString:emojiString5];
       [v58 setRepresentedString:v61];
 
-      v62 = [v58 representedString];
-      [v58 setDisplayString:v62];
+      representedString3 = [v58 representedString];
+      [v58 setDisplayString:representedString3];
 
       [v58 setDisplayType:0];
       v63 = MEMORY[0x1E696AEC0];
-      v64 = [v23 name];
-      v65 = [v58 representedString];
-      v66 = [v63 stringWithFormat:@"%@/%@", v64, v65];
+      name3 = [v23 name];
+      representedString4 = [v58 representedString];
+      v66 = [v63 stringWithFormat:@"%@/%@", name3, representedString4];
       [v58 setName:v66];
 
       [v58 setOverrideDisplayString:0];
       [v124 insertObject:v58 atIndex:0];
     }
 
-    v67 = [v121 emojiString];
-    v68 = [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 skinToneWasUsedForEmoji:v67];
+    emojiString6 = [emoji emojiString];
+    v68 = [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy skinToneWasUsedForEmoji:emojiString6];
 
     if (v68)
     {
@@ -2005,7 +2005,7 @@ uint64_t __67__UIKeyboardEmojiAndStickerCollectionInputView_treeForStickerCell__
       v126[1] = 3221225472;
       v126[2] = __60__UIKeyboardEmojiAndStickerCollectionInputView_treeForCell___block_invoke;
       v126[3] = &unk_1E710FF58;
-      v127 = v121;
+      v127 = emoji;
       v128 = &v133;
       [v124 enumerateObjectsUsingBlock:v126];
       [v23 setSelectedVariantIndex:*(v134 + 24)];
@@ -2013,22 +2013,22 @@ uint64_t __67__UIKeyboardEmojiAndStickerCollectionInputView_treeForStickerCell__
       _Block_object_dispose(&v133, 8);
     }
 
-    v69 = [(UIView *)v123 effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(UIView *)selfCopy effectiveUserInterfaceLayoutDirection];
     v70 = UIKBAttributeValueFixedLeftStr;
-    if (v69 != 1)
+    if (effectiveUserInterfaceLayoutDirection != 1)
     {
       v70 = UIKBAttributeValueFixedRightStr;
     }
 
     [v23 setVariantPopupBias:*v70];
     [v23 setSubtrees:v124];
-    v71 = [v121 emojiString];
-    v72 = [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 baseStringIsCoupleEmoji:v71];
+    emojiString7 = [emoji emojiString];
+    v72 = [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy baseStringIsCoupleEmoji:emojiString7];
 
-    v73 = [v121 emojiString];
-    if ([(UIKeyboardEmojiAndStickerCollectionInputView *)v123 skinToneWasUsedForEmoji:v73])
+    emojiString8 = [emoji emojiString];
+    if ([(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy skinToneWasUsedForEmoji:emojiString8])
     {
-      emojiGraphicsTraits = v123->_emojiGraphicsTraits;
+      emojiGraphicsTraits = selfCopy->_emojiGraphicsTraits;
       if (emojiGraphicsTraits)
       {
         isFirstPartyStickers = emojiGraphicsTraits->_isFirstPartyStickers;
@@ -2051,22 +2051,22 @@ LABEL_44:
           [v23 setVariantType:v76];
           [v23 setState:v77];
           v81 = +[UIKeyboardImpl activeInstance];
-          v82 = [v81 isEmojiPopoverPresented];
+          isEmojiPopoverPresented = [v81 isEmojiPopoverPresented];
 
-          if (v82)
+          if (isEmojiPopoverPresented)
           {
-            objc_storeStrong(&v123->_selectedPopupKey, v23);
-            v123->_showingVariants = 1;
-            v123->_currentVariantRow = 0;
-            v83 = [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 tappedSkinToneEmoji];
-            v84 = [v83 copy];
-            [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 setSelectedIndexPath:v84];
+            objc_storeStrong(&selfCopy->_selectedPopupKey, v23);
+            selfCopy->_showingVariants = 1;
+            selfCopy->_currentVariantRow = 0;
+            tappedSkinToneEmoji = [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy tappedSkinToneEmoji];
+            v84 = [tappedSkinToneEmoji copy];
+            [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy setSelectedIndexPath:v84];
           }
 
 LABEL_47:
-          v85 = v123->_collectionView;
-          v86 = [(UIView *)v123 superview];
-          [(UIView *)v85 convertRect:v86 toView:v25 + 0.0, v27 + 1.0, v29, v31];
+          v85 = selfCopy->_collectionView;
+          superview2 = [(UIView *)selfCopy superview];
+          [(UIView *)v85 convertRect:superview2 toView:v25 + 0.0, v27 + 1.0, v29, v31];
           v88 = v87;
           v90 = v89;
           v92 = v91;
@@ -2074,7 +2074,7 @@ LABEL_47:
 
           if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) != 1 || +[UIKeyboardImpl isFloating])
           {
-            [(UIKeyboardEmojiGraphicsTraits *)v123->_emojiGraphicsTraits fakeEmojiKeySize];
+            [(UIKeyboardEmojiGraphicsTraits *)selfCopy->_emojiGraphicsTraits fakeEmojiKeySize];
             v104 = v90 - (v103 - v94) * 0.5;
             v100 = v88 - (v102 - v92) * 0.5 + 0.0;
             v96 = v102 + 1.0;
@@ -2085,22 +2085,22 @@ LABEL_47:
             v145.size.width = v96;
             v145.size.height = v98;
             MaxX = CGRectGetMaxX(v145);
-            [(UIView *)v123->_collectionView bounds];
+            [(UIView *)selfCopy->_collectionView bounds];
             if (MaxX > v106)
             {
-              if ([v121 supportsSkinToneVariants])
+              if ([emoji supportsSkinToneVariants])
               {
-                v107 = v123->_emojiGraphicsTraits;
+                v107 = selfCopy->_emojiGraphicsTraits;
                 if (!v107 || !v107->_isFirstPartyStickers)
                 {
-                  [(UIView *)v123->_collectionView bounds];
+                  [(UIView *)selfCopy->_collectionView bounds];
                   v109 = v108;
                   v146.origin.x = v100;
                   v146.origin.y = v101;
                   v146.size.width = v96;
                   v146.size.height = v98;
                   v110 = CGRectGetMaxX(v146);
-                  [(UIView *)v123->_collectionView bounds];
+                  [(UIView *)selfCopy->_collectionView bounds];
                   if (v110 - v111 >= 0.0)
                   {
                     v112 = v110 - v111;
@@ -2111,10 +2111,10 @@ LABEL_47:
                     v112 = -(v110 - v111);
                   }
 
-                  v113 = v123->_collectionView;
+                  v113 = selfCopy->_collectionView;
                   [(UIScrollView *)v113 contentOffset];
                   v115 = v114;
-                  [(UIScrollView *)v123->_collectionView contentOffset];
+                  [(UIScrollView *)selfCopy->_collectionView contentOffset];
                   [(UICollectionView *)v113 setContentOffset:1 animated:v115 + v112];
                   v100 = v109 - v96;
                 }
@@ -2124,7 +2124,7 @@ LABEL_47:
 
           else
           {
-            [(UIKeyboardEmojiGraphicsTraits *)v123->_emojiGraphicsTraits fakeEmojiKeySize];
+            [(UIKeyboardEmojiGraphicsTraits *)selfCopy->_emojiGraphicsTraits fakeEmojiKeySize];
             v96 = v95;
             v98 = v97;
             v99 = (v97 - v94) * 0.5;
@@ -2135,10 +2135,10 @@ LABEL_47:
           v116 = [[UIKBShape alloc] initWithGeometry:0 frame:v100 paddedFrame:v101, v96, v98, v100, v101, v96, v98];
           [v23 setShape:v116];
 
-          v117 = [(UIKBKeyView *)v123 key];
+          v117 = [(UIKBKeyView *)selfCopy key];
           [v23 setParentKey:v117];
 
-          [v23 setObject:v121 forProperty:@"UIKBAssociatedEmoji"];
+          [v23 setObject:emoji forProperty:@"UIKBAssociatedEmoji"];
           goto LABEL_59;
         }
 
@@ -2160,14 +2160,14 @@ LABEL_40:
 
     else
     {
-      v78 = [(UIKeyboardEmojiAndStickerCollectionInputView *)v123 tappedSkinToneEmoji];
-      if ([v78 section] || !-[UIKeyboardEmojiAndStickerCollectionInputView _userHasSelectedSkinToneEmoji](v123, "_userHasSelectedSkinToneEmoji"))
+      tappedSkinToneEmoji2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy tappedSkinToneEmoji];
+      if ([tappedSkinToneEmoji2 section] || !-[UIKeyboardEmojiAndStickerCollectionInputView _userHasSelectedSkinToneEmoji](selfCopy, "_userHasSelectedSkinToneEmoji"))
       {
 
         goto LABEL_40;
       }
 
-      v79 = v123->_emojiGraphicsTraits;
+      v79 = selfCopy->_emojiGraphicsTraits;
       if (v79)
       {
         v80 = v79->_isFirstPartyStickers;
@@ -2205,61 +2205,61 @@ void __60__UIKeyboardEmojiAndStickerCollectionInputView_treeForCell___block_invo
   }
 }
 
-- (BOOL)genderEmojiBaseStringNeedVariantSelector:(id)a3
+- (BOOL)genderEmojiBaseStringNeedVariantSelector:(id)selector
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"⛹"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"🏋"))
+  selectorCopy = selector;
+  if ([selectorCopy isEqualToString:@"⛹"] & 1) != 0 || (objc_msgSend(selectorCopy, "isEqualToString:", @"🏋"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"🕵"];
+    v4 = [selectorCopy isEqualToString:@"🕵"];
   }
 
   return v4;
 }
 
-- (id)selectedChildSkinToneEmoji:(id)a3
+- (id)selectedChildSkinToneEmoji:(id)emoji
 {
-  v3 = a3;
-  if ([v3 selectedVariantIndex] == 0x7FFFFFFFFFFFFFFFLL || (objc_msgSend(v3, "subtrees"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "objectAtIndex:", objc_msgSend(v3, "selectedVariantIndex")), v5 = objc_claimAutoreleasedReturnValue(), v4, objc_msgSend(v5, "displayString"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  emojiCopy = emoji;
+  if ([emojiCopy selectedVariantIndex] == 0x7FFFFFFFFFFFFFFFLL || (objc_msgSend(emojiCopy, "subtrees"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "objectAtIndex:", objc_msgSend(emojiCopy, "selectedVariantIndex")), v5 = objc_claimAutoreleasedReturnValue(), v4, objc_msgSend(v5, "displayString"), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
   {
-    v8 = [v3 objectForProperty:@"UIKBAssociatedEmoji"];
+    v8 = [emojiCopy objectForProperty:@"UIKBAssociatedEmoji"];
   }
 
   else
   {
-    v7 = [v3 objectForProperty:@"UIKBAssociatedEmoji"];
+    v7 = [emojiCopy objectForProperty:@"UIKBAssociatedEmoji"];
     v8 = +[UIKeyboardEmoji emojiWithString:withVariantMask:](UIKeyboardEmoji, "emojiWithString:withVariantMask:", v6, [v7 variantMask]);
   }
 
   return v8;
 }
 
-- (int64_t)didInputSubTree:(id)a3
+- (int64_t)didInputSubTree:(id)tree
 {
   v79[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  treeCopy = tree;
   v75.receiver = self;
   v75.super_class = UIKeyboardEmojiAndStickerCollectionInputView;
-  v5 = [(UIKBKeyView *)&v75 didInputSubTree:v4];
-  v6 = [v4 objectForProperty:@"UIKBAssociatedEmoji"];
-  v7 = [v4 objectForProperty:@"UIKBAssociatedImageGlyph"];
+  v5 = [(UIKBKeyView *)&v75 didInputSubTree:treeCopy];
+  v6 = [treeCopy objectForProperty:@"UIKBAssociatedEmoji"];
+  v7 = [treeCopy objectForProperty:@"UIKBAssociatedImageGlyph"];
   v8 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _usageSourceFromSection:[(NSIndexPath *)self->_currentIndexPath section]];
   if (v6)
   {
-    v74 = v4;
+    v74 = treeCopy;
     v70 = v7;
     if ([v6 supportsSkinToneVariants])
     {
-      if ([v4 state] == 16)
+      if ([treeCopy state] == 16)
       {
-        v9 = [v4 selectedVariantIndex];
-        [v4 subtrees];
+        selectedVariantIndex = [treeCopy selectedVariantIndex];
+        [treeCopy subtrees];
         v11 = v10 = v8;
-        v12 = v9 < [v11 count];
+        v12 = selectedVariantIndex < [v11 count];
 
         v8 = v10;
       }
@@ -2275,26 +2275,26 @@ void __60__UIKeyboardEmojiAndStickerCollectionInputView_treeForCell___block_invo
       }
 
       v73 = v5;
-      v25 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedChildSkinToneEmoji:v4];
+      v25 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedChildSkinToneEmoji:treeCopy];
 
       if (v12)
       {
-        v26 = [v4 subtrees];
-        v27 = [v26 objectAtIndex:0];
-        v28 = [v27 representedString];
+        subtrees = [treeCopy subtrees];
+        v27 = [subtrees objectAtIndex:0];
+        representedString = [v27 representedString];
 
-        v29 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-        v30 = [v25 emojiString];
-        [v29 updateSkinToneBaseKey:v28 variantUsed:v30];
+        emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+        emojiString = [v25 emojiString];
+        [emojiKeyManager updateSkinToneBaseKey:representedString variantUsed:emojiString];
       }
 
       collectionView = self->_collectionView;
-      v32 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self tappedSkinToneEmoji];
-      v33 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v32];
+      tappedSkinToneEmoji = [(UIKeyboardEmojiAndStickerCollectionInputView *)self tappedSkinToneEmoji];
+      v33 = [(UICollectionView *)collectionView cellForItemAtIndexPath:tappedSkinToneEmoji];
 
-      v34 = [v33 emoji];
-      v35 = [v34 emojiString];
-      v36 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiBaseString:v35];
+      emoji = [v33 emoji];
+      emojiString2 = [emoji emojiString];
+      v36 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiBaseString:emojiString2];
       [v25 emojiString];
       v37 = v20 = v25;
       v38 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiBaseString:v37];
@@ -2306,8 +2306,8 @@ void __60__UIKeyboardEmojiAndStickerCollectionInputView_treeForCell___block_invo
         if (os_variant_has_internal_diagnostics())
         {
           v66 = objc_opt_class();
-          v67 = [v20 emojiString];
-          [v33 setUnreleasedHighlight:{objc_msgSend(v66, "shouldHighlightEmoji:", v67)}];
+          emojiString3 = [v20 emojiString];
+          [v33 setUnreleasedHighlight:{objc_msgSend(v66, "shouldHighlightEmoji:", emojiString3)}];
         }
       }
     }
@@ -2319,9 +2319,9 @@ void __60__UIKeyboardEmojiAndStickerCollectionInputView_treeForCell___block_invo
     }
 
     v40 = +[UIKeyboardInputModeController sharedInputModeController];
-    v41 = [v40 lastUsedInputModeForCurrentContext];
-    v42 = [v41 primaryLanguage];
-    v43 = [v42 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+    lastUsedInputModeForCurrentContext = [v40 lastUsedInputModeForCurrentContext];
+    primaryLanguage = [lastUsedInputModeForCurrentContext primaryLanguage];
+    v43 = [primaryLanguage stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
     v44 = @"en_US";
     if (v43)
@@ -2330,21 +2330,21 @@ void __60__UIKeyboardEmojiAndStickerCollectionInputView_treeForCell___block_invo
     }
 
     v45 = +[UIKeyboardImpl activeInstance];
-    v46 = [v45 isEmojiPopoverVisibleOrDismissing];
+    isEmojiPopoverVisibleOrDismissing = [v45 isEmojiPopoverVisibleOrDismissing];
 
-    if (!v46)
+    if (!isEmojiPopoverVisibleOrDismissing)
     {
       goto LABEL_28;
     }
 
-    v47 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
-    v48 = [v47 text];
-    if ([v48 length])
+    emojiSearchField = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
+    text = [emojiSearchField text];
+    if ([text length])
     {
-      v49 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self tappedSkinToneEmoji];
-      v50 = [v49 section];
+      tappedSkinToneEmoji2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self tappedSkinToneEmoji];
+      section = [tappedSkinToneEmoji2 section];
 
-      if (!v50)
+      if (!section)
       {
         v51 = UIKBAnalyticsEmojiInputTypePopoverSearch;
 LABEL_27:
@@ -2366,27 +2366,27 @@ LABEL_28:
         v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:v78 count:3];
         v59 = [v52 initWithDictionary:v58];
 
-        v60 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self bundleId];
+        bundleId = [(UIKeyboardEmojiAndStickerCollectionInputView *)self bundleId];
 
-        if (v60)
+        if (bundleId)
         {
-          v61 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self bundleId];
+          bundleId2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self bundleId];
           v62 = +[_UISignalAnalytics getIAPayloadKeyGenmojiBundleID];
-          [v59 setObject:v61 forKeyedSubscript:v62];
+          [v59 setObject:bundleId2 forKeyedSubscript:v62];
         }
 
         v63 = +[_UISignalAnalytics getIASignalGenmojiUsage];
         [_UISignalAnalytics sendGenmojiSignal:v63 payload:v59];
 
-        v64 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-        [v64 emojiUsed:v20 language:v68];
+        emojiKeyManager2 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+        [emojiKeyManager2 emojiUsed:v20 language:v68];
 
         v7 = v70;
         v5 = v73;
 LABEL_31:
         v8 = v69;
 
-        v4 = v74;
+        treeCopy = v74;
         goto LABEL_32;
       }
     }
@@ -2402,7 +2402,7 @@ LABEL_31:
   if (v7)
   {
     v72 = v5;
-    v74 = v4;
+    v74 = treeCopy;
     v13 = objc_alloc(MEMORY[0x1E695DF90]);
     v14 = +[_UISignalAnalytics getIAPayloadKeyGenmojiImageType];
     v76[0] = v14;
@@ -2420,13 +2420,13 @@ LABEL_31:
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:v76 count:3];
     v20 = [v13 initWithDictionary:v19];
 
-    v21 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self bundleId];
+    bundleId3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self bundleId];
 
-    if (v21)
+    if (bundleId3)
     {
-      v22 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self bundleId];
+      bundleId4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self bundleId];
       v23 = +[_UISignalAnalytics getIAPayloadKeyGenmojiBundleID];
-      [v20 setObject:v22 forKeyedSubscript:v23];
+      [v20 setObject:bundleId4 forKeyedSubscript:v23];
     }
 
     v24 = +[_UISignalAnalytics getIASignalGenmojiUsage];
@@ -2439,23 +2439,23 @@ LABEL_31:
   }
 
 LABEL_32:
-  [v4 setObject:0 forProperty:@"UIKBAssociatedImageGlyph"];
-  [v4 setObject:0 forProperty:@"UIKBAssociatedEmoji"];
+  [treeCopy setObject:0 forProperty:@"UIKBAssociatedImageGlyph"];
+  [treeCopy setObject:0 forProperty:@"UIKBAssociatedEmoji"];
 
   return v5;
 }
 
-- (void)insertImageGlyph:(id)a3 dismiss:(BOOL)a4
+- (void)insertImageGlyph:(id)glyph dismiss:(BOOL)dismiss
 {
-  v6 = a3;
+  glyphCopy = glyph;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss___block_invoke;
   v7[3] = &unk_1E711BD50;
-  v9 = a4;
+  dismissCopy = dismiss;
   objc_copyWeak(&v8, &location);
-  [v6 createUIStickerWithLoadAllRepresentations:1 completionHandler:v7];
+  [glyphCopy createUIStickerWithLoadAllRepresentations:1 completionHandler:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
@@ -2490,30 +2490,30 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   }
 }
 
-- (void)shouldDismissModalDisplayView:(id)a3
+- (void)shouldDismissModalDisplayView:(id)view
 {
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self _setUserHasSelectedSkinToneEmoji:1];
-  v4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self completionBlock];
-  if (v4)
+  completionBlock = [(UIKeyboardEmojiAndStickerCollectionInputView *)self completionBlock];
+  if (completionBlock)
   {
-    v5 = v4;
-    v4[2]();
+    v5 = completionBlock;
+    completionBlock[2]();
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self setCompletionBlock:0];
-    v4 = v5;
+    completionBlock = v5;
   }
 }
 
-- (void)willDisplayModalActionView:(id)a3 withSubTreeKeyView:(id)a4 completion:(id)a5
+- (void)willDisplayModalActionView:(id)view withSubTreeKeyView:(id)keyView completion:(id)completion
 {
   v83[2] = *MEMORY[0x1E69E9840];
-  v78 = a4;
-  v8 = a3;
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self setCompletionBlock:a5];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [(UIKBKeyView *)self renderConfig];
-  v11 = [v10 whiteText];
+  keyViewCopy = keyView;
+  viewCopy = view;
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self setCompletionBlock:completion];
+  array = [MEMORY[0x1E695DF70] array];
+  renderConfig = [(UIKBKeyView *)self renderConfig];
+  whiteText = [renderConfig whiteText];
 
-  if (v11)
+  if (whiteText)
   {
     v12 = +[UIColor whiteColor];
     v13 = v12;
@@ -2534,16 +2534,16 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
 
   else
   {
-    v15 = [(UIKBKeyView *)self renderConfig];
-    v77 = [v15 isFloating] ^ 1;
+    renderConfig2 = [(UIKBKeyView *)self renderConfig];
+    v77 = [renderConfig2 isFloating] ^ 1;
   }
 
   v76 = (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1;
-  v71 = self;
+  selfCopy = self;
   v16 = [(UIView *)self _keyboardOrientation]- 3;
   v17 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v18 = [v17 preferencesActions];
-  [v18 rivenSizeFactor:1.0];
+  preferencesActions = [v17 preferencesActions];
+  [preferencesActions rivenSizeFactor:1.0];
   v20 = v19;
 
   v21 = 1.67;
@@ -2586,18 +2586,18 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   v25 = v21 * v24;
   v26 = objc_alloc_init(UIView);
   [(UIView *)v26 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v8 addSubview:v26];
-  v27 = [MEMORY[0x1E69977A0] constraintWithItem:v26 attribute:3 relatedBy:0 toItem:v8 attribute:3 multiplier:1.0 constant:0.0];
-  [v9 addObject:v27];
+  [viewCopy addSubview:v26];
+  v27 = [MEMORY[0x1E69977A0] constraintWithItem:v26 attribute:3 relatedBy:0 toItem:viewCopy attribute:3 multiplier:1.0 constant:0.0];
+  [array addObject:v27];
 
-  v28 = [MEMORY[0x1E69977A0] constraintWithItem:v26 attribute:1 relatedBy:0 toItem:v8 attribute:1 multiplier:1.0 constant:0.0];
-  [v9 addObject:v28];
+  v28 = [MEMORY[0x1E69977A0] constraintWithItem:v26 attribute:1 relatedBy:0 toItem:viewCopy attribute:1 multiplier:1.0 constant:0.0];
+  [array addObject:v28];
 
-  v29 = [MEMORY[0x1E69977A0] constraintWithItem:v26 attribute:2 relatedBy:0 toItem:v8 attribute:2 multiplier:1.0 constant:0.0];
-  [v9 addObject:v29];
+  v29 = [MEMORY[0x1E69977A0] constraintWithItem:v26 attribute:2 relatedBy:0 toItem:viewCopy attribute:2 multiplier:1.0 constant:0.0];
+  [array addObject:v29];
 
-  v30 = [MEMORY[0x1E69977A0] constraintWithItem:v26 attribute:8 relatedBy:0 toItem:v8 attribute:8 multiplier:v22 constant:0.0];
-  [v9 addObject:v30];
+  v30 = [MEMORY[0x1E69977A0] constraintWithItem:v26 attribute:8 relatedBy:0 toItem:viewCopy attribute:8 multiplier:v22 constant:0.0];
+  [array addObject:v30];
 
   v31 = objc_alloc_init(UILabel);
   [(UIView *)v31 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2613,36 +2613,36 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
 
   v75 = v13;
   v35 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v36 = [getEMFEmojiCategoryClass_2() localizedSkinToneEmojiDescription];
-  v73 = [v35 initWithString:v36 attributes:v74];
+  localizedSkinToneEmojiDescription = [getEMFEmojiCategoryClass_2() localizedSkinToneEmojiDescription];
+  v73 = [v35 initWithString:localizedSkinToneEmojiDescription attributes:v74];
 
   [(UILabel *)v31 setNumberOfLines:0];
   [(UILabel *)v31 setTextAlignment:1];
   [(UILabel *)v31 setAttributedText:v73];
   [(UIView *)v26 addSubview:v31];
   v37 = [MEMORY[0x1E69977A0] constraintWithItem:v31 attribute:9 relatedBy:0 toItem:v26 attribute:9 multiplier:v25 constant:0.0];
-  [v9 addObject:v37];
+  [array addObject:v37];
 
   v72 = v26;
   v38 = [MEMORY[0x1E69977A0] constraintWithItem:v31 attribute:3 relatedBy:0 toItem:v26 attribute:3 multiplier:1.0 constant:0.0];
-  [v9 addObject:v38];
+  [array addObject:v38];
 
   v39 = [MEMORY[0x1E69977A0] constraintWithItem:v31 attribute:4 relatedBy:0 toItem:v26 attribute:4 multiplier:1.0 constant:0.0];
-  [v9 addObject:v39];
+  [array addObject:v39];
 
   v40 = MEMORY[0x1E69977A0];
-  [(UIKeyboardEmojiGraphicsTraits *)v71->_emojiGraphicsTraits alertTextWidth];
+  [(UIKeyboardEmojiGraphicsTraits *)selfCopy->_emojiGraphicsTraits alertTextWidth];
   v42 = [v40 constraintWithItem:v31 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:v41 - v23];
-  [v9 addObject:v42];
+  [array addObject:v42];
 
   v43 = objc_alloc_init(UIView);
   [(UIView *)v43 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v8 addSubview:v43];
-  v44 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:4 relatedBy:0 toItem:v8 attribute:4 multiplier:1.0 constant:0.0];
-  [v9 addObject:v44];
+  [viewCopy addSubview:v43];
+  v44 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:4 relatedBy:0 toItem:viewCopy attribute:4 multiplier:1.0 constant:0.0];
+  [array addObject:v44];
 
-  v45 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:8 relatedBy:0 toItem:v8 attribute:8 multiplier:0.086 constant:0.0];
-  [v9 addObject:v45];
+  v45 = [MEMORY[0x1E69977A0] constraintWithItem:v43 attribute:8 relatedBy:0 toItem:viewCopy attribute:8 multiplier:0.086 constant:0.0];
+  [array addObject:v45];
 
   v46 = [UIButton buttonWithType:1];
   [v46 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -2658,18 +2658,18 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   v68 = [v48 initWithString:v49 attributes:v70];
 
   [v46 setAttributedTitle:v68 forState:0];
-  [v46 addTarget:v71 action:sel_shouldDismissModalDisplayView_ forControlEvents:64];
-  [v8 addSubview:v46];
-  v50 = [MEMORY[0x1E69977A0] constraintWithItem:v46 attribute:9 relatedBy:0 toItem:v8 attribute:9 multiplier:v25 constant:0.0];
-  [v9 addObject:v50];
+  [v46 addTarget:selfCopy action:sel_shouldDismissModalDisplayView_ forControlEvents:64];
+  [viewCopy addSubview:v46];
+  v50 = [MEMORY[0x1E69977A0] constraintWithItem:v46 attribute:9 relatedBy:0 toItem:viewCopy attribute:9 multiplier:v25 constant:0.0];
+  [array addObject:v50];
 
   v51 = [MEMORY[0x1E69977A0] constraintWithItem:v46 attribute:4 relatedBy:0 toItem:v43 attribute:3 multiplier:1.0 constant:6.0];
-  [v9 addObject:v51];
+  [array addObject:v51];
 
   v52 = [MEMORY[0x1E69977A0] constraintWithItem:v46 attribute:7 relatedBy:0 toItem:v31 attribute:7 multiplier:1.0 constant:0.0];
-  [v9 addObject:v52];
+  [array addObject:v52];
 
-  v53 = [v78 snapshotViewAfterScreenUpdates:1];
+  v53 = [keyViewCopy snapshotViewAfterScreenUpdates:1];
 
   [v53 setUserInteractionEnabled:0];
   v54 = [[UIKBEmojiAndStickerSnapshotSizingView alloc] initWithSnapshotView:v53];
@@ -2684,36 +2684,36 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
     v55 = 0.0;
   }
 
-  [v8 addSubview:{v54, v68}];
+  [viewCopy addSubview:{v54, v68}];
   LODWORD(v56) = 1148829696;
   [(UIView *)v54 setContentHuggingPriority:1 forAxis:v56];
-  v57 = [MEMORY[0x1E69977A0] constraintWithItem:v54 attribute:9 relatedBy:0 toItem:v8 attribute:9 multiplier:v25 constant:0.0];
-  [v9 addObject:v57];
+  v57 = [MEMORY[0x1E69977A0] constraintWithItem:v54 attribute:9 relatedBy:0 toItem:viewCopy attribute:9 multiplier:v25 constant:0.0];
+  [array addObject:v57];
 
   v58 = [MEMORY[0x1E69977A0] constraintWithItem:v54 attribute:3 relatedBy:0 toItem:v31 attribute:4 multiplier:1.0 constant:v55];
-  [v9 addObject:v58];
+  [array addObject:v58];
 
   v59 = objc_alloc_init(UILayoutGuide);
-  [v8 addLayoutGuide:v59];
+  [viewCopy addLayoutGuide:v59];
 
-  v60 = [(UILayoutGuide *)v59 topAnchor];
-  v61 = [(UIView *)v54 bottomAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
-  [v9 addObject:v62];
+  topAnchor = [(UILayoutGuide *)v59 topAnchor];
+  bottomAnchor = [(UIView *)v54 bottomAnchor];
+  v62 = [topAnchor constraintEqualToAnchor:bottomAnchor];
+  [array addObject:v62];
 
-  v63 = [(UILayoutGuide *)v59 bottomAnchor];
-  v64 = [v46 topAnchor];
-  v65 = [v63 constraintEqualToAnchor:v64];
-  [v9 addObject:v65];
+  bottomAnchor2 = [(UILayoutGuide *)v59 bottomAnchor];
+  topAnchor2 = [v46 topAnchor];
+  v65 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2];
+  [array addObject:v65];
 
-  v66 = [(UILayoutGuide *)v59 heightAnchor];
-  v67 = [v66 constraintGreaterThanOrEqualToConstant:6.0];
-  [v9 addObject:v67];
+  heightAnchor = [(UILayoutGuide *)v59 heightAnchor];
+  v67 = [heightAnchor constraintGreaterThanOrEqualToConstant:6.0];
+  [array addObject:v67];
 
-  [MEMORY[0x1E69977A0] activateConstraints:v9];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
 }
 
-- (void)didTearDownRecentsViewForKeyboardMediaController:(id)a3
+- (void)didTearDownRecentsViewForKeyboardMediaController:(id)controller
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2723,28 +2723,28 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)didInsertMediaForKeyboardMediaController:(id)a3
+- (void)didInsertMediaForKeyboardMediaController:(id)controller
 {
   v3 = +[UIKeyboardImpl activeInstance];
   [v3 dismissEmojiPopoverIfNecessaryWithCompletion:0];
 }
 
-- (void)didPresentCardForKeyboardMediaController:(id)a3
+- (void)didPresentCardForKeyboardMediaController:(id)controller
 {
-  v4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
-  v5 = [v4 isActive];
+  emojiSearchField = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
+  isActive = [emojiSearchField isActive];
 
-  if (v5)
+  if (isActive)
   {
-    v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
-    [v6 resignFirstResponder];
+    emojiSearchField2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
+    [emojiSearchField2 resignFirstResponder];
   }
 
   v7 = +[UIKeyboardImpl activeInstance];
   [v7 didPresentMemojiCard];
 }
 
-- (void)didDismissCardForKeyboardMediaController:(id)a3
+- (void)didDismissCardForKeyboardMediaController:(id)controller
 {
   v3 = +[UIKeyboardImpl activeInstance];
   [v3 didDismissMemojiCard];
@@ -2776,31 +2776,31 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
 
 - (BOOL)doesShowMemoji
 {
-  v3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph];
-  if (v3)
+  doesSupportImageGlyph = [(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph];
+  if (doesSupportImageGlyph)
   {
     imageGlyphDataSource = self->_imageGlyphDataSource;
 
-    LOBYTE(v3) = [(STKImageGlyphDataSource *)imageGlyphDataSource canShowMemoji];
+    LOBYTE(doesSupportImageGlyph) = [(STKImageGlyphDataSource *)imageGlyphDataSource canShowMemoji];
   }
 
-  return v3;
+  return doesSupportImageGlyph;
 }
 
 - (BOOL)doesShowStickers
 {
-  v3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph];
-  if (v3)
+  doesSupportImageGlyph = [(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph];
+  if (doesSupportImageGlyph)
   {
     imageGlyphDataSource = self->_imageGlyphDataSource;
 
-    LOBYTE(v3) = [(STKImageGlyphDataSource *)imageGlyphDataSource canShowStickers];
+    LOBYTE(doesSupportImageGlyph) = [(STKImageGlyphDataSource *)imageGlyphDataSource canShowStickers];
   }
 
-  return v3;
+  return doesSupportImageGlyph;
 }
 
-- (BOOL)isMemojiCategory:(int64_t)a3
+- (BOOL)isMemojiCategory:(int64_t)category
 {
   if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph]|| [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching])
   {
@@ -2809,34 +2809,34 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
 
   imageGlyphDataSource = self->_imageGlyphDataSource;
 
-  return [(STKImageGlyphDataSource *)imageGlyphDataSource isMemojiSection:a3];
+  return [(STKImageGlyphDataSource *)imageGlyphDataSource isMemojiSection:category];
 }
 
-- (BOOL)isStickersCategory:(int64_t)a3
+- (BOOL)isStickersCategory:(int64_t)category
 {
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph];
-  if (v5)
+  doesSupportImageGlyph = [(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph];
+  if (doesSupportImageGlyph)
   {
     imageGlyphDataSource = self->_imageGlyphDataSource;
 
-    LOBYTE(v5) = [(STKImageGlyphDataSource *)imageGlyphDataSource isStickerSection:a3];
+    LOBYTE(doesSupportImageGlyph) = [(STKImageGlyphDataSource *)imageGlyphDataSource isStickerSection:category];
   }
 
-  return v5;
+  return doesSupportImageGlyph;
 }
 
-- (BOOL)isSearchCategory:(int64_t)a3
+- (BOOL)isSearchCategory:(int64_t)category
 {
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching];
-  if (v5)
+  isSearching = [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching];
+  if (isSearching)
   {
-    LOBYTE(v5) = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections]== a3;
+    LOBYTE(isSearching) = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections]== category;
   }
 
-  return v5;
+  return isSearching;
 }
 
-- (BOOL)isRecentCategory:(int64_t)a3
+- (BOOL)isRecentCategory:(int64_t)category
 {
   if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph]|| (objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -2845,14 +2845,14 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
 
   imageGlyphDataSource = self->_imageGlyphDataSource;
 
-  return [(STKImageGlyphDataSource *)imageGlyphDataSource isRecentSection:a3];
+  return [(STKImageGlyphDataSource *)imageGlyphDataSource isRecentSection:category];
 }
 
-- (BOOL)isEmojiCategory:(int64_t)a3
+- (BOOL)isEmojiCategory:(int64_t)category
 {
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph];
-  v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:a3];
-  if (!v5)
+  doesSupportImageGlyph = [(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph];
+  v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:category];
+  if (!doesSupportImageGlyph)
   {
     return !v6;
   }
@@ -2864,7 +2864,7 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
 
   imageGlyphDataSource = self->_imageGlyphDataSource;
 
-  return [(STKImageGlyphDataSource *)imageGlyphDataSource isEmojiSection:a3];
+  return [(STKImageGlyphDataSource *)imageGlyphDataSource isEmojiSection:category];
 }
 
 - (int64_t)memojiSectionIndex
@@ -2873,15 +2873,15 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 section];
+    section = [v2 section];
   }
 
   else
   {
-    v4 = 0;
+    section = 0;
   }
 
-  return v4;
+  return section;
 }
 
 - (int64_t)stickersSectionIndex
@@ -2890,22 +2890,22 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 section];
+    section = [v3 section];
   }
 
   else
   {
-    v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections];
+    numberOfPrefixSections = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections];
     v7 = 2;
-    if (v6 > 2)
+    if (numberOfPrefixSections > 2)
     {
-      v7 = v6;
+      v7 = numberOfPrefixSections;
     }
 
-    v5 = v7 - 2;
+    section = v7 - 2;
   }
 
-  return v5;
+  return section;
 }
 
 - (int64_t)recentSectionIndex
@@ -2914,26 +2914,26 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 section];
+    section = [v3 section];
   }
 
   else
   {
-    v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections];
-    if (v6 <= 1)
+    numberOfPrefixSections = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections];
+    if (numberOfPrefixSections <= 1)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = v6;
+      v7 = numberOfPrefixSections;
     }
 
-    v5 = v7 - 1;
+    section = v7 - 1;
   }
 
-  return v5;
+  return section;
 }
 
 - (int64_t)emojiSectionIndex
@@ -2942,15 +2942,15 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 section];
+    section = [v3 section];
   }
 
   else
   {
-    v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections];
+    section = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections];
   }
 
-  v6 = v5;
+  v6 = section;
 
   return v6;
 }
@@ -2958,9 +2958,9 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
 - (id)recentsIndexPath
 {
   v2 = MEMORY[0x1E696AC88];
-  v3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentSectionIndex];
+  recentSectionIndex = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentSectionIndex];
 
-  return [v2 indexPathForItem:0 inSection:v3];
+  return [v2 indexPathForItem:0 inSection:recentSectionIndex];
 }
 
 - (double)emojiKeyWidth
@@ -2976,7 +2976,7 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   return v4 * v5;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph])
   {
@@ -2999,22 +2999,22 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   }
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (!-[UIKeyboardEmojiAndStickerCollectionInputView isStickersCategory:](self, "isStickersCategory:", [v11 section]))
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  proposedIndexPathCopy = proposedIndexPath;
+  v12 = proposedIndexPathCopy;
+  if (!-[UIKeyboardEmojiAndStickerCollectionInputView isStickersCategory:](self, "isStickersCategory:", [proposedIndexPathCopy section]))
   {
-    if (-[UIKeyboardEmojiAndStickerCollectionInputView isStickersCategory:](self, "isStickersCategory:", [v10 section]))
+    if (-[UIKeyboardEmojiAndStickerCollectionInputView isStickersCategory:](self, "isStickersCategory:", [indexPathCopy section]))
     {
-      v12 = v10;
+      v12 = indexPathCopy;
     }
 
     else
     {
-      v12 = v9;
+      v12 = pathCopy;
     }
   }
 
@@ -3023,70 +3023,70 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
   return v12;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:a4]&& [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching])
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:section]&& [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching])
   {
-    v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-    v7 = [v6 count];
+    searchResults = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+    v7 = [searchResults count];
 
     if (!v7)
     {
       return 1;
     }
 
-    v8 = [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits prepolulatedRecentCount];
-    v9 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-    v10 = [v9 count];
+    prepolulatedRecentCount = [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits prepolulatedRecentCount];
+    searchResults2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+    v10 = [searchResults2 count];
 
-    if (v10 > v8)
+    if (v10 > prepolulatedRecentCount)
     {
-      v11 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-      v8 = [v11 count];
+      searchResults3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+      prepolulatedRecentCount = [searchResults3 count];
     }
 
-    return v8;
+    return prepolulatedRecentCount;
   }
 
   else if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph])
   {
     imageGlyphDataSource = self->_imageGlyphDataSource;
 
-    return [(STKImageGlyphDataSource *)imageGlyphDataSource numberOfItemsInSection:a4];
+    return [(STKImageGlyphDataSource *)imageGlyphDataSource numberOfItemsInSection:section];
   }
 
   else
   {
-    v14 = [UIKeyboardEmojiCategory categoryForType:[(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiCategoryTypeForSection:a4]];
-    v15 = [v14 emoji];
-    v16 = [v15 count];
+    v14 = [UIKeyboardEmojiCategory categoryForType:[(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiCategoryTypeForSection:section]];
+    emoji = [v14 emoji];
+    v16 = [emoji count];
 
     return v16;
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 section];
-  v7 = [v5 item];
-  if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:v6]&& ![(UIKeyboardEmojiAndStickerCollectionInputView *)self isEmojiCategory:v6])
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
+  if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:section]&& ![(UIKeyboardEmojiAndStickerCollectionInputView *)self isEmojiCategory:section])
   {
-    v32 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self stickerCellForIndexPath:v5];
+    v32 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self stickerCellForIndexPath:pathCopy];
     goto LABEL_31;
   }
 
-  v8 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"kEmojiCellIdentifier" forIndexPath:v5];
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:v6])
+  v8 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"kEmojiCellIdentifier" forIndexPath:pathCopy];
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:section])
   {
-    v9 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+    searchResults = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
 
-    if (v9)
+    if (searchResults)
     {
-      v10 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"kEmojiCellIdentifier" forIndexPath:v5];
+      v10 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"kEmojiCellIdentifier" forIndexPath:pathCopy];
 
-      v11 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-      v12 = [v11 count];
+      searchResults2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+      v12 = [searchResults2 count];
 
       if (!v12)
       {
@@ -3095,35 +3095,35 @@ void __73__UIKeyboardEmojiAndStickerCollectionInputView_insertImageGlyph_dismiss
         goto LABEL_25;
       }
 
-      v13 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-      v14 = [v13 count];
+      searchResults3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+      v14 = [searchResults3 count];
 
-      if (v7 >= v14)
+      if (item >= v14)
       {
         [v10 setEmoji:0];
         goto LABEL_25;
       }
 
-      v15 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-      v16 = [v15 objectAtIndex:v7];
+      searchResults4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+      emoji = [searchResults4 objectAtIndex:item];
 
       if (objc_opt_respondsToSelector())
       {
-        v17 = [v16 type];
-        if (v17 == 1)
+        type = [emoji type];
+        if (type == 1)
         {
-          v32 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"kStickerCellIdentifier" forIndexPath:v5];
-          [v32 setImageGlyph:v16];
+          v32 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"kStickerCellIdentifier" forIndexPath:pathCopy];
+          [v32 setImageGlyph:emoji];
           goto LABEL_30;
         }
 
-        if (v17 == 3)
+        if (type == 3)
         {
-          v18 = [v16 toString];
-          if (v18)
+          toString = [emoji toString];
+          if (toString)
           {
-            v19 = v18;
-            v20 = [UIKeyboardEmoji emojiWithString:v18 withVariantMask:[UIKeyboardEmojiCategory hasVariantsForEmoji:v18]];
+            toString2 = toString;
+            v20 = [UIKeyboardEmoji emojiWithString:toString withVariantMask:[UIKeyboardEmojiCategory hasVariantsForEmoji:toString]];
             goto LABEL_15;
           }
 
@@ -3145,18 +3145,18 @@ LABEL_28:
 
   if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph])
   {
-    v24 = [UIKeyboardEmojiCategory categoryForType:[(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiCategoryTypeForSection:v6]];
-    v16 = [v24 emoji];
+    v24 = [UIKeyboardEmojiCategory categoryForType:[(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiCategoryTypeForSection:section]];
+    emoji = [v24 emoji];
 
-    if (v16)
+    if (emoji)
     {
-      v25 = [v16 objectAtIndex:v7];
+      v25 = [emoji objectAtIndex:item];
       if (v25)
       {
         v20 = v25;
-        v26 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-        v27 = [v20 emojiString];
-        v28 = [v26 lastUsedVariantEmojiForEmojiString:v27];
+        emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+        emojiString = [v20 emojiString];
+        v28 = [emojiKeyManager lastUsedVariantEmojiForEmojiString:emojiString];
         [v20 setEmojiString:v28];
 
 LABEL_20:
@@ -3166,8 +3166,8 @@ LABEL_20:
         if (os_variant_has_internal_diagnostics())
         {
           v30 = objc_opt_class();
-          v31 = [v20 emojiString];
-          [v8 setUnreleasedHighlight:{objc_msgSend(v30, "shouldHighlightEmoji:", v31)}];
+          emojiString2 = [v20 emojiString];
+          [v8 setUnreleasedHighlight:{objc_msgSend(v30, "shouldHighlightEmoji:", emojiString2)}];
         }
 
         goto LABEL_28;
@@ -3177,17 +3177,17 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  v21 = [(STKImageGlyphDataSource *)self->_imageGlyphDataSource itemAtIndexPath:v5];
-  v16 = v21;
+  v21 = [(STKImageGlyphDataSource *)self->_imageGlyphDataSource itemAtIndexPath:pathCopy];
+  emoji = v21;
   if (!v21)
   {
     goto LABEL_27;
   }
 
-  v19 = [v21 toString];
-  v22 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-  v23 = [v22 lastUsedVariantEmojiForEmojiString:v19];
-  v20 = [UIKeyboardEmoji emojiWithString:v19 withVariantMask:v23];
+  toString2 = [v21 toString];
+  emojiKeyManager2 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+  v23 = [emojiKeyManager2 lastUsedVariantEmojiForEmojiString:toString2];
+  v20 = [UIKeyboardEmoji emojiWithString:toString2 withVariantMask:v23];
 
   v10 = v8;
 LABEL_15:
@@ -3200,7 +3200,7 @@ LABEL_15:
 
 LABEL_29:
   v10 = v10;
-  v16 = v20;
+  emoji = v20;
   v32 = v10;
 LABEL_30:
 
@@ -3209,34 +3209,34 @@ LABEL_31:
   return v32;
 }
 
-- (id)stickerCellForIndexPath:(id)a3
+- (id)stickerCellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"kStickerCellIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  v5 = [(UICollectionView *)self->_collectionView dequeueReusableCellWithReuseIdentifier:@"kStickerCellIdentifier" forIndexPath:pathCopy];
   if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph])
   {
-    v6 = [(STKImageGlyphDataSource *)self->_imageGlyphDataSource itemAtIndexPath:v4];
+    v6 = [(STKImageGlyphDataSource *)self->_imageGlyphDataSource itemAtIndexPath:pathCopy];
     [v5 setImageGlyph:v6];
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)self _updateRearrangeModeForCell:v5 atIndexPath:v4];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)self _updateRearrangeModeForCell:v5 atIndexPath:pathCopy];
   }
 
   return v5;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  v11 = pathCopy;
   emojiGraphicsTraits = self->_emojiGraphicsTraits;
-  if (emojiGraphicsTraits && emojiGraphicsTraits->_isFirstPartyStickers && ![v10 section])
+  if (emojiGraphicsTraits && emojiGraphicsTraits->_isFirstPartyStickers && ![pathCopy section])
   {
     v13 = 0;
     goto LABEL_23;
   }
 
-  v13 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:@"kEmojiCategoryTitleIdentifier" forIndexPath:v11];
+  v13 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"kEmojiCategoryTitleIdentifier" forIndexPath:v11];
   if ([(UICollectionViewFlowLayout *)self->_flowLayout scrollDirection]== UICollectionViewScrollDirectionVertical)
   {
     [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits inputViewLeftMostPadding];
@@ -3245,9 +3245,9 @@ LABEL_31:
     [v13 setInsets:{0.0, v15, 0.0, v16}];
   }
 
-  v17 = [v11 section];
-  v18 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiCategoryTypeForSection:v17];
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isMemojiCategory:v17])
+  section = [v11 section];
+  v18 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiCategoryTypeForSection:section];
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isMemojiCategory:section])
   {
     v19 = @"Memoji";
 LABEL_12:
@@ -3255,13 +3255,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isStickersCategory:v17])
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isStickersCategory:section])
   {
     v19 = @"Stickers";
     goto LABEL_12;
   }
 
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:v17])
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearchCategory:section])
   {
     v19 = @"Results";
     goto LABEL_12;
@@ -3274,13 +3274,13 @@ LABEL_13:
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self categoryHeaderFontSize];
   [v13 setHeaderFontSize:?];
   v22 = +[UIDevice currentDevice];
-  v23 = [v22 _keyboardGraphicsQuality];
+  _keyboardGraphicsQuality = [v22 _keyboardGraphicsQuality];
 
-  v24 = [(UIKBKeyView *)self renderConfig];
-  v25 = [v24 whiteText];
-  if (v23 == 10)
+  renderConfig = [(UIKBKeyView *)self renderConfig];
+  whiteText = [renderConfig whiteText];
+  if (_keyboardGraphicsQuality == 10)
   {
-    if ((v25 & 1) == 0)
+    if ((whiteText & 1) == 0)
     {
       v26 = 0.51372549;
       v27 = 0.517647059;
@@ -3291,7 +3291,7 @@ LABEL_19:
     }
   }
 
-  else if ((v25 & 1) == 0)
+  else if ((whiteText & 1) == 0)
   {
     v26 = 0.647;
     v27 = 0.651;
@@ -3304,37 +3304,37 @@ LABEL_20:
   v30 = v29;
   [v13 setHeaderTextColor:v29];
 
-  v31 = [(UIKBKeyView *)self renderConfig];
-  v32 = [v31 whiteText];
+  renderConfig2 = [(UIKBKeyView *)self renderConfig];
+  whiteText2 = [renderConfig2 whiteText];
   v33 = 0.4;
-  if (!v32)
+  if (!whiteText2)
   {
     v33 = 1.0;
   }
 
   [v13 setHeaderOpacity:v33];
 
-  v34 = [(UIKBKeyView *)self renderConfig];
-  [v13 setUseVibrantBlend:{objc_msgSend(v34, "whiteText")}];
+  renderConfig3 = [(UIKBKeyView *)self renderConfig];
+  [v13 setUseVibrantBlend:{objc_msgSend(renderConfig3, "whiteText")}];
 
 LABEL_23:
 
   return v13;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  layoutCopy = layout;
   objc_opt_class();
   v10 = 0.0;
   if (objc_opt_isKindOfClass())
   {
     v11 = 0.0;
-    if (![v9 scrollDirection])
+    if (![layoutCopy scrollDirection])
     {
       emojiGraphicsTraits = self->_emojiGraphicsTraits;
-      if (emojiGraphicsTraits && !a5 && emojiGraphicsTraits->_isFirstPartyStickers)
+      if (emojiGraphicsTraits && !section && emojiGraphicsTraits->_isFirstPartyStickers)
       {
         v10 = *MEMORY[0x1E695F060];
         v11 = *(MEMORY[0x1E695F060] + 8);
@@ -3342,7 +3342,7 @@ LABEL_23:
 
       else
       {
-        [v8 bounds];
+        [viewCopy bounds];
         v10 = v15;
         [(UIKeyboardEmojiAndStickerCollectionInputView *)self categoryHeaderHeight];
         v11 = v16;
@@ -3362,12 +3362,12 @@ LABEL_23:
   return result;
 }
 
-- (void)deleteImageGlyph:(id)a3 atPath:(id)a4
+- (void)deleteImageGlyph:(id)glyph atPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  glyphCopy = glyph;
+  pathCopy = path;
   objc_initWeak(&location, self);
-  v8 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v7];
+  v8 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:pathCopy];
   if (v8)
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -3375,7 +3375,7 @@ LABEL_23:
     v9[2] = __72__UIKeyboardEmojiAndStickerCollectionInputView_deleteImageGlyph_atPath___block_invoke;
     v9[3] = &unk_1E70F2F80;
     objc_copyWeak(&v11, &location);
-    v10 = v6;
+    v10 = glyphCopy;
     [v8 performDeleteWithCompletionHandler:v9];
 
     objc_destroyWeak(&v11);
@@ -3390,45 +3390,45 @@ void __72__UIKeyboardEmojiAndStickerCollectionInputView_deleteImageGlyph_atPath_
   [WeakRetained[110] deleteItem:*(a1 + 32) completionHandler:&__block_literal_global_255_0];
 }
 
-- (int64_t)emojiCategoryTypeForSection:(int64_t)a3
+- (int64_t)emojiCategoryTypeForSection:(int64_t)section
 {
   if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isMemojiCategory:?])
   {
     return 13;
   }
 
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isStickersCategory:a3])
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isStickersCategory:section])
   {
     return 14;
   }
 
-  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isRecentCategory:a3])
+  if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isRecentCategory:section])
   {
     return 0;
   }
 
-  return [(UIKeyboardEmojiAndStickerCollectionInputView *)self translatedEmojiCategoryForSection:a3];
+  return [(UIKeyboardEmojiAndStickerCollectionInputView *)self translatedEmojiCategoryForSection:section];
 }
 
-- (int64_t)translatedEmojiCategoryForSection:(int64_t)a3
+- (int64_t)translatedEmojiCategoryForSection:(int64_t)section
 {
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections];
-  v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixCategories];
+  numberOfPrefixSections = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixSections];
+  numberOfPrefixCategories = [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixCategories];
 
-  return [UIKeyboardEmojiCategory categoryTypeForCategoryIndex:(a3 - v5 + v6) & ~((a3 - v5 + v6) >> 63)];
+  return [UIKeyboardEmojiCategory categoryTypeForCategoryIndex:(section - numberOfPrefixSections + numberOfPrefixCategories) & ~((section - numberOfPrefixSections + numberOfPrefixCategories) >> 63)];
 }
 
-- (int64_t)sectionForCategoryType:(int64_t)a3
+- (int64_t)sectionForCategoryType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 14)
+    if (type == 14)
     {
 
       return [(UIKeyboardEmojiAndStickerCollectionInputView *)self stickersSectionIndex];
     }
 
-    else if (a3 == 13)
+    else if (type == 13)
     {
 
       return [(UIKeyboardEmojiAndStickerCollectionInputView *)self memojiSectionIndex];
@@ -3437,8 +3437,8 @@ void __72__UIKeyboardEmojiAndStickerCollectionInputView_deleteImageGlyph_atPath_
     else
     {
       v5 = [UIKeyboardEmojiCategory categoryIndexForCategoryType:?];
-      v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSectionIndex];
-      return v6 + v5 - [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixCategories];
+      emojiSectionIndex = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSectionIndex];
+      return emojiSectionIndex + v5 - [(UIKeyboardEmojiAndStickerCollectionInputView *)self numberOfPrefixCategories];
     }
   }
 
@@ -3449,17 +3449,17 @@ void __72__UIKeyboardEmojiAndStickerCollectionInputView_deleteImageGlyph_atPath_
   }
 }
 
-- (BOOL)handleKeyEvent:(id)a3
+- (BOOL)handleKeyEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 keyCode])
+  eventCopy = event;
+  if ([eventCopy keyCode])
   {
-    v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
-    v6 = [v5 markedTextRange];
+    emojiSearchField = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
+    markedTextRange = [emojiSearchField markedTextRange];
 
-    if (!v6)
+    if (!markedTextRange)
     {
-      if (([v4 keyCode] == 44 || objc_msgSend(v4, "keyCode") == 40) && -[UIKeyboardEmojiAndStickerCollectionInputView handleSelectionEvent:](self, "handleSelectionEvent:", v4))
+      if (([eventCopy keyCode] == 44 || objc_msgSend(eventCopy, "keyCode") == 40) && -[UIKeyboardEmojiAndStickerCollectionInputView handleSelectionEvent:](self, "handleSelectionEvent:", eventCopy))
       {
         goto LABEL_8;
       }
@@ -3471,7 +3471,7 @@ void __72__UIKeyboardEmojiAndStickerCollectionInputView_deleteImageGlyph_atPath_
         {
           if ([(UIKBTree *)selectedPopupKey variantType]== 12 || [(UIKBTree *)self->_selectedPopupKey variantType]== 13)
           {
-            if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self handleKeyInputForFamilySelector:v4])
+            if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self handleKeyInputForFamilySelector:eventCopy])
             {
               goto LABEL_16;
             }
@@ -3481,7 +3481,7 @@ LABEL_8:
             goto LABEL_4;
           }
 
-          if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self handleKeyInputForVariantSelector:v4])
+          if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self handleKeyInputForVariantSelector:eventCopy])
           {
             goto LABEL_8;
           }
@@ -3489,7 +3489,7 @@ LABEL_8:
       }
 
 LABEL_16:
-      v7 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self handleKeyInputForCollectionViewNavigation:v4];
+      v7 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self handleKeyInputForCollectionViewNavigation:eventCopy];
       goto LABEL_4;
     }
   }
@@ -3500,45 +3500,45 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)handleKeyInputForVariantSelector:(id)a3
+- (BOOL)handleKeyInputForVariantSelector:(id)selector
 {
-  v4 = a3;
-  if ([v4 modifiersEqual:0])
+  selectorCopy = selector;
+  if ([selectorCopy modifiersEqual:0])
   {
-    v5 = -[UIKeyboardEmojiAndStickerCollectionInputView keyCodeForCurrentEnvironmentFromKeyCode:](self, "keyCodeForCurrentEnvironmentFromKeyCode:", [v4 keyCode]);
+    v5 = -[UIKeyboardEmojiAndStickerCollectionInputView keyCodeForCurrentEnvironmentFromKeyCode:](self, "keyCodeForCurrentEnvironmentFromKeyCode:", [selectorCopy keyCode]);
     if (v5 > 80)
     {
       if (v5 == 82)
       {
         if ([(UIKBTree *)self->_selectedPopupKey selectedVariantIndex]== 0x7FFFFFFFFFFFFFFFLL)
         {
-          v14 = 0;
+          selectedVariantIndex = 0;
         }
 
         else
         {
-          v14 = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndex];
+          selectedVariantIndex = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndex];
         }
 
-        self->_selectedVariant = v14;
+        self->_selectedVariant = selectedVariantIndex;
         [(UIKBTree *)self->_selectedPopupKey setSelectedVariantIndex:?];
-        v22 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-        v8 = v22;
+        hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+        selectedIndexPath = hitTestResponder;
         selectedPopupKey = self->_selectedPopupKey;
         goto LABEL_30;
       }
 
       if (v5 == 81)
       {
-        v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-        [v6 updateState:2 forKey:self->_selectedPopupKey];
+        hitTestResponder2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+        [hitTestResponder2 updateState:2 forKey:self->_selectedPopupKey];
 
         self->_showingVariants = 0;
         v7 = self->_selectedPopupKey;
         self->_selectedPopupKey = 0;
 
-        v8 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-        [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:v8 scrollIfNeeded:0 animateScroll:0];
+        selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+        [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:selectedIndexPath scrollIfNeeded:0 animateScroll:0];
 LABEL_31:
         v9 = 1;
         goto LABEL_32;
@@ -3560,12 +3560,12 @@ LABEL_31:
         }
 
         self->_selectedVariant = v13;
-        v15 = [(UIKBTree *)self->_selectedPopupKey subtrees];
-        v16 = [v15 objectAtIndex:self->_selectedVariant];
-        v17 = [v16 interactionType];
+        subtrees = [(UIKBTree *)self->_selectedPopupKey subtrees];
+        v16 = [subtrees objectAtIndex:self->_selectedVariant];
+        interactionType = [v16 interactionType];
 
         v18 = self->_selectedVariant;
-        if (v17)
+        if (interactionType)
         {
           goto LABEL_29;
         }
@@ -3588,8 +3588,8 @@ LABEL_31:
           v21 = v19 - 1;
           if (v20)
           {
-            v24 = [(UIKBTree *)self->_selectedPopupKey subtrees];
-            self->_selectedVariant = [v24 count] - 1;
+            subtrees2 = [(UIKBTree *)self->_selectedPopupKey subtrees];
+            self->_selectedVariant = [subtrees2 count] - 1;
           }
 
           else
@@ -3598,12 +3598,12 @@ LABEL_31:
           }
         }
 
-        v25 = [(UIKBTree *)self->_selectedPopupKey subtrees];
-        v26 = [v25 objectAtIndex:self->_selectedVariant];
-        v27 = [v26 interactionType];
+        subtrees3 = [(UIKBTree *)self->_selectedPopupKey subtrees];
+        v26 = [subtrees3 objectAtIndex:self->_selectedVariant];
+        interactionType2 = [v26 interactionType];
 
         v18 = self->_selectedVariant;
-        if (v27)
+        if (interactionType2)
         {
           goto LABEL_29;
         }
@@ -3613,19 +3613,19 @@ LABEL_28:
         self->_selectedVariant = v18;
 LABEL_29:
         [(UIKBTree *)self->_selectedPopupKey setSelectedVariantIndex:v18];
-        v22 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-        v8 = v22;
+        hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+        selectedIndexPath = hitTestResponder;
         selectedPopupKey = self->_selectedPopupKey;
 LABEL_30:
-        [v22 updateState:16 forKey:selectedPopupKey];
+        [hitTestResponder updateState:16 forKey:selectedPopupKey];
         goto LABEL_31;
       }
     }
 
     if (self->_selectedPopupKey)
     {
-      v8 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-      [v8 updateState:2 forKey:self->_selectedPopupKey];
+      selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+      [selectedIndexPath updateState:2 forKey:self->_selectedPopupKey];
       v9 = 0;
 LABEL_32:
 
@@ -3639,13 +3639,13 @@ LABEL_33:
   return v9;
 }
 
-- (id)verticalNeighborForIndexPath:(id)a3 up:(BOOL)a4 byPage:(BOOL)a5
+- (id)verticalNeighborForIndexPath:(id)path up:(BOOL)up byPage:(BOOL)page
 {
-  v5 = a5;
-  v6 = a4;
+  pageCopy = page;
+  upCopy = up;
   v72 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(UICollectionView *)self->_collectionView layoutAttributesForItemAtIndexPath:v8];
+  pathCopy = path;
+  v9 = [(UICollectionView *)self->_collectionView layoutAttributesForItemAtIndexPath:pathCopy];
   [v9 frame];
   v11 = v10;
   v13 = v12;
@@ -3655,7 +3655,7 @@ LABEL_33:
   v18 = v13 + v17 * 0.5;
   [(UIView *)self->_collectionView frame];
   v21 = v20;
-  if (v6)
+  if (upCopy)
   {
     v22 = -1.0;
   }
@@ -3665,7 +3665,7 @@ LABEL_33:
     v22 = 1.0;
   }
 
-  if (v5)
+  if (pageCopy)
   {
     v23 = v19;
   }
@@ -3694,8 +3694,8 @@ LABEL_33:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v31 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  v32 = [v31 layoutAttributesForElementsInRect:{x, y, width, height}];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  v32 = [collectionViewLayout layoutAttributesForElementsInRect:{x, y, width, height}];
 
   v33 = [v32 countByEnumeratingWithState:&v67 objects:v71 count:16];
   if (v33)
@@ -3784,64 +3784,64 @@ LABEL_28:
     v35 = 0;
   }
 
-  v62 = [v35 indexPath];
+  indexPath = [v35 indexPath];
 
-  return v62;
+  return indexPath;
 }
 
-- (BOOL)handleKeyInputForCollectionViewNavigation:(id)a3
+- (BOOL)handleKeyInputForCollectionViewNavigation:(id)navigation
 {
-  v4 = a3;
-  if ([v4 unmodifiedKeyCodeEquals:44] & 1) != 0 || (objc_msgSend(v4, "unmodifiedKeyCodeEquals:", 158))
+  navigationCopy = navigation;
+  if ([navigationCopy unmodifiedKeyCodeEquals:44] & 1) != 0 || (objc_msgSend(navigationCopy, "unmodifiedKeyCodeEquals:", 158))
   {
     goto LABEL_3;
   }
 
-  if ([v4 unmodifiedKeyCodeEquals:79])
+  if ([navigationCopy unmodifiedKeyCodeEquals:79])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v4 equalsKeyCode:79 modifiers:0x100000];
+    v6 = [navigationCopy equalsKeyCode:79 modifiers:0x100000];
   }
 
-  if ([v4 unmodifiedKeyCodeEquals:80])
+  if ([navigationCopy unmodifiedKeyCodeEquals:80])
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [v4 equalsKeyCode:80 modifiers:0x100000];
+    v7 = [navigationCopy equalsKeyCode:80 modifiers:0x100000];
   }
 
-  if ([v4 unmodifiedKeyCodeEquals:82])
+  if ([navigationCopy unmodifiedKeyCodeEquals:82])
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [v4 equalsKeyCode:82 modifiers:0x100000];
+    v8 = [navigationCopy equalsKeyCode:82 modifiers:0x100000];
   }
 
-  if ([v4 unmodifiedKeyCodeEquals:81])
+  if ([navigationCopy unmodifiedKeyCodeEquals:81])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [v4 equalsKeyCode:81 modifiers:0x100000];
+    v9 = [navigationCopy equalsKeyCode:81 modifiers:0x100000];
   }
 
-  v10 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
-  v11 = [(UIView *)self effectiveUserInterfaceLayoutDirection];
-  if (v10)
+  hasVerticalScrolling = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
+  effectiveUserInterfaceLayoutDirection = [(UIView *)self effectiveUserInterfaceLayoutDirection];
+  if (hasVerticalScrolling)
   {
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       v12 = v6;
     }
@@ -3852,7 +3852,7 @@ LABEL_28:
     }
 
     v57 = v9;
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       v9 = v7;
     }
@@ -3865,7 +3865,7 @@ LABEL_28:
 
   else
   {
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       v13 = v7;
     }
@@ -3877,7 +3877,7 @@ LABEL_28:
 
     v57 = v13;
     v12 = v8;
-    if (v11 == UIUserInterfaceLayoutDirectionRightToLeft)
+    if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
     {
       v8 = v6;
     }
@@ -3888,23 +3888,23 @@ LABEL_28:
     }
   }
 
-  v14 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+  selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
 
   v56 = v12;
-  if (v14)
+  if (selectedIndexPath)
   {
-    v15 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-    v16 = [v15 section];
+    selectedIndexPath2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    section = [selectedIndexPath2 section];
 
-    v17 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-    v18 = [v17 item];
+    selectedIndexPath3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    item = [selectedIndexPath3 item];
   }
 
   else
   {
     if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching])
     {
-      if (v10)
+      if (hasVerticalScrolling)
       {
         if ((v9 | v12))
         {
@@ -3919,63 +3919,63 @@ LABEL_28:
     }
 
     v55 = v8;
-    v19 = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
-    v20 = [v19 sortedArrayUsingSelector:sel_compare_];
+    indexPathsForVisibleItems = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
+    v20 = [indexPathsForVisibleItems sortedArrayUsingSelector:sel_compare_];
 
-    v21 = [v20 firstObject];
-    v16 = [v21 section];
-    v18 = [v21 item];
-    if (!(v16 | v18))
+    firstObject = [v20 firstObject];
+    section = [firstObject section];
+    item = [firstObject item];
+    if (!(section | item))
     {
-      v18 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia];
+      item = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia];
     }
 
     if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching])
     {
       [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
       v54 = v20;
-      v23 = v22 = v16;
+      v23 = v22 = section;
       v24 = [v23 count];
 
-      v16 = v22;
+      section = v22;
       v20 = v54;
       if (!v24)
       {
-        v16 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentSectionIndex]+ 1;
+        section = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentSectionIndex]+ 1;
       }
     }
 
-    v25 = [MEMORY[0x1E696AC88] indexPathForItem:v18 inSection:v16];
+    v25 = [MEMORY[0x1E696AC88] indexPathForItem:item inSection:section];
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self setSelectedIndexPath:v25];
 
     v8 = v55;
   }
 
-  v26 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:v16];
+  v26 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:section];
   if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph])
   {
-    v27 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-    -[UIKeyboardEmojiAndStickerCollectionInputView rowsInSection:](self, "rowsInSection:", [v27 section]);
+    selectedIndexPath4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    -[UIKeyboardEmojiAndStickerCollectionInputView rowsInSection:](self, "rowsInSection:", [selectedIndexPath4 section]);
   }
 
   if (v9)
   {
-    if (v14)
+    if (selectedIndexPath)
     {
-      if (v18 >= v26 - 1)
+      if (item >= v26 - 1)
       {
         v28 = 0;
-        if (v16 < [(UICollectionView *)self->_collectionView numberOfSections]- 1)
+        if (section < [(UICollectionView *)self->_collectionView numberOfSections]- 1)
         {
-          v18 = 0;
-          ++v16;
+          item = 0;
+          ++section;
         }
       }
 
       else
       {
         v28 = 0;
-        ++v18;
+        ++item;
       }
     }
 
@@ -3990,14 +3990,14 @@ LABEL_28:
 
   if (v56)
   {
-    v29 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia];
-    if (v14)
+    _shouldShowRecentlyUsedMedia = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia];
+    if (selectedIndexPath)
     {
-      v30 = v16 < 2 && v29;
-      if (v18 > v30)
+      v30 = section < 2 && _shouldShowRecentlyUsedMedia;
+      if (item > v30)
       {
         v28 = 0;
-        --v18;
+        --item;
 LABEL_74:
         LODWORD(v8) = 1;
 LABEL_75:
@@ -4005,13 +4005,13 @@ LABEL_75:
         goto LABEL_76;
       }
 
-      if (v16 >= 1)
+      if (section >= 1)
       {
         v28 = 0;
-        v18 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:v16 - 1]- 1;
+        item = [(UICollectionView *)self->_collectionView numberOfItemsInSection:section - 1]- 1;
         LODWORD(v8) = 1;
         v38 = 1;
-        --v16;
+        --section;
 LABEL_76:
         v35 = v57;
         goto LABEL_77;
@@ -4025,23 +4025,23 @@ LABEL_76:
   if ((v57 | v8))
   {
     v31 = ![(UIScrollView *)self->_collectionView isScrollAnimating];
-    v32 = [v4 modifiersEqual:0x100000];
+    v32 = [navigationCopy modifiersEqual:0x100000];
     v28 = v32 | v31;
-    if (v14)
+    if (selectedIndexPath)
     {
       v33 = v32;
-      v34 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+      selectedIndexPath5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
 
       v35 = v57;
-      if (v34)
+      if (selectedIndexPath5)
       {
-        v36 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-        v37 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self verticalNeighborForIndexPath:v36 up:v8 byPage:v33];
+        selectedIndexPath6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+        v37 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self verticalNeighborForIndexPath:selectedIndexPath6 up:v8 byPage:v33];
 
         if (v37)
         {
-          v16 = [v37 section];
-          v18 = [v37 item];
+          section = [v37 section];
+          item = [v37 item];
         }
       }
 
@@ -4051,66 +4051,66 @@ LABEL_76:
     goto LABEL_75;
   }
 
-  v39 = [v4 unmodifiedKeyCodeEquals:43];
-  v40 = [v4 equalsKeyCode:43 modifiers:0x20000];
+  v39 = [navigationCopy unmodifiedKeyCodeEquals:43];
+  v40 = [navigationCopy equalsKeyCode:43 modifiers:0x20000];
   if ((v39 & 1) != 0 || v40)
   {
     if (v40)
     {
-      if (v16 > 0)
+      if (section > 0)
       {
-        --v16;
+        --section;
         goto LABEL_92;
       }
 
       LODWORD(v8) = 0;
       v35 = 0;
       v28 = 0;
-      v16 = 0;
-      v18 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia];
+      section = 0;
+      item = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia];
     }
 
     else
     {
-      if (v16 < [(UICollectionView *)self->_collectionView numberOfSections]- 1)
+      if (section < [(UICollectionView *)self->_collectionView numberOfSections]- 1)
       {
-        ++v16;
+        ++section;
 LABEL_92:
-        v50 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiCategoryTypeForSection:v16];
-        v51 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-        [v51 reloadForCategory:v50 withSender:self];
+        v50 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiCategoryTypeForSection:section];
+        emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+        [emojiKeyManager reloadForCategory:v50 withSender:self];
 
-        v52 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:v16];
+        v52 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:section];
         [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateToIndexPath:v52];
 
-        v53 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-        v18 = [v53 lastVisibleFirstEmojiIndex];
+        category = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+        item = [category lastVisibleFirstEmojiIndex];
 
         LODWORD(v8) = 0;
         v35 = 0;
         v28 = 0;
         v38 = 0;
-        if (!(v18 | v16))
+        if (!(item | section))
         {
-          v16 = 0;
-          v18 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia];
+          section = 0;
+          item = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia];
         }
 
 LABEL_77:
-        if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching]&& v16 == [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentSectionIndex])
+        if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching]&& section == [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentSectionIndex])
         {
-          v41 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-          v42 = [v41 count];
+          searchResults = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+          v42 = [searchResults count];
 
-          v43 = (v18 < v42) | v35;
-          if (v18 < v42)
+          v43 = (item < v42) | v35;
+          if (item < v42)
           {
-            v44 = v16;
+            v44 = section;
           }
 
           else
           {
-            v18 = 0;
+            item = 0;
             v44 = 1;
           }
 
@@ -4119,34 +4119,34 @@ LABEL_77:
             goto LABEL_87;
           }
 
-          v45 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-          v46 = [v45 count];
+          searchResults2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+          v46 = [searchResults2 count];
 
           if (!v46)
           {
-            v18 = 0;
+            item = 0;
             v44 = 1;
             goto LABEL_87;
           }
 
-          v47 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-          v18 = [v47 count] - 1;
+          searchResults3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+          item = [searchResults3 count] - 1;
         }
 
-        v44 = v16;
+        v44 = section;
 LABEL_87:
-        v48 = [MEMORY[0x1E696AC88] indexPathForItem:v18 inSection:v44];
+        v48 = [MEMORY[0x1E696AC88] indexPathForItem:item inSection:v44];
         [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:v48 scrollIfNeeded:v38 animateScroll:v28 & v38];
 
         v5 = 1;
         goto LABEL_88;
       }
 
-      v16 = [(UICollectionView *)self->_collectionView numberOfSections]- 1;
+      section = [(UICollectionView *)self->_collectionView numberOfSections]- 1;
       LODWORD(v8) = 0;
       v35 = 0;
       v28 = 0;
-      v18 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:v16]- 1;
+      item = [(UICollectionView *)self->_collectionView numberOfItemsInSection:section]- 1;
     }
 
 LABEL_65:
@@ -4161,15 +4161,15 @@ LABEL_88:
   return v5;
 }
 
-- (BOOL)handleKeyInputForFamilySelector:(id)a3
+- (BOOL)handleKeyInputForFamilySelector:(id)selector
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 modifiersEqual:0];
+  selectorCopy = selector;
+  v5 = [selectorCopy modifiersEqual:0];
   if (v5)
   {
-    v6 = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndices];
-    v7 = [v6 mutableCopy];
+    selectedVariantIndices = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndices];
+    v7 = [selectedVariantIndices mutableCopy];
 
     if (!v7)
     {
@@ -4191,7 +4191,7 @@ LABEL_88:
     v10 = [v7 objectAtIndex:v9];
     self->_selectedVariant = [v10 integerValue];
 
-    v11 = -[UIKeyboardEmojiAndStickerCollectionInputView keyCodeForCurrentEnvironmentFromKeyCode:](self, "keyCodeForCurrentEnvironmentFromKeyCode:", [v4 keyCode]);
+    v11 = -[UIKeyboardEmojiAndStickerCollectionInputView keyCodeForCurrentEnvironmentFromKeyCode:](self, "keyCodeForCurrentEnvironmentFromKeyCode:", [selectorCopy keyCode]);
     if (v11 <= 80)
     {
       if (v11 == 79)
@@ -4242,16 +4242,16 @@ LABEL_31:
 
 LABEL_34:
       [(UIKBTree *)self->_selectedPopupKey setSelectedVariantIndices:v7];
-      v23 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-      [v23 updateState:16 forKey:self->_selectedPopupKey];
+      hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+      [hitTestResponder updateState:16 forKey:self->_selectedPopupKey];
       goto LABEL_35;
     }
 
     if (v11 == 82)
     {
-      v19 = [(UIKBTree *)self->_selectedPopupKey popupDirection];
+      popupDirection = [(UIKBTree *)self->_selectedPopupKey popupDirection];
       v20 = self->_currentVariantRow;
-      if (v19 != 2 || v20)
+      if (popupDirection != 2 || v20)
       {
         v24 = v20 < 1;
         v25 = v20 - 1;
@@ -4259,7 +4259,7 @@ LABEL_34:
         {
           if ([(UIKBTree *)self->_selectedPopupKey popupDirection]== 1)
           {
-            v42 = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndex];
+            selectedVariantIndex = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndex];
             v44 = 0u;
             v45 = 0u;
             v46 = 0u;
@@ -4296,7 +4296,7 @@ LABEL_34:
               }
             }
 
-            if (v42)
+            if (selectedVariantIndex)
             {
               self->_currentVariantRow = [v7 count];
               [v7 addObject:&unk_1EFE32380];
@@ -4337,13 +4337,13 @@ LABEL_58:
         goto LABEL_34;
       }
 
-      v14 = [(UIKBTree *)self->_selectedPopupKey popupDirection];
+      popupDirection2 = [(UIKBTree *)self->_selectedPopupKey popupDirection];
       v15 = self->_currentVariantRow;
       if (v15 < [v7 count] && (self->_selectedVariant != 0x7FFFFFFFFFFFFFFFLL || -[UIKBTree popupDirection](self->_selectedPopupKey, "popupDirection") == 2))
       {
-        v16 = [(UIKBTree *)self->_selectedPopupKey popupDirection];
+        popupDirection3 = [(UIKBTree *)self->_selectedPopupKey popupDirection];
         v17 = self->_currentVariantRow;
-        if (v16 == 2 && !v17)
+        if (popupDirection3 == 2 && !v17)
         {
           if (self->_selectedVariant == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -4375,17 +4375,17 @@ LABEL_58:
         }
 
         [(UIKBTree *)self->_selectedPopupKey setSelectedVariantIndices:v7];
-        v37 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-        [v37 updateState:16 forKey:self->_selectedPopupKey];
+        hitTestResponder2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+        [hitTestResponder2 updateState:16 forKey:self->_selectedPopupKey];
 
-        if (v14 != 1)
+        if (popupDirection2 != 1)
         {
           goto LABEL_36;
         }
 
         v38 = [v7 count];
-        v39 = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndices];
-        v40 = [v39 count];
+        selectedVariantIndices2 = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndices];
+        v40 = [selectedVariantIndices2 count];
 
         if (v38 <= v40)
         {
@@ -4394,15 +4394,15 @@ LABEL_58:
       }
     }
 
-    v21 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-    [v21 updateState:2 forKey:self->_selectedPopupKey];
+    hitTestResponder3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+    [hitTestResponder3 updateState:2 forKey:self->_selectedPopupKey];
 
     self->_showingVariants = 0;
     selectedPopupKey = self->_selectedPopupKey;
     self->_selectedPopupKey = 0;
 
-    v23 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:v23 scrollIfNeeded:0 animateScroll:0];
+    hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:hitTestResponder scrollIfNeeded:0 animateScroll:0];
 LABEL_35:
 
 LABEL_36:
@@ -4411,25 +4411,25 @@ LABEL_36:
   return v5;
 }
 
-- (BOOL)_handleInitialSelectionEvent:(id)a3
+- (BOOL)_handleInitialSelectionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
-  v6 = [v5 text];
+  eventCopy = event;
+  emojiSearchField = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
+  text = [emojiSearchField text];
 
-  if ([v4 unmodifiedKeyCodeEquals:44] && !objc_msgSend(v6, "length") || objc_msgSend(v4, "unmodifiedKeyCodeEquals:", 40) && objc_msgSend(v6, "length") && (-[UIKeyboardEmojiAndStickerCollectionInputView searchResults](self, "searchResults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8))
+  if ([eventCopy unmodifiedKeyCodeEquals:44] && !objc_msgSend(text, "length") || objc_msgSend(eventCopy, "unmodifiedKeyCodeEquals:", 40) && objc_msgSend(text, "length") && (-[UIKeyboardEmojiAndStickerCollectionInputView searchResults](self, "searchResults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8))
   {
-    v9 = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
-    v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+    indexPathsForVisibleItems = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
+    v10 = [indexPathsForVisibleItems sortedArrayUsingSelector:sel_compare_];
 
-    v11 = [v10 firstObject];
-    if (!v11)
+    firstObject = [v10 firstObject];
+    if (!firstObject)
     {
       v14 = 0;
       goto LABEL_15;
     }
 
-    v12 = v11;
+    v12 = firstObject;
     if (-[UIKeyboardEmojiAndStickerCollectionInputView _shouldShowRecentlyUsedMedia](self, "_shouldShowRecentlyUsedMedia") && ![v12 section] && !objc_msgSend(v12, "item"))
     {
       v13 = [MEMORY[0x1E696AC88] indexPathForItem:1 inSection:0];
@@ -4442,7 +4442,7 @@ LABEL_36:
 
   else
   {
-    if (![v4 unmodifiedKeyCodeEquals:40])
+    if (![eventCopy unmodifiedKeyCodeEquals:40])
     {
       v14 = 0;
       goto LABEL_17;
@@ -4466,30 +4466,30 @@ void __77__UIKeyboardEmojiAndStickerCollectionInputView__handleInitialSelectionE
   [v0 clearForwardingInputDelegateAndResign:0];
 }
 
-- (BOOL)_handleVariantSelectionEvent:(id)a3
+- (BOOL)_handleVariantSelectionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 unmodifiedKeyCodeEquals:44];
-  v6 = [v4 unmodifiedKeyCodeEquals:40];
+  eventCopy = event;
+  v5 = [eventCopy unmodifiedKeyCodeEquals:44];
+  v6 = [eventCopy unmodifiedKeyCodeEquals:40];
 
   v7 = v5 | v6;
   if ((v5 | v6))
   {
     collectionView = self->_collectionView;
-    v9 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-    v10 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v9];
+    selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    v10 = [(UICollectionView *)collectionView cellForItemAtIndexPath:selectedIndexPath];
 
     v11 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedChildSkinToneEmoji:self->_selectedPopupKey];
-    v12 = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndices];
-    v13 = [v12 count];
+    selectedVariantIndices = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndices];
+    v13 = [selectedVariantIndices count];
 
     if (v13)
     {
-      v14 = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndices];
-      v15 = [v14 lastObject];
-      v16 = [v15 integerValue];
+      selectedVariantIndices2 = [(UIKBTree *)self->_selectedPopupKey selectedVariantIndices];
+      lastObject = [selectedVariantIndices2 lastObject];
+      integerValue = [lastObject integerValue];
 
-      if (!v16)
+      if (!integerValue)
       {
         [(UIKBTree *)self->_selectedPopupKey setSelectedVariantIndex:0];
         v17 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedChildSkinToneEmoji:self->_selectedPopupKey];
@@ -4500,14 +4500,14 @@ void __77__UIKeyboardEmojiAndStickerCollectionInputView__handleInitialSelectionE
 
     [(UIKBTree *)self->_selectedPopupKey setObject:v11 forProperty:@"UIKBAssociatedEmoji"];
     [v10 setEmoji:v11];
-    v18 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-    [v18 updateState:2 forKey:self->_selectedPopupKey];
+    hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+    [hitTestResponder updateState:2 forKey:self->_selectedPopupKey];
 
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self didInputSubTree:self->_selectedPopupKey];
     if (v5)
     {
-      v19 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-      [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:v19 scrollIfNeeded:0 animateScroll:0];
+      selectedIndexPath2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+      [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:selectedIndexPath2 scrollIfNeeded:0 animateScroll:0];
     }
 
     else if ((v6 & 1) == 0)
@@ -4524,16 +4524,16 @@ LABEL_9:
   return v7 & 1;
 }
 
-- (BOOL)_handleBaseKeySelectionEvent:(id)a3
+- (BOOL)_handleBaseKeySelectionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 unmodifiedKeyCodeEquals:44];
-  v6 = [v4 equalsKeyCode:44 modifiers:0x80000];
-  v7 = [v4 unmodifiedKeyCodeEquals:40];
-  v8 = [v4 equalsKeyCode:40 modifiers:0x80000];
+  eventCopy = event;
+  v5 = [eventCopy unmodifiedKeyCodeEquals:44];
+  v6 = [eventCopy equalsKeyCode:44 modifiers:0x80000];
+  v7 = [eventCopy unmodifiedKeyCodeEquals:40];
+  v8 = [eventCopy equalsKeyCode:40 modifiers:0x80000];
   collectionView = self->_collectionView;
-  v10 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-  v11 = [(UICollectionView *)collectionView cellForItemAtIndexPath:v10];
+  selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+  v11 = [(UICollectionView *)collectionView cellForItemAtIndexPath:selectedIndexPath];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -4564,33 +4564,33 @@ LABEL_9:
       goto LABEL_12;
     }
 
-    v13 = [v11 emoji];
+    emoji = [v11 emoji];
     v14 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self treeForCell:v11];
     if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self keySupportsVariants:v14])
     {
-      v15 = [(UIKBKeyView *)self factory];
-      if ([v15 popupKeyUsesCustomKeyContentView:v14])
+      factory = [(UIKBKeyView *)self factory];
+      if ([factory popupKeyUsesCustomKeyContentView:v14])
       {
         if ([v14 selectedVariantIndex] == 0x7FFFFFFFFFFFFFFFLL)
         {
 
 LABEL_24:
           self->_currentVariantRow = 0;
-          v20 = [v14 selectedVariantIndices];
-          v21 = v20;
-          if (v20)
+          selectedVariantIndices = [v14 selectedVariantIndices];
+          v21 = selectedVariantIndices;
+          if (selectedVariantIndices)
           {
-            v22 = [v20 firstObject];
-            v23 = [v22 integerValue];
+            firstObject = [selectedVariantIndices firstObject];
+            integerValue = [firstObject integerValue];
 
-            if (v23 == 0x7FFFFFFFFFFFFFFFLL)
+            if (integerValue == 0x7FFFFFFFFFFFFFFFLL)
             {
               v24 = 0;
             }
 
             else
             {
-              v24 = v23;
+              v24 = integerValue;
             }
 
             self->_selectedVariant = v24;
@@ -4600,13 +4600,13 @@ LABEL_24:
           objc_storeStrong(&self->_selectedPopupKey, v14);
           v17 = 1;
           self->_showingVariants = 1;
-          v25 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-          [v25 updateState:16 forKey:v14];
+          hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+          [hitTestResponder updateState:16 forKey:v14];
 
           goto LABEL_30;
         }
 
-        v28 = [v4 modifiersEqual:0x80000];
+        v28 = [eventCopy modifiersEqual:0x80000];
 
         if (v28)
         {
@@ -4629,8 +4629,8 @@ LABEL_24:
         objc_storeStrong(&self->_selectedPopupKey, v14);
         v17 = 1;
         self->_showingVariants = 1;
-        v18 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-        [v18 updateState:16 forKey:v14];
+        hitTestResponder2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+        [hitTestResponder2 updateState:16 forKey:v14];
 
         goto LABEL_30;
       }
@@ -4638,17 +4638,17 @@ LABEL_24:
 
     if (v5)
     {
-      v19 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-      [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:v19 scrollIfNeeded:0 animateScroll:0];
+      selectedIndexPath2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+      [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateHighlightForIndexPath:selectedIndexPath2 scrollIfNeeded:0 animateScroll:0];
 
-      [(UIKeyboardEmojiAndStickerCollectionInputView *)self insertSelectedEmoji:v13 shouldDismissPopover:0];
+      [(UIKeyboardEmojiAndStickerCollectionInputView *)self insertSelectedEmoji:emoji shouldDismissPopover:0];
       v17 = 1;
     }
 
     else if (v7)
     {
       v17 = 1;
-      [(UIKeyboardEmojiAndStickerCollectionInputView *)self insertSelectedEmoji:v13 shouldDismissPopover:1];
+      [(UIKeyboardEmojiAndStickerCollectionInputView *)self insertSelectedEmoji:emoji shouldDismissPopover:1];
     }
 
     else
@@ -4663,8 +4663,8 @@ LABEL_30:
 
   if ((v5 | v7))
   {
-    v12 = [v11 imageGlyph];
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)self insertImageGlyph:v12 dismiss:v7];
+    imageGlyph = [v11 imageGlyph];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)self insertImageGlyph:imageGlyph dismiss:v7];
   }
 
 LABEL_12:
@@ -4674,34 +4674,34 @@ LABEL_31:
   return v17;
 }
 
-- (BOOL)handleSelectionEvent:(id)a3
+- (BOOL)handleSelectionEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 modifierFlags] && !objc_msgSend(v4, "modifiersEqual:", 0x80000))
+  eventCopy = event;
+  if ([eventCopy modifierFlags] && !objc_msgSend(eventCopy, "modifiersEqual:", 0x80000))
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
 
-    if (v5)
+    if (selectedIndexPath)
     {
       if (self->_showingVariants)
       {
-        v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _handleVariantSelectionEvent:v4];
+        v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _handleVariantSelectionEvent:eventCopy];
       }
 
       else
       {
-        v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _handleBaseKeySelectionEvent:v4];
+        v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _handleBaseKeySelectionEvent:eventCopy];
       }
     }
 
     else
     {
-      v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _handleInitialSelectionEvent:v4];
+      v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self _handleInitialSelectionEvent:eventCopy];
     }
 
     v7 = v6;
@@ -4710,40 +4710,40 @@ LABEL_31:
   return v7;
 }
 
-- (void)updateHighlightForIndexPath:(id)a3 scrollIfNeeded:(BOOL)a4 animateScroll:(BOOL)a5
+- (void)updateHighlightForIndexPath:(id)path scrollIfNeeded:(BOOL)needed animateScroll:(BOOL)scroll
 {
-  v5 = a5;
-  v6 = a4;
-  v21 = a3;
-  v8 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-  v9 = [v8 section];
-  v10 = [v21 section];
+  scrollCopy = scroll;
+  neededCopy = needed;
+  pathCopy = path;
+  selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+  section = [selectedIndexPath section];
+  section2 = [pathCopy section];
 
-  if (v9 != v10)
+  if (section != section2)
   {
-    v11 = -[UIKeyboardEmojiAndStickerCollectionInputView emojiCategoryTypeForSection:](self, "emojiCategoryTypeForSection:", [v21 section]);
-    v12 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-    [v12 reloadCategoryForIndexPath:v21 withSender:self];
+    v11 = -[UIKeyboardEmojiAndStickerCollectionInputView emojiCategoryTypeForSection:](self, "emojiCategoryTypeForSection:", [pathCopy section]);
+    emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+    [emojiKeyManager reloadCategoryForIndexPath:pathCopy withSender:self];
 
-    v13 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-    [v13 reloadForCategory:v11 withSender:self];
+    emojiKeyManager2 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+    [emojiKeyManager2 reloadForCategory:v11 withSender:self];
 
     v14 = [UIKeyboardEmojiCategory categoryForType:v11];
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self setCategory:v14];
   }
 
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self setSelectedIndexPath:v21];
-  v15 = -[UICollectionView numberOfItemsInSection:](self->_collectionView, "numberOfItemsInSection:", [v21 section]);
-  if (v15 > [v21 item])
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self setSelectedIndexPath:pathCopy];
+  v15 = -[UICollectionView numberOfItemsInSection:](self->_collectionView, "numberOfItemsInSection:", [pathCopy section]);
+  if (v15 > [pathCopy item])
   {
     collectionView = self->_collectionView;
-    v17 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-    [(UICollectionView *)collectionView selectItemAtIndexPath:v17 animated:0 scrollPosition:0];
+    selectedIndexPath2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    [(UICollectionView *)collectionView selectItemAtIndexPath:selectedIndexPath2 animated:0 scrollPosition:0];
 
-    if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self cellShouldScrollWhenSelectedAtIndexPath:v21]&& v6)
+    if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self cellShouldScrollWhenSelectedAtIndexPath:pathCopy]&& neededCopy)
     {
       v18 = self->_collectionView;
-      v19 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+      selectedIndexPath3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
       if ([(UICollectionViewFlowLayout *)self->_flowLayout scrollDirection])
       {
         v20 = 16;
@@ -4754,70 +4754,70 @@ LABEL_31:
         v20 = 2;
       }
 
-      [(UICollectionView *)v18 scrollToItemAtIndexPath:v19 atScrollPosition:v20 animated:v5];
+      [(UICollectionView *)v18 scrollToItemAtIndexPath:selectedIndexPath3 atScrollPosition:v20 animated:scrollCopy];
     }
 
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateLastSeenItemForIndexPath:v21];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateLastSeenItemForIndexPath:pathCopy];
   }
 }
 
-- (void)insertSelectedEmoji:(id)a3 shouldDismissPopover:(BOOL)a4
+- (void)insertSelectedEmoji:(id)emoji shouldDismissPopover:(BOOL)popover
 {
-  v4 = a4;
-  v27 = a3;
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self updatePreferencesForSelectedEmoji:v27];
-  v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchInputViewController];
-  v7 = [v6 textDocumentProxy];
-  v8 = [v27 emojiString];
-  [v7 insertText:v8];
+  popoverCopy = popover;
+  emojiCopy = emoji;
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self updatePreferencesForSelectedEmoji:emojiCopy];
+  emojiSearchInputViewController = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchInputViewController];
+  textDocumentProxy = [emojiSearchInputViewController textDocumentProxy];
+  emojiString = [emojiCopy emojiString];
+  [textDocumentProxy insertText:emojiString];
 
-  v9 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
-  v10 = [v9 text];
+  emojiSearchField = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
+  text = [emojiSearchField text];
 
-  v11 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-  v12 = [v11 section];
+  selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+  section = [selectedIndexPath section];
 
   v13 = +[UIKeyboardImpl activeInstance];
   v14 = v13;
-  if (v12)
+  if (section)
   {
     v15 = UIKBAnalyticsEmojiSelectionMethodReturnKey;
-    if (!v4)
+    if (!popoverCopy)
     {
       v15 = UIKBAnalyticsEmojiSelectionMethodSpaceBar;
     }
 
-    [v13 insertedEmojiFromPopover:v27 selectionMethod:*v15];
+    [v13 insertedEmojiFromPopover:emojiCopy selectionMethod:*v15];
   }
 
   else
   {
-    v16 = [v27 emojiString];
+    emojiString2 = [emojiCopy emojiString];
     v17 = UIKBAnalyticsEmojiSelectionMethodReturnKey;
-    if (!v4)
+    if (!popoverCopy)
     {
       v17 = UIKBAnalyticsEmojiSelectionMethodSpaceBar;
     }
 
-    [v14 emojiSearchWillInsertEmoji:v16 forSearchQuery:v10 selectionMethod:*v17 inputType:@"PopoverSearch"];
+    [v14 emojiSearchWillInsertEmoji:emojiString2 forSearchQuery:text selectionMethod:*v17 inputType:@"PopoverSearch"];
   }
 
   v18 = +[UIKeyboardImpl activeInstance];
-  v19 = [v18 activeLayout];
+  activeLayout = [v18 activeLayout];
 
-  v20 = [v19 delegate];
+  delegate = [activeLayout delegate];
   v21 = objc_opt_respondsToSelector();
 
   if (v21)
   {
-    v22 = [v27 emojiString];
-    v23 = [v19 createKeyEventForStringAction:v22 forKey:0 inputFlags:0];
+    emojiString3 = [emojiCopy emojiString];
+    v23 = [activeLayout createKeyEventForStringAction:emojiString3 forKey:0 inputFlags:0];
 
-    v24 = [v19 delegate];
-    [v24 handleKeyUIEvent:v23 dismiss:v4];
+    delegate2 = [activeLayout delegate];
+    [delegate2 handleKeyUIEvent:v23 dismiss:popoverCopy];
   }
 
-  if (v4)
+  if (popoverCopy)
   {
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self resetSelectionIfNeeded];
     v25 = +[UIKeyboardImpl activeInstance];
@@ -4836,39 +4836,39 @@ void __89__UIKeyboardEmojiAndStickerCollectionInputView_insertSelectedEmoji_shou
   [v0 clearForwardingInputDelegateAndResign:0];
 }
 
-- (int64_t)keyCodeForCurrentEnvironmentFromKeyCode:(int64_t)a3
+- (int64_t)keyCodeForCurrentEnvironmentFromKeyCode:(int64_t)code
 {
-  v4 = [(UIView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(UIView *)self effectiveUserInterfaceLayoutDirection];
   v5 = 80;
-  v6 = 79;
-  if (a3 != 80)
+  codeCopy = 79;
+  if (code != 80)
   {
-    v6 = a3;
+    codeCopy = code;
   }
 
-  if (a3 != 79)
+  if (code != 79)
   {
-    v5 = v6;
+    v5 = codeCopy;
   }
 
-  if (v4 == UIUserInterfaceLayoutDirectionRightToLeft)
+  if (effectiveUserInterfaceLayoutDirection == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     return v5;
   }
 
   else
   {
-    return a3;
+    return code;
   }
 }
 
-- (void)updatePreferencesForSelectedEmoji:(id)a3
+- (void)updatePreferencesForSelectedEmoji:(id)emoji
 {
-  v4 = a3;
+  emojiCopy = emoji;
   v5 = +[UIKeyboardInputModeController sharedInputModeController];
-  v6 = [v5 lastUsedInputModeForCurrentContext];
-  v7 = [v6 primaryLanguage];
-  v8 = [v7 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  lastUsedInputModeForCurrentContext = [v5 lastUsedInputModeForCurrentContext];
+  primaryLanguage = [lastUsedInputModeForCurrentContext primaryLanguage];
+  v8 = [primaryLanguage stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
   if (v8)
   {
@@ -4881,42 +4881,42 @@ void __89__UIKeyboardEmojiAndStickerCollectionInputView_insertSelectedEmoji_shou
   }
 
   v13 = v9;
-  v10 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-  [v10 emojiUsed:v4 language:v13];
+  emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+  [emojiKeyManager emojiUsed:emojiCopy language:v13];
 
-  v11 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+  selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
 
-  if (v11)
+  if (selectedIndexPath)
   {
-    v12 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateLastSeenItemForIndexPath:v12];
+    selectedIndexPath2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateLastSeenItemForIndexPath:selectedIndexPath2];
   }
 }
 
-- (void)updateLastSeenItemForIndexPath:(id)a3
+- (void)updateLastSeenItemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = +[UIKeyboardEmojiCategory categoryForType:](UIKeyboardEmojiCategory, "categoryForType:", -[UIKeyboardEmojiAndStickerCollectionInputView emojiCategoryTypeForSection:](self, "emojiCategoryTypeForSection:", [v4 section]));
+  pathCopy = path;
+  v5 = +[UIKeyboardEmojiCategory categoryForType:](UIKeyboardEmojiCategory, "categoryForType:", -[UIKeyboardEmojiAndStickerCollectionInputView emojiCategoryTypeForSection:](self, "emojiCategoryTypeForSection:", [pathCopy section]));
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self setCategory:v5];
 
-  v6 = [v4 item];
-  v7 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-  [v7 setLastVisibleFirstEmojiIndex:v6];
+  item = [pathCopy item];
+  category = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+  [category setLastVisibleFirstEmojiIndex:item];
 
-  v9 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-  v8 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-  [v8 setLastViewedCategory:v9];
+  category2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+  emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+  [emojiKeyManager setLastViewedCategory:category2];
 }
 
 - (void)resetSelectionIfNeeded
 {
-  v3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+  selectedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
 
-  if (v3)
+  if (selectedIndexPath)
   {
     collectionView = self->_collectionView;
-    v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
-    [(UICollectionView *)collectionView deselectItemAtIndexPath:v5 animated:0];
+    selectedIndexPath2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self selectedIndexPath];
+    [(UICollectionView *)collectionView deselectItemAtIndexPath:selectedIndexPath2 animated:0];
 
     selectedIndexPath = self->_selectedIndexPath;
     self->_selectedIndexPath = 0;
@@ -4928,25 +4928,25 @@ void __89__UIKeyboardEmojiAndStickerCollectionInputView_insertSelectedEmoji_shou
   }
 }
 
-- (BOOL)keySupportsVariants:(id)a3
+- (BOOL)keySupportsVariants:(id)variants
 {
-  v3 = a3;
-  v4 = [v3 variantType] == 10 || objc_msgSend(v3, "variantType") == 12 || objc_msgSend(v3, "variantType") == 11 || objc_msgSend(v3, "variantType") == 13;
+  variantsCopy = variants;
+  v4 = [variantsCopy variantType] == 10 || objc_msgSend(variantsCopy, "variantType") == 12 || objc_msgSend(variantsCopy, "variantType") == 11 || objc_msgSend(variantsCopy, "variantType") == 13;
 
   return v4;
 }
 
-- (BOOL)cellShouldScrollWhenSelectedAtIndexPath:(id)a3
+- (BOOL)cellShouldScrollWhenSelectedAtIndexPath:(id)path
 {
   collectionView = self->_collectionView;
-  v5 = a3;
+  pathCopy = path;
   [(UIView *)collectionView bounds];
   v22 = CGRectInset(v21, 0.0, -1.0);
   x = v22.origin.x;
   y = v22.origin.y;
   width = v22.size.width;
   height = v22.size.height;
-  v10 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v5];
+  v10 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:pathCopy];
 
   v11 = self->_collectionView;
   [v10 bounds];
@@ -4973,25 +4973,25 @@ void __89__UIKeyboardEmojiAndStickerCollectionInputView_insertSelectedEmoji_shou
   return v11 ^ 1;
 }
 
-- (void)emojiSearchTextFieldWillBecomeActive:(id)a3
+- (void)emojiSearchTextFieldWillBecomeActive:(id)active
 {
-  v4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
-  v5 = [(UIKBKeyView *)self renderConfig];
-  [v4 _setRenderConfig:v5];
+  emojiSearchField = [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiSearchField];
+  renderConfig = [(UIKBKeyView *)self renderConfig];
+  [emojiSearchField _setRenderConfig:renderConfig];
 
   collectionView = self->_collectionView;
 
   [(UIKeyboardEmojiAndStickerCollectionView *)collectionView setIsInSearchPopover:1];
 }
 
-- (void)emojiSearchTextFieldDidBecomeActive:(id)a3
+- (void)emojiSearchTextFieldDidBecomeActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  [v4 changePreferredEmojiSearchInputModeForInputDelegate:v3];
+  [v4 changePreferredEmojiSearchInputModeForInputDelegate:activeCopy];
 }
 
-- (void)emojiSearchTextFieldWillBecomeInactive:(id)a3
+- (void)emojiSearchTextFieldWillBecomeInactive:(id)inactive
 {
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self setIsSearching:0];
   [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView setIsInSearchPopover:0];
@@ -4999,21 +4999,21 @@ void __89__UIKeyboardEmojiAndStickerCollectionInputView_insertSelectedEmoji_shou
   [v4 clearForwardingInputDelegateAndResign:0];
 }
 
-- (void)emojiSearchTextFieldDidBecomeInactive:(id)a3
+- (void)emojiSearchTextFieldDidBecomeInactive:(id)inactive
 {
   v3 = +[UIKeyboardImpl activeInstance];
   [v3 updateAssistantView];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"UIKeyboardSwitchedAwayFromEmoji" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"UIKeyboardSwitchedAwayFromEmoji" object:0];
 
   v7 = +[UIKeyboardInputModeController sharedInputModeController];
   v5 = +[UIKeyboardInputModeController sharedInputModeController];
-  v6 = [v5 hardwareInputMode];
-  [v7 setCurrentInputMode:v6];
+  hardwareInputMode = [v5 hardwareInputMode];
+  [v7 setCurrentInputMode:hardwareInputMode];
 }
 
-- (void)emojiSearchTextFieldWillClear:(id)a3
+- (void)emojiSearchTextFieldWillClear:(id)clear
 {
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self setIsSearching:0];
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self setSearchResults:MEMORY[0x1E695E0F0]];
@@ -5021,12 +5021,12 @@ void __89__UIKeyboardEmojiAndStickerCollectionInputView_insertSelectedEmoji_shou
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self resetSelectionIfNeeded];
 }
 
-- (void)emojiSearchTextFieldDidReset:(id)a3
+- (void)emojiSearchTextFieldDidReset:(id)reset
 {
-  v4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching];
+  isSearching = [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching];
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self setIsSearching:0];
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self resetSelectionIfNeeded];
-  if (v4)
+  if (isSearching)
   {
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self setSearchResults:MEMORY[0x1E695E0F0]];
     if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self showingRecents])
@@ -5064,44 +5064,44 @@ uint64_t __77__UIKeyboardEmojiAndStickerCollectionInputView_emojiSearchTextField
   return [UIView performWithoutAnimation:v2];
 }
 
-- (void)setSearchResults:(id)a3
+- (void)setSearchResults:(id)results
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultsCopy = results;
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self _setRearrangeMode:0];
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching];
-  v6 = v5;
-  if (v4)
+  isSearching = [(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching];
+  v6 = isSearching;
+  if (resultsCopy)
   {
-    if (!v5)
+    if (!isSearching)
     {
       [(UIKeyboardEmojiAndStickerCollectionInputView *)self setIsSearching:1];
-      v7 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-      v8 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentsIndexPath];
-      [v7 reloadCategoryForIndexPath:v8 withSender:self];
+      emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+      recentsIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentsIndexPath];
+      [emojiKeyManager reloadCategoryForIndexPath:recentsIndexPath withSender:self];
 
       [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateOffsetForSearchResultsAnimated:1];
     }
 
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self resetSelectionIfNeeded];
-    v9 = [v4 copy];
+    v9 = [resultsCopy copy];
     searchResults = self->_searchResults;
     self->_searchResults = v9;
 
-    v11 = [(STKImageGlyphDataSource *)self->_imageGlyphDataSource snapshot];
-    v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[UIKeyboardEmojiAndStickerCollectionInputView recentSectionIndex](self, "recentSectionIndex")}];
+    snapshot = [(STKImageGlyphDataSource *)self->_imageGlyphDataSource snapshot];
+    recentsIndexPath2 = [MEMORY[0x1E696AD98] numberWithInt:{-[UIKeyboardEmojiAndStickerCollectionInputView recentSectionIndex](self, "recentSectionIndex")}];
     v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[UIKeyboardEmojiAndStickerCollectionInputView emojiSectionIndex](self, "emojiSectionIndex")}];
-    v21[0] = v12;
+    v21[0] = recentsIndexPath2;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
-    [v11 deleteSectionsWithIdentifiers:v14];
+    [snapshot deleteSectionsWithIdentifiers:v14];
 
-    v20 = v12;
+    v20 = recentsIndexPath2;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
-    [v11 insertSectionsWithIdentifiers:v15 beforeSectionWithIdentifier:v13];
+    [snapshot insertSectionsWithIdentifiers:v15 beforeSectionWithIdentifier:v13];
 
-    if ([v4 count])
+    if ([resultsCopy count])
     {
-      v16 = [v4 bs_compactMap:&__block_literal_global_276];
+      v16 = [resultsCopy bs_compactMap:&__block_literal_global_276];
     }
 
     else
@@ -5111,9 +5111,9 @@ uint64_t __77__UIKeyboardEmojiAndStickerCollectionInputView_emojiSearchTextField
     }
 
     v18 = v16;
-    [v11 appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:v12];
+    [snapshot appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:recentsIndexPath2];
 
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateDataSourceWithSnapshot:v11 animated:0];
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateDataSourceWithSnapshot:snapshot animated:0];
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateOffsetForSearchResultsAnimated:0];
 
     goto LABEL_10;
@@ -5127,9 +5127,9 @@ uint64_t __77__UIKeyboardEmojiAndStickerCollectionInputView_emojiSearchTextField
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateDataSourceSnapshotAnimated:0];
   if (v6)
   {
-    v11 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-    v12 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentsIndexPath];
-    [v11 reloadCategoryForIndexPath:v12 withSender:self];
+    snapshot = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+    recentsIndexPath2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentsIndexPath];
+    [snapshot reloadCategoryForIndexPath:recentsIndexPath2 withSender:self];
 LABEL_10:
   }
 }
@@ -5150,26 +5150,26 @@ id __65__UIKeyboardEmojiAndStickerCollectionInputView_setSearchResults___block_i
   return v3;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  pathCopy = path;
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self topPadding];
   v10 = v9;
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self categoryHeaderHeight];
   v12 = v11;
   if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isSearching])
   {
-    v13 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
-    if ([v13 count])
+    searchResults = [(UIKeyboardEmojiAndStickerCollectionInputView *)self searchResults];
+    if ([searchResults count])
     {
     }
 
     else
     {
-      v14 = [v8 section];
+      section = [pathCopy section];
 
-      if (!v14)
+      if (!section)
       {
         [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiKeyWidth];
         v25 = v24;
@@ -5177,7 +5177,7 @@ id __65__UIKeyboardEmojiAndStickerCollectionInputView_setSearchResults___block_i
         v27 = (v25 + v26 + 1.0) * 6.0;
         [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits minimumLineSpacing];
         v18 = v27 + v28 + v28;
-        [v7 bounds];
+        [viewCopy bounds];
         v29 = CGRectGetHeight(v40) - v12;
         [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits bottomPadding];
         v19 = v29 - v30;
@@ -5186,12 +5186,12 @@ id __65__UIKeyboardEmojiAndStickerCollectionInputView_setSearchResults___block_i
     }
   }
 
-  if (!-[UIKeyboardEmojiAndStickerCollectionInputView _shouldShowRecentlyUsedMedia](self, "_shouldShowRecentlyUsedMedia") || [v8 section] || objc_msgSend(v8, "item"))
+  if (!-[UIKeyboardEmojiAndStickerCollectionInputView _shouldShowRecentlyUsedMedia](self, "_shouldShowRecentlyUsedMedia") || [pathCopy section] || objc_msgSend(pathCopy, "item"))
   {
     if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph])
     {
-      v15 = -[UIKeyboardEmojiAndStickerCollectionInputView rowsInSection:](self, "rowsInSection:", [v8 section]);
-      [v7 bounds];
+      v15 = -[UIKeyboardEmojiAndStickerCollectionInputView rowsInSection:](self, "rowsInSection:", [pathCopy section]);
+      [viewCopy bounds];
       v16 = (CGRectGetHeight(v39) - v12) / v15;
       [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits bottomPadding];
       v18 = v16 - v17 - v10;
@@ -5209,7 +5209,7 @@ id __65__UIKeyboardEmojiAndStickerCollectionInputView_setSearchResults___block_i
 
   else
   {
-    [v7 bounds];
+    [viewCopy bounds];
     Height = CGRectGetHeight(v41);
     [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits bottomPadding];
     v33 = v32;
@@ -5229,13 +5229,13 @@ id __65__UIKeyboardEmojiAndStickerCollectionInputView_setSearchResults___block_i
 
     else
     {
-      [v7 bounds];
+      [viewCopy bounds];
       Width = CGRectGetWidth(v42);
       [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits inputViewLeftMostPadding];
       v36 = Width - v35;
       [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits inputViewRightMostPadding];
       v18 = v36 - v37;
-      [v7 bounds];
+      [viewCopy bounds];
       v19 = CGRectGetWidth(v43) * 0.166666667;
     }
   }
@@ -5249,9 +5249,9 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:0, a4];
+  layout = [(UICollectionView *)self->_collectionView numberOfItemsInSection:0, layout];
   [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits sectionOffset];
   v9 = v8;
   [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits bottomPadding];
@@ -5260,21 +5260,21 @@ LABEL_11:
   v13 = v12;
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self categoryHeaderHeight];
   v15 = v14;
-  v16 = [(UICollectionViewFlowLayout *)self->_flowLayout scrollDirection];
-  if (a5)
+  scrollDirection = [(UICollectionViewFlowLayout *)self->_flowLayout scrollDirection];
+  if (index)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = v7 <= 0;
+    v17 = layout <= 0;
   }
 
   v18 = !v17;
-  if (v16 == UICollectionViewScrollDirectionVertical)
+  if (scrollDirection == UICollectionViewScrollDirectionVertical)
   {
-    if ((v18 & 1) != 0 || a5 == 1 && !v7)
+    if ((v18 & 1) != 0 || index == 1 && !layout)
     {
       [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits inputViewLeftMostPadding];
       v20 = v21;
@@ -5288,7 +5288,7 @@ LABEL_11:
       [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits inputViewLeftMostPadding];
       v20 = v24;
       [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits inputViewRightMostPadding];
-      if (v23 != a5)
+      if (v23 != index)
       {
         v11 = v9;
       }
@@ -5297,11 +5297,11 @@ LABEL_11:
     goto LABEL_20;
   }
 
-  if ((v18 & 1) == 0 && (a5 != 1 || v7))
+  if ((v18 & 1) == 0 && (index != 1 || layout))
   {
     v13 = v13 + v15;
     v20 = 0.0;
-    if ([(UICollectionView *)self->_collectionView numberOfSections]- 1 != a5)
+    if ([(UICollectionView *)self->_collectionView numberOfSections]- 1 != index)
     {
       goto LABEL_21;
     }
@@ -5327,11 +5327,11 @@ LABEL_21:
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumLineSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumLineSpacingForSectionAtIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5 && [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia])
+  viewCopy = view;
+  layoutCopy = layout;
+  if (!index && [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia])
   {
     [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits minimumInteritemSpacing];
 LABEL_6:
@@ -5340,7 +5340,7 @@ LABEL_6:
   }
 
   v11 = 0.0;
-  if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isMemojiCategory:a5])
+  if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isMemojiCategory:index])
   {
     [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits minimumLineSpacing];
     goto LABEL_6;
@@ -5351,11 +5351,11 @@ LABEL_7:
   return v11;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  if (!a5 && [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia])
+  viewCopy = view;
+  layoutCopy = layout;
+  if (!index && [(UIKeyboardEmojiAndStickerCollectionInputView *)self _shouldShowRecentlyUsedMedia])
   {
     [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits minimumLineSpacing];
 LABEL_6:
@@ -5364,7 +5364,7 @@ LABEL_6:
   }
 
   v11 = 0.0;
-  if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isMemojiCategory:a5])
+  if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isMemojiCategory:index])
   {
     [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits minimumInteritemSpacing];
     goto LABEL_6;
@@ -5375,124 +5375,124 @@ LABEL_7:
   return v11;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 willDisplay];
+    [cellCopy willDisplay];
   }
 
-  if (!self->_hasShownAnimojiCell && -[UIKeyboardEmojiAndStickerCollectionInputView _shouldShowRecentlyUsedMedia](self, "_shouldShowRecentlyUsedMedia") && ![v7 item] && !objc_msgSend(v7, "section"))
+  if (!self->_hasShownAnimojiCell && -[UIKeyboardEmojiAndStickerCollectionInputView _shouldShowRecentlyUsedMedia](self, "_shouldShowRecentlyUsedMedia") && ![pathCopy item] && !objc_msgSend(pathCopy, "section"))
   {
     self->_hasShownAnimojiCell = 1;
     ADClientAddValueForScalarKey();
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v5 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 didEndDisplaying];
+    [cellCopy didEndDisplaying];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self handleScrollViewDynamicPagination:v4];
+  scrollCopy = scroll;
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self handleScrollViewDynamicPagination:scrollCopy];
   if (_UIApplicationIsFirstPartyStickers())
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v18 = @"contentOffsetY";
     v6 = MEMORY[0x1E696AD98];
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v8 = [v6 numberWithDouble:v7];
     v19[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    [v5 postNotificationName:@"UIKeyboardEmojiCollectionInputViewDidScroll" object:0 userInfo:v9];
+    [defaultCenter postNotificationName:@"UIKeyboardEmojiCollectionInputViewDidScroll" object:0 userInfo:v9];
   }
 
   if (!self->_isRearranging)
   {
-    v10 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-    [v10 deactivateActiveKey];
+    hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+    [hitTestResponder deactivateActiveKey];
   }
 
-  v11 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self currentlyFocusedIndexPath];
-  v12 = [v11 section];
-  if (self->_currentSection != v12)
+  currentlyFocusedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self currentlyFocusedIndexPath];
+  section = [currentlyFocusedIndexPath section];
+  if (self->_currentSection != section)
   {
-    v13 = v12;
-    self->_currentSection = v12;
+    v13 = section;
+    self->_currentSection = section;
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self _setRearrangeMode:0];
     if (self->_isDraggingInputView)
     {
-      v14 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-      [v14 reloadCategoryForIndexPath:v11 withSender:self];
+      emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+      [emojiKeyManager reloadCategoryForIndexPath:currentlyFocusedIndexPath withSender:self];
 
-      v15 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-      [v15 reloadForCategory:-[UIKeyboardEmojiAndStickerCollectionInputView emojiCategoryTypeForSection:](self withSender:{"emojiCategoryTypeForSection:", v13), self}];
+      emojiKeyManager2 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+      [emojiKeyManager2 reloadForCategory:-[UIKeyboardEmojiAndStickerCollectionInputView emojiCategoryTypeForSection:](self withSender:{"emojiCategoryTypeForSection:", v13), self}];
     }
   }
 
   keylineView = self->_keylineView;
-  [v4 contentOffset];
+  [scrollCopy contentOffset];
   [(UIKeyboardEmojiAndStickerCollectionInputViewKeylineView *)keylineView updateAlphaForScrollDistance:v17];
 }
 
-- (void)handleScrollViewDynamicPagination:(id)a3
+- (void)handleScrollViewDynamicPagination:(id)pagination
 {
-  v8 = a3;
-  v4 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  paginationCopy = pagination;
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
   if (objc_opt_respondsToSelector())
   {
-    [v8 contentOffset];
-    v5 = [v4 paginationOriginForCurrentOffset:?];
+    [paginationCopy contentOffset];
+    v5 = [collectionViewLayout paginationOriginForCurrentOffset:?];
     if (v5)
     {
-      [v8 setPagingEnabled:1];
+      [paginationCopy setPagingEnabled:1];
       [v5 CGPointValue];
     }
 
     else
     {
-      [v8 setPagingEnabled:0];
+      [paginationCopy setPagingEnabled:0];
       v6 = *MEMORY[0x1E695EFF8];
       v7 = *(MEMORY[0x1E695EFF8] + 8);
     }
 
-    [v8 _setPagingOrigin:{v6, v7}];
+    [paginationCopy _setPagingOrigin:{v6, v7}];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   self->_isDraggingInputView = 1;
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self snappedXOffsetForOffset:0 scrubbing:a5->x, a4.y];
-  a5->x = v6;
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self snappedXOffsetForOffset:0 scrubbing:offset->x, velocity.y];
+  offset->x = v6;
 }
 
-- (id)itemInRect:(CGRect)a3
+- (id)itemInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__162;
   v16 = __Block_byref_object_dispose__162;
   v17 = 0;
-  v7 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  v8 = [v7 layoutAttributesForElementsInRect:{x, y, width, height}];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  v8 = [collectionViewLayout layoutAttributesForElementsInRect:{x, y, width, height}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__UIKeyboardEmojiAndStickerCollectionInputView_itemInRect___block_invoke;
@@ -5522,81 +5522,81 @@ void __59__UIKeyboardEmojiAndStickerCollectionInputView_itemInRect___block_invok
 
 - (int64_t)currentlyFocusedSectionIndex
 {
-  v3 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 currentlyFocusedSectionIndex];
+    currentlyFocusedSectionIndex = [collectionViewLayout currentlyFocusedSectionIndex];
   }
 
   else
   {
-    v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self currentlyFocusedIndexPath];
-    v4 = [v5 section];
+    currentlyFocusedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self currentlyFocusedIndexPath];
+    currentlyFocusedSectionIndex = [currentlyFocusedIndexPath section];
   }
 
-  return v4;
+  return currentlyFocusedSectionIndex;
 }
 
 - (id)currentlyFocusedIndexPath
 {
-  v3 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 currentlyFocusedIndexPath];
+    currentlyFocusedIndexPath = [collectionViewLayout currentlyFocusedIndexPath];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AC88] indexPathWithIndex:self->_currentSection];
-    v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self trulyVisibleIndexPaths];
-    if ([v5 count])
+    currentlyFocusedIndexPath = [MEMORY[0x1E696AC88] indexPathWithIndex:self->_currentSection];
+    trulyVisibleIndexPaths = [(UIKeyboardEmojiAndStickerCollectionInputView *)self trulyVisibleIndexPaths];
+    if ([trulyVisibleIndexPaths count])
     {
-      v6 = [v5 objectAtIndexedSubscript:{((2 * ((5 * objc_msgSend(v5, "count")) & 0x1FFFFFFFFFFFFFFFuLL) * 0x28F5C28F5C28F5C3uLL) >> 64) >> 2}];
+      v6 = [trulyVisibleIndexPaths objectAtIndexedSubscript:{((2 * ((5 * objc_msgSend(trulyVisibleIndexPaths, "count")) & 0x1FFFFFFFFFFFFFFFuLL) * 0x28F5C28F5C28F5C3uLL) >> 64) >> 2}];
 
-      v7 = [v5 firstObject];
-      if ([v7 section] || objc_msgSend(v7, "item"))
+      firstObject = [trulyVisibleIndexPaths firstObject];
+      if ([firstObject section] || objc_msgSend(firstObject, "item"))
       {
         v8 = [(UICollectionView *)self->_collectionView numberOfSections]- 1;
         v9 = [(UICollectionView *)self->_collectionView numberOfItemsInSection:v8];
         v10 = [MEMORY[0x1E696AC88] indexPathForItem:v9 - 1 inSection:v8];
-        v11 = [v5 lastObject];
+        lastObject = [trulyVisibleIndexPaths lastObject];
 
-        if (v10 == v11)
+        if (v10 == lastObject)
         {
-          v12 = [v5 lastObject];
+          lastObject2 = [trulyVisibleIndexPaths lastObject];
 
-          v6 = v12;
+          v6 = lastObject2;
         }
       }
 
       else
       {
         v10 = v6;
-        v6 = v7;
+        v6 = firstObject;
       }
 
-      v4 = v6;
+      currentlyFocusedIndexPath = v6;
     }
   }
 
-  return v4;
+  return currentlyFocusedIndexPath;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   self->_isDraggingInputView = 0;
-  v4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self currentlyFocusedIndexPath];
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self trulyVisibleIndexPaths];
+  currentlyFocusedIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self currentlyFocusedIndexPath];
+  trulyVisibleIndexPaths = [(UIKeyboardEmojiAndStickerCollectionInputView *)self trulyVisibleIndexPaths];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __77__UIKeyboardEmojiAndStickerCollectionInputView_scrollViewDidEndDecelerating___block_invoke;
   v9[3] = &unk_1E711BD98;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_filter:v9];
-  v8 = [v7 firstObject];
+  v10 = currentlyFocusedIndexPath;
+  v6 = currentlyFocusedIndexPath;
+  v7 = [trulyVisibleIndexPaths bs_filter:v9];
+  firstObject = [v7 firstObject];
 
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateLastSeenItemForIndexPath:v8];
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateLastSeenItemForIndexPath:firstObject];
 }
 
 - (id)trulyVisibleIndexPaths
@@ -5607,7 +5607,7 @@ void __59__UIKeyboardEmojiAndStickerCollectionInputView_itemInRect___block_invok
   [(UIView *)self->_collectionView bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [(UICollectionView *)self->_collectionView visibleCells];
+  visibleCells = [(UICollectionView *)self->_collectionView visibleCells];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__UIKeyboardEmojiAndStickerCollectionInputView_trulyVisibleIndexPaths__block_invoke;
@@ -5617,7 +5617,7 @@ void __59__UIKeyboardEmojiAndStickerCollectionInputView_itemInRect___block_invok
   v15[7] = v8;
   v15[8] = v10;
   v15[4] = self;
-  v12 = [v11 bs_compactMap:v15];
+  v12 = [visibleCells bs_compactMap:v15];
   v13 = [v12 sortedArrayUsingComparator:&__block_literal_global_290_0];
 
   return v13;
@@ -5680,23 +5680,23 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)indexForPrettyCategoryDisplay:(id)a3
+- (int64_t)indexForPrettyCategoryDisplay:(id)display
 {
-  v4 = a3;
-  if (self->_collectionView && (-[UIKeyboardEmojiAndStickerCollectionInputView category](self, "category"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 categoryType], v5, v7 = -[UIKeyboardEmojiAndStickerCollectionInputView sectionForCategoryType:](self, "sectionForCategoryType:", v6), v7 < -[UICollectionView numberOfSections](self->_collectionView, "numberOfSections")) && (v8 = -[UICollectionView numberOfItemsInSection:](self->_collectionView, "numberOfItemsInSection:", v7), objc_msgSend(v4, "lastVisibleFirstEmojiIndex") >= v8))
+  displayCopy = display;
+  if (self->_collectionView && (-[UIKeyboardEmojiAndStickerCollectionInputView category](self, "category"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 categoryType], v5, v7 = -[UIKeyboardEmojiAndStickerCollectionInputView sectionForCategoryType:](self, "sectionForCategoryType:", v6), v7 < -[UICollectionView numberOfSections](self->_collectionView, "numberOfSections")) && (v8 = -[UICollectionView numberOfItemsInSection:](self->_collectionView, "numberOfItemsInSection:", v7), objc_msgSend(displayCopy, "lastVisibleFirstEmojiIndex") >= v8))
   {
-    v9 = v8 - 1;
+    lastVisibleFirstEmojiIndex = v8 - 1;
   }
 
   else
   {
-    v9 = [v4 lastVisibleFirstEmojiIndex];
+    lastVisibleFirstEmojiIndex = [displayCopy lastVisibleFirstEmojiIndex];
   }
 
-  return v9;
+  return lastVisibleFirstEmojiIndex;
 }
 
-- (int64_t)rowsInSection:(int64_t)a3
+- (int64_t)rowsInSection:(int64_t)section
 {
   if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self doesSupportImageGlyph])
   {
@@ -5705,9 +5705,9 @@ LABEL_9:
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isEmojiCategory:a3])
+    if (![(UIKeyboardEmojiAndStickerCollectionInputView *)self isEmojiCategory:section])
     {
-      if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isRecentCategory:a3])
+      if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self isRecentCategory:section])
       {
         return 4;
       }
@@ -5723,139 +5723,139 @@ LABEL_9:
 
   imageGlyphDataSource = self->_imageGlyphDataSource;
 
-  return [(STKImageGlyphDataSource *)imageGlyphDataSource numberOfRowsInSection:a3];
+  return [(STKImageGlyphDataSource *)imageGlyphDataSource numberOfRowsInSection:section];
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   v34.receiver = self;
   v34.super_class = UIKeyboardEmojiAndStickerCollectionInputView;
   [(UIView *)&v34 didMoveToWindow];
-  [(UIView *)v2->_collectionView layoutIfNeeded];
-  v3 = [(UIKeyboardEmojiKeyView *)v2 emojiKeyManager];
-  v4 = [v3 lastViewedCategory];
-  objc_storeWeak(&v2->_category, v4);
+  [(UIView *)selfCopy->_collectionView layoutIfNeeded];
+  emojiKeyManager = [(UIKeyboardEmojiKeyView *)selfCopy emojiKeyManager];
+  lastViewedCategory = [emojiKeyManager lastViewedCategory];
+  objc_storeWeak(&selfCopy->_category, lastViewedCategory);
 
   v5 = +[UIKeyboardEmojiCategory enabledCategoryIndexes];
   v6 = MEMORY[0x1E696AD98];
-  WeakRetained = objc_loadWeakRetained(&v2->_category);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_category);
   v8 = [v6 numberWithInteger:{objc_msgSend(WeakRetained, "categoryType")}];
   v9 = [v5 containsObject:v8];
 
   if ((v9 & 1) == 0)
   {
     v10 = +[UIKeyboardEmojiCategory enabledCategoryIndexes];
-    v11 = [v10 firstObject];
-    v12 = [v11 integerValue];
+    firstObject = [v10 firstObject];
+    integerValue = [firstObject integerValue];
 
-    v13 = [UIKeyboardEmojiCategory categoryForType:v12];
-    objc_storeWeak(&v2->_category, v13);
+    v13 = [UIKeyboardEmojiCategory categoryForType:integerValue];
+    objc_storeWeak(&selfCopy->_category, v13);
   }
 
-  v14 = objc_loadWeakRetained(&v2->_category);
-  v2->_currentSection = -[UIKeyboardEmojiAndStickerCollectionInputView sectionForCategoryType:](v2, "sectionForCategoryType:", [v14 categoryType]);
+  v14 = objc_loadWeakRetained(&selfCopy->_category);
+  selfCopy->_currentSection = -[UIKeyboardEmojiAndStickerCollectionInputView sectionForCategoryType:](selfCopy, "sectionForCategoryType:", [v14 categoryType]);
 
-  v15 = [(UIView *)v2 window];
+  window = [(UIView *)selfCopy window];
 
-  if (v15)
+  if (window)
   {
-    [(UIKeyboardEmojiAndStickerCollectionInputView *)v2 updateDataSourceSnapshot];
-    if (v2->_inputDelegateCanSupportAnimoji && !v2->_hasShownAnimojiFirstTimeExperience && [(UIKeyboardEmojiAndStickerCollectionInputView *)v2 _shouldShowRecentlyUsedMedia])
+    [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy updateDataSourceSnapshot];
+    if (selfCopy->_inputDelegateCanSupportAnimoji && !selfCopy->_hasShownAnimojiFirstTimeExperience && [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy _shouldShowRecentlyUsedMedia])
     {
       v16 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
     }
 
     else
     {
-      v17 = [(UIKeyboardEmojiAndStickerCollectionInputView *)v2 category];
-      v18 = -[UIKeyboardEmojiAndStickerCollectionInputView sectionForCategoryType:](v2, "sectionForCategoryType:", [v17 categoryType]);
+      category = [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy category];
+      v18 = -[UIKeyboardEmojiAndStickerCollectionInputView sectionForCategoryType:](selfCopy, "sectionForCategoryType:", [category categoryType]);
 
       v19 = MEMORY[0x1E696AC88];
-      v20 = [(UIKeyboardEmojiAndStickerCollectionInputView *)v2 category];
-      v16 = [v19 indexPathForItem:-[UIKeyboardEmojiAndStickerCollectionInputView indexForPrettyCategoryDisplay:](v2 inSection:{"indexForPrettyCategoryDisplay:", v20), v18}];
+      category2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy category];
+      v16 = [v19 indexPathForItem:-[UIKeyboardEmojiAndStickerCollectionInputView indexForPrettyCategoryDisplay:](selfCopy inSection:{"indexForPrettyCategoryDisplay:", category2), v18}];
     }
 
-    v21 = [(UICollectionView *)v2->_collectionView layoutAttributesForItemAtIndexPath:v16];
+    v21 = [(UICollectionView *)selfCopy->_collectionView layoutAttributesForItemAtIndexPath:v16];
     [v21 frame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
 
-    if (v2->_hasCompletedInitialDisplay && (v35.origin.x = v23, v35.origin.y = v25, v35.size.width = v27, v35.size.height = v29, !CGRectEqualToRect(v35, *MEMORY[0x1E695F058])))
+    if (selfCopy->_hasCompletedInitialDisplay && (v35.origin.x = v23, v35.origin.y = v25, v35.size.width = v27, v35.size.height = v29, !CGRectEqualToRect(v35, *MEMORY[0x1E695F058])))
     {
-      [(UIKeyboardEmojiAndStickerCollectionInputView *)v2 updateToIndexPath:v16];
-      unavailableLaunchPath = [(UIKeyboardEmojiKeyView *)v2 emojiKeyManager];
-      [unavailableLaunchPath reloadCategoryForIndexPath:v16 withSender:v2];
+      [(UIKeyboardEmojiAndStickerCollectionInputView *)selfCopy updateToIndexPath:v16];
+      unavailableLaunchPath = [(UIKeyboardEmojiKeyView *)selfCopy emojiKeyManager];
+      [unavailableLaunchPath reloadCategoryForIndexPath:v16 withSender:selfCopy];
     }
 
     else
     {
       v30 = v16;
-      unavailableLaunchPath = v2->_unavailableLaunchPath;
-      v2->_unavailableLaunchPath = v30;
+      unavailableLaunchPath = selfCopy->_unavailableLaunchPath;
+      selfCopy->_unavailableLaunchPath = v30;
     }
   }
 
-  v32 = [(UIView *)v2 window];
-  if (!v32)
+  window2 = [(UIView *)selfCopy window];
+  if (!window2)
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
   v33 = +[UIKeyboardMediaController sharedKeyboardMediaController];
-  [v33 setDelegate:v2];
+  [v33 setDelegate:selfCopy];
 }
 
-- (void)updateToCategory:(int64_t)a3
+- (void)updateToCategory:(int64_t)category
 {
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-  [v5 deactivateActiveKey];
+  hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+  [hitTestResponder deactivateActiveKey];
 
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self resetSelectionIfNeeded];
-  v6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-  v7 = [v6 categoryType];
+  category = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+  categoryType = [category categoryType];
 
-  if (v7 == a3)
+  if (categoryType == category)
   {
-    if (a3)
+    if (category)
     {
       v8 = 1;
     }
 
     else
     {
-      v12 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-      v8 = [v12 lastVisibleFirstEmojiIndex] != 1 || self->_isDraggingInputView;
+      category2 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+      v8 = [category2 lastVisibleFirstEmojiIndex] != 1 || self->_isDraggingInputView;
     }
 
-    v13 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-    [v13 setLastVisibleFirstEmojiIndex:v8];
+    category3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+    [category3 setLastVisibleFirstEmojiIndex:v8];
 
-    v11 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+    category4 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
   }
 
   else
   {
-    v49 = [UIKeyboardEmojiCategory categoryForType:a3];
-    v9 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-    [v49 setLastVisibleFirstEmojiIndex:{objc_msgSend(v9, "lastVisibleFirstEmojiIndexforCategory:", v49)}];
+    v49 = [UIKeyboardEmojiCategory categoryForType:category];
+    emojiKeyManager = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+    [v49 setLastVisibleFirstEmojiIndex:{objc_msgSend(emojiKeyManager, "lastVisibleFirstEmojiIndexforCategory:", v49)}];
 
-    if (!a3 && ![v49 lastVisibleFirstEmojiIndex])
+    if (!category && ![v49 lastVisibleFirstEmojiIndex])
     {
       [v49 setLastVisibleFirstEmojiIndex:1];
     }
 
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self setCategory:v49];
-    v10 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-    v8 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self indexForPrettyCategoryDisplay:v10];
+    category5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+    v8 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self indexForPrettyCategoryDisplay:category5];
 
-    v11 = v49;
+    category4 = v49;
   }
 
-  v50 = v11;
-  v14 = +[UIKeyboardEmojiCategory categoryIndexForCategoryType:](UIKeyboardEmojiCategory, "categoryIndexForCategoryType:", [v11 categoryType]);
+  v50 = category4;
+  v14 = +[UIKeyboardEmojiCategory categoryIndexForCategoryType:](UIKeyboardEmojiCategory, "categoryIndexForCategoryType:", [category4 categoryType]);
   collectionView = self->_collectionView;
   v16 = [MEMORY[0x1E696AC88] indexPathForItem:v8 inSection:v14];
   v17 = [(UICollectionView *)collectionView layoutAttributesForItemAtIndexPath:v16];
@@ -5865,18 +5865,18 @@ LABEL_9:
   v23 = v22;
   v25 = v24;
 
-  v26 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
+  hasVerticalScrolling = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
   v27 = v19;
   v28 = v21;
   v29 = v23;
   v30 = v25;
-  if (v26)
+  if (hasVerticalScrolling)
   {
     MinY = CGRectGetMinY(*&v27);
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self categoryHeaderHeight];
     v33 = MinY - v32;
-    v34 = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
-    [v34 sectionOffset];
+    emojiGraphicsTraits = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
+    [emojiGraphicsTraits sectionOffset];
     v36 = v33 - v35;
 
     [(UIScrollView *)self->_collectionView contentOffset];
@@ -5886,8 +5886,8 @@ LABEL_9:
   else
   {
     MinX = CGRectGetMinX(*&v27);
-    v40 = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
-    [v40 inputViewLeftMostPadding];
+    emojiGraphicsTraits2 = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
+    [emojiGraphicsTraits2 inputViewLeftMostPadding];
     v42 = MinX - v41;
 
     [(UIKeyboardEmojiAndStickerCollectionInputView *)self snappedXOffsetForOffset:0 scrubbing:v42];
@@ -5900,16 +5900,16 @@ LABEL_9:
   v46 = v45;
   [(UIView *)self->_collectionView bounds];
   [(UIScrollView *)self->_collectionView scrollRectToVisible:0 animated:v38, v36, v46];
-  v47 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
-  v48 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
-  [v48 setLastViewedCategory:v47];
+  category6 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self category];
+  emojiKeyManager2 = [(UIKeyboardEmojiKeyView *)self emojiKeyManager];
+  [emojiKeyManager2 setLastViewedCategory:category6];
 }
 
-- (void)updateToIndexPath:(id)a3
+- (void)updateToIndexPath:(id)path
 {
-  v6 = a3;
+  pathCopy = path;
   [(UIView *)self effectiveUserInterfaceLayoutDirection];
-  if (-[UIKeyboardEmojiAndStickerCollectionInputView isEmojiCategory:](self, "isEmojiCategory:", [v6 section]) || -[UIKeyboardEmojiAndStickerCollectionInputView isRecentCategory:](self, "isRecentCategory:", objc_msgSend(v6, "section")))
+  if (-[UIKeyboardEmojiAndStickerCollectionInputView isEmojiCategory:](self, "isEmojiCategory:", [pathCopy section]) || -[UIKeyboardEmojiAndStickerCollectionInputView isRecentCategory:](self, "isRecentCategory:", objc_msgSend(pathCopy, "section")))
   {
     v4 = 8;
   }
@@ -5929,16 +5929,16 @@ LABEL_9:
     v5 = v4;
   }
 
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self targetRectForIndexPath:v6 atScrollPosition:v5];
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self targetRectForIndexPath:pathCopy atScrollPosition:v5];
   [(UIScrollView *)self->_collectionView scrollRectToVisible:0 animated:?];
-  self->_currentSection = [v6 section];
-  [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateLastSeenItemForIndexPath:v6];
+  self->_currentSection = [pathCopy section];
+  [(UIKeyboardEmojiAndStickerCollectionInputView *)self updateLastSeenItemForIndexPath:pathCopy];
 }
 
-- (CGRect)targetRectForIndexPath:(id)a3 atScrollPosition:(unint64_t)a4
+- (CGRect)targetRectForIndexPath:(id)path atScrollPosition:(unint64_t)position
 {
-  v6 = a3;
-  v7 = [(UICollectionView *)self->_collectionView layoutAttributesForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(UICollectionView *)self->_collectionView layoutAttributesForItemAtIndexPath:pathCopy];
   [v7 frame];
   v9 = v8;
   v11 = v10;
@@ -5951,7 +5951,7 @@ LABEL_9:
   v48.size.height = v15;
   if (CGRectEqualToRect(v48, *MEMORY[0x1E695F058]))
   {
-    -[UIKeyboardEmojiAndStickerCollectionInputView targetRectForSectionIndex:](self, "targetRectForSectionIndex:", [v6 section]);
+    -[UIKeyboardEmojiAndStickerCollectionInputView targetRectForSectionIndex:](self, "targetRectForSectionIndex:", [pathCopy section]);
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -5959,16 +5959,16 @@ LABEL_9:
 
   else
   {
-    v23 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
+    hasVerticalScrolling = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
     v24 = v9;
     v25 = v11;
     v26 = v13;
     v27 = v15;
-    if (v23)
+    if (hasVerticalScrolling)
     {
       MinY = CGRectGetMinY(*&v24);
-      v29 = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
-      [v29 sectionOffset];
+      emojiGraphicsTraits = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
+      [emojiGraphicsTraits sectionOffset];
       v20 = MinY - v30;
 
       [(UIScrollView *)self->_collectionView contentOffset];
@@ -5977,11 +5977,11 @@ LABEL_9:
 
     else
     {
-      if (a4 == 32)
+      if (position == 32)
       {
         MaxX = CGRectGetMaxX(*&v24);
-        v33 = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
-        [v33 inputViewRightMostPadding];
+        emojiGraphicsTraits2 = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
+        [emojiGraphicsTraits2 inputViewRightMostPadding];
         v35 = MaxX + v34;
         [(UIView *)self->_collectionView bounds];
         v37 = v35 - v36;
@@ -5990,8 +5990,8 @@ LABEL_9:
       else
       {
         MinX = CGRectGetMinX(*&v24);
-        v33 = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
-        [v33 inputViewLeftMostPadding];
+        emojiGraphicsTraits2 = [(UIKeyboardEmojiAndStickerCollectionView *)self->_collectionView emojiGraphicsTraits];
+        [emojiGraphicsTraits2 inputViewLeftMostPadding];
         v37 = MinX - v39;
       }
 
@@ -6019,12 +6019,12 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)targetRectForSectionIndex:(int64_t)a3
+- (CGRect)targetRectForSectionIndex:(int64_t)index
 {
-  v4 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
   if (objc_opt_respondsToSelector())
   {
-    [v4 targetRectForSectionIndex:a3];
+    [collectionViewLayout targetRectForSectionIndex:index];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -6050,11 +6050,11 @@ LABEL_9:
   return result;
 }
 
-- (void)updateOffsetForSearchResultsAnimated:(BOOL)a3
+- (void)updateOffsetForSearchResultsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
-  [v5 deactivateActiveKey];
+  animatedCopy = animated;
+  hitTestResponder = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hitTestResponder];
+  [hitTestResponder deactivateActiveKey];
 
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self resetSelectionIfNeeded];
   if ([(UIView *)self effectiveUserInterfaceLayoutDirection]== UIUserInterfaceLayoutDirectionRightToLeft)
@@ -6067,16 +6067,16 @@ LABEL_9:
     v6 = 8;
   }
 
-  v7 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
+  hasVerticalScrolling = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
   collectionView = self->_collectionView;
-  v9 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentsIndexPath];
-  [(UICollectionView *)collectionView scrollToItemAtIndexPath:v9 atScrollPosition:v6 | v7 animated:v3];
+  recentsIndexPath = [(UIKeyboardEmojiAndStickerCollectionInputView *)self recentsIndexPath];
+  [(UICollectionView *)collectionView scrollToItemAtIndexPath:recentsIndexPath atScrollPosition:v6 | hasVerticalScrolling animated:animatedCopy];
 }
 
-- (double)pointInScrollingDirection:(CGPoint)a3
+- (double)pointInScrollingDirection:(CGPoint)direction
 {
-  y = a3.y;
-  x = a3.x;
+  y = direction.y;
+  x = direction.x;
   if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling])
   {
     return y;
@@ -6088,10 +6088,10 @@ LABEL_9:
   }
 }
 
-- (double)distanceInScrollingDirection:(CGSize)a3
+- (double)distanceInScrollingDirection:(CGSize)direction
 {
-  height = a3.height;
-  width = a3.width;
+  height = direction.height;
+  width = direction.width;
   if ([(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling])
   {
     return height;
@@ -6118,9 +6118,9 @@ LABEL_9:
 
 - (double)scrollingEndPoint
 {
-  v3 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
+  hasVerticalScrolling = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
   emojiGraphicsTraits = self->_emojiGraphicsTraits;
-  if (v3)
+  if (hasVerticalScrolling)
   {
 
     [(UIKeyboardEmojiGraphicsTraits *)emojiGraphicsTraits bottomPadding];
@@ -6135,7 +6135,7 @@ LABEL_9:
   return result;
 }
 
-- (int64_t)updateToCategoryWithOffsetPercentage:(double)a3
+- (int64_t)updateToCategoryWithOffsetPercentage:(double)percentage
 {
   [(UIView *)self->_collectionView bounds];
   Height = CGRectGetHeight(v34);
@@ -6167,15 +6167,15 @@ LABEL_9:
   v12 = v11 - v8;
   [(UIView *)self->_collectionView bounds];
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self distanceInScrollingDirection:v13, v14];
-  v16 = v15 * 0.5 * round(ceil(v12 / (v15 * 0.5)) * a3);
+  v16 = v15 * 0.5 * round(ceil(v12 / (v15 * 0.5)) * percentage);
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self emojiKeyWidth];
   v18 = v17;
   [(UIKeyboardEmojiGraphicsTraits *)self->_emojiGraphicsTraits columnOffset];
   [(UIKeyboardEmojiAndStickerCollectionInputView *)self snappedXOffsetForOffset:1 scrubbing:(v18 + v19 + v19) * round(v16 / (v18 + v19 + v19))];
   v21 = v8 + v20;
-  v22 = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
+  hasVerticalScrolling = [(UIKeyboardEmojiAndStickerCollectionInputView *)self hasVerticalScrolling];
   [(UIScrollView *)self->_collectionView contentOffset];
-  if (v22)
+  if (hasVerticalScrolling)
   {
     v25 = v23;
   }
@@ -6185,7 +6185,7 @@ LABEL_9:
     v25 = v21;
   }
 
-  if (!v22)
+  if (!hasVerticalScrolling)
   {
     v21 = v24;
   }
@@ -6195,8 +6195,8 @@ LABEL_9:
   v28 = v27;
   [(UIView *)self->_collectionView bounds];
   [(UIScrollView *)collectionView scrollRectToVisible:0 animated:v25, v21, v28];
-  v29 = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
-  v30 = [v29 sortedArrayUsingSelector:sel_compare_];
+  indexPathsForVisibleItems = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
+  v30 = [indexPathsForVisibleItems sortedArrayUsingSelector:sel_compare_];
 
   if ([v30 count])
   {

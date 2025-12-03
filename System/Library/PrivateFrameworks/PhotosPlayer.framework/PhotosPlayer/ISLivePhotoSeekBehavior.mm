@@ -1,18 +1,18 @@
 @interface ISLivePhotoSeekBehavior
-- (ISLivePhotoSeekBehavior)initWithInitialLayoutInfo:(id)a3 seekTime:(id *)a4;
-- (void)_handleDidSeekToSeekTime:(BOOL)a3;
+- (ISLivePhotoSeekBehavior)initWithInitialLayoutInfo:(id)info seekTime:(id *)time;
+- (void)_handleDidSeekToSeekTime:(BOOL)time;
 - (void)_seekIfNeeded;
 - (void)activeDidChange;
-- (void)setSeekTime:(id *)a3;
+- (void)setSeekTime:(id *)time;
 @end
 
 @implementation ISLivePhotoSeekBehavior
 
-- (void)_handleDidSeekToSeekTime:(BOOL)a3
+- (void)_handleDidSeekToSeekTime:(BOOL)time
 {
-  v3 = a3;
+  timeCopy = time;
   [(ISLivePhotoSeekBehavior *)self _callSeekCompletionHandler:?];
-  if (v3 && self->_needsTransitionToVideo)
+  if (timeCopy && self->_needsTransitionToVideo)
   {
     self->_needsTransitionToVideo = 0;
     v5 = objc_alloc_init(ISPlayerOutputTransitionOptions);
@@ -124,15 +124,15 @@ void __40__ISLivePhotoSeekBehavior__seekIfNeeded__block_invoke_3(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSeekTime:(id *)a3
+- (void)setSeekTime:(id *)time
 {
   p_seekTime = &self->_seekTime;
-  time1 = *a3;
+  time1 = *time;
   seekTime = self->_seekTime;
   if (CMTimeCompare(&time1, &seekTime))
   {
-    v6 = *&a3->var0;
-    p_seekTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_seekTime->epoch = time->var3;
     *&p_seekTime->value = v6;
     self->_needsSeek = 1;
     [(ISLivePhotoSeekBehavior *)self _seekIfNeeded];
@@ -160,19 +160,19 @@ void __40__ISLivePhotoSeekBehavior__seekIfNeeded__block_invoke_3(uint64_t a1)
   }
 }
 
-- (ISLivePhotoSeekBehavior)initWithInitialLayoutInfo:(id)a3 seekTime:(id *)a4
+- (ISLivePhotoSeekBehavior)initWithInitialLayoutInfo:(id)info seekTime:(id *)time
 {
-  v6 = a3;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = ISLivePhotoSeekBehavior;
-  v7 = [(ISBehavior *)&v12 initWithInitialLayoutInfo:v6];
+  v7 = [(ISBehavior *)&v12 initWithInitialLayoutInfo:infoCopy];
   v8 = v7;
   if (v7)
   {
-    var3 = a4->var3;
-    *(v7 + 56) = *&a4->var0;
+    var3 = time->var3;
+    *(v7 + 56) = *&time->var0;
     *(v7 + 9) = var3;
-    [v6 videoAlpha];
+    [infoCopy videoAlpha];
     v8->_needsTransitionToVideo = v10 == 0.0;
     v8->_needsSeek = 1;
     v8->_signpostID = os_signpost_id_make_with_pointer(MEMORY[0x277D86220], v8);

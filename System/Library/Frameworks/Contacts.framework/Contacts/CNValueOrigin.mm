@@ -1,36 +1,36 @@
 @interface CNValueOrigin
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNValueOrigin)init;
-- (CNValueOrigin)initWithCoder:(id)a3;
-- (CNValueOrigin)initWithLocalizedApplicationName:(id)a3 donationIdentifier:(id)a4;
+- (CNValueOrigin)initWithCoder:(id)coder;
+- (CNValueOrigin)initWithLocalizedApplicationName:(id)name donationIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNValueOrigin
 
 - (CNValueOrigin)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNValueOrigin)initWithLocalizedApplicationName:(id)a3 donationIdentifier:(id)a4
+- (CNValueOrigin)initWithLocalizedApplicationName:(id)name donationIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = CNValueOrigin;
   v8 = [(CNValueOrigin *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     localizedApplicationName = v8->_localizedApplicationName;
     v8->_localizedApplicationName = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     donationIdentifier = v8->_donationIdentifier;
     v8->_donationIdentifier = v11;
 
@@ -43,36 +43,36 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNValueOrigin *)self localizedApplicationName];
-  v5 = [v3 appendName:@"localizedApplicationName" object:v4];
+  localizedApplicationName = [(CNValueOrigin *)self localizedApplicationName];
+  v5 = [v3 appendName:@"localizedApplicationName" object:localizedApplicationName];
 
-  v6 = [(CNValueOrigin *)self donationIdentifier];
-  v7 = [v3 appendName:@"donationIdentifier" object:v6];
+  donationIdentifier = [(CNValueOrigin *)self donationIdentifier];
+  v7 = [v3 appendName:@"donationIdentifier" object:donationIdentifier];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = MEMORY[0x1E69966F0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __25__CNValueOrigin_isEqual___block_invoke;
   v15[3] = &unk_1E7412228;
   v15[4] = self;
-  v16 = v4;
+  v16 = equalCopy;
   aBlock = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __25__CNValueOrigin_isEqual___block_invoke_2;
   v12 = &unk_1E7412228;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v6 = v16;
   v7 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, v13}];
+  LOBYTE(self) = [v5 isObject:v6 memberOfSameClassAndEqualTo:self withBlocks:{v15, v7, 0, aBlock, v10, v11, v12, selfCopy}];
 
   return self;
 }
@@ -134,24 +134,24 @@ uint64_t __21__CNValueOrigin_hash__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (CNValueOrigin)initWithCoder:(id)a3
+- (CNValueOrigin)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedApplicationName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"donationIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedApplicationName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"donationIdentifier"];
 
   v7 = [(CNValueOrigin *)self initWithLocalizedApplicationName:v5 donationIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CNValueOrigin *)self localizedApplicationName];
-  [v4 encodeObject:v5 forKey:@"localizedApplicationName"];
+  coderCopy = coder;
+  localizedApplicationName = [(CNValueOrigin *)self localizedApplicationName];
+  [coderCopy encodeObject:localizedApplicationName forKey:@"localizedApplicationName"];
 
-  v6 = [(CNValueOrigin *)self donationIdentifier];
-  [v4 encodeObject:v6 forKey:@"donationIdentifier"];
+  donationIdentifier = [(CNValueOrigin *)self donationIdentifier];
+  [coderCopy encodeObject:donationIdentifier forKey:@"donationIdentifier"];
 }
 
 @end

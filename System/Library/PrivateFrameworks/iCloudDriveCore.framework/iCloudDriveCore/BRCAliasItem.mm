@@ -1,101 +1,101 @@
 @interface BRCAliasItem
-+ (id)targetReferenceWithItemID:(id)a3 targetZone:(id)a4 isFolderShare:(BOOL)a5;
-+ (void)fillStructureRecord:(id)a3 inZone:(id)a4 itemID:(id)a5 ckInfo:(id)a6 parentID:(id)a7 targetItemID:(id)a8 targetZone:(id)a9 diffs:(unint64_t)a10 isFolderShare:(BOOL)a11 beingDeadInServerTruth:(BOOL)a12 shouldPCSChainStatus:(unsigned __int8)a13;
-- (BOOL)_insertInDB:(id)a3 dbRowID:(unint64_t)a4;
-- (BOOL)_updateInDB:(id)a3 diffs:(unint64_t)a4;
++ (id)targetReferenceWithItemID:(id)d targetZone:(id)zone isFolderShare:(BOOL)share;
++ (void)fillStructureRecord:(id)record inZone:(id)zone itemID:(id)d ckInfo:(id)info parentID:(id)iD targetItemID:(id)itemID targetZone:(id)targetZone diffs:(unint64_t)self0 isFolderShare:(BOOL)self1 beingDeadInServerTruth:(BOOL)self2 shouldPCSChainStatus:(unsigned __int8)self3;
+- (BOOL)_insertInDB:(id)b dbRowID:(unint64_t)d;
+- (BOOL)_updateInDB:(id)b diffs:(unint64_t)diffs;
 - (BOOL)isBRAlias;
 - (BRCClientZone)targetClientZone;
 - (void)isBRAlias;
-- (void)markLatestSyncRequestRejectedInZone:(id)a3;
+- (void)markLatestSyncRequestRejectedInZone:(id)zone;
 @end
 
 @implementation BRCAliasItem
 
-+ (id)targetReferenceWithItemID:(id)a3 targetZone:(id)a4 isFolderShare:(BOOL)a5
++ (id)targetReferenceWithItemID:(id)d targetZone:(id)zone isFolderShare:(BOOL)share
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 zoneID];
-  if (a5)
+  dCopy = d;
+  zoneCopy = zone;
+  zoneID = [zoneCopy zoneID];
+  if (share)
   {
     v10 = @"directory/";
   }
 
   else
   {
-    v11 = [v8 isSharedZone];
+    isSharedZone = [zoneCopy isSharedZone];
     v10 = @"documentStructure/";
-    if (v11)
+    if (isSharedZone)
     {
       v10 = @"documentContent/";
     }
   }
 
   v12 = v10;
-  v13 = [v7 itemIDString];
-  v14 = [(__CFString *)v12 stringByAppendingString:v13];
+  itemIDString = [dCopy itemIDString];
+  v14 = [(__CFString *)v12 stringByAppendingString:itemIDString];
 
-  v15 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v14 zoneID:v9];
+  v15 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v14 zoneID:zoneID];
   v16 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v15 action:0];
 
   return v16;
 }
 
-+ (void)fillStructureRecord:(id)a3 inZone:(id)a4 itemID:(id)a5 ckInfo:(id)a6 parentID:(id)a7 targetItemID:(id)a8 targetZone:(id)a9 diffs:(unint64_t)a10 isFolderShare:(BOOL)a11 beingDeadInServerTruth:(BOOL)a12 shouldPCSChainStatus:(unsigned __int8)a13
++ (void)fillStructureRecord:(id)record inZone:(id)zone itemID:(id)d ckInfo:(id)info parentID:(id)iD targetItemID:(id)itemID targetZone:(id)targetZone diffs:(unint64_t)self0 isFolderShare:(BOOL)self1 beingDeadInServerTruth:(BOOL)self2 shouldPCSChainStatus:(unsigned __int8)self3
 {
-  v33 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  if (a12)
+  recordCopy = record;
+  zoneCopy = zone;
+  dCopy = d;
+  infoCopy = info;
+  iDCopy = iD;
+  itemIDCopy = itemID;
+  targetZoneCopy = targetZone;
+  if (truth)
   {
     v24 = 1;
   }
 
   else
   {
-    v25 = [v20 etag];
-    v24 = v25 == 0;
+    etag = [infoCopy etag];
+    v24 = etag == 0;
   }
 
-  if ((a13 & 0x2C) != 0 || (a10 & 0x20) != 0 || v24)
+  if ((status & 0x2C) != 0 || (diffs & 0x20) != 0 || v24)
   {
-    v26 = [v21 validatingDirectoryReferenceInZone:v18];
-    [v33 setObject:v26 forKeyedSubscript:@"parent"];
+    v26 = [iDCopy validatingDirectoryReferenceInZone:zoneCopy];
+    [recordCopy setObject:v26 forKeyedSubscript:@"parent"];
 
-    if ((a13 & 0x3C) != 0)
+    if ((status & 0x3C) != 0)
     {
-      v27 = [v21 pcsChainParentReferenceInZone:v18];
-      [v33 setParent:v27];
+      v27 = [iDCopy pcsChainParentReferenceInZone:zoneCopy];
+      [recordCopy setParent:v27];
     }
   }
 
   if (v24)
   {
-    if ([v23 isPrivateZone])
+    if ([targetZoneCopy isPrivateZone])
     {
-      v28 = v22;
+      v28 = itemIDCopy;
     }
 
     else
     {
-      v28 = v19;
+      v28 = dCopy;
     }
 
-    v29 = [v28 itemIDString];
-    v30 = [v29 brc_SHA256];
-    [v33 setObject:v30 forKeyedSubscript:@"basehash"];
+    itemIDString = [v28 itemIDString];
+    brc_SHA256 = [itemIDString brc_SHA256];
+    [recordCopy setObject:brc_SHA256 forKeyedSubscript:@"basehash"];
 
-    v31 = [a1 targetReferenceWithItemID:v22 targetZone:v23 isFolderShare:a11];
-    [v33 setObject:v31 forKeyedSubscript:@"target"];
+    v31 = [self targetReferenceWithItemID:itemIDCopy targetZone:targetZoneCopy isFolderShare:share];
+    [recordCopy setObject:v31 forKeyedSubscript:@"target"];
   }
 
-  if (!a12)
+  if (!truth)
   {
-    [v33 serializeSystemFields:v20];
+    [recordCopy serializeSystemFields:infoCopy];
   }
 }
 
@@ -109,10 +109,10 @@
   return 1;
 }
 
-- (BOOL)_insertInDB:(id)a3 dbRowID:(unint64_t)a4
+- (BOOL)_insertInDB:(id)b dbRowID:(unint64_t)d
 {
-  v33 = a3;
-  v44 = [(BRCServerZone *)self->super._serverZone dbRowID];
+  bCopy = b;
+  dbRowID = [(BRCServerZone *)self->super._serverZone dbRowID];
   itemID = self->super._itemID;
   ownerKey = self->super._ownerKey;
   sharingOptions = self->super._sharingOptions;
@@ -121,18 +121,18 @@
   localDiffs = self->super._localDiffs;
   notifsRank = self->super._notifsRank;
   syncUpState = self->super._syncUpState;
-  v38 = [(BRCLocalItem *)self appLibrary];
-  v41 = [v38 dbRowID];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  dbRowID2 = [appLibrary dbRowID];
   minimumSupportedOSRowID = self->super._minimumSupportedOSRowID;
   isUserVisible = self->super._isUserVisible;
-  v45 = [(BRCStatInfo *)self->super._st ckInfo];
-  v25 = [(BRCStatInfo *)self->super._st state];
-  v24 = [(BRCStatInfo *)self->super._st type];
-  v21 = [(BRCStatInfo *)self->super._st mode];
-  v23 = [(BRCStatInfo *)self->super._st birthtime];
-  v22 = [(BRCStatInfo *)self->super._st lastUsedTime];
-  v20 = [(BRCStatInfo *)self->super._st favoriteRank];
-  v42 = [(BRCStatInfo *)self->super._st parentID];
+  ckInfo = [(BRCStatInfo *)self->super._st ckInfo];
+  state = [(BRCStatInfo *)self->super._st state];
+  type = [(BRCStatInfo *)self->super._st type];
+  mode = [(BRCStatInfo *)self->super._st mode];
+  birthtime = [(BRCStatInfo *)self->super._st birthtime];
+  lastUsedTime = [(BRCStatInfo *)self->super._st lastUsedTime];
+  favoriteRank = [(BRCStatInfo *)self->super._st favoriteRank];
+  parentID = [(BRCStatInfo *)self->super._st parentID];
   st = self->super._st;
   logicalName = st->super._logicalName;
   if (!logicalName)
@@ -141,24 +141,24 @@
   }
 
   v19 = logicalName;
-  v18 = [(BRCStatInfo *)st isHiddenExt];
-  v43 = [(BRCStatInfo *)self->super._st finderTags];
-  v40 = [(BRCStatInfo *)self->super._st xattrSignature];
-  v39 = [(BRCStatInfo *)self->super._st trashPutBackPath];
-  v7 = [(BRCStatInfo *)self->super._st trashPutBackParentID];
-  v8 = [(BRCStatInfo *)self->super._st aliasTarget];
-  v9 = [(BRCStatInfo *)self->super._st creatorRowID];
-  v10 = [(BRCLocalStatInfo *)self->super._st processingStamp];
-  v11 = [(BRCLocalStatInfo *)self->super._st rawBouncedLogicalName];
-  v12 = [(BRCLocalStatInfo *)self->super._st itemScope];
-  v13 = [(BRCLocalStatInfo *)self->super._st localChangeCount];
-  v14 = [(BRCLocalStatInfo *)self->super._st oldVersionIdentifier];
-  v15 = [(BRCLocalStatInfo *)self->super._st fpCreationItemIdentifier];
-  if ([v33 execute:{@"INSERT INTO client_items(rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier) VALUES(%lld, %@, %@, %@, %ld, %@, %@, %d, %lld, %lld, %@, %@, %d, %@, %d, %d, %d, %lld, %lld, %lld, %@, %@, %d, %@, %@, %@, %@, %@, %@, %@, %@, %d, %llu, %@, %@)", a4, v44, itemID, ownerKey, sharingOptions, sideCarCKInfo, parentZoneRowID, syncUpState, localDiffs, notifsRank, v41, minimumSupportedOSRowID, isUserVisible, v45, v25, v24, v21, v23, v22, v20, v42, v19, v18, v43, v40, v39, v7, v8, v9, v10, v11, v12, v13, v14, v15}])
+  isHiddenExt = [(BRCStatInfo *)st isHiddenExt];
+  finderTags = [(BRCStatInfo *)self->super._st finderTags];
+  xattrSignature = [(BRCStatInfo *)self->super._st xattrSignature];
+  trashPutBackPath = [(BRCStatInfo *)self->super._st trashPutBackPath];
+  trashPutBackParentID = [(BRCStatInfo *)self->super._st trashPutBackParentID];
+  aliasTarget = [(BRCStatInfo *)self->super._st aliasTarget];
+  creatorRowID = [(BRCStatInfo *)self->super._st creatorRowID];
+  processingStamp = [(BRCLocalStatInfo *)self->super._st processingStamp];
+  rawBouncedLogicalName = [(BRCLocalStatInfo *)self->super._st rawBouncedLogicalName];
+  itemScope = [(BRCLocalStatInfo *)self->super._st itemScope];
+  localChangeCount = [(BRCLocalStatInfo *)self->super._st localChangeCount];
+  oldVersionIdentifier = [(BRCLocalStatInfo *)self->super._st oldVersionIdentifier];
+  fpCreationItemIdentifier = [(BRCLocalStatInfo *)self->super._st fpCreationItemIdentifier];
+  if ([bCopy execute:{@"INSERT INTO client_items(rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier) VALUES(%lld, %@, %@, %@, %ld, %@, %@, %d, %lld, %lld, %@, %@, %d, %@, %d, %d, %d, %lld, %lld, %lld, %@, %@, %d, %@, %@, %@, %@, %@, %@, %@, %@, %d, %llu, %@, %@)", d, dbRowID, itemID, ownerKey, sharingOptions, sideCarCKInfo, parentZoneRowID, syncUpState, localDiffs, notifsRank, dbRowID2, minimumSupportedOSRowID, isUserVisible, ckInfo, state, type, mode, birthtime, lastUsedTime, favoriteRank, parentID, v19, isHiddenExt, finderTags, xattrSignature, trashPutBackPath, trashPutBackParentID, aliasTarget, creatorRowID, processingStamp, rawBouncedLogicalName, itemScope, localChangeCount, oldVersionIdentifier, fpCreationItemIdentifier}])
   {
     v46.receiver = self;
     v46.super_class = BRCAliasItem;
-    v16 = [(BRCLocalItem *)&v46 _insertInDB:v33 dbRowID:a4];
+    v16 = [(BRCLocalItem *)&v46 _insertInDB:bCopy dbRowID:d];
   }
 
   else
@@ -169,10 +169,10 @@
   return v16;
 }
 
-- (BOOL)_updateInDB:(id)a3 diffs:(unint64_t)a4
+- (BOOL)_updateInDB:(id)b diffs:(unint64_t)diffs
 {
-  v33 = a3;
-  v44 = [(BRCClientZone *)self->super._clientZone dbRowID];
+  bCopy = b;
+  dbRowID = [(BRCClientZone *)self->super._clientZone dbRowID];
   itemID = self->super._itemID;
   ownerKey = self->super._ownerKey;
   sharingOptions = self->super._sharingOptions;
@@ -181,18 +181,18 @@
   localDiffs = self->super._localDiffs;
   notifsRank = self->super._notifsRank;
   syncUpState = self->super._syncUpState;
-  v39 = [(BRCLocalItem *)self appLibrary];
-  v42 = [v39 dbRowID];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  dbRowID2 = [appLibrary dbRowID];
   minimumSupportedOSRowID = self->super._minimumSupportedOSRowID;
   isUserVisible = self->super._isUserVisible;
-  v43 = [(BRCStatInfo *)self->super._st ckInfo];
-  v27 = [(BRCStatInfo *)self->super._st state];
-  v25 = [(BRCStatInfo *)self->super._st type];
-  v26 = [(BRCStatInfo *)self->super._st mode];
-  v24 = [(BRCStatInfo *)self->super._st birthtime];
-  v23 = [(BRCStatInfo *)self->super._st lastUsedTime];
-  v22 = [(BRCStatInfo *)self->super._st favoriteRank];
-  v45 = [(BRCStatInfo *)self->super._st parentID];
+  ckInfo = [(BRCStatInfo *)self->super._st ckInfo];
+  state = [(BRCStatInfo *)self->super._st state];
+  type = [(BRCStatInfo *)self->super._st type];
+  mode = [(BRCStatInfo *)self->super._st mode];
+  birthtime = [(BRCStatInfo *)self->super._st birthtime];
+  lastUsedTime = [(BRCStatInfo *)self->super._st lastUsedTime];
+  favoriteRank = [(BRCStatInfo *)self->super._st favoriteRank];
+  parentID = [(BRCStatInfo *)self->super._st parentID];
   st = self->super._st;
   logicalName = st->super._logicalName;
   if (!logicalName)
@@ -201,24 +201,24 @@
   }
 
   v20 = logicalName;
-  v19 = [(BRCStatInfo *)st isHiddenExt];
-  v41 = [(BRCStatInfo *)self->super._st finderTags];
-  v40 = [(BRCStatInfo *)self->super._st xattrSignature];
-  v21 = [(BRCStatInfo *)self->super._st trashPutBackPath];
-  v7 = [(BRCStatInfo *)self->super._st trashPutBackParentID];
-  v8 = [(BRCStatInfo *)self->super._st aliasTarget];
-  v9 = [(BRCStatInfo *)self->super._st creatorRowID];
-  v10 = [(BRCLocalStatInfo *)self->super._st processingStamp];
-  v11 = [(BRCLocalStatInfo *)self->super._st rawBouncedLogicalName];
-  v12 = [(BRCLocalStatInfo *)self->super._st itemScope];
-  v13 = [(BRCLocalStatInfo *)self->super._st localChangeCount];
-  v14 = [(BRCLocalStatInfo *)self->super._st oldVersionIdentifier];
-  v15 = [(BRCLocalStatInfo *)self->super._st fpCreationItemIdentifier];
-  if ([v33 execute:{@"UPDATE client_items SET  zone_rowid = %@, item_id = %@, item_creator_id = %@, item_sharing_options = %ld, item_side_car_ckinfo = %@, item_parent_zone_rowid = %@, item_localsyncupstate = %d, item_local_diffs = %llu, item_notifs_rank = %lld, app_library_rowid = %@, item_min_supported_os_rowid = %@, item_user_visible = %d, item_stat_ckinfo = %@, item_state = %d, item_type = %d, item_mode = %d, item_birthtime = %lld, item_lastusedtime = %lld, item_favoriterank = %lld, item_parent_id = %@, item_filename = %@, item_hidden_ext = %d, item_finder_tags = %@, item_xattr_signature = %@, item_trash_put_back_path = %@, item_trash_put_back_parent_id = %@, item_alias_target = %@, item_creator = %@, item_processing_stamp = %@, item_bouncedname = %@, item_scope = %d, item_local_change_count = %llu, item_old_version_identifier = %@, fp_creation_item_identifier = %@  WHERE rowid = %llu", v44, itemID, ownerKey, sharingOptions, sideCarCKInfo, parentZoneRowID, syncUpState, localDiffs, notifsRank, v42, minimumSupportedOSRowID, isUserVisible, v43, v27, v25, v26, v24, v23, v22, v45, v20, v19, v41, v40, v21, v7, v8, v9, v10, v11, v12, v13, v14, v15, self->super._dbRowID}])
+  isHiddenExt = [(BRCStatInfo *)st isHiddenExt];
+  finderTags = [(BRCStatInfo *)self->super._st finderTags];
+  xattrSignature = [(BRCStatInfo *)self->super._st xattrSignature];
+  trashPutBackPath = [(BRCStatInfo *)self->super._st trashPutBackPath];
+  trashPutBackParentID = [(BRCStatInfo *)self->super._st trashPutBackParentID];
+  aliasTarget = [(BRCStatInfo *)self->super._st aliasTarget];
+  creatorRowID = [(BRCStatInfo *)self->super._st creatorRowID];
+  processingStamp = [(BRCLocalStatInfo *)self->super._st processingStamp];
+  rawBouncedLogicalName = [(BRCLocalStatInfo *)self->super._st rawBouncedLogicalName];
+  itemScope = [(BRCLocalStatInfo *)self->super._st itemScope];
+  localChangeCount = [(BRCLocalStatInfo *)self->super._st localChangeCount];
+  oldVersionIdentifier = [(BRCLocalStatInfo *)self->super._st oldVersionIdentifier];
+  fpCreationItemIdentifier = [(BRCLocalStatInfo *)self->super._st fpCreationItemIdentifier];
+  if ([bCopy execute:{@"UPDATE client_items SET  zone_rowid = %@, item_id = %@, item_creator_id = %@, item_sharing_options = %ld, item_side_car_ckinfo = %@, item_parent_zone_rowid = %@, item_localsyncupstate = %d, item_local_diffs = %llu, item_notifs_rank = %lld, app_library_rowid = %@, item_min_supported_os_rowid = %@, item_user_visible = %d, item_stat_ckinfo = %@, item_state = %d, item_type = %d, item_mode = %d, item_birthtime = %lld, item_lastusedtime = %lld, item_favoriterank = %lld, item_parent_id = %@, item_filename = %@, item_hidden_ext = %d, item_finder_tags = %@, item_xattr_signature = %@, item_trash_put_back_path = %@, item_trash_put_back_parent_id = %@, item_alias_target = %@, item_creator = %@, item_processing_stamp = %@, item_bouncedname = %@, item_scope = %d, item_local_change_count = %llu, item_old_version_identifier = %@, fp_creation_item_identifier = %@  WHERE rowid = %llu", dbRowID, itemID, ownerKey, sharingOptions, sideCarCKInfo, parentZoneRowID, syncUpState, localDiffs, notifsRank, dbRowID2, minimumSupportedOSRowID, isUserVisible, ckInfo, state, type, mode, birthtime, lastUsedTime, favoriteRank, parentID, v20, isHiddenExt, finderTags, xattrSignature, trashPutBackPath, trashPutBackParentID, aliasTarget, creatorRowID, processingStamp, rawBouncedLogicalName, itemScope, localChangeCount, oldVersionIdentifier, fpCreationItemIdentifier, self->super._dbRowID}])
   {
     v46.receiver = self;
     v46.super_class = BRCAliasItem;
-    v16 = [(BRCLocalItem *)&v46 _updateInDB:v33 diffs:a4];
+    v16 = [(BRCLocalItem *)&v46 _updateInDB:bCopy diffs:diffs];
   }
 
   else
@@ -232,16 +232,16 @@
 - (BRCClientZone)targetClientZone
 {
   session = self->super._session;
-  v3 = [(BRCStatInfo *)self->super._st _aliasTargetMangledID];
-  v4 = [(BRCAccountSession *)session clientZoneByMangledID:v3];
+  _aliasTargetMangledID = [(BRCStatInfo *)self->super._st _aliasTargetMangledID];
+  v4 = [(BRCAccountSession *)session clientZoneByMangledID:_aliasTargetMangledID];
 
   return v4;
 }
 
-- (void)markLatestSyncRequestRejectedInZone:(id)a3
+- (void)markLatestSyncRequestRejectedInZone:(id)zone
 {
   self->super._localDiffs = 0;
-  v4 = a3;
+  zoneCopy = zone;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -251,7 +251,7 @@
 
   v7.receiver = self;
   v7.super_class = BRCAliasItem;
-  [(BRCLocalItem *)&v7 markLatestSyncRequestRejectedInZone:v4];
+  [(BRCLocalItem *)&v7 markLatestSyncRequestRejectedInZone:zoneCopy];
 }
 
 - (void)isBRAlias

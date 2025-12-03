@@ -2,23 +2,23 @@
 - (APPCMediaMetricsHelper)init;
 - (id)visiblePercentageChanged;
 - (void)mediaComplete;
-- (void)mediaContractedAtPosition:(double)a3 fullScreen:(BOOL)a4;
-- (void)mediaExpandedAtPosition:(double)a3 fullScreen:(BOOL)a4;
+- (void)mediaContractedAtPosition:(double)position fullScreen:(BOOL)screen;
+- (void)mediaExpandedAtPosition:(double)position fullScreen:(BOOL)screen;
 - (void)mediaFinished;
 - (void)mediaLoaded;
-- (void)mediaPausedAtPosition:(double)a3;
-- (void)mediaPlayedAtPosition:(double)a3;
-- (void)mediaProgress:(int64_t)a3;
-- (void)mediaShowControlsAtPosition:(double)a3;
-- (void)mediaSkippedAtPosition:(double)a3;
+- (void)mediaPausedAtPosition:(double)position;
+- (void)mediaPlayedAtPosition:(double)position;
+- (void)mediaProgress:(int64_t)progress;
+- (void)mediaShowControlsAtPosition:(double)position;
+- (void)mediaSkippedAtPosition:(double)position;
 - (void)mediaStarted;
-- (void)mediaVolumeChangedAtPosition:(double)a3 volume:(float)a4;
-- (void)registerHandlerForAllMetricsWithClosure:(id)a3;
+- (void)mediaVolumeChangedAtPosition:(double)position volume:(float)volume;
+- (void)registerHandlerForAllMetricsWithClosure:(id)closure;
 - (void)removeHandler;
-- (void)setVisiblePercentage:(int64_t)a3;
-- (void)setVisiblePercentageChanged:(id)a3;
+- (void)setVisiblePercentage:(int64_t)percentage;
+- (void)setVisiblePercentageChanged:(id)changed;
 - (void)videoChosen;
-- (void)videoChosenWithVideoWidth:(float)a3 videoHeight:(float)a4;
+- (void)videoChosenWithVideoWidth:(float)width videoHeight:(float)height;
 @end
 
 @implementation APPCMediaMetricsHelper
@@ -47,9 +47,9 @@
   return v4;
 }
 
-- (void)setVisiblePercentageChanged:(id)a3
+- (void)setVisiblePercentageChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -68,109 +68,109 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1C1AC0530(v7);
 }
 
-- (void)setVisiblePercentage:(int64_t)a3
+- (void)setVisiblePercentage:(int64_t)percentage
 {
-  v4 = self;
-  sub_1C1B13220(a3);
+  selfCopy = self;
+  sub_1C1B13220(percentage);
 }
 
-- (void)registerHandlerForAllMetricsWithClosure:(id)a3
+- (void)registerHandlerForAllMetricsWithClosure:(id)closure
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(closure);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1C1B1352C(sub_1C1B192F0, v5);
 }
 
 - (void)removeHandler
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B13778();
 }
 
 - (void)mediaLoaded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B14874();
 }
 
-- (void)videoChosenWithVideoWidth:(float)a3 videoHeight:(float)a4
+- (void)videoChosenWithVideoWidth:(float)width videoHeight:(float)height
 {
-  v4 = self;
+  selfCopy = self;
   sub_1C1B151A8();
 }
 
 - (void)videoChosen
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B151A8();
 }
 
-- (void)mediaPlayedAtPosition:(double)a3
+- (void)mediaPlayedAtPosition:(double)position
 {
-  v4 = self;
-  sub_1C1B156F4(a3);
+  selfCopy = self;
+  sub_1C1B156F4(position);
 }
 
-- (void)mediaPausedAtPosition:(double)a3
+- (void)mediaPausedAtPosition:(double)position
 {
-  v4 = self;
-  sub_1C1B15C28(a3);
+  selfCopy = self;
+  sub_1C1B15C28(position);
 }
 
-- (void)mediaSkippedAtPosition:(double)a3
+- (void)mediaSkippedAtPosition:(double)position
 {
-  v4 = self;
-  sub_1C1B15C88(a3);
+  selfCopy = self;
+  sub_1C1B15C88(position);
 }
 
-- (void)mediaVolumeChangedAtPosition:(double)a3 volume:(float)a4
+- (void)mediaVolumeChangedAtPosition:(double)position volume:(float)volume
 {
-  v6 = self;
-  sub_1C1B1608C(a3, a4);
+  selfCopy = self;
+  sub_1C1B1608C(position, volume);
 }
 
-- (void)mediaExpandedAtPosition:(double)a3 fullScreen:(BOOL)a4
+- (void)mediaExpandedAtPosition:(double)position fullScreen:(BOOL)screen
 {
-  v4 = a4;
-  v6 = self;
-  sub_1C1B166E8(v4, a3);
+  screenCopy = screen;
+  selfCopy = self;
+  sub_1C1B166E8(screenCopy, position);
 }
 
-- (void)mediaContractedAtPosition:(double)a3 fullScreen:(BOOL)a4
+- (void)mediaContractedAtPosition:(double)position fullScreen:(BOOL)screen
 {
-  v4 = a4;
-  v6 = self;
-  sub_1C1B16754(v4, a3);
+  screenCopy = screen;
+  selfCopy = self;
+  sub_1C1B16754(screenCopy, position);
 }
 
-- (void)mediaShowControlsAtPosition:(double)a3
+- (void)mediaShowControlsAtPosition:(double)position
 {
-  v4 = self;
-  sub_1C1B16D68(a3);
+  selfCopy = self;
+  sub_1C1B16D68(position);
 }
 
 - (void)mediaStarted
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B172A8();
 }
 
 - (void)mediaFinished
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B1748C(100);
 }
 
-- (void)mediaProgress:(int64_t)a3
+- (void)mediaProgress:(int64_t)progress
 {
-  v4 = self;
-  sub_1C1B1748C(a3);
+  selfCopy = self;
+  sub_1C1B1748C(progress);
 }
 
 - (APPCMediaMetricsHelper)init

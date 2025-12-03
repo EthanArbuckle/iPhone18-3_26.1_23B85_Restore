@@ -1,16 +1,16 @@
 @interface CKChatEagerUploadController
 - (CKChatEagerUploadController)init;
-- (id)_newTransferForURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5;
-- (void)_uploadFileURL:(id)a3 filename:(id)a4 transcoderUserInfo:(id)a5 videoComplementURL:(id)a6 attributionInfo:(id)a7 identifier:(id)a8 recipients:(id)a9;
-- (void)addURLToIdentifierMap:(id)a3 forIdentifier:(id)a4;
-- (void)asyncCopyFileAtURL:(id)a3 toDestinationURL:(id)a4 completion:(id)a5;
+- (id)_newTransferForURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo;
+- (void)_uploadFileURL:(id)l filename:(id)filename transcoderUserInfo:(id)info videoComplementURL:(id)rL attributionInfo:(id)attributionInfo identifier:(id)identifier recipients:(id)recipients;
+- (void)addURLToIdentifierMap:(id)map forIdentifier:(id)identifier;
+- (void)asyncCopyFileAtURL:(id)l toDestinationURL:(id)rL completion:(id)completion;
 - (void)cancelAll;
-- (void)cancelIdentifier:(id)a3;
-- (void)cancelURL:(id)a3;
+- (void)cancelIdentifier:(id)identifier;
+- (void)cancelURL:(id)l;
 - (void)didSendComposition;
-- (void)removeTemporaryURLForURL:(id)a3;
-- (void)uploadFileURL:(id)a3 filename:(id)a4 transcoderUserInfo:(id)a5 videoComplementURL:(id)a6 attributionInfo:(id)a7 identifier:(id)a8 recipients:(id)a9;
-- (void)uploadPayload:(id)a3 identifier:(id)a4 replace:(BOOL)a5 recipients:(id)a6;
+- (void)removeTemporaryURLForURL:(id)l;
+- (void)uploadFileURL:(id)l filename:(id)filename transcoderUserInfo:(id)info videoComplementURL:(id)rL attributionInfo:(id)attributionInfo identifier:(id)identifier recipients:(id)recipients;
+- (void)uploadPayload:(id)payload identifier:(id)identifier replace:(BOOL)replace recipients:(id)recipients;
 @end
 
 @implementation CKChatEagerUploadController
@@ -35,17 +35,17 @@
   return v2;
 }
 
-- (void)removeTemporaryURLForURL:(id)a3
+- (void)removeTemporaryURLForURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   v4 = [(NSMutableDictionary *)self->_temporaryURLS objectForKeyedSubscript:?];
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 removeItemAtURL:v4 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:v4 error:0];
   }
 
-  [(NSMutableDictionary *)self->_temporaryURLS setObject:0 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_temporaryURLS setObject:0 forKeyedSubscript:lCopy];
 }
 
 - (void)didSendComposition
@@ -91,10 +91,10 @@
   }
 }
 
-- (void)cancelIdentifier:(id)a3
+- (void)cancelIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(NSMutableDictionary *)self->_identifierMap objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_identifierMap objectForKeyedSubscript:identifier];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -125,28 +125,28 @@
   }
 }
 
-- (void)cancelURL:(id)a3
+- (void)cancelURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([MEMORY[0x1E69A7F58] IMIsEagerUploadEnabledForPhoneNumber:0 simID:0])
   {
-    [(NSMutableArray *)self->_uploadUrls removeObject:v4];
+    [(NSMutableArray *)self->_uploadUrls removeObject:lCopy];
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     identifierMap = self->_identifierMap;
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __41__CKChatEagerUploadController_cancelURL___block_invoke;
     v15 = &unk_1E72F81C8;
-    v7 = v4;
+    v7 = lCopy;
     v16 = v7;
     v17 = v5;
     v8 = v5;
     [(NSMutableDictionary *)identifierMap enumerateKeysAndObjectsUsingBlock:&v12];
     [(NSMutableDictionary *)self->_identifierMap removeObjectsForKeys:v8, v12, v13, v14, v15];
     v9 = [(NSMutableDictionary *)self->_temporaryURLS objectForKeyedSubscript:v7];
-    v10 = [MEMORY[0x1E69A5B50] sharedController];
-    v11 = [v10 remoteDaemon];
-    [v11 eagerUploadCancel:v9];
+    mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedController];
+    remoteDaemon = [mEMORY[0x1E69A5B50] remoteDaemon];
+    [remoteDaemon eagerUploadCancel:v9];
 
     [(CKChatEagerUploadController *)self removeTemporaryURLForURL:v7];
   }
@@ -161,138 +161,138 @@ void __41__CKChatEagerUploadController_cancelURL___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)_newTransferForURL:(id)a3 transcoderUserInfo:(id)a4 attributionInfo:(id)a5
+- (id)_newTransferForURL:(id)l transcoderUserInfo:(id)info attributionInfo:(id)attributionInfo
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
-  v11 = [v7 path];
+  lCopy = l;
+  infoCopy = info;
+  attributionInfoCopy = attributionInfo;
+  defaultHFSFileManager = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
+  path = [lCopy path];
   v22 = 0;
-  v12 = [v10 attributesOfItemAtPath:v11 error:&v22];
+  v12 = [defaultHFSFileManager attributesOfItemAtPath:path error:&v22];
 
   v13 = [v12 objectForKey:*MEMORY[0x1E696A3D8]];
-  LOBYTE(v11) = [v13 isEqual:*MEMORY[0x1E696A3E0]];
+  LOBYTE(path) = [v13 isEqual:*MEMORY[0x1E696A3E0]];
 
   v14 = 0;
-  if ((v11 & 1) == 0)
+  if ((path & 1) == 0)
   {
     v15 = objc_alloc(MEMORY[0x1E69A8078]);
-    v16 = [v7 lastPathComponent];
-    v17 = [v12 fileSize];
-    v18 = [v12 fileHFSTypeCode];
-    v19 = [v12 fileHFSCreatorCode];
+    lastPathComponent = [lCopy lastPathComponent];
+    fileSize = [v12 fileSize];
+    fileHFSTypeCode = [v12 fileHFSTypeCode];
+    fileHFSCreatorCode = [v12 fileHFSCreatorCode];
     BYTE2(v21) = 0;
     LOWORD(v21) = [v12 fileHFSFlags];
-    v14 = [v15 _initWithGUID:@"EAGER" filename:v16 isDirectory:0 localURL:v7 account:0 otherPerson:0 totalBytes:v17 hfsType:__PAIR64__(v19 hfsCreator:v18) hfsFlags:v21 isIncoming:?];
+    v14 = [v15 _initWithGUID:@"EAGER" filename:lastPathComponent isDirectory:0 localURL:lCopy account:0 otherPerson:0 totalBytes:fileSize hfsType:__PAIR64__(fileHFSCreatorCode hfsCreator:fileHFSTypeCode) hfsFlags:v21 isIncoming:?];
 
-    [v14 setTranscoderUserInfo:v8];
-    [v14 setAttributionInfo:v9];
+    [v14 setTranscoderUserInfo:infoCopy];
+    [v14 setAttributionInfo:attributionInfoCopy];
   }
 
   return v14;
 }
 
-- (void)uploadPayload:(id)a3 identifier:(id)a4 replace:(BOOL)a5 recipients:(id)a6
+- (void)uploadPayload:(id)payload identifier:(id)identifier replace:(BOOL)replace recipients:(id)recipients
 {
-  v7 = a5;
+  replaceCopy = replace;
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([MEMORY[0x1E69A7F58] IMIsEagerUploadEnabledForPhoneNumber:0 simID:0] && (objc_msgSend(v10, "isSticker") & 1) == 0 && (objc_msgSend(v10, "shouldSendAsRichLink") & 1) == 0)
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  recipientsCopy = recipients;
+  if ([MEMORY[0x1E69A7F58] IMIsEagerUploadEnabledForPhoneNumber:0 simID:0] && (objc_msgSend(payloadCopy, "isSticker") & 1) == 0 && (objc_msgSend(payloadCopy, "shouldSendAsRichLink") & 1) == 0)
   {
-    v13 = [v10 fileURL];
+    fileURL = [payloadCopy fileURL];
     if (IMOSLoggingEnabled())
     {
       v14 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v19 = v13;
+        v19 = fileURL;
         v20 = 2112;
-        v21 = v12;
+        v21 = recipientsCopy;
         _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Eager Upload Payload at URL %@ recipients %@", buf, 0x16u);
       }
     }
 
-    if (v7)
+    if (replaceCopy)
     {
       [(CKChatEagerUploadController *)self cancelAll];
     }
 
-    if (v13)
+    if (fileURL)
     {
-      v15 = [v10 transcoderUserInfo];
-      v16 = [v10 videoComplementFileURL];
-      v17 = [v10 attributionInfo];
-      [(CKChatEagerUploadController *)self _uploadFileURL:v13 filename:0 transcoderUserInfo:v15 videoComplementURL:v16 attributionInfo:v17 identifier:v11 recipients:v12];
+      transcoderUserInfo = [payloadCopy transcoderUserInfo];
+      videoComplementFileURL = [payloadCopy videoComplementFileURL];
+      attributionInfo = [payloadCopy attributionInfo];
+      [(CKChatEagerUploadController *)self _uploadFileURL:fileURL filename:0 transcoderUserInfo:transcoderUserInfo videoComplementURL:videoComplementFileURL attributionInfo:attributionInfo identifier:identifierCopy recipients:recipientsCopy];
     }
   }
 }
 
-- (void)uploadFileURL:(id)a3 filename:(id)a4 transcoderUserInfo:(id)a5 videoComplementURL:(id)a6 attributionInfo:(id)a7 identifier:(id)a8 recipients:(id)a9
+- (void)uploadFileURL:(id)l filename:(id)filename transcoderUserInfo:(id)info videoComplementURL:(id)rL attributionInfo:(id)attributionInfo identifier:(id)identifier recipients:(id)recipients
 {
   v27 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  lCopy = l;
+  filenameCopy = filename;
+  infoCopy = info;
+  rLCopy = rL;
+  attributionInfoCopy = attributionInfo;
+  identifierCopy = identifier;
+  recipientsCopy = recipients;
   if (IMOSLoggingEnabled())
   {
     v22 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v24 = v15;
+      v24 = lCopy;
       v25 = 2112;
-      v26 = v21;
+      v26 = recipientsCopy;
       _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "Eager Upload url %@ recipients %@", buf, 0x16u);
     }
   }
 
   [(CKChatEagerUploadController *)self cancelAll];
-  [(CKChatEagerUploadController *)self _uploadFileURL:v15 filename:v16 transcoderUserInfo:v17 videoComplementURL:v18 attributionInfo:v19 identifier:v20 recipients:v21];
+  [(CKChatEagerUploadController *)self _uploadFileURL:lCopy filename:filenameCopy transcoderUserInfo:infoCopy videoComplementURL:rLCopy attributionInfo:attributionInfoCopy identifier:identifierCopy recipients:recipientsCopy];
 }
 
-- (void)_uploadFileURL:(id)a3 filename:(id)a4 transcoderUserInfo:(id)a5 videoComplementURL:(id)a6 attributionInfo:(id)a7 identifier:(id)a8 recipients:(id)a9
+- (void)_uploadFileURL:(id)l filename:(id)filename transcoderUserInfo:(id)info videoComplementURL:(id)rL attributionInfo:(id)attributionInfo identifier:(id)identifier recipients:(id)recipients
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v32 = a4;
-  v33 = a5;
-  v34 = a6;
-  v35 = a7;
-  v36 = a8;
-  v37 = a9;
-  if (v15)
+  lCopy = l;
+  filenameCopy = filename;
+  infoCopy = info;
+  rLCopy = rL;
+  attributionInfoCopy = attributionInfo;
+  identifierCopy = identifier;
+  recipientsCopy = recipients;
+  if (lCopy)
   {
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v17 = [v15 lastPathComponent];
-    v18 = CKAttachmentTmpFileURL(v17);
+    lastPathComponent = [lCopy lastPathComponent];
+    v18 = CKAttachmentTmpFileURL(lastPathComponent);
 
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __131__CKChatEagerUploadController__uploadFileURL_filename_transcoderUserInfo_videoComplementURL_attributionInfo_identifier_recipients___block_invoke;
     v46[3] = &unk_1E72F81F0;
     v46[4] = self;
-    v47 = v15;
+    v47 = lCopy;
     v48 = v18;
-    v49 = v33;
-    v19 = v35;
+    v49 = infoCopy;
+    v19 = attributionInfoCopy;
     v50 = v19;
-    v20 = v32;
+    v20 = filenameCopy;
     v51 = v20;
-    v21 = v34;
+    v21 = rLCopy;
     v52 = v21;
     v30 = v16;
     v53 = v30;
-    v22 = v37;
+    v22 = recipientsCopy;
     v54 = v22;
-    v23 = v36;
+    v23 = identifierCopy;
     v55 = v23;
     v31 = v48;
     [(CKChatEagerUploadController *)self asyncCopyFileAtURL:v47 toDestinationURL:v48 completion:v46];
@@ -301,8 +301,8 @@ void __41__CKChatEagerUploadController_cancelURL___block_invoke(uint64_t a1, voi
       v57 = *MEMORY[0x1E69A6F50];
       v58[0] = MEMORY[0x1E695E118];
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:&v57 count:{1, v30}];
-      v25 = [v21 lastPathComponent];
-      v26 = CKAttachmentTmpFileURL(v25);
+      lastPathComponent2 = [v21 lastPathComponent];
+      v26 = CKAttachmentTmpFileURL(lastPathComponent2);
 
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
@@ -385,25 +385,25 @@ void __131__CKChatEagerUploadController__uploadFileURL_filename_transcoderUserIn
   }
 }
 
-- (void)addURLToIdentifierMap:(id)a3 forIdentifier:(id)a4
+- (void)addURLToIdentifierMap:(id)map forIdentifier:(id)identifier
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  mapCopy = map;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (mapCopy && identifierCopy)
   {
-    v9 = [(NSMutableDictionary *)self->_identifierMap objectForKeyedSubscript:v7];
+    v9 = [(NSMutableDictionary *)self->_identifierMap objectForKeyedSubscript:identifierCopy];
     v10 = v9;
     if (v9)
     {
-      [v9 addObject:v6];
+      [v9 addObject:mapCopy];
     }
 
     else
     {
       v11 = MEMORY[0x1E695DF70];
-      v14[0] = v6;
+      v14[0] = mapCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
       v13 = [v11 arrayWithArray:v12];
       [(NSMutableDictionary *)self->_identifierMap setObject:v13 forKeyedSubscript:v8];
@@ -411,22 +411,22 @@ void __131__CKChatEagerUploadController__uploadFileURL_filename_transcoderUserIn
   }
 }
 
-- (void)asyncCopyFileAtURL:(id)a3 toDestinationURL:(id)a4 completion:(id)a5
+- (void)asyncCopyFileAtURL:(id)l toDestinationURL:(id)rL completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  completionCopy = completion;
   v10 = dispatch_get_global_queue(-2, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__CKChatEagerUploadController_asyncCopyFileAtURL_toDestinationURL_completion___block_invoke;
   block[3] = &unk_1E72EDA68;
-  v15 = v8;
-  v16 = v7;
-  v17 = v9;
-  v11 = v9;
-  v12 = v7;
-  v13 = v8;
+  v15 = rLCopy;
+  v16 = lCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = lCopy;
+  v13 = rLCopy;
   dispatch_async(v10, block);
 }
 

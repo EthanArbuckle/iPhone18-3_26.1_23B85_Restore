@@ -1,17 +1,17 @@
 @interface PKOverlayDrawingView
-- (PKOverlayDrawingView)initWithFrame:(CGRect)a3;
+- (PKOverlayDrawingView)initWithFrame:(CGRect)frame;
 - (id)imageView;
-- (void)hideImageViewWithDuration:(double)a3;
-- (void)showImageView:(uint64_t)a3 frame:(double)a4 animationType:(double)a5 animationDuration:(double)a6;
+- (void)hideImageViewWithDuration:(double)duration;
+- (void)showImageView:(uint64_t)view frame:(double)frame animationType:(double)type animationDuration:(double)duration;
 @end
 
 @implementation PKOverlayDrawingView
 
-- (PKOverlayDrawingView)initWithFrame:(CGRect)a3
+- (PKOverlayDrawingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKOverlayDrawingView;
-  v3 = [(PKOverlayDrawingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKOverlayDrawingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,17 +33,17 @@
   return WeakRetained;
 }
 
-- (void)showImageView:(uint64_t)a3 frame:(double)a4 animationType:(double)a5 animationDuration:(double)a6
+- (void)showImageView:(uint64_t)view frame:(double)frame animationType:(double)type animationDuration:(double)duration
 {
   v14 = a2;
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 51);
-    [a1 frame];
-    v17 = v16 - a4;
-    v19 = v18 - a5;
-    objc_storeWeak(a1 + 51, v14);
-    if (a3 == 1)
+    WeakRetained = objc_loadWeakRetained(self + 51);
+    [self frame];
+    v17 = v16 - frame;
+    v19 = v18 - type;
+    objc_storeWeak(self + 51, v14);
+    if (view == 1)
     {
       v20 = a7 * 1.5 + 0.0;
     }
@@ -58,10 +58,10 @@
     v41[1] = 3221225472;
     v41[2] = __76__PKOverlayDrawingView_showImageView_frame_animationType_animationDuration___block_invoke;
     v41[3] = &unk_1E82D9B78;
-    v41[4] = a1;
-    v44 = a4;
-    v45 = a5;
-    v46 = a6;
+    v41[4] = self;
+    frameCopy = frame;
+    typeCopy = type;
+    durationCopy = duration;
     v47 = a7;
     v22 = WeakRetained;
     v42 = v22;
@@ -71,7 +71,7 @@
     v43 = v23;
     v50 = 0;
     v51 = v20;
-    v52 = a6;
+    durationCopy2 = duration;
     v53 = a7;
     [v21 performWithoutAnimation:v41];
     v24 = MEMORY[0x1E69DD250];
@@ -82,7 +82,7 @@
     v37 = 0;
     v38 = 0;
     v35 = v23;
-    v39 = a6;
+    durationCopy3 = duration;
     v40 = a7;
     v36 = v22;
     v27[0] = MEMORY[0x1E69E9820];
@@ -93,7 +93,7 @@
     v30 = 0;
     v31 = 0;
     v29 = v35;
-    v32 = a6;
+    durationCopy4 = duration;
     v33 = a7;
     v25 = v36;
     [v24 _animateUsingSpringWithDuration:0 delay:v34 options:v27 mass:a8 stiffness:0.0 damping:1.0 initialVelocity:400.0 animations:20.0 completion:0.0];
@@ -139,15 +139,15 @@ uint64_t __76__PKOverlayDrawingView_showImageView_frame_animationType_animationD
   return [v2 commit];
 }
 
-- (void)hideImageViewWithDuration:(double)a3
+- (void)hideImageViewWithDuration:(double)duration
 {
-  if (a1)
+  if (self)
   {
-    objc_setProperty_nonatomic_copy(a1, a2, &stru_1F476BD20, 424);
+    objc_setProperty_nonatomic_copy(self, a2, &stru_1F476BD20, 424);
     v5 = *(MEMORY[0x1E695F050] + 16);
-    *(a1 + 432) = *MEMORY[0x1E695F050];
-    *(a1 + 448) = v5;
-    WeakRetained = objc_loadWeakRetained((a1 + 408));
+    *(self + 432) = *MEMORY[0x1E695F050];
+    *(self + 448) = v5;
+    WeakRetained = objc_loadWeakRetained((self + 408));
     v7 = WeakRetained;
     if (WeakRetained)
     {
@@ -162,7 +162,7 @@ uint64_t __76__PKOverlayDrawingView_showImageView_frame_animationType_animationD
       v9[2] = __50__PKOverlayDrawingView_hideImageViewWithDuration___block_invoke_2;
       v9[3] = &unk_1E82D8F30;
       v10 = v12;
-      [v8 animateWithDuration:v11 animations:v9 completion:a3];
+      [v8 animateWithDuration:v11 animations:v9 completion:duration];
     }
   }
 }

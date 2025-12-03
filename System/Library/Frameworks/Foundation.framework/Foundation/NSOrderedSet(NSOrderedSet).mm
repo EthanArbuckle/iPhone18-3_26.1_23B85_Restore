@@ -10,7 +10,7 @@
   v16 = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E100])
   {
-    (*MEMORY[0x1E695E100])(a1, v3, *MEMORY[0x1E695E0E0]);
+    (*MEMORY[0x1E695E100])(self, v3, *MEMORY[0x1E695E0E0]);
   }
 
   if (([a3 allowsKeyedCoding] & 1) == 0)
@@ -22,7 +22,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  result = [a1 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  result = [self countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (result)
   {
     v7 = result;
@@ -35,14 +35,14 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         [a3 encodeObject:*(*(&v12 + 1) + 8 * v10++) forKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.object.%lu", v8++)}];
       }
 
       while (v7 != v10);
-      result = [a1 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      result = [self countByEnumeratingWithState:&v12 objects:v11 count:16];
       v7 = result;
     }
 
@@ -81,7 +81,7 @@ LABEL_6:
     v10 = [NSString stringWithFormat:@"NS.object.%lu", i];
     if (![a3 containsValueForKey:v10])
     {
-      v12 = [a1 initWithObjects:v7 count:i];
+      v12 = [self initWithObjects:v7 count:i];
       goto LABEL_12;
     }
 
@@ -94,7 +94,7 @@ LABEL_6:
   }
 
   v15 = @"NSLocalizedDescription";
-  v16[0] = [NSString stringWithFormat:@"%@: ordered set is too large to decode (%llu)", _NSMethodExceptionProem(a1, a2), v6];
+  v16[0] = [NSString stringWithFormat:@"%@: ordered set is too large to decode (%llu)", _NSMethodExceptionProem(self, a2), v6];
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
   [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", *MEMORY[0x1E695E628], 4864, v13)}];
   v7 = 0;

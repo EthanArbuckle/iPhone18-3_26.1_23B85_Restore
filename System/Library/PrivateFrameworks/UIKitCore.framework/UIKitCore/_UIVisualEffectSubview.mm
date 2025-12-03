@@ -1,14 +1,14 @@
 @interface _UIVisualEffectSubview
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (_UIVisualEffectSubview)initWithFrame:(CGRect)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (_UIVisualEffectSubview)initWithFrame:(CGRect)frame;
 - (_UIVisualEffectViewSubviewMonitoring)subviewMonitor;
-- (id)_initialValueForLayer:(id)a3 keyPath:(id)a4 usePresentationValue:(BOOL)a5;
-- (void)_monitoredView:(id)a3 willMoveFromSuperview:(id)a4 toSuperview:(id)a5;
+- (id)_initialValueForLayer:(id)layer keyPath:(id)path usePresentationValue:(BOOL)value;
+- (void)_monitoredView:(id)view willMoveFromSuperview:(id)superview toSuperview:(id)toSuperview;
 - (void)layoutSubviews;
-- (void)setContainedView:(id)a3;
-- (void)setFilters:(id)a3;
-- (void)setViewEffects:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setContainedView:(id)view;
+- (void)setFilters:(id)filters;
+- (void)setViewEffects:(id)effects;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIVisualEffectSubview
@@ -25,11 +25,11 @@
   }
 }
 
-- (_UIVisualEffectSubview)initWithFrame:(CGRect)a3
+- (_UIVisualEffectSubview)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIVisualEffectSubview;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,89 +39,89 @@
   return v4;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   WeakRetained = objc_loadWeakRetained(&self->_subviewMonitor);
-  [WeakRetained _view:self willMoveToWindow:v4];
+  [WeakRetained _view:self willMoveToWindow:windowCopy];
 }
 
-- (void)_monitoredView:(id)a3 willMoveFromSuperview:(id)a4 toSuperview:(id)a5
+- (void)_monitoredView:(id)view willMoveFromSuperview:(id)superview toSuperview:(id)toSuperview
 {
-  v10 = a3;
-  v8 = a4;
-  if ([a5 isDescendantOfView:self] && (objc_msgSend(v8, "isDescendantOfView:", self) & 1) == 0)
+  viewCopy = view;
+  superviewCopy = superview;
+  if ([toSuperview isDescendantOfView:self] && (objc_msgSend(superviewCopy, "isDescendantOfView:", self) & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_subviewMonitor);
-    [WeakRetained _view:self willGainDescendent:v10];
+    [WeakRetained _view:self willGainDescendent:viewCopy];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_subviewMonitor);
-    [WeakRetained _view:self willLoseDescendent:v10];
+    [WeakRetained _view:self willLoseDescendent:viewCopy];
   }
 }
 
-- (void)setContainedView:(id)a3
+- (void)setContainedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   containedView = self->_containedView;
-  if (containedView != v5)
+  if (containedView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(_UIVisualEffectViewParticipating *)containedView removeFromSuperview];
-    objc_storeStrong(&self->_containedView, a3);
+    objc_storeStrong(&self->_containedView, view);
     [(UIView *)self addSubview:self->_containedView];
     [(UIView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setViewEffects:(id)a3
+- (void)setViewEffects:(id)effects
 {
-  v4 = _UIVisualEffectSubviewSetViewEffects(self, self->_viewEffects, a3);
+  v4 = _UIVisualEffectSubviewSetViewEffects(self, self->_viewEffects, effects);
   viewEffects = self->_viewEffects;
   self->_viewEffects = v4;
 }
 
-- (void)setFilters:(id)a3
+- (void)setFilters:(id)filters
 {
-  v4 = _UIVisualEffectSubviewSetFilters(self, self->_filters, a3);
+  v4 = _UIVisualEffectSubviewSetFilters(self, self->_filters, filters);
   filters = self->_filters;
   self->_filters = v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = _UIVisualEffectSubview;
-  if ([(UIView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     ShouldAnimateKeyInternal = 1;
   }
 
   else
   {
-    ShouldAnimateKeyInternal = _UIVisualEffectSubviewShouldAnimateKeyInternal(self->_viewEffects, v4);
+    ShouldAnimateKeyInternal = _UIVisualEffectSubviewShouldAnimateKeyInternal(self->_viewEffects, keyCopy);
   }
 
   return ShouldAnimateKeyInternal;
 }
 
-- (id)_initialValueForLayer:(id)a3 keyPath:(id)a4 usePresentationValue:(BOOL)a5
+- (id)_initialValueForLayer:(id)layer keyPath:(id)path usePresentationValue:(BOOL)value
 {
-  v5 = a5;
-  v8 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = _UIVisualEffectSubview;
-  v9 = [(UIView *)&v11 _initialValueForLayer:a3 keyPath:v8 usePresentationValue:v5];
+  v9 = [(UIView *)&v11 _initialValueForLayer:layer keyPath:pathCopy usePresentationValue:valueCopy];
   if (!v9)
   {
-    if ([v8 hasPrefix:@"filters."])
+    if ([pathCopy hasPrefix:@"filters."])
     {
-      v9 = _UIVisualEffectSubviewFilterIdentityValueForKeypath(self->_filters, v8);
+      v9 = _UIVisualEffectSubviewFilterIdentityValueForKeypath(self->_filters, pathCopy);
     }
 
     else

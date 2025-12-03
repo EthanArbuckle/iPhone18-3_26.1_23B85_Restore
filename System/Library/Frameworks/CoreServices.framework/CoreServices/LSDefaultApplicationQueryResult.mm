@@ -1,38 +1,38 @@
 @interface LSDefaultApplicationQueryResult
-+ (id)queryResultForCategory:(unint64_t)a3 error:(id *)a4;
-- (LSDefaultApplicationQueryResult)initWithCoder:(id)a3;
-- (LSDefaultApplicationQueryResult)initWithReferenceDate:(id)a3 didRefresh:(BOOL)a4 refreshAfter:(id)a5 defaultForCategory:(BOOL)a6;
-- (void)encodeWithCoder:(id)a3;
++ (id)queryResultForCategory:(unint64_t)category error:(id *)error;
+- (LSDefaultApplicationQueryResult)initWithCoder:(id)coder;
+- (LSDefaultApplicationQueryResult)initWithReferenceDate:(id)date didRefresh:(BOOL)refresh refreshAfter:(id)after defaultForCategory:(BOOL)category;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSDefaultApplicationQueryResult
 
-- (LSDefaultApplicationQueryResult)initWithReferenceDate:(id)a3 didRefresh:(BOOL)a4 refreshAfter:(id)a5 defaultForCategory:(BOOL)a6
+- (LSDefaultApplicationQueryResult)initWithReferenceDate:(id)date didRefresh:(BOOL)refresh refreshAfter:(id)after defaultForCategory:(BOOL)category
 {
-  v11 = a3;
-  v12 = a5;
+  dateCopy = date;
+  afterCopy = after;
   v16.receiver = self;
   v16.super_class = LSDefaultApplicationQueryResult;
   v13 = [(LSDefaultApplicationQueryResult *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_referenceDate, a3);
-    v14->_didRefresh = a4;
-    objc_storeStrong(&v14->_refreshAfter, a5);
-    v14->_defaultForCategory = a6;
+    objc_storeStrong(&v13->_referenceDate, date);
+    v14->_didRefresh = refresh;
+    objc_storeStrong(&v14->_refreshAfter, after);
+    v14->_defaultForCategory = category;
   }
 
   return v14;
 }
 
-- (LSDefaultApplicationQueryResult)initWithCoder:(id)a3
+- (LSDefaultApplicationQueryResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceDate"];
-  v6 = [v4 decodeBoolForKey:@"didRefresh"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"refreshAfter"];
-  v8 = [v4 decodeBoolForKey:@"defaultForCategory"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceDate"];
+  v6 = [coderCopy decodeBoolForKey:@"didRefresh"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"refreshAfter"];
+  v8 = [coderCopy decodeBoolForKey:@"defaultForCategory"];
 
   if (v5)
   {
@@ -42,17 +42,17 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   referenceDate = self->_referenceDate;
-  v5 = a3;
-  [v5 encodeObject:referenceDate forKey:@"referenceDate"];
-  [v5 encodeBool:self->_didRefresh forKey:@"didRefresh"];
-  [v5 encodeObject:self->_refreshAfter forKey:@"refreshAfter"];
-  [v5 encodeBool:self->_defaultForCategory forKey:@"defaultForCategory"];
+  coderCopy = coder;
+  [coderCopy encodeObject:referenceDate forKey:@"referenceDate"];
+  [coderCopy encodeBool:self->_didRefresh forKey:@"didRefresh"];
+  [coderCopy encodeObject:self->_refreshAfter forKey:@"refreshAfter"];
+  [coderCopy encodeBool:self->_defaultForCategory forKey:@"defaultForCategory"];
 }
 
-+ (id)queryResultForCategory:(unint64_t)a3 error:(id *)a4
++ (id)queryResultForCategory:(unint64_t)category error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -78,12 +78,12 @@
   v10[3] = &unk_1E6A1CD10;
   v10[4] = &v12;
   v10[5] = &v18;
-  [v6 getCurrentApplicationDefaultInfoForCategory:a3 completion:v10];
+  [v6 getCurrentApplicationDefaultInfoForCategory:category completion:v10];
 
   v7 = v13[5];
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    *a4 = v19[5];
+    *error = v19[5];
     v7 = v13[5];
   }
 

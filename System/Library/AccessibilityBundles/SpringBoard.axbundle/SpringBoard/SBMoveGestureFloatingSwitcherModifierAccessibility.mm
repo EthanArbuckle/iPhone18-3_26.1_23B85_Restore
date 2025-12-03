@@ -1,54 +1,54 @@
 @interface SBMoveGestureFloatingSwitcherModifierAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_updateForGestureDidBeginWithEvent:(id)a3;
-- (id)_updateForGestureDidChangeWithEvent:(id)a3;
-- (id)_updateForGestureDidEndWithEvent:(id)a3;
-- (int64_t)_axFloatingConfigurationForGestureEvent:(id)a3 withZeroVelocity:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_updateForGestureDidBeginWithEvent:(id)event;
+- (id)_updateForGestureDidChangeWithEvent:(id)event;
+- (id)_updateForGestureDidEndWithEvent:(id)event;
+- (int64_t)_axFloatingConfigurationForGestureEvent:(id)event withZeroVelocity:(BOOL)velocity;
 @end
 
 @implementation SBMoveGestureFloatingSwitcherModifierAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBMoveGestureFloatingSwitcherModifier" isKindOfClass:@"SBSwitcherModifier"];
-  [v3 validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"initialFloatingConfiguration" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"_updateForGestureDidBeginWithEvent:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"_updateForGestureDidChangeWithEvent:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"_updateForGestureDidEndWithEvent:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"containerViewBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"SBSwitcherModifier"];
-  [v3 validateClass:@"SBSwitcherModifier" isKindOfClass:@"SBSwitcherModifierBase"];
-  [v3 validateClass:@"SBSwitcherModifierBase" conformsToProtocol:@"SBSwitcherContextProviding"];
-  [v3 validateProtocol:@"SBSwitcherContextProviding" hasRequiredInstanceMethod:@"switcherViewBounds"];
-  [v3 validateProtocol:@"SBSwitcherContextProviding" hasRequiredInstanceMethod:@"medusaSettings"];
-  [v3 validateClass:@"SBGestureSwitcherModifierEvent"];
-  [v3 validateClass:@"SBGestureSwitcherModifierEvent" hasInstanceMethod:@"translationInContainerView" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SBGestureSwitcherModifierEvent" hasInstanceMethod:@"velocityInContainerView" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SBMedusaSettings"];
-  [v3 validateClass:@"SBMedusaSettings" hasInstanceMethod:@"movePanGestureNegativeVelocityThreshold" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBMedusaSettings" hasInstanceMethod:@"movePanGesturePositiveVelocityThreshold" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBMedusaSettings" hasInstanceMethod:@"movePanGestureThresholdPercentage" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBMoveGestureFloatingSwitcherModifier" isKindOfClass:@"SBSwitcherModifier"];
+  [validationsCopy validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"initialFloatingConfiguration" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"_updateForGestureDidBeginWithEvent:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"_updateForGestureDidChangeWithEvent:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"_updateForGestureDidEndWithEvent:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBMoveGestureFloatingSwitcherModifier" hasInstanceMethod:@"containerViewBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"SBSwitcherModifier"];
+  [validationsCopy validateClass:@"SBSwitcherModifier" isKindOfClass:@"SBSwitcherModifierBase"];
+  [validationsCopy validateClass:@"SBSwitcherModifierBase" conformsToProtocol:@"SBSwitcherContextProviding"];
+  [validationsCopy validateProtocol:@"SBSwitcherContextProviding" hasRequiredInstanceMethod:@"switcherViewBounds"];
+  [validationsCopy validateProtocol:@"SBSwitcherContextProviding" hasRequiredInstanceMethod:@"medusaSettings"];
+  [validationsCopy validateClass:@"SBGestureSwitcherModifierEvent"];
+  [validationsCopy validateClass:@"SBGestureSwitcherModifierEvent" hasInstanceMethod:@"translationInContainerView" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SBGestureSwitcherModifierEvent" hasInstanceMethod:@"velocityInContainerView" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SBMedusaSettings"];
+  [validationsCopy validateClass:@"SBMedusaSettings" hasInstanceMethod:@"movePanGestureNegativeVelocityThreshold" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBMedusaSettings" hasInstanceMethod:@"movePanGesturePositiveVelocityThreshold" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBMedusaSettings" hasInstanceMethod:@"movePanGestureThresholdPercentage" withFullSignature:{"d", 0}];
 }
 
-- (id)_updateForGestureDidBeginWithEvent:(id)a3
+- (id)_updateForGestureDidBeginWithEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = SBMoveGestureFloatingSwitcherModifierAccessibility;
-  v4 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)&v6 _updateForGestureDidBeginWithEvent:a3];
+  v4 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)&v6 _updateForGestureDidBeginWithEvent:event];
   [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axSetCurrentFloatingConfiguration:[(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axInitialFloatingConfiguration]];
 
   return v4;
 }
 
-- (id)_updateForGestureDidChangeWithEvent:(id)a3
+- (id)_updateForGestureDidChangeWithEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBMoveGestureFloatingSwitcherModifierAccessibility;
-  v4 = a3;
-  v5 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)&v11 _updateForGestureDidChangeWithEvent:v4];
+  eventCopy = event;
+  v5 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)&v11 _updateForGestureDidChangeWithEvent:eventCopy];
   v6 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axGetCurrentFloatingConfiguration:v11.receiver];
-  v7 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axFloatingConfigurationForGestureEvent:v4 withZeroVelocity:1];
+  v7 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axFloatingConfigurationForGestureEvent:eventCopy withZeroVelocity:1];
 
   if (v6 != v7 && (v7 - 1) <= 1)
   {
@@ -70,23 +70,23 @@
   return v5;
 }
 
-- (id)_updateForGestureDidEndWithEvent:(id)a3
+- (id)_updateForGestureDidEndWithEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBMoveGestureFloatingSwitcherModifierAccessibility;
-  v4 = a3;
-  v5 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)&v8 _updateForGestureDidEndWithEvent:v4];
-  v6 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axFloatingConfigurationForGestureEvent:v4 withZeroVelocity:0, v8.receiver, v8.super_class];
+  eventCopy = event;
+  v5 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)&v8 _updateForGestureDidEndWithEvent:eventCopy];
+  v6 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axFloatingConfigurationForGestureEvent:eventCopy withZeroVelocity:0, v8.receiver, v8.super_class];
 
   [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axSetFinishedFloatingConfiguration:v6];
 
   return v5;
 }
 
-- (int64_t)_axFloatingConfigurationForGestureEvent:(id)a3 withZeroVelocity:(BOOL)a4
+- (int64_t)_axFloatingConfigurationForGestureEvent:(id)event withZeroVelocity:(BOOL)velocity
 {
-  v6 = a3;
-  v7 = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axInitialFloatingConfiguration];
+  eventCopy = event;
+  _axInitialFloatingConfiguration = [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self _axInitialFloatingConfiguration];
   [(SBMoveGestureFloatingSwitcherModifierAccessibility *)self safeCGRectForKey:@"switcherViewBounds"];
   v9 = v8;
   v11 = v10;
@@ -97,12 +97,12 @@
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  [v6 safeCGPointForKey:@"translationInContainerView"];
+  [eventCopy safeCGPointForKey:@"translationInContainerView"];
   v61 = v24;
   v25 = 0;
-  if (!a4)
+  if (!velocity)
   {
-    [v6 safeCGPointForKey:{@"velocityInContainerView", 0.0}];
+    [eventCopy safeCGPointForKey:{@"velocityInContainerView", 0.0}];
   }
 
   v59 = v25;
@@ -157,30 +157,30 @@
     v35 = v34;
   }
 
-  v37 = [*v31 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*v31 userInterfaceLayoutDirection];
   v38 = 0;
   v39 = 0;
   v40 = v32 >= v61;
-  if (v37 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v40 = v32 <= v61;
   }
 
   v41 = v33 <= v61;
-  if (v37 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v41 = v33 >= v61;
   }
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  if ((_axInitialFloatingConfiguration & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     v40 = v41;
   }
 
-  if (v7 > 1)
+  if (_axInitialFloatingConfiguration > 1)
   {
     v42 = 0.0;
-    if (v7 == 2)
+    if (_axInitialFloatingConfiguration == 2)
     {
       if (v40)
       {
@@ -225,11 +225,11 @@
 
     else
     {
-      if (v7 != 3)
+      if (_axInitialFloatingConfiguration != 3)
       {
         v43 = 0;
         v44 = 0.0;
-        if (v7 != 4)
+        if (_axInitialFloatingConfiguration != 4)
         {
           goto LABEL_75;
         }
@@ -283,7 +283,7 @@
   }
 
   v42 = 0.0;
-  if (!v7)
+  if (!_axInitialFloatingConfiguration)
   {
 LABEL_38:
     if (v40)
@@ -332,7 +332,7 @@ LABEL_38:
 
   v43 = 0;
   v44 = 0.0;
-  if (v7 == 1)
+  if (_axInitialFloatingConfiguration == 1)
   {
     v39 = 0;
     if (v40)

@@ -1,11 +1,11 @@
 @interface FMLostModeAlertContentViewController
-- (_TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController)initWithCoder:(id)a3;
-- (_TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController)initWithCoder:(id)coder;
+- (_TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation FMLostModeAlertContentViewController
 
-- (_TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController)initWithCoder:(id)a3
+- (_TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController_lostModeInfo;
   *v3 = xmmword_100062C80;
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21FindMyRemoteUIService36FMLostModeAlertContentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

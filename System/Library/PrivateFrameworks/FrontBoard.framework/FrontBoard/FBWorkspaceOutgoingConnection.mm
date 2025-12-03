@@ -1,47 +1,47 @@
 @interface FBWorkspaceOutgoingConnection
 - (id)initWithWorkspace:(id *)result;
 - (uint64_t)queue_isVerified;
-- (void)workspaceLock_setEndpoint:(uint64_t)a1;
+- (void)workspaceLock_setEndpoint:(uint64_t)endpoint;
 @end
 
 @implementation FBWorkspaceOutgoingConnection
 
-- (void)workspaceLock_setEndpoint:(uint64_t)a1
+- (void)workspaceLock_setEndpoint:(uint64_t)endpoint
 {
   v36 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (endpoint)
   {
     if (!v3)
     {
       [FBWorkspaceOutgoingConnection workspaceLock_setEndpoint:?];
     }
 
-    v5 = [v3 service];
-    v6 = [MEMORY[0x1E699FCF0] identifier];
-    v7 = [v5 isEqualToString:v6];
+    service = [v3 service];
+    identifier = [MEMORY[0x1E699FCF0] identifier];
+    v7 = [service isEqualToString:identifier];
 
     if ((v7 & 1) == 0)
     {
       [(FBWorkspaceOutgoingConnection *)v4 workspaceLock_setEndpoint:?];
     }
 
-    v8 = *(a1 + 8);
+    v8 = *(endpoint + 8);
     [(FBWorkspace *)v8 _assertLocked];
-    v9 = [(os_unfair_lock *)v8 process];
-    v10 = [(FBWorkspaceConnection *)a1 _workspaceLock_connection];
+    process = [(os_unfair_lock *)v8 process];
+    _workspaceLock_connection = [(FBWorkspaceConnection *)endpoint _workspaceLock_connection];
 
     v11 = FBLogProcessWorkspace();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (_workspaceLock_connection)
     {
       if (v12)
       {
-        v13 = [(FBProcess *)v9 logProem];
-        v14 = *(a1 + 40);
+        logProem = [(FBProcess *)process logProem];
+        v14 = *(endpoint + 40);
         *buf = 138543874;
-        v31 = v13;
+        v31 = logProem;
         v32 = 2114;
         v33 = v4;
         v34 = 2114;
@@ -49,11 +49,11 @@
         _os_log_impl(&dword_1A89DD000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ ignoring outgoing endpoint due to already established connection : endpoint=%{public}@ existing=%{public}@", buf, 0x20u);
       }
 
-      if (([v4 isEqualToServiceEndpoint:*(a1 + 40)] & 1) == 0)
+      if (([v4 isEqualToServiceEndpoint:*(endpoint + 40)] & 1) == 0)
       {
         v15 = MEMORY[0x1E696AEC0];
-        v16 = [(FBProcess *)v9 logProem];
-        v17 = [v15 stringWithFormat:@"%@ already have an outgoing connection but the endpoint doesn't match existing : new=%@ existing=%@", v16, v4, *(a1 + 40)];
+        logProem2 = [(FBProcess *)process logProem];
+        v17 = [v15 stringWithFormat:@"%@ already have an outgoing connection but the endpoint doesn't match existing : new=%@ existing=%@", logProem2, v4, *(endpoint + 40)];
 
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -71,23 +71,23 @@
     {
       if (v12)
       {
-        v18 = [(FBProcess *)v9 logProem];
+        logProem3 = [(FBProcess *)process logProem];
         *buf = 138543618;
-        v31 = v18;
+        v31 = logProem3;
         v32 = 2114;
         v33 = v4;
         _os_log_impl(&dword_1A89DD000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Creating outgoing connection to %{public}@.", buf, 0x16u);
       }
 
       v19 = [MEMORY[0x1E698F490] connectionWithEndpoint:v4 clientContextBuilder:&__block_literal_global_25];
-      v20 = a1;
-      v21 = [MEMORY[0x1E699FCF0] invertedInterface];
+      endpointCopy = endpoint;
+      invertedInterface = [MEMORY[0x1E699FCF0] invertedInterface];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __59__FBWorkspaceOutgoingConnection_workspaceLock_setEndpoint___block_invoke_2;
       v27[3] = &unk_1E783D640;
-      v28 = v9;
-      v29 = v20;
+      v28 = process;
+      v29 = endpointCopy;
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __59__FBWorkspaceOutgoingConnection_workspaceLock_setEndpoint___block_invoke_76;
@@ -95,7 +95,7 @@
       v25 = v29;
       v26 = v28;
       v22 = v29;
-      [(FBWorkspaceConnection *)v22 _workspaceLock_setConnection:v19 withInterface:v21 activationHandler:v27 invalidationHandler:v24];
+      [(FBWorkspaceConnection *)v22 _workspaceLock_setConnection:v19 withInterface:invertedInterface activationHandler:v27 invalidationHandler:v24];
     }
   }
 
@@ -181,12 +181,12 @@ void __59__FBWorkspaceOutgoingConnection_workspaceLock_setEndpoint___block_invok
 
 - (uint64_t)queue_isVerified
 {
-  if (a1)
+  if (self)
   {
-    v2 = [(FBWorkspaceConnection *)a1 queue];
-    [v2 assertBarrierOnQueue];
+    queue = [(FBWorkspaceConnection *)self queue];
+    [queue assertBarrierOnQueue];
 
-    v3 = *(a1 + 33);
+    v3 = *(self + 33);
   }
 
   else

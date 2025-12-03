@@ -1,10 +1,10 @@
 @interface AAPApplicationTerminator
-- (void)terminateAllAppsExcludingBundleIdentifiers:(id)a3 completion:(id)a4;
+- (void)terminateAllAppsExcludingBundleIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation AAPApplicationTerminator
 
-- (void)terminateAllAppsExcludingBundleIdentifiers:(id)a3 completion:(id)a4
+- (void)terminateAllAppsExcludingBundleIdentifiers:(id)identifiers completion:(id)completion
 {
   v5 = objc_alloc_init(NSMutableSet);
   v25 = _NSConcreteStackBlock;
@@ -60,11 +60,11 @@
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: Terminated all running apps successfully", buf, 0xCu);
       }
 
-      if (a4)
+      if (completion)
       {
         v14 = 0;
 LABEL_26:
-        (*(a4 + 2))(a4, v14);
+        (*(completion + 2))(completion, v14);
       }
     }
 
@@ -91,7 +91,7 @@ LABEL_26:
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: %@", buf, 0x16u);
       }
 
-      if (a4)
+      if (completion)
       {
         goto LABEL_26;
       }
@@ -108,9 +108,9 @@ LABEL_26:
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "%s com.apple.siri.applications: No running apps to terminate", buf, 0xCu);
     }
 
-    if (a4)
+    if (completion)
     {
-      (*(a4 + 2))(a4, 0);
+      (*(completion + 2))(completion, 0);
     }
   }
 }

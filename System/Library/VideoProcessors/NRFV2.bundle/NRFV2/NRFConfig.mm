@@ -1,13 +1,13 @@
 @interface NRFConfig
-- (NRFConfig)initWithDefaults:(id)a3;
+- (NRFConfig)initWithDefaults:(id)defaults;
 - (void)dealloc;
 @end
 
 @implementation NRFConfig
 
-- (NRFConfig)initWithDefaults:(id)a3
+- (NRFConfig)initWithDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   v52.receiver = self;
   v52.super_class = NRFConfig;
   v5 = [(NRFConfig *)&v52 init];
@@ -24,7 +24,7 @@
     *&v5->_enableFlickerDetection = 257;
     v5->_forceEnableMotionDetection = 0;
     v5->_defaultDoRedFaceFix = -1;
-    v10 = objc_msgSend_objectForKeyedSubscript_(v4, v6, *MEMORY[0x29EDC0818], v7);
+    v10 = objc_msgSend_objectForKeyedSubscript_(defaultsCopy, v6, *MEMORY[0x29EDC0818], v7);
     v14 = v10;
     if (v10)
     {
@@ -32,7 +32,7 @@
     }
 
     v8->_isAsynchronous = v9;
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v11, *MEMORY[0x29EDC0810], v13);
+    v15 = objc_msgSend_objectForKeyedSubscript_(defaultsCopy, v11, *MEMORY[0x29EDC0810], v13);
 
     if (v15)
     {
@@ -45,7 +45,7 @@
     }
 
     v8->_ctxCreateSynchronization = v19;
-    v20 = objc_msgSend_objectForKeyedSubscript_(v4, v16, *MEMORY[0x29EDC0290], v18);
+    v20 = objc_msgSend_objectForKeyedSubscript_(defaultsCopy, v16, *MEMORY[0x29EDC0290], v18);
 
     if (v20)
     {
@@ -58,7 +58,7 @@
     }
 
     v8->_gpuPriority = v24;
-    v25 = objc_msgSend_objectForKeyedSubscript_(v4, v21, *MEMORY[0x29EDC0820], v23);
+    v25 = objc_msgSend_objectForKeyedSubscript_(defaultsCopy, v21, *MEMORY[0x29EDC0820], v23);
 
     if (v25)
     {
@@ -72,10 +72,10 @@
 
     v8->_isPanoramaMode = v29;
     v8->_isOnlySingleImage = 1;
-    v30 = objc_msgSend_objectForKeyedSubscript_(v4, v26, *MEMORY[0x29EDC0890], v28);
+    v30 = objc_msgSend_objectForKeyedSubscript_(defaultsCopy, v26, *MEMORY[0x29EDC0890], v28);
     v8->_isDepthEnabled = objc_msgSend_BOOLValue(v30, v31, v32, v33);
 
-    v36 = objc_msgSend_objectForKeyedSubscript_(v4, v34, *MEMORY[0x29EDC0838], v35);
+    v36 = objc_msgSend_objectForKeyedSubscript_(defaultsCopy, v34, *MEMORY[0x29EDC0838], v35);
     v39 = objc_msgSend_objectForKeyedSubscript_(v36, v37, &unk_2A1CC40A8, v38);
     v8->_enableDeepFusion = v39 != 0;
 

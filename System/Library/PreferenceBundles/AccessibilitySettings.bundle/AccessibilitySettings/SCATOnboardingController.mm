@@ -1,9 +1,9 @@
 @interface SCATOnboardingController
-- (BOOL)_shouldShowRemoveSwitchAlertForViewController:(id)a3;
+- (BOOL)_shouldShowRemoveSwitchAlertForViewController:(id)controller;
 - (SCATOnboardingController)init;
-- (id)popViewControllerAnimated:(BOOL)a3;
+- (id)popViewControllerAnimated:(BOOL)animated;
 - (void)_popToLastSwitchSourceController;
-- (void)_popToLastViewControllerClass:(Class)a3;
+- (void)_popToLastViewControllerClass:(Class)class;
 - (void)_showActivateExternalSwitchController;
 - (void)_showAirPodGesturesSwitches;
 - (void)_showAutoScanningTimeController;
@@ -34,9 +34,9 @@
 - (void)_showStartGlidingCursorTutorialController;
 - (void)_showStartScreenSwitches;
 - (void)_showTurnOnSwitchControlController;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SCATOnboardingController
@@ -50,8 +50,8 @@
   if (v2)
   {
     [(SCATOnboardingController *)v2 setOnboardNavigationController:v2];
-    v4 = [(SCATOnboardingController *)v3 onboardNavigationController];
-    [v4 setModalInPresentation:1];
+    onboardNavigationController = [(SCATOnboardingController *)v3 onboardNavigationController];
+    [onboardNavigationController setModalInPresentation:1];
 
     v5 = +[SCATOnboardingManager sharedInstance];
     [(SCATOnboardingController *)v3 setManager:v5];
@@ -68,8 +68,8 @@
   v13.receiver = self;
   v13.super_class = SCATOnboardingController;
   [(SCATOnboardingController *)&v13 viewDidLoad];
-  v3 = [(SCATOnboardingController *)self manager];
-  [v3 initWithController:self];
+  manager = [(SCATOnboardingController *)self manager];
+  [manager initWithController:self];
 
   objc_initWeak(&location, self);
   v4 = [SCATOnboardingWelcomeController alloc];
@@ -95,46 +95,46 @@ void __39__SCATOnboardingController_viewDidLoad__block_invoke(uint64_t a1, int a
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SCATOnboardingController;
-  [(SCATOnboardingController *)&v5 viewWillDisappear:a3];
-  v4 = [(SCATOnboardingController *)self manager];
-  [v4 resetManager];
+  [(SCATOnboardingController *)&v5 viewWillDisappear:disappear];
+  manager = [(SCATOnboardingController *)self manager];
+  [manager resetManager];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v10.receiver = self;
   v10.super_class = SCATOnboardingController;
-  v6 = a3;
-  [(SCATOnboardingController *)&v10 pushViewController:v6 animated:v4];
+  controllerCopy = controller;
+  [(SCATOnboardingController *)&v10 pushViewController:controllerCopy animated:animatedCopy];
   v7 = [UIBarButtonItem alloc];
   v8 = [v7 initWithBarButtonSystemItem:1 target:self action:{"_cancelOnboarding", v10.receiver, v10.super_class}];
-  v9 = [v6 navigationItem];
+  navigationItem = [controllerCopy navigationItem];
 
-  [v9 setRightBarButtonItem:v8];
+  [navigationItem setRightBarButtonItem:v8];
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SCATOnboardingController *)self viewControllers];
-  if ([v5 count] < 2)
+  animatedCopy = animated;
+  viewControllers = [(SCATOnboardingController *)self viewControllers];
+  if ([viewControllers count] < 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v5, "count") - 2}];
+    v6 = [viewControllers objectAtIndexedSubscript:{objc_msgSend(viewControllers, "count") - 2}];
     if ([(SCATOnboardingController *)self _shouldShowRemoveSwitchAlertForViewController:v6])
     {
       v7 = AXParameterizedLocalizedString();
       v8 = AXParameterizedLocalizedString();
-      v9 = [(SCATOnboardingController *)self switchAlertCoordinator];
+      switchAlertCoordinator = [(SCATOnboardingController *)self switchAlertCoordinator];
       v10 = AXParameterizedLocalizedString();
       v11 = AXParameterizedLocalizedString();
       v17[0] = _NSConcreteStackBlock;
@@ -142,7 +142,7 @@ void __39__SCATOnboardingController_viewDidLoad__block_invoke(uint64_t a1, int a
       v17[2] = __54__SCATOnboardingController_popViewControllerAnimated___block_invoke;
       v17[3] = &unk_2553B0;
       v17[4] = self;
-      [v9 showOnboardingAlertWithTitle:v7 message:v8 successTitle:v10 cancelTitle:v11 successHandler:0 cancelHandler:v17];
+      [switchAlertCoordinator showOnboardingAlertWithTitle:v7 message:v8 successTitle:v10 cancelTitle:v11 successHandler:0 cancelHandler:v17];
 
       v12 = v6;
       v13 = v12;
@@ -150,18 +150,18 @@ void __39__SCATOnboardingController_viewDidLoad__block_invoke(uint64_t a1, int a
     }
   }
 
-  v12 = [v5 objectAtIndexedSubscript:{objc_msgSend(v5, "count") - 1}];
+  v12 = [viewControllers objectAtIndexedSubscript:{objc_msgSend(viewControllers, "count") - 1}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [(SCATOnboardingController *)self manager];
-    [v14 didPopStartSetUpSwitchController];
+    manager = [(SCATOnboardingController *)self manager];
+    [manager didPopStartSetUpSwitchController];
   }
 
   v16.receiver = self;
   v16.super_class = SCATOnboardingController;
-  v13 = [(SCATOnboardingController *)&v16 popViewControllerAnimated:v3];
+  v13 = [(SCATOnboardingController *)&v16 popViewControllerAnimated:animatedCopy];
 LABEL_8:
 
   return v13;
@@ -178,17 +178,17 @@ id __54__SCATOnboardingController_popViewControllerAnimated___block_invoke(uint6
   return [v4 _popToLastSwitchSourceController];
 }
 
-- (void)_popToLastViewControllerClass:(Class)a3
+- (void)_popToLastViewControllerClass:(Class)class
 {
-  v4 = [(SCATOnboardingController *)self viewControllers];
-  v5 = [v4 reverseObjectEnumerator];
-  v6 = [v5 allObjects];
+  viewControllers = [(SCATOnboardingController *)self viewControllers];
+  reverseObjectEnumerator = [viewControllers reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -226,60 +226,60 @@ LABEL_11:
 
 - (void)_popToLastSwitchSourceController
 {
-  v3 = [(SCATOnboardingController *)self manager];
-  v13 = [v3 lastSelectItemController];
+  manager = [(SCATOnboardingController *)self manager];
+  lastSelectItemController = [manager lastSelectItemController];
 
-  v4 = [(SCATOnboardingController *)self manager];
-  v5 = [v4 lastMoveToNextItemController];
+  manager2 = [(SCATOnboardingController *)self manager];
+  lastMoveToNextItemController = [manager2 lastMoveToNextItemController];
 
-  v6 = [(SCATOnboardingController *)self manager];
-  v7 = [v6 onboardAction];
+  manager3 = [(SCATOnboardingController *)self manager];
+  onboardAction = [manager3 onboardAction];
 
-  if (v7 == &stru_20.flags + 3 && v13)
+  if (onboardAction == &stru_20.flags + 3 && lastSelectItemController)
   {
-    v8 = [(SCATOnboardingController *)self popToViewController:v13 animated:1];
-    v9 = [(SCATOnboardingController *)self manager];
-    [v9 setLastSelectItemController:0];
+    v8 = [(SCATOnboardingController *)self popToViewController:lastSelectItemController animated:1];
+    manager4 = [(SCATOnboardingController *)self manager];
+    [manager4 setLastSelectItemController:0];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v10 = [(SCATOnboardingController *)self manager];
-  v11 = [v10 onboardAction];
+  manager5 = [(SCATOnboardingController *)self manager];
+  onboardAction2 = [manager5 onboardAction];
 
-  if (v11 == &stru_68 && v5)
+  if (onboardAction2 == &stru_68 && lastMoveToNextItemController)
   {
-    v12 = [(SCATOnboardingController *)self popToViewController:v5 animated:1];
-    v9 = [(SCATOnboardingController *)self manager];
-    [v9 setLastMoveToNextItemController:0];
+    v12 = [(SCATOnboardingController *)self popToViewController:lastMoveToNextItemController animated:1];
+    manager4 = [(SCATOnboardingController *)self manager];
+    [manager4 setLastMoveToNextItemController:0];
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (BOOL)_shouldShowRemoveSwitchAlertForViewController:(id)a3
+- (BOOL)_shouldShowRemoveSwitchAlertForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SCATOnboardingController *)self manager];
+  controllerCopy = controller;
+  manager = [(SCATOnboardingController *)self manager];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if ([v4 isMemberOfClass:objc_opt_class()])
+    if ([controllerCopy isMemberOfClass:objc_opt_class()])
     {
-      if ([v5 onboardAction] == &stru_20.flags + 3)
+      if ([manager onboardAction] == &stru_20.flags + 3)
       {
-        v7 = [v5 selectItemSwitch];
+        selectItemSwitch = [manager selectItemSwitch];
 LABEL_8:
-        v6 = v7 != 0;
+        v6 = selectItemSwitch != 0;
 
         goto LABEL_10;
       }
 
-      if ([v5 onboardAction] == &stru_68)
+      if ([manager onboardAction] == &stru_68)
       {
-        v7 = [v5 moveToNextItemSwitch];
+        selectItemSwitch = [manager moveToNextItemSwitch];
         goto LABEL_8;
       }
     }
@@ -338,8 +338,8 @@ void __55__SCATOnboardingController__showBasicActionsController__block_invoke(ui
   objc_copyWeak(&v12, &location);
   v9 = [(SCATOnboardingBaseVideoController *)v5 initWithTitle:v6 detailText:v7 nextButtonTitle:v8 videoURL:v4 completion:v11];
 
-  v10 = [(SCATOnboardingController *)self onboardNavigationController];
-  [v10 pushViewController:v9 animated:1];
+  onboardNavigationController = [(SCATOnboardingController *)self onboardNavigationController];
+  [onboardNavigationController pushViewController:v9 animated:1];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -378,8 +378,8 @@ void __58__SCATOnboardingController__showSelectItemVideoController__block_invoke
   v12[4] = self;
   objc_copyWeak(&v13, &location);
   v10 = [(SCATOnboardingBaseVideoController *)v9 initWithTitle:v3 detailText:v4 nextButtonTitle:v5 cancelButtonTitle:v6 videoURL:v8 completion:v12];
-  v11 = [(SCATOnboardingController *)self onboardNavigationController];
-  [v11 pushViewController:v10 animated:1];
+  onboardNavigationController = [(SCATOnboardingController *)self onboardNavigationController];
+  [onboardNavigationController pushViewController:v10 animated:1];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -405,11 +405,11 @@ void __62__SCATOnboardingController__showMoveToNextItemVideoController__block_in
 
 - (void)_showSelectItemSwitchController
 {
-  v3 = [(SCATOnboardingController *)self manager];
-  v4 = [v3 selectItemSwitch];
+  manager = [(SCATOnboardingController *)self manager];
+  selectItemSwitch = [manager selectItemSwitch];
 
   v5 = AXParameterizedLocalizedString();
-  v10 = [v4 name];
+  name = [selectItemSwitch name];
   v6 = AXParameterizedLocalizedString();
 
   objc_initWeak(&location, self);
@@ -419,9 +419,9 @@ void __62__SCATOnboardingController__showMoveToNextItemVideoController__block_in
   v11[2] = __59__SCATOnboardingController__showSelectItemSwitchController__block_invoke;
   v11[3] = &unk_255BD0;
   objc_copyWeak(&v12, &location);
-  v8 = [(SCATOnboardingAddedSwitchDetailController *)v7 initWithSwitch:v4 title:v5 detailText:v6 completion:v11, v10];
-  v9 = [(SCATOnboardingController *)self onboardNavigationController];
-  [v9 pushViewController:v8 animated:1];
+  v8 = [(SCATOnboardingAddedSwitchDetailController *)v7 initWithSwitch:selectItemSwitch title:v5 detailText:v6 completion:v11, name];
+  onboardNavigationController = [(SCATOnboardingController *)self onboardNavigationController];
+  [onboardNavigationController pushViewController:v8 animated:1];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -451,8 +451,8 @@ void __59__SCATOnboardingController__showSelectItemSwitchController__block_invok
   v10[4] = self;
   objc_copyWeak(&v11, &location);
   v8 = [(SCATOnboardingDecisionBaseController *)v7 initWithTitle:v3 detailText:v4 yesButtonTitle:v5 noButtonTitle:v6 completion:v10];
-  v9 = [(SCATOnboardingController *)self onboardNavigationController];
-  [v9 pushViewController:v8 animated:1];
+  onboardNavigationController = [(SCATOnboardingController *)self onboardNavigationController];
+  [onboardNavigationController pushViewController:v8 animated:1];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -475,11 +475,11 @@ void __62__SCATOnboardingController__showTurnOnSwitchControlController__block_in
 
 - (void)_showMoveToNextItemSwitchController
 {
-  v3 = [(SCATOnboardingController *)self manager];
-  v4 = [v3 moveToNextItemSwitch];
+  manager = [(SCATOnboardingController *)self manager];
+  moveToNextItemSwitch = [manager moveToNextItemSwitch];
 
   v5 = AXParameterizedLocalizedString();
-  v10 = [v4 name];
+  name = [moveToNextItemSwitch name];
   v6 = AXParameterizedLocalizedString();
 
   objc_initWeak(&location, self);
@@ -489,9 +489,9 @@ void __62__SCATOnboardingController__showTurnOnSwitchControlController__block_in
   v11[2] = __63__SCATOnboardingController__showMoveToNextItemSwitchController__block_invoke;
   v11[3] = &unk_255BD0;
   objc_copyWeak(&v12, &location);
-  v8 = [(SCATOnboardingAddedSwitchDetailController *)v7 initWithSwitch:v4 title:v5 detailText:v6 completion:v11, v10];
-  v9 = [(SCATOnboardingController *)self onboardNavigationController];
-  [v9 pushViewController:v8 animated:1];
+  v8 = [(SCATOnboardingAddedSwitchDetailController *)v7 initWithSwitch:moveToNextItemSwitch title:v5 detailText:v6 completion:v11, name];
+  onboardNavigationController = [(SCATOnboardingController *)self onboardNavigationController];
+  [onboardNavigationController pushViewController:v8 animated:1];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -521,8 +521,8 @@ void __63__SCATOnboardingController__showMoveToNextItemSwitchController__block_i
   v10[4] = self;
   objc_copyWeak(&v11, &location);
   v8 = [(SCATOnboardingDecisionBaseController *)v7 initWithTitle:v3 detailText:v4 yesButtonTitle:v5 noButtonTitle:v6 completion:v10];
-  v9 = [(SCATOnboardingController *)self onboardNavigationController];
-  [v9 pushViewController:v8 animated:1];
+  onboardNavigationController = [(SCATOnboardingController *)self onboardNavigationController];
+  [onboardNavigationController pushViewController:v8 animated:1];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -602,8 +602,8 @@ void __61__SCATOnboardingController__showOnboardingCompleteController__block_inv
 - (void)_showExitOnboardingController
 {
   v4 = [[SCATOnboardingExitController alloc] initWithCompletion:&__block_literal_global_59];
-  v3 = [(SCATOnboardingController *)self onboardNavigationController];
-  [v3 pushViewController:v4 animated:1];
+  onboardNavigationController = [(SCATOnboardingController *)self onboardNavigationController];
+  [onboardNavigationController pushViewController:v4 animated:1];
 }
 
 - (void)_showStartAddExternalSwitchController
@@ -753,8 +753,8 @@ void __68__SCATOnboardingController__showExternalSwitchNoBluetoothController__bl
 - (void)_showActivateExternalSwitchController
 {
   v4 = objc_opt_new();
-  v3 = [(SCATOnboardingController *)self onboardNavigationController];
-  [v3 pushViewController:v4 animated:1];
+  onboardNavigationController = [(SCATOnboardingController *)self onboardNavigationController];
+  [onboardNavigationController pushViewController:v4 animated:1];
 }
 
 - (void)_showStartAddHeadGesturesSwitches
@@ -1070,7 +1070,7 @@ void __47__SCATOnboardingController__showScreenSwitches__block_invoke(uint64_t a
 {
   v3 = AXParameterizedLocalizedString();
   v4 = AXParameterizedLocalizedString();
-  v5 = [(SCATOnboardingController *)self switchAlertCoordinator];
+  switchAlertCoordinator = [(SCATOnboardingController *)self switchAlertCoordinator];
   v6 = AXParameterizedLocalizedString();
   v7 = AXParameterizedLocalizedString();
   v8[0] = _NSConcreteStackBlock;
@@ -1078,7 +1078,7 @@ void __47__SCATOnboardingController__showScreenSwitches__block_invoke(uint64_t a
   v8[2] = __57__SCATOnboardingController__showNoMoreSwitchOptionsAlert__block_invoke;
   v8[3] = &unk_2553B0;
   v8[4] = self;
-  [v5 showOnboardingAlertWithTitle:v3 message:v4 successTitle:v6 cancelTitle:v7 successHandler:0 cancelHandler:v8];
+  [switchAlertCoordinator showOnboardingAlertWithTitle:v3 message:v4 successTitle:v6 cancelTitle:v7 successHandler:0 cancelHandler:v8];
 }
 
 id __57__SCATOnboardingController__showNoMoreSwitchOptionsAlert__block_invoke(uint64_t a1)

@@ -2,16 +2,16 @@
 - (BOOL)wakeEventOccurred;
 - (double)_currentTime;
 - (void)_reconfigureFilter;
-- (void)setIntervalActivationLimit:(unint64_t)a3;
+- (void)setIntervalActivationLimit:(unint64_t)limit;
 @end
 
 @implementation SBWakeDebounceFilter
 
-- (void)setIntervalActivationLimit:(unint64_t)a3
+- (void)setIntervalActivationLimit:(unint64_t)limit
 {
-  if (self->_intervalActivationLimit != a3)
+  if (self->_intervalActivationLimit != limit)
   {
-    self->_intervalActivationLimit = a3;
+    self->_intervalActivationLimit = limit;
     [(SBWakeDebounceFilter *)self _reconfigureFilter];
   }
 }
@@ -50,10 +50,10 @@
 
 - (void)_reconfigureFilter
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 8) count];
-    v3 = *(a1 + 24);
+    v2 = [*(self + 8) count];
+    v3 = *(self + 24);
     if (v3 != v2)
     {
       v4 = v2;
@@ -63,7 +63,7 @@
       {
         for (i = 0; i != v4; ++i)
         {
-          v8 = [*(a1 + 8) objectAtIndexedSubscript:(i + *(a1 + 16)) % v4];
+          v8 = [*(self + 8) objectAtIndexedSubscript:(i + *(self + 16)) % v4];
           [v6 addObject:v8];
         }
       }
@@ -81,11 +81,11 @@
         while (v9);
       }
 
-      [*(a1 + 8) removeAllObjects];
-      v11 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      [*(self + 8) removeAllObjects];
+      v11 = *(self + 8);
+      *(self + 8) = v6;
 
-      *(a1 + 16) = v4;
+      *(self + 16) = v4;
 
       objc_autoreleasePoolPop(v5);
     }
@@ -94,12 +94,12 @@
 
 - (double)_currentTime
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
   if (v1)
   {
     [v1 doubleValue];

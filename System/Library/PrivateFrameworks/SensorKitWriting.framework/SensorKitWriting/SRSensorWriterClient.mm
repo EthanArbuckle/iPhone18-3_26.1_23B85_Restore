@@ -1,19 +1,19 @@
 @interface SRSensorWriterClient
-+ (id)sensorWriterClientWithWriter:(id)a3;
-- (SRSensorWriterClient)initWithWriter:(id)a3;
-- (void)resetDatastoreFiles:(id)a3;
++ (id)sensorWriterClientWithWriter:(id)writer;
+- (SRSensorWriterClient)initWithWriter:(id)writer;
+- (void)resetDatastoreFiles:(id)files;
 @end
 
 @implementation SRSensorWriterClient
 
-+ (id)sensorWriterClientWithWriter:(id)a3
++ (id)sensorWriterClientWithWriter:(id)writer
 {
-  v3 = [[a1 alloc] initWithWriter:a3];
+  v3 = [[self alloc] initWithWriter:writer];
 
   return v3;
 }
 
-- (SRSensorWriterClient)initWithWriter:(id)a3
+- (SRSensorWriterClient)initWithWriter:(id)writer
 {
   v7.receiver = self;
   v7.super_class = SRSensorWriterClient;
@@ -21,17 +21,17 @@
   v5 = v4;
   if (v4)
   {
-    [(SRSensorWriterClient *)v4 setWriter:a3];
+    [(SRSensorWriterClient *)v4 setWriter:writer];
   }
 
   return v5;
 }
 
-- (void)resetDatastoreFiles:(id)a3
+- (void)resetDatastoreFiles:(id)files
 {
-  v4 = [(SRSensorWriterClient *)self writer];
+  writer = [(SRSensorWriterClient *)self writer];
 
-  [(SRSensorWriter *)v4 daemonForcedResetDatastoreFiles:a3];
+  [(SRSensorWriter *)writer daemonForcedResetDatastoreFiles:files];
 }
 
 @end

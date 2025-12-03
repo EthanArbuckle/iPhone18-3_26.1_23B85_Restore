@@ -1,7 +1,7 @@
 @interface HUCCLockStateHandler
 - (BOOL)_isAccessAllowedForCurrentLockState;
 - (BOOL)isDeviceUnlocked;
-- (HUCCLockStateHandler)initWithDelegate:(id)a3;
+- (HUCCLockStateHandler)initWithDelegate:(id)delegate;
 - (HUCCLockStateHandlerDelegate)delegate;
 - (void)_registerKeybagLockStatusNotifications;
 - (void)_unregisterKeybagLockStatusNotifications;
@@ -11,16 +11,16 @@
 
 @implementation HUCCLockStateHandler
 
-- (HUCCLockStateHandler)initWithDelegate:(id)a3
+- (HUCCLockStateHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HUCCLockStateHandler;
   v5 = [(HUCCLockStateHandler *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_keybagLockStatusNotifyToken = -1;
     [(HUCCLockStateHandler *)v6 _registerKeybagLockStatusNotifications];
   }
@@ -79,13 +79,13 @@
     _os_log_impl(&dword_29C988000, v3, OS_LOG_TYPE_DEFAULT, "Checking if access is allowed for current lock state", buf, 2u);
   }
 
-  v4 = [MEMORY[0x29EDC5390] sharedDispatcher];
-  v5 = [v4 homeManager];
-  v6 = [v5 isAccessAllowedWhenLocked];
+  mEMORY[0x29EDC5390] = [MEMORY[0x29EDC5390] sharedDispatcher];
+  homeManager = [mEMORY[0x29EDC5390] homeManager];
+  isAccessAllowedWhenLocked = [homeManager isAccessAllowedWhenLocked];
 
   v7 = HFLogForCategory();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (isAccessAllowedWhenLocked)
   {
     if (v8)
     {
@@ -154,17 +154,17 @@
 - (void)_updateAccessAllowedForLockState
 {
   v8 = *MEMORY[0x29EDCA608];
-  v3 = [(HUCCLockStateHandler *)self _isAccessAllowedForCurrentLockState];
+  _isAccessAllowedForCurrentLockState = [(HUCCLockStateHandler *)self _isAccessAllowedForCurrentLockState];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = _isAccessAllowedForCurrentLockState;
     _os_log_impl(&dword_29C988000, v4, OS_LOG_TYPE_DEFAULT, "Access allowed for current lock state is %d, updating delegate", v7, 8u);
   }
 
-  v5 = [(HUCCLockStateHandler *)self delegate];
-  [v5 lockStateWasUpdated:v3];
+  delegate = [(HUCCLockStateHandler *)self delegate];
+  [delegate lockStateWasUpdated:_isAccessAllowedForCurrentLockState];
 
   v6 = *MEMORY[0x29EDCA608];
 }

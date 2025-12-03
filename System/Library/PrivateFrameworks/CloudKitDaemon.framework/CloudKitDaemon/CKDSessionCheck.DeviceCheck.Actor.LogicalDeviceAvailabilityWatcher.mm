@@ -1,15 +1,15 @@
 @interface CKDSessionCheck.DeviceCheck.Actor.LogicalDeviceAvailabilityWatcher
-- (BOOL)systemAvailabilityChanged:(unint64_t)a3;
+- (BOOL)systemAvailabilityChanged:(unint64_t)changed;
 @end
 
 @implementation CKDSessionCheck.DeviceCheck.Actor.LogicalDeviceAvailabilityWatcher
 
-- (BOOL)systemAvailabilityChanged:(unint64_t)a3
+- (BOOL)systemAvailabilityChanged:(unint64_t)changed
 {
-  v4 = self;
-  LOBYTE(a3) = sub_2250E093C(a3);
+  selfCopy = self;
+  LOBYTE(changed) = sub_2250E093C(changed);
 
-  return a3 & 1;
+  return changed & 1;
 }
 
 @end

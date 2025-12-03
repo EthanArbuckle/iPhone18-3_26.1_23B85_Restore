@@ -1,11 +1,11 @@
 @interface _UIEditMenuSceneComponent
-+ (id)sceneComponentForView:(id)a3;
++ (id)sceneComponentForView:(id)view;
 - (BOOL)hasVisibleMenu;
 - (UIScene)_scene;
-- (_UIEditMenuSceneComponent)initWithScene:(id)a3;
+- (_UIEditMenuSceneComponent)initWithScene:(id)scene;
 - (void)dismissCurrentMenu;
-- (void)removeActivePresentation:(id)a3;
-- (void)setActivePresentation:(id)a3;
+- (void)removeActivePresentation:(id)presentation;
+- (void)setActivePresentation:(id)presentation;
 @end
 
 @implementation _UIEditMenuSceneComponent
@@ -22,16 +22,16 @@
   }
 }
 
-- (_UIEditMenuSceneComponent)initWithScene:(id)a3
+- (_UIEditMenuSceneComponent)initWithScene:(id)scene
 {
-  v5 = a3;
+  sceneCopy = scene;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIEditMenuSceneComponent.m" lineNumber:41 description:{@"Only UIWindowScene is supported by %@.", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEditMenuSceneComponent.m" lineNumber:41 description:{@"Only UIWindowScene is supported by %@.", v11}];
   }
 
   v12.receiver = self;
@@ -40,29 +40,29 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_scene, v5);
+    objc_storeWeak(&v6->_scene, sceneCopy);
   }
 
   return v7;
 }
 
-- (void)setActivePresentation:(id)a3
+- (void)setActivePresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   activePresentation = self->_activePresentation;
-  if (activePresentation != v4)
+  if (activePresentation != presentationCopy)
   {
     [(_UIEditMenuPresentation *)activePresentation hideMenuWithReason:0];
     activePresentation = self->_activePresentation;
   }
 
-  self->_activePresentation = v4;
+  self->_activePresentation = presentationCopy;
 }
 
-- (void)removeActivePresentation:(id)a3
+- (void)removeActivePresentation:(id)presentation
 {
   activePresentation = self->_activePresentation;
-  if (activePresentation == a3)
+  if (activePresentation == presentation)
   {
     self->_activePresentation = 0;
   }
@@ -70,27 +70,27 @@
 
 - (BOOL)hasVisibleMenu
 {
-  v3 = [(_UIEditMenuSceneComponent *)self activePresentation];
+  activePresentation = [(_UIEditMenuSceneComponent *)self activePresentation];
 
-  if (!v3)
+  if (!activePresentation)
   {
     return 0;
   }
 
-  v4 = [(_UIEditMenuSceneComponent *)self activePresentation];
-  v5 = [v4 displayedMenu];
-  v6 = v5 != 0;
+  activePresentation2 = [(_UIEditMenuSceneComponent *)self activePresentation];
+  displayedMenu = [activePresentation2 displayedMenu];
+  v6 = displayedMenu != 0;
 
   return v6;
 }
 
-+ (id)sceneComponentForView:(id)a3
++ (id)sceneComponentForView:(id)view
 {
-  v3 = [a3 _window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _editMenuSceneComponent];
+  _window = [view _window];
+  windowScene = [_window windowScene];
+  _editMenuSceneComponent = [windowScene _editMenuSceneComponent];
 
-  return v5;
+  return _editMenuSceneComponent;
 }
 
 - (UIScene)_scene

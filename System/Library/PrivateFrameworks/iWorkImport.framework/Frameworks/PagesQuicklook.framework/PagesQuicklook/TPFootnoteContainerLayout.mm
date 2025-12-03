@@ -1,39 +1,39 @@
 @interface TPFootnoteContainerLayout
 - (BOOL)isEmpty;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
 - (CGRect)footnoteSeparatorLineFrame;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
-- (TPFootnoteContainerLayout)initWithFootnoteMarkProvider:(id)a3 vertical:(BOOL)a4 lineWidth:(double)a5 maxFootnoteBlockHeight:(double)a6 footnoteSpacing:(double)a7;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
+- (TPFootnoteContainerLayout)initWithFootnoteMarkProvider:(id)provider vertical:(BOOL)vertical lineWidth:(double)width maxFootnoteBlockHeight:(double)height footnoteSpacing:(double)spacing;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
 - (double)blockHeight;
-- (double)maxAutoGrowBlockHeightForTextLayout:(id)a3;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
+- (double)maxAutoGrowBlockHeightForTextLayout:(id)layout;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
 - (id)computeLayoutGeometry;
-- (id)dependentsOfTextLayout:(id)a3;
-- (id)markStringForFootnoteReferenceStorage:(id)a3;
-- (id)markStringForFootnoteReferenceStorage:(id)a3 ignoreDeletedFootnotes:(BOOL)a4 forceDocumentEndnotes:(BOOL)a5;
-- (void)addFootnoteLayout:(id)a3;
+- (id)dependentsOfTextLayout:(id)layout;
+- (id)markStringForFootnoteReferenceStorage:(id)storage;
+- (id)markStringForFootnoteReferenceStorage:(id)storage ignoreDeletedFootnotes:(BOOL)footnotes forceDocumentEndnotes:(BOOL)endnotes;
+- (void)addFootnoteLayout:(id)layout;
 - (void)removeAllFootnoteLayouts;
-- (void)removeFootnoteLayout:(id)a3;
-- (void)removeFootnoteLayoutWithInfo:(id)a3;
-- (void)setFootnoteSpacing:(int64_t)a3;
-- (void)setIncludeFootnoteSeparatorLine:(BOOL)a3;
-- (void)trimFootnoteLayoutsFromIndex:(unint64_t)a3;
+- (void)removeFootnoteLayout:(id)layout;
+- (void)removeFootnoteLayoutWithInfo:(id)info;
+- (void)setFootnoteSpacing:(int64_t)spacing;
+- (void)setIncludeFootnoteSeparatorLine:(BOOL)line;
+- (void)trimFootnoteLayoutsFromIndex:(unint64_t)index;
 - (void)validate;
 @end
 
 @implementation TPFootnoteContainerLayout
 
-- (TPFootnoteContainerLayout)initWithFootnoteMarkProvider:(id)a3 vertical:(BOOL)a4 lineWidth:(double)a5 maxFootnoteBlockHeight:(double)a6 footnoteSpacing:(double)a7
+- (TPFootnoteContainerLayout)initWithFootnoteMarkProvider:(id)provider vertical:(BOOL)vertical lineWidth:(double)width maxFootnoteBlockHeight:(double)height footnoteSpacing:(double)spacing
 {
-  v12 = a3;
+  providerCopy = provider;
   v13 = objc_alloc_init(TPFootnoteContainerInfo);
   v39.receiver = self;
   v39.super_class = TPFootnoteContainerLayout;
   v15 = [(TPFootnoteContainerLayout *)&v39 initWithInfo:v13];
   if (v15)
   {
-    if (!v12)
+    if (!providerCopy)
     {
       v20 = MEMORY[0x277D81150];
       v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v16, v17, v18, v19, "[TPFootnoteContainerLayout initWithFootnoteMarkProvider:vertical:lineWidth:maxFootnoteBlockHeight:footnoteSpacing:]");
@@ -43,22 +43,22 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v33, v34, v35, v36, v37);
     }
 
-    v15->_vertical = a4;
-    v15->_lineWidth = a5;
-    v15->_maxFootnoteBlockHeight = a6;
-    v15->_footnoteSpacing = a7;
+    v15->_vertical = vertical;
+    v15->_lineWidth = width;
+    v15->_maxFootnoteBlockHeight = height;
+    v15->_footnoteSpacing = spacing;
     v15->_includeFootnoteSeparatorLine = 1;
-    objc_storeWeak(&v15->_footnoteMarkProvider, v12);
+    objc_storeWeak(&v15->_footnoteMarkProvider, providerCopy);
   }
 
   return v15;
 }
 
-- (void)addFootnoteLayout:(id)a3
+- (void)addFootnoteLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v10 = objc_msgSend_children(self, v5, v6, v7, v8, v9);
-  v16 = objc_msgSend_containsObject_(v10, v11, v12, v13, v14, v15, v4);
+  v16 = objc_msgSend_containsObject_(v10, v11, v12, v13, v14, v15, layoutCopy);
 
   if (v16)
   {
@@ -74,20 +74,20 @@
   {
     v45.receiver = self;
     v45.super_class = TPFootnoteContainerLayout;
-    [(TPFootnoteContainerLayout *)&v45 addChild:v4];
+    [(TPFootnoteContainerLayout *)&v45 addChild:layoutCopy];
     objc_msgSend_invalidateSize(self, v40, v41, v42, v43, v44);
   }
 }
 
-- (void)removeFootnoteLayout:(id)a3
+- (void)removeFootnoteLayout:(id)layout
 {
-  v44 = a3;
+  layoutCopy = layout;
   v9 = objc_msgSend_children(self, v4, v5, v6, v7, v8);
-  v15 = objc_msgSend_containsObject_(v9, v10, v11, v12, v13, v14, v44);
+  v15 = objc_msgSend_containsObject_(v9, v10, v11, v12, v13, v14, layoutCopy);
 
   if (v15)
   {
-    objc_msgSend_removeFromParent(v44, v16, v17, v18, v19, v20);
+    objc_msgSend_removeFromParent(layoutCopy, v16, v17, v18, v19, v20);
     objc_msgSend_invalidateSize(self, v21, v22, v23, v24, v25);
   }
 
@@ -102,10 +102,10 @@
   }
 }
 
-- (void)removeFootnoteLayoutWithInfo:(id)a3
+- (void)removeFootnoteLayoutWithInfo:(id)info
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -128,7 +128,7 @@ LABEL_3:
       v24 = *(*(&v32 + 1) + 8 * v23);
       v25 = objc_msgSend_info(v24, v16, v17, v18, v19, v20);
 
-      if (v25 == v4)
+      if (v25 == infoCopy)
       {
         break;
       }
@@ -171,18 +171,18 @@ LABEL_13:
   }
 }
 
-- (void)setFootnoteSpacing:(int64_t)a3
+- (void)setFootnoteSpacing:(int64_t)spacing
 {
-  v3.n128_f64[0] = a3;
-  self->_footnoteSpacing = a3;
+  v3.n128_f64[0] = spacing;
+  self->_footnoteSpacing = spacing;
   objc_msgSend_invalidateFrame(self, a2, v3, v4, v5, v6);
 }
 
-- (void)trimFootnoteLayoutsFromIndex:(unint64_t)a3
+- (void)trimFootnoteLayoutsFromIndex:(unint64_t)index
 {
   v27 = objc_msgSend_children(self, a2, v3, v4, v5, v6);
   v14 = objc_msgSend_count(v27, v9, v10, v11, v12, v13);
-  if (v14 > a3)
+  if (v14 > index)
   {
     v20 = v14;
     do
@@ -191,7 +191,7 @@ LABEL_13:
       objc_msgSend_removeFootnoteLayout_(self, v22, v23, v24, v25, v26, v21);
     }
 
-    while (v20 > a3);
+    while (v20 > index);
   }
 }
 
@@ -225,11 +225,11 @@ LABEL_13:
   }
 }
 
-- (void)setIncludeFootnoteSeparatorLine:(BOOL)a3
+- (void)setIncludeFootnoteSeparatorLine:(BOOL)line
 {
-  if (self->_includeFootnoteSeparatorLine != a3)
+  if (self->_includeFootnoteSeparatorLine != line)
   {
-    self->_includeFootnoteSeparatorLine = a3;
+    self->_includeFootnoteSeparatorLine = line;
     objc_msgSend_invalidateSize(self, a2, v3, v4, v5, v6);
   }
 }
@@ -464,7 +464,7 @@ LABEL_13:
   return v58;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   v3.n128_u64[0] = *MEMORY[0x277CBF3A8];
   v4.n128_u64[0] = *(MEMORY[0x277CBF3A8] + 8);
@@ -476,12 +476,12 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
   lineWidth = self->_lineWidth;
   if (self->_vertical)
   {
-    width = a4.width;
+    width = size.width;
   }
 
   else
@@ -491,7 +491,7 @@ LABEL_13:
 
   if (!self->_vertical)
   {
-    lineWidth = a4.height;
+    lineWidth = size.height;
   }
 
   v6 = 0.0;
@@ -503,7 +503,7 @@ LABEL_13:
   return result;
 }
 
-- (id)dependentsOfTextLayout:(id)a3
+- (id)dependentsOfTextLayout:(id)layout
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v9[0] = self;
@@ -512,7 +512,7 @@ LABEL_13:
   return v7;
 }
 
-- (double)maxAutoGrowBlockHeightForTextLayout:(id)a3
+- (double)maxAutoGrowBlockHeightForTextLayout:(id)layout
 {
   result = self->_maxFootnoteBlockHeight;
   if (self->_includeFootnoteSeparatorLine)
@@ -523,7 +523,7 @@ LABEL_13:
   return result;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   v3 = *MEMORY[0x277D81428];
   v4 = *(MEMORY[0x277D81428] + 8);
@@ -536,37 +536,37 @@ LABEL_13:
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a6)
+  if (outWidth)
   {
-    *a6 = a4;
+    *outWidth = width;
   }
 
-  if (a7)
+  if (gap)
   {
-    *a7 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;
 }
 
-- (id)markStringForFootnoteReferenceStorage:(id)a3
+- (id)markStringForFootnoteReferenceStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   WeakRetained = objc_loadWeakRetained(&self->_footnoteMarkProvider);
-  v11 = objc_msgSend_markStringForFootnoteReferenceStorage_(WeakRetained, v6, v7, v8, v9, v10, v4);
+  v11 = objc_msgSend_markStringForFootnoteReferenceStorage_(WeakRetained, v6, v7, v8, v9, v10, storageCopy);
 
   return v11;
 }
 
-- (id)markStringForFootnoteReferenceStorage:(id)a3 ignoreDeletedFootnotes:(BOOL)a4 forceDocumentEndnotes:(BOOL)a5
+- (id)markStringForFootnoteReferenceStorage:(id)storage ignoreDeletedFootnotes:(BOOL)footnotes forceDocumentEndnotes:(BOOL)endnotes
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  endnotesCopy = endnotes;
+  footnotesCopy = footnotes;
+  storageCopy = storage;
   WeakRetained = objc_loadWeakRetained(&self->_footnoteMarkProvider);
-  v15 = objc_msgSend_markStringForFootnoteReferenceStorage_ignoreDeletedFootnotes_forceDocumentEndnotes_(WeakRetained, v10, v11, v12, v13, v14, v8, v6, v5);
+  v15 = objc_msgSend_markStringForFootnoteReferenceStorage_ignoreDeletedFootnotes_forceDocumentEndnotes_(WeakRetained, v10, v11, v12, v13, v14, storageCopy, footnotesCopy, endnotesCopy);
 
   return v15;
 }

@@ -1,16 +1,16 @@
 @interface OfferButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation OfferButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SubscribePageExtension.OfferButton" hasSwiftField:@"label" withSwiftType:"DynamicTypeLabel"];
-  [v3 validateClass:@"SubscribePageExtension.OfferButton" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicTypeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SubscribePageExtension.OfferButton" hasSwiftField:@"label" withSwiftType:"DynamicTypeLabel"];
+  [validationsCopy validateClass:@"SubscribePageExtension.OfferButton" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicTypeLabel"];
 }
 
 - (unint64_t)accessibilityTraits

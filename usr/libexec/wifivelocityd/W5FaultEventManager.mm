@@ -1,30 +1,30 @@
 @interface W5FaultEventManager
-- (W5FaultEventManager)initWithPeerManager:(id)a3 diagnosticsModeManager:(id)a4;
+- (W5FaultEventManager)initWithPeerManager:(id)manager diagnosticsModeManager:(id)modeManager;
 - (id)faultEventCache;
-- (void)__addFaultEvent:(id)a3;
+- (void)__addFaultEvent:(id)event;
 - (void)__archiveEventCache;
 - (void)__archiveNotifyPeers;
 - (void)__purgeObsoleteFaultEvents;
 - (void)__unarchiveEventCache;
 - (void)__unarchiveNotifyPeers;
-- (void)notifyPeersWithFaultEvent:(id)a3 info:(id)a4;
-- (void)queryFaultEventCacheForPeer:(id)a3 reply:(id)a4;
-- (void)startMonitoringFaultEventsForPeer:(id)a3 reply:(id)a4;
-- (void)stopMonitoringFaultEventsForPeer:(id)a3 reply:(id)a4;
-- (void)submitFaultEvent:(id)a3;
+- (void)notifyPeersWithFaultEvent:(id)event info:(id)info;
+- (void)queryFaultEventCacheForPeer:(id)peer reply:(id)reply;
+- (void)startMonitoringFaultEventsForPeer:(id)peer reply:(id)reply;
+- (void)stopMonitoringFaultEventsForPeer:(id)peer reply:(id)reply;
+- (void)submitFaultEvent:(id)event;
 @end
 
 @implementation W5FaultEventManager
 
-- (W5FaultEventManager)initWithPeerManager:(id)a3 diagnosticsModeManager:(id)a4
+- (W5FaultEventManager)initWithPeerManager:(id)manager diagnosticsModeManager:(id)modeManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  modeManagerCopy = modeManager;
   v20.receiver = self;
   v20.super_class = W5FaultEventManager;
   v9 = [(W5FaultEventManager *)&v20 init];
   v10 = v9;
-  if (v9 && (objc_storeStrong(&v9->_peerManager, a3), v10->_peerManager) && (objc_storeStrong(&v10->_diagnosticsModeManager, a4), v10->_diagnosticsModeManager) && (v11 = objc_alloc_init(W5PeerGenericRequestListener), listener = v10->_listener, v10->_listener = v11, listener, (v13 = v10->_listener) != 0))
+  if (v9 && (objc_storeStrong(&v9->_peerManager, manager), v10->_peerManager) && (objc_storeStrong(&v10->_diagnosticsModeManager, modeManager), v10->_diagnosticsModeManager) && (v11 = objc_alloc_init(W5PeerGenericRequestListener), listener = v10->_listener, v10->_listener = v11, listener, (v13 = v10->_listener) != 0))
   {
     [(W5PeerGenericRequestListener *)v13 setIdentifier:@"com.apple.wifi.peer.faults"];
     v17[0] = _NSConcreteStackBlock;
@@ -60,94 +60,94 @@
   return v14;
 }
 
-- (void)startMonitoringFaultEventsForPeer:(id)a3 reply:(id)a4
+- (void)startMonitoringFaultEventsForPeer:(id)peer reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  peerCopy = peer;
+  replyCopy = reply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = objc_alloc_init(W5PeerGenericRequest);
   [(W5PeerGenericRequest *)v9 setIdentifier:@"com.apple.wifi.peer.faults"];
-  [(W5PeerGenericRequest *)v9 setPeer:v6];
+  [(W5PeerGenericRequest *)v9 setPeer:peerCopy];
   [(W5PeerGenericRequest *)v9 setDiscoveryFlags:1];
-  -[W5PeerGenericRequest setControlFlags:](v9, "setControlFlags:", [v6 controlFlags]);
+  -[W5PeerGenericRequest setControlFlags:](v9, "setControlFlags:", [peerCopy controlFlags]);
   v10 = +[NSMutableDictionary dictionary];
   [v10 setObject:&off_1000EFB18 forKeyedSubscript:@"Type"];
-  v11 = [(W5FaultEventManager *)v8 localPeer];
-  [v10 setObject:v11 forKeyedSubscript:@"RequestPeer"];
+  localPeer = [(W5FaultEventManager *)selfCopy localPeer];
+  [v10 setObject:localPeer forKeyedSubscript:@"RequestPeer"];
 
-  [v10 setObject:v6 forKeyedSubscript:@"ResponsePeer"];
+  [v10 setObject:peerCopy forKeyedSubscript:@"ResponsePeer"];
   [(W5PeerGenericRequest *)v9 setRequestInfo:v10];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000891F0;
   v15[3] = &unk_1000E33A8;
-  v15[4] = v8;
-  v12 = v6;
+  v15[4] = selfCopy;
+  v12 = peerCopy;
   v16 = v12;
-  v13 = v7;
+  v13 = replyCopy;
   v17 = v13;
   [(W5PeerGenericRequest *)v9 setResponseHandler:v15];
-  v14 = [(W5PeerManager *)v8->_peerManager sendRequest:v9];
+  v14 = [(W5PeerManager *)selfCopy->_peerManager sendRequest:v9];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)stopMonitoringFaultEventsForPeer:(id)a3 reply:(id)a4
+- (void)stopMonitoringFaultEventsForPeer:(id)peer reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  [(NSCountedSet *)v8->_monitoringPeers removeObject:v6];
-  if (![(NSCountedSet *)v8->_monitoringPeers countForObject:v6])
+  peerCopy = peer;
+  replyCopy = reply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSCountedSet *)selfCopy->_monitoringPeers removeObject:peerCopy];
+  if (![(NSCountedSet *)selfCopy->_monitoringPeers countForObject:peerCopy])
   {
     v9 = objc_alloc_init(W5PeerGenericRequest);
     [(W5PeerGenericRequest *)v9 setIdentifier:@"com.apple.wifi.peer.faults"];
-    [(W5PeerGenericRequest *)v9 setPeer:v6];
+    [(W5PeerGenericRequest *)v9 setPeer:peerCopy];
     [(W5PeerGenericRequest *)v9 setDiscoveryFlags:1];
-    -[W5PeerGenericRequest setControlFlags:](v9, "setControlFlags:", [v6 controlFlags]);
+    -[W5PeerGenericRequest setControlFlags:](v9, "setControlFlags:", [peerCopy controlFlags]);
     v10 = +[NSMutableDictionary dictionary];
     [v10 setObject:&off_1000EFB30 forKeyedSubscript:@"Type"];
-    v11 = [(W5FaultEventManager *)v8 localPeer];
-    [v10 setObject:v11 forKeyedSubscript:@"RequestPeer"];
+    localPeer = [(W5FaultEventManager *)selfCopy localPeer];
+    [v10 setObject:localPeer forKeyedSubscript:@"RequestPeer"];
 
-    [v10 setObject:v6 forKeyedSubscript:@"ResponsePeer"];
+    [v10 setObject:peerCopy forKeyedSubscript:@"ResponsePeer"];
     [(W5PeerGenericRequest *)v9 setRequestInfo:v10];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000894BC;
     v13[3] = &unk_1000E33D0;
-    v14 = v7;
+    v14 = replyCopy;
     [(W5PeerGenericRequest *)v9 setResponseHandler:v13];
-    v12 = [(W5PeerManager *)v8->_peerManager sendRequest:v9];
+    v12 = [(W5PeerManager *)selfCopy->_peerManager sendRequest:v9];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)queryFaultEventCacheForPeer:(id)a3 reply:(id)a4
+- (void)queryFaultEventCacheForPeer:(id)peer reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  peerCopy = peer;
   v8 = objc_alloc_init(W5PeerGenericRequest);
   [(W5PeerGenericRequest *)v8 setIdentifier:@"com.apple.wifi.peer.faults"];
-  [(W5PeerGenericRequest *)v8 setPeer:v7];
+  [(W5PeerGenericRequest *)v8 setPeer:peerCopy];
   [(W5PeerGenericRequest *)v8 setDiscoveryFlags:1];
-  -[W5PeerGenericRequest setControlFlags:](v8, "setControlFlags:", [v7 controlFlags]);
+  -[W5PeerGenericRequest setControlFlags:](v8, "setControlFlags:", [peerCopy controlFlags]);
   v9 = +[NSMutableDictionary dictionary];
   [v9 setObject:&off_1000EFB48 forKeyedSubscript:@"Type"];
-  v10 = [(W5FaultEventManager *)self localPeer];
-  [v9 setObject:v10 forKeyedSubscript:@"RequestPeer"];
+  localPeer = [(W5FaultEventManager *)self localPeer];
+  [v9 setObject:localPeer forKeyedSubscript:@"RequestPeer"];
 
-  [v9 setObject:v7 forKeyedSubscript:@"ResponsePeer"];
+  [v9 setObject:peerCopy forKeyedSubscript:@"ResponsePeer"];
   [(W5PeerGenericRequest *)v8 setRequestInfo:v9];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100089664;
   v13[3] = &unk_1000E33D0;
-  v14 = v6;
-  v11 = v6;
+  v14 = replyCopy;
+  v11 = replyCopy;
   [(W5PeerGenericRequest *)v8 setResponseHandler:v13];
   v12 = [(W5PeerManager *)self->_peerManager sendRequest:v8];
 }
@@ -316,8 +316,8 @@ LABEL_9:
 
 - (void)__purgeObsoleteFaultEvents
 {
-  v2 = [(NSMutableOrderedSet *)self->_faultEventCache array];
-  v3 = [v2 mutableCopy];
+  array = [(NSMutableOrderedSet *)self->_faultEventCache array];
+  v3 = [array mutableCopy];
 
   +[NSDate timeIntervalSinceReferenceDate];
   v5 = v4;
@@ -339,11 +339,11 @@ LABEL_9:
       if (v5 - v11 <= 86400.0)
       {
         v12 = v7;
-        v13 = [v10 peer];
-        v14 = [v13 peerID];
-        v15 = [v10 info];
-        v16 = [v15 objectForKeyedSubscript:@"FaultType"];
-        v17 = [NSString stringWithFormat:@"%@/%@", v14, v16];
+        peer = [v10 peer];
+        peerID = [peer peerID];
+        info = [v10 info];
+        v16 = [info objectForKeyedSubscript:@"FaultType"];
+        v17 = [NSString stringWithFormat:@"%@/%@", peerID, v16];
 
         v18 = [v8 countForObject:v17];
         if (v18 && ((v19 = v18, [v10 timestamp], v5 - v20 > 3600.0) || v19 >= 0xA))
@@ -386,11 +386,11 @@ LABEL_9:
   [(NSMutableOrderedSet *)self->_faultEventCache addObjectsFromArray:v3];
 }
 
-- (void)__addFaultEvent:(id)a3
+- (void)__addFaultEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   faultEventCache = self->_faultEventCache;
-  v8 = v4;
+  v8 = eventCopy;
   if (!faultEventCache)
   {
     v6 = +[NSMutableOrderedSet orderedSet];
@@ -398,36 +398,36 @@ LABEL_9:
     self->_faultEventCache = v6;
 
     [(W5FaultEventManager *)self __unarchiveEventCache];
-    v4 = v8;
+    eventCopy = v8;
     faultEventCache = self->_faultEventCache;
   }
 
-  [(NSMutableOrderedSet *)faultEventCache addObject:v4];
+  [(NSMutableOrderedSet *)faultEventCache addObject:eventCopy];
   [(W5FaultEventManager *)self __purgeObsoleteFaultEvents];
   [(W5FaultEventManager *)self __archiveEventCache];
 }
 
-- (void)notifyPeersWithFaultEvent:(id)a3 info:(id)a4
+- (void)notifyPeersWithFaultEvent:(id)event info:(id)info
 {
-  v6 = a3;
-  v43 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (!v7->_notifyPeers)
+  eventCopy = event;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_notifyPeers)
   {
     v8 = +[NSMutableSet set];
-    notifyPeers = v7->_notifyPeers;
-    v7->_notifyPeers = v8;
+    notifyPeers = selfCopy->_notifyPeers;
+    selfCopy->_notifyPeers = v8;
 
-    [(W5FaultEventManager *)v7 __unarchiveNotifyPeers];
+    [(W5FaultEventManager *)selfCopy __unarchiveNotifyPeers];
   }
 
-  v10 = [v6 info];
-  v11 = [v10 objectForKeyedSubscript:@"FaultType"];
-  v12 = [v11 integerValue];
+  info = [eventCopy info];
+  v11 = [info objectForKeyedSubscript:@"FaultType"];
+  integerValue = [v11 integerValue];
 
-  v13 = [(W5FaultEventManager *)v7 diagnosticsModeManager];
-  v14 = [v13 registeredPeersForFaultType:v12];
+  diagnosticsModeManager = [(W5FaultEventManager *)selfCopy diagnosticsModeManager];
+  v14 = [diagnosticsModeManager registeredPeersForFaultType:integerValue];
 
   v55 = 0u;
   v56 = 0u;
@@ -448,13 +448,13 @@ LABEL_9:
         }
 
         v18 = *(*(&v53 + 1) + 8 * i);
-        v19 = [v18 peer];
-        v20 = v19 == 0;
+        peer = [v18 peer];
+        v20 = peer == 0;
 
         if (v20)
         {
-          v22 = sub_100098A04();
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+          peer2 = sub_100098A04();
+          if (os_log_type_enabled(peer2, OS_LOG_TYPE_DEFAULT))
           {
             v57 = 136315906;
             v58 = "[W5FaultEventManager notifyPeersWithFaultEvent:info:]";
@@ -472,9 +472,9 @@ LABEL_9:
 
         else
         {
-          v21 = v7->_notifyPeers;
-          v22 = [v18 peer];
-          [(NSMutableSet *)v21 addObject:v22];
+          v21 = selfCopy->_notifyPeers;
+          peer2 = [v18 peer];
+          [(NSMutableSet *)v21 addObject:peer2];
         }
       }
 
@@ -488,7 +488,7 @@ LABEL_9:
   v50 = 0u;
   v51 = 0u;
   v49 = 0u;
-  v23 = [(NSMutableSet *)v7->_notifyPeers copy];
+  v23 = [(NSMutableSet *)selfCopy->_notifyPeers copy];
   v24 = [v23 countByEnumeratingWithState:&v49 objects:v67 count:16];
   if (v24)
   {
@@ -512,16 +512,16 @@ LABEL_9:
         [(W5PeerGenericRequest *)v27 setControlFlags:0];
         v28 = +[NSMutableDictionary dictionary];
         [v28 setObject:&off_1000EFB60 forKeyedSubscript:@"Type"];
-        v29 = [(W5FaultEventManager *)v7 localPeer];
-        [v28 setObject:v29 forKeyedSubscript:@"RequestPeer"];
+        localPeer = [(W5FaultEventManager *)selfCopy localPeer];
+        [v28 setObject:localPeer forKeyedSubscript:@"RequestPeer"];
 
         [v28 setObject:v26 forKeyedSubscript:@"ResponsePeer"];
-        v30 = [v6 copy];
-        v31 = [v6 info];
-        if (v31)
+        v30 = [eventCopy copy];
+        info2 = [eventCopy info];
+        if (info2)
         {
-          v32 = [v6 info];
-          v33 = [v32 mutableCopy];
+          info3 = [eventCopy info];
+          v33 = [info3 mutableCopy];
         }
 
         else
@@ -529,22 +529,22 @@ LABEL_9:
           v33 = +[NSMutableDictionary dictionary];
         }
 
-        v34 = [(W5FaultEventManager *)v7 diagnosticsModeManager];
-        v35 = [v34 registeredRoleForPeer:v26] == 16;
+        diagnosticsModeManager2 = [(W5FaultEventManager *)selfCopy diagnosticsModeManager];
+        v35 = [diagnosticsModeManager2 registeredRoleForPeer:v26] == 16;
 
         if (v35)
         {
-          v36 = [v26 peerID];
-          [v33 setObject:v36 forKeyedSubscript:@"RemoteListener"];
+          peerID = [v26 peerID];
+          [v33 setObject:peerID forKeyedSubscript:@"RemoteListener"];
 
-          if (v43)
+          if (infoCopy)
           {
             v47[0] = _NSConcreteStackBlock;
             v47[1] = 3221225472;
             v47[2] = sub_10008A91C;
             v47[3] = &unk_1000E3438;
             v48 = v33;
-            [v43 enumerateKeysAndObjectsUsingBlock:v47];
+            [infoCopy enumerateKeysAndObjectsUsingBlock:v47];
           }
         }
 
@@ -573,10 +573,10 @@ LABEL_9:
         v46[1] = 3221225472;
         v46[2] = sub_10008A928;
         v46[3] = &unk_1000E3460;
-        v46[4] = v7;
+        v46[4] = selfCopy;
         v46[5] = v26;
         [(W5PeerGenericRequest *)v27 setResponseHandler:v46];
-        v38 = [(W5PeerManager *)v7->_peerManager sendRequest:v27];
+        v38 = [(W5PeerManager *)selfCopy->_peerManager sendRequest:v27];
       }
 
       v23 = v41;
@@ -586,43 +586,43 @@ LABEL_9:
     while (v24);
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)submitFaultEvent:(id)a3
+- (void)submitFaultEvent:(id)event
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(W5FaultEventManager *)v4 localPeer];
-  [v7 setPeer:v5];
+  eventCopy = event;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  localPeer = [(W5FaultEventManager *)selfCopy localPeer];
+  [eventCopy setPeer:localPeer];
 
-  [(W5FaultEventManager *)v4 __addFaultEvent:v7];
-  v6 = [(W5FaultEventManager *)v4 faultEventHandler];
-  (v6)[2](v6, v7);
+  [(W5FaultEventManager *)selfCopy __addFaultEvent:eventCopy];
+  faultEventHandler = [(W5FaultEventManager *)selfCopy faultEventHandler];
+  (faultEventHandler)[2](faultEventHandler, eventCopy);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)faultEventCache
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_faultEventCache)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_faultEventCache)
   {
     v3 = +[NSMutableOrderedSet orderedSet];
-    faultEventCache = v2->_faultEventCache;
-    v2->_faultEventCache = v3;
+    faultEventCache = selfCopy->_faultEventCache;
+    selfCopy->_faultEventCache = v3;
 
-    [(W5FaultEventManager *)v2 __unarchiveEventCache];
+    [(W5FaultEventManager *)selfCopy __unarchiveEventCache];
   }
 
-  [(W5FaultEventManager *)v2 __purgeObsoleteFaultEvents];
-  if (v2->_faultEventCache)
+  [(W5FaultEventManager *)selfCopy __purgeObsoleteFaultEvents];
+  if (selfCopy->_faultEventCache)
   {
     v5 = [NSArray alloc];
-    v6 = [(NSMutableOrderedSet *)v2->_faultEventCache array];
-    v7 = [v5 initWithArray:v6 copyItems:1];
+    array = [(NSMutableOrderedSet *)selfCopy->_faultEventCache array];
+    v7 = [v5 initWithArray:array copyItems:1];
   }
 
   else
@@ -630,7 +630,7 @@ LABEL_9:
     v7 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }

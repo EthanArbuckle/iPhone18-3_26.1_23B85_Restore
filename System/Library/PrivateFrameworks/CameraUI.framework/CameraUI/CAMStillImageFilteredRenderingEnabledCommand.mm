@@ -1,14 +1,14 @@
 @interface CAMStillImageFilteredRenderingEnabledCommand
-- (CAMStillImageFilteredRenderingEnabledCommand)initWithCoder:(id)a3;
-- (CAMStillImageFilteredRenderingEnabledCommand)initWithFilteredRenderingEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMStillImageFilteredRenderingEnabledCommand)initWithCoder:(id)coder;
+- (CAMStillImageFilteredRenderingEnabledCommand)initWithFilteredRenderingEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMStillImageFilteredRenderingEnabledCommand
 
-- (CAMStillImageFilteredRenderingEnabledCommand)initWithFilteredRenderingEnabled:(BOOL)a3
+- (CAMStillImageFilteredRenderingEnabledCommand)initWithFilteredRenderingEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMStillImageFilteredRenderingEnabledCommand;
@@ -16,45 +16,45 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMStillImageFilteredRenderingEnabledCommand)initWithCoder:(id)a3
+- (CAMStillImageFilteredRenderingEnabledCommand)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"CAMStillImageFilteredRenderingEnabledKey"];
+  v4 = [coder decodeBoolForKey:@"CAMStillImageFilteredRenderingEnabledKey"];
 
   return [(CAMStillImageFilteredRenderingEnabledCommand *)self initWithFilteredRenderingEnabled:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMStillImageFilteredRenderingEnabledCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMStillImageFilteredRenderingEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMStillImageFilteredRenderingEnabledKey"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMStillImageFilteredRenderingEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMStillImageFilteredRenderingEnabledKey"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMStillImageFilteredRenderingEnabledCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMStillImageFilteredRenderingEnabledCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CAMStillImageFilteredRenderingEnabledCommand *)self _isEnabled];
-  v6 = [v4 currentStillImageOutput];
+  contextCopy = context;
+  _isEnabled = [(CAMStillImageFilteredRenderingEnabledCommand *)self _isEnabled];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
 
-  [v6 setFilterRenderingEnabled:v5];
+  [currentStillImageOutput setFilterRenderingEnabled:_isEnabled];
 }
 
 @end

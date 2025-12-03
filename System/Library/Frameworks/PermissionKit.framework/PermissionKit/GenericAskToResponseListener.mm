@@ -1,14 +1,14 @@
 @interface GenericAskToResponseListener
-- (void)didReceiveResponse:(id)a3;
+- (void)didReceiveResponse:(id)response;
 @end
 
 @implementation GenericAskToResponseListener
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
 
-  sub_23A62C62C(v3);
+  sub_23A62C62C(responseCopy);
 }
 
 @end

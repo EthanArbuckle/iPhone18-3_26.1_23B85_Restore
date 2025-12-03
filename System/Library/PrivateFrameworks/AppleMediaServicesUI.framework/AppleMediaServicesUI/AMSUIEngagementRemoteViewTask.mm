@@ -1,28 +1,28 @@
 @interface AMSUIEngagementRemoteViewTask
-- (AMSUIEngagementRemoteViewTask)initWithRequest:(id)a3 presentingViewController:(id)a4;
+- (AMSUIEngagementRemoteViewTask)initWithRequest:(id)request presentingViewController:(id)controller;
 - (CGSize)preferredContentSize;
 - (id)_snapshotBagDataPromise;
 - (id)presentEngagement;
-- (void)_presentViewController:(id)a3;
+- (void)_presentViewController:(id)controller;
 - (void)_unblock;
-- (void)engagementTaskDidFinishWithResult:(id)a3 error:(id)a4 completion:(id)a5;
-- (void)preferredContentSizeDidChange:(CGSize)a3;
+- (void)engagementTaskDidFinishWithResult:(id)result error:(id)error completion:(id)completion;
+- (void)preferredContentSizeDidChange:(CGSize)change;
 @end
 
 @implementation AMSUIEngagementRemoteViewTask
 
-- (AMSUIEngagementRemoteViewTask)initWithRequest:(id)a3 presentingViewController:(id)a4
+- (AMSUIEngagementRemoteViewTask)initWithRequest:(id)request presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = AMSUIEngagementRemoteViewTask;
   v9 = [(AMSTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_viewController, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_viewController, controller);
     v10->_preferredContentSize = *MEMORY[0x1E695F060];
     v11 = dispatch_group_create();
     dispatchGroup = v10->_dispatchGroup;
@@ -296,99 +296,99 @@ void __50__AMSUIEngagementRemoteViewTask_presentEngagement__block_invoke_4(uint6
   v3 = [v1 instantiateWithExtension:v2 completion:v4];
 }
 
-- (void)engagementTaskDidFinishWithResult:(id)a3 error:(id)a4 completion:(id)a5
+- (void)engagementTaskDidFinishWithResult:(id)result error:(id)error completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v10 = MEMORY[0x1E698C968];
-  v11 = a5;
-  v12 = [v10 sharedConfig];
-  if (!v12)
+  completionCopy = completion;
+  sharedConfig = [v10 sharedConfig];
+  if (!sharedConfig)
   {
-    v12 = [MEMORY[0x1E698C968] sharedConfig];
+    sharedConfig = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [sharedConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
-    v15 = [(AMSUIEngagementRemoteViewTask *)self request];
-    v16 = [v15 logKey];
+    request = [(AMSUIEngagementRemoteViewTask *)self request];
+    logKey = [request logKey];
     v24 = 138544130;
     v25 = v14;
     v26 = 2114;
-    v27 = v16;
+    v27 = logKey;
     v28 = 2114;
-    v29 = v8;
+    v29 = resultCopy;
     v30 = 2114;
-    v31 = v9;
-    _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] remote engagement task finished. Result: %{public}@, error: %{public}@", &v24, 0x2Au);
+    v31 = errorCopy;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] remote engagement task finished. Result: %{public}@, error: %{public}@", &v24, 0x2Au);
   }
 
-  [(AMSUIEngagementRemoteViewTask *)self setResult:v8];
-  [(AMSUIEngagementRemoteViewTask *)self setError:v9];
-  v17 = [(AMSUIEngagementRemoteViewTask *)self presentedViewController];
-  [v17 dismissViewControllerAnimated:1 completion:0];
+  [(AMSUIEngagementRemoteViewTask *)self setResult:resultCopy];
+  [(AMSUIEngagementRemoteViewTask *)self setError:errorCopy];
+  presentedViewController = [(AMSUIEngagementRemoteViewTask *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 
-  v18 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v18)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v18 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v19 = [v18 OSLogObject];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v20 = objc_opt_class();
-    v21 = [(AMSUIEngagementRemoteViewTask *)self request];
-    v22 = [v21 logKey];
+    request2 = [(AMSUIEngagementRemoteViewTask *)self request];
+    logKey2 = [request2 logKey];
     v24 = 138543618;
     v25 = v20;
     v26 = 2114;
-    v27 = v22;
-    _os_log_impl(&dword_1BB036000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] remote engagement task finished. Cleaning up vc references", &v24, 0x16u);
+    v27 = logKey2;
+    _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] remote engagement task finished. Cleaning up vc references", &v24, 0x16u);
   }
 
   [(AMSUIEngagementRemoteViewTask *)self setPresentedViewController:0];
   [(AMSUIEngagementRemoteViewTask *)self setViewController:0];
-  v11[2](v11);
+  completionCopy[2](completionCopy);
 
   [(AMSUIEngagementRemoteViewTask *)self _unblock];
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)preferredContentSizeDidChange:(CGSize)a3
+- (void)preferredContentSizeDidChange:(CGSize)change
 {
-  height = a3.height;
-  width = a3.width;
+  height = change.height;
+  width = change.width;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v6)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
-    v9 = [(AMSUIEngagementRemoteViewTask *)self request];
-    v10 = [v9 logKey];
+    request = [(AMSUIEngagementRemoteViewTask *)self request];
+    logKey = [request logKey];
     v21.width = width;
     v21.height = height;
     v11 = AMSStringFromSize(v21);
     v14 = 138543874;
     v15 = v8;
     v16 = 2114;
-    v17 = v10;
+    v17 = logKey;
     v18 = 2114;
     v19 = v11;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Preferred content size did change. Size: %{public}@", &v14, 0x20u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Preferred content size did change. Size: %{public}@", &v14, 0x20u);
   }
 
-  v12 = [(AMSUIEngagementRemoteViewTask *)self presentedViewController];
-  [v12 setPreferredContentSize:{width, height}];
+  presentedViewController = [(AMSUIEngagementRemoteViewTask *)self presentedViewController];
+  [presentedViewController setPreferredContentSize:{width, height}];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -402,8 +402,8 @@ void __50__AMSUIEngagementRemoteViewTask_presentEngagement__block_invoke_4(uint6
   {
     v5 = objc_alloc_init(MEMORY[0x1E698CAD0]);
     v6 = [(AMSUIEngagementRemoteViewTask *)self bag];
-    v7 = [v5 completionHandlerAdapter];
-    [v6 createSnapshotWithCompletion:v7];
+    completionHandlerAdapter = [v5 completionHandlerAdapter];
+    [v6 createSnapshotWithCompletion:completionHandlerAdapter];
 
     [v5 thenWithBlock:&__block_literal_global_5];
   }
@@ -420,25 +420,25 @@ void __50__AMSUIEngagementRemoteViewTask_presentEngagement__block_invoke_4(uint6
 
 - (void)_unblock
 {
-  v3 = [(AMSUIEngagementRemoteViewTask *)self dispatchGroup];
+  dispatchGroup = [(AMSUIEngagementRemoteViewTask *)self dispatchGroup];
 
-  if (v3)
+  if (dispatchGroup)
   {
-    v4 = [(AMSUIEngagementRemoteViewTask *)self dispatchGroup];
-    dispatch_group_leave(v4);
+    dispatchGroup2 = [(AMSUIEngagementRemoteViewTask *)self dispatchGroup];
+    dispatch_group_leave(dispatchGroup2);
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__AMSUIEngagementRemoteViewTask__presentViewController___block_invoke;
   v6[3] = &unk_1E7F243C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = controllerCopy;
+  v5 = controllerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

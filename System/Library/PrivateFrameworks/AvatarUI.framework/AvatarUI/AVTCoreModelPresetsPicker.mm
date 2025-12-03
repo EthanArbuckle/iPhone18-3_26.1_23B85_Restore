@@ -1,48 +1,48 @@
 @interface AVTCoreModelPresetsPicker
-- (AVTCoreModelPresetsPicker)initWithTitle:(id)a3 representedTags:(id)a4 pairing:(id)a5 options:(id)a6;
-- (AVTCoreModelPresetsPicker)initWithTitle:(id)a3 representedTags:(id)a4 pairing:(id)a5 options:(id)a6 identifier:(id)a7;
+- (AVTCoreModelPresetsPicker)initWithTitle:(id)title representedTags:(id)tags pairing:(id)pairing options:(id)options;
+- (AVTCoreModelPresetsPicker)initWithTitle:(id)title representedTags:(id)tags pairing:(id)pairing options:(id)options identifier:(id)identifier;
 - (NSString)description;
 @end
 
 @implementation AVTCoreModelPresetsPicker
 
-- (AVTCoreModelPresetsPicker)initWithTitle:(id)a3 representedTags:(id)a4 pairing:(id)a5 options:(id)a6
+- (AVTCoreModelPresetsPicker)initWithTitle:(id)title representedTags:(id)tags pairing:(id)pairing options:(id)options
 {
   v10 = MEMORY[0x1E696AFB0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 UUID];
-  v16 = [v15 UUIDString];
-  v17 = [(AVTCoreModelPresetsPicker *)self initWithTitle:v14 representedTags:v13 pairing:v12 options:v11 identifier:v16];
+  optionsCopy = options;
+  pairingCopy = pairing;
+  tagsCopy = tags;
+  titleCopy = title;
+  uUID = [v10 UUID];
+  uUIDString = [uUID UUIDString];
+  v17 = [(AVTCoreModelPresetsPicker *)self initWithTitle:titleCopy representedTags:tagsCopy pairing:pairingCopy options:optionsCopy identifier:uUIDString];
 
   return v17;
 }
 
-- (AVTCoreModelPresetsPicker)initWithTitle:(id)a3 representedTags:(id)a4 pairing:(id)a5 options:(id)a6 identifier:(id)a7
+- (AVTCoreModelPresetsPicker)initWithTitle:(id)title representedTags:(id)tags pairing:(id)pairing options:(id)options identifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  tagsCopy = tags;
+  pairingCopy = pairing;
+  optionsCopy = options;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = AVTCoreModelPresetsPicker;
   v17 = [(AVTCoreModelPresetsPicker *)&v25 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [titleCopy copy];
     title = v17->_title;
     v17->_title = v18;
 
-    v20 = [v13 copy];
+    v20 = [tagsCopy copy];
     representedTags = v17->_representedTags;
     v17->_representedTags = v20;
 
-    objc_storeStrong(&v17->_pairing, a5);
-    objc_storeStrong(&v17->_options, a6);
-    v22 = [v16 copy];
+    objc_storeStrong(&v17->_pairing, pairing);
+    objc_storeStrong(&v17->_options, options);
+    v22 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v22;
   }
@@ -57,14 +57,14 @@
   v3 = [(AVTCoreModelPresetsPicker *)&v10 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTCoreModelPresetsPicker *)self identifier];
-  [v4 appendFormat:@" identifier: %@\n", v5];
+  identifier = [(AVTCoreModelPresetsPicker *)self identifier];
+  [v4 appendFormat:@" identifier: %@\n", identifier];
 
-  v6 = [(AVTCoreModelPresetsPicker *)self title];
-  [v4 appendFormat:@" title: %@\n", v6];
+  title = [(AVTCoreModelPresetsPicker *)self title];
+  [v4 appendFormat:@" title: %@\n", title];
 
-  v7 = [(AVTCoreModelPresetsPicker *)self representedTags];
-  [v4 appendFormat:@" tags: %@\n", v7];
+  representedTags = [(AVTCoreModelPresetsPicker *)self representedTags];
+  [v4 appendFormat:@" tags: %@\n", representedTags];
 
   v8 = [v4 copy];
 

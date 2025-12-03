@@ -1,21 +1,21 @@
 @interface _PIWhiteColorCalculator
-- ($78DA7BC45C8C992E2555122C1BE30523)_computeWhitePointColorWithGrayEdgesBuffer:(SEL)a3 grayWorldBuffer:(id)a4 greenChannelPercentage:(id)a5 RAWCameraSpaceProperties:(double)a6;
-- ($78DA7BC45C8C992E2555122C1BE30523)_whitePointColorFromGrayEdgesImage:(SEL)a3 grayWorldImage:(id)a4 greenChannelPercentage:(id)a5 RAWCameraSpaceProperties:(double)a6;
-- (_PIWhiteColorCalculator)initWithComposition:(id)a3 useSushi:(BOOL)a4;
-- (id)_brightnessMultiplierFromImageProperties:(id)a3;
-- (void)_computeGreenPercentage:(id)a3;
-- (void)_configureRequest:(id)a3;
-- (void)_submitGERenderRequest:(id)a3;
-- (void)_submitGWRenderRequest:(id)a3;
-- (void)calculateColorWithProperties:(id)a3 completion:(id)a4;
-- (void)readBufferFromImage:(id)a3 withRGBAfBufferBlock:(id)a4;
+- ($78DA7BC45C8C992E2555122C1BE30523)_computeWhitePointColorWithGrayEdgesBuffer:(SEL)buffer grayWorldBuffer:(id)worldBuffer greenChannelPercentage:(id)percentage RAWCameraSpaceProperties:(double)properties;
+- ($78DA7BC45C8C992E2555122C1BE30523)_whitePointColorFromGrayEdgesImage:(SEL)image grayWorldImage:(id)worldImage greenChannelPercentage:(id)percentage RAWCameraSpaceProperties:(double)properties;
+- (_PIWhiteColorCalculator)initWithComposition:(id)composition useSushi:(BOOL)sushi;
+- (id)_brightnessMultiplierFromImageProperties:(id)properties;
+- (void)_computeGreenPercentage:(id)percentage;
+- (void)_configureRequest:(id)request;
+- (void)_submitGERenderRequest:(id)request;
+- (void)_submitGWRenderRequest:(id)request;
+- (void)calculateColorWithProperties:(id)properties completion:(id)completion;
+- (void)readBufferFromImage:(id)image withRGBAfBufferBlock:(id)block;
 @end
 
 @implementation _PIWhiteColorCalculator
 
-- (void)_submitGERenderRequest:(id)a3
+- (void)_submitGERenderRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [objc_alloc(MEMORY[0x1E69B39A0]) initWithComposition:self->_composition];
   [v5 setName:@"PIWhiteColorCalculator-grayEdges"];
   [(_PIWhiteColorCalculator *)self _configureRequest:v5];
@@ -44,16 +44,16 @@
   v12[1] = 3221225472;
   v12[2] = __50___PIWhiteColorCalculator__submitGERenderRequest___block_invoke_2;
   v12[3] = &unk_1E82ACA08;
-  v13 = v4;
-  v11 = v4;
+  v13 = requestCopy;
+  v11 = requestCopy;
   [(NUBufferRenderClient *)bufferRenderClient setCompletionBlock:v12];
   [(NUBufferRenderClient *)self->_bufferRenderClient submitRequest:v5];
   [(NUBufferRenderClient *)self->_bufferRenderClient setCompletionBlock:&__block_literal_global_270];
 }
 
-- (void)_submitGWRenderRequest:(id)a3
+- (void)_submitGWRenderRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [objc_alloc(MEMORY[0x1E69B39A0]) initWithComposition:self->_composition];
   [v5 setName:@"PIWhiteColorCalculator-grayWorld"];
   [(_PIWhiteColorCalculator *)self _configureRequest:v5];
@@ -62,16 +62,16 @@
   v8[1] = 3221225472;
   v8[2] = __50___PIWhiteColorCalculator__submitGWRenderRequest___block_invoke;
   v8[3] = &unk_1E82ACA08;
-  v9 = v4;
-  v7 = v4;
+  v9 = requestCopy;
+  v7 = requestCopy;
   [(NUBufferRenderClient *)bufferRenderClient setCompletionBlock:v8];
   [(NUBufferRenderClient *)self->_bufferRenderClient submitRequest:v5];
   [(NUBufferRenderClient *)self->_bufferRenderClient setCompletionBlock:&__block_literal_global_7606];
 }
 
-- (void)_computeGreenPercentage:(id)a3
+- (void)_computeGreenPercentage:(id)percentage
 {
-  v4 = a3;
+  percentageCopy = percentage;
   v5 = [objc_alloc(MEMORY[0x1E69B3AE8]) initWithComposition:self->_composition dataExtractor:@"CIAreaAverage" options:0];
   [v5 setName:@"PIWhiteColorCalculator-computeGreenPercentage"];
   [(_PIWhiteColorCalculator *)self _configureRequest:v5];
@@ -80,25 +80,25 @@
   v8[1] = 3221225472;
   v8[2] = __51___PIWhiteColorCalculator__computeGreenPercentage___block_invoke;
   v8[3] = &unk_1E82ACA08;
-  v9 = v4;
-  v7 = v4;
+  v9 = percentageCopy;
+  v7 = percentageCopy;
   [(NUImageDataClient *)imageDataClient submitRequest:v5 completion:v8];
 }
 
-- (void)_configureRequest:(id)a3
+- (void)_configureRequest:(id)request
 {
-  v10 = a3;
-  v4 = [MEMORY[0x1E69B3BF0] RGBAh];
-  [v10 setPixelFormat:v4];
+  requestCopy = request;
+  rGBAh = [MEMORY[0x1E69B3BF0] RGBAh];
+  [requestCopy setPixelFormat:rGBAh];
 
-  v5 = [MEMORY[0x1E69B3A10] genericRGBLinearColorSpace];
-  [v10 setColorSpace:v5];
+  genericRGBLinearColorSpace = [MEMORY[0x1E69B3A10] genericRGBLinearColorSpace];
+  [requestCopy setColorSpace:genericRGBLinearColorSpace];
 
   v6 = [objc_alloc(MEMORY[0x1E69B3BE8]) initWithTargetPixelCount:0x40000];
-  [v10 setScalePolicy:v6];
+  [requestCopy setScalePolicy:v6];
 
-  [v10 setSampleMode:3];
-  [v10 setTileSize:{0x40000, 0x40000}];
+  [requestCopy setSampleMode:3];
+  [requestCopy setTileSize:{0x40000, 0x40000}];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (self->_useSushi)
   {
@@ -115,13 +115,13 @@
   v9 = ;
   [v7 addObject:v9];
 
-  [v10 setPipelineFilters:v7];
+  [requestCopy setPipelineFilters:v7];
 }
 
-- ($78DA7BC45C8C992E2555122C1BE30523)_whitePointColorFromGrayEdgesImage:(SEL)a3 grayWorldImage:(id)a4 greenChannelPercentage:(id)a5 RAWCameraSpaceProperties:(double)a6
+- ($78DA7BC45C8C992E2555122C1BE30523)_whitePointColorFromGrayEdgesImage:(SEL)image grayWorldImage:(id)worldImage greenChannelPercentage:(id)percentage RAWCameraSpaceProperties:(double)properties
 {
-  v12 = a4;
-  v13 = a5;
+  worldImageCopy = worldImage;
+  percentageCopy = percentage;
   v14 = a7;
   v26 = 0;
   v27 = &v26;
@@ -137,13 +137,13 @@
   v21[2] = __125___PIWhiteColorCalculator__whitePointColorFromGrayEdgesImage_grayWorldImage_greenChannelPercentage_RAWCameraSpaceProperties___block_invoke;
   v21[3] = &unk_1E82AA568;
   v21[4] = self;
-  v15 = v13;
+  v15 = percentageCopy;
   v22 = v15;
   v24 = &v26;
-  v25 = a6;
+  propertiesCopy = properties;
   v16 = v14;
   v23 = v16;
-  [(_PIWhiteColorCalculator *)self readBufferFromImage:v12 withRGBAfBufferBlock:v21];
+  [(_PIWhiteColorCalculator *)self readBufferFromImage:worldImageCopy withRGBAfBufferBlock:v21];
   v17 = v27;
   v18 = *(v27 + 5);
   *retstr->var1.var0 = *(v27 + 4);
@@ -157,13 +157,13 @@
   return result;
 }
 
-- ($78DA7BC45C8C992E2555122C1BE30523)_computeWhitePointColorWithGrayEdgesBuffer:(SEL)a3 grayWorldBuffer:(id)a4 greenChannelPercentage:(id)a5 RAWCameraSpaceProperties:(double)a6
+- ($78DA7BC45C8C992E2555122C1BE30523)_computeWhitePointColorWithGrayEdgesBuffer:(SEL)buffer grayWorldBuffer:(id)worldBuffer greenChannelPercentage:(id)percentage RAWCameraSpaceProperties:(double)properties
 {
   v109 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = v11;
-  v14 = v12;
+  worldBufferCopy = worldBuffer;
+  percentageCopy = percentage;
+  v13 = worldBufferCopy;
+  v14 = percentageCopy;
   v15 = a7;
   *retstr->var0.var0 = 0u;
   *&retstr->var0.var0[2] = 0u;
@@ -171,8 +171,8 @@
   *retstr->var1.var0 = 0u;
   *&retstr->var1.var0[2] = 0u;
   retstr->var2 = 0.0;
-  v17 = [v13 rowBytes];
-  v18 = [v14 rowBytes];
+  rowBytes = [v13 rowBytes];
+  rowBytes2 = [v14 rowBytes];
   v91 = v15;
   if (v15)
   {
@@ -194,8 +194,8 @@
   }
 
   v24 = v14;
-  v25 = [v14 bytes];
-  v26 = [v13 bytes];
+  bytes = [v14 bytes];
+  bytes2 = [v13 bytes];
   v27 = [v13 size];
   v29 = v28;
   v89 = v24;
@@ -226,7 +226,7 @@
       }
 
       *&v93[8] = 2048;
-      v94 = v17;
+      v94 = rowBytes;
       v95 = 2048;
       v96 = v33;
       v97 = 2048;
@@ -264,11 +264,11 @@
           v43 = v27 + 1;
           do
           {
-            v45 = *(v25 + v42);
-            v44 = *(v25 + v42 + 4);
-            v46 = *(v25 + v42 + 8);
+            v45 = *(bytes + v42);
+            v44 = *(bytes + v42 + 4);
+            v46 = *(bytes + v42 + 8);
             v49 = (((v44 + v45) + v46) / 3.0) > v33 && v44 < v23 && v45 < v23 && v46 < v23;
-            if (v49 && ((v50 = v44, v51 = v45, v52 = v46, v50 * a6 < v51) || v50 * a6 < v52))
+            if (v49 && ((v50 = v44, v51 = v45, v52 = v46, v50 * properties < v51) || v50 * properties < v52))
             {
               v53 = 0;
               v40 = v40 + v51;
@@ -282,12 +282,12 @@
               v53 = 1;
             }
 
-            v54 = *(v26 + v42);
-            v55 = *(v26 + v42 + 8);
+            v54 = *(bytes2 + v42);
+            v55 = *(bytes2 + v42 + 8);
             v56 = (vaddv_f32(v54) + v55) / 3.0;
             if (v56 > flt_1C7845720[v91 == 0] && v56 < (v23 * v23))
             {
-              if (fmax(v54.f32[0], v55) <= v54.f32[1] * a6)
+              if (fmax(v54.f32[0], v55) <= v54.f32[1] * properties)
               {
                 v53 = 1;
               }
@@ -307,8 +307,8 @@
           while (v43 > 1);
         }
 
-        v25 += v18;
-        v26 += v17;
+        bytes += rowBytes2;
+        bytes2 += rowBytes;
       }
 
       while (v29-- > 1);
@@ -441,11 +441,11 @@
   return result;
 }
 
-- (id)_brightnessMultiplierFromImageProperties:(id)a3
+- (id)_brightnessMultiplierFromImageProperties:(id)properties
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = [a3 metadata];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696D9B0]];
+  metadata = [properties metadata];
+  v5 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696D9B0]];
 
   v6 = flashFired(v5);
   v7 = apertureValue(v5);
@@ -535,10 +535,10 @@ LABEL_16:
   return v22;
 }
 
-- (void)calculateColorWithProperties:(id)a3 completion:(id)a4
+- (void)calculateColorWithProperties:(id)properties completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  completionCopy = completion;
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x3032000000;
@@ -561,7 +561,7 @@ LABEL_16:
   v31[3] = __Block_byref_object_copy__7505;
   v31[4] = __Block_byref_object_dispose__7506;
   v32 = 0;
-  v8 = [(_PIWhiteColorCalculator *)self _brightnessMultiplierFromImageProperties:v6];
+  v8 = [(_PIWhiteColorCalculator *)self _brightnessMultiplierFromImageProperties:propertiesCopy];
   [MEMORY[0x1E69B3C60] begin];
   if (v8)
   {
@@ -601,12 +601,12 @@ LABEL_16:
   v16 = v12;
   v21 = v35;
   v24 = useSushi;
-  v13 = v6;
+  v13 = propertiesCopy;
   v17 = v13;
-  v18 = self;
+  selfCopy = self;
   v22 = v33;
   v23 = v31;
-  v14 = v7;
+  v14 = completionCopy;
   v19 = v14;
   [v10 commitAndNotifyOnQueue:q withBlock:v15];
 
@@ -617,31 +617,31 @@ LABEL_16:
   _Block_object_dispose(v36, 8);
 }
 
-- (void)readBufferFromImage:(id)a3 withRGBAfBufferBlock:(id)a4
+- (void)readBufferFromImage:(id)image withRGBAfBufferBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 validRegion];
+  blockCopy = block;
+  imageCopy = image;
+  validRegion = [imageCopy validRegion];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68___PIWhiteColorCalculator_readBufferFromImage_withRGBAfBufferBlock___block_invoke;
   v9[3] = &unk_1E82AA518;
-  v10 = v5;
-  v8 = v5;
-  [v6 readBufferRegion:v7 withBlock:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [imageCopy readBufferRegion:validRegion withBlock:v9];
 }
 
-- (_PIWhiteColorCalculator)initWithComposition:(id)a3 useSushi:(BOOL)a4
+- (_PIWhiteColorCalculator)initWithComposition:(id)composition useSushi:(BOOL)sushi
 {
-  v6 = a3;
+  compositionCopy = composition;
   v17.receiver = self;
   v17.super_class = _PIWhiteColorCalculator;
   v7 = [(_PIWhiteColorCalculator *)&v17 init];
   composition = v7->_composition;
-  v7->_composition = v6;
-  v9 = v6;
+  v7->_composition = compositionCopy;
+  v9 = compositionCopy;
 
-  v7->_useSushi = a4;
+  v7->_useSushi = sushi;
   v10 = dispatch_queue_create("PIWhiteBalanceAutoCalculator", 0);
   q = v7->_q;
   v7->_q = v10;

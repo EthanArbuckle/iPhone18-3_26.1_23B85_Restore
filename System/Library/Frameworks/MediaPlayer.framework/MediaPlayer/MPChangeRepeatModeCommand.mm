@@ -1,8 +1,8 @@
 @interface MPChangeRepeatModeCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (id)newCommandEventWithType:(int64_t)a3 preservesRepeatMode:(BOOL)a4;
+- (id)newCommandEventWithType:(int64_t)type preservesRepeatMode:(BOOL)mode;
 - (void)setCurrentRepeatType:(MPRepeatType)currentRepeatType;
-- (void)setSupportedRepeatTypes:(id)a3;
+- (void)setSupportedRepeatTypes:(id)types;
 @end
 
 @implementation MPChangeRepeatModeCommand
@@ -59,8 +59,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * i) integerValue];
-          if (v15 == 1)
+          integerValue = [*(*(&v20 + 1) + 8 * i) integerValue];
+          if (integerValue == 1)
           {
             v16 = 2;
           }
@@ -70,7 +70,7 @@
             v16 = 1;
           }
 
-          if (v15 == 2)
+          if (integerValue == 2)
           {
             v17 = 3;
           }
@@ -96,13 +96,13 @@
   return v8;
 }
 
-- (id)newCommandEventWithType:(int64_t)a3 preservesRepeatMode:(BOOL)a4
+- (id)newCommandEventWithType:(int64_t)type preservesRepeatMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v16[2] = *MEMORY[0x1E69E9840];
-  v7 = [(MPRemoteCommand *)self mediaRemoteCommandType];
+  mediaRemoteCommandType = [(MPRemoteCommand *)self mediaRemoteCommandType];
   v15[0] = *MEMORY[0x1E69B1208];
-  if (a3 == 1)
+  if (type == 1)
   {
     v8 = 2;
   }
@@ -112,7 +112,7 @@
     v8 = 1;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v9 = 3;
   }
@@ -125,20 +125,20 @@
   v10 = [MEMORY[0x1E696AD98] numberWithInt:v9];
   v16[0] = v10;
   v15[1] = *MEMORY[0x1E69B0CE0];
-  v11 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:modeCopy];
   v16[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
-  v13 = [(MPRemoteCommand *)self newCommandEventWithCommandType:v7 options:v12];
+  v13 = [(MPRemoteCommand *)self newCommandEventWithCommandType:mediaRemoteCommandType options:v12];
 
   return v13;
 }
 
-- (void)setSupportedRepeatTypes:(id)a3
+- (void)setSupportedRepeatTypes:(id)types
 {
-  v6 = a3;
+  typesCopy = types;
   if (![(NSArray *)self->_supportedRepeatTypes isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [typesCopy copy];
     supportedRepeatTypes = self->_supportedRepeatTypes;
     self->_supportedRepeatTypes = v4;
 

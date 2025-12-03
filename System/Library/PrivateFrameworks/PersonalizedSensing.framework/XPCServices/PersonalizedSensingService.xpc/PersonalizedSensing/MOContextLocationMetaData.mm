@@ -1,15 +1,15 @@
 @interface MOContextLocationMetaData
 - (MOContextLocationMetaData)init;
-- (MOContextLocationMetaData)initWithCoder:(id)a3;
-- (MOContextLocationMetaData)initWithLocationMetaDataMO:(id)a3;
-- (MOContextLocationMetaData)initWithPlace:(id)a3 city:(id)a4;
-- (MOContextLocationMetaData)initWithPlace:(id)a3 city:(id)a4 location:(id)a5;
-- (MOContextLocationMetaData)initWithPlace:(id)a3 city:(id)a4 visitTimeWindow:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOContextLocationMetaData)initWithCoder:(id)coder;
+- (MOContextLocationMetaData)initWithLocationMetaDataMO:(id)o;
+- (MOContextLocationMetaData)initWithPlace:(id)place city:(id)city;
+- (MOContextLocationMetaData)initWithPlace:(id)place city:(id)city location:(id)location;
+- (MOContextLocationMetaData)initWithPlace:(id)place city:(id)city visitTimeWindow:(id)window;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)deserializeCLLocationObject:(id)a3;
+- (id)deserializeCLLocationObject:(id)object;
 - (id)serializeCLLocationObject;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContextLocationMetaData
@@ -21,29 +21,29 @@
   return [(MOContextLocationMetaData *)&v3 init];
 }
 
-- (MOContextLocationMetaData)initWithPlace:(id)a3 city:(id)a4 visitTimeWindow:(id)a5
+- (MOContextLocationMetaData)initWithPlace:(id)place city:(id)city visitTimeWindow:(id)window
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  placeCopy = place;
+  cityCopy = city;
+  windowCopy = window;
   v16.receiver = self;
   v16.super_class = MOContextLocationMetaData;
   v12 = [(MOContextLocationMetaData *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_place, a3);
-    objc_storeStrong(&v13->_city, a4);
-    objc_storeStrong(&v13->_visitTimeWindow, a5);
+    objc_storeStrong(&v12->_place, place);
+    objc_storeStrong(&v13->_city, city);
+    objc_storeStrong(&v13->_visitTimeWindow, window);
     v14 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v18 = v9;
+      v18 = placeCopy;
       v19 = 2112;
-      v20 = v10;
+      v20 = cityCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = windowCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "LocationMetaData place,%@,city,%@,visitTimeWindow,%@", buf, 0x20u);
     }
   }
@@ -51,49 +51,49 @@
   return v13;
 }
 
-- (MOContextLocationMetaData)initWithPlace:(id)a3 city:(id)a4
+- (MOContextLocationMetaData)initWithPlace:(id)place city:(id)city
 {
-  v7 = a3;
-  v8 = a4;
+  placeCopy = place;
+  cityCopy = city;
   v12.receiver = self;
   v12.super_class = MOContextLocationMetaData;
   v9 = [(MOContextLocationMetaData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_place, a3);
-    objc_storeStrong(&v10->_city, a4);
+    objc_storeStrong(&v9->_place, place);
+    objc_storeStrong(&v10->_city, city);
   }
 
   return v10;
 }
 
-- (MOContextLocationMetaData)initWithPlace:(id)a3 city:(id)a4 location:(id)a5
+- (MOContextLocationMetaData)initWithPlace:(id)place city:(id)city location:(id)location
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  placeCopy = place;
+  cityCopy = city;
+  locationCopy = location;
   v15.receiver = self;
   v15.super_class = MOContextLocationMetaData;
   v12 = [(MOContextLocationMetaData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_place, a3);
-    objc_storeStrong(&v13->_city, a4);
-    objc_storeStrong(&v13->_location, a5);
+    objc_storeStrong(&v12->_place, place);
+    objc_storeStrong(&v13->_city, city);
+    objc_storeStrong(&v13->_location, location);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContextLocationMetaData alloc];
-  v5 = [(MOContextLocationMetaData *)self place];
-  v6 = [(MOContextLocationMetaData *)self city];
-  v7 = [(MOContextLocationMetaData *)self visitTimeWindow];
-  v8 = [(MOContextLocationMetaData *)v4 initWithPlace:v5 city:v6 visitTimeWindow:v7];
+  place = [(MOContextLocationMetaData *)self place];
+  city = [(MOContextLocationMetaData *)self city];
+  visitTimeWindow = [(MOContextLocationMetaData *)self visitTimeWindow];
+  v8 = [(MOContextLocationMetaData *)v4 initWithPlace:place city:city visitTimeWindow:visitTimeWindow];
 
   return v8;
 }
@@ -101,34 +101,34 @@
 - (id)serializeCLLocationObject
 {
   v19[0] = @"latitude";
-  v18 = [(MOContextLocationMetaData *)self location];
-  [v18 coordinate];
+  location = [(MOContextLocationMetaData *)self location];
+  [location coordinate];
   v17 = [NSNumber numberWithDouble:?];
   v20[0] = v17;
   v19[1] = @"longitude";
-  v16 = [(MOContextLocationMetaData *)self location];
-  [v16 coordinate];
+  location2 = [(MOContextLocationMetaData *)self location];
+  [location2 coordinate];
   v15 = [NSNumber numberWithDouble:v3];
   v20[1] = v15;
   v19[2] = @"altitude";
-  v4 = [(MOContextLocationMetaData *)self location];
-  [v4 altitude];
+  location3 = [(MOContextLocationMetaData *)self location];
+  [location3 altitude];
   v5 = [NSNumber numberWithDouble:?];
   v20[2] = v5;
   v19[3] = @"horizontalAccuracy";
-  v6 = [(MOContextLocationMetaData *)self location];
-  [v6 horizontalAccuracy];
+  location4 = [(MOContextLocationMetaData *)self location];
+  [location4 horizontalAccuracy];
   v7 = [NSNumber numberWithDouble:?];
   v20[3] = v7;
   v19[4] = @"verticalAccuracy";
-  v8 = [(MOContextLocationMetaData *)self location];
-  [v8 verticalAccuracy];
+  location5 = [(MOContextLocationMetaData *)self location];
+  [location5 verticalAccuracy];
   v9 = [NSNumber numberWithDouble:?];
   v20[4] = v9;
   v19[5] = @"timestamp";
-  v10 = [(MOContextLocationMetaData *)self location];
-  v11 = [v10 timestamp];
-  [v11 timeIntervalSince1970];
+  location6 = [(MOContextLocationMetaData *)self location];
+  timestamp = [location6 timestamp];
+  [timestamp timeIntervalSince1970];
   v12 = [NSNumber numberWithDouble:?];
   v20[5] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:6];
@@ -136,27 +136,27 @@
   return v13;
 }
 
-- (id)deserializeCLLocationObject:(id)a3
+- (id)deserializeCLLocationObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"latitude"];
+  objectCopy = object;
+  v4 = [objectCopy objectForKeyedSubscript:@"latitude"];
   [v4 doubleValue];
   v6 = v5;
-  v7 = [v3 objectForKeyedSubscript:@"longitude"];
+  v7 = [objectCopy objectForKeyedSubscript:@"longitude"];
   [v7 doubleValue];
   v9 = CLLocationCoordinate2DMake(v6, v8);
 
   v10 = [CLLocation alloc];
-  v11 = [v3 objectForKeyedSubscript:@"altitude"];
+  v11 = [objectCopy objectForKeyedSubscript:@"altitude"];
   [v11 doubleValue];
   v13 = v12;
-  v14 = [v3 objectForKeyedSubscript:@"horizontalAccuracy"];
+  v14 = [objectCopy objectForKeyedSubscript:@"horizontalAccuracy"];
   [v14 doubleValue];
   v16 = v15;
-  v17 = [v3 objectForKeyedSubscript:@"verticalAccuracy"];
+  v17 = [objectCopy objectForKeyedSubscript:@"verticalAccuracy"];
   [v17 doubleValue];
   v19 = v18;
-  v20 = [v3 objectForKeyedSubscript:@"timestamp"];
+  v20 = [objectCopy objectForKeyedSubscript:@"timestamp"];
 
   [v20 doubleValue];
   v21 = [NSDate dateWithTimeIntervalSince1970:?];
@@ -165,27 +165,27 @@
   return v22;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   place = self->_place;
-  v5 = a3;
-  [v5 encodeObject:place forKey:@"place"];
-  [v5 encodeObject:self->_city forKey:@"city"];
-  [v5 encodeObject:self->_visitTimeWindow forKey:@"visitTimeWindow"];
-  v6 = [(MOContextLocationMetaData *)self serializeCLLocationObject];
-  [v5 encodeObject:v6 forKey:@"location"];
+  coderCopy = coder;
+  [coderCopy encodeObject:place forKey:@"place"];
+  [coderCopy encodeObject:self->_city forKey:@"city"];
+  [coderCopy encodeObject:self->_visitTimeWindow forKey:@"visitTimeWindow"];
+  serializeCLLocationObject = [(MOContextLocationMetaData *)self serializeCLLocationObject];
+  [coderCopy encodeObject:serializeCLLocationObject forKey:@"location"];
 }
 
-- (MOContextLocationMetaData)initWithCoder:(id)a3
+- (MOContextLocationMetaData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"place"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"city"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"place"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"city"];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = [NSSet setWithObjects:v7, v8, v9, objc_opt_class(), 0];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"location"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"location"];
 
   v12 = [(MOContextLocationMetaData *)self deserializeCLLocationObject:v11];
   v13 = [(MOContextLocationMetaData *)self initWithPlace:v5 city:v6 location:v12];
@@ -195,34 +195,34 @@
 
 - (id)description
 {
-  v3 = [(MOContextLocationMetaData *)self place];
-  v4 = [v3 mask];
-  v5 = [(MOContextLocationMetaData *)self city];
-  v6 = [v5 mask];
-  v7 = [(MOContextLocationMetaData *)self location];
-  v8 = [NSString stringWithFormat:@"place, %@, city, %@, location %{sensitive}@", v4, v6, v7];
+  place = [(MOContextLocationMetaData *)self place];
+  mask = [place mask];
+  city = [(MOContextLocationMetaData *)self city];
+  mask2 = [city mask];
+  location = [(MOContextLocationMetaData *)self location];
+  v8 = [NSString stringWithFormat:@"place, %@, city, %@, location %{sensitive}@", mask, mask2, location];
 
   return v8;
 }
 
-- (MOContextLocationMetaData)initWithLocationMetaDataMO:(id)a3
+- (MOContextLocationMetaData)initWithLocationMetaDataMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = a3;
-    v5 = [v4 place];
-    v6 = [v4 city];
+    oCopy = o;
+    place = [oCopy place];
+    city = [oCopy city];
 
-    self = [(MOContextLocationMetaData *)self initWithPlace:v5 city:v6];
-    v7 = self;
+    self = [(MOContextLocationMetaData *)self initWithPlace:place city:city];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

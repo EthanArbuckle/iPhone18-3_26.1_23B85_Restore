@@ -1,7 +1,7 @@
 @interface _LTTextToSpeechCache
 - (_LTTextToSpeechCache)init;
-- (id)audioDataForKey:(id)a3;
-- (void)cacheAudioData:(id)a3 forKey:(id)a4;
+- (id)audioDataForKey:(id)key;
+- (void)cacheAudioData:(id)data forKey:(id)key;
 - (void)clear;
 @end
 
@@ -18,9 +18,9 @@
     cacheQueue = v2->_cacheQueue;
     v2->_cacheQueue = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     cache = v2->_cache;
-    v2->_cache = v5;
+    v2->_cache = dictionary;
 
     v7 = v2;
   }
@@ -28,10 +28,10 @@
   return v2;
 }
 
-- (void)cacheAudioData:(id)a3 forKey:(id)a4
+- (void)cacheAudioData:(id)data forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  keyCopy = key;
   if (_LTPreferencesDebugDisableTTSCache())
   {
     v8 = _LTOSLogTTS();
@@ -50,8 +50,8 @@
     v10[2] = __46___LTTextToSpeechCache_cacheAudioData_forKey___block_invoke;
     v10[3] = &unk_2789B6C78;
     objc_copyWeak(&v13, &location);
-    v11 = v7;
-    v12 = v6;
+    v11 = keyCopy;
+    v12 = dataCopy;
     dispatch_async(cacheQueue, v10);
 
     objc_destroyWeak(&v13);
@@ -59,10 +59,10 @@
   }
 }
 
-- (id)audioDataForKey:(id)a3
+- (id)audioDataForKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -76,7 +76,7 @@
   block[3] = &unk_2789B59B8;
   v14 = &v15;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   v13 = v6;
   dispatch_sync(cacheQueue, block);
   v7 = _LTOSLogTTS();

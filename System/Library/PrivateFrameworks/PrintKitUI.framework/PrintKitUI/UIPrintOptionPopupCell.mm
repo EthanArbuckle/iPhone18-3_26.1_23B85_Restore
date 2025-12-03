@@ -1,20 +1,20 @@
 @interface UIPrintOptionPopupCell
 - (BOOL)usingLargeTextLayout;
-- (UIPrintOptionPopupCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (UIPrintOptionPopupCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateConstraints;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPopupActions:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPopupActions:(id)actions;
 @end
 
 @implementation UIPrintOptionPopupCell
 
-- (UIPrintOptionPopupCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (UIPrintOptionPopupCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   v35.receiver = self;
   v35.super_class = UIPrintOptionPopupCell;
-  v6 = [(UIPrintOptionCell *)&v35 initWithStyle:1 reuseIdentifier:v5];
+  v6 = [(UIPrintOptionCell *)&v35 initWithStyle:1 reuseIdentifier:identifierCopy];
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -26,48 +26,48 @@
 
     [(UILabel *)v6->_textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v6->_textLabel setAdjustsFontForContentSizeCategory:1];
-    v10 = [(UIPrintOptionPopupCell *)v6 contentView];
-    [v10 addSubview:v6->_textLabel];
+    contentView = [(UIPrintOptionPopupCell *)v6 contentView];
+    [contentView addSubview:v6->_textLabel];
 
-    v11 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    [v11 setTitleLineBreakMode:4];
-    v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [v11 setBaseForegroundColor:v12];
+    plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+    [plainButtonConfiguration setTitleLineBreakMode:4];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [plainButtonConfiguration setBaseForegroundColor:secondaryLabelColor];
 
-    [v11 contentInsets];
+    [plainButtonConfiguration contentInsets];
     v14 = v13;
-    [v11 contentInsets];
-    [v11 setContentInsets:{v14, 0.0}];
-    v15 = [MEMORY[0x277D75220] buttonWithConfiguration:v11 primaryAction:0];
+    [plainButtonConfiguration contentInsets];
+    [plainButtonConfiguration setContentInsets:{v14, 0.0}];
+    v15 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     [(UIPrintOptionPopupCell *)v6 setPopupButton:v15];
 
-    v16 = [(UIPrintOptionPopupCell *)v6 popupButton];
-    [v16 setChangesSelectionAsPrimaryAction:1];
+    popupButton = [(UIPrintOptionPopupCell *)v6 popupButton];
+    [popupButton setChangesSelectionAsPrimaryAction:1];
 
-    v17 = [(UIPrintOptionPopupCell *)v6 popupButton];
-    [v17 setShowsMenuAsPrimaryAction:1];
+    popupButton2 = [(UIPrintOptionPopupCell *)v6 popupButton];
+    [popupButton2 setShowsMenuAsPrimaryAction:1];
 
     v18 = [MEMORY[0x277D750C8] actionWithTitle:&stru_2871AE610 image:0 identifier:0 handler:&__block_literal_global_1];
     v19 = MEMORY[0x277D75710];
     v37[0] = v18;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
     v21 = [v19 menuWithChildren:v20];
-    v22 = [(UIPrintOptionPopupCell *)v6 popupButton];
-    [v22 setMenu:v21];
+    popupButton3 = [(UIPrintOptionPopupCell *)v6 popupButton];
+    [popupButton3 setMenu:v21];
 
-    v23 = [(UIPrintOptionPopupCell *)v6 popupButton];
-    [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+    popupButton4 = [(UIPrintOptionPopupCell *)v6 popupButton];
+    [popupButton4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v24 = [(UIPrintOptionPopupCell *)v6 popupButton];
+    popupButton5 = [(UIPrintOptionPopupCell *)v6 popupButton];
     LODWORD(v25) = 1144750080;
-    [v24 setContentCompressionResistancePriority:0 forAxis:v25];
+    [popupButton5 setContentCompressionResistancePriority:0 forAxis:v25];
 
-    v26 = [(UIPrintOptionPopupCell *)v6 popupButton];
-    [(UIPrintOptionPopupCell *)v6 _setPopupMenuButton:v26];
+    popupButton6 = [(UIPrintOptionPopupCell *)v6 popupButton];
+    [(UIPrintOptionPopupCell *)v6 _setPopupMenuButton:popupButton6];
 
-    v27 = [(UIPrintOptionPopupCell *)v6 contentView];
-    v28 = [(UIPrintOptionPopupCell *)v6 popupButton];
-    [v27 addSubview:v28];
+    contentView2 = [(UIPrintOptionPopupCell *)v6 contentView];
+    popupButton7 = [(UIPrintOptionPopupCell *)v6 popupButton];
+    [contentView2 addSubview:popupButton7];
 
     [(UIPrintOptionPopupCell *)v6 _updateConstraints];
     objc_initWeak(&location, v6);
@@ -95,16 +95,16 @@ void __56__UIPrintOptionPopupCell_initWithStyle_reuseIdentifier___block_invoke_2
 
 - (BOOL)usingLargeTextLayout
 {
-  v3 = [(UIPrintOptionPopupCell *)self traitCollection];
+  traitCollection = [(UIPrintOptionPopupCell *)self traitCollection];
 
-  if (!v3)
+  if (!traitCollection)
   {
     return 0;
   }
 
-  v4 = [(UIPrintOptionPopupCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  traitCollection2 = [(UIPrintOptionPopupCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   return IsAccessibilityCategory;
 }
@@ -112,155 +112,155 @@ void __56__UIPrintOptionPopupCell_initWithStyle_reuseIdentifier___block_invoke_2
 - (void)_updateConstraints
 {
   v72[7] = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintOptionPopupCell *)self constraints];
+  constraints = [(UIPrintOptionPopupCell *)self constraints];
 
-  if (v3)
+  if (constraints)
   {
     v4 = MEMORY[0x277CCAAD0];
-    v5 = [(UIPrintOptionPopupCell *)self constraints];
-    [v4 deactivateConstraints:v5];
+    constraints2 = [(UIPrintOptionPopupCell *)self constraints];
+    [v4 deactivateConstraints:constraints2];
   }
 
-  v6 = [(UIPrintOptionPopupCell *)self usingLargeTextLayout];
+  usingLargeTextLayout = [(UIPrintOptionPopupCell *)self usingLargeTextLayout];
   textLabel = self->_textLabel;
-  if (v6)
+  if (usingLargeTextLayout)
   {
     LODWORD(v7) = 1144750080;
     [(UILabel *)textLabel setContentCompressionResistancePriority:0 forAxis:v7];
-    v63 = [(UILabel *)self->_textLabel leadingAnchor];
-    v57 = [(UIPrintOptionPopupCell *)self contentView];
-    v51 = [v57 layoutMarginsGuide];
-    v50 = [v51 leadingAnchor];
-    v49 = [v63 constraintEqualToAnchor:v50];
+    leadingAnchor = [(UILabel *)self->_textLabel leadingAnchor];
+    contentView = [(UIPrintOptionPopupCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v72[0] = v49;
-    v47 = [(UILabel *)self->_textLabel topAnchor];
-    v48 = [(UIPrintOptionPopupCell *)self contentView];
-    v70 = [v48 layoutMarginsGuide];
-    v69 = [v70 topAnchor];
-    v68 = [v47 constraintEqualToAnchor:?];
+    topAnchor = [(UILabel *)self->_textLabel topAnchor];
+    contentView2 = [(UIPrintOptionPopupCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide2 topAnchor];
+    v68 = [topAnchor constraintEqualToAnchor:?];
     v72[1] = v68;
-    v9 = [(UILabel *)self->_textLabel trailingAnchor];
-    v66 = [(UIPrintOptionPopupCell *)self contentView];
-    v46 = [v66 layoutMarginsGuide];
-    [v46 trailingAnchor];
-    v65 = v67 = v9;
-    v64 = [v9 constraintEqualToAnchor:?];
-    v72[2] = v64;
-    v62 = [(UIPrintOptionPopupCell *)self popupButton];
-    v10 = [v62 leadingAnchor];
-    v60 = [(UIPrintOptionPopupCell *)self contentView];
-    v45 = [v60 layoutMarginsGuide];
-    [v45 leadingAnchor];
-    v59 = v61 = v10;
-    v58 = [v10 constraintEqualToAnchor:?];
-    v72[3] = v58;
-    v56 = [(UIPrintOptionPopupCell *)self popupButton];
-    v11 = [v56 trailingAnchor];
-    v54 = [(UIPrintOptionPopupCell *)self contentView];
-    v42 = [v54 layoutMarginsGuide];
-    [v42 trailingAnchor];
-    v53 = v55 = v11;
-    v52 = [v11 constraintLessThanOrEqualToAnchor:?];
+    trailingAnchor = [(UILabel *)self->_textLabel trailingAnchor];
+    contentView3 = [(UIPrintOptionPopupCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    [layoutMarginsGuide3 trailingAnchor];
+    v65 = popupButton5 = trailingAnchor;
+    popupButton6 = [trailingAnchor constraintEqualToAnchor:?];
+    v72[2] = popupButton6;
+    popupButton = [(UIPrintOptionPopupCell *)self popupButton];
+    leadingAnchor3 = [popupButton leadingAnchor];
+    contentView4 = [(UIPrintOptionPopupCell *)self contentView];
+    layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+    [layoutMarginsGuide4 leadingAnchor];
+    v59 = contentView8 = leadingAnchor3;
+    popupButton7 = [leadingAnchor3 constraintEqualToAnchor:?];
+    v72[3] = popupButton7;
+    popupButton2 = [(UIPrintOptionPopupCell *)self popupButton];
+    trailingAnchor2 = [popupButton2 trailingAnchor];
+    contentView5 = [(UIPrintOptionPopupCell *)self contentView];
+    layoutMarginsGuide5 = [contentView5 layoutMarginsGuide];
+    [layoutMarginsGuide5 trailingAnchor];
+    v53 = contentView9 = trailingAnchor2;
+    v52 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:?];
     v72[4] = v52;
-    v44 = [(UIPrintOptionPopupCell *)self popupButton];
-    v43 = [v44 topAnchor];
-    v12 = [(UILabel *)self->_textLabel bottomAnchor];
-    v13 = [v43 constraintEqualToAnchor:v12];
+    popupButton3 = [(UIPrintOptionPopupCell *)self popupButton];
+    topAnchor3 = [popupButton3 topAnchor];
+    bottomAnchor = [(UILabel *)self->_textLabel bottomAnchor];
+    v13 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v72[5] = v13;
-    v14 = [(UIPrintOptionPopupCell *)self popupButton];
-    v15 = [v14 bottomAnchor];
-    v16 = [(UIPrintOptionPopupCell *)self contentView];
-    v17 = [v16 layoutMarginsGuide];
-    v18 = [v17 bottomAnchor];
-    v19 = [v15 constraintEqualToAnchor:v18];
+    popupButton4 = [(UIPrintOptionPopupCell *)self popupButton];
+    bottomAnchor2 = [popupButton4 bottomAnchor];
+    contentView6 = [(UIPrintOptionPopupCell *)self contentView];
+    layoutMarginsGuide6 = [contentView6 layoutMarginsGuide];
+    bottomAnchor3 = [layoutMarginsGuide6 bottomAnchor];
+    v19 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v72[6] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:7];
     [(UIPrintOptionPopupCell *)self setConstraints:v20];
 
-    v21 = v48;
-    v22 = v42;
+    contentView7 = contentView2;
+    v22 = layoutMarginsGuide5;
 
-    v23 = v47;
-    v24 = v45;
+    centerYAnchor = topAnchor;
+    v24 = layoutMarginsGuide4;
 
     v25 = v49;
-    v26 = v50;
+    leadingAnchor5 = leadingAnchor2;
 
-    v27 = v51;
-    v28 = v46;
+    layoutMarginsGuide7 = layoutMarginsGuide;
+    v28 = layoutMarginsGuide3;
   }
 
   else
   {
     LODWORD(v7) = 1148846080;
     [(UILabel *)textLabel setContentCompressionResistancePriority:0 forAxis:v7];
-    v29 = [(UILabel *)self->_textLabel leadingAnchor];
-    v57 = [(UIPrintOptionPopupCell *)self contentView];
-    v27 = [v57 layoutMarginsGuide];
-    v26 = [v27 leadingAnchor];
-    v63 = v29;
-    v25 = [v29 constraintEqualToAnchor:v26];
+    leadingAnchor4 = [(UILabel *)self->_textLabel leadingAnchor];
+    contentView = [(UIPrintOptionPopupCell *)self contentView];
+    layoutMarginsGuide7 = [contentView layoutMarginsGuide];
+    leadingAnchor5 = [layoutMarginsGuide7 leadingAnchor];
+    leadingAnchor = leadingAnchor4;
+    v25 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v71[0] = v25;
-    v23 = [(UILabel *)self->_textLabel centerYAnchor];
-    v21 = [(UIPrintOptionPopupCell *)self contentView];
-    v70 = [v21 layoutMarginsGuide];
-    v69 = [v70 centerYAnchor];
-    v68 = [v23 constraintEqualToAnchor:?];
+    centerYAnchor = [(UILabel *)self->_textLabel centerYAnchor];
+    contentView7 = [(UIPrintOptionPopupCell *)self contentView];
+    layoutMarginsGuide2 = [contentView7 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide2 centerYAnchor];
+    v68 = [centerYAnchor constraintEqualToAnchor:?];
     v71[1] = v68;
-    v67 = [(UIPrintOptionPopupCell *)self popupButton];
-    v30 = [v67 leadingAnchor];
-    v31 = [(UILabel *)self->_textLabel trailingAnchor];
-    v66 = v30;
-    v32 = v30;
-    v28 = v31;
-    v65 = [v32 constraintGreaterThanOrEqualToAnchor:v31 constant:8.0];
+    popupButton5 = [(UIPrintOptionPopupCell *)self popupButton];
+    leadingAnchor6 = [popupButton5 leadingAnchor];
+    trailingAnchor3 = [(UILabel *)self->_textLabel trailingAnchor];
+    contentView3 = leadingAnchor6;
+    v32 = leadingAnchor6;
+    v28 = trailingAnchor3;
+    v65 = [v32 constraintGreaterThanOrEqualToAnchor:trailingAnchor3 constant:8.0];
     v71[2] = v65;
-    v64 = [(UIPrintOptionPopupCell *)self popupButton];
-    v33 = [v64 trailingAnchor];
-    v61 = [(UIPrintOptionPopupCell *)self contentView];
-    v60 = [v61 layoutMarginsGuide];
-    v34 = [v60 trailingAnchor];
-    v62 = v33;
-    v35 = v33;
-    v24 = v34;
-    v59 = [v35 constraintEqualToAnchor:v34];
+    popupButton6 = [(UIPrintOptionPopupCell *)self popupButton];
+    trailingAnchor4 = [popupButton6 trailingAnchor];
+    contentView8 = [(UIPrintOptionPopupCell *)self contentView];
+    contentView4 = [contentView8 layoutMarginsGuide];
+    trailingAnchor5 = [contentView4 trailingAnchor];
+    popupButton = trailingAnchor4;
+    v35 = trailingAnchor4;
+    v24 = trailingAnchor5;
+    v59 = [v35 constraintEqualToAnchor:trailingAnchor5];
     v71[3] = v59;
-    v58 = [(UIPrintOptionPopupCell *)self popupButton];
-    v36 = [v58 centerYAnchor];
-    v55 = [(UIPrintOptionPopupCell *)self contentView];
-    v54 = [v55 layoutMarginsGuide];
-    v37 = [v54 centerYAnchor];
-    v56 = v36;
-    v38 = v36;
-    v22 = v37;
-    v53 = [v38 constraintEqualToAnchor:v37];
+    popupButton7 = [(UIPrintOptionPopupCell *)self popupButton];
+    centerYAnchor2 = [popupButton7 centerYAnchor];
+    contentView9 = [(UIPrintOptionPopupCell *)self contentView];
+    contentView5 = [contentView9 layoutMarginsGuide];
+    centerYAnchor3 = [contentView5 centerYAnchor];
+    popupButton2 = centerYAnchor2;
+    v38 = centerYAnchor2;
+    v22 = centerYAnchor3;
+    v53 = [v38 constraintEqualToAnchor:centerYAnchor3];
     v71[4] = v53;
     v52 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:5];
     [(UIPrintOptionPopupCell *)self setConstraints:?];
   }
 
   v39 = MEMORY[0x277CCAAD0];
-  v40 = [(UIPrintOptionPopupCell *)self constraints];
-  [v39 activateConstraints:v40];
+  constraints3 = [(UIPrintOptionPopupCell *)self constraints];
+  [v39 activateConstraints:constraints3];
 
   [(UILabel *)self->_textLabel setNeedsUpdateConstraints];
-  v41 = [(UIPrintOptionPopupCell *)self popupButton];
-  [v41 setNeedsUpdateConstraints];
+  popupButton8 = [(UIPrintOptionPopupCell *)self popupButton];
+  [popupButton8 setNeedsUpdateConstraints];
 }
 
-- (void)setPopupActions:(id)a3
+- (void)setPopupActions:(id)actions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_popupActions, a3);
-  if (v5)
+  actionsCopy = actions;
+  objc_storeStrong(&self->_popupActions, actions);
+  if (actionsCopy)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v5;
+    v7 = actionsCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -277,7 +277,7 @@ void __56__UIPrintOptionPopupCell_initWithStyle_reuseIdentifier___block_invoke_2
           }
 
           v12 = [MEMORY[0x277D75710] menuWithTitle:&stru_2871AE610 image:0 identifier:0 options:1 children:{*(*(&v16 + 1) + 8 * v11), v16}];
-          [v6 addObject:v12];
+          [array addObject:v12];
 
           ++v11;
         }
@@ -289,22 +289,22 @@ void __56__UIPrintOptionPopupCell_initWithStyle_reuseIdentifier___block_invoke_2
       while (v9);
     }
 
-    v13 = [MEMORY[0x277D75710] menuWithTitle:&stru_2871AE610 children:v6];
-    v14 = [(UIPrintOptionPopupCell *)self popupButton];
-    [v14 setMenu:v13];
+    v13 = [MEMORY[0x277D75710] menuWithTitle:&stru_2871AE610 children:array];
+    popupButton = [(UIPrintOptionPopupCell *)self popupButton];
+    [popupButton setMenu:v13];
   }
 
-  v15 = [(UIPrintOptionPopupCell *)self popupButton];
-  [(UIPrintOptionPopupCell *)self _setPopupMenuButton:v15];
+  popupButton2 = [(UIPrintOptionPopupCell *)self popupButton];
+  [(UIPrintOptionPopupCell *)self _setPopupMenuButton:popupButton2];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(UIPrintOptionPopupCell *)self popupButton];
-  [v5 setEnabled:v3];
+  enabledCopy = enabled;
+  popupButton = [(UIPrintOptionPopupCell *)self popupButton];
+  [popupButton setEnabled:enabledCopy];
 
-  [(UIPrintOptionPopupCell *)self setUserInteractionEnabled:v3];
+  [(UIPrintOptionPopupCell *)self setUserInteractionEnabled:enabledCopy];
 }
 
 @end

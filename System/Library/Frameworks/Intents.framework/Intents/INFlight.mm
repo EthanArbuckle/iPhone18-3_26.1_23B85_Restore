@@ -1,13 +1,13 @@
 @interface INFlight
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INFlight)initWithAirline:(INAirline *)airline flightNumber:(NSString *)flightNumber boardingTime:(INDateComponentsRange *)boardingTime flightDuration:(INDateComponentsRange *)flightDuration departureAirportGate:(INAirportGate *)departureAirportGate arrivalAirportGate:(INAirportGate *)arrivalAirportGate;
-- (INFlight)initWithCoder:(id)a3;
+- (INFlight)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INFlight
@@ -17,61 +17,61 @@
   v28[6] = *MEMORY[0x1E69E9840];
   v22 = @"airline";
   airline = self->_airline;
-  v4 = airline;
+  null = airline;
   if (!airline)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v4;
-  v28[0] = v4;
+  v21 = null;
+  v28[0] = null;
   v23 = @"flightNumber";
   flightNumber = self->_flightNumber;
-  v6 = flightNumber;
+  null2 = flightNumber;
   if (!flightNumber)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v6;
-  v28[1] = v6;
+  v20 = null2;
+  v28[1] = null2;
   v24 = @"boardingTime";
   boardingTime = self->_boardingTime;
-  v8 = boardingTime;
+  null3 = boardingTime;
   if (!boardingTime)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v8;
-  v28[2] = v8;
+  v18 = null3;
+  v28[2] = null3;
   v25 = @"flightDuration";
   flightDuration = self->_flightDuration;
-  v10 = flightDuration;
+  null4 = flightDuration;
   if (!flightDuration)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[3] = v10;
+  v28[3] = null4;
   v26 = @"departureAirportGate";
   departureAirportGate = self->_departureAirportGate;
-  v12 = departureAirportGate;
+  null5 = departureAirportGate;
   if (!departureAirportGate)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[4] = v12;
+  v28[4] = null5;
   v27 = @"arrivalAirportGate";
   arrivalAirportGate = self->_arrivalAirportGate;
-  v14 = arrivalAirportGate;
+  null6 = arrivalAirportGate;
   if (!arrivalAirportGate)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28[5] = v14;
+  v28[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v22 count:{6, v18}];
   if (arrivalAirportGate)
   {
@@ -148,80 +148,80 @@ LABEL_19:
   return v15;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INFlight;
   v6 = [(INFlight *)&v11 description];
-  v7 = [(INFlight *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INFlight *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_airline];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"airline"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_airline];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"airline"];
 
-  v9 = [v6 encodeObject:self->_flightNumber];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"flightNumber"];
+  v9 = [encoderCopy encodeObject:self->_flightNumber];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"flightNumber"];
 
-  v10 = [v6 encodeObject:self->_boardingTime];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"boardingTime"];
+  v10 = [encoderCopy encodeObject:self->_boardingTime];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"boardingTime"];
 
-  v11 = [v6 encodeObject:self->_flightDuration];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"flightDuration"];
+  v11 = [encoderCopy encodeObject:self->_flightDuration];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"flightDuration"];
 
-  v12 = [v6 encodeObject:self->_departureAirportGate];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"departureAirportGate"];
+  v12 = [encoderCopy encodeObject:self->_departureAirportGate];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"departureAirportGate"];
 
-  v13 = [v6 encodeObject:self->_arrivalAirportGate];
+  v13 = [encoderCopy encodeObject:self->_arrivalAirportGate];
 
-  [v7 if_setObjectIfNonNil:v13 forKey:@"arrivalAirportGate"];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"arrivalAirportGate"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   airline = self->_airline;
-  v5 = a3;
-  [v5 encodeObject:airline forKey:@"airline"];
-  [v5 encodeObject:self->_flightNumber forKey:@"flightNumber"];
-  [v5 encodeObject:self->_boardingTime forKey:@"boardingTime"];
-  [v5 encodeObject:self->_flightDuration forKey:@"flightDuration"];
-  [v5 encodeObject:self->_departureAirportGate forKey:@"departureAirportGate"];
-  [v5 encodeObject:self->_arrivalAirportGate forKey:@"arrivalAirportGate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:airline forKey:@"airline"];
+  [coderCopy encodeObject:self->_flightNumber forKey:@"flightNumber"];
+  [coderCopy encodeObject:self->_boardingTime forKey:@"boardingTime"];
+  [coderCopy encodeObject:self->_flightDuration forKey:@"flightDuration"];
+  [coderCopy encodeObject:self->_departureAirportGate forKey:@"departureAirportGate"];
+  [coderCopy encodeObject:self->_arrivalAirportGate forKey:@"arrivalAirportGate"];
 }
 
-- (INFlight)initWithCoder:(id)a3
+- (INFlight)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"airline"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"airline"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"flightNumber"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"flightNumber"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"boardingTime"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flightDuration"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"departureAirportGate"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"arrivalAirportGate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"boardingTime"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flightDuration"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"departureAirportGate"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"arrivalAirportGate"];
 
   v14 = [(INFlight *)self initWithAirline:v5 flightNumber:v9 boardingTime:v10 flightDuration:v11 departureAirportGate:v12 arrivalAirportGate:v13];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -231,7 +231,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       airline = self->_airline;
       v12 = 0;
       if (airline == v5->_airline || [(INAirline *)airline isEqual:?])
@@ -320,35 +320,35 @@ LABEL_19:
   return v20;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"airline"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"airline"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v12 = [v8 objectForKeyedSubscript:@"flightNumber"];
+    v12 = [fromCopy objectForKeyedSubscript:@"flightNumber"];
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"boardingTime"];
-    v15 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"boardingTime"];
+    v15 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
     v16 = objc_opt_class();
-    v17 = [v8 objectForKeyedSubscript:@"flightDuration"];
-    v18 = [v7 decodeObjectOfClass:v16 from:v17];
+    v17 = [fromCopy objectForKeyedSubscript:@"flightDuration"];
+    v18 = [decoderCopy decodeObjectOfClass:v16 from:v17];
 
     v19 = objc_opt_class();
-    v20 = [v8 objectForKeyedSubscript:@"departureAirportGate"];
-    v21 = [v7 decodeObjectOfClass:v19 from:v20];
+    v20 = [fromCopy objectForKeyedSubscript:@"departureAirportGate"];
+    v21 = [decoderCopy decodeObjectOfClass:v19 from:v20];
 
     v22 = objc_opt_class();
-    v23 = [v8 objectForKeyedSubscript:@"arrivalAirportGate"];
-    v24 = [v7 decodeObjectOfClass:v22 from:v23];
+    v23 = [fromCopy objectForKeyedSubscript:@"arrivalAirportGate"];
+    v24 = [decoderCopy decodeObjectOfClass:v22 from:v23];
 
-    v25 = [[a1 alloc] initWithAirline:v11 flightNumber:v12 boardingTime:v15 flightDuration:v18 departureAirportGate:v21 arrivalAirportGate:v24];
+    v25 = [[self alloc] initWithAirline:v11 flightNumber:v12 boardingTime:v15 flightDuration:v18 departureAirportGate:v21 arrivalAirportGate:v24];
   }
 
   else

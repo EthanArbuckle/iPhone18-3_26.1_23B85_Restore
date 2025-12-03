@@ -1,15 +1,15 @@
 @interface NoKeyboardTextView
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (_TtC11EmojiPoster18NoKeyboardTextView)initWithCoder:(id)a3;
-- (_TtC11EmojiPoster18NoKeyboardTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)buildMenuWithBuilder:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (_TtC11EmojiPoster18NoKeyboardTextView)initWithCoder:(id)coder;
+- (_TtC11EmojiPoster18NoKeyboardTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation NoKeyboardTextView
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
     swift_unknownObjectRetain();
     sub_24A021948();
@@ -35,34 +35,34 @@
   return v4 & 1;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for NoKeyboardTextView();
   swift_unknownObjectRetain();
   v4 = v5.receiver;
-  [(NoKeyboardTextView *)&v5 buildMenuWithBuilder:a3];
-  [a3 removeMenuForIdentifier_];
+  [(NoKeyboardTextView *)&v5 buildMenuWithBuilder:builder];
+  [builder removeMenuForIdentifier_];
   swift_unknownObjectRelease();
 }
 
-- (_TtC11EmojiPoster18NoKeyboardTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC11EmojiPoster18NoKeyboardTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for NoKeyboardTextView();
-  return [(NoKeyboardTextView *)&v10 initWithFrame:a4 textContainer:x, y, width, height];
+  return [(NoKeyboardTextView *)&v10 initWithFrame:container textContainer:x, y, width, height];
 }
 
-- (_TtC11EmojiPoster18NoKeyboardTextView)initWithCoder:(id)a3
+- (_TtC11EmojiPoster18NoKeyboardTextView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NoKeyboardTextView();
-  v4 = a3;
-  v5 = [(NoKeyboardTextView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NoKeyboardTextView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

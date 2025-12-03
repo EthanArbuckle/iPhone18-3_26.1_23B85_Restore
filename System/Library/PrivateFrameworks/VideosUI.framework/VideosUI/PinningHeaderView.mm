@@ -1,16 +1,16 @@
 @interface PinningHeaderView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PinningHeaderView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = sub_1E4080364(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  v8 = sub_1E4080364(only, width, height);
   v10 = v9;
 
   v11 = v8;
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1E4080C7C(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1E4080C7C(event, x, y);
 
   return v10;
 }

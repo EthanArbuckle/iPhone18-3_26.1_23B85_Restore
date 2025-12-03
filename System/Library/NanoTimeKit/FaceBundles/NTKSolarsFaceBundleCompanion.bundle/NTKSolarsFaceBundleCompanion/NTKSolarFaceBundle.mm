@@ -1,10 +1,10 @@
 @interface NTKSolarFaceBundle
 + (id)identifier;
-- (id)_graceDefaultFacesForDevice:(id)a3;
-- (id)_legacyDefaultFacesForDevice:(id)a3;
+- (id)_graceDefaultFacesForDevice:(id)device;
+- (id)_legacyDefaultFacesForDevice:(id)device;
 - (id)complicationTypesBySlot;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
 - (id)siderealComplicationTypesBySlot;
 @end
 
@@ -12,18 +12,18 @@
 
 + (id)identifier
 {
-  v3 = [NSBundle bundleForClass:a1];
-  v4 = [v3 bundleIdentifier];
-  v5 = NSStringFromClass(a1);
-  v6 = [NSString stringWithFormat:@"%@.%@", v4, v5];
+  v3 = [NSBundle bundleForClass:self];
+  bundleIdentifier = [v3 bundleIdentifier];
+  v5 = NSStringFromClass(self);
+  v6 = [NSString stringWithFormat:@"%@.%@", bundleIdentifier, v5];
 
   return v6;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
-  v3 = a3;
-  if ((NTKShowGalleryLiteUI() & 1) != 0 || [v3 deviceCategory] == &dword_0 + 1)
+  deviceCopy = device;
+  if ((NTKShowGalleryLiteUI() & 1) != 0 || [deviceCopy deviceCategory] == &dword_0 + 1)
   {
     v4 = @"FACE_STYLE_SOLAR_GRAPH_IN_TITLE_CASE";
     v5 = @"Solar Graph";
@@ -40,28 +40,28 @@
   return v6;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isRunningGraceOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningGraceOrLater])
   {
-    [(NTKSolarFaceBundle *)self _graceDefaultFacesForDevice:v4];
+    [(NTKSolarFaceBundle *)self _graceDefaultFacesForDevice:deviceCopy];
   }
 
   else
   {
-    [(NTKSolarFaceBundle *)self _legacyDefaultFacesForDevice:v4];
+    [(NTKSolarFaceBundle *)self _legacyDefaultFacesForDevice:deviceCopy];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)_legacyDefaultFacesForDevice:(id)a3
+- (id)_legacyDefaultFacesForDevice:(id)device
 {
-  v4 = [(NTKSolarFaceBundle *)self defaultFaceForDevice:a3];
-  v5 = [(NTKSolarFaceBundle *)self complicationTypesBySlot];
-  [v4 _setFaceGalleryComplicationTypesForSlots:v5];
+  v4 = [(NTKSolarFaceBundle *)self defaultFaceForDevice:device];
+  complicationTypesBySlot = [(NTKSolarFaceBundle *)self complicationTypesBySlot];
+  [v4 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
   if (v4)
   {
@@ -77,13 +77,13 @@
   return v6;
 }
 
-- (id)_graceDefaultFacesForDevice:(id)a3
+- (id)_graceDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[NSMutableArray array];
-  if ((NTKShowGalleryLiteUI() & 1) == 0 && [v4 deviceCategory] != &dword_0 + 1)
+  if ((NTKShowGalleryLiteUI() & 1) == 0 && [deviceCopy deviceCategory] != &dword_0 + 1)
   {
-    v6 = [NTKSiderealTimeStyleEditOption numberOfOptionsForDevice:v4];
+    v6 = [NTKSiderealTimeStyleEditOption numberOfOptionsForDevice:deviceCopy];
     if (v6)
     {
       v7 = v6;
@@ -93,14 +93,14 @@
       v11 = NTKComplicationSlotTopLeft;
       do
       {
-        v12 = [NTKSiderealFace defaultFaceOfStyle:36 forDevice:v4];
+        v12 = [NTKSiderealFace defaultFaceOfStyle:36 forDevice:deviceCopy];
         if (v12)
         {
-          v13 = [NTKSiderealTimeStyleEditOption optionWithStyle:v8 forDevice:v4];
+          v13 = [NTKSiderealTimeStyleEditOption optionWithStyle:v8 forDevice:deviceCopy];
           [v12 selectOption:v13 forCustomEditMode:15 slot:0];
 
-          v14 = [(NTKSolarFaceBundle *)self siderealComplicationTypesBySlot];
-          [v12 _setFaceGalleryComplicationTypesForSlots:v14];
+          siderealComplicationTypesBySlot = [(NTKSolarFaceBundle *)self siderealComplicationTypesBySlot];
+          [v12 _setFaceGalleryComplicationTypesForSlots:siderealComplicationTypesBySlot];
 
           v15 = [NTKBundleComplication bundledComplicationWithBundleIdentifier:v9 appBundleIdentifier:v10 complicationDescriptor:0];
           [v12 setComplication:v15 forSlot:v11];
@@ -114,9 +114,9 @@
     }
   }
 
-  v16 = [(NTKSolarFaceBundle *)self defaultFaceForDevice:v4];
-  v17 = [(NTKSolarFaceBundle *)self complicationTypesBySlot];
-  [v16 _setFaceGalleryComplicationTypesForSlots:v17];
+  v16 = [(NTKSolarFaceBundle *)self defaultFaceForDevice:deviceCopy];
+  complicationTypesBySlot = [(NTKSolarFaceBundle *)self complicationTypesBySlot];
+  [v16 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
   if (v16)
   {

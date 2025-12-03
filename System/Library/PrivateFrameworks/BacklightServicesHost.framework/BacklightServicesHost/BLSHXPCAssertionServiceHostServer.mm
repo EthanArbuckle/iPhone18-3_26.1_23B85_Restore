@@ -1,16 +1,16 @@
 @interface BLSHXPCAssertionServiceHostServer
 + (id)domainSpecification;
-+ (id)serverWithLocalAssertionService:(id)a3;
-- (BLSHXPCAssertionServiceHostServer)initWithLocalAssertionService:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
++ (id)serverWithLocalAssertionService:(id)service;
+- (BLSHXPCAssertionServiceHostServer)initWithLocalAssertionService:(id)service;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation BLSHXPCAssertionServiceHostServer
 
-+ (id)serverWithLocalAssertionService:(id)a3
++ (id)serverWithLocalAssertionService:(id)service
 {
-  v3 = a3;
-  v4 = [[BLSHXPCAssertionServiceHostServer alloc] initWithLocalAssertionService:v3];
+  serviceCopy = service;
+  v4 = [[BLSHXPCAssertionServiceHostServer alloc] initWithLocalAssertionService:serviceCopy];
   v5 = bls_assertions_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -65,16 +65,16 @@ void __56__BLSHXPCAssertionServiceHostServer_domainSpecification__block_invoke()
   }
 }
 
-- (BLSHXPCAssertionServiceHostServer)initWithLocalAssertionService:(id)a3
+- (BLSHXPCAssertionServiceHostServer)initWithLocalAssertionService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v28.receiver = self;
   v28.super_class = BLSHXPCAssertionServiceHostServer;
   v6 = [(BLSHXPCAssertionServiceHostServer *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localAssertionService, a3);
+    objc_storeStrong(&v6->_localAssertionService, service);
     v8 = +[BLSHXPCAssertionServiceHostServer domainSpecification];
     v9 = bls_assertions_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -82,9 +82,9 @@ void __56__BLSHXPCAssertionServiceHostServer_domainSpecification__block_invoke()
       [(BLSHXPCBacklightProxyHostServer *)v7 initWithLocalBacklightProxy:v8, v9];
     }
 
-    v10 = [MEMORY[0x277CF09F8] serviceQuality];
-    v11 = [MEMORY[0x277CF0C18] serial];
-    v12 = [v11 serviceClass:objc_msgSend(v10 relativePriority:{"serviceClass"), objc_msgSend(v10, "relativePriority")}];
+    serviceQuality = [MEMORY[0x277CF09F8] serviceQuality];
+    serial = [MEMORY[0x277CF0C18] serial];
+    v12 = [serial serviceClass:objc_msgSend(serviceQuality relativePriority:{"serviceClass"), objc_msgSend(serviceQuality, "relativePriority")}];
     v13 = BSDispatchQueueCreate();
     callbackQueue = v7->_callbackQueue;
     v7->_callbackQueue = v13;
@@ -135,15 +135,15 @@ void __67__BLSHXPCAssertionServiceHostServer_initWithLocalAssertionService___blo
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __79__BLSHXPCAssertionServiceHostServer_listener_didReceiveConnection_withContext___block_invoke;
   v12 = &unk_27841EBB8;
-  v13 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = connectionCopy;
   v14 = v7;
   [v7 configureConnection:&v9];
   [v7 activate];

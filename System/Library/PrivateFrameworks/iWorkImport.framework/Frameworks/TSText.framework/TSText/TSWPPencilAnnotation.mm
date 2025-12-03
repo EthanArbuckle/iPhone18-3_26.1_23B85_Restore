@@ -1,28 +1,28 @@
 @interface TSWPPencilAnnotation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToObject:(id)object;
 - (NSString)description;
-- (TSWPPencilAnnotation)initWithContext:(id)a3 pencilAnnotationStorage:(id)a4;
+- (TSWPPencilAnnotation)initWithContext:(id)context pencilAnnotationStorage:(id)storage;
 - (TSWPStorage)parentStorage;
-- (id)copyWithContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)i_setTextAttributeUUIDString:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)i_setTextAttributeUUIDString:(id)string;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)resetTextAttributeUUIDString;
-- (void)saveToArchiver:(id)a3;
+- (void)saveToArchiver:(id)archiver;
 @end
 
 @implementation TSWPPencilAnnotation
 
-- (TSWPPencilAnnotation)initWithContext:(id)a3 pencilAnnotationStorage:(id)a4
+- (TSWPPencilAnnotation)initWithContext:(id)context pencilAnnotationStorage:(id)storage
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  storageCopy = storage;
   v20.receiver = self;
   v20.super_class = TSWPPencilAnnotation;
-  v10 = [(TSWPPencilAnnotation *)&v20 initWithContext:v6];
+  v10 = [(TSWPPencilAnnotation *)&v20 initWithContext:contextCopy];
   if (v10)
   {
     v11 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v8, v9);
@@ -31,18 +31,18 @@
     textAttributeUUIDString = v10->_textAttributeUUIDString;
     v10->_textAttributeUUIDString = v17;
 
-    objc_storeStrong(&v10->_pencilAnnotationStorage, a4);
+    objc_storeStrong(&v10->_pencilAnnotationStorage, storage);
   }
 
   return v10;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
   v8 = objc_msgSend_pencilAnnotationStorage(self, v6, v7);
-  v10 = objc_msgSend_initWithContext_pencilAnnotationStorage_(v5, v9, v4, v8);
+  v10 = objc_msgSend_initWithContext_pencilAnnotationStorage_(v5, v9, contextCopy, v8);
 
   v13 = objc_msgSend_textAttributeUUIDString(self, v11, v12);
   objc_msgSend_i_setTextAttributeUUIDString_(v10, v14, v13);
@@ -50,23 +50,23 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_context(self, a2, a3);
+  v4 = objc_msgSend_context(self, a2, zone);
   v6 = objc_msgSend_copyWithContext_(self, v5, v4);
 
   return v6;
 }
 
-- (void)i_setTextAttributeUUIDString:(id)a3
+- (void)i_setTextAttributeUUIDString:(id)string
 {
-  v10 = a3;
+  stringCopy = string;
   v7 = objc_msgSend_textAttributeUUIDString(self, v5, v6);
 
-  if (v7 != v10)
+  if (v7 != stringCopy)
   {
     objc_msgSend_willModify(self, v8, v9);
-    objc_storeStrong(&self->_textAttributeUUIDString, a3);
+    objc_storeStrong(&self->_textAttributeUUIDString, string);
   }
 }
 
@@ -102,16 +102,16 @@
   objc_msgSend_i_setTextAttributeUUIDString_(self, v7, v6);
 }
 
-- (BOOL)isEquivalentToObject:(id)a3
+- (BOOL)isEquivalentToObject:(id)object
 {
-  v4 = a3;
-  v6 = v4;
-  if (self == v4)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (self == objectCopy)
   {
     isEqualToString = 1;
   }
 
-  else if (v4 && (objc_msgSend_conformsToProtocol_(v4, v5, &unk_288643E30) & 1) != 0)
+  else if (objectCopy && (objc_msgSend_conformsToProtocol_(objectCopy, v5, &unk_288643E30) & 1) != 0)
   {
     v9 = objc_msgSend_textAttributeUUIDString(v6, v7, v8);
     v12 = objc_msgSend_textAttributeUUIDString(self, v10, v11);
@@ -154,16 +154,16 @@
   return isEqualToString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEquivalentToObject = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEquivalentToObject = objc_msgSend_isEquivalentToObject_(self, v6, v5);
   }
@@ -184,49 +184,49 @@
   return v6;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v7 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v7 = *(archive + 4);
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v11 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v11 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     if (v11)
     {
       objc_msgSend_i_setTextAttributeUUIDString_(self, v10, v11);
     }
 
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   if ((v7 & 2) != 0)
   {
-    v12 = *(a3 + 4);
+    v12 = *(archive + 4);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_276D9EF9C;
     v13[3] = &unk_27A6F4400;
     v13[4] = self;
-    sub_276D9EEF0(v6, v12, &unk_28866C828, v13);
+    sub_276D9EEF0(unarchiverCopy, v12, &unk_28866C828, v13);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812DC408[22]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[22]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276D9F40C, off_2812DC408[22]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276D9F40C, off_2812DC408[22]);
 
   v9 = objc_msgSend_textAttributeUUIDString(self, v7, v8);
 
@@ -262,7 +262,7 @@
       *(v6 + 32) = v19;
     }
 
-    objc_msgSend_setStrongReference_message_(v4, v17, v18, v19);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v17, v18, v19);
   }
 }
 

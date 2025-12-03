@@ -1,5 +1,5 @@
 @interface WalletSettingsModel
-- (void)passLibraryDidChangeWithNotification:(id)a3;
+- (void)passLibraryDidChangeWithNotification:(id)notification;
 - (void)paymentOptionsDidChange;
 @end
 
@@ -11,7 +11,7 @@
   sub_1BD405E54();
 }
 
-- (void)passLibraryDidChangeWithNotification:(id)a3
+- (void)passLibraryDidChangeWithNotification:(id)notification
 {
   v3 = sub_1BE04A2E4();
   v4 = *(v3 - 8);

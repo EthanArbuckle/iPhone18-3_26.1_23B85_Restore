@@ -1,42 +1,42 @@
 @interface CHXBubbleSeries
-+ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXBubbleSeries
 
-+ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdSeriesFromXmlSeriesElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 chart];
-  v7 = [(CHDSeries *)CHDBubbleSeries seriesWithChart:v6];
+  stateCopy = state;
+  chart = [stateCopy chart];
+  v7 = [(CHDSeries *)CHDBubbleSeries seriesWithChart:chart];
 
-  v8 = [v5 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(a3, v9, "bubble3D");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(element, oAXChartNamespace, "bubble3D");
 
   if (v10)
   {
     [v7 setBubble3D:{CXRequiredBoolAttribute(v10, CXNoNamespace, "val")}];
   }
 
-  v11 = [v5 drawingState];
-  v12 = [v11 OAXChartNamespace];
-  v13 = OCXFindChild(a3, v12, "invertIfNegative");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v13 = OCXFindChild(element, oAXChartNamespace2, "invertIfNegative");
 
   if (v13)
   {
     [v7 setInvertIfNegative:{CXRequiredBoolAttribute(v13, CXNoNamespace, "val")}];
   }
 
-  v14 = [v5 drawingState];
-  v15 = [v14 OAXChartNamespace];
-  v16 = OCXFindChild(a3, v15, "dLbls");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v16 = OCXFindChild(element, oAXChartNamespace3, "dLbls");
 
   if (!v16)
   {
-    v17 = [v5 drawingState];
-    v18 = [v17 OAXChartNamespace];
-    v19 = OCXFindChild(0, v18, "showBubbleSize");
+    drawingState4 = [stateCopy drawingState];
+    oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+    v19 = OCXFindChild(0, oAXChartNamespace4, "showBubbleSize");
 
     if (v19)
     {

@@ -10,29 +10,29 @@
 - (IMDCKExitManager)init;
 - (NSDate)exitRecordDate;
 - (NSError)errorFetchingExitDate;
-- (id)_modifiedOpGroupName:(id)a3;
+- (id)_modifiedOpGroupName:(id)name;
 - (id)analyticZoneRecordID;
 - (id)exitConfiguration;
-- (id)initRecordZoneManager:(id)a3 databaseManager:(id)a4;
+- (id)initRecordZoneManager:(id)manager databaseManager:(id)databaseManager;
 - (id)syncCompleteRecordID;
 - (int64_t)derivedQualityOfService;
 - (void)_evalToggleiCloudSettingsSwitch;
-- (void)_fetchExitRecordDateWithCompletion:(id)a3;
-- (void)_scheduleMetricOperation:(id)a3;
-- (void)_scheduleOperation:(id)a3;
+- (void)_fetchExitRecordDateWithCompletion:(id)completion;
+- (void)_scheduleMetricOperation:(id)operation;
+- (void)_scheduleOperation:(id)operation;
 - (void)_setUpSubscription;
-- (void)_submitCloudKitMetricWithOperationGroupName:(id)a3 record:(id)a4 ignoreZoneNotFoundError:(BOOL)a5 completion:(id)a6;
-- (void)deleteExitRecordWithCompletion:(id)a3;
-- (void)exitRecordDateWithCompletion:(id)a3;
-- (void)handleNotificationForSubscriptionID:(id)a3;
+- (void)_submitCloudKitMetricWithOperationGroupName:(id)name record:(id)record ignoreZoneNotFoundError:(BOOL)error completion:(id)completion;
+- (void)deleteExitRecordWithCompletion:(id)completion;
+- (void)exitRecordDateWithCompletion:(id)completion;
+- (void)handleNotificationForSubscriptionID:(id)d;
 - (void)sendCloudKitZoneFetchRequestToNoteFeatureIsOn;
-- (void)setErrorFetchingExitDate:(id)a3;
-- (void)setExitRecordDate:(id)a3;
-- (void)submitCloudKitAnalyticWithDictionary:(id)a3 operationGroupName:(id)a4 completion:(id)a5;
-- (void)submitCloudKitAnalyticWithOperationGroupName:(id)a3 analyticDictionary:(id)a4;
-- (void)submitCloudKitMetricWithData:(id)a3 operationGroupName:(id)a4 completion:(id)a5;
-- (void)submitCloudKitMetricWithOperationGroupName:(id)a3;
-- (void)writeExitRecordWithDate:(id)a3 completion:(id)a4;
+- (void)setErrorFetchingExitDate:(id)date;
+- (void)setExitRecordDate:(id)date;
+- (void)submitCloudKitAnalyticWithDictionary:(id)dictionary operationGroupName:(id)name completion:(id)completion;
+- (void)submitCloudKitAnalyticWithOperationGroupName:(id)name analyticDictionary:(id)dictionary;
+- (void)submitCloudKitMetricWithData:(id)data operationGroupName:(id)name completion:(id)completion;
+- (void)submitCloudKitMetricWithOperationGroupName:(id)name;
+- (void)writeExitRecordWithDate:(id)date completion:(id)completion;
 - (void)writeInitialSyncCompletedRecordIfNeeded;
 @end
 
@@ -50,10 +50,10 @@
   return v3;
 }
 
-- (id)initRecordZoneManager:(id)a3 databaseManager:(id)a4
+- (id)initRecordZoneManager:(id)manager databaseManager:(id)databaseManager
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  databaseManagerCopy = databaseManager;
   v13.receiver = self;
   v13.super_class = IMDCKExitManager;
   v9 = [(IMDCKExitManager *)&v13 init];
@@ -63,8 +63,8 @@
     ckQueue = v9->_ckQueue;
     v9->_ckQueue = v10;
 
-    objc_storeStrong(&v9->_recordZoneManager, a3);
-    objc_storeStrong(&v9->_databaseManager, a4);
+    objc_storeStrong(&v9->_recordZoneManager, manager);
+    objc_storeStrong(&v9->_databaseManager, databaseManager);
     v9->_fetchedExitDateOnLaunch = 0;
   }
 
@@ -86,13 +86,13 @@
 
 - (void)_setUpSubscription
 {
-  v3 = [(IMDCKExitManager *)self ckQueue];
+  ckQueue = [(IMDCKExitManager *)self ckQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B5235D8;
   block[3] = &unk_278702FF0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(ckQueue, block);
 }
 
 - (NSDate)exitRecordDate
@@ -112,12 +112,12 @@
   return exitRecordDate;
 }
 
-- (void)setExitRecordDate:(id)a3
+- (void)setExitRecordDate:(id)date
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(IMDCKExitManager *)self exitRecordDate];
-  if (!v5 || ([v5 isEqualToDate:v6] & 1) == 0)
+  dateCopy = date;
+  exitRecordDate = [(IMDCKExitManager *)self exitRecordDate];
+  if (!dateCopy || ([dateCopy isEqualToDate:exitRecordDate] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -126,14 +126,14 @@
       {
         v8 = @"NO";
         v13 = 138412802;
-        v14 = v6;
+        v14 = exitRecordDate;
         v15 = 2112;
-        if (v5)
+        if (dateCopy)
         {
           v8 = @"YES";
         }
 
-        v16 = v5;
+        v16 = dateCopy;
         v17 = 2112;
         v18 = v8;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Exit Record date has been modified, changing it from %@ to %@. Are we in exit state ? %@", &v13, 0x20u);
@@ -145,7 +145,7 @@
     IMSetDomainValueForKey();
     v11 = *MEMORY[0x277D19B40];
     IMSetDomainBoolForKey();
-    objc_storeStrong(&self->_exitRecordDate, a3);
+    objc_storeStrong(&self->_exitRecordDate, date);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -177,12 +177,12 @@
   return errorFetchingExitDate;
 }
 
-- (void)setErrorFetchingExitDate:(id)a3
+- (void)setErrorFetchingExitDate:(id)date
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(IMDCKExitManager *)self errorFetchingExitDate];
-  if (!v5 || ([v5 isEqual:v6] & 1) == 0)
+  dateCopy = date;
+  errorFetchingExitDate = [(IMDCKExitManager *)self errorFetchingExitDate];
+  if (!dateCopy || ([dateCopy isEqual:errorFetchingExitDate] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -190,49 +190,49 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v13 = 138412546;
-        v14 = v6;
+        v14 = errorFetchingExitDate;
         v15 = 2112;
-        v16 = v5;
+        v16 = dateCopy;
         _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Error fetching exit record date has been modified, changing it from %@ to %@", &v13, 0x16u);
       }
     }
 
-    if (v5)
+    if (dateCopy)
     {
       v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.Messages.IMDCKExitManagerErrorDomain" code:3 userInfo:0];
-      v9 = [v8 serializedError_im];
+      serializedError_im = [v8 serializedError_im];
     }
 
     else
     {
-      v9 = 0;
+      serializedError_im = 0;
     }
 
     v10 = *MEMORY[0x277D19A08];
     v11 = *MEMORY[0x277D19AC0];
     IMSetDomainValueForKey();
-    objc_storeStrong(&self->_errorFetchingExitDate, a3);
+    objc_storeStrong(&self->_errorFetchingExitDate, date);
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleNotificationForSubscriptionID:(id)a3
+- (void)handleNotificationForSubscriptionID:(id)d
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = dCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Handling notification for subscriptionID: %@", &v7, 0xCu);
     }
   }
 
-  if ([v4 isEqualToString:@"ExitRecordKeyManateeZoneSubscription"])
+  if ([dCopy isEqualToString:@"ExitRecordKeyManateeZoneSubscription"])
   {
     [(IMDCKExitManager *)self _fetchExitRecordDateWithCompletion:0];
   }
@@ -240,33 +240,33 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeExitRecordWithDate:(id)a3 completion:(id)a4
+- (void)writeExitRecordWithDate:(id)date completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = dateCopy;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Calling writeExitRecordWithDate. ExitDate: %@", buf, 0xCu);
     }
   }
 
-  if (v6)
+  if (dateCopy)
   {
-    v9 = [(IMDCKExitManager *)self ckQueue];
+    ckQueue = [(IMDCKExitManager *)self ckQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_22B523DC8;
     block[3] = &unk_2787037B8;
     block[4] = self;
-    v14 = v6;
-    v15 = v7;
-    dispatch_async(v9, block);
+    v14 = dateCopy;
+    v15 = completionCopy;
+    dispatch_async(ckQueue, block);
   }
 
   else
@@ -281,38 +281,38 @@
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.Messages.IMDCKExitManagerErrorDomain" code:2 userInfo:0];
-      (*(v7 + 2))(v7, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, v11);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)exitRecordDateWithCompletion:(id)a3
+- (void)exitRecordDateWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(IMDCKExitManager *)self exitRecordDate];
-      v7 = [(IMDCKExitManager *)self errorFetchingExitDate];
-      v8 = [(IMDCKExitManager *)self fetchedExitDateOnLaunch];
+      exitRecordDate = [(IMDCKExitManager *)self exitRecordDate];
+      errorFetchingExitDate = [(IMDCKExitManager *)self errorFetchingExitDate];
+      fetchedExitDateOnLaunch = [(IMDCKExitManager *)self fetchedExitDateOnLaunch];
       v9 = @"NO";
       *buf = 138412802;
-      v25 = v6;
+      v25 = exitRecordDate;
       v26 = 2112;
-      if (v8)
+      if (fetchedExitDateOnLaunch)
       {
         v9 = @"YES";
       }
 
-      v27 = v7;
+      v27 = errorFetchingExitDate;
       v28 = 2112;
       v29 = v9;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Calling exitRecordDateWithCompletion date: %@ error: %@ fetchedExitDateOnLaunch: %@", buf, 0x20u);
@@ -321,31 +321,31 @@
 
   if ([(IMDCKExitManager *)self fetchedExitDateOnLaunch]&& ([(IMDCKExitManager *)self errorFetchingExitDate], v10 = objc_claimAutoreleasedReturnValue(), v11 = v10 == 0, v10, v11))
   {
-    if (v4)
+    if (completionCopy)
     {
-      v13 = [MEMORY[0x277CCACC8] currentThread];
-      v14 = [v13 isMainThread];
+      currentThread = [MEMORY[0x277CCACC8] currentThread];
+      isMainThread = [currentThread isMainThread];
 
-      if (v14)
+      if (isMainThread)
       {
         if (IMOSLoggingEnabled())
         {
           v15 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
-            v16 = [(IMDCKExitManager *)self exitRecordDate];
-            v17 = [(IMDCKExitManager *)self errorFetchingExitDate];
+            exitRecordDate2 = [(IMDCKExitManager *)self exitRecordDate];
+            errorFetchingExitDate2 = [(IMDCKExitManager *)self errorFetchingExitDate];
             *buf = 138412546;
-            v25 = v16;
+            v25 = exitRecordDate2;
             v26 = 2112;
-            v27 = v17;
+            v27 = errorFetchingExitDate2;
             _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Already on main queue exitDate: %@ error: %@", buf, 0x16u);
           }
         }
 
-        v18 = [(IMDCKExitManager *)self exitRecordDate];
-        v19 = [(IMDCKExitManager *)self errorFetchingExitDate];
-        v4[2](v4, v18, v19);
+        exitRecordDate3 = [(IMDCKExitManager *)self exitRecordDate];
+        errorFetchingExitDate3 = [(IMDCKExitManager *)self errorFetchingExitDate];
+        completionCopy[2](completionCopy, exitRecordDate3, errorFetchingExitDate3);
       }
 
       else
@@ -355,7 +355,7 @@
         v20[2] = sub_22B524898;
         v20[3] = &unk_278703808;
         v20[4] = self;
-        v21 = v4;
+        v21 = completionCopy;
         dispatch_async(MEMORY[0x277D85CD0], v20);
       }
     }
@@ -368,7 +368,7 @@
     v22[2] = sub_22B5246F4;
     v22[3] = &unk_2787037E0;
     v22[4] = self;
-    v23 = v4;
+    v23 = completionCopy;
     [(IMDCKExitManager *)self _fetchExitRecordDateWithCompletion:v22];
   }
 
@@ -381,23 +381,23 @@
   [v2 evalToggleiCloudSettingsSwitch];
 }
 
-- (void)_fetchExitRecordDateWithCompletion:(id)a3
+- (void)_fetchExitRecordDateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IMDCKExitManager *)self ckQueue];
+  completionCopy = completion;
+  ckQueue = [(IMDCKExitManager *)self ckQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_22B524AE8;
   v7[3] = &unk_278703808;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(ckQueue, v7);
 }
 
-- (void)deleteExitRecordWithCompletion:(id)a3
+- (void)deleteExitRecordWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -408,15 +408,15 @@
     }
   }
 
-  v6 = [(IMDCKExitManager *)self ckQueue];
+  ckQueue = [(IMDCKExitManager *)self ckQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_22B525340;
   v8[3] = &unk_278703808;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(ckQueue, v8);
 }
 
 - (CKRecordID)exitRecordID
@@ -425,9 +425,9 @@
   if (!exitRecordID)
   {
     v4 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v5 = [(IMDCKExitManager *)self recordZoneManager];
-    v6 = [v5 deDupeSaltZoneID];
-    v7 = [v4 initWithRecordName:@"CloudKitExitRecord" zoneID:v6];
+    recordZoneManager = [(IMDCKExitManager *)self recordZoneManager];
+    deDupeSaltZoneID = [recordZoneManager deDupeSaltZoneID];
+    v7 = [v4 initWithRecordName:@"CloudKitExitRecord" zoneID:deDupeSaltZoneID];
     v8 = self->_exitRecordID;
     self->_exitRecordID = v7;
 
@@ -440,9 +440,9 @@
 - (id)syncCompleteRecordID
 {
   v3 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v4 = [(IMDCKExitManager *)self recordZoneManager];
-  v5 = [v4 metricZoneID];
-  v6 = [v3 initWithRecordName:@"SyncCompleteRecord" zoneID:v5];
+  recordZoneManager = [(IMDCKExitManager *)self recordZoneManager];
+  metricZoneID = [recordZoneManager metricZoneID];
+  v6 = [v3 initWithRecordName:@"SyncCompleteRecord" zoneID:metricZoneID];
 
   return v6;
 }
@@ -450,9 +450,9 @@
 - (id)analyticZoneRecordID
 {
   v3 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v4 = [(IMDCKExitManager *)self recordZoneManager];
-  v5 = [v4 analyticRecordZoneID];
-  v6 = [v3 initWithRecordName:@"AnalyticZoneRecord" zoneID:v5];
+  recordZoneManager = [(IMDCKExitManager *)self recordZoneManager];
+  analyticRecordZoneID = [recordZoneManager analyticRecordZoneID];
+  v6 = [v3 initWithRecordName:@"AnalyticZoneRecord" zoneID:analyticRecordZoneID];
 
   return v6;
 }
@@ -460,17 +460,17 @@
 - (int64_t)derivedQualityOfService
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [v2 qualityOfService];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  qualityOfService = [currentThread qualityOfService];
 
-  if (v3 <= 17)
+  if (qualityOfService <= 17)
   {
     v4 = 17;
   }
 
   else
   {
-    v4 = v3;
+    v4 = qualityOfService;
   }
 
   if (IMOSLoggingEnabled())
@@ -478,9 +478,9 @@
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [MEMORY[0x277CCACC8] currentThread];
+      currentThread2 = [MEMORY[0x277CCACC8] currentThread];
       v9 = 134218240;
-      v10 = [v6 qualityOfService];
+      qualityOfService2 = [currentThread2 qualityOfService];
       v11 = 2048;
       v12 = v4;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "QOS: 0x%lX target qos: 0x%lX", &v9, 0x16u);
@@ -515,12 +515,12 @@
   return databaseManager;
 }
 
-- (void)_scheduleOperation:(id)a3
+- (void)_scheduleOperation:(id)operation
 {
-  v4 = a3;
-  v6 = [(IMDCKExitManager *)self databaseManager];
-  v5 = [v6 truthDatabase];
-  [v5 addOperation:v4];
+  operationCopy = operation;
+  databaseManager = [(IMDCKExitManager *)self databaseManager];
+  truthDatabase = [databaseManager truthDatabase];
+  [truthDatabase addOperation:operationCopy];
 }
 
 - (BOOL)_saltZoneCreated
@@ -549,7 +549,7 @@
     v18 = 0x2020000000;
     v19 = 0;
     v6 = dispatch_semaphore_create(0);
-    v7 = [(IMDCKExitManager *)self recordZoneManager];
+    recordZoneManager = [(IMDCKExitManager *)self recordZoneManager];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_22B525D90;
@@ -557,7 +557,7 @@
     v15 = buf;
     v8 = v6;
     v14 = v8;
-    [v7 createDeDupeSaltZoneIfNeededWithCompletionBlock:v13];
+    [recordZoneManager createDeDupeSaltZoneIfNeededWithCompletionBlock:v13];
 
     v9 = dispatch_time(0, 600000000000);
     if (dispatch_semaphore_wait(v8, v9))
@@ -607,7 +607,7 @@
     v18 = 0x2020000000;
     v19 = 0;
     v6 = dispatch_semaphore_create(0);
-    v7 = [(IMDCKExitManager *)self recordZoneManager];
+    recordZoneManager = [(IMDCKExitManager *)self recordZoneManager];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = sub_22B5260F0;
@@ -615,7 +615,7 @@
     v15 = buf;
     v8 = v6;
     v14 = v8;
-    [v7 createSubscriptionIfNeededOnDeDupeZoneForSubscription:@"ExitRecordKeyManateeZoneSubscription" recordType:@"Exit" completionBlock:v13];
+    [recordZoneManager createSubscriptionIfNeededOnDeDupeZoneForSubscription:@"ExitRecordKeyManateeZoneSubscription" recordType:@"Exit" completionBlock:v13];
 
     v9 = dispatch_time(0, 180000000000);
     if (dispatch_semaphore_wait(v8, v9))
@@ -642,18 +642,18 @@
 - (void)writeInitialSyncCompletedRecordIfNeeded
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D1ACB8] sharedInstance];
-  v4 = [v3 isUnderFirstDataProtectionLock];
+  mEMORY[0x277D1ACB8] = [MEMORY[0x277D1ACB8] sharedInstance];
+  isUnderFirstDataProtectionLock = [mEMORY[0x277D1ACB8] isUnderFirstDataProtectionLock];
 
-  if (v4)
+  if (isUnderFirstDataProtectionLock)
   {
     if (IMOSLoggingEnabled())
     {
-      v5 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+      lastSyncDate = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(lastSyncDate, OS_LOG_TYPE_INFO))
       {
         LOWORD(v16) = 0;
-        _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "writeInitialSyncCompletedRecordIfNeeded Not doing under first unlock", &v16, 2u);
+        _os_log_impl(&dword_22B4CC000, lastSyncDate, OS_LOG_TYPE_INFO, "writeInitialSyncCompletedRecordIfNeeded Not doing under first unlock", &v16, 2u);
       }
 
 LABEL_31:
@@ -666,8 +666,8 @@ LABEL_31:
     if ((IMGetDomainBoolForKeyWithDefaultValue() & 1) == 0)
     {
       IMSetDomainBoolForKey();
-      v7 = [(IMDCKAbstractSyncController *)self syncState];
-      v5 = [v7 lastSyncDate];
+      syncState = [(IMDCKAbstractSyncController *)self syncState];
+      lastSyncDate = [syncState lastSyncDate];
 
       if (IMOSLoggingEnabled())
       {
@@ -675,15 +675,15 @@ LABEL_31:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v16 = 138412290;
-          v17 = v5;
+          v17 = lastSyncDate;
           _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "writeInitialSyncCompletedRecordIfNeeded Requesting last sync date for metrics: %@", &v16, 0xCu);
         }
       }
 
-      if (v5)
+      if (lastSyncDate)
       {
-        v9 = [MEMORY[0x277CBEAA8] date];
-        v10 = ([v5 differenceFromDate:v9]+ 7) < 8;
+        date = [MEMORY[0x277CBEAA8] date];
+        v10 = ([lastSyncDate differenceFromDate:date]+ 7) < 8;
         v11 = IMOSLoggingEnabled();
         if (v10)
         {
@@ -697,7 +697,7 @@ LABEL_31:
             }
           }
 
-          [(IMDCKExitManager *)self writeSyncCompletedRecordWithDate:v5 completion:&unk_283F197E8];
+          [(IMDCKExitManager *)self writeSyncCompletedRecordWithDate:lastSyncDate completion:&unk_283F197E8];
         }
 
         else if (v11)
@@ -706,7 +706,7 @@ LABEL_31:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
             v16 = 138412290;
-            v17 = v5;
+            v17 = lastSyncDate;
             _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "writeInitialSyncCompletedRecordIfNeeded last sync date %@ was not in last 7 days", &v16, 0xCu);
           }
         }
@@ -727,11 +727,11 @@ LABEL_31:
 
     if (IMOSLoggingEnabled())
     {
-      v5 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+      lastSyncDate = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(lastSyncDate, OS_LOG_TYPE_INFO))
       {
         LOWORD(v16) = 0;
-        _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "writeInitialSyncCompletedRecordIfNeeded We have already done this. Not doing again unless you do defaults delete com.apple.madrid initialSyncRecordHasBeenWritten", &v16, 2u);
+        _os_log_impl(&dword_22B4CC000, lastSyncDate, OS_LOG_TYPE_INFO, "writeInitialSyncCompletedRecordIfNeeded We have already done this. Not doing again unless you do defaults delete com.apple.madrid initialSyncRecordHasBeenWritten", &v16, 2u);
       }
 
       goto LABEL_31;
@@ -741,26 +741,26 @@ LABEL_31:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitCloudKitMetricWithOperationGroupName:(id)a3
+- (void)submitCloudKitMetricWithOperationGroupName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDCKAbstractSyncController *)self ckUtilities];
-  v6 = [v5 cloudKitSyncingEnabled];
+  nameCopy = name;
+  ckUtilities = [(IMDCKAbstractSyncController *)self ckUtilities];
+  cloudKitSyncingEnabled = [ckUtilities cloudKitSyncingEnabled];
 
-  v7 = [(IMDCKAbstractSyncController *)self ckUtilities];
-  v8 = [v7 serverAllowsMetricSubmission];
+  ckUtilities2 = [(IMDCKAbstractSyncController *)self ckUtilities];
+  serverAllowsMetricSubmission = [ckUtilities2 serverAllowsMetricSubmission];
 
-  if ((v6 & v8) == 1)
+  if ((cloudKitSyncingEnabled & serverAllowsMetricSubmission) == 1)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_22B5268D0;
     v14[3] = &unk_2787038A8;
     v14[4] = self;
-    v15 = v4;
-    [(IMDCKExitManager *)self submitCloudKitMetricWithData:v9 operationGroupName:v15 completion:v14];
+    v15 = nameCopy;
+    [(IMDCKExitManager *)self submitCloudKitMetricWithData:date operationGroupName:v15 completion:v14];
   }
 
   else if (IMOSLoggingEnabled())
@@ -769,7 +769,7 @@ LABEL_31:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = @"NO";
-      if (v6)
+      if (cloudKitSyncingEnabled)
       {
         v12 = @"YES";
       }
@@ -779,7 +779,7 @@ LABEL_31:
         v12 = @"NO";
       }
 
-      if (v8)
+      if (serverAllowsMetricSubmission)
       {
         v11 = @"YES";
       }
@@ -802,7 +802,7 @@ LABEL_31:
   v16 = 0x2020000000;
   v17 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(IMDCKExitManager *)self recordZoneManager];
+  recordZoneManager = [(IMDCKExitManager *)self recordZoneManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_22B526B90;
@@ -810,7 +810,7 @@ LABEL_31:
   v13 = &v14;
   v5 = v3;
   v12 = v5;
-  [v4 createAnalyticZoneIfNeededWithCompletionBlock:v11];
+  [recordZoneManager createAnalyticZoneIfNeededWithCompletionBlock:v11];
 
   v6 = dispatch_time(0, 300000000000);
   if (dispatch_semaphore_wait(v5, v6))
@@ -833,37 +833,37 @@ LABEL_31:
   return v8;
 }
 
-- (void)submitCloudKitAnalyticWithOperationGroupName:(id)a3 analyticDictionary:(id)a4
+- (void)submitCloudKitAnalyticWithOperationGroupName:(id)name analyticDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dictionaryCopy, "count")}];
       *buf = 138412546;
       v18 = v9;
       v19 = 2112;
-      v20 = v6;
+      v20 = nameCopy;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Request to submit dictionary (%@) opGroupName %@", buf, 0x16u);
     }
   }
 
-  v10 = [(IMDCKAbstractSyncController *)self ckUtilities];
-  v11 = [v10 serverAllowsAnalyticSubmission];
+  ckUtilities = [(IMDCKAbstractSyncController *)self ckUtilities];
+  serverAllowsAnalyticSubmission = [ckUtilities serverAllowsAnalyticSubmission];
 
-  if (v11)
+  if (serverAllowsAnalyticSubmission)
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = sub_22B526ED4;
     v14[3] = &unk_2787038D0;
     v14[4] = self;
-    v15 = v7;
-    v16 = v6;
+    v15 = dictionaryCopy;
+    v16 = nameCopy;
     [(IMDCKExitManager *)self submitCloudKitAnalyticWithDictionary:v15 operationGroupName:v16 completion:v14];
   }
 
@@ -880,77 +880,77 @@ LABEL_31:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleMetricOperation:(id)a3
+- (void)_scheduleMetricOperation:(id)operation
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDCKExitManager *)self databaseManager];
-  v6 = [v5 manateeDataBase];
+  operationCopy = operation;
+  databaseManager = [(IMDCKExitManager *)self databaseManager];
+  manateeDataBase = [databaseManager manateeDataBase];
 
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [v4 group];
-      v9 = [v8 name];
+      group = [operationCopy group];
+      name = [group name];
       v11 = 138412546;
-      v12 = v9;
+      v12 = name;
       v13 = 2112;
-      v14 = v6;
+      v14 = manateeDataBase;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Performing metric operation name %@ using DB %@", &v11, 0x16u);
     }
   }
 
-  [v6 addOperation:v4];
+  [manateeDataBase addOperation:operationCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_modifiedOpGroupName:(id)a3
+- (id)_modifiedOpGroupName:(id)name
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(IMDCKExitManager *)self _sharedCKUtilities];
-  v7 = [v6 deviceActiveString];
-  v8 = [v4 stringWithFormat:@"-%@", v7];
+  nameCopy = name;
+  _sharedCKUtilities = [(IMDCKExitManager *)self _sharedCKUtilities];
+  deviceActiveString = [_sharedCKUtilities deviceActiveString];
+  v8 = [v4 stringWithFormat:@"-%@", deviceActiveString];
 
-  v9 = [v5 stringByAppendingString:v8];
+  v9 = [nameCopy stringByAppendingString:v8];
 
   return v9;
 }
 
-- (void)_submitCloudKitMetricWithOperationGroupName:(id)a3 record:(id)a4 ignoreZoneNotFoundError:(BOOL)a5 completion:(id)a6
+- (void)_submitCloudKitMetricWithOperationGroupName:(id)name record:(id)record ignoreZoneNotFoundError:(BOOL)error completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(IMDCKExitManager *)self ckQueue];
+  nameCopy = name;
+  recordCopy = record;
+  completionCopy = completion;
+  ckQueue = [(IMDCKExitManager *)self ckQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B527838;
   block[3] = &unk_278703948;
-  v18 = v11;
-  v19 = v10;
-  v22 = a5;
-  v20 = self;
-  v21 = v12;
-  v14 = v12;
-  v15 = v10;
-  v16 = v11;
-  dispatch_async(v13, block);
+  v18 = recordCopy;
+  v19 = nameCopy;
+  errorCopy = error;
+  selfCopy = self;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = nameCopy;
+  v16 = recordCopy;
+  dispatch_async(ckQueue, block);
 }
 
 - (BOOL)_canSubmitCloudKitMetric
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(IMDCKAbstractSyncController *)self ckUtilities];
-  v3 = [v2 serverAllowsMetricSubmission];
+  ckUtilities = [(IMDCKAbstractSyncController *)self ckUtilities];
+  serverAllowsMetricSubmission = [ckUtilities serverAllowsMetricSubmission];
 
-  v4 = [MEMORY[0x277D19268] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+  isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
 
-  if ((v3 & 1) == 0 && IMOSLoggingEnabled())
+  if ((serverAllowsMetricSubmission & 1) == 0 && IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -959,7 +959,7 @@ LABEL_31:
       v10 = 138412802;
       v11 = @"NO";
       v12 = 2112;
-      if (!v5)
+      if (!isInternalInstall)
       {
         v7 = @"NO";
       }
@@ -972,19 +972,19 @@ LABEL_31:
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v3;
+  return serverAllowsMetricSubmission;
 }
 
 - (BOOL)_canSubmitCloudKitAnalytic
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(IMDCKAbstractSyncController *)self ckUtilities];
-  v3 = [v2 serverAllowsAnalyticSubmission];
+  ckUtilities = [(IMDCKAbstractSyncController *)self ckUtilities];
+  serverAllowsAnalyticSubmission = [ckUtilities serverAllowsAnalyticSubmission];
 
-  v4 = [MEMORY[0x277D19268] sharedInstance];
-  v5 = [v4 isInternalInstall];
+  mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+  isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
 
-  if ((v3 & 1) == 0 && IMOSLoggingEnabled())
+  if ((serverAllowsAnalyticSubmission & 1) == 0 && IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -993,7 +993,7 @@ LABEL_31:
       v10 = 138412802;
       v11 = @"NO";
       v12 = 2112;
-      if (!v5)
+      if (!isInternalInstall)
       {
         v7 = @"NO";
       }
@@ -1006,18 +1006,18 @@ LABEL_31:
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v3;
+  return serverAllowsAnalyticSubmission;
 }
 
-- (void)submitCloudKitMetricWithData:(id)a3 operationGroupName:(id)a4 completion:(id)a5
+- (void)submitCloudKitMetricWithData:(id)data operationGroupName:(id)name completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  nameCopy = name;
+  completionCopy = completion;
   if ([(IMDCKExitManager *)self _canSubmitCloudKitMetric])
   {
-    v11 = [(IMDCKExitManager *)self _modifiedOpGroupName:v9];
+    v11 = [(IMDCKExitManager *)self _modifiedOpGroupName:nameCopy];
 
     if (IMOSLoggingEnabled())
     {
@@ -1031,11 +1031,11 @@ LABEL_31:
     }
 
     v13 = objc_alloc(MEMORY[0x277CBC5A0]);
-    v14 = [(IMDCKExitManager *)self syncCompleteRecordID];
-    v15 = [v13 initWithRecordType:@"SyncCompleteRecordType" recordID:v14];
+    syncCompleteRecordID = [(IMDCKExitManager *)self syncCompleteRecordID];
+    v15 = [v13 initWithRecordType:@"SyncCompleteRecordType" recordID:syncCompleteRecordID];
 
-    [v15 setObject:v8 forKey:@"SyncCompleteDateKey"];
-    [(IMDCKExitManager *)self _submitCloudKitMetricWithOperationGroupName:v11 record:v15 ignoreZoneNotFoundError:1 completion:v10];
+    [v15 setObject:dataCopy forKey:@"SyncCompleteDateKey"];
+    [(IMDCKExitManager *)self _submitCloudKitMetricWithOperationGroupName:v11 record:v15 ignoreZoneNotFoundError:1 completion:completionCopy];
   }
 
   else
@@ -1050,30 +1050,30 @@ LABEL_31:
       }
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
-    v11 = v9;
+    v11 = nameCopy;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitCloudKitAnalyticWithDictionary:(id)a3 operationGroupName:(id)a4 completion:(id)a5
+- (void)submitCloudKitAnalyticWithDictionary:(id)dictionary operationGroupName:(id)name completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IMDCKExitManager *)self _canSubmitCloudKitAnalytic];
-  if (v8 && [MEMORY[0x277CCAAA0] isValidJSONObject:v8])
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  completionCopy = completion;
+  _canSubmitCloudKitAnalytic = [(IMDCKExitManager *)self _canSubmitCloudKitAnalytic];
+  if (dictionaryCopy && [MEMORY[0x277CCAAA0] isValidJSONObject:dictionaryCopy])
   {
     v23 = 0;
-    v12 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v8 options:1 error:&v23];
+    v12 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryCopy options:1 error:&v23];
     v13 = v23;
-    if (!v11)
+    if (!_canSubmitCloudKitAnalytic)
     {
 LABEL_4:
       if (IMOSLoggingEnabled())
@@ -1095,8 +1095,8 @@ LABEL_4:
         }
       }
 
-      v10[2](v10, 1, 0);
-      v16 = v9;
+      completionCopy[2](completionCopy, 1, 0);
+      v16 = nameCopy;
       goto LABEL_23;
     }
   }
@@ -1109,22 +1109,22 @@ LABEL_4:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v25 = v8;
+        v25 = dictionaryCopy;
         v26 = 2112;
-        v27 = v9;
+        v27 = nameCopy;
         _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Failed to serizlize analyticdict as JSON %@. Posting operationGroupName %@ only.", buf, 0x16u);
       }
     }
 
     v12 = 0;
     v13 = 0;
-    if (!v11)
+    if (!_canSubmitCloudKitAnalytic)
     {
       goto LABEL_4;
     }
   }
 
-  v16 = [(IMDCKExitManager *)self _modifiedOpGroupName:v9];
+  v16 = [(IMDCKExitManager *)self _modifiedOpGroupName:nameCopy];
 
   if (IMOSLoggingEnabled())
   {
@@ -1138,15 +1138,15 @@ LABEL_4:
   }
 
   v19 = objc_alloc(MEMORY[0x277CBC5A0]);
-  v20 = [(IMDCKExitManager *)self analyticZoneRecordID];
-  v21 = [v19 initWithRecordType:@"AnalyticDataRecordType" recordID:v20];
+  analyticZoneRecordID = [(IMDCKExitManager *)self analyticZoneRecordID];
+  v21 = [v19 initWithRecordType:@"AnalyticDataRecordType" recordID:analyticZoneRecordID];
 
   if (v12)
   {
     [v21 setObject:v12 forKey:@"AnalyticDataKey"];
   }
 
-  [(IMDCKExitManager *)self _submitCloudKitMetricWithOperationGroupName:v16 record:v21 ignoreZoneNotFoundError:0 completion:v10];
+  [(IMDCKExitManager *)self _submitCloudKitMetricWithOperationGroupName:v16 record:v21 ignoreZoneNotFoundError:0 completion:completionCopy];
 
 LABEL_23:
   v22 = *MEMORY[0x277D85DE8];
@@ -1165,10 +1165,10 @@ LABEL_23:
   }
 
   v4 = +[IMDCKUtilities sharedInstance];
-  v5 = [v4 cloudKitSyncingEnabled];
+  cloudKitSyncingEnabled = [v4 cloudKitSyncingEnabled];
 
   v6 = IMOSLoggingEnabled();
-  if (v5)
+  if (cloudKitSyncingEnabled)
   {
     if (v6)
     {
@@ -1180,13 +1180,13 @@ LABEL_23:
       }
     }
 
-    v8 = [(IMDCKExitManager *)self ckQueue];
+    ckQueue = [(IMDCKExitManager *)self ckQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_22B528654;
     block[3] = &unk_278702FF0;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(ckQueue, block);
   }
 
   else if (v6)

@@ -1,9 +1,9 @@
 @interface RSAsset
 - (RSAsset)init;
-- (RSAsset)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RSAsset)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RSAsset
@@ -89,16 +89,16 @@
   return v24;
 }
 
-- (RSAsset)initWithCoder:(id)a3
+- (RSAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = RSAsset;
   v5 = [(RSAsset *)&v25 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"floorPlan");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"floorPlan");
     floorPlan = v5->_floorPlan;
     v5->_floorPlan = v8;
 
@@ -106,14 +106,14 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v14 = objc_msgSend_setWithObjects_(v10, v13, v11, v12, 0);
-    v16 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v15, v14, @"mirrorPoints");
+    v16 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v15, v14, @"mirrorPoints");
     mirrorPoints = v5->_mirrorPoints;
     v5->_mirrorPoints = v16;
 
-    v5->_version = objc_msgSend_decodeIntegerForKey_(v4, v18, @"version");
-    v5->_isCaptured = objc_msgSend_decodeBoolForKey_(v4, v19, @"isCaptured");
+    v5->_version = objc_msgSend_decodeIntegerForKey_(coderCopy, v18, @"version");
+    v5->_isCaptured = objc_msgSend_decodeBoolForKey_(coderCopy, v19, @"isCaptured");
     v20 = objc_opt_class();
-    v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v21, v20, @"rawFloorPlan");
+    v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v21, v20, @"rawFloorPlan");
     rawFloorPlan = v5->_rawFloorPlan;
     v5->_rawFloorPlan = v22;
   }
@@ -121,17 +121,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  objc_msgSend_encodeObject_forKey_(v9, v4, self->_floorPlan, @"floorPlan");
-  objc_msgSend_encodeObject_forKey_(v9, v5, self->_mirrorPoints, @"mirrorPoints");
-  objc_msgSend_encodeInteger_forKey_(v9, v6, self->_version, @"version");
-  objc_msgSend_encodeBool_forKey_(v9, v7, self->_isCaptured, @"isCaptured");
-  objc_msgSend_encodeObject_forKey_(v9, v8, self->_rawFloorPlan, @"rawFloorPlan");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_floorPlan, @"floorPlan");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_mirrorPoints, @"mirrorPoints");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_version, @"version");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v7, self->_isCaptured, @"isCaptured");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_rawFloorPlan, @"rawFloorPlan");
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RSAsset);
   v7 = objc_msgSend_copy(self->_floorPlan, v5, v6);

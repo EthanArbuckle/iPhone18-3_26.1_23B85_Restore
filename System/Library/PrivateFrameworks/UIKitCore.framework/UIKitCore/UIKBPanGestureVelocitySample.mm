@@ -1,24 +1,24 @@
 @interface UIKBPanGestureVelocitySample
 - (CGPoint)end;
 - (CGPoint)start;
-- (void)pullValuesFrom:(id)a3;
+- (void)pullValuesFrom:(id)from;
 - (void)resetValues;
 @end
 
 @implementation UIKBPanGestureVelocitySample
 
-- (void)pullValuesFrom:(id)a3
+- (void)pullValuesFrom:(id)from
 {
-  v4 = a3;
-  [v4 start];
+  fromCopy = from;
+  [fromCopy start];
   [(UIKBPanGestureVelocitySample *)self setStart:?];
-  [v4 end];
+  [fromCopy end];
   [(UIKBPanGestureVelocitySample *)self setEnd:?];
-  [v4 dt];
+  [fromCopy dt];
   [(UIKBPanGestureVelocitySample *)self setDt:?];
-  [v4 force];
+  [fromCopy force];
   [(UIKBPanGestureVelocitySample *)self setForce:?];
-  [v4 majorRadius];
+  [fromCopy majorRadius];
   v6 = v5;
 
   [(UIKBPanGestureVelocitySample *)self setMajorRadius:v6];

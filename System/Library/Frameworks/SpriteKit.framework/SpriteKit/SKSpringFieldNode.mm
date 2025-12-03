@@ -1,8 +1,8 @@
 @interface SKSpringFieldNode
 - (SKSpringFieldNode)init;
-- (SKSpringFieldNode)initWithCoder:(id)a3;
+- (SKSpringFieldNode)initWithCoder:(id)coder;
 - (void)_initialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKSpringFieldNode
@@ -11,9 +11,9 @@
 {
   if (!self->super._field)
   {
-    v3 = [MEMORY[0x277D3D118] field];
+    field = [MEMORY[0x277D3D118] field];
     field = self->super._field;
-    self->super._field = v3;
+    self->super._field = field;
 
     v5 = self->super._field;
 
@@ -35,13 +35,13 @@
   return v3;
 }
 
-- (SKSpringFieldNode)initWithCoder:(id)a3
+- (SKSpringFieldNode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D3D118] field];
+  coderCopy = coder;
+  field = [MEMORY[0x277D3D118] field];
   v8.receiver = self;
   v8.super_class = SKSpringFieldNode;
-  v6 = [(SKFieldNode *)&v8 initWithCoder:v4 field:v5];
+  v6 = [(SKFieldNode *)&v8 initWithCoder:coderCopy field:field];
 
   if (v6)
   {
@@ -51,11 +51,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SKSpringFieldNode;
-  [(SKFieldNode *)&v3 encodeWithCoder:a3];
+  [(SKFieldNode *)&v3 encodeWithCoder:coder];
 }
 
 @end

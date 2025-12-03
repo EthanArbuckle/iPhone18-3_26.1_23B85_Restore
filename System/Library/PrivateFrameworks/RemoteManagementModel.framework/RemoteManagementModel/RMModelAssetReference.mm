@@ -1,25 +1,25 @@
 @interface RMModelAssetReference
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAssetReference:(id)a3;
-- (RMModelAssetReference)initWithIdentifier:(id)a3 assetTypes:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAssetReference:(id)reference;
+- (RMModelAssetReference)initWithIdentifier:(id)identifier assetTypes:(id)types;
 @end
 
 @implementation RMModelAssetReference
 
-- (RMModelAssetReference)initWithIdentifier:(id)a3 assetTypes:(id)a4
+- (RMModelAssetReference)initWithIdentifier:(id)identifier assetTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  typesCopy = types;
   v14.receiver = self;
   v14.super_class = RMModelAssetReference;
   v8 = [(RMModelAssetReference *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [typesCopy copy];
     assetTypes = v8->_assetTypes;
     v8->_assetTypes = v11;
   }
@@ -27,10 +27,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -38,22 +38,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMModelAssetReference *)self isEqualToAssetReference:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMModelAssetReference *)self isEqualToAssetReference:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToAssetReference:(id)a3
+- (BOOL)isEqualToAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(RMModelAssetReference *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6])
+  referenceCopy = reference;
+  identifier = [(RMModelAssetReference *)self identifier];
+  identifier2 = [referenceCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [(RMModelAssetReference *)self assetTypes];
-    v8 = [v4 assetTypes];
-    v9 = [v7 isEqualToArray:v8];
+    assetTypes = [(RMModelAssetReference *)self assetTypes];
+    assetTypes2 = [referenceCopy assetTypes];
+    v9 = [assetTypes isEqualToArray:assetTypes2];
   }
 
   else

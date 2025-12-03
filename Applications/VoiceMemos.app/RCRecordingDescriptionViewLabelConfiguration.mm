@@ -3,8 +3,8 @@
 + (id)recordingCollectionViewCellConfiguration;
 + (id)recordingViewConfiguration;
 + (id)selectedRecordingCollectionViewCellConfiguration;
-- (RCRecordingDescriptionViewLabelConfiguration)initWithRecordingTitleTextColor:(id)a3 recordingTitleEditingTintColor:(id)a4 subtitleTextColor:(id)a5;
-- (id)_initWithStyle:(unint64_t)a3;
+- (RCRecordingDescriptionViewLabelConfiguration)initWithRecordingTitleTextColor:(id)color recordingTitleEditingTintColor:(id)tintColor subtitleTextColor:(id)textColor;
+- (id)_initWithStyle:(unint64_t)style;
 @end
 
 @implementation RCRecordingDescriptionViewLabelConfiguration
@@ -37,26 +37,26 @@
   return v2;
 }
 
-- (RCRecordingDescriptionViewLabelConfiguration)initWithRecordingTitleTextColor:(id)a3 recordingTitleEditingTintColor:(id)a4 subtitleTextColor:(id)a5
+- (RCRecordingDescriptionViewLabelConfiguration)initWithRecordingTitleTextColor:(id)color recordingTitleEditingTintColor:(id)tintColor subtitleTextColor:(id)textColor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  colorCopy = color;
+  tintColorCopy = tintColor;
+  textColorCopy = textColor;
   v15.receiver = self;
   v15.super_class = RCRecordingDescriptionViewLabelConfiguration;
   v12 = [(RCRecordingDescriptionViewLabelConfiguration *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_recordingTitleTextColor, a3);
-    objc_storeStrong(&v13->_recordingTitleEditingTintColor, a4);
-    objc_storeStrong(&v13->_subtitleTextColor, a5);
+    objc_storeStrong(&v12->_recordingTitleTextColor, color);
+    objc_storeStrong(&v13->_recordingTitleEditingTintColor, tintColor);
+    objc_storeStrong(&v13->_subtitleTextColor, textColor);
   }
 
   return v13;
 }
 
-- (id)_initWithStyle:(unint64_t)a3
+- (id)_initWithStyle:(unint64_t)style
 {
   v22.receiver = self;
   v22.super_class = RCRecordingDescriptionViewLabelConfiguration;
@@ -65,36 +65,36 @@
   {
     v5 = +[RCRecorderStyleProvider sharedStyleProvider];
     v6 = v5;
-    switch(a3)
+    switch(style)
     {
       case 3uLL:
-        v16 = [v5 recordingCardPrimaryLabelFontColor];
+        recordingCardPrimaryLabelFontColor = [v5 recordingCardPrimaryLabelFontColor];
         recordingTitleTextColor = v4->_recordingTitleTextColor;
-        v4->_recordingTitleTextColor = v16;
+        v4->_recordingTitleTextColor = recordingCardPrimaryLabelFontColor;
 
-        v11 = [v6 recordingCardPrimaryLabelFontColor];
+        recordingCardPrimaryLabelFontColor2 = [v6 recordingCardPrimaryLabelFontColor];
         break;
       case 2uLL:
-        v12 = [v5 recordingCollectionViewSelectedCellTextColor];
+        recordingCollectionViewSelectedCellTextColor = [v5 recordingCollectionViewSelectedCellTextColor];
         v13 = v4->_recordingTitleTextColor;
-        v4->_recordingTitleTextColor = v12;
+        v4->_recordingTitleTextColor = recordingCollectionViewSelectedCellTextColor;
 
-        v14 = [v6 recordingCollectionViewSelectedCellTextColor];
+        recordingCollectionViewSelectedCellTextColor2 = [v6 recordingCollectionViewSelectedCellTextColor];
         recordingTitleEditingTintColor = v4->_recordingTitleEditingTintColor;
-        v4->_recordingTitleEditingTintColor = v14;
+        v4->_recordingTitleEditingTintColor = recordingCollectionViewSelectedCellTextColor2;
 
-        v11 = [v6 recordingCollectionViewSelectedCellTextColor];
+        recordingCardPrimaryLabelFontColor2 = [v6 recordingCollectionViewSelectedCellTextColor];
         break;
       case 1uLL:
-        v7 = [v5 recordingCollectionViewCellTextColor];
+        recordingCollectionViewCellTextColor = [v5 recordingCollectionViewCellTextColor];
         v8 = v4->_recordingTitleTextColor;
-        v4->_recordingTitleTextColor = v7;
+        v4->_recordingTitleTextColor = recordingCollectionViewCellTextColor;
 
-        v9 = [v6 recordingCollectionViewCellTextColor];
+        recordingCollectionViewCellTextColor2 = [v6 recordingCollectionViewCellTextColor];
         v10 = v4->_recordingTitleEditingTintColor;
-        v4->_recordingTitleEditingTintColor = v9;
+        v4->_recordingTitleEditingTintColor = recordingCollectionViewCellTextColor2;
 
-        v11 = [v6 recordingCollectionViewCellTextColor];
+        recordingCardPrimaryLabelFontColor2 = [v6 recordingCollectionViewCellTextColor];
         break;
       default:
 LABEL_9:
@@ -102,7 +102,7 @@ LABEL_9:
         return v4;
     }
 
-    v18 = v11;
+    v18 = recordingCardPrimaryLabelFontColor2;
     [v6 descriptionViewSecondaryLabelAlpha];
     v19 = [v18 colorWithAlphaComponent:?];
     subtitleTextColor = v4->_subtitleTextColor;

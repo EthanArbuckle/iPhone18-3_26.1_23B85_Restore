@@ -1,42 +1,42 @@
 @interface NMSPodcastSavedEpisodesMediaItemGroup
-- (id)identifiersForContainerType:(unint64_t)a3;
+- (id)identifiersForContainerType:(unint64_t)type;
 - (id)itemList;
 @end
 
 @implementation NMSPodcastSavedEpisodesMediaItemGroup
 
-- (id)identifiersForContainerType:(unint64_t)a3
+- (id)identifiersForContainerType:(unint64_t)type
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([(NMSMediaItemGroup *)self type]== a3)
+  array = [MEMORY[0x277CBEB18] array];
+  if ([(NMSMediaItemGroup *)self type]== type)
   {
     v6 = [objc_alloc(MEMORY[0x277CD5DA0]) initWithBlock:&__block_literal_global_10];
-    [v5 addObject:v6];
+    [array addObject:v6];
   }
 
-  v7 = [v5 copy];
+  v7 = [array copy];
 
   return v7;
 }
 
 - (id)itemList
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc_init(NMSPodcastSizeEstimation);
-  v5 = [MEMORY[0x277D3DAE8] sharedInstance];
-  v6 = [v5 mainOrPrivateContext];
+  mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+  mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __49__NMSPodcastSavedEpisodesMediaItemGroup_itemList__block_invoke;
   v15 = &unk_27993EB90;
-  v16 = self;
-  v17 = v6;
+  selfCopy = self;
+  v17 = mainOrPrivateContext;
   v18 = v4;
-  v19 = v3;
-  v7 = v3;
+  v19 = array;
+  v7 = array;
   v8 = v4;
-  v9 = v6;
+  v9 = mainOrPrivateContext;
   [v9 performBlockAndWait:&v12];
   v10 = [v7 copy];
 

@@ -1,7 +1,7 @@
 @interface PXGHostingLayerVisibilityInfo
 - (PXGHostingLayerVisibilityInfo)init;
 - (PXGHostingLayerVisibilityInfoDelegate)delegate;
-- (void)setIsVisible:(BOOL)a3;
+- (void)setIsVisible:(BOOL)visible;
 @end
 
 @implementation PXGHostingLayerVisibilityInfo
@@ -13,13 +13,13 @@
   return WeakRetained;
 }
 
-- (void)setIsVisible:(BOOL)a3
+- (void)setIsVisible:(BOOL)visible
 {
-  if (self->_isVisible != a3)
+  if (self->_isVisible != visible)
   {
-    self->_isVisible = a3;
-    v5 = [(PXGHostingLayerVisibilityInfo *)self delegate];
-    [v5 hostingLayerVisibilityInfoDidChange:self];
+    self->_isVisible = visible;
+    delegate = [(PXGHostingLayerVisibilityInfo *)self delegate];
+    [delegate hostingLayerVisibilityInfoDidChange:self];
   }
 }
 

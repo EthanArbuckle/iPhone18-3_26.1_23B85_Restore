@@ -1,30 +1,30 @@
 @interface MPSFColorConversion
-- (BOOL)addNxMStage:(CGColorConversionIteratorData *)a3 stage:(int64_t)a4 index:(int64_t)a5 error:(id *)a6;
-- (BOOL)addTRCStage:(CGColorConversionIteratorData *)a3 stage:(int64_t)a4 count:(int64_t)a5 trcIndices:(int64_t *)a6 error:(id *)a7;
-- (MPSFColorConversion)initWithCoder:(id)a3 device:(id)a4 error:(id *)a5;
-- (MPSFColorConversion)initWithDevice:(id)a3 conversion:(CGColorConversionInfo *)a4 functionName:(id)a5 sourceRange:(id *)a6 options:(unint64_t)a7 error:(id *)a8;
-- (MPSFColorConversion)initWithDevice:(id)a3 startColorSpace:(CGColorSpace *)a4 endColorSpace:(CGColorSpace *)a5 functionName:(id)a6 sourceRange:(id *)a7 options:(unint64_t)a8 error:(id *)a9;
+- (BOOL)addNxMStage:(CGColorConversionIteratorData *)stage stage:(int64_t)a4 index:(int64_t)index error:(id *)error;
+- (BOOL)addTRCStage:(CGColorConversionIteratorData *)stage stage:(int64_t)a4 count:(int64_t)count trcIndices:(int64_t *)indices error:(id *)error;
+- (MPSFColorConversion)initWithCoder:(id)coder device:(id)device error:(id *)error;
+- (MPSFColorConversion)initWithDevice:(id)device conversion:(CGColorConversionInfo *)conversion functionName:(id)name sourceRange:(id *)range options:(unint64_t)options error:(id *)error;
+- (MPSFColorConversion)initWithDevice:(id)device startColorSpace:(CGColorSpace *)space endColorSpace:(CGColorSpace *)colorSpace functionName:(id)name sourceRange:(id *)range options:(unint64_t)options error:(id *)error;
 - (const)find1DTexture1Stage;
-- (const)find3dTextureStageAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (const)find3dTextureStageAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (id)descriptorFor1DTexture1;
 - (id)descriptorFor3DTexture1;
 - (id)descriptorFor3DTexture2;
-- (id)newDAGUsingFunctionList:(id)a3;
-- (id)newSubroutineListWithError:(id *)a3;
+- (id)newDAGUsingFunctionList:(id)list;
+- (id)newSubroutineListWithError:(id *)error;
 - (void)dealloc;
-- (void)effectiveRange:(__n128)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initialize1DTexture1:(id)a3;
-- (void)initialize3DTexture1:(id)a3;
-- (void)initialize3DTexture2:(id)a3;
+- (void)effectiveRange:(__n128)range;
+- (void)encodeWithCoder:(id)coder;
+- (void)initialize1DTexture1:(id)texture1;
+- (void)initialize3DTexture1:(id)texture1;
+- (void)initialize3DTexture2:(id)texture2;
 - (void)optimizeStages;
 @end
 
 @implementation MPSFColorConversion
 
-- (MPSFColorConversion)initWithDevice:(id)a3 startColorSpace:(CGColorSpace *)a4 endColorSpace:(CGColorSpace *)a5 functionName:(id)a6 sourceRange:(id *)a7 options:(unint64_t)a8 error:(id *)a9
+- (MPSFColorConversion)initWithDevice:(id)device startColorSpace:(CGColorSpace *)space endColorSpace:(CGColorSpace *)colorSpace functionName:(id)name sourceRange:(id *)range options:(unint64_t)options error:(id *)error
 {
   v14 = off_27DF853A0;
   if (!off_27DF853A0)
@@ -42,11 +42,11 @@
 
     else
     {
-      v21 = self;
-      v22 = a4;
+      selfCopy = self;
+      spaceCopy = space;
       dispatch_once_f(&qword_27DF85438, &v25, sub_239934C08);
-      a4 = v22;
-      self = v21;
+      space = spaceCopy;
+      self = selfCopy;
       v14 = off_27DF853A0;
       if (!off_27DF853A0)
       {
@@ -69,11 +69,11 @@
 
     else
     {
-      v23 = self;
-      v24 = a4;
+      selfCopy2 = self;
+      spaceCopy2 = space;
       dispatch_once_f(&qword_27DF85440, &v25, sub_239934C40);
-      a4 = v24;
-      self = v23;
+      space = spaceCopy2;
+      self = selfCopy2;
       if (off_27DF853D8)
       {
         goto LABEL_7;
@@ -81,13 +81,13 @@
     }
 
 LABEL_19:
-    objc_msgSend_dealloc(self, a2, a3, a4, v25, v26);
+    objc_msgSend_dealloc(self, a2, device, space, v25, v26);
     return 0;
   }
 
 LABEL_7:
-  v15 = self;
-  v16 = v14(a4, a5);
+  selfCopy3 = self;
+  v16 = v14(space, colorSpace);
   v17 = off_27DF853D8;
   if (!off_27DF853D8)
   {
@@ -101,14 +101,14 @@ LABEL_7:
     v17 = off_27DF853D8;
   }
 
-  if (v17(a5) == 1)
+  if (v17(colorSpace) == 1)
   {
-    result = objc_msgSend_initWithDevice_conversion_functionName_sourceRange_options_error_(v15, v18, a3, v16, a6, a7, a8, a9, v25, v26);
+    result = objc_msgSend_initWithDevice_conversion_functionName_sourceRange_options_error_(selfCopy3, v18, device, v16, name, range, options, error, v25, v26);
   }
 
   else
   {
-    result = objc_msgSend_initWithDevice_conversion_functionName_sourceRange_options_error_(v15, v18, a3, v16, a6, a7, a8 & 0xFFFFFFFFFFFFFEFFLL, a9, v25, v26);
+    result = objc_msgSend_initWithDevice_conversion_functionName_sourceRange_options_error_(selfCopy3, v18, device, v16, name, range, options & 0xFFFFFFFFFFFFFEFFLL, error, v25, v26);
   }
 
   if (v16)
@@ -121,7 +121,7 @@ LABEL_7:
   return result;
 }
 
-- (id)newSubroutineListWithError:(id *)a3
+- (id)newSubroutineListWithError:(id *)error
 {
   v6 = objc_opt_new();
   if (!v6)
@@ -136,7 +136,7 @@ LABEL_7:
     if (!v10)
     {
       v42 = "MHDR_ExtractChannel0";
-      if (!a3)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -155,7 +155,7 @@ LABEL_7:
     if (!v17)
     {
       v42 = "MHDR_ExtractChannel1";
-      if (!a3)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -174,7 +174,7 @@ LABEL_7:
     if (!v24)
     {
       v42 = "MHDR_ExtractChannel2";
-      if (!a3)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -193,7 +193,7 @@ LABEL_7:
     if (!v31)
     {
       v42 = "MHDR_ExtractChannel3";
-      if (!a3)
+      if (!error)
       {
 LABEL_27:
 
@@ -201,7 +201,7 @@ LABEL_27:
       }
 
 LABEL_26:
-      *a3 = sub_239931A78("Failed to find function %s in MTLLibrary %p\n", v42, self->super._library);
+      *error = sub_239931A78("Failed to find function %s in MTLLibrary %p\n", v42, self->super._library);
       goto LABEL_27;
     }
 
@@ -219,7 +219,7 @@ LABEL_26:
   if (!v38)
   {
     v42 = "MHDR_MakePixel";
-    if (!a3)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -231,34 +231,34 @@ LABEL_26:
   objc_msgSend_addObject_(v6, v39, v38, v40);
 
 LABEL_17:
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return v6;
 }
 
-- (BOOL)addTRCStage:(CGColorConversionIteratorData *)a3 stage:(int64_t)a4 count:(int64_t)a5 trcIndices:(int64_t *)a6 error:(id *)a7
+- (BOOL)addTRCStage:(CGColorConversionIteratorData *)stage stage:(int64_t)a4 count:(int64_t)count trcIndices:(int64_t *)indices error:(id *)error
 {
-  if (a5 < 5)
+  if (count < 5)
   {
-    v10 = malloc_type_malloc(84 * (a5 & ~(a5 >> 63)) + 32, 0x10A10400956659AuLL);
+    v10 = malloc_type_malloc(84 * (count & ~(count >> 63)) + 32, 0x10A10400956659AuLL);
     if (v10)
     {
       v15 = v10;
-      sub_239928934(v10, a3, v14, a5, a6);
+      sub_239928934(v10, stage, v14, count, indices);
       v15->var1 = self->_stageList;
       self->_stageList = v15;
       LOBYTE(v10) = 1;
     }
   }
 
-  else if (a7)
+  else if (error)
   {
-    v9 = sub_239931A78("MetalHDRConversion error: conversion stage %lu requires %lu color channels, which is more than will fit in a float4.\n\tTry vImageConvert_AnyToAny or ColorSyncTransformConvert instead on the CPU instead.\n", a4, a5);
+    v9 = sub_239931A78("MetalHDRConversion error: conversion stage %lu requires %lu color channels, which is more than will fit in a float4.\n\tTry vImageConvert_AnyToAny or ColorSyncTransformConvert instead on the CPU instead.\n", a4, count);
     LOBYTE(v10) = 0;
-    *a7 = v9;
+    *error = v9;
   }
 
   else
@@ -269,7 +269,7 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)addNxMStage:(CGColorConversionIteratorData *)a3 stage:(int64_t)a4 index:(int64_t)a5 error:(id *)a6
+- (BOOL)addNxMStage:(CGColorConversionIteratorData *)stage stage:(int64_t)a4 index:(int64_t)index error:(id *)error
 {
   v9 = off_27DF853D0;
   if (off_27DF853D0)
@@ -297,19 +297,19 @@ LABEL_17:
 LABEL_4:
       v15 = 0;
       memset(context, 0, sizeof(context));
-      v9(context, (*(&a3->var8 + 4))[a5], a2);
+      v9(context, (*(&stage->var8 + 4))[index], a2);
       if (*(context + 4) <= 4uLL && *(context + 12) < 5uLL)
       {
         operator new();
       }
 
-      if (a6)
+      if (error)
       {
         v11 = sub_239931A78("MetalHDRConversion error: conversion stage %lu requires %lu color channels, which is more than will fit in a float4.\n\tTry vImageConvert_AnyToAny or ColorSyncTransformConvert instead on the CPU instead.\n");
 LABEL_14:
         v12 = v11;
         result = 0;
-        *a6 = v12;
+        *error = v12;
         return result;
       }
 
@@ -317,7 +317,7 @@ LABEL_14:
     }
   }
 
-  if (a6)
+  if (error)
   {
     v11 = sub_239931A78("MetalHDRConversion error: could not load address of CGColorNxMTransformGetTransform\n");
     goto LABEL_14;
@@ -326,25 +326,25 @@ LABEL_14:
   return 0;
 }
 
-- (MPSFColorConversion)initWithDevice:(id)a3 conversion:(CGColorConversionInfo *)a4 functionName:(id)a5 sourceRange:(id *)a6 options:(unint64_t)a7 error:(id *)a8
+- (MPSFColorConversion)initWithDevice:(id)device conversion:(CGColorConversionInfo *)conversion functionName:(id)name sourceRange:(id *)range options:(unint64_t)options error:(id *)error
 {
-  if (a8)
+  if (error)
   {
-    *a8 = 0;
+    *error = 0;
   }
 
-  if (!a3 || (a7 & 0xFFFFFFFFFFFFFCC0) != 0)
+  if (!device || (options & 0xFFFFFFFFFFFFFCC0) != 0)
   {
-    if ((a7 & 0x200) != 0)
+    if ((options & 0x200) != 0)
     {
-      v14 = self;
+      selfCopy = self;
       NSLog(&cfstr_InvalidParamet.isa, a2);
 LABEL_29:
-      self = v14;
+      self = selfCopy;
     }
 
 LABEL_30:
-    objc_msgSend_dealloc(self, a2, a3, a4, a5, a6);
+    objc_msgSend_dealloc(self, a2, device, conversion, name, range);
     return 0;
   }
 
@@ -365,25 +365,25 @@ LABEL_30:
     goto LABEL_48;
   }
 
-  v61 = self;
-  v62 = a3;
-  v63 = a5;
-  v64 = a6;
-  v65 = a7;
+  selfCopy2 = self;
+  deviceCopy = device;
+  nameCopy = name;
+  rangeCopy = range;
+  optionsCopy = options;
   dispatch_once_f(&qword_27DF85430, &context, sub_239934C78);
-  a3 = v62;
-  self = v61;
-  a7 = v65;
-  a6 = v64;
-  a5 = v63;
+  device = deviceCopy;
+  self = selfCopy2;
+  options = optionsCopy;
+  range = rangeCopy;
+  name = nameCopy;
   if (!off_27DF853A8)
   {
 LABEL_48:
-    if (a8)
+    if (error)
     {
-      v66 = self;
-      *a8 = sub_239931A78("[MetalHDRConversion initWithDevice:conversion:type:options] could not load address of CGColorConversionInfoIterateFunctionsWithCallbacks. Unable to proceed.", a2, a3, a4, a5, a6, a7);
-      objc_msgSend_dealloc(v66, v67, v68, v69, v70, v71);
+      selfCopy3 = self;
+      *error = sub_239931A78("[MetalHDRConversion initWithDevice:conversion:type:options] could not load address of CGColorConversionInfoIterateFunctionsWithCallbacks. Unable to proceed.", a2, device, conversion, name, range, options);
+      objc_msgSend_dealloc(selfCopy3, v67, v68, v69, v70, v71);
       return 0;
     }
 
@@ -391,16 +391,16 @@ LABEL_48:
   }
 
 LABEL_8:
-  v10 = a7;
-  v11 = a6;
+  optionsCopy2 = options;
+  rangeCopy2 = range;
   v75.receiver = self;
   v75.super_class = MPSFColorConversion;
-  v12 = a5;
+  nameCopy2 = name;
   v13 = [MPSFunction initWithDevice:sel_initWithDevice_functionName_zone_error_ functionName:? zone:? error:?];
-  v14 = v13;
+  selfCopy = v13;
   if (v13)
   {
-    *(v13 + 6) = v10;
+    *(v13 + 6) = optionsCopy2;
     *(v13 + 18) = 0;
     v15 = v13 + 112;
     v16.i64[0] = 0x7F0000007FLL;
@@ -411,17 +411,17 @@ LABEL_8:
     v18 = *(v13 + 8);
     *(v13 + 5) = *(v13 + 7);
     *(v13 + 6) = v18;
-    if (v11)
+    if (rangeCopy2)
     {
-      v19 = *(v11 + 1);
-      *v17 = *v11;
+      v19 = *(rangeCopy2 + 1);
+      *v17 = *rangeCopy2;
       *(v13 + 6) = v19;
     }
 
-    if (!a4)
+    if (!conversion)
     {
       v34 = objc_autoreleasePoolPush();
-      if ((v14->_options & 0x100) != 0)
+      if ((selfCopy->_options & 0x100) != 0)
       {
         v35 = @"MPSFColorConversion_ConvertGrayToRGB";
       }
@@ -433,27 +433,27 @@ LABEL_8:
 
       v36 = objc_msgSend_functionDescriptor(MEMORY[0x277CD6D78], v31, v32, v33);
       objc_msgSend_setName_(v36, v37, v35, v38);
-      v41 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v39, @"%@_f32", v40, v12);
+      v41 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v39, @"%@_f32", v40, nameCopy2);
       objc_msgSend_setSpecializedName_(v36, v42, v41, v43);
       context = 0;
-      v45 = objc_msgSend_newFunctionWithDescriptor_error_(v14->super._library, v44, v36, &context);
+      v45 = objc_msgSend_newFunctionWithDescriptor_error_(selfCopy->super._library, v44, v36, &context);
       if (v45)
       {
         v46 = v45;
         v47 = [CompilationResult alloc];
-        v14->super._compilationResult = objc_msgSend_initWithFunction_error_(v47, v48, v46, context);
+        selfCopy->super._compilationResult = objc_msgSend_initWithFunction_error_(v47, v48, v46, context);
       }
 
-      else if (a8)
+      else if (error)
       {
-        *a8 = context;
+        *error = context;
       }
 
-      v59 = *&v14->_anon_50[16];
+      v59 = *&selfCopy->_anon_50[16];
       *v15 = *v17;
-      *&v14->_anon_70[16] = v59;
-      v14->_outputColorChannels = 0;
-      v14->_inputColorChannels = 0;
+      *&selfCopy->_anon_70[16] = v59;
+      selfCopy->_outputColorChannels = 0;
+      selfCopy->_inputColorChannels = 0;
       v58 = v34;
       goto LABEL_45;
     }
@@ -471,14 +471,14 @@ LABEL_8:
       v20 = off_27DF853A8;
     }
 
-    v73[4] = v14;
+    v73[4] = selfCopy;
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = sub_239933218;
     v74[3] = &unk_278AAAC80;
-    v74[4] = v14;
-    v74[5] = a8;
-    v72[5] = a8;
+    v74[4] = selfCopy;
+    v74[5] = error;
+    v72[5] = error;
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = sub_239933268;
@@ -487,32 +487,32 @@ LABEL_8:
     v72[1] = 3221225472;
     v72[2] = sub_2399332B0;
     v72[3] = &unk_278AAACD0;
-    v72[4] = v14;
-    if ((v20)(a4, 0, &unk_284C6AA28, v74, v73, v72, 0, 0))
+    v72[4] = selfCopy;
+    if ((v20)(conversion, 0, &unk_284C6AA28, v74, v73, v72, 0, 0))
     {
-      if ((v14->_options & 0x100) == 0)
+      if ((selfCopy->_options & 0x100) == 0)
       {
         goto LABEL_21;
       }
 
-      stageList = v14->_stageList;
+      stageList = selfCopy->_stageList;
       if (!stageList)
       {
         goto LABEL_37;
       }
 
-      if (*(stageList->var0 + 4))(stageList) != 1 || (objc_msgSend_addGrayToRGBStage(v14, v22, v23, v24))
+      if (*(stageList->var0 + 4))(stageList) != 1 || (objc_msgSend_addGrayToRGBStage(selfCopy, v22, v23, v24))
       {
 LABEL_21:
-        v25 = v14->_stageList;
+        v25 = selfCopy->_stageList;
         if (v25)
         {
-          v14->_outputColorChannels = (*(v25->var0 + 4))(v25);
-          v26 = v14->_stageList;
+          selfCopy->_outputColorChannels = (*(v25->var0 + 4))(v25);
+          v26 = selfCopy->_stageList;
           if (v26)
           {
             v27 = 0;
-            v28 = v14->_stageList;
+            v28 = selfCopy->_stageList;
             do
             {
               v29 = v27;
@@ -522,9 +522,9 @@ LABEL_21:
             }
 
             while (v28);
-            v14->_stageList = v27;
+            selfCopy->_stageList = v27;
             v30 = (*(v27->var0 + 3))(v27);
-            v14->_inputColorChannels = v30;
+            selfCopy->_inputColorChannels = v30;
             if (v30 < 4)
             {
               goto LABEL_41;
@@ -536,22 +536,22 @@ LABEL_21:
 
 LABEL_37:
         v26 = 0;
-        v14->_stageList = 0;
-        if (v14->_inputColorChannels < 4)
+        selfCopy->_stageList = 0;
+        if (selfCopy->_inputColorChannels < 4)
         {
 LABEL_41:
           v49 = objc_autoreleasePoolPush();
-          objc_msgSend_optimizeStages(v14, v50, v51, v52);
-          v55 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v53, @"%@_f32", v54, v12);
-          objc_msgSend_buildStitchedFunctionAsyncWithName_(v14, v56, v55, v57);
+          objc_msgSend_optimizeStages(selfCopy, v50, v51, v52);
+          v55 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v53, @"%@_f32", v54, nameCopy2);
+          objc_msgSend_buildStitchedFunctionAsyncWithName_(selfCopy, v56, v55, v57);
           v58 = v49;
 LABEL_45:
           objc_autoreleasePoolPop(v58);
-          return v14;
+          return selfCopy;
         }
 
 LABEL_38:
-        if (v26 && v14->_outputColorChannels <= 3)
+        if (v26 && selfCopy->_outputColorChannels <= 3)
         {
           operator new();
         }
@@ -563,7 +563,7 @@ LABEL_38:
     goto LABEL_29;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -586,11 +586,11 @@ LABEL_38:
   [(MPSFunction *)&v5 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v18.receiver = self;
   v18.super_class = MPSFColorConversion;
-  v7 = [(MPSFunction *)&v18 copyWithZone:a3 device:a4];
+  v7 = [(MPSFunction *)&v18 copyWithZone:zone device:device];
   v7[6] = self->_options;
   v7[7] = self->_inputColorChannels;
   v7[8] = self->_outputColorChannels;
@@ -644,23 +644,23 @@ LABEL_9:
   return 0;
 }
 
-- (MPSFColorConversion)initWithCoder:(id)a3 device:(id)a4 error:(id *)a5
+- (MPSFColorConversion)initWithCoder:(id)coder device:(id)device error:(id *)error
 {
   v86.receiver = self;
   v86.super_class = MPSFColorConversion;
-  result = [(MPSFunction *)&v86 initWithCoder:a3 device:a4 error:?];
+  result = [(MPSFunction *)&v86 initWithCoder:coder device:device error:?];
   if (result)
   {
     if (result->super._fileVersion.bits >= 0x20000)
     {
-      if (a5)
+      if (error)
       {
         v11 = result;
         v12 = sub_239931A78("MPSFColorConversion Error: file version for MPSFColorConversion is too new. Unable to decode.\n");
 LABEL_15:
         v18 = v12;
         result = v11;
-        *a5 = v18;
+        *error = v18;
         goto LABEL_16;
       }
 
@@ -668,12 +668,12 @@ LABEL_15:
     }
 
     v11 = result;
-    v13 = objc_msgSend_decodeInt64ForKey_(a3, v8, @"MPSFColorConversion.options", v10);
+    v13 = objc_msgSend_decodeInt64ForKey_(coder, v8, @"MPSFColorConversion.options", v10);
     v11->_options = v13;
     if ((v13 & 0xFFFFFFFFFFFFFCC0) != 0)
     {
       result = v11;
-      if (a5)
+      if (error)
       {
         v12 = sub_239931A78("MPSFColorConversion Error: file contains illegal MPSFColorConversionOptions 0x%llx.\n");
         goto LABEL_15;
@@ -684,13 +684,13 @@ LABEL_16:
       return 0;
     }
 
-    v11->_inputColorChannels = objc_msgSend_decodeIntegerForKey_(a3, v8, @"MPSFColorConversion.inputChannels", v10);
-    v16 = objc_msgSend_decodeIntegerForKey_(a3, v14, @"MPSFColorConversion.outputChannels", v15);
+    v11->_inputColorChannels = objc_msgSend_decodeIntegerForKey_(coder, v8, @"MPSFColorConversion.inputChannels", v10);
+    v16 = objc_msgSend_decodeIntegerForKey_(coder, v14, @"MPSFColorConversion.outputChannels", v15);
     result = v11;
     v11->_outputColorChannels = v16;
     if (v11->_inputColorChannels > 4 || v16 >= 5)
     {
-      if (a5)
+      if (error)
       {
         v12 = sub_239931A78("MPSFColorConversion Error: file contains illegal channel counts.\n");
         goto LABEL_15;
@@ -704,32 +704,32 @@ LABEL_16:
     v83 = vnegq_f32(v19);
     *v11->_anon_50 = v19;
     *&v11->_anon_50[16] = v83;
-    objc_msgSend_decodeFloatForKey_(a3, v8, @"MPSFColorConversion.inputRange.min0", v10);
+    objc_msgSend_decodeFloatForKey_(coder, v8, @"MPSFColorConversion.inputRange.min0", v10);
     *&v11->_anon_50[16] = v20;
-    objc_msgSend_decodeFloatForKey_(a3, v21, @"MPSFColorConversion.inputRange.min1", v22);
+    objc_msgSend_decodeFloatForKey_(coder, v21, @"MPSFColorConversion.inputRange.min1", v22);
     *&v11->_anon_50[20] = v23;
-    objc_msgSend_decodeFloatForKey_(a3, v24, @"MPSFColorConversion.inputRange.min2", v25);
+    objc_msgSend_decodeFloatForKey_(coder, v24, @"MPSFColorConversion.inputRange.min2", v25);
     *&v11->_anon_50[24] = v26;
-    objc_msgSend_decodeFloatForKey_(a3, v27, @"MPSFColorConversion.inputRange.min3", v28);
+    objc_msgSend_decodeFloatForKey_(coder, v27, @"MPSFColorConversion.inputRange.min3", v28);
     *&v11->_anon_50[28] = v29;
-    objc_msgSend_decodeFloatForKey_(a3, v30, @"MPSFColorConversion.inputRange.max0", v31);
+    objc_msgSend_decodeFloatForKey_(coder, v30, @"MPSFColorConversion.inputRange.max0", v31);
     *v11->_anon_50 = v32;
-    objc_msgSend_decodeFloatForKey_(a3, v33, @"MPSFColorConversion.inputRange.max1", v34);
+    objc_msgSend_decodeFloatForKey_(coder, v33, @"MPSFColorConversion.inputRange.max1", v34);
     *&v11->_anon_50[4] = v35;
-    objc_msgSend_decodeFloatForKey_(a3, v36, @"MPSFColorConversion.inputRange.max2", v37);
+    objc_msgSend_decodeFloatForKey_(coder, v36, @"MPSFColorConversion.inputRange.max2", v37);
     *&v11->_anon_50[8] = v38;
-    objc_msgSend_decodeFloatForKey_(a3, v39, @"MPSFColorConversion.inputRange.max3", v40);
+    objc_msgSend_decodeFloatForKey_(coder, v39, @"MPSFColorConversion.inputRange.max3", v40);
     v45 = *v11->_anon_50;
     v46 = *&v11->_anon_50[16];
     v45.i32[3] = v44;
     *&v11->_anon_50[12] = v44;
     if ((vminvq_u32(vcgeq_f32(v45, v46)) & 0x80000000) == 0)
     {
-      if (a5)
+      if (error)
       {
         v47 = sub_239931A78("MPSFColorConversion Error: file contains illegal input range information.\n");
 LABEL_25:
-        *a5 = v47;
+        *error = v47;
         goto LABEL_26;
       }
 
@@ -740,28 +740,28 @@ LABEL_25:
     *(&v48 + 1) = 0x7F0000007FLL;
     *v11->_anon_70 = v48;
     *&v11->_anon_70[16] = v83;
-    objc_msgSend_decodeFloatForKey_(a3, v41, @"MPSFColorConversion.outputRange.min0", v43);
+    objc_msgSend_decodeFloatForKey_(coder, v41, @"MPSFColorConversion.outputRange.min0", v43);
     *&v11->_anon_70[16] = v49;
-    objc_msgSend_decodeFloatForKey_(a3, v50, @"MPSFColorConversion.outputRange.min1", v51);
+    objc_msgSend_decodeFloatForKey_(coder, v50, @"MPSFColorConversion.outputRange.min1", v51);
     *&v11->_anon_70[20] = v52;
-    objc_msgSend_decodeFloatForKey_(a3, v53, @"MPSFColorConversion.outputRange.min2", v54);
+    objc_msgSend_decodeFloatForKey_(coder, v53, @"MPSFColorConversion.outputRange.min2", v54);
     *&v11->_anon_70[24] = v55;
-    objc_msgSend_decodeFloatForKey_(a3, v56, @"MPSFColorConversion.outputRange.min3", v57);
+    objc_msgSend_decodeFloatForKey_(coder, v56, @"MPSFColorConversion.outputRange.min3", v57);
     *&v11->_anon_70[28] = v58;
-    objc_msgSend_decodeFloatForKey_(a3, v59, @"MPSFColorConversion.outputRange.max0", v60);
+    objc_msgSend_decodeFloatForKey_(coder, v59, @"MPSFColorConversion.outputRange.max0", v60);
     *v11->_anon_70 = v61;
-    objc_msgSend_decodeFloatForKey_(a3, v62, @"MPSFColorConversion.outputRange.max1", v63);
+    objc_msgSend_decodeFloatForKey_(coder, v62, @"MPSFColorConversion.outputRange.max1", v63);
     *&v11->_anon_70[4] = v64;
-    objc_msgSend_decodeFloatForKey_(a3, v65, @"MPSFColorConversion.outputRange.max2", v66);
+    objc_msgSend_decodeFloatForKey_(coder, v65, @"MPSFColorConversion.outputRange.max2", v66);
     *&v11->_anon_70[8] = v67;
-    objc_msgSend_decodeFloatForKey_(a3, v68, @"MPSFColorConversion.outputRange.max3", v69);
+    objc_msgSend_decodeFloatForKey_(coder, v68, @"MPSFColorConversion.outputRange.max3", v69);
     v70 = *v11->_anon_70;
     v71 = *&v11->_anon_70[16];
     v70.i32[3] = v72;
     *&v11->_anon_70[12] = v72;
     if ((vminvq_u32(vcgeq_f32(v70, v71)) & 0x80000000) == 0)
     {
-      if (a5)
+      if (error)
       {
         v47 = sub_239931A78("MPSFColorConversion Error: file contains illegal output range information.\n");
         goto LABEL_25;
@@ -772,7 +772,7 @@ LABEL_26:
       return 0;
     }
 
-    v73 = objc_msgSend_decodeIntegerForKey_(a3, v41, @"MPSFColorConversion.stageCount", v43);
+    v73 = objc_msgSend_decodeIntegerForKey_(coder, v41, @"MPSFColorConversion.stageCount", v43);
     v74 = v11;
     v11->_stageList = 0;
     if (v73)
@@ -782,10 +782,10 @@ LABEL_26:
       if (v76)
       {
         v85 = 0;
-        v84 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v41, v76, &v85);
+        v84 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v41, v76, &v85);
         if (!v84)
         {
-          if (!a5)
+          if (!error)
           {
             goto LABEL_26;
           }
@@ -795,7 +795,7 @@ LABEL_36:
           goto LABEL_25;
         }
 
-        v77 = sub_239926F88(&v84, &v85, a5);
+        v77 = sub_239926F88(&v84, &v85, error);
         v11->_stageList = v77;
         if (!v77)
         {
@@ -818,10 +818,10 @@ LABEL_32:
             break;
           }
 
-          v84 = objc_msgSend_decodeBytesForKey_returnedLength_(a3, v41, v80, &v85);
+          v84 = objc_msgSend_decodeBytesForKey_returnedLength_(coder, v41, v80, &v85);
           if (!v84)
           {
-            if (!a5)
+            if (!error)
             {
               goto LABEL_26;
             }
@@ -829,7 +829,7 @@ LABEL_32:
             goto LABEL_36;
           }
 
-          v81 = sub_239926F88(&v84, &v85, a5);
+          v81 = sub_239926F88(&v84, &v85, error);
           if (!v81)
           {
             goto LABEL_26;
@@ -845,7 +845,7 @@ LABEL_32:
         }
       }
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -868,9 +868,9 @@ LABEL_33:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = MEMORY[0x28223BE20](self, a2, a3);
+  v3 = MEMORY[0x28223BE20](self, a2, coder);
   v5 = v4;
   v6 = v3;
   v76 = *MEMORY[0x277D85DE8];
@@ -977,12 +977,12 @@ LABEL_14:
   {
     v6 = objc_msgSend_debugDescription(self, a2, v2, v3);
     NSLog(&cfstr_StartingGraph.isa, v6);
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   anon_50 = self->_anon_50;
@@ -1007,7 +1007,7 @@ LABEL_14:
   }
 }
 
-- (id)newDAGUsingFunctionList:(id)a3
+- (id)newDAGUsingFunctionList:(id)list
 {
   v75 = *MEMORY[0x277D85DE8];
   v73 = 0;
@@ -1015,11 +1015,11 @@ LABEL_14:
   v9 = objc_msgSend_cStringUsingEncoding_(v6, v7, 4, v8);
   sub_239929E3C(&v73, "DAGS {\n\t%s {\n\t\tALWAYS_INLINE;\n\t\tNODE( tex1d_1) : FUNCTION( MPSFColorConversion_DeclareTex1d1), INPUT(%u);\n\t\tNODE( tex3d_1) : FUNCTION( MPSFColorConversion_DeclareTex3d1), INPUT(%u);\n\t\tNODE( tex3d_2) : FUNCTION( MPSFColorConversion_DeclareTex3d2), INPUT(%u);\n", v10, v11, v12, v13, v14, v15, v9);
   v18 = objc_msgSend_newFunctionWithName_(self->super._library, v16, @"MPSFColorConversion_DeclareTex1d1", v17);
-  objc_msgSend_addObject_(a3, v19, v18, v20);
+  objc_msgSend_addObject_(list, v19, v18, v20);
   v23 = objc_msgSend_newFunctionWithName_(self->super._library, v21, @"MPSFColorConversion_DeclareTex3d1", v22);
-  objc_msgSend_addObject_(a3, v24, v23, v25);
+  objc_msgSend_addObject_(list, v24, v23, v25);
   v28 = objc_msgSend_newFunctionWithName_(self->super._library, v26, @"MPSFColorConversion_DeclareTex3d2", v27);
-  objc_msgSend_addObject_(a3, v29, v28, v30);
+  objc_msgSend_addObject_(list, v29, v28, v30);
   v72 = 1;
   v74[0] = *"INPUT(0)";
   memset(&v74[1], 0, 240);
@@ -1041,7 +1041,7 @@ LABEL_14:
         strcpy(&v74[8 * (v39 ^ 1)], "OUTPUT(o)");
       }
 
-      v41 = (*(stageList->var0 + 7))(stageList, &v73, v38, &v72, &v74[8 * v39], &v74[8 * (v39 ^ 1)], a3, self->super._library);
+      v41 = (*(stageList->var0 + 7))(stageList, &v73, v38, &v72, &v74[8 * v39], &v74[8 * (v39 ^ 1)], list, self->super._library);
       if (v41 && (self->_options & 0x200) != 0)
       {
         v49 = v41;
@@ -1062,7 +1062,7 @@ LABEL_14:
   {
     sub_239929E3C(&v73, "\t\t\tOUTPUT(o) : FUNCTION( MPSFColorConversion_DoNothing_float4), INPUT(0);\n", v31, v32, v33, v34, v35, v36, v71);
     v55 = objc_msgSend_newFunctionWithName_(self->super._library, v53, @"MPSFColorConversion_DoNothing_float4", v54);
-    objc_msgSend_addObject_(a3, v56, v55, v57);
+    objc_msgSend_addObject_(list, v56, v55, v57);
   }
 
   sub_239929E3C(&v73, "\t}\n}", v43, v44, v45, v46, v47, v48, v71);
@@ -1072,7 +1072,7 @@ LABEL_14:
     device = self->super._device;
     objc_sync_enter(device);
     v63 = objc_msgSend_description(self, v60, v61, v62);
-    v67 = objc_msgSend_debugDescription(a3, v64, v65, v66);
+    v67 = objc_msgSend_debugDescription(list, v64, v65, v66);
     NSLog(&cfstr_DagFunctionlis.isa, v58, v63, v67, 3, v72);
     objc_sync_exit(device);
   }
@@ -1093,16 +1093,16 @@ LABEL_14:
   return v58;
 }
 
-- (void)effectiveRange:(__n128)a3
+- (void)effectiveRange:(__n128)range
 {
   v7 = a2;
-  v8 = a3;
-  for (i = *(a1 + 144); i; i = i[1])
+  rangeCopy = range;
+  for (i = *(self + 144); i; i = i[1])
   {
     v6 = 0;
     v4.n128_f64[0] = (*(*i + 64))(i, &v7, &v6);
     v7 = v4;
-    v8 = v5;
+    rangeCopy = v5;
   }
 }
 
@@ -1155,7 +1155,7 @@ LABEL_14:
   return result;
 }
 
-- (const)find3dTextureStageAtIndex:(unint64_t)a3
+- (const)find3dTextureStageAtIndex:(unint64_t)index
 {
   stageList = self->_stageList;
   if (stageList)
@@ -1163,7 +1163,7 @@ LABEL_14:
     v5 = 0;
     do
     {
-      if ((*(stageList->var0 + 2))(stageList, a2) == 3 && !LODWORD(stageList[8].var1) && ++v5 == a3)
+      if ((*(stageList->var0 + 2))(stageList, a2) == 3 && !LODWORD(stageList[8].var1) && ++v5 == index)
       {
         break;
       }
@@ -1201,11 +1201,11 @@ LABEL_14:
   return result;
 }
 
-- (void)initialize1DTexture1:(id)a3
+- (void)initialize1DTexture1:(id)texture1
 {
-  if (a3)
+  if (texture1)
   {
-    v5 = objc_msgSend_find1DTexture1Stage(self, a2, a3, v3);
+    v5 = objc_msgSend_find1DTexture1Stage(self, a2, texture1, v3);
     if (v5)
     {
       v7 = *(v5 + 16);
@@ -1231,15 +1231,15 @@ LABEL_14:
         memset(v10, 0, sizeof(v10));
         v11 = *(i + 4);
         v12 = vdupq_n_s64(1uLL);
-        objc_msgSend_replaceRegion_mipmapLevel_withBytes_bytesPerRow_(a3, v6, v10, 0, v9, 4 * v11);
+        objc_msgSend_replaceRegion_mipmapLevel_withBytes_bytesPerRow_(texture1, v6, v10, 0, v9, 4 * v11);
       }
     }
   }
 }
 
-- (void)initialize3DTexture1:(id)a3
+- (void)initialize3DTexture1:(id)texture1
 {
-  if (a3)
+  if (texture1)
   {
     v5 = objc_msgSend_find3dTextureStageAtIndex_(self, a2, 1, v3);
     if (v5)
@@ -1281,14 +1281,14 @@ LABEL_14:
 
       memset(v19, 0, sizeof(v19));
       v21 = v14.u32[2];
-      objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(a3, v6, v19, 0, 0, *(v5 + 32), 2 * v14.u32[0] * v18, 2 * v14.u32[0] * v18 * v14.u32[1]);
+      objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(texture1, v6, v19, 0, 0, *(v5 + 32), 2 * v14.u32[0] * v18, 2 * v14.u32[0] * v18 * v14.u32[1]);
     }
   }
 }
 
-- (void)initialize3DTexture2:(id)a3
+- (void)initialize3DTexture2:(id)texture2
 {
-  if (a3)
+  if (texture2)
   {
     v5 = objc_msgSend_find3dTextureStageAtIndex_(self, a2, 2, v3);
     if (v5)
@@ -1330,7 +1330,7 @@ LABEL_14:
 
       memset(v19, 0, sizeof(v19));
       v21 = v14.u32[2];
-      objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(a3, v6, v19, 0, 0, *(v5 + 32), 2 * v14.u32[0] * v18, 2 * v14.u32[0] * v18 * v14.u32[1]);
+      objc_msgSend_replaceRegion_mipmapLevel_slice_withBytes_bytesPerRow_bytesPerImage_(texture2, v6, v19, 0, 0, *(v5 + 32), 2 * v14.u32[0] * v18, 2 * v14.u32[0] * v18 * v14.u32[1]);
     }
   }
 }

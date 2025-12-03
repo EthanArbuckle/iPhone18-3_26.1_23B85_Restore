@@ -1,5 +1,5 @@
 @interface MKTransitIncidentViewModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)symbolName;
 - (UIColor)backgroundColor;
 - (UIColor)symbolColor;
@@ -7,17 +7,17 @@
 
 @implementation MKTransitIncidentViewModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(MKTransitIncidentViewModel *)self symbolName];
-    v7 = [v5 symbolName];
-    v8 = v6;
-    v9 = v7;
+    v5 = equalCopy;
+    symbolName = [(MKTransitIncidentViewModel *)self symbolName];
+    symbolName2 = [v5 symbolName];
+    v8 = symbolName;
+    v9 = symbolName2;
     if (v8 | v9 && (v10 = [v8 isEqual:v9], v9, v8, !v10))
     {
       LOBYTE(v17) = 0;
@@ -25,14 +25,14 @@
 
     else
     {
-      v11 = [(MKTransitIncidentViewModel *)self message];
-      v12 = [v5 message];
-      v13 = v11;
-      v14 = v12;
+      message = [(MKTransitIncidentViewModel *)self message];
+      message2 = [v5 message];
+      v13 = message;
+      v14 = message2;
       if ((!(v13 | v14) || (v15 = [v13 isEqual:v14], v14, v13, v15)) && (v16 = -[MKTransitIncidentViewModel isBlocking](self, "isBlocking"), v16 == objc_msgSend(v5, "isBlocking")))
       {
-        v18 = [(MKTransitIncidentViewModel *)self showImage];
-        v17 = v18 ^ [v5 showImage] ^ 1;
+        showImage = [(MKTransitIncidentViewModel *)self showImage];
+        v17 = showImage ^ [v5 showImage] ^ 1;
       }
 
       else
@@ -90,19 +90,19 @@
 {
   if ([(MKTransitIncidentViewModel *)self isBlocking])
   {
-    v2 = [MEMORY[0x1E69DC888] systemRedColor];
-    v3 = v2;
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    v3 = systemRedColor;
     v4 = 0.150000006;
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v3 = v2;
+    systemRedColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    v3 = systemRedColor;
     v4 = 0.200000003;
   }
 
-  v5 = [v2 colorWithAlphaComponent:v4];
+  v5 = [systemRedColor colorWithAlphaComponent:v4];
 
   v6 = objc_alloc(MEMORY[0x1E69DC888]);
   v10[0] = MEMORY[0x1E69E9820];

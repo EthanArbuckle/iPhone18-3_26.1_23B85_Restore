@@ -1,24 +1,24 @@
 @interface VLFSession
 - (ARConfiguration)configuration;
-- (VLFSession)initWithMode:(int64_t)a3;
+- (VLFSession)initWithMode:(int64_t)mode;
 - (VLFSessionDelegate)delegate;
-- (void)_processVLDebugInfo:(id)a3;
-- (void)checkForSuccessWithFusionLocation:(id)a3 accuracyLocation:(id)a4;
+- (void)_processVLDebugInfo:(id)info;
+- (void)checkForSuccessWithFusionLocation:(id)location accuracyLocation:(id)accuracyLocation;
 - (void)dealloc;
 - (void)endRecordingIfNecessary;
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4;
-- (void)registerFailureWithResult:(int64_t)a3 error:(id)a4 initializationFailureDetails:(id)a5;
-- (void)registerSuccessWithVLFLocation:(id)a3;
-- (void)sendAnalytics:(id)a3;
-- (void)session:(id)a3 didChangeGeoTrackingStatus:(id)a4;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)sessionManager:(id)a3 didGainSessionOwnership:(id)a4;
-- (void)sessionManager:(id)a3 didResignSessionOwnership:(id)a4;
+- (void)locationManager:(id)manager didUpdateLocation:(id)location;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state;
+- (void)registerFailureWithResult:(int64_t)result error:(id)error initializationFailureDetails:(id)details;
+- (void)registerSuccessWithVLFLocation:(id)location;
+- (void)sendAnalytics:(id)analytics;
+- (void)session:(id)session didChangeGeoTrackingStatus:(id)status;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)sessionManager:(id)manager didGainSessionOwnership:(id)ownership;
+- (void)sessionManager:(id)manager didResignSessionOwnership:(id)ownership;
 - (void)start;
 - (void)startLocationUpdates;
 - (void)stop;
@@ -34,7 +34,7 @@
   return WeakRetained;
 }
 
-- (void)pocketStateManager:(id)a3 didUpdateState:(int64_t)a4
+- (void)pocketStateManager:(id)manager didUpdateState:(int64_t)state
 {
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
@@ -42,19 +42,19 @@
   v6[2] = sub_1009881E4;
   v6[3] = &unk_101651D38;
   v6[4] = self;
-  v7[1] = a4;
+  v7[1] = state;
   objc_copyWeak(v7, &location);
   dispatch_async(&_dispatch_main_q, v6);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"PedestrianARAutoFocusDistanceKey"] && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == v11))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"PedestrianARAutoFocusDistanceKey"] && (+[NSUserDefaults standardUserDefaults](NSUserDefaults, "standardUserDefaults"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == objectCopy))
   {
     if (self->_session && (configuration = self->_configuration) != 0)
     {
@@ -73,13 +73,13 @@
   {
     v16.receiver = self;
     v16.super_class = VLFSession;
-    [(VLFSession *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VLFSession *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -91,7 +91,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v16 = 136316418;
-        v17 = "[VLFSession locationManagerUpdatedLocation:]";
+        selfCopy = "[VLFSession locationManagerUpdatedLocation:]";
         v18 = 2080;
         v19 = "VLFSession.m";
         v20 = 1024;
@@ -112,7 +112,7 @@
         {
           v15 = +[NSThread callStackSymbols];
           v16 = 138412290;
-          v17 = v15;
+          selfCopy = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@", &v16, 0xCu);
         }
       }
@@ -122,24 +122,24 @@
   v8 = sub_1009882CC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v4 lastLocation];
+    lastLocation = [locationCopy lastLocation];
     v16 = 134349315;
-    v17 = self;
+    selfCopy = self;
     v18 = 2113;
-    v19 = v9;
+    v19 = lastLocation;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] Got MK location update: (%{private}@)", &v16, 0x16u);
   }
 
   v10 = +[VLFLocationManager sharedLocationManager];
-  v11 = [v10 lastLocation];
-  v12 = [v4 lastLocation];
-  [(VLFSession *)self checkForSuccessWithFusionLocation:v11 accuracyLocation:v12];
+  lastLocation2 = [v10 lastLocation];
+  lastLocation3 = [locationCopy lastLocation];
+  [(VLFSession *)self checkForSuccessWithFusionLocation:lastLocation2 accuracyLocation:lastLocation3];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4
+- (void)locationManager:(id)manager didUpdateLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -151,7 +151,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v17 = 136316418;
-        v18 = "[VLFSession locationManager:didUpdateLocation:]";
+        selfCopy = "[VLFSession locationManager:didUpdateLocation:]";
         v19 = 2080;
         v20 = "VLFSession.m";
         v21 = 1024;
@@ -172,7 +172,7 @@
         {
           v16 = +[NSThread callStackSymbols];
           v17 = 138412290;
-          v18 = v16;
+          selfCopy = v16;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
         }
       }
@@ -183,31 +183,31 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v17 = 134349315;
-    v18 = self;
+    selfCopy = self;
     v19 = 2113;
-    v20 = v7;
+    v20 = locationCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "[%{public}p] Got VLF location update: (%{private}@)", &v17, 0x16u);
   }
 
   v12 = +[MKLocationManager sharedLocationManager];
-  v13 = [v12 lastLocation];
-  [(VLFSession *)self checkForSuccessWithFusionLocation:v7 accuracyLocation:v13];
+  lastLocation = [v12 lastLocation];
+  [(VLFSession *)self checkForSuccessWithFusionLocation:locationCopy accuracyLocation:lastLocation];
 }
 
-- (void)sessionManager:(id)a3 didResignSessionOwnership:(id)a4
+- (void)sessionManager:(id)manager didResignSessionOwnership:(id)ownership
 {
   v5 = sub_1009882CC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v11 = 134349314;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2080;
     v14 = "[VLFSession sessionManager:didResignSessionOwnership:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] %s", &v11, 0x16u);
   }
 
-  v6 = [(VLFSession *)self session];
-  [v6 _removeObserver:self];
+  session = [(VLFSession *)self session];
+  [session _removeObserver:self];
 
   [(VLFSession *)self setTimeoutTimer:0];
   if ([(VLFSession *)self mode]== 1)
@@ -221,7 +221,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v11 = 134349314;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = @"VLFSessionModeNonUI";
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Will not end recording because we were not started for mode: %@", &v11, 0x16u);
@@ -239,27 +239,27 @@
   [v10 postNotificationName:@"VLFSessionDidStopNotification" object:self];
 }
 
-- (void)sessionManager:(id)a3 didGainSessionOwnership:(id)a4
+- (void)sessionManager:(id)manager didGainSessionOwnership:(id)ownership
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  ownershipCopy = ownership;
   v8 = sub_1009882CC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349314;
-    v25 = self;
+    selfCopy4 = self;
     v26 = 2080;
     v27 = "[VLFSession sessionManager:didGainSessionOwnership:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] %s", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_session, a4);
+  objc_storeStrong(&self->_session, ownership);
   [(VLFSession *)self setShouldObserveFrames:0];
   [(VLFSession *)self setNotifiedFirstFrame:0];
   [(ARSession *)self->_session _addObserver:self];
-  v9 = [(VLFSession *)self configuration];
-  -[VLFSession setShouldUpdateCameraFocusLensPosition:](self, "setShouldUpdateCameraFocusLensPosition:", [v9 isAutoFocusEnabled] ^ 1);
-  [(ARSession *)self->_session runWithConfiguration:v9 options:3];
+  configuration = [(VLFSession *)self configuration];
+  -[VLFSession setShouldUpdateCameraFocusLensPosition:](self, "setShouldUpdateCameraFocusLensPosition:", [configuration isAutoFocusEnabled] ^ 1);
+  [(ARSession *)self->_session runWithConfiguration:configuration options:3];
   if ([(ARSession *)self->_session state]== 1 && [(VLFSession *)self mode]== 1)
   {
     [(VLFSession *)self startLocationUpdates];
@@ -279,7 +279,7 @@
       if (v17)
       {
         *buf = 134349056;
-        v25 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}p] Debug option to keep VLF running forever is enabled; not starting the timeout timer", buf, 0xCu);
       }
     }
@@ -287,7 +287,7 @@
     else if (v17)
     {
       *buf = 134349312;
-      v25 = self;
+      selfCopy4 = self;
       v26 = 2048;
       v27 = *&v11;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}p] Timeout was <= 0 (%f); not starting the timeout timer", buf, 0x16u);
@@ -300,7 +300,7 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349312;
-      v25 = self;
+      selfCopy4 = self;
       v26 = 2048;
       v27 = *&v11;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[%{public}p] Starting timeout timer for %f seconds", buf, 0x16u);
@@ -324,10 +324,10 @@
   [v21 postNotificationName:@"VLFSessionDidStartNotification" object:self];
 }
 
-- (void)session:(id)a3 didChangeGeoTrackingStatus:(id)a4
+- (void)session:(id)session didChangeGeoTrackingStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  statusCopy = status;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label == v9 || (label ? (v10 = v9 == 0) : (v10 = 1), !v10 && !strcmp(label, v9)))
@@ -361,9 +361,9 @@
     }
   }
 
-  [objc_opt_class() setLastGeoTrackingStatus:v7];
-  v11 = [v6 currentFrame];
-  v12 = [v11 vlDebugInfo];
+  [objc_opt_class() setLastGeoTrackingStatus:statusCopy];
+  currentFrame = [sessionCopy currentFrame];
+  vlDebugInfo = [currentFrame vlDebugInfo];
 
   objc_initWeak(location, self);
   block[0] = _NSConcreteStackBlock;
@@ -371,20 +371,20 @@
   block[2] = sub_1009892E0;
   block[3] = &unk_101661480;
   objc_copyWeak(&v21, location);
-  v19 = v7;
-  v20 = v12;
-  v13 = v12;
-  v14 = v7;
+  v19 = statusCopy;
+  v20 = vlDebugInfo;
+  v13 = vlDebugInfo;
+  v14 = statusCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(location);
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label == v9 || (label ? (v10 = v9 == 0) : (v10 = 1), !v10 && !strcmp(label, v9)))
@@ -419,16 +419,16 @@
   }
 
   v11 = objc_alloc_init(GEOVLFInitializationFailureDetails);
-  [v11 setArkitErrorCode:{objc_msgSend(v7, "code")}];
-  v12 = [v7 underlyingErrors];
-  v13 = [v12 firstObject];
+  [v11 setArkitErrorCode:{objc_msgSend(errorCopy, "code")}];
+  underlyingErrors = [errorCopy underlyingErrors];
+  firstObject = [underlyingErrors firstObject];
 
-  if (v13)
+  if (firstObject)
   {
-    v14 = [v13 domain];
-    [v11 setArkitUnderlyingErrorDomain:v14];
+    domain = [firstObject domain];
+    [v11 setArkitUnderlyingErrorDomain:domain];
 
-    [v11 setArkitUnderlyingErrorCode:{objc_msgSend(v13, "code")}];
+    [v11 setArkitUnderlyingErrorCode:{objc_msgSend(firstObject, "code")}];
   }
 
   objc_initWeak(location, self);
@@ -437,20 +437,20 @@
   block[2] = sub_100989718;
   block[3] = &unk_101661480;
   objc_copyWeak(&v23, location);
-  v21 = v7;
+  v21 = errorCopy;
   v22 = v11;
   v15 = v11;
-  v16 = v7;
+  v16 = errorCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(location);
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  frameCopy = frame;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label == v9 || (label ? (v10 = v9 == 0) : (v10 = 1), !v10 && !strcmp(label, v9)))
@@ -484,13 +484,13 @@
     }
   }
 
-  v11 = [v7 vlDebugInfo];
-  v12 = [v7 geoTrackingStatus];
-  v13 = v12;
-  if (v12 && [v12 state] == 2)
+  vlDebugInfo = [frameCopy vlDebugInfo];
+  geoTrackingStatus = [frameCopy geoTrackingStatus];
+  v13 = geoTrackingStatus;
+  if (geoTrackingStatus && [geoTrackingStatus state] == 2)
   {
-    v14 = [(VLFSession *)self indoorOutdoorRecorder];
-    [v14 recordFrame:v7];
+    indoorOutdoorRecorder = [(VLFSession *)self indoorOutdoorRecorder];
+    [indoorOutdoorRecorder recordFrame:frameCopy];
   }
 
   objc_initWeak(location, self);
@@ -500,8 +500,8 @@
   block[3] = &unk_101661480;
   objc_copyWeak(&v23, location);
   v21 = v13;
-  v22 = v11;
-  v15 = v11;
+  v22 = vlDebugInfo;
+  v15 = vlDebugInfo;
   v16 = v13;
   dispatch_async(&_dispatch_main_q, block);
 
@@ -509,9 +509,9 @@
   objc_destroyWeak(location);
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  v6 = a3;
+  sessionCopy = session;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v8 = dispatch_queue_get_label(0);
   if (label == v8 || (label ? (v9 = v8 == 0) : (v9 = 1), !v9 && !strcmp(label, v8)))
@@ -551,16 +551,16 @@
   v13[2] = sub_100989E3C;
   v13[3] = &unk_10165FBC0;
   objc_copyWeak(v14, location);
-  v14[1] = a4;
+  v14[1] = state;
   dispatch_async(&_dispatch_main_q, v13);
 
   objc_destroyWeak(v14);
   objc_destroyWeak(location);
 }
 
-- (void)_processVLDebugInfo:(id)a3
+- (void)_processVLDebugInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v7 = dispatch_queue_get_label(0);
   if (label != v7)
@@ -600,25 +600,25 @@
     }
   }
 
-  if (v5)
+  if (infoCopy)
   {
     lastDebugInfo = self->_lastDebugInfo;
-    if (lastDebugInfo != v5 && ([(VLLocalizationDebugInfo *)lastDebugInfo isEqual:v5]& 1) == 0)
+    if (lastDebugInfo != infoCopy && ([(VLLocalizationDebugInfo *)lastDebugInfo isEqual:infoCopy]& 1) == 0)
     {
-      objc_storeStrong(&self->_lastDebugInfo, a3);
-      v10 = [(VLFSession *)self traceRecorder];
-      [v10 recordAttempt:self->_lastDebugInfo];
+      objc_storeStrong(&self->_lastDebugInfo, info);
+      traceRecorder = [(VLFSession *)self traceRecorder];
+      [traceRecorder recordAttempt:self->_lastDebugInfo];
 
-      v11 = [(VLFSession *)self analyticsCapturer];
-      [v11 recordAttempt:self->_lastDebugInfo];
+      analyticsCapturer = [(VLFSession *)self analyticsCapturer];
+      [analyticsCapturer recordAttempt:self->_lastDebugInfo];
     }
   }
 }
 
-- (void)registerFailureWithResult:(int64_t)a3 error:(id)a4 initializationFailureDetails:(id)a5
+- (void)registerFailureWithResult:(int64_t)result error:(id)error initializationFailureDetails:(id)details
 {
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  detailsCopy = details;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v11 = dispatch_queue_get_label(0);
   if (label != v11)
@@ -630,9 +630,9 @@
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         v20 = 136316418;
-        v21 = "[VLFSession registerFailureWithResult:error:initializationFailureDetails:]";
+        selfCopy = "[VLFSession registerFailureWithResult:error:initializationFailureDetails:]";
         v22 = 2080;
-        v23 = "VLFSession.m";
+        resultCopy = "VLFSession.m";
         v24 = 1024;
         *v25 = 386;
         *&v25[4] = 2080;
@@ -651,15 +651,15 @@
         {
           v19 = +[NSThread callStackSymbols];
           v20 = 138412290;
-          v21 = v19;
+          selfCopy = v19;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%@", &v20, 0xCu);
         }
       }
     }
   }
 
-  v13 = [(VLFSession *)self session];
-  [v13 _removeObserver:self];
+  session = [(VLFSession *)self session];
+  [session _removeObserver:self];
 
   if (![(VLFSession *)self hasNotifiedDelegate])
   {
@@ -667,33 +667,33 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v20 = 134349570;
-      v21 = self;
+      selfCopy = self;
       v22 = 2048;
-      v23 = a3;
+      resultCopy = result;
       v24 = 2112;
-      *v25 = v8;
+      *v25 = errorCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{public}p] Registering failure with result: %ld, error: %@", &v20, 0x20u);
     }
 
     [(VLFSession *)self setWasLastLocalizationSuccessful:0];
-    self->_lastLocalizationResult = a3;
-    objc_storeStrong(&self->_initializationFailureDetails, a5);
+    self->_lastLocalizationResult = result;
+    objc_storeStrong(&self->_initializationFailureDetails, details);
     [(VLFSession *)self setNotifiedDelegate:1];
-    v15 = [(VLFSession *)self delegate];
-    [v15 VLFSessionLocalizationFailedWithError:v8];
+    delegate = [(VLFSession *)self delegate];
+    [delegate VLFSessionLocalizationFailedWithError:errorCopy];
 
     [(VLFSession *)self stop];
     if ([(VLFSession *)self mode])
     {
-      v16 = [(VLFSession *)self notificationGenerator];
-      [v16 notificationOccurred:2];
+      notificationGenerator = [(VLFSession *)self notificationGenerator];
+      [notificationGenerator notificationOccurred:2];
     }
   }
 }
 
-- (void)registerSuccessWithVLFLocation:(id)a3
+- (void)registerSuccessWithVLFLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -705,7 +705,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v16 = 136316418;
-        v17 = "[VLFSession registerSuccessWithVLFLocation:]";
+        selfCopy = "[VLFSession registerSuccessWithVLFLocation:]";
         v18 = 2080;
         v19 = "VLFSession.m";
         v20 = 1024;
@@ -726,7 +726,7 @@
         {
           v15 = +[NSThread callStackSymbols];
           v16 = 138412290;
-          v17 = v15;
+          selfCopy = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@", &v16, 0xCu);
         }
       }
@@ -739,35 +739,35 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v16 = 134349314;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v4;
+      v19 = locationCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Registering success with vlf location: %@", &v16, 0x16u);
     }
 
-    v9 = [(VLFSession *)self session];
-    v10 = [v9 technique];
-    [v10 setVlfLocation:v4];
+    session = [(VLFSession *)self session];
+    technique = [session technique];
+    [technique setVlfLocation:locationCopy];
 
     [(VLFSession *)self setWasLastLocalizationSuccessful:1];
     self->_lastLocalizationResult = 4;
     [(VLFSession *)self setNotifiedDelegate:1];
-    v11 = [(VLFSession *)self delegate];
-    [v11 VLFSessionLocalizationSucceeded];
+    delegate = [(VLFSession *)self delegate];
+    [delegate VLFSessionLocalizationSucceeded];
 
     [(VLFSession *)self stop];
     if ([(VLFSession *)self mode])
     {
-      v12 = [(VLFSession *)self notificationGenerator];
-      [v12 notificationOccurred:0];
+      notificationGenerator = [(VLFSession *)self notificationGenerator];
+      [notificationGenerator notificationOccurred:0];
     }
   }
 }
 
-- (void)checkForSuccessWithFusionLocation:(id)a3 accuracyLocation:(id)a4
+- (void)checkForSuccessWithFusionLocation:(id)location accuracyLocation:(id)accuracyLocation
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  accuracyLocationCopy = accuracyLocation;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -779,7 +779,7 @@
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
         v52 = 136316418;
-        v53 = "[VLFSession checkForSuccessWithFusionLocation:accuracyLocation:]";
+        selfCopy12 = "[VLFSession checkForSuccessWithFusionLocation:accuracyLocation:]";
         v54 = 2080;
         v55 = "VLFSession.m";
         v56 = 1024;
@@ -800,7 +800,7 @@
         {
           v51 = +[NSThread callStackSymbols];
           v52 = 138412290;
-          v53 = v51;
+          selfCopy12 = v51;
           _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_ERROR, "%@", &v52, 0xCu);
         }
       }
@@ -813,7 +813,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v52 = 136315650;
-      v53 = "[VLFSession checkForSuccessWithFusionLocation:accuracyLocation:]";
+      selfCopy12 = "[VLFSession checkForSuccessWithFusionLocation:accuracyLocation:]";
       v54 = 2080;
       v55 = "VLFSession.m";
       v56 = 1024;
@@ -828,7 +828,7 @@
       {
         v19 = +[NSThread callStackSymbols];
         v52 = 138412290;
-        v53 = v19;
+        selfCopy12 = v19;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%@", &v52, 0xCu);
       }
     }
@@ -840,7 +840,7 @@
     }
 
     v52 = 134349314;
-    v53 = self;
+    selfCopy12 = self;
     v54 = 2112;
     v55 = @"VLFSessionModeNonUI";
     v14 = "[%{public}p] Mode must be %@ to check location based success criteria";
@@ -850,7 +850,7 @@
     goto LABEL_27;
   }
 
-  if (!v6)
+  if (!locationCopy)
   {
     v13 = sub_1009882CC();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -859,7 +859,7 @@
     }
 
     v52 = 134349056;
-    v53 = self;
+    selfCopy12 = self;
     v14 = "[%{public}p] fusionLocation was nil; ignoring";
 LABEL_25:
     v15 = v13;
@@ -867,7 +867,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (!v7)
+  if (!accuracyLocationCopy)
   {
     v13 = sub_1009882CC();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -876,12 +876,12 @@ LABEL_25:
     }
 
     v52 = 134349056;
-    v53 = self;
+    selfCopy12 = self;
     v14 = "[%{public}p] accuracyLocation was nil; ignoring";
     goto LABEL_25;
   }
 
-  [objc_opt_class() setLastLocation:v6];
+  [objc_opt_class() setLastLocation:locationCopy];
   v11 = +[NSUserDefaults standardUserDefaults];
   v12 = [v11 BOOLForKey:@"VLFSessionKeepARSessionRunningForeverKey"];
 
@@ -891,7 +891,7 @@ LABEL_25:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v52 = 134349056;
-      v53 = self;
+      selfCopy12 = self;
       v14 = "[%{public}p] Debug switch to keep the session running forever is set; ignoring location update";
       v15 = v13;
       v16 = OS_LOG_TYPE_INFO;
@@ -911,21 +911,21 @@ LABEL_28:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v52 = 134349312;
-    v53 = self;
+    selfCopy12 = self;
     v54 = 2048;
     v55 = UInteger;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "[%{public}p] Checking success criteria for mode: %lu", &v52, 0x16u);
   }
 
-  v23 = [v6 isCoordinateFused];
-  v24 = [(VLFSession *)self session];
-  v25 = [v24 configuration];
+  isCoordinateFused = [locationCopy isCoordinateFused];
+  session = [(VLFSession *)self session];
+  configuration = [session configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    if (!v23)
+    if (!isCoordinateFused)
     {
       goto LABEL_42;
     }
@@ -935,7 +935,7 @@ LABEL_38:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
       v52 = 134349056;
-      v53 = self;
+      selfCopy12 = self;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "[%{public}p] Location is fused", &v52, 0xCu);
     }
 
@@ -953,17 +953,17 @@ LABEL_38:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       v52 = 134349056;
-      v53 = self;
+      selfCopy12 = self;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "[%{public}p] Replaying from a recording; pretending as though the location is fused", &v52, 0xCu);
     }
 
     goto LABEL_38;
   }
 
-  v33 = [objc_opt_class() lastGeoTrackingStatus];
-  v34 = [v33 state];
+  lastGeoTrackingStatus = [objc_opt_class() lastGeoTrackingStatus];
+  state = [lastGeoTrackingStatus state];
 
-  if (v34 == 3)
+  if (state == 3)
   {
     goto LABEL_38;
   }
@@ -973,7 +973,7 @@ LABEL_42:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
   {
     v52 = 134349056;
-    v53 = self;
+    selfCopy12 = self;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "[%{public}p] Location is not fused", &v52, 0xCu);
   }
 
@@ -985,7 +985,7 @@ LABEL_42:
   v32 = 0;
   v31 = 1;
 LABEL_46:
-  [v7 horizontalAccuracy];
+  [accuracyLocationCopy horizontalAccuracy];
   v37 = v36;
   GEOConfigGetDouble();
   v39 = v38;
@@ -999,7 +999,7 @@ LABEL_46:
     }
 
     v52 = 134349569;
-    v53 = self;
+    selfCopy12 = self;
     v54 = 2049;
     v55 = *&v37;
     v56 = 2049;
@@ -1015,7 +1015,7 @@ LABEL_46:
     }
 
     v52 = 134349569;
-    v53 = self;
+    selfCopy12 = self;
     v54 = 2049;
     v55 = *&v37;
     v56 = 2049;
@@ -1053,7 +1053,7 @@ LABEL_52:
       }
 
       v52 = 134349056;
-      v53 = self;
+      selfCopy12 = self;
       v14 = "[%{public}p] Not localized yet";
       goto LABEL_25;
     }
@@ -1062,22 +1062,22 @@ LABEL_52:
   v45 = sub_1009882CC();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
-    v46 = [(VLFSession *)self session];
-    v47 = [v46 currentFrame];
-    v48 = [v47 location];
+    session2 = [(VLFSession *)self session];
+    currentFrame = [session2 currentFrame];
+    location = [currentFrame location];
     v52 = 134349827;
-    v53 = self;
+    selfCopy12 = self;
     v54 = 2113;
-    v55 = v6;
+    v55 = locationCopy;
     v56 = 2113;
-    *v57 = v7;
+    *v57 = accuracyLocationCopy;
     *&v57[8] = 2113;
-    *&v57[10] = v48;
+    *&v57[10] = location;
     _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "[%{public}p] Localization succeeded with CL fusion location: (%{private}@), accuracy location: (%{private}@), ARKit location: (%{private}@)", &v52, 0x2Au);
   }
 
   [(VLFSession *)self stopLocationUpdates];
-  [(VLFSession *)self registerSuccessWithVLFLocation:v6];
+  [(VLFSession *)self registerSuccessWithVLFLocation:locationCopy];
 LABEL_29:
 }
 
@@ -1105,14 +1105,14 @@ LABEL_29:
   if (objc_opt_isKindOfClass())
   {
     v3 = self->_configuration;
-    v4 = [(ARConfiguration *)v3 fileURL];
+    fileURL = [(ARConfiguration *)v3 fileURL];
     objc_initWeak(&location, self);
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10098B160;
     v6[3] = &unk_10165D288;
     objc_copyWeak(&v8, &location);
-    v5 = v4;
+    v5 = fileURL;
     v7 = v5;
     [(ARConfiguration *)v3 finishRecordingWithHandler:v6];
 
@@ -1140,7 +1140,7 @@ LABEL_29:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134349312;
-        v41 = self;
+        selfCopy5 = self;
         v42 = 2048;
         v43 = v7;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] Configuring VLF with framerate: %f", buf, 0x16u);
@@ -1153,8 +1153,8 @@ LABEL_29:
       v11 = [NSNumber numberWithDouble:v7];
       v46[2] = v11;
       v12 = [NSArray arrayWithObjects:v46 count:3];
-      v13 = [v5 videoFormat];
-      [v13 setFrameRatesByPowerUsage:v12];
+      videoFormat = [v5 videoFormat];
+      [videoFormat setFrameRatesByPowerUsage:v12];
     }
 
     else
@@ -1173,7 +1173,7 @@ LABEL_29:
     {
       [v5 visualLocalizationCallInterval];
       *buf = 134349312;
-      v41 = self;
+      selfCopy5 = self;
       v42 = 2048;
       v43 = v16;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "[%{public}p] Configuring VLF with call interval: %f", buf, 0x16u);
@@ -1189,13 +1189,13 @@ LABEL_29:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v41 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "[%{public}p] ARKit session recording is enabled; trying to create recording configuration", buf, 0xCu);
       }
 
-      v20 = [(VLFSession *)self mode];
+      mode = [(VLFSession *)self mode];
       v21 = @"pedestrianar";
-      if (v20 == 1)
+      if (mode == 1)
       {
         v21 = @"vlf";
       }
@@ -1233,7 +1233,7 @@ LABEL_24:
         NSStringFromARReplayMode();
         v32 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *buf = 134349570;
-        v41 = self;
+        selfCopy5 = self;
         v42 = 2112;
         v43 = v32;
         v44 = 2112;
@@ -1261,7 +1261,7 @@ LABEL_24:
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
           *buf = 134349570;
-          v41 = self;
+          selfCopy5 = self;
           v42 = 2112;
           v43 = v24;
           v44 = 2112;
@@ -1279,15 +1279,15 @@ LABEL_25:
   return configuration;
 }
 
-- (void)sendAnalytics:(id)a3
+- (void)sendAnalytics:(id)analytics
 {
-  v6 = a3;
-  v4 = [(VLFSession *)self analyticsCapturer];
+  analyticsCopy = analytics;
+  analyticsCapturer = [(VLFSession *)self analyticsCapturer];
 
-  if (v4)
+  if (analyticsCapturer)
   {
-    v5 = [(VLFSession *)self analyticsCapturer];
-    [v5 sessionEndedWithResult:self->_lastLocalizationResult initializationFailureDetails:self->_initializationFailureDetails arFailureTypes:v6];
+    analyticsCapturer2 = [(VLFSession *)self analyticsCapturer];
+    [analyticsCapturer2 sessionEndedWithResult:self->_lastLocalizationResult initializationFailureDetails:self->_initializationFailureDetails arFailureTypes:analyticsCopy];
 
     [(VLFSession *)self setAnalyticsCapturer:0];
   }
@@ -1301,26 +1301,26 @@ LABEL_25:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134349056;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}p] Stopping", &v11, 0xCu);
   }
 
   v4 = +[MapsARSessionManager sharedManager];
   [v4 resignSessionWithOwner:self];
 
-  v5 = [(VLFSession *)self traceRecorder];
+  traceRecorder = [(VLFSession *)self traceRecorder];
 
-  if (v5)
+  if (traceRecorder)
   {
-    v6 = [(VLFSession *)self traceRecorder];
-    [v6 finish];
+    traceRecorder2 = [(VLFSession *)self traceRecorder];
+    [traceRecorder2 finish];
 
     [(VLFSession *)self setTraceRecorder:0];
     [VLLocalizer _setDebugInfoRecorder:0];
   }
 
-  v7 = [(VLFSession *)self pocketStateManager];
-  [v7 setDelegate:0];
+  pocketStateManager = [(VLFSession *)self pocketStateManager];
+  [pocketStateManager setDelegate:0];
 
   [(VLFSession *)self setPocketStateManager:0];
   if (![(VLFSession *)self hasNotifiedDelegate])
@@ -1329,16 +1329,16 @@ LABEL_25:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134349056;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}p] Detected user cancelled", &v11, 0xCu);
     }
 
     self->_lastLocalizationResult = 2;
     [(VLFSession *)self setWasLastLocalizationSuccessful:0];
     [(VLFSession *)self setNotifiedDelegate:1];
-    v9 = [(VLFSession *)self delegate];
+    delegate = [(VLFSession *)self delegate];
     v10 = [NSError errorWithDomain:@"com.apple.Maps.VLFSession" code:2 userInfo:0];
-    [v9 VLFSessionLocalizationFailedWithError:v10];
+    [delegate VLFSessionLocalizationFailedWithError:v10];
   }
 
   if ([(VLFSession *)self mode]== 1)
@@ -1353,7 +1353,7 @@ LABEL_25:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
-    v30 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}p] Starting", buf, 0xCu);
   }
 
@@ -1363,27 +1363,27 @@ LABEL_25:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v30 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}p] Recording VL trace", buf, 0xCu);
     }
 
     v5 = objc_alloc_init(VisualLocalizationTraceRecorder);
     [(VLFSession *)self setTraceRecorder:v5];
 
-    v6 = [(VLFSession *)self traceRecorder];
-    [v6 start];
+    traceRecorder = [(VLFSession *)self traceRecorder];
+    [traceRecorder start];
   }
 
-  v7 = [(VLFSession *)self analyticsCapturer];
-  v8 = v7 == 0;
+  analyticsCapturer = [(VLFSession *)self analyticsCapturer];
+  v8 = analyticsCapturer == 0;
 
   if (v8)
   {
     v9 = objc_alloc_init(VLFSessionAnalyticsCapturer);
     [(VLFSession *)self setAnalyticsCapturer:v9];
 
-    v10 = [(VLFSession *)self analyticsCapturer];
-    [v10 sessionStartedWithEntryPoint:self->_entryPoint];
+    analyticsCapturer2 = [(VLFSession *)self analyticsCapturer];
+    [analyticsCapturer2 sessionStartedWithEntryPoint:self->_entryPoint];
   }
 
   BOOL = GEOConfigGetBOOL();
@@ -1408,11 +1408,11 @@ LABEL_25:
     v14 = objc_alloc_init(CMPocketStateManager);
     [(VLFSession *)self setPocketStateManager:v14];
 
-    v15 = [(VLFSession *)self pocketStateManager];
-    [v15 setDelegate:self];
+    pocketStateManager = [(VLFSession *)self pocketStateManager];
+    [pocketStateManager setDelegate:self];
 
     objc_initWeak(buf, self);
-    v16 = [(VLFSession *)self pocketStateManager];
+    pocketStateManager2 = [(VLFSession *)self pocketStateManager];
     v17 = &_dispatch_main_q;
     [(VLFSession *)self timeout];
     v18 = 15.0;
@@ -1435,7 +1435,7 @@ LABEL_25:
     v27[2] = sub_10098BEF0;
     v27[3] = &unk_101661B70;
     objc_copyWeak(&v28, buf);
-    [v16 queryStateOntoQueue:&_dispatch_main_q andMonitorFor:v27 withTimeout:v18 andHandler:v21];
+    [pocketStateManager2 queryStateOntoQueue:&_dispatch_main_q andMonitorFor:v27 withTimeout:v18 andHandler:v21];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -1443,8 +1443,8 @@ LABEL_25:
 
   if ([(VLFSession *)self mode])
   {
-    v24 = [(VLFSession *)self notificationGenerator];
-    [v24 prepare];
+    notificationGenerator = [(VLFSession *)self notificationGenerator];
+    [notificationGenerator prepare];
   }
 
   [(VLFSession *)self setNotifiedDelegate:0];
@@ -1461,7 +1461,7 @@ LABEL_25:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -1472,7 +1472,7 @@ LABEL_25:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v14 = "[VLFSession dealloc]";
+      selfCopy2 = "[VLFSession dealloc]";
       v15 = 2080;
       v16 = "VLFSession.m";
       v17 = 1024;
@@ -1489,7 +1489,7 @@ LABEL_25:
       {
         v7 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v14 = v7;
+        selfCopy2 = v7;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -1500,7 +1500,7 @@ LABEL_25:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 134349056;
-        v14 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{public}p] VLFSession being dealloc'd while still being the active ARSession owner", buf, 0xCu);
       }
 
@@ -1508,7 +1508,7 @@ LABEL_25:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v14 = "[VLFSession dealloc]";
+        selfCopy2 = "[VLFSession dealloc]";
         v15 = 2080;
         v16 = "VLFSession.m";
         v17 = 1024;
@@ -1523,7 +1523,7 @@ LABEL_25:
         {
           v11 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v14 = v11;
+          selfCopy2 = v11;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -1538,7 +1538,7 @@ LABEL_25:
   [(VLFSession *)&v12 dealloc];
 }
 
-- (VLFSession)initWithMode:(int64_t)a3
+- (VLFSession)initWithMode:(int64_t)mode
 {
   v14.receiver = self;
   v14.super_class = VLFSession;
@@ -1548,9 +1548,9 @@ LABEL_25:
     v5 = sub_1009882CC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (mode)
       {
-        if (a3 == 1)
+        if (mode == 1)
         {
           v6 = @"VLFSessionModeNonUI";
         }
@@ -1597,8 +1597,8 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}p] Configuring with mode: %{public}@", buf, 0x16u);
     }
 
-    v4->_mode = a3;
-    if (a3)
+    v4->_mode = mode;
+    if (mode)
     {
       v10 = objc_alloc_init(UINotificationFeedbackGenerator);
       notificationGenerator = v4->_notificationGenerator;

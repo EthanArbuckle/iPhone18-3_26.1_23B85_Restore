@@ -1,26 +1,26 @@
 @interface Section
-- (Section)initWithUUID:(id)a3 kind:(int)a4 depth:(int)a5 parent:(id)a6;
+- (Section)initWithUUID:(id)d kind:(int)kind depth:(int)depth parent:(id)parent;
 - (id)sectionRoot;
-- (void)_dumpPrefix:(const char *)a3 depth:(int)a4 to:(id)a5;
-- (void)dumpEndSectionTo:(id)a3;
-- (void)dumpPrefixWithKind:(int)a3 depth:(int)a4 to:(id)a5;
+- (void)_dumpPrefix:(const char *)prefix depth:(int)depth to:(id)to;
+- (void)dumpEndSectionTo:(id)to;
+- (void)dumpPrefixWithKind:(int)kind depth:(int)depth to:(id)to;
 @end
 
 @implementation Section
 
-- (Section)initWithUUID:(id)a3 kind:(int)a4 depth:(int)a5 parent:(id)a6
+- (Section)initWithUUID:(id)d kind:(int)kind depth:(int)depth parent:(id)parent
 {
-  v10 = a6;
+  parentCopy = parent;
   v16.receiver = self;
   v16.super_class = Section;
   v11 = [(Section *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_parent, a6);
-    v12->_kind = a4;
-    v12->_depth = a5;
-    if (a4 == 4 || !v10)
+    objc_storeStrong(&v11->_parent, parent);
+    v12->_kind = kind;
+    v12->_depth = depth;
+    if (kind == 4 || !parentCopy)
     {
       v14 = (dword_10002A7B0 + 1) & 7;
       dword_10002A7B0 = (dword_10002A7B0 + 1) & 7;
@@ -29,8 +29,8 @@
 
     else
     {
-      v13 = [(Section *)v12 sectionRoot];
-      v12->_color = v13[2];
+      sectionRoot = [(Section *)v12 sectionRoot];
+      v12->_color = sectionRoot[2];
     }
   }
 
@@ -39,16 +39,16 @@
 
 - (id)sectionRoot
 {
-  v2 = self;
-  parent = v2->_parent;
+  selfCopy = self;
+  parent = selfCopy->_parent;
   if (parent)
   {
-    while (v2->_kind != 4)
+    while (selfCopy->_kind != 4)
     {
       v4 = parent;
 
       parent = v4->_parent;
-      v2 = v4;
+      selfCopy = v4;
       if (!parent)
       {
         goto LABEL_6;
@@ -56,48 +56,48 @@
     }
   }
 
-  v4 = v2;
+  v4 = selfCopy;
 LABEL_6:
 
   return v4;
 }
 
-- (void)_dumpPrefix:(const char *)a3 depth:(int)a4 to:(id)a5
+- (void)_dumpPrefix:(const char *)prefix depth:(int)depth to:(id)to
 {
-  v8 = a5;
-  if (a4 >= 1)
+  toCopy = to;
+  if (depth >= 1)
   {
-    v9 = v8;
+    v9 = toCopy;
     if (self->_kind != 4)
     {
-      [(Section *)self->_parent _dumpPrefix:a3 depth:(a4 - 1) to:v8];
-      v8 = v9;
+      [(Section *)self->_parent _dumpPrefix:prefix depth:(depth - 1) to:toCopy];
+      toCopy = v9;
     }
 
-    [v8 startFgColor:self->_color attr:2];
-    [v9 puts:a3 len:strlen(a3)];
+    [toCopy startFgColor:self->_color attr:2];
+    [v9 puts:prefix len:strlen(prefix)];
     [v9 reset];
-    v8 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)dumpPrefixWithKind:(int)a3 depth:(int)a4 to:(id)a5
+- (void)dumpPrefixWithKind:(int)kind depth:(int)depth to:(id)to
 {
-  v8 = a5;
+  toCopy = to;
   v9 = "┃  ";
-  v11 = v8;
-  if (a3 > 3)
+  v11 = toCopy;
+  if (kind > 3)
   {
-    if (a3 == 4)
+    if (kind == 4)
     {
       v10 = "[ ";
 LABEL_14:
-      [(Section *)self->_parent _dumpPrefix:v9 depth:(a4 - 1) to:v8];
-      v8 = v11;
+      [(Section *)self->_parent _dumpPrefix:v9 depth:(depth - 1) to:toCopy];
+      toCopy = v11;
       goto LABEL_15;
     }
 
-    if (a3 != 5)
+    if (kind != 5)
     {
       goto LABEL_18;
     }
@@ -107,9 +107,9 @@ LABEL_14:
 
   else
   {
-    if (a3)
+    if (kind)
     {
-      if (a3 == 2)
+      if (kind == 2)
       {
         v10 = "┏  ";
         goto LABEL_9;
@@ -123,7 +123,7 @@ LABEL_18:
   }
 
 LABEL_9:
-  if (a3 == 5)
+  if (kind == 5)
   {
     v9 = v10;
   }
@@ -134,22 +134,22 @@ LABEL_9:
   }
 
 LABEL_15:
-  [v8 startFgColor:self->_color attr:2];
+  [toCopy startFgColor:self->_color attr:2];
   [v11 puts:v10 len:strlen(v10)];
   [v11 reset];
 }
 
-- (void)dumpEndSectionTo:(id)a3
+- (void)dumpEndSectionTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_kind != 4)
   {
-    [(Section *)self->_parent _dumpPrefix:"┃  " depth:(self->_depth - 1) to:v4];
-    v4 = v5;
+    [(Section *)self->_parent _dumpPrefix:"┃  " depth:(self->_depth - 1) to:toCopy];
+    toCopy = v5;
   }
 
-  [v4 startFgColor:self->_color attr:2];
+  [toCopy startFgColor:self->_color attr:2];
   [v5 write:{"%send\n", "┗  "}];
   [v5 reset];
 }

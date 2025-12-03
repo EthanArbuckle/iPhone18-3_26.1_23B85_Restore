@@ -1,113 +1,113 @@
 @interface TSAPdfTagger
-+ (BOOL)isHeadingStyle:(id)a3 headingIndex:(int *)a4;
-+ (BOOL)shouldMapDrawableRep:(id)a3;
-+ (BOOL)totalCellNumberInAllTablesExceedsMaxAllowedInDocument:(id)a3;
++ (BOOL)isHeadingStyle:(id)style headingIndex:(int *)index;
++ (BOOL)shouldMapDrawableRep:(id)rep;
++ (BOOL)totalCellNumberInAllTablesExceedsMaxAllowedInDocument:(id)document;
 - (BOOL)currentParagraphHasContents;
 - (BOOL)currentParagraphNeedsSpans;
-- (BOOL)textStorageChunkIsFootnote:(id)a3;
+- (BOOL)textStorageChunkIsFootnote:(id)footnote;
 - (BOOL)topOfContextStackIsParagraph;
-- (TSAPdfTagger)initWithRenderingExporter:(id)a3;
+- (TSAPdfTagger)initWithRenderingExporter:(id)exporter;
 - (TSARenderingExporter)exporter;
 - (_NSRange)topmostColumnRange;
 - (id)canvas;
 - (id)documentRoot;
 - (id)imager;
-- (id)regularDrawableRepForObjectRep:(id)a3;
-- (id)retrieveHighestInfoAtCharIndex:(unint64_t)a3 returnTagType:(int *)a4;
+- (id)regularDrawableRepForObjectRep:(id)rep;
+- (id)retrieveHighestInfoAtCharIndex:(unint64_t)index returnTagType:(int *)type;
 - (id)state;
-- (id)topOfContextStackWithExpectedClass:(Class)a3;
+- (id)topOfContextStackWithExpectedClass:(Class)class;
 - (id)topmostColumn;
 - (id)topmostColumnContext;
-- (id)topmostContextOfClass:(Class)a3;
+- (id)topmostContextOfClass:(Class)class;
 - (id)topmostParagraphContext;
 - (id)topmostTextStorage;
 - (id)topmostTocChunkContext;
-- (int)tagTypeAtDepth:(unint64_t)a3;
-- (unint64_t)depthOfContext:(id)a3;
-- (unint64_t)depthOfTopmostTagOfType:(int)a3;
-- (unint64_t)indexOfFirstVisibleCharInParagraphAtOrAfterCharIndex:(unint64_t)a3;
-- (unint64_t)indexOfLastVisibleCharInParagraphBeforeCharIndex:(unint64_t)a3;
-- (void)advanceParagraphEnumeratorToCharIndex:(unint64_t)a3;
-- (void)assertCharIndexRelativeToParagraphRange:(BOOL)a3;
-- (void)assertTopOfContextStackIsParagraph:(BOOL)a3;
-- (void)beginAncillaryTextRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4;
-- (void)beginCheckboxCell:(BOOL)a3;
+- (int)tagTypeAtDepth:(unint64_t)depth;
+- (unint64_t)depthOfContext:(id)context;
+- (unint64_t)depthOfTopmostTagOfType:(int)type;
+- (unint64_t)indexOfFirstVisibleCharInParagraphAtOrAfterCharIndex:(unint64_t)index;
+- (unint64_t)indexOfLastVisibleCharInParagraphBeforeCharIndex:(unint64_t)index;
+- (void)advanceParagraphEnumeratorToCharIndex:(unint64_t)index;
+- (void)assertCharIndexRelativeToParagraphRange:(BOOL)range;
+- (void)assertTopOfContextStackIsParagraph:(BOOL)paragraph;
+- (void)beginAncillaryTextRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange;
+- (void)beginCheckboxCell:(BOOL)cell;
 - (void)beginComment;
-- (void)beginDrawable:(id)a3;
-- (void)beginFreehandDrawing:(id)a3;
-- (void)beginLineFragmentBodyWithRange:(_NSRange)a3;
-- (void)beginLineFragmentWithRange:(_NSRange)a3;
+- (void)beginDrawable:(id)drawable;
+- (void)beginFreehandDrawing:(id)drawing;
+- (void)beginLineFragmentBodyWithRange:(_NSRange)range;
+- (void)beginLineFragmentWithRange:(_NSRange)range;
 - (void)beginListLabel;
-- (void)beginMultiParagraphEntityWithLineFragmentRange:(_NSRange)a3;
-- (void)beginObject:(id)a3;
-- (void)beginOneColumnText:(id)a3 column:(id)a4 limitSelection:(id)a5;
+- (void)beginMultiParagraphEntityWithLineFragmentRange:(_NSRange)range;
+- (void)beginObject:(id)object;
+- (void)beginOneColumnText:(id)text column:(id)column limitSelection:(id)selection;
 - (void)beginPage;
-- (void)beginParagraphBodyWithLineFragmentRange:(_NSRange)a3;
-- (void)beginParagraphWithLineFragmentRange:(_NSRange)a3;
-- (void)beginPencilAnnotation:(id)a3;
-- (void)beginPrimaryTextRunWithRange:(_NSRange)a3 hasActualContents:(BOOL)a4;
-- (void)beginRatingCell:(double)a3;
-- (void)beginRubyRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4;
-- (void)beginTOCChunk:(id)a3;
-- (void)beginTableCell:(id)a3 withCellID:(TSUCellCoord)a4 cellHasContents:(BOOL)a5 cellIsPrimary:(BOOL)a6;
-- (void)beginTableChunk:(id)a3;
-- (void)beginTableLayoutSpace:(id)a3;
-- (void)beginTableNameForChunk:(id)a3;
-- (void)beginTableRow:(unsigned int)a3;
-- (void)beginTagWithType:(int)a3 tagProperties:(id)a4;
-- (void)beginTateChuYokoRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4;
-- (void)beginTextColumn:(id)a3 limitSelection:(id)a4;
-- (void)beginTextStorageChunk:(id)a3 limitSelection:(id)a4;
-- (void)dispatchObject:(id)a3 tableBlock:(id)a4 tocBlock:(id)a5 drawableBlock:(id)a6;
-- (void)endAncillaryTextRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4;
+- (void)beginParagraphBodyWithLineFragmentRange:(_NSRange)range;
+- (void)beginParagraphWithLineFragmentRange:(_NSRange)range;
+- (void)beginPencilAnnotation:(id)annotation;
+- (void)beginPrimaryTextRunWithRange:(_NSRange)range hasActualContents:(BOOL)contents;
+- (void)beginRatingCell:(double)cell;
+- (void)beginRubyRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange;
+- (void)beginTOCChunk:(id)chunk;
+- (void)beginTableCell:(id)cell withCellID:(TSUCellCoord)d cellHasContents:(BOOL)contents cellIsPrimary:(BOOL)primary;
+- (void)beginTableChunk:(id)chunk;
+- (void)beginTableLayoutSpace:(id)space;
+- (void)beginTableNameForChunk:(id)chunk;
+- (void)beginTableRow:(unsigned int)row;
+- (void)beginTagWithType:(int)type tagProperties:(id)properties;
+- (void)beginTateChuYokoRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange;
+- (void)beginTextColumn:(id)column limitSelection:(id)selection;
+- (void)beginTextStorageChunk:(id)chunk limitSelection:(id)selection;
+- (void)dispatchObject:(id)object tableBlock:(id)block tocBlock:(id)tocBlock drawableBlock:(id)drawableBlock;
+- (void)endAncillaryTextRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange;
 - (void)endCheckboxCell;
 - (void)endComment;
-- (void)endDrawable:(id)a3;
-- (void)endFreehandDrawing:(id)a3;
-- (void)endLineFragmentBodyWithRange:(_NSRange)a3;
-- (void)endLineFragmentWithRange:(_NSRange)a3;
+- (void)endDrawable:(id)drawable;
+- (void)endFreehandDrawing:(id)drawing;
+- (void)endLineFragmentBodyWithRange:(_NSRange)range;
+- (void)endLineFragmentWithRange:(_NSRange)range;
 - (void)endListLabel;
-- (void)endMultiParagraphEntityWithLineFragmentRange:(_NSRange)a3;
-- (void)endObject:(id)a3;
-- (void)endOneColumnText:(id)a3 column:(id)a4;
-- (void)endParagraphWithLineFragmentRange:(_NSRange)a3;
-- (void)endPencilAnnotation:(id)a3;
-- (void)endPrimaryTextRunWithRange:(_NSRange)a3 hasActualContents:(BOOL)a4;
+- (void)endMultiParagraphEntityWithLineFragmentRange:(_NSRange)range;
+- (void)endObject:(id)object;
+- (void)endOneColumnText:(id)text column:(id)column;
+- (void)endParagraphWithLineFragmentRange:(_NSRange)range;
+- (void)endPencilAnnotation:(id)annotation;
+- (void)endPrimaryTextRunWithRange:(_NSRange)range hasActualContents:(BOOL)contents;
 - (void)endRatingCell;
-- (void)endRubyRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4;
-- (void)endTOCChunk:(id)a3;
-- (void)endTableCell:(id)a3 withCellID:(TSUCellCoord)a4 cellHasContents:(BOOL)a5 cellIsPrimary:(BOOL)a6;
-- (void)endTableChunk:(id)a3;
-- (void)endTableLayoutSpace:(id)a3;
-- (void)endTableNameForChunk:(id)a3;
-- (void)endTableRow:(unsigned int)a3;
+- (void)endRubyRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange;
+- (void)endTOCChunk:(id)chunk;
+- (void)endTableCell:(id)cell withCellID:(TSUCellCoord)d cellHasContents:(BOOL)contents cellIsPrimary:(BOOL)primary;
+- (void)endTableChunk:(id)chunk;
+- (void)endTableLayoutSpace:(id)space;
+- (void)endTableNameForChunk:(id)chunk;
+- (void)endTableRow:(unsigned int)row;
 - (void)endTag;
-- (void)endTateChuYokoRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4;
-- (void)endTextColumn:(id)a3;
-- (void)endTextStorageChunk:(id)a3;
-- (void)executeBlock:(id)a3;
-- (void)executeBlockForCurrentParagraph:(id)a3;
-- (void)handleObject:(id)a3 tableBlock:(id)a4 tocBlock:(id)a5 drawableBlock:(id)a6;
-- (void)popContextWithExpectedClass:(Class)a3;
-- (void)popTagStackUntilReachingHeight:(unint64_t)a3;
-- (void)pushContext:(id)a3;
-- (void)restoreStateFromTopOfContextStackWithExpectedClass:(Class)a3;
-- (void)setState:(id)a3;
+- (void)endTateChuYokoRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange;
+- (void)endTextColumn:(id)column;
+- (void)endTextStorageChunk:(id)chunk;
+- (void)executeBlock:(id)block;
+- (void)executeBlockForCurrentParagraph:(id)paragraph;
+- (void)handleObject:(id)object tableBlock:(id)block tocBlock:(id)tocBlock drawableBlock:(id)drawableBlock;
+- (void)popContextWithExpectedClass:(Class)class;
+- (void)popTagStackUntilReachingHeight:(unint64_t)height;
+- (void)pushContext:(id)context;
+- (void)restoreStateFromTopOfContextStackWithExpectedClass:(Class)class;
+- (void)setState:(id)state;
 - (void)setUp;
 @end
 
 @implementation TSAPdfTagger
 
-- (TSAPdfTagger)initWithRenderingExporter:(id)a3
+- (TSAPdfTagger)initWithRenderingExporter:(id)exporter
 {
-  v4 = a3;
+  exporterCopy = exporter;
   v11.receiver = self;
   v11.super_class = TSAPdfTagger;
   v5 = [(TSAPdfTagger *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_exporter, v4);
+    objc_storeWeak(&v5->_exporter, exporterCopy);
     objc_msgSend_setUp(v6, v7, v8, v9);
   }
 
@@ -161,9 +161,9 @@
   return v8;
 }
 
-+ (BOOL)totalCellNumberInAllTablesExceedsMaxAllowedInDocument:(id)a3
++ (BOOL)totalCellNumberInAllTablesExceedsMaxAllowedInDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -173,7 +173,7 @@
   v13[2] = 0x2020000000;
   v13[3] = 0;
   v4 = objc_opt_class();
-  v7 = objc_msgSend_modelEnumeratorForObjectsOfClass_(v3, v5, v4, v6);
+  v7 = objc_msgSend_modelEnumeratorForObjectsOfClass_(documentCopy, v5, v4, v6);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2760CCF08;
@@ -189,30 +189,30 @@
   return v10;
 }
 
-- (void)executeBlock:(id)a3
+- (void)executeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_stateIsValid)
   {
-    v4[2]();
+    blockCopy[2]();
   }
 }
 
-- (void)pushContext:(id)a3
+- (void)pushContext:(id)context
 {
-  v23 = a3;
+  contextCopy = context;
   v7 = objc_msgSend_count(self->_contextStack, v4, v5, v6);
-  v9 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v23, @"%@", v8, v23);
+  v9 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], contextCopy, @"%@", v8, contextCopy);
   v10 = v9;
   v14 = objc_msgSend_UTF8String(v10, v11, v12, v13);
   sub_2760CD160(v7, "PUSH %s", v15, v16, v17, v18, v19, v20, v14);
 
-  objc_msgSend_tsu_push_(self->_contextStack, v21, v23, v22);
+  objc_msgSend_tsu_push_(self->_contextStack, v21, contextCopy, v22);
 }
 
-- (void)popContextWithExpectedClass:(Class)a3
+- (void)popContextWithExpectedClass:(Class)class
 {
-  v33 = objc_msgSend_tsu_peek(self->_contextStack, a2, a3, v3);
+  v33 = objc_msgSend_tsu_peek(self->_contextStack, a2, class, v3);
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v8 = objc_opt_class();
@@ -227,10 +227,10 @@
   sub_2760CD160(v19, "POP %s", v27, v28, v29, v30, v31, v32, v26);
 }
 
-- (void)beginTagWithType:(int)a3 tagProperties:(id)a4
+- (void)beginTagWithType:(int)type tagProperties:(id)properties
 {
-  v4 = *&a3;
-  tagProperties = a4;
+  v4 = *&type;
+  tagProperties = properties;
   Name = CGPDFTagTypeGetName(v4);
   v10 = objc_msgSend_count(self->_tagStack, v7, v8, v9);
   sub_2760CD160(v10 - 1, "BEGIN %s", v11, v12, v13, v14, v15, v16, Name);
@@ -266,25 +266,25 @@
   }
 }
 
-- (void)popTagStackUntilReachingHeight:(unint64_t)a3
+- (void)popTagStackUntilReachingHeight:(unint64_t)height
 {
-  v6 = objc_msgSend_count(self->_tagStack, a2, a3, v3) >= a3;
+  v6 = objc_msgSend_count(self->_tagStack, a2, height, v3) >= height;
   v10 = objc_msgSend_count(self->_tagStack, v7, v8, v9);
   sub_2760CB2EC(v6, "Tag stack %d less than desired value %d", v11, v12, v13, v14, v15, v16, v10);
-  while (objc_msgSend_count(self->_tagStack, v17, v18, v19) > a3)
+  while (objc_msgSend_count(self->_tagStack, v17, v18, v19) > height)
   {
     objc_msgSend_endTag(self, v20, v21, v22);
   }
 }
 
-- (id)topmostContextOfClass:(Class)a3
+- (id)topmostContextOfClass:(Class)class
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = objc_msgSend_reverseObjectEnumerator(self->_contextStack, a2, a3, v3, 0);
+  v4 = objc_msgSend_reverseObjectEnumerator(self->_contextStack, a2, class, v3, 0);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v13, v17, 16);
   if (v6)
   {
@@ -322,10 +322,10 @@ LABEL_11:
   return v11;
 }
 
-- (unint64_t)depthOfContext:(id)a3
+- (unint64_t)depthOfContext:(id)context
 {
-  v4 = a3;
-  v10 = objc_msgSend_indexOfObjectIdenticalTo_(self->_contextStack, v5, v4, v6);
+  contextCopy = context;
+  v10 = objc_msgSend_indexOfObjectIdenticalTo_(self->_contextStack, v5, contextCopy, v6);
   v11 = 0x7FFFFFFFFFFFFFFFLL;
   if (v10 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -335,27 +335,27 @@ LABEL_11:
   return v11;
 }
 
-- (int)tagTypeAtDepth:(unint64_t)a3
+- (int)tagTypeAtDepth:(unint64_t)depth
 {
-  v6 = objc_msgSend_count(self->_tagStack, a2, a3, v3) > a3;
+  v6 = objc_msgSend_count(self->_tagStack, a2, depth, v3) > depth;
   objc_msgSend_count(self->_tagStack, v7, v8, v9);
-  sub_2760CB2EC(v6, "Tag depth %d exceeds tag stack height %d", v10, v11, v12, v13, v14, v15, a3);
+  sub_2760CB2EC(v6, "Tag depth %d exceeds tag stack height %d", v10, v11, v12, v13, v14, v15, depth);
   tagStack = self->_tagStack;
   v20 = objc_msgSend_count(tagStack, v17, v18, v19);
-  v23 = objc_msgSend_objectAtIndexedSubscript_(tagStack, v21, v20 + ~a3, v22);
+  v23 = objc_msgSend_objectAtIndexedSubscript_(tagStack, v21, v20 + ~depth, v22);
   LODWORD(tagStack) = objc_msgSend_tagType(v23, v24, v25, v26);
 
   return tagStack;
 }
 
-- (unint64_t)depthOfTopmostTagOfType:(int)a3
+- (unint64_t)depthOfTopmostTagOfType:(int)type
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = objc_msgSend_reverseObjectEnumerator(self->_tagStack, a2, *&a3, v3, 0);
+  v5 = objc_msgSend_reverseObjectEnumerator(self->_tagStack, a2, *&type, v3, 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v16, v20, 16);
   if (v10)
   {
@@ -372,7 +372,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      if (objc_msgSend_tagType(*(*(&v16 + 1) + 8 * v13), v7, v8, v9) == a3)
+      if (objc_msgSend_tagType(*(*(&v16 + 1) + 8 * v13), v7, v8, v9) == type)
       {
         break;
       }
@@ -409,18 +409,18 @@ LABEL_9:
   return v10;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v10 = a3;
-  v7 = objc_msgSend_tagStackHeight(v10, v4, v5, v6);
+  stateCopy = state;
+  v7 = objc_msgSend_tagStackHeight(stateCopy, v4, v5, v6);
   objc_msgSend_popTagStackUntilReachingHeight_(self, v8, v7, v9);
 }
 
-- (id)topOfContextStackWithExpectedClass:(Class)a3
+- (id)topOfContextStackWithExpectedClass:(Class)class
 {
-  v5 = objc_msgSend_tsu_peek(self->_contextStack, a2, a3, v3);
+  v5 = objc_msgSend_tsu_peek(self->_contextStack, a2, class, v3);
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = NSStringFromClass(a3);
+  v7 = NSStringFromClass(class);
   v8 = objc_opt_class();
   v16 = NSStringFromClass(v8);
   sub_2760CB2EC(isKindOfClass & 1, "Incorrect top context class: expected %@, actual %@", v9, v10, v11, v12, v13, v14, v7);
@@ -428,16 +428,16 @@ LABEL_9:
   return v5;
 }
 
-- (void)restoreStateFromTopOfContextStackWithExpectedClass:(Class)a3
+- (void)restoreStateFromTopOfContextStackWithExpectedClass:(Class)class
 {
   v5 = objc_opt_class();
-  isSubclassOfClass = objc_msgSend_isSubclassOfClass_(a3, v6, v5, v7);
+  isSubclassOfClass = objc_msgSend_isSubclassOfClass_(class, v6, v5, v7);
   sub_2760CB2EC(isSubclassOfClass, "Unexpected class hierarchy", v9, v10, v11, v12, v13, v14, v25);
-  v26 = objc_msgSend_topOfContextStackWithExpectedClass_(self, v15, a3, v16);
+  v26 = objc_msgSend_topOfContextStackWithExpectedClass_(self, v15, class, v16);
   v20 = objc_msgSend_taggerState(v26, v17, v18, v19);
   objc_msgSend_setState_(self, v21, v20, v22);
 
-  objc_msgSend_popContextWithExpectedClass_(self, v23, a3, v24);
+  objc_msgSend_popContextWithExpectedClass_(self, v23, class, v24);
 }
 
 - (id)topmostColumnContext
@@ -491,31 +491,31 @@ LABEL_9:
   }
 }
 
-- (BOOL)textStorageChunkIsFootnote:(id)a3
+- (BOOL)textStorageChunkIsFootnote:(id)footnote
 {
-  v4 = objc_msgSend_storage(a3, a2, a3, v3);
+  v4 = objc_msgSend_storage(footnote, a2, footnote, v3);
   v8 = objc_msgSend_wpKind(v4, v5, v6, v7) == 2;
 
   return v8;
 }
 
-- (void)beginTextStorageChunk:(id)a3 limitSelection:(id)a4
+- (void)beginTextStorageChunk:(id)chunk limitSelection:(id)selection
 {
-  v6 = a3;
-  v7 = a4;
+  chunkCopy = chunk;
+  selectionCopy = selection;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2760CDE84;
   v12[3] = &unk_27A6B03E0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = chunkCopy;
+  v14 = selectionCopy;
+  v8 = selectionCopy;
+  v9 = chunkCopy;
   objc_msgSend_executeBlock_(self, v10, v12, v11);
 }
 
-- (void)endTextStorageChunk:(id)a3
+- (void)endTextStorageChunk:(id)chunk
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -525,49 +525,49 @@ LABEL_9:
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
-- (void)beginOneColumnText:(id)a3 column:(id)a4 limitSelection:(id)a5
+- (void)beginOneColumnText:(id)text column:(id)column limitSelection:(id)selection
 {
-  v7 = a4;
-  v8 = a5;
+  columnCopy = column;
+  selectionCopy = selection;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_2760CE154;
   v13[3] = &unk_27A6B03E0;
   v13[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v9 = v8;
-  v10 = v7;
+  v14 = columnCopy;
+  v15 = selectionCopy;
+  v9 = selectionCopy;
+  v10 = columnCopy;
   objc_msgSend_executeBlock_(self, v11, v13, v12);
 }
 
-- (void)endOneColumnText:(id)a3 column:(id)a4
+- (void)endOneColumnText:(id)text column:(id)column
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760CE23C;
   v4[3] = &unk_27A6AF850;
   v4[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v4, a4);
+  objc_msgSend_executeBlock_(self, a2, v4, column);
 }
 
-- (void)beginTextColumn:(id)a3 limitSelection:(id)a4
+- (void)beginTextColumn:(id)column limitSelection:(id)selection
 {
-  v6 = a3;
-  v7 = a4;
+  columnCopy = column;
+  selectionCopy = selection;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2760CE364;
   v12[3] = &unk_27A6B03E0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = columnCopy;
+  v14 = selectionCopy;
+  v8 = selectionCopy;
+  v9 = columnCopy;
   objc_msgSend_executeBlock_(self, v10, v12, v11);
 }
 
-- (void)endTextColumn:(id)a3
+- (void)endTextColumn:(id)column
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -593,20 +593,20 @@ LABEL_9:
   return isKindOfClass & 1;
 }
 
-- (void)assertTopOfContextStackIsParagraph:(BOOL)a3
+- (void)assertTopOfContextStackIsParagraph:(BOOL)paragraph
 {
-  if (objc_msgSend_topOfContextStackIsParagraph(self, a2, a3, v3) != a3)
+  if (objc_msgSend_topOfContextStackIsParagraph(self, a2, paragraph, v3) != paragraph)
   {
 
     sub_2760CB2EC(0, "Incorrect paragraph rendering context life span", v4, v5, v6, v7, v8, v9, v11);
   }
 }
 
-- (void)beginMultiParagraphEntityWithLineFragmentRange:(_NSRange)a3
+- (void)beginMultiParagraphEntityWithLineFragmentRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_topmostParagraphLevelResolver(self, a2, a3.location, a3.length);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_topmostParagraphLevelResolver(self, a2, range.location, range.length);
   v10 = objc_msgSend_topmostColumnContext(self, v7, v8, v9);
   v14 = objc_msgSend_paragraphEnumerator(v10, v11, v12, v13);
   v22 = TSWPParagraphEnumerator::paragraphTextRange(v14);
@@ -670,11 +670,11 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)endMultiParagraphEntityWithLineFragmentRange:(_NSRange)a3
+- (void)endMultiParagraphEntityWithLineFragmentRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_topmostParagraphLevelResolver(self, a2, a3.location, a3.length);
+  length = range.length;
+  location = range.location;
+  v6 = objc_msgSend_topmostParagraphLevelResolver(self, a2, range.location, range.length);
   v10 = objc_msgSend_topmostColumnContext(self, v7, v8, v9);
   v14 = objc_msgSend_paragraphEnumerator(v10, v11, v12, v13);
   v15 = TSWPParagraphEnumerator::paragraphTextRange(v14);
@@ -734,12 +734,12 @@ LABEL_12:
 LABEL_14:
 }
 
-+ (BOOL)isHeadingStyle:(id)a3 headingIndex:(int *)a4
++ (BOOL)isHeadingStyle:(id)style headingIndex:(int *)index
 {
-  v5 = objc_msgSend_intValueForProperty_(a3, a2, 101, a4);
-  if (a4 && v5 <= 6)
+  v5 = objc_msgSend_intValueForProperty_(style, a2, 101, index);
+  if (index && v5 <= 6)
   {
-    *a4 = v5;
+    *index = v5;
   }
 
   return v5 < 7;
@@ -850,11 +850,11 @@ LABEL_14:
   return v24;
 }
 
-- (void)beginParagraphWithLineFragmentRange:(_NSRange)a3
+- (void)beginParagraphWithLineFragmentRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  objc_msgSend_assertTopOfContextStackIsParagraph_(self, a2, 0, a3.length);
+  length = range.length;
+  location = range.location;
+  objc_msgSend_assertTopOfContextStackIsParagraph_(self, a2, 0, range.length);
   objc_msgSend_beginMultiParagraphEntityWithLineFragmentRange_(self, v6, location, length);
   v10 = objc_msgSend_currentParagraphNeedsSpans(self, v7, v8, v9);
   v11 = [TSAPdfTaggerParagraphContext alloc];
@@ -975,19 +975,19 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)endParagraphWithLineFragmentRange:(_NSRange)a3
+- (void)endParagraphWithLineFragmentRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_opt_class();
   objc_msgSend_restoreStateFromTopOfContextStackWithExpectedClass_(self, v7, v6, v8);
 
   MEMORY[0x2821F9670](self, sel_endMultiParagraphEntityWithLineFragmentRange_, location, length);
 }
 
-- (void)beginParagraphBodyWithLineFragmentRange:(_NSRange)a3
+- (void)beginParagraphBodyWithLineFragmentRange:(_NSRange)range
 {
-  v4 = objc_msgSend_topmostTagType(self, a2, a3.location, a3.length);
+  v4 = objc_msgSend_topmostTagType(self, a2, range.location, range.length);
   if (v4 == 301)
   {
     v7 = 303;
@@ -1006,22 +1006,22 @@ LABEL_27:
   objc_msgSend_beginTagWithType_(self, v5, v7, v6);
 }
 
-- (void)assertCharIndexRelativeToParagraphRange:(BOOL)a3
+- (void)assertCharIndexRelativeToParagraphRange:(BOOL)range
 {
-  if (!a3)
+  if (!range)
   {
-    sub_2760CB2EC(0, "Char index not in paragraph range", a3, v3, v4, v5, v6, v7, v8);
+    sub_2760CB2EC(0, "Char index not in paragraph range", range, v3, v4, v5, v6, v7, v8);
   }
 }
 
-- (void)advanceParagraphEnumeratorToCharIndex:(unint64_t)a3
+- (void)advanceParagraphEnumeratorToCharIndex:(unint64_t)index
 {
-  v11 = objc_msgSend_topmostColumnContext(self, a2, a3, v3);
+  v11 = objc_msgSend_topmostColumnContext(self, a2, index, v3);
   v8 = objc_msgSend_paragraphEnumerator(v11, v5, v6, v7);
   while (1)
   {
     v9 = TSWPParagraphEnumerator::paragraphTextRange(v8);
-    if (v9 + v10 > a3)
+    if (v9 + v10 > index)
     {
       break;
     }
@@ -1030,9 +1030,9 @@ LABEL_27:
   }
 }
 
-- (void)executeBlockForCurrentParagraph:(id)a3
+- (void)executeBlockForCurrentParagraph:(id)paragraph
 {
-  v26 = a3;
+  paragraphCopy = paragraph;
   v7 = objc_msgSend_topmostColumnRange(self, v4, v5, v6);
   v9 = v8;
   v12 = objc_msgSend_topmostColumnContext(self, v8, v10, v11);
@@ -1044,10 +1044,10 @@ LABEL_27:
   v29.location = v7;
   v29.length = v9;
   v25 = NSIntersectionRange(v28, v29);
-  v26[2](v26, v20, v25.location, v25.length);
+  paragraphCopy[2](paragraphCopy, v20, v25.location, v25.length);
 }
 
-- (unint64_t)indexOfLastVisibleCharInParagraphBeforeCharIndex:(unint64_t)a3
+- (unint64_t)indexOfLastVisibleCharInParagraphBeforeCharIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -1058,7 +1058,7 @@ LABEL_27:
   v6[2] = sub_2760CF4C4;
   v6[3] = &unk_27A6B0990;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = index;
   v6[4] = self;
   objc_msgSend_executeBlockForCurrentParagraph_(self, a2, v6, v3);
   v4 = v8[3];
@@ -1066,7 +1066,7 @@ LABEL_27:
   return v4;
 }
 
-- (unint64_t)indexOfFirstVisibleCharInParagraphAtOrAfterCharIndex:(unint64_t)a3
+- (unint64_t)indexOfFirstVisibleCharInParagraphAtOrAfterCharIndex:(unint64_t)index
 {
   v7 = 0;
   v8 = &v7;
@@ -1077,7 +1077,7 @@ LABEL_27:
   v6[2] = sub_2760CF658;
   v6[3] = &unk_27A6B0990;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = index;
   v6[4] = self;
   objc_msgSend_executeBlockForCurrentParagraph_(self, a2, v6, v3);
   v4 = v8[3];
@@ -1085,26 +1085,26 @@ LABEL_27:
   return v4;
 }
 
-- (void)beginLineFragmentWithRange:(_NSRange)a3
+- (void)beginLineFragmentWithRange:(_NSRange)range
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_2760CF79C;
   v3[3] = &unk_27A6B09B8;
-  v4 = a3;
+  rangeCopy = range;
   v3[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v3, a3.length);
+  objc_msgSend_executeBlock_(self, a2, v3, range.length);
 }
 
-- (void)endLineFragmentWithRange:(_NSRange)a3
+- (void)endLineFragmentWithRange:(_NSRange)range
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_2760CF878;
   v3[3] = &unk_27A6B09B8;
-  v4 = a3;
+  rangeCopy = range;
   v3[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v3, a3.length);
+  objc_msgSend_executeBlock_(self, a2, v3, range.length);
 }
 
 - (void)beginListLabel
@@ -1127,159 +1127,159 @@ LABEL_27:
   objc_msgSend_executeBlock_(self, a2, v3, v2);
 }
 
-- (void)beginLineFragmentBodyWithRange:(_NSRange)a3
+- (void)beginLineFragmentBodyWithRange:(_NSRange)range
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_2760CFB1C;
   v3[3] = &unk_27A6B09B8;
-  v4 = a3;
+  rangeCopy = range;
   v3[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v3, a3.length);
+  objc_msgSend_executeBlock_(self, a2, v3, range.length);
 }
 
-- (void)endLineFragmentBodyWithRange:(_NSRange)a3
+- (void)endLineFragmentBodyWithRange:(_NSRange)range
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_2760CFC3C;
   v3[3] = &unk_27A6B09B8;
-  v4 = a3;
+  rangeCopy = range;
   v3[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v3, a3.length);
+  objc_msgSend_executeBlock_(self, a2, v3, range.length);
 }
 
-- (id)retrieveHighestInfoAtCharIndex:(unint64_t)a3 returnTagType:(int *)a4
+- (id)retrieveHighestInfoAtCharIndex:(unint64_t)index returnTagType:(int *)type
 {
-  v6 = objc_msgSend_topmostTextStorage(self, a2, a3, a4);
+  v6 = objc_msgSend_topmostTextStorage(self, a2, index, type);
   v8 = v6;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(v6, v7, a3, 6, 0);
+    v10 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(v6, v7, index, 6, 0);
     objc_opt_class();
     v9 = TSUDynamicCast();
 
     if (v9)
     {
-      *a4 = 506;
+      *type = 506;
     }
   }
 
   return v9;
 }
 
-- (void)beginPrimaryTextRunWithRange:(_NSRange)a3 hasActualContents:(BOOL)a4
+- (void)beginPrimaryTextRunWithRange:(_NSRange)range hasActualContents:(BOOL)contents
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760CFE00;
   v4[3] = &unk_27A6AF8A0;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
-  objc_msgSend_executeBlock_(self, a2, v4, a3.length);
+  rangeCopy = range;
+  contentsCopy = contents;
+  objc_msgSend_executeBlock_(self, a2, v4, range.length);
 }
 
-- (void)endPrimaryTextRunWithRange:(_NSRange)a3 hasActualContents:(BOOL)a4
+- (void)endPrimaryTextRunWithRange:(_NSRange)range hasActualContents:(BOOL)contents
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760CFF58;
   v4[3] = &unk_27A6AF850;
   v4[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v4, a3.length, a4);
+  objc_msgSend_executeBlock_(self, a2, v4, range.length, contents);
 }
 
-- (void)beginAncillaryTextRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4
+- (void)beginAncillaryTextRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D0014;
   v4[3] = &unk_27A6B09E0;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
-  objc_msgSend_executeBlock_(self, a2, v4, a3.length);
+  rangeCopy = range;
+  textRangeCopy = textRange;
+  objc_msgSend_executeBlock_(self, a2, v4, range.length);
 }
 
-- (void)endAncillaryTextRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4
+- (void)endAncillaryTextRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D01A0;
   v4[3] = &unk_27A6AF850;
   v4[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v4, a3.length, a4.location, a4.length);
+  objc_msgSend_executeBlock_(self, a2, v4, range.length, textRange.location, textRange.length);
 }
 
-- (void)beginRubyRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4
+- (void)beginRubyRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D025C;
   v4[3] = &unk_27A6B09E0;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
-  objc_msgSend_executeBlock_(self, a2, v4, a3.length);
+  rangeCopy = range;
+  textRangeCopy = textRange;
+  objc_msgSend_executeBlock_(self, a2, v4, range.length);
 }
 
-- (void)endRubyRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4
+- (void)endRubyRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D0360;
   v4[3] = &unk_27A6AF850;
   v4[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v4, a3.length, a4.location, a4.length);
+  objc_msgSend_executeBlock_(self, a2, v4, range.length, textRange.location, textRange.length);
 }
 
-- (void)beginTateChuYokoRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4
+- (void)beginTateChuYokoRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D041C;
   v4[3] = &unk_27A6B09E0;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
-  objc_msgSend_executeBlock_(self, a2, v4, a3.length);
+  rangeCopy = range;
+  textRangeCopy = textRange;
+  objc_msgSend_executeBlock_(self, a2, v4, range.length);
 }
 
-- (void)endTateChuYokoRunWithRange:(_NSRange)a3 baseTextRange:(_NSRange)a4
+- (void)endTateChuYokoRunWithRange:(_NSRange)range baseTextRange:(_NSRange)textRange
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D052C;
   v4[3] = &unk_27A6AF850;
   v4[4] = self;
-  objc_msgSend_executeBlock_(self, a2, v4, a3.length, a4.location, a4.length);
+  objc_msgSend_executeBlock_(self, a2, v4, range.length, textRange.location, textRange.length);
 }
 
-- (void)dispatchObject:(id)a3 tableBlock:(id)a4 tocBlock:(id)a5 drawableBlock:(id)a6
+- (void)dispatchObject:(id)object tableBlock:(id)block tocBlock:(id)tocBlock drawableBlock:(id)drawableBlock
 {
-  v21 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  objectCopy = object;
+  blockCopy = block;
+  tocBlockCopy = tocBlock;
+  drawableBlockCopy = drawableBlock;
   objc_opt_class();
   v12 = TSUDynamicCast();
   objc_opt_class();
   v13 = TSUDynamicCast();
   objc_opt_class();
-  v17 = objc_msgSend_info(v21, v14, v15, v16);
+  v17 = objc_msgSend_info(objectCopy, v14, v15, v16);
   v18 = TSUDynamicCast();
 
   if (v12)
   {
-    v19 = v9;
+    v19 = blockCopy;
     v20 = v12;
-    if (!v9)
+    if (!blockCopy)
     {
       goto LABEL_7;
     }
@@ -1291,9 +1291,9 @@ LABEL_6:
 
   if (v13)
   {
-    v19 = v10;
+    v19 = tocBlockCopy;
     v20 = v13;
-    if (!v10)
+    if (!tocBlockCopy)
     {
       goto LABEL_7;
     }
@@ -1301,37 +1301,37 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (v11 && v18)
+  if (drawableBlockCopy && v18)
   {
-    v11[2](v11, v21);
+    drawableBlockCopy[2](drawableBlockCopy, objectCopy);
   }
 
 LABEL_7:
 }
 
-- (void)handleObject:(id)a3 tableBlock:(id)a4 tocBlock:(id)a5 drawableBlock:(id)a6
+- (void)handleObject:(id)object tableBlock:(id)block tocBlock:(id)tocBlock drawableBlock:(id)drawableBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectCopy = object;
+  blockCopy = block;
+  tocBlockCopy = tocBlock;
+  drawableBlockCopy = drawableBlock;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = sub_2760D0860;
   v20[3] = &unk_27A6B0A08;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v21 = objectCopy;
+  v22 = blockCopy;
+  v23 = tocBlockCopy;
+  v24 = drawableBlockCopy;
+  v14 = drawableBlockCopy;
+  v15 = tocBlockCopy;
+  v16 = blockCopy;
+  v17 = objectCopy;
   objc_msgSend_executeBlock_(self, v18, v20, v19);
 }
 
-- (id)regularDrawableRepForObjectRep:(id)a3
+- (id)regularDrawableRepForObjectRep:(id)rep
 {
   v6 = 0;
   v7 = &v6;
@@ -1344,18 +1344,18 @@ LABEL_7:
   v5[2] = sub_2760D099C;
   v5[3] = &unk_27A6B0A30;
   v5[4] = &v6;
-  objc_msgSend_dispatchObject_tableBlock_tocBlock_drawableBlock_(self, a2, a3, 0, 0, v5);
+  objc_msgSend_dispatchObject_tableBlock_tocBlock_drawableBlock_(self, a2, rep, 0, 0, v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
   return v3;
 }
 
-+ (BOOL)shouldMapDrawableRep:(id)a3
++ (BOOL)shouldMapDrawableRep:(id)rep
 {
-  v3 = a3;
+  repCopy = rep;
   objc_opt_class();
-  v7 = objc_msgSend_info(v3, v4, v5, v6);
+  v7 = objc_msgSend_info(repCopy, v4, v5, v6);
   v8 = TSUDynamicCast();
 
   objc_opt_class();
@@ -1382,7 +1382,7 @@ LABEL_7:
   return v15 & 1;
 }
 
-- (void)beginObject:(id)a3
+- (void)beginObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -1399,10 +1399,10 @@ LABEL_7:
   v3[1] = 3221225472;
   v3[2] = sub_2760D0BF0;
   v3[3] = &unk_27A6B0AA8;
-  objc_msgSend_handleObject_tableBlock_tocBlock_drawableBlock_(self, a2, a3, v5, v4, v3);
+  objc_msgSend_handleObject_tableBlock_tocBlock_drawableBlock_(self, a2, object, v5, v4, v3);
 }
 
-- (void)endObject:(id)a3
+- (void)endObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -1419,18 +1419,18 @@ LABEL_7:
   v3[1] = 3221225472;
   v3[2] = sub_2760D0D74;
   v3[3] = &unk_27A6B0AA8;
-  objc_msgSend_handleObject_tableBlock_tocBlock_drawableBlock_(self, a2, a3, v5, v4, v3);
+  objc_msgSend_handleObject_tableBlock_tocBlock_drawableBlock_(self, a2, object, v5, v4, v3);
 }
 
-- (void)beginDrawable:(id)a3
+- (void)beginDrawable:(id)drawable
 {
   v76[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  drawableCopy = drawable;
   v5 = [TSAPdfTaggerDrawableContext alloc];
-  v7 = objc_msgSend_initWithStateOfTagger_drawableRep_(v5, v6, self, v4);
+  v7 = objc_msgSend_initWithStateOfTagger_drawableRep_(v5, v6, self, drawableCopy);
   objc_msgSend_pushContext_(self, v8, v7, v9);
   objc_opt_class();
-  v13 = objc_msgSend_info(v4, v10, v11, v12);
+  v13 = objc_msgSend_info(drawableCopy, v10, v11, v12);
   v14 = TSUDynamicCast();
 
   v18 = objc_msgSend_accessibilityDescription(v14, v15, v16, v17);
@@ -1522,44 +1522,44 @@ LABEL_7:
   }
 }
 
-- (void)endDrawable:(id)a3
+- (void)endDrawable:(id)drawable
 {
   v5 = objc_opt_class();
 
   objc_msgSend_restoreStateFromTopOfContextStackWithExpectedClass_(self, v4, v5, v6);
 }
 
-- (void)beginFreehandDrawing:(id)a3
+- (void)beginFreehandDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2760D13F8;
   v8[3] = &unk_27A6B0338;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = drawingCopy;
+  v5 = drawingCopy;
   objc_msgSend_executeBlock_(self, v6, v8, v7);
 }
 
-- (void)endFreehandDrawing:(id)a3
+- (void)endFreehandDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2760D14B0;
   v8[3] = &unk_27A6B0338;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = drawingCopy;
+  v5 = drawingCopy;
   objc_msgSend_executeBlock_(self, v6, v8, v7);
 }
 
-- (void)beginTOCChunk:(id)a3
+- (void)beginTOCChunk:(id)chunk
 {
-  v18 = a3;
+  chunkCopy = chunk;
   v4 = [TSAPdfTaggerTocChunkContext alloc];
-  v6 = objc_msgSend_initWithStateOfTagger_tocChunkRep_(v4, v5, self, v18);
+  v6 = objc_msgSend_initWithStateOfTagger_tocChunkRep_(v4, v5, self, chunkCopy);
   objc_msgSend_setUp(v6, v7, v8, v9);
   objc_msgSend_pushContext_(self, v10, v6, v11);
   v12 = [TSAPdfTaggerTocParagraphLevelResolver alloc];
@@ -1567,35 +1567,35 @@ LABEL_7:
   objc_msgSend_tsu_push_(self->_paragraphLevelResolverStack, v16, v15, v17);
 }
 
-- (void)endTOCChunk:(id)a3
+- (void)endTOCChunk:(id)chunk
 {
-  v5 = objc_msgSend_tsu_pop(self->_paragraphLevelResolverStack, a2, a3, v3);
+  v5 = objc_msgSend_tsu_pop(self->_paragraphLevelResolverStack, a2, chunk, v3);
   v7 = objc_opt_class();
 
   objc_msgSend_restoreStateFromTopOfContextStackWithExpectedClass_(self, v6, v7, v8);
 }
 
-- (void)beginTableChunk:(id)a3
+- (void)beginTableChunk:(id)chunk
 {
-  v15 = a3;
+  chunkCopy = chunk;
   v4 = [TSAPdfTaggerTableChunkContext alloc];
-  v6 = objc_msgSend_initWithStateOfTagger_tableChunk_(v4, v5, self, v15);
+  v6 = objc_msgSend_initWithStateOfTagger_tableChunk_(v4, v5, self, chunkCopy);
   objc_msgSend_pushContext_(self, v7, v6, v8);
-  v12 = objc_msgSend_tableLayout(v15, v9, v10, v11);
+  v12 = objc_msgSend_tableLayout(chunkCopy, v9, v10, v11);
   if (TSTLayoutGetTableNameVisible())
   {
     objc_msgSend_beginTagWithType_(self, v13, 104, v14);
   }
 }
 
-- (void)endTableChunk:(id)a3
+- (void)endTableChunk:(id)chunk
 {
   v5 = objc_opt_class();
 
   objc_msgSend_restoreStateFromTopOfContextStackWithExpectedClass_(self, v4, v5, v6);
 }
 
-- (void)beginTableNameForChunk:(id)a3
+- (void)beginTableNameForChunk:(id)chunk
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1605,7 +1605,7 @@ LABEL_7:
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
-- (void)endTableNameForChunk:(id)a3
+- (void)endTableNameForChunk:(id)chunk
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1615,20 +1615,20 @@ LABEL_7:
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
-- (void)beginTableLayoutSpace:(id)a3
+- (void)beginTableLayoutSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_2760D193C;
   v8[3] = &unk_27A6B0338;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = spaceCopy;
+  v5 = spaceCopy;
   objc_msgSend_executeBlock_(self, v6, v8, v7);
 }
 
-- (void)endTableLayoutSpace:(id)a3
+- (void)endTableLayoutSpace:(id)space
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1638,18 +1638,18 @@ LABEL_7:
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
-- (void)beginTableRow:(unsigned int)a3
+- (void)beginTableRow:(unsigned int)row
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D1B48;
   v4[3] = &unk_27A6B0AD0;
   v4[4] = self;
-  v5 = a3;
+  rowCopy = row;
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
-- (void)endTableRow:(unsigned int)a3
+- (void)endTableRow:(unsigned int)row
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1659,38 +1659,38 @@ LABEL_7:
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
-- (void)beginTableCell:(id)a3 withCellID:(TSUCellCoord)a4 cellHasContents:(BOOL)a5 cellIsPrimary:(BOOL)a6
+- (void)beginTableCell:(id)cell withCellID:(TSUCellCoord)d cellHasContents:(BOOL)contents cellIsPrimary:(BOOL)primary
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2760D1D04;
   v6[3] = &unk_27A6B0AF8;
-  v7 = a6;
+  primaryCopy = primary;
   v6[4] = self;
-  v6[5] = a4;
-  v8 = a5;
-  objc_msgSend_executeBlock_(self, a2, v6, *&a4);
+  v6[5] = d;
+  contentsCopy = contents;
+  objc_msgSend_executeBlock_(self, a2, v6, *&d);
 }
 
-- (void)endTableCell:(id)a3 withCellID:(TSUCellCoord)a4 cellHasContents:(BOOL)a5 cellIsPrimary:(BOOL)a6
+- (void)endTableCell:(id)cell withCellID:(TSUCellCoord)d cellHasContents:(BOOL)contents cellIsPrimary:(BOOL)primary
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = sub_2760D1EF0;
   v6[3] = &unk_27A6B0B20;
   v6[4] = self;
-  v7 = a6;
-  objc_msgSend_executeBlock_(self, a2, v6, *&a4, a5);
+  primaryCopy = primary;
+  objc_msgSend_executeBlock_(self, a2, v6, *&d, contents);
 }
 
-- (void)beginCheckboxCell:(BOOL)a3
+- (void)beginCheckboxCell:(BOOL)cell
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D1FD8;
   v4[3] = &unk_27A6B0B20;
   v4[4] = self;
-  v5 = a3;
+  cellCopy = cell;
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
@@ -1704,14 +1704,14 @@ LABEL_7:
   objc_msgSend_executeBlock_(self, a2, v3, v2);
 }
 
-- (void)beginRatingCell:(double)a3
+- (void)beginRatingCell:(double)cell
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_2760D2340;
   v4[3] = &unk_27A6AF878;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = cell;
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
@@ -1725,7 +1725,7 @@ LABEL_7:
   objc_msgSend_executeBlock_(self, a2, v3, v2);
 }
 
-- (void)beginPencilAnnotation:(id)a3
+- (void)beginPencilAnnotation:(id)annotation
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1735,7 +1735,7 @@ LABEL_7:
   objc_msgSend_executeBlock_(self, a2, v4, v3);
 }
 
-- (void)endPencilAnnotation:(id)a3
+- (void)endPencilAnnotation:(id)annotation
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;

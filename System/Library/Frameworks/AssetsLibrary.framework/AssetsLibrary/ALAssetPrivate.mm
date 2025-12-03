@@ -1,24 +1,24 @@
 @interface ALAssetPrivate
-- (ALAssetPrivate)initWithManagedAsset:(id)a3 library:(id)a4;
+- (ALAssetPrivate)initWithManagedAsset:(id)asset library:(id)library;
 - (BOOL)isDeletable;
-- (void)_performBlockAndWait:(id)a3;
+- (void)_performBlockAndWait:(id)wait;
 - (void)dealloc;
 @end
 
 @implementation ALAssetPrivate
 
-- (void)_performBlockAndWait:(id)a3
+- (void)_performBlockAndWait:(id)wait
 {
-  v5 = [(ALAssetPrivate *)self library];
-  if (v5)
+  library = [(ALAssetPrivate *)self library];
+  if (library)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __39__ALAssetPrivate__performBlockAndWait___block_invoke;
     v9[3] = &unk_278A07C08;
     v9[4] = self;
-    v9[5] = a3;
-    [(ALAssetsLibrary *)v5 _performBlockAndWait:v9];
+    v9[5] = wait;
+    [(ALAssetsLibrary *)library _performBlockAndWait:v9];
   }
 
   else if (_CFExecutableLinkedOnOrAfter())
@@ -46,7 +46,7 @@
       block[7] = __39__ALAssetPrivate__performBlockAndWait___block_invoke_3;
       block[8] = &unk_278A07C30;
       block[9] = self;
-      block[10] = a3;
+      block[10] = wait;
     }
 
     else
@@ -58,7 +58,7 @@
       block[13] = __39__ALAssetPrivate__performBlockAndWait___block_invoke_2;
       block[14] = &unk_278A07C30;
       block[15] = self;
-      block[16] = a3;
+      block[16] = wait;
     }
 
     [(PLPhotoLibrary *)photoLibrary withDispatchGroup:v6 performBlock:?];
@@ -129,7 +129,7 @@ uint64_t __29__ALAssetPrivate_isDeletable__block_invoke(uint64_t a1, uint64_t a2
   [(ALAssetPrivate *)&v3 dealloc];
 }
 
-- (ALAssetPrivate)initWithManagedAsset:(id)a3 library:(id)a4
+- (ALAssetPrivate)initWithManagedAsset:(id)asset library:(id)library
 {
   v9.receiver = self;
   v9.super_class = ALAssetPrivate;
@@ -137,8 +137,8 @@ uint64_t __29__ALAssetPrivate_isDeletable__block_invoke(uint64_t a1, uint64_t a2
   v7 = v6;
   if (v6)
   {
-    [(ALAssetPrivate *)v6 setPhoto:a3];
-    [(ALAssetPrivate *)v7 setLibrary:a4];
+    [(ALAssetPrivate *)v6 setPhoto:asset];
+    [(ALAssetPrivate *)v7 setLibrary:library];
     [(ALAssetPrivate *)v7 setIsValid:1];
   }
 

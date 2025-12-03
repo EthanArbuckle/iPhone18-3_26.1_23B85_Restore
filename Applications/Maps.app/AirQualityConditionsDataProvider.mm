@@ -1,17 +1,17 @@
 @interface AirQualityConditionsDataProvider
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
-- (void)weatherLocationDataProvider:(id)a3 didChangeLocation:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)weatherLocationDataProvider:(id)provider didChangeLocation:(id)location;
 @end
 
 @implementation AirQualityConditionsDataProvider
 
-- (void)weatherLocationDataProvider:(id)a3 didChangeLocation:(id)a4
+- (void)weatherLocationDataProvider:(id)provider didChangeLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10004EB04(a4);
+  providerCopy = provider;
+  locationCopy = location;
+  selfCopy = self;
+  sub_10004EB04(location);
 }
 
 - (void)dealloc
@@ -20,7 +20,7 @@
   if (*(&self->super.isa + OBJC_IVAR____TtC4Maps32AirQualityConditionsDataProvider_updatingTimer))
   {
     swift_getObjectType();
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     OS_dispatch_source.cancel()();
     swift_unknownObjectRelease();
@@ -30,7 +30,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6.receiver = self;
@@ -38,11 +38,11 @@
   [(AirQualityConditionsDataProvider *)&v6 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC4Maps32AirQualityConditionsDataProvider_enabled);
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps32AirQualityConditionsDataProvider_enabled) = a3;
-  v4 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps32AirQualityConditionsDataProvider_enabled) = enabled;
+  selfCopy = self;
   sub_1000DF310(v3);
 }
 

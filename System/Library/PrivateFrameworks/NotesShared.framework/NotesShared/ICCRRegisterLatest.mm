@@ -1,100 +1,100 @@
 @interface ICCRRegisterLatest
-- (BOOL)isEqualContents:(id)a3;
-- (ICCRRegisterLatest)initWithContents:(id)a3 document:(id)a4;
-- (ICCRRegisterLatest)initWithContents:(id)a3 timestamp:(id)a4 document:(id)a5;
-- (ICCRRegisterLatest)initWithICCRCoder:(id)a3;
-- (ICCRRegisterLatest)initWithProtobufRegisterLatest:(const void *)a3 decoder:(id)a4;
-- (id)deltaSince:(id)a3 in:(id)a4;
+- (BOOL)isEqualContents:(id)contents;
+- (ICCRRegisterLatest)initWithContents:(id)contents document:(id)document;
+- (ICCRRegisterLatest)initWithContents:(id)contents timestamp:(id)timestamp document:(id)document;
+- (ICCRRegisterLatest)initWithICCRCoder:(id)coder;
+- (ICCRRegisterLatest)initWithProtobufRegisterLatest:(const void *)latest decoder:(id)decoder;
+- (id)deltaSince:(id)since in:(id)in;
 - (id)description;
-- (void)encodeIntoProtobufRegisterLatest:(void *)a3 coder:(id)a4;
-- (void)encodeWithICCRCoder:(id)a3;
-- (void)mergeWith:(id)a3;
-- (void)mergeWithRegisterLatest:(id)a3;
-- (void)realizeLocalChangesIn:(id)a3;
-- (void)setContents:(id)a3;
-- (void)setDocument:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)encodeIntoProtobufRegisterLatest:(void *)latest coder:(id)coder;
+- (void)encodeWithICCRCoder:(id)coder;
+- (void)mergeWith:(id)with;
+- (void)mergeWithRegisterLatest:(id)latest;
+- (void)realizeLocalChangesIn:(id)in;
+- (void)setContents:(id)contents;
+- (void)setDocument:(id)document;
+- (void)walkGraph:(id)graph;
 @end
 
 @implementation ICCRRegisterLatest
 
-- (ICCRRegisterLatest)initWithContents:(id)a3 document:(id)a4
+- (ICCRRegisterLatest)initWithContents:(id)contents document:(id)document
 {
-  v6 = a3;
-  v7 = a4;
+  contentsCopy = contents;
+  documentCopy = document;
   v8 = [ICCRTimestamp alloc];
-  v9 = [MEMORY[0x277CCAD78] CR_unserialized];
-  v10 = [(ICCRTimestamp *)v8 initWithReplica:v9 andCounter:0];
+  cR_unserialized = [MEMORY[0x277CCAD78] CR_unserialized];
+  v10 = [(ICCRTimestamp *)v8 initWithReplica:cR_unserialized andCounter:0];
 
-  v11 = [(ICCRRegisterLatest *)self initWithContents:v6 timestamp:v10 document:v7];
+  v11 = [(ICCRRegisterLatest *)self initWithContents:contentsCopy timestamp:v10 document:documentCopy];
   return v11;
 }
 
-- (ICCRRegisterLatest)initWithContents:(id)a3 timestamp:(id)a4 document:(id)a5
+- (ICCRRegisterLatest)initWithContents:(id)contents timestamp:(id)timestamp document:(id)document
 {
-  v9 = a3;
-  v10 = a4;
+  contentsCopy = contents;
+  timestampCopy = timestamp;
   v14.receiver = self;
   v14.super_class = ICCRRegisterLatest;
-  v11 = [(ICCRRegister *)&v14 initWithDocument:a5];
+  v11 = [(ICCRRegister *)&v14 initWithDocument:document];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_timestamp, a4);
-    objc_storeStrong(&v12->_contents, a3);
+    objc_storeStrong(&v11->_timestamp, timestamp);
+    objc_storeStrong(&v12->_contents, contents);
   }
 
   return v12;
 }
 
-- (void)encodeWithICCRCoder:(id)a3
+- (void)encodeWithICCRCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 1)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 1)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 1;
     operator new();
   }
 
-  [(ICCRRegisterLatest *)self encodeIntoProtobufRegisterLatest:*(v4 + 40) coder:v6];
+  [(ICCRRegisterLatest *)self encodeIntoProtobufRegisterLatest:*(currentDocumentObjectForEncoding + 40) coder:coderCopy];
 }
 
-- (ICCRRegisterLatest)initWithICCRCoder:(id)a3
+- (ICCRRegisterLatest)initWithICCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 1)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 1)
   {
-    v6 = [(ICCRRegisterLatest *)self initWithProtobufRegisterLatest:*(v5 + 40) decoder:v4];
+    v6 = [(ICCRRegisterLatest *)self initWithProtobufRegisterLatest:*(currentDocumentObjectForDecoding + 40) decoder:coderCopy];
   }
 
   else
   {
-    v7 = [v4 document];
-    v6 = [(ICCRRegisterLatest *)self initWithContents:0 document:v7];
+    document = [coderCopy document];
+    v6 = [(ICCRRegisterLatest *)self initWithContents:0 document:document];
   }
 
   return v6;
 }
 
-- (ICCRRegisterLatest)initWithProtobufRegisterLatest:(const void *)a3 decoder:(id)a4
+- (ICCRRegisterLatest)initWithProtobufRegisterLatest:(const void *)latest decoder:(id)decoder
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = *(a3 + 8);
+  decoderCopy = decoder;
+  v7 = decoderCopy;
+  v8 = *(latest + 8);
   if ((v8 & 2) != 0)
   {
-    v10 = *(a3 + 6);
+    v10 = *(latest + 6);
     if (!v10)
     {
-      v10 = *(CRDT::RegisterLatest::default_instance(v6) + 48);
+      v10 = *(CRDT::RegisterLatest::default_instance(decoderCopy) + 48);
     }
 
     v11 = [(CRDT::RegisterLatest *)v7 decodeObjectForProtobufObjectID:v10];
-    v8 = *(a3 + 8);
+    v8 = *(latest + 8);
     v9 = v11;
   }
 
@@ -107,7 +107,7 @@
   {
     v16 = [ICCRTimestamp alloc];
     v17 = v16;
-    v18 = *(a3 + 5);
+    v18 = *(latest + 5);
     if (!v18)
     {
       v18 = *(CRDT::RegisterLatest::default_instance(v16) + 40);
@@ -119,102 +119,102 @@
   else
   {
     v12 = [ICCRTimestamp alloc];
-    v13 = [(CRDT::RegisterLatest *)v7 document];
-    v14 = [v13 replica];
-    v15 = [(ICCRTimestamp *)v12 initWithReplica:v14 andCounter:0];
+    document = [(CRDT::RegisterLatest *)v7 document];
+    replica = [document replica];
+    v15 = [(ICCRTimestamp *)v12 initWithReplica:replica andCounter:0];
   }
 
-  v19 = [(CRDT::RegisterLatest *)v7 document];
-  v20 = [(ICCRRegisterLatest *)self initWithContents:v9 timestamp:v15 document:v19];
+  document2 = [(CRDT::RegisterLatest *)v7 document];
+  v20 = [(ICCRRegisterLatest *)self initWithContents:v9 timestamp:v15 document:document2];
 
   return v20;
 }
 
-- (void)encodeIntoProtobufRegisterLatest:(void *)a3 coder:(id)a4
+- (void)encodeIntoProtobufRegisterLatest:(void *)latest coder:(id)coder
 {
-  v13 = a4;
-  v6 = [(ICCRRegisterLatest *)self timestamp];
-  *(a3 + 8) |= 1u;
-  v7 = *(a3 + 5);
+  coderCopy = coder;
+  timestamp = [(ICCRRegisterLatest *)self timestamp];
+  *(latest + 8) |= 1u;
+  v7 = *(latest + 5);
   if (!v7)
   {
     operator new();
   }
 
-  [v6 encodeIntoProtobufTimestamp:v7 coder:v13];
+  [timestamp encodeIntoProtobufTimestamp:v7 coder:coderCopy];
 
-  v8 = [(ICCRRegisterLatest *)self contents];
+  contents = [(ICCRRegisterLatest *)self contents];
 
-  if (v8)
+  if (contents)
   {
-    v9 = [(ICCRRegisterLatest *)self contents];
-    v10 = [v9 conformsToProtocol:&unk_282759DF8];
+    contents2 = [(ICCRRegisterLatest *)self contents];
+    v10 = [contents2 conformsToProtocol:&unk_282759DF8];
 
     if (v10)
     {
-      v11 = [(ICCRRegisterLatest *)self contents];
-      *(a3 + 8) |= 2u;
-      v12 = *(a3 + 6);
+      contents3 = [(ICCRRegisterLatest *)self contents];
+      *(latest + 8) |= 2u;
+      v12 = *(latest + 6);
       if (!v12)
       {
         operator new();
       }
 
-      [v13 encodeObject:v11 forObjectID:v12];
+      [coderCopy encodeObject:contents3 forObjectID:v12];
     }
   }
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v5 = a3;
-  if (self->_contents != v5)
+  contentsCopy = contents;
+  if (self->_contents != contentsCopy)
   {
-    v17 = v5;
-    objc_storeStrong(&self->_contents, a3);
-    v6 = [(ICCRRegisterLatest *)self timestamp];
-    v7 = [v6 replica];
-    v8 = [MEMORY[0x277CCAD78] CR_unserialized];
+    v17 = contentsCopy;
+    objc_storeStrong(&self->_contents, contents);
+    timestamp = [(ICCRRegisterLatest *)self timestamp];
+    replica = [timestamp replica];
+    cR_unserialized = [MEMORY[0x277CCAD78] CR_unserialized];
 
-    if (v7 != v8)
+    if (replica != cR_unserialized)
     {
-      v9 = [(ICCRRegister *)self document];
-      v10 = [v9 replicaClock];
+      document = [(ICCRRegister *)self document];
+      replicaClock = [document replicaClock];
 
-      v11 = [(ICCRRegisterLatest *)self timestamp];
-      v12 = [v11 counter];
+      timestamp2 = [(ICCRRegisterLatest *)self timestamp];
+      counter = [timestamp2 counter];
 
-      if (v10 > v12)
+      if (replicaClock > counter)
       {
-        v12 = v10;
+        counter = replicaClock;
       }
 
       v13 = [ICCRTimestamp alloc];
-      v14 = [MEMORY[0x277CCAD78] CR_unserialized];
-      v15 = [(ICCRTimestamp *)v13 initWithReplica:v14 andCounter:v12 + 1];
+      cR_unserialized2 = [MEMORY[0x277CCAD78] CR_unserialized];
+      v15 = [(ICCRTimestamp *)v13 initWithReplica:cR_unserialized2 andCounter:counter + 1];
       [(ICCRRegisterLatest *)self setTimestamp:v15];
     }
 
-    v16 = [(ICCRRegister *)self document];
-    [v16 setDocumentFor:v17];
+    document2 = [(ICCRRegister *)self document];
+    [document2 setDocumentFor:v17];
 
-    v5 = v17;
+    contentsCopy = v17;
   }
 }
 
-- (BOOL)isEqualContents:(id)a3
+- (BOOL)isEqualContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ICCRRegisterLatest *)self contents];
-    v6 = [v4 contents];
-    if ([v5 isEqual:v6])
+    contents = [(ICCRRegisterLatest *)self contents];
+    contents2 = [contentsCopy contents];
+    if ([contents isEqual:contents2])
     {
-      v7 = [(ICCRRegisterLatest *)self timestamp];
-      v8 = [v4 timestamp];
-      v9 = [v7 isEqual:v8];
+      timestamp = [(ICCRRegisterLatest *)self timestamp];
+      timestamp2 = [contentsCopy timestamp];
+      v9 = [timestamp isEqual:timestamp2];
     }
 
     else
@@ -231,51 +231,51 @@
   return v9;
 }
 
-- (void)realizeLocalChangesIn:(id)a3
+- (void)realizeLocalChangesIn:(id)in
 {
-  v15 = a3;
-  v4 = [(ICCRRegisterLatest *)self timestamp];
-  v5 = [v4 replica];
-  v6 = [MEMORY[0x277CCAD78] CR_unserialized];
+  inCopy = in;
+  timestamp = [(ICCRRegisterLatest *)self timestamp];
+  replica = [timestamp replica];
+  cR_unserialized = [MEMORY[0x277CCAD78] CR_unserialized];
 
-  if (v5 == v6)
+  if (replica == cR_unserialized)
   {
-    v7 = [(ICCRRegisterLatest *)self timestamp];
-    if ([v7 counter])
+    timestamp2 = [(ICCRRegisterLatest *)self timestamp];
+    if ([timestamp2 counter])
     {
-      v8 = [(ICCRRegisterLatest *)self timestamp];
-      v9 = [v8 counter];
+      timestamp3 = [(ICCRRegisterLatest *)self timestamp];
+      counter = [timestamp3 counter];
     }
 
     else
     {
-      v9 = [v15 replicaClock] + 1;
+      counter = [inCopy replicaClock] + 1;
     }
 
     v10 = [ICCRTimestamp alloc];
-    v11 = [v15 replica];
-    v12 = [(ICCRTimestamp *)v10 initWithReplica:v11 andCounter:v9];
+    replica2 = [inCopy replica];
+    v12 = [(ICCRTimestamp *)v10 initWithReplica:replica2 andCounter:counter];
     [(ICCRRegisterLatest *)self setTimestamp:v12];
 
-    v13 = [v15 unserializedReplicaClock];
-    if (v9 <= v13)
+    unserializedReplicaClock = [inCopy unserializedReplicaClock];
+    if (counter <= unserializedReplicaClock)
     {
-      v14 = v13;
+      v14 = unserializedReplicaClock;
     }
 
     else
     {
-      v14 = v9;
+      v14 = counter;
     }
 
-    [v15 setUnserializedReplicaClock:v14];
+    [inCopy setUnserializedReplicaClock:v14];
   }
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v5 = a3;
-  if (v5)
+  withCopy = with;
+  if (withCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -284,57 +284,57 @@
       objc_exception_throw(v4);
     }
 
-    [(ICCRRegisterLatest *)self mergeWithRegisterLatest:v5];
+    [(ICCRRegisterLatest *)self mergeWithRegisterLatest:withCopy];
   }
 }
 
-- (void)mergeWithRegisterLatest:(id)a3
+- (void)mergeWithRegisterLatest:(id)latest
 {
-  v9 = a3;
-  v4 = [(ICCRRegisterLatest *)self timestamp];
-  v5 = [v9 timestamp];
-  v6 = [v4 compare:v5];
+  latestCopy = latest;
+  timestamp = [(ICCRRegisterLatest *)self timestamp];
+  timestamp2 = [latestCopy timestamp];
+  v6 = [timestamp compare:timestamp2];
 
   if (v6 == -1)
   {
-    v7 = [v9 contents];
-    [(ICCRRegisterLatest *)self setContents:v7];
+    contents = [latestCopy contents];
+    [(ICCRRegisterLatest *)self setContents:contents];
 
-    v8 = [v9 timestamp];
-    [(ICCRRegisterLatest *)self setTimestamp:v8];
+    timestamp3 = [latestCopy timestamp];
+    [(ICCRRegisterLatest *)self setTimestamp:timestamp3];
   }
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v8.receiver = self;
   v8.super_class = ICCRRegisterLatest;
-  [(ICCRRegister *)&v8 setDocument:v4];
-  v5 = [(ICCRRegisterLatest *)self contents];
-  v6 = [v4 localObject:v5];
+  [(ICCRRegister *)&v8 setDocument:documentCopy];
+  contents = [(ICCRRegisterLatest *)self contents];
+  v6 = [documentCopy localObject:contents];
   contents = self->_contents;
   self->_contents = v6;
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCRRegisterLatest *)self timestamp];
-  v9 = [v8 replica];
-  v10 = [v6 timestampForReplica:v9];
-  v11 = [(ICCRRegisterLatest *)self timestamp];
-  v12 = [v10 compare:v11];
+  sinceCopy = since;
+  inCopy = in;
+  timestamp = [(ICCRRegisterLatest *)self timestamp];
+  replica = [timestamp replica];
+  v10 = [sinceCopy timestampForReplica:replica];
+  timestamp2 = [(ICCRRegisterLatest *)self timestamp];
+  v12 = [v10 compare:timestamp2];
 
   if (v12)
   {
     if (v12 == -1)
     {
       v13 = [ICCRRegisterLatest alloc];
-      v14 = [(ICCRRegisterLatest *)self contents];
-      v15 = [(ICCRRegisterLatest *)self timestamp];
-      v16 = [(ICCRRegisterLatest *)v13 initWithContents:v14 timestamp:v15 document:v7];
+      contents = [(ICCRRegisterLatest *)self contents];
+      timestamp3 = [(ICCRRegisterLatest *)self timestamp];
+      v16 = [(ICCRRegisterLatest *)v13 initWithContents:contents timestamp:timestamp3 document:inCopy];
 LABEL_6:
       v19 = v16;
 
@@ -344,14 +344,14 @@ LABEL_6:
 
   else
   {
-    v17 = [(ICCRRegisterLatest *)self contents];
-    v14 = [v17 deltaSince:v6 in:v7];
+    contents2 = [(ICCRRegisterLatest *)self contents];
+    contents = [contents2 deltaSince:sinceCopy in:inCopy];
 
-    if (v14)
+    if (contents)
     {
       v18 = [ICCRRegisterLatest alloc];
-      v15 = [(ICCRRegisterLatest *)self timestamp];
-      v16 = [(ICCRRegisterLatest *)v18 initWithContents:v14 timestamp:v15 document:v7];
+      timestamp3 = [(ICCRRegisterLatest *)self timestamp];
+      v16 = [(ICCRRegisterLatest *)v18 initWithContents:contents timestamp:timestamp3 document:inCopy];
       goto LABEL_6;
     }
   }
@@ -362,11 +362,11 @@ LABEL_8:
   return v19;
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v5 = a3;
-  v4 = [(ICCRRegisterLatest *)self contents];
-  v5[2](v5, v4);
+  graphCopy = graph;
+  contents = [(ICCRRegisterLatest *)self contents];
+  graphCopy[2](graphCopy, contents);
 }
 
 - (id)description
@@ -374,10 +374,10 @@ LABEL_8:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICCRRegisterLatest *)self timestamp];
-  v7 = [v6 shortDescription];
-  v8 = [(ICCRRegisterLatest *)self contents];
-  v9 = [v3 stringWithFormat:@"<%@ %p %@ %@>", v5, self, v7, v8];
+  timestamp = [(ICCRRegisterLatest *)self timestamp];
+  shortDescription = [timestamp shortDescription];
+  contents = [(ICCRRegisterLatest *)self contents];
+  v9 = [v3 stringWithFormat:@"<%@ %p %@ %@>", v5, self, shortDescription, contents];
 
   return v9;
 }

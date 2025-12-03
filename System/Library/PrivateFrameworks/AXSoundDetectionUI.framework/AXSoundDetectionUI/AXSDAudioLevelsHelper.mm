@@ -1,9 +1,9 @@
 @interface AXSDAudioLevelsHelper
 + (id)sharedInstance;
 - (AXSDAudioLevelsHelper)init;
-- (void)deregisterListener:(id)a3;
-- (void)registerListener:(id)a3 forAudioLevelUpdates:(id)a4 withBucketCount:(int)a5;
-- (void)updateListenersWithBuffer:(id)a3;
+- (void)deregisterListener:(id)listener;
+- (void)registerListener:(id)listener forAudioLevelUpdates:(id)updates withBucketCount:(int)count;
+- (void)updateListenersWithBuffer:(id)buffer;
 @end
 
 @implementation AXSDAudioLevelsHelper
@@ -50,33 +50,33 @@ uint64_t __39__AXSDAudioLevelsHelper_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)registerListener:(id)a3 forAudioLevelUpdates:(id)a4 withBucketCount:(int)a5
+- (void)registerListener:(id)listener forAudioLevelUpdates:(id)updates withBucketCount:(int)count
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  listenerCopy = listener;
+  updatesCopy = updates;
   v10 = AXLogUltron();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v21 = v8;
+    v21 = listenerCopy;
     v22 = 1024;
-    v23 = a5;
+    countCopy = count;
     _os_log_debug_impl(&dword_23D62D000, v10, OS_LOG_TYPE_DEBUG, "Register audio listener: %@ with bucket count: %d", buf, 0x12u);
   }
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v8];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:listenerCopy];
   listenerQueue = self->_listenerQueue;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __79__AXSDAudioLevelsHelper_registerListener_forAudioLevelUpdates_withBucketCount___block_invoke;
   v16[3] = &unk_278BDD518;
   v17 = v11;
-  v18 = v9;
+  v18 = updatesCopy;
   v16[4] = self;
-  v19 = a5;
+  countCopy2 = count;
   v13 = v11;
-  v14 = v9;
+  v14 = updatesCopy;
   dispatch_async(listenerQueue, v16);
 
   v15 = *MEMORY[0x277D85DE8];
@@ -93,19 +93,19 @@ void __79__AXSDAudioLevelsHelper_registerListener_forAudioLevelUpdates_withBucke
   [v4 setObject:v5 forKey:*(a1 + 40)];
 }
 
-- (void)deregisterListener:(id)a3
+- (void)deregisterListener:(id)listener
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listenerCopy = listener;
   v5 = AXLogUltron();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = listenerCopy;
     _os_log_debug_impl(&dword_23D62D000, v5, OS_LOG_TYPE_DEBUG, "Deregister audio listener: %@", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v4];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:listenerCopy];
   listenerQueue = self->_listenerQueue;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -128,9 +128,9 @@ uint64_t __44__AXSDAudioLevelsHelper_deregisterListener___block_invoke(uint64_t 
   return [v3 removeObjectForKey:v2];
 }
 
-- (void)updateListenersWithBuffer:(id)a3
+- (void)updateListenersWithBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -149,8 +149,8 @@ uint64_t __44__AXSDAudioLevelsHelper_deregisterListener___block_invoke(uint64_t 
   v9 = v13;
   v10 = v11;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = bufferCopy;
+  v6 = bufferCopy;
   dispatch_async(listenerQueue, v7);
 
   _Block_object_dispose(v11, 8);

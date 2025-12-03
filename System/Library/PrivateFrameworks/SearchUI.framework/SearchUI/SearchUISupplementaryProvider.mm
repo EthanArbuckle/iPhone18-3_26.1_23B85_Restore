@@ -1,20 +1,20 @@
 @interface SearchUISupplementaryProvider
-+ (id)sectionForHeaderView:(id)a3;
-+ (id)viewForSupplementaryOfKind:(id)a3 atIndexPath:(id)a4 forSectionModel:(id)a5 controller:(id)a6;
-+ (unint64_t)headerTypeForHeaderView:(id)a3;
-+ (void)registerSupplementariesForCollectionView:(id)a3;
++ (id)sectionForHeaderView:(id)view;
++ (id)viewForSupplementaryOfKind:(id)kind atIndexPath:(id)path forSectionModel:(id)model controller:(id)controller;
++ (unint64_t)headerTypeForHeaderView:(id)view;
++ (void)registerSupplementariesForCollectionView:(id)view;
 - (SearchUISupplementaryProvider)init;
 @end
 
 @implementation SearchUISupplementaryProvider
 
-+ (void)registerSupplementariesForCollectionView:(id)a3
++ (void)registerSupplementariesForCollectionView:(id)view
 {
-  v3 = a3;
-  sub_1DA16E840(v3);
+  viewCopy = view;
+  sub_1DA16E840(viewCopy);
 }
 
-+ (id)viewForSupplementaryOfKind:(id)a3 atIndexPath:(id)a4 forSectionModel:(id)a5 controller:(id)a6
++ (id)viewForSupplementaryOfKind:(id)kind atIndexPath:(id)path forSectionModel:(id)model controller:(id)controller
 {
   v8 = sub_1DA25DF94();
   v9 = *(v8 - 8);
@@ -23,16 +23,16 @@
   v12 = sub_1DA25F244();
   v14 = v13;
   sub_1DA25DF74();
-  v15 = a5;
-  v16 = a6;
-  v17 = sub_1DA177A44(v12, v14, v11, v15, v16);
+  modelCopy = model;
+  controllerCopy = controller;
+  v17 = sub_1DA177A44(v12, v14, v11, modelCopy, controllerCopy);
 
   (*(v9 + 8))(v11, v8);
 
   return v17;
 }
 
-+ (id)sectionForHeaderView:(id)a3
++ (id)sectionForHeaderView:(id)view
 {
   v4 = type metadata accessor for Header();
   MEMORY[0x1EEE9AC00](v4 - 8);
@@ -42,7 +42,7 @@
   if (v7)
   {
     v8 = *(v7 + qword_1EDAE5298);
-    v9 = a3;
+    viewCopy = view;
     v10 = v8;
     sub_1DA25E404();
 
@@ -58,9 +58,9 @@
   return v11;
 }
 
-+ (unint64_t)headerTypeForHeaderView:(id)a3
++ (unint64_t)headerTypeForHeaderView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = sub_1DA2344C4();
 
   return v4;

@@ -1,12 +1,12 @@
 @interface PBBProtoAppViewListImageRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoAppViewListImageRequest
@@ -17,34 +17,34 @@
   v8.receiver = self;
   v8.super_class = PBBProtoAppViewListImageRequest;
   v4 = [(PBBProtoAppViewListImageRequest *)&v8 description];
-  v5 = [(PBBProtoAppViewListImageRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoAppViewListImageRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   *&v4 = self->_scale;
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"scale"];
+  [dictionary setObject:v5 forKey:@"scale"];
 
   *&v6 = self->_width;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
-  [v3 setObject:v7 forKey:@"width"];
+  [dictionary setObject:v7 forKey:@"width"];
 
   *&v8 = self->_height;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
-  [v3 setObject:v9 forKey:@"height"];
+  [dictionary setObject:v9 forKey:@"height"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   scale = self->_scale;
-  v7 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   width = self->_width;
   PBDataWriterWriteFloatField();
@@ -52,26 +52,26 @@
   PBDataWriterWriteFloatField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 3) = LODWORD(self->_scale);
-  *(a3 + 4) = LODWORD(self->_width);
-  *(a3 + 2) = LODWORD(self->_height);
+  *(to + 3) = LODWORD(self->_scale);
+  *(to + 4) = LODWORD(self->_width);
+  *(to + 2) = LODWORD(self->_height);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = LODWORD(self->_scale);
   *(result + 4) = LODWORD(self->_width);
   *(result + 2) = LODWORD(self->_height);
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_scale == v4[3] && self->_width == v4[4] && self->_height == v4[2];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_scale == equalCopy[3] && self->_width == equalCopy[4] && self->_height == equalCopy[2];
 
   return v5;
 }
@@ -154,11 +154,11 @@
   return v20 ^ v13 ^ v26;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_scale = *(a3 + 3);
-  self->_width = *(a3 + 4);
-  self->_height = *(a3 + 2);
+  self->_scale = *(from + 3);
+  self->_width = *(from + 4);
+  self->_height = *(from + 2);
 }
 
 @end

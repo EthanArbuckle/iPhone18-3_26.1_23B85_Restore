@@ -1,30 +1,30 @@
 @interface VKScreenCameraController
 - (BOOL)isAnimating;
-- (VKScreenCameraController)initWithMapDataAccess:(MapDataAccess *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6;
+- (VKScreenCameraController)initWithMapDataAccess:(MapDataAccess *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate;
 - (void)dealloc;
-- (void)setAnnotationTrackingBehavior:(id *)a3;
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3;
-- (void)setCenterCoordinateDistanceRange:(id *)a3 duration:(double)a4 timingFunction:(id)a5;
-- (void)setEdgeInsets:(VKEdgeInsets)a3;
-- (void)setRegionRestriction:(id)a3 duration:(double)a4 timingFunction:(id)a5;
-- (void)setVkCamera:(id)a3;
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4;
-- (void)startPinchingWithFocusPoint:(CGPoint)a3;
-- (void)startPitchingWithFocusPoint:(CGPoint)a3;
-- (void)startRotatingWithFocusPoint:(CGPoint)a3;
+- (void)setAnnotationTrackingBehavior:(id *)behavior;
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera;
+- (void)setCenterCoordinateDistanceRange:(id *)range duration:(double)duration timingFunction:(id)function;
+- (void)setEdgeInsets:(VKEdgeInsets)insets;
+- (void)setRegionRestriction:(id)restriction duration:(double)duration timingFunction:(id)function;
+- (void)setVkCamera:(id)camera;
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint;
+- (void)startPinchingWithFocusPoint:(CGPoint)point;
+- (void)startPitchingWithFocusPoint:(CGPoint)point;
+- (void)startRotatingWithFocusPoint:(CGPoint)point;
 - (void)stopAnimations;
-- (void)stopPanningAtPoint:(CGPoint)a3;
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3;
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3;
+- (void)stopPanningAtPoint:(CGPoint)point;
+- (void)stopPinchingWithFocusPoint:(CGPoint)point;
+- (void)stopPitchingWithFocusPoint:(CGPoint)point;
 - (void)stopRegionAnimation;
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3;
+- (void)stopRotatingWithFocusPoint:(CGPoint)point;
 - (void)stopSnappingAnimations;
 - (void)stopTrackingAnnotation;
-- (void)transferStatesWithCameraController:(id)a3;
-- (void)updatePanWithTranslation:(CGPoint)a3;
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5;
+- (void)transferStatesWithCameraController:(id)controller;
+- (void)updatePanWithTranslation:(CGPoint)translation;
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler;
 @end
 
 @implementation VKScreenCameraController
@@ -91,19 +91,19 @@
   }
 }
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   v7.receiver = self;
   v7.super_class = VKScreenCameraController;
   [VKCameraController updateWithTimestamp:sel_updateWithTimestamp_withContext_ withContext:?];
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior updateWithTimestamp:a4 withContext:a3];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior updateWithTimestamp:context withContext:timestamp];
 }
 
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera
 {
-  ptr = a3.__ptr_;
-  v5 = *a3.__ptr_;
-  if (!*a3.__ptr_)
+  ptr = camera.__ptr_;
+  v5 = *camera.__ptr_;
+  if (!*camera.__ptr_)
   {
     [(VKScreenCameraController *)self stopAnimations];
     v5 = *ptr;
@@ -119,41 +119,41 @@
 
   v7.receiver = self;
   v7.super_class = VKScreenCameraController;
-  [(VKCameraController *)&v7 setCamera:&v8, a3.__cntrl_];
+  [(VKCameraController *)&v7 setCamera:&v8, camera.__cntrl_];
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v9);
   }
 }
 
-- (void)setVkCamera:(id)a3
+- (void)setVkCamera:(id)camera
 {
-  v4 = a3;
-  if (!v4)
+  cameraCopy = camera;
+  if (!cameraCopy)
   {
     [(VKScreenCameraController *)self stopAnimations];
   }
 
   v5.receiver = self;
   v5.super_class = VKScreenCameraController;
-  [(VKCameraController *)&v5 setVkCamera:v4];
+  [(VKCameraController *)&v5 setVkCamera:cameraCopy];
 }
 
-- (void)transferStatesWithCameraController:(id)a3
+- (void)transferStatesWithCameraController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = controllerCopy;
       [v5 centerCoordinateDistanceRange];
       v8 = v10;
       v9 = v11;
       [(VKScreenCameraController *)self setCenterCoordinateDistanceRange:&v8];
-      v6 = [v5 regionRestriction];
-      [(VKScreenCameraController *)self setRegionRestriction:v6];
+      regionRestriction = [v5 regionRestriction];
+      [(VKScreenCameraController *)self setRegionRestriction:regionRestriction];
 
       -[VKScreenCameraController setHasVehicleHeading:](self, "setHasVehicleHeading:", [v5 hasVehicleHeading]);
       -[VKScreenCameraController setUserChangedZoomSinceLastProgrammaticRegionChange:](self, "setUserChangedZoomSinceLastProgrammaticRegionChange:", [v5 userChangedZoomSinceLastProgrammaticRegionChange]);
@@ -162,109 +162,109 @@
 
   v7.receiver = self;
   v7.super_class = VKScreenCameraController;
-  [(VKCameraController *)&v7 transferStatesWithCameraController:v4];
+  [(VKCameraController *)&v7 transferStatesWithCameraController:controllerCopy];
 }
 
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3
+- (void)stopPitchingWithFocusPoint:(CGPoint)point
 {
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior stopPitchingWithFocusPoint:a3.x, a3.y];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior stopPitchingWithFocusPoint:point.x, point.y];
   [(VKScreenCameraController *)self clampZoomLevelIfNecessary];
-  v4 = [(VKCameraController *)self cameraDelegate];
-  [v4 didEndPitchingAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate didEndPitchingAccess];
 
   [(VKScreenCameraController *)self snapMapIfNecessary:1];
 }
 
-- (void)startPitchingWithFocusPoint:(CGPoint)a3
+- (void)startPitchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   pitchAnimation = self->_pitchAnimation;
   if (pitchAnimation)
   {
     [(VKAnimation *)pitchAnimation stop];
   }
 
-  v7 = [(VKCameraController *)self cameraDelegate];
-  [v7 willBeginPitchingAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate willBeginPitchingAccess];
 
   gestureCameraControllerBehavior = self->_gestureCameraControllerBehavior;
 
   [(VKGestureCameraBehavior *)gestureCameraControllerBehavior startPitchingWithFocusPoint:x, y];
 }
 
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3
+- (void)stopRotatingWithFocusPoint:(CGPoint)point
 {
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior stopRotatingWithFocusPoint:a3.x, a3.y];
-  v4 = [(VKCameraController *)self cameraDelegate];
-  [v4 didEndRotatingAccess];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior stopRotatingWithFocusPoint:point.x, point.y];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate didEndRotatingAccess];
 
   [(VKScreenCameraController *)self snapMapIfNecessary:1];
 }
 
-- (void)startRotatingWithFocusPoint:(CGPoint)a3
+- (void)startRotatingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(VKCameraController *)self cameraDelegate];
-  [v6 willBeginRotatingAccess];
+  y = point.y;
+  x = point.x;
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate willBeginRotatingAccess];
 
   gestureCameraControllerBehavior = self->_gestureCameraControllerBehavior;
 
   [(VKGestureCameraBehavior *)gestureCameraControllerBehavior startRotatingWithFocusPoint:x, y];
 }
 
-- (void)stopPanningAtPoint:(CGPoint)a3
+- (void)stopPanningAtPoint:(CGPoint)point
 {
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior stopPanningAtPoint:a3.x, a3.y];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior stopPanningAtPoint:point.x, point.y];
   [(VKScreenCameraController *)self clampZoomLevelIfNecessary];
-  v4 = [(VKCameraController *)self cameraDelegate];
-  [v4 didEndPanningAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate didEndPanningAccess];
 }
 
-- (void)updatePanWithTranslation:(CGPoint)a3
+- (void)updatePanWithTranslation:(CGPoint)translation
 {
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior updatePanWithTranslation:a3.x, a3.y];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior updatePanWithTranslation:translation.x, translation.y];
 
   [(VKScreenCameraController *)self clampZoomLevelIfNecessary];
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(VKCameraController *)self cameraDelegate];
-  [v8 willBeginPanningAccess];
+  startPointCopy = startPoint;
+  y = point.y;
+  x = point.x;
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate willBeginPanningAccess];
 
   gestureCameraControllerBehavior = self->_gestureCameraControllerBehavior;
 
-  [(VKGestureCameraBehavior *)gestureCameraControllerBehavior startPanningAtPoint:v4 panAtStartPoint:x, y];
+  [(VKGestureCameraBehavior *)gestureCameraControllerBehavior startPanningAtPoint:startPointCopy panAtStartPoint:x, y];
 }
 
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3
+- (void)stopPinchingWithFocusPoint:(CGPoint)point
 {
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior stopPinchingWithFocusPoint:a3.x, a3.y];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior stopPinchingWithFocusPoint:point.x, point.y];
   [(VKScreenCameraController *)self clampZoomLevelIfNecessaryAnimated:[(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior allowsZoomRubberbanding]];
-  v4 = [(VKCameraController *)self cameraDelegate];
-  [v4 didEndPinchingAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate didEndPinchingAccess];
 
   [(VKScreenCameraController *)self snapMapIfNecessary:1];
 }
 
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior updatePinchWithFocusPoint:a3.x oldFactor:a3.y newFactor:a4, a5];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior updatePinchWithFocusPoint:point.x oldFactor:point.y newFactor:factor, newFactor];
   self->_userChangedZoomSinceLastProgrammaticRegionChange = 1;
   annotationTrackingCameraController = self->_annotationTrackingCameraController;
 
   [(VKAnnotationTrackingCameraController *)annotationTrackingCameraController setHasUserSpecifiedZoomLevel:1];
 }
 
-- (void)startPinchingWithFocusPoint:(CGPoint)a3
+- (void)startPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   zoomAnimation = self->_zoomAnimation;
   if (zoomAnimation && [(VKAnimation *)zoomAnimation running])
   {
@@ -278,25 +278,25 @@
     self->_zoomAnimation = 0;
   }
 
-  v8 = [(VKCameraController *)self cameraDelegate];
-  [v8 willBeginPinchingAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate willBeginPinchingAccess];
 
   gestureCameraControllerBehavior = self->_gestureCameraControllerBehavior;
 
   [(VKGestureCameraBehavior *)gestureCameraControllerBehavior startPinchingWithFocusPoint:x, y];
 }
 
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v14 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = [(VKCameraController *)self cameraDelegate];
-  v11 = v10;
-  if (v10)
+  handlerCopy = handler;
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  v11 = cameraDelegate;
+  if (cameraDelegate)
   {
-    [v10 willBeginRegionChangeAccess:1];
+    [cameraDelegate willBeginRegionChangeAccess:1];
   }
 
   else
@@ -304,49 +304,49 @@
     memset(v13, 0, sizeof(v13));
   }
 
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior zoom:v9 withFocusPoint:a3 completionHandler:x, y];
-  v12 = [(VKCameraController *)self cameraDelegate];
-  [v12 didEndRegionChangeAccess:v13];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior zoom:handlerCopy withFocusPoint:zoom completionHandler:x, y];
+  cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate2 didEndRegionChangeAccess:v13];
 
   gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v13);
 }
 
-- (void)setRegionRestriction:(id)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)setRegionRestriction:(id)restriction duration:(double)duration timingFunction:(id)function
 {
-  v8 = a3;
+  restrictionCopy = restriction;
   if (![(VKCameraRegionRestriction *)self->_regionRestriction isEqual:?])
   {
-    objc_storeStrong(&self->_regionRestriction, a3);
-    v7 = [(VKCameraController *)self vkCamera];
-    [v7 setRegionRestriction:v8];
+    objc_storeStrong(&self->_regionRestriction, restriction);
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera setRegionRestriction:restrictionCopy];
   }
 }
 
-- (void)setCenterCoordinateDistanceRange:(id *)a3 duration:(double)a4 timingFunction:(id)a5
+- (void)setCenterCoordinateDistanceRange:(id *)range duration:(double)duration timingFunction:(id)function
 {
-  v7 = *&a3->var2;
-  *&self->_centerCoordinateDistanceRange.min = *&a3->var0;
+  v7 = *&range->var2;
+  *&self->_centerCoordinateDistanceRange.min = *&range->var0;
   *&self->_centerCoordinateDistanceRange.allowRubberband = v7;
-  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior setAllowsZoomRubberbanding:a3->var2, a5];
-  v18 = [(VKCameraController *)self vkCamera];
-  [v18 groundPoint];
+  [(VKGestureCameraBehavior *)self->_gestureCameraControllerBehavior setAllowsZoomRubberbanding:range->var2, function];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera groundPoint];
   v9 = exp(v8 * 6.28318531 + -3.14159265);
   v10 = atan(v9);
   v11 = geo::WGS84::unitsPerMeterAtLatitude<geo::Degrees,double>(v10 * 114.591559 + -90.0);
 
-  var1 = a3->var1;
-  v13 = [(VKCameraController *)self vkCamera];
+  var1 = range->var1;
+  vkCamera2 = [(VKCameraController *)self vkCamera];
   v14 = fmin(var1 * v11, 1.0);
   if (var1 < 0.0)
   {
     v14 = 0.0;
   }
 
-  v19 = v13;
-  [v13 setMaxDistanceToGroundRestriction:{*&v14, var1 >= 0.0}];
+  v19 = vkCamera2;
+  [vkCamera2 setMaxDistanceToGroundRestriction:{*&v14, var1 >= 0.0}];
 
-  var0 = a3->var0;
-  if (a3->var0 >= 0.0)
+  var0 = range->var0;
+  if (range->var0 >= 0.0)
   {
     var0 = fmin(fmax(var0 * v11, 0.0), 1.0);
     v17 = var0;
@@ -359,8 +359,8 @@
     v17 = 0.0;
   }
 
-  v20 = [(VKCameraController *)self vkCamera];
-  [v20 setMinDistanceToGroundRestriction:{*&v17, v16}];
+  vkCamera3 = [(VKCameraController *)self vkCamera];
+  [vkCamera3 setMinDistanceToGroundRestriction:{*&v17, v16}];
 }
 
 - (BOOL)isAnimating
@@ -377,12 +377,12 @@
   self->_regionAnimation = 0;
 }
 
-- (void)setEdgeInsets:(VKEdgeInsets)a3
+- (void)setEdgeInsets:(VKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v12.receiver = self;
   v12.super_class = VKScreenCameraController;
   [(VKCameraController *)&v12 setEdgeInsets:?];
@@ -393,12 +393,12 @@
   [(VKCameraController *)self->_annotationTrackingCameraController setEdgeInsets:v8, v9, v10, v11];
 }
 
-- (void)setAnnotationTrackingBehavior:(id *)a3
+- (void)setAnnotationTrackingBehavior:(id *)behavior
 {
-  v3 = *&a3->var2;
-  *&self->_annotationTrackingBehavior.shouldZoomToFit = *&a3->var0;
+  v3 = *&behavior->var2;
+  *&self->_annotationTrackingBehavior.shouldZoomToFit = *&behavior->var0;
   *&self->_annotationTrackingBehavior.shouldPreserveUserSpecifiedZoomLevel = v3;
-  v4 = *a3;
+  v4 = *behavior;
   [(VKAnnotationTrackingCameraController *)self->_annotationTrackingCameraController setBehavior:&v4];
 }
 
@@ -432,12 +432,12 @@
   [(VKScreenCameraController *)&v9 dealloc];
 }
 
-- (VKScreenCameraController)initWithMapDataAccess:(MapDataAccess *)a3 animationRunner:(AnimationRunner *)a4 runLoopController:(RunLoopController *)a5 cameraDelegate:(id)a6
+- (VKScreenCameraController)initWithMapDataAccess:(MapDataAccess *)access animationRunner:(AnimationRunner *)runner runLoopController:(RunLoopController *)controller cameraDelegate:(id)delegate
 {
-  v10 = a6;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = VKScreenCameraController;
-  v11 = [(VKCameraController *)&v21 initWithMapDataAccess:a3 animationRunner:a4 runLoopController:a5 cameraDelegate:v10];
+  v11 = [(VKCameraController *)&v21 initWithMapDataAccess:access animationRunner:runner runLoopController:controller cameraDelegate:delegateCopy];
   if (v11)
   {
     v12 = [[VKCameraRegionRestriction alloc] initWithMapRegion:0];

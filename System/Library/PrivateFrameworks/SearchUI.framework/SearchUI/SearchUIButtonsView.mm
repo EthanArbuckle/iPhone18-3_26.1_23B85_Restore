@@ -1,16 +1,16 @@
 @interface SearchUIButtonsView
-- (SearchUIButtonsView)initWithCardSectionView:(id)a3;
+- (SearchUIButtonsView)initWithCardSectionView:(id)view;
 - (SearchUIMovieCardSectionView)cardSectionView;
-- (id)buttonWithTitle:(id)a3 subtitle:(id)a4 punchoutURL:(id)a5;
-- (void)fetchButtonsWithCompletionHandler:(id)a3;
+- (id)buttonWithTitle:(id)title subtitle:(id)subtitle punchoutURL:(id)l;
+- (void)fetchButtonsWithCompletionHandler:(id)handler;
 @end
 
 @implementation SearchUIButtonsView
 
-- (SearchUIButtonsView)initWithCardSectionView:(id)a3
+- (SearchUIButtonsView)initWithCardSectionView:(id)view
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = [(SearchUIButtonsView *)self buttonWithTitle:&stru_1F55BC4E8 subtitle:@"\n" punchoutURL:0];
   [v5 setAlpha:0.0];
   v18[0] = v5;
@@ -21,12 +21,12 @@
 
   if (v7)
   {
-    [(SearchUIButtonsView *)v7 setCardSectionView:v4];
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = [v8 userInterfaceIdiom] == 1;
+    [(SearchUIButtonsView *)v7 setCardSectionView:viewCopy];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v9 = [currentDevice userInterfaceIdiom] == 1;
 
-    v10 = [MEMORY[0x1E69D91A8] isSuperLargeAccessibilitySize];
-    if ((v9 | v10))
+    isSuperLargeAccessibilitySize = [MEMORY[0x1E69D91A8] isSuperLargeAccessibilitySize];
+    if ((v9 | isSuperLargeAccessibilitySize))
     {
       v11 = 1;
     }
@@ -41,7 +41,7 @@
     v13[1] = 3221225472;
     v13[2] = __47__SearchUIButtonsView_initWithCardSectionView___block_invoke;
     v13[3] = &unk_1E85B3460;
-    v16 = v10;
+    v16 = isSuperLargeAccessibilitySize;
     v14 = v5;
     v15 = v7;
     [(SearchUIButtonsView *)v15 fetchButtonsWithCompletionHandler:v13];
@@ -123,22 +123,22 @@ void __47__SearchUIButtonsView_initWithCardSectionView___block_invoke(uint64_t a
   }
 }
 
-- (void)fetchButtonsWithCompletionHandler:(id)a3
+- (void)fetchButtonsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUIButtonsView *)self cardSectionView];
-  v6 = [v5 section];
+  handlerCopy = handler;
+  cardSectionView = [(SearchUIButtonsView *)self cardSectionView];
+  section = [cardSectionView section];
 
-  v7 = +[SearchUIWatchListUtilities watchListTypeForType:isMediaContainer:](SearchUIWatchListUtilities, "watchListTypeForType:isMediaContainer:", [v6 watchListItemType], objc_msgSend(v6, "isMediaContainer"));
-  v8 = [v6 watchListIdentifier];
+  v7 = +[SearchUIWatchListUtilities watchListTypeForType:isMediaContainer:](SearchUIWatchListUtilities, "watchListTypeForType:isMediaContainer:", [section watchListItemType], objc_msgSend(section, "isMediaContainer"));
+  watchListIdentifier = [section watchListIdentifier];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__SearchUIButtonsView_fetchButtonsWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E85B2FD8;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [SearchUIWatchListUtilities fetchButtonsForWatchListIdentifier:v8 type:v7 isHorizontallySrollingStyle:0 completion:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [SearchUIWatchListUtilities fetchButtonsForWatchListIdentifier:watchListIdentifier type:v7 isHorizontallySrollingStyle:0 completion:v10];
 }
 
 void __57__SearchUIButtonsView_fetchButtonsWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -228,18 +228,18 @@ void __57__SearchUIButtonsView_fetchButtonsWithCompletionHandler___block_invoke_
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)buttonWithTitle:(id)a3 subtitle:(id)a4 punchoutURL:(id)a5
+- (id)buttonWithTitle:(id)title subtitle:(id)subtitle punchoutURL:(id)l
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  lCopy = l;
+  subtitleCopy = subtitle;
+  titleCopy = title;
   v11 = [SearchUIMovieCardSectionBuyButtonView alloc];
-  v12 = [MEMORY[0x1E69CA3A0] textWithString:v9];
+  v12 = [MEMORY[0x1E69CA3A0] textWithString:subtitleCopy];
 
-  v13 = [MEMORY[0x1E69CA320] punchoutWithURL:v8];
+  v13 = [MEMORY[0x1E69CA320] punchoutWithURL:lCopy];
 
-  v14 = [(SearchUIButtonsView *)self cardSectionView];
-  v15 = [(SearchUIMovieCardSectionBuyButtonView *)v11 initWithTitle:v10 subtitle:v12 punchout:v13 cardSectionView:v14];
+  cardSectionView = [(SearchUIButtonsView *)self cardSectionView];
+  v15 = [(SearchUIMovieCardSectionBuyButtonView *)v11 initWithTitle:titleCopy subtitle:v12 punchout:v13 cardSectionView:cardSectionView];
 
   return v15;
 }

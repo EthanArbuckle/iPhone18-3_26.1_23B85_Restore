@@ -1,25 +1,25 @@
 @interface CLSContext
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (BOOL)shouldInsertInDatabase:(id)a3;
-- (CLSContext)initWithCKRecord:(id)a3;
-- (CLSContext)initWithDatabaseRow:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (BOOL)shouldInsertInDatabase:(id)database;
+- (CLSContext)initWithCKRecord:(id)record;
+- (CLSContext)initWithDatabaseRow:(id)row;
 - (int64_t)syncOrder;
 - (unint64_t)changeHash;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
-- (void)willBeDeletedFromDatabase:(id)a3;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
+- (void)willBeDeletedFromDatabase:(id)database;
 @end
 
 @implementation CLSContext
 
-- (CLSContext)initWithCKRecord:(id)a3
+- (CLSContext)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:CLSContextPropertyType];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:CLSContextPropertyType];
   v6 = CLSContextTypeFromDefaultName();
 
-  v7 = [v4 objectForKeyedSubscript:CLSPredicateKeyPathIdentifier];
-  v8 = [v4 objectForKeyedSubscript:CLSPredicateKeyPathTitle];
+  v7 = [recordCopy objectForKeyedSubscript:CLSPredicateKeyPathIdentifier];
+  v8 = [recordCopy objectForKeyedSubscript:CLSPredicateKeyPathTitle];
   v9 = [(CLSContext *)self initWithInternalType:v6 identifier:v7 title:v8];
   if (!v9)
   {
@@ -28,19 +28,19 @@
 
   v58 = v8;
   v60 = v7;
-  v10 = v4;
+  v10 = recordCopy;
   v11 = [v10 objectForKeyedSubscript:CLSContextPropertyIdentifierPath];
   [(CLSContext *)v9 setPath:v11];
-  v12 = [v10 recordID];
-  v13 = [v12 recordName];
+  recordID = [v10 recordID];
+  recordName = [recordID recordName];
 
   v14 = [v10 objectForKeyedSubscript:CLSPredicateKeyPathStableObjectID];
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(CLSContext *)v9 parentReferenceName];
-    if (v15)
+    parentReferenceName = [(CLSContext *)v9 parentReferenceName];
+    if (parentReferenceName)
     {
-      v16 = [v10 objectForKeyedSubscript:v15];
+      v16 = [v10 objectForKeyedSubscript:parentReferenceName];
     }
 
     else
@@ -54,14 +54,14 @@
     v16 = 0;
   }
 
-  if (!(v13 | v14))
+  if (!(recordName | v14))
   {
     goto LABEL_9;
   }
 
-  if (!v13 || !v14)
+  if (!recordName || !v14)
   {
-    [(CLSContext *)v9 setObjectID:v13, v58, v60];
+    [(CLSContext *)v9 setObjectID:recordName, v58, v60];
     if (!v14)
     {
       v14 = [CLSContext stableObjectIDForIdentifierPath:v11];
@@ -70,24 +70,24 @@
     goto LABEL_17;
   }
 
-  if (([v13 isEqualToString:v14] & 1) == 0)
+  if (([recordName isEqualToString:v14] & 1) == 0)
   {
-    [(CLSContext *)v9 setObjectID:v13];
+    [(CLSContext *)v9 setObjectID:recordName];
 LABEL_17:
     if ([v14 length])
     {
       [(CLSContext *)v9 setStableObjectID:v14];
     }
 
-    v21 = [v16 recordID];
-    v19 = [v21 recordName];
+    recordID2 = [v16 recordID];
+    recordName2 = [recordID2 recordName];
 
-    if (v19)
+    if (recordName2)
     {
-      [(CLSContext *)v9 setParentObjectID:v19];
+      [(CLSContext *)v9 setParentObjectID:recordName2];
     }
 
-    v17 = v13;
+    v17 = recordName;
     goto LABEL_22;
   }
 
@@ -102,8 +102,8 @@ LABEL_9:
     goto LABEL_23;
   }
 
-  v19 = [v11 subarrayWithRange:{0, v18 - 1}];
-  v20 = [CLSContext objectIDForIdentifierPath:v19];
+  recordName2 = [v11 subarrayWithRange:{0, v18 - 1}];
+  v20 = [CLSContext objectIDForIdentifierPath:recordName2];
   [(CLSContext *)v9 setParentObjectID:v20];
 
 LABEL_22:
@@ -115,9 +115,9 @@ LABEL_23:
   v23 = [v10 objectForKeyedSubscript:@"dateCreated"];
   [(CLSContext *)v9 setDateCreated:v23];
 
-  v24 = [(CLSContext *)v9 dateCreated];
+  dateCreated = [(CLSContext *)v9 dateCreated];
 
-  if (!v24)
+  if (!dateCreated)
   {
     v25 = +[NSDate date];
     [(CLSContext *)v9 setDateCreated:v25];
@@ -126,12 +126,12 @@ LABEL_23:
   v26 = [v10 objectForKeyedSubscript:@"dateLastModified"];
   [(CLSContext *)v9 setDateLastModified:v26];
 
-  v27 = [(CLSContext *)v9 dateLastModified];
+  dateLastModified = [(CLSContext *)v9 dateLastModified];
 
-  if (!v27)
+  if (!dateLastModified)
   {
-    v28 = [(CLSContext *)v9 dateCreated];
-    [(CLSContext *)v9 setDateLastModified:v28];
+    dateCreated2 = [(CLSContext *)v9 dateCreated];
+    [(CLSContext *)v9 setDateLastModified:dateCreated2];
   }
 
   v29 = [v10 objectForKeyedSubscript:CLSContextPropertyDisplayOrder];
@@ -169,41 +169,41 @@ LABEL_23:
     -[CLSContext setAssignable:](v9, "setAssignable:", [v38 BOOLValue]);
   }
 
-  v40 = [(CLSContext *)v9 suggestedAge];
+  suggestedAge = [(CLSContext *)v9 suggestedAge];
   v42 = v41;
   v43 = [v10 objectForKeyedSubscript:CLSPredicateKeyPathSuggestedAgeMin];
   v44 = [v10 objectForKeyedSubscript:CLSPredicateKeyPathSuggestedAgeMax];
   v45 = v44;
   if (v43)
   {
-    v46 = [v43 integerValue];
+    integerValue = [v43 integerValue];
     if (v45)
     {
 LABEL_33:
-      v47 = [v45 integerValue];
+      integerValue2 = [v45 integerValue];
       goto LABEL_36;
     }
   }
 
   else
   {
-    v46 = v40;
+    integerValue = suggestedAge;
     if (v44)
     {
       goto LABEL_33;
     }
   }
 
-  v47 = &v40[v42 - 1];
+  integerValue2 = &suggestedAge[v42 - 1];
 LABEL_36:
-  v48 = v47 - v46;
-  if (v47 < v46)
+  v48 = integerValue2 - integerValue;
+  if (integerValue2 < integerValue)
   {
     v48 = 0;
   }
 
-  [(CLSContext *)v9 setSuggestedAge:v46, v48 + 1];
-  v49 = [(CLSContext *)v9 suggestedCompletionTime];
+  [(CLSContext *)v9 setSuggestedAge:integerValue, v48 + 1];
+  suggestedCompletionTime = [(CLSContext *)v9 suggestedCompletionTime];
   v51 = v50;
   v52 = [v10 objectForKeyedSubscript:CLSPredicateKeyPathSuggestedCompletionTimeMin];
 
@@ -211,33 +211,33 @@ LABEL_36:
 
   if (!v52)
   {
-    v54 = v49;
+    integerValue3 = suggestedCompletionTime;
     if (v53)
     {
       goto LABEL_40;
     }
 
 LABEL_42:
-    v55 = &v49[v51 - 1];
+    integerValue4 = &suggestedCompletionTime[v51 - 1];
     goto LABEL_43;
   }
 
-  v54 = [v52 integerValue];
+  integerValue3 = [v52 integerValue];
   if (!v53)
   {
     goto LABEL_42;
   }
 
 LABEL_40:
-  v55 = [v53 integerValue];
+  integerValue4 = [v53 integerValue];
 LABEL_43:
-  v56 = v55 - v54;
-  if (v55 < v54)
+  v56 = integerValue4 - integerValue3;
+  if (integerValue4 < integerValue3)
   {
     v56 = 0;
   }
 
-  [(CLSContext *)v9 setSuggestedCompletionTime:v54, v56 + 1];
+  [(CLSContext *)v9 setSuggestedCompletionTime:integerValue3, v56 + 1];
 
   v8 = v59;
   v7 = v61;
@@ -246,134 +246,134 @@ LABEL_46:
   return v9;
 }
 
-- (BOOL)shouldInsertInDatabase:(id)a3
+- (BOOL)shouldInsertInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSContext *)self objectID];
-  v7 = [v4 select:v5 identity:v6];
+  objectID = [(CLSContext *)self objectID];
+  v7 = [databaseCopy select:v5 identity:objectID];
 
   if (v7)
   {
-    v8 = [v7 currentActivityID];
-    [(CLSContext *)self setCurrentActivityID:v8];
+    currentActivityID = [v7 currentActivityID];
+    [(CLSContext *)self setCurrentActivityID:currentActivityID];
   }
 
   return 1;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v34.receiver = self;
   v34.super_class = CLSContext;
-  v4 = a3;
-  [(CLSContext *)&v34 populate:v4];
+  populateCopy = populate;
+  [(CLSContext *)&v34 populate:populateCopy];
   [(CLSContext *)self type:v34.receiver];
   v5 = DefaultNameFromContextType();
-  [v4 setObject:v5 forKeyedSubscript:CLSContextPropertyType];
+  [populateCopy setObject:v5 forKeyedSubscript:CLSContextPropertyType];
 
-  v6 = [(CLSContext *)self identifier];
-  [v4 setObject:v6 forKeyedSubscript:CLSPredicateKeyPathIdentifier];
+  identifier = [(CLSContext *)self identifier];
+  [populateCopy setObject:identifier forKeyedSubscript:CLSPredicateKeyPathIdentifier];
 
-  v7 = [(CLSContext *)self title];
-  [v4 setObject:v7 forKeyedSubscript:CLSPredicateKeyPathTitle];
+  title = [(CLSContext *)self title];
+  [populateCopy setObject:title forKeyedSubscript:CLSPredicateKeyPathTitle];
 
   v8 = [NSNumber numberWithInteger:[(CLSContext *)self displayOrder]];
-  [v4 setObject:v8 forKeyedSubscript:CLSContextPropertyDisplayOrder];
+  [populateCopy setObject:v8 forKeyedSubscript:CLSContextPropertyDisplayOrder];
 
-  v9 = [(CLSContext *)self universalLinkURL];
-  v10 = [v9 absoluteString];
-  [v4 setObject:v10 forKeyedSubscript:CLSPredicateKeyPathUniversalLinkURL];
+  universalLinkURL = [(CLSContext *)self universalLinkURL];
+  absoluteString = [universalLinkURL absoluteString];
+  [populateCopy setObject:absoluteString forKeyedSubscript:CLSPredicateKeyPathUniversalLinkURL];
 
-  v11 = [(CLSContext *)self topic];
-  [v4 setObject:v11 forKeyedSubscript:CLSPredicateKeyPathTopic];
+  topic = [(CLSContext *)self topic];
+  [populateCopy setObject:topic forKeyedSubscript:CLSPredicateKeyPathTopic];
 
-  v12 = [(CLSContext *)self identifierPath];
-  [v4 setObject:v12 forKeyedSubscript:CLSContextPropertyIdentifierPath];
-  v13 = [objc_opt_class() objectIDPathFromIdentifierPath:v12];
+  identifierPath = [(CLSContext *)self identifierPath];
+  [populateCopy setObject:identifierPath forKeyedSubscript:CLSContextPropertyIdentifierPath];
+  v13 = [objc_opt_class() objectIDPathFromIdentifierPath:identifierPath];
   v14 = [v13 componentsJoinedByString:@"/"];
-  [v4 setObject:v14 forKeyedSubscript:CLSContextPropertyObjectIDPath];
+  [populateCopy setObject:v14 forKeyedSubscript:CLSContextPropertyObjectIDPath];
 
-  v15 = [(CLSContext *)self stableObjectID];
-  [v4 setObject:v15 forKeyedSubscript:CLSPredicateKeyPathStableObjectID];
+  stableObjectID = [(CLSContext *)self stableObjectID];
+  [populateCopy setObject:stableObjectID forKeyedSubscript:CLSPredicateKeyPathStableObjectID];
 
-  v16 = [objc_opt_class() stableObjectIDPathFromIdentifierPath:v12];
+  v16 = [objc_opt_class() stableObjectIDPathFromIdentifierPath:identifierPath];
   v17 = [v16 componentsJoinedByString:@"/"];
-  [v4 setObject:v17 forKeyedSubscript:CLSContextPropertyStableObjectIDPath];
+  [populateCopy setObject:v17 forKeyedSubscript:CLSContextPropertyStableObjectIDPath];
 
-  v18 = [(CLSContext *)self storeIdentifier];
-  [v4 setObject:v18 forKeyedSubscript:CLSContextPropertyStoreIdentifier];
+  storeIdentifier = [(CLSContext *)self storeIdentifier];
+  [populateCopy setObject:storeIdentifier forKeyedSubscript:CLSContextPropertyStoreIdentifier];
 
-  v19 = [(CLSContext *)self contentStoreIdentifier];
-  [v4 setObject:v19 forKeyedSubscript:CLSContextPropertyContentStoreIdentifier];
+  contentStoreIdentifier = [(CLSContext *)self contentStoreIdentifier];
+  [populateCopy setObject:contentStoreIdentifier forKeyedSubscript:CLSContextPropertyContentStoreIdentifier];
 
-  v20 = [(CLSContext *)self storeTeamID];
-  [v4 setObject:v20 forKeyedSubscript:CLSContextPropertyStoreTeamID];
+  storeTeamID = [(CLSContext *)self storeTeamID];
+  [populateCopy setObject:storeTeamID forKeyedSubscript:CLSContextPropertyStoreTeamID];
 
-  [(CLSContext *)self updateParentReferencesForRecord:v4];
-  v21 = [(CLSContext *)self summary];
-  [v4 setObject:v21 forKeyedSubscript:CLSContextPropertySummary];
+  [(CLSContext *)self updateParentReferencesForRecord:populateCopy];
+  summary = [(CLSContext *)self summary];
+  [populateCopy setObject:summary forKeyedSubscript:CLSContextPropertySummary];
 
-  v22 = [(CLSContext *)self customTypeName];
-  [v4 setObject:v22 forKeyedSubscript:CLSContextPropertyCustomTypeName];
+  customTypeName = [(CLSContext *)self customTypeName];
+  [populateCopy setObject:customTypeName forKeyedSubscript:CLSContextPropertyCustomTypeName];
 
   v23 = [NSNumber numberWithBool:[(CLSContext *)self isAssignable]];
-  [v4 setObject:v23 forKeyedSubscript:CLSContextPropertyAssignable];
+  [populateCopy setObject:v23 forKeyedSubscript:CLSContextPropertyAssignable];
 
-  v24 = [(CLSContext *)self suggestedAge];
-  v26 = v24 + v25 - 1;
-  v27 = [NSNumber numberWithInteger:v24];
-  [v4 setObject:v27 forKeyedSubscript:CLSPredicateKeyPathSuggestedAgeMin];
+  suggestedAge = [(CLSContext *)self suggestedAge];
+  v26 = suggestedAge + v25 - 1;
+  v27 = [NSNumber numberWithInteger:suggestedAge];
+  [populateCopy setObject:v27 forKeyedSubscript:CLSPredicateKeyPathSuggestedAgeMin];
 
   v28 = [NSNumber numberWithInteger:v26];
-  [v4 setObject:v28 forKeyedSubscript:CLSPredicateKeyPathSuggestedAgeMax];
+  [populateCopy setObject:v28 forKeyedSubscript:CLSPredicateKeyPathSuggestedAgeMax];
 
-  v29 = [(CLSContext *)self suggestedCompletionTime];
-  v31 = v29 + v30 - 1;
-  v32 = [NSNumber numberWithInteger:v29];
-  [v4 setObject:v32 forKeyedSubscript:CLSPredicateKeyPathSuggestedCompletionTimeMin];
+  suggestedCompletionTime = [(CLSContext *)self suggestedCompletionTime];
+  v31 = suggestedCompletionTime + v30 - 1;
+  v32 = [NSNumber numberWithInteger:suggestedCompletionTime];
+  [populateCopy setObject:v32 forKeyedSubscript:CLSPredicateKeyPathSuggestedCompletionTimeMin];
 
   v33 = [NSNumber numberWithInteger:v31];
-  [v4 setObject:v33 forKeyedSubscript:CLSPredicateKeyPathSuggestedCompletionTimeMax];
+  [populateCopy setObject:v33 forKeyedSubscript:CLSPredicateKeyPathSuggestedCompletionTimeMax];
 }
 
 - (int64_t)syncOrder
 {
-  v2 = [(CLSContext *)self identifierPath];
-  v3 = [v2 count];
+  identifierPath = [(CLSContext *)self identifierPath];
+  v3 = [identifierPath count];
 
   return v3;
 }
 
-- (CLSContext)initWithDatabaseRow:(id)a3
+- (CLSContext)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = sub_10016D778(v4, CLSContextPropertyType);
-  v6 = [v5 integerValue];
-  v7 = sub_10016D778(v4, CLSPredicateKeyPathIdentifier);
-  v8 = sub_10016D778(v4, CLSPredicateKeyPathTitle);
-  v9 = [(CLSContext *)self initWithInternalType:v6 identifier:v7 title:v8];
+  rowCopy = row;
+  v5 = sub_10016D778(rowCopy, CLSContextPropertyType);
+  integerValue = [v5 integerValue];
+  v7 = sub_10016D778(rowCopy, CLSPredicateKeyPathIdentifier);
+  v8 = sub_10016D778(rowCopy, CLSPredicateKeyPathTitle);
+  v9 = [(CLSContext *)self initWithInternalType:integerValue identifier:v7 title:v8];
 
   if (v9)
   {
-    [(CLSContext *)v9 _initCommonPropsWithDatabaseRow:v4];
-    v10 = sub_10016D778(v4, CLSPredicateKeyPathParentObjectID);
+    [(CLSContext *)v9 _initCommonPropsWithDatabaseRow:rowCopy];
+    v10 = sub_10016D778(rowCopy, CLSPredicateKeyPathParentObjectID);
     [(CLSContext *)v9 setParentObjectID:v10];
 
-    v11 = sub_10016D778(v4, CLSContextPropertyDisplayOrder);
+    v11 = sub_10016D778(rowCopy, CLSContextPropertyDisplayOrder);
     -[CLSContext setDisplayOrder:](v9, "setDisplayOrder:", [v11 integerValue]);
 
-    v12 = sub_10016D778(v4, CLSPredicateKeyPathTopic);
+    v12 = sub_10016D778(rowCopy, CLSPredicateKeyPathTopic);
     [(CLSContext *)v9 setTopic:v12];
 
-    v13 = sub_10016D778(v4, CLSPredicateKeyPathUniversalLinkURL);
+    v13 = sub_10016D778(rowCopy, CLSPredicateKeyPathUniversalLinkURL);
     if (v13)
     {
       v14 = [[NSURL alloc] initWithString:v13];
       [(CLSContext *)v9 setUniversalLinkURL:v14];
     }
 
-    v15 = sub_10016D778(v4, CLSContextPropertyIdentifierPath);
+    v15 = sub_10016D778(rowCopy, CLSContextPropertyIdentifierPath);
     if (v15)
     {
       v16 = [CLSUtil pathFromData:v15];
@@ -385,7 +385,7 @@ LABEL_46:
     }
 
     [(CLSContext *)v9 setPath:v16];
-    v17 = sub_10016D778(v4, CLSPredicateKeyPathStableObjectID);
+    v17 = sub_10016D778(rowCopy, CLSPredicateKeyPathStableObjectID);
     if (!v17)
     {
       v17 = [CLSContext stableObjectIDForIdentifierPath:v16];
@@ -396,93 +396,93 @@ LABEL_46:
       [(CLSContext *)v9 setStableObjectID:v17];
     }
 
-    v18 = sub_10016D778(v4, CLSContextPropertyStoreIdentifier);
+    v18 = sub_10016D778(rowCopy, CLSContextPropertyStoreIdentifier);
     [(CLSContext *)v9 setStoreIdentifier:v18];
 
-    v19 = sub_10016D778(v4, CLSContextPropertyContentStoreIdentifier);
+    v19 = sub_10016D778(rowCopy, CLSContextPropertyContentStoreIdentifier);
     [(CLSContext *)v9 setContentStoreIdentifier:v19];
 
-    v20 = sub_10016D778(v4, CLSContextPropertyStoreTeamID);
+    v20 = sub_10016D778(rowCopy, CLSContextPropertyStoreTeamID);
     [(CLSContext *)v9 setStoreTeamID:v20];
 
-    v21 = sub_10016D778(v4, CLSContextPropertyCurrentActivityID);
+    v21 = sub_10016D778(rowCopy, CLSContextPropertyCurrentActivityID);
     [(CLSContext *)v9 setCurrentActivityID:v21];
 
-    v22 = sub_10016D778(v4, CLSContextPropertyCustomTypeName);
+    v22 = sub_10016D778(rowCopy, CLSContextPropertyCustomTypeName);
     [(CLSContext *)v9 setCustomTypeName:v22];
 
-    v23 = sub_10016D778(v4, CLSContextPropertySummary);
+    v23 = sub_10016D778(rowCopy, CLSContextPropertySummary);
     [(CLSContext *)v9 setSummary:v23];
 
-    v24 = sub_10016D778(v4, CLSPredicateKeyPathAssignable);
+    v24 = sub_10016D778(rowCopy, CLSPredicateKeyPathAssignable);
     -[CLSContext setAssignable:](v9, "setAssignable:", [v24 BOOLValue]);
 
-    v25 = sub_10016D778(v4, CLSPredicateKeyPathSuggestedAgeMin);
-    v26 = [v25 integerValue];
+    v25 = sub_10016D778(rowCopy, CLSPredicateKeyPathSuggestedAgeMin);
+    integerValue2 = [v25 integerValue];
 
-    v27 = sub_10016D778(v4, CLSPredicateKeyPathSuggestedAgeMax);
-    v28 = [v27 integerValue];
+    v27 = sub_10016D778(rowCopy, CLSPredicateKeyPathSuggestedAgeMax);
+    integerValue3 = [v27 integerValue];
 
-    v29 = v28 - v26;
-    if (v28 < v26)
+    v29 = integerValue3 - integerValue2;
+    if (integerValue3 < integerValue2)
     {
       v29 = 0;
     }
 
-    [(CLSContext *)v9 setSuggestedAge:v26, v29 + 1];
-    v30 = sub_10016D778(v4, CLSPredicateKeyPathSuggestedCompletionTimeMin);
-    v31 = [v30 integerValue];
+    [(CLSContext *)v9 setSuggestedAge:integerValue2, v29 + 1];
+    v30 = sub_10016D778(rowCopy, CLSPredicateKeyPathSuggestedCompletionTimeMin);
+    integerValue4 = [v30 integerValue];
 
-    v32 = sub_10016D778(v4, CLSPredicateKeyPathSuggestedCompletionTimeMax);
-    v33 = [v32 integerValue];
+    v32 = sub_10016D778(rowCopy, CLSPredicateKeyPathSuggestedCompletionTimeMax);
+    integerValue5 = [v32 integerValue];
 
-    v34 = v33 - v31;
-    if (v33 < v31)
+    v34 = integerValue5 - integerValue4;
+    if (integerValue5 < integerValue4)
     {
       v34 = 0;
     }
 
-    [(CLSContext *)v9 setSuggestedCompletionTime:v31, v34 + 1];
+    [(CLSContext *)v9 setSuggestedCompletionTime:integerValue4, v34 + 1];
   }
 
   return v9;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v33.receiver = self;
   v33.super_class = CLSContext;
-  [(CLSContext *)&v33 bindTo:v4];
-  v5 = [(CLSContext *)self stableObjectID];
-  sub_1000982FC(v4, v5, CLSPredicateKeyPathStableObjectID);
+  [(CLSContext *)&v33 bindTo:toCopy];
+  stableObjectID = [(CLSContext *)self stableObjectID];
+  sub_1000982FC(toCopy, stableObjectID, CLSPredicateKeyPathStableObjectID);
 
-  v6 = [(CLSContext *)self parentObjectID];
-  sub_1000982FC(v4, v6, CLSPredicateKeyPathParentObjectID);
+  parentObjectID = [(CLSContext *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, CLSPredicateKeyPathParentObjectID);
 
   v7 = [NSNumber numberWithInteger:[(CLSContext *)self type]];
-  sub_1000982FC(v4, v7, CLSContextPropertyType);
+  sub_1000982FC(toCopy, v7, CLSContextPropertyType);
 
-  v8 = [(CLSContext *)self identifier];
-  sub_1000982FC(v4, v8, CLSPredicateKeyPathIdentifier);
+  identifier = [(CLSContext *)self identifier];
+  sub_1000982FC(toCopy, identifier, CLSPredicateKeyPathIdentifier);
 
-  v9 = [(CLSContext *)self title];
-  sub_1000982FC(v4, v9, CLSPredicateKeyPathTitle);
+  title = [(CLSContext *)self title];
+  sub_1000982FC(toCopy, title, CLSPredicateKeyPathTitle);
 
   v10 = [NSNumber numberWithInteger:[(CLSContext *)self displayOrder]];
-  sub_1000982FC(v4, v10, CLSContextPropertyDisplayOrder);
+  sub_1000982FC(toCopy, v10, CLSContextPropertyDisplayOrder);
 
-  v11 = [(CLSContext *)self topic];
-  sub_1000982FC(v4, v11, CLSPredicateKeyPathTopic);
+  topic = [(CLSContext *)self topic];
+  sub_1000982FC(toCopy, topic, CLSPredicateKeyPathTopic);
 
-  v12 = [(CLSContext *)self universalLinkURL];
-  v13 = [v12 absoluteString];
-  sub_1000982FC(v4, v13, CLSPredicateKeyPathUniversalLinkURL);
+  universalLinkURL = [(CLSContext *)self universalLinkURL];
+  absoluteString = [universalLinkURL absoluteString];
+  sub_1000982FC(toCopy, absoluteString, CLSPredicateKeyPathUniversalLinkURL);
 
-  v14 = [(CLSContext *)self identifierPath];
-  if ([v14 count])
+  identifierPath = [(CLSContext *)self identifierPath];
+  if ([identifierPath count])
   {
-    v15 = [CLSUtil dataFromPath:v14 makeBackwardCompatible:1 error:0];
+    v15 = [CLSUtil dataFromPath:identifierPath makeBackwardCompatible:1 error:0];
   }
 
   else
@@ -490,99 +490,99 @@ LABEL_46:
     v15 = 0;
   }
 
-  sub_1000982FC(v4, v15, CLSContextPropertyIdentifierPath);
-  v16 = [(CLSContext *)self storeIdentifier];
-  sub_1000982FC(v4, v16, CLSContextPropertyStoreIdentifier);
+  sub_1000982FC(toCopy, v15, CLSContextPropertyIdentifierPath);
+  storeIdentifier = [(CLSContext *)self storeIdentifier];
+  sub_1000982FC(toCopy, storeIdentifier, CLSContextPropertyStoreIdentifier);
 
-  v17 = [(CLSContext *)self contentStoreIdentifier];
-  sub_1000982FC(v4, v17, CLSContextPropertyContentStoreIdentifier);
+  contentStoreIdentifier = [(CLSContext *)self contentStoreIdentifier];
+  sub_1000982FC(toCopy, contentStoreIdentifier, CLSContextPropertyContentStoreIdentifier);
 
-  v18 = [(CLSContext *)self storeTeamID];
-  sub_1000982FC(v4, v18, CLSContextPropertyStoreTeamID);
+  storeTeamID = [(CLSContext *)self storeTeamID];
+  sub_1000982FC(toCopy, storeTeamID, CLSContextPropertyStoreTeamID);
 
-  v19 = [(CLSContext *)self currentActivityID];
-  sub_1000982FC(v4, v19, CLSContextPropertyCurrentActivityID);
+  currentActivityID = [(CLSContext *)self currentActivityID];
+  sub_1000982FC(toCopy, currentActivityID, CLSContextPropertyCurrentActivityID);
 
-  v20 = [(CLSContext *)self customTypeName];
-  sub_1000982FC(v4, v20, CLSContextPropertyCustomTypeName);
+  customTypeName = [(CLSContext *)self customTypeName];
+  sub_1000982FC(toCopy, customTypeName, CLSContextPropertyCustomTypeName);
 
-  v21 = [(CLSContext *)self summary];
-  sub_1000982FC(v4, v21, CLSContextPropertySummary);
+  summary = [(CLSContext *)self summary];
+  sub_1000982FC(toCopy, summary, CLSContextPropertySummary);
 
   v22 = [NSNumber numberWithBool:[(CLSContext *)self isAssignable]];
-  sub_1000982FC(v4, v22, CLSPredicateKeyPathAssignable);
+  sub_1000982FC(toCopy, v22, CLSPredicateKeyPathAssignable);
 
-  v23 = [(CLSContext *)self suggestedAge];
-  v25 = v23 + v24 - 1;
-  v26 = [NSNumber numberWithInteger:v23];
-  sub_1000982FC(v4, v26, CLSPredicateKeyPathSuggestedAgeMin);
+  suggestedAge = [(CLSContext *)self suggestedAge];
+  v25 = suggestedAge + v24 - 1;
+  v26 = [NSNumber numberWithInteger:suggestedAge];
+  sub_1000982FC(toCopy, v26, CLSPredicateKeyPathSuggestedAgeMin);
 
   v27 = [NSNumber numberWithInteger:v25];
-  sub_1000982FC(v4, v27, CLSPredicateKeyPathSuggestedAgeMax);
+  sub_1000982FC(toCopy, v27, CLSPredicateKeyPathSuggestedAgeMax);
 
-  v28 = [(CLSContext *)self suggestedCompletionTime];
-  v30 = v28 + v29 - 1;
-  v31 = [NSNumber numberWithInteger:v28];
-  sub_1000982FC(v4, v31, CLSPredicateKeyPathSuggestedCompletionTimeMin);
+  suggestedCompletionTime = [(CLSContext *)self suggestedCompletionTime];
+  v30 = suggestedCompletionTime + v29 - 1;
+  v31 = [NSNumber numberWithInteger:suggestedCompletionTime];
+  sub_1000982FC(toCopy, v31, CLSPredicateKeyPathSuggestedCompletionTimeMin);
 
   v32 = [NSNumber numberWithInteger:v30];
-  sub_1000982FC(v4, v32, CLSPredicateKeyPathSuggestedCompletionTimeMax);
+  sub_1000982FC(toCopy, v32, CLSPredicateKeyPathSuggestedCompletionTimeMax);
 }
 
 - (unint64_t)changeHash
 {
   v16.receiver = self;
   v16.super_class = CLSContext;
-  v3 = [(CLSContext *)&v16 changeHash];
-  v4 = [(CLSContext *)self parentObjectID];
-  if (v4)
+  changeHash = [(CLSContext *)&v16 changeHash];
+  parentObjectID = [(CLSContext *)self parentObjectID];
+  if (parentObjectID)
   {
-    v5 = [(CLSContext *)self parentObjectID];
-    v6 = [v5 _cls_stableHash];
+    parentObjectID2 = [(CLSContext *)self parentObjectID];
+    _cls_stableHash = [parentObjectID2 _cls_stableHash];
   }
 
   else
   {
-    v6 = 11;
+    _cls_stableHash = 11;
   }
 
-  v7 = [(CLSContext *)self type];
-  v8 = [(CLSContext *)self identifier];
-  v9 = [v8 _cls_stableHash];
+  type = [(CLSContext *)self type];
+  identifier = [(CLSContext *)self identifier];
+  _cls_stableHash2 = [identifier _cls_stableHash];
 
-  v10 = [(CLSContext *)self title];
-  v11 = [v10 _cls_stableHash];
+  title = [(CLSContext *)self title];
+  _cls_stableHash3 = [title _cls_stableHash];
 
-  v12 = [(CLSContext *)self topic];
-  if (v12)
+  topic = [(CLSContext *)self topic];
+  if (topic)
   {
-    v13 = [(CLSContext *)self topic];
-    v14 = [v13 _cls_stableHash];
+    topic2 = [(CLSContext *)self topic];
+    _cls_stableHash4 = [topic2 _cls_stableHash];
   }
 
   else
   {
-    v14 = 13;
+    _cls_stableHash4 = 13;
   }
 
-  return v6 ^ v3 ^ (2 * v7) ^ v9 ^ v11 ^ v14 ^ (4 * [(CLSContext *)self displayOrder]);
+  return _cls_stableHash ^ changeHash ^ (2 * type) ^ _cls_stableHash2 ^ _cls_stableHash3 ^ _cls_stableHash4 ^ (4 * [(CLSContext *)self displayOrder]);
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3 != 1)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (version != 1)
   {
-    if (a3)
+    if (version)
     {
 LABEL_35:
-      if (a3 == 4)
+      if (version == 4)
       {
         goto LABEL_52;
       }
 
-      if (a3 == 3)
+      if (version == 3)
       {
 LABEL_40:
         if ((sub_1000B9298(v8, @"alter table CLSContext add column assignable integer default 1", 0, 0, 0) & 1) == 0)
@@ -595,7 +595,7 @@ LABEL_40:
             _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(3): Could not add column assignable", buf, 2u);
           }
 
-          v29 = @"alter table CLSContext add column assignable integer default 1";
+          0x7FFFFFFFFFFFFFFELL = @"alter table CLSContext add column assignable integer default 1";
           goto LABEL_90;
         }
 
@@ -609,7 +609,7 @@ LABEL_40:
             _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(3): Could not create index CLSContext_assignable", buf, 2u);
           }
 
-          v29 = @"create index CLSContext_assignable on CLSContext (assignable)";
+          0x7FFFFFFFFFFFFFFELL = @"create index CLSContext_assignable on CLSContext (assignable)";
           goto LABEL_90;
         }
 
@@ -623,7 +623,7 @@ LABEL_40:
             _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(3): Could not add column ageMin", buf, 2u);
           }
 
-          v29 = @"alter table CLSContext add column ageMin integer default 0";
+          0x7FFFFFFFFFFFFFFELL = @"alter table CLSContext add column ageMin integer default 0";
           goto LABEL_90;
         }
 
@@ -637,12 +637,12 @@ LABEL_40:
             _os_log_error_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(3): Could not create index CLSContext_ageMin", buf, 2u);
           }
 
-          v29 = @"create index CLSContext_ageMin on CLSContext (ageMin)";
+          0x7FFFFFFFFFFFFFFELL = @"create index CLSContext_ageMin on CLSContext (ageMin)";
           goto LABEL_90;
         }
 
-        v29 = [NSString stringWithFormat:@"alter table CLSContext add column ageMax integer default %ld", 0x7FFFFFFFFFFFFFFELL];
-        if (sub_1000B9298(v8, v29, 0, 0, 0))
+        0x7FFFFFFFFFFFFFFELL = [NSString stringWithFormat:@"alter table CLSContext add column ageMax integer default %ld", 0x7FFFFFFFFFFFFFFELL];
+        if (sub_1000B9298(v8, 0x7FFFFFFFFFFFFFFELL, 0, 0, 0))
         {
 
           if ((sub_1000B9298(v8, @"create index CLSContext_ageMax on CLSContext (ageMax)", 0, 0, 0) & 1) == 0)
@@ -655,7 +655,7 @@ LABEL_40:
               _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(3): Could not create index CLSContext_ageMax", buf, 2u);
             }
 
-            v29 = @"create index CLSContext_ageMax on CLSContext (ageMax)";
+            0x7FFFFFFFFFFFFFFELL = @"create index CLSContext_ageMax on CLSContext (ageMax)";
             goto LABEL_90;
           }
 
@@ -669,7 +669,7 @@ LABEL_40:
               _os_log_error_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(3): Could not add column timeMin", buf, 2u);
             }
 
-            v29 = @"alter table CLSContext add column timeMin integer default 0";
+            0x7FFFFFFFFFFFFFFELL = @"alter table CLSContext add column timeMin integer default 0";
             goto LABEL_90;
           }
 
@@ -683,12 +683,12 @@ LABEL_40:
               _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(3): Could not create index CLSContext_timeMin", buf, 2u);
             }
 
-            v29 = @"create index CLSContext_timeMin on CLSContext (timeMin)";
+            0x7FFFFFFFFFFFFFFELL = @"create index CLSContext_timeMin on CLSContext (timeMin)";
             goto LABEL_90;
           }
 
-          v29 = [NSString stringWithFormat:@"alter table CLSContext add column timeMax integer default %ld", 0x7FFFFFFFFFFFFFFELL];
-          if (sub_1000B9298(v8, v29, 0, 0, 0))
+          0x7FFFFFFFFFFFFFFELL = [NSString stringWithFormat:@"alter table CLSContext add column timeMax integer default %ld", 0x7FFFFFFFFFFFFFFELL];
+          if (sub_1000B9298(v8, 0x7FFFFFFFFFFFFFFELL, 0, 0, 0))
           {
 
             if ((sub_1000B9298(v8, @"create index CLSContext_timeMax on CLSContext (timeMax)", 0, 0, 0) & 1) == 0)
@@ -701,18 +701,18 @@ LABEL_40:
                 _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(3): Could not create index CLSContext_timeMax", buf, 2u);
               }
 
-              v29 = @"create index CLSContext_timeMax on CLSContext (timeMax)";
+              0x7FFFFFFFFFFFFFFELL = @"create index CLSContext_timeMax on CLSContext (timeMax)";
               goto LABEL_90;
             }
 
-            v29 = [NSString stringWithFormat:@"update CLSContext set assignable=1, ageMin=0, ageMax=%ld, timeMin=0, timeMax=%ld", 0x7FFFFFFFFFFFFFFELL, 0x7FFFFFFFFFFFFFFELL];
-            if (sub_1000B9298(v8, v29, 0, 0, 0))
+            0x7FFFFFFFFFFFFFFELL = [NSString stringWithFormat:@"update CLSContext set assignable=1, ageMin=0, ageMax=%ld, timeMin=0, timeMax=%ld", 0x7FFFFFFFFFFFFFFELL, 0x7FFFFFFFFFFFFFFELL];
+            if (sub_1000B9298(v8, 0x7FFFFFFFFFFFFFFELL, 0, 0, 0))
             {
 
 LABEL_52:
               if (sub_1000B9298(v8, @"create trigger if not exists trigger_cascade_delete_activity_for_delete\n  after delete\n  on CLSContext\n  for each row\n  begin\n  delete from CLSActivity where parentObjectID=OLD.objectID;\n end\n", 0, 0, 0))
               {
-                a3 = 5;
+                version = 5;
                 goto LABEL_54;
               }
 
@@ -765,10 +765,10 @@ LABEL_90:
         goto LABEL_90;
       }
 
-      if (a3 != 2)
+      if (version != 2)
       {
 LABEL_54:
-        *a4 = a3;
+        *finalVersion = version;
         LOBYTE(v24) = 1;
         goto LABEL_92;
       }
@@ -809,7 +809,7 @@ LABEL_65:
       goto LABEL_91;
     }
 
-    if (!sub_1000B9298(v7, @"create table CLSContext(   objectID          text not null,    parentObjectID    text,    appIdentifier     text not null,    dateCreated       real not null,    dateLastModified  real not null,    type              integer,    identifier        text not null,    title             text not null,    topic             text,    universalLinkURL  text,    path              blob,    displayOrder      integer,    storeIdentifier   text,    contentStoreIdentifier text,    storeTeamID       text,    currentActivityID text,    foreign key(parentObjectID) references CLSContext(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSContext_objectID on CLSContext (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSContext_parentObjectID on CLSContext (parentObjectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create table if not exists AuthStatus( statusID text not null,  identifier text not null,  parentStatusID text,  deniedCount integer default 0,  authorizedCount integer default 0)", 0, 0, 0) || !sub_1000B9298(v8, @"create index AuthStatus_identifier_parentStatusID on AuthStatus (identifier, parentStatusID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSContext(   objectID          text not null,    parentObjectID    text,    appIdentifier     text not null,    dateCreated       real not null,    dateLastModified  real not null,    type              integer,    identifier        text not null,    title             text not null,    topic             text,    universalLinkURL  text,    path              blob,    displayOrder      integer,    storeIdentifier   text,    contentStoreIdentifier text,    storeTeamID       text,    currentActivityID text,    foreign key(parentObjectID) references CLSContext(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSContext_objectID on CLSContext (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSContext_parentObjectID on CLSContext (parentObjectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create table if not exists AuthStatus( statusID text not null,  identifier text not null,  parentStatusID text,  deniedCount integer default 0,  authorizedCount integer default 0)", 0, 0, 0) || !sub_1000B9298(v8, @"create index AuthStatus_identifier_parentStatusID on AuthStatus (identifier, parentStatusID)", 0, 0, 0))
     {
       goto LABEL_91;
     }
@@ -857,21 +857,21 @@ LABEL_65:
   [v8 selectAll:v11 block:v48];
   if ([v12 count])
   {
-    v13 = [v12 allObjects];
-    v14 = [PDDatabase whereSQLForArray:v13 prefix:@"objectID in "];
-    if (([v8 deleteAll:objc_opt_class() where:v14 bindings:v13] & 1) == 0)
+    allObjects = [v12 allObjects];
+    v14 = [PDDatabase whereSQLForArray:allObjects prefix:@"objectID in "];
+    if (([v8 deleteAll:objc_opt_class() where:v14 bindings:allObjects] & 1) == 0)
     {
       CLSInitLog();
       v28 = CLSLogDatabase;
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v52 = v13;
+        v52 = allObjects;
         _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Failed to migrate CLSContext(1): Failed to delete rows with bad objectIDs: %@", buf, 0xCu);
       }
 
       v24 = 0;
-      a3 = 1;
+      version = 1;
       goto LABEL_34;
     }
   }
@@ -880,16 +880,16 @@ LABEL_65:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v13 = [v43 keyEnumerator];
-  v15 = [v13 countByEnumeratingWithState:&v44 objects:v56 count:16];
+  allObjects = [v43 keyEnumerator];
+  v15 = [allObjects countByEnumeratingWithState:&v44 objects:v56 count:16];
   if (v15)
   {
     v16 = v15;
-    obj = v13;
+    obj = allObjects;
     v41 = v12;
     v17 = v8;
     v18 = *v45;
-    a3 = 2;
+    version = 2;
     while (2)
     {
       for (i = 0; i != v16; i = i + 1)
@@ -920,7 +920,7 @@ LABEL_65:
 
           objc_autoreleasePoolPop(v21);
           v24 = 0;
-          a3 = 1;
+          version = 1;
           goto LABEL_29;
         }
 
@@ -940,13 +940,13 @@ LABEL_65:
 LABEL_29:
     v8 = v17;
     v12 = v41;
-    v13 = obj;
+    allObjects = obj;
   }
 
   else
   {
     v24 = 1;
-    a3 = 2;
+    version = 2;
   }
 
 LABEL_34:
@@ -961,13 +961,13 @@ LABEL_92:
   return v24;
 }
 
-- (void)willBeDeletedFromDatabase:(id)a3
+- (void)willBeDeletedFromDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(CLSContext *)self objectID];
-  v7 = v5;
+  databaseCopy = database;
+  objectID = [(CLSContext *)self objectID];
+  v7 = objectID;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v4 deleteAll:objc_opt_class() where:@"childObjectID = ?" bindings:v6];
+  [databaseCopy deleteAll:objc_opt_class() where:@"childObjectID = ?" bindings:v6];
 }
 
 @end

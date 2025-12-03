@@ -1,5 +1,5 @@
 @interface MessagesUsagePreferencesDelegate
-- (float)sizeForCategory:(id)a3;
+- (float)sizeForCategory:(id)category;
 - (id)usageBundleApps;
 @end
 
@@ -24,7 +24,7 @@
   return [NSArray arrayWithObjects:v3, 0];
 }
 
-- (float)sizeForCategory:(id)a3
+- (float)sizeForCategory:(id)category
 {
   v3 = [NSNumber numberWithUnsignedLongLong:self->_totalSize];
 

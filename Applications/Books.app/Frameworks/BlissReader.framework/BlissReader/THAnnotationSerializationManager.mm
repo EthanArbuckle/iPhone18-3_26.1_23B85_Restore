@@ -1,23 +1,23 @@
 @interface THAnnotationSerializationManager
-- (BOOL)wentOfflineAfterHandleAnnotationProvider:(id)a3 willEncounterAnnotationAssetVersion:(id)a4 assetAssetVersion:(id)a5 assetID:(id)a6 assetURL:(id)a7 copyIfGoingOffline:(BOOL)a8;
+- (BOOL)wentOfflineAfterHandleAnnotationProvider:(id)provider willEncounterAnnotationAssetVersion:(id)version assetAssetVersion:(id)assetVersion assetID:(id)d assetURL:(id)l copyIfGoingOffline:(BOOL)offline;
 @end
 
 @implementation THAnnotationSerializationManager
 
-- (BOOL)wentOfflineAfterHandleAnnotationProvider:(id)a3 willEncounterAnnotationAssetVersion:(id)a4 assetAssetVersion:(id)a5 assetID:(id)a6 assetURL:(id)a7 copyIfGoingOffline:(BOOL)a8
+- (BOOL)wentOfflineAfterHandleAnnotationProvider:(id)provider willEncounterAnnotationAssetVersion:(id)version assetAssetVersion:(id)assetVersion assetID:(id)d assetURL:(id)l copyIfGoingOffline:(BOOL)offline
 {
-  v8 = a8;
-  v12 = [a4 isStrictlyNewerThanBookVersion:a5];
+  offlineCopy = offline;
+  v12 = [version isStrictlyNewerThanBookVersion:assetVersion];
   if (v12)
   {
-    if (([(THAnnotationSerializationManager *)self isAssetOfflineWithAssetID:a6]& 1) != 0)
+    if (([(THAnnotationSerializationManager *)self isAssetOfflineWithAssetID:d]& 1) != 0)
     {
       LOBYTE(v12) = 0;
     }
 
     else
     {
-      [(THAnnotationSerializationManager *)self protected_takeAssetOfflineWithProvider:a3 assetID:a6 copyData:v8];
+      [(THAnnotationSerializationManager *)self protected_takeAssetOfflineWithProvider:provider assetID:d copyData:offlineCopy];
       LOBYTE(v12) = 1;
     }
   }

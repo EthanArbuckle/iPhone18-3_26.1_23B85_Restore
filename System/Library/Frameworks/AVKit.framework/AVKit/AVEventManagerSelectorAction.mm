@@ -1,9 +1,9 @@
 @interface AVEventManagerSelectorAction
-- (AVEventManagerSelectorAction)initWithTarget:(id)a3 selector:(SEL)a4 event:(id)a5;
-- (BOOL)hasMatchingTarget:(id)a3 withSelector:(SEL)a4 forEvent:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (AVEventManagerSelectorAction)initWithTarget:(id)target selector:(SEL)selector event:(id)event;
+- (BOOL)hasMatchingTarget:(id)target withSelector:(SEL)selector forEvent:(id)event;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)sendAction:(id)a3;
+- (void)sendAction:(id)action;
 @end
 
 @implementation AVEventManagerSelectorAction
@@ -31,10 +31,10 @@
   return v8 & v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqual = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v12.receiver = self;
       v12.super_class = AVEventManagerSelectorAction;
       if ([(AVEventManagerAction *)&v12 isEqual:v5])
@@ -97,12 +97,12 @@
   return isEqual;
 }
 
-- (BOOL)hasMatchingTarget:(id)a3 withSelector:(SEL)a4 forEvent:(id)a5
+- (BOOL)hasMatchingTarget:(id)target withSelector:(SEL)selector forEvent:(id)event
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_target);
-  if (WeakRetained == v8)
+  if (WeakRetained == targetCopy)
   {
     if (self->_selector)
     {
@@ -114,7 +114,7 @@
       selector = 0;
     }
 
-    isEqual = sel_isEqual(selector, a4);
+    isEqual = sel_isEqual(selector, selector);
   }
 
   else
@@ -125,9 +125,9 @@
   return isEqual;
 }
 
-- (void)sendAction:(id)a3
+- (void)sendAction:(id)action
 {
-  v10 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_target);
   v5 = WeakRetained;
   if (self->_selector)
@@ -144,9 +144,9 @@
   parameterCount = self->_parameterCount;
   if (parameterCount == 1)
   {
-    if (v10 && v5)
+    if (actionCopy && v5)
     {
-      v7(v5, selector, v10);
+      v7(v5, selector, actionCopy);
     }
   }
 
@@ -169,31 +169,31 @@
   }
 }
 
-- (AVEventManagerSelectorAction)initWithTarget:(id)a3 selector:(SEL)a4 event:(id)a5
+- (AVEventManagerSelectorAction)initWithTarget:(id)target selector:(SEL)selector event:(id)event
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  eventCopy = event;
   v16.receiver = self;
   v16.super_class = AVEventManagerSelectorAction;
-  v10 = [(AVEventManagerAction *)&v16 initWithEvent:v9];
+  v10 = [(AVEventManagerAction *)&v16 initWithEvent:eventCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_target, v8);
+    objc_storeWeak(&v10->_target, targetCopy);
     p_selector = &v11->_selector;
-    if (a4)
+    if (selector)
     {
-      *p_selector = a4;
-      v13 = a4;
+      *p_selector = selector;
+      selectorCopy = selector;
     }
 
     else
     {
-      v13 = 0;
+      selectorCopy = 0;
       *p_selector = 0;
     }
 
-    v14 = [v8 methodSignatureForSelector:v13];
+    v14 = [targetCopy methodSignatureForSelector:selectorCopy];
     v11->_parameterCount = [v14 numberOfArguments] - 2;
   }
 

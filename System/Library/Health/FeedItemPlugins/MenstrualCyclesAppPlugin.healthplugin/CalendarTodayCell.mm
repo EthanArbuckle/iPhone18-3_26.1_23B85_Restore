@@ -1,10 +1,10 @@
 @interface CalendarTodayCell
-- (_TtC24MenstrualCyclesAppPlugin17CalendarTodayCell)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin17CalendarTodayCell)initWithCoder:(id)coder;
 @end
 
 @implementation CalendarTodayCell
 
-- (_TtC24MenstrualCyclesAppPlugin17CalendarTodayCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin17CalendarTodayCell)initWithCoder:(id)coder
 {
   result = sub_29E2C4724();
   __break(1u);

@@ -1,5 +1,5 @@
 @interface AGXG18PFamilyDeadlineProfile
-- (AGXG18PFamilyDeadlineProfile)initWithDevice:(__IOGPUDevice *)a3 executionSize:(unint64_t)a4;
+- (AGXG18PFamilyDeadlineProfile)initWithDevice:(__IOGPUDevice *)device executionSize:(unint64_t)size;
 - (void)dealloc;
 @end
 
@@ -28,7 +28,7 @@
   [(AGXG18PFamilyDeadlineProfile *)&v5 dealloc];
 }
 
-- (AGXG18PFamilyDeadlineProfile)initWithDevice:(__IOGPUDevice *)a3 executionSize:(unint64_t)a4
+- (AGXG18PFamilyDeadlineProfile)initWithDevice:(__IOGPUDevice *)device executionSize:(unint64_t)size
 {
   v14.receiver = self;
   v14.super_class = AGXG18PFamilyDeadlineProfile;
@@ -36,9 +36,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_deviceRef = a3;
-    CFRetain(a3);
-    v12 = a4;
+    v6->_deviceRef = device;
+    CFRetain(device);
+    sizeCopy = size;
     v13 = 0;
     outputStructCnt = 16;
     outputStruct = 0;
@@ -52,7 +52,7 @@
     {
       v7->_deadlineProfileID = v13;
       v8 = outputStruct;
-      v7->_executionSize = a4;
+      v7->_executionSize = size;
       v7->_globalTraceObjectID = v8;
     }
   }

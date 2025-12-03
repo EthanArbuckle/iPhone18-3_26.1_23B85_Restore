@@ -1,11 +1,11 @@
 @interface VerificationCell
-- (_TtC28HealthExposureNotificationUI16VerificationCell)initWithCoder:(id)a3;
+- (_TtC28HealthExposureNotificationUI16VerificationCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation VerificationCell
 
-- (_TtC28HealthExposureNotificationUI16VerificationCell)initWithCoder:(id)a3
+- (_TtC28HealthExposureNotificationUI16VerificationCell)initWithCoder:(id)coder
 {
   result = sub_251703584();
   __break(1u);

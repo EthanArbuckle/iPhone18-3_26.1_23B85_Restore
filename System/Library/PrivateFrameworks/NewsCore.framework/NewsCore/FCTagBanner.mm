@@ -1,27 +1,27 @@
 @interface FCTagBanner
 - (CGSize)size;
 - (FCEdgeInsets)insets;
-- (FCTagBanner)initWithAssetHandle:(id)a3 size:(CGSize)a4 insets:(FCEdgeInsets)a5;
+- (FCTagBanner)initWithAssetHandle:(id)handle size:(CGSize)size insets:(FCEdgeInsets)insets;
 @end
 
 @implementation FCTagBanner
 
-- (FCTagBanner)initWithAssetHandle:(id)a3 size:(CGSize)a4 insets:(FCEdgeInsets)a5
+- (FCTagBanner)initWithAssetHandle:(id)handle size:(CGSize)size insets:(FCEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  handleCopy = handle;
   v17.receiver = self;
   v17.super_class = FCTagBanner;
   v14 = [(FCTagBanner *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_assetHandle, a3);
+    objc_storeStrong(&v14->_assetHandle, handle);
     v15->_size.width = width;
     v15->_size.height = height;
     v15->_insets.top = top;

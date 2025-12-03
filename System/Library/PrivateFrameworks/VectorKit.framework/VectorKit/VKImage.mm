@@ -5,18 +5,18 @@
 - (CGRect)collisionRect;
 - (CGSize)size;
 - (TextureHandle)texture;
-- (VKImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a5;
-- (VKImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 usedAsTextureAndImage:(BOOL)a5 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a6;
-- (VKImage)initWithData:(id)a3 scale:(double)a4 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a5;
-- (VKImage)initWithData:(id)a3 scale:(double)a4 usedAsTextureAndImage:(BOOL)a5 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a6;
-- (VKImage)initWithName:(id)a3 scale:(double)a4 resourceManager:(id)a5 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a6;
+- (VKImage)initWithCGImage:(CGImage *)image scale:(double)scale resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store;
+- (VKImage)initWithCGImage:(CGImage *)image scale:(double)scale usedAsTextureAndImage:(BOOL)andImage resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store;
+- (VKImage)initWithData:(id)data scale:(double)scale resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store;
+- (VKImage)initWithData:(id)data scale:(double)scale usedAsTextureAndImage:(BOOL)image resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store;
+- (VKImage)initWithName:(id)name scale:(double)scale resourceManager:(id)manager resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store;
 - (const)textureCoordinates;
 - (id).cxx_construct;
-- (int)compareTo:(id)a3;
+- (int)compareTo:(id)to;
 - (void)_prepareImage;
-- (void)_prepareTextureWithAtlas:(TextureAtlas *)a3;
+- (void)_prepareTextureWithAtlas:(TextureAtlas *)atlas;
 - (void)dealloc;
-- (void)prepareTextureWithAtlas:(TextureAtlas *)a3;
+- (void)prepareTextureWithAtlas:(TextureAtlas *)atlas;
 @end
 
 @implementation VKImage
@@ -117,10 +117,10 @@
   return self;
 }
 
-- (int)compareTo:(id)a3
+- (int)compareTo:(id)to
 {
-  v4 = a3;
-  if (self == v4 || (-[VKImage prepareTextureWithAtlas:](self, "prepareTextureWithAtlas:", 0), [v4 prepareTextureWithAtlas:0], v5 = bswap64(*self->_imageHash), v6 = bswap64(v4[25]), v5 == v6) && (v5 = bswap64(*&self->_imageHash[8]), v6 = bswap64(v4[26]), v5 == v6))
+  toCopy = to;
+  if (self == toCopy || (-[VKImage prepareTextureWithAtlas:](self, "prepareTextureWithAtlas:", 0), [toCopy prepareTextureWithAtlas:0], v5 = bswap64(*self->_imageHash), v6 = bswap64(toCopy[25]), v5 == v6) && (v5 = bswap64(*&self->_imageHash[8]), v6 = bswap64(toCopy[26]), v5 == v6))
   {
     v7 = 0;
   }
@@ -284,8 +284,8 @@
       v16 = [v14 stringByAppendingPathExtension:@"png"];
 
       v17 = [(VKResourceManager *)self->_resourceManager pathForResourceWithName:v16];
-      v18 = [MEMORY[0x1E696AC08] defaultManager];
-      v19 = [v18 fileExistsAtPath:v17];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v19 = [defaultManager fileExistsAtPath:v17];
 
       if (v19)
       {
@@ -358,22 +358,22 @@ LABEL_29:
   v4 = atomic_load(&self->_isImageReady);
   if ((v4 & 1) == 0)
   {
-    v5 = self;
-    objc_sync_enter(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v6 = atomic_load(p_isImageReady);
     if ((v6 & 1) == 0)
     {
-      [(VKImage *)v5 _prepareImage];
+      [(VKImage *)selfCopy _prepareImage];
       atomic_store(1u, &self->_isImageReady);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   return self->_imageRef;
 }
 
-- (void)_prepareTextureWithAtlas:(TextureAtlas *)a3
+- (void)_prepareTextureWithAtlas:(TextureAtlas *)atlas
 {
   [(VKImage *)self image];
   v5 = atomic_load(&self->_isImageReady);
@@ -392,7 +392,7 @@ LABEL_29:
   Height = CGImageGetHeight(self->_imageRef);
   v9 = Height;
   v25 = __PAIR64__(Height, Width);
-  if (!a3)
+  if (!atlas)
   {
     v25 = vshl_u32(0x100000001, vand_s8(vneg_s32(vclz_s32(vadd_s32(__PAIR64__(Height, Width), -1))), 0x1F0000001FLL));
   }
@@ -430,9 +430,9 @@ LABEL_29:
     MEMORY[0x1B8C61850](v14, *(v27.__ptr_ + 16), 3, self->_imageHash);
   }
 
-  if (a3)
+  if (atlas)
   {
-    (*(a3->var0 + 4))(&v26, a3, &v27, 1);
+    (*(atlas->var0 + 4))(&v26, atlas, &v27, 1);
     v17 = v26;
     v26 = 0;
     cntrl = self->_textureAtlasRegion.__cntrl_;
@@ -509,7 +509,7 @@ LABEL_27:
   }
 }
 
-- (void)prepareTextureWithAtlas:(TextureAtlas *)a3
+- (void)prepareTextureWithAtlas:(TextureAtlas *)atlas
 {
   p_isTextureReady = &self->_isTextureReady;
   v4 = atomic_load(&self->_isTextureReady);
@@ -520,7 +520,7 @@ LABEL_27:
     v7 = atomic_load(p_isTextureReady);
     if ((v7 & 1) == 0)
     {
-      [(VKImage *)obj _prepareTextureWithAtlas:a3];
+      [(VKImage *)obj _prepareTextureWithAtlas:atlas];
       atomic_store(1u, &self->_isTextureReady);
     }
 
@@ -528,22 +528,22 @@ LABEL_27:
   }
 }
 
-- (VKImage)initWithName:(id)a3 scale:(double)a4 resourceManager:(id)a5 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a6
+- (VKImage)initWithName:(id)name scale:(double)scale resourceManager:(id)manager resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store
 {
-  ptr = a6.__ptr_;
-  v10 = a3;
-  v11 = a5;
+  ptr = store.__ptr_;
+  nameCopy = name;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = VKImage;
   v12 = [(VKImage *)&v20 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
-    v12->_scale = a4;
-    objc_storeStrong(&v12->_resourceManager, a5);
+    v12->_scale = scale;
+    objc_storeStrong(&v12->_resourceManager, manager);
     v16 = *ptr;
     v15 = *(ptr + 1);
     if (v15)
@@ -565,10 +565,10 @@ LABEL_27:
   return v12;
 }
 
-- (VKImage)initWithData:(id)a3 scale:(double)a4 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a5
+- (VKImage)initWithData:(id)data scale:(double)scale resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store
 {
-  ptr = a5.__ptr_;
-  v8 = a3;
+  ptr = store.__ptr_;
+  dataCopy = data;
   v9 = *(ptr + 1);
   v12 = *ptr;
   v13 = v9;
@@ -577,7 +577,7 @@ LABEL_27:
     atomic_fetch_add_explicit(&v9->__shared_weak_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v10 = [(VKImage *)self initWithData:v8 scale:0 usedAsTextureAndImage:&v12 resourceStore:a4];
+  v10 = [(VKImage *)self initWithData:dataCopy scale:0 usedAsTextureAndImage:&v12 resourceStore:scale];
   if (v13)
   {
     std::__shared_weak_count::__release_weak(v13);
@@ -586,19 +586,19 @@ LABEL_27:
   return v10;
 }
 
-- (VKImage)initWithData:(id)a3 scale:(double)a4 usedAsTextureAndImage:(BOOL)a5 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a6
+- (VKImage)initWithData:(id)data scale:(double)scale usedAsTextureAndImage:(BOOL)image resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store
 {
-  ptr = a6.__ptr_;
-  v11 = a3;
+  ptr = store.__ptr_;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = VKImage;
   v12 = [(VKImage *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    v13->_usedAsTextureAndImage = a5;
-    v13->_scale = a4;
+    objc_storeStrong(&v12->_data, data);
+    v13->_usedAsTextureAndImage = image;
+    v13->_scale = scale;
     v15 = *ptr;
     v14 = *(ptr + 1);
     if (v14)
@@ -620,17 +620,17 @@ LABEL_27:
   return v13;
 }
 
-- (VKImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a5
+- (VKImage)initWithCGImage:(CGImage *)image scale:(double)scale resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store
 {
-  v5 = *(a5.__ptr_ + 1);
-  v8 = *a5.__ptr_;
+  v5 = *(store.__ptr_ + 1);
+  v8 = *store.__ptr_;
   v9 = v5;
   if (v5)
   {
     atomic_fetch_add_explicit(&v5->__shared_weak_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v6 = [(VKImage *)self initWithCGImage:a3 scale:0 usedAsTextureAndImage:&v8 resourceStore:a4];
+  v6 = [(VKImage *)self initWithCGImage:image scale:0 usedAsTextureAndImage:&v8 resourceStore:scale];
   if (v9)
   {
     std::__shared_weak_count::__release_weak(v9);
@@ -639,23 +639,23 @@ LABEL_27:
   return v6;
 }
 
-- (VKImage)initWithCGImage:(CGImage *)a3 scale:(double)a4 usedAsTextureAndImage:(BOOL)a5 resourceStore:(weak_ptr<mre::GraphicsResourceStore>)a6
+- (VKImage)initWithCGImage:(CGImage *)image scale:(double)scale usedAsTextureAndImage:(BOOL)andImage resourceStore:(weak_ptr<mre::GraphicsResourceStore>)store
 {
-  ptr = a6.__ptr_;
+  ptr = store.__ptr_;
   v19.receiver = self;
   v19.super_class = VKImage;
-  v10 = [(VKImage *)&v19 init:a3];
+  v10 = [(VKImage *)&v19 init:image];
   if (v10)
   {
-    v11 = CGImageRetain(a3);
+    v11 = CGImageRetain(image);
     v10->_imageRef = v11;
     atomic_store(1u, &v10->_isImageReady);
     Width = CGImageGetWidth(v11);
     Height = CGImageGetHeight(v10->_imageRef);
     v10->_size.width = Width;
     v10->_size.height = Height;
-    v10->_scale = a4;
-    v10->_usedAsTextureAndImage = a5;
+    v10->_scale = scale;
+    v10->_usedAsTextureAndImage = andImage;
     v15 = *ptr;
     v14 = *(ptr + 1);
     if (v14)

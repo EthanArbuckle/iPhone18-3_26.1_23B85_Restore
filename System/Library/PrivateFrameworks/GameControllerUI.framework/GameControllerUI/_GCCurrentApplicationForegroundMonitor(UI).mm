@@ -12,7 +12,7 @@
   v4[1] = 3221225472;
   v4[2] = __55___GCCurrentApplicationForegroundMonitor_UI___ui_init___block_invoke;
   v4[3] = &unk_277E1DD30;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a3;
   v3 = MEMORY[0x20F32E600](v4);
   if ([MEMORY[0x277CCACC8] isMainThread])
@@ -31,7 +31,7 @@
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
 
-    [a1 CBApplicationDidBecomeActive];
+    [self CBApplicationDidBecomeActive];
   }
 
   else
@@ -40,7 +40,7 @@
     block[1] = 3221225472;
     block[2] = __75___GCCurrentApplicationForegroundMonitor_UI__CBApplicationDidBecomeActive___block_invoke;
     block[3] = &unk_277E1DC40;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -50,7 +50,7 @@
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
 
-    [a1 CBApplicationWillResignActive];
+    [self CBApplicationWillResignActive];
   }
 
   else
@@ -59,7 +59,7 @@
     block[1] = 3221225472;
     block[2] = __76___GCCurrentApplicationForegroundMonitor_UI__CBApplicationWillResignActive___block_invoke;
     block[3] = &unk_277E1DC40;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }

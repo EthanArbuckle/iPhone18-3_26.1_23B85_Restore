@@ -1,28 +1,28 @@
 @interface _LTLanguageAssetModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSLocale)locale;
 - (NSString)debugDescription;
 - (NSString)displayName;
 - (NSString)identifierForDownloads;
-- (_LTLanguageAssetModel)initWithCoder:(id)a3;
-- (_LTLanguageAssetModel)initWithInstallationStatus:(id)a3;
-- (_LTLanguageAssetModel)initWithLocale:(id)a3 progress:(id)a4;
-- (_LTLanguageAssetModel)initWithLocale:(id)a3 state:(int64_t)a4;
+- (_LTLanguageAssetModel)initWithCoder:(id)coder;
+- (_LTLanguageAssetModel)initWithInstallationStatus:(id)status;
+- (_LTLanguageAssetModel)initWithLocale:(id)locale progress:(id)progress;
+- (_LTLanguageAssetModel)initWithLocale:(id)locale state:(int64_t)state;
 - (_LTLanguageInstallationStatus)installationStatus;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)state;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTLanguageAssetModel
 
 - (int64_t)state
 {
-  v2 = [(_LTLanguageAssetModel *)self progress];
-  v3 = [v2 offlineState];
+  progress = [(_LTLanguageAssetModel *)self progress];
+  offlineState = [progress offlineState];
 
-  return v3;
+  return offlineState;
 }
 
 - (NSString)displayName
@@ -30,12 +30,12 @@
   displayName = self->_displayName;
   if (!displayName)
   {
-    v4 = [MEMORY[0x277CBEAF8] currentLocale];
-    v5 = [(_LTLanguageAssetModel *)self locale];
-    v6 = [v5 languageCode];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    locale = [(_LTLanguageAssetModel *)self locale];
+    languageCode = [locale languageCode];
 
-    v7 = [v4 localizedStringForLanguageCode:v6];
-    v8 = [v7 capitalizedStringWithLocale:v4];
+    v7 = [currentLocale localizedStringForLanguageCode:languageCode];
+    v8 = [v7 capitalizedStringWithLocale:currentLocale];
     v9 = self->_displayName;
     self->_displayName = v8;
 
@@ -60,72 +60,72 @@
   return locale;
 }
 
-- (_LTLanguageAssetModel)initWithLocale:(id)a3 progress:(id)a4
+- (_LTLanguageAssetModel)initWithLocale:(id)locale progress:(id)progress
 {
-  v6 = a3;
-  v7 = a4;
+  localeCopy = locale;
+  progressCopy = progress;
   v13.receiver = self;
   v13.super_class = _LTLanguageAssetModel;
   v8 = [(_LTLanguageAssetModel *)&v13 init];
   if (v8)
   {
-    v9 = [v6 _ltLocaleIdentifier];
+    _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
     ltIdentifier = v8->_ltIdentifier;
-    v8->_ltIdentifier = v9;
+    v8->_ltIdentifier = _ltLocaleIdentifier;
 
-    objc_storeStrong(&v8->_progress, a4);
+    objc_storeStrong(&v8->_progress, progress);
     v11 = v8;
   }
 
   return v8;
 }
 
-- (_LTLanguageAssetModel)initWithLocale:(id)a3 state:(int64_t)a4
+- (_LTLanguageAssetModel)initWithLocale:(id)locale state:(int64_t)state
 {
-  v6 = a3;
-  v7 = [v6 _ltLocaleIdentifier];
-  v8 = [_LTAssetProgress discreteProgressWithIdentifier:v7 totalUnitCount:838860800];
+  localeCopy = locale;
+  _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
+  v8 = [_LTAssetProgress discreteProgressWithIdentifier:_ltLocaleIdentifier totalUnitCount:838860800];
 
-  [v8 setOfflineState:a4];
-  v9 = [(_LTLanguageAssetModel *)self initWithLocale:v6 progress:v8];
+  [v8 setOfflineState:state];
+  v9 = [(_LTLanguageAssetModel *)self initWithLocale:localeCopy progress:v8];
 
   return v9;
 }
 
-- (_LTLanguageAssetModel)initWithInstallationStatus:(id)a3
+- (_LTLanguageAssetModel)initWithInstallationStatus:(id)status
 {
   v4 = MEMORY[0x277CBEAF8];
-  v5 = a3;
-  v6 = [v5 localeIdentifier];
-  v7 = [v4 localeWithLocaleIdentifier:v6];
+  statusCopy = status;
+  localeIdentifier = [statusCopy localeIdentifier];
+  v7 = [v4 localeWithLocaleIdentifier:localeIdentifier];
 
-  v8 = [v5 offlineState];
-  v9 = [(_LTLanguageAssetModel *)self initWithLocale:v7 state:v8];
+  offlineState = [statusCopy offlineState];
+  v9 = [(_LTLanguageAssetModel *)self initWithLocale:v7 state:offlineState];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ltIdentifier = self->_ltIdentifier;
-  v5 = a3;
-  [v5 encodeObject:ltIdentifier forKey:@"ltIdentifier"];
-  [v5 encodeObject:self->_progress forKey:@"progress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:ltIdentifier forKey:@"ltIdentifier"];
+  [coderCopy encodeObject:self->_progress forKey:@"progress"];
 }
 
-- (_LTLanguageAssetModel)initWithCoder:(id)a3
+- (_LTLanguageAssetModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _LTLanguageAssetModel;
   v5 = [(_LTLanguageAssetModel *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ltIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ltIdentifier"];
     ltIdentifier = v5->_ltIdentifier;
     v5->_ltIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"progress"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"progress"];
     progress = v5->_progress;
     v5->_progress = v8;
 
@@ -138,10 +138,10 @@
 - (NSString)identifierForDownloads
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_LTLanguageAssetModel *)self ltIdentifier];
-  v5 = [(_LTLanguageAssetModel *)self progress];
-  v6 = _LTOfflineStateString([v5 offlineState]);
-  v7 = [v3 stringWithFormat:@"%@ %@", v4, v6];
+  ltIdentifier = [(_LTLanguageAssetModel *)self ltIdentifier];
+  progress = [(_LTLanguageAssetModel *)self progress];
+  v6 = _LTOfflineStateString([progress offlineState]);
+  v7 = [v3 stringWithFormat:@"%@ %@", ltIdentifier, v6];
 
   return v7;
 }
@@ -149,33 +149,33 @@
 - (_LTLanguageInstallationStatus)installationStatus
 {
   v3 = [_LTLanguageInstallationStatus alloc];
-  v4 = [(_LTLanguageAssetModel *)self locale];
-  v5 = [v4 _ltLocaleIdentifier];
-  v6 = [(_LTLanguageAssetModel *)self progress];
-  v7 = [(_LTLanguageInstallationStatus *)v3 initWithLocaleIdentifier:v5 progress:v6];
+  locale = [(_LTLanguageAssetModel *)self locale];
+  _ltLocaleIdentifier = [locale _ltLocaleIdentifier];
+  progress = [(_LTLanguageAssetModel *)self progress];
+  v7 = [(_LTLanguageInstallationStatus *)v3 initWithLocaleIdentifier:_ltLocaleIdentifier progress:progress];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(_LTLanguageAssetModel *)self ltIdentifier];
-  v3 = [v2 hash];
+  ltIdentifier = [(_LTLanguageAssetModel *)self ltIdentifier];
+  v3 = [ltIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_LTLanguageAssetModel *)self ltIdentifier];
-    v7 = [v5 ltIdentifier];
+    v5 = equalCopy;
+    ltIdentifier = [(_LTLanguageAssetModel *)self ltIdentifier];
+    ltIdentifier2 = [v5 ltIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [ltIdentifier isEqualToString:ltIdentifier2];
   }
 
   else
@@ -186,23 +186,23 @@
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(_LTLanguageAssetModel *)self displayName];
-  v6 = [v4 displayName];
+  compareCopy = compare;
+  displayName = [(_LTLanguageAssetModel *)self displayName];
+  displayName2 = [compareCopy displayName];
 
-  v7 = [v5 compare:v6];
+  v7 = [displayName compare:displayName2];
   return v7;
 }
 
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(_LTLanguageAssetModel *)self ltIdentifier];
+  ltIdentifier = [(_LTLanguageAssetModel *)self ltIdentifier];
   v5 = _LTOfflineStateString([(_LTLanguageAssetModel *)self state]);
-  v6 = [(_LTLanguageAssetModel *)self progress];
-  v7 = [v3 stringWithFormat:@"%@: %@ %@", v4, v5, v6];
+  progress = [(_LTLanguageAssetModel *)self progress];
+  v7 = [v3 stringWithFormat:@"%@: %@ %@", ltIdentifier, v5, progress];
 
   return v7;
 }

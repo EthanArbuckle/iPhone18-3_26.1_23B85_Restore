@@ -1,28 +1,28 @@
 @interface HMSupportedAccessoryDiagnostics
-- (BOOL)isEqual:(id)a3;
-- (HMSupportedAccessoryDiagnostics)initWithCoder:(id)a3;
-- (HMSupportedAccessoryDiagnostics)initWithSupportedTypes:(unint64_t)a3 format:(int64_t)a4 audio:(unint64_t)a5 options:(unint64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMSupportedAccessoryDiagnostics)initWithCoder:(id)coder;
+- (HMSupportedAccessoryDiagnostics)initWithSupportedTypes:(unint64_t)types format:(int64_t)format audio:(unint64_t)audio options:(unint64_t)options;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMSupportedAccessoryDiagnostics
 
 - (unint64_t)hash
 {
-  v3 = [(HMSupportedAccessoryDiagnostics *)self supportedTypes];
-  v4 = [(HMSupportedAccessoryDiagnostics *)self supportedFormat]^ v3;
-  v5 = [(HMSupportedAccessoryDiagnostics *)self supportedOptions];
-  return v4 ^ v5 ^ [(HMSupportedAccessoryDiagnostics *)self supportedAudio];
+  supportedTypes = [(HMSupportedAccessoryDiagnostics *)self supportedTypes];
+  v4 = [(HMSupportedAccessoryDiagnostics *)self supportedFormat]^ supportedTypes;
+  supportedOptions = [(HMSupportedAccessoryDiagnostics *)self supportedOptions];
+  return v4 ^ supportedOptions ^ [(HMSupportedAccessoryDiagnostics *)self supportedAudio];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -33,8 +33,8 @@
   v6 = v5;
   if (v6 && (v7 = -[HMSupportedAccessoryDiagnostics supportedTypes](self, "supportedTypes"), v7 == [v6 supportedTypes]) && (v8 = -[HMSupportedAccessoryDiagnostics supportedFormat](self, "supportedFormat"), v8 == objc_msgSend(v6, "supportedFormat")) && (v9 = -[HMSupportedAccessoryDiagnostics supportedOptions](self, "supportedOptions"), v9 == objc_msgSend(v6, "supportedOptions")))
   {
-    v10 = [(HMSupportedAccessoryDiagnostics *)self supportedAudio];
-    v11 = v10 == [v6 supportedAudio];
+    supportedAudio = [(HMSupportedAccessoryDiagnostics *)self supportedAudio];
+    v11 = supportedAudio == [v6 supportedAudio];
   }
 
   else
@@ -45,58 +45,58 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   supportedTypes = self->_supportedTypes;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:supportedTypes];
-  [v6 encodeObject:v7 forKey:@"HMA.diagnostics.ck.ty"];
+  [coderCopy encodeObject:v7 forKey:@"HMA.diagnostics.ck.ty"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_supportedFormat];
-  [v6 encodeObject:v8 forKey:@"HMA.diagnostics.ck.sf"];
+  [coderCopy encodeObject:v8 forKey:@"HMA.diagnostics.ck.sf"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_supportedOptions];
-  [v6 encodeObject:v9 forKey:@"HMA.diagnostics.ck.so"];
+  [coderCopy encodeObject:v9 forKey:@"HMA.diagnostics.ck.so"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_supportedAudio];
-  [v6 encodeObject:v10 forKey:@"HMA.diagnostics.ck.sa"];
+  [coderCopy encodeObject:v10 forKey:@"HMA.diagnostics.ck.sa"];
 }
 
-- (HMSupportedAccessoryDiagnostics)initWithCoder:(id)a3
+- (HMSupportedAccessoryDiagnostics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.ty"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.sf"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.so"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.sa"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.ty"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.sf"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.so"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMA.diagnostics.ck.sa"];
 
-  v9 = [v6 integerValue];
-  if ((v9 - 3) >= 0xFFFFFFFFFFFFFFFELL)
+  integerValue = [v6 integerValue];
+  if ((integerValue - 3) >= 0xFFFFFFFFFFFFFFFELL)
   {
-    self = -[HMSupportedAccessoryDiagnostics initWithSupportedTypes:format:audio:options:](self, "initWithSupportedTypes:format:audio:options:", [v5 integerValue], v9, objc_msgSend(v8, "integerValue"), objc_msgSend(v7, "integerValue"));
-    v10 = self;
+    self = -[HMSupportedAccessoryDiagnostics initWithSupportedTypes:format:audio:options:](self, "initWithSupportedTypes:format:audio:options:", [v5 integerValue], integerValue, objc_msgSend(v8, "integerValue"), objc_msgSend(v7, "integerValue"));
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (HMSupportedAccessoryDiagnostics)initWithSupportedTypes:(unint64_t)a3 format:(int64_t)a4 audio:(unint64_t)a5 options:(unint64_t)a6
+- (HMSupportedAccessoryDiagnostics)initWithSupportedTypes:(unint64_t)types format:(int64_t)format audio:(unint64_t)audio options:(unint64_t)options
 {
   v11.receiver = self;
   v11.super_class = HMSupportedAccessoryDiagnostics;
   result = [(HMSupportedAccessoryDiagnostics *)&v11 init];
   if (result)
   {
-    result->_supportedTypes = a3;
-    result->_supportedFormat = a4;
-    result->_supportedOptions = a6;
-    result->_supportedAudio = a5;
+    result->_supportedTypes = types;
+    result->_supportedFormat = format;
+    result->_supportedOptions = options;
+    result->_supportedAudio = audio;
   }
 
   return result;

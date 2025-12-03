@@ -1,38 +1,38 @@
 @interface IDSMessageFactoryComponent
-- (BOOL)shouldSendAsAttachment:(id)a3 maxSize:(unint64_t)a4;
-- (IDSMessageFactoryComponent)initWithMMCSUploader:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (BOOL)shouldSendAsAttachment:(id)attachment maxSize:(unint64_t)size;
+- (IDSMessageFactoryComponent)initWithMMCSUploader:(id)uploader;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IDSMessageFactoryComponent
 
-- (IDSMessageFactoryComponent)initWithMMCSUploader:(id)a3
+- (IDSMessageFactoryComponent)initWithMMCSUploader:(id)uploader
 {
-  v5 = a3;
+  uploaderCopy = uploader;
   v9.receiver = self;
   v9.super_class = IDSMessageFactoryComponent;
   v6 = [(IDSMessageFactoryComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mmcsUploader, a3);
+    objc_storeStrong(&v6->_mmcsUploader, uploader);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
-  v3 = a3;
-  v51 = [v3 guid];
-  v4 = [v3 endpointsToEncryptedData];
-  [v3 setUsedMMCS:0];
+  inputCopy = input;
+  guid = [inputCopy guid];
+  endpointsToEncryptedData = [inputCopy endpointsToEncryptedData];
+  [inputCopy setUsedMMCS:0];
   v49 = objc_alloc_init(NSMutableArray);
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v5 = v4;
+  v5 = endpointsToEncryptedData;
   v50 = [v5 countByEnumeratingWithState:&v66 objects:v74 count:16];
   if (v50)
   {
@@ -52,25 +52,25 @@
 
         v8 = *(*(&v66 + 1) + 8 * i);
         v9 = [v8 URI];
-        v10 = [v3 fromID];
+        fromID = [inputCopy fromID];
         v54 = v9;
-        v11 = [v9 prefixedURI];
-        v12 = [v10 isEqualToString:v11];
+        prefixedURI = [v9 prefixedURI];
+        v12 = [fromID isEqualToString:prefixedURI];
 
         if (v12)
         {
-          v13 = 0;
+          wantsDeliveryStatus = 0;
         }
 
         else
         {
-          v13 = [v3 wantsDeliveryStatus];
+          wantsDeliveryStatus = [inputCopy wantsDeliveryStatus];
         }
 
-        if ([v3 wantsCertifiedDelivery])
+        if ([inputCopy wantsCertifiedDelivery])
         {
-          v14 = [v8 capabilities];
-          v15 = [v14 valueForCapability:v46] > 0;
+          capabilities = [v8 capabilities];
+          v15 = [capabilities valueForCapability:v46] > 0;
         }
 
         else
@@ -79,45 +79,45 @@
         }
 
         v16 = [v5 objectForKey:v8];
-        if (([v3 forceAttachmentMessage] & 1) != 0 || -[IDSMessageFactoryComponent shouldSendAsAttachment:maxSize:](self, "shouldSendAsAttachment:maxSize:", v16, objc_msgSend(v3, "maxSize")))
+        if (([inputCopy forceAttachmentMessage] & 1) != 0 || -[IDSMessageFactoryComponent shouldSendAsAttachment:maxSize:](self, "shouldSendAsAttachment:maxSize:", v16, objc_msgSend(inputCopy, "maxSize")))
         {
           v53 = v15;
-          v17 = v13;
+          v17 = wantsDeliveryStatus;
           v18 = +[IDSFoundationLog delivery];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v8 pushTokenObject];
-            v20 = [v54 URIByAddingPushToken:v19];
+            pushTokenObject = [v8 pushTokenObject];
+            v20 = [v54 URIByAddingPushToken:pushTokenObject];
             *buf = v45;
-            v71 = v51;
+            v71 = guid;
             v72 = 2112;
             v73 = v20;
             _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "GUID %@ Uploading data as attachment for token: %@", buf, 0x16u);
           }
 
-          [v3 setUsedMMCS:1];
+          [inputCopy setUsedMMCS:1];
           v21 = objc_alloc_init(CUTUnsafePromiseSeal);
           mmcsUploader = self->_mmcsUploader;
-          v23 = [v3 fromID];
-          v24 = [v3 service];
-          v25 = -[IDSMMCSUploader uploadData:fromID:toEndpoint:onTopic:forGUID:encryptionType:](mmcsUploader, "uploadData:fromID:toEndpoint:onTopic:forGUID:encryptionType:", v16, v23, v8, v24, v51, [v3 encryptionType]);
+          fromID2 = [inputCopy fromID];
+          service = [inputCopy service];
+          v25 = -[IDSMMCSUploader uploadData:fromID:toEndpoint:onTopic:forGUID:encryptionType:](mmcsUploader, "uploadData:fromID:toEndpoint:onTopic:forGUID:encryptionType:", v16, fromID2, v8, service, guid, [inputCopy encryptionType]);
 
           v58[0] = _NSConcreteStackBlock;
           v58[1] = 3221225472;
           v58[2] = sub_100444CEC;
           v58[3] = &unk_100BDC510;
-          v59 = v3;
+          v59 = inputCopy;
           v60 = v21;
           v61 = v8;
           v26 = v54;
           v62 = v54;
           v64 = v17;
           v65 = v53;
-          v63 = v51;
+          v63 = guid;
           v27 = v21;
           [(IDSPeerAggregatableMessage *)v25 registerResultBlock:v58];
-          v28 = [v27 promise];
-          [v49 addObject:v28];
+          promise = [v27 promise];
+          [v49 addObject:promise];
 
           v5 = v47;
         }
@@ -125,34 +125,34 @@
         else
         {
           v25 = objc_alloc_init(IDSPeerAggregatableMessage);
-          v29 = [v8 pushTokenObject];
-          [(IDSPeerAggregatableMessage *)v25 setTargetToken:v29];
+          pushTokenObject2 = [v8 pushTokenObject];
+          [(IDSPeerAggregatableMessage *)v25 setTargetToken:pushTokenObject2];
 
-          v30 = [v8 sessionToken];
-          [(IDSPeerAggregatableMessage *)v25 setTargetSessionToken:v30];
+          sessionToken = [v8 sessionToken];
+          [(IDSPeerAggregatableMessage *)v25 setTargetSessionToken:sessionToken];
 
           [(IDSPeerAggregatableMessage *)v25 setTargetPeerID:v54];
-          v31 = [v16 data];
-          [(IDSPeerAggregatableMessage *)v25 setEncryptedData:v31];
+          data = [v16 data];
+          [(IDSPeerAggregatableMessage *)v25 setEncryptedData:data];
 
-          v32 = [NSNumber numberWithBool:v13];
+          v32 = [NSNumber numberWithBool:wantsDeliveryStatus];
           [(IDSPeerAggregatableMessage *)v25 setWantsDeliveryStatus:v32];
 
           [(IDSPeerAggregatableMessage *)v25 setWantsCertifiedDelivery:v15];
-          v33 = [v16 payloadMetadata];
-          v34 = [v33 length];
+          payloadMetadata = [v16 payloadMetadata];
+          v34 = [payloadMetadata length];
 
           if (v34)
           {
-            v35 = [v16 payloadMetadata];
-            [(IDSPeerAggregatableMessage *)v25 setPayloadMetadata:v35];
+            payloadMetadata2 = [v16 payloadMetadata];
+            [(IDSPeerAggregatableMessage *)v25 setPayloadMetadata:payloadMetadata2];
           }
 
-          v36 = [v8 anonymizedSenderID];
-          [(IDSPeerAggregatableMessage *)v25 setAnonymizedSenderID:v36];
+          anonymizedSenderID = [v8 anonymizedSenderID];
+          [(IDSPeerAggregatableMessage *)v25 setAnonymizedSenderID:anonymizedSenderID];
 
-          v37 = [v8 expireDate];
-          [(IDSPeerAggregatableMessage *)v25 setExpirationDate:v37];
+          expireDate = [v8 expireDate];
+          [(IDSPeerAggregatableMessage *)v25 setExpirationDate:expireDate];
 
           if ([v16 encryptionType] != 2)
           {
@@ -178,22 +178,22 @@
   v55[1] = 3221225472;
   v55[2] = sub_100445130;
   v55[3] = &unk_100BD8848;
-  v56 = v3;
-  v57 = v51;
-  v40 = v51;
+  v56 = inputCopy;
+  v57 = guid;
+  v40 = guid;
   v41 = v5;
-  v42 = v3;
+  v42 = inputCopy;
   v43 = [v39 then:v55];
 
   return v43;
 }
 
-- (BOOL)shouldSendAsAttachment:(id)a3 maxSize:(unint64_t)a4
+- (BOOL)shouldSendAsAttachment:(id)attachment maxSize:(unint64_t)size
 {
-  v5 = [a3 data];
-  LOBYTE(a4) = [v5 length] >= a4;
+  data = [attachment data];
+  LOBYTE(size) = [data length] >= size;
 
-  return a4;
+  return size;
 }
 
 @end

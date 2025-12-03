@@ -1,77 +1,77 @@
 @interface UARPDeploymentRule
-- (BOOL)isDeploymentAllowed:(id *)a3;
+- (BOOL)isDeploymentAllowed:(id *)allowed;
 - (BOOL)isDeploymentAllowedPerCountryList;
 - (BOOL)isDeploymentAllowedPerDeploymentLimit;
 - (BOOL)isDeploymentAllowedPerGoLiveDate;
 - (BOOL)isDeploymentAllowedPerRampPeriod;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateDeploymentLimits:(id *)a3;
-- (UARPDeploymentRule)initWithCoder:(id)a3;
-- (UARPDeploymentRule)initWithConfig:(id)a3;
-- (UARPDeploymentRule)initWithMinOSVersion:(id)a3 maxOSVersion:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateDeploymentLimits:(id *)limits;
+- (UARPDeploymentRule)initWithCoder:(id)coder;
+- (UARPDeploymentRule)initWithConfig:(id)config;
+- (UARPDeploymentRule)initWithMinOSVersion:(id)version maxOSVersion:(id)sVersion;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compareOSVersion:(id)a3 withVersion:(id)a4;
-- (void)addDeploymentLimit:(id)a3 withGoLiveDate:(id)a4 error:(id *)a5;
+- (int64_t)compareOSVersion:(id)version withVersion:(id)withVersion;
+- (void)addDeploymentLimit:(id)limit withGoLiveDate:(id)date error:(id *)error;
 - (void)calculateDeploymentDay;
 - (void)calculateDeploymentPercent;
 - (void)createSerialNumber;
-- (void)dumpWithTabDepth:(unint64_t)a3 dumpString:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeploymentDay:(id)a3;
-- (void)setDeploymentPercent:(id)a3;
-- (void)setTestSerialNumber:(id)a3;
+- (void)dumpWithTabDepth:(unint64_t)depth dumpString:(id)string;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeploymentDay:(id)day;
+- (void)setDeploymentPercent:(id)percent;
+- (void)setTestSerialNumber:(id)number;
 @end
 
 @implementation UARPDeploymentRule
 
-- (UARPDeploymentRule)initWithMinOSVersion:(id)a3 maxOSVersion:(id)a4
+- (UARPDeploymentRule)initWithMinOSVersion:(id)version maxOSVersion:(id)sVersion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v4 = v15;
-  v15 = 0;
+  objc_storeStrong(&v13, sVersion);
+  v4 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v4;
   v12.super_class = UARPDeploymentRule;
-  v15 = [(UARPDeploymentRule *)&v12 init];
-  objc_storeStrong(&v15, v15);
-  if (v15)
+  selfCopy = [(UARPDeploymentRule *)&v12 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = [location[0] copy];
-    minOSVersion = v15->_minOSVersion;
-    v15->_minOSVersion = v5;
+    minOSVersion = selfCopy->_minOSVersion;
+    selfCopy->_minOSVersion = v5;
 
     v7 = [v13 copy];
-    maxOSVersion = v15->_maxOSVersion;
-    v15->_maxOSVersion = v7;
+    maxOSVersion = selfCopy->_maxOSVersion;
+    selfCopy->_maxOSVersion = v7;
   }
 
-  v10 = v15;
+  v10 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 
-- (UARPDeploymentRule)initWithConfig:(id)a3
+- (UARPDeploymentRule)initWithConfig:(id)config
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, config);
   v45 = 0;
-  v34 = [location[0] rampPeriod];
+  rampPeriod = [location[0] rampPeriod];
   v43 = 0;
   v35 = 0;
-  if (v34)
+  if (rampPeriod)
   {
-    v44 = [location[0] deploymentLimit];
+    deploymentLimit = [location[0] deploymentLimit];
     v43 = 1;
-    v35 = v44 != 0;
+    v35 = deploymentLimit != 0;
   }
 
   if (v43)
@@ -86,28 +86,28 @@
 
   else
   {
-    v33 = [location[0] rampPeriod];
+    rampPeriod2 = [location[0] rampPeriod];
 
-    if (v33)
+    if (rampPeriod2)
     {
-      v31 = [location[0] rampPeriod];
-      v32 = [v31 unsignedIntValue];
+      rampPeriod3 = [location[0] rampPeriod];
+      unsignedIntValue = [rampPeriod3 unsignedIntValue];
 
-      v41 = v32;
-      v45 = v32 == 7 || v41 == 28;
+      v41 = unsignedIntValue;
+      v45 = unsignedIntValue == 7 || v41 == 28;
     }
 
     else
     {
-      v30 = [location[0] deploymentLimit];
+      deploymentLimit2 = [location[0] deploymentLimit];
 
-      if (v30)
+      if (deploymentLimit2)
       {
-        v28 = [location[0] deploymentLimit];
-        v29 = [v28 unsignedIntValue];
+        deploymentLimit3 = [location[0] deploymentLimit];
+        unsignedIntValue2 = [deploymentLimit3 unsignedIntValue];
 
-        v40 = v29;
-        v45 = v29 && v40 <= 0x63;
+        v40 = unsignedIntValue2;
+        v45 = unsignedIntValue2 && v40 <= 0x63;
       }
 
       else
@@ -118,63 +118,63 @@
 
     if (v45)
     {
-      v3 = v47;
-      v47 = 0;
+      v3 = selfCopy;
+      selfCopy = 0;
       v39.receiver = v3;
       v39.super_class = UARPDeploymentRule;
-      v47 = [(UARPDeploymentRule *)&v39 init];
-      objc_storeStrong(&v47, v47);
-      if (v47)
+      selfCopy = [(UARPDeploymentRule *)&v39 init];
+      objc_storeStrong(&selfCopy, selfCopy);
+      if (selfCopy)
       {
-        v24 = [location[0] goLiveDate];
-        v4 = [v24 copy];
-        v5 = *(v47 + 10);
-        *(v47 + 10) = v4;
+        goLiveDate = [location[0] goLiveDate];
+        v4 = [goLiveDate copy];
+        v5 = *(selfCopy + 10);
+        *(selfCopy + 10) = v4;
 
-        v25 = [location[0] countryList];
-        v6 = [v25 copy];
-        v7 = *(v47 + 11);
-        *(v47 + 11) = v6;
+        countryList = [location[0] countryList];
+        v6 = [countryList copy];
+        v7 = *(selfCopy + 11);
+        *(selfCopy + 11) = v6;
 
-        v26 = [location[0] rampPeriod];
-        v8 = [v26 copy];
-        v9 = *(v47 + 12);
-        *(v47 + 12) = v8;
+        rampPeriod4 = [location[0] rampPeriod];
+        v8 = [rampPeriod4 copy];
+        v9 = *(selfCopy + 12);
+        *(selfCopy + 12) = v8;
 
-        v27 = [location[0] deploymentLimit];
-        v10 = [v27 copy];
-        v11 = *(v47 + 13);
-        *(v47 + 13) = v10;
+        deploymentLimit4 = [location[0] deploymentLimit];
+        v10 = [deploymentLimit4 copy];
+        v11 = *(selfCopy + 13);
+        *(selfCopy + 13) = v10;
 
         v12 = os_log_create("com.apple.accessoryupdater.uarp", "deployment");
-        v13 = *(v47 + 1);
-        *(v47 + 1) = v12;
+        v13 = *(selfCopy + 1);
+        *(selfCopy + 1) = v12;
 
         if (objc_opt_class())
         {
           v23 = +[GEOCountryConfiguration sharedConfiguration];
-          v22 = [v23 countryCode];
-          v14 = [v22 copy];
-          v15 = *(v47 + 9);
-          *(v47 + 9) = v14;
+          countryCode = [v23 countryCode];
+          v14 = [countryCode copy];
+          v15 = *(selfCopy + 9);
+          *(selfCopy + 9) = v14;
         }
 
         v16 = objc_alloc_init(NSMutableDictionary);
-        v17 = *(v47 + 14);
-        *(v47 + 14) = v16;
+        v17 = *(selfCopy + 14);
+        *(selfCopy + 14) = v16;
 
-        *(v47 + 64) = 0;
+        *(selfCopy + 64) = 0;
         v38 = 0;
-        v19 = v47;
-        v21 = [*(v47 + 13) copy];
-        v20 = [*(v47 + 10) copy];
+        v19 = selfCopy;
+        v21 = [*(selfCopy + 13) copy];
+        v20 = [*(selfCopy + 10) copy];
         v37 = v38;
         [v19 addDeploymentLimit:v21 withGoLiveDate:? error:?];
         objc_storeStrong(&v38, v37);
 
         if (v38)
         {
-          v36 = *(v47 + 1);
+          v36 = *(selfCopy + 1);
           if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
           {
             __os_log_helper_16_2_2_8_32_8_64(v49, "[UARPDeploymentRule initWithConfig:]", v38);
@@ -187,7 +187,7 @@
         objc_storeStrong(&v38, 0);
       }
 
-      v48 = v47;
+      v48 = selfCopy;
       v42 = 1;
     }
 
@@ -199,35 +199,35 @@
   }
 
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v47, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v48;
 }
 
-- (UARPDeploymentRule)initWithCoder:(id)a3
+- (UARPDeploymentRule)initWithCoder:(id)coder
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v22;
-  v22 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v20.receiver = v3;
   v20.super_class = UARPDeploymentRule;
-  v22 = [(UARPDeploymentRule *)&v20 init];
-  objc_storeStrong(&v22, v22);
-  if (v22)
+  selfCopy = [(UARPDeploymentRule *)&v20 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"goLiveDate"];
-    goLiveDate = v22->_goLiveDate;
-    v22->_goLiveDate = v4;
+    goLiveDate = selfCopy->_goLiveDate;
+    selfCopy->_goLiveDate = v4;
 
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"rampPeriod"];
-    rampPeriod = v22->_rampPeriod;
-    v22->_rampPeriod = v6;
+    rampPeriod = selfCopy->_rampPeriod;
+    selfCopy->_rampPeriod = v6;
 
     v8 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"deploymentLimit"];
-    deploymentLimit = v22->_deploymentLimit;
-    v22->_deploymentLimit = v8;
+    deploymentLimit = selfCopy->_deploymentLimit;
+    selfCopy->_deploymentLimit = v8;
 
     v23[0] = objc_opt_class();
     v23[1] = objc_opt_class();
@@ -235,62 +235,62 @@
     v19 = [NSSet setWithArray:?];
 
     v10 = [location[0] decodeObjectOfClasses:v19 forKey:@"countryList"];
-    countryList = v22->_countryList;
-    v22->_countryList = v10;
+    countryList = selfCopy->_countryList;
+    selfCopy->_countryList = v10;
 
     v12 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"minOSVersion"];
-    minOSVersion = v22->_minOSVersion;
-    v22->_minOSVersion = v12;
+    minOSVersion = selfCopy->_minOSVersion;
+    selfCopy->_minOSVersion = v12;
 
     v14 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"maxOSVersion"];
-    maxOSVersion = v22->_maxOSVersion;
-    v22->_maxOSVersion = v14;
+    maxOSVersion = selfCopy->_maxOSVersion;
+    selfCopy->_maxOSVersion = v14;
 
     objc_storeStrong(&v19, 0);
   }
 
-  v17 = v22;
+  v17 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_goLiveDate forKey:@"goLiveDate"];
-  [location[0] encodeObject:v4->_countryList forKey:@"countryList"];
-  [location[0] encodeObject:v4->_rampPeriod forKey:@"rampPeriod"];
-  [location[0] encodeObject:v4->_deploymentLimit forKey:@"deploymentLimit"];
-  [location[0] encodeObject:v4->_minOSVersion forKey:@"minOSVersion"];
-  [location[0] encodeObject:v4->_maxOSVersion forKey:@"maxOSVersion"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_goLiveDate forKey:@"goLiveDate"];
+  [location[0] encodeObject:selfCopy->_countryList forKey:@"countryList"];
+  [location[0] encodeObject:selfCopy->_rampPeriod forKey:@"rampPeriod"];
+  [location[0] encodeObject:selfCopy->_deploymentLimit forKey:@"deploymentLimit"];
+  [location[0] encodeObject:selfCopy->_minOSVersion forKey:@"minOSVersion"];
+  [location[0] encodeObject:selfCopy->_maxOSVersion forKey:@"maxOSVersion"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v12 = self;
+  selfCopy = self;
   v11[2] = a2;
-  v11[1] = a3;
+  v11[1] = zone;
   v11[0] = objc_alloc_init(UARPDeploymentRule);
-  objc_storeStrong(v11[0] + 9, v12->_currentISOCountryCode);
-  objc_storeStrong(v11[0] + 10, v12->_goLiveDate);
-  objc_storeStrong(v11[0] + 11, v12->_countryList);
-  objc_storeStrong(v11[0] + 12, v12->_rampPeriod);
-  objc_storeStrong(v11[0] + 13, v12->_deploymentLimit);
-  v3 = [(NSMutableDictionary *)v12->_deploymentLimits mutableCopy];
+  objc_storeStrong(v11[0] + 9, selfCopy->_currentISOCountryCode);
+  objc_storeStrong(v11[0] + 10, selfCopy->_goLiveDate);
+  objc_storeStrong(v11[0] + 11, selfCopy->_countryList);
+  objc_storeStrong(v11[0] + 12, selfCopy->_rampPeriod);
+  objc_storeStrong(v11[0] + 13, selfCopy->_deploymentLimit);
+  v3 = [(NSMutableDictionary *)selfCopy->_deploymentLimits mutableCopy];
   v4 = *(v11[0] + 14);
   *(v11[0] + 14) = v3;
 
-  *(v11[0] + 64) = v12->_isFullyDeployedDeploymentLimits;
-  v5 = [(NSString *)v12->_minOSVersion copy];
+  *(v11[0] + 64) = selfCopy->_isFullyDeployedDeploymentLimits;
+  v5 = [(NSString *)selfCopy->_minOSVersion copy];
   v6 = *(v11[0] + 6);
   *(v11[0] + 6) = v5;
 
-  v7 = [(NSString *)v12->_maxOSVersion copy];
+  v7 = [(NSString *)selfCopy->_maxOSVersion copy];
   v8 = *(v11[0] + 7);
   *(v11[0] + 7) = v7;
 
@@ -308,76 +308,76 @@
   return v5;
 }
 
-- (void)setTestSerialNumber:(id)a3
+- (void)setTestSerialNumber:(id)number
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v3 = [location[0] copy];
-  testSerialNumber = v6->_testSerialNumber;
-  v6->_testSerialNumber = v3;
+  testSerialNumber = selfCopy->_testSerialNumber;
+  selfCopy->_testSerialNumber = v3;
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setDeploymentDay:(id)a3
+- (void)setDeploymentDay:(id)day
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_deploymentDay, location[0]);
+  objc_storeStrong(location, day);
+  objc_storeStrong(&selfCopy->_deploymentDay, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (void)setDeploymentPercent:(id)a3
+- (void)setDeploymentPercent:(id)percent
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_deploymentPercent, location[0]);
+  objc_storeStrong(location, percent);
+  objc_storeStrong(&selfCopy->_deploymentPercent, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)isDeploymentAllowed:(id *)a3
+- (BOOL)isDeploymentAllowed:(id *)allowed
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
-  v19 = 1;
+  allowedCopy = allowed;
+  isDeploymentAllowedPerGoLiveDate = 1;
   v18 = 0;
   [(UARPDeploymentRule *)self createSerialNumber];
-  [(UARPDeploymentRule *)v22 calculateDeploymentDay];
-  [(UARPDeploymentRule *)v22 calculateDeploymentPercent];
-  if (v22->_goLiveDate)
+  [(UARPDeploymentRule *)selfCopy calculateDeploymentDay];
+  [(UARPDeploymentRule *)selfCopy calculateDeploymentPercent];
+  if (selfCopy->_goLiveDate)
   {
-    v19 = [(UARPDeploymentRule *)v22 isDeploymentAllowedPerGoLiveDate];
+    isDeploymentAllowedPerGoLiveDate = [(UARPDeploymentRule *)selfCopy isDeploymentAllowedPerGoLiveDate];
   }
 
-  if (v19)
+  if (isDeploymentAllowedPerGoLiveDate)
   {
-    if ([(NSArray *)v22->_countryList count])
+    if ([(NSArray *)selfCopy->_countryList count])
     {
-      v19 = [(UARPDeploymentRule *)v22 isDeploymentAllowedPerCountryList];
+      isDeploymentAllowedPerGoLiveDate = [(UARPDeploymentRule *)selfCopy isDeploymentAllowedPerCountryList];
     }
 
-    if (v19)
+    if (isDeploymentAllowedPerGoLiveDate)
     {
-      if (v22->_rampPeriod)
+      if (selfCopy->_rampPeriod)
       {
-        v19 = [(UARPDeploymentRule *)v22 isDeploymentAllowedPerRampPeriod];
+        isDeploymentAllowedPerGoLiveDate = [(UARPDeploymentRule *)selfCopy isDeploymentAllowedPerRampPeriod];
       }
 
-      if (v19)
+      if (isDeploymentAllowedPerGoLiveDate)
       {
-        if (v22->_deploymentLimit)
+        if (selfCopy->_deploymentLimit)
         {
-          v19 = [(UARPDeploymentRule *)v22 isDeploymentAllowedPerDeploymentLimit];
+          isDeploymentAllowedPerGoLiveDate = [(UARPDeploymentRule *)selfCopy isDeploymentAllowedPerDeploymentLimit];
         }
 
-        if (v22->_minOSVersion && v22->_maxOSVersion)
+        if (selfCopy->_minOSVersion && selfCopy->_maxOSVersion)
         {
           v15 = 0;
           v16 = 0;
@@ -396,29 +396,29 @@
           }
 
           location = [NSString stringWithFormat:@"%ld.%ld.%ld", v15, v16, v17];
-          v13 = [(UARPDeploymentRule *)v22 compareOSVersion:v22->_minOSVersion withVersion:location];
-          v12 = [(UARPDeploymentRule *)v22 compareOSVersion:v22->_maxOSVersion withVersion:location];
+          v13 = [(UARPDeploymentRule *)selfCopy compareOSVersion:selfCopy->_minOSVersion withVersion:location];
+          v12 = [(UARPDeploymentRule *)selfCopy compareOSVersion:selfCopy->_maxOSVersion withVersion:location];
           v10 = 1;
           if (v13)
           {
             v10 = v13 == -1;
           }
 
-          v19 = v10;
+          isDeploymentAllowedPerGoLiveDate = v10;
           v9 = 1;
           if (v12)
           {
             v9 = v12 == 1;
           }
 
-          v19 = (v19 & 1 & v9) != 0;
+          isDeploymentAllowedPerGoLiveDate = (isDeploymentAllowedPerGoLiveDate & 1 & v9) != 0;
           objc_storeStrong(&location, 0);
         }
       }
     }
   }
 
-  if ((v19 & 1) == 0)
+  if ((isDeploymentAllowedPerGoLiveDate & 1) == 0)
   {
     v3 = [NSError errorWithDomain:@"com.apple.uarp" code:6 userInfo:0];
     v4 = v18;
@@ -426,22 +426,22 @@
 
     v8 = v18;
     v5 = v18;
-    *v20 = v8;
+    *allowedCopy = v8;
   }
 
-  v7 = v19;
+  v7 = isDeploymentAllowedPerGoLiveDate;
   objc_storeStrong(&v18, 0);
   return v7 & 1;
 }
 
-- (int64_t)compareOSVersion:(id)a3 withVersion:(id)a4
+- (int64_t)compareOSVersion:(id)version withVersion:(id)withVersion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, withVersion);
   v13 = [location[0] componentsSeparatedByString:?];
   v12 = [v14 componentsSeparatedByString:@"."];
   for (i = 0; ; ++i)
@@ -470,18 +470,18 @@
     }
 
     v5 = [v13 objectAtIndexedSubscript:i];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
 
     v7 = [v12 objectAtIndexedSubscript:i];
-    v8 = [v7 integerValue];
+    integerValue2 = [v7 integerValue];
 
-    if (v6 > v8)
+    if (integerValue > integerValue2)
     {
       v16 = 1;
       goto LABEL_15;
     }
 
-    if (v6 < v8)
+    if (integerValue < integerValue2)
     {
       v16 = -1;
       goto LABEL_15;
@@ -499,7 +499,7 @@ LABEL_15:
 
 - (BOOL)isDeploymentAllowedPerCountryList
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8 = 0;
   if (self->_currentISOCountryCode)
@@ -507,11 +507,11 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  location = v10->_log;
+  location = selfCopy->_log;
   v6 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(location, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_2_8_32_8_64(v14, "[UARPDeploymentRule isDeploymentAllowedPerCountryList]", v10->_currentISOCountryCode);
+    __os_log_helper_16_2_2_8_32_8_64(v14, "[UARPDeploymentRule isDeploymentAllowedPerCountryList]", selfCopy->_currentISOCountryCode);
     _os_log_impl(&_mh_execute_header, location, v6, "%s: Current location unknown %@", v14, 0x16u);
   }
 
@@ -522,14 +522,14 @@ LABEL_15:
   }
 
 LABEL_19:
-  if (!v10->_currentISOCountryCode)
+  if (!selfCopy->_currentISOCountryCode)
   {
     return 0;
   }
 
-  if ([(NSArray *)v10->_countryList containsObject:v10->_currentISOCountryCode])
+  if ([(NSArray *)selfCopy->_countryList containsObject:selfCopy->_currentISOCountryCode])
   {
-    oslog = v10->_log;
+    oslog = selfCopy->_log;
     v4 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
@@ -543,7 +543,7 @@ LABEL_19:
 
   else
   {
-    v3 = v10->_log;
+    v3 = selfCopy->_log;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       __os_log_helper_16_2_1_8_32(v12, "[UARPDeploymentRule isDeploymentAllowedPerCountryList]");
@@ -557,18 +557,18 @@ LABEL_19:
 
 - (BOOL)isDeploymentAllowedPerGoLiveDate
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11 = 0;
   location = +[NSDate date];
-  v9 = [location compare:v13->_goLiveDate];
+  v9 = [location compare:selfCopy->_goLiveDate];
   if (v9 == 1)
   {
-    oslog = v13->_log;
+    oslog = selfCopy->_log;
     type = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_3_8_32_8_64_8_64(v16, "[UARPDeploymentRule isDeploymentAllowedPerGoLiveDate]", v13->_goLiveDate, location);
+      __os_log_helper_16_2_3_8_32_8_64_8_64(v16, "[UARPDeploymentRule isDeploymentAllowedPerGoLiveDate]", selfCopy->_goLiveDate, location);
       _os_log_impl(&_mh_execute_header, oslog, type, "%s: GoLive %@ date in past (today: %@), deployment allowed", v16, 0x20u);
     }
 
@@ -578,10 +578,10 @@ LABEL_19:
 
   else if (v9)
   {
-    v4 = v13->_log;
+    v4 = selfCopy->_log;
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_3_8_32_8_64_8_64(v14, "[UARPDeploymentRule isDeploymentAllowedPerGoLiveDate]", v13->_goLiveDate, location);
+      __os_log_helper_16_2_3_8_32_8_64_8_64(v14, "[UARPDeploymentRule isDeploymentAllowedPerGoLiveDate]", selfCopy->_goLiveDate, location);
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s: GoLive date (%@) in future (today: %@), deployment not allowed", v14, 0x20u);
     }
 
@@ -591,11 +591,11 @@ LABEL_19:
 
   else
   {
-    v6 = v13->_log;
+    v6 = selfCopy->_log;
     v5 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_3_8_32_8_64_8_64(v15, "[UARPDeploymentRule isDeploymentAllowedPerGoLiveDate]", v13->_goLiveDate, location);
+      __os_log_helper_16_2_3_8_32_8_64_8_64(v15, "[UARPDeploymentRule isDeploymentAllowedPerGoLiveDate]", selfCopy->_goLiveDate, location);
       _os_log_impl(&_mh_execute_header, v6, v5, "%s: GoLive %@ date today (today: %@), deployment allowed", v15, 0x20u);
     }
 
@@ -610,25 +610,25 @@ LABEL_19:
 
 - (BOOL)isDeploymentAllowedPerRampPeriod
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9 = 0;
   v8 = 0;
   v7 = 0;
   time(&v7);
   v8 = localtime(&v7);
-  if (!v11->_deploymentDay)
+  if (!selfCopy->_deploymentDay)
   {
     return 0;
   }
 
-  v6 = [(NSNumber *)v11->_deploymentDay unsignedIntValue];
-  if (v8->tm_wday == v6)
+  unsignedIntValue = [(NSNumber *)selfCopy->_deploymentDay unsignedIntValue];
+  if (v8->tm_wday == unsignedIntValue)
   {
-    v3 = v11->_log;
+    v3 = selfCopy->_log;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_2_8_32_4_0(v13, "[UARPDeploymentRule isDeploymentAllowedPerRampPeriod]", v6);
+      __os_log_helper_16_2_2_8_32_4_0(v13, "[UARPDeploymentRule isDeploymentAllowedPerRampPeriod]", unsignedIntValue);
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s: Today is the day for Ramped Updates: Day %d", v13, 0x12u);
     }
 
@@ -638,11 +638,11 @@ LABEL_19:
 
   else
   {
-    oslog = v11->_log;
+    oslog = selfCopy->_log;
     type = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_3_8_32_4_0_4_0(v14, "[UARPDeploymentRule isDeploymentAllowedPerRampPeriod]", v8->tm_wday, v6);
+      __os_log_helper_16_2_3_8_32_4_0_4_0(v14, "[UARPDeploymentRule isDeploymentAllowedPerRampPeriod]", v8->tm_wday, unsignedIntValue);
       _os_log_impl(&_mh_execute_header, oslog, type, "%s: Cannot apply update today is Day %d and this device can only do Ramped Updates on Day %d", v14, 0x18u);
     }
 
@@ -653,7 +653,7 @@ LABEL_19:
 
 - (BOOL)isDeploymentAllowedPerDeploymentLimit
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8 = 0;
   if (!self->_deploymentPercent)
@@ -661,14 +661,14 @@ LABEL_19:
     return 0;
   }
 
-  v7 = [(NSNumber *)v10->_deploymentLimit unsignedIntValue];
-  v6 = [(NSNumber *)v10->_deploymentPercent unsignedIntValue];
-  if (v6 > v7)
+  unsignedIntValue = [(NSNumber *)selfCopy->_deploymentLimit unsignedIntValue];
+  unsignedIntValue2 = [(NSNumber *)selfCopy->_deploymentPercent unsignedIntValue];
+  if (unsignedIntValue2 > unsignedIntValue)
   {
-    v3 = v10->_log;
+    v3 = selfCopy->_log;
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_3_8_32_4_0_4_0(v12, "[UARPDeploymentRule isDeploymentAllowedPerDeploymentLimit]", v7, v6);
+      __os_log_helper_16_2_3_8_32_4_0_4_0(v12, "[UARPDeploymentRule isDeploymentAllowedPerDeploymentLimit]", unsignedIntValue, unsignedIntValue2);
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s: Device cannot apply metered rollout as it doesn't fall under %d percent. Device is %d percent.", v12, 0x18u);
     }
 
@@ -678,11 +678,11 @@ LABEL_19:
 
   else
   {
-    oslog = v10->_log;
+    oslog = selfCopy->_log;
     type = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_2_8_32_4_0(v13, "[UARPDeploymentRule isDeploymentAllowedPerDeploymentLimit]", v6);
+      __os_log_helper_16_2_2_8_32_4_0(v13, "[UARPDeploymentRule isDeploymentAllowedPerDeploymentLimit]", unsignedIntValue2);
       _os_log_impl(&_mh_execute_header, oslog, type, "%s: Device can apply metered rollout, %d percent.", v13, 0x12u);
     }
 
@@ -693,24 +693,24 @@ LABEL_19:
 
 - (void)calculateDeploymentDay
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = 0;
+  uTF8String = 0;
   v9 = 0;
   v8 = 0;
-  v7 = 0;
-  if (self->_serialNumber && v12->_rampPeriod)
+  unsignedIntValue = 0;
+  if (self->_serialNumber && selfCopy->_rampPeriod)
   {
-    v7 = [(NSNumber *)v12->_rampPeriod unsignedIntValue];
-    v10 = [(NSString *)v12->_serialNumber UTF8String];
-    v9 = [(NSString *)v12->_serialNumber length];
+    unsignedIntValue = [(NSNumber *)selfCopy->_rampPeriod unsignedIntValue];
+    uTF8String = [(NSString *)selfCopy->_serialNumber UTF8String];
+    v9 = [(NSString *)selfCopy->_serialNumber length];
     for (i = 0; i < v9; ++i)
     {
-      v8 += v10[i];
+      v8 += uTF8String[i];
     }
 
-    v5 = v8 % v7;
-    oslog = v12->_log;
+    v5 = v8 % unsignedIntValue;
+    oslog = selfCopy->_log;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
       __os_log_helper_16_2_2_8_32_4_0(v13, "[UARPDeploymentRule calculateDeploymentDay]", v5);
@@ -719,31 +719,31 @@ LABEL_19:
 
     objc_storeStrong(&oslog, 0);
     v2 = [NSNumber numberWithUnsignedInt:v5];
-    deploymentDay = v12->_deploymentDay;
-    v12->_deploymentDay = v2;
+    deploymentDay = selfCopy->_deploymentDay;
+    selfCopy->_deploymentDay = v2;
   }
 }
 
 - (void)calculateDeploymentPercent
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = 0;
+  uTF8String = 0;
   v9 = 0;
   v8 = 0;
   v7 = 3;
   if (self->_serialNumber)
   {
-    v10 = [(NSString *)v12->_serialNumber UTF8String];
-    v9 = [(NSString *)v12->_serialNumber length];
+    uTF8String = [(NSString *)selfCopy->_serialNumber UTF8String];
+    v9 = [(NSString *)selfCopy->_serialNumber length];
     for (i = 0; i < v9; ++i)
     {
-      v8 += v10[i];
-      v7 *= v10[i];
+      v8 += uTF8String[i];
+      v7 *= uTF8String[i];
     }
 
     v5 = 10 * (v8 % 0xA) + v7 % 0xA;
-    oslog = v12->_log;
+    oslog = selfCopy->_log;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
       __os_log_helper_16_2_2_8_32_4_0(v13, "[UARPDeploymentRule calculateDeploymentPercent]", v5);
@@ -752,23 +752,23 @@ LABEL_19:
 
     objc_storeStrong(&oslog, 0);
     v2 = [NSNumber numberWithUnsignedInt:v5];
-    deploymentPercent = v12->_deploymentPercent;
-    v12->_deploymentPercent = v2;
+    deploymentPercent = selfCopy->_deploymentPercent;
+    selfCopy->_deploymentPercent = v2;
   }
 }
 
 - (void)createSerialNumber
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_testSerialNumber)
   {
-    objc_storeStrong(&v8->_serialNumber, v8->_testSerialNumber);
-    location[0] = v8->_log;
+    objc_storeStrong(&selfCopy->_serialNumber, selfCopy->_testSerialNumber);
+    location[0] = selfCopy->_log;
     v6 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(location[0], OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_2_2_8_32_8_64(v11, "[UARPDeploymentRule createSerialNumber]", v8->_serialNumber);
+      __os_log_helper_16_2_2_8_32_8_64(v11, "[UARPDeploymentRule createSerialNumber]", selfCopy->_serialNumber);
       _os_log_impl(&_mh_execute_header, location[0], v6, "%s: Using %@ provided by user as seed", v11, 0x16u);
     }
 
@@ -780,10 +780,10 @@ LABEL_19:
     v9 = MGCopyAnswer();
     v2 = v9;
     v3 = v9;
-    serialNumber = v8->_serialNumber;
-    v8->_serialNumber = v3;
+    serialNumber = selfCopy->_serialNumber;
+    selfCopy->_serialNumber = v3;
 
-    oslog = v8->_log;
+    oslog = selfCopy->_log;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
       __os_log_helper_16_2_1_8_32(v10, "[UARPDeploymentRule createSerialNumber]");
@@ -794,25 +794,25 @@ LABEL_19:
   }
 }
 
-- (void)addDeploymentLimit:(id)a3 withGoLiveDate:(id)a4 error:(id *)a5
+- (void)addDeploymentLimit:(id)limit withGoLiveDate:(id)date error:(id *)error
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, limit);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
-  v20 = a5;
-  if (v23->_isFullyDeployedDeploymentLimits)
+  objc_storeStrong(&v21, date);
+  errorCopy = error;
+  if (selfCopy->_isFullyDeployedDeploymentLimits)
   {
     v19 = objc_opt_new();
-    v11 = [NSString stringWithFormat:@"Invalid Deployment Rule: Deployment already scheduled for full deployment for %@", v23->_currentISOCountryCode];
+    v11 = [NSString stringWithFormat:@"Invalid Deployment Rule: Deployment already scheduled for full deployment for %@", selfCopy->_currentISOCountryCode];
     [v19 setObject:? forKeyedSubscript:?];
 
     v18 = [NSError errorWithDomain:@"com.apple.uarp" code:6 userInfo:v19];
     v12 = v18;
     v5 = v18;
-    *v20 = v12;
+    *errorCopy = v12;
     v17 = 1;
     objc_storeStrong(&v18, 0);
     objc_storeStrong(&v19, 0);
@@ -820,19 +820,19 @@ LABEL_19:
 
   else
   {
-    v10 = [(NSMutableDictionary *)v23->_deploymentLimits objectForKey:v21];
+    v10 = [(NSMutableDictionary *)selfCopy->_deploymentLimits objectForKey:v21];
 
     if (v10)
     {
       v16 = objc_opt_new();
-      v8 = [(NSDate *)v23->_goLiveDate description];
-      v7 = [NSString stringWithFormat:@"Invalid Deployment Rule: Deployment Limit already set on Go Live Date %@ for %@", v8, v23->_currentISOCountryCode];
+      v8 = [(NSDate *)selfCopy->_goLiveDate description];
+      v7 = [NSString stringWithFormat:@"Invalid Deployment Rule: Deployment Limit already set on Go Live Date %@ for %@", v8, selfCopy->_currentISOCountryCode];
       [v16 setObject:? forKeyedSubscript:?];
 
       v15 = [NSError errorWithDomain:@"com.apple.uarp" code:6 userInfo:v16];
       v9 = v15;
       v6 = v15;
-      *v20 = v9;
+      *errorCopy = v9;
       v17 = 1;
       objc_storeStrong(&v15, 0);
       objc_storeStrong(&v16, 0);
@@ -842,10 +842,10 @@ LABEL_19:
     {
       if (v21)
       {
-        [(NSMutableDictionary *)v23->_deploymentLimits setObject:location[0] forKeyedSubscript:v21];
+        [(NSMutableDictionary *)selfCopy->_deploymentLimits setObject:location[0] forKeyedSubscript:v21];
       }
 
-      [(UARPDeploymentRule *)v23 validateDeploymentLimits:v20];
+      [(UARPDeploymentRule *)selfCopy validateDeploymentLimits:errorCopy];
       v17 = 1;
     }
   }
@@ -854,33 +854,33 @@ LABEL_19:
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)validateDeploymentLimits:(id *)a3
+- (BOOL)validateDeploymentLimits:(id *)limits
 {
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
-  v25 = [(NSMutableDictionary *)self->_deploymentLimits allKeys];
-  v31 = [v25 sortedArrayUsingSelector:"compare:"];
+  limitsCopy = limits;
+  allKeys = [(NSMutableDictionary *)self->_deploymentLimits allKeys];
+  v31 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   for (i = 1; i < [v31 count]; ++i)
   {
-    deploymentLimits = v34->_deploymentLimits;
+    deploymentLimits = selfCopy->_deploymentLimits;
     v19 = [v31 objectAtIndexedSubscript:i - 1];
     v18 = [(NSMutableDictionary *)deploymentLimits objectForKeyedSubscript:?];
-    v20 = [v18 unsignedIntValue];
+    unsignedIntValue = [v18 unsignedIntValue];
 
-    v29 = v20;
-    v21 = v34->_deploymentLimits;
+    v29 = unsignedIntValue;
+    v21 = selfCopy->_deploymentLimits;
     v23 = [v31 objectAtIndexedSubscript:i];
     v22 = [(NSMutableDictionary *)v21 objectForKeyedSubscript:?];
-    v24 = [v22 unsignedIntValue];
+    unsignedIntValue2 = [v22 unsignedIntValue];
 
-    v28 = v24;
-    if (v20 >= v24)
+    v28 = unsignedIntValue2;
+    if (unsignedIntValue >= unsignedIntValue2)
     {
       v27 = objc_opt_new();
       v9 = v28;
-      currentISOCountryCode = v34->_currentISOCountryCode;
+      currentISOCountryCode = selfCopy->_currentISOCountryCode;
       v13 = [v31 objectAtIndexedSubscript:i];
       v12 = [v13 description];
       v11 = [NSString stringWithFormat:@"Invalid Deployment Rule: Deployment Limit %lu for %@ with Go Live Date %@ is invalid, must be strictly increasing", v9, currentISOCountryCode, v12];
@@ -889,8 +889,8 @@ LABEL_19:
       v26 = [NSError errorWithDomain:@"com.apple.uarp" code:6 userInfo:v27];
       v14 = v26;
       v3 = v26;
-      *v32 = v14;
-      v15 = v34->_deploymentLimits;
+      *limitsCopy = v14;
+      v15 = selfCopy->_deploymentLimits;
       v16 = [v31 objectAtIndexedSubscript:i];
       [(NSMutableDictionary *)v15 removeObjectForKey:?];
 
@@ -901,14 +901,14 @@ LABEL_19:
     }
   }
 
-  v5 = v34->_deploymentLimits;
-  v7 = [v31 lastObject];
+  v5 = selfCopy->_deploymentLimits;
+  lastObject = [v31 lastObject];
   v6 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:?];
-  v8 = [v6 unsignedIntValue];
+  unsignedIntValue3 = [v6 unsignedIntValue];
 
-  if (v8 == 100)
+  if (unsignedIntValue3 == 100)
   {
-    v34->_isFullyDeployedDeploymentLimits = 1;
+    selfCopy->_isFullyDeployedDeploymentLimits = 1;
   }
 
   v35 = 1;
@@ -917,29 +917,29 @@ LABEL_9:
   return v35 & 1;
 }
 
-- (void)dumpWithTabDepth:(unint64_t)a3 dumpString:(id)a4
+- (void)dumpWithTabDepth:(unint64_t)depth dumpString:(id)string
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  depthCopy = depth;
   location = 0;
-  objc_storeStrong(&location, a4);
-  [location appendWithTabDepth:v13 format:@"Deployment Rule:\n"];
-  if (v15->_currentISOCountryCode)
+  objc_storeStrong(&location, string);
+  [location appendWithTabDepth:depthCopy format:@"Deployment Rule:\n"];
+  if (selfCopy->_currentISOCountryCode)
   {
-    [location appendWithTabDepth:v13 + 1 format:{@"Current Country Code: %@\n", v15->_currentISOCountryCode}];
+    [location appendWithTabDepth:depthCopy + 1 format:{@"Current Country Code: %@\n", selfCopy->_currentISOCountryCode}];
   }
 
-  if (v15->_goLiveDate)
+  if (selfCopy->_goLiveDate)
   {
-    [location appendWithTabDepth:v13 + 1 format:{@"Go-Live Date: %@\n", v15->_goLiveDate}];
+    [location appendWithTabDepth:depthCopy + 1 format:{@"Go-Live Date: %@\n", selfCopy->_goLiveDate}];
   }
 
-  if ([(NSArray *)v15->_countryList count])
+  if ([(NSArray *)selfCopy->_countryList count])
   {
-    [location appendWithTabDepth:v13 + 1 format:@"Country List:"];
+    [location appendWithTabDepth:depthCopy + 1 format:@"Country List:"];
     memset(__b, 0, sizeof(__b));
-    obj = v15->_countryList;
+    obj = selfCopy->_countryList;
     v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v16 count:16];
     if (v9)
     {
@@ -972,55 +972,55 @@ LABEL_9:
     [location appendString:@"\n"];
   }
 
-  if (v15->_rampPeriod)
+  if (selfCopy->_rampPeriod)
   {
-    [location appendWithTabDepth:v13 + 1 format:{@"Ramp Period: %@\n", v15->_rampPeriod}];
+    [location appendWithTabDepth:depthCopy + 1 format:{@"Ramp Period: %@\n", selfCopy->_rampPeriod}];
   }
 
-  if (v15->_deploymentLimit)
+  if (selfCopy->_deploymentLimit)
   {
-    [location appendWithTabDepth:v13 + 1 format:{@"Deployment Limit: %@\n", v15->_deploymentLimit}];
+    [location appendWithTabDepth:depthCopy + 1 format:{@"Deployment Limit: %@\n", selfCopy->_deploymentLimit}];
   }
 
-  if (v15->_deploymentPercent)
+  if (selfCopy->_deploymentPercent)
   {
-    [location appendWithTabDepth:v13 + 1 format:{@"Deployment Percent: %@\n", v15->_deploymentPercent}];
+    [location appendWithTabDepth:depthCopy + 1 format:{@"Deployment Percent: %@\n", selfCopy->_deploymentPercent}];
   }
 
-  if (v15->_deploymentDay)
+  if (selfCopy->_deploymentDay)
   {
-    [location appendWithTabDepth:v13 + 1 format:{@"Deployment Day: %@\n", v15->_deploymentDay}];
+    [location appendWithTabDepth:depthCopy + 1 format:{@"Deployment Day: %@\n", selfCopy->_deploymentDay}];
   }
 
-  if (v15->_serialNumber)
+  if (selfCopy->_serialNumber)
   {
-    [location appendWithTabDepth:v13 + 1 format:{@"Serial Number: %@\n", v15->_serialNumber}];
+    [location appendWithTabDepth:depthCopy + 1 format:{@"Serial Number: %@\n", selfCopy->_serialNumber}];
   }
 
   objc_storeStrong(&location, 0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   if (location[0])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v7 == location[0])
+      if (selfCopy == location[0])
       {
         v8 = 1;
       }
 
       else
       {
-        v5 = [(UARPDeploymentRule *)v7 currentISOCountryCode];
-        v4 = [location[0] currentISOCountryCode];
-        v8 = [(NSString *)v5 isEqualToString:?];
+        currentISOCountryCode = [(UARPDeploymentRule *)selfCopy currentISOCountryCode];
+        currentISOCountryCode2 = [location[0] currentISOCountryCode];
+        v8 = [(NSString *)currentISOCountryCode isEqualToString:?];
       }
     }
 

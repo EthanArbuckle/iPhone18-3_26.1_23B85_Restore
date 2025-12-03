@@ -1,17 +1,17 @@
 @interface SpatialAudioProfileClient
 - (SpatialAudioProfileClient)init;
-- (SpatialAudioProfileClient)initWithCoder:(id)a3;
+- (SpatialAudioProfileClient)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
-- (void)_fetchSpatialAudioProfileRecordWithCompletion:(id)a3;
+- (void)_fetchSpatialAudioProfileRecordWithCompletion:(id)completion;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)fetchSpatialAudioProfileRecordWithCompletion:(id)a3;
+- (void)fetchSpatialAudioProfileRecordWithCompletion:(id)completion;
 - (void)invalidate;
 @end
 
 @implementation SpatialAudioProfileClient
 
-- (SpatialAudioProfileClient)initWithCoder:(id)a3
+- (SpatialAudioProfileClient)initWithCoder:(id)coder
 {
   v3 = [(SpatialAudioProfileClient *)self init];
   v4 = v3;
@@ -38,17 +38,17 @@
   return v3;
 }
 
-- (void)fetchSpatialAudioProfileRecordWithCompletion:(id)a3
+- (void)fetchSpatialAudioProfileRecordWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__SpatialAudioProfileClient_fetchSpatialAudioProfileRecordWithCompletion___block_invoke;
   v7[3] = &unk_279CD8040;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -107,13 +107,13 @@ LABEL_7:
   return v5();
 }
 
-- (void)_fetchSpatialAudioProfileRecordWithCompletion:(id)a3
+- (void)_fetchSpatialAudioProfileRecordWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self->_invalidateCalled)
   {
     v5 = *MEMORY[0x277CCA590];
-    v6 = NSErrorF();
+    _ensureXPCStarted = NSErrorF();
     if (gLogCategory_SpatialAudioProfileClient <= 90 && (gLogCategory_SpatialAudioProfileClient != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
@@ -127,15 +127,15 @@ LABEL_7:
       [SpatialAudioProfileClient _fetchSpatialAudioProfileRecordWithCompletion:];
     }
 
-    v6 = [(SpatialAudioProfileClient *)self _ensureXPCStarted];
-    if (!v6)
+    _ensureXPCStarted = [(SpatialAudioProfileClient *)self _ensureXPCStarted];
+    if (!_ensureXPCStarted)
     {
       xpcCnx = self->_xpcCnx;
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __75__SpatialAudioProfileClient__fetchSpatialAudioProfileRecordWithCompletion___block_invoke;
       v10[3] = &unk_279CD8068;
-      v8 = v4;
+      v8 = completionCopy;
       v11 = v8;
       v9 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v10];
       [v9 fetchSpatialAudioProfileRecordForClient:self WithCompletion:v8];
@@ -144,9 +144,9 @@ LABEL_7:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, _ensureXPCStarted);
   }
 
 LABEL_13:

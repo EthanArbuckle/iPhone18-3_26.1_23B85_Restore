@@ -1,78 +1,78 @@
 @interface NUChannelExpression
-+ (id)constantExpression:(id)a3;
++ (id)constantExpression:(id)expression;
 + (id)falseExpression;
-+ (id)if:(id)a3 then:(id)a4 else:(id)a5;
-+ (id)isNil:(id)a3;
-+ (id)isNotNil:(id)a3;
-+ (id)max:(id)a3;
-+ (id)min:(id)a3;
-+ (id)negative:(id)a3;
-+ (id)not:(id)a3;
++ (id)if:(id)if then:(id)then else:(id)else;
++ (id)isNil:(id)nil;
++ (id)isNotNil:(id)nil;
++ (id)max:(id)max;
++ (id)min:(id)min;
++ (id)negative:(id)negative;
++ (id)not:(id)not;
 + (id)nullExpression;
-+ (id)rectWithX:(id)a3 y:(id)a4 width:(id)a5 height:(id)a6;
-+ (id)staticExpression:(id)a3;
++ (id)rectWithX:(id)x y:(id)y width:(id)width height:(id)height;
++ (id)staticExpression:(id)expression;
 + (id)trueExpression;
 - (NSString)compactDescription;
 - (NUChannelExpression)init;
-- (NUChannelExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4;
-- (id)and:(id)a3;
+- (NUChannelExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments;
+- (id)and:(id)and;
 - (id)debugDescription;
 - (id)description;
-- (id)divide:(id)a3;
-- (id)equal:(id)a3;
-- (id)evaluateWithArgumentData:(id)a3 error:(id *)a4;
-- (id)evaluateWithContext:(id)a3 error:(id *)a4;
-- (id)greaterThan:(id)a3;
-- (id)greaterThanOrEqual:(id)a3;
-- (id)lessThan:(id)a3;
-- (id)lessThanOrEqual:(id)a3;
-- (id)minus:(id)a3;
-- (id)multiply:(id)a3;
-- (id)notEqual:(id)a3;
-- (id)or:(id)a3;
-- (id)plus:(id)a3;
+- (id)divide:(id)divide;
+- (id)equal:(id)equal;
+- (id)evaluateWithArgumentData:(id)data error:(id *)error;
+- (id)evaluateWithContext:(id)context error:(id *)error;
+- (id)greaterThan:(id)than;
+- (id)greaterThanOrEqual:(id)equal;
+- (id)lessThan:(id)than;
+- (id)lessThanOrEqual:(id)equal;
+- (id)minus:(id)minus;
+- (id)multiply:(id)multiply;
+- (id)notEqual:(id)equal;
+- (id)or:(id)or;
+- (id)plus:(id)plus;
 @end
 
 @implementation NUChannelExpression
 
-- (id)or:(id)a3
+- (id)or:(id)or
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelLogicalOrExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  orCopy = or;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelLogicalOrExpression alloc] initWithLeftExpression:self rightExpression:orCopy];
 
   return v5;
 }
 
-+ (id)min:(id)a3
++ (id)min:(id)min
 {
-  v3 = a3;
-  v4 = [(NUChannelMinMaxExpression *)[NUChannelMinExpression alloc] initWithExpressions:v3];
+  minCopy = min;
+  v4 = [(NUChannelMinMaxExpression *)[NUChannelMinExpression alloc] initWithExpressions:minCopy];
 
   return v4;
 }
 
-+ (id)max:(id)a3
++ (id)max:(id)max
 {
-  v3 = a3;
-  v4 = [(NUChannelMinMaxExpression *)[NUChannelMaxExpression alloc] initWithExpressions:v3];
+  maxCopy = max;
+  v4 = [(NUChannelMinMaxExpression *)[NUChannelMaxExpression alloc] initWithExpressions:maxCopy];
 
   return v4;
 }
 
-+ (id)if:(id)a3 then:(id)a4 else:(id)a5
++ (id)if:(id)if then:(id)then else:(id)else
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[NUChannelIfThenElseExpression alloc] initWithConditionExpression:v9 trueExpression:v8 falseExpression:v7];
+  elseCopy = else;
+  thenCopy = then;
+  ifCopy = if;
+  v10 = [[NUChannelIfThenElseExpression alloc] initWithConditionExpression:ifCopy trueExpression:thenCopy falseExpression:elseCopy];
 
   return v10;
 }
 
-+ (id)not:(id)a3
++ (id)not:(id)not
 {
-  v3 = a3;
-  v4 = [(NUChannelUnaryExpression *)[NUChannelLogicalNotExpression alloc] initWithExpression:v3];
+  notCopy = not;
+  v4 = [(NUChannelUnaryExpression *)[NUChannelLogicalNotExpression alloc] initWithExpression:notCopy];
 
   return v4;
 }
@@ -80,7 +80,7 @@
 + (id)falseExpression
 {
   v3 = [NUChannelData BOOLean:0];
-  v4 = [a1 constantExpression:v3];
+  v4 = [self constantExpression:v3];
 
   return v4;
 }
@@ -88,80 +88,80 @@
 + (id)trueExpression
 {
   v3 = [NUChannelData BOOLean:1];
-  v4 = [a1 constantExpression:v3];
+  v4 = [self constantExpression:v3];
 
   return v4;
 }
 
-+ (id)isNotNil:(id)a3
++ (id)isNotNil:(id)nil
 {
-  v3 = a3;
-  v4 = [(NUChannelUnaryExpression *)[NUChannelIsNotNilExpression alloc] initWithExpression:v3];
+  nilCopy = nil;
+  v4 = [(NUChannelUnaryExpression *)[NUChannelIsNotNilExpression alloc] initWithExpression:nilCopy];
 
   return v4;
 }
 
-+ (id)isNil:(id)a3
++ (id)isNil:(id)nil
 {
-  v3 = a3;
-  v4 = [(NUChannelUnaryExpression *)[NUChannelIsNilExpression alloc] initWithExpression:v3];
+  nilCopy = nil;
+  v4 = [(NUChannelUnaryExpression *)[NUChannelIsNilExpression alloc] initWithExpression:nilCopy];
 
   return v4;
 }
 
-+ (id)negative:(id)a3
++ (id)negative:(id)negative
 {
-  v3 = a3;
-  v4 = [(NUChannelUnaryExpression *)[NUChannelNegationExpression alloc] initWithExpression:v3];
+  negativeCopy = negative;
+  v4 = [(NUChannelUnaryExpression *)[NUChannelNegationExpression alloc] initWithExpression:negativeCopy];
 
   return v4;
 }
 
-+ (id)rectWithX:(id)a3 y:(id)a4 width:(id)a5 height:(id)a6
++ (id)rectWithX:(id)x y:(id)y width:(id)width height:(id)height
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[NURectExpression alloc] initWithXExpression:v12 yExpression:v11 widthExpression:v10 heightExpression:v9];
+  heightCopy = height;
+  widthCopy = width;
+  yCopy = y;
+  xCopy = x;
+  v13 = [[NURectExpression alloc] initWithXExpression:xCopy yExpression:yCopy widthExpression:widthCopy heightExpression:heightCopy];
 
   return v13;
 }
 
-+ (id)staticExpression:(id)a3
++ (id)staticExpression:(id)expression
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 channel], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "format"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "expressionType"), v7, v6, v8))
+  expressionCopy = expression;
+  v5 = expressionCopy;
+  if (expressionCopy && ([expressionCopy channel], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "format"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "expressionType"), v7, v6, v8))
   {
-    v9 = [[NUChannelStaticExpression alloc] initWithPort:v5 expressionType:v8];
+    nullExpression = [[NUChannelStaticExpression alloc] initWithPort:v5 expressionType:v8];
   }
 
   else
   {
-    v9 = [a1 nullExpression];
+    nullExpression = [self nullExpression];
   }
 
-  v10 = v9;
+  v10 = nullExpression;
 
   return v10;
 }
 
-+ (id)constantExpression:(id)a3
++ (id)constantExpression:(id)expression
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 format], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "expressionType"), v6, v7))
+  expressionCopy = expression;
+  v5 = expressionCopy;
+  if (expressionCopy && ([expressionCopy format], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "expressionType"), v6, v7))
   {
-    v8 = [[NUChannelConstantExpression alloc] initWithData:v5 expressionType:v7];
+    nullExpression = [[NUChannelConstantExpression alloc] initWithData:v5 expressionType:v7];
   }
 
   else
   {
-    v8 = [a1 nullExpression];
+    nullExpression = [self nullExpression];
   }
 
-  v9 = v8;
+  v9 = nullExpression;
 
   return v9;
 }
@@ -173,98 +173,98 @@
   return v2;
 }
 
-- (id)and:(id)a3
+- (id)and:(id)and
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelLogicalAndExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  andCopy = and;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelLogicalAndExpression alloc] initWithLeftExpression:self rightExpression:andCopy];
 
   return v5;
 }
 
-- (id)greaterThanOrEqual:(id)a3
+- (id)greaterThanOrEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelGreaterThanOrEqualExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  equalCopy = equal;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelGreaterThanOrEqualExpression alloc] initWithLeftExpression:self rightExpression:equalCopy];
 
   return v5;
 }
 
-- (id)greaterThan:(id)a3
+- (id)greaterThan:(id)than
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelGreaterThanExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  thanCopy = than;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelGreaterThanExpression alloc] initWithLeftExpression:self rightExpression:thanCopy];
 
   return v5;
 }
 
-- (id)lessThanOrEqual:(id)a3
+- (id)lessThanOrEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelLessThanOrEqualExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  equalCopy = equal;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelLessThanOrEqualExpression alloc] initWithLeftExpression:self rightExpression:equalCopy];
 
   return v5;
 }
 
-- (id)lessThan:(id)a3
+- (id)lessThan:(id)than
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelLessThanExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  thanCopy = than;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelLessThanExpression alloc] initWithLeftExpression:self rightExpression:thanCopy];
 
   return v5;
 }
 
-- (id)notEqual:(id)a3
+- (id)notEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelInequalityExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  equalCopy = equal;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelInequalityExpression alloc] initWithLeftExpression:self rightExpression:equalCopy];
 
   return v5;
 }
 
-- (id)equal:(id)a3
+- (id)equal:(id)equal
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelEqualityExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  equalCopy = equal;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelEqualityExpression alloc] initWithLeftExpression:self rightExpression:equalCopy];
 
   return v5;
 }
 
-- (id)divide:(id)a3
+- (id)divide:(id)divide
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelDivisionExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  divideCopy = divide;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelDivisionExpression alloc] initWithLeftExpression:self rightExpression:divideCopy];
 
   return v5;
 }
 
-- (id)multiply:(id)a3
+- (id)multiply:(id)multiply
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelMultiplicationExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  multiplyCopy = multiply;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelMultiplicationExpression alloc] initWithLeftExpression:self rightExpression:multiplyCopy];
 
   return v5;
 }
 
-- (id)minus:(id)a3
+- (id)minus:(id)minus
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelSubtractionExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  minusCopy = minus;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelSubtractionExpression alloc] initWithLeftExpression:self rightExpression:minusCopy];
 
   return v5;
 }
 
-- (id)plus:(id)a3
+- (id)plus:(id)plus
 {
-  v4 = a3;
-  v5 = [(NUChannelBinaryExpression *)[NUChannelAdditionExpression alloc] initWithLeftExpression:self rightExpression:v4];
+  plusCopy = plus;
+  v5 = [(NUChannelBinaryExpression *)[NUChannelAdditionExpression alloc] initWithLeftExpression:self rightExpression:plusCopy];
 
   return v5;
 }
 
-- (id)evaluateWithArgumentData:(id)a3 error:(id *)a4
+- (id)evaluateWithArgumentData:(id)data error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1367);
@@ -307,8 +307,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -324,8 +324,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -339,20 +339,20 @@ LABEL_14:
   _NUAssertFailHandler("[NUChannelExpression evaluateWithArgumentData:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUChannel.m", 2884, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v26, v27, v28, v29, v25);
 }
 
-- (id)evaluateWithContext:(id)a3 error:(id *)a4
+- (id)evaluateWithContext:(id)context error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = objc_alloc(MEMORY[0x1E695DF70]);
-  v8 = [(NUChannelExpression *)self arguments];
-  v9 = [v7 initWithCapacity:{objc_msgSend(v8, "count")}];
+  arguments = [(NUChannelExpression *)self arguments];
+  v9 = [v7 initWithCapacity:{objc_msgSend(arguments, "count")}];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(NUChannelExpression *)self arguments];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  arguments2 = [(NUChannelExpression *)self arguments];
+  v11 = [arguments2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -363,10 +363,10 @@ LABEL_14:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(arguments2);
         }
 
-        v15 = [*(*(&v19 + 1) + 8 * i) evaluateWithContext:v6 error:a4];
+        v15 = [*(*(&v19 + 1) + 8 * i) evaluateWithContext:contextCopy error:error];
         if (!v15)
         {
 
@@ -378,7 +378,7 @@ LABEL_14:
         [v9 addObject:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [arguments2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v12)
       {
         continue;
@@ -388,7 +388,7 @@ LABEL_14:
     }
   }
 
-  v17 = [(NUChannelExpression *)self evaluateWithArgumentData:v9 error:a4];
+  v17 = [(NUChannelExpression *)self evaluateWithArgumentData:v9 error:error];
 LABEL_11:
 
   return v17;
@@ -398,19 +398,19 @@ LABEL_11:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUChannelExpression *)self type];
-  if (v5 > 4)
+  type = [(NUChannelExpression *)self type];
+  if (type > 4)
   {
     v6 = @"???";
   }
 
   else
   {
-    v6 = off_1E8109B40[v5];
+    v6 = off_1E8109B40[type];
   }
 
-  v7 = [(NUChannelExpression *)self arguments];
-  v8 = [v3 stringWithFormat:@"<%@:%p type=%@ args=%@>", v4, self, v6, v7];
+  arguments = [(NUChannelExpression *)self arguments];
+  v8 = [v3 stringWithFormat:@"<%@:%p type=%@ args=%@>", v4, self, v6, arguments];
 
   return v8;
 }
@@ -418,15 +418,15 @@ LABEL_11:
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelExpression *)self type];
-  if (v3 > 4)
+  type = [(NUChannelExpression *)self type];
+  if (type > 4)
   {
     v4 = @"???";
   }
 
   else
   {
-    v4 = off_1E8109B40[v3];
+    v4 = off_1E8109B40[type];
   }
 
   return [v2 stringWithFormat:@"expr<%@>", v4];
@@ -434,7 +434,7 @@ LABEL_11:
 
 - (NSString)compactDescription
 {
-  v2 = [(NUChannelExpression *)self inputPorts];
+  inputPorts = [(NUChannelExpression *)self inputPorts];
   v3 = PFMap();
   v4 = [v3 componentsJoinedByString:{@", "}];
 
@@ -443,14 +443,14 @@ LABEL_11:
   return v5;
 }
 
-- (NUChannelExpression)initWithExpressionType:(int64_t)a3 arguments:(id)a4
+- (NUChannelExpression)initWithExpressionType:(int64_t)type arguments:(id)arguments
 {
   v10.receiver = self;
   v10.super_class = NUChannelExpression;
-  v5 = a4;
+  argumentsCopy = arguments;
   v6 = [(NUChannelExpression *)&v10 init];
-  v6->_type = a3;
-  v7 = [v5 copy];
+  v6->_type = type;
+  v7 = [argumentsCopy copy];
 
   arguments = v6->_arguments;
   v6->_arguments = v7;
@@ -504,8 +504,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -521,8 +521,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

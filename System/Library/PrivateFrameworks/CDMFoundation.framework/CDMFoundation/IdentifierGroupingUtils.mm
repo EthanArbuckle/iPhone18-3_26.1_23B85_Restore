@@ -1,106 +1,106 @@
 @interface IdentifierGroupingUtils
-+ (id)getInterpretationGroupMax:(id)a3;
-+ (id)getInterpretationGroups:(id)a3;
-+ (id)limitAlignments:(id)a3 alignmentSpanDict:(id)a4;
-+ (void)createIdentifierGroups:(id)a3 alignmentSpanDict:(id)a4 identifiers:(id)a5 nodeIndex:(unsigned int)a6 interpretationGroupCurrentMax:(id)a7 tagSpans:(id)a8;
-+ (void)createNonOverlapping:(id)a3 interpretationGroup:(id)a4 start:(unint64_t)a5 interpretationGroups:(id)a6;
-+ (void)sortAlignmentDict:(id)a3 orderedIndexes:(id)a4 alignmentSpanDict:(id)a5;
++ (id)getInterpretationGroupMax:(id)max;
++ (id)getInterpretationGroups:(id)groups;
++ (id)limitAlignments:(id)alignments alignmentSpanDict:(id)dict;
++ (void)createIdentifierGroups:(id)groups alignmentSpanDict:(id)dict identifiers:(id)identifiers nodeIndex:(unsigned int)index interpretationGroupCurrentMax:(id)max tagSpans:(id)spans;
++ (void)createNonOverlapping:(id)overlapping interpretationGroup:(id)group start:(unint64_t)start interpretationGroups:(id)groups;
++ (void)sortAlignmentDict:(id)dict orderedIndexes:(id)indexes alignmentSpanDict:(id)spanDict;
 @end
 
 @implementation IdentifierGroupingUtils
 
-+ (id)getInterpretationGroups:(id)a3
++ (id)getInterpretationGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v4 count])
+  if ([groupsCopy count])
   {
     v6 = 0;
     do
     {
       v7 = objc_alloc(MEMORY[0x1E695DF70]);
-      v8 = [v4 objectAtIndexedSubscript:v6];
+      v8 = [groupsCopy objectAtIndexedSubscript:v6];
       v9 = [v7 initWithObjects:{v8, 0}];
 
-      [a1 createNonOverlapping:v4 interpretationGroup:v9 start:++v6 interpretationGroups:v5];
+      [self createNonOverlapping:groupsCopy interpretationGroup:v9 start:++v6 interpretationGroups:v5];
     }
 
-    while (v6 < [v4 count]);
+    while (v6 < [groupsCopy count]);
   }
 
   return v5;
 }
 
-+ (void)createNonOverlapping:(id)a3 interpretationGroup:(id)a4 start:(unint64_t)a5 interpretationGroups:(id)a6
++ (void)createNonOverlapping:(id)overlapping interpretationGroup:(id)group start:(unint64_t)start interpretationGroups:(id)groups
 {
-  v19 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([v11 count] <= 0x1F)
+  overlappingCopy = overlapping;
+  groupCopy = group;
+  groupsCopy = groups;
+  if ([groupsCopy count] <= 0x1F)
   {
-    if ([v19 count] <= a5)
+    if ([overlappingCopy count] <= start)
     {
       goto LABEL_13;
     }
 
-    if ([v19 count] <= a5)
+    if ([overlappingCopy count] <= start)
     {
       goto LABEL_12;
     }
 
     v12 = 0;
-    v13 = v19;
+    v13 = overlappingCopy;
     do
     {
-      v14 = [v13 objectAtIndexedSubscript:a5];
-      v15 = [v10 lastObject];
-      v16 = [v14 overlaps:v15];
+      v14 = [v13 objectAtIndexedSubscript:start];
+      lastObject = [groupCopy lastObject];
+      v16 = [v14 overlaps:lastObject];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [v10 mutableCopy];
+        v17 = [groupCopy mutableCopy];
         [v17 addObject:v14];
-        if (([MEMORY[0x1E69D1268] subset:v17 of:v11] & 1) == 0)
+        if (([MEMORY[0x1E69D1268] subset:v17 of:groupsCopy] & 1) == 0)
         {
-          [a1 createNonOverlapping:v19 interpretationGroup:v17 start:a5 + 1 interpretationGroups:v11];
+          [self createNonOverlapping:overlappingCopy interpretationGroup:v17 start:start + 1 interpretationGroups:groupsCopy];
           v12 = 1;
         }
       }
 
-      v18 = ++a5 >= [v19 count];
-      v13 = v19;
+      v18 = ++start >= [overlappingCopy count];
+      v13 = overlappingCopy;
     }
 
     while (!v18);
     if ((v12 & 1) == 0)
     {
 LABEL_12:
-      if ([v11 count] <= 0x1F)
+      if ([groupsCopy count] <= 0x1F)
       {
 LABEL_13:
-        if (([MEMORY[0x1E69D1268] subset:v10 of:v11] & 1) == 0)
+        if (([MEMORY[0x1E69D1268] subset:groupCopy of:groupsCopy] & 1) == 0)
         {
-          [v11 addObject:v10];
+          [groupsCopy addObject:groupCopy];
         }
       }
     }
   }
 }
 
-+ (void)createIdentifierGroups:(id)a3 alignmentSpanDict:(id)a4 identifiers:(id)a5 nodeIndex:(unsigned int)a6 interpretationGroupCurrentMax:(id)a7 tagSpans:(id)a8
++ (void)createIdentifierGroups:(id)groups alignmentSpanDict:(id)dict identifiers:(id)identifiers nodeIndex:(unsigned int)index interpretationGroupCurrentMax:(id)max tagSpans:(id)spans
 {
   v135 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v77 = a4;
-  v97 = a5;
-  v69 = a7;
-  v13 = a8;
-  v14 = v12;
-  v75 = v13;
-  if (v12 && [v12 count])
+  groupsCopy = groups;
+  dictCopy = dict;
+  identifiersCopy = identifiers;
+  maxCopy = max;
+  spansCopy = spans;
+  v14 = groupsCopy;
+  v75 = spansCopy;
+  if (groupsCopy && [groupsCopy count])
   {
-    v71 = v12;
-    v15 = [v12 sortedArrayUsingSelector:sel_compareStartAndSize_];
+    v71 = groupsCopy;
+    v15 = [groupsCopy sortedArrayUsingSelector:sel_compareStartAndSize_];
     if ([v15 count] < 0xD)
     {
       v19 = v15;
@@ -120,7 +120,7 @@ LABEL_13:
         _os_log_impl(&dword_1DC287000, v16, OS_LOG_TYPE_INFO, "%s Limiting the number span alignments to %d when creating interpretation groups. Given %@", buf, 0x1Cu);
       }
 
-      v17 = [a1 limitAlignments:v15 alignmentSpanDict:v77];
+      v17 = [self limitAlignments:v15 alignmentSpanDict:dictCopy];
 
       v18 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -135,10 +135,10 @@ LABEL_13:
       v19 = v17;
     }
 
-    v20 = [a1 getInterpretationGroups:v19];
-    if (v69)
+    v20 = [self getInterpretationGroups:v19];
+    if (maxCopy)
     {
-      v98 = [v69 unsignedIntValue] + 1;
+      v98 = [maxCopy unsignedIntValue] + 1;
     }
 
     else
@@ -151,7 +151,7 @@ LABEL_13:
     v121 = 0u;
     v122 = 0u;
     obj = v20;
-    v14 = v12;
+    v14 = groupsCopy;
     v73 = [obj countByEnumeratingWithState:&v121 objects:v130 count:16];
     if (v73)
     {
@@ -193,10 +193,10 @@ LABEL_13:
 
                 v27 = *(*(&v117 + 1) + 8 * i);
                 v28 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v27];
-                v29 = [v77 objectForKeyedSubscript:v28];
+                v29 = [dictCopy objectForKeyedSubscript:v28];
 
-                v30 = [v29 usoGraph];
-                if (!v30)
+                usoGraph = [v29 usoGraph];
+                if (!usoGraph)
                 {
                   goto LABEL_81;
                 }
@@ -205,9 +205,9 @@ LABEL_13:
                 v116 = 0u;
                 v113 = 0u;
                 v114 = 0u;
-                v80 = v30;
-                v31 = [v30 identifiers];
-                v32 = [v31 countByEnumeratingWithState:&v113 objects:v128 count:16];
+                v80 = usoGraph;
+                identifiers = [usoGraph identifiers];
+                v32 = [identifiers countByEnumeratingWithState:&v113 objects:v128 count:16];
                 v81 = i;
                 if (!v32)
                 {
@@ -218,7 +218,7 @@ LABEL_13:
                 }
 
                 v33 = v32;
-                v93 = v31;
+                v93 = identifiers;
                 v34 = 0;
                 v95 = 0;
                 v91 = 0;
@@ -234,8 +234,8 @@ LABEL_13:
                     }
 
                     v38 = *(*(&v113 + 1) + 8 * j);
-                    v39 = [v38 nodeIndex];
-                    if (v39 == [v27 nodeIndex])
+                    nodeIndex = [v38 nodeIndex];
+                    if (nodeIndex == [v27 nodeIndex])
                     {
                       if (v34)
                       {
@@ -244,10 +244,10 @@ LABEL_13:
 
                       if ([v29 hasInput])
                       {
-                        v40 = [a1 getTokenIndexIdentifier:v25 interpretationGroup:v98 nodeIndex:a6 span:v29 spanIdentifier:v38];
+                        v40 = [self getTokenIndexIdentifier:v25 interpretationGroup:v98 nodeIndex:index span:v29 spanIdentifier:v38];
                         if (v40)
                         {
-                          [v97 addObject:v40];
+                          [identifiersCopy addObject:v40];
                         }
 
 LABEL_35:
@@ -259,14 +259,14 @@ LABEL_35:
                         v34 = 0;
                       }
 
-                      v41 = [a1 createIdentifier:v25 interpretationGroupIndex:v98 nodeIndex:a6 spanIdentifier:v38];
-                      v42 = [v38 groupIndex];
-                      if (v35 <= v42)
+                      v41 = [self createIdentifier:v25 interpretationGroupIndex:v98 nodeIndex:index spanIdentifier:v38];
+                      groupIndex = [v38 groupIndex];
+                      if (v35 <= groupIndex)
                       {
-                        v35 = v42;
+                        v35 = groupIndex;
                       }
 
-                      [v97 addObject:v41];
+                      [identifiersCopy addObject:v41];
                       v95 |= [v38 sourceComponent] == 1;
 
                       v91 = 1;
@@ -328,11 +328,11 @@ LABEL_47:
                         v107 = 0u;
                         v108 = 0u;
                         v90 = v49;
-                        v50 = [v49 usoGraph];
-                        v51 = [v50 alignments];
+                        usoGraph2 = [v49 usoGraph];
+                        alignments = [usoGraph2 alignments];
 
-                        v94 = v51;
-                        v52 = [v51 countByEnumeratingWithState:&v105 objects:v126 count:16];
+                        v94 = alignments;
+                        v52 = [alignments countByEnumeratingWithState:&v105 objects:v126 count:16];
                         if (v52)
                         {
                           v53 = v52;
@@ -357,10 +357,10 @@ LABEL_47:
                                 v104 = 0u;
                                 v101 = 0u;
                                 v102 = 0u;
-                                v57 = [v90 usoGraph];
-                                v58 = [v57 identifiers];
+                                usoGraph3 = [v90 usoGraph];
+                                identifiers2 = [usoGraph3 identifiers];
 
-                                v59 = [v58 countByEnumeratingWithState:&v101 objects:v125 count:16];
+                                v59 = [identifiers2 countByEnumeratingWithState:&v101 objects:v125 count:16];
                                 if (v59)
                                 {
                                   v60 = v59;
@@ -371,27 +371,27 @@ LABEL_47:
                                     {
                                       if (*v102 != v61)
                                       {
-                                        objc_enumerationMutation(v58);
+                                        objc_enumerationMutation(identifiers2);
                                       }
 
                                       v63 = *(*(&v101 + 1) + 8 * k);
-                                      v64 = [v63 nodeIndex];
-                                      if (v64 == [v56 nodeIndex])
+                                      nodeIndex2 = [v63 nodeIndex];
+                                      if (nodeIndex2 == [v56 nodeIndex])
                                       {
-                                        v65 = [a1 createIdentifier:v25 interpretationGroupIndex:v98 nodeIndex:a6 spanIdentifier:v63];
-                                        v66 = [v63 groupIndex];
-                                        if (v35 <= v66)
+                                        v65 = [self createIdentifier:v25 interpretationGroupIndex:v98 nodeIndex:index spanIdentifier:v63];
+                                        groupIndex2 = [v63 groupIndex];
+                                        if (v35 <= groupIndex2)
                                         {
-                                          v35 = v66;
+                                          v35 = groupIndex2;
                                         }
 
-                                        [v97 addObject:v65];
+                                        [identifiersCopy addObject:v65];
 
                                         v46 = 1;
                                       }
                                     }
 
-                                    v60 = [v58 countByEnumeratingWithState:&v101 objects:v125 count:16];
+                                    v60 = [identifiers2 countByEnumeratingWithState:&v101 objects:v125 count:16];
                                   }
 
                                   while (v60);
@@ -436,7 +436,7 @@ LABEL_47:
                   }
                 }
 
-                v30 = v80;
+                usoGraph = v80;
                 i = v81;
 LABEL_81:
               }
@@ -467,17 +467,17 @@ LABEL_85:
   v67 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sortAlignmentDict:(id)a3 orderedIndexes:(id)a4 alignmentSpanDict:(id)a5
++ (void)sortAlignmentDict:(id)dict orderedIndexes:(id)indexes alignmentSpanDict:(id)spanDict
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictCopy = dict;
+  indexesCopy = indexes;
+  spanDictCopy = spanDict;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [indexesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -489,10 +489,10 @@ LABEL_85:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(indexesCopy);
         }
 
-        v14 = [v7 objectForKeyedSubscript:*(*(&v19 + 1) + 8 * v13)];
+        v14 = [dictCopy objectForKeyedSubscript:*(*(&v19 + 1) + 8 * v13)];
         v15 = v14;
         if (v14 && [v14 count] >= 2)
         {
@@ -500,7 +500,7 @@ LABEL_85:
           v17[1] = 3221225472;
           v17[2] = __78__IdentifierGroupingUtils_sortAlignmentDict_orderedIndexes_alignmentSpanDict___block_invoke;
           v17[3] = &unk_1E862E7A0;
-          v18 = v9;
+          v18 = spanDictCopy;
           [v15 sortUsingComparator:v17];
         }
 
@@ -508,7 +508,7 @@ LABEL_85:
       }
 
       while (v11 != v13);
-      v11 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [indexesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
@@ -565,18 +565,18 @@ LABEL_6:
   return v15;
 }
 
-+ (id)limitAlignments:(id)a3 alignmentSpanDict:(id)a4
++ (id)limitAlignments:(id)alignments alignmentSpanDict:(id)dict
 {
   v44 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v31 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  alignmentsCopy = alignments;
+  dictCopy = dict;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v32 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(alignmentsCopy, "count")}];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v5;
+  obj = alignmentsCopy;
   v7 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v7)
   {
@@ -597,11 +597,11 @@ LABEL_6:
         v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v11, "getEndIndex")}];
         v15 = [v12 arrayWithObjects:{v13, v14, 0}];
 
-        v16 = [v6 objectForKeyedSubscript:v15];
+        v16 = [dictionary objectForKeyedSubscript:v15];
         if (!v16)
         {
           v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          [v6 setObject:v16 forKeyedSubscript:v15];
+          [dictionary setObject:v16 forKeyedSubscript:v15];
           [v32 addObject:v15];
         }
 
@@ -614,7 +614,7 @@ LABEL_6:
     while (v8);
   }
 
-  [a1 sortAlignmentDict:v6 orderedIndexes:v32 alignmentSpanDict:v31];
+  [self sortAlignmentDict:dictionary orderedIndexes:v32 alignmentSpanDict:dictCopy];
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   while ([v17 count] <= 0xB)
   {
@@ -642,7 +642,7 @@ LABEL_6:
           objc_enumerationMutation(v18);
         }
 
-        v24 = [v6 objectForKeyedSubscript:*(*(&v34 + 1) + 8 * j)];
+        v24 = [dictionary objectForKeyedSubscript:*(*(&v34 + 1) + 8 * j)];
         v25 = v24;
         if (v24 && [v24 count])
         {
@@ -672,16 +672,16 @@ LABEL_6:
   return v27;
 }
 
-+ (id)getInterpretationGroupMax:(id)a3
++ (id)getInterpretationGroupMax:(id)max
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  maxCopy = max;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 identifiers];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  identifiers = [maxCopy identifiers];
+  v5 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -693,7 +693,7 @@ LABEL_6:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiers);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -717,7 +717,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);

@@ -1,60 +1,60 @@
 @interface SearchUIMediaPlayerUtilities
-+ (id)filterPropertyForMPMediaEntityType:(int64_t)a3;
-+ (int64_t)MPMediaEntityTypeForSFMediaEntityType:(int)a3;
-+ (int64_t)MPMediaGroupingForMPMediaEntityType:(int64_t)a3;
-+ (void)fetchVideoPunchoutForActionItem:(id)a3 completion:(id)a4;
++ (id)filterPropertyForMPMediaEntityType:(int64_t)type;
++ (int64_t)MPMediaEntityTypeForSFMediaEntityType:(int)type;
++ (int64_t)MPMediaGroupingForMPMediaEntityType:(int64_t)type;
++ (void)fetchVideoPunchoutForActionItem:(id)item completion:(id)completion;
 @end
 
 @implementation SearchUIMediaPlayerUtilities
 
-+ (int64_t)MPMediaEntityTypeForSFMediaEntityType:(int)a3
++ (int64_t)MPMediaEntityTypeForSFMediaEntityType:(int)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DA272BC0[a3 - 1];
+    return qword_1DA272BC0[type - 1];
   }
 }
 
-+ (int64_t)MPMediaGroupingForMPMediaEntityType:(int64_t)a3
++ (int64_t)MPMediaGroupingForMPMediaEntityType:(int64_t)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_1DA272BF0[a3 - 1];
+    return qword_1DA272BF0[type - 1];
   }
 }
 
-+ (id)filterPropertyForMPMediaEntityType:(int64_t)a3
++ (id)filterPropertyForMPMediaEntityType:(int64_t)type
 {
-  if (a3 <= 7 && ((0xBFu >> a3) & 1) != 0)
+  if (type <= 7 && ((0xBFu >> type) & 1) != 0)
   {
-    a1 = **(&unk_1E85B3978 + a3);
+    self = **(&unk_1E85B3978 + type);
   }
 
-  return a1;
+  return self;
 }
 
-+ (void)fetchVideoPunchoutForActionItem:(id)a3 completion:(id)a4
++ (void)fetchVideoPunchoutForActionItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__SearchUIMediaPlayerUtilities_fetchVideoPunchoutForActionItem_completion___block_invoke;
   v9[3] = &unk_1E85B3958;
-  v10 = v5;
-  v11 = v6;
-  v7 = v5;
-  v8 = v6;
+  v10 = itemCopy;
+  v11 = completionCopy;
+  v7 = itemCopy;
+  v8 = completionCopy;
   [SearchUIUtilities dispatchAsyncIfNecessary:v9];
 }
 

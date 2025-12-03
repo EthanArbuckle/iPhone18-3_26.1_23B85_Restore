@@ -1,14 +1,14 @@
 @interface CKLStreamTrafficConsoleLogObserver
-- (CKLStreamTrafficConsoleLogObserver)initWithLogTypes:(unint64_t)a3;
+- (CKLStreamTrafficConsoleLogObserver)initWithLogTypes:(unint64_t)types;
 @end
 
 @implementation CKLStreamTrafficConsoleLogObserver
 
-- (CKLStreamTrafficConsoleLogObserver)initWithLogTypes:(unint64_t)a3
+- (CKLStreamTrafficConsoleLogObserver)initWithLogTypes:(unint64_t)types
 {
   v7.receiver = self;
   v7.super_class = CKLStreamTrafficConsoleLogObserver;
-  v3 = [(CKLStreamTrafficObserver *)&v7 initWithLogTypes:a3];
+  v3 = [(CKLStreamTrafficObserver *)&v7 initWithLogTypes:types];
   v5 = v3;
   if (v3)
   {

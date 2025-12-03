@@ -1,24 +1,24 @@
 @interface BCSDataDetectorsScannerResultData
-- (BCSDataDetectorsScannerResultData)initWithCoder:(id)a3;
-- (BCSDataDetectorsScannerResultData)initWithScannerResult:(id)a3 type:(int64_t)a4 extraPreviewText:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BCSDataDetectorsScannerResultData)initWithCoder:(id)coder;
+- (BCSDataDetectorsScannerResultData)initWithScannerResult:(id)result type:(int64_t)type extraPreviewText:(id)text;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BCSDataDetectorsScannerResultData
 
-- (BCSDataDetectorsScannerResultData)initWithScannerResult:(id)a3 type:(int64_t)a4 extraPreviewText:(id)a5
+- (BCSDataDetectorsScannerResultData)initWithScannerResult:(id)result type:(int64_t)type extraPreviewText:(id)text
 {
-  v9 = a3;
-  v10 = a5;
+  resultCopy = result;
+  textCopy = text;
   v17.receiver = self;
   v17.super_class = BCSDataDetectorsScannerResultData;
   v11 = [(BCSDataDetectorsScannerResultData *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_scannerResult, a3);
-    v12->_type = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_scannerResult, result);
+    v12->_type = type;
+    v13 = [textCopy copy];
     extraPreviewText = v12->_extraPreviewText;
     v12->_extraPreviewText = v13;
 
@@ -28,24 +28,24 @@
   return v12;
 }
 
-- (BCSDataDetectorsScannerResultData)initWithCoder:(id)a3
+- (BCSDataDetectorsScannerResultData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 _bcs_strictlyDecodeObjectOfClass:getDDScannerResultClass() forKey:@"scannerResult"];
-  v6 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"type"];
-  v7 = [v4 _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"extraPreviewText"];
+  coderCopy = coder;
+  v5 = [coderCopy _bcs_strictlyDecodeObjectOfClass:getDDScannerResultClass() forKey:@"scannerResult"];
+  v6 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v7 = [coderCopy _bcs_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"extraPreviewText"];
 
   v8 = -[BCSDataDetectorsScannerResultData initWithScannerResult:type:extraPreviewText:](self, "initWithScannerResult:type:extraPreviewText:", v5, [v6 integerValue], v7);
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   scannerResult = self->_scannerResult;
-  v5 = a3;
-  [v5 encodeObject:scannerResult forKey:@"scannerResult"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_extraPreviewText forKey:@"extraPreviewText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:scannerResult forKey:@"scannerResult"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_extraPreviewText forKey:@"extraPreviewText"];
 }
 
 @end

@@ -6,19 +6,19 @@
 
 - (id)_searchUI_requestAppClipCommand
 {
-  v2 = [a1 command];
+  command = [self command];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [a1 command];
+    command2 = [self command];
   }
 
   else
   {
-    v3 = 0;
+    command2 = 0;
   }
 
-  return v3;
+  return command2;
 }
 
 @end

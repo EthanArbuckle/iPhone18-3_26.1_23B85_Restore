@@ -1,22 +1,22 @@
 @interface WBSSafariCyclerConfigurationTool
 - (WBSSafariCyclerConfigurationTool)init;
-- (id)_commandWithName:(id)a3;
-- (id)_descriptionForErrorCode:(int64_t)a3;
-- (id)_errorWithCode:(int64_t)a3;
+- (id)_commandWithName:(id)name;
+- (id)_descriptionForErrorCode:(int64_t)code;
+- (id)_errorWithCode:(int64_t)code;
 - (id)_supportedCommands;
-- (void)_configureDevice:(id)a3;
-- (void)_exitWithError:(id)a3;
-- (void)_fetchLastError:(id)a3;
-- (void)_fetchLogs:(id)a3;
-- (void)_fetchStatus:(id)a3;
+- (void)_configureDevice:(id)device;
+- (void)_exitWithError:(id)error;
+- (void)_fetchLastError:(id)error;
+- (void)_fetchLogs:(id)logs;
+- (void)_fetchStatus:(id)status;
 - (void)_printUsage;
-- (void)_resumeCycler:(id)a3;
-- (void)_runTest:(id)a3;
-- (void)_sendRequestToTest:(id)a3;
-- (void)_setConfigurationOption:(id)a3;
-- (void)_startCycler:(id)a3;
-- (void)_stopCycler:(id)a3;
-- (void)_waitForCyclerToFinish:(id)a3;
+- (void)_resumeCycler:(id)cycler;
+- (void)_runTest:(id)test;
+- (void)_sendRequestToTest:(id)test;
+- (void)_setConfigurationOption:(id)option;
+- (void)_startCycler:(id)cycler;
+- (void)_stopCycler:(id)cycler;
+- (void)_waitForCyclerToFinish:(id)finish;
 - (void)run;
 @end
 
@@ -81,22 +81,22 @@ void __40__WBSSafariCyclerConfigurationTool_init__block_invoke_2(uint64_t a1, vo
 
 - (void)run
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v8 = [v3 arguments];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  arguments = [processInfo arguments];
 
-  if ([v8 count] <= 1)
+  if ([arguments count] <= 1)
   {
     [(WBSSafariCyclerConfigurationTool *)self _printUsage];
     [(WBSSafariCyclerConfigurationTool *)self _exitWithError:0];
     goto LABEL_9;
   }
 
-  v4 = [v8 objectAtIndexedSubscript:1];
+  v4 = [arguments objectAtIndexedSubscript:1];
   v5 = [(WBSSafariCyclerConfigurationTool *)self _commandWithName:v4];
 
   if (v5)
   {
-    v6 = [v8 subarrayWithRange:{2, objc_msgSend(v8, "count") - 2}];
+    v6 = [arguments subarrayWithRange:{2, objc_msgSend(arguments, "count") - 2}];
     v7 = [v5 invokeWithParameters:v6];
 
     if (v7)
@@ -189,16 +189,16 @@ void __54__WBSSafariCyclerConfigurationTool__supportedCommands__block_invoke(uin
   [_supportedCommands_commands addObject:v11];
 }
 
-- (id)_commandWithName:(id)a3
+- (id)_commandWithName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(WBSSafariCyclerConfigurationTool *)self _supportedCommands];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _supportedCommands = [(WBSSafariCyclerConfigurationTool *)self _supportedCommands];
+  v6 = [_supportedCommands countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -208,12 +208,12 @@ void __54__WBSSafariCyclerConfigurationTool__supportedCommands__block_invoke(uin
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_supportedCommands);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 caseInsensitiveCompare:v4];
+        name = [v9 name];
+        v11 = [name caseInsensitiveCompare:nameCopy];
 
         if (!v11)
         {
@@ -222,7 +222,7 @@ void __54__WBSSafariCyclerConfigurationTool__supportedCommands__block_invoke(uin
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_supportedCommands countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -246,8 +246,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(WBSSafariCyclerConfigurationTool *)self _supportedCommands];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _supportedCommands = [(WBSSafariCyclerConfigurationTool *)self _supportedCommands];
+  v4 = [_supportedCommands countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -258,38 +258,38 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_supportedCommands);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 name];
-        v10 = [v9 UTF8String];
-        v11 = [v8 help];
-        printf("    %s\t\t%s\n", v10, [v11 UTF8String]);
+        name = [v8 name];
+        uTF8String = [name UTF8String];
+        help = [v8 help];
+        printf("    %s\t\t%s\n", uTF8String, [help UTF8String]);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [_supportedCommands countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_exitWithError:(id)a3
+- (void)_exitWithError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v4 = [v3 description];
+    v4 = [errorCopy description];
     printf("Error: %s\n", [v4 UTF8String]);
 
-    LODWORD(v3) = 1;
+    LODWORD(errorCopy) = 1;
   }
 
-  exit(v3);
+  exit(errorCopy);
 }
 
-- (id)_errorWithCode:(int64_t)a3
+- (id)_errorWithCode:(int64_t)code
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ABC0];
@@ -297,32 +297,32 @@ LABEL_11:
   v5 = [(WBSSafariCyclerConfigurationTool *)self _descriptionForErrorCode:?];
   v10[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [v4 errorWithDomain:@"WBSSafariCyclerConfigurationToolErrorDomain" code:a3 userInfo:v6];
+  v7 = [v4 errorWithDomain:@"WBSSafariCyclerConfigurationToolErrorDomain" code:code userInfo:v6];
 
   return v7;
 }
 
-- (id)_descriptionForErrorCode:(int64_t)a3
+- (id)_descriptionForErrorCode:(int64_t)code
 {
-  if ((a3 - 1) > 3)
+  if ((code - 1) > 3)
   {
     return @"A logging plist already exists; not overwriting it";
   }
 
   else
   {
-    return off_1E7FCA218[a3 - 1];
+    return off_1E7FCA218[code - 1];
   }
 }
 
-- (void)_runTest:(id)a3
+- (void)_runTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   objc_initWeak(&location, self);
-  v5 = [v4 firstObject];
-  v6 = [v5 lowercaseString];
+  firstObject = [testCopy firstObject];
+  lowercaseString = [firstObject lowercaseString];
 
-  v7 = [&unk_1F3A9B460 objectForKeyedSubscript:v6];
+  v7 = [&unk_1F3A9B460 objectForKeyedSubscript:lowercaseString];
   if (!v7)
   {
     v8 = [(WBSSafariCyclerConfigurationTool *)self _errorWithCode:3];
@@ -335,7 +335,7 @@ LABEL_11:
   v11[2] = __45__WBSSafariCyclerConfigurationTool__runTest___block_invoke;
   v11[3] = &unk_1E7FCA180;
   objc_copyWeak(&v13, &location);
-  v10 = v6;
+  v10 = lowercaseString;
   v12 = v10;
   [(WBSCyclerServiceProxy *)cyclerProxy setValue:v7 forConfigurationKey:@"test-suite" reply:v11];
 
@@ -390,9 +390,9 @@ uint64_t __45__WBSSafariCyclerConfigurationTool__runTest___block_invoke_2(uint64
   return [v4 startCyclingFromBeginning:1 reply:v6];
 }
 
-- (void)_startCycler:(id)a3
+- (void)_startCycler:(id)cycler
 {
-  v4 = a3;
+  cyclerCopy = cycler;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
   v6[0] = MEMORY[0x1E69E9820];
@@ -412,9 +412,9 @@ void __49__WBSSafariCyclerConfigurationTool__startCycler___block_invoke(uint64_t
   [WeakRetained _exitWithError:v3];
 }
 
-- (void)_stopCycler:(id)a3
+- (void)_stopCycler:(id)cycler
 {
-  v4 = a3;
+  cyclerCopy = cycler;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
   v6[0] = MEMORY[0x1E69E9820];
@@ -434,9 +434,9 @@ void __48__WBSSafariCyclerConfigurationTool__stopCycler___block_invoke(uint64_t 
   [WeakRetained _exitWithError:v3];
 }
 
-- (void)_resumeCycler:(id)a3
+- (void)_resumeCycler:(id)cycler
 {
-  v4 = a3;
+  cyclerCopy = cycler;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
   v6[0] = MEMORY[0x1E69E9820];
@@ -456,19 +456,19 @@ void __50__WBSSafariCyclerConfigurationTool__resumeCycler___block_invoke(uint64_
   [WeakRetained _exitWithError:v3];
 }
 
-- (void)_setConfigurationOption:(id)a3
+- (void)_setConfigurationOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
-  v6 = [v4 lastObject];
-  v7 = [v4 firstObject];
+  lastObject = [optionCopy lastObject];
+  firstObject = [optionCopy firstObject];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__WBSSafariCyclerConfigurationTool__setConfigurationOption___block_invoke;
   v8[3] = &unk_1E7FC9DC0;
   objc_copyWeak(&v9, &location);
-  [(WBSCyclerServiceProxy *)cyclerProxy setValue:v6 forConfigurationKey:v7 reply:v8];
+  [(WBSCyclerServiceProxy *)cyclerProxy setValue:lastObject forConfigurationKey:firstObject reply:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -481,18 +481,18 @@ void __60__WBSSafariCyclerConfigurationTool__setConfigurationOption___block_invo
   [WeakRetained _exitWithError:v3];
 }
 
-- (void)_sendRequestToTest:(id)a3
+- (void)_sendRequestToTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
-  v6 = [v4 firstObject];
+  firstObject = [testCopy firstObject];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__WBSSafariCyclerConfigurationTool__sendRequestToTest___block_invoke;
   v7[3] = &unk_1E7FC9DC0;
   objc_copyWeak(&v8, &location);
-  [(WBSCyclerServiceProxy *)cyclerProxy sendRequestToTestSuite:v6 reply:v7];
+  [(WBSCyclerServiceProxy *)cyclerProxy sendRequestToTestSuite:firstObject reply:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -505,17 +505,17 @@ void __55__WBSSafariCyclerConfigurationTool__sendRequestToTest___block_invoke(ui
   [WeakRetained _exitWithError:v3];
 }
 
-- (void)_configureDevice:(id)a3
+- (void)_configureDevice:(id)device
 {
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:@"/Library/Preferences/Logging/Subsystems/com.apple.SafariShared.plist"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:@"/Library/Preferences/Logging/Subsystems/com.apple.SafariShared.plist"];
 
   if (v5)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 0;
 LABEL_8:
-    v8 = [(WBSSafariCyclerConfigurationTool *)v6 _errorWithCode:v7];
+    v8 = [(WBSSafariCyclerConfigurationTool *)selfCopy2 _errorWithCode:v7];
     [(WBSSafariCyclerConfigurationTool *)self _exitWithError:v8];
 
     return;
@@ -523,7 +523,7 @@ LABEL_8:
 
   if (([&unk_1F3A9B4B0 writeToFile:@"/Library/Preferences/Logging/Subsystems/com.apple.SafariShared.plist" atomically:1] & 1) == 0)
   {
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
     goto LABEL_8;
   }
@@ -531,9 +531,9 @@ LABEL_8:
   [(WBSSafariCyclerConfigurationTool *)self _exitWithError:0];
 }
 
-- (void)_fetchStatus:(id)a3
+- (void)_fetchStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
   v6[0] = MEMORY[0x1E69E9820];
@@ -598,9 +598,9 @@ void __49__WBSSafariCyclerConfigurationTool__fetchStatus___block_invoke(uint64_t
   }
 }
 
-- (void)_fetchLogs:(id)a3
+- (void)_fetchLogs:(id)logs
 {
-  v4 = a3;
+  logsCopy = logs;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
   v6[0] = MEMORY[0x1E69E9820];
@@ -670,9 +670,9 @@ void __47__WBSSafariCyclerConfigurationTool__fetchLogs___block_invoke(uint64_t a
   }
 }
 
-- (void)_fetchLastError:(id)a3
+- (void)_fetchLastError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
   v6[0] = MEMORY[0x1E69E9820];
@@ -698,9 +698,9 @@ void __52__WBSSafariCyclerConfigurationTool__fetchLastError___block_invoke(uint6
   }
 }
 
-- (void)_waitForCyclerToFinish:(id)a3
+- (void)_waitForCyclerToFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   objc_initWeak(&location, self);
   cyclerProxy = self->_cyclerProxy;
   v6[0] = MEMORY[0x1E69E9820];

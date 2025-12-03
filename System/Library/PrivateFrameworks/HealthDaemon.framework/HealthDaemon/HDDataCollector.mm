@@ -1,29 +1,29 @@
 @interface HDDataCollector
-+ (BOOL)_primaryContextExistsForDomain:(id)a3 profile:(id)a4;
++ (BOOL)_primaryContextExistsForDomain:(id)domain profile:(id)profile;
 + (Class)sensorDatumClass;
-+ (id)_lastReceivedSensorDatumForProfile:(id)a3;
-+ (id)_retrieveContextForKey:(void *)a3 domain:(void *)a4 profile:;
-+ (id)_sensorDatumFromContext:(id)a3;
++ (id)_lastReceivedSensorDatumForProfile:(id)profile;
++ (id)_retrieveContextForKey:(void *)key domain:(void *)domain profile:;
++ (id)_sensorDatumFromContext:(id)context;
 + (id)domain;
 + (id)observedType;
 + (id)secondaryContextClasses;
 - (BOOL)disabled;
-- (HDDataCollector)initWithProfile:(id)a3;
+- (HDDataCollector)initWithProfile:(id)profile;
 - (double)collectionInterval;
-- (id)_retrieveContextForKey:(uint64_t)a1;
+- (id)_retrieveContextForKey:(uint64_t)key;
 - (id)dataCollectorDiagnosticDescription;
-- (void)_performAsync:(id)a3;
-- (void)_performSync:(id)a3;
-- (void)_persistContext:(void *)a3 forKey:;
+- (void)_performAsync:(id)async;
+- (void)_performSync:(id)sync;
+- (void)_persistContext:(void *)context forKey:;
 - (void)_queue_transitionToFailure;
 - (void)_queue_transitionToStreaming;
-- (void)_queue_updateCollectionInterval:(uint64_t)a1;
-- (void)collectionStartedForType:(id)a3 collectionInterval:(double)a4;
-- (void)collectionStoppedForType:(id)a3;
-- (void)setCollectionInterval:(double)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)stopPerformingUpdatesWithErrorEncountered:(BOOL)a3;
-- (void)updateCollectionInterval:(double)a3 forType:(id)a4;
+- (void)_queue_updateCollectionInterval:(uint64_t)interval;
+- (void)collectionStartedForType:(id)type collectionInterval:(double)interval;
+- (void)collectionStoppedForType:(id)type;
+- (void)setCollectionInterval:(double)interval;
+- (void)setDisabled:(BOOL)disabled;
+- (void)stopPerformingUpdatesWithErrorEncountered:(BOOL)encountered;
+- (void)updateCollectionInterval:(double)interval forType:(id)type;
 @end
 
 @implementation HDDataCollector
@@ -31,7 +31,7 @@
 - (void)_queue_transitionToStreaming
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = *MEMORY[0x277CCC298];
@@ -39,7 +39,7 @@
     {
       v4 = v2;
       v5 = objc_opt_class();
-      v6 = *(a1 + 40);
+      v6 = *(self + 40);
       v8 = 138543618;
       v9 = v5;
       v10 = 2048;
@@ -48,7 +48,7 @@
       _os_log_debug_impl(&dword_228986000, v4, OS_LOG_TYPE_DEBUG, "%{public}@: Transitioning to Streaming. Previous state %ld", &v8, 0x16u);
     }
 
-    *(a1 + 40) = 2;
+    *(self + 40) = 2;
   }
 
   v3 = *MEMORY[0x277D85DE8];
@@ -69,29 +69,29 @@
   return v4;
 }
 
-- (HDDataCollector)initWithProfile:(id)a3
+- (HDDataCollector)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HDDataCollector;
   v5 = [(HDDataCollector *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeWeak(&v6->_primaryProfile, v4);
+      objc_storeWeak(&v6->_primaryProfile, profileCopy);
     }
 
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
-    v9 = [objc_opt_class() observedType];
+    observedType = [objc_opt_class() observedType];
     observedType = v6->_observedType;
-    v6->_observedType = v9;
+    v6->_observedType = observedType;
 
     v6->_state = 1;
     [objc_opt_class() defaultCollectionInterval];
@@ -101,43 +101,43 @@
   return v6;
 }
 
-- (void)_performAsync:(id)a3
+- (void)_performAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__HDDataCollector__performAsync___block_invoke;
   block[3] = &unk_278613658;
-  v8 = v4;
-  v6 = v4;
+  v8 = asyncCopy;
+  v6 = asyncCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_performSync:(id)a3
+- (void)_performSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__HDDataCollector__performSync___block_invoke;
   block[3] = &unk_278613658;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_persistContext:(void *)a3 forKey:
+- (void)_persistContext:(void *)context forKey:
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    contextCopy = context;
     v6 = a2;
-    v7 = [objc_opt_class() domain];
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    domain = [objc_opt_class() domain];
+    WeakRetained = objc_loadWeakRetained((self + 16));
     v16 = 0;
-    v9 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity setData:v6 forKey:v5 domain:v7 category:0 profile:WeakRetained error:&v16];
+    v9 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity setData:v6 forKey:contextCopy domain:domain category:0 profile:WeakRetained error:&v16];
 
     v10 = v16;
     if (!v9)
@@ -161,25 +161,25 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_retrieveContextForKey:(uint64_t)a1
+- (id)_retrieveContextForKey:(uint64_t)key
 {
   v3 = a2;
-  v4 = [objc_opt_class() domain];
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
-  v6 = [HDDataCollector _retrieveContextForKey:v3 domain:v4 profile:WeakRetained];
+  domain = [objc_opt_class() domain];
+  WeakRetained = objc_loadWeakRetained((key + 16));
+  v6 = [HDDataCollector _retrieveContextForKey:v3 domain:domain profile:WeakRetained];
 
   return v6;
 }
 
-+ (id)_retrieveContextForKey:(void *)a3 domain:(void *)a4 profile:
++ (id)_retrieveContextForKey:(void *)key domain:(void *)domain profile:
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  domainCopy = domain;
+  keyCopy = key;
   v8 = a2;
   objc_opt_self();
   v17 = 0;
-  v9 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity dataForKey:v8 domain:v7 category:0 profile:v6 entity:0 error:&v17];
+  v9 = [(HDKeyValueEntity *)HDUnprotectedKeyValueEntity dataForKey:v8 domain:keyCopy category:0 profile:domainCopy entity:0 error:&v17];
 
   v10 = v17;
   if (v10)
@@ -204,15 +204,15 @@
   return v9;
 }
 
-+ (id)_sensorDatumFromContext:(id)a3
++ (id)_sensorDatumFromContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy && [contextCopy length])
   {
     v14 = 0;
-    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_msgSend(a1 fromData:"sensorDatumClass") error:{v5, &v14}];
+    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_msgSend(self fromData:"sensorDatumClass") error:{v5, &v14}];
     v7 = v14;
     if (!v6)
     {
@@ -223,7 +223,7 @@
         v12 = v8;
         v13 = [v5 length];
         *buf = 138543874;
-        v16 = a1;
+        selfCopy2 = self;
         v17 = 2048;
         v18 = v13;
         v19 = 2114;
@@ -240,7 +240,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v16 = a1;
+      selfCopy2 = self;
       v17 = 2114;
       v18 = v5;
       _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Asked to decode empty context (%{public}@), returning nil", buf, 0x16u);
@@ -254,21 +254,21 @@
   return v6;
 }
 
-+ (BOOL)_primaryContextExistsForDomain:(id)a3 profile:(id)a4
++ (BOOL)_primaryContextExistsForDomain:(id)domain profile:(id)profile
 {
-  v4 = [(HDDataCollector *)a1 _retrieveContextForKey:a3 domain:a4 profile:?];
+  v4 = [(HDDataCollector *)self _retrieveContextForKey:domain domain:profile profile:?];
   v5 = v4 != 0;
 
   return v5;
 }
 
-+ (id)_lastReceivedSensorDatumForProfile:(id)a3
++ (id)_lastReceivedSensorDatumForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [a1 domain];
-  v6 = [(HDDataCollector *)a1 _retrieveContextForKey:v5 domain:v4 profile:?];
+  profileCopy = profile;
+  domain = [self domain];
+  v6 = [(HDDataCollector *)self _retrieveContextForKey:domain domain:profileCopy profile:?];
 
-  v7 = [a1 _sensorDatumFromContext:v6];
+  v7 = [self _sensorDatumFromContext:v6];
 
   return v7;
 }
@@ -298,14 +298,14 @@ double __37__HDDataCollector_collectionInterval__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setCollectionInterval:(double)a3
+- (void)setCollectionInterval:(double)interval
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __41__HDDataCollector_setCollectionInterval___block_invoke;
   v3[3] = &unk_2786138F8;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = interval;
   [(HDDataCollector *)self _performAsync:v3];
 }
 
@@ -346,13 +346,13 @@ uint64_t __27__HDDataCollector_disabled__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __31__HDDataCollector_setDisabled___block_invoke;
   v3[3] = &unk_278618990;
-  v4 = a3;
+  disabledCopy = disabled;
   v3[4] = self;
   [(HDDataCollector *)self _performAsync:v3];
 }
@@ -387,7 +387,7 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
 - (void)_queue_transitionToFailure
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     _HKInitializeLogging();
     v2 = MEMORY[0x277CCC298];
@@ -396,7 +396,7 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
     {
       v4 = v3;
       v5 = objc_opt_class();
-      v6 = a1[5];
+      v6 = self[5];
       v20 = 138543618;
       v21 = v5;
       v22 = 2048;
@@ -405,11 +405,11 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
       _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Transitioning to Failure. Previous state %ld", &v20, 0x16u);
     }
 
-    if (a1[5] != 1)
+    if (self[5] != 1)
     {
-      [a1 stopPerformingUpdatesWithErrorEncountered:1];
-      a1[5] = 3;
-      v8 = a1[8];
+      [self stopPerformingUpdatesWithErrorEncountered:1];
+      self[5] = 3;
+      v8 = self[8];
       _HKInitializeLogging();
       v9 = *v2;
       v10 = os_log_type_enabled(*v2, OS_LOG_TYPE_DEFAULT);
@@ -419,7 +419,7 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
         {
           v15 = v9;
           v16 = objc_opt_class();
-          v17 = a1[8];
+          v17 = self[8];
           v20 = 138543618;
           v21 = v16;
           v22 = 2048;
@@ -428,7 +428,7 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
           _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Retrying count limit reached (%ld), not retrying", &v20, 0x16u);
         }
 
-        a1[8] = 0;
+        self[8] = 0;
       }
 
       else
@@ -437,7 +437,7 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
         {
           v11 = v9;
           v12 = objc_opt_class();
-          v13 = a1[8];
+          v13 = self[8];
           v20 = 138543618;
           v21 = v12;
           v22 = 2048;
@@ -446,11 +446,11 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
           _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Retrying from failure (%ld)", &v20, 0x16u);
         }
 
-        ++a1[8];
-        if (a1[5] != 2)
+        ++self[8];
+        if (self[5] != 2)
         {
-          [(HDDataCollector *)a1 _queue_transitionToStreaming];
-          [a1 _queue_beginStreaming];
+          [(HDDataCollector *)self _queue_transitionToStreaming];
+          [self _queue_beginStreaming];
         }
       }
     }
@@ -459,12 +459,12 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_updateCollectionInterval:(uint64_t)a1
+- (void)_queue_updateCollectionInterval:(uint64_t)interval
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (interval)
   {
-    if (*(a1 + 32) != a2)
+    if (*(interval + 32) != a2)
     {
       _HKInitializeLogging();
       v4 = *MEMORY[0x277CCC298];
@@ -480,15 +480,15 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
       }
     }
 
-    *(a1 + 32) = a2;
+    *(interval + 32) = a2;
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collectionStartedForType:(id)a3 collectionInterval:(double)a4
+- (void)collectionStartedForType:(id)type collectionInterval:(double)interval
 {
-  if ([(HKObjectType *)self->_observedType isEqual:a3])
+  if ([(HKObjectType *)self->_observedType isEqual:type])
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -496,7 +496,7 @@ uint64_t __31__HDDataCollector_setDisabled___block_invoke(uint64_t result)
     v7[2] = __63__HDDataCollector_collectionStartedForType_collectionInterval___block_invoke;
     v7[3] = &unk_2786138F8;
     v7[4] = self;
-    *&v7[5] = a4;
+    *&v7[5] = interval;
     dispatch_async(queue, v7);
   }
 }
@@ -513,9 +513,9 @@ void __63__HDDataCollector_collectionStartedForType_collectionInterval___block_i
   }
 }
 
-- (void)updateCollectionInterval:(double)a3 forType:(id)a4
+- (void)updateCollectionInterval:(double)interval forType:(id)type
 {
-  if ([a4 isEqual:self->_observedType])
+  if ([type isEqual:self->_observedType])
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -523,14 +523,14 @@ void __63__HDDataCollector_collectionStartedForType_collectionInterval___block_i
     v7[2] = __52__HDDataCollector_updateCollectionInterval_forType___block_invoke;
     v7[3] = &unk_2786138F8;
     v7[4] = self;
-    *&v7[5] = a3;
+    *&v7[5] = interval;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)collectionStoppedForType:(id)a3
+- (void)collectionStoppedForType:(id)type
 {
-  if ([(HKObjectType *)self->_observedType isEqual:a3])
+  if ([(HKObjectType *)self->_observedType isEqual:type])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -585,7 +585,7 @@ void __44__HDDataCollector_collectionStoppedForType___block_invoke(uint64_t a1)
 
 - (id)dataCollectorDiagnosticDescription
 {
-  v3 = [objc_opt_class() observedType];
+  observedType = [objc_opt_class() observedType];
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_collectionInterval];
@@ -600,7 +600,7 @@ void __44__HDDataCollector_collectionStoppedForType___block_invoke(uint64_t a1)
     v8 = off_278628920[v7];
   }
 
-  v9 = [v4 stringWithFormat:@"%@ (%@): %@, %@", v5, v3, v6, v8];
+  v9 = [v4 stringWithFormat:@"%@ (%@): %@, %@", v5, observedType, v6, v8];
 
   return v9;
 }
@@ -626,7 +626,7 @@ void __44__HDDataCollector_collectionStoppedForType___block_invoke(uint64_t a1)
   return 0;
 }
 
-- (void)stopPerformingUpdatesWithErrorEncountered:(BOOL)a3
+- (void)stopPerformingUpdatesWithErrorEncountered:(BOOL)encountered
 {
   objc_opt_class();
 

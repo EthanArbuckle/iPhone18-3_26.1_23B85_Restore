@@ -1,11 +1,11 @@
 @interface IpsFileUtility
-+ (id)_createDataForCrashReporterIpsHeaderWithBugType:(id)a3 contentType:(id)a4 date:(id)a5 additionalFields:(id)a6;
-+ (id)_createIpsFileNameWithPrefix:(id)a3 date:(id)a4 inDirectory:(id)a5;
-+ (id)formattedDateForFilename:(id)a3;
-- (BOOL)_checkDirectoryAndCreateIfNecessary:(id)a3;
-- (BOOL)_writeIpsFileWithBugType:(id)a3 contentType:(id)a4 additionalIpsHeaders:(id)a5 ipsData:(id)a6 inDirectory:(id)a7 fileNamePrefix:(id)a8;
-- (BOOL)createIpsFileWithBugType:(id)a3 contentType:(id)a4 additionalIpsHeaders:(id)a5 ipsContent:(id)a6 inDirectory:(id)a7 fileNamePrefix:(id)a8;
-- (BOOL)createIpsFileWithBugType:(id)a3 contentType:(id)a4 additionalIpsHeaders:(id)a5 ipsData:(id)a6 inDirectory:(id)a7 fileNamePrefix:(id)a8;
++ (id)_createDataForCrashReporterIpsHeaderWithBugType:(id)type contentType:(id)contentType date:(id)date additionalFields:(id)fields;
++ (id)_createIpsFileNameWithPrefix:(id)prefix date:(id)date inDirectory:(id)directory;
++ (id)formattedDateForFilename:(id)filename;
+- (BOOL)_checkDirectoryAndCreateIfNecessary:(id)necessary;
+- (BOOL)_writeIpsFileWithBugType:(id)type contentType:(id)contentType additionalIpsHeaders:(id)headers ipsData:(id)data inDirectory:(id)directory fileNamePrefix:(id)prefix;
+- (BOOL)createIpsFileWithBugType:(id)type contentType:(id)contentType additionalIpsHeaders:(id)headers ipsContent:(id)content inDirectory:(id)directory fileNamePrefix:(id)prefix;
+- (BOOL)createIpsFileWithBugType:(id)type contentType:(id)contentType additionalIpsHeaders:(id)headers ipsData:(id)data inDirectory:(id)directory fileNamePrefix:(id)prefix;
 - (void)dealloc;
 @end
 
@@ -24,18 +24,18 @@
   [(IpsFileUtility *)&v3 dealloc];
 }
 
-- (BOOL)createIpsFileWithBugType:(id)a3 contentType:(id)a4 additionalIpsHeaders:(id)a5 ipsContent:(id)a6 inDirectory:(id)a7 fileNamePrefix:(id)a8
+- (BOOL)createIpsFileWithBugType:(id)type contentType:(id)contentType additionalIpsHeaders:(id)headers ipsContent:(id)content inDirectory:(id)directory fileNamePrefix:(id)prefix
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v17];
+  typeCopy = type;
+  contentTypeCopy = contentType;
+  headersCopy = headers;
+  contentCopy = content;
+  directoryCopy = directory;
+  prefixCopy = prefix;
+  v20 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:contentCopy];
   if (v20)
   {
-    v21 = [(IpsFileUtility *)self createIpsFileWithBugType:v14 contentType:v15 additionalIpsHeaders:v16 ipsData:v20 inDirectory:v18 fileNamePrefix:v19];
+    v21 = [(IpsFileUtility *)self createIpsFileWithBugType:typeCopy contentType:contentTypeCopy additionalIpsHeaders:headersCopy ipsData:v20 inDirectory:directoryCopy fileNamePrefix:prefixCopy];
   }
 
   else
@@ -53,35 +53,35 @@
   return v21;
 }
 
-- (BOOL)_writeIpsFileWithBugType:(id)a3 contentType:(id)a4 additionalIpsHeaders:(id)a5 ipsData:(id)a6 inDirectory:(id)a7 fileNamePrefix:(id)a8
+- (BOOL)_writeIpsFileWithBugType:(id)type contentType:(id)contentType additionalIpsHeaders:(id)headers ipsData:(id)data inDirectory:(id)directory fileNamePrefix:(id)prefix
 {
   v53 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([(IpsFileUtility *)self _checkDirectoryAndCreateIfNecessary:v18])
+  typeCopy = type;
+  contentTypeCopy = contentType;
+  headersCopy = headers;
+  dataCopy = data;
+  directoryCopy = directory;
+  prefixCopy = prefix;
+  if ([(IpsFileUtility *)self _checkDirectoryAndCreateIfNecessary:directoryCopy])
   {
-    v48 = v17;
+    v48 = dataCopy;
     context = objc_autoreleasePoolPush();
     [MEMORY[0x277CBEAA8] date];
-    v21 = v20 = v14;
-    v22 = [MEMORY[0x277CCAA00] defaultManager];
-    v23 = [IpsFileUtility _createIpsFileNameWithPrefix:v19 date:v21 inDirectory:v18];
+    v21 = v20 = typeCopy;
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v23 = [IpsFileUtility _createIpsFileNameWithPrefix:prefixCopy date:v21 inDirectory:directoryCopy];
     v47 = v20;
-    v24 = [IpsFileUtility _createDataForCrashReporterIpsHeaderWithBugType:v20 contentType:v15 date:v21 additionalFields:v16];
+    v24 = [IpsFileUtility _createDataForCrashReporterIpsHeaderWithBugType:v20 contentType:contentTypeCopy date:v21 additionalFields:headersCopy];
     if (v24)
     {
-      v25 = v22;
-      if ([v22 createFileAtPath:v23 contents:v24 attributes:0])
+      v25 = defaultManager;
+      if ([defaultManager createFileAtPath:v23 contents:v24 attributes:0])
       {
-        v26 = [MEMORY[0x277CCAD78] UUID];
-        v27 = [v26 UUIDString];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
 
-        v44 = v27;
-        v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.tmp", v18, v27];
+        v44 = uUIDString;
+        v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@.tmp", directoryCopy, uUIDString];
         v45 = v28;
         if ([v48 writeToFile:v28 atomically:1])
         {
@@ -176,8 +176,8 @@ LABEL_38:
 
 LABEL_39:
         objc_autoreleasePoolPop(context);
-        v14 = v47;
-        v17 = v48;
+        typeCopy = v47;
+        dataCopy = v48;
         goto LABEL_40;
       }
 
@@ -193,7 +193,7 @@ LABEL_39:
     else
     {
       v36 = otherLogHandle;
-      v25 = v22;
+      v25 = defaultManager;
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -211,7 +211,7 @@ LABEL_21:
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v50 = v18;
+    v50 = directoryCopy;
     _os_log_impl(&dword_23255B000, v35, OS_LOG_TYPE_INFO, "Directory %@ does not exist and failed to create one", buf, 0xCu);
   }
 
@@ -222,14 +222,14 @@ LABEL_40:
   return v33;
 }
 
-- (BOOL)createIpsFileWithBugType:(id)a3 contentType:(id)a4 additionalIpsHeaders:(id)a5 ipsData:(id)a6 inDirectory:(id)a7 fileNamePrefix:(id)a8
+- (BOOL)createIpsFileWithBugType:(id)type contentType:(id)contentType additionalIpsHeaders:(id)headers ipsData:(id)data inDirectory:(id)directory fileNamePrefix:(id)prefix
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  typeCopy = type;
+  contentTypeCopy = contentType;
+  headersCopy = headers;
+  dataCopy = data;
+  directoryCopy = directory;
+  prefixCopy = prefix;
   if (_loadCrashReporterSupport_symbolLoadOnce != -1)
   {
     _loadCrashReporterSupport_cold_1();
@@ -251,15 +251,15 @@ LABEL_40:
       v24[1] = 3221225472;
       v24[2] = __111__IpsFileUtility_createIpsFileWithBugType_contentType_additionalIpsHeaders_ipsData_inDirectory_fileNamePrefix___block_invoke;
       v24[3] = &unk_27898BA60;
-      v25 = v17;
-      (v21)(v14, v19, 0, 0, v24);
+      v25 = dataCopy;
+      (v21)(typeCopy, prefixCopy, 0, 0, v24);
 
       v22 = 1;
     }
 
     else
     {
-      v22 = [(IpsFileUtility *)self _writeIpsFileWithBugType:v14 contentType:v15 additionalIpsHeaders:v16 ipsData:v17 inDirectory:v18 fileNamePrefix:v19];
+      v22 = [(IpsFileUtility *)self _writeIpsFileWithBugType:typeCopy contentType:contentTypeCopy additionalIpsHeaders:headersCopy ipsData:dataCopy inDirectory:directoryCopy fileNamePrefix:prefixCopy];
     }
   }
 
@@ -271,13 +271,13 @@ LABEL_40:
   return v22;
 }
 
-- (BOOL)_checkDirectoryAndCreateIfNecessary:(id)a3
+- (BOOL)_checkDirectoryAndCreateIfNecessary:(id)necessary
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  necessaryCopy = necessary;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0;
-  if ([v4 fileExistsAtPath:v3 isDirectory:&v10])
+  if ([defaultManager fileExistsAtPath:necessaryCopy isDirectory:&v10])
   {
     if (v10)
     {
@@ -290,7 +290,7 @@ LABEL_40:
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v12 = v3;
+        v12 = necessaryCopy;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_INFO, "There is a file at %@", buf, 0xCu);
       }
 
@@ -304,40 +304,40 @@ LABEL_40:
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v12 = v3;
+      v12 = necessaryCopy;
       _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_INFO, "Directory %@ does not exist, creating one.", buf, 0xCu);
     }
 
-    v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+    v5 = [defaultManager createDirectoryAtPath:necessaryCopy withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-+ (id)_createDataForCrashReporterIpsHeaderWithBugType:(id)a3 contentType:(id)a4 date:(id)a5 additionalFields:(id)a6
++ (id)_createDataForCrashReporterIpsHeaderWithBugType:(id)type contentType:(id)contentType date:(id)date additionalFields:(id)fields
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  fieldsCopy = fields;
+  dateCopy = date;
+  contentTypeCopy = contentType;
+  typeCopy = type;
   v13 = +[SystemProperties sharedInstance];
   v14 = MEMORY[0x277CCACA8];
-  v15 = [v13 productName];
-  v16 = [v13 productVersion];
-  v17 = [v13 buildVersion];
-  v18 = [v14 stringWithFormat:@"%@ %@ (%@)", v15, v16, v17];
+  productName = [v13 productName];
+  productVersion = [v13 productVersion];
+  buildVersion = [v13 buildVersion];
+  v18 = [v14 stringWithFormat:@"%@ %@ (%@)", productName, productVersion, buildVersion];
 
   v19 = MEMORY[0x277CBEB38];
-  v20 = [v13 buildVariant];
-  [v10 timeIntervalSince1970];
+  buildVariant = [v13 buildVariant];
+  [dateCopy timeIntervalSince1970];
   v22 = v21;
 
   v23 = formattedDateStringForTimeInterval(v22);
-  v24 = [v19 dictionaryWithObjectsAndKeys:{v12, @"bug_type", v18, @"os_version", v20, @"os_variant", v23, @"timestamp", v11, @"content-type", 0}];
+  v24 = [v19 dictionaryWithObjectsAndKeys:{typeCopy, @"bug_type", v18, @"os_version", buildVariant, @"os_variant", v23, @"timestamp", contentTypeCopy, @"content-type", 0}];
 
-  [v24 addEntriesFromDictionary:v9];
+  [v24 addEntriesFromDictionary:fieldsCopy];
   if ([MEMORY[0x277CCAAA0] isValidJSONObject:v24])
   {
     v25 = objc_alloc(MEMORY[0x277CBEB28]);
@@ -387,27 +387,27 @@ LABEL_8:
   return v29;
 }
 
-+ (id)_createIpsFileNameWithPrefix:(id)a3 date:(id)a4 inDirectory:(id)a5
++ (id)_createIpsFileNameWithPrefix:(id)prefix date:(id)date inDirectory:(id)directory
 {
   v7 = MEMORY[0x277CCACA8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  directoryCopy = directory;
+  dateCopy = date;
+  prefixCopy = prefix;
   v11 = [v7 alloc];
-  v12 = [IpsFileUtility formattedDateForFilename:v9];
+  v12 = [IpsFileUtility formattedDateForFilename:dateCopy];
 
-  v13 = [v11 initWithFormat:@"%@/%@_%@.ips", v8, v10, v12];
+  v13 = [v11 initWithFormat:@"%@/%@_%@.ips", directoryCopy, prefixCopy, v12];
 
   return v13;
 }
 
-+ (id)formattedDateForFilename:(id)a3
++ (id)formattedDateForFilename:(id)filename
 {
   v3 = MEMORY[0x277CCA968];
-  v4 = a3;
+  filenameCopy = filename;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"yyyy-MM-dd_HH-mm-ss"];
-  v6 = [v5 stringFromDate:v4];
+  v6 = [v5 stringFromDate:filenameCopy];
 
   return v6;
 }

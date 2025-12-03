@@ -1,24 +1,24 @@
 @interface VKAnalyticsQuickActionEvent
-- (VKAnalyticsQuickActionEvent)initWithQuickActionType:(id)a3 quickActionsCount:(int64_t)a4 textLength:(int64_t)a5 eventType:(int64_t)a6 customIdentifier:(id)a7;
+- (VKAnalyticsQuickActionEvent)initWithQuickActionType:(id)type quickActionsCount:(int64_t)count textLength:(int64_t)length eventType:(int64_t)eventType customIdentifier:(id)identifier;
 - (id)coreAnalyticsDictionary;
 - (id)description;
 @end
 
 @implementation VKAnalyticsQuickActionEvent
 
-- (VKAnalyticsQuickActionEvent)initWithQuickActionType:(id)a3 quickActionsCount:(int64_t)a4 textLength:(int64_t)a5 eventType:(int64_t)a6 customIdentifier:(id)a7
+- (VKAnalyticsQuickActionEvent)initWithQuickActionType:(id)type quickActionsCount:(int64_t)count textLength:(int64_t)length eventType:(int64_t)eventType customIdentifier:(id)identifier
 {
-  v13 = a3;
+  typeCopy = type;
   v17.receiver = self;
   v17.super_class = VKAnalyticsQuickActionEvent;
-  v14 = [(VKAnalyticsEvent *)&v17 initWithCustomIdentifier:a7];
+  v14 = [(VKAnalyticsEvent *)&v17 initWithCustomIdentifier:identifier];
   v15 = v14;
   if (v14)
   {
-    v14->_eventType = a6;
-    v14->_quickActionsCount = a4;
-    objc_storeStrong(&v14->_quickActionType, a3);
-    v15->_textLength = a5;
+    v14->_eventType = eventType;
+    v14->_quickActionsCount = count;
+    objc_storeStrong(&v14->_quickActionType, type);
+    v15->_textLength = length;
   }
 
   return v15;
@@ -31,12 +31,12 @@
   v3 = VKMUIStringForVKAnalyticsQAEventType([(VKAnalyticsQuickActionEvent *)self eventType]);
   v14[0] = v3;
   v13[1] = @"types";
-  v4 = [(VKAnalyticsQuickActionEvent *)self quickActionType];
-  v5 = v4;
+  quickActionType = [(VKAnalyticsQuickActionEvent *)self quickActionType];
+  v5 = quickActionType;
   v6 = &stru_1F2C04538;
-  if (v4)
+  if (quickActionType)
   {
-    v6 = v4;
+    v6 = quickActionType;
   }
 
   v14[1] = v6;
@@ -50,8 +50,8 @@
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[VKAnalyticsEvent isPerformingAutomatedTest](self, "isPerformingAutomatedTest")}];
   v14[4] = v9;
   v13[5] = @"bundleIdentifier";
-  v10 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v14[5] = v10;
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v14[5] = bundleIdentifier;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:6];
 
   return v11;
@@ -64,11 +64,11 @@
   v15.super_class = VKAnalyticsQuickActionEvent;
   v4 = [(VKAnalyticsQuickActionEvent *)&v15 description];
   v5 = VKMUIStringForVKAnalyticsQAEventType([(VKAnalyticsQuickActionEvent *)self eventType]);
-  v6 = [(VKAnalyticsQuickActionEvent *)self quickActionType];
-  v7 = v6;
-  if (v6)
+  quickActionType = [(VKAnalyticsQuickActionEvent *)self quickActionType];
+  v7 = quickActionType;
+  if (quickActionType)
   {
-    v8 = v6;
+    v8 = quickActionType;
   }
 
   else
@@ -76,11 +76,11 @@
     v8 = &stru_1F2C04538;
   }
 
-  v9 = [(VKAnalyticsQuickActionEvent *)self textLength];
-  v10 = [(VKAnalyticsQuickActionEvent *)self quickActionsCount];
+  textLength = [(VKAnalyticsQuickActionEvent *)self textLength];
+  quickActionsCount = [(VKAnalyticsQuickActionEvent *)self quickActionsCount];
   v11 = VKMUIStringForBool([(VKAnalyticsEvent *)self isPerformingAutomatedTest]);
-  v12 = [(VKAnalyticsEvent *)self bundleIdentifier];
-  v13 = [v3 stringWithFormat:@"%@ \n eventType: %@ \n types: %@ \n textLength: %lu \n numberOfQuickActions: %lu \n automatedTest: %@ \n bundleIdentifier: %@ ", v4, v5, v8, v9, v10, v11, v12];
+  bundleIdentifier = [(VKAnalyticsEvent *)self bundleIdentifier];
+  v13 = [v3 stringWithFormat:@"%@ \n eventType: %@ \n types: %@ \n textLength: %lu \n numberOfQuickActions: %lu \n automatedTest: %@ \n bundleIdentifier: %@ ", v4, v5, v8, textLength, quickActionsCount, v11, bundleIdentifier];
 
   return v13;
 }

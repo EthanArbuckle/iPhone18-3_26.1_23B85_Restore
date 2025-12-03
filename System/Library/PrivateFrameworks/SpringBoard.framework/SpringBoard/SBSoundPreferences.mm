@@ -31,16 +31,16 @@ void __36__SBSoundPreferences__soundDefaults__block_invoke()
 
 + (id)calendarAlarmPath
 {
-  v2 = [a1 _soundDefaults];
-  v3 = [v2 calendarAlarmPath];
+  _soundDefaults = [self _soundDefaults];
+  calendarAlarmPath = [_soundDefaults calendarAlarmPath];
 
-  return v3;
+  return calendarAlarmPath;
 }
 
 + (id)ringtoneIdentifier
 {
-  v2 = [MEMORY[0x277D71F78] sharedToneManager];
-  v3 = [v2 currentToneIdentifierForAlertType:1];
+  mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+  v3 = [mEMORY[0x277D71F78] currentToneIdentifierForAlertType:1];
 
   return v3;
 }
@@ -48,26 +48,26 @@ void __36__SBSoundPreferences__soundDefaults__block_invoke()
 + (id)ringtonePath
 {
   v2 = +[SBSoundPreferences ringtoneIdentifier];
-  v3 = [MEMORY[0x277D71F78] sharedToneManager];
-  v4 = [v3 filePathForToneIdentifier:v2];
+  mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+  v4 = [mEMORY[0x277D71F78] filePathForToneIdentifier:v2];
 
   return v4;
 }
 
 + (BOOL)vibrateWhenRinging
 {
-  v2 = [a1 _soundDefaults];
-  v3 = [v2 vibrateWhenRinging];
+  _soundDefaults = [self _soundDefaults];
+  vibrateWhenRinging = [_soundDefaults vibrateWhenRinging];
 
-  return v3;
+  return vibrateWhenRinging;
 }
 
 + (BOOL)vibrateWhenSilent
 {
-  v2 = [a1 _soundDefaults];
-  v3 = [v2 vibrateWhenSilent];
+  _soundDefaults = [self _soundDefaults];
+  vibrateWhenSilent = [_soundDefaults vibrateWhenSilent];
 
-  return v3;
+  return vibrateWhenSilent;
 }
 
 @end

@@ -1,119 +1,119 @@
 @interface CNiOSAddressBookDataMapper
 + (const)_copyLocalSourceIfEnabledInAddressBook:;
-+ (id)contactBuffersDecoderForFetchRequest:(id)a3 posterDataStore:(id)a4;
-+ (id)encodedPeopleFetcherForForFetchRequest:(id)a3 addressBook:(void *)a4 managedConfiguration:(id)a5 addressBookCompletionHandler:(id)a6 cursorCompletionHandler:(id)a7 environment:(id)a8 identifierAuditMode:(int64_t)a9 authorizationContext:(id)a10;
++ (id)contactBuffersDecoderForFetchRequest:(id)request posterDataStore:(id)store;
++ (id)encodedPeopleFetcherForForFetchRequest:(id)request addressBook:(void *)book managedConfiguration:(id)configuration addressBookCompletionHandler:(id)handler cursorCompletionHandler:(id)completionHandler environment:(id)environment identifierAuditMode:(int64_t)mode authorizationContext:(id)self0;
 + (id)os_log;
-+ (void)_copyEligiblePrimarySourceForAccountWithIdentifier:(uint64_t)a3 addressBook:(void *)a4 error:;
++ (void)_copyEligiblePrimarySourceForAccountWithIdentifier:(uint64_t)identifier addressBook:(void *)book error:;
 + (void)initialize;
-- (BOOL)_fetchAccountsInSaveContext:(void *)a3 error:;
-- (BOOL)analyzeDatabaseWithError:(id *)a3;
-- (BOOL)executeChangeHistoryClearRequest:(id)a3 error:(id *)a4;
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6;
-- (BOOL)fetchContactsForFetchRequest:(id)a3 error:(id *)a4 batchHandler:(id)a5;
-- (BOOL)fetchEncodedContactsForFetchRequest:(id)a3 error:(id *)a4 cancelationToken:(id)a5 batchHandler:(id)a6;
+- (BOOL)_fetchAccountsInSaveContext:(void *)context error:;
+- (BOOL)analyzeDatabaseWithError:(id *)error;
+- (BOOL)executeChangeHistoryClearRequest:(id)request error:(id *)error;
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error;
+- (BOOL)fetchContactsForFetchRequest:(id)request error:(id *)error batchHandler:(id)handler;
+- (BOOL)fetchEncodedContactsForFetchRequest:(id)request error:(id *)error cancelationToken:(id)token batchHandler:(id)handler;
 - (BOOL)hasGroups;
 - (BOOL)hasMultipleGroupsOrAccounts;
-- (BOOL)moveContacts:(id)a3 fromContainer:(id)a4 toContainer:(id)a5 error:(id *)a6;
-- (BOOL)registerChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)requestAccessForEntityType:(int64_t)a3 error:(id *)a4;
-- (BOOL)setBestMeIfNeededForGivenName:(id)a3 familyName:(id)a4 email:(id)a5 error:(id *)a6;
-- (BOOL)setDefaultAccountIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)setMeContact:(id)a3 error:(id *)a4;
-- (BOOL)setMeContact:(id)a3 forContainer:(id)a4 error:(id *)a5;
-- (BOOL)shouldAnalyzeDatabaseWithError:(id *)a3;
-- (BOOL)unregisterChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)moveContacts:(id)contacts fromContainer:(id)container toContainer:(id)toContainer error:(id *)error;
+- (BOOL)registerChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error;
+- (BOOL)requestAccessForEntityType:(int64_t)type error:(id *)error;
+- (BOOL)setBestMeIfNeededForGivenName:(id)name familyName:(id)familyName email:(id)email error:(id *)error;
+- (BOOL)setDefaultAccountIdentifier:(id)identifier error:(id *)error;
+- (BOOL)setMeContact:(id)contact error:(id *)error;
+- (BOOL)setMeContact:(id)contact forContainer:(id)container error:(id *)error;
+- (BOOL)shouldAnalyzeDatabaseWithError:(id *)error;
+- (BOOL)unregisterChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error;
 - (CNiOSAddressBookDataMapper)init;
-- (CNiOSAddressBookDataMapper)initWithConfiguration:(id)a3 addressBook:(id)a4;
+- (CNiOSAddressBookDataMapper)initWithConfiguration:(id)configuration addressBook:(id)book;
 - (__CFArray)copyChangeTableRowIDsFromChangeIDs:(__CFArray *)Mutable;
-- (id)_containersMatchingPredicate:(char)a3 remote:(void *)a4 error:;
-- (id)_legacyContactCountForFetchRequest:(void *)a3 error:;
-- (id)accountsMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)changeHistoryWithFetchRequest:(id)a3 error:(id *)a4;
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4;
-- (id)contactIdentifierWithMatchingDictionary:(id)a3;
-- (id)contactObservableForFetchRequest:(id)a3;
-- (id)contactWithUserActivityUserInfo:(id)a3 keysToFetch:(id)a4;
+- (id)_containersMatchingPredicate:(char)predicate remote:(void *)remote error:;
+- (id)_legacyContactCountForFetchRequest:(void *)request error:;
+- (id)accountsMatchingPredicate:(id)predicate error:(id *)error;
+- (id)changeHistoryWithFetchRequest:(id)request error:(id *)error;
+- (id)contactCountForFetchRequest:(id)request error:(id *)error;
+- (id)contactIdentifierWithMatchingDictionary:(id)dictionary;
+- (id)contactObservableForFetchRequest:(id)request;
+- (id)contactWithUserActivityUserInfo:(id)info keysToFetch:(id)fetch;
 - (id)currentHistoryAnchor;
 - (id)currentHistoryToken;
 - (id)defaultContainerIdentifier;
-- (id)defaultContainerIdentifierForAddressBook:(void *)a3 error:;
-- (id)encodedContactsCursorForFetchRequest:(id)a3 cursorCleanupBlock:(id)a4 error:(id *)a5;
-- (id)encodedPeopleFetcherWithAddressBook:(void *)a3 addressBookCleanupBlock:(void *)a4 cursorCleanupBlock:(void *)a5 fetchRequest:;
-- (id)executeFetchRequest:(id)a3 progressiveResults:(id)a4 completion:(id)a5;
-- (id)fetchAndDecodeEncodedContactsForFetchRequest:(void *)a3 error:(void *)a4 cancelationToken:(void *)a5 batchHandler:;
-- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)a3;
-- (id)getLimitedAccessContactsCountForBundle:(id)a3;
-- (id)getLimitedAccessLastSyncSequenceNumber:(id *)a3;
-- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(id)a3;
-- (id)groupsMatchingPredicate:(id)a3 error:(id *)a4;
-- (id)groupsWithIdentifiers:(id)a3 error:(id *)a4;
-- (id)identifierWithError:(id *)a3;
-- (id)legacyTetheredSyncAnchorForKey:(uint64_t)a1;
-- (id)matchingDictionaryForContact:(id)a3;
-- (id)meContactIdentifiers:(id *)a3;
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4;
-- (id)policyWithDescription:(id)a3 error:(id *)a4;
-- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)a3;
-- (id)sectionListOffsetsForSortOrder:(int64_t)a3 error:(id *)a4;
-- (id)subgroupsOfGroupWithIdentifier:(id)a3 error:(id *)a4;
-- (id)unifiedContactCountWithError:(id *)a3;
-- (id)usedLabelsForPropertyWithKey:(id)a3 error:(id *)a4;
-- (id)userActivityUserInfoForContact:(id)a3;
+- (id)defaultContainerIdentifierForAddressBook:(void *)book error:;
+- (id)encodedContactsCursorForFetchRequest:(id)request cursorCleanupBlock:(id)block error:(id *)error;
+- (id)encodedPeopleFetcherWithAddressBook:(void *)book addressBookCleanupBlock:(void *)block cursorCleanupBlock:(void *)cleanupBlock fetchRequest:;
+- (id)executeFetchRequest:(id)request progressiveResults:(id)results completion:(id)completion;
+- (id)fetchAndDecodeEncodedContactsForFetchRequest:(void *)request error:(void *)error cancelationToken:(void *)token batchHandler:;
+- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)bundle;
+- (id)getLimitedAccessContactsCountForBundle:(id)bundle;
+- (id)getLimitedAccessLastSyncSequenceNumber:(id *)number;
+- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(id)number;
+- (id)groupsMatchingPredicate:(id)predicate error:(id *)error;
+- (id)groupsWithIdentifiers:(id)identifiers error:(id *)error;
+- (id)identifierWithError:(id *)error;
+- (id)legacyTetheredSyncAnchorForKey:(uint64_t)key;
+- (id)matchingDictionaryForContact:(id)contact;
+- (id)meContactIdentifiers:(id *)identifiers;
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error;
+- (id)policyWithDescription:(id)description error:(id *)error;
+- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)number;
+- (id)sectionListOffsetsForSortOrder:(int64_t)order error:(id *)error;
+- (id)subgroupsOfGroupWithIdentifier:(id)identifier error:(id *)error;
+- (id)unifiedContactCountWithError:(id *)error;
+- (id)usedLabelsForPropertyWithKey:(id)key error:(id *)error;
+- (id)userActivityUserInfoForContact:(id)contact;
 - (int)saveSequenceCount;
-- (uint64_t)_canReadUnderManagementRestrictionsFromSource:(uint64_t)a1 inAddressBook:;
-- (uint64_t)_canWriteUnderManagementRestrictionsToSource:(uint64_t)a1 inAddressBook:;
+- (uint64_t)_canReadUnderManagementRestrictionsFromSource:(uint64_t)source inAddressBook:;
+- (uint64_t)_canWriteUnderManagementRestrictionsToSource:(uint64_t)source inAddressBook:;
 - (uint64_t)_fetchAllRecordsInSaveContext:error:;
-- (uint64_t)_fetchContactsInSaveContext:(void *)a3 error:;
-- (uint64_t)_fetchContainersInSaveContext:(void *)a3 error:;
-- (uint64_t)_fetchGroupsInSaveContext:(void *)a3 error:;
+- (uint64_t)_fetchContactsInSaveContext:(void *)context error:;
+- (uint64_t)_fetchContainersInSaveContext:(void *)context error:;
+- (uint64_t)_fetchGroupsInSaveContext:(void *)context error:;
 - (uint64_t)_hasManagedAccessToReadFromAccountCorrespondingToSource:(uint64_t)result fromAddressBook:;
 - (uint64_t)_hasManagedAccessToWriteToAccountCorrespondingToSource:(uint64_t)result fromAddressBook:;
-- (uint64_t)_hasManagedWriteAccessToAccountContainingPerson:(void *)a3 fromSaveContext:;
+- (uint64_t)_hasManagedWriteAccessToAccountContainingPerson:(void *)person fromSaveContext:;
 - (uint64_t)_hasManagementRestrictionsEnabled;
-- (uint64_t)_processAccountsFromSaveContext:(void *)a3 error:;
-- (uint64_t)_processContactChangeRequestsFromSaveContext:(void *)a3 error:;
-- (uint64_t)_processContactMembershipsFromSaveContext:(void *)a3 error:;
-- (uint64_t)_processContactsFromSaveContext:(void *)a3 error:;
-- (uint64_t)_processContainersFromSaveContext:(void *)a3 error:;
-- (uint64_t)_processGroupsFromSaveContext:(void *)a3 error:;
-- (uint64_t)_processSubgroupMembershipsFromSaveContext:(void *)a3 error:;
-- (uint64_t)_purgeMetadataFromDeletedContactsFromSaveContext:(void *)a3 error:;
+- (uint64_t)_processAccountsFromSaveContext:(void *)context error:;
+- (uint64_t)_processContactChangeRequestsFromSaveContext:(void *)context error:;
+- (uint64_t)_processContactMembershipsFromSaveContext:(void *)context error:;
+- (uint64_t)_processContactsFromSaveContext:(void *)context error:;
+- (uint64_t)_processContainersFromSaveContext:(void *)context error:;
+- (uint64_t)_processGroupsFromSaveContext:(void *)context error:;
+- (uint64_t)_processSubgroupMembershipsFromSaveContext:(void *)context error:;
+- (uint64_t)_purgeMetadataFromDeletedContactsFromSaveContext:(void *)context error:;
 - (uint64_t)addressBook;
 - (uint64_t)copySourceForContainerIdentifier:fromAddressBook:;
-- (void)_alternativeSourceWithAccessibleAccountFromAddressBook:(uint64_t)a1;
-- (void)_defaultSourceInAddressBook:(void *)a3 error:;
-- (void)_logDeleteHasError:(uint64_t)a1;
-- (void)_logDeleteHasFoundAtLeastOnePersistedContactIdentifier:(void *)a1;
-- (void)_logDeleteHasManagedWriteAccess:(void *)a3 contactIdentifier:;
-- (void)_logDeleteHasNoABRecordForContactIdentifier:(void *)a1;
-- (void)_logDeleteHasNoPersistedContactIdentifier:(void *)a1;
-- (void)_logDeleteHasRemovedRecordWithResult:(void *)a3 err:;
-- (void)_logDeleteSuccess:(int)a3 hasFoundAtLeastOneBackingPerson:(int)a4 hasDeletedAtLeastOneLinkedContact:(int)a5 hasFoundMissingContactWithNoSnapshot:;
-- (void)_logIgnoringSuggestedLinkedSetContactIdentifier:(void *)a1;
-- (void)_logIngoringImplicitAugmentationLinkedSetContactIdentifier:(void *)a1;
-- (void)_logWillDeleteLinkedSetContactIdentifier:(void *)a1;
-- (void)_logWillDeleteWithSaveContext:(uint64_t)a1;
-- (void)_postProcessContactsFromSaveContext:(uint64_t)a1;
+- (void)_alternativeSourceWithAccessibleAccountFromAddressBook:(uint64_t)book;
+- (void)_defaultSourceInAddressBook:(void *)book error:;
+- (void)_logDeleteHasError:(uint64_t)error;
+- (void)_logDeleteHasFoundAtLeastOnePersistedContactIdentifier:(void *)identifier;
+- (void)_logDeleteHasManagedWriteAccess:(void *)access contactIdentifier:;
+- (void)_logDeleteHasNoABRecordForContactIdentifier:(void *)identifier;
+- (void)_logDeleteHasNoPersistedContactIdentifier:(void *)identifier;
+- (void)_logDeleteHasRemovedRecordWithResult:(void *)result err:;
+- (void)_logDeleteSuccess:(int)success hasFoundAtLeastOneBackingPerson:(int)person hasDeletedAtLeastOneLinkedContact:(int)contact hasFoundMissingContactWithNoSnapshot:;
+- (void)_logIgnoringSuggestedLinkedSetContactIdentifier:(void *)identifier;
+- (void)_logIngoringImplicitAugmentationLinkedSetContactIdentifier:(void *)identifier;
+- (void)_logWillDeleteLinkedSetContactIdentifier:(void *)identifier;
+- (void)_logWillDeleteWithSaveContext:(uint64_t)context;
+- (void)_postProcessContactsFromSaveContext:(uint64_t)context;
 - (void)_postProcessContainersFromSaveContext:;
 - (void)_postProcessGroupsFromSaveContext:;
-- (void)applyLimitedAccessSyncEvents:(id)a3;
+- (void)applyLimitedAccessSyncEvents:(id)events;
 - (void)canExecuteSaveRequest:error:;
 - (void)dropAllLimitedAccessRows;
 - (void)dropAllLimitedAccessRowsAndSyncNotify;
-- (void)purgeLimitedAccessRecordsForBundle:(id)a3;
-- (void)removeContactIdentifiersFromLimitedAcessForAllBundles:(uint64_t)a1;
-- (void)requestAccessForEntityType:(int64_t)a3 completionHandler:(id)a4;
-- (void)setLegacyTetheredSyncAnchor:(uint64_t)a1 forKey:;
-- (void)setLimitedAccessTableCurrentSequenceNumber:(id)a3;
+- (void)purgeLimitedAccessRecordsForBundle:(id)bundle;
+- (void)removeContactIdentifiersFromLimitedAcessForAllBundles:(uint64_t)bundles;
+- (void)requestAccessForEntityType:(int64_t)type completionHandler:(id)handler;
+- (void)setLegacyTetheredSyncAnchor:(uint64_t)anchor forKey:;
+- (void)setLimitedAccessTableCurrentSequenceNumber:(id)number;
 - (void)updateLimitedAccessListForSaveRequest:authorizationContext:;
-- (void)updateLimitedAccessTable:(id)a3;
+- (void)updateLimitedAccessTable:(id)table;
 @end
 
 @implementation CNiOSAddressBookDataMapper
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CNiOSAddressBookDataMapper;
   objc_msgSendSuper2(&v2, sel_initialize);
   ABInitialize();
@@ -121,7 +121,7 @@
 
 - (id)currentHistoryAnchor
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_authorizationContext;
@@ -141,9 +141,9 @@
     OUTLINED_FUNCTION_2_5();
     v26 = v5;
     v27 = 0;
-    if (v3)
+    if (selfCopy)
     {
-      addressBook = v3->_addressBook;
+      addressBook = selfCopy->_addressBook;
     }
 
     else
@@ -161,8 +161,8 @@
 
     v10 = MEMORY[0x1E6996810];
     v11 = v25[5];
-    v12 = [v9 error];
-    v4 = [v10 resultWithValue:v11 orError:v12];
+    error = [v9 error];
+    v4 = [v10 resultWithValue:v11 orError:error];
 
     OUTLINED_FUNCTION_28(v13, v14, v15, v16, v17, v18);
   }
@@ -182,11 +182,11 @@ uint64_t __50__CNiOSAddressBookDataMapper_currentHistoryAnchor__block_invoke(uin
 
 - (id)currentHistoryToken
 {
-  v2 = [(CNiOSAddressBookDataMapper *)self currentHistoryAnchor];
-  v3 = [v2 value];
-  v4 = [v3 historyToken];
+  currentHistoryAnchor = [(CNiOSAddressBookDataMapper *)self currentHistoryAnchor];
+  value = [currentHistoryAnchor value];
+  historyToken = [value historyToken];
 
-  return v4;
+  return historyToken;
 }
 
 - (uint64_t)addressBook
@@ -221,24 +221,24 @@ uint64_t __36__CNiOSAddressBookDataMapper_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)contactBuffersDecoderForFetchRequest:(id)a3 posterDataStore:(id)a4
++ (id)contactBuffersDecoderForFetchRequest:(id)request posterDataStore:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNiOSABContactBuffersDecoder alloc] initWithFetchRequest:v6 posterDataStore:v5];
+  storeCopy = store;
+  requestCopy = request;
+  v7 = [[CNiOSABContactBuffersDecoder alloc] initWithFetchRequest:requestCopy posterDataStore:storeCopy];
 
   return v7;
 }
 
-+ (id)encodedPeopleFetcherForForFetchRequest:(id)a3 addressBook:(void *)a4 managedConfiguration:(id)a5 addressBookCompletionHandler:(id)a6 cursorCompletionHandler:(id)a7 environment:(id)a8 identifierAuditMode:(int64_t)a9 authorizationContext:(id)a10
++ (id)encodedPeopleFetcherForForFetchRequest:(id)request addressBook:(void *)book managedConfiguration:(id)configuration addressBookCompletionHandler:(id)handler cursorCompletionHandler:(id)completionHandler environment:(id)environment identifierAuditMode:(int64_t)mode authorizationContext:(id)self0
 {
-  v16 = a10;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a3;
-  v22 = [[CNiOSEncodedPeopleFetcher alloc] initWithFetchRequest:v21 addressBook:a4 managedConfiguration:v20 addressBookCompletionHandler:v19 cursorCompletionHandler:v18 environment:v17 identifierAuditMode:a9 authorizationContext:v16];
+  contextCopy = context;
+  environmentCopy = environment;
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  requestCopy = request;
+  v22 = [[CNiOSEncodedPeopleFetcher alloc] initWithFetchRequest:requestCopy addressBook:book managedConfiguration:configurationCopy addressBookCompletionHandler:handlerCopy cursorCompletionHandler:completionHandlerCopy environment:environmentCopy identifierAuditMode:mode authorizationContext:contextCopy];
 
   return v22;
 }
@@ -251,20 +251,20 @@ uint64_t __36__CNiOSAddressBookDataMapper_os_log__block_invoke()
   return v4;
 }
 
-- (CNiOSAddressBookDataMapper)initWithConfiguration:(id)a3 addressBook:(id)a4
+- (CNiOSAddressBookDataMapper)initWithConfiguration:(id)configuration addressBook:(id)book
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  bookCopy = book;
   v34.receiver = self;
   v34.super_class = CNiOSAddressBookDataMapper;
   v8 = [(CNiOSAddressBookDataMapper *)&v34 init];
   if (v8)
   {
-    v9 = [v6 environment];
-    v10 = v9;
-    if (v9)
+    environment = [configurationCopy environment];
+    v10 = environment;
+    if (environment)
     {
-      v11 = v9;
+      v11 = environment;
     }
 
     else
@@ -274,45 +274,45 @@ uint64_t __36__CNiOSAddressBookDataMapper_os_log__block_invoke()
 
     v12 = v11;
 
-    if (v7)
+    if (bookCopy)
     {
-      v13 = v7;
+      addressBook = bookCopy;
     }
 
     else
     {
-      v13 = [v12 addressBook];
+      addressBook = [v12 addressBook];
     }
 
     addressBook = v8->_addressBook;
-    v8->_addressBook = v13;
+    v8->_addressBook = addressBook;
 
     objc_storeStrong(&v8->_environment, v12);
-    v15 = [v6 managedConfiguration];
+    managedConfiguration = [configurationCopy managedConfiguration];
     managedConfiguration = v8->_managedConfiguration;
-    v8->_managedConfiguration = v15;
+    v8->_managedConfiguration = managedConfiguration;
 
-    v17 = [v12 loggerProvider];
-    v18 = [v17 contactsLogger];
+    loggerProvider = [v12 loggerProvider];
+    contactsLogger = [loggerProvider contactsLogger];
     logger = v8->_logger;
-    v8->_logger = v18;
+    v8->_logger = contactsLogger;
 
-    v20 = [MEMORY[0x1E6996758] sharedCache];
+    mEMORY[0x1E6996758] = [MEMORY[0x1E6996758] sharedCache];
     managedAccountsCache = v8->_managedAccountsCache;
-    v8->_managedAccountsCache = v20;
+    v8->_managedAccountsCache = mEMORY[0x1E6996758];
 
     v22 = [CNAuthorization alloc];
-    v23 = [v6 assumedIdentity];
-    v24 = [(CNAuthorization *)v22 initWithAssumedIdentity:v23];
+    assumedIdentity = [configurationCopy assumedIdentity];
+    v24 = [(CNAuthorization *)v22 initWithAssumedIdentity:assumedIdentity];
     authorization = v8->_authorization;
     v8->_authorization = v24;
 
-    v8->_contactIdentifierAuditMode = [v6 identifierAuditMode];
-    v26 = [v6 authorizationContext];
-    v27 = v26;
-    if (v26)
+    v8->_contactIdentifierAuditMode = [configurationCopy identifierAuditMode];
+    authorizationContext = [configurationCopy authorizationContext];
+    v27 = authorizationContext;
+    if (authorizationContext)
     {
-      v28 = v26;
+      v28 = authorizationContext;
       authorizationContext = v8->_authorizationContext;
       v8->_authorizationContext = v28;
     }
@@ -320,9 +320,9 @@ uint64_t __36__CNiOSAddressBookDataMapper_os_log__block_invoke()
     else
     {
       authorizationContext = v8->_authorization;
-      v30 = [(CNAuthorization *)authorizationContext authorizationContext];
+      authorizationContext2 = [(CNAuthorization *)authorizationContext authorizationContext];
       v31 = v8->_authorizationContext;
-      v8->_authorizationContext = v30;
+      v8->_authorizationContext = authorizationContext2;
     }
 
     v32 = v8;
@@ -345,10 +345,10 @@ uint64_t __47__CNiOSAddressBookDataMapper_saveSequenceCount__block_invoke(uint64
   return result;
 }
 
-- (id)_legacyContactCountForFetchRequest:(void *)a3 error:
+- (id)_legacyContactCountForFetchRequest:(void *)request error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v18 = 0;
     v19 = &v18;
@@ -356,24 +356,24 @@ uint64_t __47__CNiOSAddressBookDataMapper_saveSequenceCount__block_invoke(uint64
     v21 = __Block_byref_object_copy__17;
     v22 = __Block_byref_object_dispose__17;
     v23 = 0;
-    v6 = *(a1 + 16);
+    v6 = *(self + 16);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __71__CNiOSAddressBookDataMapper__legacyContactCountForFetchRequest_error___block_invoke;
     v14[3] = &unk_1E7414178;
     v15 = v5;
-    v16 = a1;
+    selfCopy = self;
     v17 = &v18;
     v7 = [v6 performSynchronousWorkWithInvalidatedAddressBook:v14];
 
     v8 = v19[5];
-    v9 = [v7 error];
+    error = [v7 error];
     v10 = v8;
     v11 = v10;
-    if (a3 && !v10)
+    if (request && !v10)
     {
-      v12 = v9;
-      *a3 = v9;
+      v12 = error;
+      *request = error;
     }
 
     _Block_object_dispose(&v18, 8);
@@ -407,12 +407,12 @@ uint64_t __71__CNiOSAddressBookDataMapper__legacyContactCountForFetchRequest_err
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (id)contactCountForFetchRequest:(id)a3 error:(id *)a4
+- (id)contactCountForFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 predicate];
+  requestCopy = request;
+  predicate = [requestCopy predicate];
 
-  if (v7)
+  if (predicate)
   {
     v8 = [CNiOSEncodedPeopleCounter alloc];
     if (self)
@@ -427,20 +427,20 @@ uint64_t __71__CNiOSAddressBookDataMapper__legacyContactCountForFetchRequest_err
       managedConfiguration = 0;
     }
 
-    v11 = [(CNiOSEncodedPeopleCounter *)v8 initWithFetchRequest:v6 addressBook:v9 managedConfiguration:managedConfiguration];
+    v11 = [(CNiOSEncodedPeopleCounter *)v8 initWithFetchRequest:requestCopy addressBook:v9 managedConfiguration:managedConfiguration];
 
     if ([(CNiOSEncodedPeopleCounter *)v11 supportsCounting])
     {
-      v12 = [(CNiOSEncodedPeopleCounter *)v11 fetchContactCountWithError:a4];
+      v12 = [(CNiOSEncodedPeopleCounter *)v11 fetchContactCountWithError:error];
     }
 
     else
     {
       v13 = [CNErrorFactory errorWithCode:104];
-      if (a4)
+      if (error)
       {
         v13 = v13;
-        *a4 = v13;
+        *error = v13;
       }
 
       v12 = 0;
@@ -449,13 +449,13 @@ uint64_t __71__CNiOSAddressBookDataMapper__legacyContactCountForFetchRequest_err
 
   else
   {
-    v12 = [(CNiOSAddressBookDataMapper *)self _legacyContactCountForFetchRequest:v6 error:a4];
+    v12 = [(CNiOSAddressBookDataMapper *)self _legacyContactCountForFetchRequest:requestCopy error:error];
   }
 
   return v12;
 }
 
-- (id)sectionListOffsetsForSortOrder:(int64_t)a3 error:(id *)a4
+- (id)sectionListOffsetsForSortOrder:(int64_t)order error:(id *)error
 {
   v5 = 0;
   v6 = 0;
@@ -465,7 +465,7 @@ uint64_t __71__CNiOSAddressBookDataMapper__legacyContactCountForFetchRequest_err
   v25 = __Block_byref_object_copy__17;
   v26 = __Block_byref_object_dispose__17;
   v27 = 0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((order & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     if (self)
     {
@@ -482,7 +482,7 @@ uint64_t __71__CNiOSAddressBookDataMapper__legacyContactCountForFetchRequest_err
     v20[1] = 3221225472;
     v20[2] = __67__CNiOSAddressBookDataMapper_sectionListOffsetsForSortOrder_error___block_invoke;
     v20[3] = &unk_1E74141C8;
-    v21 = a3 == 3;
+    v21 = order == 3;
     v20[4] = self;
     v20[5] = &v22;
     v6 = [(CNiOSAddressBook *)v10 performSynchronousWorkWithInvalidatedAddressBook:v20];
@@ -499,9 +499,9 @@ uint64_t __71__CNiOSAddressBookDataMapper__legacyContactCountForFetchRequest_err
   v12 = v5;
   v13 = v16;
   v14 = v13;
-  if (a4 && !v12)
+  if (error && !v12)
   {
-    *a4 = v17(v13);
+    *error = v17(v13);
   }
 
   _Block_object_dispose(&v22, 8);
@@ -539,13 +539,13 @@ id __67__CNiOSAddressBookDataMapper_sectionListOffsetsForSortOrder_error___block
   return v4;
 }
 
-- (BOOL)moveContacts:(id)a3 fromContainer:(id)a4 toContainer:(id)a5 error:(id *)a6
+- (BOOL)moveContacts:(id)contacts fromContainer:(id)container toContainer:(id)toContainer error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  contactsCopy = contacts;
+  containerCopy = container;
+  toContainerCopy = toContainer;
   v13 = (*(*MEMORY[0x1E6996530] + 16))();
-  if (v12 && v11 && !v13)
+  if (toContainerCopy && containerCopy && !v13)
   {
     v31 = 0;
     v32 = &v31;
@@ -566,8 +566,8 @@ id __67__CNiOSAddressBookDataMapper_sectionListOffsetsForSortOrder_error___block
     v27[1] = 3221225472;
     v27[2] = __75__CNiOSAddressBookDataMapper_moveContacts_fromContainer_toContainer_error___block_invoke;
     v27[3] = &unk_1E7414178;
-    v28 = v11;
-    v29 = v12;
+    v28 = containerCopy;
+    v29 = toContainerCopy;
     v30 = &v31;
     v16 = [(CNiOSAddressBook *)v15 performSynchronousWorkWithInvalidatedAddressBook:v27];
 
@@ -580,9 +580,9 @@ id __67__CNiOSAddressBookDataMapper_sectionListOffsetsForSortOrder_error___block
     v26 = v18;
     v19 = v23;
     v20 = v19;
-    if (a6 && (v17 & 1) == 0)
+    if (error && (v17 & 1) == 0)
     {
-      *a6 = v24(v19);
+      *error = v24(v19);
     }
 
     _Block_object_dispose(&v31, 8);
@@ -591,10 +591,10 @@ id __67__CNiOSAddressBookDataMapper_sectionListOffsetsForSortOrder_error___block
   else
   {
     v21 = [CNErrorFactory errorWithCode:1002];
-    if (a6)
+    if (error)
     {
       v21 = v21;
-      *a6 = v21;
+      *error = v21;
     }
 
     v17 = 0;
@@ -645,17 +645,17 @@ id __75__CNiOSAddressBookDataMapper_moveContacts_fromContainer_toContainer_error
   return v4;
 }
 
-- (id)contactObservableForFetchRequest:(id)a3
+- (id)contactObservableForFetchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E6996798];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__CNiOSAddressBookDataMapper_contactObservableForFetchRequest___block_invoke;
   v9[3] = &unk_1E7412F00;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
+  v10 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   v7 = [v5 observableWithBlock:v9];
 
   return v7;
@@ -732,18 +732,18 @@ id __63__CNiOSAddressBookDataMapper_contactObservableForFetchRequest___block_inv
   return v7;
 }
 
-- (id)fetchAndDecodeEncodedContactsForFetchRequest:(void *)a3 error:(void *)a4 cancelationToken:(void *)a5 batchHandler:
+- (id)fetchAndDecodeEncodedContactsForFetchRequest:(void *)request error:(void *)error cancelationToken:(void *)token batchHandler:
 {
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  errorCopy = error;
+  tokenCopy = token;
+  if (self)
   {
     v12 = objc_opt_class();
-    v13 = [a1[3] posterDataStore];
-    v14 = [v12 contactBuffersDecoderForFetchRequest:v9 posterDataStore:v13];
+    posterDataStore = [self[3] posterDataStore];
+    v14 = [v12 contactBuffersDecoderForFetchRequest:v9 posterDataStore:posterDataStore];
 
-    v15 = a1[4];
+    v15 = self[4];
     v36 = 0;
     v37 = &v36;
     v38 = 0x3032000000;
@@ -762,11 +762,11 @@ id __63__CNiOSAddressBookDataMapper_contactObservableForFetchRequest___block_inv
     v29 = &v32;
     v16 = v14;
     v26 = v16;
-    v28 = v11;
+    v28 = tokenCopy;
     v17 = v15;
     v27 = v17;
     v30 = &v36;
-    a1 = [a1 fetchEncodedContactsForFetchRequest:v9 error:&v31 cancelationToken:v10 batchHandler:&v22];
+    self = [self fetchEncodedContactsForFetchRequest:v9 error:&v31 cancelationToken:errorCopy batchHandler:&v22];
     v18 = v31;
     if ((v33[3] & 1) == 0)
     {
@@ -779,32 +779,32 @@ id __63__CNiOSAddressBookDataMapper_contactObservableForFetchRequest___block_inv
       v19 = v37[5];
     }
 
-    if (a3)
+    if (request)
     {
-      v20 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v20 = 1;
+      selfCopy = 1;
     }
 
-    if ((v20 & 1) == 0)
+    if ((selfCopy & 1) == 0)
     {
-      *a3 = v19;
+      *request = v19;
     }
 
     _Block_object_dispose(&v32, 8);
     _Block_object_dispose(&v36, 8);
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)fetchContactsForFetchRequest:(id)a3 error:(id *)a4 batchHandler:(id)a5
+- (BOOL)fetchContactsForFetchRequest:(id)request error:(id *)error batchHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -823,7 +823,7 @@ id __63__CNiOSAddressBookDataMapper_contactObservableForFetchRequest___block_inv
   v35 = __Block_byref_object_copy__17;
   v36 = __Block_byref_object_dispose__17;
   v37 = 0;
-  v10 = [v8 effectivePredicate];
+  effectivePredicate = [requestCopy effectivePredicate];
   if (self)
   {
     logger = self->_logger;
@@ -835,9 +835,9 @@ id __63__CNiOSAddressBookDataMapper_contactObservableForFetchRequest___block_inv
   }
 
   v12 = logger;
-  v13 = [v8 unifyResults];
-  v14 = [v8 keysToFetch];
-  [(CNContactsLogger *)v12 fetchContactsMatchingPredicate:v10 unifyResults:v13 keysToFetch:v14];
+  unifyResults = [requestCopy unifyResults];
+  keysToFetch = [requestCopy keysToFetch];
+  [(CNContactsLogger *)v12 fetchContactsMatchingPredicate:effectivePredicate unifyResults:unifyResults keysToFetch:keysToFetch];
 
   if (self)
   {
@@ -855,24 +855,24 @@ id __63__CNiOSAddressBookDataMapper_contactObservableForFetchRequest___block_inv
   v26[2] = __78__CNiOSAddressBookDataMapper_fetchContactsForFetchRequest_error_batchHandler___block_invoke;
   v26[3] = &unk_1E7414218;
   v29 = &v44;
-  v17 = v8;
+  v17 = requestCopy;
   v27 = v17;
-  v28 = self;
+  selfCopy = self;
   v30 = &v38;
   v31 = &v32;
   v18 = [(CNiOSAddressBook *)v16 performSynchronousWorkWithInvalidatedAddressBook:v26];
 
   if ([v18 isFailure])
   {
-    v19 = [v18 error];
+    error = [v18 error];
     v20 = v33[5];
-    v33[5] = v19;
+    v33[5] = error;
   }
 
   v21 = v45[5];
   if (v21)
   {
-    v9[2](v9, v21, v39[5]);
+    handlerCopy[2](handlerCopy, v21, v39[5]);
   }
 
   if (self)
@@ -889,9 +889,9 @@ id __63__CNiOSAddressBookDataMapper_contactObservableForFetchRequest___block_inv
   [(CNContactsLogger *)v23 didFetchContacts:v45[5] error:v33[5]];
 
   v24 = v45[5];
-  if (a4 && !v24)
+  if (error && !v24)
   {
-    *a4 = v33[5];
+    *error = v33[5];
   }
 
   _Block_object_dispose(&v32, 8);
@@ -948,11 +948,11 @@ void __111__CNiOSAddressBookDataMapper_fetchAndDecodeEncodedContactsForFetchRequ
   }
 }
 
-- (BOOL)fetchEncodedContactsForFetchRequest:(id)a3 error:(id *)a4 cancelationToken:(id)a5 batchHandler:(id)a6
+- (BOOL)fetchEncodedContactsForFetchRequest:(id)request error:(id *)error cancelationToken:(id)token batchHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  requestCopy = request;
+  tokenCopy = token;
+  handlerCopy = handler;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
@@ -963,7 +963,7 @@ void __111__CNiOSAddressBookDataMapper_fetchAndDecodeEncodedContactsForFetchRequ
   v43 = __Block_byref_object_copy__17;
   v44 = __Block_byref_object_dispose__17;
   v45 = 0;
-  v13 = [v10 effectivePredicate];
+  effectivePredicate = [requestCopy effectivePredicate];
   if (self)
   {
     logger = self->_logger;
@@ -975,9 +975,9 @@ void __111__CNiOSAddressBookDataMapper_fetchAndDecodeEncodedContactsForFetchRequ
   }
 
   v15 = logger;
-  v16 = [v10 unifyResults];
-  v17 = [v10 keysToFetch];
-  [(CNContactsLogger *)v15 fetchEncodedContactsMatchingPredicate:v13 unifyResults:v16 keysToFetch:v17];
+  unifyResults = [requestCopy unifyResults];
+  keysToFetch = [requestCopy keysToFetch];
+  [(CNContactsLogger *)v15 fetchEncodedContactsMatchingPredicate:effectivePredicate unifyResults:unifyResults keysToFetch:keysToFetch];
 
   if (self)
   {
@@ -994,22 +994,22 @@ void __111__CNiOSAddressBookDataMapper_fetchAndDecodeEncodedContactsForFetchRequ
   v31 = 3221225472;
   v32 = __102__CNiOSAddressBookDataMapper_fetchEncodedContactsForFetchRequest_error_cancelationToken_batchHandler___block_invoke;
   v33 = &unk_1E7414290;
-  v34 = self;
-  v20 = v10;
+  selfCopy = self;
+  v20 = requestCopy;
   v35 = v20;
   v38 = &v46;
   v39 = &v40;
-  v21 = v11;
+  v21 = tokenCopy;
   v36 = v21;
-  v22 = v12;
+  v22 = handlerCopy;
   v37 = v22;
   v23 = [(CNiOSAddressBook *)v19 performSynchronousWorkWithInvalidatedAddressBook:&v30];
 
   if ([v23 isFailure])
   {
-    v24 = [v23 error];
+    error = [v23 error];
     v25 = v41[5];
-    v41[5] = v24;
+    v41[5] = error;
   }
 
   v26 = *(v47 + 24);
@@ -1031,9 +1031,9 @@ void __111__CNiOSAddressBookDataMapper_fetchAndDecodeEncodedContactsForFetchRequ
     v26 = *(v47 + 24);
   }
 
-  if (a4 && (v26 & 1) == 0)
+  if (error && (v26 & 1) == 0)
   {
-    *a4 = v41[5];
+    *error = v41[5];
   }
 
   _Block_object_dispose(&v40, 8);
@@ -1167,10 +1167,10 @@ uint64_t __58__CNiOSAddressBookDataMapper_canExecuteSaveRequest_error___block_in
   return v4;
 }
 
-- (BOOL)executeSaveRequest:(id)a3 response:(id *)a4 authorizationContext:(id)a5 error:(id *)a6
+- (BOOL)executeSaveRequest:(id)request response:(id *)response authorizationContext:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  requestCopy = request;
+  contextCopy = context;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -1187,10 +1187,10 @@ uint64_t __58__CNiOSAddressBookDataMapper_canExecuteSaveRequest_error___block_in
   objc_storeStrong(&v40, 0);
   if (v13)
   {
-    if (a4)
+    if (response)
     {
       v14 = objc_alloc_init(CNMutableSaveResponse);
-      *a4 = v14;
+      *response = v14;
     }
 
     else
@@ -1198,28 +1198,28 @@ uint64_t __58__CNiOSAddressBookDataMapper_canExecuteSaveRequest_error___block_in
       v14 = 0;
     }
 
-    v18 = [(CNContactsEnvironment *)self->_environment posterDataStore];
+    posterDataStore = [(CNContactsEnvironment *)self->_environment posterDataStore];
     v19 = self->_addressBook;
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __85__CNiOSAddressBookDataMapper_executeSaveRequest_response_authorizationContext_error___block_invoke;
     v27[3] = &unk_1E74143E8;
-    v28 = v10;
+    v28 = requestCopy;
     v20 = v14;
     v29 = v20;
-    v21 = v18;
+    v21 = posterDataStore;
     v32 = &v41;
     v33 = &v35;
     v30 = v21;
-    v31 = self;
+    selfCopy = self;
     v22 = [(CNiOSAddressBook *)v19 performSynchronousWorkWithInvalidatedAddressBook:v27];
 
     if (([v22 isSuccess] & 1) == 0)
     {
       *(v42 + 24) = 0;
-      v23 = [v22 error];
+      error = [v22 error];
       v24 = v36[5];
-      v36[5] = v23;
+      v36[5] = error;
     }
 
     if (*(v42 + 24) == 1)
@@ -1234,9 +1234,9 @@ uint64_t __58__CNiOSAddressBookDataMapper_canExecuteSaveRequest_error___block_in
     }
 
     v17 = *(v42 + 24);
-    if (a6 && (v42[3] & 1) == 0)
+    if (error && (v42[3] & 1) == 0)
     {
-      *a6 = v36[5];
+      *error = v36[5];
     }
   }
 
@@ -1256,9 +1256,9 @@ uint64_t __58__CNiOSAddressBookDataMapper_canExecuteSaveRequest_error___block_in
     [(CNContactsLogger *)v16 saveRequestInvalid:v36[5]];
 
     v17 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v36[5];
+      *error = v36[5];
     }
   }
 
@@ -1498,11 +1498,11 @@ void __85__CNiOSAddressBookDataMapper_executeSaveRequest_response_authorizationC
   }
 }
 
-- (uint64_t)_processContainersFromSaveContext:(void *)a3 error:
+- (uint64_t)_processContainersFromSaveContext:(void *)context error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v34 = 0;
     v35 = &v34;
@@ -1514,8 +1514,8 @@ void __85__CNiOSAddressBookDataMapper_executeSaveRequest_response_authorizationC
     v31 = __Block_byref_object_copy__17;
     v32 = __Block_byref_object_dispose__17;
     v33 = 0;
-    v7 = [v5 saveRequest];
-    v8 = [v7 addedAccountContainersByParentContainerIdentifier];
+    saveRequest = [v5 saveRequest];
+    addedAccountContainersByParentContainerIdentifier = [saveRequest addedAccountContainersByParentContainerIdentifier];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __70__CNiOSAddressBookDataMapper__processContainersFromSaveContext_error___block_invoke;
@@ -1524,24 +1524,24 @@ void __85__CNiOSAddressBookDataMapper_executeSaveRequest_response_authorizationC
     v26 = &v34;
     v27 = &v28;
     v24 = v9;
-    v25 = a1;
-    [v8 enumerateKeysAndObjectsUsingBlock:v23];
+    selfCopy = self;
+    [addedAccountContainersByParentContainerIdentifier enumerateKeysAndObjectsUsingBlock:v23];
 
-    if (*(v35 + 24) == 1 && ([v9 saveRequest], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "deletedContainers"), v11 = objc_claimAutoreleasedReturnValue(), v19[0] = MEMORY[0x1E69E9820], v19[1] = 3221225472, v19[2] = __70__CNiOSAddressBookDataMapper__processContainersFromSaveContext_error___block_invoke_60, v19[3] = &unk_1E7414460, a1 = v9, v20 = a1, v21 = &v34, v22 = &v28, objc_msgSend(v11, "enumerateObjectsUsingBlock:", v19), v11, v10, v20, (v35[3] & 1) != 0))
+    if (*(v35 + 24) == 1 && ([v9 saveRequest], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "deletedContainers"), v11 = objc_claimAutoreleasedReturnValue(), v19[0] = MEMORY[0x1E69E9820], v19[1] = 3221225472, v19[2] = __70__CNiOSAddressBookDataMapper__processContainersFromSaveContext_error___block_invoke_60, v19[3] = &unk_1E7414460, self = v9, v20 = self, v21 = &v34, v22 = &v28, objc_msgSend(v11, "enumerateObjectsUsingBlock:", v19), v11, v10, v20, (v35[3] & 1) != 0))
     {
-      v12 = [a1 saveRequest];
-      v13 = [v12 updatedContainers];
+      saveRequest2 = [self saveRequest];
+      updatedContainers = [saveRequest2 updatedContainers];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __70__CNiOSAddressBookDataMapper__processContainersFromSaveContext_error___block_invoke_2;
       v15[3] = &unk_1E7414460;
-      v16 = a1;
+      selfCopy2 = self;
       v17 = &v34;
       v18 = &v28;
-      [v13 enumerateObjectsUsingBlock:v15];
+      [updatedContainers enumerateObjectsUsingBlock:v15];
 
-      LOBYTE(a1) = *(v35 + 24);
-      if (!a3)
+      LOBYTE(self) = *(v35 + 24);
+      if (!context)
       {
         goto LABEL_9;
       }
@@ -1549,8 +1549,8 @@ void __85__CNiOSAddressBookDataMapper_executeSaveRequest_response_authorizationC
 
     else
     {
-      LOBYTE(a1) = 0;
-      if (!a3)
+      LOBYTE(self) = 0;
+      if (!context)
       {
 LABEL_9:
         _Block_object_dispose(&v28, 8);
@@ -1560,9 +1560,9 @@ LABEL_9:
       }
     }
 
-    if ((a1 & 1) == 0)
+    if ((self & 1) == 0)
     {
-      *a3 = v29[5];
+      *context = v29[5];
     }
 
     goto LABEL_9;
@@ -1570,14 +1570,14 @@ LABEL_9:
 
 LABEL_10:
 
-  return a1 & 1;
+  return self & 1;
 }
 
-- (uint64_t)_processContactsFromSaveContext:(void *)a3 error:
+- (uint64_t)_processContactsFromSaveContext:(void *)context error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v38 = 0;
     v39 = &v38;
@@ -1589,33 +1589,33 @@ LABEL_10:
     v35 = __Block_byref_object_copy__17;
     v36 = __Block_byref_object_dispose__17;
     v37 = 0;
-    v7 = [v5 saveRequest];
-    v8 = [v7 addedContactsByContainerIdentifier];
+    saveRequest = [v5 saveRequest];
+    addedContactsByContainerIdentifier = [saveRequest addedContactsByContainerIdentifier];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___block_invoke;
     v28[3] = &unk_1E7414488;
-    v28[4] = a1;
+    v28[4] = self;
     v9 = v6;
     v29 = v9;
     v30 = &v38;
     v31 = &v32;
-    [v8 enumerateKeysAndObjectsUsingBlock:v28];
+    [addedContactsByContainerIdentifier enumerateKeysAndObjectsUsingBlock:v28];
 
-    if (*(v39 + 24) == 1 && (-[CNiOSAddressBookDataMapper _logWillDeleteWithSaveContext:](a1, v9), [v9 saveRequest], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "deletedContacts"), v11 = objc_claimAutoreleasedReturnValue(), v24[0] = MEMORY[0x1E69E9820], v24[1] = 3221225472, v24[2] = __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___block_invoke_2, v24[3] = &unk_1E74144B0, v24[4] = a1, v12 = v9, v25 = v12, v26 = &v38, v27 = &v32, objc_msgSend(v11, "enumerateObjectsUsingBlock:", v24), v11, v10, v25, (v39[3] & 1) != 0) && (objc_msgSend(v12, "saveRequest"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "updatedContacts"), v14 = objc_claimAutoreleasedReturnValue(), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___block_invoke_3, v20[3] = &unk_1E74144D8, v20[4] = a1, v22 = &v32, v23 = &v38, v15 = v12, v21 = v15, objc_msgSend(v14, "enumerateObjectsUsingBlock:", v20), v14, v13, v21, (v39[3] & 1) != 0))
+    if (*(v39 + 24) == 1 && (-[CNiOSAddressBookDataMapper _logWillDeleteWithSaveContext:](self, v9), [v9 saveRequest], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "deletedContacts"), v11 = objc_claimAutoreleasedReturnValue(), v24[0] = MEMORY[0x1E69E9820], v24[1] = 3221225472, v24[2] = __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___block_invoke_2, v24[3] = &unk_1E74144B0, v24[4] = self, v12 = v9, v25 = v12, v26 = &v38, v27 = &v32, objc_msgSend(v11, "enumerateObjectsUsingBlock:", v24), v11, v10, v25, (v39[3] & 1) != 0) && (objc_msgSend(v12, "saveRequest"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "updatedContacts"), v14 = objc_claimAutoreleasedReturnValue(), v20[0] = MEMORY[0x1E69E9820], v20[1] = 3221225472, v20[2] = __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___block_invoke_3, v20[3] = &unk_1E74144D8, v20[4] = self, v22 = &v32, v23 = &v38, v15 = v12, v21 = v15, objc_msgSend(v14, "enumerateObjectsUsingBlock:", v20), v14, v13, v21, (v39[3] & 1) != 0))
     {
       v19 = 0;
-      v16 = [(CNiOSAddressBookDataMapper *)a1 _processContactChangeRequestsFromSaveContext:v15 error:&v19];
+      v16 = [(CNiOSAddressBookDataMapper *)self _processContactChangeRequestsFromSaveContext:v15 error:&v19];
       v17 = v19;
-      a1 = v19;
+      self = v19;
       *(v39 + 24) = v16;
       if ((v16 & 1) == 0)
       {
         objc_storeStrong(v33 + 5, v17);
       }
 
-      LOBYTE(a1) = *(v39 + 24);
-      if (!a3)
+      LOBYTE(self) = *(v39 + 24);
+      if (!context)
       {
         goto LABEL_12;
       }
@@ -1623,8 +1623,8 @@ LABEL_10:
 
     else
     {
-      LOBYTE(a1) = 0;
-      if (!a3)
+      LOBYTE(self) = 0;
+      if (!context)
       {
 LABEL_12:
         _Block_object_dispose(&v32, 8);
@@ -1634,9 +1634,9 @@ LABEL_12:
       }
     }
 
-    if ((a1 & 1) == 0)
+    if ((self & 1) == 0)
     {
-      *a3 = v33[5];
+      *context = v33[5];
     }
 
     goto LABEL_12;
@@ -1644,14 +1644,14 @@ LABEL_12:
 
 LABEL_13:
 
-  return a1 & 1;
+  return self & 1;
 }
 
-- (uint64_t)_processGroupsFromSaveContext:(void *)a3 error:
+- (uint64_t)_processGroupsFromSaveContext:(void *)context error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v40 = 0;
     v41 = &v40;
@@ -1663,8 +1663,8 @@ LABEL_13:
     v37 = __Block_byref_object_copy__17;
     v38 = __Block_byref_object_dispose__17;
     v39 = 0;
-    v7 = [v5 saveRequest];
-    v8 = [v7 addedGroupsByContainerIdentifier];
+    saveRequest = [v5 saveRequest];
+    addedGroupsByContainerIdentifier = [saveRequest addedGroupsByContainerIdentifier];
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __66__CNiOSAddressBookDataMapper__processGroupsFromSaveContext_error___block_invoke;
@@ -1673,44 +1673,44 @@ LABEL_13:
     v31 = v9;
     v32 = &v40;
     v33 = &v34;
-    [v8 enumerateKeysAndObjectsUsingBlock:v30];
+    [addedGroupsByContainerIdentifier enumerateKeysAndObjectsUsingBlock:v30];
 
-    if (*(v41 + 24) == 1 && ([v9 saveRequest], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "deletedGroups"), v11 = objc_claimAutoreleasedReturnValue(), v26[0] = MEMORY[0x1E69E9820], v26[1] = 3221225472, v26[2] = __66__CNiOSAddressBookDataMapper__processGroupsFromSaveContext_error___block_invoke_2, v26[3] = &unk_1E7414460, v12 = v9, v27 = v12, v28 = &v40, v29 = &v34, objc_msgSend(v11, "enumerateObjectsUsingBlock:", v26), v11, v10, v27, (v41[3] & 1) != 0) && (objc_msgSend(v12, "saveRequest"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "updatedGroups"), v14 = objc_claimAutoreleasedReturnValue(), v22[0] = MEMORY[0x1E69E9820], v22[1] = 3221225472, v22[2] = __66__CNiOSAddressBookDataMapper__processGroupsFromSaveContext_error___block_invoke_3, v22[3] = &unk_1E7414460, v15 = v12, v23 = v15, v24 = &v40, v25 = &v34, objc_msgSend(v14, "enumerateObjectsUsingBlock:", v22), v14, v13, v23, (v41[3] & 1) != 0) && (v16 = v35, obj = v35[5], v17 = -[CNiOSAddressBookDataMapper _processContactMembershipsFromSaveContext:error:](a1, v15, &obj), objc_storeStrong(v16 + 5, obj), *(v41 + 24) = v17, v17))
+    if (*(v41 + 24) == 1 && ([v9 saveRequest], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "deletedGroups"), v11 = objc_claimAutoreleasedReturnValue(), v26[0] = MEMORY[0x1E69E9820], v26[1] = 3221225472, v26[2] = __66__CNiOSAddressBookDataMapper__processGroupsFromSaveContext_error___block_invoke_2, v26[3] = &unk_1E7414460, v12 = v9, v27 = v12, v28 = &v40, v29 = &v34, objc_msgSend(v11, "enumerateObjectsUsingBlock:", v26), v11, v10, v27, (v41[3] & 1) != 0) && (objc_msgSend(v12, "saveRequest"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "updatedGroups"), v14 = objc_claimAutoreleasedReturnValue(), v22[0] = MEMORY[0x1E69E9820], v22[1] = 3221225472, v22[2] = __66__CNiOSAddressBookDataMapper__processGroupsFromSaveContext_error___block_invoke_3, v22[3] = &unk_1E7414460, v15 = v12, v23 = v15, v24 = &v40, v25 = &v34, objc_msgSend(v14, "enumerateObjectsUsingBlock:", v22), v14, v13, v23, (v41[3] & 1) != 0) && (v16 = v35, obj = v35[5], v17 = -[CNiOSAddressBookDataMapper _processContactMembershipsFromSaveContext:error:](self, v15, &obj), objc_storeStrong(v16 + 5, obj), *(v41 + 24) = v17, v17))
     {
       v18 = v35;
       v20 = v35[5];
-      a1 = [(CNiOSAddressBookDataMapper *)a1 _processSubgroupMembershipsFromSaveContext:v15 error:&v20];
+      self = [(CNiOSAddressBookDataMapper *)self _processSubgroupMembershipsFromSaveContext:v15 error:&v20];
       objc_storeStrong(v18 + 5, v20);
-      *(v41 + 24) = a1;
+      *(v41 + 24) = self;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
-    if (a3 && (a1 & 1) == 0)
+    if (context && (self & 1) == 0)
     {
-      *a3 = v35[5];
+      *context = v35[5];
     }
 
     _Block_object_dispose(&v34, 8);
     _Block_object_dispose(&v40, 8);
   }
 
-  return a1;
+  return self;
 }
 
-- (void)removeContactIdentifiersFromLimitedAcessForAllBundles:(uint64_t)a1
+- (void)removeContactIdentifiersFromLimitedAcessForAllBundles:(uint64_t)bundles
 {
   v3 = a2;
-  if (a1)
+  if (bundles)
   {
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v4 = *(a1 + 16);
+    v4 = *(bundles + 16);
     v9 = MEMORY[0x1E69E9820];
     v10 = 3221225472;
     v11 = __84__CNiOSAddressBookDataMapper_removeContactIdentifiersFromLimitedAcessForAllBundles___block_invoke;
@@ -1721,8 +1721,8 @@ LABEL_13:
 
     if (v5)
     {
-      v6 = [v5 value];
-      if ([v6 isEqual:MEMORY[0x1E695E118]])
+      value = [v5 value];
+      if ([value isEqual:MEMORY[0x1E695E118]])
       {
         v7 = *(v16 + 24);
 
@@ -2121,11 +2121,11 @@ void __70__CNiOSAddressBookDataMapper__processContainersFromSaveContext_error___
   }
 }
 
-- (uint64_t)_processContactChangeRequestsFromSaveContext:(void *)a3 error:
+- (uint64_t)_processContactChangeRequestsFromSaveContext:(void *)context error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v21 = 0;
     v22 = &v21;
@@ -2137,29 +2137,29 @@ void __70__CNiOSAddressBookDataMapper__processContainersFromSaveContext_error___
     v18 = __Block_byref_object_copy__17;
     v19 = __Block_byref_object_dispose__17;
     v20 = 0;
-    v7 = [v5 saveRequest];
-    v8 = [v7 contactChangeRequests];
+    saveRequest = [v5 saveRequest];
+    contactChangeRequests = [saveRequest contactChangeRequests];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __81__CNiOSAddressBookDataMapper__processContactChangeRequestsFromSaveContext_error___block_invoke;
     v10[3] = &unk_1E7414500;
     v11 = v6;
-    v12 = a1;
+    selfCopy = self;
     v13 = &v21;
     v14 = &v15;
-    [v8 enumerateObjectsUsingBlock:v10];
+    [contactChangeRequests enumerateObjectsUsingBlock:v10];
 
-    a1 = *(v22 + 24);
-    if (a3 && (a1 & 1) == 0)
+    self = *(v22 + 24);
+    if (context && (self & 1) == 0)
     {
-      *a3 = v16[5];
+      *context = v16[5];
     }
 
     _Block_object_dispose(&v15, 8);
     _Block_object_dispose(&v21, 8);
   }
 
-  return a1;
+  return self;
 }
 
 void __81__CNiOSAddressBookDataMapper__processContactChangeRequestsFromSaveContext_error___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -2766,11 +2766,11 @@ void __66__CNiOSAddressBookDataMapper__processGroupsFromSaveContext_error___bloc
   }
 }
 
-- (uint64_t)_processContactMembershipsFromSaveContext:(void *)a3 error:
+- (uint64_t)_processContactMembershipsFromSaveContext:(void *)context error:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     v14 = 0;
     goto LABEL_10;
@@ -2797,29 +2797,29 @@ void __66__CNiOSAddressBookDataMapper__processGroupsFromSaveContext_error___bloc
   v8 = _Block_copy(aBlock);
   if (*(v31 + 24) == 1)
   {
-    v9 = [v7 saveRequest];
-    v10 = [v9 addedMembersByGroupIdentifier];
+    saveRequest = [v7 saveRequest];
+    addedMembersByGroupIdentifier = [saveRequest addedMembersByGroupIdentifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __78__CNiOSAddressBookDataMapper__processContactMembershipsFromSaveContext_error___block_invoke_5;
     v18[3] = &unk_1E7414680;
     v11 = v7;
     v19 = v11;
-    v8[2](v8, v10, &__block_literal_global_81, v18);
+    v8[2](v8, addedMembersByGroupIdentifier, &__block_literal_global_81, v18);
 
     if (v31[3])
     {
-      v12 = [v11 saveRequest];
-      v13 = [v12 removedMembersByGroupIdentifier];
+      saveRequest2 = [v11 saveRequest];
+      removedMembersByGroupIdentifier = [saveRequest2 removedMembersByGroupIdentifier];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __78__CNiOSAddressBookDataMapper__processContactMembershipsFromSaveContext_error___block_invoke_7;
       v16[3] = &unk_1E7414680;
       v17 = v11;
-      v8[2](v8, v13, &__block_literal_global_84, v16);
+      v8[2](v8, removedMembersByGroupIdentifier, &__block_literal_global_84, v16);
 
       v14 = *(v31 + 24);
-      if (!a3)
+      if (!context)
       {
         goto LABEL_9;
       }
@@ -2827,7 +2827,7 @@ void __66__CNiOSAddressBookDataMapper__processGroupsFromSaveContext_error___bloc
 LABEL_7:
       if ((v14 & 1) == 0)
       {
-        *a3 = v25[5];
+        *context = v25[5];
       }
 
       goto LABEL_9;
@@ -2835,7 +2835,7 @@ LABEL_7:
   }
 
   v14 = 0;
-  if (a3)
+  if (context)
   {
     goto LABEL_7;
   }
@@ -2849,11 +2849,11 @@ LABEL_10:
   return v14 & 1;
 }
 
-- (uint64_t)_processSubgroupMembershipsFromSaveContext:(void *)a3 error:
+- (uint64_t)_processSubgroupMembershipsFromSaveContext:(void *)context error:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     v14 = 0;
     goto LABEL_10;
@@ -2880,29 +2880,29 @@ LABEL_10:
   v8 = _Block_copy(aBlock);
   if (*(v31 + 24) == 1)
   {
-    v9 = [v7 saveRequest];
-    v10 = [v9 addedSubgroupsByGroupIdentifier];
+    saveRequest = [v7 saveRequest];
+    addedSubgroupsByGroupIdentifier = [saveRequest addedSubgroupsByGroupIdentifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __79__CNiOSAddressBookDataMapper__processSubgroupMembershipsFromSaveContext_error___block_invoke_4;
     v18[3] = &unk_1E7414680;
     v11 = v7;
     v19 = v11;
-    v8[2](v8, v10, &__block_literal_global_88, v18);
+    v8[2](v8, addedSubgroupsByGroupIdentifier, &__block_literal_global_88, v18);
 
     if (v31[3])
     {
-      v12 = [v11 saveRequest];
-      v13 = [v12 removedSubgroupsByGroupIdentifier];
+      saveRequest2 = [v11 saveRequest];
+      removedSubgroupsByGroupIdentifier = [saveRequest2 removedSubgroupsByGroupIdentifier];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __79__CNiOSAddressBookDataMapper__processSubgroupMembershipsFromSaveContext_error___block_invoke_6;
       v16[3] = &unk_1E7414680;
       v17 = v11;
-      v8[2](v8, v13, &__block_literal_global_90, v16);
+      v8[2](v8, removedSubgroupsByGroupIdentifier, &__block_literal_global_90, v16);
 
       v14 = *(v31 + 24);
-      if (!a3)
+      if (!context)
       {
         goto LABEL_9;
       }
@@ -2910,7 +2910,7 @@ LABEL_10:
 LABEL_7:
       if ((v14 & 1) == 0)
       {
-        *a3 = v25[5];
+        *context = v25[5];
       }
 
       goto LABEL_9;
@@ -2918,7 +2918,7 @@ LABEL_7:
   }
 
   v14 = 0;
-  if (a3)
+  if (context)
   {
     goto LABEL_7;
   }
@@ -3215,11 +3215,11 @@ id __79__CNiOSAddressBookDataMapper__processSubgroupMembershipsFromSaveContext_e
   return v5;
 }
 
-- (id)_containersMatchingPredicate:(char)a3 remote:(void *)a4 error:
+- (id)_containersMatchingPredicate:(char)predicate remote:(void *)remote error:
 {
   v7 = a2;
   v8 = v7;
-  if (a1)
+  if (self)
   {
     if (!v7 || ([v7 conformsToProtocol:&unk_1F0993CD0] & 1) != 0)
     {
@@ -3239,7 +3239,7 @@ id __79__CNiOSAddressBookDataMapper__processSubgroupMembershipsFromSaveContext_e
 
       if (v11 && [v11 type] == 1004)
       {
-        a1 = MEMORY[0x1E695E0F0];
+        self = MEMORY[0x1E695E0F0];
 LABEL_19:
 
         goto LABEL_20;
@@ -3257,16 +3257,16 @@ LABEL_19:
       v30[3] = __Block_byref_object_copy__17;
       v30[4] = __Block_byref_object_dispose__17;
       v31 = 0;
-      v12 = a1[2];
+      v12 = self[2];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __72__CNiOSAddressBookDataMapper__containersMatchingPredicate_remote_error___block_invoke;
       v24[3] = &unk_1E7414740;
       v25 = v9;
-      v26 = a1;
+      selfCopy = self;
       v27 = v30;
       v28 = &v32;
-      v29 = a3;
+      predicateCopy = predicate;
       v13 = [v12 performSynchronousWorkWithInvalidatedAddressBook:v24];
 
       if ([v13 isSuccess])
@@ -3277,10 +3277,10 @@ LABEL_19:
         v21 = __72__CNiOSAddressBookDataMapper__containersMatchingPredicate_remote_error___block_invoke_4;
         v22 = &unk_1E7414768;
         v23 = v30;
-        a1 = v14;
+        self = v14;
         v15 = v20;
         v16 = v15;
-        if (!a4 || a1)
+        if (!remote || self)
         {
           goto LABEL_18;
         }
@@ -3290,19 +3290,19 @@ LABEL_19:
 
       else
       {
-        v18 = [v13 error];
-        v16 = v18;
-        if (!a4)
+        error = [v13 error];
+        v16 = error;
+        if (!remote)
         {
-          a1 = 0;
+          self = 0;
           goto LABEL_18;
         }
 
-        v17 = v18;
-        a1 = 0;
+        v17 = error;
+        self = 0;
       }
 
-      *a4 = v17;
+      *remote = v17;
 LABEL_18:
 
       _Block_object_dispose(v30, 8);
@@ -3311,13 +3311,13 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    [CNiOSAddressBookDataMapper _containersMatchingPredicate:a4 remote:? error:?];
-    a1 = 0;
+    [CNiOSAddressBookDataMapper _containersMatchingPredicate:remote remote:? error:?];
+    self = 0;
   }
 
 LABEL_20:
 
-  return a1;
+  return self;
 }
 
 void __72__CNiOSAddressBookDataMapper__containersMatchingPredicate_remote_error___block_invoke(uint64_t a1, const void *a2)
@@ -3393,21 +3393,21 @@ id __72__CNiOSAddressBookDataMapper__containersMatchingPredicate_remote_error___
   return v2;
 }
 
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(CNPolicyDescription);
-  [(CNPolicyDescription *)v7 setContainerIdentifier:v6];
+  [(CNPolicyDescription *)v7 setContainerIdentifier:identifierCopy];
 
-  v8 = [(CNiOSAddressBookDataMapper *)self policyWithDescription:v7 error:a4];
+  v8 = [(CNiOSAddressBookDataMapper *)self policyWithDescription:v7 error:error];
 
   return v8;
 }
 
-- (id)policyWithDescription:(id)a3 error:(id *)a4
+- (id)policyWithDescription:(id)description error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  descriptionCopy = description;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -3420,11 +3420,11 @@ id __72__CNiOSAddressBookDataMapper__containersMatchingPredicate_remote_error___
   v28[3] = __Block_byref_object_copy__17;
   v28[4] = __Block_byref_object_dispose__17;
   v29 = 0;
-  v7 = [v6 containerIdentifier];
-  if (!v7)
+  containerIdentifier = [descriptionCopy containerIdentifier];
+  if (!containerIdentifier)
   {
-    v7 = [(CNiOSAddressBookDataMapper *)self defaultContainerIdentifier];
-    if (!v7)
+    containerIdentifier = [(CNiOSAddressBookDataMapper *)self defaultContainerIdentifier];
+    if (!containerIdentifier)
     {
 LABEL_9:
       v14 = v31[5];
@@ -3436,16 +3436,16 @@ LABEL_9:
       v15 = v14;
       v16 = v19;
       v12 = v16;
-      if (a4 && !v15)
+      if (error && !v15)
       {
-        *a4 = v20(v16);
+        *error = v20(v16);
       }
 
       goto LABEL_15;
     }
   }
 
-  v36[0] = v7;
+  v36[0] = containerIdentifier;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
   v9 = [CNContainer predicateForContainersWithIdentifiers:v8];
 
@@ -3474,7 +3474,7 @@ LABEL_8:
   v26 = v28;
   v12 = v9;
   v24 = v12;
-  v25 = v6;
+  v25 = descriptionCopy;
   v27 = &v30;
   v13 = [(CNiOSAddressBook *)v11 performSynchronousWorkWithInvalidatedAddressBook:v23];
 
@@ -3484,11 +3484,11 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v17 = [v13 error];
-  if (a4)
+  error = [v13 error];
+  if (error)
   {
-    v17 = v17;
-    *a4 = v17;
+    error = error;
+    *error = error;
   }
 
   v15 = 0;
@@ -3544,9 +3544,9 @@ id __58__CNiOSAddressBookDataMapper_policyWithDescription_error___block_invoke_3
   return v2;
 }
 
-- (id)usedLabelsForPropertyWithKey:(id)a3 error:(id *)a4
+- (id)usedLabelsForPropertyWithKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -3554,7 +3554,7 @@ id __58__CNiOSAddressBookDataMapper_policyWithDescription_error___block_invoke_3
   v29 = __Block_byref_object_dispose__17;
   v30 = 0;
   v7 = +[CN contactPropertiesByKey];
-  v8 = [v7 objectForKey:v6];
+  v8 = [v7 objectForKey:keyCopy];
 
   if (v8 && (v24 = 0, [v8 abPropertyID:&v24]))
   {
@@ -3593,9 +3593,9 @@ id __58__CNiOSAddressBookDataMapper_policyWithDescription_error___block_invoke_3
   v14 = v12;
   v15 = v18;
   v16 = v15;
-  if (a4 && !v14)
+  if (error && !v14)
   {
-    *a4 = v19(v15);
+    *error = v19(v15);
   }
 
   _Block_object_dispose(&v25, 8);
@@ -3640,11 +3640,11 @@ id __65__CNiOSAddressBookDataMapper_usedLabelsForPropertyWithKey_error___block_i
   return v4;
 }
 
-- (id)accountsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)accountsMatchingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ([v6 conformsToProtocol:&unk_1F0991650] & 1) != 0)
+  predicateCopy = predicate;
+  v7 = predicateCopy;
+  if (!predicateCopy || ([predicateCopy conformsToProtocol:&unk_1F0991650] & 1) != 0)
   {
     v30 = 0;
     v31 = &v30;
@@ -3674,7 +3674,7 @@ id __65__CNiOSAddressBookDataMapper_usedLabelsForPropertyWithKey_error___block_i
     v23[2] = __62__CNiOSAddressBookDataMapper_accountsMatchingPredicate_error___block_invoke;
     v23[3] = &unk_1E74147E0;
     v24 = v7;
-    v25 = self;
+    selfCopy = self;
     v26 = v28;
     v27 = &v30;
     v10 = [(CNiOSAddressBook *)v9 performSynchronousWorkWithInvalidatedAddressBook:v23];
@@ -3690,7 +3690,7 @@ id __65__CNiOSAddressBookDataMapper_usedLabelsForPropertyWithKey_error___block_i
       v12 = v11;
       v13 = v19;
       v14 = v13;
-      if (!a4 || v12)
+      if (!error || v12)
       {
         goto LABEL_16;
       }
@@ -3700,19 +3700,19 @@ id __65__CNiOSAddressBookDataMapper_usedLabelsForPropertyWithKey_error___block_i
 
     else
     {
-      v16 = [v10 error];
-      v14 = v16;
-      if (!a4)
+      error = [v10 error];
+      v14 = error;
+      if (!error)
       {
         v12 = 0;
         goto LABEL_16;
       }
 
-      v15 = v16;
+      v15 = error;
       v12 = 0;
     }
 
-    *a4 = v15;
+    *error = v15;
 LABEL_16:
 
     _Block_object_dispose(v28, 8);
@@ -3722,10 +3722,10 @@ LABEL_16:
   }
 
   v17 = [CNErrorFactory errorWithCode:400];
-  if (a4)
+  if (error)
   {
     v17 = v17;
-    *a4 = v17;
+    *error = v17;
   }
 
   v12 = 0;
@@ -3750,11 +3750,11 @@ id __62__CNiOSAddressBookDataMapper_accountsMatchingPredicate_error___block_invo
   return v2;
 }
 
-- (id)groupsMatchingPredicate:(id)a3 error:(id *)a4
+- (id)groupsMatchingPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || ([v6 conformsToProtocol:&unk_1F0994930] & 1) != 0)
+  predicateCopy = predicate;
+  v7 = predicateCopy;
+  if (!predicateCopy || ([predicateCopy conformsToProtocol:&unk_1F0994930] & 1) != 0)
   {
     v29 = 0;
     v30 = &v29;
@@ -3799,7 +3799,7 @@ id __62__CNiOSAddressBookDataMapper_accountsMatchingPredicate_error___block_invo
       v12 = v11;
       v13 = v19;
       v14 = v13;
-      if (!a4 || v12)
+      if (!error || v12)
       {
         goto LABEL_16;
       }
@@ -3809,19 +3809,19 @@ id __62__CNiOSAddressBookDataMapper_accountsMatchingPredicate_error___block_invo
 
     else
     {
-      v16 = [v10 error];
-      v14 = v16;
-      if (!a4)
+      error = [v10 error];
+      v14 = error;
+      if (!error)
       {
         v12 = 0;
         goto LABEL_16;
       }
 
-      v15 = v16;
+      v15 = error;
       v12 = 0;
     }
 
-    *a4 = v15;
+    *error = v15;
 LABEL_16:
 
     _Block_object_dispose(v27, 8);
@@ -3831,10 +3831,10 @@ LABEL_16:
   }
 
   v17 = [CNErrorFactory errorWithCode:400];
-  if (a4)
+  if (error)
   {
     v17 = v17;
-    *a4 = v17;
+    *error = v17;
   }
 
   v12 = 0;
@@ -3904,21 +3904,21 @@ id __60__CNiOSAddressBookDataMapper_groupsMatchingPredicate_error___block_invoke
   return v2;
 }
 
-- (id)groupsWithIdentifiers:(id)a3 error:(id *)a4
+- (id)groupsWithIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = [CNGroup predicateForGroupsWithIdentifiers:a3];
-  v7 = [(CNiOSAddressBookDataMapper *)self groupsMatchingPredicate:v6 error:a4];
+  v6 = [CNGroup predicateForGroupsWithIdentifiers:identifiers];
+  v7 = [(CNiOSAddressBookDataMapper *)self groupsMatchingPredicate:v6 error:error];
 
   return v7;
 }
 
-- (id)subgroupsOfGroupWithIdentifier:(id)a3 error:(id *)a4
+- (id)subgroupsOfGroupWithIdentifier:(id)identifier error:(id *)error
 {
   v5 = [CNErrorFactory errorWithCode:1005];
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;
@@ -3949,15 +3949,15 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
   }
 }
 
-- (id)legacyTetheredSyncAnchorForKey:(uint64_t)a1
+- (id)legacyTetheredSyncAnchorForKey:(uint64_t)key
 {
-  if (a1)
+  if (key)
   {
     v8 = 0;
     v9 = &v8;
     v10 = 0x2020000000;
     v11 = 0;
-    v3 = *(a1 + 16);
+    v3 = *(key + 16);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__CNiOSAddressBookDataMapper_legacyTetheredSyncAnchorForKey___block_invoke;
@@ -4013,10 +4013,10 @@ ABRecordRef __61__CNiOSAddressBookDataMapper_userActivityUserInfoForContact___bl
   return result;
 }
 
-- (id)matchingDictionaryForContact:(id)a3
+- (id)matchingDictionaryForContact:(id)contact
 {
-  v4 = a3;
-  if ([v4 hasBeenPersisted])
+  contactCopy = contact;
+  if ([contactCopy hasBeenPersisted])
   {
     v13 = 0;
     v14 = &v13;
@@ -4039,7 +4039,7 @@ ABRecordRef __61__CNiOSAddressBookDataMapper_userActivityUserInfoForContact___bl
     v10[1] = 3221225472;
     v10[2] = __59__CNiOSAddressBookDataMapper_matchingDictionaryForContact___block_invoke;
     v10[3] = &unk_1E7414150;
-    v11 = v4;
+    v11 = contactCopy;
     v12 = &v13;
     v7 = [(CNiOSAddressBook *)v6 performSynchronousWorkWithInvalidatedAddressBook:v10];
 
@@ -4083,20 +4083,20 @@ uint64_t __70__CNiOSAddressBookDataMapper_contactIdentifierWithMatchingDictionar
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (BOOL)registerChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5
+- (BOOL)registerChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v10 = [CNErrorFactory errorWithCode:600];
-    if (a5)
+    if (error)
     {
       v10 = v10;
-      *a5 = v10;
+      *error = v10;
     }
 
-    v11 = 0;
+    isSuccess = 0;
   }
 
   else
@@ -4116,19 +4116,19 @@ uint64_t __70__CNiOSAddressBookDataMapper_contactIdentifierWithMatchingDictionar
     v16[2] = __97__CNiOSAddressBookDataMapper_registerChangeHistoryClientIdentifier_forContainerIdentifier_error___block_invoke;
     v16[3] = &unk_1E74148F0;
     v16[4] = self;
-    v17 = v9;
-    v18 = v8;
+    v17 = containerIdentifierCopy;
+    v18 = identifierCopy;
     v13 = [(CNiOSAddressBook *)addressBook performSynchronousWorkWithInvalidatedAddressBook:v16];
-    v11 = [v13 isSuccess];
-    v14 = [v13 error];
-    if (a5 && (v11 & 1) == 0)
+    isSuccess = [v13 isSuccess];
+    error = [v13 error];
+    if (error && (isSuccess & 1) == 0)
     {
-      v14 = v14;
-      *a5 = v14;
+      error = error;
+      *error = error;
     }
   }
 
-  return v11;
+  return isSuccess;
 }
 
 void __97__CNiOSAddressBookDataMapper_registerChangeHistoryClientIdentifier_forContainerIdentifier_error___block_invoke()
@@ -4142,17 +4142,17 @@ void __97__CNiOSAddressBookDataMapper_registerChangeHistoryClientIdentifier_forC
   }
 }
 
-- (BOOL)unregisterChangeHistoryClientIdentifier:(id)a3 forContainerIdentifier:(id)a4 error:(id *)a5
+- (BOOL)unregisterChangeHistoryClientIdentifier:(id)identifier forContainerIdentifier:(id)containerIdentifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  containerIdentifierCopy = containerIdentifier;
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v10 = [CNErrorFactory errorWithCode:600];
-    if (a5)
+    if (error)
     {
       v10 = v10;
-      *a5 = v10;
+      *error = v10;
     }
 
     v11 = 0;
@@ -4186,29 +4186,29 @@ void __97__CNiOSAddressBookDataMapper_registerChangeHistoryClientIdentifier_forC
     v17[2] = __99__CNiOSAddressBookDataMapper_unregisterChangeHistoryClientIdentifier_forContainerIdentifier_error___block_invoke;
     v17[3] = &unk_1E7414918;
     v21 = &v23;
-    v18 = v8;
-    v19 = self;
-    v20 = v9;
+    v18 = identifierCopy;
+    selfCopy = self;
+    v20 = containerIdentifierCopy;
     v22 = &v29;
     v14 = [(CNiOSAddressBook *)v13 performSynchronousWorkWithInvalidatedAddressBook:v17];
 
     if ([v14 isSuccess])
     {
       v11 = *(v30 + 24);
-      if (a5 && (v30[3] & 1) == 0)
+      if (error && (v30[3] & 1) == 0)
       {
         v11 = 0;
-        *a5 = v24[5];
+        *error = v24[5];
       }
     }
 
     else
     {
-      v15 = [v14 error];
-      if (a5)
+      error = [v14 error];
+      if (error)
       {
-        v15 = v15;
-        *a5 = v15;
+        error = error;
+        *error = error;
       }
 
       v11 = 0;
@@ -4237,12 +4237,12 @@ void __99__CNiOSAddressBookDataMapper_unregisterChangeHistoryClientIdentifier_fo
   }
 }
 
-- (id)changeHistoryWithFetchRequest:(id)a3 error:(id *)a4
+- (id)changeHistoryWithFetchRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  if (![v6 shouldEnforceClientIdentifer] || (v7 = *MEMORY[0x1E6996568], objc_msgSend(v6, "clientIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), LODWORD(v7) = (*(v7 + 16))(v7, v8), v8, !v7))
+  requestCopy = request;
+  if (![requestCopy shouldEnforceClientIdentifer] || (v7 = *MEMORY[0x1E6996568], objc_msgSend(requestCopy, "clientIdentifier"), v8 = objc_claimAutoreleasedReturnValue(), LODWORD(v7) = (*(v7 + 16))(v7, v8), v8, !v7))
   {
-    if ([v6 shouldUnifyResults] && objc_msgSend(v6, "includeLinkingChanges"))
+    if ([requestCopy shouldUnifyResults] && objc_msgSend(requestCopy, "includeLinkingChanges"))
     {
       v9 = 605;
       goto LABEL_7;
@@ -4262,58 +4262,58 @@ void __99__CNiOSAddressBookDataMapper_unregisterChangeHistoryClientIdentifier_fo
     v20 = 3221225472;
     v21 = __66__CNiOSAddressBookDataMapper_changeHistoryWithFetchRequest_error___block_invoke;
     v22 = &unk_1E7414968;
-    v23 = v6;
-    v24 = self;
+    v23 = requestCopy;
+    selfCopy = self;
     v13 = [(CNiOSAddressBook *)addressBook resultWithInvalidatedAddressBook:&v19];
     if ([v13 isSuccess])
     {
-      v14 = [v13 value];
+      value = [v13 value];
       if ((*(*MEMORY[0x1E6996490] + 16))())
       {
-        v11 = [v14 left];
+        left = [value left];
 LABEL_21:
 
         goto LABEL_22;
       }
 
-      v17 = [v14 right];
-      if (a4)
+      right = [value right];
+      if (error)
       {
-        v17 = v17;
-        *a4 = v17;
+        right = right;
+        *error = right;
       }
     }
 
     else
     {
-      v15 = [v13 error];
-      v14 = v15;
-      if (a4)
+      error = [v13 error];
+      value = error;
+      if (error)
       {
-        v16 = v15;
-        v11 = 0;
-        *a4 = v14;
+        v16 = error;
+        left = 0;
+        *error = value;
         goto LABEL_21;
       }
     }
 
-    v11 = 0;
+    left = 0;
     goto LABEL_21;
   }
 
   v9 = 600;
 LABEL_7:
   v10 = [CNErrorFactory errorWithCode:v9];
-  if (a4)
+  if (error)
   {
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
-  v11 = 0;
+  left = 0;
 LABEL_22:
 
-  return v11;
+  return left;
 }
 
 id __66__CNiOSAddressBookDataMapper_changeHistoryWithFetchRequest_error___block_invoke(uint64_t a1, uint64_t a2)
@@ -4645,37 +4645,37 @@ LABEL_47:
   return v67;
 }
 
-- (BOOL)executeChangeHistoryClearRequest:(id)a3 error:(id *)a4
+- (BOOL)executeChangeHistoryClearRequest:(id)request error:(id *)error
 {
-  v6 = a3;
+  requestCopy = request;
   v7 = *MEMORY[0x1E6996568];
-  v8 = [v6 clientIdentifier];
-  LODWORD(v7) = (*(v7 + 16))(v7, v8);
+  clientIdentifier = [requestCopy clientIdentifier];
+  LODWORD(v7) = (*(v7 + 16))(v7, clientIdentifier);
 
   if (v7)
   {
     v9 = 600;
 LABEL_3:
     v10 = [CNErrorFactory errorWithCode:v9];
-    if (a4)
+    if (error)
     {
       v10 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     v11 = 0;
     goto LABEL_19;
   }
 
-  v12 = [v6 toChangeAnchor];
-  if (v12 || ([v6 contactChangeIDs], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "count")))
+  toChangeAnchor = [requestCopy toChangeAnchor];
+  if (toChangeAnchor || ([requestCopy contactChangeIDs], toChangeAnchor = objc_claimAutoreleasedReturnValue(), objc_msgSend(toChangeAnchor, "count")))
   {
   }
 
   else
   {
-    v18 = [v6 groupChangeIDs];
-    v19 = [v18 count];
+    groupChangeIDs = [requestCopy groupChangeIDs];
+    v19 = [groupChangeIDs count];
 
     if (!v19)
     {
@@ -4709,8 +4709,8 @@ LABEL_3:
   v21 = 3221225472;
   v22 = __69__CNiOSAddressBookDataMapper_executeChangeHistoryClearRequest_error___block_invoke;
   v23 = &unk_1E74147E0;
-  v24 = v6;
-  v25 = self;
+  v24 = requestCopy;
+  selfCopy = self;
   v26 = &v28;
   v27 = &v34;
   v15 = [(CNiOSAddressBook *)v14 performSynchronousWorkWithInvalidatedAddressBook:&v20];
@@ -4718,20 +4718,20 @@ LABEL_3:
   if ([v15 isSuccess])
   {
     v11 = *(v35 + 24);
-    if (a4 && (v35[3] & 1) == 0)
+    if (error && (v35[3] & 1) == 0)
     {
       v11 = 0;
-      *a4 = v29[5];
+      *error = v29[5];
     }
   }
 
   else
   {
-    v16 = [v15 error];
-    if (a4)
+    error = [v15 error];
+    if (error)
     {
-      v16 = v16;
-      *a4 = v16;
+      error = error;
+      *error = error;
     }
 
     v11 = 0;
@@ -4763,7 +4763,7 @@ void __69__CNiOSAddressBookDataMapper_executeChangeHistoryClearRequest_error___b
   }
 }
 
-+ (void)_copyEligiblePrimarySourceForAccountWithIdentifier:(uint64_t)a3 addressBook:(void *)a4 error:
++ (void)_copyEligiblePrimarySourceForAccountWithIdentifier:(uint64_t)identifier addressBook:(void *)book error:
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v5 = a2;
@@ -4819,10 +4819,10 @@ LABEL_14:
 LABEL_19:
   v18 = v13;
   v19 = v18;
-  if (a4 && !v18)
+  if (book && !v18)
   {
     v20 = v17;
-    *a4 = v17;
+    *book = v17;
   }
 
   v21 = v19;
@@ -4848,16 +4848,16 @@ LABEL_19:
   return v0;
 }
 
-- (BOOL)setDefaultAccountIdentifier:(id)a3 error:(id *)a4
+- (BOOL)setDefaultAccountIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v7 = [CNErrorFactory errorWithCode:200];
-    if (a4)
+    if (error)
     {
       v7 = v7;
-      *a4 = v7;
+      *error = v7;
     }
 
     v8 = 0;
@@ -4890,7 +4890,7 @@ LABEL_19:
     v14[1] = 3221225472;
     v14[2] = __64__CNiOSAddressBookDataMapper_setDefaultAccountIdentifier_error___block_invoke;
     v14[3] = &unk_1E7414328;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = &v18;
     v17 = &v24;
     v11 = [(CNiOSAddressBook *)v10 performSynchronousWorkWithInvalidatedAddressBook:v14];
@@ -4898,20 +4898,20 @@ LABEL_19:
     if ([v11 isSuccess])
     {
       v8 = *(v25 + 24);
-      if (a4 && (v25[3] & 1) == 0)
+      if (error && (v25[3] & 1) == 0)
       {
         v8 = 0;
-        *a4 = v19[5];
+        *error = v19[5];
       }
     }
 
     else
     {
-      v12 = [v11 error];
-      if (a4)
+      error = [v11 error];
+      if (error)
       {
-        v12 = v12;
-        *a4 = v12;
+        error = error;
+        *error = error;
       }
 
       v8 = 0;
@@ -5131,20 +5131,20 @@ void __84__CNiOSAddressBookDataMapper_getWatchLimitedAccessSyncDataStartingAtSeq
   [*(*(*(v13 + 40) + 8) + 40) setSyncEventsArray:v3];
 }
 
-- (void)applyLimitedAccessSyncEvents:(id)a3
+- (void)applyLimitedAccessSyncEvents:(id)events
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventsCopy = events;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = eventsCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v7)
   {
@@ -5161,15 +5161,15 @@ void __84__CNiOSAddressBookDataMapper_getWatchLimitedAccessSyncDataStartingAtSeq
 
         v10 = *(*(&v27 + 1) + 8 * v9);
         v11 = objc_alloc_init(MEMORY[0x1E698A118]);
-        v12 = [v10 bundleID];
-        [v11 setBundleID:v12];
+        bundleID = [v10 bundleID];
+        [v11 setBundleID:bundleID];
 
-        v13 = [v10 contactID];
-        [v11 setContactID:v13];
+        contactID = [v10 contactID];
+        [v11 setContactID:contactID];
 
         [v11 setSequenceNumber:{objc_msgSend(v10, "sequenceNumber")}];
         [v11 setIsActive:{objc_msgSend(v10, "isActive")}];
-        [v5 addObject:v11];
+        [array addObject:v11];
 
         ++v9;
       }
@@ -5197,14 +5197,14 @@ void __84__CNiOSAddressBookDataMapper_getWatchLimitedAccessSyncDataStartingAtSeq
   v23 = __59__CNiOSAddressBookDataMapper_applyLimitedAccessSyncEvents___block_invoke;
   v24 = &unk_1E74146F0;
   v26 = &v31;
-  v16 = v5;
+  v16 = array;
   v25 = v16;
   v17 = [(CNiOSAddressBook *)v15 performSynchronousWorkWithInvalidatedAddressBook:&v21];
 
   if (v17)
   {
-    v18 = [v17 value];
-    if ([v18 isEqual:MEMORY[0x1E695E118]])
+    value = [v17 value];
+    if ([value isEqual:MEMORY[0x1E695E118]])
     {
       v19 = *(v32 + 24);
 
@@ -5273,17 +5273,17 @@ uint64_t __55__CNiOSAddressBookDataMapper_analyzeDatabaseWithError___block_invok
   return MEMORY[0x1EEDEAD40](addressBook, PersonCount);
 }
 
-- (void)requestAccessForEntityType:(int64_t)a3 completionHandler:(id)a4
+- (void)requestAccessForEntityType:(int64_t)type completionHandler:(id)handler
 {
   if (self)
   {
     self = self->_authorization;
   }
 
-  [(CNiOSAddressBookDataMapper *)self requestAccessForEntityType:a3 completionHandler:a4];
+  [(CNiOSAddressBookDataMapper *)self requestAccessForEntityType:type completionHandler:handler];
 }
 
-- (BOOL)requestAccessForEntityType:(int64_t)a3 error:(id *)a4
+- (BOOL)requestAccessForEntityType:(int64_t)type error:(id *)error
 {
   if (self)
   {
@@ -5300,16 +5300,16 @@ uint64_t __55__CNiOSAddressBookDataMapper_analyzeDatabaseWithError___block_invok
   v7 = [(CNAuthorization *)v6 requestAccessForEntityType:0 error:&v11];
   v8 = v11;
 
-  if (a4 && !v7)
+  if (error && !v7)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-- (id)identifierWithError:(id *)a3
+- (id)identifierWithError:(id *)error
 {
   OUTLINED_FUNCTION_27();
   v28 = 0x2020000000;
@@ -5344,13 +5344,13 @@ uint64_t __55__CNiOSAddressBookDataMapper_analyzeDatabaseWithError___block_invok
     v11 = 0;
   }
 
-  v12 = [v9 error];
+  error = [v9 error];
   v13 = v11;
   v14 = v13;
-  if (a3 && !v13)
+  if (error && !v13)
   {
-    v15 = v12;
-    *a3 = v12;
+    v15 = error;
+    *error = error;
   }
 
   OUTLINED_FUNCTION_28(v16, v17, v18, v19, v20, v21);
@@ -5386,7 +5386,7 @@ uint64_t __55__CNiOSAddressBookDataMapper_analyzeDatabaseWithError___block_invok
   return v5;
 }
 
-- (id)unifiedContactCountWithError:(id *)a3
+- (id)unifiedContactCountWithError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -5413,13 +5413,13 @@ uint64_t __55__CNiOSAddressBookDataMapper_analyzeDatabaseWithError___block_invok
   v9 = [v8 performSynchronousWorkWithInvalidatedAddressBook:v22];
 
   v10 = v24[5];
-  v11 = [v9 error];
+  error = [v9 error];
   v12 = v10;
   v13 = v12;
-  if (a3 && !v12)
+  if (error && !v12)
   {
-    v14 = v11;
-    *a3 = v11;
+    v14 = error;
+    *error = error;
   }
 
   OUTLINED_FUNCTION_28(v15, v16, v17, v18, v19, v20);
@@ -5539,26 +5539,26 @@ void __102__CNiOSAddressBookDataMapper_fetchEncodedContactsForFetchRequest_error
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)encodedPeopleFetcherWithAddressBook:(void *)a3 addressBookCleanupBlock:(void *)a4 cursorCleanupBlock:(void *)a5 fetchRequest:
+- (id)encodedPeopleFetcherWithAddressBook:(void *)book addressBookCleanupBlock:(void *)block cursorCleanupBlock:(void *)cleanupBlock fetchRequest:
 {
-  v9 = a3;
-  if (a1)
+  bookCopy = book;
+  if (self)
   {
     OUTLINED_FUNCTION_16_0();
     v22 = 3221225472;
     v23 = __122__CNiOSAddressBookDataMapper_encodedPeopleFetcherWithAddressBook_addressBookCleanupBlock_cursorCleanupBlock_fetchRequest___block_invoke;
     v24 = &unk_1E74142B8;
-    v25 = v9;
-    v10 = a5;
-    v11 = a4;
+    v25 = bookCopy;
+    cleanupBlockCopy = cleanupBlock;
+    blockCopy = block;
     v12 = _Block_copy(aBlock);
     v13 = objc_opt_class();
-    v14 = *(a1 + 40);
-    v16 = *(a1 + 64);
-    v15 = *(a1 + 72);
-    v17 = *(a1 + 24);
+    v14 = *(self + 40);
+    v16 = *(self + 64);
+    v15 = *(self + 72);
+    v17 = *(self + 24);
     v18 = v14;
-    v19 = [v13 encodedPeopleFetcherForForFetchRequest:v10 addressBook:a2 managedConfiguration:v18 addressBookCompletionHandler:v12 cursorCompletionHandler:v11 environment:v17 identifierAuditMode:v15 authorizationContext:v16];
+    v19 = [v13 encodedPeopleFetcherForForFetchRequest:cleanupBlockCopy addressBook:a2 managedConfiguration:v18 addressBookCompletionHandler:v12 cursorCompletionHandler:blockCopy environment:v17 identifierAuditMode:v15 authorizationContext:v16];
   }
 
   else
@@ -5569,10 +5569,10 @@ void __102__CNiOSAddressBookDataMapper_fetchEncodedContactsForFetchRequest_error
   return v19;
 }
 
-- (id)encodedContactsCursorForFetchRequest:(id)a3 cursorCleanupBlock:(id)a4 error:(id *)a5
+- (id)encodedContactsCursorForFetchRequest:(id)request cursorCleanupBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  blockCopy = block;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -5589,10 +5589,10 @@ void __102__CNiOSAddressBookDataMapper_fetchEncodedContactsForFetchRequest_error
   }
 
   v11 = logger;
-  v12 = [v8 effectivePredicate];
-  v13 = [v8 unifyResults];
-  v14 = [v8 keysToFetch];
-  [(CNContactsLogger *)v11 fetchEncodedContactsMatchingPredicate:v12 unifyResults:v13 keysToFetch:v14];
+  effectivePredicate = [requestCopy effectivePredicate];
+  unifyResults = [requestCopy unifyResults];
+  keysToFetch = [requestCopy keysToFetch];
+  [(CNContactsLogger *)v11 fetchEncodedContactsMatchingPredicate:effectivePredicate unifyResults:unifyResults keysToFetch:keysToFetch];
 
   if (self)
   {
@@ -5611,20 +5611,20 @@ void __102__CNiOSAddressBookDataMapper_fetchEncodedContactsForFetchRequest_error
   v34[3] = &unk_1E74142E0;
   v37 = &v38;
   v34[4] = self;
-  v17 = v9;
+  v17 = blockCopy;
   v36 = v17;
-  v18 = v8;
+  v18 = requestCopy;
   v35 = v18;
   v19 = [(CNiOSAddressBook *)v16 performAsynchronousWorkWithInvalidatedAddressBook:v34];
 
   v20 = v39[5];
-  v21 = [v19 error];
+  error = [v19 error];
   v22 = v20;
   v23 = v22;
-  if (a5 && !v22)
+  if (error && !v22)
   {
-    v24 = v21;
-    *a5 = v21;
+    v24 = error;
+    *error = error;
   }
 
   OUTLINED_FUNCTION_33(v25, v26, v27, v28, v29, v30, v31, v32);
@@ -5640,7 +5640,7 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (BOOL)setMeContact:(id)a3 error:(id *)a4
+- (BOOL)setMeContact:(id)contact error:(id *)error
 {
   OUTLINED_FUNCTION_72();
   v42 = v4;
@@ -5679,16 +5679,16 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
   v15 = [v13 performSynchronousWorkWithInvalidatedAddressBook:v28];
 
   v16 = *(v39 + 24);
-  v17 = [v15 error];
-  v18 = v17;
-  if (!v17)
+  error = [v15 error];
+  v18 = error;
+  if (!error)
   {
-    v17 = v35[5];
+    error = v35[5];
   }
 
   if (v7 && (v16 & 1) == 0)
   {
-    *v7 = v17;
+    *v7 = error;
   }
 
   OUTLINED_FUNCTION_33(v19, v20, v21, v22, v23, v24, v25, v26);
@@ -5698,7 +5698,7 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
   return result;
 }
 
-- (BOOL)setMeContact:(id)a3 forContainer:(id)a4 error:(id *)a5
+- (BOOL)setMeContact:(id)contact forContainer:(id)container error:(id *)error
 {
   OUTLINED_FUNCTION_72();
   v41 = v5;
@@ -5735,16 +5735,16 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
   v20 = [OUTLINED_FUNCTION_31() performSynchronousWorkWithInvalidatedAddressBook:?];
 
   v21 = *(v38 + 24);
-  v22 = [v20 error];
-  v23 = v22;
-  if (!v22)
+  error = [v20 error];
+  v23 = error;
+  if (!error)
   {
-    v22 = v34[5];
+    error = v34[5];
   }
 
   if (v8 && (v21 & 1) == 0)
   {
-    *v8 = v22;
+    *v8 = error;
   }
 
   OUTLINED_FUNCTION_33(v24, v25, v26, v27, v28, v29, v30, v31);
@@ -5754,11 +5754,11 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
   return result;
 }
 
-- (BOOL)setBestMeIfNeededForGivenName:(id)a3 familyName:(id)a4 email:(id)a5 error:(id *)a6
+- (BOOL)setBestMeIfNeededForGivenName:(id)name familyName:(id)familyName email:(id)email error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  familyNameCopy = familyName;
+  emailCopy = email;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -5782,23 +5782,23 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
   v14 = addressBook;
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_12();
-  v15 = v10;
-  v16 = v11;
-  v17 = v12;
+  v15 = nameCopy;
+  v16 = familyNameCopy;
+  v17 = emailCopy;
   v18 = [OUTLINED_FUNCTION_37() performSynchronousWorkWithInvalidatedAddressBook:?];
 
   v19 = *(v30 + 24);
   v20 = v24[5];
-  v21 = v20;
+  error = v20;
   if (!v20)
   {
-    v21 = [v18 error];
+    error = [v18 error];
   }
 
-  if (a6 && (v19 & 1) == 0)
+  if (error && (v19 & 1) == 0)
   {
-    v21 = v21;
-    *a6 = v21;
+    error = error;
+    *error = error;
   }
 
   if (!v20)
@@ -5811,7 +5811,7 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
   return v19;
 }
 
-- (id)meContactIdentifiers:(id *)a3
+- (id)meContactIdentifiers:(id *)identifiers
 {
   v32[1] = *MEMORY[0x1E69E9840];
   OUTLINED_FUNCTION_27();
@@ -5853,10 +5853,10 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
     v16 = [CNErrorFactory errorWithCode:200];
     v17 = v11;
     v13 = v17;
-    if (a3 && !v17)
+    if (identifiers && !v17)
     {
       v18 = v16;
-      *a3 = v16;
+      *identifiers = v16;
     }
 
     v15 = v13;
@@ -5864,13 +5864,13 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
 
   else
   {
-    v12 = [v9 error];
-    v13 = v12;
-    if (a3)
+    error = [v9 error];
+    v13 = error;
+    if (identifiers)
     {
-      v14 = v12;
+      v14 = error;
       v15 = 0;
-      *a3 = v13;
+      *identifiers = v13;
     }
 
     else
@@ -5905,28 +5905,28 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
 
     else
     {
-      v6 = [v4 addedAccounts];
-      v7 = [v6 valueForKey:@"identifier"];
+      addedAccounts = [v4 addedAccounts];
+      v7 = [addedAccounts valueForKey:@"identifier"];
 
       v96 = 0u;
       v97 = 0u;
       v94 = 0u;
       v95 = 0u;
-      v8 = [v4 addedAccountContainersByParentContainerIdentifier];
-      v9 = [v8 allKeys];
+      addedAccountContainersByParentContainerIdentifier = [v4 addedAccountContainersByParentContainerIdentifier];
+      allKeys = [addedAccountContainersByParentContainerIdentifier allKeys];
 
       v18 = OUTLINED_FUNCTION_66(v10, v11, v12, v13, v14, v15, v16, v17, v70, v73, v76, *(&v76 + 1), v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, 0);
       if (v18)
       {
-        v8 = v18;
+        addedAccountContainersByParentContainerIdentifier = v18;
         v19 = *v95;
         while (2)
         {
-          for (i = 0; i != v8; i = i + 1)
+          for (i = 0; i != addedAccountContainersByParentContainerIdentifier; i = i + 1)
           {
             if (*v95 != v19)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allKeys);
             }
 
             v21 = *(*(&v94 + 1) + 8 * i);
@@ -5935,13 +5935,13 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
             {
               if (v0)
               {
-                v31 = [v4 addedAccounts];
+                addedAccounts2 = [v4 addedAccounts];
                 v89 = MEMORY[0x1E69E9820];
                 v90 = 3221225472;
                 v91 = __58__CNiOSAddressBookDataMapper_canExecuteSaveRequest_error___block_invoke;
                 v92 = &unk_1E74143C0;
                 v93 = v21;
-                v32 = [v31 _cn_firstObjectPassingTest:&v89];
+                v32 = [addedAccounts2 _cn_firstObjectPassingTest:&v89];
 
                 if (v32)
                 {
@@ -5964,8 +5964,8 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
             }
           }
 
-          v8 = OUTLINED_FUNCTION_66(v22, v23, v24, v25, v26, v27, v28, v29, v71, v74, v76, *(&v76 + 1), v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94);
-          if (v8)
+          addedAccountContainersByParentContainerIdentifier = OUTLINED_FUNCTION_66(v22, v23, v24, v25, v26, v27, v28, v29, v71, v74, v76, *(&v76 + 1), v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94);
+          if (addedAccountContainersByParentContainerIdentifier)
           {
             continue;
           }
@@ -5974,17 +5974,17 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
         }
       }
 
-      v30 = [v4 addedMembersByGroupIdentifier];
-      if ([v30 count])
+      addedMembersByGroupIdentifier = [v4 addedMembersByGroupIdentifier];
+      if ([addedMembersByGroupIdentifier count])
       {
       }
 
       else
       {
-        v35 = [v4 addedSubgroupsByGroupIdentifier];
-        v8 = [v35 count];
+        addedSubgroupsByGroupIdentifier = [v4 addedSubgroupsByGroupIdentifier];
+        addedAccountContainersByParentContainerIdentifier = [addedSubgroupsByGroupIdentifier count];
 
-        if (!v8)
+        if (!addedAccountContainersByParentContainerIdentifier)
         {
           goto LABEL_42;
         }
@@ -5992,18 +5992,18 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
 
       [MEMORY[0x1E695DFA8] set];
       objc_claimAutoreleasedReturnValue();
-      v36 = [OUTLINED_FUNCTION_48() addedMembersByGroupIdentifier];
-      [v36 allKeys];
+      addedMembersByGroupIdentifier2 = [OUTLINED_FUNCTION_48() addedMembersByGroupIdentifier];
+      [addedMembersByGroupIdentifier2 allKeys];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_40() addObjectsFromArray:?];
 
-      v37 = [v4 addedSubgroupsByGroupIdentifier];
-      [v37 allKeys];
+      addedSubgroupsByGroupIdentifier2 = [v4 addedSubgroupsByGroupIdentifier];
+      [addedSubgroupsByGroupIdentifier2 allKeys];
       objc_claimAutoreleasedReturnValue();
       [OUTLINED_FUNCTION_40() addObjectsFromArray:?];
 
-      v38 = [v4 addedGroupsByContainerIdentifier];
-      v39 = [v38 allValues];
+      addedGroupsByContainerIdentifier = [v4 addedGroupsByContainerIdentifier];
+      allValues = [addedGroupsByContainerIdentifier allValues];
 
       v75 = OUTLINED_FUNCTION_69(v40, v41, v42, v43, v44, v45, v46, v47, v71, v74, v76, *(&v76 + 1), v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), 0, 0, 0, 0, 0, 0, 0, 0, v88, v89, v90, v91, v92, v93, v94, *(&v94 + 1), v95, *(&v95 + 1), v96, *(&v96 + 1), v97, *(&v97 + 1), v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117);
       if (v75)
@@ -6016,10 +6016,10 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
             OUTLINED_FUNCTION_53();
             if (!v49)
             {
-              objc_enumerationMutation(v39);
+              objc_enumerationMutation(allValues);
             }
 
-            v50 = v39;
+            v50 = allValues;
             v51 = *(v81 + 8 * j);
             v76 = 0u;
             v77 = 0u;
@@ -6040,13 +6040,13 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
                     objc_enumerationMutation(v52);
                   }
 
-                  v57 = [*(*(&v76 + 1) + 8 * k) identifier];
-                  if ([v30 containsObject:v57])
+                  identifier = [*(*(&v76 + 1) + 8 * k) identifier];
+                  if ([addedMembersByGroupIdentifier containsObject:identifier])
                   {
-                    v39 = v50;
+                    allValues = v50;
                     if (v0)
                     {
-                      v66 = [v4 groupWithAddedSubgroupForGroupIdentifier:v57];
+                      v66 = [v4 groupWithAddedSubgroupForGroupIdentifier:identifier];
                       v67 = v66;
                       if (v66)
                       {
@@ -6079,7 +6079,7 @@ uint64_t __92__CNiOSAddressBookDataMapper_encodedContactsCursorForFetchRequest_c
               }
             }
 
-            v39 = v50;
+            allValues = v50;
           }
 
           v75 = OUTLINED_FUNCTION_69(v58, v59, v60, v61, v62, v63, v64, v65, v72, v75, v76, *(&v76 + 1), v77, *(&v77 + 1), v78, *(&v78 + 1), v79, *(&v79 + 1), v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, *(&v94 + 1), v95, *(&v95 + 1), v96, *(&v96 + 1), v97, *(&v97 + 1), v98, v99, v100, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117);
@@ -6115,20 +6115,20 @@ LABEL_42:
   return v6;
 }
 
-- (uint64_t)_processAccountsFromSaveContext:(void *)a3 error:
+- (uint64_t)_processAccountsFromSaveContext:(void *)context error:
 {
-  v78 = a3;
+  contextCopy = context;
   v124 = *MEMORY[0x1E69E9840];
   v4 = a2;
   v5 = v4;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_76;
   }
 
   memset(v103, 0, sizeof(v103));
-  v6 = [v4 saveRequest];
-  v7 = [v6 addedAccounts];
+  saveRequest = [v4 saveRequest];
+  addedAccounts = [saveRequest addedAccounts];
 
   v10 = OUTLINED_FUNCTION_50(v8, v9, v103, v123);
   v11 = &CNErrorUserInfoAffectedRecordsKey;
@@ -6143,11 +6143,11 @@ LABEL_42:
         OUTLINED_FUNCTION_53();
         if (!v15)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(addedAccounts);
         }
 
         v16 = *(*(&v103[0] + 1) + 8 * i);
-        v17 = [v5 abAccountsByIdentifier];
+        abAccountsByIdentifier = [v5 abAccountsByIdentifier];
         [v16 identifier];
         objc_claimAutoreleasedReturnValue();
         v18 = [OUTLINED_FUNCTION_42() objectForKey:?];
@@ -6156,8 +6156,8 @@ LABEL_42:
         {
           v121 = @"CNInvalidRecords";
           v120 = v16;
-          v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v120 count:1];
-          v122 = v28;
+          identifier2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v120 count:1];
+          v122 = identifier2;
           v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
           v30 = [CNErrorFactory errorWithCode:201 userInfo:v29];
           goto LABEL_70;
@@ -6171,9 +6171,9 @@ LABEL_42:
           [v16 identifier];
           if (ABAccountSetInternalUUID() && ([v16 externalIdentifierString], ABAccountSetIdentifier()) && ABAddressBookAddRecord(objc_msgSend(v5, "addressBook"), v20, &error))
           {
-            v21 = [v5 abAccountsByIdentifier];
-            v22 = [v16 identifier];
-            [v21 setObject:v20 forKey:v22];
+            abAccountsByIdentifier2 = [v5 abAccountsByIdentifier];
+            identifier = [v16 identifier];
+            [abAccountsByIdentifier2 setObject:v20 forKey:identifier];
 
             v11 = 1;
           }
@@ -6228,8 +6228,8 @@ LABEL_42:
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v31 = [v5 saveRequest];
-  v7 = [v31 removedAccounts];
+  saveRequest2 = [v5 saveRequest];
+  addedAccounts = [saveRequest2 removedAccounts];
 
   v84 = v5;
   v81 = OUTLINED_FUNCTION_50(v32, v33, &v98, v119);
@@ -6242,7 +6242,7 @@ LABEL_42:
   v80 = *v99;
   v34 = *MEMORY[0x1E6996530];
   v35 = 1;
-  v82 = v7;
+  v82 = addedAccounts;
   v79 = *MEMORY[0x1E6996530];
   do
   {
@@ -6251,20 +6251,20 @@ LABEL_42:
     {
       if (*v99 != v80)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(addedAccounts);
       }
 
       v37 = *(*(&v98 + 1) + 8 * v36);
       [v5 addressBook];
-      v38 = [v37 externalIdentifierString];
+      externalIdentifierString = [v37 externalIdentifierString];
       v39 = ABAddressBookCopyAccountWithIdentifier();
       if (!v39)
       {
 
 LABEL_65:
         v117 = @"CNInvalidRecordIdentifiers";
-        v28 = [v37 identifier];
-        v116 = v28;
+        identifier2 = [v37 identifier];
+        v116 = identifier2;
         v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v116 count:1];
         v118 = v29;
         v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v118 forKeys:&v117 count:1];
@@ -6300,27 +6300,27 @@ LABEL_70:
       v95 = v91;
       v88 = v41;
       v87 = [v41 _cn_flatMap:v94];
-      v44 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v86 = v43;
       if (((*(v34 + 16))(v34, v43) & 1) == 0)
       {
-        [v44 addObjectsFromArray:v43];
+        [array addObjectsFromArray:v43];
       }
 
       if (((*(v34 + 16))(v34, v87) & 1) == 0)
       {
-        [v44 addObjectsFromArray:v87];
+        [array addObjectsFromArray:v87];
       }
 
       if (((*(v34 + 16))(v34, v41) & 1) == 0)
       {
-        [v44 addObjectsFromArray:v41];
+        [array addObjectsFromArray:v41];
       }
 
       v85 = v36;
-      [v44 addObject:v40];
+      [array addObject:v40];
       memset(v93, 0, sizeof(v93));
-      obj = v44;
+      obj = array;
       v45 = [obj countByEnumeratingWithState:v93 objects:v115 count:16];
       if (v45)
       {
@@ -6367,7 +6367,7 @@ LABEL_70:
 
       v5 = v84;
       ++v36;
-      v7 = v82;
+      addedAccounts = v82;
       v34 = v79;
     }
 
@@ -6385,9 +6385,9 @@ LABEL_70:
 
 LABEL_53:
   memset(v92, 0, sizeof(v92));
-  v56 = [v5 saveRequest];
-  v57 = [v56 defaultAccountContainersByAccountIdentifier];
-  v7 = [v57 allKeys];
+  saveRequest3 = [v5 saveRequest];
+  defaultAccountContainersByAccountIdentifier = [saveRequest3 defaultAccountContainersByAccountIdentifier];
+  addedAccounts = [defaultAccountContainersByAccountIdentifier allKeys];
 
   v60 = OUTLINED_FUNCTION_50(v58, v59, v92, v111);
   if (!v60)
@@ -6398,7 +6398,7 @@ LABEL_53:
 
   v61 = v60;
   obja = v27;
-  v83 = v7;
+  v83 = addedAccounts;
   while (2)
   {
     v62 = 0;
@@ -6411,18 +6411,18 @@ LABEL_53:
       }
 
       v63 = *(*(&v92[0] + 1) + 8 * v62);
-      v64 = [v84 abAccountsByIdentifier];
-      v65 = [v64 objectForKeyedSubscript:v63];
+      abAccountsByIdentifier3 = [v84 abAccountsByIdentifier];
+      v65 = [abAccountsByIdentifier3 objectForKeyedSubscript:v63];
 
-      v66 = [v84 saveRequest];
-      v67 = [v66 defaultAccountContainersByAccountIdentifier];
-      v68 = [v67 objectForKeyedSubscript:v63];
-      v28 = [v68 firstObject];
+      saveRequest4 = [v84 saveRequest];
+      defaultAccountContainersByAccountIdentifier2 = [saveRequest4 defaultAccountContainersByAccountIdentifier];
+      v68 = [defaultAccountContainersByAccountIdentifier2 objectForKeyedSubscript:v63];
+      identifier2 = [v68 firstObject];
 
-      v69 = [v84 abSourcesByIdentifier];
-      [v28 identifier];
+      abSourcesByIdentifier = [v84 abSourcesByIdentifier];
+      [identifier2 identifier];
       objc_claimAutoreleasedReturnValue();
-      v70 = [OUTLINED_FUNCTION_65() objectForKeyedSubscript:v67];
+      v70 = [OUTLINED_FUNCTION_65() objectForKeyedSubscript:defaultAccountContainersByAccountIdentifier2];
 
       if (!v65 || !v70)
       {
@@ -6436,7 +6436,7 @@ LABEL_69:
         v30 = [CNErrorFactory errorWithCode:v75 userInfo:v74];
 
         v13 = v74;
-        v7 = v83;
+        addedAccounts = v83;
         v5 = v84;
         goto LABEL_70;
       }
@@ -6464,7 +6464,7 @@ LABEL_69:
       break;
     }
 
-    v7 = v83;
+    addedAccounts = v83;
     v61 = OUTLINED_FUNCTION_50(v72, v73, v92, v111);
     v55 = 1;
     if (v61)
@@ -6480,60 +6480,60 @@ LABEL_69:
 LABEL_71:
 
 LABEL_72:
-  if (v78 && (v55 & 1) == 0)
+  if (contextCopy && (v55 & 1) == 0)
   {
     v76 = v27;
-    *v78 = v27;
+    *contextCopy = v27;
   }
 
   v104 = v55;
 
-  a1 = v104;
+  self = v104;
 LABEL_76:
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_purgeMetadataFromDeletedContactsFromSaveContext:(void *)a3 error:
+- (uint64_t)_purgeMetadataFromDeletedContactsFromSaveContext:(void *)context error:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [OUTLINED_FUNCTION_48() contactIdentifiersNeedingMetadataPurge];
-    v9 = [v8 count];
+    contactIdentifiersNeedingMetadataPurge = [OUTLINED_FUNCTION_48() contactIdentifiersNeedingMetadataPurge];
+    v9 = [contactIdentifiersNeedingMetadataPurge count];
 
     if (v9)
     {
-      v25 = a3;
+      contextCopy = context;
       v10 = objc_alloc_init(CNContactImageStore);
-      v11 = [v6 contactIdentifiersNeedingMetadataPurge];
-      v12 = [CNContactImageDeleteRequest requestToDeleteImagesForContactIdentifiers:v11];
+      contactIdentifiersNeedingMetadataPurge2 = [v6 contactIdentifiersNeedingMetadataPurge];
+      v12 = [CNContactImageDeleteRequest requestToDeleteImagesForContactIdentifiers:contactIdentifiersNeedingMetadataPurge2];
 
       v26 = 0;
       v13 = [(CNContactImageStore *)v10 performDeleteRequest:v12 error:&v26];
       v14 = v26;
       if (!v13)
       {
-        [*(a1 + 32) deleteImageRecentsMetadataRequestFailed:v14];
+        [*(self + 32) deleteImageRecentsMetadataRequestFailed:v14];
       }
 
       v15 = objc_alloc_init(CNContactPosterStore);
-      v16 = [v6 contactIdentifiersNeedingMetadataPurge];
-      v17 = [CNContactPosterDeleteRequest requestToDeletePostersForContactIdentifiers:v16];
+      contactIdentifiersNeedingMetadataPurge3 = [v6 contactIdentifiersNeedingMetadataPurge];
+      v17 = [CNContactPosterDeleteRequest requestToDeletePostersForContactIdentifiers:contactIdentifiersNeedingMetadataPurge3];
 
       v18 = [OUTLINED_FUNCTION_36() performDeleteRequest:? error:?];
       v19 = v14;
 
       if ((v18 & 1) == 0)
       {
-        [*(a1 + 32) deletePosterRecentsMetadataRequestFailed:v19];
+        [*(self + 32) deletePosterRecentsMetadataRequestFailed:v19];
       }
 
       objc_autoreleasePoolPop(v3);
       v20 = v19;
       v21 = v20;
-      if (v25)
+      if (contextCopy)
       {
         v22 = v18;
       }
@@ -6547,7 +6547,7 @@ LABEL_76:
       {
         v23 = v20;
         v18 = 0;
-        *v25 = v21;
+        *contextCopy = v21;
       }
     }
 
@@ -6567,26 +6567,26 @@ LABEL_76:
   return v18;
 }
 
-- (void)_postProcessContactsFromSaveContext:(uint64_t)a1
+- (void)_postProcessContactsFromSaveContext:(uint64_t)context
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (context)
   {
-    v6 = [v4 saveRequest];
-    v7 = [v6 deletedContactsByIdentifier];
+    saveRequest = [v4 saveRequest];
+    deletedContactsByIdentifier = [saveRequest deletedContactsByIdentifier];
 
     +[CN writableContactProperties];
     objc_claimAutoreleasedReturnValue();
-    v8 = [OUTLINED_FUNCTION_65() saveRequest];
-    v9 = [v8 allContacts];
+    saveRequest2 = [OUTLINED_FUNCTION_65() saveRequest];
+    allContacts = [saveRequest2 allContacts];
     OUTLINED_FUNCTION_0();
     OUTLINED_FUNCTION_12();
-    v12 = v7;
+    v12 = deletedContactsByIdentifier;
     v13 = v5;
     v14 = v2;
     v10 = v2;
-    v11 = v7;
+    v11 = deletedContactsByIdentifier;
     [OUTLINED_FUNCTION_37() enumerateObjectsUsingBlock:?];
   }
 }
@@ -6600,13 +6600,13 @@ LABEL_76:
   v8 = v7;
   if (v5)
   {
-    v9 = [v7 saveRequest];
-    [v9 allGroups];
+    saveRequest = [v7 saveRequest];
+    [saveRequest allGroups];
     objc_claimAutoreleasedReturnValue();
     v10 = [OUTLINED_FUNCTION_42() setWithArray:?];
 
-    v11 = [v8 saveRequest];
-    [v11 deletedGroups];
+    saveRequest2 = [v8 saveRequest];
+    [saveRequest2 deletedGroups];
     objc_claimAutoreleasedReturnValue();
     v12 = [OUTLINED_FUNCTION_40() setWithArray:?];
 
@@ -6635,8 +6635,8 @@ LABEL_76:
           v18 = *(*(&v41 + 1) + 8 * i);
           [v8 abGroupsByIdentifier];
           objc_claimAutoreleasedReturnValue();
-          v19 = [OUTLINED_FUNCTION_62() identifier];
-          v20 = [v3 objectForKeyedSubscript:v19];
+          identifier = [OUTLINED_FUNCTION_62() identifier];
+          v20 = [v3 objectForKeyedSubscript:identifier];
 
           RecordID = ABRecordGetRecordID(v20);
           if (RecordID != [v18 iOSLegacyIdentifier])
@@ -6651,8 +6651,8 @@ LABEL_76:
           }
 
           v23 = v22;
-          v24 = [v18 name];
-          v25 = [v24 isEqual:v23];
+          name = [v18 name];
+          v25 = [name isEqual:v23];
 
           if ((v25 & 1) == 0)
           {
@@ -6660,11 +6660,11 @@ LABEL_76:
           }
 
           v3 = [v18 mutableCopy];
-          v26 = [v3 freezeWithSelfAsSnapshot];
-          [v18 setSnapshot:v26];
-          v27 = [v8 saveResponse];
+          freezeWithSelfAsSnapshot = [v3 freezeWithSelfAsSnapshot];
+          [v18 setSnapshot:freezeWithSelfAsSnapshot];
+          saveResponse = [v8 saveResponse];
           v2 = [v8 indexPathForGroupInstance:v18];
-          [v27 setGroupSnapshot:v26 forIndexPath:v2];
+          [saveResponse setGroupSnapshot:freezeWithSelfAsSnapshot forIndexPath:v2];
         }
 
         v14 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
@@ -6719,14 +6719,14 @@ LABEL_76:
   v4 = v3;
   if (v1)
   {
-    v5 = [v3 saveRequest];
-    v6 = [v5 allContainers];
+    saveRequest = [v3 saveRequest];
+    allContainers = [saveRequest allContainers];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v7 = v6;
+    v7 = allContainers;
     OUTLINED_FUNCTION_57();
     obj = v8;
     v28 = [v8 countByEnumeratingWithState:? objects:? count:?];
@@ -6744,9 +6744,9 @@ LABEL_76:
           }
 
           v10 = *(*(&v33 + 1) + 8 * i);
-          v11 = [v4 abSourcesByIdentifier];
-          v12 = [v10 identifier];
-          v13 = [v11 objectForKeyedSubscript:v12];
+          abSourcesByIdentifier = [v4 abSourcesByIdentifier];
+          identifier = [v10 identifier];
+          v13 = [abSourcesByIdentifier objectForKeyedSubscript:identifier];
 
           v31 = 0u;
           v32 = 0u;
@@ -6789,12 +6789,12 @@ LABEL_76:
           }
 
           v21 = [v10 mutableCopy];
-          v22 = [v21 freezeWithSelfAsSnapshot];
-          [v10 setSnapshot:v22];
+          freezeWithSelfAsSnapshot = [v21 freezeWithSelfAsSnapshot];
+          [v10 setSnapshot:freezeWithSelfAsSnapshot];
           v4 = v27;
-          v23 = [v27 saveResponse];
+          saveResponse = [v27 saveResponse];
           v24 = [v27 indexPathForContainerInstance:v10];
-          [v23 setContainerSnapshot:v22 forIndexPath:v24];
+          [saveResponse setContainerSnapshot:freezeWithSelfAsSnapshot forIndexPath:v24];
         }
 
         OUTLINED_FUNCTION_57();
@@ -6820,13 +6820,13 @@ LABEL_76:
     if (!v4)
     {
       objc_opt_class();
-      v13 = +[CNiOSAddressBookDataMapper os_log];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      deletedContacts = +[CNiOSAddressBookDataMapper os_log];
+      if (os_log_type_enabled(deletedContacts, OS_LOG_TYPE_ERROR))
       {
         v15 = v1[5];
-        v16 = [v15 clientBundleIdentifier];
+        clientBundleIdentifier = [v15 clientBundleIdentifier];
         OUTLINED_FUNCTION_1();
-        OUTLINED_FUNCTION_38(&dword_1954A0000, v13, v17, "authorization context is nil (Client: %@)", v18);
+        OUTLINED_FUNCTION_38(&dword_1954A0000, deletedContacts, v17, "authorization context is nil (Client: %@)", v18);
       }
 
       goto LABEL_8;
@@ -6835,21 +6835,21 @@ LABEL_76:
     if ([v4 isLimitedAccessGranted])
     {
       v6 = *MEMORY[0x1E6996570];
-      v7 = [v5 clientBundleIdentifier];
-      v8 = (*(v6 + 16))(v6, v7);
+      clientBundleIdentifier2 = [v5 clientBundleIdentifier];
+      v8 = (*(v6 + 16))(v6, clientBundleIdentifier2);
 
       if (v8)
       {
         [v5 clientBundleIdentifier];
         objc_claimAutoreleasedReturnValue();
-        v9 = [OUTLINED_FUNCTION_65() addedContactsByContainerIdentifier];
-        v10 = [v9 allValues];
-        v11 = [v10 _cn_flatten];
-        v12 = [v11 _cn_map:CNContactToIdentifier];
+        addedContactsByContainerIdentifier = [OUTLINED_FUNCTION_65() addedContactsByContainerIdentifier];
+        allValues = [addedContactsByContainerIdentifier allValues];
+        _cn_flatten = [allValues _cn_flatten];
+        v12 = [_cn_flatten _cn_map:CNContactToIdentifier];
         [v1 addLimitedAccessForBundle:v8 contactIdentifiers:v12];
 
-        v13 = [v3 deletedContacts];
-        v14 = [v13 _cn_map:CNContactToIdentifier];
+        deletedContacts = [v3 deletedContacts];
+        v14 = [deletedContacts _cn_map:CNContactToIdentifier];
         [(CNiOSAddressBookDataMapper *)v1 removeContactIdentifiersFromLimitedAcessForAllBundles:v14];
 
 LABEL_8:
@@ -6858,15 +6858,15 @@ LABEL_8:
   }
 }
 
-- (BOOL)_fetchAccountsInSaveContext:(void *)a3 error:
+- (BOOL)_fetchAccountsInSaveContext:(void *)context error:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     [v5 addressBook];
     v7 = ABAddressBookCopyArrayOfAllAccounts();
-    a1 = v7 != 0;
+    self = v7 != 0;
     if (v7)
     {
       v8 = v7;
@@ -6877,8 +6877,8 @@ LABEL_8:
         {
           ValueAtIndex = CFArrayGetValueAtIndex(v8, v9);
           v11 = ABAccountCopyInternalUUID();
-          v12 = [v6 abAccountsByIdentifier];
-          [v12 setObject:ValueAtIndex forKey:v11];
+          abAccountsByIdentifier = [v6 abAccountsByIdentifier];
+          [abAccountsByIdentifier setObject:ValueAtIndex forKey:v11];
 
           if (v11)
           {
@@ -6899,36 +6899,36 @@ LABEL_8:
     {
       v14 = +[CNErrorFactory genericiOSABError];
       v13 = v14;
-      if (a3)
+      if (context)
       {
         v15 = v14;
-        *a3 = v13;
+        *context = v13;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_fetchContainersInSaveContext:(void *)a3 error:
+- (uint64_t)_fetchContainersInSaveContext:(void *)context error:
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
     v20 = 0;
     goto LABEL_13;
   }
 
   v29 = 0;
-  v9 = [v7 saveRequest];
-  v10 = [v9 allContainerIdentifierStrings:&v29];
+  saveRequest = [v7 saveRequest];
+  v10 = [saveRequest allContainerIdentifierStrings:&v29];
 
   if (v29 == 1)
   {
     v28 = 0;
-    v24 = -[CNiOSAddressBookDataMapper defaultContainerIdentifierForAddressBook:error:](a1, [v8 addressBook], &v28);
+    v24 = -[CNiOSAddressBookDataMapper defaultContainerIdentifierForAddressBook:error:](self, [v8 addressBook], &v28);
     v25 = v28;
     v26 = v25;
     if (v24)
@@ -6959,11 +6959,11 @@ LABEL_8:
     {
       v22 = +[CNErrorFactory genericiOSABError];
       v18 = v22;
-      if (a3)
+      if (context)
       {
         v23 = v22;
         v19 = 0;
-        *a3 = v18;
+        *context = v18;
       }
 
       else
@@ -6983,8 +6983,8 @@ LABEL_8:
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v12, v13);
         ABRecordCopyValue(ValueAtIndex, v14);
-        v16 = [OUTLINED_FUNCTION_55() abSourcesByIdentifier];
-        OUTLINED_FUNCTION_51(v16, v17);
+        abSourcesByIdentifier = [OUTLINED_FUNCTION_55() abSourcesByIdentifier];
+        OUTLINED_FUNCTION_51(abSourcesByIdentifier, v17);
 
         if (v3)
         {
@@ -7011,20 +7011,20 @@ LABEL_13:
   return v20;
 }
 
-- (uint64_t)_fetchContactsInSaveContext:(void *)a3 error:
+- (uint64_t)_fetchContactsInSaveContext:(void *)context error:
 {
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
     v19 = 0;
     goto LABEL_12;
   }
 
-  v9 = [v7 saveRequest];
-  v10 = [v9 allContactIdentifiers];
+  saveRequest = [v7 saveRequest];
+  allContactIdentifiers = [saveRequest allContactIdentifiers];
 
-  if ([v10 count])
+  if ([allContactIdentifiers count])
   {
     [v8 addressBook];
     v11 = ABAddressBookCopyPeopleWithUUIDs();
@@ -7032,11 +7032,11 @@ LABEL_13:
     {
       v21 = +[CNErrorFactory genericiOSABError];
       v18 = v21;
-      if (a3)
+      if (context)
       {
         v22 = v21;
         v19 = 0;
-        *a3 = v18;
+        *context = v18;
       }
 
       else
@@ -7056,8 +7056,8 @@ LABEL_13:
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v12, v13);
         ABRecordCopyValue(ValueAtIndex, v14);
-        v16 = [OUTLINED_FUNCTION_55() abPersonsByIdentifier];
-        OUTLINED_FUNCTION_51(v16, v17);
+        abPersonsByIdentifier = [OUTLINED_FUNCTION_55() abPersonsByIdentifier];
+        OUTLINED_FUNCTION_51(abPersonsByIdentifier, v17);
 
         if (v3)
         {
@@ -7081,20 +7081,20 @@ LABEL_12:
   return v19;
 }
 
-- (uint64_t)_fetchGroupsInSaveContext:(void *)a3 error:
+- (uint64_t)_fetchGroupsInSaveContext:(void *)context error:
 {
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
     v19 = 0;
     goto LABEL_12;
   }
 
-  v9 = [v7 saveRequest];
-  v10 = [v9 allGroupIdentifiers];
+  saveRequest = [v7 saveRequest];
+  allGroupIdentifiers = [saveRequest allGroupIdentifiers];
 
-  if ([v10 count])
+  if ([allGroupIdentifiers count])
   {
     [v8 addressBook];
     v11 = ABAddressBookCopyGroupsWithUUIDs();
@@ -7102,11 +7102,11 @@ LABEL_12:
     {
       v21 = +[CNErrorFactory genericiOSABError];
       v18 = v21;
-      if (a3)
+      if (context)
       {
         v22 = v21;
         v19 = 0;
-        *a3 = v18;
+        *context = v18;
       }
 
       else
@@ -7126,8 +7126,8 @@ LABEL_12:
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v12, v13);
         ABRecordCopyValue(ValueAtIndex, v14);
-        v16 = [OUTLINED_FUNCTION_55() abGroupsByIdentifier];
-        OUTLINED_FUNCTION_51(v16, v17);
+        abGroupsByIdentifier = [OUTLINED_FUNCTION_55() abGroupsByIdentifier];
+        OUTLINED_FUNCTION_51(abGroupsByIdentifier, v17);
 
         if (v3)
         {
@@ -7151,11 +7151,11 @@ LABEL_12:
   return v19;
 }
 
-- (id)defaultContainerIdentifierForAddressBook:(void *)a3 error:
+- (id)defaultContainerIdentifierForAddressBook:(void *)book error:
 {
-  if (a1)
+  if (self)
   {
-    v3 = [(CNiOSAddressBookDataMapper *)a1 _defaultSourceInAddressBook:a2 error:a3];
+    v3 = [(CNiOSAddressBookDataMapper *)self _defaultSourceInAddressBook:a2 error:book];
     if (v3)
     {
       v4 = +[CN containerIdentifierDescription];
@@ -7473,9 +7473,9 @@ LABEL_34:
 
 - (uint64_t)_hasManagementRestrictionsEnabled
 {
-  if (a1 && *(a1 + 40))
+  if (self && *(self + 40))
   {
-    return [*(a1 + 40) deviceHasManagementRestrictions];
+    return [*(self + 40) deviceHasManagementRestrictions];
   }
 
   else
@@ -7484,9 +7484,9 @@ LABEL_34:
   }
 }
 
-- (void)_defaultSourceInAddressBook:(void *)a3 error:
+- (void)_defaultSourceInAddressBook:(void *)book error:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -7502,9 +7502,9 @@ LABEL_34:
     v7 = 0;
   }
 
-  if ([(CNiOSAddressBookDataMapper *)a1 _hasManagementRestrictionsEnabled]&& ([CNiOSAddressBookDataMapper _canWriteUnderManagementRestrictionsToSource:a1 inAddressBook:?]& 1) == 0)
+  if ([(CNiOSAddressBookDataMapper *)self _hasManagementRestrictionsEnabled]&& ([CNiOSAddressBookDataMapper _canWriteUnderManagementRestrictionsToSource:self inAddressBook:?]& 1) == 0)
   {
-    v7 = [(CNiOSAddressBookDataMapper *)a1 _alternativeSourceWithAccessibleAccountFromAddressBook:?];
+    v7 = [(CNiOSAddressBookDataMapper *)self _alternativeSourceWithAccessibleAccountFromAddressBook:?];
   }
 
   if (v7)
@@ -7517,10 +7517,10 @@ LABEL_34:
   {
     v10 = [CNErrorFactory errorWithCode:101];
     v9 = v10;
-    if (a3)
+    if (book)
     {
       v11 = v10;
-      *a3 = v9;
+      *book = v9;
     }
   }
 
@@ -7548,33 +7548,33 @@ LABEL_34:
   return result;
 }
 
-- (void)_logWillDeleteWithSaveContext:(uint64_t)a1
+- (void)_logWillDeleteWithSaveContext:(uint64_t)context
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (context)
   {
-    v5 = [v3 saveRequest];
-    v6 = [v5 deletedContacts];
-    *(a1 + 8) = [v6 count] == 1;
+    saveRequest = [v3 saveRequest];
+    deletedContacts = [saveRequest deletedContacts];
+    *(context + 8) = [deletedContacts count] == 1;
 
-    if (*(a1 + 8) == 1)
+    if (*(context + 8) == 1)
     {
-      v7 = [v4 saveRequest];
-      v8 = [v7 allContactIdentifiers];
+      saveRequest2 = [v4 saveRequest];
+      allContactIdentifiers = [saveRequest2 allContactIdentifiers];
 
-      v9 = [v4 abPersonsByIdentifier];
-      v10 = [v9 allKeys];
+      abPersonsByIdentifier = [v4 abPersonsByIdentifier];
+      allKeys = [abPersonsByIdentifier allKeys];
 
       objc_opt_class();
       v11 = +[CNiOSAddressBookDataMapper os_log];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        [v8 count];
+        [allContactIdentifiers count];
         OUTLINED_FUNCTION_1();
         v14 = 2114;
-        v15 = v8;
+        v15 = allContactIdentifiers;
         _os_log_impl(&dword_1954A0000, v11, OS_LOG_TYPE_DEFAULT, "_processContactsFromSaveContext delete, save context contact identifiers (%ld):%{public}@", v13, 0x16u);
       }
 
@@ -7582,10 +7582,10 @@ LABEL_34:
       v12 = +[CNiOSAddressBookDataMapper os_log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        [v10 count];
+        [allKeys count];
         OUTLINED_FUNCTION_1();
         v14 = 2114;
-        v15 = v10;
+        v15 = allKeys;
         _os_log_impl(&dword_1954A0000, v12, OS_LOG_TYPE_DEFAULT, "_processContactsFromSaveContext delete, fetched contact identifiers (%ld):%{public}@", v13, 0x16u);
       }
     }
@@ -7799,10 +7799,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   objc_autoreleasePoolPop(context);
 }
 
-- (void)_logIgnoringSuggestedLinkedSetContactIdentifier:(void *)a1
+- (void)_logIgnoringSuggestedLinkedSetContactIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     OUTLINED_FUNCTION_25();
     if (v4)
@@ -7819,10 +7819,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (void)_logIngoringImplicitAugmentationLinkedSetContactIdentifier:(void *)a1
+- (void)_logIngoringImplicitAugmentationLinkedSetContactIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     OUTLINED_FUNCTION_25();
     if (v4)
@@ -7839,10 +7839,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (void)_logWillDeleteLinkedSetContactIdentifier:(void *)a1
+- (void)_logWillDeleteLinkedSetContactIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     OUTLINED_FUNCTION_25();
     if (v4)
@@ -7859,10 +7859,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (void)_logDeleteHasNoPersistedContactIdentifier:(void *)a1
+- (void)_logDeleteHasNoPersistedContactIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     OUTLINED_FUNCTION_25();
     if (v4)
@@ -7879,10 +7879,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (void)_logDeleteHasNoABRecordForContactIdentifier:(void *)a1
+- (void)_logDeleteHasNoABRecordForContactIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     OUTLINED_FUNCTION_25();
     if (v4)
@@ -7899,10 +7899,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (void)_logDeleteHasFoundAtLeastOnePersistedContactIdentifier:(void *)a1
+- (void)_logDeleteHasFoundAtLeastOnePersistedContactIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     OUTLINED_FUNCTION_25();
     if (v4)
@@ -7919,10 +7919,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (uint64_t)_hasManagedWriteAccessToAccountContainingPerson:(void *)a3 fromSaveContext:
+- (uint64_t)_hasManagedWriteAccessToAccountContainingPerson:(void *)person fromSaveContext:
 {
-  v5 = a3;
-  if (a1)
+  personCopy = person;
+  if (self)
   {
     v6 = ABPersonCopySource(a2);
     if (v6)
@@ -7930,25 +7930,25 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
       CFAutorelease(v6);
     }
 
-    [v5 addressBook];
-    if ([(CNiOSAddressBookDataMapper *)a1 _hasManagementRestrictionsEnabled])
+    [personCopy addressBook];
+    if ([(CNiOSAddressBookDataMapper *)self _hasManagementRestrictionsEnabled])
     {
-      a1 = [CNiOSAddressBookDataMapper _canWriteUnderManagementRestrictionsToSource:a1 inAddressBook:?];
+      self = [CNiOSAddressBookDataMapper _canWriteUnderManagementRestrictionsToSource:self inAddressBook:?];
     }
 
     else
     {
-      a1 = 1;
+      self = 1;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_logDeleteHasManagedWriteAccess:(void *)a3 contactIdentifier:
+- (void)_logDeleteHasManagedWriteAccess:(void *)access contactIdentifier:
 {
-  v4 = a3;
-  if (a1)
+  accessCopy = access;
+  if (self)
   {
     OUTLINED_FUNCTION_25();
     if (v5)
@@ -7965,12 +7965,12 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (void)_logDeleteHasRemovedRecordWithResult:(void *)a3 err:
+- (void)_logDeleteHasRemovedRecordWithResult:(void *)result err:
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 8) == 1)
+  if (self && *(self + 8) == 1)
   {
-    v3 = a3;
+    resultCopy = result;
     objc_opt_class();
     v4 = +[CNiOSAddressBookDataMapper os_log];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -7981,10 +7981,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (void)_logDeleteSuccess:(int)a3 hasFoundAtLeastOneBackingPerson:(int)a4 hasDeletedAtLeastOneLinkedContact:(int)a5 hasFoundMissingContactWithNoSnapshot:
+- (void)_logDeleteSuccess:(int)success hasFoundAtLeastOneBackingPerson:(int)person hasDeletedAtLeastOneLinkedContact:(int)contact hasFoundMissingContactWithNoSnapshot:
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 8) == 1)
+  if (self && *(self + 8) == 1)
   {
     objc_opt_class();
     v9 = +[CNiOSAddressBookDataMapper os_log];
@@ -7996,7 +7996,7 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
         v10 = @"success";
       }
 
-      if (a3)
+      if (success)
       {
         v11 = @"YES";
       }
@@ -8008,7 +8008,7 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
 
       v14 = 138544130;
       v15 = v10;
-      if (a4)
+      if (person)
       {
         v12 = @"YES";
       }
@@ -8022,7 +8022,7 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
       v17 = v11;
       v18 = 2114;
       v19 = v12;
-      if (a5)
+      if (contact)
       {
         v13 = @"YES";
       }
@@ -8039,11 +8039,11 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   }
 }
 
-- (void)_logDeleteHasError:(uint64_t)a1
+- (void)_logDeleteHasError:(uint64_t)error
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
     OUTLINED_FUNCTION_25();
     if (v4)
@@ -8274,10 +8274,10 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)_alternativeSourceWithAccessibleAccountFromAddressBook:(uint64_t)a1
+- (void)_alternativeSourceWithAccessibleAccountFromAddressBook:(uint64_t)book
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!book)
   {
     return 0;
   }
@@ -8287,14 +8287,14 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   v21 = 3221225472;
   v22 = __85__CNiOSAddressBookDataMapper__alternativeSourceWithAccessibleAccountFromAddressBook___block_invoke;
   v23 = &unk_1E7414528;
-  v24 = a1;
+  bookCopy = book;
   v25 = addressBook;
   v6 = [v5 _cn_filter:v20];
   OUTLINED_FUNCTION_0();
   v15 = 3221225472;
   v16 = __85__CNiOSAddressBookDataMapper__alternativeSourceWithAccessibleAccountFromAddressBook___block_invoke_2;
   v17 = &unk_1E7414550;
-  v18 = a1;
+  bookCopy2 = book;
   v19 = addressBook;
   v7 = _Block_copy(aBlock);
   v8 = _Block_copy(v7);
@@ -8304,9 +8304,9 @@ void __68__CNiOSAddressBookDataMapper__processContactsFromSaveContext_error___bl
   v10 = CNAggregateComparator();
   v11 = [v6 sortedArrayUsingComparator:v10];
 
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
 uint64_t __85__CNiOSAddressBookDataMapper__alternativeSourceWithAccessibleAccountFromAddressBook___block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
@@ -8364,9 +8364,9 @@ uint64_t __85__CNiOSAddressBookDataMapper__alternativeSourceWithAccessibleAccoun
   return v22;
 }
 
-- (uint64_t)_canWriteUnderManagementRestrictionsToSource:(uint64_t)a1 inAddressBook:
+- (uint64_t)_canWriteUnderManagementRestrictionsToSource:(uint64_t)source inAddressBook:
 {
-  if (!a1)
+  if (!source)
   {
     return 0;
   }
@@ -8404,9 +8404,9 @@ uint64_t __85__CNiOSAddressBookDataMapper__alternativeSourceWithAccessibleAccoun
   return result;
 }
 
-- (uint64_t)_canReadUnderManagementRestrictionsFromSource:(uint64_t)a1 inAddressBook:
+- (uint64_t)_canReadUnderManagementRestrictionsFromSource:(uint64_t)source inAddressBook:
 {
-  if (!a1)
+  if (!source)
   {
     return 0;
   }
@@ -8551,11 +8551,11 @@ uint64_t __62__CNiOSAddressBookDataMapper_accountsMatchingPredicate_error___bloc
   return [CNiOSAddressBookDataMapper _hasManagedAccessToReadFromAccountCorrespondingToSource:v2 fromAddressBook:?];
 }
 
-- (id)executeFetchRequest:(id)a3 progressiveResults:(id)a4 completion:(id)a5
+- (id)executeFetchRequest:(id)request progressiveResults:(id)results completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  resultsCopy = results;
+  completionCopy = completion;
   if (self)
   {
     logger = self->_logger;
@@ -8567,12 +8567,12 @@ uint64_t __62__CNiOSAddressBookDataMapper_accountsMatchingPredicate_error___bloc
   }
 
   v13 = logger;
-  v14 = [OUTLINED_FUNCTION_65() predicate];
-  v15 = [v9 unifyResults];
-  v16 = [v9 keysToFetch];
-  [v5 fetchContactsProgressivelyMatchingPredicate:v14 unifyResults:v15 keysToFetch:v16];
+  predicate = [OUTLINED_FUNCTION_65() predicate];
+  unifyResults = [requestCopy unifyResults];
+  keysToFetch = [requestCopy keysToFetch];
+  [v5 fetchContactsProgressivelyMatchingPredicate:predicate unifyResults:unifyResults keysToFetch:keysToFetch];
 
-  v17 = [v9 effectivePredicate];
+  effectivePredicate = [requestCopy effectivePredicate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -8591,20 +8591,20 @@ uint64_t __62__CNiOSAddressBookDataMapper_accountsMatchingPredicate_error___bloc
     OUTLINED_FUNCTION_15_0();
     v28[2] = __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_completion___block_invoke;
     v28[3] = &unk_1E7414858;
-    v29 = v9;
-    v30 = self;
+    v29 = requestCopy;
+    selfCopy = self;
     v31 = v5;
-    v33 = v10;
-    v20 = v11;
+    v33 = resultsCopy;
+    v20 = completionCopy;
     v34 = v20;
     v21 = v18;
     v32 = v21;
     v22 = [(CNiOSAddressBook *)addressBook performAsynchronousWorkWithInvalidatedAddressBook:v28];
-    v23 = [v22 isSuccess];
-    if (v20 && (v23 & 1) == 0)
+    isSuccess = [v22 isSuccess];
+    if (v20 && (isSuccess & 1) == 0)
     {
-      v24 = [v22 error];
-      (*(v20 + 2))(v20, v24);
+      error = [v22 error];
+      (*(v20 + 2))(v20, error);
     }
 
     v25 = v21;
@@ -8613,9 +8613,9 @@ uint64_t __62__CNiOSAddressBookDataMapper_accountsMatchingPredicate_error___bloc
   else
   {
     v26 = [CNErrorFactory errorWithCode:400];
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, v26);
+      (*(completionCopy + 2))(completionCopy, v26);
     }
 
     v25 = 0;
@@ -8671,11 +8671,11 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
   }
 }
 
-- (void)setLegacyTetheredSyncAnchor:(uint64_t)a1 forKey:
+- (void)setLegacyTetheredSyncAnchor:(uint64_t)anchor forKey:
 {
-  if (a1)
+  if (anchor)
   {
-    v1 = *(a1 + 16);
+    v1 = *(anchor + 16);
     OUTLINED_FUNCTION_2();
     OUTLINED_FUNCTION_15_0();
     v6[2] = __65__CNiOSAddressBookDataMapper_setLegacyTetheredSyncAnchor_forKey___block_invoke;
@@ -8687,10 +8687,10 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
   }
 }
 
-- (id)contactWithUserActivityUserInfo:(id)a3 keysToFetch:(id)a4
+- (id)contactWithUserActivityUserInfo:(id)info keysToFetch:(id)fetch
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  fetchCopy = fetch;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -8711,10 +8711,10 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
   OUTLINED_FUNCTION_12();
   v24 = __74__CNiOSAddressBookDataMapper_contactWithUserActivityUserInfo_keysToFetch___block_invoke;
   v25 = &unk_1E74148C8;
-  v10 = v6;
+  v10 = infoCopy;
   v26 = v10;
   v28 = &v29;
-  v11 = v7;
+  v11 = fetchCopy;
   v27 = v11;
   v12 = [(CNiOSAddressBook *)v9 performSynchronousWorkWithInvalidatedAddressBook:v23];
 
@@ -8724,9 +8724,9 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
   return v13;
 }
 
-- (id)userActivityUserInfoForContact:(id)a3
+- (id)userActivityUserInfoForContact:(id)contact
 {
-  v6 = a3;
+  contactCopy = contact;
   OUTLINED_FUNCTION_8_2();
   OUTLINED_FUNCTION_2_5();
   v24 = v7;
@@ -8759,9 +8759,9 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
   return v13;
 }
 
-- (id)contactIdentifierWithMatchingDictionary:(id)a3
+- (id)contactIdentifierWithMatchingDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   OUTLINED_FUNCTION_8_2();
   OUTLINED_FUNCTION_2_5();
   v24 = v7;
@@ -8804,15 +8804,15 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
     v6[0] = v2;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
     v4 = ABAddressBookCopySourcesWithUUIDs();
-    v3 = [v4 firstObject];
+    firstObject = [v4 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (__CFArray)copyChangeTableRowIDsFromChangeIDs:(__CFArray *)Mutable
@@ -8910,9 +8910,9 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
   return v5;
 }
 
-- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)a3
+- (id)fetchLimitedAccessContactIdentifiersForBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   OUTLINED_FUNCTION_8_2();
   OUTLINED_FUNCTION_2_5();
   v29 = MEMORY[0x1E695E0F0];
@@ -8935,8 +8935,8 @@ void __80__CNiOSAddressBookDataMapper_executeFetchRequest_progressiveResults_com
 
   if (v9)
   {
-    v10 = [v9 value];
-    if ([v10 isEqual:MEMORY[0x1E695E118]])
+    value = [v9 value];
+    if ([value isEqual:MEMORY[0x1E695E118]])
     {
       OUTLINED_FUNCTION_19();
       v12 = v11 == 0;
@@ -8970,9 +8970,9 @@ LABEL_11:
   return v15;
 }
 
-- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)a3
+- (id)populateSyncTableForLimitedAccessAboveSequenceNumber:(id)number
 {
-  v5 = a3;
+  numberCopy = number;
   OUTLINED_FUNCTION_8_2();
   OUTLINED_FUNCTION_2_5();
   v29 = MEMORY[0x1E695E0F8];
@@ -9013,10 +9013,10 @@ LABEL_11:
   return v15;
 }
 
-- (void)purgeLimitedAccessRecordsForBundle:(id)a3
+- (void)purgeLimitedAccessRecordsForBundle:(id)bundle
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundleCopy = bundle;
   OUTLINED_FUNCTION_27();
   OUTLINED_FUNCTION_32();
   if (self)
@@ -9032,14 +9032,14 @@ LABEL_11:
   v6 = addressBook;
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_15_0();
-  v7 = v4;
+  v7 = bundleCopy;
   OUTLINED_FUNCTION_46();
   v8 = [OUTLINED_FUNCTION_31() performSynchronousWorkWithInvalidatedAddressBook:?];
 
   if (v8)
   {
-    v9 = [v8 value];
-    if ([v9 isEqual:MEMORY[0x1E695E118]])
+    value = [v8 value];
+    if ([value isEqual:MEMORY[0x1E695E118]])
     {
       v10 = *(v19 + 24);
 
@@ -9059,7 +9059,7 @@ LABEL_11:
   if (OUTLINED_FUNCTION_52(v11))
   {
     *buf = 138412546;
-    v21 = v4;
+    v21 = bundleCopy;
     v22 = 2112;
     v23 = v8;
     _os_log_error_impl(&dword_1954A0000, &self->super, OS_LOG_TYPE_ERROR, "purgeLimitedAccessRecordsForBundle: %@ failed: %@", buf, 0x16u);
@@ -9069,9 +9069,9 @@ LABEL_11:
   OUTLINED_FUNCTION_28(v12, v13, v14, v15, v16, v17);
 }
 
-- (void)updateLimitedAccessTable:(id)a3
+- (void)updateLimitedAccessTable:(id)table
 {
-  v5 = a3;
+  tableCopy = table;
   OUTLINED_FUNCTION_8_2();
   OUTLINED_FUNCTION_32();
   if (self)
@@ -9093,8 +9093,8 @@ LABEL_11:
 
   if (v9)
   {
-    v10 = [v9 value];
-    if ([v10 isEqual:MEMORY[0x1E695E118]])
+    value = [v9 value];
+    if ([value isEqual:MEMORY[0x1E695E118]])
     {
       v11 = *(v25 + 24);
 
@@ -9121,9 +9121,9 @@ LABEL_11:
   OUTLINED_FUNCTION_28(v13, v14, v15, v16, v17, v18);
 }
 
-- (id)getLimitedAccessContactsCountForBundle:(id)a3
+- (id)getLimitedAccessContactsCountForBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   OUTLINED_FUNCTION_8_2();
   OUTLINED_FUNCTION_2_5();
   if (self)
@@ -9145,8 +9145,8 @@ LABEL_11:
 
   if (v9)
   {
-    v10 = [v9 value];
-    if ([v10 isEqual:MEMORY[0x1E695E118]])
+    value = [v9 value];
+    if ([value isEqual:MEMORY[0x1E695E118]])
     {
       OUTLINED_FUNCTION_19();
       v12 = v11 == 0;
@@ -9179,7 +9179,7 @@ LABEL_11:
   return v15;
 }
 
-- (id)getLimitedAccessLastSyncSequenceNumber:(id *)a3
+- (id)getLimitedAccessLastSyncSequenceNumber:(id *)number
 {
   v35 = *MEMORY[0x1E69E9840];
   OUTLINED_FUNCTION_27();
@@ -9226,10 +9226,10 @@ LABEL_11:
   OUTLINED_FUNCTION_19();
   v17 = v16;
   v18 = v17;
-  if (a3 && !v17)
+  if (number && !v17)
   {
     v19 = v13;
-    *a3 = v13;
+    *number = v13;
   }
 
   OUTLINED_FUNCTION_28(v20, v21, v22, v23, v24, v25);
@@ -9237,9 +9237,9 @@ LABEL_11:
   return v18;
 }
 
-- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(id)a3
+- (id)getWatchLimitedAccessSyncDataStartingAtSequenceNumber:(id)number
 {
-  v6 = a3;
+  numberCopy = number;
   OUTLINED_FUNCTION_8_2();
   OUTLINED_FUNCTION_2_5();
   *(v4 + 40) = objc_alloc_init(CNLimitedAccessSyncData);
@@ -9306,8 +9306,8 @@ LABEL_11:
 
   if (v7)
   {
-    v8 = [v7 value];
-    if ([v8 isEqual:MEMORY[0x1E695E118]])
+    value = [v7 value];
+    if ([value isEqual:MEMORY[0x1E695E118]])
     {
       v9 = *(v27 + 24);
 
@@ -9362,8 +9362,8 @@ LABEL_11:
 
   if (v7)
   {
-    v8 = [v7 value];
-    if ([v8 isEqual:MEMORY[0x1E695E118]])
+    value = [v7 value];
+    if ([value isEqual:MEMORY[0x1E695E118]])
     {
       v9 = *(v27 + 24);
 
@@ -9392,10 +9392,10 @@ LABEL_11:
   OUTLINED_FUNCTION_28(v11, v12, v13, v14, v15, v16);
 }
 
-- (void)setLimitedAccessTableCurrentSequenceNumber:(id)a3
+- (void)setLimitedAccessTableCurrentSequenceNumber:(id)number
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  numberCopy = number;
   if (self)
   {
     addressBook = self->_addressBook;
@@ -9429,7 +9429,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)shouldAnalyzeDatabaseWithError:(id *)a3
+- (BOOL)shouldAnalyzeDatabaseWithError:(id *)error
 {
   OUTLINED_FUNCTION_27();
   OUTLINED_FUNCTION_32();
@@ -9458,11 +9458,11 @@ LABEL_11:
 
   else
   {
-    v11 = [v9 error];
-    if (a3)
+    error = [v9 error];
+    if (error)
     {
-      v11 = v11;
-      *a3 = v11;
+      error = error;
+      *error = error;
     }
 
     v10 = 0;
@@ -9472,7 +9472,7 @@ LABEL_11:
   return v10 & 1;
 }
 
-- (BOOL)analyzeDatabaseWithError:(id *)a3
+- (BOOL)analyzeDatabaseWithError:(id *)error
 {
   if (self)
   {
@@ -9480,22 +9480,22 @@ LABEL_11:
   }
 
   v4 = [(CNiOSAddressBookDataMapper *)self performSynchronousWorkWithInvalidatedAddressBook:&__block_literal_global_173_0];
-  v5 = [v4 value];
+  value = [v4 value];
 
-  if (v5)
+  if (value)
   {
-    v6 = [v4 value];
-    v7 = v6;
+    value2 = [v4 value];
+    v7 = value2;
   }
 
   else
   {
-    v6 = [v4 error];
-    if (a3)
+    value2 = [v4 error];
+    if (error)
     {
-      v6 = v6;
+      value2 = value2;
       v7 = 0;
-      *a3 = v6;
+      *error = value2;
     }
 
     else

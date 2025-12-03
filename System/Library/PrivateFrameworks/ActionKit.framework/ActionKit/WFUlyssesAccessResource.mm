@@ -1,35 +1,35 @@
 @interface WFUlyssesAccessResource
-- (WFUlyssesAccessResource)initWithDefinition:(id)a3;
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3;
+- (WFUlyssesAccessResource)initWithDefinition:(id)definition;
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context;
 - (unint64_t)status;
 - (void)dealloc;
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4;
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler;
 @end
 
 @implementation WFUlyssesAccessResource
 
-- (void)makeAvailableWithUserInterface:(id)a3 completionHandler:(id)a4
+- (void)makeAvailableWithUserInterface:(id)interface completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CFC248] sharedContext];
-  v9 = [v8 provider];
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
+  provider = [mEMORY[0x277CFC248] provider];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
-    v7[2](v7, 0, v11);
+    wfUnsupportedUserInterfaceError = [MEMORY[0x277CCA9B8] wfUnsupportedUserInterfaceError];
+    handlerCopy[2](handlerCopy, 0, wfUnsupportedUserInterfaceError);
   }
 
   else
   {
-    v11 = [(WFUlyssesAccessResource *)self scheme];
+    wfUnsupportedUserInterfaceError = [(WFUlyssesAccessResource *)self scheme];
     v12 = objc_opt_new();
-    v13 = [v11 scheme];
-    [v12 setScheme:v13];
+    scheme = [wfUnsupportedUserInterfaceError scheme];
+    [v12 setScheme:scheme];
 
     [v12 setHost:@"x-callback-url"];
     [v12 setPath:@"/authorize"];
@@ -45,16 +45,16 @@
     v23[2] = __76__WFUlyssesAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke;
     v23[3] = &unk_278C1AC70;
     v23[4] = self;
-    v24 = v7;
+    v24 = handlerCopy;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __76__WFUlyssesAccessResource_makeAvailableWithUserInterface_completionHandler___block_invoke_2;
     v21[3] = &unk_278C20008;
     v22 = v24;
-    v18 = [v16 requestWithURL:v17 scheme:v11 userInterface:v6 bundleIdentifier:@"com.ulyssesapp.ios" successHandler:v23 failureHandler:v21];
+    v18 = [v16 requestWithURL:v17 scheme:wfUnsupportedUserInterfaceError userInterface:interfaceCopy bundleIdentifier:@"com.ulyssesapp.ios" successHandler:v23 failureHandler:v21];
 
-    v19 = [MEMORY[0x277D7C548] sharedManager];
-    [v19 performRequest:v18];
+    mEMORY[0x277D7C548] = [MEMORY[0x277D7C548] sharedManager];
+    [mEMORY[0x277D7C548] performRequest:v18];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -94,8 +94,8 @@ void __76__WFUlyssesAccessResource_makeAvailableWithUserInterface_completionHand
 
 - (unint64_t)status
 {
-  v2 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  v3 = [v2 stringForKey:@"WFUlyssesAccessToken"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  v3 = [workflowUserDefaults stringForKey:@"WFUlyssesAccessToken"];
 
   if ([v3 length])
   {
@@ -110,47 +110,47 @@ void __76__WFUlyssesAccessResource_makeAvailableWithUserInterface_completionHand
   return v4;
 }
 
-- (id)localizedProtectedResourceDescriptionWithContext:(id)a3
+- (id)localizedProtectedResourceDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"your Ulysses library", @"your Ulysses library");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"WFUlyssesAccessResourceAvailabilityChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"WFUlyssesAccessResourceAvailabilityChangedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = WFUlyssesAccessResource;
   [(WFAccessResource *)&v4 dealloc];
 }
 
-- (WFUlyssesAccessResource)initWithDefinition:(id)a3
+- (WFUlyssesAccessResource)initWithDefinition:(id)definition
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  definitionCopy = definition;
   v28.receiver = self;
   v28.super_class = WFUlyssesAccessResource;
-  v5 = [(WFAccessResource *)&v28 initWithDefinition:v4];
+  v5 = [(WFAccessResource *)&v28 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D7CCF0]];
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D7CCE8]];
-    v8 = [MEMORY[0x277D7C540] sharedRegistry];
+    v6 = [definitionCopy objectForKeyedSubscript:*MEMORY[0x277D7CCF0]];
+    v7 = [definitionCopy objectForKeyedSubscript:*MEMORY[0x277D7CCE8]];
+    mEMORY[0x277D7C540] = [MEMORY[0x277D7C540] sharedRegistry];
     v23 = v7;
-    v9 = [v8 appWithIdentifier:v7];
+    v9 = [mEMORY[0x277D7C540] appWithIdentifier:v7];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
     v22 = v9;
-    v10 = [v9 schemes];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    schemes = [v9 schemes];
+    v11 = [schemes countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -161,12 +161,12 @@ void __76__WFUlyssesAccessResource_makeAvailableWithUserInterface_completionHand
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(schemes);
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 scheme];
-          v17 = [v16 isEqualToString:v6];
+          scheme = [v15 scheme];
+          v17 = [scheme isEqualToString:v6];
 
           if (v17)
           {
@@ -175,7 +175,7 @@ void __76__WFUlyssesAccessResource_makeAvailableWithUserInterface_completionHand
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v12 = [schemes countByEnumeratingWithState:&v24 objects:v29 count:16];
         if (v12)
         {
           continue;
@@ -187,8 +187,8 @@ void __76__WFUlyssesAccessResource_makeAvailableWithUserInterface_completionHand
 
 LABEL_12:
 
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v5 selector:sel_refreshAvailabilityWithNotification name:@"WFUlyssesAccessResourceAvailabilityChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_refreshAvailabilityWithNotification name:@"WFUlyssesAccessResourceAvailabilityChangedNotification" object:0];
 
     v19 = v5;
   }

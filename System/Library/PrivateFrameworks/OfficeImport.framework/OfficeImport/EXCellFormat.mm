@@ -1,102 +1,102 @@
 @interface EXCellFormat
-+ (id)edCellFormatFromXmlCellFormatElement:(_xmlNode *)a3 isStyle:(BOOL)a4 state:(id)a5;
++ (id)edCellFormatFromXmlCellFormatElement:(_xmlNode *)element isStyle:(BOOL)style state:(id)state;
 @end
 
 @implementation EXCellFormat
 
-+ (id)edCellFormatFromXmlCellFormatElement:(_xmlNode *)a3 isStyle:(BOOL)a4 state:(id)a5
++ (id)edCellFormatFromXmlCellFormatElement:(_xmlNode *)element isStyle:(BOOL)style state:(id)state
 {
-  v5 = a4;
-  v7 = a5;
-  if (a3)
+  styleCopy = style;
+  stateCopy = state;
+  if (element)
   {
-    if (v5)
+    if (styleCopy)
     {
       v8 = [EDNamedStyle alloc];
-      v9 = [v7 resources];
-      v10 = [(EDStyle *)v8 initWithResources:v9];
+      resources = [stateCopy resources];
+      v10 = [(EDStyle *)v8 initWithResources:resources];
 
-      v11 = 0;
+      cellStyleXfsOffset = 0;
     }
 
     else
     {
       v12 = [EDStyle alloc];
-      v13 = [v7 resources];
-      v10 = [(EDStyle *)v12 initWithResources:v13];
+      resources2 = [stateCopy resources];
+      v10 = [(EDStyle *)v12 initWithResources:resources2];
 
-      v11 = [v7 cellStyleXfsOffset];
+      cellStyleXfsOffset = [stateCopy cellStyleXfsOffset];
     }
 
     v26 = 0;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "xfId", &v26))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "xfId", &v26))
     {
-      [(EDStyle *)v10 setParentIndex:v26 + v11];
+      [(EDStyle *)v10 setParentIndex:v26 + cellStyleXfsOffset];
     }
 
     v25 = 0;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "fontId", &v25))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "fontId", &v25))
     {
       [(EDStyle *)v10 setFontIndex:v25];
       v24[0] = 1;
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "applyFont", v24);
+      CXOptionalBoolAttribute(element, CXNoNamespace, "applyFont", v24);
       [(EDStyle *)v10 setFontApplied:v24[0]];
     }
 
     *v24 = 0;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "borderId", v24))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "borderId", v24))
     {
       [(EDStyle *)v10 setBordersIndex:*v24];
       v23[0] = 1;
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "applyBorder", v23);
+      CXOptionalBoolAttribute(element, CXNoNamespace, "applyBorder", v23);
       [(EDStyle *)v10 setBordersApplied:v23[0]];
     }
 
     *v23 = 0;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "fillId", v23))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "fillId", v23))
     {
       [(EDStyle *)v10 setFillIndex:*v23];
       v22[0] = 1;
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "applyFill", v22);
+      CXOptionalBoolAttribute(element, CXNoNamespace, "applyFill", v22);
       [(EDStyle *)v10 setFillApplied:v22[0]];
     }
 
     *v22 = 0;
-    if (CXOptionalLongAttribute(a3, CXNoNamespace, "numFmtId", v22))
+    if (CXOptionalLongAttribute(element, CXNoNamespace, "numFmtId", v22))
     {
       [(EDStyle *)v10 setContentFormatId:*v22];
       v21 = 1;
-      if (CXOptionalBoolAttribute(a3, CXNoNamespace, "applyNumberFormat", &v21))
+      if (CXOptionalBoolAttribute(element, CXNoNamespace, "applyNumberFormat", &v21))
       {
         [(EDStyle *)v10 setContentFormatApplied:v21];
       }
     }
 
-    v14 = [v7 EXSpreadsheetMLNamespace];
-    v15 = OCXFindChild(a3, v14, "protection");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v15 = OCXFindChild(element, eXSpreadsheetMLNamespace, "protection");
 
-    v16 = [EXProtection edProtectionFromXmlElement:v15 state:v7];
+    v16 = [EXProtection edProtectionFromXmlElement:v15 state:stateCopy];
     [(EDStyle *)v10 setProtection:v16];
 
     [(EDStyle *)v10 setProtectionOverridden:v15 != 0];
     if (v15)
     {
       v21 = 1;
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "applyProtection", &v21);
+      CXOptionalBoolAttribute(element, CXNoNamespace, "applyProtection", &v21);
       [(EDStyle *)v10 setProtectionApplied:v21];
     }
 
-    v17 = [v7 EXSpreadsheetMLNamespace];
-    v18 = OCXFindChild(a3, v17, "alignment");
+    eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+    v18 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "alignment");
 
-    v19 = [EXAlignmentInfo edAlignmentInfoFromXmlAlignmentInfoElement:v18 state:v7];
+    v19 = [EXAlignmentInfo edAlignmentInfoFromXmlAlignmentInfoElement:v18 state:stateCopy];
     [(EDStyle *)v10 setAlignmentInfo:v19];
 
     [(EDStyle *)v10 setAlignmentInfoOverridden:v18 != 0];
     if (v18)
     {
       v21 = 1;
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "applyAlignment", &v21);
+      CXOptionalBoolAttribute(element, CXNoNamespace, "applyAlignment", &v21);
       [(EDStyle *)v10 setAlignmentInfoApplied:v21];
     }
   }

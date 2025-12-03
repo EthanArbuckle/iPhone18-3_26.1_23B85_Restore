@@ -1,14 +1,14 @@
 @interface SBSLockScreenService
 - (SBSLockScreenService)init;
-- (id)preventPasscodeLockWithReason:(id)a3;
-- (id)preventSpuriousScreenUndimWithReason:(id)a3;
+- (id)preventPasscodeLockWithReason:(id)reason;
+- (id)preventSpuriousScreenUndimWithReason:(id)reason;
 - (void)dealloc;
 - (void)invalidate;
-- (void)launchEmergencyDialerWithCompletion:(id)a3;
-- (void)lockDeviceAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)launchEmergencyDialerWithCompletion:(id)completion;
+- (void)lockDeviceAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)migrateIncomingNotificationsToHistory;
-- (void)requestPasscodeCheckUIWithOptions:(id)a3 withCompletion:(id)a4;
-- (void)requestPasscodeUnlockUIWithOptions:(id)a3 withCompletion:(id)a4;
+- (void)requestPasscodeCheckUIWithOptions:(id)options withCompletion:(id)completion;
+- (void)requestPasscodeUnlockUIWithOptions:(id)options withCompletion:(id)completion;
 @end
 
 @implementation SBSLockScreenService
@@ -33,7 +33,7 @@
 - (void)dealloc
 {
   OUTLINED_FUNCTION_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -47,9 +47,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)launchEmergencyDialerWithCompletion:(id)a3
+- (void)launchEmergencyDialerWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v4 = self->_lock_connection;
   os_unfair_lock_unlock(&self->_lock);
@@ -58,13 +58,13 @@
     [SBSLockScreenService launchEmergencyDialerWithCompletion:];
   }
 
-  [(SBSLockScreenServiceConnection *)v4 launchEmergencyDialerWithCompletion:v5];
+  [(SBSLockScreenServiceConnection *)v4 launchEmergencyDialerWithCompletion:completionCopy];
 }
 
-- (void)requestPasscodeUnlockUIWithOptions:(id)a3 withCompletion:(id)a4
+- (void)requestPasscodeUnlockUIWithOptions:(id)options withCompletion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v7 = self->_lock_connection;
   os_unfair_lock_unlock(&self->_lock);
@@ -73,13 +73,13 @@
     [SBSLockScreenService requestPasscodeUnlockUIWithOptions:withCompletion:];
   }
 
-  [(SBSLockScreenServiceConnection *)v7 requestPasscodeUnlockUIWithOptions:v8 withCompletion:v6];
+  [(SBSLockScreenServiceConnection *)v7 requestPasscodeUnlockUIWithOptions:optionsCopy withCompletion:completionCopy];
 }
 
-- (void)requestPasscodeCheckUIWithOptions:(id)a3 withCompletion:(id)a4
+- (void)requestPasscodeCheckUIWithOptions:(id)options withCompletion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v7 = self->_lock_connection;
   os_unfair_lock_unlock(&self->_lock);
@@ -88,12 +88,12 @@
     [SBSLockScreenService requestPasscodeCheckUIWithOptions:withCompletion:];
   }
 
-  [(SBSLockScreenServiceConnection *)v7 requestPasscodeCheckUIWithOptions:v8 withCompletion:v6];
+  [(SBSLockScreenServiceConnection *)v7 requestPasscodeCheckUIWithOptions:optionsCopy withCompletion:completionCopy];
 }
 
-- (id)preventPasscodeLockWithReason:(id)a3
+- (id)preventPasscodeLockWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_lock_connection;
   os_unfair_lock_unlock(&self->_lock);
@@ -102,15 +102,15 @@
     [SBSLockScreenService preventPasscodeLockWithReason:];
   }
 
-  v6 = [v4 copy];
+  v6 = [reasonCopy copy];
   v7 = [(SBSLockScreenServiceConnection *)v5 preventPasscodeLockWithReason:v6];
 
   return v7;
 }
 
-- (id)preventSpuriousScreenUndimWithReason:(id)a3
+- (id)preventSpuriousScreenUndimWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_lock_connection;
   os_unfair_lock_unlock(&self->_lock);
@@ -119,16 +119,16 @@
     [SBSLockScreenService preventSpuriousScreenUndimWithReason:];
   }
 
-  v6 = [v4 copy];
+  v6 = [reasonCopy copy];
   v7 = [(SBSLockScreenServiceConnection *)v5 preventSpuriousScreenUndimWithReason:v6];
 
   return v7;
 }
 
-- (void)lockDeviceAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)lockDeviceAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v7 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
   v6 = self->_lock_connection;
   os_unfair_lock_unlock(&self->_lock);
@@ -137,13 +137,13 @@
     [SBSLockScreenService lockDeviceAnimated:withCompletion:];
   }
 
-  [(SBSLockScreenServiceConnection *)v6 lockDeviceAnimated:v4 withCompletion:v7];
+  [(SBSLockScreenServiceConnection *)v6 lockDeviceAnimated:animatedCopy withCompletion:completionCopy];
 }
 
 - (void)migrateIncomingNotificationsToHistory
 {
   OUTLINED_FUNCTION_0();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

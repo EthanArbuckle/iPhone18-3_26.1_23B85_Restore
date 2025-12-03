@@ -3,10 +3,10 @@
 - (CGPoint)trackedCenter;
 - (CGRect)trackedBounds;
 - (PXDisplayVelocity)trackedVelocity;
-- (PXSwipeDownTracker)initWithOptions:(unint64_t)a3;
-- (void)setTrackedTransform:(CGAffineTransform *)a3;
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6 velocity:(CGPoint)a7;
-- (void)trackGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4;
+- (PXSwipeDownTracker)initWithOptions:(unint64_t)options;
+- (void)setTrackedTransform:(CGAffineTransform *)transform;
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location velocity:(CGPoint)velocity;
+- (void)trackGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity;
 @end
 
 @implementation PXSwipeDownTracker
@@ -24,11 +24,11 @@
   return result;
 }
 
-- (void)setTrackedTransform:(CGAffineTransform *)a3
+- (void)setTrackedTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_trackedTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_trackedTransform.c = *&transform->c;
   *&self->_trackedTransform.tx = v4;
   *&self->_trackedTransform.a = v3;
 }
@@ -64,10 +64,10 @@
   return result;
 }
 
-- (void)trackGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4
+- (void)trackGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   v7 = [(PXSwipeDownTracker *)self options]& 1;
   if (v7)
   {
@@ -80,8 +80,8 @@
   }
 
   v9 = +[PXSwipeDownSettings sharedInstance];
-  v10 = [(PXSwipeDownTracker *)self verticalDirectionFilter];
-  if (!v10)
+  verticalDirectionFilter = [(PXSwipeDownTracker *)self verticalDirectionFilter];
+  if (!verticalDirectionFilter)
   {
     v11 = objc_alloc_init(off_1E7721510);
     [v11 setMinimumChange:5.0];
@@ -89,10 +89,10 @@
     v36[1] = 3221225472;
     v36[2] = __55__PXSwipeDownTracker_trackGestureTranslation_velocity___block_invoke;
     v36[3] = &unk_1E7733D80;
-    v10 = v11;
-    v37 = v10;
-    [v10 performChanges:v36];
-    [(PXSwipeDownTracker *)self setVerticalDirectionFilter:v10];
+    verticalDirectionFilter = v11;
+    v37 = verticalDirectionFilter;
+    [verticalDirectionFilter performChanges:v36];
+    [(PXSwipeDownTracker *)self setVerticalDirectionFilter:verticalDirectionFilter];
   }
 
   v35[0] = MEMORY[0x1E69E9820];
@@ -101,19 +101,19 @@
   v35[3] = &__block_descriptor_48_e33_v16__0___PXMutableNumberFilter__8l;
   *&v35[4] = v8;
   *&v35[5] = y;
-  [v10 performChanges:v35];
+  [verticalDirectionFilter performChanges:v35];
   [v9 transitionDistance];
   v13 = v12;
-  [v10 output];
+  [verticalDirectionFilter output];
   if (self->_didStartTracking)
   {
-    v15 = [(PXSwipeDownTracker *)self horizontalTranslationFilter];
-    if (!v15)
+    horizontalTranslationFilter = [(PXSwipeDownTracker *)self horizontalTranslationFilter];
+    if (!horizontalTranslationFilter)
     {
-      v15 = objc_alloc_init(off_1E7721778);
+      horizontalTranslationFilter = objc_alloc_init(off_1E7721778);
       [v9 rotationHorizontalMotionHysteresisDistance];
-      [v15 setHysteresis:?];
-      [(PXSwipeDownTracker *)self setHorizontalTranslationFilter:v15];
+      [horizontalTranslationFilter setHysteresis:?];
+      [(PXSwipeDownTracker *)self setHorizontalTranslationFilter:horizontalTranslationFilter];
     }
 
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -132,8 +132,8 @@
     v32[3] = &__block_descriptor_48_e33_v16__0___PXMutableNumberFilter__8l;
     *&v32[4] = v8;
     *&v32[5] = y;
-    [v15 performChanges:v32];
-    [v15 output];
+    [horizontalTranslationFilter performChanges:v32];
+    [horizontalTranslationFilter output];
     v30[0] = 0;
     v30[1] = v30;
     v30[2] = 0x3010000000;
@@ -159,7 +159,7 @@
     *&v23.a = v19;
     CGAffineTransformRotate(&v23, &v22, v20);
     v16;
-    v15;
+    horizontalTranslationFilter;
     PXDerivative();
   }
 
@@ -268,39 +268,39 @@ uint64_t __55__PXSwipeDownTracker_trackGestureTranslation_velocity___block_invok
   return result;
 }
 
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6 velocity:(CGPoint)a7
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location velocity:(CGPoint)velocity
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   self->_didStartTracking = 1;
-  self->_initialTouchLocation = a6;
-  self->_initialCenter = a3;
-  self->_initialBounds = a4;
-  v13 = *&a5->a;
-  v14 = *&a5->tx;
-  *&self->_initialTransform.c = *&a5->c;
+  self->_initialTouchLocation = location;
+  self->_initialCenter = center;
+  self->_initialBounds = bounds;
+  v13 = *&transform->a;
+  v14 = *&transform->tx;
+  *&self->_initialTransform.c = *&transform->c;
   *&self->_initialTransform.tx = v14;
   *&self->_initialTransform.a = v13;
   [(PXSwipeDownTracker *)self setTrackedCenter:?];
   [(PXSwipeDownTracker *)self setTrackedBounds:x, y, width, height];
-  v15 = *&a5->c;
-  v16[0] = *&a5->a;
+  v15 = *&transform->c;
+  v16[0] = *&transform->a;
   v16[1] = v15;
-  v16[2] = *&a5->tx;
+  v16[2] = *&transform->tx;
   [(PXSwipeDownTracker *)self setTrackedTransform:v16];
   PXPointIsNull();
 }
 
-- (PXSwipeDownTracker)initWithOptions:(unint64_t)a3
+- (PXSwipeDownTracker)initWithOptions:(unint64_t)options
 {
   v6.receiver = self;
   v6.super_class = PXSwipeDownTracker;
   result = [(PXSwipeDownTracker *)&v6 init];
   if (result)
   {
-    result->_options = a3;
+    result->_options = options;
     v5 = *(off_1E7721F90 + 1);
     *&result->_trackedVelocity.x = *off_1E7721F90;
     *&result->_trackedVelocity.scale = v5;

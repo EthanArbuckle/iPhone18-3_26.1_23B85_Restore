@@ -1,13 +1,13 @@
 @interface ClosableActionCardViewFactory
-+ (id)createWithTitle:(id)a3 subtitle:(id)a4 actionTitle:(id)a5 action:(id)a6 close:(id)a7;
++ (id)createWithTitle:(id)title subtitle:(id)subtitle actionTitle:(id)actionTitle action:(id)action close:(id)close;
 @end
 
 @implementation ClosableActionCardViewFactory
 
-+ (id)createWithTitle:(id)a3 subtitle:(id)a4 actionTitle:(id)a5 action:(id)a6 close:(id)a7
++ (id)createWithTitle:(id)title subtitle:(id)subtitle actionTitle:(id)actionTitle action:(id)action close:(id)close
 {
-  v8 = _Block_copy(a6);
-  v9 = _Block_copy(a7);
+  v8 = _Block_copy(action);
+  v9 = _Block_copy(close);
   v10 = sub_1171B0();
   v12 = v11;
   v13 = sub_1171B0();

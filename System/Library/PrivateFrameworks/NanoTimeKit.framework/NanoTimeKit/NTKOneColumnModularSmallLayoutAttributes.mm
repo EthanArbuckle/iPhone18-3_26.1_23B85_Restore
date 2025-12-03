@@ -1,22 +1,22 @@
 @interface NTKOneColumnModularSmallLayoutAttributes
-+ (id)attributesForTemplate:(id)a3 forDevice:(id)a4;
++ (id)attributesForTemplate:(id)template forDevice:(id)device;
 @end
 
 @implementation NTKOneColumnModularSmallLayoutAttributes
 
-+ (id)attributesForTemplate:(id)a3 forDevice:(id)a4
++ (id)attributesForTemplate:(id)template forDevice:(id)device
 {
   v62[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  templateCopy = template;
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (!templateCopy)
   {
     v10 = 0;
     goto LABEL_16;
   }
 
-  __76__NTKOneColumnModularSmallLayoutAttributes_attributesForTemplate_forDevice___block_invoke(v6, v6);
+  __76__NTKOneColumnModularSmallLayoutAttributes_attributesForTemplate_forDevice___block_invoke(deviceCopy, deviceCopy);
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   v10 = [attributesForTemplate_forDevice____classToAttributes objectForKeyedSubscript:v9];

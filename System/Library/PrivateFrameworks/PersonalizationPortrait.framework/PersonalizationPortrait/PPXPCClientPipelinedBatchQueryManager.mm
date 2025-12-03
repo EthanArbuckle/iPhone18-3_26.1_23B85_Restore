@@ -1,16 +1,16 @@
 @interface PPXPCClientPipelinedBatchQueryManager
-+ (void)assertBatch:(id)a3 forQueryName:(id)a4 hasExpectedContainedType:(Class)a5;
-- (BOOL)syncExecuteQueryWithName:(id)a3 error:(id *)a4 queryInitializer:(id)a5 handleBatch:(id)a6;
-- (PPXPCClientPipelinedBatchQueryManager)initWithName:(id)a3;
-- (void)cancelPendingQueriesWithError:(id)a3;
-- (void)handleReplyWithName:(id)a3 batch:(id)a4 isLast:(BOOL)a5 error:(id)a6 queryId:(unint64_t)a7 completion:(id)a8;
++ (void)assertBatch:(id)batch forQueryName:(id)name hasExpectedContainedType:(Class)type;
+- (BOOL)syncExecuteQueryWithName:(id)name error:(id *)error queryInitializer:(id)initializer handleBatch:(id)batch;
+- (PPXPCClientPipelinedBatchQueryManager)initWithName:(id)name;
+- (void)cancelPendingQueriesWithError:(id)error;
+- (void)handleReplyWithName:(id)name batch:(id)batch isLast:(BOOL)last error:(id)error queryId:(unint64_t)id completion:(id)completion;
 @end
 
 @implementation PPXPCClientPipelinedBatchQueryManager
 
-- (void)cancelPendingQueriesWithError:(id)a3
+- (void)cancelPendingQueriesWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = self->_queryContexts;
   objc_sync_enter(v5);
   queryContexts = self->_queryContexts;
@@ -18,7 +18,7 @@
   v8[1] = 3221225472;
   v8[2] = __71__PPXPCClientPipelinedBatchQueryManager_cancelPendingQueriesWithError___block_invoke;
   v8[3] = &unk_1E77F6ED8;
-  v7 = v4;
+  v7 = errorCopy;
   v9 = v7;
   [(NSMutableDictionary *)queryContexts enumerateKeysAndObjectsUsingBlock:v8];
 
@@ -39,33 +39,33 @@ void __71__PPXPCClientPipelinedBatchQueryManager_cancelPendingQueriesWithError__
   dispatch_async(v5, v7);
 }
 
-- (void)handleReplyWithName:(id)a3 batch:(id)a4 isLast:(BOOL)a5 error:(id)a6 queryId:(unint64_t)a7 completion:(id)a8
+- (void)handleReplyWithName:(id)name batch:(id)batch isLast:(BOOL)last error:(id)error queryId:(unint64_t)id completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  nameCopy = name;
+  batchCopy = batch;
+  errorCopy = error;
+  completionCopy = completion;
   v18 = self->_queryContexts;
   objc_sync_enter(v18);
   queryContexts = self->_queryContexts;
-  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a7];
+  v20 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:id];
   v21 = [(NSMutableDictionary *)queryContexts objectForKeyedSubscript:v20];
 
   objc_sync_exit(v18);
   if (v21)
   {
-    v22 = [v21 queue];
+    queue = [v21 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __99__PPXPCClientPipelinedBatchQueryManager_handleReplyWithName_batch_isLast_error_queryId_completion___block_invoke;
     block[3] = &unk_1E77F6E88;
-    v28 = v15;
+    v28 = batchCopy;
     v29 = v21;
-    v32 = a5;
-    v30 = v16;
-    v31 = v17;
-    dispatch_async(v22, block);
+    lastCopy = last;
+    v30 = errorCopy;
+    v31 = completionCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -73,14 +73,14 @@ void __71__PPXPCClientPipelinedBatchQueryManager_cancelPendingQueriesWithError__
     v23 = atomic_load(&self->_queryId);
     v24 = pp_xpc_client_log_handle();
     v25 = v24;
-    if (v23 <= a7)
+    if (v23 <= id)
     {
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v34 = v14;
+        v34 = nameCopy;
         v35 = 2048;
-        v36 = a7;
+        idCopy2 = id;
         _os_log_error_impl(&dword_1A7FD3000, v25, OS_LOG_TYPE_ERROR, "Received batch reply of type %@ for unknown queryId %llu.", buf, 0x16u);
       }
     }
@@ -88,13 +88,13 @@ void __71__PPXPCClientPipelinedBatchQueryManager_cancelPendingQueriesWithError__
     else if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v34 = v14;
+      v34 = nameCopy;
       v35 = 2048;
-      v36 = a7;
+      idCopy2 = id;
       _os_log_debug_impl(&dword_1A7FD3000, v25, OS_LOG_TYPE_DEBUG, "Received batch reply of type %@ for old queryId %llu.", buf, 0x16u);
     }
 
-    (*(v17 + 2))(v17, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -133,11 +133,11 @@ LABEL_6:
   return v8();
 }
 
-- (BOOL)syncExecuteQueryWithName:(id)a3 error:(id *)a4 queryInitializer:(id)a5 handleBatch:(id)a6
+- (BOOL)syncExecuteQueryWithName:(id)name error:(id *)error queryInitializer:(id)initializer handleBatch:(id)batch
 {
-  v24 = a3;
-  v9 = a5;
-  v10 = a6;
+  nameCopy = name;
+  initializerCopy = initializer;
+  batchCopy = batch;
   add = atomic_fetch_add(&self->_queryId, 1uLL);
   v35 = 0;
   v36 = &v35;
@@ -152,7 +152,7 @@ LABEL_6:
   v12 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_4759);
   v13 = objc_opt_new();
   [v13 setQueue:self->_queue];
-  [v13 setHandleBatch:v10];
+  [v13 setHandleBatch:batchCopy];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __101__PPXPCClientPipelinedBatchQueryManager_syncExecuteQueryWithName_error_queryInitializer_handleBatch___block_invoke_2;
@@ -170,7 +170,7 @@ LABEL_6:
   [(NSMutableDictionary *)queryContexts setObject:v13 forKeyedSubscript:v17];
 
   objc_sync_exit(v15);
-  v9[2](v9, add);
+  initializerCopy[2](initializerCopy, add);
   dispatch_block_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
   v18 = self->_queryContexts;
   objc_sync_enter(v18);
@@ -179,9 +179,9 @@ LABEL_6:
   [(NSMutableDictionary *)v19 setObject:0 forKeyedSubscript:v20];
 
   objc_sync_exit(v18);
-  if (a4)
+  if (error)
   {
-    *a4 = v30[5];
+    *error = v30[5];
   }
 
   v21 = *(v36 + 24);
@@ -200,13 +200,13 @@ void __101__PPXPCClientPipelinedBatchQueryManager_syncExecuteQueryWithName_error
   dispatch_async(*(*(a1 + 32) + 24), *(a1 + 40));
 }
 
-- (PPXPCClientPipelinedBatchQueryManager)initWithName:(id)a3
+- (PPXPCClientPipelinedBatchQueryManager)initWithName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PPXPCClientSupport.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPXPCClientSupport.m" lineNumber:170 description:{@"Invalid parameter not satisfying: %@", @"name"}];
   }
 
   v18.receiver = self;
@@ -220,16 +220,16 @@ void __101__PPXPCClientPipelinedBatchQueryManager_syncExecuteQueryWithName_error
     queryContexts = v7->_queryContexts;
     v7->_queryContexts = v8;
 
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-completion", v5];
-    v11 = [v10 UTF8String];
-    if (!v11)
+    nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@-completion", nameCopy];
+    uTF8String = [nameCopy UTF8String];
+    if (!uTF8String)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:v7 file:@"PPXPCClientSupport.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"utf8Name"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v7 file:@"PPXPCClientSupport.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"utf8Name"}];
     }
 
     v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v13 = dispatch_queue_create(v11, v12);
+    v13 = dispatch_queue_create(uTF8String, v12);
     queue = v7->_queue;
     v7->_queue = v13;
   }
@@ -237,19 +237,19 @@ void __101__PPXPCClientPipelinedBatchQueryManager_syncExecuteQueryWithName_error
   return v7;
 }
 
-+ (void)assertBatch:(id)a3 forQueryName:(id)a4 hasExpectedContainedType:(Class)a5
++ (void)assertBatch:(id)batch forQueryName:(id)name hasExpectedContainedType:(Class)type
 {
-  v12 = a3;
-  v8 = a4;
-  if ([v12 count])
+  batchCopy = batch;
+  nameCopy = name;
+  if ([batchCopy count])
   {
-    v9 = [v12 objectAtIndexedSubscript:0];
+    v9 = [batchCopy objectAtIndexedSubscript:0];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:a1 file:@"PPXPCClientSupport.m" lineNumber:272 description:{@"Received incorrect batch type for query named %@", v8}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PPXPCClientSupport.m" lineNumber:272 description:{@"Received incorrect batch type for query named %@", nameCopy}];
     }
   }
 }

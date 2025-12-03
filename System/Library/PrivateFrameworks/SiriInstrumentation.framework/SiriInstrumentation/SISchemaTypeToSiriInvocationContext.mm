@@ -1,25 +1,25 @@
 @interface SISchemaTypeToSiriInvocationContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaTypeToSiriInvocationContext)initWithDictionary:(id)a3;
-- (SISchemaTypeToSiriInvocationContext)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaTypeToSiriInvocationContext)initWithDictionary:(id)dictionary;
+- (SISchemaTypeToSiriInvocationContext)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaTypeToSiriInvocationContext
 
-- (SISchemaTypeToSiriInvocationContext)initWithDictionary:(id)a3
+- (SISchemaTypeToSiriInvocationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = SISchemaTypeToSiriInvocationContext;
   v5 = [(SISchemaTypeToSiriInvocationContext *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"backgroundAppBundleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"backgroundAppBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (SISchemaTypeToSiriInvocationContext)initWithJSON:(id)a3
+- (SISchemaTypeToSiriInvocationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaTypeToSiriInvocationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaTypeToSiriInvocationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaTypeToSiriInvocationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,31 +69,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_backgroundAppBundleId)
   {
-    v4 = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"backgroundAppBundleId"];
+    backgroundAppBundleId = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
+    v5 = [backgroundAppBundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"backgroundAppBundleId"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
-    v6 = [v4 backgroundAppBundleId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    backgroundAppBundleId = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
+    backgroundAppBundleId2 = [equalCopy backgroundAppBundleId];
+    v7 = backgroundAppBundleId2;
+    if ((backgroundAppBundleId != 0) != (backgroundAppBundleId2 == 0))
     {
-      v8 = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
-      if (!v8)
+      backgroundAppBundleId3 = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
+      if (!backgroundAppBundleId3)
       {
 
 LABEL_10:
@@ -101,10 +101,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
-      v11 = [v4 backgroundAppBundleId];
-      v12 = [v10 isEqual:v11];
+      v9 = backgroundAppBundleId3;
+      backgroundAppBundleId4 = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
+      backgroundAppBundleId5 = [equalCopy backgroundAppBundleId];
+      v12 = [backgroundAppBundleId4 isEqual:backgroundAppBundleId5];
 
       if (v12)
       {
@@ -123,24 +123,24 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
+  toCopy = to;
+  backgroundAppBundleId = [(SISchemaTypeToSiriInvocationContext *)self backgroundAppBundleId];
 
-  if (v4)
+  if (backgroundAppBundleId)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = SISchemaTypeToSiriInvocationContext;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

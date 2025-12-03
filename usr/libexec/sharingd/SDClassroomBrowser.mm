@@ -1,20 +1,20 @@
 @interface SDClassroomBrowser
 + (id)sharedBrowser;
 - (SDClassroomBrowser)init;
-- (__SFNode)convertShareTargetToNode:(id)a3;
-- (id)convertAdvancedDescriptionToSimple:(id)a3;
-- (id)operationNameForPersonID:(id)a3 sessionID:(id)a4 clientBundleID:(id)a5;
+- (__SFNode)convertShareTargetToNode:(id)node;
+- (id)convertAdvancedDescriptionToSimple:(id)simple;
+- (id)operationNameForPersonID:(id)d sessionID:(id)iD clientBundleID:(id)bundleID;
 - (void)browserInvalidated;
-- (void)cancelSendingItemsToPersonWithID:(id)a3 sessionID:(id)a4 clientBundleID:(id)a5;
-- (void)operationEnded:(id)a3;
-- (void)operationMadeProgress:(id)a3;
-- (void)operationStarted:(id)a3;
+- (void)cancelSendingItemsToPersonWithID:(id)d sessionID:(id)iD clientBundleID:(id)bundleID;
+- (void)operationEnded:(id)ended;
+- (void)operationMadeProgress:(id)progress;
+- (void)operationStarted:(id)started;
 - (void)potentiallyInvalidate;
-- (void)shareTargetBrowser:(id)a3 didFindTargets:(id)a4;
-- (void)shareTargetBrowser:(id)a3 didInterruptWithError:(id)a4;
-- (void)shareTargetBrowser:(id)a3 didRemoveTargets:(id)a4;
+- (void)shareTargetBrowser:(id)browser didFindTargets:(id)targets;
+- (void)shareTargetBrowser:(id)browser didInterruptWithError:(id)error;
+- (void)shareTargetBrowser:(id)browser didRemoveTargets:(id)targets;
 - (void)start;
-- (void)startSendingItems:(id)a3 withProperties:(id)a4 toPersonWithID:(id)a5 clientBundleID:(id)a6 airDropClientDelegate:(id)a7;
+- (void)startSendingItems:(id)items withProperties:(id)properties toPersonWithID:(id)d clientBundleID:(id)iD airDropClientDelegate:(id)delegate;
 - (void)stop;
 - (void)transferConcluded;
 @end
@@ -123,17 +123,17 @@
   [(NSOperationQueue *)operationsQueue cancelAllOperations];
 }
 
-- (void)startSendingItems:(id)a3 withProperties:(id)a4 toPersonWithID:(id)a5 clientBundleID:(id)a6 airDropClientDelegate:(id)a7
+- (void)startSendingItems:(id)items withProperties:(id)properties toPersonWithID:(id)d clientBundleID:(id)iD airDropClientDelegate:(id)delegate
 {
-  v63 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v61 = self;
-  v62 = [(NSMutableDictionary *)self->_personIDToShareTarget objectForKeyedSubscript:v13];
-  v65 = v12;
-  v16 = [v12 mutableCopy];
+  itemsCopy = items;
+  propertiesCopy = properties;
+  dCopy = d;
+  iDCopy = iD;
+  delegateCopy = delegate;
+  selfCopy = self;
+  v62 = [(NSMutableDictionary *)self->_personIDToShareTarget objectForKeyedSubscript:dCopy];
+  v65 = propertiesCopy;
+  v16 = [propertiesCopy mutableCopy];
   v17 = [v16 objectForKeyedSubscript:kSFOperationSessionIDKey];
   v64 = [v16 objectForKeyedSubscript:kSFOperationItemsDescriptionKey];
   v18 = kSFOperationFileIconKey;
@@ -150,31 +150,31 @@
   }
 
   v20 = [NSProgress alloc];
-  v21 = [v20 sf_initWithAppBundle:v14 sessionID:v17 andPersonRealName:v13];
+  v21 = [v20 sf_initWithAppBundle:iDCopy sessionID:v17 andPersonRealName:dCopy];
 
   v71[0] = _NSConcreteStackBlock;
   v71[1] = 3221225472;
   v71[2] = sub_100072410;
   v71[3] = &unk_1008CE158;
-  value = v13;
+  value = dCopy;
   v72 = value;
   v22 = v17;
-  v23 = v61;
+  v23 = selfCopy;
   v73 = v22;
-  v74 = v61;
-  v24 = v14;
+  v74 = selfCopy;
+  v24 = iDCopy;
   v75 = v24;
   [v21 setCancellationHandler:v71];
   [v21 _publish];
   [v21 setSf_transferState:2];
   v26 = v62;
-  v25 = v63;
+  v25 = itemsCopy;
   if (v62)
   {
-    if ([v63 count])
+    if ([itemsCopy count])
     {
       v27 = [v65 count];
-      if (v15)
+      if (delegateCopy)
       {
         if (v24 && value && v27)
         {
@@ -187,7 +187,7 @@
           v68 = 0u;
           v69 = 0u;
           v70 = 0u;
-          v29 = v63;
+          v29 = itemsCopy;
           v30 = [v29 countByEnumeratingWithState:&v67 objects:v76 count:16];
           if (!v30)
           {
@@ -249,7 +249,7 @@ LABEL_23:
               v26 = v62;
               if ([v62 isInstructor])
               {
-                v39 = [(SDClassroomBrowser *)v61 convertAdvancedDescriptionToSimple:v64];
+                v39 = [(SDClassroomBrowser *)selfCopy convertAdvancedDescriptionToSimple:v64];
 
                 v40 = v39;
               }
@@ -260,40 +260,40 @@ LABEL_23:
               }
 
               [v16 setObject:&off_10090B7D8 forKeyedSubscript:kSFOperationFilesCopiedKey];
-              v43 = [v62 displayName];
-              [v16 setObject:v43 forKeyedSubscript:kSFOperationReceiverCompositeNameKey];
+              displayName = [v62 displayName];
+              [v16 setObject:displayName forKeyedSubscript:kSFOperationReceiverCompositeNameKey];
 
-              v44 = [v62 secondaryName];
-              [v16 setObject:v44 forKeyedSubscript:kSFOperationReceiverComputerNameKey];
+              secondaryName = [v62 secondaryName];
+              [v16 setObject:secondaryName forKeyedSubscript:kSFOperationReceiverComputerNameKey];
 
-              v45 = [v62 displayName];
-              [v16 setObject:v45 forKeyedSubscript:kSFOperationReceiverFirstNameKey];
+              displayName2 = [v62 displayName];
+              [v16 setObject:displayName2 forKeyedSubscript:kSFOperationReceiverFirstNameKey];
 
-              v46 = [v62 displayName];
-              [v16 setObject:v46 forKeyedSubscript:kSFOperationReceiverLastNameKey];
+              displayName3 = [v62 displayName];
+              [v16 setObject:displayName3 forKeyedSubscript:kSFOperationReceiverLastNameKey];
 
               [v16 setObject:@"Classroom" forKeyedSubscript:kSFOperationReceiverModelNameKey];
-              v47 = [v62 identifier];
-              [v16 setObject:v47 forKeyedSubscript:kSFOperationReceiverIDKey];
+              identifier = [v62 identifier];
+              [v16 setObject:identifier forKeyedSubscript:kSFOperationReceiverIDKey];
 
               v64 = v40;
               v48 = [v62 operationToSendItems:v28 fromBundleIdentifier:v58 description:v40 previewImageData:v60];
               v22 = v59;
-              v49 = [(SDClassroomBrowser *)v61 operationNameForPersonID:value sessionID:v59 clientBundleID:v58];
+              v49 = [(SDClassroomBrowser *)selfCopy operationNameForPersonID:value sessionID:v59 clientBundleID:v58];
               [v48 setName:v49];
 
-              [v48 addTarget:v61 selector:"operationStarted:" forOperationEvents:1 delegateQueue:&_dispatch_main_q];
-              [v48 addTarget:v61 selector:"operationMadeProgress:" forOperationEvents:8 delegateQueue:&_dispatch_main_q];
+              [v48 addTarget:selfCopy selector:"operationStarted:" forOperationEvents:1 delegateQueue:&_dispatch_main_q];
+              [v48 addTarget:selfCopy selector:"operationMadeProgress:" forOperationEvents:8 delegateQueue:&_dispatch_main_q];
 
-              [v48 addTarget:v61 selector:"operationEnded:" forOperationEvents:6 delegateQueue:&_dispatch_main_q];
+              [v48 addTarget:selfCopy selector:"operationEnded:" forOperationEvents:6 delegateQueue:&_dispatch_main_q];
               v24 = v58;
               objc_setAssociatedObject(v48, "SFClassroomPersonID", value, 0x301);
-              objc_setAssociatedObject(v48, "SFClassroomDelegate", v15, 0x301);
+              objc_setAssociatedObject(v48, "SFClassroomDelegate", delegateCopy, 0x301);
               objc_setAssociatedObject(v48, "SFClassroomProgress", v21, 0x301);
               objc_setAssociatedObject(v48, "SFClassroomResults", v16, 0x301);
-              [(NSOperationQueue *)v61->_operationsQueue addOperation:v48];
+              [(NSOperationQueue *)selfCopy->_operationsQueue addOperation:v48];
 
-              v25 = v63;
+              v25 = itemsCopy;
               goto LABEL_29;
             }
           }
@@ -315,8 +315,8 @@ LABEL_23:
       v50 = "no";
     }
 
-    v51 = v15;
-    if ([v63 count])
+    v51 = delegateCopy;
+    if ([itemsCopy count])
     {
       v52 = "yes";
     }
@@ -340,7 +340,7 @@ LABEL_23:
 
     *v78 = v50;
     v26 = v62;
-    v25 = v63;
+    v25 = itemsCopy;
     if (value)
     {
       v55 = "yes";
@@ -363,9 +363,9 @@ LABEL_23:
     }
 
     *&v78[10] = v52;
-    v15 = v51;
-    v23 = v61;
-    if (v15)
+    delegateCopy = v51;
+    v23 = selfCopy;
+    if (delegateCopy)
     {
       v57 = "yes";
     }
@@ -388,24 +388,24 @@ LABEL_23:
 
   v28 = sub_100092BE0(-1, 0);
   [v16 setObject:v28 forKeyedSubscript:kSFOperationErrorKey];
-  v42 = [v28 localizedDescription];
-  [v21 sf_failedWithError:v42];
+  localizedDescription = [v28 localizedDescription];
+  [v21 sf_failedWithError:localizedDescription];
 
-  [v15 airDropClient:0 event:10 withResults:v16];
+  [delegateCopy airDropClient:0 event:10 withResults:v16];
   [v21 _unpublish];
   [(SDClassroomBrowser *)v23 transferConcluded];
 LABEL_29:
 }
 
-- (void)cancelSendingItemsToPersonWithID:(id)a3 sessionID:(id)a4 clientBundleID:(id)a5
+- (void)cancelSendingItemsToPersonWithID:(id)d sessionID:(id)iD clientBundleID:(id)bundleID
 {
-  v6 = [(SDClassroomBrowser *)self operationNameForPersonID:a3 sessionID:a4 clientBundleID:a5];
+  v6 = [(SDClassroomBrowser *)self operationNameForPersonID:d sessionID:iD clientBundleID:bundleID];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(NSOperationQueue *)self->_operationsQueue operations];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  operations = [(NSOperationQueue *)self->_operationsQueue operations];
+  v8 = [operations countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -416,12 +416,12 @@ LABEL_29:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(operations);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v13 isEqual:v6];
+        name = [v12 name];
+        v14 = [name isEqual:v6];
 
         if (v14)
         {
@@ -429,7 +429,7 @@ LABEL_29:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [operations countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -438,9 +438,9 @@ LABEL_29:
   [(SDClassroomBrowser *)self transferConcluded];
 }
 
-- (id)convertAdvancedDescriptionToSimple:(id)a3
+- (id)convertAdvancedDescriptionToSimple:(id)simple
 {
-  v3 = a3;
+  simpleCopy = simple;
   v4 = SFStringIsJSON();
   if (v4)
   {
@@ -455,43 +455,43 @@ LABEL_29:
 
       v6 = [v4 objectForKeyedSubscript:@"SFAirDropActivitySubjectMain"];
 
-      v3 = v6;
+      simpleCopy = v6;
     }
 
     else
     {
 
-      v3 = 0;
+      simpleCopy = 0;
     }
   }
 
-  return v3;
+  return simpleCopy;
 }
 
-- (id)operationNameForPersonID:(id)a3 sessionID:(id)a4 clientBundleID:(id)a5
+- (id)operationNameForPersonID:(id)d sessionID:(id)iD clientBundleID:(id)bundleID
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [NSArray arrayWithObjects:&v13 count:3];
+  dCopy = d;
+  iDCopy = iD;
+  bundleIDCopy = bundleID;
+  bundleIDCopy2 = bundleID;
+  iDCopy2 = iD;
+  dCopy2 = d;
+  v10 = [NSArray arrayWithObjects:&dCopy count:3];
 
-  v11 = [v10 componentsJoinedByString:{@"_", v13, v14, v15}];
+  v11 = [v10 componentsJoinedByString:{@"_", dCopy, iDCopy, bundleIDCopy}];
 
   return v11;
 }
 
-- (void)operationStarted:(id)a3
+- (void)operationStarted:(id)started
 {
-  v3 = a3;
-  v4 = objc_getAssociatedObject(v3, "SFClassroomResults");
-  v5 = objc_getAssociatedObject(v3, "SFClassroomPersonID");
-  v6 = objc_getAssociatedObject(v3, "SFClassroomProgress");
+  startedCopy = started;
+  v4 = objc_getAssociatedObject(startedCopy, "SFClassroomResults");
+  v5 = objc_getAssociatedObject(startedCopy, "SFClassroomPersonID");
+  v6 = objc_getAssociatedObject(startedCopy, "SFClassroomProgress");
   [v6 setSf_transferState:3];
-  [v6 setTotalUnitCount:{objc_msgSend(v3, "totalUnitCount")}];
-  [v6 setCompletedUnitCount:{objc_msgSend(v3, "completedUnitCount")}];
+  [v6 setTotalUnitCount:{objc_msgSend(startedCopy, "totalUnitCount")}];
+  [v6 setCompletedUnitCount:{objc_msgSend(startedCopy, "completedUnitCount")}];
   v7 = airdrop_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -500,27 +500,27 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "SDClassroomBrowser started send operation to %@", &v9, 0xCu);
   }
 
-  v8 = objc_getAssociatedObject(v3, "SFClassroomDelegate");
+  v8 = objc_getAssociatedObject(startedCopy, "SFClassroomDelegate");
   [v8 airDropClient:0 event:11 withResults:v4];
   [v8 airDropClient:0 event:3 withResults:v4];
   [v8 airDropClient:0 event:6 withResults:v4];
 }
 
-- (void)operationMadeProgress:(id)a3
+- (void)operationMadeProgress:(id)progress
 {
-  v3 = a3;
-  v4 = objc_getAssociatedObject(v3, "SFClassroomProgress");
-  v5 = objc_getAssociatedObject(v3, "SFClassroomPersonID");
-  [v4 setTotalUnitCount:{objc_msgSend(v3, "totalUnitCount")}];
-  [v4 setCompletedUnitCount:{objc_msgSend(v3, "completedUnitCount")}];
+  progressCopy = progress;
+  v4 = objc_getAssociatedObject(progressCopy, "SFClassroomProgress");
+  v5 = objc_getAssociatedObject(progressCopy, "SFClassroomPersonID");
+  [v4 setTotalUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
+  [v4 setCompletedUnitCount:{objc_msgSend(progressCopy, "completedUnitCount")}];
   v6 = airdrop_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_100073868(v5, v4);
   }
 
-  v7 = objc_getAssociatedObject(v3, "SFClassroomDelegate");
-  v8 = objc_getAssociatedObject(v3, "SFClassroomResults");
+  v7 = objc_getAssociatedObject(progressCopy, "SFClassroomDelegate");
+  v8 = objc_getAssociatedObject(progressCopy, "SFClassroomResults");
   v9 = kSFOperationTotalBytesKey;
   v10 = [v8 objectForKeyedSubscript:kSFOperationTotalBytesKey];
 
@@ -540,16 +540,16 @@ LABEL_29:
   [v7 airDropClient:0 event:7 withResults:v8];
 }
 
-- (void)operationEnded:(id)a3
+- (void)operationEnded:(id)ended
 {
-  v4 = a3;
-  v5 = objc_getAssociatedObject(v4, "SFClassroomPersonID");
-  v6 = objc_getAssociatedObject(v4, "SFClassroomDelegate");
-  v7 = objc_getAssociatedObject(v4, "SFClassroomProgress");
-  v8 = objc_getAssociatedObject(v4, "SFClassroomResults");
-  v9 = [v4 error];
+  endedCopy = ended;
+  v5 = objc_getAssociatedObject(endedCopy, "SFClassroomPersonID");
+  v6 = objc_getAssociatedObject(endedCopy, "SFClassroomDelegate");
+  v7 = objc_getAssociatedObject(endedCopy, "SFClassroomProgress");
+  v8 = objc_getAssociatedObject(endedCopy, "SFClassroomResults");
+  error = [endedCopy error];
 
-  if (!v9)
+  if (!error)
   {
     v12 = airdrop_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -570,10 +570,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v10 = [v4 error];
-  v11 = [v10 code];
+  error2 = [endedCopy error];
+  code = [error2 code];
 
-  if (v11 == 404)
+  if (code == 404)
   {
     v12 = airdrop_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -589,12 +589,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v16 = [v4 error];
-  v17 = [v16 code];
+  error3 = [endedCopy error];
+  code2 = [error3 code];
 
   v18 = airdrop_log();
   v19 = v18;
-  if (v17 == 18)
+  if (code2 == 18)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -611,15 +611,15 @@ LABEL_7:
 
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
-    sub_100073920(v5, v4, v19);
+    sub_100073920(v5, endedCopy, v19);
   }
 
-  v20 = [v4 error];
-  v21 = sub_100092BE0(-1, v20);
+  error4 = [endedCopy error];
+  v21 = sub_100092BE0(-1, error4);
 
   [v8 setObject:v21 forKeyedSubscript:kSFOperationErrorKey];
-  v22 = [v21 localizedDescription];
-  [v7 sf_failedWithError:v22];
+  localizedDescription = [v21 localizedDescription];
+  [v7 sf_failedWithError:localizedDescription];
 
   [v6 airDropClient:0 event:10 withResults:v8];
 LABEL_10:
@@ -627,37 +627,37 @@ LABEL_10:
   [(SDClassroomBrowser *)self transferConcluded];
 }
 
-- (__SFNode)convertShareTargetToNode:(id)a3
+- (__SFNode)convertShareTargetToNode:(id)node
 {
-  v4 = a3;
-  v5 = [v4 displayName];
-  v6 = [v4 identifier];
+  nodeCopy = node;
+  displayName = [nodeCopy displayName];
+  identifier = [nodeCopy identifier];
   v7 = SFNodeCreate();
 
-  v8 = [v4 secondaryName];
+  secondaryName = [nodeCopy secondaryName];
   SFNodeSetSecondaryName();
 
-  v9 = [v4 iconImageData];
-  if (v9)
+  iconImageData = [nodeCopy iconImageData];
+  if (iconImageData)
   {
-    v10 = v9;
-    v11 = [UIImage imageWithData:v9];
+    v10 = iconImageData;
+    v11 = [UIImage imageWithData:iconImageData];
     [v11 CGImage];
     v12 = SFDataFromCGImage();
   }
 
   else
   {
-    v13 = [(SDClassroomBrowser *)self clientBundleID];
-    v14 = v13;
-    if (v13 == @"com.apple.finder")
+    clientBundleID = [(SDClassroomBrowser *)self clientBundleID];
+    v14 = clientBundleID;
+    if (clientBundleID == @"com.apple.finder")
     {
       v15 = 0;
     }
 
-    else if (v13)
+    else if (clientBundleID)
     {
-      v15 = [(__CFString *)v13 isEqual:@"com.apple.finder"]^ 1;
+      v15 = [(__CFString *)clientBundleID isEqual:@"com.apple.finder"]^ 1;
     }
 
     else
@@ -675,18 +675,18 @@ LABEL_10:
   SFNodeSetIconData();
   SFNodeAddKind();
   SFNodeAddKind();
-  if (([v4 isGroup] & 1) == 0 && !objc_msgSend(v4, "isCourse"))
+  if (([nodeCopy isGroup] & 1) == 0 && !objc_msgSend(nodeCopy, "isCourse"))
   {
     v16 = &kSFNodeKindPerson;
     goto LABEL_17;
   }
 
-  if ([v4 isGroup])
+  if ([nodeCopy isGroup])
   {
     SFNodeAddKind();
   }
 
-  if ([v4 isCourse])
+  if ([nodeCopy isCourse])
   {
     v16 = &kSFNodeKindClassroomCourse;
 LABEL_17:
@@ -702,9 +702,9 @@ LABEL_17:
   return v7;
 }
 
-- (void)shareTargetBrowser:(id)a3 didInterruptWithError:(id)a4
+- (void)shareTargetBrowser:(id)browser didInterruptWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = browser_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -715,9 +715,9 @@ LABEL_17:
   [(SDClassroomBrowser *)self stop];
 }
 
-- (void)shareTargetBrowser:(id)a3 didFindTargets:(id)a4
+- (void)shareTargetBrowser:(id)browser didFindTargets:(id)targets
 {
-  v5 = a4;
+  targetsCopy = targets;
   v6 = browser_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -730,7 +730,7 @@ LABEL_17:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v5;
+  v9 = targetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v10)
   {
@@ -747,8 +747,8 @@ LABEL_17:
 
         v14 = *(*(&v26 + 1) + 8 * i);
         personIDToShareTarget = self->_personIDToShareTarget;
-        v16 = [v14 identifier];
-        [(NSMutableDictionary *)personIDToShareTarget setObject:v14 forKeyedSubscript:v16];
+        identifier = [v14 identifier];
+        [(NSMutableDictionary *)personIDToShareTarget setObject:v14 forKeyedSubscript:identifier];
 
         v17 = [(SDClassroomBrowser *)self convertShareTargetToNode:v14];
         [v8 addObject:v17];
@@ -762,8 +762,8 @@ LABEL_17:
 
   objc_storeStrong(&self->_nodes, v8);
   v18 = [(NSArray *)self->_nodes count];
-  v19 = [(NSMutableDictionary *)self->_personIDToShareTarget allKeys];
-  v20 = [v19 count];
+  allKeys = [(NSMutableDictionary *)self->_personIDToShareTarget allKeys];
+  v20 = [allKeys count];
 
   if (v18 != v20)
   {
@@ -784,23 +784,23 @@ LABEL_17:
   [v24 postNotificationName:@"com.apple.sharingd.ClassroomChanged" object:0 userInfo:0];
 }
 
-- (void)shareTargetBrowser:(id)a3 didRemoveTargets:(id)a4
+- (void)shareTargetBrowser:(id)browser didRemoveTargets:(id)targets
 {
-  v5 = a4;
+  targetsCopy = targets;
   v6 = browser_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     sub_100073B38();
   }
 
-  v29 = self;
+  selfCopy = self;
   location = &self->_nodes;
   v30 = [NSMutableArray arrayWithArray:self->_nodes];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v5;
+  obj = targetsCopy;
   v33 = [obj countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v33)
   {
@@ -836,14 +836,14 @@ LABEL_17:
 
               v14 = *(*(&v34 + 1) + 8 * j);
               v15 = SFNodeCopyRealName();
-              v16 = [v8 identifier];
-              v17 = [v16 isEqual:v15];
+              identifier = [v8 identifier];
+              v17 = [identifier isEqual:v15];
 
               if (v17)
               {
-                personIDToShareTarget = v29->_personIDToShareTarget;
-                v19 = [v8 identifier];
-                [(NSMutableDictionary *)personIDToShareTarget removeObjectForKey:v19];
+                personIDToShareTarget = selfCopy->_personIDToShareTarget;
+                identifier2 = [v8 identifier];
+                [(NSMutableDictionary *)personIDToShareTarget removeObjectForKey:identifier2];
 
                 [v30 removeObject:v14];
                 goto LABEL_18;
@@ -870,13 +870,13 @@ LABEL_18:
   }
 
   objc_storeStrong(location, v30);
-  v20 = [(NSArray *)v29->_nodes count];
-  v21 = [(NSMutableDictionary *)v29->_personIDToShareTarget allKeys];
-  v22 = [v21 count];
+  v20 = [(NSArray *)selfCopy->_nodes count];
+  allKeys = [(NSMutableDictionary *)selfCopy->_personIDToShareTarget allKeys];
+  v22 = [allKeys count];
 
   if (v20 != v22)
   {
-    sub_100073BC4(a2, v29);
+    sub_100073BC4(a2, selfCopy);
   }
 
   v23 = browser_log();

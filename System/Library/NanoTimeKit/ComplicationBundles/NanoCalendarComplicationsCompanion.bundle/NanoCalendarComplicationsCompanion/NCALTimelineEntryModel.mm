@@ -1,70 +1,70 @@
 @interface NCALTimelineEntryModel
-+ (id)_entryForTemplateDescription:(id)a3 family:(int64_t)a4;
-+ (id)_extraLargeCalendarImageProviderWithConflicts:(BOOL)a3;
-+ (id)_graphicStackTextProvider:(id)a3;
-+ (id)_modularSmallCalendarImageWithConflicts:(BOOL)a3;
++ (id)_entryForTemplateDescription:(id)description family:(int64_t)family;
++ (id)_extraLargeCalendarImageProviderWithConflicts:(BOOL)conflicts;
++ (id)_graphicStackTextProvider:(id)provider;
++ (id)_modularSmallCalendarImageWithConflicts:(BOOL)conflicts;
 + (id)_signatureCornerImageProvider;
-+ (id)_swapPlaceholderString:(id)a3 withTimeStringForDate:(id)a4 inString:(id)a5 usingBaseFont:(id)a6 smallCapsBaseFont:(id)a7 timeZone:(id)a8 options:(unint64_t)a9;
++ (id)_swapPlaceholderString:(id)string withTimeStringForDate:(id)date inString:(id)inString usingBaseFont:(id)font smallCapsBaseFont:(id)baseFont timeZone:(id)zone options:(unint64_t)options;
 + (id)_utilityCalendarImageProvider;
-+ (id)circular:(id)a3 isMedium:(BOOL)a4;
-+ (id)contentForLargeModular:(id)a3;
-+ (id)contentForSignatureRectangular:(id)a3;
-+ (id)eventStartDateTextProvider:(id)a3;
-+ (id)extraLarge:(id)a3;
-+ (id)graphicCircular:(id)a3;
-+ (id)graphicExtraLarge:(id)a3;
-+ (id)largeModular:(id)a3;
-+ (id)largeUtility:(id)a3;
-+ (id)loadingEntryForFamily:(int64_t)a3;
-+ (id)lockedEntryForFamily:(int64_t)a3;
-+ (id)sampleEventTemplateForFamily:(int64_t)a3;
-+ (id)signatureBezel:(id)a3;
-+ (id)signatureCircular:(id)a3;
-+ (id)signatureCorner:(id)a3;
-+ (id)signatureRectangular:(id)a3;
-+ (id)smallModular:(id)a3;
-+ (id)smallUtility:(id)a3;
-+ (id)wrappedUserStringFrom:(id)a3;
++ (id)circular:(id)circular isMedium:(BOOL)medium;
++ (id)contentForLargeModular:(id)modular;
++ (id)contentForSignatureRectangular:(id)rectangular;
++ (id)eventStartDateTextProvider:(id)provider;
++ (id)extraLarge:(id)large;
++ (id)graphicCircular:(id)circular;
++ (id)graphicExtraLarge:(id)large;
++ (id)largeModular:(id)modular;
++ (id)largeUtility:(id)utility;
++ (id)loadingEntryForFamily:(int64_t)family;
++ (id)lockedEntryForFamily:(int64_t)family;
++ (id)sampleEventTemplateForFamily:(int64_t)family;
++ (id)signatureBezel:(id)bezel;
++ (id)signatureCircular:(id)circular;
++ (id)signatureCorner:(id)corner;
++ (id)signatureRectangular:(id)rectangular;
++ (id)smallModular:(id)modular;
++ (id)smallUtility:(id)utility;
++ (id)wrappedUserStringFrom:(id)from;
 - (id)_wrappedPrimaryEventLocation;
 - (id)_wrappedPrimaryEventOrganizerName;
 - (id)_wrappedPrimaryEventTitle;
 - (id)_wrappedSecondaryEventTitle;
 - (id)description;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NCALTimelineEntryModel
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
-  if (NTKComplicationFamilyUtilitarianLargeNarrow == a3)
+  if (NTKComplicationFamilyUtilitarianLargeNarrow == family)
   {
     goto LABEL_2;
   }
 
-  if (CLKComplicationFamilyCircularMedium == a3)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     v5 = objc_opt_class();
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
 LABEL_5:
-    v4 = [v5 circular:v6 isMedium:v7];
+    v4 = [v5 circular:selfCopy2 isMedium:v7];
     goto LABEL_6;
   }
 
   v8 = 0;
-  if (a3 > 6)
+  if (family > 6)
   {
-    if (a3 <= 9)
+    if (family <= 9)
     {
-      if (a3 == 7)
+      if (family == 7)
       {
         v4 = [objc_opt_class() extraLarge:self];
       }
 
       else
       {
-        if (a3 == 8)
+        if (family == 8)
         {
           [objc_opt_class() signatureCorner:self];
         }
@@ -79,7 +79,7 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    switch(a3)
+    switch(family)
     {
       case 10:
         v4 = [objc_opt_class() graphicCircular:self];
@@ -95,21 +95,21 @@ LABEL_5:
 
   else
   {
-    if (a3 <= 2)
+    if (family <= 2)
     {
-      if (!a3)
+      if (!family)
       {
         v4 = [objc_opt_class() smallModular:self];
         goto LABEL_6;
       }
 
-      if (a3 == 1)
+      if (family == 1)
       {
         v4 = [objc_opt_class() largeModular:self];
         goto LABEL_6;
       }
 
-      if (a3 != 2)
+      if (family != 2)
       {
         goto LABEL_7;
       }
@@ -119,7 +119,7 @@ LABEL_24:
       goto LABEL_6;
     }
 
-    switch(a3)
+    switch(family)
     {
       case 3:
 LABEL_2:
@@ -129,7 +129,7 @@ LABEL_6:
         break;
       case 4:
         v5 = objc_opt_class();
-        v6 = self;
+        selfCopy2 = self;
         v7 = 0;
         goto LABEL_5;
       case 6:
@@ -143,11 +143,11 @@ LABEL_7:
   return v8;
 }
 
-+ (id)largeModular:(id)a3
++ (id)largeModular:(id)modular
 {
-  v4 = a3;
-  v5 = [a1 contentForLargeModular:v4];
-  v6 = [v5 firstObject];
+  modularCopy = modular;
+  v5 = [self contentForLargeModular:modularCopy];
+  firstObject = [v5 firstObject];
   if ([v5 count] < 2)
   {
     [CLKSimpleTextProvider textProviderWithText:&stru_20EF0];
@@ -169,11 +169,11 @@ LABEL_7:
   }
 
   v9 = [UIImage systemImageNamed:@"exclamationmark.circle"];
-  v10 = [v4 overlappingEventCount];
-  if (v10 == &dword_0 + 1)
+  overlappingEventCount = [modularCopy overlappingEventCount];
+  if (overlappingEventCount == &dword_0 + 1)
   {
-    v11 = [CLKComplicationTemplateModularLargeStandardBody templateWithHeaderTextProvider:v6 body1TextProvider:v7 body2TextProvider:v8];
-    if (![v4 displayAsConflicting])
+    v11 = [CLKComplicationTemplateModularLargeStandardBody templateWithHeaderTextProvider:firstObject body1TextProvider:v7 body2TextProvider:v8];
+    if (![modularCopy displayAsConflicting])
     {
       goto LABEL_18;
     }
@@ -184,9 +184,9 @@ LABEL_7:
 
   else
   {
-    if (!v10)
+    if (!overlappingEventCount)
     {
-      v11 = [CLKComplicationTemplateModularLargeStandardBody templateWithHeaderTextProvider:v6 body1TextProvider:v7];
+      v11 = [CLKComplicationTemplateModularLargeStandardBody templateWithHeaderTextProvider:firstObject body1TextProvider:v7];
       goto LABEL_18;
     }
 
@@ -197,9 +197,9 @@ LABEL_7:
       v8 = [CLKSimpleTextProvider textProviderWithText:&stru_20EF0];
     }
 
-    v11 = [CLKComplicationTemplateModularLargeTable templateWithHeaderTextProvider:v6 row1Column1TextProvider:v13 row1Column2TextProvider:v7 row2Column1TextProvider:v13 row2Column2TextProvider:v8];
+    v11 = [CLKComplicationTemplateModularLargeTable templateWithHeaderTextProvider:firstObject row1Column1TextProvider:v13 row1Column2TextProvider:v7 row2Column1TextProvider:v13 row2Column2TextProvider:v8];
     [v11 setUseNoColumnPadding:1];
-    if ([v4 displayAsConflicting])
+    if ([modularCopy displayAsConflicting])
     {
       v14 = [CLKImageProvider imageProviderWithOnePieceImage:v9];
       [v11 setHeaderImageProvider:v14];
@@ -213,34 +213,34 @@ LABEL_18:
   return v11;
 }
 
-+ (id)contentForLargeModular:(id)a3
++ (id)contentForLargeModular:(id)modular
 {
-  v3 = a3;
-  v4 = [v3 overlappingEventCount];
-  v5 = v4 - 1;
-  if (v4 == &dword_0 + 1)
+  modularCopy = modular;
+  overlappingEventCount = [modularCopy overlappingEventCount];
+  v5 = overlappingEventCount - 1;
+  if (overlappingEventCount == &dword_0 + 1)
   {
-    v9 = [v3 eventStartDate];
-    v10 = [v3 eventEndDate];
+    eventStartDate = [modularCopy eventStartDate];
+    eventEndDate = [modularCopy eventEndDate];
     v11 = +[NSTimeZone calendarTimeZone];
-    v12 = [CLKTimeIntervalTextProvider finalizedTextProviderWithStartDate:v9 endDate:v10 timeZone:v11];
+    v12 = [CLKTimeIntervalTextProvider finalizedTextProviderWithStartDate:eventStartDate endDate:eventEndDate timeZone:v11];
 
-    v13 = [v3 _wrappedPrimaryEventTitle];
-    v14 = [CLKSimpleTextProvider finalizedTextProviderWithText:v13];
+    _wrappedPrimaryEventTitle = [modularCopy _wrappedPrimaryEventTitle];
+    v14 = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedPrimaryEventTitle];
 
-    v15 = [v3 _wrappedPrimaryEventLocation];
-    v16 = v15;
-    if (v15)
+    _wrappedPrimaryEventLocation = [modularCopy _wrappedPrimaryEventLocation];
+    v16 = _wrappedPrimaryEventLocation;
+    if (_wrappedPrimaryEventLocation)
     {
-      v17 = v15;
+      _wrappedPrimaryEventOrganizerName = _wrappedPrimaryEventLocation;
     }
 
     else
     {
-      v17 = [v3 _wrappedPrimaryEventOrganizerName];
+      _wrappedPrimaryEventOrganizerName = [modularCopy _wrappedPrimaryEventOrganizerName];
     }
 
-    v28 = v17;
+    v28 = _wrappedPrimaryEventOrganizerName;
 
     if ([v28 length])
     {
@@ -255,10 +255,10 @@ LABEL_18:
 
   else
   {
-    v6 = v4;
-    if (v4)
+    v6 = overlappingEventCount;
+    if (overlappingEventCount)
     {
-      v18 = [v3 eventStartDate];
+      eventStartDate2 = [modularCopy eventStartDate];
       if (NTKHourOfDateIsSingular())
       {
         v19 = @"SINGULAR";
@@ -277,35 +277,35 @@ LABEL_18:
       v33[1] = 3221225472;
       v33[2] = sub_88CC;
       v33[3] = &unk_20BD0;
-      v23 = v18;
+      v23 = eventStartDate2;
       v34 = v23;
       v12 = [NTKOverrideTextProvider textProviderWithText:v22 overrideBlock:v33];
-      v24 = [v3 _wrappedPrimaryEventTitle];
-      v14 = [CLKSimpleTextProvider finalizedTextProviderWithText:v24];
+      _wrappedPrimaryEventTitle2 = [modularCopy _wrappedPrimaryEventTitle];
+      v14 = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedPrimaryEventTitle2];
 
       if (v6 == &dword_0 + 2)
       {
-        v25 = [v3 _wrappedSecondaryEventTitle];
+        _wrappedSecondaryEventTitle = [modularCopy _wrappedSecondaryEventTitle];
       }
 
       else
       {
         v26 = NCALComplicationLocalizedString(@"NEXTEVENT_N_MORE_ELLIPSIS_LARGE_MODULAR");
-        v25 = [NSString localizedStringWithFormat:v26, v5];
+        _wrappedSecondaryEventTitle = [NSString localizedStringWithFormat:v26, v5];
       }
 
-      v27 = [CLKSimpleTextProvider finalizedTextProviderWithText:v25];
+      v27 = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedSecondaryEventTitle];
     }
 
     else
     {
       v7 = NCALComplicationLocalizedString(@"NEXTEVENT_NEXT_EVENT_TITLE_LARGE_MODULAR");
-      if ([v3 displayAsTomorrow])
+      if ([modularCopy displayAsTomorrow])
       {
         v8 = @"NEXTEVENT_NO_EVENTS_TOMORROW_LARGE_MODULAR";
       }
 
-      else if ([v3 displayAsFirstInDay])
+      else if ([modularCopy displayAsFirstInDay])
       {
         v8 = @"NEXTEVENT_NO_EVENTS_TODAY_LARGE_MODULAR";
       }
@@ -343,88 +343,88 @@ LABEL_18:
   return v31;
 }
 
-+ (id)contentForSignatureRectangular:(id)a3
++ (id)contentForSignatureRectangular:(id)rectangular
 {
-  v3 = a3;
-  v4 = [v3 overlappingEventCount];
-  v5 = v4 - 1;
-  if (v4 == &dword_0 + 1)
+  rectangularCopy = rectangular;
+  overlappingEventCount = [rectangularCopy overlappingEventCount];
+  v5 = overlappingEventCount - 1;
+  if (overlappingEventCount == &dword_0 + 1)
   {
-    v13 = [v3 eventStartDate];
-    v14 = [v3 eventEndDate];
+    eventStartDate = [rectangularCopy eventStartDate];
+    eventEndDate = [rectangularCopy eventEndDate];
     v15 = +[NSTimeZone calendarTimeZone];
-    v10 = [CLKTimeIntervalTextProvider finalizedTextProviderWithStartDate:v13 endDate:v14 timeZone:v15];
+    v10 = [CLKTimeIntervalTextProvider finalizedTextProviderWithStartDate:eventStartDate endDate:eventEndDate timeZone:v15];
 
-    v16 = [v3 _wrappedPrimaryEventTitle];
-    v11 = [CLKSimpleTextProvider finalizedTextProviderWithText:v16];
+    _wrappedPrimaryEventTitle = [rectangularCopy _wrappedPrimaryEventTitle];
+    v11 = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedPrimaryEventTitle];
 
-    v17 = [v3 _wrappedPrimaryEventLocation];
-    v18 = v17;
-    if (v17)
+    _wrappedPrimaryEventLocation = [rectangularCopy _wrappedPrimaryEventLocation];
+    v18 = _wrappedPrimaryEventLocation;
+    if (_wrappedPrimaryEventLocation)
     {
-      v19 = v17;
+      _wrappedPrimaryEventOrganizerName = _wrappedPrimaryEventLocation;
     }
 
     else
     {
-      v19 = [v3 _wrappedPrimaryEventOrganizerName];
+      _wrappedPrimaryEventOrganizerName = [rectangularCopy _wrappedPrimaryEventOrganizerName];
     }
 
-    v7 = v19;
+    _wrappedSecondaryEventTitle = _wrappedPrimaryEventOrganizerName;
 
-    if (![v7 length])
+    if (![_wrappedSecondaryEventTitle length])
     {
       v12 = 0;
       goto LABEL_30;
     }
 
-    v32 = [NTKOverrideTextProvider textProviderWithText:v7 overrideBlock:&stru_20BF0];
+    v32 = [NTKOverrideTextProvider textProviderWithText:_wrappedSecondaryEventTitle overrideBlock:&stru_20BF0];
 LABEL_22:
     v12 = v32;
     goto LABEL_30;
   }
 
-  v6 = v4;
-  if (v4)
+  v6 = overlappingEventCount;
+  if (overlappingEventCount)
   {
-    if ([v3 overlappingDates])
+    if ([rectangularCopy overlappingDates])
     {
-      v20 = [v3 eventStartDate];
-      v21 = [v3 eventEndDate];
+      eventStartDate2 = [rectangularCopy eventStartDate];
+      eventEndDate2 = [rectangularCopy eventEndDate];
       v22 = +[NSTimeZone calendarTimeZone];
-      v10 = [CLKTimeIntervalTextProvider finalizedTextProviderWithStartDate:v20 endDate:v21 timeZone:v22];
+      v10 = [CLKTimeIntervalTextProvider finalizedTextProviderWithStartDate:eventStartDate2 endDate:eventEndDate2 timeZone:v22];
     }
 
     else
     {
-      v20 = [v3 eventStartDate];
-      v10 = [CLKTimeTextProvider textProviderWithDate:v20];
+      eventStartDate2 = [rectangularCopy eventStartDate];
+      v10 = [CLKTimeTextProvider textProviderWithDate:eventStartDate2];
     }
 
-    v30 = [v3 _wrappedPrimaryEventTitle];
-    v11 = [CLKSimpleTextProvider finalizedTextProviderWithText:v30];
+    _wrappedPrimaryEventTitle2 = [rectangularCopy _wrappedPrimaryEventTitle];
+    v11 = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedPrimaryEventTitle2];
 
     if (v6 == &dword_0 + 2)
     {
-      v7 = [v3 _wrappedSecondaryEventTitle];
+      _wrappedSecondaryEventTitle = [rectangularCopy _wrappedSecondaryEventTitle];
     }
 
     else
     {
       v31 = NCALComplicationLocalizedFormat(@"NEXTEVENT_N_MORE_EVENTS_SIGNATURE_RECTANGULAR");
-      v7 = [NSString localizedStringWithFormat:v31, v5];
+      _wrappedSecondaryEventTitle = [NSString localizedStringWithFormat:v31, v5];
     }
 
-    v32 = [CLKSimpleTextProvider finalizedTextProviderWithText:v7];
+    v32 = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedSecondaryEventTitle];
     goto LABEL_22;
   }
 
-  if ([v3 displayAsTomorrow])
+  if ([rectangularCopy displayAsTomorrow])
   {
-    v7 = NCALComplicationLocalizedString(@"NEXTEVENT_NEXT_EVENT_TOMORROW_TITLE_SIGNATURE_RECTANGULAR");
+    _wrappedSecondaryEventTitle = NCALComplicationLocalizedString(@"NEXTEVENT_NEXT_EVENT_TOMORROW_TITLE_SIGNATURE_RECTANGULAR");
     v8 = NCALComplicationLocalizedString(@"NEXTEVENT_NO_EVENTS_TOMORROW_SUBTITLE_SIGNATURE_RECTANGULAR");
     v9 = 0;
-    if (v7)
+    if (_wrappedSecondaryEventTitle)
     {
       goto LABEL_5;
     }
@@ -433,16 +433,16 @@ LABEL_22:
   else
   {
     v23 = +[NSBundle mainBundle];
-    v24 = [v23 preferredLocalizations];
-    v25 = [v24 firstObject];
-    v26 = [NSLocale localeWithLocaleIdentifier:v25];
+    preferredLocalizations = [v23 preferredLocalizations];
+    firstObject = [preferredLocalizations firstObject];
+    v26 = [NSLocale localeWithLocaleIdentifier:firstObject];
 
-    v27 = [v3 entryDate];
-    v28 = [NTKComplicationDateFormatter stringForDate:v27 withStyle:32];
-    v7 = [v28 uppercaseStringWithLocale:v26];
+    entryDate = [rectangularCopy entryDate];
+    v28 = [NTKComplicationDateFormatter stringForDate:entryDate withStyle:32];
+    _wrappedSecondaryEventTitle = [v28 uppercaseStringWithLocale:v26];
 
     v9 = NCALComplicationLocalizedString(@"NEXTEVENT_NO_EVENT_SUBTITLE_SIGNATURE_RECTANGULAR");
-    if ([v3 displayAsFirstInDay])
+    if ([rectangularCopy displayAsFirstInDay])
     {
       v29 = @"NEXTEVENT_NO_EVENTS_TODAY_SIGNATURE_RECTANGULAR";
     }
@@ -454,10 +454,10 @@ LABEL_22:
 
     v8 = NCALComplicationLocalizedString(v29);
 
-    if (v7)
+    if (_wrappedSecondaryEventTitle)
     {
 LABEL_5:
-      v10 = [CLKSimpleTextProvider finalizedTextProviderWithText:v7];
+      v10 = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedSecondaryEventTitle];
       if (v8)
       {
         goto LABEL_6;
@@ -514,19 +514,19 @@ LABEL_30:
   return v34;
 }
 
-+ (id)_swapPlaceholderString:(id)a3 withTimeStringForDate:(id)a4 inString:(id)a5 usingBaseFont:(id)a6 smallCapsBaseFont:(id)a7 timeZone:(id)a8 options:(unint64_t)a9
++ (id)_swapPlaceholderString:(id)string withTimeStringForDate:(id)date inString:(id)inString usingBaseFont:(id)font smallCapsBaseFont:(id)baseFont timeZone:(id)zone options:(unint64_t)options
 {
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [a7 CLKFontWithLocalizedSmallCaps];
+  fontCopy = font;
+  inStringCopy = inString;
+  dateCopy = date;
+  stringCopy = string;
+  cLKFontWithLocalizedSmallCaps = [baseFont CLKFontWithLocalizedSmallCaps];
   v18 = CLKTimeDesignatorAttribute;
   v43 = CLKTimeDesignatorAttribute;
   v44 = &__kCFBooleanTrue;
   v19 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
   v20 = +[NSTimeZone calendarTimeZone];
-  v21 = [NSAttributedString NTKTimeWithDate:v15 andDesignatorAttributes:v19 timeZone:v20 options:0];
+  v21 = [NSAttributedString NTKTimeWithDate:dateCopy andDesignatorAttributes:v19 timeZone:v20 options:0];
 
   v22 = [v21 mutableCopy];
   [v22 beginEditing];
@@ -537,20 +537,20 @@ LABEL_30:
   v37 = &unk_20C18;
   v24 = v22;
   v38 = v24;
-  v25 = v17;
+  v25 = cLKFontWithLocalizedSmallCaps;
   v39 = v25;
-  v26 = v13;
+  v26 = fontCopy;
   v40 = v26;
   [v24 enumerateAttribute:v18 inRange:0 options:v23 usingBlock:{0x100000, &v34}];
   [v24 endEditing];
-  v27 = [v14 rangeOfString:v16];
+  v27 = [inStringCopy rangeOfString:stringCopy];
   v29 = v28;
 
   v30 = [NSMutableAttributedString alloc];
   v41 = NSFontAttributeName;
   v42 = v26;
   v31 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-  v32 = [v30 initWithString:v14 attributes:v31];
+  v32 = [v30 initWithString:inStringCopy attributes:v31];
 
   if (v27 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -560,11 +560,11 @@ LABEL_30:
   return v32;
 }
 
-+ (id)smallUtility:(id)a3
++ (id)smallUtility:(id)utility
 {
-  v3 = a3;
-  v4 = [v3 overlappingEventCount];
-  if ([v3 displayAsConflicting])
+  utilityCopy = utility;
+  overlappingEventCount = [utilityCopy overlappingEventCount];
+  if ([utilityCopy displayAsConflicting])
   {
     v5 = 0;
   }
@@ -574,7 +574,7 @@ LABEL_30:
     v5 = NCALComplicationImageNamed(@"analogNextEventCalendarBackground");
   }
 
-  if ([v3 displayAsConflicting])
+  if ([utilityCopy displayAsConflicting])
   {
     v6 = 0;
   }
@@ -584,7 +584,7 @@ LABEL_30:
     v6 = NCALComplicationImageNamed(@"analogNextEventCalendarForeground");
   }
 
-  if ([v3 displayAsConflicting])
+  if ([utilityCopy displayAsConflicting])
   {
     v7 = @"analogNextEventCoincidentAlertGlyph";
   }
@@ -595,7 +595,7 @@ LABEL_30:
   }
 
   v8 = NCALComplicationImageNamed(v7);
-  if ([v3 displayAsConflicting])
+  if ([utilityCopy displayAsConflicting])
   {
     +[UIColor whiteColor];
   }
@@ -607,17 +607,17 @@ LABEL_30:
   v9 = ;
   v10 = [CLKImageProvider imageProviderWithOnePieceImage:v8 twoPieceImageBackground:v5 twoPieceImageForeground:v6];
   [v10 setTintColor:v9];
-  if (v4)
+  if (overlappingEventCount)
   {
-    v11 = [v3 eventStartDate];
+    eventStartDate = [utilityCopy eventStartDate];
     v12 = +[NSTimeZone calendarTimeZone];
-    v13 = [CLKTimeTextProvider textProviderWithDate:v11 timeZone:v12];
+    v13 = [CLKTimeTextProvider textProviderWithDate:eventStartDate timeZone:v12];
   }
 
   else
   {
-    v11 = NCALComplicationLocalizedString(@"NEXTEVENT_NONE_SHORT_UTILITY");
-    v13 = [CLKSimpleTextProvider finalizedTextProviderWithText:v11];
+    eventStartDate = NCALComplicationLocalizedString(@"NEXTEVENT_NONE_SHORT_UTILITY");
+    v13 = [CLKSimpleTextProvider finalizedTextProviderWithText:eventStartDate];
   }
 
   v14 = [CLKComplicationTemplateUtilitarianSmallFlat templateWithTextProvider:v13 imageProvider:v10];
@@ -625,9 +625,9 @@ LABEL_30:
   return v14;
 }
 
-+ (id)_modularSmallCalendarImageWithConflicts:(BOOL)a3
++ (id)_modularSmallCalendarImageWithConflicts:(BOOL)conflicts
 {
-  if (a3)
+  if (conflicts)
   {
     v3 = @"graphicSmallCalendarConflict";
   }
@@ -637,7 +637,7 @@ LABEL_30:
     v3 = @"graphicCalendar";
   }
 
-  if (a3)
+  if (conflicts)
   {
     v4 = @"graphicSmallCalendarConflictNoAccent";
   }
@@ -647,7 +647,7 @@ LABEL_30:
     v4 = @"graphicCalendarNoAccent";
   }
 
-  if (a3)
+  if (conflicts)
   {
     v5 = @"graphicSmallCalendarConflictAccent";
   }
@@ -672,9 +672,9 @@ LABEL_30:
   return v11;
 }
 
-+ (id)_extraLargeCalendarImageProviderWithConflicts:(BOOL)a3
++ (id)_extraLargeCalendarImageProviderWithConflicts:(BOOL)conflicts
 {
-  if (a3)
+  if (conflicts)
   {
     v3 = @"XLgraphicSmallCalendarConflict";
   }
@@ -684,7 +684,7 @@ LABEL_30:
     v3 = @"XLgraphicCalendar";
   }
 
-  if (a3)
+  if (conflicts)
   {
     v4 = @"XLgraphicSmallCalendarConflictNoAccent";
   }
@@ -694,7 +694,7 @@ LABEL_30:
     v4 = @"XLgraphicCalendarNoAccent";
   }
 
-  if (a3)
+  if (conflicts)
   {
     v5 = @"XLgraphicSmallCalendarConflictAccent";
   }
@@ -722,29 +722,29 @@ LABEL_30:
 + (id)_utilityCalendarImageProvider
 {
   v2 = +[CLKRenderingContext sharedRenderingContext];
-  v3 = [v2 device];
-  sub_9810(v3, v3);
+  device = [v2 device];
+  sub_9810(device, device);
 
   v4 = qword_28178;
 
   return v4;
 }
 
-+ (id)smallModular:(id)a3
++ (id)smallModular:(id)modular
 {
-  v4 = a3;
-  v5 = [v4 overlappingEventCount];
-  v6 = [a1 _modularSmallCalendarImageWithConflicts:{objc_msgSend(v4, "displayAsConflicting")}];
-  if (v5)
+  modularCopy = modular;
+  overlappingEventCount = [modularCopy overlappingEventCount];
+  v6 = [self _modularSmallCalendarImageWithConflicts:{objc_msgSend(modularCopy, "displayAsConflicting")}];
+  if (overlappingEventCount)
   {
-    v7 = [v4 eventStartDate];
-    [a1 eventStartDateTextProvider:v7];
+    eventStartDate = [modularCopy eventStartDate];
+    [self eventStartDateTextProvider:eventStartDate];
   }
 
   else
   {
-    v7 = NCALComplicationLocalizedString(@"NEXTEVENT_NONE_SHORT_UTILITY");
-    [CLKSimpleTextProvider finalizedTextProviderWithText:v7];
+    eventStartDate = NCALComplicationLocalizedString(@"NEXTEVENT_NONE_SHORT_UTILITY");
+    [CLKSimpleTextProvider finalizedTextProviderWithText:eventStartDate];
   }
   v8 = ;
 
@@ -755,24 +755,24 @@ LABEL_30:
   return v9;
 }
 
-+ (id)largeUtility:(id)a3
++ (id)largeUtility:(id)utility
 {
-  v3 = a3;
+  utilityCopy = utility;
   v4 = NCALComplicationImageNamed(@"analogNextEventCoincidentAlertGlyph");
-  v5 = [v3 overlappingEventCount];
-  if (v5 == &dword_0 + 1)
+  overlappingEventCount = [utilityCopy overlappingEventCount];
+  if (overlappingEventCount == &dword_0 + 1)
   {
-    v8 = [v3 eventStartDate];
+    eventStartDate = [utilityCopy eventStartDate];
     v9 = +[NSTimeZone calendarTimeZone];
-    v10 = [CLKTimeTextProvider textProviderWithDate:v8 timeZone:v9];
+    v10 = [CLKTimeTextProvider textProviderWithDate:eventStartDate timeZone:v9];
 
     [v10 setPrefersDesignatorToMinutes:1];
-    v11 = [v3 _wrappedPrimaryEventTitle];
-    if (v11)
+    _wrappedPrimaryEventTitle = [utilityCopy _wrappedPrimaryEventTitle];
+    if (_wrappedPrimaryEventTitle)
     {
-      v12 = [v3 _wrappedPrimaryEventTitle];
+      _wrappedPrimaryEventTitle2 = [utilityCopy _wrappedPrimaryEventTitle];
       v13 = +[NSLocale currentLocale];
-      v14 = [v12 uppercaseStringWithLocale:v13];
+      v14 = [_wrappedPrimaryEventTitle2 uppercaseStringWithLocale:v13];
     }
 
     else
@@ -782,7 +782,7 @@ LABEL_30:
 
     v24 = [CLKSimpleTextProvider textProviderWithText:v14];
     v21 = [CLKTextProvider textProviderWithFormat:@"%@ %@", v10, v24];
-    if ([v3 displayAsConflicting])
+    if ([utilityCopy displayAsConflicting])
     {
       v22 = [CLKImageProvider imageProviderWithOnePieceImage:v4];
       v25 = +[UIColor whiteColor];
@@ -797,10 +797,10 @@ LABEL_30:
 
   else
   {
-    v6 = v5;
-    if (v5)
+    v6 = overlappingEventCount;
+    if (overlappingEventCount)
     {
-      v15 = [v3 eventStartDate];
+      eventStartDate2 = [utilityCopy eventStartDate];
       if (NTKHourOfDateIsSingular())
       {
         v16 = @"SINGULAR";
@@ -819,11 +819,11 @@ LABEL_30:
       v29[1] = 3221225472;
       v29[2] = sub_9EA0;
       v29[3] = &unk_20BD0;
-      v20 = v15;
+      v20 = eventStartDate2;
       v30 = v20;
       v21 = [NTKOverrideTextProvider textProviderWithText:v19 overrideBlock:v29];
       [v21 finalize];
-      if ([v3 displayAsConflicting])
+      if ([utilityCopy displayAsConflicting])
       {
         v22 = [CLKImageProvider imageProviderWithOnePieceImage:v4];
         v23 = +[UIColor whiteColor];
@@ -838,12 +838,12 @@ LABEL_30:
 
     else
     {
-      if ([v3 displayAsTomorrow])
+      if ([utilityCopy displayAsTomorrow])
       {
         v7 = @"NEXTEVENT_NO_EVENTS_TOMORROW_LONG_UTILITY";
       }
 
-      else if ([v3 displayAsFirstInDay])
+      else if ([utilityCopy displayAsFirstInDay])
       {
         v7 = @"NEXTEVENT_NO_EVENTS_TODAY_LONG_UTILITY";
       }
@@ -866,14 +866,14 @@ LABEL_30:
   return v27;
 }
 
-+ (id)circular:(id)a3 isMedium:(BOOL)a4
++ (id)circular:(id)circular isMedium:(BOOL)medium
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 overlappingEventCount])
+  mediumCopy = medium;
+  circularCopy = circular;
+  if ([circularCopy overlappingEventCount])
   {
     v7 = @"analog";
-    if (v4)
+    if (mediumCopy)
     {
       v7 = @"victory";
       v8 = CLKComplicationTemplateCircularMediumStackImage_ptr;
@@ -885,7 +885,7 @@ LABEL_30:
     }
 
     v9 = v7;
-    if ([v6 displayAsConflicting])
+    if ([circularCopy displayAsConflicting])
     {
       v10 = @"NextEventCoincidentAlertGlyph";
     }
@@ -900,15 +900,15 @@ LABEL_30:
     v12 = NCALComplicationImageNamed(v11);
 
     v13 = [CLKImageProvider imageProviderWithOnePieceImage:v12];
-    v14 = [v6 eventStartDate];
-    v15 = [a1 eventStartDateTextProvider:v14];
+    eventStartDate = [circularCopy eventStartDate];
+    v15 = [self eventStartDateTextProvider:eventStartDate];
 
     v16 = [*v8 templateWithLine1ImageProvider:v13 line2TextProvider:v15];
   }
 
   else
   {
-    if (v4)
+    if (mediumCopy)
     {
       v17 = @"victoryCalendarNone";
     }
@@ -918,7 +918,7 @@ LABEL_30:
       v17 = @"colorAnalogCalendarNoContent";
     }
 
-    if (v4)
+    if (mediumCopy)
     {
       v18 = CLKComplicationTemplateCircularMediumSimpleImage_ptr;
     }
@@ -937,11 +937,11 @@ LABEL_30:
   return v16;
 }
 
-+ (id)extraLarge:(id)a3
++ (id)extraLarge:(id)large
 {
-  v4 = a3;
-  v5 = [a1 _extraLargeCalendarImageProviderWithConflicts:{objc_msgSend(v4, "displayAsConflicting")}];
-  v6 = [a1 _graphicStackTextProvider:v4];
+  largeCopy = large;
+  v5 = [self _extraLargeCalendarImageProviderWithConflicts:{objc_msgSend(largeCopy, "displayAsConflicting")}];
+  v6 = [self _graphicStackTextProvider:largeCopy];
 
   v7 = [CLKComplicationTemplateExtraLargeStackImage templateWithLine1ImageProvider:v5 line2TextProvider:v6];
   v8 = +[UIColor systemRedColor];
@@ -950,33 +950,33 @@ LABEL_30:
   return v7;
 }
 
-+ (id)_graphicStackTextProvider:(id)a3
++ (id)_graphicStackTextProvider:(id)provider
 {
-  v4 = a3;
-  if ([v4 overlappingEventCount])
+  providerCopy = provider;
+  if ([providerCopy overlappingEventCount])
   {
-    v5 = [v4 eventStartDate];
-    [a1 eventStartDateTextProvider:v5];
+    eventStartDate = [providerCopy eventStartDate];
+    [self eventStartDateTextProvider:eventStartDate];
   }
 
   else
   {
-    v5 = NCALComplicationLocalizedString(@"NEXTEVENT_NONE_SHORT_UTILITY");
-    [CLKSimpleTextProvider finalizedTextProviderWithText:v5];
+    eventStartDate = NCALComplicationLocalizedString(@"NEXTEVENT_NONE_SHORT_UTILITY");
+    [CLKSimpleTextProvider finalizedTextProviderWithText:eventStartDate];
   }
   v6 = ;
 
   return v6;
 }
 
-+ (id)eventStartDateTextProvider:(id)a3
++ (id)eventStartDateTextProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = +[NSTimeZone calendarTimeZone];
-  v5 = [CLKTimeTextProvider textProviderWithDate:v3 timeZone:v4];
+  v5 = [CLKTimeTextProvider textProviderWithDate:providerCopy timeZone:v4];
 
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 components:64 fromDate:v3];
+  v7 = [v6 components:64 fromDate:providerCopy];
 
   if (![v7 minute])
   {
@@ -989,22 +989,22 @@ LABEL_30:
   return v5;
 }
 
-+ (id)graphicExtraLarge:(id)a3
++ (id)graphicExtraLarge:(id)large
 {
-  v4 = a3;
-  v5 = [a1 _graphicExtraLargeImageProviderWithConflicts:{objc_msgSend(v4, "displayAsConflicting")}];
-  v6 = [a1 _graphicStackTextProvider:v4];
+  largeCopy = large;
+  v5 = [self _graphicExtraLargeImageProviderWithConflicts:{objc_msgSend(largeCopy, "displayAsConflicting")}];
+  v6 = [self _graphicStackTextProvider:largeCopy];
 
   v7 = [CLKComplicationTemplateGraphicExtraLargeCircularStackImage templateWithLine1ImageProvider:v5 line2TextProvider:v6];
 
   return v7;
 }
 
-+ (id)graphicCircular:(id)a3
++ (id)graphicCircular:(id)circular
 {
-  v4 = a3;
-  v5 = [a1 _graphicCircularImageProviderWithConflicts:{objc_msgSend(v4, "displayAsConflicting")}];
-  v6 = [a1 _graphicStackTextProvider:v4];
+  circularCopy = circular;
+  v5 = [self _graphicCircularImageProviderWithConflicts:{objc_msgSend(circularCopy, "displayAsConflicting")}];
+  v6 = [self _graphicStackTextProvider:circularCopy];
 
   v7 = [CLKComplicationTemplateGraphicCircularStackImage templateWithLine1ImageProvider:v5 line2TextProvider:v6];
 
@@ -1016,26 +1016,26 @@ LABEL_30:
   return v7;
 }
 
-+ (id)signatureBezel:(id)a3
++ (id)signatureBezel:(id)bezel
 {
-  v4 = a3;
-  v5 = [v4 overlappingEventCount];
-  if (v5 == &dword_0 + 1)
+  bezelCopy = bezel;
+  overlappingEventCount = [bezelCopy overlappingEventCount];
+  if (overlappingEventCount == &dword_0 + 1)
   {
-    v9 = [v4 _wrappedPrimaryEventTitle];
-    v10 = [CLKSimpleTextProvider textProviderWithText:v9];
+    _wrappedPrimaryEventTitle = [bezelCopy _wrappedPrimaryEventTitle];
+    v10 = [CLKSimpleTextProvider textProviderWithText:_wrappedPrimaryEventTitle];
 
-    v11 = [v4 eventStartDate];
+    eventStartDate = [bezelCopy eventStartDate];
     v12 = +[NSTimeZone calendarTimeZone];
-    v13 = [CLKTimeTextProvider textProviderWithDate:v11 timeZone:v12];
+    v13 = [CLKTimeTextProvider textProviderWithDate:eventStartDate timeZone:v12];
 
     [v13 setPrefersDesignatorToMinutes:1];
     [v13 finalize];
-    v14 = [v4 _wrappedPrimaryEventLocation];
-    if (v14 || ([v4 _wrappedPrimaryEventOrganizerName], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    _wrappedPrimaryEventLocation = [bezelCopy _wrappedPrimaryEventLocation];
+    if (_wrappedPrimaryEventLocation || ([bezelCopy _wrappedPrimaryEventOrganizerName], (_wrappedPrimaryEventLocation = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v15 = v14;
-      v16 = [CLKSimpleTextProvider textProviderWithText:v14];
+      v15 = _wrappedPrimaryEventLocation;
+      v16 = [CLKSimpleTextProvider textProviderWithText:_wrappedPrimaryEventLocation];
       v17 = NCALComplicationLocalizedString(@"CALENDAR_BEZEL_FORMAT");
       v8 = [CLKTextProvider textProviderWithFormat:v17, v13, v10, v16];
     }
@@ -1049,8 +1049,8 @@ LABEL_30:
 
   else
   {
-    v6 = v5;
-    if (!v5)
+    v6 = overlappingEventCount;
+    if (!overlappingEventCount)
     {
       v7 = NCALComplicationLocalizedString(@"CALENDAR_BEZEL_NO_EVENTS_TODAY");
       v8 = [CLKSimpleTextProvider textProviderWithText:v7];
@@ -1058,7 +1058,7 @@ LABEL_30:
       goto LABEL_13;
     }
 
-    v18 = [v4 eventStartDate];
+    eventStartDate2 = [bezelCopy eventStartDate];
     if (NTKHourOfDateIsSingular())
     {
       v19 = @"SINGULAR";
@@ -1077,27 +1077,27 @@ LABEL_30:
     v26[1] = 3221225472;
     v26[2] = sub_AA48;
     v26[3] = &unk_20BD0;
-    v27 = v18;
-    v22 = v18;
+    v27 = eventStartDate2;
+    v22 = eventStartDate2;
     v8 = [NTKOverrideTextProvider textProviderWithText:v21 overrideBlock:v26];
   }
 
 LABEL_13:
-  v23 = [a1 signatureCircular:v4];
+  v23 = [self signatureCircular:bezelCopy];
   v24 = [CLKComplicationTemplateGraphicBezelCircularText templateWithCircularTemplate:v23 textProvider:v8];
 
   return v24;
 }
 
-+ (id)signatureCircular:(id)a3
++ (id)signatureCircular:(id)circular
 {
-  v3 = a3;
+  circularCopy = circular;
   v4 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
-  if (v3 && [v3 displayEntryDateInGraphicCircularView])
+  if (circularCopy && [circularCopy displayEntryDateInGraphicCircularView])
   {
     v9 = NCALDateComplicationOverrideMetadataKey;
-    v5 = [v3 entryDate];
-    v10 = v5;
+    entryDate = [circularCopy entryDate];
+    v10 = entryDate;
     v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
     [v4 setMetadata:v6];
   }
@@ -1107,59 +1107,59 @@ LABEL_13:
   return v7;
 }
 
-+ (id)signatureCorner:(id)a3
++ (id)signatureCorner:(id)corner
 {
-  v4 = a3;
-  v5 = [v4 overlappingEventCount];
-  if (v5 == &dword_0 + 1)
+  cornerCopy = corner;
+  overlappingEventCount = [cornerCopy overlappingEventCount];
+  if (overlappingEventCount == &dword_0 + 1)
   {
     if (NTKLanguageIsTallScript())
     {
-      v7 = [v4 eventStartDate];
-      v9 = [v4 eventEndDate];
+      eventStartDate = [cornerCopy eventStartDate];
+      eventEndDate = [cornerCopy eventEndDate];
       v10 = +[NSTimeZone calendarTimeZone];
-      v8 = [CLKTimeIntervalTextProvider finalizedTextProviderWithStartDate:v7 endDate:v9 timeZone:v10];
+      v8 = [CLKTimeIntervalTextProvider finalizedTextProviderWithStartDate:eventStartDate endDate:eventEndDate timeZone:v10];
 
       goto LABEL_6;
     }
 
-    v16 = [v4 eventStartDate];
-    v8 = [CLKTimeTextProvider textProviderWithDate:v16];
+    eventStartDate2 = [cornerCopy eventStartDate];
+    v8 = [CLKTimeTextProvider textProviderWithDate:eventStartDate2];
 
-    v12 = [v4 _wrappedPrimaryEventTitle];
-    v13 = [CLKSimpleTextProvider finalizedTextProviderWithText:v12];
+    _wrappedPrimaryEventTitle = [cornerCopy _wrappedPrimaryEventTitle];
+    _signatureCornerImageProvider = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedPrimaryEventTitle];
   }
 
   else
   {
-    v6 = v5;
-    if (!v5)
+    v6 = overlappingEventCount;
+    if (!overlappingEventCount)
     {
-      v7 = NCALComplicationLocalizedString(@"NEXTEVENT_NO_EVENTS_SIGNATURE_CORNER");
-      v8 = [CLKSimpleTextProvider finalizedTextProviderWithText:v7];
+      eventStartDate = NCALComplicationLocalizedString(@"NEXTEVENT_NO_EVENTS_SIGNATURE_CORNER");
+      v8 = [CLKSimpleTextProvider finalizedTextProviderWithText:eventStartDate];
 LABEL_6:
 
       goto LABEL_11;
     }
 
     v11 = NCALComplicationLocalizedFormat(@"NEXTEVENT_CONFLICT_SIGNATURE_CORNER");
-    v12 = [NSString localizedStringWithFormat:v11, v6];
+    _wrappedPrimaryEventTitle = [NSString localizedStringWithFormat:v11, v6];
 
-    v13 = [CLKSimpleTextProvider finalizedTextProviderWithText:v12];
-    v14 = [v4 eventStartDate];
+    _signatureCornerImageProvider = [CLKSimpleTextProvider finalizedTextProviderWithText:_wrappedPrimaryEventTitle];
+    eventStartDate3 = [cornerCopy eventStartDate];
     v15 = +[NSTimeZone calendarTimeZone];
-    v8 = [CLKTimeTextProvider textProviderWithDate:v14 timeZone:v15];
+    v8 = [CLKTimeTextProvider textProviderWithDate:eventStartDate3 timeZone:v15];
   }
 
-  if (v13)
+  if (_signatureCornerImageProvider)
   {
     v17 = +[UIColor systemRedColor];
-    [v13 setTintColor:v17];
+    [_signatureCornerImageProvider setTintColor:v17];
 
     v18 = +[UIColor whiteColor];
     [v8 setTintColor:v18];
 
-    v19 = [CLKComplicationTemplateGraphicCornerStackText templateWithInnerTextProvider:v13 outerTextProvider:v8];
+    v19 = [CLKComplicationTemplateGraphicCornerStackText templateWithInnerTextProvider:_signatureCornerImageProvider outerTextProvider:v8];
     goto LABEL_12;
   }
 
@@ -1167,8 +1167,8 @@ LABEL_11:
   v20 = +[UIColor systemRedColor];
   [v8 setTintColor:v20];
 
-  v13 = [a1 _signatureCornerImageProvider];
-  v19 = [CLKComplicationTemplateGraphicCornerTextImage templateWithTextProvider:v8 imageProvider:v13];
+  _signatureCornerImageProvider = [self _signatureCornerImageProvider];
+  v19 = [CLKComplicationTemplateGraphicCornerTextImage templateWithTextProvider:v8 imageProvider:_signatureCornerImageProvider];
 LABEL_12:
   v21 = v19;
 
@@ -1178,19 +1178,19 @@ LABEL_12:
 + (id)_signatureCornerImageProvider
 {
   v2 = +[CLKRenderingContext sharedRenderingContext];
-  v3 = [v2 device];
-  sub_AFA8(v3, v3);
+  device = [v2 device];
+  sub_AFA8(device, device);
 
   v4 = qword_28198;
 
   return v4;
 }
 
-+ (id)signatureRectangular:(id)a3
++ (id)signatureRectangular:(id)rectangular
 {
-  v4 = a3;
+  rectangularCopy = rectangular;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [a1 contentForSignatureRectangular:v4];
+  v6 = [self contentForSignatureRectangular:rectangularCopy];
   if ([v6 count])
   {
     v7 = [v6 objectAtIndexedSubscript:0];
@@ -1209,8 +1209,8 @@ LABEL_12:
     [v5 setObject:v9 forKeyedSubscript:@"NanoCalendarRichComplicationRectangularViewThirdTextKey"];
   }
 
-  v10 = [v4 eventColors];
-  [v5 setObject:v10 forKeyedSubscript:@"NanoCalendarRichComplicationRectangularEventColorsKey"];
+  eventColors = [rectangularCopy eventColors];
+  [v5 setObject:eventColors forKeyedSubscript:@"NanoCalendarRichComplicationRectangularEventColorsKey"];
 
   v11 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
   [v11 setMetadata:v5];
@@ -1224,21 +1224,21 @@ LABEL_12:
   v13.receiver = self;
   v13.super_class = NCALTimelineEntryModel;
   v3 = [(NCALTimelineEntryModel *)&v13 description];
-  v4 = [(NCALTimelineEntryModel *)self identifier];
-  v5 = [(NCALTimelineEntryModel *)self entryDate];
-  v6 = [(NCALTimelineEntryModel *)self primaryEventTitle];
-  v7 = [(NCALTimelineEntryModel *)self primaryEventLocation];
-  v8 = [(NCALTimelineEntryModel *)self secondaryEventTitle];
-  v9 = [(NCALTimelineEntryModel *)self eventStartDate];
-  v10 = [(NCALTimelineEntryModel *)self eventEndDate];
-  v11 = [NSString stringWithFormat:@"%@ identifier: %@ entryDate %@ title 1 %@ location %@ title 2 %@ startDate %@ endDate %@", v3, v4, v5, v6, v7, v8, v9, v10];
+  identifier = [(NCALTimelineEntryModel *)self identifier];
+  entryDate = [(NCALTimelineEntryModel *)self entryDate];
+  primaryEventTitle = [(NCALTimelineEntryModel *)self primaryEventTitle];
+  primaryEventLocation = [(NCALTimelineEntryModel *)self primaryEventLocation];
+  secondaryEventTitle = [(NCALTimelineEntryModel *)self secondaryEventTitle];
+  eventStartDate = [(NCALTimelineEntryModel *)self eventStartDate];
+  eventEndDate = [(NCALTimelineEntryModel *)self eventEndDate];
+  v11 = [NSString stringWithFormat:@"%@ identifier: %@ entryDate %@ title 1 %@ location %@ title 2 %@ startDate %@ endDate %@", v3, identifier, entryDate, primaryEventTitle, primaryEventLocation, secondaryEventTitle, eventStartDate, eventEndDate];
 
   return v11;
 }
 
-+ (id)wrappedUserStringFrom:(id)a3
++ (id)wrappedUserStringFrom:(id)from
 {
-  v3 = [a3 stringByAppendingString:@"⁩"];
+  v3 = [from stringByAppendingString:@"⁩"];
   v4 = [@"⁨" stringByAppendingString:v3];
 
   return v4;
@@ -1246,13 +1246,13 @@ LABEL_12:
 
 - (id)_wrappedPrimaryEventTitle
 {
-  v3 = [(NCALTimelineEntryModel *)self primaryEventTitle];
+  primaryEventTitle = [(NCALTimelineEntryModel *)self primaryEventTitle];
 
-  if (v3)
+  if (primaryEventTitle)
   {
     v4 = objc_opt_class();
-    v5 = [(NCALTimelineEntryModel *)self primaryEventTitle];
-    v6 = [v4 wrappedUserStringFrom:v5];
+    primaryEventTitle2 = [(NCALTimelineEntryModel *)self primaryEventTitle];
+    v6 = [v4 wrappedUserStringFrom:primaryEventTitle2];
   }
 
   else
@@ -1265,13 +1265,13 @@ LABEL_12:
 
 - (id)_wrappedSecondaryEventTitle
 {
-  v3 = [(NCALTimelineEntryModel *)self secondaryEventTitle];
+  secondaryEventTitle = [(NCALTimelineEntryModel *)self secondaryEventTitle];
 
-  if (v3)
+  if (secondaryEventTitle)
   {
     v4 = objc_opt_class();
-    v5 = [(NCALTimelineEntryModel *)self secondaryEventTitle];
-    v6 = [v4 wrappedUserStringFrom:v5];
+    secondaryEventTitle2 = [(NCALTimelineEntryModel *)self secondaryEventTitle];
+    v6 = [v4 wrappedUserStringFrom:secondaryEventTitle2];
   }
 
   else
@@ -1284,13 +1284,13 @@ LABEL_12:
 
 - (id)_wrappedPrimaryEventLocation
 {
-  v3 = [(NCALTimelineEntryModel *)self primaryEventLocation];
+  primaryEventLocation = [(NCALTimelineEntryModel *)self primaryEventLocation];
 
-  if (v3)
+  if (primaryEventLocation)
   {
     v4 = objc_opt_class();
-    v5 = [(NCALTimelineEntryModel *)self primaryEventLocation];
-    v6 = [v4 wrappedUserStringFrom:v5];
+    primaryEventLocation2 = [(NCALTimelineEntryModel *)self primaryEventLocation];
+    v6 = [v4 wrappedUserStringFrom:primaryEventLocation2];
   }
 
   else
@@ -1303,13 +1303,13 @@ LABEL_12:
 
 - (id)_wrappedPrimaryEventOrganizerName
 {
-  v3 = [(NCALTimelineEntryModel *)self primaryEventOrganizerName];
+  primaryEventOrganizerName = [(NCALTimelineEntryModel *)self primaryEventOrganizerName];
 
-  if (v3)
+  if (primaryEventOrganizerName)
   {
     v4 = objc_opt_class();
-    v5 = [(NCALTimelineEntryModel *)self primaryEventOrganizerName];
-    v6 = [v4 wrappedUserStringFrom:v5];
+    primaryEventOrganizerName2 = [(NCALTimelineEntryModel *)self primaryEventOrganizerName];
+    v6 = [v4 wrappedUserStringFrom:primaryEventOrganizerName2];
   }
 
   else
@@ -1320,49 +1320,49 @@ LABEL_12:
   return v6;
 }
 
-+ (id)lockedEntryForFamily:(int64_t)a3
++ (id)lockedEntryForFamily:(int64_t)family
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_B768;
   v9[3] = &unk_20C58;
-  v9[4] = a1;
+  v9[4] = self;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
-  sub_B768(v9, v6);
+  device = [v5 device];
+  sub_B768(v9, device);
 
-  v7 = [a1 _entryForTemplateDescription:qword_281B8 family:a3];
+  v7 = [self _entryForTemplateDescription:qword_281B8 family:family];
 
   return v7;
 }
 
-+ (id)loadingEntryForFamily:(int64_t)a3
++ (id)loadingEntryForFamily:(int64_t)family
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_BE10;
   v9[3] = &unk_20C58;
-  v9[4] = a1;
+  v9[4] = self;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
-  sub_BE10(v9, v6);
+  device = [v5 device];
+  sub_BE10(v9, device);
 
-  v7 = [a1 _entryForTemplateDescription:qword_281D8 family:a3];
+  v7 = [self _entryForTemplateDescription:qword_281D8 family:family];
 
   return v7;
 }
 
-+ (id)_entryForTemplateDescription:(id)a3 family:(int64_t)a4
++ (id)_entryForTemplateDescription:(id)description family:(int64_t)family
 {
-  v6 = a3;
+  descriptionCopy = description;
   v7 = objc_opt_new();
   v8 = +[NSDate date];
   [v7 setDate:v8];
 
-  if (NTKComplicationFamilyUtilitarianLargeNarrow == a4)
+  if (NTKComplicationFamilyUtilitarianLargeNarrow == family)
   {
-    v9 = [v6 utilityLarge];
-    v10 = [CLKComplicationTemplateUtilitarianLargeFlat templateWithTextProvider:v9];
+    utilityLarge = [descriptionCopy utilityLarge];
+    v10 = [CLKComplicationTemplateUtilitarianLargeFlat templateWithTextProvider:utilityLarge];
 LABEL_7:
     v14 = v10;
 LABEL_8:
@@ -1370,50 +1370,50 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (CLKComplicationFamilyCircularMedium == a4)
+  if (CLKComplicationFamilyCircularMedium == family)
   {
     v11 = CLKComplicationTemplateCircularMediumSimpleImage;
-    v12 = [v6 circularMediumImage];
+    circularMediumImage = [descriptionCopy circularMediumImage];
 LABEL_5:
-    v9 = v12;
+    utilityLarge = circularMediumImage;
     v13 = v11;
 LABEL_6:
-    v10 = [v13 templateWithImageProvider:v9];
+    v10 = [v13 templateWithImageProvider:utilityLarge];
     goto LABEL_7;
   }
 
   v14 = 0;
-  if (a4 > 6)
+  if (family > 6)
   {
-    if (a4 > 9)
+    if (family > 9)
     {
-      switch(a4)
+      switch(family)
       {
         case 10:
           v21 = CLKComplicationTemplateGraphicCircularStackImage;
-          v22 = [a1 _graphicCircularImageProviderWithConflicts:0];
+          graphicExtraLargeTop = [self _graphicCircularImageProviderWithConflicts:0];
           break;
         case 11:
-          v9 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
+          utilityLarge = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];
           v31[0] = @"NanoCalendarRichComplicationRectangularViewFirstTextKey";
-          v25 = [v6 modularLargeHeader];
-          v32[0] = v25;
+          modularLargeHeader = [descriptionCopy modularLargeHeader];
+          v32[0] = modularLargeHeader;
           v31[1] = @"NanoCalendarRichComplicationRectangularViewSecondTextKey";
-          v26 = [v6 modularLargeFirst];
-          v32[1] = v26;
+          modularLargeFirst = [descriptionCopy modularLargeFirst];
+          v32[1] = modularLargeFirst;
           v31[2] = @"NanoCalendarRichComplicationRectangularEventColorsKey";
           v27 = +[UIColor whiteColor];
           v30 = v27;
           v28 = [NSArray arrayWithObjects:&v30 count:1];
           v32[2] = v28;
           v29 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:3];
-          [v9 setMetadata:v29];
+          [utilityLarge setMetadata:v29];
 
           v13 = CLKComplicationTemplateGraphicRectangularFullImage;
           goto LABEL_6;
         case 12:
           v21 = CLKComplicationTemplateGraphicExtraLargeCircularStackImage;
-          v22 = [v6 graphicExtraLargeTop];
+          graphicExtraLargeTop = [descriptionCopy graphicExtraLargeTop];
           break;
         default:
           goto LABEL_9;
@@ -1422,38 +1422,38 @@ LABEL_6:
 
     else
     {
-      if (a4 != 7)
+      if (family != 7)
       {
-        if (a4 == 8)
+        if (family == 8)
         {
           v19 = CLKComplicationTemplateGraphicCornerTextImage;
-          v9 = [v6 signatureCornerTextProvider];
-          v24 = [a1 _signatureCornerImageProvider];
+          utilityLarge = [descriptionCopy signatureCornerTextProvider];
+          _signatureCornerImageProvider = [self _signatureCornerImageProvider];
           goto LABEL_41;
         }
 
-        v9 = [a1 signatureCircular:0];
-        v17 = [v6 signatureBezel];
-        v18 = [CLKComplicationTemplateGraphicBezelCircularText templateWithCircularTemplate:v9 textProvider:v17];
+        utilityLarge = [self signatureCircular:0];
+        signatureBezel = [descriptionCopy signatureBezel];
+        v18 = [CLKComplicationTemplateGraphicBezelCircularText templateWithCircularTemplate:utilityLarge textProvider:signatureBezel];
         goto LABEL_42;
       }
 
       v21 = CLKComplicationTemplateExtraLargeStackImage;
-      v22 = [v6 extraLargeTop];
+      graphicExtraLargeTop = [descriptionCopy extraLargeTop];
     }
 
-    v9 = v22;
-    v23 = [v6 graphicStackTimeText];
+    utilityLarge = graphicExtraLargeTop;
+    graphicStackTimeText = [descriptionCopy graphicStackTimeText];
     goto LABEL_38;
   }
 
-  if (a4 <= 2)
+  if (family <= 2)
   {
-    if (a4)
+    if (family)
     {
-      if (a4 != 1)
+      if (family != 1)
       {
-        if (a4 != 2)
+        if (family != 2)
         {
           goto LABEL_9;
         }
@@ -1461,9 +1461,9 @@ LABEL_6:
         goto LABEL_27;
       }
 
-      v9 = [v6 modularLargeHeader];
-      v17 = [v6 modularLargeFirst];
-      v18 = [CLKComplicationTemplateModularLargeStandardBody templateWithHeaderTextProvider:v9 body1TextProvider:v17];
+      utilityLarge = [descriptionCopy modularLargeHeader];
+      signatureBezel = [descriptionCopy modularLargeFirst];
+      v18 = [CLKComplicationTemplateModularLargeStandardBody templateWithHeaderTextProvider:utilityLarge body1TextProvider:signatureBezel];
 LABEL_42:
       v14 = v18;
 
@@ -1471,34 +1471,34 @@ LABEL_42:
     }
 
     v21 = CLKComplicationTemplateModularSmallStackImage;
-    v9 = [v6 modularSmallTop];
-    v23 = [v6 modularSmallBottom];
+    utilityLarge = [descriptionCopy modularSmallTop];
+    graphicStackTimeText = [descriptionCopy modularSmallBottom];
 LABEL_38:
-    v17 = v23;
-    v18 = [v21 templateWithLine1ImageProvider:v9 line2TextProvider:v23];
+    signatureBezel = graphicStackTimeText;
+    v18 = [v21 templateWithLine1ImageProvider:utilityLarge line2TextProvider:graphicStackTimeText];
     goto LABEL_42;
   }
 
-  switch(a4)
+  switch(family)
   {
     case 3:
       v19 = CLKComplicationTemplateUtilitarianLargeFlat;
-      v20 = [v6 utilityLarge];
+      utilityLarge2 = [descriptionCopy utilityLarge];
       goto LABEL_35;
     case 4:
       v11 = CLKComplicationTemplateCircularSmallSimpleImage;
-      v12 = [v6 circularSmallImage];
+      circularMediumImage = [descriptionCopy circularSmallImage];
       goto LABEL_5;
     case 6:
 LABEL_27:
       v19 = CLKComplicationTemplateUtilitarianSmallFlat;
-      v20 = [v6 utilitySmall];
+      utilityLarge2 = [descriptionCopy utilitySmall];
 LABEL_35:
-      v9 = v20;
-      v24 = [v6 utilityImageProvider];
+      utilityLarge = utilityLarge2;
+      _signatureCornerImageProvider = [descriptionCopy utilityImageProvider];
 LABEL_41:
-      v17 = v24;
-      v18 = [v19 templateWithTextProvider:v9 imageProvider:v24];
+      signatureBezel = _signatureCornerImageProvider;
+      v18 = [v19 templateWithTextProvider:utilityLarge imageProvider:_signatureCornerImageProvider];
       goto LABEL_42;
   }
 
@@ -1514,7 +1514,7 @@ LABEL_9:
   return v7;
 }
 
-+ (id)sampleEventTemplateForFamily:(int64_t)a3
++ (id)sampleEventTemplateForFamily:(int64_t)family
 {
   v4 = objc_opt_new();
   v5 = NTKIdealizedDate();
@@ -1529,8 +1529,8 @@ LABEL_9:
   v8 = NTKStartOfDayForDate();
   v9 = +[NSCalendar currentCalendar];
   v10 = [v9 components:62 fromDate:v5];
-  v21 = a3;
-  if ((a3 | 2) == 0xB)
+  familyCopy = family;
+  if ((family | 2) == 0xB)
   {
     v11 = NCALComplicationLocalizedString(@"COMPLICATION_SAMPLE_CALENDAR_TITLE_ALTERNATE");
     [v4 setPrimaryEventTitle:v11];
@@ -1563,7 +1563,7 @@ LABEL_9:
   v18 = [v9 nextDateAfterDate:v8 matchingComponents:v10 options:2];
   [v4 setEventEndDate:v18];
 
-  v19 = [v4 templateForComplicationFamily:v21];
+  v19 = [v4 templateForComplicationFamily:familyCopy];
 
   return v19;
 }

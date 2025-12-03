@@ -1,7 +1,7 @@
 @interface ICNoteFolderSectionIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ICNoteFolderSectionIdentifier)init;
-- (ICNoteFolderSectionIdentifier)initWithNoteContainerObjectID:(id)a3;
+- (ICNoteFolderSectionIdentifier)initWithNoteContainerObjectID:(id)d;
 - (id)debugDescription;
 - (unint64_t)hash;
 @end
@@ -15,49 +15,49 @@
   return [(ICNoteSectionIdentifier *)&v3 initWithNoteSectionType:2];
 }
 
-- (ICNoteFolderSectionIdentifier)initWithNoteContainerObjectID:(id)a3
+- (ICNoteFolderSectionIdentifier)initWithNoteContainerObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = [(ICNoteFolderSectionIdentifier *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_noteContainerObjectID, a3);
+    objc_storeStrong(&v6->_noteContainerObjectID, d);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = ICDynamicCast();
 
   if (v5 && (v6 = -[ICNoteSectionIdentifier sectionType](self, "sectionType"), v6 == [v5 sectionType]))
   {
-    v7 = [(ICNoteFolderSectionIdentifier *)self noteContainerObjectID];
-    v8 = [v5 noteContainerObjectID];
+    noteContainerObjectID = [(ICNoteFolderSectionIdentifier *)self noteContainerObjectID];
+    noteContainerObjectID2 = [v5 noteContainerObjectID];
     v9 = *MEMORY[0x1E695E738];
-    if (*MEMORY[0x1E695E738] == v7)
+    if (*MEMORY[0x1E695E738] == noteContainerObjectID)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = v7;
+      v10 = noteContainerObjectID;
     }
 
     v11 = v10;
-    if (v9 == v8)
+    if (v9 == noteContainerObjectID2)
     {
       v12 = 0;
     }
 
     else
     {
-      v12 = v8;
+      v12 = noteContainerObjectID2;
     }
 
     v13 = v12;
@@ -104,10 +104,10 @@
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICNoteSectionIdentifier *)self sectionType];
-    v5 = [(ICNoteFolderSectionIdentifier *)self noteContainerObjectID];
-    v6 = [v5 hash];
-    self->_hash = ICHashWithHashKeys(v4, v7, v8, v9, v10, v11, v12, v13, v6);
+    sectionType = [(ICNoteSectionIdentifier *)self sectionType];
+    noteContainerObjectID = [(ICNoteFolderSectionIdentifier *)self noteContainerObjectID];
+    v6 = [noteContainerObjectID hash];
+    self->_hash = ICHashWithHashKeys(sectionType, v7, v8, v9, v10, v11, v12, v13, v6);
 
     return self->_hash;
   }
@@ -121,8 +121,8 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = NSStringFromICNoteSectionType([(ICNoteSectionIdentifier *)self sectionType]);
-  v7 = [(ICNoteFolderSectionIdentifier *)self noteContainerObjectID];
-  v8 = [v3 stringWithFormat:@"<%@: %p, sectionType: %@, noteContainerObjectID: %@>", v5, self, v6, v7];
+  noteContainerObjectID = [(ICNoteFolderSectionIdentifier *)self noteContainerObjectID];
+  v8 = [v3 stringWithFormat:@"<%@: %p, sectionType: %@, noteContainerObjectID: %@>", v5, self, v6, noteContainerObjectID];
 
   return v8;
 }

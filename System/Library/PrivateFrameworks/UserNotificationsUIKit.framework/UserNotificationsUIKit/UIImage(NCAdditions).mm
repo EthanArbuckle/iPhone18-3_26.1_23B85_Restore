@@ -8,7 +8,7 @@
 + (id)nc_imageFromPDFWithFileURL:()NCAdditions size:
 {
   v8 = CGPDFDocumentCreateWithURL(url);
-  v9 = [a1 nc_imageWithPDDocument:v8 size:{a4, a5}];
+  v9 = [self nc_imageWithPDDocument:v8 size:{a4, a5}];
   CGPDFDocumentRelease(v8);
 
   return v9;

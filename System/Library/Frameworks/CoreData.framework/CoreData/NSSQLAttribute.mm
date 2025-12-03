@@ -1,8 +1,8 @@
 @interface NSSQLAttribute
 - (BOOL)isFileBackedFuture;
-- (NSSQLAttribute)initWithEntity:(id)a3 propertyDescription:(id)a4;
-- (id)initForReadOnlyFetchWithExpression:(id)a3;
-- (uint64_t)_sqlTypeForAttributeType:(uint64_t)a1 flags:(uint64_t)a2;
+- (NSSQLAttribute)initWithEntity:(id)entity propertyDescription:(id)description;
+- (id)initForReadOnlyFetchWithExpression:(id)expression;
+- (uint64_t)_sqlTypeForAttributeType:(uint64_t)type flags:(uint64_t)flags;
 - (void)addKeyForTriggerOnRelationship:(id)object;
 - (void)dealloc;
 @end
@@ -16,18 +16,18 @@
   [(NSSQLColumn *)&v2 dealloc];
 }
 
-- (uint64_t)_sqlTypeForAttributeType:(uint64_t)a1 flags:(uint64_t)a2
+- (uint64_t)_sqlTypeForAttributeType:(uint64_t)type flags:(uint64_t)flags
 {
   result = 1;
-  if (a1 > 799)
+  if (type > 799)
   {
-    if (a1 > 1099)
+    if (type > 1099)
     {
-      if (a1 > 1799)
+      if (type > 1799)
       {
-        if (a1 != 1800)
+        if (type != 1800)
         {
-          if (a1 == 2200)
+          if (type == 2200)
           {
             return 18;
           }
@@ -40,9 +40,9 @@
 
       else
       {
-        if (a1 != 1100)
+        if (type != 1100)
         {
-          if (a1 == 1200)
+          if (type == 1200)
           {
             return 12;
           }
@@ -54,14 +54,14 @@
       }
     }
 
-    switch(a1)
+    switch(type)
     {
       case 800:
         return result;
       case 900:
         return 8;
       case 1000:
-        if (a2)
+        if (flags)
         {
           return 16;
         }
@@ -75,9 +75,9 @@
     return 6;
   }
 
-  if (a1 <= 299)
+  if (type <= 299)
   {
-    if (a1 && (a1 == 100 || a1 == 200))
+    if (type && (type == 100 || type == 200))
     {
       return result;
     }
@@ -85,9 +85,9 @@
     return 6;
   }
 
-  if (a1 > 499)
+  if (type > 499)
   {
-    if (a1 == 500 || a1 == 600)
+    if (type == 500 || type == 600)
     {
       return 7;
     }
@@ -95,9 +95,9 @@
     return 6;
   }
 
-  if (a1 != 300)
+  if (type != 300)
   {
-    if (a1 == 400)
+    if (type == 400)
     {
       return 4;
     }
@@ -108,7 +108,7 @@
   return 2;
 }
 
-- (NSSQLAttribute)initWithEntity:(id)a3 propertyDescription:(id)a4
+- (NSSQLAttribute)initWithEntity:(id)entity propertyDescription:(id)description
 {
   v12.receiver = self;
   v12.super_class = NSSQLAttribute;
@@ -117,64 +117,64 @@
   if (v6)
   {
     v6->super.super._propertyType = 1;
-    v6->super.super._sqlType = -[NSSQLAttribute _sqlTypeForAttributeType:flags:]([a4 attributeType], objc_msgSend(a4, "storesBinaryDataExternally"));
-    if (a4 && [a4 superCompositeAttribute])
+    v6->super.super._sqlType = -[NSSQLAttribute _sqlTypeForAttributeType:flags:]([description attributeType], objc_msgSend(description, "storesBinaryDataExternally"));
+    if (description && [description superCompositeAttribute])
     {
       *&v7->super.super._flags |= 0x20u;
-      if (a3)
+      if (entity)
       {
-        v8 = *(a3 + 3);
+        v8 = *(entity + 3);
         if (v8)
         {
-          a3 = *(v8 + 104);
+          entity = *(v8 + 104);
         }
 
         else
         {
-          a3 = 0;
+          entity = 0;
         }
       }
 
-      v10 = [(NSPropertyDescription *)a4 _rootName];
+      _rootName = [(NSPropertyDescription *)description _rootName];
     }
 
     else
     {
-      if (a3)
+      if (entity)
       {
-        v9 = *(a3 + 3);
+        v9 = *(entity + 3);
         if (v9)
         {
-          a3 = *(v9 + 104);
+          entity = *(v9 + 104);
         }
 
         else
         {
-          a3 = 0;
+          entity = 0;
         }
       }
 
-      v10 = [(NSSQLProperty *)v7 name];
+      _rootName = [(NSSQLProperty *)v7 name];
     }
 
-    v7->super.super._slot = [a3 fastIndexForKnownKey:v10];
-    *&v7->super.super._flags = *&v7->super.super._flags & 0xFFE7 | (16 * ([a4 _propertyType] == 6));
+    v7->super.super._slot = [entity fastIndexForKnownKey:_rootName];
+    *&v7->super.super._flags = *&v7->super.super._flags & 0xFFE7 | (16 * ([description _propertyType] == 6));
   }
 
   return v7;
 }
 
-- (id)initForReadOnlyFetchWithExpression:(id)a3
+- (id)initForReadOnlyFetchWithExpression:(id)expression
 {
   v7.receiver = self;
   v7.super_class = NSSQLAttribute;
-  v4 = [(NSSQLColumn *)&v7 initForReadOnlyFetching];
-  v5 = v4;
-  if (v4)
+  initForReadOnlyFetching = [(NSSQLColumn *)&v7 initForReadOnlyFetching];
+  v5 = initForReadOnlyFetching;
+  if (initForReadOnlyFetching)
   {
-    v4[24] = 1;
-    v4[25] = -[NSSQLAttribute _sqlTypeForAttributeType:flags:]([a3 expressionResultType], 0);
-    *(v5 + 1) = a3;
+    initForReadOnlyFetching[24] = 1;
+    initForReadOnlyFetching[25] = -[NSSQLAttribute _sqlTypeForAttributeType:flags:]([expression expressionResultType], 0);
+    *(v5 + 1) = expression;
     *(v5 + 16) &= 0xFFF6u;
   }
 
@@ -212,9 +212,9 @@
 
 - (BOOL)isFileBackedFuture
 {
-  v2 = [(NSSQLProperty *)self propertyDescription];
+  propertyDescription = [(NSSQLProperty *)self propertyDescription];
 
-  return [v2 isFileBackedFuture];
+  return [propertyDescription isFileBackedFuture];
 }
 
 @end

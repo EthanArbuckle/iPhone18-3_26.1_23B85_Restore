@@ -1,28 +1,28 @@
 @interface ICDelegationConsumerServiceProtocolHandler
 - (ICDelegationConsumerServiceProtocolHandler)init;
-- (void)getResponseForFinishDelegationRequest:(id)a3 withSessionIDToRequestInfoMap:(id)a4 completionHandler:(id)a5;
-- (void)getResponseForStartDelegationRequest:(id)a3 requestContext:(id)a4 withCompletionHandler:(id)a5;
+- (void)getResponseForFinishDelegationRequest:(id)request withSessionIDToRequestInfoMap:(id)map completionHandler:(id)handler;
+- (void)getResponseForStartDelegationRequest:(id)request requestContext:(id)context withCompletionHandler:(id)handler;
 @end
 
 @implementation ICDelegationConsumerServiceProtocolHandler
 
-- (void)getResponseForStartDelegationRequest:(id)a3 requestContext:(id)a4 withCompletionHandler:(id)a5
+- (void)getResponseForStartDelegationRequest:(id)request requestContext:(id)context withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = [ICAsyncBlockOperation alloc];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __120__ICDelegationConsumerServiceProtocolHandler_getResponseForStartDelegationRequest_requestContext_withCompletionHandler___block_invoke;
   v19 = &unk_1E7BF8BC0;
-  v20 = v9;
-  v21 = v8;
-  v22 = self;
-  v23 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v20 = contextCopy;
+  v21 = requestCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = requestCopy;
+  v14 = contextCopy;
   v15 = [(ICAsyncBlockOperation *)v11 initWithStartHandler:&v16];
   [(NSOperationQueue *)self->_operationQueue addOperation:v15, v16, v17, v18, v19];
 }
@@ -366,23 +366,23 @@ void __120__ICDelegationConsumerServiceProtocolHandler_getResponseForStartDelega
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getResponseForFinishDelegationRequest:(id)a3 withSessionIDToRequestInfoMap:(id)a4 completionHandler:(id)a5
+- (void)getResponseForFinishDelegationRequest:(id)request withSessionIDToRequestInfoMap:(id)map completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  mapCopy = map;
+  handlerCopy = handler;
   v11 = [ICAsyncBlockOperation alloc];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __132__ICDelegationConsumerServiceProtocolHandler_getResponseForFinishDelegationRequest_withSessionIDToRequestInfoMap_completionHandler___block_invoke;
   v19 = &unk_1E7BF8BC0;
-  v20 = v8;
-  v21 = v9;
-  v22 = self;
-  v23 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v20 = requestCopy;
+  v21 = mapCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = mapCopy;
+  v14 = requestCopy;
   v15 = [(ICAsyncBlockOperation *)v11 initWithStartHandler:&v16];
   [(NSOperationQueue *)self->_operationQueue addOperation:v15, v16, v17, v18, v19];
 }

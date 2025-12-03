@@ -3,76 +3,76 @@
 + (id)healthSettingsSpecifier;
 + (id)messagesSettingsSpecifier;
 + (void)_loadCKStoragePluginSettingsBundleIfNeeded;
-- (BOOL)_loadNativeURL:(id)a3;
-- (BOOL)objectModel:(id)a3 page:(id)a4 deletedTableRow:(id)a5 atIndexPath:(id)a6 withURL:(id)a7 httpMethod:(id)a8;
+- (BOOL)_loadNativeURL:(id)l;
+- (BOOL)objectModel:(id)model page:(id)page deletedTableRow:(id)row atIndexPath:(id)path withURL:(id)l httpMethod:(id)method;
 - (DelayedPushDelegate)delegate;
-- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)a3;
-- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)a3 buyStorageFlow:(BOOL)a4;
-- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)a3 initialAction:(id)a4;
-- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)a3 initialAction:(id)a4 account:(id)a5;
-- (void)_activateBackupsElementForObjectModel:(id)a3 completion:(id)a4;
-- (void)_activatePhotosElementForObjectModel:(id)a3 completion:(id)a4;
-- (void)_freshmintStorageUpgradeWithCompletion:(id)a3 withURL:(id)a4;
-- (void)_freshmintStorageUpgradeWithICQLink:(id)a3 completion:(id)a4;
-- (void)_popObjectModelAnimated:(BOOL)a3;
+- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)controller;
+- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)controller buyStorageFlow:(BOOL)flow;
+- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)controller initialAction:(id)action;
+- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)controller initialAction:(id)action account:(id)account;
+- (void)_activateBackupsElementForObjectModel:(id)model completion:(id)completion;
+- (void)_activatePhotosElementForObjectModel:(id)model completion:(id)completion;
+- (void)_freshmintStorageUpgradeWithCompletion:(id)completion withURL:(id)l;
+- (void)_freshmintStorageUpgradeWithICQLink:(id)link completion:(id)completion;
+- (void)_popObjectModelAnimated:(BOOL)animated;
 - (void)_postQuotaDidChangeNotification;
-- (void)_presentCloudStorageOffersFlowWithAction:(id)a3 completion:(id)a4;
-- (void)_processObjectModel:(id)a3;
-- (void)_processTableRow:(id)a3;
+- (void)_presentCloudStorageOffersFlowWithAction:(id)action completion:(id)completion;
+- (void)_processObjectModel:(id)model;
+- (void)_processTableRow:(id)row;
 - (void)_reloadQuotaInfo;
 - (void)beginLegacyFlow;
-- (void)buyFlowCompletionDidSucceed:(BOOL)a3 error:(id)a4;
+- (void)buyFlowCompletionDidSucceed:(BOOL)succeed error:(id)error;
 - (void)cleanupLoader;
 - (void)confirmDeleteAll;
-- (void)confirmDeleteWithTitle:(id)a3 prompt:(id)a4 explanation:(id)a5 confirmationAction:(id)a6;
+- (void)confirmDeleteWithTitle:(id)title prompt:(id)prompt explanation:(id)explanation confirmationAction:(id)action;
 - (void)dealloc;
 - (void)deleteAllDocuments;
-- (void)loadURL:(id)a3 postBody:(id)a4 additionalHeaders:(id)a5;
-- (void)loader:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 topActionSignal:(id)a5;
-- (void)manager:(id)a3 didCompleteWithError:(id)a4;
-- (void)managerDidCancel:(id)a3;
-- (void)objectModel:(id)a3 configureTableRow:(id)a4 page:(id)a5;
-- (void)objectModel:(id)a3 page:(id)a4 toggledEditing:(BOOL)a5;
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5;
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6;
-- (void)objectModelDidChange:(id)a3;
-- (void)objectModelPressedBack:(id)a3;
-- (void)popAndReloadFromRemoteUI:(BOOL)a3 additionalHeaders:(id)a4;
-- (void)reloadTopControllerWithAdditionalHeaders:(id)a3;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
-- (void)willShowController:(id)a3;
+- (void)loadURL:(id)l postBody:(id)body additionalHeaders:(id)headers;
+- (void)loader:(id)loader didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)loader:(id)loader receivedObjectModel:(id)model topActionSignal:(id)signal;
+- (void)manager:(id)manager didCompleteWithError:(id)error;
+- (void)managerDidCancel:(id)cancel;
+- (void)objectModel:(id)model configureTableRow:(id)row page:(id)page;
+- (void)objectModel:(id)model page:(id)page toggledEditing:(BOOL)editing;
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes;
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion;
+- (void)objectModelDidChange:(id)change;
+- (void)objectModelPressedBack:(id)back;
+- (void)popAndReloadFromRemoteUI:(BOOL)i additionalHeaders:(id)headers;
+- (void)reloadTopControllerWithAdditionalHeaders:(id)headers;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
+- (void)willShowController:(id)controller;
 @end
 
 @implementation ICQPreferencesRemoteUIDelegate
 
-- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)a3
+- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)controller
 {
   v4 = MEMORY[0x277CB8F48];
-  v5 = a3;
-  v6 = [v4 defaultStore];
-  v7 = [v6 aa_primaryAppleAccount];
-  v8 = [(ICQPreferencesRemoteUIDelegate *)self initWithNavigationController:v5 initialAction:0 account:v7];
+  controllerCopy = controller;
+  defaultStore = [v4 defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v8 = [(ICQPreferencesRemoteUIDelegate *)self initWithNavigationController:controllerCopy initialAction:0 account:aa_primaryAppleAccount];
 
   return v8;
 }
 
-- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)a3 initialAction:(id)a4
+- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)controller initialAction:(id)action
 {
   v6 = MEMORY[0x277CB8F48];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 defaultStore];
-  v10 = [v9 aa_primaryAppleAccount];
-  v11 = [(ICQPreferencesRemoteUIDelegate *)self initWithNavigationController:v8 initialAction:v7 account:v10];
+  actionCopy = action;
+  controllerCopy = controller;
+  defaultStore = [v6 defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v11 = [(ICQPreferencesRemoteUIDelegate *)self initWithNavigationController:controllerCopy initialAction:actionCopy account:aa_primaryAppleAccount];
 
   return v11;
 }
 
-- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)a3 buyStorageFlow:(BOOL)a4
+- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)controller buyStorageFlow:(BOOL)flow
 {
-  if (a4)
+  if (flow)
   {
     v6 = *MEMORY[0x277D3FD40];
   }
@@ -83,38 +83,38 @@
   }
 
   v7 = MEMORY[0x277CB8F48];
-  v8 = a3;
-  v9 = [v7 defaultStore];
-  v10 = [v9 aa_primaryAppleAccount];
-  v11 = [(ICQPreferencesRemoteUIDelegate *)self initWithNavigationController:v8 initialAction:v6 account:v10];
+  controllerCopy = controller;
+  defaultStore = [v7 defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v11 = [(ICQPreferencesRemoteUIDelegate *)self initWithNavigationController:controllerCopy initialAction:v6 account:aa_primaryAppleAccount];
 
   return v11;
 }
 
-- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)a3 initialAction:(id)a4 account:(id)a5
+- (ICQPreferencesRemoteUIDelegate)initWithNavigationController:(id)controller initialAction:(id)action account:(id)account
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  actionCopy = action;
+  accountCopy = account;
   v19.receiver = self;
   v19.super_class = ICQPreferencesRemoteUIDelegate;
   v12 = [(ICQPreferencesRemoteUIDelegate *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_navigationController, a3);
-    objc_storeStrong(&v13->_initialAction, a4);
-    objc_storeStrong(&v13->_account, a5);
+    objc_storeStrong(&v12->_navigationController, controller);
+    objc_storeStrong(&v13->_initialAction, action);
+    objc_storeStrong(&v13->_account, account);
     v14 = objc_alloc_init(ICQPreferencesFreshmintManager);
     freshmintManager = v13->_freshmintManager;
     v13->_freshmintManager = v14;
 
     [(ICQPreferencesFreshmintManager *)v13->_freshmintManager setDelegate:v13];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v13 selector:sel_willShowController_ name:*MEMORY[0x277D40048] object:v13->_navigationController];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel_willShowController_ name:*MEMORY[0x277D40048] object:v13->_navigationController];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v13 selector:sel__reloadQuotaInfo name:@"QuotaInformationChanged" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v13 selector:sel__reloadQuotaInfo name:@"QuotaInformationChanged" object:0];
   }
 
   return v13;
@@ -122,10 +122,10 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(UINavigationController *)self->_navigationController presentedViewController];
+  presentedViewController = [(UINavigationController *)self->_navigationController presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -141,24 +141,24 @@
   [(ICQPreferencesRemoteUIDelegate *)&v6 dealloc];
 }
 
-- (void)willShowController:(id)a3
+- (void)willShowController:(id)controller
 {
-  v12 = a3;
-  v4 = [v12 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D40050]];
+  controllerCopy = controller;
+  userInfo = [controllerCopy userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D40050]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v12 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x277D40058]];
-    v8 = [v7 intValue];
+    userInfo2 = [controllerCopy userInfo];
+    v7 = [userInfo2 objectForKey:*MEMORY[0x277D40058]];
+    intValue = [v7 intValue];
 
-    if (v8 == 2)
+    if (intValue == 2)
     {
-      v9 = [(NSMutableArray *)self->_objectModels lastObject];
-      v10 = [v9 defaultPages];
-      v11 = [v10 containsObject:v5];
+      lastObject = [(NSMutableArray *)self->_objectModels lastObject];
+      defaultPages = [lastObject defaultPages];
+      v11 = [defaultPages containsObject:v5];
 
       if (v11)
       {
@@ -189,14 +189,14 @@
   }
 }
 
-- (void)loadURL:(id)a3 postBody:(id)a4 additionalHeaders:(id)a5
+- (void)loadURL:(id)l postBody:(id)body additionalHeaders:(id)headers
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
-  v12 = [v11 isEqualToString:@"MANAGE"];
+  lCopy = l;
+  bodyCopy = body;
+  headersCopy = headers;
+  nextSignpostId = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
+  v12 = [nextSignpostId isEqualToString:@"MANAGE"];
 
   if (v12)
   {
@@ -226,8 +226,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v21 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
-  v22 = [v21 isEqualToString:@"MANAGE_DRILLDOWN"];
+  nextSignpostId2 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
+  v22 = [nextSignpostId2 isEqualToString:@"MANAGE_DRILLDOWN"];
 
   if (v22)
   {
@@ -253,16 +253,16 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v42 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
+  nextSignpostId3 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
 
-  if (v42)
+  if (nextSignpostId3)
   {
     v43 = _ICQGetLogSystem();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
+      nextSignpostId4 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
       *buf = 138412290;
-      v51 = v44;
+      v51 = nextSignpostId4;
       _os_log_impl(&dword_275623000, v43, OS_LOG_TYPE_DEFAULT, "Unknown signpost id %@", buf, 0xCu);
     }
   }
@@ -274,16 +274,16 @@ LABEL_14:
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v51 = v10;
+    v51 = headersCopy;
     _os_log_impl(&dword_275623000, v28, OS_LOG_TYPE_DEFAULT, "additional headers: %@", buf, 0xCu);
   }
 
-  v29 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v8 cachePolicy:1 timeoutInterval:30.0];
+  v29 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:lCopy cachePolicy:1 timeoutInterval:30.0];
   [v29 ak_addAnisetteHeaders];
   [v29 ak_addDeviceUDIDHeader];
-  if (v9)
+  if (bodyCopy)
   {
-    [v29 setHTTPBody:v9];
+    [v29 setHTTPBody:bodyCopy];
     [v29 setHTTPMethod:@"POST"];
     if (self->_requestContentType)
     {
@@ -304,7 +304,7 @@ LABEL_14:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v31 = v10;
+  v31 = headersCopy;
   v32 = [v31 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v32)
   {
@@ -350,20 +350,20 @@ LABEL_14:
   [(RUILoader *)self->_loader loadXMLUIWithRequest:v29, v45];
 }
 
-- (void)reloadTopControllerWithAdditionalHeaders:(id)a3
+- (void)reloadTopControllerWithAdditionalHeaders:(id)headers
 {
   objectModels = self->_objectModels;
-  v5 = a3;
-  v7 = [(NSMutableArray *)objectModels lastObject];
+  headersCopy = headers;
+  lastObject = [(NSMutableArray *)objectModels lastObject];
   self->_forceActionSignal = 3;
-  v6 = [v7 sourceURL];
-  [(ICQPreferencesRemoteUIDelegate *)self loadURL:v6 postBody:0 additionalHeaders:v5];
+  sourceURL = [lastObject sourceURL];
+  [(ICQPreferencesRemoteUIDelegate *)self loadURL:sourceURL postBody:0 additionalHeaders:headersCopy];
 }
 
-- (void)popAndReloadFromRemoteUI:(BOOL)a3 additionalHeaders:(id)a4
+- (void)popAndReloadFromRemoteUI:(BOOL)i additionalHeaders:(id)headers
 {
-  v14 = a4;
-  if (a3)
+  headersCopy = headers;
+  if (i)
   {
     v6 = -1;
   }
@@ -378,8 +378,8 @@ LABEL_14:
   }
 
   v9 = [(NSMutableArray *)self->_objectModels objectAtIndex:[(NSMutableArray *)self->_objectModels count]+ v6];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"manageStorageBackup"];
+  identifier = [v9 identifier];
+  v11 = [identifier isEqualToString:@"manageStorageBackup"];
 
   v12 = 4;
   if (v11)
@@ -388,43 +388,43 @@ LABEL_14:
   }
 
   self->_forceActionSignal = v12;
-  v13 = [v9 sourceURL];
-  [(ICQPreferencesRemoteUIDelegate *)self loadURL:v13 postBody:0 additionalHeaders:v14];
+  sourceURL = [v9 sourceURL];
+  [(ICQPreferencesRemoteUIDelegate *)self loadURL:sourceURL postBody:0 additionalHeaders:headersCopy];
 }
 
-- (void)objectModel:(id)a3 pressedButton:(id)a4 attributes:(id)a5
+- (void)objectModel:(id)model pressedButton:(id)button attributes:(id)attributes
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  buttonCopy = button;
+  attributesCopy = attributes;
   [(ICQPreferencesRemoteUIDelegate *)self cleanupLoader];
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v7;
+    v23 = buttonCopy;
     _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "Action taken at PrefRUIDelegate: %@", buf, 0xCu);
   }
 
-  if ([v7 isEqualToString:@"localBackup"])
+  if ([buttonCopy isEqualToString:@"localBackup"])
   {
     v10 = ICQLocalBackupController;
 LABEL_7:
     v11 = [(__objc2_class *)v10 specifierForAccount:self->_account];
 LABEL_8:
     v12 = v11;
-    [v11 setProperty:v8 forKey:@"attributes"];
+    [v11 setProperty:attributesCopy forKey:@"attributes"];
     [v12 setProperty:self forKey:@"remoteDelegate"];
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"remoteBackup"])
+  if ([buttonCopy isEqualToString:@"remoteBackup"])
   {
     v10 = ICQRemoteBackupController;
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:@"buyStorage"])
+  if ([buttonCopy isEqualToString:@"buyStorage"])
   {
     v15 = *MEMORY[0x277D3FD40];
     v21[0] = MEMORY[0x277D85DD0];
@@ -437,19 +437,19 @@ LABEL_8:
 
   else
   {
-    if ([v7 isEqualToString:@"afuiSettings"])
+    if ([buttonCopy isEqualToString:@"afuiSettings"])
     {
       v11 = +[ICQPreferencesRemoteUIDelegate afuiSettingsSpecifier];
       goto LABEL_8;
     }
 
-    if ([v7 isEqualToString:@"messagesSettings"])
+    if ([buttonCopy isEqualToString:@"messagesSettings"])
     {
       v11 = +[ICQPreferencesRemoteUIDelegate messagesSettingsSpecifier];
       goto LABEL_8;
     }
 
-    if ([v7 isEqualToString:@"healthSettings"])
+    if ([buttonCopy isEqualToString:@"healthSettings"])
     {
       v11 = +[ICQPreferencesRemoteUIDelegate healthSettingsSpecifier];
       goto LABEL_8;
@@ -458,7 +458,7 @@ LABEL_8:
 
   v12 = 0;
 LABEL_9:
-  v13 = [v8 objectForKeyedSubscript:@"action"];
+  v13 = [attributesCopy objectForKeyedSubscript:@"action"];
   if (([v13 isEqualToString:@"launchPlanManagement"] & 1) == 0)
   {
     v14 = _ICQStringForAction();
@@ -478,8 +478,8 @@ LABEL_9:
     }
   }
 
-  v18 = [(ICQPreferencesRemoteUIDelegate *)self freshmintManager];
-  [v18 setShouldShowFreshmint:1];
+  freshmintManager = [(ICQPreferencesRemoteUIDelegate *)self freshmintManager];
+  [freshmintManager setShouldShowFreshmint:1];
 
   self->_icqAction = _ICQActionForString();
 LABEL_17:
@@ -494,18 +494,18 @@ LABEL_17:
   }
 }
 
-- (void)objectModel:(id)a3 pressedLink:(id)a4 httpMethod:(id)a5 completion:(id)a6
+- (void)objectModel:(id)model pressedLink:(id)link httpMethod:(id)method completion:(id)completion
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modelCopy = model;
+  linkCopy = link;
+  methodCopy = method;
+  completionCopy = completion;
   v14 = _ICQGetLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v49 = v11;
+    v49 = linkCopy;
     _os_log_impl(&dword_275623000, v14, OS_LOG_TYPE_DEFAULT, "linkURL: %@", buf, 0xCu);
   }
 
@@ -514,75 +514,75 @@ LABEL_17:
   v41 = 3221225472;
   v42 = __80__ICQPreferencesRemoteUIDelegate_objectModel_pressedLink_httpMethod_completion___block_invoke;
   v43 = &unk_27A65BA58;
-  v15 = v11;
+  v15 = linkCopy;
   v44 = v15;
   objc_copyWeak(&v47, buf);
-  v16 = v13;
-  v45 = self;
+  v16 = completionCopy;
+  selfCopy = self;
   v46 = v16;
   v17 = _Block_copy(&v40);
   if (([(RUILoader *)self->_loader isLoading:v40]& 1) == 0 && ![(ICQPreferencesRemoteUIDelegate *)self _loadNativeURL:v15])
   {
-    v18 = [v12 lowercaseString];
-    v19 = [v18 isEqualToString:@"liftui"];
+    lowercaseString = [methodCopy lowercaseString];
+    v19 = [lowercaseString isEqualToString:@"liftui"];
 
     if (v19)
     {
-      v20 = [(ICQPreferencesRemoteUIDelegate *)self liftUIDelegate];
-      v21 = v20 == 0;
+      liftUIDelegate = [(ICQPreferencesRemoteUIDelegate *)self liftUIDelegate];
+      v21 = liftUIDelegate == 0;
 
       if (v21)
       {
         v22 = [[ICQUIPreferencesLiftUIDelegate alloc] initWithNavigationController:self->_navigationController account:self->_account];
         [(ICQPreferencesRemoteUIDelegate *)self setLiftUIDelegate:v22];
 
-        v23 = [(ICQPreferencesRemoteUIDelegate *)self liftUIDelegate];
-        [v23 setDelegate:self];
+        liftUIDelegate2 = [(ICQPreferencesRemoteUIDelegate *)self liftUIDelegate];
+        [liftUIDelegate2 setDelegate:self];
       }
 
-      v24 = [(ICQPreferencesRemoteUIDelegate *)self liftUIDelegate];
-      [v24 loadURL:v15];
+      liftUIDelegate3 = [(ICQPreferencesRemoteUIDelegate *)self liftUIDelegate];
+      [liftUIDelegate3 loadURL:v15];
 
       v17[2](v17, 1, 0);
     }
 
     else
     {
-      v25 = [v12 lowercaseString];
-      v26 = [v25 isEqualToString:@"post"];
+      lowercaseString2 = [methodCopy lowercaseString];
+      v26 = [lowercaseString2 isEqualToString:@"post"];
 
       if (v26)
       {
-        v27 = [MEMORY[0x277CBEB38] dictionary];
-        v28 = [v10 defaultPages];
-        v29 = [v28 lastObject];
-        [v29 populatePostbackDictionary:v27];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        defaultPages = [modelCopy defaultPages];
+        lastObject = [defaultPages lastObject];
+        [lastObject populatePostbackDictionary:dictionary];
 
-        if (v27)
+        if (dictionary)
         {
-          v30 = [MEMORY[0x277CCAC58] dataWithPropertyList:v27 format:100 options:0 error:0];
+          postbackData = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:100 options:0 error:0];
           requestContentType = self->_requestContentType;
           self->_requestContentType = @"application/x-plist";
         }
 
         else
         {
-          v30 = [v10 postbackData];
+          postbackData = [modelCopy postbackData];
         }
 
         v38 = _Block_copy(v17);
         linkCompletionBlock = self->_linkCompletionBlock;
         self->_linkCompletionBlock = v38;
 
-        [(ICQPreferencesRemoteUIDelegate *)self loadURL:v15 postBody:v30];
+        [(ICQPreferencesRemoteUIDelegate *)self loadURL:v15 postBody:postbackData];
       }
 
       else
       {
-        v32 = [(ICQPreferencesRemoteUIDelegate *)self freshmintManager];
-        v33 = [v32 shouldShowFreshmint];
+        freshmintManager = [(ICQPreferencesRemoteUIDelegate *)self freshmintManager];
+        shouldShowFreshmint = [freshmintManager shouldShowFreshmint];
 
-        if (v33)
+        if (shouldShowFreshmint)
         {
           [(ICQPreferencesRemoteUIDelegate *)self _freshmintStorageUpgradeWithCompletion:v17 withURL:v15];
         }
@@ -591,8 +591,8 @@ LABEL_17:
         {
           if ([(ICQPreferencesRemoteUIDelegate *)self isManageStorage])
           {
-            v34 = [v10 identifier];
-            v35 = [v34 isEqualToString:@"iCloudManageStorage"];
+            identifier = [modelCopy identifier];
+            v35 = [identifier isEqualToString:@"iCloudManageStorage"];
 
             if (v35)
             {
@@ -659,12 +659,12 @@ LABEL_11:
 - (void)deleteAllDocuments
 {
   ++self->_deleteAllDocumentsAttemptCount;
-  v3 = [(NSMutableArray *)self->_objectModels lastObject];
-  v4 = [v3 defaultPages];
-  v5 = [v4 lastObject];
-  v6 = [v5 tableViewOM];
-  v7 = [v6 attributes];
-  v9 = [v7 objectForKey:@"deleteAllURL"];
+  lastObject = [(NSMutableArray *)self->_objectModels lastObject];
+  defaultPages = [lastObject defaultPages];
+  lastObject2 = [defaultPages lastObject];
+  tableViewOM = [lastObject2 tableViewOM];
+  attributes = [tableViewOM attributes];
+  v9 = [attributes objectForKey:@"deleteAllURL"];
 
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v9];
   [(ICQPreferencesRemoteUIDelegate *)self loadURL:v8 postBody:0];
@@ -672,14 +672,14 @@ LABEL_11:
 
 - (void)confirmDeleteAll
 {
-  v3 = [(NSMutableArray *)self->_objectModels lastObject];
-  v4 = [v3 defaultPages];
-  v5 = [v4 lastObject];
-  v6 = [v5 tableViewOM];
-  v7 = [v6 sections];
-  v8 = [v7 objectAtIndex:0];
-  v9 = [v8 attributes];
-  v18 = [v9 objectForKey:@"header"];
+  lastObject = [(NSMutableArray *)self->_objectModels lastObject];
+  defaultPages = [lastObject defaultPages];
+  lastObject2 = [defaultPages lastObject];
+  tableViewOM = [lastObject2 tableViewOM];
+  sections = [tableViewOM sections];
+  v8 = [sections objectAtIndex:0];
+  attributes = [v8 attributes];
+  v18 = [attributes objectForKey:@"header"];
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"DELETE_ALL" value:&stru_28844FC60 table:@"CloudGroup"];
@@ -697,29 +697,29 @@ LABEL_11:
   [(ICQPreferencesRemoteUIDelegate *)self confirmDeleteWithTitle:v11 prompt:v13 explanation:v17 confirmationAction:v19];
 }
 
-- (void)confirmDeleteWithTitle:(id)a3 prompt:(id)a4 explanation:(id)a5 confirmationAction:(id)a6
+- (void)confirmDeleteWithTitle:(id)title prompt:(id)prompt explanation:(id)explanation confirmationAction:(id)action
 {
-  v10 = a6;
+  actionCopy = action;
   v11 = MEMORY[0x277D75418];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v11 currentDevice];
-  v16 = [v15 sf_isiPad];
+  explanationCopy = explanation;
+  promptCopy = prompt;
+  titleCopy = title;
+  currentDevice = [v11 currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  if (v16)
+  if (sf_isiPad)
   {
-    v17 = v13;
+    v17 = promptCopy;
   }
 
   else
   {
-    v17 = v12;
+    v17 = explanationCopy;
   }
 
-  if (v16)
+  if (sf_isiPad)
   {
-    v18 = v12;
+    v18 = explanationCopy;
   }
 
   else
@@ -727,7 +727,7 @@ LABEL_11:
     v18 = 0;
   }
 
-  v19 = [MEMORY[0x277D75110] alertControllerWithTitle:v17 message:v18 preferredStyle:v16];
+  v19 = [MEMORY[0x277D75110] alertControllerWithTitle:v17 message:v18 preferredStyle:sf_isiPad];
 
   v20 = MEMORY[0x277D750F8];
   v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -740,9 +740,9 @@ LABEL_11:
   v27[1] = 3221225472;
   v27[2] = __95__ICQPreferencesRemoteUIDelegate_confirmDeleteWithTitle_prompt_explanation_confirmationAction___block_invoke;
   v27[3] = &unk_27A65BA80;
-  v28 = v10;
-  v25 = v10;
-  v26 = [v24 actionWithTitle:v14 style:2 handler:v27];
+  v28 = actionCopy;
+  v25 = actionCopy;
+  v26 = [v24 actionWithTitle:titleCopy style:2 handler:v27];
 
   [v19 addAction:v26];
   [(UINavigationController *)self->_navigationController presentViewController:v19 animated:1 completion:0];
@@ -759,13 +759,13 @@ uint64_t __95__ICQPreferencesRemoteUIDelegate_confirmDeleteWithTitle_prompt_expl
   return result;
 }
 
-- (void)objectModel:(id)a3 page:(id)a4 toggledEditing:(BOOL)a5
+- (void)objectModel:(id)model page:(id)page toggledEditing:(BOOL)editing
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  editingCopy = editing;
+  modelCopy = model;
+  pageCopy = page;
+  v10 = pageCopy;
+  if (editingCopy)
   {
     button = self->_button;
     if (!button)
@@ -781,9 +781,9 @@ uint64_t __95__ICQPreferencesRemoteUIDelegate_confirmDeleteWithTitle_prompt_expl
     }
 
     [(ICQPreferencesRemoteUIDelegateTableCellButton *)button setAlpha:0.0];
-    v17 = [v10 tableViewOM];
-    v18 = [v17 tableView];
-    [v18 setTableFooterView:self->_button];
+    tableViewOM = [v10 tableViewOM];
+    tableView = [tableViewOM tableView];
+    [tableView setTableFooterView:self->_button];
 
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -805,7 +805,7 @@ uint64_t __95__ICQPreferencesRemoteUIDelegate_confirmDeleteWithTitle_prompt_expl
     v20[1] = 3221225472;
     v20[2] = __66__ICQPreferencesRemoteUIDelegate_objectModel_page_toggledEditing___block_invoke_3;
     v20[3] = &unk_27A65A750;
-    v21 = v9;
+    v21 = pageCopy;
     [v19 animateWithDuration:v22 animations:v20 completion:0.3];
   }
 }
@@ -817,11 +817,11 @@ void __66__ICQPreferencesRemoteUIDelegate_objectModel_page_toggledEditing___bloc
   [v1 setTableFooterView:0];
 }
 
-- (BOOL)objectModel:(id)a3 page:(id)a4 deletedTableRow:(id)a5 atIndexPath:(id)a6 withURL:(id)a7 httpMethod:(id)a8
+- (BOOL)objectModel:(id)model page:(id)page deletedTableRow:(id)row atIndexPath:(id)path withURL:(id)l httpMethod:(id)method
 {
   v13 = MEMORY[0x277CBEAC0];
-  v14 = a5;
-  v15 = [v13 dictionaryWithObjectsAndKeys:{a3, @"objectModel", a4, @"page", v14, @"row", a6, @"indexPath", a7, @"url", a8, @"httpMethod", 0}];
+  rowCopy = row;
+  v15 = [v13 dictionaryWithObjectsAndKeys:{model, @"objectModel", page, @"page", rowCopy, @"row", path, @"indexPath", l, @"url", method, @"httpMethod", 0}];
   v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v16 = [v27 localizedStringForKey:@"DELETE_ITEM" value:&stru_28844FC60 table:@"CloudGroup"];
   v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -829,16 +829,16 @@ void __66__ICQPreferencesRemoteUIDelegate_objectModel_page_toggledEditing___bloc
   v19 = MEMORY[0x277CCACA8];
   v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v21 = [v20 localizedStringForKey:@"DELETE_ITEM_EXPLAINATION" value:&stru_28844FC60 table:@"CloudGroup"];
-  v22 = [v14 attributes];
+  attributes = [rowCopy attributes];
 
-  v23 = [v22 objectForKey:@"label"];
+  v23 = [attributes objectForKey:@"label"];
   v24 = [v19 stringWithFormat:v21, v23];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __98__ICQPreferencesRemoteUIDelegate_objectModel_page_deletedTableRow_atIndexPath_withURL_httpMethod___block_invoke;
   v29[3] = &unk_27A65A708;
   v30 = v15;
-  v31 = self;
+  selfCopy = self;
   v25 = v15;
   [(ICQPreferencesRemoteUIDelegate *)self confirmDeleteWithTitle:v16 prompt:v18 explanation:v24 confirmationAction:v29];
 
@@ -906,26 +906,26 @@ void __98__ICQPreferencesRemoteUIDelegate_objectModel_page_deletedTableRow_atInd
   [v17 deleteRowsAtIndexPaths:v22 withRowAnimation:100];
 }
 
-- (void)_popObjectModelAnimated:(BOOL)a3
+- (void)_popObjectModelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(NSMutableArray *)self->_objectModels count])
   {
     [ICQPreferencesRemoteUIDelegate _popObjectModelAnimated:];
   }
 
-  v12 = [(NSMutableArray *)self->_objectModels lastObject];
+  lastObject = [(NSMutableArray *)self->_objectModels lastObject];
   [(NSMutableArray *)self->_objectModels removeLastObject];
-  v5 = [v12 defaultPages];
-  v6 = [v5 count] - 1;
+  defaultPages = [lastObject defaultPages];
+  v6 = [defaultPages count] - 1;
   if (v6 >= 0)
   {
     do
     {
-      v7 = [v5 objectAtIndex:v6];
-      v8 = [(UINavigationController *)self->_navigationController topViewController];
+      v7 = [defaultPages objectAtIndex:v6];
+      topViewController = [(UINavigationController *)self->_navigationController topViewController];
 
-      if (v8 == v7)
+      if (topViewController == v7)
       {
         if (v6)
         {
@@ -934,7 +934,7 @@ void __98__ICQPreferencesRemoteUIDelegate_objectModel_page_deletedTableRow_atInd
 
         else
         {
-          v9 = v3;
+          v9 = animatedCopy;
         }
 
         v10 = [(UINavigationController *)self->_navigationController popViewControllerAnimated:v9];
@@ -945,20 +945,20 @@ void __98__ICQPreferencesRemoteUIDelegate_objectModel_page_deletedTableRow_atInd
   }
 }
 
-- (void)objectModelPressedBack:(id)a3
+- (void)objectModelPressedBack:(id)back
 {
-  v9 = a3;
+  backCopy = back;
   [(ICQPreferencesRemoteUIDelegate *)self cleanupLoader];
-  v4 = [(UINavigationController *)self->_navigationController topViewController];
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
   v5 = [(UINavigationController *)self->_navigationController popViewControllerAnimated:1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
+    v6 = topViewController;
     if (v6)
     {
-      v7 = [v9 defaultPages];
-      v8 = [v7 containsObject:v6];
+      defaultPages = [backCopy defaultPages];
+      v8 = [defaultPages containsObject:v6];
 
       if (v8)
       {
@@ -973,17 +973,17 @@ void __98__ICQPreferencesRemoteUIDelegate_objectModel_page_deletedTableRow_atInd
   }
 }
 
-- (void)loader:(id)a3 receivedObjectModel:(id)a4 topActionSignal:(id)a5
+- (void)loader:(id)loader receivedObjectModel:(id)model topActionSignal:(id)signal
 {
   v166 = *MEMORY[0x277D85DE8];
-  v121 = a3;
-  v126 = a4;
-  v118 = a5;
-  v127 = self;
-  v8 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
-  LODWORD(a4) = [v8 isEqualToString:@"MANAGE"];
+  loaderCopy = loader;
+  modelCopy = model;
+  signalCopy = signal;
+  selfCopy = self;
+  nextSignpostId = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
+  LODWORD(model) = [nextSignpostId isEqualToString:@"MANAGE"];
 
-  if (a4)
+  if (model)
   {
     _ICQSignpostGetNanoseconds();
     v9 = _ICQSignpostLogSystem();
@@ -1004,8 +1004,8 @@ void __98__ICQPreferencesRemoteUIDelegate_objectModel_page_deletedTableRow_atInd
 
   else
   {
-    v13 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
-    v14 = [v13 isEqualToString:@"MANAGE_DRILLDOWN"];
+    nextSignpostId2 = [(ICQPreferencesRemoteUIDelegate *)self nextSignpostId];
+    v14 = [nextSignpostId2 isEqualToString:@"MANAGE_DRILLDOWN"];
 
     if (!v14)
     {
@@ -1033,8 +1033,8 @@ LABEL_14:
   nextSignpostId = self->_nextSignpostId;
   self->_nextSignpostId = 0;
 
-  v19 = [(ICQPreferencesRemoteUIDelegate *)self lastDocumentDeleteLoader];
-  v116 = [v19 isEqual:v121];
+  lastDocumentDeleteLoader = [(ICQPreferencesRemoteUIDelegate *)self lastDocumentDeleteLoader];
+  v116 = [lastDocumentDeleteLoader isEqual:loaderCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v21 = objc_opt_respondsToSelector();
@@ -1045,8 +1045,8 @@ LABEL_14:
     v152 = 0u;
     v149 = 0u;
     v150 = 0u;
-    v22 = [v126 allPages];
-    v23 = [v22 countByEnumeratingWithState:&v149 objects:v161 count:16];
+    allPages = [modelCopy allPages];
+    v23 = [allPages countByEnumeratingWithState:&v149 objects:v161 count:16];
     if (v23)
     {
       v24 = *v150;
@@ -1056,15 +1056,15 @@ LABEL_14:
         {
           if (*v150 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allPages);
           }
 
           v26 = *(*(&v149 + 1) + 8 * i);
-          v27 = objc_loadWeakRetained(&v127->_delegate);
-          [v27 remoteUIDelegate:v127 didCreatePage:v26 forAccount:v127->_account inObjectModel:v126];
+          v27 = objc_loadWeakRetained(&selfCopy->_delegate);
+          [v27 remoteUIDelegate:selfCopy didCreatePage:v26 forAccount:selfCopy->_account inObjectModel:modelCopy];
         }
 
-        v23 = [v22 countByEnumeratingWithState:&v149 objects:v161 count:16];
+        v23 = [allPages countByEnumeratingWithState:&v149 objects:v161 count:16];
       }
 
       while (v23);
@@ -1085,8 +1085,8 @@ LABEL_14:
     v148 = 0u;
     v145 = 0u;
     v146 = 0u;
-    v22 = [v126 allPages];
-    v30 = [v22 countByEnumeratingWithState:&v145 objects:v160 count:16];
+    allPages = [modelCopy allPages];
+    v30 = [allPages countByEnumeratingWithState:&v145 objects:v160 count:16];
     if (v30)
     {
       v31 = *v146;
@@ -1096,15 +1096,15 @@ LABEL_14:
         {
           if (*v146 != v31)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(allPages);
           }
 
           v33 = *(*(&v145 + 1) + 8 * j);
-          v34 = objc_loadWeakRetained(&v127->_delegate);
-          [v34 remoteUIDelegate:v127 didCreatePage:v33 inObjectModel:v126];
+          v34 = objc_loadWeakRetained(&selfCopy->_delegate);
+          [v34 remoteUIDelegate:selfCopy didCreatePage:v33 inObjectModel:modelCopy];
         }
 
-        v30 = [v22 countByEnumeratingWithState:&v145 objects:v160 count:16];
+        v30 = [allPages countByEnumeratingWithState:&v145 objects:v160 count:16];
       }
 
       while (v30);
@@ -1116,7 +1116,7 @@ LABEL_32:
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  obj = [v126 allPages];
+  obj = [modelCopy allPages];
   v119 = [obj countByEnumeratingWithState:&v141 objects:v159 count:16];
   if (v119)
   {
@@ -1140,10 +1140,10 @@ LABEL_32:
         v138 = 0u;
         v139 = 0u;
         v140 = 0u;
-        v39 = [v38 tableViewOM];
-        v122 = [v39 sections];
+        tableViewOM = [v38 tableViewOM];
+        sections = [tableViewOM sections];
 
-        v124 = [v122 countByEnumeratingWithState:&v137 objects:v158 count:16];
+        v124 = [sections countByEnumeratingWithState:&v137 objects:v158 count:16];
         if (v124)
         {
           v123 = *v138;
@@ -1155,7 +1155,7 @@ LABEL_32:
               if (*v138 != v123)
               {
                 v41 = v40;
-                objc_enumerationMutation(v122);
+                objc_enumerationMutation(sections);
                 v40 = v41;
               }
 
@@ -1165,8 +1165,8 @@ LABEL_32:
               v134 = 0u;
               v135 = 0u;
               v136 = 0u;
-              v43 = [v42 rows];
-              v44 = [v43 countByEnumeratingWithState:&v133 objects:v157 count:16];
+              rows = [v42 rows];
+              v44 = [rows countByEnumeratingWithState:&v133 objects:v157 count:16];
               if (v44)
               {
                 v45 = *v134;
@@ -1176,12 +1176,12 @@ LABEL_32:
                   {
                     if (*v134 != v45)
                     {
-                      objc_enumerationMutation(v43);
+                      objc_enumerationMutation(rows);
                     }
 
                     v47 = *(*(&v133 + 1) + 8 * k);
-                    v48 = [v47 attributes];
-                    v49 = [v48 objectForKeyedSubscript:@"encryptedFile"];
+                    attributes = [v47 attributes];
+                    v49 = [attributes objectForKeyedSubscript:@"encryptedFile"];
 
                     if (v49)
                     {
@@ -1206,7 +1206,7 @@ LABEL_32:
                       _Block_object_dispose(&v153, 8);
                       if (!v51)
                       {
-                        v59 = [ICQFamilySharingHook _beginFamilySharingFlowWithCompletion:];
+                        topSignal = [ICQFamilySharingHook _beginFamilySharingFlowWithCompletion:];
                         __break(1u);
                         goto LABEL_70;
                       }
@@ -1216,8 +1216,8 @@ LABEL_32:
                       v53 = v132;
                       if (v52)
                       {
-                        v54 = [v47 attributes];
-                        v55 = [v54 mutableCopy];
+                        attributes2 = [v47 attributes];
+                        v55 = [attributes2 mutableCopy];
 
                         [v55 setObject:v52 forKeyedSubscript:@"label"];
                         [v47 setAttributes:v55];
@@ -1236,7 +1236,7 @@ LABEL_32:
                     }
                   }
 
-                  v44 = [v43 countByEnumeratingWithState:&v133 objects:v157 count:16];
+                  v44 = [rows countByEnumeratingWithState:&v133 objects:v157 count:16];
                   if (v44)
                   {
                     continue;
@@ -1250,7 +1250,7 @@ LABEL_32:
             }
 
             while (v125 + 1 != v124);
-            v124 = [v122 countByEnumeratingWithState:&v137 objects:v158 count:16];
+            v124 = [sections countByEnumeratingWithState:&v137 objects:v158 count:16];
           }
 
           while (v124);
@@ -1268,61 +1268,61 @@ LABEL_32:
     while (v119);
   }
 
-  if (![(NSMutableArray *)v127->_deleteLoaders containsObject:v121]|| ([(NSMutableArray *)v127->_deleteLoaders removeObject:v121], v116))
+  if (![(NSMutableArray *)selfCopy->_deleteLoaders containsObject:loaderCopy]|| ([(NSMutableArray *)selfCopy->_deleteLoaders removeObject:loaderCopy], v116))
   {
-    [(ICQPreferencesRemoteUIDelegate *)v127 setLastDocumentDeleteLoader:0];
-    [v126 setDelegate:v127];
-    v56 = v127;
-    linkCompletionBlock = v127->_linkCompletionBlock;
+    [(ICQPreferencesRemoteUIDelegate *)selfCopy setLastDocumentDeleteLoader:0];
+    [modelCopy setDelegate:selfCopy];
+    v56 = selfCopy;
+    linkCompletionBlock = selfCopy->_linkCompletionBlock;
     if (linkCompletionBlock)
     {
       linkCompletionBlock[2](linkCompletionBlock, 1, 0);
-      v58 = v127->_linkCompletionBlock;
-      v127->_linkCompletionBlock = 0;
+      v58 = selfCopy->_linkCompletionBlock;
+      selfCopy->_linkCompletionBlock = 0;
 
-      v56 = v127;
+      v56 = selfCopy;
     }
 
     if (!v56->_cancelled)
     {
-      v59 = [v118 topSignal];
-      v60 = v127;
-      forceActionSignal = v127->_forceActionSignal;
+      topSignal = [signalCopy topSignal];
+      v60 = selfCopy;
+      forceActionSignal = selfCopy->_forceActionSignal;
       if (forceActionSignal)
       {
-        v127->_forceActionSignal = 0;
+        selfCopy->_forceActionSignal = 0;
         v62 = forceActionSignal;
       }
 
       else
       {
 LABEL_70:
-        v62 = v59;
+        v62 = topSignal;
       }
 
       v63 = objc_loadWeakRetained(&v60->_delegate);
 
       if (v63)
       {
-        v64 = objc_loadWeakRetained(&v127->_delegate);
-        [v64 loadFinished:v127];
+        v64 = objc_loadWeakRetained(&selfCopy->_delegate);
+        [v64 loadFinished:selfCopy];
       }
 
-      objectModels = v127->_objectModels;
+      objectModels = selfCopy->_objectModels;
       if (!objectModels)
       {
         v66 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v67 = v127->_objectModels;
-        v127->_objectModels = v66;
+        v67 = selfCopy->_objectModels;
+        selfCopy->_objectModels = v66;
 
-        objectModels = v127->_objectModels;
+        objectModels = selfCopy->_objectModels;
       }
 
       if (![(NSMutableArray *)objectModels count])
       {
         if (v62 == 3)
         {
-          if ([(ICQPreferencesRemoteUIDelegate *)v127 isNativeManageStorage])
+          if ([(ICQPreferencesRemoteUIDelegate *)selfCopy isNativeManageStorage])
           {
             v62 = 0;
           }
@@ -1339,110 +1339,110 @@ LABEL_70:
         }
       }
 
-      v68 = [v126 defaultPages];
-      v69 = [v68 lastObject];
+      defaultPages = [modelCopy defaultPages];
+      lastObject = [defaultPages lastObject];
 
-      if (v62 == 2 && v69)
+      if (v62 == 2 && lastObject)
       {
-        [(NSMutableArray *)v127->_objectModels addObject:v126];
-        [(UINavigationController *)v127->_navigationController showViewController:v69 sender:?];
-        [(UINavigationController *)v127->_navigationController setToolbarHidden:1 animated:0];
+        [(NSMutableArray *)selfCopy->_objectModels addObject:modelCopy];
+        [(UINavigationController *)selfCopy->_navigationController showViewController:lastObject sender:?];
+        [(UINavigationController *)selfCopy->_navigationController setToolbarHidden:1 animated:0];
       }
 
-      else if (v62 == 3 && v69)
+      else if (v62 == 3 && lastObject)
       {
-        v70 = [(UINavigationController *)v127->_navigationController viewControllers];
-        v71 = [v70 mutableCopy];
+        viewControllers = [(UINavigationController *)selfCopy->_navigationController viewControllers];
+        v71 = [viewControllers mutableCopy];
 
-        [(NSMutableArray *)v127->_objectModels removeLastObject];
+        [(NSMutableArray *)selfCopy->_objectModels removeLastObject];
         [v71 removeLastObject];
-        [v71 addObject:v69];
-        [(NSMutableArray *)v127->_objectModels addObject:v126];
-        [(UINavigationController *)v127->_navigationController setViewControllers:v71 animated:0];
+        [v71 addObject:lastObject];
+        [(NSMutableArray *)selfCopy->_objectModels addObject:modelCopy];
+        [(UINavigationController *)selfCopy->_navigationController setViewControllers:v71 animated:0];
       }
 
       else if (v62 == 4)
       {
-        if (v69)
+        if (lastObject)
         {
-          v72 = [v126 clientInfo];
-          v73 = [v72 objectForKeyedSubscript:@"shouldRefreshStorageGraph"];
+          clientInfo = [modelCopy clientInfo];
+          v73 = [clientInfo objectForKeyedSubscript:@"shouldRefreshStorageGraph"];
 
-          if (-[ICQPreferencesRemoteUIDelegate isNativeManageStorage](v127, "isNativeManageStorage") && [v73 isEqualToString:@"true"])
+          if (-[ICQPreferencesRemoteUIDelegate isNativeManageStorage](selfCopy, "isNativeManageStorage") && [v73 isEqualToString:@"true"])
           {
-            v74 = [(UINavigationController *)v127->_navigationController popViewControllerAnimated:1];
-            v75 = [MEMORY[0x277CCAB98] defaultCenter];
-            [v75 postNotificationName:@"QuotaDidChange" object:0];
+            v74 = [(UINavigationController *)selfCopy->_navigationController popViewControllerAnimated:1];
+            defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+            [defaultCenter postNotificationName:@"QuotaDidChange" object:0];
           }
 
-          else if ([(NSMutableArray *)v127->_objectModels count]> 1)
+          else if ([(NSMutableArray *)selfCopy->_objectModels count]> 1)
           {
             v76 = +[ICQQuotaRequestManager sharedManager];
             [v76 noteQuotaInfoChanged];
 
-            v75 = [(UINavigationController *)v127->_navigationController topViewController];
-            [(NSMutableArray *)v127->_objectModels removeLastObject];
-            [(NSMutableArray *)v127->_objectModels removeLastObject];
-            v77 = [(UINavigationController *)v127->_navigationController viewControllers];
-            v78 = [v77 mutableCopy];
+            defaultCenter = [(UINavigationController *)selfCopy->_navigationController topViewController];
+            [(NSMutableArray *)selfCopy->_objectModels removeLastObject];
+            [(NSMutableArray *)selfCopy->_objectModels removeLastObject];
+            viewControllers2 = [(UINavigationController *)selfCopy->_navigationController viewControllers];
+            v78 = [viewControllers2 mutableCopy];
 
             [v78 removeLastObject];
             [v78 removeLastObject];
-            [(NSMutableArray *)v127->_objectModels addObject:v126];
-            [v78 addObject:v69];
-            [v78 addObject:v75];
-            [(UINavigationController *)v127->_navigationController setViewControllers:v78 animated:0];
-            v79 = [(UINavigationController *)v127->_navigationController popViewControllerAnimated:1];
+            [(NSMutableArray *)selfCopy->_objectModels addObject:modelCopy];
+            [v78 addObject:lastObject];
+            [v78 addObject:defaultCenter];
+            [(UINavigationController *)selfCopy->_navigationController setViewControllers:v78 animated:0];
+            v79 = [(UINavigationController *)selfCopy->_navigationController popViewControllerAnimated:1];
           }
 
           else
           {
-            v75 = ICQUSLogForCategory(0);
-            if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
+            defaultCenter = ICQUSLogForCategory(0);
+            if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEFAULT))
             {
               LOWORD(buf) = 0;
-              _os_log_impl(&dword_275623000, v75, OS_LOG_TYPE_DEFAULT, "Pop + Replace requires at least 2 existing object models.", &buf, 2u);
+              _os_log_impl(&dword_275623000, defaultCenter, OS_LOG_TYPE_DEFAULT, "Pop + Replace requires at least 2 existing object models.", &buf, 2u);
             }
           }
         }
 
         else
         {
-          [(ICQPreferencesRemoteUIDelegate *)v127 _popObjectModelAnimated:1];
+          [(ICQPreferencesRemoteUIDelegate *)selfCopy _popObjectModelAnimated:1];
         }
       }
 
-      v56 = v127;
+      v56 = selfCopy;
     }
 
     [(ICQPreferencesRemoteUIDelegate *)v56 cleanupLoader];
   }
 
-  v80 = [v126 clientInfo];
-  v81 = [v80 objectForKeyedSubscript:@"action"];
+  clientInfo2 = [modelCopy clientInfo];
+  v81 = [clientInfo2 objectForKeyedSubscript:@"action"];
 
   if ([v81 isEqualToString:@"remoteAction:launchApp"])
   {
     v82 = MEMORY[0x277CBEBC0];
-    v83 = [v126 clientInfo];
-    v84 = [v83 objectForKeyedSubscript:@"remoteLaunchUrl"];
+    clientInfo3 = [modelCopy clientInfo];
+    v84 = [clientInfo3 objectForKeyedSubscript:@"remoteLaunchUrl"];
     v85 = [v82 URLWithString:v84];
 
-    [(ICQPreferencesRemoteUIDelegate *)v127 _loadNativeURL:v85];
+    [(ICQPreferencesRemoteUIDelegate *)selfCopy _loadNativeURL:v85];
   }
 
   v86 = [v81 isEqualToString:@"buyStorage"];
   v87 = MEMORY[0x277D3FD40];
   if (v86)
   {
-    __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSignal___block_invoke(v86, v126);
+    __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSignal___block_invoke(v86, modelCopy);
     v88 = *v87;
     v131[0] = MEMORY[0x277D85DD0];
     v131[1] = 3221225472;
     v131[2] = __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSignal___block_invoke_2;
     v131[3] = &unk_27A65A7F8;
-    v131[4] = v127;
-    [(ICQPreferencesRemoteUIDelegate *)v127 _presentCloudStorageOffersFlowWithAction:v88 completion:v131];
+    v131[4] = selfCopy;
+    [(ICQPreferencesRemoteUIDelegate *)selfCopy _presentCloudStorageOffersFlowWithAction:v88 completion:v131];
     goto LABEL_111;
   }
 
@@ -1465,19 +1465,19 @@ LABEL_70:
   if (v92)
   {
 LABEL_109:
-    __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSignal___block_invoke(v89, v126);
-    v93 = [v126 clientInfo];
-    v94 = [v93 objectForKeyedSubscript:@"planManagementUrl"];
+    __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSignal___block_invoke(v89, modelCopy);
+    clientInfo4 = [modelCopy clientInfo];
+    v94 = [clientInfo4 objectForKeyedSubscript:@"planManagementUrl"];
 
     if (v94)
     {
-      v127->_icqAction = _ICQActionForString();
+      selfCopy->_icqAction = _ICQActionForString();
       v95 = MEMORY[0x277CBEBC0];
-      v96 = [v126 clientInfo];
-      v97 = [v96 objectForKeyedSubscript:@"planManagementUrl"];
+      clientInfo5 = [modelCopy clientInfo];
+      v97 = [clientInfo5 objectForKeyedSubscript:@"planManagementUrl"];
       v98 = [v95 URLWithString:v97];
 
-      [(ICQPreferencesRemoteUIDelegate *)v127 _freshmintStorageUpgradeWithCompletion:0 withURL:v98];
+      [(ICQPreferencesRemoteUIDelegate *)selfCopy _freshmintStorageUpgradeWithCompletion:0 withURL:v98];
     }
 
     goto LABEL_111;
@@ -1485,8 +1485,8 @@ LABEL_109:
 
   if ([v81 isEqualToString:@"UNIFIED_MESSAGING"])
   {
-    v110 = [v126 clientInfo];
-    v111 = [v110 objectForKeyedSubscript:@"storageChangeNotice"];
+    clientInfo6 = [modelCopy clientInfo];
+    v111 = [clientInfo6 objectForKeyedSubscript:@"storageChangeNotice"];
 
     if (v111)
     {
@@ -1496,61 +1496,61 @@ LABEL_109:
 
   else
   {
-    v112 = [v126 identifier];
-    v113 = [v112 isEqualToString:@"manageStorageBackup"];
+    identifier = [modelCopy identifier];
+    v113 = [identifier isEqualToString:@"manageStorageBackup"];
 
     if (v113)
     {
-      __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSignal___block_invoke(v114, v126);
+      __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSignal___block_invoke(v114, modelCopy);
     }
   }
 
 LABEL_111:
-  v99 = v127;
-  initialAction = v127->_initialAction;
+  v99 = selfCopy;
+  initialAction = selfCopy->_initialAction;
   if (initialAction)
   {
     v101 = initialAction;
-    v102 = v127->_initialAction;
+    v102 = selfCopy->_initialAction;
     v103 = *MEMORY[0x277D3FD58];
     if (v102 != *MEMORY[0x277D3FD58])
     {
-      v127->_initialAction = 0;
+      selfCopy->_initialAction = 0;
 
-      v99 = v127;
+      v99 = selfCopy;
     }
 
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSignal___block_invoke_3;
     aBlock[3] = &unk_27A65BAA8;
-    v104 = v126;
+    v104 = modelCopy;
     v129 = v104;
     v130 = v99;
     v105 = _Block_copy(aBlock);
     if (v101 == *v87 || v101 == *MEMORY[0x277D3FD48])
     {
-      [(ICQPreferencesRemoteUIDelegate *)v127 _presentCloudStorageOffersFlowWithAction:v101 completion:v105];
+      [(ICQPreferencesRemoteUIDelegate *)selfCopy _presentCloudStorageOffersFlowWithAction:v101 completion:v105];
     }
 
     else if (v101 == *MEMORY[0x277D3FD50])
     {
       v106 = MEMORY[0x277CBEBC0];
-      v107 = [v104 clientInfo];
-      v108 = [v107 objectForKeyedSubscript:@"refreshUrl"];
+      clientInfo7 = [v104 clientInfo];
+      v108 = [clientInfo7 objectForKeyedSubscript:@"refreshUrl"];
       v109 = [v106 URLWithString:v108];
 
-      [(ICQPreferencesRemoteUIDelegate *)v127 _freshmintStorageUpgradeWithCompletion:v105 withURL:v109];
+      [(ICQPreferencesRemoteUIDelegate *)selfCopy _freshmintStorageUpgradeWithCompletion:v105 withURL:v109];
     }
 
     else if (v101 == *MEMORY[0x277D3FD60])
     {
-      [(ICQPreferencesRemoteUIDelegate *)v127 _activatePhotosElementForObjectModel:v104 completion:v105];
+      [(ICQPreferencesRemoteUIDelegate *)selfCopy _activatePhotosElementForObjectModel:v104 completion:v105];
     }
 
     else if (v101 == v103)
     {
-      [(ICQPreferencesRemoteUIDelegate *)v127 _activateBackupsElementForObjectModel:v104 completion:v105];
+      [(ICQPreferencesRemoteUIDelegate *)selfCopy _activateBackupsElementForObjectModel:v104 completion:v105];
     }
   }
 }
@@ -1619,35 +1619,35 @@ void __77__ICQPreferencesRemoteUIDelegate_loader_receivedObjectModel_topActionSi
 LABEL_11:
 }
 
-- (void)loader:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)loader:(id)loader didFinishLoadWithError:(id)error forRequest:(id)request
 {
   *&v34[5] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loaderCopy = loader;
+  errorCopy = error;
+  requestCopy = request;
   linkCompletionBlock = self->_linkCompletionBlock;
   if (linkCompletionBlock)
   {
-    linkCompletionBlock[2](linkCompletionBlock, v9 == 0, v9);
+    linkCompletionBlock[2](linkCompletionBlock, errorCopy == 0, errorCopy);
     v12 = self->_linkCompletionBlock;
     self->_linkCompletionBlock = 0;
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
     goto LABEL_18;
   }
 
-  if (![(NSMutableArray *)self->_deleteLoaders containsObject:v8])
+  if (![(NSMutableArray *)self->_deleteLoaders containsObject:loaderCopy])
   {
-    v21 = [(NSMutableArray *)self->_objectModels lastObject];
-    v22 = [v21 defaultPages];
-    v23 = [v22 lastObject];
-    v24 = [v23 tableViewOM];
-    v25 = [v24 attributes];
-    v16 = [v25 objectForKey:@"deleteAllURL"];
+    lastObject = [(NSMutableArray *)self->_objectModels lastObject];
+    defaultPages = [lastObject defaultPages];
+    lastObject2 = [defaultPages lastObject];
+    tableViewOM = [lastObject2 tableViewOM];
+    attributes = [tableViewOM attributes];
+    v16 = [attributes objectForKey:@"deleteAllURL"];
 
-    v26 = [v8 URL];
+    v26 = [loaderCopy URL];
     [(ICQPreferencesRemoteUIDelegate *)self cleanupLoader];
     v27 = [MEMORY[0x277CBEBC0] URLWithString:v16];
     if ([v26 isEqual:v27])
@@ -1663,7 +1663,7 @@ LABEL_11:
           v33 = 67109378;
           v34[0] = v30;
           LOWORD(v34[1]) = 2112;
-          *(&v34[1] + 2) = v9;
+          *(&v34[1] + 2) = errorCopy;
           _os_log_impl(&dword_275623000, v29, OS_LOG_TYPE_DEFAULT, "Failed to delete all documents on attempt #%i: %@", &v33, 0x12u);
         }
 
@@ -1682,17 +1682,17 @@ LABEL_16:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       v33 = 138412290;
-      *v34 = v9;
+      *v34 = errorCopy;
       _os_log_impl(&dword_275623000, v31, OS_LOG_TYPE_DEFAULT, "RUILoader failed: %@", &v33, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained loadFailed:self withError:v9];
+    [WeakRetained loadFailed:self withError:errorCopy];
 
     goto LABEL_16;
   }
 
-  [(NSMutableArray *)self->_deleteLoaders removeObject:v8];
+  [(NSMutableArray *)self->_deleteLoaders removeObject:loaderCopy];
   if ([(NSMutableArray *)self->_objectModels count]>= 2)
   {
     [(ICQPreferencesRemoteUIDelegate *)self _popObjectModelAnimated:1];
@@ -1714,28 +1714,28 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)objectModelDidChange:(id)a3
+- (void)objectModelDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 delegate];
+    delegate = [changeCopy delegate];
     v7 = 136315394;
     v8 = "[ICQPreferencesRemoteUIDelegate objectModelDidChange:]";
     v9 = 2112;
-    v10 = v6;
+    v10 = delegate;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "%s, current delegate %@", &v7, 0x16u);
   }
 
-  [(ICQPreferencesRemoteUIDelegate *)self _processObjectModel:v4];
+  [(ICQPreferencesRemoteUIDelegate *)self _processObjectModel:changeCopy];
 }
 
-- (void)objectModel:(id)a3 configureTableRow:(id)a4 page:(id)a5
+- (void)objectModel:(id)model configureTableRow:(id)row page:(id)page
 {
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  rowCopy = row;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1744,19 +1744,19 @@ LABEL_18:
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "%s", &v8, 0xCu);
   }
 
-  [(ICQPreferencesRemoteUIDelegate *)self _processTableRow:v6];
+  [(ICQPreferencesRemoteUIDelegate *)self _processTableRow:rowCopy];
 }
 
-- (void)_processObjectModel:(id)a3
+- (void)_processObjectModel:(id)model
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 subElementWithID:@"substituteRowSection"];
+  v4 = [model subElementWithID:@"substituteRowSection"];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 rows];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  rows = [v4 rows];
+  v6 = [rows countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1768,58 +1768,58 @@ LABEL_18:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(rows);
         }
 
         [(ICQPreferencesRemoteUIDelegate *)self _processTableRow:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [rows countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_processTableRow:(id)a3
+- (void)_processTableRow:(id)row
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [v5 objectForKeyedSubscript:@"hasSubstitutions"];
+  rowCopy = row;
+  attributes = [rowCopy attributes];
+  v6 = [attributes objectForKeyedSubscript:@"hasSubstitutions"];
   if (([v6 BOOLValue] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v4 attributes];
-  v8 = [v7 objectForKeyedSubscript:@"index"];
-  v9 = [v8 intValue];
-  v10 = [(ICQPreferencesRemoteUIDelegate *)self dataclassSubstitutions];
-  v11 = [v10 count];
+  attributes2 = [rowCopy attributes];
+  v8 = [attributes2 objectForKeyedSubscript:@"index"];
+  intValue = [v8 intValue];
+  dataclassSubstitutions = [(ICQPreferencesRemoteUIDelegate *)self dataclassSubstitutions];
+  v11 = [dataclassSubstitutions count];
 
-  if (v11 > v9)
+  if (v11 > intValue)
   {
-    v12 = [v4 attributes];
-    v5 = [v12 mutableCopy];
+    attributes3 = [rowCopy attributes];
+    attributes = [attributes3 mutableCopy];
 
-    v13 = [(ICQPreferencesRemoteUIDelegate *)self dataclassSubstitutions];
-    v14 = [v4 attributes];
-    v15 = [v14 objectForKeyedSubscript:@"index"];
-    v16 = [v13 objectAtIndexedSubscript:{objc_msgSend(v15, "intValue")}];
+    dataclassSubstitutions2 = [(ICQPreferencesRemoteUIDelegate *)self dataclassSubstitutions];
+    attributes4 = [rowCopy attributes];
+    v15 = [attributes4 objectForKeyedSubscript:@"index"];
+    v16 = [dataclassSubstitutions2 objectAtIndexedSubscript:{objc_msgSend(v15, "intValue")}];
 
     v17 = MEMORY[0x277CE8588];
     v21[0] = v16;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     v19 = [v17 localizedTextForDataclasses:v18 usedAtBeginningOfSentence:1 forAccount:0];
-    [v5 setObject:v19 forKeyedSubscript:@"label"];
+    [attributes setObject:v19 forKeyedSubscript:@"label"];
 
     v20 = [MEMORY[0x277D3FAD8] acui_iconForDataclass:v16];
-    [v4 setImage:v20];
+    [rowCopy setImage:v20];
 
-    [v4 setAttributes:v5];
+    [rowCopy setAttributes:attributes];
 LABEL_5:
   }
 }
@@ -1870,14 +1870,14 @@ void __50__ICQPreferencesRemoteUIDelegate__reloadQuotaInfo__block_invoke(uint64_
   }
 }
 
-- (void)buyFlowCompletionDidSucceed:(BOOL)a3 error:(id)a4
+- (void)buyFlowCompletionDidSucceed:(BOOL)succeed error:(id)error
 {
-  v4 = a3;
+  succeedCopy = succeed;
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = ICQUSLogForCategory(0);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (succeedCopy)
   {
     if (v8)
     {
@@ -1894,24 +1894,24 @@ void __50__ICQPreferencesRemoteUIDelegate__reloadQuotaInfo__block_invoke(uint64_
     if (v8)
     {
       v9 = 138543362;
-      v10 = v6;
+      v10 = errorCopy;
       _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "buy storage failed with error: %{public}@", &v9, 0xCu);
     }
   }
 }
 
-- (BOOL)_loadNativeURL:(id)a3
+- (BOOL)_loadNativeURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 containsString:@"prefs"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme containsString:@"prefs"])
   {
   }
 
   else
   {
-    v5 = [v3 scheme];
-    v6 = [v5 isEqualToString:@"ams-ui"];
+    scheme2 = [lCopy scheme];
+    v6 = [scheme2 isEqualToString:@"ams-ui"];
 
     if (!v6)
     {
@@ -1920,8 +1920,8 @@ void __50__ICQPreferencesRemoteUIDelegate__reloadQuotaInfo__block_invoke(uint64_
     }
   }
 
-  v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v7 openSensitiveURL:v3 withOptions:0];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:lCopy withOptions:0];
 
   v8 = 1;
 LABEL_6:
@@ -1929,10 +1929,10 @@ LABEL_6:
   return v8;
 }
 
-- (void)_presentCloudStorageOffersFlowWithAction:(id)a3 completion:(id)a4
+- (void)_presentCloudStorageOffersFlowWithAction:(id)action completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  completionCopy = completion;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1947,7 +1947,7 @@ LABEL_6:
   [(UINavigationController *)self->_modalNavigationController setModalPresentationStyle:2];
   [(UINavigationController *)self->_modalNavigationController setModalTransitionStyle:0];
   [(UINavigationController *)self->_navigationController presentViewController:self->_modalNavigationController animated:1 completion:0];
-  v12 = [v7 copy];
+  v12 = [completionCopy copy];
 
   storageOffersFlowCompletion = self->_storageOffersFlowCompletion;
   self->_storageOffersFlowCompletion = v12;
@@ -1963,15 +1963,15 @@ LABEL_6:
     storageOffersManager = self->_storageOffersManager;
   }
 
-  [(ICQUICloudStorageOffersManager *)storageOffersManager setShouldOfferDeviceOffers:*MEMORY[0x277D3FD48] == v6];
+  [(ICQUICloudStorageOffersManager *)storageOffersManager setShouldOfferDeviceOffers:*MEMORY[0x277D3FD48] == actionCopy];
   [(ICQUICloudStorageOffersManager *)self->_storageOffersManager beginFlowWithNavigationController:self->_modalNavigationController modally:0];
 }
 
-- (void)_activateBackupsElementForObjectModel:(id)a3 completion:(id)a4
+- (void)_activateBackupsElementForObjectModel:(id)model completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v7 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1979,9 +1979,9 @@ LABEL_6:
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to launch backup page", &v13, 2u);
   }
 
-  v8 = [v5 identifier];
+  identifier = [modelCopy identifier];
 
-  if (v8)
+  if (identifier)
   {
     v9 = @"backups";
   }
@@ -1991,7 +1991,7 @@ LABEL_6:
     v9 = @"currentDeviceBackUp";
   }
 
-  v10 = [v5 subElementWithID:v9];
+  v10 = [modelCopy subElementWithID:v9];
   v11 = ICQUSLogForCategory(0);
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (v10)
@@ -2003,7 +2003,7 @@ LABEL_6:
       _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "found element - activating %@", &v13, 0xCu);
     }
 
-    [v5 activateElement:v10 completion:v6];
+    [modelCopy activateElement:v10 completion:completionCopy];
   }
 
   else
@@ -2014,15 +2014,15 @@ LABEL_6:
       _os_log_impl(&dword_275623000, v11, OS_LOG_TYPE_DEFAULT, "Unable to launch backup page - element is nil", &v13, 2u);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_activatePhotosElementForObjectModel:(id)a3 completion:(id)a4
+- (void)_activatePhotosElementForObjectModel:(id)model completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  modelCopy = model;
+  completionCopy = completion;
   v7 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2030,7 +2030,7 @@ LABEL_6:
     _os_log_impl(&dword_275623000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to launch photos page", &v11, 2u);
   }
 
-  v8 = [v5 subElementWithID:@"photos"];
+  v8 = [modelCopy subElementWithID:@"photos"];
   v9 = ICQUSLogForCategory(0);
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -2042,7 +2042,7 @@ LABEL_6:
       _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "found element - activating %@", &v11, 0xCu);
     }
 
-    [v5 activateElement:v8 completion:v6];
+    [modelCopy activateElement:v8 completion:completionCopy];
   }
 
   else
@@ -2053,11 +2053,11 @@ LABEL_6:
       _os_log_impl(&dword_275623000, v9, OS_LOG_TYPE_DEFAULT, "Unable to launch photos page - element is nil", &v11, 2u);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_freshmintStorageUpgradeWithCompletion:(id)a3 withURL:(id)a4
+- (void)_freshmintStorageUpgradeWithCompletion:(id)completion withURL:(id)l
 {
   if (self->_icqAction == 121)
   {
@@ -2071,22 +2071,22 @@ LABEL_6:
   }
 
   v7 = MEMORY[0x277D7F370];
-  v8 = a4;
-  v9 = a3;
-  v10 = [[v7 alloc] initWithAction:v6 url:v8];
+  lCopy = l;
+  completionCopy = completion;
+  v10 = [[v7 alloc] initWithAction:v6 url:lCopy];
 
-  [(ICQPreferencesRemoteUIDelegate *)self _freshmintStorageUpgradeWithICQLink:v10 completion:v9];
+  [(ICQPreferencesRemoteUIDelegate *)self _freshmintStorageUpgradeWithICQLink:v10 completion:completionCopy];
 }
 
-- (void)_freshmintStorageUpgradeWithICQLink:(id)a3 completion:(id)a4
+- (void)_freshmintStorageUpgradeWithICQLink:(id)link completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  completionCopy = completion;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v8 = [(UINavigationController *)self->_navigationController topViewController];
+  topViewController = [(UINavigationController *)self->_navigationController topViewController];
   v9 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -2101,13 +2101,13 @@ LABEL_6:
   block[3] = &unk_27A65BAD0;
   v25 = &v27;
   block[4] = self;
-  v11 = v8;
+  v11 = topViewController;
   v23 = v11;
-  v12 = v7;
+  v12 = completionCopy;
   v24 = v12;
   dispatch_after(v10, MEMORY[0x277D85CD0], block);
   v28[3] = 1;
-  v13 = [MEMORY[0x277D7F390] sharedOfferManager];
+  mEMORY[0x277D7F390] = [MEMORY[0x277D7F390] sharedOfferManager];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __81__ICQPreferencesRemoteUIDelegate__freshmintStorageUpgradeWithICQLink_completion___block_invoke_293;
@@ -2116,11 +2116,11 @@ LABEL_6:
   v17[4] = self;
   v14 = v11;
   v18 = v14;
-  v15 = v6;
+  v15 = linkCopy;
   v19 = v15;
   v16 = v12;
   v20 = v16;
-  [v13 getOfferWithCompletion:v17];
+  [mEMORY[0x277D7F390] getOfferWithCompletion:v17];
 
   _Block_object_dispose(&v27, 8);
 }
@@ -2233,7 +2233,7 @@ void __81__ICQPreferencesRemoteUIDelegate__freshmintStorageUpgradeWithICQLink_co
 
   v7 = v6;
   _Block_object_dispose(&v11, 8);
-  v8 = [v3 preferenceSpecifierNamed:v5 target:a1 set:0 get:0 detail:v6 cell:1 edit:0];
+  v8 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:v6 cell:1 edit:0];
 
   return v8;
 }
@@ -2261,14 +2261,14 @@ void __81__ICQPreferencesRemoteUIDelegate__freshmintStorageUpgradeWithICQLink_co
 
   v7 = v6;
   _Block_object_dispose(&v11, 8);
-  v8 = [v3 preferenceSpecifierNamed:v5 target:a1 set:0 get:0 detail:v6 cell:1 edit:0];
+  v8 = [v3 preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:v6 cell:1 edit:0];
 
   return v8;
 }
 
 + (id)messagesSettingsSpecifier
 {
-  [a1 _loadCKStoragePluginSettingsBundleIfNeeded];
+  [self _loadCKStoragePluginSettingsBundleIfNeeded];
   v2 = NSClassFromString(&cfstr_Ckcloudmessage.isa);
 
   return [(objc_class *)v2 specifier];
@@ -2285,11 +2285,11 @@ void __81__ICQPreferencesRemoteUIDelegate__freshmintStorageUpgradeWithICQLink_co
     _os_log_impl(&dword_275623000, v2, OS_LOG_TYPE_DEFAULT, "ICQPreferencesRemoteUIDelegate posting %@ notification.", &v4, 0xCu);
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"QuotaDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"QuotaDidChange" object:0];
 }
 
-- (void)managerDidCancel:(id)a3
+- (void)managerDidCancel:(id)cancel
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2307,27 +2307,27 @@ void __81__ICQPreferencesRemoteUIDelegate__freshmintStorageUpgradeWithICQLink_co
   }
 }
 
-- (void)manager:(id)a3 didCompleteWithError:(id)a4
+- (void)manager:(id)manager didCompleteWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v5;
+    v12 = errorCopy;
     _os_log_impl(&dword_275623000, v6, OS_LOG_TYPE_DEFAULT, "Cloud storage offers flow did complete with error: %{public}@", &v11, 0xCu);
   }
 
   storageOffersFlowCompletion = self->_storageOffersFlowCompletion;
   if (storageOffersFlowCompletion)
   {
-    if (v5)
+    if (errorCopy)
     {
-      v8 = [v5 domain];
-      if ([v8 isEqualToString:@"com.apple.Preferences.cloud-storage-offers"])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:@"com.apple.Preferences.cloud-storage-offers"])
       {
-        v9 = [v5 code] == 2;
+        v9 = [errorCopy code] == 2;
       }
 
       else
@@ -2343,13 +2343,13 @@ void __81__ICQPreferencesRemoteUIDelegate__freshmintStorageUpgradeWithICQLink_co
       v9 = 1;
     }
 
-    storageOffersFlowCompletion[2](storageOffersFlowCompletion, v9, v5);
+    storageOffersFlowCompletion[2](storageOffersFlowCompletion, v9, errorCopy);
     v10 = self->_storageOffersFlowCompletion;
     self->_storageOffersFlowCompletion = 0;
   }
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
   v3 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -2359,7 +2359,7 @@ void __81__ICQPreferencesRemoteUIDelegate__freshmintStorageUpgradeWithICQLink_co
   }
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
   v4 = ICQUSLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2374,7 +2374,7 @@ void __81__ICQPreferencesRemoteUIDelegate__freshmintStorageUpgradeWithICQLink_co
 
 + (void)_loadCKStoragePluginSettingsBundleIfNeeded
 {
-  v2 = MEMORY[0x277C80FF0](a1, a2);
+  v2 = MEMORY[0x277C80FF0](self, a2);
   v3 = [v2 stringByAppendingPathComponent:@"System/Library/PreferenceBundles/StoragePlugins"];
 
   v4 = [v3 stringByAppendingPathComponent:@"CKStoragePlugin.bundle"];

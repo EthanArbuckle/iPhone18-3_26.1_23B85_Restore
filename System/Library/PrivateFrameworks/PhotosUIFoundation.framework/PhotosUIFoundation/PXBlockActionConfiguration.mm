@@ -1,51 +1,51 @@
 @interface PXBlockActionConfiguration
 - (PXBlockActionConfiguration)init;
-- (PXBlockActionConfiguration)initWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXBlockActionConfiguration)initWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXBlockActionConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PXBlockActionConfiguration alloc];
-  v5 = [(PXBlockActionConfiguration *)self actionBlock];
-  v6 = [(PXBlockActionConfiguration *)v4 initWithBlock:v5];
+  actionBlock = [(PXBlockActionConfiguration *)self actionBlock];
+  v6 = [(PXBlockActionConfiguration *)v4 initWithBlock:actionBlock];
 
-  v7 = [(PXBlockActionConfiguration *)self actionName];
-  [(PXBlockActionConfiguration *)v6 setActionName:v7];
+  actionName = [(PXBlockActionConfiguration *)self actionName];
+  [(PXBlockActionConfiguration *)v6 setActionName:actionName];
 
-  v8 = [(PXBlockActionConfiguration *)self image];
-  [(PXBlockActionConfiguration *)v6 setImage:v8];
+  image = [(PXBlockActionConfiguration *)self image];
+  [(PXBlockActionConfiguration *)v6 setImage:image];
 
-  v9 = [(PXBlockActionConfiguration *)self canPerformBlock];
-  [(PXBlockActionConfiguration *)v6 setCanPerformBlock:v9];
+  canPerformBlock = [(PXBlockActionConfiguration *)self canPerformBlock];
+  [(PXBlockActionConfiguration *)v6 setCanPerformBlock:canPerformBlock];
 
   [(PXBlockActionConfiguration *)v6 setDestructive:[(PXBlockActionConfiguration *)self isDestructive]];
   [(PXBlockActionConfiguration *)v6 setSelected:[(PXBlockActionConfiguration *)self isSelected]];
-  v10 = [(PXBlockActionConfiguration *)self menuElementConstructor];
-  [(PXBlockActionConfiguration *)v6 setMenuElementConstructor:v10];
+  menuElementConstructor = [(PXBlockActionConfiguration *)self menuElementConstructor];
+  [(PXBlockActionConfiguration *)v6 setMenuElementConstructor:menuElementConstructor];
 
   return v6;
 }
 
 - (PXBlockActionConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXBlockActionConfiguration.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXBlockActionConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXBlockActionConfiguration.m" lineNumber:23 description:{@"%s is not available as initializer", "-[PXBlockActionConfiguration init]"}];
 
   abort();
 }
 
-- (PXBlockActionConfiguration)initWithBlock:(id)a3
+- (PXBlockActionConfiguration)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = PXBlockActionConfiguration;
   v5 = [(PXBlockActionConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     actionBlock = v5->_actionBlock;
     v5->_actionBlock = v6;
   }

@@ -1,18 +1,18 @@
 @interface MTLDebugTensor
-- (id)newTensorViewWithReshapedDescriptor:(id)a3 error:(id *)a4;
-- (id)newTensorViewWithSlice:(MTLTensorSlice)a3 error:(id *)a4;
-- (void)getBytes:(void *)a3 strides:(id)a4 fromSlice:(MTLTensorSlice)a5;
-- (void)getBytes:(void *)a3 strides:(id)a4 fromSliceOrigin:(id)a5 sliceDimensions:(id)a6;
-- (void)replaceSlice:(MTLTensorSlice)a3 withBytes:(const void *)a4 strides:(id)a5;
-- (void)replaceSliceOrigin:(id)a3 sliceDimensions:(id)a4 withBytes:(const void *)a5 strides:(id)a6;
-- (void)verifyGetBytesReplaceSliceWithContext:(_MTLMessageContext *)a3 strides:(id)a4 slice:(MTLTensorSlice)a5;
+- (id)newTensorViewWithReshapedDescriptor:(id)descriptor error:(id *)error;
+- (id)newTensorViewWithSlice:(MTLTensorSlice)slice error:(id *)error;
+- (void)getBytes:(void *)bytes strides:(id)strides fromSlice:(MTLTensorSlice)slice;
+- (void)getBytes:(void *)bytes strides:(id)strides fromSliceOrigin:(id)origin sliceDimensions:(id)dimensions;
+- (void)replaceSlice:(MTLTensorSlice)slice withBytes:(const void *)bytes strides:(id)strides;
+- (void)replaceSliceOrigin:(id)origin sliceDimensions:(id)dimensions withBytes:(const void *)bytes strides:(id)strides;
+- (void)verifyGetBytesReplaceSliceWithContext:(_MTLMessageContext *)context strides:(id)strides slice:(MTLTensorSlice)slice;
 @end
 
 @implementation MTLDebugTensor
 
-- (void)verifyGetBytesReplaceSliceWithContext:(_MTLMessageContext *)a3 strides:(id)a4 slice:(MTLTensorSlice)a5
+- (void)verifyGetBytesReplaceSliceWithContext:(_MTLMessageContext *)context strides:(id)strides slice:(MTLTensorSlice)slice
 {
-  var1 = a5.var1;
+  var1 = slice.var1;
   if ([(MTLToolsResource *)self storageMode]== 2)
   {
     _MTLMessageContextPush_();
@@ -21,60 +21,60 @@
   [(MTLToolsTensor *)self dimensions];
   verifySlice();
 
-  MEMORY[0x282123EA0](a3, 8, 0, var1, a4, "slice");
+  MEMORY[0x282123EA0](context, 8, 0, var1, strides, "slice");
 }
 
-- (void)getBytes:(void *)a3 strides:(id)a4 fromSliceOrigin:(id)a5 sliceDimensions:(id)a6
+- (void)getBytes:(void *)bytes strides:(id)strides fromSliceOrigin:(id)origin sliceDimensions:(id)dimensions
 {
   [(MTLToolsObject *)self baseObject:0];
   _MTLMessageContextBegin_();
-  [(MTLDebugTensor *)self verifyGetBytesReplaceSliceWithContext:&v11 strides:a4 slice:a5, a6];
+  [(MTLDebugTensor *)self verifyGetBytesReplaceSliceWithContext:&v11 strides:strides slice:origin, dimensions];
   _MTLMessageContextEnd();
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)replaceSliceOrigin:(id)a3 sliceDimensions:(id)a4 withBytes:(const void *)a5 strides:(id)a6
+- (void)replaceSliceOrigin:(id)origin sliceDimensions:(id)dimensions withBytes:(const void *)bytes strides:(id)strides
 {
   [(MTLToolsObject *)self baseObject:0];
   _MTLMessageContextBegin_();
-  [(MTLDebugTensor *)self verifyGetBytesReplaceSliceWithContext:&v11 strides:a6 slice:a3, a4];
+  [(MTLDebugTensor *)self verifyGetBytesReplaceSliceWithContext:&v11 strides:strides slice:origin, dimensions];
   _MTLMessageContextEnd();
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)getBytes:(void *)a3 strides:(id)a4 fromSlice:(MTLTensorSlice)a5
+- (void)getBytes:(void *)bytes strides:(id)strides fromSlice:(MTLTensorSlice)slice
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = slice.var1;
+  var0 = slice.var0;
   [(MTLToolsObject *)self baseObject:0];
   _MTLMessageContextBegin_();
-  [(MTLDebugTensor *)self verifyGetBytesReplaceSliceWithContext:&v10 strides:a4 slice:var0, var1];
+  [(MTLDebugTensor *)self verifyGetBytesReplaceSliceWithContext:&v10 strides:strides slice:var0, var1];
   _MTLMessageContextEnd();
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (void)replaceSlice:(MTLTensorSlice)a3 withBytes:(const void *)a4 strides:(id)a5
+- (void)replaceSlice:(MTLTensorSlice)slice withBytes:(const void *)bytes strides:(id)strides
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = slice.var1;
+  var0 = slice.var0;
   [(MTLToolsObject *)self baseObject:0];
   _MTLMessageContextBegin_();
-  [(MTLDebugTensor *)self verifyGetBytesReplaceSliceWithContext:&v10 strides:a5 slice:var0, var1];
+  [(MTLDebugTensor *)self verifyGetBytesReplaceSliceWithContext:&v10 strides:strides slice:var0, var1];
   _MTLMessageContextEnd();
   [-[MTLToolsObject baseObject](self "baseObject")];
 }
 
-- (id)newTensorViewWithSlice:(MTLTensorSlice)a3 error:(id *)a4
+- (id)newTensorViewWithSlice:(MTLTensorSlice)slice error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = slice.var1;
+  var0 = slice.var0;
   v14 = 0;
   v8 = objc_autoreleasePoolPush();
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (!v9)
   {
     v11 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -87,7 +87,7 @@ LABEL_5:
   v10 = v9;
   v11 = [(MTLToolsTensor *)[MTLDebugTensor alloc] initWithBaseObject:v9 parentTensor:self];
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_5;
   }
@@ -95,11 +95,11 @@ LABEL_5:
 LABEL_3:
   v12 = v14;
   objc_autoreleasePoolPop(v8);
-  *a4 = v14;
+  *error = v14;
   return v11;
 }
 
-- (id)newTensorViewWithReshapedDescriptor:(id)a3 error:(id *)a4
+- (id)newTensorViewWithReshapedDescriptor:(id)descriptor error:(id *)error
 {
   v13 = 0;
   v7 = objc_autoreleasePoolPush();
@@ -107,7 +107,7 @@ LABEL_3:
   if (!v8)
   {
     v10 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -120,7 +120,7 @@ LABEL_5:
   v9 = v8;
   v10 = [(MTLToolsTensor *)[MTLDebugTensor alloc] initWithBaseObject:v8 parentTensor:self];
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_5;
   }
@@ -128,7 +128,7 @@ LABEL_5:
 LABEL_3:
   v11 = v13;
   objc_autoreleasePoolPop(v7);
-  *a4 = v13;
+  *error = v13;
   return v10;
 }
 

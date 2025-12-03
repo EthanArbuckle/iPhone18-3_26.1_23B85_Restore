@@ -6,16 +6,16 @@
 - (NSAttributedString)attributedText;
 - (NSString)accessibilityHint;
 - (UIButton)filterButton;
-- (_TtC11MobileNotes24InlineMenuButtonTextView)initWithCoder:(id)a3;
-- (_TtC11MobileNotes24InlineMenuButtonTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC11MobileNotes24InlineMenuButtonTextView)initWithCoder:(id)coder;
+- (_TtC11MobileNotes24InlineMenuButtonTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (unint64_t)accessibilityTraits;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setAttributedText:(id)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation InlineMenuButtonTextView
 
-- (_TtC11MobileNotes24InlineMenuButtonTextView)initWithCoder:(id)a3
+- (_TtC11MobileNotes24InlineMenuButtonTextView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes24InlineMenuButtonTextView_menu) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes24InlineMenuButtonTextView_preservesMenuLineHeight) = 0;
@@ -32,23 +32,23 @@
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  v2 = [(InlineMenuButtonTextView *)&v4 attributedText];
+  attributedText = [(InlineMenuButtonTextView *)&v4 attributedText];
 
-  return v2;
+  return attributedText;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v6 = a3;
-  v5 = self;
-  sub_1004B073C(a3);
+  textCopy = text;
+  selfCopy = self;
+  sub_1004B073C(text);
 }
 
 - (NSArray)accessibilityElements
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
-  if (UIAccessibilityIsVoiceOverRunning() || (v10.receiver = v4, v10.super_class = ObjectType, (v5 = [(InlineMenuButtonTextView *)&v10 accessibilityElements]) == 0))
+  selfCopy = self;
+  if (UIAccessibilityIsVoiceOverRunning() || (v10.receiver = selfCopy, v10.super_class = ObjectType, (v5 = [(InlineMenuButtonTextView *)&v10 accessibilityElements]) == 0))
   {
 
     v8 = 0;
@@ -69,7 +69,7 @@
 
 - (NSAttributedString)accessibilityAttributedValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004AF270();
 
   return v3;
@@ -77,7 +77,7 @@
 
 - (NSString)accessibilityHint
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004AFB14();
   v4 = v3;
 
@@ -97,33 +97,33 @@
 - (unint64_t)accessibilityTraits
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   if (UIAccessibilityIsVoiceOverRunning() && (v5 = sub_1004AF7D0()) != 0)
   {
 
-    v6 = UIAccessibilityTraitButton;
+    accessibilityTraits = UIAccessibilityTraitButton;
   }
 
   else
   {
-    v8.receiver = v4;
+    v8.receiver = selfCopy;
     v8.super_class = ObjectType;
-    v6 = [(InlineMenuButtonTextView *)&v8 accessibilityTraits];
+    accessibilityTraits = [(InlineMenuButtonTextView *)&v8 accessibilityTraits];
   }
 
-  return v6;
+  return accessibilityTraits;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(InlineMenuButtonTextView *)&v4 setAccessibilityTraits:a3];
+  [(InlineMenuButtonTextView *)&v4 setAccessibilityTraits:traits];
 }
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004AFF70();
 
   return v3 & 1;
@@ -132,7 +132,7 @@
 - (CGPoint)accessibilityActivationPoint
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1004AF7D0();
   if (v5)
   {
@@ -144,7 +144,7 @@
 
   else
   {
-    v15.receiver = v4;
+    v15.receiver = selfCopy;
     v15.super_class = ObjectType;
     [(InlineMenuButtonTextView *)&v15 accessibilityActivationPoint];
     v8 = v11;
@@ -160,13 +160,13 @@
 
 - (UIButton)filterButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1004AF7D0();
 
   return v3;
 }
 
-- (_TtC11MobileNotes24InlineMenuButtonTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC11MobileNotes24InlineMenuButtonTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

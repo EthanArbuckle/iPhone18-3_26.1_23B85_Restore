@@ -1,7 +1,7 @@
 @interface VoiceOverActivityAudioDuckingController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -9,8 +9,8 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(VoiceOverActivityAudioDuckingController *)self specifier];
-  v4 = [v3 propertyForKey:@"activity"];
+  specifier = [(VoiceOverActivityAudioDuckingController *)self specifier];
+  v4 = [specifier propertyForKey:@"activity"];
   [(VoiceOverActivityAudioDuckingController *)self setActivity:v4];
 
   v21[0] = @"title";
@@ -74,7 +74,7 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v23 = self;
+    selfCopy = self;
     obj = [(VoiceOverActivityAudioDuckingController *)self audioDuckingOptions];
     v7 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v7)
@@ -114,32 +114,32 @@
     }
 
     v18 = [v4 copy];
-    v19 = *&v23->AXUISettingsBaseListController_opaque[v22];
-    *&v23->AXUISettingsBaseListController_opaque[v22] = v18;
+    v19 = *&selfCopy->AXUISettingsBaseListController_opaque[v22];
+    *&selfCopy->AXUISettingsBaseListController_opaque[v22] = v18;
 
-    v3 = *&v23->AXUISettingsBaseListController_opaque[v22];
+    v3 = *&selfCopy->AXUISettingsBaseListController_opaque[v22];
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v17 = a4;
-  v7 = [(VoiceOverActivityAudioDuckingController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(VoiceOverActivityAudioDuckingController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"audioDuckingModeValue"];
   v9 = [v7 propertyForKey:@"isDefault"];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v8 || v10)
+  if (v8 || bOOLValue)
   {
-    v11 = v17;
-    v12 = [(VoiceOverActivityAudioDuckingController *)self activity];
-    v13 = [v12 audioDucking];
+    v11 = cellCopy;
+    activity = [(VoiceOverActivityAudioDuckingController *)self activity];
+    audioDucking = [activity audioDucking];
 
-    if (v13)
+    if (audioDucking)
     {
-      v14 = v10;
+      v14 = bOOLValue;
     }
 
     else
@@ -147,47 +147,47 @@
       v14 = 1;
     }
 
-    if (v13)
+    if (audioDucking)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v10;
+      v15 = bOOLValue;
     }
 
     if ((v14 & 1) == 0)
     {
-      v16 = [v13 integerValue];
-      v15 = v16 == [v8 integerValue];
+      integerValue = [audioDucking integerValue];
+      v15 = integerValue == [v8 integerValue];
     }
 
     [v11 setChecked:v15];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v46.receiver = self;
   v46.super_class = VoiceOverActivityAudioDuckingController;
-  [(VoiceOverActivityAudioDuckingController *)&v46 tableView:v6 didSelectRowAtIndexPath:v7];
-  v39 = self;
-  v8 = [(VoiceOverActivityAudioDuckingController *)self specifierForIndexPath:v7];
+  [(VoiceOverActivityAudioDuckingController *)&v46 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  selfCopy = self;
+  v8 = [(VoiceOverActivityAudioDuckingController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"audioDuckingModeValue"];
   v10 = [v8 propertyForKey:@"isDefault"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (v9 || v11)
+  if (v9 || bOOLValue)
   {
     v36 = v8;
-    v37 = v7;
-    v12 = [(VoiceOverActivityAudioDuckingController *)v39 activity];
-    v13 = v12;
+    v37 = pathCopy;
+    activity = [(VoiceOverActivityAudioDuckingController *)selfCopy activity];
+    v13 = activity;
     v35 = v9;
-    if (v11)
+    if (bOOLValue)
     {
       v14 = 0;
     }
@@ -197,14 +197,14 @@
       v14 = v9;
     }
 
-    [v12 setAudioDucking:v14];
+    [activity setAudioDucking:v14];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v38 = v6;
-    obj = [v6 visibleCells];
+    v38 = viewCopy;
+    obj = [viewCopy visibleCells];
     v15 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v15)
     {
@@ -224,10 +224,10 @@
           }
 
           v21 = *(*(&v42 + 1) + 8 * v20);
-          v22 = [v21 specifier];
-          v23 = [v22 propertyForKey:v18];
-          v24 = [v22 propertyForKey:v19];
-          v25 = [v24 BOOLValue];
+          specifier = [v21 specifier];
+          v23 = [specifier propertyForKey:v18];
+          v24 = [specifier propertyForKey:v19];
+          bOOLValue2 = [v24 BOOLValue];
 
           if (v23)
           {
@@ -236,7 +236,7 @@
 
           else
           {
-            v26 = v25 == 0;
+            v26 = bOOLValue2 == 0;
           }
 
           if (!v26)
@@ -244,12 +244,12 @@
             v27 = v17;
             v28 = v19;
             v29 = v18;
-            v30 = [(VoiceOverActivityAudioDuckingController *)v39 activity];
-            v31 = [v30 audioDucking];
+            activity2 = [(VoiceOverActivityAudioDuckingController *)selfCopy activity];
+            audioDucking = [activity2 audioDucking];
 
-            if (v31)
+            if (audioDucking)
             {
-              v32 = v25;
+              v32 = bOOLValue2;
             }
 
             else
@@ -257,20 +257,20 @@
               v32 = 1;
             }
 
-            if (v31)
+            if (audioDucking)
             {
               v33 = 0;
             }
 
             else
             {
-              v33 = v25;
+              v33 = bOOLValue2;
             }
 
             if ((v32 & 1) == 0)
             {
-              v34 = [v31 integerValue];
-              v33 = v34 == [v23 integerValue];
+              integerValue = [audioDucking integerValue];
+              v33 = integerValue == [v23 integerValue];
             }
 
             [v21 setChecked:v33];
@@ -291,8 +291,8 @@
       while (v16);
     }
 
-    v7 = v37;
-    v6 = v38;
+    pathCopy = v37;
+    viewCopy = v38;
     v9 = v35;
     v8 = v36;
   }

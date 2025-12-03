@@ -1,11 +1,11 @@
 @interface SFSpeechAnalyzerLanguageDetectorOptions
 - (SFSpeechAnalyzerLanguageDetectorOptions)init;
-- (SFSpeechAnalyzerLanguageDetectorOptions)initWithResultReportingFrequency:(unint64_t)a3;
+- (SFSpeechAnalyzerLanguageDetectorOptions)initWithResultReportingFrequency:(unint64_t)frequency;
 @end
 
 @implementation SFSpeechAnalyzerLanguageDetectorOptions
 
-- (SFSpeechAnalyzerLanguageDetectorOptions)initWithResultReportingFrequency:(unint64_t)a3
+- (SFSpeechAnalyzerLanguageDetectorOptions)initWithResultReportingFrequency:(unint64_t)frequency
 {
   v8.receiver = self;
   v8.super_class = SFSpeechAnalyzerLanguageDetectorOptions;
@@ -17,7 +17,7 @@
     v4->_languageConstraints = 0;
 
     v5->_alternativeCount = 5;
-    v5->_resultReportingFrequency = a3;
+    v5->_resultReportingFrequency = frequency;
   }
 
   return v5;

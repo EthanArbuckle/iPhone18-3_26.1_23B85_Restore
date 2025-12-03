@@ -1,13 +1,13 @@
 @interface FigCaptureSemanticStyle
-+ (FigCaptureSemanticStyle)semanticStyleWithToneBias:(float)a3 warmthBias:(float)a4;
++ (FigCaptureSemanticStyle)semanticStyleWithToneBias:(float)bias warmthBias:(float)warmthBias;
 + (id)identityStyle;
-- (BOOL)isEqual:(id)a3;
-- (FigCaptureSemanticStyle)initWithCoder:(id)a3;
-- (FigCaptureSemanticStyle)initWithXPCEncoding:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCaptureSemanticStyle)initWithCoder:(id)coder;
+- (FigCaptureSemanticStyle)initWithXPCEncoding:(id)encoding;
 - (NSString)description;
-- (id)_initWithToneBias:(float)a3 warmthBias:;
+- (id)_initWithToneBias:(float)bias warmthBias:;
 - (id)copyXPCEncoding;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FigCaptureSemanticStyle
@@ -20,21 +20,21 @@
   return v3;
 }
 
-+ (FigCaptureSemanticStyle)semanticStyleWithToneBias:(float)a3 warmthBias:(float)a4
++ (FigCaptureSemanticStyle)semanticStyleWithToneBias:(float)bias warmthBias:(float)warmthBias
 {
-  v4 = [[FigCaptureSemanticStyle alloc] _initWithToneBias:a3 warmthBias:a4];
+  v4 = [[FigCaptureSemanticStyle alloc] _initWithToneBias:bias warmthBias:warmthBias];
 
   return v4;
 }
 
-- (id)_initWithToneBias:(float)a3 warmthBias:
+- (id)_initWithToneBias:(float)bias warmthBias:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = FigCaptureSemanticStyle;
   v5 = objc_msgSendSuper2(&v9, sel_init);
   v6 = v5;
@@ -47,9 +47,9 @@
 
     else
     {
-      if (fabsf(a3) <= 1.0)
+      if (fabsf(bias) <= 1.0)
       {
-        [(FigCaptureSemanticStyle *)v5 _initWithToneBias:a2 warmthBias:a3];
+        [(FigCaptureSemanticStyle *)v5 _initWithToneBias:a2 warmthBias:bias];
         return v6;
       }
 
@@ -62,39 +62,39 @@
   return v6;
 }
 
-- (FigCaptureSemanticStyle)initWithXPCEncoding:(id)a3
+- (FigCaptureSemanticStyle)initWithXPCEncoding:(id)encoding
 {
-  v5 = xpc_dictionary_get_double(a3, "toneBias");
-  v6 = xpc_dictionary_get_double(a3, "warmthBias");
+  v5 = xpc_dictionary_get_double(encoding, "toneBias");
+  v6 = xpc_dictionary_get_double(encoding, "warmthBias");
 
   return [(FigCaptureSemanticStyle *)self _initWithToneBias:v5 warmthBias:v6];
 }
 
-- (FigCaptureSemanticStyle)initWithCoder:(id)a3
+- (FigCaptureSemanticStyle)initWithCoder:(id)coder
 {
-  [a3 decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "toneBias")}];
+  [coder decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "toneBias")}];
   v6 = v5;
-  [a3 decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "warmthBias")}];
+  [coder decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "warmthBias")}];
 
   return [(FigCaptureSemanticStyle *)self _initWithToneBias:v6 warmthBias:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   toneBias = self->_toneBias;
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"toneBias"];
   *&v7 = toneBias;
-  [a3 encodeFloat:v6 forKey:v7];
+  [coder encodeFloat:v6 forKey:v7];
   warmthBias = self->_warmthBias;
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"warmthBias"];
   *&v10 = warmthBias;
 
-  [a3 encodeFloat:v9 forKey:v10];
+  [coder encodeFloat:v9 forKey:v10];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -107,7 +107,7 @@
 
   [(FigCaptureSemanticStyle *)self toneBias];
   v6 = v5;
-  [a3 toneBias];
+  [equal toneBias];
   if (v6 != v7)
   {
     return 0;
@@ -115,7 +115,7 @@
 
   [(FigCaptureSemanticStyle *)self warmthBias];
   v10 = v9;
-  [a3 warmthBias];
+  [equal warmthBias];
   return v10 == v11;
 }
 

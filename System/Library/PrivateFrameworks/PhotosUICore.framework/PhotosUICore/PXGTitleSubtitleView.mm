@@ -1,6 +1,6 @@
 @interface PXGTitleSubtitleView
 - (CGRect)clippingRect;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXGTitleSubtitleView
@@ -18,22 +18,22 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  dataCopy = data;
+  v5 = [dataCopy copy];
   userData = self->_userData;
   self->_userData = v5;
 
-  v7 = [v4 title];
-  [(PXTitleSubtitleUILabel *)self setTitleText:v7];
+  title = [dataCopy title];
+  [(PXTitleSubtitleUILabel *)self setTitleText:title];
 
-  v8 = [v4 subtitle];
-  [(PXTitleSubtitleUILabel *)self setSubtitleText:v8];
+  subtitle = [dataCopy subtitle];
+  [(PXTitleSubtitleUILabel *)self setSubtitleText:subtitle];
 
-  v9 = [v4 spec];
+  spec = [dataCopy spec];
 
-  [(PXTitleSubtitleUILabel *)self setSpec:v9];
+  [(PXTitleSubtitleUILabel *)self setSpec:spec];
 }
 
 @end

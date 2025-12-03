@@ -1,74 +1,74 @@
 @interface ULHomeSlamModelData
 + (id)emptyHomeSlamModelData;
-- (BOOL)isEqual:(id)a3;
-- (ULHomeSlamModelData)initWithCoder:(id)a3;
-- (ULHomeSlamModelData)initWithMapROIs:(id)a3 trajectoryPoints:(id)a4 numInputSegments:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULHomeSlamModelData)initWithCoder:(id)coder;
+- (ULHomeSlamModelData)initWithMapROIs:(id)is trajectoryPoints:(id)points numInputSegments:(id)segments;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULHomeSlamModelData
 
 + (id)emptyHomeSlamModelData
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x277CBEA60] array];
-  v4 = [MEMORY[0x277CBEA60] array];
-  v5 = [v2 initWithMapROIs:v3 trajectoryPoints:v4 numInputSegments:&unk_286A52858];
+  v2 = [self alloc];
+  array = [MEMORY[0x277CBEA60] array];
+  array2 = [MEMORY[0x277CBEA60] array];
+  v5 = [v2 initWithMapROIs:array trajectoryPoints:array2 numInputSegments:&unk_286A52858];
 
   return v5;
 }
 
-- (ULHomeSlamModelData)initWithMapROIs:(id)a3 trajectoryPoints:(id)a4 numInputSegments:(id)a5
+- (ULHomeSlamModelData)initWithMapROIs:(id)is trajectoryPoints:(id)points numInputSegments:(id)segments
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  isCopy = is;
+  pointsCopy = points;
+  segmentsCopy = segments;
   v14.receiver = self;
   v14.super_class = ULHomeSlamModelData;
   v11 = [(ULHomeSlamModelData *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(ULHomeSlamModelData *)v11 setMapROIs:v8];
-    [(ULHomeSlamModelData *)v12 setTrajectoryPoints:v9];
-    [(ULHomeSlamModelData *)v12 setNumberOfInputSegments:v10];
+    [(ULHomeSlamModelData *)v11 setMapROIs:isCopy];
+    [(ULHomeSlamModelData *)v12 setTrajectoryPoints:pointsCopy];
+    [(ULHomeSlamModelData *)v12 setNumberOfInputSegments:segmentsCopy];
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ULHomeSlamModelData *)self mapROIs];
-  v6 = [(ULHomeSlamModelData *)self trajectoryPoints];
-  v7 = [(ULHomeSlamModelData *)self numberOfInputSegments];
-  v8 = [v4 initWithMapROIs:v5 trajectoryPoints:v6 numInputSegments:v7];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  mapROIs = [(ULHomeSlamModelData *)self mapROIs];
+  trajectoryPoints = [(ULHomeSlamModelData *)self trajectoryPoints];
+  numberOfInputSegments = [(ULHomeSlamModelData *)self numberOfInputSegments];
+  v8 = [v4 initWithMapROIs:mapROIs trajectoryPoints:trajectoryPoints numInputSegments:numberOfInputSegments];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mapROIs = self->_mapROIs;
-  v5 = a3;
-  [v5 encodeObject:mapROIs forKey:@"mapROIs"];
-  [v5 encodeObject:self->_trajectoryPoints forKey:@"trajectoryPoints"];
-  [v5 encodeObject:self->_numberOfInputSegments forKey:@"numberOfInputSegments"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mapROIs forKey:@"mapROIs"];
+  [coderCopy encodeObject:self->_trajectoryPoints forKey:@"trajectoryPoints"];
+  [coderCopy encodeObject:self->_numberOfInputSegments forKey:@"numberOfInputSegments"];
 }
 
-- (ULHomeSlamModelData)initWithCoder:(id)a3
+- (ULHomeSlamModelData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = ULHomeSlamModelData;
   v5 = [(ULHomeSlamModelData *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"mapROIs"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"mapROIs"];
     if (v6)
     {
       v7 = objc_opt_self();
@@ -76,7 +76,7 @@
       mapROIs = v5->_mapROIs;
       v5->_mapROIs = v7;
 
-      v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"trajectoryPoints"];
+      v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"trajectoryPoints"];
       if (v6)
       {
         v9 = objc_opt_self();
@@ -84,7 +84,7 @@
         trajectoryPoints = v5->_trajectoryPoints;
         v5->_trajectoryPoints = v9;
 
-        v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numberOfInputSegments"];
+        v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numberOfInputSegments"];
         v12 = objc_opt_self();
 
         numberOfInputSegments = v5->_numberOfInputSegments;
@@ -110,61 +110,61 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: ", v5];
 
-  v7 = [(ULHomeSlamModelData *)self mapROIs];
-  [v6 appendFormat:@", mapROIs: %@", v7];
+  mapROIs = [(ULHomeSlamModelData *)self mapROIs];
+  [v6 appendFormat:@", mapROIs: %@", mapROIs];
 
-  v8 = [(ULHomeSlamModelData *)self trajectoryPoints];
-  [v6 appendFormat:@", trajectoryPoints: %@", v8];
+  trajectoryPoints = [(ULHomeSlamModelData *)self trajectoryPoints];
+  [v6 appendFormat:@", trajectoryPoints: %@", trajectoryPoints];
 
-  v9 = [(ULHomeSlamModelData *)self numberOfInputSegments];
-  [v6 appendFormat:@", numberOfInputSegments: %@", v9];
+  numberOfInputSegments = [(ULHomeSlamModelData *)self numberOfInputSegments];
+  [v6 appendFormat:@", numberOfInputSegments: %@", numberOfInputSegments];
 
   [v6 appendString:@">"];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULHomeSlamModelData *)self mapROIs];
-    v7 = [v5 mapROIs];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    mapROIs = [(ULHomeSlamModelData *)self mapROIs];
+    mapROIs2 = [v5 mapROIs];
+    if ([mapROIs isEqual:mapROIs2])
     {
     }
 
     else
     {
-      v9 = [(ULHomeSlamModelData *)self mapROIs];
-      v10 = [v5 mapROIs];
+      mapROIs3 = [(ULHomeSlamModelData *)self mapROIs];
+      mapROIs4 = [v5 mapROIs];
 
-      if (v9 != v10)
+      if (mapROIs3 != mapROIs4)
       {
         goto LABEL_9;
       }
     }
 
-    v11 = [(ULHomeSlamModelData *)self trajectoryPoints];
-    v12 = [v5 trajectoryPoints];
-    if ([v11 isEqual:v12])
+    trajectoryPoints = [(ULHomeSlamModelData *)self trajectoryPoints];
+    trajectoryPoints2 = [v5 trajectoryPoints];
+    if ([trajectoryPoints isEqual:trajectoryPoints2])
     {
 
       goto LABEL_10;
     }
 
-    v13 = [(ULHomeSlamModelData *)self trajectoryPoints];
-    v14 = [v5 trajectoryPoints];
+    trajectoryPoints3 = [(ULHomeSlamModelData *)self trajectoryPoints];
+    trajectoryPoints4 = [v5 trajectoryPoints];
 
-    if (v13 == v14)
+    if (trajectoryPoints3 == trajectoryPoints4)
     {
 LABEL_10:
-      v15 = [(ULHomeSlamModelData *)self numberOfInputSegments];
-      v16 = [v5 numberOfInputSegments];
-      if ([v15 isEqual:v16])
+      numberOfInputSegments = [(ULHomeSlamModelData *)self numberOfInputSegments];
+      numberOfInputSegments2 = [v5 numberOfInputSegments];
+      if ([numberOfInputSegments isEqual:numberOfInputSegments2])
       {
 
         v8 = 1;
@@ -172,9 +172,9 @@ LABEL_10:
 
       else
       {
-        v17 = [(ULHomeSlamModelData *)self numberOfInputSegments];
-        v18 = [v5 numberOfInputSegments];
-        v8 = v17 == v18;
+        numberOfInputSegments3 = [(ULHomeSlamModelData *)self numberOfInputSegments];
+        numberOfInputSegments4 = [v5 numberOfInputSegments];
+        v8 = numberOfInputSegments3 == numberOfInputSegments4;
       }
 
       goto LABEL_13;

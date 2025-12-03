@@ -1,10 +1,10 @@
 @interface PREditingColorItem
-+ (id)_legibleIconColorForBackgroundColor:(id)a3;
-+ (id)suggestedColorItemWithColor:(id)a3 context:(unint64_t)a4;
++ (id)_legibleIconColorForBackgroundColor:(id)color;
++ (id)suggestedColorItemWithColor:(id)color context:(unint64_t)context;
 + (id)vibrantMaterialItem;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)localizedName;
-- (PREditingColorItem)initWithPickerColor:(id)a3 variation:(double)a4 context:(unint64_t)a5;
+- (PREditingColorItem)initWithPickerColor:(id)color variation:(double)variation context:(unint64_t)context;
 - (PRPosterColor)baseColor;
 - (PRPosterColor)color;
 - (PRPosterColor)displayColor;
@@ -32,10 +32,10 @@
   return v5;
 }
 
-+ (id)suggestedColorItemWithColor:(id)a3 context:(unint64_t)a4
++ (id)suggestedColorItemWithColor:(id)color context:(unint64_t)context
 {
-  v6 = a3;
-  if (a4 == 1)
+  colorCopy = color;
+  if (context == 1)
   {
     v7 = 1.0;
   }
@@ -46,23 +46,23 @@
   }
 
   v8 = off_1E7841A50;
-  if (a4 != 1)
+  if (context != 1)
   {
     v8 = off_1E7841A48;
   }
 
-  v9 = [objc_alloc(*v8) initWithColor:v6 initialVariation:v7];
+  v9 = [objc_alloc(*v8) initWithColor:colorCopy initialVariation:v7];
   v10 = [[PREditingColorItem alloc] initWithPickerColor:v9 variation:0 context:v7];
   v11 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 30.0, 30.0}];
-  v12 = [v6 color];
-  [v11 setBackgroundColor:v12];
+  color = [colorCopy color];
+  [v11 setBackgroundColor:color];
 
   v13 = objc_alloc(MEMORY[0x1E69DCAE0]);
   v14 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"sparkles"];
   v15 = [v13 initWithImage:v14];
 
-  v16 = [v6 color];
-  v17 = [a1 _legibleIconColorForBackgroundColor:v16];
+  color2 = [colorCopy color];
+  v17 = [self _legibleIconColorForBackgroundColor:color2];
   [v15 setTintColor:v17];
 
   [v11 bounds];
@@ -76,20 +76,20 @@
   return v10;
 }
 
-- (PREditingColorItem)initWithPickerColor:(id)a3 variation:(double)a4 context:(unint64_t)a5
+- (PREditingColorItem)initWithPickerColor:(id)color variation:(double)variation context:(unint64_t)context
 {
-  v9 = a3;
+  colorCopy = color;
   v13.receiver = self;
   v13.super_class = PREditingColorItem;
   v10 = [(PREditingColorItem *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pickerColor, a3);
+    objc_storeStrong(&v10->_pickerColor, color);
     v11->_pickerRespondsToDisplayColorSelector = objc_opt_respondsToSelector() & 1;
-    v11->_variation = a4;
+    v11->_variation = variation;
     v11->_showsSlider = 1;
-    v11->_context = a5;
+    v11->_context = context;
   }
 
   return v11;
@@ -97,24 +97,24 @@
 
 - (PRPosterColor)baseColor
 {
-  v2 = [(PREditingColorItem *)self pickerColor];
-  v3 = [v2 baseColor];
+  pickerColor = [(PREditingColorItem *)self pickerColor];
+  baseColor = [pickerColor baseColor];
 
-  return v3;
+  return baseColor;
 }
 
 - (NSString)localizedName
 {
-  v2 = [(PREditingColorItem *)self pickerColor];
-  v3 = [v2 localizedName];
+  pickerColor = [(PREditingColorItem *)self pickerColor];
+  localizedName = [pickerColor localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (PRPosterColor)color
 {
-  v3 = [(PREditingColorItem *)self pickerColor];
-  v4 = [v3 colorWithVariation:self->_variation];
+  pickerColor = [(PREditingColorItem *)self pickerColor];
+  v4 = [pickerColor colorWithVariation:self->_variation];
 
   return v4;
 }
@@ -122,27 +122,27 @@
 - (PRPosterColor)displayColor
 {
   pickerRespondsToDisplayColorSelector = self->_pickerRespondsToDisplayColorSelector;
-  v4 = [(PREditingColorItem *)self pickerColor];
-  v5 = v4;
+  pickerColor = [(PREditingColorItem *)self pickerColor];
+  v5 = pickerColor;
   variation = self->_variation;
   if (pickerRespondsToDisplayColorSelector)
   {
-    [v4 displayColorWithVariation:variation];
+    [pickerColor displayColorWithVariation:variation];
   }
 
   else
   {
-    [v4 colorWithVariation:variation];
+    [pickerColor colorWithVariation:variation];
   }
   v7 = ;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -152,9 +152,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PREditingColorItem *)self baseColor];
-      v7 = [(PREditingColorItem *)v5 baseColor];
+      v5 = equalCopy;
+      baseColor = [(PREditingColorItem *)self baseColor];
+      baseColor2 = [(PREditingColorItem *)v5 baseColor];
       if (BSEqualObjects())
       {
         [(PREditingColorItem *)self variation];
@@ -181,32 +181,32 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PREditingColorItem *)self baseColor];
+  baseColor = [(PREditingColorItem *)self baseColor];
   [(PREditingColorItem *)self variation];
-  v6 = [v3 stringWithFormat:@"<PREditingColorItem: %p> Base Color: %@ Variation: %.5f", self, v4, v5];
+  v6 = [v3 stringWithFormat:@"<PREditingColorItem: %p> Base Color: %@ Variation: %.5f", self, baseColor, v5];
 
   return v6;
 }
 
-+ (id)_legibleIconColorForBackgroundColor:(id)a3
++ (id)_legibleIconColorForBackgroundColor:(id)color
 {
   v9 = 0;
   v10 = 0;
   v8 = 0.0;
-  v3 = [a3 colorWithAlphaComponent:1.0];
+  v3 = [color colorWithAlphaComponent:1.0];
   v4 = [v3 getHue:&v10 saturation:&v9 brightness:&v8 alpha:0];
 
   if (v4 && (v5 = v8, v8 >= 0.9))
   {
-    v6 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
+    blackColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  return v6;
+  return blackColor;
 }
 
 @end

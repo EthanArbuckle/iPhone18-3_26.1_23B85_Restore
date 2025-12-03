@@ -1,6 +1,6 @@
 @interface PXPhotosSearchBodyContainerInfo
 - (CGSize)containerSize;
-- (void)setContainerSize:(CGSize)a3;
+- (void)setContainerSize:(CGSize)size;
 @end
 
 @implementation PXPhotosSearchBodyContainerInfo
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (void)setContainerSize:(CGSize)a3
+- (void)setContainerSize:(CGSize)size
 {
-  if (self->_containerSize.width != a3.width || self->_containerSize.height != a3.height)
+  if (self->_containerSize.width != size.width || self->_containerSize.height != size.height)
   {
-    self->_containerSize = a3;
+    self->_containerSize = size;
     containerSizeDidChange = self->_containerSizeDidChange;
     if (containerSizeDidChange)
     {

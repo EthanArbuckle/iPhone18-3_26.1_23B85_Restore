@@ -1,16 +1,16 @@
 @interface EFQueryLogger
 + (id)_logQueue;
-- (EFQueryLogger)initWithBaseFilename:(id)a3 directory:(id)a4;
-- (void)_moveLogFileContentsAtPath:(id)a3;
-- (void)_moveLogFileContentsWithoutDateAtPath:(id)a3;
+- (EFQueryLogger)initWithBaseFilename:(id)filename directory:(id)directory;
+- (void)_moveLogFileContentsAtPath:(id)path;
+- (void)_moveLogFileContentsWithoutDateAtPath:(id)path;
 - (void)_openLookasideFile;
-- (void)_sortAndWriteQueries:(id)a3 forCount:(unint64_t)a4 totalCount:(unint64_t)a5 queryCountMap:(id)a6;
-- (void)countQueryString:(id)a3 executionTime:(double)a4;
+- (void)_sortAndWriteQueries:(id)queries forCount:(unint64_t)count totalCount:(unint64_t)totalCount queryCountMap:(id)map;
+- (void)countQueryString:(id)string executionTime:(double)time;
 - (void)flushLogs;
 - (void)flushLogsWithoutDate;
-- (void)logPlainTextData:(id)a3;
-- (void)logQueryString:(id)a3;
-- (void)logUniqueQueryString:(id)a3;
+- (void)logPlainTextData:(id)data;
+- (void)logQueryString:(id)string;
+- (void)logUniqueQueryString:(id)string;
 @end
 
 @implementation EFQueryLogger
@@ -34,18 +34,18 @@ void __26__EFQueryLogger__logQueue__block_invoke()
   _logQueue_logQueue = v0;
 }
 
-- (EFQueryLogger)initWithBaseFilename:(id)a3 directory:(id)a4
+- (EFQueryLogger)initWithBaseFilename:(id)filename directory:(id)directory
 {
-  v7 = a3;
-  v8 = a4;
+  filenameCopy = filename;
+  directoryCopy = directory;
   v12.receiver = self;
   v12.super_class = EFQueryLogger;
   v9 = [(EFQueryLogger *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseFileName, a3);
-    objc_storeStrong(&v10->_logDirectory, a4);
+    objc_storeStrong(&v9->_baseFileName, filename);
+    objc_storeStrong(&v10->_logDirectory, directory);
   }
 
   return v10;
@@ -57,8 +57,8 @@ void __26__EFQueryLogger__logQueue__block_invoke()
   {
     if (self->_lookasideFilePath)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"EFQueryLogger.m" lineNumber:55 description:@"_lookasideFilePath is not nil in _openTempLogFile"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EFQueryLogger.m" lineNumber:55 description:@"_lookasideFilePath is not nil in _openTempLogFile"];
     }
 
     v15 = NSTemporaryDirectory();
@@ -73,11 +73,11 @@ void __26__EFQueryLogger__logQueue__block_invoke()
       v7 = open([(NSString *)self->_lookasideFilePath fileSystemRepresentation], 522, 384);
       if ((v7 & 0x80000000) != 0)
       {
-        v10 = [(NSString *)self->_lookasideFilePath fileSystemRepresentation];
+        fileSystemRepresentation = [(NSString *)self->_lookasideFilePath fileSystemRepresentation];
         v11 = *__error();
         v12 = __error();
         v13 = strerror(*v12);
-        NSLog(&cfstr_WarningCouldnT.isa, v10, v11, v13);
+        NSLog(&cfstr_WarningCouldnT.isa, fileSystemRepresentation, v11, v13);
         lookasideFileHandle = self->_lookasideFilePath;
         self->_lookasideFilePath = 0;
       }
@@ -92,9 +92,9 @@ void __26__EFQueryLogger__logQueue__block_invoke()
   }
 }
 
-- (void)_moveLogFileContentsAtPath:(id)a3
+- (void)_moveLogFileContentsAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [MEMORY[0x1E69998C8] filenameWithBasename:self->_baseFileName];
   v6 = [[EFFileLogger alloc] initWithFilename:v5 directory:self->_logDirectory];
   Current = CFAbsoluteTimeGetCurrent();
@@ -110,7 +110,7 @@ void __26__EFQueryLogger__logQueue__block_invoke()
     if (!v11)
     {
       v8 = @"\n";
-      if (v4)
+      if (pathCopy)
       {
         goto LABEL_5;
       }
@@ -129,25 +129,25 @@ LABEL_7:
     v8 = [@"\n" stringByAppendingFormat:@"<<%04d-%02d-%02d %02d:%02d:%02d.%03d>>", v17[4], v17[3], v17[2], v17[1], v17[0], v16, v13];
   }
 
-  if (!v4)
+  if (!pathCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  [(EFFileLogger *)v6 slurpAndRemoveLookasideFile:v4 prefixString:v8 suffixString:0];
+  [(EFFileLogger *)v6 slurpAndRemoveLookasideFile:pathCopy prefixString:v8 suffixString:0];
 LABEL_8:
 }
 
-- (void)_moveLogFileContentsWithoutDateAtPath:(id)a3
+- (void)_moveLogFileContentsWithoutDateAtPath:(id)path
 {
-  v8 = a3;
+  pathCopy = path;
   v4 = [MEMORY[0x1E69998C8] filenameWithBasename:self->_baseFileName];
   v5 = [[EFFileLogger alloc] initWithFilename:v4 directory:self->_logDirectory];
   v6 = v5;
-  if (v8)
+  if (pathCopy)
   {
-    [(EFFileLogger *)v5 slurpAndRemoveLookasideFile:v8 prefixString:@"\n" suffixString:0];
+    [(EFFileLogger *)v5 slurpAndRemoveLookasideFile:pathCopy prefixString:@"\n" suffixString:0];
   }
 
   else
@@ -222,11 +222,11 @@ void __37__EFQueryLogger_flushLogsWithoutDate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)logPlainTextData:(id)a3
+- (void)logPlainTextData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && [dataCopy length])
   {
     objc_initWeak(&location, self);
     v6 = +[EFQueryLogger _logQueue];
@@ -256,17 +256,17 @@ void __34__EFQueryLogger_logPlainTextData___block_invoke(uint64_t a1)
   }
 }
 
-- (void)logQueryString:(id)a3
+- (void)logQueryString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
   [(EFQueryLogger *)self logPlainTextData:?];
 }
 
-- (void)logUniqueQueryString:(id)a3
+- (void)logUniqueQueryString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     objc_initWeak(&location, self);
     v6 = +[EFQueryLogger _logQueue];
@@ -308,11 +308,11 @@ void __38__EFQueryLogger_logUniqueQueryString___block_invoke(uint64_t a1)
   }
 }
 
-- (void)countQueryString:(id)a3 executionTime:(double)a4
+- (void)countQueryString:(id)string executionTime:(double)time
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 length])
+  stringCopy = string;
+  v7 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     objc_initWeak(&location, self);
     v8 = +[EFQueryLogger _logQueue];
@@ -322,7 +322,7 @@ void __38__EFQueryLogger_logUniqueQueryString___block_invoke(uint64_t a1)
     v9[3] = &unk_1E8249A90;
     objc_copyWeak(v11, &location);
     v10 = v7;
-    v11[1] = *&a4;
+    v11[1] = *&time;
     dispatch_async(v8, v9);
 
     objc_destroyWeak(v11);
@@ -466,20 +466,20 @@ uint64_t __48__EFQueryLogger_countQueryString_executionTime___block_invoke_2(uin
   return v9;
 }
 
-- (void)_sortAndWriteQueries:(id)a3 forCount:(unint64_t)a4 totalCount:(unint64_t)a5 queryCountMap:(id)a6
+- (void)_sortAndWriteQueries:(id)queries forCount:(unint64_t)count totalCount:(unint64_t)totalCount queryCountMap:(id)map
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v24 = a6;
-  v22 = v10;
-  if (v10 && [v10 count])
+  queriesCopy = queries;
+  mapCopy = map;
+  v22 = queriesCopy;
+  if (queriesCopy && [queriesCopy count])
   {
-    [v10 sortUsingSelector:sel_caseInsensitiveCompare_];
+    [queriesCopy sortUsingSelector:sel_caseInsensitiveCompare_];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = v10;
+    obj = queriesCopy;
     v11 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
     {
@@ -494,10 +494,10 @@ uint64_t __48__EFQueryLogger_countQueryString_executionTime___block_invoke_2(uin
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [v24 objectForKeyedSubscript:v14];
+          v15 = [mapCopy objectForKeyedSubscript:v14];
           v16 = MEMORY[0x1E696AEC0];
           [v15 totalExecutionTime];
-          v18 = [v16 stringWithFormat:@"\nCount: %lu, Percentage of total: %.2f%%, Average Execution Time: %0.06f seconds\n%@", a4, a4 * 100.0 / a5, v17 / a4, v14];
+          v18 = [v16 stringWithFormat:@"\nCount: %lu, Percentage of total: %.2f%%, Average Execution Time: %0.06f seconds\n%@", count, count * 100.0 / totalCount, v17 / count, v14];
           v19 = [v18 dataUsingEncoding:4];
           LODWORD(v14) = [(NSFileHandle *)self->_lookasideFileHandle fileDescriptor];
           v20 = v19;

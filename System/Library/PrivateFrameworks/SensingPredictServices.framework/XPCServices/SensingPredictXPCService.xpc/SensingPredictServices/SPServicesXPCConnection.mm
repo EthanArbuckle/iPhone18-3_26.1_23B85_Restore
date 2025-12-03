@@ -1,13 +1,13 @@
 @interface SPServicesXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (void)contextMonitorActivate:(id)a3 completion:(id)a4;
-- (void)contextMonitorReportLocationChanged:(id)a3;
-- (void)contextMonitorUpdate:(id)a3;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (void)contextMonitorActivate:(id)activate completion:(id)completion;
+- (void)contextMonitorReportLocationChanged:(id)changed;
+- (void)contextMonitorUpdate:(id)update;
 @end
 
 @implementation SPServicesXPCConnection
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -28,28 +28,28 @@
   if (dword_100015F40 <= 90 && (dword_100015F40 != -1 || _LogCategory_Initialize()))
   {
     sub_10000A010(p_xpcCnx);
-    if (a3)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_9:
     v9 = NSErrorF();
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
   return 0;
 }
 
-- (void)contextMonitorActivate:(id)a3 completion:(id)a4
+- (void)contextMonitorActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
+  activateCopy = activate;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -61,12 +61,12 @@ LABEL_9:
   v14[2] = sub_100004D88;
   v14[3] = &unk_100010880;
   v16 = &v17;
-  v8 = a4;
-  v15 = v8;
+  completionCopy = completion;
+  v15 = completionCopy;
   v9 = objc_retainBlock(v14);
   if (dword_100015F40 <= 30 && (dword_100015F40 != -1 || _LogCategory_Initialize()))
   {
-    v12 = v7;
+    v12 = activateCopy;
     LogPrintF();
   }
 
@@ -76,11 +76,11 @@ LABEL_9:
   objc_storeStrong(v10, obj);
   if (v11)
   {
-    objc_storeStrong(&self->_contextMonitor, a3);
-    objc_storeStrong(&self->_xpcService->_contextMonitor, a3);
-    if (v8)
+    objc_storeStrong(&self->_contextMonitor, activate);
+    objc_storeStrong(&self->_xpcService->_contextMonitor, activate);
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     [(SPXPCService *)self->_xpcService _update];
@@ -91,9 +91,9 @@ LABEL_9:
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)contextMonitorUpdate:(id)a3
+- (void)contextMonitorUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -114,22 +114,22 @@ LABEL_9:
   {
     if (dword_100015F40 <= 30 && (dword_100015F40 != -1 || _LogCategory_Initialize()))
     {
-      v10 = v4;
+      v10 = updateCopy;
       LogPrintF();
     }
 
-    v8 = [(SPContextMonitor *)self->_contextMonitor contextChangeFlags];
-    v9 = [v4 contextChangeFlags];
-    if (v8 != v9)
+    contextChangeFlags = [(SPContextMonitor *)self->_contextMonitor contextChangeFlags];
+    contextChangeFlags2 = [updateCopy contextChangeFlags];
+    if (contextChangeFlags != contextChangeFlags2)
     {
       if (dword_100015F40 <= 30 && (dword_100015F40 != -1 || _LogCategory_Initialize()))
       {
-        v11 = v8;
-        v12 = v9;
+        v11 = contextChangeFlags;
+        v12 = contextChangeFlags2;
         LogPrintF();
       }
 
-      [(SPContextMonitor *)self->_contextMonitor setContextChangeFlags:v9, v11, v12];
+      [(SPContextMonitor *)self->_contextMonitor setContextChangeFlags:contextChangeFlags2, v11, v12];
       [(SPXPCService *)self->_xpcService _update];
     }
   }
@@ -139,31 +139,31 @@ LABEL_9:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)contextMonitorReportLocationChanged:(id)a3
+- (void)contextMonitorReportLocationChanged:(id)changed
 {
-  v9 = a3;
+  changedCopy = changed;
   v4 = self->_contextMonitor;
   if (v4)
   {
     if (dword_100015F40 <= 30 && (dword_100015F40 != -1 || _LogCategory_Initialize()))
     {
-      v5 = [v9 locationCategory];
-      if (v5 > 9)
+      locationCategory = [changedCopy locationCategory];
+      if (locationCategory > 9)
       {
         v6 = @"?";
       }
 
       else
       {
-        v6 = off_1000108E0[v5];
+        v6 = off_1000108E0[locationCategory];
       }
 
       v8 = v6;
       LogPrintF();
     }
 
-    v7 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v7 contextMonitorContextChanged:v9];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy contextMonitorContextChanged:changedCopy];
   }
 }
 

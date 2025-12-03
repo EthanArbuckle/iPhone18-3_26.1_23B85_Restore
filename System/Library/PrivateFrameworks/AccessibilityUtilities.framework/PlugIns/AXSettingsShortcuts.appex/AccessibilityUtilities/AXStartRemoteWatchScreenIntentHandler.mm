@@ -1,12 +1,12 @@
 @interface AXStartRemoteWatchScreenIntentHandler
-- (void)handleStartRemoteWatchScreen:(id)a3 completion:(id)a4;
+- (void)handleStartRemoteWatchScreen:(id)screen completion:(id)completion;
 @end
 
 @implementation AXStartRemoteWatchScreenIntentHandler
 
-- (void)handleStartRemoteWatchScreen:(id)a3 completion:(id)a4
+- (void)handleStartRemoteWatchScreen:(id)screen completion:(id)completion
 {
-  v8 = a4;
+  completionCopy = completion;
   v4 = +[AXSpringBoardServer server];
   v5 = [v4 isScreenLockedWithPasscode:0];
 
@@ -28,7 +28,7 @@
   }
 
   v7 = [[AXStartRemoteWatchScreenIntentResponse alloc] initWithCode:v6 userActivity:0];
-  v8[2](v8, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
 @end

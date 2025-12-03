@@ -13,7 +13,7 @@
   {
     v9 = *a5;
     v10 = a5[1];
-    result = [a1 rangeOfString:a3 options:a4 range:{*a5, v10}];
+    result = [self rangeOfString:a3 options:a4 range:{*a5, v10}];
     if (result == 0x7FFFFFFFFFFFFFFFLL)
     {
       *a5 = NSInvalidRange;
@@ -36,7 +36,7 @@
   {
     v13 = [a3 length];
 
-    return [a1 rangeOfString:a3 options:a4 range:{0, v13}];
+    return [self rangeOfString:a3 options:a4 range:{0, v13}];
   }
 
   return result;
@@ -44,19 +44,19 @@
 
 - (void)tsu_enumerateRangesOfCharactersInSet:()TSUNSStringPathExtensions usingBlock:
 {
-  v6 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:a1];
+  v6 = [objc_alloc(MEMORY[0x277CCAC80]) initWithString:self];
   [v6 setCaseSensitive:1];
   [v6 setCharactersToBeSkipped:0];
   if (([v6 isAtEnd] & 1) == 0)
   {
     do
     {
-      v7 = [v6 scanLocation];
+      scanLocation = [v6 scanLocation];
       if ([v6 scanCharactersFromSet:a3 intoString:0])
       {
-        v8 = [v6 scanLocation];
+        scanLocation2 = [v6 scanLocation];
         v9 = 0;
-        (*(a4 + 16))(a4, v7, v8 - v7, &v9);
+        (*(a4 + 16))(a4, scanLocation, scanLocation2 - scanLocation, &v9);
         if (v9)
         {
           break;
@@ -77,9 +77,9 @@
 {
   if (a3)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [a3 pathComponents];
-    v7 = [v6 count];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    pathComponents = [a3 pathComponents];
+    v7 = [pathComponents count];
     v8 = objc_alloc_init(MEMORY[0x277CCA8B0]);
     if (v7)
     {
@@ -87,24 +87,24 @@
       v10 = v7;
       while (1)
       {
-        if ([v5 fileExistsAtPath:{objc_msgSend(a1, "stringByAppendingPathComponent:", objc_msgSend(v6, "objectAtIndex:", --v10))}])
+        if ([defaultManager fileExistsAtPath:{objc_msgSend(self, "stringByAppendingPathComponent:", objc_msgSend(pathComponents, "objectAtIndex:", --v10))}])
         {
-          v11 = a1;
+          selfCopy2 = self;
           if (v10 < v7)
           {
             v12 = v9;
             v13 = v10;
-            v11 = a1;
+            selfCopy2 = self;
             do
             {
-              v11 = [v11 stringByAppendingPathComponent:{objc_msgSend(v6, "objectAtIndex:", v13++)}];
+              selfCopy2 = [selfCopy2 stringByAppendingPathComponent:{objc_msgSend(pathComponents, "objectAtIndex:", v13++)}];
               --v12;
             }
 
             while (v12);
           }
 
-          if ([v5 fileExistsAtPath:v11])
+          if ([defaultManager fileExistsAtPath:selfCopy2])
           {
             break;
           }
@@ -117,7 +117,7 @@
         }
       }
 
-      v14 = v11;
+      v14 = selfCopy2;
     }
 
     else
@@ -138,16 +138,16 @@ LABEL_10:
 - (BOOL)tsu_isPathCreatedByAppendingPathComponent:()TSUNSStringPathExtensions insideBasePath:
 {
   v7 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  v8 = [a1 stringByStandardizingPath];
-  v9 = [objc_msgSend(objc_msgSend(v8 stringByAppendingPathComponent:{a3), "stringByStandardizingPath"), "pathComponents"}];
-  if (a1 != a4)
+  stringByStandardizingPath = [self stringByStandardizingPath];
+  v9 = [objc_msgSend(objc_msgSend(stringByStandardizingPath stringByAppendingPathComponent:{a3), "stringByStandardizingPath"), "pathComponents"}];
+  if (self != a4)
   {
-    v8 = [a4 stringByStandardizingPath];
+    stringByStandardizingPath = [a4 stringByStandardizingPath];
   }
 
-  v10 = [v8 pathComponents];
+  pathComponents = [stringByStandardizingPath pathComponents];
   v11 = [v9 count];
-  v12 = [v10 count];
+  v12 = [pathComponents count];
   if (v12 <= v11)
   {
     v14 = 0;
@@ -157,7 +157,7 @@ LABEL_10:
       v16 = 1;
       do
       {
-        if (([objc_msgSend(v10 objectAtIndex:{v14), "isEqualToString:", objc_msgSend(v9, "objectAtIndex:", v14)}] & 1) == 0)
+        if (([objc_msgSend(pathComponents objectAtIndex:{v14), "isEqualToString:", objc_msgSend(v9, "objectAtIndex:", v14)}] & 1) == 0)
         {
           break;
         }

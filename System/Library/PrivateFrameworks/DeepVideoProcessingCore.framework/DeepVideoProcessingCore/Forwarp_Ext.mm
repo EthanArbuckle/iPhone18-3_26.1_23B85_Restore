@@ -1,9 +1,9 @@
 @interface Forwarp_Ext
 - (BOOL)setupMetal;
-- (Forwarp_Ext)initWithDevice:(id)a3 commmandQueue:(id)a4;
-- (int64_t)encodeForerunnerToCommandBuffer:(id)a3 velocity:(id)a4 magnitude:(id)a5 depth:(id)a6 neighborMax:(id)a7 tileSize:(int)a8 virtualFrameNum:(int)a9 timeScale:(float)a10 destination:(id)a11;
-- (int64_t)encodeVirtualShutterLinePredictionToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 timeScale:(float)a6 destination:(id)a7;
-- (int64_t)encodeVirtualShutterLinePredictionV2ToCommandBuffer:(id)a3 input:(id)a4 velocity:(id)a5 magnitude:(id)a6 smoothedMagnitude:(id)a7 depth:(id)a8 neighborMax:(id)a9 edgeTex:(id)a10 kernelTex:(id)a11 lowresOutput:(id)a12 lowresKernel:(id)a13 tileSize:(int)a14 virtualFrameNum:(int)a15 timeScale:(float)a16 lowresRender:(float)a17 destination:(id)a18 foreruner:(id)a19;
+- (Forwarp_Ext)initWithDevice:(id)device commmandQueue:(id)queue;
+- (int64_t)encodeForerunnerToCommandBuffer:(id)buffer velocity:(id)velocity magnitude:(id)magnitude depth:(id)depth neighborMax:(id)max tileSize:(int)size virtualFrameNum:(int)num timeScale:(float)self0 destination:(id)self1;
+- (int64_t)encodeVirtualShutterLinePredictionToCommandBuffer:(id)buffer input:(id)input flow:(id)flow timeScale:(float)scale destination:(id)destination;
+- (int64_t)encodeVirtualShutterLinePredictionV2ToCommandBuffer:(id)buffer input:(id)input velocity:(id)velocity magnitude:(id)magnitude smoothedMagnitude:(id)smoothedMagnitude depth:(id)depth neighborMax:(id)max edgeTex:(id)self0 kernelTex:(id)self1 lowresOutput:(id)self2 lowresKernel:(id)self3 tileSize:(int)self4 virtualFrameNum:(int)self5 timeScale:(float)self6 lowresRender:(float)self7 destination:(id)self8 foreruner:(id)self9;
 - (void)dealloc;
 @end
 
@@ -16,11 +16,11 @@
   [(Forwarp_Ext *)&v2 dealloc];
 }
 
-- (Forwarp_Ext)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (Forwarp_Ext)initWithDevice:(id)device commmandQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = Forwarp_Ext;
-  v4 = [(VEMetalBase *)&v8 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(VEMetalBase *)&v8 initWithDevice:device commmandQueue:queue];
   v5 = v4;
   if (v4 && (v4->_errorTolerance = 0.1, [(Forwarp_Ext *)v4 setupMetal]))
   {
@@ -69,39 +69,39 @@
   return v16;
 }
 
-- (int64_t)encodeVirtualShutterLinePredictionToCommandBuffer:(id)a3 input:(id)a4 flow:(id)a5 timeScale:(float)a6 destination:(id)a7
+- (int64_t)encodeVirtualShutterLinePredictionToCommandBuffer:(id)buffer input:(id)input flow:(id)flow timeScale:(float)scale destination:(id)destination
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = v14;
+  inputCopy = input;
+  flowCopy = flow;
+  destinationCopy = destination;
+  v15 = destinationCopy;
   v16 = 12;
-  if (v12 && v13 && v14)
+  if (inputCopy && flowCopy && destinationCopy)
   {
-    v17 = a3;
+    bufferCopy = buffer;
     v18 = getCurrentTimeStamp();
-    v19 = [v17 computeCommandEncoder];
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-    if (v19)
+    if (computeCommandEncoder)
     {
       v20 = [(MTLDevice *)self->super._device newBufferWithLength:24 options:0];
-      v21 = [v20 contents];
-      *v21 = a6;
+      contents = [v20 contents];
+      *contents = scale;
       errorTolerance = self->_errorTolerance;
-      *(v21 + 12) = 0;
-      *(v21 + 16) = errorTolerance;
-      [v19 setComputePipelineState:self->_linePredictOutput];
-      [v19 setTexture:v12 atIndex:0];
-      [v19 setTexture:v13 atIndex:1];
-      [v19 setTexture:v15 atIndex:2];
-      [v19 setBuffer:v20 offset:0 atIndex:0];
+      *(contents + 12) = 0;
+      *(contents + 16) = errorTolerance;
+      [computeCommandEncoder setComputePipelineState:self->_linePredictOutput];
+      [computeCommandEncoder setTexture:inputCopy atIndex:0];
+      [computeCommandEncoder setTexture:flowCopy atIndex:1];
+      [computeCommandEncoder setTexture:v15 atIndex:2];
+      [computeCommandEncoder setBuffer:v20 offset:0 atIndex:0];
       v27[0] = ([v15 width] + 15) >> 4;
       v27[1] = ([v15 height] + 15) >> 4;
       v27[2] = 1;
       v25 = vdupq_n_s64(0x10uLL);
       v26 = 1;
-      [v19 dispatchThreadgroups:v27 threadsPerThreadgroup:&v25];
-      [v19 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v27 threadsPerThreadgroup:&v25];
+      [computeCommandEncoder endEncoding];
       v23 = getCurrentTimeStamp();
 
       v16 = 0;
@@ -116,45 +116,45 @@
   return v16;
 }
 
-- (int64_t)encodeForerunnerToCommandBuffer:(id)a3 velocity:(id)a4 magnitude:(id)a5 depth:(id)a6 neighborMax:(id)a7 tileSize:(int)a8 virtualFrameNum:(int)a9 timeScale:(float)a10 destination:(id)a11
+- (int64_t)encodeForerunnerToCommandBuffer:(id)buffer velocity:(id)velocity magnitude:(id)magnitude depth:(id)depth neighborMax:(id)max tileSize:(int)size virtualFrameNum:(int)num timeScale:(float)self0 destination:(id)self1
 {
-  v18 = a4;
-  v32 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a11;
-  v22 = v21;
+  velocityCopy = velocity;
+  magnitudeCopy = magnitude;
+  depthCopy = depth;
+  maxCopy = max;
+  destinationCopy = destination;
+  v22 = destinationCopy;
   v23 = 12;
-  if (v18 && v19 && v20 && v21)
+  if (velocityCopy && depthCopy && maxCopy && destinationCopy)
   {
-    v24 = a3;
+    bufferCopy = buffer;
     v25 = getCurrentTimeStamp();
-    v26 = [v24 computeCommandEncoder];
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-    if (v26)
+    if (computeCommandEncoder)
     {
       v27 = [(MTLDevice *)self->super._device newBufferWithLength:24 options:0];
-      v28 = [v27 contents];
-      *v28 = a10;
-      *(v28 + 4) = a8;
-      *(v28 + 8) = a9;
+      contents = [v27 contents];
+      *contents = scale;
+      *(contents + 4) = size;
+      *(contents + 8) = num;
       errorTolerance = self->_errorTolerance;
-      *(v28 + 12) = 0;
-      *(v28 + 16) = errorTolerance;
-      [v26 setComputePipelineState:self->_forerunnerKernel];
-      [v26 setTexture:v18 atIndex:0];
-      [v26 setTexture:v19 atIndex:1];
-      [v26 setTexture:v20 atIndex:2];
-      [v26 setTexture:v22 atIndex:3];
-      [v26 setTexture:v32 atIndex:4];
-      [v26 setBuffer:v27 offset:0 atIndex:0];
+      *(contents + 12) = 0;
+      *(contents + 16) = errorTolerance;
+      [computeCommandEncoder setComputePipelineState:self->_forerunnerKernel];
+      [computeCommandEncoder setTexture:velocityCopy atIndex:0];
+      [computeCommandEncoder setTexture:depthCopy atIndex:1];
+      [computeCommandEncoder setTexture:maxCopy atIndex:2];
+      [computeCommandEncoder setTexture:v22 atIndex:3];
+      [computeCommandEncoder setTexture:magnitudeCopy atIndex:4];
+      [computeCommandEncoder setBuffer:v27 offset:0 atIndex:0];
       v35[0] = ([v22 width] + 15) >> 4;
       v35[1] = ([v22 height] + 15) >> 4;
       v35[2] = 1;
       v33 = vdupq_n_s64(0x10uLL);
       v34 = 1;
-      [v26 dispatchThreadgroups:v35 threadsPerThreadgroup:&v33];
-      [v26 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v35 threadsPerThreadgroup:&v33];
+      [computeCommandEncoder endEncoding];
       v30 = getCurrentTimeStamp();
 
       v23 = 0;
@@ -169,83 +169,83 @@
   return v23;
 }
 
-- (int64_t)encodeVirtualShutterLinePredictionV2ToCommandBuffer:(id)a3 input:(id)a4 velocity:(id)a5 magnitude:(id)a6 smoothedMagnitude:(id)a7 depth:(id)a8 neighborMax:(id)a9 edgeTex:(id)a10 kernelTex:(id)a11 lowresOutput:(id)a12 lowresKernel:(id)a13 tileSize:(int)a14 virtualFrameNum:(int)a15 timeScale:(float)a16 lowresRender:(float)a17 destination:(id)a18 foreruner:(id)a19
+- (int64_t)encodeVirtualShutterLinePredictionV2ToCommandBuffer:(id)buffer input:(id)input velocity:(id)velocity magnitude:(id)magnitude smoothedMagnitude:(id)smoothedMagnitude depth:(id)depth neighborMax:(id)max edgeTex:(id)self0 kernelTex:(id)self1 lowresOutput:(id)self2 lowresKernel:(id)self3 tileSize:(int)self4 virtualFrameNum:(int)self5 timeScale:(float)self6 lowresRender:(float)self7 destination:(id)self8 foreruner:(id)self9
 {
-  v25 = a4;
-  v26 = a5;
-  v53 = a6;
-  v54 = a7;
-  v27 = a8;
-  v28 = a9;
-  v29 = a10;
-  v51 = a11;
-  v50 = a12;
-  v49 = a13;
-  v30 = a18;
-  v31 = a19;
-  v32 = v31;
+  inputCopy = input;
+  velocityCopy = velocity;
+  magnitudeCopy = magnitude;
+  smoothedMagnitudeCopy = smoothedMagnitude;
+  depthCopy = depth;
+  maxCopy = max;
+  texCopy = tex;
+  kernelTexCopy = kernelTex;
+  outputCopy = output;
+  kernelCopy = kernel;
+  destinationCopy = destination;
+  forerunerCopy = foreruner;
+  v32 = forerunerCopy;
   v33 = 12;
-  if (v25 && v26 && v54 && v27 && v28 && v29 && v31)
+  if (inputCopy && velocityCopy && smoothedMagnitudeCopy && depthCopy && maxCopy && texCopy && forerunerCopy)
   {
-    v52 = v28;
-    v34 = a3;
+    v52 = maxCopy;
+    bufferCopy = buffer;
     v35 = getCurrentTimeStamp();
-    v36 = [v34 computeCommandEncoder];
+    computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-    if (v36)
+    if (computeCommandEncoder)
     {
       v48 = v35;
       v37 = [(MTLDevice *)self->super._device newBufferWithLength:24 options:0];
-      v38 = [v37 contents];
-      *v38 = a16;
-      *(v38 + 4) = a14;
-      *(v38 + 8) = a15;
-      *(v38 + 12) = 0;
-      *(v38 + 16) = self->_errorTolerance;
-      *(v38 + 20) = a17;
-      v39 = [v32 width];
-      v58[0] = v39 / [v25 width];
+      contents = [v37 contents];
+      *contents = scale;
+      *(contents + 4) = size;
+      *(contents + 8) = num;
+      *(contents + 12) = 0;
+      *(contents + 16) = self->_errorTolerance;
+      *(contents + 20) = render;
+      width = [v32 width];
+      v58[0] = width / [inputCopy width];
       v40 = &OBJC_IVAR___Forwarp_Ext__linePredictOutput_finalStage;
-      if (a17 == 1.0)
+      if (render == 1.0)
       {
         v40 = &OBJC_IVAR___Forwarp_Ext__linePredictOutput_lowres;
       }
 
-      [v36 setComputePipelineState:*(&self->super.super.isa + *v40)];
-      [v36 setTexture:v25 atIndex:0];
-      [v36 setTexture:v26 atIndex:1];
-      [v36 setTexture:v54 atIndex:2];
-      [v36 setTexture:v27 atIndex:3];
-      [v36 setTexture:v52 atIndex:4];
-      [v36 setTexture:v30 atIndex:5];
-      [v36 setTexture:v29 atIndex:6];
-      [v36 setTexture:v32 atIndex:7];
-      [v36 setTexture:v53 atIndex:8];
-      [v36 setBuffer:v37 offset:0 atIndex:0];
-      [v36 setBytes:v58 length:4 atIndex:1];
-      if (a17 == 1.0)
+      [computeCommandEncoder setComputePipelineState:*(&self->super.super.isa + *v40)];
+      [computeCommandEncoder setTexture:inputCopy atIndex:0];
+      [computeCommandEncoder setTexture:velocityCopy atIndex:1];
+      [computeCommandEncoder setTexture:smoothedMagnitudeCopy atIndex:2];
+      [computeCommandEncoder setTexture:depthCopy atIndex:3];
+      [computeCommandEncoder setTexture:v52 atIndex:4];
+      [computeCommandEncoder setTexture:destinationCopy atIndex:5];
+      [computeCommandEncoder setTexture:texCopy atIndex:6];
+      [computeCommandEncoder setTexture:v32 atIndex:7];
+      [computeCommandEncoder setTexture:magnitudeCopy atIndex:8];
+      [computeCommandEncoder setBuffer:v37 offset:0 atIndex:0];
+      [computeCommandEncoder setBytes:v58 length:4 atIndex:1];
+      if (render == 1.0)
       {
-        [v36 setTexture:v51 atIndex:9];
+        [computeCommandEncoder setTexture:kernelTexCopy atIndex:9];
       }
 
       else
       {
-        v41 = [v50 width];
-        *v57 = v41 / [v25 width];
-        [v36 setTexture:v50 atIndex:9];
-        [v36 setTexture:v49 atIndex:10];
-        [v36 setBytes:v57 length:4 atIndex:2];
+        width2 = [outputCopy width];
+        *v57 = width2 / [inputCopy width];
+        [computeCommandEncoder setTexture:outputCopy atIndex:9];
+        [computeCommandEncoder setTexture:kernelCopy atIndex:10];
+        [computeCommandEncoder setBytes:v57 length:4 atIndex:2];
       }
 
-      v42 = ([v30 width] + 15) >> 4;
-      v43 = [v30 height];
+      v42 = ([destinationCopy width] + 15) >> 4;
+      height = [destinationCopy height];
       v57[0] = v42;
-      v57[1] = (v43 + 15) >> 4;
+      v57[1] = (height + 15) >> 4;
       v57[2] = 1;
       v55 = vdupq_n_s64(0x10uLL);
       v56 = 1;
-      [v36 dispatchThreadgroups:v57 threadsPerThreadgroup:&v55];
-      [v36 endEncoding];
+      [computeCommandEncoder dispatchThreadgroups:v57 threadsPerThreadgroup:&v55];
+      [computeCommandEncoder endEncoding];
       v35 = v48;
       v44 = getCurrentTimeStamp();
 
@@ -257,7 +257,7 @@
       v33 = 9;
     }
 
-    v28 = v52;
+    maxCopy = v52;
   }
 
   return v33;

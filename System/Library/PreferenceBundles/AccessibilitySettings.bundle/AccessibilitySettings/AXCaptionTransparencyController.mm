@@ -1,10 +1,10 @@
 @interface AXCaptionTransparencyController
-- (id)_videoOverridesStyle:(id)a3;
+- (id)_videoOverridesStyle:(id)style;
 - (id)specifiers;
 - (int)transparencyType;
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -15,16 +15,16 @@
   v6.receiver = self;
   v6.super_class = AXCaptionTransparencyController;
   [(AXCaptionStyleChooserController *)&v6 viewDidLoad];
-  v3 = [(AXCaptionTransparencyController *)self table];
+  table = [(AXCaptionTransparencyController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXCaptionColorCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (int)transparencyType
 {
-  v2 = [(AXCaptionTransparencyController *)self specifier];
-  v3 = [v2 propertyForKey:@"transparencyType"];
+  specifier = [(AXCaptionTransparencyController *)self specifier];
+  v3 = [specifier propertyForKey:@"transparencyType"];
 
   if ([v3 isEqualToString:@"text"])
   {
@@ -56,9 +56,9 @@
   {
     v20 = OBJC_IVAR___PSListController__specifiers;
     v4 = objc_alloc_init(NSMutableArray);
-    v5 = [(AXCaptionStyleChooserController *)self captionPreviewSpecifiers];
+    captionPreviewSpecifiers = [(AXCaptionStyleChooserController *)self captionPreviewSpecifiers];
     v24 = v4;
-    [v4 addObjectsFromArray:v5];
+    [v4 addObjectsFromArray:captionPreviewSpecifiers];
 
     v23 = AXCaptionTransparencyDefault([(AXCaptionTransparencyController *)self transparencyType]);
     v25 = 0u;
@@ -111,8 +111,8 @@
       while (v7);
     }
 
-    v17 = [(AXCaptionStyleChooserController *)self videoOverrideSpecifiers];
-    [v24 addObjectsFromArray:v17];
+    videoOverrideSpecifiers = [(AXCaptionStyleChooserController *)self videoOverrideSpecifiers];
+    [v24 addObjectsFromArray:videoOverrideSpecifiers];
 
     v18 = *&self->super.AXUISettingsBaseListController_opaque[v20];
     *&self->super.AXUISettingsBaseListController_opaque[v20] = v24;
@@ -123,38 +123,38 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = AXCaptionTransparencyController;
-  [(AXCaptionStyleChooserController *)&v14 tableView:a3 willDisplayCell:v8 forRowAtIndexPath:a5];
-  v9 = v8;
-  v10 = [(AXCaptionTransparencyController *)self transparencyType];
-  v11 = [v9 specifier];
-  v12 = [v11 propertyForKey:@"alpha"];
-  v13 = [(AXCaptionStyleChooserController *)self isStoredTransparencyType:v10 equalWithTransparency:v12];
+  [(AXCaptionStyleChooserController *)&v14 tableView:view willDisplayCell:cellCopy forRowAtIndexPath:path];
+  v9 = cellCopy;
+  transparencyType = [(AXCaptionTransparencyController *)self transparencyType];
+  specifier = [v9 specifier];
+  v12 = [specifier propertyForKey:@"alpha"];
+  v13 = [(AXCaptionStyleChooserController *)self isStoredTransparencyType:transparencyType equalWithTransparency:v12];
 
   [v9 setChecked:v13];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = AXCaptionTransparencyController;
-  v6 = a4;
-  v7 = a3;
-  [(AXCaptionTransparencyController *)&v13 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [(AXCaptionTransparencyController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v9 = [v8 specifier];
+  specifier = [v8 specifier];
 
-  v10 = [v9 propertyForKey:@"alpha"];
+  v10 = [specifier propertyForKey:@"alpha"];
   [(AXCaptionTransparencyController *)self transparencyType];
   v12 = v10;
   v11 = v10;
   AXPerformBlockOnMainThreadAfterDelay();
-  [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:v6];
+  [(AXCaptionStyleChooserController *)self updateTableCheckedSelection:pathCopy];
 }
 
 uint64_t __69__AXCaptionTransparencyController_tableView_didSelectRowAtIndexPath___block_invoke(uint64_t result)
@@ -183,10 +183,10 @@ uint64_t __69__AXCaptionTransparencyController_tableView_didSelectRowAtIndexPath
   return result;
 }
 
-- (id)_videoOverridesStyle:(id)a3
+- (id)_videoOverridesStyle:(id)style
 {
-  v4 = [(AXCaptionTransparencyController *)self transparencyType];
-  switch(v4)
+  transparencyType = [(AXCaptionTransparencyController *)self transparencyType];
+  switch(transparencyType)
   {
     case 1u:
       [(AXCaptionStyleChooserController *)self profileId];
@@ -208,35 +208,35 @@ uint64_t __69__AXCaptionTransparencyController_tableView_didSelectRowAtIndexPath
   return v5;
 }
 
-- (void)_setVideoOverridesStyle:(id)a3 specifier:(id)a4
+- (void)_setVideoOverridesStyle:(id)style specifier:(id)specifier
 {
-  v8 = a3;
-  v5 = [(AXCaptionTransparencyController *)self transparencyType];
-  if (v5 == 1)
+  styleCopy = style;
+  transparencyType = [(AXCaptionTransparencyController *)self transparencyType];
+  if (transparencyType == 1)
   {
     [(AXCaptionStyleChooserController *)self profileId];
-    [v8 BOOLValue];
+    [styleCopy BOOLValue];
     MACaptionAppearancePrefSetVideoOverrideForegroundOpacity();
     goto LABEL_8;
   }
 
-  if (v5 == 3)
+  if (transparencyType == 3)
   {
     [(AXCaptionStyleChooserController *)self profileId];
-    [v8 BOOLValue];
+    [styleCopy BOOLValue];
     MACaptionAppearancePrefSetVideoOverrideWindowOpacity();
     goto LABEL_8;
   }
 
-  v6 = v5 == 2;
-  v7 = v8;
+  v6 = transparencyType == 2;
+  v7 = styleCopy;
   if (v6)
   {
     [(AXCaptionStyleChooserController *)self profileId];
-    [v8 BOOLValue];
+    [styleCopy BOOLValue];
     MACaptionAppearancePrefSetVideoOverrideBackgroundOpacity();
 LABEL_8:
-    v7 = v8;
+    v7 = styleCopy;
   }
 }
 

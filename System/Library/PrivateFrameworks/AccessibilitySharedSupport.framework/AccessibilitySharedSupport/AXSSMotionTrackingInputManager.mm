@@ -1,33 +1,33 @@
 @interface AXSSMotionTrackingInputManager
 - (AXSSMotionTrackingInputConfiguration)configuration;
-- (AXSSMotionTrackingInputManager)initWithConfiguration:(id)a3;
+- (AXSSMotionTrackingInputManager)initWithConfiguration:(id)configuration;
 - (AXSSMotionTrackingInputManagerDelegate)delegate;
 - (BOOL)_supportsCameraInputs;
-- (BOOL)_supportsMotionTrackingType:(unint64_t)a3;
+- (BOOL)_supportsMotionTrackingType:(unint64_t)type;
 - (NSArray)allInputs;
 - (NSArray)compatibleInputs;
-- (id)_compatibleCameraInputMatchingCaptureDeviceUniqueID:(id)a3;
+- (id)_compatibleCameraInputMatchingCaptureDeviceUniqueID:(id)d;
 - (void)_inputUpdated;
 - (void)_updateMonitoring;
-- (void)motionTrackingCameraManager:(id)a3 updatedCompatibleCaptureDevices:(id)a4;
-- (void)motionTrackingHIDManager:(id)a3 updatedDevices:(id)a4;
-- (void)motionTrackingVideoFileInputManager:(id)a3 updatedVideoFileInputNames:(id)a4;
-- (void)setConfiguration:(id)a3;
+- (void)motionTrackingCameraManager:(id)manager updatedCompatibleCaptureDevices:(id)devices;
+- (void)motionTrackingHIDManager:(id)manager updatedDevices:(id)devices;
+- (void)motionTrackingVideoFileInputManager:(id)manager updatedVideoFileInputNames:(id)names;
+- (void)setConfiguration:(id)configuration;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation AXSSMotionTrackingInputManager
 
-- (AXSSMotionTrackingInputManager)initWithConfiguration:(id)a3
+- (AXSSMotionTrackingInputManager)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v27.receiver = self;
   v27.super_class = AXSSMotionTrackingInputManager;
   v5 = [(AXSSMotionTrackingInputManager *)&v27 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
@@ -36,22 +36,22 @@
     v5->__cameraManager = v8;
 
     [(AXSSMotionTrackingCameraManager *)v5->__cameraManager setDelegate:v5];
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     compatibleCameraInputs = v5->__compatibleCameraInputs;
-    v5->__compatibleCameraInputs = v10;
+    v5->__compatibleCameraInputs = array;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     allCameraInputs = v5->__allCameraInputs;
-    v5->__allCameraInputs = v12;
+    v5->__allCameraInputs = array2;
 
     v14 = objc_alloc_init(AXSSMotionTrackingHIDManager);
     hidManager = v5->__hidManager;
     v5->__hidManager = v14;
 
     [(AXSSMotionTrackingHIDManager *)v5->__hidManager setDelegate:v5];
-    v16 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     hidInputs = v5->__hidInputs;
-    v5->__hidInputs = v16;
+    v5->__hidInputs = array3;
 
     if (+[AXSSMotionTrackingVideoFileInputManager allowVideoFileInput])
     {
@@ -60,18 +60,18 @@
       v5->__videoFileInputManager = v18;
 
       [(AXSSMotionTrackingVideoFileInputManager *)v5->__videoFileInputManager setDelegate:v5];
-      v20 = [MEMORY[0x1E695DF70] array];
+      array4 = [MEMORY[0x1E695DF70] array];
       videoFileInputs = v5->__videoFileInputs;
-      v5->__videoFileInputs = v20;
+      v5->__videoFileInputs = array4;
     }
 
-    v22 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     allInputs = v5->__allInputs;
-    v5->__allInputs = v22;
+    v5->__allInputs = array5;
 
-    v24 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     compatibleInputs = v5->__compatibleInputs;
-    v5->__compatibleInputs = v24;
+    v5->__compatibleInputs = array6;
   }
 
   return v5;
@@ -101,65 +101,65 @@
 {
   if ([(AXSSMotionTrackingInputManager *)self _monitoring]&& [(AXSSMotionTrackingInputManager *)self _supportsCameraInputs])
   {
-    v3 = [(AXSSMotionTrackingInputManager *)self _cameraManager];
-    [v3 startMonitoring];
+    _cameraManager = [(AXSSMotionTrackingInputManager *)self _cameraManager];
+    [_cameraManager startMonitoring];
   }
 
   else
   {
-    v4 = [(AXSSMotionTrackingInputManager *)self _allCameraInputs];
-    [v4 removeAllObjects];
+    _allCameraInputs = [(AXSSMotionTrackingInputManager *)self _allCameraInputs];
+    [_allCameraInputs removeAllObjects];
 
-    v5 = [(AXSSMotionTrackingInputManager *)self _compatibleCameraInputs];
-    [v5 removeAllObjects];
+    _compatibleCameraInputs = [(AXSSMotionTrackingInputManager *)self _compatibleCameraInputs];
+    [_compatibleCameraInputs removeAllObjects];
 
-    v3 = [(AXSSMotionTrackingInputManager *)self _cameraManager];
-    [v3 stopMonitoring];
+    _cameraManager = [(AXSSMotionTrackingInputManager *)self _cameraManager];
+    [_cameraManager stopMonitoring];
   }
 
   if ([(AXSSMotionTrackingInputManager *)self _monitoring]&& [(AXSSMotionTrackingInputManager *)self _supportsCameraInputs])
   {
-    v6 = [(AXSSMotionTrackingInputManager *)self _videoFileInputManager];
-    [v6 startMonitoring];
+    _videoFileInputManager = [(AXSSMotionTrackingInputManager *)self _videoFileInputManager];
+    [_videoFileInputManager startMonitoring];
   }
 
   else
   {
-    v7 = [(AXSSMotionTrackingInputManager *)self _videoFileInputs];
-    [v7 removeAllObjects];
+    _videoFileInputs = [(AXSSMotionTrackingInputManager *)self _videoFileInputs];
+    [_videoFileInputs removeAllObjects];
 
-    v6 = [(AXSSMotionTrackingInputManager *)self _videoFileInputManager];
-    [v6 stopMonitoring];
+    _videoFileInputManager = [(AXSSMotionTrackingInputManager *)self _videoFileInputManager];
+    [_videoFileInputManager stopMonitoring];
   }
 
   if ([(AXSSMotionTrackingInputManager *)self _monitoring]&& [(AXSSMotionTrackingInputManager *)self _supportsHIDInputs])
   {
-    v9 = [(AXSSMotionTrackingInputManager *)self _hidManager];
-    [v9 startMonitoring];
+    _hidManager = [(AXSSMotionTrackingInputManager *)self _hidManager];
+    [_hidManager startMonitoring];
   }
 
   else
   {
-    v8 = [(AXSSMotionTrackingInputManager *)self _hidInputs];
-    [v8 removeAllObjects];
+    _hidInputs = [(AXSSMotionTrackingInputManager *)self _hidInputs];
+    [_hidInputs removeAllObjects];
 
-    v9 = [(AXSSMotionTrackingInputManager *)self _hidManager];
-    [v9 stopMonitoring];
+    _hidManager = [(AXSSMotionTrackingInputManager *)self _hidManager];
+    [_hidManager stopMonitoring];
   }
 }
 
 - (NSArray)compatibleInputs
 {
-  v2 = [(AXSSMotionTrackingInputManager *)self _compatibleInputs];
-  v3 = [v2 copy];
+  _compatibleInputs = [(AXSSMotionTrackingInputManager *)self _compatibleInputs];
+  v3 = [_compatibleInputs copy];
 
   return v3;
 }
 
 - (NSArray)allInputs
 {
-  v2 = [(AXSSMotionTrackingInputManager *)self _allInputs];
-  v3 = [v2 copy];
+  _allInputs = [(AXSSMotionTrackingInputManager *)self _allInputs];
+  v3 = [_allInputs copy];
 
   return v3;
 }
@@ -171,21 +171,21 @@
   return v2;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AXSSMotionTrackingInputManager *)self configuration];
-  v6 = [v4 isEqual:v5];
+  configurationCopy = configuration;
+  configuration = [(AXSSMotionTrackingInputManager *)self configuration];
+  v6 = [configurationCopy isEqual:configuration];
 
   if ((v6 & 1) == 0)
   {
     v7 = AXSSLogForCategory(2);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(AXSSMotionTrackingInputManager *)v4 setConfiguration:v7];
+      [(AXSSMotionTrackingInputManager *)configurationCopy setConfiguration:v7];
     }
 
-    v8 = [v4 copy];
+    v8 = [configurationCopy copy];
     configuration = self->_configuration;
     self->_configuration = v8;
 
@@ -197,25 +197,25 @@
   }
 }
 
-- (BOOL)_supportsMotionTrackingType:(unint64_t)a3
+- (BOOL)_supportsMotionTrackingType:(unint64_t)type
 {
-  v3 = a3;
-  if (a3)
+  typeCopy = type;
+  if (type)
   {
-    v5 = [(AXSSMotionTrackingInputManager *)self configuration];
-    if (v5)
+    configuration = [(AXSSMotionTrackingInputManager *)self configuration];
+    if (configuration)
     {
-      v6 = [(AXSSMotionTrackingInputManager *)self configuration];
-      LOBYTE(v3) = [v6 supportsTrackingType:v3];
+      configuration2 = [(AXSSMotionTrackingInputManager *)self configuration];
+      LOBYTE(typeCopy) = [configuration2 supportsTrackingType:typeCopy];
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(typeCopy) = 1;
     }
   }
 
-  return v3;
+  return typeCopy;
 }
 
 - (BOOL)_supportsCameraInputs
@@ -228,22 +228,22 @@
   return [(AXSSMotionTrackingInputManager *)self _supportsMotionTrackingType:3];
 }
 
-- (void)motionTrackingCameraManager:(id)a3 updatedCompatibleCaptureDevices:(id)a4
+- (void)motionTrackingCameraManager:(id)manager updatedCompatibleCaptureDevices:(id)devices
 {
-  v5 = [(AXSSMotionTrackingInputManager *)self _compatibleCameraInputs:a3];
+  v5 = [(AXSSMotionTrackingInputManager *)self _compatibleCameraInputs:manager];
   [v5 removeAllObjects];
 
-  v6 = [(AXSSMotionTrackingInputManager *)self _allCameraInputs];
-  [v6 removeAllObjects];
+  _allCameraInputs = [(AXSSMotionTrackingInputManager *)self _allCameraInputs];
+  [_allCameraInputs removeAllObjects];
 
-  v7 = [(AXSSMotionTrackingInputManager *)self _cameraManager];
-  v8 = [v7 allCaptureDevices];
+  _cameraManager = [(AXSSMotionTrackingInputManager *)self _cameraManager];
+  allCaptureDevices = [_cameraManager allCaptureDevices];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __94__AXSSMotionTrackingInputManager_motionTrackingCameraManager_updatedCompatibleCaptureDevices___block_invoke;
   v9[3] = &unk_1E8135558;
   v9[4] = self;
-  [v8 enumerateObjectsUsingBlock:v9];
+  [allCaptureDevices enumerateObjectsUsingBlock:v9];
 
   [(AXSSMotionTrackingInputManager *)self _inputUpdated];
 }
@@ -268,19 +268,19 @@ void __94__AXSSMotionTrackingInputManager_motionTrackingCameraManager_updatedCom
   [v9 addObject:v10];
 }
 
-- (void)motionTrackingHIDManager:(id)a3 updatedDevices:(id)a4
+- (void)motionTrackingHIDManager:(id)manager updatedDevices:(id)devices
 {
-  v5 = [(AXSSMotionTrackingInputManager *)self _hidInputs:a3];
+  v5 = [(AXSSMotionTrackingInputManager *)self _hidInputs:manager];
   [v5 removeAllObjects];
 
-  v6 = [(AXSSMotionTrackingInputManager *)self _hidManager];
-  v7 = [v6 devices];
+  _hidManager = [(AXSSMotionTrackingInputManager *)self _hidManager];
+  devices = [_hidManager devices];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__AXSSMotionTrackingInputManager_motionTrackingHIDManager_updatedDevices___block_invoke;
   v8[3] = &unk_1E8135580;
   v8[4] = self;
-  [v7 enumerateObjectsUsingBlock:v8];
+  [devices enumerateObjectsUsingBlock:v8];
 
   [(AXSSMotionTrackingInputManager *)self _inputUpdated];
 }
@@ -298,21 +298,21 @@ void __74__AXSSMotionTrackingInputManager_motionTrackingHIDManager_updatedDevice
   }
 }
 
-- (void)motionTrackingVideoFileInputManager:(id)a3 updatedVideoFileInputNames:(id)a4
+- (void)motionTrackingVideoFileInputManager:(id)manager updatedVideoFileInputNames:(id)names
 {
-  if ([AXSSMotionTrackingVideoFileInputManager allowVideoFileInput:a3])
+  if ([AXSSMotionTrackingVideoFileInputManager allowVideoFileInput:manager])
   {
-    v5 = [(AXSSMotionTrackingInputManager *)self _videoFileInputs];
-    [v5 removeAllObjects];
+    _videoFileInputs = [(AXSSMotionTrackingInputManager *)self _videoFileInputs];
+    [_videoFileInputs removeAllObjects];
 
-    v6 = [(AXSSMotionTrackingInputManager *)self _videoFileInputManager];
-    v7 = [v6 videoFileInputNames];
+    _videoFileInputManager = [(AXSSMotionTrackingInputManager *)self _videoFileInputManager];
+    videoFileInputNames = [_videoFileInputManager videoFileInputNames];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __97__AXSSMotionTrackingInputManager_motionTrackingVideoFileInputManager_updatedVideoFileInputNames___block_invoke;
     v8[3] = &unk_1E81355A8;
     v8[4] = self;
-    [v7 enumerateObjectsUsingBlock:v8];
+    [videoFileInputNames enumerateObjectsUsingBlock:v8];
 
     [(AXSSMotionTrackingInputManager *)self _inputUpdated];
   }
@@ -333,10 +333,10 @@ void __97__AXSSMotionTrackingInputManager_motionTrackingVideoFileInputManager_up
   }
 }
 
-- (id)_compatibleCameraInputMatchingCaptureDeviceUniqueID:(id)a3
+- (id)_compatibleCameraInputMatchingCaptureDeviceUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v11 = 0;
     v12 = &v11;
@@ -344,14 +344,14 @@ void __97__AXSSMotionTrackingInputManager_motionTrackingVideoFileInputManager_up
     v14 = __Block_byref_object_copy__5;
     v15 = __Block_byref_object_dispose__5;
     v16 = 0;
-    v5 = [(AXSSMotionTrackingInputManager *)self _compatibleInputs];
+    _compatibleInputs = [(AXSSMotionTrackingInputManager *)self _compatibleInputs];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __86__AXSSMotionTrackingInputManager__compatibleCameraInputMatchingCaptureDeviceUniqueID___block_invoke;
     v8[3] = &unk_1E81355D0;
-    v9 = v4;
+    v9 = dCopy;
     v10 = &v11;
-    [v5 enumerateObjectsUsingBlock:v8];
+    [_compatibleInputs enumerateObjectsUsingBlock:v8];
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -386,7 +386,7 @@ uint64_t __86__AXSSMotionTrackingInputManager__compatibleCameraInputMatchingCapt
 - (void)_inputUpdated
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = [a1 _compatibleInputs];
+  _compatibleInputs = [self _compatibleInputs];
   OUTLINED_FUNCTION_0_5();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
 

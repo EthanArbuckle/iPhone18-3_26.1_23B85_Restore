@@ -1,6 +1,6 @@
 @interface PLDataMigratorSupport
-- (PLDataMigratorSupport)initWithPathManager:(id)a3;
-- (void)recordDataMigrationInfo:(id)a3;
+- (PLDataMigratorSupport)initWithPathManager:(id)manager;
+- (void)recordDataMigrationInfo:(id)info;
 - (void)removeAsidePhotosDatabase;
 - (void)removeInternalMemoriesRelatedSnapshotDirectory;
 - (void)removeLegacyMetadataFiles;
@@ -14,11 +14,11 @@
   v11 = *MEMORY[0x1E69E9840];
   v2 = [(PLPhotoLibraryPathManager *)self->_pathManager privateDirectoryWithSubType:5 createIfNeeded:0 error:0];
   v3 = [v2 stringByAppendingPathComponent:@"NVP_HIDDENFACES.hiddenfacemetadata"];
-  v4 = [MEMORY[0x1E69BF238] fileManager];
-  if ([v4 fileExistsAtPath:v3])
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
+  if ([fileManager fileExistsAtPath:v3])
   {
     v8 = 0;
-    v5 = [v4 removeItemAtPath:v3 error:&v8];
+    v5 = [fileManager removeItemAtPath:v3 error:&v8];
     v6 = v8;
     if ((v5 & 1) == 0)
     {
@@ -35,21 +35,21 @@
 
 - (void)removeAsidePhotosDatabase
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager photosAsideDatabasePath];
-  [MEMORY[0x1E69BF238] removeDisconnectedSQLiteDatabaseFileWithPath:v2 error:0];
+  photosAsideDatabasePath = [(PLPhotoLibraryPathManager *)self->_pathManager photosAsideDatabasePath];
+  [MEMORY[0x1E69BF238] removeDisconnectedSQLiteDatabaseFileWithPath:photosAsideDatabasePath error:0];
 }
 
 - (void)removeInternalMemoriesRelatedSnapshotDirectory
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager legacyMemoriesRelatedSnapshotDirectory];
-  v3 = [MEMORY[0x1E69BF238] fileManager];
-  v4 = v3;
+  legacyMemoriesRelatedSnapshotDirectory = [(PLPhotoLibraryPathManager *)self->_pathManager legacyMemoriesRelatedSnapshotDirectory];
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
+  v4 = fileManager;
   v10 = 0;
-  if (v2 && [v3 fileExistsAtPath:v2 isDirectory:&v10] && v10 == 1)
+  if (legacyMemoriesRelatedSnapshotDirectory && [fileManager fileExistsAtPath:legacyMemoriesRelatedSnapshotDirectory isDirectory:&v10] && v10 == 1)
   {
     v9 = 0;
-    v5 = [v4 removeItemAtPath:v2 error:&v9];
+    v5 = [v4 removeItemAtPath:legacyMemoriesRelatedSnapshotDirectory error:&v9];
     v6 = v9;
     v7 = v6;
     if (!v5 || v6)
@@ -58,7 +58,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v12 = v2;
+        v12 = legacyMemoriesRelatedSnapshotDirectory;
         v13 = 2112;
         v14 = v7;
         _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Failed to clean up %@ [%@]", buf, 0x16u);
@@ -69,14 +69,14 @@
 
 - (void)removeModelInterestDatabase
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager legacyModelInterestDatabasePath];
-  [MEMORY[0x1E69BF238] removeDisconnectedSQLiteDatabaseFileWithPath:v2 error:0];
+  legacyModelInterestDatabasePath = [(PLPhotoLibraryPathManager *)self->_pathManager legacyModelInterestDatabasePath];
+  [MEMORY[0x1E69BF238] removeDisconnectedSQLiteDatabaseFileWithPath:legacyModelInterestDatabasePath error:0];
 }
 
-- (void)recordDataMigrationInfo:(id)a3
+- (void)recordDataMigrationInfo:(id)info
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   v5 = [(PLPhotoLibraryPathManager *)self->_pathManager photoDirectoryWithType:6];
   v21 = 0;
   v6 = [MEMORY[0x1E69BF238] createDirectoryAtPath:v5 error:&v21];
@@ -96,7 +96,7 @@
 
   v9 = [v5 stringByAppendingPathComponent:*MEMORY[0x1E69BFCE8]];
   v20 = 0;
-  v10 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:100 options:0 error:&v20];
+  v10 = [MEMORY[0x1E696AE40] dataWithPropertyList:infoCopy format:100 options:0 error:&v20];
   v11 = v20;
 
   if (v10)
@@ -114,7 +114,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v23 = v4;
+      v23 = infoCopy;
       v24 = 2114;
       v25 = v9;
       v26 = 2114;
@@ -129,7 +129,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v23 = v4;
+      v23 = infoCopy;
       v24 = 2114;
       v25 = v11;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Unable to create data from info dictionary: %{public}@, reason: %{public}@", buf, 0x16u);
@@ -157,16 +157,16 @@ LABEL_13:
   }
 }
 
-- (PLDataMigratorSupport)initWithPathManager:(id)a3
+- (PLDataMigratorSupport)initWithPathManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PLDataMigratorSupport;
   v6 = [(PLDataMigratorSupport *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pathManager, a3);
+    objc_storeStrong(&v6->_pathManager, manager);
   }
 
   return v7;

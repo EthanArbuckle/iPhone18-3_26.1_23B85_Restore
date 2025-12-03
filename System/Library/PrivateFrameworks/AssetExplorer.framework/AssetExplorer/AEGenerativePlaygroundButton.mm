@@ -1,29 +1,29 @@
 @interface AEGenerativePlaygroundButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setIsGenerativeAssetAppearance:(BOOL)a3;
+- (void)setIsGenerativeAssetAppearance:(BOOL)appearance;
 @end
 
 @implementation AEGenerativePlaygroundButton
 
-- (void)setIsGenerativeAssetAppearance:(BOOL)a3
+- (void)setIsGenerativeAssetAppearance:(BOOL)appearance
 {
-  v4 = self;
-  sub_2411E0718(a3);
+  selfCopy = self;
+  sub_2411E0718(appearance);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2411E0E3C();
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  selfCopy = self;
   LOBYTE(self) = sub_2411E0F20(x, y);
 
   return self & 1;

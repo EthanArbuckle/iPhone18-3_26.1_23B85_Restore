@@ -1,38 +1,38 @@
 @interface BKEndOfBookCardViewController
 - (BCSheetTransitioningCardContent)transitioningCardContent;
-- (BKEndOfBookCardViewController)initWithStoreID:(id)a3 resource:(id)a4;
+- (BKEndOfBookCardViewController)initWithStoreID:(id)d resource:(id)resource;
 - (BKEndOfBookCardViewControllerDelegate)delegate;
 - (BSUIFeedNavigationController)cardNavigationController;
 - (BSUIFeedViewController)currentFeedViewController;
 - (CGSize)cardSize;
-- (id)_optionsForUIScene:(BOOL)a3;
+- (id)_optionsForUIScene:(BOOL)scene;
 - (id)serializeUpSellData;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_anchorCloseButton:(id)a3 toView:(id)a4;
-- (void)bc_closeAssetWithCardStackViewController:(id)a3 completion:(id)a4;
-- (void)bc_closeToAssetWithCardStackViewController:(id)a3 completion:(id)a4;
+- (void)_anchorCloseButton:(id)button toView:(id)view;
+- (void)bc_closeAssetWithCardStackViewController:(id)controller completion:(id)completion;
+- (void)bc_closeToAssetWithCardStackViewController:(id)controller completion:(id)completion;
 - (void)closeCard;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)updateCardSize;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKEndOfBookCardViewController
 
-- (BKEndOfBookCardViewController)initWithStoreID:(id)a3 resource:(id)a4
+- (BKEndOfBookCardViewController)initWithStoreID:(id)d resource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  resourceCopy = resource;
   v11.receiver = self;
   v11.super_class = BKEndOfBookCardViewController;
   v8 = [(BKEndOfBookCardViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(BKEndOfBookCardViewController *)v8 setStoreID:v6];
-    [(BKEndOfBookCardViewController *)v9 setResource:v7];
+    [(BKEndOfBookCardViewController *)v8 setStoreID:dCopy];
+    [(BKEndOfBookCardViewController *)v9 setResource:resourceCopy];
     [(BKEndOfBookCardViewController *)v9 setDefinesPresentationContext:1];
     [(BKEndOfBookCardViewController *)v9 setPreferredContentSize:540.0, 746.0];
     [(BKEndOfBookCardViewController *)v9 setModalPresentationStyle:2];
@@ -47,8 +47,8 @@
   v27.super_class = BKEndOfBookCardViewController;
   [(BKEndOfBookCardViewController *)&v27 viewDidLoad];
   v3 = [BSUIFeedViewController alloc];
-  v4 = [(BKEndOfBookCardViewController *)self options];
-  v5 = [v3 initWithOptions:v4];
+  options = [(BKEndOfBookCardViewController *)self options];
+  v5 = [v3 initWithOptions:options];
 
   v6 = [[BSUIFeedNavigationController alloc] initWithOptions:0];
   v29 = v5;
@@ -56,18 +56,18 @@
   [v6 setViewControllers:v7];
 
   [(BKEndOfBookCardViewController *)self addChildViewController:v6];
-  v8 = [(BKEndOfBookCardViewController *)self view];
-  [v8 bounds];
+  view = [(BKEndOfBookCardViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v6 view];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  view2 = [v6 view];
+  [view2 setFrame:{v10, v12, v14, v16}];
 
-  v18 = [(BKEndOfBookCardViewController *)self view];
-  v19 = [v6 view];
-  [v18 addSubview:v19];
+  view3 = [(BKEndOfBookCardViewController *)self view];
+  view4 = [v6 view];
+  [view3 addSubview:view4];
 
   [v6 didMoveToParentViewController:self];
   [v6 setDelegate:self];
@@ -89,11 +89,11 @@
   else
   {
     v24 = [UIButton buttonWithType:7];
-    v25 = [(BKEndOfBookCardViewController *)self view];
-    [v25 addSubview:v24];
+    view5 = [(BKEndOfBookCardViewController *)self view];
+    [view5 addSubview:v24];
 
-    v26 = [(BKEndOfBookCardViewController *)self view];
-    [(BKEndOfBookCardViewController *)self _anchorCloseButton:v24 toView:v26];
+    view6 = [(BKEndOfBookCardViewController *)self view];
+    [(BKEndOfBookCardViewController *)self _anchorCloseButton:v24 toView:view6];
 
     [(UIView *)v24 addTarget:self action:"_closeButtonTapped:" forControlEvents:64];
     [(UIView *)v24 _accessibilitySetSortPriority:999];
@@ -102,31 +102,31 @@
   }
 }
 
-- (id)_optionsForUIScene:(BOOL)a3
+- (id)_optionsForUIScene:(BOOL)scene
 {
-  v3 = a3;
-  v5 = [(BKEndOfBookCardViewController *)self upSellData];
+  sceneCopy = scene;
+  upSellData = [(BKEndOfBookCardViewController *)self upSellData];
 
   v6 = &_s19EngagementCollector15BMPropertyValueC4withACSgAA08PropertyD0OSg_tcfc_ptr;
-  if (v5)
+  if (upSellData)
   {
-    v23 = v3;
+    v23 = sceneCopy;
     v26[0] = BAUpSellLocationKey;
-    v7 = &_s19EngagementCollector15BMPropertyValueC4withACSgAA08PropertyD0OSg_tcfc_ptr;
-    v8 = [(BKEndOfBookCardViewController *)self upSellData];
-    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 location]);
+    upSellData5 = &_s19EngagementCollector15BMPropertyValueC4withACSgAA08PropertyD0OSg_tcfc_ptr;
+    upSellData2 = [(BKEndOfBookCardViewController *)self upSellData];
+    v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [upSellData2 location]);
     v27[0] = v9;
     v26[1] = BAUpSellVariantKey;
-    v10 = [(BKEndOfBookCardViewController *)self upSellData];
-    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 variant]);
+    upSellData3 = [(BKEndOfBookCardViewController *)self upSellData];
+    v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [upSellData3 variant]);
     v27[1] = v11;
     v26[2] = BAUpSellVariantVersionKey;
-    v12 = [(BKEndOfBookCardViewController *)self upSellData];
-    v13 = [v12 variantVersion];
-    if (v13)
+    upSellData4 = [(BKEndOfBookCardViewController *)self upSellData];
+    variantVersion = [upSellData4 variantVersion];
+    if (variantVersion)
     {
-      v7 = [(BKEndOfBookCardViewController *)self upSellData];
-      [v7 variantVersion];
+      upSellData5 = [(BKEndOfBookCardViewController *)self upSellData];
+      [upSellData5 variantVersion];
     }
 
     else
@@ -135,19 +135,19 @@
     }
     v14 = ;
     v27[2] = v14;
-    v5 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:3];
-    if (v13)
+    upSellData = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:3];
+    if (variantVersion)
     {
 
-      v14 = v7;
+      v14 = upSellData5;
     }
 
     v6 = &_s19EngagementCollector15BMPropertyValueC4withACSgAA08PropertyD0OSg_tcfc_ptr;
-    v3 = v23;
+    sceneCopy = v23;
   }
 
   v24[0] = BSUIFeedOptionsKeyContextMenuProvider;
-  if (v3)
+  if (sceneCopy)
   {
     +[NSNull null];
   }
@@ -161,34 +161,34 @@
   v25[1] = &__kCFBooleanTrue;
   v24[1] = @"end-of-book-card";
   v24[2] = @"storeId";
-  v16 = [(BKEndOfBookCardViewController *)self storeID];
-  v25[2] = v16;
+  storeID = [(BKEndOfBookCardViewController *)self storeID];
+  v25[2] = storeID;
   v24[3] = @"resource";
-  v17 = [(BKEndOfBookCardViewController *)self resource];
-  v18 = v17;
-  if (!v17)
+  resource = [(BKEndOfBookCardViewController *)self resource];
+  v18 = resource;
+  if (!resource)
   {
     v18 = +[NSNull null];
   }
 
   v25[3] = v18;
   v24[4] = @"upSellData";
-  v19 = [(BKEndOfBookCardViewController *)self serializeUpSellData];
-  v25[4] = v19;
+  serializeUpSellData = [(BKEndOfBookCardViewController *)self serializeUpSellData];
+  v25[4] = serializeUpSellData;
   v24[5] = @"rawUpSellData";
-  v20 = v5;
-  if (!v5)
+  v20 = upSellData;
+  if (!upSellData)
   {
     v20 = +[NSNull null];
   }
 
   v25[5] = v20;
   v21 = [v6[471] dictionaryWithObjects:v25 forKeys:v24 count:6];
-  if (!v5)
+  if (!upSellData)
   {
   }
 
-  if (!v17)
+  if (!resource)
   {
   }
 
@@ -197,22 +197,22 @@
 
 - (id)serializeUpSellData
 {
-  v2 = self;
+  selfCopy = self;
   v12[0] = BAUpSellLocationKey;
-  v3 = [(BKEndOfBookCardViewController *)self upSellData];
-  v4 = +[BAUtilities stringFromUpSellLocation:](BAUtilities, "stringFromUpSellLocation:", [v3 location]);
+  upSellData = [(BKEndOfBookCardViewController *)self upSellData];
+  v4 = +[BAUtilities stringFromUpSellLocation:](BAUtilities, "stringFromUpSellLocation:", [upSellData location]);
   v13[0] = v4;
   v12[1] = BAUpSellVariantKey;
-  v5 = [v2 upSellData];
-  v6 = +[BAUtilities stringFromUpSellVariant:](BAUtilities, "stringFromUpSellVariant:", [v5 variant]);
+  upSellData2 = [selfCopy upSellData];
+  v6 = +[BAUtilities stringFromUpSellVariant:](BAUtilities, "stringFromUpSellVariant:", [upSellData2 variant]);
   v13[1] = v6;
   v12[2] = BAUpSellVariantVersionKey;
-  v7 = [v2 upSellData];
-  v8 = [v7 variantVersion];
-  if (v8)
+  upSellData3 = [selfCopy upSellData];
+  variantVersion = [upSellData3 variantVersion];
+  if (variantVersion)
   {
-    v2 = [v2 upSellData];
-    [v2 variantVersion];
+    selfCopy = [selfCopy upSellData];
+    [selfCopy variantVersion];
   }
 
   else
@@ -222,10 +222,10 @@
   v9 = ;
   v13[2] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v8)
+  if (variantVersion)
   {
 
-    v9 = v2;
+    v9 = selfCopy;
   }
 
   return v10;
@@ -262,9 +262,9 @@
 
 - (CGSize)cardSize
 {
-  v2 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-  v3 = [v2 view];
-  [v3 bounds];
+  cardNavigationController = [(BKEndOfBookCardViewController *)self cardNavigationController];
+  view = [cardNavigationController view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -277,81 +277,81 @@
 
 - (void)updateCardSize
 {
-  v3 = [(BKEndOfBookCardViewController *)self view];
-  [v3 bounds];
+  view = [(BKEndOfBookCardViewController *)self view];
+  [view bounds];
   CGRectGetCenterNoRounding();
   v5 = v4;
   v7 = v6;
-  v8 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-  v9 = [v8 view];
-  [v9 setCenter:{v5, v7}];
+  cardNavigationController = [(BKEndOfBookCardViewController *)self cardNavigationController];
+  view2 = [cardNavigationController view];
+  [view2 setCenter:{v5, v7}];
 
-  v22 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-  v10 = [v22 view];
-  [v10 bounds];
-  v11 = [(BKEndOfBookCardViewController *)self view];
-  [v11 bounds];
+  cardNavigationController2 = [(BKEndOfBookCardViewController *)self cardNavigationController];
+  view3 = [cardNavigationController2 view];
+  [view3 bounds];
+  view4 = [(BKEndOfBookCardViewController *)self view];
+  [view4 bounds];
   CGRectMakeWithOriginSize();
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-  v21 = [v20 view];
-  [v21 setBounds:{v13, v15, v17, v19}];
+  cardNavigationController3 = [(BKEndOfBookCardViewController *)self cardNavigationController];
+  view5 = [cardNavigationController3 view];
+  [view5 setBounds:{v13, v15, v17, v19}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = BKEndOfBookCardViewController;
-  v7 = a4;
-  [(BKEndOfBookCardViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BKEndOfBookCardViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E8508;
   v8[3] = &unk_100A04410;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (void)closeCard
 {
-  v3 = [(BKEndOfBookCardViewController *)self delegate];
-  v8 = v3;
-  if (v3)
+  delegate = [(BKEndOfBookCardViewController *)self delegate];
+  v8 = delegate;
+  if (delegate)
   {
-    [v3 endOfBookCardViewControllerDidFinish:self];
+    [delegate endOfBookCardViewControllerDidFinish:self];
   }
 
   else
   {
-    v4 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-    v5 = [v4 currentFeedViewController];
-    v6 = [(BKEndOfBookCardViewController *)self presentingViewController];
-    [v5 cardStackViewController:0 parentCardWillDismissWithReason:1 targetViewController:v6];
+    cardNavigationController = [(BKEndOfBookCardViewController *)self cardNavigationController];
+    currentFeedViewController = [cardNavigationController currentFeedViewController];
+    presentingViewController = [(BKEndOfBookCardViewController *)self presentingViewController];
+    [currentFeedViewController cardStackViewController:0 parentCardWillDismissWithReason:1 targetViewController:presentingViewController];
 
-    v7 = [(BKEndOfBookCardViewController *)self presentingViewController];
-    [v7 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController2 = [(BKEndOfBookCardViewController *)self presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_anchorCloseButton:(id)a3 toView:(id)a4
+- (void)_anchorCloseButton:(id)button toView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v6 topAnchor];
-  v8 = [v5 topAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8 constant:16.0];
+  viewCopy = view;
+  buttonCopy = button;
+  [buttonCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  topAnchor = [buttonCopy topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v14[0] = v9;
-  v10 = [v6 trailingAnchor];
+  trailingAnchor = [buttonCopy trailingAnchor];
 
-  v11 = [v5 trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
 
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-16.0];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v14[1] = v12;
   v13 = [NSArray arrayWithObjects:v14 count:2];
   [NSLayoutConstraint activateConstraints:v13];
@@ -359,14 +359,14 @@
 
 - (BCSheetTransitioningCardContent)transitioningCardContent
 {
-  v3 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 count];
+  cardNavigationController = [(BKEndOfBookCardViewController *)self cardNavigationController];
+  viewControllers = [cardNavigationController viewControllers];
+  v5 = [viewControllers count];
 
   if (v5 == 1)
   {
-    v6 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-    v7 = [v6 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCSheetTransitioningCardContent];
+    cardNavigationController2 = [(BKEndOfBookCardViewController *)self cardNavigationController];
+    v7 = [cardNavigationController2 im_firstVisibleChildConformingToProtocol:&OBJC_PROTOCOL___BCSheetTransitioningCardContent];
   }
 
   else
@@ -377,54 +377,54 @@
   return v7;
 }
 
-- (void)bc_closeToAssetWithCardStackViewController:(id)a3 completion:(id)a4
+- (void)bc_closeToAssetWithCardStackViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKEndOfBookCardViewController *)self delegate];
-  [v8 endOfBookCardViewControllerWantsToCloseToAsset:self cardStackViewController:v7 completion:v6];
+  completionCopy = completion;
+  controllerCopy = controller;
+  delegate = [(BKEndOfBookCardViewController *)self delegate];
+  [delegate endOfBookCardViewControllerWantsToCloseToAsset:self cardStackViewController:controllerCopy completion:completionCopy];
 }
 
-- (void)bc_closeAssetWithCardStackViewController:(id)a3 completion:(id)a4
+- (void)bc_closeAssetWithCardStackViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKEndOfBookCardViewController *)self delegate];
-  [v8 endOfBookCardViewControllerWantsToCloseAsset:self cardStackViewController:v7 completion:v6];
+  completionCopy = completion;
+  controllerCopy = controller;
+  delegate = [(BKEndOfBookCardViewController *)self delegate];
+  [delegate endOfBookCardViewControllerWantsToCloseAsset:self cardStackViewController:controllerCopy completion:completionCopy];
 }
 
 - (BSUIFeedViewController)currentFeedViewController
 {
-  v2 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-  v3 = [v2 currentFeedViewController];
+  cardNavigationController = [(BKEndOfBookCardViewController *)self cardNavigationController];
+  currentFeedViewController = [cardNavigationController currentFeedViewController];
 
-  return v3;
+  return currentFeedViewController;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(BKEndOfBookCardViewController *)self cardNavigationController];
-  v10 = [v9 childViewControllers];
-  v11 = [v10 firstObject];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  cardNavigationController = [(BKEndOfBookCardViewController *)self cardNavigationController];
+  childViewControllers = [cardNavigationController childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  v12 = [v8 transitionCoordinator];
+  transitionCoordinator = [controllerCopy transitionCoordinator];
 
-  if (v12)
+  if (transitionCoordinator)
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000E8A60;
     v15[3] = &unk_100A06F50;
     v15[4] = self;
-    v16 = v11 != v7;
-    [v12 animateAlongsideTransition:v15 completion:0];
+    v16 = firstObject != viewControllerCopy;
+    [transitionCoordinator animateAlongsideTransition:v15 completion:0];
   }
 
   else
   {
-    if (v11 == v7)
+    if (firstObject == viewControllerCopy)
     {
       v13 = 1.0;
     }
@@ -434,8 +434,8 @@
       v13 = 0.0;
     }
 
-    v14 = [(BKEndOfBookCardViewController *)self closeButton];
-    [v14 setAlpha:v13];
+    closeButton = [(BKEndOfBookCardViewController *)self closeButton];
+    [closeButton setAlpha:v13];
   }
 }
 

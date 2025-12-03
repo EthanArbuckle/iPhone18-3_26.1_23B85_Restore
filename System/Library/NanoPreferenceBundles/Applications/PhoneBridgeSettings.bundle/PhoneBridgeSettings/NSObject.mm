@@ -1,15 +1,15 @@
 @interface NSObject
 + (void)NPHRequestIdleTimeNotification;
-+ (void)_NPHIdleTimeNotification:(id)a3;
-+ (void)performBlockAtIdle:(id)a3;
-- (void)nph_debounce:(SEL)a3 delay:(double)a4;
++ (void)_NPHIdleTimeNotification:(id)notification;
++ (void)performBlockAtIdle:(id)idle;
+- (void)nph_debounce:(SEL)nph_debounce delay:(double)delay;
 @end
 
 @implementation NSObject
 
-+ (void)performBlockAtIdle:(id)a3
++ (void)performBlockAtIdle:(id)idle
 {
-  v4 = a3;
+  idleCopy = idle;
   v5 = nph_general_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -22,17 +22,17 @@
   block[1] = 3221225472;
   block[2] = sub_1EDC;
   block[3] = &unk_83E0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_C680 != -1)
   {
     dispatch_once(&qword_C680, block);
   }
 
   v6 = qword_C688;
-  v7 = [v4 copy];
+  v7 = [idleCopy copy];
 
   [v6 addObject:v7];
-  [a1 NPHRequestIdleTimeNotification];
+  [self NPHRequestIdleTimeNotification];
 }
 
 + (void)NPHRequestIdleTimeNotification
@@ -50,7 +50,7 @@
   [v4 enqueueNotification:v3 postingStyle:1];
 }
 
-+ (void)_NPHIdleTimeNotification:(id)a3
++ (void)_NPHIdleTimeNotification:(id)notification
 {
   v4 = nph_general_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -62,11 +62,11 @@
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "%s sIdleBlocks.count:%lu", &v10, 0x16u);
   }
 
-  v5 = [qword_C688 firstObject];
-  if (v5)
+  firstObject = [qword_C688 firstObject];
+  if (firstObject)
   {
     v6 = +[NSDate date];
-    v5[2](v5);
+    firstObject[2](firstObject);
     [v6 timeIntervalSinceNow];
     v8 = v7 * -1000.0;
     if (v7 * -1000.0 > 100.0)
@@ -85,16 +85,16 @@
     [qword_C688 removeObjectAtIndex:0];
     if ([qword_C688 count])
     {
-      [a1 NPHRequestIdleTimeNotification];
+      [self NPHRequestIdleTimeNotification];
     }
   }
 }
 
-- (void)nph_debounce:(SEL)a3 delay:(double)a4
+- (void)nph_debounce:(SEL)nph_debounce delay:(double)delay
 {
-  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:a3 object:0];
+  [NSObject cancelPreviousPerformRequestsWithTarget:self selector:nph_debounce object:0];
 
-  [self performSelector:a3 withObject:0 afterDelay:a4];
+  [self performSelector:nph_debounce withObject:0 afterDelay:delay];
 }
 
 @end

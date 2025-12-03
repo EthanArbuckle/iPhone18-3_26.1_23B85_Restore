@@ -1,17 +1,17 @@
 @interface SafariSandboxBrokerConnection
-- (void)_connectionWithCompletionHandler:(id)a3;
+- (void)_connectionWithCompletionHandler:(id)handler;
 @end
 
 @implementation SafariSandboxBrokerConnection
 
-- (void)_connectionWithCompletionHandler:(id)a3
+- (void)_connectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   connection = self->_connection;
   if (connection)
   {
-    (*(v4 + 2))(v4, connection, 0);
+    (*(handlerCopy + 2))(handlerCopy, connection, 0);
   }
 
   else

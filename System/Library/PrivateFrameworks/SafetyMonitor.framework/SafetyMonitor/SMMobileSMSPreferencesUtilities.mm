@@ -6,20 +6,20 @@
 + (BOOL)isUserOnBoardedForCriticalAlert;
 + (BOOL)shareAllLocations;
 + (BOOL)showCheckInRemindersTip;
-+ (id)_copyDuetExpertPreferencesValueForKey:(id)a3;
-+ (id)_copyMobileSMSPreferencesValueForKey:(id)a3;
++ (id)_copyDuetExpertPreferencesValueForKey:(id)key;
++ (id)_copyMobileSMSPreferencesValueForKey:(id)key;
 + (id)_criticalAlertPreference;
 + (id)duetExpertStore;
 + (id)legacyStore;
 + (id)store;
 + (int64_t)alwaysOnPromptCount;
 + (int64_t)criticalAlertPreference;
-+ (void)_setMobileSMSPreferencesValue:(id)a3 forKey:(id)a4;
-+ (void)_setShareAllLocations:(id)a3;
++ (void)_setMobileSMSPreferencesValue:(id)value forKey:(id)key;
++ (void)_setShareAllLocations:(id)locations;
 + (void)_syncSiriLockScreenSuggestionsPrefIfNeeded;
 + (void)migrateIfNeeded;
-+ (void)setAlwaysOnPromptCount:(int64_t)a3;
-+ (void)setCriticalAlertPreference:(int64_t)a3;
++ (void)setAlwaysOnPromptCount:(int64_t)count;
++ (void)setCriticalAlertPreference:(int64_t)preference;
 + (void)syncSiriLockScreenSuggestionsPrefs;
 @end
 
@@ -104,15 +104,15 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
 + (void)migrateIfNeeded
 {
   v24 = *MEMORY[0x277D85DE8];
-  [a1 _syncSiriLockScreenSuggestionsPrefIfNeeded];
-  v3 = [a1 legacyStore];
-  v4 = [v3 objectForKey:@"SafetyMonitorFirstTimeUI"];
+  [self _syncSiriLockScreenSuggestionsPrefIfNeeded];
+  legacyStore = [self legacyStore];
+  v4 = [legacyStore objectForKey:@"SafetyMonitorFirstTimeUI"];
 
-  v5 = [a1 legacyStore];
-  v6 = [v5 objectForKey:@"SafetyMonitorUseCriticalAlerts"];
+  legacyStore2 = [self legacyStore];
+  v6 = [legacyStore2 objectForKey:@"SafetyMonitorUseCriticalAlerts"];
 
-  v7 = [a1 legacyStore];
-  v8 = [v7 objectForKey:@"SafetyMonitorShareAllLocations"];
+  legacyStore3 = [self legacyStore];
+  v8 = [legacyStore3 objectForKey:@"SafetyMonitorShareAllLocations"];
 
   if (v4 || v6 || v8)
   {
@@ -129,38 +129,38 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
       }
     }
 
-    v12 = [a1 store];
-    v13 = [v12 objectForKey:@"SafetyMonitorFirstTimeUI"];
+    store = [self store];
+    v13 = [store objectForKey:@"SafetyMonitorFirstTimeUI"];
 
     if (!v13)
     {
-      [a1 _setMobileSMSPreferencesValue:v4 forKey:@"SafetyMonitorFirstTimeUI"];
+      [self _setMobileSMSPreferencesValue:v4 forKey:@"SafetyMonitorFirstTimeUI"];
     }
 
-    v14 = [a1 store];
-    v15 = [v14 objectForKey:@"SafetyMonitorUseCriticalAlerts"];
+    store2 = [self store];
+    v15 = [store2 objectForKey:@"SafetyMonitorUseCriticalAlerts"];
 
     if (!v15)
     {
-      [a1 _setMobileSMSPreferencesValue:v6 forKey:@"SafetyMonitorUseCriticalAlerts"];
+      [self _setMobileSMSPreferencesValue:v6 forKey:@"SafetyMonitorUseCriticalAlerts"];
     }
 
-    v16 = [a1 store];
-    v17 = [v16 objectForKey:@"SafetyMonitorShareAllLocations"];
+    store3 = [self store];
+    v17 = [store3 objectForKey:@"SafetyMonitorShareAllLocations"];
 
     if (!v17)
     {
-      [a1 _setMobileSMSPreferencesValue:v8 forKey:@"SafetyMonitorShareAllLocations"];
+      [self _setMobileSMSPreferencesValue:v8 forKey:@"SafetyMonitorShareAllLocations"];
     }
 
-    v18 = [a1 legacyStore];
-    [v18 removeObjectForKey:@"SafetyMonitorFirstTimeUI"];
+    legacyStore4 = [self legacyStore];
+    [legacyStore4 removeObjectForKey:@"SafetyMonitorFirstTimeUI"];
 
-    v19 = [a1 legacyStore];
-    [v19 removeObjectForKey:@"SafetyMonitorUseCriticalAlerts"];
+    legacyStore5 = [self legacyStore];
+    [legacyStore5 removeObjectForKey:@"SafetyMonitorUseCriticalAlerts"];
 
-    v20 = [a1 legacyStore];
-    [v20 removeObjectForKey:@"SafetyMonitorShareAllLocations"];
+    legacyStore6 = [self legacyStore];
+    [legacyStore6 removeObjectForKey:@"SafetyMonitorShareAllLocations"];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -168,27 +168,27 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
 
 + (void)_syncSiriLockScreenSuggestionsPrefIfNeeded
 {
-  v3 = [a1 isLockScreenSuggestionsAllowed];
-  if (v3 != [a1 isMobileSMSPreferencesLockScreenSuggestionsAllowed])
+  isLockScreenSuggestionsAllowed = [self isLockScreenSuggestionsAllowed];
+  if (isLockScreenSuggestionsAllowed != [self isMobileSMSPreferencesLockScreenSuggestionsAllowed])
   {
 
-    [a1 _syncSiriLockScreenSuggestionsPrefWithValue:v3];
+    [self _syncSiriLockScreenSuggestionsPrefWithValue:isLockScreenSuggestionsAllowed];
   }
 }
 
 + (void)syncSiriLockScreenSuggestionsPrefs
 {
-  v3 = [a1 isLockScreenSuggestionsAllowed];
+  isLockScreenSuggestionsAllowed = [self isLockScreenSuggestionsAllowed];
 
-  [a1 _syncSiriLockScreenSuggestionsPrefWithValue:v3];
+  [self _syncSiriLockScreenSuggestionsPrefWithValue:isLockScreenSuggestionsAllowed];
 }
 
-+ (id)_copyMobileSMSPreferencesValueForKey:(id)a3
++ (id)_copyMobileSMSPreferencesValueForKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 store];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  store = [self store];
+  v6 = [store objectForKey:keyCopy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -200,7 +200,7 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
       v12 = 138412802;
       v13 = v9;
       v14 = 2112;
-      v15 = v4;
+      v15 = keyCopy;
       v16 = 2112;
       v17 = v6;
       _os_log_impl(&dword_26455D000, v7, OS_LOG_TYPE_INFO, "%@, getting preference %@ value: %@", &v12, 0x20u);
@@ -211,12 +211,12 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
   return v6;
 }
 
-+ (id)_copyDuetExpertPreferencesValueForKey:(id)a3
++ (id)_copyDuetExpertPreferencesValueForKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 duetExpertStore];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  duetExpertStore = [self duetExpertStore];
+  v6 = [duetExpertStore objectForKey:keyCopy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -228,7 +228,7 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
       v12 = 138412802;
       v13 = v9;
       v14 = 2112;
-      v15 = v4;
+      v15 = keyCopy;
       v16 = 2112;
       v17 = v6;
       _os_log_impl(&dword_26455D000, v7, OS_LOG_TYPE_INFO, "%@, getting preference %@ value: %@", &v12, 0x20u);
@@ -239,11 +239,11 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
   return v6;
 }
 
-+ (void)_setMobileSMSPreferencesValue:(id)a3 forKey:(id)a4
++ (void)_setMobileSMSPreferencesValue:(id)value forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -254,56 +254,56 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
       v13 = 138412802;
       v14 = v10;
       v15 = 2112;
-      v16 = v7;
+      v16 = keyCopy;
       v17 = 2112;
-      v18 = v6;
+      v18 = valueCopy;
       _os_log_impl(&dword_26455D000, v8, OS_LOG_TYPE_INFO, "%@, setting preference %@ to %@", &v13, 0x20u);
     }
   }
 
-  v11 = [a1 store];
-  [v11 setObject:v6 forKey:v7];
+  store = [self store];
+  [store setObject:valueCopy forKey:keyCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
 + (BOOL)hasUserCompletedOnboarding
 {
-  v2 = [a1 _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorFirstTimeUI"];
+  v2 = [self _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorFirstTimeUI"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)shareAllLocations
 {
-  v2 = [a1 _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorShareAllLocations"];
+  v2 = [self _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorShareAllLocations"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)_setShareAllLocations:(id)a3
++ (void)_setShareAllLocations:(id)locations
 {
-  [a1 _setMobileSMSPreferencesValue:a3 forKey:@"SafetyMonitorShareAllLocations"];
+  [self _setMobileSMSPreferencesValue:locations forKey:@"SafetyMonitorShareAllLocations"];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"SMShareAllLocationsChangedNotification", 0, 0, 1u);
@@ -311,19 +311,19 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
 
 + (BOOL)isUserOnBoardedForCriticalAlert
 {
-  v2 = [a1 _criticalAlertPreference];
-  v3 = v2 != 0;
+  _criticalAlertPreference = [self _criticalAlertPreference];
+  v3 = _criticalAlertPreference != 0;
 
   return v3;
 }
 
 + (int64_t)criticalAlertPreference
 {
-  v2 = [a1 _criticalAlertPreference];
-  v3 = v2;
-  if (v2)
+  _criticalAlertPreference = [self _criticalAlertPreference];
+  v3 = _criticalAlertPreference;
+  if (_criticalAlertPreference)
   {
-    if ([v2 BOOLValue])
+    if ([_criticalAlertPreference BOOLValue])
     {
       v4 = 1;
     }
@@ -344,16 +344,16 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
 
 + (id)_criticalAlertPreference
 {
-  v2 = [a1 _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorUseCriticalAlerts"];
+  v2 = [self _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorUseCriticalAlerts"];
 
   return v2;
 }
 
-+ (void)setCriticalAlertPreference:(int64_t)a3
++ (void)setCriticalAlertPreference:(int64_t)preference
 {
-  if (a3)
+  if (preference)
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInt:a3 == 1];
+    v4 = [MEMORY[0x277CCABB0] numberWithInt:preference == 1];
   }
 
   else
@@ -362,26 +362,26 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
   }
 
   v6 = v4;
-  [a1 _setMobileSMSPreferencesValue:v4 forKey:@"SafetyMonitorUseCriticalAlerts"];
+  [self _setMobileSMSPreferencesValue:v4 forKey:@"SafetyMonitorUseCriticalAlerts"];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.MobileSMS.SafetyMonitorUseCriticalAlerts.changed", 0, 0, 1u);
 }
 
 + (BOOL)isMobileSMSPreferencesLockScreenSuggestionsAllowed
 {
-  v2 = [a1 _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorLockscreenSuggestionsEnabledWatch"];
+  v2 = [self _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorLockscreenSuggestionsEnabledWatch"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)isLockScreenSuggestionsAllowed
@@ -459,16 +459,16 @@ uint64_t __50__SMMobileSMSPreferencesUtilities_duetExpertStore__block_invoke()
 
 + (int64_t)alwaysOnPromptCount
 {
-  v2 = [a1 _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorAlwaysOnPromptCount"];
-  v3 = [v2 integerValue];
+  v2 = [self _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorAlwaysOnPromptCount"];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-+ (void)setAlwaysOnPromptCount:(int64_t)a3
++ (void)setAlwaysOnPromptCount:(int64_t)count
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [a1 _setMobileSMSPreferencesValue:v4 forKey:@"SafetyMonitorAlwaysOnPromptCount"];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:count];
+  [self _setMobileSMSPreferencesValue:v4 forKey:@"SafetyMonitorAlwaysOnPromptCount"];
 }
 
 + (BOOL)showCheckInRemindersTip
@@ -505,7 +505,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if ([a1 checkInRemindersPreviouslyEnabled])
+    if ([self checkInRemindersPreviouslyEnabled])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -532,9 +532,9 @@ LABEL_16:
     v4 = objc_alloc_init(SMAppDeletionManager);
     if ([(SMAppDeletionManager *)v4 isMessagesAppInstalled])
     {
-      v14 = [a1 alwaysOnPromptCount];
+      alwaysOnPromptCount = [self alwaysOnPromptCount];
       v15 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-      if (v14 > 2)
+      if (alwaysOnPromptCount > 2)
       {
         if (!v15)
         {
@@ -648,10 +648,10 @@ LABEL_17:
 
 + (BOOL)checkInRemindersPreviouslyEnabled
 {
-  v2 = [a1 _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorAlwaysOnPreviouslyEnabled"];
-  v3 = [v2 BOOLValue];
+  v2 = [self _copyMobileSMSPreferencesValueForKey:@"SafetyMonitorAlwaysOnPreviouslyEnabled"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

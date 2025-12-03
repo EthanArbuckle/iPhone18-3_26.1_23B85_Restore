@@ -17,13 +17,6 @@ void __89__UITraitCollection_SpringBoardHome__sbh_traitCollectionWithIconImageSt
   [v3 setObject:v2 forTrait:v4];
 }
 
-{
-  v2 = *(a1 + 32);
-  v3 = a2;
-  v4 = objc_opt_self();
-  [v3 setObject:v2 forTrait:v4];
-}
-
 void __108__UITraitCollection_SpringBoardHome__sbh_traitCollectionWithIconImageStyleConfiguration_userInterfaceStyle___block_invoke(uint64_t a1, void *a2)
 {
   v3 = a2;

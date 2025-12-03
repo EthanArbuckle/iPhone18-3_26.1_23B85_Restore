@@ -1,57 +1,57 @@
 @interface IKDOMFeatureFactory
-+ (id)featureForName:(id)a3 withDOMNode:(id)a4;
++ (id)featureForName:(id)name withDOMNode:(id)node;
 + (void)initialize;
-+ (void)registerClass:(Class)a3 forFeatureName:(id)a4;
++ (void)registerClass:(Class)class forFeatureName:(id)name;
 @end
 
 @implementation IKDOMFeatureFactory
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v4 = sClassMap_0;
     sClassMap_0 = v3;
 
-    [a1 registerClass:objc_opt_class() forFeatureName:@"Player"];
-    [a1 registerClass:objc_opt_class() forFeatureName:@"MenuBarDocument"];
-    [a1 registerClass:objc_opt_class() forFeatureName:@"Keyboard"];
-    [a1 registerClass:objc_opt_class() forFeatureName:@"leftNavigationDocument"];
-    [a1 registerClass:objc_opt_class() forFeatureName:@"rightNavigationDocument"];
+    [self registerClass:objc_opt_class() forFeatureName:@"Player"];
+    [self registerClass:objc_opt_class() forFeatureName:@"MenuBarDocument"];
+    [self registerClass:objc_opt_class() forFeatureName:@"Keyboard"];
+    [self registerClass:objc_opt_class() forFeatureName:@"leftNavigationDocument"];
+    [self registerClass:objc_opt_class() forFeatureName:@"rightNavigationDocument"];
     v5 = objc_opt_class();
 
-    [a1 registerClass:v5 forFeatureName:@"Browser"];
+    [self registerClass:v5 forFeatureName:@"Browser"];
   }
 }
 
-+ (void)registerClass:(Class)a3 forFeatureName:(id)a4
++ (void)registerClass:(Class)class forFeatureName:(id)name
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  nameCopy = name;
+  v6 = nameCopy;
+  if (class)
   {
-    v7 = v5;
-    v5 = [v5 length];
+    v7 = nameCopy;
+    nameCopy = [nameCopy length];
     v6 = v7;
-    if (v5)
+    if (nameCopy)
     {
-      v5 = [sClassMap_0 setObject:a3 forKey:v7];
+      nameCopy = [sClassMap_0 setObject:class forKey:v7];
       v6 = v7;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](nameCopy, v6);
 }
 
-+ (id)featureForName:(id)a3 withDOMNode:(id)a4
++ (id)featureForName:(id)name withDOMNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [sClassMap_0 objectForKey:v5];
+  nameCopy = name;
+  nodeCopy = node;
+  v7 = [sClassMap_0 objectForKey:nameCopy];
   if (v7)
   {
-    v8 = [[v7 alloc] initWithDOMNode:v6 featureName:v5];
+    v8 = [[v7 alloc] initWithDOMNode:nodeCopy featureName:nameCopy];
   }
 
   else

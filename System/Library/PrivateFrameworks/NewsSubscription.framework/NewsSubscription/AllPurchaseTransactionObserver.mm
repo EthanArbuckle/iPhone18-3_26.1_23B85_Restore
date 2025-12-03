@@ -1,7 +1,7 @@
 @interface AllPurchaseTransactionObserver
 - (_TtC16NewsSubscription30AllPurchaseTransactionObserver)init;
-- (void)bundleSubscriptionDidSubscribe:(id)a3 hideBundleDetectionUI:(BOOL)a4;
-- (void)handlePurchaseAddedNotificationWithNotification:(id)a3;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe hideBundleDetectionUI:(BOOL)i;
+- (void)handlePurchaseAddedNotificationWithNotification:(id)notification;
 @end
 
 @implementation AllPurchaseTransactionObserver
@@ -13,24 +13,24 @@
   return result;
 }
 
-- (void)handlePurchaseAddedNotificationWithNotification:(id)a3
+- (void)handlePurchaseAddedNotificationWithNotification:(id)notification
 {
   v4 = sub_1D78B3024();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D78B3004();
-  v8 = self;
+  selfCopy = self;
   sub_1D7857BBC();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3 hideBundleDetectionUI:(BOOL)a4
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe hideBundleDetectionUI:(BOOL)i
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D78595A4(a4);
+  subscribeCopy = subscribe;
+  selfCopy = self;
+  sub_1D78595A4(i);
 }
 
 @end

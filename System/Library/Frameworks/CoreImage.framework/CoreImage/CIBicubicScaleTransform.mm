@@ -90,9 +90,9 @@
 
 - (float32x2_t)_scale
 {
-  [*(a1 + 88) doubleValue];
+  [*(self + 88) doubleValue];
   v6 = fmax(v2, 0.0);
-  [*(a1 + 96) doubleValue];
+  [*(self + 96) doubleValue];
   v4.f64[0] = v6 * fmax(v3, 0.0);
   v4.f64[1] = v6;
   return vcvt_f32_f64(v4);
@@ -203,7 +203,7 @@
       v159 = v35;
     }
 
-    v145 = self;
+    selfCopy = self;
     inputImage = self->inputImage;
     v158 = 2.5;
     if (v34 != 0.0)
@@ -773,7 +773,7 @@ LABEL_137:
 LABEL_150:
     LODWORD(v91) = 1.0;
     v180 = v96;
-    if (*&v96 > 1.0 || (v96 = v174, *&v174 > 1.0) || inputImage == v145->inputImage)
+    if (*&v96 > 1.0 || (v96 = v174, *&v174 > 1.0) || inputImage == selfCopy->inputImage)
     {
       [(CIImage *)inputImage extent:v91];
       v111 = v211.origin.x;
@@ -843,7 +843,7 @@ LABEL_150:
       *&v116 = v144;
       if (*&v143 == 1.0 && v144 == 0.0)
       {
-        v117 = [CIKernel kernelWithInternalRepresentation:&CI::_cubicUpsample10, v116, v143];
+        v143 = [CIKernel kernelWithInternalRepresentation:&CI::_cubicUpsample10, v116, v143];
         if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(*&v191.var0, vdupq_n_s64(0xFFDFFFFFFFFFFFFFLL)), vceqq_f64(*&v191.var2, vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL)))))))
         {
           var2 = v191.var2;
@@ -867,12 +867,12 @@ LABEL_150:
         *&v184[4] = v181;
         v194[0] = inputImage;
         v194[1] = [CIVector vectorWithX:*&v181 Y:*(&v181 + 1)];
-        return -[CIKernel applyWithExtent:roiCallback:arguments:](v117, "applyWithExtent:roiCallback:arguments:", v184, [MEMORY[0x1E695DEC8] arrayWithObjects:v194 count:2], var0, var1, var2, var3);
+        return -[CIKernel applyWithExtent:roiCallback:arguments:](v143, "applyWithExtent:roiCallback:arguments:", v184, [MEMORY[0x1E695DEC8] arrayWithObjects:v194 count:2], var0, var1, var2, var3);
       }
 
       else if (v144 == 0.0)
       {
-        v120 = [CIKernel kernelWithInternalRepresentation:&CI::_cubicUpsampleX0, v116, v143];
+        v1432 = [CIKernel kernelWithInternalRepresentation:&CI::_cubicUpsampleX0, v116, v143];
         Rectangle::operator CGRect();
         v122 = v121;
         v124 = v123;
@@ -887,12 +887,12 @@ LABEL_150:
         v193[1] = [CIVector vectorWithX:*&v181 Y:*(&v181 + 1)];
         v193[2] = [CIVector vectorWithX:v149.f32[0] Y:v149.f32[1] Z:v149.f32[2] W:v149.f32[3]];
         v193[3] = [CIVector vectorWithX:v148.f32[0] Y:v148.f32[1] Z:v148.f32[2] W:v148.f32[3]];
-        return -[CIKernel applyWithExtent:roiCallback:arguments:](v120, "applyWithExtent:roiCallback:arguments:", v183, [MEMORY[0x1E695DEC8] arrayWithObjects:v193 count:4], v122, v124, v126, v128);
+        return -[CIKernel applyWithExtent:roiCallback:arguments:](v1432, "applyWithExtent:roiCallback:arguments:", v183, [MEMORY[0x1E695DEC8] arrayWithObjects:v193 count:4], v122, v124, v126, v128);
       }
 
       else
       {
-        v133 = [CIKernel kernelWithInternalRepresentation:&CI::_cubicUpsample, v116, v143];
+        v1433 = [CIKernel kernelWithInternalRepresentation:&CI::_cubicUpsample, v116, v143];
         Rectangle::operator CGRect();
         v135 = v134;
         v137 = v136;
@@ -907,7 +907,7 @@ LABEL_150:
         v192[1] = [CIVector vectorWithX:*&v181 Y:*(&v181 + 1)];
         v192[2] = [CIVector vectorWithX:v149.f32[0] Y:v149.f32[1] Z:v149.f32[2] W:v149.f32[3]];
         v192[3] = [CIVector vectorWithX:v148.f32[0] Y:v148.f32[1] Z:v148.f32[2] W:v148.f32[3]];
-        return -[CIKernel applyWithExtent:roiCallback:arguments:](v133, "applyWithExtent:roiCallback:arguments:", v182, [MEMORY[0x1E695DEC8] arrayWithObjects:v192 count:4], v135, v137, v139, v141);
+        return -[CIKernel applyWithExtent:roiCallback:arguments:](v1433, "applyWithExtent:roiCallback:arguments:", v182, [MEMORY[0x1E695DEC8] arrayWithObjects:v192 count:4], v135, v137, v139, v141);
       }
     }
 

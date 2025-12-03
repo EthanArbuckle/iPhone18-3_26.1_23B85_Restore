@@ -1,8 +1,8 @@
 @interface MUPayloadEncryption
 + (id)sharedInstance;
 - (MUPayloadEncryption)init;
-- (id)decryptData:(id)a3;
-- (id)encryptData:(id)a3;
+- (id)decryptData:(id)data;
+- (id)encryptData:(id)data;
 - (void)initializeKey;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __37__MUPayloadEncryption_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -47,11 +47,11 @@ uint64_t __37__MUPayloadEncryption_sharedInstance__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)encryptData:(id)a3
+- (id)encryptData:(id)data
 {
   __buf[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
     goto LABEL_7;
   }
@@ -63,16 +63,16 @@ uint64_t __37__MUPayloadEncryption_sharedInstance__block_invoke(uint64_t a1)
 
   if (self->_haveKey)
   {
-    dataOut = [v4 length];
+    dataOut = [dataCopy length];
     AKLog();
     generateRandomKey(__buf);
     v5 = [MEMORY[0x277CBEA90] dataWithBytes:__buf length:{16, dataOut}];
-    v6 = [v4 length];
+    v6 = [dataCopy length];
     v7 = [v5 length] + v6;
     dataOutAvailable = (v7 + 31) & 0xFFFFFFFFFFFFFFF0;
     v9 = [MEMORY[0x277CBEB28] dataWithCapacity:dataOutAvailable];
     [v9 appendData:v5];
-    [v9 appendData:v4];
+    [v9 appendData:dataCopy];
     [v9 setLength:dataOutAvailable];
     v14 = 0;
     v10 = CCCrypt(0, 0, 1u, self->_key, 0x10uLL, 0, [v9 mutableBytes], v7, objc_msgSend(v9, "mutableBytes"), dataOutAvailable, &v14);
@@ -100,11 +100,11 @@ LABEL_7:
   return v11;
 }
 
-- (id)decryptData:(id)a3
+- (id)decryptData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_8;
   }
@@ -150,11 +150,11 @@ LABEL_8:
 - (void)initializeKey
 {
   v32[7] = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_keyInitialized)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_keyInitialized)
   {
-    v2->_haveKey = 0;
+    selfCopy->_haveKey = 0;
     result = 0;
     v3 = *MEMORY[0x277CDC228];
     v4 = *MEMORY[0x277CDC238];
@@ -185,8 +185,8 @@ LABEL_8:
     v13 = SecItemCopyMatching(query, &result);
     if (v13 == -25300)
     {
-      generateRandomKey(v2->_key);
-      v16 = [MEMORY[0x277CBEA90] dataWithBytes:v2->_key length:16];
+      generateRandomKey(selfCopy->_key);
+      v16 = [MEMORY[0x277CBEA90] dataWithBytes:selfCopy->_key length:16];
       v24 = [v16 base64EncodedDataWithOptions:0];
 
       v29[0] = v3;
@@ -220,7 +220,7 @@ LABEL_8:
 
       else
       {
-        v2->_haveKey = 1;
+        selfCopy->_haveKey = 1;
       }
 
       if (cf)
@@ -235,7 +235,7 @@ LABEL_8:
       {
         NSLog(&cfstr_Secitemcopymat.isa, v13, &stru_286962590);
 LABEL_16:
-        v2->_keyInitialized = 1;
+        selfCopy->_keyInitialized = 1;
 
         goto LABEL_17;
       }
@@ -258,8 +258,8 @@ LABEL_16:
 
           if (v23)
           {
-            [v23 getBytes:v2->_key length:16];
-            v2->_haveKey = 1;
+            [v23 getBytes:selfCopy->_key length:16];
+            selfCopy->_haveKey = 1;
           }
         }
       }
@@ -269,7 +269,7 @@ LABEL_16:
   }
 
 LABEL_17:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 @end

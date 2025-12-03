@@ -1,6 +1,6 @@
 @interface CCSQLCommandJoinTable
 - (CCSQLCommandJoinTable)init;
-- (CCSQLCommandJoinTable)initWithTable:(id)a3 joinCriterion:(id)a4;
+- (CCSQLCommandJoinTable)initWithTable:(id)table joinCriterion:(id)criterion;
 - (id)description;
 @end
 
@@ -12,20 +12,20 @@
   objc_exception_throw(v2);
 }
 
-- (CCSQLCommandJoinTable)initWithTable:(id)a3 joinCriterion:(id)a4
+- (CCSQLCommandJoinTable)initWithTable:(id)table joinCriterion:(id)criterion
 {
-  v6 = a3;
-  v7 = a4;
+  tableCopy = table;
+  criterionCopy = criterion;
   v14.receiver = self;
   v14.super_class = CCSQLCommandJoinTable;
   v8 = [(CCSQLCommandJoinTable *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [tableCopy copy];
     table = v8->_table;
     v8->_table = v9;
 
-    v11 = [v7 copy];
+    v11 = [criterionCopy copy];
     joinCriterion = v8->_joinCriterion;
     v8->_joinCriterion = v11;
   }

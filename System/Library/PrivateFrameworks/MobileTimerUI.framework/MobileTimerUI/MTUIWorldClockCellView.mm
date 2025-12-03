@@ -1,19 +1,19 @@
 @interface MTUIWorldClockCellView
 + (double)defaultHeight;
-+ (id)dayAndTimeZoneOffsetStringFromDate:(id)a3 withTimeZoneOffset:(int64_t)a4 timeZoneAbbreviation:(id)a5 spaceBeforeTimeDesignator:(BOOL)a6 hoursOnly:(BOOL)a7;
-- (MTUIWorldClockCellView)initWithFrame:(CGRect)a3;
++ (id)dayAndTimeZoneOffsetStringFromDate:(id)date withTimeZoneOffset:(int64_t)offset timeZoneAbbreviation:(id)abbreviation spaceBeforeTimeDesignator:(BOOL)designator hoursOnly:(BOOL)only;
+- (MTUIWorldClockCellView)initWithFrame:(CGRect)frame;
 - (MTUIWorldClockCellViewDelegate)delegate;
 - (void)_configureFonts;
-- (void)handleTextSizeChange:(id)a3;
+- (void)handleTextSizeChange:(id)change;
 - (void)layoutSubviews;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTimeZone:(id)a3;
-- (void)significantTimeChange:(id)a3;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setTimeZone:(id)zone;
+- (void)significantTimeChange:(id)change;
 - (void)start;
 - (void)stop;
 - (void)updateLabelAdjustFontSize;
 - (void)updateTime;
-- (void)updateTimeContinuously:(int64_t)a3;
+- (void)updateTimeContinuously:(int64_t)continuously;
 @end
 
 @implementation MTUIWorldClockCellView
@@ -28,10 +28,10 @@
   v7 = v6;
   [v2 _scaledValueForValue:27.0];
   v9 = v5 + v7 + v8;
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  v11 = [v10 _defaultTraitCollection];
-  v12 = [v11 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v12);
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  _defaultTraitCollection = [mainScreen _defaultTraitCollection];
+  preferredContentSizeCategory = [_defaultTraitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -42,38 +42,38 @@
   return v9;
 }
 
-- (MTUIWorldClockCellView)initWithFrame:(CGRect)a3
+- (MTUIWorldClockCellView)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = MTUIWorldClockCellView;
-  v3 = [(MTUIWorldClockCellView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTUIWorldClockCellView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MTUIWorldClockCellView *)v3 setPreservesSuperviewLayoutMargins:1];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v4 selector:sel_significantTimeChange_ name:*MEMORY[0x277D766F0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_significantTimeChange_ name:*MEMORY[0x277D766F0] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v4 selector:sel_localeChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v4 selector:sel_localeChange_ name:*MEMORY[0x277CBE620] object:0];
 
-    v7 = [(UIView *)v4 mtui_isRTL];
+    mtui_isRTL = [(UIView *)v4 mtui_isRTL];
     v8 = objc_alloc_init(MTUIDigitalClockLabel);
     digitalClock = v4->_digitalClock;
     v4->_digitalClock = v8;
 
-    v10 = [MEMORY[0x277D74300] mtui_thinTimeFont];
-    [(MTUIDateLabel *)v4->_digitalClock setFont:v10];
+    mtui_thinTimeFont = [MEMORY[0x277D74300] mtui_thinTimeFont];
+    [(MTUIDateLabel *)v4->_digitalClock setFont:mtui_thinTimeFont];
 
-    v11 = [MEMORY[0x277D74300] mtui_defaultTimeDesignatorFont];
-    [(MTUIDateLabel *)v4->_digitalClock setTimeDesignatorFont:v11];
+    mtui_defaultTimeDesignatorFont = [MEMORY[0x277D74300] mtui_defaultTimeDesignatorFont];
+    [(MTUIDateLabel *)v4->_digitalClock setTimeDesignatorFont:mtui_defaultTimeDesignatorFont];
 
-    v12 = [MEMORY[0x277D75348] mtui_primaryTextColor];
-    [(MTUIDateLabel *)v4->_digitalClock setTextColor:v12];
+    mtui_primaryTextColor = [MEMORY[0x277D75348] mtui_primaryTextColor];
+    [(MTUIDateLabel *)v4->_digitalClock setTextColor:mtui_primaryTextColor];
 
-    v13 = [(MTUIDateLabel *)v4->_digitalClock dateLabel];
-    v14 = v13;
-    if (v7)
+    dateLabel = [(MTUIDateLabel *)v4->_digitalClock dateLabel];
+    v14 = dateLabel;
+    if (mtui_isRTL)
     {
       v15 = 0;
     }
@@ -83,7 +83,7 @@
       v15 = 2;
     }
 
-    if (v7)
+    if (mtui_isRTL)
     {
       v16 = 8;
     }
@@ -93,7 +93,7 @@
       v16 = 7;
     }
 
-    [v13 setTextAlignment:v15];
+    [dateLabel setTextAlignment:v15];
 
     [(MTUIWorldClockCellView *)v4 addSubview:v4->_digitalClock];
     v17 = objc_alloc(MEMORY[0x277D756B8]);
@@ -101,11 +101,11 @@
     nameLabel = v4->_nameLabel;
     v4->_nameLabel = v18;
 
-    v20 = [MEMORY[0x277D75348] mtui_primaryTextColor];
-    [(UILabel *)v4->_nameLabel setTextColor:v20];
+    mtui_primaryTextColor2 = [MEMORY[0x277D75348] mtui_primaryTextColor];
+    [(UILabel *)v4->_nameLabel setTextColor:mtui_primaryTextColor2];
 
-    v21 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v4->_nameLabel setBackgroundColor:v21];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v4->_nameLabel setBackgroundColor:clearColor];
 
     [(UILabel *)v4->_nameLabel setContentMode:v16];
     [(MTUIWorldClockCellView *)v4 addSubview:v4->_nameLabel];
@@ -113,18 +113,18 @@
     combinedLabel = v4->_combinedLabel;
     v4->_combinedLabel = v22;
 
-    v24 = [MEMORY[0x277D75348] mtui_secondaryTextColor];
-    [(UILabel *)v4->_combinedLabel setTextColor:v24];
+    mtui_secondaryTextColor = [MEMORY[0x277D75348] mtui_secondaryTextColor];
+    [(UILabel *)v4->_combinedLabel setTextColor:mtui_secondaryTextColor];
 
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v4->_combinedLabel setBackgroundColor:v25];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v4->_combinedLabel setBackgroundColor:clearColor2];
 
     [(UILabel *)v4->_combinedLabel setContentMode:v16];
     [(MTUIWorldClockCellView *)v4 addSubview:v4->_combinedLabel];
     v4->_shouldStackViews = 0;
     [(MTUIWorldClockCellView *)v4 _configureFonts];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v4 selector:sel_handleTextSizeChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v4 selector:sel_handleTextSizeChange_ name:*MEMORY[0x277D76810] object:0];
   }
 
   return v4;
@@ -134,13 +134,13 @@
 {
   [(MTUIWorldClockCellView *)self updateLabelAdjustFontSize];
   v10 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
-  v3 = [v10 fontDescriptor];
-  v4 = [v3 fontDescriptorWithSymbolicTraits:0x8000];
+  fontDescriptor = [v10 fontDescriptor];
+  v4 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
   v5 = [MEMORY[0x277D74300] fontWithDescriptor:v4 size:0.0];
   [(UILabel *)self->_nameLabel setFont:v5];
   v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769C0]];
-  v7 = [v6 fontDescriptor];
-  v8 = [v7 fontDescriptorWithSymbolicTraits:0x8000];
+  fontDescriptor2 = [v6 fontDescriptor];
+  v8 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:0x8000];
   v9 = [MEMORY[0x277D74300] fontWithDescriptor:v8 size:0.0];
   [(UILabel *)self->_combinedLabel setFont:v9];
 }
@@ -154,7 +154,7 @@
   [(UILabel *)combinedLabel setAdjustsFontSizeToFitWidth:!shouldStackViews];
 }
 
-- (void)handleTextSizeChange:(id)a3
+- (void)handleTextSizeChange:(id)change
 {
   gLabelMetrics_0 = 0;
   [(MTUIWorldClockCellView *)self _configureFonts];
@@ -171,16 +171,16 @@
     gLabelMetrics_1 = v3;
     [(UILabel *)self->_nameLabel effectiveFirstBaselineOffsetFromTop];
     gLabelMetrics_2 = v4;
-    v5 = [(UILabel *)self->_nameLabel font];
-    [v5 _scaledValueForValue:33.0];
+    font = [(UILabel *)self->_nameLabel font];
+    [font _scaledValueForValue:33.0];
     gLabelMetrics_3 = v6;
 
     [(UILabel *)self->_combinedLabel effectiveLayoutSizeFittingSize:1.79769313e308, 1.79769313e308];
     gLabelMetrics_4 = v7;
     [(UILabel *)self->_combinedLabel effectiveFirstBaselineOffsetFromTop];
     gLabelMetrics_5 = v8;
-    v9 = [(UILabel *)self->_combinedLabel font];
-    [v9 _scaledValueForValue:36.0];
+    font2 = [(UILabel *)self->_combinedLabel font];
+    [font2 _scaledValueForValue:36.0];
     gLabelMetrics_6 = v10;
   }
 
@@ -195,12 +195,12 @@
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(UIView *)self mtui_isRTL];
+  mtui_isRTL = [(UIView *)self mtui_isRTL];
   v43 = *&gLabelMetrics_5;
   v44 = *&gLabelMetrics_6;
   v41 = *&gLabelMetrics_2;
   v42 = *&gLabelMetrics_3;
-  if (v23)
+  if (mtui_isRTL)
   {
     v24 = v14;
   }
@@ -223,7 +223,7 @@
   if (!self->_shouldStackViews)
   {
     v28 = v12;
-    if (!v23)
+    if (!mtui_isRTL)
     {
       v50.origin.x = v16;
       v50.origin.y = v18;
@@ -240,7 +240,7 @@
     v31 = v28;
     v32 = v47;
     v33 = rect;
-    if (v23)
+    if (mtui_isRTL)
     {
       v34 = CGRectGetMaxX(*&v31) + 8.0;
       v51.origin.x = v16;
@@ -274,24 +274,24 @@
   [(UILabel *)self->_combinedLabel setFrame:v46, v44 - v43, v29, v36];
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_editing = a3;
-    if (a4)
+    animatedCopy = animated;
+    editingCopy = editing;
+    self->_editing = editing;
+    if (animated)
     {
       [MEMORY[0x277D75D18] beginAnimations:@"WorldClockCell" context:0];
     }
 
     if (!self->_shouldStackViews)
     {
-      [(MTUIDigitalClockLabel *)self->_digitalClock setHidden:v6];
+      [(MTUIDigitalClockLabel *)self->_digitalClock setHidden:editingCopy];
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       [MEMORY[0x277D75D18] commitAnimations];
     }
@@ -300,15 +300,15 @@
   }
 }
 
-- (void)significantTimeChange:(id)a3
+- (void)significantTimeChange:(id)change
 {
   [MEMORY[0x277CBEBB0] resetSystemTimeZone];
   [(MTUIWorldClockCellView *)self updateTime];
   v4 = gTodayFormatter;
   if (gTodayFormatter)
   {
-    v5 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [v4 setTimeZone:v5];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [v4 setTimeZone:systemTimeZone];
   }
 }
 
@@ -332,11 +332,11 @@
   }
 }
 
-- (void)updateTimeContinuously:(int64_t)a3
+- (void)updateTimeContinuously:(int64_t)continuously
 {
-  if (self->_nowInMinutes != a3)
+  if (self->_nowInMinutes != continuously)
   {
-    self->_nowInMinutes = a3;
+    self->_nowInMinutes = continuously;
     [(MTUIWorldClockCellView *)self updateTime];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained timeDidChangeForClockCell:self];
@@ -348,50 +348,50 @@
   timeZone = self->_timeZone;
   if (timeZone)
   {
-    v4 = [(NSTimeZone *)timeZone secondsFromGMT];
-    v5 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    v6 = v4 - [v5 secondsFromGMT];
+    secondsFromGMT = [(NSTimeZone *)timeZone secondsFromGMT];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    v6 = secondsFromGMT - [systemTimeZone secondsFromGMT];
 
     v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v6];
     v7 = [objc_opt_class() dayAndTimeZoneOffsetStringFromDate:v11 withTimeZoneOffset:v6 timeZoneAbbreviation:0 spaceBeforeTimeDesignator:0];
-    v8 = [(UILabel *)self->_combinedLabel text];
-    v9 = [v7 isEqualToString:v8];
+    text = [(UILabel *)self->_combinedLabel text];
+    v9 = [v7 isEqualToString:text];
 
     if ((v9 & 1) == 0)
     {
       [(UILabel *)self->_combinedLabel setText:v7];
     }
 
-    v10 = [MEMORY[0x277CBEAA8] date];
-    [(MTUIDateLabel *)self->_digitalClock setDate:v10];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(MTUIDateLabel *)self->_digitalClock setDate:date];
 
     [(MTUIWorldClockCellView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_timeZone != v5)
+  zoneCopy = zone;
+  v6 = zoneCopy;
+  if (self->_timeZone != zoneCopy)
   {
-    v7 = v5;
-    [(MTUIDateLabel *)self->_digitalClock setTimeZone:v5];
-    objc_storeStrong(&self->_timeZone, a3);
+    v7 = zoneCopy;
+    [(MTUIDateLabel *)self->_digitalClock setTimeZone:zoneCopy];
+    objc_storeStrong(&self->_timeZone, zone);
     self->_nowInMinutes = vcvtmd_s64_f64(CFAbsoluteTimeGetCurrent() / 60.0);
-    v5 = [(MTUIWorldClockCellView *)self updateTime];
+    zoneCopy = [(MTUIWorldClockCellView *)self updateTime];
     v6 = v7;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](zoneCopy, v6);
 }
 
-+ (id)dayAndTimeZoneOffsetStringFromDate:(id)a3 withTimeZoneOffset:(int64_t)a4 timeZoneAbbreviation:(id)a5 spaceBeforeTimeDesignator:(BOOL)a6 hoursOnly:(BOOL)a7
++ (id)dayAndTimeZoneOffsetStringFromDate:(id)date withTimeZoneOffset:(int64_t)offset timeZoneAbbreviation:(id)abbreviation spaceBeforeTimeDesignator:(BOOL)designator hoursOnly:(BOOL)only
 {
-  v53 = a7;
-  v7 = a6;
-  v54 = a3;
-  v10 = a5;
+  onlyCopy = only;
+  designatorCopy = designator;
+  dateCopy = date;
+  abbreviationCopy = abbreviation;
   if (!gNumberFormatter)
   {
     v11 = objc_alloc_init(MEMORY[0x277CCABB8]);
@@ -403,8 +403,8 @@
     v14 = gTodayFormatter;
     gTodayFormatter = v13;
 
-    v15 = [MEMORY[0x277CBEBB0] systemTimeZone];
-    [gTodayFormatter setTimeZone:v15];
+    systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+    [gTodayFormatter setTimeZone:systemTimeZone];
     [gTodayFormatter setDateStyle:2];
     [gTodayFormatter setTimeStyle:0];
     [gTodayFormatter setDoesRelativeDateFormatting:1];
@@ -417,15 +417,15 @@
   }
 
   v18 = gTodayFormatter;
-  v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a4];
+  v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:offset];
   v20 = [v18 stringFromDate:v19];
 
-  if (!a4)
+  if (!offset)
   {
     v30 = [gNumberFormatter stringFromNumber:&unk_286BC8B98];
     v24 = @"DAY_FORMAT_HOURS_AHEAD";
     v25 = @"HOURS_AHEAD";
-    if (!v10)
+    if (!abbreviationCopy)
     {
       goto LABEL_33;
     }
@@ -433,20 +433,20 @@
     goto LABEL_32;
   }
 
-  if (a4 >= 0)
+  if (offset >= 0)
   {
-    v21 = a4;
+    offsetCopy = offset;
   }
 
   else
   {
-    v21 = -a4;
+    offsetCopy = -offset;
   }
 
-  if (v21 <= 0xE0F)
+  if (offsetCopy <= 0xE0F)
   {
     v22 = @"DAY_FORMAT_MINUTES_BEHIND";
-    if (a4 <= 0)
+    if (offset <= 0)
     {
       v23 = @"MINUTES_BEHIND";
     }
@@ -460,14 +460,14 @@
     v24 = v22;
     v25 = v23;
     v26 = gNumberFormatter;
-    if (a4 / 60 >= 0)
+    if (offset / 60 >= 0)
     {
-      v27 = a4 / 60;
+      v27 = offset / 60;
     }
 
     else
     {
-      v27 = a4 / -60;
+      v27 = offset / -60;
     }
 
     v28 = [MEMORY[0x277CCABB0] numberWithInteger:v27];
@@ -475,10 +475,10 @@
     goto LABEL_31;
   }
 
-  if (v21 == 3600)
+  if (offsetCopy == 3600)
   {
     v31 = @"DAY_FORMAT_ONE_HOUR_BEHIND";
-    if (a4 <= 0)
+    if (offset <= 0)
     {
       v32 = @"ONE_HOUR_BEHIND";
     }
@@ -492,7 +492,7 @@
     v24 = v31;
     v25 = v32;
     v30 = [gNumberFormatter stringFromNumber:&unk_286BC8BB0];
-    if (!v10)
+    if (!abbreviationCopy)
     {
       goto LABEL_33;
     }
@@ -504,20 +504,20 @@ LABEL_32:
     goto LABEL_33;
   }
 
-  if (a4 / 3600 >= 0)
+  if (offset / 3600 >= 0)
   {
-    v33 = a4 / 3600;
+    v33 = offset / 3600;
   }
 
   else
   {
-    v33 = a4 / -3600;
+    v33 = offset / -3600;
   }
 
-  if (a4 % 3600)
+  if (offset % 3600)
   {
     v34 = @"DAY_FORMAT_HOURS_MINUTES_BEHIND";
-    if (a4 <= 0)
+    if (offset <= 0)
     {
       v35 = @"HOURS_MINUTES_BEHIND";
     }
@@ -532,12 +532,12 @@ LABEL_32:
     v25 = v35;
     v28 = objc_opt_new();
     [v28 setHour:v33];
-    [v28 setMinute:(2185 * (v21 - 3600 * ((v21 / 0xE10) & 0x1FFFFFFF))) >> 17];
+    [v28 setMinute:(2185 * (offsetCopy - 3600 * ((offsetCopy / 0xE10) & 0x1FFFFFFF))) >> 17];
     v29 = [gDateComponentsFormatter stringFromDateComponents:v28];
 LABEL_31:
     v30 = v29;
 
-    if (!v10)
+    if (!abbreviationCopy)
     {
       goto LABEL_33;
     }
@@ -546,13 +546,13 @@ LABEL_31:
   }
 
   v48 = @"DAY_FORMAT_HOURS_BEHIND";
-  if (a4 > 0)
+  if (offset > 0)
   {
     v48 = @"DAY_FORMAT_HOURS_AHEAD";
   }
 
   v49 = v33;
-  if (a4 <= 0)
+  if (offset <= 0)
   {
     v50 = @"HOURS_BEHIND";
   }
@@ -568,7 +568,7 @@ LABEL_31:
   v52 = [MEMORY[0x277CCABB0] numberWithInteger:v49];
   v30 = [v51 stringFromNumber:v52];
 
-  if (v10)
+  if (abbreviationCopy)
   {
     goto LABEL_32;
   }
@@ -577,7 +577,7 @@ LABEL_33:
   v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v38 = [v37 localizedStringForKey:v24 value:&stru_286BC5E38 table:@"MobileTimerUI"];
 
-  if (v7)
+  if (designatorCopy)
   {
     v39 = [(__CFString *)v25 stringByAppendingString:@"_SPACE"];
 
@@ -588,16 +588,16 @@ LABEL_33:
   v41 = [v40 localizedStringForKey:v25 value:&stru_286BC5E38 table:@"MobileTimerUI"];
 
   v42 = [MEMORY[0x277CCACA8] stringWithFormat:v41, v30];
-  v43 = [MEMORY[0x277CCACA8] stringWithFormat:v38, v20, v42, v10];
-  v44 = v43;
-  if (v53)
+  abbreviationCopy = [MEMORY[0x277CCACA8] stringWithFormat:v38, v20, v42, abbreviationCopy];
+  v44 = abbreviationCopy;
+  if (onlyCopy)
   {
     v45 = v42;
   }
 
   else
   {
-    v45 = v43;
+    v45 = abbreviationCopy;
   }
 
   v46 = v45;

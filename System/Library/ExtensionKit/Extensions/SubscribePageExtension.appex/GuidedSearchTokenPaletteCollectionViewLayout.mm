@@ -1,12 +1,12 @@
 @interface GuidedSearchTokenPaletteCollectionViewLayout
 + (Class)layoutAttributesClass;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (_TtC22SubscribePageExtension44GuidedSearchTokenPaletteCollectionViewLayout)init;
-- (_TtC22SubscribePageExtension44GuidedSearchTokenPaletteCollectionViewLayout)initWithCoder:(id)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (_TtC22SubscribePageExtension44GuidedSearchTokenPaletteCollectionViewLayout)initWithCoder:(id)coder;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)finalizeCollectionViewUpdates;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 @end
 
 @implementation GuidedSearchTokenPaletteCollectionViewLayout
@@ -27,7 +27,7 @@
   return v3;
 }
 
-- (_TtC22SubscribePageExtension44GuidedSearchTokenPaletteCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension44GuidedSearchTokenPaletteCollectionViewLayout)initWithCoder:(id)coder
 {
   *&self->pinningEnabled[OBJC_IVAR____TtC22SubscribePageExtension44GuidedSearchTokenPaletteCollectionViewLayout_layoutDelegate] = 0;
   swift_unknownObjectWeakInit();
@@ -43,11 +43,11 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   sub_100016C60(0, &qword_100928438);
   v4 = sub_1007532A4();
-  v5 = self;
+  selfCopy = self;
   sub_1000F5200(v4);
 }
 
@@ -62,13 +62,13 @@
   *&v2[OBJC_IVAR____TtC22SubscribePageExtension44GuidedSearchTokenPaletteCollectionViewLayout_indexPathsToFadeDisappearAnimate] = _swiftEmptyArrayStorage;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_1000F5B4C(x, y, width, height);
 
   if (v8)
@@ -85,17 +85,17 @@
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_1007417F4();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100741744();
-  v8 = self;
+  selfCopy = self;
   isa = sub_100741704().super.isa;
   v10 = type metadata accessor for GuidedSearchTokenPaletteCollectionViewLayout();
-  v14.receiver = v8;
+  v14.receiver = selfCopy;
   v14.super_class = v10;
   v11 = [(GuidedSearchTokenPaletteCollectionViewLayout *)&v14 layoutAttributesForItemAtIndexPath:isa];
 
@@ -103,7 +103,7 @@
   {
     v12 = sub_1000F6410(v11);
 
-    v8 = v11;
+    selfCopy = v11;
   }
 
   else
@@ -116,12 +116,12 @@
   return v12;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v10.receiver = self;
   v10.super_class = type metadata accessor for GuidedSearchTokenPaletteCollectionViewLayout();
   v7 = v10.receiver;

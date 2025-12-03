@@ -1,14 +1,14 @@
 @interface ICDPowerEventLogger
-+ (void)logEvent:(id)a3 payload:(id)a4;
++ (void)logEvent:(id)event payload:(id)payload;
 @end
 
 @implementation ICDPowerEventLogger
 
-+ (void)logEvent:(id)a3 payload:(id)a4
++ (void)logEvent:(id)event payload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  eventCopy = event;
+  payloadCopy = payload;
+  if ([eventCopy length])
   {
     v19 = 0;
     v20 = &v19;
@@ -32,15 +32,15 @@
     _Block_object_dispose(&v19, 8);
     if (v7)
     {
-      if (!v7(15, v5))
+      if (!v7(15, eventCopy))
       {
         v13 = os_log_create("com.apple.amp.itunescloudd", "XPC");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          *&buf[4] = v5;
+          *&buf[4] = eventCopy;
           *&buf[12] = 2114;
-          *&buf[14] = v6;
+          *&buf[14] = payloadCopy;
           v14 = "Log Power Event requested but not permitted -- %{public}@ -- %{public}@";
           goto LABEL_13;
         }
@@ -72,14 +72,14 @@ LABEL_14:
       _Block_object_dispose(&v19, 8);
       if (v10)
       {
-        v10(15, v5, v6, 0);
+        v10(15, eventCopy, payloadCopy, 0);
         v13 = os_log_create("com.apple.amp.itunescloudd", "XPC");
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          *&buf[4] = v5;
+          *&buf[4] = eventCopy;
           *&buf[12] = 2114;
-          *&buf[14] = v6;
+          *&buf[14] = payloadCopy;
           v14 = "Logged Power Event -- %{public}@ -- %{public}@";
 LABEL_13:
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, v14, buf, 0x16u);

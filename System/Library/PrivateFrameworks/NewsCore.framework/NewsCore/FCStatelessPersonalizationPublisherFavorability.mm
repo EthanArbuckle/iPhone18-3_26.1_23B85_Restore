@@ -1,12 +1,12 @@
 @interface FCStatelessPersonalizationPublisherFavorability
-- (FCStatelessPersonalizationPublisherFavorability)initWithArray:(id)a3;
+- (FCStatelessPersonalizationPublisherFavorability)initWithArray:(id)array;
 @end
 
 @implementation FCStatelessPersonalizationPublisherFavorability
 
-- (FCStatelessPersonalizationPublisherFavorability)initWithArray:(id)a3
+- (FCStatelessPersonalizationPublisherFavorability)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = FCStatelessPersonalizationPublisherFavorability;
   v5 = [(FCStatelessPersonalizationPublisherFavorability *)&v12 init];
@@ -17,7 +17,7 @@
     v10[1] = 3221225472;
     v10[2] = __65__FCStatelessPersonalizationPublisherFavorability_initWithArray___block_invoke;
     v10[3] = &unk_1E7C36EC8;
-    v11 = v4;
+    v11 = arrayCopy;
     v7 = [v6 fc_dictionary:v10];
     favorabilityByPublisherID = v5->_favorabilityByPublisherID;
     v5->_favorabilityByPublisherID = v7;

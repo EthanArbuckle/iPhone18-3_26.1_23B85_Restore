@@ -1,56 +1,56 @@
 @interface _UIStickerRepresentation
 - (CGSize)size;
-- (_UIStickerRepresentation)initWithCoder:(id)a3;
-- (_UIStickerRepresentation)initWithData:(id)a3 type:(id)a4 size:(CGSize)a5 role:(id)a6;
+- (_UIStickerRepresentation)initWithCoder:(id)coder;
+- (_UIStickerRepresentation)initWithData:(id)data type:(id)type size:(CGSize)size role:(id)role;
 - (id)createPNGDataFromHEICData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIStickerRepresentation
 
-- (_UIStickerRepresentation)initWithData:(id)a3 type:(id)a4 size:(CGSize)a5 role:(id)a6
+- (_UIStickerRepresentation)initWithData:(id)data type:(id)type size:(CGSize)size role:(id)role
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  typeCopy = type;
+  roleCopy = role;
   v18.receiver = self;
   v18.super_class = _UIStickerRepresentation;
   v15 = [(_UIStickerRepresentation *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_data, a3);
-    objc_storeStrong(&v16->_type, a4);
+    objc_storeStrong(&v15->_data, data);
+    objc_storeStrong(&v16->_type, type);
     v16->_size.width = width;
     v16->_size.height = height;
-    objc_storeStrong(&v16->_role, a6);
+    objc_storeStrong(&v16->_role, role);
   }
 
   return v16;
 }
 
-- (_UIStickerRepresentation)initWithCoder:(id)a3
+- (_UIStickerRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = _UIStickerRepresentation;
   v5 = [(_UIStickerRepresentation *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v8;
 
-    [v4 decodeCGSizeForKey:@"size"];
+    [coderCopy decodeCGSizeForKey:@"size"];
     v5->_size.width = v10;
     v5->_size.height = v11;
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"role"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"role"];
     role = v5->_role;
     v5->_role = v12;
   }
@@ -58,32 +58,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_UIStickerRepresentation *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(_UIStickerRepresentation *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  v6 = [(_UIStickerRepresentation *)self type];
-  [v4 encodeObject:v6 forKey:@"type"];
+  type = [(_UIStickerRepresentation *)self type];
+  [coderCopy encodeObject:type forKey:@"type"];
 
   [(_UIStickerRepresentation *)self size];
-  [v4 encodeCGSize:@"size" forKey:?];
-  v7 = [(_UIStickerRepresentation *)self role];
-  [v4 encodeObject:v7 forKey:@"role"];
+  [coderCopy encodeCGSize:@"size" forKey:?];
+  role = [(_UIStickerRepresentation *)self role];
+  [coderCopy encodeObject:role forKey:@"role"];
 }
 
 - (id)createPNGDataFromHEICData
 {
-  v3 = [(_UIStickerRepresentation *)self type];
-  v4 = [*MEMORY[0x1E6982E00] identifier];
-  v5 = [v3 isEqualToString:v4];
+  type = [(_UIStickerRepresentation *)self type];
+  identifier = [*MEMORY[0x1E6982E00] identifier];
+  v5 = [type isEqualToString:identifier];
 
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695F658]);
-    v7 = [(_UIStickerRepresentation *)self data];
-    v8 = [v6 initWithData:v7];
+    data = [(_UIStickerRepresentation *)self data];
+    v8 = [v6 initWithData:data];
 
     v9 = objc_alloc_init(MEMORY[0x1E695F620]);
     v10 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F1C0]);

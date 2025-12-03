@@ -1,15 +1,15 @@
 @interface BWActionCameraFlickerAvoidanceMonitor
-- (BOOL)detectFlickerWithSampleBuffer:(opaqueCMSampleBuffer *)a3 fromCaptureStreamWithPortType:(id)a4;
-- (BWActionCameraFlickerAvoidanceMonitor)initWithDefaultMaxExposureDurationFrameworkOverrideByPortType:(id)a3;
-- (float)_updateCurrentFrameRateWithFrameRate:(uint64_t)a1;
+- (BOOL)detectFlickerWithSampleBuffer:(opaqueCMSampleBuffer *)buffer fromCaptureStreamWithPortType:(id)type;
+- (BWActionCameraFlickerAvoidanceMonitor)initWithDefaultMaxExposureDurationFrameworkOverrideByPortType:(id)type;
+- (float)_updateCurrentFrameRateWithFrameRate:(uint64_t)rate;
 - (void)dealloc;
 @end
 
 @implementation BWActionCameraFlickerAvoidanceMonitor
 
-- (BWActionCameraFlickerAvoidanceMonitor)initWithDefaultMaxExposureDurationFrameworkOverrideByPortType:(id)a3
+- (BWActionCameraFlickerAvoidanceMonitor)initWithDefaultMaxExposureDurationFrameworkOverrideByPortType:(id)type
 {
-  if (a3)
+  if (type)
   {
     v7.receiver = self;
     v7.super_class = BWActionCameraFlickerAvoidanceMonitor;
@@ -19,7 +19,7 @@
     {
       *&v4->_confidenceThreshold = 0x2710000088B8;
       v4->_frameRateAware = 1;
-      v4->_defaultMaxExposureDurationFrameworkOverrideByPortType = [a3 copy];
+      v4->_defaultMaxExposureDurationFrameworkOverrideByPortType = [type copy];
     }
   }
 
@@ -39,9 +39,9 @@
   [(BWActionCameraFlickerAvoidanceMonitor *)&v3 dealloc];
 }
 
-- (BOOL)detectFlickerWithSampleBuffer:(opaqueCMSampleBuffer *)a3 fromCaptureStreamWithPortType:(id)a4
+- (BOOL)detectFlickerWithSampleBuffer:(opaqueCMSampleBuffer *)buffer fromCaptureStreamWithPortType:(id)type
 {
-  v6 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v6 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v7 = [v6 objectForKeyedSubscript:*off_1E798B528];
   if (v7)
   {
@@ -80,7 +80,7 @@ LABEL_15:
     else
     {
       v20 = llroundf(v15);
-      CMTimeMakeFromDictionary(&time, [(NSDictionary *)self->_defaultMaxExposureDurationFrameworkOverrideByPortType objectForKeyedSubscript:a4]);
+      CMTimeMakeFromDictionary(&time, [(NSDictionary *)self->_defaultMaxExposureDurationFrameworkOverrideByPortType objectForKeyedSubscript:type]);
       v21 = CMTimeGetSeconds(&time) * v20;
       frameRateAware = self->_frameRateAware;
       v23 = frameRateAware && vabds_f32(v16 / v10, roundf(v16 / v10)) <= 0.03;
@@ -117,24 +117,24 @@ LABEL_17:
   return v7;
 }
 
-- (float)_updateCurrentFrameRateWithFrameRate:(uint64_t)a1
+- (float)_updateCurrentFrameRateWithFrameRate:(uint64_t)rate
 {
-  if (!a1)
+  if (!rate)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 28);
+  v2 = *(rate + 28);
   if (v2 == 0.0)
   {
-    *(a1 + 28) = a2;
-    v3 = (a1 + 32);
+    *(rate + 28) = a2;
+    v3 = (rate + 32);
 LABEL_12:
     *v3 = 0;
     return a2;
   }
 
-  v3 = (a1 + 32);
+  v3 = (rate + 32);
   if (vabds_f32(a2, v2) < 1.0)
   {
     goto LABEL_11;
@@ -150,7 +150,7 @@ LABEL_12:
   if (v4 >= 3)
   {
 LABEL_11:
-    *(a1 + 28) = a2;
+    *(rate + 28) = a2;
     goto LABEL_12;
   }
 

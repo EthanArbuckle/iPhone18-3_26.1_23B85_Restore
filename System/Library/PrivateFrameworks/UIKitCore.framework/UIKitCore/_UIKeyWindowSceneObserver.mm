@@ -2,13 +2,13 @@
 - (NSString)description;
 - (UIScene)_scene;
 - (_UIKeyWindowSceneObserver)init;
-- (_UIKeyWindowSceneObserver)initWithScene:(id)a3;
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5;
-- (void)_sceneWillInvalidate:(id)a3;
-- (void)_windowHostingScene:(id)a3 didMoveFromScreen:(id)a4 toScreen:(id)a5;
-- (void)_windowHostingScene:(id)a3 willMoveFromScreen:(id)a4 toScreen:(id)a5;
+- (_UIKeyWindowSceneObserver)initWithScene:(id)scene;
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask;
+- (void)_sceneWillInvalidate:(id)invalidate;
+- (void)_windowHostingScene:(id)scene didMoveFromScreen:(id)screen toScreen:(id)toScreen;
+- (void)_windowHostingScene:(id)scene willMoveFromScreen:(id)screen toScreen:(id)toScreen;
 - (void)evaluateTargetOfEventDeferringEnvironments;
-- (void)observerDeliveryPolicyDidChange:(id)a3;
+- (void)observerDeliveryPolicyDidChange:(id)change;
 @end
 
 @implementation _UIKeyWindowSceneObserver
@@ -16,26 +16,26 @@
 - (void)evaluateTargetOfEventDeferringEnvironments
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
-    v3 = [WeakRetained _allowsEventUIWindowRouting];
+    WeakRetained = objc_loadWeakRetained((self + 32));
+    _allowsEventUIWindowRouting = [WeakRetained _allowsEventUIWindowRouting];
 
-    v4 = objc_loadWeakRetained((a1 + 32));
+    v4 = objc_loadWeakRetained((self + 32));
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if (v3 & 1) != 0 || (isKindOfClass)
+    if (_allowsEventUIWindowRouting & 1) != 0 || (isKindOfClass)
     {
-      v6 = objc_loadWeakRetained((a1 + 32));
-      v7 = [*(a1 + 16) policyStatus];
+      v6 = objc_loadWeakRetained((self + 32));
+      policyStatus = [*(self + 16) policyStatus];
       [(UIScene *)v6 _targetOfKeyboardEventDeferringEnvironmentDidUpdate:?];
-      if (v7 >= 1)
+      if (policyStatus >= 1)
       {
         [_UIEventDeferringManager targetOfEventDeferringEnvironmentsDidUpdateForScene:v6];
         if (isKindOfClass)
         {
-          v8 = objc_loadWeakRetained((a1 + 32));
+          v8 = objc_loadWeakRetained((self + 32));
           v9 = objc_opt_class();
           Name = class_getName(v9);
           v11 = _UIKeyWindowUTF8SceneIdentityStringForWindowScene(v8);
@@ -51,13 +51,13 @@
             _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "Scene became target of keyboard event deferring environment: %{public}s: %{public}p; scene identity: %s", &v15, 0x20u);
           }
 
-          [(_UIKeyWindowEvaluator *)*(a1 + 8) windowSceneDidBecomeTargetOfKeyboardEventDeferringEnvironment:v8];
-          v13 = [(UIWindowScene *)v8 _keyWindow];
+          [(_UIKeyWindowEvaluator *)*(self + 8) windowSceneDidBecomeTargetOfKeyboardEventDeferringEnvironment:v8];
+          _keyWindow = [(UIWindowScene *)v8 _keyWindow];
 
-          if (v13)
+          if (_keyWindow)
           {
-            v14 = [(UIWindowScene *)v8 _keyWindow];
-            [v14 _restoreFirstResponder];
+            _keyWindow2 = [(UIWindowScene *)v8 _keyWindow];
+            [_keyWindow2 _restoreFirstResponder];
           }
         }
       }
@@ -67,13 +67,13 @@
 
 - (_UIKeyWindowSceneObserver)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIKeyWindowSceneObserver.m" lineNumber:124 description:{@"%s: init is not allowed on %@", "-[_UIKeyWindowSceneObserver init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKeyWindowSceneObserver.m" lineNumber:124 description:{@"%s: init is not allowed on %@", "-[_UIKeyWindowSceneObserver init]", objc_opt_class()}];
 
   return 0;
 }
 
-- (_UIKeyWindowSceneObserver)initWithScene:(id)a3
+- (_UIKeyWindowSceneObserver)initWithScene:(id)scene
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = +[_UIKeyWindowEvaluator sharedEvaluator];
@@ -85,7 +85,7 @@
     self = v6;
     if (v6)
     {
-      objc_storeWeak(&v6->_scene, a3);
+      objc_storeWeak(&v6->_scene, scene);
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       *&self->_observerFlags = *&self->_observerFlags & 0xFE | isKindOfClass & 1;
@@ -114,10 +114,10 @@
           }
         }
 
-        v9 = [a3 _FBSScene];
-        v10 = [v9 identityToken];
+        _FBSScene = [scene _FBSScene];
+        identityToken = [_FBSScene identityToken];
 
-        if (v10)
+        if (identityToken)
         {
           v11 = objc_opt_new();
           hidPolicyObserver = self->_hidPolicyObserver;
@@ -126,8 +126,8 @@
           [(BKSHIDEventDeliveryPolicyObserver *)self->_hidPolicyObserver addObserver:self];
           v13 = self->_hidPolicyObserver;
           v14 = MEMORY[0x1E698E3A0];
-          v15 = [v10 stringRepresentation];
-          v16 = [v14 tokenForString:v15];
+          stringRepresentation = [identityToken stringRepresentation];
+          v16 = [v14 tokenForString:stringRepresentation];
           [(BKSHIDEventDeliveryPolicyObserver *)v13 setDeferringToken:v16];
         }
 
@@ -141,7 +141,7 @@
   return self;
 }
 
-- (void)_scene:(id)a3 willTransitionToActivationState:(int64_t)a4 withReasonsMask:(unint64_t)a5
+- (void)_scene:(id)_scene willTransitionToActivationState:(int64_t)state withReasonsMask:(unint64_t)mask
 {
   v27 = *MEMORY[0x1E69E9840];
   if (*&self->_observerFlags)
@@ -152,10 +152,10 @@
       v8 = objc_opt_class();
       Name = class_getName(v8);
       v10 = _NSStringFromUISceneActivationState([WeakRetained activationState]);
-      v11 = [v10 UTF8String];
+      uTF8String = [v10 UTF8String];
 
-      v12 = _NSStringFromUISceneActivationState(a4);
-      v13 = [v12 UTF8String];
+      v12 = _NSStringFromUISceneActivationState(state);
+      uTF8String2 = [v12 UTF8String];
 
       v14 = _UIKeyWindowUTF8SceneIdentityStringForWindowScene(WeakRetained);
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("KeyWindow", &qword_1ED49FF00);
@@ -169,9 +169,9 @@
           v19 = 2050;
           v20 = WeakRetained;
           v21 = 2082;
-          v22 = v11;
+          v22 = uTF8String;
           v23 = 2082;
-          v24 = v13;
+          v24 = uTF8String2;
           v25 = 2082;
           v26 = v14;
           _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, "Scene will transition to activation state: %{public}s: %{public}p; from %{public}s to %{public}s; scene identity: %{public}s", &v17, 0x34u);
@@ -179,18 +179,18 @@
       }
     }
 
-    [(_UIKeyWindowEvaluator *)self->_keyWindowEvaluator windowScene:a4 willTransitionToActivationState:?];
+    [(_UIKeyWindowEvaluator *)self->_keyWindowEvaluator windowScene:state willTransitionToActivationState:?];
   }
 }
 
-- (void)_windowHostingScene:(id)a3 willMoveFromScreen:(id)a4 toScreen:(id)a5
+- (void)_windowHostingScene:(id)scene willMoveFromScreen:(id)screen toScreen:(id)toScreen
 {
   v36 = *MEMORY[0x1E69E9840];
   if (*&self->_observerFlags)
   {
-    v8 = [a3 _screen];
+    _screen = [scene _screen];
 
-    if (v8 == a4)
+    if (_screen == screen)
     {
       WeakRetained = objc_loadWeakRetained(&self->_scene);
       if (*__UILogGetCategoryCachedImpl("KeyWindow", &qword_1ED49FF08))
@@ -204,33 +204,33 @@
           v14 = *(CategoryCachedImpl + 8);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            if (a4)
+            if (screen)
             {
               v15 = MEMORY[0x1E696AEC0];
-              v16 = a4;
+              screenCopy = screen;
               v17 = objc_opt_class();
               v18 = NSStringFromClass(v17);
-              v19 = [v15 stringWithFormat:@"<%@: %p>", v18, v16];
+              screenCopy = [v15 stringWithFormat:@"<%@: %p>", v18, screenCopy];
             }
 
             else
             {
-              v19 = @"(nil)";
+              screenCopy = @"(nil)";
             }
 
-            v25 = v19;
-            if (a5)
+            v25 = screenCopy;
+            if (toScreen)
             {
               v20 = MEMORY[0x1E696AEC0];
-              v21 = a5;
+              toScreenCopy = toScreen;
               v22 = objc_opt_class();
               v23 = NSStringFromClass(v22);
-              v24 = [v20 stringWithFormat:@"<%@: %p>", v23, v21];
+              toScreenCopy = [v20 stringWithFormat:@"<%@: %p>", v23, toScreenCopy];
             }
 
             else
             {
-              v24 = @"(nil)";
+              toScreenCopy = @"(nil)";
             }
 
             *buf = 136447234;
@@ -240,7 +240,7 @@
             v30 = 2114;
             v31 = v25;
             v32 = 2114;
-            v33 = v24;
+            v33 = toScreenCopy;
             v34 = 2082;
             v35 = v12;
             _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Scene will move screens: %{public}s: %{public}p; from %{public}@ to %{public}@; scene identity: %{public}s", buf, 0x34u);
@@ -248,19 +248,19 @@
         }
       }
 
-      [(_UIKeyWindowEvaluator *)self->_keyWindowEvaluator windowScene:a4 willMoveFromScreen:a5 toScreen:?];
+      [(_UIKeyWindowEvaluator *)self->_keyWindowEvaluator windowScene:screen willMoveFromScreen:toScreen toScreen:?];
     }
   }
 }
 
-- (void)_windowHostingScene:(id)a3 didMoveFromScreen:(id)a4 toScreen:(id)a5
+- (void)_windowHostingScene:(id)scene didMoveFromScreen:(id)screen toScreen:(id)toScreen
 {
   v36 = *MEMORY[0x1E69E9840];
   if (*&self->_observerFlags)
   {
-    v8 = [a3 _screen];
+    _screen = [scene _screen];
 
-    if (v8 == a5)
+    if (_screen == toScreen)
     {
       WeakRetained = objc_loadWeakRetained(&self->_scene);
       if (*__UILogGetCategoryCachedImpl("KeyWindow", &qword_1ED49FF18))
@@ -274,33 +274,33 @@
           v14 = *(CategoryCachedImpl + 8);
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            if (a4)
+            if (screen)
             {
               v15 = MEMORY[0x1E696AEC0];
-              v16 = a4;
+              screenCopy = screen;
               v17 = objc_opt_class();
               v18 = NSStringFromClass(v17);
-              v19 = [v15 stringWithFormat:@"<%@: %p>", v18, v16];
+              screenCopy = [v15 stringWithFormat:@"<%@: %p>", v18, screenCopy];
             }
 
             else
             {
-              v19 = @"(nil)";
+              screenCopy = @"(nil)";
             }
 
-            v25 = v19;
-            if (a5)
+            v25 = screenCopy;
+            if (toScreen)
             {
               v20 = MEMORY[0x1E696AEC0];
-              v21 = a5;
+              toScreenCopy = toScreen;
               v22 = objc_opt_class();
               v23 = NSStringFromClass(v22);
-              v24 = [v20 stringWithFormat:@"<%@: %p>", v23, v21];
+              toScreenCopy = [v20 stringWithFormat:@"<%@: %p>", v23, toScreenCopy];
             }
 
             else
             {
-              v24 = @"(nil)";
+              toScreenCopy = @"(nil)";
             }
 
             *buf = 136447234;
@@ -310,7 +310,7 @@
             v30 = 2114;
             v31 = v25;
             v32 = 2114;
-            v33 = v24;
+            v33 = toScreenCopy;
             v34 = 2082;
             v35 = v12;
             _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Scene did move screens: %{public}s: %{public}p; from %{public}@ to %{public}@; scene identity: %{public}s", buf, 0x34u);
@@ -318,13 +318,13 @@
         }
       }
 
-      [(_UIKeyWindowEvaluator *)self->_keyWindowEvaluator windowScene:a4 didMoveFromScreen:a5 toScreen:?];
+      [(_UIKeyWindowEvaluator *)self->_keyWindowEvaluator windowScene:screen didMoveFromScreen:toScreen toScreen:?];
       [(_UIKeyWindowSceneObserver *)self evaluateTargetOfEventDeferringEnvironments];
     }
   }
 }
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
   v15 = *MEMORY[0x1E69E9840];
   if (*&self->_observerFlags)
@@ -349,7 +349,7 @@
   }
 }
 
-- (void)observerDeliveryPolicyDidChange:(id)a3
+- (void)observerDeliveryPolicyDidChange:(id)change
 {
   objc_initWeak(&location, self);
   objc_copyWeak(&v3, &location);

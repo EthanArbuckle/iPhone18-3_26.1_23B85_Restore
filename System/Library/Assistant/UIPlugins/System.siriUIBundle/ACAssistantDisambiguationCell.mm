@@ -1,21 +1,21 @@
 @interface ACAssistantDisambiguationCell
-- (ACAssistantDisambiguationCell)initWithFrame:(CGRect)a3;
+- (ACAssistantDisambiguationCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setImageView:(id)a3;
-- (void)setItem:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setImageView:(id)view;
+- (void)setItem:(id)item;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)updateConstraintConstants;
 - (void)updateConstraints;
 @end
 
 @implementation ACAssistantDisambiguationCell
 
-- (ACAssistantDisambiguationCell)initWithFrame:(CGRect)a3
+- (ACAssistantDisambiguationCell)initWithFrame:(CGRect)frame
 {
   v33.receiver = self;
   v33.super_class = ACAssistantDisambiguationCell;
-  v3 = [(ACAssistantDisambiguationCell *)&v33 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ACAssistantDisambiguationCell *)&v33 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SiriSharedUIContentLabel label];
@@ -29,8 +29,8 @@
     LODWORD(v8) = 1132068864;
     [(SiriSharedUIContentLabel *)v3->_titleLabel setContentCompressionResistancePriority:0 forAxis:v8];
     [(SiriSharedUIContentLabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v9 = [(ACAssistantDisambiguationCell *)v3 contentView];
-    [v9 addSubview:v3->_titleLabel];
+    contentView = [(ACAssistantDisambiguationCell *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
 
     v10 = +[SiriSharedUIContentLabel labelWithMediumWeightSubtextFont];
     secondaryTitleLabel = v3->_secondaryTitleLabel;
@@ -39,8 +39,8 @@
     [(SiriSharedUIContentLabel *)v3->_secondaryTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v12) = 1132068864;
     [(SiriSharedUIContentLabel *)v3->_secondaryTitleLabel setContentCompressionResistancePriority:0 forAxis:v12];
-    v13 = [(ACAssistantDisambiguationCell *)v3 contentView];
-    [v13 addSubview:v3->_secondaryTitleLabel];
+    contentView2 = [(ACAssistantDisambiguationCell *)v3 contentView];
+    [contentView2 addSubview:v3->_secondaryTitleLabel];
 
     v14 = +[SiriSharedUIContentLabel labelWithLightWeightRegularFont];
     extraDisambiguationLabel = v3->_extraDisambiguationLabel;
@@ -52,8 +52,8 @@
     [(SiriSharedUIContentLabel *)v3->_extraDisambiguationLabel setContentCompressionResistancePriority:0 forAxis:v16];
     LODWORD(v17) = 1144750080;
     [(SiriSharedUIContentLabel *)v3->_extraDisambiguationLabel setContentHuggingPriority:0 forAxis:v17];
-    v18 = [(ACAssistantDisambiguationCell *)v3 contentView];
-    [v18 addSubview:v3->_extraDisambiguationLabel];
+    contentView3 = [(ACAssistantDisambiguationCell *)v3 contentView];
+    [contentView3 addSubview:v3->_extraDisambiguationLabel];
 
     v19 = +[SiriSharedUIContentLabel labelWithMediumWeightSubtextFont];
     extraDisambiguationSubTextLabel = v3->_extraDisambiguationSubTextLabel;
@@ -65,8 +65,8 @@
     [(SiriSharedUIContentLabel *)v3->_extraDisambiguationSubTextLabel setContentCompressionResistancePriority:0 forAxis:v21];
     LODWORD(v22) = 1144750080;
     [(SiriSharedUIContentLabel *)v3->_extraDisambiguationSubTextLabel setContentHuggingPriority:0 forAxis:v22];
-    v23 = [(ACAssistantDisambiguationCell *)v3 contentView];
-    [v23 addSubview:v3->_extraDisambiguationSubTextLabel];
+    contentView4 = [(ACAssistantDisambiguationCell *)v3 contentView];
+    [contentView4 addSubview:v3->_extraDisambiguationSubTextLabel];
 
     v24 = [UIImageView alloc];
     v25 = [NSBundle bundleForClass:objc_opt_class()];
@@ -78,8 +78,8 @@
     v3->_starView = v29;
 
     [(UIImageView *)v3->_starView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v31 = [(ACAssistantDisambiguationCell *)v3 contentView];
-    [v31 addSubview:v3->_starView];
+    contentView5 = [(ACAssistantDisambiguationCell *)v3 contentView];
+    [contentView5 addSubview:v3->_starView];
   }
 
   return v3;
@@ -93,40 +93,40 @@
   [(UIImageView *)self->_starView setHidden:[(SiriUIDisambiguationItem *)self->_item showsFavoriteStar]^ 1];
   if ([(ACAssistantDisambiguationCell *)self isLastRow])
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = 0;
 LABEL_7:
-    [(ACAssistantDisambiguationCell *)v3 setKeylineType:v4];
+    [(ACAssistantDisambiguationCell *)selfCopy2 setKeylineType:v4];
     return;
   }
 
   if (![(ACAssistantDisambiguationCell *)self hasStarColumn])
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = 1;
     goto LABEL_7;
   }
 
-  v5 = [(ACAssistantDisambiguationCell *)self keyline];
-  [v5 setKeylineType:4];
+  keyline = [(ACAssistantDisambiguationCell *)self keyline];
+  [keyline setKeylineType:4];
 
-  v6 = [(ACAssistantDisambiguationCell *)self semanticContentAttribute];
-  v7 = [(ACAssistantDisambiguationCell *)self keyline];
-  v8 = v7;
-  if (v6 == &dword_4)
+  semanticContentAttribute = [(ACAssistantDisambiguationCell *)self semanticContentAttribute];
+  keyline2 = [(ACAssistantDisambiguationCell *)self keyline];
+  v8 = keyline2;
+  if (semanticContentAttribute == &dword_4)
   {
-    [v7 setCustomRightPadding:35.0];
+    [keyline2 setCustomRightPadding:35.0];
 
-    v9 = [(ACAssistantDisambiguationCell *)self keyline];
-    [v9 setCustomLeftPadding:0.0];
+    keyline3 = [(ACAssistantDisambiguationCell *)self keyline];
+    [keyline3 setCustomLeftPadding:0.0];
   }
 
   else
   {
-    [v7 setCustomLeftPadding:35.0];
+    [keyline2 setCustomLeftPadding:35.0];
 
-    v9 = [(ACAssistantDisambiguationCell *)self keyline];
-    [v9 setCustomRightPadding:0.0];
+    keyline3 = [(ACAssistantDisambiguationCell *)self keyline];
+    [keyline3 setCustomRightPadding:0.0];
   }
 }
 
@@ -138,66 +138,66 @@ LABEL_7:
   if (!self->_constraintsCreated)
   {
     v3 = _NSDictionaryOfVariableBindings(@"_titleLabel, _secondaryTitleLabel, _extraDisambiguationLabel, _extraDisambiguationSubTextLabel, _starView", self->_titleLabel, self->_secondaryTitleLabel, self->_extraDisambiguationLabel, self->_extraDisambiguationSubTextLabel, self->_starView, 0);
-    v4 = [(ACAssistantDisambiguationCell *)self contentView];
+    contentView = [(ACAssistantDisambiguationCell *)self contentView];
     v5 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-starTop-[_starView(==starHeight)]-(>=0)-|", 0, &off_18F00, v3);
-    [v4 addConstraints:v5];
+    [contentView addConstraints:v5];
 
     v6 = v3;
     v7 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-starLeft-[_starView(==starWidth)]-(>=0)-|", 0, &off_18F00, v3);
-    [v4 addConstraints:v7];
+    [contentView addConstraints:v7];
 
-    v8 = [(ACAssistantDisambiguationCell *)self keyline];
-    v9 = [NSLayoutConstraint constraintWithItem:v8 attribute:4 relatedBy:0 toItem:v4 attribute:4 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v9];
+    keyline = [(ACAssistantDisambiguationCell *)self keyline];
+    v9 = [NSLayoutConstraint constraintWithItem:keyline attribute:4 relatedBy:0 toItem:contentView attribute:4 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v9];
 
-    v10 = [(ACAssistantDisambiguationCell *)self keyline];
-    v11 = [NSLayoutConstraint constraintWithItem:v10 attribute:5 relatedBy:0 toItem:v4 attribute:5 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v11];
+    keyline2 = [(ACAssistantDisambiguationCell *)self keyline];
+    v11 = [NSLayoutConstraint constraintWithItem:keyline2 attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v11];
 
-    v12 = [(ACAssistantDisambiguationCell *)self keyline];
-    v13 = [NSLayoutConstraint constraintWithItem:v12 attribute:6 relatedBy:0 toItem:v4 attribute:6 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v13];
+    keyline3 = [(ACAssistantDisambiguationCell *)self keyline];
+    v13 = [NSLayoutConstraint constraintWithItem:keyline3 attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:0.0];
+    [contentView addConstraint:v13];
 
-    v14 = [NSLayoutConstraint constraintWithItem:self->_titleLabel attribute:11 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:28.5];
+    v14 = [NSLayoutConstraint constraintWithItem:self->_titleLabel attribute:11 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:28.5];
     titleBaselineConstraint = self->_titleBaselineConstraint;
     self->_titleBaselineConstraint = v14;
 
-    [v4 addConstraint:self->_titleBaselineConstraint];
-    v16 = [NSLayoutConstraint constraintWithItem:self->_secondaryTitleLabel attribute:11 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:41.0];
+    [contentView addConstraint:self->_titleBaselineConstraint];
+    v16 = [NSLayoutConstraint constraintWithItem:self->_secondaryTitleLabel attribute:11 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:41.0];
     secondaryTitleBaselineConstraint = self->_secondaryTitleBaselineConstraint;
     self->_secondaryTitleBaselineConstraint = v16;
 
-    [v4 addConstraint:self->_secondaryTitleBaselineConstraint];
+    [contentView addConstraint:self->_secondaryTitleBaselineConstraint];
     v18 = v6;
     v19 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:[_titleLabel]-[_extraDisambiguationLabel]-edgePadding-|", 0, &off_18F00, v6);
-    [v4 addConstraints:v19];
+    [contentView addConstraints:v19];
 
-    v20 = [NSLayoutConstraint constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:v4 attribute:5 multiplier:1.0 constant:35.0];
+    v20 = [NSLayoutConstraint constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:35.0];
     titleLeadingOffsetConstraint = self->_titleLeadingOffsetConstraint;
     self->_titleLeadingOffsetConstraint = v20;
 
     LODWORD(v22) = 1144750080;
     [(NSLayoutConstraint *)self->_titleLeadingOffsetConstraint setPriority:v22];
-    [v4 addConstraint:self->_titleLeadingOffsetConstraint];
+    [contentView addConstraint:self->_titleLeadingOffsetConstraint];
     v23 = [NSLayoutConstraint constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:self->_secondaryTitleLabel attribute:5 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v23];
+    [contentView addConstraint:v23];
 
     v24 = [NSLayoutConstraint constraintWithItem:self->_extraDisambiguationLabel attribute:5 relatedBy:0 toItem:self->_extraDisambiguationSubTextLabel attribute:5 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v24];
+    [contentView addConstraint:v24];
 
     v25 = [NSLayoutConstraint constraintWithItem:self->_titleLabel attribute:6 relatedBy:0 toItem:self->_secondaryTitleLabel attribute:6 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v25];
+    [contentView addConstraint:v25];
 
     v26 = [NSLayoutConstraint constraintWithItem:self->_extraDisambiguationLabel attribute:6 relatedBy:0 toItem:self->_extraDisambiguationSubTextLabel attribute:6 multiplier:1.0 constant:0.0];
-    [v4 addConstraint:v26];
+    [contentView addConstraint:v26];
 
-    v27 = [NSLayoutConstraint constraintWithItem:self->_extraDisambiguationLabel attribute:11 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:28.5];
+    v27 = [NSLayoutConstraint constraintWithItem:self->_extraDisambiguationLabel attribute:11 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:28.5];
     extraTitleBaselineConstraint = self->_extraTitleBaselineConstraint;
     self->_extraTitleBaselineConstraint = v27;
 
-    [v4 addConstraint:self->_extraTitleBaselineConstraint];
-    v29 = [NSLayoutConstraint constraintWithItem:self->_extraDisambiguationSubTextLabel attribute:11 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:41.0];
-    [v4 addConstraint:v29];
+    [contentView addConstraint:self->_extraTitleBaselineConstraint];
+    v29 = [NSLayoutConstraint constraintWithItem:self->_extraDisambiguationSubTextLabel attribute:11 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:41.0];
+    [contentView addConstraint:v29];
 
     self->_constraintsCreated = 1;
   }
@@ -251,9 +251,9 @@ LABEL_7:
     v8 = 41.0;
   }
 
-  v9 = [(ACAssistantDisambiguationCell *)self item];
-  v10 = [v9 subtitle];
-  v11 = [v10 length];
+  item = [(ACAssistantDisambiguationCell *)self item];
+  subtitle = [item subtitle];
+  v11 = [subtitle length];
 
   if (v11)
   {
@@ -270,9 +270,9 @@ LABEL_7:
 
   else
   {
-    v13 = [(ACAssistantDisambiguationCell *)self item];
-    v14 = [v13 headingText];
-    v15 = [v14 length];
+    item2 = [(ACAssistantDisambiguationCell *)self item];
+    headingText = [item2 headingText];
+    v15 = [headingText length];
 
     if (v15)
     {
@@ -290,9 +290,9 @@ LABEL_7:
     }
   }
 
-  v16 = [(ACAssistantDisambiguationCell *)self item];
-  v17 = [v16 extraDisambiguationSubText];
-  v18 = [v17 length];
+  item3 = [(ACAssistantDisambiguationCell *)self item];
+  extraDisambiguationSubText = [item3 extraDisambiguationSubText];
+  v18 = [extraDisambiguationSubText length];
 
   if (v18)
   {
@@ -314,17 +314,17 @@ LABEL_7:
   [(ACAssistantDisambiguationCell *)self setItem:0];
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v20 = a3;
-  objc_storeStrong(&self->_item, a3);
-  v5 = [v20 title];
-  v6 = [v20 titleBoldedRange];
+  itemCopy = item;
+  objc_storeStrong(&self->_item, item);
+  title = [itemCopy title];
+  titleBoldedRange = [itemCopy titleBoldedRange];
   if (v7)
   {
-    v8 = v6;
+    v8 = titleBoldedRange;
     v9 = v7;
-    v10 = [[NSMutableAttributedString alloc] initWithString:v5];
+    v10 = [[NSMutableAttributedString alloc] initWithString:title];
     v11 = [UIFont siriui_mediumWeightFontWithSize:18.0];
     [v10 addAttribute:NSFontAttributeName value:v11 range:{v8, v9}];
     [(SiriSharedUIContentLabel *)self->_titleLabel setAttributedText:v10];
@@ -332,66 +332,66 @@ LABEL_7:
 
   else
   {
-    [(SiriSharedUIContentLabel *)self->_titleLabel setText:v5];
+    [(SiriSharedUIContentLabel *)self->_titleLabel setText:title];
   }
 
-  v12 = [v20 subtitle];
+  subtitle = [itemCopy subtitle];
 
   secondaryTitleLabel = self->_secondaryTitleLabel;
-  if (v12)
+  if (subtitle)
   {
-    [v20 subtitle];
+    [itemCopy subtitle];
   }
 
   else
   {
-    [v20 headingText];
+    [itemCopy headingText];
   }
   v14 = ;
   [(SiriSharedUIContentLabel *)secondaryTitleLabel setText:v14];
 
   extraDisambiguationLabel = self->_extraDisambiguationLabel;
-  v16 = [v20 extraDisambiguationText];
-  [(SiriSharedUIContentLabel *)extraDisambiguationLabel setText:v16];
+  extraDisambiguationText = [itemCopy extraDisambiguationText];
+  [(SiriSharedUIContentLabel *)extraDisambiguationLabel setText:extraDisambiguationText];
 
   extraDisambiguationSubTextLabel = self->_extraDisambiguationSubTextLabel;
-  v18 = [v20 extraDisambiguationSubText];
-  [(SiriSharedUIContentLabel *)extraDisambiguationSubTextLabel setText:v18];
+  extraDisambiguationSubText = [itemCopy extraDisambiguationSubText];
+  [(SiriSharedUIContentLabel *)extraDisambiguationSubTextLabel setText:extraDisambiguationSubText];
 
-  v19 = [v20 imageView];
-  [(ACAssistantDisambiguationCell *)self setImageView:v19];
+  imageView = [itemCopy imageView];
+  [(ACAssistantDisambiguationCell *)self setImageView:imageView];
 
   [(ACAssistantDisambiguationCell *)self setNeedsUpdateConstraints];
   [(ACAssistantDisambiguationCell *)self setNeedsLayout];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v17 = a3;
+  viewCopy = view;
   [(UIImageView *)self->_imageView removeFromSuperview];
   imageLeadingOffsetConstraint = self->_imageLeadingOffsetConstraint;
   self->_imageLeadingOffsetConstraint = 0;
 
-  objc_storeStrong(&self->_imageView, a3);
+  objc_storeStrong(&self->_imageView, view);
   if (self->_imageView)
   {
-    v6 = [(ACAssistantDisambiguationCell *)self contentView];
-    [v6 addSubview:self->_imageView];
+    contentView = [(ACAssistantDisambiguationCell *)self contentView];
+    [contentView addSubview:self->_imageView];
 
     [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(ACAssistantDisambiguationCell *)self contentView];
+    contentView2 = [(ACAssistantDisambiguationCell *)self contentView];
     v8 = _NSDictionaryOfVariableBindings(@"_imageView", self->_imageView, 0);
     v9 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[_imageView(==imageWidth)]" options:0 metrics:&off_18F28 views:v8];
-    [v7 addConstraints:v9];
+    [contentView2 addConstraints:v9];
 
     v10 = _NSDictionaryOfVariableBindings(@"_imageView, _titleLabel", self->_imageView, self->_titleLabel, 0);
     v11 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-imageTop-[_imageView(==imageHeight)]", 0, &off_18F28, v10);
-    [v7 addConstraints:v11];
+    [contentView2 addConstraints:v11];
 
     v12 = [NSLayoutConstraint constraintWithItem:self->_titleLabel attribute:5 relatedBy:0 toItem:self->_imageView attribute:6 multiplier:1.0 constant:15.0];
     LODWORD(v13) = 1144766464;
     [v12 setPriority:v13];
-    [v7 addConstraint:v12];
+    [contentView2 addConstraint:v12];
     if (self->_hasStarColumn)
     {
       v14 = 35.0;
@@ -402,27 +402,27 @@ LABEL_7:
       v14 = 15.0;
     }
 
-    v15 = [NSLayoutConstraint constraintWithItem:self->_imageView attribute:5 relatedBy:0 toItem:v7 attribute:5 multiplier:1.0 constant:v14];
+    v15 = [NSLayoutConstraint constraintWithItem:self->_imageView attribute:5 relatedBy:0 toItem:contentView2 attribute:5 multiplier:1.0 constant:v14];
     v16 = self->_imageLeadingOffsetConstraint;
     self->_imageLeadingOffsetConstraint = v15;
 
-    [v7 addConstraint:self->_imageLeadingOffsetConstraint];
+    [contentView2 addConstraint:self->_imageLeadingOffsetConstraint];
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
-  v5 = [(ACAssistantDisambiguationCell *)self contentView];
-  v6 = [v5 constraints];
+  contentView = [(ACAssistantDisambiguationCell *)self contentView];
+  constraints = [contentView constraints];
 
-  v7 = [(ACAssistantDisambiguationCell *)self contentView];
-  [v7 removeConstraints:v6];
+  contentView2 = [(ACAssistantDisambiguationCell *)self contentView];
+  [contentView2 removeConstraints:constraints];
 
   v9.receiver = self;
   v9.super_class = ACAssistantDisambiguationCell;
-  [(ACAssistantDisambiguationCell *)&v9 setSemanticContentAttribute:a3];
-  v8 = [(ACAssistantDisambiguationCell *)self contentView];
-  [v8 addConstraints:v6];
+  [(ACAssistantDisambiguationCell *)&v9 setSemanticContentAttribute:attribute];
+  contentView3 = [(ACAssistantDisambiguationCell *)self contentView];
+  [contentView3 addConstraints:constraints];
 }
 
 @end

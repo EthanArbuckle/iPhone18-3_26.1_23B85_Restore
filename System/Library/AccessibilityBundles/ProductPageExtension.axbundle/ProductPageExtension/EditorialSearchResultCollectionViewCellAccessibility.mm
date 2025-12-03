@@ -1,16 +1,16 @@
 @interface EditorialSearchResultCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation EditorialSearchResultCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ProductPageExtension.EditorialSearchResultCollectionViewCell" hasInstanceMethod:@"accessibilityEditorialTypeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.EditorialSearchResultCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ProductPageExtension.EditorialSearchResultCollectionViewCell" hasInstanceMethod:@"accessibilitySummaryLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ProductPageExtension.EditorialSearchResultCollectionViewCell" hasInstanceMethod:@"accessibilityEditorialTypeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.EditorialSearchResultCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ProductPageExtension.EditorialSearchResultCollectionViewCell" hasInstanceMethod:@"accessibilitySummaryLabel" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits

@@ -1,7 +1,7 @@
 @interface VGEarPCASelectionState
 - (EarPose)pose;
 - (id).cxx_construct;
-- (void)setPose:(EarPose *)a3;
+- (void)setPose:(EarPose *)pose;
 @end
 
 @implementation VGEarPCASelectionState
@@ -32,27 +32,27 @@
   return std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&retstr[4].yawAngle, *&self[1]._pose.yawAngle, self[2].super.isa, (self[2].super.isa - *&self[1]._pose.yawAngle) >> 2);
 }
 
-- (void)setPose:(EarPose *)a3
+- (void)setPose:(EarPose *)pose
 {
-  v4 = *&a3->side;
-  v5 = *&a3->faceYawAngle.var0.__null_state_;
-  v6 = *&a3[1].faceYawAngle.var0.__null_state_;
-  *&self[1].super.isa = *&a3[1].side;
+  v4 = *&pose->side;
+  v5 = *&pose->faceYawAngle.var0.__null_state_;
+  v6 = *&pose[1].faceYawAngle.var0.__null_state_;
+  *&self[1].super.isa = *&pose[1].side;
   *&self[1]._leftFrameCount = v6;
   *&self->_pose.side = v4;
   *&self->_pose.faceYawAngle.var0.__null_state_ = v5;
-  v7 = *&a3[2].side;
-  v8 = *&a3[2].faceYawAngle.var0.__null_state_;
-  v9 = *&a3[3].faceYawAngle.var0.__null_state_;
-  *&self[1]._leftEarYawAngleCaptured = *&a3[3].side;
+  v7 = *&pose[2].side;
+  v8 = *&pose[2].faceYawAngle.var0.__null_state_;
+  v9 = *&pose[3].faceYawAngle.var0.__null_state_;
+  *&self[1]._leftEarYawAngleCaptured = *&pose[3].side;
   *&self[1]._rightEarYawAngleCaptured = v9;
   *&self[1]._leftEarYawAngleCapturedPoses = v7;
   *&self[1]._rightEarYawAngleCapturedPoses = v8;
-  if (&self->_pose != a3)
+  if (&self->_pose != pose)
   {
-    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(&self[1]._pose.side, *&a3[4].side, *&a3[4].lmPCA.__elems_[1], (*&a3[4].lmPCA.__elems_[1] - *&a3[4].side) >> 2);
-    v12 = *&a3[4].yawAngle;
-    v13 = *&a3[5].side;
+    std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(&self[1]._pose.side, *&pose[4].side, *&pose[4].lmPCA.__elems_[1], (*&pose[4].lmPCA.__elems_[1] - *&pose[4].side) >> 2);
+    v12 = *&pose[4].yawAngle;
+    v13 = *&pose[5].side;
 
     std::vector<float>::__assign_with_size[abi:ne200100]<float *,float *>(&self[1]._pose.yawAngle, v12, v13, (v13 - v12) >> 2);
   }

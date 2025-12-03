@@ -1,8 +1,8 @@
 @interface VSKeychainItemAttribute
 - (NSString)attributeValueClassName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setSecItemAttributeKey:(__CFString *)a3;
+- (void)setSecItemAttributeKey:(__CFString *)key;
 @end
 
 @implementation VSKeychainItemAttribute
@@ -37,33 +37,33 @@
   return v2;
 }
 
-- (void)setSecItemAttributeKey:(__CFString *)a3
+- (void)setSecItemAttributeKey:(__CFString *)key
 {
   secItemAttributeKey = self->_secItemAttributeKey;
-  if (secItemAttributeKey != a3)
+  if (secItemAttributeKey != key)
   {
     if (secItemAttributeKey)
     {
       CFRelease(secItemAttributeKey);
     }
 
-    self->_secItemAttributeKey = CFStringCreateCopy(*MEMORY[0x277CBECE8], a3);
+    self->_secItemAttributeKey = CFStringCreateCopy(*MEMORY[0x277CBECE8], key);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[VSKeychainItemAttribute allocWithZone:?]];
-  v5 = [(VSKeychainItemAttribute *)self name];
-  [(VSKeychainItemAttribute *)v4 setName:v5];
+  name = [(VSKeychainItemAttribute *)self name];
+  [(VSKeychainItemAttribute *)v4 setName:name];
 
   [(VSKeychainItemAttribute *)v4 setAttributeType:[(VSKeychainItemAttribute *)self attributeType]];
-  v6 = [(VSKeychainItemAttribute *)self attributeValueClassName];
-  [(VSKeychainItemAttribute *)v4 setAttributeValueClassName:v6];
+  attributeValueClassName = [(VSKeychainItemAttribute *)self attributeValueClassName];
+  [(VSKeychainItemAttribute *)v4 setAttributeValueClassName:attributeValueClassName];
 
   [(VSKeychainItemAttribute *)v4 setSecItemAttributeKey:[(VSKeychainItemAttribute *)self secItemAttributeKey]];
-  v7 = [(VSKeychainItemAttribute *)self defaultValue];
-  [(VSKeychainItemAttribute *)v4 setDefaultValue:v7];
+  defaultValue = [(VSKeychainItemAttribute *)self defaultValue];
+  [(VSKeychainItemAttribute *)v4 setDefaultValue:defaultValue];
 
   return v4;
 }

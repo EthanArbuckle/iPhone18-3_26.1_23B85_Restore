@@ -1,24 +1,24 @@
 @interface BuddyFinishedCursiveChildWelcomeView
-- (BuddyFinishedCursiveChildWelcomeView)initWithFrame:(CGRect)a3;
+- (BuddyFinishedCursiveChildWelcomeView)initWithFrame:(CGRect)frame;
 - (void)_animateCursiveForTimePassed;
 - (void)_createDisplayLink;
-- (void)_onDisplayLink:(id)a3;
+- (void)_onDisplayLink:(id)link;
 - (void)_removeDisplayLink;
 - (void)_updateFillColor;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 - (void)startAnimation;
 @end
 
 @implementation BuddyFinishedCursiveChildWelcomeView
 
-- (BuddyFinishedCursiveChildWelcomeView)initWithFrame:(CGRect)a3
+- (BuddyFinishedCursiveChildWelcomeView)initWithFrame:(CGRect)frame
 {
-  v19 = a3;
+  frameCopy = frame;
   v17 = a2;
   location = 0;
   v16.receiver = self;
   v16.super_class = BuddyFinishedCursiveChildWelcomeView;
-  location = [(BuddyFinishedCursiveChildWelcomeView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  location = [(BuddyFinishedCursiveChildWelcomeView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   objc_storeStrong(&location, location);
   if (location)
   {
@@ -52,35 +52,35 @@
 
 - (void)startAnimation
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[NSBundle mainBundle];
   location[0] = [(NSBundle *)v2 URLForResource:@"BuddyCursive" withExtension:@"plist" subdirectory:0];
 
-  v3 = [(BuddyFinishedCursiveChildWelcomeView *)v6 cursiveTextView];
-  [(BuddyCursiveTextView *)v3 loadText:location[0] pointSize:64.0];
+  cursiveTextView = [(BuddyFinishedCursiveChildWelcomeView *)selfCopy cursiveTextView];
+  [(BuddyCursiveTextView *)cursiveTextView loadText:location[0] pointSize:64.0];
 
-  v4 = [(BuddyFinishedCursiveChildWelcomeView *)v6 cursiveTextView];
-  [(BuddyCursiveTextView *)v4 duration];
-  [(BuddyFinishedCursiveChildWelcomeView *)v6 setCustomDelayDuration:?];
+  cursiveTextView2 = [(BuddyFinishedCursiveChildWelcomeView *)selfCopy cursiveTextView];
+  [(BuddyCursiveTextView *)cursiveTextView2 duration];
+  [(BuddyFinishedCursiveChildWelcomeView *)selfCopy setCustomDelayDuration:?];
 
-  [(BuddyFinishedCursiveChildWelcomeView *)v6 setStartTime:CFAbsoluteTimeGetCurrent()];
-  [(BuddyFinishedCursiveChildWelcomeView *)v6 _createDisplayLink];
-  [(BuddyFinishedCursiveChildWelcomeView *)v6 setNeedsLayout];
+  [(BuddyFinishedCursiveChildWelcomeView *)selfCopy setStartTime:CFAbsoluteTimeGetCurrent()];
+  [(BuddyFinishedCursiveChildWelcomeView *)selfCopy _createDisplayLink];
+  [(BuddyFinishedCursiveChildWelcomeView *)selfCopy setNeedsLayout];
   objc_storeStrong(location, 0);
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4.receiver = v6;
+  objc_storeStrong(location, label);
+  v4.receiver = selfCopy;
   v4.super_class = BuddyFinishedCursiveChildWelcomeView;
   [(BuddyFinishedCursiveChildWelcomeView *)&v4 setAccessibilityLabel:location[0]];
-  v3 = [(BuddyFinishedCursiveChildWelcomeView *)v6 cursiveTextView];
-  [(BuddyCursiveTextView *)v3 setAccessibilityLabel:location[0]];
+  cursiveTextView = [(BuddyFinishedCursiveChildWelcomeView *)selfCopy cursiveTextView];
+  [(BuddyCursiveTextView *)cursiveTextView setAccessibilityLabel:location[0]];
 
   objc_storeStrong(location, 0);
 }
@@ -95,35 +95,35 @@
   v2 = [CADisplayLink displayLinkWithTarget:self selector:"_onDisplayLink:"];
   [(BuddyFinishedCursiveChildWelcomeView *)self setDisplayLink:v2];
 
-  v3 = [(BuddyFinishedCursiveChildWelcomeView *)self displayLink];
+  displayLink = [(BuddyFinishedCursiveChildWelcomeView *)self displayLink];
   v7 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [(CADisplayLink *)v3 setPreferredFrameRateRange:*&v7.minimum, *&v7.maximum, *&v7.preferred];
+  [(CADisplayLink *)displayLink setPreferredFrameRateRange:*&v7.minimum, *&v7.maximum, *&v7.preferred];
 
-  v4 = [(BuddyFinishedCursiveChildWelcomeView *)self displayLink];
+  displayLink2 = [(BuddyFinishedCursiveChildWelcomeView *)self displayLink];
   v5 = +[NSRunLoop mainRunLoop];
-  [(CADisplayLink *)v4 addToRunLoop:v5 forMode:NSRunLoopCommonModes];
+  [(CADisplayLink *)displayLink2 addToRunLoop:v5 forMode:NSRunLoopCommonModes];
 }
 
 - (void)_removeDisplayLink
 {
-  v2 = [(BuddyFinishedCursiveChildWelcomeView *)self displayLink];
-  [(CADisplayLink *)v2 invalidate];
+  displayLink = [(BuddyFinishedCursiveChildWelcomeView *)self displayLink];
+  [(CADisplayLink *)displayLink invalidate];
 
   [(BuddyFinishedCursiveChildWelcomeView *)self setDisplayLink:0];
 }
 
-- (void)_onDisplayLink:(id)a3
+- (void)_onDisplayLink:(id)link
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, link);
   v3 = location[0];
-  v4 = [(BuddyFinishedCursiveChildWelcomeView *)v6 displayLink];
+  displayLink = [(BuddyFinishedCursiveChildWelcomeView *)selfCopy displayLink];
 
-  if (v3 == v4)
+  if (v3 == displayLink)
   {
-    [(BuddyFinishedCursiveChildWelcomeView *)v6 _animateCursiveForTimePassed];
+    [(BuddyFinishedCursiveChildWelcomeView *)selfCopy _animateCursiveForTimePassed];
   }
 
   objc_storeStrong(location, 0);
@@ -134,10 +134,10 @@
   Current = CFAbsoluteTimeGetCurrent();
   [(BuddyFinishedCursiveChildWelcomeView *)self startTime];
   v6 = Current - v3;
-  v4 = [(BuddyFinishedCursiveChildWelcomeView *)self cursiveTextView];
+  cursiveTextView = [(BuddyFinishedCursiveChildWelcomeView *)self cursiveTextView];
   HIDWORD(v5) = HIDWORD(v6);
   *&v5 = v6;
-  [(BuddyCursiveTextView *)v4 setTime:v5];
+  [(BuddyCursiveTextView *)cursiveTextView setTime:v5];
 
   [(BuddyFinishedCursiveChildWelcomeView *)self customDelayDuration];
   if (BSFloatGreaterThanFloat())
@@ -148,11 +148,11 @@
 
 - (void)_updateFillColor
 {
-  v2 = [(BuddyFinishedCursiveChildWelcomeView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(BuddyFinishedCursiveChildWelcomeView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v4 = [(BuddyFinishedCursiveChildWelcomeView *)self cursiveTextView];
-  if (v3 == 2)
+  cursiveTextView = [(BuddyFinishedCursiveChildWelcomeView *)self cursiveTextView];
+  if (userInterfaceStyle == 2)
   {
     v5 = +[UIColor whiteColor];
   }
@@ -162,7 +162,7 @@
     v5 = +[UIColor blackColor];
   }
 
-  [(BuddyCursiveTextView *)v4 setFillColor:v5];
+  [(BuddyCursiveTextView *)cursiveTextView setFillColor:v5];
 }
 
 @end

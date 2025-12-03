@@ -1,18 +1,18 @@
 @interface WFPhotoItemCollectionParameterState
 + (id)processingValueClasses;
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFPhotoItemCollectionParameterState
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v7 = MEMORY[0x1E69AC920];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithSerializedRepresentation:v10 variableProvider:v9 parameter:v8];
+  parameterCopy = parameter;
+  providerCopy = provider;
+  representationCopy = representation;
+  v11 = [[v7 alloc] initWithSerializedRepresentation:representationCopy variableProvider:providerCopy parameter:parameterCopy];
 
   return v11;
 }
@@ -27,22 +27,22 @@
   return v2;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v10 = a3;
-  v7 = a5;
-  v8 = [(WFVariableSubstitutableParameterState *)self variable];
+  contextCopy = context;
+  valueHandlerCopy = valueHandler;
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
 
-  if (v8)
+  if (variable)
   {
-    v9 = [(WFVariableSubstitutableParameterState *)self variable];
-    [v9 getContentWithContext:v10 completionHandler:v7];
+    variable2 = [(WFVariableSubstitutableParameterState *)self variable];
+    [variable2 getContentWithContext:contextCopy completionHandler:valueHandlerCopy];
   }
 
   else
   {
-    v9 = [(WFVariableSubstitutableParameterState *)self value];
-    v7[2](v7, v9, 0);
+    variable2 = [(WFVariableSubstitutableParameterState *)self value];
+    valueHandlerCopy[2](valueHandlerCopy, variable2, 0);
   }
 }
 

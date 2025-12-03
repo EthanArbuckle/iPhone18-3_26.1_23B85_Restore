@@ -1,5 +1,5 @@
 @interface CAMExposureResult
-- (CAMExposureResult)initWithMode:(int64_t)a3 pointOfInterest:(CGPoint)a4 exposureTargetBias:(float)a5 adjusting:(BOOL)a6 exposureDidStart:(BOOL)a7 exposureDidEnd:(BOOL)a8 deviceSupportsFocus:(BOOL)a9;
+- (CAMExposureResult)initWithMode:(int64_t)mode pointOfInterest:(CGPoint)interest exposureTargetBias:(float)bias adjusting:(BOOL)adjusting exposureDidStart:(BOOL)start exposureDidEnd:(BOOL)end deviceSupportsFocus:(BOOL)focus;
 - (CGPoint)pointOfInterest;
 - (id)description;
 @end
@@ -15,24 +15,24 @@
   return result;
 }
 
-- (CAMExposureResult)initWithMode:(int64_t)a3 pointOfInterest:(CGPoint)a4 exposureTargetBias:(float)a5 adjusting:(BOOL)a6 exposureDidStart:(BOOL)a7 exposureDidEnd:(BOOL)a8 deviceSupportsFocus:(BOOL)a9
+- (CAMExposureResult)initWithMode:(int64_t)mode pointOfInterest:(CGPoint)interest exposureTargetBias:(float)bias adjusting:(BOOL)adjusting exposureDidStart:(BOOL)start exposureDidEnd:(BOOL)end deviceSupportsFocus:(BOOL)focus
 {
-  y = a4.y;
-  x = a4.x;
+  y = interest.y;
+  x = interest.x;
   v21.receiver = self;
   v21.super_class = CAMExposureResult;
   v17 = [(CAMExposureResult *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    v17->_exposureMode = a3;
+    v17->_exposureMode = mode;
     v17->_pointOfInterest.x = x;
     v17->_pointOfInterest.y = y;
-    v17->_exposureTargetBias = a5;
-    v17->_adjustingExposure = a6;
-    v17->_exposureDidStart = a7;
-    v17->_exposureDidEnd = a8;
-    v17->_deviceSupportsFocus = a9;
+    v17->_exposureTargetBias = bias;
+    v17->_adjustingExposure = adjusting;
+    v17->_exposureDidStart = start;
+    v17->_exposureDidEnd = end;
+    v17->_deviceSupportsFocus = focus;
     v19 = v17;
   }
 
@@ -44,12 +44,12 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CAMExposureResult *)self exposureMode];
+  exposureMode = [(CAMExposureResult *)self exposureMode];
   [(CAMExposureResult *)self pointOfInterest];
   v7 = NSStringFromCGPoint(v15);
-  v8 = [(CAMExposureResult *)self isAdjustingExposure];
+  isAdjustingExposure = [(CAMExposureResult *)self isAdjustingExposure];
   [(CAMExposureResult *)self exposureTargetBias];
-  v10 = [v3 stringWithFormat:@"<%@: %p mode: %ld pointOfInterest: %@ adjusting: %d targetBias: %.3f>", v5, self, v6, v7, v8, v9];
+  v10 = [v3 stringWithFormat:@"<%@: %p mode: %ld pointOfInterest: %@ adjusting: %d targetBias: %.3f>", v5, self, exposureMode, v7, isAdjustingExposure, v9];
 
   if ([(CAMExposureResult *)self exposureDidStart])
   {

@@ -1,7 +1,7 @@
 @interface BCSAction
-+ (id)_identityCredentialActionWithData:(id)a3 codePayload:(id)a4;
-+ (void)getActionWithData:(id)a3 codePayload:(id)a4 completionHandler:(id)a5;
-- (BCSAction)initWithData:(id)a3 codePayload:(id)a4;
++ (id)_identityCredentialActionWithData:(id)data codePayload:(id)payload;
++ (void)getActionWithData:(id)data codePayload:(id)payload completionHandler:(id)handler;
+- (BCSAction)initWithData:(id)data codePayload:(id)payload;
 - (BCSActionDelegate)delegate;
 - (BOOL)isLiveCameraOnlyAction;
 - (BOOL)preferItemsInSubmenu;
@@ -13,32 +13,32 @@
 - (UIImage)actionIcon;
 - (id)_fallbackDataTypeDisplayString;
 - (id)menuProvider;
-- (id)subMenuWithMenuItems:(id)a3;
+- (id)subMenuWithMenuItems:(id)items;
 - (int64_t)codeType;
 - (int64_t)payloadDataType;
 - (unint64_t)menuElementsCount;
-- (void)determineActionabilityWithCompletionHandler:(id)a3;
-- (void)performActionWithCompletion:(id)a3;
-- (void)performActionWithOptions:(id)a3 completion:(id)a4;
+- (void)determineActionabilityWithCompletionHandler:(id)handler;
+- (void)performActionWithCompletion:(id)completion;
+- (void)performActionWithOptions:(id)options completion:(id)completion;
 - (void)performDefaultAction;
 - (void)showActionPicker;
 @end
 
 @implementation BCSAction
 
-+ (void)getActionWithData:(id)a3 codePayload:(id)a4 completionHandler:(id)a5
++ (void)getActionWithData:(id)data codePayload:(id)payload completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 type];
-  if (v11 <= 8)
+  dataCopy = data;
+  payloadCopy = payload;
+  handlerCopy = handler;
+  type = [dataCopy type];
+  if (type <= 8)
   {
-    if (v11 > 5)
+    if (type > 5)
     {
-      if (v11 != 6)
+      if (type != 6)
       {
-        if (v11 != 7)
+        if (type != 7)
         {
           v12 = BCSWiFiConfigurationAction;
           goto LABEL_12;
@@ -50,18 +50,18 @@
 
     else
     {
-      if ((v11 - 2) < 4)
+      if ((type - 2) < 4)
       {
         goto LABEL_10;
       }
 
-      if (!v11)
+      if (!type)
       {
         v12 = BCSInvalidDataAction;
         goto LABEL_12;
       }
 
-      if (v11 != 1)
+      if (type != 1)
       {
         goto LABEL_25;
       }
@@ -78,15 +78,15 @@ LABEL_9:
 LABEL_10:
     v12 = BCSDataDetectorsSupportedAction;
 LABEL_12:
-    v13 = [[v12 alloc] initWithData:v8 codePayload:v9];
+    v13 = [[v12 alloc] initWithData:dataCopy codePayload:payloadCopy];
     goto LABEL_13;
   }
 
-  if (v11 <= 14)
+  if (type <= 14)
   {
-    if ((v11 - 11) >= 4 && v11 != 9)
+    if ((type - 11) >= 4 && type != 9)
     {
-      if (v11 != 10)
+      if (type != 10)
       {
         goto LABEL_25;
       }
@@ -98,15 +98,15 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (v11 == 15)
+  if (type == 15)
   {
     v12 = BCSContinuityCameraAction;
     goto LABEL_12;
   }
 
-  if (v11 != 17)
+  if (type != 17)
   {
-    if (v11 != 16)
+    if (type != 16)
     {
       goto LABEL_25;
     }
@@ -114,13 +114,13 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v13 = [a1 _identityCredentialActionWithData:v8 codePayload:v9];
+  v13 = [self _identityCredentialActionWithData:dataCopy codePayload:payloadCopy];
 LABEL_13:
   v14 = v13;
   if (!v13)
   {
 LABEL_25:
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_26;
   }
 
@@ -128,10 +128,10 @@ LABEL_25:
   v16[1] = 3221225472;
   v16[2] = __61__BCSAction_getActionWithData_codePayload_completionHandler___block_invoke;
   v16[3] = &unk_278CFE798;
-  v20 = v10;
+  v20 = handlerCopy;
   v17 = v14;
-  v18 = v8;
-  v19 = v9;
+  v18 = dataCopy;
+  v19 = payloadCopy;
   v15 = v14;
   [v15 determineActionabilityWithCompletionHandler:v16];
 
@@ -157,21 +157,21 @@ void __61__BCSAction_getActionWithData_codePayload_completionHandler___block_inv
   }
 }
 
-+ (id)_identityCredentialActionWithData:(id)a3 codePayload:(id)a4
++ (id)_identityCredentialActionWithData:(id)data codePayload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  payloadCopy = payload;
   if (_bcs_deviceIsPad())
   {
     v7 = BCSInvalidDataAction;
 LABEL_8:
-    v11 = [[v7 alloc] initWithData:v5 codePayload:v6];
+    v11 = [[v7 alloc] initWithData:dataCopy codePayload:payloadCopy];
     goto LABEL_9;
   }
 
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  if ([v9 isEqualToString:@"com.apple.BarcodeScanner"])
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.BarcodeScanner"])
   {
 
 LABEL_7:
@@ -179,11 +179,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v6)
+  if (payloadCopy)
   {
-    v10 = [v6 codeType];
+    codeType = [payloadCopy codeType];
 
-    if (v10 == 1)
+    if (codeType == 1)
     {
       goto LABEL_7;
     }
@@ -199,18 +199,18 @@ LABEL_9:
   return v11;
 }
 
-- (BCSAction)initWithData:(id)a3 codePayload:(id)a4
+- (BCSAction)initWithData:(id)data codePayload:(id)payload
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  payloadCopy = payload;
   v13.receiver = self;
   v13.super_class = BCSAction;
   v9 = [(BCSAction *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_data, a3);
-    objc_storeStrong(&v10->_codePayload, a4);
+    objc_storeStrong(&v9->_data, data);
+    objc_storeStrong(&v10->_codePayload, payload);
     v11 = v10;
   }
 
@@ -228,14 +228,14 @@ LABEL_9:
 
 - (void)performDefaultAction
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BCSAction.m" lineNumber:248 description:@"Subclasses must implement this"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BCSAction.m" lineNumber:248 description:@"Subclasses must implement this"];
 }
 
 - (NSString)localizedDefaultActionDescription
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BCSAction.m" lineNumber:253 description:@"Subclasses must implement this"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BCSAction.m" lineNumber:253 description:@"Subclasses must implement this"];
 
   return _BCSLocalizedString(@"Open", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
 }
@@ -260,18 +260,18 @@ LABEL_9:
   v4 = NSStringFromClass(v3);
   v13[0] = v4;
   v12[1] = @"actionDescription";
-  v5 = [(BCSAction *)self localizedActionDescription];
-  v13[1] = v5;
+  localizedActionDescription = [(BCSAction *)self localizedActionDescription];
+  v13[1] = localizedActionDescription;
   v12[2] = @"defaultActionDescription";
-  v6 = [(BCSAction *)self localizedDefaultActionDescription];
-  v13[2] = v6;
+  localizedDefaultActionDescription = [(BCSAction *)self localizedDefaultActionDescription];
+  v13[2] = localizedDefaultActionDescription;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
-  v8 = [(BCSAction *)self debugDescriptionExtraInfoDictionary];
-  if (v8)
+  debugDescriptionExtraInfoDictionary = [(BCSAction *)self debugDescriptionExtraInfoDictionary];
+  if (debugDescriptionExtraInfoDictionary)
   {
     v9 = [v7 mutableCopy];
-    [v9 setObject:v8 forKeyedSubscript:@"actionInfo"];
+    [v9 setObject:debugDescriptionExtraInfoDictionary forKeyedSubscript:@"actionInfo"];
   }
 
   else
@@ -284,13 +284,13 @@ LABEL_9:
   return v9;
 }
 
-- (void)determineActionabilityWithCompletionHandler:(id)a3
+- (void)determineActionabilityWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(BCSAction *)self data];
-  v5 = [v4 type];
+  handlerCopy = handler;
+  data = [(BCSAction *)self data];
+  type = [data type];
 
-  if (v5 == 8)
+  if (type == 8)
   {
     isHostAppEntitled = _bcs_isHostAppEntitled();
   }
@@ -300,7 +300,7 @@ LABEL_9:
     isHostAppEntitled = 1;
   }
 
-  v7[2](v7, isHostAppEntitled);
+  handlerCopy[2](handlerCopy, isHostAppEntitled);
 }
 
 - (int64_t)codeType
@@ -317,16 +317,16 @@ LABEL_9:
   }
 }
 
-- (void)performActionWithCompletion:(id)a3
+- (void)performActionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__BCSAction_performActionWithCompletion___block_invoke;
   v6[3] = &unk_278CFE7C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   _bcs_performActionAfterUnlock(v6);
 }
 
@@ -337,19 +337,19 @@ void __41__BCSAction_performActionWithCompletion___block_invoke(uint64_t a1)
   [v2 performActionWithOptions:v3 completion:*(a1 + 40)];
 }
 
-- (void)performActionWithOptions:(id)a3 completion:(id)a4
+- (void)performActionWithOptions:(id)options completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(BCSAction *)self performDefaultAction];
-  v5[2](v5, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 - (BOOL)preferItemsInSubmenu
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(BCSAction *)self detectedCode];
+  detectedCode = [(BCSAction *)self detectedCode];
 
-  if (v3)
+  if (detectedCode)
   {
     if (_bcs_isCurrentProcessSafari())
     {
@@ -358,13 +358,13 @@ void __41__BCSAction_performActionWithCompletion___block_invoke(uint64_t a1)
       v10 = 0u;
       v11 = 0u;
       v4 = v12 = 0u;
-      v3 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      detectedCode = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (detectedCode)
       {
         v5 = *v10;
         while (2)
         {
-          for (i = 0; i != v3; i = i + 1)
+          for (i = 0; i != detectedCode; i = i + 1)
           {
             if (*v10 != v5)
             {
@@ -373,13 +373,13 @@ void __41__BCSAction_performActionWithCompletion___block_invoke(uint64_t a1)
 
             if ([*(*(&v9 + 1) + 8 * i) canGroupInSubmenu])
             {
-              LOBYTE(v3) = 1;
+              LOBYTE(detectedCode) = 1;
               goto LABEL_14;
             }
           }
 
-          v3 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
-          if (v3)
+          detectedCode = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+          if (detectedCode)
           {
             continue;
           }
@@ -393,20 +393,20 @@ LABEL_14:
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(detectedCode) = 0;
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v3;
+  return detectedCode;
 }
 
-- (id)subMenuWithMenuItems:(id)a3
+- (id)subMenuWithMenuItems:(id)items
 {
-  v4 = a3;
-  v5 = [(BCSAction *)self codeType];
+  itemsCopy = items;
+  codeType = [(BCSAction *)self codeType];
   UIMenuClass = getUIMenuClass();
-  if (v5 == 3)
+  if (codeType == 3)
   {
     v7 = @"appclip";
     v8 = @"App Clip Code MenuItem";
@@ -420,7 +420,7 @@ LABEL_14:
 
   v9 = _BCSLocalizedString(v8, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
   v10 = [getUIImageClass() systemImageNamed:v7];
-  v11 = [UIMenuClass menuWithTitle:v9 image:v10 identifier:0 options:32 children:v4];
+  v11 = [UIMenuClass menuWithTitle:v9 image:v10 identifier:0 options:32 children:itemsCopy];
 
   return v11;
 }
@@ -428,14 +428,14 @@ LABEL_14:
 - (NSArray)menuElements
 {
   v33 = *MEMORY[0x277D85DE8];
-  v2 = [(BCSAction *)self actionPickerItems];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB18] array];
+  actionPickerItems = [(BCSAction *)self actionPickerItems];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v2;
+  obj = actionPickerItems;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v5)
   {
@@ -445,8 +445,8 @@ LABEL_14:
     {
       for (i = 0; i != v6; ++i)
       {
-        v8 = v4;
-        v9 = v3;
+        v8 = array2;
+        v9 = array;
         if (*v28 != v25)
         {
           objc_enumerationMutation(obj);
@@ -454,21 +454,21 @@ LABEL_14:
 
         v10 = *(*(&v27 + 1) + 8 * i);
         UIActionClass = getUIActionClass();
-        v12 = [v10 label];
-        v13 = [v10 icon];
-        v14 = [v10 label];
+        label = [v10 label];
+        icon = [v10 icon];
+        label2 = [v10 label];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __25__BCSAction_menuElements__block_invoke;
         v26[3] = &unk_278CFE810;
         v26[4] = v10;
-        v15 = [UIActionClass actionWithTitle:v12 image:v13 identifier:v14 handler:v26];
+        v15 = [UIActionClass actionWithTitle:label image:icon identifier:label2 handler:v26];
 
-        v3 = v9;
-        v4 = v8;
+        array = v9;
+        array2 = v8;
         if ([v10 useInlineMenu])
         {
-          v16 = v3;
+          v16 = array;
         }
 
         else
@@ -485,19 +485,19 @@ LABEL_14:
     while (v6);
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v17 = [getUIMenuClass() menuWithTitle:&stru_2853953A0 image:0 identifier:0 options:1 children:v3];
+    v17 = [getUIMenuClass() menuWithTitle:&stru_2853953A0 image:0 identifier:0 options:1 children:array];
     v18 = [MEMORY[0x277CBEA60] arrayWithObject:v17];
-    if ([v4 count] && -[BCSAction preferItemsInSubmenu](self, "preferItemsInSubmenu"))
+    if ([array2 count] && -[BCSAction preferItemsInSubmenu](self, "preferItemsInSubmenu"))
     {
-      v19 = [(BCSAction *)self subMenuWithMenuItems:v4];
+      v19 = [(BCSAction *)self subMenuWithMenuItems:array2];
       v20 = [v18 arrayByAddingObject:v19];
     }
 
     else
     {
-      v20 = [v18 arrayByAddingObjectsFromArray:v4];
+      v20 = [v18 arrayByAddingObjectsFromArray:array2];
     }
 
     goto LABEL_19;
@@ -505,7 +505,7 @@ LABEL_14:
 
   if ([(BCSAction *)self preferItemsInSubmenu])
   {
-    v17 = [(BCSAction *)self subMenuWithMenuItems:v4];
+    v17 = [(BCSAction *)self subMenuWithMenuItems:array2];
     v31 = v17;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
 LABEL_19:
@@ -513,7 +513,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v20 = v4;
+  v20 = array2;
 LABEL_20:
 
   v21 = *MEMORY[0x277D85DE8];
@@ -562,8 +562,8 @@ id __25__BCSAction_menuProvider__block_invoke(uint64_t a1)
 
 - (unint64_t)menuElementsCount
 {
-  v2 = [(BCSAction *)self actionPickerItems];
-  v3 = [v2 count];
+  actionPickerItems = [(BCSAction *)self actionPickerItems];
+  v3 = [actionPickerItems count];
 
   return v3;
 }
@@ -571,16 +571,16 @@ id __25__BCSAction_menuProvider__block_invoke(uint64_t a1)
 - (UIImage)actionIcon
 {
   UIImageClass = getUIImageClass();
-  v4 = [(BCSAction *)self actionIconSystemImageName];
-  v5 = [UIImageClass _systemImageNamed:v4];
+  actionIconSystemImageName = [(BCSAction *)self actionIconSystemImageName];
+  v5 = [UIImageClass _systemImageNamed:actionIconSystemImageName];
 
   return v5;
 }
 
 - (id)_fallbackDataTypeDisplayString
 {
-  v2 = [(BCSAction *)self codeType];
-  switch(v2)
+  codeType = [(BCSAction *)self codeType];
+  switch(codeType)
   {
     case 3:
       v4 = @"APP CLIP CODE DETECTED";
@@ -603,29 +603,29 @@ LABEL_8:
 
 - (NSString)dataTypeDisplayString
 {
-  v3 = [(BCSAction *)self localizedDefaultActionTitle];
-  v4 = [v3 length];
+  localizedDefaultActionTitle = [(BCSAction *)self localizedDefaultActionTitle];
+  v4 = [localizedDefaultActionTitle length];
 
   if (v4)
   {
-    v5 = [(BCSAction *)self localizedDefaultActionTitle];
+    localizedDefaultActionTitle2 = [(BCSAction *)self localizedDefaultActionTitle];
 LABEL_20:
-    v13 = v5;
+    v13 = localizedDefaultActionTitle2;
     goto LABEL_21;
   }
 
-  v6 = [(BCSAction *)self data];
-  v7 = [v6 type];
+  data = [(BCSAction *)self data];
+  type = [data type];
 
-  if (v7 == 10)
+  if (type == 10)
   {
     v8 = @"TEXT QR CODE";
 LABEL_19:
-    v5 = _BCSLocalizedString(v8, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+    localizedDefaultActionTitle2 = _BCSLocalizedString(v8, &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
     goto LABEL_20;
   }
 
-  if (v7 == 8)
+  if (type == 8)
   {
     if (MGGetBoolAnswer())
     {
@@ -646,9 +646,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v9 = [(BCSAction *)self clipMetadataRequest];
+  clipMetadataRequest = [(BCSAction *)self clipMetadataRequest];
 
-  if (v9)
+  if (clipMetadataRequest)
   {
     if ([(BCSAction *)self codeType]== 3)
     {
@@ -663,30 +663,30 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v10 = [(BCSAction *)self defaultActionTargetApplicationBundleIdentifier];
-  v11 = v10;
-  if (v10)
+  defaultActionTargetApplicationBundleIdentifier = [(BCSAction *)self defaultActionTargetApplicationBundleIdentifier];
+  v11 = defaultActionTargetApplicationBundleIdentifier;
+  if (defaultActionTargetApplicationBundleIdentifier)
   {
-    if (![v10 isEqualToString:@"com.apple.mobilesafari"])
+    if (![defaultActionTargetApplicationBundleIdentifier isEqualToString:@"com.apple.mobilesafari"])
     {
       v15 = [getLSApplicationProxyClass() applicationProxyForIdentifier:v11];
       v16 = MEMORY[0x277CCACA8];
       v17 = _BCSLocalizedString(@"%@ QR CODE", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
-      v18 = [v15 localizedName];
-      v13 = [v16 stringWithFormat:v17, v18];
+      localizedName = [v15 localizedName];
+      v13 = [v16 stringWithFormat:v17, localizedName];
 
       goto LABEL_27;
     }
 
-    v12 = _BCSLocalizedString(@"WEBSITE QR CODE", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
+    _fallbackDataTypeDisplayString = _BCSLocalizedString(@"WEBSITE QR CODE", &_BCSLocalizableStringsBundleOnceToken, &_BCSLocalizableStringsBundle);
   }
 
   else
   {
-    v12 = [(BCSAction *)self _fallbackDataTypeDisplayString];
+    _fallbackDataTypeDisplayString = [(BCSAction *)self _fallbackDataTypeDisplayString];
   }
 
-  v13 = v12;
+  v13 = _fallbackDataTypeDisplayString;
 LABEL_27:
 
 LABEL_21:
@@ -696,10 +696,10 @@ LABEL_21:
 
 - (int64_t)payloadDataType
 {
-  v2 = [(BCSAction *)self data];
-  v3 = [v2 type];
+  data = [(BCSAction *)self data];
+  type = [data type];
 
-  return v3;
+  return type;
 }
 
 - (BOOL)isLiveCameraOnlyAction

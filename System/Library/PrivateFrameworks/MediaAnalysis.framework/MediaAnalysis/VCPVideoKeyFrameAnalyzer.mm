@@ -1,36 +1,36 @@
 @interface VCPVideoKeyFrameAnalyzer
-- (VCPVideoKeyFrameAnalyzer)initWithTransform:(CGAffineTransform *)a3 timeRange:(id *)a4 isLivePhoto:(BOOL)a5 keyFrameResults:(id)a6;
-- (float)computeMinDistanceBetween:(id)a3 withSet:(id)a4;
-- (int)analyzeFrame:(__CVBuffer *)a3 frameStats:(id)a4 timestamp:(id *)a5;
-- (int)computeFaceQualityOfFrame:(__CVBuffer *)a3;
-- (int)computeSharpnessOfFrame:(__CVBuffer *)a3;
+- (VCPVideoKeyFrameAnalyzer)initWithTransform:(CGAffineTransform *)transform timeRange:(id *)range isLivePhoto:(BOOL)photo keyFrameResults:(id)results;
+- (float)computeMinDistanceBetween:(id)between withSet:(id)set;
+- (int)analyzeFrame:(__CVBuffer *)frame frameStats:(id)stats timestamp:(id *)timestamp;
+- (int)computeFaceQualityOfFrame:(__CVBuffer *)frame;
+- (int)computeSharpnessOfFrame:(__CVBuffer *)frame;
 - (int)finalizeKeyFrame;
-- (int)loadKeyFrameResults:(id *)a3;
+- (int)loadKeyFrameResults:(id *)results;
 - (int)postProcess;
 - (void)adjustScoreByFace;
 - (void)modulateByExposure;
 - (void)modulateByJunk;
 - (void)modulateByTimeRange;
-- (void)prepareFrameStats:(id)a3 timeStamp:(id *)a4;
-- (void)preparePostProcessingStatsFromFaceRange:(id)a3 junkResults:(id)a4;
-- (void)setBlurAnalyzerFaceResults:(id)a3;
-- (void)setKeyFrameTime:(id *)a3 isHeadingFrame:(BOOL)a4;
+- (void)prepareFrameStats:(id)stats timeStamp:(id *)stamp;
+- (void)preparePostProcessingStatsFromFaceRange:(id)range junkResults:(id)results;
+- (void)setBlurAnalyzerFaceResults:(id)results;
+- (void)setKeyFrameTime:(id *)time isHeadingFrame:(BOOL)frame;
 @end
 
 @implementation VCPVideoKeyFrameAnalyzer
 
-- (VCPVideoKeyFrameAnalyzer)initWithTransform:(CGAffineTransform *)a3 timeRange:(id *)a4 isLivePhoto:(BOOL)a5 keyFrameResults:(id)a6
+- (VCPVideoKeyFrameAnalyzer)initWithTransform:(CGAffineTransform *)transform timeRange:(id *)range isLivePhoto:(BOOL)photo keyFrameResults:(id)results
 {
-  v7 = a5;
-  v10 = a6;
+  photoCopy = photo;
+  resultsCopy = results;
   v28.receiver = self;
   v28.super_class = VCPVideoKeyFrameAnalyzer;
   v11 = [(VCPVideoKeyFrameAnalyzer *)&v28 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     keyFrames = v11->_keyFrames;
-    v11->_keyFrames = v12;
+    v11->_keyFrames = array;
 
     v14 = [[VCPImageBlurAnalyzer alloc] initWithFaceResults:0 sdof:0];
     blurAnalyzer = v11->_blurAnalyzer;
@@ -40,24 +40,24 @@
     faceQualityAnalyzer = v11->_faceQualityAnalyzer;
     v11->_faceQualityAnalyzer = v16;
 
-    v18 = *&a4->var0.var0;
-    v19 = *&a4->var1.var1;
-    *&v11->_timeRange.start.epoch = *&a4->var0.var3;
+    v18 = *&range->var0.var0;
+    v19 = *&range->var1.var1;
+    *&v11->_timeRange.start.epoch = *&range->var0.var3;
     *&v11->_timeRange.duration.timescale = v19;
     *&v11->_timeRange.start.value = v18;
-    v20 = [[VCPVideoKeyFrame alloc] initWithLivePhoto:v7];
+    v20 = [[VCPVideoKeyFrame alloc] initWithLivePhoto:photoCopy];
     activeKeyFrame = v11->_activeKeyFrame;
     v11->_activeKeyFrame = v20;
 
     faceRanges = v11->_faceRanges;
     v11->_faceRanges = 0;
 
-    v11->_isLivePhoto = v7;
-    v23 = [MEMORY[0x1E695DF70] array];
+    v11->_isLivePhoto = photoCopy;
+    array2 = [MEMORY[0x1E695DF70] array];
     keyFrameScores = v11->_keyFrameScores;
-    v11->_keyFrameScores = v23;
+    v11->_keyFrameScores = array2;
 
-    objc_storeStrong(&v11->_inputKeyFrameResults, a6);
+    objc_storeStrong(&v11->_inputKeyFrameResults, results);
     if (!v11->_blurAnalyzer || !v11->_faceQualityAnalyzer || (v25 = v11, !v11->_activeKeyFrame))
     {
       v25 = 0;
@@ -74,26 +74,26 @@
   return v26;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 frameStats:(id)a4 timestamp:(id *)a5
+- (int)analyzeFrame:(__CVBuffer *)frame frameStats:(id)stats timestamp:(id *)timestamp
 {
-  v8 = a4;
+  statsCopy = stats;
   {
     CMTimeMake([VCPVideoKeyFrameAnalyzer analyzeFrame:frameStats:timestamp:]::kHeadingTime, 1, 1);
   }
 
-  v24 = *&a5->var0;
-  var3 = a5->var3;
-  lhs = *a5;
+  v24 = *&timestamp->var0;
+  var3 = timestamp->var3;
+  lhs = *timestamp;
   rhs = self->_timeRange.start;
   CMTimeSubtract(&v23, &lhs, &rhs);
   lhs = v23;
   rhs = *[VCPVideoKeyFrameAnalyzer analyzeFrame:frameStats:timestamp:]::kHeadingTime;
   [(VCPVideoKeyFrameAnalyzer *)self setKeyFrameTime:&v24 isHeadingFrame:CMTimeCompare(&lhs, &rhs) >> 31];
-  lhs = *a5;
-  [(VCPVideoKeyFrameAnalyzer *)self prepareFrameStats:v8 timeStamp:&lhs];
+  lhs = *timestamp;
+  [(VCPVideoKeyFrameAnalyzer *)self prepareFrameStats:statsCopy timeStamp:&lhs];
   if (([(VCPVideoKeyFrame *)self->_activeKeyFrame statsFlags]& 1) == 0 && ([(VCPVideoKeyFrame *)self->_activeKeyFrame statsFlags]& 0x10) == 0)
   {
-    v9 = 0;
+    finalizeKeyFrame = 0;
     goto LABEL_27;
   }
 
@@ -110,8 +110,8 @@
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "VCPVideoKeyFrameBlurAnalyzer", "", &lhs, 2u);
     }
 
-    v9 = [(VCPVideoKeyFrameAnalyzer *)self computeSharpnessOfFrame:a3];
-    if (v9)
+    finalizeKeyFrame = [(VCPVideoKeyFrameAnalyzer *)self computeSharpnessOfFrame:frame];
+    if (finalizeKeyFrame)
     {
       goto LABEL_27;
     }
@@ -128,7 +128,7 @@
   if (!+[VCPVideoKeyFrameAnalyzer isLivePhotoKeyFrameEnabled]|| ([(VCPVideoKeyFrame *)self->_activeKeyFrame statsFlags]& 1) == 0 || !self->_isLivePhoto)
   {
 LABEL_26:
-    v9 = [(VCPVideoKeyFrameAnalyzer *)self finalizeKeyFrame];
+    finalizeKeyFrame = [(VCPVideoKeyFrameAnalyzer *)self finalizeKeyFrame];
     goto LABEL_27;
   }
 
@@ -143,8 +143,8 @@ LABEL_26:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "VCPVideoKeyFrameFaceQualityAnalyzer", "", &lhs, 2u);
   }
 
-  v9 = [(VCPVideoKeyFrameAnalyzer *)self computeFaceQualityOfFrame:a3];
-  if (!v9)
+  finalizeKeyFrame = [(VCPVideoKeyFrameAnalyzer *)self computeFaceQualityOfFrame:frame];
+  if (!finalizeKeyFrame)
   {
     v20 = VCPSignPostLog();
     v21 = v20;
@@ -159,10 +159,10 @@ LABEL_26:
 
 LABEL_27:
 
-  return v9;
+  return finalizeKeyFrame;
 }
 
-- (int)loadKeyFrameResults:(id *)a3
+- (int)loadKeyFrameResults:(id *)results
 {
   if (self->_inputKeyFrameResults)
   {
@@ -171,8 +171,8 @@ LABEL_27:
     {
       v6 = [(NSArray *)self->_inputKeyFrameResults objectAtIndexedSubscript:[(NSMutableArray *)self->_keyFrames count]];
       activeKeyFrame = self->_activeKeyFrame;
-      v9 = *&a3->var0;
-      var3 = a3->var3;
+      v9 = *&results->var0;
+      var3 = results->var3;
       [(VCPVideoKeyFrame *)activeKeyFrame loadKeyFrameResult:v6 timestamp:&v9];
     }
   }
@@ -180,15 +180,15 @@ LABEL_27:
   return 0;
 }
 
-- (void)preparePostProcessingStatsFromFaceRange:(id)a3 junkResults:(id)a4
+- (void)preparePostProcessingStatsFromFaceRange:(id)range junkResults:(id)results
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v11];
+  rangeCopy = range;
+  resultsCopy = results;
+  v7 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:rangeCopy];
   faceRanges = self->_faceRanges;
   self->_faceRanges = v7;
 
-  v9 = [MEMORY[0x1E695DEC8] arrayWithArray:v6];
+  v9 = [MEMORY[0x1E695DEC8] arrayWithArray:resultsCopy];
   junkResults = self->_junkResults;
   self->_junkResults = v9;
 }
@@ -201,16 +201,16 @@ LABEL_27:
   return 0;
 }
 
-- (void)setBlurAnalyzerFaceResults:(id)a3
+- (void)setBlurAnalyzerFaceResults:(id)results
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v3 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  obj = v10;
+  obj = resultsCopy;
   v4 = [obj countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v4)
   {
@@ -233,7 +233,7 @@ LABEL_27:
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
         v20 = v8;
         v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-        [v3 addObject:v9];
+        [array addObject:v9];
 
         ++v6;
       }
@@ -245,34 +245,34 @@ LABEL_27:
     while (v4);
   }
 
-  [(VCPImageBlurAnalyzer *)self->_blurAnalyzer setFaceResults:v3];
+  [(VCPImageBlurAnalyzer *)self->_blurAnalyzer setFaceResults:array];
 }
 
-- (int)computeFaceQualityOfFrame:(__CVBuffer *)a3
+- (int)computeFaceQualityOfFrame:(__CVBuffer *)frame
 {
-  v5 = [(VCPVideoKeyFrame *)self->_activeKeyFrame detectedFaces];
-  if (![v5 count])
+  detectedFaces = [(VCPVideoKeyFrame *)self->_activeKeyFrame detectedFaces];
+  if (![detectedFaces count])
   {
     goto LABEL_5;
   }
 
-  v6 = [(VCPVideoKeyFrame *)self->_activeKeyFrame detectedFaces];
-  v7 = [v6 objectAtIndexedSubscript:0];
-  v8 = [v7 observation];
+  detectedFaces2 = [(VCPVideoKeyFrame *)self->_activeKeyFrame detectedFaces];
+  v7 = [detectedFaces2 objectAtIndexedSubscript:0];
+  observation = [v7 observation];
 
-  if (!v8)
+  if (!observation)
   {
     return 0;
   }
 
   faceQualityAnalyzer = self->_faceQualityAnalyzer;
-  v10 = [(VCPVideoKeyFrame *)self->_activeKeyFrame detectedFaces];
-  v11 = [(VCPImageFaceQualityAnalyzer *)faceQualityAnalyzer analyzeDetectedFaces:a3 faceResults:v10 cancel:&__block_literal_global_23];
+  detectedFaces3 = [(VCPVideoKeyFrame *)self->_activeKeyFrame detectedFaces];
+  v11 = [(VCPImageFaceQualityAnalyzer *)faceQualityAnalyzer analyzeDetectedFaces:frame faceResults:detectedFaces3 cancel:&__block_literal_global_23];
 
   if (!v11)
   {
-    v5 = [(VCPImageFaceQualityAnalyzer *)self->_faceQualityAnalyzer faceQualityScores];
-    v12 = [v5 mutableCopy];
+    detectedFaces = [(VCPImageFaceQualityAnalyzer *)self->_faceQualityAnalyzer faceQualityScores];
+    v12 = [detectedFaces mutableCopy];
     [(VCPVideoKeyFrame *)self->_activeKeyFrame setFaceQualityScores:v12];
 
 LABEL_5:
@@ -282,15 +282,15 @@ LABEL_5:
   return v11;
 }
 
-- (int)computeSharpnessOfFrame:(__CVBuffer *)a3
+- (int)computeSharpnessOfFrame:(__CVBuffer *)frame
 {
   v24 = 0;
-  v5 = [(VCPVideoKeyFrame *)self->_activeKeyFrame detectedFaces];
-  [(VCPVideoKeyFrameAnalyzer *)self setBlurAnalyzerFaceResults:v5];
+  detectedFaces = [(VCPVideoKeyFrame *)self->_activeKeyFrame detectedFaces];
+  [(VCPVideoKeyFrameAnalyzer *)self setBlurAnalyzerFaceResults:detectedFaces];
 
   blurAnalyzer = self->_blurAnalyzer;
   v23 = 0;
-  v7 = [(VCPImageBlurAnalyzer *)blurAnalyzer analyzePixelBuffer:a3 flags:&v24 results:&v23 cancel:&__block_literal_global_347];
+  v7 = [(VCPImageBlurAnalyzer *)blurAnalyzer analyzePixelBuffer:frame flags:&v24 results:&v23 cancel:&__block_literal_global_347];
   v8 = v23;
   v9 = v8;
   if (!v7)
@@ -334,8 +334,8 @@ LABEL_5:
   [(VCPVideoKeyFrame *)self->_activeKeyFrame computeCurationScore];
   [(NSMutableArray *)self->_keyFrames addObject:self->_activeKeyFrame];
   keyFrameScores = self->_keyFrameScores;
-  v4 = [(VCPVideoKeyFrame *)self->_activeKeyFrame frameResults];
-  [(NSMutableArray *)keyFrameScores addObject:v4];
+  frameResults = [(VCPVideoKeyFrame *)self->_activeKeyFrame frameResults];
+  [(NSMutableArray *)keyFrameScores addObject:frameResults];
 
   v5 = [[VCPVideoKeyFrame alloc] initWithLivePhoto:self->_isLivePhoto];
   activeKeyFrame = self->_activeKeyFrame;
@@ -459,9 +459,9 @@ LABEL_5:
           }
         }
 
-        v14 = [v8 hasGoodSubjectAction];
+        hasGoodSubjectAction = [v8 hasGoodSubjectAction];
         [v8 score];
-        if (v14)
+        if (hasGoodSubjectAction)
         {
           v16 = 1.0;
         }
@@ -553,14 +553,14 @@ void __45__VCPVideoKeyFrameAnalyzer_adjustScoreByFace__block_invoke(uint64_t a1,
   Seconds = CMTimeGetSeconds(&duration);
   if (Seconds >= 3.0)
   {
-    v4 = [(NSMutableArray *)self->_keyFrames firstObject];
-    v5 = [(NSMutableArray *)self->_keyFrames lastObject];
-    [v4 score];
+    firstObject = [(NSMutableArray *)self->_keyFrames firstObject];
+    lastObject = [(NSMutableArray *)self->_keyFrames lastObject];
+    [firstObject score];
     *&v7 = v6 * 0.8;
-    [v4 setScore:v7];
-    [v5 score];
+    [firstObject setScore:v7];
+    [lastObject score];
     *&v9 = v8 * 0.8;
-    [v5 setScore:v9];
+    [lastObject setScore:v9];
   }
 }
 
@@ -745,48 +745,48 @@ LABEL_20:
   }
 }
 
-- (void)setKeyFrameTime:(id *)a3 isHeadingFrame:(BOOL)a4
+- (void)setKeyFrameTime:(id *)time isHeadingFrame:(BOOL)frame
 {
-  v4 = a4;
-  v6 = *a3;
+  frameCopy = frame;
+  v6 = *time;
   [(VCPVideoKeyFrame *)self->_activeKeyFrame setTimestamp:&v6];
-  [(VCPVideoKeyFrame *)self->_activeKeyFrame setIsHeadingFrame:v4];
+  [(VCPVideoKeyFrame *)self->_activeKeyFrame setIsHeadingFrame:frameCopy];
 }
 
-- (void)prepareFrameStats:(id)a3 timeStamp:(id *)a4
+- (void)prepareFrameStats:(id)stats timeStamp:(id *)stamp
 {
-  v6 = a3;
+  statsCopy = stats;
   [(VCPVideoKeyFrame *)self->_activeKeyFrame resetStatsFlag];
-  v39 = *a4;
+  v39 = *stamp;
   [(VCPVideoKeyFrameAnalyzer *)self loadKeyFrameResults:&v39];
   activeKeyFrame = self->_activeKeyFrame;
-  v8 = [v6 frameProcessedByFaceDetector];
-  v9 = [v6 detectedFaces];
-  [(VCPVideoKeyFrame *)activeKeyFrame setFaceStatsFlag:v8 detectedFaces:v9];
+  frameProcessedByFaceDetector = [statsCopy frameProcessedByFaceDetector];
+  detectedFaces = [statsCopy detectedFaces];
+  [(VCPVideoKeyFrame *)activeKeyFrame setFaceStatsFlag:frameProcessedByFaceDetector detectedFaces:detectedFaces];
 
   v10 = self->_activeKeyFrame;
-  [v6 frameExpressionScore];
+  [statsCopy frameExpressionScore];
   [(VCPVideoKeyFrame *)v10 setExpressionChangeScore:?];
   v11 = self->_activeKeyFrame;
-  v12 = [v6 frameProcessedByVideoAnalyzer];
-  [v6 cameraMotionScore];
+  frameProcessedByVideoAnalyzer = [statsCopy frameProcessedByVideoAnalyzer];
+  [statsCopy cameraMotionScore];
   v14 = v13;
-  [v6 subjectActionScore];
+  [statsCopy subjectActionScore];
   v16 = v15;
-  [v6 interestingnessScore];
+  [statsCopy interestingnessScore];
   v18 = v17;
-  [v6 obstructionScore];
+  [statsCopy obstructionScore];
   v20 = v19;
-  [v6 colorfulnessScore];
+  [statsCopy colorfulnessScore];
   v22 = v21;
-  [v6 exposureScore];
+  [statsCopy exposureScore];
   v24 = v23;
-  v25 = [v6 frameProcessedByHumanAnalyzer];
-  [v6 humanPoseScore];
+  frameProcessedByHumanAnalyzer = [statsCopy frameProcessedByHumanAnalyzer];
+  [statsCopy humanPoseScore];
   v27 = v26;
-  [v6 humanActionScore];
+  [statsCopy humanActionScore];
   v29 = v28;
-  v30 = [v6 subMbMotionAvailable];
+  subMbMotionAvailable = [statsCopy subMbMotionAvailable];
   LODWORD(v31) = v14;
   LODWORD(v32) = v16;
   LODWORD(v33) = v18;
@@ -795,19 +795,19 @@ LABEL_20:
   LODWORD(v36) = v24;
   LODWORD(v37) = v27;
   LODWORD(v38) = v29;
-  [(VCPVideoKeyFrame *)v11 setMotionStatsFlag:v12 cameraMotion:v25 subjectAction:v30 interestingness:v31 obstruction:v32 colorfulness:v33 exposureScore:v34 humanActionStatsFlag:v35 humanPoseScore:v36 humanActionScore:v37 subMb:v38];
+  [(VCPVideoKeyFrame *)v11 setMotionStatsFlag:frameProcessedByVideoAnalyzer cameraMotion:frameProcessedByHumanAnalyzer subjectAction:subMbMotionAvailable interestingness:v31 obstruction:v32 colorfulness:v33 exposureScore:v34 humanActionStatsFlag:v35 humanPoseScore:v36 humanActionScore:v37 subMb:v38];
 }
 
-- (float)computeMinDistanceBetween:(id)a3 withSet:(id)a4
+- (float)computeMinDistanceBetween:(id)between withSet:(id)set
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  betweenCopy = between;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  setCopy = set;
+  v7 = [setCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -818,12 +818,12 @@ LABEL_20:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(setCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v14 = 0.0;
-        v12 = [v5 computeDistance:&v14 toDescriptor:v11];
+        v12 = [betweenCopy computeDistance:&v14 toDescriptor:v11];
         if (v12)
         {
           v9 = v12;
@@ -836,7 +836,7 @@ LABEL_20:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [setCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

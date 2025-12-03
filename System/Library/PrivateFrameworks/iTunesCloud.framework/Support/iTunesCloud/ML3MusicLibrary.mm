@@ -1,27 +1,27 @@
 @interface ML3MusicLibrary
-- (BOOL)_updateUbiquitousDatabaseWithEntity:(id)a3 syncRevision:(int64_t)a4 usingConnection:(id)a5;
-- (BOOL)removeAllUbiquitousMetadataUsingClientIdentity:(id)a3 error:(id *)a4;
-- (BOOL)updateMusicLibraryWithClientIdentity:(id)a3 applyUbiquitousBookmarkMetadataToTrackWithPersistentID:(int64_t)a4;
-- (BOOL)updateUbiquitousDatabaseWithClientIdentity:(id)a3 removeUbiquitousMetadataFromTrackWithPersistentID:(int64_t)a4 error:(id *)a5;
-- (BOOL)updateWithEntity:(id)a3 clientIdentity:(id)a4;
+- (BOOL)_updateUbiquitousDatabaseWithEntity:(id)entity syncRevision:(int64_t)revision usingConnection:(id)connection;
+- (BOOL)removeAllUbiquitousMetadataUsingClientIdentity:(id)identity error:(id *)error;
+- (BOOL)updateMusicLibraryWithClientIdentity:(id)identity applyUbiquitousBookmarkMetadataToTrackWithPersistentID:(int64_t)d;
+- (BOOL)updateUbiquitousDatabaseWithClientIdentity:(id)identity removeUbiquitousMetadataFromTrackWithPersistentID:(int64_t)d error:(id *)error;
+- (BOOL)updateWithEntity:(id)entity clientIdentity:(id)identity;
 - (NSDate)dateLastSynced;
-- (id)_keyValueStoreItemIdentifierForItem:(id)a3;
-- (id)_kvsEntityWithKVSKey:(id)a3 domain:(id)a4;
-- (id)_queryForTracksNeedingPushWithEntityRevisionAnchor:(unint64_t)a3 orderingTerms:(id)a4;
-- (id)beginTransactionWithItemsToSyncWithDomain:(id)a3 enumerationBlock:(id)a4;
-- (id)readUbiquitousDatabaseMetadataValuesForIdentifiers:(id)a3 forDomain:(id)a4 clientIdentity:(id)a5;
+- (id)_keyValueStoreItemIdentifierForItem:(id)item;
+- (id)_kvsEntityWithKVSKey:(id)key domain:(id)domain;
+- (id)_queryForTracksNeedingPushWithEntityRevisionAnchor:(unint64_t)anchor orderingTerms:(id)terms;
+- (id)beginTransactionWithItemsToSyncWithDomain:(id)domain enumerationBlock:(id)block;
+- (id)readUbiquitousDatabaseMetadataValuesForIdentifiers:(id)identifiers forDomain:(id)domain clientIdentity:(id)identity;
 - (int64_t)icd_preferredVideoQuality;
 - (int64_t)icd_sagaCloudAddToPlaylistBehavior;
 - (int64_t)icd_sagaCloudFavoriteSongAddToLibraryBehavior;
 - (unint64_t)lastSyncedEntityRevision;
-- (void)_populateMetadataValues:(id)a3 fromDataSourceTrack:(id)a4;
-- (void)_updateDatabaseByResetingSyncEntityRevisionForItemsWithIdentifiers:(id)a3;
-- (void)commitUniversalPlaybackPositions:(id)a3 context:(id)a4 domain:(id)a5 domainVersion:(id)a6;
-- (void)icd_setPreferredVideoQuality:(int64_t)a3;
-- (void)icd_setSagaCloudAddToPlaylistBehavior:(int64_t)a3;
-- (void)icd_setSagaCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3;
-- (void)setDateLastSynced:(id)a3;
-- (void)setLastSyncedEntityRevision:(unint64_t)a3;
+- (void)_populateMetadataValues:(id)values fromDataSourceTrack:(id)track;
+- (void)_updateDatabaseByResetingSyncEntityRevisionForItemsWithIdentifiers:(id)identifiers;
+- (void)commitUniversalPlaybackPositions:(id)positions context:(id)context domain:(id)domain domainVersion:(id)version;
+- (void)icd_setPreferredVideoQuality:(int64_t)quality;
+- (void)icd_setSagaCloudAddToPlaylistBehavior:(int64_t)behavior;
+- (void)icd_setSagaCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior;
+- (void)setDateLastSynced:(id)synced;
+- (void)setLastSyncedEntityRevision:(unint64_t)revision;
 @end
 
 @implementation ML3MusicLibrary
@@ -29,19 +29,19 @@
 - (unint64_t)lastSyncedEntityRevision
 {
   v2 = [(ML3MusicLibrary *)self valueForDatabaseProperty:@"MLUbiquitousBookmarkEntityRevisionAnchor"];
-  v3 = [v2 longLongValue];
+  longLongValue = [v2 longLongValue];
 
-  return v3;
+  return longLongValue;
 }
 
-- (void)icd_setPreferredVideoQuality:(int64_t)a3
+- (void)icd_setPreferredVideoQuality:(int64_t)quality
 {
-  if (a3 >= 3)
+  if (quality >= 3)
   {
-    a3 = -1;
+    quality = -1;
   }
 
-  [(ML3MusicLibrary *)self setPreferredVideoQuality:a3];
+  [(ML3MusicLibrary *)self setPreferredVideoQuality:quality];
 }
 
 - (int64_t)icd_preferredVideoQuality
@@ -55,16 +55,16 @@
   return result;
 }
 
-- (void)icd_setSagaCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3
+- (void)icd_setSagaCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior
 {
-  if (a3 == 1)
+  if (behavior == 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = 2 * (a3 == 2);
+    v3 = 2 * (behavior == 2);
   }
 
   [(ML3MusicLibrary *)self setSagaCloudFavoriteSongAddToLibraryBehavior:v3];
@@ -74,16 +74,16 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v5, 0, 0, 1u);
 }
 
-- (void)icd_setSagaCloudAddToPlaylistBehavior:(int64_t)a3
+- (void)icd_setSagaCloudAddToPlaylistBehavior:(int64_t)behavior
 {
-  if (a3 == 1)
+  if (behavior == 1)
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = 2 * (a3 == 2);
+    v3 = 2 * (behavior == 2);
   }
 
   [(ML3MusicLibrary *)self setSagaCloudAddToPlaylistBehavior:v3];
@@ -106,32 +106,32 @@
 
 - (int64_t)icd_sagaCloudAddToPlaylistBehavior
 {
-  v2 = [(ML3MusicLibrary *)self sagaCloudAddToPlaylistBehavior];
-  if (v2 == 1)
+  sagaCloudAddToPlaylistBehavior = [(ML3MusicLibrary *)self sagaCloudAddToPlaylistBehavior];
+  if (sagaCloudAddToPlaylistBehavior == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v2 == 2);
+    return 2 * (sagaCloudAddToPlaylistBehavior == 2);
   }
 }
 
-- (BOOL)_updateUbiquitousDatabaseWithEntity:(id)a3 syncRevision:(int64_t)a4 usingConnection:(id)a5
+- (BOOL)_updateUbiquitousDatabaseWithEntity:(id)entity syncRevision:(int64_t)revision usingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 playbackPositionKey];
-  v10 = [v9 length];
+  entityCopy = entity;
+  connectionCopy = connection;
+  playbackPositionKey = [entityCopy playbackPositionKey];
+  v10 = [playbackPositionKey length];
 
   if (v10)
   {
-    v11 = [v7 bookmarkTime];
-    if (v11)
+    bookmarkTime = [entityCopy bookmarkTime];
+    if (bookmarkTime)
     {
-      v12 = [v7 bookmarkTime];
-      [v12 doubleValue];
+      bookmarkTime2 = [entityCopy bookmarkTime];
+      [bookmarkTime2 doubleValue];
       v14 = [NSNumber numberWithDouble:v13 * 1000.0];
     }
 
@@ -140,13 +140,13 @@
       v14 = &off_1001ED708;
     }
 
-    v16 = [v7 playbackPositionKey];
-    v33[0] = v16;
-    v17 = [v7 userPlayCount];
-    v18 = v17;
-    if (v17)
+    playbackPositionKey2 = [entityCopy playbackPositionKey];
+    v33[0] = playbackPositionKey2;
+    userPlayCount = [entityCopy userPlayCount];
+    v18 = userPlayCount;
+    if (userPlayCount)
     {
-      v19 = v17;
+      v19 = userPlayCount;
     }
 
     else
@@ -155,11 +155,11 @@
     }
 
     v33[1] = v19;
-    v20 = [v7 hasBeenPlayed];
-    v21 = v20;
-    if (v20)
+    hasBeenPlayed = [entityCopy hasBeenPlayed];
+    v21 = hasBeenPlayed;
+    if (hasBeenPlayed)
     {
-      v22 = v20;
+      v22 = hasBeenPlayed;
     }
 
     else
@@ -169,11 +169,11 @@
 
     v33[2] = v22;
     v33[3] = v14;
-    v23 = [v7 bookmarkTimestamp];
-    v24 = v23;
-    if (v23)
+    bookmarkTimestamp = [entityCopy bookmarkTimestamp];
+    v24 = bookmarkTimestamp;
+    if (bookmarkTimestamp)
     {
-      v25 = v23;
+      v25 = bookmarkTimestamp;
     }
 
     else
@@ -182,19 +182,19 @@
     }
 
     v33[4] = v25;
-    v26 = [NSNumber numberWithLongLong:a4];
+    v26 = [NSNumber numberWithLongLong:revision];
     v33[5] = v26;
     v27 = [NSArray arrayWithObjects:v33 count:6];
-    v15 = [v8 executeUpdate:@"INSERT OR REPLACE INTO cloud_kvs (key withParameters:play_count_user error:{has_been_played, bookmark_time_ms, bookmark_sync_timestamp, bookmark_sync_revision) VALUES (?, ?, ?, ?, ?, ?)", v27, 0}];
+    v15 = [connectionCopy executeUpdate:@"INSERT OR REPLACE INTO cloud_kvs (key withParameters:play_count_user error:{has_been_played, bookmark_time_ms, bookmark_sync_timestamp, bookmark_sync_revision) VALUES (?, ?, ?, ?, ?, ?)", v27, 0}];
 
     if ((v15 & 1) == 0)
     {
       v28 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v29 = [v7 playbackPositionKey];
+        playbackPositionKey3 = [entityCopy playbackPositionKey];
         v31 = 138412290;
-        v32 = v29;
+        v32 = playbackPositionKey3;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "failed to update ubiquitous bookmarkmatadata for identifier %@.", &v31, 0xCu);
       }
     }
@@ -208,31 +208,31 @@
   return v15;
 }
 
-- (void)_updateDatabaseByResetingSyncEntityRevisionForItemsWithIdentifiers:(id)a3
+- (void)_updateDatabaseByResetingSyncEntityRevisionForItemsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     v5 = +[ML3DatabaseStatementRenderer defaultRenderer];
-    [v5 statementWithPrefix:@"UPDATE cloud_kvs SET bookmark_sync_revision = 0 WHERE key" inParameterCount:{objc_msgSend(v4, "count")}];
+    [v5 statementWithPrefix:@"UPDATE cloud_kvs SET bookmark_sync_revision = 0 WHERE key" inParameterCount:{objc_msgSend(identifiersCopy, "count")}];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000C3178;
     v8 = v7[3] = &unk_1001DEDD0;
-    v9 = v4;
+    v9 = identifiersCopy;
     v6 = v8;
     [(ML3MusicLibrary *)self performDatabaseTransactionWithBlock:v7];
   }
 }
 
-- (id)_queryForTracksNeedingPushWithEntityRevisionAnchor:(unint64_t)a3 orderingTerms:(id)a4
+- (id)_queryForTracksNeedingPushWithEntityRevisionAnchor:(unint64_t)anchor orderingTerms:(id)terms
 {
   v6 = ML3TrackPropertyRememberBookmarkTime;
-  v7 = a4;
+  termsCopy = terms;
   v8 = [ML3ComparisonPredicate predicateWithProperty:v6 equalToValue:&__kCFBooleanTrue];
   v9 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyStoreBookmarkMetadataTimestamp value:&off_1001ED708 comparison:2];
   v10 = ML3TrackPropertyStoreBookmarkMetadataEntityRevision;
-  v11 = [NSNumber numberWithUnsignedLongLong:a3];
+  v11 = [NSNumber numberWithUnsignedLongLong:anchor];
   v12 = [ML3ComparisonPredicate predicateWithProperty:v10 value:v11 comparison:4];
 
   v17[0] = v8;
@@ -241,14 +241,14 @@
   v13 = [NSArray arrayWithObjects:v17 count:3];
   v14 = [ML3AllCompoundPredicate predicateMatchingPredicates:v13];
 
-  v15 = [ML3Track unrestrictedAllItemsQueryWithlibrary:self predicate:v14 orderingTerms:v7];
+  v15 = [ML3Track unrestrictedAllItemsQueryWithlibrary:self predicate:v14 orderingTerms:termsCopy];
 
   return v15;
 }
 
-- (id)_keyValueStoreItemIdentifierForItem:(id)a3
+- (id)_keyValueStoreItemIdentifierForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = ML3TrackPropertyStoreItemID;
   v5 = ML3TrackPropertySubscriptionStoreItemID;
   v38[0] = ML3TrackPropertyStoreItemID;
@@ -256,9 +256,9 @@
   v6 = ML3TrackPropertyMediaType;
   v38[2] = ML3TrackPropertyMediaType;
   v7 = [NSArray arrayWithObjects:v38 count:3];
-  v8 = sub_1000C3740(v3, v7);
+  v8 = sub_1000C3740(itemCopy, v7);
   v9 = [v8 objectForKey:v6];
-  v10 = [v9 unsignedIntValue];
+  unsignedIntValue = [v9 unsignedIntValue];
 
   v11 = [v8 objectForKey:v4];
   v12 = _NSIsNSString();
@@ -266,15 +266,15 @@
   v14 = v13;
   if (v12)
   {
-    v15 = [v13 longLongValue];
+    longLongValue = [v13 longLongValue];
   }
 
   else
   {
-    v15 = [v13 unsignedLongLongValue];
+    longLongValue = [v13 unsignedLongLongValue];
   }
 
-  v16 = v15;
+  v16 = longLongValue;
 
   if (v16)
   {
@@ -291,7 +291,7 @@
   if (v16)
   {
 LABEL_10:
-    if (v10 != 256 && v10 != 4096)
+    if (unsignedIntValue != 256 && unsignedIntValue != 4096)
     {
       v22 = [NSString stringWithFormat:@"%llu", v16];
 LABEL_12:
@@ -304,7 +304,7 @@ LABEL_12:
   v37[1] = ML3TrackPropertyPodcastExternalGUID;
   v24 = [NSArray arrayWithObjects:v37 count:2];
 
-  v25 = sub_1000C3740(v3, v24);
+  v25 = sub_1000C3740(itemCopy, v24);
 
   v26 = ICPlaybackPositionEntityIdentifierForProperties();
   if (v26)
@@ -320,7 +320,7 @@ LABEL_12:
   v36[2] = ML3TrackPropertyAlbum;
   v7 = [NSArray arrayWithObjects:v36 count:3];
 
-  v8 = sub_1000C3740(v3, v7);
+  v8 = sub_1000C3740(itemCopy, v7);
 
   v22 = ICPlaybackPositionEntityIdentifierForProperties();
   if (v22)
@@ -332,7 +332,7 @@ LABEL_12:
   v35[1] = v30;
   v24 = [NSArray arrayWithObjects:v35 count:2];
 
-  v25 = sub_1000C3740(v3, v24);
+  v25 = sub_1000C3740(itemCopy, v24);
 
   v26 = ICPlaybackPositionEntityIdentifierForProperties();
   if (v26)
@@ -349,7 +349,7 @@ LABEL_14:
     v34[1] = v29;
     v7 = [NSArray arrayWithObjects:v34 count:2];
 
-    v8 = sub_1000C3740(v3, v7);
+    v8 = sub_1000C3740(itemCopy, v7);
 
     v22 = ICPlaybackPositionEntityIdentifierForProperties();
     if (v22)
@@ -360,7 +360,7 @@ LABEL_14:
     v33 = v28;
     v31 = [NSArray arrayWithObjects:&v33 count:1];
 
-    v32 = sub_1000C3740(v3, v31);
+    v32 = sub_1000C3740(itemCopy, v31);
 
     v23 = ICPlaybackPositionEntityIdentifierForProperties();
     v7 = v31;
@@ -372,10 +372,10 @@ LABEL_15:
   return v23;
 }
 
-- (id)_kvsEntityWithKVSKey:(id)a3 domain:(id)a4
+- (id)_kvsEntityWithKVSKey:(id)key domain:(id)domain
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  domainCopy = domain;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -386,12 +386,12 @@ LABEL_15:
   v12[1] = 3221225472;
   v12[2] = sub_1000C3A10;
   v12[3] = &unk_1001DCF38;
-  v8 = v6;
+  v8 = keyCopy;
   v13 = v8;
   v16 = &v17;
-  v9 = v7;
+  v9 = domainCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   [(ML3MusicLibrary *)self performDatabaseTransactionWithBlock:v12];
   v10 = v18[5];
 
@@ -400,39 +400,39 @@ LABEL_15:
   return v10;
 }
 
-- (void)_populateMetadataValues:(id)a3 fromDataSourceTrack:(id)a4
+- (void)_populateMetadataValues:(id)values fromDataSourceTrack:(id)track
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(ML3MusicLibrary *)self _keyValueStoreItemIdentifierForItem:v6];
-  [v16 setPlaybackPositionKey:v7];
+  valuesCopy = values;
+  trackCopy = track;
+  v7 = [(ML3MusicLibrary *)self _keyValueStoreItemIdentifierForItem:trackCopy];
+  [valuesCopy setPlaybackPositionKey:v7];
 
-  v8 = [v6 valueForProperty:ML3TrackPropertyStoreBookmarkMetadataTimestamp];
-  [v16 setBookmarkTimestamp:v8];
+  v8 = [trackCopy valueForProperty:ML3TrackPropertyStoreBookmarkMetadataTimestamp];
+  [valuesCopy setBookmarkTimestamp:v8];
 
-  v9 = [v6 valueForProperty:ML3TrackPropertyHasBeenPlayed];
-  [v16 setHasBeenPlayed:v9];
+  v9 = [trackCopy valueForProperty:ML3TrackPropertyHasBeenPlayed];
+  [valuesCopy setHasBeenPlayed:v9];
 
-  v10 = [v6 valueForProperty:ML3TrackPropertyPlayCountUser];
-  [v16 setUserPlayCount:v10];
+  v10 = [trackCopy valueForProperty:ML3TrackPropertyPlayCountUser];
+  [valuesCopy setUserPlayCount:v10];
 
-  v11 = [v6 valueForProperty:ML3TrackPropertyBookmarkTime];
+  v11 = [trackCopy valueForProperty:ML3TrackPropertyBookmarkTime];
 
-  [v16 setBookmarkTime:v11];
-  v12 = [v16 bookmarkTime];
+  [valuesCopy setBookmarkTime:v11];
+  bookmarkTime = [valuesCopy bookmarkTime];
 
-  if (v12)
+  if (bookmarkTime)
   {
-    v13 = [v16 bookmarkTime];
-    [v13 doubleValue];
+    bookmarkTime2 = [valuesCopy bookmarkTime];
+    [bookmarkTime2 doubleValue];
     v15 = [NSNumber numberWithDouble:v14 / 1000.0];
-    [v16 setBookmarkTime:v15];
+    [valuesCopy setBookmarkTime:v15];
   }
 }
 
-- (BOOL)updateUbiquitousDatabaseWithClientIdentity:(id)a3 removeUbiquitousMetadataFromTrackWithPersistentID:(int64_t)a4 error:(id *)a5
+- (BOOL)updateUbiquitousDatabaseWithClientIdentity:(id)identity removeUbiquitousMetadataFromTrackWithPersistentID:(int64_t)d error:(id *)error
 {
-  v8 = a3;
+  identityCopy = identity;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -443,7 +443,7 @@ LABEL_15:
   v21 = sub_1000C39F8;
   v22 = sub_1000C3A08;
   v23 = 0;
-  v9 = [[ML3Track alloc] initWithPersistentID:a4 inLibrary:self];
+  v9 = [[ML3Track alloc] initWithPersistentID:d inLibrary:self];
   v10 = [v9 valueForProperty:ML3TrackPropertyStoreBookmarkMetadataIdentifier];
   if ([v10 length])
   {
@@ -451,7 +451,7 @@ LABEL_15:
     v13[1] = 3221225472;
     v13[2] = sub_1000C4074;
     v13[3] = &unk_1001DCEE8;
-    v14 = v8;
+    v14 = identityCopy;
     v16 = &v24;
     v15 = v10;
     v17 = &v18;
@@ -465,7 +465,7 @@ LABEL_15:
 
   else
   {
-    *a5 = v19[5];
+    *error = v19[5];
     v11 = *(v25 + 24);
   }
 
@@ -475,13 +475,13 @@ LABEL_15:
   return v11 & 1;
 }
 
-- (BOOL)updateWithEntity:(id)a3 clientIdentity:(id)a4
+- (BOOL)updateWithEntity:(id)entity clientIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = [v6 playbackPositionKey];
-  v10 = [v9 length];
+  entityCopy = entity;
+  identityCopy = identity;
+  selfCopy = self;
+  playbackPositionKey = [entityCopy playbackPositionKey];
+  v10 = [playbackPositionKey length];
 
   if (v10)
   {
@@ -493,9 +493,9 @@ LABEL_15:
     v14[1] = 3221225472;
     v14[2] = sub_1000C4368;
     v14[3] = &unk_1001DCEC0;
-    v15 = v7;
-    v16 = v6;
-    v18 = v8;
+    v15 = identityCopy;
+    v16 = entityCopy;
+    v18 = selfCopy;
     v19 = buf;
     v17 = v18;
     [(ML3MusicLibrary *)v18 performDatabaseTransactionWithBlock:v14];
@@ -510,9 +510,9 @@ LABEL_15:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = v8;
+      *&buf[4] = selfCopy;
       *&buf[12] = 2114;
-      *&buf[14] = v6;
+      *&buf[14] = entityCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@ Entity has no playbackPositionKey. entity=%{public}@", buf, 0x16u);
     }
 
@@ -522,7 +522,7 @@ LABEL_15:
   return v11 & 1;
 }
 
-- (BOOL)updateMusicLibraryWithClientIdentity:(id)a3 applyUbiquitousBookmarkMetadataToTrackWithPersistentID:(int64_t)a4
+- (BOOL)updateMusicLibraryWithClientIdentity:(id)identity applyUbiquitousBookmarkMetadataToTrackWithPersistentID:(int64_t)d
 {
   v13 = 0;
   v14 = &v13;
@@ -532,19 +532,19 @@ LABEL_15:
   v8[1] = 3221225472;
   v8[2] = sub_1000C4D0C;
   v8[3] = &unk_1001DCE48;
-  v6 = a3;
-  v9 = v6;
-  v10 = self;
+  identityCopy = identity;
+  v9 = identityCopy;
+  selfCopy = self;
   v11 = &v13;
-  v12 = a4;
+  dCopy = d;
   [(ML3MusicLibrary *)self performDatabaseTransactionWithBlock:v8];
-  LOBYTE(a4) = *(v14 + 24);
+  LOBYTE(d) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return a4;
+  return d;
 }
 
-- (BOOL)removeAllUbiquitousMetadataUsingClientIdentity:(id)a3 error:(id *)a4
+- (BOOL)removeAllUbiquitousMetadataUsingClientIdentity:(id)identity error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -560,8 +560,8 @@ LABEL_15:
   v9[1] = 3221225472;
   v9[2] = sub_1000C52D8;
   v9[3] = &unk_1001DD538;
-  v6 = a3;
-  v10 = v6;
+  identityCopy = identity;
+  v10 = identityCopy;
   v11 = &v19;
   v12 = &v13;
   [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:1 withBlock:v9];
@@ -572,7 +572,7 @@ LABEL_15:
 
   else
   {
-    *a4 = v14[5];
+    *error = v14[5];
     v7 = *(v20 + 24);
   }
 
@@ -582,12 +582,12 @@ LABEL_15:
   return v7 & 1;
 }
 
-- (id)readUbiquitousDatabaseMetadataValuesForIdentifiers:(id)a3 forDomain:(id)a4 clientIdentity:(id)a5
+- (id)readUbiquitousDatabaseMetadataValuesForIdentifiers:(id)identifiers forDomain:(id)domain clientIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  domainCopy = domain;
+  identityCopy = identity;
+  if ([identifiersCopy count])
   {
     v18 = 0;
     v19 = &v18;
@@ -599,9 +599,9 @@ LABEL_15:
     v13[1] = 3221225472;
     v13[2] = sub_1000C5524;
     v13[3] = &unk_1001DD6B8;
-    v14 = v10;
-    v15 = v8;
-    v16 = v9;
+    v14 = identityCopy;
+    v15 = identifiersCopy;
+    v16 = domainCopy;
     v17 = &v18;
     [(ML3MusicLibrary *)self databaseConnectionAllowingWrites:0 withBlock:v13];
     v11 = v19[5];
@@ -617,30 +617,30 @@ LABEL_15:
   return v11;
 }
 
-- (void)commitUniversalPlaybackPositions:(id)a3 context:(id)a4 domain:(id)a5 domainVersion:(id)a6
+- (void)commitUniversalPlaybackPositions:(id)positions context:(id)context domain:(id)domain domainVersion:(id)version
 {
-  v10 = a3;
-  v11 = a4;
-  v35 = a5;
-  v36 = a6;
-  v37 = v11;
-  v34 = [v11 transactionEntityRevision];
+  positionsCopy = positions;
+  contextCopy = context;
+  domainCopy = domain;
+  versionCopy = version;
+  v37 = contextCopy;
+  transactionEntityRevision = [contextCopy transactionEntityRevision];
   v12 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v54 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting commit", buf, 0xCu);
   }
 
-  v13 = self;
+  selfCopy2 = self;
 
   v14 = +[NSMutableDictionary dictionary];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v10;
+  obj = positionsCopy;
   v15 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v15)
   {
@@ -657,11 +657,11 @@ LABEL_15:
         }
 
         v20 = *(*(&v48 + 1) + 8 * i);
-        v21 = [v20 playbackPositionKey];
-        if (v21)
+        playbackPositionKey = [v20 playbackPositionKey];
+        if (playbackPositionKey)
         {
-          v22 = [ML3ComparisonPredicate predicateWithProperty:v18 equalToValue:v21];
-          v23 = [ML3Track anyInLibrary:v13 predicate:v22];
+          v22 = [ML3ComparisonPredicate predicateWithProperty:v18 equalToValue:playbackPositionKey];
+          v23 = [ML3Track anyInLibrary:selfCopy2 predicate:v22];
 
           if (v23)
           {
@@ -689,15 +689,15 @@ LABEL_15:
   v44[3] = &unk_1001DCDA8;
   v26 = v14;
   v45 = v26;
-  v47 = v34;
+  v47 = transactionEntityRevision;
   v27 = v25;
   v46 = v27;
-  [(ML3MusicLibrary *)v13 performDatabaseTransactionWithBlock:v44];
+  [(ML3MusicLibrary *)selfCopy2 performDatabaseTransactionWithBlock:v44];
   v28 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v54 = v13;
+    selfCopy = selfCopy2;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ Done Updating Local Items", buf, 0xCu);
   }
 
@@ -706,31 +706,31 @@ LABEL_15:
   v39[1] = 3221225472;
   v39[2] = sub_1000C5D90;
   v39[3] = &unk_1001DCDF8;
-  v39[4] = v13;
-  v40 = v36;
+  v39[4] = selfCopy2;
+  v40 = versionCopy;
   v41 = v26;
-  v42 = v35;
-  v43 = v34;
-  v29 = v35;
+  v42 = domainCopy;
+  v43 = transactionEntityRevision;
+  v29 = domainCopy;
   v30 = v26;
-  v31 = v36;
-  [(ML3MusicLibrary *)v13 performDatabaseTransactionWithBlock:v39];
-  v32 = [v37 ubiquitousIdentifiersToSync];
-  [(ML3MusicLibrary *)v13 _updateDatabaseByResetingSyncEntityRevisionForItemsWithIdentifiers:v32];
+  v31 = versionCopy;
+  [(ML3MusicLibrary *)selfCopy2 performDatabaseTransactionWithBlock:v39];
+  ubiquitousIdentifiersToSync = [v37 ubiquitousIdentifiersToSync];
+  [(ML3MusicLibrary *)selfCopy2 _updateDatabaseByResetingSyncEntityRevisionForItemsWithIdentifiers:ubiquitousIdentifiersToSync];
 
   v33 = os_log_create("com.apple.amp.itunescloudd", "PlaybackPosition");
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v54 = v13;
+    selfCopy = selfCopy2;
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ Done Updating ubiquitous_bookmarks table (all items)", buf, 0xCu);
   }
 }
 
-- (id)beginTransactionWithItemsToSyncWithDomain:(id)a3 enumerationBlock:(id)a4
+- (id)beginTransactionWithItemsToSyncWithDomain:(id)domain enumerationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  blockCopy = block;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000C6300;
@@ -738,21 +738,21 @@ LABEL_15:
   v15[4] = self;
   v8 = [[ICDPlaybackPositionDatabaseContext alloc] initWithLibrary:self];
   v16 = v8;
-  v17 = v6;
-  v18 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = self;
-  [(ML3MusicLibrary *)v11 performReadOnlyDatabaseTransactionWithBlock:v15];
+  v17 = domainCopy;
+  v18 = blockCopy;
+  v9 = blockCopy;
+  v10 = domainCopy;
+  selfCopy = self;
+  [(ML3MusicLibrary *)selfCopy performReadOnlyDatabaseTransactionWithBlock:v15];
   v12 = v18;
   v13 = v8;
 
   return v8;
 }
 
-- (void)setDateLastSynced:(id)a3
+- (void)setDateLastSynced:(id)synced
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [synced timeIntervalSinceReferenceDate];
   v4 = [NSNumber numberWithDouble:?];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MPDateLastSynced"];
 }
@@ -774,9 +774,9 @@ LABEL_15:
   return v3;
 }
 
-- (void)setLastSyncedEntityRevision:(unint64_t)a3
+- (void)setLastSyncedEntityRevision:(unint64_t)revision
 {
-  v4 = [NSNumber numberWithUnsignedLongLong:a3];
+  v4 = [NSNumber numberWithUnsignedLongLong:revision];
   [(ML3MusicLibrary *)self setValue:v4 forDatabaseProperty:@"MLUbiquitousBookmarkEntityRevisionAnchor"];
 }
 

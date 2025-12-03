@@ -1,24 +1,24 @@
 @interface OrgApacheLuceneIndexSegmentCommitInfo
 - (id)clone;
 - (id)files;
-- (id)toStringWithInt:(int)a3;
+- (id)toStringWithInt:(int)int;
 - (int64_t)sizeInBytes;
 - (void)advanceDelGen;
 - (void)advanceDocValuesGen;
 - (void)advanceFieldInfosGen;
 - (void)dealloc;
-- (void)setDelCountWithInt:(int)a3;
-- (void)setDocValuesUpdatesFilesWithJavaUtilMap:(id)a3;
-- (void)setFieldInfosFilesWithJavaUtilSet:(id)a3;
-- (void)setGenUpdatesFilesWithJavaUtilMap:(id)a3;
+- (void)setDelCountWithInt:(int)int;
+- (void)setDocValuesUpdatesFilesWithJavaUtilMap:(id)map;
+- (void)setFieldInfosFilesWithJavaUtilSet:(id)set;
+- (void)setGenUpdatesFilesWithJavaUtilMap:(id)map;
 @end
 
 @implementation OrgApacheLuceneIndexSegmentCommitInfo
 
-- (void)setGenUpdatesFilesWithJavaUtilMap:(id)a3
+- (void)setGenUpdatesFilesWithJavaUtilMap:(id)map
 {
   genUpdatesFiles = self->genUpdatesFiles_;
-  if (!genUpdatesFiles || (-[JavaUtilMap clear](genUpdatesFiles, "clear"), v28 = 0u, v29 = 0u, v26 = 0u, v27 = 0u, !a3) || (v6 = [a3 entrySet]) == 0)
+  if (!genUpdatesFiles || (-[JavaUtilMap clear](genUpdatesFiles, "clear"), v28 = 0u, v29 = 0u, v26 = 0u, v27 = 0u, !map) || (v6 = [map entrySet]) == 0)
   {
 LABEL_22:
     JreThrowNullPointerException();
@@ -51,14 +51,14 @@ LABEL_22:
         }
 
         v13 = v12;
-        v14 = [v11 getValue];
-        if (!v14)
+        getValue = [v11 getValue];
+        if (!getValue)
         {
           goto LABEL_22;
         }
 
-        v15 = v14;
-        v16 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v15 = getValue;
+        v16 = [getValue countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v16)
         {
           v17 = v16;
@@ -97,10 +97,10 @@ LABEL_22:
   }
 }
 
-- (void)setDocValuesUpdatesFilesWithJavaUtilMap:(id)a3
+- (void)setDocValuesUpdatesFilesWithJavaUtilMap:(id)map
 {
   dvUpdatesFiles = self->dvUpdatesFiles_;
-  if (!dvUpdatesFiles || (-[JavaUtilMap clear](dvUpdatesFiles, "clear"), v28 = 0u, v29 = 0u, v26 = 0u, v27 = 0u, !a3) || (v6 = [a3 entrySet]) == 0)
+  if (!dvUpdatesFiles || (-[JavaUtilMap clear](dvUpdatesFiles, "clear"), v28 = 0u, v29 = 0u, v26 = 0u, v27 = 0u, !map) || (v6 = [map entrySet]) == 0)
   {
 LABEL_22:
     JreThrowNullPointerException();
@@ -133,14 +133,14 @@ LABEL_22:
         }
 
         v13 = v12;
-        v14 = [v11 getValue];
-        if (!v14)
+        getValue = [v11 getValue];
+        if (!getValue)
         {
           goto LABEL_22;
         }
 
-        v15 = v14;
-        v16 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        v15 = getValue;
+        v16 = [getValue countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v16)
         {
           v17 = v16;
@@ -179,16 +179,16 @@ LABEL_22:
   }
 }
 
-- (void)setFieldInfosFilesWithJavaUtilSet:(id)a3
+- (void)setFieldInfosFilesWithJavaUtilSet:(id)set
 {
   fieldInfosFiles = self->fieldInfosFiles_;
-  if (!fieldInfosFiles || ([(JavaUtilSet *)fieldInfosFiles clear], v13 = 0u, v14 = 0u, v11 = 0u, v12 = 0u, !a3))
+  if (!fieldInfosFiles || ([(JavaUtilSet *)fieldInfosFiles clear], v13 = 0u, v14 = 0u, v11 = 0u, v12 = 0u, !set))
   {
 LABEL_12:
     JreThrowNullPointerException();
   }
 
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [set countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -199,7 +199,7 @@ LABEL_12:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(set);
         }
 
         info = self->info_;
@@ -211,7 +211,7 @@ LABEL_12:
         [(JavaUtilSet *)self->fieldInfosFiles_ addWithId:[(OrgApacheLuceneIndexSegmentInfo *)info namedForThisSegmentWithNSString:*(*(&v11 + 1) + 8 * i), v11]];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [set countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -252,15 +252,15 @@ LABEL_12:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(OrgApacheLuceneIndexSegmentCommitInfo *)self files];
-    if (!v5)
+    files = [(OrgApacheLuceneIndexSegmentCommitInfo *)self files];
+    if (!files)
     {
 LABEL_16:
       JreThrowNullPointerException();
     }
 
-    v6 = v5;
-    v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = files;
+    v7 = [files countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -316,19 +316,19 @@ LABEL_16:
   }
 
   v4 = new_JavaUtilHashSet_initWithJavaUtilCollection_([(OrgApacheLuceneIndexSegmentInfo *)info files]);
-  v5 = [(OrgApacheLuceneIndexSegmentInfo *)self->info_ getCodec];
-  if (!v5)
+  getCodec = [(OrgApacheLuceneIndexSegmentInfo *)self->info_ getCodec];
+  if (!getCodec)
   {
     goto LABEL_23;
   }
 
-  v6 = [v5 liveDocsFormat];
-  if (!v6)
+  liveDocsFormat = [getCodec liveDocsFormat];
+  if (!liveDocsFormat)
   {
     goto LABEL_23;
   }
 
-  [v6 filesWithOrgApacheLuceneIndexSegmentCommitInfo:self withJavaUtilCollection:v4];
+  [liveDocsFormat filesWithOrgApacheLuceneIndexSegmentCommitInfo:self withJavaUtilCollection:v4];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -339,14 +339,14 @@ LABEL_16:
     goto LABEL_23;
   }
 
-  v8 = [(JavaUtilMap *)genUpdatesFiles values];
-  if (!v8)
+  values = [(JavaUtilMap *)genUpdatesFiles values];
+  if (!values)
   {
     goto LABEL_23;
   }
 
-  v9 = v8;
-  v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v9 = values;
+  v10 = [values countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v10)
   {
     v11 = v10;
@@ -408,9 +408,9 @@ LABEL_23:
   return v4;
 }
 
-- (void)setDelCountWithInt:(int)a3
+- (void)setDelCountWithInt:(int)int
 {
-  if (a3 < 0)
+  if (int < 0)
   {
     goto LABEL_5;
   }
@@ -421,7 +421,7 @@ LABEL_23:
     goto LABEL_7;
   }
 
-  if ([(OrgApacheLuceneIndexSegmentInfo *)info maxDoc]< a3)
+  if ([(OrgApacheLuceneIndexSegmentInfo *)info maxDoc]< int)
   {
 LABEL_5:
     v6 = self->info_;
@@ -437,10 +437,10 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  self->delCount_ = a3;
+  self->delCount_ = int;
 }
 
-- (id)toStringWithInt:(int)a3
+- (id)toStringWithInt:(int)int
 {
   info = self->info_;
   if (!info)
@@ -448,7 +448,7 @@ LABEL_7:
     JreThrowNullPointerException();
   }
 
-  v15 = [(OrgApacheLuceneIndexSegmentInfo *)info toStringWithInt:(self->delCount_ + a3)];
+  v15 = [(OrgApacheLuceneIndexSegmentInfo *)info toStringWithInt:(self->delCount_ + int)];
   if (self->delGen_ != -1)
   {
     delGen = self->delGen_;
@@ -493,14 +493,14 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  v11 = [(JavaUtilMap *)genUpdatesFiles entrySet];
-  if (!v11)
+  entrySet = [(JavaUtilMap *)genUpdatesFiles entrySet];
+  if (!entrySet)
   {
     goto LABEL_23;
   }
 
-  v12 = v11;
-  v13 = [v11 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  v12 = entrySet;
+  v13 = [entrySet countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v13)
   {
     v14 = v13;
@@ -539,14 +539,14 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  v19 = [(JavaUtilMap *)dvUpdatesFiles entrySet];
-  if (!v19)
+  entrySet2 = [(JavaUtilMap *)dvUpdatesFiles entrySet];
+  if (!entrySet2)
   {
     goto LABEL_23;
   }
 
-  v20 = v19;
-  v21 = [v19 countByEnumeratingWithState:&v28 objects:v36 count:16];
+  v20 = entrySet2;
+  v21 = [entrySet2 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v21)
   {
     v22 = v21;

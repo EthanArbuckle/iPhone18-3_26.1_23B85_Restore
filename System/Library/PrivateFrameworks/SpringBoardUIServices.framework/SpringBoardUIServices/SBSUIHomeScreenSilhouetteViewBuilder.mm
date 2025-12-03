@@ -1,7 +1,7 @@
 @interface SBSUIHomeScreenSilhouetteViewBuilder
-- (CGRect)frameForNormalizedFrame:(CGRect)a3;
+- (CGRect)frameForNormalizedFrame:(CGRect)frame;
 - (CGSize)viewSize;
-- (SBSUIHomeScreenSilhouetteViewBuilder)initWithSilhouetteLayout:(id)a3 viewSize:(CGSize)a4;
+- (SBSUIHomeScreenSilhouetteViewBuilder)initWithSilhouetteLayout:(id)layout viewSize:(CGSize)size;
 - (id)buildView;
 - (id)makeDockView;
 - (id)makeIconView;
@@ -10,17 +10,17 @@
 
 @implementation SBSUIHomeScreenSilhouetteViewBuilder
 
-- (SBSUIHomeScreenSilhouetteViewBuilder)initWithSilhouetteLayout:(id)a3 viewSize:(CGSize)a4
+- (SBSUIHomeScreenSilhouetteViewBuilder)initWithSilhouetteLayout:(id)layout viewSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = SBSUIHomeScreenSilhouetteViewBuilder;
   v8 = [(SBSUIHomeScreenSilhouetteViewBuilder *)&v12 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [layoutCopy copy];
     silhouetteLayout = v8->_silhouetteLayout;
     v8->_silhouetteLayout = v9;
 
@@ -37,25 +37,25 @@
   v42 = *MEMORY[0x1E69E9840];
   [(SBSUIHomeScreenSilhouetteViewBuilder *)self viewSize];
   v36 = v3;
-  v4 = [(SBSUIHomeScreenSilhouetteViewBuilder *)self makeRootView];
-  v5 = [(SBSUIHomeScreenSilhouetteViewBuilder *)self silhouetteLayout];
-  v6 = [(SBSUIHomeScreenSilhouetteViewBuilder *)self includesDock];
-  v7 = [v5 dock];
-  if (v7 && v6)
+  makeRootView = [(SBSUIHomeScreenSilhouetteViewBuilder *)self makeRootView];
+  silhouetteLayout = [(SBSUIHomeScreenSilhouetteViewBuilder *)self silhouetteLayout];
+  includesDock = [(SBSUIHomeScreenSilhouetteViewBuilder *)self includesDock];
+  dock = [silhouetteLayout dock];
+  if (dock && includesDock)
   {
-    v8 = [(SBSUIHomeScreenSilhouetteViewBuilder *)self makeDockView];
-    if (v8)
+    makeDockView = [(SBSUIHomeScreenSilhouetteViewBuilder *)self makeDockView];
+    if (makeDockView)
     {
-      [v7 frame];
+      [dock frame];
       [(SBSUIHomeScreenSilhouetteViewBuilder *)self frameForNormalizedFrame:?];
-      [v8 setFrame:?];
-      [v7 cornerRadius];
-      [v8 _setContinuousCornerRadius:v36 * v9];
-      [v4 addSubview:v8];
+      [makeDockView setFrame:?];
+      [dock cornerRadius];
+      [makeDockView _setContinuousCornerRadius:v36 * v9];
+      [makeRootView addSubview:makeDockView];
     }
   }
 
-  [v7 frame];
+  [dock frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -64,9 +64,9 @@
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v35 = v5;
-  v18 = [v5 icons];
-  v19 = [v18 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  v35 = silhouetteLayout;
+  icons = [silhouetteLayout icons];
+  v19 = [icons countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v19)
   {
     v20 = v19;
@@ -77,7 +77,7 @@
       {
         if (*v38 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(icons);
         }
 
         v23 = *(*(&v37 + 1) + 8 * i);
@@ -86,7 +86,7 @@
         v27 = v26;
         v29 = v28;
         v31 = v30;
-        if (!v6)
+        if (!includesDock)
         {
           v44.origin.x = v11;
           v44.origin.y = v13;
@@ -102,33 +102,33 @@
           }
         }
 
-        v32 = [(SBSUIHomeScreenSilhouetteViewBuilder *)self makeIconView];
-        if (v32)
+        makeIconView = [(SBSUIHomeScreenSilhouetteViewBuilder *)self makeIconView];
+        if (makeIconView)
         {
           [(SBSUIHomeScreenSilhouetteViewBuilder *)self frameForNormalizedFrame:v25, v27, v29, v31];
-          [v32 setFrame:?];
+          [makeIconView setFrame:?];
           [v23 cornerRadius];
-          [v32 _setContinuousCornerRadius:v36 * v33];
-          [v4 addSubview:v32];
+          [makeIconView _setContinuousCornerRadius:v36 * v33];
+          [makeRootView addSubview:makeIconView];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v20 = [icons countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v20);
   }
 
-  return v4;
+  return makeRootView;
 }
 
 - (id)makeRootView
 {
-  v3 = [(SBSUIHomeScreenSilhouetteViewBuilder *)self rootViewBuilder];
+  rootViewBuilder = [(SBSUIHomeScreenSilhouetteViewBuilder *)self rootViewBuilder];
   [(SBSUIHomeScreenSilhouetteViewBuilder *)self viewSize];
-  if (v3)
+  if (rootViewBuilder)
   {
-    v6 = v3[2](v3, v4, v5);
+    v6 = rootViewBuilder[2](rootViewBuilder, v4, v5);
     if (!v6)
     {
       v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"A view must be returned from the rootViewBuilder" userInfo:0];
@@ -146,11 +146,11 @@
 
 - (id)makeDockView
 {
-  v2 = [(SBSUIHomeScreenSilhouetteViewBuilder *)self dockViewBuilder];
-  v3 = v2;
-  if (v2)
+  dockViewBuilder = [(SBSUIHomeScreenSilhouetteViewBuilder *)self dockViewBuilder];
+  v3 = dockViewBuilder;
+  if (dockViewBuilder)
   {
-    v4 = (*(v2 + 16))(v2);
+    v4 = (*(dockViewBuilder + 16))(dockViewBuilder);
   }
 
   else
@@ -165,11 +165,11 @@
 
 - (id)makeIconView
 {
-  v2 = [(SBSUIHomeScreenSilhouetteViewBuilder *)self iconViewBuilder];
-  v3 = v2;
-  if (v2)
+  iconViewBuilder = [(SBSUIHomeScreenSilhouetteViewBuilder *)self iconViewBuilder];
+  v3 = iconViewBuilder;
+  if (iconViewBuilder)
   {
-    v4 = (*(v2 + 16))(v2);
+    v4 = (*(iconViewBuilder + 16))(iconViewBuilder);
   }
 
   else
@@ -182,12 +182,12 @@
   return v4;
 }
 
-- (CGRect)frameForNormalizedFrame:(CGRect)a3
+- (CGRect)frameForNormalizedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SBSUIHomeScreenSilhouetteViewBuilder *)self viewSize];
   v8 = v7;
   v10 = v9;

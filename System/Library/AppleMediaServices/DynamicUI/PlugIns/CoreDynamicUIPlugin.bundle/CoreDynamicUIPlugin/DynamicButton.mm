@@ -2,19 +2,19 @@
 - (BOOL)hasContent;
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation DynamicButton
 
 - (BOOL)hasContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_361B8();
 
   return v3 & 1;
@@ -22,29 +22,29 @@
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_36218();
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_362A4(a3);
+  selfCopy = self;
+  sub_362A4(highlighted);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_3640C();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_364C0(a4);
+  selfCopy = self;
+  sub_364C0(in);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -64,7 +64,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_365DC();
   v4 = v3;
 
@@ -81,20 +81,20 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_8F5F4();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_18714();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_366F4();
   v4 = v3;
   v6 = v5;
@@ -106,9 +106,9 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  v5 = self;
+  selfCopy = self;
   sub_3670C();
   v7 = v6;
   v9 = v8;

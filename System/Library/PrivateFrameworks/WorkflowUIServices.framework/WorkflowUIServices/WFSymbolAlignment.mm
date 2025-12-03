@@ -1,11 +1,11 @@
 @interface WFSymbolAlignment
-+ (CGSize)absoluteOffsetFor:(id)a3 fontSize:(double)a4;
-+ (double)fontSizeFor:(id)a3 containerDimension:(double)a4 scale:(double)a5 circularContainer:(BOOL)a6;
++ (CGSize)absoluteOffsetFor:(id)for fontSize:(double)size;
++ (double)fontSizeFor:(id)for containerDimension:(double)dimension scale:(double)scale circularContainer:(BOOL)container;
 @end
 
 @implementation WFSymbolAlignment
 
-+ (CGSize)absoluteOffsetFor:(id)a3 fontSize:(double)a4
++ (CGSize)absoluteOffsetFor:(id)for fontSize:(double)size
 {
   v4 = sub_1C840CDDC();
   static SymbolAlignment.absoluteOffset(for:fontSize:)(v4, v5);
@@ -19,10 +19,10 @@
   return result;
 }
 
-+ (double)fontSizeFor:(id)a3 containerDimension:(double)a4 scale:(double)a5 circularContainer:(BOOL)a6
++ (double)fontSizeFor:(id)for containerDimension:(double)dimension scale:(double)scale circularContainer:(BOOL)container
 {
   v9 = sub_1C840CDDC();
-  static SymbolAlignment.fontSize(for:containerDimension:scale:circularContainer:)(v9, v10, a6, a4, a5);
+  static SymbolAlignment.fontSize(for:containerDimension:scale:circularContainer:)(v9, v10, container, dimension, scale);
   v12 = v11;
 
   return v12;

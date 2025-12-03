@@ -26,13 +26,13 @@
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v16 = [a1 arrivalMapRegions];
-  v17 = [v16 countByEnumeratingWithState:&v42 objects:v46 count:16];
+  arrivalMapRegions = [self arrivalMapRegions];
+  v17 = [arrivalMapRegions countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v17)
   {
     v18 = v17;
     v39 = v7;
-    obj = v16;
+    obj = arrivalMapRegions;
     v38 = 0;
     v19 = 0;
     v20 = 0;
@@ -116,7 +116,7 @@ LABEL_28:
 - (uint64_t)containsCoordinate:()MNExtras arrivalRegionType:
 {
   v7 = [[MNLocation alloc] initWithLatitude:a2 longitude:a3];
-  v8 = [a1 containsLocation:v7 arrivalRegionType:a5];
+  v8 = [self containsLocation:v7 arrivalRegionType:a5];
 
   return v8;
 }

@@ -1,7 +1,7 @@
 @interface ScrollColorBlockTestProcessor
-- (BOOL)performActionForPage:(id)a3;
-- (BOOL)startPageAction:(id)a3;
-- (ScrollColorBlockTestProcessor)initWithTestName:(id)a3 browserController:(id)a4;
+- (BOOL)performActionForPage:(id)page;
+- (BOOL)startPageAction:(id)action;
+- (ScrollColorBlockTestProcessor)initWithTestName:(id)name browserController:(id)controller;
 - (id)_createTestPageIfNeeded;
 @end
 
@@ -10,8 +10,8 @@
 - (id)_createTestPageIfNeeded
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(PageLoadTestRunner *)self testName];
-  v4 = [v3 stringByAppendingPathExtension:@"html"];
+  testName = [(PageLoadTestRunner *)self testName];
+  v4 = [testName stringByAppendingPathExtension:@"html"];
 
   v5 = NSTemporaryDirectory();
   v17 = v4;
@@ -24,8 +24,8 @@
   v22[3] = &unk_2781D7598;
   v22[4] = self;
   v8 = __56__ScrollColorBlockTestProcessor__createTestPageIfNeeded__block_invoke(v22);
-  v9 = [MEMORY[0x277CCAB68] string];
-  [v9 appendString:@"<!doctype html><html><head><meta charset='utf-8'><title>ScrollColorBlockTest</title><style>.box{width:100%;aspect-ratio:2/1;}</style></head><body>"];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"<!doctype html><html><head><meta charset='utf-8'><title>ScrollColorBlockTest</title><style>.box{width:100%;aspect-ratio:2/1;}</style></head><body>"];
   for (i = 0; i != 4; ++i)
   {
     v20 = 0u;
@@ -47,7 +47,7 @@
             objc_enumerationMutation(v11);
           }
 
-          [v9 appendFormat:@"<div class='box' style='background-color:%@;'></div>", *(*(&v18 + 1) + 8 * j)];
+          [string appendFormat:@"<div class='box' style='background-color:%@;'></div>", *(*(&v18 + 1) + 8 * j)];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
@@ -57,8 +57,8 @@
     }
   }
 
-  [v9 appendString:@"</body></html>"];
-  [v9 writeToURL:v7 atomically:1 encoding:4 error:0];
+  [string appendString:@"</body></html>"];
+  [string writeToURL:v7 atomically:1 encoding:4 error:0];
 
   return v7;
 }
@@ -87,16 +87,16 @@ void *__56__ScrollColorBlockTestProcessor__createTestPageIfNeeded__block_invoke(
   }
 }
 
-- (ScrollColorBlockTestProcessor)initWithTestName:(id)a3 browserController:(id)a4
+- (ScrollColorBlockTestProcessor)initWithTestName:(id)name browserController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = ScrollColorBlockTestProcessor;
-  v4 = [(ContentInteractionTestRunner *)&v9 initWithTestName:a3 browserController:a4];
+  v4 = [(ContentInteractionTestRunner *)&v9 initWithTestName:name browserController:controller];
   v5 = v4;
   if (v4)
   {
-    v6 = [(ScrollColorBlockTestProcessor *)v4 _createTestPageIfNeeded];
-    [(PageLoadTestRunner *)v5 addPageURL:v6 withProcessSwap:1];
+    _createTestPageIfNeeded = [(ScrollColorBlockTestProcessor *)v4 _createTestPageIfNeeded];
+    [(PageLoadTestRunner *)v5 addPageURL:_createTestPageIfNeeded withProcessSwap:1];
 
     v7 = v5;
   }
@@ -104,23 +104,23 @@ void *__56__ScrollColorBlockTestProcessor__createTestPageIfNeeded__block_invoke(
   return v5;
 }
 
-- (BOOL)startPageAction:(id)a3
+- (BOOL)startPageAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(ScrollColorBlockTestProcessor *)self setStartedScrollColorBlockTest:0];
   [(ScrollColorBlockTestProcessor *)self setEndedScrollColorBlockTest:0];
   v6.receiver = self;
   v6.super_class = ScrollColorBlockTestProcessor;
-  LOBYTE(self) = [(ContentInteractionTestRunner *)&v6 startPageAction:v4];
+  LOBYTE(self) = [(ContentInteractionTestRunner *)&v6 startPageAction:actionCopy];
 
   return self;
 }
 
-- (BOOL)performActionForPage:(id)a3
+- (BOOL)performActionForPage:(id)page
 {
-  v4 = a3;
-  v5 = [(ContentInteractionTestRunner *)self pageWebView];
-  v6 = [v5 scrollView];
+  pageCopy = page;
+  pageWebView = [(ContentInteractionTestRunner *)self pageWebView];
+  scrollView = [pageWebView scrollView];
 
   if (![(ScrollColorBlockTestProcessor *)self startedScrollColorBlockTest])
   {
@@ -149,7 +149,7 @@ void *__56__ScrollColorBlockTestProcessor__createTestPageIfNeeded__block_invoke(
     v15[2] = __54__ScrollColorBlockTestProcessor_performActionForPage___block_invoke;
     v15[3] = &unk_2781D4D40;
     v15[4] = self;
-    v10 = [v9 initWithTestName:0 testType:2 scrollView:v6 completionHandler:v15];
+    v10 = [v9 initWithTestName:0 testType:2 scrollView:scrollView completionHandler:v15];
     v21 = 0;
     v22 = &v21;
     v23 = 0x2050000000;
@@ -172,13 +172,13 @@ void *__56__ScrollColorBlockTestProcessor__createTestPageIfNeeded__block_invoke(
     [(ScrollColorBlockTestProcessor *)self setStartedScrollColorBlockTest:1];
   }
 
-  v13 = [(ScrollColorBlockTestProcessor *)self endedScrollColorBlockTest];
-  if (v13)
+  endedScrollColorBlockTest = [(ScrollColorBlockTestProcessor *)self endedScrollColorBlockTest];
+  if (endedScrollColorBlockTest)
   {
     [(ContentInteractionTestRunner *)self endTrackingFrameRate];
   }
 
-  return !v13;
+  return !endedScrollColorBlockTest;
 }
 
 @end

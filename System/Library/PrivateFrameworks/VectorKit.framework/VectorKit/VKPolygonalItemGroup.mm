@@ -1,19 +1,19 @@
 @interface VKPolygonalItemGroup
-- (BOOL)canAcceptPolygon:(void *)a3;
+- (BOOL)canAcceptPolygon:(void *)polygon;
 - (Matrix<float,)centroid;
 - (Matrix<float,)size;
-- (VKPolygonalItemGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 fixedAroundCentroid:(const void *)a5 contentScale:(float)a6;
-- (VKPolygonalItemGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 fixedAroundCentroid:(const void *)a5 contentScale:(float)a6 storage:(shared_ptr<md::MeshSetStorage>)a7;
-- (const)commitRangesToFillRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long;
-- (const)commitRangesToHorizontalVenueWallStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5;
-- (const)commitRangesToStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long;
-- (const)commitRangesToVenueWallEndCapRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5;
-- (const)commitRangesToVenueWallRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5;
-- (const)commitRangesToVerticalVenueWallStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5;
+- (VKPolygonalItemGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom fixedAroundCentroid:(const void *)centroid contentScale:(float)scale;
+- (VKPolygonalItemGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom fixedAroundCentroid:(const void *)centroid contentScale:(float)scale storage:(shared_ptr<md::MeshSetStorage>)storage;
+- (const)commitRangesToFillRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long;
+- (const)commitRangesToHorizontalVenueWallStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask;
+- (const)commitRangesToStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long;
+- (const)commitRangesToVenueWallEndCapRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask;
+- (const)commitRangesToVenueWallRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask;
+- (const)commitRangesToVerticalVenueWallStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask;
 - (id).cxx_construct;
-- (unsigned)indexForGeoFeatureAttributes:(const void *)a3;
+- (unsigned)indexForGeoFeatureAttributes:(const void *)attributes;
 - (void)didFinishAddingData;
-- (void)setRouteAttributes:(const PolygonRouteAttributes *)a3;
+- (void)setRouteAttributes:(const PolygonRouteAttributes *)attributes;
 - (void)updateCachedStyles;
 @end
 
@@ -52,11 +52,11 @@
   return result;
 }
 
-- (void)setRouteAttributes:(const PolygonRouteAttributes *)a3
+- (void)setRouteAttributes:(const PolygonRouteAttributes *)attributes
 {
   self->_hasRouteAttributes = 1;
-  routeSignificance = a3->routeSignificance;
-  *&self->_routeAttributes.routeProximity = *&a3->routeProximity;
+  routeSignificance = attributes->routeSignificance;
+  *&self->_routeAttributes.routeProximity = *&attributes->routeProximity;
   self->_routeAttributes.routeSignificance = routeSignificance;
   [(VKPolygonalItemGroup *)self updateCachedStyles];
 }
@@ -335,7 +335,7 @@ LABEL_53:
   }
 }
 
-- (BOOL)canAcceptPolygon:(void *)a3
+- (BOOL)canAcceptPolygon:(void *)polygon
 {
   v5 = self->_attributeSets._array.__end_ - self->_attributeSets._array.__begin_;
   if ([(VKPolygonalItemGroup *)self maxAttributeSetsPerGroup]> (v5 >> 4))
@@ -350,7 +350,7 @@ LABEL_53:
     goto LABEL_10;
   }
 
-  v9 = *(a3 + 3);
+  v9 = *(polygon + 3);
   v10 = FeatureStyleAttributes::hash(v9);
   v11 = p_end_node;
   do
@@ -483,7 +483,7 @@ LABEL_10:
   while (v13 != 16);
 }
 
-- (unsigned)indexForGeoFeatureAttributes:(const void *)a3
+- (unsigned)indexForGeoFeatureAttributes:(const void *)attributes
 {
   p_end_node = &self->_attributeSets._set.__tree_.__end_node_;
   left = self->_attributeSets._set.__tree_.__end_node_.__left_;
@@ -493,8 +493,8 @@ LABEL_14:
     operator new();
   }
 
-  v7 = *a3;
-  v8 = FeatureStyleAttributes::hash(*a3);
+  v7 = *attributes;
+  v8 = FeatureStyleAttributes::hash(*attributes);
   v9 = p_end_node;
   v10 = left;
   do
@@ -511,8 +511,8 @@ LABEL_14:
   while (v10);
   if (p_end_node == v9 || (v12 = FeatureStyleAttributes::hash(v7), v12 < FeatureStyleAttributes::hash(v9[4].__left_)))
   {
-    v13 = *a3;
-    v14 = FeatureStyleAttributes::hash(*a3);
+    v13 = *attributes;
+    v14 = FeatureStyleAttributes::hash(*attributes);
     while (1)
     {
       while (1)
@@ -582,8 +582,8 @@ LABEL_14:
       }
 
       v36 = &v26[16 * v22];
-      v37 = *a3;
-      *v36 = *a3;
+      v37 = *attributes;
+      *v36 = *attributes;
       if (*(&v37 + 1))
       {
         atomic_fetch_add_explicit((*(&v37 + 1) + 8), 1uLL, memory_order_relaxed);
@@ -607,8 +607,8 @@ LABEL_14:
 
     else
     {
-      v19 = *(a3 + 1);
-      *end = *a3;
+      v19 = *(attributes + 1);
+      *end = *attributes;
       *(end + 1) = v19;
       if (v19)
       {
@@ -670,62 +670,62 @@ LABEL_14:
   return v30;
 }
 
-- (const)commitRangesToVerticalVenueWallStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5
+- (const)commitRangesToVerticalVenueWallStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask
 {
   v8[4] = *MEMORY[0x1E69E9840];
   v8[0] = &unk_1F2A4E800;
   v8[3] = v8;
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_venueWallVerticalStrokeCullingGroups, a5, v8);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_venueWallVerticalStrokeCullingGroups, mask, v8);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v8);
-  return ggl::Batcher::commit(a3, 0xC8u, v6);
+  return ggl::Batcher::commit(batcher, 0xC8u, v6);
 }
 
-- (const)commitRangesToHorizontalVenueWallStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5
+- (const)commitRangesToHorizontalVenueWallStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask
 {
   v8[4] = *MEMORY[0x1E69E9840];
   v8[0] = &unk_1F2A4E800;
   v8[3] = v8;
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_venueWallHorizontalStrokeCullingGroups, a5, v8);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_venueWallHorizontalStrokeCullingGroups, mask, v8);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v8);
-  return ggl::Batcher::commit(a3, 0xC8u, v6);
+  return ggl::Batcher::commit(batcher, 0xC8u, v6);
 }
 
-- (const)commitRangesToVenueWallEndCapRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5
+- (const)commitRangesToVenueWallEndCapRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask
 {
   v8[4] = *MEMORY[0x1E69E9840];
   v8[0] = &unk_1F2A4E800;
   v8[3] = v8;
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_venueEndCapCullingGroups, a5, v8);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_venueEndCapCullingGroups, mask, v8);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v8);
-  return ggl::Batcher::commit(a3, 0xC8u, v6);
+  return ggl::Batcher::commit(batcher, 0xC8u, v6);
 }
 
-- (const)commitRangesToVenueWallRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5
+- (const)commitRangesToVenueWallRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask
 {
   v8[4] = *MEMORY[0x1E69E9840];
   v8[0] = &unk_1F2A4E800;
   v8[3] = v8;
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_venueCullingGroups, a5, v8);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_venueCullingGroups, mask, v8);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v8);
-  return ggl::Batcher::commit(a3, 0xC8u, v6);
+  return ggl::Batcher::commit(batcher, 0xC8u, v6);
 }
 
-- (const)commitRangesToStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long
+- (const)commitRangesToStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long
 {
   v13 = *MEMORY[0x1E69E9840];
   std::__function::__value_func<BOOL ()(unsigned long long)>::__value_func[abi:nn200100](v12, a6);
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_strokeCullingGroups, a5, v12);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_strokeCullingGroups, mask, v12);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v12);
-  return ggl::Batcher::commit(a3, 0, v10);
+  return ggl::Batcher::commit(batcher, 0, v10);
 }
 
-- (const)commitRangesToFillRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long
+- (const)commitRangesToFillRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long
 {
   v13 = *MEMORY[0x1E69E9840];
   std::__function::__value_func<BOOL ()(unsigned long long)>::__value_func[abi:nn200100](v12, a6);
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_fillCullingGroups, a5, v12);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_fillCullingGroups, mask, v12);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v12);
-  return ggl::Batcher::commit(a3, 0, v10);
+  return ggl::Batcher::commit(batcher, 0, v10);
 }
 
 - (Matrix<float,)size
@@ -748,18 +748,18 @@ LABEL_14:
   return result;
 }
 
-- (VKPolygonalItemGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 fixedAroundCentroid:(const void *)a5 contentScale:(float)a6 storage:(shared_ptr<md::MeshSetStorage>)a7
+- (VKPolygonalItemGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom fixedAroundCentroid:(const void *)centroid contentScale:(float)scale storage:(shared_ptr<md::MeshSetStorage>)storage
 {
-  ptr = a7.__ptr_;
+  ptr = storage.__ptr_;
   v25.receiver = self;
   v25.super_class = VKPolygonalItemGroup;
-  v12 = [(VKPolygonalItemGroup *)&v25 init:a3];
+  v12 = [(VKPolygonalItemGroup *)&v25 init:query];
   v13 = v12;
   if (v12)
   {
-    v12->_tileZoom = a4;
-    v12->_contentScale = a6;
-    v14 = *a3;
+    v12->_tileZoom = zoom;
+    v12->_contentScale = scale;
+    v14 = *query;
     v15 = *(v14 + 16);
     if (v15 && (v15 = std::__shared_weak_count::lock(v15)) != 0)
     {
@@ -781,10 +781,10 @@ LABEL_14:
 
     *v13->_boundingBox._minimum._e = xmmword_1B33B1330;
     *&v13->_boundingBox._maximum._e[1] = 0x80000000800000;
-    if (a5)
+    if (centroid)
     {
-      v13->_centroid._e[0] = *a5;
-      v18 = *(a5 + 1);
+      v13->_centroid._e[0] = *centroid;
+      v18 = *(centroid + 1);
       v19 = 1;
     }
 
@@ -819,11 +819,11 @@ LABEL_14:
   return 0;
 }
 
-- (VKPolygonalItemGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 fixedAroundCentroid:(const void *)a5 contentScale:(float)a6
+- (VKPolygonalItemGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom fixedAroundCentroid:(const void *)centroid contentScale:(float)scale
 {
   v8 = 0;
   v9 = 0;
-  v6 = [VKPolygonalItemGroup initWithStyleQuery:"initWithStyleQuery:tileZoom:fixedAroundCentroid:contentScale:storage:" tileZoom:a3 fixedAroundCentroid:a5 contentScale:&v8 storage:?];
+  v6 = [VKPolygonalItemGroup initWithStyleQuery:"initWithStyleQuery:tileZoom:fixedAroundCentroid:contentScale:storage:" tileZoom:query fixedAroundCentroid:centroid contentScale:&v8 storage:?];
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v9);

@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (BOOL)_checkFirstUnlocked;
 - (VTFirstUnlockMonitor)init;
-- (void)_didReceiveFirstUnlock:(BOOL)a3;
-- (void)_didReceiveFirstUnlockInQueue:(BOOL)a3;
-- (void)_notifyObserver:(id)a3 withUnlocked:(BOOL)a4;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveFirstUnlock:(BOOL)unlock;
+- (void)_didReceiveFirstUnlockInQueue:(BOOL)queue;
+- (void)_notifyObserver:(id)observer withUnlocked:(BOOL)unlocked;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -32,36 +32,36 @@
   return v2 == 1;
 }
 
-- (void)_notifyObserver:(id)a3 withUnlocked:(BOOL)a4
+- (void)_notifyObserver:(id)observer withUnlocked:(BOOL)unlocked
 {
-  v4 = a4;
-  v6 = a3;
-  [(VTEventMonitor *)self notifyObserver:v6];
+  unlockedCopy = unlocked;
+  observerCopy = observer;
+  [(VTEventMonitor *)self notifyObserver:observerCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v6 VTFirstUnlockMonitor:self didReceiveFirstUnlock:v4];
+    [observerCopy VTFirstUnlockMonitor:self didReceiveFirstUnlock:unlockedCopy];
   }
 }
 
-- (void)_didReceiveFirstUnlock:(BOOL)a3
+- (void)_didReceiveFirstUnlock:(BOOL)unlock
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __47__VTFirstUnlockMonitor__didReceiveFirstUnlock___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  unlockCopy = unlock;
   [(VTEventMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveFirstUnlockInQueue:(BOOL)a3
+- (void)_didReceiveFirstUnlockInQueue:(BOOL)queue
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __54__VTFirstUnlockMonitor__didReceiveFirstUnlockInQueue___block_invoke;
   v3[3] = &unk_2784ECDA8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(VTEventMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -81,9 +81,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = MEMORY[0x277D85DD0];
@@ -91,7 +91,7 @@
     handler[2] = __50__VTFirstUnlockMonitor__startMonitoringWithQueue___block_invoke;
     handler[3] = &unk_2784ECD80;
     handler[4] = self;
-    notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &self->_notifyToken, queueCopy, handler);
     v5 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {

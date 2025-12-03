@@ -13,58 +13,58 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v4 = [MEMORY[0x29EDB8DB0] date];
-  v5 = [v3 components:62 fromDate:v4];
+  currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+  date = [MEMORY[0x29EDB8DB0] date];
+  v5 = [currentCalendar components:62 fromDate:date];
 
-  v6 = [(MobileCalHourAccessibilityElement *)self hourDate];
-  v7 = [v6 _accessibilityTimeString];
+  hourDate = [(MobileCalHourAccessibilityElement *)self hourDate];
+  _accessibilityTimeString = [hourDate _accessibilityTimeString];
 
-  v8 = [(MobileCalHourAccessibilityElement *)self hourDate];
+  hourDate2 = [(MobileCalHourAccessibilityElement *)self hourDate];
 
-  if (!v8)
+  if (!hourDate2)
   {
-    v18 = self;
+    selfCopy = self;
     _AXAssert();
   }
 
-  v9 = [(MobileCalHourAccessibilityElement *)self hourDate];
+  hourDate3 = [(MobileCalHourAccessibilityElement *)self hourDate];
 
-  if (v9)
+  if (hourDate3)
   {
-    v10 = [(MobileCalHourAccessibilityElement *)self hourDate];
-    v11 = [v3 components:62 fromDate:v10];
+    hourDate4 = [(MobileCalHourAccessibilityElement *)self hourDate];
+    v11 = [currentCalendar components:62 fromDate:hourDate4];
 
-    v12 = [v11 year];
-    if (v12 == [v5 year])
+    year = [v11 year];
+    if (year == [v5 year])
     {
-      v13 = [v11 month];
-      if (v13 == [v5 month])
+      month = [v11 month];
+      if (month == [v5 month])
       {
         v14 = [v11 day];
         if (v14 == [v5 day])
         {
-          v15 = [v11 hour];
-          if (v15 == [v5 hour])
+          hour = [v11 hour];
+          if (hour == [v5 hour])
           {
             v19 = accessibilityLocalizedString(@"in.progress");
             v16 = __UIAXStringForVariables();
 
-            v7 = v16;
+            _accessibilityTimeString = v16;
           }
         }
       }
     }
   }
 
-  return v7;
+  return _accessibilityTimeString;
 }
 
 - (id)accessibilityUserInputLabels
 {
-  v2 = [(MobileCalHourAccessibilityElement *)self hourDate];
-  v3 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v4 = [v3 components:62 fromDate:v2];
+  hourDate = [(MobileCalHourAccessibilityElement *)self hourDate];
+  currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+  v4 = [currentCalendar components:62 fromDate:hourDate];
 
   if ([v4 hour] == 12 && !MEMORY[0x29C2D5120]())
   {
@@ -84,36 +84,36 @@
 
 - (CGRect)_frameInDayGridView
 {
-  v3 = [(MobileCalHourAccessibilityElement *)self accessibilityContainer];
-  [v3 accessibilityFrame];
+  accessibilityContainer = [(MobileCalHourAccessibilityElement *)self accessibilityContainer];
+  [accessibilityContainer accessibilityFrame];
 
-  v4 = [(MobileCalHourAccessibilityElement *)self dayGridView];
+  dayGridView = [(MobileCalHourAccessibilityElement *)self dayGridView];
   UIAccessibilityFrameToBounds();
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(MobileCalHourAccessibilityElement *)self hourDate];
-  v14 = [(MobileCalHourAccessibilityElement *)self hourDate];
+  hourDate = [(MobileCalHourAccessibilityElement *)self hourDate];
+  hourDate2 = [(MobileCalHourAccessibilityElement *)self hourDate];
 
-  if (!v14)
+  if (!hourDate2)
   {
-    v27 = self;
+    selfCopy = self;
     _AXAssert();
   }
 
-  v15 = [(MobileCalHourAccessibilityElement *)self hourDate];
+  hourDate3 = [(MobileCalHourAccessibilityElement *)self hourDate];
 
-  if (v15)
+  if (hourDate3)
   {
-    v16 = [MEMORY[0x29EDB8D98] currentCalendar];
-    v17 = [v16 components:62 fromDate:v13];
+    currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+    v17 = [currentCalendar components:62 fromDate:hourDate];
 
-    v18 = [v4 safeValueForKey:@"topPadding"];
+    v18 = [dayGridView safeValueForKey:@"topPadding"];
     [v18 doubleValue];
     v20 = v19;
 
-    v21 = [v4 safeValueForKey:@"hourHeight"];
+    v21 = [dayGridView safeValueForKey:@"hourHeight"];
     [v21 doubleValue];
     v12 = v22;
 
@@ -133,7 +133,7 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(MobileCalHourAccessibilityElement *)self dayGridView];
+  dayGridView = [(MobileCalHourAccessibilityElement *)self dayGridView];
   [(MobileCalHourAccessibilityElement *)self _frameInDayGridView];
   UIAccessibilityFrameForBounds();
   v5 = v4;
@@ -156,12 +156,12 @@
 {
   v8.receiver = self;
   v8.super_class = MobileCalHourAccessibilityElement;
-  v3 = [(MobileCalHourAccessibilityElement *)&v8 isAccessibilityElement];
+  isAccessibilityElement = [(MobileCalHourAccessibilityElement *)&v8 isAccessibilityElement];
   objc_opt_class();
-  v4 = [(MobileCalHourAccessibilityElement *)self dayGridView];
+  dayGridView = [(MobileCalHourAccessibilityElement *)self dayGridView];
   v5 = __UIAccessibilityCastAsSafeCategory();
 
-  if (v3)
+  if (isAccessibilityElement)
   {
     if ([v5 accessibilityIsPreviewGridView])
     {
@@ -194,13 +194,13 @@
   height = v9;
   v32 = 0;
   objc_opt_class();
-  v11 = [(MobileCalHourAccessibilityElement *)self dayGridView];
+  dayGridView = [(MobileCalHourAccessibilityElement *)self dayGridView];
   v12 = __UIAccessibilityCastAsSafeCategory();
 
   if ([v12 accessibilityIsPreviewGridView])
   {
-    v13 = [(MobileCalHourAccessibilityElement *)self dayGridView];
-    v14 = [v13 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+    dayGridView2 = [(MobileCalHourAccessibilityElement *)self dayGridView];
+    v14 = [dayGridView2 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
 
     v31.receiver = self;
     v31.super_class = MobileCalHourAccessibilityElement;
@@ -238,47 +238,47 @@
 
 - (id)accessibilityDropPointDescriptors
 {
-  v2 = self;
-  v3 = [(MobileCalHourAccessibilityElement *)self dayGridView];
+  selfCopy = self;
+  dayGridView = [(MobileCalHourAccessibilityElement *)self dayGridView];
   v28 = 0;
-  v4 = [v3 _accessibilityDragAndDropTargetViewForDrop:1 eventGestureController:&v28];
+  v4 = [dayGridView _accessibilityDragAndDropTargetViewForDrop:1 eventGestureController:&v28];
   v5 = v28;
 
   if (v4)
   {
-    v6 = [(MobileCalHourAccessibilityElement *)v2 dayGridView];
-    [(MobileCalHourAccessibilityElement *)v2 _frameInDayGridView];
-    [v6 convertRect:v4 toView:?];
+    dayGridView2 = [(MobileCalHourAccessibilityElement *)selfCopy dayGridView];
+    [(MobileCalHourAccessibilityElement *)selfCopy _frameInDayGridView];
+    [dayGridView2 convertRect:v4 toView:?];
 
     v7 = *MEMORY[0x29EDB9820];
     v26 = 0x3CuLL / *MEMORY[0x29EDB9820];
-    v8 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:?];
+    accessibilityDropPointDescriptors = [MEMORY[0x29EDB8DE8] arrayWithCapacity:?];
     if (v7 <= 0x3C)
     {
       v9 = 0;
       v10 = v7;
       do
       {
-        v11 = [(MobileCalHourAccessibilityElement *)v2 hourDate];
-        v12 = [v11 dateByAddingTimeInterval:v10 * v9 * 60.0];
+        hourDate = [(MobileCalHourAccessibilityElement *)selfCopy hourDate];
+        v12 = [hourDate dateByAddingTimeInterval:v10 * v9 * 60.0];
 
         [v5 touchOffset];
         CalRoundPointToScreenScale();
         v14 = v13;
         v16 = v15;
         v17 = objc_alloc(MEMORY[0x29EDC7900]);
-        v18 = v2;
+        v18 = selfCopy;
         v19 = v5;
         v20 = MEMORY[0x29EDBA0F8];
         v21 = accessibilityLocalizedString(@"drop.event.time");
-        v22 = [v12 _accessibilityTimeString];
-        v23 = [v20 stringWithFormat:v21, v22];
+        _accessibilityTimeString = [v12 _accessibilityTimeString];
+        v23 = [v20 stringWithFormat:v21, _accessibilityTimeString];
         v24 = [v17 initWithName:v23 point:v4 inView:{v14, v16}];
 
         v5 = v19;
-        v2 = v18;
+        selfCopy = v18;
 
-        [v8 addObject:v24];
+        [accessibilityDropPointDescriptors addObject:v24];
         ++v9;
       }
 
@@ -288,12 +288,12 @@
 
   else
   {
-    v27.receiver = v2;
+    v27.receiver = selfCopy;
     v27.super_class = MobileCalHourAccessibilityElement;
-    v8 = [(MobileCalHourAccessibilityElement *)&v27 accessibilityDropPointDescriptors];
+    accessibilityDropPointDescriptors = [(MobileCalHourAccessibilityElement *)&v27 accessibilityDropPointDescriptors];
   }
 
-  return v8;
+  return accessibilityDropPointDescriptors;
 }
 
 - (UIView)dayGridView

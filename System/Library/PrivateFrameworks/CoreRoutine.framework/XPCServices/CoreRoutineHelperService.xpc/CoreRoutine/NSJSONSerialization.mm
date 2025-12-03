@@ -1,16 +1,16 @@
 @interface NSJSONSerialization
-+ (id)JSONStringFromNSDictionary:(id)a3 error:(id *)a4;
++ (id)JSONStringFromNSDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation NSJSONSerialization
 
-+ (id)JSONStringFromNSDictionary:(id)a3 error:(id *)a4
++ (id)JSONStringFromNSDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  if ([NSJSONSerialization isValidJSONObject:v5])
+  dictionaryCopy = dictionary;
+  if ([NSJSONSerialization isValidJSONObject:dictionaryCopy])
   {
     v17 = 0;
-    v6 = [NSJSONSerialization dataWithJSONObject:v5 options:8 error:&v17];
+    v6 = [NSJSONSerialization dataWithJSONObject:dictionaryCopy options:8 error:&v17];
     v7 = v17;
     if (v7)
     {
@@ -22,9 +22,9 @@
       v19[1] = v7;
       v10 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
 
-      if (a4)
+      if (error)
       {
-        *a4 = [NSError errorWithDomain:@"com.apple.routined.NSJSONSerializationRTExtensions" code:0 userInfo:v10];
+        *error = [NSError errorWithDomain:@"com.apple.routined.NSJSONSerializationRTExtensions" code:0 userInfo:v10];
       }
 
       v11 = +[NSString string];
@@ -48,9 +48,9 @@
     v21[1] = v15;
     v7 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:2];
 
-    if (a4)
+    if (error)
     {
-      *a4 = [NSError errorWithDomain:@"com.apple.routined.NSJSONSerializationRTExtensions" code:0 userInfo:v7];
+      *error = [NSError errorWithDomain:@"com.apple.routined.NSJSONSerializationRTExtensions" code:0 userInfo:v7];
     }
 
     v11 = +[NSString string];

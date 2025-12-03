@@ -1,23 +1,23 @@
 @interface SupplementalStackViewController
-- (SupplementalStackViewController)initWithTopSafeAreaInsetConstraining:(BOOL)a3;
+- (SupplementalStackViewController)initWithTopSafeAreaInsetConstraining:(BOOL)constraining;
 - (id)preferredFocusEnvironments;
-- (void)_addContainee:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_removeContainee:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)popContainee:(BOOL)a3 completion:(id)a4;
-- (void)pushContainee:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setContainees:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setTopSafeAreaInsetConstraining:(BOOL)a3;
+- (void)_addContainee:(id)containee animated:(BOOL)animated completion:(id)completion;
+- (void)_removeContainee:(id)containee animated:(BOOL)animated completion:(id)completion;
+- (void)popContainee:(BOOL)containee completion:(id)completion;
+- (void)pushContainee:(id)containee animated:(BOOL)animated completion:(id)completion;
+- (void)setContainees:(id)containees animated:(BOOL)animated completion:(id)completion;
+- (void)setTopSafeAreaInsetConstraining:(BOOL)constraining;
 @end
 
 @implementation SupplementalStackViewController
 
 - (id)preferredFocusEnvironments
 {
-  v2 = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
-  v3 = v2;
-  if (v2)
+  lastObject = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
+  v3 = lastObject;
+  if (lastObject)
   {
-    v6 = v2;
+    v6 = lastObject;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -29,19 +29,19 @@
   return v4;
 }
 
-- (void)setContainees:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setContainees:(id)containees animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  containeesCopy = containees;
+  completionCopy = completion;
   containeeViewControllerStack = self->_containeeViewControllerStack;
-  v11 = v8;
+  v11 = containeesCopy;
   v12 = containeeViewControllerStack;
   if (v11 | v12 && (v13 = v12, v14 = [v11 isEqual:v12], v13, v11, !v14))
   {
     v15 = dispatch_group_create();
-    v16 = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
-    if (v16)
+    lastObject = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
+    if (lastObject)
     {
       dispatch_group_enter(v15);
       v24[0] = _NSConcreteStackBlock;
@@ -49,15 +49,15 @@
       v24[2] = sub_100A115C0;
       v24[3] = &unk_101661738;
       v25 = v15;
-      [(SupplementalStackViewController *)self _removeContainee:v16 animated:v6 completion:v24];
+      [(SupplementalStackViewController *)self _removeContainee:lastObject animated:animatedCopy completion:v24];
     }
 
     v17 = [NSMutableArray arrayWithArray:v11];
     v18 = self->_containeeViewControllerStack;
     self->_containeeViewControllerStack = v17;
 
-    v19 = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
-    if (v19)
+    lastObject2 = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
+    if (lastObject2)
     {
       dispatch_group_enter(v15);
       v22[0] = _NSConcreteStackBlock;
@@ -65,30 +65,30 @@
       v22[2] = sub_100A115C8;
       v22[3] = &unk_101661738;
       v23 = v15;
-      [(SupplementalStackViewController *)self _addContainee:v19 animated:v6 completion:v22];
+      [(SupplementalStackViewController *)self _addContainee:lastObject2 animated:animatedCopy completion:v22];
     }
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100A115D0;
     block[3] = &unk_101661760;
-    v21 = v9;
+    v21 = completionCopy;
     dispatch_group_notify(v15, &_dispatch_main_q, block);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)popContainee:(BOOL)a3 completion:(id)a4
+- (void)popContainee:(BOOL)containee completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  containeeCopy = containee;
+  completionCopy = completion;
   v7 = dispatch_group_create();
-  v8 = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
-  if (v8)
+  lastObject = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
+  if (lastObject)
   {
     dispatch_group_enter(v7);
     [(NSMutableArray *)self->_containeeViewControllerStack removeObjectAtIndex:[(NSMutableArray *)self->_containeeViewControllerStack count]- 1];
@@ -98,9 +98,9 @@
     v15[3] = &unk_101661738;
     v9 = v7;
     v16 = v9;
-    [(SupplementalStackViewController *)self _removeContainee:v8 animated:v4 completion:v15];
-    v10 = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
-    if (v10)
+    [(SupplementalStackViewController *)self _removeContainee:lastObject animated:containeeCopy completion:v15];
+    lastObject2 = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
+    if (lastObject2)
     {
       dispatch_group_enter(v9);
       v13[0] = _NSConcreteStackBlock;
@@ -108,33 +108,33 @@
       v13[2] = sub_100A117F8;
       v13[3] = &unk_101661738;
       v14 = v9;
-      [(SupplementalStackViewController *)self _addContainee:v10 animated:v4 completion:v13];
+      [(SupplementalStackViewController *)self _addContainee:lastObject2 animated:containeeCopy completion:v13];
     }
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100A11800;
     block[3] = &unk_101661760;
-    v12 = v6;
+    v12 = completionCopy;
     dispatch_group_notify(v9, &_dispatch_main_q, block);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)pushContainee:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)pushContainee:(id)containee animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (([(NSMutableArray *)self->_containeeViewControllerStack containsObject:v8]& 1) == 0)
+  animatedCopy = animated;
+  containeeCopy = containee;
+  completionCopy = completion;
+  if (([(NSMutableArray *)self->_containeeViewControllerStack containsObject:containeeCopy]& 1) == 0)
   {
     v10 = dispatch_group_create();
-    v11 = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
-    if (v11)
+    lastObject = [(NSMutableArray *)self->_containeeViewControllerStack lastObject];
+    if (lastObject)
     {
       dispatch_group_enter(v10);
       v17[0] = _NSConcreteStackBlock;
@@ -142,90 +142,90 @@
       v17[2] = sub_100A11A0C;
       v17[3] = &unk_101661738;
       v18 = v10;
-      [(SupplementalStackViewController *)self _removeContainee:v11 animated:v6 completion:v17];
+      [(SupplementalStackViewController *)self _removeContainee:lastObject animated:animatedCopy completion:v17];
     }
 
     dispatch_group_enter(v10);
-    [(NSMutableArray *)self->_containeeViewControllerStack addObject:v8];
+    [(NSMutableArray *)self->_containeeViewControllerStack addObject:containeeCopy];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100A11A14;
     v15[3] = &unk_101661738;
     v16 = v10;
     v12 = v10;
-    [(SupplementalStackViewController *)self _addContainee:v8 animated:v6 completion:v15];
+    [(SupplementalStackViewController *)self _addContainee:containeeCopy animated:animatedCopy completion:v15];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100A11A1C;
     block[3] = &unk_101661760;
-    v14 = v9;
+    v14 = completionCopy;
     dispatch_group_notify(v12, &_dispatch_main_q, block);
   }
 }
 
-- (void)_removeContainee:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_removeContainee:(id)containee animated:(BOOL)animated completion:(id)completion
 {
-  v12 = a5;
+  completionCopy = completion;
   contentViewTopAnchorConstraint = self->_contentViewTopAnchorConstraint;
   self->_contentViewTopAnchorConstraint = 0;
-  v8 = a3;
+  containeeCopy = containee;
 
   contentViewTopSafeAreaConstraint = self->_contentViewTopSafeAreaConstraint;
   self->_contentViewTopSafeAreaConstraint = 0;
 
-  [v8 willMoveToParentViewController:0];
-  v10 = [v8 view];
-  [v10 removeFromSuperview];
+  [containeeCopy willMoveToParentViewController:0];
+  view = [containeeCopy view];
+  [view removeFromSuperview];
 
-  [v8 removeFromParentViewController];
-  v11 = v12;
-  if (v12)
+  [containeeCopy removeFromParentViewController];
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    (*(v12 + 2))(v12, 1);
-    v11 = v12;
+    (*(completionCopy + 2))(completionCopy, 1);
+    v11 = completionCopy;
   }
 }
 
-- (void)_addContainee:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_addContainee:(id)containee animated:(BOOL)animated completion:(id)completion
 {
-  v39 = a5;
-  v38 = a3;
-  v7 = [v38 view];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(SupplementalStackViewController *)self addChildViewController:v38];
-  v8 = [(SupplementalStackViewController *)self view];
-  [v8 addSubview:v7];
+  completionCopy = completion;
+  containeeCopy = containee;
+  view = [containeeCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(SupplementalStackViewController *)self addChildViewController:containeeCopy];
+  view2 = [(SupplementalStackViewController *)self view];
+  [view2 addSubview:view];
 
   v36 = [NSMutableArray alloc];
-  v34 = [v7 leadingAnchor];
-  v35 = [(SupplementalStackViewController *)self view];
-  v33 = [v35 safeAreaLayoutGuide];
-  v32 = [v33 leadingAnchor];
-  v9 = [v34 constraintEqualToAnchor:v32];
-  v30 = [v7 bottomAnchor];
-  v31 = [(SupplementalStackViewController *)self view];
-  v29 = [v31 safeAreaLayoutGuide];
-  v10 = [v29 bottomAnchor];
-  v11 = [v30 constraintEqualToAnchor:v10];
-  v12 = [v7 trailingAnchor];
-  v13 = [(SupplementalStackViewController *)self view];
-  v14 = [v13 safeAreaLayoutGuide];
-  v15 = [v14 trailingAnchor];
-  v16 = [v12 constraintEqualToAnchor:v15];
+  leadingAnchor = [view leadingAnchor];
+  view3 = [(SupplementalStackViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  bottomAnchor = [view bottomAnchor];
+  view4 = [(SupplementalStackViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  trailingAnchor = [view trailingAnchor];
+  view5 = [(SupplementalStackViewController *)self view];
+  safeAreaLayoutGuide3 = [view5 safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v37 = [v36 initWithObjects:{v9, v11, v16, 0}];
 
-  v17 = [v7 topAnchor];
-  v18 = [(SupplementalStackViewController *)self view];
-  v19 = [v18 safeAreaLayoutGuide];
-  v20 = [v19 topAnchor];
-  v21 = [v17 constraintEqualToAnchor:v20];
+  topAnchor = [view topAnchor];
+  view6 = [(SupplementalStackViewController *)self view];
+  safeAreaLayoutGuide4 = [view6 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide4 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   contentViewTopSafeAreaConstraint = self->_contentViewTopSafeAreaConstraint;
   self->_contentViewTopSafeAreaConstraint = v21;
 
-  v23 = [v7 topAnchor];
-  v24 = [(SupplementalStackViewController *)self view];
-  v25 = [v24 topAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  topAnchor3 = [view topAnchor];
+  view7 = [(SupplementalStackViewController *)self view];
+  topAnchor4 = [view7 topAnchor];
+  v26 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   contentViewTopAnchorConstraint = self->_contentViewTopAnchorConstraint;
   self->_contentViewTopAnchorConstraint = v26;
 
@@ -241,22 +241,22 @@
 
   [v37 addObject:*(&self->super.super.super.isa + v28)];
   [NSLayoutConstraint activateConstraints:v37];
-  [v38 didMoveToParentViewController:self];
+  [containeeCopy didMoveToParentViewController:self];
 
-  if (v39)
+  if (completionCopy)
   {
-    v39[2](v39, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)setTopSafeAreaInsetConstraining:(BOOL)a3
+- (void)setTopSafeAreaInsetConstraining:(BOOL)constraining
 {
-  if (self->_topSafeAreaInsetConstraining != a3)
+  if (self->_topSafeAreaInsetConstraining != constraining)
   {
     v11 = v4;
     v12 = v3;
-    self->_topSafeAreaInsetConstraining = a3;
-    if (a3)
+    self->_topSafeAreaInsetConstraining = constraining;
+    if (constraining)
     {
       v8 = &OBJC_IVAR___SupplementalStackViewController__contentViewTopAnchorConstraint;
     }
@@ -266,7 +266,7 @@
       v8 = &OBJC_IVAR___SupplementalStackViewController__contentViewTopSafeAreaConstraint;
     }
 
-    if (a3)
+    if (constraining)
     {
       v9 = &OBJC_IVAR___SupplementalStackViewController__contentViewTopSafeAreaConstraint;
     }
@@ -283,7 +283,7 @@
   }
 }
 
-- (SupplementalStackViewController)initWithTopSafeAreaInsetConstraining:(BOOL)a3
+- (SupplementalStackViewController)initWithTopSafeAreaInsetConstraining:(BOOL)constraining
 {
   v8.receiver = self;
   v8.super_class = SupplementalStackViewController;
@@ -294,7 +294,7 @@
     containeeViewControllerStack = v4->_containeeViewControllerStack;
     v4->_containeeViewControllerStack = v5;
 
-    v4->_topSafeAreaInsetConstraining = a3;
+    v4->_topSafeAreaInsetConstraining = constraining;
   }
 
   return v4;

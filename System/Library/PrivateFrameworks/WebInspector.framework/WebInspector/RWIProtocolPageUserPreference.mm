@@ -1,14 +1,14 @@
 @interface RWIProtocolPageUserPreference
-- (RWIProtocolPageUserPreference)initWithName:(int64_t)a3 value:(int64_t)a4;
+- (RWIProtocolPageUserPreference)initWithName:(int64_t)name value:(int64_t)value;
 - (int64_t)name;
 - (int64_t)value;
-- (void)setName:(int64_t)a3;
-- (void)setValue:(int64_t)a3;
+- (void)setName:(int64_t)name;
+- (void)setValue:(int64_t)value;
 @end
 
 @implementation RWIProtocolPageUserPreference
 
-- (RWIProtocolPageUserPreference)initWithName:(int64_t)a3 value:(int64_t)a4
+- (RWIProtocolPageUserPreference)initWithName:(int64_t)name value:(int64_t)value
 {
   v10.receiver = self;
   v10.super_class = RWIProtocolPageUserPreference;
@@ -16,15 +16,15 @@
   v7 = v6;
   if (v6)
   {
-    [(RWIProtocolPageUserPreference *)v6 setName:a3];
-    [(RWIProtocolPageUserPreference *)v7 setValue:a4];
+    [(RWIProtocolPageUserPreference *)v6 setName:name];
+    [(RWIProtocolPageUserPreference *)v7 setValue:value];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)setName:(int64_t)a3
+- (void)setName:(int64_t)name
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -92,7 +92,7 @@ LABEL_8:
   return v10;
 }
 
-- (void)setValue:(int64_t)a3
+- (void)setValue:(int64_t)value
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)

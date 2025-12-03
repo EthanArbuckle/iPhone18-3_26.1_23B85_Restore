@@ -1,17 +1,17 @@
 @interface NEIKEv2SessionConfiguration
 - (NEIKEv2SessionConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)copyRemoteAuthKey;
 - (void)dealloc;
-- (void)setConfigurationReply:(id)a3;
-- (void)setConfigurationRequest:(id)a3;
+- (void)setConfigurationReply:(id)reply;
+- (void)setConfigurationRequest:(id)request;
 @end
 
 @implementation NEIKEv2SessionConfiguration
 
-- (void)setConfigurationReply:(id)a3
+- (void)setConfigurationReply:(id)reply
 {
-  v4 = [a3 copy];
+  v4 = [reply copy];
   if (v4)
   {
     v4->_configurationType = 2;
@@ -23,9 +23,9 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setConfigurationRequest:(id)a3
+- (void)setConfigurationRequest:(id)request
 {
-  v4 = [a3 copy];
+  v4 = [request copy];
   if (v4)
   {
     v4->_configurationType = 1;
@@ -37,26 +37,26 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NEIKEv2SessionConfiguration *)self localIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  localIdentifier = [(NEIKEv2SessionConfiguration *)self localIdentifier];
+  v6 = [localIdentifier copy];
   [v4 setLocalIdentifier:v6];
 
-  v7 = [(NEIKEv2SessionConfiguration *)self remoteIdentifier];
-  v8 = [v7 copy];
+  remoteIdentifier = [(NEIKEv2SessionConfiguration *)self remoteIdentifier];
+  v8 = [remoteIdentifier copy];
   [v4 setRemoteIdentifier:v8];
 
   [v4 setInitialContactDisabled:{-[NEIKEv2SessionConfiguration initialContactDisabled](self, "initialContactDisabled")}];
   [v4 setNegotiateMOBIKE:{-[NEIKEv2SessionConfiguration negotiateMOBIKE](self, "negotiateMOBIKE")}];
-  v9 = [(NEIKEv2SessionConfiguration *)self additionalMOBIKEAddresses];
+  additionalMOBIKEAddresses = [(NEIKEv2SessionConfiguration *)self additionalMOBIKEAddresses];
 
-  if (v9)
+  if (additionalMOBIKEAddresses)
   {
     v10 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v11 = [(NEIKEv2SessionConfiguration *)self additionalMOBIKEAddresses];
-    v12 = [v10 initWithArray:v11 copyItems:1];
+    additionalMOBIKEAddresses2 = [(NEIKEv2SessionConfiguration *)self additionalMOBIKEAddresses];
+    v12 = [v10 initWithArray:additionalMOBIKEAddresses2 copyItems:1];
     [v4 setAdditionalMOBIKEAddresses:v12];
   }
 
@@ -74,66 +74,66 @@
   [v4 setIdleTimeoutEnabled:{-[NEIKEv2SessionConfiguration idleTimeoutEnabled](self, "idleTimeoutEnabled")}];
   [v4 setIdleTimeoutSeconds:{-[NEIKEv2SessionConfiguration idleTimeoutSeconds](self, "idleTimeoutSeconds")}];
   [v4 setBlackholeDetectionEnabled:{-[NEIKEv2SessionConfiguration blackholeDetectionEnabled](self, "blackholeDetectionEnabled")}];
-  v13 = [(NEIKEv2SessionConfiguration *)self authenticationProtocol];
-  v14 = [v13 copy];
+  authenticationProtocol = [(NEIKEv2SessionConfiguration *)self authenticationProtocol];
+  v14 = [authenticationProtocol copy];
   [v4 setAuthenticationProtocol:v14];
 
-  v15 = [(NEIKEv2SessionConfiguration *)self localPrivateEAPIdentity];
-  v16 = [v15 copy];
+  localPrivateEAPIdentity = [(NEIKEv2SessionConfiguration *)self localPrivateEAPIdentity];
+  v16 = [localPrivateEAPIdentity copy];
   [v4 setLocalPrivateEAPIdentity:v16];
 
-  v17 = [(NEIKEv2SessionConfiguration *)self localEncryptedEAPIdentity];
-  v18 = [v17 copy];
+  localEncryptedEAPIdentity = [(NEIKEv2SessionConfiguration *)self localEncryptedEAPIdentity];
+  v18 = [localEncryptedEAPIdentity copy];
   [v4 setLocalEncryptedEAPIdentity:v18];
 
-  v19 = [(NEIKEv2SessionConfiguration *)self username];
-  v20 = [v19 copy];
+  username = [(NEIKEv2SessionConfiguration *)self username];
+  v20 = [username copy];
   [v4 setUsername:v20];
 
-  v21 = [(NEIKEv2SessionConfiguration *)self password];
-  v22 = [v21 copy];
+  password = [(NEIKEv2SessionConfiguration *)self password];
+  v22 = [password copy];
   [v4 setPassword:v22];
 
-  v23 = [(NEIKEv2SessionConfiguration *)self passwordReference];
-  v24 = [v23 copy];
+  passwordReference = [(NEIKEv2SessionConfiguration *)self passwordReference];
+  v24 = [passwordReference copy];
   [v4 setPasswordReference:v24];
 
-  v25 = [(NEIKEv2SessionConfiguration *)self sharedSecret];
-  v26 = [v25 copy];
+  sharedSecret = [(NEIKEv2SessionConfiguration *)self sharedSecret];
+  v26 = [sharedSecret copy];
   [v4 setSharedSecret:v26];
 
-  v27 = [(NEIKEv2SessionConfiguration *)self sharedSecretReference];
-  v28 = [v27 copy];
+  sharedSecretReference = [(NEIKEv2SessionConfiguration *)self sharedSecretReference];
+  v28 = [sharedSecretReference copy];
   [v4 setSharedSecretReference:v28];
 
-  v29 = [(NEIKEv2SessionConfiguration *)self localCertificateName];
-  v30 = [v29 copy];
+  localCertificateName = [(NEIKEv2SessionConfiguration *)self localCertificateName];
+  v30 = [localCertificateName copy];
   [v4 setLocalCertificateName:v30];
 
-  v31 = [(NEIKEv2SessionConfiguration *)self localCertificateReference];
-  v32 = [v31 copy];
+  localCertificateReference = [(NEIKEv2SessionConfiguration *)self localCertificateReference];
+  v32 = [localCertificateReference copy];
   [v4 setLocalCertificateReference:v32];
 
-  v33 = [(NEIKEv2SessionConfiguration *)self remoteCertificateHostname];
-  v34 = [v33 copy];
+  remoteCertificateHostname = [(NEIKEv2SessionConfiguration *)self remoteCertificateHostname];
+  v34 = [remoteCertificateHostname copy];
   [v4 setRemoteCertificateHostname:v34];
 
-  v35 = [(NEIKEv2SessionConfiguration *)self remoteCertificateAuthorityName];
-  v36 = [v35 copy];
+  remoteCertificateAuthorityName = [(NEIKEv2SessionConfiguration *)self remoteCertificateAuthorityName];
+  v36 = [remoteCertificateAuthorityName copy];
   [v4 setRemoteCertificateAuthorityName:v36];
 
-  v37 = [(NEIKEv2SessionConfiguration *)self remoteCertificateAuthorityReferences];
+  remoteCertificateAuthorityReferences = [(NEIKEv2SessionConfiguration *)self remoteCertificateAuthorityReferences];
 
-  if (v37)
+  if (remoteCertificateAuthorityReferences)
   {
     v38 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v39 = [(NEIKEv2SessionConfiguration *)self remoteCertificateAuthorityReferences];
-    v40 = [v38 initWithArray:v39 copyItems:1];
+    remoteCertificateAuthorityReferences2 = [(NEIKEv2SessionConfiguration *)self remoteCertificateAuthorityReferences];
+    v40 = [v38 initWithArray:remoteCertificateAuthorityReferences2 copyItems:1];
     [v4 setRemoteCertificateAuthorityReferences:v40];
   }
 
-  v41 = [(NEIKEv2SessionConfiguration *)self remoteCertificateAuthorityHash];
-  v42 = [v41 copy];
+  remoteCertificateAuthorityHash = [(NEIKEv2SessionConfiguration *)self remoteCertificateAuthorityHash];
+  v42 = [remoteCertificateAuthorityHash copy];
   [v4 setRemoteCertificateAuthorityHash:v42];
 
   [v4 setEnableCertificateRevocationCheck:{-[NEIKEv2SessionConfiguration enableCertificateRevocationCheck](self, "enableCertificateRevocationCheck")}];
@@ -141,75 +141,75 @@
   [v4 setDisableRemoteCertificateValidation:{-[NEIKEv2SessionConfiguration disableRemoteCertificateValidation](self, "disableRemoteCertificateValidation")}];
   [v4 setLocalPrivateKeyRef:{-[NEIKEv2SessionConfiguration localPrivateKeyRef](self, "localPrivateKeyRef")}];
   [v4 setRemotePublicKeyRef:{-[NEIKEv2SessionConfiguration remotePublicKeyRef](self, "remotePublicKeyRef")}];
-  v43 = [(NEIKEv2SessionConfiguration *)self remoteAuthentication];
-  v44 = [v43 copy];
+  remoteAuthentication = [(NEIKEv2SessionConfiguration *)self remoteAuthentication];
+  v44 = [remoteAuthentication copy];
   [v4 setRemoteAuthentication:v44];
 
-  v45 = [(NEIKEv2SessionConfiguration *)self tlsMinimumVersion];
-  v46 = [v45 copy];
+  tlsMinimumVersion = [(NEIKEv2SessionConfiguration *)self tlsMinimumVersion];
+  v46 = [tlsMinimumVersion copy];
   [v4 setTlsMinimumVersion:v46];
 
-  v47 = [(NEIKEv2SessionConfiguration *)self tlsMaximumVersion];
-  v48 = [v47 copy];
+  tlsMaximumVersion = [(NEIKEv2SessionConfiguration *)self tlsMaximumVersion];
+  v48 = [tlsMaximumVersion copy];
   [v4 setTlsMaximumVersion:v48];
 
-  v49 = [(NEIKEv2SessionConfiguration *)self configurationRequest];
-  v50 = [v49 copy];
+  configurationRequest = [(NEIKEv2SessionConfiguration *)self configurationRequest];
+  v50 = [configurationRequest copy];
   [v4 setConfigurationRequest:v50];
 
-  v51 = [(NEIKEv2SessionConfiguration *)self configurationReply];
-  v52 = [v51 copy];
+  configurationReply = [(NEIKEv2SessionConfiguration *)self configurationReply];
+  v52 = [configurationReply copy];
   [v4 setConfigurationReply:v52];
 
   v53 = objc_opt_self();
-  v54 = [v53 customIKEAuthPayloads];
+  customIKEAuthPayloads = [v53 customIKEAuthPayloads];
 
-  if (v54)
+  if (customIKEAuthPayloads)
   {
     v55 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v56 = [(NEIKEv2SessionConfiguration *)self customIKEAuthPayloads];
-    v57 = [v55 initWithArray:v56 copyItems:1];
+    customIKEAuthPayloads2 = [(NEIKEv2SessionConfiguration *)self customIKEAuthPayloads];
+    v57 = [v55 initWithArray:customIKEAuthPayloads2 copyItems:1];
     [v4 setCustomIKEAuthPayloads:v57];
   }
 
-  v58 = [(NEIKEv2SessionConfiguration *)self customIKEAuthVendorPayloads];
+  customIKEAuthVendorPayloads = [(NEIKEv2SessionConfiguration *)self customIKEAuthVendorPayloads];
 
-  if (v58)
+  if (customIKEAuthVendorPayloads)
   {
     v59 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v60 = [(NEIKEv2SessionConfiguration *)self customIKEAuthVendorPayloads];
-    v61 = [v59 initWithArray:v60 copyItems:1];
+    customIKEAuthVendorPayloads2 = [(NEIKEv2SessionConfiguration *)self customIKEAuthVendorPayloads];
+    v61 = [v59 initWithArray:customIKEAuthVendorPayloads2 copyItems:1];
     [v4 setCustomIKEAuthVendorPayloads:v61];
   }
 
-  v62 = [(NEIKEv2SessionConfiguration *)self customIKEAuthPrivateNotifies];
+  customIKEAuthPrivateNotifies = [(NEIKEv2SessionConfiguration *)self customIKEAuthPrivateNotifies];
 
-  if (v62)
+  if (customIKEAuthPrivateNotifies)
   {
     v63 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v64 = [(NEIKEv2SessionConfiguration *)self customIKEAuthPrivateNotifies];
-    v65 = [v63 initWithArray:v64 copyItems:1];
+    customIKEAuthPrivateNotifies2 = [(NEIKEv2SessionConfiguration *)self customIKEAuthPrivateNotifies];
+    v65 = [v63 initWithArray:customIKEAuthPrivateNotifies2 copyItems:1];
     [v4 setCustomIKEAuthPrivateNotifies:v65];
   }
 
-  v66 = [(NEIKEv2SessionConfiguration *)self IMEI];
-  v67 = [v66 copy];
+  iMEI = [(NEIKEv2SessionConfiguration *)self IMEI];
+  v67 = [iMEI copy];
   [v4 setIMEI:v67];
 
-  v68 = [(NEIKEv2SessionConfiguration *)self IMEISV];
-  v69 = [v68 copy];
+  iMEISV = [(NEIKEv2SessionConfiguration *)self IMEISV];
+  v69 = [iMEISV copy];
   [v4 setIMEISV:v69];
 
   v70 = [(NEIKEv2SessionConfiguration *)self ppk];
   v71 = [v70 copy];
   [v4 setPpk:v71];
 
-  v72 = [(NEIKEv2SessionConfiguration *)self ppkReference];
-  v73 = [v72 copy];
+  ppkReference = [(NEIKEv2SessionConfiguration *)self ppkReference];
+  v73 = [ppkReference copy];
   [v4 setPpkReference:v73];
 
-  v74 = [(NEIKEv2SessionConfiguration *)self ppkID];
-  v75 = [v74 copy];
+  ppkID = [(NEIKEv2SessionConfiguration *)self ppkID];
+  v75 = [ppkID copy];
   [v4 setPpkID:v75];
 
   [v4 setPpkIDType:{-[NEIKEv2SessionConfiguration ppkIDType](self, "ppkIDType")}];
@@ -252,13 +252,13 @@
 
 - (void)copyRemoteAuthKey
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([a1 remotePublicKeyRef])
+    if ([self remotePublicKeyRef])
     {
-      v1 = [v1 remotePublicKeyRef];
-      CFRetain(v1);
+      selfCopy = [selfCopy remotePublicKeyRef];
+      CFRetain(selfCopy);
     }
 
     else
@@ -267,7 +267,7 @@
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

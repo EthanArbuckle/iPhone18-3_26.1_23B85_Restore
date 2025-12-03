@@ -1,32 +1,32 @@
 @interface DODMLASRSchemaDODMLASRDecodingResult
-- (BOOL)isEqual:(id)a3;
-- (DODMLASRSchemaDODMLASRDecodingResult)initWithDictionary:(id)a3;
-- (DODMLASRSchemaDODMLASRDecodingResult)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DODMLASRSchemaDODMLASRDecodingResult)initWithDictionary:(id)dictionary;
+- (DODMLASRSchemaDODMLASRDecodingResult)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAlignments:(id)a3;
-- (void)addEntityScoreResults:(id)a3;
-- (void)addTokens:(id)a3;
-- (void)addUtterances:(id)a3;
-- (void)setHasOneBestTranscriptLinkIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAlignments:(id)alignments;
+- (void)addEntityScoreResults:(id)results;
+- (void)addTokens:(id)tokens;
+- (void)addUtterances:(id)utterances;
+- (void)setHasOneBestTranscriptLinkIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLASRSchemaDODMLASRDecodingResult
 
-- (DODMLASRSchemaDODMLASRDecodingResult)initWithDictionary:(id)a3
+- (DODMLASRSchemaDODMLASRDecodingResult)initWithDictionary:(id)dictionary
 {
   v75 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v70.receiver = self;
   v70.super_class = DODMLASRSchemaDODMLASRDecodingResult;
   v5 = [(DODMLASRSchemaDODMLASRDecodingResult *)&v70 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"configName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"configName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
     }
 
     v53 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"tokens"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"tokens"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"utterances"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"utterances"];
     objc_opt_class();
     v51 = v16;
     if (objc_opt_isKindOfClass())
@@ -116,7 +116,7 @@
       v16 = v51;
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"decodingMetrics"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"decodingMetrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
       [(DODMLASRSchemaDODMLASRDecodingResult *)v5 setDecodingMetrics:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"decodeDurationInNs"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"decodeDurationInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
     }
 
     v52 = v8;
-    v27 = [v4 objectForKeyedSubscript:@"alignments"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"alignments"];
     objc_opt_class();
     v48 = v26;
     v46 = v27;
@@ -176,7 +176,7 @@
       v27 = v46;
     }
 
-    v35 = [v4 objectForKeyedSubscript:{@"entityScoreResults", v46, v48, v24}];
+    v35 = [dictionaryCopy objectForKeyedSubscript:{@"entityScoreResults", v46, v48, v24}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -220,7 +220,7 @@
       v26 = v49;
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"oneBestTranscriptLinkIndex"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"oneBestTranscriptLinkIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -233,30 +233,30 @@
   return v5;
 }
 
-- (DODMLASRSchemaDODMLASRDecodingResult)initWithJSON:(id)a3
+- (DODMLASRSchemaDODMLASRDecodingResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLASRSchemaDODMLASRDecodingResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLASRSchemaDODMLASRDecodingResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLASRSchemaDODMLASRDecodingResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -270,11 +270,11 @@
 - (id)dictionaryRepresentation
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v44 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v44 = dictionary;
   if ([(NSArray *)self->_alignments count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
@@ -294,16 +294,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v57 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v57 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -313,42 +313,42 @@
       while (v7);
     }
 
-    v3 = v44;
-    [v44 setObject:v4 forKeyedSubscript:@"alignments"];
+    dictionary = v44;
+    [v44 setObject:array forKeyedSubscript:@"alignments"];
   }
 
   if (self->_configName)
   {
-    v12 = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"configName"];
+    configName = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
+    v13 = [configName copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"configName"];
   }
 
   if (*&self->_has)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[DODMLASRSchemaDODMLASRDecodingResult decodeDurationInNs](self, "decodeDurationInNs")}];
-    [v3 setObject:v14 forKeyedSubscript:@"decodeDurationInNs"];
+    [dictionary setObject:v14 forKeyedSubscript:@"decodeDurationInNs"];
   }
 
   if (self->_decodingMetrics)
   {
-    v15 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    decodingMetrics = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
+    dictionaryRepresentation2 = [decodingMetrics dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"decodingMetrics"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"decodingMetrics"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"decodingMetrics"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"decodingMetrics"];
     }
   }
 
   if ([(NSArray *)self->_entityScoreResults count])
   {
-    v18 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
@@ -368,16 +368,16 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v53 + 1) + 8 * j) dictionaryRepresentation];
-          if (v24)
+          dictionaryRepresentation3 = [*(*(&v53 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v18 addObject:v24];
+            [array2 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v25 = [MEMORY[0x1E695DFB0] null];
-            [v18 addObject:v25];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null3];
           }
         }
 
@@ -387,19 +387,19 @@
       while (v21);
     }
 
-    v3 = v44;
-    [v44 setObject:v18 forKeyedSubscript:@"entityScoreResults"];
+    dictionary = v44;
+    [v44 setObject:array2 forKeyedSubscript:@"entityScoreResults"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DODMLASRSchemaDODMLASRDecodingResult oneBestTranscriptLinkIndex](self, "oneBestTranscriptLinkIndex")}];
-    [v3 setObject:v26 forKeyedSubscript:@"oneBestTranscriptLinkIndex"];
+    [dictionary setObject:v26 forKeyedSubscript:@"oneBestTranscriptLinkIndex"];
   }
 
   if ([(NSArray *)self->_tokens count])
   {
-    v27 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -419,16 +419,16 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v49 + 1) + 8 * k) dictionaryRepresentation];
-          if (v33)
+          dictionaryRepresentation4 = [*(*(&v49 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v27 addObject:v33];
+            [array3 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v34 = [MEMORY[0x1E695DFB0] null];
-            [v27 addObject:v34];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null4];
           }
         }
 
@@ -438,13 +438,13 @@
       while (v30);
     }
 
-    v3 = v44;
-    [v44 setObject:v27 forKeyedSubscript:@"tokens"];
+    dictionary = v44;
+    [v44 setObject:array3 forKeyedSubscript:@"tokens"];
   }
 
   if ([(NSArray *)self->_utterances count])
   {
-    v35 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -464,16 +464,16 @@
             objc_enumerationMutation(v36);
           }
 
-          v41 = [*(*(&v45 + 1) + 8 * m) dictionaryRepresentation];
-          if (v41)
+          dictionaryRepresentation5 = [*(*(&v45 + 1) + 8 * m) dictionaryRepresentation];
+          if (dictionaryRepresentation5)
           {
-            [v35 addObject:v41];
+            [array4 addObject:dictionaryRepresentation5];
           }
 
           else
           {
-            v42 = [MEMORY[0x1E695DFB0] null];
-            [v35 addObject:v42];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array4 addObject:null5];
           }
         }
 
@@ -483,13 +483,13 @@
       while (v38);
     }
 
-    v3 = v44;
-    [v44 setObject:v35 forKeyedSubscript:@"utterances"];
+    dictionary = v44;
+    [v44 setObject:array4 forKeyedSubscript:@"utterances"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -523,28 +523,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
-  v6 = [v4 configName];
-  if ((v5 != 0) == (v6 == 0))
+  configName = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
+  configName2 = [equalCopy configName];
+  if ((configName != 0) == (configName2 == 0))
   {
     goto LABEL_34;
   }
 
-  v7 = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
-  if (v7)
+  configName3 = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
+  if (configName3)
   {
-    v8 = v7;
-    v9 = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
-    v10 = [v4 configName];
-    v11 = [v9 isEqual:v10];
+    v8 = configName3;
+    configName4 = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
+    configName5 = [equalCopy configName];
+    v11 = [configName4 isEqual:configName5];
 
     if (!v11)
     {
@@ -556,20 +556,20 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRDecodingResult *)self tokens];
-  v6 = [v4 tokens];
-  if ((v5 != 0) == (v6 == 0))
+  configName = [(DODMLASRSchemaDODMLASRDecodingResult *)self tokens];
+  configName2 = [equalCopy tokens];
+  if ((configName != 0) == (configName2 == 0))
   {
     goto LABEL_34;
   }
 
-  v12 = [(DODMLASRSchemaDODMLASRDecodingResult *)self tokens];
-  if (v12)
+  tokens = [(DODMLASRSchemaDODMLASRDecodingResult *)self tokens];
+  if (tokens)
   {
-    v13 = v12;
-    v14 = [(DODMLASRSchemaDODMLASRDecodingResult *)self tokens];
-    v15 = [v4 tokens];
-    v16 = [v14 isEqual:v15];
+    v13 = tokens;
+    tokens2 = [(DODMLASRSchemaDODMLASRDecodingResult *)self tokens];
+    tokens3 = [equalCopy tokens];
+    v16 = [tokens2 isEqual:tokens3];
 
     if (!v16)
     {
@@ -581,20 +581,20 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRDecodingResult *)self utterances];
-  v6 = [v4 utterances];
-  if ((v5 != 0) == (v6 == 0))
+  configName = [(DODMLASRSchemaDODMLASRDecodingResult *)self utterances];
+  configName2 = [equalCopy utterances];
+  if ((configName != 0) == (configName2 == 0))
   {
     goto LABEL_34;
   }
 
-  v17 = [(DODMLASRSchemaDODMLASRDecodingResult *)self utterances];
-  if (v17)
+  utterances = [(DODMLASRSchemaDODMLASRDecodingResult *)self utterances];
+  if (utterances)
   {
-    v18 = v17;
-    v19 = [(DODMLASRSchemaDODMLASRDecodingResult *)self utterances];
-    v20 = [v4 utterances];
-    v21 = [v19 isEqual:v20];
+    v18 = utterances;
+    utterances2 = [(DODMLASRSchemaDODMLASRDecodingResult *)self utterances];
+    utterances3 = [equalCopy utterances];
+    v21 = [utterances2 isEqual:utterances3];
 
     if (!v21)
     {
@@ -606,20 +606,20 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
-  v6 = [v4 decodingMetrics];
-  if ((v5 != 0) == (v6 == 0))
+  configName = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
+  configName2 = [equalCopy decodingMetrics];
+  if ((configName != 0) == (configName2 == 0))
   {
     goto LABEL_34;
   }
 
-  v22 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
-  if (v22)
+  decodingMetrics = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
+  if (decodingMetrics)
   {
-    v23 = v22;
-    v24 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
-    v25 = [v4 decodingMetrics];
-    v26 = [v24 isEqual:v25];
+    v23 = decodingMetrics;
+    decodingMetrics2 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
+    decodingMetrics3 = [equalCopy decodingMetrics];
+    v26 = [decodingMetrics2 isEqual:decodingMetrics3];
 
     if (!v26)
     {
@@ -631,7 +631,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[68] & 1))
+  if ((*&self->_has & 1) != (equalCopy[68] & 1))
   {
     goto LABEL_35;
   }
@@ -639,26 +639,26 @@
   if (*&self->_has)
   {
     decodeDurationInNs = self->_decodeDurationInNs;
-    if (decodeDurationInNs != [v4 decodeDurationInNs])
+    if (decodeDurationInNs != [equalCopy decodeDurationInNs])
     {
       goto LABEL_35;
     }
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRDecodingResult *)self alignments];
-  v6 = [v4 alignments];
-  if ((v5 != 0) == (v6 == 0))
+  configName = [(DODMLASRSchemaDODMLASRDecodingResult *)self alignments];
+  configName2 = [equalCopy alignments];
+  if ((configName != 0) == (configName2 == 0))
   {
     goto LABEL_34;
   }
 
-  v28 = [(DODMLASRSchemaDODMLASRDecodingResult *)self alignments];
-  if (v28)
+  alignments = [(DODMLASRSchemaDODMLASRDecodingResult *)self alignments];
+  if (alignments)
   {
-    v29 = v28;
-    v30 = [(DODMLASRSchemaDODMLASRDecodingResult *)self alignments];
-    v31 = [v4 alignments];
-    v32 = [v30 isEqual:v31];
+    v29 = alignments;
+    alignments2 = [(DODMLASRSchemaDODMLASRDecodingResult *)self alignments];
+    alignments3 = [equalCopy alignments];
+    v32 = [alignments2 isEqual:alignments3];
 
     if (!v32)
     {
@@ -670,22 +670,22 @@
   {
   }
 
-  v5 = [(DODMLASRSchemaDODMLASRDecodingResult *)self entityScoreResults];
-  v6 = [v4 entityScoreResults];
-  if ((v5 != 0) == (v6 == 0))
+  configName = [(DODMLASRSchemaDODMLASRDecodingResult *)self entityScoreResults];
+  configName2 = [equalCopy entityScoreResults];
+  if ((configName != 0) == (configName2 == 0))
   {
 LABEL_34:
 
     goto LABEL_35;
   }
 
-  v33 = [(DODMLASRSchemaDODMLASRDecodingResult *)self entityScoreResults];
-  if (v33)
+  entityScoreResults = [(DODMLASRSchemaDODMLASRDecodingResult *)self entityScoreResults];
+  if (entityScoreResults)
   {
-    v34 = v33;
-    v35 = [(DODMLASRSchemaDODMLASRDecodingResult *)self entityScoreResults];
-    v36 = [v4 entityScoreResults];
-    v37 = [v35 isEqual:v36];
+    v34 = entityScoreResults;
+    entityScoreResults2 = [(DODMLASRSchemaDODMLASRDecodingResult *)self entityScoreResults];
+    entityScoreResults3 = [equalCopy entityScoreResults];
+    v37 = [entityScoreResults2 isEqual:entityScoreResults3];
 
     if (!v37)
     {
@@ -698,9 +698,9 @@ LABEL_34:
   }
 
   v40 = (*&self->_has >> 1) & 1;
-  if (v40 == ((v4[68] >> 1) & 1))
+  if (v40 == ((equalCopy[68] >> 1) & 1))
   {
-    if (!v40 || (oneBestTranscriptLinkIndex = self->_oneBestTranscriptLinkIndex, oneBestTranscriptLinkIndex == [v4 oneBestTranscriptLinkIndex]))
+    if (!v40 || (oneBestTranscriptLinkIndex = self->_oneBestTranscriptLinkIndex, oneBestTranscriptLinkIndex == [equalCopy oneBestTranscriptLinkIndex]))
     {
       v38 = 1;
       goto LABEL_36;
@@ -714,13 +714,13 @@ LABEL_36:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
+  toCopy = to;
+  configName = [(DODMLASRSchemaDODMLASRDecodingResult *)self configName];
 
-  if (v5)
+  if (configName)
   {
     PBDataWriterWriteStringField();
   }
@@ -787,11 +787,11 @@ LABEL_36:
     while (v13);
   }
 
-  v16 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
+  decodingMetrics = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
 
-  if (v16)
+  if (decodingMetrics)
   {
-    v17 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
+    decodingMetrics2 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
     PBDataWriterWriteSubmessage();
   }
 
@@ -868,9 +868,9 @@ LABEL_36:
   }
 }
 
-- (void)setHasOneBestTranscriptLinkIndex:(BOOL)a3
+- (void)setHasOneBestTranscriptLinkIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -883,107 +883,107 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addEntityScoreResults:(id)a3
+- (void)addEntityScoreResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   entityScoreResults = self->_entityScoreResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!entityScoreResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_entityScoreResults;
-    self->_entityScoreResults = v6;
+    self->_entityScoreResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     entityScoreResults = self->_entityScoreResults;
   }
 
-  [(NSArray *)entityScoreResults addObject:v4];
+  [(NSArray *)entityScoreResults addObject:resultsCopy];
 }
 
-- (void)addAlignments:(id)a3
+- (void)addAlignments:(id)alignments
 {
-  v4 = a3;
+  alignmentsCopy = alignments;
   alignments = self->_alignments;
-  v8 = v4;
+  v8 = alignmentsCopy;
   if (!alignments)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_alignments;
-    self->_alignments = v6;
+    self->_alignments = array;
 
-    v4 = v8;
+    alignmentsCopy = v8;
     alignments = self->_alignments;
   }
 
-  [(NSArray *)alignments addObject:v4];
+  [(NSArray *)alignments addObject:alignmentsCopy];
 }
 
-- (void)addUtterances:(id)a3
+- (void)addUtterances:(id)utterances
 {
-  v4 = a3;
+  utterancesCopy = utterances;
   utterances = self->_utterances;
-  v8 = v4;
+  v8 = utterancesCopy;
   if (!utterances)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_utterances;
-    self->_utterances = v6;
+    self->_utterances = array;
 
-    v4 = v8;
+    utterancesCopy = v8;
     utterances = self->_utterances;
   }
 
-  [(NSArray *)utterances addObject:v4];
+  [(NSArray *)utterances addObject:utterancesCopy];
 }
 
-- (void)addTokens:(id)a3
+- (void)addTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   tokens = self->_tokens;
-  v8 = v4;
+  v8 = tokensCopy;
   if (!tokens)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_tokens;
-    self->_tokens = v6;
+    self->_tokens = array;
 
-    v4 = v8;
+    tokensCopy = v8;
     tokens = self->_tokens;
   }
 
-  [(NSArray *)tokens addObject:v4];
+  [(NSArray *)tokens addObject:tokensCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = DODMLASRSchemaDODMLASRDecodingResult;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  v6 = [(DODMLASRSchemaDODMLASRDecodingResult *)self tokens];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  tokens = [(DODMLASRSchemaDODMLASRDecodingResult *)self tokens];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:tokens underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRDecodingResult *)self setTokens:v7];
 
-  v8 = [(DODMLASRSchemaDODMLASRDecodingResult *)self utterances];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  utterances = [(DODMLASRSchemaDODMLASRDecodingResult *)self utterances];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:utterances underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRDecodingResult *)self setUtterances:v9];
 
-  v10 = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
-  v11 = [v10 applySensitiveConditionsPolicy:v4];
-  v12 = [v11 suppressMessage];
+  decodingMetrics = [(DODMLASRSchemaDODMLASRDecodingResult *)self decodingMetrics];
+  v11 = [decodingMetrics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v11 suppressMessage];
 
-  if (v12)
+  if (suppressMessage)
   {
     [(DODMLASRSchemaDODMLASRDecodingResult *)self deleteDecodingMetrics];
   }
 
-  v13 = [(DODMLASRSchemaDODMLASRDecodingResult *)self alignments];
-  v14 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v13 underConditions:v4];
+  alignments = [(DODMLASRSchemaDODMLASRDecodingResult *)self alignments];
+  v14 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:alignments underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRDecodingResult *)self setAlignments:v14];
 
-  v15 = [(DODMLASRSchemaDODMLASRDecodingResult *)self entityScoreResults];
-  v16 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v15 underConditions:v4];
+  entityScoreResults = [(DODMLASRSchemaDODMLASRDecodingResult *)self entityScoreResults];
+  v16 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:entityScoreResults underConditions:policyCopy];
   [(DODMLASRSchemaDODMLASRDecodingResult *)self setEntityScoreResults:v16];
 
   return v5;

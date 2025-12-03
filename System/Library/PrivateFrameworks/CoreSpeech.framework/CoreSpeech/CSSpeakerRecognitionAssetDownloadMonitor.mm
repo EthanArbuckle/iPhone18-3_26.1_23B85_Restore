@@ -2,21 +2,21 @@
 + (CSSpeakerRecognitionAssetDownloadMonitor)sharedInstance;
 - (CSSpeakerRecognitionAssetDownloadMonitor)init;
 - (void)_didInstalledNewAsset;
-- (void)_notifyObserver:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)trialAssetDownloadMonitorDelegate:(id)a3 didInstallNewAsset:(BOOL)a4 assetType:(unint64_t)a5;
+- (void)trialAssetDownloadMonitorDelegate:(id)delegate didInstallNewAsset:(BOOL)asset assetType:(unint64_t)type;
 @end
 
 @implementation CSSpeakerRecognitionAssetDownloadMonitor
 
-- (void)trialAssetDownloadMonitorDelegate:(id)a3 didInstallNewAsset:(BOOL)a4 assetType:(unint64_t)a5
+- (void)trialAssetDownloadMonitorDelegate:(id)delegate didInstallNewAsset:(BOOL)asset assetType:(unint64_t)type
 {
-  v6 = a4;
-  v8 = a3;
-  if (a5 == 3)
+  assetCopy = asset;
+  delegateCopy = delegate;
+  if (type == 3)
   {
-    if (v6)
+    if (assetCopy)
     {
       self->_lastUpdatedAssetType = 1;
       [(CSSpeakerRecognitionAssetDownloadMonitor *)self _didInstalledNewAsset];
@@ -31,17 +31,17 @@
       v10 = 136315394;
       v11 = "[CSSpeakerRecognitionAssetDownloadMonitor trialAssetDownloadMonitorDelegate:didInstallNewAsset:assetType:]";
       v12 = 2048;
-      v13 = a5;
+      typeCopy = type;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s ERR: Delegate received for invalid Trial assetType:%lu", &v10, 0x16u);
     }
   }
 }
 
-- (void)_notifyObserver:(id)a3
+- (void)_notifyObserver:(id)observer
 {
-  v4 = a3;
-  [(CSSpeakerRecognitionAssetDownloadMonitor *)self notifyObserver:v4];
-  [v4 CSSpeakerRecognitionAssetDownloadMonitor:self didInstallNewAsset:1 assetProviderType:self->_lastUpdatedAssetType];
+  observerCopy = observer;
+  [(CSSpeakerRecognitionAssetDownloadMonitor *)self notifyObserver:observerCopy];
+  [observerCopy CSSpeakerRecognitionAssetDownloadMonitor:self didInstallNewAsset:1 assetProviderType:self->_lastUpdatedAssetType];
 }
 
 - (void)_didInstalledNewAsset
@@ -79,17 +79,17 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   if (self->_notifyToken == -1)
   {
-    v4 = a3;
+    queueCopy = queue;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10015EE54;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch([(CSSpeakerRecognitionAssetDownloadMonitor *)self _notificationKey], &self->_notifyToken, v4, handler);
+    notify_register_dispatch([(CSSpeakerRecognitionAssetDownloadMonitor *)self _notificationKey], &self->_notifyToken, queueCopy, handler);
 
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -109,9 +109,9 @@
   if (v2)
   {
     v3 = +[CSFPreferences sharedPreferences];
-    v4 = [v3 isSpeakerRecognitionAvailable];
+    isSpeakerRecognitionAvailable = [v3 isSpeakerRecognitionAvailable];
 
-    if (!v4)
+    if (!isSpeakerRecognitionAvailable)
     {
       v7 = 0;
       goto LABEL_6;

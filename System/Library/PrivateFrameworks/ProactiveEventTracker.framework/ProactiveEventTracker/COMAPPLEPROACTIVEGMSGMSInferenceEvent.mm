@@ -1,47 +1,47 @@
 @interface COMAPPLEPROACTIVEGMSGMSInferenceEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRequestType:(id)a3;
+- (int)StringAsRequestType:(id)type;
 - (int)requestType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasExtendInferenceMillis:(BOOL)a3;
-- (void)setHasInferenceTimeMillis:(BOOL)a3;
-- (void)setHasInputTokensCount:(BOOL)a3;
-- (void)setHasOutputTokensCount:(BOOL)a3;
-- (void)setHasRequestType:(BOOL)a3;
-- (void)setHasSdDraftModelInferenceCallCount:(BOOL)a3;
-- (void)setHasSdDraftModelTotalLatencyMillis:(BOOL)a3;
-- (void)setHasSdDraftOutputTokensCount:(BOOL)a3;
-- (void)setHasSdDraftTokenAcceptanceRate:(BOOL)a3;
-- (void)setHasSdSpeculationSuccessRate:(BOOL)a3;
-- (void)setHasSdTargetModelInferenceCallCount:(BOOL)a3;
-- (void)setHasSdTargetModelTotalLatencyMillis:(BOOL)a3;
-- (void)setHasSdTinyModelInferenceCallCount:(BOOL)a3;
-- (void)setHasSdTinyModelTotalLatencyMillis:(BOOL)a3;
-- (void)setHasSdTinyTokenAcceptanceRate:(BOOL)a3;
-- (void)setHasSdTotalOutputTokensCount:(BOOL)a3;
-- (void)setHasTimeToFirstTokenMillis:(BOOL)a3;
-- (void)setHasTokensPerSecond:(BOOL)a3;
-- (void)setHasTotalLatencyMillis:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasExtendInferenceMillis:(BOOL)millis;
+- (void)setHasInferenceTimeMillis:(BOOL)millis;
+- (void)setHasInputTokensCount:(BOOL)count;
+- (void)setHasOutputTokensCount:(BOOL)count;
+- (void)setHasRequestType:(BOOL)type;
+- (void)setHasSdDraftModelInferenceCallCount:(BOOL)count;
+- (void)setHasSdDraftModelTotalLatencyMillis:(BOOL)millis;
+- (void)setHasSdDraftOutputTokensCount:(BOOL)count;
+- (void)setHasSdDraftTokenAcceptanceRate:(BOOL)rate;
+- (void)setHasSdSpeculationSuccessRate:(BOOL)rate;
+- (void)setHasSdTargetModelInferenceCallCount:(BOOL)count;
+- (void)setHasSdTargetModelTotalLatencyMillis:(BOOL)millis;
+- (void)setHasSdTinyModelInferenceCallCount:(BOOL)count;
+- (void)setHasSdTinyModelTotalLatencyMillis:(BOOL)millis;
+- (void)setHasSdTinyTokenAcceptanceRate:(BOOL)rate;
+- (void)setHasSdTotalOutputTokensCount:(BOOL)count;
+- (void)setHasTimeToFirstTokenMillis:(BOOL)millis;
+- (void)setHasTokensPerSecond:(BOOL)second;
+- (void)setHasTotalLatencyMillis:(BOOL)millis;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation COMAPPLEPROACTIVEGMSGMSInferenceEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 43);
+  fromCopy = from;
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x100000) != 0)
   {
-    self->_requestType = *(v4 + 42);
+    self->_requestType = *(fromCopy + 42);
     *&self->_has |= 0x100000u;
-    v5 = *(v4 + 43);
+    v5 = *(fromCopy + 43);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -59,9 +59,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_inputTokensCount = *(v4 + 4);
+  self->_inputTokensCount = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -74,9 +74,9 @@ LABEL_4:
   }
 
 LABEL_28:
-  self->_outputTokensCount = *(v4 + 5);
+  self->_outputTokensCount = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_5:
@@ -89,9 +89,9 @@ LABEL_5:
   }
 
 LABEL_29:
-  self->_totalLatencyMillis = *(v4 + 19);
+  self->_totalLatencyMillis = *(fromCopy + 19);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_6:
@@ -104,9 +104,9 @@ LABEL_6:
   }
 
 LABEL_30:
-  self->_timeToFirstTokenMillis = *(v4 + 17);
+  self->_timeToFirstTokenMillis = *(fromCopy + 17);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_7:
@@ -119,9 +119,9 @@ LABEL_7:
   }
 
 LABEL_31:
-  self->_tokensPerSecond = *(v4 + 18);
+  self->_tokensPerSecond = *(fromCopy + 18);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_8:
@@ -134,9 +134,9 @@ LABEL_8:
   }
 
 LABEL_32:
-  self->_version = *(v4 + 20);
+  self->_version = *(fromCopy + 20);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 4) == 0)
   {
 LABEL_9:
@@ -149,9 +149,9 @@ LABEL_9:
   }
 
 LABEL_33:
-  self->_inferenceTimeMillis = *(v4 + 3);
+  self->_inferenceTimeMillis = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 2) == 0)
   {
 LABEL_10:
@@ -164,9 +164,9 @@ LABEL_10:
   }
 
 LABEL_34:
-  self->_extendInferenceMillis = *(v4 + 2);
+  self->_extendInferenceMillis = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 1) == 0)
   {
 LABEL_11:
@@ -179,9 +179,9 @@ LABEL_11:
   }
 
 LABEL_35:
-  self->_assetLoadAndTtftCombinedMillis = *(v4 + 1);
+  self->_assetLoadAndTtftCombinedMillis = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_12:
@@ -194,9 +194,9 @@ LABEL_12:
   }
 
 LABEL_36:
-  self->_sdTinyModelInferenceCallCount = *(v4 + 13);
+  self->_sdTinyModelInferenceCallCount = *(fromCopy + 13);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x20) == 0)
   {
 LABEL_13:
@@ -209,9 +209,9 @@ LABEL_13:
   }
 
 LABEL_37:
-  self->_sdDraftModelInferenceCallCount = *(v4 + 6);
+  self->_sdDraftModelInferenceCallCount = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x400) == 0)
   {
 LABEL_14:
@@ -224,9 +224,9 @@ LABEL_14:
   }
 
 LABEL_38:
-  self->_sdTargetModelInferenceCallCount = *(v4 + 11);
+  self->_sdTargetModelInferenceCallCount = *(fromCopy + 11);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x100) == 0)
   {
 LABEL_15:
@@ -239,9 +239,9 @@ LABEL_15:
   }
 
 LABEL_39:
-  self->_sdDraftTokenAcceptanceRate = *(v4 + 9);
+  self->_sdDraftTokenAcceptanceRate = *(fromCopy + 9);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_16:
@@ -254,9 +254,9 @@ LABEL_16:
   }
 
 LABEL_40:
-  self->_sdTinyTokenAcceptanceRate = *(v4 + 15);
+  self->_sdTinyTokenAcceptanceRate = *(fromCopy + 15);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x200) == 0)
   {
 LABEL_17:
@@ -269,9 +269,9 @@ LABEL_17:
   }
 
 LABEL_41:
-  self->_sdSpeculationSuccessRate = *(v4 + 10);
+  self->_sdSpeculationSuccessRate = *(fromCopy + 10);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x80) == 0)
   {
 LABEL_18:
@@ -284,9 +284,9 @@ LABEL_18:
   }
 
 LABEL_42:
-  self->_sdDraftOutputTokensCount = *(v4 + 8);
+  self->_sdDraftOutputTokensCount = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_19:
@@ -299,9 +299,9 @@ LABEL_19:
   }
 
 LABEL_43:
-  self->_sdTotalOutputTokensCount = *(v4 + 16);
+  self->_sdTotalOutputTokensCount = *(fromCopy + 16);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_20:
@@ -314,9 +314,9 @@ LABEL_20:
   }
 
 LABEL_44:
-  self->_sdTinyModelTotalLatencyMillis = *(v4 + 14);
+  self->_sdTinyModelTotalLatencyMillis = *(fromCopy + 14);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 43);
+  v5 = *(fromCopy + 43);
   if ((v5 & 0x40) == 0)
   {
 LABEL_21:
@@ -329,12 +329,12 @@ LABEL_21:
   }
 
 LABEL_45:
-  self->_sdDraftModelTotalLatencyMillis = *(v4 + 7);
+  self->_sdDraftModelTotalLatencyMillis = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  if ((*(v4 + 43) & 0x800) != 0)
+  if ((*(fromCopy + 43) & 0x800) != 0)
   {
 LABEL_22:
-    self->_sdTargetModelTotalLatencyMillis = *(v4 + 12);
+    self->_sdTargetModelTotalLatencyMillis = *(fromCopy + 12);
     *&self->_has |= 0x800u;
   }
 
@@ -876,19 +876,19 @@ LABEL_97:
   return v6 ^ v5 ^ v7 ^ v11 ^ v12 ^ v16 ^ v20 ^ v24 ^ v25 ^ v29 ^ v33 ^ v34 ^ v35 ^ v39 ^ v40 ^ v44 ^ v48 ^ v49 ^ v53 ^ v54 ^ v58;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_107;
   }
 
   has = self->_has;
-  v6 = *(v4 + 43);
+  v6 = *(equalCopy + 43);
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_requestType != *(v4 + 42))
+    if ((v6 & 0x100000) == 0 || self->_requestType != *(equalCopy + 42))
     {
       goto LABEL_107;
     }
@@ -903,7 +903,7 @@ LABEL_107:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_inputTokensCount != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_inputTokensCount != *(equalCopy + 4))
     {
       goto LABEL_107;
     }
@@ -916,7 +916,7 @@ LABEL_107:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_outputTokensCount != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_outputTokensCount != *(equalCopy + 5))
     {
       goto LABEL_107;
     }
@@ -929,7 +929,7 @@ LABEL_107:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_totalLatencyMillis != *(v4 + 19))
+    if ((v6 & 0x40000) == 0 || self->_totalLatencyMillis != *(equalCopy + 19))
     {
       goto LABEL_107;
     }
@@ -942,7 +942,7 @@ LABEL_107:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_timeToFirstTokenMillis != *(v4 + 17))
+    if ((v6 & 0x10000) == 0 || self->_timeToFirstTokenMillis != *(equalCopy + 17))
     {
       goto LABEL_107;
     }
@@ -955,7 +955,7 @@ LABEL_107:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_tokensPerSecond != *(v4 + 18))
+    if ((v6 & 0x20000) == 0 || self->_tokensPerSecond != *(equalCopy + 18))
     {
       goto LABEL_107;
     }
@@ -968,7 +968,7 @@ LABEL_107:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_version != *(v4 + 20))
+    if ((v6 & 0x80000) == 0 || self->_version != *(equalCopy + 20))
     {
       goto LABEL_107;
     }
@@ -981,7 +981,7 @@ LABEL_107:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_inferenceTimeMillis != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_inferenceTimeMillis != *(equalCopy + 3))
     {
       goto LABEL_107;
     }
@@ -994,7 +994,7 @@ LABEL_107:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_extendInferenceMillis != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_extendInferenceMillis != *(equalCopy + 2))
     {
       goto LABEL_107;
     }
@@ -1007,7 +1007,7 @@ LABEL_107:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_assetLoadAndTtftCombinedMillis != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_assetLoadAndTtftCombinedMillis != *(equalCopy + 1))
     {
       goto LABEL_107;
     }
@@ -1020,7 +1020,7 @@ LABEL_107:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_sdTinyModelInferenceCallCount != *(v4 + 13))
+    if ((v6 & 0x1000) == 0 || self->_sdTinyModelInferenceCallCount != *(equalCopy + 13))
     {
       goto LABEL_107;
     }
@@ -1033,7 +1033,7 @@ LABEL_107:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_sdDraftModelInferenceCallCount != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_sdDraftModelInferenceCallCount != *(equalCopy + 6))
     {
       goto LABEL_107;
     }
@@ -1046,7 +1046,7 @@ LABEL_107:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_sdTargetModelInferenceCallCount != *(v4 + 11))
+    if ((v6 & 0x400) == 0 || self->_sdTargetModelInferenceCallCount != *(equalCopy + 11))
     {
       goto LABEL_107;
     }
@@ -1059,7 +1059,7 @@ LABEL_107:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_sdDraftTokenAcceptanceRate != *(v4 + 9))
+    if ((v6 & 0x100) == 0 || self->_sdDraftTokenAcceptanceRate != *(equalCopy + 9))
     {
       goto LABEL_107;
     }
@@ -1072,7 +1072,7 @@ LABEL_107:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_sdTinyTokenAcceptanceRate != *(v4 + 15))
+    if ((v6 & 0x4000) == 0 || self->_sdTinyTokenAcceptanceRate != *(equalCopy + 15))
     {
       goto LABEL_107;
     }
@@ -1085,7 +1085,7 @@ LABEL_107:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_sdSpeculationSuccessRate != *(v4 + 10))
+    if ((v6 & 0x200) == 0 || self->_sdSpeculationSuccessRate != *(equalCopy + 10))
     {
       goto LABEL_107;
     }
@@ -1098,7 +1098,7 @@ LABEL_107:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_sdDraftOutputTokensCount != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_sdDraftOutputTokensCount != *(equalCopy + 8))
     {
       goto LABEL_107;
     }
@@ -1111,7 +1111,7 @@ LABEL_107:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_sdTotalOutputTokensCount != *(v4 + 16))
+    if ((v6 & 0x8000) == 0 || self->_sdTotalOutputTokensCount != *(equalCopy + 16))
     {
       goto LABEL_107;
     }
@@ -1124,7 +1124,7 @@ LABEL_107:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_sdTinyModelTotalLatencyMillis != *(v4 + 14))
+    if ((v6 & 0x2000) == 0 || self->_sdTinyModelTotalLatencyMillis != *(equalCopy + 14))
     {
       goto LABEL_107;
     }
@@ -1137,7 +1137,7 @@ LABEL_107:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_sdDraftModelTotalLatencyMillis != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_sdDraftModelTotalLatencyMillis != *(equalCopy + 7))
     {
       goto LABEL_107;
     }
@@ -1150,7 +1150,7 @@ LABEL_107:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_sdTargetModelTotalLatencyMillis != *(v4 + 12))
+    if ((v6 & 0x800) == 0 || self->_sdTargetModelTotalLatencyMillis != *(equalCopy + 12))
     {
       goto LABEL_107;
     }
@@ -1160,7 +1160,7 @@ LABEL_107:
 
   else
   {
-    v7 = (*(v4 + 43) & 0x800) == 0;
+    v7 = (*(equalCopy + 43) & 0x800) == 0;
   }
 
 LABEL_108:
@@ -1168,9 +1168,9 @@ LABEL_108:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x100000) != 0)
   {
@@ -1477,14 +1477,14 @@ LABEL_22:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x100000) != 0)
   {
-    v4[42] = self->_requestType;
-    v4[43] |= 0x100000u;
+    toCopy[42] = self->_requestType;
+    toCopy[43] |= 0x100000u;
     has = self->_has;
     if ((*&has & 8) == 0)
     {
@@ -1503,8 +1503,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_inputTokensCount;
-  v4[43] |= 8u;
+  *(toCopy + 4) = self->_inputTokensCount;
+  toCopy[43] |= 8u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1518,8 +1518,8 @@ LABEL_4:
   }
 
 LABEL_28:
-  *(v4 + 5) = self->_outputTokensCount;
-  v4[43] |= 0x10u;
+  *(toCopy + 5) = self->_outputTokensCount;
+  toCopy[43] |= 0x10u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1533,8 +1533,8 @@ LABEL_5:
   }
 
 LABEL_29:
-  *(v4 + 19) = *&self->_totalLatencyMillis;
-  v4[43] |= 0x40000u;
+  *(toCopy + 19) = *&self->_totalLatencyMillis;
+  toCopy[43] |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1548,8 +1548,8 @@ LABEL_6:
   }
 
 LABEL_30:
-  *(v4 + 17) = *&self->_timeToFirstTokenMillis;
-  v4[43] |= 0x10000u;
+  *(toCopy + 17) = *&self->_timeToFirstTokenMillis;
+  toCopy[43] |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1563,8 +1563,8 @@ LABEL_7:
   }
 
 LABEL_31:
-  *(v4 + 18) = *&self->_tokensPerSecond;
-  v4[43] |= 0x20000u;
+  *(toCopy + 18) = *&self->_tokensPerSecond;
+  toCopy[43] |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1578,8 +1578,8 @@ LABEL_8:
   }
 
 LABEL_32:
-  *(v4 + 20) = self->_version;
-  v4[43] |= 0x80000u;
+  *(toCopy + 20) = self->_version;
+  toCopy[43] |= 0x80000u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1593,8 +1593,8 @@ LABEL_9:
   }
 
 LABEL_33:
-  *(v4 + 3) = *&self->_inferenceTimeMillis;
-  v4[43] |= 4u;
+  *(toCopy + 3) = *&self->_inferenceTimeMillis;
+  toCopy[43] |= 4u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1608,8 +1608,8 @@ LABEL_10:
   }
 
 LABEL_34:
-  *(v4 + 2) = *&self->_extendInferenceMillis;
-  v4[43] |= 2u;
+  *(toCopy + 2) = *&self->_extendInferenceMillis;
+  toCopy[43] |= 2u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1623,8 +1623,8 @@ LABEL_11:
   }
 
 LABEL_35:
-  *(v4 + 1) = *&self->_assetLoadAndTtftCombinedMillis;
-  v4[43] |= 1u;
+  *(toCopy + 1) = *&self->_assetLoadAndTtftCombinedMillis;
+  toCopy[43] |= 1u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1638,8 +1638,8 @@ LABEL_12:
   }
 
 LABEL_36:
-  *(v4 + 13) = self->_sdTinyModelInferenceCallCount;
-  v4[43] |= 0x1000u;
+  *(toCopy + 13) = self->_sdTinyModelInferenceCallCount;
+  toCopy[43] |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1653,8 +1653,8 @@ LABEL_13:
   }
 
 LABEL_37:
-  *(v4 + 6) = self->_sdDraftModelInferenceCallCount;
-  v4[43] |= 0x20u;
+  *(toCopy + 6) = self->_sdDraftModelInferenceCallCount;
+  toCopy[43] |= 0x20u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1668,8 +1668,8 @@ LABEL_14:
   }
 
 LABEL_38:
-  *(v4 + 11) = self->_sdTargetModelInferenceCallCount;
-  v4[43] |= 0x400u;
+  *(toCopy + 11) = self->_sdTargetModelInferenceCallCount;
+  toCopy[43] |= 0x400u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1683,8 +1683,8 @@ LABEL_15:
   }
 
 LABEL_39:
-  *(v4 + 9) = *&self->_sdDraftTokenAcceptanceRate;
-  v4[43] |= 0x100u;
+  *(toCopy + 9) = *&self->_sdDraftTokenAcceptanceRate;
+  toCopy[43] |= 0x100u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1698,8 +1698,8 @@ LABEL_16:
   }
 
 LABEL_40:
-  *(v4 + 15) = *&self->_sdTinyTokenAcceptanceRate;
-  v4[43] |= 0x4000u;
+  *(toCopy + 15) = *&self->_sdTinyTokenAcceptanceRate;
+  toCopy[43] |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1713,8 +1713,8 @@ LABEL_17:
   }
 
 LABEL_41:
-  *(v4 + 10) = *&self->_sdSpeculationSuccessRate;
-  v4[43] |= 0x200u;
+  *(toCopy + 10) = *&self->_sdSpeculationSuccessRate;
+  toCopy[43] |= 0x200u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1728,8 +1728,8 @@ LABEL_18:
   }
 
 LABEL_42:
-  *(v4 + 8) = self->_sdDraftOutputTokensCount;
-  v4[43] |= 0x80u;
+  *(toCopy + 8) = self->_sdDraftOutputTokensCount;
+  toCopy[43] |= 0x80u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1743,8 +1743,8 @@ LABEL_19:
   }
 
 LABEL_43:
-  *(v4 + 16) = self->_sdTotalOutputTokensCount;
-  v4[43] |= 0x8000u;
+  *(toCopy + 16) = self->_sdTotalOutputTokensCount;
+  toCopy[43] |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1758,8 +1758,8 @@ LABEL_20:
   }
 
 LABEL_44:
-  *(v4 + 14) = *&self->_sdTinyModelTotalLatencyMillis;
-  v4[43] |= 0x2000u;
+  *(toCopy + 14) = *&self->_sdTinyModelTotalLatencyMillis;
+  toCopy[43] |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1773,21 +1773,21 @@ LABEL_21:
   }
 
 LABEL_45:
-  *(v4 + 7) = *&self->_sdDraftModelTotalLatencyMillis;
-  v4[43] |= 0x40u;
+  *(toCopy + 7) = *&self->_sdDraftModelTotalLatencyMillis;
+  toCopy[43] |= 0x40u;
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_22:
-    *(v4 + 12) = *&self->_sdTargetModelTotalLatencyMillis;
-    v4[43] |= 0x800u;
+    *(toCopy + 12) = *&self->_sdTargetModelTotalLatencyMillis;
+    toCopy[43] |= 0x800u;
   }
 
 LABEL_23:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v26 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x100000) != 0)
   {
@@ -2095,7 +2095,7 @@ LABEL_23:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((*&has & 0x100000) != 0)
   {
@@ -2110,7 +2110,7 @@ LABEL_23:
       v6 = off_1E86C2DB8[requestType];
     }
 
-    [v3 setObject:v6 forKey:@"requestType"];
+    [dictionary setObject:v6 forKey:@"requestType"];
 
     has = self->_has;
   }
@@ -2118,7 +2118,7 @@ LABEL_23:
   if ((*&has & 8) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_inputTokensCount];
-    [v3 setObject:v9 forKey:@"inputTokensCount"];
+    [dictionary setObject:v9 forKey:@"inputTokensCount"];
 
     has = self->_has;
     if ((*&has & 0x10) == 0)
@@ -2139,7 +2139,7 @@ LABEL_8:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_outputTokensCount];
-  [v3 setObject:v10 forKey:@"outputTokensCount"];
+  [dictionary setObject:v10 forKey:@"outputTokensCount"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -2155,7 +2155,7 @@ LABEL_9:
 
 LABEL_32:
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_totalLatencyMillis];
-  [v3 setObject:v11 forKey:@"totalLatencyMillis"];
+  [dictionary setObject:v11 forKey:@"totalLatencyMillis"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -2171,7 +2171,7 @@ LABEL_10:
 
 LABEL_33:
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timeToFirstTokenMillis];
-  [v3 setObject:v12 forKey:@"timeToFirstTokenMillis"];
+  [dictionary setObject:v12 forKey:@"timeToFirstTokenMillis"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -2187,7 +2187,7 @@ LABEL_11:
 
 LABEL_34:
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:self->_tokensPerSecond];
-  [v3 setObject:v13 forKey:@"tokensPerSecond"];
+  [dictionary setObject:v13 forKey:@"tokensPerSecond"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -2203,7 +2203,7 @@ LABEL_12:
 
 LABEL_35:
   v14 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_version];
-  [v3 setObject:v14 forKey:@"version"];
+  [dictionary setObject:v14 forKey:@"version"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -2219,7 +2219,7 @@ LABEL_13:
 
 LABEL_36:
   v15 = [MEMORY[0x1E696AD98] numberWithDouble:self->_inferenceTimeMillis];
-  [v3 setObject:v15 forKey:@"inferenceTimeMillis"];
+  [dictionary setObject:v15 forKey:@"inferenceTimeMillis"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -2235,7 +2235,7 @@ LABEL_14:
 
 LABEL_37:
   v16 = [MEMORY[0x1E696AD98] numberWithDouble:self->_extendInferenceMillis];
-  [v3 setObject:v16 forKey:@"extendInferenceMillis"];
+  [dictionary setObject:v16 forKey:@"extendInferenceMillis"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -2251,7 +2251,7 @@ LABEL_15:
 
 LABEL_38:
   v17 = [MEMORY[0x1E696AD98] numberWithDouble:self->_assetLoadAndTtftCombinedMillis];
-  [v3 setObject:v17 forKey:@"assetLoadAndTtftCombinedMillis"];
+  [dictionary setObject:v17 forKey:@"assetLoadAndTtftCombinedMillis"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -2267,7 +2267,7 @@ LABEL_16:
 
 LABEL_39:
   v18 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sdTinyModelInferenceCallCount];
-  [v3 setObject:v18 forKey:@"sdTinyModelInferenceCallCount"];
+  [dictionary setObject:v18 forKey:@"sdTinyModelInferenceCallCount"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -2283,7 +2283,7 @@ LABEL_17:
 
 LABEL_40:
   v19 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sdDraftModelInferenceCallCount];
-  [v3 setObject:v19 forKey:@"sdDraftModelInferenceCallCount"];
+  [dictionary setObject:v19 forKey:@"sdDraftModelInferenceCallCount"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -2299,7 +2299,7 @@ LABEL_18:
 
 LABEL_41:
   v20 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sdTargetModelInferenceCallCount];
-  [v3 setObject:v20 forKey:@"sdTargetModelInferenceCallCount"];
+  [dictionary setObject:v20 forKey:@"sdTargetModelInferenceCallCount"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -2315,7 +2315,7 @@ LABEL_19:
 
 LABEL_42:
   v21 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sdDraftTokenAcceptanceRate];
-  [v3 setObject:v21 forKey:@"sdDraftTokenAcceptanceRate"];
+  [dictionary setObject:v21 forKey:@"sdDraftTokenAcceptanceRate"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -2331,7 +2331,7 @@ LABEL_20:
 
 LABEL_43:
   v22 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sdTinyTokenAcceptanceRate];
-  [v3 setObject:v22 forKey:@"sdTinyTokenAcceptanceRate"];
+  [dictionary setObject:v22 forKey:@"sdTinyTokenAcceptanceRate"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -2347,7 +2347,7 @@ LABEL_21:
 
 LABEL_44:
   v23 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sdSpeculationSuccessRate];
-  [v3 setObject:v23 forKey:@"sdSpeculationSuccessRate"];
+  [dictionary setObject:v23 forKey:@"sdSpeculationSuccessRate"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -2363,7 +2363,7 @@ LABEL_22:
 
 LABEL_45:
   v24 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sdDraftOutputTokensCount];
-  [v3 setObject:v24 forKey:@"sdDraftOutputTokensCount"];
+  [dictionary setObject:v24 forKey:@"sdDraftOutputTokensCount"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -2379,7 +2379,7 @@ LABEL_23:
 
 LABEL_46:
   v25 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sdTotalOutputTokensCount];
-  [v3 setObject:v25 forKey:@"sdTotalOutputTokensCount"];
+  [dictionary setObject:v25 forKey:@"sdTotalOutputTokensCount"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -2395,7 +2395,7 @@ LABEL_24:
 
 LABEL_47:
   v26 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sdTinyModelTotalLatencyMillis];
-  [v3 setObject:v26 forKey:@"sdTinyModelTotalLatencyMillis"];
+  [dictionary setObject:v26 forKey:@"sdTinyModelTotalLatencyMillis"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -2411,18 +2411,18 @@ LABEL_25:
 
 LABEL_48:
   v27 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sdDraftModelTotalLatencyMillis];
-  [v3 setObject:v27 forKey:@"sdDraftModelTotalLatencyMillis"];
+  [dictionary setObject:v27 forKey:@"sdDraftModelTotalLatencyMillis"];
 
   if ((*&self->_has & 0x800) != 0)
   {
 LABEL_26:
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_sdTargetModelTotalLatencyMillis];
-    [v3 setObject:v7 forKey:@"sdTargetModelTotalLatencyMillis"];
+    [dictionary setObject:v7 forKey:@"sdTargetModelTotalLatencyMillis"];
   }
 
 LABEL_27:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -2431,15 +2431,15 @@ LABEL_27:
   v8.receiver = self;
   v8.super_class = COMAPPLEPROACTIVEGMSGMSInferenceEvent;
   v4 = [(COMAPPLEPROACTIVEGMSGMSInferenceEvent *)&v8 description];
-  v5 = [(COMAPPLEPROACTIVEGMSGMSInferenceEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(COMAPPLEPROACTIVEGMSGMSInferenceEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasSdTargetModelTotalLatencyMillis:(BOOL)a3
+- (void)setHasSdTargetModelTotalLatencyMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 2048;
   }
@@ -2452,9 +2452,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasSdDraftModelTotalLatencyMillis:(BOOL)a3
+- (void)setHasSdDraftModelTotalLatencyMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 64;
   }
@@ -2467,9 +2467,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasSdTinyModelTotalLatencyMillis:(BOOL)a3
+- (void)setHasSdTinyModelTotalLatencyMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 0x2000;
   }
@@ -2482,9 +2482,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasSdTotalOutputTokensCount:(BOOL)a3
+- (void)setHasSdTotalOutputTokensCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x8000;
   }
@@ -2497,9 +2497,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasSdDraftOutputTokensCount:(BOOL)a3
+- (void)setHasSdDraftOutputTokensCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -2512,9 +2512,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasSdSpeculationSuccessRate:(BOOL)a3
+- (void)setHasSdSpeculationSuccessRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 512;
   }
@@ -2527,9 +2527,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasSdTinyTokenAcceptanceRate:(BOOL)a3
+- (void)setHasSdTinyTokenAcceptanceRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 0x4000;
   }
@@ -2542,9 +2542,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasSdDraftTokenAcceptanceRate:(BOOL)a3
+- (void)setHasSdDraftTokenAcceptanceRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 256;
   }
@@ -2557,9 +2557,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasSdTargetModelInferenceCallCount:(BOOL)a3
+- (void)setHasSdTargetModelInferenceCallCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -2572,9 +2572,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasSdDraftModelInferenceCallCount:(BOOL)a3
+- (void)setHasSdDraftModelInferenceCallCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -2587,9 +2587,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasSdTinyModelInferenceCallCount:(BOOL)a3
+- (void)setHasSdTinyModelInferenceCallCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4096;
   }
@@ -2602,9 +2602,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasExtendInferenceMillis:(BOOL)a3
+- (void)setHasExtendInferenceMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 2;
   }
@@ -2617,9 +2617,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasInferenceTimeMillis:(BOOL)a3
+- (void)setHasInferenceTimeMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 4;
   }
@@ -2632,9 +2632,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 0x80000;
   }
@@ -2647,9 +2647,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasTokensPerSecond:(BOOL)a3
+- (void)setHasTokensPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 0x20000;
   }
@@ -2662,9 +2662,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasTimeToFirstTokenMillis:(BOOL)a3
+- (void)setHasTimeToFirstTokenMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 0x10000;
   }
@@ -2677,9 +2677,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasTotalLatencyMillis:(BOOL)a3
+- (void)setHasTotalLatencyMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 0x40000;
   }
@@ -2692,9 +2692,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasOutputTokensCount:(BOOL)a3
+- (void)setHasOutputTokensCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -2707,9 +2707,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasInputTokensCount:(BOOL)a3
+- (void)setHasInputTokensCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -2722,20 +2722,20 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (int)StringAsRequestType:(id)a3
+- (int)StringAsRequestType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"GMS_REQUEST_TYPE_UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"GMS_REQUEST_TYPE_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"GMS_REQUEST_TYPE_ONE_SHOT"])
+  else if ([typeCopy isEqualToString:@"GMS_REQUEST_TYPE_ONE_SHOT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GMS_REQUEST_TYPE_STREAMING"])
+  else if ([typeCopy isEqualToString:@"GMS_REQUEST_TYPE_STREAMING"])
   {
     v4 = 2;
   }
@@ -2748,9 +2748,9 @@ LABEL_27:
   return v4;
 }
 
-- (void)setHasRequestType:(BOOL)a3
+- (void)setHasRequestType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x100000;
   }

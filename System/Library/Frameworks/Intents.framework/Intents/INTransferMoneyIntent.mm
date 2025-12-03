@@ -8,36 +8,36 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setFromAccount:(id)a3;
-- (void)setToAccount:(id)a3;
-- (void)setTransactionAmount:(id)a3;
-- (void)setTransactionNote:(id)a3;
-- (void)setTransactionScheduledDate:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setFromAccount:(id)account;
+- (void)setToAccount:(id)account;
+- (void)setTransactionAmount:(id)amount;
+- (void)setTransactionNote:(id)note;
+- (void)setTransactionScheduledDate:(id)date;
 @end
 
 @implementation INTransferMoneyIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v16 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 fromAccount];
-  v10 = INIntentSlotValueRedactedFinancialAccountValueFromFinancialAccountValue(v9, a3, v16);
+  idCopy = id;
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  v16 = idCopy;
+  v8 = [_typedBackingStore copy];
+  fromAccount = [_typedBackingStore fromAccount];
+  v10 = INIntentSlotValueRedactedFinancialAccountValueFromFinancialAccountValue(fromAccount, options, v16);
   [v8 setFromAccount:v10];
 
-  v11 = [v7 toAccount];
-  v12 = INIntentSlotValueRedactedFinancialAccountValueFromFinancialAccountValue(v11, a3, v16);
+  toAccount = [_typedBackingStore toAccount];
+  v12 = INIntentSlotValueRedactedFinancialAccountValueFromFinancialAccountValue(toAccount, options, v16);
   [v8 setToAccount:v12];
 
-  v13 = [v7 transactionAmount];
-  [v8 setTransactionAmount:v13];
+  transactionAmount = [_typedBackingStore transactionAmount];
+  [v8 setTransactionAmount:transactionAmount];
 
-  v14 = [v7 transactionScheduledDate];
-  v15 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(v14, a3);
+  transactionScheduledDate = [_typedBackingStore transactionScheduledDate];
+  v15 = INIntentSlotValueRedactedDateTimeRangeFromDateTimeRange(transactionScheduledDate, options);
 
   [v8 setTransactionScheduledDate:v15];
   [(INIntent *)self setBackingStore:v8];
@@ -47,64 +47,64 @@
 {
   v18[5] = *MEMORY[0x1E69E9840];
   v17[0] = @"fromAccount";
-  v3 = [(INTransferMoneyIntent *)self fromAccount];
-  v4 = v3;
-  if (!v3)
+  fromAccount = [(INTransferMoneyIntent *)self fromAccount];
+  v4 = fromAccount;
+  if (!fromAccount)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    fromAccount = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v3;
+  v18[0] = fromAccount;
   v17[1] = @"toAccount";
-  v5 = [(INTransferMoneyIntent *)self toAccount];
-  v6 = v5;
-  if (!v5)
+  toAccount = [(INTransferMoneyIntent *)self toAccount];
+  null = toAccount;
+  if (!toAccount)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v6;
+  v18[1] = null;
   v17[2] = @"transactionAmount";
-  v7 = [(INTransferMoneyIntent *)self transactionAmount];
-  v8 = v7;
-  if (!v7)
+  transactionAmount = [(INTransferMoneyIntent *)self transactionAmount];
+  null2 = transactionAmount;
+  if (!transactionAmount)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[2] = v8;
+  v18[2] = null2;
   v17[3] = @"transactionScheduledDate";
-  v9 = [(INTransferMoneyIntent *)self transactionScheduledDate];
-  v10 = v9;
-  if (!v9)
+  transactionScheduledDate = [(INTransferMoneyIntent *)self transactionScheduledDate];
+  null3 = transactionScheduledDate;
+  if (!transactionScheduledDate)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[3] = v10;
+  v18[3] = null3;
   v17[4] = @"transactionNote";
-  v11 = [(INTransferMoneyIntent *)self transactionNote];
-  v12 = v11;
-  if (!v11)
+  transactionNote = [(INTransferMoneyIntent *)self transactionNote];
+  null4 = transactionNote;
+  if (!transactionNote)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[4] = v12;
+  v18[4] = null4;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  if (!v11)
+  if (!transactionNote)
   {
   }
 
-  if (!v9)
+  if (!transactionScheduledDate)
   {
   }
 
-  if (!v7)
+  if (!transactionAmount)
   {
   }
 
-  if (!v5)
+  if (!toAccount)
   {
   }
 
@@ -117,90 +117,90 @@
   return v13;
 }
 
-- (void)setTransactionNote:(id)a3
+- (void)setTransactionNote:(id)note
 {
-  v4 = a3;
-  v5 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  [v5 setTransactionNote:v4];
+  noteCopy = note;
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  [_typedBackingStore setTransactionNote:noteCopy];
 }
 
 - (NSString)transactionNote
 {
-  v2 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v3 = [v2 transactionNote];
-  v4 = [v3 copy];
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  transactionNote = [_typedBackingStore transactionNote];
+  v4 = [transactionNote copy];
 
   return v4;
 }
 
-- (void)setTransactionScheduledDate:(id)a3
+- (void)setTransactionScheduledDate:(id)date
 {
-  v4 = a3;
-  v6 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDateTimeRange(v4);
+  dateCopy = date;
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDateTimeRange(dateCopy);
 
-  [v6 setTransactionScheduledDate:v5];
+  [_typedBackingStore setTransactionScheduledDate:v5];
 }
 
 - (INDateComponentsRange)transactionScheduledDate
 {
-  v2 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v3 = [v2 transactionScheduledDate];
-  v4 = INIntentSlotValueTransformFromDateTimeRange(v3);
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  transactionScheduledDate = [_typedBackingStore transactionScheduledDate];
+  v4 = INIntentSlotValueTransformFromDateTimeRange(transactionScheduledDate);
 
   return v4;
 }
 
-- (void)setTransactionAmount:(id)a3
+- (void)setTransactionAmount:(id)amount
 {
-  v4 = a3;
-  v6 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToPaymentAmountValue(v4);
+  amountCopy = amount;
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToPaymentAmountValue(amountCopy);
 
-  [v6 setTransactionAmount:v5];
+  [_typedBackingStore setTransactionAmount:v5];
 }
 
 - (INPaymentAmount)transactionAmount
 {
-  v2 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v3 = [v2 transactionAmount];
-  v4 = INIntentSlotValueTransformFromPaymentAmountValue(v3);
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  transactionAmount = [_typedBackingStore transactionAmount];
+  v4 = INIntentSlotValueTransformFromPaymentAmountValue(transactionAmount);
 
   return v4;
 }
 
-- (void)setToAccount:(id)a3
+- (void)setToAccount:(id)account
 {
-  v4 = a3;
-  v6 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToFinancialAccountValue(v4);
+  accountCopy = account;
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToFinancialAccountValue(accountCopy);
 
-  [v6 setToAccount:v5];
+  [_typedBackingStore setToAccount:v5];
 }
 
 - (INPaymentAccount)toAccount
 {
-  v2 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v3 = [v2 toAccount];
-  v4 = INIntentSlotValueTransformFromFinancialAccountValue(v3);
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  toAccount = [_typedBackingStore toAccount];
+  v4 = INIntentSlotValueTransformFromFinancialAccountValue(toAccount);
 
   return v4;
 }
 
-- (void)setFromAccount:(id)a3
+- (void)setFromAccount:(id)account
 {
-  v4 = a3;
-  v6 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToFinancialAccountValue(v4);
+  accountCopy = account;
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToFinancialAccountValue(accountCopy);
 
-  [v6 setFromAccount:v5];
+  [_typedBackingStore setFromAccount:v5];
 }
 
 - (INPaymentAccount)fromAccount
 {
-  v2 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v3 = [v2 fromAccount];
-  v4 = INIntentSlotValueTransformFromFinancialAccountValue(v3);
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  fromAccount = [_typedBackingStore fromAccount];
+  v4 = INIntentSlotValueTransformFromFinancialAccountValue(fromAccount);
 
   return v4;
 }
@@ -228,28 +228,28 @@
   return v18;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INTransferMoneyIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INTransferMoneyIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

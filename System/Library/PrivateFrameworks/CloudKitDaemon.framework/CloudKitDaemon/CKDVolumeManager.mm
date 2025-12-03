@@ -1,8 +1,8 @@
 @interface CKDVolumeManager
-+ (id)deviceIDForVolumeUUID:(id)a3;
-+ (id)volumeForDeviceID:(id)a3;
-+ (id)volumeForVolumeUUID:(id)a3;
-+ (id)volumeUUIDForDeviceID:(id)a3;
++ (id)deviceIDForVolumeUUID:(id)d;
++ (id)volumeForDeviceID:(id)d;
++ (id)volumeForVolumeUUID:(id)d;
++ (id)volumeUUIDForDeviceID:(id)d;
 + (void)_rebuildVolumes;
 + (void)initialize;
 @end
@@ -74,9 +74,9 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)volumeForVolumeUUID:(id)a3
++ (id)volumeForVolumeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -89,9 +89,9 @@
   block[2] = sub_22512609C;
   block[3] = &unk_278546268;
   v11 = &v13;
-  v12 = a1;
-  v10 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v10 = dCopy;
+  v6 = dCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -100,9 +100,9 @@
   return v7;
 }
 
-+ (id)volumeForDeviceID:(id)a3
++ (id)volumeForDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -115,9 +115,9 @@
   block[2] = sub_225126214;
   block[3] = &unk_278546268;
   v11 = &v13;
-  v12 = a1;
-  v10 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v10 = dCopy;
+  v6 = dCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -126,17 +126,17 @@
   return v7;
 }
 
-+ (id)deviceIDForVolumeUUID:(id)a3
++ (id)deviceIDForVolumeUUID:(id)d
 {
-  v3 = objc_msgSend_volumeForVolumeUUID_(a1, a2, a3);
+  v3 = objc_msgSend_volumeForVolumeUUID_(self, a2, d);
   v6 = objc_msgSend_deviceID(v3, v4, v5);
 
   return v6;
 }
 
-+ (id)volumeUUIDForDeviceID:(id)a3
++ (id)volumeUUIDForDeviceID:(id)d
 {
-  v3 = objc_msgSend_volumeForDeviceID_(a1, a2, a3);
+  v3 = objc_msgSend_volumeForDeviceID_(self, a2, d);
   v6 = objc_msgSend_volumeUUID(v3, v4, v5);
 
   return v6;

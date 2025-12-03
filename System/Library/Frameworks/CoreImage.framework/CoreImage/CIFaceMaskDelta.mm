@@ -1,6 +1,6 @@
 @interface CIFaceMaskDelta
-- (BOOL)_isValidFace:(unsigned int)a3;
-- (double)_landmarksToDist:(unsigned int)a3 minimumDistance:(float)a4 maximumDistance:(float)a5 scalingFactor:(float)a6 offset:(float)a7;
+- (BOOL)_isValidFace:(unsigned int)face;
+- (double)_landmarksToDist:(unsigned int)dist minimumDistance:(float)distance maximumDistance:(float)maximumDistance scalingFactor:(float)factor offset:(float)offset;
 - (float)distanceToAdd;
 - (id)outputImage;
 - (unsigned)findMostProminentFace;
@@ -8,30 +8,30 @@
 
 @implementation CIFaceMaskDelta
 
-- (double)_landmarksToDist:(unsigned int)a3 minimumDistance:(float)a4 maximumDistance:(float)a5 scalingFactor:(float)a6 offset:(float)a7
+- (double)_landmarksToDist:(unsigned int)dist minimumDistance:(float)distance maximumDistance:(float)maximumDistance scalingFactor:(float)factor offset:(float)offset
 {
-  v12 = a3;
-  [(CIVector *)self->inputFacesLeftEyeX valueAtIndex:a3];
+  distCopy = dist;
+  [(CIVector *)self->inputFacesLeftEyeX valueAtIndex:dist];
   v36 = v13;
-  [(CIVector *)self->inputFacesLeftEyeY valueAtIndex:v12];
+  [(CIVector *)self->inputFacesLeftEyeY valueAtIndex:distCopy];
   v14.f64[0] = v36;
   v14.f64[1] = v15;
   v16 = vcvt_f32_f64(v14);
-  [(CIVector *)self->inputFacesRightEyeX valueAtIndex:v12];
+  [(CIVector *)self->inputFacesRightEyeX valueAtIndex:distCopy];
   v37 = v17;
-  [(CIVector *)self->inputFacesRightEyeY valueAtIndex:v12];
+  [(CIVector *)self->inputFacesRightEyeY valueAtIndex:distCopy];
   v18.f64[0] = v37;
   v18.f64[1] = v19;
   v20 = vcvt_f32_f64(v18);
-  [(CIVector *)self->inputFacesCenterX valueAtIndex:v12];
+  [(CIVector *)self->inputFacesCenterX valueAtIndex:distCopy];
   v38 = v21;
-  [(CIVector *)self->inputFacesCenterY valueAtIndex:v12];
+  [(CIVector *)self->inputFacesCenterY valueAtIndex:distCopy];
   v22.f64[0] = v38;
   v22.f64[1] = v23;
   v24 = vcvt_f32_f64(v22);
-  [(CIVector *)self->inputFacesChinX valueAtIndex:v12];
+  [(CIVector *)self->inputFacesChinX valueAtIndex:distCopy];
   v39 = v25;
-  [(CIVector *)self->inputFacesChinY valueAtIndex:v12];
+  [(CIVector *)self->inputFacesChinY valueAtIndex:distCopy];
   v26.f64[0] = v39;
   v26.f64[1] = v27;
   v28 = vcvt_f32_f64(v26);
@@ -44,26 +44,26 @@
   *&v26.f64[0] = vmaxnm_f32(vsqrt_f32(vadd_f32(vzip1_s32(*&v26.f64[0], v32), vzip2_s32(*&v26.f64[0], v32))), vdup_n_s32(0x3A83126Fu));
   v33 = vsub_f32(v16, v28);
   v34 = vsub_f32(v20, v28);
-  result = a7 + (fmaxf(sqrtf(vaddv_f32(vmul_f32(v29, v29))), 0.001) * -3.3737 + *v26.f64 * -12.1925 + fmaxf(sqrtf(vaddv_f32(vmul_f32(v30, v30))), 0.001) * -3.025 + *(v26.f64 + 1) * -11.9485 + fmaxf(sqrtf(vaddv_f32(vmul_f32(v33, v33))), 0.001) * 1.6734 + fmaxf(sqrtf(vaddv_f32(vmul_f32(v34, v34))), 0.001) * 1.8423 + vmuls_lane_f32(*v26.f64, *&v26.f64[0], 1) * 47.7061 + 3.1214) * a6;
-  if (result >= a5)
+  result = offset + (fmaxf(sqrtf(vaddv_f32(vmul_f32(v29, v29))), 0.001) * -3.3737 + *v26.f64 * -12.1925 + fmaxf(sqrtf(vaddv_f32(vmul_f32(v30, v30))), 0.001) * -3.025 + *(v26.f64 + 1) * -11.9485 + fmaxf(sqrtf(vaddv_f32(vmul_f32(v33, v33))), 0.001) * 1.6734 + fmaxf(sqrtf(vaddv_f32(vmul_f32(v34, v34))), 0.001) * 1.8423 + vmuls_lane_f32(*v26.f64, *&v26.f64[0], 1) * 47.7061 + 3.1214) * factor;
+  if (result >= maximumDistance)
   {
-    result = a5;
+    result = maximumDistance;
   }
 
-  if (result <= a4)
+  if (result <= distance)
   {
-    return a4;
+    return distance;
   }
 
   return result;
 }
 
-- (BOOL)_isValidFace:(unsigned int)a3
+- (BOOL)_isValidFace:(unsigned int)face
 {
   inputFacesCenterX = self->inputFacesCenterX;
   if (inputFacesCenterX)
   {
-    if ([(CIVector *)inputFacesCenterX count]<= a3)
+    if ([(CIVector *)inputFacesCenterX count]<= face)
     {
       goto LABEL_25;
     }
@@ -71,7 +71,7 @@
     inputFacesCenterX = self->inputFacesCenterY;
     if (inputFacesCenterX)
     {
-      if ([(CIVector *)inputFacesCenterX count]<= a3)
+      if ([(CIVector *)inputFacesCenterX count]<= face)
       {
         goto LABEL_25;
       }
@@ -79,7 +79,7 @@
       inputFacesCenterX = self->inputFacesChinX;
       if (inputFacesCenterX)
       {
-        if ([(CIVector *)inputFacesCenterX count]<= a3)
+        if ([(CIVector *)inputFacesCenterX count]<= face)
         {
           goto LABEL_25;
         }
@@ -87,7 +87,7 @@
         inputFacesCenterX = self->inputFacesChinY;
         if (inputFacesCenterX)
         {
-          if ([(CIVector *)inputFacesCenterX count]<= a3)
+          if ([(CIVector *)inputFacesCenterX count]<= face)
           {
             goto LABEL_25;
           }
@@ -95,7 +95,7 @@
           inputFacesCenterX = self->inputFacesLeftEyeX;
           if (inputFacesCenterX)
           {
-            if ([(CIVector *)inputFacesCenterX count]<= a3)
+            if ([(CIVector *)inputFacesCenterX count]<= face)
             {
               goto LABEL_25;
             }
@@ -103,7 +103,7 @@
             inputFacesCenterX = self->inputFacesLeftEyeY;
             if (inputFacesCenterX)
             {
-              if ([(CIVector *)inputFacesCenterX count]<= a3)
+              if ([(CIVector *)inputFacesCenterX count]<= face)
               {
                 goto LABEL_25;
               }
@@ -111,7 +111,7 @@
               inputFacesCenterX = self->inputFacesRightEyeX;
               if (inputFacesCenterX)
               {
-                if ([(CIVector *)inputFacesCenterX count]<= a3)
+                if ([(CIVector *)inputFacesCenterX count]<= face)
                 {
                   goto LABEL_25;
                 }
@@ -119,30 +119,30 @@
                 inputFacesCenterX = self->inputFacesRightEyeY;
                 if (inputFacesCenterX)
                 {
-                  if ([(CIVector *)inputFacesCenterX count]> a3)
+                  if ([(CIVector *)inputFacesCenterX count]> face)
                   {
-                    [(CIVector *)self->inputFacesCenterX valueAtIndex:a3];
+                    [(CIVector *)self->inputFacesCenterX valueAtIndex:face];
                     if (v6 != -1.0)
                     {
-                      [(CIVector *)self->inputFacesCenterY valueAtIndex:a3];
+                      [(CIVector *)self->inputFacesCenterY valueAtIndex:face];
                       if (v7 != -1.0)
                       {
-                        [(CIVector *)self->inputFacesChinX valueAtIndex:a3];
+                        [(CIVector *)self->inputFacesChinX valueAtIndex:face];
                         if (v8 != -1.0)
                         {
-                          [(CIVector *)self->inputFacesChinY valueAtIndex:a3];
+                          [(CIVector *)self->inputFacesChinY valueAtIndex:face];
                           if (v9 != -1.0)
                           {
-                            [(CIVector *)self->inputFacesLeftEyeX valueAtIndex:a3];
+                            [(CIVector *)self->inputFacesLeftEyeX valueAtIndex:face];
                             if (v10 != -1.0)
                             {
-                              [(CIVector *)self->inputFacesLeftEyeY valueAtIndex:a3];
+                              [(CIVector *)self->inputFacesLeftEyeY valueAtIndex:face];
                               if (v11 != -1.0)
                               {
-                                [(CIVector *)self->inputFacesRightEyeX valueAtIndex:a3];
+                                [(CIVector *)self->inputFacesRightEyeX valueAtIndex:face];
                                 if (v12 != -1.0)
                                 {
-                                  [(CIVector *)self->inputFacesRightEyeY valueAtIndex:a3];
+                                  [(CIVector *)self->inputFacesRightEyeY valueAtIndex:face];
                                   LOBYTE(inputFacesCenterX) = v13 != -1.0;
                                   return inputFacesCenterX;
                                 }
@@ -245,7 +245,7 @@ LABEL_25:
 
 - (float)distanceToAdd
 {
-  v3 = [(CIFaceMaskDelta *)self findMostProminentFace];
+  findMostProminentFace = [(CIFaceMaskDelta *)self findMostProminentFace];
   [(NSNumber *)self->inputSubjectDistanceMinimumFocusDistance floatValue];
   v5 = v4;
   [(NSNumber *)self->inputSubjectDistanceMaximumFocusDistance floatValue];
@@ -257,7 +257,7 @@ LABEL_25:
   LODWORD(v12) = v5;
   LODWORD(v13) = v7;
   LODWORD(v14) = v9;
-  [(CIFaceMaskDelta *)self _landmarksToDist:v3 minimumDistance:v12 maximumDistance:v13 scalingFactor:v14 offset:v11];
+  [(CIFaceMaskDelta *)self _landmarksToDist:findMostProminentFace minimumDistance:v12 maximumDistance:v13 scalingFactor:v14 offset:v11];
   v16 = v15;
   [(NSNumber *)self->inputDistanceAdd floatValue];
   v18 = v17;

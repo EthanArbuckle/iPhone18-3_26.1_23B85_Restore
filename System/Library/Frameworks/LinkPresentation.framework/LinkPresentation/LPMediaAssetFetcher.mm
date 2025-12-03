@@ -2,14 +2,14 @@
 - (LPMediaAssetFetcher)init;
 - (id)audioProperties;
 - (id)videoProperties;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)_completedWithAudio:(id)a3;
-- (void)_completedWithVideo:(id)a3;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)_completedWithAudio:(id)audio;
+- (void)_completedWithVideo:(id)video;
 - (void)_resolveVideo;
 - (void)cancel;
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)stopLoading;
 @end
 
@@ -30,16 +30,16 @@
   return v3;
 }
 
-- (void)fetchWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  self->_loadingIsNonAppInitiated = [v6 loadingIsNonAppInitiated];
-  v8 = _Block_copy(v7);
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  self->_loadingIsNonAppInitiated = [configurationCopy loadingIsNonAppInitiated];
+  v8 = _Block_copy(handlerCopy);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v8;
 
-  self->_fetchIsNotUserInitiated = [v6 fetchIsNotUserInitiated];
+  self->_fetchIsNotUserInitiated = [configurationCopy fetchIsNotUserInitiated];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__LPMediaAssetFetcher_fetchWithConfiguration_completionHandler___block_invoke;
@@ -63,8 +63,8 @@
       self->_hasAudio = 1;
       v6 = [LPVideo alloc];
       v23 = [(LPMediaAssetFetcher *)self URL];
-      v7 = [(LPMediaAssetFetcher *)self videoProperties];
-      v8 = [(LPVideo *)v6 initWithYouTubeURL:v23 properties:v7];
+      videoProperties = [(LPMediaAssetFetcher *)self videoProperties];
+      v8 = [(LPVideo *)v6 initWithYouTubeURL:v23 properties:videoProperties];
       [(LPMediaAssetFetcher *)self _completedWithVideo:v8];
     }
 
@@ -74,14 +74,14 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v25 = [(LPFetcher *)self _loggingID];
+        _loggingID = [(LPFetcher *)self _loggingID];
         _os_log_impl(&dword_1AE886000, v9, OS_LOG_TYPE_DEFAULT, "LPMediaAssetFetcher<%d>: forcing video to stream instead of downloading", buf, 8u);
       }
 
       v10 = [LPVideo alloc];
       v11 = [(LPMediaAssetFetcher *)self URL];
-      v12 = [(LPMediaAssetFetcher *)self videoProperties];
-      v13 = [(LPVideo *)v10 initWithStreamingURL:v11 properties:v12];
+      videoProperties2 = [(LPMediaAssetFetcher *)self videoProperties];
+      v13 = [(LPVideo *)v10 initWithStreamingURL:v11 properties:videoProperties2];
       [(LPMediaAssetFetcher *)self _completedWithVideo:v13];
     }
 
@@ -107,8 +107,8 @@
       if (v20)
       {
         v21 = +[LPTestingOverrides customLoader];
-        v22 = [(AVURLAsset *)self->_asset resourceLoader];
-        [v21 installCustomMediaLoader:v22];
+        resourceLoader = [(AVURLAsset *)self->_asset resourceLoader];
+        [v21 installCustomMediaLoader:resourceLoader];
       }
 
       [AVURLAsset loadValuesAsynchronouslyForKeys:"loadValuesAsynchronouslyForKeys:completionHandler:" completionHandler:?];
@@ -240,17 +240,17 @@ void __36__LPMediaAssetFetcher__resolveVideo__block_invoke_2(uint64_t a1)
   self->_completionHandler = 0;
 }
 
-- (void)_completedWithVideo:(id)a3
+- (void)_completedWithVideo:(id)video
 {
-  v4 = a3;
+  videoCopy = video;
   [(LPMediaAssetFetcher *)self stopLoading];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__LPMediaAssetFetcher__completedWithVideo___block_invoke;
   v6[3] = &unk_1E7A35478;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = videoCopy;
+  v5 = videoCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -292,17 +292,17 @@ void __43__LPMediaAssetFetcher__completedWithVideo___block_invoke(uint64_t a1)
   *(v11 + 40) = 0;
 }
 
-- (void)_completedWithAudio:(id)a3
+- (void)_completedWithAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   [(LPMediaAssetFetcher *)self stopLoading];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__LPMediaAssetFetcher__completedWithAudio___block_invoke;
   v6[3] = &unk_1E7A35478;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = audioCopy;
+  v5 = audioCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -356,20 +356,20 @@ void __43__LPMediaAssetFetcher__completedWithAudio___block_invoke(uint64_t a1)
   return [v3 audioPropertiesForFetcher:self];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v16 = a4;
-  v9 = a5;
-  v10 = a6;
-  if ([v16 countOfBytesExpectedToReceive] <= 10485760 && objc_msgSend(v16, "countOfBytesReceived") <= 10485760)
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  if ([taskCopy countOfBytesExpectedToReceive] <= 10485760 && objc_msgSend(taskCopy, "countOfBytesReceived") <= 10485760)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF88]);
     receivedData = self->_receivedData;
     self->_receivedData = v12;
 
-    v14 = [v9 MIMEType];
+    mIMEType = [responseCopy MIMEType];
     MIMEType = self->_MIMEType;
-    self->_MIMEType = v14;
+    self->_MIMEType = mIMEType;
 
     v11 = 1;
   }
@@ -379,34 +379,34 @@ void __43__LPMediaAssetFetcher__completedWithAudio___block_invoke(uint64_t a1)
     v11 = 0;
   }
 
-  v10[2](v10, v11);
+  handlerCopy[2](handlerCopy, v11);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a4;
-  v7 = a5;
-  if ([v8 countOfBytesExpectedToReceive] <= 10485760 && objc_msgSend(v8, "countOfBytesReceived") <= 10485760)
+  taskCopy = task;
+  dataCopy = data;
+  if ([taskCopy countOfBytesExpectedToReceive] <= 10485760 && objc_msgSend(taskCopy, "countOfBytesReceived") <= 10485760)
   {
-    [(NSMutableData *)self->_receivedData appendData:v7];
+    [(NSMutableData *)self->_receivedData appendData:dataCopy];
   }
 
   else
   {
-    [v8 cancel];
+    [taskCopy cancel];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__LPMediaAssetFetcher_URLSession_task_didCompleteWithError___block_invoke;
   v8[3] = &unk_1E7A35478;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 

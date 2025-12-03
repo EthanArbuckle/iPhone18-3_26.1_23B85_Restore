@@ -1,5 +1,5 @@
 @interface PLPrimaryResourceDataStoreKeyHelper
-- (PLPrimaryResourceDataStoreKeyHelper)initWithPathManager:(id)a3;
+- (PLPrimaryResourceDataStoreKeyHelper)initWithPathManager:(id)manager;
 - (void)dealloc;
 @end
 
@@ -26,26 +26,26 @@
   [(PLPrimaryResourceDataStoreKeyHelper *)&v3 dealloc];
 }
 
-- (PLPrimaryResourceDataStoreKeyHelper)initWithPathManager:(id)a3
+- (PLPrimaryResourceDataStoreKeyHelper)initWithPathManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = PLPrimaryResourceDataStoreKeyHelper;
   v6 = [(PLPrimaryResourceDataStoreKeyHelper *)&v19 init];
   if (v6)
   {
-    if (!v5)
+    if (!managerCopy)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:v6 file:@"PLPrimaryResourceDataStore.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"PLPrimaryResourceDataStore.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
     }
 
-    v7 = [v5 photoDirectoryWithType:1];
-    v8 = [v5 photoDirectoryWithType:9];
-    v9 = [v5 photoDirectoryWithType:10];
-    v10 = [v5 photoDirectoryWithType:12];
-    v11 = [v5 photoDirectoryWithType:19];
-    v12 = [v5 photoDirectoryWithType:4];
+    v7 = [managerCopy photoDirectoryWithType:1];
+    v8 = [managerCopy photoDirectoryWithType:9];
+    v9 = [managerCopy photoDirectoryWithType:10];
+    v10 = [managerCopy photoDirectoryWithType:12];
+    v11 = [managerCopy photoDirectoryWithType:19];
+    v12 = [managerCopy photoDirectoryWithType:4];
     __59__PLPrimaryResourceDataStoreKeyHelper_initWithPathManager___block_invoke(v7, &v6->bundleBaseData);
     __59__PLPrimaryResourceDataStoreKeyHelper_initWithPathManager___block_invoke(v12, &v6->originalsBaseData);
     __59__PLPrimaryResourceDataStoreKeyHelper_initWithPathManager___block_invoke(v8, &v6->rendersBaseData);
@@ -53,12 +53,12 @@
     __59__PLPrimaryResourceDataStoreKeyHelper_initWithPathManager___block_invoke(v10, &v6->masterThumbsBaseData);
     __59__PLPrimaryResourceDataStoreKeyHelper_initWithPathManager___block_invoke(v11, &v6->computeBaseData);
     v13 = +[PLThumbnailManager masterThumbFilename];
-    v14 = [v13 UTF8String];
+    uTF8String = [v13 UTF8String];
 
-    v15 = strlen(v14);
+    v15 = strlen(uTF8String);
     v16 = malloc_type_calloc(v15 + 1, 1uLL, 0xF75200EFuLL);
     v6->masterThumbFilenameData = v16;
-    strcpy(v16, v14);
+    strcpy(v16, uTF8String);
   }
 
   return v6;

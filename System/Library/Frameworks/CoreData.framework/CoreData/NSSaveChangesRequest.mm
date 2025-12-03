@@ -4,7 +4,7 @@
 - (NSSaveChangesRequest)initWithInsertedObjects:(NSSet *)insertedObjects updatedObjects:(NSSet *)updatedObjects deletedObjects:(NSSet *)deletedObjects lockedObjects:(NSSet *)lockedObjects;
 - (id)description;
 - (uint64_t)_addChangedObjectIDsNotification:(uint64_t)result;
-- (void)_setSecureOperation:(BOOL)a3;
+- (void)_setSecureOperation:(BOOL)operation;
 - (void)dealloc;
 - (void)setDeletedObjects:(void *)result;
 @end
@@ -136,10 +136,10 @@
   return result;
 }
 
-- (void)_setSecureOperation:(BOOL)a3
+- (void)_setSecureOperation:(BOOL)operation
 {
   v3 = self->_flags | 0x200;
-  if (!a3)
+  if (!operation)
   {
     v3 = self->_flags & 0xFFFFFEFF;
   }

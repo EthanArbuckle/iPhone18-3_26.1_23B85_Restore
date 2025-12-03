@@ -1,31 +1,31 @@
 @interface VUITabBarController
 + (BOOL)_hasSeenTVPlusTabForCurrentUser;
 + (BOOL)shouldIgnoreLastSelectedTabIndex;
-+ (id)_tabBarImageForResource:(id)a3;
-+ (void)_setHasSeenTVPlusTabForCurrentUser:(BOOL)a3;
++ (id)_tabBarImageForResource:(id)resource;
++ (void)_setHasSeenTVPlusTabForCurrentUser:(BOOL)user;
 - (UINavigationController)currentNavigationController;
 - (UIViewController)currentViewController;
 - (VUIMetricsReportPageOverrideDelegate)reportPageOverrideDelegate;
 - (VUITabBarController)init;
 - (VUITabBarControllerUpdatingDelegate)updatingDelegate;
-- (id)_tabBarChildViewControllerWithIdentifier:(id)a3 documentRef:(id)a4 isNonServerTab:(BOOL)a5 title:(id)a6 isSelectedTab:(BOOL)a7 appContext:(id)a8 iconResource:(id)a9 contextData:(id)a10 uiConfigDict:(id)a11;
-- (unint64_t)indexForTabBarItemIdentifier:(id)a3;
-- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)a3;
-- (void)_addAndPresentBubbleTipIfAny:(id)a3;
+- (id)_tabBarChildViewControllerWithIdentifier:(id)identifier documentRef:(id)ref isNonServerTab:(BOOL)tab title:(id)title isSelectedTab:(BOOL)selectedTab appContext:(id)context iconResource:(id)resource contextData:(id)self0 uiConfigDict:(id)self1;
+- (unint64_t)indexForTabBarItemIdentifier:(id)identifier;
+- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)_addAndPresentBubbleTipIfAny:(id)any;
 - (void)_handleSelectedViewControllerDidChange;
-- (void)_saveLastSelectedAndScrollToTop:(id)a3 selectedIndex:(unint64_t)a4 previousSelectedIndex:(unint64_t)a5;
-- (void)_updateLastSelectedTabId:(id)a3 tabInfo:(id)a4;
-- (void)_updateTabBarChildViewController:(id)a3 withTitle:(id)a4;
-- (void)_updateTabbarChildViewController:(id)a3 withTitle:(id)a4 iconResource:(id)a5;
+- (void)_saveLastSelectedAndScrollToTop:(id)top selectedIndex:(unint64_t)index previousSelectedIndex:(unint64_t)selectedIndex;
+- (void)_updateLastSelectedTabId:(id)id tabInfo:(id)info;
+- (void)_updateTabBarChildViewController:(id)controller withTitle:(id)title;
+- (void)_updateTabbarChildViewController:(id)controller withTitle:(id)title iconResource:(id)resource;
 - (void)dealloc;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setSelectedIndexForTabBarItemIdentifier:(id)a3 clearStack:(BOOL)a4;
-- (void)setVuiSelectedIndex:(unint64_t)a3;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
-- (void)updateWithTabBarItems:(id)a3 setSelectedIdentifierFromDefaults:(BOOL)a4 appContext:(id)a5;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)setSelectedIndexForTabBarItemIdentifier:(id)identifier clearStack:(BOOL)stack;
+- (void)setVuiSelectedIndex:(unint64_t)index;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
+- (void)updateWithTabBarItems:(id)items setSelectedIdentifierFromDefaults:(BOOL)defaults appContext:(id)context;
 - (void)viewDidLoad;
 @end
 
@@ -39,8 +39,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(VUITabBarController *)v2 tabBar];
-    [v4 setUserInteractionEnabled:1];
+    tabBar = [(VUITabBarController *)v2 tabBar];
+    [tabBar setUserInteractionEnabled:1];
 
     [(VUITabBarController *)v3 setVuiDelegate:v3];
     v3->_previousSelectedIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -54,9 +54,9 @@
   v5.receiver = self;
   v5.super_class = VUITabBarController;
   [(VUITabBarController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-  v4 = [(VUITabBarController *)self view];
-  [v4 setVuiBackgroundColor:v3];
+  vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+  view = [(VUITabBarController *)self view];
+  [view setVuiBackgroundColor:vui_primaryDynamicBackgroundColor];
 }
 
 - (void)dealloc
@@ -67,51 +67,51 @@
   [(VUITabBarController *)&v3 dealloc];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(VUITabBarController *)self reportPageOverrideDelegate];
-  [v7 reportPageEvent];
+  animatedCopy = animated;
+  completionCopy = completion;
+  reportPageOverrideDelegate = [(VUITabBarController *)self reportPageOverrideDelegate];
+  [reportPageOverrideDelegate reportPageEvent];
 
   v8.receiver = self;
   v8.super_class = VUITabBarController;
-  [(VUITabBarController *)&v8 dismissViewControllerAnimated:v4 completion:v6];
+  [(VUITabBarController *)&v8 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(VUITabBarController *)self selectedViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  selectedViewController = [(VUITabBarController *)self selectedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [(VUITabBarController *)self selectedViewController];
-    v13 = [v12 topViewController];
-    v14 = [v13 conformsToProtocol:&unk_1F5F33660];
+    selectedViewController2 = [(VUITabBarController *)self selectedViewController];
+    topViewController = [selectedViewController2 topViewController];
+    v14 = [topViewController conformsToProtocol:&unk_1F5F33660];
 
     if (v14)
     {
-      v15 = [v12 topViewController];
-      [(VUITabBarController *)self setReportPageOverrideDelegate:v15];
+      topViewController2 = [selectedViewController2 topViewController];
+      [(VUITabBarController *)self setReportPageOverrideDelegate:topViewController2];
     }
   }
 
   v16.receiver = self;
   v16.super_class = VUITabBarController;
-  [(VUITabBarController *)&v16 presentViewController:v8 animated:v6 completion:v9];
+  [(VUITabBarController *)&v16 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)updateWithTabBarItems:(id)a3 setSelectedIdentifierFromDefaults:(BOOL)a4 appContext:(id)a5
+- (void)updateWithTabBarItems:(id)items setSelectedIdentifierFromDefaults:(BOOL)defaults appContext:(id)context
 {
-  v6 = a4;
+  defaultsCopy = defaults;
   v138 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v85 = a5;
+  itemsCopy = items;
+  contextCopy = context;
   v9 = VUISignpostLogObject();
   if (os_signpost_enabled(v9))
   {
@@ -119,8 +119,8 @@
     _os_signpost_emit_with_name_impl(&dword_1E323F000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "TabBarUpdateItems", "", buf, 2u);
   }
 
-  v10 = [(VUITabBarController *)self tabBarItems];
-  if (!v6)
+  tabBarItems = [(VUITabBarController *)self tabBarItems];
+  if (!defaultsCopy)
   {
     goto LABEL_11;
   }
@@ -141,8 +141,8 @@
     [v12 setShouldPostAppLaunchData:1];
   }
 
-  v13 = [v11 lowercaseString];
-  v14 = [v13 hasPrefix:@"ppt"];
+  lowercaseString = [v11 lowercaseString];
+  v14 = [lowercaseString hasPrefix:@"ppt"];
 
   if (v14)
   {
@@ -151,26 +151,26 @@ LABEL_11:
     v11 = 0;
   }
 
-  v15 = [(VUITabBarController *)self vuiSelectedIndex];
-  v84 = v8;
+  vuiSelectedIndex = [(VUITabBarController *)self vuiSelectedIndex];
+  v84 = itemsCopy;
   v92 = v11;
-  v93 = self;
-  if (!v11 || (v16 = v15, v15 == 0x7FFFFFFFFFFFFFFFLL) || v15 >= [v8 count])
+  selfCopy = self;
+  if (!v11 || (v16 = vuiSelectedIndex, vuiSelectedIndex == 0x7FFFFFFFFFFFFFFFLL) || vuiSelectedIndex >= [itemsCopy count])
   {
     v17 = +[VUIFeaturesConfiguration sharedInstance];
-    v18 = [v17 dropOnTabConfig];
-    v19 = [v18 dropOnTabIdentifier];
+    dropOnTabConfig = [v17 dropOnTabConfig];
+    dropOnTabIdentifier = [dropOnTabConfig dropOnTabIdentifier];
 
     v124 = 0u;
     v125 = 0u;
     v122 = 0u;
     v123 = 0u;
-    v20 = v8;
+    v20 = itemsCopy;
     v21 = [v20 countByEnumeratingWithState:&v122 objects:v137 count:16];
     if (v21)
     {
       v22 = v21;
-      v104 = v10;
+      v104 = tabBarItems;
       v23 = 0;
       v24 = *v123;
 LABEL_17:
@@ -185,7 +185,7 @@ LABEL_17:
         }
 
         v26 = [*(*(&v122 + 1) + 8 * v25) vui_stringForKey:@"identifier"];
-        v27 = [v26 isEqualToString:v19];
+        v27 = [v26 isEqualToString:dropOnTabIdentifier];
 
         if (v27)
         {
@@ -206,9 +206,9 @@ LABEL_17:
         }
       }
 
-      v8 = v84;
-      self = v93;
-      v10 = v104;
+      itemsCopy = v84;
+      self = selfCopy;
+      tabBarItems = v104;
     }
 
     else
@@ -223,7 +223,7 @@ LABEL_17:
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  obj = v10;
+  obj = tabBarItems;
   v28 = [obj countByEnumeratingWithState:&v118 objects:v136 count:16];
   if (v28)
   {
@@ -254,8 +254,8 @@ LABEL_17:
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
-  v35 = [(VUITabBarController *)self vuiViewControllers];
-  v36 = [v35 countByEnumeratingWithState:&v114 objects:v135 count:16];
+  vuiViewControllers = [(VUITabBarController *)self vuiViewControllers];
+  v36 = [vuiViewControllers countByEnumeratingWithState:&v114 objects:v135 count:16];
   if (v36)
   {
     v37 = v36;
@@ -266,20 +266,20 @@ LABEL_17:
       {
         if (*v115 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(vuiViewControllers);
         }
 
         v40 = *(*(&v114 + 1) + 8 * j);
-        v41 = [v40 vuiViewControllerIdentifier];
+        vuiViewControllerIdentifier = [v40 vuiViewControllerIdentifier];
 
-        if (v41)
+        if (vuiViewControllerIdentifier)
         {
-          v42 = [v40 vuiViewControllerIdentifier];
-          [v34 setObject:v40 forKey:v42];
+          vuiViewControllerIdentifier2 = [v40 vuiViewControllerIdentifier];
+          [v34 setObject:v40 forKey:vuiViewControllerIdentifier2];
         }
       }
 
-      v37 = [v35 countByEnumeratingWithState:&v114 objects:v135 count:16];
+      v37 = [vuiViewControllers countByEnumeratingWithState:&v114 objects:v135 count:16];
     }
 
     while (v37);
@@ -291,16 +291,16 @@ LABEL_17:
   v86 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v88 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v87 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v43 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v8];
-  v44 = [MEMORY[0x1E69DC668] sharedApplication];
-  if (![v44 launchedToTest])
+  v43 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:itemsCopy];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  if (![mEMORY[0x1E69DC668] launchedToTest])
   {
     v47 = v92;
     goto LABEL_47;
   }
 
-  v45 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v46 = [v45 BOOLForKey:@"DoNotAddPPTTabs"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v46 = [standardUserDefaults BOOLForKey:@"DoNotAddPPTTabs"];
 
   v47 = v92;
   if ((v46 & 1) == 0)
@@ -330,8 +330,8 @@ LABEL_17:
     v129[2] = @"title";
     v47 = v92;
     v130[2] = @"pptshowproduct";
-    v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v130 forKeys:v129 count:3];
-    [v43 addObject:v44];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v130 forKeys:v129 count:3];
+    [v43 addObject:mEMORY[0x1E69DC668]];
 LABEL_47:
   }
 
@@ -390,10 +390,10 @@ LABEL_47:
         goto LABEL_64;
       }
 
-      v58 = [MEMORY[0x1E69DC668] sharedApplication];
-      v59 = [v58 isRunningTest];
+      mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+      isRunningTest = [mEMORY[0x1E69DC668]2 isRunningTest];
 
-      if (v59 && [v51 vui_BOOLForKey:@"isSideBarItem" defaultValue:0])
+      if (isRunningTest && [v51 vui_BOOLForKey:@"isSideBarItem" defaultValue:0])
       {
         v60 = VUIDefaultLogObject();
         if (!os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
@@ -451,7 +451,7 @@ LABEL_64:
       else
       {
         v90 = v67;
-        v73 = [(VUITabBarController *)v93 _tabBarChildViewControllerWithIdentifier:v52 documentRef:v53 isNonServerTab:v54 title:v55 isSelectedTab:v96 == v99 appContext:v85 iconResource:v56 contextData:v105 uiConfigDict:v103];
+        v73 = [(VUITabBarController *)selfCopy _tabBarChildViewControllerWithIdentifier:v52 documentRef:v53 isNonServerTab:v54 title:v55 isSelectedTab:v96 == v99 appContext:contextCopy iconResource:v56 contextData:v105 uiConfigDict:v103];
         if (!v73)
         {
           v70 = v56;
@@ -520,23 +520,23 @@ LABEL_83:
 LABEL_87:
 
   v78 = [v89 copy];
-  [(VUITabBarController *)v93 setTabBarItems:v78];
+  [(VUITabBarController *)selfCopy setTabBarItems:v78];
 
   v79 = [v88 copy];
-  [(VUITabBarController *)v93 setStoredViewControllers:v79];
+  [(VUITabBarController *)selfCopy setStoredViewControllers:v79];
 
   v80 = [v87 copy];
-  [(VUITabBarController *)v93 setTabs:v80];
+  [(VUITabBarController *)selfCopy setTabs:v80];
 
-  [(VUITabBarController *)v93 setPreviousSelectedIndex:v96];
-  [(VUITabBarController *)v93 setVuiSelectedIndex:v94];
-  v81 = [(VUITabBarController *)v93 tabBar];
-  [v81 setNeedsLayout];
+  [(VUITabBarController *)selfCopy setPreviousSelectedIndex:v96];
+  [(VUITabBarController *)selfCopy setVuiSelectedIndex:v94];
+  tabBar = [(VUITabBarController *)selfCopy tabBar];
+  [tabBar setNeedsLayout];
 
-  v82 = [(VUITabBarController *)v93 updatingDelegate];
-  [v82 tabBarControllerDidUpdateTabBarItems:v93];
+  updatingDelegate = [(VUITabBarController *)selfCopy updatingDelegate];
+  [updatingDelegate tabBarControllerDidUpdateTabBarItems:selfCopy];
 
-  [(VUITabBarController *)v93 _addAndPresentBubbleTipIfAny:v84];
+  [(VUITabBarController *)selfCopy _addAndPresentBubbleTipIfAny:v84];
   v83 = VUISignpostLogObject();
   if (os_signpost_enabled(v83))
   {
@@ -545,32 +545,32 @@ LABEL_87:
   }
 }
 
-- (void)setSelectedIndexForTabBarItemIdentifier:(id)a3 clearStack:(BOOL)a4
+- (void)setSelectedIndexForTabBarItemIdentifier:(id)identifier clearStack:(BOOL)stack
 {
-  v5 = [(VUITabBarController *)self indexForTabBarItemIdentifier:a3, a4];
-  if ((v5 & 0x8000000000000000) == 0)
+  stack = [(VUITabBarController *)self indexForTabBarItemIdentifier:identifier, stack];
+  if ((stack & 0x8000000000000000) == 0)
   {
 
-    [(VUITabBarController *)self setVuiSelectedIndex:v5];
+    [(VUITabBarController *)self setVuiSelectedIndex:stack];
   }
 }
 
-- (unint64_t)indexForTabBarItemIdentifier:(id)a3
+- (unint64_t)indexForTabBarItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(VUITabBarController *)self tabBarItems];
-  v6 = [v5 count];
+  identifierCopy = identifier;
+  tabBarItems = [(VUITabBarController *)self tabBarItems];
+  v6 = [tabBarItems count];
 
   if (v6)
   {
     v7 = 0;
     while (1)
     {
-      v8 = [(VUITabBarController *)self tabBarItems];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      tabBarItems2 = [(VUITabBarController *)self tabBarItems];
+      v9 = [tabBarItems2 objectAtIndexedSubscript:v7];
 
       v10 = [v9 objectForKeyedSubscript:@"identifier"];
-      v11 = [v10 isEqualToString:v4];
+      v11 = [v10 isEqualToString:identifierCopy];
 
       if (v11)
       {
@@ -578,8 +578,8 @@ LABEL_87:
       }
 
       ++v7;
-      v12 = [(VUITabBarController *)self tabBarItems];
-      v13 = [v12 count];
+      tabBarItems3 = [(VUITabBarController *)self tabBarItems];
+      v13 = [tabBarItems3 count];
 
       if (v7 >= v13)
       {
@@ -597,19 +597,19 @@ LABEL_5:
   return v7;
 }
 
-- (void)_addAndPresentBubbleTipIfAny:(id)a3
+- (void)_addAndPresentBubbleTipIfAny:(id)any
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  anyCopy = any;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  v5 = [anyCopy countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v5)
   {
     v6 = v5;
-    v33 = self;
+    selfCopy = self;
     v7 = 0;
     v8 = 0;
     v9 = *v36;
@@ -622,10 +622,10 @@ LABEL_5:
       {
         if (*v36 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(anyCopy);
         }
 
-        v12 = [*(*(&v35 + 1) + 8 * v11) vui_stringForKey:{@"tipPlacementId", v33}];
+        v12 = [*(*(&v35 + 1) + 8 * v11) vui_stringForKey:{@"tipPlacementId", selfCopy}];
         v13 = v12;
         if (v12 && [v12 length])
         {
@@ -642,7 +642,7 @@ LABEL_5:
 
       while (v6 != v11);
       v7 = v34 + v6;
-      v6 = [v4 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v6 = [anyCopy countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v6);
@@ -651,14 +651,14 @@ LABEL_5:
       v15 = [_TtC8VideosUI8VideosUI getTipViewControllerIfAny:v8];
       if (v15)
       {
-        v16 = [(VUITabBarController *)v33 tabBar];
-        [v16 bounds];
+        tabBar = [(VUITabBarController *)selfCopy tabBar];
+        [tabBar bounds];
         v18 = v17;
         v20 = v19;
         v22 = v21;
         v24 = v23;
 
-        v25 = [v4 count];
+        v25 = [anyCopy count];
         if (v25 <= 1)
         {
           v26 = 1;
@@ -671,18 +671,18 @@ LABEL_5:
 
         v27 = v22 / v26;
         [v15 setModalPresentationStyle:7];
-        v28 = [v15 popoverPresentationController];
-        v29 = [(VUITabBarController *)v33 tabBar];
-        [v28 setSourceView:v29];
+        popoverPresentationController = [v15 popoverPresentationController];
+        tabBar2 = [(VUITabBarController *)selfCopy tabBar];
+        [popoverPresentationController setSourceView:tabBar2];
 
-        v30 = [v15 popoverPresentationController];
-        [v30 setSourceRect:{v18 + (v10 * v27), v20, v27, v24}];
+        popoverPresentationController2 = [v15 popoverPresentationController];
+        [popoverPresentationController2 setSourceRect:{v18 + (v10 * v27), v20, v27, v24}];
 
-        [v15 setDelegate:v33];
-        v31 = [v15 popoverPresentationController];
-        [v31 setDelegate:v33];
+        [v15 setDelegate:selfCopy];
+        popoverPresentationController3 = [v15 popoverPresentationController];
+        [popoverPresentationController3 setDelegate:selfCopy];
 
-        [(VUITabBarController *)v33 presentViewController:v15 animated:1 completion:0];
+        [(VUITabBarController *)selfCopy presentViewController:v15 animated:1 completion:0];
       }
 
       else
@@ -704,33 +704,33 @@ LABEL_5:
   }
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  resultCopy = result;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 originalRequest];
+    originalRequest = [resultCopy originalRequest];
     v16 = 138412546;
-    v17 = v7;
+    v17 = resultCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = originalRequest;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_INFO, "VUITabBarController - UnifiedMessaging::Action dialogResult: %@, request: %@", &v16, 0x16u);
   }
 
   [(VUITabBarController *)self dismissViewControllerAnimated:1 completion:0];
-  v10 = [v7 originalRequest];
-  v11 = [v7 selectedActionIdentifier];
-  v12 = [v10 locateActionWithIdentifier:v11];
+  originalRequest2 = [resultCopy originalRequest];
+  selectedActionIdentifier = [resultCopy selectedActionIdentifier];
+  v12 = [originalRequest2 locateActionWithIdentifier:selectedActionIdentifier];
 
   if (v12)
   {
-    v13 = [v12 deepLink];
-    if (v13)
+    deepLink = [v12 deepLink];
+    if (deepLink)
     {
-      [_TtC8VideosUI8VideosUI processDeeplink:v13];
+      [_TtC8VideosUI8VideosUI processDeeplink:deepLink];
     }
 
     else
@@ -743,34 +743,34 @@ LABEL_5:
       }
     }
 
-    [_TtC8VideosUI8VideosUI messageViewController:v6 didSelectActionWith:v7];
+    [_TtC8VideosUI8VideosUI messageViewController:controllerCopy didSelectActionWith:resultCopy];
   }
 
   else
   {
-    v13 = VUIDefaultLogObject();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    deepLink = VUIDefaultLogObject();
+    if (os_log_type_enabled(deepLink, OS_LOG_TYPE_INFO))
     {
-      v14 = [v7 selectedActionIdentifier];
+      selectedActionIdentifier2 = [resultCopy selectedActionIdentifier];
       v16 = 138412290;
-      v17 = v14;
-      _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_INFO, "VUITabBarController - UnifiedMessaging::Action Could not find action for %@", &v16, 0xCu);
+      v17 = selectedActionIdentifier2;
+      _os_log_impl(&dword_1E323F000, deepLink, OS_LOG_TYPE_INFO, "VUITabBarController - UnifiedMessaging::Action Could not find action for %@", &v16, 0xCu);
     }
   }
 }
 
 - (UINavigationController)currentNavigationController
 {
-  v3 = [(VUITabBarController *)self vuiViewControllers];
-  v4 = [(VUITabBarController *)self vuiSelectedIndex];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  vuiViewControllers = [(VUITabBarController *)self vuiViewControllers];
+  vuiSelectedIndex = [(VUITabBarController *)self vuiSelectedIndex];
+  if (vuiSelectedIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v3 objectAtIndex:v4];
+    v5 = [vuiViewControllers objectAtIndex:vuiSelectedIndex];
   }
 
   objc_opt_class();
@@ -789,84 +789,84 @@ LABEL_5:
 
 - (UIViewController)currentViewController
 {
-  v3 = [(VUITabBarController *)self vuiViewControllers];
-  v4 = [(VUITabBarController *)self vuiSelectedIndex];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+  vuiViewControllers = [(VUITabBarController *)self vuiViewControllers];
+  vuiSelectedIndex = [(VUITabBarController *)self vuiSelectedIndex];
+  if (vuiSelectedIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v3 objectAtIndex:v4];
+    v5 = [vuiViewControllers objectAtIndex:vuiSelectedIndex];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = v5;
+    currentViewController = v5;
     goto LABEL_8;
   }
 
   if ([v5 conformsToProtocol:&unk_1F5E7E650])
   {
-    v6 = [v5 currentViewController];
+    currentViewController = [v5 currentViewController];
 LABEL_8:
-    v7 = v6;
+    lastObject = currentViewController;
     goto LABEL_10;
   }
 
-  v8 = [v5 viewControllers];
-  v7 = [v8 lastObject];
+  viewControllers = [v5 viewControllers];
+  lastObject = [viewControllers lastObject];
 
 LABEL_10:
 
-  return v7;
+  return lastObject;
 }
 
-- (void)setVuiSelectedIndex:(unint64_t)a3
+- (void)setVuiSelectedIndex:(unint64_t)index
 {
   v5.receiver = self;
   v5.super_class = VUITabBarController;
-  [(VUITabBarController *)&v5 setVuiSelectedIndex:a3];
-  v4 = [(VUITabBarController *)self updatingDelegate];
-  [v4 tabBarControllerDidUpdateSelectedIndex:self];
+  [(VUITabBarController *)&v5 setVuiSelectedIndex:index];
+  updatingDelegate = [(VUITabBarController *)self updatingDelegate];
+  [updatingDelegate tabBarControllerDidUpdateSelectedIndex:self];
 }
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(VUITabBarController *)self tabs];
-  v10 = [v9 indexOfObject:v8];
+  previousTabCopy = previousTab;
+  tabCopy = tab;
+  tabs = [(VUITabBarController *)self tabs];
+  v10 = [tabs indexOfObject:tabCopy];
 
-  v11 = [(VUITabBarController *)self tabs];
-  v12 = [v11 indexOfObject:v7];
+  tabs2 = [(VUITabBarController *)self tabs];
+  v12 = [tabs2 indexOfObject:previousTabCopy];
 
-  v13 = [v8 viewController];
+  viewController = [tabCopy viewController];
 
-  [(VUITabBarController *)self _saveLastSelectedAndScrollToTop:v13 selectedIndex:v10 previousSelectedIndex:v12];
+  [(VUITabBarController *)self _saveLastSelectedAndScrollToTop:viewController selectedIndex:v10 previousSelectedIndex:v12];
 }
 
-- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  orientationsCopy = orientations;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v5)
+  if (userInterfaceIdiom)
   {
     v6 = 30;
   }
 
   else
   {
-    v7 = [v3 presentedViewController];
-    v8 = v7;
-    if (v7 && [v7 conformsToProtocol:&unk_1F5F1B7C8] && (objc_msgSend(v8, "isBeingPresented") & 1) == 0)
+    presentedViewController = [orientationsCopy presentedViewController];
+    v8 = presentedViewController;
+    if (presentedViewController && [presentedViewController conformsToProtocol:&unk_1F5F1B7C8] && (objc_msgSend(v8, "isBeingPresented") & 1) == 0)
     {
-      v10 = [v3 presentedViewController];
-      if ([v10 overridesOrientationLock])
+      presentedViewController2 = [orientationsCopy presentedViewController];
+      if ([presentedViewController2 overridesOrientationLock])
       {
         if ([v8 isBeingDismissed])
         {
@@ -894,31 +894,31 @@ LABEL_10:
   return v6;
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(VUITabBarController *)self vuiViewControllers];
-  -[VUITabBarController _saveLastSelectedAndScrollToTop:selectedIndex:previousSelectedIndex:](self, "_saveLastSelectedAndScrollToTop:selectedIndex:previousSelectedIndex:", v5, [v6 indexOfObjectIdenticalTo:v5], -[VUITabBarController previousSelectedIndex](self, "previousSelectedIndex"));
+  viewControllerCopy = viewController;
+  vuiViewControllers = [(VUITabBarController *)self vuiViewControllers];
+  -[VUITabBarController _saveLastSelectedAndScrollToTop:selectedIndex:previousSelectedIndex:](self, "_saveLastSelectedAndScrollToTop:selectedIndex:previousSelectedIndex:", viewControllerCopy, [vuiViewControllers indexOfObjectIdenticalTo:viewControllerCopy], -[VUITabBarController previousSelectedIndex](self, "previousSelectedIndex"));
 }
 
 - (void)_handleSelectedViewControllerDidChange
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [(VUITabBarController *)self vuiSelectedIndex];
-  v4 = [(VUITabBarController *)self tabBarItems];
-  if ([v4 count])
+  vuiSelectedIndex = [(VUITabBarController *)self vuiSelectedIndex];
+  tabBarItems = [(VUITabBarController *)self tabBarItems];
+  if ([tabBarItems count])
   {
-    if (v3 >= [v4 count])
+    if (vuiSelectedIndex >= [tabBarItems count])
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = v3;
+      v5 = vuiSelectedIndex;
     }
 
-    v6 = [v4 objectAtIndex:v5];
+    v6 = [tabBarItems objectAtIndex:v5];
     v7 = [v6 vui_stringForKey:@"identifier"];
     v8 = [v6 vui_stringForKey:@"pageContext"];
     v9 = v8;
@@ -939,60 +939,60 @@ LABEL_10:
     v15[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     [(VUITabBarController *)self _updateLastSelectedTabId:v7 tabInfo:v6];
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v13 postNotificationName:@"TVAppRootViewControllerCurrentNavigationControllerDidChangeNotification" object:self userInfo:v12];
+    [defaultCenter postNotificationName:@"TVAppRootViewControllerCurrentNavigationControllerDidChangeNotification" object:self userInfo:v12];
   }
 }
 
-- (void)_updateLastSelectedTabId:(id)a3 tabInfo:(id)a4
+- (void)_updateLastSelectedTabId:(id)id tabInfo:(id)info
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 isRunningTest];
+  idCopy = id;
+  infoCopy = info;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isRunningTest = [mEMORY[0x1E69DC668] isRunningTest];
 
-  if ((v7 & 1) == 0)
+  if ((isRunningTest & 1) == 0)
   {
-    [_TtC8VideosUI26VUIBarItemSelectionManager updateLastSelectedIdentifier:v8 tabItemInfo:v5];
+    [_TtC8VideosUI26VUIBarItemSelectionManager updateLastSelectedIdentifier:idCopy tabItemInfo:infoCopy];
   }
 }
 
-- (id)_tabBarChildViewControllerWithIdentifier:(id)a3 documentRef:(id)a4 isNonServerTab:(BOOL)a5 title:(id)a6 isSelectedTab:(BOOL)a7 appContext:(id)a8 iconResource:(id)a9 contextData:(id)a10 uiConfigDict:(id)a11
+- (id)_tabBarChildViewControllerWithIdentifier:(id)identifier documentRef:(id)ref isNonServerTab:(BOOL)tab title:(id)title isSelectedTab:(BOOL)selectedTab appContext:(id)context iconResource:(id)resource contextData:(id)self0 uiConfigDict:(id)self1
 {
-  v12 = a7;
+  selectedTabCopy = selectedTab;
   v39 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v34 = a6;
-  v18 = a10;
-  v19 = a11;
-  v20 = a8;
+  identifierCopy = identifier;
+  refCopy = ref;
+  titleCopy = title;
+  dataCopy = data;
+  dictCopy = dict;
+  contextCopy = context;
   v21 = VUISignpostLogObject();
   if (os_signpost_enabled(v21))
   {
     *buf = 138412290;
-    v38 = v16;
+    v38 = identifierCopy;
     _os_signpost_emit_with_name_impl(&dword_1E323F000, v21, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "TabBarChildViewCreate", "id:%@", buf, 0xCu);
   }
 
-  v22 = [[VUIDocumentDataSource alloc] initWithDocumentRef:v17];
+  v22 = [[VUIDocumentDataSource alloc] initWithDocumentRef:refCopy];
   v23 = objc_alloc_init(VUIDocumentUIConfiguration);
-  if (v19)
+  if (dictCopy)
   {
-    v24 = [VUIDocumentUIConfiguration uiConfigurationWithDict:v19];
+    v24 = [VUIDocumentUIConfiguration uiConfigurationWithDict:dictCopy];
 
     v23 = v24;
   }
 
   [(VUIDocumentDataSource *)v22 setUiConfiguration:v23];
-  [(VUIDocumentDataSource *)v22 setShouldLoadPageImmediately:v12];
-  if ([v16 length])
+  [(VUIDocumentDataSource *)v22 setShouldLoadPageImmediately:selectedTabCopy];
+  if ([identifierCopy length])
   {
     v35 = @"tabIdentifier";
-    v36 = v16;
+    v36 = identifierCopy;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-    if (a5)
+    if (tab)
     {
       goto LABEL_11;
     }
@@ -1001,34 +1001,34 @@ LABEL_10:
   else
   {
     v25 = 0;
-    if (a5)
+    if (tab)
     {
       goto LABEL_11;
     }
   }
 
   [(VUIDocumentDataSource *)v22 setDocumentType:@"default"];
-  [(VUIDocumentDataSource *)v22 setControllerRef:v17];
-  [(VUIDocumentDataSource *)v22 setTitle:v34];
-  if (v18)
+  [(VUIDocumentDataSource *)v22 setControllerRef:refCopy];
+  [(VUIDocumentDataSource *)v22 setTitle:titleCopy];
+  if (dataCopy)
   {
-    v26 = [[VUIDocumentContextData alloc] initWithDictionary:v18];
+    v26 = [[VUIDocumentContextData alloc] initWithDictionary:dataCopy];
     [(VUIDocumentDataSource *)v22 setContextData:v26];
   }
 
 LABEL_11:
-  v27 = [(VUIDocumentDataSource *)v22 uiConfiguration];
-  [v27 setViewControllerDocumentIdentifier:v16];
+  uiConfiguration = [(VUIDocumentDataSource *)v22 uiConfiguration];
+  [uiConfiguration setViewControllerDocumentIdentifier:identifierCopy];
 
-  v28 = [(VUIDocumentDataSource *)v22 uiConfiguration];
-  [v28 setIsRootViewController:1];
+  uiConfiguration2 = [(VUIDocumentDataSource *)v22 uiConfiguration];
+  [uiConfiguration2 setIsRootViewController:1];
 
   v29 = +[VUIInterfaceFactory sharedInstance];
-  v30 = [v29 viewControllerWithDocumentDataSource:v22 appContext:v20 documentOptions:v25];
+  v30 = [v29 viewControllerWithDocumentDataSource:v22 appContext:contextCopy documentOptions:v25];
 
   v31 = [[VUIAppNavigationController alloc] initWithRootViewController:v30];
   [(_VUITVAppNavigationController *)v31 setMaxNavControllerStackDepth:6];
-  [(VUIAppNavigationController *)v31 setVuiViewControllerIdentifier:v16];
+  [(VUIAppNavigationController *)v31 setVuiViewControllerIdentifier:identifierCopy];
   v32 = VUISignpostLogObject();
   if (os_signpost_enabled(v32))
   {
@@ -1039,71 +1039,71 @@ LABEL_11:
   return v31;
 }
 
-- (void)_updateTabbarChildViewController:(id)a3 withTitle:(id)a4 iconResource:(id)a5
+- (void)_updateTabbarChildViewController:(id)controller withTitle:(id)title iconResource:(id)resource
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [objc_opt_class() _tabBarImageForResource:v8];
+  resourceCopy = resource;
+  titleCopy = title;
+  controllerCopy = controller;
+  v12 = [objc_opt_class() _tabBarImageForResource:resourceCopy];
 
-  v11 = [v10 tabBarItem];
-  [v11 setImage:v12];
+  tabBarItem = [controllerCopy tabBarItem];
+  [tabBarItem setImage:v12];
 
-  [(VUITabBarController *)self _updateTabBarChildViewController:v10 withTitle:v9];
+  [(VUITabBarController *)self _updateTabBarChildViewController:controllerCopy withTitle:titleCopy];
 }
 
-- (void)_updateTabBarChildViewController:(id)a3 withTitle:(id)a4
+- (void)_updateTabBarChildViewController:(id)controller withTitle:(id)title
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setTitle:v5];
-  v7 = [v6 tabBarItem];
+  titleCopy = title;
+  controllerCopy = controller;
+  [controllerCopy setTitle:titleCopy];
+  tabBarItem = [controllerCopy tabBarItem];
 
-  [v7 setTitle:v5];
+  [tabBarItem setTitle:titleCopy];
 }
 
-+ (id)_tabBarImageForResource:(id)a3
++ (id)_tabBarImageForResource:(id)resource
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"symbol://"])
+  resourceCopy = resource;
+  if ([resourceCopy hasPrefix:@"symbol://"])
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@"symbol://" withString:&stru_1F5DB25C0];
+    v4 = [resourceCopy stringByReplacingOccurrencesOfString:@"symbol://" withString:&stru_1F5DB25C0];
     v5 = MEMORY[0x1E69DCAB8];
-    v6 = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
-    v7 = [v5 _systemImageNamed:v4 withConfiguration:v6];
-    v8 = [v7 _imageThatSuppressesAccessibilityHairlineThickening];
+    configurationPreferringMonochrome = [MEMORY[0x1E69DCAD8] configurationPreferringMonochrome];
+    v7 = [v5 _systemImageNamed:v4 withConfiguration:configurationPreferringMonochrome];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v7 _imageThatSuppressesAccessibilityHairlineThickening];
 
 LABEL_6:
     goto LABEL_7;
   }
 
   v9 = @"resource://";
-  if ([v3 hasPrefix:@"resource://"] || (v9 = @"resource-symbol://", objc_msgSend(v3, "hasPrefix:", @"resource-symbol://")))
+  if ([resourceCopy hasPrefix:@"resource://"] || (v9 = @"resource-symbol://", objc_msgSend(resourceCopy, "hasPrefix:", @"resource-symbol://")))
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:v9 withString:&stru_1F5DB25C0];
-    v6 = [MEMORY[0x1E69DCAB8] vuiImageNamed:v4];
-    v8 = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
+    v4 = [resourceCopy stringByReplacingOccurrencesOfString:v9 withString:&stru_1F5DB25C0];
+    configurationPreferringMonochrome = [MEMORY[0x1E69DCAB8] vuiImageNamed:v4];
+    _imageThatSuppressesAccessibilityHairlineThickening = [configurationPreferringMonochrome _imageThatSuppressesAccessibilityHairlineThickening];
     goto LABEL_6;
   }
 
-  v8 = 0;
+  _imageThatSuppressesAccessibilityHairlineThickening = 0;
 LABEL_7:
 
-  return v8;
+  return _imageThatSuppressesAccessibilityHairlineThickening;
 }
 
-- (void)_saveLastSelectedAndScrollToTop:(id)a3 selectedIndex:(unint64_t)a4 previousSelectedIndex:(unint64_t)a5
+- (void)_saveLastSelectedAndScrollToTop:(id)top selectedIndex:(unint64_t)index previousSelectedIndex:(unint64_t)selectedIndex
 {
-  v8 = a3;
-  v9 = v8;
-  if (!v8 || a5 == a4)
+  topCopy = top;
+  v9 = topCopy;
+  if (!topCopy || selectedIndex == index)
   {
-    if (!v8)
+    if (!topCopy)
     {
       goto LABEL_17;
     }
 
-    if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+    if (selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_17;
     }
@@ -1115,24 +1115,24 @@ LABEL_7:
     }
 
     v11 = v9;
-    v12 = [v11 viewControllers];
-    if ([v12 count] == 1)
+    viewControllers = [v11 viewControllers];
+    if ([viewControllers count] == 1)
     {
-      v13 = [v11 visibleViewController];
-      v14 = [v13 view];
-      v15 = [v14 window];
+      visibleViewController = [v11 visibleViewController];
+      view = [visibleViewController view];
+      window = [view window];
 
-      if (!v15)
+      if (!window)
       {
 LABEL_12:
 
         goto LABEL_17;
       }
 
-      v12 = [v11 visibleViewController];
+      viewControllers = [v11 visibleViewController];
       v16 = +[VUIInterfaceFactory sharedInstance];
-      v17 = [v16 documentCreator];
-      [v17 scrollViewControllerToTop:v12 animated:1 needsFocusUpdate:1];
+      documentCreator = [v16 documentCreator];
+      [documentCreator scrollViewControllerToTop:viewControllers animated:1 needsFocusUpdate:1];
 
       [_TtC8VideosUI8VideosUI notifyAppearingViewControllerOfTabSelection:v11];
     }
@@ -1140,13 +1140,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v10 = [(VUITabBarController *)self tabBarItems];
-  if ([v10 count] <= a4)
+  tabBarItems = [(VUITabBarController *)self tabBarItems];
+  if ([tabBarItems count] <= index)
   {
     v18 = VUIDefaultLogObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [VUITabBarController _saveLastSelectedAndScrollToTop:a4 selectedIndex:v18 previousSelectedIndex:?];
+      [VUITabBarController _saveLastSelectedAndScrollToTop:index selectedIndex:v18 previousSelectedIndex:?];
     }
   }
 
@@ -1176,47 +1176,47 @@ LABEL_17:
 
   if ([objc_opt_class() _hasSeenTVPlusTabForCurrentUser])
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 objectForKey:@"lastActiveDate"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"lastActiveDate"];
 
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v7 = [v6 objectForKey:@"lastPlaybackDate"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v7 = [standardUserDefaults2 objectForKey:@"lastPlaybackDate"];
 
-    v8 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __55__VUITabBarController_shouldIgnoreLastSelectedTabIndex__block_invoke;
     aBlock[3] = &unk_1E8734918;
-    v9 = v8;
+    v9 = date;
     v28 = v9;
     v10 = _Block_copy(aBlock);
     v11 = +[VUIFeaturesConfiguration sharedInstance];
-    v12 = [v11 dropOnTabConfig];
+    dropOnTabConfig = [v11 dropOnTabConfig];
 
-    v13 = [v12 daysWithoutPlaybackThreshold];
-    v14 = [v12 daysWithoutOpeningThreshold];
+    daysWithoutPlaybackThreshold = [dropOnTabConfig daysWithoutPlaybackThreshold];
+    daysWithoutOpeningThreshold = [dropOnTabConfig daysWithoutOpeningThreshold];
     v26 = v7;
-    v15 = v10[2](v10, v7, v13);
+    v15 = v10[2](v10, v7, daysWithoutPlaybackThreshold);
     v16 = VUIDefaultLogObject();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
       *v30 = v15;
       *&v30[4] = 2112;
-      *&v30[6] = v13;
+      *&v30[6] = daysWithoutPlaybackThreshold;
       v31 = 2112;
       v32 = v7;
       _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_DEFAULT, "DropOnTab: isPastPlaybackThreshold = %i for %@ days since date of %@ ", buf, 0x1Cu);
     }
 
-    v17 = v10[2](v10, v5, v14);
+    v17 = v10[2](v10, v5, daysWithoutOpeningThreshold);
     v18 = VUIDefaultLogObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
       *v30 = v17;
       *&v30[4] = 2112;
-      *&v30[6] = v14;
+      *&v30[6] = daysWithoutOpeningThreshold;
       v31 = 2112;
       v32 = v5;
       _os_log_impl(&dword_1E323F000, v18, OS_LOG_TYPE_DEFAULT, "DropOnTab: isPastAppOpeningThreshold = %i for %@ days since date of %@ ", buf, 0x1Cu);
@@ -1224,11 +1224,11 @@ LABEL_17:
 
     v19 = v15 | v17;
     v3 = (v5 == 0) | v15 | v17;
-    v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v20 setObject:v9 forKey:@"lastActiveDate"];
+    standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults3 setObject:v9 forKey:@"lastActiveDate"];
 
-    v21 = VUIDefaultLogObject();
-    v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
+    standardUserDefaults4 = VUIDefaultLogObject();
+    v22 = os_log_type_enabled(standardUserDefaults4, OS_LOG_TYPE_DEFAULT);
     if (v5)
     {
       if ((v19 & 1) == 0)
@@ -1237,7 +1237,7 @@ LABEL_17:
         {
           *buf = 138412290;
           *v30 = v9;
-          _os_log_impl(&dword_1E323F000, v21, OS_LOG_TYPE_DEFAULT, "DropOnTab: shouldIgnoreLastSelectedTabIndex=NO. Updating lastActiveDate to %@", buf, 0xCu);
+          _os_log_impl(&dword_1E323F000, standardUserDefaults4, OS_LOG_TYPE_DEFAULT, "DropOnTab: shouldIgnoreLastSelectedTabIndex=NO. Updating lastActiveDate to %@", buf, 0xCu);
         }
 
         goto LABEL_21;
@@ -1249,7 +1249,7 @@ LABEL_17:
         *v30 = v9;
         v23 = "DropOnTab: shouldIgnoreLastSelectedTabIndex=YES. Updating lastActiveDate and lastPlaybackDate to %@";
 LABEL_19:
-        _os_log_impl(&dword_1E323F000, v21, OS_LOG_TYPE_DEFAULT, v23, buf, 0xCu);
+        _os_log_impl(&dword_1E323F000, standardUserDefaults4, OS_LOG_TYPE_DEFAULT, v23, buf, 0xCu);
       }
     }
 
@@ -1261,8 +1261,8 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v21 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v21 setObject:v9 forKey:@"lastPlaybackDate"];
+    standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults4 setObject:v9 forKey:@"lastPlaybackDate"];
 LABEL_21:
 
     return v3 & 1;
@@ -1299,46 +1299,46 @@ BOOL __55__VUITabBarController_shouldIgnoreLastSelectedTabIndex__block_invoke(ui
 
 + (BOOL)_hasSeenTVPlusTabForCurrentUser
 {
-  v2 = [MEMORY[0x1E69D5920] activeAccount];
-  v3 = [v2 ams_DSID];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 dictionaryForKey:@"hasSeenTVPlusTab"];
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults dictionaryForKey:@"hasSeenTVPlusTab"];
 
-  if (v3)
+  if (ams_DSID)
   {
-    v6 = [v3 stringValue];
+    stringValue = [ams_DSID stringValue];
   }
 
   else
   {
-    v6 = @"noDSID";
+    stringValue = @"noDSID";
   }
 
-  v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v7 BOOLValue];
+  v7 = [v5 objectForKeyedSubscript:stringValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (void)_setHasSeenTVPlusTabForCurrentUser:(BOOL)a3
++ (void)_setHasSeenTVPlusTabForCurrentUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69D5920] activeAccount];
-  v5 = [v4 ams_DSID];
-  v6 = v5;
-  if (v5)
+  activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+  ams_DSID = [activeAccount ams_DSID];
+  v6 = ams_DSID;
+  if (ams_DSID)
   {
-    v7 = [v5 stringValue];
+    stringValue = [ams_DSID stringValue];
   }
 
   else
   {
-    v7 = @"noDSID";
+    stringValue = @"noDSID";
   }
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v9 = [v8 dictionaryForKey:@"hasSeenTVPlusTab"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v9 = [standardUserDefaults dictionaryForKey:@"hasSeenTVPlusTab"];
   v10 = [v9 mutableCopy];
 
   if (!v10)
@@ -1346,18 +1346,18 @@ BOOL __55__VUITabBarController_shouldIgnoreLastSelectedTabIndex__block_invoke(ui
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v10 setObject:v11 forKey:v7];
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:userCopy];
+  [v10 setObject:v11 forKey:stringValue];
 
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
   v13 = [v10 copy];
-  [v12 setObject:v13 forKey:@"hasSeenTVPlusTab"];
+  [standardUserDefaults2 setObject:v13 forKey:@"hasSeenTVPlusTab"];
 
   v14 = VUIDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = @"NO";
-    if (v3)
+    if (userCopy)
     {
       v15 = @"YES";
     }
@@ -1365,7 +1365,7 @@ BOOL __55__VUITabBarController_shouldIgnoreLastSelectedTabIndex__block_invoke(ui
     v16 = 138412546;
     v17 = v15;
     v18 = 2112;
-    v19 = v7;
+    v19 = stringValue;
     _os_log_impl(&dword_1E323F000, v14, OS_LOG_TYPE_DEFAULT, "DropOnTab: Setting hasSeenTVPlusTab to %@ for account key: %@", &v16, 0x16u);
   }
 }

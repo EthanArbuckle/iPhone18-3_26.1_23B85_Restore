@@ -1,41 +1,41 @@
 @interface VSViewServiceHostViewController
-- (BOOL)_shouldAuthenticateAccountProviderWithIdentifier:(id)a3;
-- (VSViewServiceHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)_shouldAuthenticateAccountProviderWithIdentifier:(id)identifier;
+- (VSViewServiceHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (VSViewServiceHostViewControllerDelegate)delegate;
-- (id)_requestForID:(id)a3;
+- (id)_requestForID:(id)d;
 - (void)_addRemoteViewControllerAsChildViewController;
-- (void)_cancelButtonPressed:(id)a3;
-- (void)_connectToViewServiceForRequest:(id)a3;
-- (void)_didCancelRequest:(id)a3;
-- (void)_didChooseAdditionalProvidersForRequest:(id)a3;
-- (void)_didCompleteRequest:(id)a3;
+- (void)_cancelButtonPressed:(id)pressed;
+- (void)_connectToViewServiceForRequest:(id)request;
+- (void)_didCancelRequest:(id)request;
+- (void)_didChooseAdditionalProvidersForRequest:(id)request;
+- (void)_didCompleteRequest:(id)request;
 - (void)_dismissViewServiceHostViewController;
 - (void)_presentViewServiceHostViewController;
 - (void)_removeRemoteViewControllerAsChildViewController;
-- (void)_request:(id)a3 didFailWithError:(id)a4;
-- (void)_request:(id)a3 didFinishWithResponse:(id)a4;
+- (void)_request:(id)_request didFailWithError:(id)error;
+- (void)_request:(id)_request didFinishWithResponse:(id)response;
 - (void)dealloc;
-- (void)dismissViewServiceRemoteViewController:(id)a3;
-- (void)enqueueViewServiceRequest:(id)a3 withIdentifier:(id)a4;
-- (void)presentViewServiceRemoteViewController:(id)a3;
-- (void)viewServiceRemoteViewController:(id)a3 didCancelRequest:(id)a4;
-- (void)viewServiceRemoteViewController:(id)a3 didChooseAdditionalProvidersForRequest:(id)a4;
-- (void)viewServiceRemoteViewController:(id)a3 didSelectProviderWithIdentifier:(id)a4 vetoHandler:(id)a5;
-- (void)viewServiceRemoteViewController:(id)a3 didTerminateWithError:(id)a4;
-- (void)viewServiceRemoteViewController:(id)a3 request:(id)a4 didFailWithError:(id)a5;
-- (void)viewServiceRemoteViewController:(id)a3 request:(id)a4 didFinishWithResponse:(id)a5;
+- (void)dismissViewServiceRemoteViewController:(id)controller;
+- (void)enqueueViewServiceRequest:(id)request withIdentifier:(id)identifier;
+- (void)presentViewServiceRemoteViewController:(id)controller;
+- (void)viewServiceRemoteViewController:(id)controller didCancelRequest:(id)request;
+- (void)viewServiceRemoteViewController:(id)controller didChooseAdditionalProvidersForRequest:(id)request;
+- (void)viewServiceRemoteViewController:(id)controller didSelectProviderWithIdentifier:(id)identifier vetoHandler:(id)handler;
+- (void)viewServiceRemoteViewController:(id)controller didTerminateWithError:(id)error;
+- (void)viewServiceRemoteViewController:(id)controller request:(id)request didFailWithError:(id)error;
+- (void)viewServiceRemoteViewController:(id)controller request:(id)request didFinishWithResponse:(id)response;
 @end
 
 @implementation VSViewServiceHostViewController
 
-- (VSViewServiceHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VSViewServiceHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a4;
-  v7 = a3;
+  bundleCopy = bundle;
+  nameCopy = name;
   VSRequireMainThread();
   v16.receiver = self;
   v16.super_class = VSViewServiceHostViewController;
-  v8 = [(VSViewServiceHostViewController *)&v16 initWithNibName:v7 bundle:v6];
+  v8 = [(VSViewServiceHostViewController *)&v16 initWithNibName:nameCopy bundle:bundleCopy];
 
   if (v8)
   {
@@ -63,76 +63,76 @@
   [(VSViewServiceHostViewController *)&v3 dealloc];
 }
 
-- (void)enqueueViewServiceRequest:(id)a3 withIdentifier:(id)a4
+- (void)enqueueViewServiceRequest:(id)request withIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v6;
+    v14 = requestCopy;
     _os_log_impl(&dword_270DD4000, v8, OS_LOG_TYPE_DEFAULT, "Will enque view service request in host view controller: %@", buf, 0xCu);
   }
 
-  v9 = [(VSViewServiceHostViewController *)self requestsByID];
-  v10 = [v9 objectForKey:v7];
+  requestsByID = [(VSViewServiceHostViewController *)self requestsByID];
+  v10 = [requestsByID objectForKey:identifierCopy];
 
   if (v10)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Request %@ already enqueued.", v7}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Request %@ already enqueued.", identifierCopy}];
   }
 
-  v11 = [v6 copy];
-  [v9 setObject:v11 forKey:v7];
+  v11 = [requestCopy copy];
+  [requestsByID setObject:v11 forKey:identifierCopy];
 
-  if ([v9 count] == 1)
+  if ([requestsByID count] == 1)
   {
-    [(VSViewServiceHostViewController *)self _connectToViewServiceForRequest:v7];
+    [(VSViewServiceHostViewController *)self _connectToViewServiceForRequest:identifierCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_requestForID:(id)a3
+- (id)_requestForID:(id)d
 {
   v4 = MEMORY[0x277CE2298];
-  v5 = a3;
-  v6 = [(VSViewServiceHostViewController *)self requestsByID];
-  v7 = [v6 objectForKey:v5];
+  dCopy = d;
+  requestsByID = [(VSViewServiceHostViewController *)self requestsByID];
+  v7 = [requestsByID objectForKey:dCopy];
 
   v8 = [v4 optionalWithObject:v7];
 
   return v8;
 }
 
-- (void)_didCompleteRequest:(id)a3
+- (void)_didCompleteRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = requestCopy;
     _os_log_impl(&dword_270DD4000, v5, OS_LOG_TYPE_DEFAULT, "Did complete request %@", buf, 0xCu);
   }
 
-  v6 = [(VSViewServiceHostViewController *)self requestsByID];
-  v7 = [v6 allKeys];
-  v8 = [v7 containsObject:v4];
+  requestsByID = [(VSViewServiceHostViewController *)self requestsByID];
+  allKeys = [requestsByID allKeys];
+  v8 = [allKeys containsObject:requestCopy];
 
   if ((v8 & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unrecognized request ID: %@", v4}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"Unrecognized request ID: %@", requestCopy}];
   }
 
-  [v6 removeObjectForKey:v4];
-  if ([v6 count])
+  [requestsByID removeObjectForKey:requestCopy];
+  if ([requestsByID count])
   {
-    v9 = [v6 allKeys];
-    v10 = [v9 objectAtIndex:0];
+    allKeys2 = [requestsByID allKeys];
+    v10 = [allKeys2 objectAtIndex:0];
 
     v11 = VSDefaultLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -161,17 +161,17 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_request:(id)a3 didFinishWithResponse:(id)a4
+- (void)_request:(id)_request didFinishWithResponse:(id)response
 {
-  v6 = a4;
-  v7 = [(VSViewServiceHostViewController *)self _requestForID:a3];
+  responseCopy = response;
+  v7 = [(VSViewServiceHostViewController *)self _requestForID:_request];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__VSViewServiceHostViewController__request_didFinishWithResponse___block_invoke;
   v9[3] = &unk_279E191F0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = responseCopy;
+  v8 = responseCopy;
   [v7 conditionallyUnwrapObject:v9];
 }
 
@@ -183,17 +183,17 @@ void __66__VSViewServiceHostViewController__request_didFinishWithResponse___bloc
   [v5 viewServiceHostViewController:*(a1 + 32) request:v4 didFinishWithResponse:*(a1 + 40)];
 }
 
-- (void)_request:(id)a3 didFailWithError:(id)a4
+- (void)_request:(id)_request didFailWithError:(id)error
 {
-  v6 = a4;
-  v7 = [(VSViewServiceHostViewController *)self _requestForID:a3];
+  errorCopy = error;
+  v7 = [(VSViewServiceHostViewController *)self _requestForID:_request];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__VSViewServiceHostViewController__request_didFailWithError___block_invoke;
   v9[3] = &unk_279E191F0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   [v7 conditionallyUnwrapObject:v9];
 }
 
@@ -205,9 +205,9 @@ void __61__VSViewServiceHostViewController__request_didFailWithError___block_inv
   [v5 viewServiceHostViewController:*(a1 + 32) request:v4 didFailWithError:*(a1 + 40)];
 }
 
-- (void)_didCancelRequest:(id)a3
+- (void)_didCancelRequest:(id)request
 {
-  v4 = [(VSViewServiceHostViewController *)self _requestForID:a3];
+  v4 = [(VSViewServiceHostViewController *)self _requestForID:request];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__VSViewServiceHostViewController__didCancelRequest___block_invoke;
@@ -224,9 +224,9 @@ void __53__VSViewServiceHostViewController__didCancelRequest___block_invoke(uint
   [v5 viewServiceHostViewController:*(a1 + 32) didCancelRequest:v4];
 }
 
-- (void)_didChooseAdditionalProvidersForRequest:(id)a3
+- (void)_didChooseAdditionalProvidersForRequest:(id)request
 {
-  v4 = [(VSViewServiceHostViewController *)self _requestForID:a3];
+  v4 = [(VSViewServiceHostViewController *)self _requestForID:request];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __75__VSViewServiceHostViewController__didChooseAdditionalProvidersForRequest___block_invoke;
@@ -245,35 +245,35 @@ void __75__VSViewServiceHostViewController__didChooseAdditionalProvidersForReque
 
 - (void)_presentViewServiceHostViewController
 {
-  v3 = [(VSViewServiceHostViewController *)self delegate];
-  [v3 presentViewServiceHostViewController:self];
+  delegate = [(VSViewServiceHostViewController *)self delegate];
+  [delegate presentViewServiceHostViewController:self];
 }
 
 - (void)_dismissViewServiceHostViewController
 {
-  v3 = [(VSViewServiceHostViewController *)self delegate];
-  [v3 dismissViewServiceHostViewController:self];
+  delegate = [(VSViewServiceHostViewController *)self delegate];
+  [delegate dismissViewServiceHostViewController:self];
 }
 
-- (BOOL)_shouldAuthenticateAccountProviderWithIdentifier:(id)a3
+- (BOOL)_shouldAuthenticateAccountProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(VSViewServiceHostViewController *)self delegate];
-  LOBYTE(self) = [v5 viewServiceHostViewController:self shouldAuthenticateAccountProviderWithIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(VSViewServiceHostViewController *)self delegate];
+  LOBYTE(self) = [delegate viewServiceHostViewController:self shouldAuthenticateAccountProviderWithIdentifier:identifierCopy];
 
   return self;
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(VSViewServiceHostViewController *)self requestsByID:a3];
-  v5 = [v4 allKeys];
-  v6 = [v5 copy];
+  v4 = [(VSViewServiceHostViewController *)self requestsByID:pressed];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys copy];
 
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
@@ -303,7 +303,7 @@ void __75__VSViewServiceHostViewController__didChooseAdditionalProvidersForReque
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentViewServiceRemoteViewController:(id)a3
+- (void)presentViewServiceRemoteViewController:(id)controller
 {
   if (![(VSViewServiceHostViewController *)self hasRequestedPresentation])
   {
@@ -314,7 +314,7 @@ void __75__VSViewServiceHostViewController__didChooseAdditionalProvidersForReque
   [(VSViewServiceHostViewController *)self _addRemoteViewControllerAsChildViewController];
 }
 
-- (void)dismissViewServiceRemoteViewController:(id)a3
+- (void)dismissViewServiceRemoteViewController:(id)controller
 {
   if ([(VSViewServiceHostViewController *)self hasRequestedPresentation])
   {
@@ -324,36 +324,36 @@ void __75__VSViewServiceHostViewController__didChooseAdditionalProvidersForReque
   }
 }
 
-- (void)viewServiceRemoteViewController:(id)a3 request:(id)a4 didFinishWithResponse:(id)a5
+- (void)viewServiceRemoteViewController:(id)controller request:(id)request didFinishWithResponse:(id)response
 {
-  v7 = a4;
-  [(VSViewServiceHostViewController *)self _request:v7 didFinishWithResponse:a5];
-  [(VSViewServiceHostViewController *)self _didCompleteRequest:v7];
+  requestCopy = request;
+  [(VSViewServiceHostViewController *)self _request:requestCopy didFinishWithResponse:response];
+  [(VSViewServiceHostViewController *)self _didCompleteRequest:requestCopy];
 }
 
-- (void)viewServiceRemoteViewController:(id)a3 didTerminateWithError:(id)a4
+- (void)viewServiceRemoteViewController:(id)controller didTerminateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = VSErrorLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [VSViewServiceHostViewController viewServiceRemoteViewController:v5 didTerminateWithError:v6];
+    [VSViewServiceHostViewController viewServiceRemoteViewController:errorCopy didTerminateWithError:v6];
   }
 
-  v7 = [(VSViewServiceHostViewController *)self currentRequest];
+  currentRequest = [(VSViewServiceHostViewController *)self currentRequest];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __89__VSViewServiceHostViewController_viewServiceRemoteViewController_didTerminateWithError___block_invoke;
   v10[3] = &unk_279E19268;
   v10[4] = self;
-  v11 = v5;
+  v11 = errorCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __89__VSViewServiceHostViewController_viewServiceRemoteViewController_didTerminateWithError___block_invoke_12;
   v9[3] = &unk_279E19290;
   v9[4] = self;
-  v8 = v5;
-  [v7 conditionallyUnwrapObject:v10 otherwise:v9];
+  v8 = errorCopy;
+  [currentRequest conditionallyUnwrapObject:v10 otherwise:v9];
 }
 
 void __89__VSViewServiceHostViewController_viewServiceRemoteViewController_didTerminateWithError___block_invoke(uint64_t a1, void *a2)
@@ -416,37 +416,37 @@ uint64_t __89__VSViewServiceHostViewController_viewServiceRemoteViewController_d
   }
 }
 
-- (void)viewServiceRemoteViewController:(id)a3 request:(id)a4 didFailWithError:(id)a5
+- (void)viewServiceRemoteViewController:(id)controller request:(id)request didFailWithError:(id)error
 {
-  v7 = a4;
-  [(VSViewServiceHostViewController *)self _request:v7 didFailWithError:a5];
-  [(VSViewServiceHostViewController *)self _didCompleteRequest:v7];
+  requestCopy = request;
+  [(VSViewServiceHostViewController *)self _request:requestCopy didFailWithError:error];
+  [(VSViewServiceHostViewController *)self _didCompleteRequest:requestCopy];
 }
 
-- (void)viewServiceRemoteViewController:(id)a3 didChooseAdditionalProvidersForRequest:(id)a4
+- (void)viewServiceRemoteViewController:(id)controller didChooseAdditionalProvidersForRequest:(id)request
 {
-  v5 = a4;
-  [(VSViewServiceHostViewController *)self _didChooseAdditionalProvidersForRequest:v5];
-  [(VSViewServiceHostViewController *)self _didCompleteRequest:v5];
+  requestCopy = request;
+  [(VSViewServiceHostViewController *)self _didChooseAdditionalProvidersForRequest:requestCopy];
+  [(VSViewServiceHostViewController *)self _didCompleteRequest:requestCopy];
 }
 
-- (void)viewServiceRemoteViewController:(id)a3 didCancelRequest:(id)a4
+- (void)viewServiceRemoteViewController:(id)controller didCancelRequest:(id)request
 {
-  v5 = a4;
-  [(VSViewServiceHostViewController *)self _didCancelRequest:v5];
-  [(VSViewServiceHostViewController *)self _didCompleteRequest:v5];
+  requestCopy = request;
+  [(VSViewServiceHostViewController *)self _didCancelRequest:requestCopy];
+  [(VSViewServiceHostViewController *)self _didCompleteRequest:requestCopy];
 }
 
-- (void)viewServiceRemoteViewController:(id)a3 didSelectProviderWithIdentifier:(id)a4 vetoHandler:(id)a5
+- (void)viewServiceRemoteViewController:(id)controller didSelectProviderWithIdentifier:(id)identifier vetoHandler:(id)handler
 {
-  v7 = a5;
-  v7[2](v7, [(VSViewServiceHostViewController *)self _shouldAuthenticateAccountProviderWithIdentifier:a4]);
+  handlerCopy = handler;
+  handlerCopy[2](handlerCopy, [(VSViewServiceHostViewController *)self _shouldAuthenticateAccountProviderWithIdentifier:identifier]);
 }
 
-- (void)_connectToViewServiceForRequest:(id)a3
+- (void)_connectToViewServiceForRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   v6 = VSDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -454,37 +454,37 @@ uint64_t __89__VSViewServiceHostViewController_viewServiceRemoteViewController_d
     *buf = 138412546;
     v26 = v7;
     v27 = 2112;
-    v28 = v5;
+    v28 = requestCopy;
     _os_log_impl(&dword_270DD4000, v6, OS_LOG_TYPE_DEFAULT, "Entering %@ for request %@.", buf, 0x16u);
   }
 
   v8 = MEMORY[0x277CE2298];
-  v9 = [v5 copy];
+  v9 = [requestCopy copy];
   v10 = [v8 optionalWithObject:v9];
   [(VSViewServiceHostViewController *)self setCurrentRequest:v10];
 
-  v11 = [(VSViewServiceHostViewController *)self remoteViewController];
-  v12 = v11;
-  if (v11)
+  remoteViewController = [(VSViewServiceHostViewController *)self remoteViewController];
+  v12 = remoteViewController;
+  if (remoteViewController)
   {
-    v13 = [v11 serviceViewControllerProxy];
+    serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
     v14 = VSDefaultLogObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v5;
+      v26 = requestCopy;
       _os_log_impl(&dword_270DD4000, v14, OS_LOG_TYPE_DEFAULT, "Will send request %@ to view service.", buf, 0xCu);
     }
 
-    v15 = [(VSViewServiceHostViewController *)self _requestForID:v5];
-    v16 = [v15 forceUnwrapObject];
+    v15 = [(VSViewServiceHostViewController *)self _requestForID:requestCopy];
+    forceUnwrapObject = [v15 forceUnwrapObject];
 
-    [v13 _performRequest:v16 withIdentifier:v5];
+    [serviceViewControllerProxy _performRequest:forceUnwrapObject withIdentifier:requestCopy];
     v17 = VSDefaultLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v5;
+      v26 = requestCopy;
       _os_log_impl(&dword_270DD4000, v17, OS_LOG_TYPE_DEFAULT, "Did send request %@ to view service.", buf, 0xCu);
     }
   }
@@ -499,14 +499,14 @@ uint64_t __89__VSViewServiceHostViewController_viewServiceRemoteViewController_d
       _os_log_impl(&dword_270DD4000, v18, OS_LOG_TYPE_DEFAULT, "Will construct remote view controller.", v24, 2u);
     }
 
-    v19 = [(VSViewServiceHostViewController *)self viewControllerFactory];
+    viewControllerFactory = [(VSViewServiceHostViewController *)self viewControllerFactory];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __67__VSViewServiceHostViewController__connectToViewServiceForRequest___block_invoke;
     v21[3] = &unk_279E192B8;
     objc_copyWeak(&v23, buf);
-    v22 = v5;
-    [v19 viewServiceRemoteViewControllerWithCompletion:v21];
+    v22 = requestCopy;
+    [viewControllerFactory viewServiceRemoteViewControllerWithCompletion:v21];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -560,37 +560,37 @@ void __67__VSViewServiceHostViewController__connectToViewServiceForRequest___blo
 
 - (void)_removeRemoteViewControllerAsChildViewController
 {
-  v6 = [(VSViewServiceHostViewController *)self remoteViewController];
-  if (v6)
+  remoteViewController = [(VSViewServiceHostViewController *)self remoteViewController];
+  if (remoteViewController)
   {
-    v3 = [(VSViewServiceHostViewController *)self childViewControllers];
-    v4 = [v3 containsObject:v6];
+    childViewControllers = [(VSViewServiceHostViewController *)self childViewControllers];
+    v4 = [childViewControllers containsObject:remoteViewController];
 
     if (v4)
     {
-      [v6 willMoveToParentViewController:0];
-      v5 = [v6 view];
-      [v5 removeFromSuperview];
-      [v6 removeFromParentViewController];
+      [remoteViewController willMoveToParentViewController:0];
+      view = [remoteViewController view];
+      [view removeFromSuperview];
+      [remoteViewController removeFromParentViewController];
     }
   }
 }
 
 - (void)_addRemoteViewControllerAsChildViewController
 {
-  v3 = [(VSViewServiceHostViewController *)self remoteViewController];
-  if (v3)
+  remoteViewController = [(VSViewServiceHostViewController *)self remoteViewController];
+  if (remoteViewController)
   {
-    v7 = v3;
-    [(VSViewServiceHostViewController *)self addChildViewController:v3];
-    v4 = [v7 view];
-    v5 = [(VSViewServiceHostViewController *)self view];
-    [v5 bounds];
-    [v4 setFrame:?];
+    v7 = remoteViewController;
+    [(VSViewServiceHostViewController *)self addChildViewController:remoteViewController];
+    view = [v7 view];
+    view2 = [(VSViewServiceHostViewController *)self view];
+    [view2 bounds];
+    [view setFrame:?];
 
-    [v4 setAutoresizingMask:18];
-    v6 = [(VSViewServiceHostViewController *)self view];
-    [v6 insertSubview:v4 atIndex:0];
+    [view setAutoresizingMask:18];
+    view3 = [(VSViewServiceHostViewController *)self view];
+    [view3 insertSubview:view atIndex:0];
 
     [v7 didMoveToParentViewController:self];
   }

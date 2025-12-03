@@ -5,30 +5,30 @@
 + (float)confidenceThreshold;
 + (id)newAugmentedExperienceManager;
 - (BCAugmentedExperienceHosting)presentationViewController;
-- (BCAugmentedExperienceManager)initWithStateChangeCoalescingDelay:(double)a3;
-- (BOOL)_cancelShowExperience:(id)a3;
-- (id)_detailsForExperience:(id)a3;
-- (id)_eventToString:(int64_t)a3;
-- (id)_stateToString:(int64_t)a3;
-- (void)_cancelDelayForExperience:(id)a3;
-- (void)_cancelPreloadExperience:(id)a3;
+- (BCAugmentedExperienceManager)initWithStateChangeCoalescingDelay:(double)delay;
+- (BOOL)_cancelShowExperience:(id)experience;
+- (id)_detailsForExperience:(id)experience;
+- (id)_eventToString:(int64_t)string;
+- (id)_stateToString:(int64_t)string;
+- (void)_cancelDelayForExperience:(id)experience;
+- (void)_cancelPreloadExperience:(id)experience;
 - (void)_currentBookIsFinished;
-- (void)_delayCompletedForExperience:(id)a3;
-- (void)_expandExperience:(id)a3;
-- (void)_handleStateChange:(id)a3;
-- (void)_preloadExperience:(id)a3;
-- (void)_processStateEvent:(int64_t)a3 forExperience:(id)a4;
-- (void)_showExperience:(id)a3;
-- (void)_startDelayForExperience:(id)a3;
-- (void)_userClosedExperience:(id)a3;
-- (void)addExperience:(id)a3;
-- (void)emitter:(id)a3 bookMilestoneReached:(int64_t)a4;
-- (void)emitter:(id)a3 bookPositionChanged:(id)a4;
-- (void)emitter:(id)a3 bookSectionChanged:(id)a4;
-- (void)presenterWantsToCloseAsset:(id)a3 completion:(id)a4;
-- (void)presenterWantsToDismiss:(id)a3;
-- (void)presentingViewControllerDidChangeLayout:(id)a3;
-- (void)removeExperienceOfType:(int64_t)a3;
+- (void)_delayCompletedForExperience:(id)experience;
+- (void)_expandExperience:(id)experience;
+- (void)_handleStateChange:(id)change;
+- (void)_preloadExperience:(id)experience;
+- (void)_processStateEvent:(int64_t)event forExperience:(id)experience;
+- (void)_showExperience:(id)experience;
+- (void)_startDelayForExperience:(id)experience;
+- (void)_userClosedExperience:(id)experience;
+- (void)addExperience:(id)experience;
+- (void)emitter:(id)emitter bookMilestoneReached:(int64_t)reached;
+- (void)emitter:(id)emitter bookPositionChanged:(id)changed;
+- (void)emitter:(id)emitter bookSectionChanged:(id)changed;
+- (void)presenterWantsToCloseAsset:(id)asset completion:(id)completion;
+- (void)presenterWantsToDismiss:(id)dismiss;
+- (void)presentingViewControllerDidChangeLayout:(id)layout;
+- (void)removeExperienceOfType:(int64_t)type;
 @end
 
 @implementation BCAugmentedExperienceManager
@@ -38,15 +38,15 @@
   v3 = +[NSUserDefaults standardUserDefaults];
   if ([v3 BOOLForKey:@"BKEndOfBookExperienceDisabled"])
   {
-    v4 = 0;
+    enabled = 0;
   }
 
   else
   {
-    v4 = [a1 enabled];
+    enabled = [self enabled];
   }
 
-  return v4;
+  return enabled;
 }
 
 + (id)newAugmentedExperienceManager
@@ -63,50 +63,50 @@
 {
   objc_opt_class();
   v2 = +[BCRCDataContainer defaultContainer];
-  v3 = [v2 configs];
-  v4 = [v3 valueForKeyPath:@"endOfBookExperience.enabled"];
+  configs = [v2 configs];
+  v4 = [configs valueForKeyPath:@"endOfBookExperience.enabled"];
   v5 = BUDynamicCast();
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 + (BOOL)autoExpandAtEnd
 {
   objc_opt_class();
   v2 = +[BCRCDataContainer defaultContainer];
-  v3 = [v2 configs];
-  v4 = [v3 valueForKeyPath:@"endOfBookExperience.autoExpandAtEnd"];
+  configs = [v2 configs];
+  v4 = [configs valueForKeyPath:@"endOfBookExperience.autoExpandAtEnd"];
   v5 = BUDynamicCast();
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 + (float)confidenceThreshold
 {
   objc_opt_class();
   v2 = +[BCRCDataContainer defaultContainer];
-  v3 = [v2 configs];
-  v4 = [v3 valueForKeyPath:@"endOfBookExperience.confidenceThreshold"];
+  configs = [v2 configs];
+  v4 = [configs valueForKeyPath:@"endOfBookExperience.confidenceThreshold"];
   v5 = BUDynamicCast();
 
   if (v5)
@@ -123,7 +123,7 @@
   return v7;
 }
 
-- (BCAugmentedExperienceManager)initWithStateChangeCoalescingDelay:(double)a3
+- (BCAugmentedExperienceManager)initWithStateChangeCoalescingDelay:(double)delay
 {
   v17.receiver = self;
   v17.super_class = BCAugmentedExperienceManager;
@@ -134,7 +134,7 @@
     augmentedExperiences = v4->_augmentedExperiences;
     v4->_augmentedExperiences = v5;
 
-    if (a3 != 0.0)
+    if (delay != 0.0)
     {
       objc_initWeak(&location, v4);
       v7 = [BUCoalescingCallBlock alloc];
@@ -146,7 +146,7 @@
       stateChangeCoalescingCallBlock = v4->_stateChangeCoalescingCallBlock;
       v4->_stateChangeCoalescingCallBlock = v11;
 
-      [(BUCoalescingCallBlock *)v4->_stateChangeCoalescingCallBlock setCoalescingDelay:a3];
+      [(BUCoalescingCallBlock *)v4->_stateChangeCoalescingCallBlock setCoalescingDelay:delay];
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
     }
@@ -157,55 +157,55 @@
 
 - (void)_currentBookIsFinished
 {
-  v3 = [(BCAugmentedExperienceManager *)self presentationViewController];
+  presentationViewController = [(BCAugmentedExperienceManager *)self presentationViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v6 = [(BCAugmentedExperienceManager *)self presentationViewController];
-    v5 = [(BCAugmentedExperienceManager *)self storeID];
-    [v6 setFinishedForAssetID:v5];
+    presentationViewController2 = [(BCAugmentedExperienceManager *)self presentationViewController];
+    storeID = [(BCAugmentedExperienceManager *)self storeID];
+    [presentationViewController2 setFinishedForAssetID:storeID];
   }
 }
 
-- (void)_handleStateChange:(id)a3
+- (void)_handleStateChange:(id)change
 {
-  v4 = a3;
-  v5 = [(BCAugmentedExperienceManager *)self stateChangeCoalescingCallBlock];
+  changeCopy = change;
+  stateChangeCoalescingCallBlock = [(BCAugmentedExperienceManager *)self stateChangeCoalescingCallBlock];
 
-  if (v5)
+  if (stateChangeCoalescingCallBlock)
   {
-    [(BCAugmentedExperienceManager *)self setStateChangeBlock:v4];
+    [(BCAugmentedExperienceManager *)self setStateChangeBlock:changeCopy];
 
-    v7 = [(BCAugmentedExperienceManager *)self stateChangeCoalescingCallBlock];
-    [v7 signalWithCompletion:&stru_2C8160];
+    stateChangeCoalescingCallBlock2 = [(BCAugmentedExperienceManager *)self stateChangeCoalescingCallBlock];
+    [stateChangeCoalescingCallBlock2 signalWithCompletion:&stru_2C8160];
   }
 
   else
   {
-    v7 = objc_retainBlock(v4);
+    stateChangeCoalescingCallBlock2 = objc_retainBlock(changeCopy);
 
-    v6 = v7;
-    if (!v7)
+    v6 = stateChangeCoalescingCallBlock2;
+    if (!stateChangeCoalescingCallBlock2)
     {
       goto LABEL_6;
     }
 
-    v7[2](v7);
+    stateChangeCoalescingCallBlock2[2](stateChangeCoalescingCallBlock2);
   }
 
-  v6 = v7;
+  v6 = stateChangeCoalescingCallBlock2;
 LABEL_6:
 }
 
-- (void)emitter:(id)a3 bookPositionChanged:(id)a4
+- (void)emitter:(id)emitter bookPositionChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  emitterCopy = emitter;
+  changedCopy = changed;
   v8 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1E49B4(v7, v8);
+    sub_1E49B4(changedCopy, v8);
   }
 
   objc_initWeak(&location, self);
@@ -214,7 +214,7 @@ LABEL_6:
   v10[2] = sub_14188;
   v10[3] = &unk_2C8188;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = changedCopy;
   v11 = v9;
   [(BCAugmentedExperienceManager *)self _handleStateChange:v10];
 
@@ -222,20 +222,20 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (void)emitter:(id)a3 bookMilestoneReached:(int64_t)a4
+- (void)emitter:(id)emitter bookMilestoneReached:(int64_t)reached
 {
   v6 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_1E4A98(a4, v6);
+    sub_1E4A98(reached, v6);
   }
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(BCAugmentedExperienceManager *)self augmentedExperiences];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  augmentedExperiences = [(BCAugmentedExperienceManager *)self augmentedExperiences];
+  v8 = [augmentedExperiences countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -246,20 +246,20 @@ LABEL_6:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(augmentedExperiences);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 experience];
-        v14 = [v13 kind];
+        experience = [v12 experience];
+        kind = [experience kind];
 
-        if (!v14)
+        if (!kind)
         {
-          if (a4 <= 6)
+          if (reached <= 6)
           {
-            if (a4 != 2)
+            if (reached != 2)
             {
-              if (a4 != 3)
+              if (reached != 3)
               {
                 continue;
               }
@@ -276,42 +276,42 @@ LABEL_20:
 
             [v12 setTriggeredLocation:1];
             [(BCAugmentedExperienceManager *)self _processStateEvent:1 forExperience:v12];
-            v15 = self;
+            selfCopy2 = self;
             v16 = 2;
             goto LABEL_23;
           }
 
-          if ((a4 - 7) < 2 || a4 == 10)
+          if ((reached - 7) < 2 || reached == 10)
           {
-            v15 = self;
+            selfCopy2 = self;
             v16 = 7;
 LABEL_23:
-            [(BCAugmentedExperienceManager *)v15 _processStateEvent:v16 forExperience:v12];
+            [(BCAugmentedExperienceManager *)selfCopy2 _processStateEvent:v16 forExperience:v12];
             continue;
           }
 
-          if (a4 == 9 && [v12 isPresented] && objc_msgSend(v12, "isOnExperiencePage"))
+          if (reached == 9 && [v12 isPresented] && objc_msgSend(v12, "isOnExperiencePage"))
           {
             goto LABEL_20;
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [augmentedExperiences countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)emitter:(id)a3 bookSectionChanged:(id)a4
+- (void)emitter:(id)emitter bookSectionChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  emitterCopy = emitter;
+  changedCopy = changed;
   v8 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    sub_1E4B3C(v7, v8);
+    sub_1E4B3C(changedCopy, v8);
   }
 
   objc_initWeak(&location, self);
@@ -320,24 +320,24 @@ LABEL_23:
   v10[2] = sub_146D4;
   v10[3] = &unk_2C81B0;
   objc_copyWeak(&v13, &location);
-  v9 = v7;
+  v9 = changedCopy;
   v11 = v9;
-  v12 = self;
+  selfCopy = self;
   [(BCAugmentedExperienceManager *)self _handleStateChange:v10];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)presentingViewControllerDidChangeLayout:(id)a3
+- (void)presentingViewControllerDidChangeLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(BCAugmentedExperienceManager *)self augmentedExperiences];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  augmentedExperiences = [(BCAugmentedExperienceManager *)self augmentedExperiences];
+  v6 = [augmentedExperiences countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -349,32 +349,32 @@ LABEL_23:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(augmentedExperiences);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * v9) experience];
-        v11 = [v10 presenter];
-        [v11 bringExperienceViewToFront:v4];
+        experience = [*(*(&v12 + 1) + 8 * v9) experience];
+        presenter = [experience presenter];
+        [presenter bringExperienceViewToFront:layoutCopy];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [augmentedExperiences countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)removeExperienceOfType:(int64_t)a3
+- (void)removeExperienceOfType:(int64_t)type
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(BCAugmentedExperienceManager *)self augmentedExperiences];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  augmentedExperiences = [(BCAugmentedExperienceManager *)self augmentedExperiences];
+  v6 = [augmentedExperiences countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -385,27 +385,27 @@ LABEL_23:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(augmentedExperiences);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 experience];
-        v12 = [v11 kind];
+        experience = [v10 experience];
+        kind = [experience kind];
 
-        if (v12 == a3)
+        if (kind == type)
         {
-          v13 = [v10 experience];
-          v14 = [v13 presenter];
-          [v14 endPresentation:0];
+          experience2 = [v10 experience];
+          presenter = [experience2 presenter];
+          [presenter endPresentation:0];
 
-          v15 = [(BCAugmentedExperienceManager *)self augmentedExperiences];
-          [v15 removeObject:v10];
+          augmentedExperiences2 = [(BCAugmentedExperienceManager *)self augmentedExperiences];
+          [augmentedExperiences2 removeObject:v10];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [augmentedExperiences countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -418,44 +418,44 @@ LABEL_23:
 LABEL_11:
 }
 
-- (void)addExperience:(id)a3
+- (void)addExperience:(id)experience
 {
-  v14 = a3;
-  v4 = [v14 location];
-  if (!v4 || (v5 = v4, [v14 location], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "confidence"), v8 = v7, +[BCAugmentedExperienceManager confidenceThreshold](BCAugmentedExperienceManager, "confidenceThreshold"), v10 = v9, v6, v5, v8 >= v10))
+  experienceCopy = experience;
+  location = [experienceCopy location];
+  if (!location || (v5 = location, [experienceCopy location], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "confidence"), v8 = v7, +[BCAugmentedExperienceManager confidenceThreshold](BCAugmentedExperienceManager, "confidenceThreshold"), v10 = v9, v6, v5, v8 >= v10))
   {
     v11 = objc_alloc_init(BKAugmentedExperienceData);
-    [(BKAugmentedExperienceData *)v11 setExperience:v14];
+    [(BKAugmentedExperienceData *)v11 setExperience:experienceCopy];
     [(BKAugmentedExperienceData *)v11 setTriggeredLocation:0];
-    v12 = [(BCAugmentedExperienceManager *)self augmentedExperiences];
-    [v12 addObject:v11];
+    augmentedExperiences = [(BCAugmentedExperienceManager *)self augmentedExperiences];
+    [augmentedExperiences addObject:v11];
 
-    v13 = [v14 presenter];
-    [v13 setPresentingDelegate:self];
+    presenter = [experienceCopy presenter];
+    [presenter setPresentingDelegate:self];
   }
 }
 
-- (void)_processStateEvent:(int64_t)a3 forExperience:(id)a4
+- (void)_processStateEvent:(int64_t)event forExperience:(id)experience
 {
-  v6 = a4;
+  experienceCopy = experience;
   v7 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(BCAugmentedExperienceManager *)self _eventToString:a3];
+    v8 = [(BCAugmentedExperienceManager *)self _eventToString:event];
     v23 = 138412290;
     v24 = v8;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "processStateEvent %@", &v23, 0xCu);
   }
 
-  v9 = [v6 state];
-  v10 = [v6 state];
-  if (v10 <= 3)
+  state = [experienceCopy state];
+  state2 = [experienceCopy state];
+  if (state2 <= 3)
   {
-    if (v10 > 1)
+    if (state2 > 1)
     {
-      if (v10 != (&dword_0 + 2))
+      if (state2 != (&dword_0 + 2))
       {
-        if (a3)
+        if (event)
         {
           goto LABEL_53;
         }
@@ -463,19 +463,19 @@ LABEL_11:
         goto LABEL_45;
       }
 
-      if (a3 == 7)
+      if (event == 7)
       {
-        if (![(BCAugmentedExperienceManager *)self _cancelShowExperience:v6])
+        if (![(BCAugmentedExperienceManager *)self _cancelShowExperience:experienceCopy])
         {
           goto LABEL_53;
         }
 
-        v15 = v6;
+        v15 = experienceCopy;
         v16 = 1;
         goto LABEL_52;
       }
 
-      if (a3 != 6 || ![(BCAugmentedExperienceManager *)self _cancelShowExperience:v6])
+      if (event != 6 || ![(BCAugmentedExperienceManager *)self _cancelShowExperience:experienceCopy])
       {
         goto LABEL_53;
       }
@@ -483,129 +483,129 @@ LABEL_11:
 
     else
     {
-      if (!v10)
+      if (!state2)
       {
-        if (a3 == 1)
+        if (event == 1)
         {
-          v13 = [v6 experience];
-          v14 = [(BCAugmentedExperienceManager *)self _isExperienceViable:v13];
+          experience = [experienceCopy experience];
+          v14 = [(BCAugmentedExperienceManager *)self _isExperienceViable:experience];
 
           if (v14)
           {
-            [v6 setState:4];
-            [(BCAugmentedExperienceManager *)self _preloadExperience:v6];
+            [experienceCopy setState:4];
+            [(BCAugmentedExperienceManager *)self _preloadExperience:experienceCopy];
           }
         }
 
         goto LABEL_53;
       }
 
-      if (v10 != (&dword_0 + 1) || a3 == 7)
+      if (state2 != (&dword_0 + 1) || event == 7)
       {
         goto LABEL_53;
       }
 
-      if (a3 != 6)
+      if (event != 6)
       {
         goto LABEL_40;
       }
     }
 
-    v15 = v6;
+    v15 = experienceCopy;
     v16 = 3;
 LABEL_52:
     [v15 setState:v16];
     goto LABEL_53;
   }
 
-  if (v10 <= 5)
+  if (state2 <= 5)
   {
-    if (v10 != &dword_4)
+    if (state2 != &dword_4)
     {
-      if (a3)
+      if (event)
       {
-        if (a3 != 2)
+        if (event != 2)
         {
           goto LABEL_53;
         }
 
-        v11 = v6;
+        v11 = experienceCopy;
         v12 = 7;
 LABEL_38:
         [v11 setState:v12];
-        [(BCAugmentedExperienceManager *)self _startDelayForExperience:v6];
+        [(BCAugmentedExperienceManager *)self _startDelayForExperience:experienceCopy];
         goto LABEL_53;
       }
 
       goto LABEL_41;
     }
 
-    if (a3 <= 2)
+    if (event <= 2)
     {
-      if (a3)
+      if (event)
       {
-        if (a3 != 2)
+        if (event != 2)
         {
           goto LABEL_53;
         }
 
-        v11 = v6;
+        v11 = experienceCopy;
         v12 = 6;
         goto LABEL_38;
       }
 
 LABEL_41:
-      [v6 setState:0];
+      [experienceCopy setState:0];
 LABEL_48:
-      [(BCAugmentedExperienceManager *)self _cancelPreloadExperience:v6];
+      [(BCAugmentedExperienceManager *)self _cancelPreloadExperience:experienceCopy];
       goto LABEL_53;
     }
 
-    if (a3 != 4)
+    if (event != 4)
     {
-      if (a3 != 3)
+      if (event != 3)
       {
         goto LABEL_53;
       }
 
-      v15 = v6;
+      v15 = experienceCopy;
       v16 = 5;
       goto LABEL_52;
     }
 
 LABEL_45:
-    v15 = v6;
+    v15 = experienceCopy;
     v16 = 0;
     goto LABEL_52;
   }
 
-  if (v10 != (&dword_4 + 2))
+  if (state2 != (&dword_4 + 2))
   {
-    if (v10 == (&dword_4 + 3))
+    if (state2 == (&dword_4 + 3))
     {
-      if (a3 != 5)
+      if (event != 5)
       {
-        if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+        if ((event & 0xFFFFFFFFFFFFFFFBLL) != 0)
         {
           goto LABEL_53;
         }
 
-        [v6 setState:0];
-        [(BCAugmentedExperienceManager *)self _cancelDelayForExperience:v6];
+        [experienceCopy setState:0];
+        [(BCAugmentedExperienceManager *)self _cancelDelayForExperience:experienceCopy];
         goto LABEL_48;
       }
     }
 
     else
     {
-      if (v10 != &dword_8)
+      if (state2 != &dword_8)
       {
         goto LABEL_53;
       }
 
-      if (a3 != 3)
+      if (event != 3)
       {
-        if ((a3 & 0xFFFFFFFFFFFFFFFBLL) != 0)
+        if ((event & 0xFFFFFFFFFFFFFFFBLL) != 0)
         {
           goto LABEL_53;
         }
@@ -615,41 +615,41 @@ LABEL_45:
     }
 
 LABEL_40:
-    [v6 setState:2];
-    [(BCAugmentedExperienceManager *)self _showExperience:v6];
+    [experienceCopy setState:2];
+    [(BCAugmentedExperienceManager *)self _showExperience:experienceCopy];
     goto LABEL_53;
   }
 
-  if (a3 == 5)
+  if (event == 5)
   {
-    v15 = v6;
+    v15 = experienceCopy;
     v16 = 8;
     goto LABEL_52;
   }
 
-  if (a3 == 3)
+  if (event == 3)
   {
-    v15 = v6;
+    v15 = experienceCopy;
     v16 = 7;
     goto LABEL_52;
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFFBLL) == 0)
+  if ((event & 0xFFFFFFFFFFFFFFFBLL) == 0)
   {
-    [v6 setState:0];
-    [(BCAugmentedExperienceManager *)self _cancelPreloadExperience:v6];
-    [(BCAugmentedExperienceManager *)self _cancelDelayForExperience:v6];
+    [experienceCopy setState:0];
+    [(BCAugmentedExperienceManager *)self _cancelPreloadExperience:experienceCopy];
+    [(BCAugmentedExperienceManager *)self _cancelDelayForExperience:experienceCopy];
   }
 
 LABEL_53:
-  v17 = [v6 state];
-  if (v9 != v17)
+  state3 = [experienceCopy state];
+  if (state != state3)
   {
-    v18 = v17;
+    v18 = state3;
     v19 = BCAugmentedExperienceLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(BCAugmentedExperienceManager *)self _stateToString:v9];
+      v20 = [(BCAugmentedExperienceManager *)self _stateToString:state];
       v21 = [(BCAugmentedExperienceManager *)self _stateToString:v18];
       v23 = 138412546;
       v24 = v20;
@@ -658,40 +658,40 @@ LABEL_53:
       _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "processStateEvent state change from %@ to %@", &v23, 0x16u);
     }
 
-    v22 = [v6 experience];
-    [(BCAugmentedExperienceManager *)self _stateChangedTo:v18 forExperience:v22];
+    experience2 = [experienceCopy experience];
+    [(BCAugmentedExperienceManager *)self _stateChangedTo:v18 forExperience:experience2];
   }
 }
 
-- (id)_eventToString:(int64_t)a3
+- (id)_eventToString:(int64_t)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_2C8248[a3];
+    return off_2C8248[string];
   }
 }
 
-- (id)_stateToString:(int64_t)a3
+- (id)_stateToString:(int64_t)string
 {
-  if (a3 > 8)
+  if (string > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_2C8288[a3];
+    return off_2C8288[string];
   }
 }
 
-- (void)_preloadExperience:(id)a3
+- (void)_preloadExperience:(id)experience
 {
-  v4 = a3;
+  experienceCopy = experience;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -699,25 +699,25 @@ LABEL_53:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "preloadExperience", buf, 2u);
   }
 
-  v6 = [v4 experience];
-  v7 = [v6 presenter];
+  experience = [experienceCopy experience];
+  presenter = [experience presenter];
 
-  if (v7)
+  if (presenter)
   {
-    v8 = [(BCAugmentedExperienceManager *)self presentationViewController];
-    if (v8)
+    presentationViewController = [(BCAugmentedExperienceManager *)self presentationViewController];
+    if (presentationViewController)
     {
-      v9 = [v4 experience];
-      v10 = [v9 presenter];
-      v11 = [v4 experience];
-      v12 = [v11 pageProgressionIsRTL];
+      experience2 = [experienceCopy experience];
+      presenter2 = [experience2 presenter];
+      experience3 = [experienceCopy experience];
+      pageProgressionIsRTL = [experience3 pageProgressionIsRTL];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_15380;
       v14[3] = &unk_2C8200;
       v14[4] = self;
-      v15 = v4;
-      [v10 preloadPresentationInVC:v8 pageProgressionIsRTL:v12 completion:v14];
+      v15 = experienceCopy;
+      [presenter2 preloadPresentationInVC:presentationViewController pageProgressionIsRTL:pageProgressionIsRTL completion:v14];
     }
   }
 
@@ -729,13 +729,13 @@ LABEL_53:
       sub_1E4C20(v13);
     }
 
-    [(BCAugmentedExperienceManager *)self _processStateEvent:4 forExperience:v4];
+    [(BCAugmentedExperienceManager *)self _processStateEvent:4 forExperience:experienceCopy];
   }
 }
 
-- (void)_cancelPreloadExperience:(id)a3
+- (void)_cancelPreloadExperience:(id)experience
 {
-  v3 = a3;
+  experienceCopy = experience;
   v4 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -743,15 +743,15 @@ LABEL_53:
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "cancelPreloadExperience", v7, 2u);
   }
 
-  v5 = [v3 experience];
+  experience = [experienceCopy experience];
 
-  v6 = [v5 presenter];
-  [v6 cancelPreloadPresentation];
+  presenter = [experience presenter];
+  [presenter cancelPreloadPresentation];
 }
 
-- (void)_startDelayForExperience:(id)a3
+- (void)_startDelayForExperience:(id)experience
 {
-  v4 = a3;
+  experienceCopy = experience;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -759,36 +759,36 @@ LABEL_53:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "startDelayForExperience", buf, 2u);
   }
 
-  v6 = [v4 experience];
-  [v6 delay];
+  experience = [experienceCopy experience];
+  [experience delay];
   v8 = v7;
 
   if (v8 <= 0.0)
   {
-    [(BCAugmentedExperienceManager *)self _delayCompletedForExperience:v4];
+    [(BCAugmentedExperienceManager *)self _delayCompletedForExperience:experienceCopy];
   }
 
   else
   {
-    v9 = [v4 experience];
-    [v9 delay];
+    experience2 = [experienceCopy experience];
+    [experience2 delay];
     v11 = v10;
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_15634;
     v17 = &unk_2C8228;
-    v12 = v4;
+    v12 = experienceCopy;
     v18 = v12;
-    v19 = self;
+    selfCopy = self;
     v13 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:&v14 block:v11];
 
     [v12 setDelayTimer:{v13, v14, v15, v16, v17}];
   }
 }
 
-- (void)_delayCompletedForExperience:(id)a3
+- (void)_delayCompletedForExperience:(id)experience
 {
-  v4 = a3;
+  experienceCopy = experience;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -802,14 +802,14 @@ LABEL_53:
   v7[2] = sub_15768;
   v7[3] = &unk_2C7BE8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = experienceCopy;
+  v6 = experienceCopy;
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (void)_cancelDelayForExperience:(id)a3
+- (void)_cancelDelayForExperience:(id)experience
 {
-  v3 = a3;
+  experienceCopy = experience;
   v4 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -817,31 +817,31 @@ LABEL_53:
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "cancelDelayForExperience", v6, 2u);
   }
 
-  v5 = [v3 delayTimer];
-  [v5 invalidate];
+  delayTimer = [experienceCopy delayTimer];
+  [delayTimer invalidate];
 
-  [v3 setDelayTimer:0];
+  [experienceCopy setDelayTimer:0];
 }
 
-- (id)_detailsForExperience:(id)a3
+- (id)_detailsForExperience:(id)experience
 {
-  v3 = a3;
+  experienceCopy = experience;
   v4 = +[NSMutableDictionary dictionary];
   [v4 setObject:&off_2E5858 forKeyedSubscript:@"BCAugmentedExperienceLocationKey"];
-  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 triggeredLocation]);
+  v5 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [experienceCopy triggeredLocation]);
   [v4 setObject:v5 forKeyedSubscript:@"BCAugmentedExperienceLocationVariantKey"];
 
-  v6 = [v3 experience];
+  experience = [experienceCopy experience];
 
-  v7 = [v6 version];
-  [v4 setObject:v7 forKeyedSubscript:@"BCAugmentedExperienceVariantVersionKey"];
+  version = [experience version];
+  [v4 setObject:version forKeyedSubscript:@"BCAugmentedExperienceVariantVersionKey"];
 
   return v4;
 }
 
-- (void)_expandExperience:(id)a3
+- (void)_expandExperience:(id)experience
 {
-  v4 = a3;
+  experienceCopy = experience;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -849,18 +849,18 @@ LABEL_53:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "expandExperience", v9, 2u);
   }
 
-  v6 = [(BCAugmentedExperienceManager *)self presentationViewController];
-  if (v6)
+  presentationViewController = [(BCAugmentedExperienceManager *)self presentationViewController];
+  if (presentationViewController)
   {
-    v7 = [v4 experience];
-    v8 = [v7 presenter];
-    [v8 expandInVC:v6];
+    experience = [experienceCopy experience];
+    presenter = [experience presenter];
+    [presenter expandInVC:presentationViewController];
   }
 }
 
-- (void)_showExperience:(id)a3
+- (void)_showExperience:(id)experience
 {
-  v4 = a3;
+  experienceCopy = experience;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -868,29 +868,29 @@ LABEL_53:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "showExperience", v13, 2u);
   }
 
-  v6 = [(BCAugmentedExperienceManager *)self presentationViewController];
-  if (v6)
+  presentationViewController = [(BCAugmentedExperienceManager *)self presentationViewController];
+  if (presentationViewController)
   {
-    v7 = [v4 experience];
-    v8 = [v7 presenter];
-    v9 = [v4 autoExpand];
-    v10 = [(BCAugmentedExperienceManager *)self _detailsForExperience:v4];
-    [v8 presentInVC:v6 autoExpanded:v9 details:v10];
+    experience = [experienceCopy experience];
+    presenter = [experience presenter];
+    autoExpand = [experienceCopy autoExpand];
+    v10 = [(BCAugmentedExperienceManager *)self _detailsForExperience:experienceCopy];
+    [presenter presentInVC:presentationViewController autoExpanded:autoExpand details:v10];
 
-    [v4 setIsPresented:1];
-    v11 = [v4 experience];
-    v12 = [v11 kind];
+    [experienceCopy setIsPresented:1];
+    experience2 = [experienceCopy experience];
+    kind = [experience2 kind];
 
-    if (!v12)
+    if (!kind)
     {
       [(BCAugmentedExperienceManager *)self _currentBookIsFinished];
     }
   }
 }
 
-- (void)_userClosedExperience:(id)a3
+- (void)_userClosedExperience:(id)experience
 {
-  v4 = a3;
+  experienceCopy = experience;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -898,13 +898,13 @@ LABEL_53:
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "userClosedExperience", v6, 2u);
   }
 
-  [v4 setIsPresented:0];
-  [(BCAugmentedExperienceManager *)self _processStateEvent:6 forExperience:v4];
+  [experienceCopy setIsPresented:0];
+  [(BCAugmentedExperienceManager *)self _processStateEvent:6 forExperience:experienceCopy];
 }
 
-- (BOOL)_cancelShowExperience:(id)a3
+- (BOOL)_cancelShowExperience:(id)experience
 {
-  v3 = a3;
+  experienceCopy = experience;
   v4 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -912,22 +912,22 @@ LABEL_53:
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "cancelShowExperience", buf, 2u);
   }
 
-  v5 = [v3 experience];
-  v6 = [v5 presenter];
+  experience = [experienceCopy experience];
+  presenter = [experience presenter];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_15C9C;
   v10[3] = &unk_2C7D40;
-  v11 = v3;
-  v7 = v3;
-  v8 = [v6 endPresentation:v10];
+  v11 = experienceCopy;
+  v7 = experienceCopy;
+  v8 = [presenter endPresentation:v10];
 
   return v8;
 }
 
-- (void)presenterWantsToDismiss:(id)a3
+- (void)presenterWantsToDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   v5 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -939,8 +939,8 @@ LABEL_53:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(BCAugmentedExperienceManager *)self augmentedExperiences];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  augmentedExperiences = [(BCAugmentedExperienceManager *)self augmentedExperiences];
+  v7 = [augmentedExperiences countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -951,30 +951,30 @@ LABEL_53:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(augmentedExperiences);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 experience];
-        v13 = [v12 presenter];
+        experience = [v11 experience];
+        presenter = [experience presenter];
 
-        if (v13 == v4)
+        if (presenter == dismissCopy)
         {
           [(BCAugmentedExperienceManager *)self _userClosedExperience:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [augmentedExperiences countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)presenterWantsToCloseAsset:(id)a3 completion:(id)a4
+- (void)presenterWantsToCloseAsset:(id)asset completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  assetCopy = asset;
   v8 = BCAugmentedExperienceLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -982,11 +982,11 @@ LABEL_53:
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Closing the current asset", v11, 2u);
   }
 
-  [(BCAugmentedExperienceManager *)self presenterWantsToDismiss:v7];
-  v9 = [(BCAugmentedExperienceManager *)self presentationViewController];
-  [v9 requestClose:1];
+  [(BCAugmentedExperienceManager *)self presenterWantsToDismiss:assetCopy];
+  presentationViewController = [(BCAugmentedExperienceManager *)self presentationViewController];
+  [presentationViewController requestClose:1];
 
-  v10 = objc_retainBlock(v6);
+  v10 = objc_retainBlock(completionCopy);
   if (v10)
   {
     v10[2](v10);

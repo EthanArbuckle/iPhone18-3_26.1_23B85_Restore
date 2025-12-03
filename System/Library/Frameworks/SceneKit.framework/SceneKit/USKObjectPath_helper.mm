@@ -1,12 +1,12 @@
 @interface USKObjectPath_helper
-+ (id)objectPathWithString:(id)a3;
++ (id)objectPathWithString:(id)string;
 @end
 
 @implementation USKObjectPath_helper
 
-+ (id)objectPathWithString:(id)a3
++ (id)objectPathWithString:(id)string
 {
-  v3 = [[USKObjectPath_weak alloc] initWithString:a3];
+  v3 = [[USKObjectPath_weak alloc] initWithString:string];
 
   return v3;
 }

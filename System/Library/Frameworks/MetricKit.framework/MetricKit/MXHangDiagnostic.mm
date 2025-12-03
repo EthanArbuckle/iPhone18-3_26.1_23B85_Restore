@@ -1,32 +1,32 @@
 @interface MXHangDiagnostic
-+ (int64_t)_hangTypeForHangTypeString:(id)a3;
-- (MXHangDiagnostic)initWithCoder:(id)a3;
-- (MXHangDiagnostic)initWithMetaData:(id)a3 applicationVersion:(id)a4 callStack:(id)a5 hangDuration:(id)a6;
++ (int64_t)_hangTypeForHangTypeString:(id)string;
+- (MXHangDiagnostic)initWithCoder:(id)coder;
+- (MXHangDiagnostic)initWithMetaData:(id)data applicationVersion:(id)version callStack:(id)stack hangDuration:(id)duration;
 - (NSString)hangTypeString;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXHangDiagnostic
 
-- (MXHangDiagnostic)initWithMetaData:(id)a3 applicationVersion:(id)a4 callStack:(id)a5 hangDuration:(id)a6
+- (MXHangDiagnostic)initWithMetaData:(id)data applicationVersion:(id)version callStack:(id)stack hangDuration:(id)duration
 {
-  v11 = a5;
-  v12 = a6;
+  stackCopy = stack;
+  durationCopy = duration;
   v17.receiver = self;
   v17.super_class = MXHangDiagnostic;
-  v13 = [(MXDiagnostic *)&v17 initWithMetaData:a3 applicationVersion:a4];
+  v13 = [(MXDiagnostic *)&v17 initWithMetaData:data applicationVersion:version];
   if (v13)
   {
-    if (!v11 || ([v12 doubleValue], v14 <= 0.0))
+    if (!stackCopy || ([durationCopy doubleValue], v14 <= 0.0))
     {
       v15 = 0;
       goto LABEL_7;
     }
 
     v13->_hangType = 1;
-    objc_storeStrong(&v13->_callStackTree, a5);
-    objc_storeStrong(&v13->_hangDuration, a6);
+    objc_storeStrong(&v13->_callStackTree, stack);
+    objc_storeStrong(&v13->_hangDuration, duration);
   }
 
   v15 = v13;
@@ -35,47 +35,47 @@ LABEL_7:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MXHangDiagnostic;
-  v4 = a3;
-  [(MXDiagnostic *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_callStackTree forKey:{@"callStackTree", v6.receiver, v6.super_class}];
-  [v4 encodeObject:self->_hangDuration forKey:@"hangDuration"];
-  v5 = [(MXHangDiagnostic *)self hangTypeString];
-  [v4 encodeObject:v5 forKey:@"hangType"];
+  coderCopy = coder;
+  [(MXDiagnostic *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_callStackTree forKey:{@"callStackTree", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:self->_hangDuration forKey:@"hangDuration"];
+  hangTypeString = [(MXHangDiagnostic *)self hangTypeString];
+  [coderCopy encodeObject:hangTypeString forKey:@"hangType"];
 }
 
-- (MXHangDiagnostic)initWithCoder:(id)a3
+- (MXHangDiagnostic)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MXHangDiagnostic;
-  v5 = [(MXDiagnostic *)&v13 initWithCoder:v4];
+  v5 = [(MXDiagnostic *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callStackTree"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callStackTree"];
     callStackTree = v5->_callStackTree;
     v5->_callStackTree = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hangDuration"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hangDuration"];
     hangDuration = v5->_hangDuration;
     v5->_hangDuration = v8;
 
     v10 = objc_opt_class();
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hangType"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hangType"];
     v5->_hangType = [v10 _hangTypeForHangTypeString:v11];
   }
 
   return v5;
 }
 
-+ (int64_t)_hangTypeForHangTypeString:(id)a3
++ (int64_t)_hangTypeForHangTypeString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:@"Unknown"] & 1) == 0)
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && ([stringCopy isEqualToString:@"Unknown"] & 1) == 0)
   {
     if ([v4 isEqualToString:@"Main Runloop Hang"])
     {
@@ -103,14 +103,14 @@ LABEL_7:
 
 - (NSString)hangTypeString
 {
-  v2 = [(MXHangDiagnostic *)self hangType];
+  hangType = [(MXHangDiagnostic *)self hangType];
   v3 = @"Unknown";
-  if (v2 == 1)
+  if (hangType == 1)
   {
     v3 = @"Main Runloop Hang";
   }
 
-  if (v2 == 2)
+  if (hangType == 2)
   {
     return @"Compositor Client Hang";
   }
@@ -126,14 +126,14 @@ LABEL_7:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v14.receiver = self;
   v14.super_class = MXHangDiagnostic;
-  v4 = [(MXDiagnostic *)&v14 toDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  toDictionary = [(MXDiagnostic *)&v14 toDictionary];
+  [v3 addEntriesFromDictionary:toDictionary];
 
   callStackTree = self->_callStackTree;
   if (callStackTree)
   {
-    v6 = [(MXCallStackTree *)callStackTree toDictionary];
-    [v3 setObject:v6 forKey:@"callStackTree"];
+    toDictionary2 = [(MXCallStackTree *)callStackTree toDictionary];
+    [v3 setObject:toDictionary2 forKey:@"callStackTree"];
   }
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -142,8 +142,8 @@ LABEL_7:
 
   if (self->_hangDuration)
   {
-    v9 = [(MXDiagnostic *)self measurementFormatter];
-    v10 = [v9 stringFromMeasurement:self->_hangDuration];
+    measurementFormatter = [(MXDiagnostic *)self measurementFormatter];
+    v10 = [measurementFormatter stringFromMeasurement:self->_hangDuration];
     [v7 setObject:v10 forKey:@"hangDuration"];
   }
 
@@ -153,8 +153,8 @@ LABEL_7:
     [v3 setObject:v11 forKey:@"diagnosticMetaData"];
   }
 
-  v12 = [(MXHangDiagnostic *)self hangTypeString];
-  [v3 setObject:v12 forKeyedSubscript:@"hangType"];
+  hangTypeString = [(MXHangDiagnostic *)self hangTypeString];
+  [v3 setObject:hangTypeString forKeyedSubscript:@"hangType"];
 
   return v3;
 }

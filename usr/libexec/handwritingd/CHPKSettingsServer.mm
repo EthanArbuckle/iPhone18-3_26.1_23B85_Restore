@@ -4,16 +4,16 @@
 + (void)setupDefaults;
 - (BOOL)getGlobalAutoRefineEnabled;
 - (BOOL)getGlobalProofreadingEnabled;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CHPKSettingsServer)init;
 - (void)_enqueueTimestampUpdate;
 - (void)_touchLastSessionTimestampIfNecessary;
 - (void)dealloc;
-- (void)getGlobalPrefersPencilHoverPreviewEnabledWithCompletion:(id)a3;
+- (void)getGlobalPrefersPencilHoverPreviewEnabledWithCompletion:(id)completion;
 - (void)openPencilSettings;
 - (void)resumeConnectionIfIdle;
-- (void)setCurrentScribbleLanguageIdentifier:(id)a3;
-- (void)setCurrentScribbleLanguageIdentifiers:(id)a3;
+- (void)setCurrentScribbleLanguageIdentifier:(id)identifier;
+- (void)setCurrentScribbleLanguageIdentifiers:(id)identifiers;
 @end
 
 @implementation CHPKSettingsServer
@@ -29,10 +29,10 @@
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___CHPKSettingsServer;
   objc_msgSendSuper2(&v3, "initialize");
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     +[CHPKSettingsServer setupDefaults];
   }
@@ -91,27 +91,27 @@
 {
   if (![(CHPKSettingsServer *)self isListening])
   {
-    v3 = [(CHPKSettingsServer *)self listener];
-    [v3 resume];
+    listener = [(CHPKSettingsServer *)self listener];
+    [listener resume];
 
     [(CHPKSettingsServer *)self setIsListening:1];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   listener = self->_listener;
-  if (listener == a3)
+  if (listener == listener)
   {
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CHPKRemoteSettingsProtocol];
-    [v6 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
   }
 
-  [v6 setExportedObject:self];
-  [v6 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
-  return listener == a3;
+  return listener == listener;
 }
 
 - (void)openPencilSettings
@@ -135,23 +135,23 @@
 
   v4 = v3;
   _Block_object_dispose(&v8, 8);
-  v5 = [v3 defaultWorkspace];
+  defaultWorkspace = [v3 defaultWorkspace];
   v12[0] = @"__UnlockDevice";
   v12[1] = @"__PromptUnlockDevice";
   v13[0] = &__kCFBooleanTrue;
   v13[1] = &__kCFBooleanTrue;
   v6 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
-  [v5 openSensitiveURL:v2 withOptions:v6];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:v6];
 }
 
-- (void)setCurrentScribbleLanguageIdentifier:(id)a3
+- (void)setCurrentScribbleLanguageIdentifier:(id)identifier
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v3 = [NSLocale localeWithLocaleIdentifier:?];
   if ([CHRecognitionSession isLocaleSupported:v3])
   {
     v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.PencilKit"];
-    [v4 setObject:v8 forKey:@"CurrentScribbleLanguageKey"];
+    [v4 setObject:identifierCopy forKey:@"CurrentScribbleLanguageKey"];
     v5 = +[NSDate date];
     [v5 timeIntervalSinceReferenceDate];
     v6 = [NSNumber numberWithDouble:?];
@@ -163,15 +163,15 @@
   }
 }
 
-- (void)setCurrentScribbleLanguageIdentifiers:(id)a3
+- (void)setCurrentScribbleLanguageIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  identifiersCopy = identifiers;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [identifiersCopy count]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -234,17 +234,17 @@ LABEL_14:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.PencilKit", 0, 0, 1u);
 }
 
-- (void)getGlobalPrefersPencilHoverPreviewEnabledWithCompletion:(id)a3
+- (void)getGlobalPrefersPencilHoverPreviewEnabledWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   v3 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.UIKit"];
   v4 = [v3 BOOLForKey:@"PKUIPencilHoverPreviewEnabledKey"];
 
-  v5 = v6;
-  if (v6)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, v4);
-    v5 = v6;
+    (*(completionCopy + 2))(completionCopy, v4);
+    v5 = completionCopy;
   }
 }
 
@@ -275,7 +275,7 @@ LABEL_14:
   v6[3] = &unk_100024758;
   objc_copyWeak(&v9, &location);
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_sync(queue, v6);
 
@@ -285,11 +285,11 @@ LABEL_14:
 
 - (void)_touchLastSessionTimestampIfNecessary
 {
-  v2 = [(CHPKSettingsServer *)self queuedTimestampDate];
-  v3 = v2;
-  if (v2)
+  queuedTimestampDate = [(CHPKSettingsServer *)self queuedTimestampDate];
+  v3 = queuedTimestampDate;
+  if (queuedTimestampDate)
   {
-    v4 = v2;
+    v4 = queuedTimestampDate;
   }
 
   else

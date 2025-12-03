@@ -9,50 +9,50 @@
 - (CGAffineTransform)fullTransformInRoot;
 - (CGAffineTransform)transformInRoot;
 - (CGPoint)transformableObjectAnchorPoint;
-- (TSDDrawableInfo)initWithContext:(id)a3 geometry:(id)a4;
+- (TSDDrawableInfo)initWithContext:(id)context geometry:(id)geometry;
 - (TSDOwningAttachment)owningAttachment;
-- (id)boxedObjectForProperty:(int)a3;
+- (id)boxedObjectForProperty:(int)property;
 - (id)containingGroup;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (id)descriptionForPasteboard;
 - (id)endCollectingChanges;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)objectForProperty:(int)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)objectForProperty:(int)property;
 - (id)partitioner;
-- (id)searchForAnnotationsWithHitBlock:(id)a3;
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4;
-- (id)transformedGeometryWithTransform:(CGAffineTransform *)a3 inBounds:(CGRect)a4;
-- (int64_t)mixingTypeWithObject:(id)a3;
-- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)a3;
+- (id)searchForAnnotationsWithHitBlock:(id)block;
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter;
+- (id)transformedGeometryWithTransform:(CGAffineTransform *)transform inBounds:(CGRect)bounds;
+- (int64_t)mixingTypeWithObject:(id)object;
+- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)string;
 - (void)beginCollectingChanges;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)coalesceChanges:(id)a3;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)coalesceChanges:(id)changes;
 - (void)dealloc;
-- (void)performBlockWithTemporaryLayout:(id)a3;
-- (void)setAccessibilityDescription:(id)a3;
-- (void)setAspectRatioLocked:(BOOL)a3;
-- (void)setComment:(id)a3;
-- (void)setExteriorTextWrap:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setHyperlinkURL:(id)a3;
-- (void)setInsertionCenterPosition:(CGPoint)a3;
-- (void)setLocked:(BOOL)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willChangeProperties:(id)a3;
-- (void)willChangeProperty:(int)a3;
+- (void)performBlockWithTemporaryLayout:(id)layout;
+- (void)setAccessibilityDescription:(id)description;
+- (void)setAspectRatioLocked:(BOOL)locked;
+- (void)setComment:(id)comment;
+- (void)setExteriorTextWrap:(id)wrap;
+- (void)setGeometry:(id)geometry;
+- (void)setHyperlinkURL:(id)l;
+- (void)setInsertionCenterPosition:(CGPoint)position;
+- (void)setLocked:(BOOL)locked;
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willChangeProperties:(id)properties;
+- (void)willChangeProperty:(int)property;
 @end
 
 @implementation TSDDrawableInfo
 
-- (TSDDrawableInfo)initWithContext:(id)a3 geometry:(id)a4
+- (TSDDrawableInfo)initWithContext:(id)context geometry:(id)geometry
 {
   v7.receiver = self;
   v7.super_class = TSDDrawableInfo;
-  v5 = [(TSPObject *)&v7 initWithContext:a3];
+  v5 = [(TSPObject *)&v7 initWithContext:context];
   if (v5)
   {
-    v5->mGeometry = a4;
+    v5->mGeometry = geometry;
     v5->mExteriorTextWrap = [[TSDExteriorTextWrap alloc] initWithIsHTMLWrap:0 type:4 direction:2 fitType:1 margin:12.0 alphaThreshold:0.5];
     v5->mAspectRatioLocked = 0;
   }
@@ -70,20 +70,20 @@
   [(TSDDrawableInfo *)&v3 dealloc];
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  if (self->mParentInfo == a3)
+  if (self->mParentInfo == needed)
   {
     self->mParentInfo = 0;
   }
 }
 
-- (void)setComment:(id)a3
+- (void)setComment:(id)comment
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  commentCopy = comment;
 
-  self->mComment = a3;
+  self->mComment = comment;
 }
 
 - (TSDOwningAttachment)owningAttachment
@@ -96,24 +96,24 @@
     return mOwningAttachment;
   }
 
-  v4 = [(TSDDrawableInfo *)self parentInfo];
+  parentInfo = [(TSDDrawableInfo *)self parentInfo];
 
-  return [(TSDContainerInfo *)v4 owningAttachment];
+  return [(TSDContainerInfo *)parentInfo owningAttachment];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   [(TSPObject *)self willModify];
-  if (!a3)
+  if (!geometry)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDrawableInfo setGeometry:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 181, @"invalid nil value for '%s'", "newGeometry"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 181, @"invalid nil value for '%s'", "newGeometry"}];
   }
 
-  if (([a3 isEqual:self->mGeometry] & 1) == 0)
+  if (([geometry isEqual:self->mGeometry] & 1) == 0)
   {
-    if ([a3 isEqualExceptForPosition:self->mGeometry])
+    if ([geometry isEqualExceptForPosition:self->mGeometry])
     {
       v7 = 513;
     }
@@ -125,37 +125,37 @@
 
     [(TSDDrawableInfo *)self willChangeProperty:v7];
 
-    self->mGeometry = a3;
+    self->mGeometry = geometry;
 
     [(TSDDrawableInfo *)self setMatchesObjectPlaceholderGeometry:0];
   }
 }
 
-- (void)setHyperlinkURL:(id)a3
+- (void)setHyperlinkURL:(id)l
 {
-  if (([a3 isEqual:self->mHyperlinkURL] & 1) == 0)
+  if (([l isEqual:self->mHyperlinkURL] & 1) == 0)
   {
     [(TSPObject *)self willModify];
     [(TSDDrawableInfo *)self willChangeProperty:524];
 
-    self->mHyperlinkURL = a3;
+    self->mHyperlinkURL = l;
   }
 }
 
-- (void)setAccessibilityDescription:(id)a3
+- (void)setAccessibilityDescription:(id)description
 {
-  if (([a3 isEqualToString:self->mAccessibilityDescription] & 1) == 0)
+  if (([description isEqualToString:self->mAccessibilityDescription] & 1) == 0)
   {
     [(TSPObject *)self willModify];
 
-    self->mAccessibilityDescription = [a3 copy];
+    self->mAccessibilityDescription = [description copy];
   }
 }
 
-- (void)setLocked:(BOOL)a3
+- (void)setLocked:(BOOL)locked
 {
-  v3 = a3;
-  if (!a3)
+  lockedCopy = locked;
+  if (!locked)
   {
     p_mLocked = &self->mLocked;
     if (!self->mLocked)
@@ -168,31 +168,31 @@
 
   if (![(TSDDrawableInfo *)self isLockable])
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDrawableInfo setLocked:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 239, @"Invalid attempt to lock an unlockable object."}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 239, @"Invalid attempt to lock an unlockable object."}];
   }
 
   p_mLocked = &self->mLocked;
-  if (self->mLocked != v3 && [(TSDDrawableInfo *)self isLockable])
+  if (self->mLocked != lockedCopy && [(TSDDrawableInfo *)self isLockable])
   {
 LABEL_8:
     [(TSPObject *)self willModify];
-    *p_mLocked = v3;
+    *p_mLocked = lockedCopy;
   }
 }
 
-- (void)setAspectRatioLocked:(BOOL)a3
+- (void)setAspectRatioLocked:(BOOL)locked
 {
-  if (self->mAspectRatioLocked != a3)
+  if (self->mAspectRatioLocked != locked)
   {
     [(TSDDrawableInfo *)self willChangeProperty:525];
     [(TSPObject *)self willModify];
-    self->mAspectRatioLocked = a3;
+    self->mAspectRatioLocked = locked;
   }
 }
 
-- (void)performBlockWithTemporaryLayout:(id)a3
+- (void)performBlockWithTemporaryLayout:(id)layout
 {
   v5 = [MEMORY[0x277CBEA60] arrayWithObject:self];
   v6[0] = MEMORY[0x277D85DD0];
@@ -200,7 +200,7 @@ LABEL_8:
   v6[2] = __51__TSDDrawableInfo_performBlockWithTemporaryLayout___block_invoke;
   v6[3] = &unk_279D48520;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = layout;
   [TSDLayoutController temporaryLayoutControllerForInfos:v5 useInBlock:v6];
 }
 
@@ -326,10 +326,10 @@ LABEL_8:
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v5 = [(TSDDrawableInfo *)self geometry];
-  if (v5)
+  geometry = [(TSDDrawableInfo *)self geometry];
+  if (geometry)
   {
-    [(TSDInfoGeometry *)v5 fullTransform];
+    [(TSDInfoGeometry *)geometry fullTransform];
   }
 
   else
@@ -368,13 +368,13 @@ LABEL_8:
   *&retstr->tx = *(v4 + 32);
   if (self)
   {
-    v6 = self;
+    selfCopy2 = self;
     do
     {
-      v7 = [(CGAffineTransform *)v6 geometry];
-      if (v7)
+      geometry = [(CGAffineTransform *)selfCopy2 geometry];
+      if (geometry)
       {
-        [v7 transform];
+        [geometry transform];
       }
 
       else
@@ -388,9 +388,9 @@ LABEL_8:
       *&v9.tx = *&retstr->tx;
       CGAffineTransformConcat(retstr, &v9, &t2);
       objc_opt_class();
-      [(CGAffineTransform *)v6 parentInfo];
+      [(CGAffineTransform *)selfCopy2 parentInfo];
       self = TSUDynamicCast();
-      v6 = self;
+      selfCopy2 = self;
     }
 
     while (self);
@@ -401,9 +401,9 @@ LABEL_8:
 
 - (BOOL)isAnchoredToText
 {
-  v2 = [(TSDDrawableInfo *)self owningAttachmentNoRecurse];
+  owningAttachmentNoRecurse = [(TSDDrawableInfo *)self owningAttachmentNoRecurse];
 
-  return [(TSDOwningAttachment *)v2 isAnchored];
+  return [(TSDOwningAttachment *)owningAttachmentNoRecurse isAnchored];
 }
 
 - (BOOL)isInlineWithText
@@ -421,34 +421,34 @@ LABEL_8:
 
 - (BOOL)isAttachedToBodyText
 {
-  v2 = [(TSDDrawableInfo *)self owningAttachmentNoRecurse];
+  owningAttachmentNoRecurse = [(TSDDrawableInfo *)self owningAttachmentNoRecurse];
 
-  return [(TSDOwningAttachment *)v2 isAttachedToBodyText];
+  return [(TSDOwningAttachment *)owningAttachmentNoRecurse isAttachedToBodyText];
 }
 
-- (void)setExteriorTextWrap:(id)a3
+- (void)setExteriorTextWrap:(id)wrap
 {
   [(TSPObject *)self willModify];
-  if (!a3)
+  if (!wrap)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDrawableInfo setExteriorTextWrap:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 340, @"invalid nil value for '%s'", "exteriorTextWrap"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 340, @"invalid nil value for '%s'", "exteriorTextWrap"}];
   }
 
-  if (([a3 isEqual:self->mExteriorTextWrap] & 1) == 0)
+  if (([wrap isEqual:self->mExteriorTextWrap] & 1) == 0)
   {
     [(TSDDrawableInfo *)self willChangeProperty:521];
 
-    self->mExteriorTextWrap = [a3 copy];
+    self->mExteriorTextWrap = [wrap copy];
   }
 }
 
 - (BOOL)isThemeContent
 {
-  v2 = [(TSDDrawableInfo *)self parentInfo];
+  parentInfo = [(TSDDrawableInfo *)self parentInfo];
 
-  return [(TSDContainerInfo *)v2 isThemeContent];
+  return [(TSDContainerInfo *)parentInfo isThemeContent];
 }
 
 - (id)partitioner
@@ -472,18 +472,18 @@ LABEL_8:
 
 - (BOOL)isLockable
 {
-  v3 = [(TSDDrawableInfo *)self isFloatingAboveText];
-  if (v3)
+  isFloatingAboveText = [(TSDDrawableInfo *)self isFloatingAboveText];
+  if (isFloatingAboveText)
   {
-    LOBYTE(v3) = [(TSDDrawableInfo *)self containingGroup]== 0;
+    LOBYTE(isFloatingAboveText) = [(TSDDrawableInfo *)self containingGroup]== 0;
   }
 
-  return v3;
+  return isFloatingAboveText;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithContext:a3];
+  v4 = [objc_alloc(objc_opt_class()) initWithContext:context];
   if (v4)
   {
     *(v4 + 48) = [(TSDInfoGeometry *)self->mGeometry copy];
@@ -498,13 +498,13 @@ LABEL_8:
   return v4;
 }
 
-- (id)searchForAnnotationsWithHitBlock:(id)a3
+- (id)searchForAnnotationsWithHitBlock:(id)block
 {
   if ([(TSDDrawableInfo *)self comment])
   {
     v5 = [TSDCanvasSearchReference searchReferenceWithDrawableInfo:self];
     [(TSDCanvasSearchReference *)v5 setAnnotation:[(TSDDrawableInfo *)self comment]];
-    (*(a3 + 2))(a3, v5);
+    (*(block + 2))(block, v5);
   }
 
   return 0;
@@ -518,21 +518,21 @@ LABEL_8:
   }
 }
 
-- (void)willChangeProperty:(int)a3
+- (void)willChangeProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   [(TSPObject *)self willModify];
   mChanges = self->mChanges;
 
   [(TSSPropertySetChangeDetails *)mChanges addChangedProperty:v3];
 }
 
-- (void)willChangeProperties:(id)a3
+- (void)willChangeProperties:(id)properties
 {
   [(TSPObject *)self willModify];
   mChanges = self->mChanges;
 
-  [(TSSPropertySetChangeDetails *)mChanges addChangedProperties:a3];
+  [(TSSPropertySetChangeDetails *)mChanges addChangedProperties:properties];
 }
 
 - (id)endCollectingChanges
@@ -540,9 +540,9 @@ LABEL_8:
   mChanges = self->mChanges;
   if (!mChanges)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDrawableInfo endCollectingChanges]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 515, @"don't try to endCollectingChanges without calling -beginCollectingChanges first"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 515, @"don't try to endCollectingChanges without calling -beginCollectingChanges first"}];
     mChanges = self->mChanges;
   }
 
@@ -551,9 +551,9 @@ LABEL_8:
   return mChanges;
 }
 
-- (void)coalesceChanges:(id)a3
+- (void)coalesceChanges:(id)changes
 {
-  v4 = [a3 count];
+  v4 = [changes count];
   if (v4 >= 2)
   {
     v5 = v4;
@@ -561,7 +561,7 @@ LABEL_8:
     v7 = v5 - 1;
     do
     {
-      v8 = [a3 objectAtIndex:v7];
+      v8 = [changes objectAtIndex:v7];
       v9 = [v6 objectForKey:{objc_msgSend(v8, "kind")}];
       objc_opt_class();
       [v8 details];
@@ -571,7 +571,7 @@ LABEL_8:
         if (v9)
         {
           [v9 addChangedProperties:{objc_msgSend(v10, "changedProperties")}];
-          [a3 removeObjectAtIndex:v7];
+          [changes removeObjectAtIndex:v7];
         }
 
         else
@@ -587,34 +587,34 @@ LABEL_8:
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 context:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root context:(id)context
 {
-  if ([(TSDDrawableInfo *)self comment:a3])
+  if ([(TSDDrawableInfo *)self comment:root])
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v5 postNotificationName:@"kTSDAnnotationInvalidatedNotification" object:a3];
+    [defaultCenter postNotificationName:@"kTSDAnnotationInvalidatedNotification" object:root];
   }
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   if ([(TSDDrawableInfo *)self comment])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v4 postNotificationName:@"kTSDAnnotationInvalidatedNotification" object:a3];
+    [defaultCenter postNotificationName:@"kTSDAnnotationInvalidatedNotification" object:root];
   }
 }
 
-- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)a3
+- (unint64_t)textureDeliveryStyleFromDeliveryString:(id)string
 {
   if (textureDeliveryStyleFromDeliveryString__onceToken != -1)
   {
     [TSDDrawableInfo textureDeliveryStyleFromDeliveryString:];
   }
 
-  result = [textureDeliveryStyleFromDeliveryString__sDeliveryStyleMap objectForKeyedSubscript:a3];
+  result = [textureDeliveryStyleFromDeliveryString__sDeliveryStyleMap objectForKeyedSubscript:string];
   if (result)
   {
 
@@ -624,10 +624,10 @@ LABEL_8:
   return result;
 }
 
-- (id)textureDeliveryStylesLocalized:(BOOL)a3 animationFilter:(id)a4
+- (id)textureDeliveryStylesLocalized:(BOOL)localized animationFilter:(id)filter
 {
   v4 = MEMORY[0x277CBEA60];
-  if (a3)
+  if (localized)
   {
     v5 = [TSDBundle() localizedStringForKey:@"All at Once" value:&stru_287D36338 table:@"TSDrawables"];
   }
@@ -678,29 +678,29 @@ LABEL_8:
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDrawableInfo mixingTypeWithObject:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 717, @"TSDDrawableInfo does not implement TSDMixing!"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 717, @"TSDDrawableInfo does not implement TSDMixing!"}];
   return 1;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v4 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDrawableInfo mixedObjectWithFraction:ofObject:]"];
-  [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 724, @"TSDDrawableInfo does not implement TSDMixing!"}];
+  [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableInfo.m"), 724, @"TSDDrawableInfo does not implement TSDMixing!"}];
   return 0;
 }
 
-- (id)transformedGeometryWithTransform:(CGAffineTransform *)a3 inBounds:(CGRect)a4
+- (id)transformedGeometryWithTransform:(CGAffineTransform *)transform inBounds:(CGRect)bounds
 {
-  v6 = TSDCenterOfRect(a4.origin.x, a4.origin.y, a4.size.width, a4.size.height);
-  v28 = v6 / a3->a;
+  v6 = TSDCenterOfRect(bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height);
+  v28 = v6 / transform->a;
   v7 = [(TSDInfoGeometry *)[(TSDDrawableInfo *)self geometry] mutableCopy];
-  a = a3->a;
-  d = a3->d;
+  a = transform->a;
+  d = transform->d;
   v10 = fminf(a, d);
   [v7 size];
   [v7 setSize:{TSDMultiplySizeScalar(v11, v12, v10)}];
@@ -721,27 +721,27 @@ LABEL_8:
 
 - (CGPoint)transformableObjectAnchorPoint
 {
-  v2 = [(TSDDrawableInfo *)self geometry];
+  geometry = [(TSDDrawableInfo *)self geometry];
 
-  [(TSDInfoGeometry *)v2 center];
+  [(TSDInfoGeometry *)geometry center];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)setInsertionCenterPosition:(CGPoint)a3
+- (void)setInsertionCenterPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v6 = [(TSDInfoGeometry *)[(TSDDrawableInfo *)self geometry] mutableCopy];
   [v6 setCenter:{x, y}];
   [(TSDDrawableInfo *)self setGeometry:v6];
 }
 
-- (id)boxedObjectForProperty:(int)a3
+- (id)boxedObjectForProperty:(int)property
 {
-  v3 = *&a3;
-  v5 = String(a3);
+  v3 = *&property;
+  v5 = String(property);
   if (v5 > 1)
   {
     if (v5 == 2)
@@ -799,14 +799,14 @@ LABEL_8:
   }
 }
 
-- (id)objectForProperty:(int)a3
+- (id)objectForProperty:(int)property
 {
-  if (a3 == 524)
+  if (property == 524)
   {
     return [(TSDDrawableInfo *)self hyperlinkURL];
   }
 
-  if (a3 == 512)
+  if (property == 512)
   {
     return [(TSDDrawableInfo *)self geometry];
   }

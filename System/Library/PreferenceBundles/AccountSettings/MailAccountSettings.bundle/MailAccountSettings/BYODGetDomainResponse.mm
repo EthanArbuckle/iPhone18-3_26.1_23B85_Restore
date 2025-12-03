@@ -1,17 +1,17 @@
 @interface BYODGetDomainResponse
-- (BYODGetDomainResponse)initWithDictionary:(id)a3;
-- (BYODGetDomainResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (BYODGetDomainResponse)initWithDictionary:(id)dictionary;
+- (BYODGetDomainResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation BYODGetDomainResponse
 
-- (BYODGetDomainResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (BYODGetDomainResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = BYODGetDomainResponse;
-  v8 = [(BYODGetDomainResponse *)&v11 initWithHTTPResponse:v6 data:v7 bodyIsPlist:0];
+  v8 = [(BYODGetDomainResponse *)&v11 initWithHTTPResponse:responseCopy data:dataCopy bodyIsPlist:0];
   v9 = v8;
   if (v8 && [*&v8->super.AAResponse_opaque[OBJC_IVAR___AAResponse__httpResponse] statusCode] == stru_B8.segname)
   {
@@ -21,16 +21,16 @@
   return v9;
 }
 
-- (BYODGetDomainResponse)initWithDictionary:(id)a3
+- (BYODGetDomainResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = BYODGetDomainResponse;
-  v5 = [(BYODBaseResponse *)&v11 initWithDictionary:v4];
+  v5 = [(BYODBaseResponse *)&v11 initWithDictionary:dictionaryCopy];
   if (v5)
   {
     v6 = [BYODGetDomainResult alloc];
-    v7 = [v4 objectForKeyedSubscript:@"result"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"result"];
     v8 = [(BYODGetDomainResult *)v6 initWithDictionary:v7];
     v9 = v5->_result;
     v5->_result = v8;

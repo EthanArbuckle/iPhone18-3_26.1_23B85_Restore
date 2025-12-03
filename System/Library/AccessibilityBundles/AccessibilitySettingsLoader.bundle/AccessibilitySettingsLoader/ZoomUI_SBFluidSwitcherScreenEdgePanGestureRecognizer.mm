@@ -1,23 +1,23 @@
 @interface ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer
-- (BOOL)_viewOrientationDoesNotMatchSBOrientation:(id)a3;
-- (CGPoint)_convertPortaitPointToSBOrientation:(CGPoint)a3;
-- (CGPoint)_convertSBPointToPortaitOrientation:(CGPoint)a3;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)translationInView:(id)a3;
-- (void)setTranslation:(CGPoint)a3 inView:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (BOOL)_viewOrientationDoesNotMatchSBOrientation:(id)orientation;
+- (CGPoint)_convertPortaitPointToSBOrientation:(CGPoint)orientation;
+- (CGPoint)_convertSBPointToPortaitOrientation:(CGPoint)orientation;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)translationInView:(id)view;
+- (void)setTranslation:(CGPoint)translation inView:(id)view;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer
 
-- (CGPoint)_convertPortaitPointToSBOrientation:(CGPoint)a3
+- (CGPoint)_convertPortaitPointToSBOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [*MEMORY[0x29EDC8008] activeInterfaceOrientation];
-  v6 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v6 bounds];
+  y = orientation.y;
+  x = orientation.x;
+  activeInterfaceOrientation = [*MEMORY[0x29EDC8008] activeInterfaceOrientation];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen bounds];
   v8 = v7;
   v10 = v9;
 
@@ -25,7 +25,7 @@
   v12 = v10 - y;
   v13 = v10 - x;
   v14 = v8 - y;
-  if (v5 == 4)
+  if (activeInterfaceOrientation == 4)
   {
     v15 = x;
   }
@@ -36,7 +36,7 @@
     v15 = y;
   }
 
-  if (v5 == 3)
+  if (activeInterfaceOrientation == 3)
   {
     v14 = y;
   }
@@ -46,7 +46,7 @@
     v13 = v15;
   }
 
-  if (v5 != 2)
+  if (activeInterfaceOrientation != 2)
   {
     v11 = v14;
     v12 = v13;
@@ -57,19 +57,19 @@
   return result;
 }
 
-- (CGPoint)_convertSBPointToPortaitOrientation:(CGPoint)a3
+- (CGPoint)_convertSBPointToPortaitOrientation:(CGPoint)orientation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [*MEMORY[0x29EDC8008] activeInterfaceOrientation];
-  v6 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v6 bounds];
+  y = orientation.y;
+  x = orientation.x;
+  activeInterfaceOrientation = [*MEMORY[0x29EDC8008] activeInterfaceOrientation];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen bounds];
   v8 = v7;
   v10 = v9;
 
   v11 = v8 - x;
   v12 = v10 - y;
-  if (v5 == 4)
+  if (activeInterfaceOrientation == 4)
   {
     v13 = y;
   }
@@ -79,7 +79,7 @@
     v13 = x;
   }
 
-  if (v5 == 4)
+  if (activeInterfaceOrientation == 4)
   {
     v14 = v8 - x;
   }
@@ -89,13 +89,13 @@
     v14 = y;
   }
 
-  if (v5 == 3)
+  if (activeInterfaceOrientation == 3)
   {
     v13 = v10 - y;
     v14 = x;
   }
 
-  if (v5 != 2)
+  if (activeInterfaceOrientation != 2)
   {
     v11 = v13;
     v12 = v14;
@@ -106,29 +106,29 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [getZoomServicesClass() sharedInstance];
-  v9 = [MEMORY[0x29EDC7C40] mainScreen];
-  v10 = [v9 displayIdentity];
-  [v8 zoomFrameOnDisplay:{objc_msgSend(v10, "displayID")}];
+  eventCopy = event;
+  beganCopy = began;
+  sharedInstance = [getZoomServicesClass() sharedInstance];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  displayIdentity = [mainScreen displayIdentity];
+  [sharedInstance zoomFrameOnDisplay:{objc_msgSend(displayIdentity, "displayID")}];
   *zoomFrame = v11;
   *&zoomFrame[8] = v12;
   *&zoomFrame[16] = v13;
   *&zoomFrame[24] = v14;
 
-  v15 = [getAXSettingsClass() sharedInstance];
-  zoomInStandByAtGestureStart = [v15 zoomInStandby];
+  sharedInstance2 = [getAXSettingsClass() sharedInstance];
+  zoomInStandByAtGestureStart = [sharedInstance2 zoomInStandby];
 
   translatedUpwards = 0;
   v16.receiver = self;
   v16.super_class = ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer;
-  [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v16 touchesBegan:v7 withEvent:v6];
+  [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v16 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v4 = *(MEMORY[0x29EDB90E0] + 16);
   *zoomFrame = *MEMORY[0x29EDB90E0];
@@ -136,18 +136,18 @@
   translatedUpwards = 0;
   v5.receiver = self;
   v5.super_class = ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer;
-  [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v5 touchesEnded:a3 withEvent:a4];
+  [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v5 touchesEnded:ended withEvent:event];
 }
 
-- (BOOL)_viewOrientationDoesNotMatchSBOrientation:(id)a3
+- (BOOL)_viewOrientationDoesNotMatchSBOrientation:(id)orientation
 {
   v3 = MEMORY[0x29EDC7C40];
-  v4 = a3;
-  v5 = [v3 mainScreen];
-  [v5 bounds];
+  orientationCopy = orientation;
+  mainScreen = [v3 mainScreen];
+  [mainScreen bounds];
   v7 = v6;
   v9 = v8;
-  [v4 bounds];
+  [orientationCopy bounds];
   v11 = v10;
   v13 = v12;
 
@@ -155,9 +155,9 @@
   return v14;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (+[ZoomServicesUI _shouldUnmapPointsForFluidGestures]&& (zoomInStandByAtGestureStart & 1) == 0)
   {
     [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)self safeCGPointForKey:@"_lastSceneReferenceLocation"];
@@ -165,16 +165,16 @@
     [ZoomServicesUI _unMappedZoomPoint:?];
     v10 = v9;
     v12 = v11;
-    if ([(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)self _viewOrientationDoesNotMatchSBOrientation:v4])
+    if ([(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)self _viewOrientationDoesNotMatchSBOrientation:viewCopy])
     {
       [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)self _convertSBPointToPortaitOrientation:v10, v12];
       v10 = v13;
       v12 = v14;
     }
 
-    [v4 bounds];
+    [viewCopy bounds];
     v6 = v10 + v15;
-    [v4 bounds];
+    [viewCopy bounds];
     v8 = v12 + v16;
   }
 
@@ -182,7 +182,7 @@
   {
     v19.receiver = self;
     v19.super_class = ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer;
-    [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v19 locationInView:v4];
+    [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v19 locationInView:viewCopy];
     v6 = v5;
     v8 = v7;
   }
@@ -194,9 +194,9 @@
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (+[ZoomServicesUI _shouldUnmapPointsForFluidGestures]&& (zoomInStandByAtGestureStart & 1) == 0)
   {
     [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)self safeCGPointForKey:@"_firstSceneReferenceLocation"];
@@ -217,7 +217,7 @@
     [ZoomServicesUI _unMappedZoomPoint:v22, v24];
     v30 = v29;
     v32 = v31;
-    if ([(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)self _viewOrientationDoesNotMatchSBOrientation:v4])
+    if ([(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)self _viewOrientationDoesNotMatchSBOrientation:viewCopy])
     {
       [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)self _convertSBPointToPortaitOrientation:v26, v28];
       v26 = v33;
@@ -236,7 +236,7 @@
   {
     v39.receiver = self;
     v39.super_class = ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer;
-    [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v39 translationInView:v4];
+    [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v39 translationInView:viewCopy];
     v6 = v5;
     v8 = v7;
   }
@@ -248,16 +248,16 @@
   return result;
 }
 
-- (void)setTranslation:(CGPoint)a3 inView:(id)a4
+- (void)setTranslation:(CGPoint)translation inView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = translation.y;
+  x = translation.x;
+  viewCopy = view;
   if (!+[ZoomServicesUI _shouldUnmapPointsForFluidGestures]|| zoomInStandByAtGestureStart == 1)
   {
     v8.receiver = self;
     v8.super_class = ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer;
-    [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v8 setTranslation:v7 inView:x, y];
+    [(ZoomUI_SBFluidSwitcherScreenEdgePanGestureRecognizer *)&v8 setTranslation:viewCopy inView:x, y];
   }
 }
 

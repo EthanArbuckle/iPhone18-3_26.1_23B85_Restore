@@ -10,17 +10,17 @@
 {
   v14[1] = *MEMORY[0x29EDCA608];
   v2 = [(HURecordingButtonAccessibility *)self safeSwiftValueForKey:@"currentRecordingState"];
-  v3 = [v2 safeSwiftEnumCase];
+  safeSwiftEnumCase = [v2 safeSwiftEnumCase];
 
-  if ([v3 isEqualToString:@"recording"])
+  if ([safeSwiftEnumCase isEqualToString:@"recording"])
   {
     v4 = objc_alloc(MEMORY[0x29EDBA038]);
     v5 = accessibilityHomeUILocalizedString(@"record.button");
     v6 = [v4 initWithString:v5];
 
-    v7 = [MEMORY[0x29EDB8DE0] preferredLanguages];
-    v8 = [v7 firstObject];
-    v9 = [v8 hasPrefix:@"en"];
+    preferredLanguages = [MEMORY[0x29EDB8DE0] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
+    v9 = [firstObject hasPrefix:@"en"];
 
     if (v9)
     {
@@ -45,9 +45,9 @@
 {
   v11[3] = *MEMORY[0x29EDCA608];
   v2 = [(HURecordingButtonAccessibility *)self safeSwiftValueForKey:@"currentRecordingState"];
-  v3 = [v2 safeSwiftEnumCase];
+  safeSwiftEnumCase = [v2 safeSwiftEnumCase];
 
-  if ([v3 isEqualToString:@"recording"])
+  if ([safeSwiftEnumCase isEqualToString:@"recording"])
   {
     v4 = accessibilityHomeUILocalizedString(@"record.button");
     v11[0] = v4;
@@ -61,7 +61,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"stopped"])
+  if ([safeSwiftEnumCase isEqualToString:@"stopped"])
   {
     v4 = accessibilityHomeUILocalizedString(@"stop.button");
     v10[0] = v4;
@@ -82,9 +82,9 @@ LABEL_7:
 - (id)accessibilityLabel
 {
   v2 = [(HURecordingButtonAccessibility *)self safeSwiftValueForKey:@"currentRecordingState"];
-  v3 = [v2 safeSwiftEnumCase];
+  safeSwiftEnumCase = [v2 safeSwiftEnumCase];
 
-  if ([v3 isEqualToString:@"recording"])
+  if ([safeSwiftEnumCase isEqualToString:@"recording"])
   {
     v4 = @"record.button";
 LABEL_5:
@@ -92,7 +92,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"stopped"])
+  if ([safeSwiftEnumCase isEqualToString:@"stopped"])
   {
     v4 = @"stop.button";
     goto LABEL_5;

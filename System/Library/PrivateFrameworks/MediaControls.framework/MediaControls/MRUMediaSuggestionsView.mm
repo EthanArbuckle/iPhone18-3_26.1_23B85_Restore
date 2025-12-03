@@ -1,27 +1,27 @@
 @interface MRUMediaSuggestionsView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUMediaSuggestionsView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUMediaSuggestionsView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentEdgeInsets;
-- (double)itemHeightForItemWidth:(double)a3;
-- (double)itemWidthForWidth:(double)a3;
+- (double)itemHeightForItemWidth:(double)width;
+- (double)itemWidthForWidth:(double)width;
 - (int64_t)numberOfColumns;
 - (int64_t)numberOfRows;
 - (void)layoutSubviews;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setContentScale:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLayout:(int64_t)a3;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setContentScale:(double)scale;
+- (void)setFrame:(CGRect)frame;
+- (void)setLayout:(int64_t)layout;
 - (void)updateCollectionViewLayout;
 @end
 
 @implementation MRUMediaSuggestionsView
 
-- (MRUMediaSuggestionsView)initWithFrame:(CGRect)a3
+- (MRUMediaSuggestionsView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = MRUMediaSuggestionsView;
   v7 = [(MRUMediaSuggestionsView *)&v13 initWithFrame:?];
@@ -33,8 +33,8 @@
     collectionView = v8->_collectionView;
     v8->_collectionView = v9;
 
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v8->_collectionView setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v8->_collectionView setBackgroundColor:clearColor];
 
     [(UICollectionView *)v8->_collectionView setShowsVerticalScrollIndicator:0];
     [(UICollectionView *)v8->_collectionView setShowsHorizontalScrollIndicator:0];
@@ -54,10 +54,10 @@
   [(UICollectionView *)self->_collectionView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(MRUMediaSuggestionsView *)self itemWidthForWidth:a3.width, a3.height];
+  width = fits.width;
+  [(MRUMediaSuggestionsView *)self itemWidthForWidth:fits.width, fits.height];
   [(MRUMediaSuggestionsView *)self itemHeightForItemWidth:?];
   top = self->_contentEdgeInsets.top;
   v7 = top + v6 * [(MRUMediaSuggestionsView *)self numberOfRows];
@@ -67,12 +67,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MRUMediaSuggestionsView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -86,33 +86,33 @@
   }
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(MRUMediaSuggestionsView *)self updateCollectionViewLayout];
   }
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentEdgeInsets.top, v3), vceqq_f64(*&self->_contentEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentEdgeInsets = a3;
+    self->_contentEdgeInsets = insets;
     [(MRUMediaSuggestionsView *)self updateCollectionViewLayout];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (vabdd_f64(self->_contentScale, a3) > 2.22044605e-16)
+  if (vabdd_f64(self->_contentScale, scale) > 2.22044605e-16)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(MRUMediaSuggestionsView *)self updateCollectionViewLayout];
   }
 }
@@ -121,7 +121,7 @@
 {
   if (self->_supportsHorizontalLayout && !MRULayoutShouldBeVertical())
   {
-    v22 = [(MRUMediaSuggestionsView *)self numberOfColumns];
+    numberOfColumns = [(MRUMediaSuggestionsView *)self numberOfColumns];
     [(MRUMediaSuggestionsView *)self bounds];
     [(MRUMediaSuggestionsView *)self itemWidthForWidth:CGRectGetWidth(v42)];
     [(MRUMediaSuggestionsView *)self itemHeightForItemWidth:?];
@@ -138,7 +138,7 @@
     v31 = [MEMORY[0x1E6995558] absoluteDimension:v24];
     v14 = [v29 sizeWithWidthDimension:v30 heightDimension:v31];
 
-    v15 = [MEMORY[0x1E6995568] horizontalGroupWithLayoutSize:v14 subitem:v10 count:v22];
+    v15 = [MEMORY[0x1E6995568] horizontalGroupWithLayoutSize:v14 subitem:v10 count:numberOfColumns];
     v32 = [MEMORY[0x1E6995590] fixedSpacing:10.0];
     [v15 setInterItemSpacing:v32];
 
@@ -152,7 +152,7 @@
 
   else
   {
-    v3 = [(MRUMediaSuggestionsView *)self numberOfRows];
+    numberOfRows = [(MRUMediaSuggestionsView *)self numberOfRows];
     [(MRUMediaSuggestionsView *)self bounds];
     [(MRUMediaSuggestionsView *)self itemWidthForWidth:CGRectGetWidth(v41)];
     v5 = v4;
@@ -168,7 +168,7 @@
     v13 = [MEMORY[0x1E6995558] fractionalHeightDimension:1.0];
     v14 = [v11 sizeWithWidthDimension:v12 heightDimension:v13];
 
-    v15 = [MEMORY[0x1E6995568] verticalGroupWithLayoutSize:v14 subitem:v10 count:v3];
+    v15 = [MEMORY[0x1E6995568] verticalGroupWithLayoutSize:v14 subitem:v10 count:numberOfRows];
     v16 = [MEMORY[0x1E6995580] sectionWithGroup:v15];
     [v16 setInterGroupSpacing:10.0];
     v17 = 0;
@@ -196,7 +196,7 @@
   [(UICollectionView *)collectionView setContentOffset:v36, v37];
 }
 
-- (double)itemWidthForWidth:(double)a3
+- (double)itemWidthForWidth:(double)width
 {
   MRUMediaSuggestionsVisibleItemCount(self->_layout);
   layout = self->_layout;
@@ -207,8 +207,8 @@
       return result;
     }
 
-    v6 = [(MRUMediaSuggestionsView *)self traitCollection];
-    [v6 displayScale];
+    traitCollection = [(MRUMediaSuggestionsView *)self traitCollection];
+    [traitCollection displayScale];
     UIRoundToScale();
 
     MRUMediaSuggestionsMaxItemWidthCompact();
@@ -219,24 +219,24 @@
     [(MRUMediaSuggestionsView *)self numberOfColumns];
   }
 
-  v7 = [(MRUMediaSuggestionsView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection2 = [(MRUMediaSuggestionsView *)self traitCollection];
+  [traitCollection2 displayScale];
   UIRoundToScale();
   v9 = v8;
 
   return v9;
 }
 
-- (double)itemHeightForItemWidth:(double)a3
+- (double)itemHeightForItemWidth:(double)width
 {
-  v4 = [MEMORY[0x1E69DB878] mru_suggestionsTitleFont];
-  [v4 lineHeight];
+  mru_suggestionsTitleFont = [MEMORY[0x1E69DB878] mru_suggestionsTitleFont];
+  [mru_suggestionsTitleFont lineHeight];
 
-  v5 = [MEMORY[0x1E69DB878] mru_suggestionsSubtitleFont];
-  [v5 lineHeight];
+  mru_suggestionsSubtitleFont = [MEMORY[0x1E69DB878] mru_suggestionsSubtitleFont];
+  [mru_suggestionsSubtitleFont lineHeight];
 
-  v6 = [(MRUMediaSuggestionsView *)self traitCollection];
-  [v6 displayScale];
+  traitCollection = [(MRUMediaSuggestionsView *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v8 = v7;
 

@@ -1,13 +1,13 @@
 @interface NTKCompanionCustomization
 + (void)initialize;
-- (BOOL)_canHandleNotification:(id)a3;
-- (BOOL)handlePresentationOfNotification:(id)a3 fromNotificationCenter:(id)a4 withCompletionHandler:(id)a5;
-- (BOOL)handleUserNotificationResponse:(id)a3 fromNotificationCenter:(id)a4 withCompletionHandler:(id)a5;
+- (BOOL)_canHandleNotification:(id)notification;
+- (BOOL)handlePresentationOfNotification:(id)notification fromNotificationCenter:(id)center withCompletionHandler:(id)handler;
+- (BOOL)handleUserNotificationResponse:(id)response fromNotificationCenter:(id)center withCompletionHandler:(id)handler;
 - (id)facesViewController;
 - (id)galleryViewController;
 - (id)libraryViewController;
 - (id)userNotificationCategories;
-- (void)_addFaceForBundleIdentifier:(id)a3;
+- (void)_addFaceForBundleIdentifier:(id)identifier;
 @end
 
 @implementation NTKCompanionCustomization
@@ -28,40 +28,40 @@
 
 - (id)facesViewController
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  facesViewController = v2->_facesViewController;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  facesViewController = selfCopy->_facesViewController;
   if (!facesViewController)
   {
     v4 = objc_opt_new();
-    v5 = v2->_facesViewController;
-    v2->_facesViewController = v4;
+    v5 = selfCopy->_facesViewController;
+    selfCopy->_facesViewController = v4;
 
-    facesViewController = v2->_facesViewController;
+    facesViewController = selfCopy->_facesViewController;
   }
 
   v6 = facesViewController;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)galleryViewController
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  galleryViewController = v2->_galleryViewController;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  galleryViewController = selfCopy->_galleryViewController;
   if (!galleryViewController)
   {
     v4 = objc_opt_new();
-    v5 = v2->_galleryViewController;
-    v2->_galleryViewController = v4;
+    v5 = selfCopy->_galleryViewController;
+    selfCopy->_galleryViewController = v4;
 
-    galleryViewController = v2->_galleryViewController;
+    galleryViewController = selfCopy->_galleryViewController;
   }
 
   v6 = galleryViewController;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -113,34 +113,34 @@
 
 - (id)libraryViewController
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  libraryViewController = v2->_libraryViewController;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  libraryViewController = selfCopy->_libraryViewController;
   if (!libraryViewController)
   {
     v4 = objc_opt_new();
-    v5 = v2->_libraryViewController;
-    v2->_libraryViewController = v4;
+    v5 = selfCopy->_libraryViewController;
+    selfCopy->_libraryViewController = v4;
 
-    libraryViewController = v2->_libraryViewController;
+    libraryViewController = selfCopy->_libraryViewController;
   }
 
   v6 = libraryViewController;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)handleUserNotificationResponse:(id)a3 fromNotificationCenter:(id)a4 withCompletionHandler:(id)a5
+- (BOOL)handleUserNotificationResponse:(id)response fromNotificationCenter:(id)center withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [v6 notification];
-  if ([(NTKCompanionCustomization *)self _canHandleNotification:v7])
+  responseCopy = response;
+  notification = [responseCopy notification];
+  if ([(NTKCompanionCustomization *)self _canHandleNotification:notification])
   {
-    v8 = [v7 request];
-    v9 = [v8 content];
-    v10 = [v9 categoryIdentifier];
-    v11 = [v10 hasPrefix:@"com.apple.nanotimekit.facesupport."];
+    request = [notification request];
+    content = [request content];
+    categoryIdentifier = [content categoryIdentifier];
+    v11 = [categoryIdentifier hasPrefix:@"com.apple.nanotimekit.facesupport."];
     if (!v11)
     {
 LABEL_30:
@@ -148,50 +148,50 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v39 = v10;
-    v40 = v9;
+    v39 = categoryIdentifier;
+    v40 = content;
     if (qword_277F0 != -1)
     {
       sub_FBF4();
     }
 
-    v12 = v8;
+    v12 = request;
     v13 = qword_277E8;
     if (os_log_type_enabled(qword_277E8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v42 = v6;
+      v42 = responseCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Got a response for %@", buf, 0xCu);
     }
 
-    v14 = [v6 actionIdentifier];
-    v15 = [v6 notification];
-    v16 = [v15 request];
-    v17 = [v16 content];
-    v18 = [v17 userInfo];
+    actionIdentifier = [responseCopy actionIdentifier];
+    notification2 = [responseCopy notification];
+    request2 = [notification2 request];
+    content2 = [request2 content];
+    userInfo = [content2 userInfo];
 
-    v19 = v18;
-    if (!v18)
+    v19 = userInfo;
+    if (!userInfo)
     {
       v25 = qword_277E8;
-      v21 = v14;
-      v8 = v12;
-      v9 = v40;
+      v21 = actionIdentifier;
+      request = v12;
+      content = v40;
       if (os_log_type_enabled(qword_277E8, OS_LOG_TYPE_ERROR))
       {
-        sub_FC80(v6, v25);
+        sub_FC80(responseCopy, v25);
       }
 
       goto LABEL_29;
     }
 
-    v20 = [v18 objectForKey:@"bid"];
+    v20 = [userInfo objectForKey:@"bid"];
     if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v24 = qword_277E8;
-      v21 = v14;
-      v8 = v12;
-      v9 = v40;
+      v21 = actionIdentifier;
+      request = v12;
+      content = v40;
       if (os_log_type_enabled(qword_277E8, OS_LOG_TYPE_ERROR))
       {
         sub_FC08(v20, v24);
@@ -200,15 +200,15 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v21 = v14;
-    if ([v14 isEqualToString:@"ADD_FACE_ID"])
+    v21 = actionIdentifier;
+    if ([actionIdentifier isEqualToString:@"ADD_FACE_ID"])
     {
       v22 = qword_277E8;
-      v8 = v12;
+      request = v12;
       if (os_log_type_enabled(qword_277E8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v42 = v6;
+        v42 = responseCopy;
         _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "ADDING FACE for response %{public}@", buf, 0xCu);
       }
 
@@ -216,21 +216,21 @@ LABEL_30:
       [v23 postNotificationName:@"NTKFaceSupportAddFaceNotification" object:v20];
 
       [(NTKCompanionCustomization *)self _addFaceForBundleIdentifier:v20];
-      v9 = v40;
+      content = v40;
     }
 
     else
     {
-      v26 = [v14 isEqualToString:@"VIEW_GALLERY_ID"];
-      v8 = v12;
+      v26 = [actionIdentifier isEqualToString:@"VIEW_GALLERY_ID"];
+      request = v12;
       if (v26)
       {
         v27 = qword_277E8;
-        v9 = v40;
+        content = v40;
         if (os_log_type_enabled(qword_277E8, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v42 = v6;
+          v42 = responseCopy;
           _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "VIEWING GALLERY for response %{public}@", buf, 0xCu);
         }
 
@@ -242,17 +242,17 @@ LABEL_30:
 
       else
       {
-        v9 = v40;
+        content = v40;
         if (![v21 isEqualToString:@"VIEW_WHATS_NEW_ID"])
         {
-          v32 = [v18 objectForKey:@"defaultaction"];
+          v32 = [userInfo objectForKey:@"defaultaction"];
           if ([v32 isEqualToString:@"detail"])
           {
             log = qword_277E8;
             if (os_log_type_enabled(qword_277E8, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v42 = v6;
+              v42 = responseCopy;
               v43 = 2114;
               v44 = v21;
               _os_log_impl(&dword_0, log, OS_LOG_TYPE_DEFAULT, "VIEWING FACE DETAIL for response %{public}@ - %{public}@", buf, 0x16u);
@@ -273,7 +273,7 @@ LABEL_30:
               if (v35)
               {
                 *buf = 138543618;
-                v42 = v6;
+                v42 = responseCopy;
                 v43 = 2114;
                 v44 = v21;
                 _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "VIEWING WHAT'S NEW for response %{public}@ - %{public}@", buf, 0x16u);
@@ -287,7 +287,7 @@ LABEL_30:
               if (v35)
               {
                 *buf = 138543618;
-                v42 = v6;
+                v42 = responseCopy;
                 v43 = 2114;
                 v44 = v21;
                 _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "PERFORMING DEFAULT ACTION (VIEWING FACE DETAIL) for response %{public}@ - %{public}@", buf, 0x16u);
@@ -307,7 +307,7 @@ LABEL_30:
         if (os_log_type_enabled(qword_277E8, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v42 = v6;
+          v42 = responseCopy;
           _os_log_impl(&dword_0, v29, OS_LOG_TYPE_DEFAULT, "VIEWING WHAT'S NEW for response %{public}@", buf, 0xCu);
         }
 
@@ -318,11 +318,11 @@ LABEL_30:
       }
     }
 
-    v19 = v18;
+    v19 = userInfo;
 LABEL_28:
 
 LABEL_29:
-    v10 = v39;
+    categoryIdentifier = v39;
     goto LABEL_30;
   }
 
@@ -332,21 +332,21 @@ LABEL_31:
   return v11;
 }
 
-- (BOOL)handlePresentationOfNotification:(id)a3 fromNotificationCenter:(id)a4 withCompletionHandler:(id)a5
+- (BOOL)handlePresentationOfNotification:(id)notification fromNotificationCenter:(id)center withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [(NTKCompanionCustomization *)self _canHandleNotification:a3];
+  handlerCopy = handler;
+  v8 = [(NTKCompanionCustomization *)self _canHandleNotification:notification];
   if (v8)
   {
-    v7[2](v7, 26);
+    handlerCopy[2](handlerCopy, 26);
   }
 
   return v8;
 }
 
-- (void)_addFaceForBundleIdentifier:(id)a3
+- (void)_addFaceForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[CLKDevice currentDevice];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -355,22 +355,22 @@ LABEL_31:
   v12 = NTKCollectionIdentifierLibraryFaces;
   sub_C070(v11, v5);
   v6 = +[NTKFaceBundleManager sharedManager];
-  v7 = [v6 faceBundleForBundleIdentifier:v4 onDevice:v5];
+  v7 = [v6 faceBundleForBundleIdentifier:identifierCopy onDevice:v5];
 
   v8 = [v7 defaultFaceForDevice:v5];
   [qword_277F8 appendFace:v8 suppressingCallbackToObserver:0];
   [qword_277F8 setSelectedFace:v8 suppressingCallbackToObserver:0];
-  v9 = [(NTKCompanionCustomization *)self galleryViewController];
-  v10 = [v9 tabBarController];
-  [v10 setSelectedIndex:0];
+  galleryViewController = [(NTKCompanionCustomization *)self galleryViewController];
+  tabBarController = [galleryViewController tabBarController];
+  [tabBarController setSelectedIndex:0];
 }
 
-- (BOOL)_canHandleNotification:(id)a3
+- (BOOL)_canHandleNotification:(id)notification
 {
-  v3 = [a3 request];
-  v4 = [v3 content];
-  v5 = [v4 categoryIdentifier];
-  v6 = [v5 hasPrefix:@"com.apple.nanotimekit.facesupport."];
+  request = [notification request];
+  content = [request content];
+  categoryIdentifier = [content categoryIdentifier];
+  v6 = [categoryIdentifier hasPrefix:@"com.apple.nanotimekit.facesupport."];
 
   return v6;
 }

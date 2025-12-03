@@ -1,7 +1,7 @@
 @interface HMDEventCountersManager.CoreDataDelegate
 - (HMDEventCounterContext)context;
-- (id)groupForSpecifier:(id)a3;
-- (void)saveForManager:(id)a3;
+- (id)groupForSpecifier:(id)specifier;
+- (void)saveForManager:(id)manager;
 @end
 
 @implementation HMDEventCountersManager.CoreDataDelegate
@@ -13,17 +13,17 @@
   return Strong;
 }
 
-- (id)groupForSpecifier:(id)a3
+- (id)groupForSpecifier:(id)specifier
 {
   swift_unknownObjectRetain();
 
-  v4 = sub_2297A0370(a3);
+  v4 = sub_2297A0370(specifier);
   swift_unknownObjectRelease();
 
   return v4;
 }
 
-- (void)saveForManager:(id)a3
+- (void)saveForManager:(id)manager
 {
   v3 = *(self + 3);
 

@@ -1,76 +1,76 @@
 @interface UserGuidesContext
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3;
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3;
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3;
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker;
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation;
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item;
 - (ChromeViewController)chromeViewController;
 - (_TtC4Maps17UserGuidesContext)init;
-- (_TtC4Maps17UserGuidesContext)initWithConfiguration:(id)a3;
+- (_TtC4Maps17UserGuidesContext)initWithConfiguration:(id)configuration;
 - (id)desiredCards;
 - (id)personalizedItemSources;
-- (id)searchResultsForViewController:(id)a3;
-- (id)traitsForAddFromACViewController:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)containeeViewControllerDidDismissExternally:(id)a3;
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4;
-- (void)injectSearchPinsFromSearchInfo:(id)a3;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)userGuideViewController:(id)a3 createNewUserGuideWith:(id)a4;
-- (void)userGuideViewController:(id)a3 didSelect:(id)a4;
-- (void)userGuideViewController:(id)a3 didTapAddPlacesToGuide:(id)a4;
-- (void)userGuideViewController:(id)a3 didUpdateWith:(id)a4;
-- (void)userGuideViewController:(id)a3 present:(id)a4;
-- (void)viewController:(id)a3 showSortPickerWithSortOptions:(id)a4 initialSelectedSortOptionIndex:(int64_t)a5 completion:(id)a6;
-- (void)viewControllerClearInjectedSearchPins:(id)a3;
+- (id)searchResultsForViewController:(id)controller;
+- (id)traitsForAddFromACViewController:(id)controller;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)containeeViewControllerDidDismissExternally:(id)externally;
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender;
+- (void)injectSearchPinsFromSearchInfo:(id)info;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)userGuideViewController:(id)controller createNewUserGuideWith:(id)with;
+- (void)userGuideViewController:(id)controller didSelect:(id)select;
+- (void)userGuideViewController:(id)controller didTapAddPlacesToGuide:(id)guide;
+- (void)userGuideViewController:(id)controller didUpdateWith:(id)with;
+- (void)userGuideViewController:(id)controller present:(id)present;
+- (void)viewController:(id)controller showSortPickerWithSortOptions:(id)options initialSelectedSortOptionIndex:(int64_t)index completion:(id)completion;
+- (void)viewControllerClearInjectedSearchPins:(id)pins;
 @end
 
 @implementation UserGuidesContext
 
-- (void)userGuideViewController:(id)a3 createNewUserGuideWith:(id)a4
+- (void)userGuideViewController:(id)controller createNewUserGuideWith:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100214C54(v7);
+  controllerCopy = controller;
+  withCopy = with;
+  selfCopy = self;
+  sub_100214C54(withCopy);
 }
 
-- (void)userGuideViewController:(id)a3 present:(id)a4
+- (void)userGuideViewController:(id)controller present:(id)present
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100214E34(v7);
+  controllerCopy = controller;
+  presentCopy = present;
+  selfCopy = self;
+  sub_100214E34(presentCopy);
 }
 
-- (void)userGuideViewController:(id)a3 didTapAddPlacesToGuide:(id)a4
+- (void)userGuideViewController:(id)controller didTapAddPlacesToGuide:(id)guide
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100214F44(v7);
+  controllerCopy = controller;
+  guideCopy = guide;
+  selfCopy = self;
+  sub_100214F44(guideCopy);
 }
 
-- (void)userGuideViewController:(id)a3 didSelect:(id)a4
+- (void)userGuideViewController:(id)controller didSelect:(id)select
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002150CC(v7);
+  controllerCopy = controller;
+  selectCopy = select;
+  selfCopy = self;
+  sub_1002150CC(selectCopy);
 }
 
-- (void)userGuideViewController:(id)a3 didUpdateWith:(id)a4
+- (void)userGuideViewController:(id)controller didUpdateWith:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100215204(v7);
+  controllerCopy = controller;
+  withCopy = with;
+  selfCopy = self;
+  sub_100215204(withCopy);
 }
 
-- (void)containeeViewControllerGoToPreviousState:(id)a3 withSender:(id)a4
+- (void)containeeViewControllerGoToPreviousState:(id)state withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    stateCopy = state;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -79,8 +79,8 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    stateCopy2 = state;
+    selfCopy2 = self;
   }
 
   sub_100227ED4();
@@ -88,10 +88,10 @@
   sub_1000DB2F4(v10);
 }
 
-- (void)containeeViewControllerDidDismissExternally:(id)a3
+- (void)containeeViewControllerDidDismissExternally:(id)externally
 {
-  v4 = a3;
-  v5 = self;
+  externallyCopy = externally;
+  selfCopy = self;
   sub_100227ED4();
 }
 
@@ -107,7 +107,7 @@
 
 - (id)personalizedItemSources
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002F6A28();
 
   sub_1000E2690();
@@ -116,26 +116,26 @@
   return v3.super.isa;
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002F6DA4(v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_1002F6DA4(animationCopy);
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1002F6EC0(v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_1002F6EC0(animationCopy);
 }
 
-- (id)searchResultsForViewController:(id)a3
+- (id)searchResultsForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1003C0290();
 
   sub_10019152C();
@@ -144,24 +144,24 @@
   return v6.super.isa;
 }
 
-- (void)viewControllerClearInjectedSearchPins:(id)a3
+- (void)viewControllerClearInjectedSearchPins:(id)pins
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v7 = self;
-    v6 = [v5 searchPinsManager];
+    selfCopy = self;
+    searchPinsManager = [v5 searchPinsManager];
 
-    [v6 clearSearchPins];
+    [searchPinsManager clearSearchPins];
   }
 }
 
-- (void)injectSearchPinsFromSearchInfo:(id)a3
+- (void)injectSearchPinsFromSearchInfo:(id)info
 {
-  v4 = a3;
-  v5 = self;
-  sub_100215204(v4);
+  infoCopy = info;
+  selfCopy = self;
+  sub_100215204(infoCopy);
 }
 
 - (ChromeViewController)chromeViewController
@@ -171,10 +171,10 @@
   return Strong;
 }
 
-- (_TtC4Maps17UserGuidesContext)initWithConfiguration:(id)a3
+- (_TtC4Maps17UserGuidesContext)initWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = sub_10042A66C(v3);
+  configurationCopy = configuration;
+  v4 = sub_10042A66C(configurationCopy);
 
   return v4;
 }
@@ -186,37 +186,37 @@
   return result;
 }
 
-- (BOOL)chromeDidSelectMarkerForMapItem:(id)a3
+- (BOOL)chromeDidSelectMarkerForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  VisitedPlacesLibraryContext.chromeDidSelectMarker(for:)(v4);
+  itemCopy = item;
+  selfCopy = self;
+  VisitedPlacesLibraryContext.chromeDidSelectMarker(for:)(itemCopy);
 
   return 1;
 }
 
-- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)a3
+- (BOOL)chromeDidSelectCustomPOIAnnotation:(id)annotation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = VisitedPlacesLibraryContext.chromeDidSelect(_:)(a3);
+  selfCopy = self;
+  v6 = VisitedPlacesLibraryContext.chromeDidSelect(_:)(annotation);
   swift_unknownObjectRelease();
 
   return v6 & 1;
 }
 
-- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)a3
+- (BOOL)chromeDidSelectClusteredFeatureAnnotationsMarker:(id)marker
 {
-  v4 = a3;
-  v5 = self;
-  VisitedPlacesLibraryContext.chromeDidSelectClusteredFeatureAnnotationsMarker(_:)(v4);
+  markerCopy = marker;
+  selfCopy = self;
+  VisitedPlacesLibraryContext.chromeDidSelectClusteredFeatureAnnotationsMarker(_:)(markerCopy);
 
   return 1;
 }
 
-- (void)viewController:(id)a3 showSortPickerWithSortOptions:(id)a4 initialSelectedSortOptionIndex:(int64_t)a5 completion:(id)a6
+- (void)viewController:(id)controller showSortPickerWithSortOptions:(id)options initialSelectedSortOptionIndex:(int64_t)index completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   type metadata accessor for SortOptionPickerSortOption();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   if (v9)
@@ -231,16 +231,16 @@
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = self;
-  sub_1004C2CD0(v12, v10, a5, v9, v11);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1004C2CD0(controllerCopy, v10, index, v9, v11);
   sub_1000588AC(v9);
 }
 
-- (id)traitsForAddFromACViewController:(id)a3
+- (id)traitsForAddFromACViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_100536470();
   v7 = v6;
 

@@ -1,20 +1,20 @@
 @interface ABSevenDayAnalysisBreadcrumbDiagnosticManager
-- (ABSevenDayAnalysisBreadcrumbDiagnosticManager)initWithLoggingDirectoryPath:(id)a3 control:(id)a4;
+- (ABSevenDayAnalysisBreadcrumbDiagnosticManager)initWithLoggingDirectoryPath:(id)path control:(id)control;
 - (id)extractDiagnosticContent;
 @end
 
 @implementation ABSevenDayAnalysisBreadcrumbDiagnosticManager
 
-- (ABSevenDayAnalysisBreadcrumbDiagnosticManager)initWithLoggingDirectoryPath:(id)a3 control:(id)a4
+- (ABSevenDayAnalysisBreadcrumbDiagnosticManager)initWithLoggingDirectoryPath:(id)path control:(id)control
 {
-  v7 = a4;
+  controlCopy = control;
   v11.receiver = self;
   v11.super_class = ABSevenDayAnalysisBreadcrumbDiagnosticManager;
-  v8 = [(ABDiagnosticManager *)&v11 initWithDiagnosticName:@"SevenDayAnalysisBreadcrumb" loggingDirectoryPath:a3];
+  v8 = [(ABDiagnosticManager *)&v11 initWithDiagnosticName:@"SevenDayAnalysisBreadcrumb" loggingDirectoryPath:path];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_control, a4);
+    objc_storeStrong(&v8->_control, control);
   }
 
   return v9;
@@ -26,7 +26,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Starting seven day analysis breadcrumb extraction", buf, 0xCu);
   }
 
@@ -45,7 +45,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = v6;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Seven day analysis breadcrumb extraction failed with error %@", buf, 0x16u);

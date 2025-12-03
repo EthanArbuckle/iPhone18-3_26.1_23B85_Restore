@@ -18,10 +18,10 @@
 
 - (BOOL)bs_endAppearanceTransition
 {
-  v2 = [a1 _appearState] & 0xFFFFFFFD;
+  v2 = [self _appearState] & 0xFFFFFFFD;
   if (v2 == 1)
   {
-    [a1 endAppearanceTransition];
+    [self endAppearanceTransition];
   }
 
   return v2 == 1;
@@ -35,15 +35,15 @@
     v5 = v4;
     do
     {
-      v6 = [a1 viewControllerForView:v5];
-      v7 = [v5 superview];
+      v6 = [self viewControllerForView:v5];
+      superview = [v5 superview];
 
-      if (!v7)
+      if (!superview)
       {
         break;
       }
 
-      v5 = v7;
+      v5 = superview;
     }
 
     while (!v6);
@@ -52,7 +52,7 @@
   else
   {
     v6 = 0;
-    v7 = 0;
+    superview = 0;
   }
 
   return v6;
@@ -62,7 +62,7 @@
 {
   if (a3)
   {
-    if (([a1 bs_isDisappearingOrDisappeared] & 1) == 0)
+    if (([self bs_isDisappearingOrDisappeared] & 1) == 0)
     {
       return 0;
     }
@@ -70,29 +70,29 @@
 
   else
   {
-    result = [a1 bs_isAppearingOrAppeared];
+    result = [self bs_isAppearingOrAppeared];
     if (!result)
     {
       return result;
     }
   }
 
-  [a1 beginAppearanceTransition:a3 animated:a4];
+  [self beginAppearanceTransition:a3 animated:a4];
   return 1;
 }
 
 - (uint64_t)bs_endAppearanceTransition:()BaseBoardUI
 {
-  [a1 bs_beginAppearanceTransition:a3 animated:0];
+  [self bs_beginAppearanceTransition:a3 animated:0];
 
-  return [a1 bs_endAppearanceTransition];
+  return [self bs_endAppearanceTransition];
 }
 
 - (uint64_t)bs_beginAppearanceTransitionForChildViewController:()BaseBoardUI toVisible:animated:
 {
   v30 = *MEMORY[0x1E69E9840];
   v9 = a3;
-  if (a1 == v9)
+  if (self == v9)
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"self != childController"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -105,7 +105,7 @@
       v20 = 2114;
       v21 = v16;
       v22 = 2048;
-      v23 = a1;
+      selfCopy = self;
       v24 = 2114;
       v25 = @"UIViewController+BaseBoardUI.m";
       v26 = 1024;
@@ -122,7 +122,7 @@
     JUMPOUT(0x1A2D48BE0);
   }
 
-  if (([a1 shouldAutomaticallyForwardAppearanceMethods] & 1) != 0 || (objc_msgSend(v9, "parentViewController"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != a1) || a4 && !objc_msgSend(a1, "_appearState"))
+  if (([self shouldAutomaticallyForwardAppearanceMethods] & 1) != 0 || (objc_msgSend(v9, "parentViewController"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10 != self) || a4 && !objc_msgSend(self, "_appearState"))
   {
     v11 = 0;
   }
@@ -139,7 +139,7 @@
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = a3;
-  if (a1 == v5)
+  if (self == v5)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"self != childController"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -152,7 +152,7 @@
       v16 = 2114;
       v17 = v12;
       v18 = 2048;
-      v19 = a1;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"UIViewController+BaseBoardUI.m";
       v22 = 1024;
@@ -169,24 +169,24 @@
     JUMPOUT(0x1A2D48DDCLL);
   }
 
-  if (([a1 shouldAutomaticallyForwardAppearanceMethods] & 1) == 0 && (objc_msgSend(v5, "parentViewController"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6 == a1))
+  if (([self shouldAutomaticallyForwardAppearanceMethods] & 1) == 0 && (objc_msgSend(v5, "parentViewController"), v6 = objc_claimAutoreleasedReturnValue(), v6, v6 == self))
   {
-    v7 = [v5 bs_endAppearanceTransition];
+    bs_endAppearanceTransition = [v5 bs_endAppearanceTransition];
   }
 
   else
   {
-    v7 = 0;
+    bs_endAppearanceTransition = 0;
   }
 
-  return v7;
+  return bs_endAppearanceTransition;
 }
 
 - (uint64_t)bs_endAppearanceTransitionForChildViewController:()BaseBoardUI toVisible:
 {
   v6 = a3;
-  [a1 bs_beginAppearanceTransitionForChildViewController:v6 toVisible:a4 animated:0];
-  v7 = [a1 bs_endAppearanceTransitionForChildViewController:v6];
+  [self bs_beginAppearanceTransitionForChildViewController:v6 toVisible:a4 animated:0];
+  v7 = [self bs_endAppearanceTransitionForChildViewController:v6];
 
   return v7;
 }
@@ -196,28 +196,28 @@
   v10 = a3;
   v11 = a4;
   v12 = a6;
-  if (v10 && [a1 isViewLoaded] && (objc_msgSend(v10, "parentViewController"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 != a1))
+  if (v10 && [self isViewLoaded] && (objc_msgSend(v10, "parentViewController"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 != self))
   {
     [v10 loadViewIfNeeded];
-    [a1 addChildViewController:v10];
-    v14 = [a1 bs_beginAppearanceTransitionForChildViewController:v10 toVisible:1 animated:a5];
+    [self addChildViewController:v10];
+    v14 = [self bs_beginAppearanceTransitionForChildViewController:v10 toVisible:1 animated:a5];
     if (v11)
     {
-      v15 = v11;
+      view = v11;
     }
 
     else
     {
-      v15 = [a1 view];
+      view = [self view];
     }
 
-    v18 = v15;
-    v19 = [v10 view];
-    v20 = [v19 superview];
-    v21 = v20;
-    if (!v20 || ([v20 isDescendantOfView:v18] & 1) == 0)
+    v18 = view;
+    view2 = [v10 view];
+    superview = [view2 superview];
+    v21 = superview;
+    if (!superview || ([superview isDescendantOfView:v18] & 1) == 0)
     {
-      [v18 addSubview:v19];
+      [v18 addSubview:view2];
     }
 
     v32[0] = MEMORY[0x1E69E9820];
@@ -225,7 +225,7 @@
     v32[2] = __98__UIViewController_BaseBoardUI__bs_addChildViewController_withSuperview_animated_transitionBlock___block_invoke;
     v32[3] = &unk_1E76B7EC8;
     v33 = v10;
-    v34 = a1;
+    selfCopy = self;
     v35 = v14;
     v22 = MEMORY[0x1A58E5D00](v32);
     v23 = v22;
@@ -268,16 +268,16 @@
 {
   v8 = a3;
   v9 = a5;
-  if (v8 && ([v8 parentViewController], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == a1))
+  if (v8 && ([v8 parentViewController], v10 = objc_claimAutoreleasedReturnValue(), v10, v10 == self))
   {
     [v8 willMoveToParentViewController:0];
-    v12 = [a1 bs_beginAppearanceTransitionForChildViewController:v8 toVisible:0 animated:a4];
+    v12 = [self bs_beginAppearanceTransitionForChildViewController:v8 toVisible:0 animated:a4];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __87__UIViewController_BaseBoardUI__bs_removeChildViewController_animated_transitionBlock___block_invoke;
     v24[3] = &unk_1E76B7EC8;
     v25 = v8;
-    v26 = a1;
+    selfCopy = self;
     v27 = v12;
     v13 = MEMORY[0x1A58E5D00](v24);
     v14 = v13;
@@ -318,32 +318,32 @@
 
 - (id)bs_presentedViewControllerIncludingAncestors
 {
-  v2 = [a1 presentedViewController];
-  v3 = v2;
-  if (v2)
+  presentedViewController = [self presentedViewController];
+  v3 = presentedViewController;
+  if (presentedViewController)
   {
-    v4 = v2;
+    bs_presentedViewControllerIncludingAncestors = presentedViewController;
   }
 
   else
   {
-    v5 = [a1 parentViewController];
-    v4 = [v5 bs_presentedViewControllerIncludingAncestors];
+    parentViewController = [self parentViewController];
+    bs_presentedViewControllerIncludingAncestors = [parentViewController bs_presentedViewControllerIncludingAncestors];
   }
 
-  return v4;
+  return bs_presentedViewControllerIncludingAncestors;
 }
 
 - (id)bs_presentationContextDefiningViewController
 {
-  v1 = a1;
-  v2 = v1;
-  if (v1)
+  selfCopy = self;
+  v2 = selfCopy;
+  if (selfCopy)
   {
-    for (i = v1; ; i = v7)
+    for (i = selfCopy; ; i = parentViewController)
     {
-      v4 = [v2 definesPresentationContext];
-      v5 = i ? v4 : 1;
+      definesPresentationContext = [v2 definesPresentationContext];
+      v5 = i ? definesPresentationContext : 1;
       if (v5)
       {
         break;
@@ -351,7 +351,7 @@
 
       v6 = i;
 
-      v7 = [v6 parentViewController];
+      parentViewController = [v6 parentViewController];
 
       v2 = v6;
     }
@@ -367,20 +367,20 @@
 
 - (id)bs_topPresentedViewController
 {
-  v1 = a1;
-  v2 = v1;
-  if (v1)
+  selfCopy = self;
+  v2 = selfCopy;
+  if (selfCopy)
   {
-    v3 = v1;
+    presentedViewController = selfCopy;
     do
     {
       v4 = v2;
-      v2 = v3;
+      v2 = presentedViewController;
 
-      v3 = [v2 presentedViewController];
+      presentedViewController = [v2 presentedViewController];
     }
 
-    while (v3);
+    while (presentedViewController);
   }
 
   return v2;
@@ -390,8 +390,8 @@
 {
   v8 = a3;
   v6 = a4;
-  v7 = [a1 parentViewController];
-  [v7 bs_traitCollectionDidChange:v8 forManagedTraitEnvironment:v6];
+  parentViewController = [self parentViewController];
+  [parentViewController bs_traitCollectionDidChange:v8 forManagedTraitEnvironment:v6];
 }
 
 @end

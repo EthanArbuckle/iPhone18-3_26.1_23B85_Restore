@@ -1,17 +1,17 @@
 @interface MTVibrantImageView
-- (MTVibrantImageView)initWithFrame:(CGRect)a3;
+- (MTVibrantImageView)initWithFrame:(CGRect)frame;
 - (id)compositingFilter;
-- (void)setCompositingFilter:(id)a3;
+- (void)setCompositingFilter:(id)filter;
 @end
 
 @implementation MTVibrantImageView
 
-- (MTVibrantImageView)initWithFrame:(CGRect)a3
+- (MTVibrantImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16.receiver = self;
   v16.super_class = MTVibrantImageView;
   v7 = [(MTVibrantImageView *)&v16 initWithFrame:?];
@@ -29,8 +29,8 @@
     v7->_vibrancyView = v10;
 
     v12 = kCAFilterPlusL;
-    v13 = [(UIView *)v7->_vibrancyView layer];
-    [v13 setCompositingFilter:v12];
+    layer = [(UIView *)v7->_vibrancyView layer];
+    [layer setCompositingFilter:v12];
 
     [(UIView *)v7->_vibrancyView setAutoresizingMask:18];
     v14 = [UIColor colorWithWhite:1.0 alpha:0.4];
@@ -44,18 +44,18 @@
 
 - (id)compositingFilter
 {
-  v2 = [(UIView *)self->_vibrancyView layer];
-  v3 = [v2 compositingFilter];
+  layer = [(UIView *)self->_vibrancyView layer];
+  compositingFilter = [layer compositingFilter];
 
-  return v3;
+  return compositingFilter;
 }
 
-- (void)setCompositingFilter:(id)a3
+- (void)setCompositingFilter:(id)filter
 {
   vibrancyView = self->_vibrancyView;
-  v4 = a3;
-  v5 = [(UIView *)vibrancyView layer];
-  [v5 setCompositingFilter:v4];
+  filterCopy = filter;
+  layer = [(UIView *)vibrancyView layer];
+  [layer setCompositingFilter:filterCopy];
 }
 
 @end

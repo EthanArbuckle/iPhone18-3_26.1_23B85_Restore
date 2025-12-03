@@ -1,28 +1,28 @@
 @interface TFFeedbackFormLongTextCell
-+ (CGSize)_sizeToFitText:(id)a3 fittingSize:(CGSize)a4 inTraitEnvironment:(id)a5;
-+ (CGSize)sizeForEntry:(id)a3 dataSource:(id)a4 fittingSize:(CGSize)a5 inTraitEnvironment:(id)a6;
-+ (UIEdgeInsets)_textViewInsetsInTraitEnvironment:(id)a3;
-+ (double)_adjustedTextViewHeightForCandidateHeight:(double)a3 font:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TFFeedbackFormLongTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_prepareForDisplayWithTraitCollection:(id)a3;
++ (CGSize)_sizeToFitText:(id)text fittingSize:(CGSize)size inTraitEnvironment:(id)environment;
++ (CGSize)sizeForEntry:(id)entry dataSource:(id)source fittingSize:(CGSize)size inTraitEnvironment:(id)environment;
++ (UIEdgeInsets)_textViewInsetsInTraitEnvironment:(id)environment;
++ (double)_adjustedTextViewHeightForCandidateHeight:(double)height font:(id)font;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TFFeedbackFormLongTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_prepareForDisplayWithTraitCollection:(id)collection;
 - (void)_updateCellHeightForTextIfNecessary;
-- (void)_updateCellHeightForTextUpdatesInTableView:(id)a3;
-- (void)applyContentsOfEntry:(id)a3;
+- (void)_updateCellHeightForTextUpdatesInTableView:(id)view;
+- (void)applyContentsOfEntry:(id)entry;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setDisplayedDataString:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDisplayedDataString:(id)string;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TFFeedbackFormLongTextCell
 
-- (TFFeedbackFormLongTextCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (TFFeedbackFormLongTextCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = TFFeedbackFormLongTextCell;
-  v4 = [(TFFeedbackFormBaseCell *)&v15 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(TFFeedbackFormBaseCell *)&v15 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277D75C40]);
@@ -30,24 +30,24 @@
     textView = v4->_textView;
     v4->_textView = v6;
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v4->_textView setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v4->_textView setBackgroundColor:clearColor];
 
     [(UITextView *)v4->_textView setDelegate:v4];
-    v9 = [(TFFeedbackFormLongTextCell *)v4 traitCollection];
-    v10 = [TFFeedbackFormLongTextCell _createTextViewFontForTraitCollection:v9];
+    traitCollection = [(TFFeedbackFormLongTextCell *)v4 traitCollection];
+    v10 = [TFFeedbackFormLongTextCell _createTextViewFontForTraitCollection:traitCollection];
     [(UITextView *)v4->_textView setFont:v10];
 
     [(UITextView *)v4->_textView setTextContainerInset:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-    v11 = [(UITextView *)v4->_textView textContainer];
-    [v11 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v4->_textView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    v12 = [(UITextView *)v4->_textView textContainer];
-    [v12 setLineBreakMode:0];
+    textContainer2 = [(UITextView *)v4->_textView textContainer];
+    [textContainer2 setLineBreakMode:0];
 
     [(UITextView *)v4->_textView setScrollEnabled:0];
-    v13 = [(TFFeedbackFormLongTextCell *)v4 contentView];
-    [v13 addSubview:v4->_textView];
+    contentView = [(TFFeedbackFormLongTextCell *)v4 contentView];
+    [contentView addSubview:v4->_textView];
   }
 
   return v4;
@@ -64,24 +64,24 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TFFeedbackFormLongTextCell *)self contentView];
-  [v11 bounds];
+  contentView = [(TFFeedbackFormLongTextCell *)self contentView];
+  [contentView bounds];
   v13 = v6 + v12;
   v15 = v4 + v14;
   v17 = v16 - (v6 + v10);
   v19 = v18 - (v4 + v8);
 
-  v20 = [(TFFeedbackFormLongTextCell *)self textView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  textView = [(TFFeedbackFormLongTextCell *)self textView];
+  [textView setFrame:{v13, v15, v17, v19}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TFFeedbackFormLongTextCell *)self textView];
-  v7 = [v6 text];
-  [TFFeedbackFormLongTextCell _sizeToFitText:v7 fittingSize:self inTraitEnvironment:width, height];
+  height = fits.height;
+  width = fits.width;
+  textView = [(TFFeedbackFormLongTextCell *)self textView];
+  text = [textView text];
+  [TFFeedbackFormLongTextCell _sizeToFitText:text fittingSize:self inTraitEnvironment:width, height];
   v9 = v8;
   v11 = v10;
 
@@ -92,13 +92,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = TFFeedbackFormLongTextCell;
-  [(TFFeedbackFormLongTextCell *)&v5 traitCollectionDidChange:a3];
-  v4 = [(TFFeedbackFormLongTextCell *)self traitCollection];
-  [(TFFeedbackFormLongTextCell *)self _prepareForDisplayWithTraitCollection:v4];
+  [(TFFeedbackFormLongTextCell *)&v5 traitCollectionDidChange:change];
+  traitCollection = [(TFFeedbackFormLongTextCell *)self traitCollection];
+  [(TFFeedbackFormLongTextCell *)self _prepareForDisplayWithTraitCollection:traitCollection];
 
   [(TFFeedbackFormLongTextCell *)self setNeedsLayout];
 }
@@ -108,69 +108,69 @@
   v10.receiver = self;
   v10.super_class = TFFeedbackFormLongTextCell;
   [(TFFeedbackFormLongTextCell *)&v10 prepareForReuse];
-  v3 = [(TFFeedbackFormLongTextCell *)self textView];
-  v4 = [v3 isFirstResponder];
+  textView = [(TFFeedbackFormLongTextCell *)self textView];
+  isFirstResponder = [textView isFirstResponder];
 
-  if (v4)
+  if (isFirstResponder)
   {
-    v5 = [(TFFeedbackFormLongTextCell *)self longTextEntry];
+    longTextEntry = [(TFFeedbackFormLongTextCell *)self longTextEntry];
 
-    if (v5)
+    if (longTextEntry)
     {
-      v6 = [(TFFeedbackFormBaseCell *)self updateProxy];
-      v7 = [(TFFeedbackFormLongTextCell *)self longTextEntry];
-      v8 = [(TFFeedbackFormLongTextCell *)self textView];
-      v9 = [v8 text];
-      [v6 didUpdateEntry:v7 toString:v9 editInProgress:0];
+      updateProxy = [(TFFeedbackFormBaseCell *)self updateProxy];
+      longTextEntry2 = [(TFFeedbackFormLongTextCell *)self longTextEntry];
+      textView2 = [(TFFeedbackFormLongTextCell *)self textView];
+      text = [textView2 text];
+      [updateProxy didUpdateEntry:longTextEntry2 toString:text editInProgress:0];
     }
   }
 
   [(TFFeedbackFormLongTextCell *)self setLongTextEntry:0];
 }
 
-- (void)applyContentsOfEntry:(id)a3
+- (void)applyContentsOfEntry:(id)entry
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] == 1)
+  entryCopy = entry;
+  if ([entryCopy type] == 1)
   {
-    [(TFFeedbackFormLongTextCell *)self setLongTextEntry:v4];
-    v5 = [MEMORY[0x277D75348] placeholderTextColor];
+    [(TFFeedbackFormLongTextCell *)self setLongTextEntry:entryCopy];
+    placeholderTextColor = [MEMORY[0x277D75348] placeholderTextColor];
     v6 = objc_alloc(MEMORY[0x277CCA898]);
-    v7 = [(TFFeedbackFormLongTextCell *)self longTextEntry];
-    v8 = [v7 placeholder];
+    longTextEntry = [(TFFeedbackFormLongTextCell *)self longTextEntry];
+    placeholder = [longTextEntry placeholder];
     v14[0] = *MEMORY[0x277D740A8];
-    v9 = [(TFFeedbackFormLongTextCell *)self textView];
-    v10 = [v9 font];
+    textView = [(TFFeedbackFormLongTextCell *)self textView];
+    font = [textView font];
     v14[1] = *MEMORY[0x277D740C0];
-    v15[0] = v10;
-    v15[1] = v5;
+    v15[0] = font;
+    v15[1] = placeholderTextColor;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v12 = [v6 initWithString:v8 attributes:v11];
-    v13 = [(TFFeedbackFormLongTextCell *)self textView];
-    [v13 setAttributedPlaceholder:v12];
+    v12 = [v6 initWithString:placeholder attributes:v11];
+    textView2 = [(TFFeedbackFormLongTextCell *)self textView];
+    [textView2 setAttributedPlaceholder:v12];
   }
 }
 
-+ (CGSize)sizeForEntry:(id)a3 dataSource:(id)a4 fittingSize:(CGSize)a5 inTraitEnvironment:(id)a6
++ (CGSize)sizeForEntry:(id)entry dataSource:(id)source fittingSize:(CGSize)size inTraitEnvironment:(id)environment
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a6;
-  v13 = v11;
-  v14 = a4;
-  v15 = [v13 identifier];
-  v16 = [v14 stringForIdentifier:v15];
+  height = size.height;
+  width = size.width;
+  entryCopy = entry;
+  environmentCopy = environment;
+  v13 = entryCopy;
+  sourceCopy = source;
+  identifier = [v13 identifier];
+  v16 = [sourceCopy stringForIdentifier:identifier];
 
   if (!v16 || ![v16 length])
   {
-    v17 = [v13 placeholder];
+    placeholder = [v13 placeholder];
 
-    v16 = v17;
+    v16 = placeholder;
   }
 
-  [a1 _sizeToFitText:v16 fittingSize:v12 inTraitEnvironment:{width, height}];
+  [self _sizeToFitText:v16 fittingSize:environmentCopy inTraitEnvironment:{width, height}];
   v19 = v18;
   v21 = v20;
 
@@ -181,30 +181,30 @@
   return result;
 }
 
-- (void)setDisplayedDataString:(id)a3
+- (void)setDisplayedDataString:(id)string
 {
-  v4 = a3;
-  v5 = [(TFFeedbackFormLongTextCell *)self textView];
-  [v5 setText:v4];
+  stringCopy = string;
+  textView = [(TFFeedbackFormLongTextCell *)self textView];
+  [textView setText:stringCopy];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v8 = a3;
-  v4 = [(TFFeedbackFormLongTextCell *)self longTextEntry];
+  editingCopy = editing;
+  longTextEntry = [(TFFeedbackFormLongTextCell *)self longTextEntry];
 
-  if (v4)
+  if (longTextEntry)
   {
-    v5 = [(TFFeedbackFormBaseCell *)self updateProxy];
-    v6 = [(TFFeedbackFormLongTextCell *)self longTextEntry];
-    v7 = [v8 text];
-    [v5 didUpdateEntry:v6 toString:v7 editInProgress:0];
+    updateProxy = [(TFFeedbackFormBaseCell *)self updateProxy];
+    longTextEntry2 = [(TFFeedbackFormLongTextCell *)self longTextEntry];
+    text = [editingCopy text];
+    [updateProxy didUpdateEntry:longTextEntry2 toString:text editInProgress:0];
   }
 }
 
-+ (UIEdgeInsets)_textViewInsetsInTraitEnvironment:(id)a3
++ (UIEdgeInsets)_textViewInsetsInTraitEnvironment:(id)environment
 {
-  [TFFeedbackFormViewSpecification formCellInsetsInTraitEnvironment:a3];
+  [TFFeedbackFormViewSpecification formCellInsetsInTraitEnvironment:environment];
 
   MEMORY[0x2821DE498](15);
   result.right = v6;
@@ -214,24 +214,24 @@
   return result;
 }
 
-+ (CGSize)_sizeToFitText:(id)a3 fittingSize:(CGSize)a4 inTraitEnvironment:(id)a5
++ (CGSize)_sizeToFitText:(id)text fittingSize:(CGSize)size inTraitEnvironment:(id)environment
 {
-  width = a4.width;
+  width = size.width;
   v33[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
-  [TFFeedbackFormLongTextCell _textViewInsetsInTraitEnvironment:v8];
+  environmentCopy = environment;
+  textCopy = text;
+  [TFFeedbackFormLongTextCell _textViewInsetsInTraitEnvironment:environmentCopy];
   v11 = v10;
   v13 = v12;
   v16 = width - v14 - v15;
-  v17 = [v8 traitCollection];
+  traitCollection = [environmentCopy traitCollection];
 
-  v18 = [a1 _createTextViewFontForTraitCollection:v17];
+  v18 = [self _createTextViewFontForTraitCollection:traitCollection];
 
   v32 = *MEMORY[0x277D740A8];
   v33[0] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:&v32 count:1];
-  [v9 boundingRectWithSize:3 options:v19 attributes:0 context:{v16, 1.79769313e308}];
+  [textCopy boundingRectWithSize:3 options:v19 attributes:0 context:{v16, 1.79769313e308}];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -241,7 +241,7 @@
   v35.origin.y = v23;
   v35.size.width = v25;
   v35.size.height = v27;
-  [a1 _adjustedTextViewHeightForCandidateHeight:v18 font:CGRectGetHeight(v35)];
+  [self _adjustedTextViewHeightForCandidateHeight:v18 font:CGRectGetHeight(v35)];
   v29 = v28;
 
   v30 = ceil(v13 + v11 + v29);
@@ -251,13 +251,13 @@
   return result;
 }
 
-+ (double)_adjustedTextViewHeightForCandidateHeight:(double)a3 font:(id)a4
++ (double)_adjustedTextViewHeightForCandidateHeight:(double)height font:(id)font
 {
-  [a4 tf_computeFittedLineHeight];
+  [font tf_computeFittedLineHeight];
   result = v5 * 3.0;
-  if (result <= a3)
+  if (result <= height)
   {
-    return a3;
+    return height;
   }
 
   return result;
@@ -268,43 +268,43 @@
   [(TFFeedbackFormLongTextCell *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(TFFeedbackFormLongTextCell *)self textView];
-  v8 = [v7 text];
-  [TFFeedbackFormLongTextCell _sizeToFitText:v8 fittingSize:self inTraitEnvironment:v4, 1.79769313e308];
+  textView = [(TFFeedbackFormLongTextCell *)self textView];
+  text = [textView text];
+  [TFFeedbackFormLongTextCell _sizeToFitText:text fittingSize:self inTraitEnvironment:v4, 1.79769313e308];
   v10 = v9;
 
   if (v6 != v10)
   {
-    v11 = [(TFFeedbackFormBaseCell *)self updateProxy];
-    v12 = [(TFFeedbackFormLongTextCell *)self longTextEntry];
-    v13 = [(TFFeedbackFormLongTextCell *)self textView];
-    v14 = [v13 text];
-    [v11 didUpdateEntry:v12 toString:v14 editInProgress:1];
+    updateProxy = [(TFFeedbackFormBaseCell *)self updateProxy];
+    longTextEntry = [(TFFeedbackFormLongTextCell *)self longTextEntry];
+    textView2 = [(TFFeedbackFormLongTextCell *)self textView];
+    text2 = [textView2 text];
+    [updateProxy didUpdateEntry:longTextEntry toString:text2 editInProgress:1];
 
     [(TFFeedbackFormLongTextCell *)self setNeedsDisplay];
-    v15 = [(TFFeedbackFormLongTextCell *)self _tableView];
-    [(TFFeedbackFormLongTextCell *)self _updateCellHeightForTextUpdatesInTableView:v15];
+    _tableView = [(TFFeedbackFormLongTextCell *)self _tableView];
+    [(TFFeedbackFormLongTextCell *)self _updateCellHeightForTextUpdatesInTableView:_tableView];
   }
 }
 
-- (void)_updateCellHeightForTextUpdatesInTableView:(id)a3
+- (void)_updateCellHeightForTextUpdatesInTableView:(id)view
 {
   v3 = MEMORY[0x277D75D18];
-  v4 = a3;
-  v5 = [v3 areAnimationsEnabled];
+  viewCopy = view;
+  areAnimationsEnabled = [v3 areAnimationsEnabled];
   [MEMORY[0x277D75D18] setAnimationsEnabled:0];
-  [v4 performBatchUpdates:&__block_literal_global_10 completion:0];
+  [viewCopy performBatchUpdates:&__block_literal_global_10 completion:0];
 
   v6 = MEMORY[0x277D75D18];
 
-  [v6 setAnimationsEnabled:v5];
+  [v6 setAnimationsEnabled:areAnimationsEnabled];
 }
 
-- (void)_prepareForDisplayWithTraitCollection:(id)a3
+- (void)_prepareForDisplayWithTraitCollection:(id)collection
 {
-  v5 = [TFFeedbackFormLongTextCell _createTextViewFontForTraitCollection:a3];
-  v4 = [(TFFeedbackFormLongTextCell *)self textView];
-  [v4 setFont:v5];
+  v5 = [TFFeedbackFormLongTextCell _createTextViewFontForTraitCollection:collection];
+  textView = [(TFFeedbackFormLongTextCell *)self textView];
+  [textView setFont:v5];
 }
 
 @end

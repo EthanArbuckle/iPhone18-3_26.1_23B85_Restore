@@ -1,7 +1,7 @@
 @interface SGEventActivity
-+ (id)describeType:(unsigned __int8)a3;
-- (SGEventActivity)initWithDictionary:(id)a3;
-- (SGEventActivity)initWithTeamIdentifier:(id)a3 type:(unsigned __int8)a4 userActivity:(id)a5 validStartDate:(double)a6 validEndDate:(double)a7;
++ (id)describeType:(unsigned __int8)type;
+- (SGEventActivity)initWithDictionary:(id)dictionary;
+- (SGEventActivity)initWithTeamIdentifier:(id)identifier type:(unsigned __int8)type userActivity:(id)activity validStartDate:(double)date validEndDate:(double)endDate;
 - (id)jsonObject;
 @end
 
@@ -63,33 +63,33 @@ void __29__SGEventActivity_jsonObject__block_invoke(uint64_t a1, void *a2)
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (SGEventActivity)initWithDictionary:(id)a3
+- (SGEventActivity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = SGEventActivity;
   v5 = [(SGEventActivity *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"SGEventActivityTeamIdentifierKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"SGEventActivityTeamIdentifierKey"];
     teamIdentifier = v5->_teamIdentifier;
     v5->_teamIdentifier = v6;
 
     v8 = objc_opt_class();
-    v9 = [v4 objectForKeyedSubscript:@"SGEventActivityTypeKey"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"SGEventActivityTypeKey"];
     v5->_type = [v8 typeForString:v9];
 
     v10 = objc_alloc(MEMORY[0x1E69636A8]);
-    v11 = [v4 objectForKeyedSubscript:@"SGEventActivityUserActivityStringKey"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"SGEventActivityUserActivityStringKey"];
     v12 = [v10 _initWithUserActivityStrings:v11 secondaryString:0 optionalData:0];
     userActivity = v5->_userActivity;
     v5->_userActivity = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"SGEventActivityStartDateKey"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"SGEventActivityStartDateKey"];
     [v14 doubleValue];
     v5->_validStartDate = v15;
 
-    v16 = [v4 objectForKeyedSubscript:@"SGEventActivityEndDateKey"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"SGEventActivityEndDateKey"];
     [v16 doubleValue];
     v5->_validEndDate = v17;
   }
@@ -97,29 +97,29 @@ void __29__SGEventActivity_jsonObject__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (SGEventActivity)initWithTeamIdentifier:(id)a3 type:(unsigned __int8)a4 userActivity:(id)a5 validStartDate:(double)a6 validEndDate:(double)a7
+- (SGEventActivity)initWithTeamIdentifier:(id)identifier type:(unsigned __int8)type userActivity:(id)activity validStartDate:(double)date validEndDate:(double)endDate
 {
-  v13 = a3;
-  v14 = a5;
+  identifierCopy = identifier;
+  activityCopy = activity;
   v18.receiver = self;
   v18.super_class = SGEventActivity;
   v15 = [(SGEventActivity *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_teamIdentifier, a3);
-    v16->_type = a4;
-    objc_storeStrong(&v16->_userActivity, a5);
-    v16->_validStartDate = a6;
-    v16->_validEndDate = a7;
+    objc_storeStrong(&v15->_teamIdentifier, identifier);
+    v16->_type = type;
+    objc_storeStrong(&v16->_userActivity, activity);
+    v16->_validStartDate = date;
+    v16->_validEndDate = endDate;
   }
 
   return v16;
 }
 
-+ (id)describeType:(unsigned __int8)a3
++ (id)describeType:(unsigned __int8)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"CheckIn";
   }

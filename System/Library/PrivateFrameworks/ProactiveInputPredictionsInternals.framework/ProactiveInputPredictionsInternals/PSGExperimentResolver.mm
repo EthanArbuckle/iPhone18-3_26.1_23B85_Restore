@@ -3,11 +3,11 @@
 + (id)sharedWordBoundaryQueue;
 + (id)sharedZKWQueue;
 - (PSGExperimentResolver)init;
-- (id)_getDefaultResponseSuggestionsExperimentConfig:(id)a3;
-- (id)_getDefaultWordBoundarySuggestionsExperimentConfig:(id)a3;
-- (id)getResponseSuggestionsExperimentConfig:(id)a3 shouldDownloadAssets:(BOOL)a4;
-- (id)getWordBoundarySuggestionsExperimentConfig:(id)a3 shouldDownloadAssets:(BOOL)a4;
-- (void)warmupForLocale:(id)a3;
+- (id)_getDefaultResponseSuggestionsExperimentConfig:(id)config;
+- (id)_getDefaultWordBoundarySuggestionsExperimentConfig:(id)config;
+- (id)getResponseSuggestionsExperimentConfig:(id)config shouldDownloadAssets:(BOOL)assets;
+- (id)getWordBoundarySuggestionsExperimentConfig:(id)config shouldDownloadAssets:(BOOL)assets;
+- (void)warmupForLocale:(id)locale;
 @end
 
 @implementation PSGExperimentResolver
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __39__PSGExperimentResolver_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken3 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken3, block);
@@ -53,32 +53,32 @@
   return v3;
 }
 
-- (id)_getDefaultWordBoundarySuggestionsExperimentConfig:(id)a3
+- (id)_getDefaultWordBoundarySuggestionsExperimentConfig:(id)config
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)_getDefaultResponseSuggestionsExperimentConfig:(id)a3
+- (id)_getDefaultResponseSuggestionsExperimentConfig:(id)config
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)getResponseSuggestionsExperimentConfig:(id)a3 shouldDownloadAssets:(BOOL)a4
+- (id)getResponseSuggestionsExperimentConfig:(id)config shouldDownloadAssets:(BOOL)assets
 {
-  v6 = a3;
+  configCopy = config;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy_;
   v43 = __Block_byref_object_dispose_;
   v44 = 0;
-  if ([v6 length])
+  if ([configCopy length])
   {
-    v7 = [MEMORY[0x277D02548] languageForLocaleIdentifier:v6];
+    v7 = [MEMORY[0x277D02548] languageForLocaleIdentifier:configCopy];
     v8 = [(NSDictionary *)self->_zkwLangAndNamespaces objectForKey:v7];
     if (v8)
     {
@@ -113,10 +113,10 @@
       v24 = v8;
       v12 = v10;
       v25 = v12;
-      v28 = a4;
+      assetsCopy = assets;
       v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-      v14 = [objc_opt_class() sharedZKWQueue];
-      dispatch_async(v14, v13);
+      sharedZKWQueue = [objc_opt_class() sharedZKWQueue];
+      dispatch_async(sharedZKWQueue, v13);
 
       v15 = dispatch_time(0, 1000000000);
       dispatch_block_wait(v13, v15);
@@ -227,18 +227,18 @@ uint64_t __85__PSGExperimentResolver_getResponseSuggestionsExperimentConfig_shou
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)getWordBoundarySuggestionsExperimentConfig:(id)a3 shouldDownloadAssets:(BOOL)a4
+- (id)getWordBoundarySuggestionsExperimentConfig:(id)config shouldDownloadAssets:(BOOL)assets
 {
-  v6 = a3;
+  configCopy = config;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy_;
   v41 = __Block_byref_object_dispose_;
   v42 = 0;
-  if ([v6 length])
+  if ([configCopy length])
   {
-    v7 = [MEMORY[0x277D02548] languageForLocaleIdentifier:v6];
+    v7 = [MEMORY[0x277D02548] languageForLocaleIdentifier:configCopy];
     v8 = [(NSDictionary *)self->_wordBoundaryLangAndNamespaces objectForKey:v7];
     if (v8)
     {
@@ -271,10 +271,10 @@ uint64_t __85__PSGExperimentResolver_getResponseSuggestionsExperimentConfig_shou
       objc_copyWeak(&v25, &location);
       v24 = &v28;
       v23 = v8;
-      v26 = a4;
+      assetsCopy = assets;
       v12 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-      v13 = [objc_opt_class() sharedWordBoundaryQueue];
-      dispatch_async(v13, v12);
+      sharedWordBoundaryQueue = [objc_opt_class() sharedWordBoundaryQueue];
+      dispatch_async(sharedWordBoundaryQueue, v12);
 
       v14 = dispatch_time(0, 1000000000);
       dispatch_block_wait(v12, v14);
@@ -386,11 +386,11 @@ uint64_t __89__PSGExperimentResolver_getWordBoundarySuggestionsExperimentConfig_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)warmupForLocale:(id)a3
+- (void)warmupForLocale:(id)locale
 {
-  v6 = a3;
-  v4 = [(PSGExperimentResolver *)self getWordBoundarySuggestionsExperimentConfig:v6 shouldDownloadAssets:1];
-  v5 = [(PSGExperimentResolver *)self getResponseSuggestionsExperimentConfig:v6 shouldDownloadAssets:1];
+  localeCopy = locale;
+  v4 = [(PSGExperimentResolver *)self getWordBoundarySuggestionsExperimentConfig:localeCopy shouldDownloadAssets:1];
+  v5 = [(PSGExperimentResolver *)self getResponseSuggestionsExperimentConfig:localeCopy shouldDownloadAssets:1];
 }
 
 - (PSGExperimentResolver)init
@@ -458,8 +458,8 @@ uint64_t __89__PSGExperimentResolver_getWordBoundarySuggestionsExperimentConfig_
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v18 = [(NSDictionary *)v2->_zkwLangAndNamespaces allKeys];
-    v19 = [v18 countByEnumeratingWithState:&v46 objects:v52 count:16];
+    allKeys = [(NSDictionary *)v2->_zkwLangAndNamespaces allKeys];
+    v19 = [allKeys countByEnumeratingWithState:&v46 objects:v52 count:16];
     if (v19)
     {
       v20 = *v47;
@@ -469,7 +469,7 @@ uint64_t __89__PSGExperimentResolver_getWordBoundarySuggestionsExperimentConfig_
         {
           if (*v47 != v20)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allKeys);
           }
 
           v22 = *(*(&v46 + 1) + 8 * i);
@@ -488,7 +488,7 @@ uint64_t __89__PSGExperimentResolver_getWordBoundarySuggestionsExperimentConfig_
           objc_destroyWeak(&v45);
         }
 
-        v19 = [v18 countByEnumeratingWithState:&v46 objects:v52 count:16];
+        v19 = [allKeys countByEnumeratingWithState:&v46 objects:v52 count:16];
       }
 
       while (v19);
@@ -498,8 +498,8 @@ uint64_t __89__PSGExperimentResolver_getWordBoundarySuggestionsExperimentConfig_
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v27 = [(NSDictionary *)v2->_wordBoundaryLangAndNamespaces allValues];
-    v28 = [v27 countByEnumeratingWithState:&v38 objects:v51 count:16];
+    allValues = [(NSDictionary *)v2->_wordBoundaryLangAndNamespaces allValues];
+    v28 = [allValues countByEnumeratingWithState:&v38 objects:v51 count:16];
     if (v28)
     {
       v29 = *v39;
@@ -509,7 +509,7 @@ uint64_t __89__PSGExperimentResolver_getWordBoundarySuggestionsExperimentConfig_
         {
           if (*v39 != v29)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(allValues);
           }
 
           v31 = *(*(&v38 + 1) + 8 * j);
@@ -524,7 +524,7 @@ uint64_t __89__PSGExperimentResolver_getWordBoundarySuggestionsExperimentConfig_
           objc_destroyWeak(&v37);
         }
 
-        v28 = [v27 countByEnumeratingWithState:&v38 objects:v51 count:16];
+        v28 = [allValues countByEnumeratingWithState:&v38 objects:v51 count:16];
       }
 
       while (v28);

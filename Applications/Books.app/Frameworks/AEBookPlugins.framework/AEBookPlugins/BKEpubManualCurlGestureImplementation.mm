@@ -1,23 +1,23 @@
 @interface BKEpubManualCurlGestureImplementation
-- (BKEpubManualCurlGestureImplementation)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 duration:(double)a5;
+- (BKEpubManualCurlGestureImplementation)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint duration:(double)duration;
 - (CGPoint)endPoint;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)startLocationInView:(id)a3;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)startLocationInView:(id)view;
 - (CGPoint)startPoint;
-- (CGPoint)translationInView:(id)a3;
+- (CGPoint)translationInView:(id)view;
 - (CGPoint)velocity;
-- (CGPoint)velocityInView:(id)a3;
-- (void)setStartTime:(double)a3;
+- (CGPoint)velocityInView:(id)view;
+- (void)setStartTime:(double)time;
 @end
 
 @implementation BKEpubManualCurlGestureImplementation
 
-- (BKEpubManualCurlGestureImplementation)initWithStartPoint:(CGPoint)a3 endPoint:(CGPoint)a4 duration:(double)a5
+- (BKEpubManualCurlGestureImplementation)initWithStartPoint:(CGPoint)point endPoint:(CGPoint)endPoint duration:(double)duration
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v8 = point.y;
+  v9 = point.x;
   v11.receiver = self;
   v11.super_class = BKEpubManualCurlGestureImplementation;
   result = [(BKEpubManualCurlGestureImplementation *)&v11 init];
@@ -27,32 +27,32 @@
     result->_startPoint.y = v8;
     result->_endPoint.x = x;
     result->_endPoint.y = y;
-    result->_duration = a5;
-    result->_velocity.x = (x - v9) / a5;
-    result->_velocity.y = (y - v8) / a5;
+    result->_duration = duration;
+    result->_velocity.x = (x - v9) / duration;
+    result->_velocity.y = (y - v8) / duration;
   }
 
   return result;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  v3 = self->_duration + a3;
-  self->_startTime = a3;
+  v3 = self->_duration + time;
+  self->_startTime = time;
   self->_endTime = v3;
 }
 
-- (CGPoint)startLocationInView:(id)a3
+- (CGPoint)startLocationInView:(id)view
 {
-  [a3 convertPoint:0 fromView:{self->_startPoint.x, self->_startPoint.y}];
+  [view convertPoint:0 fromView:{self->_startPoint.x, self->_startPoint.y}];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(BKEpubManualCurlGestureImplementation *)self nextTime];
   v6 = v5;
   [(BKEpubManualCurlGestureImplementation *)self startTime];
@@ -70,7 +70,7 @@
   [(BKEpubManualCurlGestureImplementation *)self endPoint];
   v20 = v19;
   [(BKEpubManualCurlGestureImplementation *)self startPoint];
-  [v4 convertPoint:0 fromView:{v16, v18 + (v20 - v21) * v10}];
+  [viewCopy convertPoint:0 fromView:{v16, v18 + (v20 - v21) * v10}];
   v23 = v22;
   v25 = v24;
 
@@ -81,15 +81,15 @@
   return result;
 }
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
   x = self->_startPoint.x;
   y = self->_startPoint.y;
-  v6 = a3;
-  [v6 convertPoint:0 fromView:{x, y}];
+  viewCopy = view;
+  [viewCopy convertPoint:0 fromView:{x, y}];
   v8 = v7;
   v10 = v9;
-  [(BKEpubManualCurlGestureImplementation *)self locationInView:v6];
+  [(BKEpubManualCurlGestureImplementation *)self locationInView:viewCopy];
   v12 = v11;
   v14 = v13;
 
@@ -100,11 +100,11 @@
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(BKEpubManualCurlGestureImplementation *)self velocity];
-  [v4 convertPoint:0 fromView:?];
+  [viewCopy convertPoint:0 fromView:?];
   v6 = v5;
   v8 = v7;
 

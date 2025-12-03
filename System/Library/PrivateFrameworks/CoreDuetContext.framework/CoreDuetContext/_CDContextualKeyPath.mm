@@ -1,16 +1,16 @@
 @interface _CDContextualKeyPath
-+ (_CDContextualKeyPath)keyPathWithKey:(id)a3;
-+ (id)ephemeralKeyPathWithKey:(id)a3;
-+ (id)remoteKeyPathForKeyPath:(id)a3 forDeviceID:(id)a4;
-+ (id)remotekeyPathForKeyPath:(id)a3 forDevice:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (_CDContextualKeyPath)keyPathWithKey:(id)key;
++ (id)ephemeralKeyPathWithKey:(id)key;
++ (id)remoteKeyPathForKeyPath:(id)path forDeviceID:(id)d;
++ (id)remotekeyPathForKeyPath:(id)path forDevice:(unint64_t)device;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMultiDeviceKeyPath;
-- (_CDContextualKeyPath)initWithCoder:(id)a3;
-- (_CDContextualKeyPath)initWithKey:(id)a3 forDeviceID:(id)a4 isUserCentric:(BOOL)a5 isEphemeral:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CDContextualKeyPath)initWithCoder:(id)coder;
+- (_CDContextualKeyPath)initWithKey:(id)key forDeviceID:(id)d isUserCentric:(BOOL)centric isEphemeral:(BOOL)ephemeral;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _CDContextualKeyPath
@@ -29,8 +29,8 @@
 
   deviceID = self->_deviceID;
   v5 = +[_CDDevice localDevice];
-  v6 = [v5 deviceID];
-  LOBYTE(deviceID) = [(NSString *)deviceID isEqualToString:v6];
+  deviceID = [v5 deviceID];
+  LOBYTE(deviceID) = [(NSString *)deviceID isEqualToString:deviceID];
 
   if (deviceID)
   {
@@ -52,68 +52,68 @@
   return v8;
 }
 
-- (_CDContextualKeyPath)initWithKey:(id)a3 forDeviceID:(id)a4 isUserCentric:(BOOL)a5 isEphemeral:(BOOL)a6
+- (_CDContextualKeyPath)initWithKey:(id)key forDeviceID:(id)d isUserCentric:(BOOL)centric isEphemeral:(BOOL)ephemeral
 {
-  v11 = a3;
-  v12 = a4;
+  keyCopy = key;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = _CDContextualKeyPath;
   v13 = [(_CDContextualKeyPath *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_key, a3);
-    objc_storeStrong(&v14->_deviceID, a4);
-    v14->_isUserCentric = a5;
-    v14->_isEphemeral = a6;
+    objc_storeStrong(&v13->_key, key);
+    objc_storeStrong(&v14->_deviceID, d);
+    v14->_isUserCentric = centric;
+    v14->_isEphemeral = ephemeral;
   }
 
   return v14;
 }
 
-+ (_CDContextualKeyPath)keyPathWithKey:(id)a3
++ (_CDContextualKeyPath)keyPathWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc(objc_opt_class());
   v5 = +[_CDDevice localDevice];
-  v6 = [v5 deviceID];
-  v7 = [v4 initWithKey:v3 forDeviceID:v6 isUserCentric:0 isEphemeral:0];
+  deviceID = [v5 deviceID];
+  v7 = [v4 initWithKey:keyCopy forDeviceID:deviceID isUserCentric:0 isEphemeral:0];
 
   return v7;
 }
 
-+ (id)ephemeralKeyPathWithKey:(id)a3
++ (id)ephemeralKeyPathWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc(objc_opt_class());
   v5 = +[_CDDevice localDevice];
-  v6 = [v5 deviceID];
-  v7 = [v4 initWithKey:v3 forDeviceID:v6 isUserCentric:0 isEphemeral:1];
+  deviceID = [v5 deviceID];
+  v7 = [v4 initWithKey:keyCopy forDeviceID:deviceID isUserCentric:0 isEphemeral:1];
 
   return v7;
 }
 
-+ (id)remotekeyPathForKeyPath:(id)a3 forDevice:(unint64_t)a4
++ (id)remotekeyPathForKeyPath:(id)path forDevice:(unint64_t)device
 {
-  v4 = [a3 copy];
+  v4 = [path copy];
 
   return v4;
 }
 
-+ (id)remoteKeyPathForKeyPath:(id)a3 forDeviceID:(id)a4
++ (id)remoteKeyPathForKeyPath:(id)path forDeviceID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isUserCentric])
+  pathCopy = path;
+  dCopy = d;
+  if ([pathCopy isUserCentric])
   {
-    v7 = [v5 copy];
+    v7 = [pathCopy copy];
   }
 
   else
   {
     v8 = [_CDContextualKeyPath alloc];
-    v9 = [v5 key];
-    v7 = -[_CDContextualKeyPath initWithKey:forDeviceID:isUserCentric:isEphemeral:](v8, "initWithKey:forDeviceID:isUserCentric:isEphemeral:", v9, v6, [v5 isUserCentric], objc_msgSend(v5, "isEphemeral"));
+    v9 = [pathCopy key];
+    v7 = -[_CDContextualKeyPath initWithKey:forDeviceID:isUserCentric:isEphemeral:](v8, "initWithKey:forDeviceID:isUserCentric:isEphemeral:", v9, dCopy, [pathCopy isUserCentric], objc_msgSend(pathCopy, "isEphemeral"));
   }
 
   return v7;
@@ -131,28 +131,28 @@
   return [v3 containsObject:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"key"];
-  [v5 encodeObject:self->_deviceID forKey:@"deviceID"];
-  [v5 encodeBool:self->_isUserCentric forKey:@"userCentric"];
-  [v5 encodeBool:self->_isEphemeral forKey:@"ephemeral"];
-  [v5 encodeBool:self->_sensitiveContents forKey:@"sensitiveContents"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"key"];
+  [coderCopy encodeObject:self->_deviceID forKey:@"deviceID"];
+  [coderCopy encodeBool:self->_isUserCentric forKey:@"userCentric"];
+  [coderCopy encodeBool:self->_isEphemeral forKey:@"ephemeral"];
+  [coderCopy encodeBool:self->_sensitiveContents forKey:@"sensitiveContents"];
 }
 
-- (_CDContextualKeyPath)initWithCoder:(id)a3
+- (_CDContextualKeyPath)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
-    if (v6 && [v4 containsValueForKey:@"userCentric"] && (v7 = objc_msgSend(v4, "decodeBoolForKey:", @"userCentric"), objc_msgSend(v4, "containsValueForKey:", @"ephemeral")))
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+    if (v6 && [coderCopy containsValueForKey:@"userCentric"] && (v7 = objc_msgSend(coderCopy, "decodeBoolForKey:", @"userCentric"), objc_msgSend(coderCopy, "containsValueForKey:", @"ephemeral")))
     {
-      v8 = [objc_alloc(objc_opt_class()) initWithKey:v5 forDeviceID:v6 isUserCentric:v7 isEphemeral:{objc_msgSend(v4, "decodeBoolForKey:", @"ephemeral"}];
-      -[_CDContextualKeyPath setSensitiveContents:](v8, "setSensitiveContents:", [v4 decodeBoolForKey:@"sensitiveContents"]);
+      v8 = [objc_alloc(objc_opt_class()) initWithKey:v5 forDeviceID:v6 isUserCentric:v7 isEphemeral:{objc_msgSend(coderCopy, "decodeBoolForKey:", @"ephemeral"}];
+      -[_CDContextualKeyPath setSensitiveContents:](v8, "setSensitiveContents:", [coderCopy decodeBoolForKey:@"sensitiveContents"]);
     }
 
     else
@@ -169,17 +169,17 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithKey:forDeviceID:isUserCentric:isEphemeral:", self->_key, self->_deviceID, self->_isUserCentric, self->_isEphemeral}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithKey:forDeviceID:isUserCentric:isEphemeral:", self->_key, self->_deviceID, self->_isUserCentric, self->_isEphemeral}];
   [v4 setSensitiveContents:self->_sensitiveContents];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -189,7 +189,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_isUserCentric)
       {
@@ -229,7 +229,7 @@ LABEL_12:
   return v7;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   key = self->_key;
   if (objc_opt_respondsToSelector())

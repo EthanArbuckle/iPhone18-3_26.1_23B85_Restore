@@ -1,5 +1,5 @@
 @interface MPMediaLibraryConnectionAssertion
-- (id)_initWithMediaLibrary:(id)a3 identifier:(id)a4;
+- (id)_initWithMediaLibrary:(id)library identifier:(id)identifier;
 - (void)dealloc;
 @end
 
@@ -13,18 +13,18 @@
   [(MPMediaLibraryConnectionAssertion *)&v3 dealloc];
 }
 
-- (id)_initWithMediaLibrary:(id)a3 identifier:(id)a4
+- (id)_initWithMediaLibrary:(id)library identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = MPMediaLibraryConnectionAssertion;
   v9 = [(MPMediaLibraryConnectionAssertion *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_library, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_library, library);
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
   }

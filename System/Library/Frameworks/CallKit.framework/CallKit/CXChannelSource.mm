@@ -1,21 +1,21 @@
 @interface CXChannelSource
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3;
+- (void)handleAudioSessionActivationStateChangedTo:(id)to;
 @end
 
 @implementation CXChannelSource
 
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3
+- (void)handleAudioSessionActivationStateChangedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(CXAbstractProviderSource *)self queue];
+  toCopy = to;
+  queue = [(CXAbstractProviderSource *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__CXChannelSource_handleAudioSessionActivationStateChangedTo___block_invoke;
   v7[3] = &unk_1E7C06BE0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = toCopy;
+  selfCopy = self;
+  v6 = toCopy;
+  dispatch_async(queue, v7);
 }
 
 void __62__CXChannelSource_handleAudioSessionActivationStateChangedTo___block_invoke(uint64_t a1)

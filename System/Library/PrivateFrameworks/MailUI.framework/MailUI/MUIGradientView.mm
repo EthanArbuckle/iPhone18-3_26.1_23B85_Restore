@@ -3,19 +3,19 @@
 - (CGPoint)startPoint;
 - (NSArray)gradientColors;
 - (NSArray)locations;
-- (void)setEndPoint:(CGPoint)a3;
-- (void)setGradientColors:(id)a3;
-- (void)setLocations:(id)a3;
-- (void)setStartPoint:(CGPoint)a3;
+- (void)setEndPoint:(CGPoint)point;
+- (void)setGradientColors:(id)colors;
+- (void)setLocations:(id)locations;
+- (void)setStartPoint:(CGPoint)point;
 @end
 
 @implementation MUIGradientView
 
-- (void)setGradientColors:(id)a3
+- (void)setGradientColors:(id)colors
 {
-  v5 = [a3 ef_map:&__block_literal_global_19];
-  v4 = [(MUIGradientView *)self gradientLayer];
-  [v4 setColors:v5];
+  v5 = [colors ef_map:&__block_literal_global_19];
+  gradientLayer = [(MUIGradientView *)self gradientLayer];
+  [gradientLayer setColors:v5];
 }
 
 uint64_t __37__MUIGradientView_setGradientColors___block_invoke(int a1, id a2)
@@ -27,40 +27,40 @@ uint64_t __37__MUIGradientView_setGradientColors___block_invoke(int a1, id a2)
 
 - (NSArray)gradientColors
 {
-  v2 = [(MUIGradientView *)self gradientLayer];
-  v3 = [v2 colors];
-  v4 = [v3 ef_map:&__block_literal_global_3];
+  gradientLayer = [(MUIGradientView *)self gradientLayer];
+  colors = [gradientLayer colors];
+  v4 = [colors ef_map:&__block_literal_global_3];
 
   return v4;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(MUIGradientView *)self gradientLayer];
-  [v5 setLocations:v4];
+  locationsCopy = locations;
+  gradientLayer = [(MUIGradientView *)self gradientLayer];
+  [gradientLayer setLocations:locationsCopy];
 }
 
 - (NSArray)locations
 {
-  v2 = [(MUIGradientView *)self gradientLayer];
-  v3 = [v2 locations];
+  gradientLayer = [(MUIGradientView *)self gradientLayer];
+  locations = [gradientLayer locations];
 
-  return v3;
+  return locations;
 }
 
-- (void)setStartPoint:(CGPoint)a3
+- (void)setStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MUIGradientView *)self gradientLayer];
-  [v5 setStartPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  gradientLayer = [(MUIGradientView *)self gradientLayer];
+  [gradientLayer setStartPoint:{x, y}];
 }
 
 - (CGPoint)startPoint
 {
-  v2 = [(MUIGradientView *)self gradientLayer];
-  [v2 startPoint];
+  gradientLayer = [(MUIGradientView *)self gradientLayer];
+  [gradientLayer startPoint];
   v4 = v3;
   v6 = v5;
 
@@ -71,18 +71,18 @@ uint64_t __37__MUIGradientView_setGradientColors___block_invoke(int a1, id a2)
   return result;
 }
 
-- (void)setEndPoint:(CGPoint)a3
+- (void)setEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(MUIGradientView *)self gradientLayer];
-  [v5 setEndPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  gradientLayer = [(MUIGradientView *)self gradientLayer];
+  [gradientLayer setEndPoint:{x, y}];
 }
 
 - (CGPoint)endPoint
 {
-  v2 = [(MUIGradientView *)self gradientLayer];
-  [v2 endPoint];
+  gradientLayer = [(MUIGradientView *)self gradientLayer];
+  [gradientLayer endPoint];
   v4 = v3;
   v6 = v5;
 

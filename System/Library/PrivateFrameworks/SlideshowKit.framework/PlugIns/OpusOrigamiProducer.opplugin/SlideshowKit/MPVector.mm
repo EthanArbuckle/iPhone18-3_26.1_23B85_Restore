@@ -1,39 +1,39 @@
 @interface MPVector
-+ (id)vectorFromCGColor:(CGColor *)a3;
-+ (id)vectorFromMCVector:(id *)a3;
-+ (id)vectorFromString:(id)a3;
-+ (id)vectorWithValues:(id)a3;
++ (id)vectorFromCGColor:(CGColor *)color;
++ (id)vectorFromMCVector:(id *)vector;
++ (id)vectorFromString:(id)string;
++ (id)vectorWithValues:(id)values;
 - ($421962E1114BB55FD51FACB03C2AC210)vector;
 - (MPVector)init;
 - (id)CIColorString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)string;
 - (id)values;
-- (void)setValues:(id)a3;
-- (void)setVector:(id *)a3;
+- (void)setValues:(id)values;
+- (void)setVector:(id *)vector;
 @end
 
 @implementation MPVector
 
-+ (id)vectorFromString:(id)a3
++ (id)vectorFromString:(id)string
 {
-  v4 = objc_alloc_init(a1);
-  MCStringToVector(a3, v6);
+  v4 = objc_alloc_init(self);
+  MCStringToVector(string, v6);
   [v4 setVector:v6];
   return v4;
 }
 
-+ (id)vectorWithValues:(id)a3
++ (id)vectorWithValues:(id)values
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setValues:a3];
+  v4 = objc_alloc_init(self);
+  [v4 setValues:values];
   return v4;
 }
 
-+ (id)vectorFromCGColor:(CGColor *)a3
++ (id)vectorFromCGColor:(CGColor *)color
 {
-  v4 = objc_alloc_init(a1);
-  Components = CGColorGetComponents(a3);
+  v4 = objc_alloc_init(self);
+  Components = CGColorGetComponents(color);
   v6 = vcvt_hight_f32_f64(vcvt_f32_f64(*Components), Components[1]);
   v8 = 4;
   v9 = 0;
@@ -50,9 +50,9 @@
   return [(MPVector *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setValues:{-[MPVector values](self, "values")}];
   return v4;
 }
@@ -125,9 +125,9 @@
   return v4;
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v5 = [a3 count];
+  v5 = [values count];
   if (v5 <= 4)
   {
     v6 = v5;
@@ -138,7 +138,7 @@
       vector = self->_vector;
       do
       {
-        [objc_msgSend(a3 objectAtIndex:{v7), "floatValue"}];
+        [objc_msgSend(values objectAtIndex:{v7), "floatValue"}];
         vector[v7] = v9;
         v7 = v7 + 1;
       }
@@ -148,18 +148,18 @@
   }
 }
 
-+ (id)vectorFromMCVector:(id *)a3
++ (id)vectorFromMCVector:(id *)vector
 {
-  v4 = objc_alloc_init(a1);
-  v6 = *a3;
+  v4 = objc_alloc_init(self);
+  v6 = *vector;
   [v4 setVector:&v6];
   return v4;
 }
 
-- (void)setVector:(id *)a3
+- (void)setVector:(id *)vector
 {
-  self->_length = a3->var0;
-  v3 = *a3->var1;
+  self->_length = vector->var0;
+  v3 = *vector->var1;
   *&self->_vector[2] = vcvt_hight_f64_f32(v3);
   *self->_vector = vcvtq_f64_f32(*v3.f32);
 }

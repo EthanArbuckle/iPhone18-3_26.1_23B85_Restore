@@ -1,9 +1,9 @@
 @interface ATXSendMessagesToDigestManager
 - (ATXSendMessagesToDigestManager)init;
-- (ATXSendMessagesToDigestManager)initWithDataStore:(id)a3;
-- (BOOL)bundleIdIsEligibleForSendMessagesToDigestSuggestions:(id)a3;
+- (ATXSendMessagesToDigestManager)initWithDataStore:(id)store;
+- (BOOL)bundleIdIsEligibleForSendMessagesToDigestSuggestions:(id)suggestions;
 - (id)activeSuggestions;
-- (id)sendMessagesToDigestSuggestion:(id)a3 uuid:(id)a4 engagementStatus:(id)a5;
+- (id)sendMessagesToDigestSuggestion:(id)suggestion uuid:(id)uuid engagementStatus:(id)status;
 @end
 
 @implementation ATXSendMessagesToDigestManager
@@ -16,34 +16,34 @@
   return v4;
 }
 
-- (ATXSendMessagesToDigestManager)initWithDataStore:(id)a3
+- (ATXSendMessagesToDigestManager)initWithDataStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = ATXSendMessagesToDigestManager;
   v6 = [(ATXSendMessagesToDigestManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataStore, a3);
+    objc_storeStrong(&v6->_dataStore, store);
     v8 = objc_opt_new();
     notificationSettingsReader = v7->_notificationSettingsReader;
     v7->_notificationSettingsReader = v8;
 
-    v10 = [MEMORY[0x277CEB710] sharedInstance];
+    mEMORY[0x277CEB710] = [MEMORY[0x277CEB710] sharedInstance];
     notificationManagementMAConstants = v7->_notificationManagementMAConstants;
-    v7->_notificationManagementMAConstants = v10;
+    v7->_notificationManagementMAConstants = mEMORY[0x277CEB710];
   }
 
   return v7;
 }
 
-- (BOOL)bundleIdIsEligibleForSendMessagesToDigestSuggestions:(id)a3
+- (BOOL)bundleIdIsEligibleForSendMessagesToDigestSuggestions:(id)suggestions
 {
-  v4 = a3;
-  if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader doesAppSendNotificationsToDigest:v4])
+  suggestionsCopy = suggestions;
+  if ([(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader doesAppSendNotificationsToDigest:suggestionsCopy])
   {
-    v5 = [(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader doesAppAllowMessageBreakthrough:v4];
+    v5 = [(ATXNotificationSettingsReaderProtocol *)self->_notificationSettingsReader doesAppAllowMessageBreakthrough:suggestionsCopy];
   }
 
   else
@@ -98,18 +98,18 @@ void __51__ATXSendMessagesToDigestManager_activeSuggestions__block_invoke(uint64
   }
 }
 
-- (id)sendMessagesToDigestSuggestion:(id)a3 uuid:(id)a4 engagementStatus:(id)a5
+- (id)sendMessagesToDigestSuggestion:(id)suggestion uuid:(id)uuid engagementStatus:(id)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 first];
-  v12 = [v11 unsignedIntegerValue];
+  suggestionCopy = suggestion;
+  uuidCopy = uuid;
+  statusCopy = status;
+  first = [statusCopy first];
+  unsignedIntegerValue = [first unsignedIntegerValue];
 
-  v13 = [v10 second];
+  second = [statusCopy second];
 
-  v14 = [v13 unsignedIntegerValue];
-  if (v12 || v14 <= [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants sendMessagesToDigestManagerMaxNumNonEngagementsAllowedForMessageNotifications])
+  unsignedIntegerValue2 = [second unsignedIntegerValue];
+  if (unsignedIntegerValue || unsignedIntegerValue2 <= [(ATXNotificationManagementMAConstants *)self->_notificationManagementMAConstants sendMessagesToDigestManagerMaxNumNonEngagementsAllowedForMessageNotifications])
   {
     v18 = 0;
   }
@@ -119,7 +119,7 @@ void __51__ATXSendMessagesToDigestManager_activeSuggestions__block_invoke(uint64
     v15 = objc_alloc(MEMORY[0x277CEB6F0]);
     v16 = objc_opt_new();
     v17 = [MEMORY[0x277CBEAA8] now];
-    v18 = [v15 initSendToMessagesDigestSuggestionWithUUID:v16 bundleID:v8 timestamp:v17 triggerNotificationUUID:v9];
+    v18 = [v15 initSendToMessagesDigestSuggestionWithUUID:v16 bundleID:suggestionCopy timestamp:v17 triggerNotificationUUID:uuidCopy];
   }
 
   return v18;

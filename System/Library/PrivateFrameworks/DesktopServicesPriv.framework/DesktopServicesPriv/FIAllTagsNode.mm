@@ -1,16 +1,16 @@
 @interface FIAllTagsNode
-+ (int)colorForTagName:(id)a3;
-+ (void)setCurrentTagsColorMappings:(id)a3;
++ (int)colorForTagName:(id)name;
++ (void)setCurrentTagsColorMappings:(id)mappings;
 @end
 
 @implementation FIAllTagsNode
 
-+ (int)colorForTagName:(id)a3
++ (int)colorForTagName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v8.fString.fRef = &stru_1F5F42870;
   CFRetain(&stru_1F5F42870);
-  TString::SetStringRefAsImmutable(&v8, v3);
+  TString::SetStringRefAsImmutable(&v8, nameCopy);
 
   v5 = TFSInfo::LabelColorForTagName(&v8, v4);
   v6 = v5 & (v5 << 15 >> 31);
@@ -19,9 +19,9 @@
   return v6;
 }
 
-+ (void)setCurrentTagsColorMappings:(id)a3
++ (void)setCurrentTagsColorMappings:(id)mappings
 {
-  v3 = Copy<NSMutableArray<FILocalAppContainerNode *>>(a3);
+  v3 = Copy<NSMutableArray<FILocalAppContainerNode *>>(mappings);
   TFSInfo::SetUserTagsMap(v3);
 }
 

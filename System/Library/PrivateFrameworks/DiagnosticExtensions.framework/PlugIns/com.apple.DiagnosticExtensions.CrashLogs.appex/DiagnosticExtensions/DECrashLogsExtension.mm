@@ -1,9 +1,9 @@
 @interface DECrashLogsExtension
 - (DECrashLogsExtension)init;
-- (id)_attachmentsWithDisplayName:(id)a3;
-- (id)_submittableLogsWithPattern:(id)a3 excludingPattern:(id)a4 excludingPathComponents:(id)a5;
-- (id)attachmentsForParameters:(id)a3;
-- (id)shortname:(id)a3;
+- (id)_attachmentsWithDisplayName:(id)name;
+- (id)_submittableLogsWithPattern:(id)pattern excludingPattern:(id)excludingPattern excludingPathComponents:(id)components;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)shortname:(id)shortname;
 @end
 
 @implementation DECrashLogsExtension
@@ -23,9 +23,9 @@
       {
         v5 = +[NSUserDefaults standardUserDefaults];
         v6 = [v5 valueForKey:@"RCInternalMode"];
-        v7 = [v6 integerValue];
+        integerValue = [v6 integerValue];
 
-        if (v7 != 2)
+        if (integerValue != 2)
         {
           goto LABEL_5;
         }
@@ -48,11 +48,11 @@ LABEL_8:
   return v2;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [v5 objectForKey:@"DEExtensionAttachmentsParamDisplayNameKey"];
+  v7 = [parametersCopy objectForKey:@"DEExtensionAttachmentsParamDisplayNameKey"];
 
   if (v7)
   {
@@ -60,7 +60,7 @@ LABEL_8:
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v8 = [v5 objectForKeyedSubscript:@"DEExtensionAttachmentsParamDisplayNameKey"];
+    v8 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamDisplayNameKey"];
     v9 = [v8 countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v9)
     {
@@ -89,7 +89,7 @@ LABEL_8:
     }
   }
 
-  v36 = v5;
+  v36 = parametersCopy;
   if (![v6 count])
   {
     if (!MGGetBoolAnswer())
@@ -104,12 +104,12 @@ LABEL_20:
     v13 = v6;
     v14 = +[NSUserDefaults standardUserDefaults];
     v15 = [v14 valueForKey:@"RCInternalMode"];
-    v16 = [v15 integerValue];
-    if (v16)
+    integerValue = [v15 integerValue];
+    if (integerValue)
     {
       v3 = +[NSUserDefaults standardUserDefaults];
-      v5 = [v3 valueForKey:@"RCInternalMode"];
-      if ([v5 integerValue] != 2)
+      parametersCopy = [v3 valueForKey:@"RCInternalMode"];
+      if ([parametersCopy integerValue] != 2)
       {
 
         v6 = v13;
@@ -120,7 +120,7 @@ LABEL_20:
     v17 = [v36 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
     v18 = [@"Feedback Assistant" isEqualToString:v17];
 
-    if (v16)
+    if (integerValue)
     {
     }
 
@@ -156,9 +156,9 @@ LABEL_21:
         }
 
         v26 = *(*(&v39 + 1) + 8 * j);
-        v27 = [v26 path];
-        v28 = [v27 lastPathComponent];
-        v29 = [(DECrashLogsExtension *)self shortname:v28];
+        path = [v26 path];
+        lastPathComponent = [path lastPathComponent];
+        v29 = [(DECrashLogsExtension *)self shortname:lastPathComponent];
 
         v30 = [v20 objectForKey:v29];
 
@@ -172,9 +172,9 @@ LABEL_21:
         [v20 setObject:v32 forKeyedSubscript:v29];
 
         v33 = [v20 objectForKeyedSubscript:v29];
-        v34 = [v33 integerValue];
+        integerValue2 = [v33 integerValue];
 
-        if (v34 >= 6)
+        if (integerValue2 >= 6)
         {
           [v37 removeObject:v26];
         }
@@ -189,13 +189,13 @@ LABEL_21:
   return v37;
 }
 
-- (id)_attachmentsWithDisplayName:(id)a3
+- (id)_attachmentsWithDisplayName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [NSString stringWithFormat:@".*\\.%@.*", @"ips"];
-  if (v4)
+  if (nameCopy)
   {
-    v6 = [NSString stringWithFormat:@"%@.*\\.%@.*", v4, @"ips"];
+    v6 = [NSString stringWithFormat:@"%@.*\\.%@.*", nameCopy, @"ips"];
 
     v7 = @"(JetsamEvent|Sandbox|^stacks|log-aggregated).*";
     v5 = v6;
@@ -213,14 +213,14 @@ LABEL_21:
   v12 = [(DECrashLogsExtension *)self _submittableLogsWithPattern:v10 excludingPattern:0 excludingPathComponents:&off_1000043A8];
   v13 = [v11 mutableCopy];
   [v13 addObjectsFromArray:v12];
-  if (v4)
+  if (nameCopy)
   {
     v24 = v12;
     v25 = v10;
     v26 = v9;
     v27 = v8;
     v28 = v5;
-    v29 = v4;
+    v29 = nameCopy;
     v14 = [[NSDate alloc] initWithTimeIntervalSinceNow:{-[DECrashLogsExtension cutOffSeconds](self, "cutOffSeconds")}];
     v30 = 0u;
     v31 = 0u;
@@ -242,8 +242,8 @@ LABEL_21:
           }
 
           v20 = *(*(&v30 + 1) + 8 * i);
-          v21 = [v20 modificationDate];
-          v22 = [v21 compare:v14];
+          modificationDate = [v20 modificationDate];
+          v22 = [modificationDate compare:v14];
 
           if (v22 == -1)
           {
@@ -258,7 +258,7 @@ LABEL_21:
     }
 
     v5 = v28;
-    v4 = v29;
+    nameCopy = v29;
     v9 = v26;
     v8 = v27;
     v12 = v24;
@@ -268,25 +268,25 @@ LABEL_21:
   return v13;
 }
 
-- (id)_submittableLogsWithPattern:(id)a3 excludingPattern:(id)a4 excludingPathComponents:(id)a5
+- (id)_submittableLogsWithPattern:(id)pattern excludingPattern:(id)excludingPattern excludingPathComponents:(id)components
 {
-  v7 = a3;
-  v36 = a4;
-  v8 = a5;
+  patternCopy = pattern;
+  excludingPatternCopy = excludingPattern;
+  componentsCopy = components;
   v9 = OSASubmittableLogs();
   if ([v9 count])
   {
-    v10 = v7;
+    v10 = patternCopy;
     if (!v10)
     {
       v10 = [NSRegularExpression regularExpressionWithPattern:@"*" options:1 error:0];
     }
 
-    v31 = v8;
-    v32 = v7;
-    if (v8 && [v8 count])
+    v31 = componentsCopy;
+    v32 = patternCopy;
+    if (componentsCopy && [componentsCopy count])
     {
-      v35 = [NSSet setWithArray:v8];
+      v35 = [NSSet setWithArray:componentsCopy];
     }
 
     else
@@ -332,7 +332,7 @@ LABEL_21:
 
           if (v18 || ([v10 firstMatchInString:v16 options:8 range:{0, v17}], v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
           {
-            if (!v36 || !v17 || ([v36 firstMatchInString:v16 options:8 range:{0, v17}], v20 = objc_claimAutoreleasedReturnValue(), v20, !v20))
+            if (!excludingPatternCopy || !v17 || ([excludingPatternCopy firstMatchInString:v16 options:8 range:{0, v17}], v20 = objc_claimAutoreleasedReturnValue(), v20, !v20))
             {
               if (!v35 || (v21 = [NSSet alloc], [v15 pathComponents], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "initWithArray:", v22), v24 = objc_msgSend(v23, "intersectsSet:", v35), v23, v22, (v24 & 1) == 0))
               {
@@ -342,8 +342,8 @@ LABEL_21:
                 v25 = v38;
                 [v15 getResourceValue:&v37 forKey:NSURLContentModificationDateKey error:0];
                 v26 = v37;
-                v27 = [v15 lastPathComponent];
-                v28 = [DEAttachmentItem attachmentWithPath:v15 withDisplayName:v27 modificationDate:v26 andFilesize:v25];
+                lastPathComponent = [v15 lastPathComponent];
+                v28 = [DEAttachmentItem attachmentWithPath:v15 withDisplayName:lastPathComponent modificationDate:v26 andFilesize:v25];
 
                 [v33 addObject:v28];
               }
@@ -357,8 +357,8 @@ LABEL_21:
       while (v12);
     }
 
-    v8 = v31;
-    v7 = v32;
+    componentsCopy = v31;
+    patternCopy = v32;
     v9 = v30;
   }
 
@@ -370,9 +370,9 @@ LABEL_21:
   return v33;
 }
 
-- (id)shortname:(id)a3
+- (id)shortname:(id)shortname
 {
-  v3 = a3;
+  shortnameCopy = shortname;
   v4 = qword_100008278;
   if (!qword_100008278)
   {
@@ -383,17 +383,17 @@ LABEL_21:
     v4 = qword_100008278;
   }
 
-  v7 = [v4 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v7 = [v4 firstMatchInString:shortnameCopy options:0 range:{0, objc_msgSend(shortnameCopy, "length")}];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 range];
-    v11 = [v3 substringWithRange:{v9, v10}];
+    range = [v7 range];
+    v11 = [shortnameCopy substringWithRange:{range, v10}];
   }
 
   else
   {
-    v11 = v3;
+    v11 = shortnameCopy;
   }
 
   v12 = v11;

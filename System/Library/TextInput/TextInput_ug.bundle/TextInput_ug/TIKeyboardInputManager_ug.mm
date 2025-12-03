@@ -11,13 +11,13 @@
     [TIKeyboardInputManager_ug keyboardConfigurationLayoutTag];
   }
 
-  v3 = [(TIKeyboardInputManager_ug *)self keyboardState];
-  v4 = [v3 documentState];
-  v5 = [v4 contextBeforeInput];
+  keyboardState = [(TIKeyboardInputManager_ug *)self keyboardState];
+  documentState = [keyboardState documentState];
+  contextBeforeInput = [documentState contextBeforeInput];
 
-  if ([v5 length])
+  if ([contextBeforeInput length])
   {
-    v6 = [v5 rangeOfCharacterFromSet:-[TIKeyboardInputManager_ug keyboardConfigurationLayoutTag]::__nonLetterSet options:4];
+    v6 = [contextBeforeInput rangeOfCharacterFromSet:-[TIKeyboardInputManager_ug keyboardConfigurationLayoutTag]::__nonLetterSet options:4];
   }
 
   else
@@ -28,12 +28,12 @@
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v5 substringFromIndex:v6 + v7];
+    v8 = [contextBeforeInput substringFromIndex:v6 + v7];
 
-    v5 = v8;
+    contextBeforeInput = v8;
   }
 
-  if ([v5 length])
+  if ([contextBeforeInput length])
   {
     v9 = @"Default";
   }

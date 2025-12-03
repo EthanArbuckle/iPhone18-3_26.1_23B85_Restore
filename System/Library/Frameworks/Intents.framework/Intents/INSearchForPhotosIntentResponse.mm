@@ -1,17 +1,17 @@
 @interface INSearchForPhotosIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INSearchForPhotosIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INSearchForPhotosIntentResponse)initWithBackingStore:(id)store;
 - (INSearchForPhotosIntentResponse)initWithCode:(INSearchForPhotosIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INSearchForPhotosIntentResponse)initWithCoder:(id)a3;
+- (INSearchForPhotosIntentResponse)initWithCoder:(id)coder;
 - (INSearchForPhotosIntentResponseCode)code;
 - (NSNumber)searchResultsCount;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setSearchResultsCount:(NSNumber *)searchResultsCount;
 @end
 
@@ -21,32 +21,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INSearchForPhotosIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < (INSearchForPhotosIntentResponseCodeFailureRequiringAppLaunch|INSearchForPhotosIntentResponseCodeContinueInApp))
+  code = [(INSearchForPhotosIntentResponse *)self code];
+  v4 = code;
+  if (code < (INSearchForPhotosIntentResponseCodeFailureRequiringAppLaunch|INSearchForPhotosIntentResponseCodeContinueInApp))
   {
-    v5 = off_1E72801A0[v3];
-    v6 = v5;
+    null = off_1E72801A0[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"searchResultsCount";
-  v13[0] = v5;
-  v7 = [(INSearchForPhotosIntentResponse *)self searchResultsCount];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  searchResultsCount = [(INSearchForPhotosIntentResponse *)self searchResultsCount];
+  null2 = searchResultsCount;
+  if (!searchResultsCount)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!searchResultsCount)
   {
   }
 
@@ -62,30 +62,30 @@
 - (void)setSearchResultsCount:(NSNumber *)searchResultsCount
 {
   v7 = searchResultsCount;
-  v4 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   if (v7)
   {
-    [v4 setSearchResultsCount:{-[NSNumber intValue](v7, "intValue")}];
+    [_responseMessagePBRepresentation setSearchResultsCount:{-[NSNumber intValue](v7, "intValue")}];
   }
 
   else
   {
-    [v4 setHasSearchResultsCount:0];
+    [_responseMessagePBRepresentation setHasSearchResultsCount:0];
   }
 
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSNumber)searchResultsCount
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if ([v3 hasSearchResultsCount])
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if ([_responseMessagePBRepresentation hasSearchResultsCount])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    v6 = [v4 numberWithInt:{objc_msgSend(v5, "searchResultsCount")}];
+    _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    v6 = [v4 numberWithInt:{objc_msgSend(_responseMessagePBRepresentation2, "searchResultsCount")}];
   }
 
   else
@@ -96,22 +96,22 @@
   return v6;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INSearchForPhotosIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INSearchForPhotosIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INSearchForPhotosIntentResponseCodeContinueInApp"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INSearchForPhotosIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INSearchForPhotosIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INSearchForPhotosIntentResponseCodeContinueInApp"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INSearchForPhotosIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INSearchForPhotosIntentResponseCodeFailure"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INSearchForPhotosIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INSearchForPhotosIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v5 = 4;
   }
@@ -121,7 +121,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INSearchForPhotosIntentResponseCodeFailureAppConfigurationRequired"];
+  v6 = [nameCopy isEqualToString:@"INSearchForPhotosIntentResponseCodeFailureAppConfigurationRequired"];
 
   if (v6)
   {
@@ -136,30 +136,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INSearchForPhotosIntentResponse *)self code];
-  if ((v2 - 1) > 4)
+  code = [(INSearchForPhotosIntentResponse *)self code];
+  if ((code - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F000[v2 - 1];
+    return qword_18EE5F000[code - 1];
   }
 }
 
-- (INSearchForPhotosIntentResponse)initWithCoder:(id)a3
+- (INSearchForPhotosIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INSearchForPhotosIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INSearchForPhotosIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INSearchForPhotosIntentResponseCode)code
@@ -169,18 +169,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INSearchForPhotosIntentResponse)initWithBackingStore:(id)a3
+- (INSearchForPhotosIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INSearchForPhotosIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INSearchForPhotosIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INSearchForPhotosIntentResponse)initWithCode:(INSearchForPhotosIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -221,9 +221,9 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 5)
+  if (code == 5)
   {
     return 1;
   }
@@ -234,39 +234,39 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 4)
+  if ((code - 1) > 4)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5EFE8[a3 - 1];
+    return dword_18EE5EFE8[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 3;
-  if (a5)
+  if (requested)
   {
     v5 = 4;
   }
 
-  if (a4 == 1)
+  if (code == 1)
   {
     v5 = 5;
   }
 
   v6 = 2;
-  if (a3 != 4)
+  if (type != 4)
   {
-    v6 = a3 == 5;
+    v6 = type == 5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return v5;
   }

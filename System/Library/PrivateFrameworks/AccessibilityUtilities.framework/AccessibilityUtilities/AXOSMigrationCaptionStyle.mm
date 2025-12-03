@@ -1,114 +1,114 @@
 @interface AXOSMigrationCaptionStyle
-- (AXOSMigrationCaptionStyle)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AXOSMigrationCaptionStyle)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXOSMigrationCaptionStyle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXOSMigrationCaptionStyle *)self captionStyleName];
-  [v4 encodeObject:v5 forKey:@"captionStyleName"];
+  coderCopy = coder;
+  captionStyleName = [(AXOSMigrationCaptionStyle *)self captionStyleName];
+  [coderCopy encodeObject:captionStyleName forKey:@"captionStyleName"];
 
-  v6 = [(AXOSMigrationCaptionStyle *)self fontName];
-  [v4 encodeObject:v6 forKey:@"fontName"];
+  fontName = [(AXOSMigrationCaptionStyle *)self fontName];
+  [coderCopy encodeObject:fontName forKey:@"fontName"];
 
   v7 = [(AXOSMigrationCaptionStyle *)self size];
-  [v4 encodeObject:v7 forKey:@"size"];
+  [coderCopy encodeObject:v7 forKey:@"size"];
 
-  v8 = [(AXOSMigrationCaptionStyle *)self color];
-  [v4 encodeObject:v8 forKey:@"color"];
+  color = [(AXOSMigrationCaptionStyle *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
-  v9 = [(AXOSMigrationCaptionStyle *)self colorVideoOverride];
-  [v4 encodeObject:v9 forKey:@"colorVideoOverride"];
+  colorVideoOverride = [(AXOSMigrationCaptionStyle *)self colorVideoOverride];
+  [coderCopy encodeObject:colorVideoOverride forKey:@"colorVideoOverride"];
 
-  v10 = [(AXOSMigrationCaptionStyle *)self backgroundColor];
-  [v4 encodeObject:v10 forKey:@"backgroundColor"];
+  backgroundColor = [(AXOSMigrationCaptionStyle *)self backgroundColor];
+  [coderCopy encodeObject:backgroundColor forKey:@"backgroundColor"];
 
-  v11 = [(AXOSMigrationCaptionStyle *)self backgroundColorVideoOverride];
-  [v4 encodeObject:v11 forKey:@"backgroundColorVideoOverride"];
+  backgroundColorVideoOverride = [(AXOSMigrationCaptionStyle *)self backgroundColorVideoOverride];
+  [coderCopy encodeObject:backgroundColorVideoOverride forKey:@"backgroundColorVideoOverride"];
 
-  v12 = [(AXOSMigrationCaptionStyle *)self backgroundOpacity];
-  [v4 encodeObject:v12 forKey:@"backgroundOpacity"];
+  backgroundOpacity = [(AXOSMigrationCaptionStyle *)self backgroundOpacity];
+  [coderCopy encodeObject:backgroundOpacity forKey:@"backgroundOpacity"];
 
-  v13 = [(AXOSMigrationCaptionStyle *)self backgroundOpacityVideoOverride];
-  [v4 encodeObject:v13 forKey:@"backgroundOpacityVideoOverride"];
+  backgroundOpacityVideoOverride = [(AXOSMigrationCaptionStyle *)self backgroundOpacityVideoOverride];
+  [coderCopy encodeObject:backgroundOpacityVideoOverride forKey:@"backgroundOpacityVideoOverride"];
 
-  v14 = [(AXOSMigrationCaptionStyle *)self textOpacity];
-  [v4 encodeObject:v14 forKey:@"textOpacity"];
+  textOpacity = [(AXOSMigrationCaptionStyle *)self textOpacity];
+  [coderCopy encodeObject:textOpacity forKey:@"textOpacity"];
 
-  v15 = [(AXOSMigrationCaptionStyle *)self textOpacityVideoOverride];
-  [v4 encodeObject:v15 forKey:@"textOpacityVideoOverride"];
+  textOpacityVideoOverride = [(AXOSMigrationCaptionStyle *)self textOpacityVideoOverride];
+  [coderCopy encodeObject:textOpacityVideoOverride forKey:@"textOpacityVideoOverride"];
 
-  v16 = [(AXOSMigrationCaptionStyle *)self textEdgeStyle];
-  [v4 encodeObject:v16 forKey:@"textEdgeStyle"];
+  textEdgeStyle = [(AXOSMigrationCaptionStyle *)self textEdgeStyle];
+  [coderCopy encodeObject:textEdgeStyle forKey:@"textEdgeStyle"];
 
-  v17 = [(AXOSMigrationCaptionStyle *)self textEdgeStyleVideoOverride];
-  [v4 encodeObject:v17 forKey:@"textEdgeStyleVideoOverride"];
+  textEdgeStyleVideoOverride = [(AXOSMigrationCaptionStyle *)self textEdgeStyleVideoOverride];
+  [coderCopy encodeObject:textEdgeStyleVideoOverride forKey:@"textEdgeStyleVideoOverride"];
 
-  v18 = [(AXOSMigrationCaptionStyle *)self textHighlightColor];
-  [v4 encodeObject:v18 forKey:@"textHighlightColor"];
+  textHighlightColor = [(AXOSMigrationCaptionStyle *)self textHighlightColor];
+  [coderCopy encodeObject:textHighlightColor forKey:@"textHighlightColor"];
 
-  v19 = [(AXOSMigrationCaptionStyle *)self textHighlightOpacity];
-  [v4 encodeObject:v19 forKey:@"textHighlightOpacity"];
+  textHighlightOpacity = [(AXOSMigrationCaptionStyle *)self textHighlightOpacity];
+  [coderCopy encodeObject:textHighlightOpacity forKey:@"textHighlightOpacity"];
 
-  v20 = [(AXOSMigrationCaptionStyle *)self textHighlightOpacityVideoOverride];
-  [v4 encodeObject:v20 forKey:@"textHighlightOpacityVideoOverride"];
+  textHighlightOpacityVideoOverride = [(AXOSMigrationCaptionStyle *)self textHighlightOpacityVideoOverride];
+  [coderCopy encodeObject:textHighlightOpacityVideoOverride forKey:@"textHighlightOpacityVideoOverride"];
 }
 
-- (AXOSMigrationCaptionStyle)initWithCoder:(id)a3
+- (AXOSMigrationCaptionStyle)initWithCoder:(id)coder
 {
   v22.receiver = self;
   v22.super_class = AXOSMigrationCaptionStyle;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(AXOSMigrationCaptionStyle *)&v22 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"captionStyleName", v22.receiver, v22.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"captionStyleName", v22.receiver, v22.super_class}];
   [(AXOSMigrationCaptionStyle *)v4 setCaptionStyleName:v5];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"fontName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fontName"];
   [(AXOSMigrationCaptionStyle *)v4 setFontName:v6];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"size"];
   [(AXOSMigrationCaptionStyle *)v4 setSize:v7];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
   [(AXOSMigrationCaptionStyle *)v4 setColor:v8];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"colorVideoOverride"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorVideoOverride"];
   [(AXOSMigrationCaptionStyle *)v4 setColorVideoOverride:v9];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
   [(AXOSMigrationCaptionStyle *)v4 setBackgroundColor:v10];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColorVideoOverride"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColorVideoOverride"];
   [(AXOSMigrationCaptionStyle *)v4 setBackgroundColorVideoOverride:v11];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundOpacity"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundOpacity"];
   [(AXOSMigrationCaptionStyle *)v4 setBackgroundOpacity:v12];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundOpacityVideoOverride"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundOpacityVideoOverride"];
   [(AXOSMigrationCaptionStyle *)v4 setBackgroundOpacityVideoOverride:v13];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textOpacity"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textOpacity"];
   [(AXOSMigrationCaptionStyle *)v4 setTextOpacity:v14];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textOpacityVideoOverride"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textOpacityVideoOverride"];
   [(AXOSMigrationCaptionStyle *)v4 setTextOpacityVideoOverride:v15];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textEdgeStyle"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textEdgeStyle"];
   [(AXOSMigrationCaptionStyle *)v4 setTextEdgeStyle:v16];
 
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textEdgeStyleVideoOverride"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textEdgeStyleVideoOverride"];
   [(AXOSMigrationCaptionStyle *)v4 setTextEdgeStyleVideoOverride:v17];
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textHighlightColor"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textHighlightColor"];
   [(AXOSMigrationCaptionStyle *)v4 setTextHighlightColor:v18];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textHighlightOpacity"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textHighlightOpacity"];
   [(AXOSMigrationCaptionStyle *)v4 setTextHighlightOpacity:v19];
 
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"textHighlightOpacityVideoOverride"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textHighlightOpacityVideoOverride"];
 
   [(AXOSMigrationCaptionStyle *)v4 setTextHighlightOpacityVideoOverride:v20];
   return v4;

@@ -1,24 +1,24 @@
 @interface RestorableViewControllerState
-- (RestorableViewControllerState)initWithCoder:(id)a3;
-- (RestorableViewControllerState)initWithRestorableViewController:(id)a3;
-- (RestorableViewControllerState)initWithUserActivity:(id)a3 viewControllerClass:(Class)a4;
-- (id)restoreViewControllerWithScene:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RestorableViewControllerState)initWithCoder:(id)coder;
+- (RestorableViewControllerState)initWithRestorableViewController:(id)controller;
+- (RestorableViewControllerState)initWithUserActivity:(id)activity viewControllerClass:(Class)class;
+- (id)restoreViewControllerWithScene:(id)scene;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RestorableViewControllerState
 
-- (RestorableViewControllerState)initWithRestorableViewController:(id)a3
+- (RestorableViewControllerState)initWithRestorableViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = RestorableViewControllerState;
   v5 = [(RestorableViewControllerState *)&v11 init];
   if (v5)
   {
-    v6 = [v4 userActivityForRestoration];
+    userActivityForRestoration = [controllerCopy userActivityForRestoration];
     storedUserActivity = v5->_storedUserActivity;
-    v5->_storedUserActivity = v6;
+    v5->_storedUserActivity = userActivityForRestoration;
 
     v8 = objc_opt_class();
     storedViewControllerClass = v5->_storedViewControllerClass;
@@ -28,39 +28,39 @@
   return v5;
 }
 
-- (RestorableViewControllerState)initWithUserActivity:(id)a3 viewControllerClass:(Class)a4
+- (RestorableViewControllerState)initWithUserActivity:(id)activity viewControllerClass:(Class)class
 {
-  v7 = a3;
+  activityCopy = activity;
   v11.receiver = self;
   v11.super_class = RestorableViewControllerState;
   v8 = [(RestorableViewControllerState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_storedViewControllerClass, a4);
-    objc_storeStrong(&v9->_storedUserActivity, a3);
+    objc_storeStrong(&v8->_storedViewControllerClass, class);
+    objc_storeStrong(&v9->_storedUserActivity, activity);
   }
 
   return v9;
 }
 
-- (id)restoreViewControllerWithScene:(id)a3
+- (id)restoreViewControllerWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = objc_alloc([(RestorableViewControllerState *)self storedViewControllerClass]);
-  v6 = [(RestorableViewControllerState *)self storedUserActivity];
-  v7 = [v5 initWithUserActivity:v6 scene:v4];
+  storedUserActivity = [(RestorableViewControllerState *)self storedUserActivity];
+  v7 = [v5 initWithUserActivity:storedUserActivity scene:sceneCopy];
 
   return v7;
 }
 
-- (RestorableViewControllerState)initWithCoder:(id)a3
+- (RestorableViewControllerState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kStoredActivityType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kStoredViewControllerClassName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kStoredActivityType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kStoredViewControllerClassName"];
   v7 = NSClassFromString(v6);
-  v8 = 0;
+  selfCopy = 0;
   if (v5)
   {
     v9 = v7;
@@ -77,33 +77,33 @@
 
         v13 = objc_opt_class();
         v14 = [NSSet setWithObjects:v13, objc_opt_class(), 0];
-        v15 = [v4 decodeObjectOfClasses:v14 forKey:@"kStoredActivityInfo"];
+        v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"kStoredActivityInfo"];
         [(NSUserActivity *)v10->_storedUserActivity setUserInfo:v15];
 
         objc_storeStrong(&v10->_storedViewControllerClass, v9);
       }
 
       self = v10;
-      v8 = self;
+      selfCopy = self;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(RestorableViewControllerState *)self storedUserActivity];
-  v5 = [v4 activityType];
-  [v9 encodeObject:v5 forKey:@"kStoredActivityType"];
+  coderCopy = coder;
+  storedUserActivity = [(RestorableViewControllerState *)self storedUserActivity];
+  activityType = [storedUserActivity activityType];
+  [coderCopy encodeObject:activityType forKey:@"kStoredActivityType"];
 
-  v6 = [(RestorableViewControllerState *)self storedUserActivity];
-  v7 = [v6 userInfo];
-  [v9 encodeObject:v7 forKey:@"kStoredActivityInfo"];
+  storedUserActivity2 = [(RestorableViewControllerState *)self storedUserActivity];
+  userInfo = [storedUserActivity2 userInfo];
+  [coderCopy encodeObject:userInfo forKey:@"kStoredActivityInfo"];
 
   v8 = NSStringFromClass([(RestorableViewControllerState *)self storedViewControllerClass]);
-  [v9 encodeObject:v8 forKey:@"kStoredViewControllerClassName"];
+  [coderCopy encodeObject:v8 forKey:@"kStoredViewControllerClassName"];
 }
 
 @end

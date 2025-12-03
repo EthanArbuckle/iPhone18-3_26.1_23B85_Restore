@@ -1,22 +1,22 @@
 @interface CNUIPRUISPosterTitleStyleAttributes
-+ (id)attributesForCNConfiguration:(id)a3;
-+ (id)attributesFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (CNUIPRUISPosterTitleStyleAttributes)initWithPosterTitleStyleAttributes:(id)a3;
++ (id)attributesForCNConfiguration:(id)configuration;
++ (id)attributesFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (CNUIPRUISPosterTitleStyleAttributes)initWithPosterTitleStyleAttributes:(id)attributes;
 - (id)titleColor;
 - (id)titleFont;
 @end
 
 @implementation CNUIPRUISPosterTitleStyleAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -56,11 +56,11 @@
     v18 = 3221225472;
     v19 = __47__CNUIPRUISPosterTitleStyleAttributes_isEqual___block_invoke_4;
     v20 = &unk_1E76E7A88;
-    v21 = self;
+    selfCopy = self;
     v22 = v11;
     v13 = v11;
     v14 = _Block_copy(&v17);
-    v15 = [v8 isObject:self equalToOther:v13 withBlocks:{v27, v10, v12, v14, 0, v17, v18, v19, v20, v21}];
+    v15 = [v8 isObject:self equalToOther:v13 withBlocks:{v27, v10, v12, v14, 0, v17, v18, v19, v20, selfCopy}];
   }
 
   else
@@ -89,12 +89,12 @@ uint64_t __47__CNUIPRUISPosterTitleStyleAttributes_isEqual___block_invoke_2(uint
   return v4;
 }
 
-+ (id)attributesFromData:(id)a3 error:(id *)a4
++ (id)attributesFromData:(id)data error:(id *)error
 {
-  v5 = [CNUIPRSPosterArchiver unarchiveCNConfigurationFromData:a3 error:?];
+  v5 = [CNUIPRSPosterArchiver unarchiveCNConfigurationFromData:data error:?];
   if (v5)
   {
-    v6 = [CNUIPRUISPosterConfigurationUtilities titleStyleAttributesForCNConfiguration:v5 error:a4];
+    v6 = [CNUIPRUISPosterConfigurationUtilities titleStyleAttributesForCNConfiguration:v5 error:error];
   }
 
   else
@@ -105,10 +105,10 @@ uint64_t __47__CNUIPRUISPosterTitleStyleAttributes_isEqual___block_invoke_2(uint
   return v6;
 }
 
-+ (id)attributesForCNConfiguration:(id)a3
++ (id)attributesForCNConfiguration:(id)configuration
 {
   v7 = 0;
-  v3 = [CNUIPRUISPosterConfigurationUtilities titleStyleAttributesForCNConfiguration:a3 error:&v7];
+  v3 = [CNUIPRUISPosterConfigurationUtilities titleStyleAttributesForCNConfiguration:configuration error:&v7];
   v4 = v7;
   if (!v3)
   {
@@ -122,16 +122,16 @@ uint64_t __47__CNUIPRUISPosterTitleStyleAttributes_isEqual___block_invoke_2(uint
   return v3;
 }
 
-- (CNUIPRUISPosterTitleStyleAttributes)initWithPosterTitleStyleAttributes:(id)a3
+- (CNUIPRUISPosterTitleStyleAttributes)initWithPosterTitleStyleAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v10.receiver = self;
   v10.super_class = CNUIPRUISPosterTitleStyleAttributes;
   v6 = [(CNUIPRUISPosterTitleStyleAttributes *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrappedPosterTitleStyleAttributes, a3);
+    objc_storeStrong(&v6->_wrappedPosterTitleStyleAttributes, attributes);
     v8 = v7;
   }
 
@@ -140,30 +140,30 @@ uint64_t __47__CNUIPRUISPosterTitleStyleAttributes_isEqual___block_invoke_2(uint
 
 - (id)titleColor
 {
-  v2 = [(PRUISPosterTitleStyleAttributes *)self->_wrappedPosterTitleStyleAttributes titleColor];
-  v3 = v2;
-  if (v2)
+  titleColor = [(PRUISPosterTitleStyleAttributes *)self->_wrappedPosterTitleStyleAttributes titleColor];
+  v3 = titleColor;
+  if (titleColor)
   {
-    v4 = v2;
+    blackColor = titleColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  v5 = v4;
+  v5 = blackColor;
 
   return v5;
 }
 
 - (id)titleFont
 {
-  v2 = [(PRUISPosterTitleStyleAttributes *)self->_wrappedPosterTitleStyleAttributes titleFont];
-  v3 = v2;
-  if (v2)
+  titleFont = [(PRUISPosterTitleStyleAttributes *)self->_wrappedPosterTitleStyleAttributes titleFont];
+  v3 = titleFont;
+  if (titleFont)
   {
-    v4 = v2;
+    v4 = titleFont;
   }
 
   else

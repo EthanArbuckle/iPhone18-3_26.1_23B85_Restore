@@ -68,7 +68,7 @@
     height = *(v23.f64 + 1);
   }
 
-  v26 = [(CINinePartStretched *)self _kernel];
+  _kernel = [(CINinePartStretched *)self _kernel];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __34__CINinePartStretched_outputImage__block_invoke;
@@ -80,7 +80,7 @@
   v39[0] = [CIVector vectorWithX:v28.f32[0] Y:v28.f32[1]];
   v39[1] = [CIVector vectorWithX:v8 Y:v9];
   v39[2] = [CIVector vectorWithX:v35.f32[0] Y:v35.f32[1]];
-  return [v26 applyWithExtent:v38 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 3), x, y, width, height}];
+  return [_kernel applyWithExtent:v38 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v39, 3), x, y, width, height}];
 }
 
 + (id)customAttributes

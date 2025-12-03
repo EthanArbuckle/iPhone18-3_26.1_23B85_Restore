@@ -1,5 +1,5 @@
 @interface VCDailyMetricSubmitter
-- (VCDailyMetricSubmitter)initWithDatabaseProvider:(id)a3;
+- (VCDailyMetricSubmitter)initWithDatabaseProvider:(id)provider;
 - (id)event;
 @end
 
@@ -13,12 +13,12 @@
   return v2;
 }
 
-- (VCDailyMetricSubmitter)initWithDatabaseProvider:(id)a3
+- (VCDailyMetricSubmitter)initWithDatabaseProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [VCMetricCheckIn recentCheckInWithMode:1];
   v6 = objc_alloc_init(MEMORY[0x277D7C658]);
-  v7 = [(VCMetricSubmitter *)self initWithCheckIn:v5 event:v6 databaseProvider:v4];
+  v7 = [(VCMetricSubmitter *)self initWithCheckIn:v5 event:v6 databaseProvider:providerCopy];
 
   return v7;
 }

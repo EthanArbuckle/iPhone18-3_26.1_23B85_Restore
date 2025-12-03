@@ -1,24 +1,24 @@
 @interface ASActivityDataBulletinManager
-- (void)activitySharingManagerReady:(id)a3;
-- (void)showActivityNotifications:(id)a3 withPostingStyle:(int64_t)a4;
+- (void)activitySharingManagerReady:(id)ready;
+- (void)showActivityNotifications:(id)notifications withPostingStyle:(int64_t)style;
 @end
 
 @implementation ASActivityDataBulletinManager
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = [a3 bulletinPostingManager];
+  bulletinPostingManager = [ready bulletinPostingManager];
   notificationPostingManager = self->_notificationPostingManager;
-  self->_notificationPostingManager = v4;
+  self->_notificationPostingManager = bulletinPostingManager;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)showActivityNotifications:(id)a3 withPostingStyle:(int64_t)a4
+- (void)showActivityNotifications:(id)notifications withPostingStyle:(int64_t)style
 {
-  v23 = a3;
-  v6 = [v23 workoutNotifications];
-  v7 = [v6 hk_map:&__block_literal_global_7];
+  notificationsCopy = notifications;
+  workoutNotifications = [notificationsCopy workoutNotifications];
+  v7 = [workoutNotifications hk_map:&__block_literal_global_7];
   v8 = v7;
   if (v7)
   {
@@ -32,8 +32,8 @@
 
   v10 = v9;
 
-  v11 = [v23 achievementNotifications];
-  v12 = [v11 hk_map:&__block_literal_global_297];
+  achievementNotifications = [notificationsCopy achievementNotifications];
+  v12 = [achievementNotifications hk_map:&__block_literal_global_297];
   v13 = v12;
   if (v12)
   {
@@ -47,8 +47,8 @@
 
   v15 = v14;
 
-  v16 = [v23 goalCompletionNotifications];
-  v17 = [v16 hk_map:&__block_literal_global_299];
+  goalCompletionNotifications = [notificationsCopy goalCompletionNotifications];
+  v17 = [goalCompletionNotifications hk_map:&__block_literal_global_299];
   v18 = v17;
   if (v17)
   {
@@ -65,7 +65,7 @@
   v21 = [v10 setByAddingObjectsFromSet:v15];
   v22 = [v21 setByAddingObjectsFromSet:v20];
 
-  [(ASBulletinPostingManager *)self->_notificationPostingManager enqueueBulletins:v22 withPostingSyle:a4];
+  [(ASBulletinPostingManager *)self->_notificationPostingManager enqueueBulletins:v22 withPostingSyle:style];
 }
 
 id __76__ASActivityDataBulletinManager_showActivityNotifications_withPostingStyle___block_invoke(uint64_t a1, void *a2)

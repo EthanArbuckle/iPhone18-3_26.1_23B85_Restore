@@ -1,21 +1,21 @@
 @interface IPProgressStubBehavior
 - (IPProgressServerBehaviorDelegate)delegate;
-- (IPProgressStubBehavior)initWithEventStreamName:(id)a3;
+- (IPProgressStubBehavior)initWithEventStreamName:(id)name;
 - (OS_dispatch_queue)queue;
 - (void)resume;
 @end
 
 @implementation IPProgressStubBehavior
 
-- (IPProgressStubBehavior)initWithEventStreamName:(id)a3
+- (IPProgressStubBehavior)initWithEventStreamName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = IPProgressStubBehavior;
   v5 = [(IPProgressStubBehavior *)&v9 init];
   if (v5)
   {
-    v6 = [[IPXPCEventSubscriptionBlackhole alloc] initWithStreamName:v4];
+    v6 = [[IPXPCEventSubscriptionBlackhole alloc] initWithStreamName:nameCopy];
     streamBlackhole = v5->_streamBlackhole;
     v5->_streamBlackhole = v6;
   }

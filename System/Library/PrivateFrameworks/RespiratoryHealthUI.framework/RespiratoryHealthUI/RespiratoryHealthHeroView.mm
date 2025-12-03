@@ -2,8 +2,8 @@
 - (CGSize)intrinsicContentSize;
 - (RespiratoryHealthHeroView)init;
 - (double)validScaleFactorForCandidate:(double)result;
-- (void)_updateHeroUIWithScaleFactor:(double)a3;
-- (void)setPreferredWidth:(double)a3;
+- (void)_updateHeroUIWithScaleFactor:(double)factor;
+- (void)setPreferredWidth:(double)width;
 @end
 
 @implementation RespiratoryHealthHeroView
@@ -102,17 +102,17 @@
   return result;
 }
 
-- (void)setPreferredWidth:(double)a3
+- (void)setPreferredWidth:(double)width
 {
-  self->_preferredWidth = a3;
-  [(RespiratoryHealthHeroView *)self validScaleFactorForCandidate:a3 / self->_watchImageMediumFrame.size.width];
+  self->_preferredWidth = width;
+  [(RespiratoryHealthHeroView *)self validScaleFactorForCandidate:width / self->_watchImageMediumFrame.size.width];
 
   [(RespiratoryHealthHeroView *)self _updateHeroUIWithScaleFactor:?];
 }
 
-- (void)_updateHeroUIWithScaleFactor:(double)a3
+- (void)_updateHeroUIWithScaleFactor:(double)factor
 {
-  if (a3 == 1.0)
+  if (factor == 1.0)
   {
     [(UIImageView *)self->_heroImageView setFrame:self->_heroImageMediumFrame.origin.x, self->_heroImageMediumFrame.origin.y, self->_heroImageMediumFrame.size.width, self->_heroImageMediumFrame.size.height];
     [(UIImageView *)self->_watchImageView setFrame:self->_watchImageMediumFrame.origin.x, self->_watchImageMediumFrame.origin.y, self->_watchImageMediumFrame.size.width, self->_watchImageMediumFrame.size.height];
@@ -123,21 +123,21 @@
   else
   {
     width = self->_watchImageMediumFrame.size.width;
-    v6 = width * a3;
-    v7 = self->_watchImageMediumFrame.size.height * a3;
-    v8 = -(width - width * a3) * 0.5;
-    [(UIImageView *)self->_watchImageView setFrame:self->_watchImageMediumFrame.origin.x, self->_watchImageMediumFrame.origin.y, width * a3, v7];
+    v6 = width * factor;
+    v7 = self->_watchImageMediumFrame.size.height * factor;
+    v8 = -(width - width * factor) * 0.5;
+    [(UIImageView *)self->_watchImageView setFrame:self->_watchImageMediumFrame.origin.x, self->_watchImageMediumFrame.origin.y, width * factor, v7];
     v9 = self->_heroImageMediumFrame.size.width;
-    v10 = self->_heroImageMediumFrame.origin.x + v8 - -(v9 - v9 * a3) * 0.5;
-    v11 = (a3 + -1.0) * 8.0 + self->_heroImageMediumFrame.origin.y * a3;
-    v12 = self->_heroImageMediumFrame.size.height * a3;
-    [(UIImageView *)self->_heroImageView setFrame:v10, v11, v9 * a3, v12];
-    [(RespiratoryHealthHeroCountdownLabel *)self->_countdownLabel setFrame:v10 + 4.0, v11 + v12 - self->_countdownLabelMediumFrame.size.height * a3, self->_countdownLabelMediumFrame.size.width * a3];
+    v10 = self->_heroImageMediumFrame.origin.x + v8 - -(v9 - v9 * factor) * 0.5;
+    v11 = (factor + -1.0) * 8.0 + self->_heroImageMediumFrame.origin.y * factor;
+    v12 = self->_heroImageMediumFrame.size.height * factor;
+    [(UIImageView *)self->_heroImageView setFrame:v10, v11, v9 * factor, v12];
+    [(RespiratoryHealthHeroCountdownLabel *)self->_countdownLabel setFrame:v10 + 4.0, v11 + v12 - self->_countdownLabelMediumFrame.size.height * factor, self->_countdownLabelMediumFrame.size.width * factor];
     self->_watchImageSize.width = v6;
     self->_watchImageSize.height = v7;
   }
 
-  [(RespiratoryHealthHeroCountdownLabel *)self->_countdownLabel setScaleFactor:a3];
+  [(RespiratoryHealthHeroCountdownLabel *)self->_countdownLabel setScaleFactor:factor];
   [(RespiratoryHealthHeroView *)self frame];
   v13 = self->_watchImageSize.width;
   height = self->_watchImageSize.height;

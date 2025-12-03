@@ -1,13 +1,13 @@
 @interface _ICQAlertSpecification
-+ (id)alertSpecificationDictionarySampleForLevel:(int64_t)a3;
-+ (id)alertSpecificationSampleForLevel:(int64_t)a3;
++ (id)alertSpecificationDictionarySampleForLevel:(int64_t)level;
++ (id)alertSpecificationSampleForLevel:(int64_t)level;
 - (_ICQAlertSpecification)init;
-- (_ICQAlertSpecification)initWithServerDictionary:(id)a3;
-- (id)linkForButtonIndex:(int64_t)a3;
-- (void)_setLinks:(id)a3 defaultIndex:(unint64_t)a4;
-- (void)setLink:(id)a3 forButtonIndex:(int64_t)a4;
-- (void)setLink:(id)a3 forButtonIndex:(int64_t)a4 defaultButton:(BOOL)a5;
-- (void)setServerDict:(id)a3;
+- (_ICQAlertSpecification)initWithServerDictionary:(id)dictionary;
+- (id)linkForButtonIndex:(int64_t)index;
+- (void)_setLinks:(id)links defaultIndex:(unint64_t)index;
+- (void)setLink:(id)link forButtonIndex:(int64_t)index;
+- (void)setLink:(id)link forButtonIndex:(int64_t)index defaultButton:(BOOL)button;
+- (void)setServerDict:(id)dict;
 @end
 
 @implementation _ICQAlertSpecification
@@ -27,69 +27,69 @@
   return v2;
 }
 
-- (_ICQAlertSpecification)initWithServerDictionary:(id)a3
+- (_ICQAlertSpecification)initWithServerDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(_ICQAlertSpecification *)self init];
   v6 = v5;
   if (v5)
   {
-    [(_ICQAlertSpecification *)v5 setServerDict:v4];
+    [(_ICQAlertSpecification *)v5 setServerDict:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (id)linkForButtonIndex:(int64_t)a3
+- (id)linkForButtonIndex:(int64_t)index
 {
-  v4 = [(_ICQAlertSpecification *)self linkForButtonIndex];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v6 = [v4 objectForKey:v5];
+  linkForButtonIndex = [(_ICQAlertSpecification *)self linkForButtonIndex];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  v6 = [linkForButtonIndex objectForKey:v5];
 
   return v6;
 }
 
-- (void)setLink:(id)a3 forButtonIndex:(int64_t)a4
+- (void)setLink:(id)link forButtonIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if ((a4 - 4) >= 0xFFFFFFFFFFFFFFFDLL)
+  linkCopy = link;
+  v7 = linkCopy;
+  if ((index - 4) >= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v10 = v6;
-    v8 = [(_ICQAlertSpecification *)self linkForButtonIndex];
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v10 = linkCopy;
+    linkForButtonIndex = [(_ICQAlertSpecification *)self linkForButtonIndex];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     if (v10)
     {
-      [v8 setObject:v10 forKey:v9];
+      [linkForButtonIndex setObject:v10 forKey:v9];
     }
 
     else
     {
-      [v8 removeObjectForKey:v9];
+      [linkForButtonIndex removeObjectForKey:v9];
     }
 
     v7 = v10;
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](linkCopy, v7);
 }
 
-- (void)setLink:(id)a3 forButtonIndex:(int64_t)a4 defaultButton:(BOOL)a5
+- (void)setLink:(id)link forButtonIndex:(int64_t)index defaultButton:(BOOL)button
 {
-  v5 = a5;
-  v8 = a3;
-  if (v5)
+  buttonCopy = button;
+  linkCopy = link;
+  if (buttonCopy)
   {
-    [(_ICQAlertSpecification *)self setDefaultButtonIndex:a4];
+    [(_ICQAlertSpecification *)self setDefaultButtonIndex:index];
   }
 
-  [(_ICQAlertSpecification *)self setLink:v8 forButtonIndex:a4];
+  [(_ICQAlertSpecification *)self setLink:linkCopy forButtonIndex:index];
 }
 
-- (void)_setLinks:(id)a3 defaultIndex:(unint64_t)a4
+- (void)_setLinks:(id)links defaultIndex:(unint64_t)index
 {
-  v12 = a3;
-  v6 = [v12 count];
+  linksCopy = links;
+  v6 = [linksCopy count];
   if (v6 == 1)
   {
     goto LABEL_7;
@@ -98,23 +98,23 @@
   if (v6 == 2)
   {
 LABEL_6:
-    v10 = [v12 objectAtIndexedSubscript:1];
-    [(_ICQAlertSpecification *)self setLink:v10 forButtonIndex:2 defaultButton:a4 == 1];
+    v10 = [linksCopy objectAtIndexedSubscript:1];
+    [(_ICQAlertSpecification *)self setLink:v10 forButtonIndex:2 defaultButton:index == 1];
 
 LABEL_7:
-    v11 = [v12 objectAtIndexedSubscript:0];
-    [(_ICQAlertSpecification *)self setLink:v11 forButtonIndex:1 defaultButton:a4 == 0];
+    v11 = [linksCopy objectAtIndexedSubscript:0];
+    [(_ICQAlertSpecification *)self setLink:v11 forButtonIndex:1 defaultButton:index == 0];
 
-    v8 = v12;
+    v8 = linksCopy;
     goto LABEL_8;
   }
 
   v7 = v6 == 3;
-  v8 = v12;
+  v8 = linksCopy;
   if (v7)
   {
-    v9 = [v12 objectAtIndexedSubscript:2];
-    [(_ICQAlertSpecification *)self setLink:v9 forButtonIndex:3 defaultButton:a4 == 2];
+    v9 = [linksCopy objectAtIndexedSubscript:2];
+    [(_ICQAlertSpecification *)self setLink:v9 forButtonIndex:3 defaultButton:index == 2];
 
     goto LABEL_6;
   }
@@ -122,27 +122,27 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setServerDict:(id)a3
+- (void)setServerDict:(id)dict
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_serverDict, a3);
-  v6 = [v5 objectForKeyedSubscript:@"title"];
+  dictCopy = dict;
+  objc_storeStrong(&self->_serverDict, dict);
+  v6 = [dictCopy objectForKeyedSubscript:@"title"];
   [(_ICQAlertSpecification *)self setTitle:v6];
 
-  v7 = [v5 objectForKeyedSubscript:@"mesg"];
+  v7 = [dictCopy objectForKeyedSubscript:@"mesg"];
   [(_ICQAlertSpecification *)self setMessage:v7];
 
-  v8 = [v5 objectForKeyedSubscript:@"altMesg"];
+  v8 = [dictCopy objectForKeyedSubscript:@"altMesg"];
   [(_ICQAlertSpecification *)self setAltMessage:v8];
 
-  v9 = [v5 objectForKeyedSubscript:@"hideOnLock"];
-  v37 = self;
+  v9 = [dictCopy objectForKeyedSubscript:@"hideOnLock"];
+  selfCopy = self;
   [(_ICQAlertSpecification *)self setDisableLockScreenAlert:_ICQBooleanForServerObjectDefault(v9, 0)];
 
-  v10 = [v5 objectForKeyedSubscript:@"actions"];
+  v10 = [dictCopy objectForKeyedSubscript:@"actions"];
   v11 = v10;
-  v38 = v5;
+  v38 = dictCopy;
   if (v10)
   {
     v12 = v10;
@@ -150,7 +150,7 @@ LABEL_8:
 
   else
   {
-    v12 = [v5 objectForKeyedSubscript:@"Actions"];
+    v12 = [dictCopy objectForKeyedSubscript:@"Actions"];
   }
 
   v13 = v12;
@@ -201,9 +201,9 @@ LABEL_8:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v28 = [v27 BOOLValue];
+            bOOLValue = [v27 BOOLValue];
 
-            if ((v28 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               goto LABEL_26;
             }
@@ -269,14 +269,14 @@ LABEL_26:
 LABEL_31:
 
   v35 = [v15 copy];
-  [(_ICQAlertSpecification *)v37 _setLinks:v35 defaultIndex:v39];
+  [(_ICQAlertSpecification *)selfCopy _setLinks:v35 defaultIndex:v39];
 
   v36 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)alertSpecificationSampleForLevel:(int64_t)a3
++ (id)alertSpecificationSampleForLevel:(int64_t)level
 {
-  if (a3 == 3)
+  if (level == 3)
   {
     if (AlertSpecificationSampleForFullLevel_onceToken != -1)
     {
@@ -287,7 +287,7 @@ LABEL_31:
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (level == 2)
   {
     if (AlertSpecificationSampleForAlmostFullLevel_onceToken != -1)
     {
@@ -306,9 +306,9 @@ LABEL_11:
   return v4;
 }
 
-+ (id)alertSpecificationDictionarySampleForLevel:(int64_t)a3
++ (id)alertSpecificationDictionarySampleForLevel:(int64_t)level
 {
-  if ((a3 - 1) >= 3)
+  if ((level - 1) >= 3)
   {
     return 0;
   }

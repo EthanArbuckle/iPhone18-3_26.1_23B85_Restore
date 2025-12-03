@@ -1,15 +1,15 @@
 @interface CPLChangeBatchChangeStorage
-- (CPLChangeBatchChangeStorage)initWithBatch:(id)a3 name:(id)a4;
-- (id)changeWithScopedIdentifier:(id)a3;
-- (id)changesWithRelatedScopedIdentifier:(id)a3 class:(Class)a4;
+- (CPLChangeBatchChangeStorage)initWithBatch:(id)batch name:(id)name;
+- (id)changeWithScopedIdentifier:(id)identifier;
+- (id)changesWithRelatedScopedIdentifier:(id)identifier class:(Class)class;
 @end
 
 @implementation CPLChangeBatchChangeStorage
 
-- (id)changesWithRelatedScopedIdentifier:(id)a3 class:(Class)a4
+- (id)changesWithRelatedScopedIdentifier:(id)identifier class:(Class)class
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -34,19 +34,19 @@
         v11 = *(*(&v28 + 1) + 8 * i);
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 relatedIdentifier];
-          v13 = [v5 identifier];
-          v14 = [v12 isEqualToString:v13];
+          relatedIdentifier = [v11 relatedIdentifier];
+          identifier = [identifierCopy identifier];
+          v14 = [relatedIdentifier isEqualToString:identifier];
 
           if (v14)
           {
             v15 = v6;
-            v16 = [v11 scopedIdentifier];
-            v17 = [v16 scopeIdentifier];
+            scopedIdentifier = [v11 scopedIdentifier];
+            scopeIdentifier = [scopedIdentifier scopeIdentifier];
 
-            v18 = v5;
-            v19 = [v5 scopeIdentifier];
-            v20 = [v17 isEqualToString:v19];
+            v18 = identifierCopy;
+            scopeIdentifier2 = [identifierCopy scopeIdentifier];
+            v20 = [scopeIdentifier isEqualToString:scopeIdentifier2];
 
             if (v20)
             {
@@ -67,7 +67,7 @@
             }
 
             v6 = v15;
-            v5 = v18;
+            identifierCopy = v18;
             v9 = v26;
           }
         }
@@ -89,10 +89,10 @@
   return v27;
 }
 
-- (id)changeWithScopedIdentifier:(id)a3
+- (id)changeWithScopedIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   changesPerScopedIdentifier = self->_changesPerScopedIdentifier;
   if (!changesPerScopedIdentifier)
   {
@@ -117,8 +117,8 @@
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 scopedIdentifier];
-          [(NSDictionary *)v6 setObject:v12 forKeyedSubscript:v13];
+          scopedIdentifier = [v12 scopedIdentifier];
+          [(NSDictionary *)v6 setObject:v12 forKeyedSubscript:scopedIdentifier];
         }
 
         v9 = [(CPLChangeBatch *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -133,7 +133,7 @@
     changesPerScopedIdentifier = self->_changesPerScopedIdentifier;
   }
 
-  v15 = [(NSDictionary *)changesPerScopedIdentifier objectForKeyedSubscript:v4, v19];
+  v15 = [(NSDictionary *)changesPerScopedIdentifier objectForKeyedSubscript:identifierCopy, v19];
   v16 = [v15 copy];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -141,11 +141,11 @@
   return v16;
 }
 
-- (CPLChangeBatchChangeStorage)initWithBatch:(id)a3 name:(id)a4
+- (CPLChangeBatchChangeStorage)initWithBatch:(id)batch name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  batchCopy = batch;
+  nameCopy = name;
+  if (!batchCopy)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -157,22 +157,22 @@
       }
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLChangeBatchChangeStorage.m"];
-    [v15 handleFailureInMethod:a2 object:self file:v16 lineNumber:20 description:@"Trying to create a batch change storage without a batch"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v16 lineNumber:20 description:@"Trying to create a batch change storage without a batch"];
 
     abort();
   }
 
-  v10 = v9;
+  v10 = nameCopy;
   v17.receiver = self;
   v17.super_class = CPLChangeBatchChangeStorage;
   v11 = [(CPLChangeBatchChangeStorage *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_batch, a3);
-    objc_storeStrong(&v12->_storageDescription, a4);
+    objc_storeStrong(&v11->_batch, batch);
+    objc_storeStrong(&v12->_storageDescription, name);
   }
 
   return v12;

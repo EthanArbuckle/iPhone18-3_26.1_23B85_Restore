@@ -1,6 +1,6 @@
 @interface MTRDescriptorClusterDeviceTypeStruct
 - (MTRDescriptorClusterDeviceTypeStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDescriptorClusterDeviceTypeStruct);
-  v5 = [(MTRDescriptorClusterDeviceTypeStruct *)self deviceType];
-  [(MTRDescriptorClusterDeviceTypeStruct *)v4 setDeviceType:v5];
+  deviceType = [(MTRDescriptorClusterDeviceTypeStruct *)self deviceType];
+  [(MTRDescriptorClusterDeviceTypeStruct *)v4 setDeviceType:deviceType];
 
-  v6 = [(MTRDescriptorClusterDeviceTypeStruct *)self revision];
-  [(MTRDescriptorClusterDeviceTypeStruct *)v4 setRevision:v6];
+  revision = [(MTRDescriptorClusterDeviceTypeStruct *)self revision];
+  [(MTRDescriptorClusterDeviceTypeStruct *)v4 setRevision:revision];
 
   return v4;
 }

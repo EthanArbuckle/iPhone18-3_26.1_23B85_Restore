@@ -1,29 +1,29 @@
 @interface SPCBPeripheralKeyAddressPair
-- (SPCBPeripheralKeyAddressPair)initWithCoder:(id)a3;
-- (SPCBPeripheralKeyAddressPair)initWithLEMACAddress:(id)a3 longTermKey:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPCBPeripheralKeyAddressPair)initWithCoder:(id)coder;
+- (SPCBPeripheralKeyAddressPair)initWithLEMACAddress:(id)address longTermKey:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPCBPeripheralKeyAddressPair
 
-- (SPCBPeripheralKeyAddressPair)initWithLEMACAddress:(id)a3 longTermKey:(id)a4
+- (SPCBPeripheralKeyAddressPair)initWithLEMACAddress:(id)address longTermKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = SPCBPeripheralKeyAddressPair;
   v8 = [(SPCBPeripheralKeyAddressPair *)&v14 init];
   if (v8)
   {
-    if ([v6 length] == 7 && objc_msgSend(v7, "length") == 16)
+    if ([addressCopy length] == 7 && objc_msgSend(keyCopy, "length") == 16)
     {
-      v9 = [v6 copy];
+      v9 = [addressCopy copy];
       leMACAddress = v8->_leMACAddress;
       v8->_leMACAddress = v9;
 
-      v11 = [v7 copy];
+      v11 = [keyCopy copy];
       longTermKey = v8->_longTermKey;
       v8->_longTermKey = v11;
     }
@@ -38,59 +38,59 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPCBPeripheralKeyAddressPair alloc];
-  v5 = [(SPCBPeripheralKeyAddressPair *)self leMACAddress];
-  v6 = [(SPCBPeripheralKeyAddressPair *)self longTermKey];
-  v7 = [(SPCBPeripheralKeyAddressPair *)v4 initWithLEMACAddress:v5 longTermKey:v6];
+  leMACAddress = [(SPCBPeripheralKeyAddressPair *)self leMACAddress];
+  longTermKey = [(SPCBPeripheralKeyAddressPair *)self longTermKey];
+  v7 = [(SPCBPeripheralKeyAddressPair *)v4 initWithLEMACAddress:leMACAddress longTermKey:longTermKey];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SPCBPeripheralKeyAddressPair *)self leMACAddress];
-  [v4 encodeObject:v5 forKey:@"mac"];
+  coderCopy = coder;
+  leMACAddress = [(SPCBPeripheralKeyAddressPair *)self leMACAddress];
+  [coderCopy encodeObject:leMACAddress forKey:@"mac"];
 
-  v6 = [(SPCBPeripheralKeyAddressPair *)self longTermKey];
-  [v4 encodeObject:v6 forKey:@"ltk"];
+  longTermKey = [(SPCBPeripheralKeyAddressPair *)self longTermKey];
+  [coderCopy encodeObject:longTermKey forKey:@"ltk"];
 }
 
-- (SPCBPeripheralKeyAddressPair)initWithCoder:(id)a3
+- (SPCBPeripheralKeyAddressPair)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mac"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mac"];
   leMACAddress = self->_leMACAddress;
   self->_leMACAddress = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ltk"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ltk"];
 
   longTermKey = self->_longTermKey;
   self->_longTermKey = v7;
 
   if ([(NSData *)self->_leMACAddress length]== 7 && [(NSData *)self->_longTermKey length]== 16)
   {
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SPCBPeripheralKeyAddressPair *)self leMACAddress];
-  v5 = [v4 fm_hexString];
-  v6 = [(SPCBPeripheralKeyAddressPair *)self longTermKey];
-  v7 = [v6 fm_hexString];
-  v8 = [v3 stringWithFormat:@"[LEMAC: %@ LTK: %@]", v5, v7];
+  leMACAddress = [(SPCBPeripheralKeyAddressPair *)self leMACAddress];
+  fm_hexString = [leMACAddress fm_hexString];
+  longTermKey = [(SPCBPeripheralKeyAddressPair *)self longTermKey];
+  fm_hexString2 = [longTermKey fm_hexString];
+  v8 = [v3 stringWithFormat:@"[LEMAC: %@ LTK: %@]", fm_hexString, fm_hexString2];
 
   return v8;
 }

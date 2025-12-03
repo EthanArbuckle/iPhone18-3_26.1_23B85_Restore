@@ -1,22 +1,22 @@
 @interface SBLowPowerAlertItem
-+ (BOOL)_shouldIgnoreChangeToBatteryLevel:(unsigned int)a3;
-+ (unsigned)_thresholdForLevel:(unsigned int)a3;
++ (BOOL)_shouldIgnoreChangeToBatteryLevel:(unsigned int)level;
++ (unsigned)_thresholdForLevel:(unsigned int)level;
 + (void)initialize;
-+ (void)setBatteryLevel:(unsigned int)a3;
++ (void)setBatteryLevel:(unsigned int)level;
 - (BOOL)_isLowPowerModeEnabled;
 - (BOOL)shouldShowInLockScreen;
 - (SBLowPowerAlertItem)init;
-- (SBLowPowerAlertItem)initWithLevel:(unsigned int)a3;
+- (SBLowPowerAlertItem)initWithLevel:(unsigned int)level;
 - (id)_batteryPercentageString;
 - (id)_createSystemApertureElement;
 - (id)_enableLowPowerModeActionTitle;
 - (id)_lowBatteryTitle;
 - (void)_didDeactivateForDismissAction;
 - (void)_enableLowPowerModeActionTriggered;
-- (void)_setLowPowerMode:(BOOL)a3;
+- (void)_setLowPowerMode:(BOOL)mode;
 - (void)_toggleLowPowerMode;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
-- (void)didDeactivateForReason:(int)a3;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
+- (void)didDeactivateForReason:(int)reason;
 @end
 
 @implementation SBLowPowerAlertItem
@@ -37,13 +37,13 @@
   return v3;
 }
 
-- (SBLowPowerAlertItem)initWithLevel:(unsigned int)a3
+- (SBLowPowerAlertItem)initWithLevel:(unsigned int)level
 {
   v4 = [(SBLowPowerAlertItem *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_talkLevel = a3;
+    v4->_talkLevel = level;
     [(SBLowPowerAlertItem *)v4 setShowFindMyAlert:0];
   }
 
@@ -52,17 +52,17 @@
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x277D75A78] lowBatteryLevel];
-  __WarnLevelThresholds[0] = v2 / 2;
-  *algn_28125077C = v2;
+  lowBatteryLevel = [MEMORY[0x277D75A78] lowBatteryLevel];
+  __WarnLevelThresholds[0] = lowBatteryLevel / 2;
+  *algn_28125077C = lowBatteryLevel;
 }
 
-+ (unsigned)_thresholdForLevel:(unsigned int)a3
++ (unsigned)_thresholdForLevel:(unsigned int)level
 {
   result = 2;
   do
   {
-    if (__WarnLevelThresholds[result - 1] < a3)
+    if (__WarnLevelThresholds[result - 1] < level)
     {
       break;
     }
@@ -74,15 +74,15 @@
   return result;
 }
 
-+ (BOOL)_shouldIgnoreChangeToBatteryLevel:(unsigned int)a3
++ (BOOL)_shouldIgnoreChangeToBatteryLevel:(unsigned int)level
 {
   v4 = +[SBUIController sharedInstance];
-  v5 = [v4 isBatteryCharging];
+  isBatteryCharging = [v4 isBatteryCharging];
   v6 = __LastBatteryLevel;
 
-  if (v5)
+  if (isBatteryCharging)
   {
-    v7 = v6 > a3;
+    v7 = v6 > level;
   }
 
   else
@@ -92,23 +92,23 @@
 
   if (v7)
   {
-    v11 = __LastBatteryLevel - a3 >= 3;
+    v11 = __LastBatteryLevel - level >= 3;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CF0CA8] sharedInstance];
-    v9 = [v8 hasGasGauge];
+    mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+    hasGasGauge = [mEMORY[0x277CF0CA8] hasGasGauge];
 
-    if (v9)
+    if (hasGasGauge)
     {
       return 0;
     }
 
-    v12 = __LastBatteryLevel - a3;
-    if ((__LastBatteryLevel - a3) < 0)
+    v12 = __LastBatteryLevel - level;
+    if ((__LastBatteryLevel - level) < 0)
     {
-      v12 = a3 - __LastBatteryLevel;
+      v12 = level - __LastBatteryLevel;
     }
 
     v11 = v12 >= 2;
@@ -117,12 +117,12 @@
   return !v11;
 }
 
-+ (void)setBatteryLevel:(unsigned int)a3
++ (void)setBatteryLevel:(unsigned int)level
 {
-  v3 = *&a3;
-  if (([a1 _shouldIgnoreChangeToBatteryLevel:?] & 1) == 0)
+  v3 = *&level;
+  if (([self _shouldIgnoreChangeToBatteryLevel:?] & 1) == 0)
   {
-    v5 = [a1 _thresholdForLevel:v3];
+    v5 = [self _thresholdForLevel:v3];
     v6 = __LastWarnThreshold;
     v7 = +[SBAlertItemsController sharedInstance];
     if (v5 == v6)
@@ -131,10 +131,10 @@
 
       if (v8 && [v8 count])
       {
-        v9 = [v8 allObjects];
-        v10 = [v9 firstObject];
+        allObjects = [v8 allObjects];
+        firstObject = [allObjects firstObject];
         v11 = objc_opt_class();
-        v12 = v10;
+        v12 = firstObject;
         if (v11)
         {
           if (objc_opt_isKindOfClass())
@@ -155,10 +155,10 @@
 
         v28 = v13;
 
-        v29 = [v28 _existingSystemApertureElement];
+        _existingSystemApertureElement = [v28 _existingSystemApertureElement];
 
         v30 = objc_opt_class();
-        v31 = v29;
+        v31 = _existingSystemApertureElement;
         if (v30)
         {
           if (objc_opt_isKindOfClass())
@@ -188,17 +188,17 @@
     [v7 deactivateAlertItemsOfClass:objc_opt_class()];
 
     v14 = +[SBDefaults localDefaults];
-    v15 = [v14 powerDefaults];
-    v16 = [v15 hideLowPowerAlerts];
+    powerDefaults = [v14 powerDefaults];
+    hideLowPowerAlerts = [powerDefaults hideLowPowerAlerts];
 
     if (v5 <= 1 && v5 < __LastWarnThreshold)
     {
       if (__LastBatteryLevel == 100)
       {
         v17 = +[SBUIController sharedInstance];
-        v18 = [v17 isBatteryCharging];
+        isBatteryCharging = [v17 isBatteryCharging];
 
-        if ((v18 | v16))
+        if ((isBatteryCharging | hideLowPowerAlerts))
         {
           goto LABEL_29;
         }
@@ -221,18 +221,18 @@ LABEL_15:
         if (!v5)
         {
           v23 = +[SBTelephonyManager sharedTelephonyManager];
-          v24 = [v23 inCall];
+          inCall = [v23 inCall];
 
-          if (v24)
+          if (inCall)
           {
             AudioServicesPlaySystemSoundWithCompletion(0x3EEu, 0);
           }
         }
 
         v25 = +[SBModelessSyncController sharedInstance];
-        v26 = [v25 isSyncing];
+        isSyncing = [v25 isSyncing];
 
-        if (v26)
+        if (isSyncing)
         {
           v27 = +[SBModelessSyncController sharedInstance];
           [v27 gotLowBatteryWarning];
@@ -241,7 +241,7 @@ LABEL_15:
         goto LABEL_29;
       }
 
-      if ((v16 & 1) == 0)
+      if ((hideLowPowerAlerts & 1) == 0)
       {
         goto LABEL_15;
       }
@@ -274,17 +274,17 @@ uint64_t __39__SBLowPowerAlertItem_setBatteryLevel___block_invoke_2(uint64_t a1)
   return [v2 setShowFindMyAlert:v3];
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v6 = [(SBAlertItem *)self alertController:a3];
-  v7 = [(SBLowPowerAlertItem *)self _lowBatteryTitle];
-  [v6 setTitle:v7];
+  v6 = [(SBAlertItem *)self alertController:configure];
+  _lowBatteryTitle = [(SBLowPowerAlertItem *)self _lowBatteryTitle];
+  [v6 setTitle:_lowBatteryTitle];
 
-  v8 = [(SBLowPowerAlertItem *)self _batteryPercentageString];
+  _batteryPercentageString = [(SBLowPowerAlertItem *)self _batteryPercentageString];
   v9 = MEMORY[0x277CCACA8];
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"LOW_BATT_MSG_LEVEL" value:&stru_283094718 table:@"SpringBoard"];
-  v12 = [v9 stringWithFormat:v11, v8];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle localizedStringForKey:@"LOW_BATT_MSG_LEVEL" value:&stru_283094718 table:@"SpringBoard"];
+  v12 = [v9 stringWithFormat:v11, _batteryPercentageString];
 
   v13 = +[SBModelessSyncController sharedInstance];
   if ([v13 isSyncing])
@@ -315,26 +315,26 @@ uint64_t __39__SBLowPowerAlertItem_setBatteryLevel___block_invoke_2(uint64_t a1)
     }
 
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:v14, v16];
-    v18 = [MEMORY[0x277CCA8D8] mainBundle];
-    v19 = [v18 localizedStringForKey:v17 value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v19 = [mainBundle2 localizedStringForKey:v17 value:&stru_283094718 table:@"SpringBoard"];
     v20 = [v12 stringByAppendingFormat:@" %@", v19];
 
     v12 = v20;
   }
 
   [v6 setMessage:v12];
-  if (!a3)
+  if (!configure)
   {
     if ([(SBLowPowerAlertItem *)self _supportsLowPowerMode]&& ![(SBLowPowerAlertItem *)self _isLowPowerModeEnabled])
     {
       v22 = MEMORY[0x277D750F8];
-      v23 = [(SBLowPowerAlertItem *)self _enableLowPowerModeActionTitle];
+      _enableLowPowerModeActionTitle = [(SBLowPowerAlertItem *)self _enableLowPowerModeActionTitle];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __59__SBLowPowerAlertItem_configure_requirePasscodeForActions___block_invoke;
       v30[3] = &unk_2783A8A40;
       v30[4] = self;
-      v24 = [v22 actionWithTitle:v23 style:0 handler:v30];
+      v24 = [v22 actionWithTitle:_enableLowPowerModeActionTitle style:0 handler:v30];
       [v6 addAction:v24];
 
       v21 = 1;
@@ -347,8 +347,8 @@ uint64_t __39__SBLowPowerAlertItem_setBatteryLevel___block_invoke_2(uint64_t a1)
 
     [(SBLowPowerAlertItem *)self setHasEnableLowPowerModeAction:v21];
     v25 = MEMORY[0x277D750F8];
-    v26 = [MEMORY[0x277CCA8D8] mainBundle];
-    v27 = [v26 localizedStringForKey:@"CLOSE" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v27 = [mainBundle3 localizedStringForKey:@"CLOSE" value:&stru_283094718 table:@"SpringBoard"];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __59__SBLowPowerAlertItem_configure_requirePasscodeForActions___block_invoke_2;
@@ -367,12 +367,12 @@ uint64_t __59__SBLowPowerAlertItem_configure_requirePasscodeForActions___block_i
   return [v2 _didDeactivateForDismissAction];
 }
 
-- (void)didDeactivateForReason:(int)a3
+- (void)didDeactivateForReason:(int)reason
 {
   v5.receiver = self;
   v5.super_class = SBLowPowerAlertItem;
   [(SBAlertItem *)&v5 didDeactivateForReason:?];
-  if (a3 != 3)
+  if (reason != 3)
   {
     [(SBLowPowerAlertItem *)self _didDeactivateForDismissAction];
   }
@@ -380,8 +380,8 @@ uint64_t __59__SBLowPowerAlertItem_configure_requirePasscodeForActions___block_i
 
 - (id)_createSystemApertureElement
 {
-  v3 = [(SBLowPowerAlertItem *)self _isLowPowerModeEnabled];
-  v4 = [(SBLowPowerAlertItem *)self _supportsLowPowerMode]& !v3;
+  _isLowPowerModeEnabled = [(SBLowPowerAlertItem *)self _isLowPowerModeEnabled];
+  v4 = [(SBLowPowerAlertItem *)self _supportsLowPowerMode]& !_isLowPowerModeEnabled;
   if (v4 == 1)
   {
     objc_initWeak(&location, self);
@@ -403,7 +403,7 @@ uint64_t __59__SBLowPowerAlertItem_configure_requirePasscodeForActions___block_i
   [(SBLowPowerAlertItem *)self setHasEnableLowPowerModeAction:v4, v10, v11, v12, v13];
   v6 = [SBPowerAlertElement alloc];
   LODWORD(v7) = self->_talkLevel;
-  v8 = [(SBPowerAlertElement *)v6 initWithIdentifier:self style:1 batteryPercentage:v3 lowPowerModeEnabled:v5 action:v7 / 100.0];
+  v8 = [(SBPowerAlertElement *)v6 initWithIdentifier:self style:1 batteryPercentage:_isLowPowerModeEnabled lowPowerModeEnabled:v5 action:v7 / 100.0];
 
   return v8;
 }
@@ -441,15 +441,15 @@ void __51__SBLowPowerAlertItem__createSystemApertureElement__block_invoke(uint64
   [(SBLowPowerAlertItem *)self _setLowPowerMode:v3];
 }
 
-- (void)_setLowPowerMode:(BOOL)a3
+- (void)_setLowPowerMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__17;
   v13 = __Block_byref_object_dispose__17;
-  v14 = [MEMORY[0x277D244D8] sharedInstance];
+  mEMORY[0x277D244D8] = [MEMORY[0x277D244D8] sharedInstance];
   v4 = SBLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -464,7 +464,7 @@ void __51__SBLowPowerAlertItem__createSystemApertureElement__block_invoke(uint64
   v7[2] = __40__SBLowPowerAlertItem__setLowPowerMode___block_invoke;
   v7[3] = &unk_2783AF340;
   v7[4] = &v9;
-  [v5 setPowerMode:v3 fromSource:v6 withCompletion:v7];
+  [v5 setPowerMode:modeCopy fromSource:v6 withCompletion:v7];
   _Block_object_dispose(&v9, 8);
 }
 
@@ -489,20 +489,20 @@ void __40__SBLowPowerAlertItem__setLowPowerMode___block_invoke(uint64_t a1, int 
 
 - (BOOL)shouldShowInLockScreen
 {
-  v2 = [SBApp notificationDispatcher];
-  v3 = [v2 isCarDestinationActive];
+  notificationDispatcher = [SBApp notificationDispatcher];
+  isCarDestinationActive = [notificationDispatcher isCarDestinationActive];
 
-  return v3;
+  return isCarDestinationActive;
 }
 
 - (id)_lowBatteryTitle
 {
-  v2 = [SBApp notificationDispatcher];
-  v3 = [v2 isCarDestinationActive];
+  notificationDispatcher = [SBApp notificationDispatcher];
+  isCarDestinationActive = [notificationDispatcher isCarDestinationActive];
 
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = v4;
-  if (v3)
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = mainBundle;
+  if (isCarDestinationActive)
   {
     v6 = @"PHONE_LOW_BATT_TITLE";
   }
@@ -512,7 +512,7 @@ void __40__SBLowPowerAlertItem__setLowPowerMode___block_invoke(uint64_t a1, int 
     v6 = @"LOW_BATT_TITLE";
   }
 
-  v7 = [v4 localizedStringForKey:v6 value:&stru_283094718 table:@"SpringBoard"];
+  v7 = [mainBundle localizedStringForKey:v6 value:&stru_283094718 table:@"SpringBoard"];
 
   return v7;
 }
@@ -529,16 +529,16 @@ void __40__SBLowPowerAlertItem__setLowPowerMode___block_invoke(uint64_t a1, int 
 
 - (BOOL)_isLowPowerModeEnabled
 {
-  v2 = [MEMORY[0x277D244D8] sharedInstance];
-  v3 = [v2 getPowerMode] == 1;
+  mEMORY[0x277D244D8] = [MEMORY[0x277D244D8] sharedInstance];
+  v3 = [mEMORY[0x277D244D8] getPowerMode] == 1;
 
   return v3;
 }
 
 - (id)_enableLowPowerModeActionTitle
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"ENABLE_LOW_POWER" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"ENABLE_LOW_POWER" value:&stru_283094718 table:@"SpringBoard"];
 
   return v3;
 }

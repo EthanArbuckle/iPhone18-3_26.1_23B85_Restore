@@ -1,7 +1,7 @@
 @interface HDSimpleGraphObject
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDSimpleGraphObject)init;
-- (HDSimpleGraphObject)initWithRowID:(int64_t)a3 version:(int64_t)a4 slots:(unint64_t)a5 deleted:(BOOL)a6;
+- (HDSimpleGraphObject)initWithRowID:(int64_t)d version:(int64_t)version slots:(unint64_t)slots deleted:(BOOL)deleted;
 - (id)description;
 @end
 
@@ -17,17 +17,17 @@
   return 0;
 }
 
-- (HDSimpleGraphObject)initWithRowID:(int64_t)a3 version:(int64_t)a4 slots:(unint64_t)a5 deleted:(BOOL)a6
+- (HDSimpleGraphObject)initWithRowID:(int64_t)d version:(int64_t)version slots:(unint64_t)slots deleted:(BOOL)deleted
 {
   v11.receiver = self;
   v11.super_class = HDSimpleGraphObject;
   result = [(HDSimpleGraphObject *)&v11 init];
   if (result)
   {
-    result->_rowID = a3;
-    result->_version = a4;
-    result->_slots = a5;
-    result->_deleted = a6;
+    result->_rowID = d;
+    result->_version = version;
+    result->_slots = slots;
+    result->_deleted = deleted;
   }
 
   return result;
@@ -51,10 +51,10 @@
   return [v3 stringWithFormat:@"%@:%p:%lld:%lld:%llX%@", v4, self, *&self->_rowID, self->_slots, v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -64,11 +64,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HDSimpleGraphObject *)self rowID];
-      v7 = [(HDSimpleGraphObject *)v5 rowID];
+      v5 = equalCopy;
+      rowID = [(HDSimpleGraphObject *)self rowID];
+      rowID2 = [(HDSimpleGraphObject *)v5 rowID];
 
-      v8 = v6 == v7;
+      v8 = rowID == rowID2;
     }
 
     else

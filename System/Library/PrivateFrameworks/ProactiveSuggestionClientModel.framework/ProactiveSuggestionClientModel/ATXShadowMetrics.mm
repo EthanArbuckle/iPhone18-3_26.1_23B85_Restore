@@ -1,6 +1,6 @@
 @interface ATXShadowMetrics
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXShadowMetrics:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXShadowMetrics:(id)metrics;
 - (double)meanReciprocalRank;
 - (double)precisionAllCachedPredictions;
 - (double)precisionAtTop1CachedPrediction;
@@ -18,7 +18,7 @@
 - (double)recallOfHighConfidenceCachedPredictions;
 - (double)recallOfLowConfidenceCachedPredictions;
 - (double)recallOfMediumConfidenceCachedPredictions;
-- (id)asCoreAnalyticsMessageWithModelId:(id)a3 executableType:(int64_t)a4;
+- (id)asCoreAnalyticsMessageWithModelId:(id)id executableType:(int64_t)type;
 - (unint64_t)hash;
 - (void)meanReciprocalRank;
 - (void)precisionAllCachedPredictions;
@@ -415,15 +415,15 @@
   return v4;
 }
 
-- (id)asCoreAnalyticsMessageWithModelId:(id)a3 executableType:(int64_t)a4
+- (id)asCoreAnalyticsMessageWithModelId:(id)id executableType:(int64_t)type
 {
   v53[25] = *MEMORY[0x1E69E9840];
-  v53[0] = a3;
+  v53[0] = id;
   v52[0] = @"modelID";
   v52[1] = @"executableType";
   v6 = MEMORY[0x1E696AD98];
-  v46 = a3;
-  v51 = [v6 numberWithInteger:a4];
+  idCopy = id;
+  v51 = [v6 numberWithInteger:type];
   v53[1] = v51;
   v52[2] = @"cacheHitMRR";
   v7 = MEMORY[0x1E696AD98];
@@ -535,27 +535,27 @@
   return v33;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShadowMetrics *)self isEqualToATXShadowMetrics:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShadowMetrics *)self isEqualToATXShadowMetrics:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXShadowMetrics:(id)a3
+- (BOOL)isEqualToATXShadowMetrics:(id)metrics
 {
-  v4 = a3;
-  v5 = *&self->_numberOfCorrectTop1CachedPrediction == *(v4 + 8) && self->_numberOfCorrectTop4CachedPredictions == *(v4 + 3) && self->_numberOfCorrectTop8CachedPredictions == *(v4 + 4) && self->_numberOfCorrectHighConfidenceCachedPredictions == *(v4 + 5) && self->_numberOfCorrectMediumConfidenceCachedPredictions == *(v4 + 6) && self->_numberOfCorrectLowConfidenceCachedPredictions == *(v4 + 7) && self->_numberOfCorrectCachedPredictions == *(v4 + 8) && self->_numberOfCachedPredictions == *(v4 + 9) && self->_numberOfCachedHighConfidencePredictions == *(v4 + 10) && self->_numberOfCachedMediumConfidencePredictions == *(v4 + 11) && self->_numberOfCachedLowConfidencePredictions == *(v4 + 12) && self->_numberOfShadowEventTop1CacheHits == *(v4 + 13) && self->_numberOfShadowEventTop2CacheHits == *(v4 + 14) && self->_numberOfShadowEventTop4CacheHits == *(v4 + 15) && self->_numberOfShadowEventTop8CacheHits == *(v4 + 16) && self->_numberOfShadowEventHighConfidenceCacheHits == *(v4 + 17) && self->_numberOfShadowEventMediumConfidenceCacheHits == *(v4 + 18) && self->_numberOfShadowEventLowConfidenceCacheHits == *(v4 + 19) && self->_numberOfShadowEventCacheHits == *(v4 + 20) && self->_numberOfShadowEvents == *(v4 + 21) && self->_numberOfPredictionCacheRefreshes == *(v4 + 22) && self->_sumOfShadowEventCacheHitReciprocalRanks == *(v4 + 23);
+  metricsCopy = metrics;
+  v5 = *&self->_numberOfCorrectTop1CachedPrediction == *(metricsCopy + 8) && self->_numberOfCorrectTop4CachedPredictions == *(metricsCopy + 3) && self->_numberOfCorrectTop8CachedPredictions == *(metricsCopy + 4) && self->_numberOfCorrectHighConfidenceCachedPredictions == *(metricsCopy + 5) && self->_numberOfCorrectMediumConfidenceCachedPredictions == *(metricsCopy + 6) && self->_numberOfCorrectLowConfidenceCachedPredictions == *(metricsCopy + 7) && self->_numberOfCorrectCachedPredictions == *(metricsCopy + 8) && self->_numberOfCachedPredictions == *(metricsCopy + 9) && self->_numberOfCachedHighConfidencePredictions == *(metricsCopy + 10) && self->_numberOfCachedMediumConfidencePredictions == *(metricsCopy + 11) && self->_numberOfCachedLowConfidencePredictions == *(metricsCopy + 12) && self->_numberOfShadowEventTop1CacheHits == *(metricsCopy + 13) && self->_numberOfShadowEventTop2CacheHits == *(metricsCopy + 14) && self->_numberOfShadowEventTop4CacheHits == *(metricsCopy + 15) && self->_numberOfShadowEventTop8CacheHits == *(metricsCopy + 16) && self->_numberOfShadowEventHighConfidenceCacheHits == *(metricsCopy + 17) && self->_numberOfShadowEventMediumConfidenceCacheHits == *(metricsCopy + 18) && self->_numberOfShadowEventLowConfidenceCacheHits == *(metricsCopy + 19) && self->_numberOfShadowEventCacheHits == *(metricsCopy + 20) && self->_numberOfShadowEvents == *(metricsCopy + 21) && self->_numberOfPredictionCacheRefreshes == *(metricsCopy + 22) && self->_sumOfShadowEventCacheHitReciprocalRanks == *(metricsCopy + 23);
 
   return v5;
 }
@@ -589,119 +589,119 @@
 - (void)precisionAtTop1CachedPrediction
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfCorrectTop1CachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfCorrectTop1CachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)precisionAtTop2CachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfCorrectTop2CachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfCorrectTop2CachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)precisionAtTop4CachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfCorrectTop4CachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfCorrectTop4CachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)precisionAtTop8CachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfCorrectTop8CachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfCorrectTop8CachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)precisionOfHighConfidenceCachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfCorrectHighConfidenceCachedPredictions != 0 while _numberOfCachedHighConfidencePredictions == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfCorrectHighConfidenceCachedPredictions != 0 while _numberOfCachedHighConfidencePredictions == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)precisionOfMediumConfidenceCachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfCorrectMediumConfidenceCachedPredictions != 0 while _numberOfCachedMediumConfidencePredictions == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfCorrectMediumConfidenceCachedPredictions != 0 while _numberOfCachedMediumConfidencePredictions == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)precisionOfLowConfidenceCachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfCorrectLowConfidenceCachedPredictions != 0 while _numberOfCachedLowConfidencePredictions == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfCorrectLowConfidenceCachedPredictions != 0 while _numberOfCachedLowConfidencePredictions == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)precisionAllCachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfCorrectCachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfCorrectCachedPrediction != 0 while _numberOfCachedPredictions == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)recallAtTop1CachedPrediction
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfShadowEventTop1CacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfShadowEventTop1CacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)recallAtTop2CachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfShadowEventTop2CacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfShadowEventTop2CacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)recallAtTop4CachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfShadowEventTop4CacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfShadowEventTop4CacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)recallAtTop8CachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfShadowEventTop8CacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfShadowEventTop8CacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)recallOfHighConfidenceCachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfShadowEventHighConfidenceCacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfShadowEventHighConfidenceCacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)recallOfMediumConfidenceCachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfShadowEventMediumConfidenceCacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfShadowEventMediumConfidenceCacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)recallOfLowConfidenceCachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfShadowEventLowConfidenceCacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfShadowEventLowConfidenceCacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)recallAllCachedPredictions
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _numberOfShadowEventCacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _numberOfShadowEventCacheHits != 0 while _numberOfShadowEvents == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)meanReciprocalRank
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, a1, a3, "%s: _sumOfShadowEventCacheHitReciprocalRanks != 0 while _numberOfShadowEventCacheHits == 0.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_12(&dword_1DEFC4000, self, a3, "%s: _sumOfShadowEventCacheHitReciprocalRanks != 0 while _numberOfShadowEventCacheHits == 0.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 

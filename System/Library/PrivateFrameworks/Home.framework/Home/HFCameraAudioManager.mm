@@ -1,34 +1,34 @@
 @interface HFCameraAudioManager
-- (HFCameraAudioManager)initWithCameraProfile:(id)a3 cameraStream:(id)a4 valueManager:(id)a5;
+- (HFCameraAudioManager)initWithCameraProfile:(id)profile cameraStream:(id)stream valueManager:(id)manager;
 - (float)incomingAudioVolume;
-- (id)_enableAudioIfNecessaryForAudioControl:(id)a3 minVolume:(float)a4;
-- (id)_readValuesForCharacteristics:(id)a3;
-- (id)_writeValuesForCharacteristics:(id)a3;
+- (id)_enableAudioIfNecessaryForAudioControl:(id)control minVolume:(float)volume;
+- (id)_readValuesForCharacteristics:(id)characteristics;
+- (id)_writeValuesForCharacteristics:(id)characteristics;
 - (id)enableRemoteMicrophoneIfNecessary;
 - (id)enableRemoteSpeakerIfNecessary;
-- (id)setIncomingAudioEnabled:(BOOL)a3;
-- (id)setIncomingAudioVolume:(float)a3;
-- (id)setOutgoingAudioEnabled:(BOOL)a3;
-- (id)updateAudioStreamSetting:(unint64_t)a3;
+- (id)setIncomingAudioEnabled:(BOOL)enabled;
+- (id)setIncomingAudioVolume:(float)volume;
+- (id)setOutgoingAudioEnabled:(BOOL)enabled;
+- (id)updateAudioStreamSetting:(unint64_t)setting;
 - (unint64_t)audioStreamSetting;
 @end
 
 @implementation HFCameraAudioManager
 
-- (HFCameraAudioManager)initWithCameraProfile:(id)a3 cameraStream:(id)a4 valueManager:(id)a5
+- (HFCameraAudioManager)initWithCameraProfile:(id)profile cameraStream:(id)stream valueManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  streamCopy = stream;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = HFCameraAudioManager;
   v11 = [(HFCameraAudioManager *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(HFCameraAudioManager *)v11 setCameraProfile:v8];
-    [(HFCameraAudioManager *)v12 setCameraStream:v9];
-    [(HFCameraAudioManager *)v12 setValueManager:v10];
+    [(HFCameraAudioManager *)v11 setCameraProfile:profileCopy];
+    [(HFCameraAudioManager *)v12 setCameraStream:streamCopy];
+    [(HFCameraAudioManager *)v12 setValueManager:managerCopy];
   }
 
   return v12;
@@ -36,35 +36,35 @@
 
 - (unint64_t)audioStreamSetting
 {
-  v2 = [(HFCameraAudioManager *)self cameraStream];
-  v3 = [v2 audioStreamSetting];
+  cameraStream = [(HFCameraAudioManager *)self cameraStream];
+  audioStreamSetting = [cameraStream audioStreamSetting];
 
-  return v3;
+  return audioStreamSetting;
 }
 
 - (float)incomingAudioVolume
 {
-  v2 = [(HFCameraAudioManager *)self cameraStream];
-  v3 = [v2 audioVolume];
-  [v3 floatValue];
+  cameraStream = [(HFCameraAudioManager *)self cameraStream];
+  audioVolume = [cameraStream audioVolume];
+  [audioVolume floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (id)setOutgoingAudioEnabled:(BOOL)a3
+- (id)setOutgoingAudioEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = 3;
   }
 
   else
   {
-    v5 = [(HFCameraAudioManager *)self cameraStream];
-    v6 = [v5 audioStreamSetting];
+    cameraStream = [(HFCameraAudioManager *)self cameraStream];
+    audioStreamSetting = [cameraStream audioStreamSetting];
 
-    if (v6 == 3)
+    if (audioStreamSetting == 3)
     {
       v4 = 2;
     }
@@ -78,14 +78,14 @@
   return [(HFCameraAudioManager *)self updateAudioStreamSetting:v4];
 }
 
-- (id)setIncomingAudioEnabled:(BOOL)a3
+- (id)setIncomingAudioEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [(HFCameraAudioManager *)self cameraStream];
-    v5 = [v4 audioStreamSetting];
+    cameraStream = [(HFCameraAudioManager *)self cameraStream];
+    audioStreamSetting = [cameraStream audioStreamSetting];
 
-    if (v5 == 3)
+    if (audioStreamSetting == 3)
     {
       v6 = 3;
     }
@@ -104,14 +104,14 @@
   return [(HFCameraAudioManager *)self updateAudioStreamSetting:v6];
 }
 
-- (id)setIncomingAudioVolume:(float)a3
+- (id)setIncomingAudioVolume:(float)volume
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory(0x1CuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v13 = a3;
+    volumeCopy = volume;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Setting incoming audio volume to %.1f", buf, 0xCu);
   }
 
@@ -120,7 +120,7 @@
   v10[2] = __47__HFCameraAudioManager_setIncomingAudioVolume___block_invoke;
   v10[3] = &unk_277DF4668;
   v10[4] = self;
-  v11 = a3;
+  volumeCopy2 = volume;
   v6 = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v10];
   v7 = [v6 addFailureBlock:&__block_literal_global_21];
   v8 = *MEMORY[0x277D85DE8];
@@ -153,36 +153,36 @@ void __47__HFCameraAudioManager_setIncomingAudioVolume___block_invoke_2(uint64_t
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateAudioStreamSetting:(unint64_t)a3
+- (id)updateAudioStreamSetting:(unint64_t)setting
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [(HFCameraAudioManager *)self cameraProfile];
-  v6 = [v5 streamControl];
-  v7 = [v6 streamState];
+  cameraProfile = [(HFCameraAudioManager *)self cameraProfile];
+  streamControl = [cameraProfile streamControl];
+  streamState = [streamControl streamState];
 
   v8 = HFLogForCategory(0x1CuLL);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if ((v7 - 3) > 1)
+  if ((streamState - 3) > 1)
   {
     if (v9)
     {
-      if (a3 - 1 >= 3)
+      if (setting - 1 >= 3)
       {
-        NSLog(&cfstr_UnknownHmcamer.isa, a3);
+        NSLog(&cfstr_UnknownHmcamer.isa, setting);
         v11 = 0;
       }
 
       else
       {
-        v11 = off_277DF4790[a3 - 1];
+        v11 = off_277DF4790[setting - 1];
       }
 
-      v15 = [(HFCameraAudioManager *)self cameraProfile];
-      v16 = [v15 hf_prettyDescription];
+      cameraProfile2 = [(HFCameraAudioManager *)self cameraProfile];
+      hf_prettyDescription = [cameraProfile2 hf_prettyDescription];
       *buf = 138412546;
       v26 = v11;
       v27 = 2112;
-      v28 = v16;
+      v28 = hf_prettyDescription;
       _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Updating audio stream setting to %@ for %@", buf, 0x16u);
     }
 
@@ -191,7 +191,7 @@ void __47__HFCameraAudioManager_setIncomingAudioVolume___block_invoke_2(uint64_t
     v24[2] = __49__HFCameraAudioManager_updateAudioStreamSetting___block_invoke;
     v24[3] = &unk_277DF46B0;
     v24[4] = self;
-    v24[5] = a3;
+    v24[5] = setting;
     v17 = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v24];
     v18 = [v17 addFailureBlock:&__block_literal_global_4_0];
     v23[0] = MEMORY[0x277D85DD0];
@@ -205,40 +205,40 @@ void __47__HFCameraAudioManager_setIncomingAudioVolume___block_invoke_2(uint64_t
     v22[2] = __49__HFCameraAudioManager_updateAudioStreamSetting___block_invoke_3;
     v22[3] = &unk_277DF4748;
     v22[4] = self;
-    v22[5] = a3;
-    v14 = [v17 flatMap:v22];
+    v22[5] = setting;
+    futureWithNoResult = [v17 flatMap:v22];
   }
 
   else
   {
     if (v9)
     {
-      if (a3 - 1 >= 3)
+      if (setting - 1 >= 3)
       {
-        NSLog(&cfstr_UnknownHmcamer.isa, a3);
+        NSLog(&cfstr_UnknownHmcamer.isa, setting);
         v10 = 0;
       }
 
       else
       {
-        v10 = off_277DF4790[a3 - 1];
+        v10 = off_277DF4790[setting - 1];
       }
 
-      v12 = [(HFCameraAudioManager *)self cameraProfile];
-      v13 = [v12 hf_prettyDescription];
+      cameraProfile3 = [(HFCameraAudioManager *)self cameraProfile];
+      hf_prettyDescription2 = [cameraProfile3 hf_prettyDescription];
       *buf = 138412546;
       v26 = v10;
       v27 = 2112;
-      v28 = v13;
+      v28 = hf_prettyDescription2;
       _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "Ignoring request to update audio stream setting to %@ for %@, as the stream is stopping or has already stopped.", buf, 0x16u);
     }
 
-    v14 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return futureWithNoResult;
 }
 
 void __49__HFCameraAudioManager_updateAudioStreamSetting___block_invoke(uint64_t a1, void *a2)
@@ -314,33 +314,33 @@ id __49__HFCameraAudioManager_updateAudioStreamSetting___block_invoke_3(uint64_t
 
 - (id)enableRemoteSpeakerIfNecessary
 {
-  v3 = [(HFCameraAudioManager *)self cameraProfile];
-  v4 = [v3 speakerControl];
+  cameraProfile = [(HFCameraAudioManager *)self cameraProfile];
+  speakerControl = [cameraProfile speakerControl];
   LODWORD(v5) = 0.5;
-  v6 = [(HFCameraAudioManager *)self _enableAudioIfNecessaryForAudioControl:v4 minVolume:v5];
+  v6 = [(HFCameraAudioManager *)self _enableAudioIfNecessaryForAudioControl:speakerControl minVolume:v5];
 
   return v6;
 }
 
 - (id)enableRemoteMicrophoneIfNecessary
 {
-  v3 = [(HFCameraAudioManager *)self cameraProfile];
-  v4 = [v3 microphoneControl];
+  cameraProfile = [(HFCameraAudioManager *)self cameraProfile];
+  microphoneControl = [cameraProfile microphoneControl];
   LODWORD(v5) = 0.5;
-  v6 = [(HFCameraAudioManager *)self _enableAudioIfNecessaryForAudioControl:v4 minVolume:v5];
+  v6 = [(HFCameraAudioManager *)self _enableAudioIfNecessaryForAudioControl:microphoneControl minVolume:v5];
 
   return v6;
 }
 
-- (id)_enableAudioIfNecessaryForAudioControl:(id)a3 minVolume:(float)a4
+- (id)_enableAudioIfNecessaryForAudioControl:(id)control minVolume:(float)volume
 {
-  v6 = a3;
+  controlCopy = control;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [v6 mute];
-  [v7 na_safeAddObject:v8];
+  mute = [controlCopy mute];
+  [v7 na_safeAddObject:mute];
 
-  v9 = [v6 volume];
-  [v7 na_safeAddObject:v9];
+  volume = [controlCopy volume];
+  [v7 na_safeAddObject:volume];
 
   if ([v7 count])
   {
@@ -349,18 +349,18 @@ id __49__HFCameraAudioManager_updateAudioStreamSetting___block_invoke_3(uint64_t
     v13[1] = 3221225472;
     v13[2] = __73__HFCameraAudioManager__enableAudioIfNecessaryForAudioControl_minVolume___block_invoke;
     v13[3] = &unk_277DF4770;
-    v16 = a4;
-    v14 = v6;
-    v15 = self;
-    v11 = [v10 flatMap:v13];
+    volumeCopy = volume;
+    v14 = controlCopy;
+    selfCopy = self;
+    futureWithNoResult = [v10 flatMap:v13];
   }
 
   else
   {
-    v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v11;
+  return futureWithNoResult;
 }
 
 id __73__HFCameraAudioManager__enableAudioIfNecessaryForAudioControl_minVolume___block_invoke(uint64_t a1, void *a2)
@@ -439,34 +439,34 @@ LABEL_6:
   return v25;
 }
 
-- (id)_readValuesForCharacteristics:(id)a3
+- (id)_readValuesForCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  v5 = [(HFCameraAudioManager *)self valueManager];
+  characteristicsCopy = characteristics;
+  valueManager = [(HFCameraAudioManager *)self valueManager];
   v6 = objc_opt_new();
-  [v5 beginTransactionWithReason:@"HFCameraAudioManagerReadReason" readPolicy:v6 logger:0];
+  [valueManager beginTransactionWithReason:@"HFCameraAudioManagerReadReason" readPolicy:v6 logger:0];
 
-  v7 = [(HFCameraAudioManager *)self valueManager];
-  v8 = [v7 readValuesForCharacteristics:v4];
+  valueManager2 = [(HFCameraAudioManager *)self valueManager];
+  v8 = [valueManager2 readValuesForCharacteristics:characteristicsCopy];
 
-  v9 = [(HFCameraAudioManager *)self valueManager];
-  [v9 commitTransactionWithReason:@"HFCameraAudioManagerReadReason"];
+  valueManager3 = [(HFCameraAudioManager *)self valueManager];
+  [valueManager3 commitTransactionWithReason:@"HFCameraAudioManagerReadReason"];
 
   return v8;
 }
 
-- (id)_writeValuesForCharacteristics:(id)a3
+- (id)_writeValuesForCharacteristics:(id)characteristics
 {
-  v4 = a3;
-  v5 = [(HFCameraAudioManager *)self valueManager];
+  characteristicsCopy = characteristics;
+  valueManager = [(HFCameraAudioManager *)self valueManager];
   v6 = objc_opt_new();
-  [v5 beginTransactionWithReason:@"HFCameraAudioManagerWriteReason" readPolicy:v6 logger:0];
+  [valueManager beginTransactionWithReason:@"HFCameraAudioManagerWriteReason" readPolicy:v6 logger:0];
 
-  v7 = [(HFCameraAudioManager *)self valueManager];
-  v8 = [v7 writeValuesForCharacteristics:v4];
+  valueManager2 = [(HFCameraAudioManager *)self valueManager];
+  v8 = [valueManager2 writeValuesForCharacteristics:characteristicsCopy];
 
-  v9 = [(HFCameraAudioManager *)self valueManager];
-  [v9 commitTransactionWithReason:@"HFCameraAudioManagerWriteReason"];
+  valueManager3 = [(HFCameraAudioManager *)self valueManager];
+  [valueManager3 commitTransactionWithReason:@"HFCameraAudioManagerWriteReason"];
 
   return v8;
 }

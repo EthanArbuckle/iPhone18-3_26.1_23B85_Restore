@@ -1,26 +1,26 @@
 @interface VCAudioRule
-- (BOOL)isEqual:(id)a3;
-- (VCAudioRule)initWithPayload:(int)a3 isSecondary:(BOOL)a4 sbr:(BOOL)a5 samplesPerBlock:(unsigned int)a6;
+- (BOOL)isEqual:(id)equal;
+- (VCAudioRule)initWithPayload:(int)payload isSecondary:(BOOL)secondary sbr:(BOOL)sbr samplesPerBlock:(unsigned int)block;
 - (id)description;
 @end
 
 @implementation VCAudioRule
 
-- (VCAudioRule)initWithPayload:(int)a3 isSecondary:(BOOL)a4 sbr:(BOOL)a5 samplesPerBlock:(unsigned int)a6
+- (VCAudioRule)initWithPayload:(int)payload isSecondary:(BOOL)secondary sbr:(BOOL)sbr samplesPerBlock:(unsigned int)block
 {
-  v7 = a5;
-  v8 = a4;
+  sbrCopy = sbr;
+  secondaryCopy = secondary;
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = VCAudioRule;
   result = [(VCAudioRule *)&v13 init];
   if (result)
   {
-    result->_payload = a3;
-    result->_isSecondary = v8;
-    result->_sbr = v7;
-    result->_samplesPerBlock = a6;
-    if (v7)
+    result->_payload = payload;
+    result->_isSecondary = secondaryCopy;
+    result->_sbr = sbrCopy;
+    result->_samplesPerBlock = block;
+    if (sbrCopy)
     {
       v11 = 0x10000;
     }
@@ -30,7 +30,7 @@
       v11 = 0;
     }
 
-    if (v8)
+    if (secondaryCopy)
     {
       v12 = 0x20000;
     }
@@ -40,22 +40,22 @@
       v12 = 0;
     }
 
-    result->_hash = v12 & 0xFFFF0000 | a3 | v11 | (a6 << 18);
+    result->_hash = v12 & 0xFFFF0000 | payload | v11 | (block << 18);
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     payload = self->_payload;
-    if (payload == [a3 payload] && (isSecondary = self->_isSecondary, isSecondary == objc_msgSend(a3, "isSecondary")) && (sbr = self->_sbr, sbr == objc_msgSend(a3, "sbr")))
+    if (payload == [equal payload] && (isSecondary = self->_isSecondary, isSecondary == objc_msgSend(equal, "isSecondary")) && (sbr = self->_sbr, sbr == objc_msgSend(equal, "sbr")))
     {
       samplesPerBlock = self->_samplesPerBlock;
-      LOBYTE(v5) = samplesPerBlock == [a3 samplesPerBlock];
+      LOBYTE(v5) = samplesPerBlock == [equal samplesPerBlock];
     }
 
     else

@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterRunningStateChangeEvent
 - (MTRThermostatClusterRunningStateChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterRunningStateChangeEvent);
-  v5 = [(MTRThermostatClusterRunningStateChangeEvent *)self previousRunningState];
-  [(MTRThermostatClusterRunningStateChangeEvent *)v4 setPreviousRunningState:v5];
+  previousRunningState = [(MTRThermostatClusterRunningStateChangeEvent *)self previousRunningState];
+  [(MTRThermostatClusterRunningStateChangeEvent *)v4 setPreviousRunningState:previousRunningState];
 
-  v6 = [(MTRThermostatClusterRunningStateChangeEvent *)self currentRunningState];
-  [(MTRThermostatClusterRunningStateChangeEvent *)v4 setCurrentRunningState:v6];
+  currentRunningState = [(MTRThermostatClusterRunningStateChangeEvent *)self currentRunningState];
+  [(MTRThermostatClusterRunningStateChangeEvent *)v4 setCurrentRunningState:currentRunningState];
 
   return v4;
 }

@@ -1,12 +1,12 @@
 @interface _TVModalPageTemplateController
-- (BOOL)_updateWithCollectionListElement:(id)a3;
-- (id)_viewControllerWithElement:(id)a3 existingController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (void)_tapAction:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (BOOL)_updateWithCollectionListElement:(id)element;
+- (id)_viewControllerWithElement:(id)element existingController:(id)controller;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (void)_tapAction:(id)action;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
-- (void)updateWithViewElement:(id)a3;
+- (void)updateWithViewElement:(id)element;
 - (void)viewDidLoad;
 @end
 
@@ -15,17 +15,17 @@
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D75D18]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v11 = [v3 initWithFrame:?];
 
-  v5 = [(IKViewElement *)self->_backgroundElement style];
-  v6 = [v5 tv_backgroundColor];
-  v7 = [v6 color];
-  v8 = v7;
-  if (v7)
+  style = [(IKViewElement *)self->_backgroundElement style];
+  tv_backgroundColor = [style tv_backgroundColor];
+  color = [tv_backgroundColor color];
+  v8 = color;
+  if (color)
   {
-    v9 = v7;
+    v9 = color;
   }
 
   else
@@ -50,44 +50,44 @@
   self->_pageViewController = v3;
 
   [(UIPageViewController *)self->_pageViewController setDataSource:self];
-  v5 = [(UIPageViewController *)self->_pageViewController view];
+  view = [(UIPageViewController *)self->_pageViewController view];
   [(_TVModalPageTemplateController *)self addChildViewController:self->_pageViewController];
-  v6 = [(_TVModalPageTemplateController *)self view];
-  [v6 bounds];
-  [v5 setFrame:?];
+  view2 = [(_TVModalPageTemplateController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v5 setAutoresizingMask:18];
-  v7 = [(_TVModalPageTemplateController *)self view];
-  [v7 addSubview:v5];
+  [view setAutoresizingMask:18];
+  view3 = [(_TVModalPageTemplateController *)self view];
+  [view3 addSubview:view];
 
   [(UIPageViewController *)self->_pageViewController didMoveToParentViewController:self];
   if ([(NSArray *)self->_viewControllers count])
   {
     v8 = self->_pageViewController;
-    v9 = [(NSArray *)self->_bezelViewControllers firstObject];
-    v14[0] = v9;
+    firstObject = [(NSArray *)self->_bezelViewControllers firstObject];
+    v14[0] = firstObject;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     [(UIPageViewController *)v8 setViewControllers:v10 direction:0 animated:0 completion:0];
   }
 
   v11 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__tapAction_];
-  v12 = [(_TVModalPageTemplateController *)self view];
-  [v12 addGestureRecognizer:v11];
+  view4 = [(_TVModalPageTemplateController *)self view];
+  [view4 addGestureRecognizer:v11];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setOpaque:0];
+    [controllerCopy setOpaque:0];
   }
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  if ([(NSArray *)self->_bezelViewControllers indexOfObjectIdenticalTo:a4]- 1 > 0x7FFFFFFFFFFFFFFDLL)
+  if ([(NSArray *)self->_bezelViewControllers indexOfObjectIdenticalTo:viewController]- 1 > 0x7FFFFFFFFFFFFFFDLL)
   {
     v5 = 0;
   }
@@ -100,9 +100,9 @@
   return v5;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = [(NSArray *)self->_bezelViewControllers indexOfObjectIdenticalTo:a4];
+  v5 = [(NSArray *)self->_bezelViewControllers indexOfObjectIdenticalTo:viewController];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5, v5 >= [(NSArray *)self->_bezelViewControllers count]- 1))
   {
     v7 = 0;
@@ -116,14 +116,14 @@
   return v7;
 }
 
-- (void)_tapAction:(id)a3
+- (void)_tapAction:(id)action
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_TVModalPageTemplateController *)self view];
-  v6 = [(_TVModalPageTemplateController *)self view];
-  [v4 locationInView:v6];
-  v7 = [v5 hitTest:0 withEvent:?];
+  actionCopy = action;
+  view = [(_TVModalPageTemplateController *)self view];
+  view2 = [(_TVModalPageTemplateController *)self view];
+  [actionCopy locationInView:view2];
+  v7 = [view hitTest:0 withEvent:?];
 
   v20 = 0u;
   v21 = 0u;
@@ -144,11 +144,11 @@ LABEL_3:
         objc_enumerationMutation(v8);
       }
 
-      v13 = [*(*(&v18 + 1) + 8 * v12) contentViewController];
-      if ([v13 isViewLoaded])
+      contentViewController = [*(*(&v18 + 1) + 8 * v12) contentViewController];
+      if ([contentViewController isViewLoaded])
       {
-        v14 = [v13 view];
-        v15 = [v7 isDescendantOfView:v14];
+        view3 = [contentViewController view];
+        v15 = [v7 isDescendantOfView:view3];
 
         if (v15)
         {
@@ -170,39 +170,39 @@ LABEL_3:
   }
 
   v8 = +[_TVModalPresenter presenter];
-  v16 = [(NSArray *)v8 presentedViewController];
+  presentedViewController = [(NSArray *)v8 presentedViewController];
 
-  if (v16)
+  if (presentedViewController)
   {
-    v13 = [(NSArray *)v8 presentedViewController];
-    [(NSArray *)v8 hideController:v13 animated:1 withCompletion:0];
+    contentViewController = [(NSArray *)v8 presentedViewController];
+    [(NSArray *)v8 hideController:contentViewController animated:1 withCompletion:0];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v17 = [(_TVModalPageTemplateController *)self presentingViewController];
+  presentingViewController = [(_TVModalPageTemplateController *)self presentingViewController];
 
-  if (v17)
+  if (presentingViewController)
   {
-    v13 = [(_TVModalPageTemplateController *)self presentingViewController];
-    [v13 dismissViewControllerAnimated:1 completion:0];
+    contentViewController = [(_TVModalPageTemplateController *)self presentingViewController];
+    [contentViewController dismissViewControllerAnimated:1 completion:0];
     goto LABEL_14;
   }
 
 LABEL_15:
 }
 
-- (void)updateWithViewElement:(id)a3
+- (void)updateWithViewElement:(id)element
 {
   v90 = *MEMORY[0x277D85DE8];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v61 = a3;
-  v5 = [v61 children];
-  v6 = [v5 countByEnumeratingWithState:&v80 objects:v89 count:16];
+  elementCopy = element;
+  children = [elementCopy children];
+  v6 = [children countByEnumeratingWithState:&v80 objects:v89 count:16];
   if (!v6)
   {
     v8 = 0;
@@ -220,12 +220,12 @@ LABEL_15:
     {
       if (*v81 != v10)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(children);
       }
 
       v12 = *(*(&v80 + 1) + 8 * i);
-      v13 = [v12 tv_elementType];
-      if (v13 == 4)
+      tv_elementType = [v12 tv_elementType];
+      if (tv_elementType == 4)
       {
         v14 = v8;
         v8 = v12;
@@ -233,7 +233,7 @@ LABEL_15:
 
       else
       {
-        if (v13 != 10)
+        if (tv_elementType != 10)
         {
           continue;
         }
@@ -245,13 +245,13 @@ LABEL_15:
       v15 = v12;
     }
 
-    v7 = [v5 countByEnumeratingWithState:&v80 objects:v89 count:16];
+    v7 = [children countByEnumeratingWithState:&v80 objects:v89 count:16];
   }
 
   while (v7);
 LABEL_15:
 
-  objc_storeStrong(&self->_viewElement, a3);
+  objc_storeStrong(&self->_viewElement, element);
   objc_storeStrong(&self->_collectionListElement, v9);
   objc_storeStrong(&self->_backgroundElement, v8);
   v59 = [(_TVModalPageTemplateController *)self _updateWithCollectionListElement:self->_collectionListElement];
@@ -260,7 +260,7 @@ LABEL_15:
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v60 = self;
+  selfCopy = self;
   v17 = self->_viewControllers;
   v18 = [(NSArray *)v17 countByEnumeratingWithState:&v76 objects:v88 count:16];
   if (v18)
@@ -289,34 +289,34 @@ LABEL_15:
   }
 
   v24 = [v16 copy];
-  bezelViewControllers = v60->_bezelViewControllers;
-  v60->_bezelViewControllers = v24;
+  bezelViewControllers = selfCopy->_bezelViewControllers;
+  selfCopy->_bezelViewControllers = v24;
 
   if (v59)
   {
-    pageViewController = v60->_pageViewController;
-    v27 = [(NSArray *)v60->_bezelViewControllers firstObject];
-    v87 = v27;
+    pageViewController = selfCopy->_pageViewController;
+    firstObject = [(NSArray *)selfCopy->_bezelViewControllers firstObject];
+    v87 = firstObject;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:&v87 count:1];
     [(UIPageViewController *)pageViewController setViewControllers:v28 direction:0 animated:0 completion:0];
   }
 
-  if ([(_TVModalPageTemplateController *)v60 isViewLoaded])
+  if ([(_TVModalPageTemplateController *)selfCopy isViewLoaded])
   {
-    v29 = [(IKViewElement *)v60->_backgroundElement style];
-    v30 = [v29 tv_backgroundColor];
-    v31 = [v30 color];
+    style = [(IKViewElement *)selfCopy->_backgroundElement style];
+    tv_backgroundColor = [style tv_backgroundColor];
+    color = [tv_backgroundColor color];
 
-    if (v31)
+    if (color)
     {
-      v32 = [(_TVModalPageTemplateController *)v60 view];
-      [v32 setBackgroundColor:v31];
+      view = [(_TVModalPageTemplateController *)selfCopy view];
+      [view setBackgroundColor:color];
     }
   }
 
   v74 = TVCornerRadiiZero;
   v75 = *&qword_26CE880D8;
-  if ([TVMLUtilities _cornerRadiiFromElement:v60->_viewElement cornerRadii:&v74 circle:0])
+  if ([TVMLUtilities _cornerRadiiFromElement:selfCopy->_viewElement cornerRadii:&v74 circle:0])
   {
     [TVCornerUtilities radiusFromCornerRadii:v74, v75];
     v34 = v33;
@@ -324,7 +324,7 @@ LABEL_15:
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v35 = v60->_bezelViewControllers;
+    v35 = selfCopy->_bezelViewControllers;
     v36 = [(NSArray *)v35 countByEnumeratingWithState:&v70 objects:v86 count:16];
     if (v36)
     {
@@ -349,17 +349,17 @@ LABEL_15:
     }
   }
 
-  v40 = [(IKViewElement *)v60->_viewElement style];
-  v41 = [v40 tv_backgroundColor];
-  v42 = [v41 color];
+  style2 = [(IKViewElement *)selfCopy->_viewElement style];
+  tv_backgroundColor2 = [style2 tv_backgroundColor];
+  color2 = [tv_backgroundColor2 color];
 
-  if (v42)
+  if (color2)
   {
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v43 = v60->_bezelViewControllers;
+    v43 = selfCopy->_bezelViewControllers;
     v44 = [(NSArray *)v43 countByEnumeratingWithState:&v66 objects:v85 count:16];
     if (v44)
     {
@@ -374,7 +374,7 @@ LABEL_15:
             objc_enumerationMutation(v43);
           }
 
-          [*(*(&v66 + 1) + 8 * m) setBezelBackgroundColor:v42];
+          [*(*(&v66 + 1) + 8 * m) setBezelBackgroundColor:color2];
         }
 
         v45 = [(NSArray *)v43 countByEnumeratingWithState:&v66 objects:v85 count:16];
@@ -384,12 +384,12 @@ LABEL_15:
     }
   }
 
-  v48 = [(IKViewElement *)v60->_viewElement style];
-  [v48 tv_width];
+  style3 = [(IKViewElement *)selfCopy->_viewElement style];
+  [style3 tv_width];
   v50 = v49;
 
-  v51 = [(IKViewElement *)v60->_viewElement style];
-  [v51 tv_height];
+  style4 = [(IKViewElement *)selfCopy->_viewElement style];
+  [style4 tv_height];
   v53 = v52;
 
   if (v50 > 0.0 && v53 > 0.0)
@@ -398,7 +398,7 @@ LABEL_15:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v54 = v60->_bezelViewControllers;
+    v54 = selfCopy->_bezelViewControllers;
     v55 = [(NSArray *)v54 countByEnumeratingWithState:&v62 objects:v84 count:16];
     if (v55)
     {
@@ -424,41 +424,41 @@ LABEL_15:
   }
 }
 
-- (BOOL)_updateWithCollectionListElement:(id)a3
+- (BOOL)_updateWithCollectionListElement:(id)element
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 updateType] == 2 && (objc_msgSend(v4, "children"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v7 = -[NSArray count](self->_viewControllers, "count"), v5, v6 == v7))
+  elementCopy = element;
+  if ([elementCopy updateType] == 2 && (objc_msgSend(elementCopy, "children"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v7 = -[NSArray count](self->_viewControllers, "count"), v5, v6 == v7))
   {
-    v8 = [v4 children];
+    children = [elementCopy children];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __67___TVModalPageTemplateController__updateWithCollectionListElement___block_invoke;
     v60[3] = &unk_279D6F498;
     v60[4] = self;
-    [v8 enumerateObjectsUsingBlock:v60];
+    [children enumerateObjectsUsingBlock:v60];
 
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     Width = CGRectGetWidth(v65);
 
     v12 = objc_alloc(MEMORY[0x277CBEB18]);
-    v13 = [v4 children];
-    v40 = [v12 initWithCapacity:{objc_msgSend(v13, "count")}];
+    children2 = [elementCopy children];
+    v40 = [v12 initWithCapacity:{objc_msgSend(children2, "count")}];
 
     v44 = [(NSArray *)self->_viewControllers mutableCopy];
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v39 = v4;
-    obj = [v4 children];
-    v42 = self;
+    v39 = elementCopy;
+    obj = [elementCopy children];
+    selfCopy = self;
     v45 = [obj countByEnumeratingWithState:&v56 objects:v63 count:16];
     v9 = 0;
     if (v45)
@@ -496,8 +496,8 @@ LABEL_15:
                 }
 
                 v21 = *(*(&v52 + 1) + 8 * j);
-                v22 = [v21 tv_associatedIKViewElement];
-                v23 = [[_TVShadowViewElementID alloc] initWithViewElement:v22];
+                tv_associatedIKViewElement = [v21 tv_associatedIKViewElement];
+                v23 = [[_TVShadowViewElementID alloc] initWithViewElement:tv_associatedIKViewElement];
                 v24 = [[_TVShadowViewElementID alloc] initWithViewElement:v16];
                 if ([(_TVShadowViewElementID *)v23 isEqual:v24])
                 {
@@ -517,14 +517,14 @@ LABEL_15:
             }
 
 LABEL_19:
-            self = v42;
+            self = selfCopy;
             i = v47;
             v15 = v46;
           }
 
           v25 = [(_TVModalPageTemplateController *)self _viewControllerWithElement:v16 existingController:v18];
-          v26 = [v25 view];
-          [v26 tv_sizeThatFits:{Width, 0.0}];
+          view = [v25 view];
+          [view tv_sizeThatFits:{Width, 0.0}];
           v28 = v27;
 
           if (v28 == 0.0)
@@ -558,7 +558,7 @@ LABEL_19:
     v49 = 0u;
     v29 = v44;
     v30 = [v29 countByEnumeratingWithState:&v48 objects:v61 count:16];
-    v4 = v39;
+    elementCopy = v39;
     if (v30)
     {
       v31 = v30;
@@ -574,8 +574,8 @@ LABEL_19:
 
           v34 = *(*(&v48 + 1) + 8 * k);
           [v34 willMoveToParentViewController:0];
-          v35 = [v34 view];
-          [v35 removeFromSuperview];
+          view2 = [v34 view];
+          [view2 removeFromSuperview];
 
           [v34 removeFromParentViewController];
         }
@@ -587,32 +587,32 @@ LABEL_19:
     }
 
     v36 = [v40 copy];
-    viewControllers = v42->_viewControllers;
-    v42->_viewControllers = v36;
+    viewControllers = selfCopy->_viewControllers;
+    selfCopy->_viewControllers = v36;
   }
 
   return v9 & 1;
 }
 
-- (id)_viewControllerWithElement:(id)a3 existingController:(id)a4
+- (id)_viewControllerWithElement:(id)element existingController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  controllerCopy = controller;
   v7 = +[TVInterfaceFactory sharedInterfaceFactory];
-  v8 = [v7 _viewControllerFromElement:v5 existingController:v6];
+  v8 = [v7 _viewControllerFromElement:elementCopy existingController:controllerCopy];
 
   if (!v8)
   {
     v9 = +[TVInterfaceFactory sharedInterfaceFactory];
-    v10 = [v6 view];
-    v11 = [v9 _viewFromElement:v5 existingView:v10];
+    view = [controllerCopy view];
+    v11 = [v9 _viewFromElement:elementCopy existingView:view];
 
     if (v11)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v6;
+        v12 = controllerCopy;
       }
 
       else
@@ -622,7 +622,7 @@ LABEL_19:
 
       v8 = v12;
       [(_TVModalPageSupplementalViewController *)v12 setView:v11];
-      [v8 tv_setAssociatedIKViewElement:v5];
+      [v8 tv_setAssociatedIKViewElement:elementCopy];
     }
 
     else

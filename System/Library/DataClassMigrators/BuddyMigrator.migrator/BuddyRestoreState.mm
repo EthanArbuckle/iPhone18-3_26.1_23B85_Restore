@@ -1,24 +1,24 @@
 @interface BuddyRestoreState
-+ (BOOL)hasStateFromPreferences:(id)a3;
-+ (id)_loadClassicState:(id)a3;
-+ (id)_loadModernState:(id)a3;
-+ (id)loadFromPreferences:(id)a3;
-- (BuddyRestoreState)initWithProductBuild:(id)a3 backupUDID:(id)a4 backupUUID:(id)a5 snapshotID:(unint64_t)a6 snapshotDate:(id)a7 useLatestSnapshot:(BOOL)a8 allowCellularNetwork:(BOOL)a9 persistDate:(id)a10;
++ (BOOL)hasStateFromPreferences:(id)preferences;
++ (id)_loadClassicState:(id)state;
++ (id)_loadModernState:(id)state;
++ (id)loadFromPreferences:(id)preferences;
+- (BuddyRestoreState)initWithProductBuild:(id)build backupUDID:(id)d backupUUID:(id)iD snapshotID:(unint64_t)snapshotID snapshotDate:(id)date useLatestSnapshot:(BOOL)snapshot allowCellularNetwork:(BOOL)network persistDate:(id)self0;
 - (id)description;
-- (void)persistUsingPreferences:(id)a3;
+- (void)persistUsingPreferences:(id)preferences;
 @end
 
 @implementation BuddyRestoreState
 
-- (BuddyRestoreState)initWithProductBuild:(id)a3 backupUDID:(id)a4 backupUUID:(id)a5 snapshotID:(unint64_t)a6 snapshotDate:(id)a7 useLatestSnapshot:(BOOL)a8 allowCellularNetwork:(BOOL)a9 persistDate:(id)a10
+- (BuddyRestoreState)initWithProductBuild:(id)build backupUDID:(id)d backupUUID:(id)iD snapshotID:(unint64_t)snapshotID snapshotDate:(id)date useLatestSnapshot:(BOOL)snapshot allowCellularNetwork:(BOOL)network persistDate:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v25 = a5;
-  v24 = a7;
-  v17 = a10;
-  v18 = 0;
-  if (v15 && v16)
+  buildCopy = build;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  persistDateCopy = persistDate;
+  selfCopy = 0;
+  if (buildCopy && dCopy)
   {
     v26.receiver = self;
     v26.super_class = BuddyRestoreState;
@@ -26,26 +26,26 @@
     v20 = v19;
     if (v19)
     {
-      objc_storeStrong(&v19->_productBuild, a3);
-      objc_storeStrong(&v20->_backupUDID, a4);
-      objc_storeStrong(&v20->_backupUUID, a5);
-      v20->_snapshotID = a6;
-      objc_storeStrong(&v20->_snapshotDate, a7);
-      v20->_useLatestSnapshot = a8;
-      v20->_allowCellularNetwork = a9;
-      objc_storeStrong(&v20->_persistDate, a10);
+      objc_storeStrong(&v19->_productBuild, build);
+      objc_storeStrong(&v20->_backupUDID, d);
+      objc_storeStrong(&v20->_backupUUID, iD);
+      v20->_snapshotID = snapshotID;
+      objc_storeStrong(&v20->_snapshotDate, date);
+      v20->_useLatestSnapshot = snapshot;
+      v20->_allowCellularNetwork = network;
+      objc_storeStrong(&v20->_persistDate, persistDate);
     }
 
     self = v20;
-    v18 = self;
+    selfCopy = self;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-+ (id)loadFromPreferences:(id)a3
++ (id)loadFromPreferences:(id)preferences
 {
-  v3 = [a3 objectForKey:@"showiCloudRestoreOnLaunch" includeCache:0];
+  v3 = [preferences objectForKey:@"showiCloudRestoreOnLaunch" includeCache:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -83,32 +83,32 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)hasStateFromPreferences:(id)a3
++ (BOOL)hasStateFromPreferences:(id)preferences
 {
-  v3 = [a3 objectForKey:@"showiCloudRestoreOnLaunch"];
+  v3 = [preferences objectForKey:@"showiCloudRestoreOnLaunch"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)persistUsingPreferences:(id)a3
+- (void)persistUsingPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v13 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(BuddyRestoreState *)self productBuild];
-  [v13 setObject:v5 forKeyedSubscript:@"productBuild"];
+  productBuild = [(BuddyRestoreState *)self productBuild];
+  [v13 setObject:productBuild forKeyedSubscript:@"productBuild"];
 
-  v6 = [(BuddyRestoreState *)self backupUDID];
-  [v13 setObject:v6 forKeyedSubscript:@"backupUDID"];
+  backupUDID = [(BuddyRestoreState *)self backupUDID];
+  [v13 setObject:backupUDID forKeyedSubscript:@"backupUDID"];
 
-  v7 = [(BuddyRestoreState *)self backupUUID];
-  [v13 setObject:v7 forKeyedSubscript:@"backupUUID"];
+  backupUUID = [(BuddyRestoreState *)self backupUUID];
+  [v13 setObject:backupUUID forKeyedSubscript:@"backupUUID"];
 
   v8 = [NSNumber numberWithUnsignedInteger:[(BuddyRestoreState *)self snapshotID]];
   [v13 setObject:v8 forKeyedSubscript:@"snapshotID"];
 
-  v9 = [(BuddyRestoreState *)self snapshotDate];
-  [v13 setObject:v9 forKeyedSubscript:@"snapshotDate"];
+  snapshotDate = [(BuddyRestoreState *)self snapshotDate];
+  [v13 setObject:snapshotDate forKeyedSubscript:@"snapshotDate"];
 
   v10 = [NSNumber numberWithBool:[(BuddyRestoreState *)self useLatestSnapshot]];
   [v13 setObject:v10 forKeyedSubscript:@"useLatestSnapshot"];
@@ -119,37 +119,37 @@ LABEL_11:
   v12 = +[NSDate date];
   [v13 setObject:v12 forKeyedSubscript:@"persistDate"];
 
-  [v4 setObject:v13 forKey:@"showiCloudRestoreOnLaunch" persistImmediately:1];
+  [preferencesCopy setObject:v13 forKey:@"showiCloudRestoreOnLaunch" persistImmediately:1];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(BuddyRestoreState *)self productBuild];
-  v5 = [(BuddyRestoreState *)self backupUDID];
-  v6 = [(BuddyRestoreState *)self backupUUID];
-  v7 = [(BuddyRestoreState *)self snapshotID];
-  v8 = [(BuddyRestoreState *)self snapshotDate];
-  v9 = [NSString stringWithFormat:@"<%@ : %p> Build: %@ Backup UDID: %@ Backup UUID: %@ Snapshot ID: %lu Snapshot Date: %@", v3, self, v4, v5, v6, v7, v8];
+  productBuild = [(BuddyRestoreState *)self productBuild];
+  backupUDID = [(BuddyRestoreState *)self backupUDID];
+  backupUUID = [(BuddyRestoreState *)self backupUUID];
+  snapshotID = [(BuddyRestoreState *)self snapshotID];
+  snapshotDate = [(BuddyRestoreState *)self snapshotDate];
+  v9 = [NSString stringWithFormat:@"<%@ : %p> Build: %@ Backup UDID: %@ Backup UUID: %@ Snapshot ID: %lu Snapshot Date: %@", v3, self, productBuild, backupUDID, backupUUID, snapshotID, snapshotDate];
 
   return v9;
 }
 
-+ (id)_loadClassicState:(id)a3
++ (id)_loadClassicState:(id)state
 {
-  v3 = a3;
-  if ([v3 count] >= 3)
+  stateCopy = state;
+  if ([stateCopy count] >= 3)
   {
-    v5 = [v3 objectAtIndexedSubscript:0];
+    v5 = [stateCopy objectAtIndexedSubscript:0];
     if (v5)
     {
-      v6 = [v3 objectAtIndexedSubscript:0];
+      v6 = [stateCopy objectAtIndexedSubscript:0];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v5 = [v3 objectAtIndexedSubscript:0];
+        v5 = [stateCopy objectAtIndexedSubscript:0];
       }
 
       else
@@ -158,16 +158,16 @@ LABEL_11:
       }
     }
 
-    v8 = [v3 objectAtIndexedSubscript:1];
+    v8 = [stateCopy objectAtIndexedSubscript:1];
     if (v8)
     {
-      v9 = [v3 objectAtIndexedSubscript:1];
+      v9 = [stateCopy objectAtIndexedSubscript:1];
       objc_opt_class();
       v10 = objc_opt_isKindOfClass();
 
       if (v10)
       {
-        v8 = [v3 objectAtIndexedSubscript:1];
+        v8 = [stateCopy objectAtIndexedSubscript:1];
       }
 
       else
@@ -176,11 +176,11 @@ LABEL_11:
       }
     }
 
-    v11 = [v3 objectAtIndexedSubscript:2];
-    if (v11 && (v12 = v11, [v3 objectAtIndexedSubscript:2], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v14 = objc_opt_isKindOfClass(), v13, v12, (v14 & 1) != 0))
+    v11 = [stateCopy objectAtIndexedSubscript:2];
+    if (v11 && (v12 = v11, [stateCopy objectAtIndexedSubscript:2], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v14 = objc_opt_isKindOfClass(), v13, v12, (v14 & 1) != 0))
     {
-      v15 = [v3 objectAtIndexedSubscript:2];
-      v16 = [v15 unsignedIntegerValue];
+      v15 = [stateCopy objectAtIndexedSubscript:2];
+      unsignedIntegerValue = [v15 unsignedIntegerValue];
 
       v17 = 1;
     }
@@ -190,16 +190,16 @@ LABEL_11:
       v18 = _BYLoggingFacility();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        sub_1906C(v3, v18);
+        sub_1906C(stateCopy, v18);
       }
 
       v17 = 0;
-      v16 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    if ([v3 count] >= 4)
+    if ([stateCopy count] >= 4)
     {
-      v19 = [v3 objectAtIndexedSubscript:3];
+      v19 = [stateCopy objectAtIndexedSubscript:3];
       if (!v19)
       {
 LABEL_22:
@@ -226,7 +226,7 @@ LABEL_22:
         if (v23 == 1)
         {
           LOBYTE(v25) = 0;
-          v4 = [objc_alloc(objc_opt_class()) initWithProductBuild:v5 backupUDID:v8 backupUUID:v19 snapshotID:v16 snapshotDate:0 useLatestSnapshot:0 allowCellularNetwork:v25 persistDate:0];
+          v4 = [objc_alloc(objc_opt_class()) initWithProductBuild:v5 backupUDID:v8 backupUUID:v19 snapshotID:unsignedIntegerValue snapshotDate:0 useLatestSnapshot:0 allowCellularNetwork:v25 persistDate:0];
         }
 
         else
@@ -237,13 +237,13 @@ LABEL_22:
         goto LABEL_32;
       }
 
-      v20 = [v3 objectAtIndexedSubscript:3];
+      v20 = [stateCopy objectAtIndexedSubscript:3];
       objc_opt_class();
       v21 = objc_opt_isKindOfClass();
 
       if (v21)
       {
-        v19 = [v3 objectAtIndexedSubscript:3];
+        v19 = [stateCopy objectAtIndexedSubscript:3];
         goto LABEL_22;
       }
     }
@@ -258,26 +258,26 @@ LABEL_32:
   return v4;
 }
 
-+ (id)_loadModernState:(id)a3
++ (id)_loadModernState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"productBuild"];
-  v5 = [v3 objectForKeyedSubscript:@"backupUDID"];
-  v6 = [v3 objectForKeyedSubscript:@"backupUUID"];
-  v7 = [v3 objectForKeyedSubscript:@"snapshotID"];
-  v8 = [v7 unsignedIntegerValue];
+  stateCopy = state;
+  v4 = [stateCopy objectForKeyedSubscript:@"productBuild"];
+  v5 = [stateCopy objectForKeyedSubscript:@"backupUDID"];
+  v6 = [stateCopy objectForKeyedSubscript:@"backupUUID"];
+  v7 = [stateCopy objectForKeyedSubscript:@"snapshotID"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [v3 objectForKeyedSubscript:@"snapshotDate"];
-  v10 = [v3 objectForKeyedSubscript:@"useLatestSnapshot"];
-  v11 = [v10 BOOLValue];
+  v9 = [stateCopy objectForKeyedSubscript:@"snapshotDate"];
+  v10 = [stateCopy objectForKeyedSubscript:@"useLatestSnapshot"];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v3 objectForKeyedSubscript:@"allowCellularNetwork"];
-  v13 = [v12 BOOLValue];
+  v12 = [stateCopy objectForKeyedSubscript:@"allowCellularNetwork"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v14 = [v3 objectForKeyedSubscript:@"persistDate"];
+  v14 = [stateCopy objectForKeyedSubscript:@"persistDate"];
 
-  LOBYTE(v17) = v13;
-  v15 = [objc_alloc(objc_opt_class()) initWithProductBuild:v4 backupUDID:v5 backupUUID:v6 snapshotID:v8 snapshotDate:v9 useLatestSnapshot:v11 allowCellularNetwork:v17 persistDate:v14];
+  LOBYTE(v17) = bOOLValue2;
+  v15 = [objc_alloc(objc_opt_class()) initWithProductBuild:v4 backupUDID:v5 backupUUID:v6 snapshotID:unsignedIntegerValue snapshotDate:v9 useLatestSnapshot:bOOLValue allowCellularNetwork:v17 persistDate:v14];
 
   return v15;
 }

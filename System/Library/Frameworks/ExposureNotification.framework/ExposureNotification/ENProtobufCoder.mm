@@ -1,48 +1,48 @@
 @interface ENProtobufCoder
-- (BOOL)_skipLength:(unint64_t)a3 error:(id *)a4;
-- (BOOL)_writeBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)readFixedDouble:(double *)a3 error:(id *)a4;
-- (BOOL)readFixedFloat:(float *)a3 error:(id *)a4;
-- (BOOL)readFixedSInt32:(int *)a3 error:(id *)a4;
-- (BOOL)readFixedSInt64:(int64_t *)a3 error:(id *)a4;
-- (BOOL)readFixedUInt32:(unsigned int *)a3 error:(id *)a4;
-- (BOOL)readFixedUInt64:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)readType:(char *)a3 tag:(unint64_t *)a4 eofOkay:(BOOL)a5 error:(id *)a6;
-- (BOOL)readVarIntBoolean:(BOOL *)a3 error:(id *)a4;
-- (BOOL)readVarIntInt32:(int *)a3 error:(id *)a4;
-- (BOOL)readVarIntSInt32:(int *)a3 error:(id *)a4;
-- (BOOL)readVarIntSInt64:(int64_t *)a3 error:(id *)a4;
-- (BOOL)readVarIntUInt32:(unsigned int *)a3 error:(id *)a4;
-- (BOOL)readVarIntUInt64:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)skipType:(unsigned __int8)a3 error:(id *)a4;
-- (BOOL)writeFixedDouble:(double)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeFixedFloat:(float)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeFixedSInt32:(int)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeFixedSInt64:(int64_t)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeFixedUInt32:(unsigned int)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeFixedUInt64:(unint64_t)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeLengthDelimitedPtr:(const void *)a3 length:(unint64_t)a4 tag:(unint64_t)a5 error:(id *)a6;
-- (BOOL)writeNSData:(id)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeNSString:(id)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeVarInt:(unint64_t)a3 error:(id *)a4;
-- (BOOL)writeVarIntBoolean:(BOOL)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeVarIntSInt32:(int)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeVarIntSInt64:(int64_t)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeVarIntUInt32:(unsigned int)a3 tag:(unint64_t)a4 error:(id *)a5;
-- (BOOL)writeVarIntUInt64:(unint64_t)a3 tag:(unint64_t)a4 error:(id *)a5;
+- (BOOL)_skipLength:(unint64_t)length error:(id *)error;
+- (BOOL)_writeBytes:(const void *)bytes length:(unint64_t)length error:(id *)error;
+- (BOOL)readFixedDouble:(double *)double error:(id *)error;
+- (BOOL)readFixedFloat:(float *)float error:(id *)error;
+- (BOOL)readFixedSInt32:(int *)int32 error:(id *)error;
+- (BOOL)readFixedSInt64:(int64_t *)int64 error:(id *)error;
+- (BOOL)readFixedUInt32:(unsigned int *)int32 error:(id *)error;
+- (BOOL)readFixedUInt64:(unint64_t *)int64 error:(id *)error;
+- (BOOL)readType:(char *)type tag:(unint64_t *)tag eofOkay:(BOOL)okay error:(id *)error;
+- (BOOL)readVarIntBoolean:(BOOL *)boolean error:(id *)error;
+- (BOOL)readVarIntInt32:(int *)int32 error:(id *)error;
+- (BOOL)readVarIntSInt32:(int *)int32 error:(id *)error;
+- (BOOL)readVarIntSInt64:(int64_t *)int64 error:(id *)error;
+- (BOOL)readVarIntUInt32:(unsigned int *)int32 error:(id *)error;
+- (BOOL)readVarIntUInt64:(unint64_t *)int64 error:(id *)error;
+- (BOOL)skipType:(unsigned __int8)type error:(id *)error;
+- (BOOL)writeFixedDouble:(double)double tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeFixedFloat:(float)float tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeFixedSInt32:(int)int32 tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeFixedSInt64:(int64_t)int64 tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeFixedUInt32:(unsigned int)int32 tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeFixedUInt64:(unint64_t)int64 tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeLengthDelimitedPtr:(const void *)ptr length:(unint64_t)length tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeNSData:(id)data tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeNSString:(id)string tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeVarInt:(unint64_t)int error:(id *)error;
+- (BOOL)writeVarIntBoolean:(BOOL)boolean tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeVarIntSInt32:(int)int32 tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeVarIntSInt64:(int64_t)int64 tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeVarIntUInt32:(unsigned int)int32 tag:(unint64_t)tag error:(id *)error;
+- (BOOL)writeVarIntUInt64:(unint64_t)int64 tag:(unint64_t)tag error:(id *)error;
 - (ENProtobufCoder)init;
-- (const)_readLength:(unint64_t)a3 eofOkay:(BOOL)a4 error:(id *)a5;
-- (const)readLengthDelimited:(unint64_t *)a3 error:(id *)a4;
+- (const)_readLength:(unint64_t)length eofOkay:(BOOL)okay error:(id *)error;
+- (const)readLengthDelimited:(unint64_t *)delimited error:(id *)error;
 - (id)dequeueOrCreateSubCoder;
-- (id)readNSDataAndReturnError:(id *)a3;
-- (id)readNSStringAndReturnError:(id *)a3;
-- (void)enqueueSubCoder:(id)a3;
+- (id)readNSDataAndReturnError:(id *)error;
+- (id)readNSStringAndReturnError:(id *)error;
+- (void)enqueueSubCoder:(id)coder;
 - (void)prepareForReuse;
-- (void)setFileHandle:(__sFILE *)a3;
-- (void)setReadArchive:(id)a3;
-- (void)setReadMemory:(const void *)a3 length:(unint64_t)a4;
-- (void)setWriteMemory:(void *)a3 length:(unint64_t)a4;
-- (void)setWriteMutableData:(id)a3;
+- (void)setFileHandle:(__sFILE *)handle;
+- (void)setReadArchive:(id)archive;
+- (void)setReadMemory:(const void *)memory length:(unint64_t)length;
+- (void)setWriteMemory:(void *)memory length:(unint64_t)length;
+- (void)setWriteMutableData:(id)data;
 @end
 
 @implementation ENProtobufCoder
@@ -62,14 +62,14 @@
   return v3;
 }
 
-- (void)setReadMemory:(const void *)a3 length:(unint64_t)a4
+- (void)setReadMemory:(const void *)memory length:(unint64_t)length
 {
   readArchive = self->_readArchive;
   self->_readArchive = 0;
 
-  self->_readBase = a3;
-  self->_readSrc = a3;
-  self->_readEnd = a3 + a4;
+  self->_readBase = memory;
+  self->_readSrc = memory;
+  self->_readEnd = memory + length;
   *&self->_writeBase = 0u;
   *&self->_writeLim = 0u;
   bufferData = self->_bufferData;
@@ -78,7 +78,7 @@
   self->_bufferOffset = 0;
 }
 
-- (void)setWriteMemory:(void *)a3 length:(unint64_t)a4
+- (void)setWriteMemory:(void *)memory length:(unint64_t)length
 {
   readArchive = self->_readArchive;
   self->_readArchive = 0;
@@ -86,9 +86,9 @@
   self->_readBase = 0;
   self->_readSrc = 0;
   self->_readEnd = 0;
-  self->_writeBase = a3;
-  self->_writeDst = a3;
-  self->_writeLim = a3 + a4;
+  self->_writeBase = memory;
+  self->_writeDst = memory;
+  self->_writeLim = memory + length;
   bufferData = self->_bufferData;
   self->_fileHandle = 0;
   self->_bufferData = 0;
@@ -96,9 +96,9 @@
   self->_bufferOffset = 0;
 }
 
-- (void)setWriteMutableData:(id)a3
+- (void)setWriteMutableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   readArchive = self->_readArchive;
   self->_readArchive = 0;
 
@@ -107,12 +107,12 @@
   *&self->_readBase = 0u;
   bufferData = self->_bufferData;
   self->_fileHandle = 0;
-  self->_bufferData = v4;
+  self->_bufferData = dataCopy;
 
   self->_bufferOffset = 0;
 }
 
-- (void)setFileHandle:(__sFILE *)a3
+- (void)setFileHandle:(__sFILE *)handle
 {
   readArchive = self->_readArchive;
   self->_readArchive = 0;
@@ -121,16 +121,16 @@
   *&self->_writeDst = 0u;
   *&self->_readBase = 0u;
   bufferData = self->_bufferData;
-  self->_fileHandle = a3;
+  self->_fileHandle = handle;
   self->_bufferData = 0;
 
   self->_bufferOffset = 0;
 }
 
-- (void)setReadArchive:(id)a3
+- (void)setReadArchive:(id)archive
 {
-  objc_storeStrong(&self->_readArchive, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_readArchive, archive);
+  archiveCopy = archive;
   *&self->_readBase = 0u;
   *&self->_readEnd = 0u;
   *&self->_writeDst = 0u;
@@ -143,11 +143,11 @@
 
 - (id)dequeueOrCreateSubCoder
 {
-  v2 = [(NSMutableArray *)self->_subCoders popFirstObject];
-  if (v2)
+  popFirstObject = [(NSMutableArray *)self->_subCoders popFirstObject];
+  if (popFirstObject)
   {
-    v3 = v2;
-    [(ENProtobufCoder *)v2 prepareForReuse];
+    v3 = popFirstObject;
+    [(ENProtobufCoder *)popFirstObject prepareForReuse];
   }
 
   else
@@ -158,22 +158,22 @@
   return v3;
 }
 
-- (void)enqueueSubCoder:(id)a3
+- (void)enqueueSubCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   subCoders = self->_subCoders;
-  v8 = v4;
+  v8 = coderCopy;
   if (!subCoders)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_subCoders;
     self->_subCoders = v6;
 
-    v4 = v8;
+    coderCopy = v8;
     subCoders = self->_subCoders;
   }
 
-  [(NSMutableArray *)subCoders addObject:v4];
+  [(NSMutableArray *)subCoders addObject:coderCopy];
 }
 
 - (void)prepareForReuse
@@ -191,66 +191,66 @@
   self->_bufferOffset = 0;
 }
 
-- (BOOL)writeNSData:(id)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeNSData:(id)data tag:(unint64_t)tag error:(id *)error
 {
-  v9 = a3;
-  v10 = a3;
-  v11 = [v10 bytes];
-  v12 = [v10 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v12 = [dataCopy2 length];
 
-  return [(ENProtobufCoder *)self writeLengthDelimitedPtr:v11 length:v12 tag:a4 error:a5];
+  return [(ENProtobufCoder *)self writeLengthDelimitedPtr:bytes length:v12 tag:tag error:error];
 }
 
-- (BOOL)writeNSString:(id)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeNSString:(id)string tag:(unint64_t)tag error:(id *)error
 {
-  v9 = a3;
-  v10 = [a3 UTF8String];
-  v11 = strlen(v10);
+  stringCopy = string;
+  uTF8String = [string UTF8String];
+  v11 = strlen(uTF8String);
 
-  return [(ENProtobufCoder *)self writeLengthDelimitedPtr:v10 length:v11 tag:a4 error:a5];
+  return [(ENProtobufCoder *)self writeLengthDelimitedPtr:uTF8String length:v11 tag:tag error:error];
 }
 
-- (BOOL)writeVarInt:(unint64_t)a3 error:(id *)a4
+- (BOOL)writeVarInt:(unint64_t)int error:(id *)error
 {
-  while (a3 >= 0x80)
+  while (int >= 0x80)
   {
-    v9 = a3 | 0x80;
-    a3 >>= 7;
-    if (![(ENProtobufCoder *)self _writeBytes:&v9 length:1 error:a4])
+    v9 = int | 0x80;
+    int >>= 7;
+    if (![(ENProtobufCoder *)self _writeBytes:&v9 length:1 error:error])
     {
       return 0;
     }
   }
 
-  v8 = a3;
-  return [(ENProtobufCoder *)self _writeBytes:&v8 length:1 error:a4];
+  intCopy = int;
+  return [(ENProtobufCoder *)self _writeBytes:&intCopy length:1 error:error];
 }
 
-- (const)_readLength:(unint64_t)a3 eofOkay:(BOOL)a4 error:(id *)a5
+- (const)_readLength:(unint64_t)length eofOkay:(BOOL)okay error:(id *)error
 {
   readSrc = self->_readSrc;
   if (readSrc)
   {
-    if (self->_readEnd - readSrc < a3)
+    if (self->_readEnd - readSrc < length)
     {
-      if (a5)
+      if (error)
       {
-        if (a4)
+        if (okay)
         {
           readSrc = 0;
-          *a5 = 0;
+          *error = 0;
           return readSrc;
         }
 
         v18 = *MEMORY[0x277CCA590];
         v19 = NSErrorF();
-        *a5 = v19;
+        *error = v19;
       }
 
       return 0;
     }
 
-    self->_readSrc = &readSrc[a3];
+    self->_readSrc = &readSrc[length];
     return readSrc;
   }
 
@@ -258,7 +258,7 @@
   v10 = self->_readArchive;
   if (!(fileHandle | v10))
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -267,9 +267,9 @@
     goto LABEL_14;
   }
 
-  if (self->_bufferMaxSize < a3)
+  if (self->_bufferMaxSize < length)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -277,11 +277,11 @@
     v20 = *MEMORY[0x277CCA590];
 LABEL_14:
     NSErrorF();
-    *a5 = readSrc = 0;
+    *error = readSrc = 0;
     goto LABEL_25;
   }
 
-  if (a3 <= 0x100)
+  if (length <= 0x100)
   {
     readSrc = self->_staticBuffer;
     if (!fileHandle)
@@ -290,21 +290,21 @@ LABEL_14:
     }
 
 LABEL_19:
-    if (fread(readSrc, 1uLL, a3, fileHandle) != a3)
+    if (fread(readSrc, 1uLL, length, fileHandle) != length)
     {
-      if (a5)
+      if (error)
       {
         if (feof(fileHandle))
         {
           readSrc = 0;
-          *a5 = 0;
+          *error = 0;
           goto LABEL_25;
         }
 
         v15 = *MEMORY[0x277CCA590];
         v25 = *__error();
         v16 = NSErrorF();
-        *a5 = v16;
+        *error = v16;
       }
 
 LABEL_24:
@@ -320,12 +320,12 @@ LABEL_25:
   if (v12)
   {
     v13 = v12;
-    [(NSMutableData *)v12 setLength:a3];
+    [(NSMutableData *)v12 setLength:length];
   }
 
   else
   {
-    v13 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:a3];
+    v13 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:length];
     bufferData = self->_bufferData;
     self->_bufferData = v13;
   }
@@ -340,7 +340,7 @@ LABEL_25:
 LABEL_8:
   if (v10)
   {
-    if (([v10 readDataIntoBuffer:readSrc length:a3 error:a5] & 1) == 0)
+    if (([v10 readDataIntoBuffer:readSrc length:length error:error] & 1) == 0)
     {
       readSrc = 0;
     }
@@ -352,18 +352,18 @@ LABEL_8:
   return [(ENProtobufCoder *)v21 _skipLength:v22 error:v23, v24];
 }
 
-- (BOOL)_skipLength:(unint64_t)a3 error:(id *)a4
+- (BOOL)_skipLength:(unint64_t)length error:(id *)error
 {
   readSrc = self->_readSrc;
   if (readSrc)
   {
-    if (self->_readEnd - readSrc >= a3)
+    if (self->_readEnd - readSrc >= length)
     {
-      self->_readSrc = &readSrc[a3];
+      self->_readSrc = &readSrc[length];
       return 1;
     }
 
-    if (a4)
+    if (error)
     {
       v13 = *MEMORY[0x277CCA590];
       goto LABEL_14;
@@ -375,14 +375,14 @@ LABEL_8:
   if (self->_fileHandle)
   {
     v7 = 1;
-    if (fseeko(self->_fileHandle, a3, 1) && (!*__error() || *__error()))
+    if (fseeko(self->_fileHandle, length, 1) && (!*__error() || *__error()))
     {
-      if (a4)
+      if (error)
       {
         v11 = *MEMORY[0x277CCA590];
 LABEL_14:
         NSErrorF();
-        *a4 = v7 = 0;
+        *error = v7 = 0;
         return v7;
       }
 
@@ -396,14 +396,14 @@ LABEL_14:
     v10 = v9;
     if (v9)
     {
-      v7 = [(ENArchive *)v9 skipBytes:a3 error:a4];
+      v7 = [(ENArchive *)v9 skipBytes:length error:error];
     }
 
-    else if (a4)
+    else if (error)
     {
       v12 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -415,18 +415,18 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)_writeBytes:(const void *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)_writeBytes:(const void *)bytes length:(unint64_t)length error:(id *)error
 {
   writeDst = self->_writeDst;
   if (writeDst)
   {
-    if (self->_writeLim - writeDst < a4)
+    if (self->_writeLim - writeDst < length)
     {
-      if (a5)
+      if (error)
       {
         v15 = *MEMORY[0x277CCA590];
         NSErrorF();
-        *a5 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -437,8 +437,8 @@ LABEL_14:
 
     else
     {
-      memcpy(self->_writeDst, a3, a4);
-      self->_writeDst = &writeDst[a4];
+      memcpy(self->_writeDst, bytes, length);
+      self->_writeDst = &writeDst[length];
       return 1;
     }
 
@@ -452,29 +452,29 @@ LABEL_14:
     v13 = v12;
     if (v12)
     {
-      if (self->_bufferMaxSize - self->_bufferOffset >= a4)
+      if (self->_bufferMaxSize - self->_bufferOffset >= length)
       {
-        [(NSMutableData *)v12 appendBytes:a3 length:a4];
-        self->_bufferOffset += a4;
+        [(NSMutableData *)v12 appendBytes:bytes length:length];
+        self->_bufferOffset += length;
         v10 = 1;
 LABEL_19:
 
         return v10;
       }
 
-      if (a5)
+      if (error)
       {
         v16 = *MEMORY[0x277CCA590];
         goto LABEL_12;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v14 = *MEMORY[0x277CCA590];
 LABEL_12:
       NSErrorF();
-      *a5 = v10 = 0;
+      *error = v10 = 0;
       goto LABEL_19;
     }
 
@@ -483,16 +483,16 @@ LABEL_12:
   }
 
   v10 = 1;
-  if (fwrite(a3, 1uLL, a4, fileHandle) != a4)
+  if (fwrite(bytes, 1uLL, length, fileHandle) != length)
   {
-    [ENProtobufCoder _writeBytes:a5 length:&v18 error:?];
+    [ENProtobufCoder _writeBytes:error length:&v18 error:?];
     return v18;
   }
 
   return v10;
 }
 
-- (BOOL)readType:(char *)a3 tag:(unint64_t *)a4 eofOkay:(BOOL)a5 error:(id *)a6
+- (BOOL)readType:(char *)type tag:(unint64_t *)tag eofOkay:(BOOL)okay error:(id *)error
 {
   OUTLINED_FUNCTION_2_2();
   v14 = 0;
@@ -507,7 +507,7 @@ LABEL_12:
   return v11;
 }
 
-- (const)readLengthDelimited:(unint64_t *)a3 error:(id *)a4
+- (const)readLengthDelimited:(unint64_t *)delimited error:(id *)error
 {
   OUTLINED_FUNCTION_2_2();
   v6 = v5;
@@ -528,20 +528,20 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)writeLengthDelimitedPtr:(const void *)a3 length:(unint64_t)a4 tag:(unint64_t)a5 error:(id *)a6
+- (BOOL)writeLengthDelimitedPtr:(const void *)ptr length:(unint64_t)length tag:(unint64_t)tag error:(id *)error
 {
-  if (![(ENProtobufCoder *)self writeVarInt:(8 * a5) | 2 error:a6]|| ![(ENProtobufCoder *)self writeVarInt:a4 error:a6])
+  if (![(ENProtobufCoder *)self writeVarInt:(8 * tag) | 2 error:error]|| ![(ENProtobufCoder *)self writeVarInt:length error:error])
   {
     return 0;
   }
 
-  return [(ENProtobufCoder *)self _writeBytes:a3 length:a4 error:a6];
+  return [(ENProtobufCoder *)self _writeBytes:ptr length:length error:error];
 }
 
-- (BOOL)skipType:(unsigned __int8)a3 error:(id *)a4
+- (BOOL)skipType:(unsigned __int8)type error:(id *)error
 {
-  v5 = self;
-  switch(a3)
+  selfCopy = self;
+  switch(type)
   {
     case 0u:
       OUTLINED_FUNCTION_3_3();
@@ -563,9 +563,9 @@ LABEL_12:
       }
 
       v9 = 0;
-      self = v5;
+      self = selfCopy;
 LABEL_8:
-      if ([(ENProtobufCoder *)self _skipLength:v9 error:a4])
+      if ([(ENProtobufCoder *)self _skipLength:v9 error:error])
       {
 LABEL_9:
         LOBYTE(v8) = 1;
@@ -582,7 +582,7 @@ LABEL_12:
       v9 = 4;
       goto LABEL_8;
     default:
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -596,7 +596,7 @@ LABEL_12:
   return v8;
 }
 
-- (id)readNSDataAndReturnError:(id *)a3
+- (id)readNSDataAndReturnError:(id *)error
 {
   OUTLINED_FUNCTION_0_5();
   if (![v5 readVarInt:? eofOkay:? error:?])
@@ -608,18 +608,18 @@ LABEL_12:
 
   if (v14 == -1)
   {
-    if (a3)
+    if (error)
     {
       v12 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a3 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_7;
     }
 
     goto LABEL_12;
   }
 
-  v6 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_3_3();
   v8 = [v7 _readLength:? eofOkay:? error:?];
   if (v8)
@@ -631,10 +631,10 @@ LABEL_12:
       v10 = v9;
     }
 
-    else if (a3)
+    else if (error)
     {
       v13 = *MEMORY[0x277CCA590];
-      *a3 = NSErrorF();
+      *error = NSErrorF();
     }
   }
 
@@ -643,7 +643,7 @@ LABEL_7:
   return v8;
 }
 
-- (id)readNSStringAndReturnError:(id *)a3
+- (id)readNSStringAndReturnError:(id *)error
 {
   OUTLINED_FUNCTION_0_5();
   if (![v5 readVarInt:? eofOkay:? error:?])
@@ -655,18 +655,18 @@ LABEL_12:
 
   if (v14 == -1)
   {
-    if (a3)
+    if (error)
     {
       v12 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a3 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_7;
     }
 
     goto LABEL_12;
   }
 
-  v6 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_3_3();
   v8 = [v7 _readLength:? eofOkay:? error:?];
   if (v8)
@@ -678,10 +678,10 @@ LABEL_12:
       v10 = v9;
     }
 
-    else if (a3)
+    else if (error)
     {
       v13 = *MEMORY[0x277CCA590];
-      *a3 = NSErrorF();
+      *error = NSErrorF();
     }
   }
 
@@ -690,19 +690,19 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)readVarIntSInt32:(int *)a3 error:(id *)a4
+- (BOOL)readVarIntSInt32:(int *)int32 error:(id *)error
 {
   OUTLINED_FUNCTION_0_5();
   v6 = [v5 readVarInt:? eofOkay:? error:?];
   if (v6)
   {
-    *a3 = -(v8 & 1) ^ (v8 >> 1);
+    *int32 = -(v8 & 1) ^ (v8 >> 1);
   }
 
   return v6;
 }
 
-- (BOOL)writeVarIntSInt32:(int)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeVarIntSInt32:(int)int32 tag:(unint64_t)tag error:(id *)error
 {
   OUTLINED_FUNCTION_1_3();
   v10 = OUTLINED_FUNCTION_9_0(v5, v6, v7, v8, v9);
@@ -716,7 +716,7 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)readVarIntInt32:(int *)a3 error:(id *)a4
+- (BOOL)readVarIntInt32:(int *)int32 error:(id *)error
 {
   OUTLINED_FUNCTION_0_5();
   v7 = [v6 readVarInt:? eofOkay:? error:?];
@@ -724,11 +724,11 @@ LABEL_7:
   {
     if (v11 == v11)
     {
-      *a3 = v11;
+      *int32 = v11;
       LOBYTE(v7) = 1;
     }
 
-    else if (a4)
+    else if (error)
     {
       v8 = *MEMORY[0x277CCA590];
       v9 = NSErrorF();
@@ -744,7 +744,7 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)readVarIntUInt32:(unsigned int *)a3 error:(id *)a4
+- (BOOL)readVarIntUInt32:(unsigned int *)int32 error:(id *)error
 {
   OUTLINED_FUNCTION_0_5();
   v7 = [v6 readVarInt:? eofOkay:? error:?];
@@ -752,7 +752,7 @@ LABEL_7:
   {
     if (HIDWORD(v11))
     {
-      if (a4)
+      if (error)
       {
         v8 = *MEMORY[0x277CCA590];
         v9 = NSErrorF();
@@ -767,7 +767,7 @@ LABEL_7:
 
     else
     {
-      *a3 = v11;
+      *int32 = v11;
       LOBYTE(v7) = 1;
     }
   }
@@ -775,7 +775,7 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)writeVarIntUInt32:(unsigned int)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeVarIntUInt32:(unsigned int)int32 tag:(unint64_t)tag error:(id *)error
 {
   OUTLINED_FUNCTION_1_3();
   v10 = OUTLINED_FUNCTION_9_0(v5, v6, v7, v8, v9);
@@ -789,19 +789,19 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)readVarIntSInt64:(int64_t *)a3 error:(id *)a4
+- (BOOL)readVarIntSInt64:(int64_t *)int64 error:(id *)error
 {
   OUTLINED_FUNCTION_0_5();
   v6 = [v5 readVarInt:? eofOkay:? error:?];
   if (v6)
   {
-    *a3 = -(v8 & 1) ^ (v8 >> 1);
+    *int64 = -(v8 & 1) ^ (v8 >> 1);
   }
 
   return v6;
 }
 
-- (BOOL)writeVarIntSInt64:(int64_t)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeVarIntSInt64:(int64_t)int64 tag:(unint64_t)tag error:(id *)error
 {
   OUTLINED_FUNCTION_1_3();
   v10 = OUTLINED_FUNCTION_9_0(v5, v6, v7, v8, v9);
@@ -815,43 +815,43 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)readVarIntUInt64:(unint64_t *)a3 error:(id *)a4
+- (BOOL)readVarIntUInt64:(unint64_t *)int64 error:(id *)error
 {
   OUTLINED_FUNCTION_0_5();
   v6 = [v5 readVarInt:? eofOkay:? error:?];
   if (v6)
   {
-    *a3 = v8;
+    *int64 = v8;
   }
 
   return v6;
 }
 
-- (BOOL)writeVarIntUInt64:(unint64_t)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeVarIntUInt64:(unint64_t)int64 tag:(unint64_t)tag error:(id *)error
 {
-  v8 = OUTLINED_FUNCTION_9_0(self, a2, a3, a4, a5);
+  v8 = OUTLINED_FUNCTION_9_0(self, a2, int64, tag, error);
   if (v8)
   {
 
-    LOBYTE(v8) = [(ENProtobufCoder *)self writeVarInt:a3 error:a5];
+    LOBYTE(v8) = [(ENProtobufCoder *)self writeVarInt:int64 error:error];
   }
 
   return v8;
 }
 
-- (BOOL)readVarIntBoolean:(BOOL *)a3 error:(id *)a4
+- (BOOL)readVarIntBoolean:(BOOL *)boolean error:(id *)error
 {
   OUTLINED_FUNCTION_0_5();
   v6 = [v5 readVarInt:? eofOkay:? error:?];
   if (v6)
   {
-    *a3 = v8 != 0;
+    *boolean = v8 != 0;
   }
 
   return v6;
 }
 
-- (BOOL)writeVarIntBoolean:(BOOL)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeVarIntBoolean:(BOOL)boolean tag:(unint64_t)tag error:(id *)error
 {
   OUTLINED_FUNCTION_1_3();
   v10 = OUTLINED_FUNCTION_9_0(v5, v6, v7, v8, v9);
@@ -865,7 +865,7 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)readFixedFloat:(float *)a3 error:(id *)a4
+- (BOOL)readFixedFloat:(float *)float error:(id *)error
 {
   OUTLINED_FUNCTION_2_2();
   v6 = v5;
@@ -879,10 +879,10 @@ LABEL_7:
   return OUTLINED_FUNCTION_7_0(v8);
 }
 
-- (BOOL)writeFixedFloat:(float)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeFixedFloat:(float)float tag:(unint64_t)tag error:(id *)error
 {
-  v5 = LOBYTE(a3);
-  v6 = [(ENProtobufCoder *)self writeVarInt:(8 * a4) | 5 error:?];
+  v5 = LOBYTE(float);
+  v6 = [(ENProtobufCoder *)self writeVarInt:(8 * tag) | 5 error:?];
   if (v6)
   {
     LOBYTE(v6) = OUTLINED_FUNCTION_6_0(v6, v7, v8, v9, v10, v11, v12, v13, v15, v16, v5);
@@ -891,7 +891,7 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)readFixedSInt32:(int *)a3 error:(id *)a4
+- (BOOL)readFixedSInt32:(int *)int32 error:(id *)error
 {
   OUTLINED_FUNCTION_2_2();
   v6 = v5;
@@ -905,7 +905,7 @@ LABEL_7:
   return OUTLINED_FUNCTION_7_0(v8);
 }
 
-- (BOOL)writeFixedSInt32:(int)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeFixedSInt32:(int)int32 tag:(unint64_t)tag error:(id *)error
 {
   OUTLINED_FUNCTION_1_3();
   v9 = [v7 writeVarInt:(8 * v6) | 5 error:v8];
@@ -917,7 +917,7 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)readFixedUInt32:(unsigned int *)a3 error:(id *)a4
+- (BOOL)readFixedUInt32:(unsigned int *)int32 error:(id *)error
 {
   OUTLINED_FUNCTION_2_2();
   v6 = v5;
@@ -931,7 +931,7 @@ LABEL_7:
   return OUTLINED_FUNCTION_7_0(v8);
 }
 
-- (BOOL)writeFixedUInt32:(unsigned int)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeFixedUInt32:(unsigned int)int32 tag:(unint64_t)tag error:(id *)error
 {
   OUTLINED_FUNCTION_1_3();
   v9 = [v7 writeVarInt:(8 * v6) | 5 error:v8];
@@ -943,7 +943,7 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)readFixedDouble:(double *)a3 error:(id *)a4
+- (BOOL)readFixedDouble:(double *)double error:(id *)error
 {
   OUTLINED_FUNCTION_2_2();
   v6 = v5;
@@ -957,20 +957,20 @@ LABEL_7:
   return OUTLINED_FUNCTION_7_0(v8);
 }
 
-- (BOOL)writeFixedDouble:(double)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeFixedDouble:(double)double tag:(unint64_t)tag error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = [(ENProtobufCoder *)self writeVarInt:(8 * a4) | 1 error:?];
+  v6 = [(ENProtobufCoder *)self writeVarInt:(8 * tag) | 1 error:?];
   if (v6)
   {
-    LOBYTE(v6) = OUTLINED_FUNCTION_5_2(v6, v7, v8, v9, v10, v11, v12, v13, *&a3);
+    LOBYTE(v6) = OUTLINED_FUNCTION_5_2(v6, v7, v8, v9, v10, v11, v12, v13, *&double);
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (BOOL)readFixedSInt64:(int64_t *)a3 error:(id *)a4
+- (BOOL)readFixedSInt64:(int64_t *)int64 error:(id *)error
 {
   OUTLINED_FUNCTION_2_2();
   v6 = v5;
@@ -984,7 +984,7 @@ LABEL_7:
   return OUTLINED_FUNCTION_7_0(v8);
 }
 
-- (BOOL)writeFixedSInt64:(int64_t)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeFixedSInt64:(int64_t)int64 tag:(unint64_t)tag error:(id *)error
 {
   OUTLINED_FUNCTION_1_3();
   v6 = *MEMORY[0x277D85DE8];
@@ -998,7 +998,7 @@ LABEL_7:
   return v12;
 }
 
-- (BOOL)readFixedUInt64:(unint64_t *)a3 error:(id *)a4
+- (BOOL)readFixedUInt64:(unint64_t *)int64 error:(id *)error
 {
   OUTLINED_FUNCTION_2_2();
   v6 = v5;
@@ -1012,7 +1012,7 @@ LABEL_7:
   return OUTLINED_FUNCTION_7_0(v8);
 }
 
-- (BOOL)writeFixedUInt64:(unint64_t)a3 tag:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeFixedUInt64:(unint64_t)int64 tag:(unint64_t)tag error:(id *)error
 {
   OUTLINED_FUNCTION_1_3();
   v6 = *MEMORY[0x277D85DE8];

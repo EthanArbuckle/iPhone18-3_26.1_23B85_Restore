@@ -1,28 +1,28 @@
 @interface ACCBLEPairingServer
 + (id)sharedServer;
-- (ACCBLEPairingServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4;
-- (BOOL)accessoryReserved:(id)a3 connHash:(id)a4;
-- (BOOL)accessoryReserved:(id)a3 xpcConn:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)releaseAccessory:(id)a3 connHash:(id)a4;
-- (BOOL)releaseAccessory:(id)a3 xpcConn:(id)a4;
-- (BOOL)reserveAccessory:(id)a3 xpcConn:(id)a4;
-- (void)accessoryBLEPairingAttached:(id)a3 blePairingUUID:(id)a4 accInfoDict:(id)a5 supportedPairTypes:(id)a6;
-- (void)accessoryBLEPairingDetached:(id)a3 blePairingUUID:(id)a4;
-- (void)accessoryBLEPairingFinished:(id)a3 blePairingUUID:(id)a4;
+- (ACCBLEPairingServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification;
+- (BOOL)accessoryReserved:(id)reserved connHash:(id)hash;
+- (BOOL)accessoryReserved:(id)reserved xpcConn:(id)conn;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)releaseAccessory:(id)accessory connHash:(id)hash;
+- (BOOL)releaseAccessory:(id)accessory xpcConn:(id)conn;
+- (BOOL)reserveAccessory:(id)accessory xpcConn:(id)conn;
+- (void)accessoryBLEPairingAttached:(id)attached blePairingUUID:(id)d accInfoDict:(id)dict supportedPairTypes:(id)types;
+- (void)accessoryBLEPairingDetached:(id)detached blePairingUUID:(id)d;
+- (void)accessoryBLEPairingFinished:(id)finished blePairingUUID:(id)d;
 - (void)dealloc;
-- (void)iterateAttachedConnectionsSync:(id)a3;
-- (void)iterateBLEPairingProviderListSync:(id)a3;
+- (void)iterateAttachedConnectionsSync:(id)sync;
+- (void)iterateBLEPairingProviderListSync:(id)sync;
 @end
 
 @implementation ACCBLEPairingServer
 
-- (ACCBLEPairingServer)initWithXPCServiceName:(id)a3 andFeatureNotification:(const char *)a4
+- (ACCBLEPairingServer)initWithXPCServiceName:(id)name andFeatureNotification:(const char *)notification
 {
-  v6 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = ACCBLEPairingServer;
-  v7 = [(ACCFeatureServer *)&v18 initWithXPCServiceName:v6 andFeatureNotification:a4];
+  v7 = [(ACCFeatureServer *)&v18 initWithXPCServiceName:nameCopy andFeatureNotification:notification];
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -52,9 +52,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v20 = v6;
+    v20 = nameCopy;
     v21 = 2080;
-    v22 = a4;
+    notificationCopy = notification;
     v23 = 2112;
     v24 = v7;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "initWithXPCServiceName: serviceName='%@' notification='%s' self=%@", buf, 0x20u);
@@ -109,7 +109,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dealloc: self=%@", buf, 0xCu);
   }
 
@@ -127,15 +127,15 @@
   [(ACCFeatureServer *)&v9 dealloc];
 }
 
-- (void)iterateAttachedConnectionsSync:(id)a3
+- (void)iterateAttachedConnectionsSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_registeredAccessoryConnections allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -146,12 +146,12 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = 1;
-      v4[2](v4, v10, &v11);
+      syncCopy[2](syncCopy, v10, &v11);
       if (v11 != 1)
       {
         break;
@@ -159,7 +159,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -171,15 +171,15 @@ LABEL_3:
   }
 }
 
-- (void)iterateBLEPairingProviderListSync:(id)a3
+- (void)iterateBLEPairingProviderListSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSMutableDictionary *)self->_blePairingProviderList allValues];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_blePairingProviderList allValues];
+  v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -190,12 +190,12 @@ LABEL_3:
     {
       if (*v13 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allValues);
       }
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = 1;
-      v4[2](v4, v10, &v11);
+      syncCopy[2](syncCopy, v10, &v11);
       if (v11 != 1)
       {
         break;
@@ -203,7 +203,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -215,12 +215,12 @@ LABEL_3:
   }
 }
 
-- (BOOL)reserveAccessory:(id)a3 xpcConn:(id)a4
+- (BOOL)reserveAccessory:(id)accessory xpcConn:(id)conn
 {
-  v6 = a3;
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a4 hash]);
+  accessoryCopy = accessory;
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [conn hash]);
   v8 = [(NSMutableDictionary *)self->_blePairingProviderList objectForKey:v7];
-  v9 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:accessoryCopy];
   v10 = v9;
   if (v9)
   {
@@ -236,7 +236,7 @@ LABEL_3:
   {
     if (gLogObjects && gNumLogObjects >= 5)
     {
-      v12 = *(gLogObjects + 32);
+      providerUID = *(gLogObjects + 32);
     }
 
     else
@@ -246,17 +246,17 @@ LABEL_3:
         platform_connectionInfo_configStreamGetCategories_cold_2();
       }
 
-      v12 = &_os_log_default;
+      providerUID = &_os_log_default;
       v19 = &_os_log_default;
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(providerUID, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_47;
     }
 
     v27 = 138413058;
-    v28 = v6;
+    v28 = accessoryCopy;
     v29 = 2112;
     v30 = v7;
     v31 = 2112;
@@ -267,9 +267,9 @@ LABEL_3:
     goto LABEL_46;
   }
 
-  v13 = [v9 activeProvider];
+  activeProvider = [v9 activeProvider];
 
-  if (!v13)
+  if (!activeProvider)
   {
     if (gLogObjects && gNumLogObjects >= 5)
     {
@@ -290,7 +290,7 @@ LABEL_3:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 138413058;
-      v28 = v6;
+      v28 = accessoryCopy;
       v29 = 2112;
       v30 = v7;
       v31 = 2112;
@@ -300,14 +300,14 @@ LABEL_3:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "reserveAccessory: %@, xpcConn hash %@, provider %@, accessory %@: Reserve OK!", &v27, 0x2Au);
     }
 
-    v12 = [v8 providerUID];
-    [v10 setActiveProvider:v12];
+    providerUID = [v8 providerUID];
+    [v10 setActiveProvider:providerUID];
     goto LABEL_40;
   }
 
-  v14 = [v10 activeProvider];
-  v15 = [v8 providerUID];
-  v16 = [v14 isEqualToString:v15];
+  activeProvider2 = [v10 activeProvider];
+  providerUID2 = [v8 providerUID];
+  v16 = [activeProvider2 isEqualToString:providerUID2];
 
   if (gLogObjects)
   {
@@ -324,7 +324,7 @@ LABEL_3:
   {
     if (v18)
     {
-      v12 = *(gLogObjects + 32);
+      providerUID = *(gLogObjects + 32);
     }
 
     else
@@ -334,17 +334,17 @@ LABEL_3:
         platform_connectionInfo_configStreamGetCategories_cold_2();
       }
 
-      v12 = &_os_log_default;
+      providerUID = &_os_log_default;
       v25 = &_os_log_default;
     }
 
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(providerUID, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_47;
     }
 
     v27 = 138413058;
-    v28 = v6;
+    v28 = accessoryCopy;
     v29 = 2112;
     v30 = v7;
     v31 = 2112;
@@ -353,7 +353,7 @@ LABEL_3:
     v34 = v10;
     v20 = "reserveAccessory: %@, xpcConn hash %@, provider %@, accessory %@: Failed to reserve! already reserved for another provider";
 LABEL_46:
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, v20, &v27, 0x2Au);
+    _os_log_impl(&_mh_execute_header, providerUID, OS_LOG_TYPE_DEFAULT, v20, &v27, 0x2Au);
 LABEL_47:
     v24 = 0;
     goto LABEL_48;
@@ -361,7 +361,7 @@ LABEL_47:
 
   if (v18)
   {
-    v12 = *(gLogObjects + 32);
+    providerUID = *(gLogObjects + 32);
   }
 
   else
@@ -371,21 +371,21 @@ LABEL_47:
       platform_connectionInfo_configStreamGetCategories_cold_2();
     }
 
-    v12 = &_os_log_default;
+    providerUID = &_os_log_default;
     v23 = &_os_log_default;
   }
 
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(providerUID, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 138413058;
-    v28 = v6;
+    v28 = accessoryCopy;
     v29 = 2112;
     v30 = v7;
     v31 = 2112;
     v32 = v8;
     v33 = 2112;
     v34 = v10;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "reserveAccessory: %@, xpcConn hash %@, provider %@, accessory %@: Already reserved!", &v27, 0x2Au);
+    _os_log_impl(&_mh_execute_header, providerUID, OS_LOG_TYPE_DEFAULT, "reserveAccessory: %@, xpcConn hash %@, provider %@, accessory %@: Already reserved!", &v27, 0x2Au);
   }
 
 LABEL_40:
@@ -395,12 +395,12 @@ LABEL_48:
   return v24;
 }
 
-- (BOOL)releaseAccessory:(id)a3 connHash:(id)a4
+- (BOOL)releaseAccessory:(id)accessory connHash:(id)hash
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_blePairingProviderList objectForKey:v7];
-  v9 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v6];
+  accessoryCopy = accessory;
+  hashCopy = hash;
+  v8 = [(NSMutableDictionary *)self->_blePairingProviderList objectForKey:hashCopy];
+  v9 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:accessoryCopy];
   v10 = v9;
   if (v9)
   {
@@ -446,9 +446,9 @@ LABEL_48:
     }
 
     v26 = 138413058;
-    v27 = v6;
+    v27 = accessoryCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = hashCopy;
     v30 = 2112;
     v31 = v8;
     v32 = 2112;
@@ -457,9 +457,9 @@ LABEL_48:
     goto LABEL_38;
   }
 
-  v14 = [v9 activeProvider];
-  v15 = [v8 providerUID];
-  v16 = [v14 isEqualToString:v15];
+  activeProvider = [v9 activeProvider];
+  providerUID = [v8 providerUID];
+  v16 = [activeProvider isEqualToString:providerUID];
 
   if (gLogObjects)
   {
@@ -496,9 +496,9 @@ LABEL_48:
     }
 
     v26 = 138413058;
-    v27 = v6;
+    v27 = accessoryCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = hashCopy;
     v30 = 2112;
     v31 = v8;
     v32 = 2112;
@@ -531,9 +531,9 @@ LABEL_39:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v26 = 138413058;
-    v27 = v6;
+    v27 = accessoryCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = hashCopy;
     v30 = 2112;
     v31 = v8;
     v32 = 2112;
@@ -548,21 +548,21 @@ LABEL_40:
   return v23;
 }
 
-- (BOOL)releaseAccessory:(id)a3 xpcConn:(id)a4
+- (BOOL)releaseAccessory:(id)accessory xpcConn:(id)conn
 {
-  v6 = a3;
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a4 hash]);
-  LOBYTE(self) = [(ACCBLEPairingServer *)self releaseAccessory:v6 connHash:v7];
+  accessoryCopy = accessory;
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [conn hash]);
+  LOBYTE(self) = [(ACCBLEPairingServer *)self releaseAccessory:accessoryCopy connHash:v7];
 
   return self;
 }
 
-- (BOOL)accessoryReserved:(id)a3 connHash:(id)a4
+- (BOOL)accessoryReserved:(id)reserved connHash:(id)hash
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_blePairingProviderList objectForKey:v7];
-  v9 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v6];
+  reservedCopy = reserved;
+  hashCopy = hash;
+  v8 = [(NSMutableDictionary *)self->_blePairingProviderList objectForKey:hashCopy];
+  v9 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:reservedCopy];
   v10 = v9;
   if (v9)
   {
@@ -605,9 +605,9 @@ LABEL_40:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138413058;
-      v21 = v6;
+      v21 = reservedCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = hashCopy;
       v24 = 2112;
       v25 = v8;
       v26 = 2112;
@@ -620,9 +620,9 @@ LABEL_40:
 
   else
   {
-    v14 = [v9 activeProvider];
-    v15 = [v8 providerUID];
-    v16 = [v14 isEqualToString:v15];
+    activeProvider = [v9 activeProvider];
+    providerUID = [v8 providerUID];
+    v16 = [activeProvider isEqualToString:providerUID];
 
     if (gLogObjects && gNumLogObjects >= 5)
     {
@@ -643,9 +643,9 @@ LABEL_40:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138413314;
-      v21 = v6;
+      v21 = reservedCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = hashCopy;
       v24 = 2112;
       v25 = v8;
       v26 = 2112;
@@ -659,19 +659,19 @@ LABEL_40:
   return v16;
 }
 
-- (BOOL)accessoryReserved:(id)a3 xpcConn:(id)a4
+- (BOOL)accessoryReserved:(id)reserved xpcConn:(id)conn
 {
-  v6 = a3;
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [a4 hash]);
-  LOBYTE(self) = [(ACCBLEPairingServer *)self accessoryReserved:v6 connHash:v7];
+  reservedCopy = reserved;
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [conn hash]);
+  LOBYTE(self) = [(ACCBLEPairingServer *)self accessoryReserved:reservedCopy connHash:v7];
 
   return self;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v25 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 5;
@@ -707,15 +707,15 @@ LABEL_40:
   }
 
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCBLEPairingXPCServerProtocol];
-  [v6 setExportedInterface:v11];
+  [connectionCopy setExportedInterface:v11];
 
-  v12 = [[ACCBLEPairingServerRemote alloc] initWithXPCConnection:v6];
-  [v6 setExportedObject:v12];
+  v12 = [[ACCBLEPairingServerRemote alloc] initWithXPCConnection:connectionCopy];
+  [connectionCopy setExportedObject:v12];
   v13 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ACCBLEPairingXPCClientProtocol];
-  [v6 setRemoteObjectInterface:v13];
+  [connectionCopy setRemoteObjectInterface:v13];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v6);
+  objc_initWeak(&from, connectionCopy);
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __58__ACCBLEPairingServer_listener_shouldAcceptNewConnection___block_invoke;
@@ -723,18 +723,18 @@ LABEL_40:
   objc_copyWeak(&v29, &from);
   objc_copyWeak(&v30, &location);
   v28[4] = self;
-  [v6 setInvalidationHandler:v28];
+  [connectionCopy setInvalidationHandler:v28];
   v14 = objc_alloc_init(_ACCBLEPairingProviderInfo);
-  [(_ACCBLEPairingProviderInfo *)v14 setConnection:v6];
+  [(_ACCBLEPairingProviderInfo *)v14 setConnection:connectionCopy];
   [(_ACCBLEPairingProviderInfo *)v14 setServerRemote:v12];
-  v15 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
+  v15 = [connectionCopy remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
   [(_ACCBLEPairingProviderInfo *)v14 setRemoteObject:v15];
 
-  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 hash]);
+  v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [connectionCopy hash]);
   [(NSMutableDictionary *)self->_blePairingProviderList setObject:v14 forKey:v16];
   blePairingProviderListByUID = self->_blePairingProviderListByUID;
-  v18 = [(_ACCBLEPairingProviderInfo *)v14 providerUID];
-  [(NSMutableDictionary *)blePairingProviderListByUID setObject:v14 forKey:v18];
+  providerUID = [(_ACCBLEPairingProviderInfo *)v14 providerUID];
+  [(NSMutableDictionary *)blePairingProviderListByUID setObject:v14 forKey:providerUID];
 
   if (gLogObjects && gNumLogObjects >= 5)
   {
@@ -760,7 +760,7 @@ LABEL_40:
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "There are now %lu BLEPairingProvider(s).", buf, 0xCu);
   }
 
-  [v6 resume];
+  [connectionCopy resume];
   v22 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -1053,12 +1053,12 @@ void __58__ACCBLEPairingServer_listener_shouldAcceptNewConnection___block_invoke
   *a3 = 1;
 }
 
-- (void)accessoryBLEPairingAttached:(id)a3 blePairingUUID:(id)a4 accInfoDict:(id)a5 supportedPairTypes:(id)a6
+- (void)accessoryBLEPairingAttached:(id)attached blePairingUUID:(id)d accInfoDict:(id)dict supportedPairTypes:(id)types
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attachedCopy = attached;
+  dCopy = d;
+  dictCopy = dict;
+  typesCopy = types;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 5;
@@ -1088,17 +1088,17 @@ void __58__ACCBLEPairingServer_listener_shouldAcceptNewConnection___block_invoke
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v35 = v10;
+    v35 = attachedCopy;
     v36 = 2112;
-    v37 = v11;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v12;
+    v39 = dictCopy;
     v40 = 2112;
-    v41 = v13;
+    v41 = typesCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "BLEPairing server, accessoryBLEPairingAttached: %@, blePairingUUID==%@, accInfoDict=%@, supportedPairTypes=%@", buf, 0x2Au);
   }
 
-  v17 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v10];
+  v17 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:attachedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v18 = *(gLogObjects + 32);
@@ -1119,7 +1119,7 @@ void __58__ACCBLEPairingServer_listener_shouldAcceptNewConnection___block_invoke
   {
     blePairingProviderList = self->_blePairingProviderList;
     *buf = 138412802;
-    v35 = v10;
+    v35 = attachedCopy;
     v36 = 2112;
     v37 = v17;
     v38 = 2112;
@@ -1127,11 +1127,11 @@ void __58__ACCBLEPairingServer_listener_shouldAcceptNewConnection___block_invoke
     _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "BLEPairing server, accessoryBLEPairingAttached: %@, accessory=%@ _blePairingProviderList=%@", buf, 0x20u);
   }
 
-  v21 = _convertAccInfoToBLEAccInfo(v12, v20, v11, v13);
+  v21 = _convertAccInfoToBLEAccInfo(dictCopy, v20, dCopy, typesCopy);
   if (!v17)
   {
-    v17 = [[_ACCBLEPairingAccessoryInfo alloc] initWithUID:v10 blePairingUUID:v11 accInfoDict:v21 supportedPairTypes:v13];
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v17 forKey:v10];
+    v17 = [[_ACCBLEPairingAccessoryInfo alloc] initWithUID:attachedCopy blePairingUUID:dCopy accInfoDict:v21 supportedPairTypes:typesCopy];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections setObject:v17 forKey:attachedCopy];
   }
 
   v28[0] = _NSConcreteStackBlock;
@@ -1139,14 +1139,14 @@ void __58__ACCBLEPairingServer_listener_shouldAcceptNewConnection___block_invoke
   v28[2] = __97__ACCBLEPairingServer_accessoryBLEPairingAttached_blePairingUUID_accInfoDict_supportedPairTypes___block_invoke;
   v28[3] = &unk_100227178;
   v29 = v17;
-  v30 = v10;
-  v31 = v11;
+  v30 = attachedCopy;
+  v31 = dCopy;
   v32 = v21;
-  v33 = v13;
-  v22 = v13;
+  v33 = typesCopy;
+  v22 = typesCopy;
   v23 = v21;
-  v24 = v11;
-  v25 = v10;
+  v24 = dCopy;
+  v25 = attachedCopy;
   v26 = v17;
   [(ACCBLEPairingServer *)self iterateBLEPairingProviderListSync:v28];
 }
@@ -1171,10 +1171,10 @@ void __97__ACCBLEPairingServer_accessoryBLEPairingAttached_blePairingUUID_accInf
   }
 }
 
-- (void)accessoryBLEPairingDetached:(id)a3 blePairingUUID:(id)a4
+- (void)accessoryBLEPairingDetached:(id)detached blePairingUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  detachedCopy = detached;
+  dCopy = d;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -1204,13 +1204,13 @@ void __97__ACCBLEPairingServer_accessoryBLEPairingAttached_blePairingUUID_accInf
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v6;
+    v21 = detachedCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "BLEPairing server, accessoryBLEPairingDetached: %@, blePairingUUID=%@", buf, 0x16u);
   }
 
-  v11 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v6];
+  v11 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:detachedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v12 = *(gLogObjects + 32);
@@ -1231,7 +1231,7 @@ void __97__ACCBLEPairingServer_accessoryBLEPairingAttached_blePairingUUID_accInf
   {
     blePairingProviderList = self->_blePairingProviderList;
     *buf = 138412802;
-    v21 = v6;
+    v21 = detachedCopy;
     v22 = 2112;
     v23 = v11;
     v24 = 2112;
@@ -1241,17 +1241,17 @@ void __97__ACCBLEPairingServer_accessoryBLEPairingAttached_blePairingUUID_accInf
 
   if (v11)
   {
-    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_registeredAccessoryConnections removeObjectForKey:detachedCopy];
   }
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = __66__ACCBLEPairingServer_accessoryBLEPairingDetached_blePairingUUID___block_invoke;
   v17[3] = &unk_1002271A0;
-  v18 = v6;
-  v19 = v7;
-  v14 = v7;
-  v15 = v6;
+  v18 = detachedCopy;
+  v19 = dCopy;
+  v14 = dCopy;
+  v15 = detachedCopy;
   [(ACCBLEPairingServer *)self iterateBLEPairingProviderListSync:v17];
 }
 
@@ -1269,10 +1269,10 @@ void __66__ACCBLEPairingServer_accessoryBLEPairingDetached_blePairingUUID___bloc
   *a3 = 1;
 }
 
-- (void)accessoryBLEPairingFinished:(id)a3 blePairingUUID:(id)a4
+- (void)accessoryBLEPairingFinished:(id)finished blePairingUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  finishedCopy = finished;
+  dCopy = d;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 5;
@@ -1302,13 +1302,13 @@ void __66__ACCBLEPairingServer_accessoryBLEPairingDetached_blePairingUUID___bloc
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = v6;
+    v21 = finishedCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "BLEPairing server, accessoryBLEPairingFinished: %@, blePairingUUID=%@", buf, 0x16u);
   }
 
-  v11 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:v6];
+  v11 = [(NSMutableDictionary *)self->_registeredAccessoryConnections objectForKey:finishedCopy];
   if (gLogObjects && gNumLogObjects >= 5)
   {
     v12 = *(gLogObjects + 32);
@@ -1329,9 +1329,9 @@ void __66__ACCBLEPairingServer_accessoryBLEPairingDetached_blePairingUUID___bloc
   {
     blePairingProviderList = self->_blePairingProviderList;
     *buf = 138413058;
-    v21 = v6;
+    v21 = finishedCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = dCopy;
     v24 = 2112;
     v25 = v11;
     v26 = 2112;
@@ -1346,8 +1346,8 @@ void __66__ACCBLEPairingServer_accessoryBLEPairingDetached_blePairingUUID___bloc
     v17[1] = 3221225472;
     v17[2] = __66__ACCBLEPairingServer_accessoryBLEPairingFinished_blePairingUUID___block_invoke;
     v17[3] = &unk_1002271A0;
-    v18 = v6;
-    v19 = v7;
+    v18 = finishedCopy;
+    v19 = dCopy;
     [(ACCBLEPairingServer *)self iterateBLEPairingProviderListSync:v17];
 
     v14 = v18;
@@ -1374,7 +1374,7 @@ void __66__ACCBLEPairingServer_accessoryBLEPairingDetached_blePairingUUID___bloc
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v6;
+      v21 = finishedCopy;
       v22 = 2112;
       v23 = 0;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "BLEPairing server, accessoryBLEPairingFinished: %@, Invalid accessory=%@", buf, 0x16u);
@@ -1402,7 +1402,7 @@ void __66__ACCBLEPairingServer_accessoryBLEPairingFinished_blePairingUUID___bloc
   block[1] = 3221225472;
   block[2] = __35__ACCBLEPairingServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_3 != -1)
   {
     dispatch_once(&sharedServer_once_3, block);

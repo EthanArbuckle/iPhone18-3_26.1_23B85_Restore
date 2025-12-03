@@ -1,15 +1,15 @@
 @interface MusicKit_SoftLinking_MPModelAlbumKind
-- (MusicKit_SoftLinking_MPModelAlbumKind)initWithVariants:(unint64_t)a3 options:(unint64_t)a4;
+- (MusicKit_SoftLinking_MPModelAlbumKind)initWithVariants:(unint64_t)variants options:(unint64_t)options;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelAlbumKind
 
-- (MusicKit_SoftLinking_MPModelAlbumKind)initWithVariants:(unint64_t)a3 options:(unint64_t)a4
+- (MusicKit_SoftLinking_MPModelAlbumKind)initWithVariants:(unint64_t)variants options:(unint64_t)options
 {
   v7 = [(MusicKit_SoftLinking_MPModelAlbumKind *)self _underlyingVariantsFromVariants:?];
-  v8 = [(MusicKit_SoftLinking_MPModelAlbumKind *)self _underlyingOptionsFromOptions:a4];
+  v8 = [(MusicKit_SoftLinking_MPModelAlbumKind *)self _underlyingOptionsFromOptions:options];
   v9 = objc_opt_class();
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
     [v9 _defaultSongKind];
   }
@@ -26,8 +26,8 @@
   v13 = v12;
   if (v12)
   {
-    v12->_options = a4;
-    v12->_variants = a3;
+    v12->_options = options;
+    v12->_variants = variants;
   }
 
   return v13;

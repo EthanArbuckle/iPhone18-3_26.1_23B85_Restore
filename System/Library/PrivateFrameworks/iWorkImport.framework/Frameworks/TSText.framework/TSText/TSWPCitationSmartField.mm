@@ -1,45 +1,45 @@
 @interface TSWPCitationSmartField
-+ (BOOL)isValidCitationField:(id)a3;
-- (id)copyWithContext:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setCitationRecords:(id)a3;
-- (void)setIsLocalizable:(BOOL)a3;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
++ (BOOL)isValidCitationField:(id)field;
+- (id)copyWithContext:(id)context;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCitationRecords:(id)records;
+- (void)setIsLocalizable:(BOOL)localizable;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSWPCitationSmartField
 
-- (void)setCitationRecords:(id)a3
+- (void)setCitationRecords:(id)records
 {
-  v4 = a3;
-  if (self->_citationRecords != v4)
+  recordsCopy = records;
+  if (self->_citationRecords != recordsCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = recordsCopy;
+    objc_msgSend_willModify(self, recordsCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_citationRecords, v8);
-    v4 = v8;
+    recordsCopy = v8;
   }
 }
 
-- (void)setIsLocalizable:(BOOL)a3
+- (void)setIsLocalizable:(BOOL)localizable
 {
-  if (self->_isLocalizable != a3)
+  if (self->_isLocalizable != localizable)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_isLocalizable = a3;
+    objc_msgSend_willModify(self, a2, localizable);
+    self->_isLocalizable = localizable;
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812DC408[148]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812DC408[148]);
 
-  if (objc_msgSend_hasPreUFFVersion(v4, v7, v8))
+  if (objc_msgSend_hasPreUFFVersion(unarchiverCopy, v7, v8))
   {
     if (*(v6 + 48))
     {
@@ -63,7 +63,7 @@
 
     v19.receiver = self;
     v19.super_class = TSWPCitationSmartField;
-    [(TSWPSmartField *)&v19 loadFromArchive:v10 unarchiver:v4];
+    [(TSWPSmartField *)&v19 loadFromArchive:v10 unarchiver:unarchiverCopy];
     if ((*(v9 + 16) & 4) != 0)
     {
       self->_isLocalizable = *(v9 + 40);
@@ -86,7 +86,7 @@
 
     v18.receiver = self;
     v18.super_class = TSWPCitationSmartField;
-    [(TSWPSmartField *)&v18 loadFromArchive:v13 unarchiver:v4];
+    [(TSWPSmartField *)&v18 loadFromArchive:v13 unarchiver:unarchiverCopy];
     if ((*(v6 + 16) & 4) != 0)
     {
       self->_isLocalizable = *(v6 + 64);
@@ -98,16 +98,16 @@
   v17[2] = sub_276DF8E7C;
   v17[3] = &unk_27A6F4740;
   v17[4] = self;
-  v14 = v4;
+  v14 = unarchiverCopy;
   v15 = objc_opt_class();
   objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v14, v16, v6 + 24, v15, 0, v17);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DF938C, off_2812DC408[148]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276DF938C, off_2812DC408[148]);
 
   *(v6 + 16) |= 2u;
   v7 = *(v6 + 56);
@@ -125,20 +125,20 @@
 
   v11.receiver = self;
   v11.super_class = TSWPCitationSmartField;
-  [(TSWPSmartField *)&v11 saveToArchive:v7 archiver:v4];
+  [(TSWPSmartField *)&v11 saveToArchive:v7 archiver:archiverCopy];
   isLocalizable = self->_isLocalizable;
   *(v6 + 16) |= 4u;
   *(v6 + 64) = isLocalizable;
-  objc_msgSend_setStrongReferenceArray_message_(v4, v10, self->_citationRecords, v6 + 24);
+  objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v10, self->_citationRecords, v6 + 24);
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v24.receiver = self;
   v24.super_class = TSWPCitationSmartField;
-  v5 = [(TSWPSmartField *)&v24 copyWithContext:v4];
+  v5 = [(TSWPSmartField *)&v24 copyWithContext:contextCopy];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v22 = 0u;
   v23 = 0u;
@@ -159,7 +159,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v13 = objc_msgSend_copyWithContext_(*(*(&v20 + 1) + 8 * v12), v9, v4, v20);
+        v13 = objc_msgSend_copyWithContext_(*(*(&v20 + 1) + 8 * v12), v9, contextCopy, v20);
         objc_msgSend_addObject_(v6, v14, v13);
 
         ++v12;
@@ -180,19 +180,19 @@
   return v5;
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v9.receiver = self;
   v9.super_class = TSWPCitationSmartField;
-  [(TSWPSmartField *)&v9 willBeRemovedFromDocumentRoot:v4];
+  [(TSWPSmartField *)&v9 willBeRemovedFromDocumentRoot:rootCopy];
   v7 = objc_msgSend_editingDelegate(self, v5, v6);
-  objc_msgSend_citationSmartField_willBeRemovedFromDocument_(v7, v8, self, v4);
+  objc_msgSend_citationSmartField_willBeRemovedFromDocument_(v7, v8, self, rootCopy);
 }
 
-+ (BOOL)isValidCitationField:(id)a3
++ (BOOL)isValidCitationField:(id)field
 {
-  v3 = a3;
+  fieldCopy = field;
   objc_opt_class();
   v4 = TSUDynamicCast();
   v7 = v4;

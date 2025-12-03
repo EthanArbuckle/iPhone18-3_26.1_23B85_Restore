@@ -1,23 +1,23 @@
 @interface PBUIBokehImageArbiter
-+ (id)imageForBokehImage:(uint64_t)a1;
-+ (uint64_t)bokehImageForDiameter:(double)a1;
++ (id)imageForBokehImage:(uint64_t)image;
++ (uint64_t)bokehImageForDiameter:(double)diameter;
 @end
 
 @implementation PBUIBokehImageArbiter
 
-+ (uint64_t)bokehImageForDiameter:(double)a1
++ (uint64_t)bokehImageForDiameter:(double)diameter
 {
   objc_opt_self();
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v4 = a1 / 1.5;
-  if (v3 != 1)
+  diameterCopy = diameter / 1.5;
+  if (userInterfaceIdiom != 1)
   {
-    v4 = a1;
+    diameterCopy = diameter;
   }
 
-  v5 = (v4 + -40.0) / -130.0 + 1.0;
+  v5 = (diameterCopy + -40.0) / -130.0 + 1.0;
   if (v5 < 0.0)
   {
     v5 = 0.0;
@@ -26,7 +26,7 @@
   return blurTable[vcvtad_u64_f64(fmin(v5, 1.0) * 11.0)];
 }
 
-+ (id)imageForBokehImage:(uint64_t)a1
++ (id)imageForBokehImage:(uint64_t)image
 {
   objc_opt_self();
   v3 = +[PBUIWallpaperCache wallpaperCache];

@@ -1,16 +1,16 @@
 @interface SACallbackManager
 + (id)activeHandlers;
-+ (id)addAppSizerHandler:(id)a3;
-+ (id)setUniqueIDForHandler:(id)a3;
-+ (void)callAppSizeHandlersWithResults:(id)a3 error:(id)a4;
-+ (void)removeAppSizerHandler:(id)a3;
++ (id)addAppSizerHandler:(id)handler;
++ (id)setUniqueIDForHandler:(id)handler;
++ (void)callAppSizeHandlersWithResults:(id)results error:(id)error;
++ (void)removeAppSizerHandler:(id)handler;
 @end
 
 @implementation SACallbackManager
 
-+ (id)setUniqueIDForHandler:(id)a3
++ (id)setUniqueIDForHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   for (i = 0; ; i = v5)
   {
     v5 = +[NSUUID UUID];
@@ -27,7 +27,7 @@
     objc_sync_exit(v6);
   }
 
-  [qword_100073710 setObject:v3 forKeyedSubscript:v5];
+  [qword_100073710 setObject:handlerCopy forKeyedSubscript:v5];
   objc_sync_exit(v6);
 
   v8 = SALog();
@@ -41,9 +41,9 @@
   return v5;
 }
 
-+ (id)addAppSizerHandler:(id)a3
++ (id)addAppSizerHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = qword_100073710;
   objc_sync_enter(v4);
   if (!qword_100073710)
@@ -55,7 +55,7 @@
 
   objc_sync_exit(v4);
 
-  v7 = [SACallbackManager setUniqueIDForHandler:v3];
+  v7 = [SACallbackManager setUniqueIDForHandler:handlerCopy];
   v8 = SALog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -65,32 +65,32 @@
   return v7;
 }
 
-+ (void)removeAppSizerHandler:(id)a3
++ (void)removeAppSizerHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = qword_100073710;
   objc_sync_enter(v4);
-  if (!v3 || !qword_100073710)
+  if (!handlerCopy || !qword_100073710)
   {
 LABEL_9:
     objc_sync_exit(v4);
     goto LABEL_10;
   }
 
-  v5 = [qword_100073710 objectForKeyedSubscript:v3];
+  v5 = [qword_100073710 objectForKeyedSubscript:handlerCopy];
 
   if (!v5)
   {
     v6 = SALog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10003EEE8(v3, v6);
+      sub_10003EEE8(handlerCopy, v6);
     }
 
     goto LABEL_9;
   }
 
-  [qword_100073710 removeObjectForKey:v3];
+  [qword_100073710 removeObjectForKey:handlerCopy];
   objc_sync_exit(v4);
 
   v4 = SALog();
@@ -104,16 +104,16 @@ LABEL_10:
 
 + (id)activeHandlers
 {
-  v2 = [qword_100073710 allKeys];
-  v3 = [NSSet setWithArray:v2];
+  allKeys = [qword_100073710 allKeys];
+  v3 = [NSSet setWithArray:allKeys];
 
   return v3;
 }
 
-+ (void)callAppSizeHandlersWithResults:(id)a3 error:(id)a4
++ (void)callAppSizeHandlersWithResults:(id)results error:(id)error
 {
-  v19 = a3;
-  v5 = a4;
+  resultsCopy = results;
+  errorCopy = error;
   v6 = SALog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -168,7 +168,7 @@ LABEL_10:
         v20[2] = sub_100020494;
         v20[3] = &unk_1000652D0;
         v20[4] = v15;
-        [v17 callAppSizerHandlerWithResults:v19 error:v5 withHandlerResultBlock:v20];
+        [v17 callAppSizerHandlerWithResults:resultsCopy error:errorCopy withHandlerResultBlock:v20];
 
         v13 = v13 + 1;
         v14 = v11;

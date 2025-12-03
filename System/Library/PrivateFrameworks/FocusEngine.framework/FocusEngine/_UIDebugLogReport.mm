@@ -1,19 +1,19 @@
 @interface _UIDebugLogReport
 - (_UIDebugLogReport)init;
-- (id)_messagePrefixAtIndentLevel:(unint64_t)a3;
+- (id)_messagePrefixAtIndentLevel:(unint64_t)level;
 - (id)fallbackMessagePrefixHandler;
 - (unint64_t)messageCount;
 - (void)addLineBreak;
-- (void)addMessage:(id)a3;
-- (void)addMessageWithFormat:(id)a3;
+- (void)addMessage:(id)message;
+- (void)addMessageWithFormat:(id)format;
 - (void)clearAllMessagePrefixes;
 - (void)decrementIndentLevel;
 - (void)decrementIndentLevelAndPopMessagePrefix;
 - (void)incrementIndentLevel;
-- (void)incrementIndentLevelAndPushMessagePrefix:(id)a3;
+- (void)incrementIndentLevelAndPushMessagePrefix:(id)prefix;
 - (void)popMessagePrefix;
-- (void)pushMessagePrefix:(id)a3;
-- (void)pushMessagePrefixHandler:(id)a3;
+- (void)pushMessagePrefix:(id)prefix;
+- (void)pushMessagePrefixHandler:(id)handler;
 @end
 
 @implementation _UIDebugLogReport
@@ -39,52 +39,52 @@
 
 - (unint64_t)messageCount
 {
-  v2 = [(_UIDebugLogReport *)self _statements];
-  v3 = [v2 count];
+  _statements = [(_UIDebugLogReport *)self _statements];
+  v3 = [_statements count];
 
   return v3;
 }
 
-- (void)addMessageWithFormat:(id)a3
+- (void)addMessageWithFormat:(id)format
 {
-  v5 = a3;
-  if (!v5)
+  formatCopy = format;
+  if (!formatCopy)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"messageFormat"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"messageFormat"}];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v5 arguments:&v8];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:formatCopy arguments:&v8];
   [(_UIDebugLogReport *)self addMessage:v6];
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
-  v10 = a3;
-  if (!v10)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
-  v5 = [(_UIDebugLogReport *)self currentIndentLevel];
+  currentIndentLevel = [(_UIDebugLogReport *)self currentIndentLevel];
   v6 = objc_alloc_init(_UIDebugLogStatement);
   [(_UIDebugLogStatement *)v6 setType:0];
-  [(_UIDebugLogStatement *)v6 setIndentLevel:v5];
-  v7 = [(_UIDebugLogReport *)self _messagePrefixAtIndentLevel:v5];
+  [(_UIDebugLogStatement *)v6 setIndentLevel:currentIndentLevel];
+  v7 = [(_UIDebugLogReport *)self _messagePrefixAtIndentLevel:currentIndentLevel];
   [(_UIDebugLogStatement *)v6 setPrefix:v7];
 
-  [(_UIDebugLogStatement *)v6 setText:v10];
-  v8 = [(_UIDebugLogReport *)self _statements];
-  [v8 addObject:v6];
+  [(_UIDebugLogStatement *)v6 setText:messageCopy];
+  _statements = [(_UIDebugLogReport *)self _statements];
+  [_statements addObject:v6];
 }
 
 - (void)addLineBreak
 {
   v4 = objc_alloc_init(_UIDebugLogStatement);
   [(_UIDebugLogStatement *)v4 setType:1];
-  v3 = [(_UIDebugLogReport *)self _statements];
-  [v3 addObject:v4];
+  _statements = [(_UIDebugLogReport *)self _statements];
+  [_statements addObject:v4];
 }
 
 - (void)incrementIndentLevel
@@ -115,64 +115,64 @@
   return v4;
 }
 
-- (void)pushMessagePrefix:(id)a3
+- (void)pushMessagePrefix:(id)prefix
 {
-  v7 = a3;
-  if (!v7)
+  prefixCopy = prefix;
+  if (!prefixCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"prefix"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"prefix"}];
   }
 
-  v5 = [(_UIDebugLogReport *)self _prefixStack];
-  [v5 addObject:v7];
+  _prefixStack = [(_UIDebugLogReport *)self _prefixStack];
+  [_prefixStack addObject:prefixCopy];
 }
 
-- (void)pushMessagePrefixHandler:(id)a3
+- (void)pushMessagePrefixHandler:(id)handler
 {
-  v8 = a3;
-  if (!v8)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"prefixHandler"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"prefixHandler"}];
   }
 
-  v5 = [(_UIDebugLogReport *)self _prefixStack];
-  v6 = MEMORY[0x24C24D980](v8);
-  [v5 addObject:v6];
+  _prefixStack = [(_UIDebugLogReport *)self _prefixStack];
+  v6 = MEMORY[0x24C24D980](handlerCopy);
+  [_prefixStack addObject:v6];
 }
 
 - (void)popMessagePrefix
 {
-  v2 = [(_UIDebugLogReport *)self _prefixStack];
-  [v2 removeLastObject];
+  _prefixStack = [(_UIDebugLogReport *)self _prefixStack];
+  [_prefixStack removeLastObject];
 }
 
 - (void)clearAllMessagePrefixes
 {
-  v2 = [(_UIDebugLogReport *)self _prefixStack];
-  [v2 removeAllObjects];
+  _prefixStack = [(_UIDebugLogReport *)self _prefixStack];
+  [_prefixStack removeAllObjects];
 }
 
-- (id)_messagePrefixAtIndentLevel:(unint64_t)a3
+- (id)_messagePrefixAtIndentLevel:(unint64_t)level
 {
-  v6 = [(_UIDebugLogReport *)self _prefixStack];
-  v7 = [v6 lastObject];
+  _prefixStack = [(_UIDebugLogReport *)self _prefixStack];
+  lastObject = [_prefixStack lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = lastObject;
     if (v8)
     {
       goto LABEL_8;
     }
   }
 
-  else if (v7)
+  else if (lastObject)
   {
-    v9 = MEMORY[0x24C24D980](v7);
-    v8 = v9[2](v9, a3);
+    v9 = MEMORY[0x24C24D980](lastObject);
+    v8 = v9[2](v9, level);
 
     if (v8)
     {
@@ -180,13 +180,13 @@
     }
   }
 
-  v10 = [(_UIDebugLogReport *)self fallbackMessagePrefixHandler];
-  v8 = v10[2](v10, a3);
+  fallbackMessagePrefixHandler = [(_UIDebugLogReport *)self fallbackMessagePrefixHandler];
+  v8 = fallbackMessagePrefixHandler[2](fallbackMessagePrefixHandler, level);
 
   if (!v8)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:177 description:@"nil message prefixes are not allowed."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDebugLogReport.m" lineNumber:177 description:@"nil message prefixes are not allowed."];
   }
 
 LABEL_8:
@@ -194,11 +194,11 @@ LABEL_8:
   return v8;
 }
 
-- (void)incrementIndentLevelAndPushMessagePrefix:(id)a3
+- (void)incrementIndentLevelAndPushMessagePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   [(_UIDebugLogReport *)self incrementIndentLevel];
-  [(_UIDebugLogReport *)self pushMessagePrefix:v4];
+  [(_UIDebugLogReport *)self pushMessagePrefix:prefixCopy];
 }
 
 - (void)decrementIndentLevelAndPopMessagePrefix

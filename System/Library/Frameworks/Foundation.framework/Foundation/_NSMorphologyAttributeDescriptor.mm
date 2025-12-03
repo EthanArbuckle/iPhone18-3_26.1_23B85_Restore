@@ -1,14 +1,14 @@
 @interface _NSMorphologyAttributeDescriptor
-- (id)attributeValueFromValue:(id)a3;
+- (id)attributeValueFromValue:(id)value;
 @end
 
 @implementation _NSMorphologyAttributeDescriptor
 
-- (id)attributeValueFromValue:(id)a3
+- (id)attributeValueFromValue:(id)value
 {
   if (_NSIsNSDictionary())
   {
-    v4 = [[NSMorphology alloc] _initWithExternalRepresentationDictionary:a3];
+    v4 = [[NSMorphology alloc] _initWithExternalRepresentationDictionary:value];
 
     return v4;
   }
@@ -18,7 +18,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      return a3;
+      return value;
     }
 
     else

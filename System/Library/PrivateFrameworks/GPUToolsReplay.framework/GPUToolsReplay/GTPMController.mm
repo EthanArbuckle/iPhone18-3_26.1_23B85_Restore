@@ -1,11 +1,11 @@
 @interface GTPMController
-+ (id)stateFromWeightedAverage:(double)a3;
++ (id)stateFromWeightedAverage:(double)average;
 - (BOOL)serviceLaunched;
-- (GTPMController)initWithGPUFamily:(id)a3;
+- (GTPMController)initWithGPUFamily:(id)family;
 - (double)getStateOccupancy;
 - (void)_initGTPM;
 - (void)clearStateOccupancy;
-- (void)setPerfState:(id)a3;
+- (void)setPerfState:(id)state;
 - (void)tearDown;
 @end
 
@@ -124,17 +124,17 @@ void __37__GTPMController_clearStateOccupancy__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setPerfState:(id)a3
+- (void)setPerfState:(id)state
 {
-  v4 = a3;
-  if (v4)
+  stateCopy = state;
+  if (stateCopy)
   {
     if ([(GTPMController *)self serviceLaunched])
     {
-      v5 = [v4 integerValue];
-      if (v5 >= 1)
+      integerValue = [stateCopy integerValue];
+      if (integerValue >= 1)
       {
-        v6 = v5;
+        v6 = integerValue;
         objc_initWeak(&location, self);
         connectionToService = self->_connectionToService;
         v15[0] = MEMORY[0x277D85DD0];
@@ -148,8 +148,8 @@ void __37__GTPMController_clearStateOccupancy__block_invoke_2(uint64_t a1)
         v11[2] = __31__GTPMController_setPerfState___block_invoke_2;
         v11[3] = &unk_279658740;
         objc_copyWeak(&v14, &location);
-        v12 = v4;
-        v13 = self;
+        v12 = stateCopy;
+        selfCopy = self;
         [v8 setState:(v6 - 1) withReply:v11];
 
         semaphore = self->_semaphore;
@@ -271,21 +271,21 @@ void __27__GTPMController__initGTPM__block_invoke_2(uint64_t a1, int a2, void *a
   }
 }
 
-- (GTPMController)initWithGPUFamily:(id)a3
+- (GTPMController)initWithGPUFamily:(id)family
 {
-  v4 = a3;
+  familyCopy = family;
   v23.receiver = self;
   v23.super_class = GTPMController;
   v5 = [(GTPMController *)&v23 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [familyCopy copy];
     gpuFamily = v5->_gpuFamily;
     v5->_gpuFamily = v6;
 
-    if (([v4 containsString:@"Intel"] & 1) != 0 || objc_msgSend(v4, "containsString:", @"AMD"))
+    if (([familyCopy containsString:@"Intel"] & 1) != 0 || objc_msgSend(familyCopy, "containsString:", @"AMD"))
     {
-      if ([v4 containsString:@"Intel"])
+      if ([familyCopy containsString:@"Intel"])
       {
         v8 = 1;
         v9 = &protocolRef_GTPMServiceProtocol;
@@ -294,7 +294,7 @@ void __27__GTPMController__initGTPM__block_invoke_2(uint64_t a1, int a2, void *a
 
       else
       {
-        if (![v4 containsString:@"AMD"])
+        if (![familyCopy containsString:@"AMD"])
         {
 LABEL_9:
           objc_initWeak(&location, v5);
@@ -348,14 +348,14 @@ void __36__GTPMController_initWithGPUFamily___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)stateFromWeightedAverage:(double)a3
++ (id)stateFromWeightedAverage:(double)average
 {
-  if (a3 < -2.22044605e-16 || vabdd_f64(a3, floor(a3)) > 2.22044605e-16)
+  if (average < -2.22044605e-16 || vabdd_f64(average, floor(average)) > 2.22044605e-16)
   {
     return @"mixed";
   }
 
-  v4 = (a3 + 2.22044605e-16);
+  v4 = (average + 2.22044605e-16);
   if (v4 > 2)
   {
     return @"none";

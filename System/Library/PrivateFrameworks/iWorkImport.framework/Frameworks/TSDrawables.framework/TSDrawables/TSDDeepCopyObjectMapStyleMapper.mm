@@ -1,42 +1,42 @@
 @interface TSDDeepCopyObjectMapStyleMapper
-- (TSDDeepCopyObjectMapStyleMapper)initWithTargetStylesheet:(id)a3 deepCopyObjectMap:(id)a4 sourceObjectsMayUseMultipleStylesheets:(BOOL)a5;
-- (id)mappedStyleForStyle:(id)a3;
+- (TSDDeepCopyObjectMapStyleMapper)initWithTargetStylesheet:(id)stylesheet deepCopyObjectMap:(id)map sourceObjectsMayUseMultipleStylesheets:(BOOL)stylesheets;
+- (id)mappedStyleForStyle:(id)style;
 @end
 
 @implementation TSDDeepCopyObjectMapStyleMapper
 
-- (TSDDeepCopyObjectMapStyleMapper)initWithTargetStylesheet:(id)a3 deepCopyObjectMap:(id)a4 sourceObjectsMayUseMultipleStylesheets:(BOOL)a5
+- (TSDDeepCopyObjectMapStyleMapper)initWithTargetStylesheet:(id)stylesheet deepCopyObjectMap:(id)map sourceObjectsMayUseMultipleStylesheets:(BOOL)stylesheets
 {
-  v9 = a3;
-  v10 = a4;
+  stylesheetCopy = stylesheet;
+  mapCopy = map;
   v14.receiver = self;
   v14.super_class = TSDDeepCopyObjectMapStyleMapper;
   v11 = [(TSDDeepCopyObjectMapStyleMapper *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_targetStylesheet, a3);
-    objc_storeStrong(&v12->_objectMap, a4);
-    v12->_sourceObjectsMayUseMultipleStylesheets = a5;
+    objc_storeStrong(&v11->_targetStylesheet, stylesheet);
+    objc_storeStrong(&v12->_objectMap, map);
+    v12->_sourceObjectsMayUseMultipleStylesheets = stylesheets;
   }
 
   return v12;
 }
 
-- (id)mappedStyleForStyle:(id)a3
+- (id)mappedStyleForStyle:(id)style
 {
-  v4 = a3;
-  v7 = objc_msgSend_stylesheet(v4, v5, v6);
+  styleCopy = style;
+  v7 = objc_msgSend_stylesheet(styleCopy, v5, v6);
   v10 = objc_msgSend_targetStylesheet(self, v8, v9);
 
   if (v7 == v10)
   {
-    v12 = v4;
+    v12 = styleCopy;
   }
 
   else
   {
-    v12 = objc_msgSend_objectForDeepCopy_(self->_objectMap, v11, v4);
+    v12 = objc_msgSend_objectForDeepCopy_(self->_objectMap, v11, styleCopy);
     v15 = objc_msgSend_stylesheet(v12, v13, v14);
     v18 = objc_msgSend_targetStylesheet(self, v16, v17);
     v21 = v18;

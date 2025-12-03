@@ -1,41 +1,41 @@
 @interface HDSPSleepScheduleModelChangeEvaluation
-+ (id)combinedEvaluation:(id)a3;
++ (id)combinedEvaluation:(id)evaluation;
 + (id)emptyEvaluation;
-+ (id)significantChangeWithTopLevelChangeKeys:(id)a3;
-- (HDSPSleepScheduleModelChangeEvaluation)initWithIsSignificantChange:(BOOL)a3 topLevelChangeKeys:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)significantChangeWithTopLevelChangeKeys:(id)keys;
+- (HDSPSleepScheduleModelChangeEvaluation)initWithIsSignificantChange:(BOOL)change topLevelChangeKeys:(id)keys;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation HDSPSleepScheduleModelChangeEvaluation
 
-- (HDSPSleepScheduleModelChangeEvaluation)initWithIsSignificantChange:(BOOL)a3 topLevelChangeKeys:(id)a4
+- (HDSPSleepScheduleModelChangeEvaluation)initWithIsSignificantChange:(BOOL)change topLevelChangeKeys:(id)keys
 {
-  v7 = a4;
+  keysCopy = keys;
   v12.receiver = self;
   v12.super_class = HDSPSleepScheduleModelChangeEvaluation;
   v8 = [(HDSPSleepScheduleModelChangeEvaluation *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_isSignificantChange = a3;
-    objc_storeStrong(&v8->_topLevelChangeKeys, a4);
+    v8->_isSignificantChange = change;
+    objc_storeStrong(&v8->_topLevelChangeKeys, keys);
     v10 = v9;
   }
 
   return v9;
 }
 
-+ (id)combinedEvaluation:(id)a3
++ (id)combinedEvaluation:(id)evaluation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  evaluationCopy = evaluation;
   v4 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = evaluationCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -53,8 +53,8 @@
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v8 |= [v11 isSignificantChange];
-        v12 = [v11 topLevelChangeKeys];
-        [v4 unionSet:v12];
+        topLevelChangeKeys = [v11 topLevelChangeKeys];
+        [v4 unionSet:topLevelChangeKeys];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -83,23 +83,23 @@
   return v4;
 }
 
-+ (id)significantChangeWithTopLevelChangeKeys:(id)a3
++ (id)significantChangeWithTopLevelChangeKeys:(id)keys
 {
-  v3 = a3;
-  v4 = [[HDSPSleepScheduleModelChangeEvaluation alloc] initWithIsSignificantChange:1 topLevelChangeKeys:v3];
+  keysCopy = keys;
+  v4 = [[HDSPSleepScheduleModelChangeEvaluation alloc] initWithIsSignificantChange:1 topLevelChangeKeys:keysCopy];
 
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HDSPSleepScheduleModelChangeEvaluation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HDSPSleepScheduleModelChangeEvaluation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = [v4 appendBool:self->_isSignificantChange withName:@"isSignificantChange" ifEqualTo:1];

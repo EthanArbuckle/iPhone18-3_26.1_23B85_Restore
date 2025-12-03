@@ -1,17 +1,17 @@
 @interface INIntentHomeEntitySlotValueTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation INIntentHomeEntitySlotValueTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   [objc_opt_class() reverseTransformedValueClass];
   if (objc_opt_isKindOfClass())
   {
-    v4 = INIntentSlotValueTransformFromHomeEntity(v3);
+    v4 = INIntentSlotValueTransformFromHomeEntity(valueCopy);
   }
 
   else
@@ -22,13 +22,13 @@
   return v4;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   [objc_opt_class() transformedValueClass];
   if (objc_opt_isKindOfClass())
   {
-    v4 = INIntentSlotValueTransformToHomeEntity(v3);
+    v4 = INIntentSlotValueTransformToHomeEntity(valueCopy);
   }
 
   else

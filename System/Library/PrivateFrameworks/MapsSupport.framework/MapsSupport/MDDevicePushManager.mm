@@ -1,28 +1,28 @@
 @interface MDDevicePushManager
-- (BOOL)_shouldDisplayNotificationForProblemStatus:(id)a3;
-- (MDDevicePushManager)initWithState:(id)a3;
+- (BOOL)_shouldDisplayNotificationForProblemStatus:(id)status;
+- (MDDevicePushManager)initWithState:(id)state;
 - (void)_cleanupRAPNotifications;
-- (void)clearRAPStatusChangeNotificationWithManager:(id)a3;
+- (void)clearRAPStatusChangeNotificationWithManager:(id)manager;
 - (void)dealloc;
-- (void)pushManager:(id)a3 gotPushData:(id)a4;
-- (void)pushManager:(id)a3 receivedClearedPhotoAttributionNotificationWithTitle:(id)a4 message:(id)a5;
-- (void)pushManager:(id)a3 receivedFixedProblemNotification:(id)a4 manifestToken:(id)a5;
-- (void)pushManager:(id)a3 receivedPhotoLivenessMUID:(id)a4 title:(id)a5 message:(id)a6 actionURL:(id)a7;
-- (void)pushManager:(id)a3 receivedRAPStatusChangeNotification:(id)a4;
+- (void)pushManager:(id)manager gotPushData:(id)data;
+- (void)pushManager:(id)manager receivedClearedPhotoAttributionNotificationWithTitle:(id)title message:(id)message;
+- (void)pushManager:(id)manager receivedFixedProblemNotification:(id)notification manifestToken:(id)token;
+- (void)pushManager:(id)manager receivedPhotoLivenessMUID:(id)d title:(id)title message:(id)message actionURL:(id)l;
+- (void)pushManager:(id)manager receivedRAPStatusChangeNotification:(id)notification;
 @end
 
 @implementation MDDevicePushManager
 
-- (MDDevicePushManager)initWithState:(id)a3
+- (MDDevicePushManager)initWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v13.receiver = self;
   v13.super_class = MDDevicePushManager;
   v6 = [(MDDevicePushManager *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_state, a3);
+    objc_storeStrong(&v6->_state, state);
     v8 = objc_alloc_init(MapsPushManager);
     pushManager = v7->_pushManager;
     v7->_pushManager = v8;
@@ -50,12 +50,12 @@
   [(MDDevicePushManager *)&v4 dealloc];
 }
 
-- (BOOL)_shouldDisplayNotificationForProblemStatus:(id)a3
+- (BOOL)_shouldDisplayNotificationForProblemStatus:(id)status
 {
-  v3 = [a3 details];
-  v4 = [v3 displayStyle];
-  v5 = (v4 < 6) & (0x36u >> v4);
-  if ([v3 displayStyle] == 5 && objc_msgSend(v3, "placesCount") <= 1)
+  details = [status details];
+  displayStyle = [details displayStyle];
+  v5 = (displayStyle < 6) & (0x36u >> displayStyle);
+  if ([details displayStyle] == 5 && objc_msgSend(details, "placesCount") <= 1)
   {
     LOBYTE(v5) = 0;
   }
@@ -101,25 +101,25 @@
   }
 }
 
-- (void)pushManager:(id)a3 gotPushData:(id)a4
+- (void)pushManager:(id)manager gotPushData:(id)data
 {
-  v5 = a4;
-  v6 = [[SyncedBookmarkRepr alloc] initWithData:v5];
+  dataCopy = data;
+  v6 = [[SyncedBookmarkRepr alloc] initWithData:dataCopy];
   if (v6)
   {
-    v7 = [(MDState *)self->_state notificationCenter];
-    v8 = [v7 addPushedBookmark:v6];
+    notificationCenter = [(MDState *)self->_state notificationCenter];
+    v8 = [notificationCenter addPushedBookmark:v6];
 
     if (v8)
     {
-      v9 = [(MDState *)self->_state peerConnectionsLock];
-      [v9 lock];
+      peerConnectionsLock = [(MDState *)self->_state peerConnectionsLock];
+      [peerConnectionsLock lock];
 
-      v10 = [(MDState *)self->_state peerConnections];
-      v11 = [v10 copy];
+      peerConnections = [(MDState *)self->_state peerConnections];
+      v11 = [peerConnections copy];
 
-      v12 = [(MDState *)self->_state peerConnectionsLock];
-      [v12 unlock];
+      peerConnectionsLock2 = [(MDState *)self->_state peerConnectionsLock];
+      [peerConnectionsLock2 unlock];
 
       v21 = 0u;
       v22 = 0u;
@@ -140,8 +140,8 @@
               objc_enumerationMutation(v13);
             }
 
-            v18 = [*(*(&v19 + 1) + 8 * i) remoteObjectProxy];
-            [v18 pushDaemonProxyReceivedNotificationData:v5 forType:@"MapsPushNotifcationTypePushToPhone" recordIdentifier:v8];
+            remoteObjectProxy = [*(*(&v19 + 1) + 8 * i) remoteObjectProxy];
+            [remoteObjectProxy pushDaemonProxyReceivedNotificationData:dataCopy forType:@"MapsPushNotifcationTypePushToPhone" recordIdentifier:v8];
           }
 
           v15 = [v13 countByEnumeratingWithState:&v19 objects:v24 count:16];
@@ -163,14 +163,14 @@
   }
 }
 
-- (void)pushManager:(id)a3 receivedFixedProblemNotification:(id)a4 manifestToken:(id)a5
+- (void)pushManager:(id)manager receivedFixedProblemNotification:(id)notification manifestToken:(id)token
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 problemStatus];
-  v10 = [v9 firstObject];
+  notificationCopy = notification;
+  tokenCopy = token;
+  problemStatus = [notificationCopy problemStatus];
+  firstObject = [problemStatus firstObject];
 
-  if (!v10)
+  if (!firstObject)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -182,9 +182,9 @@
     goto LABEL_6;
   }
 
-  if ([(MDDevicePushManager *)self _shouldDisplayNotificationForProblemStatus:v10])
+  if ([(MDDevicePushManager *)self _shouldDisplayNotificationForProblemStatus:firstObject])
   {
-    [(RAPSubmissionStatusSyncHandler *)self->_syncHandler setFixedProblemAsReviewed:v7];
+    [(RAPSubmissionStatusSyncHandler *)self->_syncHandler setFixedProblemAsReviewed:notificationCopy];
     v11 = +[GEOResourceManifestManager modernManager];
     [v11 openServerConnection];
 
@@ -193,9 +193,9 @@
     v16 = 3221225472;
     v17 = sub_10000DB68;
     v18 = &unk_10003CED0;
-    v19 = v7;
-    v20 = self;
-    [v12 setManifestToken:v8 completionHandler:&v15];
+    v19 = notificationCopy;
+    selfCopy = self;
+    [v12 setManifestToken:tokenCopy completionHandler:&v15];
 
     v13 = [GEOPlaceCardRequester sharedRequester:v15];
     [v13 clearCache];
@@ -205,34 +205,34 @@ LABEL_6:
   }
 }
 
-- (void)pushManager:(id)a3 receivedRAPStatusChangeNotification:(id)a4
+- (void)pushManager:(id)manager receivedRAPStatusChangeNotification:(id)notification
 {
-  v7 = a4;
-  v5 = [(MDState *)self->_state notificationCenter];
-  v6 = [v5 addRAPNotificationForProblemStatusChangeWithRapInfo:v7];
+  notificationCopy = notification;
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v6 = [notificationCenter addRAPNotificationForProblemStatusChangeWithRapInfo:notificationCopy];
 }
 
-- (void)pushManager:(id)a3 receivedPhotoLivenessMUID:(id)a4 title:(id)a5 message:(id)a6 actionURL:(id)a7
+- (void)pushManager:(id)manager receivedPhotoLivenessMUID:(id)d title:(id)title message:(id)message actionURL:(id)l
 {
-  v14 = a5;
-  v10 = a6;
-  v11 = a7;
-  v12 = [(MDState *)self->_state notificationCenter];
-  v13 = [v12 addUGCPhotoNotificationWithTitle:v14 message:v10 actionURL:v11];
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v13 = [notificationCenter addUGCPhotoNotificationWithTitle:titleCopy message:messageCopy actionURL:lCopy];
 }
 
-- (void)pushManager:(id)a3 receivedClearedPhotoAttributionNotificationWithTitle:(id)a4 message:(id)a5
+- (void)pushManager:(id)manager receivedClearedPhotoAttributionNotificationWithTitle:(id)title message:(id)message
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(MDState *)self->_state notificationCenter];
-  v9 = [v8 addUGCClearedPhotoAttributionNotificationWithTitle:v10 message:v7];
+  titleCopy = title;
+  messageCopy = message;
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  v9 = [notificationCenter addUGCClearedPhotoAttributionNotificationWithTitle:titleCopy message:messageCopy];
 }
 
-- (void)clearRAPStatusChangeNotificationWithManager:(id)a3
+- (void)clearRAPStatusChangeNotificationWithManager:(id)manager
 {
-  v3 = [(MDState *)self->_state notificationCenter];
-  [v3 clearNotificationsOfType:15];
+  notificationCenter = [(MDState *)self->_state notificationCenter];
+  [notificationCenter clearNotificationsOfType:15];
 }
 
 @end

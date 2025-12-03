@@ -1,21 +1,21 @@
 @interface RTRuntime
 + (double)footprint;
-+ (id)classesFromImages:(id)a3;
-+ (id)directSubclassesOfClass:(Class)a3 images:(id)a4 includeParentClass:(BOOL)a5;
-+ (id)objToDictionary:(id)a3 filterProperties:(id)a4;
-+ (id)objToString:(id)a3 filterProperties:(id)a4;
++ (id)classesFromImages:(id)images;
++ (id)directSubclassesOfClass:(Class)class images:(id)images includeParentClass:(BOOL)parentClass;
++ (id)objToDictionary:(id)dictionary filterProperties:(id)properties;
++ (id)objToString:(id)string filterProperties:(id)properties;
 + (id)routineClassStrings;
 + (id)routineClasses;
-+ (id)routineSubclassesOfClass:(Class)a3;
-+ (id)subclassesOfClass:(Class)a3 images:(id)a4 includeParentClass:(BOOL)a5;
++ (id)routineSubclassesOfClass:(Class)class;
++ (id)subclassesOfClass:(Class)class images:(id)images includeParentClass:(BOOL)parentClass;
 @end
 
 @implementation RTRuntime
 
-+ (id)subclassesOfClass:(Class)a3 images:(id)a4 includeParentClass:(BOOL)a5
++ (id)subclassesOfClass:(Class)class images:(id)images includeParentClass:(BOOL)parentClass
 {
   v6 = MEMORY[0x277CCAC30];
-  if (a5)
+  if (parentClass)
   {
     v7 = v15;
     v15[0] = MEMORY[0x277D85DD0];
@@ -33,10 +33,10 @@
 
   v7[2] = v8;
   v7[3] = &__block_descriptor_40_e25_B24__0_8__NSDictionary_16lu32l8;
-  v7[4] = a3;
-  v9 = a4;
+  v7[4] = class;
+  imagesCopy = images;
   v10 = [v6 predicateWithBlock:v7];
-  v11 = [a1 classesFromImages:v9];
+  v11 = [self classesFromImages:imagesCopy];
 
   v12 = [v11 filteredArrayUsingPredicate:v10];
 
@@ -59,10 +59,10 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
   return v4;
 }
 
-+ (id)directSubclassesOfClass:(Class)a3 images:(id)a4 includeParentClass:(BOOL)a5
++ (id)directSubclassesOfClass:(Class)class images:(id)images includeParentClass:(BOOL)parentClass
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = [a1 subclassesOfClass:a3 images:a4 includeParentClass:a5];
+  v6 = [self subclassesOfClass:class images:images includeParentClass:parentClass];
   v7 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
@@ -84,7 +84,7 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        if (class_getSuperclass(v13) == a3)
+        if (class_getSuperclass(v13) == class)
         {
           [v7 addObject:{v13, v15}];
         }
@@ -99,9 +99,9 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
   return v7;
 }
 
-+ (id)classesFromImages:(id)a3
++ (id)classesFromImages:(id)images
 {
-  v3 = a3;
+  imagesCopy = images;
   v4 = objc_opt_new();
   outCount = 0;
   v5 = objc_copyImageNames(&outCount);
@@ -110,9 +110,9 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
     for (i = 0; i < outCount; ++i)
     {
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:v5[i]];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
 
-      if ([v3 containsObject:v8])
+      if ([imagesCopy containsObject:lastPathComponent])
       {
         v16 = 0;
         v9 = objc_copyClassNamesForImage(v5[i], &v16);
@@ -139,17 +139,17 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
   }
 
   free(v5);
-  v14 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v14;
+  return allObjects;
 }
 
-+ (id)objToString:(id)a3 filterProperties:(id)a4
++ (id)objToString:(id)string filterProperties:(id)properties
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  stringCopy = string;
+  propertiesCopy = properties;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   outCount = 0;
   v8 = objc_opt_class();
   v9 = class_copyPropertyList(v8, &outCount);
@@ -161,20 +161,20 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
       if (Name)
       {
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:Name];
-        v13 = [v5 valueForKey:v12];
-        [v7 setObject:v13 forKeyedSubscript:v12];
+        v13 = [stringCopy valueForKey:v12];
+        [dictionary setObject:v13 forKeyedSubscript:v12];
       }
     }
   }
 
   free(v9);
-  v14 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = [v7 allKeys];
-  v16 = [v15 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allKeys = [dictionary allKeys];
+  v16 = [allKeys sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   v17 = [v16 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v17)
@@ -191,11 +191,11 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
         }
 
         v21 = *(*(&v25 + 1) + 8 * j);
-        if (([v6 containsObject:v21] & 1) == 0)
+        if (([propertiesCopy containsObject:v21] & 1) == 0)
         {
-          [v14 addObject:v21];
-          v22 = [v7 objectForKeyedSubscript:v21];
-          [v14 addObject:v22];
+          [array addObject:v21];
+          v22 = [dictionary objectForKeyedSubscript:v21];
+          [array addObject:v22];
         }
       }
 
@@ -205,17 +205,17 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
     while (v18);
   }
 
-  v23 = [v14 componentsJoinedByString:{@", "}];
+  v23 = [array componentsJoinedByString:{@", "}];
 
   return v23;
 }
 
-+ (id)objToDictionary:(id)a3 filterProperties:(id)a4
++ (id)objToDictionary:(id)dictionary filterProperties:(id)properties
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionaryCopy = dictionary;
+  propertiesCopy = properties;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   outCount = 0;
   v8 = objc_opt_class();
   v9 = class_copyPropertyList(v8, &outCount);
@@ -227,20 +227,20 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
       if (Name)
       {
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:Name];
-        v13 = [v5 valueForKey:v12];
-        [v7 setObject:v13 forKeyedSubscript:v12];
+        v13 = [dictionaryCopy valueForKey:v12];
+        [dictionary setObject:v13 forKeyedSubscript:v12];
       }
     }
   }
 
   free(v9);
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [v7 allKeys];
-  v16 = [v15 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allKeys = [dictionary allKeys];
+  v16 = [allKeys sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   v17 = [v16 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v17)
@@ -257,10 +257,10 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
         }
 
         v21 = *(*(&v24 + 1) + 8 * j);
-        if (([v6 containsObject:v21] & 1) == 0)
+        if (([propertiesCopy containsObject:v21] & 1) == 0)
         {
-          v22 = [v7 objectForKeyedSubscript:v21];
-          [v14 setObject:v22 forKeyedSubscript:v21];
+          v22 = [dictionary objectForKeyedSubscript:v21];
+          [dictionary2 setObject:v22 forKeyedSubscript:v21];
         }
       }
 
@@ -270,7 +270,7 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
     while (v18);
   }
 
-  return v14;
+  return dictionary2;
 }
 
 + (id)routineClassStrings
@@ -283,10 +283,10 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
     for (i = 0; i < outCount; ++i)
     {
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:v3[i]];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
 
-      v8 = [a1 routineImageNames];
-      v9 = [v8 containsObject:v7];
+      routineImageNames = [self routineImageNames];
+      v9 = [routineImageNames containsObject:lastPathComponent];
 
       if (v9)
       {
@@ -310,23 +310,23 @@ BOOL __57__RTRuntime_subclassesOfClass_images_includeParentClass___block_invoke_
   }
 
   free(v3);
-  v13 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v13;
+  return allObjects;
 }
 
-+ (id)routineSubclassesOfClass:(Class)a3
++ (id)routineSubclassesOfClass:(Class)class
 {
-  v4 = [a1 routineImageNames];
-  v5 = [RTRuntime subclassesOfClass:a3 images:v4 includeParentClass:1];
+  routineImageNames = [self routineImageNames];
+  v5 = [RTRuntime subclassesOfClass:class images:routineImageNames includeParentClass:1];
 
   return v5;
 }
 
 + (id)routineClasses
 {
-  v2 = [a1 routineImageNames];
-  v3 = [RTRuntime classesFromImages:v2];
+  routineImageNames = [self routineImageNames];
+  v3 = [RTRuntime classesFromImages:routineImageNames];
 
   return v3;
 }

@@ -9,39 +9,39 @@
 - (double)PK_locationInView:()PKAdditions
 {
   v4 = a3;
-  v5 = [v4 window];
-  if (!v5)
+  window = [v4 window];
+  if (!window)
   {
     goto LABEL_6;
   }
 
-  v6 = v5;
-  v7 = [a1 window];
-  if (!v7)
+  v6 = window;
+  window2 = [self window];
+  if (!window2)
   {
 
     goto LABEL_6;
   }
 
-  v8 = v7;
-  v9 = [v4 window];
-  v10 = [a1 window];
+  v8 = window2;
+  window3 = [v4 window];
+  window4 = [self window];
 
-  if (v9 == v10)
+  if (window3 == window4)
   {
 LABEL_6:
-    [a1 locationInView:v4];
+    [self locationInView:v4];
     v18 = v19;
     goto LABEL_7;
   }
 
-  v11 = [a1 window];
-  [a1 locationInView:v11];
+  window5 = [self window];
+  [self locationInView:window5];
   v13 = v12;
   v15 = v14;
 
-  v16 = [a1 window];
-  [v16 PK_convertPoint:v4 toView:{v13, v15}];
+  window6 = [self window];
+  [window6 PK_convertPoint:v4 toView:{v13, v15}];
   v18 = v17;
 
 LABEL_7:
@@ -51,39 +51,39 @@ LABEL_7:
 - (double)PK_preciseLocationInView:()PKAdditions
 {
   v4 = a3;
-  v5 = [v4 window];
-  if (!v5)
+  window = [v4 window];
+  if (!window)
   {
     goto LABEL_6;
   }
 
-  v6 = v5;
-  v7 = [a1 window];
-  if (!v7)
+  v6 = window;
+  window2 = [self window];
+  if (!window2)
   {
 
     goto LABEL_6;
   }
 
-  v8 = v7;
-  v9 = [v4 window];
-  v10 = [a1 window];
+  v8 = window2;
+  window3 = [v4 window];
+  window4 = [self window];
 
-  if (v9 == v10)
+  if (window3 == window4)
   {
 LABEL_6:
-    [a1 preciseLocationInView:v4];
+    [self preciseLocationInView:v4];
     v18 = v19;
     goto LABEL_7;
   }
 
-  v11 = [a1 window];
-  [a1 preciseLocationInView:v11];
+  window5 = [self window];
+  [self preciseLocationInView:window5];
   v13 = v12;
   v15 = v14;
 
-  v16 = [a1 window];
-  [v16 PK_convertPoint:v4 toView:{v13, v15}];
+  window6 = [self window];
+  [window6 PK_convertPoint:v4 toView:{v13, v15}];
   v18 = v17;
 
 LABEL_7:
@@ -97,7 +97,7 @@ LABEL_7:
     return 0.0;
   }
 
-  [a1 _rollAngle];
+  [self _rollAngle];
   return result;
 }
 

@@ -1,7 +1,7 @@
 @interface _HDSPBiomeBridge
 - (_HDSPBiomeBridge)init;
-- (id)subscribe:(id)a3 callback:(id)a4;
-- (void)publish:(id)a3 stream:(id)a4;
+- (id)subscribe:(id)subscribe callback:(id)callback;
+- (void)publish:(id)publish stream:(id)stream;
 @end
 
 @implementation _HDSPBiomeBridge
@@ -26,39 +26,39 @@
   return v2;
 }
 
-- (id)subscribe:(id)a3 callback:(id)a4
+- (id)subscribe:(id)subscribe callback:(id)callback
 {
-  v6 = a4;
-  v7 = [a3 subscribeOn:self->_scheduler];
+  callbackCopy = callback;
+  v7 = [subscribe subscribeOn:self->_scheduler];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39___HDSPBiomeBridge_subscribe_callback___block_invoke_406;
   v11[3] = &unk_279C7CB38;
-  v12 = v6;
-  v8 = v6;
+  v12 = callbackCopy;
+  v8 = callbackCopy;
   v9 = [v7 sinkWithCompletion:&__block_literal_global_21 receiveInput:v11];
 
   return v9;
 }
 
-- (void)publish:(id)a3 stream:(id)a4
+- (void)publish:(id)publish stream:(id)stream
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  publishCopy = publish;
+  streamCopy = stream;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
     v11 = objc_opt_class();
     v12 = 2114;
-    v13 = v5;
+    v13 = publishCopy;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] publishing event: [%{public}@]", &v10, 0x16u);
   }
 
-  v8 = [v6 source];
+  source = [streamCopy source];
 
-  [v8 sendEvent:v5];
+  [source sendEvent:publishCopy];
   v9 = *MEMORY[0x277D85DE8];
 }
 

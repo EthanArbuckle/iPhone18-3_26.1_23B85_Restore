@@ -1,30 +1,30 @@
 @interface PBUIWallpaperStaticBackgroundView
-- (BOOL)_shouldSuspendMotionEffectsForState:(id *)a3;
-- (BOOL)_shouldSuspendMotionEffectsForStyle:(int64_t)a3;
-- (BOOL)setWallpaperStyleTransitionState:(id *)a3 forVariant:(int64_t)a4 withAnimationFactory:(id)a5;
-- (PBUIWallpaperStaticBackgroundView)initWithWallpaperPresenter:(id)a3;
-- (id)_effectViewForVariant:(int64_t)a3;
-- (id)_newEffectViewForVariant:(int64_t)a3 transitionState:(id *)a4;
+- (BOOL)_shouldSuspendMotionEffectsForState:(id *)state;
+- (BOOL)_shouldSuspendMotionEffectsForStyle:(int64_t)style;
+- (BOOL)setWallpaperStyleTransitionState:(id *)state forVariant:(int64_t)variant withAnimationFactory:(id)factory;
+- (PBUIWallpaperStaticBackgroundView)initWithWallpaperPresenter:(id)presenter;
+- (id)_effectViewForVariant:(int64_t)variant;
+- (id)_newEffectViewForVariant:(int64_t)variant transitionState:(id *)state;
 - (void)_beginSuspendingMotionEffectsForStyleIfNeeded;
 - (void)_endSuspendingMotionEffectsForStyleIfNeeded;
-- (void)_setEffectView:(id)a3 forVariant:(int64_t)a4;
-- (void)_updateMotionEffectsForState:(id *)a3;
+- (void)_setEffectView:(id)view forVariant:(int64_t)variant;
+- (void)_updateMotionEffectsForState:(id *)state;
 - (void)dealloc;
-- (void)setVariant:(int64_t)a3 withOutAnimationFactory:(id)a4 inAnimationFactory:(id)a5 completion:(id)a6;
+- (void)setVariant:(int64_t)variant withOutAnimationFactory:(id)factory inAnimationFactory:(id)animationFactory completion:(id)completion;
 @end
 
 @implementation PBUIWallpaperStaticBackgroundView
 
-- (PBUIWallpaperStaticBackgroundView)initWithWallpaperPresenter:(id)a3
+- (PBUIWallpaperStaticBackgroundView)initWithWallpaperPresenter:(id)presenter
 {
-  v5 = a3;
+  presenterCopy = presenter;
   v16.receiver = self;
   v16.super_class = PBUIWallpaperStaticBackgroundView;
   v6 = [(PBUIWallpaperStaticBackgroundView *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wallpaperPresenter, a3);
+    objc_storeStrong(&v6->_wallpaperPresenter, presenter);
     v7->_variant = -1;
     v13 = 0;
     v14 = 0;
@@ -52,24 +52,24 @@
   [(PBUIWallpaperStaticBackgroundView *)&v3 dealloc];
 }
 
-- (void)setVariant:(int64_t)a3 withOutAnimationFactory:(id)a4 inAnimationFactory:(id)a5 completion:(id)a6
+- (void)setVariant:(int64_t)variant withOutAnimationFactory:(id)factory inAnimationFactory:(id)animationFactory completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  factoryCopy = factory;
+  animationFactoryCopy = animationFactory;
+  completionCopy = completion;
+  v13 = completionCopy;
   variant = self->_variant;
-  if (variant == a3)
+  if (variant == variant)
   {
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    self->_variant = a3;
+    self->_variant = variant;
     v41[0] = 0;
     v41[1] = v41;
     v41[2] = 0x2020000000;
@@ -89,10 +89,10 @@
     v34 = v39;
     v35 = v41;
     v36 = v37;
-    v33 = v12;
+    v33 = completionCopy;
     v15 = MEMORY[0x223D62EE0](v32);
     v16 = [(PBUIWallpaperStaticBackgroundView *)self _effectViewForVariant:variant];
-    v17 = [(PBUIWallpaperStaticBackgroundView *)self _effectViewForVariant:a3];
+    v17 = [(PBUIWallpaperStaticBackgroundView *)self _effectViewForVariant:variant];
     v18 = MEMORY[0x277CF0D38];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
@@ -106,7 +106,7 @@
     v28[3] = &unk_2783646D8;
     v20 = v15;
     v29 = v20;
-    [v18 animateWithFactory:v10 actions:v30 completion:v28];
+    [v18 animateWithFactory:factoryCopy actions:v30 completion:v28];
     [v17 setAlpha:0.0];
     v21 = MEMORY[0x277CF0D38];
     v26[0] = MEMORY[0x277D85DD0];
@@ -121,7 +121,7 @@
     v24[3] = &unk_2783646D8;
     v23 = v20;
     v25 = v23;
-    [v21 animateWithFactory:v11 actions:v26 completion:v24];
+    [v21 animateWithFactory:animationFactoryCopy actions:v26 completion:v24];
 
     _Block_object_dispose(v37, 8);
     _Block_object_dispose(v39, 8);
@@ -155,16 +155,16 @@ uint64_t __102__PBUIWallpaperStaticBackgroundView_setVariant_withOutAnimationFac
   return result;
 }
 
-- (BOOL)setWallpaperStyleTransitionState:(id *)a3 forVariant:(int64_t)a4 withAnimationFactory:(id)a5
+- (BOOL)setWallpaperStyleTransitionState:(id *)state forVariant:(int64_t)variant withAnimationFactory:(id)factory
 {
-  v8 = a5;
-  v9 = self->_variant == a4;
-  v10 = [(PBUIWallpaperStaticBackgroundView *)self _effectViewForVariant:a4];
+  factoryCopy = factory;
+  v9 = self->_variant == variant;
+  v10 = [(PBUIWallpaperStaticBackgroundView *)self _effectViewForVariant:variant];
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x3810000000;
   v40[3] = &unk_21E71DDAF;
-  v41 = *a3;
+  v41 = *state;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -180,10 +180,10 @@ uint64_t __102__PBUIWallpaperStaticBackgroundView_setVariant_withOutAnimationFac
   v31 = v40;
   v32 = &v34;
   v29 = v12;
-  v30 = self;
-  v33 = a4;
+  selfCopy = self;
+  variantCopy = variant;
   [v11 animateWithFactory:0 actions:v28];
-  [(PBUIWallpaperStaticBackgroundView *)self _setEffectView:v35[5] forVariant:a4];
+  [(PBUIWallpaperStaticBackgroundView *)self _setEffectView:v35[5] forVariant:variant];
   v13 = MEMORY[0x277CF0D38];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -191,7 +191,7 @@ uint64_t __102__PBUIWallpaperStaticBackgroundView_setVariant_withOutAnimationFac
   v22[3] = &unk_278364728;
   v22[4] = self;
   v27 = v9;
-  v26 = a4;
+  variantCopy2 = variant;
   v24 = v40;
   v25 = &v34;
   v23 = v12;
@@ -202,10 +202,10 @@ uint64_t __102__PBUIWallpaperStaticBackgroundView_setVariant_withOutAnimationFac
   v14 = v23;
   v21 = v9;
   v17 = v14;
-  v18 = self;
+  selfCopy2 = self;
   v19 = &v34;
   v20 = v40;
-  [v13 animateWithFactory:v8 actions:v22 completion:v16];
+  [v13 animateWithFactory:factoryCopy actions:v22 completion:v16];
 
   _Block_object_dispose(&v34, 8);
   _Block_object_dispose(v40, 8);
@@ -297,9 +297,9 @@ void *__102__PBUIWallpaperStaticBackgroundView_setWallpaperStyleTransitionState_
 
 - (void)_beginSuspendingMotionEffectsForStyleIfNeeded
 {
-  v3 = [(PBUIWallpaperStaticBackgroundView *)self wallpaperStyleAnimationAssertion];
+  wallpaperStyleAnimationAssertion = [(PBUIWallpaperStaticBackgroundView *)self wallpaperStyleAnimationAssertion];
 
-  if (!v3)
+  if (!wallpaperStyleAnimationAssertion)
   {
     v4 = PBUILogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -315,9 +315,9 @@ void *__102__PBUIWallpaperStaticBackgroundView_setWallpaperStyleTransitionState_
 
 - (void)_endSuspendingMotionEffectsForStyleIfNeeded
 {
-  v3 = [(PBUIWallpaperStaticBackgroundView *)self wallpaperStyleAnimationAssertion];
+  wallpaperStyleAnimationAssertion = [(PBUIWallpaperStaticBackgroundView *)self wallpaperStyleAnimationAssertion];
 
-  if (v3)
+  if (wallpaperStyleAnimationAssertion)
   {
     v4 = PBUILogCommon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -326,16 +326,16 @@ void *__102__PBUIWallpaperStaticBackgroundView_setWallpaperStyleTransitionState_
       _os_log_impl(&dword_21E67D000, v4, OS_LOG_TYPE_INFO, "Enabling parallax because of requested wallpaper style", v6, 2u);
     }
 
-    v5 = [(PBUIWallpaperStaticBackgroundView *)self wallpaperStyleAnimationAssertion];
-    [v5 invalidate];
+    wallpaperStyleAnimationAssertion2 = [(PBUIWallpaperStaticBackgroundView *)self wallpaperStyleAnimationAssertion];
+    [wallpaperStyleAnimationAssertion2 invalidate];
 
     [(PBUIWallpaperStaticBackgroundView *)self setWallpaperStyleAnimationAssertion:0];
   }
 }
 
-- (void)_updateMotionEffectsForState:(id *)a3
+- (void)_updateMotionEffectsForState:(id *)state
 {
-  v4 = *a3;
+  v4 = *state;
   if ([(PBUIWallpaperStaticBackgroundView *)self _shouldSuspendMotionEffectsForState:&v4])
   {
     [(PBUIWallpaperStaticBackgroundView *)self _beginSuspendingMotionEffectsForStyleIfNeeded];
@@ -347,9 +347,9 @@ void *__102__PBUIWallpaperStaticBackgroundView_setWallpaperStyleTransitionState_
   }
 }
 
-- (id)_effectViewForVariant:(int64_t)a3
+- (id)_effectViewForVariant:(int64_t)variant
 {
-  if (a3 == 1)
+  if (variant == 1)
   {
     v4 = &OBJC_IVAR___PBUIWallpaperStaticBackgroundView__homescreenWallpaperEffectView;
 LABEL_5:
@@ -358,7 +358,7 @@ LABEL_5:
     return v5;
   }
 
-  if (!a3)
+  if (!variant)
   {
     v4 = &OBJC_IVAR___PBUIWallpaperStaticBackgroundView__lockscreenWallpaperEffectView;
     goto LABEL_5;
@@ -369,36 +369,36 @@ LABEL_5:
   return v5;
 }
 
-- (void)_setEffectView:(id)a3 forVariant:(int64_t)a4
+- (void)_setEffectView:(id)view forVariant:(int64_t)variant
 {
-  v7 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (variant == 1)
   {
-    v9 = v7;
+    v9 = viewCopy;
     v8 = &OBJC_IVAR___PBUIWallpaperStaticBackgroundView__homescreenWallpaperEffectView;
   }
 
   else
   {
-    if (a4)
+    if (variant)
     {
       goto LABEL_6;
     }
 
-    v9 = v7;
+    v9 = viewCopy;
     v8 = &OBJC_IVAR___PBUIWallpaperStaticBackgroundView__lockscreenWallpaperEffectView;
   }
 
-  objc_storeStrong((&self->super.super.super.isa + *v8), a3);
-  v7 = v9;
+  objc_storeStrong((&self->super.super.super.isa + *v8), view);
+  viewCopy = v9;
 LABEL_6:
 }
 
-- (id)_newEffectViewForVariant:(int64_t)a3 transitionState:(id *)a4
+- (id)_newEffectViewForVariant:(int64_t)variant transitionState:(id *)state
 {
-  v6 = [[PBUIWallpaperEffectViewBase alloc] initWithWallpaperPresenter:self->_wallpaperPresenter variant:a3 transformOptions:0];
+  v6 = [[PBUIWallpaperEffectViewBase alloc] initWithWallpaperPresenter:self->_wallpaperPresenter variant:variant transformOptions:0];
   [(PBUIWallpaperEffectViewBase *)v6 setForcesOpaque:1];
-  v8 = *a4;
+  v8 = *state;
   [(PBUIWallpaperEffectViewBase *)v6 setTransitionState:&v8];
   [(PBUIWallpaperStaticBackgroundView *)self bounds];
   [(PBUIWallpaperEffectViewBase *)v6 setFrame:?];
@@ -408,10 +408,10 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)_shouldSuspendMotionEffectsForStyle:(int64_t)a3
+- (BOOL)_shouldSuspendMotionEffectsForStyle:(int64_t)style
 {
-  result = _WallpaperStyleHasDarkBlur(a3);
-  if ((a3 - 1) < 2)
+  result = _WallpaperStyleHasDarkBlur(style);
+  if ((style - 1) < 2)
   {
     return 1;
   }
@@ -419,11 +419,11 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_shouldSuspendMotionEffectsForState:(id *)a3
+- (BOOL)_shouldSuspendMotionEffectsForState:(id *)state
 {
-  v5 = [(PBUIWallpaperStaticBackgroundView *)self _shouldSuspendMotionEffectsForStyle:a3->var0];
-  v6 = [(PBUIWallpaperStaticBackgroundView *)self _shouldSuspendMotionEffectsForStyle:a3->var1];
-  var2 = a3->var2;
+  v5 = [(PBUIWallpaperStaticBackgroundView *)self _shouldSuspendMotionEffectsForStyle:state->var0];
+  v6 = [(PBUIWallpaperStaticBackgroundView *)self _shouldSuspendMotionEffectsForStyle:state->var1];
+  var2 = state->var2;
   if (fabs(var2 + -1.0) < 2.22044605e-16 && v6)
   {
     return 1;

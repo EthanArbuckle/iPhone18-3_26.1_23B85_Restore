@@ -1,37 +1,37 @@
 @interface BCSWebPresentmentPermissionsItem
-+ (id)itemFromStatement:(sqlite3_stmt *)a3;
-- (BCSWebPresentmentPermissionsItem)initWithBrandID:(id)a3;
-- (BCSWebPresentmentPermissionsItem)initWithBrandID:(id)a3 data:(id)a4;
-- (BCSWebPresentmentPermissionsItem)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesItemIdentifying:(id)a3;
++ (id)itemFromStatement:(sqlite3_stmt *)statement;
+- (BCSWebPresentmentPermissionsItem)initWithBrandID:(id)d;
+- (BCSWebPresentmentPermissionsItem)initWithBrandID:(id)d data:(id)data;
+- (BCSWebPresentmentPermissionsItem)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesItemIdentifying:(id)identifying;
 - (NSObject)itemIdentifier;
 - (NSString)debugDescription;
 - (NSString)pirKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)serverType;
 - (int64_t)truncatedHash;
 - (int64_t)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateStatementValues:(sqlite3_stmt *)a3 withItemIdentifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateStatementValues:(sqlite3_stmt *)values withItemIdentifier:(id)identifier;
 @end
 
 @implementation BCSWebPresentmentPermissionsItem
 
-- (BCSWebPresentmentPermissionsItem)initWithBrandID:(id)a3
+- (BCSWebPresentmentPermissionsItem)initWithBrandID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = BCSWebPresentmentPermissionsItem;
   v6 = [(BCSItem *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_brandId, a3);
+    objc_storeStrong(&v6->_brandId, d);
     v8 = [BCSWebPresentmentItemIdentifier alloc];
-    v9 = [(BCSWebPresentmentPermissionsItem *)v7 brandId];
-    v10 = [(BCSWebPresentmentItemIdentifier *)v8 initWithBrandID:v9 serverType:4];
+    brandId = [(BCSWebPresentmentPermissionsItem *)v7 brandId];
+    v10 = [(BCSWebPresentmentItemIdentifier *)v8 initWithBrandID:brandId serverType:4];
     identifier = v7->_identifier;
     v7->_identifier = v10;
   }
@@ -39,21 +39,21 @@
   return v7;
 }
 
-- (BCSWebPresentmentPermissionsItem)initWithBrandID:(id)a3 data:(id)a4
+- (BCSWebPresentmentPermissionsItem)initWithBrandID:(id)d data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = BCSWebPresentmentPermissionsItem;
   v9 = [(BCSItem *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_brandId, a3);
-    objc_storeStrong(&v10->_data, a4);
+    objc_storeStrong(&v9->_brandId, d);
+    objc_storeStrong(&v10->_data, data);
     v11 = [BCSWebPresentmentItemIdentifier alloc];
-    v12 = [(BCSWebPresentmentPermissionsItem *)v10 brandId];
-    v13 = [(BCSWebPresentmentItemIdentifier *)v11 initWithBrandID:v12 serverType:4];
+    brandId = [(BCSWebPresentmentPermissionsItem *)v10 brandId];
+    v13 = [(BCSWebPresentmentItemIdentifier *)v11 initWithBrandID:brandId serverType:4];
     identifier = v10->_identifier;
     v10->_identifier = v13;
   }
@@ -65,19 +65,19 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [(BCSWebPresentmentPermissionsItem *)self description];
-  v5 = [(BCSWebPresentmentPermissionsItem *)self brandId];
-  v6 = [(BCSWebPresentmentPermissionsItem *)self data];
-  v7 = [v3 stringWithFormat:@"<%@ { brandId: %@, data: %@>", v4, v5, v6];
+  brandId = [(BCSWebPresentmentPermissionsItem *)self brandId];
+  data = [(BCSWebPresentmentPermissionsItem *)self data];
+  v7 = [v3 stringWithFormat:@"<%@ { brandId: %@, data: %@>", v4, brandId, data];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2854663D0])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_2854663D0])
   {
-    v5 = [(BCSWebPresentmentPermissionsItem *)self matchesItemIdentifying:v4];
+    v5 = [(BCSWebPresentmentPermissionsItem *)self matchesItemIdentifying:equalCopy];
   }
 
   else
@@ -97,70 +97,70 @@
 
 - (NSObject)itemIdentifier
 {
-  v2 = [(BCSWebPresentmentPermissionsItem *)self identifier];
-  v3 = [v2 itemIdentifier];
+  identifier = [(BCSWebPresentmentPermissionsItem *)self identifier];
+  itemIdentifier = [identifier itemIdentifier];
 
-  return v3;
+  return itemIdentifier;
 }
 
 - (int64_t)truncatedHash
 {
-  v2 = [(BCSWebPresentmentPermissionsItem *)self identifier];
-  v3 = [v2 truncatedHash];
+  identifier = [(BCSWebPresentmentPermissionsItem *)self identifier];
+  truncatedHash = [identifier truncatedHash];
 
-  return v3;
+  return truncatedHash;
 }
 
 - (int64_t)type
 {
-  v2 = [(BCSWebPresentmentPermissionsItem *)self identifier];
-  v3 = [v2 type];
+  identifier = [(BCSWebPresentmentPermissionsItem *)self identifier];
+  type = [identifier type];
 
-  return v3;
+  return type;
 }
 
-- (BOOL)matchesItemIdentifying:(id)a3
+- (BOOL)matchesItemIdentifying:(id)identifying
 {
-  v4 = a3;
-  v5 = [(BCSWebPresentmentPermissionsItem *)self identifier];
-  v6 = [v5 matchesItemIdentifying:v4];
+  identifyingCopy = identifying;
+  identifier = [(BCSWebPresentmentPermissionsItem *)self identifier];
+  v6 = [identifier matchesItemIdentifying:identifyingCopy];
 
   return v6;
 }
 
 - (NSString)pirKey
 {
-  v2 = [(BCSWebPresentmentPermissionsItem *)self identifier];
-  v3 = [v2 brandId];
+  identifier = [(BCSWebPresentmentPermissionsItem *)self identifier];
+  brandId = [identifier brandId];
 
-  return v3;
+  return brandId;
 }
 
 - (int64_t)serverType
 {
-  v2 = [(BCSWebPresentmentPermissionsItem *)self identifier];
-  v3 = [v2 serverType];
+  identifier = [(BCSWebPresentmentPermissionsItem *)self identifier];
+  serverType = [identifier serverType];
 
-  return v3;
+  return serverType;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(BCSWebPresentmentPermissionsItem *)self brandId];
-    v7 = [v6 copyWithZone:a3];
+    brandId = [(BCSWebPresentmentPermissionsItem *)self brandId];
+    v7 = [brandId copyWithZone:zone];
     v8 = v5[4];
     v5[4] = v7;
 
-    v9 = [(BCSWebPresentmentPermissionsItem *)self data];
-    v10 = [v9 copyWithZone:a3];
+    data = [(BCSWebPresentmentPermissionsItem *)self data];
+    v10 = [data copyWithZone:zone];
     v11 = v5[2];
     v5[2] = v10;
 
-    v12 = [(BCSWebPresentmentPermissionsItem *)self identifier];
-    v13 = [v12 copyWithZone:a3];
+    identifier = [(BCSWebPresentmentPermissionsItem *)self identifier];
+    v13 = [identifier copyWithZone:zone];
     v14 = v5[3];
     v5[3] = v13;
   }
@@ -168,31 +168,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BCSWebPresentmentPermissionsItem *)self brandId];
-  [v4 encodeObject:v5 forKey:@"BrandId"];
+  coderCopy = coder;
+  brandId = [(BCSWebPresentmentPermissionsItem *)self brandId];
+  [coderCopy encodeObject:brandId forKey:@"BrandId"];
 
-  v6 = [(BCSWebPresentmentPermissionsItem *)self data];
-  [v4 encodeObject:v6 forKey:@"Data"];
+  data = [(BCSWebPresentmentPermissionsItem *)self data];
+  [coderCopy encodeObject:data forKey:@"Data"];
 }
 
-- (BCSWebPresentmentPermissionsItem)initWithCoder:(id)a3
+- (BCSWebPresentmentPermissionsItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BrandId"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BrandId"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
 
   v7 = [(BCSWebPresentmentPermissionsItem *)self initWithBrandID:v5 data:v6];
   return v7;
 }
 
-+ (id)itemFromStatement:(sqlite3_stmt *)a3
++ (id)itemFromStatement:(sqlite3_stmt *)statement
 {
-  v4 = BCSWebPresentmentStoreStringFromStatement(a3);
-  v5 = BCSWebPresentmentStoreDataFromStatement(a3);
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{sqlite3_column_double(a3, 2)}];
+  v4 = BCSWebPresentmentStoreStringFromStatement(statement);
+  v5 = BCSWebPresentmentStoreDataFromStatement(statement);
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{sqlite3_column_double(statement, 2)}];
   if (v5)
   {
     v7 = [[BCSWebPresentmentPermissionsItem alloc] initWithBrandID:v4 data:v5];
@@ -212,19 +212,19 @@
   return v8;
 }
 
-- (void)updateStatementValues:(sqlite3_stmt *)a3 withItemIdentifier:(id)a4
+- (void)updateStatementValues:(sqlite3_stmt *)values withItemIdentifier:(id)identifier
 {
-  v6 = [a4 brandId];
-  sqlite3_bind_text(a3, 1, [v6 UTF8String], -1, 0);
+  brandId = [identifier brandId];
+  sqlite3_bind_text(values, 1, [brandId UTF8String], -1, 0);
 
-  v7 = [(BCSWebPresentmentPermissionsItem *)self data];
-  v8 = [v7 bytes];
-  v9 = [(BCSWebPresentmentPermissionsItem *)self data];
-  sqlite3_bind_blob(a3, 2, v8, [v9 length], 0);
+  data = [(BCSWebPresentmentPermissionsItem *)self data];
+  bytes = [data bytes];
+  data2 = [(BCSWebPresentmentPermissionsItem *)self data];
+  sqlite3_bind_blob(values, 2, bytes, [data2 length], 0);
 
-  v11 = [(BCSItem *)self expirationDate];
-  [v11 timeIntervalSince1970];
-  sqlite3_bind_double(a3, 3, v10);
+  expirationDate = [(BCSItem *)self expirationDate];
+  [expirationDate timeIntervalSince1970];
+  sqlite3_bind_double(values, 3, v10);
 }
 
 @end

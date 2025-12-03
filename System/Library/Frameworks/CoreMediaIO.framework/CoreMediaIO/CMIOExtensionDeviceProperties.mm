@@ -1,7 +1,7 @@
 @interface CMIOExtensionDeviceProperties
 + (CMIOExtensionDeviceProperties)devicePropertiesWithDictionary:(NSDictionary *)propertiesDictionary;
 - (CMIOExtensionDeviceProperties)initWithDictionary:(NSDictionary *)propertiesDictionary;
-- (CMIOExtensionDeviceProperties)initWithPropertyValues:(id)a3;
+- (CMIOExtensionDeviceProperties)initWithPropertyValues:(id)values;
 - (NSDictionary)propertiesDictionary;
 - (NSNumber)suspended;
 - (NSNumber)transportType;
@@ -44,16 +44,16 @@
   return v5;
 }
 
-- (CMIOExtensionDeviceProperties)initWithPropertyValues:(id)a3
+- (CMIOExtensionDeviceProperties)initWithPropertyValues:(id)values
 {
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__CMIOExtensionDeviceProperties_initWithPropertyValues___block_invoke;
   v7[3] = &unk_27885B850;
-  v7[4] = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
-  return [(CMIOExtensionDeviceProperties *)self initWithDictionary:v5];
+  v7[4] = dictionary;
+  [values enumerateKeysAndObjectsUsingBlock:v7];
+  return [(CMIOExtensionDeviceProperties *)self initWithDictionary:dictionary];
 }
 
 uint64_t __56__CMIOExtensionDeviceProperties_initWithPropertyValues___block_invoke(uint64_t a1, uint64_t a2)
@@ -129,14 +129,14 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyDeviceIsSuspended"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -149,7 +149,7 @@ LABEL_4:
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setSuspended:(NSNumber *)suspended
@@ -182,14 +182,14 @@ LABEL_4:
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableDictionary *)self->_propertiesDictionary objectForKey:@"CMIOExtensionPropertyDeviceTransportType"];
   os_unfair_lock_unlock(&self->_lock);
-  v4 = [v3 value];
-  if (v4)
+  value = [v3 value];
+  if (value)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v5 = CMIOLog();
-      v4 = v5;
+      value = v5;
       if (v5)
       {
         if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -202,7 +202,7 @@ LABEL_4:
     }
   }
 
-  return v4;
+  return value;
 }
 
 - (void)setTransportType:(NSNumber *)transportType

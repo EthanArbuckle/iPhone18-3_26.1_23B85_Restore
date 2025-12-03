@@ -1,16 +1,16 @@
 @interface DiagramAxisMetricsCalculatorFactory.HiLoScalarAxisDimension
 - (_TtCC19HealthVisualization35DiagramAxisMetricsCalculatorFactory23HiLoScalarAxisDimension)init;
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4;
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size;
 @end
 
 @implementation DiagramAxisMetricsCalculatorFactory.HiLoScalarAxisDimension
 
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size
 {
-  v6 = self;
-  v7 = a3;
-  v8 = a4;
-  sub_1D14FCDF0(a3);
+  selfCopy = self;
+  locationCopy = location;
+  sizeCopy = size;
+  sub_1D14FCDF0(location);
   v10 = v9;
 
   if (v10)

@@ -1,38 +1,38 @@
 @interface PBOfficeArtReaderClient
-+ (BOOL)readClientTextBoxFromShape:(id)a3 toGraphic:(id)a4 clientData:(id)a5 state:(id)a6;
-+ (BOOL)readOleFromClientDataHolder:(id)a3 toGraphic:(id)a4 tgtClientData:(id)a5 state:(id)a6;
-+ (BOOL)readPlaceholderInfo:(id)a3 clientData:(id)a4 toGraphic:(id)a5 presentationState:(id)a6;
-+ (BOOL)readRecolorInfoFromClientDataHolder:(id)a3 toClientData:(id)a4 state:(id)a5;
-+ (id)newBuildFromBuildType:(int)a3;
-+ (id)newTargetFromDrawable:(id)a3 clientData:(id)a4 buildType:(int)a5;
-+ (id)readClientTextBoxFromShape:(id)a3 toTextBody:(id)a4 state:(id)a5;
-+ (id)readDrawableFromPackagePart:(id)a3 foundInObject:(id)a4 state:(id)a5;
-+ (int)directionFromFlyDirection:(int)a3;
-+ (int)presetIdFromFlyMethod:(int)a3 isEntrance:(BOOL)a4;
-+ (void)addRecolorSpec:(const PptRecolorSpec *)a3 toDictionary:(id)a4 state:(id)a5;
-+ (void)readClientAnchorFromContainer:(id)a3 toDrawable:(id)a4 state:(id)a5;
-+ (void)readClientDataFromGroup:(id)a3 toGroup:(id)a4 state:(id)a5;
-+ (void)readClientDataFromShape:(id)a3 toGraphic:(id)a4 state:(id)a5;
-+ (void)readClientDataFromTableCell:(id)a3 toTableCell:(id)a4 state:(id)a5;
-+ (void)readHyperlinkFromShapeContainerHolder:(id)a3 toDrawable:(id)a4 state:(id)a5;
++ (BOOL)readClientTextBoxFromShape:(id)shape toGraphic:(id)graphic clientData:(id)data state:(id)state;
++ (BOOL)readOleFromClientDataHolder:(id)holder toGraphic:(id)graphic tgtClientData:(id)data state:(id)state;
++ (BOOL)readPlaceholderInfo:(id)info clientData:(id)data toGraphic:(id)graphic presentationState:(id)state;
++ (BOOL)readRecolorInfoFromClientDataHolder:(id)holder toClientData:(id)data state:(id)state;
++ (id)newBuildFromBuildType:(int)type;
++ (id)newTargetFromDrawable:(id)drawable clientData:(id)data buildType:(int)type;
++ (id)readClientTextBoxFromShape:(id)shape toTextBody:(id)body state:(id)state;
++ (id)readDrawableFromPackagePart:(id)part foundInObject:(id)object state:(id)state;
++ (int)directionFromFlyDirection:(int)direction;
++ (int)presetIdFromFlyMethod:(int)method isEntrance:(BOOL)entrance;
++ (void)addRecolorSpec:(const PptRecolorSpec *)spec toDictionary:(id)dictionary state:(id)state;
++ (void)readClientAnchorFromContainer:(id)container toDrawable:(id)drawable state:(id)state;
++ (void)readClientDataFromGroup:(id)group toGroup:(id)toGroup state:(id)state;
++ (void)readClientDataFromShape:(id)shape toGraphic:(id)graphic state:(id)state;
++ (void)readClientDataFromTableCell:(id)cell toTableCell:(id)tableCell state:(id)state;
++ (void)readHyperlinkFromShapeContainerHolder:(id)holder toDrawable:(id)drawable state:(id)state;
 @end
 
 @implementation PBOfficeArtReaderClient
 
-+ (id)readClientTextBoxFromShape:(id)a3 toTextBody:(id)a4 state:(id)a5
++ (id)readClientTextBoxFromShape:(id)shape toTextBody:(id)body state:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  v29 = a5;
+  shapeCopy = shape;
+  bodyCopy = body;
+  stateCopy = state;
   objc_opt_class();
-  v9 = [v29 presentationState];
+  presentationState = [stateCopy presentationState];
   objc_opt_class();
-  v10 = v7;
+  v10 = shapeCopy;
   objc_opt_class();
   v11 = [v10 firstChildOfType:61457];
   if (v11)
   {
-    [PBProgTag readClientData:v11 state:v9];
+    [PBProgTag readClientData:v11 state:presentationState];
   }
 
   objc_opt_class();
@@ -45,14 +45,14 @@
     if (Atom)
     {
       v15 = Atom[12];
-      v16 = [v9 currentSlideTextBlockRecordIndexRangeVector];
-      if (v15 < ((v16[1] - *v16) >> 4))
+      currentSlideTextBlockRecordIndexRangeVector = [presentationState currentSlideTextBlockRecordIndexRangeVector];
+      if (v15 < ((currentSlideTextBlockRecordIndexRangeVector[1] - *currentSlideTextBlockRecordIndexRangeVector) >> 4))
       {
-        v17 = (*v16 + 16 * v15);
+        v17 = (*currentSlideTextBlockRecordIndexRangeVector + 16 * v15);
         v18 = v17[1];
         if (v18)
         {
-          v28 = v8;
+          v28 = bodyCopy;
           v19 = *v17;
           v20 = [(ESDObject *)[ESDContainer alloc] initWithType:61453];
           if (v20)
@@ -61,8 +61,8 @@
             {
               do
               {
-                v21 = [v9 sourceSlideListHolder];
-                v22 = [v21 childAt:v19];
+                sourceSlideListHolder = [presentationState sourceSlideListHolder];
+                v22 = [sourceSlideListHolder childAt:v19];
                 [(ESDContainer *)v20 addChild:v22];
 
                 ++v19;
@@ -85,11 +85,11 @@
 
             if ([(ESDContainer *)v20 childCount])
             {
-              [PBTextBlock readClientTextBox:v20 textBody:v28 state:v9];
+              [PBTextBlock readClientTextBox:v20 textBody:v28 state:presentationState];
             }
           }
 
-          v8 = v28;
+          bodyCopy = v28;
         }
       }
     }
@@ -101,7 +101,7 @@
 
       if (v26)
       {
-        [PBTextBlock readClientTextBox:v12 textBody:v8 state:v9];
+        [PBTextBlock readClientTextBox:v12 textBody:bodyCopy state:presentationState];
       }
     }
   }
@@ -109,21 +109,21 @@
   return v12;
 }
 
-+ (BOOL)readClientTextBoxFromShape:(id)a3 toGraphic:(id)a4 clientData:(id)a5 state:(id)a6
++ (BOOL)readClientTextBoxFromShape:(id)shape toGraphic:(id)graphic clientData:(id)data state:(id)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  shapeCopy = shape;
+  graphicCopy = graphic;
+  dataCopy = data;
+  stateCopy = state;
   objc_opt_class();
-  v14 = [v13 presentationState];
+  presentationState = [stateCopy presentationState];
   v15 = objc_opt_class();
-  v16 = TSUDynamicCast(v15, v11);
+  v16 = TSUDynamicCast(v15, graphicCopy);
   if (v16)
   {
-    v31 = v12;
+    v31 = dataCopy;
     v17 = objc_alloc_init(OADTextBody);
-    v18 = [a1 readClientTextBoxFromShape:v10 toTextBody:v17 state:v13];
+    v18 = [self readClientTextBoxFromShape:shapeCopy toTextBody:v17 state:stateCopy];
     v19 = v18;
     v20 = v18 != 0;
     if (v18)
@@ -141,7 +141,7 @@
           v25 = [PBPlaceholder placeholderTypeFromTextType:v24[12]];
           if (v25 != -1 && ([v31 hasPlaceholder] & 1) == 0)
           {
-            v30 = [v14 tgtSlide];
+            tgtSlide = [presentationState tgtSlide];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -151,16 +151,16 @@
             }
           }
 
-          v27 = [PDPlaceholder isTextType:v25, v30];
-          v28 = [v16 shapeProperties];
-          [v28 setIsTextBox:v27];
+          v27 = [PDPlaceholder isTextType:v25, tgtSlide];
+          shapeProperties = [v16 shapeProperties];
+          [shapeProperties setIsTextBox:v27];
         }
       }
 
       [v16 setTextBody:v17];
     }
 
-    v12 = v31;
+    dataCopy = v31;
   }
 
   else
@@ -171,23 +171,23 @@
   return v20;
 }
 
-+ (void)readClientDataFromShape:(id)a3 toGraphic:(id)a4 state:(id)a5
++ (void)readClientDataFromShape:(id)shape toGraphic:(id)graphic state:(id)state
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  shapeCopy = shape;
+  graphicCopy = graphic;
+  stateCopy = state;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 presentationState];
-    v11 = v17;
+    presentationState = [stateCopy presentationState];
+    v11 = shapeCopy;
     v12 = [v11 firstChildOfType:61457];
     v13 = objc_alloc_init(PDOfficeArtClient);
-    [a1 readClientAnchorFromContainer:v11 toDrawable:v8 state:v9];
+    [self readClientAnchorFromContainer:v11 toDrawable:graphicCopy state:stateCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [a1 readPlaceholderInfo:v11 clientData:v13 toGraphic:v8 presentationState:v10];
+      v14 = [self readPlaceholderInfo:v11 clientData:v13 toGraphic:graphicCopy presentationState:presentationState];
     }
 
     else
@@ -195,85 +195,85 @@
       v14 = 0;
     }
 
-    v15 = [a1 readClientTextBoxFromShape:v11 toGraphic:v8 clientData:v13 state:v9];
-    [a1 readHyperlinkFromShapeContainerHolder:v11 toDrawable:v8 state:v9];
-    v16 = [a1 readRecolorInfoFromClientDataHolder:v11 toClientData:v13 state:v9];
-    if (v14 | v15 | v16 | [a1 readOleFromClientDataHolder:v11 toGraphic:v8 tgtClientData:v13 state:v10])
+    v15 = [self readClientTextBoxFromShape:v11 toGraphic:graphicCopy clientData:v13 state:stateCopy];
+    [self readHyperlinkFromShapeContainerHolder:v11 toDrawable:graphicCopy state:stateCopy];
+    v16 = [self readRecolorInfoFromClientDataHolder:v11 toClientData:v13 state:stateCopy];
+    if (v14 | v15 | v16 | [self readOleFromClientDataHolder:v11 toGraphic:graphicCopy tgtClientData:v13 state:presentationState])
     {
-      [v8 setClientData:v13];
+      [graphicCopy setClientData:v13];
     }
   }
 }
 
-+ (void)readClientDataFromGroup:(id)a3 toGroup:(id)a4 state:(id)a5
++ (void)readClientDataFromGroup:(id)group toGroup:(id)toGroup state:(id)state
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [a3 firstChildOfType:6];
-  [a1 readClientAnchorFromContainer:v9 toDrawable:v10 state:v8];
+  toGroupCopy = toGroup;
+  stateCopy = state;
+  v9 = [group firstChildOfType:6];
+  [self readClientAnchorFromContainer:v9 toDrawable:toGroupCopy state:stateCopy];
 }
 
-+ (void)readClientDataFromTableCell:(id)a3 toTableCell:(id)a4 state:(id)a5
++ (void)readClientDataFromTableCell:(id)cell toTableCell:(id)tableCell state:(id)state
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
+  cellCopy = cell;
+  tableCellCopy = tableCell;
+  stateCopy = state;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 presentationState];
-    v10 = [v12 firstChildOfType:61453];
+    presentationState = [stateCopy presentationState];
+    v10 = [cellCopy firstChildOfType:61453];
     if (v10)
     {
       v11 = objc_alloc_init(OADTextBody);
-      [PBTextBlock readClientTextBox:v10 textBody:v11 state:v9];
-      [v7 setTextBody:v11];
+      [PBTextBlock readClientTextBox:v10 textBody:v11 state:presentationState];
+      [tableCellCopy setTextBody:v11];
     }
   }
 }
 
-+ (id)readDrawableFromPackagePart:(id)a3 foundInObject:(id)a4 state:(id)a5
++ (id)readDrawableFromPackagePart:(id)part foundInObject:(id)object state:(id)state
 {
-  v8 = a3;
-  v60 = a4;
-  v56 = a5;
+  partCopy = part;
+  objectCopy = object;
+  stateCopy = state;
   objc_opt_class();
-  v9 = v56;
-  v58 = [v9 presentationState];
-  v10 = [v9 xmlDrawingState];
-  v11 = [v10 client];
-  v12 = [v11 presentationState];
+  v9 = stateCopy;
+  presentationState = [v9 presentationState];
+  xmlDrawingState = [v9 xmlDrawingState];
+  client = [xmlDrawingState client];
+  presentationState2 = [client presentationState];
 
-  v57 = v12;
-  v13 = [v58 tgtSlide];
-  [v10 setPackagePart:v8];
-  v14 = [v13 styleMatrix];
-  [v10 setStyleMatrix:v14];
+  v57 = presentationState2;
+  tgtSlide = [presentationState tgtSlide];
+  [xmlDrawingState setPackagePart:partCopy];
+  styleMatrix = [tgtSlide styleMatrix];
+  [xmlDrawingState setStyleMatrix:styleMatrix];
 
-  v15 = [v13 colorScheme];
-  [v10 setColorScheme:v15];
+  colorScheme = [tgtSlide colorScheme];
+  [xmlDrawingState setColorScheme:colorScheme];
 
-  v16 = [v13 colorMap];
-  [v10 setColorMap:v16];
+  colorMap = [tgtSlide colorMap];
+  [xmlDrawingState setColorMap:colorMap];
 
-  v17 = [v13 fontScheme];
-  [v10 setFontScheme:v17];
+  fontScheme = [tgtSlide fontScheme];
+  [xmlDrawingState setFontScheme:fontScheme];
 
-  v18 = OCXGetRootElement([v8 xmlDocument]);
-  v59 = [v12 PXPresentationMLNamespace];
-  v19 = [v8 contentType];
-  v20 = [v19 isEqualToString:@"application/vnd.ms-office.DrsConnector+xml"];
+  v18 = OCXGetRootElement([partCopy xmlDocument]);
+  pXPresentationMLNamespace = [presentationState2 PXPresentationMLNamespace];
+  contentType = [partCopy contentType];
+  v20 = [contentType isEqualToString:@"application/vnd.ms-office.DrsConnector+xml"];
 
   if (v20)
   {
     v21 = off_2799C5768;
 LABEL_11:
-    v30 = [(__objc2_class *)*v21 readFromXmlNode:v18 inNamespace:v59 drawingState:v10];
+    v30 = [(__objc2_class *)*v21 readFromXmlNode:v18 inNamespace:pXPresentationMLNamespace drawingState:xmlDrawingState];
     goto LABEL_12;
   }
 
-  v22 = [v8 contentType];
-  v23 = [v22 isEqualToString:@"application/vnd.ms-office.DrsE2oDoc+xml"];
+  contentType2 = [partCopy contentType];
+  v23 = [contentType2 isEqualToString:@"application/vnd.ms-office.DrsE2oDoc+xml"];
 
   if (v23)
   {
@@ -281,8 +281,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v24 = [v8 contentType];
-  v25 = [v24 isEqualToString:@"application/vnd.ms-office.DrsGroupShape+xml"];
+  contentType3 = [partCopy contentType];
+  v25 = [contentType3 isEqualToString:@"application/vnd.ms-office.DrsGroupShape+xml"];
 
   if (v25)
   {
@@ -290,8 +290,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v26 = [v8 contentType];
-  v27 = [v26 isEqualToString:@"application/vnd.ms-office.DrsPicture+xml"];
+  contentType4 = [partCopy contentType];
+  v27 = [contentType4 isEqualToString:@"application/vnd.ms-office.DrsPicture+xml"];
 
   if (v27)
   {
@@ -299,8 +299,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v28 = [v8 contentType];
-  v29 = [v28 isEqualToString:@"application/vnd.ms-office.DrsShape+xml"];
+  contentType5 = [partCopy contentType];
+  v29 = [contentType5 isEqualToString:@"application/vnd.ms-office.DrsShape+xml"];
 
   if (v29)
   {
@@ -315,17 +315,17 @@ LABEL_12:
   if (v32)
   {
     v33 = objc_opt_new();
-    v34 = [a1 readClientTextBoxFromShape:v60 toTextBody:v33 state:v9];
-    v35 = [v32 textBody];
-    v36 = [v35 isSimilarToTextBody:v33];
+    v34 = [self readClientTextBoxFromShape:objectCopy toTextBody:v33 state:v9];
+    textBody = [v32 textBody];
+    v36 = [textBody isSimilarToTextBody:v33];
 
     if ((v36 & 1) == 0)
     {
-      v37 = [v60 eshShape];
-      if (v37)
+      eshShape = [objectCopy eshShape];
+      if (eshShape)
       {
-        v38 = [v33 properties];
-        [OABTextBodyProperties readTextBodyProperties:v38 textBox:v37 + 272 useDefaults:0 state:v9];
+        properties = [v33 properties];
+        [OABTextBodyProperties readTextBodyProperties:properties textBox:eshShape + 272 useDefaults:0 state:v9];
       }
 
       [v32 setTextBody:v33];
@@ -333,7 +333,7 @@ LABEL_12:
   }
 
   v39 = objc_opt_class();
-  v40 = TSUDynamicCast(v39, v60);
+  v40 = TSUDynamicCast(v39, objectCopy);
   if (v40)
   {
     v41 = objc_opt_class();
@@ -345,27 +345,27 @@ LABEL_12:
       v44 = [v43 firstChildOfType:1055];
       Atom = ESDAtomAccess<PptRoundTripShapeIdAtom>::extractAtom(v44, 0);
 
-      v46 = [v9 useXmlBlobs];
-      v47 = Atom ? v46 : 0;
+      useXmlBlobs = [v9 useXmlBlobs];
+      v47 = Atom ? useXmlBlobs : 0;
       if (v47)
       {
         v48 = Atom[12];
-        v55 = [v9 presentationState];
+        presentationState3 = [v9 presentationState];
         v49 = objc_opt_class();
-        v50 = [v55 tgtSlide];
-        v51 = TSUDynamicCast(v49, v50);
+        tgtSlide2 = [presentationState3 tgtSlide];
+        v51 = TSUDynamicCast(v49, tgtSlide2);
 
         if (v51)
         {
-          v54 = [v51 slideLayout];
-          v52 = [v54 drawables];
+          slideLayout = [v51 slideLayout];
+          drawables = [slideLayout drawables];
           v61[0] = MEMORY[0x277D85DD0];
           v61[1] = 3221225472;
           v61[2] = __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_state___block_invoke;
           v61[3] = &unk_2799CDA90;
           v62 = v30;
           v63 = v48;
-          [v52 enumerateObjectsUsingBlock:v61];
+          [drawables enumerateObjectsUsingBlock:v61];
         }
       }
     }
@@ -398,17 +398,17 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
   }
 }
 
-+ (void)readClientAnchorFromContainer:(id)a3 toDrawable:(id)a4 state:(id)a5
++ (void)readClientAnchorFromContainer:(id)container toDrawable:(id)drawable state:(id)state
 {
-  v31 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v31 firstChildOfType:61456];
+  containerCopy = container;
+  drawableCopy = drawable;
+  stateCopy = state;
+  v9 = [containerCopy firstChildOfType:61456];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 eshObject];
-    if (v11)
+    eshObject = [v9 eshObject];
+    if (eshObject)
     {
     }
 
@@ -417,7 +417,7 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
       v12 = 0;
     }
 
-    if ([v8 groupDepth] <= 0)
+    if ([stateCopy groupDepth] <= 0)
     {
       v13 = 0.125;
     }
@@ -431,19 +431,19 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
     v14 = v12[8];
     v17 = v12[9];
     v16 = v12[10];
-    v18 = [v7 drawableProperties];
-    v19 = [v18 hasOrientedBounds];
+    drawableProperties = [drawableCopy drawableProperties];
+    hasOrientedBounds = [drawableProperties hasOrientedBounds];
     v20 = (v13 * v15);
     v21 = (v13 * v14);
     v22 = (v13 * (v17 - v15));
     v23 = (v13 * (v16 - v14));
 
-    if (v19)
+    if (hasOrientedBounds)
     {
-      v24 = [v7 drawableProperties];
-      v25 = [v24 orientedBounds];
+      drawableProperties2 = [drawableCopy drawableProperties];
+      orientedBounds = [drawableProperties2 orientedBounds];
 
-      [v25 rotation];
+      [orientedBounds rotation];
       if ([OADOrientedBounds directionCloserToVerticalThanToHorizontal:?])
       {
         v20 = NSTransposedRectWithSameCenter(v20, v21, v22, v23);
@@ -452,52 +452,52 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
         v23 = v28;
       }
 
-      [v25 setBounds:{v20, v21, v22, v23}];
+      [orientedBounds setBounds:{v20, v21, v22, v23}];
     }
 
     else
     {
       v29 = [[OADOrientedBounds alloc] initWithBounds:v20, v21, v22, v23];
-      v30 = [v7 drawableProperties];
-      [v30 setOrientedBounds:v29];
+      drawableProperties3 = [drawableCopy drawableProperties];
+      [drawableProperties3 setOrientedBounds:v29];
 
-      v25 = v29;
+      orientedBounds = v29;
     }
   }
 }
 
-+ (void)readHyperlinkFromShapeContainerHolder:(id)a3 toDrawable:(id)a4 state:(id)a5
++ (void)readHyperlinkFromShapeContainerHolder:(id)holder toDrawable:(id)drawable state:(id)state
 {
-  v16 = a4;
-  v7 = a5;
-  v8 = [a3 firstChildOfType:61457];
+  drawableCopy = drawable;
+  stateCopy = state;
+  v8 = [holder firstChildOfType:61457];
   if (v8)
   {
-    v9 = [v7 presentationState];
+    presentationState = [stateCopy presentationState];
     v10 = [v8 childOfType:4082 instance:0];
     if (v10)
     {
-      v11 = [PBHyperlink readAnimationInfoContainerHolder:v10 presentationState:v9];
-      v12 = [v16 drawableProperties];
-      [v12 setClickHyperlink:v11];
+      v11 = [PBHyperlink readAnimationInfoContainerHolder:v10 presentationState:presentationState];
+      drawableProperties = [drawableCopy drawableProperties];
+      [drawableProperties setClickHyperlink:v11];
     }
 
     v13 = [v8 childOfType:4082 instance:1];
     if (v13)
     {
-      v14 = [PBHyperlink readAnimationInfoContainerHolder:v13 presentationState:v9];
-      v15 = [v16 drawableProperties];
-      [v15 setHoverHyperlink:v14];
+      v14 = [PBHyperlink readAnimationInfoContainerHolder:v13 presentationState:presentationState];
+      drawableProperties2 = [drawableCopy drawableProperties];
+      [drawableProperties2 setHoverHyperlink:v14];
     }
   }
 }
 
-+ (BOOL)readRecolorInfoFromClientDataHolder:(id)a3 toClientData:(id)a4 state:(id)a5
++ (BOOL)readRecolorInfoFromClientDataHolder:(id)holder toClientData:(id)data state:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstChildOfType:61457];
+  holderCopy = holder;
+  dataCopy = data;
+  stateCopy = state;
+  v11 = [holderCopy firstChildOfType:61457];
   v12 = v11;
   if (v11)
   {
@@ -505,7 +505,7 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
     v14 = v13;
     if (v13 && (v15 = [v13 eshObject]) != 0)
     {
-      v29 = v9;
+      v29 = dataCopy;
       if (v16)
       {
         v17 = v16;
@@ -517,7 +517,7 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
           v21 = v19 >> 3;
           do
           {
-            [a1 addRecolorSpec:XlChartDataSeries::getCachedCustomFormat(v17 toDictionary:v20) state:{v18, v10}];
+            [self addRecolorSpec:XlChartDataSeries::getCachedCustomFormat(v17 toDictionary:v20) state:{v18, stateCopy}];
             v20 = (v20 + 1);
           }
 
@@ -532,7 +532,7 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
           v25 = v23 >> 3;
           do
           {
-            [a1 addRecolorSpec:XlChartDataSeries::getCachedCustomLabel(v17 toDictionary:v24) state:{v22, v10}];
+            [self addRecolorSpec:XlChartDataSeries::getCachedCustomLabel(v17 toDictionary:v24) state:{v22, stateCopy}];
             v24 = (v24 + 1);
           }
 
@@ -550,7 +550,7 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
         v27 = 0;
       }
 
-      v9 = v29;
+      dataCopy = v29;
     }
 
     else
@@ -567,37 +567,37 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
   return v27;
 }
 
-+ (void)addRecolorSpec:(const PptRecolorSpec *)a3 toDictionary:(id)a4 state:(id)a5
++ (void)addRecolorSpec:(const PptRecolorSpec *)spec toDictionary:(id)dictionary state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  if (a3->var3)
+  dictionaryCopy = dictionary;
+  stateCopy = state;
+  if (spec->var3)
   {
-    EshColor::EshColor(&v14, &a3->var2);
+    EshColor::EshColor(&v14, &spec->var2);
     Red = EshColor::getRed(&v14);
     Green = EshColor::getGreen(&v14);
     v11 = [OITSUColor colorWithCalibratedRed:Red / 255.0 green:Green / 255.0 blue:EshColor::getBlue(&v14) / 255.0 alpha:1.0];
-    EshColor::EshColor(&v13, &a3->var1);
-    v12 = [OABColor readColor:&v13 colorPropertiesManager:0 state:v8];
-    [v7 setObject:v12 forKey:v11];
+    EshColor::EshColor(&v13, &spec->var1);
+    v12 = [OABColor readColor:&v13 colorPropertiesManager:0 state:stateCopy];
+    [dictionaryCopy setObject:v12 forKey:v11];
   }
 }
 
-+ (BOOL)readOleFromClientDataHolder:(id)a3 toGraphic:(id)a4 tgtClientData:(id)a5 state:(id)a6
++ (BOOL)readOleFromClientDataHolder:(id)holder toGraphic:(id)graphic tgtClientData:(id)data state:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v69 = a6;
+  holderCopy = holder;
+  graphicCopy = graphic;
+  dataCopy = data;
+  stateCopy = state;
   v12 = objc_opt_class();
-  v13 = TSUDynamicCast(v12, v10);
+  v13 = TSUDynamicCast(v12, graphicCopy);
   if (!v13)
   {
     v25 = 0;
     goto LABEL_66;
   }
 
-  v14 = [v9 firstChildOfType:61457];
+  v14 = [holderCopy firstChildOfType:61457];
   v15 = v14;
   if (!v14)
   {
@@ -613,21 +613,21 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
     goto LABEL_64;
   }
 
-  v66 = v10;
-  v67 = v11;
+  v66 = graphicCopy;
+  v67 = dataCopy;
   v68 = v13;
   v64 = v16;
   v65 = v15;
-  v18 = [v16 eshObject];
+  eshObject = [v16 eshObject];
   {
     [TCMessageException raise:TCUnknownProblemMessage];
     v19 = 0;
   }
 
   v70 = v19[12];
-  DocumentRef = PptBinaryReader::getDocumentRef([v69 reader]);
-  v21 = [v69 documentRoot];
-  v22 = [v21 pbReferenceWithID:DocumentRef];
+  DocumentRef = PptBinaryReader::getDocumentRef([stateCopy reader]);
+  documentRoot = [stateCopy documentRoot];
+  v22 = [documentRoot pbReferenceWithID:DocumentRef];
 
   v63 = v22;
   v23 = [v22 firstChildOfType:1033];
@@ -643,8 +643,8 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
     }
 
     v28 = [v23 childAt:v24];
-    v29 = [v28 eshObject];
-    v30 = (*(*v29 + 16))(v29);
+    eshObject2 = [v28 eshObject];
+    v30 = (*(*eshObject2 + 16))(eshObject2);
     v31 = (v30 - 4074);
     if (v31 > 0x26)
     {
@@ -656,7 +656,7 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
       if (((1 << (v30 + 22)) & 0x4800000000) != 0)
       {
         v32 = [v28 firstChildOfType:4100];
-        v33 = [v32 eshObject];
+        eshObject3 = [v32 eshObject];
         {
           [TCMessageException raise:TCUnknownProblemMessage];
           v34 = 0;
@@ -667,14 +667,14 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
           goto LABEL_57;
         }
 
-        v35 = [PBMedia readLinkedMovieFromMovieHolder:v28 toImage:v68 state:v69];
+        v35 = [PBMedia readLinkedMovieFromMovieHolder:v28 toImage:v68 state:stateCopy];
         goto LABEL_29;
       }
 
       if (v31 == 37)
       {
         v32 = [v28 firstChildOfType:4100];
-        v40 = [v32 eshObject];
+        eshObject4 = [v32 eshObject];
         {
           [TCMessageException raise:TCUnknownProblemMessage];
           v41 = 0;
@@ -685,7 +685,7 @@ void __75__PBOfficeArtReaderClient_readDrawableFromPackagePart_foundInObject_sta
           goto LABEL_57;
         }
 
-        v35 = [PBMedia readEmbeddedSoundFromClientDataHolder:v28 toImage:v68 state:v69];
+        v35 = [PBMedia readEmbeddedSoundFromClientDataHolder:v28 toImage:v68 state:stateCopy];
 LABEL_29:
         v25 = v35;
         goto LABEL_57;
@@ -703,7 +703,7 @@ LABEL_30:
         [TCMessageException raise:TCUnknownProblemMessage];
       }
 
-      v42 = [v32 eshObject];
+      eshObject5 = [v32 eshObject];
       {
         [TCMessageException raise:TCUnknownProblemMessage];
         v43 = 0;
@@ -719,8 +719,8 @@ LABEL_30:
           break;
         }
 
-        v45 = [v44 eshObject];
-        if (v45)
+        eshObject6 = [v44 eshObject];
+        if (eshObject6)
         {
         }
 
@@ -742,34 +742,34 @@ LABEL_30:
           goto LABEL_55;
         }
 
-        v62 = v9;
+        v62 = holderCopy;
         v48 = v43[16];
-        v49 = [v69 documentRoot];
-        v50 = [v49 pbReferenceWithID:v48];
+        documentRoot2 = [stateCopy documentRoot];
+        v50 = [documentRoot2 pbReferenceWithID:v48];
 
         v61 = v50;
-        v51 = [v50 eshObject];
+        eshObject7 = [v50 eshObject];
         {
           v53 = v52;
           v54 = v52[12];
           (*(*v54 + 16))(v54, *(v52 + 16), 0);
           v60 = *(v53 + 18);
           v59 = *(v53 + 12);
-          v55 = [v69 cancelDelegate];
+          cancelDelegate = [stateCopy cancelDelegate];
           if (v59)
           {
-            [OABOle readCompressedFromStream:v54 compressedSize:v60 uncompressedSize:v59 cancel:v55];
+            [OABOle readCompressedFromStream:v54 compressedSize:v60 uncompressedSize:v59 cancel:cancelDelegate];
           }
 
           else
           {
-            [OABOle readFromStream:v54 size:v60 cancel:v55];
+            [OABOle readFromStream:v54 size:v60 cancel:cancelDelegate];
           }
           v57 = ;
 
           if (v57)
           {
-            v9 = v62;
+            holderCopy = v62;
             [v57 setIconic:v43[12] == 4];
             v25 = 1;
             [v67 setHasOleChart:1];
@@ -790,7 +790,7 @@ LABEL_56:
           v57 = 0;
         }
 
-        v9 = v62;
+        holderCopy = v62;
         goto LABEL_54;
       }
 
@@ -802,7 +802,7 @@ LABEL_56:
     if (v36)
     {
       v37 = [v36 firstChildOfType:4100];
-      v38 = [v37 eshObject];
+      eshObject8 = [v37 eshObject];
       {
         [TCMessageException raise:TCUnknownProblemMessage];
         v39 = 0;
@@ -810,7 +810,7 @@ LABEL_56:
 
       if (v39[12] == v70)
       {
-        v25 = [PBMedia readLinkedMovieFromMovieHolder:v32 toImage:v68 state:v69];
+        v25 = [PBMedia readLinkedMovieFromMovieHolder:v32 toImage:v68 state:stateCopy];
       }
 
       goto LABEL_56;
@@ -822,8 +822,8 @@ LABEL_58:
     v24 = v27 + 1;
   }
 
-  v10 = v66;
-  v11 = v67;
+  graphicCopy = v66;
+  dataCopy = v67;
   v13 = v68;
   v17 = v64;
   v15 = v65;
@@ -835,32 +835,32 @@ LABEL_66:
   return v25;
 }
 
-+ (BOOL)readPlaceholderInfo:(id)a3 clientData:(id)a4 toGraphic:(id)a5 presentationState:(id)a6
++ (BOOL)readPlaceholderInfo:(id)info clientData:(id)data toGraphic:(id)graphic presentationState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 firstChildOfType:61457];
+  infoCopy = info;
+  dataCopy = data;
+  graphicCopy = graphic;
+  stateCopy = state;
+  v13 = [infoCopy firstChildOfType:61457];
   v14 = [v13 firstChildOfType:3011];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 eshObject];
-    if (v16)
+    eshObject = [v14 eshObject];
+    if (eshObject)
     {
       if (v17)
       {
         v18 = v17;
         v19 = objc_alloc_init(PDPlaceholder);
-        [v10 setPlaceholder:v19];
+        [dataCopy setPlaceholder:v19];
         [(PDPlaceholder *)v19 setIndex:v18[12]];
         v20 = [PBPlaceholder readPlaceholderType:*(v18 + 52)];
         [(PDPlaceholder *)v19 setType:v20];
         [(PDPlaceholder *)v19 setSize:[PBPlaceholder readPlaceholderSize:*(v18 + 53)]];
         [(PDPlaceholder *)v19 setOrientation:[PBPlaceholder readPlaceholderOrientation:*(v18 + 52)]];
         v21 = objc_opt_class();
-        v22 = TSUDynamicCast(v21, v11);
+        v22 = TSUDynamicCast(v21, graphicCopy);
         v39 = v22;
         if (v20 != 5)
         {
@@ -869,16 +869,16 @@ LABEL_66:
             goto LABEL_22;
           }
 
-          v28 = [v9 firstChildOfType:61453];
-          if (v28)
+          slideMaster = [infoCopy firstChildOfType:61453];
+          if (slideMaster)
           {
-            [v12 setSourceTextBoxContainerHolder:v28 forTargetShape:v39];
+            [stateCopy setSourceTextBoxContainerHolder:slideMaster forTargetShape:v39];
           }
 
           goto LABEL_21;
         }
 
-        v23 = [v12 tgtSlide];
+        tgtSlide = [stateCopy tgtSlide];
         objc_opt_class();
         v24 = objc_opt_isKindOfClass() | (v22 == 0);
 
@@ -886,60 +886,60 @@ LABEL_66:
         {
 LABEL_22:
           v34 = [PDPlaceholder isTextType:v20];
-          v35 = [v39 shapeProperties];
-          [v35 setIsTextBox:v34];
+          shapeProperties = [v39 shapeProperties];
+          [shapeProperties setIsTextBox:v34];
 
           v29 = 1;
           goto LABEL_23;
         }
 
-        v25 = [v12 tgtSlide];
+        tgtSlide2 = [stateCopy tgtSlide];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v27 = [v12 tgtSlide];
-          v28 = [v27 slideMaster];
+          tgtSlide3 = [stateCopy tgtSlide];
+          slideMaster = [tgtSlide3 slideMaster];
         }
 
         else
         {
-          v30 = [v12 tgtSlide];
+          tgtSlide4 = [stateCopy tgtSlide];
           objc_opt_class();
           v31 = objc_opt_isKindOfClass();
 
           if ((v31 & 1) == 0)
           {
-            v33 = 0;
-            v28 = 0;
+            textBody = 0;
+            slideMaster = 0;
 LABEL_20:
 
 LABEL_21:
             goto LABEL_22;
           }
 
-          v37 = [v12 tgtSlide];
-          v32 = [v37 slideLayout];
-          v28 = [v32 slideMaster];
+          tgtSlide5 = [stateCopy tgtSlide];
+          slideLayout = [tgtSlide5 slideLayout];
+          slideMaster = [slideLayout slideMaster];
 
-          v27 = v37;
+          tgtSlide3 = tgtSlide5;
         }
 
-        if (v28)
+        if (slideMaster)
         {
-          v38 = [v28 placeholderWithType:5 placeholderTypeIndex:0 overrideIndex:1];
-          v33 = [v38 textBody];
+          v38 = [slideMaster placeholderWithType:5 placeholderTypeIndex:0 overrideIndex:1];
+          textBody = [v38 textBody];
 
-          if (v33)
+          if (textBody)
           {
-            [v39 setTextBody:v33];
+            [v39 setTextBody:textBody];
           }
         }
 
         else
         {
-          v33 = 0;
+          textBody = 0;
         }
 
         goto LABEL_20;
@@ -953,15 +953,15 @@ LABEL_23:
   return v29;
 }
 
-+ (id)newTargetFromDrawable:(id)a3 clientData:(id)a4 buildType:(int)a5
++ (id)newTargetFromDrawable:(id)drawable clientData:(id)data buildType:(int)type
 {
-  v7 = a3;
-  v8 = a4;
+  drawableCopy = drawable;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v7 shapeProperties], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isTextBox"), v9, (v10))
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([drawableCopy shapeProperties], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isTextBox"), v9, (v10))
     {
       v11 = off_2799C5810;
     }
@@ -972,7 +972,7 @@ LABEL_23:
     }
 
     v12 = objc_alloc_init(*v11);
-    [(PDAnimationShapeTarget *)v12 setDrawable:v7];
+    [(PDAnimationShapeTarget *)v12 setDrawable:drawableCopy];
   }
 
   else
@@ -980,19 +980,19 @@ LABEL_23:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v7;
-      if ([v8 hasOleChart])
+      v14 = drawableCopy;
+      if ([dataCopy hasOleChart])
       {
         v12 = objc_alloc_init(PDAnimationOleChartTarget);
         [(PDAnimationShapeTarget *)v12 setDrawable:v14];
-        if ((a5 - 7) >= 4)
+        if ((type - 7) >= 4)
         {
           v15 = 0;
         }
 
         else
         {
-          v15 = (a5 - 6);
+          v15 = (type - 6);
         }
 
         [(PDAnimationOleChartTarget *)v12 setChartSubElementType:v15];
@@ -1001,7 +1001,7 @@ LABEL_23:
       else
       {
         v16 = [v14 ole];
-        v17 = [v16 object];
+        object = [v16 object];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1028,20 +1028,20 @@ LABEL_23:
   return v12;
 }
 
-+ (int)presetIdFromFlyMethod:(int)a3 isEntrance:(BOOL)a4
++ (int)presetIdFromFlyMethod:(int)method isEntrance:(BOOL)entrance
 {
-  if (a3 > 51)
+  if (method > 51)
   {
-    if (a3 <= 71)
+    if (method <= 71)
     {
-      if (a3 == 52)
+      if (method == 52)
       {
         return 15;
       }
 
-      if (a3 == 62)
+      if (method == 62)
       {
-        v5 = !a4;
+        v5 = !entrance;
         v6 = 50;
         v7 = 17;
 LABEL_24:
@@ -1059,12 +1059,12 @@ LABEL_24:
 
     else
     {
-      if (a3 == 72)
+      if (method == 72)
       {
         return 23;
       }
 
-      if (a3 == 82)
+      if (method == 82)
       {
         return 19;
       }
@@ -1074,7 +1074,7 @@ LABEL_24:
   }
 
   result = 24;
-  switch(a3)
+  switch(method)
   {
     case 1:
       return result;
@@ -1112,7 +1112,7 @@ LABEL_24:
       result = 11;
       break;
     case 17:
-      v5 = !a4;
+      v5 = !entrance;
       v6 = 10;
       v7 = 160;
       goto LABEL_24;
@@ -1135,34 +1135,34 @@ LABEL_24:
   return result;
 }
 
-+ (int)directionFromFlyDirection:(int)a3
++ (int)directionFromFlyDirection:(int)direction
 {
-  if (a3 > 0x47)
+  if (direction > 0x47)
   {
     return 1;
   }
 
   else
   {
-    return *&asc_25D70F2E0[4 * a3];
+    return *&asc_25D70F2E0[4 * direction];
   }
 }
 
-+ (id)newBuildFromBuildType:(int)a3
++ (id)newBuildFromBuildType:(int)type
 {
-  if ((a3 - 2) <= 4)
+  if ((type - 2) <= 4)
   {
     v4 = objc_alloc_init(PDParagraphBuild);
-    [(PDParagraphBuild *)v4 setBuildLevel:(a3 - 1)];
+    [(PDParagraphBuild *)v4 setBuildLevel:(type - 1)];
     [(PDParagraphBuild *)v4 setType:2];
     goto LABEL_5;
   }
 
-  if ((a3 - 7) <= 3)
+  if ((type - 7) <= 3)
   {
-    v4 = [[PDChartBuild alloc] initWithBuildType:(a3 - 6)];
+    v4 = [[PDChartBuild alloc] initWithBuildType:(type - 6)];
 LABEL_5:
-    if (!a3)
+    if (!type)
     {
       return v4;
     }
@@ -1171,7 +1171,7 @@ LABEL_5:
   }
 
   v4 = 0;
-  if (!a3)
+  if (!type)
   {
     return v4;
   }

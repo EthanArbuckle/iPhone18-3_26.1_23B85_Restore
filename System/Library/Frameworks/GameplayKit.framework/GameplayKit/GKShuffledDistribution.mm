@@ -1,31 +1,31 @@
 @interface GKShuffledDistribution
-- (GKShuffledDistribution)initWithRandomSource:(id)a3 lowestValue:(int64_t)a4 highestValue:(int64_t)a5;
-- (GKShuffledDistribution)initWithRandomSource:(id)a3 lowestValue:(int64_t)a4 highestValue:(int64_t)a5 delta:(int64_t)a6;
+- (GKShuffledDistribution)initWithRandomSource:(id)source lowestValue:(int64_t)value highestValue:(int64_t)highestValue;
+- (GKShuffledDistribution)initWithRandomSource:(id)source lowestValue:(int64_t)value highestValue:(int64_t)highestValue delta:(int64_t)delta;
 - (int64_t)nextInt;
 - (void)dealloc;
-- (void)setUniformDistance:(float)a3;
+- (void)setUniformDistance:(float)distance;
 @end
 
 @implementation GKShuffledDistribution
 
-- (void)setUniformDistance:(float)a3
+- (void)setUniformDistance:(float)distance
 {
-  self->_uniformDistance = fminf(fmaxf(a3, 0.0), 1.0);
-  v4 = [(GKRandomDistribution *)self highestValue];
-  self->_delta = (self->_uniformDistance * (v4 - [(GKRandomDistribution *)self lowestValue]+ 1));
+  self->_uniformDistance = fminf(fmaxf(distance, 0.0), 1.0);
+  highestValue = [(GKRandomDistribution *)self highestValue];
+  self->_delta = (self->_uniformDistance * (highestValue - [(GKRandomDistribution *)self lowestValue]+ 1));
 }
 
-- (GKShuffledDistribution)initWithRandomSource:(id)a3 lowestValue:(int64_t)a4 highestValue:(int64_t)a5
+- (GKShuffledDistribution)initWithRandomSource:(id)source lowestValue:(int64_t)value highestValue:(int64_t)highestValue
 {
   v9.receiver = self;
   v9.super_class = GKShuffledDistribution;
-  result = [GKRandomDistribution initWithRandomSource:sel_initWithRandomSource_lowestValue_highestValue_ lowestValue:a3 highestValue:?];
+  result = [GKRandomDistribution initWithRandomSource:sel_initWithRandomSource_lowestValue_highestValue_ lowestValue:source highestValue:?];
   if (result)
   {
     result->_uniformDistance = 1.0;
-    v8 = (a5 - a4 + 1);
+    v8 = (highestValue - value + 1);
     result->_delta = v8;
-    result->_lastInt = a4 - v8;
+    result->_lastInt = value - v8;
     result->_nextIntsCapacity = 0;
     result->_nextInts = 0;
   }
@@ -33,16 +33,16 @@
   return result;
 }
 
-- (GKShuffledDistribution)initWithRandomSource:(id)a3 lowestValue:(int64_t)a4 highestValue:(int64_t)a5 delta:(int64_t)a6
+- (GKShuffledDistribution)initWithRandomSource:(id)source lowestValue:(int64_t)value highestValue:(int64_t)highestValue delta:(int64_t)delta
 {
   v10.receiver = self;
   v10.super_class = GKShuffledDistribution;
-  result = [GKRandomDistribution initWithRandomSource:sel_initWithRandomSource_lowestValue_highestValue_ lowestValue:a3 highestValue:?];
+  result = [GKRandomDistribution initWithRandomSource:sel_initWithRandomSource_lowestValue_highestValue_ lowestValue:source highestValue:?];
   if (result)
   {
-    result->_delta = a6;
-    result->_uniformDistance = a6 / (a5 - a4 + 1);
-    result->_lastInt = a4 - a6;
+    result->_delta = delta;
+    result->_uniformDistance = delta / (highestValue - value + 1);
+    result->_lastInt = value - delta;
     result->_nextIntsCapacity = 0;
     result->_nextInts = 0;
   }
@@ -88,8 +88,8 @@ LABEL_18:
 
     else
     {
-      v12 = [(GKRandomDistribution *)self highestValue];
-      v13 = v12 - [(GKRandomDistribution *)self lowestValue]+ 1;
+      highestValue = [(GKRandomDistribution *)self highestValue];
+      v13 = highestValue - [(GKRandomDistribution *)self lowestValue]+ 1;
       self->_nextIntsCapacity = v13;
       v14 = malloc_type_malloc(8 * v13, 0x100004000313F17uLL);
       self->_nextInts = v14;
@@ -109,9 +109,9 @@ LABEL_10:
             self->_nextInts[v7] = self->_nextInts[v10];
           }
 
-          v8 = [(GKRandomDistribution *)self lowestValue];
+          lowestValue = [(GKRandomDistribution *)self lowestValue];
           nextInts = self->_nextInts;
-          nextInts[v11] = v8 + v7;
+          nextInts[v11] = lowestValue + v7;
           nextIntsCount = self->_nextIntsCapacity;
           ++v7;
         }

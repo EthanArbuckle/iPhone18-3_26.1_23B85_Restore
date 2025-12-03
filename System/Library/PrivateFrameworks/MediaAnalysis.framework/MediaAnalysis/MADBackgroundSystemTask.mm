@@ -1,19 +1,19 @@
 @interface MADBackgroundSystemTask
 + (BOOL)networkConnectivityRequired;
 + (unint64_t)getBGSTTimeoutInTicks;
-+ (void)notImplementedException:(id)a3;
-- (void)executeWith:(id)a3 completionHandler:(id)a4;
-- (void)executeWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
++ (void)notImplementedException:(id)exception;
+- (void)executeWith:(id)with completionHandler:(id)handler;
+- (void)executeWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
 - (void)registerTask;
-- (void)submitTask:(id *)a3;
+- (void)submitTask:(id *)task;
 @end
 
 @implementation MADBackgroundSystemTask
 
-+ (void)notImplementedException:(id)a3
++ (void)notImplementedException:(id)exception
 {
-  v3 = [NSString stringWithFormat:@"[%@ %@]", objc_opt_class(), a3];
-  v4 = [NSException exceptionWithName:@"NotImplementedException" reason:v3 userInfo:0];
+  exception = [NSString stringWithFormat:@"[%@ %@]", objc_opt_class(), exception];
+  v4 = [NSException exceptionWithName:@"NotImplementedException" reason:exception userInfo:0];
   v5 = v4;
 
   objc_exception_throw(v4);
@@ -26,36 +26,36 @@
   return [v2 inexpensiveNetworkConnectivityRequired];
 }
 
-- (void)submitTask:(id *)a3
+- (void)submitTask:(id *)task
 {
-  v4 = [objc_opt_class() activityDelayInSeconds];
-  v5 = [objc_opt_class() activityGracePeriodInSeconds];
+  activityDelayInSeconds = [objc_opt_class() activityDelayInSeconds];
+  activityGracePeriodInSeconds = [objc_opt_class() activityGracePeriodInSeconds];
   v6 = objc_autoreleasePoolPush();
-  v7 = [objc_opt_class() identifier];
+  identifier = [objc_opt_class() identifier];
   if (MediaAnalysisLogLevel() >= 7)
   {
     v8 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v8))
     {
       *buf = 138412290;
-      v24 = v7;
+      v24 = identifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "[%@] Try submit the BGST task", buf, 0xCu);
     }
   }
 
   v9 = +[BGSystemTaskScheduler sharedScheduler];
-  v10 = [v9 taskRequestForIdentifier:v7];
+  v10 = [v9 taskRequestForIdentifier:identifier];
 
   if (!v10)
   {
-    v13 = [[BGNonRepeatingSystemTaskRequest alloc] initWithIdentifier:v7];
+    v13 = [[BGNonRepeatingSystemTaskRequest alloc] initWithIdentifier:identifier];
     [v13 setGroupName:MediaAnalysisDaemonDomain];
     [v13 setGroupConcurrencyLimit:1];
     [v13 setResourceIntensive:{objc_msgSend(objc_opt_class(), "resourceIntensive")}];
     [v13 setRequiresUserInactivity:1];
     [v13 setPriority:1];
-    [v13 setScheduleAfter:v4];
-    [v13 setTrySchedulingBefore:(v4 + v5)];
+    [v13 setScheduleAfter:activityDelayInSeconds];
+    [v13 setTrySchedulingBefore:(activityDelayInSeconds + activityGracePeriodInSeconds)];
     [v13 setRequiresBuddyComplete:{objc_msgSend(objc_opt_class(), "buddyCheckRequired")}];
     if ([v13 resourceIntensive])
     {
@@ -65,26 +65,26 @@
 
     [v13 setRequiresInexpensiveNetworkConnectivity:{objc_msgSend(objc_opt_class(), "inexpensiveNetworkConnectivityRequired")}];
     [v13 setRequiresNetworkConnectivity:{objc_msgSend(objc_opt_class(), "networkConnectivityRequired")}];
-    v14 = [objc_opt_class() rateLimitConfigurationName];
-    if (v14)
+    rateLimitConfigurationName = [objc_opt_class() rateLimitConfigurationName];
+    if (rateLimitConfigurationName)
     {
-      [v13 setRateLimitConfigurationName:v14];
+      [v13 setRateLimitConfigurationName:rateLimitConfigurationName];
     }
 
     [v13 setRequiresExternalPower:{objc_msgSend(objc_opt_class(), "externalPowerRequired")}];
     [v13 setPowerNap:1];
     [v13 setRequiresExternalPower:{objc_msgSend(objc_opt_class(), "externalPowerRequired")}];
     [v13 setBacklogged:1];
-    v15 = [objc_opt_class() producedResultIdentifiers];
-    [v13 setProducedResultIdentifiers:v15];
+    producedResultIdentifiers = [objc_opt_class() producedResultIdentifiers];
+    [v13 setProducedResultIdentifiers:producedResultIdentifiers];
 
     [objc_opt_class() updateTaskSpecificBGSystemTaskRequest:v13];
     v16 = +[BGSystemTaskScheduler sharedScheduler];
     v22 = 0;
-    LOBYTE(v15) = [v16 submitTaskRequest:v13 error:&v22];
+    LOBYTE(producedResultIdentifiers) = [v16 submitTaskRequest:v13 error:&v22];
     v12 = v22;
 
-    if (v15)
+    if (producedResultIdentifiers)
     {
       if (MediaAnalysisLogLevel() < 7)
       {
@@ -98,7 +98,7 @@
       }
 
       *buf = 138412290;
-      v24 = v7;
+      v24 = identifier;
       v18 = "[%@] Submitted BGST task successfully.";
       v19 = v17;
       v20 = 12;
@@ -118,7 +118,7 @@
       }
 
       *buf = 138412546;
-      v24 = v7;
+      v24 = identifier;
       v25 = 2112;
       v26 = v12;
       v18 = "[%@] Failed to submit the BGST task with error: %@";
@@ -138,7 +138,7 @@ LABEL_21:
     if (os_log_type_enabled(&_os_log_default, v11))
     {
       *buf = 138412290;
-      v24 = v7;
+      v24 = identifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[%@] the BGST task already existed, bailing out.", buf, 0xCu);
     }
   }
@@ -147,20 +147,20 @@ LABEL_21:
 LABEL_22:
 
   objc_autoreleasePoolPop(v6);
-  if (!v10 && a3 && v12)
+  if (!v10 && task && v12)
   {
-    *a3 = [v12 copy];
+    *task = [v12 copy];
   }
 }
 
-- (void)executeWith:(id)a3 completionHandler:(id)a4
+- (void)executeWith:(id)with completionHandler:(id)handler
 {
   v4 = objc_opt_class();
 
   [v4 notImplementedException:@"executeWith:completionHandler:"];
 }
 
-- (void)executeWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (void)executeWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v5 = objc_opt_class();
 
@@ -169,10 +169,10 @@ LABEL_22:
 
 - (void)registerTask
 {
-  v3 = [objc_opt_class() identifier];
+  identifier = [objc_opt_class() identifier];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [NSString stringWithFormat:@"[%@][%@]", v5, v3];
+  v6 = [NSString stringWithFormat:@"[%@][%@]", v5, identifier];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
@@ -180,8 +180,8 @@ LABEL_22:
   v18[3] = &unk_100283050;
   v7 = v6;
   v19 = v7;
-  v20 = self;
-  v8 = v3;
+  selfCopy = self;
+  v8 = identifier;
   v21 = v8;
   v9 = objc_retainBlock(v18);
   if (v8)
@@ -225,11 +225,11 @@ LABEL_12:
     v14 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v14))
     {
-      v15 = [objc_opt_class() taskID];
+      taskID = [objc_opt_class() taskID];
       *buf = 138412546;
       v23 = v7;
       v24 = 1024;
-      v25 = v15;
+      v25 = taskID;
       v13 = "%@ Invalid identifier for task %u";
       v16 = v14;
       v17 = 18;

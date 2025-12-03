@@ -1,6 +1,6 @@
 @interface MacRAPBaseTableViewController
-- (MacRAPBaseTableViewController)initWithStyle:(int64_t)a3;
-- (MacRAPBaseTableViewController)initWithStyle:(int64_t)a3 withTableViewFooter:(id)a4;
+- (MacRAPBaseTableViewController)initWithStyle:(int64_t)style;
+- (MacRAPBaseTableViewController)initWithStyle:(int64_t)style withTableViewFooter:(id)footer;
 - (void)viewDidLoad;
 @end
 
@@ -12,120 +12,120 @@
   v57.super_class = MacRAPBaseTableViewController;
   [(MacRAPBaseViewController *)&v57 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(MacRAPBaseTableViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(MacRAPBaseTableViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(MacRAPBaseTableViewController *)self view];
-  v6 = [(MacRAPBaseTableViewController *)self tableView];
-  [v5 addSubview:v6];
+  view2 = [(MacRAPBaseTableViewController *)self view];
+  tableView = [(MacRAPBaseTableViewController *)self tableView];
+  [view2 addSubview:tableView];
 
-  v7 = [(MacRAPBaseTableViewController *)self tableViewFooter];
+  tableViewFooter = [(MacRAPBaseTableViewController *)self tableViewFooter];
 
-  if (v7)
+  if (tableViewFooter)
   {
-    v8 = [(MacRAPBaseTableViewController *)self view];
-    v9 = [(MacRAPBaseTableViewController *)self tableViewFooter];
-    [v8 addSubview:v9];
+    view3 = [(MacRAPBaseTableViewController *)self view];
+    tableViewFooter2 = [(MacRAPBaseTableViewController *)self tableViewFooter];
+    [view3 addSubview:tableViewFooter2];
   }
 
   v56 = objc_alloc_init(NSMutableArray);
-  v54 = [(MacRAPBaseTableViewController *)self tableView];
-  v50 = [v54 leadingAnchor];
-  v52 = [(MacRAPBaseTableViewController *)self view];
-  v48 = [v52 leadingAnchor];
-  v46 = [v50 constraintEqualToAnchor:v48];
+  tableView2 = [(MacRAPBaseTableViewController *)self tableView];
+  leadingAnchor = [tableView2 leadingAnchor];
+  view4 = [(MacRAPBaseTableViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v46 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v59[0] = v46;
-  v44 = [(MacRAPBaseTableViewController *)self tableView];
-  v40 = [v44 trailingAnchor];
-  v42 = [(MacRAPBaseTableViewController *)self view];
-  v10 = [v42 trailingAnchor];
-  v11 = [v40 constraintEqualToAnchor:v10];
+  tableView3 = [(MacRAPBaseTableViewController *)self tableView];
+  trailingAnchor = [tableView3 trailingAnchor];
+  view5 = [(MacRAPBaseTableViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v59[1] = v11;
-  v12 = [(MacRAPBaseTableViewController *)self tableView];
-  v13 = [v12 topAnchor];
-  v14 = [(MacRAPBaseTableViewController *)self view];
-  v15 = [v14 safeAreaLayoutGuide];
-  v16 = [v15 topAnchor];
-  v17 = [v13 constraintEqualToAnchor:v16];
+  tableView4 = [(MacRAPBaseTableViewController *)self tableView];
+  topAnchor = [tableView4 topAnchor];
+  view6 = [(MacRAPBaseTableViewController *)self view];
+  safeAreaLayoutGuide = [view6 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v59[2] = v17;
   v18 = [NSArray arrayWithObjects:v59 count:3];
   [v56 addObjectsFromArray:v18];
 
-  v19 = [(MacRAPBaseTableViewController *)self tableViewFooter];
+  tableViewFooter3 = [(MacRAPBaseTableViewController *)self tableViewFooter];
 
-  if (v19)
+  if (tableViewFooter3)
   {
-    v55 = [(MacRAPBaseTableViewController *)self tableViewFooter];
-    v43 = [v55 leadingAnchor];
-    v47 = [(MacRAPBaseTableViewController *)self view];
-    v37 = [v47 leadingAnchor];
-    v49 = [v43 constraintEqualToAnchor:v37];
+    tableViewFooter4 = [(MacRAPBaseTableViewController *)self tableViewFooter];
+    leadingAnchor3 = [tableViewFooter4 leadingAnchor];
+    view7 = [(MacRAPBaseTableViewController *)self view];
+    leadingAnchor4 = [view7 leadingAnchor];
+    v49 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v58[0] = v49;
-    v39 = [(MacRAPBaseTableViewController *)self tableViewFooter];
-    v51 = [v39 trailingAnchor];
-    v53 = [(MacRAPBaseTableViewController *)self view];
-    v45 = [v53 trailingAnchor];
-    v41 = [v51 constraintEqualToAnchor:v45];
+    tableViewFooter5 = [(MacRAPBaseTableViewController *)self tableViewFooter];
+    trailingAnchor3 = [tableViewFooter5 trailingAnchor];
+    view8 = [(MacRAPBaseTableViewController *)self view];
+    trailingAnchor4 = [view8 trailingAnchor];
+    v41 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v58[1] = v41;
-    v38 = [(MacRAPBaseTableViewController *)self tableViewFooter];
-    v36 = [v38 topAnchor];
-    v20 = [(MacRAPBaseTableViewController *)self tableView];
-    v21 = [v20 bottomAnchor];
-    v22 = [v36 constraintEqualToAnchor:v21];
+    tableViewFooter6 = [(MacRAPBaseTableViewController *)self tableViewFooter];
+    topAnchor3 = [tableViewFooter6 topAnchor];
+    tableView5 = [(MacRAPBaseTableViewController *)self tableView];
+    bottomAnchor = [tableView5 bottomAnchor];
+    v22 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v58[2] = v22;
-    v23 = [(MacRAPBaseTableViewController *)self tableViewFooter];
-    v24 = [v23 bottomAnchor];
-    v25 = [(MacRAPBaseTableViewController *)self view];
-    v26 = [v25 safeAreaLayoutGuide];
-    v27 = [v26 bottomAnchor];
-    v28 = [v24 constraintEqualToAnchor:v27];
+    tableViewFooter7 = [(MacRAPBaseTableViewController *)self tableViewFooter];
+    bottomAnchor2 = [tableViewFooter7 bottomAnchor];
+    view9 = [(MacRAPBaseTableViewController *)self view];
+    safeAreaLayoutGuide2 = [view9 safeAreaLayoutGuide];
+    bottomAnchor3 = [safeAreaLayoutGuide2 bottomAnchor];
+    v28 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v58[3] = v28;
     v29 = [NSArray arrayWithObjects:v58 count:4];
     [v56 addObjectsFromArray:v29];
 
-    v30 = v37;
-    v31 = v47;
+    safeAreaLayoutGuide3 = leadingAnchor4;
+    view10 = view7;
 
-    v32 = v43;
-    v33 = v39;
+    bottomAnchor4 = leadingAnchor3;
+    v33 = tableViewFooter5;
 
-    v34 = v55;
-    v35 = v49;
+    tableView6 = tableViewFooter4;
+    bottomAnchor5 = v49;
   }
 
   else
   {
-    v34 = [(MacRAPBaseTableViewController *)self tableView];
-    v32 = [v34 bottomAnchor];
-    v31 = [(MacRAPBaseTableViewController *)self view];
-    v30 = [v31 safeAreaLayoutGuide];
-    v35 = [v30 bottomAnchor];
-    v33 = [v32 constraintEqualToAnchor:v35];
+    tableView6 = [(MacRAPBaseTableViewController *)self tableView];
+    bottomAnchor4 = [tableView6 bottomAnchor];
+    view10 = [(MacRAPBaseTableViewController *)self view];
+    safeAreaLayoutGuide3 = [view10 safeAreaLayoutGuide];
+    bottomAnchor5 = [safeAreaLayoutGuide3 bottomAnchor];
+    v33 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     [v56 addObject:v33];
   }
 
   [NSLayoutConstraint activateConstraints:v56];
 }
 
-- (MacRAPBaseTableViewController)initWithStyle:(int64_t)a3 withTableViewFooter:(id)a4
+- (MacRAPBaseTableViewController)initWithStyle:(int64_t)style withTableViewFooter:(id)footer
 {
-  result = [(MacRAPBaseTableViewController *)self initWithStyle:a3];
+  result = [(MacRAPBaseTableViewController *)self initWithStyle:style];
   if (result)
   {
-    result->_tableViewFooter = a4;
+    result->_tableViewFooter = footer;
   }
 
   return result;
 }
 
-- (MacRAPBaseTableViewController)initWithStyle:(int64_t)a3
+- (MacRAPBaseTableViewController)initWithStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = MacRAPBaseTableViewController;
   v4 = [(MacRAPBaseTableViewController *)&v9 initWithNibName:0 bundle:0];
   if (v4)
   {
-    v5 = [[UITableView alloc] initWithFrame:a3 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    v5 = [[UITableView alloc] initWithFrame:style style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     tableView = v4->_tableView;
     v4->_tableView = v5;
 

@@ -1,32 +1,32 @@
 @interface NSTextParagraph
-+ (id)textParagraphsForAttributedString:(id)a3 range:(_NSRange)a4;
++ (id)textParagraphsForAttributedString:(id)string range:(_NSRange)range;
 - (BOOL)_containsTextAttachments;
-- (CGSize)estimatedIntrinsicContentSizeForTextLayoutManager:(id)a3;
+- (CGSize)estimatedIntrinsicContentSizeForTextLayoutManager:(id)manager;
 - (NSAttributedString)attributedString;
 - (NSTextParagraph)initWithAttributedString:(NSAttributedString *)attributedString;
-- (NSTextParagraph)initWithAttributedString:(id)a3 range:(_NSRange)a4;
-- (NSTextParagraph)initWithString:(id)a3 attributes:(id)a4;
-- (NSTextParagraph)initWithTextAttachment:(id)a3 attributes:(id)a4;
-- (NSTextParagraph)initWithTextContentManager:(id)a3;
+- (NSTextParagraph)initWithAttributedString:(id)string range:(_NSRange)range;
+- (NSTextParagraph)initWithString:(id)string attributes:(id)attributes;
+- (NSTextParagraph)initWithTextAttachment:(id)attachment attributes:(id)attributes;
+- (NSTextParagraph)initWithTextContentManager:(id)manager;
 - (NSTextRange)paragraphContentRange;
 - (NSTextRange)paragraphSeparatorRange;
-- (_NSRange)rangeForLocation:(id)a3 allowsTrailingEdge:(BOOL)a4;
-- (const)_bidiLevelsForFallbackWritingDirection:(int64_t)a3 resolvedBaseWritingDirectionPointer:(int64_t *)a4;
-- (id)_textElementLocationForCharacterIndex:(unint64_t)a3;
+- (_NSRange)rangeForLocation:(id)location allowsTrailingEdge:(BOOL)edge;
+- (const)_bidiLevelsForFallbackWritingDirection:(int64_t)direction resolvedBaseWritingDirectionPointer:(int64_t *)pointer;
+- (id)_textElementLocationForCharacterIndex:(unint64_t)index;
 - (id)anchoredTextAttachments;
 - (id)description;
-- (id)locationForCharacterIndex:(int64_t)a3 dataSourceLocationsOnly:(BOOL)a4 actualRange:(_NSRange *)a5;
+- (id)locationForCharacterIndex:(int64_t)index dataSourceLocationsOnly:(BOOL)only actualRange:(_NSRange *)range;
 - (id)paragraphRange;
-- (int64_t)_resolvedBaseWritingDirectionWithFallbackDirection:(int64_t)a3;
-- (void)_setContainsTextAttachments:(BOOL)a3;
-- (void)_setElementTextLocation:(id)a3 forCharacterIndex:(unint64_t)a4;
+- (int64_t)_resolvedBaseWritingDirectionWithFallbackDirection:(int64_t)direction;
+- (void)_setContainsTextAttachments:(BOOL)attachments;
+- (void)_setElementTextLocation:(id)location forCharacterIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)enumerateSubstringsFromLocation:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateSubstringsInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)setAttributedString:(id)a3;
-- (void)setElementRange:(id)a3;
-- (void)setParagraphContentRange:(id)a3;
-- (void)setParagraphSeparatorRange:(id)a3;
+- (void)enumerateSubstringsFromLocation:(id)location options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateSubstringsInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block;
+- (void)setAttributedString:(id)string;
+- (void)setElementRange:(id)range;
+- (void)setParagraphContentRange:(id)range;
+- (void)setParagraphSeparatorRange:(id)range;
 - (void)synchronizeDocumentRange;
 @end
 
@@ -68,8 +68,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMapTable *)textElementLocationTable objectEnumerator];
-  v5 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)textElementLocationTable objectEnumerator];
+  v5 = [(NSEnumerator *)objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -81,14 +81,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) setTextElement:0];
       }
 
       while (v6 != v8);
-      v6 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSEnumerator *)objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -117,14 +117,14 @@
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v2 = [(NSTextParagraph *)self attributedString];
-  v3 = [(NSAttributedString *)v2 length];
+  attributedString = [(NSTextParagraph *)self attributedString];
+  v3 = [(NSAttributedString *)attributedString length];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__NSTextParagraph_anchoredTextAttachments__block_invoke;
   v6[3] = &unk_1E7266970;
   v6[4] = &v7;
-  [(NSAttributedString *)v2 enumerateAttribute:@"NSTextParagraphAnchoredAttachment" inRange:0 options:v3 usingBlock:0x100000, v6];
+  [(NSAttributedString *)attributedString enumerateAttribute:@"NSTextParagraphAnchoredAttachment" inRange:0 options:v3 usingBlock:0x100000, v6];
   if (v8[5])
   {
     v4 = v8[5];
@@ -162,13 +162,13 @@ uint64_t __42__NSTextParagraph_anchoredTextAttachments__block_invoke(uint64_t re
   return result;
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
-  if (self->_attributedString != a3)
+  if (self->_attributedString != string)
   {
     objc_sync_enter(self);
 
-    self->_attributedString = [a3 copy];
+    self->_attributedString = [string copy];
     self->_range = xmmword_18E856180;
 
     objc_sync_exit(self);
@@ -182,36 +182,36 @@ uint64_t __42__NSTextParagraph_anchoredTextAttachments__block_invoke(uint64_t re
     attributedString = [(NSTextParagraph *)self attributedString];
   }
 
-  v4 = [(NSAttributedString *)attributedString string];
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p %@>", objc_opt_class(), self, v4];
+  string = [(NSAttributedString *)attributedString string];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p %@>", objc_opt_class(), self, string];
 }
 
-+ (id)textParagraphsForAttributedString:(id)a3 range:(_NSRange)a4
++ (id)textParagraphsForAttributedString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3052000000;
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v9 = [a3 string];
-  if (location + length > [a3 length])
+  string = [string string];
+  if (location + length > [string length])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21.location = location;
     v21.length = length;
-    [v13 handleFailureInMethod:a2 object:a1 file:@"NSTextElement.m" lineNumber:267 description:{@"Out-of-bounds range specified %@", NSStringFromRange(v21)}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSTextElement.m" lineNumber:267 description:{@"Out-of-bounds range specified %@", NSStringFromRange(v21)}];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invoke;
   v14[3] = &unk_1E7266F98;
-  v14[4] = a3;
+  v14[4] = string;
   v14[5] = &v15;
-  [v9 enumerateSubstringsInRange:location options:length usingBlock:{513, v14}];
+  [string enumerateSubstringsInRange:location options:length usingBlock:{513, v14}];
   v10 = v16[5];
   if (v10)
   {
@@ -263,14 +263,14 @@ void __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invok
   return v5;
 }
 
-- (NSTextParagraph)initWithAttributedString:(id)a3 range:(_NSRange)a4
+- (NSTextParagraph)initWithAttributedString:(id)string range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v7 = [(NSTextParagraph *)self initWithAttributedString:0];
   if (v7)
   {
-    v7->_attributedString = a3;
+    v7->_attributedString = string;
     v7->_range.location = location;
     v7->_range.length = length;
   }
@@ -278,59 +278,59 @@ void __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invok
   return v7;
 }
 
-- (NSTextParagraph)initWithTextContentManager:(id)a3
+- (NSTextParagraph)initWithTextContentManager:(id)manager
 {
   v4 = [(NSTextParagraph *)self initWithAttributedString:0];
   v5 = v4;
   if (v4)
   {
-    [(NSTextElement *)v4 setTextContentManager:a3];
+    [(NSTextElement *)v4 setTextContentManager:manager];
   }
 
   return v5;
 }
 
-- (NSTextParagraph)initWithString:(id)a3 attributes:(id)a4
+- (NSTextParagraph)initWithString:(id)string attributes:(id)attributes
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:a3 attributes:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:string attributes:attributes];
   v7 = [(NSTextParagraph *)self initWithAttributedString:v6];
   v8 = v7;
   if (v7)
   {
-    [(NSTextParagraph *)v7 setAttributes:a4];
+    [(NSTextParagraph *)v7 setAttributes:attributes];
   }
 
   return v8;
 }
 
-- (void)setParagraphContentRange:(id)a3
+- (void)setParagraphContentRange:(id)range
 {
   objc_sync_enter(self);
   paragraphContentRange = self->_paragraphContentRange;
-  if (paragraphContentRange != a3)
+  if (paragraphContentRange != range)
   {
 
-    self->_paragraphContentRange = a3;
+    self->_paragraphContentRange = range;
   }
 
   objc_sync_exit(self);
 }
 
-- (void)setParagraphSeparatorRange:(id)a3
+- (void)setParagraphSeparatorRange:(id)range
 {
   objc_sync_enter(self);
-  if (self->_paragraphSeparatorRange != a3)
+  if (self->_paragraphSeparatorRange != range)
   {
-    v5 = [(NSTextElement *)self coalescingType];
+    coalescingType = [(NSTextElement *)self coalescingType];
     paragraphSeparatorRange = self->_paragraphSeparatorRange;
 
-    v7 = v5 & 0xF;
-    self->_paragraphSeparatorRange = a3;
+    v7 = coalescingType & 0xF;
+    self->_paragraphSeparatorRange = range;
     if (!paragraphSeparatorRange)
     {
-      if ([a3 isEmpty])
+      if ([range isEmpty])
       {
-        v7 = v5 & 0xD | 2u;
+        v7 = coalescingType & 0xD | 2u;
       }
 
       else
@@ -338,19 +338,19 @@ void __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invok
         attributedString = self->_attributedString;
         if (attributedString)
         {
-          v9 = [(NSAttributedString *)attributedString string];
+          string = [(NSAttributedString *)attributedString string];
         }
 
         else
         {
-          v9 = [(NSAttributedString *)[(NSTextParagraph *)self attributedString] string];
+          string = [(NSAttributedString *)[(NSTextParagraph *)self attributedString] string];
         }
 
-        v10 = v9;
+        v10 = string;
         location = self->_range.location;
         if (location == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v12 = [(NSString *)v9 length];
+          v12 = [(NSString *)string length];
         }
 
         else
@@ -359,10 +359,10 @@ void __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invok
         }
 
         v13 = [(NSString *)v10 characterAtIndex:v12 - 1];
-        v14 = v5 | 4;
+        v14 = coalescingType | 4;
         if (v13 != 13)
         {
-          v14 = v5;
+          v14 = coalescingType;
         }
 
         v7 = v14 & 0xD;
@@ -375,13 +375,13 @@ void __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invok
   objc_sync_exit(self);
 }
 
-- (id)locationForCharacterIndex:(int64_t)a3 dataSourceLocationsOnly:(BOOL)a4 actualRange:(_NSRange *)a5
+- (id)locationForCharacterIndex:(int64_t)index dataSourceLocationsOnly:(BOOL)only actualRange:(_NSRange *)range
 {
   p_range = &self->_range;
   location = self->_range.location;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = [(NSAttributedString *)[(NSTextParagraph *)self attributedString:a3] length];
+    length = [(NSAttributedString *)[(NSTextParagraph *)self attributedString:index] length];
     v11 = 0;
   }
 
@@ -391,43 +391,43 @@ void __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invok
     v11 = self->_range.location;
   }
 
-  if (length < a3)
+  if (length < index)
   {
     return 0;
   }
 
-  v13 = [(NSTextContentManager *)[(NSTextElement *)self textContentManager] locationFromLocation:[(NSTextRange *)[(NSTextElement *)self elementRange] location] withOffset:a3];
+  v13 = [(NSTextContentManager *)[(NSTextElement *)self textContentManager] locationFromLocation:[(NSTextRange *)[(NSTextElement *)self elementRange] location] withOffset:index];
   v12 = v13;
-  if (a5 && v13)
+  if (range && v13)
   {
-    if (length <= a3)
+    if (length <= index)
     {
       v14.length = 0;
-      v14.location = v11 + a3;
+      v14.location = v11 + index;
     }
 
     else
     {
-      v14.location = [(NSString *)[(NSAttributedString *)self->_attributedString string] rangeOfComposedCharacterSequenceAtIndex:v11 + a3];
+      v14.location = [(NSString *)[(NSAttributedString *)self->_attributedString string] rangeOfComposedCharacterSequenceAtIndex:v11 + index];
       if (location != 0x7FFFFFFFFFFFFFFFLL)
       {
         v14 = NSIntersectionRange(v14, *p_range);
       }
     }
 
-    a5->location = v14.location - v11;
-    a5->length = v14.length;
+    range->location = v14.location - v11;
+    range->length = v14.length;
   }
 
   return v12;
 }
 
-- (_NSRange)rangeForLocation:(id)a3 allowsTrailingEdge:(BOOL)a4
+- (_NSRange)rangeForLocation:(id)location allowsTrailingEdge:(BOOL)edge
 {
   v9 = xmmword_18E856180;
-  if (a3 && ((v4 = a4, -[NSTextRange containsLocation:](-[NSTextElement elementRange](self, "elementRange"), "containsLocation:", a3)) || v4 && [-[NSTextRange endLocation](-[NSTextElement elementRange](self "elementRange")]))
+  if (location && ((v4 = edge, -[NSTextRange containsLocation:](-[NSTextElement elementRange](self, "elementRange"), "containsLocation:", location)) || v4 && [-[NSTextRange endLocation](-[NSTextElement elementRange](self "elementRange")]))
   {
-    [(NSTextParagraph *)self locationForCharacterIndex:[(NSTextContentManager *)[(NSTextElement *)self textContentManager] offsetFromLocation:[(NSTextRange *)[(NSTextElement *)self elementRange] location] toLocation:a3] dataSourceLocationsOnly:0 actualRange:&v9];
+    [(NSTextParagraph *)self locationForCharacterIndex:[(NSTextContentManager *)[(NSTextElement *)self textContentManager] offsetFromLocation:[(NSTextRange *)[(NSTextElement *)self elementRange] location] toLocation:location] dataSourceLocationsOnly:0 actualRange:&v9];
     v8 = *(&v9 + 1);
     v7 = v9;
   }
@@ -443,15 +443,15 @@ void __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invok
   return result;
 }
 
-- (id)_textElementLocationForCharacterIndex:(unint64_t)a3
+- (id)_textElementLocationForCharacterIndex:(unint64_t)index
 {
   objc_sync_enter(self);
-  v5 = [(NSMapTable *)self->_textElementLocationTable objectForKey:a3 + 1];
+  v5 = [(NSMapTable *)self->_textElementLocationTable objectForKey:index + 1];
   objc_sync_exit(self);
   return v5;
 }
 
-- (void)_setElementTextLocation:(id)a3 forCharacterIndex:(unint64_t)a4
+- (void)_setElementTextLocation:(id)location forCharacterIndex:(unint64_t)index
 {
   objc_sync_enter(self);
   textElementLocationTable = self->_textElementLocationTable;
@@ -461,23 +461,23 @@ void __59__NSTextParagraph_textParagraphsForAttributedString_range___block_invok
     self->_textElementLocationTable = textElementLocationTable;
   }
 
-  [(NSMapTable *)textElementLocationTable setObject:a3 forKey:a4 + 1];
+  [(NSMapTable *)textElementLocationTable setObject:location forKey:index + 1];
 
   objc_sync_exit(self);
 }
 
-- (void)enumerateSubstringsInRange:(_NSRange)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateSubstringsInRange:(_NSRange)range options:(unint64_t)options usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = [(NSAttributedString *)self->_attributedString string];
+  length = range.length;
+  location = range.location;
+  string = [(NSAttributedString *)self->_attributedString string];
   v10 = self->_range.location;
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = 0;
   }
 
-  [(NSString *)v9 enumerateSubstringsInRange:MEMORY[0x1E69E9820] options:3221225472 usingBlock:__65__NSTextParagraph_enumerateSubstringsInRange_options_usingBlock___block_invoke, &unk_1E7266FC0, a5, v10 + location, length, v10];
+  [(NSString *)string enumerateSubstringsInRange:MEMORY[0x1E69E9820] options:3221225472 usingBlock:__65__NSTextParagraph_enumerateSubstringsInRange_options_usingBlock___block_invoke, &unk_1E7266FC0, block, v10 + location, length, v10];
 }
 
 uint64_t __65__NSTextParagraph_enumerateSubstringsInRange_options_usingBlock___block_invoke(uint64_t a1, int a2, NSRange range1, NSUInteger a4, NSUInteger a5)
@@ -496,26 +496,26 @@ uint64_t __65__NSTextParagraph_enumerateSubstringsInRange_options_usingBlock___b
   return v10();
 }
 
-- (void)enumerateSubstringsFromLocation:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateSubstringsFromLocation:(id)location options:(unint64_t)options usingBlock:(id)block
 {
-  v9 = [(NSTextParagraph *)self paragraphContentRange];
-  v10 = [(NSTextParagraph *)self paragraphSeparatorRange];
-  v11 = [(NSTextRange *)v9 location];
-  v12 = [(NSTextRange *)v10 endLocation];
-  if ([a3 compare:v11] != -1)
+  paragraphContentRange = [(NSTextParagraph *)self paragraphContentRange];
+  paragraphSeparatorRange = [(NSTextParagraph *)self paragraphSeparatorRange];
+  location = [(NSTextRange *)paragraphContentRange location];
+  endLocation = [(NSTextRange *)paragraphSeparatorRange endLocation];
+  if ([location compare:location] != -1)
   {
-    v13 = [a3 compare:v12];
-    v14 = (a4 & 0x100) != 0 ? a3 : v12;
-    v15 = (a4 & 0x100) != 0 ? v11 : a3;
+    v13 = [location compare:endLocation];
+    v14 = (options & 0x100) != 0 ? location : endLocation;
+    v15 = (options & 0x100) != 0 ? location : location;
     if (v13 == -1)
     {
-      v12 = v14;
-      v11 = v15;
+      endLocation = v14;
+      location = v15;
     }
   }
 
-  v16 = [(NSTextParagraph *)self rangeForLocation:v11 allowsTrailingEdge:0];
-  v17 = [(NSTextParagraph *)self rangeForLocation:v12 allowsTrailingEdge:1];
+  v16 = [(NSTextParagraph *)self rangeForLocation:location allowsTrailingEdge:0];
+  v17 = [(NSTextParagraph *)self rangeForLocation:endLocation allowsTrailingEdge:1];
   if (v16 != 0x7FFFFFFFFFFFFFFFLL && v17 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v18[0] = MEMORY[0x1E69E9820];
@@ -523,8 +523,8 @@ uint64_t __65__NSTextParagraph_enumerateSubstringsInRange_options_usingBlock___b
     v18[2] = __70__NSTextParagraph_enumerateSubstringsFromLocation_options_usingBlock___block_invoke;
     v18[3] = &unk_1E7266FE8;
     v18[4] = self;
-    v18[5] = a5;
-    [(NSTextParagraph *)self enumerateSubstringsInRange:v16 options:v17 - v16 usingBlock:a4, v18];
+    v18[5] = block;
+    [(NSTextParagraph *)self enumerateSubstringsInRange:v16 options:v17 - v16 usingBlock:options, v18];
   }
 }
 
@@ -540,12 +540,12 @@ void __70__NSTextParagraph_enumerateSubstringsFromLocation_options_usingBlock___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setElementRange:(id)a3
+- (void)setElementRange:(id)range
 {
   objc_sync_enter(self);
   v6.receiver = self;
   v6.super_class = NSTextParagraph;
-  [(NSTextElement *)&v6 setElementRange:a3];
+  [(NSTextElement *)&v6 setElementRange:range];
   if (self->_range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
     self->_range.location = [(NSTextRange *)[(NSTextElement *)self elementRange] range];
@@ -570,8 +570,8 @@ void __70__NSTextParagraph_enumerateSubstringsFromLocation_options_usingBlock___
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMapTable *)textElementLocationTable objectEnumerator];
-  v6 = [(NSEnumerator *)v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMapTable *)textElementLocationTable objectEnumerator];
+  v6 = [(NSEnumerator *)objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
     v7 = *v10;
@@ -581,13 +581,13 @@ void __70__NSTextParagraph_enumerateSubstringsFromLocation_options_usingBlock___
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v9 + 1) + 8 * i) updateBaseLocation];
       }
 
-      v6 = [(NSEnumerator *)v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [(NSEnumerator *)objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -596,9 +596,9 @@ void __70__NSTextParagraph_enumerateSubstringsFromLocation_options_usingBlock___
   objc_sync_exit(self);
 }
 
-- (CGSize)estimatedIntrinsicContentSizeForTextLayoutManager:(id)a3
+- (CGSize)estimatedIntrinsicContentSizeForTextLayoutManager:(id)manager
 {
-  v5 = [a3 textContainerForLocation:{-[NSTextRange location](-[NSTextElement elementRange](self, "elementRange"), "location")}];
+  v5 = [manager textContainerForLocation:{-[NSTextRange location](-[NSTextElement elementRange](self, "elementRange"), "location")}];
   v6 = *MEMORY[0x1E695F060];
   v7 = *(MEMORY[0x1E695F060] + 8);
   if (!v5)
@@ -625,7 +625,7 @@ void __70__NSTextParagraph_enumerateSubstringsFromLocation_options_usingBlock___
     }
 
 LABEL_10:
-    v14 = [objc_msgSend(objc_msgSend(a3 "textSelections")];
+    v14 = [objc_msgSend(objc_msgSend(manager "textSelections")];
     v15 = 0;
     goto LABEL_11;
   }
@@ -644,8 +644,8 @@ LABEL_11:
   [v8 size];
   v17 = v16;
   v27 = 0.0;
-  +[NSCoreTypesetter _lineMetricsForAttributes:typesetterBehavior:usesFontLeading:applySpacings:usesSystemFontLeading:usesNegativeFontLeading:layoutOrientation:lineHeight:baselineOffset:spacing:](NSCoreTypesetter, "_lineMetricsForAttributes:typesetterBehavior:usesFontLeading:applySpacings:usesSystemFontLeading:usesNegativeFontLeading:layoutOrientation:lineHeight:baselineOffset:spacing:", v14, +[NSTypesetter defaultTypesetterBehavior](NSTypesetter, "defaultTypesetterBehavior"), [a3 usesFontLeading], 1, 0, 0, objc_msgSend(v8, "layoutOrientation"), &v27, 0, 0);
-  if (([a3 allowsFontSubstitutionAffectingVerticalMetrics] & 1) != 0 || (v18 = -[NSDictionary objectForKeyedSubscript:](v14, "objectForKeyedSubscript:", @"NSOriginalFont")) == 0)
+  +[NSCoreTypesetter _lineMetricsForAttributes:typesetterBehavior:usesFontLeading:applySpacings:usesSystemFontLeading:usesNegativeFontLeading:layoutOrientation:lineHeight:baselineOffset:spacing:](NSCoreTypesetter, "_lineMetricsForAttributes:typesetterBehavior:usesFontLeading:applySpacings:usesSystemFontLeading:usesNegativeFontLeading:layoutOrientation:lineHeight:baselineOffset:spacing:", v14, +[NSTypesetter defaultTypesetterBehavior](NSTypesetter, "defaultTypesetterBehavior"), [manager usesFontLeading], 1, 0, 0, objc_msgSend(v8, "layoutOrientation"), &v27, 0, 0);
+  if (([manager allowsFontSubstitutionAffectingVerticalMetrics] & 1) != 0 || (v18 = -[NSDictionary objectForKeyedSubscript:](v14, "objectForKeyedSubscript:", @"NSOriginalFont")) == 0)
   {
     v18 = [(NSDictionary *)v14 objectForKeyedSubscript:@"NSFont"];
     if (!v18)
@@ -687,11 +687,11 @@ LABEL_27:
   return result;
 }
 
-- (int64_t)_resolvedBaseWritingDirectionWithFallbackDirection:(int64_t)a3
+- (int64_t)_resolvedBaseWritingDirectionWithFallbackDirection:(int64_t)direction
 {
   resolvedBaseDirection = self->_resolvedBaseDirection;
   fallbackBaseDirection = self->_fallbackBaseDirection;
-  if ((fallbackBaseDirection == a3 || fallbackBaseDirection == -1) && resolvedBaseDirection != -1)
+  if ((fallbackBaseDirection == direction || fallbackBaseDirection == -1) && resolvedBaseDirection != -1)
   {
     goto LABEL_30;
   }
@@ -739,16 +739,16 @@ LABEL_16:
   }
 
 LABEL_17:
-  v14 = [(NSParagraphStyle *)v13 baseWritingDirection];
-  v15 = v14;
-  self->_resolvedBaseDirection = v14;
-  if (a3 == 1 || v14 == 1 || _NSStringHasRightToLeftCharactersInRange([(NSAttributedString *)attributedString string], location, length))
+  baseWritingDirection = [(NSParagraphStyle *)v13 baseWritingDirection];
+  v15 = baseWritingDirection;
+  self->_resolvedBaseDirection = baseWritingDirection;
+  if (direction == 1 || baseWritingDirection == 1 || _NSStringHasRightToLeftCharactersInRange([(NSAttributedString *)attributedString string], location, length))
   {
-    resolvedBaseDirection = a3;
+    resolvedBaseDirection = direction;
     if (length)
     {
       v16 = malloc_type_calloc(length, 1uLL, 0x100004077774924uLL);
-      v17 = [_NSParagraphBidiLevelsProducer resolvedBaseWritingDirectionForTextContentManager:attributedString AttributedString:location paragraphRange:length baseWritingDirection:v15 fallbackBaseWritingDirection:a3 bidiLevels:?];
+      v17 = [_NSParagraphBidiLevelsProducer resolvedBaseWritingDirectionForTextContentManager:attributedString AttributedString:location paragraphRange:length baseWritingDirection:v15 fallbackBaseWritingDirection:direction bidiLevels:?];
       if (v17 == -1)
       {
         resolvedBaseDirection = v15;
@@ -775,31 +775,31 @@ LABEL_17:
   }
 
 LABEL_30:
-  self->_fallbackBaseDirection = a3;
+  self->_fallbackBaseDirection = direction;
   return resolvedBaseDirection;
 }
 
-- (const)_bidiLevelsForFallbackWritingDirection:(int64_t)a3 resolvedBaseWritingDirectionPointer:(int64_t *)a4
+- (const)_bidiLevelsForFallbackWritingDirection:(int64_t)direction resolvedBaseWritingDirectionPointer:(int64_t *)pointer
 {
-  v6 = [(NSTextParagraph *)self _resolvedBaseWritingDirectionWithFallbackDirection:a3];
-  if (a4)
+  v6 = [(NSTextParagraph *)self _resolvedBaseWritingDirectionWithFallbackDirection:direction];
+  if (pointer)
   {
-    *a4 = v6;
+    *pointer = v6;
   }
 
   return self->_bidiLevels;
 }
 
-- (NSTextParagraph)initWithTextAttachment:(id)a3 attributes:(id)a4
+- (NSTextParagraph)initWithTextAttachment:(id)attachment attributes:(id)attributes
 {
-  v7 = [a4 mutableCopy];
-  if ([a3 embeddingType] == 1)
+  v7 = [attributes mutableCopy];
+  if ([attachment embeddingType] == 1)
   {
-    v8 = [a3 standaloneAlignment];
-    if (v8 != 3)
+    standaloneAlignment = [attachment standaloneAlignment];
+    if (standaloneAlignment != 3)
     {
-      v9 = v8;
-      v10 = [a4 objectForKeyedSubscript:@"NSParagraphStyle"];
+      v9 = standaloneAlignment;
+      v10 = [attributes objectForKeyedSubscript:@"NSParagraphStyle"];
       if (v9 == 1)
       {
         v11 = 1;
@@ -838,9 +838,9 @@ LABEL_30:
   }
 
 LABEL_12:
-  v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttachment:a3 attributes:v7];
+  v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithAttachment:attachment attributes:v7];
   v16 = [(NSTextParagraph *)self initWithAttributedString:v15];
-  if ([a3 embeddingType] == 1)
+  if ([attachment embeddingType] == 1)
   {
     [(NSTextElement *)v16 setCoalescingType:0];
   }
@@ -899,11 +899,11 @@ LABEL_12:
   return v8;
 }
 
-- (void)_setContainsTextAttachments:(BOOL)a3
+- (void)_setContainsTextAttachments:(BOOL)attachments
 {
-  v3 = a3;
+  attachmentsCopy = attachments;
   objc_sync_enter(self);
-  if (v3)
+  if (attachmentsCopy)
   {
     v5 = 2;
   }

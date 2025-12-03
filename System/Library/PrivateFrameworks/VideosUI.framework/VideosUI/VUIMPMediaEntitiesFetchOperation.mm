@@ -1,6 +1,6 @@
 @interface VUIMPMediaEntitiesFetchOperation
 - (VUIMPMediaEntitiesFetchOperation)init;
-- (VUIMPMediaEntitiesFetchOperation)initWithMediaLibrary:(id)a3 requests:(id)a4;
+- (VUIMPMediaEntitiesFetchOperation)initWithMediaLibrary:(id)library requests:(id)requests;
 - (void)executionDidBegin;
 @end
 
@@ -16,14 +16,14 @@
   return 0;
 }
 
-- (VUIMPMediaEntitiesFetchOperation)initWithMediaLibrary:(id)a3 requests:(id)a4
+- (VUIMPMediaEntitiesFetchOperation)initWithMediaLibrary:(id)library requests:(id)requests
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  libraryCopy = library;
+  requestsCopy = requests;
+  v9 = requestsCopy;
+  if (libraryCopy)
   {
-    if (v8)
+    if (requestsCopy)
     {
       goto LABEL_3;
     }
@@ -45,11 +45,11 @@ LABEL_3:
   v10 = [(VUIMPMediaEntitiesFetchOperation *)&v16 init];
   if (v10)
   {
-    v11 = [v9 vui_deepCopy];
+    vui_deepCopy = [v9 vui_deepCopy];
     requests = v10->_requests;
-    v10->_requests = v11;
+    v10->_requests = vui_deepCopy;
 
-    objc_storeStrong(&v10->_mediaLibrary, a3);
+    objc_storeStrong(&v10->_mediaLibrary, library);
     v13 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     privateQueue = v10->_privateQueue;
     v10->_privateQueue = v13;
@@ -76,8 +76,8 @@ LABEL_3:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [(VUIMPMediaEntitiesFetchOperation *)self requests];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  requests = [(VUIMPMediaEntitiesFetchOperation *)self requests];
+  v8 = [requests countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v8)
   {
     v9 = *v19;
@@ -88,33 +88,33 @@ LABEL_3:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(requests);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
         v12 = [VUIMPMediaEntitiesSingleFetchOperation alloc];
-        v13 = [(VUIMPMediaEntitiesFetchOperation *)self mediaLibrary];
-        v14 = [(VUIMPMediaEntitiesSingleFetchOperation *)v12 initWithMediaLibrary:v13 request:v11];
+        mediaLibrary = [(VUIMPMediaEntitiesFetchOperation *)self mediaLibrary];
+        v14 = [(VUIMPMediaEntitiesSingleFetchOperation *)v12 initWithMediaLibrary:mediaLibrary request:v11];
 
-        v15 = [v11 identifier];
-        [v5 setObject:v14 forKey:v15];
+        identifier = [v11 identifier];
+        [v5 setObject:v14 forKey:identifier];
 
         [v6 addDependency:v14];
-        v16 = [(VUIMPMediaEntitiesFetchOperation *)self privateQueue];
-        [v16 addOperation:v14];
+        privateQueue = [(VUIMPMediaEntitiesFetchOperation *)self privateQueue];
+        [privateQueue addOperation:v14];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v8 = [requests countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v8);
   }
 
-  v17 = [(VUIMPMediaEntitiesFetchOperation *)self privateQueue];
-  [v17 addOperation:v6];
+  privateQueue2 = [(VUIMPMediaEntitiesFetchOperation *)self privateQueue];
+  [privateQueue2 addOperation:v6];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);

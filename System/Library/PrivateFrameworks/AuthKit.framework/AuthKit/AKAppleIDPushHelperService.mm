@@ -1,37 +1,37 @@
 @interface AKAppleIDPushHelperService
 + (id)sharedService;
 - (AKAppleIDPushHelperService)init;
-- (BOOL)_canProceedWithArmingForMessage:(id)a3 account:(id)a4;
-- (BOOL)_isPrimaryAccount:(id)a3;
-- (BOOL)_messageSupportsAlerts:(id)a3;
-- (BOOL)_queryDelegatesForSuppressAction:(id)a3;
-- (BOOL)_shouldProcessPushMessage:(id)a3 withAccount:(id)a4;
+- (BOOL)_canProceedWithArmingForMessage:(id)message account:(id)account;
+- (BOOL)_isPrimaryAccount:(id)account;
+- (BOOL)_messageSupportsAlerts:(id)alerts;
+- (BOOL)_queryDelegatesForSuppressAction:(id)action;
+- (BOOL)_shouldProcessPushMessage:(id)message withAccount:(id)account;
 - (id)_akPCSAuthPushHandler;
 - (id)_publicAPSToken;
 - (id)_pushCommandsPostingCFUserNotification;
 - (id)publicAPSTokenString;
-- (void)_armDeviceWithMessage:(id)a3 account:(id)a4 notificationResult:(unint64_t)a5;
-- (void)_ensureDesiredAPSEnvironmentIsInUse:(id)a3;
-- (void)_generateLoginCodeForAccount:(id)a3 withIncomingMessage:(id)a4;
-- (void)_notifyDelegatesOfMessageActivation:(id)a3 result:(unint64_t)a4;
-- (void)_notifyDelegatesOfMessageActivation:(id)a3 result:(unint64_t)a4 payload:(id)a5;
-- (void)_performCommandForMessage:(id)a3 forAccount:(id)a4;
-- (void)_processMessageWithDelegates:(id)a3;
-- (void)_startPasswordResetFlowForAccount:(id)a3;
-- (void)_unsafe_presentMessage:(id)a3 forAccount:(id)a4;
-- (void)_unsafe_processPushMessage:(id)a3;
-- (void)_unsafe_showLoginNotificationWithCode:(id)a3 incomingMessage:(id)a4 piggy:(BOOL)a5;
-- (void)_unsafe_showNotificationForMessage:(id)a3 account:(id)a4 responseHandler:(id)a5;
-- (void)_unsafe_tearDownNotificationWithID:(id)a3;
+- (void)_armDeviceWithMessage:(id)message account:(id)account notificationResult:(unint64_t)result;
+- (void)_ensureDesiredAPSEnvironmentIsInUse:(id)use;
+- (void)_generateLoginCodeForAccount:(id)account withIncomingMessage:(id)message;
+- (void)_notifyDelegatesOfMessageActivation:(id)activation result:(unint64_t)result;
+- (void)_notifyDelegatesOfMessageActivation:(id)activation result:(unint64_t)result payload:(id)payload;
+- (void)_performCommandForMessage:(id)message forAccount:(id)account;
+- (void)_processMessageWithDelegates:(id)delegates;
+- (void)_startPasswordResetFlowForAccount:(id)account;
+- (void)_unsafe_presentMessage:(id)message forAccount:(id)account;
+- (void)_unsafe_processPushMessage:(id)message;
+- (void)_unsafe_showLoginNotificationWithCode:(id)code incomingMessage:(id)message piggy:(BOOL)piggy;
+- (void)_unsafe_showNotificationForMessage:(id)message account:(id)account responseHandler:(id)handler;
+- (void)_unsafe_tearDownNotificationWithID:(id)d;
 - (void)_unsafe_teardownCurrentLoginNotification;
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connectionDidReconnect:(id)a3;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connectionDidReconnect:(id)reconnect;
 - (void)dealloc;
-- (void)setDelegates:(id)a3;
-- (void)showPigCode:(id)a3 withIncomingMessage:(id)a4;
-- (void)startWithDelegates:(id)a3;
+- (void)setDelegates:(id)delegates;
+- (void)showPigCode:(id)code withIncomingMessage:(id)message;
+- (void)startWithDelegates:(id)delegates;
 - (void)tearDownLoginNotifications;
 @end
 
@@ -94,12 +94,12 @@
   return v14;
 }
 
-- (void)startWithDelegates:(id)a3
+- (void)startWithDelegates:(id)delegates
 {
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegates);
   if (getenv("__OSINSTALL_ENVIRONMENT"))
   {
     v47 = _AKLogSystem();
@@ -134,13 +134,13 @@
 
   else
   {
-    queue = v49->_pushServiceQueue;
+    queue = selfCopy->_pushServiceQueue;
     v35 = _NSConcreteStackBlock;
     v36 = -1073741824;
     v37 = 0;
     v38 = sub_100178D34;
     v39 = &unk_10031F8B0;
-    v40 = _objc_retain(v49);
+    v40 = _objc_retain(selfCopy);
     dispatch_async(queue, &v35);
     v34 = 0uLL;
     v12 = _AKSignpostLogSystem();
@@ -178,10 +178,10 @@
     v23 = sub_100178F78;
     v24 = &unk_100325370;
     v26 = v34;
-    v25 = _objc_retain(v49);
+    v25 = _objc_retain(selfCopy);
     [v7 environmentValueForKey:v6 completion:&v20];
     _objc_release(v7);
-    [(AKAppleIDPushHelperService *)v49 setDelegates:location[0]];
+    [(AKAppleIDPushHelperService *)selfCopy setDelegates:location[0]];
     oslog = _AKLogSystem();
     v18 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -201,12 +201,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setDelegates:(id)a3
+- (void)setDelegates:(id)delegates
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegates);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -216,24 +216,24 @@
 
   objc_storeStrong(&oslog, 0);
   v3 = [location[0] copy];
-  pushDelegates = v7->_pushDelegates;
-  v7->_pushDelegates = v3;
+  pushDelegates = selfCopy->_pushDelegates;
+  selfCopy->_pushDelegates = v3;
   _objc_release(pushDelegates);
   objc_storeStrong(location, 0);
 }
 
-- (void)_notifyDelegatesOfMessageActivation:(id)a3 result:(unint64_t)a4
+- (void)_notifyDelegatesOfMessageActivation:(id)activation result:(unint64_t)result
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16 = a4;
+  objc_storeStrong(location, activation);
+  resultCopy = result;
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [NSNumber numberWithUnsignedInteger:v16];
+    v10 = [NSNumber numberWithUnsignedInteger:resultCopy];
     sub_1000194D4(v20, v10);
     _os_log_impl(&_mh_execute_header, oslog, type, "Will notify delegates of notification action: %@", v20, 0xCu);
     _objc_release(v10);
@@ -241,7 +241,7 @@
 
   objc_storeStrong(&oslog, 0);
   memset(__b, 0, sizeof(__b));
-  obj = _objc_retain(v18->_pushDelegates);
+  obj = _objc_retain(selfCopy->_pushDelegates);
   v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v19 count:16];
   if (v9)
   {
@@ -259,7 +259,7 @@
       v13 = *(__b[1] + 8 * v6);
       if (objc_opt_respondsToSelector())
       {
-        [v13 didRespondToMessage:location[0] withResult:v16];
+        [v13 didRespondToMessage:location[0] withResult:resultCopy];
       }
 
       ++v6;
@@ -279,20 +279,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_notifyDelegatesOfMessageActivation:(id)a3 result:(unint64_t)a4 payload:(id)a5
+- (void)_notifyDelegatesOfMessageActivation:(id)activation result:(unint64_t)result payload:(id)payload
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, activation);
+  resultCopy = result;
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, payload);
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [NSNumber numberWithUnsignedInteger:v19];
+    v11 = [NSNumber numberWithUnsignedInteger:resultCopy];
     sub_1000194D4(v23, v11);
     _os_log_impl(&_mh_execute_header, oslog, type, "Will notify delegates of notification action: %@", v23, 0xCu);
     _objc_release(v11);
@@ -300,7 +300,7 @@
 
   objc_storeStrong(&oslog, 0);
   memset(__b, 0, sizeof(__b));
-  v9 = _objc_retain(v21->_pushDelegates);
+  v9 = _objc_retain(selfCopy->_pushDelegates);
   v10 = [(NSArray *)v9 countByEnumeratingWithState:__b objects:v22 count:16];
   if (v10)
   {
@@ -318,7 +318,7 @@
       v15 = *(__b[1] + 8 * v7);
       if (objc_opt_respondsToSelector())
       {
-        [v15 didRespondToMessage:location[0] result:v19 payload:v18];
+        [v15 didRespondToMessage:location[0] result:resultCopy payload:v18];
       }
 
       ++v7;
@@ -339,12 +339,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_queryDelegatesForSuppressAction:(id)a3
+- (BOOL)_queryDelegatesForSuppressAction:(id)action
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   v21 = _AKLogSystem();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -358,7 +358,7 @@
   objc_storeStrong(&v21, 0);
   v18 = 0;
   memset(__b, 0, sizeof(__b));
-  obj = _objc_retain(v23->_pushDelegates);
+  obj = _objc_retain(selfCopy->_pushDelegates);
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v25 count:16];
   if (v11)
   {
@@ -417,12 +417,12 @@
   return v5;
 }
 
-- (void)_processMessageWithDelegates:(id)a3
+- (void)_processMessageWithDelegates:(id)delegates
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delegates);
   v28 = _AKLogSystem();
   v27 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -435,7 +435,7 @@
 
   objc_storeStrong(&v28, 0);
   memset(__b, 0, sizeof(__b));
-  obj = _objc_retain(v30->_pushDelegates);
+  obj = _objc_retain(selfCopy->_pushDelegates);
   v11 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v31 count:16];
   if (v11)
   {
@@ -491,22 +491,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_ensureDesiredAPSEnvironmentIsInUse:(id)a3
+- (void)_ensureDesiredAPSEnvironmentIsInUse:(id)use
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, use);
   if (location[0])
   {
-    queue = v18->_pushServiceQueue;
+    queue = selfCopy->_pushServiceQueue;
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_10017A044;
     v10 = &unk_10031F078;
     v11 = _objc_retain(location[0]);
-    v12 = _objc_retain(v18);
+    v12 = _objc_retain(selfCopy);
     dispatch_sync(queue, &v6);
     objc_storeStrong(&v12, 0);
     objc_storeStrong(&v11, 0);
@@ -534,7 +534,7 @@
 
 - (void)dealloc
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   if (self->_apsConnection)
   {
@@ -549,27 +549,27 @@
     }
 
     objc_storeStrong(location, 0);
-    [(APSConnection *)v8->_apsConnection shutdown];
-    [(APSConnection *)v8->_apsConnection setDelegate:0];
-    objc_storeStrong(&v8->_apsConnection, 0);
+    [(APSConnection *)selfCopy->_apsConnection shutdown];
+    [(APSConnection *)selfCopy->_apsConnection setDelegate:0];
+    objc_storeStrong(&selfCopy->_apsConnection, 0);
   }
 
-  v4.receiver = v8;
+  v4.receiver = selfCopy;
   v4.super_class = AKAppleIDPushHelperService;
   [(AKAppleIDPushHelperService *)&v4 dealloc];
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = a4;
+  objc_storeStrong(location, connection);
+  statusCopy = status;
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_10006A654(v8, v6);
+    sub_10006A654(v8, statusCopy);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "APNS status changed: %d", v8, 8u);
   }
 
@@ -577,12 +577,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)connectionDidReconnect:(id)a3
+- (void)connectionDidReconnect:(id)reconnect
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reconnect);
   v7 = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -597,19 +597,19 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connection);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, token);
   if (objc_opt_respondsToSelector())
   {
     v28 = objc_alloc_init(AKPushTokenKeychainWrapper);
-    v27 = [v28 fetchToken];
-    if ([v27 isEqual:v32])
+    fetchToken = [v28 fetchToken];
+    if ([fetchToken isEqual:v32])
     {
       v26 = _AKLogSystem();
       v25 = OS_LOG_TYPE_DEBUG;
@@ -626,12 +626,12 @@
       v22 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v27 aaf_toHexString];
-        v13 = [v32 aaf_toHexString];
-        sub_10001B098(v37, v14, v13);
+        aaf_toHexString = [fetchToken aaf_toHexString];
+        aaf_toHexString2 = [v32 aaf_toHexString];
+        sub_10001B098(v37, aaf_toHexString, aaf_toHexString2);
         _os_log_debug_impl(&_mh_execute_header, v23, v22, "cachedToken: %@, publicToken: %@", v37, 0x16u);
-        _objc_release(v13);
-        _objc_release(v14);
+        _objc_release(aaf_toHexString2);
+        _objc_release(aaf_toHexString);
       }
 
       objc_storeStrong(&v23, 0);
@@ -645,16 +645,16 @@
       v20 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v32 aaf_toHexString];
-        sub_1000194D4(v36, v12);
+        aaf_toHexString3 = [v32 aaf_toHexString];
+        sub_1000194D4(v36, aaf_toHexString3);
         _os_log_debug_impl(&_mh_execute_header, v21, v20, "APS says we have a new public token! %@", v36, 0xCu);
-        _objc_release(v12);
+        _objc_release(aaf_toHexString3);
       }
 
       objc_storeStrong(&v21, 0);
-      dispatch_semaphore_signal(v34->_apsTokenSemaphore);
+      dispatch_semaphore_signal(selfCopy->_apsTokenSemaphore);
       memset(__b, 0, sizeof(__b));
-      v10 = _objc_retain(v34->_pushDelegates);
+      v10 = _objc_retain(selfCopy->_pushDelegates);
       v11 = [(NSArray *)v10 countByEnumeratingWithState:__b objects:v35 count:16];
       if (v11)
       {
@@ -673,9 +673,9 @@
           if (objc_opt_respondsToSelector())
           {
             v4 = v19;
-            v5 = [v32 aaf_toHexString];
+            aaf_toHexString4 = [v32 aaf_toHexString];
             [v4 didReceiveNewPublicToken:?];
-            _objc_release(v5);
+            _objc_release(aaf_toHexString4);
           }
 
           ++v8;
@@ -695,7 +695,7 @@
       v29 = 0;
     }
 
-    objc_storeStrong(&v27, 0);
+    objc_storeStrong(&fetchToken, 0);
     objc_storeStrong(&v28, 0);
   }
 
@@ -719,16 +719,16 @@
 
 - (id)publicAPSTokenString
 {
-  v3 = [(AKAppleIDPushHelperService *)self _publicAPSToken];
-  v4 = [v3 aaf_toHexString];
-  _objc_release(v3);
+  _publicAPSToken = [(AKAppleIDPushHelperService *)self _publicAPSToken];
+  aaf_toHexString = [_publicAPSToken aaf_toHexString];
+  _objc_release(_publicAPSToken);
 
-  return v4;
+  return aaf_toHexString;
 }
 
 - (id)_publicAPSToken
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   if (+[AKDevice didConfirmDeviceWasActivated])
   {
@@ -767,14 +767,14 @@
     v31 = sub_100003EAC;
     v32 = sub_100011470;
     v33 = 0;
-    queue = v45->_pushServiceQueue;
+    queue = selfCopy->_pushServiceQueue;
     v21 = _NSConcreteStackBlock;
     v22 = -1073741824;
     v23 = 0;
     v24 = sub_10017B3C4;
     v25 = &unk_100321010;
     v26[1] = &v27;
-    v26[0] = _objc_retain(v45);
+    v26[0] = _objc_retain(selfCopy);
     dispatch_sync(queue, &v21);
     v20 = _AKSignpostGetNanoseconds() / 1000000000.0;
     v19 = _AKSignpostLogSystem();
@@ -825,14 +825,14 @@
   return v3;
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connection);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, message);
   v27 = _os_activity_create(&_mh_execute_header, "akd/received-push-message", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -843,17 +843,17 @@
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v29;
-    v10 = [v29 userInfo];
-    sub_10001B098(v32, v11, v10);
+    userInfo = [v29 userInfo];
+    sub_10001B098(v32, v11, userInfo);
     _os_log_impl(&_mh_execute_header, v25, v24, "Received push message: %@. Contents: %@", v32, 0x16u);
-    _objc_release(v10);
+    _objc_release(userInfo);
   }
 
   objc_storeStrong(&v25, 0);
-  pushTopics = v31->_pushTopics;
-  v7 = [v29 topic];
+  pushTopics = selfCopy->_pushTopics;
+  topic = [v29 topic];
   v8 = [(NSSet *)pushTopics containsObject:?];
-  _objc_release(v7);
+  _objc_release(topic);
   if (v8)
   {
     if ([v29 isTracingEnabled])
@@ -861,14 +861,14 @@
       [location[0] confirmReceiptForMessage:v29];
     }
 
-    queue = v31->_pushServiceQueue;
+    queue = selfCopy->_pushServiceQueue;
     v13 = _NSConcreteStackBlock;
     v14 = -1073741824;
     v15 = 0;
     v16 = sub_10017BBB8;
     v17 = &unk_10031F078;
     v18 = _objc_retain(v29);
-    v19 = _objc_retain(v31);
+    v19 = _objc_retain(selfCopy);
     dispatch_async(queue, &v13);
     objc_storeStrong(&v19, 0);
     objc_storeStrong(&v18, 0);
@@ -897,13 +897,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_unsafe_processPushMessage:(id)a3
+- (void)_unsafe_processPushMessage:(id)message
 {
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v48->_pushServiceQueue);
+  objc_storeStrong(location, message);
+  dispatch_assert_queue_V2(selfCopy->_pushServiceQueue);
   if (location[0])
   {
     v42 = 0;
@@ -919,13 +919,13 @@
       }
 
       objc_storeStrong(&v40, 0);
-      v38 = [location[0] altDSID];
-      v3 = [(AKAccountManager *)v48->_accountManager authKitAccountWithAltDSID:v38 error:0];
+      altDSID = [location[0] altDSID];
+      v3 = [(AKAccountManager *)selfCopy->_accountManager authKitAccountWithAltDSID:altDSID error:0];
       v4 = v42;
       v42 = v3;
       _objc_release(v4);
-      v41 = [(AKAppleIDPushHelperService *)v48 _shouldProcessPushMessage:location[0] withAccount:v42];
-      objc_storeStrong(&v38, 0);
+      v41 = [(AKAppleIDPushHelperService *)selfCopy _shouldProcessPushMessage:location[0] withAccount:v42];
+      objc_storeStrong(&altDSID, 0);
     }
 
     if (v41)
@@ -944,9 +944,9 @@
 
         objc_storeStrong(&v37, 0);
         v17 = +[AKFollowUpManagerFactory sharedAuthKitFollowupManager];
-        v16 = [location[0] previousMessageId];
+        previousMessageId = [location[0] previousMessageId];
         v34 = [v17 pendingFollowUpWithMessageId:?];
-        _objc_release(v16);
+        _objc_release(previousMessageId);
         _objc_release(v17);
         if ([v34 count])
         {
@@ -957,10 +957,10 @@
 
         else
         {
-          v13 = v48;
-          v14 = [location[0] previousMessageId];
+          v13 = selfCopy;
+          previousMessageId2 = [location[0] previousMessageId];
           [(AKAppleIDPushHelperService *)v13 _unsafe_tearDownNotificationWithID:?];
-          _objc_release(v14);
+          _objc_release(previousMessageId2);
         }
 
         objc_storeStrong(&v34, 0);
@@ -990,10 +990,10 @@
 
       else
       {
-        v30 = [(AKAppleIDPushHelperService *)v48 _messageSupportsAlerts:location[0]];
+        v30 = [(AKAppleIDPushHelperService *)selfCopy _messageSupportsAlerts:location[0]];
         if (v30)
         {
-          v29 = [(AKAppleIDPushHelperService *)v48 _queryDelegatesForSuppressAction:location[0]];
+          v29 = [(AKAppleIDPushHelperService *)selfCopy _queryDelegatesForSuppressAction:location[0]];
           if ((v29 & 1) != 0 && ([location[0] command] == 700 || objc_msgSend(location[0], "command") == 100))
           {
             v28 = _AKLogSystem();
@@ -1007,7 +1007,7 @@
             }
 
             objc_storeStrong(&v28, 0);
-            [(AKAppleIDPushHelperService *)v48 _unsafe_teardownCurrentLoginNotification];
+            [(AKAppleIDPushHelperService *)selfCopy _unsafe_teardownCurrentLoginNotification];
           }
 
           v30 = (v29 & 1) == 0;
@@ -1015,7 +1015,7 @@
 
         if (v30)
         {
-          [(AKAppleIDPushHelperService *)v48 _unsafe_presentMessage:location[0] forAccount:v42];
+          [(AKAppleIDPushHelperService *)selfCopy _unsafe_presentMessage:location[0] forAccount:v42];
         }
 
         else
@@ -1031,7 +1031,7 @@
           }
 
           objc_storeStrong(&v25, 0);
-          [(AKAppleIDPushHelperService *)v48 _processMessageWithDelegates:location[0]];
+          [(AKAppleIDPushHelperService *)selfCopy _processMessageWithDelegates:location[0]];
         }
       }
     }
@@ -1073,7 +1073,7 @@
 
 - (id)_akPCSAuthPushHandler
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   if (!self->_pcsAuthPushHandler)
   {
@@ -1081,27 +1081,27 @@
     v7 = +[AKWebSessionPCSKeyProvider sharedInstance];
     v2 = [AKPCSAuthPushHandler alloc];
     v3 = [(AKPCSAuthPushHandler *)v2 initWithAccountManager:v8[0] webSessionPCSKeyProvider:v7];
-    pcsAuthPushHandler = v9->_pcsAuthPushHandler;
-    v9->_pcsAuthPushHandler = v3;
+    pcsAuthPushHandler = selfCopy->_pcsAuthPushHandler;
+    selfCopy->_pcsAuthPushHandler = v3;
     _objc_release(pcsAuthPushHandler);
     objc_storeStrong(&v7, 0);
     objc_storeStrong(v8, 0);
   }
 
-  v5 = v9->_pcsAuthPushHandler;
+  v5 = selfCopy->_pcsAuthPushHandler;
 
   return v5;
 }
 
-- (BOOL)_shouldProcessPushMessage:(id)a3 withAccount:(id)a4
+- (BOOL)_shouldProcessPushMessage:(id)message withAccount:(id)account
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
-  if (([location[0] command] == 300 || objc_msgSend(location[0], "command") == 310) && (v21 = -[AKAccountManager altDSIDForAccount:](v44->_accountManager, "altDSIDForAccount:", v42), v20 = -[AKAccountManager altDSIDforPrimaryiCloudAccount](v44->_accountManager, "altDSIDforPrimaryiCloudAccount"), v22 = objc_msgSend(v21, "isEqualToString:"), _objc_release(v20), _objc_release(v21), !v22))
+  objc_storeStrong(&v42, account);
+  if (([location[0] command] == 300 || objc_msgSend(location[0], "command") == 310) && (v21 = -[AKAccountManager altDSIDForAccount:](selfCopy->_accountManager, "altDSIDForAccount:", v42), v20 = -[AKAccountManager altDSIDforPrimaryiCloudAccount](selfCopy->_accountManager, "altDSIDforPrimaryiCloudAccount"), v22 = objc_msgSend(v21, "isEqualToString:"), _objc_release(v20), _objc_release(v21), !v22))
   {
     v41 = _AKLogSystem();
     v40 = 16;
@@ -1155,13 +1155,13 @@
     {
       v30 = [location[0] command] == 1900;
       v30 = (v30 | ([location[0] command] == 2000)) != 0;
-      if (!v30 || [(AKAppleIDPushHelperService *)v44 _isPrimaryAccount:v42])
+      if (!v30 || [(AKAppleIDPushHelperService *)selfCopy _isPrimaryAccount:v42])
       {
-        v10 = [(AKAppleIDPushHelperService *)v44 _pushCommandsPostingCFUserNotification];
+        _pushCommandsPostingCFUserNotification = [(AKAppleIDPushHelperService *)selfCopy _pushCommandsPostingCFUserNotification];
         v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [location[0] command]);
-        v11 = [v10 containsObject:?];
+        v11 = [_pushCommandsPostingCFUserNotification containsObject:?];
         _objc_release(v9);
-        _objc_release(v10);
+        _objc_release(_pushCommandsPostingCFUserNotification);
         if (v11 & 1) != 0 && (v7 = +[AKDevice currentDevice](AKDevice, "currentDevice"), v8 = [v7 isInRestrictedSharingMode], _objc_release(v7), (v8))
         {
           v26 = _AKLogSystem();
@@ -1210,10 +1210,10 @@
       v31 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v14 = [location[0] altDSID];
-        sub_10001CE98(v46, 1752392040, v14);
+        altDSID = [location[0] altDSID];
+        sub_10001CE98(v46, 1752392040, altDSID);
         _os_log_error_impl(&_mh_execute_header, v32, v31, "Push message is for an unknown altDSID %{mask.hash}@, suppressing...", v46, 0x16u);
-        _objc_release(v14);
+        _objc_release(altDSID);
       }
 
       objc_storeStrong(&v32, 0);
@@ -1227,15 +1227,15 @@
   return v45 & 1;
 }
 
-- (void)_unsafe_presentMessage:(id)a3 forAccount:(id)a4
+- (void)_unsafe_presentMessage:(id)message forAccount:(id)account
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
-  dispatch_assert_queue_V2(v20[5]);
+  objc_storeStrong(&v18, account);
+  dispatch_assert_queue_V2(selfCopy[5]);
   v17 = _AKLogSystem();
   v16 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1245,7 +1245,7 @@
   }
 
   objc_storeStrong(&v17, 0);
-  v6 = v20;
+  v6 = selfCopy;
   v4 = location[0];
   v5 = v18;
   v8 = _NSConcreteStackBlock;
@@ -1253,7 +1253,7 @@
   v10 = 0;
   v11 = sub_10017CE94;
   v12 = &unk_1003253B8;
-  v13 = _objc_retain(v20);
+  v13 = _objc_retain(selfCopy);
   v14 = _objc_retain(location[0]);
   v15 = _objc_retain(v18);
   [(dispatch_queue_t *)v6 _unsafe_showNotificationForMessage:v4 account:v5 responseHandler:&v8];
@@ -1264,27 +1264,27 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_armDeviceWithMessage:(id)a3 account:(id)a4 notificationResult:(unint64_t)a5
+- (void)_armDeviceWithMessage:(id)message account:(id)account notificationResult:(unint64_t)result
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v16[1] = a5;
-  v8 = [(AKAppleIDPushHelperService *)v19 _akPCSAuthPushHandler];
+  objc_storeStrong(&v17, account);
+  v16[1] = result;
+  _akPCSAuthPushHandler = [(AKAppleIDPushHelperService *)selfCopy _akPCSAuthPushHandler];
   v7 = location[0];
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_10017D324;
   v13 = &unk_1003253E0;
-  v14 = _objc_retain(v19);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(location[0]);
   v16[0] = _objc_retain(v17);
-  [v8 armDeviceWithPCSAuthorizationContextForMessage:v7 completion:?];
-  _objc_release(v8);
+  [_akPCSAuthPushHandler armDeviceWithPCSAuthorizationContextForMessage:v7 completion:?];
+  _objc_release(_akPCSAuthPushHandler);
   objc_storeStrong(v16, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v14, 0);
@@ -1292,50 +1292,50 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_messageSupportsAlerts:(id)a3
+- (BOOL)_messageSupportsAlerts:(id)alerts
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [location[0] alertTitle];
+  objc_storeStrong(location, alerts);
+  alertTitle = [location[0] alertTitle];
   v6 = 0;
   v5 = 0;
-  if (v4)
+  if (alertTitle)
   {
-    v7 = [location[0] alertBody];
+    alertBody = [location[0] alertBody];
     v6 = 1;
-    v5 = v7 != 0;
+    v5 = alertBody != 0;
   }
 
   v9 = v5;
   if (v6)
   {
-    _objc_release(v7);
+    _objc_release(alertBody);
   }
 
-  _objc_release(v4);
+  _objc_release(alertTitle);
   objc_storeStrong(location, 0);
   return v9;
 }
 
-- (void)_performCommandForMessage:(id)a3 forAccount:(id)a4
+- (void)_performCommandForMessage:(id)message forAccount:(id)account
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v8 = [location[0] command];
-  if (v8 == 100)
+  objc_storeStrong(&v14, account);
+  command = [location[0] command];
+  if (command == 100)
   {
-    [(AKAppleIDPushHelperService *)v16 _generateLoginCodeForAccount:v14 withIncomingMessage:location[0]];
+    [(AKAppleIDPushHelperService *)selfCopy _generateLoginCodeForAccount:v14 withIncomingMessage:location[0]];
   }
 
-  else if (v8 == 300 || v8 == 310)
+  else if (command == 300 || command == 310)
   {
-    [(AKAppleIDPushHelperService *)v16 _startPasswordResetFlowForAccount:v14];
+    [(AKAppleIDPushHelperService *)selfCopy _startPasswordResetFlowForAccount:v14];
   }
 
   else
@@ -1364,27 +1364,27 @@
   }
 
   objc_storeStrong(&v11, 0);
-  [(AKAppleIDPushHelperService *)v16 _processMessageWithDelegates:location[0]];
+  [(AKAppleIDPushHelperService *)selfCopy _processMessageWithDelegates:location[0]];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_generateLoginCodeForAccount:(id)a3 withIncomingMessage:(id)a4
+- (void)_generateLoginCodeForAccount:(id)account withIncomingMessage:(id)message
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, message);
   v21 = _AKLogSystem();
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [location[0] username];
-    sub_1000194D4(v25, v6);
+    username = [location[0] username];
+    sub_1000194D4(v25, username);
     _os_log_impl(&_mh_execute_header, v21, v20, "Trying to generate login code now for %@...", v25, 0xCu);
-    _objc_release(v6);
+    _objc_release(username);
   }
 
   objc_storeStrong(&v21, 0);
@@ -1393,14 +1393,14 @@
   v4 = [AKAppleIDCodeGenerator generateLoginCode:&v17];
   objc_storeStrong(&v19, v17);
   v18 = v4;
-  queue = v24->_pushServiceQueue;
+  queue = selfCopy->_pushServiceQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_10017DA54;
   v12 = &unk_100320000;
   v13 = _objc_retain(v19);
-  v14 = _objc_retain(v24);
+  v14 = _objc_retain(selfCopy);
   v15 = _objc_retain(v18);
   v16 = _objc_retain(v22);
   dispatch_async(queue, &v8);
@@ -1414,14 +1414,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)showPigCode:(id)a3 withIncomingMessage:(id)a4
+- (void)showPigCode:(id)code withIncomingMessage:(id)message
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, message);
   v18 = _AKLogSystem();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1433,13 +1433,13 @@
   }
 
   objc_storeStrong(&v18, 0);
-  queue = v21->_pushServiceQueue;
+  queue = selfCopy->_pushServiceQueue;
   v8 = _NSConcreteStackBlock;
   v9 = -1073741824;
   v10 = 0;
   v11 = sub_10017DF58;
   v12 = &unk_10031F050;
-  v13 = _objc_retain(v21);
+  v13 = _objc_retain(selfCopy);
   v14 = _objc_retain(location[0]);
   v15 = _objc_retain(v19);
   dispatch_async(queue, &v8);
@@ -1465,31 +1465,31 @@
   objc_storeStrong(v8, 0);
 }
 
-- (void)_unsafe_showLoginNotificationWithCode:(id)a3 incomingMessage:(id)a4 piggy:(BOOL)a5
+- (void)_unsafe_showLoginNotificationWithCode:(id)code incomingMessage:(id)message piggy:(BOOL)piggy
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
-  v18 = a5;
-  [(AKAppleIDPushHelperService *)v21 _unsafe_teardownCurrentLoginNotification];
+  objc_storeStrong(&v19, message);
+  piggyCopy = piggy;
+  [(AKAppleIDPushHelperService *)selfCopy _unsafe_teardownCurrentLoginNotification];
   v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%06u", [location[0] unsignedIntValue]);
-  activeCode = v21->_activeCode;
-  v21->_activeCode = v5;
+  activeCode = selfCopy->_activeCode;
+  selfCopy->_activeCode = v5;
   _objc_release(activeCode);
-  v7 = [v19 messageId];
-  loginCodeNotificationID = v21->_loginCodeNotificationID;
-  v21->_loginCodeNotificationID = v7;
+  messageId = [v19 messageId];
+  loginCodeNotificationID = selfCopy->_loginCodeNotificationID;
+  selfCopy->_loginCodeNotificationID = messageId;
   _objc_release(loginCodeNotificationID);
   v9 = [AKPushMessageNotificationPresenter alloc];
   v17 = [(AKPushMessageNotificationPresenter *)v9 initWithMessage:v19];
-  [(NSMutableDictionary *)v21->_notificationsByPushID setObject:v17 forKeyedSubscript:v21->_loginCodeNotificationID];
+  [(NSMutableDictionary *)selfCopy->_notificationsByPushID setObject:v17 forKeyedSubscript:selfCopy->_loginCodeNotificationID];
   v14 = v17;
   v12 = location[0];
-  v13 = v18;
-  v15 = _objc_retain(v21);
+  v13 = piggyCopy;
+  v15 = _objc_retain(selfCopy);
   v16 = _objc_retain(v19);
   [(AKPushMessageNotificationPresenter *)v14 presentLoginNotificationWithCode:v12 piggy:v13 completionHandler:?];
   objc_storeStrong(&v16, 0);
@@ -1501,41 +1501,41 @@
 
 - (void)_unsafe_teardownCurrentLoginNotification
 {
-  v3 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _AKLogSystem();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000194D4(v4, v3->_loginCodeNotificationID);
+    sub_1000194D4(v4, selfCopy->_loginCodeNotificationID);
     _os_log_impl(&_mh_execute_header, oslog[0], OS_LOG_TYPE_DEFAULT, "Tearing down login notification: %@", v4, 0xCu);
   }
 
   objc_storeStrong(oslog, 0);
-  [(AKAppleIDPushHelperService *)v3 _unsafe_tearDownNotificationWithID:v3->_loginCodeNotificationID];
+  [(AKAppleIDPushHelperService *)selfCopy _unsafe_tearDownNotificationWithID:selfCopy->_loginCodeNotificationID];
 }
 
-- (void)_unsafe_tearDownNotificationWithID:(id)a3
+- (void)_unsafe_tearDownNotificationWithID:(id)d
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v10->_pushServiceQueue);
+  objc_storeStrong(location, d);
+  dispatch_assert_queue_V2(selfCopy->_pushServiceQueue);
   if (location[0])
   {
-    if ([location[0] isEqualToString:v10->_loginCodeNotificationID])
+    if ([location[0] isEqualToString:selfCopy->_loginCodeNotificationID])
     {
       v7 = _AKLogSystem();
       v6 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        sub_1000194D4(v12, v10->_loginCodeNotificationID);
+        sub_1000194D4(v12, selfCopy->_loginCodeNotificationID);
         _os_log_impl(&_mh_execute_header, v7, v6, "Will tear down current notification, with ID: %@", v12, 0xCu);
       }
 
       objc_storeStrong(&v7, 0);
-      objc_storeStrong(&v10->_loginCodeNotificationID, 0);
-      objc_storeStrong(&v10->_activeCode, 0);
+      objc_storeStrong(&selfCopy->_loginCodeNotificationID, 0);
+      objc_storeStrong(&selfCopy->_activeCode, 0);
     }
 
     else
@@ -1551,7 +1551,7 @@
       objc_storeStrong(&oslog, 0);
     }
 
-    v3 = [(NSMutableDictionary *)v10->_notificationsByPushID objectForKeyedSubscript:location[0]];
+    v3 = [(NSMutableDictionary *)selfCopy->_notificationsByPushID objectForKeyedSubscript:location[0]];
     [v3 tearDown];
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
     objc_storeStrong(&v3, 0);
@@ -1566,12 +1566,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_startPasswordResetFlowForAccount:(id)a3
+- (void)_startPasswordResetFlowForAccount:(id)account
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v13 = _AKLogSystem();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1581,22 +1581,22 @@
   }
 
   objc_storeStrong(&v13, 0);
-  v11 = [(AKAccountManager *)v15->_accountManager altDSIDForAccount:location[0]];
-  v10 = [(AKAccountManager *)v15->_accountManager iCloudAccountForAltDSID:v11];
+  v11 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:location[0]];
+  v10 = [(AKAccountManager *)selfCopy->_accountManager iCloudAccountForAltDSID:v11];
   v9 = 0;
-  if ([(AKAppleIDPushHelperService *)v15 _isPrimaryAccount:location[0]]|| !v10)
+  if ([(AKAppleIDPushHelperService *)selfCopy _isPrimaryAccount:location[0]]|| !v10)
   {
     objc_storeStrong(&v9, @"prefs:root=APPLE_ACCOUNT&aaaction=resetPassword");
   }
 
   else
   {
-    v6 = [v10 identifier];
-    v3 = [NSString stringWithFormat:@"prefs:root=ACCOUNTS_AND_PASSWORDS&path=%@&aaaction=resetPassword", v6];
+    identifier = [v10 identifier];
+    v3 = [NSString stringWithFormat:@"prefs:root=ACCOUNTS_AND_PASSWORDS&path=%@&aaaction=resetPassword", identifier];
     v4 = v9;
     v9 = v3;
     _objc_release(v4);
-    _objc_release(v6);
+    _objc_release(identifier);
   }
 
   if (v9)
@@ -1622,18 +1622,18 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_unsafe_showNotificationForMessage:(id)a3 account:(id)a4 responseHandler:(id)a5
+- (void)_unsafe_showNotificationForMessage:(id)message account:(id)account responseHandler:(id)handler
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
+  objc_storeStrong(&v44, account);
   v43 = 0;
-  objc_storeStrong(&v43, a5);
-  dispatch_assert_queue_V2(v46->_pushServiceQueue);
-  if ([(AKAppleIDPushHelperService *)v46 _canProceedWithArmingForMessage:location[0] account:v44])
+  objc_storeStrong(&v43, handler);
+  dispatch_assert_queue_V2(selfCopy->_pushServiceQueue);
+  if ([(AKAppleIDPushHelperService *)selfCopy _canProceedWithArmingForMessage:location[0] account:v44])
   {
     if ([location[0] command] == 100)
     {
@@ -1682,16 +1682,16 @@
   v42 = v13;
   if (v13)
   {
-    [(AKAppleIDPushHelperService *)v46 _unsafe_teardownCurrentLoginNotification];
-    v5 = [location[0] messageId];
-    loginCodeNotificationID = v46->_loginCodeNotificationID;
-    v46->_loginCodeNotificationID = v5;
+    [(AKAppleIDPushHelperService *)selfCopy _unsafe_teardownCurrentLoginNotification];
+    messageId = [location[0] messageId];
+    loginCodeNotificationID = selfCopy->_loginCodeNotificationID;
+    selfCopy->_loginCodeNotificationID = messageId;
     _objc_release(loginCodeNotificationID);
     v41 = _AKLogSystem();
     v40 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000194D4(v48, v46->_loginCodeNotificationID);
+      sub_1000194D4(v48, selfCopy->_loginCodeNotificationID);
       _os_log_debug_impl(&_mh_execute_header, v41, v40, "Active login notification id: %@", v48, 0xCu);
     }
 
@@ -1700,15 +1700,15 @@
 
   if ([location[0] command] == 1600)
   {
-    [(AKAppleIDPushHelperService *)v46 _unsafe_tearDownNotificationWithID:v46->_appleCareNotificationID];
-    v7 = [location[0] messageId];
-    appleCareNotificationID = v46->_appleCareNotificationID;
-    v46->_appleCareNotificationID = v7;
+    [(AKAppleIDPushHelperService *)selfCopy _unsafe_tearDownNotificationWithID:selfCopy->_appleCareNotificationID];
+    messageId2 = [location[0] messageId];
+    appleCareNotificationID = selfCopy->_appleCareNotificationID;
+    selfCopy->_appleCareNotificationID = messageId2;
     _objc_release(appleCareNotificationID);
   }
 
-  v39 = [location[0] messageId];
-  v12 = [(NSMutableDictionary *)v46->_notificationsByPushID objectForKeyedSubscript:v39];
+  messageId3 = [location[0] messageId];
+  v12 = [(NSMutableDictionary *)selfCopy->_notificationsByPushID objectForKeyedSubscript:messageId3];
   _objc_release(v12);
   if (v12)
   {
@@ -1716,7 +1716,7 @@
     v37 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000194D4(v47, v39);
+      sub_1000194D4(v47, messageId3);
       _os_log_debug_impl(&_mh_execute_header, v38, v37, "An alert is already being presented for push ID %@. Skipping alert presentation.", v47, 0xCu);
     }
 
@@ -1728,7 +1728,7 @@
   {
     v9 = [AKPushMessageNotificationPresenter alloc];
     v35 = [(AKPushMessageNotificationPresenter *)v9 initWithMessage:location[0]];
-    [(NSMutableDictionary *)v46->_notificationsByPushID setObject:v35 forKeyedSubscript:v39];
+    [(NSMutableDictionary *)selfCopy->_notificationsByPushID setObject:v35 forKeyedSubscript:messageId3];
     +[NSXPCConnection beginTransaction];
     v11 = v35;
     v10 = v44;
@@ -1737,8 +1737,8 @@
     v29 = 0;
     v30 = sub_10017F19C;
     v31 = &unk_100323BF8;
-    v32 = _objc_retain(v46);
-    v33 = _objc_retain(v39);
+    v32 = _objc_retain(selfCopy);
+    v33 = _objc_retain(messageId3);
     v34 = _objc_retain(v43);
     [(AKPushMessageNotificationPresenter *)v11 presentMessageWithAccount:v10 completionHandler:&v27];
     objc_storeStrong(&v34, 0);
@@ -1748,20 +1748,20 @@
     v36 = 0;
   }
 
-  objc_storeStrong(&v39, 0);
+  objc_storeStrong(&messageId3, 0);
   objc_storeStrong(&v43, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_canProceedWithArmingForMessage:(id)a3 account:(id)a4
+- (BOOL)_canProceedWithArmingForMessage:(id)message account:(id)account
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
+  objc_storeStrong(&v27, account);
   if ([location[0] command] != 2000 && objc_msgSend(location[0], "command") != 100)
   {
 LABEL_18:
@@ -1769,7 +1769,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (![(AKAppleIDPushHelperService *)v29 _isPrimaryAccount:v27])
+  if (![(AKAppleIDPushHelperService *)selfCopy _isPrimaryAccount:v27])
   {
     v26 = _AKLogSystem();
     v25 = OS_LOG_TYPE_DEFAULT;
@@ -1785,9 +1785,9 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v11 = [location[0] walrusWebAccessInfo];
-  _objc_release(v11);
-  if (!v11)
+  walrusWebAccessInfo = [location[0] walrusWebAccessInfo];
+  _objc_release(walrusWebAccessInfo);
+  if (!walrusWebAccessInfo)
   {
     v23 = _AKLogSystem();
     v22 = OS_LOG_TYPE_DEFAULT;
@@ -1837,14 +1837,14 @@ LABEL_19:
   return v30 & 1;
 }
 
-- (BOOL)_isPrimaryAccount:(id)a3
+- (BOOL)_isPrimaryAccount:(id)account
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AKAccountManager *)v9->_accountManager altDSIDForAccount:location[0]];
-  v6 = [(AKAccountManager *)v9->_accountManager iCloudAccountForAltDSID:v7];
+  objc_storeStrong(location, account);
+  v7 = [(AKAccountManager *)selfCopy->_accountManager altDSIDForAccount:location[0]];
+  v6 = [(AKAccountManager *)selfCopy->_accountManager iCloudAccountForAltDSID:v7];
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
@@ -1853,7 +1853,7 @@ LABEL_19:
   }
 
   objc_storeStrong(&oslog, 0);
-  v4 = [(AKAccountManager *)v9->_accountManager isPrimaryiCloudAccount:v6];
+  v4 = [(AKAccountManager *)selfCopy->_accountManager isPrimaryiCloudAccount:v6];
   objc_storeStrong(&v6, HIDWORD(v4));
   objc_storeStrong(&v7, HIDWORD(v4));
   objc_storeStrong(location, HIDWORD(v4));
@@ -1862,7 +1862,7 @@ LABEL_19:
 
 - (id)_pushCommandsPostingCFUserNotification
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [NSArray arrayWithObjects:&off_1003391A8, &off_1003391C0, &off_1003391D8, &off_1003391F0, &off_100339208, 0];
 }

@@ -9,14 +9,14 @@
 {
   v4 = a3;
   v5 = v4;
-  if (v4 == a1)
+  if (v4 == self)
   {
     v6 = 1;
   }
 
   else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [a1 isEqualToPMLMutableDenseVector:v5];
+    v6 = [self isEqualToPMLMutableDenseVector:v5];
   }
 
   else
@@ -30,15 +30,15 @@
 - (BOOL)isEqualToPMLMutableDenseVector:()Equivalence
 {
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 == [v4 count])
   {
-    if ([a1 count])
+    if ([self count])
     {
       v6 = 0;
       do
       {
-        [a1 valueAt:v6];
+        [self valueAt:v6];
         v8 = v7;
         [v4 valueAt:v6];
         v10 = v8 == v9;
@@ -50,7 +50,7 @@
         ++v6;
       }
 
-      while (v6 < [a1 count]);
+      while (v6 < [self count]);
     }
 
     else

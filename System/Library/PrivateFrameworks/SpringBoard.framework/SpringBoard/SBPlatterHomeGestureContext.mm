@@ -1,34 +1,34 @@
 @interface SBPlatterHomeGestureContext
 - (BOOL)ownsHomeGesture;
-- (SBPlatterHomeGestureContext)initWithParticipant:(id)a3 participantIdentifier:(int64_t)a4 windowScene:(id)a5;
+- (SBPlatterHomeGestureContext)initWithParticipant:(id)participant participantIdentifier:(int64_t)identifier windowScene:(id)scene;
 - (SBPlatterHomeGestureContextDelegate)delegate;
 - (SBUIPresentableHomeGestureParticipant)participant;
-- (id)hideAnimationSettingsForBarSwipeAffordanceView:(id)a3;
-- (id)keyboardHomeAffordanceAssertionForBarSwipeAffordanceControlling:(id)a3;
-- (id)unhideAnimationSettingsForBarSwipeAffordanceView:(id)a3;
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4;
-- (void)_setOwnsHomeGesture:(BOOL)a3;
-- (void)becomeActiveAffordanceIfPossible:(BOOL)a3;
+- (id)hideAnimationSettingsForBarSwipeAffordanceView:(id)view;
+- (id)keyboardHomeAffordanceAssertionForBarSwipeAffordanceControlling:(id)controlling;
+- (id)unhideAnimationSettingsForBarSwipeAffordanceView:(id)view;
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type;
+- (void)_setOwnsHomeGesture:(BOOL)gesture;
+- (void)becomeActiveAffordanceIfPossible:(BOOL)possible;
 - (void)dealloc;
-- (void)setWantsHomeGesture:(BOOL)a3;
-- (void)zStackParticipantDidChange:(id)a3;
+- (void)setWantsHomeGesture:(BOOL)gesture;
+- (void)zStackParticipantDidChange:(id)change;
 @end
 
 @implementation SBPlatterHomeGestureContext
 
 - (BOOL)ownsHomeGesture
 {
-  v2 = [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController zStackParticipant];
-  v3 = [v2 ownsHomeGesture];
+  zStackParticipant = [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController zStackParticipant];
+  ownsHomeGesture = [zStackParticipant ownsHomeGesture];
 
-  return v3;
+  return ownsHomeGesture;
 }
 
 - (void)dealloc
 {
   [(SBPlatterHomeGestureContext *)self becomeActiveAffordanceIfPossible:0];
-  v3 = [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController barSwipeAffordanceView];
-  [v3 removeFromSuperview];
+  barSwipeAffordanceView = [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController barSwipeAffordanceView];
+  [barSwipeAffordanceView removeFromSuperview];
 
   [(BSInvalidatable *)self->_gestureRecognizerPriorityAssertion invalidate];
   gestureRecognizerPriorityAssertion = self->_gestureRecognizerPriorityAssertion;
@@ -39,13 +39,13 @@
   [(SBPlatterHomeGestureContext *)&v5 dealloc];
 }
 
-- (SBPlatterHomeGestureContext)initWithParticipant:(id)a3 participantIdentifier:(int64_t)a4 windowScene:(id)a5
+- (SBPlatterHomeGestureContext)initWithParticipant:(id)participant participantIdentifier:(int64_t)identifier windowScene:(id)scene
 {
-  v9 = a3;
-  v10 = a5;
-  if (v9)
+  participantCopy = participant;
+  sceneCopy = scene;
+  if (participantCopy)
   {
-    if (a4)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -54,7 +54,7 @@
   else
   {
     [SBPlatterHomeGestureContext initWithParticipant:a2 participantIdentifier:self windowScene:?];
-    if (a4)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -68,8 +68,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_participant, v9);
-    v13 = [[SBBarSwipeAffordanceController alloc] initWithZStackParticipantIdentifier:a4 windowScene:v10];
+    objc_storeWeak(&v11->_participant, participantCopy);
+    v13 = [[SBBarSwipeAffordanceController alloc] initWithZStackParticipantIdentifier:identifier windowScene:sceneCopy];
     barSwipeAffordanceController = v12->_barSwipeAffordanceController;
     v12->_barSwipeAffordanceController = v13;
 
@@ -79,18 +79,18 @@ LABEL_3:
   return v12;
 }
 
-- (void)becomeActiveAffordanceIfPossible:(BOOL)a3
+- (void)becomeActiveAffordanceIfPossible:(BOOL)possible
 {
-  v3 = a3;
+  possibleCopy = possible;
   v13 = *MEMORY[0x277D85DE8];
-  if ([(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController wantsToBeActiveAffordance]!= a3)
+  if ([(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController wantsToBeActiveAffordance]!= possible)
   {
     WeakRetained = objc_loadWeakRetained(&self->_participant);
     v6 = SBLogBanners();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"relinquish";
-      if (v3)
+      if (possibleCopy)
       {
         v7 = @"obtain";
       }
@@ -102,22 +102,22 @@ LABEL_3:
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Banner participant asked to %{public}@ home gesture: %{public}@", &v9, 0x16u);
     }
 
-    if (!v3)
+    if (!possibleCopy)
     {
-      v8 = [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController barSwipeAffordanceView];
-      [v8 setDelegate:0];
+      barSwipeAffordanceView = [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController barSwipeAffordanceView];
+      [barSwipeAffordanceView setDelegate:0];
     }
 
-    [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController setWantsToBeActiveAffordance:v3];
+    [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController setWantsToBeActiveAffordance:possibleCopy];
   }
 }
 
-- (void)setWantsHomeGesture:(BOOL)a3
+- (void)setWantsHomeGesture:(BOOL)gesture
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (self->_wantsToBeActiveAffordance != a3)
+  if (self->_wantsToBeActiveAffordance != gesture)
   {
-    self->_wantsToBeActiveAffordance = a3;
+    self->_wantsToBeActiveAffordance = gesture;
     WeakRetained = objc_loadWeakRetained(&self->_participant);
     v5 = SBLogBanners();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -143,14 +143,14 @@ LABEL_3:
   }
 }
 
-- (void)zStackParticipantDidChange:(id)a3
+- (void)zStackParticipantDidChange:(id)change
 {
-  v4 = [(SBPlatterHomeGestureContext *)self ownsHomeGesture];
+  ownsHomeGesture = [(SBPlatterHomeGestureContext *)self ownsHomeGesture];
 
-  [(SBPlatterHomeGestureContext *)self _setOwnsHomeGesture:v4];
+  [(SBPlatterHomeGestureContext *)self _setOwnsHomeGesture:ownsHomeGesture];
 }
 
-- (id)keyboardHomeAffordanceAssertionForBarSwipeAffordanceControlling:(id)a3
+- (id)keyboardHomeAffordanceAssertionForBarSwipeAffordanceControlling:(id)controlling
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (![(SBPlatterHomeGestureContext *)self wantsToBeActiveAffordance]|| (objc_opt_respondsToSelector() & 1) == 0)
@@ -160,12 +160,12 @@ LABEL_3:
 
   if (([MEMORY[0x277D75658] usesInputSystemUI] & 1) == 0)
   {
-    v5 = [MEMORY[0x277D0AAD8] keyboardScene];
-    v6 = v5;
-    if (v5)
+    keyboardScene = [MEMORY[0x277D0AAD8] keyboardScene];
+    v6 = keyboardScene;
+    if (keyboardScene)
     {
-      v7 = [v5 clientSettings];
-      v8 = [v7 preferredSceneHostIdentity];
+      clientSettings = [keyboardScene clientSettings];
+      preferredSceneHostIdentity = [clientSettings preferredSceneHostIdentity];
       v9 = objc_loadWeakRetained(&self->_participant);
       v10 = objc_opt_class();
       v11 = v9;
@@ -181,10 +181,10 @@ LABEL_3:
 
       v13 = v12;
 
-      v14 = [v13 scene];
+      scene = [v13 scene];
 
-      v15 = [v14 identityToken];
-      v16 = [v8 isEqual:v15];
+      identityToken = [scene identityToken];
+      v16 = [preferredSceneHostIdentity isEqual:identityToken];
 
       if (v16)
       {
@@ -202,61 +202,61 @@ LABEL_15:
   return v17;
 }
 
-- (unint64_t)barSwipeAffordanceView:(id)a3 systemGestureTypeForType:(int64_t)a4
+- (unint64_t)barSwipeAffordanceView:(id)view systemGestureTypeForType:(int64_t)type
 {
-  if ((a4 - 1) >= 3)
+  if ((type - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a4 + 113;
+    return type + 113;
   }
 }
 
-- (id)hideAnimationSettingsForBarSwipeAffordanceView:(id)a3
+- (id)hideAnimationSettingsForBarSwipeAffordanceView:(id)view
 {
-  v3 = [MEMORY[0x277D65E80] rootSettings];
-  v4 = [v3 hideForHomeGestureOwnershipAnimationSettings];
-  v5 = [v4 BSAnimationSettings];
+  rootSettings = [MEMORY[0x277D65E80] rootSettings];
+  hideForHomeGestureOwnershipAnimationSettings = [rootSettings hideForHomeGestureOwnershipAnimationSettings];
+  bSAnimationSettings = [hideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
 
-  return v5;
+  return bSAnimationSettings;
 }
 
-- (id)unhideAnimationSettingsForBarSwipeAffordanceView:(id)a3
+- (id)unhideAnimationSettingsForBarSwipeAffordanceView:(id)view
 {
-  v3 = [MEMORY[0x277D65E80] rootSettings];
-  v4 = [v3 unhideForHomeGestureOwnershipAnimationSettings];
-  v5 = [v4 BSAnimationSettings];
+  rootSettings = [MEMORY[0x277D65E80] rootSettings];
+  unhideForHomeGestureOwnershipAnimationSettings = [rootSettings unhideForHomeGestureOwnershipAnimationSettings];
+  bSAnimationSettings = [unhideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
 
-  return v5;
+  return bSAnimationSettings;
 }
 
-- (void)_setOwnsHomeGesture:(BOOL)a3
+- (void)_setOwnsHomeGesture:(BOOL)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController barSwipeAffordanceView];
-  v6 = v5;
-  if (v3)
+  barSwipeAffordanceView = [(SBBarSwipeAffordanceController *)self->_barSwipeAffordanceController barSwipeAffordanceView];
+  v6 = barSwipeAffordanceView;
+  if (gestureCopy)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  [v5 setDelegate:v7];
+  [barSwipeAffordanceView setDelegate:selfCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_participant);
   v9 = SBLogBanners();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"relinquish";
-    if (v3)
+    if (gestureCopy)
     {
       v10 = @"obtain";
     }
@@ -270,17 +270,17 @@ LABEL_15:
 
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained homeGestureOwnershipDidChange:v3];
+    [WeakRetained homeGestureOwnershipDidChange:gestureCopy];
   }
 
   v11 = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [v11 bannerManagerHomeGestureContext:self homeGestureOwnershipDidChange:v3];
+    [v11 bannerManagerHomeGestureContext:self homeGestureOwnershipDidChange:gestureCopy];
   }
 
   gestureRecognizerPriorityAssertion = self->_gestureRecognizerPriorityAssertion;
-  if (v3)
+  if (gestureCopy)
   {
     if (!gestureRecognizerPriorityAssertion && (objc_opt_respondsToSelector() & 1) != 0)
     {

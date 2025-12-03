@@ -2,10 +2,10 @@
 - (ATStatusObserver)init;
 - (ATStatusObserverDelegate)delegate;
 - (NSXPCConnection)connection;
-- (void)fetchAllStatusWithCompletion:(id)a3;
+- (void)fetchAllStatusWithCompletion:(id)completion;
 - (void)resume;
 - (void)suspend;
-- (void)updateWithStatus:(id)a3;
+- (void)updateWithStatus:(id)status;
 @end
 
 @implementation ATStatusObserver
@@ -17,13 +17,13 @@
   return WeakRetained;
 }
 
-- (void)updateWithStatus:(id)a3
+- (void)updateWithStatus:(id)status
 {
-  v5 = a3;
-  v4 = [(ATStatusObserver *)self delegate];
+  statusCopy = status;
+  delegate = [(ATStatusObserver *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 observer:self didUpdateWithStatus:v5];
+    [delegate observer:self didUpdateWithStatus:statusCopy];
   }
 }
 
@@ -55,20 +55,20 @@
   return connection;
 }
 
-- (void)fetchAllStatusWithCompletion:(id)a3
+- (void)fetchAllStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_ATCRunning)
   {
-    v6 = [(ATStatusObserver *)self connection];
+    connection = [(ATStatusObserver *)self connection];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __49__ATStatusObserver_fetchAllStatusWithCompletion___block_invoke;
     v12[3] = &unk_278C6DA58;
     v7 = v5;
     v13 = v7;
-    v8 = [v6 remoteObjectProxyWithErrorHandler:v12];
+    v8 = [connection remoteObjectProxyWithErrorHandler:v12];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __49__ATStatusObserver_fetchAllStatusWithCompletion___block_invoke_2;
@@ -77,7 +77,7 @@
     [v8 fetchAllStatusWithCompletion:v10];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v9 = [MEMORY[0x277CBEB98] set];
     (v5)[2](v5, v9, 0);
@@ -119,9 +119,9 @@ uint64_t __49__ATStatusObserver_fetchAllStatusWithCompletion___block_invoke_2(ui
   self->_resumed = 1;
   if (self->_ATCRunning)
   {
-    v4 = [(ATStatusObserver *)self connection];
-    v3 = [v4 remoteObjectProxy];
-    [v3 resume];
+    connection = [(ATStatusObserver *)self connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy resume];
   }
 }
 

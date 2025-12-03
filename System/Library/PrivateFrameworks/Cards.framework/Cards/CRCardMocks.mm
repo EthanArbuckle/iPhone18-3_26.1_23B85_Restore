@@ -1,15 +1,15 @@
 @interface CRCardMocks
 + (id)basicMovieCard;
-+ (id)formattedTextWithImage:(id)a3;
-+ (id)formattedTextWithString:(id)a3;
-+ (id)formattedTextsForStringsAndImages:(id)a3;
-+ (id)mockAsyncCardWithCard:(id)a3;
++ (id)formattedTextWithImage:(id)image;
++ (id)formattedTextWithString:(id)string;
++ (id)formattedTextsForStringsAndImages:(id)images;
++ (id)mockAsyncCardWithCard:(id)card;
 + (id)mockCards;
 + (id)mockCardsDeserialized;
 + (id)movieCard;
 + (id)responseCard;
 + (id)rosterCard;
-+ (id)tableAlignmentSchemaFromTextAlignments:(id)a3 columnsAreEqualWidth:(id)a4;
++ (id)tableAlignmentSchemaFromTextAlignments:(id)alignments columnsAreEqualWidth:(id)width;
 + (id)translationCard;
 @end
 
@@ -23,8 +23,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [a1 mockCards];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  mockCards = [self mockCards];
+  v5 = [mockCards countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -35,21 +35,21 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mockCards);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) data];
-        v10 = [CRPBSerialization cardForData:v9 messageName:@"searchfoundation.Card"];
+        data = [*(*(&v14 + 1) + 8 * i) data];
+        v10 = [CRPBSerialization cardForData:data messageName:@"searchfoundation.Card"];
 
         if (v10)
         {
           [v3 addObject:v10];
-          v11 = [a1 mockAsyncCardWithCard:v10];
+          v11 = [self mockAsyncCardWithCard:v10];
           [v3 addObject:v11];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [mockCards countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -66,8 +66,8 @@
   v3 = +[CRCardMocks movieCard];
   v4 = +[CRCardMocks translationCard];
   v9[1] = v4;
-  v5 = [a1 rosterCard];
-  v9[2] = v5;
+  rosterCard = [self rosterCard];
+  v9[2] = rosterCard;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -86,24 +86,24 @@
   v6 = objc_opt_new();
   [v5 setText:v6];
 
-  v7 = [v5 text];
-  [v7 setText:@"Hello"];
+  text = [v5 text];
+  [text setText:@"Hello"];
 
   v8 = objc_opt_new();
   [v8 setMaxLines:0];
   v9 = objc_opt_new();
   [v8 setText:v9];
 
-  v10 = [v8 text];
-  [v10 setText:@"你好"];
+  text2 = [v8 text];
+  [text2 setText:@"你好"];
 
   v11 = objc_opt_new();
   [v11 setMaxLines:0];
   v12 = objc_opt_new();
   [v11 setText:v12];
 
-  v13 = [v11 text];
-  [v13 setText:@"Nǐ hǎo"];
+  text3 = [v11 text];
+  [text3 setText:@"Nǐ hǎo"];
 
   [v4 setDetailText:v5];
   [v4 setTitle:v8];
@@ -142,8 +142,8 @@
   [v4 setContent:v5];
 
   v130 = v4;
-  v6 = [v4 content];
-  [v6 setText:@"2h 23m"];
+  content = [v4 content];
+  [content setText:@"2h 23m"];
 
   v7 = objc_opt_new();
   [v7 setTitle:@"Director"];
@@ -151,8 +151,8 @@
   [v7 setContent:v8];
 
   v129 = v7;
-  v9 = [v7 content];
-  [v9 setText:@"Joss Whedon"];
+  content2 = [v7 content];
+  [content2 setText:@"Joss Whedon"];
 
   v10 = objc_opt_new();
   [v10 setTitle:@"Starring"];
@@ -160,8 +160,8 @@
   [v10 setContent:v11];
 
   v128 = v10;
-  v12 = [v10 content];
-  [v12 setText:@"Robert Downey Jr.\nChris Evans\nMark Ruffalo\nChris Hemsworth\nScarlett Johansson"];
+  content3 = [v10 content];
+  [content3 setText:@"Robert Downey Jr.\nChris Evans\nMark Ruffalo\nChris Hemsworth\nScarlett Johansson"];
 
   v13 = objc_opt_new();
   [v13 setLabel:@"ShowTime"];
@@ -175,18 +175,18 @@
   v18 = objc_opt_new();
   [v17 setActionItem:v18];
 
-  v19 = [v17 actionItem];
-  [v19 setLabel:@"$3.99"];
+  actionItem = [v17 actionItem];
+  [actionItem setLabel:@"$3.99"];
 
   [v17 setSublabel:@"Rent on iTunes"];
   v20 = MEMORY[0x277D4C790];
   v21 = [MEMORY[0x277CBEBC0] URLWithString:@"http://www.apple.com/itunes"];
   v22 = [v20 punchoutWithURL:v21];
-  v23 = [v17 actionItem];
-  [v23 setPunchout:v22];
+  actionItem2 = [v17 actionItem];
+  [actionItem2 setPunchout:v22];
 
-  v24 = [v17 actionItem];
-  [v24 setApplicationBundleIdentifier:@"533654020"];
+  actionItem3 = [v17 actionItem];
+  [actionItem3 setApplicationBundleIdentifier:@"533654020"];
 
   v126 = v17;
   [v17 setOfferIdentifier:@"HDVOD"];
@@ -194,18 +194,18 @@
   v26 = objc_opt_new();
   [v25 setActionItem:v26];
 
-  v27 = [v25 actionItem];
-  [v27 setLabel:@"$19.99"];
+  actionItem4 = [v25 actionItem];
+  [actionItem4 setLabel:@"$19.99"];
 
   [v25 setSublabel:@"Buy with iTunes Extras"];
   v28 = MEMORY[0x277D4C790];
   v29 = [MEMORY[0x277CBEBC0] URLWithString:@"http://www.apple.com/itunes"];
   v30 = [v28 punchoutWithURL:v29];
-  v31 = [v25 actionItem];
-  [v31 setPunchout:v30];
+  actionItem5 = [v25 actionItem];
+  [actionItem5 setPunchout:v30];
 
-  v32 = [v25 actionItem];
-  [v32 setApplicationBundleIdentifier:@"533654020"];
+  actionItem6 = [v25 actionItem];
+  [actionItem6 setApplicationBundleIdentifier:@"533654020"];
 
   v125 = v25;
   [v25 setOfferIdentifier:@"HDBUY"];
@@ -215,8 +215,8 @@
   [v33 setDescriptionText:v34];
 
   v135 = v33;
-  v35 = [v33 descriptionText];
-  [v35 setMaxLines:3];
+  descriptionText = [v33 descriptionText];
+  [descriptionText setMaxLines:3];
 
   [v33 setExpandText:@"more"];
   v138 = objc_opt_new();
@@ -254,8 +254,8 @@
 
   v54 = [MEMORY[0x277D755B8] imageNamed:@"trailer3"];
   v55 = UIImagePNGRepresentation(v54);
-  v56 = [v52 thumbnail];
-  [v56 setImageData:v55];
+  thumbnail = [v52 thumbnail];
+  [thumbnail setImageData:v55];
 
   v57 = MEMORY[0x277D4C790];
   v58 = [MEMORY[0x277CBEBC0] URLWithString:@"http://movietrailers.apple.com/movies/wb/dolphintale2/dolphintale2-tlr1_a720p.m4v"];
@@ -286,9 +286,9 @@
   v64 = [MEMORY[0x277D4C7A0] textWithString:@"iTunes Store"];
   [v63 setLeadingText:v64];
 
-  v65 = [v63 leadingText];
-  v66 = [v65 text];
-  [v66 setMaxLines:1];
+  leadingText = [v63 leadingText];
+  text = [leadingText text];
+  [text setMaxLines:1];
 
   v67 = MEMORY[0x277D4C760];
   v68 = [MEMORY[0x277D755B8] imageNamed:@"iTunes"];
@@ -306,9 +306,9 @@
   v74 = [MEMORY[0x277D4C7A0] textWithString:@"Netflix"];
   [v73 setLeadingText:v74];
 
-  v75 = [v73 leadingText];
-  v76 = [v75 text];
-  [v76 setMaxLines:1];
+  leadingText2 = [v73 leadingText];
+  text2 = [leadingText2 text];
+  [text2 setMaxLines:1];
 
   v77 = MEMORY[0x277D4C760];
   v78 = [MEMORY[0x277D755B8] imageNamed:@"netflix"];
@@ -327,9 +327,9 @@
   v87 = [MEMORY[0x277D4C7A0] textWithString:@"Hulu Plus"];
   [v86 setLeadingText:v87];
 
-  v88 = [v86 leadingText];
-  v89 = [v88 text];
-  [v89 setMaxLines:1];
+  leadingText3 = [v86 leadingText];
+  text3 = [leadingText3 text];
+  [text3 setMaxLines:1];
 
   v90 = MEMORY[0x277D4C760];
   v91 = [MEMORY[0x277D755B8] imageNamed:@"hulu"];
@@ -626,8 +626,8 @@
   [v30 setDescriptionText:v31];
 
   v132 = v30;
-  v32 = [v30 descriptionText];
-  [v32 setMaxLines:3];
+  descriptionText = [v30 descriptionText];
+  [descriptionText setMaxLines:3];
 
   [v30 setExpandText:@"more"];
   v135 = objc_opt_new();
@@ -698,8 +698,8 @@
   v61 = [MEMORY[0x277D4C598] textWithString:@"iTunes Store"];
   [v60 setLeadingText:v61];
 
-  v62 = [v60 leadingText];
-  [v62 setMaxLines:1];
+  leadingText = [v60 leadingText];
+  [leadingText setMaxLines:1];
 
   v63 = MEMORY[0x277D4C3B0];
   v64 = [MEMORY[0x277D755B8] imageNamed:@"iTunes"];
@@ -718,8 +718,8 @@
   v69 = [MEMORY[0x277D4C598] textWithString:@"Netflix"];
   [v68 setLeadingText:v69];
 
-  v70 = [v68 leadingText];
-  [v70 setMaxLines:1];
+  leadingText2 = [v68 leadingText];
+  [leadingText2 setMaxLines:1];
 
   v71 = MEMORY[0x277D4C3B0];
   v72 = [MEMORY[0x277D755B8] imageNamed:@"netflix"];
@@ -739,8 +739,8 @@
   v80 = [MEMORY[0x277D4C598] textWithString:@"Hulu Plus"];
   [v79 setLeadingText:v80];
 
-  v81 = [v79 leadingText];
-  [v81 setMaxLines:1];
+  leadingText3 = [v79 leadingText];
+  [leadingText3 setMaxLines:1];
 
   v82 = MEMORY[0x277D4C3B0];
   v83 = [MEMORY[0x277D755B8] imageNamed:@"hulu"];
@@ -807,8 +807,8 @@
   v3 = objc_opt_new();
   [v41 setText:v3];
 
-  v4 = [v41 text];
-  [v4 setText:@"2014-2015 Season"];
+  text = [v41 text];
+  [text setText:@"2014-2015 Season"];
 
   v38 = objc_opt_new();
   v5 = objc_opt_new();
@@ -827,10 +827,10 @@
   [v37 setRichTitleCardSection:v5];
   [v43 setValue:v37];
   v8 = objc_opt_new();
-  v9 = [a1 tableAlignmentSchemaFromTextAlignments:&unk_2855FB0B8 columnsAreEqualWidth:0];
+  v9 = [self tableAlignmentSchemaFromTextAlignments:&unk_2855FB0B8 columnsAreEqualWidth:0];
   [v8 setAlignmentSchema:v9];
 
-  v10 = [a1 formattedTextsForStringsAndImages:&unk_2855FB0D0];
+  v10 = [self formattedTextsForStringsAndImages:&unk_2855FB0D0];
   v11 = [v10 mutableCopy];
   [v8 setDatas:v11];
 
@@ -842,7 +842,7 @@
   [v35 setTableHeaderRowCardSection:v8];
   [v42 setValue:v35];
   v12 = objc_opt_new();
-  v13 = [a1 formattedTextsForStringsAndImages:&unk_2855FB0E8];
+  v13 = [self formattedTextsForStringsAndImages:&unk_2855FB0E8];
   [v12 setDatas:v13];
 
   v34 = v12;
@@ -853,7 +853,7 @@
   [v33 setTableRowCardSection:v12];
   [v14 setValue:v33];
   v15 = objc_opt_new();
-  v16 = [a1 formattedTextsForStringsAndImages:&unk_2855FB100];
+  v16 = [self formattedTextsForStringsAndImages:&unk_2855FB100];
   [v15 setDatas:v16];
 
   v17 = v15;
@@ -865,7 +865,7 @@
   [v31 setTableRowCardSection:v17];
   [v18 setValue:v31];
   v19 = objc_opt_new();
-  v20 = [a1 formattedTextsForStringsAndImages:&unk_2855FB118];
+  v20 = [self formattedTextsForStringsAndImages:&unk_2855FB118];
   [v19 setDatas:v20];
 
   [v19 setTableIdentifier:@"Roster"];
@@ -875,7 +875,7 @@
   [v22 setTableRowCardSection:v19];
   [v21 setValue:v22];
   v23 = objc_opt_new();
-  v24 = [a1 formattedTextsForStringsAndImages:&unk_2855FB130];
+  v24 = [self formattedTextsForStringsAndImages:&unk_2855FB130];
   [v23 setDatas:v24];
 
   [v23 setTableIdentifier:@"Roster"];
@@ -908,25 +908,25 @@
   return v38;
 }
 
-+ (id)tableAlignmentSchemaFromTextAlignments:(id)a3 columnsAreEqualWidth:(id)a4
++ (id)tableAlignmentSchemaFromTextAlignments:(id)alignments columnsAreEqualWidth:(id)width
 {
-  v5 = a3;
-  v6 = a4;
+  alignmentsCopy = alignments;
+  widthCopy = width;
   v19 = objc_opt_new();
   v7 = objc_opt_new();
-  if ([v5 count])
+  if ([alignmentsCopy count])
   {
     v8 = 0;
     v9 = 0;
     do
     {
       v10 = objc_opt_new();
-      v11 = [v5 objectAtIndexedSubscript:v9];
-      v12 = [v11 unsignedIntegerValue];
+      v11 = [alignmentsCopy objectAtIndexedSubscript:v9];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
 
-      [v10 setDataAlignment:v12];
-      v13 = v12 == 0;
-      v14 = v12 == 0;
+      [v10 setDataAlignment:unsignedIntegerValue];
+      v13 = unsignedIntegerValue == 0;
+      v14 = unsignedIntegerValue == 0;
       v15 = !v13;
       if ((v8 & v15) != 0)
       {
@@ -939,14 +939,14 @@
       }
 
       [v10 setColumnAlignment:v16];
-      if ([v6 count] <= v9)
+      if ([widthCopy count] <= v9)
       {
         [v10 setIsEqualWidth:0];
       }
 
       else
       {
-        v17 = [v6 objectAtIndexedSubscript:v9];
+        v17 = [widthCopy objectAtIndexedSubscript:v9];
         [v10 setIsEqualWidth:{objc_msgSend(v17, "BOOLValue")}];
       }
 
@@ -956,7 +956,7 @@
       ++v9;
     }
 
-    while (v9 < [v5 count]);
+    while (v9 < [alignmentsCopy count]);
   }
 
   [v19 setTableColumnAlignments:v7];
@@ -964,18 +964,18 @@
   return v19;
 }
 
-+ (id)mockAsyncCardWithCard:(id)a3
++ (id)mockAsyncCardWithCard:(id)card
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  cardCopy = card;
   v4 = objc_alloc_init(CRMockAsyncCard);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v3 cardSections];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  cardSections = [cardCopy cardSections];
+  v7 = [cardSections countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -986,7 +986,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cardSections);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
@@ -995,7 +995,7 @@
         [v5 addObject:v12];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [cardSections countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1007,16 +1007,16 @@
   return v4;
 }
 
-+ (id)formattedTextsForStringsAndImages:(id)a3
++ (id)formattedTextsForStringsAndImages:(id)images
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  imagesCopy = images;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = imagesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1058,18 +1058,18 @@
   return v4;
 }
 
-+ (id)formattedTextWithString:(id)a3
++ (id)formattedTextWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277D4C7D8] textWithString:v3];
+  v5 = [MEMORY[0x277D4C7D8] textWithString:stringCopy];
 
   [v4 setText:v5];
 
   return v4;
 }
 
-+ (id)formattedTextWithImage:(id)a3
++ (id)formattedTextWithImage:(id)image
 {
   v3 = objc_opt_new();
   v4 = objc_opt_new();

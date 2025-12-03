@@ -1,14 +1,14 @@
 @interface TSTLayoutValidationBundle
-- (TSTLayoutValidationBundle)initWithTableInfo:(id)a3;
-- (double)widthOfColumn:(unsigned __int16)a3 handleCacheMissUsingBlock:(id)a4;
+- (TSTLayoutValidationBundle)initWithTableInfo:(id)info;
+- (double)widthOfColumn:(unsigned __int16)column handleCacheMissUsingBlock:(id)block;
 - (id).cxx_construct;
 - (id)generateWidthHeightCollection;
-- (void)cacheWidth:(double)a3 ofColumn:(unsigned __int16)a4;
+- (void)cacheWidth:(double)width ofColumn:(unsigned __int16)column;
 @end
 
 @implementation TSTLayoutValidationBundle
 
-- (TSTLayoutValidationBundle)initWithTableInfo:(id)a3
+- (TSTLayoutValidationBundle)initWithTableInfo:(id)info
 {
   v11.receiver = self;
   v11.super_class = TSTLayoutValidationBundle;
@@ -26,18 +26,18 @@
   return v7;
 }
 
-- (void)cacheWidth:(double)a3 ofColumn:(unsigned __int16)a4
+- (void)cacheWidth:(double)width ofColumn:(unsigned __int16)column
 {
-  v4 = a4;
-  v5 = &v4;
-  *(sub_2210C30DC(&self->_columnToWidth.__table_.__bucket_list_.__ptr_, &v4) + 3) = a3;
+  columnCopy = column;
+  v5 = &columnCopy;
+  *(sub_2210C30DC(&self->_columnToWidth.__table_.__bucket_list_.__ptr_, &columnCopy) + 3) = width;
 }
 
-- (double)widthOfColumn:(unsigned __int16)a3 handleCacheMissUsingBlock:(id)a4
+- (double)widthOfColumn:(unsigned __int16)column handleCacheMissUsingBlock:(id)block
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = sub_2210C3024(&self->_columnToWidth.__table_.__bucket_list_.__ptr_, &v9);
+  columnCopy = column;
+  blockCopy = block;
+  v6 = sub_2210C3024(&self->_columnToWidth.__table_.__bucket_list_.__ptr_, &columnCopy);
   if (v6)
   {
     v7 = *(v6 + 3);
@@ -45,7 +45,7 @@
 
   else
   {
-    v7 = v5[2](v5);
+    v7 = blockCopy[2](blockCopy);
   }
 
   return v7;

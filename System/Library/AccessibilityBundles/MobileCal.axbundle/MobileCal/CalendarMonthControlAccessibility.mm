@@ -1,14 +1,14 @@
 @interface CalendarMonthControlAccessibility
-- (void)_accessibilityUpdateOcurrenceTileCount:(id)a3;
+- (void)_accessibilityUpdateOcurrenceTileCount:(id)count;
 @end
 
 @implementation CalendarMonthControlAccessibility
 
-- (void)_accessibilityUpdateOcurrenceTileCount:(id)a3
+- (void)_accessibilityUpdateOcurrenceTileCount:(id)count
 {
   v29 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v13 = self;
+  countCopy = count;
+  selfCopy = self;
   [(CalendarMonthControlAccessibility *)self safeValueForKey:@"_accessibleSubviews"];
   v26 = 0u;
   v27 = 0u;
@@ -32,9 +32,9 @@
         NSClassFromString(&cfstr_Calendarmonthd.isa);
         if (objc_opt_isKindOfClass())
         {
-          if (([v4 _accessibilityBoolValueForKey:@"_axDidWaitForLoad"] & 1) == 0)
+          if (([countCopy _accessibilityBoolValueForKey:@"_axDidWaitForLoad"] & 1) == 0)
           {
-            [v4 _accessibilitySetBoolValue:1 forKey:@"_axDidWaitForLoad"];
+            [countCopy _accessibilitySetBoolValue:1 forKey:@"_axDidWaitForLoad"];
             if (_accessibilityUpdateOcurrenceTileCount__onceToken != -1)
             {
               [CalendarMonthControlAccessibility _accessibilityUpdateOcurrenceTileCount:];
@@ -47,20 +47,20 @@
               block[1] = 3221225472;
               block[2] = __76__CalendarMonthControlAccessibility__accessibilityUpdateOcurrenceTileCount___block_invoke_2;
               block[3] = &unk_29F2D2918;
-              v22 = v4;
-              v23 = v13;
+              v22 = countCopy;
+              v23 = selfCopy;
               dispatch_async(v9, block);
             }
           }
 
-          v10 = [MEMORY[0x29EDB8DB0] date];
-          v11 = _AXDateComponentsFromDate(v10);
+          date = [MEMORY[0x29EDB8DB0] date];
+          v11 = _AXDateComponentsFromDate(date);
 
           v17 = 0;
           v18 = &v17;
           v19 = 0x2020000000;
           v20 = 0;
-          v15 = v4;
+          v15 = countCopy;
           v16 = v11;
           AXPerformSafeBlock();
           v12 = [MEMORY[0x29EDBA070] numberWithInteger:v18[3]];

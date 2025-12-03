@@ -1,12 +1,12 @@
 @interface HMSettings
 - (BOOL)isControllable;
 - (HMSettingGroup)rootGroup;
-- (HMSettings)initWithSettingsOwner:(id)a3;
+- (HMSettings)initWithSettingsOwner:(id)owner;
 - (HMSettingsDelegate)delegate;
 - (HMSettingsOwner)owner;
 - (id)description;
 - (id)longDescription;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HMSettings
@@ -22,9 +22,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HMSettings *)self rootGroup];
-  v6 = [v5 longDescription];
-  v7 = [v3 stringWithFormat:@"[%@ root: %@]", v4, v6];
+  rootGroup = [(HMSettings *)self rootGroup];
+  longDescription = [rootGroup longDescription];
+  v7 = [v3 stringWithFormat:@"[%@ root: %@]", v4, longDescription];
 
   return v7;
 }
@@ -33,54 +33,54 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HMSettings *)self rootGroup];
-  v6 = [v3 stringWithFormat:@"[%@ root: %@]", v4, v5];
+  rootGroup = [(HMSettings *)self rootGroup];
+  v6 = [v3 stringWithFormat:@"[%@ root: %@]", v4, rootGroup];
 
   return v6;
 }
 
 - (HMSettingsDelegate)delegate
 {
-  v2 = [(HMSettings *)self owner];
-  v3 = [v2 delegate];
+  owner = [(HMSettings *)self owner];
+  delegate = [owner delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HMSettings *)self owner];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  owner = [(HMSettings *)self owner];
+  [owner setDelegate:delegateCopy];
 }
 
 - (BOOL)isControllable
 {
-  v2 = [(HMSettings *)self owner];
-  v3 = [v2 rootGroup];
-  v4 = v3 != 0;
+  owner = [(HMSettings *)self owner];
+  rootGroup = [owner rootGroup];
+  v4 = rootGroup != 0;
 
   return v4;
 }
 
 - (HMSettingGroup)rootGroup
 {
-  v2 = [(HMSettings *)self owner];
-  v3 = [v2 rootGroup];
+  owner = [(HMSettings *)self owner];
+  rootGroup = [owner rootGroup];
 
-  return v3;
+  return rootGroup;
 }
 
-- (HMSettings)initWithSettingsOwner:(id)a3
+- (HMSettings)initWithSettingsOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   v8.receiver = self;
   v8.super_class = HMSettings;
   v5 = [(HMSettings *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owner, v4);
+    objc_storeWeak(&v5->_owner, ownerCopy);
   }
 
   return v6;

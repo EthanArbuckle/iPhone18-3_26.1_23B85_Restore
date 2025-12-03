@@ -1,39 +1,39 @@
 @interface STStatusItemsStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
 - (STStatusItemsStatusDomainDataDiff)init;
-- (STStatusItemsStatusDomainDataDiff)initWithChanges:(id)a3 statusItemsAttributionListDataDiff:(id)a4 visualDescriptorsByIdentifierDictionaryDataDiff:(id)a5;
-- (STStatusItemsStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (STStatusItemsStatusDomainDataDiff)initWithChanges:(id)changes statusItemsAttributionListDataDiff:(id)diff visualDescriptorsByIdentifierDictionaryDataDiff:(id)dataDiff;
+- (STStatusItemsStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STStatusItemsStatusDomainDataDiff
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
   v5 = MEMORY[0x1E698E700];
-  v6 = a4;
-  v7 = a3;
+  toDataCopy = toData;
+  dataCopy = data;
   v8 = objc_alloc_init(v5);
-  v9 = [v7 statusItemsAttributionListData];
-  v10 = [v6 statusItemsAttributionListData];
-  v11 = [STListDataDiff diffFromListData:v9 toListData:v10];
+  statusItemsAttributionListData = [dataCopy statusItemsAttributionListData];
+  statusItemsAttributionListData2 = [toDataCopy statusItemsAttributionListData];
+  v11 = [STListDataDiff diffFromListData:statusItemsAttributionListData toListData:statusItemsAttributionListData2];
 
-  v12 = [v7 visualDescriptorsByIdentifierDictionaryData];
+  visualDescriptorsByIdentifierDictionaryData = [dataCopy visualDescriptorsByIdentifierDictionaryData];
 
-  v13 = [v6 visualDescriptorsByIdentifierDictionaryData];
+  visualDescriptorsByIdentifierDictionaryData2 = [toDataCopy visualDescriptorsByIdentifierDictionaryData];
 
-  v14 = [STDictionaryDataDiff diffFromDictionaryData:v12 toDictionaryData:v13];
+  v14 = [STDictionaryDataDiff diffFromDictionaryData:visualDescriptorsByIdentifierDictionaryData toDictionaryData:visualDescriptorsByIdentifierDictionaryData2];
 
   v15 = [[STStatusItemsStatusDomainDataDiff alloc] initWithChanges:v8 statusItemsAttributionListDataDiff:v11 visualDescriptorsByIdentifierDictionaryDataDiff:v14];
 
@@ -50,25 +50,25 @@
   return v6;
 }
 
-- (STStatusItemsStatusDomainDataDiff)initWithChanges:(id)a3 statusItemsAttributionListDataDiff:(id)a4 visualDescriptorsByIdentifierDictionaryDataDiff:(id)a5
+- (STStatusItemsStatusDomainDataDiff)initWithChanges:(id)changes statusItemsAttributionListDataDiff:(id)diff visualDescriptorsByIdentifierDictionaryDataDiff:(id)dataDiff
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  changesCopy = changes;
+  diffCopy = diff;
+  dataDiffCopy = dataDiff;
   v19.receiver = self;
   v19.super_class = STStatusItemsStatusDomainDataDiff;
   v11 = [(STStatusItemsStatusDomainDataDiff *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [changesCopy copy];
     changes = v11->_changes;
     v11->_changes = v12;
 
-    v14 = [v9 copy];
+    v14 = [diffCopy copy];
     statusItemsAttributionListDataDiff = v11->_statusItemsAttributionListDataDiff;
     v11->_statusItemsAttributionListDataDiff = v14;
 
-    v16 = [v10 copy];
+    v16 = [dataDiffCopy copy];
     visualDescriptorsByIdentifierDictionaryDataDiff = v11->_visualDescriptorsByIdentifierDictionaryDataDiff;
     v11->_visualDescriptorsByIdentifierDictionaryDataDiff = v16;
   }
@@ -76,15 +76,15 @@
   return v11;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STStatusItemsStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
   if (self)
   {
@@ -97,29 +97,29 @@
   }
 
   v13 = changes;
-  v6 = a3;
+  dataCopy = data;
   [(BSSettings *)v13 enumerateObjectsWithBlock:&__block_literal_global_13];
   if (self)
   {
     v7 = self->_statusItemsAttributionListDataDiff;
-    v8 = [v6 statusItemsAttributionListData];
-    [(STListDataDiff *)v7 applyToMutableListData:v8];
+    statusItemsAttributionListData = [dataCopy statusItemsAttributionListData];
+    [(STListDataDiff *)v7 applyToMutableListData:statusItemsAttributionListData];
 
     visualDescriptorsByIdentifierDictionaryDataDiff = self->_visualDescriptorsByIdentifierDictionaryDataDiff;
   }
 
   else
   {
-    v12 = [v6 statusItemsAttributionListData];
-    [0 applyToMutableListData:v12];
+    statusItemsAttributionListData2 = [dataCopy statusItemsAttributionListData];
+    [0 applyToMutableListData:statusItemsAttributionListData2];
 
     visualDescriptorsByIdentifierDictionaryDataDiff = 0;
   }
 
   v10 = visualDescriptorsByIdentifierDictionaryDataDiff;
-  v11 = [v6 visualDescriptorsByIdentifierDictionaryData];
+  visualDescriptorsByIdentifierDictionaryData = [dataCopy visualDescriptorsByIdentifierDictionaryData];
 
-  [(STDictionaryDataDiff *)v10 applyToMutableDictionaryData:v11];
+  [(STDictionaryDataDiff *)v10 applyToMutableDictionaryData:visualDescriptorsByIdentifierDictionaryData];
 }
 
 - (BOOL)isEmpty
@@ -160,30 +160,30 @@
         visualDescriptorsByIdentifierDictionaryDataDiff = 0;
       }
 
-      v8 = [(STDictionaryDataDiff *)visualDescriptorsByIdentifierDictionaryDataDiff isEmpty];
+      isEmpty = [(STDictionaryDataDiff *)visualDescriptorsByIdentifierDictionaryDataDiff isEmpty];
     }
 
     else
     {
-      v8 = 0;
+      isEmpty = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    isEmpty = 0;
   }
 
-  return v8;
+  return isEmpty;
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = diffCopy;
     if (self)
     {
       changes = self->_changes;
@@ -268,27 +268,27 @@ LABEL_14:
   return v19;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STStatusItemsStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = v4;
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  v6 = equalCopy;
   if (self)
   {
     changes = self->_changes;
@@ -384,17 +384,17 @@ id __45__STStatusItemsStatusDomainDataDiff_isEqual___block_invoke_3(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
-    v5 = [v3 appendObject:self->_changes];
+    v5 = [builder appendObject:self->_changes];
     statusItemsAttributionListDataDiff = self->_statusItemsAttributionListDataDiff;
   }
 
   else
   {
-    v12 = [v3 appendObject:0];
+    v12 = [builder appendObject:0];
     statusItemsAttributionListDataDiff = 0;
   }
 
@@ -415,32 +415,32 @@ id __45__STStatusItemsStatusDomainDataDiff_isEqual___block_invoke_3(uint64_t a1)
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_changes forKey:@"changes"];
-    [v5 encodeObject:self->_statusItemsAttributionListDataDiff forKey:@"statusItemsAttributionListDataDiff"];
+    [coderCopy encodeObject:self->_changes forKey:@"changes"];
+    [coderCopy encodeObject:self->_statusItemsAttributionListDataDiff forKey:@"statusItemsAttributionListDataDiff"];
     visualDescriptorsByIdentifierDictionaryDataDiff = self->_visualDescriptorsByIdentifierDictionaryDataDiff;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"changes"];
-    [v5 encodeObject:0 forKey:@"statusItemsAttributionListDataDiff"];
+    [coderCopy encodeObject:0 forKey:@"changes"];
+    [coderCopy encodeObject:0 forKey:@"statusItemsAttributionListDataDiff"];
     visualDescriptorsByIdentifierDictionaryDataDiff = 0;
   }
 
-  [v5 encodeObject:visualDescriptorsByIdentifierDictionaryDataDiff forKey:@"visualDescriptorsByIdentifierDictionaryDataDiff"];
+  [coderCopy encodeObject:visualDescriptorsByIdentifierDictionaryDataDiff forKey:@"visualDescriptorsByIdentifierDictionaryDataDiff"];
 }
 
-- (STStatusItemsStatusDomainDataDiff)initWithCoder:(id)a3
+- (STStatusItemsStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"statusItemsAttributionListDataDiff"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visualDescriptorsByIdentifierDictionaryDataDiff"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"statusItemsAttributionListDataDiff"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visualDescriptorsByIdentifierDictionaryDataDiff"];
 
   if (v5)
   {
@@ -454,76 +454,76 @@ id __45__STStatusItemsStatusDomainDataDiff_isEqual___block_invoke_3(uint64_t a1)
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STStatusItemsStatusDomainDataDiff *)self initWithChanges:v5 statusItemsAttributionListDataDiff:v6 visualDescriptorsByIdentifierDictionaryDataDiff:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusItemsStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusItemsStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusItemsStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusItemsStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusItemsStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusItemsStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v5 = a2;
-    v6 = [v3 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [selfCopy succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
 
-    v7 = [v6 activeMultilinePrefix];
+    activeMultilinePrefix = [succinctDescriptionBuilder activeMultilinePrefix];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __85__STStatusItemsStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v15[3] = &unk_1E85DDD00;
-    v8 = v6;
+    v8 = succinctDescriptionBuilder;
     v16 = v8;
-    v17 = v3;
-    [v8 appendBodySectionWithName:@"statusItemAttributions" multilinePrefix:v7 block:v15];
+    v17 = selfCopy;
+    [v8 appendBodySectionWithName:@"statusItemAttributions" multilinePrefix:activeMultilinePrefix block:v15];
 
-    v9 = [v8 activeMultilinePrefix];
+    activeMultilinePrefix2 = [v8 activeMultilinePrefix];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__STStatusItemsStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke_2;
     v12[3] = &unk_1E85DDD00;
     v10 = v8;
     v13 = v10;
-    v14 = v3;
-    [v10 appendBodySectionWithName:@"visualDescriptors" multilinePrefix:v9 block:v12];
+    v14 = selfCopy;
+    [v10 appendBodySectionWithName:@"visualDescriptors" multilinePrefix:activeMultilinePrefix2 block:v12];
 
-    v3 = v10;
+    selfCopy = v10;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

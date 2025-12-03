@@ -56,11 +56,11 @@ LABEL_6:
   v8 = [(MKLookAroundSnapshotter *)&v14 init];
   if (v8)
   {
-    v9 = [(MKLookAroundSnapshotOptions *)v7 _options];
+    _options = [(MKLookAroundSnapshotOptions *)v7 _options];
     v10 = [MKMapCamera _cameraLookingAtScene:v6];
-    [v9 setCamera:v10];
+    [_options setCamera:v10];
 
-    v11 = [[MKMapSnapshotter alloc] initWithOptions:v9];
+    v11 = [[MKMapSnapshotter alloc] initWithOptions:_options];
     snapshotter = v8->_snapshotter;
     v8->_snapshotter = v11;
   }

@@ -1,15 +1,15 @@
 @interface RTPersistenceRemoteStore
-- (RTPersistenceRemoteStore)initWithReadOnly:(BOOL)a3;
+- (RTPersistenceRemoteStore)initWithReadOnly:(BOOL)only;
 - (id)_createManagedObjectContext;
 - (id)createManagedObjectContext;
-- (void)updateCurrentDeviceMOIDWithContext:(id)a3;
+- (void)updateCurrentDeviceMOIDWithContext:(id)context;
 @end
 
 @implementation RTPersistenceRemoteStore
 
-- (RTPersistenceRemoteStore)initWithReadOnly:(BOOL)a3
+- (RTPersistenceRemoteStore)initWithReadOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v48.receiver = self;
   v48.super_class = RTPersistenceRemoteStore;
   v4 = [(RTPersistenceRemoteStore *)&v48 init];
@@ -32,8 +32,8 @@
   [(RTDarwinNotificationHelper *)v7 addObserverForNotificationName:@"kRTPersistenceDeviceIdentityChanged" handler:v45];
   v8 = objc_opt_new();
   v9 = objc_alloc(MEMORY[0x277CBE4D8]);
-  v10 = [v8 latestModel];
-  v11 = [v9 initWithManagedObjectModel:v10];
+  latestModel = [v8 latestModel];
+  v11 = [v9 initWithManagedObjectModel:latestModel];
   coordinator = v4->_coordinator;
   v4->_coordinator = v11;
 
@@ -52,7 +52,7 @@
   [v19 setShouldInferMappingModelAutomatically:1];
   [v19 setShouldMigrateStoreAutomatically:0];
   [v19 setShouldAddStoreAsynchronously:0];
-  [v19 setReadOnly:v3];
+  [v19 setReadOnly:onlyCopy];
   v21 = *MEMORY[0x277CBE340];
   [v19 setOption:@"com.apple.routined.store.cache" forKey:*MEMORY[0x277CBE340]];
   v22 = *MEMORY[0x277CBE328];
@@ -63,7 +63,7 @@
   [v23 setShouldInferMappingModelAutomatically:1];
   [v23 setShouldMigrateStoreAutomatically:0];
   [v23 setShouldAddStoreAsynchronously:0];
-  [v23 setReadOnly:v3];
+  [v23 setReadOnly:onlyCopy];
   [v23 setOption:@"com.apple.routined.store.cloud" forKey:v21];
   [v23 setOption:MEMORY[0x277CBEC38] forKey:v22];
   v39 = 0;
@@ -99,8 +99,8 @@
 
   else
   {
-    v29 = [(RTPersistenceRemoteStore *)v4 _createManagedObjectContext];
-    [(RTPersistenceRemoteStore *)v4 updateCurrentDeviceMOIDWithContext:v29];
+    _createManagedObjectContext = [(RTPersistenceRemoteStore *)v4 _createManagedObjectContext];
+    [(RTPersistenceRemoteStore *)v4 updateCurrentDeviceMOIDWithContext:_createManagedObjectContext];
     currentDeviceManagedObjectId = v4->_currentDeviceManagedObjectId;
     v26 = currentDeviceManagedObjectId != 0;
     if (!currentDeviceManagedObjectId)
@@ -179,18 +179,18 @@ void __45__RTPersistenceRemoteStore_initWithReadOnly___block_invoke_7(uint64_t a
   }
 }
 
-- (void)updateCurrentDeviceMOIDWithContext:(id)a3
+- (void)updateCurrentDeviceMOIDWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  contextCopy = context;
+  v5 = contextCopy;
+  if (contextCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __63__RTPersistenceRemoteStore_updateCurrentDeviceMOIDWithContext___block_invoke;
     v7[3] = &unk_2788C4A70;
-    v8 = v4;
-    v9 = self;
+    v8 = contextCopy;
+    selfCopy = self;
     [v8 performBlockAndWait:v7];
     v6 = v8;
   }
@@ -272,27 +272,27 @@ void __63__RTPersistenceRemoteStore_updateCurrentDeviceMOIDWithContext___block_i
 - (id)_createManagedObjectContext
 {
   v3 = [objc_alloc(MEMORY[0x277CBE440]) initWithConcurrencyType:1];
-  v4 = [MEMORY[0x277CBE460] mergeByPropertyObjectTrumpMergePolicy];
-  [v3 setMergePolicy:v4];
+  mergeByPropertyObjectTrumpMergePolicy = [MEMORY[0x277CBE460] mergeByPropertyObjectTrumpMergePolicy];
+  [v3 setMergePolicy:mergeByPropertyObjectTrumpMergePolicy];
 
   [v3 setPersistentStoreCoordinator:self->_coordinator];
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  v6 = [v5 processName];
-  [v3 setTransactionAuthor:v6];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  [v3 setTransactionAuthor:processName];
 
   return v3;
 }
 
 - (id)createManagedObjectContext
 {
-  v3 = [(RTPersistenceRemoteStore *)self _createManagedObjectContext];
+  _createManagedObjectContext = [(RTPersistenceRemoteStore *)self _createManagedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__RTPersistenceRemoteStore_createManagedObjectContext__block_invoke;
   v7[3] = &unk_2788C4A70;
-  v4 = v3;
+  v4 = _createManagedObjectContext;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 performBlockAndWait:v7];
   v5 = v4;
 

@@ -1,21 +1,21 @@
 @interface SXSolidBorderView
-- (SXSolidBorderView)initWithStrokeStyle:(id)a3;
+- (SXSolidBorderView)initWithStrokeStyle:(id)style;
 @end
 
 @implementation SXSolidBorderView
 
-- (SXSolidBorderView)initWithStrokeStyle:(id)a3
+- (SXSolidBorderView)initWithStrokeStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v10.receiver = self;
   v10.super_class = SXSolidBorderView;
   v6 = [(SXSolidBorderView *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_strokeStyle, a3);
-    v8 = [v5 color];
-    [(SXSolidBorderView *)v7 setBackgroundColor:v8];
+    objc_storeStrong(&v6->_strokeStyle, style);
+    color = [styleCopy color];
+    [(SXSolidBorderView *)v7 setBackgroundColor:color];
   }
 
   return v7;

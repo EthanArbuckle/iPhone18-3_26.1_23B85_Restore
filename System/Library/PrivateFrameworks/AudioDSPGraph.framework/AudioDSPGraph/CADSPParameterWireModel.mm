@@ -1,9 +1,9 @@
 @interface CADSPParameterWireModel
-- (BOOL)isEqual:(id)a3;
-- (CADSPParameterAddress)boxParameterAddressOfEndpoint:(unsigned int)a3;
+- (BOOL)isEqual:(id)equal;
+- (CADSPParameterAddress)boxParameterAddressOfEndpoint:(unsigned int)endpoint;
 - (id).cxx_construct;
-- (id)copyBoxNameOfEndpoint:(unsigned int)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyBoxNameOfEndpoint:(unsigned int)endpoint;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CADSPParameterWireModel
@@ -20,24 +20,24 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v5 = 1;
     goto LABEL_8;
   }
 
-  if (AudioDSPGraph::IR::ParameterEndpoint::operator==(&self->_this.source.boxName.__rep_.__l.__data_, &v4->_this.source.boxName.__rep_.__l.__data_) && AudioDSPGraph::IR::ParameterEndpoint::operator==(&self[1].super.isa, &v4[1].super.isa))
+  if (AudioDSPGraph::IR::ParameterEndpoint::operator==(&self->_this.source.boxName.__rep_.__l.__data_, &equalCopy->_this.source.boxName.__rep_.__l.__data_) && AudioDSPGraph::IR::ParameterEndpoint::operator==(&self[1].super.isa, &equalCopy[1].super.isa))
   {
-    v5 = LOBYTE(self[1]._this.var0) == LOBYTE(v4[1]._this.var0);
+    v5 = LOBYTE(self[1]._this.var0) == LOBYTE(equalCopy[1]._this.var0);
   }
 
   else
@@ -51,9 +51,9 @@ LABEL_8:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CADSPMutableParameterWireModel allocWithZone:a3];
+  v4 = [CADSPMutableParameterWireModel allocWithZone:zone];
   std::string::operator=(&v4->super._this, &self->_this);
   v5 = *&self->_this.source.var0;
   LODWORD(v4->super._this.var0) = self->_this.var0;
@@ -66,10 +66,10 @@ LABEL_8:
   return v4;
 }
 
-- (CADSPParameterAddress)boxParameterAddressOfEndpoint:(unsigned int)a3
+- (CADSPParameterAddress)boxParameterAddressOfEndpoint:(unsigned int)endpoint
 {
   v3 = 40;
-  if (!a3)
+  if (!endpoint)
   {
     v3 = 0;
   }
@@ -83,10 +83,10 @@ LABEL_8:
   return result;
 }
 
-- (id)copyBoxNameOfEndpoint:(unsigned int)a3
+- (id)copyBoxNameOfEndpoint:(unsigned int)endpoint
 {
   v3 = 40;
-  if (!a3)
+  if (!endpoint)
   {
     v3 = 0;
   }

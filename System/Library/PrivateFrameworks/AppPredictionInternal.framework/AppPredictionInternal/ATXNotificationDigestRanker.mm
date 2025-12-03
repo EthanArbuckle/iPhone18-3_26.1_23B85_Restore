@@ -1,10 +1,10 @@
 @interface ATXNotificationDigestRanker
 - (ATXNotificationDigestRanker)init;
-- (ATXNotificationDigestRanker)initWithDigestFeedback:(id)a3;
-- (id)appsForNotificationGroups:(id)a3;
-- (id)chooseAppsForMarquee:(id)a3;
-- (id)createDigestForNotificationStacks:(id)a3 outError:(id *)a4;
-- (id)sampleAppsForMarquee:(id)a3 numToSample:(unint64_t)a4 hasAutomaticMarqueeBeenUsedFlag:(BOOL *)a5;
+- (ATXNotificationDigestRanker)initWithDigestFeedback:(id)feedback;
+- (id)appsForNotificationGroups:(id)groups;
+- (id)chooseAppsForMarquee:(id)marquee;
+- (id)createDigestForNotificationStacks:(id)stacks outError:(id *)error;
+- (id)sampleAppsForMarquee:(id)marquee numToSample:(unint64_t)sample hasAutomaticMarqueeBeenUsedFlag:(BOOL *)flag;
 @end
 
 @implementation ATXNotificationDigestRanker
@@ -17,16 +17,16 @@
   return v4;
 }
 
-- (ATXNotificationDigestRanker)initWithDigestFeedback:(id)a3
+- (ATXNotificationDigestRanker)initWithDigestFeedback:(id)feedback
 {
-  v5 = a3;
+  feedbackCopy = feedback;
   v11.receiver = self;
   v11.super_class = ATXNotificationDigestRanker;
   v6 = [(ATXNotificationDigestRanker *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_digestFeedback, a3);
+    objc_storeStrong(&v6->_digestFeedback, feedback);
     v8 = +[ATXNotificationDigestRankingConstants sharedInstance];
     c = v7->_c;
     v7->_c = v8;
@@ -35,10 +35,10 @@
   return v7;
 }
 
-- (id)createDigestForNotificationStacks:(id)a3 outError:(id *)a4
+- (id)createDigestForNotificationStacks:(id)stacks outError:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stacksCopy = stacks;
   v6 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -49,8 +49,8 @@
     _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "[%@] Generating a notification digest", buf, 0xCu);
   }
 
-  v46 = v5;
-  v9 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_78_0];
+  v46 = stacksCopy;
+  v9 = [stacksCopy _pas_mappedArrayWithTransform:&__block_literal_global_78_0];
   v10 = [v9 _pas_filteredArrayWithTest:&__block_literal_global_81_1];
   v45 = v9;
   v11 = [v9 _pas_filteredArrayWithTest:&__block_literal_global_83_3];
@@ -83,8 +83,8 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v54 + 1) + 8 * i) unorderedGroups];
-        v23 = [v22 sortedArrayUsingComparator:&__block_literal_global_90_3];
+        unorderedGroups = [*(*(&v54 + 1) + 8 * i) unorderedGroups];
+        v23 = [unorderedGroups sortedArrayUsingComparator:&__block_literal_global_90_3];
 
         [v16 addObjectsFromArray:v23];
       }
@@ -97,9 +97,9 @@
 
   if ([v47 count] == 1 && (objc_msgSend(v47, "firstObject"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "orderedGroups"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "count"), v25, v24, v26 >= 2))
   {
-    v27 = [v47 firstObject];
-    v28 = [v27 orderedGroups];
-    v42 = [v28 subarrayWithRange:{0, 2}];
+    firstObject = [v47 firstObject];
+    orderedGroups = [firstObject orderedGroups];
+    v42 = [orderedGroups subarrayWithRange:{0, 2}];
   }
 
   else
@@ -127,8 +127,8 @@
           objc_enumerationMutation(v30);
         }
 
-        v35 = [*(*(&v50 + 1) + 8 * j) unorderedGroups];
-        v36 = [v35 sortedArrayUsingComparator:&__block_literal_global_95_3];
+        unorderedGroups2 = [*(*(&v50 + 1) + 8 * j) unorderedGroups];
+        v36 = [unorderedGroups2 sortedArrayUsingComparator:&__block_literal_global_95_3];
 
         [v29 addObjectsFromArray:v36];
       }
@@ -234,16 +234,16 @@ uint64_t __74__ATXNotificationDigestRanker_createDigestForNotificationStacks_out
   return v11;
 }
 
-- (id)appsForNotificationGroups:(id)a3
+- (id)appsForNotificationGroups:(id)groups
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupsCopy = groups;
   v5 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v4;
+  v6 = groupsCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v7)
   {
@@ -261,18 +261,18 @@ uint64_t __74__ATXNotificationDigestRanker_createDigestForNotificationStacks_out
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 bundleId];
-        if (v13)
+        bundleId = [v12 bundleId];
+        if (bundleId)
         {
-          v14 = [v5 objectForKeyedSubscript:v13];
+          v14 = [v5 objectForKeyedSubscript:bundleId];
 
           if (!v14)
           {
-            v15 = [[ATXNotificationDigestApp alloc] initWithBundleId:v13 digestFeedback:self->_digestFeedback digestConstants:self->_c];
-            [v5 setObject:v15 forKeyedSubscript:v13];
+            v15 = [[ATXNotificationDigestApp alloc] initWithBundleId:bundleId digestFeedback:self->_digestFeedback digestConstants:self->_c];
+            [v5 setObject:v15 forKeyedSubscript:bundleId];
           }
 
-          v16 = [v5 objectForKeyedSubscript:v13];
+          v16 = [v5 objectForKeyedSubscript:bundleId];
           [v16 addGroup:v12];
         }
 
@@ -283,11 +283,11 @@ uint64_t __74__ATXNotificationDigestRanker_createDigestForNotificationStacks_out
           {
             v17 = objc_opt_class();
             v18 = NSStringFromClass(v17);
-            v19 = [v12 groupId];
+            groupId = [v12 groupId];
             *buf = v23;
             v29 = v18;
             v30 = 2112;
-            v31 = v19;
+            v31 = groupId;
             _os_log_impl(&dword_2263AA000, v16, OS_LOG_TYPE_INFO, "[%@] Missing bundle ID for group with ID %@", buf, 0x16u);
           }
         }
@@ -299,24 +299,24 @@ uint64_t __74__ATXNotificationDigestRanker_createDigestForNotificationStacks_out
     while (v9);
   }
 
-  v20 = [v5 allValues];
+  allValues = [v5 allValues];
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return allValues;
 }
 
-- (id)chooseAppsForMarquee:(id)a3
+- (id)chooseAppsForMarquee:(id)marquee
 {
-  v4 = a3;
-  v5 = [(ATXNotificationDigestRankingConstants *)self->_c numMarqueeSpots];
+  marqueeCopy = marquee;
+  numMarqueeSpots = [(ATXNotificationDigestRankingConstants *)self->_c numMarqueeSpots];
   v13 = 0;
-  v6 = [v4 _pas_filteredArrayWithTest:&__block_literal_global_101_1];
-  v7 = [(ATXNotificationDigestRanker *)self sampleAppsForMarquee:v6 numToSample:v5 hasAutomaticMarqueeBeenUsedFlag:&v13];
-  v8 = v5 - [v7 count];
+  v6 = [marqueeCopy _pas_filteredArrayWithTest:&__block_literal_global_101_1];
+  v7 = [(ATXNotificationDigestRanker *)self sampleAppsForMarquee:v6 numToSample:numMarqueeSpots hasAutomaticMarqueeBeenUsedFlag:&v13];
+  v8 = numMarqueeSpots - [v7 count];
   if (v8)
   {
-    v10 = [v4 _pas_filteredArrayWithTest:&__block_literal_global_103_0];
+    v10 = [marqueeCopy _pas_filteredArrayWithTest:&__block_literal_global_103_0];
     v11 = [(ATXNotificationDigestRanker *)self sampleAppsForMarquee:v10 numToSample:v8 hasAutomaticMarqueeBeenUsedFlag:&v13];
     v9 = [v7 arrayByAddingObjectsFromArray:v11];
   }
@@ -329,16 +329,16 @@ uint64_t __74__ATXNotificationDigestRanker_createDigestForNotificationStacks_out
   return v9;
 }
 
-- (id)sampleAppsForMarquee:(id)a3 numToSample:(unint64_t)a4 hasAutomaticMarqueeBeenUsedFlag:(BOOL *)a5
+- (id)sampleAppsForMarquee:(id)marquee numToSample:(unint64_t)sample hasAutomaticMarqueeBeenUsedFlag:(BOOL *)flag
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (a4 && [v7 count])
+  marqueeCopy = marquee;
+  v8 = marqueeCopy;
+  if (sample && [marqueeCopy count])
   {
     v9 = MEMORY[0x277CEBCC0];
     v10 = [v8 _pas_mappedArrayWithTransform:&__block_literal_global_107_0];
-    v11 = [v9 sampleWeightedArray:v10 numToSample:a4];
+    v11 = [v9 sampleWeightedArray:v10 numToSample:sample];
 
     v12 = objc_opt_new();
     v25 = 0u;
@@ -370,7 +370,7 @@ uint64_t __74__ATXNotificationDigestRanker_createDigestForNotificationStacks_out
       while (v15);
     }
 
-    if (!*a5)
+    if (!*flag)
     {
       v19 = [v8 _pas_filteredArrayWithTest:&__block_literal_global_109_0];
       if ([v19 count] && objc_msgSend(v12, "count"))
@@ -383,7 +383,7 @@ uint64_t __74__ATXNotificationDigestRanker_createDigestForNotificationStacks_out
           [v12 setObject:v22 atIndexedSubscript:{objc_msgSend(v12, "count") - 1}];
         }
 
-        *a5 = 1;
+        *flag = 1;
       }
     }
   }

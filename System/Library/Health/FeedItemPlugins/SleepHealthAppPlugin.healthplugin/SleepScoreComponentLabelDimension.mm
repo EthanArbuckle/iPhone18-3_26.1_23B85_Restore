@@ -1,13 +1,13 @@
 @interface SleepScoreComponentLabelDimension
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4;
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size;
 @end
 
 @implementation SleepScoreComponentLabelDimension
 
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size
 {
-  v4 = a3;
-  [v4 integerValue];
+  locationCopy = location;
+  [locationCopy integerValue];
   sub_29E7045EC();
   sub_29E754C28();
 

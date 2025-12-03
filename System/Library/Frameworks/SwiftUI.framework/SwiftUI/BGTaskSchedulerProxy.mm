@@ -1,6 +1,6 @@
 @interface BGTaskSchedulerProxy
 + (id)shared;
-- (BOOL)registerForTaskWithIdentifier:(id)a3 launchHandler:(id)a4;
+- (BOOL)registerForTaskWithIdentifier:(id)identifier launchHandler:(id)handler;
 @end
 
 @implementation BGTaskSchedulerProxy
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __30__BGTaskSchedulerProxy_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -29,10 +29,10 @@ uint64_t __30__BGTaskSchedulerProxy_shared__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)registerForTaskWithIdentifier:(id)a3 launchHandler:(id)a4
+- (BOOL)registerForTaskWithIdentifier:(id)identifier launchHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2050000000;
@@ -51,8 +51,8 @@ uint64_t __30__BGTaskSchedulerProxy_shared__block_invoke(uint64_t a1)
 
   v8 = v7;
   _Block_object_dispose(&v12, 8);
-  v9 = [v7 sharedScheduler];
-  [v9 registerForTaskWithIdentifier:v5 usingQueue:0 launchHandler:v6];
+  sharedScheduler = [v7 sharedScheduler];
+  [sharedScheduler registerForTaskWithIdentifier:identifierCopy usingQueue:0 launchHandler:handlerCopy];
 
   return 1;
 }

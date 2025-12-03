@@ -1,24 +1,24 @@
 @interface _MLCCPULayer
-- (_MLCCPULayer)initWithDevice:(id)a3 deviceOps:(id)a4;
+- (_MLCCPULayer)initWithDevice:(id)device deviceOps:(id)ops;
 - (void)dealloc;
 @end
 
 @implementation _MLCCPULayer
 
-- (_MLCCPULayer)initWithDevice:(id)a3 deviceOps:(id)a4
+- (_MLCCPULayer)initWithDevice:(id)device deviceOps:(id)ops
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  opsCopy = ops;
   v12.receiver = self;
   v12.super_class = _MLCCPULayer;
   v9 = [(_MLCCPULayer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
+    objc_storeStrong(&v9->_device, device);
     v10->_filter = 0;
     v10->_secondaryFilter = 0;
-    objc_storeStrong(&v10->_deviceOps, a4);
+    objc_storeStrong(&v10->_deviceOps, ops);
   }
 
   return v10;

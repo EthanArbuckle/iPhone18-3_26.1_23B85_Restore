@@ -1,6 +1,6 @@
 @interface PLFileSystemCapabilities
-+ (PLFileSystemCapabilities)capabilitiesWithURL:(id)a3;
-- (BOOL)determineCapabilitiesWithURL:(id)a3 error:(id *)a4;
++ (PLFileSystemCapabilities)capabilitiesWithURL:(id)l;
+- (BOOL)determineCapabilitiesWithURL:(id)l error:(id *)error;
 - (BOOL)isCentralizedCacheDeleteCapable;
 - (id)description;
 @end
@@ -9,12 +9,12 @@
 
 - (id)description
 {
-  v3 = [(PLFileSystemCapabilities *)self isValid];
+  isValid = [(PLFileSystemCapabilities *)self isValid];
   v4 = MEMORY[0x1E696AEC0];
-  if (v3)
+  if (isValid)
   {
-    v5 = [(PLFileSystemCapabilities *)self fileSystemTypeName];
-    [v4 stringWithFormat:@"type:%@ readOnly:%d clone:%d flock:%d genCount:%d seclude:%d local:%d internal:%d", v5, -[PLFileSystemCapabilities isReadOnly](self, "isReadOnly"), -[PLFileSystemCapabilities isCloneCapable](self, "isCloneCapable"), -[PLFileSystemCapabilities isWholeFileLockCapable](self, "isWholeFileLockCapable"), -[PLFileSystemCapabilities isGenCountCapable](self, "isGenCountCapable"), -[PLFileSystemCapabilities isSecludeRenameCapable](self, "isSecludeRenameCapable"), -[PLFileSystemCapabilities isLocalVolume](self, "isLocalVolume"), -[PLFileSystemCapabilities isInternalVolume](self, "isInternalVolume")];
+    fileSystemTypeName = [(PLFileSystemCapabilities *)self fileSystemTypeName];
+    [v4 stringWithFormat:@"type:%@ readOnly:%d clone:%d flock:%d genCount:%d seclude:%d local:%d internal:%d", fileSystemTypeName, -[PLFileSystemCapabilities isReadOnly](self, "isReadOnly"), -[PLFileSystemCapabilities isCloneCapable](self, "isCloneCapable"), -[PLFileSystemCapabilities isWholeFileLockCapable](self, "isWholeFileLockCapable"), -[PLFileSystemCapabilities isGenCountCapable](self, "isGenCountCapable"), -[PLFileSystemCapabilities isSecludeRenameCapable](self, "isSecludeRenameCapable"), -[PLFileSystemCapabilities isLocalVolume](self, "isLocalVolume"), -[PLFileSystemCapabilities isInternalVolume](self, "isInternalVolume")];
     v7 = LABEL_5:;
 
     goto LABEL_6;
@@ -23,8 +23,8 @@
   error = self->_error;
   if (error)
   {
-    v5 = [(NSError *)error localizedDescription];
-    [v4 stringWithFormat:@"invalid: %@", v5, v9, v10, v11, v12, v13, v14, v15];
+    fileSystemTypeName = [(NSError *)error localizedDescription];
+    [v4 stringWithFormat:@"invalid: %@", fileSystemTypeName, v9, v10, v11, v12, v13, v14, v15];
     goto LABEL_5;
   }
 
@@ -34,12 +34,12 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)determineCapabilitiesWithURL:(id)a3 error:(id *)a4
+- (BOOL)determineCapabilitiesWithURL:(id)l error:(id *)error
 {
   v66[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  lCopy = l;
+  v7 = lCopy;
+  if (!lCopy)
   {
     v21 = MEMORY[0x1E696ABC0];
     v22 = *MEMORY[0x1E696A798];
@@ -47,25 +47,25 @@ LABEL_6:
     v65[0] = *MEMORY[0x1E696A278];
     v65[1] = v23;
     v66[0] = @"nil URL";
-    v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:strerror(22)];
-    v66[1] = v8;
+    uRLByDeletingLastPathComponent = [MEMORY[0x1E696AEC0] stringWithUTF8String:strerror(22)];
+    v66[1] = uRLByDeletingLastPathComponent;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2];
     v25 = [v21 errorWithDomain:v22 code:22 userInfo:v24];
     error = self->_error;
     self->_error = v25;
 
     v27 = v25;
-    if (a4)
+    if (error)
     {
-      *a4 = v25;
+      *error = v25;
     }
 
     goto LABEL_9;
   }
 
-  v8 = [v6 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
   memset(&v64, 0, 512);
-  if (!statfs([v8 fileSystemRepresentation], &v64))
+  if (!statfs([uRLByDeletingLastPathComponent fileSystemRepresentation], &v64))
   {
     v57 = 0u;
     memset(v58, 0, sizeof(v58));
@@ -95,10 +95,10 @@ LABEL_6:
       self->_error = v38;
 
       v40 = v38;
-      if (a4)
+      if (error)
       {
         v28 = 0;
-        *a4 = v38;
+        *error = v38;
 LABEL_18:
 
         goto LABEL_19;
@@ -115,7 +115,7 @@ LABEL_18:
       v59[2] = *MEMORY[0x1E695DDC0];
       v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v59 count:3];
       v52 = 0;
-      v37 = [v8 resourceValuesForKeys:v43 error:&v52];
+      v37 = [uRLByDeletingLastPathComponent resourceValuesForKeys:v43 error:&v52];
       v44 = v52;
       v36 = v52;
 
@@ -144,10 +144,10 @@ LABEL_18:
       objc_storeStrong(&self->_error, v44);
       v49 = v36;
       v37 = 0;
-      if (a4)
+      if (error)
       {
         v28 = 0;
-        *a4 = v36;
+        *error = v36;
         goto LABEL_18;
       }
     }
@@ -176,9 +176,9 @@ LABEL_18:
   self->_error = v18;
 
   v20 = v18;
-  if (a4)
+  if (error)
   {
-    *a4 = v18;
+    *error = v18;
   }
 
 LABEL_9:
@@ -223,11 +223,11 @@ uint64_t __59__PLFileSystemCapabilities_isCentralizedCacheDeleteCapable__block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (PLFileSystemCapabilities)capabilitiesWithURL:(id)a3
++ (PLFileSystemCapabilities)capabilitiesWithURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = objc_alloc_init(PLFileSystemCapabilities);
-  [(PLFileSystemCapabilities *)v4 determineCapabilitiesWithURL:v3 error:0];
+  [(PLFileSystemCapabilities *)v4 determineCapabilitiesWithURL:lCopy error:0];
 
   return v4;
 }

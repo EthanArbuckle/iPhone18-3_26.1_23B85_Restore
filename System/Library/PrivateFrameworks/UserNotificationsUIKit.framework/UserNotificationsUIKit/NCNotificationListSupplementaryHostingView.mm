@@ -1,7 +1,7 @@
 @interface NCNotificationListSupplementaryHostingView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCNotificationListSupplementaryHostingView)init;
 - (NCNotificationListSupplementaryHostingViewDelegate)delegate;
 - (double)glassSmoothness;
@@ -13,26 +13,26 @@
 - (void)_configureViewToBlockOutOfProcessUIInteractionsIfNecessary;
 - (void)_layoutAuxiliaryOptionsView;
 - (void)_layoutHostedView;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_tapGestureRecognized:(id)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_tapGestureRecognized:(id)recognized;
 - (void)layoutSubviews;
 - (void)removeAuxiliaryOptionsView;
 - (void)removeLightEffectsIfNeeded;
-- (void)setApparentZDistanceToUser:(int64_t)a3;
-- (void)setAuxiliaryOptionActions:(id)a3;
-- (void)setAuxiliaryOptionsBackgroundColor:(id)a3;
-- (void)setAuxiliaryOptionsBackgroundCompositingFilter:(id)a3;
-- (void)setAuxiliaryOptionsSummaryText:(id)a3;
-- (void)setAuxiliaryOptionsTextColor:(id)a3;
-- (void)setAuxiliaryOptionsVisible:(BOOL)a3;
-- (void)setGlassMode:(unint64_t)a3;
-- (void)setHostedView:(id)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setMaterialRecipe:(int64_t)a3;
-- (void)setMaterialTintColor:(id)a3;
-- (void)setRootScrollVelocity:(double)a3;
-- (void)setUnmanagedBackdropContrast:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setApparentZDistanceToUser:(int64_t)user;
+- (void)setAuxiliaryOptionActions:(id)actions;
+- (void)setAuxiliaryOptionsBackgroundColor:(id)color;
+- (void)setAuxiliaryOptionsBackgroundCompositingFilter:(id)filter;
+- (void)setAuxiliaryOptionsSummaryText:(id)text;
+- (void)setAuxiliaryOptionsTextColor:(id)color;
+- (void)setAuxiliaryOptionsVisible:(BOOL)visible;
+- (void)setGlassMode:(unint64_t)mode;
+- (void)setHostedView:(id)view;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setMaterialRecipe:(int64_t)recipe;
+- (void)setMaterialTintColor:(id)color;
+- (void)setRootScrollVelocity:(double)velocity;
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation NCNotificationListSupplementaryHostingView
@@ -61,29 +61,29 @@
   return v3;
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   hostedView = self->_hostedView;
-  if (hostedView != v5)
+  if (hostedView != viewCopy)
   {
-    v10 = v5;
+    v10 = viewCopy;
     [(UIView *)hostedView removeFromSuperview];
     v7 = self->_hostedView;
     self->_hostedView = 0;
 
-    objc_storeStrong(&self->_hostedView, a3);
+    objc_storeStrong(&self->_hostedView, view);
     [(NCDimmableView *)self setViewToFadeWhenDimming:self->_hostedView];
     if (v10)
     {
       [(NCNotificationListSupplementaryHostingView *)self _configurePlatterViewIfNecessary];
-      v8 = [(PLPlatterView *)self->_platterView customContentView];
-      [v8 addSubview:v10];
+      customContentView = [(PLPlatterView *)self->_platterView customContentView];
+      [customContentView addSubview:v10];
 
       if (self->_viewToBlockOutOfProcessUIInteractions)
       {
-        v9 = [(PLPlatterView *)self->_platterView customContentView];
-        [v9 bringSubviewToFront:self->_viewToBlockOutOfProcessUIInteractions];
+        customContentView2 = [(PLPlatterView *)self->_platterView customContentView];
+        [customContentView2 bringSubviewToFront:self->_viewToBlockOutOfProcessUIInteractions];
       }
     }
 
@@ -93,30 +93,30 @@
   MEMORY[0x2821F96F8](hostedView);
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = NCNotificationListSupplementaryHostingView;
   [(NCNotificationListSupplementaryHostingView *)&v6 setUserInteractionEnabled:?];
-  [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:v3];
-  v5 = v3 && self->_hostedViewUserInteractionEnabled;
+  [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:enabledCopy];
+  v5 = enabledCopy && self->_hostedViewUserInteractionEnabled;
   [(NCNotificationListSupplementaryHostingView *)self _blockOutOfProcessUIInteractions:v5];
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = NCNotificationListSupplementaryHostingView;
   [(NCNotificationListSupplementaryHostingView *)&v5 _setContinuousCornerRadius:?];
-  [(NCPlatterView *)self->_platterView _setContinuousCornerRadius:a3];
-  [(UIView *)self->_hostedView _setContinuousCornerRadius:a3];
+  [(NCPlatterView *)self->_platterView _setContinuousCornerRadius:radius];
+  [(UIView *)self->_hostedView _setContinuousCornerRadius:radius];
 }
 
-- (void)setAuxiliaryOptionsVisible:(BOOL)a3
+- (void)setAuxiliaryOptionsVisible:(BOOL)visible
 {
-  v3 = a3;
-  if ([(NCNotificationListSupplementaryHostingView *)self auxiliaryOptionsVisible]!= a3)
+  visibleCopy = visible;
+  if ([(NCNotificationListSupplementaryHostingView *)self auxiliaryOptionsVisible]!= visible)
   {
     [(NCNotificationListSupplementaryHostingView *)self _configureAuxiliaryOptionsViewIfNecessary];
     v5[0] = MEMORY[0x277D85DD0];
@@ -125,63 +125,63 @@
     v5[3] = &unk_27836F6A8;
     v5[4] = self;
     [MEMORY[0x277D75D18] performWithoutAnimation:v5];
-    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsVisible:v3];
+    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsVisible:visibleCopy];
     [(NCNotificationListSupplementaryHostingView *)self setNeedsLayout];
   }
 }
 
-- (void)setAuxiliaryOptionsSummaryText:(id)a3
+- (void)setAuxiliaryOptionsSummaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if ((BSEqualStrings() & 1) == 0)
   {
-    objc_storeStrong(&self->_auxiliaryOptionsSummaryText, a3);
+    objc_storeStrong(&self->_auxiliaryOptionsSummaryText, text);
     [(NCNotificationListSupplementaryHostingView *)self _configureAuxiliaryOptionsViewIfNecessary];
-    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsSummaryText:v5];
+    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsSummaryText:textCopy];
     [(NCNotificationListSupplementaryHostingView *)self setNeedsLayout];
   }
 }
 
-- (void)setAuxiliaryOptionActions:(id)a3
+- (void)setAuxiliaryOptionActions:(id)actions
 {
-  objc_storeStrong(&self->_auxiliaryOptionActions, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_auxiliaryOptionActions, actions);
+  actionsCopy = actions;
   [(NCNotificationListSupplementaryHostingView *)self _configureAuxiliaryOptionsViewIfNecessary];
-  [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionActions:v5];
+  [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionActions:actionsCopy];
 
   [(NCNotificationListSupplementaryHostingView *)self setNeedsLayout];
 }
 
-- (void)setAuxiliaryOptionsTextColor:(id)a3
+- (void)setAuxiliaryOptionsTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_auxiliaryOptionsTextColor, a3);
+    objc_storeStrong(&self->_auxiliaryOptionsTextColor, color);
     [(NCNotificationListSupplementaryHostingView *)self _configureAuxiliaryOptionsViewIfNecessary];
     [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsTextColor:self->_auxiliaryOptionsTextColor];
     [(NCNotificationListSupplementaryHostingView *)self setNeedsLayout];
   }
 }
 
-- (void)setAuxiliaryOptionsBackgroundColor:(id)a3
+- (void)setAuxiliaryOptionsBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_auxiliaryOptionsBackgroundColor, a3);
+    objc_storeStrong(&self->_auxiliaryOptionsBackgroundColor, color);
     [(NCNotificationListSupplementaryHostingView *)self _configureAuxiliaryOptionsViewIfNecessary];
     [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsBackgroundColor:self->_auxiliaryOptionsBackgroundColor];
     [(NCNotificationListSupplementaryHostingView *)self setNeedsLayout];
   }
 }
 
-- (void)setAuxiliaryOptionsBackgroundCompositingFilter:(id)a3
+- (void)setAuxiliaryOptionsBackgroundCompositingFilter:(id)filter
 {
-  v5 = a3;
+  filterCopy = filter;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_auxiliaryOptionsBackgroundCompositingFilter, a3);
+    objc_storeStrong(&self->_auxiliaryOptionsBackgroundCompositingFilter, filter);
     [(NCNotificationListSupplementaryHostingView *)self _configureAuxiliaryOptionsViewIfNecessary];
     [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsBackgroundCompositingFilter:self->_auxiliaryOptionsBackgroundCompositingFilter];
     [(NCNotificationListSupplementaryHostingView *)self setNeedsLayout];
@@ -201,20 +201,20 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCPlatterView *)self->_platterView adjustForContentSizeCategoryChange];
+    adjustForContentSizeCategoryChange = [(NCPlatterView *)self->_platterView adjustForContentSizeCategoryChange];
   }
 
   else
   {
-    v3 = 0;
+    adjustForContentSizeCategoryChange = 0;
   }
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(UIView *)self->_hostedView adjustForContentSizeCategoryChange]& 1) != 0)
   {
-    v3 = 1;
+    adjustForContentSizeCategoryChange = 1;
   }
 
-  v4 = [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView adjustForContentSizeCategoryChange]| v3;
+  v4 = [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView adjustForContentSizeCategoryChange]| adjustForContentSizeCategoryChange;
   if (v4)
   {
     [(NCNotificationListSupplementaryHostingView *)self setNeedsLayout];
@@ -223,12 +223,12 @@
   return v4 & 1;
 }
 
-- (void)setMaterialRecipe:(int64_t)a3
+- (void)setMaterialRecipe:(int64_t)recipe
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_materialRecipe != a3)
+  if (self->_materialRecipe != recipe)
   {
-    self->_materialRecipe = a3;
+    self->_materialRecipe = recipe;
     [(NCPlatterView *)self->_platterView setMaterialRecipe:?];
     if (objc_opt_respondsToSelector())
     {
@@ -236,8 +236,8 @@
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v4 = [(UIView *)self->_hostedView requiredVisualStyleCategories];
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      requiredVisualStyleCategories = [(UIView *)self->_hostedView requiredVisualStyleCategories];
+      v5 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         v6 = v5;
@@ -248,16 +248,16 @@
           {
             if (*v13 != v7)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(requiredVisualStyleCategories);
             }
 
-            v9 = [*(*(&v12 + 1) + 8 * i) integerValue];
+            integerValue = [*(*(&v12 + 1) + 8 * i) integerValue];
             hostedView = self->_hostedView;
-            v11 = [(PLPlatterView *)self->_platterView visualStylingProviderForCategory:v9];
-            [(UIView *)hostedView setVisualStylingProvider:v11 forCategory:v9];
+            v11 = [(PLPlatterView *)self->_platterView visualStylingProviderForCategory:integerValue];
+            [(UIView *)hostedView setVisualStylingProvider:v11 forCategory:integerValue];
           }
 
-          v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v6);
@@ -269,59 +269,59 @@
   }
 }
 
-- (void)setMaterialTintColor:(id)a3
+- (void)setMaterialTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((NCIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_materialTintColor, a3);
-    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setMaterialTintColor:v5];
+    objc_storeStrong(&self->_materialTintColor, color);
+    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setMaterialTintColor:colorCopy];
     [(NCPlatterView *)self->_platterView setGlassTintColor:self->_materialTintColor];
     [(NCNotificationListSupplementaryHostingView *)self setNeedsLayout];
   }
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  objc_storeStrong(&self->_materialGroupNameBase, a3);
-  v5 = a3;
-  [(PLPlatterView *)self->_platterView setMaterialGroupNameBase:v5];
-  [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setMaterialGroupNameBase:v5];
+  objc_storeStrong(&self->_materialGroupNameBase, base);
+  baseCopy = base;
+  [(PLPlatterView *)self->_platterView setMaterialGroupNameBase:baseCopy];
+  [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setMaterialGroupNameBase:baseCopy];
 }
 
-- (void)setApparentZDistanceToUser:(int64_t)a3
+- (void)setApparentZDistanceToUser:(int64_t)user
 {
-  if (self->_apparentZDistanceToUser != a3)
+  if (self->_apparentZDistanceToUser != user)
   {
-    self->_apparentZDistanceToUser = a3;
+    self->_apparentZDistanceToUser = user;
     [(NCNotificationListSupplementaryHostingView *)self _configurePlatterViewIfNecessary];
     platterView = self->_platterView;
 
-    [(NCPlatterView *)platterView updateWithApparentZDistanceToUser:a3];
+    [(NCPlatterView *)platterView updateWithApparentZDistanceToUser:user];
   }
 }
 
-- (void)setRootScrollVelocity:(double)a3
+- (void)setRootScrollVelocity:(double)velocity
 {
-  if (self->_rootScrollVelocity != a3)
+  if (self->_rootScrollVelocity != velocity)
   {
-    self->_rootScrollVelocity = a3;
+    self->_rootScrollVelocity = velocity;
     [(NCNotificationListSupplementaryHostingView *)self _configurePlatterViewIfNecessary];
     platterView = self->_platterView;
 
-    [(NCPlatterView *)platterView updateWithRootListScrollVelocity:a3];
+    [(NCPlatterView *)platterView updateWithRootListScrollVelocity:velocity];
   }
 }
 
-- (void)setGlassMode:(unint64_t)a3
+- (void)setGlassMode:(unint64_t)mode
 {
-  if (self->_glassMode != a3)
+  if (self->_glassMode != mode)
   {
-    self->_glassMode = a3;
+    self->_glassMode = mode;
     [(NCNotificationListSupplementaryHostingView *)self _configurePlatterViewIfNecessary];
     platterView = self->_platterView;
 
-    [(NCPlatterView *)platterView updateWithGlassMode:a3];
+    [(NCPlatterView *)platterView updateWithGlassMode:mode];
   }
 }
 
@@ -368,25 +368,25 @@
   }
 }
 
-- (void)setUnmanagedBackdropContrast:(BOOL)a3
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast
 {
-  if (self->_unmanagedBackdropContrast != a3)
+  if (self->_unmanagedBackdropContrast != contrast)
   {
-    v4 = a3;
-    self->_unmanagedBackdropContrast = a3;
+    contrastCopy = contrast;
+    self->_unmanagedBackdropContrast = contrast;
     [(NCNotificationListSupplementaryHostingView *)self _configurePlatterViewIfNecessary];
     platterView = self->_platterView;
 
-    [(NCPlatterView *)platterView setUnmanagedBackdropContrast:v4];
+    [(NCPlatterView *)platterView setUnmanagedBackdropContrast:contrastCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(NCNotificationListSupplementaryHostingView *)self hostedView];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  hostedView = [(NCNotificationListSupplementaryHostingView *)self hostedView];
+  [hostedView sizeThatFits:{width, height}];
   v8 = v7;
 
   if ([(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView auxiliaryOptionsVisible])
@@ -484,8 +484,8 @@
     v7 = self->_auxiliaryOptionsView;
     [(NCNotificationListSupplementaryHostingView *)self _continuousCornerRadius];
     [(NCAuxiliaryOptionsView *)v7 _setContinuousCornerRadius:?];
-    v8 = [(PLPlatterView *)self->_platterView customContentView];
-    [v8 addSubview:self->_auxiliaryOptionsView];
+    customContentView = [(PLPlatterView *)self->_platterView customContentView];
+    [customContentView addSubview:self->_auxiliaryOptionsView];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -501,8 +501,8 @@
 LABEL_2:
     if (![(NCNotificationListSupplementaryHostingView *)self hasContentForAuxiliaryOptions])
     {
-      v3 = [(NCNotificationListSupplementaryHostingView *)self auxiliaryOptionsView];
-      [v3 removeFromSuperview];
+      auxiliaryOptionsView = [(NCNotificationListSupplementaryHostingView *)self auxiliaryOptionsView];
+      [auxiliaryOptionsView removeFromSuperview];
 
       v4 = self->_auxiliaryOptionsView;
       self->_auxiliaryOptionsView = 0;
@@ -517,8 +517,8 @@ LABEL_2:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NCNotificationListSupplementaryHostingView *)self hostedView];
-  [v11 sizeThatFits:{v8, v10}];
+  hostedView = [(NCNotificationListSupplementaryHostingView *)self hostedView];
+  [hostedView sizeThatFits:{v8, v10}];
   v13 = v12;
 
   [(UIView *)self->_viewToBlockOutOfProcessUIInteractions setFrame:v4, v6, v8, v10];
@@ -546,9 +546,9 @@ LABEL_2:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [a4 view];
+  view = [touch view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -563,29 +563,29 @@ LABEL_2:
     viewToBlockOutOfProcessUIInteractions = self->_viewToBlockOutOfProcessUIInteractions;
     self->_viewToBlockOutOfProcessUIInteractions = v3;
 
-    v5 = [(UIView *)self->_viewToBlockOutOfProcessUIInteractions layer];
-    [v5 setHitTestsAsOpaque:1];
+    layer = [(UIView *)self->_viewToBlockOutOfProcessUIInteractions layer];
+    [layer setHitTestsAsOpaque:1];
 
-    v6 = [(UIView *)self->_viewToBlockOutOfProcessUIInteractions layer];
-    [v6 setAllowsHitTesting:1];
+    layer2 = [(UIView *)self->_viewToBlockOutOfProcessUIInteractions layer];
+    [layer2 setAllowsHitTesting:1];
 
     [(UIView *)self->_viewToBlockOutOfProcessUIInteractions setHidden:1];
     v7 = self->_viewToBlockOutOfProcessUIInteractions;
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v7 setBackgroundColor:clearColor];
 
     v9 = self->_viewToBlockOutOfProcessUIInteractions;
     [(NCNotificationListSupplementaryHostingView *)self bounds];
     [(UIView *)v9 setFrame:?];
     [(UIView *)self->_viewToBlockOutOfProcessUIInteractions setAutoresizingMask:18];
-    v10 = [(PLPlatterView *)self->_platterView customContentView];
-    [v10 addSubview:self->_viewToBlockOutOfProcessUIInteractions];
+    customContentView = [(PLPlatterView *)self->_platterView customContentView];
+    [customContentView addSubview:self->_viewToBlockOutOfProcessUIInteractions];
   }
 }
 
-- (void)_tapGestureRecognized:(id)a3
+- (void)_tapGestureRecognized:(id)recognized
 {
-  if ([a3 state] == 3 && -[NCNotificationListSupplementaryHostingView isUserInteractionEnabled](self, "isUserInteractionEnabled"))
+  if ([recognized state] == 3 && -[NCNotificationListSupplementaryHostingView isUserInteractionEnabled](self, "isUserInteractionEnabled"))
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)

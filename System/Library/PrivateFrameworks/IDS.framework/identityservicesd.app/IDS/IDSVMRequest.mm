@@ -1,39 +1,39 @@
 @interface IDSVMRequest
-- (IDSVMRequest)initWithCoder:(id)a3;
-- (IDSVMRequest)initWithDataRepresentation:(id)a3;
-- (IDSVMRequest)initWithPurpose:(unint64_t)a3 version:(unint64_t)a4;
+- (IDSVMRequest)initWithCoder:(id)coder;
+- (IDSVMRequest)initWithDataRepresentation:(id)representation;
+- (IDSVMRequest)initWithPurpose:(unint64_t)purpose version:(unint64_t)version;
 - (NSData)dataRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSVMRequest
 
-- (IDSVMRequest)initWithPurpose:(unint64_t)a3 version:(unint64_t)a4
+- (IDSVMRequest)initWithPurpose:(unint64_t)purpose version:(unint64_t)version
 {
   v7.receiver = self;
   v7.super_class = IDSVMRequest;
   result = [(IDSVMRequest *)&v7 init];
   if (result)
   {
-    result->_version = a4;
-    result->_purpose = a3;
+    result->_version = version;
+    result->_purpose = purpose;
   }
 
   return result;
 }
 
-- (IDSVMRequest)initWithDataRepresentation:(id)a3
+- (IDSVMRequest)initWithDataRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9 = 0;
-  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v9];
+  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:&v9];
   v6 = v9;
   if (!v5)
   {
     v7 = +[IMRGLog vm];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100921BB8(v4, v6, v7);
+      sub_100921BB8(representationCopy, v6, v7);
     }
   }
 
@@ -57,32 +57,32 @@
   return v2;
 }
 
-- (IDSVMRequest)initWithCoder:(id)a3
+- (IDSVMRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"version"];
-  v6 = [v4 decodeIntegerForKey:@"purpose"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"version"];
+  v6 = [coderCopy decodeIntegerForKey:@"purpose"];
 
   if ([(IDSVMRequest *)self isValidVMRequestPurpose:v6])
   {
     self = [(IDSVMRequest *)self initWithPurpose:v6 version:v5];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInteger:version forKey:@"version"];
-  [v5 encodeInteger:self->_purpose forKey:@"purpose"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"version"];
+  [coderCopy encodeInteger:self->_purpose forKey:@"purpose"];
 }
 
 @end

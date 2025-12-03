@@ -1,21 +1,21 @@
 @interface MBDebugContext
 + (id)defaultDebugContext;
-- (BOOL)BOOLForName:(id)a3;
-- (BOOL)isFlagSet:(id)a3;
+- (BOOL)BOOLForName:(id)name;
+- (BOOL)isFlagSet:(id)set;
 - (MBDebugContext)init;
 - (NSDictionary)dictionary;
 - (id)description;
-- (id)performSelectorForName:(id)a3;
-- (id)performSelectorForName:(id)a3 withObject:(id)a4;
-- (id)valueForName:(id)a3;
-- (int)intForName:(id)a3;
+- (id)performSelectorForName:(id)name;
+- (id)performSelectorForName:(id)name withObject:(id)object;
+- (id)valueForName:(id)name;
+- (int)intForName:(id)name;
 - (int64_t)time;
 - (void)dealloc;
-- (void)removeValueForName:(id)a3;
-- (void)setDelegate:(id)a3 andSelector:(SEL)a4 forName:(id)a5;
-- (void)setFlag:(id)a3;
-- (void)setSimulatedDate:(id)a3;
-- (void)setValue:(id)a3 forName:(id)a4;
+- (void)removeValueForName:(id)name;
+- (void)setDelegate:(id)delegate andSelector:(SEL)selector forName:(id)name;
+- (void)setFlag:(id)flag;
+- (void)setSimulatedDate:(id)date;
+- (void)setValue:(id)value forName:(id)name;
 @end
 
 @implementation MBDebugContext
@@ -56,10 +56,10 @@
 
 - (int64_t)time
 {
-  v2 = [(MBDebugContext *)self simulatedDate];
-  if (v2)
+  simulatedDate = [(MBDebugContext *)self simulatedDate];
+  if (simulatedDate)
   {
-    [(NSDate *)v2 timeIntervalSince1970];
+    [(NSDate *)simulatedDate timeIntervalSince1970];
     return v3;
   }
 
@@ -70,11 +70,11 @@
   }
 }
 
-- (void)setSimulatedDate:(id)a3
+- (void)setSimulatedDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [(MBDebugContext *)self setValue:a3 forName:@"SimulatedSystemDate"];
+    [(MBDebugContext *)self setValue:date forName:@"SimulatedSystemDate"];
   }
 
   else
@@ -83,77 +83,77 @@
   }
 }
 
-- (BOOL)isFlagSet:(id)a3
+- (BOOL)isFlagSet:(id)set
 {
   dictionary = self->_dictionary;
   objc_sync_enter(dictionary);
-  LOBYTE(a3) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_dictionary objectForKeyedSubscript:{a3), "BOOLValue"}];
+  LOBYTE(set) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_dictionary objectForKeyedSubscript:{set), "BOOLValue"}];
   objc_sync_exit(dictionary);
-  return a3;
+  return set;
 }
 
-- (void)setFlag:(id)a3
+- (void)setFlag:(id)flag
 {
   dictionary = self->_dictionary;
   objc_sync_enter(dictionary);
-  [(NSMutableDictionary *)self->_dictionary setObject:&__kCFBooleanTrue forKeyedSubscript:a3];
-
-  objc_sync_exit(dictionary);
-}
-
-- (void)setValue:(id)a3 forName:(id)a4
-{
-  dictionary = self->_dictionary;
-  objc_sync_enter(dictionary);
-  [(NSMutableDictionary *)self->_dictionary setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)self->_dictionary setObject:&__kCFBooleanTrue forKeyedSubscript:flag];
 
   objc_sync_exit(dictionary);
 }
 
-- (void)removeValueForName:(id)a3
+- (void)setValue:(id)value forName:(id)name
 {
   dictionary = self->_dictionary;
   objc_sync_enter(dictionary);
-  [(NSMutableDictionary *)self->_dictionary removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_dictionary setObject:value forKeyedSubscript:name];
 
   objc_sync_exit(dictionary);
 }
 
-- (id)valueForName:(id)a3
+- (void)removeValueForName:(id)name
 {
   dictionary = self->_dictionary;
   objc_sync_enter(dictionary);
-  v6 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->_dictionary removeObjectForKey:name];
+
+  objc_sync_exit(dictionary);
+}
+
+- (id)valueForName:(id)name
+{
+  dictionary = self->_dictionary;
+  objc_sync_enter(dictionary);
+  v6 = [(NSMutableDictionary *)self->_dictionary objectForKeyedSubscript:name];
   objc_sync_exit(dictionary);
   return v6;
 }
 
-- (BOOL)BOOLForName:(id)a3
+- (BOOL)BOOLForName:(id)name
 {
   dictionary = self->_dictionary;
   objc_sync_enter(dictionary);
-  LOBYTE(a3) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_dictionary objectForKeyedSubscript:{a3), "BOOLValue"}];
+  LOBYTE(name) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_dictionary objectForKeyedSubscript:{name), "BOOLValue"}];
   objc_sync_exit(dictionary);
-  return a3;
+  return name;
 }
 
-- (int)intForName:(id)a3
+- (int)intForName:(id)name
 {
-  v3 = [(MBDebugContext *)self valueForName:a3];
+  v3 = [(MBDebugContext *)self valueForName:name];
 
   return [v3 intValue];
 }
 
-- (void)setDelegate:(id)a3 andSelector:(SEL)a4 forName:(id)a5
+- (void)setDelegate:(id)delegate andSelector:(SEL)selector forName:(id)name
 {
-  v7[0] = a3;
-  v7[1] = NSStringFromSelector(a4);
-  [(MBDebugContext *)self setValue:[NSArray forName:"arrayWithObjects:count:" arrayWithObjects:v7 count:2], a5];
+  v7[0] = delegate;
+  v7[1] = NSStringFromSelector(selector);
+  [(MBDebugContext *)self setValue:[NSArray forName:"arrayWithObjects:count:" arrayWithObjects:v7 count:2], name];
 }
 
-- (id)performSelectorForName:(id)a3
+- (id)performSelectorForName:(id)name
 {
-  result = [(MBDebugContext *)self valueForName:a3];
+  result = [(MBDebugContext *)self valueForName:name];
   if (result)
   {
     v4 = result;
@@ -166,16 +166,16 @@
   return result;
 }
 
-- (id)performSelectorForName:(id)a3 withObject:(id)a4
+- (id)performSelectorForName:(id)name withObject:(id)object
 {
-  result = [(MBDebugContext *)self valueForName:a3];
+  result = [(MBDebugContext *)self valueForName:name];
   if (result)
   {
     v6 = result;
     v7 = [result objectAtIndexedSubscript:0];
     v8 = NSSelectorFromString([v6 objectAtIndexedSubscript:1]);
 
-    return [v7 performSelector:v8 withObject:a4];
+    return [v7 performSelector:v8 withObject:object];
   }
 
   return result;

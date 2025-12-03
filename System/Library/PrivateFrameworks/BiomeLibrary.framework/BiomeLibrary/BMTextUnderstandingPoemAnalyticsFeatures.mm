@@ -1,26 +1,26 @@
 @interface BMTextUnderstandingPoemAnalyticsFeatures
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMTextUnderstandingPoemAnalyticsFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMTextUnderstandingPoemAnalyticsFeatures)initWithNumOfFacesInMessages:(id)a3 numOfFacesOnDevice:(id)a4 numOfNamedFacesOnDevice:(id)a5 numOfConversationThreads:(id)a6 numOfNamedEntityMentions:(id)a7 numOfSenderMentions:(id)a8 numOfReceiverMentions:(id)a9 numOfPronounMentions:(id)a10 numOfImagesShared:(id)a11 numOfLinguisticMentions:(id)a12;
-- (BOOL)isEqual:(id)a3;
+- (BMTextUnderstandingPoemAnalyticsFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMTextUnderstandingPoemAnalyticsFeatures)initWithNumOfFacesInMessages:(id)messages numOfFacesOnDevice:(id)device numOfNamedFacesOnDevice:(id)onDevice numOfConversationThreads:(id)threads numOfNamedEntityMentions:(id)mentions numOfSenderMentions:(id)senderMentions numOfReceiverMentions:(id)receiverMentions numOfPronounMentions:(id)self0 numOfImagesShared:(id)self1 numOfLinguisticMentions:(id)self2;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMTextUnderstandingPoemAnalyticsFeatures
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMTextUnderstandingPoemAnalyticsFeatures hasNumOfFacesInMessages](self, "hasNumOfFacesInMessages") || [v5 hasNumOfFacesInMessages])
     {
       if (![(BMTextUnderstandingPoemAnalyticsFeatures *)self hasNumOfFacesInMessages])
@@ -33,8 +33,8 @@
         goto LABEL_53;
       }
 
-      v6 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfFacesInMessages];
-      if (v6 != [v5 numOfFacesInMessages])
+      numOfFacesInMessages = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfFacesInMessages];
+      if (numOfFacesInMessages != [v5 numOfFacesInMessages])
       {
         goto LABEL_53;
       }
@@ -52,8 +52,8 @@
         goto LABEL_53;
       }
 
-      v7 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfFacesOnDevice];
-      if (v7 != [v5 numOfFacesOnDevice])
+      numOfFacesOnDevice = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfFacesOnDevice];
+      if (numOfFacesOnDevice != [v5 numOfFacesOnDevice])
       {
         goto LABEL_53;
       }
@@ -71,8 +71,8 @@
         goto LABEL_53;
       }
 
-      v8 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfNamedFacesOnDevice];
-      if (v8 != [v5 numOfNamedFacesOnDevice])
+      numOfNamedFacesOnDevice = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfNamedFacesOnDevice];
+      if (numOfNamedFacesOnDevice != [v5 numOfNamedFacesOnDevice])
       {
         goto LABEL_53;
       }
@@ -90,8 +90,8 @@
         goto LABEL_53;
       }
 
-      v9 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfConversationThreads];
-      if (v9 != [v5 numOfConversationThreads])
+      numOfConversationThreads = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfConversationThreads];
+      if (numOfConversationThreads != [v5 numOfConversationThreads])
       {
         goto LABEL_53;
       }
@@ -109,8 +109,8 @@
         goto LABEL_53;
       }
 
-      v10 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfNamedEntityMentions];
-      if (v10 != [v5 numOfNamedEntityMentions])
+      numOfNamedEntityMentions = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfNamedEntityMentions];
+      if (numOfNamedEntityMentions != [v5 numOfNamedEntityMentions])
       {
         goto LABEL_53;
       }
@@ -128,8 +128,8 @@
         goto LABEL_53;
       }
 
-      v11 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfSenderMentions];
-      if (v11 != [v5 numOfSenderMentions])
+      numOfSenderMentions = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfSenderMentions];
+      if (numOfSenderMentions != [v5 numOfSenderMentions])
       {
         goto LABEL_53;
       }
@@ -147,8 +147,8 @@
         goto LABEL_53;
       }
 
-      v12 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfReceiverMentions];
-      if (v12 != [v5 numOfReceiverMentions])
+      numOfReceiverMentions = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfReceiverMentions];
+      if (numOfReceiverMentions != [v5 numOfReceiverMentions])
       {
         goto LABEL_53;
       }
@@ -166,8 +166,8 @@
         goto LABEL_53;
       }
 
-      v13 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfPronounMentions];
-      if (v13 != [v5 numOfPronounMentions])
+      numOfPronounMentions = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfPronounMentions];
+      if (numOfPronounMentions != [v5 numOfPronounMentions])
       {
         goto LABEL_53;
       }
@@ -185,8 +185,8 @@
         goto LABEL_53;
       }
 
-      v14 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfImagesShared];
-      if (v14 != [v5 numOfImagesShared])
+      numOfImagesShared = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfImagesShared];
+      if (numOfImagesShared != [v5 numOfImagesShared])
       {
         goto LABEL_53;
       }
@@ -200,8 +200,8 @@
 
     if (-[BMTextUnderstandingPoemAnalyticsFeatures hasNumOfLinguisticMentions](self, "hasNumOfLinguisticMentions") && [v5 hasNumOfLinguisticMentions])
     {
-      v15 = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfLinguisticMentions];
-      v16 = v15 == [v5 numOfLinguisticMentions];
+      numOfLinguisticMentions = [(BMTextUnderstandingPoemAnalyticsFeatures *)self numOfLinguisticMentions];
+      v16 = numOfLinguisticMentions == [v5 numOfLinguisticMentions];
     }
 
     else
@@ -325,95 +325,95 @@ LABEL_55:
   }
 
   v36[0] = @"numOfFacesInMessages";
-  v11 = v3;
+  null = v3;
   if (!v3)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v11;
-  v37[0] = v11;
+  v28 = null;
+  v37[0] = null;
   v36[1] = @"numOfFacesOnDevice";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v12;
-  v37[1] = v12;
+  v27 = null2;
+  v37[1] = null2;
   v36[2] = @"numOfNamedFacesOnDevice";
-  v13 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   v33 = v3;
-  v26 = v13;
-  v37[2] = v13;
+  v26 = null3;
+  v37[2] = null3;
   v36[3] = @"numOfConversationThreads";
-  v14 = v6;
+  null4 = v6;
   if (!v6)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v32 = v4;
-  v25 = v14;
-  v37[3] = v14;
+  v25 = null4;
+  v37[3] = null4;
   v36[4] = @"numOfNamedEntityMentions";
-  v15 = v7;
+  null5 = v7;
   if (!v7)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v31 = v5;
-  v37[4] = v15;
+  v37[4] = null5;
   v36[5] = @"numOfSenderMentions";
-  v16 = v8;
+  null6 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v6;
-  v37[5] = v16;
+  v37[5] = null6;
   v36[6] = @"numOfReceiverMentions";
-  v17 = v35;
+  null7 = v35;
   if (!v35)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
   v18 = v7;
-  v37[6] = v17;
+  v37[6] = null7;
   v36[7] = @"numOfPronounMentions";
-  v19 = v34;
+  null8 = v34;
   if (!v34)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
   v20 = v8;
-  v37[7] = v19;
+  v37[7] = null8;
   v36[8] = @"numOfImagesShared";
-  v21 = v9;
+  null9 = v9;
   if (!v9)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37[8] = v21;
+  v37[8] = null9;
   v36[9] = @"numOfLinguisticMentions";
-  v22 = v10;
+  null10 = v10;
   if (!v10)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null10 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v37[9] = v22;
+  v37[9] = null10;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:10];
   if (v10)
   {
@@ -489,22 +489,22 @@ LABEL_66:
   return v29;
 }
 
-- (BMTextUnderstandingPoemAnalyticsFeatures)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMTextUnderstandingPoemAnalyticsFeatures)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v129[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"numOfFacesInMessages"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"numOfFacesInMessages"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v107 = 0;
 LABEL_4:
-    v7 = [v5 objectForKeyedSubscript:@"numOfFacesOnDevice"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numOfFacesOnDevice"];
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v8 = 0;
           v24 = 0;
@@ -512,7 +512,7 @@ LABEL_4:
           goto LABEL_64;
         }
 
-        v25 = a4;
+        errorCopy = error;
         v26 = objc_alloc(MEMORY[0x1E696ABC0]);
         v27 = *MEMORY[0x1E698F240];
         v126 = *MEMORY[0x1E696A578];
@@ -524,7 +524,7 @@ LABEL_4:
         v9 = v28;
         v8 = 0;
         v24 = 0;
-        *v25 = [v26 initWithDomain:v29 code:2 userInfo:v28];
+        *errorCopy = [v26 initWithDomain:v29 code:2 userInfo:v28];
         goto LABEL_63;
       }
 
@@ -536,13 +536,13 @@ LABEL_4:
       v8 = 0;
     }
 
-    v9 = [v5 objectForKeyedSubscript:@"numOfNamedFacesOnDevice"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numOfNamedFacesOnDevice"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v12 = 0;
           v24 = 0;
@@ -551,7 +551,7 @@ LABEL_4:
         }
 
         v104 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v30 = a4;
+        errorCopy2 = error;
         v31 = *MEMORY[0x1E698F240];
         v124 = *MEMORY[0x1E696A578];
         v32 = v8;
@@ -563,7 +563,7 @@ LABEL_4:
         v125 = v106;
         v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v125 forKeys:&v124 count:1];
         v24 = 0;
-        *v30 = [v104 initWithDomain:v31 code:2 userInfo:v35];
+        *errorCopy2 = [v104 initWithDomain:v31 code:2 userInfo:v35];
         v12 = 0;
         v23 = v107;
 LABEL_62:
@@ -584,14 +584,14 @@ LABEL_63:
       v12 = 0;
     }
 
-    v13 = [v5 objectForKeyedSubscript:@"numOfConversationThreads"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numOfConversationThreads"];
     v105 = v8;
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v106 = 0;
           v24 = 0;
@@ -603,7 +603,7 @@ LABEL_63:
         }
 
         v98 = v12;
-        v93 = a4;
+        errorCopy3 = error;
         v44 = objc_alloc(MEMORY[0x1E696ABC0]);
         v45 = v9;
         v46 = *MEMORY[0x1E698F240];
@@ -618,7 +618,7 @@ LABEL_63:
         v103 = v47;
         v106 = 0;
         v24 = 0;
-        *v93 = [v48 initWithDomain:v49 code:2 userInfo:?];
+        *errorCopy3 = [v48 initWithDomain:v49 code:2 userInfo:?];
         v12 = v98;
         v23 = v107;
         v7 = v11;
@@ -636,7 +636,7 @@ LABEL_63:
       v106 = 0;
     }
 
-    v14 = [v5 objectForKeyedSubscript:@"numOfNamedEntityMentions"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"numOfNamedEntityMentions"];
     v7 = v11;
     v103 = v14;
     if (v14)
@@ -653,7 +653,7 @@ LABEL_63:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v14 = 0;
             v24 = 0;
@@ -663,7 +663,7 @@ LABEL_63:
           }
 
           v99 = v12;
-          v50 = a4;
+          errorCopy4 = error;
           v51 = objc_alloc(MEMORY[0x1E696ABC0]);
           v52 = v9;
           v53 = *MEMORY[0x1E698F240];
@@ -676,7 +676,7 @@ LABEL_63:
           v15 = v54;
           v14 = 0;
           v24 = 0;
-          *v50 = [v51 initWithDomain:v55 code:2 userInfo:v54];
+          *errorCopy4 = [v51 initWithDomain:v55 code:2 userInfo:v54];
           v12 = v99;
           goto LABEL_91;
         }
@@ -690,22 +690,22 @@ LABEL_63:
       v6 = v10;
     }
 
-    v15 = [v5 objectForKeyedSubscript:@"numOfSenderMentions"];
-    v92 = a4;
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numOfSenderMentions"];
+    errorCopy5 = error;
     if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v87 = v6;
       v16 = v12;
       v102 = 0;
 LABEL_30:
-      v17 = [v5 objectForKeyedSubscript:@"numOfReceiverMentions"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"numOfReceiverMentions"];
       v90 = v17;
       if (v17 && (v18 = v17, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v95 = 0;
             v24 = 0;
@@ -717,7 +717,7 @@ LABEL_30:
           }
 
           v101 = v16;
-          v64 = a4;
+          errorCopy6 = error;
           v65 = objc_alloc(MEMORY[0x1E696ABC0]);
           v66 = v15;
           v67 = v9;
@@ -736,7 +736,7 @@ LABEL_30:
           v15 = v66;
           v95 = 0;
           v24 = 0;
-          *v64 = [v65 initWithDomain:v72 code:2 userInfo:v19];
+          *errorCopy6 = [v65 initWithDomain:v72 code:2 userInfo:v19];
           v12 = v101;
           v6 = v87;
           goto LABEL_58;
@@ -750,7 +750,7 @@ LABEL_30:
         v95 = 0;
       }
 
-      v19 = [v5 objectForKeyedSubscript:@"numOfPronounMentions"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"numOfPronounMentions"];
       v12 = v16;
       v91 = v14;
       v86 = v15;
@@ -768,7 +768,7 @@ LABEL_30:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!a4)
+            if (!error)
             {
               v94 = 0;
               v24 = 0;
@@ -788,7 +788,7 @@ LABEL_30:
             v77 = [v76 initWithDomain:v75 code:2 userInfo:v36];
             v94 = 0;
             v24 = 0;
-            *v92 = v77;
+            *errorCopy5 = v77;
 LABEL_57:
 
             v14 = v91;
@@ -816,7 +816,7 @@ LABEL_61:
         v6 = v87;
       }
 
-      v36 = [v5 objectForKeyedSubscript:@"numOfImagesShared"];
+      v36 = [dictionaryCopy objectForKeyedSubscript:@"numOfImagesShared"];
       v85 = v9;
       v97 = v12;
       if (v36 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -824,14 +824,14 @@ LABEL_61:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v38 = 0;
             v24 = 0;
             goto LABEL_57;
           }
 
-          v37 = self;
+          selfCopy3 = self;
           v88 = objc_alloc(MEMORY[0x1E696ABC0]);
           v78 = *MEMORY[0x1E698F240];
           v112 = *MEMORY[0x1E696A578];
@@ -841,27 +841,27 @@ LABEL_61:
           v79 = [v88 initWithDomain:v78 code:2 userInfo:v39];
           v38 = 0;
           v24 = 0;
-          *v92 = v79;
+          *errorCopy5 = v79;
           goto LABEL_56;
         }
 
-        v37 = self;
+        selfCopy3 = self;
         v38 = v36;
       }
 
       else
       {
-        v37 = self;
+        selfCopy3 = self;
         v38 = 0;
       }
 
-      v39 = [v5 objectForKeyedSubscript:@"numOfLinguisticMentions"];
+      v39 = [dictionaryCopy objectForKeyedSubscript:@"numOfLinguisticMentions"];
       if (v39 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (v92)
+          if (errorCopy5)
           {
             v109 = objc_alloc(MEMORY[0x1E696ABC0]);
             v89 = *MEMORY[0x1E698F240];
@@ -869,7 +869,7 @@ LABEL_61:
             v80 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"numOfLinguisticMentions"];
             v111 = v80;
             v81 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
-            *v92 = [v109 initWithDomain:v89 code:2 userInfo:v81];
+            *errorCopy5 = [v109 initWithDomain:v89 code:2 userInfo:v81];
           }
 
           v40 = 0;
@@ -885,10 +885,10 @@ LABEL_61:
         v40 = 0;
       }
 
-      v24 = [(BMTextUnderstandingPoemAnalyticsFeatures *)v37 initWithNumOfFacesInMessages:v107 numOfFacesOnDevice:v105 numOfNamedFacesOnDevice:v97 numOfConversationThreads:v106 numOfNamedEntityMentions:v91 numOfSenderMentions:v102 numOfReceiverMentions:v95 numOfPronounMentions:v94 numOfImagesShared:v38 numOfLinguisticMentions:v40];
-      v37 = v24;
+      v24 = [(BMTextUnderstandingPoemAnalyticsFeatures *)selfCopy3 initWithNumOfFacesInMessages:v107 numOfFacesOnDevice:v105 numOfNamedFacesOnDevice:v97 numOfConversationThreads:v106 numOfNamedEntityMentions:v91 numOfSenderMentions:v102 numOfReceiverMentions:v95 numOfPronounMentions:v94 numOfImagesShared:v38 numOfLinguisticMentions:v40];
+      selfCopy3 = v24;
 LABEL_56:
-      self = v37;
+      self = selfCopy3;
 
       v9 = v85;
       v15 = v86;
@@ -905,7 +905,7 @@ LABEL_56:
       goto LABEL_30;
     }
 
-    if (a4)
+    if (error)
     {
       v100 = v12;
       v56 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -926,7 +926,7 @@ LABEL_56:
       v15 = v57;
       v102 = 0;
       v24 = 0;
-      *v92 = [v56 initWithDomain:v63 code:2 userInfo:v41];
+      *errorCopy5 = [v56 initWithDomain:v63 code:2 userInfo:v41];
       v35 = v96;
       v12 = v100;
       goto LABEL_59;
@@ -947,14 +947,14 @@ LABEL_91:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v23 = 0;
     v24 = 0;
     goto LABEL_65;
   }
 
-  v20 = a4;
+  errorCopy7 = error;
   v21 = objc_alloc(MEMORY[0x1E696ABC0]);
   v22 = *MEMORY[0x1E698F240];
   v128 = *MEMORY[0x1E696A578];
@@ -963,7 +963,7 @@ LABEL_91:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v129 forKeys:&v128 count:1];
   v23 = 0;
   v24 = 0;
-  *v20 = [v21 initWithDomain:v22 code:2 userInfo:v7];
+  *errorCopy7 = [v21 initWithDomain:v22 code:2 userInfo:v7];
 LABEL_64:
 
 LABEL_65:
@@ -975,14 +975,14 @@ LABEL_65:
 {
   v3 = objc_opt_new();
   [(BMTextUnderstandingPoemAnalyticsFeatures *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if (self->_hasNumOfFacesInMessages)
   {
     numOfFacesInMessages = self->_numOfFacesInMessages;
@@ -1044,9 +1044,9 @@ LABEL_65:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v73.receiver = self;
   v73.super_class = BMTextUnderstandingPoemAnalyticsFeatures;
   v5 = [(BMEventBase *)&v73 init];
@@ -1055,12 +1055,12 @@ LABEL_65:
     goto LABEL_140;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1071,18 +1071,18 @@ LABEL_65:
       while (1)
       {
         v74 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v74 & 0x7F) << v7;
@@ -1099,9 +1099,9 @@ LABEL_65:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -1120,18 +1120,18 @@ LABEL_16:
             while (1)
             {
               v74 = 0;
-              v47 = [v4 position] + 1;
-              if (v47 >= [v4 position] && (v48 = objc_msgSend(v4, "position") + 1, v48 <= objc_msgSend(v4, "length")))
+              v47 = [fromCopy position] + 1;
+              if (v47 >= [fromCopy position] && (v48 = objc_msgSend(fromCopy, "position") + 1, v48 <= objc_msgSend(fromCopy, "length")))
               {
-                v49 = [v4 data];
-                [v49 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 = (((v74 & 0x7F) << v45) | v18);
@@ -1173,18 +1173,18 @@ LABEL_121:
             while (1)
             {
               v74 = 0;
-              v37 = [v4 position] + 1;
-              if (v37 >= [v4 position] && (v38 = objc_msgSend(v4, "position") + 1, v38 <= objc_msgSend(v4, "length")))
+              v37 = [fromCopy position] + 1;
+              if (v37 >= [fromCopy position] && (v38 = objc_msgSend(fromCopy, "position") + 1, v38 <= objc_msgSend(fromCopy, "length")))
               {
-                v39 = [v4 data];
-                [v39 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 = (((v74 & 0x7F) << v35) | v18);
@@ -1219,18 +1219,18 @@ LABEL_121:
               while (1)
               {
                 v74 = 0;
-                v57 = [v4 position] + 1;
-                if (v57 >= [v4 position] && (v58 = objc_msgSend(v4, "position") + 1, v58 <= objc_msgSend(v4, "length")))
+                v57 = [fromCopy position] + 1;
+                if (v57 >= [fromCopy position] && (v58 = objc_msgSend(fromCopy, "position") + 1, v58 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v59 = [v4 data];
-                  [v59 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+                  data4 = [fromCopy data];
+                  [data4 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v18 = (((v74 & 0x7F) << v55) | v18);
@@ -1259,18 +1259,18 @@ LABEL_121:
               while (1)
               {
                 v74 = 0;
-                v67 = [v4 position] + 1;
-                if (v67 >= [v4 position] && (v68 = objc_msgSend(v4, "position") + 1, v68 <= objc_msgSend(v4, "length")))
+                v67 = [fromCopy position] + 1;
+                if (v67 >= [fromCopy position] && (v68 = objc_msgSend(fromCopy, "position") + 1, v68 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v69 = [v4 data];
-                  [v69 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+                  data5 = [fromCopy data];
+                  [data5 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v18 = (((v74 & 0x7F) << v65) | v18);
@@ -1299,18 +1299,18 @@ LABEL_121:
               while (1)
               {
                 v74 = 0;
-                v27 = [v4 position] + 1;
-                if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+                v27 = [fromCopy position] + 1;
+                if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
                 {
-                  v29 = [v4 data];
-                  [v29 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+                  data6 = [fromCopy data];
+                  [data6 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                  [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                  [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
                 }
 
                 else
                 {
-                  [v4 _setError];
+                  [fromCopy _setError];
                 }
 
                 v18 = (((v74 & 0x7F) << v25) | v18);
@@ -1348,18 +1348,18 @@ LABEL_121:
           while (1)
           {
             v74 = 0;
-            v42 = [v4 position] + 1;
-            if (v42 >= [v4 position] && (v43 = objc_msgSend(v4, "position") + 1, v43 <= objc_msgSend(v4, "length")))
+            v42 = [fromCopy position] + 1;
+            if (v42 >= [fromCopy position] && (v43 = objc_msgSend(fromCopy, "position") + 1, v43 <= objc_msgSend(fromCopy, "length")))
             {
-              v44 = [v4 data];
-              [v44 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+              data7 = [fromCopy data];
+              [data7 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 = (((v74 & 0x7F) << v40) | v18);
@@ -1395,18 +1395,18 @@ LABEL_121:
           while (1)
           {
             v74 = 0;
-            v32 = [v4 position] + 1;
-            if (v32 >= [v4 position] && (v33 = objc_msgSend(v4, "position") + 1, v33 <= objc_msgSend(v4, "length")))
+            v32 = [fromCopy position] + 1;
+            if (v32 >= [fromCopy position] && (v33 = objc_msgSend(fromCopy, "position") + 1, v33 <= objc_msgSend(fromCopy, "length")))
             {
-              v34 = [v4 data];
-              [v34 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+              data8 = [fromCopy data];
+              [data8 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 = (((v74 & 0x7F) << v30) | v18);
@@ -1441,18 +1441,18 @@ LABEL_121:
             while (1)
             {
               v74 = 0;
-              v52 = [v4 position] + 1;
-              if (v52 >= [v4 position] && (v53 = objc_msgSend(v4, "position") + 1, v53 <= objc_msgSend(v4, "length")))
+              v52 = [fromCopy position] + 1;
+              if (v52 >= [fromCopy position] && (v53 = objc_msgSend(fromCopy, "position") + 1, v53 <= objc_msgSend(fromCopy, "length")))
               {
-                v54 = [v4 data];
-                [v54 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+                data9 = [fromCopy data];
+                [data9 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 = (((v74 & 0x7F) << v50) | v18);
@@ -1481,18 +1481,18 @@ LABEL_121:
             while (1)
             {
               v74 = 0;
-              v62 = [v4 position] + 1;
-              if (v62 >= [v4 position] && (v63 = objc_msgSend(v4, "position") + 1, v63 <= objc_msgSend(v4, "length")))
+              v62 = [fromCopy position] + 1;
+              if (v62 >= [fromCopy position] && (v63 = objc_msgSend(fromCopy, "position") + 1, v63 <= objc_msgSend(fromCopy, "length")))
               {
-                v64 = [v4 data];
-                [v64 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+                data10 = [fromCopy data];
+                [data10 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 = (((v74 & 0x7F) << v60) | v18);
@@ -1521,18 +1521,18 @@ LABEL_121:
             while (1)
             {
               v74 = 0;
-              v19 = [v4 position] + 1;
-              if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+              v19 = [fromCopy position] + 1;
+              if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
               {
-                v21 = [v4 data];
-                [v21 getBytes:&v74 range:{objc_msgSend(v4, "position"), 1}];
+                data11 = [fromCopy data];
+                [data11 getBytes:&v74 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v18 = (((v74 & 0x7F) << v16) | v18);
@@ -1558,7 +1558,7 @@ LABEL_121:
         }
       }
 
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         v23 = 0;
       }
@@ -1571,13 +1571,13 @@ LABEL_121:
 LABEL_136:
       *(&v5->super.super.isa + *v24) = v23;
 LABEL_137:
-      v70 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v70 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_139:
     v71 = 0;
@@ -1610,154 +1610,154 @@ LABEL_140:
   return v15;
 }
 
-- (BMTextUnderstandingPoemAnalyticsFeatures)initWithNumOfFacesInMessages:(id)a3 numOfFacesOnDevice:(id)a4 numOfNamedFacesOnDevice:(id)a5 numOfConversationThreads:(id)a6 numOfNamedEntityMentions:(id)a7 numOfSenderMentions:(id)a8 numOfReceiverMentions:(id)a9 numOfPronounMentions:(id)a10 numOfImagesShared:(id)a11 numOfLinguisticMentions:(id)a12
+- (BMTextUnderstandingPoemAnalyticsFeatures)initWithNumOfFacesInMessages:(id)messages numOfFacesOnDevice:(id)device numOfNamedFacesOnDevice:(id)onDevice numOfConversationThreads:(id)threads numOfNamedEntityMentions:(id)mentions numOfSenderMentions:(id)senderMentions numOfReceiverMentions:(id)receiverMentions numOfPronounMentions:(id)self0 numOfImagesShared:(id)self1 numOfLinguisticMentions:(id)self2
 {
-  v17 = a3;
-  v39 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  messagesCopy = messages;
+  deviceCopy = device;
+  onDeviceCopy = onDevice;
+  threadsCopy = threads;
+  mentionsCopy = mentions;
+  senderMentionsCopy = senderMentions;
+  receiverMentionsCopy = receiverMentions;
+  pronounMentionsCopy = pronounMentions;
+  sharedCopy = shared;
+  linguisticMentionsCopy = linguisticMentions;
   v40.receiver = self;
   v40.super_class = BMTextUnderstandingPoemAnalyticsFeatures;
   v26 = [(BMEventBase *)&v40 init];
   if (v26)
   {
     v26->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v17)
+    if (messagesCopy)
     {
       v26->_hasNumOfFacesInMessages = 1;
-      v27 = [v17 longLongValue];
+      longLongValue = [messagesCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfFacesInMessages = 0;
-      v27 = -1;
+      longLongValue = -1;
     }
 
-    v26->_numOfFacesInMessages = v27;
-    if (v39)
+    v26->_numOfFacesInMessages = longLongValue;
+    if (deviceCopy)
     {
       v26->_hasNumOfFacesOnDevice = 1;
-      v28 = [v39 longLongValue];
+      longLongValue2 = [deviceCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfFacesOnDevice = 0;
-      v28 = -1;
+      longLongValue2 = -1;
     }
 
-    v26->_numOfFacesOnDevice = v28;
-    if (v18)
+    v26->_numOfFacesOnDevice = longLongValue2;
+    if (onDeviceCopy)
     {
       v26->_hasNumOfNamedFacesOnDevice = 1;
-      v29 = [v18 longLongValue];
+      longLongValue3 = [onDeviceCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfNamedFacesOnDevice = 0;
-      v29 = -1;
+      longLongValue3 = -1;
     }
 
-    v26->_numOfNamedFacesOnDevice = v29;
-    if (v19)
+    v26->_numOfNamedFacesOnDevice = longLongValue3;
+    if (threadsCopy)
     {
       v26->_hasNumOfConversationThreads = 1;
-      v30 = [v19 longLongValue];
+      longLongValue4 = [threadsCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfConversationThreads = 0;
-      v30 = -1;
+      longLongValue4 = -1;
     }
 
-    v26->_numOfConversationThreads = v30;
-    if (v20)
+    v26->_numOfConversationThreads = longLongValue4;
+    if (mentionsCopy)
     {
       v26->_hasNumOfNamedEntityMentions = 1;
-      v31 = [v20 longLongValue];
+      longLongValue5 = [mentionsCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfNamedEntityMentions = 0;
-      v31 = -1;
+      longLongValue5 = -1;
     }
 
-    v26->_numOfNamedEntityMentions = v31;
-    if (v21)
+    v26->_numOfNamedEntityMentions = longLongValue5;
+    if (senderMentionsCopy)
     {
       v26->_hasNumOfSenderMentions = 1;
-      v32 = [v21 longLongValue];
+      longLongValue6 = [senderMentionsCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfSenderMentions = 0;
-      v32 = -1;
+      longLongValue6 = -1;
     }
 
-    v26->_numOfSenderMentions = v32;
-    if (v22)
+    v26->_numOfSenderMentions = longLongValue6;
+    if (receiverMentionsCopy)
     {
       v26->_hasNumOfReceiverMentions = 1;
-      v33 = [v22 longLongValue];
+      longLongValue7 = [receiverMentionsCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfReceiverMentions = 0;
-      v33 = -1;
+      longLongValue7 = -1;
     }
 
-    v26->_numOfReceiverMentions = v33;
-    if (v23)
+    v26->_numOfReceiverMentions = longLongValue7;
+    if (pronounMentionsCopy)
     {
       v26->_hasNumOfPronounMentions = 1;
-      v34 = [v23 longLongValue];
+      longLongValue8 = [pronounMentionsCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfPronounMentions = 0;
-      v34 = -1;
+      longLongValue8 = -1;
     }
 
-    v26->_numOfPronounMentions = v34;
-    if (v24)
+    v26->_numOfPronounMentions = longLongValue8;
+    if (sharedCopy)
     {
       v26->_hasNumOfImagesShared = 1;
-      v35 = [v24 longLongValue];
+      longLongValue9 = [sharedCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfImagesShared = 0;
-      v35 = -1;
+      longLongValue9 = -1;
     }
 
-    v26->_numOfImagesShared = v35;
-    if (v25)
+    v26->_numOfImagesShared = longLongValue9;
+    if (linguisticMentionsCopy)
     {
       v26->_hasNumOfLinguisticMentions = 1;
-      v36 = [v25 longLongValue];
+      longLongValue10 = [linguisticMentionsCopy longLongValue];
     }
 
     else
     {
       v26->_hasNumOfLinguisticMentions = 0;
-      v36 = -1;
+      longLongValue10 = -1;
     }
 
-    v26->_numOfLinguisticMentions = v36;
+    v26->_numOfLinguisticMentions = longLongValue10;
   }
 
   return v26;
@@ -1823,9 +1823,9 @@ LABEL_140:
   return v14;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1833,8 +1833,8 @@ LABEL_140:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMTextUnderstandingPoemAnalyticsFeatures alloc] initByReadFrom:v7];
     v4 = v8;

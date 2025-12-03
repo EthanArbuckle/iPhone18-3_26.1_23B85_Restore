@@ -1,11 +1,11 @@
 @interface JavaNetURL
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)sameFileWithJavaNetURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)sameFileWithJavaNetURL:(id)l;
 - (id)getContent;
-- (id)getContentWithIOSClassArray:(id)a3;
+- (id)getContentWithIOSClassArray:(id)array;
 - (id)openConnection;
-- (id)openConnectionWithJavaNetProxy:(id)a3;
+- (id)openConnectionWithJavaNetProxy:(id)proxy;
 - (id)openStream;
 - (id)toExternalForm;
 - (id)toURI;
@@ -13,18 +13,18 @@
 - (int)getDefaultPort;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)fixURLWithBoolean:(BOOL)a3;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)setWithNSString:(id)a3 withNSString:(id)a4 withInt:(int)a5 withNSString:(id)a6 withNSString:(id)a7;
+- (void)fixURLWithBoolean:(BOOL)boolean;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)setWithNSString:(id)string withNSString:(id)sString withInt:(int)int withNSString:(id)nSString withNSString:(id)withNSString;
 - (void)setupStreamHandler;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaNetURL
 
-- (void)fixURLWithBoolean:(BOOL)a3
+- (void)fixURLWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
+  booleanCopy = boolean;
   p_host = &self->host_;
   host = self->host_;
   if (host)
@@ -41,7 +41,7 @@
     }
   }
 
-  if (v3)
+  if (booleanCopy)
   {
     if (!*p_host || (v15 = [*p_host lastIndexOf:64], (v15 & 0x80000000) != 0))
     {
@@ -77,38 +77,38 @@
   JreStrongAssign(&self->path_, v22);
 }
 
-- (void)setWithNSString:(id)a3 withNSString:(id)a4 withInt:(int)a5 withNSString:(id)a6 withNSString:(id)a7
+- (void)setWithNSString:(id)string withNSString:(id)sString withInt:(int)int withNSString:(id)nSString withNSString:(id)withNSString
 {
   protocol = self->protocol_;
   p_protocol = &self->protocol_;
   if (!protocol)
   {
-    JreStrongAssign(p_protocol, a3);
+    JreStrongAssign(p_protocol, string);
   }
 
-  JreStrongAssign(&self->host_, a4);
-  JreStrongAssign(&self->file_, a6);
-  self->port_ = a5;
-  JreStrongAssign(&self->ref_, a7);
+  JreStrongAssign(&self->host_, sString);
+  JreStrongAssign(&self->file_, nSString);
+  self->port_ = int;
+  JreStrongAssign(&self->ref_, withNSString);
   self->hashCode_ = 0;
 
   [(JavaNetURL *)self fixURLWithBoolean:1];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v5 = [(JavaNetURL *)self getClass];
-  if (v5 != [a3 getClass])
+  getClass = [(JavaNetURL *)self getClass];
+  if (getClass != [equal getClass])
   {
     return 0;
   }
@@ -125,10 +125,10 @@
     JreThrowClassCastException();
   }
 
-  return [(JavaNetURLStreamHandler *)streamHandler equalsWithJavaNetURL:self withJavaNetURL:a3];
+  return [(JavaNetURLStreamHandler *)streamHandler equalsWithJavaNetURL:self withJavaNetURL:equal];
 }
 
-- (BOOL)sameFileWithJavaNetURL:(id)a3
+- (BOOL)sameFileWithJavaNetURL:(id)l
 {
   streamHandler = self->streamHandler_;
   if (!streamHandler)
@@ -136,23 +136,23 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaNetURLStreamHandler *)streamHandler sameFileWithJavaNetURL:self withJavaNetURL:a3];
+  return [(JavaNetURLStreamHandler *)streamHandler sameFileWithJavaNetURL:self withJavaNetURL:l];
 }
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   LODWORD(self) = *(self + 88);
   if (!self)
   {
-    v3 = *(v2 + 8);
+    v3 = *(selfCopy + 8);
     if (!v3)
     {
       JreThrowNullPointerException();
     }
 
-    LODWORD(self) = [v3 hashCodeWithJavaNetURL:v2];
-    *(v2 + 88) = self;
+    LODWORD(self) = [v3 hashCodeWithJavaNetURL:selfCopy];
+    *(selfCopy + 88) = self;
   }
 
   return self;
@@ -187,11 +187,11 @@
     goto LABEL_29;
   }
 
-  v5 = [(JavaLangThread *)v4 getContextClassLoader];
+  getContextClassLoader = [(JavaLangThread *)v4 getContextClassLoader];
   if (PropertyWithNSString)
   {
-    v6 = v5;
-    if (v5)
+    v6 = getContextClassLoader;
+    if (getContextClassLoader)
     {
       v7 = [PropertyWithNSString split:@"\\|"];
       if (!v7)
@@ -208,14 +208,14 @@
           JreThrowNullPointerException();
         }
 
-        v16 = [v15 newInstance];
+        newInstance = [v15 newInstance];
         objc_opt_class();
-        if (v16 && (objc_opt_isKindOfClass() & 1) == 0)
+        if (newInstance && (objc_opt_isKindOfClass() & 1) == 0)
         {
           JreThrowClassCastException();
         }
 
-        JreStrongAssign(&self->streamHandler_, v16);
+        JreStrongAssign(&self->streamHandler_, newInstance);
         if (self->streamHandler_)
         {
           [qword_1005570A0 putWithId:self->protocol_ withId:?];
@@ -263,35 +263,35 @@ LABEL_26:
 
 - (id)getContent
 {
-  v2 = [(JavaNetURL *)self openConnection];
-  if (!v2)
+  openConnection = [(JavaNetURL *)self openConnection];
+  if (!openConnection)
   {
     JreThrowNullPointerException();
   }
 
-  return [v2 getContent];
+  return [openConnection getContent];
 }
 
-- (id)getContentWithIOSClassArray:(id)a3
+- (id)getContentWithIOSClassArray:(id)array
 {
-  v4 = [(JavaNetURL *)self openConnection];
-  if (!v4)
+  openConnection = [(JavaNetURL *)self openConnection];
+  if (!openConnection)
   {
     JreThrowNullPointerException();
   }
 
-  return [v4 getContentWithIOSClassArray:a3];
+  return [openConnection getContentWithIOSClassArray:array];
 }
 
 - (id)openStream
 {
-  v2 = [(JavaNetURL *)self openConnection];
-  if (!v2)
+  openConnection = [(JavaNetURL *)self openConnection];
+  if (!openConnection)
   {
     JreThrowNullPointerException();
   }
 
-  return [v2 getInputStream];
+  return [openConnection getInputStream];
 }
 
 - (id)openConnection
@@ -305,9 +305,9 @@ LABEL_26:
   return [(JavaNetURLStreamHandler *)streamHandler openConnectionWithJavaNetURL:self];
 }
 
-- (id)openConnectionWithJavaNetProxy:(id)a3
+- (id)openConnectionWithJavaNetProxy:(id)proxy
 {
-  if (!a3)
+  if (!proxy)
   {
     v6 = new_JavaLangIllegalArgumentException_initWithNSString_(@"proxy == null");
     objc_exception_throw(v6);
@@ -319,7 +319,7 @@ LABEL_26:
     JreThrowNullPointerException();
   }
 
-  return [(JavaNetURLStreamHandler *)streamHandler openConnectionWithJavaNetURL:self withJavaNetProxy:a3];
+  return [(JavaNetURLStreamHandler *)streamHandler openConnectionWithJavaNetURL:self withJavaNetProxy:proxy];
 }
 
 - (id)toURI
@@ -361,14 +361,14 @@ LABEL_26:
   }
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
+  [stream defaultReadObject];
   authority = self->authority_;
   if (self->host_)
   {
@@ -422,14 +422,14 @@ LABEL_13:
   self->hashCode_ = 0;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 }
 
 - (int)getDefaultPort
@@ -452,7 +452,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilHashtable_init();
     JreStrongAssignAndConsume(&qword_1005570A0, v2);

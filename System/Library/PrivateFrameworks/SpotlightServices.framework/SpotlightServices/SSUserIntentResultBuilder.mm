@@ -1,6 +1,6 @@
 @interface SSUserIntentResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SSUserIntentResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SSUserIntentResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildResult;
@@ -9,45 +9,45 @@
 
 @implementation SSUserIntentResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = [a3 contentType];
-  v4 = [v3 hasPrefix:*MEMORY[0x1E696E598]];
+  contentType = [result contentType];
+  v4 = [contentType hasPrefix:*MEMORY[0x1E696E598]];
 
   return v4;
 }
 
-- (SSUserIntentResultBuilder)initWithResult:(id)a3
+- (SSUserIntentResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = SSUserIntentResultBuilder;
-  v5 = [(SSResultBuilder *)&v15 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v15 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 applicationBundleIdentifier];
-    [(SSUserIntentResultBuilder *)v5 setAppBundleId:v6];
+    applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+    [(SSUserIntentResultBuilder *)v5 setAppBundleId:applicationBundleIdentifier];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6963D28] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6963D28] withType:objc_opt_class()];
     -[SSUserIntentResultBuilder setIsBackgroundRunnable:](v5, "setIsBackgroundRunnable:", [v7 BOOLValue]);
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x1E6964B30] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x1E6964B30] withType:objc_opt_class()];
     [(SSUserIntentResultBuilder *)v5 setStartDate:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
     [(SSUserIntentResultBuilder *)v5 setIntentName:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x1E6964950] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x1E6964950] withType:objc_opt_class()];
     [(SSUserIntentResultBuilder *)v5 setPunchoutLabel:v10];
 
-    v11 = [(SSResultBuilder *)v5 result];
-    v12 = [v11 valueForAttribute:*MEMORY[0x1E6964C68] withType:objc_opt_class()];
+    result = [(SSResultBuilder *)v5 result];
+    v12 = [result valueForAttribute:*MEMORY[0x1E6964C68] withType:objc_opt_class()];
     [(SSUserIntentResultBuilder *)v5 setUserActivityData:v12];
 
-    v13 = [v4 valueForAttribute:*MEMORY[0x1E6964C80] withType:objc_opt_class()];
+    v13 = [resultCopy valueForAttribute:*MEMORY[0x1E6964C80] withType:objc_opt_class()];
     if (!v13)
     {
-      v13 = [v4 valueForAttribute:*MEMORY[0x1E6964440] withType:objc_opt_class()];
+      v13 = [resultCopy valueForAttribute:*MEMORY[0x1E6964440] withType:objc_opt_class()];
     }
 
     [(SSUserIntentResultBuilder *)v5 setUserActivityRequiredString:v13];
@@ -60,30 +60,30 @@
 {
   v6.receiver = self;
   v6.super_class = SSUserIntentResultBuilder;
-  v3 = [(SSResultBuilder *)&v6 buildResult];
-  v4 = [(SSUserIntentResultBuilder *)self userActivityRequiredString];
-  [v3 setUserActivityRequiredString:v4];
+  buildResult = [(SSResultBuilder *)&v6 buildResult];
+  userActivityRequiredString = [(SSUserIntentResultBuilder *)self userActivityRequiredString];
+  [buildResult setUserActivityRequiredString:userActivityRequiredString];
 
-  [v3 setType:20];
+  [buildResult setType:20];
 
-  return v3;
+  return buildResult;
 }
 
 - (id)buildCommand
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(SSResultBuilder *)self result];
-  v5 = [v4 userActivityRequiredString];
-  if (v5)
+  result = [(SSResultBuilder *)self result];
+  userActivityRequiredString = [result userActivityRequiredString];
+  if (userActivityRequiredString)
   {
-    v6 = v5;
+    userActivityRequiredString2 = userActivityRequiredString;
   }
 
   else
   {
-    v6 = [(SSUserIntentResultBuilder *)self userActivityRequiredString];
+    userActivityRequiredString2 = [(SSUserIntentResultBuilder *)self userActivityRequiredString];
 
-    if (!v6)
+    if (!userActivityRequiredString2)
     {
       v8 = 0;
       v7 = 0;
@@ -91,7 +91,7 @@
     }
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v6];
+  v7 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:userActivityRequiredString2];
   if (v7)
   {
     v8 = [MEMORY[0x1E69E0928] donationWithUUID:v7];
@@ -103,13 +103,13 @@
   }
 
 LABEL_8:
-  v9 = [v8 interaction];
-  v10 = [v9 intent];
+  interaction = [v8 interaction];
+  intent = [interaction intent];
 
-  if (v10)
+  if (intent)
   {
     v18 = 0;
-    v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:0 error:&v18];
+    v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:intent requiringSecureCoding:0 error:&v18];
     v12 = v18;
     if (v12)
     {
@@ -142,8 +142,8 @@ LABEL_8:
 
   else
   {
-    v16 = [(SSUserIntentResultBuilder *)self userActivityData];
-    [v15 setIntentMessageData:v16];
+    userActivityData = [(SSUserIntentResultBuilder *)self userActivityData];
+    [v15 setIntentMessageData:userActivityData];
   }
 
   return v15;
@@ -153,31 +153,31 @@ LABEL_8:
 {
   v6.receiver = self;
   v6.super_class = SSUserIntentResultBuilder;
-  v3 = [(SSResultBuilder *)&v6 buildThumbnail];
-  if (!v3)
+  buildThumbnail = [(SSResultBuilder *)&v6 buildThumbnail];
+  if (!buildThumbnail)
   {
-    v3 = objc_opt_new();
-    v4 = [(SSUserIntentResultBuilder *)self appBundleId];
-    [v3 setBundleIdentifier:v4];
+    buildThumbnail = objc_opt_new();
+    appBundleId = [(SSUserIntentResultBuilder *)self appBundleId];
+    [buildThumbnail setBundleIdentifier:appBundleId];
   }
 
-  return v3;
+  return buildThumbnail;
 }
 
 - (id)buildDescriptions
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SSResultBuilder *)self result];
-  v4 = [v3 contentTypeTree];
-  if ([v4 containsObject:*MEMORY[0x1E696E590]])
+  result = [(SSResultBuilder *)self result];
+  contentTypeTree = [result contentTypeTree];
+  if ([contentTypeTree containsObject:*MEMORY[0x1E696E590]])
   {
-    v5 = [(SSUserIntentResultBuilder *)self startDate];
+    startDate = [(SSUserIntentResultBuilder *)self startDate];
 
-    if (v5)
+    if (startDate)
     {
       v6 = +[SSDateFormatManager shortDateTimeFormatter];
-      v7 = [(SSUserIntentResultBuilder *)self startDate];
-      v8 = [v6 stringFromDate:v7];
+      startDate2 = [(SSUserIntentResultBuilder *)self startDate];
+      v8 = [v6 stringFromDate:startDate2];
 
       v9 = MEMORY[0x1E696AEC0];
       v10 = +[SSDateFormatManager dateLastCalledStringFormat];

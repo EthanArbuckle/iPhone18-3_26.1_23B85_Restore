@@ -1,30 +1,30 @@
 @interface COCapabilityManager
 - (COCapabilityManager)init;
-- (COCapabilityManager)initWithConnectionProvider:(id)a3;
+- (COCapabilityManager)initWithConnectionProvider:(id)provider;
 - (NSArray)observers;
 - (NSSet)registeredCapabilities;
 - (NSXPCConnection)lastConnection;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
-- (id)addObserverForCapability:(id)a3 inCluster:(id)a4 usingBlock:(id)a5;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
+- (id)addObserverForCapability:(id)capability inCluster:(id)cluster usingBlock:(id)block;
 - (void)_lostConnectionToService;
-- (void)_notifyObserver:(id)a3 available:(BOOL)a4;
-- (void)_registerCapabililty:(id)a3;
-- (void)_registerObserver:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)availabilityChanged:(BOOL)a3 ofCapability:(id)a4 inCluster:(id)a5;
+- (void)_notifyObserver:(id)observer available:(BOOL)available;
+- (void)_registerCapabililty:(id)capabililty;
+- (void)_registerObserver:(id)observer;
+- (void)_withLock:(id)lock;
+- (void)availabilityChanged:(BOOL)changed ofCapability:(id)capability inCluster:(id)cluster;
 - (void)dealloc;
-- (void)registerCapability:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setObservers:(id)a3;
-- (void)setRegisteredCapabilities:(id)a3;
-- (void)unregisterCapability:(id)a3;
+- (void)registerCapability:(id)capability;
+- (void)removeObserver:(id)observer;
+- (void)setObservers:(id)observers;
+- (void)setRegisteredCapabilities:(id)capabilities;
+- (void)unregisterCapability:(id)capability;
 @end
 
 @implementation COCapabilityManager
 
-- (COCapabilityManager)initWithConnectionProvider:(id)a3
+- (COCapabilityManager)initWithConnectionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = COCapabilityManager;
   v6 = [(COCapabilityManager *)&v17 init];
@@ -32,7 +32,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_provider, a3);
+    objc_storeStrong(&v6->_provider, provider);
     v8 = objc_alloc_init(MEMORY[0x277CBEB98]);
     registeredCapabilities = v7->_registeredCapabilities;
     v7->_registeredCapabilities = v8;
@@ -49,7 +49,7 @@
     v15 = COLogForCategory(3);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      [(COCapabilityManager *)v7 initWithConnectionProvider:v5, v15];
+      [(COCapabilityManager *)v7 initWithConnectionProvider:providerCopy, v15];
     }
   }
 
@@ -89,11 +89,11 @@ void __30__COCapabilityManager_dealloc__block_invoke(uint64_t a1)
   [v3 invalidate];
 }
 
-- (void)registerCapability:(id)a3
+- (void)registerCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(COCapabilityManager *)self registeredCapabilities];
-  v6 = [v5 containsObject:v4];
+  capabilityCopy = capability;
+  registeredCapabilities = [(COCapabilityManager *)self registeredCapabilities];
+  v6 = [registeredCapabilities containsObject:capabilityCopy];
 
   if (v6)
   {
@@ -106,22 +106,22 @@ void __30__COCapabilityManager_dealloc__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [(COCapabilityManager *)self registeredCapabilities];
-    v9 = [v8 setByAddingObject:v4];
+    registeredCapabilities2 = [(COCapabilityManager *)self registeredCapabilities];
+    v9 = [registeredCapabilities2 setByAddingObject:capabilityCopy];
 
     [(COCapabilityManager *)self setRegisteredCapabilities:v9];
-    [(COCapabilityManager *)self _registerCapabililty:v4];
+    [(COCapabilityManager *)self _registerCapabililty:capabilityCopy];
   }
 }
 
-- (void)unregisterCapability:(id)a3
+- (void)unregisterCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(COCapabilityManager *)self registeredCapabilities];
-  if ([v5 containsObject:v4])
+  capabilityCopy = capability;
+  registeredCapabilities = [(COCapabilityManager *)self registeredCapabilities];
+  if ([registeredCapabilities containsObject:capabilityCopy])
   {
-    v6 = [v5 mutableCopy];
-    [v6 removeObject:v4];
+    v6 = [registeredCapabilities mutableCopy];
+    [v6 removeObject:capabilityCopy];
     [(COCapabilityManager *)self setRegisteredCapabilities:v6];
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x277D85DD0];
@@ -129,7 +129,7 @@ void __30__COCapabilityManager_dealloc__block_invoke(uint64_t a1)
     v10[2] = __44__COCapabilityManager_unregisterCapability___block_invoke;
     v10[3] = &unk_278E131D8;
     objc_copyWeak(&v12, &location);
-    v7 = v4;
+    v7 = capabilityCopy;
     v11 = v7;
     v8 = [(COCapabilityManager *)self _remoteInterfaceWithErrorHandler:v10];
     v9 = COLogForCategory(3);
@@ -177,15 +177,15 @@ void __44__COCapabilityManager_unregisterCapability___block_invoke(uint64_t a1, 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addObserverForCapability:(id)a3 inCluster:(id)a4 usingBlock:(id)a5
+- (id)addObserverForCapability:(id)capability inCluster:(id)cluster usingBlock:(id)block
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [COCluster _clusterForCluster:a4];
-  v11 = [[_COCapabilityObserver alloc] initWithCapability:v9 cluster:v10 block:v8];
+  blockCopy = block;
+  capabilityCopy = capability;
+  v10 = [COCluster _clusterForCluster:cluster];
+  v11 = [[_COCapabilityObserver alloc] initWithCapability:capabilityCopy cluster:v10 block:blockCopy];
 
-  v12 = [(COCapabilityManager *)self observers];
-  v13 = [v12 mutableCopy];
+  observers = [(COCapabilityManager *)self observers];
+  v13 = [observers mutableCopy];
 
   [v13 addObject:v11];
   [(COCapabilityManager *)self setObservers:v13];
@@ -200,15 +200,15 @@ void __44__COCapabilityManager_unregisterCapability___block_invoke(uint64_t a1, 
   return v11;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(COCapabilityManager *)self observers];
-  v6 = [v5 indexOfObject:v4];
+  observerCopy = observer;
+  observers = [(COCapabilityManager *)self observers];
+  v6 = [observers indexOfObject:observerCopy];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
-    v8 = [v5 mutableCopy];
+    v8 = [observers mutableCopy];
     v9 = [v8 objectAtIndex:v7];
     [v8 removeObjectAtIndex:v7];
     [(COCapabilityManager *)self setObservers:v8];
@@ -218,7 +218,7 @@ void __44__COCapabilityManager_unregisterCapability___block_invoke(uint64_t a1, 
     v14[2] = __38__COCapabilityManager_removeObserver___block_invoke;
     v14[3] = &unk_278E131D8;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
+    v15 = observerCopy;
     v10 = [(COCapabilityManager *)self _remoteInterfaceWithErrorHandler:v14];
     v11 = COLogForCategory(3);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -226,9 +226,9 @@ void __44__COCapabilityManager_unregisterCapability___block_invoke(uint64_t a1, 
       [COCapabilityManager removeObserver:];
     }
 
-    v12 = [v9 capability];
-    v13 = [v9 cluster];
-    [v10 removeObserverForCapability:v12 inCluster:v13];
+    capability = [v9 capability];
+    cluster = [v9 cluster];
+    [v10 removeObserverForCapability:capability inCluster:cluster];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -261,18 +261,18 @@ void __38__COCapabilityManager_removeObserver___block_invoke(uint64_t a1, void *
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availabilityChanged:(BOOL)a3 ofCapability:(id)a4 inCluster:(id)a5
+- (void)availabilityChanged:(BOOL)changed ofCapability:(id)capability inCluster:(id)cluster
 {
-  v22 = a3;
+  changedCopy = changed;
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  capabilityCopy = capability;
+  clusterCopy = cluster;
   v9 = COLogForCategory(3);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v29 = self;
-    if (v22)
+    selfCopy = self;
+    if (changedCopy)
     {
       v10 = 89;
     }
@@ -283,21 +283,21 @@ void __38__COCapabilityManager_removeObserver___block_invoke(uint64_t a1, void *
     }
 
     v30 = 2112;
-    v31 = v7;
+    v31 = capabilityCopy;
     v32 = 2112;
-    v33 = v8;
+    v33 = clusterCopy;
     v34 = 1024;
     v35 = v10;
     _os_log_impl(&dword_244328000, v9, OS_LOG_TYPE_DEFAULT, "%p received notification that Capability(%@) in Cluster(%@) is Available(%c)", buf, 0x26u);
   }
 
-  v21 = self;
-  v11 = [(COCapabilityManager *)self observers];
+  selfCopy2 = self;
+  observers = [(COCapabilityManager *)self observers];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v12 = [observers countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
@@ -308,19 +308,19 @@ void __38__COCapabilityManager_removeObserver___block_invoke(uint64_t a1, void *
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(observers);
         }
 
         v16 = *(*(&v23 + 1) + 8 * i);
-        v17 = [v16 capability];
-        if ([v17 isEqualToString:v7])
+        capability = [v16 capability];
+        if ([capability isEqualToString:capabilityCopy])
         {
-          v18 = [v16 cluster];
-          v19 = [v18 isEqual:v8];
+          cluster = [v16 cluster];
+          v19 = [cluster isEqual:clusterCopy];
 
           if (v19)
           {
-            [(COCapabilityManager *)v21 _notifyObserver:v16 available:v22];
+            [(COCapabilityManager *)selfCopy2 _notifyObserver:v16 available:changedCopy];
           }
         }
 
@@ -329,7 +329,7 @@ void __38__COCapabilityManager_removeObserver___block_invoke(uint64_t a1, void *
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v13 = [observers countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v13);
@@ -359,16 +359,16 @@ void __38__COCapabilityManager_removeObserver___block_invoke(uint64_t a1, void *
   return v2;
 }
 
-- (void)setRegisteredCapabilities:(id)a3
+- (void)setRegisteredCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__COCapabilityManager_setRegisteredCapabilities___block_invoke;
   v6[3] = &unk_278E12368;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = capabilitiesCopy;
+  selfCopy = self;
+  v5 = capabilitiesCopy;
   [(COCapabilityManager *)self _withLock:v6];
 }
 
@@ -413,16 +413,16 @@ uint64_t __49__COCapabilityManager_setRegisteredCapabilities___block_invoke(uint
   return v2;
 }
 
-- (void)setObservers:(id)a3
+- (void)setObservers:(id)observers
 {
-  v4 = a3;
+  observersCopy = observers;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__COCapabilityManager_setObservers___block_invoke;
   v6[3] = &unk_278E12368;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = observersCopy;
+  selfCopy = self;
+  v5 = observersCopy;
   [(COCapabilityManager *)self _withLock:v6];
 }
 
@@ -446,15 +446,15 @@ uint64_t __36__COCapabilityManager_setObservers___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_notifyObserver:(id)a3 available:(BOOL)a4
+- (void)_notifyObserver:(id)observer available:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  observerCopy = observer;
   v7 = COLogForCategory(3);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (availableCopy)
     {
       v8 = 89;
     }
@@ -464,48 +464,48 @@ uint64_t __36__COCapabilityManager_setObservers___block_invoke(uint64_t a1)
       v8 = 78;
     }
 
-    v9 = [v6 capability];
-    v10 = [v6 cluster];
+    capability = [observerCopy capability];
+    cluster = [observerCopy cluster];
     *buf = 134219266;
-    v18 = self;
+    selfCopy = self;
     v19 = 2048;
-    v20 = v6;
+    v20 = observerCopy;
     v21 = 2112;
-    v22 = v6;
+    v22 = observerCopy;
     v23 = 1024;
     v24 = v8;
     v25 = 2112;
-    v26 = v9;
+    v26 = capability;
     v27 = 2112;
-    v28 = v10;
+    v28 = cluster;
     _os_log_impl(&dword_244328000, v7, OS_LOG_TYPE_DEFAULT, "%p notifying Observer(%p/%@) of Availability(%c) for Capability(%@) in Cluster(%@)", buf, 0x3Au);
   }
 
-  v11 = [(COCapabilityManager *)self observerQueue];
+  observerQueue = [(COCapabilityManager *)self observerQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __49__COCapabilityManager__notifyObserver_available___block_invoke;
   v14[3] = &unk_278E133C0;
-  v15 = v6;
-  v16 = v4;
-  v12 = v6;
-  dispatch_async(v11, v14);
+  v15 = observerCopy;
+  v16 = availableCopy;
+  v12 = observerCopy;
+  dispatch_async(observerQueue, v14);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -519,7 +519,7 @@ uint64_t __36__COCapabilityManager_setObservers___block_invoke(uint64_t a1)
   v7[4] = self;
   v7[5] = &v8;
   [(COCapabilityManager *)self _withLock:v7];
-  v5 = [v9[5] remoteObjectProxyWithErrorHandler:v4];
+  v5 = [v9[5] remoteObjectProxyWithErrorHandler:handlerCopy];
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -631,13 +631,13 @@ void __56__COCapabilityManager__remoteInterfaceWithErrorHandler___block_invoke_6
 - (void)_lostConnectionToService
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(COCapabilityManager *)self observers];
-  v4 = [(COCapabilityManager *)self registeredCapabilities];
+  observers = [(COCapabilityManager *)self observers];
+  registeredCapabilities = [(COCapabilityManager *)self registeredCapabilities];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = observers;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v28 count:16];
   if (v6)
   {
@@ -667,7 +667,7 @@ void __56__COCapabilityManager__remoteInterfaceWithErrorHandler___block_invoke_6
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = v4;
+  v10 = registeredCapabilities;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v11)
   {
@@ -697,23 +697,23 @@ void __56__COCapabilityManager__remoteInterfaceWithErrorHandler___block_invoke_6
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244328000, v15, OS_LOG_TYPE_DEFAULT, "%p done restoring state after lost connection to service", buf, 0xCu);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerCapabililty:(id)a3
+- (void)_registerCapabililty:(id)capabililty
 {
-  v4 = a3;
+  capabililtyCopy = capabililty;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__COCapabilityManager__registerCapabililty___block_invoke;
   v8[3] = &unk_278E131D8;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = capabililtyCopy;
   v9 = v5;
   v6 = [(COCapabilityManager *)self _remoteInterfaceWithErrorHandler:v8];
   v7 = COLogForCategory(3);
@@ -751,16 +751,16 @@ void __44__COCapabilityManager__registerCapabililty___block_invoke(uint64_t a1, 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerObserver:(id)a3
+- (void)_registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __41__COCapabilityManager__registerObserver___block_invoke;
   v10[3] = &unk_278E131D8;
   objc_copyWeak(&v12, &location);
-  v5 = v4;
+  v5 = observerCopy;
   v11 = v5;
   v6 = [(COCapabilityManager *)self _remoteInterfaceWithErrorHandler:v10];
   v7 = COLogForCategory(3);
@@ -769,9 +769,9 @@ void __44__COCapabilityManager__registerCapabililty___block_invoke(uint64_t a1, 
     [COCapabilityManager _registerObserver:];
   }
 
-  v8 = [v5 capability];
-  v9 = [v5 cluster];
-  [v6 addObserverForCapability:v8 inCluster:v9];
+  capability = [v5 capability];
+  cluster = [v5 cluster];
+  [v6 addObserverForCapability:capability inCluster:cluster];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

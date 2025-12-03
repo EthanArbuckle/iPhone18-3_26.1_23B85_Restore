@@ -1,6 +1,6 @@
 @interface PuzzleEmbedOpenLeaderboardMessageHandler
 - (_TtC7NewsUI240PuzzleEmbedOpenLeaderboardMessageHandler)init;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation PuzzleEmbedOpenLeaderboardMessageHandler
@@ -12,12 +12,12 @@
   return result;
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  _s7NewsUI240PuzzleEmbedOpenLeaderboardMessageHandlerC10didReceive_14securityOriginySo9SWMessage_p_So0m8SecurityL0_ptF_0(a3);
+  selfCopy = self;
+  _s7NewsUI240PuzzleEmbedOpenLeaderboardMessageHandlerC10didReceive_14securityOriginySo9SWMessage_p_So0m8SecurityL0_ptF_0(message);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

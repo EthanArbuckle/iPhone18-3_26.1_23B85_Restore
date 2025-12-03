@@ -1,16 +1,16 @@
 @interface ATXPBPredictionLocationOfInterest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBPredictionLocationOfInterest
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -43,30 +43,30 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Home"])
+  else if ([typeCopy isEqualToString:@"Home"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Work"])
+  else if ([typeCopy isEqualToString:@"Work"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"School"])
+  else if ([typeCopy isEqualToString:@"School"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Gym"])
+  else if ([typeCopy isEqualToString:@"Gym"])
   {
     v4 = 4;
   }
@@ -79,9 +79,9 @@
   return v4;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 2;
   }
@@ -100,20 +100,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBPredictionLocationOfInterest;
   v4 = [(ATXPBPredictionLocationOfInterest *)&v8 description];
-  v5 = [(ATXPBPredictionLocationOfInterest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBPredictionLocationOfInterest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   has = self->_has;
@@ -152,14 +152,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -167,7 +167,7 @@
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -188,33 +188,33 @@ LABEL_5:
 
   latitude = self->_latitude;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
     longitude = self->_longitude;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
-    v6 = v4;
-    [v4 setUuid:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setUuid:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 6) = self->_type;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 6) = self->_type;
+    *(toCopy + 40) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -233,22 +233,22 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 1) = *&self->_latitude;
-  *(v4 + 40) |= 1u;
+  *(toCopy + 1) = *&self->_latitude;
+  *(toCopy + 40) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_6:
-    *(v4 + 2) = *&self->_longitude;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 2) = *&self->_longitude;
+    *(toCopy + 40) |= 2u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -290,16 +290,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 4))
+  if (uuid | *(equalCopy + 4))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -309,13 +309,13 @@ LABEL_4:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
 LABEL_18:
     v6 = 0;
@@ -324,21 +324,21 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_latitude != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_latitude != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 40) & 2) == 0;
+  v6 = (*(equalCopy + 40) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_longitude != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_longitude != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
@@ -437,22 +437,22 @@ LABEL_9:
   return v6 ^ v3 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(ATXPBPredictionLocationOfInterest *)self setUuid:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) != 0)
   {
-    self->_type = *(v4 + 6);
+    self->_type = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 1) == 0)
     {
 LABEL_5:
@@ -465,17 +465,17 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 40) & 1) == 0)
+  else if ((*(fromCopy + 40) & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_latitude = *(v4 + 1);
+  self->_latitude = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 40) & 2) != 0)
+  if ((*(fromCopy + 40) & 2) != 0)
   {
 LABEL_6:
-    self->_longitude = *(v4 + 2);
+    self->_longitude = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 

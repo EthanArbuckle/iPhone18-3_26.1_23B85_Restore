@@ -1,8 +1,8 @@
 @interface MapsSuggestionHandler
 - (NSString)uniqueName;
 - (_TtC17wirelessinsightsd21MapsSuggestionHandler)init;
-- (void)invalidateForMapsSuggestionsManager:(id)a3;
-- (void)setUniqueName:(id)a3;
+- (void)invalidateForMapsSuggestionsManager:(id)manager;
+- (void)setUniqueName:(id)name;
 @end
 
 @implementation MapsSuggestionHandler
@@ -19,7 +19,7 @@
   return v5;
 }
 
-- (void)setUniqueName:(id)a3
+- (void)setUniqueName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -30,9 +30,9 @@
   v7[1] = v6;
 }
 
-- (void)invalidateForMapsSuggestionsManager:(id)a3
+- (void)invalidateForMapsSuggestionsManager:(id)manager
 {
-  if (a3)
+  if (manager)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

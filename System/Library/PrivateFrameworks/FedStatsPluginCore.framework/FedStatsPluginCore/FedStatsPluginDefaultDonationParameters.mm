@@ -1,39 +1,39 @@
 @interface FedStatsPluginDefaultDonationParameters
-+ (id)defaultDonationParametersWithConfiguration:(id)a3 error:(id *)a4;
-- (FedStatsPluginDefaultDonationParameters)initWithEpsilon:(double)a3 delta:(double)a4 defaultExpectedCohortSize:(unint64_t)a5 expectedCohortSizes:(id)a6;
-- (id)distributionFor:(id)a3;
-- (unint64_t)determineDefaultRecordCountFor:(id)a3;
-- (unint64_t)expectedCohortSizeFor:(id)a3;
++ (id)defaultDonationParametersWithConfiguration:(id)configuration error:(id *)error;
+- (FedStatsPluginDefaultDonationParameters)initWithEpsilon:(double)epsilon delta:(double)delta defaultExpectedCohortSize:(unint64_t)size expectedCohortSizes:(id)sizes;
+- (id)distributionFor:(id)for;
+- (unint64_t)determineDefaultRecordCountFor:(id)for;
+- (unint64_t)expectedCohortSizeFor:(id)for;
 @end
 
 @implementation FedStatsPluginDefaultDonationParameters
 
-- (FedStatsPluginDefaultDonationParameters)initWithEpsilon:(double)a3 delta:(double)a4 defaultExpectedCohortSize:(unint64_t)a5 expectedCohortSizes:(id)a6
+- (FedStatsPluginDefaultDonationParameters)initWithEpsilon:(double)epsilon delta:(double)delta defaultExpectedCohortSize:(unint64_t)size expectedCohortSizes:(id)sizes
 {
-  v11 = a6;
+  sizesCopy = sizes;
   v14.receiver = self;
   v14.super_class = FedStatsPluginDefaultDonationParameters;
   v12 = [(FedStatsPluginDefaultDonationParameters *)&v14 init];
   if (v12)
   {
-    v12->_successRateNaught = (log(1.0 / a4) + 1.0) * 3.0;
-    v12->_successProbability = 1.0 - exp(a3 * -0.2);
-    v12->_defaultExpectedCohortSize = a5;
-    objc_storeStrong(&v12->_expectedCohortSizes, a6);
+    v12->_successRateNaught = (log(1.0 / delta) + 1.0) * 3.0;
+    v12->_successProbability = 1.0 - exp(epsilon * -0.2);
+    v12->_defaultExpectedCohortSize = size;
+    objc_storeStrong(&v12->_expectedCohortSizes, sizes);
   }
 
   return v12;
 }
 
-- (unint64_t)expectedCohortSizeFor:(id)a3
+- (unint64_t)expectedCohortSizeFor:(id)for
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+  forCopy = for;
+  allKeys = [forCopy allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-  v23 = self;
-  v7 = [(FedStatsPluginDefaultDonationParameters *)self expectedCohortSizes];
+  selfCopy = self;
+  expectedCohortSizes = [(FedStatsPluginDefaultDonationParameters *)self expectedCohortSizes];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -47,7 +47,7 @@
     while (2)
     {
       v12 = 0;
-      v13 = v7;
+      v13 = expectedCohortSizes;
       do
       {
         if (*v25 != v11)
@@ -56,26 +56,26 @@
         }
 
         v14 = *(*(&v24 + 1) + 8 * v12);
-        v15 = [v4 objectForKey:v14];
+        v15 = [forCopy objectForKey:v14];
         v16 = [FedStatsPluginDefaultDonationParameters expectedCohortSizesKeyForCohortVariable:v14 cohortValue:v15];
 
-        v7 = [v13 objectForKey:v16];
+        expectedCohortSizes = [v13 objectForKey:v16];
 
-        if (!v7)
+        if (!expectedCohortSizes)
         {
           v18 = +[FedStatsPluginLog logger];
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
-            [(FedStatsPluginDefaultDonationParameters *)v4 expectedCohortSizeFor:v18];
+            [(FedStatsPluginDefaultDonationParameters *)forCopy expectedCohortSizeFor:v18];
           }
 
-          v19 = [(FedStatsPluginDefaultDonationParameters *)v23 defaultExpectedCohortSize];
-          v7 = v8;
+          defaultExpectedCohortSize = [(FedStatsPluginDefaultDonationParameters *)selfCopy defaultExpectedCohortSize];
+          expectedCohortSizes = v8;
           goto LABEL_19;
         }
 
         ++v12;
-        v13 = v7;
+        v13 = expectedCohortSizes;
       }
 
       while (v10 != v12);
@@ -89,10 +89,10 @@
     }
   }
 
-  v16 = [v7 objectForKey:@"expectedCohortSize"];
+  v16 = [expectedCohortSizes objectForKey:@"expectedCohortSize"];
   if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v17 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
   }
 
   else
@@ -100,22 +100,22 @@
     v20 = +[FedStatsPluginLog logger];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      [(FedStatsPluginDefaultDonationParameters *)v4 expectedCohortSizeFor:v20];
+      [(FedStatsPluginDefaultDonationParameters *)forCopy expectedCohortSizeFor:v20];
     }
 
-    v17 = [(FedStatsPluginDefaultDonationParameters *)v23 defaultExpectedCohortSize];
+    unsignedIntegerValue = [(FedStatsPluginDefaultDonationParameters *)selfCopy defaultExpectedCohortSize];
   }
 
-  v19 = v17;
+  defaultExpectedCohortSize = unsignedIntegerValue;
 LABEL_19:
 
   v21 = *MEMORY[0x277D85DE8];
-  return v19;
+  return defaultExpectedCohortSize;
 }
 
-- (id)distributionFor:(id)a3
+- (id)distributionFor:(id)for
 {
-  v4 = [(FedStatsPluginDefaultDonationParameters *)self expectedCohortSizeFor:a3];
+  v4 = [(FedStatsPluginDefaultDonationParameters *)self expectedCohortSizeFor:for];
   [(FedStatsPluginDefaultDonationParameters *)self successRateNaught];
   v6 = v5 / v4;
   v7 = MEMORY[0x277D08470];
@@ -133,31 +133,31 @@ LABEL_19:
   return v9;
 }
 
-- (unint64_t)determineDefaultRecordCountFor:(id)a3
+- (unint64_t)determineDefaultRecordCountFor:(id)for
 {
-  v3 = [(FedStatsPluginDefaultDonationParameters *)self distributionFor:a3];
+  v3 = [(FedStatsPluginDefaultDonationParameters *)self distributionFor:for];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 sample];
+    sample = [v3 sample];
   }
 
   else
   {
-    v5 = -1;
+    sample = -1;
   }
 
-  return v5;
+  return sample;
 }
 
-+ (id)defaultDonationParametersWithConfiguration:(id)a3 error:(id *)a4
++ (id)defaultDonationParametersWithConfiguration:(id)configuration error:(id *)error
 {
   v72 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 objectForKey:@"epsilon"];
+    v6 = [configurationCopy objectForKey:@"epsilon"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       [v6 doubleValue];
@@ -166,12 +166,12 @@ LABEL_19:
         [v6 doubleValue];
         if (v8 < 0.5)
         {
-          v9 = [v5 objectForKey:@"delta"];
+          v9 = [configurationCopy objectForKey:@"delta"];
           if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
-            if (a4)
+            if (error)
             {
-              *a4 = v13 = 0;
+              *error = v13 = 0;
 LABEL_27:
 
               goto LABEL_20;
@@ -185,15 +185,15 @@ LABEL_26:
           [v9 doubleValue];
           if (v10 >= 0.0001 || ([v9 doubleValue], v11 < 0.0))
           {
-            if (a4)
+            if (error)
               v12 = {;
-              *a4 = [FedStatsPluginError errorWithCode:100 description:v12];
+              *error = [FedStatsPluginError errorWithCode:100 description:v12];
             }
 
             goto LABEL_26;
           }
 
-          v17 = [v5 objectForKey:@"defaultExpectedCohortSize"];
+          v17 = [configurationCopy objectForKey:@"defaultExpectedCohortSize"];
           if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             [v17 doubleValue];
@@ -204,7 +204,7 @@ LABEL_26:
 
               if (v20)
               {
-                v21 = [v5 objectForKey:@"expectedCohortSizes"];
+                v21 = [configurationCopy objectForKey:@"expectedCohortSizes"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -214,8 +214,8 @@ LABEL_26:
                   {
                     if ([v21 count])
                     {
-                      v22 = [v21 firstObject];
-                      v55 = [v22 count];
+                      firstObject = [v21 firstObject];
+                      v55 = [firstObject count];
                     }
 
                     else
@@ -261,9 +261,9 @@ LABEL_50:
                       v58 = [v26 objectForKey:@"expectedCohortSize"];
                       if (!v58 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                       {
-                        if (a4)
+                        if (error)
                           v47 = {;
-                          *a4 = [FedStatsPluginError errorWithCode:100 description:v47];
+                          *error = [FedStatsPluginError errorWithCode:100 description:v47];
                           goto LABEL_76;
                         }
 
@@ -280,8 +280,8 @@ LABEL_78:
 
                       v57 = v25;
                       v61 = v26;
-                      v27 = [v26 allKeys];
-                      v28 = [v27 mutableCopy];
+                      allKeys = [v26 allKeys];
+                      v28 = [allKeys mutableCopy];
 
                       [v28 removeObject:@"expectedCohortSize"];
                       [v28 sortUsingSelector:v51];
@@ -339,9 +339,9 @@ LABEL_78:
                       if (v41)
                       {
                         v47 = v30;
-                        if (a4)
+                        if (error)
                           v48 = {;
-                          *a4 = [FedStatsPluginError errorWithCode:100 description:v48];
+                          *error = [FedStatsPluginError errorWithCode:100 description:v48];
                         }
 
 LABEL_76:
@@ -366,9 +366,9 @@ LABEL_76:
                       }
                     }
 
-                    if (a4)
+                    if (error)
                       v59 = {;
-                      *a4 = [FedStatsPluginError errorWithCode:100 description:?];
+                      *error = [FedStatsPluginError errorWithCode:100 description:?];
                     }
 
                     goto LABEL_78;
@@ -386,9 +386,9 @@ LABEL_68:
 LABEL_79:
                 }
 
-                else if (a4)
+                else if (error)
                 {
-                  *a4 = v13 = 0;
+                  *error = v13 = 0;
                 }
 
                 else
@@ -400,17 +400,17 @@ LABEL_79:
               }
             }
 
-            if (a4)
+            if (error)
             {
               goto LABEL_40;
             }
           }
 
-          else if (a4)
+          else if (error)
           {
 LABEL_40:
             [FedStatsPluginError errorWithCode:100 description:v23];
-            *a4 = v13 = 0;
+            *error = v13 = 0;
 LABEL_42:
 
             goto LABEL_27;
@@ -421,15 +421,15 @@ LABEL_42:
         }
       }
 
-      if (a4)
+      if (error)
         v14 = {;
-        *a4 = [FedStatsPluginError errorWithCode:100 description:v14];
+        *error = [FedStatsPluginError errorWithCode:100 description:v14];
       }
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = v13 = 0;
+      *error = v13 = 0;
 LABEL_20:
 
       goto LABEL_21;
@@ -439,10 +439,10 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
     [FedStatsPluginError errorWithCode:100 description:@"Privacy parameters in recipe must be a dictionary"];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else

@@ -1,26 +1,26 @@
 @interface SUUIComposeReviewFormViewController
 - (SUUIComposeReviewFormDelegate)delegate;
-- (SUUIComposeReviewFormViewController)initWithReviewMetadata:(id)a3;
+- (SUUIComposeReviewFormViewController)initWithReviewMetadata:(id)metadata;
 - (SUUIReviewMetadata)editedReviewMetadata;
 - (void)_cancel;
 - (void)_submit;
-- (void)composeReviewViewValidityChanged:(id)a3;
+- (void)composeReviewViewValidityChanged:(id)changed;
 - (void)dealloc;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUUIComposeReviewFormViewController
 
-- (SUUIComposeReviewFormViewController)initWithReviewMetadata:(id)a3
+- (SUUIComposeReviewFormViewController)initWithReviewMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = SUUIComposeReviewFormViewController;
   v5 = [(SUViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [metadataCopy copy];
     review = v5->_review;
     v5->_review = v6;
   }
@@ -38,15 +38,15 @@
 
 - (SUUIReviewMetadata)editedReviewMetadata
 {
-  v2 = [(SUUIComposeReviewView *)self->_composeView copyReview];
+  copyReview = [(SUUIComposeReviewView *)self->_composeView copyReview];
 
-  return v2;
+  return copyReview;
 }
 
 - (void)loadView
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 1;
 
   v5 = [SUUIComposeReviewView alloc];
   v6 = [(SUUIComposeReviewView *)v5 initWithFrame:v4 style:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -58,39 +58,39 @@
   [(SUUIComposeReviewView *)self->_composeView setReview:self->_review];
   [(SUUIComposeReviewView *)self->_composeView reloadData];
   [(SUUIComposeReviewFormViewController *)self setView:self->_composeView];
-  v16 = [(SUViewController *)self navigationItem];
+  navigationItem = [(SUViewController *)self navigationItem];
   v8 = objc_alloc(MEMORY[0x277D7FDB0]);
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"CANCEL" value:&stru_286AECDE0 table:0];
   v11 = [v8 initWithTitle:v10 style:0 target:self action:sel__cancel];
 
-  [v16 setLeftBarButtonItem:v11];
+  [navigationItem setLeftBarButtonItem:v11];
   v12 = objc_alloc(MEMORY[0x277D7FDB0]);
   v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"SUBMIT" value:&stru_286AECDE0 table:0];
   v15 = [v12 initWithTitle:v14 style:2 target:self action:sel__submit];
 
-  [v16 setRightBarButtonItem:v15];
+  [navigationItem setRightBarButtonItem:v15];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUViewController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
+  appearCopy = appear;
+  navigationItem = [(SUViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  [v6 setEnabled:{-[SUUIComposeReviewView isValid](self->_composeView, "isValid")}];
+  [rightBarButtonItem setEnabled:{-[SUUIComposeReviewView isValid](self->_composeView, "isValid")}];
   v7.receiver = self;
   v7.super_class = SUUIComposeReviewFormViewController;
-  [(SUViewController *)&v7 viewWillAppear:v3];
+  [(SUViewController *)&v7 viewWillAppear:appearCopy];
 }
 
-- (void)composeReviewViewValidityChanged:(id)a3
+- (void)composeReviewViewValidityChanged:(id)changed
 {
-  v4 = [(SUViewController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
+  navigationItem = [(SUViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-  [v5 setEnabled:{-[SUUIComposeReviewView isValid](self->_composeView, "isValid")}];
+  [rightBarButtonItem setEnabled:{-[SUUIComposeReviewView isValid](self->_composeView, "isValid")}];
 }
 
 - (void)_cancel

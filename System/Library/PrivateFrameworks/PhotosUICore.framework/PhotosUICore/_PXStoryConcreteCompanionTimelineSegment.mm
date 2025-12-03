@@ -3,7 +3,7 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)preferredDuration;
 - (NSArray)assets;
 - (PXStoryCompanionTimelineSegmentTransition)orderOutTransition;
-- (_PXStoryConcreteCompanionTimelineSegment)initWithTimeline:(id)a3 segmentIndex:(int64_t)a4;
+- (_PXStoryConcreteCompanionTimelineSegment)initWithTimeline:(id)timeline segmentIndex:(int64_t)index;
 @end
 
 @implementation _PXStoryConcreteCompanionTimelineSegment
@@ -47,14 +47,14 @@
 - (NSArray)assets
 {
   [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
-  v3 = [(_PXStoryConcreteCompanionTimelineSegment *)self timeline];
+  timeline = [(_PXStoryConcreteCompanionTimelineSegment *)self timeline];
   [(_PXStoryConcreteCompanionTimelineSegment *)self segmentInfo];
-  if (v3)
+  if (timeline)
   {
-    [v3 timeRangeForSegmentWithIdentifier:v5];
+    [timeline timeRangeForSegmentWithIdentifier:v5];
   }
 
-  [v3 size];
+  [timeline size];
   PXRectWithOriginAndSize();
 }
 
@@ -65,20 +65,20 @@
   return result;
 }
 
-- (_PXStoryConcreteCompanionTimelineSegment)initWithTimeline:(id)a3 segmentIndex:(int64_t)a4
+- (_PXStoryConcreteCompanionTimelineSegment)initWithTimeline:(id)timeline segmentIndex:(int64_t)index
 {
-  v7 = a3;
+  timelineCopy = timeline;
   v25.receiver = self;
   v25.super_class = _PXStoryConcreteCompanionTimelineSegment;
   v8 = [(_PXStoryConcreteCompanionTimelineSegment *)&v25 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_timeline, a3);
-    v10 = [v7 identifierForSegmentAtIndex:a4];
-    if (v7)
+    objc_storeStrong(&v8->_timeline, timeline);
+    v10 = [timelineCopy identifierForSegmentAtIndex:index];
+    if (timelineCopy)
     {
-      [v7 infoForSegmentWithIdentifier:v10];
+      [timelineCopy infoForSegmentWithIdentifier:v10];
     }
 
     else

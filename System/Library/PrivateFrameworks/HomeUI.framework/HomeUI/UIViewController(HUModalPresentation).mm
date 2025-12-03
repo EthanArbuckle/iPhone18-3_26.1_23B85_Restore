@@ -6,10 +6,10 @@
 
 - (id)hu_delegateForModalPresentation
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v2 = v1;
+    v2 = selfCopy;
     v3 = 0;
     do
     {
@@ -20,12 +20,12 @@
         v3 = v4;
       }
 
-      v5 = [v2 parentViewController];
+      parentViewController = [v2 parentViewController];
 
-      v2 = v5;
+      v2 = parentViewController;
     }
 
-    while (v5);
+    while (parentViewController);
   }
 
   else

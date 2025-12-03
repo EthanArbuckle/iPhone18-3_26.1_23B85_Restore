@@ -1,7 +1,7 @@
 @interface SFSSCacheItem
-+ (id)generateCacheKey:(id)a3 text:(id)a4;
++ (id)generateCacheKey:(id)key text:(id)text;
 - (AudioStreamBasicDescription)asbd;
-- (SFSSCacheItem)initWithText:(id)a3 voiceName:(id)a4 voiceKey:(id)a5 resourceKey:(id)a6 asbd:(AudioStreamBasicDescription *)a7 rawAudio:(id)a8;
+- (SFSSCacheItem)initWithText:(id)text voiceName:(id)name voiceKey:(id)key resourceKey:(id)resourceKey asbd:(AudioStreamBasicDescription *)asbd rawAudio:(id)audio;
 @end
 
 @implementation SFSSCacheItem
@@ -15,37 +15,37 @@
   return self;
 }
 
-- (SFSSCacheItem)initWithText:(id)a3 voiceName:(id)a4 voiceKey:(id)a5 resourceKey:(id)a6 asbd:(AudioStreamBasicDescription *)a7 rawAudio:(id)a8
+- (SFSSCacheItem)initWithText:(id)text voiceName:(id)name voiceKey:(id)key resourceKey:(id)resourceKey asbd:(AudioStreamBasicDescription *)asbd rawAudio:(id)audio
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  textCopy = text;
+  nameCopy = name;
+  keyCopy = key;
+  resourceKeyCopy = resourceKey;
+  audioCopy = audio;
   v31.receiver = self;
   v31.super_class = SFSSCacheItem;
   v19 = [(SFSSCacheItem *)&v31 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [textCopy copy];
     text = v19->_text;
     v19->_text = v20;
 
-    v22 = [v16 copy];
+    v22 = [keyCopy copy];
     voiceKey = v19->_voiceKey;
     v19->_voiceKey = v22;
 
-    v24 = [v17 copy];
+    v24 = [resourceKeyCopy copy];
     resourceKey = v19->_resourceKey;
     v19->_resourceKey = v24;
 
-    v26 = *&a7->mSampleRate;
-    v27 = *&a7->mBytesPerPacket;
-    *&v19->_asbd.mBitsPerChannel = *&a7->mBitsPerChannel;
+    v26 = *&asbd->mSampleRate;
+    v27 = *&asbd->mBytesPerPacket;
+    *&v19->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
     *&v19->_asbd.mSampleRate = v26;
     *&v19->_asbd.mBytesPerPacket = v27;
-    objc_storeStrong(&v19->_rawAudio, a8);
-    v28 = [SFSSCacheItem generateCacheKey:v15 text:v19->_text];
+    objc_storeStrong(&v19->_rawAudio, audio);
+    v28 = [SFSSCacheItem generateCacheKey:nameCopy text:v19->_text];
     key = v19->_key;
     v19->_key = v28;
   }
@@ -53,9 +53,9 @@
   return v19;
 }
 
-+ (id)generateCacheKey:(id)a3 text:(id)a4
++ (id)generateCacheKey:(id)key text:(id)text
 {
-  v4 = [MEMORY[0x277CBEA60] arrayWithObjects:{a3, a4, 0}];
+  v4 = [MEMORY[0x277CBEA60] arrayWithObjects:{key, text, 0}];
   v5 = [v4 componentsJoinedByString:@":"];
 
   return v5;

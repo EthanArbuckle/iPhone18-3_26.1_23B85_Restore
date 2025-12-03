@@ -1,50 +1,50 @@
 @interface BSKWebClip
-+ (void)fetchWebClipsURLWithCompletionHandler:(id)a3;
-+ (void)fetchWebClipsUUIDWithCompletionHandler:(id)a3;
-+ (void)getWebClipWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (id)_initWithWebClip:(id)a3 manifest:(id)a4;
++ (void)fetchWebClipsURLWithCompletionHandler:(id)handler;
++ (void)fetchWebClipsUUIDWithCompletionHandler:(id)handler;
++ (void)getWebClipWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (id)_initWithWebClip:(id)clip manifest:(id)manifest;
 @end
 
 @implementation BSKWebClip
 
-+ (void)fetchWebClipsUUIDWithCompletionHandler:(id)a3
++ (void)fetchWebClipsUUIDWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   CPSWebClipServiceClass = getCPSWebClipServiceClass();
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    [CPSWebClipServiceClass fetchWebClipsUUIDForClientBundleID:v5 completion:v6];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [CPSWebClipServiceClass fetchWebClipsUUIDForClientBundleID:bundleIdentifier completion:handlerCopy];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-+ (void)fetchWebClipsURLWithCompletionHandler:(id)a3
++ (void)fetchWebClipsURLWithCompletionHandler:(id)handler
 {
-  v6 = a3;
+  handlerCopy = handler;
   CPSWebClipServiceClass = getCPSWebClipServiceClass();
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
-    [CPSWebClipServiceClass fetchWebClipsURLForClientBundleID:v5 completion:v6];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [CPSWebClipServiceClass fetchWebClipsURLForClientBundleID:bundleIdentifier completion:handlerCopy];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-+ (void)getWebClipWithIdentifier:(id)a3 completionHandler:(id)a4
++ (void)getWebClipWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   CPSWebClipServiceClass = getCPSWebClipServiceClass();
   if (objc_opt_respondsToSelector())
   {
@@ -52,13 +52,13 @@
     v8[1] = 3221225472;
     v8[2] = __57__BSKWebClip_getWebClipWithIdentifier_completionHandler___block_invoke;
     v8[3] = &unk_278D29AF0;
-    v9 = v6;
-    [CPSWebClipServiceClass getWebClipDictionaryWithIdentifier:v5 completion:v8];
+    v9 = handlerCopy;
+    [CPSWebClipServiceClass getWebClipDictionaryWithIdentifier:identifierCopy completion:v8];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -106,18 +106,18 @@ LABEL_9:
 LABEL_14:
 }
 
-- (id)_initWithWebClip:(id)a3 manifest:(id)a4
+- (id)_initWithWebClip:(id)clip manifest:(id)manifest
 {
-  v7 = a3;
-  v8 = a4;
+  clipCopy = clip;
+  manifestCopy = manifest;
   v13.receiver = self;
   v13.super_class = BSKWebClip;
   v9 = [(BSKWebClip *)&v13 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_webClip, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_webClip, clip);
+    objc_storeStrong(p_isa + 2, manifest);
     v11 = p_isa;
   }
 

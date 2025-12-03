@@ -1,20 +1,20 @@
 @interface AXDisplayManagerObjcWrapper
-- (AXDisplayManagerObjcWrapper)initWithService:(id)a3;
+- (AXDisplayManagerObjcWrapper)initWithService:(id)service;
 - (AXUIService)service;
 @end
 
 @implementation AXDisplayManagerObjcWrapper
 
-- (AXDisplayManagerObjcWrapper)initWithService:(id)a3
+- (AXDisplayManagerObjcWrapper)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v8.receiver = self;
   v8.super_class = AXDisplayManagerObjcWrapper;
   v5 = [(AXDisplayManagerObjcWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(AXDisplayManagerObjcWrapper *)v5 setService:v4];
+    [(AXDisplayManagerObjcWrapper *)v5 setService:serviceCopy];
   }
 
   return v6;

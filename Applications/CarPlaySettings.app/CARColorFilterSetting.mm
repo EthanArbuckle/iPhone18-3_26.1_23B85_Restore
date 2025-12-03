@@ -1,16 +1,16 @@
 @interface CARColorFilterSetting
-+ (id)filterPreference:(int64_t)a3 name:(id)a4;
++ (id)filterPreference:(int64_t)preference name:(id)name;
 - (id)description;
 @end
 
 @implementation CARColorFilterSetting
 
-+ (id)filterPreference:(int64_t)a3 name:(id)a4
++ (id)filterPreference:(int64_t)preference name:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v6 = objc_opt_new();
-  [v6 setPreference:a3];
-  [v6 setName:v5];
+  [v6 setPreference:preference];
+  [v6 setName:nameCopy];
 
   return v6;
 }
@@ -20,9 +20,9 @@
   v8.receiver = self;
   v8.super_class = CARColorFilterSetting;
   v3 = [(CARColorFilterSetting *)&v8 description];
-  v4 = [(CARColorFilterSetting *)self preference];
-  v5 = [(CARColorFilterSetting *)self name];
-  v6 = [NSString stringWithFormat:@"%@ [preference: %ld, name: %@]", v3, v4, v5];
+  preference = [(CARColorFilterSetting *)self preference];
+  name = [(CARColorFilterSetting *)self name];
+  v6 = [NSString stringWithFormat:@"%@ [preference: %ld, name: %@]", v3, preference, name];
 
   return v6;
 }

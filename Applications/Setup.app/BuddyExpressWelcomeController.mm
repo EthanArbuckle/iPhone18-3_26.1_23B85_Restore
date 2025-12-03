@@ -1,40 +1,40 @@
 @interface BuddyExpressWelcomeController
-+ (BOOL)_isSettingsFeature:(unint64_t)a3;
-+ (id)_accessoryViewForFeature:(unint64_t)a3;
-+ (id)_createFeatureCardForDataTransferMethod:(unint64_t)a3 deviceName:(id)a4 lastBackupDate:(id)a5;
-+ (id)_determineIfFeatureIsInExpress:(unint64_t)a3 withDataSource:(id)a4;
-+ (id)_localizedDescriptionForFeature:(unint64_t)a3;
-+ (id)_localizedNameForFeature:(unint64_t)a3;
-+ (id)_privacyIdentifiersForFeature:(unint64_t)a3;
-+ (id)_privacyIdentifiersForFeatures:(id)a3;
-+ (id)_stateStringForFeature:(unint64_t)a3 withDataSource:(id)a4 withFeatureState:(id)a5;
++ (BOOL)_isSettingsFeature:(unint64_t)feature;
++ (id)_accessoryViewForFeature:(unint64_t)feature;
++ (id)_createFeatureCardForDataTransferMethod:(unint64_t)method deviceName:(id)name lastBackupDate:(id)date;
++ (id)_determineIfFeatureIsInExpress:(unint64_t)express withDataSource:(id)source;
++ (id)_localizedDescriptionForFeature:(unint64_t)feature;
++ (id)_localizedNameForFeature:(unint64_t)feature;
++ (id)_privacyIdentifiersForFeature:(unint64_t)feature;
++ (id)_privacyIdentifiersForFeatures:(id)features;
++ (id)_stateStringForFeature:(unint64_t)feature withDataSource:(id)source withFeatureState:(id)state;
 - (BOOL)controllerNeedsToRun;
 - (BuddyExpressWelcomeController)init;
-- (id)_createFeatureCardForApplePay:(id)a3;
-- (id)_createFeatureCardForConnections:(id)a3;
-- (id)_createFeatureCardForSettings:(id)a3 withDataSource:(id)a4;
-- (id)_detailForDataSourceDeviceClass:(id)a3;
+- (id)_createFeatureCardForApplePay:(id)pay;
+- (id)_createFeatureCardForConnections:(id)connections;
+- (id)_createFeatureCardForSettings:(id)settings withDataSource:(id)source;
+- (id)_detailForDataSourceDeviceClass:(id)class;
 - (id)dateForChosenBackup;
 - (id)deviceNameForChosenBackup;
 - (unint64_t)dataTransferMethod;
-- (void)_addFeatureCardsForFeatures:(id)a3;
+- (void)_addFeatureCardsForFeatures:(id)features;
 - (void)_addLearnMoreButton;
 - (void)_learnMoreTapped;
-- (void)_populateDataSourcesForDataProvider:(id)a3 completion:(id)a4;
-- (void)_recordAnalyticsEventForDataProvider:(id)a3 presented:(BOOL)a4 customized:(BOOL)a5;
+- (void)_populateDataSourcesForDataProvider:(id)provider completion:(id)completion;
+- (void)_recordAnalyticsEventForDataProvider:(id)provider presented:(BOOL)presented customized:(BOOL)customized;
 - (void)continueTapped;
 - (void)controllerWasPopped;
-- (void)createBackupDataSource:(id)a3;
-- (void)createCloudDataSource:(id)a3;
-- (void)createDataProvider:(id)a3;
-- (void)createDataProviderWithCustomization:(id)a3 completion:(id)a4;
-- (void)createWalletProvisionalContextUsingDataProvider:(id)a3 completion:(id)a4;
+- (void)createBackupDataSource:(id)source;
+- (void)createCloudDataSource:(id)source;
+- (void)createDataProvider:(id)provider;
+- (void)createDataProviderWithCustomization:(id)customization completion:(id)completion;
+- (void)createWalletProvisionalContextUsingDataProvider:(id)provider completion:(id)completion;
 - (void)customizeTapped;
-- (void)finishFlowItemWithDidApplyExpressSettings:(BOOL)a3 didCustomize:(BOOL)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
-- (void)prepareStateForExpressFeatures:(id)a3 withDataSource:(id)a4;
+- (void)finishFlowItemWithDidApplyExpressSettings:(BOOL)settings didCustomize:(BOOL)customize;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
+- (void)prepareStateForExpressFeatures:(id)features withDataSource:(id)source;
 - (void)startOver;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -74,63 +74,63 @@
 
 - (void)viewDidLoad
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
   v19.receiver = self;
   v19.super_class = BuddyExpressWelcomeController;
   [(BuddyExpressWelcomeController *)&v19 viewDidLoad];
-  v2 = v21;
+  v2 = selfCopy;
   v3 = +[NSBundle mainBundle];
   v4 = [(NSBundle *)v3 localizedStringForKey:@"CONTINUE" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v2 addBoldButton:v4 action:"continueTapped"];
 
-  v5 = v21;
+  v5 = selfCopy;
   v6 = +[NSBundle mainBundle];
   v7 = [(NSBundle *)v6 localizedStringForKey:@"CUSTOMIZE" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v5 addLinkButton:v7 action:"customizeTapped"];
 
-  v8 = [(BuddyExpressWelcomeController *)v21 headerView];
-  v9 = v21;
-  v10 = [(BuddyExpressWelcomeController *)v21 expressSetupDataProvider];
-  v11 = [(BYExpressSetupDataProvider *)v10 resolvedDataSource];
-  v12 = [(BYExpressSetupDataSource *)v11 sourceDeviceClass];
-  v13 = [(BuddyExpressWelcomeController *)v9 _detailForDataSourceDeviceClass:v12];
-  [v8 setDetailText:v13];
+  headerView = [(BuddyExpressWelcomeController *)selfCopy headerView];
+  v9 = selfCopy;
+  expressSetupDataProvider = [(BuddyExpressWelcomeController *)selfCopy expressSetupDataProvider];
+  resolvedDataSource = [(BYExpressSetupDataProvider *)expressSetupDataProvider resolvedDataSource];
+  sourceDeviceClass = [(BYExpressSetupDataSource *)resolvedDataSource sourceDeviceClass];
+  v13 = [(BuddyExpressWelcomeController *)v9 _detailForDataSourceDeviceClass:sourceDeviceClass];
+  [headerView setDetailText:v13];
 
-  v14 = [(BuddyExpressWelcomeController *)v21 privacyIdentifiers];
-  v15 = [(NSArray *)v14 count];
+  privacyIdentifiers = [(BuddyExpressWelcomeController *)selfCopy privacyIdentifiers];
+  v15 = [(NSArray *)privacyIdentifiers count];
 
   if (v15)
   {
-    [(BuddyExpressWelcomeController *)v21 _addLearnMoreButton];
+    [(BuddyExpressWelcomeController *)selfCopy _addLearnMoreButton];
   }
 
-  v16 = v21;
-  v17 = [(BuddyExpressWelcomeController *)v21 expressSetupDataProvider];
-  v18 = [(BYExpressSetupDataProvider *)v17 expressSetupFeatures];
-  [(BuddyExpressWelcomeController *)v16 _addFeatureCardsForFeatures:v18];
+  v16 = selfCopy;
+  expressSetupDataProvider2 = [(BuddyExpressWelcomeController *)selfCopy expressSetupDataProvider];
+  expressSetupFeatures = [(BYExpressSetupDataProvider *)expressSetupDataProvider2 expressSetupFeatures];
+  [(BuddyExpressWelcomeController *)v16 _addFeatureCardsForFeatures:expressSetupFeatures];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  appearCopy = appear;
   v11.receiver = self;
   v11.super_class = BuddyExpressWelcomeController;
-  [(BuddyExpressWelcomeController *)&v11 viewDidAppear:a3];
-  v3 = [(BuddyExpressWelcomeController *)v14 miscState];
-  [(BuddyMiscState *)v3 setUserChoseExpress:0];
+  [(BuddyExpressWelcomeController *)&v11 viewDidAppear:appear];
+  miscState = [(BuddyExpressWelcomeController *)selfCopy miscState];
+  [(BuddyMiscState *)miscState setUserChoseExpress:0];
 
-  v4 = [(BuddyExpressWelcomeController *)v14 expressSettingsAndAnalyticsQueue];
+  expressSettingsAndAnalyticsQueue = [(BuddyExpressWelcomeController *)selfCopy expressSettingsAndAnalyticsQueue];
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_1000DC488;
   v9 = &unk_10032B0D0;
-  v10 = v14;
-  dispatch_async(v4, &v6);
+  v10 = selfCopy;
+  dispatch_async(expressSettingsAndAnalyticsQueue, &v6);
 
-  v5 = [(BuddyExpressWelcomeController *)v14 pendingRestoreState:v6];
+  v5 = [(BuddyExpressWelcomeController *)selfCopy pendingRestoreState:v6];
   [(BuddyPendingRestoreState *)v5 setAttemptedBackupItem:0];
 
   objc_storeStrong(&v10, 0);
@@ -138,31 +138,31 @@
 
 - (void)continueTapped
 {
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
-  v2 = [(BuddyExpressWelcomeController *)self view];
-  v3 = [v2 window];
-  [v3 setUserInteractionEnabled:0];
+  view = [(BuddyExpressWelcomeController *)self view];
+  window = [view window];
+  [window setUserInteractionEnabled:0];
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v13 identifier:v5];
+  [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:selfCopy identifier:v5];
 
-  v6 = [(BuddyExpressWelcomeController *)v13 expressSettingsAndAnalyticsQueue];
+  expressSettingsAndAnalyticsQueue = [(BuddyExpressWelcomeController *)selfCopy expressSettingsAndAnalyticsQueue];
   block = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_1000DC654;
   v11 = &unk_10032B0D0;
-  v12[0] = v13;
-  dispatch_async(v6, &block);
+  v12[0] = selfCopy;
+  dispatch_async(expressSettingsAndAnalyticsQueue, &block);
 
   objc_storeStrong(v12, 0);
 }
 
 - (void)customizeTapped
 {
-  v19 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v17 = OS_LOG_TYPE_DEFAULT;
@@ -175,97 +175,97 @@
   }
 
   objc_storeStrong(oslog, 0);
-  v4 = [(BuddyExpressWelcomeController *)v19 view];
-  v5 = [v4 window];
-  [v5 setUserInteractionEnabled:0];
+  view = [(BuddyExpressWelcomeController *)selfCopy view];
+  window = [view window];
+  [window setUserInteractionEnabled:0];
 
-  v6 = v19;
+  v6 = selfCopy;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v6 identifier:v8];
 
-  v9 = [(BuddyExpressWelcomeController *)v19 expressSettingsAndAnalyticsQueue];
+  expressSettingsAndAnalyticsQueue = [(BuddyExpressWelcomeController *)selfCopy expressSettingsAndAnalyticsQueue];
   block = _NSConcreteStackBlock;
   v11 = -1073741824;
   v12 = 0;
   v13 = sub_1000DC97C;
   v14 = &unk_10032B0D0;
-  v15 = v19;
-  dispatch_async(v9, &block);
+  v15 = selfCopy;
+  dispatch_async(expressSettingsAndAnalyticsQueue, &block);
 
   objc_storeStrong(&v15, 0);
 }
 
-- (void)finishFlowItemWithDidApplyExpressSettings:(BOOL)a3 didCustomize:(BOOL)a4
+- (void)finishFlowItemWithDidApplyExpressSettings:(BOOL)settings didCustomize:(BOOL)customize
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
-  v4 = [(BuddyExpressWelcomeController *)self expressSettingsAndAnalyticsQueue];
+  settingsCopy = settings;
+  customizeCopy = customize;
+  expressSettingsAndAnalyticsQueue = [(BuddyExpressWelcomeController *)self expressSettingsAndAnalyticsQueue];
   v5 = _NSConcreteStackBlock;
   v6 = -1073741824;
   v7 = 0;
   v8 = sub_1000DCACC;
   v9 = &unk_10032C7B8;
-  v10 = v16;
-  v11 = v13;
-  v12 = v14;
-  dispatch_async(v4, &v5);
+  v10 = selfCopy;
+  v11 = customizeCopy;
+  v12 = settingsCopy;
+  dispatch_async(expressSettingsAndAnalyticsQueue, &v5);
 
   objc_storeStrong(&v10, 0);
 }
 
-- (void)createDataProvider:(id)a3
+- (void)createDataProvider:(id)provider
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyExpressWelcomeController *)v4 createDataProviderWithCustomization:0 completion:location[0]];
+  objc_storeStrong(location, provider);
+  [(BuddyExpressWelcomeController *)selfCopy createDataProviderWithCustomization:0 completion:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)createDataProviderWithCustomization:(id)a3 completion:(id)a4
+- (void)createDataProviderWithCustomization:(id)customization completion:(id)completion
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, customization);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, completion);
   v5 = [BYExpressSetupDataProvider alloc];
-  v23 = [(BuddyExpressWelcomeController *)v44 chronicle];
-  v6 = [(BuddyExpressWelcomeController *)v44 displayZoomExecutor];
-  v7 = [(BuddyExpressWelcomeController *)v44 capabilities];
-  v8 = [(BuddyExpressWelcomeController *)v44 settingsManager];
-  v9 = [(BuddyExpressWelcomeController *)v44 buddyPreferences];
-  v24 = [(BuddyExpressWelcomeController *)v44 buddyPreferencesExcludedFromBackup];
-  v10 = [(BuddyExpressWelcomeController *)v44 managedConfiguration];
-  v11 = [(BuddyExpressWelcomeController *)v44 deviceProvider];
-  v12 = [(BuddyExpressWelcomeController *)v44 expressSettingsCache];
-  v13 = [(BuddyExpressWelcomeController *)v44 iPadMultitaskingModeManager];
-  v14 = [(BuddyExpressWelcomeController *)v44 flowItemDispositionProvider];
-  v41 = [(BYExpressSetupDataProvider *)v5 initWithChronicle:v23 displayZoomExecutor:v6 capabilities:v7 settingsManager:v8 buddyPreferences:v9 buddyPreferencesExcludedFromBackup:v24 managedConfiguration:v10 deviceProvider:v11 expressSettingsCache:v12 iPadMultitaskingManager:v13 flowItemDispositionProvider:v14];
+  chronicle = [(BuddyExpressWelcomeController *)selfCopy chronicle];
+  displayZoomExecutor = [(BuddyExpressWelcomeController *)selfCopy displayZoomExecutor];
+  capabilities = [(BuddyExpressWelcomeController *)selfCopy capabilities];
+  settingsManager = [(BuddyExpressWelcomeController *)selfCopy settingsManager];
+  buddyPreferences = [(BuddyExpressWelcomeController *)selfCopy buddyPreferences];
+  buddyPreferencesExcludedFromBackup = [(BuddyExpressWelcomeController *)selfCopy buddyPreferencesExcludedFromBackup];
+  managedConfiguration = [(BuddyExpressWelcomeController *)selfCopy managedConfiguration];
+  deviceProvider = [(BuddyExpressWelcomeController *)selfCopy deviceProvider];
+  expressSettingsCache = [(BuddyExpressWelcomeController *)selfCopy expressSettingsCache];
+  iPadMultitaskingModeManager = [(BuddyExpressWelcomeController *)selfCopy iPadMultitaskingModeManager];
+  flowItemDispositionProvider = [(BuddyExpressWelcomeController *)selfCopy flowItemDispositionProvider];
+  v41 = [(BYExpressSetupDataProvider *)v5 initWithChronicle:chronicle displayZoomExecutor:displayZoomExecutor capabilities:capabilities settingsManager:settingsManager buddyPreferences:buddyPreferences buddyPreferencesExcludedFromBackup:buddyPreferencesExcludedFromBackup managedConfiguration:managedConfiguration deviceProvider:deviceProvider expressSettingsCache:expressSettingsCache iPadMultitaskingManager:iPadMultitaskingModeManager flowItemDispositionProvider:flowItemDispositionProvider];
 
-  v15 = [(BuddyExpressWelcomeController *)v44 miscState];
-  [v41 setMiscState:v15];
+  miscState = [(BuddyExpressWelcomeController *)selfCopy miscState];
+  [v41 setMiscState:miscState];
 
-  v16 = [(BuddyExpressWelcomeController *)v44 pendingRestoreState];
-  v17 = [(BuddyPendingRestoreState *)v16 backupItem];
+  pendingRestoreState = [(BuddyExpressWelcomeController *)selfCopy pendingRestoreState];
+  backupItem = [(BuddyPendingRestoreState *)pendingRestoreState backupItem];
   v39 = 0;
   v37 = 0;
-  v18 = 1;
-  if (!v17)
+  migrationInProgressOrCompleted = 1;
+  if (!backupItem)
   {
-    v40 = [(BuddyExpressWelcomeController *)v44 miscState];
+    miscState2 = [(BuddyExpressWelcomeController *)selfCopy miscState];
     v39 = 1;
-    v38 = [(BuddyMiscState *)v40 migrationManager];
+    migrationManager = [(BuddyMiscState *)miscState2 migrationManager];
     v37 = 1;
-    v18 = [v38 migrationInProgressOrCompleted];
+    migrationInProgressOrCompleted = [migrationManager migrationInProgressOrCompleted];
   }
 
-  [v41 setWillRestoreOrMigrate:v18 & 1];
+  [v41 setWillRestoreOrMigrate:migrationInProgressOrCompleted & 1];
   if (v37)
   {
   }
@@ -274,21 +274,21 @@
   {
   }
 
-  v19 = [(BuddyExpressWelcomeController *)v44 pendingRestoreState];
-  v20 = [(BuddyPendingRestoreState *)v19 backupItem];
+  pendingRestoreState2 = [(BuddyExpressWelcomeController *)selfCopy pendingRestoreState];
+  backupItem2 = [(BuddyPendingRestoreState *)pendingRestoreState2 backupItem];
   v35 = 0;
   v33 = 0;
-  v21 = 1;
-  if (!v20)
+  willMigrate = 1;
+  if (!backupItem2)
   {
-    v36 = [(BuddyExpressWelcomeController *)v44 miscState];
+    miscState3 = [(BuddyExpressWelcomeController *)selfCopy miscState];
     v35 = 1;
-    v34 = [v36 migrationManager];
+    migrationManager2 = [miscState3 migrationManager];
     v33 = 1;
-    v21 = [v34 willMigrate];
+    willMigrate = [migrationManager2 willMigrate];
   }
 
-  [v41 setWillRestoreOrReallyMigrate:v21 & 1];
+  [v41 setWillRestoreOrReallyMigrate:willMigrate & 1];
   if (v33)
   {
   }
@@ -302,14 +302,14 @@
     (*(location[0] + 2))(location[0], v41);
   }
 
-  v22 = v44;
+  v22 = selfCopy;
   v25 = _NSConcreteStackBlock;
   v26 = -1073741824;
   v27 = 0;
   v28 = sub_1000DD1F4;
   v29 = &unk_10032BC78;
   v30 = v41;
-  v31 = v44;
+  v31 = selfCopy;
   v32 = v42;
   [(BuddyExpressWelcomeController *)v22 _populateDataSourcesForDataProvider:v41 completion:&v25];
   objc_storeStrong(&v32, 0);
@@ -320,15 +320,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)createBackupDataSource:(id)a3
+- (void)createBackupDataSource:(id)source
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyExpressWelcomeController *)v16 pendingRestoreState];
-  v4 = [(BuddyPendingRestoreState *)v3 backupItem];
-  v5 = v4 == 0;
+  objc_storeStrong(location, source);
+  pendingRestoreState = [(BuddyExpressWelcomeController *)selfCopy pendingRestoreState];
+  backupItem = [(BuddyPendingRestoreState *)pendingRestoreState backupItem];
+  v5 = backupItem == 0;
 
   if (v5)
   {
@@ -344,7 +344,7 @@
     v9 = 0;
     v10 = sub_1000DD4FC;
     v11 = &unk_10032AFD0;
-    v12 = v16;
+    v12 = selfCopy;
     v13 = location[0];
     dispatch_async(v6, &v7);
 
@@ -358,25 +358,25 @@
 
 - (unint64_t)dataTransferMethod
 {
-  v2 = [(BuddyExpressWelcomeController *)self setupMethod];
-  v3 = [(BuddySetupMethod *)v2 dataTransferMethod];
+  setupMethod = [(BuddyExpressWelcomeController *)self setupMethod];
+  dataTransferMethod = [(BuddySetupMethod *)setupMethod dataTransferMethod];
 
-  if (!v3)
+  if (!dataTransferMethod)
   {
     return 0;
   }
 
-  if (v3 == 1)
+  if (dataTransferMethod == 1)
   {
     return 1;
   }
 
-  if (v3 == 2)
+  if (dataTransferMethod == 2)
   {
     return 3;
   }
 
-  if (v3 == 3)
+  if (dataTransferMethod == 3)
   {
     return 4;
   }
@@ -384,19 +384,19 @@
   return v5;
 }
 
-- (void)createWalletProvisionalContextUsingDataProvider:(id)a3 completion:(id)a4
+- (void)createWalletProvisionalContextUsingDataProvider:(id)provider completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = [location[0] resolvedDataSource];
-  v13 = [v5 walletMetadata];
+  objc_storeStrong(&v14, completion);
+  resolvedDataSource = [location[0] resolvedDataSource];
+  walletMetadata = [resolvedDataSource walletMetadata];
 
-  v6 = [sub_1000DD810() sharedInstance];
-  [v6 setBackupMetadata:v13];
+  sharedInstance = [sub_1000DD810() sharedInstance];
+  [sharedInstance setBackupMetadata:walletMetadata];
 
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
@@ -406,17 +406,17 @@
   v12 = v14;
   [BuddyPaymentController setupAssistantExpressProvisioningContext:&v7];
   objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&walletMetadata, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)createCloudDataSource:(id)a3
+- (void)createCloudDataSource:(id)source
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   v9 = objc_alloc_init(SASExpressCloudSettings);
   v3 = _NSConcreteStackBlock;
   v4 = -1073741824;
@@ -432,71 +432,71 @@
 
 - (id)dateForChosenBackup
 {
-  v2 = [(BuddyExpressWelcomeController *)self pendingRestoreState];
-  v3 = [(BuddyPendingRestoreState *)v2 backupItem];
-  v4 = v3 == 0;
+  pendingRestoreState = [(BuddyExpressWelcomeController *)self pendingRestoreState];
+  backupItem = [(BuddyPendingRestoreState *)pendingRestoreState backupItem];
+  v4 = backupItem == 0;
 
   if (v4)
   {
-    v12 = 0;
+    completionDate2 = 0;
   }
 
   else
   {
-    v5 = [(BuddyExpressWelcomeController *)self backupDeviceController];
-    v6 = [(BFFBackupDeviceController *)v5 completionDate];
+    backupDeviceController = [(BuddyExpressWelcomeController *)self backupDeviceController];
+    completionDate = [(BFFBackupDeviceController *)backupDeviceController completionDate];
 
-    if (v6)
+    if (completionDate)
     {
-      v7 = [(BuddyExpressWelcomeController *)self backupDeviceController];
-      v12 = [(BFFBackupDeviceController *)v7 completionDate];
+      backupDeviceController2 = [(BuddyExpressWelcomeController *)self backupDeviceController];
+      completionDate2 = [(BFFBackupDeviceController *)backupDeviceController2 completionDate];
     }
 
     else
     {
-      v7 = [(BuddyExpressWelcomeController *)self pendingRestoreState];
-      v8 = [(BFFBackupDeviceController *)v7 backupItem];
-      v9 = [v8 snapshot];
-      v12 = [v9 date];
+      backupDeviceController2 = [(BuddyExpressWelcomeController *)self pendingRestoreState];
+      backupItem2 = [(BFFBackupDeviceController *)backupDeviceController2 backupItem];
+      snapshot = [backupItem2 snapshot];
+      completionDate2 = [snapshot date];
     }
   }
 
-  return v12;
+  return completionDate2;
 }
 
 - (id)deviceNameForChosenBackup
 {
-  v2 = [(BuddyExpressWelcomeController *)self pendingRestoreState];
-  v3 = [(BuddyPendingRestoreState *)v2 backupItem];
-  v4 = v3 == 0;
+  pendingRestoreState = [(BuddyExpressWelcomeController *)self pendingRestoreState];
+  backupItem = [(BuddyPendingRestoreState *)pendingRestoreState backupItem];
+  v4 = backupItem == 0;
 
   if (v4)
   {
-    v10 = 0;
+    deviceName = 0;
   }
 
   else
   {
-    v5 = [(BuddyExpressWelcomeController *)self pendingRestoreState];
-    v6 = [(BuddyPendingRestoreState *)v5 backupItem];
-    v7 = [(RestorableBackupItem *)v6 snapshot];
-    v10 = [(MBSnapshot *)v7 deviceName];
+    pendingRestoreState2 = [(BuddyExpressWelcomeController *)self pendingRestoreState];
+    backupItem2 = [(BuddyPendingRestoreState *)pendingRestoreState2 backupItem];
+    snapshot = [(RestorableBackupItem *)backupItem2 snapshot];
+    deviceName = [(MBSnapshot *)snapshot deviceName];
   }
 
-  return v10;
+  return deviceName;
 }
 
-- (void)_populateDataSourcesForDataProvider:(id)a3 completion:(id)a4
+- (void)_populateDataSourcesForDataProvider:(id)provider completion:(id)completion
 {
-  v67 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, provider);
   v65 = 0;
-  objc_storeStrong(&v65, a4);
-  v5 = [(BuddyExpressWelcomeController *)v67 proximitySetupController];
-  v6 = [(ProximitySetupController *)v5 expressDataSource];
-  [location[0] setProximitySetupDataSource:v6];
+  objc_storeStrong(&v65, completion);
+  proximitySetupController = [(BuddyExpressWelcomeController *)selfCopy proximitySetupController];
+  expressDataSource = [(ProximitySetupController *)proximitySetupController expressDataSource];
+  [location[0] setProximitySetupDataSource:expressDataSource];
 
   v64 = dispatch_group_create();
   dispatch_group_enter(v64);
@@ -529,7 +529,7 @@
 
   objc_storeStrong(&v57, 0);
   v63 = v62;
-  v13 = v67;
+  v13 = selfCopy;
   v48 = _NSConcreteStackBlock;
   v49 = -1073741824;
   v50 = 0;
@@ -571,7 +571,7 @@
   objc_storeStrong(&oslog, 0);
   v46 = v44;
   v47 = v45;
-  v20 = v67;
+  v20 = selfCopy;
   v31 = _NSConcreteStackBlock;
   v32 = -1073741824;
   v33 = 0;
@@ -589,7 +589,7 @@
   v25 = 0;
   v26 = sub_1000DE7FC;
   v27 = &unk_10032BC78;
-  v28 = v67;
+  v28 = selfCopy;
   v29 = location[0];
   v30 = v65;
   dispatch_group_notify(v21, v22, &block);
@@ -606,12 +606,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_detailForDataSourceDeviceClass:(id)a3
+- (id)_detailForDataSourceDeviceClass:(id)class
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, class);
   v10 = MGCopyAnswer();
   if ([v10 isEqualToString:location[0]])
   {
@@ -656,26 +656,26 @@
 
 - (void)_addLearnMoreButton
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = +[OBHeaderAccessoryButton accessoryButton];
   v2 = +[NSBundle mainBundle];
   v3 = [(NSBundle *)v2 localizedStringForKey:@"LEARN_MORE_ELLIPSIS" value:&stru_10032F900 table:@"Localizable"];
   [location[0] setTitle:v3 forState:0];
 
-  [location[0] addTarget:v6 action:"_learnMoreTapped" forControlEvents:0x2000];
-  v4 = [(BuddyExpressWelcomeController *)v6 headerView];
-  [v4 addAccessoryButton:location[0]];
+  [location[0] addTarget:selfCopy action:"_learnMoreTapped" forControlEvents:0x2000];
+  headerView = [(BuddyExpressWelcomeController *)selfCopy headerView];
+  [headerView addAccessoryButton:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-+ (id)_privacyIdentifiersForFeatures:(id)a3
++ (id)_privacyIdentifiersForFeatures:(id)features
 {
-  v14 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, features);
   v12 = objc_alloc_init(NSMutableArray);
   memset(__b, 0, sizeof(__b));
   v3 = location[0];
@@ -693,7 +693,7 @@
         }
 
         v11 = *(__b[1] + 8 * i);
-        v9 = [v14 _privacyIdentifiersForFeature:{objc_msgSend(v11, "unsignedIntegerValue")}];
+        v9 = [selfCopy _privacyIdentifiersForFeature:{objc_msgSend(v11, "unsignedIntegerValue")}];
         if (v9)
         {
           [v12 addObjectsFromArray:v9];
@@ -714,53 +714,53 @@
   return v7;
 }
 
-+ (id)_privacyIdentifiersForFeature:(unint64_t)a3
++ (id)_privacyIdentifiersForFeature:(unint64_t)feature
 {
-  switch(a3)
+  switch(feature)
   {
     case 1uLL:
       v11 = BYPrivacyLocationServicesIdentifier;
-      v4 = [NSArray arrayWithObjects:&v11 count:1, 1, a2, a1];
+      v4 = [NSArray arrayWithObjects:&v11 count:1, 1, a2, self];
       goto LABEL_19;
     case 2uLL:
       v10 = BYPrivacyAnalyticsDeviceIdentifier;
-      v4 = [NSArray arrayWithObjects:&v10 count:1, 2, a2, a1];
+      v4 = [NSArray arrayWithObjects:&v10 count:1, 2, a2, self];
       goto LABEL_19;
     case 3uLL:
       v9 = BYPrivacyAnalyticsAppIdentifier;
-      v4 = [NSArray arrayWithObjects:&v9 count:1, 3, a2, a1];
+      v4 = [NSArray arrayWithObjects:&v9 count:1, 3, a2, self];
       goto LABEL_19;
     case 4uLL:
       v8[0] = BYPrivacyAnalyticsDeviceIdentifier;
       v8[1] = BYPrivacyAnalyticsAppIdentifier;
-      v4 = [NSArray arrayWithObjects:v8 count:2, 4, a2, a1];
+      v4 = [NSArray arrayWithObjects:v8 count:2, 4, a2, self];
       goto LABEL_19;
     case 5uLL:
       v7 = BYPrivacySiriIdentifier;
-      v4 = [NSArray arrayWithObjects:&v7 count:1, 5, a2, a1];
+      v4 = [NSArray arrayWithObjects:&v7 count:1, 5, a2, self];
       goto LABEL_19;
     case 6uLL:
       v6 = BYPrivacyImproveSiriIdentifier;
-      v4 = [NSArray arrayWithObjects:&v6 count:1, 6, a2, a1];
+      v4 = [NSArray arrayWithObjects:&v6 count:1, 6, a2, self];
       goto LABEL_19;
   }
 
-  if (a3 - 7 < 4)
+  if (feature - 7 < 4)
   {
     goto LABEL_18;
   }
 
-  if (a3 == 11)
+  if (feature == 11)
   {
     v5[0] = BYPrivacyAppleCard;
     v5[1] = BYPrivacyApplePay;
     v5[2] = BYPrivacyApplePayCash;
     v5[3] = BYPrivacyAppleWallet;
-    v4 = [NSArray arrayWithObjects:v5 count:4, 11, a2, a1];
+    v4 = [NSArray arrayWithObjects:v5 count:4, 11, a2, self];
     goto LABEL_19;
   }
 
-  if (a3 - 12 < 3)
+  if (feature - 12 < 3)
   {
 LABEL_18:
     v4 = 0;
@@ -771,22 +771,22 @@ LABEL_19:
   return v4;
 }
 
-- (void)_addFeatureCardsForFeatures:(id)a3
+- (void)_addFeatureCardsForFeatures:(id)features
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, features);
   v44 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v44 setAxis:1];
   [v44 setSpacing:10.0];
   if ([location[0] containsObject:&off_10033D100])
   {
-    v3 = v46;
-    v4 = [(BuddyExpressWelcomeController *)v46 expressSetupDataProvider];
-    v5 = [(BYExpressSetupDataProvider *)v4 walletProvisioningContext];
-    v43 = [(BuddyExpressWelcomeController *)v3 _createFeatureCardForApplePay:v5];
+    v3 = selfCopy;
+    expressSetupDataProvider = [(BuddyExpressWelcomeController *)selfCopy expressSetupDataProvider];
+    walletProvisioningContext = [(BYExpressSetupDataProvider *)expressSetupDataProvider walletProvisioningContext];
+    v43 = [(BuddyExpressWelcomeController *)v3 _createFeatureCardForApplePay:walletProvisioningContext];
 
     [v44 addArrangedSubview:v43];
     objc_storeStrong(&v43, 0);
@@ -794,10 +794,10 @@ LABEL_19:
 
   if ([location[0] containsObject:&off_10033D118])
   {
-    v6 = v46;
-    v7 = [(BuddyExpressWelcomeController *)v46 expressSetupDataProvider];
-    v8 = [(BYExpressSetupDataProvider *)v7 pairedWatches];
-    v42 = [(BuddyExpressWelcomeController *)v6 _createFeatureCardForConnections:v8];
+    v6 = selfCopy;
+    expressSetupDataProvider2 = [(BuddyExpressWelcomeController *)selfCopy expressSetupDataProvider];
+    pairedWatches = [(BYExpressSetupDataProvider *)expressSetupDataProvider2 pairedWatches];
+    v42 = [(BuddyExpressWelcomeController *)v6 _createFeatureCardForConnections:pairedWatches];
 
     [v44 addArrangedSubview:v42];
     objc_storeStrong(&v42, 0);
@@ -807,64 +807,64 @@ LABEL_19:
   [v41 removeObject:&off_10033D118];
   if ([v41 count])
   {
-    v9 = v46;
-    v10 = [(BuddyExpressWelcomeController *)v46 expressSetupDataProvider];
-    v11 = [(BYExpressSetupDataProvider *)v10 resolvedDataSource];
-    v40 = [(BuddyExpressWelcomeController *)v9 _createFeatureCardForSettings:v41 withDataSource:v11];
+    v9 = selfCopy;
+    expressSetupDataProvider3 = [(BuddyExpressWelcomeController *)selfCopy expressSetupDataProvider];
+    resolvedDataSource = [(BYExpressSetupDataProvider *)expressSetupDataProvider3 resolvedDataSource];
+    v40 = [(BuddyExpressWelcomeController *)v9 _createFeatureCardForSettings:v41 withDataSource:resolvedDataSource];
 
     [v44 insertArrangedSubview:v40 atIndex:0];
     objc_storeStrong(&v40, 0);
   }
 
   v12 = objc_opt_class();
-  v13 = [(BuddyExpressWelcomeController *)v46 dataTransferMethod];
-  v14 = [(BuddyExpressWelcomeController *)v46 deviceNameForChosenBackup];
-  v15 = [(BuddyExpressWelcomeController *)v46 dateForChosenBackup];
-  v39 = [v12 _createFeatureCardForDataTransferMethod:v13 deviceName:v14 lastBackupDate:v15];
+  dataTransferMethod = [(BuddyExpressWelcomeController *)selfCopy dataTransferMethod];
+  deviceNameForChosenBackup = [(BuddyExpressWelcomeController *)selfCopy deviceNameForChosenBackup];
+  dateForChosenBackup = [(BuddyExpressWelcomeController *)selfCopy dateForChosenBackup];
+  v39 = [v12 _createFeatureCardForDataTransferMethod:dataTransferMethod deviceName:deviceNameForChosenBackup lastBackupDate:dateForChosenBackup];
 
   if (v39)
   {
     [v44 insertArrangedSubview:v39 atIndex:0];
   }
 
-  v16 = [(BuddyExpressWelcomeController *)v46 contentView];
-  [v16 addSubview:v44];
+  contentView = [(BuddyExpressWelcomeController *)selfCopy contentView];
+  [contentView addSubview:v44];
 
-  v17 = [v44 arrangedSubviews];
-  v18 = [v17 count];
+  arrangedSubviews = [v44 arrangedSubviews];
+  v18 = [arrangedSubviews count];
 
   if (v18 == 1)
   {
-    v19 = [v44 arrangedSubviews];
-    v38 = [v19 firstObject];
+    arrangedSubviews2 = [v44 arrangedSubviews];
+    firstObject = [arrangedSubviews2 firstObject];
 
-    [v38 setExpanded:1];
-    objc_storeStrong(&v38, 0);
+    [firstObject setExpanded:1];
+    objc_storeStrong(&firstObject, 0);
   }
 
-  v20 = [(BuddyExpressWelcomeController *)v46 contentView];
-  v37 = [(BuddyExpressWelcomeController *)v46 contentView];
-  v36 = [v37 topAnchor];
-  v35 = [v44 topAnchor];
-  v34 = [v36 constraintEqualToAnchor:?];
+  contentView2 = [(BuddyExpressWelcomeController *)selfCopy contentView];
+  contentView3 = [(BuddyExpressWelcomeController *)selfCopy contentView];
+  topAnchor = [contentView3 topAnchor];
+  topAnchor2 = [v44 topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:?];
   v47[0] = v34;
-  v33 = [(BuddyExpressWelcomeController *)v46 contentView];
-  v32 = [v33 leadingAnchor];
-  v31 = [v44 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:?];
+  contentView4 = [(BuddyExpressWelcomeController *)selfCopy contentView];
+  leadingAnchor = [contentView4 leadingAnchor];
+  leadingAnchor2 = [v44 leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:?];
   v47[1] = v30;
-  v21 = [(BuddyExpressWelcomeController *)v46 contentView];
-  v22 = [v21 trailingAnchor];
-  v23 = [v44 trailingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  contentView5 = [(BuddyExpressWelcomeController *)selfCopy contentView];
+  trailingAnchor = [contentView5 trailingAnchor];
+  trailingAnchor2 = [v44 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[2] = v24;
-  v25 = [(BuddyExpressWelcomeController *)v46 contentView];
-  v26 = [v25 bottomAnchor];
-  v27 = [v44 bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  contentView6 = [(BuddyExpressWelcomeController *)selfCopy contentView];
+  bottomAnchor = [contentView6 bottomAnchor];
+  bottomAnchor2 = [v44 bottomAnchor];
+  v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v47[3] = v28;
   v29 = [NSArray arrayWithObjects:v47 count:4];
-  [v20 addConstraints:v29];
+  [contentView2 addConstraints:v29];
 
   objc_storeStrong(&v39, 0);
   objc_storeStrong(&v41, 0);
@@ -872,12 +872,12 @@ LABEL_19:
   objc_storeStrong(location, 0);
 }
 
-- (id)_createFeatureCardForConnections:(id)a3
+- (id)_createFeatureCardForConnections:(id)connections
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connections);
   v39 = [UIImage systemImageNamed:@"applewatch.watchface"];
   v38 = objc_alloc_init(NSMutableArray);
   memset(__b, 0, sizeof(__b));
@@ -976,17 +976,17 @@ LABEL_19:
   return v25;
 }
 
-- (id)_createFeatureCardForApplePay:(id)a3
+- (id)_createFeatureCardForApplePay:(id)pay
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, pay);
   v41 = [UIImage _systemImageNamed:@"wallet"];
   v40 = objc_alloc_init(NSMutableArray);
-  v3 = [location[0] setupAssistantCredentials];
-  v4 = [location[0] selectedIndices];
-  v39 = [v3 objectsAtIndexes:v4];
+  setupAssistantCredentials = [location[0] setupAssistantCredentials];
+  selectedIndices = [location[0] selectedIndices];
+  v39 = [setupAssistantCredentials objectsAtIndexes:selectedIndices];
 
   memset(__b, 0, sizeof(__b));
   v5 = v39;
@@ -1004,17 +1004,17 @@ LABEL_19:
         }
 
         v38 = *(__b[1] + 8 * i);
-        v36 = [v38 title];
-        if (v36)
+        title = [v38 title];
+        if (title)
         {
           v9 = v40;
           v10 = +[NSBundle mainBundle];
           v11 = [(NSBundle *)v10 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_APPLE_WALLET_NAME" value:&stru_10032F900 table:@"Localizable"];
-          v12 = [NSString localizedStringWithFormat:v11, v36];
+          v12 = [NSString localizedStringWithFormat:v11, title];
           [v9 addObject:v12];
         }
 
-        objc_storeStrong(&v36, 0);
+        objc_storeStrong(&title, 0);
       }
 
       v6 = [v5 countByEnumeratingWithState:__b objects:v44 count:16];
@@ -1056,12 +1056,12 @@ LABEL_19:
         [v31 setContentMode:1];
         [v31 setTranslatesAutoresizingMaskIntoConstraints:0];
         v24 = [BuddyExpressWalletFeatureCardCell alloc];
-        v25 = [v33 title];
-        v26 = [v33 subtitle];
-        v30 = [(BuddyExpressSetupFeatureCardCell *)v24 initWithTitle:v25 subtitle:v26 state:0 accessoryView:v31];
+        title2 = [v33 title];
+        subtitle = [v33 subtitle];
+        v30 = [(BuddyExpressSetupFeatureCardCell *)v24 initWithTitle:title2 subtitle:subtitle state:0 accessoryView:v31];
 
-        v27 = [v33 uniqueIdentifier];
-        [v30 setUniqueIdentifier:v27];
+        uniqueIdentifier = [v33 uniqueIdentifier];
+        [v30 setUniqueIdentifier:uniqueIdentifier];
 
         [v34 addCardCell:v30];
         objc_storeStrong(&v30, 0);
@@ -1084,21 +1084,21 @@ LABEL_19:
   return v28;
 }
 
-- (id)_createFeatureCardForSettings:(id)a3 withDataSource:(id)a4
+- (id)_createFeatureCardForSettings:(id)settings withDataSource:(id)source
 {
-  v58 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, settings);
   v56 = 0;
-  objc_storeStrong(&v56, a4);
+  objc_storeStrong(&v56, source);
   v5 = location[0];
   v49 = _NSConcreteStackBlock;
   v50 = -1073741824;
   v51 = 0;
   v52 = sub_1000E0BC8;
   v53 = &unk_10032C8A8;
-  v54 = v58;
+  v54 = selfCopy;
   v6 = [NSPredicate predicateWithBlock:&v49];
   v55 = [v5 filteredArrayUsingPredicate:v6];
 
@@ -1108,7 +1108,7 @@ LABEL_19:
   v45 = 0;
   v46 = sub_1000E0C58;
   v47 = &unk_10032C8D0;
-  v48 = v58;
+  v48 = selfCopy;
   v8 = [v7 sortedArrayUsingComparator:&v43];
   v9 = v55;
   v55 = v8;
@@ -1166,14 +1166,14 @@ LABEL_19:
         }
 
         v36 = *(v35[1] + 8 * j);
-        v34 = [v36 unsignedIntegerValue];
-        v33 = [objc_opt_class() _localizedNameForFeature:v34];
-        v32 = [objc_opt_class() _localizedDescriptionForFeature:v34];
-        v24 = [v58 expressSettingsStateCacheInDataSource];
-        v31 = [v24 objectForKeyedSubscript:v36];
+        unsignedIntegerValue = [v36 unsignedIntegerValue];
+        v33 = [objc_opt_class() _localizedNameForFeature:unsignedIntegerValue];
+        v32 = [objc_opt_class() _localizedDescriptionForFeature:unsignedIntegerValue];
+        expressSettingsStateCacheInDataSource = [selfCopy expressSettingsStateCacheInDataSource];
+        v31 = [expressSettingsStateCacheInDataSource objectForKeyedSubscript:v36];
 
-        v30 = [objc_opt_class() _stateStringForFeature:v34 withDataSource:v56 withFeatureState:v31];
-        v29 = [objc_opt_class() _accessoryViewForFeature:v34];
+        v30 = [objc_opt_class() _stateStringForFeature:unsignedIntegerValue withDataSource:v56 withFeatureState:v31];
+        v29 = [objc_opt_class() _accessoryViewForFeature:unsignedIntegerValue];
         v25 = [BuddyExpressSetupFeatureCardCell alloc];
         v28 = [(BuddyExpressSetupFeatureCardCell *)v25 initWithTitle:v33 subtitle:v32 state:v30 accessoryView:v29];
         [v37 addCardCell:v28];
@@ -1204,24 +1204,24 @@ LABEL_19:
   return v26;
 }
 
-+ (id)_createFeatureCardForDataTransferMethod:(unint64_t)a3 deviceName:(id)a4 lastBackupDate:(id)a5
++ (id)_createFeatureCardForDataTransferMethod:(unint64_t)method deviceName:(id)name lastBackupDate:(id)date
 {
-  v42 = a1;
+  selfCopy = self;
   v41 = a2;
-  v40 = a3;
+  methodCopy = method;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, name);
   v38 = 0;
-  objc_storeStrong(&v38, a5);
+  objc_storeStrong(&v38, date);
   v37 = [UIImage _systemImageNamed:@"app.3.stack.3d"];
   v6 = +[NSBundle mainBundle];
   v36 = [(NSBundle *)v6 localizedStringForKey:@"APPS_AND_DATA" value:&stru_10032F900 table:@"Localizable"];
 
   v35 = 0;
   v34 = 0;
-  if (v40)
+  if (methodCopy)
   {
-    if (v40 - 1 < 2)
+    if (methodCopy - 1 < 2)
     {
       v10 = +[NSBundle mainBundle];
       v11 = [(NSBundle *)v10 localizedStringForKey:@"EXPRESS_RESTORE_METHOD_CLOUD" value:&stru_10032F900 table:@"Localizable"];
@@ -1229,7 +1229,7 @@ LABEL_19:
       v35 = v11;
 
       v33 = 0;
-      if (v40 == 2)
+      if (methodCopy == 2)
       {
         v13 = +[NSBundle mainBundle];
         v14 = [(NSBundle *)v13 localizedStringForKey:@"EXPRESS_RESTORE_METHOD_CELL_DESCRIPTION_CLOUD_WITH_BACKUP" value:&stru_10032F900 table:@"Localizable"];
@@ -1258,7 +1258,7 @@ LABEL_19:
       objc_storeStrong(&v33, 0);
     }
 
-    else if (v40 == 3)
+    else if (methodCopy == 3)
     {
       v21 = +[NSBundle mainBundle];
       v22 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"TRANSFER_DIRECTLY"];
@@ -1267,7 +1267,7 @@ LABEL_19:
       v35 = v23;
     }
 
-    else if (v40 == 4)
+    else if (methodCopy == 4)
     {
       v25 = +[NSBundle mainBundle];
       v26 = [(NSBundle *)v25 localizedStringForKey:@"MIGRATE_FROM_ANDROID_DEVICE" value:&stru_10032F900 table:@"Localizable"];
@@ -1303,14 +1303,14 @@ LABEL_19:
   return v29;
 }
 
-+ (BOOL)_isSettingsFeature:(unint64_t)a3
++ (BOOL)_isSettingsFeature:(unint64_t)feature
 {
-  if (a3 - 1 < 5)
+  if (feature - 1 < 5)
   {
     goto LABEL_8;
   }
 
-  switch(a3)
+  switch(feature)
   {
     case 6uLL:
       goto LABEL_9;
@@ -1326,12 +1326,12 @@ LABEL_9:
       goto LABEL_8;
   }
 
-  if (a3 - 10 < 2)
+  if (feature - 10 < 2)
   {
     goto LABEL_9;
   }
 
-  if (a3 - 12 <= 2)
+  if (feature - 12 <= 2)
   {
     goto LABEL_8;
   }
@@ -1339,34 +1339,34 @@ LABEL_9:
   return v4 & 1;
 }
 
-+ (id)_localizedNameForFeature:(unint64_t)a3
++ (id)_localizedNameForFeature:(unint64_t)feature
 {
-  switch(a3)
+  switch(feature)
   {
     case 1uLL:
-      v3 = [NSBundle mainBundle:a3];
+      v3 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v3 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_LOCATION_SERVICES" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 2uLL:
-      v4 = [NSBundle mainBundle:a3];
+      v4 = [NSBundle mainBundle:feature];
       v5 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"EXPRESS_FEATURE_TITLE_DEVICE_ANALYTICS"];
       v17 = [(NSBundle *)v4 localizedStringForKey:v5 value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 3uLL:
-      v6 = [NSBundle mainBundle:a3];
+      v6 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v6 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_APP_ANALYTICS" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 4uLL:
-      v7 = [NSBundle mainBundle:a3];
+      v7 = [NSBundle mainBundle:feature];
       v8 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"EXPRESS_FEATURE_TITLE_DEVICE_AND_APP_ANALYTICS"];
       v17 = [(NSBundle *)v7 localizedStringForKey:v8 value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 5uLL:
-      v9 = [NSBundle mainBundle:a3];
+      v9 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v9 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_SIRI" value:&stru_10032F900 table:@"Localizable"];
 
       break;
@@ -1376,32 +1376,32 @@ LABEL_9:
       v17 = 0;
       break;
     case 7uLL:
-      v10 = [NSBundle mainBundle:a3];
+      v10 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v10 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_SCREEN_TIME" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 9uLL:
-      v11 = [NSBundle mainBundle:a3];
+      v11 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v11 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_APPEARANCE" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 0xBuLL:
-      v12 = [NSBundle mainBundle:a3];
+      v12 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v12 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_APPLE_WALLET" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 0xCuLL:
-      v13 = [NSBundle mainBundle:a3];
+      v13 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v13 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_APPLE_ACTION_BUTTON" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 0xDuLL:
-      v14 = [NSBundle mainBundle:a3];
+      v14 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v14 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_STOLEN_DEVICE_PROTECTION" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 0xEuLL:
-      v15 = [NSBundle mainBundle:a3];
+      v15 = [NSBundle mainBundle:feature];
       v17 = [(NSBundle *)v15 localizedStringForKey:@"EXPRESS_FEATURE_TITLE_IPAD_MULTITASKING" value:&stru_10032F900 table:@"Localizable"];
 
       break;
@@ -1412,34 +1412,34 @@ LABEL_9:
   return v17;
 }
 
-+ (id)_localizedDescriptionForFeature:(unint64_t)a3
++ (id)_localizedDescriptionForFeature:(unint64_t)feature
 {
-  switch(a3)
+  switch(feature)
   {
     case 1uLL:
-      v3 = [NSBundle mainBundle:a3];
+      v3 = [NSBundle mainBundle:feature];
       v18 = [(NSBundle *)v3 localizedStringForKey:@"EXPRESS_FEATURE_DESCRIPTION_LOCATION_SERVICES" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 2uLL:
-      v4 = [NSBundle mainBundle:a3];
+      v4 = [NSBundle mainBundle:feature];
       v5 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"EXPRESS_FEATURE_DESCRIPTION_DEVICE_ANALYTICS"];
       v18 = [(NSBundle *)v4 localizedStringForKey:v5 value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 3uLL:
-      v6 = [NSBundle mainBundle:a3];
+      v6 = [NSBundle mainBundle:feature];
       v18 = [(NSBundle *)v6 localizedStringForKey:@"EXPRESS_FEATURE_DESCRIPTION_APP_ANALYTICS" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 4uLL:
-      v7 = [NSBundle mainBundle:a3];
+      v7 = [NSBundle mainBundle:feature];
       v8 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"EXPRESS_FEATURE_DESCRIPTION_DEVICE_AND_APP_ANALYTICS"];
       v18 = [(NSBundle *)v7 localizedStringForKey:v8 value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 5uLL:
-      v9 = [NSBundle mainBundle:a3];
+      v9 = [NSBundle mainBundle:feature];
       v18 = [(NSBundle *)v9 localizedStringForKey:@"EXPRESS_FEATURE_DESCRIPTION_SIRI" value:&stru_10032F900 table:@"Localizable"];
 
       break;
@@ -1449,12 +1449,12 @@ LABEL_9:
       v18 = 0;
       break;
     case 7uLL:
-      v10 = [NSBundle mainBundle:a3];
+      v10 = [NSBundle mainBundle:feature];
       v18 = [(NSBundle *)v10 localizedStringForKey:@"EXPRESS_FEATURE_DESCRIPTION_SCREEN_TIME" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 9uLL:
-      v11 = [NSBundle mainBundle:a3];
+      v11 = [NSBundle mainBundle:feature];
       v12 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"EXPRESS_FEATURE_DESCRIPTION_APPEARANCE"];
       v18 = [(NSBundle *)v11 localizedStringForKey:v12 value:&stru_10032F900 table:@"Localizable"];
 
@@ -1463,18 +1463,18 @@ LABEL_9:
       v18 = 0;
       break;
     case 0xCuLL:
-      v13 = [NSBundle mainBundle:a3];
+      v13 = [NSBundle mainBundle:feature];
       v14 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"EXPRESS_FEATURE_DESCRIPTION_ACTION_BUTTON"];
       v18 = [(NSBundle *)v13 localizedStringForKey:v14 value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 0xDuLL:
-      v15 = [NSBundle mainBundle:a3];
+      v15 = [NSBundle mainBundle:feature];
       v18 = [(NSBundle *)v15 localizedStringForKey:@"EXPRESS_FEATURE_DESCRIPTION_STOLEN_DEVICE_PROTECTION" value:&stru_10032F900 table:@"Localizable"];
 
       break;
     case 0xEuLL:
-      v16 = [NSBundle mainBundle:a3];
+      v16 = [NSBundle mainBundle:feature];
       v18 = [(NSBundle *)v16 localizedStringForKey:@"EXPRESS_FEATURE_DESCRIPTION_IPAD_MULTITASKING" value:&stru_10032F900 table:@"Localizable"];
 
       break;
@@ -1485,26 +1485,26 @@ LABEL_9:
   return v18;
 }
 
-+ (id)_accessoryViewForFeature:(unint64_t)a3
++ (id)_accessoryViewForFeature:(unint64_t)feature
 {
-  v47 = a1;
+  selfCopy = self;
   v46 = a2;
-  v45 = a3;
+  featureCopy = feature;
   v44 = 0;
   location = 0;
   v42 = 0;
   v41 = +[UIColor systemBlueColor];
-  if (v45 == 1)
+  if (featureCopy == 1)
   {
     objc_storeStrong(&location, @"location.fill");
   }
 
-  else if (v45 - 2 < 3)
+  else if (featureCopy - 2 < 3)
   {
     objc_storeStrong(&location, @"chart.bar.xaxis");
   }
 
-  else if (v45 == 5)
+  else if (featureCopy == 5)
   {
     v3 = [UIImage imageNamed:@"Siri"];
     v4 = v44;
@@ -1513,21 +1513,21 @@ LABEL_9:
 
   else
   {
-    if (v45 == 6)
+    if (featureCopy == 6)
     {
       goto LABEL_22;
     }
 
-    if (v45 != 7)
+    if (featureCopy != 7)
     {
-      if (v45 != 8)
+      if (featureCopy != 8)
       {
-        if (v45 == 9)
+        if (featureCopy == 9)
         {
           objc_storeStrong(&location, @"textformat.size");
         }
 
-        else if (v45 == 10)
+        else if (featureCopy == 10)
         {
           objc_storeStrong(&location, @"applewatch.side.right");
           v7 = +[UIColor systemGray4Color];
@@ -1537,9 +1537,9 @@ LABEL_9:
           v41 = v9;
         }
 
-        else if (v45 != 11)
+        else if (featureCopy != 11)
         {
-          switch(v45)
+          switch(featureCopy)
           {
             case 0xCuLL:
               objc_storeStrong(&location, @"button.vertical.left.press");
@@ -1594,8 +1594,8 @@ LABEL_25:
       v37 = v15;
     }
 
-    v36 = [v37 CGImage];
-    v17 = [[UIImage alloc] initWithCGImage:v36];
+    cGImage = [v37 CGImage];
+    v17 = [[UIImage alloc] initWithCGImage:cGImage];
     v18 = v44;
     v44 = v17;
 
@@ -1632,13 +1632,13 @@ LABEL_25:
     [v34 setBackgroundColor:v41];
     [v34 _setContinuousCornerRadius:8.0];
     [v34 addSubview:v35];
-    v25 = [v35 centerXAnchor];
-    v26 = [v34 centerXAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    centerXAnchor = [v35 centerXAnchor];
+    centerXAnchor2 = [v34 centerXAnchor];
+    v27 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v49[0] = v27;
-    v28 = [v35 centerYAnchor];
-    v29 = [v34 centerYAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    centerYAnchor = [v35 centerYAnchor];
+    centerYAnchor2 = [v34 centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v49[1] = v30;
     v31 = [NSArray arrayWithObjects:v49 count:2];
     [NSLayoutConstraint activateConstraints:v31];
@@ -1659,64 +1659,64 @@ LABEL_34:
   return v32;
 }
 
-+ (id)_determineIfFeatureIsInExpress:(unint64_t)a3 withDataSource:(id)a4
++ (id)_determineIfFeatureIsInExpress:(unint64_t)express withDataSource:(id)source
 {
-  v32 = a1;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  expressCopy = express;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, source);
   v28 = 0;
-  switch(v30)
+  switch(expressCopy)
   {
     case 1uLL:
-      v4 = [location locationServicesOptIn];
+      locationServicesOptIn = [location locationServicesOptIn];
       v5 = v28;
-      v28 = v4;
+      v28 = locationServicesOptIn;
 
       break;
     case 2uLL:
       goto LABEL_23;
     case 3uLL:
-      v11 = [location appAnalyticsOptIn];
+      appAnalyticsOptIn = [location appAnalyticsOptIn];
       v12 = v28;
-      v28 = v11;
+      v28 = appAnalyticsOptIn;
 
       break;
     case 4uLL:
 LABEL_23:
-      v9 = [location deviceAnalyticsOptIn];
+      deviceAnalyticsOptIn = [location deviceAnalyticsOptIn];
       v10 = v28;
-      v28 = v9;
+      v28 = deviceAnalyticsOptIn;
 
       break;
     case 5uLL:
-      v13 = [location siriOptIn];
+      siriOptIn = [location siriOptIn];
       v14 = v28;
-      v28 = v13;
+      v28 = siriOptIn;
 
       break;
     case 6uLL:
       goto LABEL_21;
     case 7uLL:
-      v6 = [location screenTimeEnabled];
+      screenTimeEnabled = [location screenTimeEnabled];
       v7 = v28;
-      v28 = v6;
+      v28 = screenTimeEnabled;
 
       break;
     case 8uLL:
-      v15 = [location softwareUpdateAutoDownloadEnabled];
-      v16 = [v15 BOOLValue];
+      softwareUpdateAutoDownloadEnabled = [location softwareUpdateAutoDownloadEnabled];
+      bOOLValue = [softwareUpdateAutoDownloadEnabled BOOLValue];
       v26 = 0;
-      v17 = 0;
-      if (v16)
+      bOOLValue2 = 0;
+      if (bOOLValue)
       {
-        v27 = [location softwareUpdateAutoUpdateEnabled];
+        softwareUpdateAutoUpdateEnabled = [location softwareUpdateAutoUpdateEnabled];
         v26 = 1;
-        v17 = [v27 BOOLValue];
+        bOOLValue2 = [softwareUpdateAutoUpdateEnabled BOOLValue];
       }
 
-      v18 = [NSNumber numberWithInt:v17 & 1];
+      v18 = [NSNumber numberWithInt:bOOLValue2 & 1];
       v19 = v28;
       v28 = v18;
 
@@ -1726,33 +1726,33 @@ LABEL_23:
 
       break;
     case 9uLL:
-      v8 = [location userInterfaceStyleModeValue];
-      if (!v8)
+      userInterfaceStyleModeValue = [location userInterfaceStyleModeValue];
+      if (!userInterfaceStyleModeValue)
       {
         goto LABEL_21;
       }
 
-      if ((v8 - 1) < 2 || v8 == 100 || v8 == 102)
+      if ((userInterfaceStyleModeValue - 1) < 2 || userInterfaceStyleModeValue == 100 || userInterfaceStyleModeValue == 102)
       {
         objc_storeStrong(&v28, &__kCFBooleanTrue);
       }
 
       break;
     default:
-      if (v30 - 10 >= 3)
+      if (expressCopy - 10 >= 3)
       {
-        if (v30 == 13)
+        if (expressCopy == 13)
         {
-          v20 = [location stolenDeviceProtectionEnabled];
+          stolenDeviceProtectionEnabled = [location stolenDeviceProtectionEnabled];
           v21 = v28;
-          v28 = v20;
+          v28 = stolenDeviceProtectionEnabled;
         }
 
-        else if (v30 == 14)
+        else if (expressCopy == 14)
         {
-          v22 = [location iPadMultitaskingMode];
+          iPadMultitaskingMode = [location iPadMultitaskingMode];
           v23 = v28;
-          v28 = v22;
+          v28 = iPadMultitaskingMode;
         }
 
         break;
@@ -1769,36 +1769,36 @@ LABEL_21:
   return v24;
 }
 
-+ (id)_stateStringForFeature:(unint64_t)a3 withDataSource:(id)a4 withFeatureState:(id)a5
++ (id)_stateStringForFeature:(unint64_t)feature withDataSource:(id)source withFeatureState:(id)state
 {
-  v20 = a1;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
+  featureCopy = feature;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, source);
   v16 = 0;
-  objc_storeStrong(&v16, a5);
-  if (v18 - 1 < 5)
+  objc_storeStrong(&v16, state);
+  if (featureCopy - 1 < 5)
   {
     goto LABEL_19;
   }
 
-  if (v18 == 6)
+  if (featureCopy == 6)
   {
     goto LABEL_31;
   }
 
-  if (v18 - 7 < 2)
+  if (featureCopy - 7 < 2)
   {
     goto LABEL_19;
   }
 
-  if (v18 == 9)
+  if (featureCopy == 9)
   {
-    v6 = [location userInterfaceStyleModeValue];
-    if (v6)
+    userInterfaceStyleModeValue = [location userInterfaceStyleModeValue];
+    if (userInterfaceStyleModeValue)
     {
-      if (v6 == 1)
+      if (userInterfaceStyleModeValue == 1)
       {
         v7 = +[NSBundle mainBundle];
         v21 = [(NSBundle *)v7 localizedStringForKey:@"EXPRESS_FEATURE_STATE_LIGHT" value:&stru_10032F900 table:@"Localizable"];
@@ -1806,7 +1806,7 @@ LABEL_21:
         goto LABEL_32;
       }
 
-      if (v6 == 2)
+      if (userInterfaceStyleModeValue == 2)
       {
         v8 = +[NSBundle mainBundle];
         v21 = [(NSBundle *)v8 localizedStringForKey:@"EXPRESS_FEATURE_STATE_DARK" value:&stru_10032F900 table:@"Localizable"];
@@ -1814,7 +1814,7 @@ LABEL_21:
         goto LABEL_32;
       }
 
-      if (v6 == 100 || v6 == 102)
+      if (userInterfaceStyleModeValue == 100 || userInterfaceStyleModeValue == 102)
       {
         v9 = +[NSBundle mainBundle];
         v21 = [(NSBundle *)v9 localizedStringForKey:@"EXPRESS_FEATURE_STATE_AUTO" value:&stru_10032F900 table:@"Localizable"];
@@ -1826,14 +1826,14 @@ LABEL_21:
     goto LABEL_31;
   }
 
-  if (v18 - 10 >= 2)
+  if (featureCopy - 10 >= 2)
   {
-    if (v18 - 12 >= 2)
+    if (featureCopy - 12 >= 2)
     {
-      if (v18 == 14 && v16)
+      if (featureCopy == 14 && v16)
       {
-        v11 = [v16 unsignedIntValue];
-        if (!v11)
+        unsignedIntValue = [v16 unsignedIntValue];
+        if (!unsignedIntValue)
         {
           v12 = +[NSBundle mainBundle];
           v21 = [(NSBundle *)v12 localizedStringForKey:@"EXPRESS_FEATURE_IPAD_MULTITASKING_FULLSCREEN" value:&stru_10032F900 table:@"Localizable"];
@@ -1841,7 +1841,7 @@ LABEL_21:
           goto LABEL_32;
         }
 
-        if (v11 == 1)
+        if (unsignedIntValue == 1)
         {
           v13 = +[NSBundle mainBundle];
           v21 = [(NSBundle *)v13 localizedStringForKey:@"EXPRESS_FEATURE_IPAD_MULTITASKING_WINDOWED_APPS" value:&stru_10032F900 table:@"Localizable"];
@@ -1884,42 +1884,42 @@ LABEL_32:
 
 - (void)_learnMoreTapped
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyExpressWelcomeController *)self privacyIdentifiers];
-  location[0] = [OBPrivacyPresenter presenterForPrivacyUnifiedAboutWithIdentifiers:v2];
+  privacyIdentifiers = [(BuddyExpressWelcomeController *)self privacyIdentifiers];
+  location[0] = [OBPrivacyPresenter presenterForPrivacyUnifiedAboutWithIdentifiers:privacyIdentifiers];
 
-  [location[0] setPresentingViewController:v4];
+  [location[0] setPresentingViewController:selfCopy];
   [location[0] present];
   objc_storeStrong(location, 0);
 }
 
-- (void)_recordAnalyticsEventForDataProvider:(id)a3 presented:(BOOL)a4 customized:(BOOL)a5
+- (void)_recordAnalyticsEventForDataProvider:(id)provider presented:(BOOL)presented customized:(BOOL)customized
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
-  v19 = a5;
-  v7 = [(BuddyExpressWelcomeController *)v22 expressSettingsAndAnalyticsQueue];
-  dispatch_assert_queue_V2(v7);
+  objc_storeStrong(location, provider);
+  presentedCopy = presented;
+  customizedCopy = customized;
+  expressSettingsAndAnalyticsQueue = [(BuddyExpressWelcomeController *)selfCopy expressSettingsAndAnalyticsQueue];
+  dispatch_assert_queue_V2(expressSettingsAndAnalyticsQueue);
 
   v8 = location[0];
-  v9 = [location[0] resolvedDataSource];
-  v18 = [v8 stringForDataSourceFeatures:v9];
+  resolvedDataSource = [location[0] resolvedDataSource];
+  v18 = [v8 stringForDataSourceFeatures:resolvedDataSource];
 
   v10 = location[0];
-  v11 = [location[0] underlyingDataSource];
-  v17 = [v10 stringForDataSourceFeatures:v11];
+  underlyingDataSource = [location[0] underlyingDataSource];
+  v17 = [v10 stringForDataSourceFeatures:underlyingDataSource];
 
   v16 = +[BYExpressSetupDataProvider stringForDataSourceType:](BYExpressSetupDataProvider, "stringForDataSourceType:", [location[0] dataSourceType]);
-  v12 = [(BuddyExpressWelcomeController *)v22 analyticsManager];
+  analyticsManager = [(BuddyExpressWelcomeController *)selfCopy analyticsManager];
   v23[0] = @"presented";
-  v13 = [NSNumber numberWithBool:v20];
+  v13 = [NSNumber numberWithBool:presentedCopy];
   v24[0] = v13;
   v23[1] = @"customizedSettings";
-  v14 = [NSNumber numberWithBool:v19];
+  v14 = [NSNumber numberWithBool:customizedCopy];
   v24[1] = v14;
   v23[2] = @"resolvedFeatures";
   v24[2] = v18;
@@ -1928,7 +1928,7 @@ LABEL_32:
   v23[4] = @"dataSource";
   v24[4] = v16;
   v15 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:5];
-  [(BYAnalyticsManager *)v12 addEvent:@"com.apple.setupassistant.ios.expressSetup" withPayload:v15 persist:1];
+  [(BYAnalyticsManager *)analyticsManager addEvent:@"com.apple.setupassistant.ios.expressSetup" withPayload:v15 persist:1];
 
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v17, 0);
@@ -1936,14 +1936,14 @@ LABEL_32:
   objc_storeStrong(location, 0);
 }
 
-- (void)prepareStateForExpressFeatures:(id)a3 withDataSource:(id)a4
+- (void)prepareStateForExpressFeatures:(id)features withDataSource:(id)source
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, features);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, source);
   v14 = objc_alloc_init(NSMutableDictionary);
   memset(__b, 0, sizeof(__b));
   v5 = location[0];
@@ -1961,8 +1961,8 @@ LABEL_32:
         }
 
         v13 = *(__b[1] + 8 * i);
-        v11 = [v13 unsignedIntegerValue];
-        v10 = [objc_opt_class() _determineIfFeatureIsInExpress:v11 withDataSource:v15];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
+        v10 = [objc_opt_class() _determineIfFeatureIsInExpress:unsignedIntegerValue withDataSource:v15];
         if (v10)
         {
           [v14 setObject:v10 forKeyedSubscript:v13];
@@ -1978,7 +1978,7 @@ LABEL_32:
   }
 
   v9 = [v14 copy];
-  [(BuddyExpressWelcomeController *)v17 setExpressSettingsStateCacheInDataSource:v9];
+  [(BuddyExpressWelcomeController *)selfCopy setExpressSettingsStateCacheInDataSource:v9];
 
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
@@ -1993,12 +1993,12 @@ LABEL_32:
 
 - (BOOL)controllerNeedsToRun
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
-  v2 = [(BuddyExpressWelcomeController *)self miscState];
-  v3 = [(BuddyMiscState *)v2 userChoseExpress];
+  miscState = [(BuddyExpressWelcomeController *)self miscState];
+  userChoseExpress = [(BuddyMiscState *)miscState userChoseExpress];
 
-  if (v3)
+  if (userChoseExpress)
   {
     v20 = 0;
   }
@@ -2025,11 +2025,11 @@ LABEL_32:
 
     else
     {
-      v6 = [(BuddyExpressWelcomeController *)v19 pendingRestoreState];
-      v7 = [(BuddyPendingRestoreState *)v6 backupItem];
-      v8 = [(BuddyExpressWelcomeController *)v19 pendingRestoreState];
-      v9 = [(BuddyPendingRestoreState *)v8 attemptedBackupItem];
-      v13 = [(RestorableBackupItem *)v7 isEqual:v9];
+      pendingRestoreState = [(BuddyExpressWelcomeController *)selfCopy pendingRestoreState];
+      backupItem = [(BuddyPendingRestoreState *)pendingRestoreState backupItem];
+      pendingRestoreState2 = [(BuddyExpressWelcomeController *)selfCopy pendingRestoreState];
+      attemptedBackupItem = [(BuddyPendingRestoreState *)pendingRestoreState2 attemptedBackupItem];
+      v13 = [(RestorableBackupItem *)backupItem isEqual:attemptedBackupItem];
 
       HasCompletedInitialRun = BYSetupAssistantHasCompletedInitialRun();
       v11 = 0;
@@ -2048,12 +2048,12 @@ LABEL_32:
   return v20 & 1;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v33[0] = 0;
   v33[1] = v33;
   v34 = 838860800;
@@ -2070,7 +2070,7 @@ LABEL_32:
   v32 = 0;
   group = dispatch_group_create();
   dispatch_group_enter(group);
-  v3 = v40;
+  v3 = selfCopy;
   v20 = _NSConcreteStackBlock;
   v21 = -1073741824;
   v22 = 0;
@@ -2095,17 +2095,17 @@ LABEL_32:
   }
 
   v4 = group;
-  v5 = [(BuddyExpressWelcomeController *)v40 expressSettingsAndAnalyticsQueue];
+  expressSettingsAndAnalyticsQueue = [(BuddyExpressWelcomeController *)selfCopy expressSettingsAndAnalyticsQueue];
   block = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_1000E3774;
   v10 = &unk_10032C998;
   v12[1] = v33;
-  v11 = v40;
+  v11 = selfCopy;
   v12[0] = location[0];
   v12[2] = v27;
-  dispatch_group_notify(v4, v5, &block);
+  dispatch_group_notify(v4, expressSettingsAndAnalyticsQueue, &block);
 
   objc_storeStrong(v12, 0);
   objc_storeStrong(&v11, 0);
@@ -2121,14 +2121,14 @@ LABEL_32:
 
 - (void)startOver
 {
-  v2 = [(BuddyExpressWelcomeController *)self miscState];
-  [(BuddyMiscState *)v2 setUserChoseExpress:0];
+  miscState = [(BuddyExpressWelcomeController *)self miscState];
+  [(BuddyMiscState *)miscState setUserChoseExpress:0];
 
-  v3 = [(BuddyExpressWelcomeController *)self miscState];
-  [(BuddyMiscState *)v3 setWalletProvisioningContext:0];
+  miscState2 = [(BuddyExpressWelcomeController *)self miscState];
+  [(BuddyMiscState *)miscState2 setWalletProvisioningContext:0];
 
-  v4 = [(BuddyExpressWelcomeController *)self paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v4 setExpressDataSource:0 features:0];
+  paneFeatureAnalyticsManager = [(BuddyExpressWelcomeController *)self paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager setExpressDataSource:0 features:0];
 }
 
 @end

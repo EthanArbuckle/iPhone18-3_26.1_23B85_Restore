@@ -1,23 +1,23 @@
 @interface OZFxPlugHostPrivateAPI
 - (BOOL)giveEffectUIFocus;
-- (OZFxPlugHostPrivateAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3;
+- (OZFxPlugHostPrivateAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock;
 - (float)blendingGamma;
 - (id).cxx_construct;
-- (id)URLForHostResource:(id)a3 withExtension:(id)a4 subDirectory:(id)a5 inBundle:(id)a6;
-- (id)URLForHostResource:(id)a3 withExtension:(id)a4 subDirectory:(id)a5 inBundleWithIdentifier:(id)a6;
-- (id)URLForHostResource:(id)a3 withExtension:(id)a4 subDirectory:(id)a5 inBundleWithURL:(id)a6;
+- (id)URLForHostResource:(id)resource withExtension:(id)extension subDirectory:(id)directory inBundle:(id)bundle;
+- (id)URLForHostResource:(id)resource withExtension:(id)extension subDirectory:(id)directory inBundleWithIdentifier:(id)identifier;
+- (id)URLForHostResource:(id)resource withExtension:(id)extension subDirectory:(id)directory inBundleWithURL:(id)l;
 - (id)URLForMediaFolder;
 - (void)dealloc;
 @end
 
 @implementation OZFxPlugHostPrivateAPI
 
-- (OZFxPlugHostPrivateAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)a3
+- (OZFxPlugHostPrivateAPI)initWithPluginLock:(shared_ptr<OZFxPlugSharedLock>)lock
 {
-  ptr = a3.__ptr_;
+  ptr = lock.__ptr_;
   v15.receiver = self;
   v15.super_class = OZFxPlugHostPrivateAPI;
-  v4 = [(OZFxPlugHostPrivateAPI *)&v15 init:a3.__ptr_];
+  v4 = [(OZFxPlugHostPrivateAPI *)&v15 init:lock.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -209,30 +209,30 @@ LABEL_11:
   return v5;
 }
 
-- (id)URLForHostResource:(id)a3 withExtension:(id)a4 subDirectory:(id)a5 inBundle:(id)a6
+- (id)URLForHostResource:(id)resource withExtension:(id)extension subDirectory:(id)directory inBundle:(id)bundle
 {
-  v6 = a6;
-  if (!a6)
+  bundleCopy = bundle;
+  if (!bundle)
   {
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleCopy = [MEMORY[0x277CCA8D8] mainBundle];
   }
 
-  return [v6 URLForResource:a3 withExtension:a4 subdirectory:a5];
+  return [bundleCopy URLForResource:resource withExtension:extension subdirectory:directory];
 }
 
-- (id)URLForHostResource:(id)a3 withExtension:(id)a4 subDirectory:(id)a5 inBundleWithIdentifier:(id)a6
+- (id)URLForHostResource:(id)resource withExtension:(id)extension subDirectory:(id)directory inBundleWithIdentifier:(id)identifier
 {
-  if (a6)
+  if (identifier)
   {
-    a6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:a6];
+    identifier = [MEMORY[0x277CCA8D8] bundleWithIdentifier:identifier];
   }
 
-  return [(OZFxPlugHostPrivateAPI *)self URLForHostResource:a3 withExtension:a4 subDirectory:a5 inBundle:a6];
+  return [(OZFxPlugHostPrivateAPI *)self URLForHostResource:resource withExtension:extension subDirectory:directory inBundle:identifier];
 }
 
-- (id)URLForHostResource:(id)a3 withExtension:(id)a4 subDirectory:(id)a5 inBundleWithURL:(id)a6
+- (id)URLForHostResource:(id)resource withExtension:(id)extension subDirectory:(id)directory inBundleWithURL:(id)l
 {
-  if (a6)
+  if (l)
   {
     v10 = 0;
   }
@@ -242,7 +242,7 @@ LABEL_11:
     v10 = [MEMORY[0x277CCA8D8] bundleWithURL:0];
   }
 
-  return [(OZFxPlugHostPrivateAPI *)self URLForHostResource:a3 withExtension:a4 subDirectory:a5 inBundle:v10];
+  return [(OZFxPlugHostPrivateAPI *)self URLForHostResource:resource withExtension:extension subDirectory:directory inBundle:v10];
 }
 
 - (id).cxx_construct

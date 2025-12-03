@@ -1,17 +1,17 @@
 @interface MPSNNLossGradientState
-+ (id)temporaryStateWithCommandBuffer:(id)a3;
-- (MPSNNLossGradientState)initWithResource:(id)a3;
++ (id)temporaryStateWithCommandBuffer:(id)buffer;
+- (MPSNNLossGradientState)initWithResource:(id)resource;
 - (id)debugDescription;
 - (void)dealloc;
 @end
 
 @implementation MPSNNLossGradientState
 
-- (MPSNNLossGradientState)initWithResource:(id)a3
+- (MPSNNLossGradientState)initWithResource:(id)resource
 {
   v4.receiver = self;
   v4.super_class = MPSNNLossGradientState;
-  result = [(MPSState *)&v4 initWithResource:a3];
+  result = [(MPSState *)&v4 initWithResource:resource];
   if (result)
   {
     result->_labelSmoothing = 1.0;
@@ -24,11 +24,11 @@
   return result;
 }
 
-+ (id)temporaryStateWithCommandBuffer:(id)a3
++ (id)temporaryStateWithCommandBuffer:(id)buffer
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MPSNNLossGradientState;
-  result = objc_msgSendSuper2(&v4, sel_temporaryStateWithCommandBuffer_, a3);
+  result = objc_msgSendSuper2(&v4, sel_temporaryStateWithCommandBuffer_, buffer);
   if (result)
   {
     *(result + 73) = 1065353216;

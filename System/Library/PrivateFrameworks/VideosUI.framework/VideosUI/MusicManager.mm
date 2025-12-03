@@ -1,13 +1,13 @@
 @interface MusicManager
-- (void)addSongToMusicWithSongId:(id)a3 isExplicit:(BOOL)a4;
+- (void)addSongToMusicWithSongId:(id)id isExplicit:(BOOL)explicit;
 @end
 
 @implementation MusicManager
 
-- (void)addSongToMusicWithSongId:(id)a3 isExplicit:(BOOL)a4
+- (void)addSongToMusicWithSongId:(id)id isExplicit:(BOOL)explicit
 {
   sub_1E4205F14();
-  v5 = self;
+  selfCopy = self;
   sub_1E3C99814();
 }
 

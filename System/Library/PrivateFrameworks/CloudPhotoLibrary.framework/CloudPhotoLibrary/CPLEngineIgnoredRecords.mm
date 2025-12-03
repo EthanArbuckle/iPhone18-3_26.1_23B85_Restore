@@ -1,84 +1,84 @@
 @interface CPLEngineIgnoredRecords
-- (BOOL)addIgnoredRecord:(id)a3 ignoredDate:(id)a4 otherScopeIndex:(int64_t)a5 error:(id *)a6;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3;
-- (BOOL)removeRecordWithScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)scopeIdentifier:(id)a3 hasIgnoredRecordsBeforeDate:(id)a4;
-- (BOOL)setIgnoredDate:(id)a3 forRecordWithScopedIdentifier:(id)a4 error:(id *)a5;
-- (id)ignoredRecordWithScopedIdentifier:(id)a3;
-- (id)ignoredRecordsBeforeDate:(id)a3 scopeIdentifier:(id)a4 maximumCount:(unint64_t)a5;
-- (id)recordWithScopedIdentifier:(id)a3;
+- (BOOL)addIgnoredRecord:(id)record ignoredDate:(id)date otherScopeIndex:(int64_t)index error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier;
+- (BOOL)removeRecordWithScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)scopeIdentifier:(id)identifier hasIgnoredRecordsBeforeDate:(id)date;
+- (BOOL)setIgnoredDate:(id)date forRecordWithScopedIdentifier:(id)identifier error:(id *)error;
+- (id)ignoredRecordWithScopedIdentifier:(id)identifier;
+- (id)ignoredRecordsBeforeDate:(id)date scopeIdentifier:(id)identifier maximumCount:(unint64_t)count;
+- (id)recordWithScopedIdentifier:(id)identifier;
 @end
 
 @implementation CPLEngineIgnoredRecords
 
-- (BOOL)scopeIdentifier:(id)a3 hasIgnoredRecordsBeforeDate:(id)a4
+- (BOOL)scopeIdentifier:(id)identifier hasIgnoredRecordsBeforeDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CPLEngineStorage *)self platformObject];
-  v9 = [v8 scopeIdentifier:v7 hasIgnoredRecordsBeforeDate:v6];
+  dateCopy = date;
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v9 = [platformObject scopeIdentifier:identifierCopy hasIgnoredRecordsBeforeDate:dateCopy];
 
   return v9;
 }
 
-- (BOOL)setIgnoredDate:(id)a3 forRecordWithScopedIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setIgnoredDate:(id)date forRecordWithScopedIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v10 setIgnoredDate:v9 forRecordWithScopedIdentifier:v8 error:a5];
+  identifierCopy = identifier;
+  dateCopy = date;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject setIgnoredDate:dateCopy forRecordWithScopedIdentifier:identifierCopy error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)ignoredRecordsBeforeDate:(id)a3 scopeIdentifier:(id)a4 maximumCount:(unint64_t)a5
+- (id)ignoredRecordsBeforeDate:(id)date scopeIdentifier:(id)identifier maximumCount:(unint64_t)count
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self platformObject];
-  v11 = [v10 ignoredRecordsBeforeDate:v9 scopeIdentifier:v8 maximumCount:a5];
+  identifierCopy = identifier;
+  dateCopy = date;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v11 = [platformObject ignoredRecordsBeforeDate:dateCopy scopeIdentifier:identifierCopy maximumCount:count];
 
   return v11;
 }
 
-- (id)ignoredRecordWithScopedIdentifier:(id)a3
+- (id)ignoredRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 ignoredRecordWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject ignoredRecordWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v11 = [(CPLEngineStorage *)self platformObject];
-  v12 = [v11 deleteRecordsForScopeIndex:a3 maxCount:a4 deletedCount:a5 error:a6];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v12 = [platformObject deleteRecordsForScopeIndex:index maxCount:count deletedCount:deletedCount error:error];
 
   if (!v12)
   {
     return 0;
   }
 
-  if (*a5)
+  if (*deletedCount)
   {
     return 1;
   }
 
-  v14 = [(CPLEngineStorage *)self platformObject];
+  platformObject2 = [(CPLEngineStorage *)self platformObject];
   v20 = 0;
-  v15 = [v14 popCloudScopedIdentifiersToCheck:&v20 otherScopeIndex:a3 maxCount:a4 deletedCount:a5 error:a6];
+  v15 = [platformObject2 popCloudScopedIdentifiersToCheck:&v20 otherScopeIndex:index maxCount:count deletedCount:deletedCount error:error];
   v16 = v20;
 
   if (v15)
   {
     if ([v16 count])
     {
-      v17 = [(CPLEngineStorage *)self engineStore];
-      v18 = [v17 pendingRecordChecks];
+      engineStore = [(CPLEngineStorage *)self engineStore];
+      pendingRecordChecks = [engineStore pendingRecordChecks];
 
-      v13 = [v18 enqueueCloudScopedIdentifiersToCheck:v16 error:a6];
+      v13 = [pendingRecordChecks enqueueCloudScopedIdentifiersToCheck:v16 error:error];
     }
 
     else
@@ -95,40 +95,40 @@
   return v13;
 }
 
-- (BOOL)removeRecordWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeRecordWithScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 removeRecordWithScopedIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject removeRecordWithScopedIdentifier:identifierCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)addIgnoredRecord:(id)a3 ignoredDate:(id)a4 otherScopeIndex:(int64_t)a5 error:(id *)a6
+- (BOOL)addIgnoredRecord:(id)record ignoredDate:(id)date otherScopeIndex:(int64_t)index error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a6) = [v12 addIgnoredRecord:v11 ignoredDate:v10 otherScopeIndex:a5 error:a6];
+  dateCopy = date;
+  recordCopy = record;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject addIgnoredRecord:recordCopy ignoredDate:dateCopy otherScopeIndex:index error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasRecordWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasRecordWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)recordWithScopedIdentifier:(id)a3
+- (id)recordWithScopedIdentifier:(id)identifier
 {
-  v3 = [(CPLEngineIgnoredRecords *)self ignoredRecordWithScopedIdentifier:a3];
-  v4 = [v3 record];
+  v3 = [(CPLEngineIgnoredRecords *)self ignoredRecordWithScopedIdentifier:identifier];
+  record = [v3 record];
 
-  return v4;
+  return record;
 }
 
 @end

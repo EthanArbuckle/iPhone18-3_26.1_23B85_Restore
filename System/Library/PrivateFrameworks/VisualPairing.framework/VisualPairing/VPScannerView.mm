@@ -1,17 +1,17 @@
 @interface VPScannerView
-- (VPScannerView)initWithCoder:(id)a3;
-- (VPScannerView)initWithFrame:(CGRect)a3;
+- (VPScannerView)initWithCoder:(id)coder;
+- (VPScannerView)initWithFrame:(CGRect)frame;
 - (id)_setupCapture;
-- (id)_setupDevice:(id)a3;
+- (id)_setupDevice:(id)device;
 - (id)initAsProxCard;
-- (void)_handleCaptureSessionInterrupted:(id)a3;
-- (void)_handleCaptureSessionInterruptionEnded:(id)a3;
-- (void)_handleCaptureSessionRuntimeError:(id)a3;
-- (void)_handleCaptureSessionStarted:(id)a3;
-- (void)_handleCaptureSessionStopped:(id)a3;
+- (void)_handleCaptureSessionInterrupted:(id)interrupted;
+- (void)_handleCaptureSessionInterruptionEnded:(id)ended;
+- (void)_handleCaptureSessionRuntimeError:(id)error;
+- (void)_handleCaptureSessionStarted:(id)started;
+- (void)_handleCaptureSessionStopped:(id)stopped;
 - (void)_initCommon;
 - (void)_postMetricAndResetAnalyticsState;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)layoutSubviews;
 - (void)start;
 - (void)stop;
@@ -19,11 +19,11 @@
 
 @implementation VPScannerView
 
-- (VPScannerView)initWithFrame:(CGRect)a3
+- (VPScannerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VPScannerView;
-  v3 = [(VPScannerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VPScannerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -33,12 +33,12 @@
   return v4;
 }
 
-- (VPScannerView)initWithCoder:(id)a3
+- (VPScannerView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VPScannerView;
-  v5 = [(VPScannerView *)&v8 initWithCoder:v4];
+  v5 = [(VPScannerView *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -79,30 +79,30 @@
   [(VPWatermarkReader *)self->_watermarkReader setProgressHandler:&__block_literal_global];
   if (!self->_isProxCardType)
   {
-    v5 = [MEMORY[0x277CD9F90] layer];
+    layer = [MEMORY[0x277CD9F90] layer];
     viewfinderRevealLayer = self->_viewfinderRevealLayer;
-    self->_viewfinderRevealLayer = v5;
+    self->_viewfinderRevealLayer = layer;
 
-    v10 = [MEMORY[0x277D75348] blackColor];
-    -[CAShapeLayer setFillColor:](self->_viewfinderRevealLayer, "setFillColor:", [v10 CGColor]);
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    -[CAShapeLayer setFillColor:](self->_viewfinderRevealLayer, "setFillColor:", [blackColor CGColor]);
 
     LODWORD(v7) = 0.5;
     [(CAShapeLayer *)self->_viewfinderRevealLayer setOpacity:v7];
-    v11 = [(VPScannerView *)self layer];
-    [v11 insertSublayer:self->_viewfinderRevealLayer atIndex:0];
+    layer2 = [(VPScannerView *)self layer];
+    [layer2 insertSublayer:self->_viewfinderRevealLayer atIndex:0];
 
-    v8 = [MEMORY[0x277CD9F90] layer];
+    layer3 = [MEMORY[0x277CD9F90] layer];
     viewfinderBorderLayer = self->_viewfinderBorderLayer;
-    self->_viewfinderBorderLayer = v8;
+    self->_viewfinderBorderLayer = layer3;
 
-    v12 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](self->_viewfinderBorderLayer, "setFillColor:", [v12 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](self->_viewfinderBorderLayer, "setFillColor:", [clearColor CGColor]);
 
-    v13 = [MEMORY[0x277D75348] tableCellBlueTextColor];
-    -[CAShapeLayer setStrokeColor:](self->_viewfinderBorderLayer, "setStrokeColor:", [v13 CGColor]);
+    tableCellBlueTextColor = [MEMORY[0x277D75348] tableCellBlueTextColor];
+    -[CAShapeLayer setStrokeColor:](self->_viewfinderBorderLayer, "setStrokeColor:", [tableCellBlueTextColor CGColor]);
 
-    v14 = [(VPScannerView *)self layer];
-    [v14 insertSublayer:self->_viewfinderBorderLayer atIndex:1];
+    layer4 = [(VPScannerView *)self layer];
+    [layer4 insertSublayer:self->_viewfinderBorderLayer atIndex:1];
   }
 }
 
@@ -119,8 +119,8 @@ void __28__VPScannerView__initCommon__block_invoke()
   v10.receiver = self;
   v10.super_class = VPScannerView;
   [(VPScannerView *)&v10 layoutSubviews];
-  v3 = [(VPScannerView *)self layer];
-  [v3 bounds];
+  layer = [(VPScannerView *)self layer];
+  [layer bounds];
   [(AVCaptureVideoPreviewLayer *)self->_avPreviewLayer setFrame:?];
 
   if (!self->_isProxCardType)
@@ -145,14 +145,14 @@ void __28__VPScannerView__initCommon__block_invoke()
     LogPrintF();
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(VPScannerView *)self setStartDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(VPScannerView *)self setStartDate:date];
 
-  v5 = [(VPScannerView *)self _setupCapture];
-  if (v5)
+  _setupCapture = [(VPScannerView *)self _setupCapture];
+  if (_setupCapture)
   {
-    [(VPScannerView *)self setLatestError:v5];
-    v4 = v5;
+    [(VPScannerView *)self setLatestError:_setupCapture];
+    v4 = _setupCapture;
   }
 
   else
@@ -172,12 +172,12 @@ void __28__VPScannerView__initCommon__block_invoke()
 
   [(VPScannerView *)self _postMetricAndResetAnalyticsState];
   self->_scanning = 0;
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277CE5930] object:0];
-  [v6 removeObserver:self name:*MEMORY[0x277CE5938] object:0];
-  [v6 removeObserver:self name:*MEMORY[0x277CE59C0] object:0];
-  [v6 removeObserver:self name:*MEMORY[0x277CE59C8] object:0];
-  [v6 removeObserver:self name:*MEMORY[0x277CE5948] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE5930] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE5938] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE59C0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE59C8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE5948] object:0];
   [(AVCaptureVideoPreviewLayer *)self->_avPreviewLayer removeFromSuperlayer];
   avPreviewLayer = self->_avPreviewLayer;
   self->_avPreviewLayer = 0;
@@ -205,12 +205,12 @@ void __28__VPScannerView__initCommon__block_invoke()
 
   if (self->_avCaptureSession)
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel__handleCaptureSessionStarted_ name:*MEMORY[0x277CE5930] object:self->_avCaptureSession];
-    [v6 addObserver:self selector:sel__handleCaptureSessionStopped_ name:*MEMORY[0x277CE5938] object:self->_avCaptureSession];
-    [v6 addObserver:self selector:sel__handleCaptureSessionRuntimeError_ name:*MEMORY[0x277CE59C0] object:self->_avCaptureSession];
-    [v6 addObserver:self selector:sel__handleCaptureSessionInterrupted_ name:*MEMORY[0x277CE59C8] object:self->_avCaptureSession];
-    [v6 addObserver:self selector:sel__handleCaptureSessionInterruptionEnded_ name:*MEMORY[0x277CE5948] object:self->_avCaptureSession];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleCaptureSessionStarted_ name:*MEMORY[0x277CE5930] object:self->_avCaptureSession];
+    [defaultCenter addObserver:self selector:sel__handleCaptureSessionStopped_ name:*MEMORY[0x277CE5938] object:self->_avCaptureSession];
+    [defaultCenter addObserver:self selector:sel__handleCaptureSessionRuntimeError_ name:*MEMORY[0x277CE59C0] object:self->_avCaptureSession];
+    [defaultCenter addObserver:self selector:sel__handleCaptureSessionInterrupted_ name:*MEMORY[0x277CE59C8] object:self->_avCaptureSession];
+    [defaultCenter addObserver:self selector:sel__handleCaptureSessionInterruptionEnded_ name:*MEMORY[0x277CE5948] object:self->_avCaptureSession];
     [(AVCaptureSession *)self->_avCaptureSession beginConfiguration];
     v7 = [MEMORY[0x277CE5AC8] defaultDeviceWithMediaType:*MEMORY[0x277CE5EA8]];
     avCaptureDevice = self->_avCaptureDevice;
@@ -274,42 +274,42 @@ void __28__VPScannerView__initCommon__block_invoke()
             avPreviewLayer = self->_avPreviewLayer;
             self->_avPreviewLayer = v23;
 
-            v25 = [(VPScannerView *)self fillLayerBoundsWithVideo];
+            fillLayerBoundsWithVideo = [(VPScannerView *)self fillLayerBoundsWithVideo];
             v26 = MEMORY[0x277CE5DD8];
-            if (!v25)
+            if (!fillLayerBoundsWithVideo)
             {
               v26 = MEMORY[0x277CE5DD0];
             }
 
             [(AVCaptureVideoPreviewLayer *)self->_avPreviewLayer setVideoGravity:*v26];
-            v27 = [(VPScannerView *)self layer];
-            [v27 bounds];
+            layer = [(VPScannerView *)self layer];
+            [layer bounds];
             [(AVCaptureVideoPreviewLayer *)self->_avPreviewLayer setFrame:?];
 
-            v28 = [(VPScannerView *)self layer];
-            [v28 insertSublayer:self->_avPreviewLayer atIndex:0];
+            layer2 = [(VPScannerView *)self layer];
+            [layer2 insertSublayer:self->_avPreviewLayer atIndex:0];
 
-            v29 = [(AVCaptureVideoPreviewLayer *)self->_avPreviewLayer connection];
-            if ([v29 isVideoOrientationSupported])
+            connection = [(AVCaptureVideoPreviewLayer *)self->_avPreviewLayer connection];
+            if ([connection isVideoOrientationSupported])
             {
-              v30 = [*MEMORY[0x277D76620] activeInterfaceOrientation];
-              if ((v30 - 2) >= 3)
+              activeInterfaceOrientation = [*MEMORY[0x277D76620] activeInterfaceOrientation];
+              if ((activeInterfaceOrientation - 2) >= 3)
               {
                 v31 = 1;
               }
 
               else
               {
-                v31 = v30;
+                v31 = activeInterfaceOrientation;
               }
 
-              v32 = v29;
-              [v29 setVideoOrientation:v31];
+              v32 = connection;
+              [connection setVideoOrientation:v31];
             }
 
             else
             {
-              v32 = v29;
+              v32 = connection;
             }
 
             goto LABEL_21;
@@ -344,7 +344,7 @@ void __28__VPScannerView__initCommon__block_invoke()
   {
     v32 = 0;
     v12 = NSErrorWithOSStatusF();
-    v6 = 0;
+    defaultCenter = 0;
     v11 = 0;
     v14 = 0;
   }
@@ -363,9 +363,9 @@ LABEL_27:
   return v2;
 }
 
-- (id)_setupDevice:(id)a3
+- (id)_setupDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   avCaptureDevice = self->_avCaptureDevice;
   v8 = 0;
   [(AVCaptureDevice *)avCaptureDevice lockForConfiguration:&v8];
@@ -380,26 +380,26 @@ LABEL_27:
 
   else
   {
-    if ([v4 isFocusModeSupported:self->_focusMode])
+    if ([deviceCopy isFocusModeSupported:self->_focusMode])
     {
-      [v4 setFocusPointOfInterest:{0.5, 0.5}];
-      [v4 setFocusMode:self->_focusMode];
+      [deviceCopy setFocusPointOfInterest:{0.5, 0.5}];
+      [deviceCopy setFocusMode:self->_focusMode];
     }
 
-    if ([v4 isAutoFocusRangeRestrictionSupported])
+    if ([deviceCopy isAutoFocusRangeRestrictionSupported])
     {
-      [v4 setAutoFocusRangeRestriction:self->_autoFocusRangeRestriction];
+      [deviceCopy setAutoFocusRangeRestriction:self->_autoFocusRangeRestriction];
     }
 
-    if ([v4 isWhiteBalanceModeSupported:2])
+    if ([deviceCopy isWhiteBalanceModeSupported:2])
     {
-      [v4 setWhiteBalanceMode:2];
+      [deviceCopy setWhiteBalanceMode:2];
     }
 
-    if ([v4 isExposureModeSupported:2])
+    if ([deviceCopy isExposureModeSupported:2])
     {
-      [v4 setExposurePointOfInterest:{0.5, 0.5}];
-      [v4 setExposureMode:2];
+      [deviceCopy setExposurePointOfInterest:{0.5, 0.5}];
+      [deviceCopy setExposureMode:2];
     }
 
     [(AVCaptureDevice *)self->_avCaptureDevice unlockForConfiguration];
@@ -408,27 +408,27 @@ LABEL_27:
   return v6;
 }
 
-- (void)_handleCaptureSessionStarted:(id)a3
+- (void)_handleCaptureSessionStarted:(id)started
 {
-  v3 = a3;
+  startedCopy = started;
   if (gLogCategory_SV <= 30 && (gLogCategory_SV != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 }
 
-- (void)_handleCaptureSessionStopped:(id)a3
+- (void)_handleCaptureSessionStopped:(id)stopped
 {
-  v3 = a3;
+  stoppedCopy = stopped;
   if (gLogCategory_SV <= 30 && (gLogCategory_SV != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 }
 
-- (void)_handleCaptureSessionRuntimeError:(id)a3
+- (void)_handleCaptureSessionRuntimeError:(id)error
 {
-  v4 = [a3 userInfo];
+  userInfo = [error userInfo];
   CFErrorGetTypeID();
   v5 = *MEMORY[0x277CE5940];
   v7 = CFDictionaryGetTypedValue();
@@ -442,11 +442,11 @@ LABEL_27:
   [(VPScannerView *)self setLatestError:v7, v6];
 }
 
-- (void)_handleCaptureSessionInterrupted:(id)a3
+- (void)_handleCaptureSessionInterrupted:(id)interrupted
 {
-  v4 = [a3 userInfo];
+  userInfo = [interrupted userInfo];
   v5 = *MEMORY[0x277CE5950];
-  v12 = v4;
+  v12 = userInfo;
   Int64Ranged = CFDictionaryGetInt64Ranged();
   if (gLogCategory_SV <= 60 && (gLogCategory_SV != -1 || _LogCategory_Initialize()))
   {
@@ -474,9 +474,9 @@ LABEL_27:
   [(VPScannerView *)self setLatestError:v9, v10, v11];
 }
 
-- (void)_handleCaptureSessionInterruptionEnded:(id)a3
+- (void)_handleCaptureSessionInterruptionEnded:(id)ended
 {
-  v3 = a3;
+  endedCopy = ended;
   if (gLogCategory_SV <= 30 && (gLogCategory_SV != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -486,9 +486,9 @@ LABEL_27:
 - (void)_postMetricAndResetAnalyticsState
 {
   v28 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 processName];
-  [v28 setObject:v4 forKeyedSubscript:@"processName"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  [v28 setObject:processName forKeyedSubscript:@"processName"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_focusMode];
   [v28 setObject:v5 forKeyedSubscript:@"focusMode"];
@@ -496,31 +496,31 @@ LABEL_27:
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_autoFocusRangeRestriction];
   [v28 setObject:v6 forKeyedSubscript:@"autoFocusRangeRestriction"];
 
-  v7 = [(VPScannerView *)self startDate];
-  if (v7)
+  startDate = [(VPScannerView *)self startDate];
+  if (startDate)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v9 = MEMORY[0x277CCABB0];
-    [v8 timeIntervalSinceDate:v7];
+    [date timeIntervalSinceDate:startDate];
     v10 = [v9 numberWithDouble:?];
     [v28 setObject:v10 forKeyedSubscript:@"sessionDurationSeconds"];
 
-    v11 = [(VPWatermarkReader *)self->_watermarkReader firstCapturedFrameDate];
-    v12 = v11;
-    if (v11)
+    firstCapturedFrameDate = [(VPWatermarkReader *)self->_watermarkReader firstCapturedFrameDate];
+    v12 = firstCapturedFrameDate;
+    if (firstCapturedFrameDate)
     {
       v13 = MEMORY[0x277CCABB0];
-      [v11 timeIntervalSinceDate:v7];
+      [firstCapturedFrameDate timeIntervalSinceDate:startDate];
       v14 = [v13 numberWithDouble:?];
       [v28 setObject:v14 forKeyedSubscript:@"secondsToFirstFrame"];
     }
 
-    v15 = [(VPWatermarkReader *)self->_watermarkReader firstScannedCodeDate];
-    v16 = v15;
-    if (v15)
+    firstScannedCodeDate = [(VPWatermarkReader *)self->_watermarkReader firstScannedCodeDate];
+    v16 = firstScannedCodeDate;
+    if (firstScannedCodeDate)
     {
       v17 = MEMORY[0x277CCABB0];
-      [v15 timeIntervalSinceDate:v7];
+      [firstScannedCodeDate timeIntervalSinceDate:startDate];
       v18 = [v17 numberWithDouble:?];
       [v28 setObject:v18 forKeyedSubscript:@"secondsToFirstCode"];
     }
@@ -541,12 +541,12 @@ LABEL_27:
     [v28 setObject:v23 forKeyedSubscript:@"readerRowBytes"];
   }
 
-  v24 = [(VPScannerView *)self latestError];
-  v25 = v24;
-  if (v24)
+  latestError = [(VPScannerView *)self latestError];
+  v25 = latestError;
+  if (latestError)
   {
-    v26 = [v24 localizedDescription];
-    [v28 setObject:v26 forKeyedSubscript:@"latestError"];
+    localizedDescription = [latestError localizedDescription];
+    [v28 setObject:localizedDescription forKeyedSubscript:@"latestError"];
   }
 
   AnalyticsSendEvent();
@@ -560,11 +560,11 @@ LABEL_27:
   [(VPScannerView *)self setLatestError:0];
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   if (self->_scanning)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     watermarkReader = self->_watermarkReader;
     v14 = 0;
     v8 = [(VPWatermarkReader *)watermarkReader readWatermarkInPixelBuffer:ImageBuffer error:&v14];

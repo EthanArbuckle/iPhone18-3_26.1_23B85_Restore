@@ -1,15 +1,15 @@
 @interface BuddyiPhoneFinishedControllerAnimator.TransitionAnimator
 - (_TtCC5SetupP33_2E1A7F9B18E101D41616D94C1C664A5F37BuddyiPhoneFinishedControllerAnimator18TransitionAnimator)init;
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation BuddyiPhoneFinishedControllerAnimator.TransitionAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1000219E0(a3);
+  selfCopy = self;
+  sub_1000219E0(transition);
   swift_unknownObjectRelease();
 }
 

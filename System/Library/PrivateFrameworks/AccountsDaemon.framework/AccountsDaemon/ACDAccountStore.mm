@@ -1,119 +1,119 @@
 @interface ACDAccountStore
 + (id)accountCache;
 - (ACDAccountStore)init;
-- (ACDAccountStore)initWithClient:(id)a3 databaseConnection:(id)a4;
+- (ACDAccountStore)initWithClient:(id)client databaseConnection:(id)connection;
 - (ACDAccountStoreDelegate)delegate;
 - (ACDClient)client;
-- (BOOL)_canManagedAccountType:(id)a3 syncManagedDataclass:(id)a4;
-- (BOOL)_canSaveAccount:(id)a3 error:(id *)a4;
-- (BOOL)_handleAccountAdd:(id)a3 withDataclassActions:(id)a4 error:(id *)a5;
-- (BOOL)_handleAccountMod:(id)a3 withDataclassActions:(id)a4 withError:(id *)a5;
-- (BOOL)_isManagedAccount:(id)a3 enabledForManagedDataclass:(id)a4;
-- (BOOL)_performDataclassActions:(id)a3 forAccount:(id)a4 error:(id *)a5;
-- (BOOL)_removeAccountNoSave:(id)a3 withDataclassActions:(id)a4 withError:(id *)a5;
-- (BOOL)_saveWithError:(id *)a3;
-- (BOOL)_updateAccountNoSave:(id)a3 withDataclassActions:(id)a4 error:(id *)a5;
-- (BOOL)accountsExistWithAccountTypeIdentifier:(id)a3;
-- (id)_accountTypeWithIdentifier:(id)a3;
-- (id)_accountWithIdentifier:(id)a3;
-- (id)_accountWithIdentifier:(id)a3 prefetchKeypaths:(id)a4;
-- (id)_accountsWithAccountType:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)_addAccountNoSave:(id)a3 withDataclassActions:(id)a4 error:(id *)a5;
+- (BOOL)_canManagedAccountType:(id)type syncManagedDataclass:(id)dataclass;
+- (BOOL)_canSaveAccount:(id)account error:(id *)error;
+- (BOOL)_handleAccountAdd:(id)add withDataclassActions:(id)actions error:(id *)error;
+- (BOOL)_handleAccountMod:(id)mod withDataclassActions:(id)actions withError:(id *)error;
+- (BOOL)_isManagedAccount:(id)account enabledForManagedDataclass:(id)dataclass;
+- (BOOL)_performDataclassActions:(id)actions forAccount:(id)account error:(id *)error;
+- (BOOL)_removeAccountNoSave:(id)save withDataclassActions:(id)actions withError:(id *)error;
+- (BOOL)_saveWithError:(id *)error;
+- (BOOL)_updateAccountNoSave:(id)save withDataclassActions:(id)actions error:(id *)error;
+- (BOOL)accountsExistWithAccountTypeIdentifier:(id)identifier;
+- (id)_accountTypeWithIdentifier:(id)identifier;
+- (id)_accountWithIdentifier:(id)identifier;
+- (id)_accountWithIdentifier:(id)identifier prefetchKeypaths:(id)keypaths;
+- (id)_accountsWithAccountType:(id)type options:(unint64_t)options error:(id *)error;
+- (id)_addAccountNoSave:(id)save withDataclassActions:(id)actions error:(id *)error;
 - (id)_allAccounts_sync;
-- (id)_childAccountsForAccountWithID:(id)a3;
-- (id)_clientTokenForAccountIdentifier:(id)a3 error:(id)a4;
+- (id)_childAccountsForAccountWithID:(id)d;
+- (id)_clientTokenForAccountIdentifier:(id)identifier error:(id)error;
 - (id)_clientTokenQueue;
-- (id)_commitOrRollbackDataclassActions:(id)a3 forAccount:(id)a4 originalEnabledDataclasses:(id)a5;
-- (id)_credentialItemWithAccountIdentifier:(id)a3 serviceName:(id)a4;
-- (id)_dataclassWithName:(id)a3 createIfNecessary:(BOOL)a4;
-- (id)_displayAccountForAccount:(id)a3;
-- (id)_legacyCredentialForAccount:(id)a3 client:(id)a4 error:(id *)a5;
-- (id)_lockForAccountType:(id)a3;
-- (id)_predicateForFetchingAccountsWithManagedAccountTypeID:(id)a3 options:(unint64_t)a4;
-- (id)_sync_accountWithIdentifier:(id)a3;
-- (id)accountTypeWithIdentifier:(id)a3;
-- (id)accountsWithAccountTypeIdentifier:(id)a3;
-- (id)clientTokenForAccount:(id)a3;
-- (id)masterCredentialForAccountIdentifier:(id)a3;
+- (id)_commitOrRollbackDataclassActions:(id)actions forAccount:(id)account originalEnabledDataclasses:(id)dataclasses;
+- (id)_credentialItemWithAccountIdentifier:(id)identifier serviceName:(id)name;
+- (id)_dataclassWithName:(id)name createIfNecessary:(BOOL)necessary;
+- (id)_displayAccountForAccount:(id)account;
+- (id)_legacyCredentialForAccount:(id)account client:(id)client error:(id *)error;
+- (id)_lockForAccountType:(id)type;
+- (id)_predicateForFetchingAccountsWithManagedAccountTypeID:(id)d options:(unint64_t)options;
+- (id)_sync_accountWithIdentifier:(id)identifier;
+- (id)accountTypeWithIdentifier:(id)identifier;
+- (id)accountsWithAccountTypeIdentifier:(id)identifier;
+- (id)clientTokenForAccount:(id)account;
+- (id)masterCredentialForAccountIdentifier:(id)identifier;
 - (id)remoteAccountStoreSession;
-- (void)_completeSave:(id)a3 dataclassActions:(id)a4 completion:(id)a5;
-- (void)_deleteAccountNoSave:(id)a3 withDataclassActions:(id)a4 error:(id *)a5;
-- (void)_pruneDuplicateAccountsForAccountType:(id)a3 withUserName:(id)a4 error:(id *)a5;
-- (void)_removeClientTokenForAccountIdentifer:(id)a3;
-- (void)_setAccountManagedObjectRelationships:(id)a3 withAccount:(id)a4 oldAccount:(id)a5 error:(id *)a6;
-- (void)accessKeysForAccountType:(id)a3 handler:(id)a4;
-- (void)accountExistsWithDescription:(id)a3 completion:(id)a4;
-- (void)accountIdentifiersEnabledForDataclass:(id)a3 handler:(id)a4;
-- (void)accountIdentifiersEnabledForDataclasses:(id)a3 withAccountTypeIdentifiers:(id)a4 completion:(id)a5;
-- (void)accountIdentifiersEnabledToSyncDataclass:(id)a3 handler:(id)a4;
-- (void)accountTypeWithIdentifier:(id)a3 handler:(id)a4;
-- (void)accountTypesWithHandler:(id)a3;
-- (void)accountWithIdentifier:(id)a3 handler:(id)a4;
-- (void)accountsOnPairedDeviceWithAccountTypes:(id)a3 withOptions:(id)a4 handler:(id)a5;
-- (void)accountsWithAccountType:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)accountsWithAccountTypeIdentifiers:(id)a3 preloadedProperties:(id)a4 completion:(id)a5;
-- (void)accountsWithHandler:(id)a3;
-- (void)addAccountNoSave:(id)a3 error:(id *)a4;
-- (void)addClientToken:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5;
-- (void)appPermissionsForAccountType:(id)a3 withHandler:(id)a4;
-- (void)cacheGenerationForAccounts:(id)a3 cacheSuffix:(id)a4;
-- (void)canSaveAccount:(id)a3 completion:(id)a4;
-- (void)childAccountsForAccountWithIdentifier:(id)a3 handler:(id)a4;
-- (void)childAccountsWithAccountTypeIdentifier:(id)a3 parentAccountIdentifier:(id)a4 handler:(id)a5;
-- (void)clearAllPermissionsGrantedForAccountType:(id)a3 withHandler:(id)a4;
-- (void)clearGrantedPermissionsForAccountType:(id)a3 withHandler:(id)a4;
-- (void)clientTokenForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)credentialForAccount:(id)a3 serviceID:(id)a4 handler:(id)a5;
-- (void)credentialForAccountWithIdentifier:(id)a3 handler:(id)a4;
-- (void)credentialItemForAccount:(id)a3 serviceName:(id)a4 completion:(id)a5;
-- (void)credentialItemsWithCompletion:(id)a3;
-- (void)dataclassActionsForAccountDeletion:(id)a3 completion:(id)a4;
-- (void)dataclassActionsForAccountSave:(id)a3 completion:(id)a4;
-- (void)dataclassesWithHandler:(id)a3;
-- (void)deleteAccountNoSave:(id)a3 error:(id *)a4;
-- (void)discoverPropertiesForAccount:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)displayAccountTypeForAccountWithIdentifier:(id)a3 handler:(id)a4;
-- (void)enabledDataclassesForAccountWithIdentifier:(id)a3 handler:(id)a4;
-- (void)grantedPermissionsForAccountType:(id)a3 withHandler:(id)a4;
-- (void)handleURL:(id)a3;
+- (void)_completeSave:(id)save dataclassActions:(id)actions completion:(id)completion;
+- (void)_deleteAccountNoSave:(id)save withDataclassActions:(id)actions error:(id *)error;
+- (void)_pruneDuplicateAccountsForAccountType:(id)type withUserName:(id)name error:(id *)error;
+- (void)_removeClientTokenForAccountIdentifer:(id)identifer;
+- (void)_setAccountManagedObjectRelationships:(id)relationships withAccount:(id)account oldAccount:(id)oldAccount error:(id *)error;
+- (void)accessKeysForAccountType:(id)type handler:(id)handler;
+- (void)accountExistsWithDescription:(id)description completion:(id)completion;
+- (void)accountIdentifiersEnabledForDataclass:(id)dataclass handler:(id)handler;
+- (void)accountIdentifiersEnabledForDataclasses:(id)dataclasses withAccountTypeIdentifiers:(id)identifiers completion:(id)completion;
+- (void)accountIdentifiersEnabledToSyncDataclass:(id)dataclass handler:(id)handler;
+- (void)accountTypeWithIdentifier:(id)identifier handler:(id)handler;
+- (void)accountTypesWithHandler:(id)handler;
+- (void)accountWithIdentifier:(id)identifier handler:(id)handler;
+- (void)accountsOnPairedDeviceWithAccountTypes:(id)types withOptions:(id)options handler:(id)handler;
+- (void)accountsWithAccountType:(id)type options:(unint64_t)options completion:(id)completion;
+- (void)accountsWithAccountTypeIdentifiers:(id)identifiers preloadedProperties:(id)properties completion:(id)completion;
+- (void)accountsWithHandler:(id)handler;
+- (void)addAccountNoSave:(id)save error:(id *)error;
+- (void)addClientToken:(id)token forAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)appPermissionsForAccountType:(id)type withHandler:(id)handler;
+- (void)cacheGenerationForAccounts:(id)accounts cacheSuffix:(id)suffix;
+- (void)canSaveAccount:(id)account completion:(id)completion;
+- (void)childAccountsForAccountWithIdentifier:(id)identifier handler:(id)handler;
+- (void)childAccountsWithAccountTypeIdentifier:(id)identifier parentAccountIdentifier:(id)accountIdentifier handler:(id)handler;
+- (void)clearAllPermissionsGrantedForAccountType:(id)type withHandler:(id)handler;
+- (void)clearGrantedPermissionsForAccountType:(id)type withHandler:(id)handler;
+- (void)clientTokenForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)credentialForAccount:(id)account serviceID:(id)d handler:(id)handler;
+- (void)credentialForAccountWithIdentifier:(id)identifier handler:(id)handler;
+- (void)credentialItemForAccount:(id)account serviceName:(id)name completion:(id)completion;
+- (void)credentialItemsWithCompletion:(id)completion;
+- (void)dataclassActionsForAccountDeletion:(id)deletion completion:(id)completion;
+- (void)dataclassActionsForAccountSave:(id)save completion:(id)completion;
+- (void)dataclassesWithHandler:(id)handler;
+- (void)deleteAccountNoSave:(id)save error:(id *)error;
+- (void)discoverPropertiesForAccount:(id)account options:(id)options completion:(id)completion;
+- (void)displayAccountTypeForAccountWithIdentifier:(id)identifier handler:(id)handler;
+- (void)enabledDataclassesForAccountWithIdentifier:(id)identifier handler:(id)handler;
+- (void)grantedPermissionsForAccountType:(id)type withHandler:(id)handler;
+- (void)handleURL:(id)l;
 - (void)init;
-- (void)insertAccountType:(id)a3 withHandler:(id)a4;
-- (void)insertCredentialItem:(id)a3 completion:(id)a4;
-- (void)isPerformingDataclassActionsForAccount:(id)a3 completion:(id)a4;
-- (void)isPushSupportedForAccount:(id)a3 completion:(id)a4;
-- (void)isTetheredSyncingEnabledForDataclass:(id)a3 completion:(id)a4;
-- (void)kerberosAccountsForDomainFromURL:(id)a3 completion:(id)a4;
-- (void)migrateCredentialForAccount:(id)a3 completion:(id)a4;
-- (void)notifyRemoteDevicesOfModifiedAccount:(id)a3 withChangeType:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)parentAccountForAccountWithIdentifier:(id)a3 handler:(id)a4;
-- (void)permissionForAccountType:(id)a3 withHandler:(id)a4;
-- (void)preloadDataclassOwnersWithCompletion:(id)a3;
-- (void)provisionedDataclassesForAccountWithIdentifier:(id)a3 handler:(id)a4;
-- (void)registerMonitorForAccountsOfTypes:(id)a3 propertiesToPrefetch:(id)a4 completion:(id)a5;
-- (void)removeAccount:(id)a3 withDataclassActions:(id)a4 completion:(id)a5;
-- (void)removeAccountFromPairedDevice:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)removeAccountType:(id)a3 withHandler:(id)a4;
-- (void)removeAccountsFromPairedDeviceWithOptions:(id)a3 completion:(id)a4;
-- (void)removeCredentialItem:(id)a3 completion:(id)a4;
-- (void)renewCredentialsForAccount:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)resetDatabaseToVersion:(id)a3 withCompletion:(id)a4;
-- (void)runAccountMigrationPlugins:(id)a3;
-- (void)saveAccount:(id)a3 toPairedDeviceWithOptions:(id)a4 completion:(id)a5;
-- (void)saveAccount:(id)a3 verify:(BOOL)a4 dataclassActions:(id)a5 completion:(id)a6;
-- (void)saveCredentialItem:(id)a3 completion:(id)a4;
-- (void)scheduleBackupIfNonexistent:(id)a3;
-- (void)setClientBundleID:(id)a3 withHandler:(id)a4;
-- (void)setCredential:(id)a3 forAccount:(id)a4 serviceID:(id)a5 completion:(id)a6;
-- (void)setPermissionGranted:(id)a3 forBundleID:(id)a4 onAccountType:(id)a5 withHandler:(id)a6;
-- (void)shutdownAccountsD:(id)a3;
-- (void)supportedDataclassesForAccountType:(id)a3 handler:(id)a4;
-- (void)syncableDataclassesForAccountType:(id)a3 handler:(id)a4;
-- (void)tetheredSyncSourceTypeForDataclass:(id)a3 completion:(id)a4;
-- (void)triggerKeychainMigrationIfNecessary:(id)a3;
-- (void)uidOfAccountsd:(id)a3;
-- (void)updateAccountNoSave:(id)a3 error:(id *)a4;
-- (void)verifyCredentialsForAccount:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)visibleTopLevelAccountsWithAccountTypeIdentifiers:(id)a3 completion:(id)a4;
+- (void)insertAccountType:(id)type withHandler:(id)handler;
+- (void)insertCredentialItem:(id)item completion:(id)completion;
+- (void)isPerformingDataclassActionsForAccount:(id)account completion:(id)completion;
+- (void)isPushSupportedForAccount:(id)account completion:(id)completion;
+- (void)isTetheredSyncingEnabledForDataclass:(id)dataclass completion:(id)completion;
+- (void)kerberosAccountsForDomainFromURL:(id)l completion:(id)completion;
+- (void)migrateCredentialForAccount:(id)account completion:(id)completion;
+- (void)notifyRemoteDevicesOfModifiedAccount:(id)account withChangeType:(id)type options:(id)options completion:(id)completion;
+- (void)parentAccountForAccountWithIdentifier:(id)identifier handler:(id)handler;
+- (void)permissionForAccountType:(id)type withHandler:(id)handler;
+- (void)preloadDataclassOwnersWithCompletion:(id)completion;
+- (void)provisionedDataclassesForAccountWithIdentifier:(id)identifier handler:(id)handler;
+- (void)registerMonitorForAccountsOfTypes:(id)types propertiesToPrefetch:(id)prefetch completion:(id)completion;
+- (void)removeAccount:(id)account withDataclassActions:(id)actions completion:(id)completion;
+- (void)removeAccountFromPairedDevice:(id)device withOptions:(id)options completion:(id)completion;
+- (void)removeAccountType:(id)type withHandler:(id)handler;
+- (void)removeAccountsFromPairedDeviceWithOptions:(id)options completion:(id)completion;
+- (void)removeCredentialItem:(id)item completion:(id)completion;
+- (void)renewCredentialsForAccount:(id)account options:(id)options completion:(id)completion;
+- (void)resetDatabaseToVersion:(id)version withCompletion:(id)completion;
+- (void)runAccountMigrationPlugins:(id)plugins;
+- (void)saveAccount:(id)account toPairedDeviceWithOptions:(id)options completion:(id)completion;
+- (void)saveAccount:(id)account verify:(BOOL)verify dataclassActions:(id)actions completion:(id)completion;
+- (void)saveCredentialItem:(id)item completion:(id)completion;
+- (void)scheduleBackupIfNonexistent:(id)nonexistent;
+- (void)setClientBundleID:(id)d withHandler:(id)handler;
+- (void)setCredential:(id)credential forAccount:(id)account serviceID:(id)d completion:(id)completion;
+- (void)setPermissionGranted:(id)granted forBundleID:(id)d onAccountType:(id)type withHandler:(id)handler;
+- (void)shutdownAccountsD:(id)d;
+- (void)supportedDataclassesForAccountType:(id)type handler:(id)handler;
+- (void)syncableDataclassesForAccountType:(id)type handler:(id)handler;
+- (void)tetheredSyncSourceTypeForDataclass:(id)dataclass completion:(id)completion;
+- (void)triggerKeychainMigrationIfNecessary:(id)necessary;
+- (void)uidOfAccountsd:(id)accountsd;
+- (void)updateAccountNoSave:(id)save error:(id *)error;
+- (void)verifyCredentialsForAccount:(id)account options:(id)options completion:(id)completion;
+- (void)visibleTopLevelAccountsWithAccountTypeIdentifiers:(id)identifiers completion:(id)completion;
 @end
 
 @implementation ACDAccountStore
@@ -214,10 +214,10 @@ void __31__ACDAccountStore_accountCache__block_invoke()
   return [(ACDAccountStore *)self initWithClient:0 databaseConnection:0];
 }
 
-- (ACDAccountStore)initWithClient:(id)a3 databaseConnection:(id)a4
+- (ACDAccountStore)initWithClient:(id)client databaseConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = ACDAccountStore;
   v8 = [(ACDAccountStore *)&v15 init];
@@ -229,8 +229,8 @@ void __31__ACDAccountStore_accountCache__block_invoke()
       [ACDAccountStore initWithClient:databaseConnection:];
     }
 
-    objc_storeWeak(&v8->_client, v6);
-    objc_storeStrong(&v8->_databaseConnection, a4);
+    objc_storeWeak(&v8->_client, clientCopy);
+    objc_storeStrong(&v8->_databaseConnection, connection);
     v8->_notificationsEnabled = 1;
     v8->_migrationInProgress = 0;
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -245,16 +245,16 @@ void __31__ACDAccountStore_accountCache__block_invoke()
   return v8;
 }
 
-- (id)accountTypeWithIdentifier:(id)a3
+- (id)accountTypeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v5 = +[ACDAccountStore accountCache];
-  v18 = [v5 cachedAccountTypeForID:v4];
+  v18 = [v5 cachedAccountTypeForID:identifierCopy];
 
   v6 = v14[5];
   if (v6)
@@ -264,15 +264,15 @@ void __31__ACDAccountStore_accountCache__block_invoke()
 
   else
   {
-    v7 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __45__ACDAccountStore_accountTypeWithIdentifier___block_invoke;
     v10[3] = &unk_27848BF28;
     v10[4] = self;
-    v11 = v4;
+    v11 = identifierCopy;
     v12 = &v13;
-    [v7 performBlockAndWait:v10];
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -299,25 +299,25 @@ void __45__ACDAccountStore_accountTypeWithIdentifier___block_invoke(uint64_t a1)
   }
 }
 
-- (id)accountsWithAccountTypeIdentifier:(id)a3
+- (id)accountsWithAccountTypeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v5 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__ACDAccountStore_accountsWithAccountTypeIdentifier___block_invoke;
   v9[3] = &unk_27848BF28;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  [v5 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -377,19 +377,19 @@ void __53__ACDAccountStore_accountsWithAccountTypeIdentifier___block_invoke(void
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountsOnPairedDeviceWithAccountTypes:(id)a3 withOptions:(id)a4 handler:(id)a5
+- (void)accountsOnPairedDeviceWithAccountTypes:(id)types withOptions:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  typesCopy = types;
+  handlerCopy = handler;
+  optionsCopy = options;
   v11 = _ACDLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore accountsOnPairedDeviceWithAccountTypes:withOptions:handler:];
   }
 
-  v12 = [v10 objectForKeyedSubscript:*MEMORY[0x277CB8EE0]];
-  v13 = [v12 BOOLValue];
+  v12 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277CB8EE0]];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = +[ACDPairedDeviceAccountCache sharedInstance];
   remoteDeviceProxy = self->_remoteDeviceProxy;
@@ -397,11 +397,11 @@ void __53__ACDAccountStore_accountsWithAccountTypeIdentifier___block_invoke(void
   v18[1] = 3221225472;
   v18[2] = __78__ACDAccountStore_accountsOnPairedDeviceWithAccountTypes_withOptions_handler___block_invoke;
   v18[3] = &unk_27848C1F0;
-  v19 = v8;
-  v20 = v9;
-  v16 = v9;
-  v17 = v8;
-  [v14 accountsFromRemoteDeviceProxy:remoteDeviceProxy ignoreCache:v13 options:v10 completion:v18];
+  v19 = typesCopy;
+  v20 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = typesCopy;
+  [v14 accountsFromRemoteDeviceProxy:remoteDeviceProxy ignoreCache:bOOLValue options:optionsCopy completion:v18];
 }
 
 void __78__ACDAccountStore_accountsOnPairedDeviceWithAccountTypes_withOptions_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -469,23 +469,23 @@ void __78__ACDAccountStore_accountsOnPairedDeviceWithAccountTypes_withOptions_ha
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)accountsExistWithAccountTypeIdentifier:(id)a3
+- (BOOL)accountsExistWithAccountTypeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke;
   v8[3] = &unk_27848BF28;
-  v6 = v4;
+  v6 = identifierCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  [v5 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
 
   LOBYTE(self) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -522,11 +522,11 @@ void __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_removeAccountNoSave:(id)a3 withDataclassActions:(id)a4 withError:(id *)a5
+- (BOOL)_removeAccountNoSave:(id)save withDataclassActions:(id)actions withError:(id *)error
 {
   v83 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  saveCopy = save;
+  actionsCopy = actions;
   v10 = _ACDLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -535,18 +535,18 @@ void __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke
 
   if ([(ACDAccountStore *)self notificationsEnabled])
   {
-    v11 = [(ACDAccountStore *)self accountNotifier];
+    accountNotifier = [(ACDAccountStore *)self accountNotifier];
     v77 = 0;
-    v12 = [v11 canRemoveAccount:v8 inStore:self error:&v77];
+    v12 = [accountNotifier canRemoveAccount:saveCopy inStore:self error:&v77];
     v13 = v77;
 
     if ((v12 & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v49 = v13;
         v19 = 0;
-        *a5 = v13;
+        *error = v13;
       }
 
       else
@@ -560,34 +560,34 @@ void __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke
     v14 = _ACDLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v8 identifier];
+      identifier = [saveCopy identifier];
       *buf = 138412290;
-      v82 = v15;
+      v82 = identifier;
       _os_log_impl(&dword_221D2F000, v14, OS_LOG_TYPE_DEFAULT, "Plugins did not deny account %@ removal", buf, 0xCu);
     }
   }
 
   databaseConnection = self->_databaseConnection;
-  v17 = [v8 objectID];
-  v13 = [(ACDDatabaseConnection *)databaseConnection existingObjectWithURI:v17];
+  objectID = [saveCopy objectID];
+  v13 = [(ACDDatabaseConnection *)databaseConnection existingObjectWithURI:objectID];
 
   v18 = [objc_alloc(MEMORY[0x277CB8F30]) initWithManagedAccount:v13 accountStore:self];
   [v18 _loadAllCachedProperties];
   v19 = v13 != 0;
   if (v13)
   {
-    v61 = v9;
+    v61 = actionsCopy;
     v62 = v18;
     v20 = _ACDLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v82 = v8;
+      v82 = saveCopy;
       _os_log_impl(&dword_221D2F000, v20, OS_LOG_TYPE_DEFAULT, "%@ is being deleted.", buf, 0xCu);
     }
 
-    v21 = [v8 identifier];
-    v22 = [(ACDAccountStore *)self _childAccountsForAccountWithID:v21];
+    identifier2 = [saveCopy identifier];
+    v22 = [(ACDAccountStore *)self _childAccountsForAccountWithID:identifier2];
 
     v75 = 0u;
     v76 = 0u;
@@ -617,11 +617,11 @@ void __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke
       while (v25);
     }
 
-    v60 = v8;
+    v60 = saveCopy;
     if ([(ACDAccountStore *)self notificationsEnabled]&& ![(ACDAccountStore *)self isMigrationInProgress])
     {
-      v28 = [(ACDAccountStore *)self accountNotifier];
-      [v28 postWillChangeNotificationForType:3 inStore:self newAccount:0 oldAccount:v62];
+      accountNotifier2 = [(ACDAccountStore *)self accountNotifier];
+      [accountNotifier2 postWillChangeNotificationForType:3 inStore:self newAccount:0 oldAccount:v62];
 
       v71 = 0u;
       v72 = 0u;
@@ -643,8 +643,8 @@ void __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke
             }
 
             v34 = *(*(&v69 + 1) + 8 * j);
-            v35 = [(ACDAccountStore *)self accountNotifier];
-            [v35 postWillChangeNotificationForType:3 inStore:self newAccount:0 oldAccount:v34];
+            accountNotifier3 = [(ACDAccountStore *)self accountNotifier];
+            [accountNotifier3 postWillChangeNotificationForType:3 inStore:self newAccount:0 oldAccount:v34];
           }
 
           v31 = [v29 countByEnumeratingWithState:&v69 objects:v79 count:16];
@@ -653,12 +653,12 @@ void __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke
         while (v31);
       }
 
-      v8 = v60;
+      saveCopy = v60;
     }
 
-    [(ACDAccountStore *)self _performDataclassActions:v61 forAccount:v8 error:a5];
-    v36 = [v8 objectForKeyedSubscript:@"AccountSyncDelete"];
-    if (v36 && (v37 = v36, [v8 objectForKeyedSubscript:@"AccountSyncDelete"], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "BOOLValue"), v38, v37, (v39 & 1) == 0))
+    [(ACDAccountStore *)self _performDataclassActions:v61 forAccount:saveCopy error:error];
+    v36 = [saveCopy objectForKeyedSubscript:@"AccountSyncDelete"];
+    if (v36 && (v37 = v36, [saveCopy objectForKeyedSubscript:@"AccountSyncDelete"], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "BOOLValue"), v38, v37, (v39 & 1) == 0))
     {
       v42 = _ACDLogSystem();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -670,16 +670,16 @@ void __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke
     else
     {
       [ACDKeychainManager removeCredentialForAccount:v62 clientID:0 error:0];
-      v40 = [v13 identifier];
-      v41 = [(ACDAccountStore *)self _clientTokenQueue];
+      identifier3 = [v13 identifier];
+      _clientTokenQueue = [(ACDAccountStore *)self _clientTokenQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __71__ACDAccountStore__removeAccountNoSave_withDataclassActions_withError___block_invoke;
       block[3] = &unk_27848BFF0;
       block[4] = self;
-      v68 = v40;
-      v42 = v40;
-      dispatch_async(v41, block);
+      v68 = identifier3;
+      v42 = identifier3;
+      dispatch_async(_clientTokenQueue, block);
     }
 
     [(ACDDatabaseConnection *)self->_databaseConnection deleteObject:v13];
@@ -717,22 +717,22 @@ void __58__ACDAccountStore_accountsExistWithAccountTypeIdentifier___block_invoke
     v18 = v62;
     v48 = [ACDAccountChange changeWithChangeType:3 account:0 oldAccount:v62];
     [(NSMutableArray *)v56 addObject:v48];
-    v8 = v60;
-    v9 = v61;
+    saveCopy = v60;
+    actionsCopy = v61;
     v19 = v13 != 0;
     goto LABEL_45;
   }
 
-  if (a5)
+  if (error)
   {
     v43 = MEMORY[0x277CCACA8];
-    v44 = [v8 identifier];
-    v45 = [v43 stringWithFormat:@"Failed to remove account with identifier %@ because it does not exist", v44];
+    identifier4 = [saveCopy identifier];
+    v45 = [v43 stringWithFormat:@"Failed to remove account with identifier %@ because it does not exist", identifier4];
 
     v46 = MEMORY[0x277CCA9B8];
     v47 = *MEMORY[0x277CB8DC0];
     v48 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v45 forKey:*MEMORY[0x277CCA450]];
-    *a5 = [v46 errorWithDomain:v47 code:6 userInfo:v48];
+    *error = [v46 errorWithDomain:v47 code:6 userInfo:v48];
 LABEL_45:
   }
 
@@ -747,7 +747,7 @@ LABEL_49:
   return v19;
 }
 
-- (BOOL)_saveWithError:(id *)a3
+- (BOOL)_saveWithError:(id *)error
 {
   v154 = *MEMORY[0x277D85DE8];
   v5 = _ACDLogSystem();
@@ -759,8 +759,8 @@ LABEL_49:
   v6 = _ACDSaveLogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
 
-  v125 = self;
-  v110 = a3;
+  selfCopy = self;
+  errorCopy = error;
   if (v7)
   {
     v141 = 0u;
@@ -790,32 +790,32 @@ LABEL_49:
           }
 
           v13 = *(*(&v139 + 1) + 8 * v12);
-          v14 = [v13 account];
-          v15 = v14;
-          if (v14)
+          account = [v13 account];
+          v15 = account;
+          if (account)
           {
-            v16 = v14;
+            oldAccount = account;
           }
 
           else
           {
-            v16 = [v13 oldAccount];
+            oldAccount = [v13 oldAccount];
           }
 
-          v17 = v16;
+          v17 = oldAccount;
 
           v18 = _ACDSaveLogSystem();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
-            v19 = [(ACDAccountStore *)self client];
+            client = [(ACDAccountStore *)self client];
             v123 = ACDStringFromChangeType([v13 changeType]);
-            v20 = [v13 account];
-            if (v20)
+            account2 = [v13 account];
+            if (account2)
             {
-              v116 = v19;
+              v116 = client;
               v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
-              v22 = [v20 dirtyProperties];
-              v23 = [v22 mutableCopy];
+              dirtyProperties = [account2 dirtyProperties];
+              v23 = [dirtyProperties mutableCopy];
 
               [v23 removeObject:v115];
               [v23 removeObject:v114];
@@ -826,15 +826,15 @@ LABEL_49:
                 *&buf[8] = 3221225472;
                 *&buf[16] = ___ACDChangeDictionaryForAccount_block_invoke;
                 v152 = &unk_27848C768;
-                *&v153 = v20;
+                *&v153 = account2;
                 *(&v153 + 1) = v24;
                 v25 = v24;
                 [v23 enumerateObjectsUsingBlock:buf];
                 [v21 setObject:v25 forKeyedSubscript:@"dirtyProperties"];
               }
 
-              v26 = [v20 dirtyAccountProperties];
-              v27 = [v26 copy];
+              dirtyAccountProperties = [account2 dirtyAccountProperties];
+              v27 = [dirtyAccountProperties copy];
 
               if ([v27 count])
               {
@@ -844,14 +844,14 @@ LABEL_49:
                 v144[0] = ___ACDChangeDictionaryForAccount_block_invoke_3;
                 v144[1] = &unk_27848C768;
                 v145 = v28;
-                v146 = v20;
+                v146 = account2;
                 v29 = v28;
                 [v27 enumerateObjectsUsingBlock:v143];
                 [v21 setObject:v29 forKeyedSubscript:@"dirtyAccountProperties"];
               }
 
-              self = v125;
-              v19 = v116;
+              self = selfCopy;
+              client = v116;
             }
 
             else
@@ -860,7 +860,7 @@ LABEL_49:
             }
 
             *buf = 138544131;
-            *&buf[4] = v19;
+            *&buf[4] = client;
             *&buf[12] = 2114;
             *&buf[14] = v123;
             *&buf[22] = 2113;
@@ -887,7 +887,7 @@ LABEL_49:
 
   databaseConnection = self->_databaseConnection;
   v138 = 0;
-  v124 = [(ACDDatabaseConnection *)databaseConnection saveWithError:&v138, v110];
+  errorCopy = [(ACDDatabaseConnection *)databaseConnection saveWithError:&v138, errorCopy];
   v122 = v138;
   v32 = _ACLogSystem();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -895,9 +895,9 @@ LABEL_49:
     [ACDAccountStore _saveWithError:];
   }
 
-  v33 = [(ACDAccountStore *)self databaseConnection];
-  v34 = [v33 managedObjectContext];
-  [v34 refreshAllObjects];
+  databaseConnection = [(ACDAccountStore *)self databaseConnection];
+  managedObjectContext = [databaseConnection managedObjectContext];
+  [managedObjectContext refreshAllObjects];
 
   v136 = 0u;
   v137 = 0u;
@@ -919,32 +919,32 @@ LABEL_49:
         }
 
         v39 = *(*(&v134 + 1) + 8 * i);
-        v40 = [v39 account];
+        account3 = [v39 account];
 
-        if (v40)
+        if (account3)
         {
           v41 = +[ACDAccountStore accountCache];
-          v42 = [v39 account];
-          [v41 removeAccount:v42 store:self];
+          account4 = [v39 account];
+          [v41 removeAccount:account4 store:self];
 
-          v43 = [v39 account];
-          v44 = [v43 accountType];
-          v45 = [(ACDAccountStore *)self _block_accountsWithAccountType:v44 options:1 error:0];
+          account5 = [v39 account];
+          accountType = [account5 accountType];
+          v45 = [(ACDAccountStore *)self _block_accountsWithAccountType:accountType options:1 error:0];
 
           if (v45)
           {
             v46 = +[ACDAccountStore accountCache];
-            v47 = [v39 account];
-            v48 = [v47 accountType];
-            v49 = [v48 identifier];
-            [v46 cacheAccounts:v45 forType:v49 justActive:0];
+            account6 = [v39 account];
+            accountType2 = [account6 accountType];
+            identifier = [accountType2 identifier];
+            [v46 cacheAccounts:v45 forType:identifier justActive:0];
 
-            self = v125;
+            self = selfCopy;
           }
 
-          v50 = [v39 account];
-          v51 = [v50 accountType];
-          v52 = [(ACDAccountStore *)self _block_accountsWithAccountType:v51 options:0 error:0];
+          account7 = [v39 account];
+          accountType3 = [account7 accountType];
+          v52 = [(ACDAccountStore *)self _block_accountsWithAccountType:accountType3 options:0 error:0];
 
           if (!v52)
           {
@@ -952,51 +952,51 @@ LABEL_49:
           }
 
           v53 = +[ACDAccountStore accountCache];
-          v54 = [v39 account];
+          account8 = [v39 account];
           goto LABEL_42;
         }
 
-        v55 = [v39 oldAccount];
+        oldAccount2 = [v39 oldAccount];
 
-        if (!v55)
+        if (!oldAccount2)
         {
           continue;
         }
 
         v56 = +[ACDAccountStore accountCache];
-        v57 = [v39 oldAccount];
-        [v56 removeAccount:v57 store:self];
+        oldAccount3 = [v39 oldAccount];
+        [v56 removeAccount:oldAccount3 store:self];
 
-        v58 = [v39 oldAccount];
-        v59 = [v58 accountType];
-        v45 = [(ACDAccountStore *)self _block_accountsWithAccountType:v59 options:1 error:0];
+        oldAccount4 = [v39 oldAccount];
+        accountType4 = [oldAccount4 accountType];
+        v45 = [(ACDAccountStore *)self _block_accountsWithAccountType:accountType4 options:1 error:0];
 
         if (v45)
         {
           v60 = +[ACDAccountStore accountCache];
-          v61 = [v39 oldAccount];
-          v62 = [v61 accountType];
-          v63 = [v62 identifier];
-          [v60 cacheAccounts:v45 forType:v63 justActive:0];
+          oldAccount5 = [v39 oldAccount];
+          accountType5 = [oldAccount5 accountType];
+          identifier2 = [accountType5 identifier];
+          [v60 cacheAccounts:v45 forType:identifier2 justActive:0];
 
-          self = v125;
+          self = selfCopy;
         }
 
-        v64 = [v39 oldAccount];
-        v65 = [v64 accountType];
-        v52 = [(ACDAccountStore *)self _block_accountsWithAccountType:v65 options:0 error:0];
+        oldAccount6 = [v39 oldAccount];
+        accountType6 = [oldAccount6 accountType];
+        v52 = [(ACDAccountStore *)self _block_accountsWithAccountType:accountType6 options:0 error:0];
 
         if (v52)
         {
           v53 = +[ACDAccountStore accountCache];
-          v54 = [v39 oldAccount];
+          account8 = [v39 oldAccount];
 LABEL_42:
-          v66 = v54;
-          v67 = [v54 accountType];
-          v68 = [v67 identifier];
-          [v53 cacheAccounts:v52 forType:v68 justActive:1];
+          v66 = account8;
+          accountType7 = [account8 accountType];
+          identifier3 = [accountType7 identifier];
+          [v53 cacheAccounts:v52 forType:identifier3 justActive:1];
 
-          self = v125;
+          self = selfCopy;
         }
 
 LABEL_43:
@@ -1038,48 +1038,48 @@ LABEL_43:
         v76 = *(*(&v130 + 1) + 8 * j);
         if (!v72 && ([*(*(&v130 + 1) + 8 * j) changeType] == 1 || objc_msgSend(v76, "changeType") == 5))
         {
-          v77 = [v76 account];
-          v78 = [v77 objectID];
+          account9 = [v76 account];
+          objectID = [account9 objectID];
 
-          if (!v78)
+          if (!objectID)
           {
-            v79 = [v76 account];
-            v80 = [v76 account];
-            [v80 identifier];
+            account10 = [v76 account];
+            account11 = [v76 account];
+            [account11 identifier];
             v82 = v81 = v70;
             v83 = [(ACDAccountStore *)self _accountWithIdentifier:v82 prefetchKeypaths:0];
-            v84 = [v83 objectID];
-            v85 = [v84 URIRepresentation];
-            [v79 _setObjectID:v85];
+            objectID2 = [v83 objectID];
+            uRIRepresentation = [objectID2 URIRepresentation];
+            [account10 _setObjectID:uRIRepresentation];
 
             v72 = v122;
-            self = v125;
+            self = selfCopy;
 
             v70 = v81;
             v74 = objb;
           }
         }
 
-        if (v124)
+        if (errorCopy)
         {
           if ([v76 changeType] == 3)
           {
-            v86 = [v76 oldAccount];
-            -[ACDAccountStore _delegate_accountStoreDidSaveAccount:changeType:](self, "_delegate_accountStoreDidSaveAccount:changeType:", v86, [v76 changeType]);
+            oldAccount7 = [v76 oldAccount];
+            -[ACDAccountStore _delegate_accountStoreDidSaveAccount:changeType:](self, "_delegate_accountStoreDidSaveAccount:changeType:", oldAccount7, [v76 changeType]);
           }
 
           else
           {
-            v87 = [v76 account];
-            v88 = [v87 identifier];
-            v86 = [(ACDAccountStore *)self _block_accountWithIdentifier:v88];
+            account12 = [v76 account];
+            identifier4 = [account12 identifier];
+            oldAccount7 = [(ACDAccountStore *)self _block_accountWithIdentifier:identifier4];
 
-            if (v86)
+            if (oldAccount7)
             {
-              v89 = [v76 account];
-              [v86 _applyDirtyStateFromAccount:v89];
+              account13 = [v76 account];
+              [oldAccount7 _applyDirtyStateFromAccount:account13];
 
-              -[ACDAccountStore _delegate_accountStoreDidSaveAccount:changeType:](self, "_delegate_accountStoreDidSaveAccount:changeType:", v86, [v76 changeType]);
+              -[ACDAccountStore _delegate_accountStoreDidSaveAccount:changeType:](self, "_delegate_accountStoreDidSaveAccount:changeType:", oldAccount7, [v76 changeType]);
             }
 
             else
@@ -1090,8 +1090,8 @@ LABEL_43:
                 [(ACDAccountStore *)buf _saveWithError:v90];
               }
 
-              v91 = [v76 account];
-              -[ACDAccountStore _delegate_accountStoreDidSaveAccount:changeType:](self, "_delegate_accountStoreDidSaveAccount:changeType:", v91, [v76 changeType]);
+              account14 = [v76 account];
+              -[ACDAccountStore _delegate_accountStoreDidSaveAccount:changeType:](self, "_delegate_accountStoreDidSaveAccount:changeType:", account14, [v76 changeType]);
             }
 
             v72 = v122;
@@ -1145,25 +1145,25 @@ LABEL_43:
           }
 
           v100 = *(*(&v126 + 1) + 8 * k);
-          v101 = [(ACDAccountStore *)self accountNotifier];
+          accountNotifier = [(ACDAccountStore *)self accountNotifier];
           if (v72)
           {
-            v102 = [v100 account];
-            v103 = [v100 oldAccount];
-            [v101 postDidChangeNotificationForType:4 inStore:self newAccount:v102 oldAccount:v103];
+            account15 = [v100 account];
+            oldAccount8 = [v100 oldAccount];
+            [accountNotifier postDidChangeNotificationForType:4 inStore:self newAccount:account15 oldAccount:oldAccount8];
           }
 
           else
           {
-            v104 = [v100 changeType];
-            v105 = [v100 account];
-            v106 = [v100 oldAccount];
-            [v101 postDidChangeNotificationForType:v104 inStore:v125 newAccount:v105 oldAccount:v106];
+            changeType = [v100 changeType];
+            account16 = [v100 account];
+            oldAccount9 = [v100 oldAccount];
+            [accountNotifier postDidChangeNotificationForType:changeType inStore:selfCopy newAccount:account16 oldAccount:oldAccount9];
 
-            self = v125;
+            self = selfCopy;
             if ([v100 changeType] == 1 || objc_msgSend(v100, "changeType") == 3)
             {
-              [(ACRemoteDeviceProxy *)v125->_remoteDeviceProxy sendCommand:v98 withAccount:0 completion:0];
+              [(ACRemoteDeviceProxy *)selfCopy->_remoteDeviceProxy sendCommand:v98 withAccount:0 completion:0];
             }
           }
 
@@ -1186,27 +1186,27 @@ LABEL_43:
   }
 
   v108 = *MEMORY[0x277D85DE8];
-  return v124;
+  return errorCopy;
 }
 
-- (id)_commitOrRollbackDataclassActions:(id)a3 forAccount:(id)a4 originalEnabledDataclasses:(id)a5
+- (id)_commitOrRollbackDataclassActions:(id)actions forAccount:(id)account originalEnabledDataclasses:(id)dataclasses
 {
-  v7 = a4;
-  v8 = a5;
+  accountCopy = account;
+  dataclassesCopy = dataclasses;
   v9 = MEMORY[0x277CBEB38];
-  v10 = a3;
-  v11 = [[v9 alloc] initWithCapacity:{objc_msgSend(v10, "count")}];
+  actionsCopy = actions;
+  v11 = [[v9 alloc] initWithCapacity:{objc_msgSend(actionsCopy, "count")}];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_originalEnabledDataclasses___block_invoke;
   v17[3] = &unk_27848C218;
   v18 = v11;
-  v19 = v7;
-  v20 = v8;
-  v12 = v8;
-  v13 = v7;
+  v19 = accountCopy;
+  v20 = dataclassesCopy;
+  v12 = dataclassesCopy;
+  v13 = accountCopy;
   v14 = v11;
-  [v10 enumerateKeysAndObjectsUsingBlock:v17];
+  [actionsCopy enumerateKeysAndObjectsUsingBlock:v17];
 
   v15 = [v14 copy];
 
@@ -1231,11 +1231,11 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
   }
 }
 
-- (BOOL)_performDataclassActions:(id)a3 forAccount:(id)a4 error:(id *)a5
+- (BOOL)_performDataclassActions:(id)actions forAccount:(id)account error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  actionsCopy = actions;
+  accountCopy = account;
+  if ([actionsCopy count])
   {
     v10 = _ACDLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1243,21 +1243,21 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
       [ACDAccountStore _performDataclassActions:forAccount:error:];
     }
 
-    v11 = [v9 identifier];
-    v12 = [(ACDAccountStore *)self _childAccountsForAccountWithID:v11];
+    identifier = [accountCopy identifier];
+    v12 = [(ACDAccountStore *)self _childAccountsForAccountWithID:identifier];
 
-    v13 = [(ACDAccountStore *)self accountNotifier];
-    v14 = [v8 allKeys];
-    [v13 postWillPerformDataclassActionsOnAccount:v9 forDataclasses:v14];
+    accountNotifier = [(ACDAccountStore *)self accountNotifier];
+    allKeys = [actionsCopy allKeys];
+    [accountNotifier postWillPerformDataclassActionsOnAccount:accountCopy forDataclasses:allKeys];
 
-    v15 = [(ACDAccountStore *)self dataclassOwnersManager];
+    dataclassOwnersManager = [(ACDAccountStore *)self dataclassOwnersManager];
     v24 = 0;
-    v16 = [v15 performDataclassActions:v8 forAccount:v9 withChildren:v12 withError:&v24];
+    v16 = [dataclassOwnersManager performDataclassActions:actionsCopy forAccount:accountCopy withChildren:v12 withError:&v24];
     v17 = v24;
 
-    v18 = [(ACDAccountStore *)self accountNotifier];
-    v19 = [v8 allKeys];
-    [v18 postDidPerformDataclassActionsOnAccount:v9 forDataclasses:v19];
+    accountNotifier2 = [(ACDAccountStore *)self accountNotifier];
+    allKeys2 = [actionsCopy allKeys];
+    [accountNotifier2 postDidPerformDataclassActionsOnAccount:accountCopy forDataclasses:allKeys2];
 
     if (v17)
     {
@@ -1268,10 +1268,10 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
       }
     }
 
-    if (a5)
+    if (error)
     {
       v21 = v17;
-      *a5 = v17;
+      *error = v17;
     }
 
     v22 = _ACDLogSystem();
@@ -1289,17 +1289,17 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
   return v16;
 }
 
-- (void)addAccountNoSave:(id)a3 error:(id *)a4
+- (void)addAccountNoSave:(id)save error:(id *)error
 {
-  v6 = a3;
+  saveCopy = save;
   v7 = _ACDLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore addAccountNoSave:error:];
   }
 
-  [v6 _setAccountStore:self];
-  v8 = [(ACDAccountStore *)self _addAccountNoSave:v6 withDataclassActions:0 error:a4];
+  [saveCopy _setAccountStore:self];
+  v8 = [(ACDAccountStore *)self _addAccountNoSave:saveCopy withDataclassActions:0 error:error];
   v9 = _ACDLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -1307,11 +1307,11 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
   }
 }
 
-- (id)_addAccountNoSave:(id)a3 withDataclassActions:(id)a4 error:(id *)a5
+- (id)_addAccountNoSave:(id)save withDataclassActions:(id)actions error:(id *)error
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  saveCopy = save;
+  actionsCopy = actions;
   v10 = _ACDLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -1319,17 +1319,17 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
   }
 
   v11 = MEMORY[0x277CCAC30];
-  v12 = [v8 identifier];
-  v13 = [v11 predicateWithFormat:@"identifier == %@", v12];
+  identifier = [saveCopy identifier];
+  v13 = [v11 predicateWithFormat:@"identifier == %@", identifier];
 
   databaseConnection = self->_databaseConnection;
-  v15 = [MEMORY[0x277CB8F30] keypathsRequiredForInitialization];
-  v16 = [(ACDDatabaseConnection *)databaseConnection fetchObjectsForEntityNamed:@"Account" withPredicate:v13 sortDescriptor:0 prefetchKeypaths:v15];
+  keypathsRequiredForInitialization = [MEMORY[0x277CB8F30] keypathsRequiredForInitialization];
+  v16 = [(ACDDatabaseConnection *)databaseConnection fetchObjectsForEntityNamed:@"Account" withPredicate:v13 sortDescriptor:0 prefetchKeypaths:keypathsRequiredForInitialization];
 
   if (![v16 count])
   {
     v20 = [(ACDDatabaseConnection *)self->_databaseConnection insertNewObjectForEntityForName:@"Account"];
-    if (([v20 validateRequiredAttributesForObject:v8 error:a5]& 1) == 0)
+    if (([v20 validateRequiredAttributesForObject:saveCopy error:error]& 1) == 0)
     {
       [(ACDDatabaseConnection *)self->_databaseConnection deleteObject:v20];
       v25 = _ACDLogSystem();
@@ -1348,11 +1348,11 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
     aBlock[3] = &unk_27848C240;
     v47 = v20;
     v51 = v47;
-    v22 = v8;
+    v22 = saveCopy;
     v52 = v22;
-    v53 = self;
+    selfCopy = self;
     v23 = _Block_copy(aBlock);
-    v46 = [(ACDAccountStore *)self _commitOrRollbackDataclassActions:v9 forAccount:v22 originalEnabledDataclasses:0];
+    v46 = [(ACDAccountStore *)self _commitOrRollbackDataclassActions:actionsCopy forAccount:v22 originalEnabledDataclasses:0];
     v48 = v23;
     v24 = (v23[2])(v23);
     if (v24)
@@ -1360,9 +1360,9 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
       goto LABEL_11;
     }
 
-    v29 = [v22 isWarmingUp];
+    isWarmingUp = [v22 isWarmingUp];
     accountChanges = self->_accountChanges;
-    if (v29)
+    if (isWarmingUp)
     {
       v30 = 5;
     }
@@ -1377,18 +1377,18 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
 
     if ([(ACDAccountStore *)self notificationsEnabled]&& ![(ACDAccountStore *)self isMigrationInProgress])
     {
-      v43 = [v22 isWarmingUp];
+      isWarmingUp2 = [v22 isWarmingUp];
       v38 = _ACDLogSystem();
       v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG);
-      if (v43)
+      if (isWarmingUp2)
       {
         if (v39)
         {
           [ACDAccountStore _addAccountNoSave:withDataclassActions:error:];
         }
 
-        v40 = [(ACDAccountStore *)self accountNotifier];
-        v44 = [v40 postWillChangeNotificationForType:5 inStore:self newAccount:v22 oldAccount:0];
+        accountNotifier = [(ACDAccountStore *)self accountNotifier];
+        v44 = [accountNotifier postWillChangeNotificationForType:5 inStore:self newAccount:v22 oldAccount:0];
 
         if ((v44 & 1) == 0)
         {
@@ -1403,8 +1403,8 @@ void __91__ACDAccountStore__commitOrRollbackDataclassActions_forAccount_original
           [ACDAccountStore _addAccountNoSave:withDataclassActions:error:];
         }
 
-        v41 = [(ACDAccountStore *)self accountNotifier];
-        v45 = [v41 postWillChangeNotificationForType:1 inStore:self newAccount:v22 oldAccount:0];
+        accountNotifier2 = [(ACDAccountStore *)self accountNotifier];
+        v45 = [accountNotifier2 postWillChangeNotificationForType:1 inStore:self newAccount:v22 oldAccount:0];
 
         if (!v45)
         {
@@ -1424,11 +1424,11 @@ LABEL_11:
         }
 
         [(ACDDatabaseConnection *)self->_databaseConnection rollback];
-        if (a5)
+        if (error)
         {
           v27 = v25;
           v28 = 0;
-          *a5 = v25;
+          *error = v25;
         }
 
         else
@@ -1471,14 +1471,14 @@ LABEL_23:
     goto LABEL_30;
   }
 
-  if (a5)
+  if (error)
   {
     v17 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277CB8DC0];
     v54 = *MEMORY[0x277CCA450];
     v55[0] = @"An account with that identifier already exists";
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:&v54 count:1];
-    *a5 = [v17 errorWithDomain:v18 code:5 userInfo:v19];
+    *error = [v17 errorWithDomain:v18 code:5 userInfo:v19];
   }
 
   v20 = _ACDLogSystem();
@@ -1516,17 +1516,17 @@ id __64__ACDAccountStore__addAccountNoSave_withDataclassActions_error___block_in
   return v8;
 }
 
-- (void)updateAccountNoSave:(id)a3 error:(id *)a4
+- (void)updateAccountNoSave:(id)save error:(id *)error
 {
-  v6 = a3;
+  saveCopy = save;
   v7 = _ACDLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore updateAccountNoSave:error:];
   }
 
-  [v6 _setAccountStore:self];
-  [(ACDAccountStore *)self _updateAccountNoSave:v6 withDataclassActions:0 error:a4];
+  [saveCopy _setAccountStore:self];
+  [(ACDAccountStore *)self _updateAccountNoSave:saveCopy withDataclassActions:0 error:error];
   v8 = _ACDLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1534,24 +1534,24 @@ id __64__ACDAccountStore__addAccountNoSave_withDataclassActions_error___block_in
   }
 }
 
-- (BOOL)_updateAccountNoSave:(id)a3 withDataclassActions:(id)a4 error:(id *)a5
+- (BOOL)_updateAccountNoSave:(id)save withDataclassActions:(id)actions error:(id *)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  saveCopy = save;
+  actionsCopy = actions;
   v10 = _ACDLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore _updateAccountNoSave:withDataclassActions:error:];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v11 = [v8 identifier];
-  v12 = [(ACDAccountStore *)self _accountWithIdentifier:v11];
+  identifier = [saveCopy identifier];
+  v12 = [(ACDAccountStore *)self _accountWithIdentifier:identifier];
 
   if (!v12)
   {
@@ -1562,10 +1562,10 @@ id __64__ACDAccountStore__addAccountNoSave_withDataclassActions_error___block_in
       [ACDAccountStore _updateAccountNoSave:withDataclassActions:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v20 = v18;
-      *a5 = v18;
+      *error = v18;
     }
 
     v21 = 0;
@@ -1574,13 +1574,13 @@ id __64__ACDAccountStore__addAccountNoSave_withDataclassActions_error___block_in
 
   v13 = [objc_alloc(MEMORY[0x277CB8F30]) initWithManagedAccount:v12 accountStore:self];
   v14 = _ACLogSystem();
-  v59 = v8;
+  v59 = saveCopy;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
-    v47 = [WeakRetained bundleID];
+    bundleID = [WeakRetained bundleID];
     v48 = [v13 description];
-    v49 = v9;
+    v49 = actionsCopy;
     if ([v13 isWarmingUp])
     {
       v50 = @"YES";
@@ -1591,35 +1591,35 @@ id __64__ACDAccountStore__addAccountNoSave_withDataclassActions_error___block_in
       v50 = @"NO";
     }
 
-    v51 = [v8 description];
-    v52 = [v59 isWarmingUp];
+    v51 = [saveCopy description];
+    isWarmingUp = [v59 isWarmingUp];
     *buf = 138413314;
     v53 = @"YES";
-    if (!v52)
+    if (!isWarmingUp)
     {
       v53 = @"NO";
     }
 
-    v68 = v47;
+    v68 = bundleID;
     v69 = 2112;
     v70 = v48;
     v71 = 2112;
     v72 = v50;
-    v9 = v49;
+    actionsCopy = v49;
     v73 = 2112;
     v74 = v51;
     v75 = 2112;
     v76 = v53;
     _os_log_debug_impl(&dword_221D2F000, v14, OS_LOG_TYPE_DEBUG, "_updateAccountNoSave client %@ - existing %@ warming: %@ -- new %@ warming: %@", buf, 0x34u);
 
-    v8 = v59;
+    saveCopy = v59;
   }
 
   [v13 _loadAllCachedProperties];
   v15 = v13;
   if ([v15 isWarmingUp])
   {
-    if (v8 && ([v8 isWarmingUp] & 1) == 0)
+    if (saveCopy && ([saveCopy isWarmingUp] & 1) == 0)
     {
       v22 = _ACLogSystem();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -1658,16 +1658,16 @@ id __64__ACDAccountStore__addAccountNoSave_withDataclassActions_error___block_in
   aBlock[1] = 3221225472;
   aBlock[2] = __67__ACDAccountStore__updateAccountNoSave_withDataclassActions_error___block_invoke;
   aBlock[3] = &unk_27848C268;
-  v23 = v8;
+  v23 = saveCopy;
   v63 = v23;
   v24 = v12;
   v64 = v24;
   v25 = v15;
   v65 = v25;
-  v66 = self;
+  selfCopy = self;
   v26 = _Block_copy(aBlock);
-  v27 = [v25 enabledDataclasses];
-  v58 = [(ACDAccountStore *)self _commitOrRollbackDataclassActions:v9 forAccount:v23 originalEnabledDataclasses:v27];
+  enabledDataclasses = [v25 enabledDataclasses];
+  v58 = [(ACDAccountStore *)self _commitOrRollbackDataclassActions:actionsCopy forAccount:v23 originalEnabledDataclasses:enabledDataclasses];
 
   v28 = v26[2](v26, v25);
   v60 = v17;
@@ -1690,7 +1690,7 @@ id __64__ACDAccountStore__addAccountNoSave_withDataclassActions_error___block_in
     v36 = 0;
     v28 = 0;
     v21 = 0;
-    v8 = v59;
+    saveCopy = v59;
     goto LABEL_39;
   }
 
@@ -1716,11 +1716,11 @@ LABEL_24:
       [(NSMutableArray *)accountChanges addObject:v31];
 
       [(ACDDatabaseConnection *)self->_databaseConnection rollback];
-      if (a5)
+      if (error)
       {
         v32 = v28;
         v21 = 0;
-        *a5 = v28;
+        *error = v28;
       }
 
       else
@@ -1729,7 +1729,7 @@ LABEL_24:
       }
 
       v36 = 1;
-      v8 = v59;
+      saveCopy = v59;
 LABEL_39:
       v38 = v60;
       v39 = v58;
@@ -1760,13 +1760,13 @@ LABEL_39:
   [(NSMutableArray *)v44 addObject:v45];
 
   v38 = v60;
-  v46 = self;
+  selfCopy2 = self;
   v39 = v58;
-  v21 = [(ACDAccountStore *)v46 _performDataclassActions:v58 forAccount:v23 error:a5];
+  v21 = [(ACDAccountStore *)selfCopy2 _performDataclassActions:v58 forAccount:v23 error:error];
 
   v28 = 0;
   v36 = 1;
-  v8 = v59;
+  saveCopy = v59;
 LABEL_40:
 
   if ((v36 & 1) == 0)
@@ -1860,25 +1860,25 @@ id __67__ACDAccountStore__updateAccountNoSave_withDataclassActions_error___block
   return v22;
 }
 
-- (void)deleteAccountNoSave:(id)a3 error:(id *)a4
+- (void)deleteAccountNoSave:(id)save error:(id *)error
 {
-  v6 = a3;
-  [v6 _setAccountStore:self];
-  [(ACDAccountStore *)self _deleteAccountNoSave:v6 withDataclassActions:0 error:a4];
+  saveCopy = save;
+  [saveCopy _setAccountStore:self];
+  [(ACDAccountStore *)self _deleteAccountNoSave:saveCopy withDataclassActions:0 error:error];
 }
 
-- (void)_deleteAccountNoSave:(id)a3 withDataclassActions:(id)a4 error:(id *)a5
+- (void)_deleteAccountNoSave:(id)save withDataclassActions:(id)actions error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  saveCopy = save;
+  actionsCopy = actions;
   v10 = _ACDLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore _deleteAccountNoSave:withDataclassActions:error:];
   }
 
-  v11 = [v8 identifier];
-  v12 = [(ACDAccountStore *)self _accountWithIdentifier:v11];
+  identifier = [saveCopy identifier];
+  v12 = [(ACDAccountStore *)self _accountWithIdentifier:identifier];
 
   if (v12)
   {
@@ -1896,11 +1896,11 @@ id __67__ACDAccountStore__updateAccountNoSave_withDataclassActions_error___block
 
     if ([(ACDAccountStore *)self notificationsEnabled]&& ![(ACDAccountStore *)self isMigrationInProgress])
     {
-      v17 = [(ACDAccountStore *)self accountNotifier];
-      [v17 postWillChangeNotificationForType:3 inStore:self newAccount:0 oldAccount:v13];
+      accountNotifier = [(ACDAccountStore *)self accountNotifier];
+      [accountNotifier postWillChangeNotificationForType:3 inStore:self newAccount:0 oldAccount:v13];
     }
 
-    [(ACDAccountStore *)self _performDataclassActions:v9 forAccount:v8 error:a5];
+    [(ACDAccountStore *)self _performDataclassActions:actionsCopy forAccount:saveCopy error:error];
     [ACDKeychainManager removeCredentialForAccount:v13 clientID:0 error:0];
     [(ACDDatabaseConnection *)self->_databaseConnection deleteObject:v12];
   }
@@ -1914,10 +1914,10 @@ id __67__ACDAccountStore__updateAccountNoSave_withDataclassActions_error___block
       [ACDAccountStore _deleteAccountNoSave:withDataclassActions:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v19 = v13;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -1928,55 +1928,55 @@ id __67__ACDAccountStore__updateAccountNoSave_withDataclassActions_error___block
   }
 }
 
-- (id)_accountWithIdentifier:(id)a3
+- (id)_accountWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CB8F30];
-  v5 = a3;
-  v6 = [v4 keypathsRequiredForInitialization];
-  v7 = [(ACDAccountStore *)self _accountWithIdentifier:v5 prefetchKeypaths:v6];
+  identifierCopy = identifier;
+  keypathsRequiredForInitialization = [v4 keypathsRequiredForInitialization];
+  v7 = [(ACDAccountStore *)self _accountWithIdentifier:identifierCopy prefetchKeypaths:keypathsRequiredForInitialization];
 
   return v7;
 }
 
-- (id)_accountWithIdentifier:(id)a3 prefetchKeypaths:(id)a4
+- (id)_accountWithIdentifier:(id)identifier prefetchKeypaths:(id)keypaths
 {
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"identifier == %@", a3];
-  v9 = [(ACDDatabaseConnection *)self->_databaseConnection fetchObjectsForEntityNamed:@"Account" withPredicate:v8 sortDescriptor:0 prefetchKeypaths:v7];
+  keypathsCopy = keypaths;
+  identifier = [v6 predicateWithFormat:@"identifier == %@", identifier];
+  v9 = [(ACDDatabaseConnection *)self->_databaseConnection fetchObjectsForEntityNamed:@"Account" withPredicate:identifier sortDescriptor:0 prefetchKeypaths:keypathsCopy];
 
-  v10 = [v9 lastObject];
+  lastObject = [v9 lastObject];
 
-  return v10;
+  return lastObject;
 }
 
-- (id)_displayAccountForAccount:(id)a3
+- (id)_displayAccountForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 parentAccount];
-  v6 = v4;
-  if (v5)
+  accountCopy = account;
+  parentAccount = [accountCopy parentAccount];
+  v6 = accountCopy;
+  if (parentAccount)
   {
-    v6 = [(ACDAccountStore *)self _displayAccountForAccount:v5];
+    v6 = [(ACDAccountStore *)self _displayAccountForAccount:parentAccount];
   }
 
   return v6;
 }
 
-- (id)_accountTypeWithIdentifier:(id)a3
+- (id)_accountTypeWithIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", a3];
-  v5 = [(ACDDatabaseConnection *)self->_databaseConnection fetchObjectsForEntityNamed:@"AccountType" withPredicate:v4];
-  v6 = [v5 lastObject];
+  identifier = [MEMORY[0x277CCAC30] predicateWithFormat:@"identifier == %@", identifier];
+  v5 = [(ACDDatabaseConnection *)self->_databaseConnection fetchObjectsForEntityNamed:@"AccountType" withPredicate:identifier];
+  lastObject = [v5 lastObject];
 
-  return v6;
+  return lastObject;
 }
 
-- (id)_dataclassWithName:(id)a3 createIfNecessary:(BOOL)a4
+- (id)_dataclassWithName:(id)name createIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
+  necessaryCopy = necessary;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   [(ACDDatabaseConnection *)self->_databaseConnection fetchObjectsForEntityNamed:@"Dataclass" withPredicate:0];
   v18 = 0u;
   v19 = 0u;
@@ -1985,7 +1985,7 @@ id __67__ACDAccountStore__updateAccountNoSave_withDataclassActions_error___block
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
-    v17 = v4;
+    v17 = necessaryCopy;
     v9 = *v19;
     while (2)
     {
@@ -1997,8 +1997,8 @@ id __67__ACDAccountStore__updateAccountNoSave_withDataclassActions_error___block
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 name];
-        v13 = [v12 isEqualToString:v6];
+        name = [v11 name];
+        v13 = [name isEqualToString:nameCopy];
 
         if (v13)
         {
@@ -2017,10 +2017,10 @@ id __67__ACDAccountStore__updateAccountNoSave_withDataclassActions_error___block
     }
 
 LABEL_11:
-    v4 = v17;
+    necessaryCopy = v17;
   }
 
-  if (!v8 && v4)
+  if (!v8 && necessaryCopy)
   {
     v14 = _ACDLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -2029,7 +2029,7 @@ LABEL_11:
     }
 
     v8 = [(ACDDatabaseConnection *)self->_databaseConnection insertNewObjectForEntityForName:@"Dataclass"];
-    [v8 setName:v6];
+    [v8 setName:nameCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2037,41 +2037,41 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_canSaveAccount:(id)a3 error:(id *)a4
+- (BOOL)_canSaveAccount:(id)account error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  accountCopy = account;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__ACDAccountStore__canSaveAccount_error___block_invoke;
   aBlock[3] = &unk_27848C290;
   aBlock[4] = self;
-  v7 = v6;
+  v7 = accountCopy;
   v46 = v7;
   v8 = _Block_copy(aBlock);
-  v9 = [v7 accountType];
-  v10 = [v9 supportsMultipleAccounts];
+  accountType = [v7 accountType];
+  supportsMultipleAccounts = [accountType supportsMultipleAccounts];
 
   v11 = _ACDLogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (!v10)
+  if (!supportsMultipleAccounts)
   {
     if (v12)
     {
-      v15 = [v7 accountType];
+      accountType2 = [v7 accountType];
       *buf = 138412290;
-      v48 = v15;
+      v48 = accountType2;
       _os_log_impl(&dword_221D2F000, v11, OS_LOG_TYPE_DEFAULT, "Account type %@ does NOT support multiples.", buf, 0xCu);
     }
 
-    v16 = [v7 accountType];
+    accountType3 = [v7 accountType];
     v44 = 0;
-    v17 = [(ACDAccountStore *)self accountsWithAccountType:v16 options:1 error:&v44];
+    v17 = [(ACDAccountStore *)self accountsWithAccountType:accountType3 options:1 error:&v44];
     v18 = v44;
 
     if (v17)
     {
-      v37 = a4;
+      errorCopy = error;
       v38 = v18;
       v42 = 0u;
       v43 = 0u;
@@ -2094,28 +2094,28 @@ LABEL_11:
             }
 
             v24 = *(*(&v40 + 1) + 8 * i);
-            v25 = [v24 identifier];
-            v26 = [v7 identifier];
-            v27 = [v25 isEqualToString:v26];
+            identifier = [v24 identifier];
+            identifier2 = [v7 identifier];
+            v27 = [identifier isEqualToString:identifier2];
 
             if ((v27 & 1) == 0)
             {
               v28 = _ACDLogSystem();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
               {
-                v29 = [v7 accountType];
-                v30 = [v29 accountTypeDescription];
+                accountType4 = [v7 accountType];
+                accountTypeDescription = [accountType4 accountTypeDescription];
                 *buf = 138412546;
                 v48 = v24;
                 v49 = 2112;
-                v50 = v30;
+                v50 = accountTypeDescription;
                 _os_log_impl(&dword_221D2F000, v28, OS_LOG_TYPE_DEFAULT, "Found active account %@ of type %@ that does NOT support multiples.  Returning NO.", buf, 0x16u);
               }
 
               v17 = v39;
-              if (v37)
+              if (errorCopy)
               {
-                *v37 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:5 userInfo:0];
+                *errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:5 userInfo:0];
               }
 
               v14 = 0;
@@ -2146,11 +2146,11 @@ LABEL_11:
         [ACDAccountStore _canSaveAccount:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v32 = v18;
         v14 = 0;
-        *a4 = v18;
+        *error = v18;
       }
 
       else
@@ -2164,9 +2164,9 @@ LABEL_11:
     v33 = _ACDLogSystem();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v7 accountType];
+      accountType5 = [v7 accountType];
       *buf = 138412290;
-      v48 = v34;
+      v48 = accountType5;
       _os_log_impl(&dword_221D2F000, v33, OS_LOG_TYPE_DEFAULT, "Found 0 accounts of type %@, returning YES.", buf, 0xCu);
     }
 
@@ -2178,13 +2178,13 @@ LABEL_30:
 
   if (v12)
   {
-    v13 = [v7 accountType];
+    accountType6 = [v7 accountType];
     *buf = 138412290;
-    v48 = v13;
+    v48 = accountType6;
     _os_log_impl(&dword_221D2F000, v11, OS_LOG_TYPE_DEFAULT, "Account type %@ does support multiples.", buf, 0xCu);
   }
 
-  v14 = v8[2](v8, a4);
+  v14 = v8[2](v8, error);
 LABEL_31:
 
   v35 = *MEMORY[0x277D85DE8];
@@ -2233,48 +2233,48 @@ uint64_t __41__ACDAccountStore__canSaveAccount_error___block_invoke(uint64_t a1,
   return v7;
 }
 
-- (void)_setAccountManagedObjectRelationships:(id)a3 withAccount:(id)a4 oldAccount:(id)a5 error:(id *)a6
+- (void)_setAccountManagedObjectRelationships:(id)relationships withAccount:(id)account oldAccount:(id)oldAccount error:(id *)error
 {
   v146[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  relationshipsCopy = relationships;
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
   v12 = _ACDLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore _setAccountManagedObjectRelationships:withAccount:oldAccount:error:];
   }
 
-  v13 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
-  v14 = [v13 persistentStoreCoordinator];
-  v15 = [v10 accountType];
-  v16 = [v15 objectID];
-  v17 = [v14 managedObjectIDForURIRepresentation:v16];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  accountType = [accountCopy accountType];
+  objectID = [accountType objectID];
+  v17 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:objectID];
 
-  v18 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext2 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v114 = v17;
-  v19 = [v18 objectWithID:v17];
+  v19 = [managedObjectContext2 objectWithID:v17];
 
-  if ([v10 isPropertyDirty:@"accountType"])
+  if ([accountCopy isPropertyDirty:@"accountType"])
   {
-    [v9 setAccountType:v19];
+    [relationshipsCopy setAccountType:v19];
   }
 
   v113 = v19;
-  if (![v10 isPropertyDirty:@"parent"])
+  if (![accountCopy isPropertyDirty:@"parent"])
   {
 LABEL_9:
-    v112 = v11;
-    if ([v10 isPropertyDirty:@"accountProperties"])
+    v112 = oldAccountCopy;
+    if ([accountCopy isPropertyDirty:@"accountProperties"])
     {
-      v22 = [v10 accountProperties];
+      accountProperties = [accountCopy accountProperties];
       v132 = 0u;
       v133 = 0u;
       v134 = 0u;
       v135 = 0u;
-      v108 = v10;
-      v23 = [v10 dirtyAccountProperties];
-      v24 = [v23 countByEnumeratingWithState:&v132 objects:v144 count:16];
+      v108 = accountCopy;
+      dirtyAccountProperties = [accountCopy dirtyAccountProperties];
+      v24 = [dirtyAccountProperties countByEnumeratingWithState:&v132 objects:v144 count:16];
       if (v24)
       {
         v25 = v24;
@@ -2285,31 +2285,31 @@ LABEL_9:
           {
             if (*v133 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(dirtyAccountProperties);
             }
 
             v28 = *(*(&v132 + 1) + 8 * i);
-            v29 = [v22 valueForKey:v28];
+            v29 = [accountProperties valueForKey:v28];
             databaseConnection = self->_databaseConnection;
             if (v29)
             {
-              [(ACDDatabaseConnection *)databaseConnection setAccountPropertyWithKey:v28 value:v29 owner:v9];
+              [(ACDDatabaseConnection *)databaseConnection setAccountPropertyWithKey:v28 value:v29 owner:relationshipsCopy];
             }
 
             else
             {
-              [(ACDDatabaseConnection *)databaseConnection deleteAccountPropertyWithKey:v28 owner:v9];
+              [(ACDDatabaseConnection *)databaseConnection deleteAccountPropertyWithKey:v28 owner:relationshipsCopy];
             }
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v132 objects:v144 count:16];
+          v25 = [dirtyAccountProperties countByEnumeratingWithState:&v132 objects:v144 count:16];
         }
 
         while (v25);
       }
 
-      v10 = v108;
-      v11 = v112;
+      accountCopy = v108;
+      oldAccountCopy = v112;
     }
 
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -2318,37 +2318,37 @@ LABEL_9:
     aBlock[3] = &unk_27848C2B8;
     aBlock[4] = self;
     v31 = _Block_copy(aBlock);
-    if (![v10 isPropertyDirty:*MEMORY[0x277CB8E80]])
+    if (![accountCopy isPropertyDirty:*MEMORY[0x277CB8E80]])
     {
 LABEL_41:
-      if (![v10 isPropertyDirty:*MEMORY[0x277CB8E70]])
+      if (![accountCopy isPropertyDirty:*MEMORY[0x277CB8E70]])
       {
 LABEL_58:
         v58 = MEMORY[0x277CB90B8];
-        if (v11)
+        if (oldAccountCopy)
         {
-          v59 = [v9 username];
-          if (v59)
+          username = [relationshipsCopy username];
+          if (username)
           {
-            v60 = v59;
-            v61 = [v9 authenticationType];
-            v62 = [v61 isEqualToString:*v58];
+            v60 = username;
+            authenticationType = [relationshipsCopy authenticationType];
+            v62 = [authenticationType isEqualToString:*v58];
 
             if ((v62 & 1) == 0)
             {
-              v63 = [objc_alloc(MEMORY[0x277CB8F30]) initWithManagedAccount:v9];
-              v64 = [v11 qualifiedUsername];
-              v65 = [v63 qualifiedUsername];
-              v66 = [v64 isEqualToString:v65];
+              v63 = [objc_alloc(MEMORY[0x277CB8F30]) initWithManagedAccount:relationshipsCopy];
+              qualifiedUsername = [oldAccountCopy qualifiedUsername];
+              qualifiedUsername2 = [v63 qualifiedUsername];
+              v66 = [qualifiedUsername isEqualToString:qualifiedUsername2];
 
               if ((v66 & 1) == 0)
               {
                 v69 = _ACDLogSystem();
                 if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
                 {
-                  v70 = [v11 qualifiedUsername];
+                  qualifiedUsername3 = [oldAccountCopy qualifiedUsername];
                   v71 = ACHashedString();
-                  v72 = [v63 qualifiedUsername];
+                  qualifiedUsername4 = [v63 qualifiedUsername];
                   v73 = ACHashedString();
                   *buf = 138412802;
                   v137 = v63;
@@ -2359,45 +2359,45 @@ LABEL_58:
                   _os_log_impl(&dword_221D2F000, v69, OS_LOG_TYPE_DEFAULT, "%@: qualifiedUsername changed from %@ to %@", buf, 0x20u);
                 }
 
-                if ([v10 isPropertyDirty:@"credential"])
+                if ([accountCopy isPropertyDirty:@"credential"])
                 {
-                  v74 = [v10 internalCredential];
+                  internalCredential = [accountCopy internalCredential];
                   v75 = v112;
                 }
 
                 else
                 {
                   v75 = v112;
-                  v74 = [ACDKeychainManager credentialForAccount:v112 clientID:0];
+                  internalCredential = [ACDKeychainManager credentialForAccount:v112 clientID:0];
                 }
 
-                [v63 setCredential:v74];
+                [v63 setCredential:internalCredential];
                 [ACDKeychainManager removeCredentialForAccount:v75 clientID:0 error:0];
-                [ACDKeychainManager setCredentialForAccount:v63 error:a6];
+                [ACDKeychainManager setCredentialForAccount:v63 error:error];
 
-                v11 = v75;
+                oldAccountCopy = v75;
                 goto LABEL_102;
               }
             }
           }
         }
 
-        v67 = [v10 authenticationType];
-        if ([v67 isEqualToString:*v58])
+        authenticationType2 = [accountCopy authenticationType];
+        if ([authenticationType2 isEqualToString:*v58])
         {
           goto LABEL_99;
         }
 
-        v68 = [v10 isPropertyDirty:@"credential"];
+        v68 = [accountCopy isPropertyDirty:@"credential"];
 
         if (!v68)
         {
           goto LABEL_100;
         }
 
-        if (v11)
+        if (oldAccountCopy)
         {
-          v63 = [ACDKeychainManager credentialForAccount:v11 clientID:0];
+          v63 = [ACDKeychainManager credentialForAccount:oldAccountCopy clientID:0];
         }
 
         else
@@ -2405,21 +2405,21 @@ LABEL_58:
           v63 = 0;
         }
 
-        v76 = [v63 credentialType];
+        credentialType = [v63 credentialType];
         v77 = *MEMORY[0x277CB8D98];
-        if ([v76 isEqual:*MEMORY[0x277CB8D98]])
+        if ([credentialType isEqual:*MEMORY[0x277CB8D98]])
         {
         }
 
         else
         {
-          v78 = [v10 internalCredential];
-          v79 = [v78 credentialType];
-          v80 = [v79 isEqual:v77];
+          internalCredential2 = [accountCopy internalCredential];
+          credentialType2 = [internalCredential2 credentialType];
+          v80 = [credentialType2 isEqual:v77];
 
           if (!v80)
           {
-            v67 = 0;
+            authenticationType2 = 0;
             goto LABEL_81;
           }
         }
@@ -2429,15 +2429,15 @@ LABEL_58:
 
         if (v82)
         {
-          v67 = 0;
+          authenticationType2 = 0;
         }
 
         else
         {
           v83 = objc_loadWeakRetained(&self->_client);
-          v84 = [v83 bundleID];
+          bundleID = [v83 bundleID];
 
-          if (!v84)
+          if (!bundleID)
           {
             v104 = _ACDLogSystem();
             if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
@@ -2445,35 +2445,35 @@ LABEL_58:
               [ACDAccountStore _setAccountManagedObjectRelationships:? withAccount:? oldAccount:? error:?];
             }
 
-            v11 = v112;
+            oldAccountCopy = v112;
             goto LABEL_102;
           }
 
           v85 = objc_loadWeakRetained(&self->_client);
-          v67 = [v85 bundleID];
+          authenticationType2 = [v85 bundleID];
         }
 
-        v11 = v112;
+        oldAccountCopy = v112;
 LABEL_81:
-        v86 = [v10 internalCredential];
-        v87 = [v86 isEqual:v63];
+        internalCredential3 = [accountCopy internalCredential];
+        v87 = [internalCredential3 isEqual:v63];
 
         if ((v87 & 1) == 0)
         {
-          v88 = v11;
-          v89 = v10;
+          v88 = oldAccountCopy;
+          v89 = accountCopy;
           if (v88)
           {
             v115 = 0;
             v90 = &v115;
-            [ACDKeychainManager setCredentialForAccount:v89 clientID:v67 error:&v115];
+            [ACDKeychainManager setCredentialForAccount:v89 clientID:authenticationType2 error:&v115];
           }
 
           else
           {
             v116 = 0;
             v90 = &v116;
-            [ACDKeychainManager setCredentialForNewAccount:v89 clientID:v67 error:&v116];
+            [ACDKeychainManager setCredentialForNewAccount:v89 clientID:authenticationType2 error:&v116];
           }
 
           v91 = *v90;
@@ -2487,16 +2487,16 @@ LABEL_81:
               _os_log_impl(&dword_221D2F000, v92, OS_LOG_TYPE_DEFAULT, "Ignoring credential-save error because we're migrating. %@", buf, 0xCu);
             }
 
-            v10 = v89;
+            accountCopy = v89;
             goto LABEL_97;
           }
 
-          v10 = v89;
-          v11 = v112;
+          accountCopy = v89;
+          oldAccountCopy = v112;
           if (v91)
           {
-            v93 = [v91 userInfo];
-            v92 = [v93 mutableCopy];
+            userInfo = [v91 userInfo];
+            v92 = [userInfo mutableCopy];
 
             v106 = *MEMORY[0x277CCA450];
             v94 = [v92 objectForKeyedSubscript:?];
@@ -2513,19 +2513,19 @@ LABEL_81:
             v111 = v95;
             v105 = MEMORY[0x277CCACA8];
             v96 = objc_loadWeakRetained(&self->_client);
-            v97 = [v96 name];
-            v98 = [v105 stringWithFormat:@"%@ Requested By: %@", v95, v97];
+            name = [v96 name];
+            v98 = [v105 stringWithFormat:@"%@ Requested By: %@", v95, name];
 
             [v92 setObject:v98 forKeyedSubscript:v106];
             v99 = MEMORY[0x277CCA9B8];
-            v100 = [v91 domain];
-            v101 = [v99 errorWithDomain:v100 code:-[NSObject code](v91 userInfo:{"code"), v92}];
+            domain = [v91 domain];
+            v101 = [v99 errorWithDomain:domain code:-[NSObject code](v91 userInfo:{"code"), v92}];
 
             v102 = v101;
-            *a6 = v101;
+            *error = v101;
 
 LABEL_97:
-            v11 = v112;
+            oldAccountCopy = v112;
           }
         }
 
@@ -2543,22 +2543,22 @@ LABEL_102:
         goto LABEL_103;
       }
 
-      if ([v10 wasEnabledDataclassesReset])
+      if ([accountCopy wasEnabledDataclassesReset])
       {
         v49 = objc_alloc_init(MEMORY[0x277CBEB58]);
-        if (!v11)
+        if (!oldAccountCopy)
         {
 LABEL_49:
           v122 = 0u;
           v123 = 0u;
           v120 = 0u;
           v121 = 0u;
-          v52 = [v10 enabledDataclasses];
-          v53 = [v52 countByEnumeratingWithState:&v120 objects:v142 count:16];
+          enabledDataclasses = [accountCopy enabledDataclasses];
+          v53 = [enabledDataclasses countByEnumeratingWithState:&v120 objects:v142 count:16];
           if (v53)
           {
             v54 = v53;
-            v110 = v10;
+            v110 = accountCopy;
             v55 = *v121;
             v56 = *MEMORY[0x277CB8D68];
             do
@@ -2567,18 +2567,18 @@ LABEL_49:
               {
                 if (*v121 != v55)
                 {
-                  objc_enumerationMutation(v52);
+                  objc_enumerationMutation(enabledDataclasses);
                 }
 
                 (*(v31 + 2))(v31, v49, *(*(&v120 + 1) + 8 * j), v56);
               }
 
-              v54 = [v52 countByEnumeratingWithState:&v120 objects:v142 count:16];
+              v54 = [enabledDataclasses countByEnumeratingWithState:&v120 objects:v142 count:16];
             }
 
             while (v54);
-            v10 = v110;
-            v11 = v112;
+            accountCopy = v110;
+            oldAccountCopy = v112;
           }
 
           goto LABEL_57;
@@ -2587,12 +2587,12 @@ LABEL_49:
 
       else
       {
-        v50 = [v9 enabledDataclasses];
-        v49 = [v50 mutableCopy];
+        enabledDataclasses2 = [relationshipsCopy enabledDataclasses];
+        v49 = [enabledDataclasses2 mutableCopy];
 
         if (v49)
         {
-          if (!v11)
+          if (!oldAccountCopy)
           {
             goto LABEL_49;
           }
@@ -2601,45 +2601,45 @@ LABEL_49:
         else
         {
           [ACDAccountStore _setAccountManagedObjectRelationships:withAccount:oldAccount:error:];
-          if (!v11)
+          if (!oldAccountCopy)
           {
             goto LABEL_49;
           }
         }
       }
 
-      v51 = [v10 trackedEnabledDataclasses];
+      trackedEnabledDataclasses = [accountCopy trackedEnabledDataclasses];
       v117[0] = MEMORY[0x277D85DD0];
       v117[1] = 3221225472;
       v117[2] = __86__ACDAccountStore__setAccountManagedObjectRelationships_withAccount_oldAccount_error___block_invoke_3;
       v117[3] = &unk_27848C2E0;
       v119 = v31;
       v118 = v49;
-      [v51 enumerateModificationsUsingBlock:v117];
+      [trackedEnabledDataclasses enumerateModificationsUsingBlock:v117];
 
-      v52 = v119;
+      enabledDataclasses = v119;
 LABEL_57:
 
-      [v9 setEnabledDataclasses:v49];
+      [relationshipsCopy setEnabledDataclasses:v49];
       goto LABEL_58;
     }
 
-    if ([v10 wasProvisionedDataclassesReset])
+    if ([accountCopy wasProvisionedDataclassesReset])
     {
       v32 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      if (!v11)
+      if (!oldAccountCopy)
       {
 LABEL_32:
         v129 = 0u;
         v130 = 0u;
         v127 = 0u;
         v128 = 0u;
-        v35 = [v10 provisionedDataclasses];
-        v44 = [v35 countByEnumeratingWithState:&v127 objects:v143 count:16];
+        provisionedDataclasses = [accountCopy provisionedDataclasses];
+        v44 = [provisionedDataclasses countByEnumeratingWithState:&v127 objects:v143 count:16];
         if (v44)
         {
           v45 = v44;
-          v109 = v10;
+          v109 = accountCopy;
           v46 = *v128;
           v47 = *MEMORY[0x277CB8D68];
           do
@@ -2648,18 +2648,18 @@ LABEL_32:
             {
               if (*v128 != v46)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(provisionedDataclasses);
               }
 
               (*(v31 + 2))(v31, v32, *(*(&v127 + 1) + 8 * k), v47);
             }
 
-            v45 = [v35 countByEnumeratingWithState:&v127 objects:v143 count:16];
+            v45 = [provisionedDataclasses countByEnumeratingWithState:&v127 objects:v143 count:16];
           }
 
           while (v45);
-          v10 = v109;
-          v11 = v112;
+          accountCopy = v109;
+          oldAccountCopy = v112;
         }
 
         goto LABEL_40;
@@ -2668,12 +2668,12 @@ LABEL_32:
 
     else
     {
-      v33 = [v9 provisionedDataclasses];
-      v32 = [v33 mutableCopy];
+      provisionedDataclasses2 = [relationshipsCopy provisionedDataclasses];
+      v32 = [provisionedDataclasses2 mutableCopy];
 
       if (v32)
       {
-        if (!v11)
+        if (!oldAccountCopy)
         {
           goto LABEL_32;
         }
@@ -2682,34 +2682,34 @@ LABEL_32:
       else
       {
         [ACDAccountStore _setAccountManagedObjectRelationships:withAccount:oldAccount:error:];
-        if (!v11)
+        if (!oldAccountCopy)
         {
           goto LABEL_32;
         }
       }
     }
 
-    v34 = [v10 trackedProvisionedDataclasses];
+    trackedProvisionedDataclasses = [accountCopy trackedProvisionedDataclasses];
     v124[0] = MEMORY[0x277D85DD0];
     v124[1] = 3221225472;
     v124[2] = __86__ACDAccountStore__setAccountManagedObjectRelationships_withAccount_oldAccount_error___block_invoke_2;
     v124[3] = &unk_27848C2E0;
     v126 = v31;
     v125 = v32;
-    [v34 enumerateModificationsUsingBlock:v124];
+    [trackedProvisionedDataclasses enumerateModificationsUsingBlock:v124];
 
-    v35 = v126;
+    provisionedDataclasses = v126;
 LABEL_40:
 
-    [v9 setProvisionedDataclasses:v32];
+    [relationshipsCopy setProvisionedDataclasses:v32];
     goto LABEL_41;
   }
 
-  v20 = [v10 parentAccount];
+  parentAccount = [accountCopy parentAccount];
 
-  if (!v20 || ([v10 parentAccountIdentifier], v21 = objc_claimAutoreleasedReturnValue(), -[ACDAccountStore _accountWithIdentifier:](self, "_accountWithIdentifier:", v21), v20 = objc_claimAutoreleasedReturnValue(), v21, v20))
+  if (!parentAccount || ([accountCopy parentAccountIdentifier], v21 = objc_claimAutoreleasedReturnValue(), -[ACDAccountStore _accountWithIdentifier:](self, "_accountWithIdentifier:", v21), parentAccount = objc_claimAutoreleasedReturnValue(), v21, parentAccount))
   {
-    [v9 setParentAccount:v20];
+    [relationshipsCopy setParentAccount:parentAccount];
 
     goto LABEL_9;
   }
@@ -2721,15 +2721,15 @@ LABEL_40:
   }
 
   v37 = MEMORY[0x277CCACA8];
-  v38 = [v10 parentAccountIdentifier];
-  v39 = [v37 stringWithFormat:@"The parent account with ID %@ is unknown to our DB, so it cannot have any children added. The parent has probably already been deleted.", v38];
+  parentAccountIdentifier = [accountCopy parentAccountIdentifier];
+  v39 = [v37 stringWithFormat:@"The parent account with ID %@ is unknown to our DB, so it cannot have any children added. The parent has probably already been deleted.", parentAccountIdentifier];
 
   v40 = MEMORY[0x277CCA9B8];
   v41 = *MEMORY[0x277CB8DC0];
   v145 = *MEMORY[0x277CCA450];
   v146[0] = v39;
   v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v146 forKeys:&v145 count:1];
-  *a6 = [v40 errorWithDomain:v41 code:15 userInfo:v42];
+  *error = [v40 errorWithDomain:v41 code:15 userInfo:v42];
 
   v43 = v17;
 LABEL_103:
@@ -2768,15 +2768,15 @@ void __86__ACDAccountStore__setAccountManagedObjectRelationships_withAccount_old
 LABEL_8:
 }
 
-- (BOOL)_handleAccountMod:(id)a3 withDataclassActions:(id)a4 withError:(id *)a5
+- (BOOL)_handleAccountMod:(id)mod withDataclassActions:(id)actions withError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  modCopy = mod;
+  actionsCopy = actions;
   v10 = _ACDLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 username];
+    username = [modCopy username];
     v12 = ACHashedString();
     *buf = 138412290;
     v27 = v12;
@@ -2784,7 +2784,7 @@ LABEL_8:
   }
 
   v25 = 0;
-  v13 = [(ACDAccountStore *)self _updateAccountNoSave:v8 withDataclassActions:v9 error:&v25];
+  v13 = [(ACDAccountStore *)self _updateAccountNoSave:modCopy withDataclassActions:actionsCopy error:&v25];
   v14 = v25;
   v15 = v14;
   if (!v13 || v14)
@@ -2800,10 +2800,10 @@ LABEL_8:
   v17 = [(ACDAccountStore *)self _saveWithError:&v24];
   v18 = v24;
   v19 = v18;
-  if (a5 && v18)
+  if (error && v18)
   {
     v20 = v18;
-    *a5 = v19;
+    *error = v19;
   }
 
   v21 = _ACDLogSystem();
@@ -2816,38 +2816,38 @@ LABEL_8:
   return v17;
 }
 
-- (BOOL)_handleAccountAdd:(id)a3 withDataclassActions:(id)a4 error:(id *)a5
+- (BOOL)_handleAccountAdd:(id)add withDataclassActions:(id)actions error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  addCopy = add;
+  actionsCopy = actions;
   v10 = _ACDLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 username];
+    username = [addCopy username];
     v12 = ACHashedString();
     *buf = 138412290;
     v30 = v12;
     _os_log_impl(&dword_221D2F000, v10, OS_LOG_TYPE_DEFAULT, "Adding new account: %@", buf, 0xCu);
   }
 
-  [v8 markAllPropertiesDirty];
+  [addCopy markAllPropertiesDirty];
   v28 = 0;
-  v13 = [(ACDAccountStore *)self _addAccountNoSave:v8 withDataclassActions:v9 error:&v28];
+  v13 = [(ACDAccountStore *)self _addAccountNoSave:addCopy withDataclassActions:actionsCopy error:&v28];
 
   v14 = v28;
   if (v13)
   {
     WeakRetained = objc_loadWeakRetained(&self->_client);
-    v16 = [WeakRetained bundleID];
-    [v13 setOwningBundleID:v16];
+    bundleID = [WeakRetained bundleID];
+    [v13 setOwningBundleID:bundleID];
 
     v17 = _ACDLogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v13 owningBundleID];
+      owningBundleID = [v13 owningBundleID];
       *buf = 138412290;
-      v30 = v18;
+      v30 = owningBundleID;
       _os_log_impl(&dword_221D2F000, v17, OS_LOG_TYPE_DEFAULT, "Owning bundleID: %@", buf, 0xCu);
     }
 
@@ -2856,21 +2856,21 @@ LABEL_8:
     v19 = v27;
     if (self)
     {
-      v20 = [v13 objectID];
-      v21 = [v20 URIRepresentation];
-      [v8 _setObjectID:v21];
+      objectID = [v13 objectID];
+      uRIRepresentation = [objectID URIRepresentation];
+      [addCopy _setObjectID:uRIRepresentation];
     }
 
     else
     {
-      v20 = _ACDLogSystem();
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      objectID = _ACDLogSystem();
+      if (os_log_type_enabled(objectID, OS_LOG_TYPE_ERROR))
       {
         [ACDAccountStore _handleAccountAdd:withDataclassActions:error:];
       }
     }
 
-    if (!a5)
+    if (!error)
     {
       v22 = v19;
       goto LABEL_19;
@@ -2892,7 +2892,7 @@ LABEL_8:
     }
 
     LOBYTE(self) = 0;
-    if (!a5)
+    if (!error)
     {
       v22 = 0;
       goto LABEL_19;
@@ -2906,7 +2906,7 @@ LABEL_8:
   {
 LABEL_17:
     v24 = v19;
-    *a5 = v19;
+    *error = v19;
     v22 = v23;
   }
 
@@ -2916,42 +2916,42 @@ LABEL_19:
   return self;
 }
 
-- (id)_credentialItemWithAccountIdentifier:(id)a3 serviceName:(id)a4
+- (id)_credentialItemWithAccountIdentifier:(id)identifier serviceName:(id)name
 {
-  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"accountIdentifier == %@ AND serviceName == %@", a3, a4];
-  v6 = [(ACDDatabaseConnection *)self->_databaseConnection fetchObjectsForEntityNamed:@"CredentialItem" withPredicate:v5];
-  v7 = [v6 lastObject];
+  name = [MEMORY[0x277CCAC30] predicateWithFormat:@"accountIdentifier == %@ AND serviceName == %@", identifier, name];
+  v6 = [(ACDDatabaseConnection *)self->_databaseConnection fetchObjectsForEntityNamed:@"CredentialItem" withPredicate:name];
+  lastObject = [v6 lastObject];
 
-  return v7;
+  return lastObject;
 }
 
-- (void)setClientBundleID:(id)a3 withHandler:(id)a4
+- (void)setClientBundleID:(id)d withHandler:(id)handler
 {
-  v8 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_client);
-  [WeakRetained setBundleID:v6];
+  [WeakRetained setBundleID:dCopy];
 
-  v8[2](v8, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (void)accountWithIdentifier:(id)a3 handler:(id)a4
+- (void)accountWithIdentifier:(id)identifier handler:(id)handler
 {
-  v7 = a4;
-  v8 = [(ACDAccountStore *)self _sync_accountWithIdentifier:a3];
-  (*(a4 + 2))(v7, v8, 0);
+  handlerCopy = handler;
+  v8 = [(ACDAccountStore *)self _sync_accountWithIdentifier:identifier];
+  (*(handler + 2))(handlerCopy, v8, 0);
 }
 
-- (id)_sync_accountWithIdentifier:(id)a3
+- (id)_sync_accountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v5 = +[ACDAccountStore accountCache];
-  v18 = [v5 cachedAccountForIdentifier:v4];
+  v18 = [v5 cachedAccountForIdentifier:identifierCopy];
 
   v6 = v14[5];
   if (v6)
@@ -2961,15 +2961,15 @@ LABEL_19:
 
   else
   {
-    v7 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__ACDAccountStore__sync_accountWithIdentifier___block_invoke;
     v10[3] = &unk_27848BCD0;
     v12 = &v13;
     v10[4] = self;
-    v11 = v4;
-    [v7 performBlockAndWait:v10];
+    v11 = identifierCopy;
+    [managedObjectContext performBlockAndWait:v10];
   }
 
   v8 = v14[5];
@@ -3000,14 +3000,14 @@ void __47__ACDAccountStore__sync_accountWithIdentifier___block_invoke(uint64_t a
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__ACDAccountStore__allAccounts_sync__block_invoke;
   v6[3] = &unk_27848BED8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3015,32 +3015,32 @@ void __47__ACDAccountStore__sync_accountWithIdentifier___block_invoke(uint64_t a
   return v4;
 }
 
-- (void)accountsWithHandler:(id)a3
+- (void)accountsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ACDAccountStore *)self _allAccounts_sync];
-  v4[2](v4, v5, 0);
+  handlerCopy = handler;
+  _allAccounts_sync = [(ACDAccountStore *)self _allAccounts_sync];
+  handlerCopy[2](handlerCopy, _allAccounts_sync, 0);
 }
 
-- (void)accountTypesWithHandler:(id)a3
+- (void)accountTypesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v5 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__ACDAccountStore_accountTypesWithHandler___block_invoke;
   v6[3] = &unk_27848C308;
   v6[4] = self;
   v6[5] = &v7;
-  [v5 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
-  v4[2](v4, v8[5], 0);
+  handlerCopy[2](handlerCopy, v8[5], 0);
   _Block_object_dispose(&v7, 8);
 }
 
@@ -3090,28 +3090,28 @@ void __43__ACDAccountStore_accountTypesWithHandler___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayAccountTypeForAccountWithIdentifier:(id)a3 handler:(id)a4
+- (void)displayAccountTypeForAccountWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__ACDAccountStore_displayAccountTypeForAccountWithIdentifier_handler___block_invoke;
   v10[3] = &unk_27848BF28;
   v10[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v14[5], 0);
+  handlerCopy[2](handlerCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
@@ -3130,20 +3130,20 @@ void __70__ACDAccountStore_displayAccountTypeForAccountWithIdentifier_handler___
   }
 }
 
-- (void)accountTypeWithIdentifier:(id)a3 handler:(id)a4
+- (void)accountTypeWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__3;
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
-  if (v6)
+  if (identifierCopy)
   {
     v8 = +[ACDAccountStore accountCache];
-    v9 = [v8 cachedAccountTypeForID:v6];
+    v9 = [v8 cachedAccountTypeForID:identifierCopy];
     v10 = v18[5];
     v18[5] = v9;
 
@@ -3155,19 +3155,19 @@ void __70__ACDAccountStore_displayAccountTypeForAccountWithIdentifier_handler___
 
     else
     {
-      v12 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+      managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __53__ACDAccountStore_accountTypeWithIdentifier_handler___block_invoke;
       v13[3] = &unk_27848BF28;
-      v14 = v6;
-      v15 = self;
+      v14 = identifierCopy;
+      selfCopy = self;
       v16 = &v17;
-      [v12 performBlockAndWait:v13];
+      [managedObjectContext performBlockAndWait:v13];
     }
   }
 
-  v7[2](v7, v18[5], 0);
+  handlerCopy[2](handlerCopy, v18[5], 0);
   _Block_object_dispose(&v17, 8);
 }
 
@@ -3211,25 +3211,25 @@ void __53__ACDAccountStore_accountTypeWithIdentifier_handler___block_invoke(uint
   }
 }
 
-- (id)masterCredentialForAccountIdentifier:(id)a3
+- (id)masterCredentialForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__ACDAccountStore_masterCredentialForAccountIdentifier___block_invoke;
   v9[3] = &unk_27848BF28;
   v9[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 performBlockAndWait:v9];
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3270,23 +3270,23 @@ void __56__ACDAccountStore_masterCredentialForAccountIdentifier___block_invoke(v
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)credentialForAccount:(id)a3 serviceID:(id)a4 handler:(id)a5
+- (void)credentialForAccount:(id)account serviceID:(id)d handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  dCopy = d;
+  handlerCopy = handler;
   v11 = MEMORY[0x277CB8F98];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__ACDAccountStore_credentialForAccount_serviceID_handler___block_invoke;
   v15[3] = &unk_27848C358;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = accountCopy;
+  v17 = dCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dCopy;
+  v14 = accountCopy;
   [v11 performWithinPersonaForAccount:v14 withBlock:v15];
 }
 
@@ -3368,26 +3368,26 @@ void __58__ACDAccountStore_credentialForAccount_serviceID_handler___block_invoke
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCredential:(id)a3 forAccount:(id)a4 serviceID:(id)a5 completion:(id)a6
+- (void)setCredential:(id)credential forAccount:(id)account serviceID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  credentialCopy = credential;
+  accountCopy = account;
+  dCopy = d;
+  completionCopy = completion;
   v14 = MEMORY[0x277CB8F98];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __65__ACDAccountStore_setCredential_forAccount_serviceID_completion___block_invoke;
   v19[3] = &unk_27848C380;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = credentialCopy;
+  v21 = accountCopy;
+  v22 = dCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = dCopy;
+  v17 = accountCopy;
+  v18 = credentialCopy;
   [v14 performWithinPersonaForAccount:v17 withBlock:v19];
 }
 
@@ -3444,14 +3444,14 @@ void __65__ACDAccountStore_setCredential_forAccount_serviceID_completion___block
   v9();
 }
 
-- (void)credentialForAccountWithIdentifier:(id)a3 handler:(id)a4
+- (void)credentialForAccountWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = _ACDLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ACDAccountStore credentialForAccountWithIdentifier:v6 handler:self];
+    [ACDAccountStore credentialForAccountWithIdentifier:identifierCopy handler:self];
   }
 
   v21 = 0;
@@ -3460,7 +3460,7 @@ void __65__ACDAccountStore_setCredential_forAccount_serviceID_completion___block
   v24 = __Block_byref_object_copy__3;
   v25 = __Block_byref_object_dispose__3;
   v9 = +[ACDAccountStore accountCache];
-  v26 = [v9 cachedAccountForIdentifier:v6];
+  v26 = [v9 cachedAccountForIdentifier:identifierCopy];
 
   v10 = v22[5];
   if (v10)
@@ -3470,15 +3470,15 @@ void __65__ACDAccountStore_setCredential_forAccount_serviceID_completion___block
 
   else
   {
-    v11 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __62__ACDAccountStore_credentialForAccountWithIdentifier_handler___block_invoke;
     v18[3] = &unk_27848BF28;
     v18[4] = self;
-    v19 = v6;
+    v19 = identifierCopy;
     v20 = &v21;
-    [v11 performBlockAndWait:v18];
+    [managedObjectContext performBlockAndWait:v18];
   }
 
   v12 = v22[5];
@@ -3491,14 +3491,14 @@ void __65__ACDAccountStore_setCredential_forAccount_serviceID_completion___block
     v15[3] = &unk_27848C3D0;
     v15[4] = self;
     v17 = &v21;
-    v16 = v7;
+    v16 = handlerCopy;
     [v13 performWithinPersonaForAccount:v12 withBlock:v15];
   }
 
   else
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:6 userInfo:0];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 
   _Block_object_dispose(&v21, 8);
@@ -3636,21 +3636,21 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_legacyCredentialForAccount:(id)a3 client:(id)a4 error:(id *)a5
+- (id)_legacyCredentialForAccount:(id)account client:(id)client error:(id *)error
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 hasEntitlement:*MEMORY[0x277CB8FE0]])
+  accountCopy = account;
+  clientCopy = client;
+  if ([clientCopy hasEntitlement:*MEMORY[0x277CB8FE0]])
   {
     goto LABEL_2;
   }
 
-  v11 = [v7 accountType];
-  v12 = [v11 identifier];
-  if ([v12 isEqual:*MEMORY[0x277CB8D48]])
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  if ([identifier isEqual:*MEMORY[0x277CB8D48]])
   {
-    v13 = [v8 hasEntitlement:*MEMORY[0x277CB9068]];
+    v13 = [clientCopy hasEntitlement:*MEMORY[0x277CB9068]];
 
     if (v13)
     {
@@ -3662,12 +3662,12 @@ LABEL_18:
   {
   }
 
-  v14 = [v7 accountType];
-  v15 = [v14 identifier];
-  if (![v15 isEqual:*MEMORY[0x277CB8C58]])
+  accountType2 = [accountCopy accountType];
+  identifier2 = [accountType2 identifier];
+  if (![identifier2 isEqual:*MEMORY[0x277CB8C58]])
   {
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_3;
     }
@@ -3675,16 +3675,16 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  v16 = [v8 hasEntitlement:*MEMORY[0x277CB9028]];
+  v16 = [clientCopy hasEntitlement:*MEMORY[0x277CB9028]];
 
   if (v16)
   {
 LABEL_2:
-    a5 = [ACDKeychainManager credentialForAccount:v7 clientID:0 error:a5];
+    error = [ACDKeychainManager credentialForAccount:accountCopy clientID:0 error:error];
     goto LABEL_3;
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_15:
     v17 = MEMORY[0x277CCA9B8];
@@ -3692,37 +3692,37 @@ LABEL_15:
     v20 = *MEMORY[0x277CCA450];
     v21[0] = @"Client does not have access to credentials";
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    *a5 = [v17 errorWithDomain:v18 code:9 userInfo:v19];
+    *error = [v17 errorWithDomain:v18 code:9 userInfo:v19];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_3:
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return error;
 }
 
-- (void)credentialItemsWithCompletion:(id)a3
+- (void)credentialItemsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v5 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__ACDAccountStore_credentialItemsWithCompletion___block_invoke;
   v6[3] = &unk_27848C308;
   v6[4] = self;
   v6[5] = &v7;
-  [v5 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
-  v4[2](v4, v8[5], 0);
+  completionCopy[2](completionCopy, v8[5], 0);
   _Block_object_dispose(&v7, 8);
 }
 
@@ -3773,23 +3773,23 @@ void __49__ACDAccountStore_credentialItemsWithCompletion___block_invoke(uint64_t
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)credentialItemForAccount:(id)a3 serviceName:(id)a4 completion:(id)a5
+- (void)credentialItemForAccount:(id)account serviceName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  nameCopy = name;
+  completionCopy = completion;
   v11 = MEMORY[0x277CB8F98];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__ACDAccountStore_credentialItemForAccount_serviceName_completion___block_invoke;
   v15[3] = &unk_27848C358;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = accountCopy;
+  v17 = nameCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = nameCopy;
+  v14 = accountCopy;
   [v11 performWithinPersonaForAccount:v14 withBlock:v15];
 }
 
@@ -3832,21 +3832,21 @@ void __67__ACDAccountStore_credentialItemForAccount_serviceName_completion___blo
   }
 }
 
-- (void)insertCredentialItem:(id)a3 completion:(id)a4
+- (void)insertCredentialItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountIdentifier];
+  itemCopy = item;
+  completionCopy = completion;
+  accountIdentifier = [itemCopy accountIdentifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__ACDAccountStore_insertCredentialItem_completion___block_invoke;
   v11[3] = &unk_27848C470;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [(ACDAccountStore *)self accountWithIdentifier:v8 handler:v11];
+  v12 = itemCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = itemCopy;
+  [(ACDAccountStore *)self accountWithIdentifier:accountIdentifier handler:v11];
 }
 
 void __51__ACDAccountStore_insertCredentialItem_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3968,21 +3968,21 @@ void __51__ACDAccountStore_insertCredentialItem_completion___block_invoke_3(uint
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveCredentialItem:(id)a3 completion:(id)a4
+- (void)saveCredentialItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountIdentifier];
+  itemCopy = item;
+  completionCopy = completion;
+  accountIdentifier = [itemCopy accountIdentifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __49__ACDAccountStore_saveCredentialItem_completion___block_invoke;
   v11[3] = &unk_27848C470;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [(ACDAccountStore *)self accountWithIdentifier:v8 handler:v11];
+  v12 = itemCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = itemCopy;
+  [(ACDAccountStore *)self accountWithIdentifier:accountIdentifier handler:v11];
 }
 
 void __49__ACDAccountStore_saveCredentialItem_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4080,21 +4080,21 @@ void __49__ACDAccountStore_saveCredentialItem_completion___block_invoke_3(uint64
   }
 }
 
-- (void)removeCredentialItem:(id)a3 completion:(id)a4
+- (void)removeCredentialItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountIdentifier];
+  itemCopy = item;
+  completionCopy = completion;
+  accountIdentifier = [itemCopy accountIdentifier];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__ACDAccountStore_removeCredentialItem_completion___block_invoke;
   v11[3] = &unk_27848C470;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [(ACDAccountStore *)self accountWithIdentifier:v8 handler:v11];
+  v12 = itemCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = itemCopy;
+  [(ACDAccountStore *)self accountWithIdentifier:accountIdentifier handler:v11];
 }
 
 void __51__ACDAccountStore_removeCredentialItem_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -4160,23 +4160,23 @@ void __51__ACDAccountStore_removeCredentialItem_completion___block_invoke_3(uint
   }
 }
 
-- (void)dataclassesWithHandler:(id)a3
+- (void)dataclassesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
   v11 = __Block_byref_object_copy__3;
   v12 = __Block_byref_object_dispose__3;
   v13 = 0;
-  v5 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__ACDAccountStore_dataclassesWithHandler___block_invoke;
   v7[3] = &unk_27848C308;
   v7[4] = self;
   v7[5] = &v8;
-  [v5 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   if ([v9[5] count])
   {
@@ -4188,7 +4188,7 @@ void __51__ACDAccountStore_removeCredentialItem_completion___block_invoke_3(uint
     v6 = 0;
   }
 
-  v4[2](v4, v6, 0);
+  handlerCopy[2](handlerCopy, v6, 0);
   _Block_object_dispose(&v8, 8);
 }
 
@@ -4237,13 +4237,13 @@ void __42__ACDAccountStore_dataclassesWithHandler___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountsWithAccountType:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)accountsWithAccountType:(id)type options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  [v8 setAccountStore:self];
+  typeCopy = type;
+  completionCopy = completion;
+  [typeCopy setAccountStore:self];
   v14 = 0;
-  v10 = [(ACDAccountStore *)self _accountsWithAccountType:v8 options:a4 error:&v14];
+  v10 = [(ACDAccountStore *)self _accountsWithAccountType:typeCopy options:options error:&v14];
   v11 = v14;
   v12 = _ACDLogSystem();
   v13 = v12;
@@ -4254,7 +4254,7 @@ void __42__ACDAccountStore_dataclassesWithHandler___block_invoke(uint64_t a1)
       [ACDAccountStore accountsWithAccountType:options:completion:];
     }
 
-    v9[2](v9, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
@@ -4264,13 +4264,13 @@ void __42__ACDAccountStore_dataclassesWithHandler___block_invoke(uint64_t a1)
       [ACDAccountStore accountsWithAccountType:options:completion:];
     }
 
-    (v9)[2](v9, v10, 0);
+    (completionCopy)[2](completionCopy, v10, 0);
   }
 }
 
-- (id)_accountsWithAccountType:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)_accountsWithAccountType:(id)type options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  typeCopy = type;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -4283,26 +4283,26 @@ void __42__ACDAccountStore_dataclassesWithHandler___block_invoke(uint64_t a1)
   v24 = __Block_byref_object_copy__3;
   v25 = __Block_byref_object_dispose__3;
   v26 = 0;
-  v9 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__ACDAccountStore__accountsWithAccountType_options_error___block_invoke;
   v14[3] = &unk_27848C4C0;
   v17 = &v21;
-  v10 = v8;
-  v20 = (a4 & 1) == 0;
+  v10 = typeCopy;
+  v20 = (options & 1) == 0;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v18 = &v27;
-  v19 = a4;
-  [v9 performBlockAndWait:v14];
+  optionsCopy = options;
+  [managedObjectContext performBlockAndWait:v14];
 
-  if (a5)
+  if (error)
   {
     v11 = v28[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -4385,44 +4385,44 @@ id __58__ACDAccountStore__accountsWithAccountType_options_error___block_invoke_2
   return v5;
 }
 
-- (id)_predicateForFetchingAccountsWithManagedAccountTypeID:(id)a3 options:(unint64_t)a4
+- (id)_predicateForFetchingAccountsWithManagedAccountTypeID:(id)d options:(unint64_t)options
 {
-  if (a4)
+  if (options)
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"accountType == %@", a3, v6];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"accountType == %@", d, v6];
   }
 
   else
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"accountType == %@ AND active == %@", a3, MEMORY[0x277CBEC38]];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"accountType == %@ AND active == %@", d, MEMORY[0x277CBEC38]];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)parentAccountForAccountWithIdentifier:(id)a3 handler:(id)a4
+- (void)parentAccountForAccountWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__ACDAccountStore_parentAccountForAccountWithIdentifier_handler___block_invoke;
   v10[3] = &unk_27848BF28;
   v10[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v14[5], 0);
+  handlerCopy[2](handlerCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
@@ -4447,38 +4447,38 @@ void __65__ACDAccountStore_parentAccountForAccountWithIdentifier_handler___block
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)childAccountsForAccountWithIdentifier:(id)a3 handler:(id)a4
+- (void)childAccountsForAccountWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ACDAccountStore *)self _childAccountsForAccountWithID:a3];
-  v6[2](v6, v7, 0);
+  handlerCopy = handler;
+  v7 = [(ACDAccountStore *)self _childAccountsForAccountWithID:identifier];
+  handlerCopy[2](handlerCopy, v7, 0);
 }
 
-- (void)childAccountsWithAccountTypeIdentifier:(id)a3 parentAccountIdentifier:(id)a4 handler:(id)a5
+- (void)childAccountsWithAccountTypeIdentifier:(id)identifier parentAccountIdentifier:(id)accountIdentifier handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  handlerCopy = handler;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__3;
   v22 = __Block_byref_object_dispose__3;
   v23 = 0;
-  v11 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __90__ACDAccountStore_childAccountsWithAccountTypeIdentifier_parentAccountIdentifier_handler___block_invoke;
   v14[3] = &unk_27848C3F8;
   v14[4] = self;
-  v12 = v8;
+  v12 = identifierCopy;
   v15 = v12;
-  v13 = v9;
+  v13 = accountIdentifierCopy;
   v16 = v13;
   v17 = &v18;
-  [v11 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
 
-  v10[2](v10, v19[5], 0);
+  handlerCopy[2](handlerCopy, v19[5], 0);
   _Block_object_dispose(&v18, 8);
 }
 
@@ -4537,10 +4537,10 @@ void __90__ACDAccountStore_childAccountsWithAccountTypeIdentifier_parentAccountI
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_childAccountsForAccountWithID:(id)a3
+- (id)_childAccountsForAccountWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -4548,15 +4548,15 @@ void __90__ACDAccountStore_childAccountsWithAccountTypeIdentifier_parentAccountI
     v16 = __Block_byref_object_copy__3;
     v17 = __Block_byref_object_dispose__3;
     v18 = 0;
-    v5 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __50__ACDAccountStore__childAccountsForAccountWithID___block_invoke;
     v9[3] = &unk_27848BF28;
-    v10 = v4;
-    v11 = self;
+    v10 = dCopy;
+    selfCopy = self;
     v12 = &v13;
-    [v5 performBlockAndWait:v9];
+    [managedObjectContext performBlockAndWait:v9];
 
     v6 = v14[5];
     _Block_object_dispose(&v13, 8);
@@ -4633,28 +4633,28 @@ void __50__ACDAccountStore__childAccountsForAccountWithID___block_invoke(void *a
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountIdentifiersEnabledForDataclass:(id)a3 handler:(id)a4
+- (void)accountIdentifiersEnabledForDataclass:(id)dataclass handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataclassCopy = dataclass;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__ACDAccountStore_accountIdentifiersEnabledForDataclass_handler___block_invoke;
   v10[3] = &unk_27848BF28;
   v10[4] = self;
-  v9 = v6;
+  v9 = dataclassCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v14[5], 0);
+  handlerCopy[2](handlerCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
@@ -4713,28 +4713,28 @@ void __65__ACDAccountStore_accountIdentifiersEnabledForDataclass_handler___block
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountIdentifiersEnabledToSyncDataclass:(id)a3 handler:(id)a4
+- (void)accountIdentifiersEnabledToSyncDataclass:(id)dataclass handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataclassCopy = dataclass;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__ACDAccountStore_accountIdentifiersEnabledToSyncDataclass_handler___block_invoke;
   v10[3] = &unk_27848BF28;
   v10[4] = self;
-  v9 = v6;
+  v9 = dataclassCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v14[5], 0);
+  handlerCopy[2](handlerCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
@@ -4830,16 +4830,16 @@ LABEL_20:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canManagedAccountType:(id)a3 syncManagedDataclass:(id)a4
+- (BOOL)_canManagedAccountType:(id)type syncManagedDataclass:(id)dataclass
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dataclassCopy = dataclass;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 syncableDataclasses];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  syncableDataclasses = [type syncableDataclasses];
+  v7 = [syncableDataclasses countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -4849,12 +4849,12 @@ LABEL_20:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(syncableDataclasses);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) name];
-        v11 = [v5 name];
-        v12 = [v10 isEqualToString:v11];
+        name = [*(*(&v15 + 1) + 8 * i) name];
+        name2 = [dataclassCopy name];
+        v12 = [name isEqualToString:name2];
 
         if (v12)
         {
@@ -4863,7 +4863,7 @@ LABEL_20:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [syncableDataclasses countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -4879,16 +4879,16 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)_isManagedAccount:(id)a3 enabledForManagedDataclass:(id)a4
+- (BOOL)_isManagedAccount:(id)account enabledForManagedDataclass:(id)dataclass
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dataclassCopy = dataclass;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 enabledDataclasses];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  enabledDataclasses = [account enabledDataclasses];
+  v7 = [enabledDataclasses countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -4898,12 +4898,12 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(enabledDataclasses);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) name];
-        v11 = [v5 name];
-        v12 = [v10 isEqualToString:v11];
+        name = [*(*(&v15 + 1) + 8 * i) name];
+        name2 = [dataclassCopy name];
+        v12 = [name isEqualToString:name2];
 
         if (v12)
         {
@@ -4912,7 +4912,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [enabledDataclasses countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -4928,31 +4928,31 @@ LABEL_11:
   return v7;
 }
 
-- (void)accountIdentifiersEnabledForDataclasses:(id)a3 withAccountTypeIdentifiers:(id)a4 completion:(id)a5
+- (void)accountIdentifiersEnabledForDataclasses:(id)dataclasses withAccountTypeIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataclassesCopy = dataclasses;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__3;
   v23 = __Block_byref_object_dispose__3;
   v24 = 0;
-  v11 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __97__ACDAccountStore_accountIdentifiersEnabledForDataclasses_withAccountTypeIdentifiers_completion___block_invoke;
   v14[3] = &unk_27848C4E8;
-  v12 = v9;
+  v12 = identifiersCopy;
   v15 = v12;
-  v16 = self;
+  selfCopy = self;
   v18 = &v19;
-  v13 = v8;
+  v13 = dataclassesCopy;
   v17 = v13;
-  [v11 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
 
-  v10[2](v10, v20[5], 0);
+  completionCopy[2](completionCopy, v20[5], 0);
   _Block_object_dispose(&v19, 8);
 }
 
@@ -5011,28 +5011,28 @@ void __97__ACDAccountStore_accountIdentifiersEnabledForDataclasses_withAccountTy
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enabledDataclassesForAccountWithIdentifier:(id)a3 handler:(id)a4
+- (void)enabledDataclassesForAccountWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__ACDAccountStore_enabledDataclassesForAccountWithIdentifier_handler___block_invoke;
   v10[3] = &unk_27848BF28;
   v10[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v14[5], 0);
+  handlerCopy[2](handlerCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
@@ -5094,28 +5094,28 @@ void __70__ACDAccountStore_enabledDataclassesForAccountWithIdentifier_handler___
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionedDataclassesForAccountWithIdentifier:(id)a3 handler:(id)a4
+- (void)provisionedDataclassesForAccountWithIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__ACDAccountStore_provisionedDataclassesForAccountWithIdentifier_handler___block_invoke;
   v10[3] = &unk_27848BF28;
   v10[4] = self;
-  v9 = v6;
+  v9 = identifierCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v14[5], 0);
+  handlerCopy[2](handlerCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
@@ -5177,29 +5177,29 @@ void __74__ACDAccountStore_provisionedDataclassesForAccountWithIdentifier_handle
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncableDataclassesForAccountType:(id)a3 handler:(id)a4
+- (void)syncableDataclassesForAccountType:(id)type handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  [v6 setAccountStore:self];
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  [typeCopy setAccountStore:self];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__ACDAccountStore_syncableDataclassesForAccountType_handler___block_invoke;
   v10[3] = &unk_27848BF28;
   v10[4] = self;
-  v9 = v6;
+  v9 = typeCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v14[5], 0);
+  handlerCopy[2](handlerCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
@@ -5215,29 +5215,29 @@ void __61__ACDAccountStore_syncableDataclassesForAccountType_handler___block_inv
   *(v5 + 40) = v4;
 }
 
-- (void)supportedDataclassesForAccountType:(id)a3 handler:(id)a4
+- (void)supportedDataclassesForAccountType:(id)type handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  [v6 setAccountStore:self];
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  [typeCopy setAccountStore:self];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__ACDAccountStore_supportedDataclassesForAccountType_handler___block_invoke;
   v10[3] = &unk_27848BF28;
   v10[4] = self;
-  v9 = v6;
+  v9 = typeCopy;
   v11 = v9;
   v12 = &v13;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v14[5], 0);
+  handlerCopy[2](handlerCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
@@ -5253,10 +5253,10 @@ void __62__ACDAccountStore_supportedDataclassesForAccountType_handler___block_in
   *(v5 + 40) = v4;
 }
 
-- (void)accessKeysForAccountType:(id)a3 handler:(id)a4
+- (void)accessKeysForAccountType:(id)type handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -5269,20 +5269,20 @@ void __62__ACDAccountStore_supportedDataclassesForAccountType_handler___block_in
   v17 = __Block_byref_object_copy__3;
   v18 = __Block_byref_object_dispose__3;
   v19 = 0;
-  [v6 setAccountStore:self];
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  [typeCopy setAccountStore:self];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __52__ACDAccountStore_accessKeysForAccountType_handler___block_invoke;
   v10[3] = &unk_27848C420;
   v10[4] = self;
-  v9 = v6;
+  v9 = typeCopy;
   v11 = v9;
   v12 = &v20;
   v13 = &v14;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  v7[2](v7, v21[5], v15[5]);
+  handlerCopy[2](handlerCopy, v21[5], v15[5]);
   _Block_object_dispose(&v14, 8);
 
   _Block_object_dispose(&v20, 8);
@@ -5365,11 +5365,11 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertAccountType:(id)a3 withHandler:(id)a4
+- (void)insertAccountType:(id)type withHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v32 = 0;
   v33[0] = &v32;
   v33[1] = 0x3032000000;
@@ -5382,26 +5382,26 @@ LABEL_13:
   v29 = __Block_byref_object_copy__3;
   v30 = __Block_byref_object_dispose__3;
   v31 = 0;
-  [v6 setAccountStore:self];
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  [typeCopy setAccountStore:self];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __49__ACDAccountStore_insertAccountType_withHandler___block_invoke;
   v21 = &unk_27848C420;
-  v22 = self;
-  v9 = v6;
+  selfCopy = self;
+  v9 = typeCopy;
   v23 = v9;
   v24 = &v32;
   v25 = &v26;
-  [v8 performBlockAndWait:&v18];
+  [managedObjectContext performBlockAndWait:&v18];
 
   if (*(v33[0] + 40))
   {
     v10 = _ACDLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v9 identifier];
-      [ACDAccountStore insertAccountType:v11 withHandler:v33];
+      identifier = [v9 identifier];
+      [ACDAccountStore insertAccountType:identifier withHandler:v33];
     }
 
     v12 = 0;
@@ -5410,14 +5410,14 @@ LABEL_13:
 
   else
   {
-    [v9 setObjectID:{v27[5], v18, v19, v20, v21, v22}];
+    [v9 setObjectID:{v27[5], v18, v19, v20, v21, selfCopy}];
     v14 = _ACDLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 identifier];
+      identifier2 = [v9 identifier];
       v16 = v27[5];
       *buf = 138543618;
-      v36 = v15;
+      v36 = identifier2;
       v37 = 2112;
       v38 = v16;
       _os_log_impl(&dword_221D2F000, v14, OS_LOG_TYPE_DEFAULT, "Inserted account type '%{public}@' with object ID: %@", buf, 0x16u);
@@ -5427,7 +5427,7 @@ LABEL_13:
     v12 = v9;
   }
 
-  v7[2](v7, v12, v13);
+  handlerCopy[2](handlerCopy, v12, v13);
 
   _Block_object_dispose(&v26, 8);
   _Block_object_dispose(&v32, 8);
@@ -5492,20 +5492,20 @@ void __49__ACDAccountStore_insertAccountType_withHandler___block_invoke(uint64_t
   }
 }
 
-- (void)removeAccountType:(id)a3 withHandler:(id)a4
+- (void)removeAccountType:(id)type withHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   v31 = 0;
   v32[0] = &v31;
   v32[1] = 0x3032000000;
   v32[2] = __Block_byref_object_copy__3;
   v32[3] = __Block_byref_object_dispose__3;
   v33 = 0;
-  [v6 setAccountStore:self];
-  v8 = [v6 identifier];
-  v9 = [(ACDAccountStore *)self accountsExistWithAccountTypeIdentifier:v8];
+  [typeCopy setAccountStore:self];
+  identifier = [typeCopy identifier];
+  v9 = [(ACDAccountStore *)self accountsExistWithAccountTypeIdentifier:identifier];
 
   if (v9)
   {
@@ -5516,15 +5516,15 @@ void __49__ACDAccountStore_insertAccountType_withHandler___block_invoke(uint64_t
 
   else
   {
-    v12 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __49__ACDAccountStore_removeAccountType_withHandler___block_invoke;
     v28[3] = &unk_27848BF28;
     v28[4] = self;
-    v29 = v6;
+    v29 = typeCopy;
     v30 = &v31;
-    [v12 performBlockAndWait:v28];
+    [managedObjectContext performBlockAndWait:v28];
   }
 
   if (*(v32[0] + 40))
@@ -5532,8 +5532,8 @@ void __49__ACDAccountStore_insertAccountType_withHandler___block_invoke(uint64_t
     v13 = _ACDLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v6 identifier];
-      [ACDAccountStore removeAccountType:v14 withHandler:v32];
+      identifier2 = [typeCopy identifier];
+      [ACDAccountStore removeAccountType:identifier2 withHandler:v32];
     }
 
     v15 = *(v32[0] + 40);
@@ -5545,22 +5545,22 @@ void __49__ACDAccountStore_insertAccountType_withHandler___block_invoke(uint64_t
     v17 = _ACDLogSystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v6 identifier];
+      identifier3 = [typeCopy identifier];
       *buf = 138543362;
-      v35 = v18;
+      v35 = identifier3;
       _os_log_impl(&dword_221D2F000, v17, OS_LOG_TYPE_DEFAULT, "Removed account type '%{public}@'", buf, 0xCu);
     }
 
-    v19 = [MEMORY[0x277CB8F58] allIdentifiers];
-    v20 = [v6 identifier];
-    v21 = [v19 containsObject:v20];
+    allIdentifiers = [MEMORY[0x277CB8F58] allIdentifiers];
+    identifier4 = [typeCopy identifier];
+    v21 = [allIdentifiers containsObject:identifier4];
 
     if (v21)
     {
       v22 = MEMORY[0x277CCACA8];
       WeakRetained = objc_loadWeakRetained(&self->_client);
-      v24 = [v6 identifier];
-      v25 = [v22 stringWithFormat:@"Client '%@' removed internal account type '%@'", WeakRetained, v24];
+      identifier5 = [typeCopy identifier];
+      v25 = [v22 stringWithFormat:@"Client '%@' removed internal account type '%@'", WeakRetained, identifier5];
 
       v26 = +[ACDEventLedger sharedLedger];
       [v26 simulateCrashWithMessage:v25];
@@ -5570,7 +5570,7 @@ void __49__ACDAccountStore_insertAccountType_withHandler___block_invoke(uint64_t
     v16 = MEMORY[0x277CBEC38];
   }
 
-  v7[2](v7, v16, v15);
+  handlerCopy[2](handlerCopy, v16, v15);
   _Block_object_dispose(&v31, 8);
 
   v27 = *MEMORY[0x277D85DE8];
@@ -5601,24 +5601,24 @@ void __49__ACDAccountStore_removeAccountType_withHandler___block_invoke(uint64_t
   [v9 removeAccountType:*(a1 + 40)];
 }
 
-- (void)removeAccount:(id)a3 withDataclassActions:(id)a4 completion:(id)a5
+- (void)removeAccount:(id)account withDataclassActions:(id)actions completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 _setAccountStore:self];
+  accountCopy = account;
+  actionsCopy = actions;
+  completionCopy = completion;
+  [accountCopy _setAccountStore:self];
   v11 = MEMORY[0x277CB8F98];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__ACDAccountStore_removeAccount_withDataclassActions_completion___block_invoke;
   v15[3] = &unk_27848C358;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = accountCopy;
+  v17 = actionsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = actionsCopy;
+  v14 = accountCopy;
   [v11 performWithinPersonaForAccount:v14 withBlock:v15];
 }
 
@@ -5707,35 +5707,35 @@ void __65__ACDAccountStore_removeAccount_withDataclassActions_completion___block
   }
 }
 
-- (void)canSaveAccount:(id)a3 completion:(id)a4
+- (void)canSaveAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 _setAccountStore:self];
-  if (v7)
+  accountCopy = account;
+  completionCopy = completion;
+  [accountCopy _setAccountStore:self];
+  if (completionCopy)
   {
-    v8 = [v6 objectID];
-    if (v8 || ([v6 accountType], v8 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v8, "isObsolete")))
+    objectID = [accountCopy objectID];
+    if (objectID || ([accountCopy accountType], objectID = objc_claimAutoreleasedReturnValue(), !objc_msgSend(objectID, "isObsolete")))
     {
     }
 
     else
     {
-      v9 = [(ACDAccountStore *)self shouldPreventAccountCreationWithObsoleteAccountType];
+      shouldPreventAccountCreationWithObsoleteAccountType = [(ACDAccountStore *)self shouldPreventAccountCreationWithObsoleteAccountType];
 
-      if (v9)
+      if (shouldPreventAccountCreationWithObsoleteAccountType)
       {
         v10 = MEMORY[0x277CCACA8];
-        v11 = [v6 accountType];
-        v12 = [v11 accountTypeDescription];
-        v13 = [v10 stringWithFormat:@"Creating %@ accounts is not supported.", v12];
+        accountType = [accountCopy accountType];
+        accountTypeDescription = [accountType accountTypeDescription];
+        v13 = [v10 stringWithFormat:@"Creating %@ accounts is not supported.", accountTypeDescription];
 
         v14 = MEMORY[0x277CCA9B8];
         v15 = *MEMORY[0x277CB8DC0];
         v16 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v13 forKey:*MEMORY[0x277CCA450]];
         v17 = [v14 errorWithDomain:v15 code:7 userInfo:v16];
 
-        v7[2](v7, 0, v17);
+        completionCopy[2](completionCopy, 0, v17);
 LABEL_11:
 
         goto LABEL_12;
@@ -5743,7 +5743,7 @@ LABEL_11:
     }
 
     v21 = 0;
-    v18 = [(ACDAccountStore *)self _canSaveAccount:v6 error:&v21];
+    v18 = [(ACDAccountStore *)self _canSaveAccount:accountCopy error:&v21];
     v13 = v21;
     if (v18)
     {
@@ -5757,18 +5757,18 @@ LABEL_11:
       v20 = v13;
     }
 
-    v7[2](v7, v19, v20);
+    completionCopy[2](completionCopy, v19, v20);
     goto LABEL_11;
   }
 
 LABEL_12:
 }
 
-- (void)saveAccount:(id)a3 verify:(BOOL)a4 dataclassActions:(id)a5 completion:(id)a6
+- (void)saveAccount:(id)account verify:(BOOL)verify dataclassActions:(id)actions completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  accountCopy = account;
+  actionsCopy = actions;
+  completionCopy = completion;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -5780,14 +5780,14 @@ LABEL_12:
   v17[1] = 3221225472;
   v17[2] = __66__ACDAccountStore_saveAccount_verify_dataclassActions_completion___block_invoke;
   v17[3] = &unk_27848C538;
-  v14 = v10;
+  v14 = accountCopy;
   v18 = v14;
-  v19 = self;
-  v23 = a4;
-  v15 = v12;
+  selfCopy = self;
+  verifyCopy = verify;
+  v15 = completionCopy;
   v21 = v15;
   v22 = v24;
-  v16 = v11;
+  v16 = actionsCopy;
   v20 = v16;
   [v13 performWithinPersonaForAccount:v14 withBlock:v17];
 
@@ -6011,28 +6011,28 @@ void __66__ACDAccountStore_saveAccount_verify_dataclassActions_completion___bloc
   }
 }
 
-- (id)_lockForAccountType:(id)a3
+- (id)_lockForAccountType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   if (_lockForAccountType__onceToken != -1)
   {
     [ACDAccountStore _lockForAccountType:];
   }
 
-  v4 = [v3 identifier];
-  if (v4)
+  identifier = [typeCopy identifier];
+  if (identifier)
   {
     v5 = _lockForAccountType__accountTypeLocks;
     objc_sync_enter(v5);
-    v6 = [_lockForAccountType__accountTypeLocks objectForKeyedSubscript:v4];
+    v6 = [_lockForAccountType__accountTypeLocks objectForKeyedSubscript:identifier];
 
     if (!v6)
     {
       v7 = objc_opt_new();
-      [_lockForAccountType__accountTypeLocks setObject:v7 forKeyedSubscript:v4];
+      [_lockForAccountType__accountTypeLocks setObject:v7 forKeyedSubscript:identifier];
     }
 
-    v8 = [_lockForAccountType__accountTypeLocks objectForKeyedSubscript:v4];
+    v8 = [_lockForAccountType__accountTypeLocks objectForKeyedSubscript:identifier];
     objc_sync_exit(v5);
   }
 
@@ -6051,11 +6051,11 @@ uint64_t __39__ACDAccountStore__lockForAccountType___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_completeSave:(id)a3 dataclassActions:(id)a4 completion:(id)a5
+- (void)_completeSave:(id)save dataclassActions:(id)actions completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  saveCopy = save;
+  actionsCopy = actions;
+  completionCopy = completion;
   v11 = _ACDLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -6072,20 +6072,20 @@ uint64_t __39__ACDAccountStore__lockForAccountType___block_invoke()
   v24[0] = &v23;
   v24[1] = 0x2020000000;
   v25 = 0;
-  [v8 _setAccountStore:self];
-  v12 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  [saveCopy _setAccountStore:self];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__ACDAccountStore__completeSave_dataclassActions_completion___block_invoke;
   v17[3] = &unk_27848C560;
-  v13 = v8;
+  v13 = saveCopy;
   v18 = v13;
-  v19 = self;
+  selfCopy = self;
   v21 = &v26;
   v22 = &v23;
-  v14 = v9;
+  v14 = actionsCopy;
   v20 = v14;
-  [v12 performBlockAndWait:v17];
+  [managedObjectContext performBlockAndWait:v17];
 
   v15 = _ACDLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -6095,13 +6095,13 @@ uint64_t __39__ACDAccountStore__lockForAccountType___block_invoke()
 
   if (*(v24[0] + 24) == 1)
   {
-    v16 = [v13 objectID];
-    v10[2](v10, v16, v27[5]);
+    objectID = [v13 objectID];
+    completionCopy[2](completionCopy, objectID, v27[5]);
   }
 
   else
   {
-    v10[2](v10, 0, v27[5]);
+    completionCopy[2](completionCopy, 0, v27[5]);
   }
 
   _Block_object_dispose(&v23, 8);
@@ -6178,23 +6178,23 @@ LABEL_9:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyCredentialsForAccount:(id)a3 options:(id)a4 completion:(id)a5
+- (void)verifyCredentialsForAccount:(id)account options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = MEMORY[0x277CB8F98];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__ACDAccountStore_verifyCredentialsForAccount_options_completion___block_invoke;
   v15[3] = &unk_27848C358;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = accountCopy;
+  selfCopy = self;
+  v18 = optionsCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = optionsCopy;
+  v14 = accountCopy;
   [v11 performWithinPersonaForAccount:v14 withBlock:v15];
 }
 
@@ -6234,23 +6234,23 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)renewCredentialsForAccount:(id)a3 options:(id)a4 completion:(id)a5
+- (void)renewCredentialsForAccount:(id)account options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = MEMORY[0x277CB8F98];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__ACDAccountStore_renewCredentialsForAccount_options_completion___block_invoke;
   v15[3] = &unk_27848C5B0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = accountCopy;
+  v17 = optionsCopy;
+  v18 = completionCopy;
+  v12 = optionsCopy;
+  v13 = completionCopy;
+  v14 = accountCopy;
   [v11 performWithinPersonaForAccount:v14 withBlock:v15];
 }
 
@@ -6386,13 +6386,13 @@ void __103__ACDAccountStore__requestAccessForAccountTypeWithIdentifier_options_a
   (*(v7 + 16))(v7, v8, v5);
 }
 
-- (void)appPermissionsForAccountType:(id)a3 withHandler:(id)a4
+- (void)appPermissionsForAccountType:(id)type withHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   authorizationManager = self->_authorizationManager;
-  v8 = [a3 identifier];
-  v9 = [(ACDClientAuthorizationManager *)authorizationManager allAuthorizationsForAccountTypeWithIdentifier:v8];
+  identifier = [type identifier];
+  v9 = [(ACDClientAuthorizationManager *)authorizationManager allAuthorizationsForAccountTypeWithIdentifier:identifier];
 
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21 = 0u;
@@ -6416,12 +6416,12 @@ void __103__ACDAccountStore__requestAccessForAccountTypeWithIdentifier_options_a
 
         v16 = *(*(&v21 + 1) + 8 * i);
         v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v16, "isGranted", v21)}];
-        v18 = [v16 client];
-        v19 = [v18 bundleID];
+        client = [v16 client];
+        bundleID = [client bundleID];
 
-        if (v19)
+        if (bundleID)
         {
-          [v10 setValue:v17 forKey:v19];
+          [v10 setValue:v17 forKey:bundleID];
         }
       }
 
@@ -6431,35 +6431,35 @@ void __103__ACDAccountStore__requestAccessForAccountTypeWithIdentifier_options_a
     while (v13);
   }
 
-  v6[2](v6, v10, 0);
+  handlerCopy[2](handlerCopy, v10, 0);
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPermissionGranted:(id)a3 forBundleID:(id)a4 onAccountType:(id)a5 withHandler:(id)a6
+- (void)setPermissionGranted:(id)granted forBundleID:(id)d onAccountType:(id)type withHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 identifier];
-  v15 = [(ACDAccountStore *)self accountTypeWithIdentifier:v14];
+  typeCopy = type;
+  handlerCopy = handler;
+  dCopy = d;
+  grantedCopy = granted;
+  identifier = [typeCopy identifier];
+  v15 = [(ACDAccountStore *)self accountTypeWithIdentifier:identifier];
 
-  v16 = [ACDClient clientWithBundleID:v12];
+  v16 = [ACDClient clientWithBundleID:dCopy];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__ACDAccountStore_setPermissionGranted_forBundleID_onAccountType_withHandler___block_invoke;
   aBlock[3] = &unk_27848C600;
-  v17 = v10;
+  v17 = typeCopy;
   v23 = v17;
-  v18 = v11;
-  v24 = self;
+  v18 = handlerCopy;
+  selfCopy = self;
   v25 = v18;
   v19 = _Block_copy(aBlock);
-  v20 = [v13 BOOLValue];
+  bOOLValue = [grantedCopy BOOLValue];
 
   accessPluginManager = self->_accessPluginManager;
-  if (v20)
+  if (bOOLValue)
   {
     [(ACDAccessPluginManager *)accessPluginManager authorizeAccessToAccountsOfType:v15 forClient:v16 store:self completion:v19];
   }
@@ -6498,23 +6498,23 @@ void __78__ACDAccountStore_setPermissionGranted_forBundleID_onAccountType_withHa
   v7();
 }
 
-- (void)clearAllPermissionsGrantedForAccountType:(id)a3 withHandler:(id)a4
+- (void)clearAllPermissionsGrantedForAccountType:(id)type withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [(ACDAccountStore *)self accountTypeWithIdentifier:v8];
+  typeCopy = type;
+  handlerCopy = handler;
+  identifier = [typeCopy identifier];
+  v9 = [(ACDAccountStore *)self accountTypeWithIdentifier:identifier];
 
   accessPluginManager = self->_accessPluginManager;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__ACDAccountStore_clearAllPermissionsGrantedForAccountType_withHandler___block_invoke;
   v13[3] = &unk_27848C600;
-  v15 = self;
-  v16 = v7;
-  v14 = v6;
-  v11 = v7;
-  v12 = v6;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v14 = typeCopy;
+  v11 = handlerCopy;
+  v12 = typeCopy;
   [(ACDAccessPluginManager *)accessPluginManager revokeAllAccessToAccountsOfType:v9 store:self withCompletion:v13];
 }
 
@@ -6544,10 +6544,10 @@ void __72__ACDAccountStore_clearAllPermissionsGrantedForAccountType_withHandler_
   [v8 accountStore:*(a1 + 40) didSaveAccount:0 changeType:2];
 }
 
-- (void)permissionForAccountType:(id)a3 withHandler:(id)a4
+- (void)permissionForAccountType:(id)type withHandler:(id)handler
 {
-  v14 = a3;
-  v6 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_client);
   v8 = [WeakRetained hasEntitlement:*MEMORY[0x277CB8FE0]];
 
@@ -6560,35 +6560,35 @@ void __72__ACDAccountStore_clearAllPermissionsGrantedForAccountType_withHandler_
   {
     authorizationManager = self->_authorizationManager;
     v11 = objc_loadWeakRetained(&self->_client);
-    v12 = [v14 identifier];
-    v13 = [(ACDClientAuthorizationManager *)authorizationManager authorizationForClient:v11 accountTypeWithIdentifier:v12];
+    identifier = [typeCopy identifier];
+    v13 = [(ACDClientAuthorizationManager *)authorizationManager authorizationForClient:v11 accountTypeWithIdentifier:identifier];
 
     v9 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v13, "isGranted")}];
   }
 
-  v6[2](v6, v9, 0);
+  handlerCopy[2](handlerCopy, v9, 0);
 }
 
-- (void)grantedPermissionsForAccountType:(id)a3 withHandler:(id)a4
+- (void)grantedPermissionsForAccountType:(id)type withHandler:(id)handler
 {
   authorizationManager = self->_authorizationManager;
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_client);
-  v10 = [v8 identifier];
+  identifier = [typeCopy identifier];
 
-  v12 = [(ACDClientAuthorizationManager *)authorizationManager authorizationForClient:WeakRetained accountTypeWithIdentifier:v10];
+  v12 = [(ACDClientAuthorizationManager *)authorizationManager authorizationForClient:WeakRetained accountTypeWithIdentifier:identifier];
 
-  v11 = [v12 grantedPermissions];
-  v7[2](v7, v11, 0);
+  grantedPermissions = [v12 grantedPermissions];
+  handlerCopy[2](handlerCopy, grantedPermissions, 0);
 }
 
-- (void)clearGrantedPermissionsForAccountType:(id)a3 withHandler:(id)a4
+- (void)clearGrantedPermissionsForAccountType:(id)type withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
-  v9 = [(ACDAccountStore *)self accountTypeWithIdentifier:v8];
+  typeCopy = type;
+  handlerCopy = handler;
+  identifier = [typeCopy identifier];
+  v9 = [(ACDAccountStore *)self accountTypeWithIdentifier:identifier];
 
   accessPluginManager = self->_accessPluginManager;
   WeakRetained = objc_loadWeakRetained(&self->_client);
@@ -6596,11 +6596,11 @@ void __72__ACDAccountStore_clearAllPermissionsGrantedForAccountType_withHandler_
   v14[1] = 3221225472;
   v14[2] = __69__ACDAccountStore_clearGrantedPermissionsForAccountType_withHandler___block_invoke;
   v14[3] = &unk_27848C628;
-  v15 = v6;
-  v16 = v7;
+  v15 = typeCopy;
+  v16 = handlerCopy;
   v14[4] = self;
-  v12 = v6;
-  v13 = v7;
+  v12 = typeCopy;
+  v13 = handlerCopy;
   [(ACDAccessPluginManager *)accessPluginManager revokeAccessToAccountsOfType:v9 forClient:WeakRetained store:self completion:v14];
 }
 
@@ -6631,59 +6631,59 @@ void __69__ACDAccountStore_clearGrantedPermissionsForAccountType_withHandler___b
   [v10 accountStore:*(a1 + 32) didSaveAccount:0 changeType:2];
 }
 
-- (void)preloadDataclassOwnersWithCompletion:(id)a3
+- (void)preloadDataclassOwnersWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ACDAccountStore *)self dataclassOwnersManager];
+  completionCopy = completion;
+  dataclassOwnersManager = [(ACDAccountStore *)self dataclassOwnersManager];
   v7 = 0;
-  [v5 preloadDataclassOwnersWithError:&v7];
+  [dataclassOwnersManager preloadDataclassOwnersWithError:&v7];
   v6 = v7;
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v6);
+    completionCopy[2](completionCopy, v6);
   }
 }
 
-- (void)dataclassActionsForAccountSave:(id)a3 completion:(id)a4
+- (void)dataclassActionsForAccountSave:(id)save completion:(id)completion
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  [v6 _setAccountStore:self];
+  saveCopy = save;
+  completionCopy = completion;
+  [saveCopy _setAccountStore:self];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__ACDAccountStore_dataclassActionsForAccountSave_completion___block_invoke;
   aBlock[3] = &unk_27848C650;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = saveCopy;
   v25 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [v8 trackedEnabledDataclasses];
-  v11 = [v10 allModifications];
+  trackedEnabledDataclasses = [v8 trackedEnabledDataclasses];
+  allModifications = [trackedEnabledDataclasses allModifications];
 
-  if ([v11 count])
+  if ([allModifications count])
   {
-    if ([v11 count] == 1)
+    if ([allModifications count] == 1)
     {
-      v12 = [v11 allKeys];
-      v13 = [v12 firstObject];
+      allKeys = [allModifications allKeys];
+      firstObject = [allKeys firstObject];
 
-      v14 = [v11 objectForKeyedSubscript:v13];
+      v14 = [allModifications objectForKeyedSubscript:firstObject];
       v23 = 0;
-      v15 = v9[2](v9, v13, v14, &v23);
+      v15 = v9[2](v9, firstObject, v14, &v23);
       v16 = v23;
       if (v15)
       {
-        v26 = v13;
+        v26 = firstObject;
         v27[0] = v15;
         v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-        v7[2](v7, v17, v16);
+        completionCopy[2](completionCopy, v17, v16);
       }
 
       else
       {
-        v7[2](v7, 0, v16);
+        completionCopy[2](completionCopy, 0, v16);
       }
     }
 
@@ -6696,15 +6696,15 @@ void __69__ACDAccountStore_clearGrantedPermissionsForAccountType_withHandler___b
       v20[3] = &unk_27848C2E0;
       v21 = v18;
       v22 = v9;
-      v13 = v18;
-      [v11 enumerateKeysAndObjectsUsingBlock:v20];
-      v7[2](v7, v13, 0);
+      firstObject = v18;
+      [allModifications enumerateKeysAndObjectsUsingBlock:v20];
+      completionCopy[2](completionCopy, firstObject, 0);
     }
   }
 
   else
   {
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -6773,18 +6773,18 @@ void __61__ACDAccountStore_dataclassActionsForAccountSave_completion___block_inv
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataclassActionsForAccountDeletion:(id)a3 completion:(id)a4
+- (void)dataclassActionsForAccountDeletion:(id)deletion completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = a4;
-  [v6 _setAccountStore:self];
+  deletionCopy = deletion;
+  completionCopy = completion;
+  [deletionCopy _setAccountStore:self];
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = [v6 enabledDataclasses];
+  obj = [deletionCopy enabledDataclasses];
   v7 = [obj countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v7)
   {
@@ -6802,9 +6802,9 @@ void __61__ACDAccountStore_dataclassActionsForAccountSave_completion___block_inv
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [(ACDAccountStore *)self dataclassOwnersManager];
+        dataclassOwnersManager = [(ACDAccountStore *)self dataclassOwnersManager];
         v23 = v9;
-        v15 = [v14 actionsForDeletingAccount:v6 affectingDataclass:v13 withError:&v23];
+        v15 = [dataclassOwnersManager actionsForDeletingAccount:deletionCopy affectingDataclass:v13 withError:&v23];
         v9 = v23;
 
         if ([v15 count])
@@ -6842,41 +6842,41 @@ void __61__ACDAccountStore_dataclassActionsForAccountSave_completion___block_inv
     v9 = 0;
   }
 
-  v20[2](v20, v22, v9);
+  completionCopy[2](completionCopy, v22, v9);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isPerformingDataclassActionsForAccount:(id)a3 completion:(id)a4
+- (void)isPerformingDataclassActionsForAccount:(id)account completion:(id)completion
 {
-  v9 = a4;
-  v6 = a3;
-  [v6 _setAccountStore:self];
-  v7 = [(ACDAccountStore *)self dataclassOwnersManager];
-  v8 = [v7 isPerformingDataclassActionsForAccount:v6];
+  completionCopy = completion;
+  accountCopy = account;
+  [accountCopy _setAccountStore:self];
+  dataclassOwnersManager = [(ACDAccountStore *)self dataclassOwnersManager];
+  v8 = [dataclassOwnersManager isPerformingDataclassActionsForAccount:accountCopy];
 
-  v9[2](v9, v8, 0);
+  completionCopy[2](completionCopy, v8, 0);
 }
 
-- (void)accountExistsWithDescription:(id)a3 completion:(id)a4
+- (void)accountExistsWithDescription:(id)description completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__ACDAccountStore_accountExistsWithDescription_completion___block_invoke;
   v10[3] = &unk_27848BF28;
-  v9 = v6;
+  v9 = descriptionCopy;
   v11 = v9;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
-  [v8 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
-  (*(v7 + 2))(v7, *(v15 + 24), 0);
+  (*(completionCopy + 2))(completionCopy, *(v15 + 24), 0);
   _Block_object_dispose(&v14, 8);
 }
 
@@ -6890,16 +6890,16 @@ void __59__ACDAccountStore_accountExistsWithDescription_completion___block_invok
   *(*(a1[6] + 8) + 24) = [v4 count] != 0;
 }
 
-- (void)isTetheredSyncingEnabledForDataclass:(id)a3 completion:(id)a4
+- (void)isTetheredSyncingEnabledForDataclass:(id)dataclass completion:(id)completion
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = syncDataTypeForDataclass(a3);
+  completionCopy = completion;
+  v6 = syncDataTypeForDataclass(dataclass);
   if (!v6)
   {
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:1 userInfo:0];
 LABEL_6:
-    v5[2](v5, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
 
     goto LABEL_7;
   }
@@ -6917,32 +6917,32 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  (v5)[2](v5, v12 == 0, 0);
+  (completionCopy)[2](completionCopy, v12 == 0, 0);
 LABEL_7:
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tetheredSyncSourceTypeForDataclass:(id)a3 completion:(id)a4
+- (void)tetheredSyncSourceTypeForDataclass:(id)dataclass completion:(id)completion
 {
-  v5 = a4;
-  if (syncDataTypeForDataclass(a3))
+  completionCopy = completion;
+  if (syncDataTypeForDataclass(dataclass))
   {
     v6 = tetheredSyncSourceTypeForDataType();
-    v5[2](v5, v6, 0);
+    completionCopy[2](completionCopy, v6, 0);
   }
 
   else
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CB8DC0] code:1 userInfo:0];
-    (v5)[2](v5, 0, v6);
+    (completionCopy)[2](completionCopy, 0, v6);
   }
 }
 
-- (void)kerberosAccountsForDomainFromURL:(id)a3 completion:(id)a4
+- (void)kerberosAccountsForDomainFromURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -6955,21 +6955,21 @@ LABEL_7:
     [ACDAccountStore kerberosAccountsForDomainFromURL:completion:];
   }
 
-  v9 = [v6 absoluteString];
-  if (v9)
+  absoluteString = [lCopy absoluteString];
+  if (absoluteString)
   {
-    v10 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __63__ACDAccountStore_kerberosAccountsForDomainFromURL_completion___block_invoke;
     v11[3] = &unk_27848C678;
     v11[4] = self;
     v13 = &v14;
-    v12 = v9;
-    [v10 performBlockAndWait:v11];
+    v12 = absoluteString;
+    [managedObjectContext performBlockAndWait:v11];
   }
 
-  v7[2](v7, v15[5], 0);
+  completionCopy[2](completionCopy, v15[5], 0);
 
   _Block_object_dispose(&v14, 8);
 }
@@ -7069,29 +7069,29 @@ void __63__ACDAccountStore_kerberosAccountsForDomainFromURL_completion___block_i
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isPushSupportedForAccount:(id)a3 completion:(id)a4
+- (void)isPushSupportedForAccount:(id)account completion:(id)completion
 {
   authenticationPluginManager = self->_authenticationPluginManager;
-  v6 = a4;
-  v6[2](v6, [(ACDAuthenticationPluginManager *)authenticationPluginManager isPushSupportedForAccount:a3], 0);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [(ACDAuthenticationPluginManager *)authenticationPluginManager isPushSupportedForAccount:account], 0);
 }
 
-- (void)discoverPropertiesForAccount:(id)a3 options:(id)a4 completion:(id)a5
+- (void)discoverPropertiesForAccount:(id)account options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v10 _setAccountStore:self];
-  [(ACDAuthenticationPluginManager *)self->_authenticationPluginManager discoverPropertiesForAccount:v10 accountStore:self options:v9 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  accountCopy = account;
+  [accountCopy _setAccountStore:self];
+  [(ACDAuthenticationPluginManager *)self->_authenticationPluginManager discoverPropertiesForAccount:accountCopy accountStore:self options:optionsCopy completion:completionCopy];
 }
 
-- (void)resetDatabaseToVersion:(id)a3 withCompletion:(id)a4
+- (void)resetDatabaseToVersion:(id)version withCompletion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  versionCopy = version;
   databaseConnection = self->_databaseConnection;
-  v8 = a4;
-  [(ACDDatabaseConnection *)databaseConnection setVersion:v6];
+  completionCopy = completion;
+  [(ACDDatabaseConnection *)databaseConnection setVersion:versionCopy];
   v9 = self->_databaseConnection;
   v15 = 0;
   v10 = [(ACDDatabaseConnection *)v9 saveWithError:&v15];
@@ -7103,11 +7103,11 @@ void __63__ACDAccountStore_kerberosAccountsForDomainFromURL_completion___block_i
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v6;
+      v17 = versionCopy;
       _os_log_impl(&dword_221D2F000, v13, OS_LOG_TYPE_DEFAULT, "Reset database to version %@, will exit when clean", buf, 0xCu);
     }
 
-    v8[2](v8, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     xpc_transaction_exit_clean();
   }
 
@@ -7118,7 +7118,7 @@ void __63__ACDAccountStore_kerberosAccountsForDomainFromURL_completion___block_i
       [ACDAccountStore resetDatabaseToVersion:withCompletion:];
     }
 
-    (v8)[2](v8, 0, v11);
+    (completionCopy)[2](completionCopy, 0, v11);
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -7144,22 +7144,22 @@ void __36__ACDAccountStore__clientTokenQueue__block_invoke()
   _clientTokenQueue_clientTokenQueue = v0;
 }
 
-- (void)addClientToken:(id)a3 forAccountIdentifier:(id)a4 completion:(id)a5
+- (void)addClientToken:(id)token forAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__ACDAccountStore_addClientToken_forAccountIdentifier_completion___block_invoke;
   v14[3] = &unk_27848C6A0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = tokenCopy;
+  v16 = identifierCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = identifierCopy;
+  v13 = tokenCopy;
   [(ACDAccountStore *)self accountWithIdentifier:v12 handler:v14];
 }
 
@@ -7236,19 +7236,19 @@ void __66__ACDAccountStore_addClientToken_forAccountIdentifier_completion___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientTokenForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)clientTokenForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__ACDAccountStore_clientTokenForAccountIdentifier_completion___block_invoke;
   v10[3] = &unk_27848C470;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   [(ACDAccountStore *)self accountWithIdentifier:v9 handler:v10];
 }
 
@@ -7303,9 +7303,9 @@ void __62__ACDAccountStore_clientTokenForAccountIdentifier_completion___block_in
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)clientTokenForAccount:(id)a3
+- (id)clientTokenForAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -7319,7 +7319,7 @@ void __62__ACDAccountStore_clientTokenForAccountIdentifier_completion___block_in
   v9[3] = &unk_27848C678;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = accountCopy;
   v10 = v6;
   [v5 performWithinPersonaForAccount:v6 withBlock:v9];
   v7 = v13[5];
@@ -7353,12 +7353,12 @@ void __41__ACDAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)_clientTokenForAccountIdentifier:(id)a3 error:(id)a4
+- (id)_clientTokenForAccountIdentifier:(id)identifier error:(id)error
 {
-  v10 = a4;
-  v5 = a4;
-  v6 = [ACDKeychain passwordForServiceName:@"com.apple.account.clientToken" username:a3 accessGroup:0 options:0 error:&v10];
-  v7 = v10;
+  errorCopy = error;
+  errorCopy2 = error;
+  v6 = [ACDKeychain passwordForServiceName:@"com.apple.account.clientToken" username:identifier accessGroup:0 options:0 error:&errorCopy];
+  v7 = errorCopy;
 
   if (v7)
   {
@@ -7372,10 +7372,10 @@ void __41__ACDAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (void)_removeClientTokenForAccountIdentifer:(id)a3
+- (void)_removeClientTokenForAccountIdentifer:(id)identifer
 {
   v5 = 0;
-  [ACDKeychain removeItemForServiceName:@"com.apple.account.clientToken" username:a3 accessGroup:0 options:0 error:&v5];
+  [ACDKeychain removeItemForServiceName:@"com.apple.account.clientToken" username:identifer accessGroup:0 options:0 error:&v5];
   v3 = v5;
   if (v3)
   {
@@ -7387,15 +7387,15 @@ void __41__ACDAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = _ACDLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = lCopy;
     _os_log_impl(&dword_221D2F000, v5, OS_LOG_TYPE_DEFAULT, "Handling URL %@", &buf, 0xCu);
   }
 
@@ -7405,37 +7405,37 @@ void __41__ACDAccountStore_clientTokenForAccount___block_invoke_2(uint64_t a1)
   v28 = __Block_byref_object_copy__3;
   v29 = __Block_byref_object_dispose__3;
   v30 = 0;
-  v6 = [v4 host];
-  v7 = [v6 compare:@"client_token" options:1] == 0;
+  host = [lCopy host];
+  v7 = [host compare:@"client_token" options:1] == 0;
 
   if (v7)
   {
-    v9 = [v4 path];
-    if ([v9 length] >= 2)
+    path = [lCopy path];
+    if ([path length] >= 2)
     {
-      v10 = [v9 substringFromIndex:1];
+      v10 = [path substringFromIndex:1];
 
-      v11 = [(ACDAccountStore *)self _allAccounts_sync];
-      v12 = [(ACDAccountStore *)self _clientTokenQueue];
+      _allAccounts_sync = [(ACDAccountStore *)self _allAccounts_sync];
+      _clientTokenQueue = [(ACDAccountStore *)self _clientTokenQueue];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __29__ACDAccountStore_handleURL___block_invoke;
       v19[3] = &unk_27848C3F8;
-      v20 = v11;
-      v21 = self;
-      v9 = v10;
-      v22 = v9;
+      v20 = _allAccounts_sync;
+      selfCopy = self;
+      path = v10;
+      v22 = path;
       p_buf = &buf;
-      v13 = v11;
-      dispatch_sync(v12, v19);
+      v13 = _allAccounts_sync;
+      dispatch_sync(_clientTokenQueue, v19);
     }
   }
 
   else
   {
-    v8 = [v4 host];
-    v9 = *(*(&buf + 1) + 40);
-    *(*(&buf + 1) + 40) = v8;
+    host2 = [lCopy host];
+    path = *(*(&buf + 1) + 40);
+    *(*(&buf + 1) + 40) = host2;
   }
 
   if (*(*(&buf + 1) + 40))
@@ -7541,21 +7541,21 @@ LABEL_11:
   return fakeRemoteAccountStoreSession;
 }
 
-- (void)visibleTopLevelAccountsWithAccountTypeIdentifiers:(id)a3 completion:(id)a4
+- (void)visibleTopLevelAccountsWithAccountTypeIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__ACDAccountStore_visibleTopLevelAccountsWithAccountTypeIdentifiers_completion___block_invoke;
   v11[3] = &unk_27848C448;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBlockAndWait:v11];
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
+  [managedObjectContext performBlockAndWait:v11];
 }
 
 void __80__ACDAccountStore_visibleTopLevelAccountsWithAccountTypeIdentifiers_completion___block_invoke(void *a1)
@@ -7620,45 +7620,45 @@ void __80__ACDAccountStore_visibleTopLevelAccountsWithAccountTypeIdentifiers_com
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountsWithAccountTypeIdentifiers:(id)a3 preloadedProperties:(id)a4 completion:(id)a5
+- (void)accountsWithAccountTypeIdentifiers:(id)identifiers preloadedProperties:(id)properties completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] == 1 && !objc_msgSend(v9, "count"))
+  identifiersCopy = identifiers;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  if ([identifiersCopy count] == 1 && !objc_msgSend(propertiesCopy, "count"))
   {
-    v16 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __85__ACDAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties_completion___block_invoke;
     v24[3] = &unk_27848C358;
-    v25 = v8;
-    v26 = self;
-    v27 = v9;
-    v28 = v10;
-    v17 = v10;
-    v18 = v9;
-    v19 = v8;
-    [v16 performBlockAndWait:v24];
+    v25 = identifiersCopy;
+    selfCopy = self;
+    v27 = propertiesCopy;
+    v28 = completionCopy;
+    v17 = completionCopy;
+    v18 = propertiesCopy;
+    v19 = identifiersCopy;
+    [managedObjectContext performBlockAndWait:v24];
 
     v15 = v25;
   }
 
   else
   {
-    v11 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext2 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __85__ACDAccountStore_accountsWithAccountTypeIdentifiers_preloadedProperties_completion___block_invoke_3;
     v20[3] = &unk_27848C358;
     v20[4] = self;
-    v21 = v8;
-    v22 = v9;
-    v23 = v10;
-    v12 = v10;
-    v13 = v9;
-    v14 = v8;
-    [v11 performBlockAndWait:v20];
+    v21 = identifiersCopy;
+    v22 = propertiesCopy;
+    v23 = completionCopy;
+    v12 = completionCopy;
+    v13 = propertiesCopy;
+    v14 = identifiersCopy;
+    [managedObjectContext2 performBlockAndWait:v20];
 
     v15 = v21;
   }
@@ -7730,27 +7730,27 @@ uint64_t __85__ACDAccountStore_accountsWithAccountTypeIdentifiers_preloadedPrope
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)notifyRemoteDevicesOfModifiedAccount:(id)a3 withChangeType:(id)a4 options:(id)a5 completion:(id)a6
+- (void)notifyRemoteDevicesOfModifiedAccount:(id)account withChangeType:(id)type options:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  accountCopy = account;
+  typeCopy = type;
+  completionCopy = completion;
+  optionsCopy = options;
   v14 = _ACLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore notifyRemoteDevicesOfModifiedAccount:withChangeType:options:completion:];
   }
 
-  [v10 _setAccountStore:self];
+  [accountCopy _setAccountStore:self];
   remoteDeviceProxy = self->_remoteDeviceProxy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __90__ACDAccountStore_notifyRemoteDevicesOfModifiedAccount_withChangeType_options_completion___block_invoke;
   v17[3] = &unk_27848C6F0;
-  v18 = v12;
-  v16 = v12;
-  [(ACRemoteDeviceProxy *)remoteDeviceProxy sendCommand:v11 withAccount:v10 options:v13 completion:v17];
+  v18 = completionCopy;
+  v16 = completionCopy;
+  [(ACRemoteDeviceProxy *)remoteDeviceProxy sendCommand:typeCopy withAccount:accountCopy options:optionsCopy completion:v17];
 }
 
 uint64_t __90__ACDAccountStore_notifyRemoteDevicesOfModifiedAccount_withChangeType_options_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -7764,27 +7764,27 @@ uint64_t __90__ACDAccountStore_notifyRemoteDevicesOfModifiedAccount_withChangeTy
   return result;
 }
 
-- (void)saveAccount:(id)a3 toPairedDeviceWithOptions:(id)a4 completion:(id)a5
+- (void)saveAccount:(id)account toPairedDeviceWithOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  accountCopy = account;
+  completionCopy = completion;
+  optionsCopy = options;
   v11 = _ACLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore saveAccount:toPairedDeviceWithOptions:completion:];
   }
 
-  [v8 _setAccountStore:self];
+  [accountCopy _setAccountStore:self];
   remoteDeviceProxy = self->_remoteDeviceProxy;
   v13 = *MEMORY[0x277CB8EA0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__ACDAccountStore_saveAccount_toPairedDeviceWithOptions_completion___block_invoke;
   v15[3] = &unk_27848C6F0;
-  v16 = v9;
-  v14 = v9;
-  [(ACRemoteDeviceProxy *)remoteDeviceProxy sendCommand:v13 withAccount:v8 options:v10 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(ACRemoteDeviceProxy *)remoteDeviceProxy sendCommand:v13 withAccount:accountCopy options:optionsCopy completion:v15];
 }
 
 uint64_t __68__ACDAccountStore_saveAccount_toPairedDeviceWithOptions_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -7798,10 +7798,10 @@ uint64_t __68__ACDAccountStore_saveAccount_toPairedDeviceWithOptions_completion_
   return result;
 }
 
-- (void)removeAccountsFromPairedDeviceWithOptions:(id)a3 completion:(id)a4
+- (void)removeAccountsFromPairedDeviceWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
   v8 = _ACLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -7814,9 +7814,9 @@ uint64_t __68__ACDAccountStore_saveAccount_toPairedDeviceWithOptions_completion_
   v12[1] = 3221225472;
   v12[2] = __72__ACDAccountStore_removeAccountsFromPairedDeviceWithOptions_completion___block_invoke;
   v12[3] = &unk_27848C6F0;
-  v13 = v6;
-  v11 = v6;
-  [(ACRemoteDeviceProxy *)remoteDeviceProxy sendCommand:v10 withAccount:0 options:v7 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(ACRemoteDeviceProxy *)remoteDeviceProxy sendCommand:v10 withAccount:0 options:optionsCopy completion:v12];
 }
 
 uint64_t __72__ACDAccountStore_removeAccountsFromPairedDeviceWithOptions_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -7830,11 +7830,11 @@ uint64_t __72__ACDAccountStore_removeAccountsFromPairedDeviceWithOptions_complet
   return result;
 }
 
-- (void)removeAccountFromPairedDevice:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)removeAccountFromPairedDevice:(id)device withOptions:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  optionsCopy = options;
+  deviceCopy = device;
   v11 = _ACLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -7847,9 +7847,9 @@ uint64_t __72__ACDAccountStore_removeAccountsFromPairedDeviceWithOptions_complet
   v15[1] = 3221225472;
   v15[2] = __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_completion___block_invoke;
   v15[3] = &unk_27848C6F0;
-  v16 = v8;
-  v14 = v8;
-  [(ACRemoteDeviceProxy *)remoteDeviceProxy sendCommand:v13 withAccount:v10 options:v9 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [(ACRemoteDeviceProxy *)remoteDeviceProxy sendCommand:v13 withAccount:deviceCopy options:optionsCopy completion:v15];
 }
 
 uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -7863,11 +7863,11 @@ uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_complet
   return result;
 }
 
-- (void)migrateCredentialForAccount:(id)a3 completion:(id)a4
+- (void)migrateCredentialForAccount:(id)account completion:(id)completion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v7 = _ACLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -7875,7 +7875,7 @@ uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_complet
   }
 
   v8 = +[ACDKeychainMigrator sharedInstance];
-  v24[0] = v5;
+  v24[0] = accountCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
   v10 = [v8 keychainItemsForAccounts:v9];
 
@@ -7913,27 +7913,27 @@ uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_complet
     while (v13);
   }
 
-  [ACDKeychainManager notifiyCredentialChangedForAccount:v5];
-  if (v6)
+  [ACDKeychainManager notifiyCredentialChangedForAccount:accountCopy];
+  if (completionCopy)
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)triggerKeychainMigrationIfNecessary:(id)a3
+- (void)triggerKeychainMigrationIfNecessary:(id)necessary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore triggerKeychainMigrationIfNecessary:];
   }
 
-  v6 = [(ACDDatabaseConnection *)self->_databaseConnection keychainVersion];
-  v7 = [v6 integerValue];
+  keychainVersion = [(ACDDatabaseConnection *)self->_databaseConnection keychainVersion];
+  integerValue = [keychainVersion integerValue];
   v8 = _ACLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -7941,9 +7941,9 @@ uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_complet
     v10 = v9;
     v11 = @"NO";
     *buf = 138412802;
-    v21 = v6;
+    v21 = keychainVersion;
     v22 = 2112;
-    if (v7 < 9)
+    if (integerValue < 9)
     {
       v11 = @"YES";
     }
@@ -7954,7 +7954,7 @@ uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_complet
     _os_log_impl(&dword_221D2F000, v8, OS_LOG_TYPE_DEFAULT, "Database keychain version: %@, expected version: %@, will migrate: %@", buf, 0x20u);
   }
 
-  if (v7 >= 9)
+  if (integerValue >= 9)
   {
     v16 = 0;
   }
@@ -7982,17 +7982,17 @@ uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_complet
     }
   }
 
-  if (v4)
+  if (necessaryCopy)
   {
-    v4[2](v4, v16 == 0, v16);
+    necessaryCopy[2](necessaryCopy, v16 == 0, v16);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runAccountMigrationPlugins:(id)a3
+- (void)runAccountMigrationPlugins:(id)plugins
 {
-  v4 = a3;
+  pluginsCopy = plugins;
   v5 = _ACLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -8009,7 +8009,7 @@ uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_complet
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v9 = 0;
-  v6 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ACDAccountStore_runAccountMigrationPlugins___block_invoke;
@@ -8017,11 +8017,11 @@ uint64_t __72__ACDAccountStore_removeAccountFromPairedDevice_withOptions_complet
   v7[4] = self;
   v7[5] = v8;
   v7[6] = &v10;
-  [v6 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
-  if (v4)
+  if (pluginsCopy)
   {
-    v4[2](v4, v11[5] == 0);
+    pluginsCopy[2](pluginsCopy, v11[5] == 0);
   }
 
   _Block_object_dispose(v8, 8);
@@ -8056,33 +8056,33 @@ void __46__ACDAccountStore_runAccountMigrationPlugins___block_invoke(uint64_t a1
   }
 }
 
-- (void)_pruneDuplicateAccountsForAccountType:(id)a3 withUserName:(id)a4 error:(id *)a5
+- (void)_pruneDuplicateAccountsForAccountType:(id)type withUserName:(id)name error:(id *)error
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  nameCopy = name;
   v9 = _ACLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [ACDAccountStore _pruneDuplicateAccountsForAccountType:withUserName:error:];
   }
 
-  v10 = v8;
-  v39 = v7;
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"accountType == %@ && username == %@", v7, v8];
+  v10 = nameCopy;
+  v39 = typeCopy;
+  nameCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"accountType == %@ && username == %@", typeCopy, nameCopy];
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"date" ascending:1];
   v13 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"Account"];
-  v38 = v11;
-  [v13 setPredicate:v11];
+  v38 = nameCopy;
+  [v13 setPredicate:nameCopy];
   v37 = v12;
   v48[0] = v12;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:1];
   [v13 setSortDescriptors:v14];
 
   [v13 setFetchLimit:1];
-  v15 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+  managedObjectContext = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
   v41 = 0;
-  v16 = [v15 executeFetchRequest:v13 error:&v41];
+  v16 = [managedObjectContext executeFetchRequest:v13 error:&v41];
   v17 = v41;
 
   if (v17)
@@ -8102,10 +8102,10 @@ void __46__ACDAccountStore_runAccountMigrationPlugins___block_invoke(uint64_t a1
       _os_log_error_impl(&dword_221D2F000, v18, OS_LOG_TYPE_ERROR, "@Error pruning accounts of type %@ with username %@: %@", buf, 0x20u);
     }
 
-    if (a5)
+    if (error)
     {
       v21 = v17;
-      *a5 = v17;
+      *error = v17;
     }
   }
 
@@ -8118,15 +8118,15 @@ void __46__ACDAccountStore_runAccountMigrationPlugins___block_invoke(uint64_t a1
 
     v22 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"Account"];
     v23 = MEMORY[0x277CCAC30];
-    v24 = [v16 firstObject];
-    v25 = [v23 predicateWithFormat:@"accountType == %@ && username == %@ && SELF != %@", v39, v10, v24];
+    firstObject = [v16 firstObject];
+    v25 = [v23 predicateWithFormat:@"accountType == %@ && username == %@ && SELF != %@", v39, v10, firstObject];
     [v22 setPredicate:v25];
 
     v26 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v22];
     [v26 setResultType:2];
-    v27 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
+    managedObjectContext2 = [(ACDDatabaseConnection *)self->_databaseConnection managedObjectContext];
     v40 = 0;
-    v28 = [v27 executeRequest:v26 error:&v40];
+    v28 = [managedObjectContext2 executeRequest:v26 error:&v40];
     v17 = v40;
 
     v29 = _ACDLogSystem();
@@ -8151,10 +8151,10 @@ void __46__ACDAccountStore_runAccountMigrationPlugins___block_invoke(uint64_t a1
         _os_log_error_impl(&dword_221D2F000, v30, OS_LOG_TYPE_ERROR, "@Error pruning accounts of type %@ with username %@: %@", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v31 = v17;
-        *a5 = v17;
+        *error = v17;
       }
     }
 
@@ -8177,36 +8177,36 @@ void __46__ACDAccountStore_runAccountMigrationPlugins___block_invoke(uint64_t a1
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleBackupIfNonexistent:(id)a3
+- (void)scheduleBackupIfNonexistent:(id)nonexistent
 {
-  v5 = a3;
-  v4 = [(ACDAccountStore *)self databaseBackupActivity];
-  [v4 scheduleBackupIfNonexistent];
+  nonexistentCopy = nonexistent;
+  databaseBackupActivity = [(ACDAccountStore *)self databaseBackupActivity];
+  [databaseBackupActivity scheduleBackupIfNonexistent];
 
-  v5[2](v5, 1, 0);
+  nonexistentCopy[2](nonexistentCopy, 1, 0);
 }
 
-- (void)shutdownAccountsD:(id)a3
+- (void)shutdownAccountsD:(id)d
 {
-  (*(a3 + 2))(a3, 1, 0);
+  (*(d + 2))(d, 1, 0);
 
   xpc_transaction_exit_clean();
 }
 
-- (void)cacheGenerationForAccounts:(id)a3 cacheSuffix:(id)a4
+- (void)cacheGenerationForAccounts:(id)accounts cacheSuffix:(id)suffix
 {
-  v5 = a4;
-  v6 = a3;
+  suffixCopy = suffix;
+  accountsCopy = accounts;
   v7 = +[ACDAccountStore accountCache];
-  [v7 cacheGenerationForAccounts:v6 cacheSuffix:v5];
+  [v7 cacheGenerationForAccounts:accountsCopy cacheSuffix:suffixCopy];
 }
 
-- (void)registerMonitorForAccountsOfTypes:(id)a3 propertiesToPrefetch:(id)a4 completion:(id)a5
+- (void)registerMonitorForAccountsOfTypes:(id)types propertiesToPrefetch:(id)prefetch completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typesCopy = types;
+  prefetchCopy = prefetch;
+  completionCopy = completion;
   v11 = _ACDLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -8214,29 +8214,29 @@ void __46__ACDAccountStore_runAccountMigrationPlugins___block_invoke(uint64_t a1
     *buf = 138412802;
     v19 = WeakRetained;
     v20 = 2112;
-    v21 = v8;
+    v21 = typesCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = prefetchCopy;
     _os_log_debug_impl(&dword_221D2F000, v11, OS_LOG_TYPE_DEBUG, "Client %@ registered to monitor for types %@, preloadedProperties %@", buf, 0x20u);
   }
 
-  v12 = [v8 allObjects];
+  allObjects = [typesCopy allObjects];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __85__ACDAccountStore_registerMonitorForAccountsOfTypes_propertiesToPrefetch_completion___block_invoke;
   v16[3] = &unk_27848C718;
-  v17 = v10;
-  v13 = v10;
-  [(ACDAccountStore *)self accountsWithAccountTypeIdentifiers:v12 preloadedProperties:v9 completion:v16];
+  v17 = completionCopy;
+  v13 = completionCopy;
+  [(ACDAccountStore *)self accountsWithAccountTypeIdentifiers:allObjects preloadedProperties:prefetchCopy completion:v16];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)uidOfAccountsd:(id)a3
+- (void)uidOfAccountsd:(id)accountsd
 {
-  v5 = a3;
+  accountsdCopy = accountsd;
   v4 = geteuid();
-  (*(a3 + 2))(v5, v4);
+  (*(accountsd + 2))(accountsdCopy, v4);
 }
 
 - (ACDAccountStoreDelegate)delegate
@@ -8249,7 +8249,7 @@ void __46__ACDAccountStore_runAccountMigrationPlugins___block_invoke(uint64_t a1
 - (void)init
 {
   v7 = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   OUTLINED_FUNCTION_7();
   _os_log_error_impl(v0, v1, v2, v3, v4, 0x16u);
 

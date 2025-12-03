@@ -12,8 +12,8 @@
   [v3 setAppDisplayName:v4];
 
   [v3 setAppAvailableInStorefront:1];
-  v5 = [a1 _openTableBundleId];
-  [v3 setBundleId:v5];
+  _openTableBundleId = [self _openTableBundleId];
+  [v3 setBundleId:_openTableBundleId];
 
   return v3;
 }

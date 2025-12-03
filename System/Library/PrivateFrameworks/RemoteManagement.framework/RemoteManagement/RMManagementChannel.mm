@@ -1,31 +1,31 @@
 @interface RMManagementChannel
-- (id)initWithManagementSource:(id)a3;
+- (id)initWithManagementSource:(id)source;
 - (unint64_t)protocolType;
 @end
 
 @implementation RMManagementChannel
 
-- (id)initWithManagementSource:(id)a3
+- (id)initWithManagementSource:(id)source
 {
-  v3 = a3;
-  v17 = [v3 conduitConfig];
-  v4 = [v17 state];
-  v5 = [v3 enrollmentType];
-  v6 = [v3 identifier];
-  v7 = [v3 accountIdentifier];
-  v8 = [v3 storeDescription];
-  v9 = [v3 name];
-  v10 = [v3 bootstrapURI];
-  v11 = [v4 enrollmentToken];
-  v12 = v11;
-  if (!v11)
+  sourceCopy = source;
+  conduitConfig = [sourceCopy conduitConfig];
+  state = [conduitConfig state];
+  enrollmentType = [sourceCopy enrollmentType];
+  identifier = [sourceCopy identifier];
+  accountIdentifier = [sourceCopy accountIdentifier];
+  storeDescription = [sourceCopy storeDescription];
+  name = [sourceCopy name];
+  bootstrapURI = [sourceCopy bootstrapURI];
+  enrollmentToken = [state enrollmentToken];
+  identifier2 = enrollmentToken;
+  if (!enrollmentToken)
   {
-    v12 = [v3 identifier];
+    identifier2 = [sourceCopy identifier];
   }
 
-  LOBYTE(v15) = [v3 enrolled];
-  v13 = [(RMManagementChannel *)self initWithType:v5 identifier:v6 accountIdentifier:v7 accountDescription:v8 organizationDescription:v9 enrollmentURL:v10 enrollmentToken:v12 isEnrolled:v15];
-  if (!v11)
+  LOBYTE(v15) = [sourceCopy enrolled];
+  v13 = [(RMManagementChannel *)self initWithType:enrollmentType identifier:identifier accountIdentifier:accountIdentifier accountDescription:storeDescription organizationDescription:name enrollmentURL:bootstrapURI enrollmentToken:identifier2 isEnrolled:v15];
+  if (!enrollmentToken)
   {
   }
 
@@ -34,12 +34,12 @@
 
 - (unint64_t)protocolType
 {
-  v2 = [(RMManagementChannel *)self enrollmentURL];
-  v3 = [v2 scheme];
+  enrollmentURL = [(RMManagementChannel *)self enrollmentURL];
+  scheme = [enrollmentURL scheme];
 
-  if ([v3 caseInsensitiveCompare:@"https"] && objc_msgSend(v3, "caseInsensitiveCompare:", @"file"))
+  if ([scheme caseInsensitiveCompare:@"https"] && objc_msgSend(scheme, "caseInsensitiveCompare:", @"file"))
   {
-    if ([v3 caseInsensitiveCompare:@"mdm"])
+    if ([scheme caseInsensitiveCompare:@"mdm"])
     {
       v4 = 2;
     }

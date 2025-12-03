@@ -1,15 +1,15 @@
 @interface PKRulerController
 + (id)sharedRulerView;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGAffineTransform)ensureRulerTransformIsFullyOnscreen:(_OWORD *)a3@<X8>;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGAffineTransform)ensureRulerTransformIsFullyOnscreen:(_OWORD *)onscreen@<X8>;
 - (double)_rulerFrame;
 - (double)defaultRulerTransform;
-- (double)pixelSnapRulerTransform:(_OWORD *)a3@<X8>;
+- (double)pixelSnapRulerTransform:(_OWORD *)transform@<X8>;
 - (double)rulerTransform;
-- (float64x2_t)applyTransformToTouchLocation:(double)a3;
+- (float64x2_t)applyTransformToTouchLocation:(double)location;
 - (id)_viewForHostingRuler;
 - (id)adjustFrames;
-- (id)initWithDelegate:(id *)a1;
+- (id)initWithDelegate:(id *)delegate;
 - (uint64_t)_enableRulerOnCanvasIfSharedRulerIsVisible;
 - (uint64_t)drawingCancelled:(uint64_t)result;
 - (uint64_t)getRulerCenterTValueOnScreenForTransform:(uint64_t)result;
@@ -19,15 +19,15 @@
 - (void)_configureRuler;
 - (void)canvasTransform;
 - (void)dealloc;
-- (void)drawingBegan:(double)a3 coordinateSystem:(double)a4;
+- (void)drawingBegan:(double)began coordinateSystem:(double)system;
 - (void)drawingEnded;
-- (void)drawingMoved:(double)a3 coordinateSystem:(double)a4;
+- (void)drawingMoved:(double)moved coordinateSystem:(double)system;
 - (void)ensureRulerIsFullyOnscreen;
-- (void)hideRulerAnimated:(uint64_t)a1;
+- (void)hideRulerAnimated:(uint64_t)animated;
 - (void)resetRulerTouches;
-- (void)rulerMoveGesture:(id)a3;
-- (void)setRulerHostingDelegate:(uint64_t)a1;
-- (void)setSnapImpactBehavior:(uint64_t)a1;
+- (void)rulerMoveGesture:(id)gesture;
+- (void)setRulerHostingDelegate:(uint64_t)delegate;
+- (void)setSnapImpactBehavior:(uint64_t)behavior;
 - (void)showRuler;
 - (void)startRulerDrawing;
 @end
@@ -48,46 +48,46 @@ void __36__PKRulerController_sharedRulerView__block_invoke()
 
 - (id)_viewForHostingRuler
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 1);
+    WeakRetained = objc_loadWeakRetained(self + 1);
     v3 = WeakRetained;
     if (WeakRetained)
     {
-      v1 = WeakRetained;
+      selfCopy = WeakRetained;
     }
 
     else
     {
-      v4 = objc_loadWeakRetained(v1 + 5);
-      v1 = [v4 topView];
+      v4 = objc_loadWeakRetained(selfCopy + 5);
+      selfCopy = [v4 topView];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)_enableRulerOnCanvasIfSharedRulerIsVisible
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a1 || *(a1 + 16) != 1)
+  if (!self || *(self + 16) != 1)
   {
     return 0;
   }
 
   v2 = +[PKRulerController sharedRulerView];
-  v3 = [v2 superview];
-  v4 = [(PKRulerController *)a1 _viewForHostingRuler];
+  superview = [v2 superview];
+  _viewForHostingRuler = [(PKRulerController *)self _viewForHostingRuler];
 
-  if (v3 != v4 || v2 && (v2[408] & 1) != 0)
+  if (superview != _viewForHostingRuler || v2 && (v2[408] & 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    WeakRetained = objc_loadWeakRetained((self + 40));
     [WeakRetained setRulerEnabled:1];
 
     v5 = 1;
@@ -97,9 +97,9 @@ void __36__PKRulerController_sharedRulerView__block_invoke()
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(PKRulerController *)a1 _viewForHostingRuler];
-  v7 = [v6 subviews];
-  v8 = [v7 copy];
+  _viewForHostingRuler2 = [(PKRulerController *)self _viewForHostingRuler];
+  subviews = [_viewForHostingRuler2 subviews];
+  v8 = [subviews copy];
 
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
@@ -150,10 +150,10 @@ void __36__PKRulerController_sharedRulerView__block_invoke()
 
 - (void)ensureRulerIsFullyOnscreen
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 64);
-    v3 = *(a1 + 64);
+    v2 = *(self + 64);
+    v3 = *(self + 64);
     v4 = v3;
     if (v3)
     {
@@ -165,81 +165,81 @@ void __36__PKRulerController_sharedRulerView__block_invoke()
       memset(v5, 0, sizeof(v5));
     }
 
-    [v2 setRulerTransform:{v6, -[PKRulerController pixelSnapRulerTransform:](a1, v5, v6)}];
+    [v2 setRulerTransform:{v6, -[PKRulerController pixelSnapRulerTransform:](self, v5, v6)}];
   }
 }
 
 - (void)_adjustViewForHostingRulerView
 {
-  v3 = [(PKRulerController *)a1 _viewForHostingRuler];
-  v2 = [a1[7] superview];
+  _viewForHostingRuler = [(PKRulerController *)self _viewForHostingRuler];
+  superview = [self[7] superview];
 
-  if (v3 != v2)
+  if (_viewForHostingRuler != superview)
   {
-    [a1[7] removeFromSuperview];
-    [v3 addSubview:a1[7]];
+    [self[7] removeFromSuperview];
+    [_viewForHostingRuler addSubview:self[7]];
   }
 
-  [v3 bringSubviewToFront:a1[7]];
-  [a1[7] setFrame:-[PKRulerController _rulerFrame](a1)];
+  [_viewForHostingRuler bringSubviewToFront:self[7]];
+  [self[7] setFrame:-[PKRulerController _rulerFrame](self)];
 }
 
 - (double)_rulerFrame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v1 = [(PKRulerController *)a1 _viewForHostingRuler];
+  _viewForHostingRuler = [(PKRulerController *)self _viewForHostingRuler];
   v2 = *MEMORY[0x1E695EFF8];
-  [v1 bounds];
+  [_viewForHostingRuler bounds];
 
   return v2;
 }
 
-- (id)initWithDelegate:(id *)a1
+- (id)initWithDelegate:(id *)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
-    v6.receiver = a1;
+    v6.receiver = delegate;
     v6.super_class = PKRulerController;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    delegate = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 5, v3);
     }
   }
 
-  return a1;
+  return delegate;
 }
 
 - (void)_configureRuler
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (*(a1 + 16) == 1)
+  if (*(self + 16) == 1)
   {
     v2 = +[PKRulerController sharedRulerView];
-    objc_storeStrong((a1 + 56), v2);
+    objc_storeStrong((self + 56), v2);
     if (v2 && (v3 = v2->_rulerLayer) != 0)
     {
       v4 = v3;
-      v5 = *(a1 + 64);
-      *(a1 + 64) = v4;
+      v5 = *(self + 64);
+      *(self + 64) = v4;
     }
 
     else
     {
       v5 = [[PKRulerLayer alloc] initWithRulerController:0];
       [(PKRulerView *)v2 setRulerLayer:v5];
-      v8 = [(PKRulerView *)v2 layer];
-      [v8 addSublayer:v5];
+      layer = [(PKRulerView *)v2 layer];
+      [layer addSublayer:v5];
 
       if (v2)
       {
@@ -251,80 +251,80 @@ void __36__PKRulerController_sharedRulerView__block_invoke()
         rulerLayer = 0;
       }
 
-      objc_storeStrong((a1 + 64), rulerLayer);
+      objc_storeStrong((self + 64), rulerLayer);
     }
 
     goto LABEL_12;
   }
 
-  v7 = (a1 + 64);
-  v6 = *(a1 + 64);
+  v7 = (self + 64);
+  v6 = *(self + 64);
   if (!v6)
   {
     v2 = objc_alloc_init(PKRulerView);
-    objc_storeStrong((a1 + 56), v2);
-    v5 = [[PKRulerLayer alloc] initWithRulerController:a1];
-    objc_storeStrong((a1 + 64), v5);
-    [(PKRulerView *)*(a1 + 56) setRulerLayer:?];
-    v10 = [*(a1 + 56) layer];
-    [v10 addSublayer:v5];
+    objc_storeStrong((self + 56), v2);
+    v5 = [[PKRulerLayer alloc] initWithRulerController:self];
+    objc_storeStrong((self + 64), v5);
+    [(PKRulerView *)*(self + 56) setRulerLayer:?];
+    layer2 = [*(self + 56) layer];
+    [layer2 addSublayer:v5];
 
 LABEL_12:
-    v6 = *(a1 + 64);
+    v6 = *(self + 64);
     v16 = v2;
     goto LABEL_13;
   }
 
   v16 = 0;
 LABEL_13:
-  [v6 setRulerController:a1];
-  [*(a1 + 64) setFrame:-[PKRulerController _rulerFrame](a1)];
-  [*(a1 + 56) setFrame:-[PKRulerController _rulerFrame](a1)];
-  if (!*(a1 + 32))
+  [v6 setRulerController:self];
+  [*(self + 64) setFrame:-[PKRulerController _rulerFrame](self)];
+  [*(self + 56) setFrame:-[PKRulerController _rulerFrame](self)];
+  if (!*(self + 32))
   {
-    v11 = [[PKRulerGestureRecognizer alloc] initWithTarget:a1 action:sel_rulerMoveGesture_];
-    v12 = *(a1 + 32);
-    *(a1 + 32) = v11;
+    v11 = [[PKRulerGestureRecognizer alloc] initWithTarget:self action:sel_rulerMoveGesture_];
+    v12 = *(self + 32);
+    *(self + 32) = v11;
 
-    [*(a1 + 32) setCancelThreshold:15.0];
-    [*(a1 + 32) setStartDelay:0.4];
-    [*(a1 + 32) setDelegate:a1];
-    [*(a1 + 32) setAllowedTouchTypes:&unk_1F47C1AC0];
-    v13 = *(a1 + 32);
-    v14 = *(a1 + 56);
+    [*(self + 32) setCancelThreshold:15.0];
+    [*(self + 32) setStartDelay:0.4];
+    [*(self + 32) setDelegate:self];
+    [*(self + 32) setAllowedTouchTypes:&unk_1F47C1AC0];
+    v13 = *(self + 32);
+    v14 = *(self + 56);
     [v14 addGestureRecognizer:v13];
 
-    v15 = [[PKRulerGestureRecognizer alloc] initWithTarget:a1 action:sel_eatPencilGesture_];
+    v15 = [[PKRulerGestureRecognizer alloc] initWithTarget:self action:sel_eatPencilGesture_];
     [(PKFreeTransformGestureRecognizer *)v15 setCancelThreshold:15.0];
     [(PKRulerGestureRecognizer *)v15 setStartDelay:0.4];
-    [(PKRulerGestureRecognizer *)v15 setDelegate:a1];
+    [(PKRulerGestureRecognizer *)v15 setDelegate:self];
     [(PKRulerGestureRecognizer *)v15 setAllowedTouchTypes:&unk_1F47C1AD8];
-    [*(a1 + 56) addGestureRecognizer:v15];
+    [*(self + 56) addGestureRecognizer:v15];
   }
 
-  [(PKRulerController *)a1 _adjustViewForHostingRulerView];
+  [(PKRulerController *)self _adjustViewForHostingRulerView];
 }
 
-- (void)setRulerHostingDelegate:(uint64_t)a1
+- (void)setRulerHostingDelegate:(uint64_t)delegate
 {
   v3 = a2;
-  if (a1)
+  if (delegate)
   {
     v15 = v3;
-    v4 = objc_storeWeak((a1 + 48), v3);
+    v4 = objc_storeWeak((delegate + 48), v3);
     if (v15)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 48));
+      WeakRetained = objc_loadWeakRetained((delegate + 48));
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
       {
-        v7 = objc_loadWeakRetained((a1 + 48));
-        v8 = [v7 rulerHostingView];
+        v7 = objc_loadWeakRetained((delegate + 48));
+        rulerHostingView = [v7 rulerHostingView];
 
-        if (v8)
+        if (rulerHostingView)
         {
-          v9 = v8;
+          v9 = rulerHostingView;
         }
 
         else
@@ -332,37 +332,37 @@ LABEL_13:
           v9 = 0;
         }
 
-        objc_storeWeak((a1 + 8), v9);
+        objc_storeWeak((delegate + 8), v9);
       }
     }
 
-    v10 = objc_loadWeakRetained((a1 + 48));
-    if (v10 && (v11 = v10, v12 = objc_loadWeakRetained((a1 + 48)), v13 = objc_opt_respondsToSelector(), v12, v11, (v13 & 1) != 0))
+    v10 = objc_loadWeakRetained((delegate + 48));
+    if (v10 && (v11 = v10, v12 = objc_loadWeakRetained((delegate + 48)), v13 = objc_opt_respondsToSelector(), v12, v11, (v13 & 1) != 0))
     {
-      v14 = objc_loadWeakRetained((a1 + 48));
-      *(a1 + 16) = [v14 rulerHostWantsSharedRuler];
+      v14 = objc_loadWeakRetained((delegate + 48));
+      *(delegate + 16) = [v14 rulerHostWantsSharedRuler];
     }
 
     else
     {
-      *(a1 + 16) = 1;
+      *(delegate + 16) = 1;
     }
 
-    [(PKRulerController *)a1 _enableRulerOnCanvasIfSharedRulerIsVisible];
+    [(PKRulerController *)delegate _enableRulerOnCanvasIfSharedRulerIsVisible];
     v3 = v15;
   }
 }
 
 - (uint64_t)rulerSelected
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 16) == 1)
+    if (*(self + 16) == 1)
     {
-      return [(PKRulerController *)a1 _enableRulerOnCanvasIfSharedRulerIsVisible];
+      return [(PKRulerController *)self _enableRulerOnCanvasIfSharedRulerIsVisible];
     }
 
-    v2 = *(a1 + 56);
+    v2 = *(self + 56);
     if (v2)
     {
       LOBYTE(v2) = *(v2 + 408) ^ 1;
@@ -406,44 +406,44 @@ LABEL_13:
 
 - (void)showRuler
 {
-  if (a1)
+  if (self)
   {
-    [(PKRulerController *)a1 _configureRuler];
-    [(PKRulerController *)a1 adjustFrames];
-    [*(a1 + 64) showRuler];
-    [(PKRulerController *)a1 ensureRulerIsFullyOnscreen];
-    v2 = *(a1 + 56);
+    [(PKRulerController *)self _configureRuler];
+    [(PKRulerController *)self adjustFrames];
+    [*(self + 64) showRuler];
+    [(PKRulerController *)self ensureRulerIsFullyOnscreen];
+    v2 = *(self + 56);
     if (v2)
     {
       *(v2 + 408) = 0;
     }
 
-    [*(a1 + 32) setStartDelay:0.0];
-    [*(a1 + 32) setStartThreshold:0.0];
-    [*(a1 + 32) setStartSnapThreshold:10.0];
-    [*(a1 + 32) setAllowSingleTouchDrag:1];
+    [*(self + 32) setStartDelay:0.0];
+    [*(self + 32) setStartThreshold:0.0];
+    [*(self + 32) setStartSnapThreshold:10.0];
+    [*(self + 32) setAllowSingleTouchDrag:1];
     v3 = *MEMORY[0x1E69DD8E8];
-    v4 = *(a1 + 64);
+    v4 = *(self + 64);
 
     UIAccessibilityPostNotification(v3, v4);
   }
 }
 
-- (void)hideRulerAnimated:(uint64_t)a1
+- (void)hideRulerAnimated:(uint64_t)animated
 {
-  if (a1)
+  if (animated)
   {
-    [*(a1 + 64) hideRulerAnimated:a2];
-    v3 = *(a1 + 56);
+    [*(animated + 64) hideRulerAnimated:a2];
+    v3 = *(animated + 56);
     if (v3)
     {
       *(v3 + 408) = 1;
     }
 
-    *(a1 + 19) = 0;
-    [*(a1 + 32) setStartDelay:0.4];
-    [*(a1 + 32) setStartThreshold:1.79769313e308];
-    [*(a1 + 32) setAllowSingleTouchDrag:0];
+    *(animated + 19) = 0;
+    [*(animated + 32) setStartDelay:0.4];
+    [*(animated + 32) setStartThreshold:1.79769313e308];
+    [*(animated + 32) setAllowSingleTouchDrag:0];
     v4 = *MEMORY[0x1E69DD8E8];
 
     UIAccessibilityPostNotification(v4, 0);
@@ -452,10 +452,10 @@ LABEL_13:
 
 - (double)defaultRulerTransform
 {
-  if (a1)
+  if (self)
   {
     CGAffineTransformMakeRotation(&v5, 0.785398163);
-    return [(PKRulerController *)a1 pixelSnapRulerTransform:a2];
+    return [(PKRulerController *)self pixelSnapRulerTransform:a2];
   }
 
   else
@@ -507,13 +507,13 @@ LABEL_13:
   return result;
 }
 
-- (float64x2_t)applyTransformToTouchLocation:(double)a3
+- (float64x2_t)applyTransformToTouchLocation:(double)location
 {
   result = 0uLL;
-  if (a1)
+  if (self)
   {
     memset(&v9, 0, sizeof(v9));
-    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    WeakRetained = objc_loadWeakRetained((self + 40));
     v5 = WeakRetained;
     if (WeakRetained)
     {
@@ -527,45 +527,45 @@ LABEL_13:
 
     CGAffineTransformInvert(&v9, &v8);
 
-    return vaddq_f64(*&v9.tx, vmlaq_n_f64(vmulq_n_f64(*&v9.c, a3), *&v9.a, a2));
+    return vaddq_f64(*&v9.tx, vmlaq_n_f64(vmulq_n_f64(*&v9.c, location), *&v9.a, a2));
   }
 
   return result;
 }
 
-- (void)drawingBegan:(double)a3 coordinateSystem:(double)a4
+- (void)drawingBegan:(double)began coordinateSystem:(double)system
 {
   v9 = a2;
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 16) == 1)
+    if (*(self + 16) == 1)
     {
-      [(PKRulerController *)a1 _configureRuler];
+      [(PKRulerController *)self _configureRuler];
     }
 
-    [(PKRulerController *)a1 startRulerDrawing];
-    [v9 convertPoint:*(a1 + 56) toCoordinateSpace:{a3, a4}];
-    [*(a1 + 64) updateRulerMarkerForLocation:1 firstTouch:{-[PKRulerController applyTransformToTouchLocation:](a1, v7, v8).f64[0]}];
+    [(PKRulerController *)self startRulerDrawing];
+    [v9 convertPoint:*(self + 56) toCoordinateSpace:{began, system}];
+    [*(self + 64) updateRulerMarkerForLocation:1 firstTouch:{-[PKRulerController applyTransformToTouchLocation:](self, v7, v8).f64[0]}];
   }
 }
 
 - (void)startRulerDrawing
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[8];
+    v2 = self[8];
     if (v2)
     {
       v3 = v2;
       [v3 rulerTransform];
 
       memset(v27, 0, sizeof(v27));
-      WeakRetained = objc_loadWeakRetained(a1 + 5);
-      v5 = [WeakRetained topView];
+      WeakRetained = objc_loadWeakRetained(self + 5);
+      topView = [WeakRetained topView];
 
-      v6 = a1[7];
-      v7 = [v6 superview];
-      if (v7 == v5)
+      v6 = self[7];
+      superview = [v6 superview];
+      if (superview == topView)
       {
         v12 = *(MEMORY[0x1E695EFD0] + 16);
         *&v27[0].a = *MEMORY[0x1E695EFD0];
@@ -575,7 +575,7 @@ LABEL_13:
 
       else
       {
-        [v5 convertRect:v6 fromView:{0.0, 0.0, 100.0, 100.0}];
+        [topView convertRect:v6 fromView:{0.0, 0.0, 100.0, 100.0}];
         DKDTransformConvertingRectToRectAtPercent(v27, 0.0, 0.0, 100.0, 100.0, v8, v9, v10, v11, 1.0);
       }
 
@@ -584,7 +584,7 @@ LABEL_13:
       CGAffineTransformConcat(&v26, &t1, &t2);
       v27[1] = v26;
       memset(&v26, 0, sizeof(v26));
-      v13 = objc_loadWeakRetained(a1 + 5);
+      v13 = objc_loadWeakRetained(self + 5);
       v14 = v13;
       if (v13)
       {
@@ -602,37 +602,37 @@ LABEL_13:
       v23 = v26;
       CGAffineTransformConcat(&t1, &t2, &v23);
       v27[1] = t1;
-      v15 = objc_loadWeakRetained(a1 + 5);
-      v16 = [v15 drawingController];
-      v17 = [(PKController *)v16 inputController];
+      v15 = objc_loadWeakRetained(self + 5);
+      drawingController = [v15 drawingController];
+      inputController = [(PKController *)drawingController inputController];
       t1 = v27[1];
-      v18 = a1[8];
+      v18 = self[8];
       [v18 rulerWidth];
       v20 = v19;
-      v21 = a1[8];
+      v21 = self[8];
       [v21 rulerAlignInset];
-      [v17 allowSnappingToRuler:&t1 width:v20 - v22];
+      [inputController allowSnappingToRuler:&t1 width:v20 - v22];
     }
   }
 }
 
-- (void)drawingMoved:(double)a3 coordinateSystem:(double)a4
+- (void)drawingMoved:(double)moved coordinateSystem:(double)system
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
     v14 = v7;
-    [v7 convertPoint:*(a1 + 56) toCoordinateSpace:{a3, a4}];
-    [*(a1 + 64) updateRulerMarkerForLocation:0 firstTouch:{-[PKRulerController applyTransformToTouchLocation:](a1, v8, v9).f64[0]}];
-    WeakRetained = objc_loadWeakRetained((a1 + 40));
-    v11 = [WeakRetained drawingController];
-    v12 = [(PKController *)v11 inputController];
+    [v7 convertPoint:*(self + 56) toCoordinateSpace:{moved, system}];
+    [*(self + 64) updateRulerMarkerForLocation:0 firstTouch:{-[PKRulerController applyTransformToTouchLocation:](self, v8, v9).f64[0]}];
+    WeakRetained = objc_loadWeakRetained((self + 40));
+    drawingController = [WeakRetained drawingController];
+    inputController = [(PKController *)drawingController inputController];
 
-    LOBYTE(WeakRetained) = [v12 lastPointIsMasked];
-    v13 = [v12 isSnappedToRuler];
-    *(a1 + 21) = WeakRetained;
-    *(a1 + 22) |= WeakRetained;
-    *(a1 + 23) |= v13;
+    LOBYTE(WeakRetained) = [inputController lastPointIsMasked];
+    isSnappedToRuler = [inputController isSnappedToRuler];
+    *(self + 21) = WeakRetained;
+    *(self + 22) |= WeakRetained;
+    *(self + 23) |= isSnappedToRuler;
 
     v7 = v14;
   }
@@ -640,15 +640,15 @@ LABEL_13:
 
 - (void)drawingEnded
 {
-  if (a1)
+  if (self)
   {
-    [(PKRulerController *)a1 resetRulerTouches];
-    [*(a1 + 64) removeRulerMarkers];
-    v2 = *(a1 + 23);
-    if (*(a1 + 22) & 1) != 0 || (v2)
+    [(PKRulerController *)self resetRulerTouches];
+    [*(self + 64) removeRulerMarkers];
+    v2 = *(self + 23);
+    if (*(self + 22) & 1) != 0 || (v2)
     {
       v3 = +[PKStatisticsManager sharedStatisticsManager];
-      v4 = *(a1 + 56);
+      v4 = *(self + 56);
       v5 = v4;
       if (v4)
       {
@@ -665,8 +665,8 @@ LABEL_13:
       [PKStatisticsManager recordRulerInteractionEndedWithType:v3 angle:v2 ^ 1];
     }
 
-    *(a1 + 21) = 0;
-    *(a1 + 23) = 0;
+    *(self + 21) = 0;
+    *(self + 23) = 0;
   }
 }
 
@@ -686,10 +686,10 @@ LABEL_13:
 
 - (void)resetRulerTouches
 {
-  if (a1 && *(a1 + 64))
+  if (self && *(self + 64))
   {
-    [*(a1 + 32) resetStartingTouches];
-    v2 = *(a1 + 64);
+    [*(self + 32) resetStartingTouches];
+    v2 = *(self + 64);
     v3 = v2;
     if (v2)
     {
@@ -703,21 +703,21 @@ LABEL_13:
       v4 = 0u;
     }
 
-    *(a1 + 112) = v4;
-    *(a1 + 128) = v5;
-    *(a1 + 144) = v6;
+    *(self + 112) = v4;
+    *(self + 128) = v5;
+    *(self + 144) = v6;
   }
 }
 
-- (double)pixelSnapRulerTransform:(_OWORD *)a3@<X8>
+- (double)pixelSnapRulerTransform:(_OWORD *)transform@<X8>
 {
-  if (a1)
+  if (self)
   {
     v6 = *(a2 + 16);
     *&v15.a = *a2;
     *&v15.c = v6;
     *&v15.tx = *(a2 + 32);
-    [(PKRulerController *)a1 ensureRulerTransformIsFullyOnscreen:&v16];
+    [(PKRulerController *)self ensureRulerTransformIsFullyOnscreen:&v16];
     v7 = *&v16.c;
     *a2 = *&v16.a;
     *(a2 + 16) = v7;
@@ -726,7 +726,7 @@ LABEL_13:
     *&v16.a = *a2;
     *&v16.c = v8;
     *&v16.tx = *(a2 + 32);
-    [(PKRulerController *)a1 getRulerCenterTValueOnScreenForTransform:?];
+    [(PKRulerController *)self getRulerCenterTValueOnScreenForTransform:?];
     v10 = *(a2 + 16);
     *&v15.a = *a2;
     *&v15.c = v10;
@@ -738,26 +738,26 @@ LABEL_13:
     *(a2 + 32) = *&v16.tx;
     v12 = *(a2 + 16);
     *(a2 + 32) = vrndaq_f64(*(a2 + 32));
-    *a3 = *a2;
-    a3[1] = v12;
+    *transform = *a2;
+    transform[1] = v12;
     v13 = *(a2 + 32);
-    a3[2] = v13;
+    transform[2] = v13;
   }
 
   else
   {
     *&v13 = 0;
-    a3[1] = 0u;
-    a3[2] = 0u;
-    *a3 = 0u;
+    transform[1] = 0u;
+    transform[2] = 0u;
+    *transform = 0u;
   }
 
   return *&v13;
 }
 
-- (void)rulerMoveGesture:(id)a3
+- (void)rulerMoveGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (self)
   {
     rulerView = self->_rulerView;
@@ -769,18 +769,18 @@ LABEL_13:
   }
 
   v6 = rulerView;
-  v7 = [v4 state];
-  if ((v7 - 3) >= 2)
+  state = [gestureCopy state];
+  if ((state - 3) >= 2)
   {
-    if (v7 != 1)
+    if (state != 1)
     {
-      if (v7 != 2)
+      if (state != 2)
       {
         goto LABEL_108;
       }
 
 LABEL_44:
-      v27 = v4;
+      v27 = gestureCopy;
       if (!self || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v29 = [WeakRetained isDrawing], WeakRetained, (v29 & 1) != 0))
       {
 LABEL_107:
@@ -952,8 +952,8 @@ LABEL_96:
 
 LABEL_99:
         v87 = v86;
-        v62 = [v27 touches];
-        self->_rulerIsRotating = [v62 count] > 1;
+        touches = [v27 touches];
+        self->_rulerIsRotating = [touches count] > 1;
 
         v63 = self->_rulerLayer;
         t2 = v87;
@@ -978,18 +978,18 @@ LABEL_99:
           memset(&t2, 0, sizeof(t2));
           v91 = t1;
           CGAffineTransformInvert(&t2, &v91);
-          v68 = [MEMORY[0x1E69DCEB0] mainScreen];
-          [v68 scale];
+          mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+          [mainScreen scale];
           v84 = v69;
 
-          v70 = [v64 touches];
-          v71 = [v70 objectAtIndexedSubscript:0];
+          touches2 = [v64 touches];
+          v71 = [touches2 objectAtIndexedSubscript:0];
           [v71 locationInView:self->_rulerView];
           v73 = v72;
           v75 = v74;
 
-          v76 = [v64 touches];
-          v77 = [v76 objectAtIndexedSubscript:1];
+          touches3 = [v64 touches];
+          v77 = [touches3 objectAtIndexedSubscript:1];
           [v77 locationInView:self->_rulerView];
           v79 = v78;
           v81 = v80;
@@ -999,9 +999,9 @@ LABEL_99:
 
         else
         {
-          v67 = [(PKRulerLayer *)self->_rulerLayer rulerAngleMarker];
+          rulerAngleMarker = [(PKRulerLayer *)self->_rulerLayer rulerAngleMarker];
 
-          if (v67)
+          if (rulerAngleMarker)
           {
             [(PKRulerLayer *)self->_rulerLayer hideRulerAngleMarker];
           }
@@ -1118,9 +1118,9 @@ LABEL_98:
       }
 
       memset(&t1, 0, sizeof(t1));
-      if (v4)
+      if (gestureCopy)
       {
-        [v4 rulerTransform];
+        [gestureCopy rulerTransform];
       }
 
       v91 = t1;
@@ -1279,24 +1279,24 @@ LABEL_34:
 LABEL_108:
 }
 
-- (void)setSnapImpactBehavior:(uint64_t)a1
+- (void)setSnapImpactBehavior:(uint64_t)behavior
 {
-  if (a1)
+  if (behavior)
   {
-    objc_storeStrong((a1 + 72), a2);
+    objc_storeStrong((behavior + 72), a2);
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKRulerController *)&self->super.isa _viewForHostingRuler];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  _viewForHostingRuler = [(PKRulerController *)&self->super.isa _viewForHostingRuler];
   if (self)
   {
     v9 = self->_rulerGestureRecognizer;
     v10 = v9;
-    if (v9 == v6)
+    if (v9 == recognizerCopy)
     {
       rulerLayer = self->_rulerLayer;
 
@@ -1310,14 +1310,14 @@ LABEL_108:
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
 LABEL_4:
-    v12 = [WeakRetained drawingGestureRecognizer];
-    if (v12 != v6)
+    drawingGestureRecognizer = [WeakRetained drawingGestureRecognizer];
+    if (drawingGestureRecognizer != recognizerCopy)
     {
 
       if (!self)
       {
 LABEL_33:
-        if (v6)
+        if (recognizerCopy)
         {
           v22 = 0;
           goto LABEL_13;
@@ -1341,7 +1341,7 @@ LABEL_33:
     {
 LABEL_12:
       v22 = self->_rulerGestureRecognizer;
-      if (v22 != v6)
+      if (v22 != recognizerCopy)
       {
 LABEL_13:
 
@@ -1362,7 +1362,7 @@ LABEL_26:
     }
 
 LABEL_8:
-    [v7 locationInView:v8];
+    [touchCopy locationInView:_viewForHostingRuler];
     v15 = v14;
     v17 = v16;
     v18 = self->_rulerLayer;
@@ -1377,11 +1377,11 @@ LABEL_8:
       v20 = 1;
     }
 
-    v31 = v20 == (self->_rulerGestureRecognizer == v6);
+    v31 = v20 == (self->_rulerGestureRecognizer == recognizerCopy);
     goto LABEL_27;
   }
 
-  if (v6)
+  if (recognizerCopy)
   {
     v10 = 0;
     WeakRetained = 0;
@@ -1407,9 +1407,9 @@ LABEL_16:
     v25 = 0;
   }
 
-  v26 = [v25 drawingGestureRecognizer];
-  v27 = [v26 drawingTouch];
-  if (v27 == v7)
+  drawingGestureRecognizer2 = [v25 drawingGestureRecognizer];
+  drawingTouch = [drawingGestureRecognizer2 drawingTouch];
+  if (drawingTouch == touchCopy)
   {
     v31 = 1;
   }
@@ -1417,7 +1417,7 @@ LABEL_16:
   else
   {
     v34 = v25;
-    v33 = [(PKFreeTransformGestureRecognizer *)v6 touches];
+    touches = [(PKFreeTransformGestureRecognizer *)recognizerCopy touches];
     if (self)
     {
       v28 = objc_loadWeakRetained(&self->_delegate);
@@ -1428,9 +1428,9 @@ LABEL_16:
       v28 = 0;
     }
 
-    v29 = [v28 drawingGestureRecognizer];
-    v30 = [v29 drawingTouch];
-    v31 = [v33 containsObject:v30];
+    drawingGestureRecognizer3 = [v28 drawingGestureRecognizer];
+    drawingTouch2 = [drawingGestureRecognizer3 drawingTouch];
+    v31 = [touches containsObject:drawingTouch2];
 
     v25 = v34;
   }
@@ -1439,7 +1439,7 @@ LABEL_27:
   return v31 & 1;
 }
 
-- (CGAffineTransform)ensureRulerTransformIsFullyOnscreen:(_OWORD *)a3@<X8>
+- (CGAffineTransform)ensureRulerTransformIsFullyOnscreen:(_OWORD *)onscreen@<X8>
 {
   v63 = *MEMORY[0x1E69E9840];
   if (result)
@@ -1572,16 +1572,16 @@ LABEL_27:
     *(a2 + 1) = v49;
     *(a2 + 2) = *&v60.tx;
     v50 = *(a2 + 1);
-    *a3 = *a2;
-    a3[1] = v50;
-    a3[2] = *(a2 + 2);
+    *onscreen = *a2;
+    onscreen[1] = v50;
+    onscreen[2] = *(a2 + 2);
   }
 
   else
   {
-    a3[1] = 0u;
-    a3[2] = 0u;
-    *a3 = 0u;
+    onscreen[1] = 0u;
+    onscreen[2] = 0u;
+    *onscreen = 0u;
   }
 
   return result;
@@ -1728,9 +1728,9 @@ LABEL_7:
 
 - (double)rulerTransform
 {
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 64);
+    v4 = *(self + 64);
     v5 = v4;
     if (v4)
     {
@@ -1742,7 +1742,7 @@ LABEL_7:
       memset(v7, 0, sizeof(v7));
     }
 
-    [(PKRulerController *)a1 pixelSnapRulerTransform:v7, a2];
+    [(PKRulerController *)self pixelSnapRulerTransform:v7, a2];
   }
 
   else
@@ -1758,9 +1758,9 @@ LABEL_7:
 
 - (void)canvasTransform
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 40));
+    WeakRetained = objc_loadWeakRetained((self + 40));
     v5 = WeakRetained;
     if (WeakRetained)
     {
@@ -1787,7 +1787,7 @@ LABEL_7:
     {
 
 LABEL_9:
-      v11 = objc_loadWeakRetained((a1 + 40));
+      v11 = objc_loadWeakRetained((self + 40));
       [v11 drawingScale];
       v13 = v12;
 
@@ -1800,7 +1800,7 @@ LABEL_9:
       goto LABEL_9;
     }
 
-    v14 = objc_loadWeakRetained((a1 + 40));
+    v14 = objc_loadWeakRetained((self + 40));
     v15 = v14;
     if (v14)
     {

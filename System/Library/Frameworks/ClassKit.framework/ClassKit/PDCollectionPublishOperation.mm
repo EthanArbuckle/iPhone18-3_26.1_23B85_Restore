@@ -1,20 +1,20 @@
 @interface PDCollectionPublishOperation
 - (BOOL)wantsToExecute;
-- (PDCollectionPublishOperation)initWithDatabase:(id)a3;
-- (PDCollectionPublishOperation)initWithDatabase:(id)a3 andObjectsToDelete:(id)a4;
-- (id)createPayloadForDeletingCollection:(id)a3;
-- (id)createPayloadForDeletingCollectionItem:(id)a3;
+- (PDCollectionPublishOperation)initWithDatabase:(id)database;
+- (PDCollectionPublishOperation)initWithDatabase:(id)database andObjectsToDelete:(id)delete;
+- (id)createPayloadForDeletingCollection:(id)collection;
+- (id)createPayloadForDeletingCollectionItem:(id)item;
 - (id)requestData;
 - (void)execute;
 @end
 
 @implementation PDCollectionPublishOperation
 
-- (PDCollectionPublishOperation)initWithDatabase:(id)a3
+- (PDCollectionPublishOperation)initWithDatabase:(id)database
 {
   v4.receiver = self;
   v4.super_class = PDCollectionPublishOperation;
-  result = [(PDURLRequestOperation *)&v4 initWithDatabase:a3];
+  result = [(PDURLRequestOperation *)&v4 initWithDatabase:database];
   if (result)
   {
     BYTE3(result->super.super._responseStatusError) = 1;
@@ -23,10 +23,10 @@
   return result;
 }
 
-- (PDCollectionPublishOperation)initWithDatabase:(id)a3 andObjectsToDelete:(id)a4
+- (PDCollectionPublishOperation)initWithDatabase:(id)database andObjectsToDelete:(id)delete
 {
-  v6 = a4;
-  v7 = [(PDCollectionPublishOperation *)self initWithDatabase:a3];
+  deleteCopy = delete;
+  v7 = [(PDCollectionPublishOperation *)self initWithDatabase:database];
   if (v7)
   {
     v8 = objc_alloc_init(NSMutableArray);
@@ -34,7 +34,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v6;
+    v9 = deleteCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -88,7 +88,7 @@
   {
     [(PDEndpointRequestOperation *)self markAsFinished];
 LABEL_31:
-    v29 = 0;
+    immutableData = 0;
     goto LABEL_32;
   }
 
@@ -139,47 +139,47 @@ LABEL_5:
       [(PDDPPublishCollectionRequest *)v3 addPayload:v11, v31];
       [(PDDPPublishCollectionRequest *)v3 writeTo:v4];
       [(PDDPPublishCollectionRequest *)v3 clearPayloads];
-      v13 = [v4 data];
-      v14 = [v13 length];
-      v15 = [(PDURLRequestOperation *)self stats];
-      if (v15)
+      data = [v4 data];
+      v14 = [data length];
+      stats = [(PDURLRequestOperation *)self stats];
+      if (stats)
       {
-        v15[10] = v14;
+        stats[10] = v14;
       }
 
-      v16 = [(PDURLRequestOperation *)self stats];
-      if (v16)
+      stats2 = [(PDURLRequestOperation *)self stats];
+      if (stats2)
       {
-        ++v16[14];
+        ++stats2[14];
       }
 
       CLSInitLog();
-      v17 = [(PDCollectionPublishOperation *)self logSubsystem];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+      logSubsystem = [(PDCollectionPublishOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
       {
         v25 = objc_opt_class();
         v33 = v25;
         [(PDURLRequestOperation *)self operationID];
         v26 = v32 = v7;
-        v27 = [v11 dictionaryRepresentation];
+        dictionaryRepresentation = [v11 dictionaryRepresentation];
         *buf = v31;
         v41 = v25;
         v42 = 2114;
         v43 = v26;
         v44 = 2112;
-        v45 = v27;
-        _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+        v45 = dictionaryRepresentation;
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
 
         v7 = v32;
       }
 
       objc_autoreleasePoolPop(v10);
-      v18 = [(PDURLRequestOperation *)self stats];
-      v19 = v18;
-      v20 = v18 ? *(v18 + 80) : 0;
-      v21 = [(PDURLRequestOperation *)self stats];
-      v22 = v21;
-      v23 = v21 ? *(v21 + 112) : 0;
+      stats3 = [(PDURLRequestOperation *)self stats];
+      v19 = stats3;
+      v20 = stats3 ? *(stats3 + 80) : 0;
+      stats4 = [(PDURLRequestOperation *)self stats];
+      v22 = stats4;
+      v23 = stats4 ? *(stats4 + 112) : 0;
       v24 = [(PDEndpointRequestOperation *)self hasReachedRequestPayloadLimitBytes:v20 count:v23];
 
       if (v24)
@@ -201,11 +201,11 @@ LABEL_5:
     }
   }
 
-  v29 = [v4 immutableData];
+  immutableData = [v4 immutableData];
 
 LABEL_32:
 
-  return v29;
+  return immutableData;
 }
 
 - (void)execute
@@ -234,26 +234,26 @@ LABEL_32:
   return result;
 }
 
-- (id)createPayloadForDeletingCollectionItem:(id)a3
+- (id)createPayloadForDeletingCollectionItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(PDDPPayload);
   [(PDDPPayload *)v4 setAction:3];
   [(PDDPPayload *)v4 setType:21];
-  v5 = sub_10001D56C(v3);
+  v5 = sub_10001D56C(itemCopy);
 
   [(PDDPPayload *)v4 setCollectionItem:v5];
 
   return v4;
 }
 
-- (id)createPayloadForDeletingCollection:(id)a3
+- (id)createPayloadForDeletingCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_alloc_init(PDDPPayload);
   [(PDDPPayload *)v4 setAction:3];
   [(PDDPPayload *)v4 setType:20];
-  v5 = sub_10001CE94(v3);
+  v5 = sub_10001CE94(collectionCopy);
 
   [(PDDPPayload *)v4 setCollection:v5];
 

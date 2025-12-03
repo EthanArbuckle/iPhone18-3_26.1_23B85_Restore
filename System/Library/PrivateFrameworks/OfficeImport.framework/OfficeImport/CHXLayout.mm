@@ -1,26 +1,26 @@
 @interface CHXLayout
-+ (CGRect)boundsRectFromXmlManualLayoutElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)orientedBoundsFromLayoutElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)stringFromLayoutMode:(int)a3;
-+ (void)readFrom:(_xmlNode *)a3 graphicProperties:(id)a4 state:(id)a5;
++ (CGRect)boundsRectFromXmlManualLayoutElement:(_xmlNode *)element state:(id)state;
++ (id)orientedBoundsFromLayoutElement:(_xmlNode *)element state:(id)state;
++ (id)stringFromLayoutMode:(int)mode;
++ (void)readFrom:(_xmlNode *)from graphicProperties:(id)properties state:(id)state;
 @end
 
 @implementation CHXLayout
 
-+ (id)orientedBoundsFromLayoutElement:(_xmlNode *)a3 state:(id)a4
++ (id)orientedBoundsFromLayoutElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
-  v7 = [v6 drawingState];
-  v8 = [v7 OAXChartNamespace];
-  v9 = OCXFindChild(a3, v8, "manualLayout");
+  stateCopy = state;
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v9 = OCXFindChild(element, oAXChartNamespace, "manualLayout");
 
   if (v9)
   {
-    [a1 boundsRectFromXmlManualLayoutElement:v9 state:v6];
+    [self boundsRectFromXmlManualLayoutElement:v9 state:stateCopy];
     v10 = [OADOrientedBounds orientedBoundsWithBounds:"orientedBoundsWithBounds:rotation:flipX:flipY:" rotation:0 flipX:0 flipY:?];
-    v11 = [v6 drawingState];
-    v12 = [v11 OAXChartNamespace];
-    v13 = OCXFindChild(v9, v12, "xMode");
+    drawingState2 = [stateCopy drawingState];
+    oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+    v13 = OCXFindChild(v9, oAXChartNamespace2, "xMode");
 
     if (v13)
     {
@@ -31,9 +31,9 @@
       }
     }
 
-    v15 = [v6 drawingState];
-    v16 = [v15 OAXChartNamespace];
-    v17 = OCXFindChild(v9, v16, "yMode");
+    drawingState3 = [stateCopy drawingState];
+    oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+    v17 = OCXFindChild(v9, oAXChartNamespace3, "yMode");
 
     if (v17)
     {
@@ -53,23 +53,23 @@
   return v10;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 graphicProperties:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from graphicProperties:(id)properties state:(id)state
 {
-  v8 = a4;
-  v7 = [CHXLayout orientedBoundsFromLayoutElement:a3 state:a5];
+  propertiesCopy = properties;
+  v7 = [CHXLayout orientedBoundsFromLayoutElement:from state:state];
   if (v7)
   {
-    [v8 setOrientedBounds:v7];
+    [propertiesCopy setOrientedBounds:v7];
   }
 }
 
-+ (CGRect)boundsRectFromXmlManualLayoutElement:(_xmlNode *)a3 state:(id)a4
++ (CGRect)boundsRectFromXmlManualLayoutElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v26 = 0.0;
-  v6 = [v5 drawingState];
-  v7 = [v6 OAXChartNamespace];
-  v8 = OCXFindChild(a3, v7, "x");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v8 = OCXFindChild(element, oAXChartNamespace, "x");
 
   if (v8)
   {
@@ -83,9 +83,9 @@
   }
 
   v26 = 0.0;
-  v10 = [v5 drawingState];
-  v11 = [v10 OAXChartNamespace];
-  v12 = OCXFindChild(a3, v11, "y");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v12 = OCXFindChild(element, oAXChartNamespace2, "y");
 
   if (v12)
   {
@@ -99,9 +99,9 @@
   }
 
   v26 = 0.0;
-  v14 = [v5 drawingState];
-  v15 = [v14 OAXChartNamespace];
-  v16 = OCXFindChild(a3, v15, "w");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v16 = OCXFindChild(element, oAXChartNamespace3, "w");
 
   if (v16)
   {
@@ -115,9 +115,9 @@
   }
 
   v26 = 0.0;
-  v18 = [v5 drawingState];
-  v19 = [v18 OAXChartNamespace];
-  v20 = OCXFindChild(a3, v19, "h");
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v20 = OCXFindChild(element, oAXChartNamespace4, "h");
 
   if (v20)
   {
@@ -141,9 +141,9 @@
   return result;
 }
 
-+ (id)stringFromLayoutMode:(int)a3
++ (id)stringFromLayoutMode:(int)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return @"edge";
   }

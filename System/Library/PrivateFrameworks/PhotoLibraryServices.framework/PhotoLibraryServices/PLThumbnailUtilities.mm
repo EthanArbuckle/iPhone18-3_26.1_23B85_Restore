@@ -1,41 +1,41 @@
 @interface PLThumbnailUtilities
-+ (BOOL)_performSWDownscaleTo5551OnSourceImage:(CGImage *)a3 withSourceDimensions:(id)a4 withSpecification:(id)a5 destinationData:(id)a6 imageRect:(CGRect *)a7 bytesPerRow:(int *)a8;
-+ (BOOL)_validateSpecification:(id)a3 destinationData:(id *)a4;
-+ (BOOL)_validateSpecifications:(id)a3 destinationData:(id *)a4;
-+ (BOOL)performHWCascadingDownscaleTo5551OnIOSurface:(__IOSurface *)a3 withSpecifications:(id)a4 destinationData:(id *)a5 usingContext:(id)a6;
-+ (BOOL)performSWCascadingDownscaleTo5551OnImage:(CGImage *)a3 withSpecifications:(id)a4 destinationData:(id *)a5;
-+ (BOOL)performSWDownscaleTo5551OnImage:(CGImage *)a3 withSpecification:(id)a4 destinationData:(id *)a5 imageRect:(CGRect *)a6 bytesPerRow:(int *)a7;
-+ (id)_destinationDataArrayFromSpecifications:(id)a3;
-+ (id)_destinationDataFromSpecification:(id)a3;
-+ (int)_bytesPerRowForSpecification:(id)a3;
-+ (int)_requiredDataLengthForSpecification:(id)a3;
++ (BOOL)_performSWDownscaleTo5551OnSourceImage:(CGImage *)image withSourceDimensions:(id)dimensions withSpecification:(id)specification destinationData:(id)data imageRect:(CGRect *)rect bytesPerRow:(int *)row;
++ (BOOL)_validateSpecification:(id)specification destinationData:(id *)data;
++ (BOOL)_validateSpecifications:(id)specifications destinationData:(id *)data;
++ (BOOL)performHWCascadingDownscaleTo5551OnIOSurface:(__IOSurface *)surface withSpecifications:(id)specifications destinationData:(id *)data usingContext:(id)context;
++ (BOOL)performSWCascadingDownscaleTo5551OnImage:(CGImage *)image withSpecifications:(id)specifications destinationData:(id *)data;
++ (BOOL)performSWDownscaleTo5551OnImage:(CGImage *)image withSpecification:(id)specification destinationData:(id *)data imageRect:(CGRect *)rect bytesPerRow:(int *)row;
++ (id)_destinationDataArrayFromSpecifications:(id)specifications;
++ (id)_destinationDataFromSpecification:(id)specification;
++ (int)_bytesPerRowForSpecification:(id)specification;
++ (int)_requiredDataLengthForSpecification:(id)specification;
 @end
 
 @implementation PLThumbnailUtilities
 
-+ (BOOL)performSWCascadingDownscaleTo5551OnImage:(CGImage *)a3 withSpecifications:(id)a4 destinationData:(id *)a5
++ (BOOL)performSWCascadingDownscaleTo5551OnImage:(CGImage *)image withSpecifications:(id)specifications destinationData:(id *)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v29 = a1;
-  if ([a1 _validateSpecifications:v8 destinationData:a5])
+  specificationsCopy = specifications;
+  selfCopy = self;
+  if ([self _validateSpecifications:specificationsCopy destinationData:data])
   {
-    v30 = *a5;
-    CGImageGetWidth(a3);
-    CGImageGetHeight(a3);
+    v30 = *data;
+    CGImageGetWidth(image);
+    CGImageGetHeight(image);
     v25 = PLSizeMake();
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = v8;
+    obj = specificationsCopy;
     v9 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v9)
     {
       v10 = v9;
       v27 = 0;
-      image = a3;
-      v24 = v8;
+      image = image;
+      v24 = specificationsCopy;
       SquareCroppedImage = 0;
       v12 = 0;
       v13 = *v32;
@@ -51,11 +51,11 @@ LABEL_4:
 
         v16 = *(*(&v31 + 1) + 8 * v15);
         v17 = [v16 objectForKey:v14];
-        v18 = [v17 intValue];
+        intValue = [v17 intValue];
 
-        if (v18 == 2)
+        if (intValue == 2)
         {
-          v19 = SquareCroppedImage;
+          imageCopy = SquareCroppedImage;
           v20 = v27;
           if (!SquareCroppedImage)
           {
@@ -63,19 +63,19 @@ LABEL_4:
             CGImageGetWidth(SquareCroppedImage);
             CGImageGetHeight(SquareCroppedImage);
             v20 = PLSizeMake();
-            v19 = SquareCroppedImage;
+            imageCopy = SquareCroppedImage;
             v27 = v20;
           }
         }
 
         else
         {
-          v19 = image;
+          imageCopy = image;
           v20 = v25;
         }
 
         v21 = [v30 objectAtIndex:v12];
-        v22 = [v29 _performSWDownscaleTo5551OnSourceImage:v19 withSourceDimensions:v20 withSpecification:v16 destinationData:v21 imageRect:0 bytesPerRow:0];
+        v22 = [selfCopy _performSWDownscaleTo5551OnSourceImage:imageCopy withSourceDimensions:v20 withSpecification:v16 destinationData:v21 imageRect:0 bytesPerRow:0];
 
         if (!v22)
         {
@@ -96,7 +96,7 @@ LABEL_4:
         }
       }
 
-      v8 = v24;
+      specificationsCopy = v24;
     }
 
     else
@@ -116,15 +116,15 @@ LABEL_4:
   return v22;
 }
 
-+ (BOOL)performSWDownscaleTo5551OnImage:(CGImage *)a3 withSpecification:(id)a4 destinationData:(id *)a5 imageRect:(CGRect *)a6 bytesPerRow:(int *)a7
++ (BOOL)performSWDownscaleTo5551OnImage:(CGImage *)image withSpecification:(id)specification destinationData:(id *)data imageRect:(CGRect *)rect bytesPerRow:(int *)row
 {
-  v12 = a4;
-  if ([a1 _validateSpecification:v12 destinationData:a5])
+  specificationCopy = specification;
+  if ([self _validateSpecification:specificationCopy destinationData:data])
   {
-    v13 = *a5;
-    CGImageGetWidth(a3);
-    CGImageGetHeight(a3);
-    v14 = [a1 _performSWDownscaleTo5551OnSourceImage:a3 withSourceDimensions:PLSizeMake() withSpecification:v12 destinationData:v13 imageRect:a6 bytesPerRow:a7];
+    v13 = *data;
+    CGImageGetWidth(image);
+    CGImageGetHeight(image);
+    v14 = [self _performSWDownscaleTo5551OnSourceImage:image withSourceDimensions:PLSizeMake() withSpecification:specificationCopy destinationData:v13 imageRect:rect bytesPerRow:row];
   }
 
   else
@@ -135,15 +135,15 @@ LABEL_4:
   return v14;
 }
 
-+ (BOOL)_performSWDownscaleTo5551OnSourceImage:(CGImage *)a3 withSourceDimensions:(id)a4 withSpecification:(id)a5 destinationData:(id)a6 imageRect:(CGRect *)a7 bytesPerRow:(int *)a8
++ (BOOL)_performSWDownscaleTo5551OnSourceImage:(CGImage *)image withSourceDimensions:(id)dimensions withSpecification:(id)specification destinationData:(id)data imageRect:(CGRect *)rect bytesPerRow:(int *)row
 {
-  v13 = a5;
-  v14 = a6;
-  if (a3)
+  specificationCopy = specification;
+  dataCopy = data;
+  if (image)
   {
-    v15 = [v13 objectForKey:*MEMORY[0x1E69C02E8]];
+    v15 = [specificationCopy objectForKey:*MEMORY[0x1E69C02E8]];
     [v15 intValue];
-    v16 = [v13 objectForKey:*MEMORY[0x1E69C02E0]];
+    v16 = [specificationCopy objectForKey:*MEMORY[0x1E69C02E0]];
     [v16 intValue];
     v17 = PLSizeMake();
 
@@ -152,9 +152,9 @@ LABEL_4:
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [a1 _bytesPerRowForSpecification:v13];
+    v26 = [self _bytesPerRowForSpecification:specificationCopy];
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    v28 = CGBitmapContextCreate([v14 mutableBytes], v17, v17 >> 32, 5uLL, v26, DeviceRGB, 0x1006u);
+    v28 = CGBitmapContextCreate([dataCopy mutableBytes], v17, v17 >> 32, 5uLL, v26, DeviceRGB, 0x1006u);
     v29 = v28 != 0;
     if (v28)
     {
@@ -163,22 +163,22 @@ LABEL_4:
       v32.origin.y = v21;
       v32.size.width = v23;
       v32.size.height = v25;
-      CGContextDrawImage(v28, v32, a3);
+      CGContextDrawImage(v28, v32, image);
       CGContextRelease(v30);
     }
 
     CGColorSpaceRelease(DeviceRGB);
-    if (a7)
+    if (rect)
     {
-      a7->origin.x = v19;
-      a7->origin.y = v21;
-      a7->size.width = v23;
-      a7->size.height = v25;
+      rect->origin.x = v19;
+      rect->origin.y = v21;
+      rect->size.width = v23;
+      rect->size.height = v25;
     }
 
-    if (a8)
+    if (row)
     {
-      *a8 = v26;
+      *row = v26;
     }
   }
 
@@ -190,28 +190,28 @@ LABEL_4:
   return v29;
 }
 
-+ (BOOL)performHWCascadingDownscaleTo5551OnIOSurface:(__IOSurface *)a3 withSpecifications:(id)a4 destinationData:(id *)a5 usingContext:(id)a6
++ (BOOL)performHWCascadingDownscaleTo5551OnIOSurface:(__IOSurface *)surface withSpecifications:(id)specifications destinationData:(id *)data usingContext:(id)context
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [a1 _validateSpecifications:v10 destinationData:a5];
+  specificationsCopy = specifications;
+  contextCopy = context;
+  v12 = [self _validateSpecifications:specificationsCopy destinationData:data];
   v13 = 0;
-  if (!v12 || !a3 || !v11)
+  if (!v12 || !surface || !contextCopy)
   {
     goto LABEL_15;
   }
 
-  v14 = *a5;
-  v15 = [v10 count];
+  v14 = *data;
+  v15 = [specificationsCopy count];
   v16 = v15 << 32;
   v17 = malloc_type_malloc(8 * v15, 0x100004000313F17uLL);
   v18 = malloc_type_malloc(4 * v15, 0x100004052888210uLL);
   if (v15 << 32)
   {
     v29 = v15;
-    v30 = a3;
+    surfaceCopy = surface;
     v31 = v14;
-    v32 = v11;
+    v32 = contextCopy;
     v19 = 0;
     v34 = *MEMORY[0x1E69C02E8];
     v33 = *MEMORY[0x1E69C02E0];
@@ -228,15 +228,15 @@ LABEL_4:
 
     do
     {
-      v22 = [v10 objectAtIndex:v19];
+      v22 = [specificationsCopy objectAtIndex:v19];
       [v22 objectForKey:v34];
-      v24 = v23 = v10;
+      v24 = v23 = specificationsCopy;
       [v24 intValue];
       v25 = [v22 objectForKey:v33];
       [v25 intValue];
       v26 = PLSizeMake();
 
-      v10 = v23;
+      specificationsCopy = v23;
       v17[v19] = v26;
       v27 = [v22 objectForKey:v20];
       v18[v19] = [v27 intValue];
@@ -246,12 +246,12 @@ LABEL_4:
 
     while (v21 != v19);
     v14 = v31;
-    v11 = v32;
-    v13 = [v32 downscaleImageSurface:v30 destinationCount:v29 sizes:v17 cropModes:v18 pixelFormat:892679473 bytesPerRowAlignment:16 destinationData:v31];
+    contextCopy = v32;
+    v13 = [v32 downscaleImageSurface:surfaceCopy destinationCount:v29 sizes:v17 cropModes:v18 pixelFormat:892679473 bytesPerRowAlignment:16 destinationData:v31];
     goto LABEL_11;
   }
 
-  v13 = [v11 downscaleImageSurface:a3 destinationCount:v15 sizes:v17 cropModes:v18 pixelFormat:892679473 bytesPerRowAlignment:16 destinationData:v14];
+  v13 = [contextCopy downscaleImageSurface:surface destinationCount:v15 sizes:v17 cropModes:v18 pixelFormat:892679473 bytesPerRowAlignment:16 destinationData:v14];
   if (v17)
   {
 LABEL_11:
@@ -267,17 +267,17 @@ LABEL_15:
   return v13;
 }
 
-+ (BOOL)_validateSpecifications:(id)a3 destinationData:(id *)a4
++ (BOOL)_validateSpecifications:(id)specifications destinationData:(id *)data
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  specificationsCopy = specifications;
+  v7 = specificationsCopy;
+  if (!data)
   {
     goto LABEL_21;
   }
 
-  v8 = [v6 count];
+  v8 = [specificationsCopy count];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -287,8 +287,8 @@ LABEL_15:
   if (v10)
   {
     v11 = v10;
-    v33 = a4;
-    v34 = a1;
+    dataCopy = data;
+    selfCopy = self;
     v35 = v7;
     v12 = *v37;
     v13 = *MEMORY[0x1E69C02E8];
@@ -339,9 +339,9 @@ LABEL_23:
       break;
     }
 
-    a1 = v34;
+    self = selfCopy;
     v7 = v35;
-    a4 = v33;
+    data = dataCopy;
     goto LABEL_14;
   }
 
@@ -353,7 +353,7 @@ LABEL_21:
   }
 
 LABEL_14:
-  v23 = *a4;
+  v23 = *data;
   if (v23)
   {
     v24 = v23;
@@ -368,7 +368,7 @@ LABEL_14:
           v27 = [v24 objectAtIndex:v26];
           v28 = [v9 objectAtIndex:v26];
           v29 = [v27 length];
-          v30 = [a1 _requiredDataLengthForSpecification:v28];
+          v30 = [self _requiredDataLengthForSpecification:v28];
 
           v31 = v29 >= v30;
           if (v29 < v30)
@@ -399,8 +399,8 @@ LABEL_14:
 
   else
   {
-    [a1 _destinationDataArrayFromSpecifications:v9];
-    *a4 = v9 = 0;
+    [self _destinationDataArrayFromSpecifications:v9];
+    *data = v9 = 0;
     v31 = 1;
   }
 
@@ -410,13 +410,13 @@ LABEL_25:
   return v31;
 }
 
-+ (BOOL)_validateSpecification:(id)a3 destinationData:(id *)a4
++ (BOOL)_validateSpecification:(id)specification destinationData:(id *)data
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  specificationCopy = specification;
+  v7 = specificationCopy;
+  if (data)
   {
-    v8 = [v6 objectForKey:*MEMORY[0x1E69C02E8]];
+    v8 = [specificationCopy objectForKey:*MEMORY[0x1E69C02E8]];
     if (v8)
     {
       v9 = v8;
@@ -428,22 +428,22 @@ LABEL_25:
 
         if (v12)
         {
-          v13 = *a4;
-          v14 = *a4;
+          v13 = *data;
+          v14 = *data;
           if (v13)
           {
             v15 = v14;
-            a4 = [v14 length];
+            data = [v14 length];
 
-            LOBYTE(a4) = a4 >= [a1 _requiredDataLengthForSpecification:v7];
+            LOBYTE(data) = data >= [self _requiredDataLengthForSpecification:v7];
           }
 
           else
           {
-            v17 = [a1 _destinationDataFromSpecification:v7];
+            v17 = [self _destinationDataFromSpecification:v7];
             v18 = v17;
-            *a4 = v17;
-            LOBYTE(a4) = 1;
+            *data = v17;
+            LOBYTE(data) = 1;
           }
 
           goto LABEL_9;
@@ -455,24 +455,24 @@ LABEL_25:
       }
     }
 
-    LOBYTE(a4) = 0;
+    LOBYTE(data) = 0;
   }
 
 LABEL_9:
 
-  return a4;
+  return data;
 }
 
-+ (id)_destinationDataArrayFromSpecifications:(id)a3
++ (id)_destinationDataArrayFromSpecifications:(id)specifications
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  specificationsCopy = specifications;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = specificationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -487,7 +487,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _destinationDataFromSpecification:{*(*(&v13 + 1) + 8 * i), v13}];
+        v11 = [self _destinationDataFromSpecification:{*(*(&v13 + 1) + 8 * i), v13}];
         [v5 addObject:v11];
       }
 
@@ -500,43 +500,43 @@ LABEL_9:
   return v5;
 }
 
-+ (id)_destinationDataFromSpecification:(id)a3
++ (id)_destinationDataFromSpecification:(id)specification
 {
   v4 = MEMORY[0x1E695DF88];
-  v5 = a3;
+  specificationCopy = specification;
   v6 = [v4 alloc];
-  LODWORD(a1) = [a1 _requiredDataLengthForSpecification:v5];
+  LODWORD(self) = [self _requiredDataLengthForSpecification:specificationCopy];
 
-  v7 = [v6 initWithLength:a1];
+  v7 = [v6 initWithLength:self];
 
   return v7;
 }
 
-+ (int)_requiredDataLengthForSpecification:(id)a3
++ (int)_requiredDataLengthForSpecification:(id)specification
 {
   v4 = *MEMORY[0x1E69C02E0];
-  v5 = a3;
-  v6 = [v5 objectForKey:v4];
-  v7 = [v6 intValue];
+  specificationCopy = specification;
+  v6 = [specificationCopy objectForKey:v4];
+  intValue = [v6 intValue];
 
-  LODWORD(a1) = [a1 _bytesPerRowForSpecification:v5];
-  return a1 * v7;
+  LODWORD(self) = [self _bytesPerRowForSpecification:specificationCopy];
+  return self * intValue;
 }
 
-+ (int)_bytesPerRowForSpecification:(id)a3
++ (int)_bytesPerRowForSpecification:(id)specification
 {
   v3 = *MEMORY[0x1E69C02E8];
-  v4 = a3;
-  v5 = [v4 objectForKey:v3];
-  v6 = [v5 intValue];
+  specificationCopy = specification;
+  v5 = [specificationCopy objectForKey:v3];
+  intValue = [v5 intValue];
 
-  v7 = [v4 objectForKey:*MEMORY[0x1E69C0610]];
+  v7 = [specificationCopy objectForKey:*MEMORY[0x1E69C0610]];
 
-  LOWORD(v4) = [v7 intValue];
-  v8 = [MEMORY[0x1E69BF260] formatWithID:v4];
-  LODWORD(v4) = [v8 tableFormatBytesPerRowForWidth:v6];
+  LOWORD(specificationCopy) = [v7 intValue];
+  v8 = [MEMORY[0x1E69BF260] formatWithID:specificationCopy];
+  LODWORD(specificationCopy) = [v8 tableFormatBytesPerRowForWidth:intValue];
 
-  return v4;
+  return specificationCopy;
 }
 
 @end

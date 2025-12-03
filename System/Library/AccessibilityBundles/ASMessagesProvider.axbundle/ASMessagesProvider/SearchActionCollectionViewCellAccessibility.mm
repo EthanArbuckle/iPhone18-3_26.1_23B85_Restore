@@ -1,16 +1,16 @@
 @interface SearchActionCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SearchActionCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASMessagesProvider.SearchActionCollectionViewCell" hasSwiftField:@"actionContentView" withSwiftType:"SearchActionContentView"];
-  [v3 validateClass:@"ASMessagesProvider.SearchActionContentView" hasSwiftField:@"linkLabel" withSwiftType:"DynamicLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASMessagesProvider.SearchActionCollectionViewCell" hasSwiftField:@"actionContentView" withSwiftType:"SearchActionContentView"];
+  [validationsCopy validateClass:@"ASMessagesProvider.SearchActionContentView" hasSwiftField:@"linkLabel" withSwiftType:"DynamicLabel"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -27,9 +27,9 @@
   v3 = [v2 safeSwiftValueForKey:@"linkLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 @end

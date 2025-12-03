@@ -1,37 +1,37 @@
 @interface MTReflectUtil
-+ (BOOL)objectAsBool:(id)a3;
-+ (id)mergeAndCleanDictionaries:(id)a3;
-+ (id)objectAsArray:(id)a3;
-+ (id)objectAsDictionary:(id)a3;
-+ (id)objectAsString:(id)a3;
-+ (id)removeNullValuesFromDictionary:(id)a3;
++ (BOOL)objectAsBool:(id)bool;
++ (id)mergeAndCleanDictionaries:(id)dictionaries;
++ (id)objectAsArray:(id)array;
++ (id)objectAsDictionary:(id)dictionary;
++ (id)objectAsString:(id)string;
++ (id)removeNullValuesFromDictionary:(id)dictionary;
 @end
 
 @implementation MTReflectUtil
 
-+ (BOOL)objectAsBool:(id)a3
++ (BOOL)objectAsBool:(id)bool
 {
-  v3 = a3;
+  boolCopy = bool;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [boolCopy BOOLValue];
   }
 
   else
   {
-    v4 = v3 != 0;
+    bOOLValue = boolCopy != 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)objectAsString:(id)a3
++ (id)objectAsString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = stringCopy;
   }
 
   else
@@ -44,13 +44,13 @@
   return v4;
 }
 
-+ (id)objectAsArray:(id)a3
++ (id)objectAsArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = arrayCopy;
   }
 
   else
@@ -63,13 +63,13 @@
   return v4;
 }
 
-+ (id)objectAsDictionary:(id)a3
++ (id)objectAsDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dictionaryCopy;
   }
 
   else
@@ -82,16 +82,16 @@
   return v4;
 }
 
-+ (id)mergeAndCleanDictionaries:(id)a3
++ (id)mergeAndCleanDictionaries:(id)dictionaries
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -126,12 +126,12 @@
   return v4;
 }
 
-+ (id)removeNullValuesFromDictionary:(id)a3
++ (id)removeNullValuesFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 keysOfEntriesPassingTest:&__block_literal_global_1];
-  v5 = [v4 allObjects];
-  v6 = [v3 dictionaryWithValuesForKeys:v5];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy keysOfEntriesPassingTest:&__block_literal_global_1];
+  allObjects = [v4 allObjects];
+  v6 = [dictionaryCopy dictionaryWithValuesForKeys:allObjects];
 
   return v6;
 }

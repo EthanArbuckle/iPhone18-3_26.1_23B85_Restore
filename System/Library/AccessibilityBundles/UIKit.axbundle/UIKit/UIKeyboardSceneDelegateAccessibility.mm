@@ -1,21 +1,21 @@
 @interface UIKeyboardSceneDelegateAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_axPostScreenChange;
-- (void)orderInWithAnimationStyle:(id)a3;
-- (void)orderOutWithAnimationStyle:(id)a3;
-- (void)setInputViews:(id)a3 animationStyle:(id)a4;
+- (void)orderInWithAnimationStyle:(id)style;
+- (void)orderOutWithAnimationStyle:(id)style;
+- (void)setInputViews:(id)views animationStyle:(id)style;
 @end
 
 @implementation UIKeyboardSceneDelegateAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = "@";
   v3 = @"UIKeyboardSceneDelegate";
   v4 = "v";
@@ -27,16 +27,16 @@
   objc_storeStrong(v7, v6);
 }
 
-- (void)orderInWithAnimationStyle:(id)a3
+- (void)orderInWithAnimationStyle:(id)style
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6.receiver = v8;
+  objc_storeStrong(location, style);
+  v6.receiver = selfCopy;
   v6.super_class = UIKeyboardSceneDelegateAccessibility;
   [(UIKeyboardSceneDelegateAccessibility *)&v6 orderInWithAnimationStyle:location[0]];
-  v4 = v8;
+  v4 = selfCopy;
   v5 = [location[0] safeValueForKey:@"duration"];
   [v5 floatValue];
   [(UIKeyboardSceneDelegateAccessibility *)v4 performSelector:sel__axPostScreenChange withObject:0 afterDelay:v3];
@@ -44,28 +44,28 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)orderOutWithAnimationStyle:(id)a3
+- (void)orderOutWithAnimationStyle:(id)style
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, style);
+  v3.receiver = selfCopy;
   v3.super_class = UIKeyboardSceneDelegateAccessibility;
   [(UIKeyboardSceneDelegateAccessibility *)&v3 orderOutWithAnimationStyle:location[0]];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setInputViews:(id)a3 animationStyle:(id)a4
+- (void)setInputViews:(id)views animationStyle:(id)style
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, views);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11.receiver = v14;
+  objc_storeStrong(&v12, style);
+  v11.receiver = selfCopy;
   v11.super_class = UIKeyboardSceneDelegateAccessibility;
   [(UIKeyboardSceneDelegateAccessibility *)&v11 setInputViews:location[0] animationStyle:v12];
   v5 = MEMORY[0x29EDCA5F8];

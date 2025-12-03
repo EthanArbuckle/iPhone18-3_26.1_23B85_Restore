@@ -1,32 +1,32 @@
 @interface PUPhotoKitAssetActionManager
-+ (Class)actionPerformerClassForActionType:(unint64_t)a3;
-- (BOOL)_actionTypeIsSimple:(unint64_t)a3;
-- (BOOL)canPerformActionType:(unint64_t)a3 onAsset:(id)a4 inAssetCollection:(id)a5;
-- (BOOL)shouldEnableActionType:(unint64_t)a3 onAsset:(id)a4 inAssetCollection:(id)a5;
++ (Class)actionPerformerClassForActionType:(unint64_t)type;
+- (BOOL)_actionTypeIsSimple:(unint64_t)simple;
+- (BOOL)canPerformActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
+- (BOOL)shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
 - (id)_photoKitAssetsDataSource;
 - (id)_photosDataSource;
-- (id)actionPerformerForDuplicatingAssetsByAssetCollection:(id)a3 withNewStillImageTime:(id *)a4;
-- (id)actionPerformerForEditingAudioMixMode:(id)a3 onAsset:(id)a4;
-- (id)actionPerformerForEditingPlaybackRate:(float)a3 onAsset:(id)a4;
-- (id)actionPerformerForEditingWithPendingEditsRequest:(id)a3 onAsset:(id)a4;
-- (id)actionPerformerForEditingWithQuickCropContext:(id)a3 onAsset:(id)a4;
-- (id)actionPerformerForPastingAdjustmentsByAssetCollection:(id)a3;
-- (id)actionPerformerForRevertingAdjustmentsByAssetCollection:(id)a3;
-- (id)actionPerformerForSettingFavoriteTo:(BOOL)a3 onAssetsByAssetCollection:(id)a4;
-- (id)actionPerformerForSimpleActionType:(unint64_t)a3 onAssetsByAssetCollection:(id)a4;
+- (id)actionPerformerForDuplicatingAssetsByAssetCollection:(id)collection withNewStillImageTime:(id *)time;
+- (id)actionPerformerForEditingAudioMixMode:(id)mode onAsset:(id)asset;
+- (id)actionPerformerForEditingPlaybackRate:(float)rate onAsset:(id)asset;
+- (id)actionPerformerForEditingWithPendingEditsRequest:(id)request onAsset:(id)asset;
+- (id)actionPerformerForEditingWithQuickCropContext:(id)context onAsset:(id)asset;
+- (id)actionPerformerForPastingAdjustmentsByAssetCollection:(id)collection;
+- (id)actionPerformerForRevertingAdjustmentsByAssetCollection:(id)collection;
+- (id)actionPerformerForSettingFavoriteTo:(BOOL)to onAssetsByAssetCollection:(id)collection;
+- (id)actionPerformerForSimpleActionType:(unint64_t)type onAssetsByAssetCollection:(id)collection;
 @end
 
 @implementation PUPhotoKitAssetActionManager
 
-- (BOOL)_actionTypeIsSimple:(unint64_t)a3
+- (BOOL)_actionTypeIsSimple:(unint64_t)simple
 {
-  if (a3 - 1 < 0x28)
+  if (simple - 1 < 0x28)
   {
     return 1;
   }
 
   result = 0;
-  if (a3 - 42 <= 0x19 && a3 != 44)
+  if (simple - 42 <= 0x19 && simple != 44)
   {
     return 1;
   }
@@ -36,13 +36,13 @@
 
 - (id)_photoKitAssetsDataSource
 {
-  v3 = [(PUAssetActionManager *)self delegate];
+  delegate = [(PUAssetActionManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PUAssetActionManager *)self delegate];
-    v6 = [v5 assetActionManagerCurrentAssetsDataSource:self];
+    delegate2 = [(PUAssetActionManager *)self delegate];
+    v6 = [delegate2 assetActionManagerCurrentAssetsDataSource:self];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -66,18 +66,18 @@
 
 - (id)_photosDataSource
 {
-  v3 = [(PUPhotoKitAssetActionManager *)self dataSourceManager];
+  dataSourceManager = [(PUPhotoKitAssetActionManager *)self dataSourceManager];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PUPhotoKitAssetActionManager *)self dataSourceManager];
-    v6 = [v5 photosDataSource];
+    dataSourceManager2 = [(PUPhotoKitAssetActionManager *)self dataSourceManager];
+    photosDataSource = [dataSourceManager2 photosDataSource];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = photosDataSource;
     }
 
     else
@@ -94,32 +94,32 @@
   return v7;
 }
 
-- (id)actionPerformerForEditingWithPendingEditsRequest:(id)a3 onAsset:(id)a4
+- (id)actionPerformerForEditingWithPendingEditsRequest:(id)request onAsset:(id)asset
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  assetCopy = asset;
+  requestCopy = request;
   v7 = [PUPhotoKitEditActionPerformer alloc];
-  v11[0] = v5;
+  v11[0] = assetCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
   v9 = [(PUAssetActionPerformer *)v7 initWithActionType:15 assets:v8 orAssetsByAssetCollection:0];
-  [(PUPhotoKitEditActionPerformer *)v9 setPendingEditsRequest:v6];
+  [(PUPhotoKitEditActionPerformer *)v9 setPendingEditsRequest:requestCopy];
 
   return v9;
 }
 
-- (id)actionPerformerForEditingAudioMixMode:(id)a3 onAsset:(id)a4
+- (id)actionPerformerForEditingAudioMixMode:(id)mode onAsset:(id)asset
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  assetCopy = asset;
+  modeCopy = mode;
   v7 = [PUPXPhotoKitAudioMixModeActionPerformer alloc];
   v8 = [(PXActionPerformer *)v7 initWithActionType:*MEMORY[0x1E69C4698]];
-  [(PUPXPhotoKitAudioMixModeActionPerformer *)v8 setAudioMixMode:v6];
+  [(PUPXPhotoKitAudioMixModeActionPerformer *)v8 setAudioMixMode:modeCopy];
 
   v9 = [PUPhotoKitAudioMixModePerformer alloc];
-  v13[0] = v5;
+  v13[0] = assetCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
 
   v11 = [(PUPXPhotoKitActionPerformerAdapter *)v9 initWithActionType:30 assets:v10 orAssetsByAssetCollection:0 pxActionPerformer:v8];
@@ -127,16 +127,16 @@
   return v11;
 }
 
-- (id)actionPerformerForEditingPlaybackRate:(float)a3 onAsset:(id)a4
+- (id)actionPerformerForEditingPlaybackRate:(float)rate onAsset:(id)asset
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  assetCopy = asset;
   v6 = [PUPXPhotoKitPlaybackRateActionPerformer alloc];
   v7 = [(PXActionPerformer *)v6 initWithActionType:*MEMORY[0x1E69C46C0]];
-  *&v8 = a3;
+  *&v8 = rate;
   [(PUPXPhotoKitPlaybackRateActionPerformer *)v7 setPlaybackRate:v8];
   v9 = [PUPhotoKitPlaybackRatePerformer alloc];
-  v13[0] = v5;
+  v13[0] = assetCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
 
   v11 = [(PUPXPhotoKitActionPerformerAdapter *)v9 initWithActionType:29 assets:v10 orAssetsByAssetCollection:0 pxActionPerformer:v7];
@@ -144,101 +144,101 @@
   return v11;
 }
 
-- (id)actionPerformerForEditingWithQuickCropContext:(id)a3 onAsset:(id)a4
+- (id)actionPerformerForEditingWithQuickCropContext:(id)context onAsset:(id)asset
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  assetCopy = asset;
+  contextCopy = context;
   v7 = [PUPhotoKitEditActionPerformer alloc];
-  v11[0] = v5;
+  v11[0] = assetCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
 
   v9 = [(PUAssetActionPerformer *)v7 initWithActionType:26 assets:v8 orAssetsByAssetCollection:0];
-  [(PUPhotoKitEditActionPerformer *)v9 setQuickCropContext:v6];
+  [(PUPhotoKitEditActionPerformer *)v9 setQuickCropContext:contextCopy];
 
   return v9;
 }
 
-- (id)actionPerformerForRevertingAdjustmentsByAssetCollection:(id)a3
+- (id)actionPerformerForRevertingAdjustmentsByAssetCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [(PUPXPhotoKitActionPerformerAdapter *)[PUPhotoKitRevertAdjustmentsActionPerformer alloc] initWithActionType:22 assets:0 orAssetsByAssetCollection:v3];
+  collectionCopy = collection;
+  v4 = [(PUPXPhotoKitActionPerformerAdapter *)[PUPhotoKitRevertAdjustmentsActionPerformer alloc] initWithActionType:22 assets:0 orAssetsByAssetCollection:collectionCopy];
 
   return v4;
 }
 
-- (id)actionPerformerForPastingAdjustmentsByAssetCollection:(id)a3
+- (id)actionPerformerForPastingAdjustmentsByAssetCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [(PUPXPhotoKitActionPerformerAdapter *)[PUPhotoKitPasteAdjustmentsActionPerformer alloc] initWithActionType:21 assets:0 orAssetsByAssetCollection:v3];
+  collectionCopy = collection;
+  v4 = [(PUPXPhotoKitActionPerformerAdapter *)[PUPhotoKitPasteAdjustmentsActionPerformer alloc] initWithActionType:21 assets:0 orAssetsByAssetCollection:collectionCopy];
 
   return v4;
 }
 
-- (id)actionPerformerForDuplicatingAssetsByAssetCollection:(id)a3 withNewStillImageTime:(id *)a4
+- (id)actionPerformerForDuplicatingAssetsByAssetCollection:(id)collection withNewStillImageTime:(id *)time
 {
-  v5 = a3;
-  v6 = [(PUAssetActionPerformer *)[PUPhotoKitDuplicateActionPerformer alloc] initWithActionType:41 assets:0 orAssetsByAssetCollection:v5];
+  collectionCopy = collection;
+  v6 = [(PUAssetActionPerformer *)[PUPhotoKitDuplicateActionPerformer alloc] initWithActionType:41 assets:0 orAssetsByAssetCollection:collectionCopy];
 
-  v8 = *a4;
+  v8 = *time;
   [(PUPhotoKitDuplicateActionPerformer *)v6 setNewStillImageTime:&v8];
 
   return v6;
 }
 
-- (id)actionPerformerForSettingFavoriteTo:(BOOL)a3 onAssetsByAssetCollection:(id)a4
+- (id)actionPerformerForSettingFavoriteTo:(BOOL)to onAssetsByAssetCollection:(id)collection
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PUAssetActionPerformer *)[PUPhotoKitFavoriteActionPerformer alloc] initWithActionType:44 assets:0 orAssetsByAssetCollection:v6];
+  toCopy = to;
+  collectionCopy = collection;
+  v7 = [(PUAssetActionPerformer *)[PUPhotoKitFavoriteActionPerformer alloc] initWithActionType:44 assets:0 orAssetsByAssetCollection:collectionCopy];
 
-  [(PUPhotoKitFavoriteActionPerformer *)v7 setFavorite:v4];
-  v8 = [(PUPhotoKitAssetActionManager *)self _photosDataSource];
-  [(PUPhotoKitActionPerformer *)v7 setPhotosDataSource:v8];
+  [(PUPhotoKitFavoriteActionPerformer *)v7 setFavorite:toCopy];
+  _photosDataSource = [(PUPhotoKitAssetActionManager *)self _photosDataSource];
+  [(PUPhotoKitActionPerformer *)v7 setPhotosDataSource:_photosDataSource];
 
   return v7;
 }
 
-- (id)actionPerformerForSimpleActionType:(unint64_t)a3 onAssetsByAssetCollection:(id)a4
+- (id)actionPerformerForSimpleActionType:(unint64_t)type onAssetsByAssetCollection:(id)collection
 {
-  v7 = a4;
-  if (![(PUPhotoKitAssetActionManager *)self _actionTypeIsSimple:a3])
+  collectionCopy = collection;
+  if (![(PUPhotoKitAssetActionManager *)self _actionTypeIsSimple:type])
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:465 description:{@"Invalid parameter not satisfying: %@", @"[self _actionTypeIsSimple:actionType]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotoKitAssetActionManager.m" lineNumber:465 description:{@"Invalid parameter not satisfying: %@", @"[self _actionTypeIsSimple:actionType]"}];
   }
 
-  v8 = [PUPhotoKitAssetActionManager actionPerformerClassForActionType:a3];
+  v8 = [PUPhotoKitAssetActionManager actionPerformerClassForActionType:type];
   if (v8)
   {
-    v9 = [[v8 alloc] initWithActionType:a3 assets:0 orAssetsByAssetCollection:v7];
+    v9 = [[v8 alloc] initWithActionType:type assets:0 orAssetsByAssetCollection:collectionCopy];
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = PUPhotoKitAssetActionManager;
-    v9 = [(PUAssetActionManager *)&v24 actionPerformerForSimpleActionType:a3 onAssetsByAssetCollection:v7];
+    v9 = [(PUAssetActionManager *)&v24 actionPerformerForSimpleActionType:type onAssetsByAssetCollection:collectionCopy];
   }
 
   v10 = v9;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(PUPhotoKitAssetActionManager *)self _photoKitAssetsDataSource];
-    v12 = v11;
-    if (v11)
+    _photoKitAssetsDataSource = [(PUPhotoKitAssetActionManager *)self _photoKitAssetsDataSource];
+    v12 = _photoKitAssetsDataSource;
+    if (_photoKitAssetsDataSource)
     {
-      v13 = [v11 photosDataSource];
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      photosDataSource = [_photoKitAssetsDataSource photosDataSource];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __93__PUPhotoKitAssetActionManager_actionPerformerForSimpleActionType_onAssetsByAssetCollection___block_invoke;
       v21[3] = &unk_1E7B7BA28;
-      v22 = v13;
-      v23 = v14;
-      v15 = v14;
-      v16 = v13;
-      [v7 enumerateKeysAndObjectsUsingBlock:v21];
+      v22 = photosDataSource;
+      v23 = dictionary;
+      v15 = dictionary;
+      v16 = photosDataSource;
+      [collectionCopy enumerateKeysAndObjectsUsingBlock:v21];
       [v10 setFetchResultsByAssetCollection:v15];
     }
   }
@@ -246,12 +246,12 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [(PUPhotoKitAssetActionManager *)self _photosDataSource];
-    [v10 setPhotosDataSource:v17];
+    _photosDataSource = [(PUPhotoKitAssetActionManager *)self _photosDataSource];
+    [v10 setPhotosDataSource:_photosDataSource];
   }
 
-  v18 = [objc_opt_class() actionManagerLog];
-  [v10 setActionPerformerLog:v18];
+  actionManagerLog = [objc_opt_class() actionManagerLog];
+  [v10 setActionPerformerLog:actionManagerLog];
 
   return v10;
 }
@@ -270,28 +270,28 @@ void __93__PUPhotoKitAssetActionManager_actionPerformerForSimpleActionType_onAss
   }
 }
 
-- (BOOL)shouldEnableActionType:(unint64_t)a3 onAsset:(id)a4 inAssetCollection:(id)a5
+- (BOOL)shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 needsSensitivityProtection])
+  assetCopy = asset;
+  collectionCopy = collection;
+  if ([assetCopy needsSensitivityProtection])
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [PUPhotoKitAssetActionManager actionPerformerClassForActionType:a3];
-    if (v11 && ((v12 = v11, !v8) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+    v11 = [PUPhotoKitAssetActionManager actionPerformerClassForActionType:type];
+    if (v11 && ((v12 = v11, !assetCopy) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
     {
-      v13 = [(objc_class *)v12 shouldEnableOnAsset:v8 inAssetCollection:v9];
+      v13 = [(objc_class *)v12 shouldEnableOnAsset:assetCopy inAssetCollection:collectionCopy];
     }
 
     else
     {
       v15.receiver = self;
       v15.super_class = PUPhotoKitAssetActionManager;
-      v13 = [(PUAssetActionManager *)&v15 shouldEnableActionType:a3 onAsset:v8 inAssetCollection:v9];
+      v13 = [(PUAssetActionManager *)&v15 shouldEnableActionType:type onAsset:assetCopy inAssetCollection:collectionCopy];
     }
 
     v10 = v13;
@@ -300,17 +300,17 @@ void __93__PUPhotoKitAssetActionManager_actionPerformerForSimpleActionType_onAss
   return v10;
 }
 
-- (BOOL)canPerformActionType:(unint64_t)a3 onAsset:(id)a4 inAssetCollection:(id)a5
+- (BOOL)canPerformActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [PUPhotoKitAssetActionManager actionPerformerClassForActionType:a3];
-  if (v10 && ((v11 = v10, !v8) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+  assetCopy = asset;
+  collectionCopy = collection;
+  v10 = [PUPhotoKitAssetActionManager actionPerformerClassForActionType:type];
+  if (v10 && ((v11 = v10, !assetCopy) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v9;
+      v12 = collectionCopy;
     }
 
     else
@@ -319,9 +319,9 @@ void __93__PUPhotoKitAssetActionManager_actionPerformerForSimpleActionType_onAss
     }
 
     v13 = v12;
-    v14 = [(objc_class *)v11 canPerformOnAsset:v8 inAssetCollection:v13];
+    v14 = [(objc_class *)v11 canPerformOnAsset:assetCopy inAssetCollection:v13];
     v15 = v14;
-    if (v9 && v14)
+    if (collectionCopy && v14)
     {
       v16 = [MEMORY[0x1E69C33E8] privacyControllerForCollection:v13];
       v17 = v16;
@@ -336,11 +336,11 @@ void __93__PUPhotoKitAssetActionManager_actionPerformerForSimpleActionType_onAss
       }
     }
 
-    v19 = a3 == 43;
-    v18 = (a3 != 43) & v15;
+    v19 = type == 43;
+    enableNavigateToPhotos = (type != 43) & v15;
     if (v19 && v15)
     {
-      v18 = [(PUPhotoKitAssetActionManager *)self enableNavigateToPhotos];
+      enableNavigateToPhotos = [(PUPhotoKitAssetActionManager *)self enableNavigateToPhotos];
     }
   }
 
@@ -348,16 +348,16 @@ void __93__PUPhotoKitAssetActionManager_actionPerformerForSimpleActionType_onAss
   {
     v21.receiver = self;
     v21.super_class = PUPhotoKitAssetActionManager;
-    v18 = [(PUAssetActionManager *)&v21 canPerformActionType:a3 onAsset:v8 inAssetCollection:v9];
+    enableNavigateToPhotos = [(PUAssetActionManager *)&v21 canPerformActionType:type onAsset:assetCopy inAssetCollection:collectionCopy];
   }
 
-  return v18;
+  return enableNavigateToPhotos;
 }
 
-+ (Class)actionPerformerClassForActionType:(unint64_t)a3
++ (Class)actionPerformerClassForActionType:(unint64_t)type
 {
   v3 = 0;
-  switch(a3)
+  switch(type)
   {
     case 1uLL:
     case 2uLL:

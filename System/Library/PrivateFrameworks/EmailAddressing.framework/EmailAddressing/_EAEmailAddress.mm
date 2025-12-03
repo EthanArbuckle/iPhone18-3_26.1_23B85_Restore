@@ -1,30 +1,30 @@
 @interface _EAEmailAddress
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)rawAddress;
-- (_EAEmailAddress)initWithCoder:(id)a3;
-- (_EAEmailAddress)initWithEmailAddress:(id)a3;
+- (_EAEmailAddress)initWithCoder:(id)coder;
+- (_EAEmailAddress)initWithEmailAddress:(id)address;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _EAEmailAddress
 
 - (unint64_t)hash
 {
-  v3 = [(_EAEmailAddress *)self rawAddress];
-  v4 = v3;
-  if (v3)
+  rawAddress = [(_EAEmailAddress *)self rawAddress];
+  v4 = rawAddress;
+  if (rawAddress)
   {
-    v5 = [v3 lowercaseString];
-    v6 = [v5 hash];
+    lowercaseString = [rawAddress lowercaseString];
+    v6 = [lowercaseString hash];
   }
 
   else
   {
-    v5 = [(_EAEmailAddress *)self emailAddress];
-    v7 = [v5 lowercaseString];
-    v6 = [v7 hash];
+    lowercaseString = [(_EAEmailAddress *)self emailAddress];
+    v5LowercaseString = [lowercaseString lowercaseString];
+    v6 = [v5LowercaseString hash];
   }
 
   return v6;
@@ -32,21 +32,21 @@
 
 - (NSString)rawAddress
 {
-  v2 = [(_EAEmailAddress *)self emailAddress];
-  v3 = [EAEmailAddressParser rawAddressFromFullAddress:v2];
+  emailAddress = [(_EAEmailAddress *)self emailAddress];
+  v3 = [EAEmailAddressParser rawAddressFromFullAddress:emailAddress];
 
   return v3;
 }
 
-- (_EAEmailAddress)initWithEmailAddress:(id)a3
+- (_EAEmailAddress)initWithEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v9.receiver = self;
   v9.super_class = _EAEmailAddress;
   v5 = [(_EAEmailAddress *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [addressCopy copy];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v6;
   }
@@ -56,36 +56,36 @@
 
 - (id)description
 {
-  v2 = [(_EAEmailAddress *)self emailAddress];
-  v3 = [v2 description];
+  emailAddress = [(_EAEmailAddress *)self emailAddress];
+  v3 = [emailAddress description];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_EAEmailAddress *)self rawAddress];
-    v6 = [v4 rawAddress];
-    v7 = v6;
-    if (v5)
+    rawAddress = [(_EAEmailAddress *)self rawAddress];
+    rawAddress2 = [equalCopy rawAddress];
+    v7 = rawAddress2;
+    if (rawAddress)
     {
-      v8 = [v5 caseInsensitiveCompare:v6] == 0;
+      v8 = [rawAddress caseInsensitiveCompare:rawAddress2] == 0;
     }
 
-    else if (v6)
+    else if (rawAddress2)
     {
       v8 = 0;
     }
 
     else
     {
-      v9 = [(_EAEmailAddress *)self emailAddress];
-      v10 = [v4 emailAddress];
-      v8 = [v9 caseInsensitiveCompare:v10] == 0;
+      emailAddress = [(_EAEmailAddress *)self emailAddress];
+      emailAddress2 = [equalCopy emailAddress];
+      v8 = [emailAddress caseInsensitiveCompare:emailAddress2] == 0;
     }
   }
 
@@ -97,15 +97,15 @@
   return v8;
 }
 
-- (_EAEmailAddress)initWithCoder:(id)a3
+- (_EAEmailAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _EAEmailAddress;
   v5 = [(_EAEmailAddress *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_emailAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_emailAddress"];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v6;
   }
@@ -113,11 +113,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(_EAEmailAddress *)self emailAddress];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_emailAddress"];
+  coderCopy = coder;
+  emailAddress = [(_EAEmailAddress *)self emailAddress];
+  [coderCopy encodeObject:emailAddress forKey:@"EFPropertyKey_emailAddress"];
 }
 
 @end

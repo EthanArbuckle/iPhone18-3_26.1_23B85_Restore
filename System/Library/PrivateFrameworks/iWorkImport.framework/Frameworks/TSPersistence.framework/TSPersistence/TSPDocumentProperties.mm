@@ -1,30 +1,30 @@
 @interface TSPDocumentProperties
-+ (BOOL)documentIsEncryptedAtURL:(id)a3;
++ (BOOL)documentIsEncryptedAtURL:(id)l;
 + (id)documentPropertiesRelativePath;
-+ (id)documentRevisionAtURL:(id)a3;
-+ (id)documentUUIDAtURL:(id)a3;
-+ (id)keychainGenericItemForDocumentUUID:(id)a3;
++ (id)documentRevisionAtURL:(id)l;
++ (id)documentUUIDAtURL:(id)l;
++ (id)keychainGenericItemForDocumentUUID:(id)d;
 + (id)shareIdentifierRelativePath;
-- (BOOL)writeToDocumentBundleURL:(id)a3 error:(id *)a4;
-- (BOOL)writeToDocumentURL:(id)a3 writerBlock:(id)a4 error:(id *)a5;
-- (BOOL)writeToPackageWriter:(id)a3 error:(id *)a4;
-- (BOOL)writeToPropertiesURL:(id)a3 error:(id *)a4;
+- (BOOL)writeToDocumentBundleURL:(id)l error:(id *)error;
+- (BOOL)writeToDocumentURL:(id)l writerBlock:(id)block error:(id *)error;
+- (BOOL)writeToPackageWriter:(id)writer error:(id *)error;
+- (BOOL)writeToPropertiesURL:(id)l error:(id *)error;
 - (NSUUID)shareUUID;
 - (NSUUID)stableDocumentUUID;
 - (NSUUID)versionUUID;
 - (TSPDocumentProperties)init;
-- (TSPDocumentProperties)initWithDocumentBundleURL:(id)a3 allowMissingPropertyList:(BOOL)a4 error:(id *)a5;
-- (TSPDocumentProperties)initWithFilePackageURL:(id)a3 zipArchive:(id)a4 allowMissingPropertyList:(BOOL)a5 error:(id *)a6;
-- (TSPDocumentProperties)initWithPropertiesURL:(id)a3 error:(id *)a4;
-- (id)UUIDFromDocumentProperties:(id)a3 key:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSPDocumentProperties)initWithDocumentBundleURL:(id)l allowMissingPropertyList:(BOOL)list error:(id *)error;
+- (TSPDocumentProperties)initWithFilePackageURL:(id)l zipArchive:(id)archive allowMissingPropertyList:(BOOL)list error:(id *)error;
+- (TSPDocumentProperties)initWithPropertiesURL:(id)l error:(id *)error;
+- (id)UUIDFromDocumentProperties:(id)properties key:(id)key;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)encodedPropertyListWithError:(id *)a3;
-- (id)hashPrivateUUIDWithDigest:(id)a3;
+- (id)encodedPropertyListWithError:(id *)error;
+- (id)hashPrivateUUIDWithDigest:(id)digest;
 - (void)clearIsNotClean;
-- (void)readDocumentPropertiesFromDictionary:(id)a3;
+- (void)readDocumentPropertiesFromDictionary:(id)dictionary;
 - (void)resetDocumentRevision;
-- (void)setAdditionalProperties:(id)a3;
+- (void)setAdditionalProperties:(id)properties;
 - (void)updateDocumentUUID;
 - (void)updateVersionUUID;
 @end
@@ -45,10 +45,10 @@
   return v4;
 }
 
-- (TSPDocumentProperties)initWithDocumentBundleURL:(id)a3 allowMissingPropertyList:(BOOL)a4 error:(id *)a5
+- (TSPDocumentProperties)initWithDocumentBundleURL:(id)l allowMissingPropertyList:(BOOL)list error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
+  listCopy = list;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = TSPDocumentProperties;
   v9 = [(TSPDocumentProperties *)&v21 init];
@@ -56,9 +56,9 @@
   {
     v10 = objc_opt_class();
     v13 = objc_msgSend_documentPropertiesRelativePath(v10, v11, v12);
-    v15 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v8, v14, v13, 0);
+    v15 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(lCopy, v14, v13, 0);
 
-    v18 = objc_msgSend_tsu_propertyListWithContentsOfURL_options_error_(MEMORY[0x277CCAC58], v16, v15, 0, a5);
+    v18 = objc_msgSend_tsu_propertyListWithContentsOfURL_options_error_(MEMORY[0x277CCAC58], v16, v15, 0, error);
     if (v18)
     {
       objc_opt_class();
@@ -71,7 +71,7 @@ LABEL_8:
       }
     }
 
-    else if (v6)
+    else if (listCopy)
     {
       objc_msgSend_updateDocumentUUIDAndPreserveShareUUID_preserveStableDocumentUUID_(v9, v17, 0, 1);
       goto LABEL_8;
@@ -86,12 +86,12 @@ LABEL_9:
   return v9;
 }
 
-- (TSPDocumentProperties)initWithFilePackageURL:(id)a3 zipArchive:(id)a4 allowMissingPropertyList:(BOOL)a5 error:(id *)a6
+- (TSPDocumentProperties)initWithFilePackageURL:(id)l zipArchive:(id)archive allowMissingPropertyList:(BOOL)list error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v12 = a4;
-  if (!v12)
+  listCopy = list;
+  lCopy = l;
+  archiveCopy = archive;
+  if (!archiveCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSPDocumentProperties initWithFilePackageURL:zipArchive:allowMissingPropertyList:error:]");
@@ -108,17 +108,17 @@ LABEL_9:
   {
     v21 = objc_opt_class();
     v24 = objc_msgSend_documentPropertiesRelativePath(v21, v22, v23);
-    v26 = objc_msgSend_entryForName_(v12, v25, v24);
+    v26 = objc_msgSend_entryForName_(archiveCopy, v25, v24);
 
-    v29 = objc_msgSend_tsp_dataForEntry_(v12, v27, v26);
-    if (v29 && (objc_opt_class(), objc_msgSend_propertyListWithData_options_format_error_(MEMORY[0x277CCAC58], v30, v29, 0, 0, a6), v31 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v32 = objc_claimAutoreleasedReturnValue(), v31, v32))
+    v29 = objc_msgSend_tsp_dataForEntry_(archiveCopy, v27, v26);
+    if (v29 && (objc_opt_class(), objc_msgSend_propertyListWithData_options_format_error_(MEMORY[0x277CCAC58], v30, v29, 0, 0, error), v31 = objc_claimAutoreleasedReturnValue(), TSUDynamicCast(), v32 = objc_claimAutoreleasedReturnValue(), v31, v32))
     {
       objc_msgSend_readDocumentPropertiesFromDictionary_(v20, v28, v32);
     }
 
     else
     {
-      if (v7)
+      if (listCopy)
       {
         objc_msgSend_updateDocumentUUIDAndPreserveShareUUID_preserveStableDocumentUUID_(v20, v28, 0, 1);
 LABEL_11:
@@ -138,11 +138,11 @@ LABEL_12:
   return v20;
 }
 
-- (TSPDocumentProperties)initWithPropertiesURL:(id)a3 error:(id *)a4
+- (TSPDocumentProperties)initWithPropertiesURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   objc_opt_class();
-  v8 = objc_msgSend_tsu_propertyListWithContentsOfURL_options_error_(MEMORY[0x277CCAC58], v7, v6, 0, a4);
+  v8 = objc_msgSend_tsu_propertyListWithContentsOfURL_options_error_(MEMORY[0x277CCAC58], v7, lCopy, 0, error);
   v9 = TSUDynamicCast();
 
   if (v9)
@@ -166,35 +166,35 @@ LABEL_12:
   return v12;
 }
 
-- (void)readDocumentPropertiesFromDictionary:(id)a3
+- (void)readDocumentPropertiesFromDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v6 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v5, v4, @"documentUUID");
+  dictionaryCopy = dictionary;
+  v6 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v5, dictionaryCopy, @"documentUUID");
   documentUUID = self->_documentUUID;
   self->_documentUUID = v6;
 
-  v9 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v8, v4, @"versionUUID");
+  v9 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v8, dictionaryCopy, @"versionUUID");
   versionUUID = self->_versionUUID;
   self->_versionUUID = v9;
 
-  v12 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v11, v4, @"shareUUID");
+  v12 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v11, dictionaryCopy, @"shareUUID");
   shareUUID = self->_shareUUID;
   self->_shareUUID = v12;
 
-  v15 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v14, v4, @"stableDocumentUUID");
+  v15 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v14, dictionaryCopy, @"stableDocumentUUID");
   stableDocumentUUID = self->_stableDocumentUUID;
   self->_stableDocumentUUID = v15;
 
-  v18 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v17, v4, @"privateUUID");
+  v18 = objc_msgSend_UUIDFromDocumentProperties_key_(self, v17, dictionaryCopy, @"privateUUID");
   privateUUID = self->_privateUUID;
   self->_privateUUID = v18;
 
-  v21 = objc_msgSend_objectForKeyedSubscript_(v4, v20, @"fileFormatVersion");
+  v21 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v20, @"fileFormatVersion");
   self->_fileFormatVersion = sub_276AC091C(v21, v22);
 
   v23 = [TSPDocumentRevision alloc];
-  v25 = objc_msgSend_objectForKeyedSubscript_(v4, v24, @"revision");
+  v25 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v24, @"revision");
   v27 = objc_msgSend_initWithRevisionString_(v23, v26, v25);
   revision = self->_revision;
   self->_revision = v27;
@@ -221,7 +221,7 @@ LABEL_12:
     self->_privateUUID = v31;
   }
 
-  v33 = objc_msgSend_mutableCopy(v4, v29, v30);
+  v33 = objc_msgSend_mutableCopy(dictionaryCopy, v29, v30);
   v44 = 0u;
   v45 = 0u;
   v42 = 0u;
@@ -255,13 +255,13 @@ LABEL_12:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (id)UUIDFromDocumentProperties:(id)a3 key:(id)a4
+- (id)UUIDFromDocumentProperties:(id)properties key:(id)key
 {
-  v5 = a3;
-  v7 = a4;
-  if (v7)
+  propertiesCopy = properties;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v8 = objc_msgSend_objectForKeyedSubscript_(v5, v6, v7);
+    v8 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v6, keyCopy);
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x277CCAD78]);
@@ -282,11 +282,11 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)writeToDocumentURL:(id)a3 writerBlock:(id)a4 error:(id *)a5
+- (BOOL)writeToDocumentURL:(id)l writerBlock:(id)block error:(id *)error
 {
-  v7 = a4;
-  v9 = objc_msgSend_encodedPropertyListWithError_(self, v8, a5);
-  if (v9 && (v10 = objc_opt_class(), objc_msgSend_documentPropertiesRelativePath(v10, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = v7[2](v7, v9, v13), v13, v14))
+  blockCopy = block;
+  v9 = objc_msgSend_encodedPropertyListWithError_(self, v8, error);
+  if (v9 && (v10 = objc_opt_class(), objc_msgSend_documentPropertiesRelativePath(v10, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), v14 = blockCopy[2](blockCopy, v9, v13), v13, v14))
   {
     v17 = objc_msgSend_shareUUID(self, v15, v16);
     v20 = objc_msgSend_UUIDString(v17, v18, v19);
@@ -294,9 +294,9 @@ LABEL_12:
 
     v23 = objc_opt_class();
     v26 = objc_msgSend_shareIdentifierRelativePath(v23, v24, v25);
-    v27 = v7[2](v7, v22, v26);
+    v27 = blockCopy[2](blockCopy, v22, v26);
 
-    if (a5)
+    if (error)
     {
       v29 = v27;
     }
@@ -308,7 +308,7 @@ LABEL_12:
 
     if ((v29 & 1) == 0)
     {
-      *a5 = objc_msgSend_tsp_saveDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v28, 0);
+      *error = objc_msgSend_tsp_saveDocumentErrorWithUserInfo_(MEMORY[0x277CCA9B8], v28, 0);
     }
   }
 
@@ -320,38 +320,38 @@ LABEL_12:
   return v27;
 }
 
-- (BOOL)writeToPackageWriter:(id)a3 error:(id *)a4
+- (BOOL)writeToPackageWriter:(id)writer error:(id *)error
 {
-  v6 = a3;
-  v9 = objc_msgSend_URL(v6, v7, v8);
+  writerCopy = writer;
+  v9 = objc_msgSend_URL(writerCopy, v7, v8);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_276ABF3EC;
   v13[3] = &unk_27A6E6AC0;
-  v10 = v6;
+  v10 = writerCopy;
   v14 = v10;
-  v15 = a4;
-  LOBYTE(a4) = objc_msgSend_writeToDocumentURL_writerBlock_error_(self, v11, v9, v13, a4);
+  errorCopy = error;
+  LOBYTE(error) = objc_msgSend_writeToDocumentURL_writerBlock_error_(self, v11, v9, v13, error);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)writeToDocumentBundleURL:(id)a3 error:(id *)a4
+- (BOOL)writeToDocumentBundleURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_276ABF4CC;
   v10[3] = &unk_27A6E6AC0;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
-  LOBYTE(a4) = objc_msgSend_writeToDocumentURL_writerBlock_error_(self, v8, v7, v10, a4);
+  v11 = lCopy;
+  errorCopy = error;
+  v7 = lCopy;
+  LOBYTE(error) = objc_msgSend_writeToDocumentURL_writerBlock_error_(self, v8, v7, v10, error);
 
-  return a4;
+  return error;
 }
 
-- (id)encodedPropertyListWithError:(id *)a3
+- (id)encodedPropertyListWithError:(id *)error
 {
   v5 = self->_additionalProperties;
   v6 = objc_alloc(MEMORY[0x277CBEB38]);
@@ -393,19 +393,19 @@ LABEL_12:
     objc_msgSend_addEntriesFromDictionary_(v11, v51, v5);
   }
 
-  v56 = objc_msgSend_dataWithPropertyList_format_options_error_(MEMORY[0x277CCAC58], v51, v11, 200, 0, a3);
+  v56 = objc_msgSend_dataWithPropertyList_format_options_error_(MEMORY[0x277CCAC58], v51, v11, 200, 0, error);
 
   return v56;
 }
 
-- (BOOL)writeToPropertiesURL:(id)a3 error:(id *)a4
+- (BOOL)writeToPropertiesURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v8 = objc_msgSend_encodedPropertyListWithError_(self, v7, a4);
+  lCopy = l;
+  v8 = objc_msgSend_encodedPropertyListWithError_(self, v7, error);
   v10 = v8;
   if (v8)
   {
-    v11 = objc_msgSend_writeToURL_options_error_(v8, v9, v6, 0, a4);
+    v11 = objc_msgSend_writeToURL_options_error_(v8, v9, lCopy, 0, error);
   }
 
   else
@@ -416,13 +416,13 @@ LABEL_12:
   return v11;
 }
 
-+ (id)documentUUIDAtURL:(id)a3
++ (id)documentUUIDAtURL:(id)l
 {
   value[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   value[0] = 0;
   value[1] = 0;
-  v6 = objc_msgSend_path(v3, v4, v5);
+  v6 = objc_msgSend_path(lCopy, v4, v5);
   v7 = v6;
   v10 = objc_msgSend_UTF8String(v7, v8, v9);
   v11 = getxattr(v10, "com.apple.iwork.documentUUID", value, 0x10uLL, 0, 0) == 16;
@@ -436,7 +436,7 @@ LABEL_12:
   else
   {
     v15 = [TSPDocumentProperties alloc];
-    v17 = objc_msgSend_initWithDocumentURL_error_(v15, v16, v3, 0);
+    v17 = objc_msgSend_initWithDocumentURL_error_(v15, v16, lCopy, 0);
     v14 = objc_msgSend_documentUUID(v17, v18, v19);
   }
 
@@ -445,12 +445,12 @@ LABEL_12:
   return v14;
 }
 
-+ (id)documentRevisionAtURL:(id)a3
++ (id)documentRevisionAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [TSPDocumentProperties alloc];
   v12 = 0;
-  v6 = objc_msgSend_initWithDocumentURL_error_(v4, v5, v3, &v12);
+  v6 = objc_msgSend_initWithDocumentURL_error_(v4, v5, lCopy, &v12);
   v9 = v12;
   if (v9)
   {
@@ -470,10 +470,10 @@ LABEL_12:
   return v10;
 }
 
-+ (BOOL)documentIsEncryptedAtURL:(id)a3
++ (BOOL)documentIsEncryptedAtURL:(id)l
 {
-  v3 = a3;
-  v6 = objc_msgSend_path(v3, v4, v5);
+  lCopy = l;
+  v6 = objc_msgSend_path(lCopy, v4, v5);
   v9 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v7, v8);
   v25 = 0;
   if (!objc_msgSend_fileExistsAtPath_isDirectory_(v9, v10, v6, &v25))
@@ -520,9 +520,9 @@ LABEL_11:
   return v17;
 }
 
-+ (id)keychainGenericItemForDocumentUUID:(id)a3
++ (id)keychainGenericItemForDocumentUUID:(id)d
 {
-  v3 = objc_msgSend_UUIDString(a3, a2, a3);
+  v3 = objc_msgSend_UUIDString(d, a2, d);
   v5 = objc_msgSend_dataUsingEncoding_(v3, v4, 4);
 
   return v5;
@@ -610,9 +610,9 @@ LABEL_11:
   return v4;
 }
 
-- (id)hashPrivateUUIDWithDigest:(id)a3
+- (id)hashPrivateUUIDWithDigest:(id)digest
 {
-  v6 = a3;
+  digestCopy = digest;
   if (!self->_privateUUID)
   {
     v7 = MEMORY[0x277D81150];
@@ -623,7 +623,7 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v12, v13);
   }
 
-  if (!v6)
+  if (!digestCopy)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSPDocumentProperties hashPrivateUUIDWithDigest:]");
@@ -633,16 +633,16 @@ LABEL_11:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
   }
 
-  v21 = objc_msgSend_digestData(v6, v4, v5);
+  v21 = objc_msgSend_digestData(digestCopy, v4, v5);
   v23 = objc_msgSend_tsu_UUIDWithNamespaceUUID_bytes_size_(MEMORY[0x277CCAD78], v22, self->_privateUUID, v21, 20);
 
   return v23;
 }
 
-- (void)setAdditionalProperties:(id)a3
+- (void)setAdditionalProperties:(id)properties
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  propertiesCopy = properties;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -662,7 +662,7 @@ LABEL_11:
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
-        v10 = objc_msgSend_objectForKeyedSubscript_(v3, v5, v9);
+        v10 = objc_msgSend_objectForKeyedSubscript_(propertiesCopy, v5, v9);
         v11 = v10 == 0;
 
         if (!v11)
@@ -682,7 +682,7 @@ LABEL_11:
     while (v6);
   }
 
-  v21 = objc_msgSend_copy(v3, v19, v20);
+  v21 = objc_msgSend_copy(propertiesCopy, v19, v20);
   additionalProperties = self->_additionalProperties;
   self->_additionalProperties = v21;
 
@@ -707,37 +707,37 @@ LABEL_11:
   self->_additionalProperties = v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6 = objc_alloc_init(TSPDocumentProperties);
   if (v6)
   {
-    v7 = objc_msgSend_copyWithZone_(self->_documentUUID, v5, a3);
+    v7 = objc_msgSend_copyWithZone_(self->_documentUUID, v5, zone);
     documentUUID = v6->_documentUUID;
     v6->_documentUUID = v7;
 
-    v10 = objc_msgSend_copyWithZone_(self->_versionUUID, v9, a3);
+    v10 = objc_msgSend_copyWithZone_(self->_versionUUID, v9, zone);
     versionUUID = v6->_versionUUID;
     v6->_versionUUID = v10;
 
-    v13 = objc_msgSend_copyWithZone_(self->_shareUUID, v12, a3);
+    v13 = objc_msgSend_copyWithZone_(self->_shareUUID, v12, zone);
     shareUUID = v6->_shareUUID;
     v6->_shareUUID = v13;
 
-    v16 = objc_msgSend_copyWithZone_(self->_stableDocumentUUID, v15, a3);
+    v16 = objc_msgSend_copyWithZone_(self->_stableDocumentUUID, v15, zone);
     stableDocumentUUID = v6->_stableDocumentUUID;
     v6->_stableDocumentUUID = v16;
 
-    v19 = objc_msgSend_copyWithZone_(self->_privateUUID, v18, a3);
+    v19 = objc_msgSend_copyWithZone_(self->_privateUUID, v18, zone);
     privateUUID = v6->_privateUUID;
     v6->_privateUUID = v19;
 
     v6->_fileFormatVersion = self->_fileFormatVersion;
-    v22 = objc_msgSend_copyWithZone_(self->_revision, v21, a3);
+    v22 = objc_msgSend_copyWithZone_(self->_revision, v21, zone);
     revision = v6->_revision;
     v6->_revision = v22;
 
-    v25 = objc_msgSend_copyWithZone_(self->_additionalProperties, v24, a3);
+    v25 = objc_msgSend_copyWithZone_(self->_additionalProperties, v24, zone);
     additionalProperties = v6->_additionalProperties;
     v6->_additionalProperties = v25;
   }

@@ -1,21 +1,21 @@
 @interface DataRelayServiceClient
 - (DataRelayServiceClient)init;
-- (DataRelayServiceClient)initWithCoder:(id)a3;
+- (DataRelayServiceClient)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
 - (id)description;
 - (void)_activate;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)sensorDataAvailable:(id)a3 dataTypes:(unint64_t)a4 completion:(id)a5;
-- (void)sensorDataUnavailable:(id)a3 dataTypes:(unint64_t)a4 completion:(id)a5;
+- (void)sensorDataAvailable:(id)available dataTypes:(unint64_t)types completion:(id)completion;
+- (void)sensorDataUnavailable:(id)unavailable dataTypes:(unint64_t)types completion:(id)completion;
 @end
 
 @implementation DataRelayServiceClient
 
-- (DataRelayServiceClient)initWithCoder:(id)a3
+- (DataRelayServiceClient)initWithCoder:(id)coder
 {
   v3 = [(DataRelayServiceClient *)self init];
   v4 = v3;
@@ -49,17 +49,17 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__DataRelayServiceClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_278F4E358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -115,11 +115,11 @@ void __49__DataRelayServiceClient_activateWithCompletion___block_invoke(uint64_t
 
   else
   {
-    v6 = [(DataRelayServiceClient *)self _ensureXPCStarted];
-    v8 = v6;
-    if (v6)
+    _ensureXPCStarted = [(DataRelayServiceClient *)self _ensureXPCStarted];
+    v8 = _ensureXPCStarted;
+    if (_ensureXPCStarted)
     {
-      [(DataRelayServiceClient *)self _reportError:v6];
+      [(DataRelayServiceClient *)self _reportError:_ensureXPCStarted];
       goto LABEL_15;
     }
 
@@ -162,10 +162,10 @@ LABEL_15:
     v8 = 3221225472;
     v9 = __43__DataRelayServiceClient__ensureXPCStarted__block_invoke_2;
     v10 = &unk_278F4E3A8;
-    v11 = self;
+    selfCopy = self;
     objc_copyWeak(&v12, &location);
     [(NSXPCConnection *)self->_xpcCnx setInvalidationHandler:&v7];
-    [(NSXPCConnection *)self->_xpcCnx setRemoteObjectInterface:v3, v7, v8, v9, v10, v11];
+    [(NSXPCConnection *)self->_xpcCnx setRemoteObjectInterface:v3, v7, v8, v9, v10, selfCopy];
     [(NSXPCConnection *)self->_xpcCnx resume];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&v14);
@@ -303,24 +303,24 @@ void __36__DataRelayServiceClient_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   v4 = MEMORY[0x24C1D4510](self->_activateCompletion);
   activateCompletion = self->_activateCompletion;
   self->_activateCompletion = 0;
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 
-- (void)sensorDataAvailable:(id)a3 dataTypes:(unint64_t)a4 completion:(id)a5
+- (void)sensorDataAvailable:(id)available dataTypes:(unint64_t)types completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  availableCopy = available;
+  completionCopy = completion;
+  v10 = completionCopy;
   if (self->_activateCalled)
   {
     dispatchQueue = self->_dispatchQueue;
@@ -329,9 +329,9 @@ void __36__DataRelayServiceClient_invalidate__block_invoke(uint64_t a1)
     v12[2] = __67__DataRelayServiceClient_sensorDataAvailable_dataTypes_completion___block_invoke;
     v12[3] = &unk_278F4E420;
     v12[4] = self;
-    v14 = v9;
-    v13 = v8;
-    v15 = a4;
+    v14 = completionCopy;
+    v13 = availableCopy;
+    typesCopy = types;
     dispatch_async(dispatchQueue, v12);
   }
 
@@ -396,11 +396,11 @@ void __67__DataRelayServiceClient_sensorDataAvailable_dataTypes_completion___blo
   }
 }
 
-- (void)sensorDataUnavailable:(id)a3 dataTypes:(unint64_t)a4 completion:(id)a5
+- (void)sensorDataUnavailable:(id)unavailable dataTypes:(unint64_t)types completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  unavailableCopy = unavailable;
+  completionCopy = completion;
+  v10 = completionCopy;
   if (self->_activateCalled)
   {
     dispatchQueue = self->_dispatchQueue;
@@ -409,9 +409,9 @@ void __67__DataRelayServiceClient_sensorDataAvailable_dataTypes_completion___blo
     v12[2] = __69__DataRelayServiceClient_sensorDataUnavailable_dataTypes_completion___block_invoke;
     v12[3] = &unk_278F4E420;
     v12[4] = self;
-    v14 = v9;
-    v13 = v8;
-    v15 = a4;
+    v14 = completionCopy;
+    v13 = unavailableCopy;
+    typesCopy = types;
     dispatch_async(dispatchQueue, v12);
   }
 

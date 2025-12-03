@@ -1,16 +1,16 @@
 @interface NDAnalyticsUploadScheduler
 - (NDAnalyticsUploadScheduler)init;
-- (NDAnalyticsUploadScheduler)initWithURLSessionQueue:(id)a3;
+- (NDAnalyticsUploadScheduler)initWithURLSessionQueue:(id)queue;
 - (NDAnalyticsUploadSchedulerDelegate)delegate;
 - (NSURLSession)backgroundSession;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willBeginDelayedRequest:(id)a5 completionHandler:(id)a6;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
-- (void)_scheduleBackgroundUploadInWindow:(id)a3;
-- (void)_uploadWithCompletion:(id)a3;
-- (void)handleLaunchEventForBackgroundSessionWithIdentifier:(id)a3 completion:(id)a4;
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4;
-- (void)scheduleUploadInWindow:(id)a3 withForegroundUploadCompletion:(id)a4;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task willBeginDelayedRequest:(id)request completionHandler:(id)handler;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
+- (void)_scheduleBackgroundUploadInWindow:(id)window;
+- (void)_uploadWithCompletion:(id)completion;
+- (void)handleLaunchEventForBackgroundSessionWithIdentifier:(id)identifier completion:(id)completion;
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion;
+- (void)scheduleUploadInWindow:(id)window withForegroundUploadCompletion:(id)completion;
 @end
 
 @implementation NDAnalyticsUploadScheduler
@@ -41,10 +41,10 @@
   objc_exception_throw(v6);
 }
 
-- (NDAnalyticsUploadScheduler)initWithURLSessionQueue:(id)a3
+- (NDAnalyticsUploadScheduler)initWithURLSessionQueue:(id)queue
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  queueCopy = queue;
+  if (!queueCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsUploadScheduler initWithURLSessionQueue:];
   }
@@ -67,7 +67,7 @@
     v5->_uploadQueue = v10;
 
     v12 = objc_opt_new();
-    [(NSOperationQueue *)v12 setUnderlyingQueue:v4];
+    [(NSOperationQueue *)v12 setUnderlyingQueue:queueCopy];
     backgroundSessionQueue = v5->_backgroundSessionQueue;
     v5->_backgroundSessionQueue = v12;
     v14 = v12;
@@ -88,14 +88,14 @@
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(NDAnalyticsUploadScheduler *)self lock];
+  lock = [(NDAnalyticsUploadScheduler *)self lock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__NDAnalyticsUploadScheduler_backgroundSession__block_invoke;
   v6[3] = &unk_27997ACE0;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [lock performWithLockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -128,17 +128,17 @@ void __47__NDAnalyticsUploadScheduler_backgroundSession__block_invoke(uint64_t a
   objc_storeStrong(v10, v2);
 }
 
-- (void)handleLaunchEventForBackgroundSessionWithIdentifier:(id)a3 completion:(id)a4
+- (void)handleLaunchEventForBackgroundSessionWithIdentifier:(id)identifier completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (!identifierCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsUploadScheduler handleLaunchEventForBackgroundSessionWithIdentifier:completion:];
   }
 
-  if (([v6 isEqualToString:@"com.apple.newsd.analytics.uploader"] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (([identifierCopy isEqualToString:@"com.apple.newsd.analytics.uploader"] & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsUploadScheduler handleLaunchEventForBackgroundSessionWithIdentifier:completion:];
   }
@@ -151,20 +151,20 @@ void __47__NDAnalyticsUploadScheduler_backgroundSession__block_invoke(uint64_t a
     _os_log_impl(&dword_25BDF7000, v8, OS_LOG_TYPE_INFO, "%s", &v12, 0xCu);
   }
 
-  v9 = [(NDAnalyticsUploadScheduler *)self backgroundSessionLaunchEventCounter];
-  [v9 increment];
+  backgroundSessionLaunchEventCounter = [(NDAnalyticsUploadScheduler *)self backgroundSessionLaunchEventCounter];
+  [backgroundSessionLaunchEventCounter increment];
   v10 = FCDispatchQueueForQualityOfService();
-  [v9 notifyWhenCountReachesZeroOnQueue:v10 usingBlock:v7];
+  [backgroundSessionLaunchEventCounter notifyWhenCountReachesZeroOnQueue:v10 usingBlock:completionCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleUploadInWindow:(id)a3 withForegroundUploadCompletion:(id)a4
+- (void)scheduleUploadInWindow:(id)window withForegroundUploadCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  windowCopy = window;
+  completionCopy = completion;
+  if (!windowCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsUploadScheduler scheduleUploadInWindow:withForegroundUploadCompletion:];
   }
@@ -172,63 +172,63 @@ void __47__NDAnalyticsUploadScheduler_backgroundSession__block_invoke(uint64_t a
   v8 = NDSharedServiceLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 earlierDate];
-    v10 = [v6 laterDate];
+    earlierDate = [windowCopy earlierDate];
+    laterDate = [windowCopy laterDate];
     *buf = 136315650;
     v22 = "[NDAnalyticsUploadScheduler scheduleUploadInWindow:withForegroundUploadCompletion:]";
     v23 = 2112;
-    v24 = v9;
+    v24 = earlierDate;
     v25 = 2112;
-    v26 = v10;
+    v26 = laterDate;
     _os_log_impl(&dword_25BDF7000, v8, OS_LOG_TYPE_INFO, "%s with start date %@, end date %@", buf, 0x20u);
   }
 
-  v11 = [(NDAnalyticsUploadScheduler *)self lock];
+  lock = [(NDAnalyticsUploadScheduler *)self lock];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __84__NDAnalyticsUploadScheduler_scheduleUploadInWindow_withForegroundUploadCompletion___block_invoke;
   v18 = &unk_27997A678;
-  v19 = self;
-  v20 = v6;
-  v12 = v6;
-  [v11 performWithLockSync:&v15];
+  selfCopy = self;
+  v20 = windowCopy;
+  v12 = windowCopy;
+  [lock performWithLockSync:&v15];
 
   v13 = [(NDAnalyticsUploadScheduler *)self schedulingAndForegroundUploadThrottler:v15];
-  [v13 tickleWithCompletion:v7];
+  [v13 tickleWithCompletion:completionCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operationThrottler:(id)a3 performAsyncOperationWithCompletion:(id)a4
+- (void)operationThrottler:(id)throttler performAsyncOperationWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  throttlerCopy = throttler;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__2;
   v21 = __Block_byref_object_dispose__2;
   v22 = 0;
-  v8 = [(NDAnalyticsUploadScheduler *)self lock];
+  lock = [(NDAnalyticsUploadScheduler *)self lock];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __85__NDAnalyticsUploadScheduler_operationThrottler_performAsyncOperationWithCompletion___block_invoke;
   v16[3] = &unk_27997A7D0;
   v16[4] = self;
   v16[5] = &v17;
-  [v8 performWithLockSync:v16];
+  [lock performWithLockSync:v16];
 
-  v9 = [v18[5] laterDate];
-  v10 = [MEMORY[0x277CBEAA8] date];
-  v11 = [v9 fc_isEarlierThanOrEqualTo:v10];
+  laterDate = [v18[5] laterDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  v11 = [laterDate fc_isEarlierThanOrEqualTo:date];
 
   v12 = NDSharedServiceLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v18[5] laterDate];
+    laterDate2 = [v18[5] laterDate];
     *buf = 138412290;
-    v24 = v13;
+    v24 = laterDate2;
     _os_log_impl(&dword_25BDF7000, v12, OS_LOG_TYPE_INFO, "Scheduling payload with delivery window end date of %@", buf, 0xCu);
   }
 
@@ -241,13 +241,13 @@ void __47__NDAnalyticsUploadScheduler_backgroundSession__block_invoke(uint64_t a
       _os_log_impl(&dword_25BDF7000, v14, OS_LOG_TYPE_INFO, "Uploading now", buf, 2u);
     }
 
-    [(NDAnalyticsUploadScheduler *)self _uploadWithCompletion:v7];
+    [(NDAnalyticsUploadScheduler *)self _uploadWithCompletion:completionCopy];
   }
 
   else
   {
     [(NDAnalyticsUploadScheduler *)self _scheduleBackgroundUploadInWindow:v18[5]];
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   _Block_object_dispose(&v17, 8);
@@ -268,25 +268,25 @@ void __85__NDAnalyticsUploadScheduler_operationThrottler_performAsyncOperationWi
   }
 }
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
-  v3 = [(NDAnalyticsUploadScheduler *)self backgroundSessionLaunchEventCounter];
-  [v3 decrement];
+  backgroundSessionLaunchEventCounter = [(NDAnalyticsUploadScheduler *)self backgroundSessionLaunchEventCounter];
+  [backgroundSessionLaunchEventCounter decrement];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willBeginDelayedRequest:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task willBeginDelayedRequest:(id)request completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a6;
+  taskCopy = task;
+  handlerCopy = handler;
   v10 = NDSharedServiceLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v8 taskDescription];
+    taskDescription = [taskCopy taskDescription];
     *buf = 136315394;
     v17 = "[NDAnalyticsUploadScheduler URLSession:task:willBeginDelayedRequest:completionHandler:]";
     v18 = 2112;
-    v19 = v11;
+    v19 = taskDescription;
     _os_log_impl(&dword_25BDF7000, v10, OS_LOG_TYPE_INFO, "%s called for task with description %@", buf, 0x16u);
   }
 
@@ -294,37 +294,37 @@ void __85__NDAnalyticsUploadScheduler_operationThrottler_performAsyncOperationWi
   v14[1] = 3221225472;
   v14[2] = __88__NDAnalyticsUploadScheduler_URLSession_task_willBeginDelayedRequest_completionHandler___block_invoke;
   v14[3] = &unk_27997AD08;
-  v15 = v9;
-  v12 = v9;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   [(NDAnalyticsUploadScheduler *)self _uploadWithCompletion:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   v9 = NDSharedServiceLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v7 taskDescription];
+    taskDescription = [taskCopy taskDescription];
     v17 = 136315650;
     v18 = "[NDAnalyticsUploadScheduler URLSession:task:didCompleteWithError:]";
     v19 = 2112;
-    v20 = v10;
+    v20 = taskDescription;
     v21 = 2112;
-    v22 = v8;
+    v22 = errorCopy;
     _os_log_impl(&dword_25BDF7000, v9, OS_LOG_TYPE_INFO, "%s called for task with description %@, error %@", &v17, 0x20u);
   }
 
-  v11 = [v8 domain];
-  if ([v11 isEqualToString:*MEMORY[0x277CCA5B8]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA5B8]])
   {
-    v12 = [v8 code];
+    code = [errorCopy code];
 
-    if (v12 == 2)
+    if (code == 2)
     {
       goto LABEL_12;
     }
@@ -334,12 +334,12 @@ void __85__NDAnalyticsUploadScheduler_operationThrottler_performAsyncOperationWi
   {
   }
 
-  v13 = [v8 domain];
-  if ([v13 isEqualToString:*MEMORY[0x277CCA738]])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:*MEMORY[0x277CCA738]])
   {
-    v14 = [v8 code];
+    code2 = [errorCopy code];
 
-    if (v14 == -999)
+    if (code2 == -999)
     {
       goto LABEL_12;
     }
@@ -349,53 +349,53 @@ void __85__NDAnalyticsUploadScheduler_operationThrottler_performAsyncOperationWi
   {
   }
 
-  v15 = [(NDAnalyticsUploadScheduler *)self delegate];
-  [v15 uploadSchedulerDidDropScheduledBackgroundUpload:self];
+  delegate = [(NDAnalyticsUploadScheduler *)self delegate];
+  [delegate uploadSchedulerDidDropScheduledBackgroundUpload:self];
 
 LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleBackgroundUploadInWindow:(id)a3
+- (void)_scheduleBackgroundUploadInWindow:(id)window
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  windowCopy = window;
+  if (!windowCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsUploadScheduler _scheduleBackgroundUploadInWindow:];
   }
 
-  v5 = [(NDAnalyticsUploadScheduler *)self backgroundSession];
-  [v5 getAllTasksWithCompletionHandler:&__block_literal_global_6];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
+  backgroundSession = [(NDAnalyticsUploadScheduler *)self backgroundSession];
+  [backgroundSession getAllTasksWithCompletionHandler:&__block_literal_global_6];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
   v8 = MEMORY[0x277CCAD20];
   v9 = MEMORY[0x277CBEBC0];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://www.%@.com", v7];
+  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://www.%@.com", uUIDString];
   v11 = [v9 URLWithString:v10];
   v12 = [v8 requestWithURL:v11];
 
-  v13 = [v5 downloadTaskWithRequest:v12];
-  [v13 setTaskDescription:v7];
-  v14 = [v4 earlierDate];
-  [v13 setEarliestBeginDate:v14];
+  v13 = [backgroundSession downloadTaskWithRequest:v12];
+  [v13 setTaskDescription:uUIDString];
+  earlierDate = [windowCopy earlierDate];
+  [v13 setEarliestBeginDate:earlierDate];
 
-  v15 = [v4 laterDate];
-  [v15 timeIntervalSinceNow];
+  laterDate = [windowCopy laterDate];
+  [laterDate timeIntervalSinceNow];
   [v13 set_timeoutIntervalForResource:?];
 
   v16 = NDSharedServiceLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v4 earlierDate];
-    v18 = [v4 laterDate];
+    earlierDate2 = [windowCopy earlierDate];
+    laterDate2 = [windowCopy laterDate];
     *buf = 138412802;
-    v21 = v17;
+    v21 = earlierDate2;
     v22 = 2112;
-    v23 = v18;
+    v23 = laterDate2;
     v24 = 2112;
-    v25 = v7;
+    v25 = uUIDString;
     _os_log_impl(&dword_25BDF7000, v16, OS_LOG_TYPE_INFO, "Scheduling background task with start date %@, end date %@, taskDescription %@", buf, 0x20u);
   }
 
@@ -420,23 +420,23 @@ void __64__NDAnalyticsUploadScheduler__scheduleBackgroundUploadInWindow___block_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_uploadWithCompletion:(id)a3
+- (void)_uploadWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  completionCopy = completion;
+  if (!completionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsUploadScheduler _uploadWithCompletion:];
   }
 
-  v5 = [(NDAnalyticsUploadScheduler *)self uploadQueue];
+  uploadQueue = [(NDAnalyticsUploadScheduler *)self uploadQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__NDAnalyticsUploadScheduler__uploadWithCompletion___block_invoke;
   v7[3] = &unk_27997AD98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enqueueBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [uploadQueue enqueueBlock:v7];
 }
 
 void __52__NDAnalyticsUploadScheduler__uploadWithCompletion___block_invoke(uint64_t a1, void *a2)

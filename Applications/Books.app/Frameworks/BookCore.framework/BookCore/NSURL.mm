@@ -1,16 +1,16 @@
 @interface NSURL
-+ (BOOL)bc_BOOLFromResourceValue:(id)a3;
-+ (BOOL)bc_isDownloadedWithResourceValue:(id)a3;
-+ (BOOL)bc_isUbiquitousPromiseFromResourceDictionary:(id)a3;
++ (BOOL)bc_BOOLFromResourceValue:(id)value;
++ (BOOL)bc_isDownloadedWithResourceValue:(id)value;
++ (BOOL)bc_isUbiquitousPromiseFromResourceDictionary:(id)dictionary;
 + (id)supportediBooksInternalURLSchemes;
 + (id)supportediBooksStoreURLSchemes;
 + (id)supportediBooksURLSchemes;
-+ (void)bc_setIOPolicyForThreadScope:(int)a3 type:(int)a4 forBlock:(id)a5;
-+ (void)coordinateReadingItemAtURL:(id)a3 options:(unint64_t)a4 error:(id *)a5 byAccessor:(id)a6;
-+ (void)coordinateWritingItemAtURL:(id)a3 options:(unint64_t)a4 error:(id *)a5 byAccessor:(id)a6;
-- (BOOL)_actionMatchesString:(id)a3;
++ (void)bc_setIOPolicyForThreadScope:(int)scope type:(int)type forBlock:(id)block;
++ (void)coordinateReadingItemAtURL:(id)l options:(unint64_t)options error:(id *)error byAccessor:(id)accessor;
++ (void)coordinateWritingItemAtURL:(id)l options:(unint64_t)options error:(id *)error byAccessor:(id)accessor;
+- (BOOL)_actionMatchesString:(id)string;
 - (BOOL)_checkForBookStoreURLUsingRegularExpressions;
-- (BOOL)_validateWithSheetInfo:(id)a3;
+- (BOOL)_validateWithSheetInfo:(id)info;
 - (BOOL)bc_hasLegacyBookStoreScheme;
 - (BOOL)bc_isBookStoreAddToWantToReadURL;
 - (BOOL)bc_isBookStoreBuyNowURL;
@@ -28,28 +28,28 @@
 - (BOOL)isUploaded;
 - (BOOL)isUploading;
 - (id)_lastModDateFormatter;
-- (id)_valueForQueryItemWithName:(id)a3;
+- (id)_valueForQueryItemWithName:(id)name;
 - (id)bc_pathWithoutPrecedingSlash;
-- (void)bc_isBookStoreProductURLWithCompletion:(id)a3;
-- (void)bc_isBookStoreURLWithCompletion:(id)a3;
-- (void)bc_isStoreProductURLWithCompletion:(id)a3;
-- (void)bc_isStoreURLWithCompletion:(id)a3;
+- (void)bc_isBookStoreProductURLWithCompletion:(id)completion;
+- (void)bc_isBookStoreURLWithCompletion:(id)completion;
+- (void)bc_isStoreProductURLWithCompletion:(id)completion;
+- (void)bc_isStoreURLWithCompletion:(id)completion;
 @end
 
 @implementation NSURL
 
 - (BOOL)bc_hasLegacyBookStoreScheme
 {
-  v3 = [(NSURL *)self scheme];
-  if ([v3 isEqualToString:@"itms-books"])
+  scheme = [(NSURL *)self scheme];
+  if ([scheme isEqualToString:@"itms-books"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(NSURL *)self scheme];
-    v4 = [v5 isEqualToString:@"itms-bookss"];
+    scheme2 = [(NSURL *)self scheme];
+    v4 = [scheme2 isEqualToString:@"itms-bookss"];
   }
 
   return v4;
@@ -57,62 +57,62 @@
 
 - (BOOL)bc_isBookStoreAddToWantToReadURL
 {
-  v3 = [(NSURL *)self bc_hasLegacyBookStoreScheme];
-  if (v3)
+  bc_hasLegacyBookStoreScheme = [(NSURL *)self bc_hasLegacyBookStoreScheme];
+  if (bc_hasLegacyBookStoreScheme)
   {
 
-    LOBYTE(v3) = [(NSURL *)self _actionMatchesString:@"add-to-want-to-read"];
+    LOBYTE(bc_hasLegacyBookStoreScheme) = [(NSURL *)self _actionMatchesString:@"add-to-want-to-read"];
   }
 
-  return v3;
+  return bc_hasLegacyBookStoreScheme;
 }
 
 - (BOOL)bc_isBookStoreBuyNowURL
 {
-  v3 = [(NSURL *)self bc_hasLegacyBookStoreScheme];
-  if (v3)
+  bc_hasLegacyBookStoreScheme = [(NSURL *)self bc_hasLegacyBookStoreScheme];
+  if (bc_hasLegacyBookStoreScheme)
   {
 
-    LOBYTE(v3) = [(NSURL *)self _actionMatchesString:@"buy-now"];
+    LOBYTE(bc_hasLegacyBookStoreScheme) = [(NSURL *)self _actionMatchesString:@"buy-now"];
   }
 
-  return v3;
+  return bc_hasLegacyBookStoreScheme;
 }
 
 - (BOOL)bc_isBookStoreViewInStoreURL
 {
-  v3 = [(NSURL *)self bc_hasLegacyBookStoreScheme];
-  if (v3)
+  bc_hasLegacyBookStoreScheme = [(NSURL *)self bc_hasLegacyBookStoreScheme];
+  if (bc_hasLegacyBookStoreScheme)
   {
 
-    LOBYTE(v3) = [(NSURL *)self _actionMatchesString:@"view-in-store"];
+    LOBYTE(bc_hasLegacyBookStoreScheme) = [(NSURL *)self _actionMatchesString:@"view-in-store"];
   }
 
-  return v3;
+  return bc_hasLegacyBookStoreScheme;
 }
 
 - (BOOL)bc_isBookStoreStartReadingURL
 {
-  v3 = [(NSURL *)self bc_hasLegacyBookStoreScheme];
-  if (v3)
+  bc_hasLegacyBookStoreScheme = [(NSURL *)self bc_hasLegacyBookStoreScheme];
+  if (bc_hasLegacyBookStoreScheme)
   {
 
-    LOBYTE(v3) = [(NSURL *)self _actionMatchesString:@"start-reading"];
+    LOBYTE(bc_hasLegacyBookStoreScheme) = [(NSURL *)self _actionMatchesString:@"start-reading"];
   }
 
-  return v3;
+  return bc_hasLegacyBookStoreScheme;
 }
 
 - (BOOL)bc_isBookStoreStartListeningURL
 {
-  v3 = [(NSURL *)self bc_hasLegacyBookStoreScheme];
-  if (v3)
+  bc_hasLegacyBookStoreScheme = [(NSURL *)self bc_hasLegacyBookStoreScheme];
+  if (bc_hasLegacyBookStoreScheme)
   {
 
-    LOBYTE(v3) = [(NSURL *)self _actionMatchesString:@"start-listening"];
+    LOBYTE(bc_hasLegacyBookStoreScheme) = [(NSURL *)self _actionMatchesString:@"start-listening"];
   }
 
-  return v3;
+  return bc_hasLegacyBookStoreScheme;
 }
 
 + (id)supportediBooksURLSchemes
@@ -123,8 +123,8 @@
   }
 
   v3 = qword_342168;
-  v4 = [a1 supportediBooksStoreURLSchemes];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  supportediBooksStoreURLSchemes = [self supportediBooksStoreURLSchemes];
+  v5 = [v3 setByAddingObjectsFromSet:supportediBooksStoreURLSchemes];
 
   return v5;
 }
@@ -137,8 +137,8 @@
   }
 
   v3 = qword_342178;
-  v4 = [a1 supportediBooksStoreURLSchemes];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  supportediBooksStoreURLSchemes = [self supportediBooksStoreURLSchemes];
+  v5 = [v3 setByAddingObjectsFromSet:supportediBooksStoreURLSchemes];
 
   return v5;
 }
@@ -162,9 +162,9 @@
     sub_1E5C6C();
   }
 
-  v3 = [(NSURL *)self host];
-  v4 = v3;
-  if (!qword_342198 || ([v3 bc_hasMatchInRegexPatterns:?] ? (v5 = qword_3421A0 == 0) : (v5 = 1), v5))
+  host = [(NSURL *)self host];
+  v4 = host;
+  if (!qword_342198 || ([host bc_hasMatchInRegexPatterns:?] ? (v5 = qword_3421A0 == 0) : (v5 = 1), v5))
   {
     v6 = 0;
   }
@@ -172,50 +172,50 @@
   else
   {
     v7 = [[NSURLComponents alloc] initWithURL:self resolvingAgainstBaseURL:0];
-    v8 = [v7 rangeOfPath];
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    rangeOfPath = [v7 rangeOfPath];
+    if (rangeOfPath == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [(NSURL *)self path];
+      path = [(NSURL *)self path];
     }
 
     else
     {
-      v10 = v8;
-      v11 = [v7 string];
-      v9 = [v11 substringFromIndex:v10];
+      v10 = rangeOfPath;
+      string = [v7 string];
+      path = [string substringFromIndex:v10];
     }
 
-    v6 = [v9 bc_hasMatchInRegexPatterns:qword_3421A0];
+    v6 = [path bc_hasMatchInRegexPatterns:qword_3421A0];
   }
 
   return v6;
 }
 
-- (void)bc_isBookStoreProductURLWithCompletion:(id)a3
+- (void)bc_isBookStoreProductURLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[BUBag defaultBag];
-  v6 = [v5 ixStoreSheetBooks];
+  ixStoreSheetBooks = [v5 ixStoreSheetBooks];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_355C8;
   v8[3] = &unk_2C9158;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 jsa_valueWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [ixStoreSheetBooks jsa_valueWithCompletion:v8];
 }
 
-- (void)bc_isBookStoreURLWithCompletion:(id)a3
+- (void)bc_isBookStoreURLWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(NSURL *)self host];
-    if ([v5 length])
+    host = [(NSURL *)self host];
+    if ([host length])
     {
-      v6 = [(NSURL *)self path];
-      v7 = [v6 length];
+      path = [(NSURL *)self path];
+      v7 = [path length];
 
       if (v7)
       {
@@ -240,7 +240,7 @@
         v35 = 0;
         dispatch_group_enter(v8);
         v9 = +[BUBag defaultBag];
-        v10 = [v9 p2LaunchEbookstoreHostPatterns];
+        p2LaunchEbookstoreHostPatterns = [v9 p2LaunchEbookstoreHostPatterns];
         v31[0] = _NSConcreteStackBlock;
         v31[1] = 3221225472;
         v31[2] = sub_35AC8;
@@ -248,11 +248,11 @@
         v33 = v38;
         v11 = v8;
         v32 = v11;
-        [v10 jsa_valueWithCompletion:v31];
+        [p2LaunchEbookstoreHostPatterns jsa_valueWithCompletion:v31];
 
         dispatch_group_enter(v11);
         v12 = +[BUBag defaultBag];
-        v13 = [v12 p2LaunchEbookstorePathPatterns];
+        p2LaunchEbookstorePathPatterns = [v12 p2LaunchEbookstorePathPatterns];
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
         v28[2] = sub_35B28;
@@ -260,11 +260,11 @@
         v30 = v36;
         v14 = v11;
         v29 = v14;
-        [v13 jsa_valueWithCompletion:v28];
+        [p2LaunchEbookstorePathPatterns jsa_valueWithCompletion:v28];
 
         dispatch_group_enter(v14);
         v15 = +[BUBag defaultBag];
-        v16 = [v15 p2LaunchAudioBookStorePathPatterns];
+        p2LaunchAudioBookStorePathPatterns = [v15 p2LaunchAudioBookStorePathPatterns];
         v25[0] = _NSConcreteStackBlock;
         v25[1] = 3221225472;
         v25[2] = sub_35B88;
@@ -272,7 +272,7 @@
         v27 = v34;
         v17 = v14;
         v26 = v17;
-        [v16 jsa_valueWithCompletion:v25];
+        [p2LaunchAudioBookStorePathPatterns jsa_valueWithCompletion:v25];
 
         v18 = dispatch_get_global_queue(21, 0);
         v20[0] = _NSConcreteStackBlock;
@@ -283,7 +283,7 @@
         v22 = v38;
         v23 = v36;
         v24 = v34;
-        v21 = v4;
+        v21 = completionCopy;
         dispatch_group_notify(v17, v18, v20);
 
         _Block_object_dispose(v34, 8);
@@ -305,7 +305,7 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = sub_35A9C;
     block[3] = &unk_2C8398;
-    v41 = v4;
+    v41 = completionCopy;
     dispatch_async(v19, block);
 
     v17 = v41;
@@ -315,34 +315,34 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)bc_isStoreProductURLWithCompletion:(id)a3
+- (void)bc_isStoreProductURLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[BUBag defaultBag];
-  v6 = [v5 ixStoreSheet];
+  ixStoreSheet = [v5 ixStoreSheet];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_35DD4;
   v8[3] = &unk_2C91D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 jsa_valueWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [ixStoreSheet jsa_valueWithCompletion:v8];
 }
 
-- (void)bc_isStoreURLWithCompletion:(id)a3
+- (void)bc_isStoreURLWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[BUBag defaultBag];
-  v6 = [v5 trustedDomains];
+  trustedDomains = [v5 trustedDomains];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_35F54;
   v8[3] = &unk_2C91F8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 jsa_valueWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [trustedDomains jsa_valueWithCompletion:v8];
 }
 
 - (BOOL)isStoreURL
@@ -352,23 +352,23 @@ LABEL_8:
     return 1;
   }
 
-  v4 = [(NSURL *)self host];
-  if (v4)
+  host = [(NSURL *)self host];
+  if (host)
   {
-    v5 = [(NSURL *)self host];
-    if ([v5 caseInsensitiveCompare:@"itunes.apple.com"])
+    host2 = [(NSURL *)self host];
+    if ([host2 caseInsensitiveCompare:@"itunes.apple.com"])
     {
-      v6 = [(NSURL *)self host];
-      if ([v6 caseInsensitiveCompare:@"buy.itunes.apple.com"])
+      host3 = [(NSURL *)self host];
+      if ([host3 caseInsensitiveCompare:@"buy.itunes.apple.com"])
       {
-        v7 = [(NSURL *)self host];
-        if ([v7 caseInsensitiveCompare:@"finance-app.itunes.apple.com"])
+        host4 = [(NSURL *)self host];
+        if ([host4 caseInsensitiveCompare:@"finance-app.itunes.apple.com"])
         {
-          v8 = [(NSURL *)self host];
-          if ([v8 caseInsensitiveCompare:@"itun.es"])
+          host5 = [(NSURL *)self host];
+          if ([host5 caseInsensitiveCompare:@"itun.es"])
           {
-            v9 = [(NSURL *)self host];
-            v3 = [v9 caseInsensitiveCompare:@"storepreview.apple.com"] == 0;
+            host6 = [(NSURL *)self host];
+            v3 = [host6 caseInsensitiveCompare:@"storepreview.apple.com"] == 0;
           }
 
           else
@@ -410,19 +410,19 @@ LABEL_8:
     return 1;
   }
 
-  v4 = [(NSURL *)self host];
-  v5 = [v4 lowercaseString];
+  host = [(NSURL *)self host];
+  lowercaseString = [host lowercaseString];
 
-  if (v5)
+  if (lowercaseString)
   {
-    if ([v5 hasSuffix:@"itunes.apple.com"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"itun.es"))
+    if ([lowercaseString hasSuffix:@"itunes.apple.com"] & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"itun.es"))
     {
       v3 = 1;
     }
 
     else
     {
-      v3 = [v5 isEqualToString:@"itunes.com"];
+      v3 = [lowercaseString isEqualToString:@"itunes.com"];
     }
   }
 
@@ -441,26 +441,26 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(NSURL *)self path];
-  v4 = [v3 lowercaseString];
-  if ([v4 containsSubstring:@"/book/"])
+  path = [(NSURL *)self path];
+  lowercaseString = [path lowercaseString];
+  if ([lowercaseString containsSubstring:@"/book/"])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(NSURL *)self path];
-    v7 = [v6 lowercaseString];
-    if ([v7 containsSubstring:@"/books/isbn"])
+    path2 = [(NSURL *)self path];
+    lowercaseString2 = [path2 lowercaseString];
+    if ([lowercaseString2 containsSubstring:@"/books/isbn"])
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [(NSURL *)self scheme];
-      v5 = [v8 hasPrefix:@"itms-books"];
+      scheme = [(NSURL *)self scheme];
+      v5 = [scheme hasPrefix:@"itms-books"];
     }
   }
 
@@ -469,14 +469,14 @@ LABEL_8:
 
 - (id)bc_pathWithoutPrecedingSlash
 {
-  v2 = [(NSURL *)self path];
-  if ([v2 hasPrefix:@"/"])
+  path = [(NSURL *)self path];
+  if ([path hasPrefix:@"/"])
   {
     do
     {
-      v3 = [v2 substringFromIndex:{objc_msgSend(@"/", "length")}];
+      v3 = [path substringFromIndex:{objc_msgSend(@"/", "length")}];
 
-      v2 = v3;
+      path = v3;
     }
 
     while (([v3 hasPrefix:@"/"] & 1) != 0);
@@ -484,7 +484,7 @@ LABEL_8:
 
   else
   {
-    v3 = v2;
+    v3 = path;
   }
 
   return v3;
@@ -493,8 +493,8 @@ LABEL_8:
 - (id)_lastModDateFormatter
 {
   v2 = +[NSThread currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKey:@"_lastModDateFormatter"];
+  threadDictionary = [v2 threadDictionary];
+  v4 = [threadDictionary objectForKey:@"_lastModDateFormatter"];
 
   if (!v4)
   {
@@ -507,36 +507,36 @@ LABEL_8:
     [v4 setTimeZone:v6];
 
     v7 = +[NSThread currentThread];
-    v8 = [v7 threadDictionary];
-    [v8 setObject:v4 forKey:@"_lastModDateFormatter"];
+    threadDictionary2 = [v7 threadDictionary];
+    [threadDictionary2 setObject:v4 forKey:@"_lastModDateFormatter"];
   }
 
   return v4;
 }
 
-- (BOOL)_actionMatchesString:(id)a3
+- (BOOL)_actionMatchesString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(NSURL *)self _valueForQueryItemWithName:@"action"];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [stringCopy isEqualToString:v5];
 
   return v6;
 }
 
-- (id)_valueForQueryItemWithName:(id)a3
+- (id)_valueForQueryItemWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(NSURL *)self bu_dictionaryForQueryItems];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  bu_dictionaryForQueryItems = [(NSURL *)self bu_dictionaryForQueryItems];
+  v6 = [bu_dictionaryForQueryItems objectForKeyedSubscript:nameCopy];
 
   return v6;
 }
 
-- (BOOL)_validateWithSheetInfo:(id)a3
+- (BOOL)_validateWithSheetInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
-  v5 = [v4 objectForKey:@"host-patterns"];
+  v5 = [infoCopy objectForKey:@"host-patterns"];
   v6 = BUDynamicCast();
 
   if (v6 && (-[NSURL host](self, "host"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 bc_hasMatchInRegexPatterns:v6], v7, !v8))
@@ -547,30 +547,30 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    v9 = [v4 objectForKey:@"path-patterns"];
+    v9 = [infoCopy objectForKey:@"path-patterns"];
     v10 = BUDynamicCast();
 
     if (v10)
     {
-      v11 = [(NSURL *)self path];
-      v12 = [v11 mutableCopy];
+      path = [(NSURL *)self path];
+      v12 = [path mutableCopy];
 
       if (v12)
       {
-        v13 = [(NSURL *)self query];
+        query = [(NSURL *)self query];
 
-        if (v13)
+        if (query)
         {
-          v14 = [(NSURL *)self query];
-          [v12 appendFormat:@"?%@", v14];
+          query2 = [(NSURL *)self query];
+          [v12 appendFormat:@"?%@", query2];
         }
 
-        v15 = [(NSURL *)self fragment];
+        fragment = [(NSURL *)self fragment];
 
-        if (v15)
+        if (fragment)
         {
-          v16 = [(NSURL *)self fragment];
-          [v12 appendFormat:@"#%@", v16];
+          fragment2 = [(NSURL *)self fragment];
+          [v12 appendFormat:@"#%@", fragment2];
         }
 
         v17 = [v12 bc_hasMatchInRegexPatterns:v10];
@@ -719,34 +719,34 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)bc_isUbiquitousPromiseFromResourceDictionary:(id)a3
++ (BOOL)bc_isUbiquitousPromiseFromResourceDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:NSURLIsUbiquitousItemKey];
-  v6 = [a1 bc_BOOLFromResourceValue:v5];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:NSURLIsUbiquitousItemKey];
+  v6 = [self bc_BOOLFromResourceValue:v5];
 
-  v7 = [v4 objectForKeyedSubscript:NSURLUbiquitousItemIsDownloadingKey];
-  v8 = [a1 bc_BOOLFromResourceValue:v7];
+  v7 = [dictionaryCopy objectForKeyedSubscript:NSURLUbiquitousItemIsDownloadingKey];
+  v8 = [self bc_BOOLFromResourceValue:v7];
 
-  v9 = [v4 objectForKeyedSubscript:NSURLUbiquitousItemDownloadingStatusKey];
+  v9 = [dictionaryCopy objectForKeyedSubscript:NSURLUbiquitousItemDownloadingStatusKey];
 
-  LOBYTE(a1) = [a1 bc_isDownloadedWithResourceValue:v9];
-  return v6 & ((v8 | a1) ^ 1);
+  LOBYTE(self) = [self bc_isDownloadedWithResourceValue:v9];
+  return v6 & ((v8 | self) ^ 1);
 }
 
-+ (BOOL)bc_BOOLFromResourceValue:(id)a3
++ (BOOL)bc_BOOLFromResourceValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   v4 = BUDynamicCast();
 
-  LOBYTE(v3) = [v4 BOOLValue];
-  return v3;
+  LOBYTE(valueCopy) = [v4 BOOLValue];
+  return valueCopy;
 }
 
-+ (BOOL)bc_isDownloadedWithResourceValue:(id)a3
++ (BOOL)bc_isDownloadedWithResourceValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   v4 = BUDynamicCast();
 
@@ -763,10 +763,10 @@ LABEL_8:
   return v5;
 }
 
-+ (void)bc_setIOPolicyForThreadScope:(int)a3 type:(int)a4 forBlock:(id)a5
++ (void)bc_setIOPolicyForThreadScope:(int)scope type:(int)type forBlock:(id)block
 {
-  v7 = a5;
-  v8 = getiopolicy_np(a4, 1);
+  blockCopy = block;
+  v8 = getiopolicy_np(type, 1);
   if (v8 == -1)
   {
     v14 = BKLibraryDataSourceUbiquityLog();
@@ -779,9 +779,9 @@ LABEL_8:
   else
   {
     v9 = v8;
-    if (v8 != a3)
+    if (v8 != scope)
     {
-      if (setiopolicy_np(a4, 1, a3))
+      if (setiopolicy_np(type, 1, scope))
       {
         v10 = BKLibraryDataSourceUbiquityLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -790,14 +790,14 @@ LABEL_8:
         }
       }
 
-      v11 = objc_retainBlock(v7);
+      v11 = objc_retainBlock(blockCopy);
       v12 = v11;
       if (v11)
       {
         (*(v11 + 2))(v11);
       }
 
-      if ((v9 & 0x80000000) == 0 && setiopolicy_np(a4, 1, v9))
+      if ((v9 & 0x80000000) == 0 && setiopolicy_np(type, 1, v9))
       {
         v13 = BKLibraryDataSourceUbiquityLog();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -810,7 +810,7 @@ LABEL_8:
     }
   }
 
-  v15 = objc_retainBlock(v7);
+  v15 = objc_retainBlock(blockCopy);
   v16 = v15;
   if (v15)
   {
@@ -820,10 +820,10 @@ LABEL_8:
 LABEL_20:
 }
 
-+ (void)coordinateReadingItemAtURL:(id)a3 options:(unint64_t)a4 error:(id *)a5 byAccessor:(id)a6
++ (void)coordinateReadingItemAtURL:(id)l options:(unint64_t)options error:(id *)error byAccessor:(id)accessor
 {
-  v9 = a3;
-  v10 = a6;
+  lCopy = l;
+  accessorCopy = accessor;
   if (+[NSThread isMainThread])
   {
     v11 = BCIMLog();
@@ -842,21 +842,21 @@ LABEL_20:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = lCopy;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "@This should not be called from the foreground thread. [URL: %@]", &v14, 0xCu);
     }
   }
 
   v13 = objc_opt_new();
-  [v13 coordinateReadingItemAtURL:v9 options:a4 error:a5 byAccessor:v10];
+  [v13 coordinateReadingItemAtURL:lCopy options:options error:error byAccessor:accessorCopy];
 }
 
-+ (void)coordinateWritingItemAtURL:(id)a3 options:(unint64_t)a4 error:(id *)a5 byAccessor:(id)a6
++ (void)coordinateWritingItemAtURL:(id)l options:(unint64_t)options error:(id *)error byAccessor:(id)accessor
 {
-  v9 = a6;
-  v10 = a3;
+  accessorCopy = accessor;
+  lCopy = l;
   v11 = objc_opt_new();
-  [v11 coordinateWritingItemAtURL:v10 options:a4 error:a5 byAccessor:v9];
+  [v11 coordinateWritingItemAtURL:lCopy options:options error:error byAccessor:accessorCopy];
 }
 
 @end

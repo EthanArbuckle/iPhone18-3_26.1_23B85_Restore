@@ -1,26 +1,26 @@
 @interface MessageContentItemRepresentationTask
-- (BOOL)hasBeenAccessedByInvokerWithID:(id)a3;
+- (BOOL)hasBeenAccessedByInvokerWithID:(id)d;
 - (EFFuture)future;
-- (MessageContentItemRepresentationTask)initWithContentItem:(id)a3 type:(id)a4 networkUsage:(int64_t)a5;
-- (void)addAccessedByInvokerWithID:(id)a3;
+- (MessageContentItemRepresentationTask)initWithContentItem:(id)item type:(id)type networkUsage:(int64_t)usage;
+- (void)addAccessedByInvokerWithID:(id)d;
 - (void)resume;
 @end
 
 @implementation MessageContentItemRepresentationTask
 
-- (MessageContentItemRepresentationTask)initWithContentItem:(id)a3 type:(id)a4 networkUsage:(int64_t)a5
+- (MessageContentItemRepresentationTask)initWithContentItem:(id)item type:(id)type networkUsage:(int64_t)usage
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  typeCopy = type;
   v22.receiver = self;
   v22.super_class = MessageContentItemRepresentationTask;
   v11 = [(MessageContentItemRepresentationTask *)&v22 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_type, a4);
-    objc_storeStrong(&v12->_contentItem, a3);
-    v12->_networkUsage = a5;
+    objc_storeStrong(&v11->_type, type);
+    objc_storeStrong(&v12->_contentItem, item);
+    v12->_networkUsage = usage;
     v13 = objc_alloc(MEMORY[0x277D07168]);
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v15 = [v13 initWithObject:v14];
@@ -31,9 +31,9 @@
     topLevelProgress = v12->_topLevelProgress;
     v12->_topLevelProgress = v17;
 
-    v19 = [MEMORY[0x277D071A8] promise];
+    promise = [MEMORY[0x277D071A8] promise];
     contentRequestPromise = v12->_contentRequestPromise;
-    v12->_contentRequestPromise = v19;
+    v12->_contentRequestPromise = promise;
   }
 
   return v12;
@@ -41,44 +41,44 @@
 
 - (EFFuture)future
 {
-  v2 = [(MessageContentItemRepresentationTask *)self contentRequestPromise];
-  v3 = [v2 future];
+  contentRequestPromise = [(MessageContentItemRepresentationTask *)self contentRequestPromise];
+  future = [contentRequestPromise future];
 
-  return v3;
+  return future;
 }
 
-- (void)addAccessedByInvokerWithID:(id)a3
+- (void)addAccessedByInvokerWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(MessageContentItemRepresentationTask *)self invokerIDs];
+    invokerIDs = [(MessageContentItemRepresentationTask *)self invokerIDs];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __67__MessageContentItemRepresentationTask_addAccessedByInvokerWithID___block_invoke;
     v6[3] = &unk_278181558;
-    v7 = v4;
-    [v5 performWhileLocked:v6];
+    v7 = dCopy;
+    [invokerIDs performWhileLocked:v6];
   }
 }
 
-- (BOOL)hasBeenAccessedByInvokerWithID:(id)a3
+- (BOOL)hasBeenAccessedByInvokerWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 0;
-    v5 = [(MessageContentItemRepresentationTask *)self invokerIDs];
+    invokerIDs = [(MessageContentItemRepresentationTask *)self invokerIDs];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __71__MessageContentItemRepresentationTask_hasBeenAccessedByInvokerWithID___block_invoke;
     v8[3] = &unk_278181580;
     v10 = &v11;
-    v9 = v4;
-    [v5 performWhileLocked:v8];
+    v9 = dCopy;
+    [invokerIDs performWhileLocked:v8];
 
     v6 = *(v12 + 24);
     _Block_object_dispose(&v11, 8);
@@ -100,9 +100,9 @@ void __71__MessageContentItemRepresentationTask_hasBeenAccessedByInvokerWithID__
 
 - (void)resume
 {
-  v3 = [(MessageContentItemRepresentationTask *)self contentRequestProgress];
+  contentRequestProgress = [(MessageContentItemRepresentationTask *)self contentRequestProgress];
 
-  if (!v3)
+  if (!contentRequestProgress)
   {
     v4 = objc_alloc(MEMORY[0x277D06D60]);
     v11[0] = MEMORY[0x277D85DD0];
@@ -111,16 +111,16 @@ void __71__MessageContentItemRepresentationTask_hasBeenAccessedByInvokerWithID__
     v11[3] = &unk_2781815A8;
     v11[4] = self;
     v5 = [v4 initWithBuilder:v11];
-    v6 = [(MessageContentItemRepresentationTask *)self contentItem];
-    v7 = [(MessageContentItemRepresentationTask *)self contentRequestPromise];
-    v8 = [v7 completionHandlerAdapter];
-    v9 = [v6 requestRepresentationWithOptions:v5 completionHandler:v8];
+    contentItem = [(MessageContentItemRepresentationTask *)self contentItem];
+    contentRequestPromise = [(MessageContentItemRepresentationTask *)self contentRequestPromise];
+    completionHandlerAdapter = [contentRequestPromise completionHandlerAdapter];
+    v9 = [contentItem requestRepresentationWithOptions:v5 completionHandler:completionHandlerAdapter];
 
     if (v9)
     {
       [(MessageContentItemRepresentationTask *)self setContentRequestProgress:v9];
-      v10 = [(MessageContentItemRepresentationTask *)self topLevelProgress];
-      [v10 addChild:v9 withPendingUnitCount:1];
+      topLevelProgress = [(MessageContentItemRepresentationTask *)self topLevelProgress];
+      [topLevelProgress addChild:v9 withPendingUnitCount:1];
     }
   }
 }

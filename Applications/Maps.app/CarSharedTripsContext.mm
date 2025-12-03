@@ -1,5 +1,5 @@
 @interface CarSharedTripsContext
-- (BOOL)provideAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
+- (BOOL)provideAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
 - (CarSharedTripsContext)init;
 - (ChromeViewController)chromeViewController;
 - (NSArray)carFocusOrderSequences;
@@ -12,15 +12,15 @@
 - (id)searchPinsManager;
 - (id)sharedTripsAnnotationsController;
 - (int)currentUsageTarget;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)carCardViewCloseButtonTapped:(id)a3;
-- (void)configureCard:(id)a3 forKey:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)carCardViewCloseButtonTapped:(id)tapped;
+- (void)configureCard:(id)card forKey:(id)key;
 - (void)dismiss;
 - (void)presentDetailsForSelectedTrip;
-- (void)presentErrorForChinaTrip:(id)a3;
-- (void)presentErrorForUnsupportedProtocolOrTransportWithTrip:(id)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)sharedTripDetailCard:(id)a3 didSelectAction:(unint64_t)a4;
+- (void)presentErrorForChinaTrip:(id)trip;
+- (void)presentErrorForUnsupportedProtocolOrTransportWithTrip:(id)trip;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)sharedTripDetailCard:(id)card didSelectAction:(unint64_t)action;
 @end
 
 @implementation CarSharedTripsContext
@@ -34,11 +34,11 @@
 
 - (NSArray)carFocusOrderSequences
 {
-  v3 = [(CarSharedTripsContext *)self chromeViewController];
-  v4 = [v3 itemRepresentingStatusBanner];
-  v5 = [(CarSharedTripsContext *)self chromeViewController];
-  v6 = [v5 itemRepresentingOverlays];
-  v11[1] = v6;
+  chromeViewController = [(CarSharedTripsContext *)self chromeViewController];
+  itemRepresentingStatusBanner = [chromeViewController itemRepresentingStatusBanner];
+  chromeViewController2 = [(CarSharedTripsContext *)self chromeViewController];
+  itemRepresentingOverlays = [chromeViewController2 itemRepresentingOverlays];
+  v11[1] = itemRepresentingOverlays;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v8 = [CarFocusOrderSequence sequenceWithItems:v7 options:5];
   v12 = v8;
@@ -49,23 +49,23 @@
 
 - (id)_transportTypeStringForAnalytics
 {
-  v2 = [(CarSharedTripDetailCardViewController *)self->_selectedSharedTripCardViewController sharedTrip];
-  v3 = v2;
-  if (v2)
+  sharedTrip = [(CarSharedTripDetailCardViewController *)self->_selectedSharedTripCardViewController sharedTrip];
+  v3 = sharedTrip;
+  if (sharedTrip)
   {
-    v4 = [v2 _transportTypeStringForAnalytics];
+    _transportTypeStringForAnalytics = [sharedTrip _transportTypeStringForAnalytics];
   }
 
   else
   {
     v5 = +[MSPSharedTripService sharedInstance];
-    v6 = [v5 receivedTrips];
-    v7 = sub_100021DB0(v6, &stru_101656C90);
+    receivedTrips = [v5 receivedTrips];
+    v7 = sub_100021DB0(receivedTrips, &stru_101656C90);
 
-    v4 = [v7 componentsJoinedByString:{@", "}];
+    _transportTypeStringForAnalytics = [v7 componentsJoinedByString:{@", "}];
   }
 
-  return v4;
+  return _transportTypeStringForAnalytics;
 }
 
 - (int)currentUsageTarget
@@ -81,104 +81,104 @@
   }
 }
 
-- (void)sharedTripDetailCard:(id)a3 didSelectAction:(unint64_t)a4
+- (void)sharedTripDetailCard:(id)card didSelectAction:(unint64_t)action
 {
-  v6 = a3;
-  if (a4 == 1)
+  cardCopy = card;
+  if (action == 1)
   {
-    v14 = v6;
-    v12 = [(CarSharedTripsContext *)self chromeViewController];
-    v13 = [(CarSharedTripsContext *)self _transportTypeStringForAnalytics];
-    [v12 captureUserAction:9028 eventValue:v13];
+    v14 = cardCopy;
+    chromeViewController = [(CarSharedTripsContext *)self chromeViewController];
+    _transportTypeStringForAnalytics = [(CarSharedTripsContext *)self _transportTypeStringForAnalytics];
+    [chromeViewController captureUserAction:9028 eventValue:_transportTypeStringForAnalytics];
 
     v9 = +[MSPSharedTripService sharedInstance];
-    v10 = [(SharedTripsContext *)self selectedTrip];
-    v11 = [v10 groupIdentifier];
-    [v9 blockSharedTripWithIdentifier:v11];
+    selectedTrip = [(SharedTripsContext *)self selectedTrip];
+    groupIdentifier = [selectedTrip groupIdentifier];
+    [v9 blockSharedTripWithIdentifier:groupIdentifier];
   }
 
   else
   {
-    if (a4)
+    if (action)
     {
       goto LABEL_6;
     }
 
-    v14 = v6;
-    v7 = [(CarSharedTripsContext *)self chromeViewController];
-    v8 = [(CarSharedTripsContext *)self _transportTypeStringForAnalytics];
-    [v7 captureUserAction:6003 eventValue:v8];
+    v14 = cardCopy;
+    chromeViewController2 = [(CarSharedTripsContext *)self chromeViewController];
+    _transportTypeStringForAnalytics2 = [(CarSharedTripsContext *)self _transportTypeStringForAnalytics];
+    [chromeViewController2 captureUserAction:6003 eventValue:_transportTypeStringForAnalytics2];
 
     v9 = +[CarChromeModeCoordinator sharedInstance];
-    v10 = [(SharedTripsContext *)self selectedTrip];
-    v11 = [v10 destinationWaypointMapItem];
-    [v9 displayRoutePlanningForDestination:v11];
+    selectedTrip = [(SharedTripsContext *)self selectedTrip];
+    groupIdentifier = [selectedTrip destinationWaypointMapItem];
+    [v9 displayRoutePlanningForDestination:groupIdentifier];
   }
 
-  v6 = v14;
+  cardCopy = v14;
 LABEL_6:
 }
 
-- (BOOL)provideAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (BOOL)provideAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SharedTripsContext *)self sharedTrips];
-  v9 = [v8 count];
+  draftCopy = draft;
+  completionCopy = completion;
+  sharedTrips = [(SharedTripsContext *)self sharedTrips];
+  v9 = [sharedTrips count];
   if (v9)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100E86464;
     block[3] = &unk_1016605F8;
-    v12 = v6;
-    v13 = v8;
-    v14 = v7;
+    v12 = draftCopy;
+    v13 = sharedTrips;
+    v14 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
   return v9 != 0;
 }
 
-- (void)presentErrorForUnsupportedProtocolOrTransportWithTrip:(id)a3
+- (void)presentErrorForUnsupportedProtocolOrTransportWithTrip:(id)trip
 {
-  v3 = a3;
+  tripCopy = trip;
   v4 = +[CarDisplayController sharedInstance];
   v9[0] = @"kMapsInterruptionTitle";
-  v5 = [v3 alertTitleForDisallowedDetails];
+  alertTitleForDisallowedDetails = [tripCopy alertTitleForDisallowedDetails];
   v9[1] = @"kMapsInterruptionMessage";
-  v10[0] = v5;
-  v6 = [v3 alertMessageForTransportOrProtocolError];
+  v10[0] = alertTitleForDisallowedDetails;
+  alertMessageForTransportOrProtocolError = [tripCopy alertMessageForTransportOrProtocolError];
 
-  v10[1] = v6;
+  v10[1] = alertMessageForTransportOrProtocolError;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
   v8 = [v4 presentInterruptionOfKind:13 userInfo:v7 completionHandler:0];
 }
 
-- (void)presentErrorForChinaTrip:(id)a3
+- (void)presentErrorForChinaTrip:(id)trip
 {
-  v3 = a3;
+  tripCopy = trip;
   v4 = +[CarDisplayController sharedInstance];
   v9[0] = @"kMapsInterruptionTitle";
-  v5 = [v3 alertTitleForDisallowedDetails];
+  alertTitleForDisallowedDetails = [tripCopy alertTitleForDisallowedDetails];
   v9[1] = @"kMapsInterruptionMessage";
-  v10[0] = v5;
-  v6 = [v3 alertMessageForChinaError];
+  v10[0] = alertTitleForDisallowedDetails;
+  alertMessageForChinaError = [tripCopy alertMessageForChinaError];
 
-  v10[1] = v6;
+  v10[1] = alertMessageForChinaError;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
   v8 = [v4 presentInterruptionOfKind:13 userInfo:v7 completionHandler:0];
 }
 
 - (void)presentDetailsForSelectedTrip
 {
-  v3 = [(SharedTripsContext *)self selectedTrip];
+  selectedTrip = [(SharedTripsContext *)self selectedTrip];
 
-  if (v3)
+  if (selectedTrip)
   {
     v4 = [CarSharedTripDetailCardViewController alloc];
-    v5 = [(SharedTripsContext *)self selectedTrip];
-    v6 = [(CarSharedTripDetailCardViewController *)v4 initWithSharedTrip:v5 delegate:self];
+    selectedTrip2 = [(SharedTripsContext *)self selectedTrip];
+    v6 = [(CarSharedTripDetailCardViewController *)v4 initWithSharedTrip:selectedTrip2 delegate:self];
     selectedSharedTripCardViewController = self->_selectedSharedTripCardViewController;
     self->_selectedSharedTripCardViewController = v6;
   }
@@ -196,8 +196,8 @@ LABEL_6:
     [(CarSharedTripsCardViewController *)self->_listCardViewController clearSelection];
   }
 
-  v9 = [(CarSharedTripsContext *)self chromeViewController];
-  [v9 updateCardsForContext:self animated:1];
+  chromeViewController = [(CarSharedTripsContext *)self chromeViewController];
+  [chromeViewController updateCardsForContext:self animated:1];
 }
 
 - (id)sharedTripsAnnotationsController
@@ -217,34 +217,34 @@ LABEL_6:
 
 - (id)searchPinsManager
 {
-  v2 = [(CarSharedTripsContext *)self chromeViewController];
-  v3 = [v2 searchPinsManager];
+  chromeViewController = [(CarSharedTripsContext *)self chromeViewController];
+  searchPinsManager = [chromeViewController searchPinsManager];
 
-  return v3;
+  return searchPinsManager;
 }
 
 - (id)routeAnnotationsController
 {
-  v2 = [(CarSharedTripsContext *)self chromeViewController];
-  v3 = [v2 routeAnnotationsController];
+  chromeViewController = [(CarSharedTripsContext *)self chromeViewController];
+  routeAnnotationsController = [chromeViewController routeAnnotationsController];
 
-  return v3;
+  return routeAnnotationsController;
 }
 
 - (id)mapView
 {
-  v2 = [(CarSharedTripsContext *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(CarSharedTripsContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (id)cameraController
 {
-  v2 = [(CarSharedTripsContext *)self chromeViewController];
-  v3 = [v2 mapCameraController];
+  chromeViewController = [(CarSharedTripsContext *)self chromeViewController];
+  mapCameraController = [chromeViewController mapCameraController];
 
-  return v3;
+  return mapCameraController;
 }
 
 - (id)personalizedItemSources
@@ -252,8 +252,8 @@ LABEL_6:
   annotationsController = self->_annotationsController;
   if (annotationsController)
   {
-    v3 = [(SharedTripsAnnotationsController *)annotationsController itemSource];
-    v6 = v3;
+    itemSource = [(SharedTripsAnnotationsController *)annotationsController itemSource];
+    v6 = itemSource;
     v4 = [NSArray arrayWithObjects:&v6 count:1];
   }
 
@@ -265,13 +265,13 @@ LABEL_6:
   return v4;
 }
 
-- (void)carCardViewCloseButtonTapped:(id)a3
+- (void)carCardViewCloseButtonTapped:(id)tapped
 {
   v4 = sub_100E86D00();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v11 = 134349056;
-    v12 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Close button tapped", &v11, 0xCu);
   }
 
@@ -281,7 +281,7 @@ LABEL_6:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v11 = 134349056;
-      v12 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Clearing selected trip", &v11, 0xCu);
     }
 
@@ -290,8 +290,8 @@ LABEL_6:
 
   else
   {
-    v6 = [(CarSharedTripsContext *)self chromeViewController];
-    v7 = [v6 isTopContext:self];
+    chromeViewController = [(CarSharedTripsContext *)self chromeViewController];
+    v7 = [chromeViewController isTopContext:self];
 
     if (v7)
     {
@@ -299,7 +299,7 @@ LABEL_6:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v11 = 134349056;
-        v12 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Popping context", &v11, 0xCu);
       }
 
@@ -308,50 +308,50 @@ LABEL_6:
     }
   }
 
-  v10 = [(CarSharedTripsContext *)self chromeViewController];
-  [v10 captureUserAction:4];
+  chromeViewController2 = [(CarSharedTripsContext *)self chromeViewController];
+  [chromeViewController2 captureUserAction:4];
 }
 
-- (void)configureCard:(id)a3 forKey:(id)a4
+- (void)configureCard:(id)card forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  cardCopy = card;
+  keyCopy = key;
   v8 = sub_100E86D00();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134349314;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = v7;
+    v28 = keyCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Configuring card for key: %@", buf, 0x16u);
   }
 
-  if ([v7 isEqualToString:@"SharedTrip.List"])
+  if ([keyCopy isEqualToString:@"SharedTrip.List"])
   {
-    [v6 setContent:self->_listCardViewController];
+    [cardCopy setContent:self->_listCardViewController];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"CarPlay_SharedTrips_List_Title" value:@"localized string not found" table:0];
-    [v6 setTitle:v10];
+    [cardCopy setTitle:v10];
   }
 
   else
   {
-    if (![v7 isEqualToString:@"SharedTrip.Selected"])
+    if (![keyCopy isEqualToString:@"SharedTrip.Selected"])
     {
       goto LABEL_32;
     }
 
-    [v6 setContent:self->_selectedSharedTripCardViewController];
+    [cardCopy setContent:self->_selectedSharedTripCardViewController];
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"CarPlay_SharedTrip_Detail_Title" value:@"localized string not found" table:0];
-    v13 = [(CarSharedTripDetailCardViewController *)self->_selectedSharedTripCardViewController sharedTrip];
-    v14 = [v13 senderInfo];
-    v15 = [v14 localName];
-    v16 = [NSString stringWithFormat:v12, v15];
-    [v6 setTitle:v16];
+    sharedTrip = [(CarSharedTripDetailCardViewController *)self->_selectedSharedTripCardViewController sharedTrip];
+    senderInfo = [sharedTrip senderInfo];
+    localName = [senderInfo localName];
+    v16 = [NSString stringWithFormat:v12, localName];
+    [cardCopy setTitle:v16];
   }
 
-  [v6 setAccessoryType:1];
+  [cardCopy setAccessoryType:1];
   v17 = objc_alloc_init(CarCardLayout);
   [(CarCardLayout *)v17 setEdgePosition:0];
   [(CarCardLayout *)v17 setCornerPosition:4];
@@ -366,11 +366,11 @@ LABEL_6:
   [(CarCardLayout *)v17 setMargins:*&qword_10193E338, *&qword_10193E338, *&qword_10193E338, *&qword_10193E338];
   [(CarCardLayout *)v17 setFlipForRightHandDrive:1];
   v20 = v17;
-  v21 = [(CarCardLayout *)v20 primaryAxis];
-  v22 = [(CarCardLayout *)v20 cornerPosition];
-  if (v21 == 1)
+  primaryAxis = [(CarCardLayout *)v20 primaryAxis];
+  cornerPosition = [(CarCardLayout *)v20 cornerPosition];
+  if (primaryAxis == 1)
   {
-    if (v22 == 4 || [(CarCardLayout *)v20 cornerPosition]== 1 || [(CarCardLayout *)v20 edgePosition]== 2)
+    if (cornerPosition == 4 || [(CarCardLayout *)v20 cornerPosition]== 1 || [(CarCardLayout *)v20 edgePosition]== 2)
     {
       v23 = 8;
     }
@@ -395,7 +395,7 @@ LABEL_6:
 
   else
   {
-    v24 = v22 == 4 || [(CarCardLayout *)v20 cornerPosition]== 8 || [(CarCardLayout *)v20 edgePosition]== 4;
+    v24 = cornerPosition == 4 || [(CarCardLayout *)v20 cornerPosition]== 8 || [(CarCardLayout *)v20 edgePosition]== 4;
     if ([(CarCardLayout *)v20 cornerPosition]== 1 || [(CarCardLayout *)v20 cornerPosition]== 2 || [(CarCardLayout *)v20 edgePosition]== 1)
     {
       v24 |= 4uLL;
@@ -414,7 +414,7 @@ LABEL_6:
 
   [(CarCardLayout *)v20 setEdgesAffectingMapInsets:v24];
   [(CarCardLayout *)v20 setHorizontallyCenterMapInsets:0];
-  [v6 setLayout:v20];
+  [cardCopy setLayout:v20];
 
 LABEL_32:
 }
@@ -455,14 +455,14 @@ LABEL_9:
   return v5;
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a4;
+  animationCopy = animation;
   v6 = sub_100E86D00();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Resigning top context", buf, 0xCu);
   }
 
@@ -470,20 +470,20 @@ LABEL_9:
   v7[1] = 3221225472;
   v7[2] = sub_100E873E0;
   v7[3] = &unk_101661AE0;
-  v8 = [v5 isAnimated];
+  isAnimated = [animationCopy isAnimated];
   v7[4] = self;
-  [v5 addPreparation:v7];
+  [animationCopy addPreparation:v7];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animationCopy = animation;
   v8 = sub_100E86D00();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Becoming top context", buf, 0xCu);
   }
 
@@ -491,11 +491,11 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = sub_100E87580;
   v10[3] = &unk_101660CE8;
-  v12 = [v7 isAnimated];
+  isAnimated = [animationCopy isAnimated];
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v7 addPreparation:v10];
+  v11 = controllerCopy;
+  v9 = controllerCopy;
+  [animationCopy addPreparation:v10];
 }
 
 - (void)dismiss
@@ -512,20 +512,20 @@ LABEL_9:
   v3 = v2;
   if (v2)
   {
-    v4 = [(SharedTripsContext *)v2 sharedTrips];
-    v5 = [v4 count];
+    sharedTrips = [(SharedTripsContext *)v2 sharedTrips];
+    v5 = [sharedTrips count];
 
     if (v5 < 2)
     {
-      v9 = [(SharedTripsContext *)v3 sharedTrips];
-      v10 = [v9 count];
+      sharedTrips2 = [(SharedTripsContext *)v3 sharedTrips];
+      v10 = [sharedTrips2 count];
 
       if (v10 == 1)
       {
         v11 = [CarSharedTripDetailCardViewController alloc];
-        v12 = [(SharedTripsContext *)v3 sharedTrips];
-        v13 = [v12 firstObject];
-        v14 = [(CarSharedTripDetailCardViewController *)v11 initWithSharedTrip:v13 delegate:v3];
+        sharedTrips3 = [(SharedTripsContext *)v3 sharedTrips];
+        firstObject = [sharedTrips3 firstObject];
+        v14 = [(CarSharedTripDetailCardViewController *)v11 initWithSharedTrip:firstObject delegate:v3];
         selectedSharedTripCardViewController = v3->_selectedSharedTripCardViewController;
         v3->_selectedSharedTripCardViewController = v14;
       }

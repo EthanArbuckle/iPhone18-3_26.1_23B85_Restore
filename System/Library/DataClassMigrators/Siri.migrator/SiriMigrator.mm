@@ -61,14 +61,14 @@
   }
 
   v3 = objc_alloc_init(ACAccountStore);
-  v4 = [v3 aa_primaryAppleAccount];
-  if (v4)
+  aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount)
   {
     v5 = +[AFPreferences sharedPreferences];
-    v6 = [v5 cloudSyncEnabled];
-    [v4 setEnabled:v6 forDataclass:kAccountDataclassSiri];
-    [v5 setCloudSyncEnabled:v6];
-    [v3 saveAccount:v4 withCompletionHandler:0];
+    cloudSyncEnabled = [v5 cloudSyncEnabled];
+    [aa_primaryAppleAccount setEnabled:cloudSyncEnabled forDataclass:kAccountDataclassSiri];
+    [v5 setCloudSyncEnabled:cloudSyncEnabled];
+    [v3 saveAccount:aa_primaryAppleAccount withCompletionHandler:0];
   }
 
   v7 = AFSiriLogContextUtility;
@@ -214,9 +214,9 @@
       if (v7 != -1)
       {
         v8 = _AFBackedUpPreferencesValueForKey();
-        v9 = [v8 integerValue];
+        integerValue = [v8 integerValue];
 
-        if (v9 == &dword_0 + 2)
+        if (integerValue == &dword_0 + 2)
         {
           _AFBackedUpPreferencesSetValueForKey();
           AFBackedUpPreferencesSynchronize();
@@ -309,38 +309,38 @@ LABEL_12:
   }
 
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 outputVoice];
+  outputVoice = [v3 outputVoice];
 
-  if (v4)
+  if (outputVoice)
   {
     v5 = +[AFLocalization sharedInstance];
-    v6 = [v4 languageCode];
-    v7 = [v5 voiceNamesForOutputLanguageCode:v6 gender:{objc_msgSend(v4, "gender")}];
+    languageCode = [outputVoice languageCode];
+    v7 = [v5 voiceNamesForOutputLanguageCode:languageCode gender:{objc_msgSend(outputVoice, "gender")}];
 
-    v8 = [v4 name];
-    if (!v8 || ![v7 containsObject:v8])
+    name = [outputVoice name];
+    if (!name || ![v7 containsObject:name])
     {
-      v9 = [v7 firstObject];
+      firstObject = [v7 firstObject];
       v10 = AFSiriLogContextUtility;
-      if (v9)
+      if (firstObject)
       {
-        v11 = v9;
+        v11 = firstObject;
         if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
         {
           v24 = 136315650;
           v25 = "[SiriMigrator _performVoiceNameMigration]";
           v26 = 2112;
-          v27 = v8;
+          v27 = name;
           v28 = 2112;
           v29 = v11;
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "%s Updating voice name for output voice from '%@' to '%@'", &v24, 0x20u);
         }
 
-        v12 = sub_1DA0(v4, v11);
+        v12 = sub_1DA0(outputVoice, v11);
 
         _AFPreferencesSetOutputVoice();
         AFBackedUpPreferencesSynchronize();
-        v4 = v12;
+        outputVoice = v12;
         goto LABEL_13;
       }
 
@@ -349,7 +349,7 @@ LABEL_12:
         v24 = 136315394;
         v25 = "[SiriMigrator _performVoiceNameMigration]";
         v26 = 2112;
-        v27 = v4;
+        v27 = outputVoice;
         _os_log_error_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "%s Could not find a voice name for output voice %@", &v24, 0x16u);
       }
     }
@@ -357,33 +357,33 @@ LABEL_12:
 
 LABEL_13:
   v13 = +[AFPreferences sharedPreferences];
-  v14 = [v13 inProgressOutputVoice];
+  inProgressOutputVoice = [v13 inProgressOutputVoice];
 
-  if (!v14)
+  if (!inProgressOutputVoice)
   {
     goto LABEL_23;
   }
 
   v15 = +[AFLocalization sharedInstance];
-  v16 = [v14 languageCode];
-  v17 = [v15 voiceNamesForOutputLanguageCode:v16 gender:{objc_msgSend(v14, "gender")}];
+  languageCode2 = [inProgressOutputVoice languageCode];
+  v17 = [v15 voiceNamesForOutputLanguageCode:languageCode2 gender:{objc_msgSend(inProgressOutputVoice, "gender")}];
 
-  v18 = [v14 name];
-  if (v18 && [v17 containsObject:v18])
+  name2 = [inProgressOutputVoice name];
+  if (name2 && [v17 containsObject:name2])
   {
     goto LABEL_22;
   }
 
-  v19 = [v17 firstObject];
+  firstObject2 = [v17 firstObject];
   v20 = AFSiriLogContextUtility;
-  if (!v19)
+  if (!firstObject2)
   {
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_ERROR))
     {
       v24 = 136315394;
       v25 = "[SiriMigrator _performVoiceNameMigration]";
       v26 = 2112;
-      v27 = v14;
+      v27 = inProgressOutputVoice;
       _os_log_error_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "%s Could not find a voice name for in progress voice %@", &v24, 0x16u);
     }
 
@@ -392,22 +392,22 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v21 = v19;
+  v21 = firstObject2;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
   {
     v24 = 136315650;
     v25 = "[SiriMigrator _performVoiceNameMigration]";
     v26 = 2112;
-    v27 = v18;
+    v27 = name2;
     v28 = 2112;
     v29 = v21;
     _os_log_impl(&dword_0, v20, OS_LOG_TYPE_INFO, "%s Updating voice name for in progress voice from '%@' to '%@'", &v24, 0x20u);
   }
 
-  v22 = sub_1DA0(v14, v21);
+  v22 = sub_1DA0(inProgressOutputVoice, v21);
 
   _AFPreferencesSetInProgressOutputVoice();
-  v14 = v22;
+  inProgressOutputVoice = v22;
 LABEL_23:
   v23 = AFSiriLogContextUtility;
   if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
@@ -481,9 +481,9 @@ LABEL_23:
   if (v32 != -1)
   {
     v33 = +[AFPreferences sharedPreferences];
-    v34 = [v33 dictationIsEnabled];
+    dictationIsEnabled = [v33 dictationIsEnabled];
 
-    if ((v34 & 1) == 0 && !CFPreferencesGetAppBooleanValue(@"UIKeyboardSupressDictationOptIn", kCFPreferencesAnyApplication, 0))
+    if ((dictationIsEnabled & 1) == 0 && !CFPreferencesGetAppBooleanValue(@"UIKeyboardSupressDictationOptIn", kCFPreferencesAnyApplication, 0))
     {
       v35 = +[AFPreferences sharedPreferences];
       v36 = +[AFPreferences sharedPreferences];
@@ -541,12 +541,12 @@ LABEL_23:
   v3 = [[NSUserDefaults alloc] initWithSuiteName:kAFUIKitPreferencesDomain];
   v17 = [v3 BOOLForKey:v16];
   v18 = +[AFPreferences sharedPreferences];
-  v19 = [v18 dictationIsEnabled];
+  dictationIsEnabled2 = [v18 dictationIsEnabled];
 
-  if (v17 != v19)
+  if (v17 != dictationIsEnabled2)
   {
     v20 = +[AFPreferences sharedPreferences];
-    [v20 _setDictationIsEnabledLocal:v19];
+    [v20 _setDictationIsEnabledLocal:dictationIsEnabled2];
 
     v21 = +[AFPreferences sharedPreferences];
     [v21 synchronize];
@@ -562,10 +562,10 @@ LABEL_23:
   }
 
   v23 = [v3 BOOLForKey:kAFUIKitDictationAllowedKey];
-  v24 = [v22 BOOLValue];
-  if (v23 != v24)
+  bOOLValue = [v22 BOOLValue];
+  if (v23 != bOOLValue)
   {
-    v25 = v24;
+    v25 = bOOLValue;
     v26 = +[AFPreferences sharedPreferences];
     v27 = v26;
     v28 = v25;
@@ -590,11 +590,11 @@ LABEL_33:
 - (void)_performBootstrapSpeechIdMigration
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  assistantIsEnabled = [v2 assistantIsEnabled];
 
   v4 = AFSiriLogContextUtility;
   v5 = os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO);
-  if ((v3 & 1) == 0)
+  if ((assistantIsEnabled & 1) == 0)
   {
     if (!v5)
     {
@@ -755,8 +755,8 @@ LABEL_10:
     if ([v10 isEqualToString:@"en-IN"])
     {
       v11 = _AFPreferencesOutputVoice();
-      v12 = [v11 languageCode];
-      v13 = [v12 isEqualToString:@"en-GB"];
+      languageCode = [v11 languageCode];
+      v13 = [languageCode isEqualToString:@"en-GB"];
 
       if (v13)
       {
@@ -1048,7 +1048,7 @@ LABEL_40:
     return;
   }
 
-  v11 = [(SiriMigrator *)self restoredBackupBuildVersion];
+  restoredBackupBuildVersion = [(SiriMigrator *)self restoredBackupBuildVersion];
   v12 = AFShouldOptOutDataSharingForMigrationFromBuildVersion();
 
   if (v12)
@@ -1147,9 +1147,9 @@ LABEL_40:
 
   v12 = kAFAnnounceNotificationsInCarPlayType;
   v13 = _AFPreferencesValueForKey();
-  v14 = [v13 integerValue];
+  integerValue = [v13 integerValue];
 
-  if (v14)
+  if (integerValue)
   {
     v15 = AFSiriLogContextUtility;
     if (os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO))
@@ -1159,7 +1159,7 @@ LABEL_40:
       v19 = 2112;
       v20 = v12;
       v21 = 2048;
-      v22 = v14;
+      v22 = integerValue;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_INFO, "%s Migrating %@ to the backed up preferences domain. Setting value to %ld", &v17, 0x20u);
     }
 

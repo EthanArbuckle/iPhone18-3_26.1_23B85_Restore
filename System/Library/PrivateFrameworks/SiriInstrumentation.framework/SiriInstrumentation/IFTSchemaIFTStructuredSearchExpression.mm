@@ -1,36 +1,36 @@
 @interface IFTSchemaIFTStructuredSearchExpression
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTStructuredSearchExpression)initWithDictionary:(id)a3;
-- (IFTSchemaIFTStructuredSearchExpression)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTStructuredSearchExpression)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTStructuredSearchExpression)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addParameters:(id)a3;
-- (void)addProperties:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParameters:(id)parameters;
+- (void)addProperties:(id)properties;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTStructuredSearchExpression
 
-- (IFTSchemaIFTStructuredSearchExpression)initWithDictionary:(id)a3
+- (IFTSchemaIFTStructuredSearchExpression)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = IFTSchemaIFTStructuredSearchExpression;
   v5 = [(IFTSchemaIFTStructuredSearchExpression *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isExpanded"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isExpanded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTStructuredSearchExpression setIsExpanded:](v5, "setIsExpanded:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"properties"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"properties"];
     objc_opt_class();
     v29 = v6;
     if (objc_opt_isKindOfClass())
@@ -73,7 +73,7 @@
       v7 = v8;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"returnType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"returnType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       [(IFTSchemaIFTStructuredSearchExpression *)v5 setReturnType:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"parameters"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"parameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,30 +130,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTStructuredSearchExpression)initWithJSON:(id)a3
+- (IFTSchemaIFTStructuredSearchExpression)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTStructuredSearchExpression *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTStructuredSearchExpression *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTStructuredSearchExpression *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -167,16 +167,16 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTStructuredSearchExpression isExpanded](self, "isExpanded")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isExpanded"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isExpanded"];
   }
 
   if ([(NSArray *)self->_parameters count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -196,16 +196,16 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          if (v11)
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v5 addObject:v11];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v12 = [MEMORY[0x1E695DFB0] null];
-            [v5 addObject:v12];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -215,12 +215,12 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"parameters"];
+    [dictionary setObject:array forKeyedSubscript:@"parameters"];
   }
 
   if ([(NSArray *)self->_properties count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -240,16 +240,16 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          if (v19)
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v13 addObject:v19];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v20 = [MEMORY[0x1E695DFB0] null];
-            [v13 addObject:v20];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -259,28 +259,28 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"properties"];
+    [dictionary setObject:array2 forKeyedSubscript:@"properties"];
   }
 
   if (self->_returnType)
   {
-    v21 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
-    v22 = [v21 dictionaryRepresentation];
-    if (v22)
+    returnType = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
+    dictionaryRepresentation3 = [returnType dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v22 forKeyedSubscript:@"returnType"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"returnType"];
     }
 
     else
     {
-      v23 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v23 forKeyedSubscript:@"returnType"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"returnType"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v25];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v25];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -300,15 +300,15 @@
   return v4 ^ v5 ^ [(NSArray *)self->_parameters hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -316,26 +316,26 @@
   if (*&self->_has)
   {
     isExpanded = self->_isExpanded;
-    if (isExpanded != [v4 isExpanded])
+    if (isExpanded != [equalCopy isExpanded])
     {
       goto LABEL_20;
     }
   }
 
-  v6 = [(IFTSchemaIFTStructuredSearchExpression *)self properties];
-  v7 = [v4 properties];
-  if ((v6 != 0) == (v7 == 0))
+  properties = [(IFTSchemaIFTStructuredSearchExpression *)self properties];
+  properties2 = [equalCopy properties];
+  if ((properties != 0) == (properties2 == 0))
   {
     goto LABEL_19;
   }
 
-  v8 = [(IFTSchemaIFTStructuredSearchExpression *)self properties];
-  if (v8)
+  properties3 = [(IFTSchemaIFTStructuredSearchExpression *)self properties];
+  if (properties3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTStructuredSearchExpression *)self properties];
-    v11 = [v4 properties];
-    v12 = [v10 isEqual:v11];
+    v9 = properties3;
+    properties4 = [(IFTSchemaIFTStructuredSearchExpression *)self properties];
+    properties5 = [equalCopy properties];
+    v12 = [properties4 isEqual:properties5];
 
     if (!v12)
     {
@@ -347,20 +347,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
-  v7 = [v4 returnType];
-  if ((v6 != 0) == (v7 == 0))
+  properties = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
+  properties2 = [equalCopy returnType];
+  if ((properties != 0) == (properties2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
-  if (v13)
+  returnType = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
+  if (returnType)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
-    v16 = [v4 returnType];
-    v17 = [v15 isEqual:v16];
+    v14 = returnType;
+    returnType2 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
+    returnType3 = [equalCopy returnType];
+    v17 = [returnType2 isEqual:returnType3];
 
     if (!v17)
     {
@@ -372,12 +372,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTStructuredSearchExpression *)self parameters];
-  v7 = [v4 parameters];
-  if ((v6 != 0) != (v7 == 0))
+  properties = [(IFTSchemaIFTStructuredSearchExpression *)self parameters];
+  properties2 = [equalCopy parameters];
+  if ((properties != 0) != (properties2 == 0))
   {
-    v18 = [(IFTSchemaIFTStructuredSearchExpression *)self parameters];
-    if (!v18)
+    parameters = [(IFTSchemaIFTStructuredSearchExpression *)self parameters];
+    if (!parameters)
     {
 
 LABEL_23:
@@ -385,10 +385,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(IFTSchemaIFTStructuredSearchExpression *)self parameters];
-    v21 = [v4 parameters];
-    v22 = [v20 isEqual:v21];
+    v19 = parameters;
+    parameters2 = [(IFTSchemaIFTStructuredSearchExpression *)self parameters];
+    parameters3 = [equalCopy parameters];
+    v22 = [parameters2 isEqual:parameters3];
 
     if (v22)
     {
@@ -408,10 +408,10 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -448,11 +448,11 @@ LABEL_21:
     while (v7);
   }
 
-  v10 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
+  returnType = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
 
-  if (v10)
+  if (returnType)
   {
-    v11 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
+    returnType2 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
     PBDataWriterWriteSubmessage();
   }
 
@@ -488,63 +488,63 @@ LABEL_21:
   }
 }
 
-- (void)addParameters:(id)a3
+- (void)addParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   parameters = self->_parameters;
-  v8 = v4;
+  v8 = parametersCopy;
   if (!parameters)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_parameters;
-    self->_parameters = v6;
+    self->_parameters = array;
 
-    v4 = v8;
+    parametersCopy = v8;
     parameters = self->_parameters;
   }
 
-  [(NSArray *)parameters addObject:v4];
+  [(NSArray *)parameters addObject:parametersCopy];
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   properties = self->_properties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!properties)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_properties;
-    self->_properties = v6;
+    self->_properties = array;
 
-    v4 = v8;
+    propertiesCopy = v8;
     properties = self->_properties;
   }
 
-  [(NSArray *)properties addObject:v4];
+  [(NSArray *)properties addObject:propertiesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v14.receiver = self;
   v14.super_class = IFTSchemaIFTStructuredSearchExpression;
-  v5 = [(SISchemaInstrumentationMessage *)&v14 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTStructuredSearchExpression *)self properties];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v14 applySensitiveConditionsPolicy:policyCopy];
+  properties = [(IFTSchemaIFTStructuredSearchExpression *)self properties];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:properties underConditions:policyCopy];
   [(IFTSchemaIFTStructuredSearchExpression *)self setProperties:v7];
 
-  v8 = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
-  v10 = [v9 suppressMessage];
+  returnType = [(IFTSchemaIFTStructuredSearchExpression *)self returnType];
+  v9 = [returnType applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v9 suppressMessage];
 
-  if (v10)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTStructuredSearchExpression *)self deleteReturnType];
   }
 
-  v11 = [(IFTSchemaIFTStructuredSearchExpression *)self parameters];
-  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v11 underConditions:v4];
+  parameters = [(IFTSchemaIFTStructuredSearchExpression *)self parameters];
+  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:parameters underConditions:policyCopy];
   [(IFTSchemaIFTStructuredSearchExpression *)self setParameters:v12];
 
   return v5;

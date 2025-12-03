@@ -1,27 +1,27 @@
 @interface ACCAnalyticsLogger
-+ (id)databasePathForUser:(int)a3;
-+ (int64_t)fuzzyDaysSinceDate:(id)a3;
-+ (void)addBuiltInFieldsToEvent:(id)a3;
-- (BOOL)_onQueuePostJSON:(id)a3 error:(id *)a4 httpStatusCode:(int64_t *)a5;
-- (BOOL)forceUploadWithError:(id *)a3 httpStatusCode:(int64_t *)a4;
++ (id)databasePathForUser:(int)user;
++ (int64_t)fuzzyDaysSinceDate:(id)date;
++ (void)addBuiltInFieldsToEvent:(id)event;
+- (BOOL)_onQueuePostJSON:(id)n error:(id *)error httpStatusCode:(int64_t *)code;
+- (BOOL)forceUploadWithError:(id *)error httpStatusCode:(int64_t *)code;
 - (NSURL)figaroUploadURL;
-- (id)datePropertyForKey:(id)a3;
-- (id)eventDictForEventName:(id)a3 withAttributes:(id)a4;
-- (id)eventDictWithBlacklistedFieldsStrippedFrom:(id)a3;
-- (id)getLoggingJSON:(BOOL)a3 error:(id *)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)_logEventNamed:(id)a3 withAttributes:(id)a4;
-- (void)logEventNamed:(id)a3 withAttributes:(id)a4;
-- (void)resetUploadDateAndClearDBEntries:(BOOL)a3 dueToError:(BOOL)a4;
-- (void)setDateProperty:(id)a3 forKey:(id)a4;
-- (void)setIgnoreServerDisablingMessages:(BOOL)a3;
+- (id)datePropertyForKey:(id)key;
+- (id)eventDictForEventName:(id)name withAttributes:(id)attributes;
+- (id)eventDictWithBlacklistedFieldsStrippedFrom:(id)from;
+- (id)getLoggingJSON:(BOOL)n error:(id *)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_logEventNamed:(id)named withAttributes:(id)attributes;
+- (void)logEventNamed:(id)named withAttributes:(id)attributes;
+- (void)resetUploadDateAndClearDBEntries:(BOOL)entries dueToError:(BOOL)error;
+- (void)setDateProperty:(id)property forKey:(id)key;
+- (void)setIgnoreServerDisablingMessages:(BOOL)messages;
 @end
 
 @implementation ACCAnalyticsLogger
 
-+ (id)databasePathForUser:(int)a3
++ (id)databasePathForUser:(int)user
 {
-  if (a3)
+  if (user)
   {
     return @"/var/mobile/Library/CoreAccessories/Analytics/acc_analytics_accessoryd_v3.db";
   }
@@ -32,11 +32,11 @@
   }
 }
 
-+ (int64_t)fuzzyDaysSinceDate:(id)a3
++ (int64_t)fuzzyDaysSinceDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSDate date];
-  [v4 timeIntervalSinceDate:v3];
+  [v4 timeIntervalSinceDate:dateCopy];
   v6 = v5;
 
   if (v6 < 86400.0)
@@ -62,12 +62,12 @@
   return 30;
 }
 
-- (void)logEventNamed:(id)a3 withAttributes:(id)a4
+- (void)logEventNamed:(id)named withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  namedCopy = named;
+  attributesCopy = attributes;
+  v8 = attributesCopy;
+  if (!namedCopy)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -81,7 +81,7 @@ LABEL_33:
     goto LABEL_67;
   }
 
-  if (!v7)
+  if (!attributesCopy)
   {
     if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -105,28 +105,28 @@ LABEL_33:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v80 = v6;
+      v80 = namedCopy;
       v81 = 2112;
       v82 = v9;
       _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[#ACCEventLogger] Figaro event: %@\neventDict: %@", buf, 0x16u);
     }
 
     v10 = MKBDeviceUnlockedSinceBoot();
-    v11 = [(ACCAnalyticsLogger *)self eventCacheLock];
-    [v11 lock];
+    eventCacheLock = [(ACCAnalyticsLogger *)self eventCacheLock];
+    [eventCacheLock lock];
 
-    v12 = [(ACCAnalyticsLogger *)self user];
+    user = [(ACCAnalyticsLogger *)self user];
     if (v10)
     {
-      if (v12)
+      if (user)
       {
         if ([(ACCAnalyticsLogger *)self user]!= 1)
         {
           goto LABEL_59;
         }
 
-        v13 = [(ACCAnalyticsLogger *)self accessorydEventsBeforeFirstUnlock];
-        v14 = [v13 count];
+        accessorydEventsBeforeFirstUnlock = [(ACCAnalyticsLogger *)self accessorydEventsBeforeFirstUnlock];
+        v14 = [accessorydEventsBeforeFirstUnlock count];
 
         if (!v14)
         {
@@ -135,7 +135,7 @@ LABEL_33:
 
         v48 = v9;
         v49 = v8;
-        v50 = v6;
+        v50 = namedCopy;
         v65 = 0u;
         v66 = 0u;
         v63 = 0u;
@@ -204,21 +204,21 @@ LABEL_33:
           while (v55);
         }
 
-        v24 = [(ACCAnalyticsLogger *)self accessorydEventsBeforeFirstUnlock];
+        accessorydEventsBeforeFirstUnlock2 = [(ACCAnalyticsLogger *)self accessorydEventsBeforeFirstUnlock];
       }
 
       else
       {
-        v31 = [(ACCAnalyticsLogger *)self pluginEventsBeforeFirstUnlock];
-        v32 = [v31 count];
+        pluginEventsBeforeFirstUnlock = [(ACCAnalyticsLogger *)self pluginEventsBeforeFirstUnlock];
+        v32 = [pluginEventsBeforeFirstUnlock count];
 
         if (!v32)
         {
 LABEL_59:
-          v43 = [(ACCAnalyticsLogger *)self eventCacheLock];
-          [v43 unlock];
+          eventCacheLock2 = [(ACCAnalyticsLogger *)self eventCacheLock];
+          [eventCacheLock2 unlock];
 
-          [(ACCAnalyticsLogger *)self _logEventNamed:v6 withAttributes:v9];
+          [(ACCAnalyticsLogger *)self _logEventNamed:namedCopy withAttributes:v9];
 LABEL_66:
 
           goto LABEL_67;
@@ -226,7 +226,7 @@ LABEL_66:
 
         v48 = v9;
         v49 = v8;
-        v50 = v6;
+        v50 = namedCopy;
         v73 = 0u;
         v74 = 0u;
         v71 = 0u;
@@ -295,19 +295,19 @@ LABEL_66:
           while (v56);
         }
 
-        v24 = [(ACCAnalyticsLogger *)self pluginEventsBeforeFirstUnlock];
+        accessorydEventsBeforeFirstUnlock2 = [(ACCAnalyticsLogger *)self pluginEventsBeforeFirstUnlock];
       }
 
-      v42 = v24;
-      [v24 removeAllObjects];
+      v42 = accessorydEventsBeforeFirstUnlock2;
+      [accessorydEventsBeforeFirstUnlock2 removeAllObjects];
 
       v8 = v49;
-      v6 = v50;
+      namedCopy = v50;
       v9 = v48;
       goto LABEL_59;
     }
 
-    if (v12)
+    if (user)
     {
       if ([(ACCAnalyticsLogger *)self user]!= 1)
       {
@@ -317,21 +317,21 @@ LABEL_66:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v80 = v6;
+        v80 = namedCopy;
         _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[#ACCEventLogger] Adding event: %@ to accessoryd array", buf, 0xCu);
       }
 
-      v26 = [(ACCAnalyticsLogger *)self accessorydEventsBeforeFirstUnlock];
-      v27 = [NSDictionary dictionaryWithObject:v9 forKey:v6];
-      [v26 addObject:v27];
+      accessorydEventsBeforeFirstUnlock3 = [(ACCAnalyticsLogger *)self accessorydEventsBeforeFirstUnlock];
+      v27 = [NSDictionary dictionaryWithObject:v9 forKey:namedCopy];
+      [accessorydEventsBeforeFirstUnlock3 addObject:v27];
 
       if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_65;
       }
 
-      v28 = [(ACCAnalyticsLogger *)self accessorydEventsBeforeFirstUnlock];
-      v29 = [v28 count];
+      accessorydEventsBeforeFirstUnlock4 = [(ACCAnalyticsLogger *)self accessorydEventsBeforeFirstUnlock];
+      v29 = [accessorydEventsBeforeFirstUnlock4 count];
       *buf = 134217984;
       v80 = v29;
       v30 = "[#ACCEventLogger] accessorydEventsBeforeFirstUnlock count: %lu";
@@ -342,21 +342,21 @@ LABEL_66:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v80 = v6;
+        v80 = namedCopy;
         _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[#ACCEventLogger] Adding event: %@ to plugin array", buf, 0xCu);
       }
 
-      v44 = [(ACCAnalyticsLogger *)self pluginEventsBeforeFirstUnlock];
-      v45 = [NSDictionary dictionaryWithObject:v9 forKey:v6];
-      [v44 addObject:v45];
+      pluginEventsBeforeFirstUnlock2 = [(ACCAnalyticsLogger *)self pluginEventsBeforeFirstUnlock];
+      v45 = [NSDictionary dictionaryWithObject:v9 forKey:namedCopy];
+      [pluginEventsBeforeFirstUnlock2 addObject:v45];
 
       if (!os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_65;
       }
 
-      v28 = [(ACCAnalyticsLogger *)self pluginEventsBeforeFirstUnlock];
-      v46 = [v28 count];
+      accessorydEventsBeforeFirstUnlock4 = [(ACCAnalyticsLogger *)self pluginEventsBeforeFirstUnlock];
+      v46 = [accessorydEventsBeforeFirstUnlock4 count];
       *buf = 134217984;
       v80 = v46;
       v30 = "[#ACCEventLogger] pluginEventsBeforeFirstUnlock count: %lu";
@@ -365,8 +365,8 @@ LABEL_66:
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, v30, buf, 0xCu);
 
 LABEL_65:
-    v47 = [(ACCAnalyticsLogger *)self eventCacheLock];
-    [v47 unlock];
+    eventCacheLock3 = [(ACCAnalyticsLogger *)self eventCacheLock];
+    [eventCacheLock3 unlock];
 
     goto LABEL_66;
   }
@@ -374,23 +374,23 @@ LABEL_65:
 LABEL_67:
 }
 
-- (void)_logEventNamed:(id)a3 withAttributes:(id)a4
+- (void)_logEventNamed:(id)named withAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
+  namedCopy = named;
+  attributesCopy = attributes;
   objc_initWeak(&location, self);
-  v8 = [(ACCAnalyticsLogger *)self loggingQueue];
+  loggingQueue = [(ACCAnalyticsLogger *)self loggingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __52__ACCAnalyticsLogger__logEventNamed_withAttributes___block_invoke;
   block[3] = &unk_59438;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = attributesCopy;
+  selfCopy = self;
+  v14 = namedCopy;
+  v9 = namedCopy;
+  v10 = attributesCopy;
+  dispatch_async(loggingQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -513,7 +513,7 @@ void __52__ACCAnalyticsLogger__logEventNamed_withAttributes___block_invoke_107(u
   }
 }
 
-- (void)resetUploadDateAndClearDBEntries:(BOOL)a3 dueToError:(BOOL)a4
+- (void)resetUploadDateAndClearDBEntries:(BOOL)entries dueToError:(BOOL)error
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -522,8 +522,8 @@ void __52__ACCAnalyticsLogger__logEventNamed_withAttributes___block_invoke_107(u
   block[2] = __66__ACCAnalyticsLogger_resetUploadDateAndClearDBEntries_dueToError___block_invoke;
   block[3] = &unk_59460;
   objc_copyWeak(&v9, &location);
-  v10 = a3;
-  v11 = a4;
+  entriesCopy = entries;
+  errorCopy = error;
   dispatch_sync(queue, block);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -561,23 +561,23 @@ LABEL_8:
   }
 }
 
-- (id)eventDictForEventName:(id)a3 withAttributes:(id)a4
+- (id)eventDictForEventName:(id)name withAttributes:(id)attributes
 {
-  if (a4)
+  if (attributes)
   {
-    v7 = a3;
-    v8 = [a4 mutableCopy];
+    nameCopy = name;
+    v8 = [attributes mutableCopy];
   }
 
   else
   {
-    v9 = a3;
+    nameCopy2 = name;
     v8 = +[NSMutableDictionary dictionary];
   }
 
   v10 = v8;
   [v8 setObject:self->_figaroTopicName forKeyedSubscript:@"topic"];
-  [v10 setObject:a3 forKeyedSubscript:@"eventType"];
+  [v10 setObject:name forKeyedSubscript:@"eventType"];
 
   v11 = +[NSDate date];
   [v11 timeIntervalSince1970];
@@ -608,9 +608,9 @@ void __59__ACCAnalyticsLogger_eventDictForEventName_withAttributes___block_invok
   }
 }
 
-- (id)eventDictWithBlacklistedFieldsStrippedFrom:(id)a3
+- (id)eventDictWithBlacklistedFieldsStrippedFrom:(id)from
 {
-  v4 = [a3 mutableCopy];
+  v4 = [from mutableCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -642,26 +642,26 @@ void __59__ACCAnalyticsLogger_eventDictForEventName_withAttributes___block_invok
   return v4;
 }
 
-- (void)setDateProperty:(id)a3 forKey:(id)a4
+- (void)setDateProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __45__ACCAnalyticsLogger_setDateProperty_forKey___block_invoke;
   block[3] = &unk_594B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = propertyCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = propertyCopy;
   dispatch_sync(queue, block);
 }
 
-- (id)datePropertyForKey:(id)a3
+- (id)datePropertyForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -673,10 +673,10 @@ void __59__ACCAnalyticsLogger_eventDictForEventName_withAttributes___block_invok
   block[1] = 3221225472;
   block[2] = __41__ACCAnalyticsLogger_datePropertyForKey___block_invoke;
   block[3] = &unk_594D8;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -893,7 +893,7 @@ LABEL_19:
 LABEL_35:
 }
 
-- (BOOL)forceUploadWithError:(id *)a3 httpStatusCode:(int64_t *)a4
+- (BOOL)forceUploadWithError:(id *)error httpStatusCode:(int64_t *)code
 {
   v21 = 0;
   v22 = &v21;
@@ -903,25 +903,25 @@ LABEL_35:
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v7 = [(ACCAnalyticsLogger *)self getLoggingJSON:0 error:a3];
+  v7 = [(ACCAnalyticsLogger *)self getLoggingJSON:0 error:error];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __58__ACCAnalyticsLogger_forceUploadWithError_httpStatusCode___block_invoke;
   block[3] = &unk_59528;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v15 = &v21;
-  v16 = a3;
+  errorCopy = error;
   v14 = &v17;
   v9 = v7;
   dispatch_sync(queue, block);
-  *a4 = v18[3];
-  LOBYTE(a4) = *(v22 + 24);
+  *code = v18[3];
+  LOBYTE(code) = *(v22 + 24);
 
   _Block_object_dispose(&v17, 8);
   _Block_object_dispose(&v21, 8);
-  return a4;
+  return code;
 }
 
 id *__58__ACCAnalyticsLogger_forceUploadWithError_httpStatusCode___block_invoke(id *result)
@@ -942,9 +942,9 @@ id *__58__ACCAnalyticsLogger_forceUploadWithError_httpStatusCode___block_invoke(
   return result;
 }
 
-- (BOOL)_onQueuePostJSON:(id)a3 error:(id *)a4 httpStatusCode:(int64_t *)a5
+- (BOOL)_onQueuePostJSON:(id)n error:(id *)error httpStatusCode:(int64_t *)code
 {
-  v7 = a3;
+  nCopy = n;
   dispatch_assert_queue_V2(self->_queue);
   v8 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   v33 = @"User-Agent";
@@ -954,8 +954,8 @@ id *__58__ACCAnalyticsLogger_forceUploadWithError_httpStatusCode___block_invoke(
   [v8 setHTTPAdditionalHeaders:v10];
 
   v11 = [NSURLSession sessionWithConfiguration:v8 delegate:self delegateQueue:0];
-  v12 = [(ACCAnalyticsLogger *)self figaroUploadURL];
-  if (v12)
+  figaroUploadURL = [(ACCAnalyticsLogger *)self figaroUploadURL];
+  if (figaroUploadURL)
   {
     goto LABEL_5;
   }
@@ -966,14 +966,14 @@ id *__58__ACCAnalyticsLogger_forceUploadWithError_httpStatusCode___block_invoke(
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "[#ACCEventLogger] failed to get a figaro endpoint - using bag instead", buf, 2u);
   }
 
-  v12 = [(ACCAnalyticsLogger *)self figaroBagURL];
-  if (v12)
+  figaroUploadURL = [(ACCAnalyticsLogger *)self figaroBagURL];
+  if (figaroUploadURL)
   {
 LABEL_5:
     v13 = objc_alloc_init(NSMutableURLRequest);
-    [v13 setURL:v12];
+    [v13 setURL:figaroUploadURL];
     [v13 setHTTPMethod:@"POST"];
-    [v13 setHTTPBody:v7];
+    [v13 setHTTPBody:nCopy];
     v14 = dispatch_semaphore_create(0);
     *buf = 0;
     v30 = buf;
@@ -1001,7 +1001,7 @@ LABEL_5:
 
     [v16 resume];
     dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
-    *a5 = v26[3];
+    *code = v26[3];
     v17 = v30[24];
 
     _Block_object_dispose(&v25, 8);
@@ -1089,44 +1089,44 @@ LABEL_16:
   [*(a1 + 40) invalidateAndCancel];
 }
 
-+ (void)addBuiltInFieldsToEvent:(id)a3
++ (void)addBuiltInFieldsToEvent:(id)event
 {
-  v3 = a3;
-  v4 = v3;
+  eventCopy = event;
+  v4 = eventCopy;
   if (addBuiltInFieldsToEvent__onceToken != -1)
   {
     +[ACCAnalyticsLogger addBuiltInFieldsToEvent:];
-    v3 = v4;
+    eventCopy = v4;
   }
 
   if (addBuiltInFieldsToEvent__build)
   {
     [v4 setObject:addBuiltInFieldsToEvent__build forKeyedSubscript:@"build"];
-    v3 = v4;
+    eventCopy = v4;
   }
 
   if (addBuiltInFieldsToEvent__productVersion)
   {
     [v4 setObject:addBuiltInFieldsToEvent__productVersion forKeyedSubscript:@"productVersion"];
-    v3 = v4;
+    eventCopy = v4;
   }
 
   if (addBuiltInFieldsToEvent__modelNumberStr)
   {
     [v4 setObject:addBuiltInFieldsToEvent__modelNumberStr forKeyedSubscript:@"modelString"];
-    v3 = v4;
+    eventCopy = v4;
   }
 
   if (addBuiltInFieldsToEvent__platform)
   {
     [v4 setObject:addBuiltInFieldsToEvent__platform forKeyedSubscript:@"platform"];
-    v3 = v4;
+    eventCopy = v4;
   }
 
   if (addBuiltInFieldsToEvent__productType)
   {
     [v4 setObject:addBuiltInFieldsToEvent__productType forKeyedSubscript:@"productType"];
-    v3 = v4;
+    eventCopy = v4;
   }
 }
 
@@ -1164,7 +1164,7 @@ void __46__ACCAnalyticsLogger_addBuiltInFieldsToEvent___block_invoke(id a1)
   }
 }
 
-- (id)getLoggingJSON:(BOOL)a3 error:(id *)a4
+- (id)getLoggingJSON:(BOOL)n error:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -1178,9 +1178,9 @@ void __46__ACCAnalyticsLogger_addBuiltInFieldsToEvent___block_invoke(id a1)
   v7[2] = __43__ACCAnalyticsLogger_getLoggingJSON_error___block_invoke;
   v7[3] = &unk_59598;
   v7[5] = &v9;
-  v7[6] = a4;
+  v7[6] = error;
   v7[4] = self;
-  v8 = a3;
+  nCopy = n;
   dispatch_sync(queue, v7);
   v5 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1286,17 +1286,17 @@ void __43__ACCAnalyticsLogger_getLoggingJSON_error___block_invoke(uint64_t a1)
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [ACCAnalyticsLogger URLSession:didReceiveChallenge:completionHandler:];
   }
 
-  v11 = v10;
+  v11 = handlerCopy;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -1304,14 +1304,14 @@ void __43__ACCAnalyticsLogger_getLoggingJSON_error___block_invoke(uint64_t a1)
   }
 
   result = kSecTrustResultInvalid;
-  if ([v9 previousFailureCount] >= 1)
+  if ([challengeCopy previousFailureCount] >= 1)
   {
     goto LABEL_5;
   }
 
-  v12 = [v9 protectionSpace];
-  v13 = [v12 authenticationMethod];
-  v14 = [v13 isEqualToString:NSURLAuthenticationMethodServerTrust];
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v14 = [authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
 
   if (!v14)
   {
@@ -1319,10 +1319,10 @@ void __43__ACCAnalyticsLogger_getLoggingJSON_error___block_invoke(uint64_t a1)
     goto LABEL_12;
   }
 
-  v15 = [v9 protectionSpace];
-  v16 = [v15 serverTrust];
+  protectionSpace2 = [challengeCopy protectionSpace];
+  serverTrust = [protectionSpace2 serverTrust];
 
-  SecTrustEvaluate(v16, &result);
+  SecTrustEvaluate(serverTrust, &result);
   if (*(self + 88))
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -1337,7 +1337,7 @@ void __43__ACCAnalyticsLogger_getLoggingJSON_error___block_invoke(uint64_t a1)
   if (result == kSecTrustResultProceed || result == kSecTrustResultUnspecified)
   {
 LABEL_15:
-    v17 = [NSURLCredential credentialForTrust:v16];
+    v17 = [NSURLCredential credentialForTrust:serverTrust];
     (v11)[2](v11, 0, v17);
 
     goto LABEL_12;
@@ -1348,9 +1348,9 @@ LABEL_5:
 LABEL_12:
 }
 
-- (void)setIgnoreServerDisablingMessages:(BOOL)a3
+- (void)setIgnoreServerDisablingMessages:(BOOL)messages
 {
-  if (a3)
+  if (messages)
   {
     v3 = 8;
   }

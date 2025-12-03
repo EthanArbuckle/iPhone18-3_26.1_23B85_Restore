@@ -29,7 +29,7 @@
   v7 = (v5.i32[0] - 13) < 0xFFFFFFF4 || a3 >> 30 == 3 || (a3 & 0x1F) == 0;
   if (!v7 && ((a3 >> 21) & 0x3F) <= 0x3B && ((a3 >> 15) & 0x3E) <= 0x3B)
   {
-    v4 = [a1 initWithTimeIntervalSince1970:mktime(&v9)];
+    v4 = [self initWithTimeIntervalSince1970:mktime(&v9)];
   }
 
   return v4;
@@ -37,7 +37,7 @@
 
 - (uint64_t)tsu_DOSTime
 {
-  [a1 timeIntervalSince1970];
+  [self timeIntervalSince1970];
   v5 = v1;
   v2 = localtime(&v5);
   tm_year = v2->tm_year;
@@ -55,22 +55,22 @@
   v9 = a4;
   if (!v8)
   {
-    v16 = @" ";
+    tsu_fullFormattedDateWithPeriod = @" ";
     goto LABEL_23;
   }
 
-  if ([a1 compare:v8] == -1)
+  if ([self compare:v8] == -1)
   {
-    v16 = [a1 tsu_fullFormattedDateWithPeriod];
+    tsu_fullFormattedDateWithPeriod = [self tsu_fullFormattedDateWithPeriod];
     goto LABEL_23;
   }
 
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
-  v11 = [v10 components:240 fromDate:v8 toDate:a1 options:0];
-  v12 = [v10 components:752 fromDate:v8];
-  v13 = [v10 components:512 fromDate:a1];
-  v14 = [v13 weekday];
-  v15 = v14 - [v12 weekday] == 1 || objc_msgSend(v12, "weekday") == 7 && objc_msgSend(v13, "weekday") == 1;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v11 = [currentCalendar components:240 fromDate:v8 toDate:self options:0];
+  v12 = [currentCalendar components:752 fromDate:v8];
+  v13 = [currentCalendar components:512 fromDate:self];
+  weekday = [v13 weekday];
+  v15 = weekday - [v12 weekday] == 1 || objc_msgSend(v12, "weekday") == 7 && objc_msgSend(v13, "weekday") == 1;
   if ([v11 day] < 365)
   {
     if ([v11 day] < 8)
@@ -81,12 +81,12 @@
         {
           if (a5)
           {
-            [a1 p_ruleForYesterdayShortAsPossible:v8];
+            [self p_ruleForYesterdayShortAsPossible:v8];
           }
 
           else
           {
-            [a1 p_ruleForYesterday:v8 withDateFormatter:v9];
+            [self p_ruleForYesterday:v8 withDateFormatter:v9];
           }
           v17 = ;
         }
@@ -101,39 +101,39 @@
             goto LABEL_22;
           }
 
-          v17 = [a1 p_rule1To59MinutesAgo:{objc_msgSend(v11, "minute")}];
+          v17 = [self p_rule1To59MinutesAgo:{objc_msgSend(v11, "minute")}];
         }
 
         else
         {
-          v17 = [a1 p_rule1To23HoursAgo:{objc_msgSend(v11, "hour")}];
+          v17 = [self p_rule1To23HoursAgo:{objc_msgSend(v11, "hour")}];
         }
       }
 
       else
       {
-        v17 = [a1 p_ruleForUpToSevenDaysAgoAndNotYesterdayForDate:v8 withDateFormatter:v9];
+        v17 = [self p_ruleForUpToSevenDaysAgoAndNotYesterdayForDate:v8 withDateFormatter:v9];
       }
     }
 
     else
     {
-      v17 = [a1 p_ruleForOverAWeekAgoForDate:v8 withDateFormatter:v9];
+      v17 = [self p_ruleForOverAWeekAgoForDate:v8 withDateFormatter:v9];
     }
   }
 
   else
   {
-    v17 = [a1 p_ruleForOverAYearAgoForDate:v8 withDateFormatter:v9];
+    v17 = [self p_ruleForOverAYearAgoForDate:v8 withDateFormatter:v9];
   }
 
   v18 = v17;
 LABEL_22:
-  v16 = v18;
+  tsu_fullFormattedDateWithPeriod = v18;
 
 LABEL_23:
 
-  return v16;
+  return tsu_fullFormattedDateWithPeriod;
 }
 
 - (id)p_rule1To59MinutesAgo:()TSUAdditions
@@ -233,7 +233,7 @@ LABEL_23:
 {
   v2 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v2 setLocalizedDateFormatFromTemplate:@"MMMMddyyyyhhmma"];
-  v3 = [v2 stringFromDate:a1];
+  v3 = [v2 stringFromDate:self];
 
   return v3;
 }
@@ -243,7 +243,7 @@ LABEL_23:
   v4 = a3;
   if (v4)
   {
-    [a1 timeIntervalSince1970];
+    [self timeIntervalSince1970];
     v6 = v5;
     [v4 timeIntervalSince1970];
     v8 = v6 == v7 || vabdd_f64(v6, v7) < fabs(v7 * 1.0e-10);

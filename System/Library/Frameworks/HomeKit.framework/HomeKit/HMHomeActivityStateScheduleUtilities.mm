@@ -1,7 +1,7 @@
 @interface HMHomeActivityStateScheduleUtilities
-+ (BOOL)areValidScheduleEntries:(id)a3;
++ (BOOL)areValidScheduleEntries:(id)entries;
 + (id)logCategory;
-+ (id)sortedScheduleEntries:(id)a3;
++ (id)sortedScheduleEntries:(id)entries;
 @end
 
 @implementation HMHomeActivityStateScheduleUtilities
@@ -28,27 +28,27 @@ uint64_t __51__HMHomeActivityStateScheduleUtilities_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (BOOL)areValidScheduleEntries:(id)a3
++ (BOOL)areValidScheduleEntries:(id)entries
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] >= 2)
+  entriesCopy = entries;
+  if ([entriesCopy count] >= 2)
   {
-    v6 = [HMHomeActivityStateScheduleUtilities sortedScheduleEntries:v4];
+    v6 = [HMHomeActivityStateScheduleUtilities sortedScheduleEntries:entriesCopy];
     if ([v6 count] == 2)
     {
 LABEL_8:
-      v15 = [v6 lastObject];
-      v9 = [v15 end];
+      lastObject = [v6 lastObject];
+      start3 = [lastObject end];
 
-      v16 = [v6 lastObject];
-      v11 = [v16 start];
+      lastObject2 = [v6 lastObject];
+      start = [lastObject2 start];
 
-      v17 = [v6 firstObject];
-      v13 = [v17 start];
+      firstObject = [v6 firstObject];
+      start2 = [firstObject start];
 
-      v19 = scheduleEntryComparator_block_invoke(v18, v11, v9);
-      if (v19 == -1 || scheduleEntryComparator_block_invoke(v19, v9, v13) == -1)
+      v19 = scheduleEntryComparator_block_invoke(v18, start, start3);
+      if (v19 == -1 || scheduleEntryComparator_block_invoke(v19, start3, start2) == -1)
       {
         v5 = 1;
 LABEL_20:
@@ -57,7 +57,7 @@ LABEL_20:
       }
 
       v20 = objc_autoreleasePoolPush();
-      v21 = a1;
+      selfCopy = self;
       v22 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -72,11 +72,11 @@ LABEL_19:
       v31 = 138544130;
       v32 = v23;
       v33 = 2112;
-      v34 = v11;
+      v34 = start;
       v35 = 2112;
-      v36 = v9;
+      v36 = start3;
       v37 = 2112;
-      v38 = v13;
+      v38 = start2;
       v24 = "%{public}@Invalid schedule as the last end date component is invalid. lastStart:%@ lastEnd:%@ firstStart:%@";
       v25 = v22;
       v26 = 42;
@@ -88,18 +88,18 @@ LABEL_19:
       while (1)
       {
         v8 = [v6 objectAtIndex:v7];
-        v9 = [v8 start];
+        start3 = [v8 start];
 
         v10 = [v6 objectAtIndex:v7];
-        v11 = [v10 end];
+        start = [v10 end];
 
         v12 = [v6 objectAtIndex:++v7];
-        v13 = [v12 start];
+        start2 = [v12 start];
 
-        if (scheduleEntryComparator_block_invoke(v14, v9, v11) != -1)
+        if (scheduleEntryComparator_block_invoke(v14, start3, start) != -1)
         {
           v20 = objc_autoreleasePoolPush();
-          v27 = a1;
+          selfCopy2 = self;
           v22 = HMFGetOSLogHandle();
           if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
           {
@@ -110,14 +110,14 @@ LABEL_19:
           v31 = 138543874;
           v32 = v23;
           v33 = 2112;
-          v34 = v9;
+          v34 = start3;
           v35 = 2112;
-          v36 = v11;
+          v36 = start;
           v24 = "%{public}@Invalid schedule due to start:%@ not coming before end:%@";
           goto LABEL_17;
         }
 
-        if (scheduleEntryComparator_block_invoke(-1, v11, v13) != -1)
+        if (scheduleEntryComparator_block_invoke(-1, start, start2) != -1)
         {
           break;
         }
@@ -129,7 +129,7 @@ LABEL_19:
       }
 
       v20 = objc_autoreleasePoolPush();
-      v28 = a1;
+      selfCopy3 = self;
       v22 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -140,9 +140,9 @@ LABEL_19:
       v31 = 138543874;
       v32 = v23;
       v33 = 2112;
-      v34 = v11;
+      v34 = start;
       v35 = 2112;
-      v36 = v13;
+      v36 = start2;
       v24 = "%{public}@Invalid schedule due to end:%@ overlapping with following start:%@";
 LABEL_17:
       v25 = v22;
@@ -161,13 +161,13 @@ LABEL_21:
   return v5;
 }
 
-+ (id)sortedScheduleEntries:(id)a3
++ (id)sortedScheduleEntries:(id)entries
 {
   v3 = MEMORY[0x1E696AEB0];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = [v3 sortDescriptorWithKey:@"start" ascending:1 comparator:&__block_literal_global_54297];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
-  v7 = [v4 sortedArrayUsingDescriptors:v6];
+  v7 = [entriesCopy sortedArrayUsingDescriptors:v6];
 
   return v7;
 }

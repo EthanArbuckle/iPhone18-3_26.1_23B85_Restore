@@ -1,14 +1,14 @@
 @interface HNDMouseDevice
-- (BOOL)handleHIDEvent:(id)a3;
+- (BOOL)handleHIDEvent:(id)event;
 - (BOOL)load;
 - (HNDMouseDevice)init;
-- (id)actionOverrideForUsagePage:(unsigned int)a3 usage:(unsigned int)a4;
+- (id)actionOverrideForUsagePage:(unsigned int)page usage:(unsigned int)usage;
 - (id)description;
 - (void)_setupAXMouseListener;
 - (void)_updateAXMouse;
 - (void)_updateSensitivityMultiplier;
 - (void)dealloc;
-- (void)updateMouseService:(__IOHIDServiceClient *)a3;
+- (void)updateMouseService:(__IOHIDServiceClient *)service;
 @end
 
 @implementation HNDMouseDevice
@@ -112,13 +112,13 @@
   isLoaded = self->super._isLoaded;
   v6.receiver = self;
   v6.super_class = HNDMouseDevice;
-  v4 = [(HNDDevice *)&v6 load];
-  if (v4 && !isLoaded)
+  load = [(HNDDevice *)&v6 load];
+  if (load && !isLoaded)
   {
     [(HNDMouseDevice *)self _setupAXMouseListener];
   }
 
-  return v4;
+  return load;
 }
 
 - (void)_updateAXMouse
@@ -146,22 +146,22 @@
   self->_sensitivityMultiplier = v3;
 }
 
-- (BOOL)handleHIDEvent:(id)a3
+- (BOOL)handleHIDEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 senderID];
-  if (v5 == +[HNDVirtualHIDMouse eventServiceID]&& !_AXSInUnitTestMode())
+  eventCopy = event;
+  senderID = [eventCopy senderID];
+  if (senderID == +[HNDVirtualHIDMouse eventServiceID]&& !_AXSInUnitTestMode())
   {
     goto LABEL_10;
   }
 
-  if ([v4 type] != 3200)
+  if ([eventCopy type] != 3200)
   {
-    if ([v4 type] == 1100)
+    if ([eventCopy type] == 1100)
     {
       v17 = [objc_allocWithZone(HNDEvent) init];
       [v17 setType:4];
-      [v17 setDeltaY:{(objc_msgSend(v4, "scrollAmount") + objc_msgSend(v4, "scrollAccelAmount"))}];
+      [v17 setDeltaY:{(objc_msgSend(eventCopy, "scrollAmount") + objc_msgSend(eventCopy, "scrollAccelAmount"))}];
       if (v17)
       {
         goto LABEL_18;
@@ -171,15 +171,15 @@
     goto LABEL_10;
   }
 
-  v6 = [v4 pointerControllerInfo];
-  v7 = v6;
-  if (!v6)
+  pointerControllerInfo = [eventCopy pointerControllerInfo];
+  v7 = pointerControllerInfo;
+  if (!pointerControllerInfo)
   {
     v17 = 0;
     goto LABEL_17;
   }
 
-  [v6 pointerButtonMask];
+  [pointerControllerInfo pointerButtonMask];
   LODWORD(v8) = self->_lastButtonMask;
   if (v9 == v8)
   {
@@ -200,24 +200,24 @@
   lastButtonMask = self->_lastButtonMask;
   [v7 pointerButtonMask];
   v13 = sub_10004401C(lastButtonMask, v12);
-  v14 = [v13 upButton];
-  v15 = [v13 downButton];
+  upButton = [v13 upButton];
+  downButton = [v13 downButton];
   v16 = [objc_allocWithZone(HNDEvent) init];
   v17 = v16;
-  if (v14)
+  if (upButton)
   {
     v18 = 2;
-    v19 = v14;
+    v19 = upButton;
 LABEL_15:
     [v16 setType:v18];
     [v17 setButtonNumber:{objc_msgSend(v19, "integerValue")}];
     goto LABEL_16;
   }
 
-  if (v15)
+  if (downButton)
   {
     v18 = 1;
-    v19 = v15;
+    v19 = downButton;
     goto LABEL_15;
   }
 
@@ -233,8 +233,8 @@ LABEL_17:
   if (v17)
   {
 LABEL_18:
-    v29 = [(HNDDevice *)self delegate];
-    [v29 device:self didPostEvent:v17];
+    delegate = [(HNDDevice *)self delegate];
+    [delegate device:self didPostEvent:v17];
 
     v20 = 1;
     goto LABEL_19;
@@ -247,24 +247,24 @@ LABEL_19:
   return v20;
 }
 
-- (void)updateMouseService:(__IOHIDServiceClient *)a3
+- (void)updateMouseService:(__IOHIDServiceClient *)service
 {
-  if ((sub_100042C64() & 1) == 0 && (IOHIDServiceClientConformsTo(a3, 1u, 1u) || IOHIDServiceClientConformsTo(a3, 1u, 2u)))
+  if ((sub_100042C64() & 1) == 0 && (IOHIDServiceClientConformsTo(service, 1u, 1u) || IOHIDServiceClientConformsTo(service, 1u, 2u)))
   {
-    IOHIDServiceClientSetProperty(a3, @"HIDMouseAcceleration", &off_1001E46C8);
+    IOHIDServiceClientSetProperty(service, @"HIDMouseAcceleration", &off_1001E46C8);
 
-    IOHIDServiceClientSetProperty(a3, @"HIDMouseScrollAcceleration", &off_1001E46C8);
+    IOHIDServiceClientSetProperty(service, @"HIDMouseScrollAcceleration", &off_1001E46C8);
   }
 }
 
-- (id)actionOverrideForUsagePage:(unsigned int)a3 usage:(unsigned int)a4
+- (id)actionOverrideForUsagePage:(unsigned int)page usage:(unsigned int)usage
 {
-  if (a3 == 9)
+  if (page == 9)
   {
-    v4 = *&a4;
-    v6 = a4;
-    v7 = [(HNDMouseDevice *)self mouse];
-    v8 = [v7 customActionForButtonNumber:v6];
+    v4 = *&usage;
+    usageCopy = usage;
+    mouse = [(HNDMouseDevice *)self mouse];
+    v8 = [mouse customActionForButtonNumber:usageCopy];
 
     if (v8)
     {

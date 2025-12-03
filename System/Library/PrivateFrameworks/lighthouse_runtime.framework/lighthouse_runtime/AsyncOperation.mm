@@ -3,8 +3,8 @@
 - (void)cancel;
 - (void)dealloc;
 - (void)main;
-- (void)setExecuting:(BOOL)a3;
-- (void)setFinished:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
+- (void)setFinished:(BOOL)finished;
 - (void)start;
 @end
 
@@ -14,7 +14,7 @@
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC18lighthouse_runtime14AsyncOperation_task))
   {
-    v3 = self;
+    selfCopy = self;
 
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280A683D8, &qword_2771CBC90);
     sub_2771CABC4();
@@ -22,7 +22,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -30,40 +30,40 @@
   [(AsyncOperation *)&v5 dealloc];
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  v3 = a3;
-  v4 = self;
-  sub_2771C867C(v3, 0x7475636578457369, 0xEB00000000676E69, sub_2771C96C4);
+  executingCopy = executing;
+  selfCopy = self;
+  sub_2771C867C(executingCopy, 0x7475636578457369, 0xEB00000000676E69, sub_2771C96C4);
 }
 
-- (void)setFinished:(BOOL)a3
+- (void)setFinished:(BOOL)finished
 {
-  v3 = a3;
-  v4 = self;
-  sub_2771C867C(v3, 0x6873696E69467369, 0xEA00000000006465, sub_2771C96AC);
+  finishedCopy = finished;
+  selfCopy = self;
+  sub_2771C867C(finishedCopy, 0x6873696E69467369, 0xEA00000000006465, sub_2771C96AC);
 }
 
 - (void)start
 {
-  v2 = self;
-  if ([(AsyncOperation *)v2 isCancelled])
+  selfCopy = self;
+  if ([(AsyncOperation *)selfCopy isCancelled])
   {
-    [(AsyncOperation *)v2 setExecuting:0];
-    [(AsyncOperation *)v2 setFinished:1];
+    [(AsyncOperation *)selfCopy setExecuting:0];
+    [(AsyncOperation *)selfCopy setFinished:1];
   }
 
   else
   {
-    [(AsyncOperation *)v2 setFinished:0];
-    [(AsyncOperation *)v2 setExecuting:1];
-    [(AsyncOperation *)v2 main];
+    [(AsyncOperation *)selfCopy setFinished:0];
+    [(AsyncOperation *)selfCopy setExecuting:1];
+    [(AsyncOperation *)selfCopy main];
   }
 }
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_2771C8A48();
 }
 
@@ -71,7 +71,7 @@
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC18lighthouse_runtime14AsyncOperation_task))
   {
-    v3 = self;
+    selfCopy = self;
 
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_280A683D8, &qword_2771CBC90);
     sub_2771CABC4();
@@ -79,7 +79,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;

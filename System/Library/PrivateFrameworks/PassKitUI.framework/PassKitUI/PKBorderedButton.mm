@@ -1,37 +1,37 @@
 @interface PKBorderedButton
-+ (id)borderedButtonWithConfiguration:(id)a3 primaryAction:(id)a4;
++ (id)borderedButtonWithConfiguration:(id)configuration primaryAction:(id)action;
 - (void)_updateForConfigurationChange;
 - (void)layoutSubviews;
-- (void)setBorderConfiguration:(id)a3;
+- (void)setBorderConfiguration:(id)configuration;
 @end
 
 @implementation PKBorderedButton
 
-+ (id)borderedButtonWithConfiguration:(id)a3 primaryAction:(id)a4
++ (id)borderedButtonWithConfiguration:(id)configuration primaryAction:(id)action
 {
-  v4 = [a1 buttonWithConfiguration:a3 primaryAction:a4];
+  v4 = [self buttonWithConfiguration:configuration primaryAction:action];
   [v4 _updateForConfigurationChange];
 
   return v4;
 }
 
-- (void)setBorderConfiguration:(id)a3
+- (void)setBorderConfiguration:(id)configuration
 {
-  [(PKBorderedButton *)self setConfiguration:a3];
+  [(PKBorderedButton *)self setConfiguration:configuration];
 
   [(PKBorderedButton *)self _updateForConfigurationChange];
 }
 
 - (void)_updateForConfigurationChange
 {
-  v3 = [(PKBorderedButton *)self borderConfiguration];
-  if (v3)
+  borderConfiguration = [(PKBorderedButton *)self borderConfiguration];
+  if (borderConfiguration)
   {
-    v22 = v3;
-    v4 = [v3 border];
-    v5 = [v22 borderColor];
+    v22 = borderConfiguration;
+    border = [borderConfiguration border];
+    borderColor = [v22 borderColor];
     topBorder = self->_topBorder;
-    if (v4)
+    if (border)
     {
       if (!topBorder)
       {
@@ -39,7 +39,7 @@
         v9 = self->_topBorder;
         self->_topBorder = v8;
 
-        [(UIView *)self->_topBorder setBackgroundColor:v5];
+        [(UIView *)self->_topBorder setBackgroundColor:borderColor];
         [(PKBorderedButton *)self addSubview:self->_topBorder];
       }
     }
@@ -52,7 +52,7 @@
     }
 
     bottomBorder = self->_bottomBorder;
-    if ((v4 & 2) != 0)
+    if ((border & 2) != 0)
     {
       if (!bottomBorder)
       {
@@ -60,7 +60,7 @@
         v13 = self->_bottomBorder;
         self->_bottomBorder = v12;
 
-        [(UIView *)self->_bottomBorder setBackgroundColor:v5];
+        [(UIView *)self->_bottomBorder setBackgroundColor:borderColor];
         [(PKBorderedButton *)self addSubview:self->_bottomBorder];
       }
     }
@@ -73,7 +73,7 @@
     }
 
     trailingBorder = self->_trailingBorder;
-    if ((v4 & 4) != 0)
+    if ((border & 4) != 0)
     {
       if (!trailingBorder)
       {
@@ -81,7 +81,7 @@
         v17 = self->_trailingBorder;
         self->_trailingBorder = v16;
 
-        [(UIView *)self->_trailingBorder setBackgroundColor:v5];
+        [(UIView *)self->_trailingBorder setBackgroundColor:borderColor];
         [(PKBorderedButton *)self addSubview:self->_trailingBorder];
       }
     }
@@ -94,7 +94,7 @@
     }
 
     leadingBorder = self->_leadingBorder;
-    if ((v4 & 8) != 0)
+    if ((border & 8) != 0)
     {
       if (!leadingBorder)
       {
@@ -102,7 +102,7 @@
         v21 = self->_leadingBorder;
         self->_leadingBorder = v20;
 
-        [(UIView *)self->_leadingBorder setBackgroundColor:v5];
+        [(UIView *)self->_leadingBorder setBackgroundColor:borderColor];
         [(PKBorderedButton *)self addSubview:self->_leadingBorder];
       }
     }
@@ -114,7 +114,7 @@
       self->_leadingBorder = 0;
     }
 
-    v3 = v22;
+    borderConfiguration = v22;
   }
 }
 
@@ -126,8 +126,8 @@
   [(PKBorderedButton *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(PKBorderedButton *)self borderConfiguration];
-  [v7 borderWidth];
+  borderConfiguration = [(PKBorderedButton *)self borderConfiguration];
+  [borderConfiguration borderWidth];
   v9 = v8;
 
   [(UIView *)self->_topBorder setFrame:0.0, 0.0, v4, v9];

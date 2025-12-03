@@ -2,17 +2,17 @@
 + (id)sharedNetworkActivityTracing;
 - (BOOL)hasActivitiesRunning;
 - (WiFiPolicyNetworkActivityTracing)init;
-- (void)_networkActivityActivate:(int64_t)a3;
-- (void)_networkActivityAddNWConnection:(id)a3 toActivityWithLabel:(int64_t)a4;
-- (void)_networkActivityRemoveNWConnection:(id)a3 fromActivityWithLabel:(int64_t)a4 completion:(id)a5;
-- (void)_networkActivityStart:(int64_t)a3 activate:(BOOL)a4;
+- (void)_networkActivityActivate:(int64_t)activate;
+- (void)_networkActivityAddNWConnection:(id)connection toActivityWithLabel:(int64_t)label;
+- (void)_networkActivityRemoveNWConnection:(id)connection fromActivityWithLabel:(int64_t)label completion:(id)completion;
+- (void)_networkActivityStart:(int64_t)start activate:(BOOL)activate;
 - (void)_networkActivityTracingCancel;
-- (void)currentNetworkActivityTokenWithCompletion:(id)a3;
-- (void)networkActivityActivate:(int64_t)a3;
-- (void)networkActivityAddNWConnection:(id)a3 toActivityWithLabel:(int64_t)a4;
-- (void)networkActivityRemoveNWConnection:(id)a3 fromActivityWithLabel:(int64_t)a4 completion:(id)a5;
-- (void)networkActivityStart:(int64_t)a3 activate:(BOOL)a4;
-- (void)networkActivityStop:(int64_t)a3 withReason:(int)a4 withClientMetric:(const char *)a5 withClientDict:(id)a6 andError:(id)a7;
+- (void)currentNetworkActivityTokenWithCompletion:(id)completion;
+- (void)networkActivityActivate:(int64_t)activate;
+- (void)networkActivityAddNWConnection:(id)connection toActivityWithLabel:(int64_t)label;
+- (void)networkActivityRemoveNWConnection:(id)connection fromActivityWithLabel:(int64_t)label completion:(id)completion;
+- (void)networkActivityStart:(int64_t)start activate:(BOOL)activate;
+- (void)networkActivityStop:(int64_t)stop withReason:(int)reason withClientMetric:(const char *)metric withClientDict:(id)dict andError:(id)error;
 - (void)networkActivityTracingCompleteConnectionsActivities;
 @end
 
@@ -65,7 +65,7 @@ uint64_t __64__WiFiPolicyNetworkActivityTracing_sharedNetworkActivityTracing__bl
   return v2;
 }
 
-- (void)networkActivityStart:(int64_t)a3 activate:(BOOL)a4
+- (void)networkActivityStart:(int64_t)start activate:(BOOL)activate
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -73,12 +73,12 @@ uint64_t __64__WiFiPolicyNetworkActivityTracing_sharedNetworkActivityTracing__bl
   block[2] = __66__WiFiPolicyNetworkActivityTracing_networkActivityStart_activate___block_invoke;
   block[3] = &unk_2789C6D88;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = start;
+  activateCopy = activate;
   dispatch_async(queue, block);
 }
 
-- (void)networkActivityActivate:(int64_t)a3
+- (void)networkActivityActivate:(int64_t)activate
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -86,15 +86,15 @@ uint64_t __64__WiFiPolicyNetworkActivityTracing_sharedNetworkActivityTracing__bl
   v4[2] = __60__WiFiPolicyNetworkActivityTracing_networkActivityActivate___block_invoke;
   v4[3] = &unk_2789C7170;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = activate;
   dispatch_async(queue, v4);
 }
 
-- (void)networkActivityStop:(int64_t)a3 withReason:(int)a4 withClientMetric:(const char *)a5 withClientDict:(id)a6 andError:(id)a7
+- (void)networkActivityStop:(int64_t)stop withReason:(int)reason withClientMetric:(const char *)metric withClientDict:(id)dict andError:(id)error
 {
-  v12 = a6;
-  v13 = a7;
-  if (a3 == 1)
+  dictCopy = dict;
+  errorCopy = error;
+  if (stop == 1)
   {
     NSLog(&cfstr_SLinktest.isa, "[WiFiPolicyNetworkActivityTracing networkActivityStop:withReason:withClientMetric:withClientDict:andError:]", @"linkTest");
   }
@@ -104,14 +104,14 @@ uint64_t __64__WiFiPolicyNetworkActivityTracing_sharedNetworkActivityTracing__bl
   block[1] = 3221225472;
   block[2] = __108__WiFiPolicyNetworkActivityTracing_networkActivityStop_withReason_withClientMetric_withClientDict_andError___block_invoke;
   block[3] = &unk_2789C8038;
-  v22 = a4;
-  v20 = a3;
-  v21 = a5;
+  reasonCopy = reason;
+  stopCopy = stop;
+  metricCopy = metric;
   block[4] = self;
-  v18 = v12;
-  v19 = v13;
-  v15 = v13;
-  v16 = v12;
+  v18 = dictCopy;
+  v19 = errorCopy;
+  v15 = errorCopy;
+  v16 = dictCopy;
   dispatch_async(queue, block);
 }
 
@@ -126,50 +126,50 @@ uint64_t __64__WiFiPolicyNetworkActivityTracing_sharedNetworkActivityTracing__bl
   dispatch_async(queue, block);
 }
 
-- (void)networkActivityAddNWConnection:(id)a3 toActivityWithLabel:(int64_t)a4
+- (void)networkActivityAddNWConnection:(id)connection toActivityWithLabel:(int64_t)label
 {
-  v6 = a3;
+  connectionCopy = connection;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__WiFiPolicyNetworkActivityTracing_networkActivityAddNWConnection_toActivityWithLabel___block_invoke;
   block[3] = &unk_2789C7008;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = connectionCopy;
+  labelCopy = label;
+  v8 = connectionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)networkActivityRemoveNWConnection:(id)a3 fromActivityWithLabel:(int64_t)a4 completion:(id)a5
+- (void)networkActivityRemoveNWConnection:(id)connection fromActivityWithLabel:(int64_t)label completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __103__WiFiPolicyNetworkActivityTracing_networkActivityRemoveNWConnection_fromActivityWithLabel_completion___block_invoke;
   v13[3] = &unk_2789C8060;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = connectionCopy;
+  v15 = completionCopy;
+  labelCopy = label;
+  v11 = completionCopy;
+  v12 = connectionCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)currentNetworkActivityTokenWithCompletion:(id)a3
+- (void)currentNetworkActivityTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__WiFiPolicyNetworkActivityTracing_currentNetworkActivityTokenWithCompletion___block_invoke;
   v7[3] = &unk_2789C6BA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -220,24 +220,24 @@ uint64_t __56__WiFiPolicyNetworkActivityTracing_hasActivitiesRunning__block_invo
   return result;
 }
 
-- (void)_networkActivityStart:(int64_t)a3 activate:(BOOL)a4
+- (void)_networkActivityStart:(int64_t)start activate:(BOOL)activate
 {
-  v4 = a4;
+  activateCopy = activate;
   v30 = *MEMORY[0x277D85DE8];
-  v7 = _labelDescription(a3);
+  v7 = _labelDescription(start);
   v8 = [(NSMutableDictionary *)self->_activities objectForKey:v7];
   if (!v8)
   {
-    if (a3 == 1)
+    if (start == 1)
     {
       v11 = [[WiFiPolicyNetworkActivity alloc] initWithLabel:1 parent:0];
       if (v11)
       {
 LABEL_5:
         [(NSMutableDictionary *)self->_activities setObject:v11 forKey:v7];
-        if (v4)
+        if (activateCopy)
         {
-          [(WiFiPolicyNetworkActivityTracing *)self _networkActivityActivate:a3];
+          [(WiFiPolicyNetworkActivityTracing *)self _networkActivityActivate:start];
         }
 
         if ([(NSMutableSet *)self->_connections count])
@@ -283,8 +283,8 @@ LABEL_5:
       v19 = v18;
       if (v18)
       {
-        v20 = [v18 nwActivity];
-        v11 = [[WiFiPolicyNetworkActivity alloc] initWithLabel:a3 parent:v20];
+        nwActivity = [v18 nwActivity];
+        v11 = [[WiFiPolicyNetworkActivity alloc] initWithLabel:start parent:nwActivity];
       }
 
       else
@@ -301,7 +301,7 @@ LABEL_5:
     if ([0 hasStarted])
     {
 LABEL_24:
-      v21 = _labelDescription(a3);
+      v21 = _labelDescription(start);
       activities = self->_activities;
       v23 = [(WiFiPolicyNetworkActivity *)v11 description];
       NSLog(&cfstr_SStartActivity.isa, "[WiFiPolicyNetworkActivityTracing _networkActivityStart:activate:]", v21, activities, v23);
@@ -315,7 +315,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v9 = _labelDescription(a3);
+  v9 = _labelDescription(start);
   v10 = [v8 description];
   NSLog(&cfstr_SFailedToStart.isa, "[WiFiPolicyNetworkActivityTracing _networkActivityStart:activate:]", v9, v10, self->_activities);
 
@@ -323,16 +323,16 @@ LABEL_25:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_networkActivityActivate:(int64_t)a3
+- (void)_networkActivityActivate:(int64_t)activate
 {
   activities = self->_activities;
-  v6 = _labelDescription(a3);
+  v6 = _labelDescription(activate);
   v9 = [(NSMutableDictionary *)activities objectForKey:v6];
 
   v7 = v9;
   if (!v9)
   {
-    v8 = _labelDescription(a3);
+    v8 = _labelDescription(activate);
     NSLog(&cfstr_SFailedToFindA.isa, "[WiFiPolicyNetworkActivityTracing _networkActivityActivate:]", v8, self->_activities);
 
     v7 = 0;
@@ -397,19 +397,19 @@ void __65__WiFiPolicyNetworkActivityTracing__networkActivityTracingCancel__block
   NSLog(&cfstr_SFailedToPrope.isa, "[WiFiPolicyNetworkActivityTracing _networkActivityTracingCancel]_block_invoke", v4, v5);
 }
 
-- (void)_networkActivityAddNWConnection:(id)a3 toActivityWithLabel:(int64_t)a4
+- (void)_networkActivityAddNWConnection:(id)connection toActivityWithLabel:(int64_t)label
 {
-  v6 = a3;
-  if (([(NSMutableSet *)self->_connections containsObject:v6]& 1) == 0)
+  connectionCopy = connection;
+  if (([(NSMutableSet *)self->_connections containsObject:connectionCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_connections addObject:v6];
+    [(NSMutableSet *)self->_connections addObject:connectionCopy];
     activities = self->_activities;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __88__WiFiPolicyNetworkActivityTracing__networkActivityAddNWConnection_toActivityWithLabel___block_invoke;
     v8[3] = &unk_2789C80D0;
-    v10 = a4;
-    v9 = v6;
+    labelCopy = label;
+    v9 = connectionCopy;
     [(NSMutableDictionary *)activities enumerateKeysAndObjectsUsingBlock:v8];
   }
 }
@@ -427,26 +427,26 @@ void __88__WiFiPolicyNetworkActivityTracing__networkActivityAddNWConnection_toAc
   }
 }
 
-- (void)_networkActivityRemoveNWConnection:(id)a3 fromActivityWithLabel:(int64_t)a4 completion:(id)a5
+- (void)_networkActivityRemoveNWConnection:(id)connection fromActivityWithLabel:(int64_t)label completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(NSMutableSet *)self->_connections containsObject:v8])
+  connectionCopy = connection;
+  completionCopy = completion;
+  if ([(NSMutableSet *)self->_connections containsObject:connectionCopy])
   {
-    [(NSMutableSet *)self->_connections removeObject:v8];
+    [(NSMutableSet *)self->_connections removeObject:connectionCopy];
     activities = self->_activities;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __104__WiFiPolicyNetworkActivityTracing__networkActivityRemoveNWConnection_fromActivityWithLabel_completion___block_invoke;
     v11[3] = &unk_2789C80D0;
-    v13 = a4;
-    v12 = v8;
+    labelCopy = label;
+    v12 = connectionCopy;
     [(NSMutableDictionary *)activities enumerateKeysAndObjectsUsingBlock:v11];
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 

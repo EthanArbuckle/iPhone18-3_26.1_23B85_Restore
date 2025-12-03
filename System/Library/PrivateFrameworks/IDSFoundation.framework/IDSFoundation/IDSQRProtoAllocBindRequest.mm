@@ -1,30 +1,30 @@
 @interface IDSQRProtoAllocBindRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)reasonAsString:(int)a3;
-- (int)StringAsReason:(id)a3;
+- (id)reasonAsString:(int)string;
+- (int)StringAsReason:(id)reason;
 - (int)reason;
 - (unint64_t)hash;
-- (unsigned)publishedStreamIdsAtIndex:(unint64_t)a3;
-- (void)addFastPluginRequests:(id)a3;
-- (void)addMaterials:(id)a3;
-- (void)addQuicConnectionInfo:(id)a3;
-- (void)addSessionExperiments:(id)a3;
-- (void)addStaleLinks:(id)a3;
-- (void)addSubscribedStreams:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)publishedStreamIdsAtIndex:(unint64_t)index;
+- (void)addFastPluginRequests:(id)requests;
+- (void)addMaterials:(id)materials;
+- (void)addQuicConnectionInfo:(id)info;
+- (void)addSessionExperiments:(id)experiments;
+- (void)addStaleLinks:(id)links;
+- (void)addSubscribedStreams:(id)streams;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAllWildcardSubscription:(BOOL)a3;
-- (void)setHasChannelBindingInfo:(BOOL)a3;
-- (void)setHasMaxConcurrentStreams:(BOOL)a3;
-- (void)setHasMaxEmbeddedStatsResponseDelay:(BOOL)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasServiceId:(BOOL)a3;
-- (void)setHasStateFlags:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasAllWildcardSubscription:(BOOL)subscription;
+- (void)setHasChannelBindingInfo:(BOOL)info;
+- (void)setHasMaxConcurrentStreams:(BOOL)streams;
+- (void)setHasMaxEmbeddedStatsResponseDelay:(BOOL)delay;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasServiceId:(BOOL)id;
+- (void)setHasStateFlags:(BOOL)flags;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoAllocBindRequest
@@ -37,9 +37,9 @@
   [(IDSQRProtoAllocBindRequest *)&v3 dealloc];
 }
 
-- (void)setHasServiceId:(BOOL)a3
+- (void)setHasServiceId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -52,43 +52,43 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (unsigned)publishedStreamIdsAtIndex:(unint64_t)a3
+- (unsigned)publishedStreamIdsAtIndex:(unint64_t)index
 {
   p_publishedStreamIds = &self->_publishedStreamIds;
   count = self->_publishedStreamIds.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_publishedStreamIds->list[a3];
+  return p_publishedStreamIds->list[index];
 }
 
-- (void)addSubscribedStreams:(id)a3
+- (void)addSubscribedStreams:(id)streams
 {
-  v4 = a3;
+  streamsCopy = streams;
   subscribedStreams = self->_subscribedStreams;
-  v8 = v4;
+  v8 = streamsCopy;
   if (!subscribedStreams)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_subscribedStreams;
     self->_subscribedStreams = v6;
 
-    v4 = v8;
+    streamsCopy = v8;
     subscribedStreams = self->_subscribedStreams;
   }
 
-  [(NSMutableArray *)subscribedStreams addObject:v4];
+  [(NSMutableArray *)subscribedStreams addObject:streamsCopy];
 }
 
-- (void)setHasAllWildcardSubscription:(BOOL)a3
+- (void)setHasAllWildcardSubscription:(BOOL)subscription
 {
-  if (a3)
+  if (subscription)
   {
     v3 = 0x80;
   }
@@ -101,9 +101,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasMaxConcurrentStreams:(BOOL)a3
+- (void)setHasMaxConcurrentStreams:(BOOL)streams
 {
-  if (a3)
+  if (streams)
   {
     v3 = 4;
   }
@@ -116,9 +116,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasChannelBindingInfo:(BOOL)a3
+- (void)setHasChannelBindingInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 2;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMaxEmbeddedStatsResponseDelay:(BOOL)a3
+- (void)setHasMaxEmbeddedStatsResponseDelay:(BOOL)delay
 {
-  if (a3)
+  if (delay)
   {
     v3 = 8;
   }
@@ -146,27 +146,27 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)addQuicConnectionInfo:(id)a3
+- (void)addQuicConnectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   quicConnectionInfos = self->_quicConnectionInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!quicConnectionInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_quicConnectionInfos;
     self->_quicConnectionInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     quicConnectionInfos = self->_quicConnectionInfos;
   }
 
-  [(NSMutableArray *)quicConnectionInfos addObject:v4];
+  [(NSMutableArray *)quicConnectionInfos addObject:infoCopy];
 }
 
-- (void)setHasStateFlags:(BOOL)a3
+- (void)setHasStateFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 64;
   }
@@ -192,9 +192,9 @@
   }
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 16;
   }
@@ -207,18 +207,18 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (id)reasonAsString:(int)a3
+- (id)reasonAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"NEWLY_JOINED";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -230,92 +230,92 @@
   return v4;
 }
 
-- (int)StringAsReason:(id)a3
+- (int)StringAsReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"NEWLY_JOINED"];
+    v4 = [reasonCopy isEqualToString:@"NEWLY_JOINED"];
   }
 
   return v4;
 }
 
-- (void)addSessionExperiments:(id)a3
+- (void)addSessionExperiments:(id)experiments
 {
-  v4 = a3;
+  experimentsCopy = experiments;
   sessionExperiments = self->_sessionExperiments;
-  v8 = v4;
+  v8 = experimentsCopy;
   if (!sessionExperiments)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_sessionExperiments;
     self->_sessionExperiments = v6;
 
-    v4 = v8;
+    experimentsCopy = v8;
     sessionExperiments = self->_sessionExperiments;
   }
 
-  [(NSMutableArray *)sessionExperiments addObject:v4];
+  [(NSMutableArray *)sessionExperiments addObject:experimentsCopy];
 }
 
-- (void)addFastPluginRequests:(id)a3
+- (void)addFastPluginRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   fastPluginRequests = self->_fastPluginRequests;
-  v8 = v4;
+  v8 = requestsCopy;
   if (!fastPluginRequests)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_fastPluginRequests;
     self->_fastPluginRequests = v6;
 
-    v4 = v8;
+    requestsCopy = v8;
     fastPluginRequests = self->_fastPluginRequests;
   }
 
-  [(NSMutableArray *)fastPluginRequests addObject:v4];
+  [(NSMutableArray *)fastPluginRequests addObject:requestsCopy];
 }
 
-- (void)addMaterials:(id)a3
+- (void)addMaterials:(id)materials
 {
-  v4 = a3;
+  materialsCopy = materials;
   materials = self->_materials;
-  v8 = v4;
+  v8 = materialsCopy;
   if (!materials)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_materials;
     self->_materials = v6;
 
-    v4 = v8;
+    materialsCopy = v8;
     materials = self->_materials;
   }
 
-  [(NSMutableArray *)materials addObject:v4];
+  [(NSMutableArray *)materials addObject:materialsCopy];
 }
 
-- (void)addStaleLinks:(id)a3
+- (void)addStaleLinks:(id)links
 {
-  v4 = a3;
+  linksCopy = links;
   staleLinks = self->_staleLinks;
-  v8 = v4;
+  v8 = linksCopy;
   if (!staleLinks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_staleLinks;
     self->_staleLinks = v6;
 
-    v4 = v8;
+    linksCopy = v8;
     staleLinks = self->_staleLinks;
   }
 
-  [(NSMutableArray *)staleLinks addObject:v4];
+  [(NSMutableArray *)staleLinks addObject:linksCopy];
 }
 
 - (id)description
@@ -324,8 +324,8 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoAllocBindRequest;
   v4 = [(IDSQRProtoAllocBindRequest *)&v8 description];
-  v5 = [(IDSQRProtoAllocBindRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoAllocBindRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -333,33 +333,33 @@
 - (id)dictionaryRepresentation
 {
   v99 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x20) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_serviceId];
-    [v3 setObject:v4 forKey:@"service_id"];
+    [dictionary setObject:v4 forKey:@"service_id"];
   }
 
   clientOsVersion = self->_clientOsVersion;
   if (clientOsVersion)
   {
-    [v3 setObject:clientOsVersion forKey:@"client_os_version"];
+    [dictionary setObject:clientOsVersion forKey:@"client_os_version"];
   }
 
   clientHwVersion = self->_clientHwVersion;
   if (clientHwVersion)
   {
-    [v3 setObject:clientHwVersion forKey:@"client_hw_version"];
+    [dictionary setObject:clientHwVersion forKey:@"client_hw_version"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_capabilities];
-    [v3 setObject:v7 forKey:@"capabilities"];
+    [dictionary setObject:v7 forKey:@"capabilities"];
   }
 
   v8 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v8 forKey:@"published_stream_ids"];
+  [dictionary setObject:v8 forKey:@"published_stream_ids"];
 
   if ([(NSMutableArray *)self->_subscribedStreams count])
   {
@@ -383,8 +383,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v89 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v89 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v89 objects:v98 count:16];
@@ -393,7 +393,7 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"subscribed_streams"];
+    [dictionary setObject:v9 forKey:@"subscribed_streams"];
   }
 
   has = self->_has;
@@ -408,14 +408,14 @@
   }
 
   v32 = [MEMORY[0x1E696AD98] numberWithBool:self->_allWildcardSubscription];
-  [v3 setObject:v32 forKey:@"all_wildcard_subscription"];
+  [dictionary setObject:v32 forKey:@"all_wildcard_subscription"];
 
   *&has = self->_has;
   if ((*&has & 4) != 0)
   {
 LABEL_20:
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_maxConcurrentStreams];
-    [v3 setObject:v17 forKey:@"max_concurrent_streams"];
+    [dictionary setObject:v17 forKey:@"max_concurrent_streams"];
 
     *&has = self->_has;
   }
@@ -432,13 +432,13 @@ LABEL_21:
   }
 
   v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_channelBindingInfo];
-  [v3 setObject:v31 forKey:@"channel_binding_info"];
+  [dictionary setObject:v31 forKey:@"channel_binding_info"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_23:
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_maxEmbeddedStatsResponseDelay];
-    [v3 setObject:v18 forKey:@"max_embedded_stats_response_delay"];
+    [dictionary setObject:v18 forKey:@"max_embedded_stats_response_delay"];
   }
 
 LABEL_24:
@@ -464,8 +464,8 @@ LABEL_24:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v85 + 1) + 8 * j) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation2 = [*(*(&v85 + 1) + 8 * j) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation2];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v85 objects:v97 count:16];
@@ -474,20 +474,20 @@ LABEL_24:
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"quic_connection_info"];
+    [dictionary setObject:v19 forKey:@"quic_connection_info"];
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_stateFlags];
-    [v3 setObject:v26 forKey:@"state_flags"];
+    [dictionary setObject:v26 forKey:@"state_flags"];
   }
 
   clientContextBlob = self->_clientContextBlob;
   if (clientContextBlob)
   {
-    v28 = [(IDSQRProtoMaterial *)clientContextBlob dictionaryRepresentation];
-    [v3 setObject:v28 forKey:@"client_context_blob"];
+    dictionaryRepresentation3 = [(IDSQRProtoMaterial *)clientContextBlob dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"client_context_blob"];
   }
 
   if ((*&self->_has & 0x10) != 0)
@@ -511,39 +511,39 @@ LABEL_24:
       v30 = @"NONE";
     }
 
-    [v3 setObject:v30 forKey:@"reason"];
+    [dictionary setObject:v30 forKey:@"reason"];
   }
 
   randomSalt = self->_randomSalt;
   if (randomSalt)
   {
-    [v3 setObject:randomSalt forKey:@"random_salt"];
+    [dictionary setObject:randomSalt forKey:@"random_salt"];
   }
 
   accessToken = self->_accessToken;
   if (accessToken)
   {
-    [v3 setObject:accessToken forKey:@"access_token"];
+    [dictionary setObject:accessToken forKey:@"access_token"];
   }
 
   serverBlob = self->_serverBlob;
   if (serverBlob)
   {
-    [v3 setObject:serverBlob forKey:@"server_blob"];
+    [dictionary setObject:serverBlob forKey:@"server_blob"];
   }
 
   callModeInfo = self->_callModeInfo;
   if (callModeInfo)
   {
-    v37 = [(IDSQRProtoCallModeUpdateInfo *)callModeInfo dictionaryRepresentation];
-    [v3 setObject:v37 forKey:@"call_mode_info"];
+    dictionaryRepresentation4 = [(IDSQRProtoCallModeUpdateInfo *)callModeInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"call_mode_info"];
   }
 
   testOption = self->_testOption;
   if (testOption)
   {
-    v39 = [(IDSQRProtoAllocBindTestOption *)testOption dictionaryRepresentation];
-    [v3 setObject:v39 forKey:@"test_option"];
+    dictionaryRepresentation5 = [(IDSQRProtoAllocBindTestOption *)testOption dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"test_option"];
   }
 
   if ([(NSMutableArray *)self->_sessionExperiments count])
@@ -568,8 +568,8 @@ LABEL_24:
             objc_enumerationMutation(v41);
           }
 
-          v46 = [*(*(&v81 + 1) + 8 * k) dictionaryRepresentation];
-          [v40 addObject:v46];
+          dictionaryRepresentation6 = [*(*(&v81 + 1) + 8 * k) dictionaryRepresentation];
+          [v40 addObject:dictionaryRepresentation6];
         }
 
         v43 = [(NSMutableArray *)v41 countByEnumeratingWithState:&v81 objects:v96 count:16];
@@ -578,7 +578,7 @@ LABEL_24:
       while (v43);
     }
 
-    [v3 setObject:v40 forKey:@"session_experiments"];
+    [dictionary setObject:v40 forKey:@"session_experiments"];
   }
 
   if ([(NSMutableArray *)self->_fastPluginRequests count])
@@ -603,8 +603,8 @@ LABEL_24:
             objc_enumerationMutation(v48);
           }
 
-          v53 = [*(*(&v77 + 1) + 8 * m) dictionaryRepresentation];
-          [v47 addObject:v53];
+          dictionaryRepresentation7 = [*(*(&v77 + 1) + 8 * m) dictionaryRepresentation];
+          [v47 addObject:dictionaryRepresentation7];
         }
 
         v50 = [(NSMutableArray *)v48 countByEnumeratingWithState:&v77 objects:v95 count:16];
@@ -613,7 +613,7 @@ LABEL_24:
       while (v50);
     }
 
-    [v3 setObject:v47 forKey:@"fast_plugin_requests"];
+    [dictionary setObject:v47 forKey:@"fast_plugin_requests"];
   }
 
   if ([(NSMutableArray *)self->_materials count])
@@ -638,8 +638,8 @@ LABEL_24:
             objc_enumerationMutation(v55);
           }
 
-          v60 = [*(*(&v73 + 1) + 8 * n) dictionaryRepresentation];
-          [v54 addObject:v60];
+          dictionaryRepresentation8 = [*(*(&v73 + 1) + 8 * n) dictionaryRepresentation];
+          [v54 addObject:dictionaryRepresentation8];
         }
 
         v57 = [(NSMutableArray *)v55 countByEnumeratingWithState:&v73 objects:v94 count:16];
@@ -648,7 +648,7 @@ LABEL_24:
       while (v57);
     }
 
-    [v3 setObject:v54 forKey:@"materials"];
+    [dictionary setObject:v54 forKey:@"materials"];
   }
 
   if ([(NSMutableArray *)self->_staleLinks count])
@@ -673,8 +673,8 @@ LABEL_24:
             objc_enumerationMutation(v62);
           }
 
-          v67 = [*(*(&v69 + 1) + 8 * ii) dictionaryRepresentation];
-          [v61 addObject:v67];
+          dictionaryRepresentation9 = [*(*(&v69 + 1) + 8 * ii) dictionaryRepresentation];
+          [v61 addObject:dictionaryRepresentation9];
         }
 
         v64 = [(NSMutableArray *)v62 countByEnumeratingWithState:&v69 objects:v93 count:16];
@@ -683,16 +683,16 @@ LABEL_24:
       while (v64);
     }
 
-    [v3 setObject:v61 forKey:@"stale_links"];
+    [dictionary setObject:v61 forKey:@"stale_links"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x20) != 0)
   {
     PBDataWriterWriteUint32Field();
@@ -973,41 +973,41 @@ LABEL_25:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x20) != 0)
   {
-    v4[36] = self->_serviceId;
-    *(v4 + 196) |= 0x20u;
+    toCopy[36] = self->_serviceId;
+    *(toCopy + 196) |= 0x20u;
   }
 
-  v35 = v4;
+  v35 = toCopy;
   if (self->_clientOsVersion)
   {
-    [v4 setClientOsVersion:?];
-    v4 = v35;
+    [toCopy setClientOsVersion:?];
+    toCopy = v35;
   }
 
   if (self->_clientHwVersion)
   {
     [v35 setClientHwVersion:?];
-    v4 = v35;
+    toCopy = v35;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_capabilities;
-    *(v4 + 196) |= 1u;
+    *(toCopy + 4) = self->_capabilities;
+    *(toCopy + 196) |= 1u;
   }
 
   if ([(IDSQRProtoAllocBindRequest *)self publishedStreamIdsCount])
   {
     [v35 clearPublishedStreamIds];
-    v5 = [(IDSQRProtoAllocBindRequest *)self publishedStreamIdsCount];
-    if (v5)
+    publishedStreamIdsCount = [(IDSQRProtoAllocBindRequest *)self publishedStreamIdsCount];
+    if (publishedStreamIdsCount)
     {
-      v6 = v5;
+      v6 = publishedStreamIdsCount;
       for (i = 0; i != v6; ++i)
       {
         [v35 addPublishedStreamIds:{-[IDSQRProtoAllocBindRequest publishedStreamIdsAtIndex:](self, "publishedStreamIdsAtIndex:", i)}];
@@ -1018,10 +1018,10 @@ LABEL_25:
   if ([(IDSQRProtoAllocBindRequest *)self subscribedStreamsCount])
   {
     [v35 clearSubscribedStreams];
-    v8 = [(IDSQRProtoAllocBindRequest *)self subscribedStreamsCount];
-    if (v8)
+    subscribedStreamsCount = [(IDSQRProtoAllocBindRequest *)self subscribedStreamsCount];
+    if (subscribedStreamsCount)
     {
-      v9 = v8;
+      v9 = subscribedStreamsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(IDSQRProtoAllocBindRequest *)self subscribedStreamsAtIndex:j];
@@ -1078,10 +1078,10 @@ LABEL_23:
   if ([(IDSQRProtoAllocBindRequest *)self quicConnectionInfosCount])
   {
     [v35 clearQuicConnectionInfos];
-    v14 = [(IDSQRProtoAllocBindRequest *)self quicConnectionInfosCount];
-    if (v14)
+    quicConnectionInfosCount = [(IDSQRProtoAllocBindRequest *)self quicConnectionInfosCount];
+    if (quicConnectionInfosCount)
     {
-      v15 = v14;
+      v15 = quicConnectionInfosCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(IDSQRProtoAllocBindRequest *)self quicConnectionInfoAtIndex:k];
@@ -1112,10 +1112,10 @@ LABEL_23:
   if ([(IDSQRProtoAllocBindRequest *)self materialsCount])
   {
     [v35 clearMaterials];
-    v19 = [(IDSQRProtoAllocBindRequest *)self materialsCount];
-    if (v19)
+    materialsCount = [(IDSQRProtoAllocBindRequest *)self materialsCount];
+    if (materialsCount)
     {
-      v20 = v19;
+      v20 = materialsCount;
       for (m = 0; m != v20; ++m)
       {
         v22 = [(IDSQRProtoAllocBindRequest *)self materialsAtIndex:m];
@@ -1147,10 +1147,10 @@ LABEL_23:
   if ([(IDSQRProtoAllocBindRequest *)self fastPluginRequestsCount])
   {
     [v35 clearFastPluginRequests];
-    v23 = [(IDSQRProtoAllocBindRequest *)self fastPluginRequestsCount];
-    if (v23)
+    fastPluginRequestsCount = [(IDSQRProtoAllocBindRequest *)self fastPluginRequestsCount];
+    if (fastPluginRequestsCount)
     {
-      v24 = v23;
+      v24 = fastPluginRequestsCount;
       for (n = 0; n != v24; ++n)
       {
         v26 = [(IDSQRProtoAllocBindRequest *)self fastPluginRequestsAtIndex:n];
@@ -1162,10 +1162,10 @@ LABEL_23:
   if ([(IDSQRProtoAllocBindRequest *)self staleLinksCount])
   {
     [v35 clearStaleLinks];
-    v27 = [(IDSQRProtoAllocBindRequest *)self staleLinksCount];
-    if (v27)
+    staleLinksCount = [(IDSQRProtoAllocBindRequest *)self staleLinksCount];
+    if (staleLinksCount)
     {
-      v28 = v27;
+      v28 = staleLinksCount;
       for (ii = 0; ii != v28; ++ii)
       {
         v30 = [(IDSQRProtoAllocBindRequest *)self staleLinksAtIndex:ii];
@@ -1182,10 +1182,10 @@ LABEL_23:
   if ([(IDSQRProtoAllocBindRequest *)self sessionExperimentsCount])
   {
     [v35 clearSessionExperiments];
-    v31 = [(IDSQRProtoAllocBindRequest *)self sessionExperimentsCount];
-    if (v31)
+    sessionExperimentsCount = [(IDSQRProtoAllocBindRequest *)self sessionExperimentsCount];
+    if (sessionExperimentsCount)
     {
-      v32 = v31;
+      v32 = sessionExperimentsCount;
       for (jj = 0; jj != v32; ++jj)
       {
         v34 = [(IDSQRProtoAllocBindRequest *)self sessionExperimentsAtIndex:jj];
@@ -1195,10 +1195,10 @@ LABEL_23:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v91 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x20) != 0)
   {
@@ -1206,11 +1206,11 @@ LABEL_23:
     *(v5 + 196) |= 0x20u;
   }
 
-  v7 = [(NSString *)self->_clientOsVersion copyWithZone:a3];
+  v7 = [(NSString *)self->_clientOsVersion copyWithZone:zone];
   v8 = *(v6 + 80);
   *(v6 + 80) = v7;
 
-  v9 = [(NSString *)self->_clientHwVersion copyWithZone:a3];
+  v9 = [(NSString *)self->_clientHwVersion copyWithZone:zone];
   v10 = *(v6 + 72);
   *(v6 + 72) = v9;
 
@@ -1240,7 +1240,7 @@ LABEL_23:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v81 + 1) + 8 * i) copyWithZone:a3];
+        v16 = [*(*(&v81 + 1) + 8 * i) copyWithZone:zone];
         [v6 addSubscribedStreams:v16];
       }
 
@@ -1312,7 +1312,7 @@ LABEL_18:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v77 + 1) + 8 * j) copyWithZone:a3];
+        v23 = [*(*(&v77 + 1) + 8 * j) copyWithZone:zone];
         [v6 addQuicConnectionInfo:v23];
       }
 
@@ -1328,7 +1328,7 @@ LABEL_18:
     *(v6 + 196) |= 0x40u;
   }
 
-  v24 = [(IDSQRProtoMaterial *)self->_clientContextBlob copyWithZone:a3];
+  v24 = [(IDSQRProtoMaterial *)self->_clientContextBlob copyWithZone:zone];
   v25 = *(v6 + 64);
   *(v6 + 64) = v24;
 
@@ -1357,7 +1357,7 @@ LABEL_18:
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v73 + 1) + 8 * k) copyWithZone:a3];
+        v31 = [*(*(&v73 + 1) + 8 * k) copyWithZone:zone];
         [v6 addMaterials:v31];
       }
 
@@ -1367,19 +1367,19 @@ LABEL_18:
     while (v28);
   }
 
-  v32 = [(NSData *)self->_randomSalt copyWithZone:a3];
+  v32 = [(NSData *)self->_randomSalt copyWithZone:zone];
   v33 = *(v6 + 120);
   *(v6 + 120) = v32;
 
-  v34 = [(NSData *)self->_accessToken copyWithZone:a3];
+  v34 = [(NSData *)self->_accessToken copyWithZone:zone];
   v35 = *(v6 + 40);
   *(v6 + 40) = v34;
 
-  v36 = [(NSData *)self->_serverBlob copyWithZone:a3];
+  v36 = [(NSData *)self->_serverBlob copyWithZone:zone];
   v37 = *(v6 + 136);
   *(v6 + 136) = v36;
 
-  v38 = [(IDSQRProtoCallModeUpdateInfo *)self->_callModeInfo copyWithZone:a3];
+  v38 = [(IDSQRProtoCallModeUpdateInfo *)self->_callModeInfo copyWithZone:zone];
   v39 = *(v6 + 48);
   *(v6 + 48) = v38;
 
@@ -1402,7 +1402,7 @@ LABEL_18:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v69 + 1) + 8 * m) copyWithZone:a3];
+        v45 = [*(*(&v69 + 1) + 8 * m) copyWithZone:zone];
         [v6 addFastPluginRequests:v45];
       }
 
@@ -1431,7 +1431,7 @@ LABEL_18:
           objc_enumerationMutation(v46);
         }
 
-        v51 = [*(*(&v65 + 1) + 8 * n) copyWithZone:a3];
+        v51 = [*(*(&v65 + 1) + 8 * n) copyWithZone:zone];
         [v6 addStaleLinks:v51];
       }
 
@@ -1441,7 +1441,7 @@ LABEL_18:
     while (v48);
   }
 
-  v52 = [(IDSQRProtoAllocBindTestOption *)self->_testOption copyWithZone:a3];
+  v52 = [(IDSQRProtoAllocBindTestOption *)self->_testOption copyWithZone:zone];
   v53 = *(v6 + 184);
   *(v6 + 184) = v52;
 
@@ -1464,7 +1464,7 @@ LABEL_18:
           objc_enumerationMutation(v54);
         }
 
-        v59 = [*(*(&v61 + 1) + 8 * ii) copyWithZone:{a3, v61}];
+        v59 = [*(*(&v61 + 1) + 8 * ii) copyWithZone:{zone, v61}];
         [v6 addSessionExperiments:v59];
       }
 
@@ -1477,35 +1477,35 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_76;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 196) & 0x20) == 0 || self->_serviceId != *(v4 + 36))
+    if ((*(equalCopy + 196) & 0x20) == 0 || self->_serviceId != *(equalCopy + 36))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 196) & 0x20) != 0)
+  else if ((*(equalCopy + 196) & 0x20) != 0)
   {
     goto LABEL_76;
   }
 
   clientOsVersion = self->_clientOsVersion;
-  if (clientOsVersion | *(v4 + 10) && ![(NSString *)clientOsVersion isEqual:?])
+  if (clientOsVersion | *(equalCopy + 10) && ![(NSString *)clientOsVersion isEqual:?])
   {
     goto LABEL_76;
   }
 
   clientHwVersion = self->_clientHwVersion;
-  if (clientHwVersion | *(v4 + 9))
+  if (clientHwVersion | *(equalCopy + 9))
   {
     if (![(NSString *)clientHwVersion isEqual:?])
     {
@@ -1515,13 +1515,13 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 196) & 1) == 0 || self->_capabilities != *(v4 + 4))
+    if ((*(equalCopy + 196) & 1) == 0 || self->_capabilities != *(equalCopy + 4))
     {
       goto LABEL_76;
     }
   }
 
-  else if (*(v4 + 196))
+  else if (*(equalCopy + 196))
   {
     goto LABEL_76;
   }
@@ -1532,7 +1532,7 @@ LABEL_18:
   }
 
   subscribedStreams = self->_subscribedStreams;
-  if (subscribedStreams | *(v4 + 22))
+  if (subscribedStreams | *(equalCopy + 22))
   {
     if (![(NSMutableArray *)subscribedStreams isEqual:?])
     {
@@ -1543,71 +1543,71 @@ LABEL_18:
   has = self->_has;
   if ((*&has & 0x80000000) != 0)
   {
-    if ((*(v4 + 196) & 0x80) == 0)
+    if ((*(equalCopy + 196) & 0x80) == 0)
     {
       goto LABEL_76;
     }
 
     if (self->_allWildcardSubscription)
     {
-      if ((*(v4 + 192) & 1) == 0)
+      if ((*(equalCopy + 192) & 1) == 0)
       {
         goto LABEL_76;
       }
     }
 
-    else if (*(v4 + 192))
+    else if (*(equalCopy + 192))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 196) & 0x80) != 0)
+  else if ((*(equalCopy + 196) & 0x80) != 0)
   {
     goto LABEL_76;
   }
 
   if ((*&has & 4) != 0)
   {
-    if ((*(v4 + 196) & 4) == 0 || self->_maxConcurrentStreams != *(v4 + 26))
+    if ((*(equalCopy + 196) & 4) == 0 || self->_maxConcurrentStreams != *(equalCopy + 26))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 196) & 4) != 0)
+  else if ((*(equalCopy + 196) & 4) != 0)
   {
     goto LABEL_76;
   }
 
   if ((*&has & 2) != 0)
   {
-    if ((*(v4 + 196) & 2) == 0 || self->_channelBindingInfo != *(v4 + 14))
+    if ((*(equalCopy + 196) & 2) == 0 || self->_channelBindingInfo != *(equalCopy + 14))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 196) & 2) != 0)
+  else if ((*(equalCopy + 196) & 2) != 0)
   {
     goto LABEL_76;
   }
 
   if ((*&has & 8) != 0)
   {
-    if ((*(v4 + 196) & 8) == 0 || self->_maxEmbeddedStatsResponseDelay != *(v4 + 27))
+    if ((*(equalCopy + 196) & 8) == 0 || self->_maxEmbeddedStatsResponseDelay != *(equalCopy + 27))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 196) & 8) != 0)
+  else if ((*(equalCopy + 196) & 8) != 0)
   {
     goto LABEL_76;
   }
 
   quicConnectionInfos = self->_quicConnectionInfos;
-  if (quicConnectionInfos | *(v4 + 14))
+  if (quicConnectionInfos | *(equalCopy + 14))
   {
     if (![(NSMutableArray *)quicConnectionInfos isEqual:?])
     {
@@ -1619,19 +1619,19 @@ LABEL_18:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((*(v4 + 196) & 0x40) == 0 || self->_stateFlags != *(v4 + 42))
+    if ((*(equalCopy + 196) & 0x40) == 0 || self->_stateFlags != *(equalCopy + 42))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 196) & 0x40) != 0)
+  else if ((*(equalCopy + 196) & 0x40) != 0)
   {
     goto LABEL_76;
   }
 
   clientContextBlob = self->_clientContextBlob;
-  if (clientContextBlob | *(v4 + 8))
+  if (clientContextBlob | *(equalCopy + 8))
   {
     if ([(IDSQRProtoMaterial *)clientContextBlob isEqual:?])
     {
@@ -1647,25 +1647,25 @@ LABEL_76:
 LABEL_53:
   if ((*&has & 0x10) != 0)
   {
-    if ((*(v4 + 196) & 0x10) == 0 || self->_reason != *(v4 + 32))
+    if ((*(equalCopy + 196) & 0x10) == 0 || self->_reason != *(equalCopy + 32))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 196) & 0x10) != 0)
+  else if ((*(equalCopy + 196) & 0x10) != 0)
   {
     goto LABEL_76;
   }
 
   materials = self->_materials;
-  if (materials | *(v4 + 12) && ![(NSMutableArray *)materials isEqual:?])
+  if (materials | *(equalCopy + 12) && ![(NSMutableArray *)materials isEqual:?])
   {
     goto LABEL_76;
   }
 
   randomSalt = self->_randomSalt;
-  if (randomSalt | *(v4 + 15))
+  if (randomSalt | *(equalCopy + 15))
   {
     if (![(NSData *)randomSalt isEqual:?])
     {
@@ -1674,7 +1674,7 @@ LABEL_53:
   }
 
   accessToken = self->_accessToken;
-  if (accessToken | *(v4 + 5))
+  if (accessToken | *(equalCopy + 5))
   {
     if (![(NSData *)accessToken isEqual:?])
     {
@@ -1683,7 +1683,7 @@ LABEL_53:
   }
 
   serverBlob = self->_serverBlob;
-  if (serverBlob | *(v4 + 17))
+  if (serverBlob | *(equalCopy + 17))
   {
     if (![(NSData *)serverBlob isEqual:?])
     {
@@ -1692,7 +1692,7 @@ LABEL_53:
   }
 
   callModeInfo = self->_callModeInfo;
-  if (callModeInfo | *(v4 + 6))
+  if (callModeInfo | *(equalCopy + 6))
   {
     if (![(IDSQRProtoCallModeUpdateInfo *)callModeInfo isEqual:?])
     {
@@ -1701,7 +1701,7 @@ LABEL_53:
   }
 
   fastPluginRequests = self->_fastPluginRequests;
-  if (fastPluginRequests | *(v4 + 11))
+  if (fastPluginRequests | *(equalCopy + 11))
   {
     if (![(NSMutableArray *)fastPluginRequests isEqual:?])
     {
@@ -1710,7 +1710,7 @@ LABEL_53:
   }
 
   staleLinks = self->_staleLinks;
-  if (staleLinks | *(v4 + 20))
+  if (staleLinks | *(equalCopy + 20))
   {
     if (![(NSMutableArray *)staleLinks isEqual:?])
     {
@@ -1719,7 +1719,7 @@ LABEL_53:
   }
 
   testOption = self->_testOption;
-  if (testOption | *(v4 + 23))
+  if (testOption | *(equalCopy + 23))
   {
     if (![(IDSQRProtoAllocBindTestOption *)testOption isEqual:?])
     {
@@ -1728,7 +1728,7 @@ LABEL_53:
   }
 
   sessionExperiments = self->_sessionExperiments;
-  if (sessionExperiments | *(v4 + 19))
+  if (sessionExperiments | *(equalCopy + 19))
   {
     v20 = [(NSMutableArray *)sessionExperiments isEqual:?];
   }
@@ -1853,18 +1853,18 @@ LABEL_16:
   return v16 ^ v20 ^ [(NSMutableArray *)self->_sessionExperiments hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if ((v4[196] & 0x20) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[196] & 0x20) != 0)
   {
-    self->_serviceId = *(v4 + 36);
+    self->_serviceId = *(fromCopy + 36);
     *&self->_has |= 0x20u;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(IDSQRProtoAllocBindRequest *)self setClientOsVersion:?];
   }
@@ -1880,10 +1880,10 @@ LABEL_16:
     *&self->_has |= 1u;
   }
 
-  v6 = [v5 publishedStreamIdsCount];
-  if (v6)
+  publishedStreamIdsCount = [v5 publishedStreamIdsCount];
+  if (publishedStreamIdsCount)
   {
-    v7 = v6;
+    v7 = publishedStreamIdsCount;
     for (i = 0; i != v7; ++i)
     {
       -[IDSQRProtoAllocBindRequest addPublishedStreamIds:](self, "addPublishedStreamIds:", [v5 publishedStreamIdsAtIndex:i]);

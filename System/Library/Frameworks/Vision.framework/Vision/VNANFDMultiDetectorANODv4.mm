@@ -5,8 +5,8 @@
 + (NSDictionary)recognizedSportBallObjectClassToSportBallCategoryName;
 + (id)detectedObjectClassToRequestKey;
 + (id)detectedObjectRequestKeyToRequestInfo;
-- (BOOL)processDetectedObject:(id)a3 originatingRequestSpecifier:(id)a4 objectBoundingBox:(CGRect)a5 objectGroupId:(id)a6 imageBuffer:(id)a7 qosClass:(unsigned int)a8 session:(id)a9 warningRecorder:(id)a10 detectedObjectResults:(id)a11 error:(id *)a12;
-- (id)splitDetectedClassResultsIntoSubclasses:(id)a3;
+- (BOOL)processDetectedObject:(id)object originatingRequestSpecifier:(id)specifier objectBoundingBox:(CGRect)box objectGroupId:(id)id imageBuffer:(id)buffer qosClass:(unsigned int)class session:(id)session warningRecorder:(id)self0 detectedObjectResults:(id)self1 error:(id *)self2;
+- (id)splitDetectedClassResultsIntoSubclasses:(id)subclasses;
 @end
 
 @implementation VNANFDMultiDetectorANODv4
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __54__VNANFDMultiDetectorANODv4_knownSportBallIdentifiers__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetectorANODv4 knownSportBallIdentifiers]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetectorANODv4 knownSportBallIdentifiers]::onceToken, block);
@@ -65,7 +65,7 @@ void __82__VNANFDMultiDetectorANODv4_recognizedSportBallObjectClassToSportBallCa
   block[1] = 3221225472;
   block[2] = __55__VNANFDMultiDetectorANODv4_knownAnimalHeadIdentifiers__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetectorANODv4 knownAnimalHeadIdentifiers]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetectorANODv4 knownAnimalHeadIdentifiers]::onceToken, block);
@@ -115,7 +115,7 @@ void __84__VNANFDMultiDetectorANODv4_recognizedAnimalHeadObjectClassToAnimalHead
   block[1] = 3221225472;
   block[2] = __66__VNANFDMultiDetectorANODv4_detectedObjectRequestKeyToRequestInfo__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetectorANODv4 detectedObjectRequestKeyToRequestInfo]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetectorANODv4 detectedObjectRequestKeyToRequestInfo]::onceToken, block);
@@ -161,7 +161,7 @@ void __66__VNANFDMultiDetectorANODv4_detectedObjectRequestKeyToRequestInfo__bloc
   block[1] = 3221225472;
   block[2] = __60__VNANFDMultiDetectorANODv4_detectedObjectClassToRequestKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNANFDMultiDetectorANODv4 detectedObjectClassToRequestKey]::onceToken != -1)
   {
     dispatch_once(&+[VNANFDMultiDetectorANODv4 detectedObjectClassToRequestKey]::onceToken, block);
@@ -202,20 +202,20 @@ void __60__VNANFDMultiDetectorANODv4_detectedObjectClassToRequestKey__block_invo
   +[VNANFDMultiDetectorANODv4 detectedObjectClassToRequestKey]::detectedObjectClassToRequestKey = v13;
 }
 
-- (id)splitDetectedClassResultsIntoSubclasses:(id)a3
+- (id)splitDetectedClassResultsIntoSubclasses:(id)subclasses
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  subclassesCopy = subclasses;
+  if ([subclassesCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v17 = v4;
+    v17 = subclassesCopy;
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v4;
+    v7 = subclassesCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v8)
     {
@@ -242,7 +242,7 @@ void __60__VNANFDMultiDetectorANODv4_detectedObjectClassToRequestKey__block_invo
               v18.super_class = VNANFDMultiDetectorANODv4;
               v15 = [(VNANFDMultiDetectorANODv3 *)&v18 splitDetectedClassResultsIntoSubclasses:v7];
 
-              v4 = v17;
+              subclassesCopy = v17;
               goto LABEL_14;
             }
           }
@@ -260,7 +260,7 @@ void __60__VNANFDMultiDetectorANODv4_detectedObjectClassToRequestKey__block_invo
       }
     }
 
-    v4 = v17;
+    subclassesCopy = v17;
     v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v5, v6, 0}];
 LABEL_14:
   }
@@ -269,76 +269,76 @@ LABEL_14:
   {
     v23.receiver = self;
     v23.super_class = VNANFDMultiDetectorANODv4;
-    v15 = [(VNANFDMultiDetectorANODv3 *)&v23 splitDetectedClassResultsIntoSubclasses:v4];
+    v15 = [(VNANFDMultiDetectorANODv3 *)&v23 splitDetectedClassResultsIntoSubclasses:subclassesCopy];
   }
 
   return v15;
 }
 
-- (BOOL)processDetectedObject:(id)a3 originatingRequestSpecifier:(id)a4 objectBoundingBox:(CGRect)a5 objectGroupId:(id)a6 imageBuffer:(id)a7 qosClass:(unsigned int)a8 session:(id)a9 warningRecorder:(id)a10 detectedObjectResults:(id)a11 error:(id *)a12
+- (BOOL)processDetectedObject:(id)object originatingRequestSpecifier:(id)specifier objectBoundingBox:(CGRect)box objectGroupId:(id)id imageBuffer:(id)buffer qosClass:(unsigned int)class session:(id)session warningRecorder:(id)self0 detectedObjectResults:(id)self1 error:(id *)self2
 {
-  v13 = *&a8;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v22 = a3;
-  v23 = a4;
-  v24 = a6;
-  v44 = a7;
-  v43 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = [objc_opt_class() recognizedAnimalHeadObjectClassToAnimalHeadCategoryName];
-  v28 = [objc_opt_class() recognizedSportBallObjectClassToSportBallCategoryName];
-  v29 = [v22 labelKey];
-  if ((v29 - 9) < 2)
+  v13 = *&class;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  objectCopy = object;
+  specifierCopy = specifier;
+  idCopy = id;
+  bufferCopy = buffer;
+  sessionCopy = session;
+  recorderCopy = recorder;
+  resultsCopy = results;
+  recognizedAnimalHeadObjectClassToAnimalHeadCategoryName = [objc_opt_class() recognizedAnimalHeadObjectClassToAnimalHeadCategoryName];
+  recognizedSportBallObjectClassToSportBallCategoryName = [objc_opt_class() recognizedSportBallObjectClassToSportBallCategoryName];
+  labelKey = [objectCopy labelKey];
+  if ((labelKey - 9) < 2)
   {
-    v35 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v22, "labelKey")}];
-    v34 = [v27 objectForKey:v35];
+    v35 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objectCopy, "labelKey")}];
+    v34 = [recognizedAnimalHeadObjectClassToAnimalHeadCategoryName objectForKey:v35];
 
-    [v22 confidence];
+    [objectCopy confidence];
     LODWORD(v37) = v36;
-    [(VNANFDMultiDetector *)self processRecognizedObjectWithIdentifier:v34 originatingRequestSpecifier:v23 objectBoundingBox:v24 objectGroupId:v26 objectConfidence:x detectedObjectResults:y, width, height, v37];
+    [(VNANFDMultiDetector *)self processRecognizedObjectWithIdentifier:v34 originatingRequestSpecifier:specifierCopy objectBoundingBox:idCopy objectGroupId:resultsCopy objectConfidence:x detectedObjectResults:y, width, height, v37];
   }
 
-  else if (v29 == 11)
+  else if (labelKey == 11)
   {
-    v38 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v22, "labelKey")}];
-    v34 = [v28 objectForKey:v38];
+    v38 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objectCopy, "labelKey")}];
+    v34 = [recognizedSportBallObjectClassToSportBallCategoryName objectForKey:v38];
 
-    [v22 confidence];
+    [objectCopy confidence];
     LODWORD(v40) = v39;
-    [(VNANFDMultiDetector *)self processRecognizedObjectWithIdentifier:v34 originatingRequestSpecifier:v23 objectBoundingBox:v24 objectGroupId:v26 objectConfidence:x detectedObjectResults:y, width, height, v40];
+    [(VNANFDMultiDetector *)self processRecognizedObjectWithIdentifier:v34 originatingRequestSpecifier:specifierCopy objectBoundingBox:idCopy objectGroupId:resultsCopy objectConfidence:x detectedObjectResults:y, width, height, v40];
   }
 
   else
   {
-    if (v29 != 12)
+    if (labelKey != 12)
     {
       v45.receiver = self;
       v45.super_class = VNANFDMultiDetectorANODv4;
-      v41 = [(VNANFDMultiDetectorANODv3 *)&v45 processDetectedObject:v22 originatingRequestSpecifier:v23 objectBoundingBox:v24 objectGroupId:v44 imageBuffer:v13 qosClass:v43 session:x warningRecorder:y detectedObjectResults:width error:height, v25, v26, a12];
+      error = [(VNANFDMultiDetectorANODv3 *)&v45 processDetectedObject:objectCopy originatingRequestSpecifier:specifierCopy objectBoundingBox:idCopy objectGroupId:bufferCopy imageBuffer:v13 qosClass:sessionCopy session:x warningRecorder:y detectedObjectResults:width error:height, recorderCopy, resultsCopy, error];
       goto LABEL_11;
     }
 
     v30 = [VNHumanObservation alloc];
-    [v22 confidence];
+    [objectCopy confidence];
     LODWORD(v32) = v31;
-    v33 = [(VNHumanObservation *)v30 initWithOriginatingRequestSpecifier:v23 boundingBox:0 upperBodyOnly:x confidence:y, width, height, v32];
+    v33 = [(VNHumanObservation *)v30 initWithOriginatingRequestSpecifier:specifierCopy boundingBox:0 upperBodyOnly:x confidence:y, width, height, v32];
     v34 = v33;
-    if (v24)
+    if (idCopy)
     {
-      [(VNDetectedObjectObservation *)v33 setGroupId:v24];
+      [(VNDetectedObjectObservation *)v33 setGroupId:idCopy];
     }
 
-    [v26 addObject:v34];
+    [resultsCopy addObject:v34];
   }
 
-  v41 = 1;
+  error = 1;
 LABEL_11:
 
-  return v41;
+  return error;
 }
 
 @end

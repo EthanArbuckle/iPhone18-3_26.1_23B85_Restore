@@ -1,34 +1,34 @@
 @interface STScreenTimeCapabilities
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCapabilities:(id)a3;
-- (STScreenTimeCapabilities)initWithSupportedInfrastructure:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCapabilities:(id)capabilities;
+- (STScreenTimeCapabilities)initWithSupportedInfrastructure:(int64_t)infrastructure;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation STScreenTimeCapabilities
 
-- (STScreenTimeCapabilities)initWithSupportedInfrastructure:(int64_t)a3
+- (STScreenTimeCapabilities)initWithSupportedInfrastructure:(int64_t)infrastructure
 {
   v5.receiver = self;
   v5.super_class = STScreenTimeCapabilities;
   result = [(STScreenTimeCapabilities *)&v5 init];
-  result->_supportedInfrastructure = a3;
+  result->_supportedInfrastructure = infrastructure;
   return result;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(STScreenTimeCapabilities *)self supportedInfrastructure];
+  supportedInfrastructure = [(STScreenTimeCapabilities *)self supportedInfrastructure];
   v5 = objc_opt_new();
   v6 = v5;
-  if (v4)
+  if (supportedInfrastructure)
   {
     [v5 addObject:@"V1"];
   }
 
-  if ((v4 & 2) != 0)
+  if ((supportedInfrastructure & 2) != 0)
   {
     [v6 addObject:@"V2"];
   }
@@ -41,18 +41,18 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   supportedInfrastructure = self->_supportedInfrastructure;
 
   return [v4 initWithSupportedInfrastructure:supportedInfrastructure];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -62,7 +62,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STScreenTimeCapabilities *)self isEqualToCapabilities:v4];
+      v5 = [(STScreenTimeCapabilities *)self isEqualToCapabilities:equalCopy];
     }
 
     else
@@ -74,18 +74,18 @@
   return v5;
 }
 
-- (BOOL)isEqualToCapabilities:(id)a3
+- (BOOL)isEqualToCapabilities:(id)capabilities
 {
-  if (a3 == self)
+  if (capabilities == self)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [(STScreenTimeCapabilities *)self supportedInfrastructure];
-  v6 = [v4 supportedInfrastructure];
+  capabilitiesCopy = capabilities;
+  supportedInfrastructure = [(STScreenTimeCapabilities *)self supportedInfrastructure];
+  supportedInfrastructure2 = [capabilitiesCopy supportedInfrastructure];
 
-  return v5 == v6;
+  return supportedInfrastructure == supportedInfrastructure2;
 }
 
 @end

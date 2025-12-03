@@ -3,8 +3,8 @@
 - (_TtC14AppleIDSetupUI18AISSignInViewModel)init;
 - (id)authenticationContext;
 - (uint64_t)signInViewControllerDidCancel:;
-- (void)signInViewController:(id)a3 didCompleteWithAuthenticationResults:(id)a4 completionHandler:(id)a5;
-- (void)willAuthenticateWithContext:(id)a3;
+- (void)signInViewController:(id)controller didCompleteWithAuthenticationResults:(id)results completionHandler:(id)handler;
+- (void)willAuthenticateWithContext:(id)context;
 @end
 
 @implementation AISSignInViewModel
@@ -23,20 +23,20 @@
   return result;
 }
 
-- (void)signInViewController:(id)a3 didCompleteWithAuthenticationResults:(id)a4 completionHandler:(id)a5
+- (void)signInViewController:(id)controller didCompleteWithAuthenticationResults:(id)results completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27E50B420, &qword_240A30800);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = sub_240A2BEBC();
   v14 = swift_allocObject();
   *(v14 + 16) = v12;
   v15 = sub_240A2C24C();
   (*(*(v15 - 8) + 56))(v11, 1, 1, v15);
   sub_240A2C21C();
-  v16 = self;
+  selfCopy = self;
 
   v17 = sub_240A2C20C();
   v18 = swift_allocObject();
@@ -44,22 +44,22 @@
   v18[2] = v17;
   v18[3] = v19;
   v18[4] = v13;
-  v18[5] = v16;
+  v18[5] = selfCopy;
   v18[6] = sub_240963BB4;
   v18[7] = v14;
   sub_2409230D4(0, 0, v11, &unk_240A34810, v18);
 }
 
-- (void)willAuthenticateWithContext:(id)a3
+- (void)willAuthenticateWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_240986694(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_240986694(contextCopy);
 }
 
 - (id)authenticationContext
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_240986060();
 
   return v3;

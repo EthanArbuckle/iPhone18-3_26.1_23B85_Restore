@@ -1,44 +1,44 @@
 @interface PKXPCForwarder
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_initWithTarget:(uint64_t)a3 targetClass:;
-- (void)forwardInvocation:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_initWithTarget:(uint64_t)target targetClass:;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation PKXPCForwarder
 
-- (void)_initWithTarget:(uint64_t)a3 targetClass:
+- (void)_initWithTarget:(uint64_t)target targetClass:
 {
   result = a2;
   v6 = result;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_5;
   }
 
-  if (a3)
+  if (target)
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = PKXPCForwarder;
     v7 = objc_msgSendSuper2(&v8, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       *(v7 + 2) = 0;
       objc_storeWeak(v7 + 2, v6);
-      a1[3] = a3;
+      self[3] = target;
     }
 
 LABEL_5:
 
-    return a1;
+    return self;
   }
 
   __break(1u);
   return result;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_target);
@@ -47,7 +47,7 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v11.receiver = self;
   v11.super_class = PKXPCForwarder;
@@ -59,12 +59,12 @@ LABEL_5:
     os_unfair_lock_unlock(&self->_lock);
     if (WeakRetained)
     {
-      v7 = [WeakRetained methodSignatureForSelector:a3];
+      v7 = [WeakRetained methodSignatureForSelector:selector];
     }
 
     else
     {
-      InstanceMethod = class_getInstanceMethod(self->_targetClass, a3);
+      InstanceMethod = class_getInstanceMethod(self->_targetClass, selector);
       if (!InstanceMethod || (Description = method_getDescription(InstanceMethod)) == 0)
       {
         v5 = 0;
@@ -81,16 +81,16 @@ LABEL_9:
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invocationCopy = invocation;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_target);
   os_unfair_lock_unlock(&self->_lock);
   if (WeakRetained)
   {
-    [v4 invokeWithTarget:WeakRetained];
+    [invocationCopy invokeWithTarget:WeakRetained];
   }
 
   else
@@ -99,7 +99,7 @@ LABEL_9:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = NSStringFromClass(self->_targetClass);
-      v8 = NSStringFromSelector([v4 selector]);
+      v8 = NSStringFromSelector([invocationCopy selector]);
       v9 = 138543618;
       v10 = v7;
       v11 = 2112;
@@ -107,8 +107,8 @@ LABEL_9:
       _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "PKXPCForwarder: dropping [%{public}@ %@].", &v9, 0x16u);
     }
 
-    [v4 setTarget:0];
-    [v4 invoke];
+    [invocationCopy setTarget:0];
+    [invocationCopy invoke];
   }
 }
 

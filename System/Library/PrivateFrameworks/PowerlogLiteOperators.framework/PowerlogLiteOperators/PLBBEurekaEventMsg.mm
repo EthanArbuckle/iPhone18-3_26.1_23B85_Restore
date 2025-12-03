@@ -15,33 +15,33 @@
 + (id)bbEuEvMsgNameWCDMARRCState;
 + (id)bbEuEvMsgUTRANRRCState;
 - (PLBBEurekaEventMsg)init;
-- (void)addPairWithKey:(id)a3 andWithVal:(id)a4;
-- (void)appendToError:(id)a3;
-- (void)logEventCMCallEventConnWithId:(id)a3 andCallType:(id)a4 andSysMode:(id)a5;
-- (void)logEventCMCallEventConnWithId:(id)a3 andCallType:(id)a4 andSysMode:(id)a5 andClientId:(id)a6;
-- (void)logEventCMCallEventEndWithId:(id)a3 andNumCalls:(id)a4;
-- (void)logEventCMCallEventEndWithId:(id)a3 andNumCalls:(id)a4 andClientId:(id)a5;
-- (void)logEventCMCallEventOrigWithId:(id)a3 andCallType:(id)a4 andSrvType:(id)a5;
-- (void)logEventCMCallEventOrigWithId:(id)a3 andCallType:(id)a4 andSrvType:(id)a5 andClientId:(id)a6;
+- (void)addPairWithKey:(id)key andWithVal:(id)val;
+- (void)appendToError:(id)error;
+- (void)logEventCMCallEventConnWithId:(id)id andCallType:(id)type andSysMode:(id)mode;
+- (void)logEventCMCallEventConnWithId:(id)id andCallType:(id)type andSysMode:(id)mode andClientId:(id)clientId;
+- (void)logEventCMCallEventEndWithId:(id)id andNumCalls:(id)calls;
+- (void)logEventCMCallEventEndWithId:(id)id andNumCalls:(id)calls andClientId:(id)clientId;
+- (void)logEventCMCallEventOrigWithId:(id)id andCallType:(id)type andSrvType:(id)srvType;
+- (void)logEventCMCallEventOrigWithId:(id)id andCallType:(id)type andSrvType:(id)srvType andClientId:(id)clientId;
 - (void)logEventForwardBBEurekaEventMsgLite;
-- (void)logEventForwardGSML1StateWith:(id)a3;
-- (void)logEventForwardLTERRCStateAs:(id)a3;
+- (void)logEventForwardGSML1StateWith:(id)with;
+- (void)logEventForwardLTERRCStateAs:(id)as;
 - (void)logEventForwardSDEventActionCode;
-- (void)logEventForwardUTRANRRCNextStateAs:(id)a3 andCurrStateAs:(id)a4 andRateAs:(id)a5;
-- (void)logEventForwardWCDMARRCPrevStateAs:(id)a3 andCurrState:(id)a4 andRate:(id)a5;
+- (void)logEventForwardUTRANRRCNextStateAs:(id)as andCurrStateAs:(id)stateAs andRateAs:(id)rateAs;
+- (void)logEventForwardWCDMARRCPrevStateAs:(id)as andCurrState:(id)state andRate:(id)rate;
 - (void)logEventNoneEventNotProcessed;
-- (void)logEventPointCMExitCodeWithState:(id)a3;
+- (void)logEventPointCMExitCodeWithState:(id)state;
 - (void)refreshBBEurekaEventMsgLite;
 - (void)refreshEventNotProcessed;
 - (void)refreshLTERRCState;
 - (void)refreshSDEventActionCode;
 - (void)refreshUTRANRRCState;
 - (void)refreshWCDMARRCState;
-- (void)sendAndLogPLEntry:(id)a3;
-- (void)setError:(id)a3;
-- (void)setHeaderWithSeqNum:(id)a3 andDate:(id)a4 andTimeCal:(double)a5;
-- (void)setPayload:(id)a3;
-- (void)setSDEventActionCodeWith:(id)a3 andSDAction:(id)a4 andSDState:(id)a5;
+- (void)sendAndLogPLEntry:(id)entry;
+- (void)setError:(id)error;
+- (void)setHeaderWithSeqNum:(id)num andDate:(id)date andTimeCal:(double)cal;
+- (void)setPayload:(id)payload;
+- (void)setSDEventActionCodeWith:(id)with andSDAction:(id)action andSDState:(id)state;
 @end
 
 @implementation PLBBEurekaEventMsg
@@ -92,10 +92,10 @@ uint64_t __35__PLBBEurekaEventMsg_setEventCode___block_invoke_47(uint64_t a1)
   return result;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  payloadCopy = payload;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -114,9 +114,9 @@ uint64_t __35__PLBBEurekaEventMsg_setEventCode___block_invoke_47(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg setPayload:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg setPayload:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:102];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:102];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -128,10 +128,10 @@ uint64_t __35__PLBBEurekaEventMsg_setEventCode___block_invoke_47(uint64_t a1)
     }
   }
 
-  v12 = [MEMORY[0x277D3F180] debugEnabled];
-  if (v4)
+  debugEnabled = [MEMORY[0x277D3F180] debugEnabled];
+  if (payloadCopy)
   {
-    if (v12)
+    if (debugEnabled)
     {
       v13 = objc_opt_class();
       v28 = MEMORY[0x277D85DD0];
@@ -146,12 +146,12 @@ uint64_t __35__PLBBEurekaEventMsg_setEventCode___block_invoke_47(uint64_t a1)
 
       if (byte_2811F6224 == 1)
       {
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"set payload with with %@", v4, v28, v29, v30, v31, v32];
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"set payload with with %@", payloadCopy, v28, v29, v30, v31, v32];
         v15 = MEMORY[0x277D3F178];
         v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-        v17 = [v16 lastPathComponent];
+        lastPathComponent2 = [v16 lastPathComponent];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg setPayload:]"];
-        [v15 logMessage:v14 fromFile:v17 fromFunction:v18 fromLineNumber:107];
+        [v15 logMessage:v14 fromFile:lastPathComponent2 fromFunction:v18 fromLineNumber:107];
 
         v19 = PLLogCommon();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -163,10 +163,10 @@ uint64_t __35__PLBBEurekaEventMsg_setEventCode___block_invoke_47(uint64_t a1)
       }
     }
 
-    [(NSMutableDictionary *)self->_commonInfo setValue:v4 forKey:@"Payload"];
+    [(NSMutableDictionary *)self->_commonInfo setValue:payloadCopy forKey:@"Payload"];
   }
 
-  else if (v12)
+  else if (debugEnabled)
   {
     v20 = objc_opt_class();
     v33[0] = MEMORY[0x277D85DD0];
@@ -184,9 +184,9 @@ uint64_t __35__PLBBEurekaEventMsg_setEventCode___block_invoke_47(uint64_t a1)
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"bad payload"];
       v22 = MEMORY[0x277D3F178];
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v24 = [v23 lastPathComponent];
+      lastPathComponent3 = [v23 lastPathComponent];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg setPayload:]"];
-      [v22 logMessage:v21 fromFile:v24 fromFunction:v25 fromLineNumber:104];
+      [v22 logMessage:v21 fromFile:lastPathComponent3 fromFunction:v25 fromLineNumber:104];
 
       v26 = PLLogCommon();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -222,10 +222,10 @@ uint64_t __33__PLBBEurekaEventMsg_setPayload___block_invoke_59(uint64_t a1)
   return result;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -244,9 +244,9 @@ uint64_t __33__PLBBEurekaEventMsg_setPayload___block_invoke_59(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg setError:]", block, v14, v15, v16, v17];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg setError:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:117];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:117];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -258,9 +258,9 @@ uint64_t __33__PLBBEurekaEventMsg_setPayload___block_invoke_59(uint64_t a1)
     }
   }
 
-  if (v4)
+  if (errorCopy)
   {
-    [(NSMutableDictionary *)self->_commonInfo setValue:v4 forKey:@"Error"];
+    [(NSMutableDictionary *)self->_commonInfo setValue:errorCopy forKey:@"Error"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -273,10 +273,10 @@ uint64_t __31__PLBBEurekaEventMsg_setError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)appendToError:(id)a3
+- (void)appendToError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -295,9 +295,9 @@ uint64_t __31__PLBBEurekaEventMsg_setError___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg appendToError:]", block, v14, v15, v16, v17];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg appendToError:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:125];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:125];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -309,7 +309,7 @@ uint64_t __31__PLBBEurekaEventMsg_setError___block_invoke(uint64_t a1)
     }
   }
 
-  [(NSMutableDictionary *)self->_commonInfo setObject:v4 forKey:@"Error"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:errorCopy forKey:@"Error"];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -321,12 +321,12 @@ uint64_t __36__PLBBEurekaEventMsg_appendToError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setHeaderWithSeqNum:(id)a3 andDate:(id)a4 andTimeCal:(double)a5
+- (void)setHeaderWithSeqNum:(id)num andDate:(id)date andTimeCal:(double)cal
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  numCopy = num;
   v9 = MEMORY[0x277D3F180];
-  v10 = a4;
+  dateCopy = date;
   if ([v9 debugEnabled])
   {
     v11 = objc_opt_class();
@@ -345,9 +345,9 @@ uint64_t __36__PLBBEurekaEventMsg_appendToError___block_invoke(uint64_t a1)
       v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
       v13 = MEMORY[0x277D3F178];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v15 = [v14 lastPathComponent];
+      lastPathComponent = [v14 lastPathComponent];
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
-      [v13 logMessage:v12 fromFile:v15 fromFunction:v16 fromLineNumber:134];
+      [v13 logMessage:v12 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:134];
 
       v17 = PLLogCommon();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -359,8 +359,8 @@ uint64_t __36__PLBBEurekaEventMsg_appendToError___block_invoke(uint64_t a1)
     }
   }
 
-  v18 = v8;
-  if (!v8)
+  v18 = numCopy;
+  if (!numCopy)
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -380,9 +380,9 @@ uint64_t __36__PLBBEurekaEventMsg_appendToError___block_invoke(uint64_t a1)
         v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"unable to set seqNum(%@)", 0];
         v21 = MEMORY[0x277D3F178];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-        v23 = [v22 lastPathComponent];
+        lastPathComponent2 = [v22 lastPathComponent];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg setHeaderWithSeqNum:andDate:andTimeCal:]"];
-        [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:136];
+        [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:136];
 
         v25 = PLLogCommon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -398,10 +398,10 @@ uint64_t __36__PLBBEurekaEventMsg_appendToError___block_invoke(uint64_t a1)
   }
 
   [(NSMutableDictionary *)self->_commonInfo setObject:v18 forKey:@"SeqNum"];
-  [(NSMutableDictionary *)self->_commonInfo setValue:v10 forKey:@"BBDate"];
+  [(NSMutableDictionary *)self->_commonInfo setValue:dateCopy forKey:@"BBDate"];
 
   commonInfo = self->_commonInfo;
-  v27 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v27 = [MEMORY[0x277CCABB0] numberWithDouble:cal];
   [(NSMutableDictionary *)commonInfo setValue:v27 forKey:@"TimeCal"];
 
   v28 = *MEMORY[0x277D85DE8];
@@ -421,10 +421,10 @@ uint64_t __61__PLBBEurekaEventMsg_setHeaderWithSeqNum_andDate_andTimeCal___block
   return result;
 }
 
-- (void)sendAndLogPLEntry:(id)a3
+- (void)sendAndLogPLEntry:(id)entry
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entryCopy = entry;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -443,9 +443,9 @@ uint64_t __61__PLBBEurekaEventMsg_setHeaderWithSeqNum_andDate_andTimeCal___block
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg sendAndLogPLEntry:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg sendAndLogPLEntry:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:157];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:157];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -458,26 +458,26 @@ uint64_t __61__PLBBEurekaEventMsg_setHeaderWithSeqNum_andDate_andTimeCal___block
   }
 
   v12 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"EventCode"];
-  [v4 setObject:v12 forKeyedSubscript:@"EventCode"];
+  [entryCopy setObject:v12 forKeyedSubscript:@"EventCode"];
 
   v13 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Payload"];
-  [v4 setObject:v13 forKeyedSubscript:@"Payload"];
+  [entryCopy setObject:v13 forKeyedSubscript:@"Payload"];
 
   v14 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
-  [v4 setObject:v14 forKeyedSubscript:@"Error"];
+  [entryCopy setObject:v14 forKeyedSubscript:@"Error"];
 
   v15 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"SeqNum"];
-  [v4 setObject:v15 forKeyedSubscript:@"SeqNum"];
+  [entryCopy setObject:v15 forKeyedSubscript:@"SeqNum"];
 
   v16 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"BBDate"];
-  [v4 setObject:v16 forKeyedSubscript:@"BBDate"];
+  [entryCopy setObject:v16 forKeyedSubscript:@"BBDate"];
 
   v17 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"TimeCal"];
-  [v4 setObject:v17 forKeyedSubscript:@"TimeCal"];
+  [entryCopy setObject:v17 forKeyedSubscript:@"TimeCal"];
 
-  v18 = [(PLBasebandMessage *)self agent];
+  agent = [(PLBasebandMessage *)self agent];
 
-  if (!v18 && [MEMORY[0x277D3F180] debugEnabled])
+  if (!agent && [MEMORY[0x277D3F180] debugEnabled])
   {
     v19 = objc_opt_class();
     v30[0] = MEMORY[0x277D85DD0];
@@ -495,9 +495,9 @@ uint64_t __61__PLBBEurekaEventMsg_setHeaderWithSeqNum_andDate_andTimeCal___block
       v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bad agent"];
       v21 = MEMORY[0x277D3F178];
       v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v23 = [v22 lastPathComponent];
+      lastPathComponent2 = [v22 lastPathComponent];
       v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg sendAndLogPLEntry:]"];
-      [v21 logMessage:v20 fromFile:v23 fromFunction:v24 fromLineNumber:168];
+      [v21 logMessage:v20 fromFile:lastPathComponent2 fromFunction:v24 fromLineNumber:168];
 
       v25 = PLLogCommon();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -510,11 +510,11 @@ uint64_t __61__PLBBEurekaEventMsg_setHeaderWithSeqNum_andDate_andTimeCal___block
   }
 
   v26 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"BBDate"];
-  v27 = [v26 convertFromBasebandToMonotonic];
-  [v4 setEntryDate:v27];
+  convertFromBasebandToMonotonic = [v26 convertFromBasebandToMonotonic];
+  [entryCopy setEntryDate:convertFromBasebandToMonotonic];
 
-  v28 = [(PLBasebandMessage *)self agent];
-  [v28 logEntry:v4];
+  agent2 = [(PLBasebandMessage *)self agent];
+  [agent2 logEntry:entryCopy];
 
   v29 = *MEMORY[0x277D85DE8];
 }
@@ -533,11 +533,11 @@ uint64_t __40__PLBBEurekaEventMsg_sendAndLogPLEntry___block_invoke_72(uint64_t a
   return result;
 }
 
-- (void)addPairWithKey:(id)a3 andWithVal:(id)a4
+- (void)addPairWithKey:(id)key andWithVal:(id)val
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valCopy = val;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v8 = objc_opt_class();
@@ -556,9 +556,9 @@ uint64_t __40__PLBBEurekaEventMsg_sendAndLogPLEntry___block_invoke_72(uint64_t a
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg addPairWithKey:andWithVal:]"];
       v10 = MEMORY[0x277D3F178];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v12 = [v11 lastPathComponent];
+      lastPathComponent = [v11 lastPathComponent];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg addPairWithKey:andWithVal:]"];
-      [v10 logMessage:v9 fromFile:v12 fromFunction:v13 fromLineNumber:205];
+      [v10 logMessage:v9 fromFile:lastPathComponent fromFunction:v13 fromLineNumber:205];
 
       v14 = PLLogCommon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -570,7 +570,7 @@ uint64_t __40__PLBBEurekaEventMsg_sendAndLogPLEntry___block_invoke_72(uint64_t a
     }
   }
 
-  if (v6)
+  if (keyCopy)
   {
     if ([MEMORY[0x277D3F180] debugEnabled])
     {
@@ -587,12 +587,12 @@ uint64_t __40__PLBBEurekaEventMsg_sendAndLogPLEntry___block_invoke_72(uint64_t a
 
       if (byte_2811F622C == 1)
       {
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add KVPair [%@, %@]", v6, v7, v24, v25, v26, v27, v28];
+        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Add KVPair [%@, %@]", keyCopy, valCopy, v24, v25, v26, v27, v28];
         v17 = MEMORY[0x277D3F178];
         v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-        v19 = [v18 lastPathComponent];
+        lastPathComponent2 = [v18 lastPathComponent];
         v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg addPairWithKey:andWithVal:]"];
-        [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:207];
+        [v17 logMessage:v16 fromFile:lastPathComponent2 fromFunction:v20 fromLineNumber:207];
 
         v21 = PLLogCommon();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -604,8 +604,8 @@ uint64_t __40__PLBBEurekaEventMsg_sendAndLogPLEntry___block_invoke_72(uint64_t a
       }
     }
 
-    v22 = [(PLBBEurekaEventMsg *)self kvPairs];
-    [v22 setObject:v7 forKey:v6];
+    kvPairs = [(PLBBEurekaEventMsg *)self kvPairs];
+    [kvPairs setObject:valCopy forKey:keyCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -647,9 +647,9 @@ uint64_t __48__PLBBEurekaEventMsg_addPairWithKey_andWithVal___block_invoke_78(ui
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg refreshBBEurekaEventMsgLite]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg refreshBBEurekaEventMsgLite]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:246];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:246];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -664,8 +664,8 @@ uint64_t __48__PLBBEurekaEventMsg_addPairWithKey_andWithVal___block_invoke_78(ui
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"BBEurekaEventMsgLite"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -698,40 +698,40 @@ uint64_t __49__PLBBEurekaEventMsg_refreshBBEurekaEventMsgLite__block_invoke(uint
   v33[0] = v25;
   v32[1] = *MEMORY[0x277D3F540];
   v28[0] = @"EventCode";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v29[0] = v23;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v29[0] = commonTypeDict_IntegerFormat;
   v28[1] = @"Payload";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat];
-  v29[1] = v21;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v29[1] = commonTypeDict_StringFormat;
   v28[2] = @"Error";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_BoolFormat];
-  v29[2] = v19;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v29[2] = commonTypeDict_BoolFormat;
   v28[3] = @"SeqNum";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v29[3] = v17;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v29[3] = commonTypeDict_IntegerFormat2;
   v28[4] = @"BBDate";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v16 commonTypeDict_DateFormat];
-  v29[4] = v4;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v29[4] = commonTypeDict_DateFormat;
   v28[5] = @"TimeCal";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v29[5] = v6;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v29[5] = commonTypeDict_IntegerFormat3;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:6];
   v33[1] = v7;
   v32[2] = *MEMORY[0x277D3F500];
   v26[0] = @"value";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
   v26[1] = @"unit";
-  v27[0] = v9;
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v27[1] = v11;
+  v27[0] = commonTypeDict_StringFormat2;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v27[1] = commonTypeDict_StringFormat3;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
   v33[2] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:3];
@@ -762,9 +762,9 @@ uint64_t __49__PLBBEurekaEventMsg_refreshBBEurekaEventMsgLite__block_invoke(uint
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventForwardBBEurekaEventMsgLite]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventForwardBBEurekaEventMsgLite]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:295];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:295];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -782,8 +782,8 @@ uint64_t __49__PLBBEurekaEventMsg_refreshBBEurekaEventMsgLite__block_invoke(uint
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [(PLBBEurekaEventMsg *)self kvPairs];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  kvPairs = [(PLBBEurekaEventMsg *)self kvPairs];
+  v13 = [kvPairs countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -794,16 +794,16 @@ uint64_t __49__PLBBEurekaEventMsg_refreshBBEurekaEventMsgLite__block_invoke(uint
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(kvPairs);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        v18 = [(PLBBEurekaEventMsg *)self kvPairs];
-        v19 = [v18 objectForKey:v17];
+        kvPairs2 = [(PLBBEurekaEventMsg *)self kvPairs];
+        v19 = [kvPairs2 objectForKey:v17];
         [v11 setObject:v19 forKeyedSubscript:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v14 = [kvPairs countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v14);
@@ -842,9 +842,9 @@ uint64_t __57__PLBBEurekaEventMsg_logEventForwardBBEurekaEventMsgLite__block_inv
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg refreshSDEventActionCode]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg refreshSDEventActionCode]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:319];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:319];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -859,8 +859,8 @@ uint64_t __57__PLBBEurekaEventMsg_logEventForwardBBEurekaEventMsgLite__block_inv
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"SDEventActionCode"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -893,52 +893,52 @@ uint64_t __46__PLBBEurekaEventMsg_refreshSDEventActionCode__block_invoke(uint64_
   v39[0] = v31;
   v38[1] = *MEMORY[0x277D3F540];
   v34[0] = @"EventCode";
-  v30 = [MEMORY[0x277D3F198] sharedInstance];
-  v29 = [v30 commonTypeDict_IntegerFormat];
-  v35[0] = v29;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v35[0] = commonTypeDict_IntegerFormat;
   v34[1] = @"Payload";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_StringFormat];
-  v35[1] = v27;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v35[1] = commonTypeDict_StringFormat;
   v34[2] = @"Error";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_BoolFormat];
-  v35[2] = v25;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v35[2] = commonTypeDict_BoolFormat;
   v34[3] = @"SeqNum";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v35[3] = v23;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v35[3] = commonTypeDict_IntegerFormat2;
   v34[4] = @"BBDate";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_DateFormat];
-  v35[4] = v21;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v35[4] = commonTypeDict_DateFormat;
   v34[5] = @"TimeCal";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v35[5] = v19;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v35[5] = commonTypeDict_IntegerFormat3;
   v34[6] = @"Event";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v35[6] = v17;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v35[6] = commonTypeDict_IntegerFormat4;
   v34[7] = @"Action";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v16 commonTypeDict_IntegerFormat];
-  v35[7] = v4;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v35[7] = commonTypeDict_IntegerFormat5;
   v34[8] = @"State";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v35[8] = v6;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v35[8] = commonTypeDict_IntegerFormat6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:9];
   v39[1] = v7;
   v38[2] = *MEMORY[0x277D3F500];
   v32[0] = @"value";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]10 commonTypeDict_StringFormat];
   v32[1] = @"unit";
-  v33[0] = v9;
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v33[1] = v11;
+  v33[0] = commonTypeDict_StringFormat2;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]11 commonTypeDict_StringFormat];
+  v33[1] = commonTypeDict_StringFormat3;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v39[2] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:3];
@@ -948,15 +948,15 @@ uint64_t __46__PLBBEurekaEventMsg_refreshSDEventActionCode__block_invoke(uint64_
   return v13;
 }
 
-- (void)setSDEventActionCodeWith:(id)a3 andSDAction:(id)a4 andSDState:(id)a5
+- (void)setSDEventActionCodeWith:(id)with andSDAction:(id)action andSDState:(id)state
 {
   commonInfo = self->_commonInfo;
-  v10 = a5;
-  v9 = a4;
-  [(NSMutableDictionary *)commonInfo setObject:a3 forKey:@"Event"];
-  [(NSMutableDictionary *)self->_commonInfo setObject:v9 forKey:@"Action"];
+  stateCopy = state;
+  actionCopy = action;
+  [(NSMutableDictionary *)commonInfo setObject:with forKey:@"Event"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:actionCopy forKey:@"Action"];
 
-  [(NSMutableDictionary *)self->_commonInfo setObject:v10 forKey:@"State"];
+  [(NSMutableDictionary *)self->_commonInfo setObject:stateCopy forKey:@"State"];
 }
 
 - (void)logEventForwardSDEventActionCode
@@ -980,9 +980,9 @@ uint64_t __46__PLBBEurekaEventMsg_refreshSDEventActionCode__block_invoke(uint64_
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventForwardSDEventActionCode]"];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventForwardSDEventActionCode]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:385];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:385];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -996,24 +996,24 @@ uint64_t __46__PLBBEurekaEventMsg_refreshSDEventActionCode__block_invoke(uint64_
 
   v10 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"SDEventActionCode"];
   v11 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10];
-  v12 = [(PLBBEurekaEventMsg *)self commonInfo];
-  v13 = [v12 objectForKey:@"Event"];
+  commonInfo = [(PLBBEurekaEventMsg *)self commonInfo];
+  v13 = [commonInfo objectForKey:@"Event"];
   [v11 setObject:v13 forKeyedSubscript:@"Event"];
 
-  v14 = [(PLBBEurekaEventMsg *)self commonInfo];
-  v15 = [v14 objectForKey:@"Action"];
+  commonInfo2 = [(PLBBEurekaEventMsg *)self commonInfo];
+  v15 = [commonInfo2 objectForKey:@"Action"];
   [v11 setObject:v15 forKeyedSubscript:@"Action"];
 
-  v16 = [(PLBBEurekaEventMsg *)self commonInfo];
-  v17 = [v16 objectForKey:@"State"];
+  commonInfo3 = [(PLBBEurekaEventMsg *)self commonInfo];
+  v17 = [commonInfo3 objectForKey:@"State"];
   [v11 setObject:v17 forKeyedSubscript:@"State"];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = [(PLBBEurekaEventMsg *)self kvPairs];
-  v19 = [v18 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  kvPairs = [(PLBBEurekaEventMsg *)self kvPairs];
+  v19 = [kvPairs countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1024,24 +1024,24 @@ uint64_t __46__PLBBEurekaEventMsg_refreshSDEventActionCode__block_invoke(uint64_
       {
         if (*v29 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(kvPairs);
         }
 
         v23 = *(*(&v28 + 1) + 8 * i);
-        v24 = [(PLBBEurekaEventMsg *)self kvPairs];
-        v25 = [v24 objectForKey:v23];
+        kvPairs2 = [(PLBBEurekaEventMsg *)self kvPairs];
+        v25 = [kvPairs2 objectForKey:v23];
         [v11 setObject:v25 forKeyedSubscript:v23];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v20 = [kvPairs countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v20);
   }
 
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v11];
-  v26 = [(PLBasebandMessage *)self agent];
-  [v26 modelOOSPower:v11];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent modelOOSPower:v11];
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -1071,41 +1071,41 @@ uint64_t __54__PLBBEurekaEventMsg_logEventForwardSDEventActionCode__block_invoke
   v32[0] = v26;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"EventCode";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v28[0] = v24;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"Payload";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_StringFormat];
-  v28[1] = v22;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v28[1] = commonTypeDict_StringFormat;
   v27[2] = @"Error";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_BoolFormat];
-  v28[2] = v20;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v28[2] = commonTypeDict_BoolFormat;
   v27[3] = @"SeqNum";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v28[3] = v18;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v28[3] = commonTypeDict_IntegerFormat2;
   v27[4] = @"BBDate";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v28[4] = v16;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v28[4] = commonTypeDict_DateFormat;
   v27[5] = @"TimeCal";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v28[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v28[5] = commonTypeDict_IntegerFormat3;
   v27[6] = @"callId";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v28[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v28[6] = commonTypeDict_StringFormat2;
   v27[7] = @"callType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v28[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v28[7] = commonTypeDict_StringFormat3;
   v27[8] = @"systemMode";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v28[8] = v11;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v28[8] = commonTypeDict_StringFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:9];
   v32[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
@@ -1115,13 +1115,13 @@ uint64_t __54__PLBBEurekaEventMsg_logEventForwardSDEventActionCode__block_invoke
   return v13;
 }
 
-- (void)logEventCMCallEventConnWithId:(id)a3 andCallType:(id)a4 andSysMode:(id)a5
+- (void)logEventCMCallEventConnWithId:(id)id andCallType:(id)type andSysMode:(id)mode
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  modeCopy = mode;
   v9 = MEMORY[0x277D3F180];
-  v10 = a4;
-  v11 = a3;
+  typeCopy = type;
+  idCopy = id;
   if ([v9 debugEnabled])
   {
     v12 = objc_opt_class();
@@ -1140,9 +1140,9 @@ uint64_t __54__PLBBEurekaEventMsg_logEventForwardSDEventActionCode__block_invoke
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventCMCallEventConnWithId:andCallType:andSysMode:]", block, v35, v36, v37, v38];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventCMCallEventConnWithId:andCallType:andSysMode:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:465];
+      [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:465];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1165,18 +1165,18 @@ uint64_t __54__PLBBEurekaEventMsg_logEventForwardSDEventActionCode__block_invoke
   v23 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v20 setObject:v23 forKeyedSubscript:@"Error"];
 
-  [v20 setObject:v11 forKeyedSubscript:@"callId"];
-  [v20 setObject:v10 forKeyedSubscript:@"callType"];
-  [v20 setObject:v8 forKeyedSubscript:@"systemMode"];
+  [v20 setObject:idCopy forKeyedSubscript:@"callId"];
+  [v20 setObject:typeCopy forKeyedSubscript:@"callType"];
+  [v20 setObject:modeCopy forKeyedSubscript:@"systemMode"];
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v20];
-  v24 = [v10 isEqualToString:@"VOICE"];
+  v24 = [typeCopy isEqualToString:@"VOICE"];
 
   if (v24)
   {
-    if ([v8 isEqualToString:@"CDMA"])
+    if ([modeCopy isEqualToString:@"CDMA"])
     {
-      v25 = [(PLBasebandMessage *)self agent];
-      v26 = v25;
+      agent = [(PLBasebandMessage *)self agent];
+      v26 = agent;
       v27 = @"CDMA2K";
       v28 = v20;
     }
@@ -1184,49 +1184,49 @@ uint64_t __54__PLBBEurekaEventMsg_logEventForwardSDEventActionCode__block_invoke
     else
     {
       v32 = @"GSM";
-      if (![v8 isEqualToString:@"GSM"])
+      if (![modeCopy isEqualToString:@"GSM"])
       {
         v32 = @"WCDMA";
-        if (![v8 isEqualToString:@"WCDMA"])
+        if (![modeCopy isEqualToString:@"WCDMA"])
         {
           v32 = @"UTRAN";
-          if (![v8 isEqualToString:@"UTRAN"])
+          if (![modeCopy isEqualToString:@"UTRAN"])
           {
             goto LABEL_18;
           }
         }
       }
 
-      v25 = [(PLBasebandMessage *)self agent];
-      v26 = v25;
+      agent = [(PLBasebandMessage *)self agent];
+      v26 = agent;
       v28 = v20;
       v27 = v32;
     }
 
-    [v25 modelStateTransitionPower:v28 rat:v27 state:@"Voice"];
+    [agent modelStateTransitionPower:v28 rat:v27 state:@"Voice"];
 
 LABEL_18:
-    v30 = [(PLBasebandMessage *)self agent];
-    [v30 accountVoicePower:v20 state:@"voice_start"];
+    agent2 = [(PLBasebandMessage *)self agent];
+    [agent2 accountVoicePower:v20 state:@"voice_start"];
 LABEL_22:
 
     goto LABEL_23;
   }
 
-  if ([v8 isEqualToString:@"HDR"])
+  if ([modeCopy isEqualToString:@"HDR"])
   {
-    v29 = [(PLBasebandMessage *)self agent];
-    v30 = v29;
+    agent3 = [(PLBasebandMessage *)self agent];
+    agent2 = agent3;
     v31 = @"1xEVDO";
 LABEL_21:
-    [v29 modelStateTransitionPower:v20 rat:v31 state:@"Connected"];
+    [agent3 modelStateTransitionPower:v20 rat:v31 state:@"Connected"];
     goto LABEL_22;
   }
 
-  if ([v8 isEqualToString:@"CDMA"])
+  if ([modeCopy isEqualToString:@"CDMA"])
   {
-    v29 = [(PLBasebandMessage *)self agent];
-    v30 = v29;
+    agent3 = [(PLBasebandMessage *)self agent];
+    agent2 = agent3;
     v31 = @"CDMA2K";
     goto LABEL_21;
   }
@@ -1261,37 +1261,37 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventConnWithId_andCallType_andS
   v30[0] = v24;
   v29[1] = *MEMORY[0x277D3F540];
   v25[0] = @"EventCode";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_IntegerFormat];
-  v26[0] = v22;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v26[0] = commonTypeDict_IntegerFormat;
   v25[1] = @"Payload";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_StringFormat];
-  v26[1] = v20;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v26[1] = commonTypeDict_StringFormat;
   v25[2] = @"Error";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_BoolFormat];
-  v26[2] = v18;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v26[2] = commonTypeDict_BoolFormat;
   v25[3] = @"SeqNum";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v26[3] = v16;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v26[3] = commonTypeDict_IntegerFormat2;
   v25[4] = @"BBDate";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
-  v26[4] = v5;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v26[4] = commonTypeDict_DateFormat;
   v25[5] = @"TimeCal";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v26[5] = v7;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v26[5] = commonTypeDict_IntegerFormat3;
   v25[6] = @"numberOfCalls";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v26[6] = v9;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v26[6] = commonTypeDict_StringFormat2;
   v25[7] = @"callId";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v26[7] = v11;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v26[7] = commonTypeDict_StringFormat3;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:8];
   v30[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
@@ -1301,12 +1301,12 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventConnWithId_andCallType_andS
   return v13;
 }
 
-- (void)logEventCMCallEventEndWithId:(id)a3 andNumCalls:(id)a4
+- (void)logEventCMCallEventEndWithId:(id)id andNumCalls:(id)calls
 {
   v32 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277D3F180];
-  v7 = a4;
-  v8 = a3;
+  callsCopy = calls;
+  idCopy = id;
   if ([v6 debugEnabled])
   {
     v9 = objc_opt_class();
@@ -1325,9 +1325,9 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventConnWithId_andCallType_andS
       v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventCMCallEventEndWithId:andNumCalls:]", block, v26, v27, v28, v29];
       v11 = MEMORY[0x277D3F178];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v13 = [v12 lastPathComponent];
+      lastPathComponent = [v12 lastPathComponent];
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventCMCallEventEndWithId:andNumCalls:]"];
-      [v11 logMessage:v10 fromFile:v13 fromFunction:v14 fromLineNumber:543];
+      [v11 logMessage:v10 fromFile:lastPathComponent fromFunction:v14 fromLineNumber:543];
 
       v15 = PLLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -1350,18 +1350,18 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventConnWithId_andCallType_andS
   v20 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v17 setObject:v20 forKeyedSubscript:@"Error"];
 
-  [v17 setObject:v8 forKeyedSubscript:@"callId"];
-  [v17 setObject:v7 forKeyedSubscript:@"numberOfCalls"];
+  [v17 setObject:idCopy forKeyedSubscript:@"callId"];
+  [v17 setObject:callsCopy forKeyedSubscript:@"numberOfCalls"];
 
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v17];
-  v21 = [(PLBasebandMessage *)self agent];
-  [v21 modelStateTransitionPower:v17 rat:@"CDMA2K" state:@"Inactive"];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent modelStateTransitionPower:v17 rat:@"CDMA2K" state:@"Inactive"];
 
-  v22 = [(PLBasebandMessage *)self agent];
-  [v22 modelStateTransitionPower:v17 rat:@"1xEVDO" state:@"Inactive"];
+  agent2 = [(PLBasebandMessage *)self agent];
+  [agent2 modelStateTransitionPower:v17 rat:@"1xEVDO" state:@"Inactive"];
 
-  v23 = [(PLBasebandMessage *)self agent];
-  [v23 accountVoicePower:v17 state:@"voice_end"];
+  agent3 = [(PLBasebandMessage *)self agent];
+  [agent3 accountVoicePower:v17 state:@"voice_end"];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -1391,41 +1391,41 @@ uint64_t __63__PLBBEurekaEventMsg_logEventCMCallEventEndWithId_andNumCalls___blo
   v32[0] = v26;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"EventCode";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v28[0] = v24;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"Payload";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_StringFormat];
-  v28[1] = v22;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v28[1] = commonTypeDict_StringFormat;
   v27[2] = @"Error";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_BoolFormat];
-  v28[2] = v20;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v28[2] = commonTypeDict_BoolFormat;
   v27[3] = @"SeqNum";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v28[3] = v18;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v28[3] = commonTypeDict_IntegerFormat2;
   v27[4] = @"BBDate";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v28[4] = v16;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v28[4] = commonTypeDict_DateFormat;
   v27[5] = @"TimeCal";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v28[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v28[5] = commonTypeDict_IntegerFormat3;
   v27[6] = @"callId";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v28[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v28[6] = commonTypeDict_StringFormat2;
   v27[7] = @"callType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v28[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v28[7] = commonTypeDict_StringFormat3;
   v27[8] = @"serviceType";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v28[8] = v11;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v28[8] = commonTypeDict_StringFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:9];
   v32[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
@@ -1435,13 +1435,13 @@ uint64_t __63__PLBBEurekaEventMsg_logEventCMCallEventEndWithId_andNumCalls___blo
   return v13;
 }
 
-- (void)logEventCMCallEventOrigWithId:(id)a3 andCallType:(id)a4 andSrvType:(id)a5
+- (void)logEventCMCallEventOrigWithId:(id)id andCallType:(id)type andSrvType:(id)srvType
 {
   v32 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D3F180];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  srvTypeCopy = srvType;
+  typeCopy = type;
+  idCopy = id;
   if ([v8 debugEnabled])
   {
     v12 = objc_opt_class();
@@ -1460,9 +1460,9 @@ uint64_t __63__PLBBEurekaEventMsg_logEventCMCallEventEndWithId_andNumCalls___blo
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventCMCallEventOrigWithId:andCallType:andSrvType:]", block, v26, v27, v28, v29];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventCMCallEventOrigWithId:andCallType:andSrvType:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:602];
+      [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:602];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1485,10 +1485,10 @@ uint64_t __63__PLBBEurekaEventMsg_logEventCMCallEventEndWithId_andNumCalls___blo
   v23 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v20 setObject:v23 forKeyedSubscript:@"Error"];
 
-  [v20 setObject:v11 forKeyedSubscript:@"callId"];
-  [v20 setObject:v10 forKeyedSubscript:@"callType"];
+  [v20 setObject:idCopy forKeyedSubscript:@"callId"];
+  [v20 setObject:typeCopy forKeyedSubscript:@"callType"];
 
-  [v20 setObject:v9 forKeyedSubscript:@"serviceType"];
+  [v20 setObject:srvTypeCopy forKeyedSubscript:@"serviceType"];
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v20];
 
   v24 = *MEMORY[0x277D85DE8];
@@ -1519,45 +1519,45 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
   v34[0] = v28;
   v33[1] = *MEMORY[0x277D3F540];
   v29[0] = @"EventCode";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v30[0] = v26;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v30[0] = commonTypeDict_IntegerFormat;
   v29[1] = @"Payload";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_StringFormat];
-  v30[1] = v24;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v30[1] = commonTypeDict_StringFormat;
   v29[2] = @"Error";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_BoolFormat];
-  v30[2] = v22;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v30[2] = commonTypeDict_BoolFormat;
   v29[3] = @"SeqNum";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v30[3] = v20;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v30[3] = commonTypeDict_IntegerFormat2;
   v29[4] = @"BBDate";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_DateFormat];
-  v30[4] = v18;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v30[4] = commonTypeDict_DateFormat;
   v29[5] = @"TimeCal";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v30[5] = v16;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v30[5] = commonTypeDict_IntegerFormat3;
   v29[6] = @"callId";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v30[6] = v5;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v30[6] = commonTypeDict_StringFormat2;
   v29[7] = @"callType";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v30[7] = v7;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v30[7] = commonTypeDict_StringFormat3;
   v29[8] = @"systemMode";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v30[8] = v9;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v30[8] = commonTypeDict_StringFormat4;
   v29[9] = @"clientId";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v30[9] = v11;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat5 = [mEMORY[0x277D3F198]10 commonTypeDict_StringFormat];
+  v30[9] = commonTypeDict_StringFormat5;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:10];
   v34[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
@@ -1567,14 +1567,14 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
   return v13;
 }
 
-- (void)logEventCMCallEventConnWithId:(id)a3 andCallType:(id)a4 andSysMode:(id)a5 andClientId:(id)a6
+- (void)logEventCMCallEventConnWithId:(id)id andCallType:(id)type andSysMode:(id)mode andClientId:(id)clientId
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a5;
+  modeCopy = mode;
   v11 = MEMORY[0x277D3F180];
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
+  clientIdCopy = clientId;
+  typeCopy = type;
+  idCopy = id;
   if ([v11 debugEnabled])
   {
     v15 = objc_opt_class();
@@ -1593,9 +1593,9 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventCMCallEventConnWithId:andCallType:andSysMode:andClientId:]", block, v35, v36, v37, v38];
       v17 = MEMORY[0x277D3F178];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v19 = [v18 lastPathComponent];
+      lastPathComponent = [v18 lastPathComponent];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventCMCallEventConnWithId:andCallType:andSysMode:andClientId:]"];
-      [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:658];
+      [v17 logMessage:v16 fromFile:lastPathComponent fromFunction:v20 fromLineNumber:658];
 
       v21 = PLLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1618,17 +1618,17 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
   v26 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v23 setObject:v26 forKeyedSubscript:@"Error"];
 
-  [v23 setObject:v14 forKeyedSubscript:@"callId"];
-  [v23 setObject:v13 forKeyedSubscript:@"callType"];
-  [v23 setObject:v10 forKeyedSubscript:@"systemMode"];
-  [v23 setObject:v12 forKeyedSubscript:@"clientId"];
+  [v23 setObject:idCopy forKeyedSubscript:@"callId"];
+  [v23 setObject:typeCopy forKeyedSubscript:@"callType"];
+  [v23 setObject:modeCopy forKeyedSubscript:@"systemMode"];
+  [v23 setObject:clientIdCopy forKeyedSubscript:@"clientId"];
 
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v23];
-  v27 = [v13 isEqualToString:@"VOICE"];
+  v27 = [typeCopy isEqualToString:@"VOICE"];
 
   if (v27)
   {
-    if ([v10 isEqualToString:@"CDMA"])
+    if ([modeCopy isEqualToString:@"CDMA"])
     {
       v28 = @"CDMA2K";
     }
@@ -1636,13 +1636,13 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
     else
     {
       v28 = @"GSM";
-      if (([v10 isEqualToString:@"GSM"] & 1) == 0)
+      if (([modeCopy isEqualToString:@"GSM"] & 1) == 0)
       {
         v28 = @"WCDMA";
-        if (([v10 isEqualToString:@"WCDMA"] & 1) == 0)
+        if (([modeCopy isEqualToString:@"WCDMA"] & 1) == 0)
         {
           v28 = @"UTRAN";
-          if (![v10 isEqualToString:@"UTRAN"])
+          if (![modeCopy isEqualToString:@"UTRAN"])
           {
             goto LABEL_17;
           }
@@ -1650,31 +1650,31 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
       }
     }
 
-    v32 = [(PLBasebandMessage *)self agent];
-    [v32 modelStateTransitionPower:v23 rat:v28 state:@"Voice"];
+    agent = [(PLBasebandMessage *)self agent];
+    [agent modelStateTransitionPower:v23 rat:v28 state:@"Voice"];
 
 LABEL_17:
-    v30 = [(PLBasebandMessage *)self agent];
-    [v30 accountVoicePower:v23 state:@"voice_start"];
+    agent2 = [(PLBasebandMessage *)self agent];
+    [agent2 accountVoicePower:v23 state:@"voice_start"];
 LABEL_21:
 
     goto LABEL_22;
   }
 
-  if ([v10 isEqualToString:@"HDR"])
+  if ([modeCopy isEqualToString:@"HDR"])
   {
-    v29 = [(PLBasebandMessage *)self agent];
-    v30 = v29;
+    agent3 = [(PLBasebandMessage *)self agent];
+    agent2 = agent3;
     v31 = @"1xEVDO";
 LABEL_20:
-    [v29 modelStateTransitionPower:v23 rat:v31 state:@"Connected"];
+    [agent3 modelStateTransitionPower:v23 rat:v31 state:@"Connected"];
     goto LABEL_21;
   }
 
-  if ([v10 isEqualToString:@"CDMA"])
+  if ([modeCopy isEqualToString:@"CDMA"])
   {
-    v29 = [(PLBasebandMessage *)self agent];
-    v30 = v29;
+    agent3 = [(PLBasebandMessage *)self agent];
+    agent2 = agent3;
     v31 = @"CDMA2K";
     goto LABEL_20;
   }
@@ -1709,41 +1709,41 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventConnWithId_andCallType_andS
   v32[0] = v26;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"EventCode";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v28[0] = v24;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"Payload";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_StringFormat];
-  v28[1] = v22;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v28[1] = commonTypeDict_StringFormat;
   v27[2] = @"Error";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_BoolFormat];
-  v28[2] = v20;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v28[2] = commonTypeDict_BoolFormat;
   v27[3] = @"SeqNum";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v28[3] = v18;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v28[3] = commonTypeDict_IntegerFormat2;
   v27[4] = @"BBDate";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v28[4] = v16;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v28[4] = commonTypeDict_DateFormat;
   v27[5] = @"TimeCal";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v28[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v28[5] = commonTypeDict_IntegerFormat3;
   v27[6] = @"numberOfCalls";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v28[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v28[6] = commonTypeDict_StringFormat2;
   v27[7] = @"callId";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v28[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v28[7] = commonTypeDict_StringFormat3;
   v27[8] = @"clientId";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v28[8] = v11;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v28[8] = commonTypeDict_StringFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:9];
   v32[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
@@ -1753,13 +1753,13 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventConnWithId_andCallType_andS
   return v13;
 }
 
-- (void)logEventCMCallEventEndWithId:(id)a3 andNumCalls:(id)a4 andClientId:(id)a5
+- (void)logEventCMCallEventEndWithId:(id)id andNumCalls:(id)calls andClientId:(id)clientId
 {
   v35 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D3F180];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  clientIdCopy = clientId;
+  callsCopy = calls;
+  idCopy = id;
   if ([v8 debugEnabled])
   {
     v12 = objc_opt_class();
@@ -1778,9 +1778,9 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventConnWithId_andCallType_andS
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventCMCallEventEndWithId:andNumCalls:andClientId:]", block, v29, v30, v31, v32];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventCMCallEventEndWithId:andNumCalls:andClientId:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:740];
+      [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:740];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -1803,19 +1803,19 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventConnWithId_andCallType_andS
   v23 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v20 setObject:v23 forKeyedSubscript:@"Error"];
 
-  [v20 setObject:v11 forKeyedSubscript:@"callId"];
-  [v20 setObject:v10 forKeyedSubscript:@"numberOfCalls"];
+  [v20 setObject:idCopy forKeyedSubscript:@"callId"];
+  [v20 setObject:callsCopy forKeyedSubscript:@"numberOfCalls"];
 
-  [v20 setObject:v9 forKeyedSubscript:@"clientId"];
+  [v20 setObject:clientIdCopy forKeyedSubscript:@"clientId"];
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v20];
-  v24 = [(PLBasebandMessage *)self agent];
-  [v24 modelStateTransitionPower:v20 rat:@"CDMA2K" state:@"Inactive"];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent modelStateTransitionPower:v20 rat:@"CDMA2K" state:@"Inactive"];
 
-  v25 = [(PLBasebandMessage *)self agent];
-  [v25 modelStateTransitionPower:v20 rat:@"1xEVDO" state:@"Inactive"];
+  agent2 = [(PLBasebandMessage *)self agent];
+  [agent2 modelStateTransitionPower:v20 rat:@"1xEVDO" state:@"Inactive"];
 
-  v26 = [(PLBasebandMessage *)self agent];
-  [v26 accountVoicePower:v20 state:@"voice_end"];
+  agent3 = [(PLBasebandMessage *)self agent];
+  [agent3 accountVoicePower:v20 state:@"voice_end"];
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -1845,45 +1845,45 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventEndWithId_andNumCalls_andCl
   v34[0] = v28;
   v33[1] = *MEMORY[0x277D3F540];
   v29[0] = @"EventCode";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_IntegerFormat];
-  v30[0] = v26;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v30[0] = commonTypeDict_IntegerFormat;
   v29[1] = @"Payload";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_StringFormat];
-  v30[1] = v24;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v30[1] = commonTypeDict_StringFormat;
   v29[2] = @"Error";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_BoolFormat];
-  v30[2] = v22;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v30[2] = commonTypeDict_BoolFormat;
   v29[3] = @"SeqNum";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v30[3] = v20;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v30[3] = commonTypeDict_IntegerFormat2;
   v29[4] = @"BBDate";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_DateFormat];
-  v30[4] = v18;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v30[4] = commonTypeDict_DateFormat;
   v29[5] = @"TimeCal";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v30[5] = v16;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v30[5] = commonTypeDict_IntegerFormat3;
   v29[6] = @"callId";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v30[6] = v5;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v30[6] = commonTypeDict_StringFormat2;
   v29[7] = @"callType";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v30[7] = v7;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v30[7] = commonTypeDict_StringFormat3;
   v29[8] = @"serviceType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v30[8] = v9;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v30[8] = commonTypeDict_StringFormat4;
   v29[9] = @"clientId";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v30[9] = v11;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat5 = [mEMORY[0x277D3F198]10 commonTypeDict_StringFormat];
+  v30[9] = commonTypeDict_StringFormat5;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:10];
   v34[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
@@ -1893,14 +1893,14 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventEndWithId_andNumCalls_andCl
   return v13;
 }
 
-- (void)logEventCMCallEventOrigWithId:(id)a3 andCallType:(id)a4 andSrvType:(id)a5 andClientId:(id)a6
+- (void)logEventCMCallEventOrigWithId:(id)id andCallType:(id)type andSrvType:(id)srvType andClientId:(id)clientId
 {
   v35 = *MEMORY[0x277D85DE8];
   v10 = MEMORY[0x277D3F180];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  clientIdCopy = clientId;
+  srvTypeCopy = srvType;
+  typeCopy = type;
+  idCopy = id;
   if ([v10 debugEnabled])
   {
     v15 = objc_opt_class();
@@ -1919,9 +1919,9 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventEndWithId_andNumCalls_andCl
       v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventCMCallEventOrigWithId:andCallType:andSrvType:andClientId:]", block, v29, v30, v31, v32];
       v17 = MEMORY[0x277D3F178];
       v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v19 = [v18 lastPathComponent];
+      lastPathComponent = [v18 lastPathComponent];
       v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventCMCallEventOrigWithId:andCallType:andSrvType:andClientId:]"];
-      [v17 logMessage:v16 fromFile:v19 fromFunction:v20 fromLineNumber:803];
+      [v17 logMessage:v16 fromFile:lastPathComponent fromFunction:v20 fromLineNumber:803];
 
       v21 = PLLogCommon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -1944,11 +1944,11 @@ uint64_t __75__PLBBEurekaEventMsg_logEventCMCallEventEndWithId_andNumCalls_andCl
   v26 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v23 setObject:v26 forKeyedSubscript:@"Error"];
 
-  [v23 setObject:v14 forKeyedSubscript:@"callId"];
-  [v23 setObject:v13 forKeyedSubscript:@"callType"];
+  [v23 setObject:idCopy forKeyedSubscript:@"callId"];
+  [v23 setObject:typeCopy forKeyedSubscript:@"callType"];
 
-  [v23 setObject:v12 forKeyedSubscript:@"serviceType"];
-  [v23 setObject:v11 forKeyedSubscript:@"clientId"];
+  [v23 setObject:srvTypeCopy forKeyedSubscript:@"serviceType"];
+  [v23 setObject:clientIdCopy forKeyedSubscript:@"clientId"];
 
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v23];
   v27 = *MEMORY[0x277D85DE8];
@@ -1979,41 +1979,41 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
   v32[0] = v26;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"EventCode";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v28[0] = v24;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"Payload";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_StringFormat];
-  v28[1] = v22;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v28[1] = commonTypeDict_StringFormat;
   v27[2] = @"Error";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_BoolFormat];
-  v28[2] = v20;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v28[2] = commonTypeDict_BoolFormat;
   v27[3] = @"SeqNum";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v28[3] = v18;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v28[3] = commonTypeDict_IntegerFormat2;
   v27[4] = @"BBDate";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v28[4] = v16;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v28[4] = commonTypeDict_DateFormat;
   v27[5] = @"TimeCal";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v28[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v28[5] = commonTypeDict_IntegerFormat3;
   v27[6] = @"callId";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v28[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v28[6] = commonTypeDict_StringFormat2;
   v27[7] = @"callType";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v28[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v28[7] = commonTypeDict_StringFormat3;
   v27[8] = @"serviceType";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v28[8] = v11;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v28[8] = commonTypeDict_StringFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:9];
   v32[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
@@ -2041,33 +2041,33 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
   v28[0] = v22;
   v27[1] = *MEMORY[0x277D3F540];
   v23[0] = @"EventCode";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v24[0] = v20;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v24[0] = commonTypeDict_IntegerFormat;
   v23[1] = @"Payload";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v24[1] = v18;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v24[1] = commonTypeDict_StringFormat;
   v23[2] = @"Error";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_BoolFormat];
-  v24[2] = v16;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v24[2] = commonTypeDict_BoolFormat;
   v23[3] = @"SeqNum";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v24[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v24[3] = commonTypeDict_IntegerFormat2;
   v23[4] = @"BBDate";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_DateFormat];
-  v24[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v24[4] = commonTypeDict_DateFormat;
   v23[5] = @"TimeCal";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v24[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v24[5] = commonTypeDict_IntegerFormat3;
   v23[6] = @"cdmaExitCode";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v24[6] = v11;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v24[6] = commonTypeDict_StringFormat2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:7];
   v28[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
@@ -2077,11 +2077,11 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
   return v13;
 }
 
-- (void)logEventPointCMExitCodeWithState:(id)a3
+- (void)logEventPointCMExitCodeWithState:(id)state
 {
   v26 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D3F180];
-  v5 = a3;
+  stateCopy = state;
   if ([v4 debugEnabled])
   {
     v6 = objc_opt_class();
@@ -2100,9 +2100,9 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventPointCMExitCodeWithState:]", block, v20, v21, v22, v23];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventPointCMExitCodeWithState:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:890];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:890];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -2125,7 +2125,7 @@ uint64_t __87__PLBBEurekaEventMsg_logEventCMCallEventOrigWithId_andCallType_andS
   v17 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v14 setObject:v17 forKeyedSubscript:@"Error"];
 
-  [v14 setObject:v5 forKeyedSubscript:@"cdmaExitCode"];
+  [v14 setObject:stateCopy forKeyedSubscript:@"cdmaExitCode"];
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v14];
 
   v18 = *MEMORY[0x277D85DE8];
@@ -2156,33 +2156,33 @@ uint64_t __55__PLBBEurekaEventMsg_logEventPointCMExitCodeWithState___block_invok
   v28[0] = v22;
   v27[1] = *MEMORY[0x277D3F540];
   v23[0] = @"EventCode";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v24[0] = v20;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v24[0] = commonTypeDict_IntegerFormat;
   v23[1] = @"Payload";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v24[1] = v18;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v24[1] = commonTypeDict_StringFormat;
   v23[2] = @"Error";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_BoolFormat];
-  v24[2] = v16;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v24[2] = commonTypeDict_BoolFormat;
   v23[3] = @"SeqNum";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v24[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v24[3] = commonTypeDict_IntegerFormat2;
   v23[4] = @"BBDate";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_DateFormat];
-  v24[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v24[4] = commonTypeDict_DateFormat;
   v23[5] = @"TimeCal";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v24[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v24[5] = commonTypeDict_IntegerFormat3;
   v23[6] = @"State";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v24[6] = v11;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v24[6] = commonTypeDict_StringFormat2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:7];
   v28[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
@@ -2192,11 +2192,11 @@ uint64_t __55__PLBBEurekaEventMsg_logEventPointCMExitCodeWithState___block_invok
   return v13;
 }
 
-- (void)logEventForwardGSML1StateWith:(id)a3
+- (void)logEventForwardGSML1StateWith:(id)with
 {
   v24 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D3F180];
-  v5 = a3;
+  withCopy = with;
   if ([v4 debugEnabled])
   {
     v6 = objc_opt_class();
@@ -2215,9 +2215,9 @@ uint64_t __55__PLBBEurekaEventMsg_logEventPointCMExitCodeWithState___block_invok
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventForwardGSML1StateWith:]", block, v18, v19, v20, v21];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventForwardGSML1StateWith:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:943];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:943];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -2231,10 +2231,10 @@ uint64_t __55__PLBBEurekaEventMsg_logEventPointCMExitCodeWithState___block_invok
 
   v13 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"GSML1State"];
   v14 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v13];
-  [v14 setObject:v5 forKeyedSubscript:@"State"];
+  [v14 setObject:withCopy forKeyedSubscript:@"State"];
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v14];
-  v15 = [(PLBasebandMessage *)self agent];
-  [v15 modelStateTransitionPower:v14 rat:@"GSM" state:v5];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent modelStateTransitionPower:v14 rat:@"GSM" state:withCopy];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -2268,9 +2268,9 @@ uint64_t __52__PLBBEurekaEventMsg_logEventForwardGSML1StateWith___block_invoke(u
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg refreshWCDMARRCState]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg refreshWCDMARRCState]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:968];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:968];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2285,8 +2285,8 @@ uint64_t __52__PLBBEurekaEventMsg_logEventForwardGSML1StateWith___block_invoke(u
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"WCDMARRCState"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -2317,41 +2317,41 @@ uint64_t __42__PLBBEurekaEventMsg_refreshWCDMARRCState__block_invoke(uint64_t a1
   v32[0] = v26;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"EventCode";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v28[0] = v24;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"Payload";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_StringFormat];
-  v28[1] = v22;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v28[1] = commonTypeDict_StringFormat;
   v27[2] = @"Error";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_BoolFormat];
-  v28[2] = v20;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v28[2] = commonTypeDict_BoolFormat;
   v27[3] = @"SeqNum";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v28[3] = v18;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v28[3] = commonTypeDict_IntegerFormat2;
   v27[4] = @"BBDate";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v28[4] = v16;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v28[4] = commonTypeDict_DateFormat;
   v27[5] = @"TimeCal";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v28[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v28[5] = commonTypeDict_IntegerFormat3;
   v27[6] = @"PrevState";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v28[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v28[6] = commonTypeDict_StringFormat2;
   v27[7] = @"CurrState";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v28[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v28[7] = commonTypeDict_StringFormat3;
   v27[8] = @"Rate";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v28[8] = v11;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v28[8] = commonTypeDict_StringFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:9];
   v32[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
@@ -2361,12 +2361,12 @@ uint64_t __42__PLBBEurekaEventMsg_refreshWCDMARRCState__block_invoke(uint64_t a1
   return v13;
 }
 
-- (void)logEventForwardWCDMARRCPrevStateAs:(id)a3 andCurrState:(id)a4 andRate:(id)a5
+- (void)logEventForwardWCDMARRCPrevStateAs:(id)as andCurrState:(id)state andRate:(id)rate
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277D3F180];
-  v8 = a4;
-  v9 = a3;
+  stateCopy = state;
+  asCopy = as;
   if ([v7 debugEnabled])
   {
     v10 = objc_opt_class();
@@ -2385,9 +2385,9 @@ uint64_t __42__PLBBEurekaEventMsg_refreshWCDMARRCState__block_invoke(uint64_t a1
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventForwardWCDMARRCPrevStateAs:andCurrState:andRate:]", block, v22, v23, v24, v25];
       v12 = MEMORY[0x277D3F178];
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v14 = [v13 lastPathComponent];
+      lastPathComponent = [v13 lastPathComponent];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventForwardWCDMARRCPrevStateAs:andCurrState:andRate:]"];
-      [v12 logMessage:v11 fromFile:v14 fromFunction:v15 fromLineNumber:1012];
+      [v12 logMessage:v11 fromFile:lastPathComponent fromFunction:v15 fromLineNumber:1012];
 
       v16 = PLLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -2401,12 +2401,12 @@ uint64_t __42__PLBBEurekaEventMsg_refreshWCDMARRCState__block_invoke(uint64_t a1
 
   v17 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"WCDMARRCState"];
   v18 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v17];
-  [v18 setObject:v9 forKeyedSubscript:@"PrevState"];
+  [v18 setObject:asCopy forKeyedSubscript:@"PrevState"];
 
-  [v18 setObject:v8 forKeyedSubscript:@"CurrState"];
+  [v18 setObject:stateCopy forKeyedSubscript:@"CurrState"];
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v18];
-  v19 = [(PLBasebandMessage *)self agent];
-  [v19 modelStateTransitionPower:v18 rat:@"WCDMA" state:v8];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent modelStateTransitionPower:v18 rat:@"WCDMA" state:stateCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -2440,9 +2440,9 @@ uint64_t __78__PLBBEurekaEventMsg_logEventForwardWCDMARRCPrevStateAs_andCurrStat
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg refreshLTERRCState]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg refreshLTERRCState]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1052];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1052];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2457,8 +2457,8 @@ uint64_t __78__PLBBEurekaEventMsg_logEventForwardWCDMARRCPrevStateAs_andCurrStat
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"LTERRCState"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -2489,33 +2489,33 @@ uint64_t __40__PLBBEurekaEventMsg_refreshLTERRCState__block_invoke(uint64_t a1)
   v28[0] = v22;
   v27[1] = *MEMORY[0x277D3F540];
   v23[0] = @"EventCode";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v24[0] = v20;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v24[0] = commonTypeDict_IntegerFormat;
   v23[1] = @"Payload";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v24[1] = v18;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v24[1] = commonTypeDict_StringFormat;
   v23[2] = @"Error";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_BoolFormat];
-  v24[2] = v16;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v24[2] = commonTypeDict_BoolFormat;
   v23[3] = @"SeqNum";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v24[3] = v5;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v24[3] = commonTypeDict_IntegerFormat2;
   v23[4] = @"BBDate";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_DateFormat];
-  v24[4] = v7;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v24[4] = commonTypeDict_DateFormat;
   v23[5] = @"TimeCal";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v24[5] = v9;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v24[5] = commonTypeDict_IntegerFormat3;
   v23[6] = @"State";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v24[6] = v11;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v24[6] = commonTypeDict_StringFormat2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:7];
   v28[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
@@ -2525,11 +2525,11 @@ uint64_t __40__PLBBEurekaEventMsg_refreshLTERRCState__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (void)logEventForwardLTERRCStateAs:(id)a3
+- (void)logEventForwardLTERRCStateAs:(id)as
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D3F180];
-  v5 = a3;
+  asCopy = as;
   if ([v4 debugEnabled])
   {
     v6 = objc_opt_class();
@@ -2548,9 +2548,9 @@ uint64_t __40__PLBBEurekaEventMsg_refreshLTERRCState__block_invoke(uint64_t a1)
       v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventForwardLTERRCStateAs:]", block, v21, v22, v23, v24];
       v8 = MEMORY[0x277D3F178];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v10 = [v9 lastPathComponent];
+      lastPathComponent = [v9 lastPathComponent];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventForwardLTERRCStateAs:]"];
-      [v8 logMessage:v7 fromFile:v10 fromFunction:v11 fromLineNumber:1092];
+      [v8 logMessage:v7 fromFile:lastPathComponent fromFunction:v11 fromLineNumber:1092];
 
       v12 = PLLogCommon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -2573,10 +2573,10 @@ uint64_t __40__PLBBEurekaEventMsg_refreshLTERRCState__block_invoke(uint64_t a1)
   v17 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v14 setObject:v17 forKeyedSubscript:@"Error"];
 
-  [v14 setObject:v5 forKeyedSubscript:@"State"];
+  [v14 setObject:asCopy forKeyedSubscript:@"State"];
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v14];
-  v18 = [(PLBasebandMessage *)self agent];
-  [v18 modelStateTransitionPower:v14 rat:@"LTE" state:v5];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent modelStateTransitionPower:v14 rat:@"LTE" state:asCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -2610,9 +2610,9 @@ uint64_t __51__PLBBEurekaEventMsg_logEventForwardLTERRCStateAs___block_invoke(ui
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg refreshUTRANRRCState]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg refreshUTRANRRCState]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1133];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1133];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2627,8 +2627,8 @@ uint64_t __51__PLBBEurekaEventMsg_logEventForwardLTERRCStateAs___block_invoke(ui
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"UTRANRRCState"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -2659,41 +2659,41 @@ uint64_t __42__PLBBEurekaEventMsg_refreshUTRANRRCState__block_invoke(uint64_t a1
   v32[0] = v26;
   v31[1] = *MEMORY[0x277D3F540];
   v27[0] = @"EventCode";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v28[0] = v24;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v28[0] = commonTypeDict_IntegerFormat;
   v27[1] = @"Payload";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_StringFormat];
-  v28[1] = v22;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v28[1] = commonTypeDict_StringFormat;
   v27[2] = @"Error";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_BoolFormat];
-  v28[2] = v20;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v28[2] = commonTypeDict_BoolFormat;
   v27[3] = @"SeqNum";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_IntegerFormat];
-  v28[3] = v18;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v28[3] = commonTypeDict_IntegerFormat2;
   v27[4] = @"BBDate";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_DateFormat];
-  v28[4] = v16;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v28[4] = commonTypeDict_DateFormat;
   v27[5] = @"TimeCal";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v28[5] = v5;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v28[5] = commonTypeDict_IntegerFormat3;
   v27[6] = @"NextState";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_StringFormat];
-  v28[6] = v7;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat];
+  v28[6] = commonTypeDict_StringFormat2;
   v27[7] = @"CurrState";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v28[7] = v9;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v28[7] = commonTypeDict_StringFormat3;
   v27[8] = @"Rate";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_StringFormat];
-  v28[8] = v11;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]9 commonTypeDict_StringFormat];
+  v28[8] = commonTypeDict_StringFormat4;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:9];
   v32[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
@@ -2703,13 +2703,13 @@ uint64_t __42__PLBBEurekaEventMsg_refreshUTRANRRCState__block_invoke(uint64_t a1
   return v13;
 }
 
-- (void)logEventForwardUTRANRRCNextStateAs:(id)a3 andCurrStateAs:(id)a4 andRateAs:(id)a5
+- (void)logEventForwardUTRANRRCNextStateAs:(id)as andCurrStateAs:(id)stateAs andRateAs:(id)rateAs
 {
   v33 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277D3F180];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  rateAsCopy = rateAs;
+  stateAsCopy = stateAs;
+  asCopy = as;
   if ([v8 debugEnabled])
   {
     v12 = objc_opt_class();
@@ -2728,9 +2728,9 @@ uint64_t __42__PLBBEurekaEventMsg_refreshUTRANRRCState__block_invoke(uint64_t a1
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventForwardUTRANRRCNextStateAs:andCurrStateAs:andRateAs:]", block, v27, v28, v29, v30];
       v14 = MEMORY[0x277D3F178];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v16 = [v15 lastPathComponent];
+      lastPathComponent = [v15 lastPathComponent];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventForwardUTRANRRCNextStateAs:andCurrStateAs:andRateAs:]"];
-      [v14 logMessage:v13 fromFile:v16 fromFunction:v17 fromLineNumber:1177];
+      [v14 logMessage:v13 fromFile:lastPathComponent fromFunction:v17 fromLineNumber:1177];
 
       v18 = PLLogCommon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -2753,13 +2753,13 @@ uint64_t __42__PLBBEurekaEventMsg_refreshUTRANRRCState__block_invoke(uint64_t a1
   v23 = [(NSMutableDictionary *)self->_commonInfo objectForKey:@"Error"];
   [v20 setObject:v23 forKeyedSubscript:@"Error"];
 
-  [v20 setObject:v11 forKeyedSubscript:@"NextState"];
-  [v20 setObject:v10 forKeyedSubscript:@"CurrState"];
-  [v20 setObject:v9 forKeyedSubscript:@"Rate"];
+  [v20 setObject:asCopy forKeyedSubscript:@"NextState"];
+  [v20 setObject:stateAsCopy forKeyedSubscript:@"CurrState"];
+  [v20 setObject:rateAsCopy forKeyedSubscript:@"Rate"];
 
   [(PLBBEurekaEventMsg *)self sendAndLogPLEntry:v20];
-  v24 = [(PLBasebandMessage *)self agent];
-  [v24 modelStateTransitionPower:v20 rat:@"UTRAN" state:v10];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent modelStateTransitionPower:v20 rat:@"UTRAN" state:stateAsCopy];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -2793,9 +2793,9 @@ uint64_t __82__PLBBEurekaEventMsg_logEventForwardUTRANRRCNextStateAs_andCurrStat
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg refreshEventNotProcessed]", block, v16, v17, v18, v19];
       v6 = MEMORY[0x277D3F178];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v8 = [v7 lastPathComponent];
+      lastPathComponent = [v7 lastPathComponent];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg refreshEventNotProcessed]"];
-      [v6 logMessage:v5 fromFile:v8 fromFunction:v9 fromLineNumber:1211];
+      [v6 logMessage:v5 fromFile:lastPathComponent fromFunction:v9 fromLineNumber:1211];
 
       v10 = PLLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2810,8 +2810,8 @@ uint64_t __82__PLBBEurekaEventMsg_logEventForwardUTRANRRCNextStateAs_andCurrStat
   v11 = [(PLOperator *)PLBBAgent entryKeyForType:*MEMORY[0x277D3F5E0] andName:@"EventNotProcessed"];
   v12 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v11];
   [v12 setIsErrorEntry:1];
-  v13 = [(PLBasebandMessage *)self agent];
-  [v13 logEntry:v12];
+  agent = [(PLBasebandMessage *)self agent];
+  [agent logEntry:v12];
 
   objc_autoreleasePoolPop(v3);
   v14 = *MEMORY[0x277D85DE8];
@@ -2842,25 +2842,25 @@ uint64_t __46__PLBBEurekaEventMsg_refreshEventNotProcessed__block_invoke(uint64_
   v24[0] = v18;
   v23[1] = *MEMORY[0x277D3F540];
   v19[0] = @"EventCode";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v20[0] = v16;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v20[0] = commonTypeDict_IntegerFormat;
   v19[1] = @"Payload";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v20[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v20[1] = commonTypeDict_StringFormat;
   v19[2] = @"Error";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_BoolFormat];
-  v20[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]3 commonTypeDict_BoolFormat];
+  v20[2] = commonTypeDict_BoolFormat;
   v19[3] = @"SeqNum";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v20[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v20[3] = commonTypeDict_IntegerFormat2;
   v19[4] = @"BBDate";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_DateFormat];
-  v20[4] = v11;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v20[4] = commonTypeDict_DateFormat;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
   v24[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -2891,9 +2891,9 @@ uint64_t __46__PLBBEurekaEventMsg_refreshEventNotProcessed__block_invoke(uint64_
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBBEurekaEventMsg logEventNoneEventNotProcessed]", block, v17, v18, v19, v20];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBBEurekaEventMsg.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBBEurekaEventMsg logEventNoneEventNotProcessed]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:1247];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:1247];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))

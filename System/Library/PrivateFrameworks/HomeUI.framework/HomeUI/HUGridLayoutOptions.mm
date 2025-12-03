@@ -1,17 +1,17 @@
 @interface HUGridLayoutOptions
-+ (id)defaultOptionsForViewSize:(CGSize)a3 columnStyle:(unint64_t)a4 overrideSizeSubclass:(id)a5;
-+ (id)defaultOptionsForViewSize:(CGSize)a3 overrideSizeSubclass:(int64_t)a4;
-+ (unint64_t)_numberOfAccessibilityColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)a3;
-+ (unint64_t)_numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)a3 contentSizeCategory:(id)a4;
-+ (unint64_t)_numberOfNormalColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)a3;
++ (id)defaultOptionsForViewSize:(CGSize)size columnStyle:(unint64_t)style overrideSizeSubclass:(id)subclass;
++ (id)defaultOptionsForViewSize:(CGSize)size overrideSizeSubclass:(int64_t)subclass;
++ (unint64_t)_numberOfAccessibilityColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)subclass;
++ (unint64_t)_numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)subclass contentSizeCategory:(id)category;
++ (unint64_t)_numberOfNormalColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)subclass;
 - (CGSize)viewSize;
-- (HUGridLayoutOptions)initWithViewSize:(CGSize)a3 columnStyle:(unint64_t)a4 overrideSizeSubclass:(id)a5;
+- (HUGridLayoutOptions)initWithViewSize:(CGSize)size columnStyle:(unint64_t)style overrideSizeSubclass:(id)subclass;
 - (NSString)description;
 - (UIEdgeInsets)sectionTitleMargin;
-- (double)_pointWidthForFixedColumnStyleWithFractionalNumberOfColumns:(double)a3;
-- (double)_pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:(double)a3 totalNumberOfColumns:(int64_t)a4 totalWidth:(double)a5 useDefaultSectionMargin:(BOOL)a6;
-- (double)_pointWidthForFractionalNumberOfColumns:(double)a3;
-- (double)_preferredSectionHeightForNumberOfRows:(unint64_t)a3 withCellHeight:(double)a4;
+- (double)_pointWidthForFixedColumnStyleWithFractionalNumberOfColumns:(double)columns;
+- (double)_pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:(double)columns totalNumberOfColumns:(int64_t)ofColumns totalWidth:(double)width useDefaultSectionMargin:(BOOL)margin;
+- (double)_pointWidthForFractionalNumberOfColumns:(double)columns;
+- (double)_preferredSectionHeightForNumberOfRows:(unint64_t)rows withCellHeight:(double)height;
 - (double)cameraCellHeight;
 - (double)cameraCellWidth;
 - (double)fixedWidthForCell;
@@ -19,82 +19,82 @@
 - (double)pointWidthForCurrentViewSizeSubclass;
 - (double)pointWidthForFullWidthCell;
 - (double)pointWidthForWelcomeUIBanner;
-- (double)preferredSectionHeightForNumberOfSceneRows:(unint64_t)a3;
-- (double)preferredSectionHeightForNumberOfServiceRows:(unint64_t)a3 spanningColumns:(unint64_t)a4;
+- (double)preferredSectionHeightForNumberOfSceneRows:(unint64_t)rows;
+- (double)preferredSectionHeightForNumberOfServiceRows:(unint64_t)rows spanningColumns:(unint64_t)columns;
 - (double)sectionHeaderCellHeight;
 - (double)statusListCellHeight;
 - (double)statusListCellTopMargin;
 - (id)_childDisplayOptions;
-- (id)_columnStyleToString:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_columnStyleToString:(unint64_t)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)cellSizeSubclass;
 - (int64_t)numberOfColumns;
 - (int64_t)viewSizeSubclass;
-- (void)setContentColorStyle:(unint64_t)a3;
-- (void)setContentSizeCategory:(id)a3;
-- (void)setEditing:(BOOL)a3;
+- (void)setContentColorStyle:(unint64_t)style;
+- (void)setContentSizeCategory:(id)category;
+- (void)setEditing:(BOOL)editing;
 @end
 
 @implementation HUGridLayoutOptions
 
-+ (id)defaultOptionsForViewSize:(CGSize)a3 overrideSizeSubclass:(int64_t)a4
++ (id)defaultOptionsForViewSize:(CGSize)size overrideSizeSubclass:(int64_t)subclass
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v8 = [a1 defaultOptionsForViewSize:0 columnStyle:v7 overrideSizeSubclass:{width, height}];
+  height = size.height;
+  width = size.width;
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:subclass];
+  v8 = [self defaultOptionsForViewSize:0 columnStyle:v7 overrideSizeSubclass:{width, height}];
 
   return v8;
 }
 
-+ (id)defaultOptionsForViewSize:(CGSize)a3 columnStyle:(unint64_t)a4 overrideSizeSubclass:(id)a5
++ (id)defaultOptionsForViewSize:(CGSize)size columnStyle:(unint64_t)style overrideSizeSubclass:(id)subclass
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v62[6] = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = [[a1 alloc] initWithViewSize:a4 columnStyle:v9 overrideSizeSubclass:{width, height}];
+  subclassCopy = subclass;
+  v10 = [[self alloc] initWithViewSize:style columnStyle:subclassCopy overrideSizeSubclass:{width, height}];
 
-  v11 = [v10 viewSizeSubclass];
-  v12 = [v10 cellSizeSubclass];
-  v13 = [HUGridCameraCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  viewSizeSubclass = [v10 viewSizeSubclass];
+  cellSizeSubclass = [v10 cellSizeSubclass];
+  v13 = [HUGridCameraCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setCameraCellOptions:v13];
 
-  v14 = [HUGridStatusCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v14 = [HUGridStatusCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setStatusCellOptions:v14];
 
-  v15 = [HUGridSceneCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v15 = [HUGridSceneCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setSceneCellOptions:v15];
 
-  v16 = [HUGridScenePlaceholderLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v16 = [HUGridScenePlaceholderLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setPlaceholderSceneCellOptions:v16];
 
-  v17 = [HUGridServiceCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v17 = [HUGridServiceCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setServiceCellOptions:v17];
 
-  v18 = [HUGridPlaceholderServiceCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v18 = [HUGridPlaceholderServiceCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setPlaceholderServiceCellOptions:v18];
 
-  v19 = [HUGridBannerCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v19 = [HUGridBannerCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setBannerCellOptions:v19];
 
-  v20 = [HUGridWelcomeUIBannerCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v20 = [HUGridWelcomeUIBannerCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setWelcomeUIBannerCellOptions:v20];
 
-  v21 = [HUFilterCategoryCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v21 = [HUFilterCategoryCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setFilterCategoryCellOptions:v21];
 
-  v22 = [HUGridMediaPlatterCellLayoutOptions defaultOptionsForCellSizeSubclass:v12];
+  v22 = [HUGridMediaPlatterCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass];
   [v10 setMediaPlatterCellOptions:v22];
 
   [v10 setScrollDirection:0];
   v23 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D769A8] traits:32770];
   [v10 setHeadlineFont:v23];
 
-  v24 = [MEMORY[0x277D756E0] prominentInsetGroupedHeaderConfiguration];
-  v25 = [v24 textProperties];
-  v26 = [v25 font];
-  v27 = [v26 copy];
+  prominentInsetGroupedHeaderConfiguration = [MEMORY[0x277D756E0] prominentInsetGroupedHeaderConfiguration];
+  textProperties = [prominentInsetGroupedHeaderConfiguration textProperties];
+  font = [textProperties font];
+  v27 = [font copy];
   [v10 setSectionHeaderFont:v27];
 
   v61[0] = &unk_282492288;
@@ -110,17 +110,17 @@
   v62[4] = &unk_282493600;
   v62[5] = &unk_282493610;
   v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:6];
-  [v10 setHeadlineBaselineToSceneHeaderBaselineDistance:{HUConstantFloatForViewSizeSubclass(v11, v28)}];
+  [v10 setHeadlineBaselineToSceneHeaderBaselineDistance:{HUConstantFloatForViewSizeSubclass(viewSizeSubclass, v28)}];
 
-  v29 = [v10 sectionHeaderFont];
-  v30 = v29;
+  sectionHeaderFont = [v10 sectionHeaderFont];
+  v30 = sectionHeaderFont;
   v31 = 10.0;
-  if (v11 == 6)
+  if (viewSizeSubclass == 6)
   {
     v31 = 8.0;
   }
 
-  [v29 _scaledValueForValue:v31];
+  [sectionHeaderFont _scaledValueForValue:v31];
   [v10 setSectionTopMargin:?];
 
   [v10 sectionTopMargin];
@@ -130,14 +130,14 @@
   v60[0] = &unk_282493620;
   v60[1] = &unk_282493630;
   v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
-  [v10 setSectionLeadingMargin:{HUConstantFloatForViewSizeSubclass(v11, v32)}];
+  [v10 setSectionLeadingMargin:{HUConstantFloatForViewSizeSubclass(viewSizeSubclass, v32)}];
 
   [v10 sectionLeadingMargin];
   [v10 setSectionTrailingMargin:?];
   [v10 sectionLeadingMargin];
   v34 = v33;
   [v10 sectionTrailingMargin];
-  v36 = [HUGridHeadlineCellLayoutOptions defaultOptionsForCellSizeSubclass:v12 viewSizeSubclass:v11 viewWidth:width containerLeadingMargin:v34 containerTrailingMargin:v35];
+  v36 = [HUGridHeadlineCellLayoutOptions defaultOptionsForCellSizeSubclass:cellSizeSubclass viewSizeSubclass:viewSizeSubclass viewWidth:width containerLeadingMargin:v34 containerTrailingMargin:v35];
   [v10 setHeadlineCellOptions:v36];
 
   v57[0] = &unk_282492270;
@@ -147,10 +147,10 @@
   v57[2] = &unk_2824922E8;
   v58[2] = &unk_282492318;
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:3];
-  v38 = HUConstantFloatForViewSizeSubclass(v11, v37);
+  v38 = HUConstantFloatForViewSizeSubclass(viewSizeSubclass, v37);
 
-  v39 = [v10 sectionHeaderFont];
-  [v39 _scaledValueForValue:v38];
+  sectionHeaderFont2 = [v10 sectionHeaderFont];
+  [sectionHeaderFont2 _scaledValueForValue:v38];
   [v10 setSectionBottomToNextSectionTitleBaselineDistance:?];
 
   [v10 sectionLeadingMargin];
@@ -162,7 +162,7 @@
   v56[0] = &unk_282493640;
   v56[1] = &unk_282493650;
   v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:2];
-  v44 = HUConstantFloatForViewSizeSubclass(v11, v43);
+  v44 = HUConstantFloatForViewSizeSubclass(viewSizeSubclass, v43);
 
   [v10 setRowSpacing:v44];
   [v10 setColumnSpacing:v44];
@@ -209,25 +209,25 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   [(HUGridLayoutOptions *)self viewSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(HUGridLayoutOptions *)self columnStyle];
-  v10 = [(HUGridLayoutOptions *)self overrideViewSizeSubclass];
-  v11 = [v4 initWithViewSize:v9 columnStyle:v10 overrideSizeSubclass:{v6, v8}];
+  columnStyle = [(HUGridLayoutOptions *)self columnStyle];
+  overrideViewSizeSubclass = [(HUGridLayoutOptions *)self overrideViewSizeSubclass];
+  v11 = [v4 initWithViewSize:columnStyle columnStyle:overrideViewSizeSubclass overrideSizeSubclass:{v6, v8}];
 
   [v11 setScrollDirection:{-[HUGridLayoutOptions scrollDirection](self, "scrollDirection")}];
   [v11 setStatusHidden:{-[HUGridLayoutOptions statusHidden](self, "statusHidden")}];
   [v11 setHeadlineHidden:{-[HUGridLayoutOptions headlineHidden](self, "headlineHidden")}];
   [v11 setEditing:{-[HUGridLayoutOptions isEditing](self, "isEditing")}];
-  v12 = [(HUGridLayoutOptions *)self headlineFont];
-  [v11 setHeadlineFont:v12];
+  headlineFont = [(HUGridLayoutOptions *)self headlineFont];
+  [v11 setHeadlineFont:headlineFont];
 
-  v13 = [(HUGridLayoutOptions *)self sectionHeaderFont];
-  [v11 setSectionHeaderFont:v13];
+  sectionHeaderFont = [(HUGridLayoutOptions *)self sectionHeaderFont];
+  [v11 setSectionHeaderFont:sectionHeaderFont];
 
   [(HUGridLayoutOptions *)self headlineBaselineToSceneHeaderBaselineDistance];
   [v11 setHeadlineBaselineToSceneHeaderBaselineDistance:?];
@@ -251,48 +251,48 @@
   [v11 setRowSpacing:?];
   [(HUGridLayoutOptions *)self columnSpacing];
   [v11 setColumnSpacing:?];
-  v14 = [(HUGridLayoutOptions *)self overrideNumberOfColumns];
-  [v11 setOverrideNumberOfColumns:v14];
+  overrideNumberOfColumns = [(HUGridLayoutOptions *)self overrideNumberOfColumns];
+  [v11 setOverrideNumberOfColumns:overrideNumberOfColumns];
 
-  v15 = [(HUGridLayoutOptions *)self cameraCellOptions];
-  [v11 setCameraCellOptions:v15];
+  cameraCellOptions = [(HUGridLayoutOptions *)self cameraCellOptions];
+  [v11 setCameraCellOptions:cameraCellOptions];
 
-  v16 = [(HUGridLayoutOptions *)self headlineCellOptions];
-  [v11 setHeadlineCellOptions:v16];
+  headlineCellOptions = [(HUGridLayoutOptions *)self headlineCellOptions];
+  [v11 setHeadlineCellOptions:headlineCellOptions];
 
-  v17 = [(HUGridLayoutOptions *)self statusCellOptions];
-  [v11 setStatusCellOptions:v17];
+  statusCellOptions = [(HUGridLayoutOptions *)self statusCellOptions];
+  [v11 setStatusCellOptions:statusCellOptions];
 
-  v18 = [(HUGridLayoutOptions *)self sceneCellOptions];
-  [v11 setSceneCellOptions:v18];
+  sceneCellOptions = [(HUGridLayoutOptions *)self sceneCellOptions];
+  [v11 setSceneCellOptions:sceneCellOptions];
 
-  v19 = [(HUGridLayoutOptions *)self placeholderSceneCellOptions];
-  [v11 setPlaceholderSceneCellOptions:v19];
+  placeholderSceneCellOptions = [(HUGridLayoutOptions *)self placeholderSceneCellOptions];
+  [v11 setPlaceholderSceneCellOptions:placeholderSceneCellOptions];
 
-  v20 = [(HUGridLayoutOptions *)self serviceCellOptions];
-  [v11 setServiceCellOptions:v20];
+  serviceCellOptions = [(HUGridLayoutOptions *)self serviceCellOptions];
+  [v11 setServiceCellOptions:serviceCellOptions];
 
-  v21 = [(HUGridLayoutOptions *)self placeholderServiceCellOptions];
-  [v11 setPlaceholderServiceCellOptions:v21];
+  placeholderServiceCellOptions = [(HUGridLayoutOptions *)self placeholderServiceCellOptions];
+  [v11 setPlaceholderServiceCellOptions:placeholderServiceCellOptions];
 
-  v22 = [(HUGridLayoutOptions *)self bannerCellOptions];
-  [v11 setBannerCellOptions:v22];
+  bannerCellOptions = [(HUGridLayoutOptions *)self bannerCellOptions];
+  [v11 setBannerCellOptions:bannerCellOptions];
 
-  v23 = [(HUGridLayoutOptions *)self welcomeUIBannerCellOptions];
-  [v11 setWelcomeUIBannerCellOptions:v23];
+  welcomeUIBannerCellOptions = [(HUGridLayoutOptions *)self welcomeUIBannerCellOptions];
+  [v11 setWelcomeUIBannerCellOptions:welcomeUIBannerCellOptions];
 
   [v11 setContentColorStyle:{-[HUGridLayoutOptions contentColorStyle](self, "contentColorStyle")}];
-  v24 = [(HUGridLayoutOptions *)self contentSizeCategory];
-  [v11 setContentSizeCategory:v24];
+  contentSizeCategory = [(HUGridLayoutOptions *)self contentSizeCategory];
+  [v11 setContentSizeCategory:contentSizeCategory];
 
   return v11;
 }
 
-- (HUGridLayoutOptions)initWithViewSize:(CGSize)a3 columnStyle:(unint64_t)a4 overrideSizeSubclass:(id)a5
+- (HUGridLayoutOptions)initWithViewSize:(CGSize)size columnStyle:(unint64_t)style overrideSizeSubclass:(id)subclass
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  subclassCopy = subclass;
   v14.receiver = self;
   v14.super_class = HUGridLayoutOptions;
   v11 = [(HUGridLayoutOptions *)&v14 init];
@@ -301,23 +301,23 @@
   {
     v11->_viewSize.width = width;
     v11->_viewSize.height = height;
-    objc_storeStrong(&v11->_overrideViewSizeSubclass, a5);
-    v12->_columnStyle = a4;
+    objc_storeStrong(&v11->_overrideViewSizeSubclass, subclass);
+    v12->_columnStyle = style;
   }
 
   return v12;
 }
 
-- (void)setContentColorStyle:(unint64_t)a3
+- (void)setContentColorStyle:(unint64_t)style
 {
   v14 = *MEMORY[0x277D85DE8];
-  self->_contentColorStyle = a3;
+  self->_contentColorStyle = style;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(HUGridLayoutOptions *)self _childDisplayOptions];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _childDisplayOptions = [(HUGridLayoutOptions *)self _childDisplayOptions];
+  v5 = [_childDisplayOptions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -329,31 +329,31 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_childDisplayOptions);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setContentColorStyle:a3];
+        [*(*(&v9 + 1) + 8 * v8++) setContentColorStyle:style];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_childDisplayOptions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)setContentSizeCategory:(id)a3
+- (void)setContentSizeCategory:(id)category
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  self->_contentSizeCategory = v4;
+  categoryCopy = category;
+  self->_contentSizeCategory = categoryCopy;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(HUGridLayoutOptions *)self _childDisplayOptions];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _childDisplayOptions = [(HUGridLayoutOptions *)self _childDisplayOptions];
+  v6 = [_childDisplayOptions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -365,38 +365,38 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_childDisplayOptions);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setContentSizeCategory:v4];
+        [*(*(&v10 + 1) + 8 * v9++) setContentSizeCategory:categoryCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [_childDisplayOptions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
-  self->_editing = a3;
-  v4 = [(HUGridLayoutOptions *)self headlineCellOptions];
-  [v4 setEditing:v3];
+  editingCopy = editing;
+  self->_editing = editing;
+  headlineCellOptions = [(HUGridLayoutOptions *)self headlineCellOptions];
+  [headlineCellOptions setEditing:editingCopy];
 }
 
 - (int64_t)viewSizeSubclass
 {
-  v3 = [(HUGridLayoutOptions *)self overrideViewSizeSubclass];
+  overrideViewSizeSubclass = [(HUGridLayoutOptions *)self overrideViewSizeSubclass];
 
-  if (v3)
+  if (overrideViewSizeSubclass)
   {
-    v4 = [(HUGridLayoutOptions *)self overrideViewSizeSubclass];
-    v5 = [v4 integerValue];
+    overrideViewSizeSubclass2 = [(HUGridLayoutOptions *)self overrideViewSizeSubclass];
+    integerValue = [overrideViewSizeSubclass2 integerValue];
 
-    return v5;
+    return integerValue;
   }
 
   else if ([(HUGridLayoutOptions *)self columnStyle])
@@ -414,21 +414,21 @@
 
 - (int64_t)cellSizeSubclass
 {
-  v2 = [(HUGridLayoutOptions *)self viewSizeSubclass];
+  viewSizeSubclass = [(HUGridLayoutOptions *)self viewSizeSubclass];
 
-  return HUCellSizeSubclassForViewSizeSubclass(v2);
+  return HUCellSizeSubclassForViewSizeSubclass(viewSizeSubclass);
 }
 
 - (int64_t)numberOfColumns
 {
-  v3 = [(HUGridLayoutOptions *)self overrideNumberOfColumns];
+  overrideNumberOfColumns = [(HUGridLayoutOptions *)self overrideNumberOfColumns];
 
-  if (v3)
+  if (overrideNumberOfColumns)
   {
-    v4 = [(HUGridLayoutOptions *)self overrideNumberOfColumns];
-    v5 = [v4 integerValue];
+    overrideNumberOfColumns2 = [(HUGridLayoutOptions *)self overrideNumberOfColumns];
+    integerValue = [overrideNumberOfColumns2 integerValue];
 LABEL_3:
-    v6 = v5;
+    v6 = integerValue;
 
     return v6;
   }
@@ -437,9 +437,9 @@ LABEL_3:
   if (!result)
   {
     v15 = objc_opt_class();
-    v16 = [(HUGridLayoutOptions *)self viewSizeSubclass];
-    v4 = [(HUGridLayoutOptions *)self contentSizeCategory];
-    v5 = [v15 _numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:v16 contentSizeCategory:v4];
+    viewSizeSubclass = [(HUGridLayoutOptions *)self viewSizeSubclass];
+    overrideNumberOfColumns2 = [(HUGridLayoutOptions *)self contentSizeCategory];
+    integerValue = [v15 _numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:viewSizeSubclass contentSizeCategory:overrideNumberOfColumns2];
     goto LABEL_3;
   }
 
@@ -458,21 +458,21 @@ LABEL_3:
   return result;
 }
 
-+ (unint64_t)_numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)a3 contentSizeCategory:(id)a4
++ (unint64_t)_numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)subclass contentSizeCategory:(id)category
 {
-  v5 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76808], a4);
-  if (a3)
+  v5 = UIContentSizeCategoryCompareToCategory(*MEMORY[0x277D76808], category);
+  if (subclass)
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v9 = v8;
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 nativeScale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 nativeScale];
     v6 = v9 < v11;
   }
 
@@ -480,37 +480,37 @@ LABEL_3:
   if (v5 == NSOrderedDescending && !v6)
   {
 
-    return [v12 _numberOfNormalColumnsForFlexibleWidthStyleWithSizeSubclass:a3];
+    return [v12 _numberOfNormalColumnsForFlexibleWidthStyleWithSizeSubclass:subclass];
   }
 
   else
   {
 
-    return [v12 _numberOfAccessibilityColumnsForFlexibleWidthStyleWithSizeSubclass:a3];
+    return [v12 _numberOfAccessibilityColumnsForFlexibleWidthStyleWithSizeSubclass:subclass];
   }
 }
 
-+ (unint64_t)_numberOfAccessibilityColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)a3
++ (unint64_t)_numberOfAccessibilityColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)subclass
 {
   result = 4;
-  if (a3 > 5)
+  if (subclass > 5)
   {
-    if (a3 > 8)
+    if (subclass > 8)
     {
-      if (a3 == 9)
+      if (subclass == 9)
       {
         return result;
       }
 
-      if (a3 != 10)
+      if (subclass != 10)
       {
         goto LABEL_15;
       }
     }
 
-    else if ((a3 - 7) >= 2)
+    else if ((subclass - 7) >= 2)
     {
-      if (a3 == 6)
+      if (subclass == 6)
       {
         return 8;
       }
@@ -521,7 +521,7 @@ LABEL_3:
     return 6;
   }
 
-  if (a3 < 4)
+  if (subclass < 4)
   {
     if ([MEMORY[0x277D14670] isHomeUIService])
     {
@@ -534,34 +534,34 @@ LABEL_3:
     }
   }
 
-  if ((a3 - 4) < 2)
+  if ((subclass - 4) < 2)
   {
     return result;
   }
 
 LABEL_15:
 
-  return [a1 _numberOfNormalColumnsForFlexibleWidthStyleWithSizeSubclass:?];
+  return [self _numberOfNormalColumnsForFlexibleWidthStyleWithSizeSubclass:?];
 }
 
-+ (unint64_t)_numberOfNormalColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)a3
++ (unint64_t)_numberOfNormalColumnsForFlexibleWidthStyleWithSizeSubclass:(int64_t)subclass
 {
   result = 8;
-  if (a3 > 5)
+  if (subclass > 5)
   {
     v6 = 18;
     v7 = 12;
-    if (a3 != 10)
+    if (subclass != 10)
     {
       v7 = 8;
     }
 
-    if (a3 != 6)
+    if (subclass != 6)
     {
       v6 = v7;
     }
 
-    if ((a3 - 7) >= 2)
+    if ((subclass - 7) >= 2)
     {
       return v6;
     }
@@ -572,7 +572,7 @@ LABEL_15:
     }
   }
 
-  else if (a3 < 4)
+  else if (subclass < 4)
   {
     if ([MEMORY[0x277D14670] isHomeUIService])
     {
@@ -611,9 +611,9 @@ LABEL_15:
 {
   v3 = HUDefaultViewWidthForSizeSubclass([(HUGridLayoutOptions *)self viewSizeSubclass]);
   v4 = objc_opt_class();
-  v5 = [(HUGridLayoutOptions *)self viewSizeSubclass];
-  v6 = [(HUGridLayoutOptions *)self contentSizeCategory];
-  v7 = [v4 _numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:v5 contentSizeCategory:v6];
+  viewSizeSubclass = [(HUGridLayoutOptions *)self viewSizeSubclass];
+  contentSizeCategory = [(HUGridLayoutOptions *)self contentSizeCategory];
+  v7 = [v4 _numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:viewSizeSubclass contentSizeCategory:contentSizeCategory];
 
   [(HUGridLayoutOptions *)self _pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:v7 totalNumberOfColumns:1 totalWidth:1.0 useDefaultSectionMargin:v3];
   return result;
@@ -629,44 +629,44 @@ LABEL_15:
   return v6 - v7;
 }
 
-- (double)_pointWidthForFractionalNumberOfColumns:(double)a3
+- (double)_pointWidthForFractionalNumberOfColumns:(double)columns
 {
-  v5 = [(HUGridLayoutOptions *)self columnStyle];
-  if (v5)
+  columnStyle = [(HUGridLayoutOptions *)self columnStyle];
+  if (columnStyle)
   {
-    if (v5 == 1)
+    if (columnStyle == 1)
     {
 
-      [(HUGridLayoutOptions *)self _pointWidthForFixedColumnStyleWithFractionalNumberOfColumns:a3];
+      [(HUGridLayoutOptions *)self _pointWidthForFixedColumnStyleWithFractionalNumberOfColumns:columns];
     }
   }
 
   else
   {
-    v7 = [(HUGridLayoutOptions *)self numberOfColumns];
+    numberOfColumns = [(HUGridLayoutOptions *)self numberOfColumns];
     [(HUGridLayoutOptions *)self viewSize];
 
-    [(HUGridLayoutOptions *)self _pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:v7 totalNumberOfColumns:0 totalWidth:a3 useDefaultSectionMargin:v8];
+    [(HUGridLayoutOptions *)self _pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:numberOfColumns totalNumberOfColumns:0 totalWidth:columns useDefaultSectionMargin:v8];
   }
 
   return result;
 }
 
-- (double)_pointWidthForFixedColumnStyleWithFractionalNumberOfColumns:(double)a3
+- (double)_pointWidthForFixedColumnStyleWithFractionalNumberOfColumns:(double)columns
 {
   v5 = HUDefaultViewWidthForSizeSubclass([(HUGridLayoutOptions *)self viewSizeSubclass]);
   v6 = objc_opt_class();
-  v7 = [(HUGridLayoutOptions *)self viewSizeSubclass];
-  v8 = [(HUGridLayoutOptions *)self contentSizeCategory];
-  v9 = [v6 _numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:v7 contentSizeCategory:v8];
+  viewSizeSubclass = [(HUGridLayoutOptions *)self viewSizeSubclass];
+  contentSizeCategory = [(HUGridLayoutOptions *)self contentSizeCategory];
+  v9 = [v6 _numberOfColumnsForFlexibleWidthStyleWithSizeSubclass:viewSizeSubclass contentSizeCategory:contentSizeCategory];
 
-  [(HUGridLayoutOptions *)self _pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:v9 totalNumberOfColumns:0 totalWidth:a3 useDefaultSectionMargin:v5];
+  [(HUGridLayoutOptions *)self _pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:v9 totalNumberOfColumns:0 totalWidth:columns useDefaultSectionMargin:v5];
   return result;
 }
 
-- (double)_pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:(double)a3 totalNumberOfColumns:(int64_t)a4 totalWidth:(double)a5 useDefaultSectionMargin:(BOOL)a6
+- (double)_pointWidthForFlexibleColumnStyleWithFractionalNumberOfColumns:(double)columns totalNumberOfColumns:(int64_t)ofColumns totalWidth:(double)width useDefaultSectionMargin:(BOOL)margin
 {
-  if (a6)
+  if (margin)
   {
     v10 = 40.0;
   }
@@ -680,12 +680,12 @@ LABEL_15:
   }
 
   v25 = v10;
-  v14 = a5 - v10;
-  v15 = a4 + -1.0;
+  v14 = width - v10;
+  v15 = ofColumns + -1.0;
   [(HUGridLayoutOptions *)self columnSpacing];
-  v17 = (v14 - v15 * v16) / a4 * a3;
+  v17 = (v14 - v15 * v16) / ofColumns * columns;
   [(HUGridLayoutOptions *)self columnSpacing];
-  v19 = HUFloorToScreenScale(v17 + (a3 + -1.0) * v18);
+  v19 = HUFloorToScreenScale(v17 + (columns + -1.0) * v18);
   if (v19 >= 0.0)
   {
     v20 = v19;
@@ -697,9 +697,9 @@ LABEL_15:
   }
 
   [(HUGridLayoutOptions *)self columnSpacing];
-  v22 = (floor(v20 * 1000.0 + 1.0) / 1000.0 - (a3 + -1.0) * v21) / a3 * a4;
+  v22 = (floor(v20 * 1000.0 + 1.0) / 1000.0 - (columns + -1.0) * v21) / columns * ofColumns;
   [(HUGridLayoutOptions *)self columnSpacing];
-  if (v25 + v22 + v15 * v23 > a5 && v20 != 0.0)
+  if (v25 + v22 + v15 * v23 > width && v20 != 0.0)
   {
     return floor(v20 * 1000.0) / 1000.0;
   }
@@ -709,11 +709,11 @@ LABEL_15:
 
 - (double)cameraCellWidth
 {
-  v3 = [(HUGridLayoutOptions *)self viewSizeSubclass];
-  v4 = [(HUGridLayoutOptions *)self numberOfColumns];
-  v5 = v4;
-  v6 = vcvts_n_f32_s64(v4, 1uLL);
-  if (v3 > 2)
+  viewSizeSubclass = [(HUGridLayoutOptions *)self viewSizeSubclass];
+  numberOfColumns = [(HUGridLayoutOptions *)self numberOfColumns];
+  v5 = numberOfColumns;
+  v6 = vcvts_n_f32_s64(numberOfColumns, 1uLL);
+  if (viewSizeSubclass > 2)
   {
     v5 = v6;
   }
@@ -726,13 +726,13 @@ LABEL_15:
 
 - (double)cameraCellHeight
 {
-  v3 = [(HUGridLayoutOptions *)self cameraCellOptions];
-  [v3 headerViewHeight];
+  cameraCellOptions = [(HUGridLayoutOptions *)self cameraCellOptions];
+  [cameraCellOptions headerViewHeight];
   v5 = v4;
   [(HUGridLayoutOptions *)self cameraCellWidth];
   v7 = v6;
-  v8 = [(HUGridLayoutOptions *)self cameraCellOptions];
-  [v8 cameraViewAspectRatio];
+  cameraCellOptions2 = [(HUGridLayoutOptions *)self cameraCellOptions];
+  [cameraCellOptions2 cameraViewAspectRatio];
   v10 = HURoundToScreenScale(v5 + v7 / v9);
 
   return v10;
@@ -740,21 +740,21 @@ LABEL_15:
 
 - (double)headlineCellHeight
 {
-  v3 = [(HUGridLayoutOptions *)self headlineCellOptions];
-  [v3 headlineBaselineOffset];
+  headlineCellOptions = [(HUGridLayoutOptions *)self headlineCellOptions];
+  [headlineCellOptions headlineBaselineOffset];
   v5 = v4;
 
-  v6 = [(HUGridLayoutOptions *)self statusHidden];
+  statusHidden = [(HUGridLayoutOptions *)self statusHidden];
   v7 = 0.0;
-  if (v6)
+  if (statusHidden)
   {
     [(HUGridLayoutOptions *)self headlineBaselineToSceneHeaderBaselineDistance];
   }
 
   v8 = v5 + v7;
-  v9 = [(HUGridLayoutOptions *)self isEditing];
+  isEditing = [(HUGridLayoutOptions *)self isEditing];
   result = v8 + 26.0;
-  if (!v9)
+  if (!isEditing)
   {
     return v8;
   }
@@ -764,8 +764,8 @@ LABEL_15:
 
 - (double)statusListCellHeight
 {
-  v2 = [(HUGridLayoutOptions *)self statusCellOptions];
-  [v2 cellHeight];
+  statusCellOptions = [(HUGridLayoutOptions *)self statusCellOptions];
+  [statusCellOptions cellHeight];
   UICeilToViewScale();
   v4 = v3;
 
@@ -782,9 +782,9 @@ LABEL_15:
 
 - (double)statusListCellTopMargin
 {
-  v3 = [MEMORY[0x277D14CE8] isAMac];
+  isAMac = [MEMORY[0x277D14CE8] isAMac];
   [(HUGridLayoutOptions *)self gutter];
-  if (v3)
+  if (isAMac)
   {
     return result + result;
   }
@@ -792,32 +792,32 @@ LABEL_15:
   return result;
 }
 
-- (double)preferredSectionHeightForNumberOfSceneRows:(unint64_t)a3
+- (double)preferredSectionHeightForNumberOfSceneRows:(unint64_t)rows
 {
-  v5 = [(HUGridLayoutOptions *)self sceneCellOptions];
-  [v5 cellHeight];
-  [(HUGridLayoutOptions *)self _preferredSectionHeightForNumberOfRows:a3 withCellHeight:?];
+  sceneCellOptions = [(HUGridLayoutOptions *)self sceneCellOptions];
+  [sceneCellOptions cellHeight];
+  [(HUGridLayoutOptions *)self _preferredSectionHeightForNumberOfRows:rows withCellHeight:?];
   v7 = v6;
 
   return v7;
 }
 
-- (double)preferredSectionHeightForNumberOfServiceRows:(unint64_t)a3 spanningColumns:(unint64_t)a4
+- (double)preferredSectionHeightForNumberOfServiceRows:(unint64_t)rows spanningColumns:(unint64_t)columns
 {
-  [(HUGridLayoutOptions *)self pointWidthForNumberOfColumns:a4];
+  [(HUGridLayoutOptions *)self pointWidthForNumberOfColumns:columns];
 
-  [(HUGridLayoutOptions *)self _preferredSectionHeightForNumberOfRows:a3 withCellHeight:?];
+  [(HUGridLayoutOptions *)self _preferredSectionHeightForNumberOfRows:rows withCellHeight:?];
   return result;
 }
 
-- (double)_preferredSectionHeightForNumberOfRows:(unint64_t)a3 withCellHeight:(double)a4
+- (double)_preferredSectionHeightForNumberOfRows:(unint64_t)rows withCellHeight:(double)height
 {
   [(HUGridLayoutOptions *)self sectionTopMargin];
   v8 = v7;
   [(HUGridLayoutOptions *)self sectionBottomMargin];
-  v10 = v8 + v9 + a3 * a4;
+  v10 = v8 + v9 + rows * height;
   [(HUGridLayoutOptions *)self rowSpacing];
-  return v10 + (a3 - 1) * v11;
+  return v10 + (rows - 1) * v11;
 }
 
 - (double)pointWidthForWelcomeUIBanner
@@ -842,33 +842,33 @@ LABEL_15:
 - (id)_childDisplayOptions
 {
   v12[7] = *MEMORY[0x277D85DE8];
-  v3 = [(HUGridLayoutOptions *)self cameraCellOptions];
-  v4 = [(HUGridLayoutOptions *)self headlineCellOptions];
-  v12[1] = v4;
-  v5 = [(HUGridLayoutOptions *)self statusCellOptions];
-  v12[2] = v5;
-  v6 = [(HUGridLayoutOptions *)self sceneCellOptions];
-  v12[3] = v6;
-  v7 = [(HUGridLayoutOptions *)self placeholderSceneCellOptions];
-  v12[4] = v7;
-  v8 = [(HUGridLayoutOptions *)self serviceCellOptions];
-  v12[5] = v8;
-  v9 = [(HUGridLayoutOptions *)self placeholderServiceCellOptions];
-  v12[6] = v9;
+  cameraCellOptions = [(HUGridLayoutOptions *)self cameraCellOptions];
+  headlineCellOptions = [(HUGridLayoutOptions *)self headlineCellOptions];
+  v12[1] = headlineCellOptions;
+  statusCellOptions = [(HUGridLayoutOptions *)self statusCellOptions];
+  v12[2] = statusCellOptions;
+  sceneCellOptions = [(HUGridLayoutOptions *)self sceneCellOptions];
+  v12[3] = sceneCellOptions;
+  placeholderSceneCellOptions = [(HUGridLayoutOptions *)self placeholderSceneCellOptions];
+  v12[4] = placeholderSceneCellOptions;
+  serviceCellOptions = [(HUGridLayoutOptions *)self serviceCellOptions];
+  v12[5] = serviceCellOptions;
+  placeholderServiceCellOptions = [(HUGridLayoutOptions *)self placeholderServiceCellOptions];
+  v12[6] = placeholderServiceCellOptions;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:7];
 
   return v10;
 }
 
-- (id)_columnStyleToString:(unint64_t)a3
+- (id)_columnStyleToString:(unint64_t)string
 {
   v3 = &stru_2823E0EE8;
-  if (!a3)
+  if (!string)
   {
     v3 = @"HUGridLayoutColumnStyleFlexibleWidth";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"HUGridLayoutColumnStyleFixedWidth";
   }
@@ -892,9 +892,9 @@ LABEL_15:
   [v3 appendString:v9 withName:@"columnStyle"];
 
   v10 = [v3 appendBool:-[HUGridLayoutOptions isEditing](self withName:{"isEditing"), @"editing"}];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 - (CGSize)viewSize

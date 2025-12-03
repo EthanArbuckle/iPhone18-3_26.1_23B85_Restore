@@ -13,9 +13,9 @@
   *&range.duration.timescale = *(a2 + 32);
   CMTimeRangeGetEnd(&v11, &range);
   end = *a2;
-  [a1 convertToOriginalTimeFromScaledTime:&end forExport:1];
+  [self convertToOriginalTimeFromScaledTime:&end forExport:1];
   v8 = v11;
-  [a1 convertToOriginalTimeFromScaledTime:&v8 forExport:1];
+  [self convertToOriginalTimeFromScaledTime:&v8 forExport:1];
   return CMTimeRangeFromTimeToTime(a3, &range.start, &end);
 }
 

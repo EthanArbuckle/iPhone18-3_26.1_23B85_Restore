@@ -1,28 +1,28 @@
 @interface SXComponentBehaviorController
-- (SXComponentBehaviorController)initWithViewport:(id)a3 andAnimator:(id)a4;
-- (id)existingHandlerForComponentView:(id)a3 behavior:(id)a4;
-- (void)registerComponentView:(id)a3 behavior:(id)a4;
+- (SXComponentBehaviorController)initWithViewport:(id)viewport andAnimator:(id)animator;
+- (id)existingHandlerForComponentView:(id)view behavior:(id)behavior;
+- (void)registerComponentView:(id)view behavior:(id)behavior;
 - (void)reset;
-- (void)unregisterComponentView:(id)a3;
+- (void)unregisterComponentView:(id)view;
 - (void)update;
-- (void)updateComponentView:(id)a3;
-- (void)updateHandler:(id)a3;
+- (void)updateComponentView:(id)view;
+- (void)updateHandler:(id)handler;
 @end
 
 @implementation SXComponentBehaviorController
 
-- (SXComponentBehaviorController)initWithViewport:(id)a3 andAnimator:(id)a4
+- (SXComponentBehaviorController)initWithViewport:(id)viewport andAnimator:(id)animator
 {
-  v7 = a3;
-  v8 = a4;
+  viewportCopy = viewport;
+  animatorCopy = animator;
   v14.receiver = self;
   v14.super_class = SXComponentBehaviorController;
   v9 = [(SXComponentBehaviorController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_viewport, a3);
-    objc_storeStrong(&v10->_animator, a4);
+    objc_storeStrong(&v9->_viewport, viewport);
+    objc_storeStrong(&v10->_animator, animator);
     v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     behaviorHandlers = v10->_behaviorHandlers;
     v10->_behaviorHandlers = v11;
@@ -33,36 +33,36 @@
   return v10;
 }
 
-- (void)registerComponentView:(id)a3 behavior:(id)a4
+- (void)registerComponentView:(id)view behavior:(id)behavior
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 component];
-  v8 = [v6 handlerClassForComponent:v7];
+  viewCopy = view;
+  behaviorCopy = behavior;
+  component = [viewCopy component];
+  v8 = [behaviorCopy handlerClassForComponent:component];
 
   if (v8)
   {
-    v9 = [(SXComponentBehaviorController *)self existingHandlerForComponentView:v11 behavior:v6];
+    v9 = [(SXComponentBehaviorController *)self existingHandlerForComponentView:viewCopy behavior:behaviorCopy];
     if (!v9)
     {
-      v9 = [[v8 alloc] initWithComponentView:v11 withBehavior:v6];
-      v10 = [(SXComponentBehaviorController *)self behaviorHandlers];
-      [v10 addObject:v9];
+      v9 = [[v8 alloc] initWithComponentView:viewCopy withBehavior:behaviorCopy];
+      behaviorHandlers = [(SXComponentBehaviorController *)self behaviorHandlers];
+      [behaviorHandlers addObject:v9];
     }
   }
 }
 
-- (void)unregisterComponentView:(id)a3
+- (void)unregisterComponentView:(id)view
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(SXComponentBehaviorController *)self behaviorHandlers];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  behaviorHandlers = [(SXComponentBehaviorController *)self behaviorHandlers];
+  v7 = [behaviorHandlers countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -73,19 +73,19 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(behaviorHandlers);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 componentView];
+        componentView = [v11 componentView];
 
-        if (v12 == v4)
+        if (componentView == viewCopy)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v8 = [behaviorHandlers countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v8);
@@ -95,8 +95,8 @@
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [(SXComponentBehaviorController *)self behaviorHandlers];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  behaviorHandlers2 = [(SXComponentBehaviorController *)self behaviorHandlers];
+  v14 = [behaviorHandlers2 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v14)
   {
     v15 = v14;
@@ -107,7 +107,7 @@
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(behaviorHandlers2);
         }
 
         v18 = *(*(&v20 + 1) + 8 * j);
@@ -117,27 +117,27 @@
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v15 = [behaviorHandlers2 countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v15);
   }
 
-  v19 = [(SXComponentBehaviorController *)self behaviorHandlers];
-  [v19 minusSet:v5];
+  behaviorHandlers3 = [(SXComponentBehaviorController *)self behaviorHandlers];
+  [behaviorHandlers3 minusSet:v5];
 }
 
-- (id)existingHandlerForComponentView:(id)a3 behavior:(id)a4
+- (id)existingHandlerForComponentView:(id)view behavior:(id)behavior
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  behaviorCopy = behavior;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(SXComponentBehaviorController *)self behaviorHandlers];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  behaviorHandlers = [(SXComponentBehaviorController *)self behaviorHandlers];
+  v9 = [behaviorHandlers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = *v18;
@@ -147,17 +147,17 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(behaviorHandlers);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 componentView];
-        v14 = v13;
-        if (v13 == v6)
+        componentView = [v12 componentView];
+        v14 = componentView;
+        if (componentView == viewCopy)
         {
-          v15 = [v12 behavior];
+          behavior = [v12 behavior];
 
-          if (v15 == v7)
+          if (behavior == behaviorCopy)
           {
             v9 = v12;
             goto LABEL_13;
@@ -169,7 +169,7 @@
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [behaviorHandlers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -187,19 +187,19 @@ LABEL_13:
 - (void)update
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(SXComponentBehaviorController *)self viewport];
-  v4 = [v3 isPopulated];
+  viewport = [(SXComponentBehaviorController *)self viewport];
+  isPopulated = [viewport isPopulated];
 
-  if (v4)
+  if (isPopulated)
   {
-    v5 = [(SXComponentBehaviorController *)self viewport];
-    [v5 dynamicBounds];
+    viewport2 = [(SXComponentBehaviorController *)self viewport];
+    [viewport2 dynamicBounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SXComponentBehaviorController *)self viewport];
-    [v14 bounds];
+    viewport3 = [(SXComponentBehaviorController *)self viewport];
+    [viewport3 bounds];
     v16 = v15 * -2.0;
     v39.origin.x = v7;
     v39.origin.y = v9;
@@ -215,8 +215,8 @@ LABEL_13:
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v21 = [(SXComponentBehaviorController *)self behaviorHandlers];
-    v22 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    behaviorHandlers = [(SXComponentBehaviorController *)self behaviorHandlers];
+    v22 = [behaviorHandlers countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v22)
     {
       v23 = v22;
@@ -227,14 +227,14 @@ LABEL_13:
         {
           if (*v34 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(behaviorHandlers);
           }
 
           v26 = *(*(&v33 + 1) + 8 * i);
           if (([v26 requiresContinuousUpdates] & 1) == 0)
           {
-            v27 = [v26 componentView];
-            [v27 absoluteFrame];
+            componentView = [v26 componentView];
+            [componentView absoluteFrame];
             v42.origin.x = v28;
             v42.origin.y = v29;
             v42.size.width = v30;
@@ -254,7 +254,7 @@ LABEL_13:
           [(SXComponentBehaviorController *)self updateHandler:v26];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v23 = [behaviorHandlers countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v23);
@@ -262,21 +262,21 @@ LABEL_13:
   }
 }
 
-- (void)updateComponentView:(id)a3
+- (void)updateComponentView:(id)view
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SXComponentBehaviorController *)self viewport];
-  v6 = [v5 isPopulated];
+  viewCopy = view;
+  viewport = [(SXComponentBehaviorController *)self viewport];
+  isPopulated = [viewport isPopulated];
 
-  if (v6)
+  if (isPopulated)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(SXComponentBehaviorController *)self behaviorHandlers];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    behaviorHandlers = [(SXComponentBehaviorController *)self behaviorHandlers];
+    v8 = [behaviorHandlers countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -287,19 +287,19 @@ LABEL_13:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(behaviorHandlers);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
-          v13 = [v12 componentView];
+          componentView = [v12 componentView];
 
-          if (v13 == v4)
+          if (componentView == viewCopy)
           {
             [(SXComponentBehaviorController *)self updateHandler:v12];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [behaviorHandlers countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -307,31 +307,31 @@ LABEL_13:
   }
 }
 
-- (void)updateHandler:(id)a3
+- (void)updateHandler:(id)handler
 {
-  v4 = a3;
-  if (([v4 isSetup] & 1) == 0)
+  handlerCopy = handler;
+  if (([handlerCopy isSetup] & 1) == 0)
   {
-    [v4 setupWithBehaviorController:self];
+    [handlerCopy setupWithBehaviorController:self];
   }
 
-  [v4 updateWithBehaviorController:self];
+  [handlerCopy updateWithBehaviorController:self];
 }
 
 - (void)reset
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(SXComponentBehaviorController *)self viewport];
-  v4 = [v3 isPopulated];
+  viewport = [(SXComponentBehaviorController *)self viewport];
+  isPopulated = [viewport isPopulated];
 
-  if (v4)
+  if (isPopulated)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(SXComponentBehaviorController *)self behaviorHandlers];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    behaviorHandlers = [(SXComponentBehaviorController *)self behaviorHandlers];
+    v6 = [behaviorHandlers countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -342,7 +342,7 @@ LABEL_13:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(behaviorHandlers);
           }
 
           v10 = *(*(&v11 + 1) + 8 * i);
@@ -352,7 +352,7 @@ LABEL_13:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [behaviorHandlers countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);

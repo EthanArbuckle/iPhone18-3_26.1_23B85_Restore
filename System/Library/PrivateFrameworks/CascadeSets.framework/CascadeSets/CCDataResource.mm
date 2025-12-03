@@ -1,15 +1,15 @@
 @interface CCDataResource
-+ (BOOL)_databaseExistsAtURL:(id)a3 error:(id *)a4;
-+ (BOOL)directoryContainsDataResource:(id)a3;
-+ (BOOL)enumerateDataResources:(id *)a3 setIdentifier:(id)a4 descriptors:(id)a5 container:(id)a6 includingTombstoned:(BOOL)a7 startAfterSet:(id)a8 sorted:(BOOL)a9 usingBlock:(id)a10;
-+ (id)dataResourceForSet:(id)a3 inContainer:(id)a4;
-+ (id)dataResourceFromSpecifier:(id)a3 inContainer:(id)a4;
-- (BOOL)clearTombstoneStatus:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)markTombstoned:(id)a3 error:(id *)a4;
-- (CCDataResource)initWithSpecifier:(id)a3 container:(id)a4 resourceDirectoryURL:(id)a5;
++ (BOOL)_databaseExistsAtURL:(id)l error:(id *)error;
++ (BOOL)directoryContainsDataResource:(id)resource;
++ (BOOL)enumerateDataResources:(id *)resources setIdentifier:(id)identifier descriptors:(id)descriptors container:(id)container includingTombstoned:(BOOL)tombstoned startAfterSet:(id)set sorted:(BOOL)sorted usingBlock:(id)self0;
++ (id)dataResourceForSet:(id)set inContainer:(id)container;
++ (id)dataResourceFromSpecifier:(id)specifier inContainer:(id)container;
+- (BOOL)clearTombstoneStatus:(id *)status;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)markTombstoned:(id)tombstoned error:(id *)error;
+- (CCDataResource)initWithSpecifier:(id)specifier container:(id)container resourceDirectoryURL:(id)l;
 - (id)description;
-- (id)tombstoneDate:(id *)a3;
+- (id)tombstoneDate:(id *)date;
 - (unsigned)resourceStatus;
 @end
 
@@ -22,21 +22,21 @@
   return v2;
 }
 
-+ (BOOL)directoryContainsDataResource:(id)a3
++ (BOOL)directoryContainsDataResource:(id)resource
 {
-  v3 = a1;
-  v4 = [a1 _databaseDirectoryURLFromResourceDirectoryURL:a3];
-  v5 = [v3 databaseURLFromParentDirectoryURL:v4];
-  LOBYTE(v3) = [v3 _databaseExistsAtURL:v5 error:0];
+  selfCopy = self;
+  v4 = [self _databaseDirectoryURLFromResourceDirectoryURL:resource];
+  v5 = [selfCopy databaseURLFromParentDirectoryURL:v4];
+  LOBYTE(selfCopy) = [selfCopy _databaseExistsAtURL:v5 error:0];
 
-  return v3;
+  return selfCopy;
 }
 
-+ (BOOL)_databaseExistsAtURL:(id)a3 error:(id *)a4
++ (BOOL)_databaseExistsAtURL:(id)l error:(id *)error
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = access([v5 fileSystemRepresentation], 0);
+  lCopy = l;
+  v6 = access([lCopy fileSystemRepresentation], 0);
   if (v6)
   {
     v7 = MEMORY[0x1E696ABC0];
@@ -47,64 +47,64 @@
     v20[0] = v10;
     v19[1] = *MEMORY[0x1E696A278];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v5 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     v13 = __error();
-    v14 = [v11 stringWithFormat:@"Database does not exist at path: %s error: %s", v12, strerror(*v13)];
+    v14 = [v11 stringWithFormat:@"Database does not exist at path: %s error: %s", fileSystemRepresentation, strerror(*v13)];
     v20[1] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
     v16 = [v7 errorWithDomain:@"com.apple.CascadeSets.Set" code:4 userInfo:v15];
-    CCSetError(a4, v16);
+    CCSetError(error, v16);
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v6 == 0;
 }
 
-+ (id)dataResourceFromSpecifier:(id)a3 inContainer:(id)a4
++ (id)dataResourceFromSpecifier:(id)specifier inContainer:(id)container
 {
   v5 = MEMORY[0x1E698E9C8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 pathForResource:v7 inContainer:v6];
+  containerCopy = container;
+  specifierCopy = specifier;
+  v8 = [v5 pathForResource:specifierCopy inContainer:containerCopy];
   v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:1];
-  v10 = [objc_alloc(objc_opt_class()) initWithSpecifier:v7 container:v6 resourceDirectoryURL:v9];
+  v10 = [objc_alloc(objc_opt_class()) initWithSpecifier:specifierCopy container:containerCopy resourceDirectoryURL:v9];
 
   return v10;
 }
 
-+ (id)dataResourceForSet:(id)a3 inContainer:(id)a4
++ (id)dataResourceForSet:(id)set inContainer:(id)container
 {
-  v5 = a4;
-  v6 = a3;
+  containerCopy = container;
+  setCopy = set;
   v7 = objc_opt_class();
-  v8 = [v6 toResourceSpecifier];
+  toResourceSpecifier = [setCopy toResourceSpecifier];
 
-  v9 = [v7 dataResourceFromSpecifier:v8 inContainer:v5];
+  v9 = [v7 dataResourceFromSpecifier:toResourceSpecifier inContainer:containerCopy];
 
   return v9;
 }
 
-- (CCDataResource)initWithSpecifier:(id)a3 container:(id)a4 resourceDirectoryURL:(id)a5
+- (CCDataResource)initWithSpecifier:(id)specifier container:(id)container resourceDirectoryURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  specifierCopy = specifier;
+  containerCopy = container;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = CCDataResource;
   v12 = [(CCDataResource *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_specifier, a3);
-    objc_storeStrong(&v13->_container, a4);
-    objc_storeStrong(&v13->_resourceDirectoryURL, a5);
+    objc_storeStrong(&v12->_specifier, specifier);
+    objc_storeStrong(&v13->_container, container);
+    objc_storeStrong(&v13->_resourceDirectoryURL, l);
     v14 = [objc_opt_class() _databaseDirectoryURLFromResourceDirectoryURL:v13->_resourceDirectoryURL];
     databaseDirectoryURL = v13->_databaseDirectoryURL;
     v13->_databaseDirectoryURL = v14;
 
     v16 = objc_opt_class();
-    v17 = [(CCDataResource *)v13 databaseDirectoryURL];
-    v18 = [v16 databaseURLFromParentDirectoryURL:v17];
+    databaseDirectoryURL = [(CCDataResource *)v13 databaseDirectoryURL];
+    v18 = [v16 databaseURLFromParentDirectoryURL:databaseDirectoryURL];
     databaseURL = v13->_databaseURL;
     v13->_databaseURL = v18;
   }
@@ -157,7 +157,7 @@
   return v4;
 }
 
-- (id)tombstoneDate:(id *)a3
+- (id)tombstoneDate:(id *)date
 {
   value = 0;
   v4 = getxattr([(NSURL *)self->_databaseDirectoryURL fileSystemRepresentation], "com.apple.cascade.tombstonedate", &value, 8uLL, 0, 0);
@@ -174,7 +174,7 @@
         }
 
         v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-        CCSetError(a3, v6);
+        CCSetError(date, v6);
       }
 
       v4 = 0;
@@ -189,10 +189,10 @@
   return v4;
 }
 
-- (BOOL)markTombstoned:(id)a3 error:(id *)a4
+- (BOOL)markTombstoned:(id)tombstoned error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  tombstonedCopy = tombstoned;
   v7 = [(CCDataResource *)self tombstoneDate:0];
   if (v7)
   {
@@ -200,7 +200,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
       v20 = v7;
       _os_log_impl(&dword_1B6DB2000, v8, OS_LOG_TYPE_DEFAULT, "Resesource: %@, has existing tombstone date: %@, not resetting", buf, 0x16u);
@@ -211,7 +211,7 @@
 
   else
   {
-    [v6 timeIntervalSince1970];
+    [tombstonedCopy timeIntervalSince1970];
     value = (v10 * 1000000.0);
     v11 = setxattr([(NSURL *)self->_databaseDirectoryURL fileSystemRepresentation], "com.apple.cascade.tombstonedate", &value, 8uLL, 0, 0);
     v9 = v11 == 0;
@@ -225,15 +225,15 @@
       }
 
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-      CCSetError(a4, v13);
+      CCSetError(error, v13);
     }
 
     else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
-      v20 = v6;
+      v20 = tombstonedCopy;
       _os_log_impl(&dword_1B6DB2000, v13, OS_LOG_TYPE_DEFAULT, "Successfully set tombstone date for resource: %@, date: %@", buf, 0x16u);
     }
   }
@@ -242,7 +242,7 @@
   return v9;
 }
 
-- (BOOL)clearTombstoneStatus:(id *)a3
+- (BOOL)clearTombstoneStatus:(id *)status
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = [(CCDataResource *)self tombstoneDate:0];
@@ -266,7 +266,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B6DB2000, v8, OS_LOG_TYPE_DEFAULT, "Successfully cleared tombstone date for resource: %@", &v12, 0xCu);
     }
 
@@ -281,7 +281,7 @@ LABEL_10:
   }
 
   v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-  CCSetError(a3, v8);
+  CCSetError(status, v8);
   v9 = 0;
 LABEL_11:
 
@@ -289,21 +289,21 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(NSURL *)self->_resourceDirectoryURL path];
-    v7 = [(CCDataResource *)v5 resourceDirectoryURL];
-    v8 = [v7 path];
-    v9 = [v6 isEqualToString:v8];
+    path = [(NSURL *)self->_resourceDirectoryURL path];
+    resourceDirectoryURL = [(CCDataResource *)v5 resourceDirectoryURL];
+    path2 = [resourceDirectoryURL path];
+    v9 = [path isEqualToString:path2];
   }
 
   else
@@ -314,34 +314,34 @@ LABEL_11:
   return v9;
 }
 
-+ (BOOL)enumerateDataResources:(id *)a3 setIdentifier:(id)a4 descriptors:(id)a5 container:(id)a6 includingTombstoned:(BOOL)a7 startAfterSet:(id)a8 sorted:(BOOL)a9 usingBlock:(id)a10
++ (BOOL)enumerateDataResources:(id *)resources setIdentifier:(id)identifier descriptors:(id)descriptors container:(id)container includingTombstoned:(BOOL)tombstoned startAfterSet:(id)set sorted:(BOOL)sorted usingBlock:(id)self0
 {
-  v51 = a3;
+  resourcesCopy = resources;
   v85 = *MEMORY[0x1E69E9840];
-  v57 = a4;
-  v55 = a5;
-  v14 = a6;
-  v15 = a8;
-  v16 = a10;
+  identifierCopy = identifier;
+  descriptorsCopy = descriptors;
+  containerCopy = container;
+  setCopy = set;
+  blockCopy = block;
   v77 = 0;
   v78 = &v77;
   v79 = 0x3032000000;
   v80 = __Block_byref_object_copy__9;
   v81 = __Block_byref_object_dispose__9;
   v82 = 0;
-  v56 = v15;
-  if (v15)
+  v56 = setCopy;
+  if (setCopy)
   {
-    v17 = [objc_opt_class() dataResourceForSet:v15 inContainer:{v14, v51}];
-    v18 = [v17 resourceDirectoryURL];
-    v15 = [v18 path];
+    v17 = [objc_opt_class() dataResourceForSet:setCopy inContainer:{containerCopy, resourcesCopy}];
+    resourceDirectoryURL = [v17 resourceDirectoryURL];
+    setCopy = [resourceDirectoryURL path];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __129__CCDataResource_enumerateDataResources_setIdentifier_descriptors_container_includingTombstoned_startAfterSet_sorted_usingBlock___block_invoke;
   aBlock[3] = &unk_1E7C8BBA8;
-  v54 = v15;
+  v54 = setCopy;
   v76 = v54;
   v19 = _Block_copy(aBlock);
   v71[0] = MEMORY[0x1E69E9820];
@@ -350,23 +350,23 @@ LABEL_11:
   v71[3] = &unk_1E7C8BBD0;
   v60 = v19;
   v72 = v60;
-  v74 = a7;
-  v53 = v16;
+  tombstonedCopy = tombstoned;
+  v53 = blockCopy;
   v73 = v53;
   v20 = _Block_copy(v71);
   v21 = MEMORY[0x1E695DFF8];
-  v22 = [MEMORY[0x1E698E9C8] setsDirectoryInContainer:v14];
+  v22 = [MEMORY[0x1E698E9C8] setsDirectoryInContainer:containerCopy];
   v23 = [v21 fileURLWithPath:v22 isDirectory:1];
 
-  if (v57)
+  if (identifierCopy)
   {
-    v24 = [MEMORY[0x1E698E9F8] resourceFromContainer:v14 withType:4 name:v51 descriptors:{v53, v54}];
-    v59 = [MEMORY[0x1E698E9C8] pathForResource:v24 inContainer:v14];
+    v24 = [MEMORY[0x1E698E9F8] resourceFromContainer:containerCopy withType:4 name:resourcesCopy descriptors:{v53, v54}];
+    v59 = [MEMORY[0x1E698E9C8] pathForResource:v24 inContainer:containerCopy];
     v58 = [MEMORY[0x1E695DFF8] fileURLWithPath:v59 isDirectory:1];
     obj = v24;
 
     v25 = v58;
-    if (access([v58 fileSystemRepresentation], 0) || +[CCDataResource directoryContainsDataResource:](CCDataResource, "directoryContainsDataResource:", v58) && (objc_msgSend(objc_opt_class(), "dataResourceFromSpecifier:inContainer:", v24, v14), v27 = objc_claimAutoreleasedReturnValue(), v28 = v20[2](v20, v27), v27, (v28 & 1) != 0))
+    if (access([v58 fileSystemRepresentation], 0) || +[CCDataResource directoryContainsDataResource:](CCDataResource, "directoryContainsDataResource:", v58) && (objc_msgSend(objc_opt_class(), "dataResourceFromSpecifier:inContainer:", v24, containerCopy), v27 = objc_claimAutoreleasedReturnValue(), v28 = v20[2](v20, v27), v27, (v28 & 1) != 0))
     {
       v26 = 1;
 LABEL_43:
@@ -381,18 +381,18 @@ LABEL_43:
     v58 = v23;
   }
 
-  v29 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v30 = objc_opt_new();
   v70[0] = MEMORY[0x1E69E9820];
   v70[1] = 3221225472;
   v70[2] = __129__CCDataResource_enumerateDataResources_setIdentifier_descriptors_container_includingTombstoned_startAfterSet_sorted_usingBlock___block_invoke_3;
   v70[3] = &unk_1E7C8BBF8;
   v70[4] = &v77;
-  v31 = [v29 enumeratorAtURL:v58 includingPropertiesForKeys:v30 options:4 errorHandler:v70];
+  v31 = [defaultManager enumeratorAtURL:v58 includingPropertiesForKeys:v30 options:4 errorHandler:v70];
 
   if (v31)
   {
-    if (a9)
+    if (sorted)
     {
       v59 = objc_opt_new();
     }
@@ -430,11 +430,11 @@ LABEL_27:
           }
 
           v38 = MEMORY[0x1E698E9C8];
-          v39 = [v36 path];
-          v40 = [v38 resourceFromDataResourcePath:v39 inContainer:v14];
+          path = [v36 path];
+          v40 = [v38 resourceFromDataResourcePath:path inContainer:containerCopy];
 
-          v41 = [objc_opt_class() dataResourceFromSpecifier:v40 inContainer:v14];
-          if (a9)
+          v41 = [objc_opt_class() dataResourceFromSpecifier:v40 inContainer:containerCopy];
+          if (sorted)
           {
             if (((*(v60 + 2))(v60, v41) & 1) == 0)
             {
@@ -472,7 +472,7 @@ LABEL_28:
 
 LABEL_32:
 
-    if (a9)
+    if (sorted)
     {
       v44 = objc_autoreleasePoolPush();
       [v59 sortUsingComparator:&__block_literal_global_9];

@@ -37,9 +37,9 @@
 
 + (UIColor)contactStyleWithInsetPlattersDefaultContactHeaderBackgroundColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
@@ -57,9 +57,9 @@
 
 + (UIColor)contactStyleWithInsetPlattersDefaultContactHeaderDropShadowColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
@@ -77,21 +77,21 @@
 
 + (UIColor)contactStyleDefaultSelectedCellBackgroundColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
-    v5 = 0;
+    tableCellDefaultSelectionTintColor = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] tableCellDefaultSelectionTintColor];
+    tableCellDefaultSelectionTintColor = [MEMORY[0x1E69DC888] tableCellDefaultSelectionTintColor];
   }
 
-  return v5;
+  return tableCellDefaultSelectionTintColor;
 }
 
 + (UIColor)carPlaySiriButtonBackgroundColor
@@ -116,7 +116,7 @@
   v4[1] = 3221225472;
   v4[2] = __61__CNUIColorRepository_contactCardRecentBadgeTextDynamicColor__block_invoke;
   v4[3] = &__block_descriptor_40_e36___UIColor_16__0__UITraitCollection_8l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:v4];
 
   return v2;
@@ -128,7 +128,7 @@
   v4[1] = 3221225472;
   v4[2] = __68__CNUIColorRepository_contactCardLabeledBadgeBackgroundDynamicColor__block_invoke;
   v4[3] = &__block_descriptor_40_e36___UIColor_16__0__UITraitCollection_8l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:v4];
 
   return v2;
@@ -184,40 +184,40 @@
 
 + (UIColor)groupsInsetBackgroundColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
-    v5 = 0;
+    systemGroupedBackgroundColor = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
 
-  return v5;
+  return systemGroupedBackgroundColor;
 }
 
 + (UIColor)groupsOutlineBackgroundColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
-    v5 = 0;
+    secondarySystemBackgroundColor = 0;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
   }
 
-  return v5;
+  return secondarySystemBackgroundColor;
 }
 
 + (UIColor)monogrammerBackgroundDarkColor
@@ -236,9 +236,9 @@
 
 + (UIColor)contactStyleDefaultHeaderBackgroundColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
@@ -256,9 +256,9 @@
 
 + (UIColor)contactStyleDefaultContactHeaderDropShadowColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
@@ -276,9 +276,9 @@
 
 + (UIColor)contactStyleDefaultContactHeaderBackgroundColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
@@ -297,7 +297,7 @@
 + (UIColor)contactCardRecentBadgeTextColor
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
+  v3 = [MEMORY[0x1E696AAE8] bundleForClass:self];
   v4 = [v2 colorNamed:@"contactCardRecentBadgeTextColor" inBundle:v3 compatibleWithTraitCollection:0];
 
   return v4;
@@ -341,8 +341,8 @@ id __68__CNUIColorRepository_contactCardLabeledBadgeBackgroundDynamicColor__bloc
 
 + (UIColor)quickActionViewPosterBackgroundColor
 {
-  v2 = [MEMORY[0x1E69DC888] whiteColor];
-  v3 = [v2 colorWithAlphaComponent:0.3];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v3 = [whiteColor colorWithAlphaComponent:0.3];
 
   return v3;
 }
@@ -350,17 +350,17 @@ id __68__CNUIColorRepository_contactCardLabeledBadgeBackgroundDynamicColor__bloc
 + (UIColor)quickActionViewRoundedRectBorderColor
 {
   v2 = +[CNUIContactsEnvironment currentEnvironment];
-  v3 = [v2 runningInContactsAppOniPad];
+  runningInContactsAppOniPad = [v2 runningInContactsAppOniPad];
 
-  v4 = [MEMORY[0x1E69DC888] blackColor];
-  v5 = v4;
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v5 = blackColor;
   v6 = 0.08;
-  if (v3)
+  if (runningInContactsAppOniPad)
   {
     v6 = 0.01;
   }
 
-  v7 = [v4 colorWithAlphaComponent:v6];
+  v7 = [blackColor colorWithAlphaComponent:v6];
 
   return v7;
 }
@@ -368,9 +368,9 @@ id __68__CNUIColorRepository_contactCardLabeledBadgeBackgroundDynamicColor__bloc
 + (UIColor)quickActionViewRoundedRectBackgroundColor
 {
   v2 = +[CNUIContactsEnvironment currentEnvironment];
-  v3 = [v2 runningInContactsAppOniPad];
+  runningInContactsAppOniPad = [v2 runningInContactsAppOniPad];
 
-  if (v3)
+  if (runningInContactsAppOniPad)
   {
     [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
   }
@@ -386,16 +386,16 @@ id __68__CNUIColorRepository_contactCardLabeledBadgeBackgroundDynamicColor__bloc
 
 + (UIColor)quickActionBackgroundColorRegular
 {
-  v2 = [MEMORY[0x1E69DC888] _secondarySystemGroupedBackgroundColor];
-  v3 = [v2 colorWithAlphaComponent:0.75];
+  _secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] _secondarySystemGroupedBackgroundColor];
+  v3 = [_secondarySystemGroupedBackgroundColor colorWithAlphaComponent:0.75];
 
   return v3;
 }
 
 + (UIColor)photoPickerSymbolImageBackgroundColor
 {
-  v2 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v3 = [v2 colorWithAlphaComponent:0.15];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v3 = [systemBlueColor colorWithAlphaComponent:0.15];
 
   return v3;
 }
@@ -406,11 +406,11 @@ id __68__CNUIColorRepository_contactCardLabeledBadgeBackgroundDynamicColor__bloc
   v2 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:0];
   v3 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:2];
   v9[0] = v2;
-  v4 = [objc_opt_class() photoPickerCaptureLightBackgroundColor];
+  photoPickerCaptureLightBackgroundColor = [objc_opt_class() photoPickerCaptureLightBackgroundColor];
   v9[1] = v3;
-  v10[0] = v4;
-  v5 = [objc_opt_class() photoPickerCaptureDarkBackgroundColor];
-  v10[1] = v5;
+  v10[0] = photoPickerCaptureLightBackgroundColor;
+  photoPickerCaptureDarkBackgroundColor = [objc_opt_class() photoPickerCaptureDarkBackgroundColor];
+  v10[1] = photoPickerCaptureDarkBackgroundColor;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = [MEMORY[0x1E69DC888] _dynamicColorWithColorsByTraitCollection:v6];
@@ -420,33 +420,33 @@ id __68__CNUIColorRepository_contactCardLabeledBadgeBackgroundDynamicColor__bloc
 
 + (UIColor)contactCardStaticHeaderDefaultTaglineDarkTextColor
 {
-  v2 = [MEMORY[0x1E69DC888] blackColor];
-  v3 = [v2 colorWithAlphaComponent:0.5];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v3 = [blackColor colorWithAlphaComponent:0.5];
 
   return v3;
 }
 
 + (UIColor)contactCardStaticHeaderDefaultTaglineTextColor
 {
-  v2 = [MEMORY[0x1E69DC888] whiteColor];
-  v3 = [v2 colorWithAlphaComponent:0.75];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v3 = [whiteColor colorWithAlphaComponent:0.75];
 
   return v3;
 }
 
 + (UIColor)contactCardStaticHeaderGeminiTextColor
 {
-  v2 = [MEMORY[0x1E69DC888] whiteColor];
-  v3 = [v2 colorWithAlphaComponent:1.0];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v3 = [whiteColor colorWithAlphaComponent:1.0];
 
   return v3;
 }
 
 + (UIColor)contactCardEditModeBackgroundColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
@@ -464,9 +464,9 @@ id __68__CNUIColorRepository_contactCardLabeledBadgeBackgroundDynamicColor__bloc
 
 + (UIColor)contactCardBackgroundiPadOverwriteColor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:29];
 
   if (v4)
   {
@@ -500,13 +500,13 @@ id __51__CNUIColorRepository_contactPickerBackgroundColor__block_invoke(uint64_t
 
 + (UIColor)contactListContactCountTextColor
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:16];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:16];
 
   if (v5)
   {
-    [a1 contactStyleDefaultTextColor];
+    [self contactStyleDefaultTextColor];
   }
 
   else
@@ -562,24 +562,24 @@ uint64_t __62__CNUIColorRepository_navigationListCellTitleTextColorRegular__bloc
 
 + (UIColor)popoverBackgroundColor
 {
-  v2 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
   v3 = popoverBackgroundColor_shouldUseGreenPopoverTestBackground;
   if (popoverBackgroundColor_shouldUseGreenPopoverTestBackground == -1)
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    popoverBackgroundColor_shouldUseGreenPopoverTestBackground = [v4 BOOLForKey:@"ShouldUseGreenPopoverTestBackground"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    popoverBackgroundColor_shouldUseGreenPopoverTestBackground = [standardUserDefaults BOOLForKey:@"ShouldUseGreenPopoverTestBackground"];
 
     v3 = popoverBackgroundColor_shouldUseGreenPopoverTestBackground;
   }
 
   if (v3 == 1)
   {
-    v5 = [MEMORY[0x1E69DC888] greenColor];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
 
-    v2 = v5;
+    clearColor = greenColor;
   }
 
-  return v2;
+  return clearColor;
 }
 
 @end

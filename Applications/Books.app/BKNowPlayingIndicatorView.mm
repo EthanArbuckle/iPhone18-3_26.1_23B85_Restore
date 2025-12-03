@@ -1,117 +1,117 @@
 @interface BKNowPlayingIndicatorView
 - (BOOL)isHidden;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)drawRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
-- (void)setInterLevelSpacing:(double)a3;
-- (void)setLevelColor:(id)a3;
-- (void)setLevelCornerRadius:(double)a3;
-- (void)setLevelGuttersColor:(id)a3;
-- (void)setMaximumLevelHeight:(double)a3;
-- (void)setMinimumLevelHeight:(double)a3;
-- (void)setNumberOfLevels:(int64_t)a3;
-- (void)setPlaybackState:(int64_t)a3;
+- (void)setHidden:(BOOL)hidden;
+- (void)setInterLevelSpacing:(double)spacing;
+- (void)setLevelColor:(id)color;
+- (void)setLevelCornerRadius:(double)radius;
+- (void)setLevelGuttersColor:(id)color;
+- (void)setMaximumLevelHeight:(double)height;
+- (void)setMinimumLevelHeight:(double)height;
+- (void)setNumberOfLevels:(int64_t)levels;
+- (void)setPlaybackState:(int64_t)state;
 - (void)tintColorDidChange;
 @end
 
 @implementation BKNowPlayingIndicatorView
 
-- (void)setInterLevelSpacing:(double)a3
+- (void)setInterLevelSpacing:(double)spacing
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_interLevelSpacing);
-  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_interLevelSpacing) = a3;
-  if (v3 != a3)
+  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_interLevelSpacing) = spacing;
+  if (v3 != spacing)
   {
     [(BKNowPlayingIndicatorView *)self setNeedsLayout];
   }
 }
 
-- (void)setLevelCornerRadius:(double)a3
+- (void)setLevelCornerRadius:(double)radius
 {
-  v4 = self;
-  sub_100393B10(a3);
+  selfCopy = self;
+  sub_100393B10(radius);
 }
 
-- (void)setMaximumLevelHeight:(double)a3
+- (void)setMaximumLevelHeight:(double)height
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_maximumLevelHeight) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_maximumLevelHeight) = height;
+  selfCopy = self;
   sub_100394C64();
 }
 
-- (void)setMinimumLevelHeight:(double)a3
+- (void)setMinimumLevelHeight:(double)height
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_minimumLevelHeight) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_minimumLevelHeight) = height;
+  selfCopy = self;
   sub_100394C64();
 }
 
-- (void)setNumberOfLevels:(int64_t)a3
+- (void)setNumberOfLevels:(int64_t)levels
 {
-  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_numberOfLevels) = a3;
-  v3 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_numberOfLevels) = levels;
+  selfCopy = self;
   sub_1003947FC();
 }
 
-- (void)setPlaybackState:(int64_t)a3
+- (void)setPlaybackState:(int64_t)state
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_playbackState);
-  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_playbackState) = a3;
-  if (v4 != a3)
+  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_playbackState) = state;
+  if (v4 != state)
   {
-    v5 = self;
+    selfCopy = self;
     sub_100394C64();
   }
 }
 
-- (void)setLevelGuttersColor:(id)a3
+- (void)setLevelGuttersColor:(id)color
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_levelGuttersColor);
-  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_levelGuttersColor) = a3;
-  v7 = a3;
-  v5 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_levelGuttersColor) = color;
+  colorCopy = color;
+  selfCopy = self;
 
-  v6 = *(&v5->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_needsLevelUpdate);
-  *(&v5->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_needsLevelUpdate) = 1;
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_needsLevelUpdate);
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_needsLevelUpdate) = 1;
   if ((v6 & 1) == 0)
   {
-    [(BKNowPlayingIndicatorView *)v5 setNeedsDisplay];
+    [(BKNowPlayingIndicatorView *)selfCopy setNeedsDisplay];
   }
 }
 
-- (void)setLevelColor:(id)a3
+- (void)setLevelColor:(id)color
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_levelColor);
-  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_levelColor) = a3;
-  v7 = a3;
-  v5 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_levelColor) = color;
+  colorCopy = color;
+  selfCopy = self;
 
-  v6 = *(&v5->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_needsLevelUpdate);
-  *(&v5->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_needsLevelUpdate) = 1;
+  v6 = *(&selfCopy->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_needsLevelUpdate);
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR___BKNowPlayingIndicatorView_needsLevelUpdate) = 1;
   if ((v6 & 1) == 0)
   {
-    [(BKNowPlayingIndicatorView *)v5 setNeedsDisplay];
+    [(BKNowPlayingIndicatorView *)selfCopy setNeedsDisplay];
   }
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NowPlayingIndicatorView.layoutSubviews()();
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   NowPlayingIndicatorView.draw(_:)(x, y, width, height);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   _s5Books23NowPlayingIndicatorViewC12sizeThatFitsySo6CGSizeVAFF_0();
   result.height = v4;
@@ -140,18 +140,18 @@
   return [(BKNowPlayingIndicatorView *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5 = type metadata accessor for NowPlayingIndicatorView();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(BKNowPlayingIndicatorView *)&v9 isHidden];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHidden = [(BKNowPlayingIndicatorView *)&v9 isHidden];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(BKNowPlayingIndicatorView *)&v8 setHidden:v3];
-  if (![(BKNowPlayingIndicatorView *)v6 isHidden]&& v7)
+  [(BKNowPlayingIndicatorView *)&v8 setHidden:hiddenCopy];
+  if (![(BKNowPlayingIndicatorView *)selfCopy isHidden]&& isHidden)
   {
     sub_100394C64();
   }

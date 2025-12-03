@@ -1,17 +1,17 @@
 @interface TSWPDirtyRangeArray
-- (BOOL)isEqualToDirtyRangeArray:(id)a3;
+- (BOOL)isEqualToDirtyRangeArray:(id)array;
 - (TSWPDirtyRangeArray)init;
-- (TSWPDirtyRangeArray)initWithDirtyRange:(id *)a3;
-- (TSWPDirtyRangeArray)initWithRangeVector:(const void *)a3;
+- (TSWPDirtyRangeArray)initWithDirtyRange:(id *)range;
+- (TSWPDirtyRangeArray)initWithRangeVector:(const void *)vector;
 - (_NSRange)superRange;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dirtyRangesIntersecting:(_NSRange)a3;
-- (id)inclusiveDirtyRangesIntersecting:(_NSRange)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dirtyRangesIntersecting:(_NSRange)intersecting;
+- (id)inclusiveDirtyRangesIntersecting:(_NSRange)intersecting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)delta;
-- (unint64_t)indexForRange:(_NSRange)a3;
-- (void)enumerateWithBlock:(id)a3;
+- (unint64_t)indexForRange:(_NSRange)range;
+- (void)enumerateWithBlock:(id)block;
 @end
 
 @implementation TSWPDirtyRangeArray
@@ -23,51 +23,51 @@
   return [(TSWPDirtyRangeArray *)&v3 init];
 }
 
-- (TSWPDirtyRangeArray)initWithDirtyRange:(id *)a3
+- (TSWPDirtyRangeArray)initWithDirtyRange:(id *)range
 {
-  v4 = objc_msgSend_init(self, a2, a3);
+  v4 = objc_msgSend_init(self, a2, range);
   v5 = v4;
   if (v4)
   {
-    sub_276E30510(v4 + 8, a3);
+    sub_276E30510(v4 + 8, range);
   }
 
   return v5;
 }
 
-- (TSWPDirtyRangeArray)initWithRangeVector:(const void *)a3
+- (TSWPDirtyRangeArray)initWithRangeVector:(const void *)vector
 {
-  v4 = objc_msgSend_init(self, a2, a3);
+  v4 = objc_msgSend_init(self, a2, vector);
   v5 = v4;
   if (v4)
   {
     v6 = (v4 + 8);
-    if (&v5->_rangeVector != a3)
+    if (&v5->_rangeVector != vector)
     {
-      sub_276E3174C(v6, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+      sub_276E3174C(v6, *vector, *(vector + 1), 0xAAAAAAAAAAAAAAABLL * ((*(vector + 1) - *vector) >> 3));
     }
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSWPDirtyRangeArray alloc];
 
   return objc_msgSend_initWithRangeVector_(v4, v5, &self->_rangeVector);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TSWPMutableDirtyRangeArray alloc];
 
   return objc_msgSend_initWithRangeVector_(v4, v5, &self->_rangeVector);
 }
 
-- (void)enumerateWithBlock:(id)a3
+- (void)enumerateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13 = 0;
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -80,7 +80,7 @@
       v12 = *(v7 - 1);
       v10 = v12;
       v9 = v11;
-      v4[2](v4, &v9, &v13);
+      blockCopy[2](blockCopy, &v9, &v13);
       if (v13)
       {
         break;
@@ -94,13 +94,13 @@
   }
 }
 
-- (BOOL)isEqualToDirtyRangeArray:(id)a3
+- (BOOL)isEqualToDirtyRangeArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
-  v7 = v4[1];
-  if (end - begin == v4[2] - v7)
+  v7 = arrayCopy[1];
+  if (end - begin == arrayCopy[2] - v7)
   {
     if (begin == end)
     {
@@ -188,7 +188,7 @@
   return result;
 }
 
-- (unint64_t)indexForRange:(_NSRange)a3
+- (unint64_t)indexForRange:(_NSRange)range
 {
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -203,7 +203,7 @@
       v10 = *v8;
       v9 = (v8 + 3);
       v5 += ~(v5 >> 1);
-      if (v10 < a3.location)
+      if (v10 < range.location)
       {
         v6 = v9;
       }
@@ -217,10 +217,10 @@
     while (v5);
     if (v6 != end)
     {
-      if (*v6 == a3.location)
+      if (*v6 == range.location)
       {
         v11 = 24;
-        if (a3.length >= *(v6 + 1))
+        if (range.length >= *(v6 + 1))
         {
           v11 = 0;
         }
@@ -238,10 +238,10 @@
   return 0xAAAAAAAAAAAAAAABLL * ((end - begin) >> 3);
 }
 
-- (id)dirtyRangesIntersecting:(_NSRange)a3
+- (id)dirtyRangesIntersecting:(_NSRange)intersecting
 {
-  length = a3.length;
-  location = a3.location;
+  length = intersecting.length;
+  location = intersecting.location;
   v8 = objc_opt_new();
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;
@@ -289,10 +289,10 @@ LABEL_12:
   return v18;
 }
 
-- (id)inclusiveDirtyRangesIntersecting:(_NSRange)a3
+- (id)inclusiveDirtyRangesIntersecting:(_NSRange)intersecting
 {
-  length = a3.length;
-  location = a3.location;
+  length = intersecting.length;
+  location = intersecting.location;
   v8 = objc_opt_new();
   begin = self->_rangeVector.__begin_;
   end = self->_rangeVector.__end_;

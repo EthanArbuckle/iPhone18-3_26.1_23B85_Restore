@@ -1,28 +1,28 @@
 @interface SPSearchSuggestion
-+ (id)suggestionsWithData:(id)a3 queryString:(id)a4;
-+ (id)suggestionsWithNLPData:(id)a3 queryString:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)suggestionsWithData:(id)data queryString:(id)string;
++ (id)suggestionsWithNLPData:(id)data queryString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)searchEntities;
-- (SPSearchSuggestion)initWithNLPData:(id)a3 queryString:(id)a4;
-- (SPSearchSuggestion)initWithSuggestion:(id)a3 query:(id)a4 scores:(id)a5 bundleIDs:(id)a6;
+- (SPSearchSuggestion)initWithNLPData:(id)data queryString:(id)string;
+- (SPSearchSuggestion)initWithSuggestion:(id)suggestion query:(id)query scores:(id)scores bundleIDs:(id)ds;
 - (id)description;
 - (id)suggestionsFeedbackData;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPSearchSuggestion
 
-+ (id)suggestionsWithData:(id)a3 queryString:(id)a4
++ (id)suggestionsWithData:(id)data queryString:(id)string
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  stringCopy = string;
   v7 = *MEMORY[0x1E695E480];
-  [v5 bytes];
-  v29 = v5;
-  [v5 length];
+  [dataCopy bytes];
+  v29 = dataCopy;
+  [dataCopy length];
   cf = _MDPlistBytesCreateTrusted();
   v8 = _MDPlistBytesCopyPlistAtIndex();
   v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
@@ -69,8 +69,8 @@
           v20 = [v15 objectAtIndexedSubscript:0];
           v21 = [v15 objectAtIndexedSubscript:22];
           v22 = [v15 subarrayWithRange:{1, objc_msgSend(v15, "count") - 2}];
-          v23 = [[SPSearchSuggestion alloc] initWithSuggestion:v20 query:v6 scores:v22 bundleIDs:v21];
-          [(SPSearchSuggestion *)v23 setQuery:v6];
+          v23 = [[SPSearchSuggestion alloc] initWithSuggestion:v20 query:stringCopy scores:v22 bundleIDs:v21];
+          [(SPSearchSuggestion *)v23 setQuery:stringCopy];
           if (v23)
           {
             [v9 addObject:v23];
@@ -87,33 +87,33 @@
 LABEL_14:
 
   CFRelease(cf);
-  v24 = [v9 allObjects];
-  v25 = [v24 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [v9 allObjects];
+  v25 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   v26 = *MEMORY[0x1E69E9840];
 
   return v25;
 }
 
-+ (id)suggestionsWithNLPData:(id)a3 queryString:(id)a4
++ (id)suggestionsWithNLPData:(id)data queryString:(id)string
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SPSearchSuggestion alloc] initWithNLPData:v6 queryString:v5];
+  stringCopy = string;
+  dataCopy = data;
+  v7 = [[SPSearchSuggestion alloc] initWithNLPData:dataCopy queryString:stringCopy];
 
   return v7;
 }
 
-- (SPSearchSuggestion)initWithSuggestion:(id)a3 query:(id)a4 scores:(id)a5 bundleIDs:(id)a6
+- (SPSearchSuggestion)initWithSuggestion:(id)suggestion query:(id)query scores:(id)scores bundleIDs:(id)ds
 {
   v87 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v10;
-  v15 = [v12 count];
-  obj = a3;
+  suggestionCopy = suggestion;
+  queryCopy = query;
+  scoresCopy = scores;
+  dsCopy = ds;
+  v14 = suggestionCopy;
+  v15 = [scoresCopy count];
+  obj = suggestion;
   if (v15 != 21)
   {
     v18 = 0;
@@ -122,18 +122,18 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  v16 = [v12 objectAtIndexedSubscript:14];
-  v17 = [v16 integerValue];
+  v16 = [scoresCopy objectAtIndexedSubscript:14];
+  integerValue = [v16 integerValue];
 
   v18 = 0;
   v19 = 7;
-  if (v17 <= 7)
+  if (integerValue <= 7)
   {
-    if (v17 != 3)
+    if (integerValue != 3)
     {
       v20 = v14;
       v15 = 21;
-      if (v17 == 6)
+      if (integerValue == 6)
       {
         v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
         v22 = [v21 localizedStringForKey:@"PHOTOS_SUGGESTION" value:&stru_1F556FE60 table:@"SpotlightServices"];
@@ -146,11 +146,11 @@ LABEL_14:
       goto LABEL_20;
     }
 
-    v35 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    v36 = [v11 stringByTrimmingCharactersInSet:v35];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    v36 = [queryCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-    v37 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    [v14 stringByTrimmingCharactersInSet:v37];
+    whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    [v14 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
     v39 = v38 = v14;
 
     v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v36, v39];
@@ -165,7 +165,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (v17 == 8)
+  if (integerValue == 8)
   {
     v18 = 0;
     v19 = 2;
@@ -175,11 +175,11 @@ LABEL_19:
 
   v20 = v14;
   v15 = 21;
-  if (v17 == 22)
+  if (integerValue == 22)
   {
-    v75 = v12;
-    v76 = v11;
-    v77 = [v14 lowercaseString];
+    v75 = scoresCopy;
+    v76 = queryCopy;
+    lowercaseString = [v14 lowercaseString];
 
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"**=%@cwd", v14];
@@ -189,8 +189,8 @@ LABEL_19:
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v74 = v13;
-    v25 = v13;
+    v74 = dsCopy;
+    v25 = dsCopy;
     v26 = [v25 countByEnumeratingWithState:&v82 objects:v86 count:16];
     if (v26)
     {
@@ -222,11 +222,11 @@ LABEL_19:
     v18 = [v33 stringWithFormat:@"(%@)", v34];
 
     v19 = 7;
-    v12 = v75;
-    v11 = v76;
-    v13 = v74;
+    scoresCopy = v75;
+    queryCopy = v76;
+    dsCopy = v74;
     v15 = 21;
-    v20 = v77;
+    v20 = lowercaseString;
   }
 
 LABEL_20:
@@ -239,74 +239,74 @@ LABEL_20:
     v78 = v20;
     if (v15 == 21)
     {
-      v43 = [v12 objectAtIndexedSubscript:0];
+      v43 = [scoresCopy objectAtIndexedSubscript:0];
       v42->_queryLen = [v43 integerValue];
 
-      v44 = [v12 objectAtIndexedSubscript:1];
+      v44 = [scoresCopy objectAtIndexedSubscript:1];
       v42->_queryFragmentCount = [v44 integerValue];
 
-      v45 = [v12 objectAtIndexedSubscript:2];
+      v45 = [scoresCopy objectAtIndexedSubscript:2];
       v42->_queryCompletionCount = [v45 longLongValue];
 
-      v46 = [v12 objectAtIndexedSubscript:3];
+      v46 = [scoresCopy objectAtIndexedSubscript:3];
       v42->_fragments = [v46 integerValue];
 
-      v47 = [v12 objectAtIndexedSubscript:4];
+      v47 = [scoresCopy objectAtIndexedSubscript:4];
       [v47 doubleValue];
       v42->_age = v48;
 
-      v49 = [v12 objectAtIndexedSubscript:5];
+      v49 = [scoresCopy objectAtIndexedSubscript:5];
       [v49 doubleValue];
       v42->_prob = v50;
 
-      v51 = [v12 objectAtIndexedSubscript:6];
+      v51 = [scoresCopy objectAtIndexedSubscript:6];
       v42->_maxscore = [v51 longLongValue];
 
-      v52 = [v12 objectAtIndexedSubscript:7];
+      v52 = [scoresCopy objectAtIndexedSubscript:7];
       v42->_weight = [v52 intValue];
 
-      v53 = [v12 objectAtIndexedSubscript:8];
+      v53 = [scoresCopy objectAtIndexedSubscript:8];
       v42->_parentWeight = [v53 intValue];
 
-      v54 = [v12 objectAtIndexedSubscript:9];
+      v54 = [scoresCopy objectAtIndexedSubscript:9];
       v42->_rootWeight = [v54 integerValue];
 
-      v55 = [v12 objectAtIndexedSubscript:10];
+      v55 = [scoresCopy objectAtIndexedSubscript:10];
       [v55 doubleValue];
       v42->_phraseScore = v56;
 
-      v57 = [v12 objectAtIndexedSubscript:11];
+      v57 = [scoresCopy objectAtIndexedSubscript:11];
       [v57 doubleValue];
       v42->_punishment = v58;
 
-      v59 = [v12 objectAtIndexedSubscript:12];
+      v59 = [scoresCopy objectAtIndexedSubscript:12];
       [v59 doubleValue];
       p_compositeScore = &v42->_compositeScore;
       v42->_compositeScore = v61;
 
-      v62 = [v12 objectAtIndexedSubscript:13];
+      v62 = [scoresCopy objectAtIndexedSubscript:13];
       [v62 floatValue];
       v42->_fieldWeight = v63;
 
-      v64 = [v12 objectAtIndexedSubscript:14];
+      v64 = [scoresCopy objectAtIndexedSubscript:14];
       v42->_completionType = [v64 integerValue];
 
-      v65 = [v12 objectAtIndexedSubscript:15];
+      v65 = [scoresCopy objectAtIndexedSubscript:15];
       v42->_prefixLen = [v65 integerValue];
 
-      v66 = [v12 objectAtIndexedSubscript:16];
+      v66 = [scoresCopy objectAtIndexedSubscript:16];
       v42->_isSingleThread = [v66 integerValue] != 0;
 
-      v67 = [v12 objectAtIndexedSubscript:17];
+      v67 = [scoresCopy objectAtIndexedSubscript:17];
       v42->_hasUsedDate = [v67 integerValue] != 0;
 
-      v68 = [v12 objectAtIndexedSubscript:18];
+      v68 = [scoresCopy objectAtIndexedSubscript:18];
       v42->_isShortcut = [v68 integerValue] != 0;
 
-      v69 = [v12 objectAtIndexedSubscript:19];
+      v69 = [scoresCopy objectAtIndexedSubscript:19];
       v42->_hasMultipleResults = [v69 integerValue] != 0;
 
-      v70 = [v13 copy];
+      v70 = [dsCopy copy];
     }
 
     else
@@ -348,7 +348,7 @@ LABEL_20:
     [(SPSearchSuggestion *)v42 setScore:*p_compositeScore];
     v20 = v78;
     [(SPSearchSuggestion *)v42 setSuggestion:v78];
-    [(SPSearchSuggestion *)v42 setQuery:v11];
+    [(SPSearchSuggestion *)v42 setQuery:queryCopy];
     [(SPSearchSuggestion *)v42 setType:v19];
   }
 
@@ -356,13 +356,13 @@ LABEL_20:
   return v42;
 }
 
-- (SPSearchSuggestion)initWithNLPData:(id)a3 queryString:(id)a4
+- (SPSearchSuggestion)initWithNLPData:(id)data queryString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"suggestion"];
-  v9 = [v7 objectForKeyedSubscript:@"query"];
-  v10 = [v7 objectForKeyedSubscript:@"tokenCount"];
+  stringCopy = string;
+  dataCopy = data;
+  v8 = [dataCopy objectForKeyedSubscript:@"suggestion"];
+  v9 = [dataCopy objectForKeyedSubscript:@"query"];
+  v10 = [dataCopy objectForKeyedSubscript:@"tokenCount"];
   v11 = v10;
   if (v10)
   {
@@ -376,7 +376,7 @@ LABEL_20:
 
   v13 = v12;
 
-  v14 = [v7 objectForKeyedSubscript:@"attributeCount"];
+  v14 = [dataCopy objectForKeyedSubscript:@"attributeCount"];
   v15 = v14;
   if (v14)
   {
@@ -390,7 +390,7 @@ LABEL_20:
 
   v17 = v16;
 
-  v18 = [v7 objectForKeyedSubscript:@"categories"];
+  v18 = [dataCopy objectForKeyedSubscript:@"categories"];
   v19 = v18;
   v20 = MEMORY[0x1E695E0F8];
   if (v18)
@@ -406,7 +406,7 @@ LABEL_20:
   obj = v21;
   v30 = v21;
 
-  v22 = [v7 objectForKeyedSubscript:@"terms"];
+  v22 = [dataCopy objectForKeyedSubscript:@"terms"];
 
   if (v22)
   {
@@ -425,7 +425,7 @@ LABEL_20:
   v25 = [(SPSearchSuggestion *)&v31 init];
   if (v25)
   {
-    v25->_queryLen = [v6 length];
+    v25->_queryLen = [stringCopy length];
     v25->_queryFragmentCount = [v13 intValue];
     v25->_queryCompletionCount = 20;
     v25->_fragments = [v17 integerValue];
@@ -455,40 +455,40 @@ LABEL_20:
     objc_storeStrong(&v25->_terms, v23);
     objc_storeStrong(&v25->_spotlightQuery, v9);
     [(SPSearchSuggestion *)v25 setSuggestion:v8];
-    [(SPSearchSuggestion *)v25 setQuery:v6];
+    [(SPSearchSuggestion *)v25 setQuery:stringCopy];
     [(SPSearchSuggestion *)v25 setType:15];
   }
 
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = SPSearchSuggestion;
-  v4 = a3;
-  [(SPSearchSuggestion *)&v12 encodeWithCoder:v4];
-  [v4 encodeInt:LODWORD(self->_queryLen) forKey:{@"queryLen", v12.receiver, v12.super_class}];
-  [v4 encodeInt:LODWORD(self->_queryFragmentCount) forKey:@"queryFragmentCount"];
-  [v4 encodeInt64:self->_queryCompletionCount forKey:@"queryCompletionCount"];
-  [v4 encodeInt:LODWORD(self->_fragments) forKey:@"fragments"];
-  [v4 encodeDouble:@"age" forKey:self->_age];
-  [v4 encodeDouble:@"prob" forKey:self->_prob];
-  [v4 encodeInt64:self->_maxscore forKey:@"maxscore"];
-  [v4 encodeInt:self->_weight forKey:@"weight"];
-  [v4 encodeInt:self->_parentWeight forKey:@"parentWeight"];
-  [v4 encodeInt:self->_rootWeight forKey:@"rootWeight"];
-  [v4 encodeDouble:@"phraseScore" forKey:self->_phraseScore];
-  [v4 encodeDouble:@"punishment" forKey:self->_punishment];
-  [v4 encodeDouble:@"compositeScore" forKey:self->_compositeScore];
-  [v4 encodeInt:self->_completionType forKey:@"completionType"];
-  [v4 encodeInt:self->_prefixLen forKey:@"prefixLen"];
+  coderCopy = coder;
+  [(SPSearchSuggestion *)&v12 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt:LODWORD(self->_queryLen) forKey:{@"queryLen", v12.receiver, v12.super_class}];
+  [coderCopy encodeInt:LODWORD(self->_queryFragmentCount) forKey:@"queryFragmentCount"];
+  [coderCopy encodeInt64:self->_queryCompletionCount forKey:@"queryCompletionCount"];
+  [coderCopy encodeInt:LODWORD(self->_fragments) forKey:@"fragments"];
+  [coderCopy encodeDouble:@"age" forKey:self->_age];
+  [coderCopy encodeDouble:@"prob" forKey:self->_prob];
+  [coderCopy encodeInt64:self->_maxscore forKey:@"maxscore"];
+  [coderCopy encodeInt:self->_weight forKey:@"weight"];
+  [coderCopy encodeInt:self->_parentWeight forKey:@"parentWeight"];
+  [coderCopy encodeInt:self->_rootWeight forKey:@"rootWeight"];
+  [coderCopy encodeDouble:@"phraseScore" forKey:self->_phraseScore];
+  [coderCopy encodeDouble:@"punishment" forKey:self->_punishment];
+  [coderCopy encodeDouble:@"compositeScore" forKey:self->_compositeScore];
+  [coderCopy encodeInt:self->_completionType forKey:@"completionType"];
+  [coderCopy encodeInt:self->_prefixLen forKey:@"prefixLen"];
   *&v5 = self->_fieldWeight;
-  [v4 encodeFloat:@"fieldWeight" forKey:v5];
-  [v4 encodeBool:self->_isSingleThread forKey:@"isSingleThread"];
-  [v4 encodeBool:self->_hasUsedDate forKey:@"hasUsedDate"];
-  [v4 encodeBool:self->_isShortcut forKey:@"isShortcut"];
-  [v4 encodeBool:self->_hasMultipleResults forKey:@"hasMultipleResults"];
+  [coderCopy encodeFloat:@"fieldWeight" forKey:v5];
+  [coderCopy encodeBool:self->_isSingleThread forKey:@"isSingleThread"];
+  [coderCopy encodeBool:self->_hasUsedDate forKey:@"hasUsedDate"];
+  [coderCopy encodeBool:self->_isShortcut forKey:@"isShortcut"];
+  [coderCopy encodeBool:self->_hasMultipleResults forKey:@"hasMultipleResults"];
   if (self->_bundleIDs)
   {
     bundleIDs = self->_bundleIDs;
@@ -499,7 +499,7 @@ LABEL_20:
     bundleIDs = MEMORY[0x1E695E0F0];
   }
 
-  [v4 encodeObject:bundleIDs forKey:@"bundleIDs"];
+  [coderCopy encodeObject:bundleIDs forKey:@"bundleIDs"];
   if (self->_completion)
   {
     completion = self->_completion;
@@ -510,7 +510,7 @@ LABEL_20:
     completion = &stru_1F556FE60;
   }
 
-  [v4 encodeObject:completion forKey:@"completion"];
+  [coderCopy encodeObject:completion forKey:@"completion"];
   if (self->_spotlightQuery)
   {
     spotlightQuery = self->_spotlightQuery;
@@ -521,7 +521,7 @@ LABEL_20:
     spotlightQuery = &stru_1F556FE60;
   }
 
-  [v4 encodeObject:spotlightQuery forKey:@"spotlightQuery"];
+  [coderCopy encodeObject:spotlightQuery forKey:@"spotlightQuery"];
   v9 = MEMORY[0x1E695E0F8];
   if (self->_categories)
   {
@@ -533,7 +533,7 @@ LABEL_20:
     categories = MEMORY[0x1E695E0F8];
   }
 
-  [v4 encodeObject:categories forKey:@"categories"];
+  [coderCopy encodeObject:categories forKey:@"categories"];
   if (self->_terms)
   {
     terms = self->_terms;
@@ -544,20 +544,20 @@ LABEL_20:
     terms = v9;
   }
 
-  [v4 encodeObject:terms forKey:@"terms"];
+  [coderCopy encodeObject:terms forKey:@"terms"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SPSearchSuggestion *)self suggestion];
-    v7 = [v5 suggestion];
+    v5 = equalCopy;
+    suggestion = [(SPSearchSuggestion *)self suggestion];
+    suggestion2 = [v5 suggestion];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [suggestion isEqual:suggestion2];
   }
 
   else
@@ -570,8 +570,8 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v2 = [(SPSearchSuggestion *)self query];
-  v3 = [v2 hash];
+  query = [(SPSearchSuggestion *)self query];
+  v3 = [query hash];
 
   return v3;
 }
@@ -580,91 +580,91 @@ LABEL_20:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SPSearchSuggestion *)self suggestion];
-  v6 = [(SPSearchSuggestion *)self suggestion];
-  v7 = [v6 length];
+  suggestion = [(SPSearchSuggestion *)self suggestion];
+  suggestion2 = [(SPSearchSuggestion *)self suggestion];
+  v7 = [suggestion2 length];
   fragments = self->_fragments;
-  v9 = [v3 stringWithFormat:@"<%@: %p> %@ len:%ld fragments:%ld max_score:%llu age:%g weight:%d pweight:%d rweight:%d c_score:%g type:%d pfx_len:%d st:%d phrase_score:%g field_weight:%f hasUsed:%d isShortcut:%d", v4, self, v5, v7, fragments, self->_maxscore, *&self->_age, self->_weight, self->_parentWeight, self->_rootWeight, *&self->_compositeScore, self->_completionType, self->_prefixLen, self->_isSingleThread, *&self->_phraseScore, self->_fieldWeight, self->_hasUsedDate, self->_isShortcut];
+  v9 = [v3 stringWithFormat:@"<%@: %p> %@ len:%ld fragments:%ld max_score:%llu age:%g weight:%d pweight:%d rweight:%d c_score:%g type:%d pfx_len:%d st:%d phrase_score:%g field_weight:%f hasUsed:%d isShortcut:%d", v4, self, suggestion, v7, fragments, self->_maxscore, *&self->_age, self->_weight, self->_parentWeight, self->_rootWeight, *&self->_compositeScore, self->_completionType, self->_prefixLen, self->_isSingleThread, *&self->_phraseScore, self->_fieldWeight, self->_hasUsedDate, self->_isShortcut];
 
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if ([v4 completionType] > self->_completionType)
+  compareCopy = compare;
+  if ([compareCopy completionType] > self->_completionType)
   {
     goto LABEL_2;
   }
 
-  if ([v4 completionType] < self->_completionType || (objc_msgSend(v4, "compositeScore"), v6 > self->_compositeScore))
+  if ([compareCopy completionType] < self->_completionType || (objc_msgSend(compareCopy, "compositeScore"), v6 > self->_compositeScore))
   {
 LABEL_5:
     v5 = -1;
     goto LABEL_6;
   }
 
-  [v4 compositeScore];
+  [compareCopy compositeScore];
   if (v8 < self->_compositeScore)
   {
     goto LABEL_2;
   }
 
-  if ([v4 isShortcut] && !self->_isShortcut)
+  if ([compareCopy isShortcut] && !self->_isShortcut)
   {
     goto LABEL_5;
   }
 
-  if (self->_isShortcut > [v4 isShortcut])
+  if (self->_isShortcut > [compareCopy isShortcut])
   {
 LABEL_2:
     v5 = 1;
     goto LABEL_6;
   }
 
-  if (([v4 hasUsedDate] & 1) == 0 && !self->_hasUsedDate)
+  if (([compareCopy hasUsedDate] & 1) == 0 && !self->_hasUsedDate)
   {
-    [v4 age];
+    [compareCopy age];
     if (v11 < self->_age)
     {
       goto LABEL_5;
     }
 
-    [v4 age];
+    [compareCopy age];
     if (v12 <= self->_age)
     {
-      if ([v4 maxscore] > self->_maxscore)
+      if ([compareCopy maxscore] > self->_maxscore)
       {
         goto LABEL_5;
       }
 
-      if ([v4 maxscore] >= self->_maxscore)
+      if ([compareCopy maxscore] >= self->_maxscore)
       {
-        if ([v4 weight] < self->_weight)
+        if ([compareCopy weight] < self->_weight)
         {
           goto LABEL_5;
         }
 
-        if ([v4 weight] <= self->_weight)
+        if ([compareCopy weight] <= self->_weight)
         {
-          if ([v4 fragments] < self->_fragments)
+          if ([compareCopy fragments] < self->_fragments)
           {
             goto LABEL_5;
           }
 
-          if ([v4 fragments] <= self->_fragments)
+          if ([compareCopy fragments] <= self->_fragments)
           {
-            v13 = [v4 suggestion];
-            v14 = [v13 length];
-            v15 = [(SPSearchSuggestion *)self suggestion];
-            v16 = [v15 length];
+            suggestion = [compareCopy suggestion];
+            v14 = [suggestion length];
+            suggestion2 = [(SPSearchSuggestion *)self suggestion];
+            v16 = [suggestion2 length];
 
             if (v14 >= v16)
             {
-              v17 = [v4 suggestion];
-              v18 = [v17 length];
-              v19 = [(SPSearchSuggestion *)self suggestion];
-              v5 = v18 > [v19 length];
+              suggestion3 = [compareCopy suggestion];
+              v18 = [suggestion3 length];
+              suggestion4 = [(SPSearchSuggestion *)self suggestion];
+              v5 = v18 > [suggestion4 length];
 
               goto LABEL_6;
             }
@@ -678,12 +678,12 @@ LABEL_2:
     goto LABEL_2;
   }
 
-  if ([v4 hasUsedDate] && self->_hasUsedDate)
+  if ([compareCopy hasUsedDate] && self->_hasUsedDate)
   {
-    [v4 age];
+    [compareCopy age];
     if (v9 >= self->_age)
     {
-      [v4 age];
+      [compareCopy age];
       v5 = v10 > self->_age;
       goto LABEL_6;
     }
@@ -691,7 +691,7 @@ LABEL_2:
     goto LABEL_5;
   }
 
-  if ([v4 hasUsedDate])
+  if ([compareCopy hasUsedDate])
   {
     v5 = -1;
   }
@@ -719,8 +719,8 @@ LABEL_6:
   v5 = SSRoundUInt64([(SPSearchSuggestion *)self queryCompletionCount]);
   v41[2] = v5;
   v40[3] = @"len";
-  v6 = [(SPSearchSuggestion *)self suggestion];
-  v7 = SSRoundDouble(4, [v6 length]);
+  suggestion = [(SPSearchSuggestion *)self suggestion];
+  v7 = SSRoundDouble(4, [suggestion length]);
   v41[3] = v7;
   v40[4] = @"fragments";
   v8 = SSRoundDouble(4, [(SPSearchSuggestion *)self fragments]);
@@ -823,12 +823,12 @@ LABEL_6:
 
   v41[20] = v22;
   v40[21] = @"bundleIDs";
-  v23 = [(SPSearchSuggestion *)self bundleIDs];
-  v24 = v23;
+  bundleIDs = [(SPSearchSuggestion *)self bundleIDs];
+  v24 = bundleIDs;
   v25 = MEMORY[0x1E695E0F0];
-  if (v23)
+  if (bundleIDs)
   {
-    v25 = v23;
+    v25 = bundleIDs;
   }
 
   v41[21] = v25;
@@ -846,22 +846,22 @@ LABEL_6:
   v14[1] = *MEMORY[0x1E69E9840];
   if (self->_spotlightQuery)
   {
-    v3 = [(SPSearchSuggestion *)self suggestion];
+    suggestion = [(SPSearchSuggestion *)self suggestion];
     spotlightQuery = self->_spotlightQuery;
-    v5 = [(SPSearchSuggestion *)self bundleIDs];
-    v6 = [SPSearchEntity searchEntityWithSearchString:v3 spotlightQueryString:spotlightQuery preferredBundleIDs:v5];
+    bundleIDs = [(SPSearchSuggestion *)self bundleIDs];
+    v6 = [SPSearchEntity searchEntityWithSearchString:suggestion spotlightQueryString:spotlightQuery preferredBundleIDs:bundleIDs];
   }
 
   else
   {
-    v7 = [(SPSearchSuggestion *)self suggestion];
-    v8 = [v7 substringFromIndex:{-[SPSearchSuggestion prefixLen](self, "prefixLen")}];
-    v3 = SSEscapedStringForSearchQuery(v8);
+    suggestion2 = [(SPSearchSuggestion *)self suggestion];
+    v8 = [suggestion2 substringFromIndex:{-[SPSearchSuggestion prefixLen](self, "prefixLen")}];
+    suggestion = SSEscapedStringForSearchQuery(v8);
 
-    v5 = [(SPSearchSuggestion *)self suggestion];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"**=%@cwd || _kMDItemLaunchString=%@cwd", v3, v3];
-    v10 = [(SPSearchSuggestion *)self bundleIDs];
-    v6 = [SPSearchEntity searchEntityWithSearchString:v5 spotlightQueryString:v9 preferredBundleIDs:v10];
+    bundleIDs = [(SPSearchSuggestion *)self suggestion];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"**=%@cwd || _kMDItemLaunchString=%@cwd", suggestion, suggestion];
+    bundleIDs2 = [(SPSearchSuggestion *)self bundleIDs];
+    v6 = [SPSearchEntity searchEntityWithSearchString:bundleIDs spotlightQueryString:v9 preferredBundleIDs:bundleIDs2];
   }
 
   v14[0] = v6;

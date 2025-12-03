@@ -1,27 +1,27 @@
 @interface MapsSuggestionsRouteGeniusEntry
-+ (id)entryWithData:(id)a3;
-- (MapsSuggestionsRouteGeniusEntry)initWithCoder:(id)a3;
-- (MapsSuggestionsRouteGeniusEntry)initWithEntry:(id)a3 route:(id)a4;
++ (id)entryWithData:(id)data;
+- (MapsSuggestionsRouteGeniusEntry)initWithCoder:(id)coder;
+- (MapsSuggestionsRouteGeniusEntry)initWithEntry:(id)entry route:(id)route;
 - (double)etaInSeconds;
 - (id)data;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MapsSuggestionsRouteGeniusEntry
 
-- (MapsSuggestionsRouteGeniusEntry)initWithEntry:(id)a3 route:(id)a4
+- (MapsSuggestionsRouteGeniusEntry)initWithEntry:(id)entry route:(id)route
 {
-  v7 = a3;
-  v8 = a4;
+  entryCopy = entry;
+  routeCopy = route;
   v12.receiver = self;
   v12.super_class = MapsSuggestionsRouteGeniusEntry;
   v9 = [(MapsSuggestionsRouteGeniusEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entry, a3);
-    objc_storeStrong(&v10->_route, a4);
+    objc_storeStrong(&v9->_entry, entry);
+    objc_storeStrong(&v10->_route, route);
   }
 
   return v10;
@@ -32,8 +32,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   entry = self->_entry;
-  v6 = [(GEOComposedRoute *)self->_route uniqueRouteID];
-  v7 = [v3 stringWithFormat:@"<%@: %p>\n{entry:\n%@\nroute:\n%@}", v4, self, entry, v6];
+  uniqueRouteID = [(GEOComposedRoute *)self->_route uniqueRouteID];
+  v7 = [v3 stringWithFormat:@"<%@: %p>\n{entry:\n%@\nroute:\n%@}", v4, self, entry, uniqueRouteID];
 
   return v7;
 }
@@ -48,7 +48,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_ERROR, "Error archiving entry %@", &v6, 0xCu);
     }
   }
@@ -56,14 +56,14 @@
   return v3;
 }
 
-+ (id)entryWithData:(id)a3
++ (id)entryWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v10 = 0;
-    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v3 error:&v10];
+    v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v10];
     v5 = v10;
     if (v5)
     {
@@ -116,27 +116,27 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entry = self->_entry;
-  v5 = a3;
-  [v5 encodeObject:entry forKey:@"entry"];
-  [v5 encodeObject:self->_route forKey:@"route"];
+  coderCopy = coder;
+  [coderCopy encodeObject:entry forKey:@"entry"];
+  [coderCopy encodeObject:self->_route forKey:@"route"];
 }
 
-- (MapsSuggestionsRouteGeniusEntry)initWithCoder:(id)a3
+- (MapsSuggestionsRouteGeniusEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MapsSuggestionsRouteGeniusEntry;
   v5 = [(MapsSuggestionsRouteGeniusEntry *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entry"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entry"];
     entry = v5->_entry;
     v5->_entry = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"route"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"route"];
     route = v5->_route;
     v5->_route = v8;
   }

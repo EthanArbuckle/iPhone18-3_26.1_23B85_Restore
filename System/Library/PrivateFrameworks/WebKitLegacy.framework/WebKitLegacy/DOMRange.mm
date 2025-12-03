@@ -1,9 +1,9 @@
 @interface DOMRange
-+ (id)rangeForFirstPosition:(id)a3 second:(id)a4;
++ (id)rangeForFirstPosition:(id)position second:(id)second;
 - (BOOL)collapsed;
 - (BOOL)intersectsNode:(DOMNode *)refNode;
 - (BOOL)isPointInRange:(DOMNode *)refNode offset:(int)offset;
-- (CGImage)renderedImageForcingBlackText:(BOOL)a3;
+- (CGImage)renderedImageForcingBlackText:(BOOL)text;
 - (CGRect)boundingBox;
 - (DOMDocumentFragment)cloneContents;
 - (DOMDocumentFragment)createContextualFragment:(NSString *)html;
@@ -30,10 +30,10 @@
 - (void)collapse:(BOOL)toStart;
 - (void)dealloc;
 - (void)deleteContents;
-- (void)expand:(id)a3;
-- (void)extend:(unsigned int)a3 inDirection:(int)a4;
+- (void)expand:(id)expand;
+- (void)extend:(unsigned int)extend inDirection:(int)direction;
 - (void)insertNode:(DOMNode *)newNode;
-- (void)move:(unsigned int)a3 inDirection:(int)a4;
+- (void)move:(unsigned int)move inDirection:(int)direction;
 - (void)selectNode:(DOMNode *)refNode;
 - (void)selectNodeContents:(DOMNode *)refNode;
 - (void)setEnd:(DOMNode *)refNode offset:(int)offset;
@@ -111,15 +111,15 @@ LABEL_12:
   return result;
 }
 
-- (CGImage)renderedImageForcingBlackText:(BOOL)a3
+- (CGImage)renderedImageForcingBlackText:(BOOL)text
 {
-  v3 = a3;
+  textCopy = text;
   WebCore::makeSimpleRange();
   v4 = *(*(*(v11 + 6) + 8) + 552);
   if (v4 && (v5 = *(v4 + 8)) != 0)
   {
     ++*(v5 + 4);
-    WebCore::createDragImageForRange(v5, &v11, v3);
+    WebCore::createDragImageForRange(v5, &v11, textCopy);
     v6 = arg;
     if (arg)
     {
@@ -1143,11 +1143,11 @@ LABEL_16:
   return v9;
 }
 
-- (void)expand:(id)a3
+- (void)expand:(id)expand
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v13);
   internal = self->super._internal;
-  MEMORY[0x1CCA63A40](&v9, a3);
+  MEMORY[0x1CCA63A40](&v9, expand);
   WebCore::Range::expand(&v10, internal, &v9);
   if (v12 == 1)
   {
@@ -1168,7 +1168,7 @@ LABEL_16:
   WebCore::JSMainThreadNullState::~JSMainThreadNullState(v13, v6);
 }
 
-- (void)move:(unsigned int)a3 inDirection:(int)a4
+- (void)move:(unsigned int)move inDirection:(int)direction
 {
   MEMORY[0x1CCA64C30](v23, 0);
   WebCore::makeSimpleRange();
@@ -1214,23 +1214,23 @@ LABEL_5:
   }
 
 LABEL_10:
-  if (a4 == 4)
+  if (direction == 4)
   {
-    if (!a3)
+    if (!move)
     {
       goto LABEL_14;
     }
   }
 
-  else if (a4 == 5)
+  else if (direction == 5)
   {
-    if (!a3)
+    if (!move)
     {
       goto LABEL_14;
     }
   }
 
-  else if (!a3)
+  else if (!move)
   {
     goto LABEL_14;
   }
@@ -1238,10 +1238,10 @@ LABEL_10:
   do
   {
     WebCore::FrameSelection::modify();
-    --a3;
+    --move;
   }
 
-  while (a3);
+  while (move);
 LABEL_14:
   WebCore::Position::parentAnchoredEquivalent(&v22, &v24);
   WebCore::Position::parentAnchoredEquivalent(&v20, &v25);
@@ -1337,10 +1337,10 @@ LABEL_39:
   MEMORY[0x1CCA64C40](v23);
 }
 
-- (void)extend:(unsigned int)a3 inDirection:(int)a4
+- (void)extend:(unsigned int)extend inDirection:(int)direction
 {
-  v4 = a3;
-  MEMORY[0x1CCA64C30](v22, 0, *&a3, *&a4);
+  extendCopy = extend;
+  MEMORY[0x1CCA64C30](v22, 0, *&extend, *&direction);
   WebCore::makeSimpleRange();
   WebCore::VisibleSelection::VisibleSelection();
   WebCore::FrameSelection::setSelection();
@@ -1358,7 +1358,7 @@ LABEL_4:
     }
 
 LABEL_9:
-    if (!v4)
+    if (!extendCopy)
     {
       goto LABEL_11;
     }
@@ -1384,7 +1384,7 @@ LABEL_5:
   if (*(v6 + 7) == 2)
   {
     WebCore::Node::removedLastRef(v6);
-    if (!v4)
+    if (!extendCopy)
     {
       goto LABEL_11;
     }
@@ -1393,7 +1393,7 @@ LABEL_5:
   else
   {
     *(v6 + 7) -= 2;
-    if (!v4)
+    if (!extendCopy)
     {
       goto LABEL_11;
     }
@@ -1403,10 +1403,10 @@ LABEL_5:
   {
 LABEL_10:
     WebCore::FrameSelection::modify();
-    --v4;
+    --extendCopy;
   }
 
-  while (v4);
+  while (extendCopy);
 LABEL_11:
   WebCore::Position::parentAnchoredEquivalent(&v21, &v23);
   WebCore::Position::parentAnchoredEquivalent(&v19, &v24);
@@ -1949,10 +1949,10 @@ LABEL_12:
 
 - (id)enclosingWordRange
 {
-  v3 = [(DOMRange *)self startPosition];
-  if (v3)
+  startPosition = [(DOMRange *)self startPosition];
+  if (startPosition)
   {
-    [v3 _visiblePosition];
+    [startPosition _visiblePosition];
   }
 
   else
@@ -1960,10 +1960,10 @@ LABEL_12:
     memset(v15, 0, 24);
   }
 
-  v4 = [(DOMRange *)self endPosition];
-  if (v4)
+  endPosition = [(DOMRange *)self endPosition];
+  if (endPosition)
   {
-    [v4 _visiblePosition];
+    [endPosition _visiblePosition];
   }
 
   else
@@ -2057,15 +2057,15 @@ LABEL_16:
   return v11;
 }
 
-+ (id)rangeForFirstPosition:(id)a3 second:(id)a4
++ (id)rangeForFirstPosition:(id)position second:(id)second
 {
-  if (a3)
+  if (position)
   {
-    [a3 _visiblePosition];
-    if (a4)
+    [position _visiblePosition];
+    if (second)
     {
 LABEL_3:
-      [a4 _visiblePosition];
+      [second _visiblePosition];
       goto LABEL_6;
     }
   }
@@ -2075,7 +2075,7 @@ LABEL_3:
     v25 = 0;
     v26 = 0;
     v27 = 0;
-    if (a4)
+    if (second)
     {
       goto LABEL_3;
     }

@@ -1,28 +1,28 @@
 @interface PKSecureElementConsistencyChecker
-+ (BOOL)isCheckingConsistencyForSecureElementID:(id)a3;
-- (PKSecureElementConsistencyChecker)initWithPaymentWebService:(id)a3 delegate:(id)a4 cloudStoreCoordinatorDelegate:(id)a5;
-- (void)_downloadPassesWithCompletion:(id)a3;
-- (void)_rescheduleCheckInTimeInterval:(double)a3 backoffLevel:(int64_t)a4;
++ (BOOL)isCheckingConsistencyForSecureElementID:(id)d;
+- (PKSecureElementConsistencyChecker)initWithPaymentWebService:(id)service delegate:(id)delegate cloudStoreCoordinatorDelegate:(id)coordinatorDelegate;
+- (void)_downloadPassesWithCompletion:(id)completion;
+- (void)_rescheduleCheckInTimeInterval:(double)interval backoffLevel:(int64_t)level;
 - (void)_rescheduleWithBackoff;
-- (void)_syncWithTSMCompletion:(id)a3;
+- (void)_syncWithTSMCompletion:(id)completion;
 - (void)invalidate;
-- (void)queue_startWithCompletion:(id)a3;
-- (void)startWithCompletion:(id)a3;
+- (void)queue_startWithCompletion:(id)completion;
+- (void)startWithCompletion:(id)completion;
 @end
 
 @implementation PKSecureElementConsistencyChecker
 
-+ (BOOL)isCheckingConsistencyForSecureElementID:(id)a3
++ (BOOL)isCheckingConsistencyForSecureElementID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     os_unfair_lock_lock(&_MergedGlobals_267);
-    v4 = [qword_1ED6D20B8 objectForKeyedSubscript:v3];
-    v5 = [v4 unsignedIntegerValue];
+    v4 = [qword_1ED6D20B8 objectForKeyedSubscript:dCopy];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
 
     os_unfair_lock_unlock(&_MergedGlobals_267);
-    v6 = v5 != 0;
+    v6 = unsignedIntegerValue != 0;
   }
 
   else
@@ -33,20 +33,20 @@
   return v6;
 }
 
-- (PKSecureElementConsistencyChecker)initWithPaymentWebService:(id)a3 delegate:(id)a4 cloudStoreCoordinatorDelegate:(id)a5
+- (PKSecureElementConsistencyChecker)initWithPaymentWebService:(id)service delegate:(id)delegate cloudStoreCoordinatorDelegate:(id)coordinatorDelegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serviceCopy = service;
+  delegateCopy = delegate;
+  coordinatorDelegateCopy = coordinatorDelegate;
   v17.receiver = self;
   v17.super_class = PKSecureElementConsistencyChecker;
   v12 = [(PKSecureElementConsistencyChecker *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_paymentWebService, a3);
-    v13->_delegate = v10;
-    objc_storeStrong(&v13->_cloudStoreCoordinatorDelegate, a5);
+    objc_storeStrong(&v12->_paymentWebService, service);
+    v13->_delegate = delegateCopy;
+    objc_storeStrong(&v13->_cloudStoreCoordinatorDelegate, coordinatorDelegate);
     v14 = dispatch_queue_create("consistency checker", 0);
     processingQueue = v13->_processingQueue;
     v13->_processingQueue = v14;
@@ -67,28 +67,28 @@
   atomic_store(1u, &self->_invalidated);
 }
 
-- (void)startWithCompletion:(id)a3
+- (void)startWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   v6 = atomic_load(&self->_didStart);
   if (v6)
   {
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4);
+      (*(completionCopy + 2))(completionCopy);
     }
   }
 
   else
   {
     atomic_store(1u, &self->_didStart);
-    v7 = [(PKPaymentWebService *)self->_paymentWebService context];
-    v8 = [v7 secureElementID];
+    context = [(PKPaymentWebService *)self->_paymentWebService context];
+    secureElementID = [context secureElementID];
 
-    if (v8)
+    if (secureElementID)
     {
-      v9 = v8;
+      v9 = secureElementID;
       os_unfair_lock_lock(&_MergedGlobals_267);
       v10 = qword_1ED6D20B8;
       if (!qword_1ED6D20B8)
@@ -121,7 +121,7 @@
     v20[2] = __57__PKSecureElementConsistencyChecker_startWithCompletion___block_invoke;
     v20[3] = &unk_1E79CB3F8;
     v20[4] = self;
-    v21 = v8;
+    v21 = secureElementID;
     v22 = v5;
     v18 = v20;
     *buf = MEMORY[0x1E69E9820];
@@ -129,7 +129,7 @@
     v25 = __dispatch_async_ar_block_invoke_17;
     v26 = &unk_1E79C4428;
     v27 = v18;
-    v19 = v8;
+    v19 = secureElementID;
     dispatch_async(processingQueue, buf);
   }
 }
@@ -197,9 +197,9 @@ void __57__PKSecureElementConsistencyChecker_startWithCompletion___block_invoke_
   EndTrackingConsistencyCheck(v3);
 }
 
-- (void)queue_startWithCompletion:(id)a3
+- (void)queue_startWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -207,9 +207,9 @@ void __57__PKSecureElementConsistencyChecker_startWithCompletion___block_invoke_
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "PKSecureElementConsistencyChecker: Getting device state for consistency check...", buf, 2u);
   }
 
-  v6 = [(PKPaymentWebService *)self->_paymentWebService context];
-  v7 = [v6 regions];
-  v8 = [v7 allKeys];
+  context = [(PKPaymentWebService *)self->_paymentWebService context];
+  regions = [context regions];
+  allKeys = [regions allKeys];
 
   delegate = self->_delegate;
   v12[0] = MEMORY[0x1E69E9820];
@@ -217,9 +217,9 @@ void __57__PKSecureElementConsistencyChecker_startWithCompletion___block_invoke_
   v12[2] = __63__PKSecureElementConsistencyChecker_queue_startWithCompletion___block_invoke;
   v12[3] = &unk_1E79DF870;
   v12[4] = self;
-  v10 = v4;
+  v10 = completionCopy;
   v14 = v10;
-  v11 = v8;
+  v11 = allKeys;
   v13 = v11;
   [(PKSecureElementConsistencyCheckerDelegate *)delegate deviceStateWithCompletion:v12];
   if ([(PKPaymentWebService *)self->_paymentWebService needsConfiguration])
@@ -661,22 +661,22 @@ LABEL_6:
   }
 }
 
-- (void)_downloadPassesWithCompletion:(id)a3
+- (void)_downloadPassesWithCompletion:(id)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentWebService *)self->_paymentWebService context];
-  v6 = [v5 isRegistered];
+  completionCopy = completion;
+  context = [(PKPaymentWebService *)self->_paymentWebService context];
+  isRegistered = [context isRegistered];
 
-  if (v6)
+  if (isRegistered)
   {
-    v7 = [(PKSecureElementConsistencyCheckerDelegate *)self->_delegate paymentPasses];
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    paymentPasses = [(PKSecureElementConsistencyCheckerDelegate *)self->_delegate paymentPasses];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v9 = v7;
+    v9 = paymentPasses;
     v10 = [v9 countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v10)
     {
@@ -691,8 +691,8 @@ LABEL_6:
           }
 
           v13 = *(*(&v41 + 1) + 8 * i);
-          v14 = [v13 uniqueID];
-          [v8 setObject:v13 forKey:v14];
+          uniqueID = [v13 uniqueID];
+          [dictionary setObject:v13 forKey:uniqueID];
         }
 
         v10 = [v9 countByEnumeratingWithState:&v41 objects:v45 count:16];
@@ -713,7 +713,7 @@ LABEL_6:
     aBlock[3] = &unk_1E79DF908;
     aBlock[4] = self;
     v34 = buf;
-    v33 = v4;
+    v33 = completionCopy;
     v15 = _Block_copy(aBlock);
     v16 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
     v17 = *(v36 + 5);
@@ -736,9 +736,9 @@ LABEL_6:
     v26[1] = 3221225472;
     v26[2] = __67__PKSecureElementConsistencyChecker__downloadPassesWithCompletion___block_invoke_4;
     v26[3] = &unk_1E79DF980;
-    v23 = v8;
+    v23 = dictionary;
     v27 = v23;
-    v28 = self;
+    selfCopy = self;
     v24 = v21;
     v29 = v24;
     [(PKPaymentWebService *)paymentWebService devicePassesSinceLastUpdatedTag:0 withCompletion:v26];
@@ -755,7 +755,7 @@ LABEL_6:
       _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "PKSecureElementConsistencyChecker: Device needs to register; we will not sync passes with server", buf, 2u);
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -956,9 +956,9 @@ void __67__PKSecureElementConsistencyChecker__downloadPassesWithCompletion___blo
   [v8 passWithPassTypeIdentifier:v9 serialNumber:v10 completion:v13];
 }
 
-- (void)_syncWithTSMCompletion:(id)a3
+- (void)_syncWithTSMCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -966,15 +966,15 @@ void __67__PKSecureElementConsistencyChecker__downloadPassesWithCompletion___blo
     _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "PKSecureElementConsistencyChecker: Syncing with TSM…", buf, 2u);
   }
 
-  v6 = [(PKSecureElementConsistencyCheckerDelegate *)self->_delegate synchronizeWithTSM];
+  synchronizeWithTSM = [(PKSecureElementConsistencyCheckerDelegate *)self->_delegate synchronizeWithTSM];
   v7 = dispatch_time(0, 30000000000);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__PKSecureElementConsistencyChecker__syncWithTSMCompletion___block_invoke;
   v9[3] = &unk_1E79C4748;
-  v10 = v4;
-  v11 = v6;
-  v8 = v4;
+  v10 = completionCopy;
+  v11 = synchronizeWithTSM;
+  v8 = completionCopy;
   dispatch_after(v7, MEMORY[0x1E69E96A0], v9);
 }
 
@@ -994,10 +994,10 @@ uint64_t __60__PKSecureElementConsistencyChecker__syncWithTSMCompletion___block_
 - (void)_rescheduleWithBackoff
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentWebService *)self->_paymentWebService context];
-  v4 = [v3 primaryRegion];
+  context = [(PKPaymentWebService *)self->_paymentWebService context];
+  primaryRegion = [context primaryRegion];
 
-  if (!v4)
+  if (!primaryRegion)
   {
     v13 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1010,15 +1010,15 @@ uint64_t __60__PKSecureElementConsistencyChecker__syncWithTSMCompletion___block_
     goto LABEL_15;
   }
 
-  v5 = [v4 consistencyCheckBackoffLevel];
-  v6 = v5;
+  consistencyCheckBackoffLevel = [primaryRegion consistencyCheckBackoffLevel];
+  v6 = consistencyCheckBackoffLevel;
   v7 = 11;
-  if (v5 < 11)
+  if (consistencyCheckBackoffLevel < 11)
   {
-    v7 = v5;
+    v7 = consistencyCheckBackoffLevel;
   }
 
-  if (v5 <= 11 && v7 == 11)
+  if (consistencyCheckBackoffLevel <= 11 && v7 == 11)
   {
     v9 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1029,12 +1029,12 @@ uint64_t __60__PKSecureElementConsistencyChecker__syncWithTSMCompletion___block_
 
     v17[0] = @"backoffLevel";
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:12];
-    v11 = [v10 stringValue];
-    v18[0] = v11;
+    stringValue = [v10 stringValue];
+    v18[0] = stringValue;
     v17[1] = @"maxBackoffLevel";
-    v12 = [&unk_1F23B55E8 stringValue];
+    stringValue2 = [&unk_1F23B55E8 stringValue];
     v17[2] = @"hasRegion";
-    v18[1] = v12;
+    v18[1] = stringValue2;
     v18[2] = @"YES";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
@@ -1053,7 +1053,7 @@ LABEL_15:
   [(PKSecureElementConsistencyChecker *)self _rescheduleCheckInTimeInterval:ConsistencyCheckBackoffLevels[v15] backoffLevel:?];
 }
 
-- (void)_rescheduleCheckInTimeInterval:(double)a3 backoffLevel:(int64_t)a4
+- (void)_rescheduleCheckInTimeInterval:(double)interval backoffLevel:(int64_t)level
 {
   v4 = atomic_load(&self->_invalidated);
   if (v4)
@@ -1065,9 +1065,9 @@ LABEL_15:
   delegate = self->_delegate;
   if (v8)
   {
-    v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:{a4, 28800.0}];
-    [(PKSecureElementConsistencyCheckerDelegate *)delegate scheduleConsistencyCheck:v13 pluggedIn:a3 > 28800.0 backoffLevel:v10];
+    v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:interval];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:{level, 28800.0}];
+    [(PKSecureElementConsistencyCheckerDelegate *)delegate scheduleConsistencyCheck:v13 pluggedIn:interval > 28800.0 backoffLevel:v10];
 
 LABEL_6:
 
@@ -1077,8 +1077,8 @@ LABEL_6:
   if (objc_opt_respondsToSelector())
   {
     v11 = self->_delegate;
-    v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
-    [(PKSecureElementConsistencyCheckerDelegate *)v11 scheduleConsistencyCheck:v13 pluggedIn:a3 > 28800.0];
+    v13 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:interval];
+    [(PKSecureElementConsistencyCheckerDelegate *)v11 scheduleConsistencyCheck:v13 pluggedIn:interval > 28800.0];
     goto LABEL_6;
   }
 

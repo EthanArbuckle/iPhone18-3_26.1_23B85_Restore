@@ -1,68 +1,68 @@
 @interface _PFTOperationQueueScheduler
-+ (id)operationWithQualityOfService:(unint64_t)a3 block:(id)a4;
++ (id)operationWithQualityOfService:(unint64_t)service block:(id)block;
 - (NSString)description;
-- (_PFTOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)a3 qualityOfService:(unint64_t)a4 name:(id)a5;
-- (_PFTOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)a3 underlyingDispatchQueue:(id)a4 qualityOfService:(unint64_t)a5;
-- (_PFTOperationQueueScheduler)initWithOperationQueue:(id)a3 qualityOfService:(unint64_t)a4;
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)blockWithCurrentQualityOfServiceForBlock:(id)a3 ifAllowedForRequestedQualityOfService:(unint64_t)a4;
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)_enqueueBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (_PFTOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)count qualityOfService:(unint64_t)service name:(id)name;
+- (_PFTOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)count underlyingDispatchQueue:(id)queue qualityOfService:(unint64_t)service;
+- (_PFTOperationQueueScheduler)initWithOperationQueue:(id)queue qualityOfService:(unint64_t)service;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)blockWithCurrentQualityOfServiceForBlock:(id)block ifAllowedForRequestedQualityOfService:(unint64_t)service;
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)_enqueueBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation _PFTOperationQueueScheduler
 
-- (_PFTOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)a3 qualityOfService:(unint64_t)a4 name:(id)a5
+- (_PFTOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)count qualityOfService:(unint64_t)service name:(id)name
 {
-  v8 = a5;
+  nameCopy = name;
   v9 = objc_alloc_init(MEMORY[0x277CCABD8]);
-  [v9 setMaxConcurrentOperationCount:a3];
-  if (v8)
+  [v9 setMaxConcurrentOperationCount:count];
+  if (nameCopy)
   {
-    [v9 setName:v8];
+    [v9 setName:nameCopy];
   }
 
-  v10 = [(_PFTOperationQueueScheduler *)self initWithOperationQueue:v9 qualityOfService:a4];
+  v10 = [(_PFTOperationQueueScheduler *)self initWithOperationQueue:v9 qualityOfService:service];
 
   return v10;
 }
 
-- (_PFTOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)a3 underlyingDispatchQueue:(id)a4 qualityOfService:(unint64_t)a5
+- (_PFTOperationQueueScheduler)initWithMaxConcurrentOperationCount:(int64_t)count underlyingDispatchQueue:(id)queue qualityOfService:(unint64_t)service
 {
-  v8 = a4;
+  queueCopy = queue;
   v9 = objc_alloc_init(MEMORY[0x277CCABD8]);
-  [v9 setMaxConcurrentOperationCount:a3];
-  if (v8)
+  [v9 setMaxConcurrentOperationCount:count];
+  if (queueCopy)
   {
-    [v9 setUnderlyingQueue:v8];
+    [v9 setUnderlyingQueue:queueCopy];
   }
 
-  v10 = [(_PFTOperationQueueScheduler *)self initWithOperationQueue:v9 qualityOfService:a5];
+  v10 = [(_PFTOperationQueueScheduler *)self initWithOperationQueue:v9 qualityOfService:service];
 
   return v10;
 }
 
-- (_PFTOperationQueueScheduler)initWithOperationQueue:(id)a3 qualityOfService:(unint64_t)a4
+- (_PFTOperationQueueScheduler)initWithOperationQueue:(id)queue qualityOfService:(unint64_t)service
 {
-  v7 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = _PFTOperationQueueScheduler;
   v8 = [(_PFTOperationQueueScheduler *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_queue, a3);
-    if (a4)
+    objc_storeStrong(&v8->_queue, queue);
+    if (service)
     {
-      if (a4 - 2 >= 4)
+      if (service - 2 >= 4)
       {
         v10 = -1;
       }
 
       else
       {
-        v10 = 8 * (a4 - 2) + 9;
+        v10 = 8 * (service - 2) + 9;
       }
 
       [(NSOperationQueue *)v9->_queue setQualityOfService:v10];
@@ -80,41 +80,41 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendUnsignedInteger:-[NSOperationQueue maxConcurrentOperationCount](self->_queue withName:{"maxConcurrentOperationCount"), @"width"}];
   v5 = [v3 appendUnsignedInteger:-[NSOperationQueue operationCount](self->_queue withName:{"operationCount"), @"blocks"}];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = [(_PFTOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:a3 ifAllowedForRequestedQualityOfService:?];
-  [(_PFTOperationQueueScheduler *)self _enqueueBlock:v6 qualityOfService:a4];
+  v6 = [(_PFTOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:block ifAllowedForRequestedQualityOfService:?];
+  [(_PFTOperationQueueScheduler *)self _enqueueBlock:v6 qualityOfService:service];
 }
 
-- (void)_enqueueBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)_enqueueBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
-  v7 = [objc_opt_class() operationWithQualityOfService:a4 block:v6];
+  blockCopy = block;
+  v7 = [objc_opt_class() operationWithQualityOfService:service block:blockCopy];
 
   [(NSOperationQueue *)self->_queue addOperation:v7];
 }
 
-- (id)performCancellableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancellableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = objc_alloc_init(PFTOperationQueueSchedulerCancellationToken);
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __72___PFTOperationQueueScheduler_performCancellableBlock_qualityOfService___block_invoke;
   v21[3] = &unk_279A52AE8;
-  v8 = v6;
+  v8 = blockCopy;
   v23 = v8;
   v9 = v7;
   v22 = v9;
   v10 = MEMORY[0x25F8CF560](v21);
-  v11 = [(_PFTOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:v10 ifAllowedForRequestedQualityOfService:a4];
+  v11 = [(_PFTOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:v10 ifAllowedForRequestedQualityOfService:service];
 
-  v12 = [objc_opt_class() operationWithQualityOfService:a4 block:v11];
+  v12 = [objc_opt_class() operationWithQualityOfService:service block:v11];
   objc_initWeak(&location, v12);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -130,13 +130,13 @@
   return v13;
 }
 
-- (id)blockWithCurrentQualityOfServiceForBlock:(id)a3 ifAllowedForRequestedQualityOfService:(unint64_t)a4
+- (id)blockWithCurrentQualityOfServiceForBlock:(id)block ifAllowedForRequestedQualityOfService:(unint64_t)service
 {
-  v6 = a3;
+  blockCopy = block;
   v7 = MEMORY[0x25F8CF560]();
-  if (!a4 && !self->_isQualityOfServiceSpecified)
+  if (!service && !self->_isQualityOfServiceSpecified)
   {
-    v8 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, v6);
+    v8 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, blockCopy);
 
     v7 = v8;
   }
@@ -146,11 +146,11 @@
   return v9;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v8 = a4;
+  blockCopy = block;
   v9 = objc_alloc_init(PFTOperationQueueSchedulerCancellationToken);
-  v10 = [(_PFTOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:v8 ifAllowedForRequestedQualityOfService:a5];
+  v10 = [(_PFTOperationQueueScheduler *)self blockWithCurrentQualityOfServiceForBlock:blockCopy ifAllowedForRequestedQualityOfService:service];
 
   v11 = +[PFTScheduler globalAsyncScheduler];
   v17 = MEMORY[0x277D85DD0];
@@ -159,11 +159,11 @@
   v20 = &unk_279A52DA0;
   v12 = v9;
   v21 = v12;
-  v22 = self;
+  selfCopy = self;
   v23 = v10;
-  v24 = a5;
+  serviceCopy = service;
   v13 = v10;
-  v14 = [v11 afterDelay:&v17 performBlock:a3];
+  v14 = [v11 afterDelay:&v17 performBlock:delay];
 
   [(PFTCancellationToken *)v12 addCancellable:v14, v17, v18, v19, v20];
   v15 = v12;
@@ -171,18 +171,18 @@
   return v12;
 }
 
-+ (id)operationWithQualityOfService:(unint64_t)a3 block:(id)a4
++ (id)operationWithQualityOfService:(unint64_t)service block:(id)block
 {
-  v5 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:a4];
+  v5 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:block];
   v6 = v5;
-  if (a3 - 2 >= 4)
+  if (service - 2 >= 4)
   {
     v7 = -1;
   }
 
   else
   {
-    v7 = 8 * (a3 - 2) + 9;
+    v7 = 8 * (service - 2) + 9;
   }
 
   if ([v5 qualityOfService] != v7)

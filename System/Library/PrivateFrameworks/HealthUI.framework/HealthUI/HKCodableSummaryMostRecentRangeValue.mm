@@ -1,12 +1,12 @@
 @interface HKCodableSummaryMostRecentRangeValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryMostRecentRangeValue
@@ -17,92 +17,92 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryMostRecentRangeValue;
   v4 = [(HKCodableSummaryMostRecentRangeValue *)&v8 description];
-  v5 = [(HKCodableSummaryMostRecentRangeValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryMostRecentRangeValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   minimumValue = self->_minimumValue;
   if (minimumValue)
   {
-    v5 = [(HKCodableQuantity *)minimumValue dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"minimumValue"];
+    dictionaryRepresentation = [(HKCodableQuantity *)minimumValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"minimumValue"];
   }
 
   maximumValue = self->_maximumValue;
   if (maximumValue)
   {
-    v7 = [(HKCodableQuantity *)maximumValue dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"maximumValue"];
+    dictionaryRepresentation2 = [(HKCodableQuantity *)maximumValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"maximumValue"];
   }
 
   if (*&self->_has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dateData];
-    [v3 setObject:v8 forKey:@"dateData"];
+    [dictionary setObject:v8 forKey:@"dateData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_minimumValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_maximumValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_minimumValue)
   {
-    [v4 setMinimumValue:?];
-    v4 = v5;
+    [toCopy setMinimumValue:?];
+    toCopy = v5;
   }
 
   if (self->_maximumValue)
   {
     [v5 setMaximumValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_dateData;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_dateData;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableQuantity *)self->_minimumValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableQuantity *)self->_minimumValue copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(HKCodableQuantity *)self->_maximumValue copyWithZone:a3];
+  v8 = [(HKCodableQuantity *)self->_maximumValue copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -115,16 +115,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   minimumValue = self->_minimumValue;
-  if (minimumValue | *(v4 + 3))
+  if (minimumValue | *(equalCopy + 3))
   {
     if (![(HKCodableQuantity *)minimumValue isEqual:?])
     {
@@ -133,7 +133,7 @@
   }
 
   maximumValue = self->_maximumValue;
-  if (maximumValue | *(v4 + 2))
+  if (maximumValue | *(equalCopy + 2))
   {
     if (![(HKCodableQuantity *)maximumValue isEqual:?])
     {
@@ -141,10 +141,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_dateData == *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_dateData == *(equalCopy + 1))
     {
       v7 = 1;
       goto LABEL_11;
@@ -199,12 +199,12 @@ LABEL_11:
   return v4 ^ v3 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   minimumValue = self->_minimumValue;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (minimumValue)
   {
     if (!v6)
@@ -225,10 +225,10 @@ LABEL_11:
     [(HKCodableSummaryMostRecentRangeValue *)self setMinimumValue:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   maximumValue = self->_maximumValue;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (maximumValue)
   {
     if (!v8)
@@ -249,15 +249,15 @@ LABEL_7:
     maximumValue = [(HKCodableSummaryMostRecentRangeValue *)self setMaximumValue:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_dateData = *(v4 + 1);
+    self->_dateData = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](maximumValue, v4);
+  MEMORY[0x1EEE66BB8](maximumValue, fromCopy);
 }
 
 @end

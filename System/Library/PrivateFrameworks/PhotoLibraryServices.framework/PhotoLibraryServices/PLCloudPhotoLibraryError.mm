@@ -1,27 +1,27 @@
 @interface PLCloudPhotoLibraryError
-+ (id)createErrorWithType:(int64_t)a3 withDebugMessage:(id)a4;
-+ (id)userMessageForErrorType:(int64_t)a3;
++ (id)createErrorWithType:(int64_t)type withDebugMessage:(id)message;
++ (id)userMessageForErrorType:(int64_t)type;
 @end
 
 @implementation PLCloudPhotoLibraryError
 
-+ (id)createErrorWithType:(int64_t)a3 withDebugMessage:(id)a4
++ (id)createErrorWithType:(int64_t)type withDebugMessage:(id)message
 {
-  v5 = a4;
-  v6 = [PLCloudPhotoLibraryError userMessageForErrorType:a3];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setValue:v6 forKey:*MEMORY[0x1E696A578]];
-  if (v5)
+  messageCopy = message;
+  v6 = [PLCloudPhotoLibraryError userMessageForErrorType:type];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setValue:v6 forKey:*MEMORY[0x1E696A578]];
+  if (messageCopy)
   {
-    [v7 setValue:v5 forKey:*MEMORY[0x1E696A278]];
+    [dictionary setValue:messageCopy forKey:*MEMORY[0x1E696A278]];
   }
 
-  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PLCloudPhotoLibraryErrorDomain" code:a3 userInfo:v7];
+  v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PLCloudPhotoLibraryErrorDomain" code:type userInfo:dictionary];
 
   return v8;
 }
 
-+ (id)userMessageForErrorType:(int64_t)a3
++ (id)userMessageForErrorType:(int64_t)type
 {
   v4 = PLServicesLocalizedFrameworkStringForAssetsd();
 

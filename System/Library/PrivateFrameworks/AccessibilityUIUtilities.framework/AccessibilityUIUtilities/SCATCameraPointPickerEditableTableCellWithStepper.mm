@@ -1,34 +1,34 @@
 @interface SCATCameraPointPickerEditableTableCellWithStepper
-- (void)_updateTextFieldWidth:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)_updateTextFieldWidth:(id)width;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation SCATCameraPointPickerEditableTableCellWithStepper
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   v5.receiver = self;
   v5.super_class = SCATCameraPointPickerEditableTableCellWithStepper;
-  v4 = a3;
-  [(AXUISettingsEditableTableCellWithStepper *)&v5 textFieldDidEndEditing:v4];
-  [(SCATCameraPointPickerEditableTableCellWithStepper *)self _updateTextFieldWidth:v4, v5.receiver, v5.super_class];
+  editingCopy = editing;
+  [(AXUISettingsEditableTableCellWithStepper *)&v5 textFieldDidEndEditing:editingCopy];
+  [(SCATCameraPointPickerEditableTableCellWithStepper *)self _updateTextFieldWidth:editingCopy, v5.receiver, v5.super_class];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   v5.receiver = self;
   v5.super_class = SCATCameraPointPickerEditableTableCellWithStepper;
-  v4 = a3;
-  [(AXUISettingsEditableTableCellWithStepper *)&v5 textFieldDidEndEditing:v4];
-  [(SCATCameraPointPickerEditableTableCellWithStepper *)self _updateTextFieldWidth:v4, v5.receiver, v5.super_class];
+  editingCopy = editing;
+  [(AXUISettingsEditableTableCellWithStepper *)&v5 textFieldDidEndEditing:editingCopy];
+  [(SCATCameraPointPickerEditableTableCellWithStepper *)self _updateTextFieldWidth:editingCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_updateTextFieldWidth:(id)a3
+- (void)_updateTextFieldWidth:(id)width
 {
-  v3 = a3;
-  [v3 frame];
-  [v3 setFrame:?];
+  widthCopy = width;
+  [widthCopy frame];
+  [widthCopy setFrame:?];
 }
 
 @end

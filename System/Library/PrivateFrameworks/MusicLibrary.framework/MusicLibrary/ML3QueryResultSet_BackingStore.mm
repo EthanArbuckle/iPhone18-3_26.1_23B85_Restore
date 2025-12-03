@@ -1,12 +1,12 @@
 @interface ML3QueryResultSet_BackingStore
-- (BOOL)containsPersistentIDs:(const void *)a3;
+- (BOOL)containsPersistentIDs:(const void *)ds;
 - (id).cxx_construct;
-- (id)backingStoreByRemovingPersistentIDs:(const void *)a3;
-- (int64_t)persistentIDAtIndex:(unint64_t)a3;
-- (void)enumeratePersistentIDsUsingBlock:(id)a3;
-- (void)enumerateSectionsUsingBlock:(id)a3;
-- (void)reverseEnumeratePersistentIDsUsingBlock:(id)a3;
-- (void)reverseEnumerateSectionsUsingBlock:(id)a3;
+- (id)backingStoreByRemovingPersistentIDs:(const void *)ds;
+- (int64_t)persistentIDAtIndex:(unint64_t)index;
+- (void)enumeratePersistentIDsUsingBlock:(id)block;
+- (void)enumerateSectionsUsingBlock:(id)block;
+- (void)reverseEnumeratePersistentIDsUsingBlock:(id)block;
+- (void)reverseEnumerateSectionsUsingBlock:(id)block;
 @end
 
 @implementation ML3QueryResultSet_BackingStore
@@ -19,7 +19,7 @@
   return self;
 }
 
-- (id)backingStoreByRemovingPersistentIDs:(const void *)a3
+- (id)backingStoreByRemovingPersistentIDs:(const void *)ds
 {
   begin = self->_persistentIDs.__begin_;
   end = self->_persistentIDs.__end_;
@@ -42,7 +42,7 @@
     do
     {
       v14 = self->_persistentIDs.__begin_[v9];
-      if (!std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::find<long long>(*a3, *(a3 + 1), v14))
+      if (!std::__hash_table<long long,std::hash<long long>,std::equal_to<long long>,std::allocator<long long>>::find<long long>(*ds, *(ds + 1), v14))
       {
         std::vector<unsigned long long>::push_back[abi:ne200100](&v7->super._persistentIDs, &v14);
         v13 = self->_sections.__begin_[v9];
@@ -58,9 +58,9 @@
   return v7;
 }
 
-- (void)reverseEnumerateSectionsUsingBlock:(id)a3
+- (void)reverseEnumerateSectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x4012000000;
@@ -79,7 +79,7 @@
   v11[3] = &unk_278763BA8;
   v13 = &v19;
   v14 = &v15;
-  v5 = v4;
+  v5 = blockCopy;
   v12 = v5;
   v6 = MEMORY[0x2318CDB10](v11);
   begin = self->_sections.__begin_;
@@ -110,9 +110,9 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)enumerateSectionsUsingBlock:(id)a3
+- (void)enumerateSectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v19 = 0;
   v20 = &v19;
   v21 = 0x4012000000;
@@ -131,7 +131,7 @@
   v11[3] = &unk_278763BA8;
   v13 = &v19;
   v14 = &v15;
-  v5 = v4;
+  v5 = blockCopy;
   v12 = v5;
   v6 = MEMORY[0x2318CDB10](v11);
   begin = self->_sections.__begin_;
@@ -162,7 +162,7 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (BOOL)containsPersistentIDs:(const void *)a3
+- (BOOL)containsPersistentIDs:(const void *)ds
 {
   begin = self->_persistentIDs.__begin_;
   end = self->_persistentIDs.__end_;
@@ -171,8 +171,8 @@
     return 0;
   }
 
-  v5 = *a3;
-  v6 = *(a3 + 1);
+  v5 = *ds;
+  v6 = *(ds + 1);
   v7 = begin + 1;
   do
   {
@@ -186,9 +186,9 @@
   return result;
 }
 
-- (void)reverseEnumeratePersistentIDsUsingBlock:(id)a3
+- (void)reverseEnumeratePersistentIDsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = 0;
   end = self->_persistentIDs.__end_;
   do
@@ -200,15 +200,15 @@
 
     v8 = 0;
     v7 = *--end;
-    v4[2](v4, v7, v5++, &v8);
+    blockCopy[2](blockCopy, v7, v5++, &v8);
   }
 
   while ((v8 & 1) == 0);
 }
 
-- (void)enumeratePersistentIDsUsingBlock:(id)a3
+- (void)enumeratePersistentIDsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   begin = self->_persistentIDs.__begin_;
   end = self->_persistentIDs.__end_;
   if (begin != end)
@@ -219,7 +219,7 @@
     {
       v9 = *(v8 - 1);
       v11 = 0;
-      v4[2](v4, v9, v7, &v11);
+      blockCopy[2](blockCopy, v9, v7, &v11);
       if (v11)
       {
         break;
@@ -232,17 +232,17 @@
   }
 }
 
-- (int64_t)persistentIDAtIndex:(unint64_t)a3
+- (int64_t)persistentIDAtIndex:(unint64_t)index
 {
   begin = self->_persistentIDs.__begin_;
   v5 = self->_persistentIDs.__end_ - begin;
-  if (v5 <= a3)
+  if (v5 <= index)
   {
-    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:{@"Index (%ld) out of bounds (%lu)", a3, v5}];
+    [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE730] format:{@"Index (%ld) out of bounds (%lu)", index, v5}];
     begin = self->_persistentIDs.__begin_;
   }
 
-  return begin[a3];
+  return begin[index];
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface SRResourcesManager
 + (BOOL)parsecEnabled;
-+ (id)defaultParameterWithType:(int64_t)a3 value:(id)a4 name:(id)a5;
++ (id)defaultParameterWithType:(int64_t)type value:(id)value name:(id)name;
 + (id)sharedResourcesManager;
 + (id)trialOverrideList;
 + (id)trialParameterList;
-+ (int64_t)parameterTypeFromString:(id)a3;
++ (int64_t)parameterTypeFromString:(id)string;
 + (unint64_t)lastLoadedBundleVersion;
-+ (void)dumpParameterList:(id)a3;
++ (void)dumpParameterList:(id)list;
 + (void)fetchOverrideList;
 + (void)fetchParameterList;
 + (void)fetchUserDefaults;
 + (void)initialize;
 + (void)setTrialUpdateHandler;
-+ (void)updateDefaultParameter:(id)a3 withValue:(id)a4;
-- (BOOL)overrideFactor:(id)a3 client:(id)a4 type:(id)a5 value:(id)a6;
-- (SRResourcesManager)initWithOptions:(id)a3;
++ (void)updateDefaultParameter:(id)parameter withValue:(id)value;
+- (BOOL)overrideFactor:(id)factor client:(id)client type:(id)type value:(id)value;
+- (SRResourcesManager)initWithOptions:(id)options;
 - (id)allLoadedAssets;
 - (id)assetConfigDump;
-- (id)resourcesForClient:(id)a3 locale:(id)a4 options:(id)a5;
-- (id)resourcesForClient:(id)a3 options:(id)a4;
+- (id)resourcesForClient:(id)client locale:(id)locale options:(id)options;
+- (id)resourcesForClient:(id)client options:(id)options;
 - (id)trialConfigDump;
-- (void)fetchAllParametersForLanguages:(id)a3;
-- (void)handleAssetsCommand:(id)a3;
+- (void)fetchAllParametersForLanguages:(id)languages;
+- (void)handleAssetsCommand:(id)command;
 - (void)loadAllParameters;
-- (void)loadAllParametersForClient:(id)a3;
-- (void)loadAllParametersForClient:(id)a3 locale:(id)a4 options:(id)a5;
-- (void)loadAllParametersForClient:(id)a3 locales:(id)a4 options:(id)a5;
-- (void)loadDataSource:(id)a3 force:(BOOL)a4;
-- (void)refreshTrialForClient:(id)a3;
+- (void)loadAllParametersForClient:(id)client;
+- (void)loadAllParametersForClient:(id)client locale:(id)locale options:(id)options;
+- (void)loadAllParametersForClient:(id)client locales:(id)locales options:(id)options;
+- (void)loadDataSource:(id)source force:(BOOL)force;
+- (void)refreshTrialForClient:(id)client;
 @end
 
 @implementation SRResourcesManager
@@ -36,7 +36,7 @@
 {
   +[SRDefaultsManager sharedDefaultsManager];
 
-  [a1 setTrialUpdateHandler];
+  [self setTrialUpdateHandler];
 }
 
 + (void)setTrialUpdateHandler
@@ -76,11 +76,11 @@ uint64_t __44__SRResourcesManager_sharedResourcesManager__block_invoke()
     +[SRResourcesManager fetchParameterList];
   }
 
-  [a1 fetchUserDefaults];
+  [self fetchUserDefaults];
   if (SRIsAppleInternalInstall())
   {
 
-    [a1 fetchOverrideList];
+    [self fetchOverrideList];
   }
 }
 
@@ -178,7 +178,7 @@ void __40__SRResourcesManager_fetchParameterList__block_invoke()
   v7[2] = __39__SRResourcesManager_fetchUserDefaults__block_invoke;
   v7[3] = &unk_1E7A2B060;
   v8 = v3;
-  v9 = a1;
+  selfCopy = self;
   v5 = fetchUserDefaults_userListOnceToken;
   v6 = v3;
   if (v5 != -1)
@@ -334,8 +334,8 @@ void __39__SRResourcesManager_fetchUserDefaults__block_invoke(uint64_t a1)
   v5 = sOverridesPath;
   sOverridesPath = v4;
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  LODWORD(v3) = [v6 fileExistsAtPath:sOverridesPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  LODWORD(v3) = [defaultManager fileExistsAtPath:sOverridesPath];
 
   if (v3)
   {
@@ -359,7 +359,7 @@ void __39__SRResourcesManager_fetchUserDefaults__block_invoke(uint64_t a1)
             _os_log_impl(&dword_1AE58E000, v11, OS_LOG_TYPE_DEFAULT, "Using overrides.plist", buf, 2u);
           }
 
-          v44 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
@@ -380,7 +380,7 @@ void __39__SRResourcesManager_fetchUserDefaults__block_invoke(uint64_t a1)
 
                 v46 = v12;
                 v13 = *(*(&v54 + 1) + 8 * v12);
-                v47 = [MEMORY[0x1E695DF90] dictionary];
+                dictionary2 = [MEMORY[0x1E695DF90] dictionary];
                 v50 = 0u;
                 v51 = 0u;
                 v52 = 0u;
@@ -481,7 +481,7 @@ LABEL_36:
 
                           if (v26)
                           {
-                            [v47 setObject:v26 forKeyedSubscript:v18];
+                            [dictionary2 setObject:v26 forKeyedSubscript:v18];
                             v33 = SRLogCategoryLifeCycle();
                             v34 = v33;
                             v35 = fetchOverrideList_index;
@@ -528,8 +528,8 @@ LABEL_42:
                   while (v15);
                 }
 
-                v39 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v47];
-                [v44 setObject:v39 forKeyedSubscript:v49];
+                v39 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary2];
+                [dictionary setObject:v39 forKeyedSubscript:v49];
 
                 v12 = v46 + 1;
               }
@@ -541,7 +541,7 @@ LABEL_42:
             while (v45);
           }
 
-          v40 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v44];
+          v40 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
           v41 = sOverrideList;
           sOverrideList = v40;
         }
@@ -1017,7 +1017,7 @@ LABEL_74:
 LABEL_76:
 }
 
-- (SRResourcesManager)initWithOptions:(id)a3
+- (SRResourcesManager)initWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = SRResourcesManager;
@@ -1045,29 +1045,29 @@ LABEL_76:
   v3 = [v2 componentsSeparatedByString:@"."];
   v4 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v4 setNumberStyle:1];
-  v5 = [v3 firstObject];
-  v6 = [v4 numberFromString:v5];
+  firstObject = [v3 firstObject];
+  v6 = [v4 numberFromString:firstObject];
 
-  v7 = [v6 unsignedLongLongValue];
-  return v7;
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
+  return unsignedLongLongValue;
 }
 
-+ (id)defaultParameterWithType:(int64_t)a3 value:(id)a4 name:(id)a5
++ (id)defaultParameterWithType:(int64_t)type value:(id)value name:(id)name
 {
-  v7 = a4;
-  v8 = a5;
-  if (v7)
+  valueCopy = value;
+  nameCopy = name;
+  if (valueCopy)
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (a3)
+      if (type)
       {
-        if (a3 == 1)
+        if (type == 1)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = +[SRParameter parameterWithLong:name:](SRParameter, "parameterWithLong:name:", [v7 longValue], v8);
+            v9 = +[SRParameter parameterWithLong:name:](SRParameter, "parameterWithLong:name:", [valueCopy longValue], nameCopy);
             goto LABEL_19;
           }
         }
@@ -1078,7 +1078,7 @@ LABEL_76:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = +[SRParameter parameterWithBoolean:name:](SRParameter, "parameterWithBoolean:name:", [v7 BOOLValue], v8);
+          v9 = +[SRParameter parameterWithBoolean:name:](SRParameter, "parameterWithBoolean:name:", [valueCopy BOOLValue], nameCopy);
           goto LABEL_19;
         }
       }
@@ -1086,14 +1086,14 @@ LABEL_76:
 
     else
     {
-      switch(a3)
+      switch(type)
       {
         case 2:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v7 doubleValue];
-            v9 = [SRParameter parameterWithDouble:v8 name:?];
+            [valueCopy doubleValue];
+            v9 = [SRParameter parameterWithDouble:nameCopy name:?];
             goto LABEL_19;
           }
 
@@ -1102,7 +1102,7 @@ LABEL_76:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = [SRParameter parameterWithString:v7 name:v8];
+            v9 = [SRParameter parameterWithString:valueCopy name:nameCopy];
             goto LABEL_19;
           }
 
@@ -1111,7 +1111,7 @@ LABEL_76:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = [SRParameter parameterWithFilePath:v7 name:v8];
+            v9 = [SRParameter parameterWithFilePath:valueCopy name:nameCopy];
             goto LABEL_19;
           }
 
@@ -1120,30 +1120,30 @@ LABEL_76:
     }
   }
 
-  v9 = [SRParameter nilParameterWithType:a3];
+  v9 = [SRParameter nilParameterWithType:type];
 LABEL_19:
   v10 = v9;
 
   return v10;
 }
 
-+ (void)updateDefaultParameter:(id)a3 withValue:(id)a4
++ (void)updateDefaultParameter:(id)parameter withValue:(id)value
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 type];
-  if (v5)
+  parameterCopy = parameter;
+  valueCopy = value;
+  type = [parameterCopy type];
+  if (valueCopy)
   {
-    if (v6 <= 1)
+    if (type <= 1)
     {
-      if (v6)
+      if (type)
       {
-        if (v6 == 1)
+        if (type == 1)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v7 updateWithLong:{objc_msgSend(v5, "longValue")}];
+            [parameterCopy updateWithLong:{objc_msgSend(valueCopy, "longValue")}];
           }
         }
       }
@@ -1153,21 +1153,21 @@ LABEL_19:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v7 updateWithBoolean:{objc_msgSend(v5, "BOOLValue")}];
+          [parameterCopy updateWithBoolean:{objc_msgSend(valueCopy, "BOOLValue")}];
         }
       }
     }
 
     else
     {
-      switch(v6)
+      switch(type)
       {
         case 2:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v5 doubleValue];
-            [v7 updateWithDouble:?];
+            [valueCopy doubleValue];
+            [parameterCopy updateWithDouble:?];
           }
 
           break;
@@ -1175,7 +1175,7 @@ LABEL_19:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v7 updateWithString:v5];
+            [parameterCopy updateWithString:valueCopy];
           }
 
           break;
@@ -1183,7 +1183,7 @@ LABEL_19:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v7 updateWithFilePath:v5];
+            [parameterCopy updateWithFilePath:valueCopy];
           }
 
           break;
@@ -1192,30 +1192,30 @@ LABEL_19:
   }
 }
 
-+ (int64_t)parameterTypeFromString:(id)a3
++ (int64_t)parameterTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Boolean"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Boolean"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Long"])
+  else if ([stringCopy isEqualToString:@"Long"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Double"])
+  else if ([stringCopy isEqualToString:@"Double"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"String"])
+  else if ([stringCopy isEqualToString:@"String"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"File"])
+  else if ([stringCopy isEqualToString:@"File"])
   {
     v4 = 4;
   }
@@ -1241,10 +1241,10 @@ LABEL_19:
   return v2;
 }
 
-+ (void)dumpParameterList:(id)a3
++ (void)dumpParameterList:(id)list
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  listCopy = list;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1259,8 +1259,8 @@ LABEL_19:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v6 = [v4 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+    allKeys = [listCopy allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v29 objects:v38 count:16];
     if (v7)
     {
       v9 = v7;
@@ -1273,11 +1273,11 @@ LABEL_19:
         {
           if (*v30 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v29 + 1) + 8 * i);
-          v13 = [v4 objectForKey:{v12, v24}];
+          v13 = [listCopy objectForKey:{v12, v24}];
           if (v13)
           {
             v14 = SRLogCategoryGeneral();
@@ -1288,11 +1288,11 @@ LABEL_19:
               _os_log_impl(&dword_1AE58E000, v14, OS_LOG_TYPE_DEFAULT, "dumping entry [%@]:", buf, 0xCu);
             }
 
-            [a1 dumpParameterList:v13];
+            [self dumpParameterList:v13];
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v29 objects:v38 count:16];
       }
 
       while (v9);
@@ -1315,8 +1315,8 @@ LABEL_19:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v6 = v4;
-      v16 = [v6 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      allKeys = listCopy;
+      v16 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1327,13 +1327,13 @@ LABEL_19:
           {
             if (*v26 != v18)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(allKeys);
             }
 
-            [a1 dumpParameterList:*(*(&v25 + 1) + 8 * j)];
+            [self dumpParameterList:*(*(&v25 + 1) + 8 * j)];
           }
 
-          v17 = [v6 countByEnumeratingWithState:&v25 objects:v37 count:16];
+          v17 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
         }
 
         while (v17);
@@ -1344,15 +1344,15 @@ LABEL_19:
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v6 = SRLogCategoryGeneral();
-      v21 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
+      allKeys = SRLogCategoryGeneral();
+      v21 = os_log_type_enabled(allKeys, OS_LOG_TYPE_DEFAULT);
       if (isKindOfClass)
       {
         if (v21)
         {
           *buf = 138412290;
-          v34 = v4;
-          _os_log_impl(&dword_1AE58E000, v6, OS_LOG_TYPE_DEFAULT, "entry is a parameter = (%@)", buf, 0xCu);
+          v34 = listCopy;
+          _os_log_impl(&dword_1AE58E000, allKeys, OS_LOG_TYPE_DEFAULT, "entry is a parameter = (%@)", buf, 0xCu);
         }
       }
 
@@ -1361,9 +1361,9 @@ LABEL_19:
         *buf = 138412546;
         v34 = objc_opt_class();
         v35 = 2112;
-        v36 = v4;
+        v36 = listCopy;
         v22 = v34;
-        _os_log_impl(&dword_1AE58E000, v6, OS_LOG_TYPE_DEFAULT, "entry has type %@ and is (%@)", buf, 0x16u);
+        _os_log_impl(&dword_1AE58E000, allKeys, OS_LOG_TYPE_DEFAULT, "entry has type %@ and is (%@)", buf, 0x16u);
       }
     }
   }
@@ -1371,16 +1371,16 @@ LABEL_19:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)resourcesForClient:(id)a3 locale:(id)a4 options:(id)a5
+- (id)resourcesForClient:(id)client locale:(id)locale options:(id)options
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  clientCopy = client;
+  localeCopy = locale;
+  optionsCopy = options;
+  v11 = optionsCopy;
+  if (optionsCopy)
   {
-    v12 = [v10 objectForKeyedSubscript:@"SRResourcesOwner"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"SRResourcesOwner"];
   }
 
   else
@@ -1397,64 +1397,64 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  v17 = [v8 UTF8String];
-  if (v9)
+  uTF8String = [clientCopy UTF8String];
+  if (localeCopy)
   {
-    v5 = [v9 localeIdentifier];
-    v18 = [v5 UTF8String];
+    localeIdentifier = [localeCopy localeIdentifier];
+    uTF8String2 = [localeIdentifier UTF8String];
     if (v12)
     {
 LABEL_8:
-      v19 = [v12 UTF8String];
+      uTF8String3 = [v12 UTF8String];
       goto LABEL_11;
     }
   }
 
   else
   {
-    v18 = "none";
+    uTF8String2 = "none";
     if (v12)
     {
       goto LABEL_8;
     }
   }
 
-  v19 = "unknown";
+  uTF8String3 = "unknown";
 LABEL_11:
   v23 = 136315650;
-  v24 = v17;
+  v24 = uTF8String;
   v25 = 2080;
-  v26 = v18;
+  v26 = uTF8String2;
   v27 = 2080;
-  v28 = v19;
+  v28 = uTF8String3;
   _os_signpost_emit_with_name_impl(&dword_1AE58E000, v14, OS_SIGNPOST_EVENT, v16, "SRResourcesCreate", "client=%s, locale=%s, caller=%s", &v23, 0x20u);
-  if (v9)
+  if (localeCopy)
   {
   }
 
 LABEL_13:
 
-  v20 = [[SRResources alloc] initWithClient:v8 locale:v9 options:v11];
+  v20 = [[SRResources alloc] initWithClient:clientCopy locale:localeCopy options:v11];
   v21 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (id)resourcesForClient:(id)a3 options:(id)a4
+- (id)resourcesForClient:(id)client options:(id)options
 {
   v6 = MEMORY[0x1E695DF58];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 currentLocale];
-  v10 = [(SRResourcesManager *)self resourcesForClient:v8 locale:v9 options:v7];
+  optionsCopy = options;
+  clientCopy = client;
+  currentLocale = [v6 currentLocale];
+  v10 = [(SRResourcesManager *)self resourcesForClient:clientCopy locale:currentLocale options:optionsCopy];
 
   return v10;
 }
 
-- (void)refreshTrialForClient:(id)a3
+- (void)refreshTrialForClient:(id)client
 {
-  v9 = a3;
-  if ([v9 isEqualToString:@"Spotlight"])
+  clientCopy = client;
+  if ([clientCopy isEqualToString:@"Spotlight"])
   {
     v3 = +[SSTrialManager sharedSpotlightModelTrialManager];
     v4 = v3;
@@ -1491,13 +1491,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v9 isEqualToString:@"SpotlightKnowledge"])
+  if ([clientCopy isEqualToString:@"SpotlightKnowledge"])
   {
     v8 = +[SSTrialManager sharedSpotlightKnowledgeTrialManager];
     goto LABEL_18;
   }
 
-  if ([v9 isEqualToString:@"Mail"])
+  if ([clientCopy isEqualToString:@"Mail"])
   {
     v8 = +[SSTrialManager sharedSpotlightUITrialManager];
 LABEL_18:
@@ -1513,23 +1513,23 @@ LABEL_18:
 LABEL_11:
 }
 
-- (void)loadDataSource:(id)a3 force:(BOOL)a4
+- (void)loadDataSource:(id)source force:(BOOL)force
 {
-  v22 = a3;
+  sourceCopy = source;
   v5 = +[SRDefaultsManager sharedDefaultsManager];
-  v6 = [v5 currentNamespaces];
+  currentNamespaces = [v5 currentNamespaces];
 
-  if (!v6)
+  if (!currentNamespaces)
   {
     goto LABEL_19;
   }
 
-  v7 = [v6 objectForKeyedSubscript:v22];
+  v7 = [currentNamespaces objectForKeyedSubscript:sourceCopy];
   v8 = [v7 isEqualToString:@"SPOTLIGHT_BLENDING_MODEL"];
 
   if (!v8)
   {
-    v10 = [v6 objectForKeyedSubscript:v22];
+    v10 = [currentNamespaces objectForKeyedSubscript:sourceCopy];
     v11 = [v10 isEqualToString:@"SPOTLIGHT_UI"];
 
     if (v11)
@@ -1538,7 +1538,7 @@ LABEL_11:
       goto LABEL_8;
     }
 
-    v12 = [v6 objectForKeyedSubscript:v22];
+    v12 = [currentNamespaces objectForKeyedSubscript:sourceCopy];
     v13 = [v12 isEqualToString:@"SPOTLIGHT_RANKING_RULES"];
 
     if (v13)
@@ -1547,7 +1547,7 @@ LABEL_11:
       goto LABEL_8;
     }
 
-    v15 = [v6 objectForKeyedSubscript:v22];
+    v15 = [currentNamespaces objectForKeyedSubscript:sourceCopy];
     v16 = [v15 isEqualToString:@"SPOTLIGHT_RANKING_POLICY"];
 
     if (v16)
@@ -1558,7 +1558,7 @@ LABEL_16:
       goto LABEL_20;
     }
 
-    v18 = [v6 objectForKeyedSubscript:v22];
+    v18 = [currentNamespaces objectForKeyedSubscript:sourceCopy];
     v19 = [v18 isEqualToString:@"SPOTLIGHT_KNOWLEDGE_BEHAVIOR"];
 
     if (v19)
@@ -1567,7 +1567,7 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    v20 = [v6 objectForKeyedSubscript:v22];
+    v20 = [currentNamespaces objectForKeyedSubscript:sourceCopy];
     v21 = [v20 isEqualToString:@"SPOTLIGHT_MAIL_APP"];
 
     if (v21)
@@ -1584,7 +1584,7 @@ LABEL_19:
   v9 = +[SSTrialManager sharedSpotlightModelTrialManager];
 LABEL_8:
   v14 = v9;
-  if (v9 && (a4 || ([v9 wasLoadedSinceLaunch] & 1) == 0))
+  if (v9 && (force || ([v9 wasLoadedSinceLaunch] & 1) == 0))
   {
     [v14 loadWithUpdateHandler:sTrialUpdateHandler];
   }
@@ -1592,20 +1592,20 @@ LABEL_8:
 LABEL_20:
 }
 
-- (void)loadAllParametersForClient:(id)a3 locales:(id)a4 options:(id)a5
+- (void)loadAllParametersForClient:(id)client locales:(id)locales options:(id)options
 {
   v63 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKey:@"forceLoad"];
-  v45 = [v9 BOOLValue];
+  clientCopy = client;
+  localesCopy = locales;
+  v9 = [options objectForKey:@"forceLoad"];
+  bOOLValue = [v9 BOOLValue];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v11 = v8;
+  v11 = localesCopy;
   v12 = [v11 countByEnumeratingWithState:&v56 objects:v62 count:16];
   if (v12)
   {
@@ -1620,8 +1620,8 @@ LABEL_20:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v56 + 1) + 8 * i) localeIdentifier];
-        v17 = normalizedLocaleForIdentifier(v16);
+        localeIdentifier = [*(*(&v56 + 1) + 8 * i) localeIdentifier];
+        v17 = normalizedLocaleForIdentifier(localeIdentifier);
         v18 = languageCodeForLocale(v17);
         [v10 addObject:v18];
       }
@@ -1637,7 +1637,7 @@ LABEL_20:
   if (SRIsRunningInServer() & 1) != 0 || (+[SRDefaultsManager sharedDefaultsManager](SRDefaultsManager, "sharedDefaultsManager"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 hasTestAssets], v20, (v21))
   {
     v22 = +[SRDefaultsManager sharedDefaultsManager];
-    v23 = [v22 loadAssetsForLanguage:@"root" reload:0 force:v45];
+    v23 = [v22 loadAssetsForLanguage:@"root" reload:0 force:bOOLValue];
 
     v52 = 0u;
     v53 = 0u;
@@ -1663,7 +1663,7 @@ LABEL_20:
           {
             [*(v19 + 2856) sharedDefaultsManager];
             v31 = v30 = v19;
-            v32 = [v31 loadAssetsForLanguage:v29 reload:0 force:v45];
+            v32 = [v31 loadAssetsForLanguage:v29 reload:0 force:bOOLValue];
 
             v19 = v30;
           }
@@ -1680,19 +1680,19 @@ LABEL_20:
   {
     [v10 addObject:@"root"];
     v33 = +[SRDefaultsManager sharedDefaultsManager];
-    v34 = [v10 allObjects];
+    allObjects = [v10 allObjects];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __65__SRResourcesManager_loadAllParametersForClient_locales_options___block_invoke;
     v54[3] = &unk_1E7A2B088;
     v55 = v10;
-    [v33 refreshCacheForLanguages:v34 force:v45 completion:v54];
+    [v33 refreshCacheForLanguages:allObjects force:bOOLValue completion:v54];
 
     v24 = v55;
   }
 
-  v35 = [*(v19 + 2856) sharedDefaultsManager];
-  v36 = [v35 currentNamespacesForClient:v44];
+  sharedDefaultsManager = [*(v19 + 2856) sharedDefaultsManager];
+  v36 = [sharedDefaultsManager currentNamespacesForClient:clientCopy];
 
   v48 = 0u;
   v49 = 0u;
@@ -1750,26 +1750,26 @@ void __65__SRResourcesManager_loadAllParametersForClient_locales_options___block
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadAllParametersForClient:(id)a3 locale:(id)a4 options:(id)a5
+- (void)loadAllParametersForClient:(id)client locale:(id)locale options:(id)options
 {
   v15 = *MEMORY[0x1E69E9840];
-  v14 = a4;
+  localeCopy = locale;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v14 count:1];
+  optionsCopy = options;
+  localeCopy2 = locale;
+  clientCopy = client;
+  v12 = [v8 arrayWithObjects:&localeCopy count:1];
 
-  [(SRResourcesManager *)self loadAllParametersForClient:v11 locales:v12 options:v9, v14, v15];
+  [(SRResourcesManager *)self loadAllParametersForClient:clientCopy locales:v12 options:optionsCopy, localeCopy, v15];
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)loadAllParametersForClient:(id)a3
+- (void)loadAllParametersForClient:(id)client
 {
   v4 = MEMORY[0x1E695DF58];
-  v5 = a3;
-  v6 = [v4 currentLocale];
-  [(SRResourcesManager *)self loadAllParametersForClient:v5 locale:v6 options:0];
+  clientCopy = client;
+  currentLocale = [v4 currentLocale];
+  [(SRResourcesManager *)self loadAllParametersForClient:clientCopy locale:currentLocale options:0];
 }
 
 - (void)loadAllParameters
@@ -1807,16 +1807,16 @@ void __65__SRResourcesManager_loadAllParametersForClient_locales_options___block
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllParametersForLanguages:(id)a3
+- (void)fetchAllParametersForLanguages:(id)languages
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  languagesCopy = languages;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = languagesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -1857,25 +1857,25 @@ void __65__SRResourcesManager_loadAllParametersForClient_locales_options___block
 - (id)allLoadedAssets
 {
   v2 = +[SRDefaultsManager sharedDefaultsManager];
-  v3 = [v2 allLoadedAssets];
+  allLoadedAssets = [v2 allLoadedAssets];
 
-  return v3;
+  return allLoadedAssets;
 }
 
 - (id)assetConfigDump
 {
   v2 = +[SRDefaultsManager sharedDefaultsManager];
-  v3 = [v2 assetConfigDump];
+  assetConfigDump = [v2 assetConfigDump];
 
-  return v3;
+  return assetConfigDump;
 }
 
 - (id)trialConfigDump
 {
   v2 = objc_alloc(MEMORY[0x1E696AD60]);
   v3 = +[SRDefaultsManager sharedDefaultsManager];
-  v4 = [v3 trialConfigDump];
-  v5 = [v2 initWithString:v4];
+  trialConfigDump = [v3 trialConfigDump];
+  v5 = [v2 initWithString:trialConfigDump];
 
   os_unfair_lock_lock(&sTrialParameterListLock);
   [v5 appendFormat:@"\nFactors:\n%@", sTrialParameterList];
@@ -1885,27 +1885,27 @@ void __65__SRResourcesManager_loadAllParametersForClient_locales_options___block
   return v5;
 }
 
-- (BOOL)overrideFactor:(id)a3 client:(id)a4 type:(id)a5 value:(id)a6
+- (BOOL)overrideFactor:(id)factor client:(id)client type:(id)type value:(id)value
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  clientCopy = client;
+  typeCopy = type;
+  valueCopy = value;
   v12 = MEMORY[0x1E695DFF8];
   v13 = sOverridesPath;
-  v14 = a3;
+  factorCopy = factor;
   v15 = [v12 fileURLWithPath:v13];
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
-  v17 = [v16 fileExistsAtPath:sOverridesPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v17 = [defaultManager fileExistsAtPath:sOverridesPath];
 
   if ((v17 & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v19 = sOverridesPath;
     v36 = *MEMORY[0x1E696A3A0];
     v37[0] = *MEMORY[0x1E696A388];
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-    [v18 createFileAtPath:v19 contents:0 attributes:v20];
+    [defaultManager2 createFileAtPath:v19 contents:0 attributes:v20];
   }
 
   v21 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v15];
@@ -1916,16 +1916,16 @@ void __65__SRResourcesManager_loadAllParametersForClient_locales_options___block
     v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v23 = [v22 objectForKeyedSubscript:v9];
+  v23 = [v22 objectForKeyedSubscript:clientCopy];
 
   if (!v23)
   {
     v24 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v22 setObject:v24 forKeyedSubscript:v9];
+    [v22 setObject:v24 forKeyedSubscript:clientCopy];
   }
 
-  v25 = v11;
-  if ([v10 isEqualToString:@"Boolean"])
+  v25 = valueCopy;
+  if ([typeCopy isEqualToString:@"Boolean"])
   {
     v26 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:{objc_msgSend(v25, "BOOLValue")}];
 LABEL_13:
@@ -1934,14 +1934,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v10 isEqualToString:@"Long"])
+  if ([typeCopy isEqualToString:@"Long"])
   {
     v26 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLong:{objc_msgSend(v25, "integerValue")}];
     goto LABEL_13;
   }
 
   v27 = v25;
-  if ([v10 isEqualToString:@"Double"])
+  if ([typeCopy isEqualToString:@"Double"])
   {
     v28 = objc_alloc(MEMORY[0x1E696AD98]);
     [v25 doubleValue];
@@ -1952,11 +1952,11 @@ LABEL_13:
 LABEL_14:
   v34[0] = @"Type";
   v34[1] = @"Value";
-  v35[0] = v10;
+  v35[0] = typeCopy;
   v35[1] = v27;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
-  v30 = [v22 objectForKeyedSubscript:v9];
-  [v30 setObject:v29 forKeyedSubscript:v14];
+  v30 = [v22 objectForKeyedSubscript:clientCopy];
+  [v30 setObject:v29 forKeyedSubscript:factorCopy];
 
   v31 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
   [v22 setObject:v31 forKeyedSubscript:@"UsingOverrides"];
@@ -1966,10 +1966,10 @@ LABEL_14:
   return v31;
 }
 
-- (void)handleAssetsCommand:(id)a3
+- (void)handleAssetsCommand:(id)command
 {
   v5 = 0;
-  [SRXPCListener handleMessage:a3 error:&v5];
+  [SRXPCListener handleMessage:command error:&v5];
   v3 = v5;
   if (v3)
   {

@@ -1,16 +1,16 @@
 @interface GCConfigurationAssetXPCProxy
 - (GCConfigurationAssetXPCProxy)init;
-- (GCConfigurationAssetXPCProxy)initWithAsset:(id)a3;
-- (GCConfigurationAssetXPCProxy)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GCConfigurationAssetXPCProxy)initWithAsset:(id)asset;
+- (GCConfigurationAssetXPCProxy)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCConfigurationAssetXPCProxy
 
-- (GCConfigurationAssetXPCProxy)initWithAsset:(id)a3
+- (GCConfigurationAssetXPCProxy)initWithAsset:(id)asset
 {
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     [(GCConfigurationAssetXPCProxy *)a2 initWithAsset:?];
   }
@@ -18,26 +18,26 @@
   v19.receiver = self;
   v19.super_class = GCConfigurationAssetXPCProxy;
   v6 = [(GCConfigurationAssetXPCProxy *)&v19 init];
-  v7 = [v5 assetId];
-  v8 = [v7 copy];
+  assetId = [assetCopy assetId];
+  v8 = [assetId copy];
   assetId = v6->_assetId;
   v6->_assetId = v8;
 
-  v10 = [v5 assetState];
-  v11 = [v10 copy];
+  assetState = [assetCopy assetState];
+  v11 = [assetState copy];
   assetState = v6->_assetState;
   v6->_assetState = v11;
 
-  v13 = [v5 compatibilityVersion];
-  v14 = [v13 copy];
+  compatibilityVersion = [assetCopy compatibilityVersion];
+  v14 = [compatibilityVersion copy];
   compatibilityVersion = v6->_compatibilityVersion;
   v6->_compatibilityVersion = v14;
 
-  v16 = [v5 contentVersion];
+  contentVersion = [assetCopy contentVersion];
   contentVersion = v6->_contentVersion;
-  v6->_contentVersion = v16;
+  v6->_contentVersion = contentVersion;
 
-  v6->_contentRevision = [v5 contentRevision];
+  v6->_contentRevision = [assetCopy contentRevision];
   return v6;
 }
 
@@ -48,49 +48,49 @@
   return 0;
 }
 
-- (GCConfigurationAssetXPCProxy)initWithCoder:(id)a3
+- (GCConfigurationAssetXPCProxy)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = GCConfigurationAssetXPCProxy;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(GCConfigurationAssetXPCProxy *)&v15 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"assetId", v15.receiver, v15.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"assetId", v15.receiver, v15.super_class}];
   assetId = v4->_assetId;
   v4->_assetId = v5;
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"assetState"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetState"];
   assetState = v4->_assetState;
   v4->_assetState = v7;
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"compatibilityVersion"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compatibilityVersion"];
   compatibilityVersion = v4->_compatibilityVersion;
   v4->_compatibilityVersion = v9;
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"contentVersion"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentVersion"];
   contentVersion = v4->_contentVersion;
   v4->_contentVersion = v11;
 
-  v13 = [v3 decodeIntegerForKey:@"contentRevision"];
+  v13 = [coderCopy decodeIntegerForKey:@"contentRevision"];
   v4->_contentRevision = v13;
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(GCConfigurationAssetXPCProxy *)self assetId];
-  [v8 encodeObject:v4 forKey:@"assetId"];
+  coderCopy = coder;
+  assetId = [(GCConfigurationAssetXPCProxy *)self assetId];
+  [coderCopy encodeObject:assetId forKey:@"assetId"];
 
-  v5 = [(GCConfigurationAssetXPCProxy *)self assetState];
-  [v8 encodeObject:v5 forKey:@"assetState"];
+  assetState = [(GCConfigurationAssetXPCProxy *)self assetState];
+  [coderCopy encodeObject:assetState forKey:@"assetState"];
 
-  v6 = [(GCConfigurationAssetXPCProxy *)self compatibilityVersion];
-  [v8 encodeObject:v6 forKey:@"compatibilityVersion"];
+  compatibilityVersion = [(GCConfigurationAssetXPCProxy *)self compatibilityVersion];
+  [coderCopy encodeObject:compatibilityVersion forKey:@"compatibilityVersion"];
 
-  v7 = [(GCConfigurationAssetXPCProxy *)self contentVersion];
-  [v8 encodeObject:v7 forKey:@"contentVersion"];
+  contentVersion = [(GCConfigurationAssetXPCProxy *)self contentVersion];
+  [coderCopy encodeObject:contentVersion forKey:@"contentVersion"];
 
-  [v8 encodeInteger:-[GCConfigurationAssetXPCProxy contentRevision](self forKey:{"contentRevision"), @"contentRevision"}];
+  [coderCopy encodeInteger:-[GCConfigurationAssetXPCProxy contentRevision](self forKey:{"contentRevision"), @"contentRevision"}];
 }
 
 - (void)initWithAsset:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

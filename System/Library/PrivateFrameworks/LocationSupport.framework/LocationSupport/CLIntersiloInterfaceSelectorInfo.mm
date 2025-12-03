@@ -1,17 +1,17 @@
 @interface CLIntersiloInterfaceSelectorInfo
-- (CLIntersiloInterfaceSelectorInfo)initWithSelector:(SEL)a3 andMethodSignature:(id)a4;
+- (CLIntersiloInterfaceSelectorInfo)initWithSelector:(SEL)selector andMethodSignature:(id)signature;
 - (SEL)sel;
 - (id)description;
 @end
 
 @implementation CLIntersiloInterfaceSelectorInfo
 
-- (CLIntersiloInterfaceSelectorInfo)initWithSelector:(SEL)a3 andMethodSignature:(id)a4
+- (CLIntersiloInterfaceSelectorInfo)initWithSelector:(SEL)selector andMethodSignature:(id)signature
 {
   v77 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [v7 numberOfArguments];
-  if (v8 < 32)
+  signatureCopy = signature;
+  numberOfArguments = [signatureCopy numberOfArguments];
+  if (numberOfArguments < 32)
   {
     v66.receiver = self;
     v66.super_class = CLIntersiloInterfaceSelectorInfo;
@@ -25,19 +25,19 @@ LABEL_36:
       return v10;
     }
 
-    if (a3)
+    if (selector)
     {
-      v11 = a3;
+      selectorCopy = selector;
     }
 
     else
     {
-      v11 = 0;
+      selectorCopy = 0;
     }
 
-    v9->_sel = v11;
+    v9->_sel = selectorCopy;
     p_sel = &v9->_sel;
-    objc_storeStrong(&v9->_sig, a4);
+    objc_storeStrong(&v9->_sig, signature);
     if (*p_sel)
     {
       v13 = *p_sel;
@@ -53,7 +53,7 @@ LABEL_36:
     {
       if ([v14 hasPrefix:@"syncget"])
       {
-        if (v8 < 3)
+        if (numberOfArguments < 3)
         {
           goto LABEL_35;
         }
@@ -65,13 +65,13 @@ LABEL_36:
       if (os_log_type_enabled(v50, OS_LOG_TYPE_FAULT))
       {
         v51 = v14;
-        v52 = [v14 UTF8String];
+        uTF8String = [v14 UTF8String];
         *buf = 68289795;
         v68 = 0;
         v69 = 2082;
         v70 = &unk_1DF8255EF;
         v71 = 2081;
-        v72 = v52;
+        v72 = uTF8String;
         v73 = 2082;
         v74 = "assert";
         v75 = 2081;
@@ -83,13 +83,13 @@ LABEL_36:
       if (os_signpost_enabled(v53))
       {
         v54 = v14;
-        v55 = [v14 UTF8String];
+        uTF8String2 = [v14 UTF8String];
         *buf = 68289795;
         v68 = 0;
         v69 = 2082;
         v70 = &unk_1DF8255EF;
         v71 = 2081;
-        v72 = v55;
+        v72 = uTF8String2;
         v73 = 2082;
         v74 = "assert";
         v75 = 2081;
@@ -101,13 +101,13 @@ LABEL_36:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         v56 = v14;
-        v57 = [v14 UTF8String];
+        uTF8String3 = [v14 UTF8String];
         *buf = 68289795;
         v68 = 0;
         v69 = 2082;
         v70 = &unk_1DF8255EF;
         v71 = 2081;
-        v72 = v57;
+        v72 = uTF8String3;
         v73 = 2082;
         v74 = "assert";
         v75 = 2081;
@@ -127,13 +127,13 @@ LABEL_79:
       if (os_log_type_enabled(v58, OS_LOG_TYPE_FAULT))
       {
         v59 = v14;
-        v60 = [v14 UTF8String];
+        uTF8String4 = [v14 UTF8String];
         *buf = 68289795;
         v68 = 0;
         v69 = 2082;
         v70 = &unk_1DF8255EF;
         v71 = 2081;
-        v72 = v60;
+        v72 = uTF8String4;
         v73 = 2082;
         v74 = "assert";
         v75 = 2081;
@@ -145,13 +145,13 @@ LABEL_79:
       if (os_signpost_enabled(v61))
       {
         v62 = v14;
-        v63 = [v14 UTF8String];
+        uTF8String5 = [v14 UTF8String];
         *buf = 68289795;
         v68 = 0;
         v69 = 2082;
         v70 = &unk_1DF8255EF;
         v71 = 2081;
-        v72 = v63;
+        v72 = uTF8String5;
         v73 = 2082;
         v74 = "assert";
         v75 = 2081;
@@ -163,13 +163,13 @@ LABEL_79:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
         v64 = v14;
-        v65 = [v14 UTF8String];
+        uTF8String6 = [v14 UTF8String];
         *buf = 68289795;
         v68 = 0;
         v69 = 2082;
         v70 = &unk_1DF8255EF;
         v71 = 2081;
-        v72 = v65;
+        v72 = uTF8String6;
         v73 = 2082;
         v74 = "assert";
         v75 = 2081;
@@ -180,7 +180,7 @@ LABEL_79:
       goto LABEL_79;
     }
 
-    if (v8 < 3)
+    if (numberOfArguments < 3)
     {
 LABEL_35:
       v24 = v10;
@@ -194,10 +194,10 @@ LABEL_35:
     }
 
     v15 = [v14 rangeOfString:@"withReply:" options:1];
-    v16 = [(NSMethodSignature *)v10->_sig getArgumentTypeAtIndex:(v8 - 1)];
+    v16 = [(NSMethodSignature *)v10->_sig getArgumentTypeAtIndex:(numberOfArguments - 1)];
     if (*v16 == 64 && v16[1] == 63 && !v16[2])
     {
-      v10->_lastArgBlockIndex = v8 - 1;
+      v10->_lastArgBlockIndex = numberOfArguments - 1;
       v17 = 1;
     }
 
@@ -220,13 +220,13 @@ LABEL_35:
         if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
         {
           v34 = v14;
-          v35 = [v14 UTF8String];
+          uTF8String7 = [v14 UTF8String];
           *buf = 68289795;
           v68 = 0;
           v69 = 2082;
           v70 = &unk_1DF8255EF;
           v71 = 2081;
-          v72 = v35;
+          v72 = uTF8String7;
           v73 = 2082;
           v74 = "assert";
           v75 = 2081;
@@ -238,13 +238,13 @@ LABEL_35:
         if (os_signpost_enabled(v36))
         {
           v37 = v14;
-          v38 = [v14 UTF8String];
+          uTF8String8 = [v14 UTF8String];
           *buf = 68289795;
           v68 = 0;
           v69 = 2082;
           v70 = &unk_1DF8255EF;
           v71 = 2081;
-          v72 = v38;
+          v72 = uTF8String8;
           v73 = 2082;
           v74 = "assert";
           v75 = 2081;
@@ -256,13 +256,13 @@ LABEL_35:
         if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
         {
           v40 = v14;
-          v41 = [v14 UTF8String];
+          uTF8String9 = [v14 UTF8String];
           *buf = 68289795;
           v68 = 0;
           v69 = 2082;
           v70 = &unk_1DF8255EF;
           v71 = 2081;
-          v72 = v41;
+          v72 = uTF8String9;
           v73 = 2082;
           v74 = "assert";
           v75 = 2081;
@@ -279,13 +279,13 @@ LABEL_35:
         if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
         {
           v43 = v14;
-          v44 = [v14 UTF8String];
+          uTF8String10 = [v14 UTF8String];
           *buf = 68289795;
           v68 = 0;
           v69 = 2082;
           v70 = &unk_1DF8255EF;
           v71 = 2081;
-          v72 = v44;
+          v72 = uTF8String10;
           v73 = 2082;
           v74 = "assert";
           v75 = 2081;
@@ -297,13 +297,13 @@ LABEL_35:
         if (os_signpost_enabled(v45))
         {
           v46 = v14;
-          v47 = [v14 UTF8String];
+          uTF8String11 = [v14 UTF8String];
           *buf = 68289795;
           v68 = 0;
           v69 = 2082;
           v70 = &unk_1DF8255EF;
           v71 = 2081;
-          v72 = v47;
+          v72 = uTF8String11;
           v73 = 2082;
           v74 = "assert";
           v75 = 2081;
@@ -315,13 +315,13 @@ LABEL_35:
         if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
         {
           v48 = v14;
-          v49 = [v14 UTF8String];
+          uTF8String12 = [v14 UTF8String];
           *buf = 68289795;
           v68 = 0;
           v69 = 2082;
           v70 = &unk_1DF8255EF;
           v71 = 2081;
-          v72 = v49;
+          v72 = uTF8String12;
           v73 = 2082;
           v74 = "assert";
           v75 = 2081;
@@ -334,7 +334,7 @@ LABEL_35:
     }
 
 LABEL_24:
-    v19 = v8 & 0x7FFFFFFF;
+    v19 = numberOfArguments & 0x7FFFFFFF;
     v20 = 2;
     while (1)
     {

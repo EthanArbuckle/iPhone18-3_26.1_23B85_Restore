@@ -1,18 +1,18 @@
 @interface _UIGravityWellEffect
-+ (id)effectWithDescriptor:(id)a3 continuationPreview:(id)a4;
++ (id)effectWithDescriptor:(id)descriptor continuationPreview:(id)preview;
 - (NSArray)secondaryBodyPreviews;
 - (id)_criticallyDampedEffectSpringBehavior;
 - (id)_effectSpringBehavior;
-- (id)previewForContinuingToEffectWithPreview:(id)a3;
+- (id)previewForContinuingToEffectWithPreview:(id)preview;
 - (void)_installEffectViews;
 - (void)_performAllCompletions;
 - (void)_tearDownEffectViews;
-- (void)_updateToProgress:(double)a3 state:(int64_t)a4;
-- (void)addCompletion:(id)a3;
+- (void)_updateToProgress:(double)progress state:(int64_t)state;
+- (void)addCompletion:(id)completion;
 - (void)begin;
 - (void)end;
 - (void)endForHandOff;
-- (void)updateWithProgress:(double)a3;
+- (void)updateWithProgress:(double)progress;
 @end
 
 @implementation _UIGravityWellEffect
@@ -35,8 +35,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(_UIGravityWellEffect *)self completions];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  completions = [(_UIGravityWellEffect *)self completions];
+  v3 = [completions countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -48,14 +48,14 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(completions);
         }
 
         (*(*(*(&v7 + 1) + 8 * v6++) + 16))();
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [completions countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -65,16 +65,16 @@
 - (void)_tearDownEffectViews
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIGravityWellEffect *)self primaryBody];
-  v4 = [v3 anchorView];
-  [v4 removeFromSuperview];
+  primaryBody = [(_UIGravityWellEffect *)self primaryBody];
+  anchorView = [primaryBody anchorView];
+  [anchorView removeFromSuperview];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(_UIGravityWellEffect *)self secondaryBodies];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  secondaryBodies = [(_UIGravityWellEffect *)self secondaryBodies];
+  v6 = [secondaryBodies countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -86,43 +86,43 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(secondaryBodies);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) anchorView];
-        [v10 removeFromSuperview];
+        anchorView2 = [*(*(&v11 + 1) + 8 * v9) anchorView];
+        [anchorView2 removeFromSuperview];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [secondaryBodies countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (id)effectWithDescriptor:(id)a3 continuationPreview:(id)a4
++ (id)effectWithDescriptor:(id)descriptor continuationPreview:(id)preview
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 primaryPreview];
-  v9 = [v8 target];
+  descriptorCopy = descriptor;
+  previewCopy = preview;
+  primaryPreview = [descriptorCopy primaryPreview];
+  target = [primaryPreview target];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65___UIGravityWellEffect_effectWithDescriptor_continuationPreview___block_invoke;
   aBlock[3] = &unk_1E7100718;
-  v10 = v9;
+  v10 = target;
   v48 = v10;
   v11 = _Block_copy(aBlock);
   v12 = objc_opt_new();
-  objc_storeStrong(v12 + 1, a3);
-  [v12 setContinuationPreview:v7];
-  v13 = [v6 primaryPreview];
-  v14 = v11[2](v11, v13);
+  objc_storeStrong(v12 + 1, descriptor);
+  [v12 setContinuationPreview:previewCopy];
+  primaryPreview2 = [descriptorCopy primaryPreview];
+  v14 = v11[2](v11, primaryPreview2);
   [v12 setPrimaryBody:v14];
 
   v15 = +[UIDevice currentDevice];
@@ -130,20 +130,20 @@
   [v16 baseMenuOffset];
   [v12 setBaseZOffset:v17];
 
-  v18 = [v6 secondaryPreviews];
-  v19 = [v18 count];
+  secondaryPreviews = [descriptorCopy secondaryPreviews];
+  v19 = [secondaryPreviews count];
 
   if (v19)
   {
     v39 = v12;
-    v40 = v7;
+    v40 = previewCopy;
     v20 = objc_opt_new();
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v41 = v6;
-    obj = [v6 secondaryPreviews];
+    v41 = descriptorCopy;
+    obj = [descriptorCopy secondaryPreviews];
     v21 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v21)
     {
@@ -190,8 +190,8 @@
     v12 = v39;
     [v39 setSecondaryBodies:v20];
 
-    v7 = v40;
-    v6 = v41;
+    previewCopy = v40;
+    descriptorCopy = v41;
   }
 
   return v12;
@@ -200,13 +200,13 @@
 - (NSArray)secondaryBodyPreviews
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(_UIGravityWellEffect *)self secondaryBodies];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  secondaryBodies = [(_UIGravityWellEffect *)self secondaryBodies];
+  v5 = [secondaryBodies countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -217,37 +217,37 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(secondaryBodies);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         v10 = [UITargetedPreview alloc];
-        v11 = [v9 effectView];
-        v12 = [(UITargetedPreview *)v10 initWithView:v11];
+        effectView = [v9 effectView];
+        v12 = [(UITargetedPreview *)v10 initWithView:effectView];
 
-        v13 = [v9 preview];
-        v14 = [v13 _internalIdentifier];
-        [(UITargetedPreview *)v12 set_internalIdentifier:v14];
+        preview = [v9 preview];
+        _internalIdentifier = [preview _internalIdentifier];
+        [(UITargetedPreview *)v12 set_internalIdentifier:_internalIdentifier];
 
-        [v3 addObject:v12];
+        [array addObject:v12];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [secondaryBodies countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)begin
 {
-  v3 = [(_UIGravityWellEffect *)self primaryBody];
-  v4 = [v3 effectView];
-  v5 = [v4 window];
+  primaryBody = [(_UIGravityWellEffect *)self primaryBody];
+  effectView = [primaryBody effectView];
+  window = [effectView window];
 
-  if (!v5)
+  if (!window)
   {
     [(_UIGravityWellEffect *)self _installEffectViews];
   }
@@ -257,11 +257,11 @@
   [(_UIGravityWellEffect *)self _updateToProgress:1 state:?];
 }
 
-- (void)updateWithProgress:(double)a3
+- (void)updateWithProgress:(double)progress
 {
-  v5 = [(_UIGravityWellEffect *)self state];
+  state = [(_UIGravityWellEffect *)self state];
 
-  [(_UIGravityWellEffect *)self _updateToProgress:v5 state:a3];
+  [(_UIGravityWellEffect *)self _updateToProgress:state state:progress];
 }
 
 - (void)end
@@ -282,30 +282,30 @@
   }
 }
 
-- (id)previewForContinuingToEffectWithPreview:(id)a3
+- (id)previewForContinuingToEffectWithPreview:(id)preview
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = [(_UIGravityWellEffect *)self primaryBody];
-  v5 = [v4 anchorView];
+  primaryBody = [(_UIGravityWellEffect *)self primaryBody];
+  anchorView = [primaryBody anchorView];
 
-  v6 = [v5 window];
+  window = [anchorView window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [v5 layer];
-    v8 = [v7 presentationLayer];
-    v9 = v8;
-    if (v8)
+    layer = [anchorView layer];
+    presentationLayer = [layer presentationLayer];
+    v9 = presentationLayer;
+    if (presentationLayer)
     {
-      v10 = v8;
+      layer2 = presentationLayer;
     }
 
     else
     {
-      v10 = [v5 layer];
+      layer2 = [anchorView layer];
     }
 
-    v13 = v10;
+    v13 = layer2;
 
     memset(&v44, 0, sizeof(v44));
     v37 = v13;
@@ -321,32 +321,32 @@
 
     CATransform3DGetAffineTransform(&v44, &v43);
     v14 = [UIPreviewTarget alloc];
-    v15 = [v5 superview];
-    v38 = v5;
-    [v5 center];
+    superview = [anchorView superview];
+    v38 = anchorView;
+    [anchorView center];
     *&v43.m11 = *&v44.a;
     *&v43.m13 = *&v44.c;
     *&v43.m21 = *&v44.tx;
-    v16 = [(UIPreviewTarget *)v14 initWithContainer:v15 center:&v43 transform:?];
+    v16 = [(UIPreviewTarget *)v14 initWithContainer:superview center:&v43 transform:?];
 
-    v17 = [(_UIGravityWellEffect *)self primaryBody];
-    v18 = [v17 preview];
+    primaryBody2 = [(_UIGravityWellEffect *)self primaryBody];
+    preview = [primaryBody2 preview];
     v36 = v16;
-    v12 = [v18 retargetedPreviewWithTarget:v16];
+    preview2 = [preview retargetedPreviewWithTarget:v16];
 
-    v19 = [(_UIGravityWellEffect *)self primaryBody];
-    v20 = [v19 anchorView];
-    v21 = [v20 layer];
+    primaryBody3 = [(_UIGravityWellEffect *)self primaryBody];
+    anchorView2 = [primaryBody3 anchorView];
+    layer3 = [anchorView2 layer];
 
-    v22 = [v21 animationKeys];
-    [v12 set_transferrableAnimationKeys:v22];
+    animationKeys = [layer3 animationKeys];
+    [preview2 set_transferrableAnimationKeys:animationKeys];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v23 = [v12 _transferrableAnimationKeys];
-    v24 = [v23 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    _transferrableAnimationKeys = [preview2 _transferrableAnimationKeys];
+    v24 = [_transferrableAnimationKeys countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v24)
     {
       v25 = v24;
@@ -357,30 +357,30 @@
         {
           if (*v40 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(_transferrableAnimationKeys);
           }
 
           v28 = *(*(&v39 + 1) + 8 * i);
-          v29 = [v21 animationForKey:v28];
+          v29 = [layer3 animationForKey:v28];
           v30 = [v29 copy];
 
           if (v30)
           {
-            [v21 removeAnimationForKey:v28];
-            v31 = [v12 view];
-            v32 = [v31 layer];
-            [v32 addAnimation:v30 forKey:v28];
+            [layer3 removeAnimationForKey:v28];
+            view = [preview2 view];
+            layer4 = [view layer];
+            [layer4 addAnimation:v30 forKey:v28];
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v39 objects:v45 count:16];
+        v25 = [_transferrableAnimationKeys countByEnumeratingWithState:&v39 objects:v45 count:16];
       }
 
       while (v25);
     }
 
-    v11 = v37;
-    v5 = v38;
+    primaryBody4 = v37;
+    anchorView = v38;
   }
 
   else
@@ -408,29 +408,29 @@
       }
     }
 
-    v11 = [(_UIGravityWellEffect *)self primaryBody];
-    v12 = [v11 preview];
+    primaryBody4 = [(_UIGravityWellEffect *)self primaryBody];
+    preview2 = [primaryBody4 preview];
   }
 
-  return v12;
+  return preview2;
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   completions = self->_completions;
-  aBlock = v4;
+  aBlock = completionCopy;
   if (!completions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_completions;
-    self->_completions = v6;
+    self->_completions = array;
 
-    v4 = aBlock;
+    completionCopy = aBlock;
     completions = self->_completions;
   }
 
-  v8 = _Block_copy(v4);
+  v8 = _Block_copy(completionCopy);
   [(NSMutableArray *)completions addObject:v8];
 }
 
@@ -444,17 +444,17 @@
   [UIView performWithoutAnimation:v2];
 }
 
-- (void)_updateToProgress:(double)a3 state:(int64_t)a4
+- (void)_updateToProgress:(double)progress state:(int64_t)state
 {
   if ([(_UIGravityWellEffect *)self state]!= 2)
   {
     [(_UIGravityWellEffect *)self effectProgress];
-    if (vabdd_f64(v8, a3) > 2.22044605e-16 || [(_UIGravityWellEffect *)self state]!= a4)
+    if (vabdd_f64(v8, progress) > 2.22044605e-16 || [(_UIGravityWellEffect *)self state]!= state)
     {
-      [(_UIGravityWellEffect *)self setEffectProgress:a3];
-      [(_UIGravityWellEffect *)self setState:a4];
-      v9 = [(_UIGravityWellEffect *)self primaryBody];
-      [v9 positionInPrimaryContainer];
+      [(_UIGravityWellEffect *)self setEffectProgress:progress];
+      [(_UIGravityWellEffect *)self setState:state];
+      primaryBody = [(_UIGravityWellEffect *)self primaryBody];
+      [primaryBody positionInPrimaryContainer];
       v11 = v10;
       v13 = v12;
       v15 = v14;
@@ -463,9 +463,9 @@
       aBlock[2] = __48___UIGravityWellEffect__updateToProgress_state___block_invoke;
       aBlock[3] = &unk_1E7100760;
       aBlock[4] = self;
-      v16 = v9;
+      v16 = primaryBody;
       v26 = v16;
-      v27 = a3;
+      progressCopy = progress;
       v28 = v11;
       v29 = v13;
       v30 = v15;
@@ -477,19 +477,19 @@
       v24[4] = self;
       v24[5] = a2;
       v18 = _Block_copy(v24);
-      v19 = [v16 effectView];
-      v20 = [v19 traitCollection];
-      v21 = [v20 userInterfaceIdiom];
+      effectView = [v16 effectView];
+      traitCollection = [effectView traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      v22 = [(_UIGravityWellEffect *)self _effectSpringBehavior];
-      if (v21 == 6)
+      _effectSpringBehavior = [(_UIGravityWellEffect *)self _effectSpringBehavior];
+      if (userInterfaceIdiom == 6)
       {
-        v23 = [(_UIGravityWellEffect *)self _criticallyDampedEffectSpringBehavior];
+        _criticallyDampedEffectSpringBehavior = [(_UIGravityWellEffect *)self _criticallyDampedEffectSpringBehavior];
 
-        v22 = v23;
+        _effectSpringBehavior = _criticallyDampedEffectSpringBehavior;
       }
 
-      [UIView _animateUsingSpringBehavior:v22 tracking:0 animations:v17 completion:v18];
+      [UIView _animateUsingSpringBehavior:_effectSpringBehavior tracking:0 animations:v17 completion:v18];
     }
   }
 }

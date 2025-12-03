@@ -1,12 +1,12 @@
 @interface BackLightCC
 - (BOOL)findBacklightServices;
 - (BOOL)shouldSuppressMitigations;
-- (BackLightCC)initWithParams:(__CFDictionary *)a3;
+- (BackLightCC)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
 - (void)defaultAction;
 - (void)defaultCPMSAction;
-- (void)initBrightnessTable:(__CFArray *)a3;
-- (void)initPowerTable:(__CFArray *)a3;
+- (void)initBrightnessTable:(__CFArray *)table;
+- (void)initPowerTable:(__CFArray *)table;
 - (void)refreshFunctionalTelemetry;
 @end
 
@@ -40,7 +40,7 @@
   return [(ComponentControl *)&v3 numberOfFields]+ 3;
 }
 
-- (BackLightCC)initWithParams:(__CFDictionary *)a3
+- (BackLightCC)initWithParams:(__CFDictionary *)params
 {
   v13.receiver = self;
   v13.super_class = BackLightCC;
@@ -58,7 +58,7 @@
     v4->_maxLICeilingSoft = -1;
     v4->super.super.nameofComponent = CFStringCreateWithFormat(0, 0, @"%d BackLight ", 0);
     v5->super.releaseMaxLI = 2;
-    sub_100002A20(a3, @"MaxReleaseRate", kCFNumberIntType, &v5->super.releaseMaxLI);
+    sub_100002A20(params, @"MaxReleaseRate", kCFNumberIntType, &v5->super.releaseMaxLI);
     if (![(BackLightCC *)v5 findBacklightServices]&& os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
       sub_10005706C();
@@ -87,10 +87,10 @@
     }
 
     LOBYTE(v5->powerLevelDown[8]) = 0;
-    [(ComponentControl *)v5 updatePowerParameters:a3];
-    if (sub_100031D64(a3, @"expectsCPMSSupport", 0))
+    [(ComponentControl *)v5 updatePowerParameters:params];
+    if (sub_100031D64(params, @"expectsCPMSSupport", 0))
     {
-      Value = CFDictionaryGetValue(a3, @"BacklightPower");
+      Value = CFDictionaryGetValue(params, @"BacklightPower");
       if (Value)
       {
         [(BackLightCC *)v5 initPowerTable:Value];
@@ -103,7 +103,7 @@
       }
     }
 
-    v10 = CFDictionaryGetValue(a3, @"BacklightBrightness");
+    v10 = CFDictionaryGetValue(params, @"BacklightBrightness");
     if (v10)
     {
       [(BackLightCC *)v5 initBrightnessTable:v10];
@@ -253,9 +253,9 @@ LABEL_8:
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412546;
-        v11 = [(PidComponent *)self nameofComponent];
+        nameofComponent = [(PidComponent *)self nameofComponent];
         v12 = 1024;
-        v13 = [(ComponentControl *)self powerTarget];
+        powerTarget = [(ComponentControl *)self powerTarget];
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "<Notice> DefaultCPMSAction for %@, set powerTarget:%u", &v10, 0x12u);
       }
     }
@@ -264,42 +264,42 @@ LABEL_8:
   }
 }
 
-- (void)initBrightnessTable:(__CFArray *)a3
+- (void)initBrightnessTable:(__CFArray *)table
 {
-  if (a3 && (v5 = CFGetTypeID(a3), v5 == CFArrayGetTypeID()))
+  if (table && (v5 = CFGetTypeID(table), v5 == CFArrayGetTypeID()))
   {
     v18 = 0;
     valuePtr = 0;
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(table);
     *(&self->super.currentPower + 5) = Count;
     if (Count)
     {
       v7 = 0;
-      v8 = self;
+      selfCopy = self;
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v7);
+        ValueAtIndex = CFArrayGetValueAtIndex(table, v7);
         if (ValueAtIndex && (v10 = ValueAtIndex, v11 = CFGetTypeID(ValueAtIndex), v11 == CFDictionaryGetTypeID()))
         {
           Value = CFDictionaryGetValue(v10, @"up");
           if (Value)
           {
             CFNumberGetValue(Value, kCFNumberSInt32Type, &valuePtr);
-            *(&v8->super.currentPower + 7) = valuePtr;
+            *(&selfCopy->super.currentPower + 7) = valuePtr;
           }
 
           v13 = CFDictionaryGetValue(v10, @"down");
           if (v13)
           {
             CFNumberGetValue(v13, kCFNumberSInt32Type, &v18);
-            v8->brightnessLevels[5] = v18;
+            selfCopy->brightnessLevels[5] = v18;
           }
 
           v14 = CFDictionaryGetValue(v10, @"level");
           if (v14)
           {
             CFNumberGetValue(v14, kCFNumberSInt32Type, &v18 + 4);
-            v8->brightnessLevelUp[5] = BYTE4(v18);
+            selfCopy->brightnessLevelUp[5] = BYTE4(v18);
           }
         }
 
@@ -315,7 +315,7 @@ LABEL_8:
         }
 
         ++v7;
-        v8 = (v8 + 1);
+        selfCopy = (selfCopy + 1);
       }
 
       while (v7 < *(&self->super.currentPower + 5));
@@ -335,42 +335,42 @@ LABEL_8:
   }
 }
 
-- (void)initPowerTable:(__CFArray *)a3
+- (void)initPowerTable:(__CFArray *)table
 {
-  if (a3 && (v5 = CFGetTypeID(a3), v5 == CFArrayGetTypeID()))
+  if (table && (v5 = CFGetTypeID(table), v5 == CFArrayGetTypeID()))
   {
     v18 = 0;
     valuePtr = 0;
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(table);
     LOBYTE(self->_maxLICeilingSoftPrevious) = Count;
     if (Count)
     {
       v7 = 0;
-      v8 = self;
+      selfCopy = self;
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, v7);
+        ValueAtIndex = CFArrayGetValueAtIndex(table, v7);
         if (ValueAtIndex && (v10 = ValueAtIndex, v11 = CFGetTypeID(ValueAtIndex), v11 == CFDictionaryGetTypeID()))
         {
           Value = CFDictionaryGetValue(v10, @"up");
           if (Value)
           {
             CFNumberGetValue(Value, kCFNumberSInt32Type, &valuePtr);
-            v8->powerLevelPointer = valuePtr;
+            selfCopy->powerLevelPointer = valuePtr;
           }
 
           v13 = CFDictionaryGetValue(v10, @"down");
           if (v13)
           {
             CFNumberGetValue(v13, kCFNumberSInt32Type, &v18);
-            v8->powerLevels[8] = v18;
+            selfCopy->powerLevels[8] = v18;
           }
 
           v14 = CFDictionaryGetValue(v10, @"level");
           if (v14)
           {
             CFNumberGetValue(v14, kCFNumberSInt32Type, &v18 + 4);
-            v8->powerLevelUp[8] = HIDWORD(v18);
+            selfCopy->powerLevelUp[8] = HIDWORD(v18);
           }
         }
 
@@ -386,7 +386,7 @@ LABEL_8:
         }
 
         ++v7;
-        v8 = (v8 + 4);
+        selfCopy = (selfCopy + 4);
       }
 
       while (v7 < LOBYTE(self->_maxLICeilingSoftPrevious));

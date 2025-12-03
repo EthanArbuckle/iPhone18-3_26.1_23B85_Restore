@@ -1,5 +1,5 @@
 @interface WDAnnotation
-- (WDAnnotation)initWithParagraph:(id)a3 type:(int)a4;
+- (WDAnnotation)initWithParagraph:(id)paragraph type:(int)type;
 - (id)description;
 - (id)otherEndOfRangedAnnotation;
 - (id)paragraphIds;
@@ -9,30 +9,30 @@
 
 @implementation WDAnnotation
 
-- (WDAnnotation)initWithParagraph:(id)a3 type:(int)a4
+- (WDAnnotation)initWithParagraph:(id)paragraph type:(int)type
 {
-  v6 = a3;
+  paragraphCopy = paragraph;
   v18.receiver = self;
   v18.super_class = WDAnnotation;
-  v7 = [(WDRun *)&v18 initWithParagraph:v6];
+  v7 = [(WDRun *)&v18 initWithParagraph:paragraphCopy];
   if (v7)
   {
-    v8 = [v6 document];
-    v9 = [[WDCharacterRun alloc] initWithParagraph:v6];
+    document = [paragraphCopy document];
+    v9 = [[WDCharacterRun alloc] initWithParagraph:paragraphCopy];
     mReference = v7->mReference;
     v7->mReference = v9;
 
     [(WDCharacterRun *)v7->mReference setString:@"\x05"];
     v11 = [WDText alloc];
-    v12 = [v6 text];
-    v13 = [v12 tableCell];
-    v14 = [(WDText *)v11 initWithDocument:v8 textType:4 tableCell:v13];
+    text = [paragraphCopy text];
+    tableCell = [text tableCell];
+    v14 = [(WDText *)v11 initWithDocument:document textType:4 tableCell:tableCell];
 
     v15 = [[WDAnnotationData alloc] initWithText:v14];
     mData = v7->mData;
     v7->mData = v15;
 
-    v7->mType = a4;
+    v7->mType = type;
   }
 
   return v7;
@@ -41,27 +41,27 @@
 - (void)useDataFromOtherEnd
 {
   WeakRetained = objc_loadWeakRetained(&self->mOtherEndOfRangedAnnotation);
-  v4 = [WeakRetained data];
+  data = [WeakRetained data];
 
   v5 = objc_loadWeakRetained(&self->mOtherEndOfRangedAnnotation);
-  v6 = [v5 parent];
-  v7 = [v6 annotationType];
+  parent = [v5 parent];
+  annotationType = [parent annotationType];
 
   v8 = objc_loadWeakRetained(&self->mOtherEndOfRangedAnnotation);
-  v9 = [v8 parent];
-  if (v7 == 2)
+  parent2 = [v8 parent];
+  if (annotationType == 2)
   {
-    [(WDAnnotation *)self setParent:v9];
+    [(WDAnnotation *)self setParent:parent2];
   }
 
   else
   {
-    v10 = [v9 otherEndOfRangedAnnotation];
-    [(WDAnnotation *)self setParent:v10];
+    otherEndOfRangedAnnotation = [parent2 otherEndOfRangedAnnotation];
+    [(WDAnnotation *)self setParent:otherEndOfRangedAnnotation];
   }
 
   mData = self->mData;
-  self->mData = v4;
+  self->mData = data;
 }
 
 - (id)otherEndOfRangedAnnotation
@@ -73,17 +73,17 @@
 
 - (id)paragraphIds
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(WDAnnotation *)self text];
-  v5 = [v4 paragraphs];
+  array = [MEMORY[0x277CBEB18] array];
+  text = [(WDAnnotation *)self text];
+  paragraphs = [text paragraphs];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __28__WDAnnotation_paragraphIds__block_invoke;
   v8[3] = &unk_2799CD978;
-  v6 = v3;
+  v6 = array;
   v9 = v6;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [paragraphs enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -104,12 +104,12 @@ void __28__WDAnnotation_paragraphIds__block_invoke(uint64_t a1, void *a2)
 
 - (unint64_t)lastParagraphId
 {
-  v2 = [(WDAnnotation *)self text];
-  v3 = [v2 paragraphs];
-  v4 = [v3 lastObject];
-  v5 = [v4 identifier];
+  text = [(WDAnnotation *)self text];
+  paragraphs = [text paragraphs];
+  lastObject = [paragraphs lastObject];
+  identifier = [lastObject identifier];
 
-  return v5;
+  return identifier;
 }
 
 - (id)description

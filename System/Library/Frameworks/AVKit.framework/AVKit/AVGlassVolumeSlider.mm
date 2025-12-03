@@ -1,12 +1,12 @@
 @interface AVGlassVolumeSlider
-- (AVGlassVolumeSlider)initWithFrame:(CGRect)a3;
-- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)a3;
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (AVGlassVolumeSlider)initWithFrame:(CGRect)frame;
+- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)point;
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isCollapsedOrExcluded;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
 - (CGSize)extrinsicContentSize;
 - (CGSize)intrinsicContentSize;
@@ -14,14 +14,14 @@
 - (void)_commonInit;
 - (void)_endTracking;
 - (void)_updateLayoutItem;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)didMoveToWindow;
 - (void)layoutAttributesDidChange;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setRemoved:(BOOL)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setIncluded:(BOOL)included;
+- (void)setRemoved:(BOOL)removed;
+- (void)setValue:(float)value animated:(BOOL)animated;
 @end
 
 @implementation AVGlassVolumeSlider
@@ -37,11 +37,11 @@
 
 - (void)_updateLayoutItem
 {
-  v3 = [(AVGlassVolumeSlider *)self layoutAttributes];
+  layoutAttributes = [(AVGlassVolumeSlider *)self layoutAttributes];
   [(AVGlassVolumeSlider *)self intrinsicContentSize];
-  [v3 setMinimumSize:?];
+  [layoutAttributes setMinimumSize:?];
 
-  v4 = [(AVGlassVolumeSlider *)self layoutAttributes];
+  layoutAttributes2 = [(AVGlassVolumeSlider *)self layoutAttributes];
   if ([(AVGlassVolumeSlider *)self isIncluded])
   {
     v5 = [(AVGlassVolumeSlider *)self isRemoved]^ 1;
@@ -52,16 +52,16 @@
     v5 = 0;
   }
 
-  [v4 setIncluded:v5];
+  [layoutAttributes2 setIncluded:v5];
 
-  v6 = [(AVGlassVolumeSlider *)self layoutAttributes];
-  [v6 setCollapsed:{-[AVGlassVolumeSlider isCollapsed](self, "isCollapsed")}];
+  layoutAttributes3 = [(AVGlassVolumeSlider *)self layoutAttributes];
+  [layoutAttributes3 setCollapsed:{-[AVGlassVolumeSlider isCollapsed](self, "isCollapsed")}];
 }
 
-- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)a3
+- (BOOL)_shouldTrackTouchAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(AVGlassVolumeSlider *)self scrubsWhenTappedAnywhere])
   {
     return 1;
@@ -98,13 +98,13 @@
 
 - (void)layoutAttributesDidChange
 {
-  v3 = [(AVGlassVolumeSlider *)self layoutAttributes];
-  -[AVGlassVolumeSlider setCollapsed:](self, "setCollapsed:", [v3 isCollapsed]);
+  layoutAttributes = [(AVGlassVolumeSlider *)self layoutAttributes];
+  -[AVGlassVolumeSlider setCollapsed:](self, "setCollapsed:", [layoutAttributes isCollapsed]);
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     [(AVGlassVolumeSlider *)self setAnimatingVolumeChange:1];
     objc_initWeak(&location, self);
@@ -115,7 +115,7 @@
     v10[2] = __41__AVGlassVolumeSlider_setValue_animated___block_invoke;
     v10[3] = &unk_1E7207C28;
     objc_copyWeak(&v11, &location);
-    v12 = a3;
+    valueCopy = value;
     [v7 addAnimations:v10];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
@@ -133,7 +133,7 @@
   {
     v8.receiver = self;
     v8.super_class = AVGlassVolumeSlider;
-    [(AVGlassVolumeSlider *)&v8 setValue:*&a3 animated:?];
+    [(AVGlassVolumeSlider *)&v8 setValue:*&value animated:?];
   }
 }
 
@@ -147,28 +147,28 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   [v4 layoutIfNeeded];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = AVGlassVolumeSlider;
-  [(AVGlassVolumeSlider *)&v4 cancelTrackingWithEvent:a3];
+  [(AVGlassVolumeSlider *)&v4 cancelTrackingWithEvent:event];
   [(AVGlassVolumeSlider *)self _endTracking];
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(AVGlassVolumeSlider *)self bounds];
   [(AVGlassVolumeSlider *)self trackRectForBounds:?];
   Width = CGRectGetWidth(v23);
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v8 = v7;
-  [v5 previousLocationInView:self];
+  [touchCopy previousLocationInView:self];
   v10 = v9;
-  v11 = [(AVGlassVolumeSlider *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVGlassVolumeSlider *)self effectiveUserInterfaceLayoutDirection];
   if (Width > 0.0 && v8 - v10 != 0.0)
   {
-    if (v11 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v12 = -((v8 - v10) / Width);
     }
@@ -178,13 +178,13 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
       v12 = (v8 - v10) / Width;
     }
 
-    [v5 locationInView:self];
+    [touchCopy locationInView:self];
     v14 = v13;
     [(AVGlassVolumeSlider *)self bounds];
     [(AVGlassVolumeSlider *)self trackRectForBounds:?];
     if (v14 >= CGRectGetMinX(v24) || (v15 = 0.0, v12 <= 0.0))
     {
-      [v5 locationInView:self];
+      [touchCopy locationInView:self];
       v17 = v16;
       [(AVGlassVolumeSlider *)self bounds];
       [(AVGlassVolumeSlider *)self trackRectForBounds:?];
@@ -211,13 +211,13 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return Width > 0.0;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(AVGlassVolumeSlider *)self setHasChangedLocationAtLeastOnce:0];
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v7 = v6;
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v9 = v8;
   v11 = v10;
 
@@ -235,10 +235,10 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return v12;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVGlassVolumeSlider *)self hitRect];
   v10 = x;
   v11 = y;
@@ -267,10 +267,10 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  LOBYTE(self) = [v4 isDescendantOfView:self];
+  view = [begin view];
+  LOBYTE(self) = [view isDescendantOfView:self];
 
   return self;
 }
@@ -298,9 +298,9 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(AVGlassVolumeSlider *)self isIncluded];
+  isIncluded = [(AVGlassVolumeSlider *)self isIncluded];
   [(AVGlassVolumeSlider *)self extrinsicContentSize];
-  if (!v3)
+  if (!isIncluded)
   {
     v4 = 0.0;
   }
@@ -310,10 +310,10 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)a3
+- (BOOL)avkit_shouldPreventExternalGestureRecognizerAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (([(AVGlassVolumeSlider *)self isTracking]& 1) != 0)
   {
     return 1;
@@ -322,44 +322,44 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   return [(AVGlassVolumeSlider *)self _shouldTrackTouchAtPoint:x, y];
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  if (a3.width != self->_extrinsicContentSize.width || a3.height != self->_extrinsicContentSize.height)
+  if (size.width != self->_extrinsicContentSize.width || size.height != self->_extrinsicContentSize.height)
   {
-    self->_extrinsicContentSize = a3;
+    self->_extrinsicContentSize = size;
     [(AVGlassVolumeSlider *)self invalidateIntrinsicContentSize];
 
     [(AVGlassVolumeSlider *)self _updateLayoutItem];
   }
 }
 
-- (void)setRemoved:(BOOL)a3
+- (void)setRemoved:(BOOL)removed
 {
-  if (self->_removed != a3)
+  if (self->_removed != removed)
   {
-    self->_removed = a3;
+    self->_removed = removed;
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
     [(AVGlassVolumeSlider *)self _updateLayoutItem];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  if (self->_collapsed != a3)
+  if (self->_collapsed != collapsed)
   {
-    self->_collapsed = a3;
+    self->_collapsed = collapsed;
     [(AVGlassVolumeSlider *)self _updateLayoutItem];
 
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
   }
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
+    self->_included = included;
     [(AVGlassVolumeSlider *)self _updateLayoutItem];
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
 
@@ -392,15 +392,15 @@ void __41__AVGlassVolumeSlider_setValue_animated___block_invoke(uint64_t a1)
   [(AVLayoutItemAttributes *)self->_layoutAttributes setIncluded:[(AVGlassVolumeSlider *)self isIncluded]];
   [(AVLayoutItemAttributes *)self->_layoutAttributes setHasFlexibleContentSize:0];
   v6 = self->_layoutAttributes;
-  v7 = [(AVGlassVolumeSlider *)self accessibilityIdentifier];
-  [(AVLayoutItemAttributes *)v6 setAccessibilityIdentifier:v7];
+  accessibilityIdentifier = [(AVGlassVolumeSlider *)self accessibilityIdentifier];
+  [(AVLayoutItemAttributes *)v6 setAccessibilityIdentifier:accessibilityIdentifier];
 }
 
-- (AVGlassVolumeSlider)initWithFrame:(CGRect)a3
+- (AVGlassVolumeSlider)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AVGlassVolumeSlider;
-  v3 = [(AVGlassVolumeSlider *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVGlassVolumeSlider *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

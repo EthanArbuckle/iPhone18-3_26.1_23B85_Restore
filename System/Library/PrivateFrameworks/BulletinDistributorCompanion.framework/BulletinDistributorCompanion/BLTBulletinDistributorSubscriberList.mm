@@ -1,13 +1,13 @@
 @interface BLTBulletinDistributorSubscriberList
 - (BLTBulletinDistributorSubscriberList)init;
-- (BOOL)hasSubscribersForSectionID:(id)a3;
+- (BOOL)hasSubscribersForSectionID:(id)d;
 - (id)subscribedSectionIDs;
-- (void)_removeSubscribersWithMachServiceName:(id)a3 exceptFor:(id)a4;
-- (void)addSubscriber:(id)a3;
-- (void)pingWithBulletin:(id)a3 ack:(id)a4;
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4;
-- (void)removeSubscriber:(id)a3;
-- (void)subscriber:(id)a3 subscribedWithMachServiceName:(id)a4;
+- (void)_removeSubscribersWithMachServiceName:(id)name exceptFor:(id)for;
+- (void)addSubscriber:(id)subscriber;
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack;
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD;
+- (void)removeSubscriber:(id)subscriber;
+- (void)subscriber:(id)subscriber subscribedWithMachServiceName:(id)name;
 @end
 
 @implementation BLTBulletinDistributorSubscriberList
@@ -19,9 +19,9 @@
   v2 = [(BLTBulletinDistributorSubscriberList *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     subscribers = v2->_subscribers;
-    v2->_subscribers = v3;
+    v2->_subscribers = array;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.bulletindistributor.subscriberlist", v5);
@@ -32,17 +32,17 @@
   return v2;
 }
 
-- (void)addSubscriber:(id)a3
+- (void)addSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__BLTBulletinDistributorSubscriberList_addSubscriber___block_invoke;
   v7[3] = &unk_278D31400;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = subscriberCopy;
+  selfCopy = self;
+  v6 = subscriberCopy;
   dispatch_async(queue, v7);
 }
 
@@ -68,17 +68,17 @@ uint64_t __54__BLTBulletinDistributorSubscriberList_addSubscriber___block_invoke
   return result;
 }
 
-- (void)removeSubscriber:(id)a3
+- (void)removeSubscriber:(id)subscriber
 {
-  v4 = a3;
+  subscriberCopy = subscriber;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__BLTBulletinDistributorSubscriberList_removeSubscriber___block_invoke;
   v7[3] = &unk_278D31400;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = subscriberCopy;
+  selfCopy = self;
+  v6 = subscriberCopy;
   dispatch_async(queue, v7);
 }
 
@@ -96,20 +96,20 @@ void __57__BLTBulletinDistributorSubscriberList_removeSubscriber___block_invoke(
   }
 }
 
-- (void)pingWithBulletin:(id)a3 ack:(id)a4
+- (void)pingWithBulletin:(id)bulletin ack:(id)ack
 {
-  v6 = a3;
-  v7 = a4;
+  bulletinCopy = bulletin;
+  ackCopy = ack;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__BLTBulletinDistributorSubscriberList_pingWithBulletin_ack___block_invoke;
   block[3] = &unk_278D316A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bulletinCopy;
+  v13 = ackCopy;
+  v9 = ackCopy;
+  v10 = bulletinCopy;
   dispatch_async(queue, block);
 }
 
@@ -149,20 +149,20 @@ void __61__BLTBulletinDistributorSubscriberList_pingWithBulletin_ack___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pingWithRecordID:(id)a3 forSectionID:(id)a4
+- (void)pingWithRecordID:(id)d forSectionID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__BLTBulletinDistributorSubscriberList_pingWithRecordID_forSectionID___block_invoke;
   block[3] = &unk_278D316C8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -265,9 +265,9 @@ void __60__BLTBulletinDistributorSubscriberList_subscribedSectionIDs__block_invo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasSubscribersForSectionID:(id)a3
+- (BOOL)hasSubscribersForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_not_V2(self->_queue);
   v11 = 0;
   v12 = &v11;
@@ -279,14 +279,14 @@ void __60__BLTBulletinDistributorSubscriberList_subscribedSectionIDs__block_invo
   block[2] = __67__BLTBulletinDistributorSubscriberList_hasSubscribersForSectionID___block_invoke;
   block[3] = &unk_278D32FC8;
   block[4] = self;
-  v9 = v4;
+  v9 = dCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
-  LOBYTE(v4) = *(v12 + 24);
+  LOBYTE(dCopy) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return dCopy;
 }
 
 void __67__BLTBulletinDistributorSubscriberList_hasSubscribersForSectionID___block_invoke(void *a1)
@@ -336,10 +336,10 @@ LABEL_11:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscriber:(id)a3 subscribedWithMachServiceName:(id)a4
+- (void)subscriber:(id)subscriber subscribedWithMachServiceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  subscriberCopy = subscriber;
+  nameCopy = name;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -347,27 +347,27 @@ LABEL_11:
   block[2] = __81__BLTBulletinDistributorSubscriberList_subscriber_subscribedWithMachServiceName___block_invoke;
   block[3] = &unk_278D316C8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = nameCopy;
+  v13 = subscriberCopy;
+  v9 = subscriberCopy;
+  v10 = nameCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)_removeSubscribersWithMachServiceName:(id)a3 exceptFor:(id)a4
+- (void)_removeSubscribersWithMachServiceName:(id)name exceptFor:(id)for
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  nameCopy = name;
+  forCopy = for;
+  if (nameCopy)
   {
     dispatch_assert_queue_V2(self->_queue);
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
+    selfCopy = self;
     v9 = self->_subscribers;
     v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
@@ -385,14 +385,14 @@ LABEL_11:
           }
 
           v14 = *(*(&v19 + 1) + 8 * v13);
-          if (v14 != v7)
+          if (v14 != forCopy)
           {
-            v15 = [*(*(&v19 + 1) + 8 * v13) machServiceName];
-            v16 = [v15 isEqualToString:v6];
+            machServiceName = [*(*(&v19 + 1) + 8 * v13) machServiceName];
+            v16 = [machServiceName isEqualToString:nameCopy];
 
             if (v16)
             {
-              [v8 addObject:v14];
+              [array addObject:v14];
               [v14 setDelegate:0];
             }
           }
@@ -407,7 +407,7 @@ LABEL_11:
       while (v11);
     }
 
-    [(NSMutableArray *)v18->_subscribers removeObjectsInArray:v8];
+    [(NSMutableArray *)selfCopy->_subscribers removeObjectsInArray:array];
   }
 
   v17 = *MEMORY[0x277D85DE8];

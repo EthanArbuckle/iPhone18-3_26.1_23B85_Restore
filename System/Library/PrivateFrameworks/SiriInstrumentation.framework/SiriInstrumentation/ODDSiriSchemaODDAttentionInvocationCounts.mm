@@ -1,68 +1,68 @@
 @interface ODDSiriSchemaODDAttentionInvocationCounts
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAttentionInvocationCounts)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAttentionInvocationCounts)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDAttentionInvocationCounts)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAttentionInvocationCounts)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCheckerNearMissBeforeAcceptCount:(BOOL)a3;
-- (void)setHasCheckerRejectBeforeActivationCount:(BOOL)a3;
-- (void)setHasFalseWakeWithNoTriggerPhraseCount:(BOOL)a3;
-- (void)setHasFalseWakeWithSpeechNoMatchCount:(BOOL)a3;
-- (void)setHasFalseWakeWithTTMMitigationCount:(BOOL)a3;
-- (void)setHasNcAcceptPostNcMitigationCount:(BOOL)a3;
-- (void)setHasSpkidAcceptPostSpkidMitigationCount:(BOOL)a3;
-- (void)setHasTtmAcceptPostTtmMitigationCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCheckerNearMissBeforeAcceptCount:(BOOL)count;
+- (void)setHasCheckerRejectBeforeActivationCount:(BOOL)count;
+- (void)setHasFalseWakeWithNoTriggerPhraseCount:(BOOL)count;
+- (void)setHasFalseWakeWithSpeechNoMatchCount:(BOOL)count;
+- (void)setHasFalseWakeWithTTMMitigationCount:(BOOL)count;
+- (void)setHasNcAcceptPostNcMitigationCount:(BOOL)count;
+- (void)setHasSpkidAcceptPostSpkidMitigationCount:(BOOL)count;
+- (void)setHasTtmAcceptPostTtmMitigationCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAttentionInvocationCounts
 
-- (ODDSiriSchemaODDAttentionInvocationCounts)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAttentionInvocationCounts)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = ODDSiriSchemaODDAttentionInvocationCounts;
   v5 = [(ODDSiriSchemaODDAttentionInvocationCounts *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"phsRejectBeforeActivationCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"phsRejectBeforeActivationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationCounts setPhsRejectBeforeActivationCount:](v5, "setPhsRejectBeforeActivationCount:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"checkerRejectBeforeActivationCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"checkerRejectBeforeActivationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationCounts setCheckerRejectBeforeActivationCount:](v5, "setCheckerRejectBeforeActivationCount:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"checkerNearMissBeforeAcceptCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"checkerNearMissBeforeAcceptCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationCounts setCheckerNearMissBeforeAcceptCount:](v5, "setCheckerNearMissBeforeAcceptCount:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:{@"falseWakeWithNoTriggerPhraseCount", v8}];
+    v9 = [dictionaryCopy objectForKeyedSubscript:{@"falseWakeWithNoTriggerPhraseCount", v8}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationCounts setFalseWakeWithNoTriggerPhraseCount:](v5, "setFalseWakeWithNoTriggerPhraseCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"falseWakeWithSpeechNoMatchCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"falseWakeWithSpeechNoMatchCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationCounts setFalseWakeWithSpeechNoMatchCount:](v5, "setFalseWakeWithSpeechNoMatchCount:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"falseWakeWithTTMMitigationCount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"falseWakeWithTTMMitigationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
     }
 
     v19 = v7;
-    v12 = [v4 objectForKeyedSubscript:@"ncAcceptPostNcMitigationCount"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"ncAcceptPostNcMitigationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,14 +78,14 @@
     }
 
     v13 = v6;
-    v14 = [v4 objectForKeyedSubscript:@"spkidAcceptPostSpkidMitigationCount"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"spkidAcceptPostSpkidMitigationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAttentionInvocationCounts setSpkidAcceptPostSpkidMitigationCount:](v5, "setSpkidAcceptPostSpkidMitigationCount:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"ttmAcceptPostTtmMitigationCount"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"ttmAcceptPostTtmMitigationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,30 +98,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAttentionInvocationCounts)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAttentionInvocationCounts)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAttentionInvocationCounts *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAttentionInvocationCounts *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAttentionInvocationCounts *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -134,12 +134,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts checkerNearMissBeforeAcceptCount](self, "checkerNearMissBeforeAcceptCount")}];
-    [v3 setObject:v7 forKeyedSubscript:@"checkerNearMissBeforeAcceptCount"];
+    [dictionary setObject:v7 forKeyedSubscript:@"checkerNearMissBeforeAcceptCount"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -160,7 +160,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts checkerRejectBeforeActivationCount](self, "checkerRejectBeforeActivationCount")}];
-  [v3 setObject:v8 forKeyedSubscript:@"checkerRejectBeforeActivationCount"];
+  [dictionary setObject:v8 forKeyedSubscript:@"checkerRejectBeforeActivationCount"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -176,7 +176,7 @@ LABEL_4:
 
 LABEL_16:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts falseWakeWithNoTriggerPhraseCount](self, "falseWakeWithNoTriggerPhraseCount")}];
-  [v3 setObject:v9 forKeyedSubscript:@"falseWakeWithNoTriggerPhraseCount"];
+  [dictionary setObject:v9 forKeyedSubscript:@"falseWakeWithNoTriggerPhraseCount"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -192,7 +192,7 @@ LABEL_5:
 
 LABEL_17:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts falseWakeWithSpeechNoMatchCount](self, "falseWakeWithSpeechNoMatchCount")}];
-  [v3 setObject:v10 forKeyedSubscript:@"falseWakeWithSpeechNoMatchCount"];
+  [dictionary setObject:v10 forKeyedSubscript:@"falseWakeWithSpeechNoMatchCount"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -208,7 +208,7 @@ LABEL_6:
 
 LABEL_18:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts falseWakeWithTTMMitigationCount](self, "falseWakeWithTTMMitigationCount")}];
-  [v3 setObject:v11 forKeyedSubscript:@"falseWakeWithTTMMitigationCount"];
+  [dictionary setObject:v11 forKeyedSubscript:@"falseWakeWithTTMMitigationCount"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -224,7 +224,7 @@ LABEL_7:
 
 LABEL_19:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts ncAcceptPostNcMitigationCount](self, "ncAcceptPostNcMitigationCount")}];
-  [v3 setObject:v12 forKeyedSubscript:@"ncAcceptPostNcMitigationCount"];
+  [dictionary setObject:v12 forKeyedSubscript:@"ncAcceptPostNcMitigationCount"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -240,7 +240,7 @@ LABEL_8:
 
 LABEL_20:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts phsRejectBeforeActivationCount](self, "phsRejectBeforeActivationCount")}];
-  [v3 setObject:v13 forKeyedSubscript:@"phsRejectBeforeActivationCount"];
+  [dictionary setObject:v13 forKeyedSubscript:@"phsRejectBeforeActivationCount"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -256,19 +256,19 @@ LABEL_9:
 
 LABEL_21:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts spkidAcceptPostSpkidMitigationCount](self, "spkidAcceptPostSpkidMitigationCount")}];
-  [v3 setObject:v14 forKeyedSubscript:@"spkidAcceptPostSpkidMitigationCount"];
+  [dictionary setObject:v14 forKeyedSubscript:@"spkidAcceptPostSpkidMitigationCount"];
 
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_10:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDAttentionInvocationCounts ttmAcceptPostTtmMitigationCount](self, "ttmAcceptPostTtmMitigationCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"ttmAcceptPostTtmMitigationCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"ttmAcceptPostTtmMitigationCount"];
   }
 
 LABEL_11:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -396,16 +396,16 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   has = self->_has;
-  v6 = v4[22];
+  v6 = equalCopy[22];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_38;
@@ -414,13 +414,13 @@ LABEL_10:
   if (*&has)
   {
     phsRejectBeforeActivationCount = self->_phsRejectBeforeActivationCount;
-    if (phsRejectBeforeActivationCount != [v4 phsRejectBeforeActivationCount])
+    if (phsRejectBeforeActivationCount != [equalCopy phsRejectBeforeActivationCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -432,13 +432,13 @@ LABEL_10:
   if (v8)
   {
     checkerRejectBeforeActivationCount = self->_checkerRejectBeforeActivationCount;
-    if (checkerRejectBeforeActivationCount != [v4 checkerRejectBeforeActivationCount])
+    if (checkerRejectBeforeActivationCount != [equalCopy checkerRejectBeforeActivationCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -450,13 +450,13 @@ LABEL_10:
   if (v10)
   {
     checkerNearMissBeforeAcceptCount = self->_checkerNearMissBeforeAcceptCount;
-    if (checkerNearMissBeforeAcceptCount != [v4 checkerNearMissBeforeAcceptCount])
+    if (checkerNearMissBeforeAcceptCount != [equalCopy checkerNearMissBeforeAcceptCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -468,13 +468,13 @@ LABEL_10:
   if (v12)
   {
     falseWakeWithNoTriggerPhraseCount = self->_falseWakeWithNoTriggerPhraseCount;
-    if (falseWakeWithNoTriggerPhraseCount != [v4 falseWakeWithNoTriggerPhraseCount])
+    if (falseWakeWithNoTriggerPhraseCount != [equalCopy falseWakeWithNoTriggerPhraseCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -486,13 +486,13 @@ LABEL_10:
   if (v14)
   {
     falseWakeWithSpeechNoMatchCount = self->_falseWakeWithSpeechNoMatchCount;
-    if (falseWakeWithSpeechNoMatchCount != [v4 falseWakeWithSpeechNoMatchCount])
+    if (falseWakeWithSpeechNoMatchCount != [equalCopy falseWakeWithSpeechNoMatchCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -504,13 +504,13 @@ LABEL_10:
   if (v16)
   {
     falseWakeWithTTMMitigationCount = self->_falseWakeWithTTMMitigationCount;
-    if (falseWakeWithTTMMitigationCount != [v4 falseWakeWithTTMMitigationCount])
+    if (falseWakeWithTTMMitigationCount != [equalCopy falseWakeWithTTMMitigationCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -522,13 +522,13 @@ LABEL_10:
   if (v18)
   {
     ncAcceptPostNcMitigationCount = self->_ncAcceptPostNcMitigationCount;
-    if (ncAcceptPostNcMitigationCount != [v4 ncAcceptPostNcMitigationCount])
+    if (ncAcceptPostNcMitigationCount != [equalCopy ncAcceptPostNcMitigationCount])
     {
       goto LABEL_38;
     }
 
     has = self->_has;
-    v6 = v4[22];
+    v6 = equalCopy[22];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -540,10 +540,10 @@ LABEL_10:
   if (v20)
   {
     spkidAcceptPostSpkidMitigationCount = self->_spkidAcceptPostSpkidMitigationCount;
-    if (spkidAcceptPostSpkidMitigationCount == [v4 spkidAcceptPostSpkidMitigationCount])
+    if (spkidAcceptPostSpkidMitigationCount == [equalCopy spkidAcceptPostSpkidMitigationCount])
     {
       has = self->_has;
-      v6 = v4[22];
+      v6 = equalCopy[22];
       goto LABEL_34;
     }
 
@@ -562,7 +562,7 @@ LABEL_34:
   if (v22)
   {
     ttmAcceptPostTtmMitigationCount = self->_ttmAcceptPostTtmMitigationCount;
-    if (ttmAcceptPostTtmMitigationCount != [v4 ttmAcceptPostTtmMitigationCount])
+    if (ttmAcceptPostTtmMitigationCount != [equalCopy ttmAcceptPostTtmMitigationCount])
     {
       goto LABEL_38;
     }
@@ -574,9 +574,9 @@ LABEL_39:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -693,9 +693,9 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)setHasTtmAcceptPostTtmMitigationCount:(BOOL)a3
+- (void)setHasTtmAcceptPostTtmMitigationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -708,9 +708,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSpkidAcceptPostSpkidMitigationCount:(BOOL)a3
+- (void)setHasSpkidAcceptPostSpkidMitigationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -723,9 +723,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNcAcceptPostNcMitigationCount:(BOOL)a3
+- (void)setHasNcAcceptPostNcMitigationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -738,9 +738,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasFalseWakeWithTTMMitigationCount:(BOOL)a3
+- (void)setHasFalseWakeWithTTMMitigationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -753,9 +753,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasFalseWakeWithSpeechNoMatchCount:(BOOL)a3
+- (void)setHasFalseWakeWithSpeechNoMatchCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -768,9 +768,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasFalseWakeWithNoTriggerPhraseCount:(BOOL)a3
+- (void)setHasFalseWakeWithNoTriggerPhraseCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -783,9 +783,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasCheckerNearMissBeforeAcceptCount:(BOOL)a3
+- (void)setHasCheckerNearMissBeforeAcceptCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -798,9 +798,9 @@ LABEL_11:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasCheckerRejectBeforeActivationCount:(BOOL)a3
+- (void)setHasCheckerRejectBeforeActivationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

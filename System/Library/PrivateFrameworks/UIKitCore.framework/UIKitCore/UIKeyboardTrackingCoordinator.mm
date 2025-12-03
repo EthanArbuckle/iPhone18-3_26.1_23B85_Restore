@@ -1,28 +1,28 @@
 @interface UIKeyboardTrackingCoordinator
-+ (id)trackingCoordinatorForScene:(id)a3;
++ (id)trackingCoordinatorForScene:(id)scene;
 - (CGRect)lastSentEndFrame;
 - (CGRect)previousEndFrame;
-- (UIKeyboardTrackingCoordinator)initWithWindowScene:(id)a3;
-- (id)notificationInfoForStartFrame:(CGRect)a3 endFrame:(CGRect)a4 animationDuration:(double)a5;
+- (UIKeyboardTrackingCoordinator)initWithWindowScene:(id)scene;
+- (id)notificationInfoForStartFrame:(CGRect)frame endFrame:(CGRect)endFrame animationDuration:(double)duration;
 - (id)trackingCoordinator;
-- (void)animateTrackingElementsFromStart:(CGRect)a3 toEnd:(CGRect)a4 duration:(double)a5 forShow:(BOOL)a6;
-- (void)moveKeyboardTrackingElementsFromStartFrame:(CGRect)a3 endFrame:(CGRect)a4 duration:(double)a5 isStart:(BOOL)a6 forShow:(BOOL)a7;
+- (void)animateTrackingElementsFromStart:(CGRect)start toEnd:(CGRect)end duration:(double)duration forShow:(BOOL)show;
+- (void)moveKeyboardTrackingElementsFromStartFrame:(CGRect)frame endFrame:(CGRect)endFrame duration:(double)duration isStart:(BOOL)start forShow:(BOOL)show;
 @end
 
 @implementation UIKeyboardTrackingCoordinator
 
-- (UIKeyboardTrackingCoordinator)initWithWindowScene:(id)a3
+- (UIKeyboardTrackingCoordinator)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v11.receiver = self;
   v11.super_class = UIKeyboardTrackingCoordinator;
   v5 = [(UIKeyboardTrackingCoordinator *)&v11 init];
   if (v5)
   {
-    v6 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:v4];
-    v7 = [v6 rootViewController];
+    v6 = [UITextEffectsWindow activeTextEffectsWindowForWindowScene:sceneCopy];
+    rootViewController = [v6 rootViewController];
     controllerForTrackingElements = v5->_controllerForTrackingElements;
-    v5->_controllerForTrackingElements = v7;
+    v5->_controllerForTrackingElements = rootViewController;
 
     v9 = *(MEMORY[0x1E695F058] + 16);
     v5->_lastSentEndFrame.origin = *MEMORY[0x1E695F058];
@@ -32,12 +32,12 @@
   return v5;
 }
 
-+ (id)trackingCoordinatorForScene:(id)a3
++ (id)trackingCoordinatorForScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   if (os_variant_has_internal_diagnostics())
   {
-    if (!v3)
+    if (!sceneCopy)
     {
       v6 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -48,7 +48,7 @@
     }
   }
 
-  else if (!v3)
+  else if (!sceneCopy)
   {
     v7 = *(__UILogGetCategoryCachedImpl("Assert", &trackingCoordinatorForScene____s_category) + 8);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -58,7 +58,7 @@
     }
   }
 
-  v4 = [[UIKeyboardTrackingCoordinator alloc] initWithWindowScene:v3];
+  v4 = [[UIKeyboardTrackingCoordinator alloc] initWithWindowScene:sceneCopy];
 
   return v4;
 }
@@ -66,9 +66,9 @@
 - (id)trackingCoordinator
 {
   v2 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v3 = [v2 trackingElementCoordinator];
+  trackingElementCoordinator = [v2 trackingElementCoordinator];
 
-  return v3;
+  return trackingElementCoordinator;
 }
 
 - (CGRect)previousEndFrame
@@ -84,20 +84,20 @@
   return result;
 }
 
-- (id)notificationInfoForStartFrame:(CGRect)a3 endFrame:(CGRect)a4 animationDuration:(double)a5
+- (id)notificationInfoForStartFrame:(CGRect)frame endFrame:(CGRect)endFrame animationDuration:(double)duration
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = endFrame.size.height;
+  width = endFrame.size.width;
+  y = endFrame.origin.y;
+  x = endFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v12 = +[UIInputViewSetNotificationInfo info];
   [v12 populateStartInfoWithFrame:{v11, v10, v9, v8}];
   [v12 populateEndInfoWithFrame:{x, y, width, height}];
-  v13 = [UIInputViewAnimationStyle animationStyleAnimated:a5 > 0.0 duration:a5];
+  v13 = [UIInputViewAnimationStyle animationStyleAnimated:duration > 0.0 duration:duration];
   [v12 populateWithAnimationStyle:v13];
 
   [v12 addKeyboardNotificationDebuggingInfo:@"UIKeyboardTrackingCoordinator"];
@@ -105,20 +105,20 @@
   return v12;
 }
 
-- (void)animateTrackingElementsFromStart:(CGRect)a3 toEnd:(CGRect)a4 duration:(double)a5 forShow:(BOOL)a6
+- (void)animateTrackingElementsFromStart:(CGRect)start toEnd:(CGRect)end duration:(double)duration forShow:(BOOL)show
 {
-  v6 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3.size.height;
-  v12 = a3.size.width;
-  v13 = a3.origin.y;
-  v14 = a3.origin.x;
-  v16 = a3.size.width;
-  v17 = a3.origin.y;
-  v18 = a3.origin.x;
+  showCopy = show;
+  height = end.size.height;
+  width = end.size.width;
+  y = end.origin.y;
+  x = end.origin.x;
+  v11 = start.size.height;
+  v12 = start.size.width;
+  v13 = start.origin.y;
+  v14 = start.origin.x;
+  v16 = start.size.width;
+  v17 = start.origin.y;
+  v18 = start.origin.x;
   v38 = *MEMORY[0x1E69E9840];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   if ((*&v18 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&v17 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000 || (*&v16 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
@@ -196,10 +196,10 @@ LABEL_14:
 
 LABEL_15:
 LABEL_16:
-  v25 = [(UIKeyboardTrackingCoordinator *)self notificationInfoForStartFrame:v14 endFrame:v13 animationDuration:v12, v11, x, y, width, height, *&a5];
+  v25 = [(UIKeyboardTrackingCoordinator *)self notificationInfoForStartFrame:v14 endFrame:v13 animationDuration:v12, v11, x, y, width, height, *&duration];
   self->_lastSentEndFrame.origin.x = x;
   self->_lastSentEndFrame.origin.y = y;
-  if (v6)
+  if (showCopy)
   {
     v26 = 2;
   }
@@ -211,51 +211,51 @@ LABEL_16:
 
   self->_lastSentEndFrame.size.width = width;
   self->_lastSentEndFrame.size.height = height;
-  v27 = [(UIKeyboardTrackingCoordinator *)self controllerForTrackingElements];
-  [v27 animateKeyboardTrackingElementsWithNotificationInfo:v25 notificationType:v26 updateForStart:1 updateForEnd:1];
+  controllerForTrackingElements = [(UIKeyboardTrackingCoordinator *)self controllerForTrackingElements];
+  [controllerForTrackingElements animateKeyboardTrackingElementsWithNotificationInfo:v25 notificationType:v26 updateForStart:1 updateForEnd:1];
 
   if (+[UIInputWindowController useMetronomeTracking])
   {
     TUIKeyboardStateClass_2 = getTUIKeyboardStateClass_2();
-    if (v6)
+    if (showCopy)
     {
-      v29 = [TUIKeyboardStateClass_2 onscreenState];
+      onscreenState = [TUIKeyboardStateClass_2 onscreenState];
       v30 = 2;
     }
 
     else
     {
-      v29 = [TUIKeyboardStateClass_2 offscreenState];
+      onscreenState = [TUIKeyboardStateClass_2 offscreenState];
       v30 = 1;
     }
 
-    [v29 setIsNonKeyboard:1];
-    v31 = [getTUIKeyboardAnimationInfoClass_1() defaultInfo];
-    [v31 setDuration:a5];
-    [v31 setAnimationType:v30];
-    v32 = [v25 userInfo];
-    [v31 setNotificationInfo:v32];
+    [onscreenState setIsNonKeyboard:1];
+    defaultInfo = [getTUIKeyboardAnimationInfoClass_1() defaultInfo];
+    [defaultInfo setDuration:duration];
+    [defaultInfo setAnimationType:v30];
+    userInfo = [v25 userInfo];
+    [defaultInfo setNotificationInfo:userInfo];
 
-    v33 = [(UIKeyboardTrackingCoordinator *)self trackingCoordinator];
-    [v33 updateClientsForState:v29 finalFrame:v31 animationInfo:1 forStart:{x, y, width, height}];
+    trackingCoordinator = [(UIKeyboardTrackingCoordinator *)self trackingCoordinator];
+    [trackingCoordinator updateClientsForState:onscreenState finalFrame:defaultInfo animationInfo:1 forStart:{x, y, width, height}];
   }
 }
 
-- (void)moveKeyboardTrackingElementsFromStartFrame:(CGRect)a3 endFrame:(CGRect)a4 duration:(double)a5 isStart:(BOOL)a6 forShow:(BOOL)a7
+- (void)moveKeyboardTrackingElementsFromStartFrame:(CGRect)frame endFrame:(CGRect)endFrame duration:(double)duration isStart:(BOOL)start forShow:(BOOL)show
 {
-  v7 = a7;
-  v8 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3.size.height;
-  v14 = a3.size.width;
-  v15 = a3.origin.y;
-  v16 = a3.origin.x;
-  v18 = a3.size.width;
-  v19 = a3.origin.y;
-  v20 = a3.origin.x;
+  showCopy = show;
+  startCopy = start;
+  height = endFrame.size.height;
+  width = endFrame.size.width;
+  y = endFrame.origin.y;
+  x = endFrame.origin.x;
+  v13 = frame.size.height;
+  v14 = frame.size.width;
+  v15 = frame.origin.y;
+  v16 = frame.origin.x;
+  v18 = frame.size.width;
+  v19 = frame.origin.y;
+  v20 = frame.origin.x;
   v40 = *MEMORY[0x1E69E9840];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   if ((*&v20 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (*&v19 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000 || (*&v18 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
@@ -333,10 +333,10 @@ LABEL_14:
 
 LABEL_15:
 LABEL_16:
-  v27 = [(UIKeyboardTrackingCoordinator *)self notificationInfoForStartFrame:v16 endFrame:v15 animationDuration:v14, v13, x, y, width, height, *&a5];
+  v27 = [(UIKeyboardTrackingCoordinator *)self notificationInfoForStartFrame:v16 endFrame:v15 animationDuration:v14, v13, x, y, width, height, *&duration];
   self->_lastSentEndFrame.origin.x = x;
   self->_lastSentEndFrame.origin.y = y;
-  if (v7)
+  if (showCopy)
   {
     v28 = 2;
   }
@@ -348,32 +348,32 @@ LABEL_16:
 
   self->_lastSentEndFrame.size.width = width;
   self->_lastSentEndFrame.size.height = height;
-  v29 = [(UIKeyboardTrackingCoordinator *)self controllerForTrackingElements];
-  [v29 animateKeyboardTrackingElementsWithNotificationInfo:v27 notificationType:v28 updateForStart:v8 updateForEnd:v8 ^ 1];
+  controllerForTrackingElements = [(UIKeyboardTrackingCoordinator *)self controllerForTrackingElements];
+  [controllerForTrackingElements animateKeyboardTrackingElementsWithNotificationInfo:v27 notificationType:v28 updateForStart:startCopy updateForEnd:startCopy ^ 1];
 
   if (+[UIInputWindowController useMetronomeTracking])
   {
     TUIKeyboardStateClass_2 = getTUIKeyboardStateClass_2();
-    if (v7)
+    if (showCopy)
     {
-      v31 = [TUIKeyboardStateClass_2 onscreenState];
+      onscreenState = [TUIKeyboardStateClass_2 onscreenState];
       v32 = 2;
     }
 
     else
     {
-      v31 = [TUIKeyboardStateClass_2 offscreenState];
+      onscreenState = [TUIKeyboardStateClass_2 offscreenState];
       v32 = 1;
     }
 
-    [v31 setIsNonKeyboard:1];
-    v33 = [getTUIKeyboardAnimationInfoClass_1() defaultInfo];
-    [v33 setAnimationType:v32];
-    v34 = [v27 userInfo];
-    [v33 setNotificationInfo:v34];
+    [onscreenState setIsNonKeyboard:1];
+    defaultInfo = [getTUIKeyboardAnimationInfoClass_1() defaultInfo];
+    [defaultInfo setAnimationType:v32];
+    userInfo = [v27 userInfo];
+    [defaultInfo setNotificationInfo:userInfo];
 
-    v35 = [(UIKeyboardTrackingCoordinator *)self trackingCoordinator];
-    [v35 updateClientsForState:v31 finalFrame:v33 animationInfo:v8 forStart:{x, y, width, height}];
+    trackingCoordinator = [(UIKeyboardTrackingCoordinator *)self trackingCoordinator];
+    [trackingCoordinator updateClientsForState:onscreenState finalFrame:defaultInfo animationInfo:startCopy forStart:{x, y, width, height}];
   }
 }
 

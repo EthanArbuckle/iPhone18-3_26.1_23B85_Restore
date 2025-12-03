@@ -1,16 +1,16 @@
 @interface ComponentControl
 - (BOOL)shouldDoCPMSActions;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
 - (unsigned)computePowerTarget;
 - (void)defaultAction;
 - (void)defaultCPMSAction;
 - (void)refreshCPMSTGraphTelemetry;
 - (void)resetCPMSMitigationState;
-- (void)setCPMSMitigationState:(BOOL)a3;
-- (void)setMaxLoadingIndex:(unsigned int)a3 releaseIndex:(unsigned int)a4;
+- (void)setCPMSMitigationState:(BOOL)state;
+- (void)setMaxLoadingIndex:(unsigned int)index releaseIndex:(unsigned int)releaseIndex;
 - (void)testLoadingIndexLevel;
-- (void)updatePowerParameters:(__CFDictionary *)a3;
+- (void)updatePowerParameters:(__CFDictionary *)parameters;
 @end
 
 @implementation ComponentControl
@@ -55,25 +55,25 @@
 
 - (void)defaultCPMSAction
 {
-  v3 = [(ComponentControl *)self computePowerTarget];
+  computePowerTarget = [(ComponentControl *)self computePowerTarget];
   if (self->initialCPMSBudgetSent)
   {
     if (self->previousValue != self->maxLoadingIndex)
     {
-      if (v3 != [(ComponentControl *)self powerTarget])
+      if (computePowerTarget != [(ComponentControl *)self powerTarget])
       {
-        [(ComponentControl *)self setPowerTarget:v3];
+        [(ComponentControl *)self setPowerTarget:computePowerTarget];
         if (byte_1000AB2F8 == 1)
         {
           v4 = qword_1000AB718;
           if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
           {
             v6 = 138412802;
-            v7 = [(PidComponent *)self nameofComponent];
+            nameofComponent = [(PidComponent *)self nameofComponent];
             v8 = 1024;
-            v9 = [(ComponentControl *)self powerTarget];
+            powerTarget = [(ComponentControl *)self powerTarget];
             v10 = 2048;
-            v11 = [(ComponentControl *)self mitigationDetails];
+            mitigationDetails = [(ComponentControl *)self mitigationDetails];
             _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "<Notice> DefaultCPMSAction for %@, set powerTarget:%u with details: %llu", &v6, 0x1Cu);
           }
         }
@@ -93,16 +93,16 @@
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         v6 = 138412802;
-        v7 = [(PidComponent *)self nameofComponent];
+        nameofComponent = [(PidComponent *)self nameofComponent];
         v8 = 1024;
-        v9 = v3;
+        powerTarget = computePowerTarget;
         v10 = 2048;
-        v11 = [(ComponentControl *)self mitigationDetails];
+        mitigationDetails = [(ComponentControl *)self mitigationDetails];
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> Initial CPMS budget sent for %@, set powerTarget:%u with details: %llu", &v6, 0x1Cu);
       }
     }
 
-    [+[CPMSHelper sharedInstance](CPMSHelper addToCPMSMitigationArray:"addToCPMSMitigationArray:withDetails:forComponent:" withDetails:v3 forComponent:[(ComponentControl *)self mitigationDetails], [(PidComponent *)self mitigationType]];
+    [+[CPMSHelper sharedInstance](CPMSHelper addToCPMSMitigationArray:"addToCPMSMitigationArray:withDetails:forComponent:" withDetails:computePowerTarget forComponent:[(ComponentControl *)self mitigationDetails], [(PidComponent *)self mitigationType]];
     self->initialCPMSBudgetSent = 1;
   }
 }
@@ -129,36 +129,36 @@
   if ([(ComponentControl *)self shouldDoCPMSActions])
   {
     v3 = +[CPMSHelper sharedInstance];
-    v4 = [(PidComponent *)self mitigationType];
+    mitigationType = [(PidComponent *)self mitigationType];
 
-    [(CPMSHelper *)v3 requestCurrentPowerCallbackForComponent:v4];
+    [(CPMSHelper *)v3 requestCurrentPowerCallbackForComponent:mitigationType];
   }
 }
 
-- (void)setMaxLoadingIndex:(unsigned int)a3 releaseIndex:(unsigned int)a4
+- (void)setMaxLoadingIndex:(unsigned int)index releaseIndex:(unsigned int)releaseIndex
 {
   if ((*(&self->super.controlEffort + 1) & 1) == 0)
   {
-    self->currentLoadingIndex = a3;
-    self->previousValue = a4;
+    self->currentLoadingIndex = index;
+    self->previousValue = releaseIndex;
   }
 }
 
 - (BOOL)shouldDoCPMSActions
 {
-  v3 = [(ComponentControl *)self isCPMSControlEnabled];
-  if (v3)
+  isCPMSControlEnabled = [(ComponentControl *)self isCPMSControlEnabled];
+  if (isCPMSControlEnabled)
   {
 
-    LOBYTE(v3) = [(ComponentControl *)self isCPMSControlActive];
+    LOBYTE(isCPMSControlEnabled) = [(ComponentControl *)self isCPMSControlActive];
   }
 
-  return v3;
+  return isCPMSControlEnabled;
 }
 
-- (void)setCPMSMitigationState:(BOOL)a3
+- (void)setCPMSMitigationState:(BOOL)state
 {
-  if (!a3)
+  if (!state)
   {
     [(ComponentControl *)self setIsCPMSControlEnabled:?];
 LABEL_6:
@@ -176,7 +176,7 @@ LABEL_6:
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 67109120;
-        v10 = [(PidComponent *)self mitigationType];
+        mitigationType = [(PidComponent *)self mitigationType];
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "<Notice> mitigationType:%u is not a supported cpms client!", &v9, 8u);
       }
     }
@@ -204,11 +204,11 @@ LABEL_6:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
       v9 = 67109632;
-      v10 = nominalPowerTarget;
+      mitigationType = nominalPowerTarget;
       v11 = 1024;
       v12 = maxPower;
       v13 = 1024;
-      v14 = [(PidComponent *)self mitigationType];
+      mitigationType2 = [(PidComponent *)self mitigationType];
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "<Error> Invalid power range (max:%d min%d) for mitigationType:%u", &v9, 0x14u);
     }
 
@@ -221,7 +221,7 @@ LABEL_6:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 67109120;
-      v10 = [(PidComponent *)self mitigationType];
+      mitigationType = [(PidComponent *)self mitigationType];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> Setting CPMS control Active for mitigationType:%u", &v9, 8u);
     }
   }
@@ -229,27 +229,27 @@ LABEL_6:
   [(ComponentControl *)self setIsCPMSControlActive:1];
 }
 
-- (void)updatePowerParameters:(__CFDictionary *)a3
+- (void)updatePowerParameters:(__CFDictionary *)parameters
 {
-  if (a3)
+  if (parameters)
   {
-    if (CFDictionaryContainsKey(a3, @"maxThermalPower"))
+    if (CFDictionaryContainsKey(parameters, @"maxThermalPower"))
     {
       LOBYTE(self->_minPower) = 1;
-      sub_100002A20(a3, @"maxPower", kCFNumberIntType, &self->releaseRate);
-      sub_100002A20(a3, @"maxThermalPower", kCFNumberIntType, &self->_nominalPowerTarget);
-      sub_100002A20(a3, @"minThermalPower", kCFNumberIntType, &self->_maxPower);
+      sub_100002A20(parameters, @"maxPower", kCFNumberIntType, &self->releaseRate);
+      sub_100002A20(parameters, @"maxThermalPower", kCFNumberIntType, &self->_nominalPowerTarget);
+      sub_100002A20(parameters, @"minThermalPower", kCFNumberIntType, &self->_maxPower);
       if (byte_1000AB2F8 == 1)
       {
         v5 = qword_1000AB718;
         if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
         {
-          v6 = [(PidComponent *)self nameofComponent];
+          nameofComponent = [(PidComponent *)self nameofComponent];
           releaseRate = self->releaseRate;
           nominalPowerTarget = self->_nominalPowerTarget;
           maxPower = self->_maxPower;
           v10 = 138413058;
-          v11 = v6;
+          v11 = nameofComponent;
           v12 = 1024;
           v13 = releaseRate;
           v14 = 1024;
@@ -276,24 +276,24 @@ LABEL_6:
   [(ComponentControl *)self setIsCPMSControlActive:0];
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3 > 5)
+  if (index > 5)
   {
     return 0;
   }
 
   else
   {
-    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, off_100085CB8[a3], self->super.nameofComponent);
+    return CFStringCreateWithFormat(kCFAllocatorDefault, 0, off_100085CB8[index], self->super.nameofComponent);
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3 <= 2)
+  if (index <= 2)
   {
-    switch(a3)
+    switch(index)
     {
       case 0:
         v3 = kCFAllocatorDefault;
@@ -314,16 +314,16 @@ LABEL_15:
     return 0;
   }
 
-  if (a3 != 3)
+  if (index != 3)
   {
-    if (a3 == 4)
+    if (index == 4)
     {
       v3 = kCFAllocatorDefault;
       v4 = 132;
       goto LABEL_15;
     }
 
-    if (a3 == 5)
+    if (index == 5)
     {
       v3 = kCFAllocatorDefault;
       v4 = 136;

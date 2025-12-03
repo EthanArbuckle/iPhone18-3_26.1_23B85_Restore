@@ -6,8 +6,8 @@
 
 - (id)description
 {
-  v2 = [(CKAccountInfo *)self CKPropertiesDescription];
-  v3 = [NSString stringWithFormat:@"<CKAccountInfo: %@>", v2];
+  cKPropertiesDescription = [(CKAccountInfo *)self CKPropertiesDescription];
+  v3 = [NSString stringWithFormat:@"<CKAccountInfo: %@>", cKPropertiesDescription];
 
   return v3;
 }

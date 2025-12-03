@@ -1,25 +1,25 @@
 @interface TSCHTextureFillSet
-- (id)fillForSeriesIndex:(unint64_t)a3 seriesType:(id)a4 context:(id)a5;
-- (id)fillSetIdentifierForSeriesType:(id)a3 seriesIndex:(unint64_t)a4;
+- (id)fillForSeriesIndex:(unint64_t)index seriesType:(id)type context:(id)context;
+- (id)fillSetIdentifierForSeriesType:(id)type seriesIndex:(unint64_t)index;
 - (id)fillsForDefaultSeriesType;
-- (id)swatchFillsWithSwatchSize:(CGSize)a3 scaleFactor:(double)a4;
-- (unint64_t)countOfDefinedSeriesForSeriesType:(id)a3;
+- (id)swatchFillsWithSwatchSize:(CGSize)size scaleFactor:(double)factor;
+- (unint64_t)countOfDefinedSeriesForSeriesType:(id)type;
 @end
 
 @implementation TSCHTextureFillSet
 
-- (id)fillSetIdentifierForSeriesType:(id)a3 seriesIndex:(unint64_t)a4
+- (id)fillSetIdentifierForSeriesType:(id)type seriesIndex:(unint64_t)index
 {
-  v9 = objc_msgSend_fillPropertyType(a3, a2, v4, v5, v6);
+  v9 = objc_msgSend_fillPropertyType(type, a2, v4, v5, v6);
   v14 = objc_msgSend_identifier(self, v10, v11, v12, v13);
-  v19 = objc_msgSend_identifierWithFillPropertyType_seriesIndex_textureSetID_(TSCH3DFillSetIdentifier, v15, v16, v17, v18, v9, a4, v14);
+  v19 = objc_msgSend_identifierWithFillPropertyType_seriesIndex_textureSetID_(TSCH3DFillSetIdentifier, v15, v16, v17, v18, v9, index, v14);
 
   return v19;
 }
 
-- (unint64_t)countOfDefinedSeriesForSeriesType:(id)a3
+- (unint64_t)countOfDefinedSeriesForSeriesType:(id)type
 {
-  v7 = objc_msgSend_fillSetIdentifierForSeriesType_seriesIndex_(self, a2, v3, v4, v5, a3, 0);
+  v7 = objc_msgSend_fillSetIdentifierForSeriesType_seriesIndex_(self, a2, v3, v4, v5, type, 0);
   if (!v7)
   {
     v11 = MEMORY[0x277D81150];
@@ -46,15 +46,15 @@
   return v50;
 }
 
-- (id)fillForSeriesIndex:(unint64_t)a3 seriesType:(id)a4 context:(id)a5
+- (id)fillForSeriesIndex:(unint64_t)index seriesType:(id)type context:(id)context
 {
-  v8 = a4;
-  v9 = a5;
-  v14 = objc_msgSend_countOfDefinedSeriesForSeriesType_(self, v10, v11, v12, v13, v8);
+  typeCopy = type;
+  contextCopy = context;
+  v14 = objc_msgSend_countOfDefinedSeriesForSeriesType_(self, v10, v11, v12, v13, typeCopy);
   if (v14)
   {
-    v19 = a3 % v14;
-    v20 = objc_msgSend_fillSetIdentifierForSeriesType_seriesIndex_(self, v15, v16, v17, v18, v8, v19);
+    v19 = index % v14;
+    v20 = objc_msgSend_fillSetIdentifierForSeriesType_seriesIndex_(self, v15, v16, v17, v18, typeCopy, v19);
     if (objc_msgSend_seriesIndex(v20, v21, v22, v23, v24) != v19)
     {
       v29 = MEMORY[0x277D81150];
@@ -70,7 +70,7 @@
     v53 = objc_msgSend_fillWithIdentifier_(TSCH3DFill, v49, v50, v51, v52, v20);
     v54 = TSUCheckedDynamicCast();
 
-    v59 = objc_msgSend_convertForChartSeriesType_context_(v54, v55, v56, v57, v58, v8, v9);
+    v59 = objc_msgSend_convertForChartSeriesType_context_(v54, v55, v56, v57, v58, typeCopy, contextCopy);
   }
 
   else
@@ -89,12 +89,12 @@
   return v11;
 }
 
-- (id)swatchFillsWithSwatchSize:(CGSize)a3 scaleFactor:(double)a4
+- (id)swatchFillsWithSwatchSize:(CGSize)size scaleFactor:(double)factor
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v67 = *MEMORY[0x277D85DE8];
-  v7 = objc_msgSend_fillsForDefaultSeriesType(self, a2, a3.width, a3.height, a4);
+  v7 = objc_msgSend_fillsForDefaultSeriesType(self, a2, size.width, size.height, factor);
   v8 = MEMORY[0x277CBEB18];
   v13 = objc_msgSend_count(v7, v9, v10, v11, v12);
   v18 = objc_msgSend_arrayWithCapacity_(v8, v14, v15, v16, v17, v13);
@@ -122,7 +122,7 @@
         v28 = *(*(&v62 + 1) + 8 * i);
         objc_opt_class();
         v29 = TSUCheckedDynamicCast();
-        v32 = objc_msgSend_swatchFillWithSize_scaleFactor_(v29, v30, width, height, a4);
+        v32 = objc_msgSend_swatchFillWithSize_scaleFactor_(v29, v30, width, height, factor);
         v36 = v32;
         if (!v32)
         {

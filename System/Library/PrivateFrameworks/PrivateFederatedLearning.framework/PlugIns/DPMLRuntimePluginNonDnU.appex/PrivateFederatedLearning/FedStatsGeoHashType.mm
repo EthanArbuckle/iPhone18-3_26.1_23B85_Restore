@@ -1,71 +1,71 @@
 @interface FedStatsGeoHashType
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4;
-+ (unint64_t)geoHashCharToInteger:(char)a3;
-- (FedStatsGeoHashType)initWithGeoHashLength:(unint64_t)a3;
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4;
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4;
-- (id)sampleForIndex:(unint64_t)a3;
++ (id)createFromDict:(id)dict possibleError:(id *)error;
++ (unint64_t)geoHashCharToInteger:(char)integer;
+- (FedStatsGeoHashType)initWithGeoHashLength:(unint64_t)length;
+- (id)decodeFromIndex:(id)index possibleError:(id *)error;
+- (id)encodeToIndex:(id)index possibleError:(id *)error;
+- (id)sampleForIndex:(unint64_t)index;
 @end
 
 @implementation FedStatsGeoHashType
 
-+ (unint64_t)geoHashCharToInteger:(char)a3
++ (unint64_t)geoHashCharToInteger:(char)integer
 {
-  v3 = a3 - 106;
-  if ((a3 - 106) <= 0x10)
+  v3 = integer - 106;
+  if ((integer - 106) <= 0x10)
   {
     if (((1 << v3) & 0x1FFC0) != 0)
     {
-      return (a3 - 91);
+      return (integer - 91);
     }
 
     if (((1 << v3) & 3) != 0)
     {
-      return (a3 - 89);
+      return (integer - 89);
     }
 
     if (((1 << v3) & 0x18) != 0)
     {
-      return (a3 - 90);
+      return (integer - 90);
     }
   }
 
   v4 = -1;
-  if ((a3 - 98) < 7)
+  if ((integer - 98) < 7)
   {
-    v4 = (a3 - 88);
+    v4 = (integer - 88);
   }
 
-  if ((a3 - 48) >= 0xA)
+  if ((integer - 48) >= 0xA)
   {
     return v4;
   }
 
   else
   {
-    return (a3 - 48);
+    return (integer - 48);
   }
 }
 
-- (FedStatsGeoHashType)initWithGeoHashLength:(unint64_t)a3
+- (FedStatsGeoHashType)initWithGeoHashLength:(unint64_t)length
 {
   v5.receiver = self;
   v5.super_class = FedStatsGeoHashType;
-  result = [(FedStatsBoundedULongType *)&v5 initWithBound:1 << (5 * a3)];
+  result = [(FedStatsBoundedULongType *)&v5 initWithBound:1 << (5 * length)];
   if (result)
   {
-    result->_hashLength = a3;
+    result->_hashLength = length;
   }
 
   return result;
 }
 
-+ (id)createFromDict:(id)a3 possibleError:(id *)a4
++ (id)createFromDict:(id)dict possibleError:(id *)error
 {
-  v5 = [a3 objectForKey:@"hashLength"];
+  v5 = [dict objectForKey:@"hashLength"];
   if (!v5)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -83,38 +83,38 @@
     [v5 doubleValue];
     if (v7 == round(v8))
     {
-      v9 = [v5 unsignedLongValue];
-      if (v9 == [v5 longValue])
+      unsignedLongValue = [v5 unsignedLongValue];
+      if (unsignedLongValue == [v5 longValue])
       {
         if ([v5 unsignedLongValue])
         {
-          a4 = -[FedStatsGeoHashType initWithGeoHashLength:]([FedStatsGeoHashType alloc], "initWithGeoHashLength:", [v5 unsignedLongValue]);
+          error = -[FedStatsGeoHashType initWithGeoHashLength:]([FedStatsGeoHashType alloc], "initWithGeoHashLength:", [v5 unsignedLongValue]);
           goto LABEL_12;
         }
       }
     }
   }
 
-  if (a4)
+  if (error)
   {
     v10 = [NSString stringWithFormat:@"The value for key %@ must be a positive integer", @"hashLength"];
     v11 = 302;
 LABEL_11:
-    *a4 = [FedStatsError errorWithCode:v11 description:v10];
+    *error = [FedStatsError errorWithCode:v11 description:v10];
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_12:
 
-  return a4;
+  return error;
 }
 
-- (id)encodeToIndex:(id)a3 possibleError:(id *)a4
+- (id)encodeToIndex:(id)index possibleError:(id *)error
 {
-  v6 = a3;
+  indexCopy = index;
   v7 = +[NSNull null];
-  v8 = [v6 isEqual:v7];
+  v8 = [indexCopy isEqual:v7];
 
   if (v8)
   {
@@ -125,23 +125,23 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:401 description:@"The geohash type accepts only a string to encode"];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_18;
     }
 
     goto LABEL_9;
   }
 
-  v10 = [v6 length];
+  v10 = [indexCopy length];
   if (v10 > [(FedStatsGeoHashType *)self hashLength])
   {
-    if (a4)
+    if (error)
     {
       v11 = [NSString stringWithFormat:@"This geohash encoder accepts hashes of length %lu", [(FedStatsGeoHashType *)self hashLength]];
-      *a4 = [FedStatsError errorWithCode:401 description:v11];
+      *error = [FedStatsError errorWithCode:401 description:v11];
     }
 
 LABEL_9:
@@ -150,7 +150,7 @@ LABEL_9:
   }
 
   v12 = 1;
-  v13 = [v6 cStringUsingEncoding:1];
+  v13 = [indexCopy cStringUsingEncoding:1];
   if ([(FedStatsGeoHashType *)self hashLength])
   {
     v14 = 0;
@@ -188,25 +188,25 @@ LABEL_18:
   return v9;
 }
 
-- (id)decodeFromIndex:(id)a3 possibleError:(id *)a4
+- (id)decodeFromIndex:(id)index possibleError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 unsignedLongValue];
-  if (v7 == [v6 longValue])
+  indexCopy = index;
+  unsignedLongValue = [indexCopy unsignedLongValue];
+  if (unsignedLongValue == [indexCopy longValue])
   {
-    if (v7)
+    if (unsignedLongValue)
     {
-      v8 = (v7 - 1);
+      v8 = (unsignedLongValue - 1);
       v9 = malloc_type_malloc([(FedStatsGeoHashType *)self hashLength]+ 1, 0x100004077774924uLL);
       *([(FedStatsGeoHashType *)self hashLength]+ v9) = 0;
-      v10 = [(FedStatsGeoHashType *)self hashLength];
+      hashLength = [(FedStatsGeoHashType *)self hashLength];
       do
       {
-        v9[--v10] = kFedStatsGeoHashMap[v8 & 0x1F];
+        v9[--hashLength] = kFedStatsGeoHashMap[v8 & 0x1F];
         v8 >>= 5;
       }
 
-      while (v10);
+      while (hashLength);
       v11 = [NSString stringWithCString:v9 encoding:1];
       free(v9);
     }
@@ -217,10 +217,10 @@ LABEL_18:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [FedStatsError errorWithCode:500 description:@"The geohash decoder accepts only positive integers"];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -231,9 +231,9 @@ LABEL_18:
   return v11;
 }
 
-- (id)sampleForIndex:(unint64_t)a3
+- (id)sampleForIndex:(unint64_t)index
 {
-  if (a3)
+  if (index)
   {
     v4 = [NSNumber numberWithUnsignedLong:?];
     v5 = [(FedStatsGeoHashType *)self decodeFromIndex:v4 possibleError:0];

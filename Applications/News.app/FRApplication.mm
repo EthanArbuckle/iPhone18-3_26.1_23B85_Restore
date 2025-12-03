@@ -1,8 +1,8 @@
 @interface FRApplication
 - (FRApplication)init;
-- (void)registerPlatformSpecificLaunchOptions:(id)a3 transitionContext:(id)a4;
-- (void)sendEvent:(id)a3;
-- (void)workspace:(id)a3 didCreateScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6;
+- (void)registerPlatformSpecificLaunchOptions:(id)options transitionContext:(id)context;
+- (void)sendEvent:(id)event;
+- (void)workspace:(id)workspace didCreateScene:(id)scene withTransitionContext:(id)context completion:(id)completion;
 @end
 
 @implementation FRApplication
@@ -31,61 +31,61 @@
   return v3;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = FRApplication;
-  [(FRApplication *)&v8 sendEvent:v4];
-  v5 = [(FRApplication *)self delegate];
+  [(FRApplication *)&v8 sendEvent:eventCopy];
+  delegate = [(FRApplication *)self delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(FRApplication *)self delegate];
-    [v7 application:self didSendEvent:v4];
+    delegate2 = [(FRApplication *)self delegate];
+    [delegate2 application:self didSendEvent:eventCopy];
   }
 }
 
-- (void)workspace:(id)a3 didCreateScene:(id)a4 withTransitionContext:(id)a5 completion:(id)a6
+- (void)workspace:(id)workspace didCreateScene:(id)scene withTransitionContext:(id)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FRApplication *)self launchURLAction];
+  workspaceCopy = workspace;
+  sceneCopy = scene;
+  contextCopy = context;
+  completionCopy = completion;
+  launchURLAction = [(FRApplication *)self launchURLAction];
 
-  if (v14)
+  if (launchURLAction)
   {
-    v15 = [(FRApplication *)self launchURLAction];
-    v16 = [NSSet setWithObject:v15];
-    [v12 setActions:v16];
+    launchURLAction2 = [(FRApplication *)self launchURLAction];
+    v16 = [NSSet setWithObject:launchURLAction2];
+    [contextCopy setActions:v16];
   }
 
   if ([UIApplication instancesRespondToSelector:"workspace:didCreateScene:withTransitionContext:completion:"])
   {
     v17.receiver = self;
     v17.super_class = FRApplication;
-    [(FRApplication *)&v17 workspace:v10 didCreateScene:v11 withTransitionContext:v12 completion:v13];
+    [(FRApplication *)&v17 workspace:workspaceCopy didCreateScene:sceneCopy withTransitionContext:contextCopy completion:completionCopy];
   }
 }
 
-- (void)registerPlatformSpecificLaunchOptions:(id)a3 transitionContext:(id)a4
+- (void)registerPlatformSpecificLaunchOptions:(id)options transitionContext:(id)context
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(FRApplication *)self launchURLAction];
+  optionsCopy = options;
+  contextCopy = context;
+  launchURLAction = [(FRApplication *)self launchURLAction];
 
-  if (v7)
+  if (launchURLAction)
   {
-    v8 = [(FRApplication *)self launchURLAction];
-    v9 = [v8 url];
-    v12[2](v12, v9, UIApplicationLaunchOptionsURLKey);
+    launchURLAction2 = [(FRApplication *)self launchURLAction];
+    v9 = [launchURLAction2 url];
+    optionsCopy[2](optionsCopy, v9, UIApplicationLaunchOptionsURLKey);
 
-    v10 = [(FRApplication *)self launchURLAction];
-    v11 = [NSSet setWithObject:v10];
-    [v6 setActions:v11];
+    launchURLAction3 = [(FRApplication *)self launchURLAction];
+    v11 = [NSSet setWithObject:launchURLAction3];
+    [contextCopy setActions:v11];
   }
 }
 

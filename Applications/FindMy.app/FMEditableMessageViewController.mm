@@ -1,16 +1,16 @@
 @interface FMEditableMessageViewController
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (_TtC6FindMy31FMEditableMessageViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy31FMEditableMessageViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (_TtC6FindMy31FMEditableMessageViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy31FMEditableMessageViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (void)handleBackgroundTap;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMEditableMessageViewController
@@ -20,16 +20,16 @@
   v8.receiver = self;
   v8.super_class = type metadata accessor for FMEditableMessageViewController();
   v2 = v8.receiver;
-  v3 = [(FMEditableMessageViewController *)&v8 viewDidLoad];
-  (*((swift_isaMask & *v2) + 0x208))(v3);
+  viewDidLoad = [(FMEditableMessageViewController *)&v8 viewDidLoad];
+  (*((swift_isaMask & *v2) + 0x208))(viewDidLoad);
   sub_100264F8C();
   v4 = objc_allocWithZone(UITapGestureRecognizer);
   v5 = [v4 initWithTarget:v2 action:{"handleBackgroundTap", v8.receiver, v8.super_class}];
-  v6 = [v2 view];
-  if (v6)
+  view = [v2 view];
+  if (view)
   {
-    v7 = v6;
-    [v6 addGestureRecognizer:v5];
+    v7 = view;
+    [view addGestureRecognizer:v5];
   }
 
   else
@@ -38,13 +38,13 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for FMEditableMessageViewController();
   v4 = v7.receiver;
-  [(FMEditableMessageViewController *)&v7 viewWillAppear:v3];
+  [(FMEditableMessageViewController *)&v7 viewWillAppear:appearCopy];
   sub_100265920();
   v5 = sub_1002653B0();
   [v5 resignFirstResponder];
@@ -55,13 +55,13 @@
   v4[OBJC_IVAR____TtC6FindMy31FMEditableMessageViewController_hasAdjustedKeyboardHeight] = 0;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for FMEditableMessageViewController();
   v4 = v7.receiver;
-  [(FMEditableMessageViewController *)&v7 viewWillDisappear:v3];
+  [(FMEditableMessageViewController *)&v7 viewWillDisappear:disappearCopy];
   v5 = sub_1002653B0();
   [v5 resignFirstResponder];
 
@@ -74,36 +74,36 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100265DB8();
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100264DE8(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100264DE8(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   v7 = sub_100266AAC();
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -125,19 +125,19 @@
   return v9 + v9 + v8 * v12;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_100265308(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100265308(changeCopy);
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
+  length = range.length;
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = self;
+  selfCopy = self;
   LOBYTE(length) = sub_100265504(v7, v9, v11, length, 0);
 
   return length & 1;
@@ -145,28 +145,28 @@
 
 - (void)handleBackgroundTap
 {
-  v5 = self;
+  selfCopy = self;
   v2 = sub_1002653B0();
   if (v2)
   {
     v3 = v2;
     [v2 resignFirstResponder];
 
-    v4 = &v5->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy31FMEditableMessageViewController_paddingHeight];
+    v4 = &selfCopy->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy31FMEditableMessageViewController_paddingHeight];
     *v4 = 0;
     v4[8] = 1;
-    v5->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy31FMEditableMessageViewController_hasAdjustedKeyboardHeight] = 0;
+    selfCopy->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy31FMEditableMessageViewController_hasAdjustedKeyboardHeight] = 0;
   }
 }
 
-- (_TtC6FindMy31FMEditableMessageViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy31FMEditableMessageViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC6FindMy31FMEditableMessageViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy31FMEditableMessageViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

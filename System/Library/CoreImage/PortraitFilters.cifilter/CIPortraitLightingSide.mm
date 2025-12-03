@@ -128,14 +128,14 @@
   v6 = v5;
   [(NSNumber *)self->inputRotate floatValue];
   v8 = v7;
-  v9 = [(NSNumber *)self->inputOrientation intValue];
-  v10 = [(NSNumber *)self->inputCenterBottom intValue];
+  intValue = [(NSNumber *)self->inputOrientation intValue];
+  intValue2 = [(NSNumber *)self->inputCenterBottom intValue];
   if (v4 == 0.0 || v6 == 0.0)
   {
     return self->inputImage;
   }
 
-  v11 = v10;
+  v11 = intValue2;
   v168 = v6;
   [(CIVector *)self->inputPt1 X];
   v13 = v12;
@@ -147,10 +147,10 @@
   [(CIVector *)self->inputPt2 Y];
   *&v17 = (v16 + v17) * 0.5;
   v163 = *&v17;
-  v18 = v9 - 5;
+  v18 = intValue - 5;
   inputPt2 = self->inputPt2;
   v169 = v8;
-  if (v9 - 5 > 3)
+  if (intValue - 5 > 3)
   {
     [(CIVector *)inputPt2 Y];
     v31 = v30;
@@ -359,15 +359,15 @@
   v149 = [CIVector vectorWithX:v122 Y:v162];
   if (v168 <= 0.0)
   {
-    v150 = [(CIPortraitLightingSide *)self _kickLightKernel_neg];
+    _kickLightKernel_neg = [(CIPortraitLightingSide *)self _kickLightKernel_neg];
   }
 
   else
   {
-    v150 = [(CIPortraitLightingSide *)self _kickLightKernel_pos];
+    _kickLightKernel_neg = [(CIPortraitLightingSide *)self _kickLightKernel_pos];
   }
 
-  v151 = v150;
+  v151 = _kickLightKernel_neg;
   [(CIImage *)self->inputImage extent];
   v153 = v152;
   v155 = v154;

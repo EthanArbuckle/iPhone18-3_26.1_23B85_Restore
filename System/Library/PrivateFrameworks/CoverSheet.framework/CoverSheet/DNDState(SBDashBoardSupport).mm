@@ -8,31 +8,31 @@
 
 - (uint64_t)sb_isDimmingModeActive
 {
-  v2 = [a1 activeModeConfiguration];
-  v3 = [a1 _isDNDSettingEnabled:{objc_msgSend(v2, "dimsLockScreen")}];
+  activeModeConfiguration = [self activeModeConfiguration];
+  v3 = [self _isDNDSettingEnabled:{objc_msgSend(activeModeConfiguration, "dimsLockScreen")}];
 
   return v3;
 }
 
 - (uint64_t)sb_isDrivingModeActive
 {
-  v1 = [a1 activeModeIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.donotdisturb.mode.driving"];
+  activeModeIdentifier = [self activeModeIdentifier];
+  v2 = [activeModeIdentifier isEqualToString:@"com.apple.donotdisturb.mode.driving"];
 
   return v2;
 }
 
 - (uint64_t)sb_isBedtimeModeActive
 {
-  v1 = [a1 activeModeIdentifier];
-  if ([v1 isEqualToString:@"com.apple.donotdisturb.mode.bedtime"] & 1) != 0 || (objc_msgSend(v1, "isEqualToString:", *MEMORY[0x277D622D0]))
+  activeModeIdentifier = [self activeModeIdentifier];
+  if ([activeModeIdentifier isEqualToString:@"com.apple.donotdisturb.mode.bedtime"] & 1) != 0 || (objc_msgSend(activeModeIdentifier, "isEqualToString:", *MEMORY[0x277D622D0]))
   {
     v2 = 1;
   }
 
   else
   {
-    v2 = [v1 isEqualToString:*MEMORY[0x277D295E8]];
+    v2 = [activeModeIdentifier isEqualToString:*MEMORY[0x277D295E8]];
   }
 
   return v2;

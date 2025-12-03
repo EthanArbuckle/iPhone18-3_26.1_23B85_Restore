@@ -1,14 +1,14 @@
 @interface CustomSearchResultHistoryItem
-- (BOOL)isEqual:(id)a3;
-- (CustomSearchResultHistoryItem)initWithSearchResult:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CustomSearchResultHistoryItem)initWithSearchResult:(id)result;
 @end
 
 @implementation CustomSearchResultHistoryItem
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -16,22 +16,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4->_customSearchResult == self->_customSearchResult;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy->_customSearchResult == self->_customSearchResult;
   }
 
   return v5;
 }
 
-- (CustomSearchResultHistoryItem)initWithSearchResult:(id)a3
+- (CustomSearchResultHistoryItem)initWithSearchResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = CustomSearchResultHistoryItem;
   v6 = [(CustomSearchResultHistoryItem *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_customSearchResult, a3);
+    objc_storeStrong(&v6->_customSearchResult, result);
     v8 = v7;
   }
 

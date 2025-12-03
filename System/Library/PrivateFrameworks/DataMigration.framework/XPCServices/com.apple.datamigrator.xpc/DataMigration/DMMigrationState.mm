@@ -2,27 +2,27 @@
 + (BOOL)_shouldSuppressMigrationFailureAlert;
 + (id)sharedInstance;
 - (BOOL)_showIgnoreTapToRadarAlertOption;
-- (BOOL)startMigrationAndOrBlockIfNecessaryWithClientInvocation:(id)a3 buildVersion:(id)a4 migrationStarterBlock:(id)a5;
-- (DMMigrationState)initWithMigrationSentinelManager:(id)a3;
+- (BOOL)startMigrationAndOrBlockIfNecessaryWithClientInvocation:(id)invocation buildVersion:(id)version migrationStarterBlock:(id)block;
+- (DMMigrationState)initWithMigrationSentinelManager:(id)manager;
 - (NSDictionary)pluginResults;
 - (NSString)migrationPhaseDescription;
 - (void)_clearPluginResults;
 - (void)_createRecursiveMutex;
 - (void)_releaseMigrationFailureNotification;
 - (void)_reportMigrationFailureIfApplicable;
-- (void)_userDidRespondToMigrationFailureNotificationToFileRadar:(BOOL)a3;
-- (void)blockUntilProgressHostIsReadyWithTimeoutTimeInterval:(double)a3;
+- (void)_userDidRespondToMigrationFailureNotificationToFileRadar:(BOOL)radar;
+- (void)blockUntilProgressHostIsReadyWithTimeoutTimeInterval:(double)interval;
 - (void)dealloc;
 - (void)persistIfNecessary;
-- (void)pluginDidFinish:(id)a3 withSuccess:(BOOL)a4 duration:(double)a5 incident:(id)a6 migrationPhaseDescription:(id)a7;
-- (void)pluginWillRun:(id)a3 migrationPhaseDescription:(id)a4;
+- (void)pluginDidFinish:(id)finish withSuccess:(BOOL)success duration:(double)duration incident:(id)incident migrationPhaseDescription:(id)description;
+- (void)pluginWillRun:(id)run migrationPhaseDescription:(id)description;
 - (void)progressHostIsReady;
-- (void)progressWindowHadIncident:(id)a3;
-- (void)reportTelemetryForPluginIdentifier:(id)a3 duration:(double)a4 incident:(id)a5 countOfAttempts:(unint64_t)a6 userDataDisposition:(id)a7 userCategory:(unsigned int)a8;
-- (void)sendMigrationResultsToClientInvocationsInterestedInEarlyResultsForPluginIdentifier:(id)a3;
-- (void)setMigrationPhaseDescription:(id)a3;
+- (void)progressWindowHadIncident:(id)incident;
+- (void)reportTelemetryForPluginIdentifier:(id)identifier duration:(double)duration incident:(id)incident countOfAttempts:(unint64_t)attempts userDataDisposition:(id)disposition userCategory:(unsigned int)category;
+- (void)sendMigrationResultsToClientInvocationsInterestedInEarlyResultsForPluginIdentifier:(id)identifier;
+- (void)setMigrationPhaseDescription:(id)description;
 - (void)setNeedsMigrationFailureReport;
-- (void)willRunPlugins:(id)a3;
+- (void)willRunPlugins:(id)plugins;
 - (void)willStartMigration;
 @end
 
@@ -40,16 +40,16 @@
   return v3;
 }
 
-- (DMMigrationState)initWithMigrationSentinelManager:(id)a3
+- (DMMigrationState)initWithMigrationSentinelManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = DMMigrationState;
   v6 = [(DMMigrationState *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_migrationSentinelManager, a3);
+    objc_storeStrong(&v6->_migrationSentinelManager, manager);
     [(DMMigrationState *)v7 _createRecursiveMutex];
     v8 = objc_alloc_init(NSMutableDictionary);
     migrationPhaseDescriptionsByConcurrentPluginIdentifiers = v7->_migrationPhaseDescriptionsByConcurrentPluginIdentifiers;
@@ -122,8 +122,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(NSMutableDictionary *)self->_migrationPhaseDescriptionsByConcurrentPluginIdentifiers allKeys];
-  v6 = [v5 sortedArrayUsingSelector:"caseInsensitiveCompare:"];
+  allKeys = [(NSMutableDictionary *)self->_migrationPhaseDescriptionsByConcurrentPluginIdentifiers allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:"caseInsensitiveCompare:"];
 
   obj = v6;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -163,23 +163,23 @@
   {
 LABEL_11:
     v14 = +[DMEnvironment sharedInstance];
-    v15 = [v14 buildVersion];
+    buildVersion = [v14 buildVersion];
 
     v16 = +[DMEnvironment sharedInstance];
-    v17 = [v16 lastMigrationResultsPref];
+    lastMigrationResultsPref = [v16 lastMigrationResultsPref];
 
-    v18 = [v17 dmlmr_buildVersion];
-    obj = v15;
-    if (([DMEnvironment isBuildVersion:v15 equalToBuildVersion:v18]& 1) != 0)
+    dmlmr_buildVersion = [lastMigrationResultsPref dmlmr_buildVersion];
+    obj = buildVersion;
+    if (([DMEnvironment isBuildVersion:buildVersion equalToBuildVersion:dmlmr_buildVersion]& 1) != 0)
     {
-      v19 = [v17 dmlmr_success];
+      dmlmr_success = [lastMigrationResultsPref dmlmr_success];
 
-      if (v19)
+      if (dmlmr_success)
       {
-        v20 = [v17 dmlmr_success];
-        v21 = [v20 BOOLValue];
+        dmlmr_success2 = [lastMigrationResultsPref dmlmr_success];
+        bOOLValue = [dmlmr_success2 BOOLValue];
 
-        if (v21)
+        if (bOOLValue)
         {
           v4 = @"kDMMigrationPhaseDescriptionDidFinishWithSuccess";
         }
@@ -212,16 +212,16 @@ LABEL_20:
 - (NSDictionary)pluginResults
 {
   v3 = +[DMEnvironment sharedInstance];
-  v4 = [v3 implementMigrationPluginResults];
+  implementMigrationPluginResults = [v3 implementMigrationPluginResults];
 
-  if (v4)
+  if (implementMigrationPluginResults)
   {
     pthread_mutex_lock(&self->_recursiveMutex);
-    v5 = [(NSMutableDictionary *)self->_pluginResults copy];
-    if (!v5)
+    migrationPluginResultsPref = [(NSMutableDictionary *)self->_pluginResults copy];
+    if (!migrationPluginResultsPref)
     {
       v6 = +[DMEnvironment sharedInstance];
-      v5 = [v6 migrationPluginResultsPref];
+      migrationPluginResultsPref = [v6 migrationPluginResultsPref];
     }
 
     pthread_mutex_unlock(&self->_recursiveMutex);
@@ -229,17 +229,17 @@ LABEL_20:
 
   else
   {
-    v5 = 0;
+    migrationPluginResultsPref = 0;
   }
 
-  return v5;
+  return migrationPluginResultsPref;
 }
 
-- (void)setMigrationPhaseDescription:(id)a3
+- (void)setMigrationPhaseDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   pthread_mutex_lock(&self->_recursiveMutex);
-  v5 = [v4 copy];
+  v5 = [descriptionCopy copy];
 
   migrationPhaseDescription = self->_migrationPhaseDescription;
   self->_migrationPhaseDescription = v5;
@@ -247,43 +247,43 @@ LABEL_20:
   pthread_mutex_unlock(&self->_recursiveMutex);
 }
 
-- (BOOL)startMigrationAndOrBlockIfNecessaryWithClientInvocation:(id)a3 buildVersion:(id)a4 migrationStarterBlock:(id)a5
+- (BOOL)startMigrationAndOrBlockIfNecessaryWithClientInvocation:(id)invocation buildVersion:(id)version migrationStarterBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  invocationCopy = invocation;
+  versionCopy = version;
+  blockCopy = block;
   [(DMMigrationState *)self _lastPointBeforeEnteringPotentialStartOfMigrationCriticalSection];
   pthread_mutex_lock(&self->_recursiveMutex);
   v11 = +[DMEnvironment sharedInstance];
-  v12 = [v11 lastBuildVersionPref];
+  lastBuildVersionPref = [v11 lastBuildVersionPref];
 
-  if ([v8 checkNecessity] && !-[DMMigrationState isMigrationNeededWithBuildVersion:lastBuildVersion:clientPID:](self, "isMigrationNeededWithBuildVersion:lastBuildVersion:clientPID:", v9, v12, objc_msgSend(v8, "pid")))
+  if ([invocationCopy checkNecessity] && !-[DMMigrationState isMigrationNeededWithBuildVersion:lastBuildVersion:clientPID:](self, "isMigrationNeededWithBuildVersion:lastBuildVersion:clientPID:", versionCopy, lastBuildVersionPref, objc_msgSend(invocationCopy, "pid")))
   {
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_100006980;
     v34[3] = &unk_100024858;
     v17 = &v35;
-    v35 = v9;
-    v36 = v8;
+    v35 = versionCopy;
+    v36 = invocationCopy;
     v18 = objc_retainBlock(v34);
   }
 
   else
   {
-    v13 = [v8 earlyResultsPluginIdentifier];
-    if (!v13 || (v14 = v13, completedPluginIdentifiers = self->_completedPluginIdentifiers, [v8 earlyResultsPluginIdentifier], v16 = objc_claimAutoreleasedReturnValue(), LODWORD(completedPluginIdentifiers) = -[NSMutableSet containsObject:](completedPluginIdentifiers, "containsObject:", v16), v16, v14, !completedPluginIdentifiers))
+    earlyResultsPluginIdentifier = [invocationCopy earlyResultsPluginIdentifier];
+    if (!earlyResultsPluginIdentifier || (v14 = earlyResultsPluginIdentifier, completedPluginIdentifiers = self->_completedPluginIdentifiers, [invocationCopy earlyResultsPluginIdentifier], v16 = objc_claimAutoreleasedReturnValue(), LODWORD(completedPluginIdentifiers) = -[NSMutableSet containsObject:](completedPluginIdentifiers, "containsObject:", v16), v16, v14, !completedPluginIdentifiers))
     {
-      v19 = v10;
+      v19 = blockCopy;
       v20 = [(NSMutableArray *)self->_waitingClientInvocations count];
       v21 = v20 == 0;
-      [(NSMutableArray *)self->_waitingClientInvocations addObject:v8];
-      v26 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v8 pid]);
+      [(NSMutableArray *)self->_waitingClientInvocations addObject:invocationCopy];
+      v26 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [invocationCopy pid]);
       _DMLogFunc();
 
       if (v20)
       {
-        v10 = v19;
+        blockCopy = v19;
       }
 
       else
@@ -293,14 +293,14 @@ LABEL_20:
         block[1] = 3221225472;
         block[2] = sub_100006AEC;
         block[3] = &unk_100024880;
-        v10 = v19;
+        blockCopy = v19;
         v31 = v19;
-        v30 = v12;
+        v30 = lastBuildVersionPref;
         dispatch_async(migrationSerialQueue, block);
       }
 
       pthread_mutex_unlock(&self->_recursiveMutex);
-      if ([v8 isProgressHost])
+      if ([invocationCopy isProgressHost])
       {
         v23 = dispatch_time(0, 1000000000);
         v24 = dispatch_get_global_queue(25, 0);
@@ -312,11 +312,11 @@ LABEL_20:
         dispatch_after(v23, v24, v28);
       }
 
-      v27 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v8 pid]);
+      v27 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [invocationCopy pid]);
       _DMLogFunc();
 
       dispatch_sync(self->_migrationSerialQueue, &stru_1000248A0);
-      v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v8 pid]);
+      v18 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [invocationCopy pid]);
       _DMLogFunc();
       goto LABEL_15;
     }
@@ -326,7 +326,7 @@ LABEL_20:
     v32[2] = sub_100006A2C;
     v32[3] = &unk_100024768;
     v17 = &v33;
-    v33 = v8;
+    v33 = invocationCopy;
     v18 = objc_retainBlock(v32);
   }
 
@@ -377,13 +377,13 @@ LABEL_16:
   pthread_mutex_unlock(&self->_recursiveMutex);
 }
 
-- (void)blockUntilProgressHostIsReadyWithTimeoutTimeInterval:(double)a3
+- (void)blockUntilProgressHostIsReadyWithTimeoutTimeInterval:(double)interval
 {
   pthread_mutex_lock(&self->_recursiveMutex);
   v5 = +[DMEnvironment sharedInstance];
-  v6 = [v5 isProgressHostReady];
+  isProgressHostReady = [v5 isProgressHostReady];
 
-  if (v6)
+  if (isProgressHostReady)
   {
     _DMLogFunc();
 
@@ -401,35 +401,35 @@ LABEL_16:
     pthread_mutex_unlock(&self->_recursiveMutex);
     if (block)
     {
-      v9 = dispatch_time(0, (a3 * 1000000000.0));
+      v9 = dispatch_time(0, (interval * 1000000000.0));
       v10 = [NSNumber numberWithInt:dispatch_block_wait(block, v9) != 0];
       _DMLogFunc();
     }
   }
 }
 
-- (void)progressWindowHadIncident:(id)a3
+- (void)progressWindowHadIncident:(id)incident
 {
-  v4 = a3;
+  incidentCopy = incident;
   pthread_mutex_lock(&self->_recursiveMutex);
-  if (v4)
+  if (incidentCopy)
   {
-    [(NSMutableArray *)self->_incidents addObject:v4];
+    [(NSMutableArray *)self->_incidents addObject:incidentCopy];
   }
 
   pthread_mutex_unlock(&self->_recursiveMutex);
 }
 
-- (void)willRunPlugins:(id)a3
+- (void)willRunPlugins:(id)plugins
 {
-  v4 = a3;
+  pluginsCopy = plugins;
   v5 = +[DMEnvironment sharedInstance];
-  v6 = [v5 implementMigrationPluginResults];
+  implementMigrationPluginResults = [v5 implementMigrationPluginResults];
 
-  if (v6)
+  if (implementMigrationPluginResults)
   {
     pthread_mutex_lock(&self->_recursiveMutex);
-    v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(pluginsCopy, "count")}];
     pluginResults = self->_pluginResults;
     self->_pluginResults = v7;
 
@@ -437,7 +437,7 @@ LABEL_16:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v4;
+    v9 = pluginsCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v10)
     {
@@ -457,15 +457,15 @@ LABEL_16:
           {
             v24[0] = @"kDMMigrationPluginResultsBundlePathKey";
             v15 = [v14 rep];
-            v16 = [v15 path];
+            path = [v15 path];
             v24[1] = @"kDMMigrationPluginResultsPhaseDescription";
-            v25[0] = v16;
+            v25[0] = path;
             v25[1] = @"kDMMigrationPhaseDescriptionRunPending";
             v17 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
 
             v18 = self->_pluginResults;
-            v19 = [v14 identifier];
-            [(NSMutableDictionary *)v18 setObject:v17 forKey:v19];
+            identifier = [v14 identifier];
+            [(NSMutableDictionary *)v18 setObject:v17 forKey:identifier];
           }
         }
 
@@ -479,11 +479,11 @@ LABEL_16:
   }
 }
 
-- (void)sendMigrationResultsToClientInvocationsInterestedInEarlyResultsForPluginIdentifier:(id)a3
+- (void)sendMigrationResultsToClientInvocationsInterestedInEarlyResultsForPluginIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   pthread_mutex_lock(&self->_recursiveMutex);
-  [(NSMutableSet *)self->_completedPluginIdentifiers addObject:v4];
+  [(NSMutableSet *)self->_completedPluginIdentifiers addObject:identifierCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -504,15 +504,15 @@ LABEL_16:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 earlyResultsPluginIdentifier];
-        if ([v11 isEqualToString:v4])
+        earlyResultsPluginIdentifier = [v10 earlyResultsPluginIdentifier];
+        if ([earlyResultsPluginIdentifier isEqualToString:identifierCopy])
         {
-          v12 = [v10 resultsHandler];
+          resultsHandler = [v10 resultsHandler];
 
-          if (v12)
+          if (resultsHandler)
           {
-            v13 = [v10 resultsHandler];
-            v13[2](v13, 3);
+            resultsHandler2 = [v10 resultsHandler];
+            resultsHandler2[2](resultsHandler2, 3);
 
             [v10 setResultsHandler:0];
           }
@@ -532,20 +532,20 @@ LABEL_16:
   pthread_mutex_unlock(&self->_recursiveMutex);
 }
 
-- (void)pluginWillRun:(id)a3 migrationPhaseDescription:(id)a4
+- (void)pluginWillRun:(id)run migrationPhaseDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  runCopy = run;
+  descriptionCopy = description;
   pthread_mutex_lock(&self->_recursiveMutex);
   v8 = +[DMEnvironment sharedInstance];
-  v9 = [v8 implementMigrationPluginResults];
+  implementMigrationPluginResults = [v8 implementMigrationPluginResults];
 
-  if (v9)
+  if (implementMigrationPluginResults)
   {
     v31[0] = @"kDMMigrationPluginResultsBundlePathKey";
-    v10 = [v6 rep];
-    v11 = [v10 path];
-    v32[0] = v11;
+    v10 = [runCopy rep];
+    path = [v10 path];
+    v32[0] = path;
     v32[1] = &off_100027958;
     v31[1] = @"kDMMigrationPluginResultsDuration";
     v31[2] = @"kDMMigrationPluginResultsPhaseDescription";
@@ -553,8 +553,8 @@ LABEL_16:
     v12 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:3];
 
     pluginResults = self->_pluginResults;
-    v14 = [v6 identifier];
-    [(NSMutableDictionary *)pluginResults setObject:v12 forKey:v14];
+    identifier = [runCopy identifier];
+    [(NSMutableDictionary *)pluginResults setObject:v12 forKey:identifier];
 
     v15 = +[NSDate date];
     v16 = dispatch_get_global_queue(21, 0);
@@ -567,7 +567,7 @@ LABEL_16:
     handler[2] = sub_100007780;
     handler[3] = &unk_1000248E8;
     handler[4] = self;
-    v28 = v6;
+    v28 = runCopy;
     v29 = v15;
     v30 = v17;
     v19 = v17;
@@ -576,14 +576,14 @@ LABEL_16:
     dispatch_resume(v19);
   }
 
-  v21 = [v6 isConcurrent];
-  v22 = [v7 copy];
+  isConcurrent = [runCopy isConcurrent];
+  v22 = [descriptionCopy copy];
   v23 = v22;
-  if (v21)
+  if (isConcurrent)
   {
     migrationPhaseDescriptionsByConcurrentPluginIdentifiers = self->_migrationPhaseDescriptionsByConcurrentPluginIdentifiers;
-    v25 = [v6 identifier];
-    [(NSMutableDictionary *)migrationPhaseDescriptionsByConcurrentPluginIdentifiers setObject:v23 forKeyedSubscript:v25];
+    identifier2 = [runCopy identifier];
+    [(NSMutableDictionary *)migrationPhaseDescriptionsByConcurrentPluginIdentifiers setObject:v23 forKeyedSubscript:identifier2];
   }
 
   else
@@ -596,39 +596,39 @@ LABEL_16:
   pthread_mutex_unlock(&self->_recursiveMutex);
 }
 
-- (void)pluginDidFinish:(id)a3 withSuccess:(BOOL)a4 duration:(double)a5 incident:(id)a6 migrationPhaseDescription:(id)a7
+- (void)pluginDidFinish:(id)finish withSuccess:(BOOL)success duration:(double)duration incident:(id)incident migrationPhaseDescription:(id)description
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  successCopy = success;
+  finishCopy = finish;
+  incidentCopy = incident;
+  descriptionCopy = description;
   pthread_mutex_lock(&self->_recursiveMutex);
-  [v12 timeIntervalBeforeWatchdog];
+  [finishCopy timeIntervalBeforeWatchdog];
   if (v15 > 0.0)
   {
-    self->_fastPluginMigrationDuration = self->_fastPluginMigrationDuration + a5;
+    self->_fastPluginMigrationDuration = self->_fastPluginMigrationDuration + duration;
   }
 
-  if (v13)
+  if (incidentCopy)
   {
-    [(NSMutableArray *)self->_incidents addObject:v13];
+    [(NSMutableArray *)self->_incidents addObject:incidentCopy];
   }
 
   v16 = +[DMEnvironment sharedInstance];
-  v17 = [v16 implementMigrationPluginResults];
+  implementMigrationPluginResults = [v16 implementMigrationPluginResults];
 
-  if (v17)
+  if (implementMigrationPluginResults)
   {
     v29[0] = @"kDMMigrationPluginResultsBundlePathKey";
-    v18 = [v12 rep];
-    v19 = [v18 path];
-    v30[0] = v19;
+    v18 = [finishCopy rep];
+    path = [v18 path];
+    v30[0] = path;
     v29[1] = @"kDMMigrationPluginResultsDuration";
-    v20 = [NSNumber numberWithDouble:a5];
+    v20 = [NSNumber numberWithDouble:duration];
     v21 = v20;
     v29[2] = @"kDMMigrationPluginResultsPhaseDescription";
     v22 = @"kDMMigrationPhaseDescriptionDidFinishWithFailure";
-    if (v10)
+    if (successCopy)
     {
       v22 = @"kDMMigrationPhaseDescriptionDidFinishWithSuccess";
     }
@@ -638,20 +638,20 @@ LABEL_16:
     v23 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:3];
 
     pluginResults = self->_pluginResults;
-    v25 = [v12 identifier];
-    [(NSMutableDictionary *)pluginResults setObject:v23 forKey:v25];
+    identifier = [finishCopy identifier];
+    [(NSMutableDictionary *)pluginResults setObject:v23 forKey:identifier];
   }
 
-  if ([v12 isConcurrent])
+  if ([finishCopy isConcurrent])
   {
     migrationPhaseDescriptionsByConcurrentPluginIdentifiers = self->_migrationPhaseDescriptionsByConcurrentPluginIdentifiers;
-    migrationPhaseDescription = [v12 identifier];
+    migrationPhaseDescription = [finishCopy identifier];
     [(NSMutableDictionary *)migrationPhaseDescriptionsByConcurrentPluginIdentifiers removeObjectForKey:migrationPhaseDescription];
   }
 
   else
   {
-    v28 = [v14 copy];
+    v28 = [descriptionCopy copy];
     migrationPhaseDescription = self->_migrationPhaseDescription;
     self->_migrationPhaseDescription = v28;
   }
@@ -662,9 +662,9 @@ LABEL_16:
 - (void)persistIfNecessary
 {
   v3 = +[DMEnvironment sharedInstance];
-  v4 = [v3 implementMigrationPluginResults];
+  implementMigrationPluginResults = [v3 implementMigrationPluginResults];
 
-  if (v4)
+  if (implementMigrationPluginResults)
   {
     pthread_mutex_lock(&self->_recursiveMutex);
     if (self->_pluginResults)
@@ -759,42 +759,42 @@ LABEL_16:
   pthread_mutex_unlock(&self->_recursiveMutex);
 }
 
-- (void)_userDidRespondToMigrationFailureNotificationToFileRadar:(BOOL)a3
+- (void)_userDidRespondToMigrationFailureNotificationToFileRadar:(BOOL)radar
 {
-  v4 = self;
+  selfCopy = self;
   [(DMMigrationState *)self _releaseMigrationFailureNotification];
-  if (a3)
+  if (radar)
   {
-    pthread_mutex_lock(&v4->_recursiveMutex);
+    pthread_mutex_lock(&selfCopy->_recursiveMutex);
     _DMLogFunc();
     v5 = +[DMEnvironment sharedInstance];
-    v6 = [v5 buildVersion];
+    buildVersion = [v5 buildVersion];
 
-    v7 = [NSString stringWithFormat:@"Data Migration failed on %@", v6];
-    if ([(NSMutableArray *)v4->_incidents count])
+    v7 = [NSString stringWithFormat:@"Data Migration failed on %@", buildVersion];
+    if ([(NSMutableArray *)selfCopy->_incidents count])
     {
-      v38 = v6;
+      v38 = buildVersion;
       v36 = v7;
-      if ([(NSMutableArray *)v4->_incidents count]== 1)
+      if ([(NSMutableArray *)selfCopy->_incidents count]== 1)
       {
-        v8 = [(NSMutableArray *)v4->_incidents firstObject];
-        v9 = [v8 responsiblePluginRep];
-        v10 = [v9 bundleIdentifier];
+        firstObject = [(NSMutableArray *)selfCopy->_incidents firstObject];
+        responsiblePluginRep = [firstObject responsiblePluginRep];
+        bundleIdentifier = [responsiblePluginRep bundleIdentifier];
 
-        if ([v10 length])
+        if ([bundleIdentifier length])
         {
-          v11 = [NSString stringWithFormat:@" (%@)", v10];
+          v11 = [NSString stringWithFormat:@" (%@)", bundleIdentifier];
         }
 
         else
         {
-          v14 = [v8 details];
-          v15 = [v14 length];
+          details = [firstObject details];
+          v15 = [details length];
 
           if (v15)
           {
-            v16 = [v8 details];
-            v11 = [NSString stringWithFormat:@" (%@)", v16];
+            details2 = [firstObject details];
+            v11 = [NSString stringWithFormat:@" (%@)", details2];
           }
 
           else
@@ -814,13 +814,13 @@ LABEL_16:
       v17 = objc_alloc_init(NSDateFormatter);
       [v17 setDateStyle:1];
       [v17 setDateFormat:@"yyyy-MM-dd-HHmmss"];
-      v18 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableArray count](v4->_incidents, "count")}];
+      v18 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableArray count](selfCopy->_incidents, "count")}];
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v39 = v4;
-      obj = v4->_incidents;
+      v39 = selfCopy;
+      obj = selfCopy->_incidents;
       v19 = [(NSMutableArray *)obj countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v19)
       {
@@ -836,10 +836,10 @@ LABEL_16:
             }
 
             v23 = *(*(&v42 + 1) + 8 * i);
-            v24 = [v23 details];
-            v25 = [v23 date];
-            v26 = [v17 stringFromDate:v25];
-            v27 = [NSString stringWithFormat:@"%@ (%@)", v24, v26];
+            details3 = [v23 details];
+            date = [v23 date];
+            v26 = [v17 stringFromDate:date];
+            v27 = [NSString stringWithFormat:@"%@ (%@)", details3, v26];
 
             [v18 addObject:v27];
           }
@@ -853,8 +853,8 @@ LABEL_16:
       v28 = [v18 componentsJoinedByString:@"\n"];
       v7 = [NSString stringWithFormat:@"%@\nReasons:\n%@", v36, v28];
 
-      v6 = v38;
-      v4 = v39;
+      buildVersion = v38;
+      selfCopy = v39;
       v13 = v37;
     }
 
@@ -866,7 +866,7 @@ LABEL_16:
     v29 = [NSString stringWithFormat:@"%@\n\nAdditional diagnostic info in stackshots with prefixes:\nstacks+com.apple.datamigrator\ncom.apple.migrationpluginwrapper (for plugin crashes, if any)", v7];
 
     v30 = objc_alloc_init(RadarDraft);
-    v31 = [NSString stringWithFormat:@"Data Migration failed on %@%@", v6, v13];
+    v31 = [NSString stringWithFormat:@"Data Migration failed on %@%@", buildVersion, v13];
     [v30 setTitle:v31];
 
     [v30 setProblemDescription:v29];
@@ -882,17 +882,17 @@ LABEL_16:
     v34 = v41;
 
     _DMLogFunc();
-    migrationFailureNotificationTransaction = v4->_migrationFailureNotificationTransaction;
-    v4->_migrationFailureNotificationTransaction = 0;
+    migrationFailureNotificationTransaction = selfCopy->_migrationFailureNotificationTransaction;
+    selfCopy->_migrationFailureNotificationTransaction = 0;
 
-    pthread_mutex_unlock(&v4->_recursiveMutex);
+    pthread_mutex_unlock(&selfCopy->_recursiveMutex);
   }
 
   else
   {
     _DMLogFunc();
-    v12 = v4->_migrationFailureNotificationTransaction;
-    v4->_migrationFailureNotificationTransaction = 0;
+    v12 = selfCopy->_migrationFailureNotificationTransaction;
+    selfCopy->_migrationFailureNotificationTransaction = 0;
   }
 }
 
@@ -948,13 +948,13 @@ LABEL_11:
   return v7;
 }
 
-- (void)reportTelemetryForPluginIdentifier:(id)a3 duration:(double)a4 incident:(id)a5 countOfAttempts:(unint64_t)a6 userDataDisposition:(id)a7 userCategory:(unsigned int)a8
+- (void)reportTelemetryForPluginIdentifier:(id)identifier duration:(double)duration incident:(id)incident countOfAttempts:(unint64_t)attempts userDataDisposition:(id)disposition userCategory:(unsigned int)category
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  v17 = [v16 objectForKeyedSubscript:@"previousBuildVersion"];
-  v18 = [DMUserDataDispositionManager dispositionFlagsFromDispositionDict:v16];
+  identifierCopy = identifier;
+  incidentCopy = incident;
+  dispositionCopy = disposition;
+  v17 = [dispositionCopy objectForKeyedSubscript:@"previousBuildVersion"];
+  v18 = [DMUserDataDispositionManager dispositionFlagsFromDispositionDict:dispositionCopy];
 
   v19 = +[DMAnalytics sharedInstance];
   v23[0] = _NSConcreteStackBlock;
@@ -962,16 +962,16 @@ LABEL_11:
   v23[2] = sub_100008BC4;
   v23[3] = &unk_100024930;
   v23[4] = self;
-  v24 = v14;
-  v27 = a4;
-  v28 = a6;
-  v25 = v15;
+  v24 = identifierCopy;
+  durationCopy = duration;
+  attemptsCopy = attempts;
+  v25 = incidentCopy;
   v26 = v17;
   v29 = v18;
-  v30 = a8;
+  categoryCopy = category;
   v20 = v17;
-  v21 = v15;
-  v22 = v14;
+  v21 = incidentCopy;
+  v22 = identifierCopy;
   [v19 sendLazyEventWithName:@"com.apple.migration.pluginDidComplete" payloadBuilder:v23];
 }
 

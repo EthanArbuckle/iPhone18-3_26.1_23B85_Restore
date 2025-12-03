@@ -1,9 +1,9 @@
 @interface ICNoteLinkPresentationActivityItemSource
 - (ICNoteLinkPresentationActivityItemSource)init;
-- (ICNoteLinkPresentationActivityItemSource)initWithNote:(id)a3 thumbnailImage:(id)a4;
+- (ICNoteLinkPresentationActivityItemSource)initWithNote:(id)note thumbnailImage:(id)image;
 - (id)detail;
 - (id)title;
-- (void)setThumbnailImage:(id)a3;
+- (void)setThumbnailImage:(id)image;
 @end
 
 @implementation ICNoteLinkPresentationActivityItemSource
@@ -15,28 +15,28 @@
   return 0;
 }
 
-- (ICNoteLinkPresentationActivityItemSource)initWithNote:(id)a3 thumbnailImage:(id)a4
+- (ICNoteLinkPresentationActivityItemSource)initWithNote:(id)note thumbnailImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
+  noteCopy = note;
+  imageCopy = image;
   v12.receiver = self;
   v12.super_class = ICNoteLinkPresentationActivityItemSource;
   v9 = [(ICNoteLinkPresentationActivityItemSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_note, a3);
-    objc_storeStrong(&v10->_thumbnailImage, a4);
+    objc_storeStrong(&v9->_note, note);
+    objc_storeStrong(&v10->_thumbnailImage, image);
   }
 
   return v10;
 }
 
-- (void)setThumbnailImage:(id)a3
+- (void)setThumbnailImage:(id)image
 {
-  objc_storeStrong(&self->_thumbnailImage, a3);
-  v5 = a3;
-  [(ICLinkPresentationActivityItemSource *)self setIconImage:v5];
+  objc_storeStrong(&self->_thumbnailImage, image);
+  imageCopy = image;
+  [(ICLinkPresentationActivityItemSource *)self setIconImage:imageCopy];
 }
 
 - (id)title
@@ -47,15 +47,15 @@
   v11 = __Block_byref_object_copy__19;
   v12 = __Block_byref_object_dispose__19;
   v13 = 0;
-  v3 = [(ICNoteLinkPresentationActivityItemSource *)self note];
-  v4 = [v3 managedObjectContext];
+  note = [(ICNoteLinkPresentationActivityItemSource *)self note];
+  managedObjectContext = [note managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__ICNoteLinkPresentationActivityItemSource_title__block_invoke;
   v7[3] = &unk_1E8468FA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -80,15 +80,15 @@ void __49__ICNoteLinkPresentationActivityItemSource_title__block_invoke(uint64_t
   v11 = __Block_byref_object_copy__19;
   v12 = __Block_byref_object_dispose__19;
   v13 = 0;
-  v3 = [(ICNoteLinkPresentationActivityItemSource *)self note];
-  v4 = [v3 managedObjectContext];
+  note = [(ICNoteLinkPresentationActivityItemSource *)self note];
+  managedObjectContext = [note managedObjectContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__ICNoteLinkPresentationActivityItemSource_detail__block_invoke;
   v7[3] = &unk_1E8468FA8;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 performBlockAndWait:v7];
+  [managedObjectContext performBlockAndWait:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);

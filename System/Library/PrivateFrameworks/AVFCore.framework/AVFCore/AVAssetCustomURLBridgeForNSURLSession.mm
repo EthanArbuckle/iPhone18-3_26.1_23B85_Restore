@@ -1,26 +1,26 @@
 @interface AVAssetCustomURLBridgeForNSURLSession
-- (int)_cancelRequestID:(unint64_t)a3;
-- (int)_handleRequest:(__CFDictionary *)a3 requestID:(unint64_t)a4 canHandleRequestOut:(BOOL *)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)_registerRequest:(__CFDictionary *)a3 id:(unint64_t)a4 forDataTask:(id)a5;
+- (int)_cancelRequestID:(unint64_t)d;
+- (int)_handleRequest:(__CFDictionary *)request requestID:(unint64_t)d canHandleRequestOut:(BOOL *)out;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)_registerRequest:(__CFDictionary *)request id:(unint64_t)id forDataTask:(id)task;
 - (void)dealloc;
 @end
 
 @implementation AVAssetCustomURLBridgeForNSURLSession
 
-- (void)_registerRequest:(__CFDictionary *)a3 id:(unint64_t)a4 forDataTask:(id)a5
+- (void)_registerRequest:(__CFDictionary *)request id:(unint64_t)id forDataTask:(id)task
 {
   taskToRequest = self->_taskToRequest;
-  v7 = [AVAssetCustomURLRequest requestWithRequest:a3 id:a4];
+  v7 = [AVAssetCustomURLRequest requestWithRequest:request id:id];
 
-  [(NSMutableDictionary *)taskToRequest setObject:v7 forKey:a5];
+  [(NSMutableDictionary *)taskToRequest setObject:v7 forKey:task];
 }
 
-- (int)_cancelRequestID:(unint64_t)a3
+- (int)_cancelRequestID:(unint64_t)d
 {
   v7 = 0;
   v8 = &v7;
@@ -34,7 +34,7 @@
   v6[2] = __58__AVAssetCustomURLBridgeForNSURLSession__cancelRequestID___block_invoke;
   v6[3] = &unk_1E7464B40;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = d;
   [(NSMutableDictionary *)taskToRequest enumerateKeysAndObjectsUsingBlock:v6];
   if (v8[5])
   {
@@ -58,7 +58,7 @@ uint64_t __58__AVAssetCustomURLBridgeForNSURLSession__cancelRequestID___block_in
   return result;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   callbackQueue = self->_callbackQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -66,13 +66,13 @@ uint64_t __58__AVAssetCustomURLBridgeForNSURLSession__cancelRequestID___block_in
   v7[2] = __98__AVAssetCustomURLBridgeForNSURLSession_URLSession_dataTask_didReceiveResponse_completionHandler___block_invoke;
   v7[3] = &unk_1E7461108;
   v7[4] = self;
-  v7[5] = a4;
-  v7[6] = a5;
-  v7[7] = a6;
+  v7[5] = task;
+  v7[6] = response;
+  v7[7] = handler;
   dispatch_async(callbackQueue, v7);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -80,12 +80,12 @@ uint64_t __58__AVAssetCustomURLBridgeForNSURLSession__cancelRequestID___block_in
   block[2] = __76__AVAssetCustomURLBridgeForNSURLSession_URLSession_dataTask_didReceiveData___block_invoke;
   block[3] = &unk_1E7460E90;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = task;
+  block[6] = data;
   dispatch_async(callbackQueue, block);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -93,8 +93,8 @@ uint64_t __58__AVAssetCustomURLBridgeForNSURLSession__cancelRequestID___block_in
   block[2] = __84__AVAssetCustomURLBridgeForNSURLSession_URLSession_task_didFinishCollectingMetrics___block_invoke;
   block[3] = &unk_1E7460E90;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = task;
+  block[6] = metrics;
   dispatch_async(callbackQueue, block);
 }
 
@@ -106,7 +106,7 @@ uint64_t __84__AVAssetCustomURLBridgeForNSURLSession_URLSession_task_didFinishCo
   return [v2 setMetrics:v3];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -114,16 +114,16 @@ uint64_t __84__AVAssetCustomURLBridgeForNSURLSession_URLSession_task_didFinishCo
   block[2] = __78__AVAssetCustomURLBridgeForNSURLSession_URLSession_task_didCompleteWithError___block_invoke;
   block[3] = &unk_1E7460E90;
   block[4] = self;
-  block[5] = a4;
-  block[6] = a5;
+  block[5] = task;
+  block[6] = error;
   dispatch_async(callbackQueue, block);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
-  if (a6)
+  if (handler)
   {
-    (*(a6 + 2))(a6, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
@@ -146,7 +146,7 @@ uint64_t __84__AVAssetCustomURLBridgeForNSURLSession_URLSession_task_didFinishCo
   [(AVAssetCustomURLBridgeForNSURLSession *)&v5 dealloc];
 }
 
-- (int)_handleRequest:(__CFDictionary *)a3 requestID:(unint64_t)a4 canHandleRequestOut:(BOOL *)a5
+- (int)_handleRequest:(__CFDictionary *)request requestID:(unint64_t)d canHandleRequestOut:(BOOL *)out
 {
   v30 = 0;
   v31 = 0;

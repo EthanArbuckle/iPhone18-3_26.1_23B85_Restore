@@ -1,9 +1,9 @@
 @interface NSTextPhraseAttributesProvider_RippleFade
-- (NSTextPhraseAttributesProvider_RippleFade)initWithController:(id)a3;
-- (double)opacityFactorForGlyphIndex:(int64_t)a3 phraseIndex:(int64_t)a4 atTimeIndex:(int64_t)a5;
-- (double)scaleFactorForGlyphIndex:(int64_t)a3 phraseIndex:(int64_t)a4 atTimeIndex:(int64_t)a5;
+- (NSTextPhraseAttributesProvider_RippleFade)initWithController:(id)controller;
+- (double)opacityFactorForGlyphIndex:(int64_t)index phraseIndex:(int64_t)phraseIndex atTimeIndex:(int64_t)timeIndex;
+- (double)scaleFactorForGlyphIndex:(int64_t)index phraseIndex:(int64_t)phraseIndex atTimeIndex:(int64_t)timeIndex;
 - (double)totalElapsedTime;
-- (id)attributedStringForPhraseIndex:(unint64_t)a3 atPhraseTimeIndex:(int64_t)a4;
+- (id)attributedStringForPhraseIndex:(unint64_t)index atPhraseTimeIndex:(int64_t)timeIndex;
 - (int64_t)animationElapsedTimeIndex;
 - (int64_t)cycleCount;
 - (int64_t)cycleTimeIndex;
@@ -13,23 +13,23 @@
 - (int64_t)totalElapsedTimeIndex;
 - (void)generateDelayValues;
 - (void)generateFactorArrayValues;
-- (void)renderFrameForTime:(double)a3 usingHandler:(id)a4;
+- (void)renderFrameForTime:(double)time usingHandler:(id)handler;
 @end
 
 @implementation NSTextPhraseAttributesProvider_RippleFade
 
-- (NSTextPhraseAttributesProvider_RippleFade)initWithController:(id)a3
+- (NSTextPhraseAttributesProvider_RippleFade)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = NSTextPhraseAttributesProvider_RippleFade;
   v5 = [(NSTextPhraseAttributesProvider_RippleFade *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_controller, v4);
-    v8 = [v4 animatingAttributedStringPhrases];
-    objc_storeWeak(&v6->_animatingAttributedStringPhrases, v8);
+    v7 = objc_storeWeak(&v5->_controller, controllerCopy);
+    animatingAttributedStringPhrases = [controllerCopy animatingAttributedStringPhrases];
+    objc_storeWeak(&v6->_animatingAttributedStringPhrases, animatingAttributedStringPhrases);
 
     [(NSTextPhraseAttributesProvider_RippleFade *)v6 generateFactorArrayValues];
     [(NSTextPhraseAttributesProvider_RippleFade *)v6 generateDelayValues];
@@ -76,11 +76,11 @@ LABEL_8:
     LODWORD(v8) = HIDWORD(v8);
     if ((v8 >> 1) <= 0x19999999)
     {
-      v9 = [MEMORY[0x1E696AD60] string];
+      string = [MEMORY[0x1E696AD60] string];
 
-      [v9 appendString:@"TPT_RF: "];
+      [string appendString:@"TPT_RF: "];
       v7 = self->_opacityFactorArray[0];
-      v23 = v9;
+      v23 = string;
     }
 
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f ", *&v7];
@@ -108,11 +108,11 @@ LABEL_8:
     LODWORD(v16) = HIDWORD(v16);
     if ((v16 >> 1) <= 0x19999999)
     {
-      v17 = [MEMORY[0x1E696AD60] string];
+      string2 = [MEMORY[0x1E696AD60] string];
 
-      [v17 appendString:@"TPT_RF: "];
+      [string2 appendString:@"TPT_RF: "];
       v15 = scaleFactorArray[i];
-      v23 = v17;
+      v23 = string2;
     }
 
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f ", *&v15];
@@ -143,20 +143,20 @@ LABEL_8:
   v9 = v7;
 }
 
-- (void)renderFrameForTime:(double)a3 usingHandler:(id)a4
+- (void)renderFrameForTime:(double)time usingHandler:(id)handler
 {
-  v13 = a4;
-  self->_currentTime = a3;
+  handlerCopy = handler;
+  self->_currentTime = time;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
 
   if (WeakRetained)
   {
-    v7 = [(NSTextPhraseAttributesProvider_RippleFade *)self cycleTimeIndex];
-    v8 = [(NSTextPhraseAttributesProvider_RippleFade *)self cycleTimeIndex];
-    v9 = [(NSTextPhraseAttributesProvider_RippleFade *)self attributedStringForPhraseIndex:[(NSTextPhraseAttributesProvider_RippleFade *)self primaryPhraseIndex] atPhraseTimeIndex:v7];
+    cycleTimeIndex = [(NSTextPhraseAttributesProvider_RippleFade *)self cycleTimeIndex];
+    cycleTimeIndex2 = [(NSTextPhraseAttributesProvider_RippleFade *)self cycleTimeIndex];
+    v9 = [(NSTextPhraseAttributesProvider_RippleFade *)self attributedStringForPhraseIndex:[(NSTextPhraseAttributesProvider_RippleFade *)self primaryPhraseIndex] atPhraseTimeIndex:cycleTimeIndex];
     if ([(NSTextPhraseAttributesProvider_RippleFade *)self isSecondaryPhraseAvailable])
     {
-      v10 = [(NSTextPhraseAttributesProvider_RippleFade *)self attributedStringForPhraseIndex:[(NSTextPhraseAttributesProvider_RippleFade *)self secondaryPhraseIndex] atPhraseTimeIndex:v8 + 240];
+      v10 = [(NSTextPhraseAttributesProvider_RippleFade *)self attributedStringForPhraseIndex:[(NSTextPhraseAttributesProvider_RippleFade *)self secondaryPhraseIndex] atPhraseTimeIndex:cycleTimeIndex2 + 240];
     }
 
     else
@@ -165,19 +165,19 @@ LABEL_8:
     }
 
     v11 = objc_loadWeakRetained(&self->_controller);
-    v12 = [v11 animationState];
-    v13[2](v13, v12, v9, v10, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
+    animationState = [v11 animationState];
+    handlerCopy[2](handlerCopy, animationState, v9, v10, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
   }
 }
 
-- (id)attributedStringForPhraseIndex:(unint64_t)a3 atPhraseTimeIndex:(int64_t)a4
+- (id)attributedStringForPhraseIndex:(unint64_t)index atPhraseTimeIndex:(int64_t)timeIndex
 {
   WeakRetained = objc_loadWeakRetained(&self->_animatingAttributedStringPhrases);
-  v8 = [WeakRetained objectAtIndex:a3];
+  v8 = [WeakRetained objectAtIndex:index];
   v9 = [v8 mutableCopy];
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"TPT_RF: phrase%02d cycleIndex:%03d ", a3, a4];
-  [0 appendString:v10];
+  timeIndex = [MEMORY[0x1E696AEC0] stringWithFormat:@"TPT_RF: phrase%02d cycleIndex:%03d ", index, timeIndex];
+  [0 appendString:timeIndex];
 
   v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"opacity: ["];
   [0 appendString:v11];
@@ -191,7 +191,7 @@ LABEL_8:
     v14 = 0;
     do
     {
-      [(NSTextPhraseAttributesProvider_RippleFade *)self opacityFactorForGlyphIndex:v14 phraseIndex:a3 atTimeIndex:a4];
+      [(NSTextPhraseAttributesProvider_RippleFade *)self opacityFactorForGlyphIndex:v14 phraseIndex:index atTimeIndex:timeIndex];
       if (v15 <= 0.99)
       {
         v17 = v15;
@@ -233,22 +233,22 @@ LABEL_8:
   return v9;
 }
 
-- (double)opacityFactorForGlyphIndex:(int64_t)a3 phraseIndex:(int64_t)a4 atTimeIndex:(int64_t)a5
+- (double)opacityFactorForGlyphIndex:(int64_t)index phraseIndex:(int64_t)phraseIndex atTimeIndex:(int64_t)timeIndex
 {
-  v8 = [(NSArray *)self->_delayArrays objectAtIndex:a4];
-  v9 = [v8 objectAtIndex:a3];
-  v10 = [v9 unsignedIntegerValue];
+  v8 = [(NSArray *)self->_delayArrays objectAtIndex:phraseIndex];
+  v9 = [v8 objectAtIndex:index];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  return self->_opacityFactorArray[(a5 - v10) & ~((a5 - v10) >> 63)];
+  return self->_opacityFactorArray[(timeIndex - unsignedIntegerValue) & ~((timeIndex - unsignedIntegerValue) >> 63)];
 }
 
-- (double)scaleFactorForGlyphIndex:(int64_t)a3 phraseIndex:(int64_t)a4 atTimeIndex:(int64_t)a5
+- (double)scaleFactorForGlyphIndex:(int64_t)index phraseIndex:(int64_t)phraseIndex atTimeIndex:(int64_t)timeIndex
 {
-  v8 = [(NSArray *)self->_delayArrays objectAtIndex:a4];
-  v9 = [v8 objectAtIndex:a3];
-  v10 = [v9 unsignedIntegerValue];
+  v8 = [(NSArray *)self->_delayArrays objectAtIndex:phraseIndex];
+  v9 = [v8 objectAtIndex:index];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  return self->_scaleFactorArray[(a5 - v10) & ~((a5 - v10) >> 63)];
+  return self->_scaleFactorArray[(timeIndex - unsignedIntegerValue) & ~((timeIndex - unsignedIntegerValue) >> 63)];
 }
 
 - (int64_t)phraseCount
@@ -261,16 +261,16 @@ LABEL_8:
 
 - (int64_t)primaryPhraseIndex
 {
-  v3 = [(NSTextPhraseAttributesProvider_RippleFade *)self cycleCount];
-  result = v3 % [(NSTextPhraseAttributesProvider_RippleFade *)self phraseCount];
+  cycleCount = [(NSTextPhraseAttributesProvider_RippleFade *)self cycleCount];
+  result = cycleCount % [(NSTextPhraseAttributesProvider_RippleFade *)self phraseCount];
   self->_primaryPhraseIndex = result;
   return result;
 }
 
 - (int64_t)secondaryPhraseIndex
 {
-  v3 = [(NSTextPhraseAttributesProvider_RippleFade *)self primaryPhraseIndex];
-  v4 = v3 + [(NSTextPhraseAttributesProvider_RippleFade *)self phraseCount]- 1;
+  primaryPhraseIndex = [(NSTextPhraseAttributesProvider_RippleFade *)self primaryPhraseIndex];
+  v4 = primaryPhraseIndex + [(NSTextPhraseAttributesProvider_RippleFade *)self phraseCount]- 1;
   result = v4 % [(NSTextPhraseAttributesProvider_RippleFade *)self phraseCount];
   self->_secondaryPhraseIndex = result;
   return result;
@@ -286,11 +286,11 @@ LABEL_8:
 
 - (int64_t)animationElapsedTimeIndex
 {
-  v3 = [(NSTextPhraseAttributesProvider_RippleFade *)self totalElapsedTimeIndex];
+  totalElapsedTimeIndex = [(NSTextPhraseAttributesProvider_RippleFade *)self totalElapsedTimeIndex];
   v4 = -60;
-  if (v3 > -60)
+  if (totalElapsedTimeIndex > -60)
   {
-    v4 = v3;
+    v4 = totalElapsedTimeIndex;
   }
 
   result = v4 + 60;

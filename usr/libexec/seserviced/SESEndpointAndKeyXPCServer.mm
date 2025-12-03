@@ -1,138 +1,138 @@
 @interface SESEndpointAndKeyXPCServer
 + (id)createServer;
-+ (id)createServerWithMachServiceName:(id)a3 storagePath:(id)a4;
-- (BOOL)_deleteLoadedKey:(id)a3 instanceAID:(id)a4 loadedKey:(id)a5 error:(id *)a6;
-- (BOOL)_preWarmAlishaInternal:(id)a3 handle:(id)a4 proximityChipInfo:(id)a5 manufactuer:(id)a6 clientName:(id)a7 error:(id *)a8;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)createServerWithMachServiceName:(id)name storagePath:(id)path;
+- (BOOL)_deleteLoadedKey:(id)key instanceAID:(id)d loadedKey:(id)loadedKey error:(id *)error;
+- (BOOL)_preWarmAlishaInternal:(id)internal handle:(id)handle proximityChipInfo:(id)info manufactuer:(id)manufactuer clientName:(id)name error:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_aclForFidoAttestingKey;
-- (id)_applyConfidentialMailboxContents:(id *)a3 secureElement:(id)a4 instanceAID:(id)a5 keyIdentifier:(id)a6;
-- (id)_applyPrivateMailboxContents:(id *)a3 secureElement:(id)a4 instanceAID:(id)a5 keyIdentifier:(id)a6;
-- (id)_cleanupAppletsWithNoEndpoints:(id)a3 handle:(id)a4;
-- (id)_createEndPointCA:(id)a3 handle:(id)a4 clientName:(id)a5 identifier:(id)a6 subjectIdentifier:(id)a7 forEndPointType:(int64_t)a8 error:(id *)a9;
-- (id)_createKey:(id)a3 acl:(id)a4 error:(id *)a5;
-- (id)_createSynchronizableKey:(id)a3 extractedACLs:(id)a4 error:(id *)a5;
-- (id)_ensureCAExistsAndValid:(id)a3 clientName:(id)a4 secureElement:(id)a5 handle:(id)a6 forEndPointType:(int64_t)a7 error:(id *)a8;
-- (id)_getBAACertificatesForKey:(id)a3 key:(id)a4 subjectIdentifier:(id)a5 nonce:(id)a6 OIDs:(id)a7 validityInterval:(id)a8 error:(id *)a9;
-- (id)_getEndPointAndValidateAccess:(id)a3 identifier:(id)a4 clientInfo:(id)a5 outEndPointEntity:(id *)a6 outEndPoint:(id *)a7;
-- (id)_renewEndPointCAIfExpired:(id)a3 secureElement:(id)a4 forEndPointType:(int64_t)a5 handle:(id)a6;
-- (id)findAndLoadKey:(id)a3 secureElement:(id)a4 error:(id *)a5;
-- (id)getEncryptedCarOEMProprietaryData:(id)a3 withEndpointEntity:(id)a4 withSecureElement:(id)a5;
-- (id)getKeyHandle:(id)a3 key:(id)a4 error:(id *)a5;
-- (id)getOccupiedLegacyKeySlots:(id *)a3;
-- (id)getUsableKeySlot:(id)a3;
-- (id)getUsableLegacyKeySlot:(id)a3 outError:(id *)a4;
-- (id)initializeRAMRepresentation:(id)a3;
-- (id)revokeRemoteTerminationRequestEndPoints:(id)a3 handle:(id)a4 identifier:(id)a5 taskID:(id)a6 clientInfo:(id)a7 outError:(id *)a8;
+- (id)_applyConfidentialMailboxContents:(id *)contents secureElement:(id)element instanceAID:(id)d keyIdentifier:(id)identifier;
+- (id)_applyPrivateMailboxContents:(id *)contents secureElement:(id)element instanceAID:(id)d keyIdentifier:(id)identifier;
+- (id)_cleanupAppletsWithNoEndpoints:(id)endpoints handle:(id)handle;
+- (id)_createEndPointCA:(id)a handle:(id)handle clientName:(id)name identifier:(id)identifier subjectIdentifier:(id)subjectIdentifier forEndPointType:(int64_t)type error:(id *)error;
+- (id)_createKey:(id)key acl:(id)acl error:(id *)error;
+- (id)_createSynchronizableKey:(id)key extractedACLs:(id)ls error:(id *)error;
+- (id)_ensureCAExistsAndValid:(id)valid clientName:(id)name secureElement:(id)element handle:(id)handle forEndPointType:(int64_t)type error:(id *)error;
+- (id)_getBAACertificatesForKey:(id)key key:(id)a4 subjectIdentifier:(id)identifier nonce:(id)nonce OIDs:(id)ds validityInterval:(id)interval error:(id *)error;
+- (id)_getEndPointAndValidateAccess:(id)access identifier:(id)identifier clientInfo:(id)info outEndPointEntity:(id *)entity outEndPoint:(id *)point;
+- (id)_renewEndPointCAIfExpired:(id)expired secureElement:(id)element forEndPointType:(int64_t)type handle:(id)handle;
+- (id)findAndLoadKey:(id)key secureElement:(id)element error:(id *)error;
+- (id)getEncryptedCarOEMProprietaryData:(id)data withEndpointEntity:(id)entity withSecureElement:(id)element;
+- (id)getKeyHandle:(id)handle key:(id)key error:(id *)error;
+- (id)getOccupiedLegacyKeySlots:(id *)slots;
+- (id)getUsableKeySlot:(id)slot;
+- (id)getUsableLegacyKeySlot:(id)slot outError:(id *)error;
+- (id)initializeRAMRepresentation:(id)representation;
+- (id)revokeRemoteTerminationRequestEndPoints:(id)points handle:(id)handle identifier:(id)identifier taskID:(id)d clientInfo:(id)info outError:(id *)error;
 - (os_state_data_s)_dumpState;
-- (unint64_t)_existsDuplicateInDatabase:(id)a3 withIdentifier:(id)a4 orReaderIdentifier:(id)a5 outError:(id *)a6;
-- (void)addEndpointId:(id)a3 withUuid:(id)a4 reply:(id)a5;
-- (void)addInvitationWithId:(id)a3 data:(id)a4 reply:(id)a5;
-- (void)authorizeEndPointWithProxy:(id)a3 version:(unsigned __int8)a4 identifier:(id)a5 externalCA:(id)a6 instanceCA:(id)a7 endpointCertificate:(id)a8 encryptionKeyAttestation:(id)a9 bindingAttestation:(id)a10 bindingAttestationToken:(id)a11 confidentialDataOffset:(unsigned __int16)a12 confidentialDataLength:(unsigned __int16)a13 metaData:(id)a14 authorizationID:(id)a15 reply:(id)a16;
-- (void)carKeyDowngradeVersionSetting:(id)a3 brand:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)checkKeyValidity:(id)a3 completion:(id)a4;
-- (void)checkMultipleFidoKeyPresence:(id)a3 usingProxy:(id)a4 callback:(id)a5;
-- (void)cleanupAppletsWithNoEndpoints:(id)a3 completion:(id)a4;
-- (void)cleanupAppletsWithNoEndpoints:(id)a3 reply:(id)a4;
-- (void)configureEndpointWithProxy:(id)a3 identifier:(id)a4 privateData:(id)a5 confidentialData:(id)a6 contactlessVolatileVisibility:(id)a7 contactlessPersistentVisibility:(id)a8 wiredVolatileVisibility:(id)a9 wiredPersistentVisibility:(id)a10 keySlot:(id)a11 nfcExpressOnlyInLPM:(id)a12 reply:(id)a13;
-- (void)convertEndpointWithProxy:(id)a3 keyIdentifier:(id)a4 notBeforeDate:(id)a5 reply:(id)a6;
-- (void)createAlishaEndpointWithProxy:(id)a3 identifier:(id)a4 authorityIdentifier:(id)a5 subjectIdentifier:(id)a6 configuration:(id)a7 readerIdentifier:(id)a8 readerPublicKey:(id)a9 readerInformation:(id)a10 startDate:(id)a11 endDate:(id)a12 keyIdentifier:(id)a13 authorizedKeys:(id)a14 confidentialMailBoxSize:(id)a15 privateMailBoxSize:(id)a16 reply:(id)a17;
-- (void)createCertificateForKeyData:(id)a3 withKeyData:(id)a4 subjectIdentifier:(id)a5 authorityIdentifier:(id)a6 laExternalizedContext:(id)a7 nonce:(id)a8 OIDs:(id)a9 reply:(id)a10;
-- (void)createEncryptionKeyEndPointWithProxy:(id)a3 identifier:(id)a4 reply:(id)a5;
-- (void)createEndPointAuthorizationID:(id)a3 userAuth:(id)a4 reply:(id)a5;
-- (void)createFiDOKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 usingProxy:(id)a6 callback:(id)a7;
-- (void)createHydraEndpointWithProxy:(id)a3 serverParams:(id)a4 reply:(id)a5;
-- (void)createLocalEndpointWithProxy:(id)a3 readerIdentifier:(id)a4 readerPublicKey:(id)a5 reply:(id)a6;
-- (void)createLyonEndpointWithProxy:(id)a3 readerGroupIdentifier:(id)a4 readerPublicKey:(id)a5 homeUUID:(id)a6 privateMailboxSize:(id)a7 reply:(id)a8;
-- (void)createLyonHydraEndpointWithProxy:(id)a3 serverParams:(id)a4 reply:(id)a5;
-- (void)createPTAttestation:(id)a3 keyData:(id)a4 subjectIdentifier:(id)a5 nonce:(id)a6 OIDs:(id)a7 reply:(id)a8;
-- (void)createPrivacyKeyForGroupIdentifier:(id)a3 withOptions:(id)a4 completion:(id)a5;
-- (void)createSEABAASCertificate:(id)a3 subjectIdentifier:(id)a4 nonce:(id)a5 OIDs:(id)a6 validityInterval:(id)a7 reply:(id)a8;
-- (void)createSEKey:(id)a3 extractedACLs:(id)a4 reply:(id)a5;
-- (void)createSELegacyKey:(id)a3 subjectIdentifier:(id)a4 metaData:(id)a5 localValidationList:(id)a6 reply:(id)a7;
-- (void)databaseServiceWithProxy:(id)a3 isReconcileRequired:(BOOL)a4 reason:(id)a5 reply:(id)a6;
-- (void)decryptPayload:(id)a3 withGroupIdentifier:(id)a4 completion:(id)a5;
-- (void)decryptWithSEKey:(id)a3 cipherText:(id)a4 publicKey:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 sharedInfo:(id)a8 authenticationData:(id)a9 authenticationTag:(id)a10 reply:(id)a11;
-- (void)deleteEndPointAuthorizationID:(id)a3 reply:(id)a4;
-- (void)deleteEndPointWithProxy:(id)a3 identifier:(id)a4 mustBeTerminated:(BOOL)a5 reply:(id)a6;
-- (void)deleteEndPointWithPublicKey:(id)a3 reply:(id)a4;
-- (void)deleteEndPointWithPublicKeyIdentifier:(id)a3 reply:(id)a4;
-- (void)deleteEndpointIdWithUuid:(id)a3 reply:(id)a4;
-- (void)deleteFiDOKeyFor:(id)a3 usingProxy:(id)a4 callback:(id)a5;
-- (void)deleteInvitationWithId:(id)a3 reply:(id)a4;
-- (void)deletePrivacyKey:(id)a3 completion:(id)a4;
-- (void)deleteSEKey:(id)a3 keyData:(id)a4 reply:(id)a5;
-- (void)deleteSELegacyKey:(id)a3 keySlot:(id)a4 reply:(id)a5;
-- (void)designateKey:(id)a3 designation:(id)a4 handoffToken:(id)a5 completion:(id)a6;
-- (void)encryptPayload:(id)a3 encryptionScheme:(id)a4 recipientPublicKey:(id)a5 completion:(id)a6;
-- (void)encryptWithSEKey:(id)a3 plainText:(id)a4 publicKey:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 sharedInfo:(id)a8 authenticationData:(id)a9 reply:(id)a10;
-- (void)endPointAction:(id)a3 proxy:(id)a4 clientInfo:(id)a5 reason:(id)a6 reply:(id)a7;
-- (void)endPointDBAction:(id)a3 clientInfo:(id)a4 reason:(id)a5 reply:(id)a6;
-- (void)endPointServiceAvailableWithProxy:(id)a3 reason:(id)a4 reply:(id)a5;
-- (void)findAndAttest:(id)a3 challenge:(id)a4 usingProxy:(id)a5 callback:(id)a6;
-- (void)fixEndpointSignatureCertificatePK:(id)a3;
-- (void)getCASDCertificate:(id)a3 reply:(id)a4;
-- (void)getEndpointBindingAttestationRequestWithProxy:(id)a3 authorityIdentifier:(id)a4 reply:(id)a5;
-- (void)getEndpointIdWithUuid:(id)a3 reply:(id)a4;
-- (void)getEndpoints:(id)a3 completion:(id)a4;
-- (void)getInvitationWithId:(id)a3 reply:(id)a4;
-- (void)getInvitations:(id)a3;
-- (void)getPrivateDataWithProxy:(id)a3 identifier:(id)a4 privateDataOffset:(unsigned __int16)a5 privateDataLength:(unsigned __int16)a6 reply:(id)a7;
-- (void)getSELegacyKeyOccupiedSlots:(id)a3 reply:(id)a4;
-- (void)getSESEndpointTSMDictionary:(id)a3 reply:(id)a4;
-- (void)getSESKeySupportedFeatures:(id)a3;
-- (void)getSupportedAliroVersionsWithReply:(id)a3;
-- (void)handleMFDNotification:(id)a3;
-- (void)isCarKeySupported:(id)a3 brand:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)isSharingEnabledForManufacturer:(id)a3 brand:(id)a4 uuid:(id)a5 reply:(id)a6;
-- (void)keyOperation:(id)a3 handoffToken:(id)a4 keyData:(id)a5 reason:(id)a6 reply:(id)a7;
-- (void)keyServiceAvailable:(id)a3 handoffToken:(id)a4 reason:(id)a5 reply:(id)a6;
-- (void)legacyKeyServiceAvailable:(id)a3 reason:(id)a4 reply:(id)a5;
-- (void)listEndPointAuthorizations:(id)a3;
-- (void)listEndPointContainers:(id)a3 reply:(id)a4;
-- (void)notifyEndpointTracked:(id)a3 reply:(id)a4;
-- (void)notifyPassAdded:(id)a3 reply:(id)a4;
+- (unint64_t)_existsDuplicateInDatabase:(id)database withIdentifier:(id)identifier orReaderIdentifier:(id)readerIdentifier outError:(id *)error;
+- (void)addEndpointId:(id)id withUuid:(id)uuid reply:(id)reply;
+- (void)addInvitationWithId:(id)id data:(id)data reply:(id)reply;
+- (void)authorizeEndPointWithProxy:(id)proxy version:(unsigned __int8)version identifier:(id)identifier externalCA:(id)a instanceCA:(id)cA endpointCertificate:(id)certificate encryptionKeyAttestation:(id)attestation bindingAttestation:(id)self0 bindingAttestationToken:(id)self1 confidentialDataOffset:(unsigned __int16)self2 confidentialDataLength:(unsigned __int16)self3 metaData:(id)self4 authorizationID:(id)self5 reply:(id)self6;
+- (void)carKeyDowngradeVersionSetting:(id)setting brand:(id)brand uuid:(id)uuid reply:(id)reply;
+- (void)checkKeyValidity:(id)validity completion:(id)completion;
+- (void)checkMultipleFidoKeyPresence:(id)presence usingProxy:(id)proxy callback:(id)callback;
+- (void)cleanupAppletsWithNoEndpoints:(id)endpoints completion:(id)completion;
+- (void)cleanupAppletsWithNoEndpoints:(id)endpoints reply:(id)reply;
+- (void)configureEndpointWithProxy:(id)proxy identifier:(id)identifier privateData:(id)data confidentialData:(id)confidentialData contactlessVolatileVisibility:(id)visibility contactlessPersistentVisibility:(id)persistentVisibility wiredVolatileVisibility:(id)volatileVisibility wiredPersistentVisibility:(id)self0 keySlot:(id)self1 nfcExpressOnlyInLPM:(id)self2 reply:(id)self3;
+- (void)convertEndpointWithProxy:(id)proxy keyIdentifier:(id)identifier notBeforeDate:(id)date reply:(id)reply;
+- (void)createAlishaEndpointWithProxy:(id)proxy identifier:(id)identifier authorityIdentifier:(id)authorityIdentifier subjectIdentifier:(id)subjectIdentifier configuration:(id)configuration readerIdentifier:(id)readerIdentifier readerPublicKey:(id)key readerInformation:(id)self0 startDate:(id)self1 endDate:(id)self2 keyIdentifier:(id)self3 authorizedKeys:(id)self4 confidentialMailBoxSize:(id)self5 privateMailBoxSize:(id)self6 reply:(id)self7;
+- (void)createCertificateForKeyData:(id)data withKeyData:(id)keyData subjectIdentifier:(id)identifier authorityIdentifier:(id)authorityIdentifier laExternalizedContext:(id)context nonce:(id)nonce OIDs:(id)ds reply:(id)self0;
+- (void)createEncryptionKeyEndPointWithProxy:(id)proxy identifier:(id)identifier reply:(id)reply;
+- (void)createEndPointAuthorizationID:(id)d userAuth:(id)auth reply:(id)reply;
+- (void)createFiDOKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge usingProxy:(id)proxy callback:(id)callback;
+- (void)createHydraEndpointWithProxy:(id)proxy serverParams:(id)params reply:(id)reply;
+- (void)createLocalEndpointWithProxy:(id)proxy readerIdentifier:(id)identifier readerPublicKey:(id)key reply:(id)reply;
+- (void)createLyonEndpointWithProxy:(id)proxy readerGroupIdentifier:(id)identifier readerPublicKey:(id)key homeUUID:(id)d privateMailboxSize:(id)size reply:(id)reply;
+- (void)createLyonHydraEndpointWithProxy:(id)proxy serverParams:(id)params reply:(id)reply;
+- (void)createPTAttestation:(id)attestation keyData:(id)data subjectIdentifier:(id)identifier nonce:(id)nonce OIDs:(id)ds reply:(id)reply;
+- (void)createPrivacyKeyForGroupIdentifier:(id)identifier withOptions:(id)options completion:(id)completion;
+- (void)createSEABAASCertificate:(id)certificate subjectIdentifier:(id)identifier nonce:(id)nonce OIDs:(id)ds validityInterval:(id)interval reply:(id)reply;
+- (void)createSEKey:(id)key extractedACLs:(id)ls reply:(id)reply;
+- (void)createSELegacyKey:(id)key subjectIdentifier:(id)identifier metaData:(id)data localValidationList:(id)list reply:(id)reply;
+- (void)databaseServiceWithProxy:(id)proxy isReconcileRequired:(BOOL)required reason:(id)reason reply:(id)reply;
+- (void)decryptPayload:(id)payload withGroupIdentifier:(id)identifier completion:(id)completion;
+- (void)decryptWithSEKey:(id)key cipherText:(id)text publicKey:(id)publicKey algorithm:(id)algorithm laExternalizedContext:(id)context sharedInfo:(id)info authenticationData:(id)data authenticationTag:(id)self0 reply:(id)self1;
+- (void)deleteEndPointAuthorizationID:(id)d reply:(id)reply;
+- (void)deleteEndPointWithProxy:(id)proxy identifier:(id)identifier mustBeTerminated:(BOOL)terminated reply:(id)reply;
+- (void)deleteEndPointWithPublicKey:(id)key reply:(id)reply;
+- (void)deleteEndPointWithPublicKeyIdentifier:(id)identifier reply:(id)reply;
+- (void)deleteEndpointIdWithUuid:(id)uuid reply:(id)reply;
+- (void)deleteFiDOKeyFor:(id)for usingProxy:(id)proxy callback:(id)callback;
+- (void)deleteInvitationWithId:(id)id reply:(id)reply;
+- (void)deletePrivacyKey:(id)key completion:(id)completion;
+- (void)deleteSEKey:(id)key keyData:(id)data reply:(id)reply;
+- (void)deleteSELegacyKey:(id)key keySlot:(id)slot reply:(id)reply;
+- (void)designateKey:(id)key designation:(id)designation handoffToken:(id)token completion:(id)completion;
+- (void)encryptPayload:(id)payload encryptionScheme:(id)scheme recipientPublicKey:(id)key completion:(id)completion;
+- (void)encryptWithSEKey:(id)key plainText:(id)text publicKey:(id)publicKey algorithm:(id)algorithm laExternalizedContext:(id)context sharedInfo:(id)info authenticationData:(id)data reply:(id)self0;
+- (void)endPointAction:(id)action proxy:(id)proxy clientInfo:(id)info reason:(id)reason reply:(id)reply;
+- (void)endPointDBAction:(id)action clientInfo:(id)info reason:(id)reason reply:(id)reply;
+- (void)endPointServiceAvailableWithProxy:(id)proxy reason:(id)reason reply:(id)reply;
+- (void)findAndAttest:(id)attest challenge:(id)challenge usingProxy:(id)proxy callback:(id)callback;
+- (void)fixEndpointSignatureCertificatePK:(id)k;
+- (void)getCASDCertificate:(id)certificate reply:(id)reply;
+- (void)getEndpointBindingAttestationRequestWithProxy:(id)proxy authorityIdentifier:(id)identifier reply:(id)reply;
+- (void)getEndpointIdWithUuid:(id)uuid reply:(id)reply;
+- (void)getEndpoints:(id)endpoints completion:(id)completion;
+- (void)getInvitationWithId:(id)id reply:(id)reply;
+- (void)getInvitations:(id)invitations;
+- (void)getPrivateDataWithProxy:(id)proxy identifier:(id)identifier privateDataOffset:(unsigned __int16)offset privateDataLength:(unsigned __int16)length reply:(id)reply;
+- (void)getSELegacyKeyOccupiedSlots:(id)slots reply:(id)reply;
+- (void)getSESEndpointTSMDictionary:(id)dictionary reply:(id)reply;
+- (void)getSESKeySupportedFeatures:(id)features;
+- (void)getSupportedAliroVersionsWithReply:(id)reply;
+- (void)handleMFDNotification:(id)notification;
+- (void)isCarKeySupported:(id)supported brand:(id)brand uuid:(id)uuid reply:(id)reply;
+- (void)isSharingEnabledForManufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid reply:(id)reply;
+- (void)keyOperation:(id)operation handoffToken:(id)token keyData:(id)data reason:(id)reason reply:(id)reply;
+- (void)keyServiceAvailable:(id)available handoffToken:(id)token reason:(id)reason reply:(id)reply;
+- (void)legacyKeyServiceAvailable:(id)available reason:(id)reason reply:(id)reply;
+- (void)listEndPointAuthorizations:(id)authorizations;
+- (void)listEndPointContainers:(id)containers reply:(id)reply;
+- (void)notifyEndpointTracked:(id)tracked reply:(id)reply;
+- (void)notifyPassAdded:(id)added reply:(id)reply;
 - (void)onFirstUnlock;
-- (void)preAuthorizeEndpointWithProxy:(id)a3 keyIdentifier:(id)a4 bindingAttestation:(id)a5 reply:(id)a6;
-- (void)preWarmAlisha:(id)a3 reply:(id)a4;
-- (void)privacyDecryptDataWithEndPoint:(id)a3 data:(id)a4 ephemeralPublicKey:(id)a5 reply:(id)a6;
-- (void)privacyDecryptDataWithKeyPair:(id)a3 secretKey:(id)a4 data:(id)a5 ephemeralPublicKey:(id)a6 reply:(id)a7;
-- (void)privacyEncryptDataWithEndPoint:(id)a3 data:(id)a4 reply:(id)a5;
-- (void)privacyEncryptDataWithManufacturer:(id)a3 environment:(id)a4 region:(id)a5 data:(id)a6 reply:(id)a7;
-- (void)privacyKeysForGroupIdentifier:(id)a3 keyIdentifier:(id)a4 completion:(id)a5;
-- (void)proximityAndEndpointService:(id)a3 reason:(id)a4 completion:(id)a5;
-- (void)remoteTerminationRequestWithProxy:(id)a3 remoteTerminationRequest:(id)a4 publicKeyIdentifier:(id)a5 taskID:(id)a6 reply:(id)a7;
-- (void)removeDesignation:(int64_t)a3 completion:(id)a4;
-- (void)revokeEndPointWithIdentifier:(id)a3 nonce:(id)a4 metaData:(id)a5 reply:(id)a6;
-- (void)rewrapWithSEKey:(id)a3 cipherText:(id)a4 publicKey:(id)a5 decryptAlgorithm:(id)a6 decryptSharedInfo:(id)a7 encryptAlgorithm:(id)a8 encryptSharedInfo:(id)a9 certificate:(id)a10 laExternalizedContext:(id)a11 decryptAuthenticationData:(id)a12 decryptAuthenticationTag:(id)a13 encryptAuthenticationData:(id)a14 reply:(id)a15;
-- (void)secureElementService:(id)a3 reply:(id)a4;
-- (void)sendDeviceIntentWithConfidence:(id)a3 keyIdentifier:(id)a4 reply:(id)a5;
-- (void)setConfidentialDataEndPointWithIdentifier:(id)a3 senderEphemeralPublicKey:(id)a4 encryptedData:(id)a5 offset:(unsigned __int16)a6 reply:(id)a7;
-- (void)setDesignation:(id)a3 designation:(int64_t)a4 handoffToken:(id)a5 completion:(id)a6;
-- (void)setPrivateDataWithProxy:(id)a3 identifier:(id)a4 privateData:(id)a5 privateDataOffset:(unsigned __int16)a6 reply:(id)a7;
-- (void)sharedSecretWithSEKey:(id)a3 keyData:(id)a4 publicKey:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 reply:(id)a8;
-- (void)signMultipleWithFidoKeysFor:(id)a3 challenges:(id)a4 forEndpointIdentifiers:(id)a5 externalizedAuth:(id)a6 usingProxy:(id)a7 callback:(id)a8;
-- (void)signPrecomputedDigest:(id)a3 keyData:(id)a4 digest:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 reply:(id)a8;
-- (void)signPrecomputedWithSELegacyKey:(id)a3 keySlot:(id)a4 metaData:(id)a5 authorization:(id)a6 authorizationType:(id)a7 reply:(id)a8;
-- (void)signWithSEKey:(id)a3 keyData:(id)a4 data:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 reply:(id)a8;
-- (void)signWithSELegacyKey:(id)a3 keySlot:(id)a4 challenge:(id)a5 metaData:(id)a6 authorization:(id)a7 reply:(id)a8;
-- (void)signatureISO18013WithEndPointIdentifier:(id)a3 toBeSigned:(id)a4 reply:(id)a5;
-- (void)signatureWithEndPointIdentifier:(id)a3 metaDataHash:(id)a4 authorization:(id)a5 reply:(id)a6;
+- (void)preAuthorizeEndpointWithProxy:(id)proxy keyIdentifier:(id)identifier bindingAttestation:(id)attestation reply:(id)reply;
+- (void)preWarmAlisha:(id)alisha reply:(id)reply;
+- (void)privacyDecryptDataWithEndPoint:(id)point data:(id)data ephemeralPublicKey:(id)key reply:(id)reply;
+- (void)privacyDecryptDataWithKeyPair:(id)pair secretKey:(id)key data:(id)data ephemeralPublicKey:(id)publicKey reply:(id)reply;
+- (void)privacyEncryptDataWithEndPoint:(id)point data:(id)data reply:(id)reply;
+- (void)privacyEncryptDataWithManufacturer:(id)manufacturer environment:(id)environment region:(id)region data:(id)data reply:(id)reply;
+- (void)privacyKeysForGroupIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier completion:(id)completion;
+- (void)proximityAndEndpointService:(id)service reason:(id)reason completion:(id)completion;
+- (void)remoteTerminationRequestWithProxy:(id)proxy remoteTerminationRequest:(id)request publicKeyIdentifier:(id)identifier taskID:(id)d reply:(id)reply;
+- (void)removeDesignation:(int64_t)designation completion:(id)completion;
+- (void)revokeEndPointWithIdentifier:(id)identifier nonce:(id)nonce metaData:(id)data reply:(id)reply;
+- (void)rewrapWithSEKey:(id)key cipherText:(id)text publicKey:(id)publicKey decryptAlgorithm:(id)algorithm decryptSharedInfo:(id)info encryptAlgorithm:(id)encryptAlgorithm encryptSharedInfo:(id)sharedInfo certificate:(id)self0 laExternalizedContext:(id)self1 decryptAuthenticationData:(id)self2 decryptAuthenticationTag:(id)self3 encryptAuthenticationData:(id)self4 reply:(id)self5;
+- (void)secureElementService:(id)service reply:(id)reply;
+- (void)sendDeviceIntentWithConfidence:(id)confidence keyIdentifier:(id)identifier reply:(id)reply;
+- (void)setConfidentialDataEndPointWithIdentifier:(id)identifier senderEphemeralPublicKey:(id)key encryptedData:(id)data offset:(unsigned __int16)offset reply:(id)reply;
+- (void)setDesignation:(id)designation designation:(int64_t)a4 handoffToken:(id)token completion:(id)completion;
+- (void)setPrivateDataWithProxy:(id)proxy identifier:(id)identifier privateData:(id)data privateDataOffset:(unsigned __int16)offset reply:(id)reply;
+- (void)sharedSecretWithSEKey:(id)key keyData:(id)data publicKey:(id)publicKey algorithm:(id)algorithm laExternalizedContext:(id)context reply:(id)reply;
+- (void)signMultipleWithFidoKeysFor:(id)for challenges:(id)challenges forEndpointIdentifiers:(id)identifiers externalizedAuth:(id)auth usingProxy:(id)proxy callback:(id)callback;
+- (void)signPrecomputedDigest:(id)digest keyData:(id)data digest:(id)a5 algorithm:(id)algorithm laExternalizedContext:(id)context reply:(id)reply;
+- (void)signPrecomputedWithSELegacyKey:(id)key keySlot:(id)slot metaData:(id)data authorization:(id)authorization authorizationType:(id)type reply:(id)reply;
+- (void)signWithSEKey:(id)key keyData:(id)data data:(id)a5 algorithm:(id)algorithm laExternalizedContext:(id)context reply:(id)reply;
+- (void)signWithSELegacyKey:(id)key keySlot:(id)slot challenge:(id)challenge metaData:(id)data authorization:(id)authorization reply:(id)reply;
+- (void)signatureISO18013WithEndPointIdentifier:(id)identifier toBeSigned:(id)signed reply:(id)reply;
+- (void)signatureWithEndPointIdentifier:(id)identifier metaDataHash:(id)hash authorization:(id)authorization reply:(id)reply;
 - (void)start;
-- (void)triggerHeadUnitPairing:(id)a3 data:(id)a4 reply:(id)a5;
-- (void)updateACLForSEKey:(id)a3 extractedACLs:(id)a4 laExternalizedContext:(id)a5 reply:(id)a6;
-- (void)updateEndpoint:(id)a3 reply:(id)a4;
-- (void)updateHydraMailboxesWithProxy:(id)a3 identifier:(id)a4 encryptedSEBlob:(id)a5 reply:(id)a6;
-- (void)updateLyonCredentialDocumentStatusWithProxy:(id)a3 endpointIdentifier:(id)a4 accessDocumentPresent:(BOOL)a5 accessDocumentSignedTimestamp:(id)a6 revocationDocumentPresent:(BOOL)a7 revocationDocumentSignedTimestamp:(id)a8 reply:(id)a9;
-- (void)verifyWithFidoKeyFor:(id)a3 signedChallenge:(id)a4 usingProxy:(id)a5 callback:(id)a6;
+- (void)triggerHeadUnitPairing:(id)pairing data:(id)data reply:(id)reply;
+- (void)updateACLForSEKey:(id)key extractedACLs:(id)ls laExternalizedContext:(id)context reply:(id)reply;
+- (void)updateEndpoint:(id)endpoint reply:(id)reply;
+- (void)updateHydraMailboxesWithProxy:(id)proxy identifier:(id)identifier encryptedSEBlob:(id)blob reply:(id)reply;
+- (void)updateLyonCredentialDocumentStatusWithProxy:(id)proxy endpointIdentifier:(id)identifier accessDocumentPresent:(BOOL)present accessDocumentSignedTimestamp:(id)timestamp revocationDocumentPresent:(BOOL)documentPresent revocationDocumentSignedTimestamp:(id)signedTimestamp reply:(id)reply;
+- (void)verifyWithFidoKeyFor:(id)for signedChallenge:(id)challenge usingProxy:(id)proxy callback:(id)callback;
 @end
 
 @implementation SESEndpointAndKeyXPCServer
 
-- (id)initializeRAMRepresentation:(id)a3
+- (id)initializeRAMRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v5);
+  representationCopy = representation;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v6 = SESDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -141,9 +141,9 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "initializeRAMRepresentation", buf, 2u);
   }
 
-  v7 = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
+  instanceRepresentations = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
 
-  if (v7)
+  if (instanceRepresentations)
   {
     v8 = 0;
     goto LABEL_51;
@@ -170,7 +170,7 @@
 
   else
   {
-    v49 = self;
+    selfCopy = self;
     v12 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [&off_1004DC668 count]);
     v66 = 0u;
     v67 = 0u;
@@ -184,7 +184,7 @@
 
     v51 = *v67;
     v50 = v12;
-    v54 = v4;
+    v54 = representationCopy;
 LABEL_11:
     v13 = 0;
 LABEL_12:
@@ -196,9 +196,9 @@ LABEL_12:
     v14 = *(*(&v66 + 1) + 8 * v13);
     v58 = [[InstanceRepresentation alloc] initWithAID:v14];
     v56 = v14;
-    v15 = [v14 hexStringAsData];
+    hexStringAsData = [v14 hexStringAsData];
     v65 = 0;
-    v16 = sub_10002E084(v4, v15, &v65);
+    v16 = sub_10002E084(representationCopy, hexStringAsData, &v65);
     v17 = v65;
 
     if (!v17)
@@ -244,64 +244,64 @@ LABEL_23:
               [v22 setState:v23];
             }
 
-            v24 = [v22 number];
-            v25 = [(InstanceRepresentation *)v58 keys];
-            v26 = [v25 count];
+            number = [v22 number];
+            keys = [(InstanceRepresentation *)v58 keys];
+            v26 = [keys count];
 
-            if (v26 <= v24)
+            if (v26 <= number)
             {
-              v42 = [v56 hexStringAsData];
-              v28 = sub_100030394(v4, v42, [v22 number]);
+              hexStringAsData2 = [v56 hexStringAsData];
+              v28 = sub_100030394(representationCopy, hexStringAsData2, [v22 number]);
 
               v43 = SESDefaultLogObject();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
               {
-                v44 = [v22 number];
-                v45 = [v20 asHexString];
+                number2 = [v22 number];
+                asHexString = [v20 asHexString];
                 *buf = 67109378;
-                *v73 = v44;
+                *v73 = number2;
                 *&v73[4] = 2112;
-                *&v73[6] = v45;
+                *&v73[6] = asHexString;
                 _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "Out of range keySlot number %u from blob %@", buf, 0x12u);
               }
 
-              v41 = SESDefaultLogObject();
-              if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+              keys2 = SESDefaultLogObject();
+              if (os_log_type_enabled(keys2, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
                 *v73 = v28;
-                _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "Cleaned up with error: %@", buf, 0xCu);
+                _os_log_impl(&_mh_execute_header, keys2, OS_LOG_TYPE_ERROR, "Cleaned up with error: %@", buf, 0xCu);
               }
             }
 
             else
             {
-              v27 = [v22 keyIdentifier];
-              v28 = [v9 findKeyWithKeyIdentifier:v27];
+              keyIdentifier = [v22 keyIdentifier];
+              v28 = [v9 findKeyWithKeyIdentifier:keyIdentifier];
 
               if (v28)
               {
                 [v22 setDesignation:{objc_msgSend(v28, "designation")}];
-                v29 = [v28 slotNumber];
-                if (v29 != [v22 number])
+                slotNumber = [v28 slotNumber];
+                if (slotNumber != [v22 number])
                 {
                   v30 = SESDefaultLogObject();
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
                   {
-                    v31 = [v28 designation];
+                    designation = [v28 designation];
                     *buf = 138412546;
                     *v73 = v22;
                     *&v73[8] = 1024;
-                    *&v73[10] = v31;
+                    *&v73[10] = designation;
                     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_FAULT, "Inconsistent state on SE %@ in designation slot %d", buf, 0x12u);
                   }
 
-                  v32 = [v56 hexStringAsData];
-                  v55 = [v22 number];
-                  v33 = [v22 keyIdentifier];
-                  v34 = [v28 assetACL];
-                  v35 = [v28 assetACLAttestation];
-                  v37 = sub_1003AF3C4(v4, v36);
+                  hexStringAsData3 = [v56 hexStringAsData];
+                  number3 = [v22 number];
+                  keyIdentifier2 = [v22 keyIdentifier];
+                  assetACL = [v28 assetACL];
+                  assetACLAttestation = [v28 assetACLAttestation];
+                  v37 = sub_1003AF3C4(representationCopy, v36);
                   if ([v37 type] <= 3)
                   {
                     v38 = 1;
@@ -312,17 +312,17 @@ LABEL_23:
                     v38 = 2;
                   }
 
-                  v39 = [v22 designation];
+                  designation2 = [v22 designation];
                   v40 = v38;
-                  v4 = v54;
-                  [v9 designateKeyWithAid:v32 slotNumber:v55 keyIdentifier:v33 assetACL:v34 assetACLAttestation:v35 operationApprovalVersion:v40 designation:v39];
+                  representationCopy = v54;
+                  [v9 designateKeyWithAid:hexStringAsData3 slotNumber:number3 keyIdentifier:keyIdentifier2 assetACL:assetACL assetACLAttestation:assetACLAttestation operationApprovalVersion:v40 designation:designation2];
 
                   p_vtable = (SESDatabaseTransaction + 24);
                 }
               }
 
-              v41 = [(InstanceRepresentation *)v58 keys];
-              -[NSObject setObject:atIndexedSubscript:](v41, "setObject:atIndexedSubscript:", v22, [v22 number]);
+              keys2 = [(InstanceRepresentation *)v58 keys];
+              -[NSObject setObject:atIndexedSubscript:](keys2, "setObject:atIndexedSubscript:", v22, [v22 number]);
             }
           }
         }
@@ -343,8 +343,8 @@ LABEL_44:
             {
 LABEL_46:
               [v9 commit];
-              [(SESEndpointAndKeyXPCServer *)v49 setInstanceRepresentations:v12];
-              v46 = [(SESEndpointAndKeyXPCServer *)v49 messageQueue];
+              [(SESEndpointAndKeyXPCServer *)selfCopy setInstanceRepresentations:v12];
+              messageQueue2 = [(SESEndpointAndKeyXPCServer *)selfCopy messageQueue];
               os_state_add_handler();
 
               v8 = 0;
@@ -371,29 +371,29 @@ LABEL_51:
   return v8;
 }
 
-- (void)handleMFDNotification:(id)a3
+- (void)handleMFDNotification:(id)notification
 {
-  v4 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003AEC;
   block[3] = &unk_1004C08D8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(messageQueue, block);
 }
 
 - (os_state_data_s)_dumpState
 {
-  v3 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v3);
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  instanceRepresentations = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
+  v6 = [instanceRepresentations countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -404,18 +404,18 @@ LABEL_51:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(instanceRepresentations);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 keys];
-        v12 = [v11 filterMap:&stru_1004C0940];
+        keys = [v10 keys];
+        v12 = [keys filterMap:&stru_1004C0940];
 
         v13 = [v10 AID];
         [v4 setObject:v12 forKeyedSubscript:v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [instanceRepresentations countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -425,19 +425,19 @@ LABEL_51:
   return v14;
 }
 
-- (void)keyServiceAvailable:(id)a3 handoffToken:(id)a4 reason:(id)a5 reply:(id)a6
+- (void)keyServiceAvailable:(id)available handoffToken:(id)token reason:(id)reason reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  availableCopy = available;
+  tokenCopy = token;
+  reasonCopy = reason;
+  replyCopy = reply;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 67240448;
-    v27 = v10 != 0;
+    v27 = availableCopy != 0;
     v28 = 1026;
-    v29 = v11 != 0;
+    v29 = tokenCopy != 0;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "KeyServiceAvailable proxy %{public}d token %{public}d", buf, 0xEu);
   }
 
@@ -446,17 +446,17 @@ LABEL_51:
 
   if (sub_1003AD244(v16))
   {
-    v17 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+    messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003F64;
     block[3] = &unk_1004C09B8;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = self;
-    v25 = v13;
-    dispatch_async(v17, block);
+    v21 = availableCopy;
+    v22 = tokenCopy;
+    v23 = reasonCopy;
+    selfCopy = self;
+    v25 = replyCopy;
+    dispatch_async(messageQueue, block);
 
     v18 = v21;
   }
@@ -465,20 +465,20 @@ LABEL_51:
   {
     v18 = SESDefaultLogObject();
     v19 = SESCreateAndLogError();
-    (*(v13 + 2))(v13, 0, v19);
+    (*(replyCopy + 2))(replyCopy, 0, v19);
   }
 }
 
-- (void)legacyKeyServiceAvailable:(id)a3 reason:(id)a4 reply:(id)a5
+- (void)legacyKeyServiceAvailable:(id)available reason:(id)reason reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  availableCopy = available;
+  reasonCopy = reason;
+  replyCopy = reply;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 67240192;
-    v23 = v8 != 0;
+    v23 = availableCopy != 0;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "legacyKeyServiceAvailable proxy %{public}d", buf, 8u);
   }
 
@@ -487,16 +487,16 @@ LABEL_51:
 
   if (sub_1003AD258(v13))
   {
-    v14 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+    messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000043FC;
     v17[3] = &unk_1004C09E0;
-    v18 = v8;
-    v19 = v9;
-    v20 = self;
-    v21 = v10;
-    dispatch_async(v14, v17);
+    v18 = availableCopy;
+    v19 = reasonCopy;
+    selfCopy = self;
+    v21 = replyCopy;
+    dispatch_async(messageQueue, v17);
 
     v15 = v18;
   }
@@ -505,18 +505,18 @@ LABEL_51:
   {
     v15 = SESDefaultLogObject();
     v16 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, v16);
+    (*(replyCopy + 2))(replyCopy, 0, v16);
   }
 }
 
-- (void)keyOperation:(id)a3 handoffToken:(id)a4 keyData:(id)a5 reason:(id)a6 reply:(id)a7
+- (void)keyOperation:(id)operation handoffToken:(id)token keyData:(id)data reason:(id)reason reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  operationCopy = operation;
+  tokenCopy = token;
+  reasonCopy = reason;
+  replyCopy = reply;
   v23 = 0;
-  v16 = [PTClassicKey withData:a5 error:&v23];
+  v16 = [PTClassicKey withData:data error:&v23];
   v17 = v23;
   v18 = v17;
   if (v16)
@@ -535,46 +535,46 @@ LABEL_51:
     v20[1] = 3221225472;
     v20[2] = sub_1000047F4;
     v20[3] = &unk_1004C0A08;
-    v22 = v15;
+    v22 = replyCopy;
     v20[4] = self;
     v21 = v16;
-    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v12 handoffToken:v13 reason:v14 reply:v20];
+    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:operationCopy handoffToken:tokenCopy reason:reasonCopy reply:v20];
   }
 
   else
   {
-    (*(v15 + 2))(v15, 0, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v17);
   }
 }
 
-- (id)getUsableKeySlot:(id)a3
+- (id)getUsableKeySlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v5);
+  slotCopy = slot;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
-  v6 = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
+  instanceRepresentations = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100004BC0;
   v22[3] = &unk_1004C0A30;
-  v7 = v4;
+  v7 = slotCopy;
   v23 = v7;
-  v8 = [v6 find:v22];
+  v8 = [instanceRepresentations find:v22];
 
   if (v8)
   {
-    v9 = [v8 keys];
-    v10 = [v9 find:&stru_1004C0A70];
+    keys = [v8 keys];
+    v10 = [keys find:&stru_1004C0A70];
 
     if (v10)
     {
       v11 = SESDefaultLogObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v10 number];
+        number = [v10 number];
         *buf = 67109120;
-        LODWORD(v25) = v12;
+        LODWORD(v25) = number;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Returning empty keySlot %u", buf, 8u);
       }
 
@@ -584,22 +584,22 @@ LABEL_51:
 
     else
     {
-      v15 = [v8 keys];
-      v16 = [v15 filter:&stru_1004C0A90];
+      keys2 = [v8 keys];
+      v16 = [keys2 filter:&stru_1004C0A90];
 
       if (v16)
       {
-        v17 = [v16 randomElement];
+        randomElement = [v16 randomElement];
         v18 = SESDefaultLogObject();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [v17 number];
+          number2 = [randomElement number];
           *buf = 67109120;
-          LODWORD(v25) = v19;
+          LODWORD(v25) = number2;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Returning occupied keySlot %u", buf, 8u);
         }
 
-        v13 = v17;
+        v13 = randomElement;
       }
 
       else
@@ -634,34 +634,34 @@ LABEL_51:
   return v14;
 }
 
-- (id)getUsableLegacyKeySlot:(id)a3 outError:(id *)a4
+- (id)getUsableLegacyKeySlot:(id)slot outError:(id *)error
 {
-  v6 = a3;
-  v7 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v7);
+  slotCopy = slot;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
-  v8 = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
+  instanceRepresentations = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100004ED4;
   v18[3] = &unk_1004C0A30;
-  v9 = v6;
+  v9 = slotCopy;
   v19 = v9;
-  v10 = [v8 find:v18];
+  v10 = [instanceRepresentations find:v18];
 
   if (v10)
   {
-    v11 = [v10 keys];
-    v12 = [v11 find:&stru_1004C0AB0];
+    keys = [v10 keys];
+    v12 = [keys find:&stru_1004C0AB0];
 
     if (v12)
     {
       v13 = SESDefaultLogObject();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v12 number];
+        number = [v12 number];
         *buf = 67109120;
-        v21 = v14;
+        v21 = number;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Returning empty keySlot %u", buf, 8u);
       }
 
@@ -671,10 +671,10 @@ LABEL_51:
 
     else
     {
-      if (a4)
+      if (error)
       {
         v16 = SESDefaultLogObject();
-        *a4 = SESCreateAndLogError();
+        *error = SESCreateAndLogError();
       }
 
       v15 = 0;
@@ -683,11 +683,11 @@ LABEL_51:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (error)
   {
     v12 = SESDefaultLogObject();
     SESCreateAndLogError();
-    *a4 = v15 = 0;
+    *error = v15 = 0;
 LABEL_11:
 
     goto LABEL_12;
@@ -699,28 +699,28 @@ LABEL_12:
   return v15;
 }
 
-- (id)getOccupiedLegacyKeySlots:(id *)a3
+- (id)getOccupiedLegacyKeySlots:(id *)slots
 {
-  v5 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v5);
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
-  v6 = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
-  v7 = [v6 find:&stru_1004C0AF0];
+  instanceRepresentations = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
+  v7 = [instanceRepresentations find:&stru_1004C0AF0];
 
   if (v7)
   {
-    v8 = [v7 keys];
-    v9 = [v8 filterMap:&stru_1004C0B30];
+    keys = [v7 keys];
+    v9 = [keys filterMap:&stru_1004C0B30];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  if (a3)
+  if (slots)
   {
-    v8 = SESDefaultLogObject();
+    keys = SESDefaultLogObject();
     SESCreateAndLogError();
-    *a3 = v9 = 0;
+    *slots = v9 = 0;
     goto LABEL_5;
   }
 
@@ -730,42 +730,42 @@ LABEL_6:
   return v9;
 }
 
-- (id)getKeyHandle:(id)a3 key:(id)a4 error:(id *)a5
+- (id)getKeyHandle:(id)handle key:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v10);
+  handleCopy = handle;
+  keyCopy = key;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
-  v11 = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
+  instanceRepresentations = [(SESEndpointAndKeyXPCServer *)self instanceRepresentations];
   v62[0] = _NSConcreteStackBlock;
   v62[1] = 3221225472;
   v62[2] = sub_1000058F4;
   v62[3] = &unk_1004C0A30;
   v63 = @"A000000704C0000000000002";
-  v12 = [v11 find:v62];
+  v12 = [instanceRepresentations find:v62];
 
   if (v12)
   {
-    v13 = [@"A000000704C0000000000002" hexStringAsData];
-    v14 = sub_10002FFE8(v8, v13);
+    hexStringAsData = [@"A000000704C0000000000002" hexStringAsData];
+    v14 = sub_10002FFE8(handleCopy, hexStringAsData);
 
     v15 = SESDefaultLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [v9 isExportedData];
-      v17 = [v9 keyIdentifier];
-      v18 = [v17 asHexString];
+      isExportedData = [keyCopy isExportedData];
+      keyIdentifier = [keyCopy keyIdentifier];
+      asHexString = [keyIdentifier asHexString];
       *buf = 67109634;
       *v65 = v14;
       *&v65[4] = 1024;
-      *&v65[6] = v16;
+      *&v65[6] = isExportedData;
       *v66 = 2112;
-      *&v66[2] = v18;
+      *&v66[2] = asHexString;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "PTCVersion %d isExportedData %d keyIdentifier %@", buf, 0x18u);
     }
 
-    v19 = [v12 keys];
+    keys = [v12 keys];
     if (v14 < 2)
     {
       v20 = v60;
@@ -784,9 +784,9 @@ LABEL_6:
 
     v20[2] = v21;
     v20[3] = &unk_1004C0B58;
-    v24 = v9;
+    v24 = keyCopy;
     v20[4] = v24;
-    v22 = [v19 find:v20];
+    v22 = [keys find:v20];
 
     if (v22)
     {
@@ -810,36 +810,36 @@ LABEL_6:
       v28 = SESDefaultLogObject();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
-        v29 = [v24 keyNumber];
-        v30 = [v22 number];
-        v31 = [v24 isExportedData];
+        keyNumber = [v24 keyNumber];
+        number = [v22 number];
+        isExportedData2 = [v24 isExportedData];
         *buf = 67109632;
-        *v65 = v29;
+        *v65 = keyNumber;
         *&v65[4] = 1024;
-        *&v65[6] = v30;
+        *&v65[6] = number;
         *v66 = 1024;
-        *&v66[2] = v31;
+        *&v66[2] = isExportedData2;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Loading key with number 0x%x in slot %u (exported %d)", buf, 0x14u);
       }
 
       if (![v24 isExportedData])
       {
-        v44 = [@"A000000704C0000000000002" hexStringAsData];
-        v45 = sub_100034304(v8, v44, v24, [v22 number]);
+        hexStringAsData2 = [@"A000000704C0000000000002" hexStringAsData];
+        v45 = sub_100034304(handleCopy, hexStringAsData2, v24, [v22 number]);
 
         if (!v45)
         {
           goto LABEL_38;
         }
 
-        v46 = [@"A000000704C0000000000002" hexStringAsData];
-        v47 = sub_100030394(v8, v46, [v22 number]);
+        hexStringAsData3 = [@"A000000704C0000000000002" hexStringAsData];
+        v47 = sub_100030394(handleCopy, hexStringAsData3, [v22 number]);
 
         [v22 resetToEmpty];
-        if (a5)
+        if (error)
         {
           v48 = v45;
-          *a5 = v45;
+          *error = v45;
         }
 
 LABEL_47:
@@ -848,14 +848,14 @@ LABEL_47:
       }
 
       v32 = +[_TtC10seserviced16SEKeySyncManager singleton];
-      v33 = [v24 keyData];
+      keyData = [v24 keyData];
       v59 = 0;
-      v34 = [v32 haveAvailableTLKForEncryptedData:v33 secureElement:v8 error:&v59];
+      v34 = [v32 haveAvailableTLKForEncryptedData:keyData secureElement:handleCopy error:&v59];
       v35 = v59;
 
       if (![v34 BOOLValue] || v35)
       {
-        if (!a5)
+        if (!error)
         {
 LABEL_46:
 
@@ -869,16 +869,16 @@ LABEL_46:
       else
       {
         v56 = v34;
-        v36 = [@"A000000704C0000000000002" hexStringAsData];
-        v37 = sub_10002FFE8(v8, v36);
+        hexStringAsData4 = [@"A000000704C0000000000002" hexStringAsData];
+        v37 = sub_10002FFE8(handleCopy, hexStringAsData4);
 
-        if (v37 <= 3 && (([@"A000000704C0000000000002" hexStringAsData], v38 = objc_claimAutoreleasedReturnValue(), v58 = 0, v39 = sub_100035698(v8, v38, objc_msgSend(v22, "number"), &v58), v35 = v58, v38, !v39) || v35))
+        if (v37 <= 3 && (([@"A000000704C0000000000002" hexStringAsData], v38 = objc_claimAutoreleasedReturnValue(), v58 = 0, v39 = sub_100035698(handleCopy, v38, objc_msgSend(v22, "number"), &v58), v35 = v58, v38, !v39) || v35))
         {
-          v53 = [@"A000000704C0000000000002" hexStringAsData];
-          v54 = sub_100030394(v8, v53, [v22 number]);
+          hexStringAsData5 = [@"A000000704C0000000000002" hexStringAsData];
+          v54 = sub_100030394(handleCopy, hexStringAsData5, [v22 number]);
 
           [v22 resetToEmpty];
-          if (!a5)
+          if (!error)
           {
             v34 = v56;
             goto LABEL_46;
@@ -892,11 +892,11 @@ LABEL_46:
         else
         {
           v55 = v32;
-          v40 = [@"A000000704C0000000000002" hexStringAsData];
-          v41 = [v22 number];
-          v42 = [v24 keyData];
+          hexStringAsData6 = [@"A000000704C0000000000002" hexStringAsData];
+          number2 = [v22 number];
+          keyData2 = [v24 keyData];
           v57 = 0;
-          v43 = sub_1000347E4(v8, v40, v41, v42, &v57);
+          v43 = sub_1000347E4(handleCopy, hexStringAsData6, number2, keyData2, &v57);
           v35 = v57;
 
           if (v43 && !v35)
@@ -909,12 +909,12 @@ LABEL_14:
             goto LABEL_15;
           }
 
-          v51 = [@"A000000704C0000000000002" hexStringAsData];
-          v52 = sub_100030394(v8, v51, [v22 number]);
+          hexStringAsData7 = [@"A000000704C0000000000002" hexStringAsData];
+          v52 = sub_100030394(handleCopy, hexStringAsData7, [v22 number]);
 
           [v22 resetToEmpty];
           v34 = v56;
-          if (!a5)
+          if (!error)
           {
             v32 = v55;
             goto LABEL_46;
@@ -926,24 +926,24 @@ LABEL_14:
         }
       }
 
-      *a5 = v50;
+      *error = v50;
 
       goto LABEL_46;
     }
 
-    if (a5)
+    if (error)
     {
       v22 = SESDefaultLogObject();
       goto LABEL_8;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v22 = SESDefaultLogObject();
 LABEL_8:
     SESCreateAndLogError();
-    *a5 = v23 = 0;
+    *error = v23 = 0;
 LABEL_15:
 
     goto LABEL_16;
@@ -955,17 +955,17 @@ LABEL_16:
   return v23;
 }
 
-- (id)findAndLoadKey:(id)a3 secureElement:(id)a4 error:(id *)a5
+- (id)findAndLoadKey:(id)key secureElement:(id)element error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  elementCopy = element;
+  keyCopy = key;
   v10 = +[_TtC10seserviced16SEFidoKeyManager singleton];
-  v11 = [v9 relyingParty];
-  v12 = [v9 relyingPartyAccountHash];
-  v13 = [v9 fidoKeyHash];
+  relyingParty = [keyCopy relyingParty];
+  relyingPartyAccountHash = [keyCopy relyingPartyAccountHash];
+  fidoKeyHash = [keyCopy fidoKeyHash];
 
   v29 = 0;
-  v14 = [v10 findKeyForRelyingParty:v11 relyingPartyAccountHash:v12 fidoKeyHash:v13 secureElement:v8 error:&v29];
+  v14 = [v10 findKeyForRelyingParty:relyingParty relyingPartyAccountHash:relyingPartyAccountHash fidoKeyHash:fidoKeyHash secureElement:elementCopy error:&v29];
   v15 = v29;
 
   if (v14)
@@ -979,11 +979,11 @@ LABEL_16:
       v22 = +[_TtC10seserviced12SEFidoEvents keyDecodeError];
       [v10 reportCAEvent:v22];
 
-      if (a5)
+      if (error)
       {
         v23 = v17;
         v20 = 0;
-        *a5 = v17;
+        *error = v17;
       }
 
       else
@@ -995,7 +995,7 @@ LABEL_16:
     else
     {
       v27 = 0;
-      v18 = [(SESEndpointAndKeyXPCServer *)self getKeyHandle:v8 key:v16 error:&v27];
+      v18 = [(SESEndpointAndKeyXPCServer *)self getKeyHandle:elementCopy key:v16 error:&v27];
       v19 = v27;
       v17 = v19;
       if (!v18 || v19)
@@ -1003,11 +1003,11 @@ LABEL_16:
         v24 = +[_TtC10seserviced12SEFidoEvents unspecifiedError];
         [v10 reportCAEvent:v24];
 
-        if (a5)
+        if (error)
         {
           v25 = v17;
           v20 = 0;
-          *a5 = v17;
+          *error = v17;
         }
 
         else
@@ -1025,11 +1025,11 @@ LABEL_16:
     v15 = v17;
   }
 
-  else if (a5)
+  else if (error)
   {
     v21 = v15;
     v20 = 0;
-    *a5 = v15;
+    *error = v15;
   }
 
   else
@@ -1040,13 +1040,13 @@ LABEL_16:
   return v20;
 }
 
-- (void)createSELegacyKey:(id)a3 subjectIdentifier:(id)a4 metaData:(id)a5 localValidationList:(id)a6 reply:(id)a7
+- (void)createSELegacyKey:(id)key subjectIdentifier:(id)identifier metaData:(id)data localValidationList:(id)list reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
+  listCopy = list;
+  replyCopy = reply;
+  keyCopy = key;
   v17 = SESDefaultLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -1059,23 +1059,23 @@ LABEL_16:
   v23[1] = 3221225472;
   v23[2] = sub_100005DA8;
   v23[3] = &unk_1004C0B80;
-  v26 = v14;
-  v27 = v15;
+  v26 = listCopy;
+  v27 = replyCopy;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  v22 = v15;
-  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:v16 reason:v18 reply:v23];
+  v24 = identifierCopy;
+  v25 = dataCopy;
+  v19 = listCopy;
+  v20 = dataCopy;
+  v21 = identifierCopy;
+  v22 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:keyCopy reason:v18 reply:v23];
 }
 
-- (void)deleteSELegacyKey:(id)a3 keySlot:(id)a4 reply:(id)a5
+- (void)deleteSELegacyKey:(id)key keySlot:(id)slot reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  slotCopy = slot;
+  replyCopy = reply;
+  keyCopy = key;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -1088,22 +1088,22 @@ LABEL_16:
   v15[1] = 3221225472;
   v15[2] = sub_1000061AC;
   v15[3] = &unk_1004C0A08;
-  v17 = self;
-  v18 = v9;
-  v16 = v8;
-  v13 = v8;
-  v14 = v9;
-  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:v10 reason:v12 reply:v15];
+  selfCopy = self;
+  v18 = replyCopy;
+  v16 = slotCopy;
+  v13 = slotCopy;
+  v14 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:keyCopy reason:v12 reply:v15];
 }
 
-- (void)signWithSELegacyKey:(id)a3 keySlot:(id)a4 challenge:(id)a5 metaData:(id)a6 authorization:(id)a7 reply:(id)a8
+- (void)signWithSELegacyKey:(id)key keySlot:(id)slot challenge:(id)challenge metaData:(id)data authorization:(id)authorization reply:(id)reply
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a3;
+  slotCopy = slot;
+  challengeCopy = challenge;
+  dataCopy = data;
+  authorizationCopy = authorization;
+  replyCopy = reply;
+  keyCopy = key;
   v20 = SESDefaultLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -1116,27 +1116,27 @@ LABEL_16:
   v27[1] = 3221225472;
   v27[2] = sub_10000666C;
   v27[3] = &unk_1004C0B80;
-  v31 = v17;
-  v32 = v18;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
-  v26 = v18;
-  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:v19 reason:v21 reply:v27];
+  v31 = authorizationCopy;
+  v32 = replyCopy;
+  v28 = slotCopy;
+  v29 = challengeCopy;
+  v30 = dataCopy;
+  v22 = authorizationCopy;
+  v23 = dataCopy;
+  v24 = challengeCopy;
+  v25 = slotCopy;
+  v26 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:keyCopy reason:v21 reply:v27];
 }
 
-- (void)signPrecomputedWithSELegacyKey:(id)a3 keySlot:(id)a4 metaData:(id)a5 authorization:(id)a6 authorizationType:(id)a7 reply:(id)a8
+- (void)signPrecomputedWithSELegacyKey:(id)key keySlot:(id)slot metaData:(id)data authorization:(id)authorization authorizationType:(id)type reply:(id)reply
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a3;
+  slotCopy = slot;
+  dataCopy = data;
+  authorizationCopy = authorization;
+  typeCopy = type;
+  replyCopy = reply;
+  keyCopy = key;
   v20 = SESDefaultLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -1149,23 +1149,23 @@ LABEL_16:
   v27[1] = 3221225472;
   v27[2] = sub_100006914;
   v27[3] = &unk_1004C0B80;
-  v31 = v17;
-  v32 = v18;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v22 = v17;
-  v23 = v16;
-  v24 = v15;
-  v25 = v14;
-  v26 = v18;
-  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:v19 reason:v21 reply:v27];
+  v31 = typeCopy;
+  v32 = replyCopy;
+  v28 = slotCopy;
+  v29 = dataCopy;
+  v30 = authorizationCopy;
+  v22 = typeCopy;
+  v23 = authorizationCopy;
+  v24 = dataCopy;
+  v25 = slotCopy;
+  v26 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:keyCopy reason:v21 reply:v27];
 }
 
-- (void)getSELegacyKeyOccupiedSlots:(id)a3 reply:(id)a4
+- (void)getSELegacyKeyOccupiedSlots:(id)slots reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  slotsCopy = slots;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1179,33 +1179,33 @@ LABEL_16:
   v11[2] = sub_100006B38;
   v11[3] = &unk_1004C0BC8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:v7 reason:v9 reply:v11];
+  v12 = replyCopy;
+  v10 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self legacyKeyServiceAvailable:slotsCopy reason:v9 reply:v11];
 }
 
-- (void)createSEKey:(id)a3 extractedACLs:(id)a4 reply:(id)a5
+- (void)createSEKey:(id)key extractedACLs:(id)ls reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  lsCopy = ls;
+  replyCopy = reply;
+  keyCopy = key;
   v11 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) createSEKey:extractedACLs:reply:]"];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100006CDC;
   v14[3] = &unk_1004C0A08;
-  v16 = self;
-  v17 = v9;
-  v15 = v8;
-  v12 = v8;
-  v13 = v9;
-  [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v10 reason:v11 reply:v14];
+  selfCopy = self;
+  v17 = replyCopy;
+  v15 = lsCopy;
+  v12 = lsCopy;
+  v13 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:keyCopy reason:v11 reply:v14];
 }
 
-- (id)_createSynchronizableKey:(id)a3 extractedACLs:(id)a4 error:(id *)a5
+- (id)_createSynchronizableKey:(id)key extractedACLs:(id)ls error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  lsCopy = ls;
   v10 = SESDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1214,8 +1214,8 @@ LABEL_16:
   }
 
   v11 = +[_TtC10seserviced16SEKeySyncManager singleton];
-  v12 = [v11 ptcViewName];
-  v13 = [v11 getAvailableTLKForViewName:v12 secureElement:v8];
+  ptcViewName = [v11 ptcViewName];
+  v13 = [v11 getAvailableTLKForViewName:ptcViewName secureElement:keyCopy];
 
   if (v13)
   {
@@ -1226,7 +1226,7 @@ LABEL_16:
     v48 = sub_100007334;
     v49 = 0;
     obj = 0;
-    v14 = [(SESEndpointAndKeyXPCServer *)self _createKey:v8 acl:v9 error:&obj];
+    v14 = [(SESEndpointAndKeyXPCServer *)self _createKey:keyCopy acl:lsCopy error:&obj];
     objc_storeStrong(&v49, obj);
     if (v14 && !*(v45 + 5))
     {
@@ -1247,7 +1247,7 @@ LABEL_16:
           v30[2] = sub_10000733C;
           v30[3] = &unk_1004C0BF0;
           v34 = &v36;
-          v29 = v8;
+          v29 = keyCopy;
           v31 = v29;
           v19 = v14;
           v32 = v19;
@@ -1267,23 +1267,23 @@ LABEL_16:
             v21 = SESDefaultLogObject();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              v22 = [v19 slot];
-              v23 = [v22 number];
+              slot = [v19 slot];
+              number = [slot number];
               v24 = *(v45 + 5);
               *v50 = 67109378;
-              v51 = v23;
+              v51 = number;
               v52 = 2112;
               v53 = v24;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Failed to export key, deleting it from slot %d (%@)", v50, 0x12u);
             }
 
-            v25 = [@"A000000704C0000000000002" hexStringAsData];
-            [(SESEndpointAndKeyXPCServer *)self _deleteLoadedKey:v29 instanceAID:v25 loadedKey:v19 error:0];
+            hexStringAsData = [@"A000000704C0000000000002" hexStringAsData];
+            [(SESEndpointAndKeyXPCServer *)self _deleteLoadedKey:v29 instanceAID:hexStringAsData loadedKey:v19 error:0];
 
-            if (a5)
+            if (error)
             {
               v26 = SESDefaultLogObject();
-              *a5 = SESCreateAndLogError();
+              *error = SESCreateAndLogError();
             }
 
             v16 = 0;
@@ -1294,18 +1294,18 @@ LABEL_16:
         }
       }
 
-      if (a5)
+      if (error)
       {
         v27 = SESDefaultLogObject();
-        *a5 = SESCreateAndLogError();
+        *error = SESCreateAndLogError();
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v15 = *(v45 + 5);
       SESEnsureError();
-      *a5 = v16 = 0;
+      *error = v16 = 0;
 LABEL_25:
 
       _Block_object_dispose(buf, 8);
@@ -1316,10 +1316,10 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (a5)
+  if (error)
   {
     v17 = SESDefaultLogObject();
-    *a5 = SESCreateAndLogError();
+    *error = SESCreateAndLogError();
   }
 
   v16 = 0;
@@ -1328,11 +1328,11 @@ LABEL_26:
   return v16;
 }
 
-- (void)deleteSEKey:(id)a3 keyData:(id)a4 reply:(id)a5
+- (void)deleteSEKey:(id)key keyData:(id)data reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  dataCopy = data;
+  keyCopy = key;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1346,79 +1346,79 @@ LABEL_26:
   v14[2] = sub_100007550;
   v14[3] = &unk_1004C0C18;
   v14[4] = self;
-  v15 = v8;
-  v13 = v8;
-  [(SESEndpointAndKeyXPCServer *)self keyOperation:v10 keyData:v9 reason:v12 reply:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self keyOperation:keyCopy keyData:dataCopy reason:v12 reply:v14];
 }
 
-- (void)signWithSEKey:(id)a3 keyData:(id)a4 data:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 reply:(id)a8
+- (void)signWithSEKey:(id)key keyData:(id)data data:(id)a5 algorithm:(id)algorithm laExternalizedContext:(id)context reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
+  keyCopy = key;
+  dataCopy = data;
   v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v15 && v16 && v17 && v18)
+  algorithmCopy = algorithm;
+  contextCopy = context;
+  replyCopy = reply;
+  if (dataCopy && v16 && algorithmCopy && contextCopy)
   {
     v20 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) signWithSEKey:keyData:data:algorithm:laExternalizedContext:reply:]"];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100007814;
     v23[3] = &unk_1004C0C40;
-    v27 = v19;
-    v24 = v18;
+    v27 = replyCopy;
+    v24 = contextCopy;
     v25 = v16;
-    v26 = v17;
-    [(SESEndpointAndKeyXPCServer *)self keyOperation:v14 keyData:v15 reason:v20 reply:v23];
+    v26 = algorithmCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyOperation:keyCopy keyData:dataCopy reason:v20 reply:v23];
   }
 
   else
   {
     v21 = SESDefaultLogObject();
     v22 = SESCreateAndLogError();
-    (*(v19 + 2))(v19, 0, v22);
+    (*(replyCopy + 2))(replyCopy, 0, v22);
   }
 }
 
-- (void)signPrecomputedDigest:(id)a3 keyData:(id)a4 digest:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 reply:(id)a8
+- (void)signPrecomputedDigest:(id)digest keyData:(id)data digest:(id)a5 algorithm:(id)algorithm laExternalizedContext:(id)context reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
+  digestCopy = digest;
+  dataCopy = data;
   v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v15 && v16 && v17 && v18)
+  algorithmCopy = algorithm;
+  contextCopy = context;
+  replyCopy = reply;
+  if (dataCopy && v16 && algorithmCopy && contextCopy)
   {
     v20 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) signPrecomputedDigest:keyData:digest:algorithm:laExternalizedContext:reply:]"];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100007BA4;
     v23[3] = &unk_1004C0C40;
-    v27 = v19;
-    v24 = v18;
+    v27 = replyCopy;
+    v24 = contextCopy;
     v25 = v16;
-    v26 = v17;
-    [(SESEndpointAndKeyXPCServer *)self keyOperation:v14 keyData:v15 reason:v20 reply:v23];
+    v26 = algorithmCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyOperation:digestCopy keyData:dataCopy reason:v20 reply:v23];
   }
 
   else
   {
     v21 = SESDefaultLogObject();
     v22 = SESCreateAndLogError();
-    (*(v19 + 2))(v19, 0, v22);
+    (*(replyCopy + 2))(replyCopy, 0, v22);
   }
 }
 
-- (void)sharedSecretWithSEKey:(id)a3 keyData:(id)a4 publicKey:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 reply:(id)a8
+- (void)sharedSecretWithSEKey:(id)key keyData:(id)data publicKey:(id)publicKey algorithm:(id)algorithm laExternalizedContext:(id)context reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  keyCopy = key;
+  dataCopy = data;
+  publicKeyCopy = publicKey;
+  algorithmCopy = algorithm;
+  contextCopy = context;
+  replyCopy = reply;
   v20 = SESDefaultLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
@@ -1426,18 +1426,18 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "", buf, 2u);
   }
 
-  if (v15 && v16 && v17 && v18)
+  if (dataCopy && publicKeyCopy && algorithmCopy && contextCopy)
   {
     v21 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) sharedSecretWithSEKey:keyData:publicKey:algorithm:laExternalizedContext:reply:]"];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100007F74;
     v24[3] = &unk_1004C0C40;
-    v28 = v19;
-    v25 = v18;
-    v26 = v16;
-    v27 = v17;
-    [(SESEndpointAndKeyXPCServer *)self keyOperation:v14 keyData:v15 reason:v21 reply:v24];
+    v28 = replyCopy;
+    v25 = contextCopy;
+    v26 = publicKeyCopy;
+    v27 = algorithmCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyOperation:keyCopy keyData:dataCopy reason:v21 reply:v24];
 
     v22 = v28;
   }
@@ -1446,20 +1446,20 @@ LABEL_26:
   {
     v22 = SESDefaultLogObject();
     v23 = SESCreateAndLogError();
-    (*(v19 + 2))(v19, 0, v23);
+    (*(replyCopy + 2))(replyCopy, 0, v23);
   }
 }
 
-- (void)encryptWithSEKey:(id)a3 plainText:(id)a4 publicKey:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 sharedInfo:(id)a8 authenticationData:(id)a9 reply:(id)a10
+- (void)encryptWithSEKey:(id)key plainText:(id)text publicKey:(id)publicKey algorithm:(id)algorithm laExternalizedContext:(id)context sharedInfo:(id)info authenticationData:(id)data reply:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  keyCopy = key;
+  textCopy = text;
+  publicKeyCopy = publicKey;
+  algorithmCopy = algorithm;
+  contextCopy = context;
+  infoCopy = info;
+  dataCopy = data;
+  replyCopy = reply;
   v24 = SESDefaultLogObject();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
@@ -1467,21 +1467,21 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "", buf, 2u);
   }
 
-  if (v16 && v17 && v19 && v20)
+  if (keyCopy && textCopy && algorithmCopy && contextCopy)
   {
     v25 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) encryptWithSEKey:plainText:publicKey:algorithm:laExternalizedContext:sharedInfo:authenticationData:reply:]"];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_10000839C;
     v28[3] = &unk_1004C0C68;
-    v35 = v23;
-    v29 = v20;
-    v30 = v17;
-    v31 = v18;
-    v32 = v21;
-    v33 = v19;
-    v34 = v22;
-    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:v16 reason:v25 reply:v28];
+    v35 = replyCopy;
+    v29 = contextCopy;
+    v30 = textCopy;
+    v31 = publicKeyCopy;
+    v32 = infoCopy;
+    v33 = algorithmCopy;
+    v34 = dataCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:keyCopy reason:v25 reply:v28];
 
     v26 = v35;
   }
@@ -1490,21 +1490,21 @@ LABEL_26:
   {
     v26 = SESDefaultLogObject();
     v27 = SESCreateAndLogError();
-    (*(v23 + 2))(v23, 0, 0, v27);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v27);
   }
 }
 
-- (void)decryptWithSEKey:(id)a3 cipherText:(id)a4 publicKey:(id)a5 algorithm:(id)a6 laExternalizedContext:(id)a7 sharedInfo:(id)a8 authenticationData:(id)a9 authenticationTag:(id)a10 reply:(id)a11
+- (void)decryptWithSEKey:(id)key cipherText:(id)text publicKey:(id)publicKey algorithm:(id)algorithm laExternalizedContext:(id)context sharedInfo:(id)info authenticationData:(id)data authenticationTag:(id)self0 reply:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
+  keyCopy = key;
+  textCopy = text;
+  publicKeyCopy = publicKey;
+  algorithmCopy = algorithm;
+  contextCopy = context;
+  infoCopy = info;
+  dataCopy = data;
+  tagCopy = tag;
+  replyCopy = reply;
   v25 = SESDefaultLogObject();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
@@ -1512,22 +1512,22 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "", buf, 2u);
   }
 
-  if (v16 && v17 && v19 && v20)
+  if (keyCopy && textCopy && algorithmCopy && contextCopy)
   {
     v26 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) decryptWithSEKey:cipherText:publicKey:algorithm:laExternalizedContext:sharedInfo:authenticationData:authenticationTag:reply:]"];
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_10000885C;
     v38[3] = &unk_1004C0C90;
-    v46 = v24;
-    v39 = v20;
-    v40 = v17;
-    v41 = v18;
-    v42 = v21;
-    v43 = v19;
-    v44 = v22;
-    v45 = v23;
-    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:v16 reason:v26 reply:v38];
+    v46 = replyCopy;
+    v39 = contextCopy;
+    v40 = textCopy;
+    v41 = publicKeyCopy;
+    v42 = infoCopy;
+    v43 = algorithmCopy;
+    v44 = dataCopy;
+    v45 = tagCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:keyCopy reason:v26 reply:v38];
 
     v27 = v46;
   }
@@ -1536,42 +1536,42 @@ LABEL_26:
   {
     v27 = SESDefaultLogObject();
     SESCreateAndLogError();
-    v37 = v19;
-    v28 = v20;
-    v29 = v17;
-    v30 = v16;
-    v31 = v23;
-    v32 = v22;
-    v33 = v21;
-    v35 = v34 = v18;
-    (*(v24 + 2))(v24, 0, v35);
+    v37 = algorithmCopy;
+    v28 = contextCopy;
+    v29 = textCopy;
+    v30 = keyCopy;
+    v31 = tagCopy;
+    v32 = dataCopy;
+    v33 = infoCopy;
+    v35 = v34 = publicKeyCopy;
+    (*(replyCopy + 2))(replyCopy, 0, v35);
 
-    v18 = v34;
-    v21 = v33;
-    v22 = v32;
-    v23 = v31;
-    v16 = v30;
-    v17 = v29;
-    v20 = v28;
-    v19 = v37;
+    publicKeyCopy = v34;
+    infoCopy = v33;
+    dataCopy = v32;
+    tagCopy = v31;
+    keyCopy = v30;
+    textCopy = v29;
+    contextCopy = v28;
+    algorithmCopy = v37;
   }
 }
 
-- (void)rewrapWithSEKey:(id)a3 cipherText:(id)a4 publicKey:(id)a5 decryptAlgorithm:(id)a6 decryptSharedInfo:(id)a7 encryptAlgorithm:(id)a8 encryptSharedInfo:(id)a9 certificate:(id)a10 laExternalizedContext:(id)a11 decryptAuthenticationData:(id)a12 decryptAuthenticationTag:(id)a13 encryptAuthenticationData:(id)a14 reply:(id)a15
+- (void)rewrapWithSEKey:(id)key cipherText:(id)text publicKey:(id)publicKey decryptAlgorithm:(id)algorithm decryptSharedInfo:(id)info encryptAlgorithm:(id)encryptAlgorithm encryptSharedInfo:(id)sharedInfo certificate:(id)self0 laExternalizedContext:(id)self1 decryptAuthenticationData:(id)self2 decryptAuthenticationTag:(id)self3 encryptAuthenticationData:(id)self4 reply:(id)self5
 {
-  v49 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v48 = a7;
-  v23 = a8;
-  v47 = a9;
-  v24 = a10;
-  v25 = a11;
-  v45 = a12;
-  v26 = a13;
-  v27 = a14;
-  v28 = a15;
+  keyCopy = key;
+  textCopy = text;
+  publicKeyCopy = publicKey;
+  algorithmCopy = algorithm;
+  infoCopy = info;
+  encryptAlgorithmCopy = encryptAlgorithm;
+  sharedInfoCopy = sharedInfo;
+  certificateCopy = certificate;
+  contextCopy = context;
+  dataCopy = data;
+  tagCopy = tag;
+  authenticationDataCopy = authenticationData;
+  replyCopy = reply;
   v29 = SESDefaultLogObject();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
@@ -1579,38 +1579,38 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "", buf, 2u);
   }
 
-  v46 = v27;
+  v46 = authenticationDataCopy;
 
-  v43 = v25;
-  v44 = v22;
-  v42 = v20;
-  if (v49 && (v30 = v20) != 0 && v21 && v22 && v23 && v24 && v25)
+  v43 = contextCopy;
+  v44 = algorithmCopy;
+  v42 = textCopy;
+  if (keyCopy && (v30 = textCopy) != 0 && publicKeyCopy && algorithmCopy && encryptAlgorithmCopy && certificateCopy && contextCopy)
   {
     v41 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) rewrapWithSEKey:cipherText:publicKey:decryptAlgorithm:decryptSharedInfo:encryptAlgorithm:encryptSharedInfo:certificate:laExternalizedContext:decryptAuthenticationData:decryptAuthenticationTag:encryptAuthenticationData:reply:]"];
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_100008DAC;
     v50[3] = &unk_1004C0CB8;
-    v31 = v28;
-    v62 = v28;
-    v51 = v25;
+    v31 = replyCopy;
+    v62 = replyCopy;
+    v51 = contextCopy;
     v52 = v30;
-    v53 = v21;
-    v32 = v22;
-    v33 = v24;
-    v34 = v48;
-    v54 = v48;
-    v55 = v45;
-    v56 = v26;
+    v53 = publicKeyCopy;
+    v32 = algorithmCopy;
+    v33 = certificateCopy;
+    v34 = infoCopy;
+    v54 = infoCopy;
+    v55 = dataCopy;
+    v56 = tagCopy;
     v57 = v32;
-    v35 = v45;
-    v36 = v47;
-    v58 = v47;
+    v35 = dataCopy;
+    v36 = sharedInfoCopy;
+    v58 = sharedInfoCopy;
     v37 = v46;
     v59 = v46;
-    v60 = v23;
+    v60 = encryptAlgorithmCopy;
     v61 = v33;
-    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:v49 reason:v41 reply:v50];
+    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:keyCopy reason:v41 reply:v50];
 
     v38 = v62;
   }
@@ -1619,25 +1619,25 @@ LABEL_26:
   {
     v38 = SESDefaultLogObject();
     SESCreateAndLogError();
-    v39 = v33 = v24;
-    v31 = v28;
-    (*(v28 + 2))(v28, 0, 0, v39);
+    v39 = v33 = certificateCopy;
+    v31 = replyCopy;
+    (*(replyCopy + 2))(replyCopy, 0, 0, v39);
 
-    v36 = v47;
-    v34 = v48;
-    v35 = v45;
+    v36 = sharedInfoCopy;
+    v34 = infoCopy;
+    v35 = dataCopy;
     v37 = v46;
   }
 }
 
-- (void)createPTAttestation:(id)a3 keyData:(id)a4 subjectIdentifier:(id)a5 nonce:(id)a6 OIDs:(id)a7 reply:(id)a8
+- (void)createPTAttestation:(id)attestation keyData:(id)data subjectIdentifier:(id)identifier nonce:(id)nonce OIDs:(id)ds reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  attestationCopy = attestation;
+  dataCopy = data;
+  identifierCopy = identifier;
+  nonceCopy = nonce;
+  dsCopy = ds;
+  replyCopy = reply;
   v20 = +[NSXPCConnection currentConnection];
   v21 = sub_100035A18(SESClientInfo, v20);
 
@@ -1646,7 +1646,7 @@ LABEL_26:
     v24 = SESDefaultLogObject();
 LABEL_9:
     v25 = SESCreateAndLogError();
-    v19[2](v19, 0, v25);
+    replyCopy[2](replyCopy, 0, v25);
 
     goto LABEL_10;
   }
@@ -1658,7 +1658,7 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "", buf, 2u);
   }
 
-  if (!v15 || !v16)
+  if (!dataCopy || !identifierCopy)
   {
     v24 = SESDefaultLogObject();
     goto LABEL_9;
@@ -1669,19 +1669,19 @@ LABEL_9:
   v26[1] = 3221225472;
   v26[2] = sub_100009240;
   v26[3] = &unk_1004C0C40;
-  v30 = v19;
-  v27 = v18;
-  v28 = v16;
-  v29 = v17;
-  [(SESEndpointAndKeyXPCServer *)self keyOperation:v14 keyData:v15 reason:v23 reply:v26];
+  v30 = replyCopy;
+  v27 = dsCopy;
+  v28 = identifierCopy;
+  v29 = nonceCopy;
+  [(SESEndpointAndKeyXPCServer *)self keyOperation:attestationCopy keyData:dataCopy reason:v23 reply:v26];
 
 LABEL_10:
 }
 
-- (void)getCASDCertificate:(id)a3 reply:(id)a4
+- (void)getCASDCertificate:(id)certificate reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  certificateCopy = certificate;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
   v9 = sub_100035A18(SESClientInfo, v8);
 
@@ -1699,26 +1699,26 @@ LABEL_10:
     v14[1] = 3221225472;
     v14[2] = sub_100009790;
     v14[3] = &unk_1004C0CE0;
-    v15 = v7;
-    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v6 reason:v11 reply:v14];
+    v15 = replyCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:certificateCopy reason:v11 reply:v14];
   }
 
   else
   {
     v12 = SESDefaultLogObject();
     v13 = SESCreateAndLogError();
-    (*(v7 + 2))(v7, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
   }
 }
 
-- (void)createSEABAASCertificate:(id)a3 subjectIdentifier:(id)a4 nonce:(id)a5 OIDs:(id)a6 validityInterval:(id)a7 reply:(id)a8
+- (void)createSEABAASCertificate:(id)certificate subjectIdentifier:(id)identifier nonce:(id)nonce OIDs:(id)ds validityInterval:(id)interval reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  certificateCopy = certificate;
+  identifierCopy = identifier;
+  nonceCopy = nonce;
+  dsCopy = ds;
+  intervalCopy = interval;
+  replyCopy = reply;
   v20 = SESDefaultLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -1726,20 +1726,20 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "createSEABAASCertificate", buf, 2u);
   }
 
-  if (v14)
+  if (certificateCopy)
   {
     v21 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) createSEABAASCertificate:subjectIdentifier:nonce:OIDs:validityInterval:reply:]"];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100009AC0;
     v24[3] = &unk_1004C0D08;
-    v29 = v19;
+    v29 = replyCopy;
     v24[4] = self;
-    v25 = v15;
-    v26 = v16;
-    v27 = v17;
-    v28 = v18;
-    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:v14 reason:v21 reply:v24];
+    v25 = identifierCopy;
+    v26 = nonceCopy;
+    v27 = dsCopy;
+    v28 = intervalCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:certificateCopy reason:v21 reply:v24];
 
     v22 = v29;
   }
@@ -1748,31 +1748,31 @@ LABEL_10:
   {
     v22 = SESDefaultLogObject();
     v23 = SESCreateAndLogError();
-    (*(v19 + 2))(v19, 0, v23);
+    (*(replyCopy + 2))(replyCopy, 0, v23);
   }
 }
 
-- (id)_getBAACertificatesForKey:(id)a3 key:(id)a4 subjectIdentifier:(id)a5 nonce:(id)a6 OIDs:(id)a7 validityInterval:(id)a8 error:(id *)a9
+- (id)_getBAACertificatesForKey:(id)key key:(id)a4 subjectIdentifier:(id)identifier nonce:(id)nonce OIDs:(id)ds validityInterval:(id)interval error:(id *)error
 {
-  v44 = a3;
+  keyCopy = key;
   v15 = a4;
-  v45 = a5;
-  v46 = a6;
-  v16 = a7;
-  v43 = a8;
-  v17 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v17);
+  identifierCopy = identifier;
+  nonceCopy = nonce;
+  dsCopy = ds;
+  intervalCopy = interval;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v18 = SESDefaultLogObject();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [v15 slot];
-    v20 = [v19 number];
+    slot = [v15 slot];
+    number = [slot number];
     v21 = [v15 key];
     *buf = 67109376;
-    v54 = v20;
+    v54 = number;
     v55 = 1024;
-    v56 = [v21 keyNumber];
+    keyNumber = [v21 keyNumber];
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "_getBAACertificatesForKey Attest with slot %u key 0x%x", buf, 0xEu);
   }
 
@@ -1781,7 +1781,7 @@ LABEL_10:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v23 = v16;
+  v23 = dsCopy;
   v24 = [v23 countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v24)
   {
@@ -1826,20 +1826,20 @@ LABEL_10:
     while (v25);
   }
 
-  v30 = [@"A000000704C0000000000002" hexStringAsData];
+  hexStringAsData = [@"A000000704C0000000000002" hexStringAsData];
   v47 = 0;
-  v31 = v45;
-  v32 = v46;
-  v33 = sub_100032E80(v44, v30, v15, v45, v22, v46, 1, &v47);
+  v31 = identifierCopy;
+  v32 = nonceCopy;
+  v33 = sub_100032E80(keyCopy, hexStringAsData, v15, identifierCopy, v22, nonceCopy, 1, &v47);
   v34 = v47;
 
   v42 = v15;
   if (!v33 || v34)
   {
-    if (a9)
+    if (error)
     {
       SESEnsureError();
-      *a9 = v40 = 0;
+      *error = v40 = 0;
     }
 
     else
@@ -1847,27 +1847,27 @@ LABEL_10:
       v40 = 0;
     }
 
-    v39 = v43;
+    v39 = intervalCopy;
   }
 
   else
   {
     v35 = +[SEABAAManager sharedManager];
-    v37 = sub_1003AF3C4(v44, v36);
-    v38 = [v37 casdCertificate];
-    v39 = v43;
-    v40 = [v35 PerformSEABAAWithAttestation:v33 casdCertificate:v38 nonce:v46 OIDs:v23 validityInterval:v43 error:a9];
+    v37 = sub_1003AF3C4(keyCopy, v36);
+    casdCertificate = [v37 casdCertificate];
+    v39 = intervalCopy;
+    v40 = [v35 PerformSEABAAWithAttestation:v33 casdCertificate:casdCertificate nonce:nonceCopy OIDs:v23 validityInterval:intervalCopy error:error];
 
-    v31 = v45;
-    v32 = v46;
+    v31 = identifierCopy;
+    v32 = nonceCopy;
   }
 
   return v40;
 }
 
-- (void)getSESKeySupportedFeatures:(id)a3
+- (void)getSESKeySupportedFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1880,21 +1880,21 @@ LABEL_10:
   v8[1] = 3221225472;
   v8[2] = sub_10000A064;
   v8[3] = &unk_1004C0CE0;
-  v9 = v4;
-  v7 = v4;
+  v9 = featuresCopy;
+  v7 = featuresCopy;
   [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:0 reason:v6 reply:v8];
 }
 
-- (void)createCertificateForKeyData:(id)a3 withKeyData:(id)a4 subjectIdentifier:(id)a5 authorityIdentifier:(id)a6 laExternalizedContext:(id)a7 nonce:(id)a8 OIDs:(id)a9 reply:(id)a10
+- (void)createCertificateForKeyData:(id)data withKeyData:(id)keyData subjectIdentifier:(id)identifier authorityIdentifier:(id)authorityIdentifier laExternalizedContext:(id)context nonce:(id)nonce OIDs:(id)ds reply:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  dataCopy = data;
+  keyDataCopy = keyData;
+  identifierCopy = identifier;
+  authorityIdentifierCopy = authorityIdentifier;
+  contextCopy = context;
+  nonceCopy = nonce;
+  dsCopy = ds;
+  replyCopy = reply;
   v24 = SESDefaultLogObject();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
@@ -1902,30 +1902,30 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "", buf, 2u);
   }
 
-  if (v16 && v17 && v18 && v19 && v20)
+  if (dataCopy && keyDataCopy && identifierCopy && authorityIdentifierCopy && contextCopy)
   {
-    v33 = self;
-    v34 = v21;
+    selfCopy = self;
+    v34 = nonceCopy;
     v45 = 0;
-    v25 = [PTClassicKey withData:v16 error:&v45];
+    v25 = [PTClassicKey withData:dataCopy error:&v45];
     v26 = v45;
     v27 = v26;
     if (!v25 || v26)
     {
-      v23[2](v23, 0, v26);
+      replyCopy[2](replyCopy, 0, v26);
     }
 
     else
     {
       v44 = 0;
-      v28 = [PTClassicKey withData:v17 error:&v44];
+      v28 = [PTClassicKey withData:keyDataCopy error:&v44];
       v29 = v44;
       v27 = v29;
       if (!v28 || v29)
       {
-        v23[2](v23, 0, v29);
+        replyCopy[2](replyCopy, 0, v29);
         v30 = v28;
-        v21 = v34;
+        nonceCopy = v34;
       }
 
       else
@@ -1935,18 +1935,18 @@ LABEL_10:
         v35[1] = 3221225472;
         v35[2] = sub_10000A524;
         v35[3] = &unk_1004C0D30;
-        v43 = v23;
-        v35[4] = v33;
+        v43 = replyCopy;
+        v35[4] = selfCopy;
         v36 = v25;
         v37 = v28;
-        v38 = v22;
-        v39 = v20;
-        v40 = v18;
-        v41 = v19;
+        v38 = dsCopy;
+        v39 = contextCopy;
+        v40 = identifierCopy;
+        v41 = authorityIdentifierCopy;
         v31 = v28;
-        v21 = v34;
+        nonceCopy = v34;
         v42 = v34;
-        [(SESEndpointAndKeyXPCServer *)v33 keyServiceAvailable:0 reason:v32 reply:v35];
+        [(SESEndpointAndKeyXPCServer *)selfCopy keyServiceAvailable:0 reason:v32 reply:v35];
 
         v30 = v31;
       }
@@ -1957,41 +1957,41 @@ LABEL_10:
   {
     v27 = SESDefaultLogObject();
     v25 = SESCreateAndLogError();
-    v23[2](v23, 0, v25);
+    replyCopy[2](replyCopy, 0, v25);
   }
 }
 
-- (void)updateACLForSEKey:(id)a3 extractedACLs:(id)a4 laExternalizedContext:(id)a5 reply:(id)a6
+- (void)updateACLForSEKey:(id)key extractedACLs:(id)ls laExternalizedContext:(id)context reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10 && v11 && v12)
+  keyCopy = key;
+  lsCopy = ls;
+  contextCopy = context;
+  replyCopy = reply;
+  if (keyCopy && lsCopy && contextCopy)
   {
     v14 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) updateACLForSEKey:extractedACLs:laExternalizedContext:reply:]"];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10000AA70;
     v17[3] = &unk_1004C0D58;
-    v20 = v13;
-    v18 = v12;
-    v19 = v11;
-    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:v10 reason:v14 reply:v17];
+    v20 = replyCopy;
+    v18 = contextCopy;
+    v19 = lsCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:keyCopy reason:v14 reply:v17];
   }
 
   else
   {
     v15 = SESDefaultLogObject();
     v16 = SESCreateAndLogError();
-    (*(v13 + 2))(v13, 0, v16);
+    (*(replyCopy + 2))(replyCopy, 0, v16);
   }
 }
 
-- (void)checkKeyValidity:(id)a3 completion:(id)a4
+- (void)checkKeyValidity:(id)validity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  validityCopy = validity;
+  completionCopy = completion;
   v8 = dispatch_semaphore_create(0);
   v14 = 0;
   v15 = &v14;
@@ -2005,62 +2005,62 @@ LABEL_10:
   v13 = &v14;
   v10 = v8;
   v12 = v10;
-  [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:v6 reason:v9 reply:v11];
+  [(SESEndpointAndKeyXPCServer *)self keyOperation:0 keyData:validityCopy reason:v9 reply:v11];
 
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  v7[2](v7, *(v15 + 24));
+  completionCopy[2](completionCopy, *(v15 + 24));
 
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)designateKey:(id)a3 designation:(id)a4 handoffToken:(id)a5 completion:(id)a6
+- (void)designateKey:(id)key designation:(id)designation handoffToken:(id)token completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  designationCopy = designation;
+  tokenCopy = token;
+  completionCopy = completion;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412546;
-    v17 = v10;
+    v17 = keyCopy;
     v18 = 2112;
-    v19 = v11;
+    v19 = designationCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "designateKey %@ %@", &v16, 0x16u);
   }
 
-  v15 = [v11 integerValue];
-  if (v10)
+  integerValue = [designationCopy integerValue];
+  if (keyCopy)
   {
-    [(SESEndpointAndKeyXPCServer *)self setDesignation:v10 designation:v15 handoffToken:v12 completion:v13];
+    [(SESEndpointAndKeyXPCServer *)self setDesignation:keyCopy designation:integerValue handoffToken:tokenCopy completion:completionCopy];
   }
 
   else
   {
-    [(SESEndpointAndKeyXPCServer *)self removeDesignation:v15 completion:v13];
+    [(SESEndpointAndKeyXPCServer *)self removeDesignation:integerValue completion:completionCopy];
   }
 }
 
-- (void)setDesignation:(id)a3 designation:(int64_t)a4 handoffToken:(id)a5 completion:(id)a6
+- (void)setDesignation:(id)designation designation:(int64_t)a4 handoffToken:(id)token completion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000B0A8;
   v11[3] = &unk_1004C0DA8;
-  v12 = a6;
+  completionCopy = completion;
   v13 = a4;
-  v10 = v12;
-  [(SESEndpointAndKeyXPCServer *)self keyOperation:0 handoffToken:a5 keyData:a3 reason:@"designateKey" reply:v11];
+  v10 = completionCopy;
+  [(SESEndpointAndKeyXPCServer *)self keyOperation:0 handoffToken:token keyData:designation reason:@"designateKey" reply:v11];
 }
 
-- (void)removeDesignation:(int64_t)a3 completion:(id)a4
+- (void)removeDesignation:(int64_t)designation completion:(id)completion
 {
-  v6 = a4;
-  if (!a3)
+  completionCopy = completion;
+  if (!designation)
   {
     v8 = SESDefaultLogObject();
     v10 = SESCreateAndLogError();
-    v6[2](v6, 0, v10);
+    completionCopy[2](completionCopy, 0, v10);
 LABEL_6:
 
     goto LABEL_7;
@@ -2073,31 +2073,31 @@ LABEL_6:
   {
     v10 = SESDefaultLogObject();
     v11 = SESCreateAndLogError();
-    v6[2](v6, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
 
     goto LABEL_6;
   }
 
-  v9 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B600;
   block[3] = &unk_1004C0DD0;
-  v13 = v6;
-  v14 = a3;
+  v13 = completionCopy;
+  designationCopy = designation;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(messageQueue, block);
 
 LABEL_7:
 }
 
-- (void)createFiDOKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 usingProxy:(id)a6 callback:(id)a7
+- (void)createFiDOKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge usingProxy:(id)proxy callback:(id)callback
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  partyCopy = party;
+  hashCopy = hash;
+  challengeCopy = challenge;
+  proxyCopy = proxy;
+  callbackCopy = callback;
   v17 = SESDefaultLogObject();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -2109,7 +2109,7 @@ LABEL_7:
   v19 = +[NSXPCConnection currentConnection];
   v20 = sub_100035A18(SESClientInfo, v19);
 
-  if ((sub_1003AD280(v20) & 1) != 0 && v12 && v13 && v14)
+  if ((sub_1003AD280(v20) & 1) != 0 && partyCopy && hashCopy && challengeCopy)
   {
     v21 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) createFiDOKeyForRelyingParty:relyingPartyAccountHash:challenge:usingProxy:callback:]"];
     v25[0] = _NSConcreteStackBlock;
@@ -2117,12 +2117,12 @@ LABEL_7:
     v25[2] = sub_10000BB2C;
     v25[3] = &unk_1004C0DF8;
     v26 = v18;
-    v31 = v16;
-    v27 = self;
-    v28 = v12;
-    v29 = v13;
-    v30 = v14;
-    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v15 reason:v21 reply:v25];
+    v31 = callbackCopy;
+    selfCopy = self;
+    v28 = partyCopy;
+    v29 = hashCopy;
+    v30 = challengeCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:proxyCopy reason:v21 reply:v25];
 
     v22 = v26;
   }
@@ -2134,7 +2134,7 @@ LABEL_7:
 
     v22 = SESDefaultLogObject();
     v24 = SESCreateAndLogError();
-    (*(v16 + 2))(v16, 0, v24);
+    (*(callbackCopy + 2))(callbackCopy, 0, v24);
   }
 }
 
@@ -2146,12 +2146,12 @@ LABEL_7:
   return v2;
 }
 
-- (id)_createKey:(id)a3 acl:(id)a4 error:(id *)a5
+- (id)_createKey:(id)key acl:(id)acl error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v10);
+  keyCopy = key;
+  aclCopy = acl;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v11 = [(SESEndpointAndKeyXPCServer *)self getUsableKeySlot:@"A000000704C0000000000002"];
   if (v11)
@@ -2164,21 +2164,21 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Creating key in slot %u", buf, 8u);
     }
 
-    v13 = [@"A000000704C0000000000002" hexStringAsData];
+    hexStringAsData = [@"A000000704C0000000000002" hexStringAsData];
     v30 = 0;
-    v14 = sub_10002F8AC(v8, v13, [v11 number], v9, &v30);
+    v14 = sub_10002F8AC(keyCopy, hexStringAsData, [v11 number], aclCopy, &v30);
     v15 = v30;
 
     if (!v14 || v15)
     {
       [v11 resetToEmpty];
-      v22 = [@"A000000704C0000000000002" hexStringAsData];
-      v23 = sub_100030394(v8, v22, [v11 number]);
+      hexStringAsData2 = [@"A000000704C0000000000002" hexStringAsData];
+      v23 = sub_100030394(keyCopy, hexStringAsData2, [v11 number]);
 
-      if (a5)
+      if (error)
       {
         SESEnsureError();
-        *a5 = v18 = 0;
+        *error = v18 = 0;
       }
 
       else
@@ -2198,20 +2198,20 @@ LABEL_7:
         v24 = SESDefaultLogObject();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v25 = [v11 number];
+          number = [v11 number];
           *buf = 67109120;
-          LODWORD(v32) = v25;
+          LODWORD(v32) = number;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Failed to create key object, resetting and deleting slot %d", buf, 8u);
         }
 
         [v11 resetToEmpty];
-        v26 = [@"A000000704C0000000000002" hexStringAsData];
-        v27 = sub_100030394(v8, v26, [v11 number]);
+        hexStringAsData3 = [@"A000000704C0000000000002" hexStringAsData];
+        v27 = sub_100030394(keyCopy, hexStringAsData3, [v11 number]);
 
-        if (a5)
+        if (error)
         {
           SESEnsureError();
-          *a5 = v18 = 0;
+          *error = v18 = 0;
         }
 
         else
@@ -2227,11 +2227,11 @@ LABEL_7:
         v19 = SESDefaultLogObject();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v11 number];
+          number2 = [v11 number];
           *buf = 138412546;
           v32 = v16;
           v33 = 1024;
-          v34 = v20;
+          v34 = number2;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Created key %@ in slot %u", buf, 0x12u);
         }
       }
@@ -2240,10 +2240,10 @@ LABEL_7:
 
   else
   {
-    if (a5)
+    if (error)
     {
       v21 = SESDefaultLogObject();
-      *a5 = SESCreateAndLogError();
+      *error = SESCreateAndLogError();
     }
 
     v18 = 0;
@@ -2252,51 +2252,51 @@ LABEL_7:
   return v18;
 }
 
-- (BOOL)_deleteLoadedKey:(id)a3 instanceAID:(id)a4 loadedKey:(id)a5 error:(id *)a6
+- (BOOL)_deleteLoadedKey:(id)key instanceAID:(id)d loadedKey:(id)loadedKey error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v13);
+  loadedKeyCopy = loadedKey;
+  dCopy = d;
+  keyCopy = key;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v10 key];
-    v16 = [v10 slot];
+    v15 = [loadedKeyCopy key];
+    slot = [loadedKeyCopy slot];
     v25 = 138412546;
     v26 = v15;
     v27 = 1024;
-    v28 = [v16 number];
+    number = [slot number];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Deleting key %@ in slot %d", &v25, 0x12u);
   }
 
-  v17 = [v10 slot];
-  v18 = sub_100030394(v12, v11, [v17 number]);
+  slot2 = [loadedKeyCopy slot];
+  v18 = sub_100030394(keyCopy, dCopy, [slot2 number]);
 
-  v19 = [v10 slot];
-  [v19 resetToEmpty];
+  slot3 = [loadedKeyCopy slot];
+  [slot3 resetToEmpty];
 
   v20 = [_TtC10seserviced35SESKeyDesignationStorageCoordinator getAndReturnError:0];
-  v21 = [v10 key];
-  v22 = [v21 keyIdentifier];
-  [v20 removeDesignationWithKeyIdentifier:v22];
+  v21 = [loadedKeyCopy key];
+  keyIdentifier = [v21 keyIdentifier];
+  [v20 removeDesignationWithKeyIdentifier:keyIdentifier];
 
-  if (a6)
+  if (error)
   {
     v23 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
   return v18 == 0;
 }
 
-- (void)checkMultipleFidoKeyPresence:(id)a3 usingProxy:(id)a4 callback:(id)a5
+- (void)checkMultipleFidoKeyPresence:(id)presence usingProxy:(id)proxy callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  presenceCopy = presence;
+  proxyCopy = proxy;
+  callbackCopy = callback;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -2308,7 +2308,7 @@ LABEL_7:
   v13 = +[NSXPCConnection currentConnection];
   v14 = sub_100035A18(SESClientInfo, v13);
 
-  if ((sub_1003AD280(v14) & 1) != 0 && v8)
+  if ((sub_1003AD280(v14) & 1) != 0 && presenceCopy)
   {
     v15 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) checkMultipleFidoKeyPresence:usingProxy:callback:]"];
     v19[0] = _NSConcreteStackBlock;
@@ -2316,9 +2316,9 @@ LABEL_7:
     v19[2] = sub_10000CE64;
     v19[3] = &unk_1004C0E20;
     v20 = v12;
-    v22 = v10;
-    v21 = v8;
-    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v9 reason:v15 reply:v19];
+    v22 = callbackCopy;
+    v21 = presenceCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:proxyCopy reason:v15 reply:v19];
 
     v16 = v20;
   }
@@ -2330,42 +2330,42 @@ LABEL_7:
 
     v16 = SESDefaultLogObject();
     v18 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, v18);
+    (*(callbackCopy + 2))(callbackCopy, 0, v18);
   }
 }
 
-- (void)findAndAttest:(id)a3 challenge:(id)a4 usingProxy:(id)a5 callback:(id)a6
+- (void)findAndAttest:(id)attest challenge:(id)challenge usingProxy:(id)proxy callback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  attestCopy = attest;
+  challengeCopy = challenge;
+  callbackCopy = callback;
+  proxyCopy = proxy;
   v14 = +[_TtC10seserviced16SEFidoKeyManager singleton];
   v15 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) findAndAttest:challenge:usingProxy:callback:]"];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000D2F0;
   v20[3] = &unk_1004C0E48;
-  v24 = v11;
-  v25 = v12;
+  v24 = challengeCopy;
+  v25 = callbackCopy;
   v21 = v14;
-  v22 = self;
-  v23 = v10;
-  v16 = v11;
-  v17 = v10;
-  v18 = v12;
+  selfCopy = self;
+  v23 = attestCopy;
+  v16 = challengeCopy;
+  v17 = attestCopy;
+  v18 = callbackCopy;
   v19 = v14;
-  [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v13 reason:v15 reply:v20];
+  [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:proxyCopy reason:v15 reply:v20];
 }
 
-- (void)signMultipleWithFidoKeysFor:(id)a3 challenges:(id)a4 forEndpointIdentifiers:(id)a5 externalizedAuth:(id)a6 usingProxy:(id)a7 callback:(id)a8
+- (void)signMultipleWithFidoKeysFor:(id)for challenges:(id)challenges forEndpointIdentifiers:(id)identifiers externalizedAuth:(id)auth usingProxy:(id)proxy callback:(id)callback
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  forCopy = for;
+  challengesCopy = challenges;
+  identifiersCopy = identifiers;
+  authCopy = auth;
+  proxyCopy = proxy;
+  callbackCopy = callback;
   v20 = SESDefaultLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -2377,7 +2377,7 @@ LABEL_7:
   v22 = +[NSXPCConnection currentConnection];
   v23 = sub_100035A18(SESClientInfo, v22);
 
-  if ((sub_1003AD280(v23) & 1) != 0 && v14 && v15 && v17 && (v24 = [v14 count], v24 == objc_msgSend(v15, "count")) && (!v16 || (v25 = objc_msgSend(v15, "count"), v25 == objc_msgSend(v16, "count"))))
+  if ((sub_1003AD280(v23) & 1) != 0 && forCopy && challengesCopy && authCopy && (v24 = [forCopy count], v24 == objc_msgSend(challengesCopy, "count")) && (!identifiersCopy || (v25 = objc_msgSend(challengesCopy, "count"), v25 == objc_msgSend(identifiersCopy, "count"))))
   {
     v26 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) signMultipleWithFidoKeysFor:challenges:forEndpointIdentifiers:externalizedAuth:usingProxy:callback:]"];
     v30[0] = _NSConcreteStackBlock;
@@ -2385,13 +2385,13 @@ LABEL_7:
     v30[2] = sub_10000D9E0;
     v30[3] = &unk_1004C0E70;
     v31 = v21;
-    v37 = v19;
-    v32 = v14;
-    v33 = v15;
-    v34 = self;
-    v35 = v16;
-    v36 = v17;
-    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v18 reason:v26 reply:v30];
+    v37 = callbackCopy;
+    v32 = forCopy;
+    v33 = challengesCopy;
+    selfCopy = self;
+    v35 = identifiersCopy;
+    v36 = authCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:proxyCopy reason:v26 reply:v30];
 
     v27 = v31;
   }
@@ -2403,16 +2403,16 @@ LABEL_7:
 
     v27 = SESDefaultLogObject();
     v29 = SESCreateAndLogError();
-    (*(v19 + 2))(v19, 0, v29);
+    (*(callbackCopy + 2))(callbackCopy, 0, v29);
   }
 }
 
-- (void)verifyWithFidoKeyFor:(id)a3 signedChallenge:(id)a4 usingProxy:(id)a5 callback:(id)a6
+- (void)verifyWithFidoKeyFor:(id)for signedChallenge:(id)challenge usingProxy:(id)proxy callback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  forCopy = for;
+  challengeCopy = challenge;
+  proxyCopy = proxy;
+  callbackCopy = callback;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -2424,7 +2424,7 @@ LABEL_7:
   v16 = +[NSXPCConnection currentConnection];
   v17 = sub_100035A18(SESClientInfo, v16);
 
-  if ((sub_1003AD280(v17) & 1) != 0 && v10 && v11)
+  if ((sub_1003AD280(v17) & 1) != 0 && forCopy && challengeCopy)
   {
     v18 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) verifyWithFidoKeyFor:signedChallenge:usingProxy:callback:]"];
     v22[0] = _NSConcreteStackBlock;
@@ -2432,10 +2432,10 @@ LABEL_7:
     v22[2] = sub_10000E1C0;
     v22[3] = &unk_1004C0E98;
     v23 = v15;
-    v26 = v13;
-    v24 = v10;
-    v25 = v11;
-    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v12 reason:v18 reply:v22];
+    v26 = callbackCopy;
+    v24 = forCopy;
+    v25 = challengeCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:proxyCopy reason:v18 reply:v22];
 
     v19 = v23;
   }
@@ -2447,15 +2447,15 @@ LABEL_7:
 
     v19 = SESDefaultLogObject();
     v21 = SESCreateAndLogError();
-    (*(v13 + 2))(v13, &off_1004DC8E8, v21);
+    (*(callbackCopy + 2))(callbackCopy, &off_1004DC8E8, v21);
   }
 }
 
-- (void)deleteFiDOKeyFor:(id)a3 usingProxy:(id)a4 callback:(id)a5
+- (void)deleteFiDOKeyFor:(id)for usingProxy:(id)proxy callback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  forCopy = for;
+  proxyCopy = proxy;
+  callbackCopy = callback;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -2466,16 +2466,16 @@ LABEL_7:
   v12 = +[NSXPCConnection currentConnection];
   v13 = sub_100035A18(SESClientInfo, v12);
 
-  if ((sub_1003AD280(v13) & 1) != 0 && v8)
+  if ((sub_1003AD280(v13) & 1) != 0 && forCopy)
   {
     v14 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEKeyXPC) deleteFiDOKeyFor:usingProxy:callback:]"];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10000E7C4;
     v17[3] = &unk_1004C0BC8;
-    v19 = v10;
-    v18 = v8;
-    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:v9 reason:v14 reply:v17];
+    v19 = callbackCopy;
+    v18 = forCopy;
+    [(SESEndpointAndKeyXPCServer *)self keyServiceAvailable:proxyCopy reason:v14 reply:v17];
 
     v15 = v19;
   }
@@ -2484,81 +2484,81 @@ LABEL_7:
   {
     v15 = SESDefaultLogObject();
     v16 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, v16);
+    (*(callbackCopy + 2))(callbackCopy, 0, v16);
   }
 }
 
-- (void)createPrivacyKeyForGroupIdentifier:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)createPrivacyKeyForGroupIdentifier:(id)identifier withOptions:(id)options completion:(id)completion
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   v10 = sub_100035A18(SESClientInfo, v9);
 
-  if ((sub_1003AD294(v10) & 1) != 0 && v13)
+  if ((sub_1003AD294(v10) & 1) != 0 && identifierCopy)
   {
-    [_TtC10seserviced27SESPrivacyKeyImplementation createPrivacyKeyWithGroupIdentifier:v13 options:v7 completion:v8];
+    [_TtC10seserviced27SESPrivacyKeyImplementation createPrivacyKeyWithGroupIdentifier:identifierCopy options:optionsCopy completion:completionCopy];
   }
 
   else
   {
     v11 = SESDefaultLogObject();
     v12 = SESCreateAndLogError();
-    v8[2](v8, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)privacyKeysForGroupIdentifier:(id)a3 keyIdentifier:(id)a4 completion:(id)a5
+- (void)privacyKeysForGroupIdentifier:(id)identifier keyIdentifier:(id)keyIdentifier completion:(id)completion
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  keyIdentifierCopy = keyIdentifier;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   v10 = sub_100035A18(SESClientInfo, v9);
 
-  if ((sub_1003AD294(v10) & 1) != 0 && v13)
+  if ((sub_1003AD294(v10) & 1) != 0 && identifierCopy)
   {
-    [_TtC10seserviced27SESPrivacyKeyImplementation getPrivacyKeyWithGroupIdentifier:v13 keyIdentifier:v7 completion:v8];
+    [_TtC10seserviced27SESPrivacyKeyImplementation getPrivacyKeyWithGroupIdentifier:identifierCopy keyIdentifier:keyIdentifierCopy completion:completionCopy];
   }
 
   else
   {
     v11 = SESDefaultLogObject();
     v12 = SESCreateAndLogError();
-    v8[2](v8, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)deletePrivacyKey:(id)a3 completion:(id)a4
+- (void)deletePrivacyKey:(id)key completion:(id)completion
 {
-  v10 = a3;
-  v5 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v6 = +[NSXPCConnection currentConnection];
   v7 = sub_100035A18(SESClientInfo, v6);
 
-  if ((sub_1003AD294(v7) & 1) != 0 && v10)
+  if ((sub_1003AD294(v7) & 1) != 0 && keyCopy)
   {
-    [_TtC10seserviced27SESPrivacyKeyImplementation deletePrivacyKey:v10 completion:v5];
+    [_TtC10seserviced27SESPrivacyKeyImplementation deletePrivacyKey:keyCopy completion:completionCopy];
   }
 
   else
   {
     v8 = SESDefaultLogObject();
     v9 = SESCreateAndLogError();
-    v5[2](v5, 0, v9);
+    completionCopy[2](completionCopy, 0, v9);
   }
 }
 
-- (void)decryptPayload:(id)a3 withGroupIdentifier:(id)a4 completion:(id)a5
+- (void)decryptPayload:(id)payload withGroupIdentifier:(id)identifier completion:(id)completion
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
+  payloadCopy = payload;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v9 = +[NSXPCConnection currentConnection];
   v10 = sub_100035A18(SESClientInfo, v9);
 
-  if ((sub_1003AD294(v10) & 1) != 0 && v13 && v7)
+  if ((sub_1003AD294(v10) & 1) != 0 && payloadCopy && identifierCopy)
   {
     [SESPrivacyKeyImplementation decryptPayload:"decryptPayload:groupIdentifier:completion:" groupIdentifier:? completion:?];
   }
@@ -2567,20 +2567,20 @@ LABEL_7:
   {
     v11 = SESDefaultLogObject();
     v12 = SESCreateAndLogError();
-    v8[2](v8, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
   }
 }
 
-- (void)encryptPayload:(id)a3 encryptionScheme:(id)a4 recipientPublicKey:(id)a5 completion:(id)a6
+- (void)encryptPayload:(id)payload encryptionScheme:(id)scheme recipientPublicKey:(id)key completion:(id)completion
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  payloadCopy = payload;
+  schemeCopy = scheme;
+  keyCopy = key;
+  completionCopy = completion;
   v12 = +[NSXPCConnection currentConnection];
   v13 = sub_100035A18(SESClientInfo, v12);
 
-  if ((sub_1003AD294(v13) & 1) != 0 && v16 && v9 && v10)
+  if ((sub_1003AD294(v13) & 1) != 0 && payloadCopy && schemeCopy && keyCopy)
   {
     [SESPrivacyKeyImplementation encryptPayload:"encryptPayload:scheme:recipientPublicKey:completion:" scheme:? recipientPublicKey:? completion:?];
   }
@@ -2589,15 +2589,15 @@ LABEL_7:
   {
     v14 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    v11[2](v11, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 }
 
-- (void)endPointServiceAvailableWithProxy:(id)a3 reason:(id)a4 reply:(id)a5
+- (void)endPointServiceAvailableWithProxy:(id)proxy reason:(id)reason reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  proxyCopy = proxy;
+  reasonCopy = reason;
+  replyCopy = reply;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -2605,15 +2605,15 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "", buf, 2u);
   }
 
-  v12 = [(SESEndpointAndKeyXPCServer *)self database];
+  database = [(SESEndpointAndKeyXPCServer *)self database];
 
-  if (!v12)
+  if (!database)
   {
     v14 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v15);
 
-    if (v8)
+    if (proxyCopy)
     {
       goto LABEL_5;
     }
@@ -2623,49 +2623,49 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v8)
+  if (!proxyCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v13 = sub_100050E34(SEProxyAdapter, v8);
+  v13 = sub_100050E34(SEProxyAdapter, proxyCopy);
 LABEL_8:
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100017B58;
   v17[3] = &unk_1004C0990;
   v17[4] = self;
-  v18 = v10;
-  v16 = v10;
-  sub_100055378(SecureElementManager, v13, 0, v9, v17);
+  v18 = replyCopy;
+  v16 = replyCopy;
+  sub_100055378(SecureElementManager, v13, 0, reasonCopy, v17);
 }
 
-- (void)proximityAndEndpointService:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)proximityAndEndpointService:(id)service reason:(id)reason completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  serviceCopy = service;
+  reasonCopy = reason;
+  completionCopy = completion;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100017E98;
   v15[3] = &unk_1004C1700;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  [SESProximityChip cacheProximityChipData:v11 completion:v15];
+  v16 = serviceCopy;
+  v17 = reasonCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = reasonCopy;
+  v14 = serviceCopy;
+  [SESProximityChip cacheProximityChipData:messageQueue completion:v15];
 }
 
-- (void)databaseServiceWithProxy:(id)a3 isReconcileRequired:(BOOL)a4 reason:(id)a5 reply:(id)a6
+- (void)databaseServiceWithProxy:(id)proxy isReconcileRequired:(BOOL)required reason:(id)reason reply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  proxyCopy = proxy;
+  reasonCopy = reason;
+  replyCopy = reply;
   v13 = SESDefaultLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -2673,35 +2673,35 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "", buf, 2u);
   }
 
-  v14 = [(SESEndpointAndKeyXPCServer *)self database];
+  database = [(SESEndpointAndKeyXPCServer *)self database];
 
-  if (!v14)
+  if (!database)
   {
     v15 = SESDefaultLogObject();
     v16 = SESCreateAndLogError();
-    v12[2](v12, 0, v16);
+    replyCopy[2](replyCopy, 0, v16);
   }
 
-  v17 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100018200;
   block[3] = &unk_1004C1778;
-  v25 = a4;
+  requiredCopy = required;
   block[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v18 = v11;
-  v19 = v10;
-  v20 = v12;
-  dispatch_async(v17, block);
+  v22 = proxyCopy;
+  v23 = reasonCopy;
+  v24 = replyCopy;
+  v18 = reasonCopy;
+  v19 = proxyCopy;
+  v20 = replyCopy;
+  dispatch_async(messageQueue, block);
 }
 
-- (void)secureElementService:(id)a3 reply:(id)a4
+- (void)secureElementService:(id)service reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  serviceCopy = service;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2714,76 +2714,76 @@ LABEL_8:
   v10[2] = sub_100018668;
   v10[3] = &unk_1004C0990;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  sub_1003AF710(SecureElementManager, v7, v10);
+  v11 = replyCopy;
+  v9 = replyCopy;
+  sub_1003AF710(SecureElementManager, serviceCopy, v10);
 }
 
-- (void)endPointAction:(id)a3 proxy:(id)a4 clientInfo:(id)a5 reason:(id)a6 reply:(id)a7
+- (void)endPointAction:(id)action proxy:(id)proxy clientInfo:(id)info reason:(id)reason reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (sub_1003AD208(v14) & 1) != 0 || (sub_1003AD230(v14))
+  actionCopy = action;
+  proxyCopy = proxy;
+  infoCopy = info;
+  reasonCopy = reason;
+  replyCopy = reply;
+  if (sub_1003AD208(infoCopy) & 1) != 0 || (sub_1003AD230(infoCopy))
   {
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1000189CC;
     v19[3] = &unk_1004C17A0;
-    v22 = v16;
+    v22 = replyCopy;
     v19[4] = self;
-    v20 = v12;
-    v21 = v14;
-    [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:v13 reason:v15 reply:v19];
+    v20 = actionCopy;
+    v21 = infoCopy;
+    [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:proxyCopy reason:reasonCopy reply:v19];
   }
 
   else
   {
     v17 = SESDefaultLogObject();
     v18 = SESCreateAndLogError();
-    (*(v16 + 2))(v16, 0, 0, 0, 0, v18);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, 0, v18);
   }
 }
 
-- (void)endPointDBAction:(id)a3 clientInfo:(id)a4 reason:(id)a5 reply:(id)a6
+- (void)endPointDBAction:(id)action clientInfo:(id)info reason:(id)reason reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (sub_1003AD208(v11) & 1) != 0 || (sub_1003AD230(v11))
+  actionCopy = action;
+  infoCopy = info;
+  reasonCopy = reason;
+  replyCopy = reply;
+  if (sub_1003AD208(infoCopy) & 1) != 0 || (sub_1003AD230(infoCopy))
   {
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100018C44;
     v16[3] = &unk_1004C17C8;
-    v19 = v13;
+    v19 = replyCopy;
     v16[4] = self;
-    v17 = v10;
-    v18 = v11;
-    [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:v12 reply:v16];
+    v17 = actionCopy;
+    v18 = infoCopy;
+    [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:reasonCopy reply:v16];
   }
 
   else
   {
     v14 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    (*(v13 + 2))(v13, 0, 0, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v15);
   }
 }
 
-- (id)_getEndPointAndValidateAccess:(id)a3 identifier:(id)a4 clientInfo:(id)a5 outEndPointEntity:(id *)a6 outEndPoint:(id *)a7
+- (id)_getEndPointAndValidateAccess:(id)access identifier:(id)identifier clientInfo:(id)info outEndPointEntity:(id *)entity outEndPoint:(id *)point
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a3;
-  v15 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v15);
+  identifierCopy = identifier;
+  infoCopy = info;
+  accessCopy = access;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v32 = 0;
-  v16 = sub_10003C954(SESEndpointDatabase, v14, &v32);
+  v16 = sub_10003C954(SESEndpointDatabase, accessCopy, &v32);
 
   v17 = v32;
   if (v17)
@@ -2798,8 +2798,8 @@ LABEL_8:
     v29[2] = 3221225472;
     v29[3] = sub_100018F54;
     v29[4] = &unk_1004C17F0;
-    v30 = v12;
-    v20 = v13;
+    v30 = identifierCopy;
+    v20 = infoCopy;
     v31 = v20;
     v21 = Find();
     if (v21)
@@ -2817,10 +2817,10 @@ LABEL_8:
       else
       {
         v24 = v22;
-        *a7 = v22;
+        *point = v22;
         v25 = v21;
         v19 = 0;
-        *a6 = v21;
+        *entity = v21;
       }
     }
 
@@ -2837,10 +2837,10 @@ LABEL_8:
   return v19;
 }
 
-- (void)preWarmAlisha:(id)a3 reply:(id)a4
+- (void)preWarmAlisha:(id)alisha reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  alishaCopy = alisha;
+  replyCopy = reply;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -2858,9 +2858,9 @@ LABEL_8:
     v14[1] = 3221225472;
     v14[2] = sub_1000192C4;
     v14[3] = &unk_1004C1818;
-    v17 = v7;
+    v17 = replyCopy;
     v14[4] = self;
-    v15 = v6;
+    v15 = alishaCopy;
     v16 = v10;
     [(SESEndpointAndKeyXPCServer *)self proximityAndEndpointService:0 reason:v11 completion:v14];
 
@@ -2871,31 +2871,31 @@ LABEL_8:
   {
     v12 = SESDefaultLogObject();
     v13 = SESCreateAndLogError();
-    (*(v7 + 2))(v7, v13);
+    (*(replyCopy + 2))(replyCopy, v13);
   }
 }
 
-- (BOOL)_preWarmAlishaInternal:(id)a3 handle:(id)a4 proximityChipInfo:(id)a5 manufactuer:(id)a6 clientName:(id)a7 error:(id *)a8
+- (BOOL)_preWarmAlishaInternal:(id)internal handle:(id)handle proximityChipInfo:(id)info manufactuer:(id)manufactuer clientName:(id)name error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v19);
+  internalCopy = internal;
+  handleCopy = handle;
+  infoCopy = info;
+  manufactuerCopy = manufactuer;
+  nameCopy = name;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
-  v20 = [v16 isSupported];
+  isSupported = [infoCopy isSupported];
   v21 = SESDefaultLogObject();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v32 = v20;
+    v32 = isSupported;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Prewarming Alisha (Sunsprite is to be SLAM'd %d)", buf, 8u);
   }
 
   buf[0] = 0;
-  v22 = sub_100013800(v14, v20 | 8, buf, v16);
+  v22 = sub_100013800(internalCopy, isSupported | 8, buf, infoCopy);
   if (v22)
   {
     goto LABEL_7;
@@ -2903,8 +2903,8 @@ LABEL_8:
 
   if (buf[0] == 1)
   {
-    v23 = [(SESEndpointAndKeyXPCServer *)self database];
-    v24 = sub_1003AC964(v23, v14, 1);
+    database = [(SESEndpointAndKeyXPCServer *)self database];
+    v24 = sub_1003AC964(database, internalCopy, 1);
 
     if (v24)
     {
@@ -2912,15 +2912,15 @@ LABEL_8:
     }
   }
 
-  v22 = sub_100050120(v14);
+  v22 = sub_100050120(internalCopy);
   if (v22)
   {
     goto LABEL_7;
   }
 
-  if (v20)
+  if (isSupported)
   {
-    v22 = sub_100014918(v14, 1, v16);
+    v22 = sub_100014918(internalCopy, 1, infoCopy);
     if (v22)
     {
 LABEL_7:
@@ -2932,7 +2932,7 @@ LABEL_7:
     dispatch_async(v28, &stru_1004C1838);
   }
 
-  if (!v17)
+  if (!manufactuerCopy)
   {
     v24 = 0;
     v26 = 1;
@@ -2941,7 +2941,7 @@ LABEL_7:
 
   v30 = 0;
   v26 = 1;
-  v29 = [(SESEndpointAndKeyXPCServer *)self _ensureCAExistsAndValid:v17 clientName:v18 secureElement:v14 handle:v15 forEndPointType:1 error:&v30];
+  v29 = [(SESEndpointAndKeyXPCServer *)self _ensureCAExistsAndValid:manufactuerCopy clientName:nameCopy secureElement:internalCopy handle:handleCopy forEndPointType:1 error:&v30];
   v24 = v30;
   if (!v24)
   {
@@ -2949,11 +2949,11 @@ LABEL_7:
   }
 
 LABEL_8:
-  if (a8)
+  if (error)
   {
     v25 = v24;
     v26 = 0;
-    *a8 = v24;
+    *error = v24;
   }
 
   else
@@ -2966,23 +2966,23 @@ LABEL_11:
   return v26;
 }
 
-- (id)_createEndPointCA:(id)a3 handle:(id)a4 clientName:(id)a5 identifier:(id)a6 subjectIdentifier:(id)a7 forEndPointType:(int64_t)a8 error:(id *)a9
+- (id)_createEndPointCA:(id)a handle:(id)handle clientName:(id)name identifier:(id)identifier subjectIdentifier:(id)subjectIdentifier forEndPointType:(int64_t)type error:(id *)error
 {
-  v40 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v41 = a7;
-  v18 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v18);
+  aCopy = a;
+  handleCopy = handle;
+  nameCopy = name;
+  identifierCopy = identifier;
+  subjectIdentifierCopy = subjectIdentifier;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v19 = SESDefaultLogObject();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v17;
+    *&buf[4] = identifierCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v41;
+    *&buf[14] = subjectIdentifierCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "_createEndPointCA identifier %@ subjectIdentifier %@", buf, 0x16u);
   }
 
@@ -3004,16 +3004,16 @@ LABEL_11:
   v58 = sub_100019DE8;
   v59 = sub_100019DF8;
   obj = 0;
-  v20 = sub_1000431F8(SESEndpointDatabase, v17, v16, v15, &obj);
+  v20 = sub_1000431F8(SESEndpointDatabase, identifierCopy, nameCopy, handleCopy, &obj);
   objc_storeStrong(&v72, obj);
   v60 = v20;
   v21 = *(*&buf[8] + 40);
   if (v21)
   {
-    if (a9)
+    if (error)
     {
       v22 = 0;
-      *a9 = v21;
+      *error = v21;
       goto LABEL_13;
     }
 
@@ -3022,7 +3022,7 @@ LABEL_11:
 
   if (v56[5])
   {
-    if (a9)
+    if (error)
     {
       goto LABEL_11;
     }
@@ -3030,13 +3030,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v41 length] >= 0x1F)
+  if ([subjectIdentifierCopy length] >= 0x1F)
   {
-    if (a9)
+    if (error)
     {
 LABEL_11:
       v23 = SESDefaultLogObject();
-      *a9 = SESCreateAndLogError();
+      *error = SESCreateAndLogError();
     }
 
 LABEL_12:
@@ -3046,17 +3046,17 @@ LABEL_12:
 
   v25 = *&buf[8];
   v53 = *(*&buf[8] + 40);
-  v26 = sub_100043874(v40, a8, &v53);
+  v26 = sub_100043874(aCopy, type, &v53);
   objc_storeStrong((v25 + 40), v53);
   v27 = (*&buf[8] + 40);
   if (!*(*&buf[8] + 40))
   {
     v52 = 0;
-    v28 = sub_1000598B8(SESEndpointDatabase, v26, v15, &v52);
+    v28 = sub_1000598B8(SESEndpointDatabase, v26, handleCopy, &v52);
     objc_storeStrong(v27, v52);
     if (*(*&buf[8] + 40) || !v28)
     {
-      if (!a9)
+      if (!error)
       {
         v22 = 0;
         goto LABEL_37;
@@ -3064,7 +3064,7 @@ LABEL_12:
 
       v39 = SESDefaultLogObject();
       SESCreateAndLogError();
-      *a9 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -3074,18 +3074,18 @@ LABEL_12:
       v42[2] = sub_100019E00;
       v42[3] = &unk_1004C1860;
       v48 = &v55;
-      v43 = v17;
+      v43 = identifierCopy;
       v29 = v28;
       v44 = v29;
-      v45 = v16;
+      v45 = nameCopy;
       v49 = buf;
       v50 = &v61;
-      v30 = v40;
+      v30 = aCopy;
       v46 = v30;
-      v31 = v41;
+      v31 = subjectIdentifierCopy;
       v47 = v31;
-      v51 = a8;
-      sub_1003AD2A8(v15, v42);
+      typeCopy = type;
+      sub_1003AD2A8(handleCopy, v42);
       if (*(*&buf[8] + 40) && v62[5])
       {
         v32 = SESDefaultLogObject();
@@ -3095,9 +3095,9 @@ LABEL_12:
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "CA creation failed and requires cleanup ...", v67, 2u);
         }
 
-        v33 = [v29 identifier];
-        v34 = [v33 hexStringAsData];
-        v35 = sub_100046048(v30, v34, v31);
+        identifier = [v29 identifier];
+        hexStringAsData = [identifier hexStringAsData];
+        v35 = sub_100046048(v30, hexStringAsData, v31);
 
         if (v35)
         {
@@ -3117,9 +3117,9 @@ LABEL_12:
         v56[5] = 0;
       }
 
-      if (a9)
+      if (error)
       {
-        *a9 = *(*&buf[8] + 40);
+        *error = *(*&buf[8] + 40);
       }
 
       v22 = v56[5];
@@ -3131,11 +3131,11 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (a9)
+  if (error)
   {
     v28 = SESDefaultLogObject();
     SESCreateAndLogError();
-    *a9 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_37;
   }
 
@@ -3151,10 +3151,10 @@ LABEL_13:
   return v22;
 }
 
-- (void)cleanupAppletsWithNoEndpoints:(id)a3 reply:(id)a4
+- (void)cleanupAppletsWithNoEndpoints:(id)endpoints reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  endpointsCopy = endpoints;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
   v9 = sub_100035A18(SESClientInfo, v8);
 
@@ -3166,27 +3166,27 @@ LABEL_13:
     v13[2] = sub_10001A834;
     v13[3] = &unk_1004C18F0;
     v13[4] = self;
-    v14 = v7;
-    [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:v6 reason:v10 reply:v13];
+    v14 = replyCopy;
+    [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:endpointsCopy reason:v10 reply:v13];
   }
 
   else
   {
     v11 = SESDefaultLogObject();
     v12 = SESCreateAndLogError();
-    (*(v7 + 2))(v7, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
-- (id)_cleanupAppletsWithNoEndpoints:(id)a3 handle:(id)a4
+- (id)_cleanupAppletsWithNoEndpoints:(id)endpoints handle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v8);
+  endpointsCopy = endpoints;
+  handleCopy = handle;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v22 = 0;
-  v9 = sub_10003C954(SESEndpointDatabase, v7, &v22);
+  v9 = sub_10003C954(SESEndpointDatabase, handleCopy, &v22);
 
   v10 = v22;
   if (v10 || !v9)
@@ -3220,7 +3220,7 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "No endpoints found, deleting unused Applets", buf, 2u);
       }
 
-      v15 = sub_1003AAA98(v6, "SLAMDeleteCopernicusAndSunsprite");
+      v15 = sub_1003AAA98(endpointsCopy, "SLAMDeleteCopernicusAndSunsprite");
       if (v15)
       {
         v16 = SESDefaultLogObject();
@@ -3232,32 +3232,32 @@ LABEL_13:
         }
       }
 
-      v17 = [@"A000000809434343444B417631" hexStringAsData];
+      hexStringAsData = [@"A000000809434343444B417631" hexStringAsData];
       v21 = v15;
-      sub_100044F68(v6, v17, 1, &v21);
+      sub_100044F68(endpointsCopy, hexStringAsData, 1, &v21);
       v14 = v21;
 
-      v18 = [(SESEndpointAndKeyXPCServer *)self database];
-      v19 = sub_1003AC964(v18, v6, 1);
+      database = [(SESEndpointAndKeyXPCServer *)self database];
+      v19 = sub_1003AC964(database, endpointsCopy, 1);
 
       v10 = sub_10005FC78();
-      sub_100060C88(v10, v6);
+      sub_100060C88(v10, endpointsCopy);
     }
   }
 
   return v14;
 }
 
-- (id)_renewEndPointCAIfExpired:(id)a3 secureElement:(id)a4 forEndPointType:(int64_t)a5 handle:(id)a6
+- (id)_renewEndPointCAIfExpired:(id)expired secureElement:(id)element forEndPointType:(int64_t)type handle:(id)handle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v13);
+  expiredCopy = expired;
+  elementCopy = element;
+  handleCopy = handle;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v40 = 0;
-  v14 = sub_100043738(SESEndpointDatabase, v10, &v40);
+  v14 = sub_100043738(SESEndpointDatabase, expiredCopy, &v40);
   v15 = v40;
   if (v15 || v14)
   {
@@ -3267,28 +3267,28 @@ LABEL_13:
   }
 
   v39 = 0;
-  v16 = sub_1000433C4(SESEndpointDatabase, v10, &v39);
+  v16 = sub_1000433C4(SESEndpointDatabase, expiredCopy, &v39);
   v17 = v39;
   if (!v17)
   {
     v20 = SESDefaultLogObject();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [v10 identifier];
+      identifier = [expiredCopy identifier];
       *buf = 138412546;
-      v45 = v21;
+      v45 = identifier;
       v46 = 1024;
-      v47 = a5;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Renewing expired SEEndPointCA %@ with type %d", buf, 0x12u);
     }
 
     v22 = +[SEABAAManager sharedManager];
     v37 = v16;
-    v23 = [v16 secureElementAttestation];
-    v25 = sub_1003AF3C4(v11, v24);
-    v26 = [v25 casdCertificate];
+    secureElementAttestation = [v16 secureElementAttestation];
+    v25 = sub_1003AF3C4(elementCopy, v24);
+    casdCertificate = [v25 casdCertificate];
     v38 = 0;
-    v27 = [v22 PerformSEABAAWithAttestation:v23 casdCertificate:v26 nonce:0 OIDs:0 validityInterval:0 error:&v38];
+    v27 = [v22 PerformSEABAAWithAttestation:secureElementAttestation casdCertificate:casdCertificate nonce:0 OIDs:0 validityInterval:0 error:&v38];
     v18 = v38;
 
     if (v18)
@@ -3302,11 +3302,11 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if (a5 == 5 || a5 == 2)
+    if (type == 5 || type == 2)
     {
       v28 = v27;
-      v31 = sub_1003AAA6C(v27);
-      v41[0] = v31;
+      certificates2 = sub_1003AAA6C(v27);
+      v41[0] = certificates2;
       v32 = sub_1003AAA78(v27);
       v41[1] = v32;
       v33 = [NSArray arrayWithObjects:v41 count:2];
@@ -3317,7 +3317,7 @@ LABEL_19:
     else
     {
       v28 = v27;
-      if (a5 != 1)
+      if (type != 1)
       {
         v35 = SESDefaultLogObject();
         v19 = SESCreateAndLogError();
@@ -3326,23 +3326,23 @@ LABEL_19:
       }
 
       v16 = v37;
-      v29 = [v37 certificates];
-      v30 = [v29 count];
+      certificates = [v37 certificates];
+      v30 = [certificates count];
 
       if (v30 == 1)
       {
-        v31 = sub_1003AAA78(v28);
-        v43 = v31;
+        certificates2 = sub_1003AAA78(v28);
+        v43 = certificates2;
         v32 = [NSArray arrayWithObjects:&v43 count:1];
         [v37 setCertificates:v32];
 LABEL_18:
 
-        v19 = sub_1000434A0(SESEndpointDatabase, v10, v16, v12);
+        v19 = sub_1000434A0(SESEndpointDatabase, expiredCopy, v16, handleCopy);
         goto LABEL_19;
       }
 
-      v31 = [v37 certificates];
-      v32 = [v31 objectAtIndexedSubscript:0];
+      certificates2 = [v37 certificates];
+      v32 = [certificates2 objectAtIndexedSubscript:0];
       v42[0] = v32;
       v33 = sub_1003AAA78(v28);
       v42[1] = v33;
@@ -3362,35 +3362,35 @@ LABEL_21:
   return v19;
 }
 
-- (void)createAlishaEndpointWithProxy:(id)a3 identifier:(id)a4 authorityIdentifier:(id)a5 subjectIdentifier:(id)a6 configuration:(id)a7 readerIdentifier:(id)a8 readerPublicKey:(id)a9 readerInformation:(id)a10 startDate:(id)a11 endDate:(id)a12 keyIdentifier:(id)a13 authorizedKeys:(id)a14 confidentialMailBoxSize:(id)a15 privateMailBoxSize:(id)a16 reply:(id)a17
+- (void)createAlishaEndpointWithProxy:(id)proxy identifier:(id)identifier authorityIdentifier:(id)authorityIdentifier subjectIdentifier:(id)subjectIdentifier configuration:(id)configuration readerIdentifier:(id)readerIdentifier readerPublicKey:(id)key readerInformation:(id)self0 startDate:(id)self1 endDate:(id)self2 keyIdentifier:(id)self3 authorizedKeys:(id)self4 confidentialMailBoxSize:(id)self5 privateMailBoxSize:(id)self6 reply:(id)self7
 {
-  v40 = a3;
-  v22 = a4;
-  v49 = a5;
-  v48 = a6;
-  v47 = a7;
-  v23 = a8;
-  v24 = v22;
-  v46 = a9;
-  v25 = a10;
-  v26 = a11;
-  v45 = a12;
-  v44 = a13;
-  v43 = a14;
-  v42 = a15;
-  v41 = a16;
-  v27 = a17;
+  proxyCopy = proxy;
+  identifierCopy = identifier;
+  authorityIdentifierCopy = authorityIdentifier;
+  subjectIdentifierCopy = subjectIdentifier;
+  configurationCopy = configuration;
+  readerIdentifierCopy = readerIdentifier;
+  v24 = identifierCopy;
+  keyCopy = key;
+  informationCopy = information;
+  dateCopy = date;
+  endDateCopy = endDate;
+  keyIdentifierCopy = keyIdentifier;
+  keysCopy = keys;
+  sizeCopy = size;
+  boxSizeCopy = boxSize;
+  replyCopy = reply;
   v28 = SESDefaultLogObject();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v69 = v22;
+    v69 = identifierCopy;
     v70 = 2112;
-    v71 = v49;
+    v71 = authorityIdentifierCopy;
     v72 = 2112;
-    v73 = v48;
+    v73 = subjectIdentifierCopy;
     v74 = 2112;
-    v75 = v23;
+    v75 = readerIdentifierCopy;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "identifier %@ __authorityIdentifier %@ subjectIdentifier %@ readerIdentifier %@", buf, 0x2Au);
   }
 
@@ -3402,19 +3402,19 @@ LABEL_21:
     v31 = SESDefaultLogObject();
 LABEL_11:
     v32 = SESCreateAndLogError();
-    v27[2](v27, 0, v32);
+    replyCopy[2](replyCopy, 0, v32);
     goto LABEL_17;
   }
 
-  if ([v23 length] != 8)
+  if ([readerIdentifierCopy length] != 8)
   {
     v31 = SESDefaultLogObject();
-    [v23 length];
+    [readerIdentifierCopy length];
     goto LABEL_11;
   }
 
-  v31 = [v25 componentsSeparatedByString:@"."];
-  v37 = v26;
+  v31 = [informationCopy componentsSeparatedByString:@"."];
+  v37 = dateCopy;
   if ([v31 count] > 2)
   {
     v32 = [v31 objectAtIndexedSubscript:2];
@@ -3428,26 +3428,26 @@ LABEL_11:
       v50[1] = 3221225472;
       v50[2] = sub_10001B574;
       v50[3] = &unk_1004C1940;
-      v67 = v27;
-      v51 = v49;
+      v67 = replyCopy;
+      v51 = authorityIdentifierCopy;
       v52 = v30;
-      v53 = self;
+      selfCopy = self;
       v54 = v24;
-      v55 = v23;
+      v55 = readerIdentifierCopy;
       v56 = v34;
       v32 = v36;
       v57 = v32;
-      v58 = v48;
-      v59 = v47;
-      v60 = v46;
+      v58 = subjectIdentifierCopy;
+      v59 = configurationCopy;
+      v60 = keyCopy;
       v61 = v37;
-      v62 = v45;
-      v63 = v44;
-      v64 = v43;
-      v65 = v42;
-      v66 = v41;
+      v62 = endDateCopy;
+      v63 = keyIdentifierCopy;
+      v64 = keysCopy;
+      v65 = sizeCopy;
+      v66 = boxSizeCopy;
       v33 = v34;
-      [(SESEndpointAndKeyXPCServer *)self proximityAndEndpointService:v40 reason:v39 completion:v50];
+      [(SESEndpointAndKeyXPCServer *)self proximityAndEndpointService:proxyCopy reason:v39 completion:v50];
 
       v35 = v67;
     }
@@ -3456,7 +3456,7 @@ LABEL_11:
     {
       v33 = SESDefaultLogObject();
       v35 = SESCreateAndLogError();
-      v27[2](v27, 0, v35);
+      replyCopy[2](replyCopy, 0, v35);
     }
   }
 
@@ -3464,68 +3464,68 @@ LABEL_11:
   {
     v32 = SESDefaultLogObject();
     v33 = SESCreateAndLogError();
-    v27[2](v27, 0, v33);
+    replyCopy[2](replyCopy, 0, v33);
   }
 
-  v26 = v37;
+  dateCopy = v37;
 LABEL_17:
 }
 
-- (void)createHydraEndpointWithProxy:(id)a3 serverParams:(id)a4 reply:(id)a5
+- (void)createHydraEndpointWithProxy:(id)proxy serverParams:(id)params reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  proxyCopy = proxy;
+  paramsCopy = params;
+  replyCopy = reply;
   v11 = +[NSXPCConnection currentConnection];
   v12 = sub_100035A18(SESClientInfo, v11);
 
   if (sub_1003AD208(v12) && (sub_1003AD21C(v12) & 1) != 0 || (sub_1003AD230(v12) & 1) != 0)
   {
-    v49 = self;
-    v50 = v8;
+    selfCopy = self;
+    v50 = proxyCopy;
     v13 = SESDefaultLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v69 = v9;
+      v69 = paramsCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
     }
 
-    v14 = [v9 objectForKeyedSubscript:@"readerIdentifier"];
-    v15 = [v14 hexStringAsData];
+    v14 = [paramsCopy objectForKeyedSubscript:@"readerIdentifier"];
+    hexStringAsData = [v14 hexStringAsData];
 
-    v16 = [v9 objectForKeyedSubscript:@"readerCAPublicKey"];
-    v17 = [v16 hexStringAsData];
+    v16 = [paramsCopy objectForKeyedSubscript:@"readerCAPublicKey"];
+    hexStringAsData2 = [v16 hexStringAsData];
 
-    v18 = [v9 objectForKeyedSubscript:@"readerCAMaxDepth"];
-    v19 = [v9 objectForKeyedSubscript:@"mailboxInfo"];
+    v18 = [paramsCopy objectForKeyedSubscript:@"readerCAMaxDepth"];
+    v19 = [paramsCopy objectForKeyedSubscript:@"mailboxInfo"];
     v20 = [v19 objectForKeyedSubscript:@"confMailboxSize"];
-    v47 = [v20 unsignedIntValue];
+    unsignedIntValue = [v20 unsignedIntValue];
 
     v21 = [v19 objectForKeyedSubscript:@"confMailboxOffset"];
-    v45 = [v21 unsignedIntValue];
+    unsignedIntValue2 = [v21 unsignedIntValue];
 
     v22 = [v19 objectForKeyedSubscript:@"confMailboxLength"];
-    v44 = [v22 unsignedIntValue];
+    unsignedIntValue3 = [v22 unsignedIntValue];
 
     v23 = [v19 objectForKeyedSubscript:@"privMailboxSize"];
-    v43 = [v23 unsignedIntValue];
+    unsignedIntValue4 = [v23 unsignedIntValue];
 
     v24 = [v19 objectForKeyedSubscript:@"privMailboxOffset"];
-    v25 = [v24 unsignedIntValue];
+    unsignedIntValue5 = [v24 unsignedIntValue];
 
     v26 = [v19 objectForKeyedSubscript:@"privMailboxLength"];
-    v27 = [v26 unsignedIntValue];
+    unsignedIntValue6 = [v26 unsignedIntValue];
 
-    if (!v15 || !v17)
+    if (!hexStringAsData || !hexStringAsData2)
     {
-      v31 = SESDefaultLogObject();
-      v32 = [v9 allKeys];
+      asHexString = SESDefaultLogObject();
+      allKeys = [paramsCopy allKeys];
       v33 = SESCreateAndLogError();
-      v10[2](v10, 0, v33);
+      replyCopy[2](replyCopy, 0, v33);
 
 LABEL_21:
-      v8 = v50;
+      proxyCopy = v50;
       goto LABEL_22;
     }
 
@@ -3534,33 +3534,33 @@ LABEL_21:
       v18 = &off_1004DC900;
     }
 
-    if ([v15 length] == 8)
+    if ([hexStringAsData length] == 8)
     {
-      if ([v17 length] == 64)
+      if ([hexStringAsData2 length] == 64)
       {
         v28 = [NSMutableData dataWithCapacity:65];
         [v28 appendU8:4];
-        [v28 appendData:v17];
+        [v28 appendData:hexStringAsData2];
 
-        v17 = v28;
+        hexStringAsData2 = v28;
         goto LABEL_18;
       }
 
-      if ([v17 length] == 65)
+      if ([hexStringAsData2 length] == 65)
       {
 LABEL_18:
         if (![v18 unsignedIntValue] || objc_msgSend(v18, "unsignedIntValue") == 1)
         {
           [NSData randomData:4];
-          v34 = v42 = v25;
-          v31 = [v34 asHexString];
+          v34 = v42 = unsignedIntValue5;
+          asHexString = [v34 asHexString];
 
-          [v15 asHexString];
-          v35 = v41 = v27;
-          v39 = [NSString stringWithFormat:@"HY-%@-%@", v35, v31];
+          [hexStringAsData asHexString];
+          v35 = v41 = unsignedIntValue6;
+          v39 = [NSString stringWithFormat:@"HY-%@-%@", v35, asHexString];
 
-          v36 = [v15 asHexString];
-          v38 = [NSString stringWithFormat:@"HYCA-%@-%@", v36, v31];
+          asHexString2 = [hexStringAsData asHexString];
+          v38 = [NSString stringWithFormat:@"HYCA-%@-%@", asHexString2, asHexString];
 
           v37 = +[SEEndPointConfiguration hydraDefaults];
           v40 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEEndPointXPC) createHydraEndpointWithProxy:serverParams:reply:]"];
@@ -3568,67 +3568,67 @@ LABEL_18:
           v51[1] = 3221225472;
           v51[2] = sub_10001CF10;
           v51[3] = &unk_1004C1990;
-          v61 = v10;
-          v51[4] = v49;
+          v61 = replyCopy;
+          v51[4] = selfCopy;
           v52 = v38;
           v53 = v12;
           v54 = v39;
           v55 = v37;
-          v56 = v15;
-          v17 = v17;
-          v57 = v17;
+          v56 = hexStringAsData;
+          hexStringAsData2 = hexStringAsData2;
+          v57 = hexStringAsData2;
           v58 = @"20000101000000Z";
           v59 = @"99991231235959Z";
-          v62 = v47;
-          v63 = v43;
+          v62 = unsignedIntValue;
+          v63 = unsignedIntValue4;
           v18 = v18;
           v60 = v18;
           v64 = v41;
           v65 = v42;
-          v66 = v44;
-          v67 = v45;
+          v66 = unsignedIntValue3;
+          v67 = unsignedIntValue2;
           v48 = v37;
           v46 = v39;
-          v32 = v38;
-          [(SESEndpointAndKeyXPCServer *)v49 proximityAndEndpointService:v50 reason:v40 completion:v51];
+          allKeys = v38;
+          [(SESEndpointAndKeyXPCServer *)selfCopy proximityAndEndpointService:v50 reason:v40 completion:v51];
 
           goto LABEL_21;
         }
 
-        v31 = SESDefaultLogObject();
+        asHexString = SESDefaultLogObject();
         [v18 unsignedIntValue];
         goto LABEL_16;
       }
 
-      v31 = SESDefaultLogObject();
-      [v17 length];
+      asHexString = SESDefaultLogObject();
+      [hexStringAsData2 length];
     }
 
     else
     {
-      v31 = SESDefaultLogObject();
-      [v15 length];
+      asHexString = SESDefaultLogObject();
+      [hexStringAsData length];
     }
 
 LABEL_16:
-    v32 = SESCreateAndLogError();
-    v10[2](v10, 0, v32);
+    allKeys = SESCreateAndLogError();
+    replyCopy[2](replyCopy, 0, allKeys);
     goto LABEL_21;
   }
 
   v29 = SESDefaultLogObject();
   v30 = SESCreateAndLogError();
-  v10[2](v10, 0, v30);
+  replyCopy[2](replyCopy, 0, v30);
 
 LABEL_22:
 }
 
-- (void)createLocalEndpointWithProxy:(id)a3 readerIdentifier:(id)a4 readerPublicKey:(id)a5 reply:(id)a6
+- (void)createLocalEndpointWithProxy:(id)proxy readerIdentifier:(id)identifier readerPublicKey:(id)key reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  proxyCopy = proxy;
+  identifierCopy = identifier;
+  keyCopy = key;
+  replyCopy = reply;
   v14 = +[NSXPCConnection currentConnection];
   v15 = sub_100035A18(SESClientInfo, v14);
 
@@ -3637,21 +3637,21 @@ LABEL_22:
     v23 = SESDefaultLogObject();
 LABEL_8:
     v24 = SESCreateAndLogError();
-    v13[2](v13, 0, v24);
+    replyCopy[2](replyCopy, 0, v24);
 
     goto LABEL_9;
   }
 
-  if ([v11 length] != 8)
+  if ([identifierCopy length] != 8)
   {
     v23 = SESDefaultLogObject();
-    [v11 length];
+    [identifierCopy length];
     goto LABEL_8;
   }
 
   v16 = [NSData randomData:4];
-  v17 = [v16 asHexString];
-  v18 = [NSString stringWithFormat:@"HOME-%@", v17];
+  asHexString = [v16 asHexString];
+  v18 = [NSString stringWithFormat:@"HOME-%@", asHexString];
 
   v19 = +[SEEndPointConfiguration homeDefaults];
   v20 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEEndPointXPC) createLocalEndpointWithProxy:readerIdentifier:readerPublicKey:reply:]"];
@@ -3659,31 +3659,31 @@ LABEL_8:
   v25[1] = 3221225472;
   v25[2] = sub_10001DE7C;
   v25[3] = &unk_1004C19E0;
-  v34 = v13;
+  v34 = replyCopy;
   v25[4] = self;
   v26 = @"HOME";
   v27 = v15;
   v28 = v18;
   v29 = v19;
-  v30 = v11;
-  v31 = v12;
+  v30 = identifierCopy;
+  v31 = keyCopy;
   v32 = @"20000101000000Z";
   v33 = @"99991231235959Z";
   v21 = v19;
   v22 = v18;
-  [(SESEndpointAndKeyXPCServer *)self proximityAndEndpointService:v10 reason:v20 completion:v25];
+  [(SESEndpointAndKeyXPCServer *)self proximityAndEndpointService:proxyCopy reason:v20 completion:v25];
 
 LABEL_9:
 }
 
-- (void)createLyonEndpointWithProxy:(id)a3 readerGroupIdentifier:(id)a4 readerPublicKey:(id)a5 homeUUID:(id)a6 privateMailboxSize:(id)a7 reply:(id)a8
+- (void)createLyonEndpointWithProxy:(id)proxy readerGroupIdentifier:(id)identifier readerPublicKey:(id)key homeUUID:(id)d privateMailboxSize:(id)size reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  proxyCopy = proxy;
+  identifierCopy = identifier;
+  keyCopy = key;
+  dCopy = d;
+  sizeCopy = size;
+  replyCopy = reply;
   v20 = +[NSXPCConnection currentConnection];
   v21 = sub_100035A18(SESClientInfo, v20);
 
@@ -3692,28 +3692,28 @@ LABEL_9:
     v31 = SESDefaultLogObject();
 LABEL_8:
     v32 = SESCreateAndLogError();
-    v19[2](v19, 0, v32);
+    replyCopy[2](replyCopy, 0, v32);
 
     goto LABEL_9;
   }
 
-  if ([v15 length] != 16)
+  if ([identifierCopy length] != 16)
   {
     v31 = SESDefaultLogObject();
-    [v15 length];
+    [identifierCopy length];
     goto LABEL_8;
   }
 
   [NSData randomData:4];
-  v22 = v34 = v14;
+  v22 = v34 = proxyCopy;
   [v22 asHexString];
-  v33 = self;
-  v23 = v18;
-  v25 = v24 = v16;
+  selfCopy = self;
+  v23 = sizeCopy;
+  v25 = v24 = keyCopy;
   v26 = [NSString stringWithFormat:@"LYON-%@", v25];
 
-  v16 = v24;
-  v18 = v23;
+  keyCopy = v24;
+  sizeCopy = v23;
 
   v27 = +[SEEndPointConfiguration lyonHomeDefaults];
   v28 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEEndPointXPC) createLyonEndpointWithProxy:readerGroupIdentifier:readerPublicKey:homeUUID:privateMailboxSize:reply:]"];
@@ -3721,189 +3721,189 @@ LABEL_8:
   v35[1] = 3221225472;
   v35[2] = sub_10001EB4C;
   v35[3] = &unk_1004C1A50;
-  v46 = v19;
-  v35[4] = v33;
+  v46 = replyCopy;
+  v35[4] = selfCopy;
   v36 = @"LYON";
   v37 = v21;
   v38 = v26;
   v39 = v27;
-  v40 = v15;
-  v41 = v16;
+  v40 = identifierCopy;
+  v41 = keyCopy;
   v42 = @"20000101000000Z";
   v43 = @"99991231235959Z";
   v44 = v23;
-  v45 = v17;
+  v45 = dCopy;
   v29 = v27;
   v30 = v26;
-  [(SESEndpointAndKeyXPCServer *)v33 proximityAndEndpointService:v34 reason:v28 completion:v35];
+  [(SESEndpointAndKeyXPCServer *)selfCopy proximityAndEndpointService:v34 reason:v28 completion:v35];
 
-  v14 = v34;
+  proxyCopy = v34;
 LABEL_9:
 }
 
-- (void)createLyonHydraEndpointWithProxy:(id)a3 serverParams:(id)a4 reply:(id)a5
+- (void)createLyonHydraEndpointWithProxy:(id)proxy serverParams:(id)params reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  proxyCopy = proxy;
+  paramsCopy = params;
+  replyCopy = reply;
   v11 = +[NSXPCConnection currentConnection];
   v12 = sub_100035A18(SESClientInfo, v11);
 
   if (sub_1003AD208(v12) && (sub_1003AD21C(v12) & 1) != 0 || (sub_1003AD230(v12) & 1) != 0)
   {
-    v48 = self;
+    selfCopy = self;
     v13 = SESDefaultLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v68 = v9;
+      v68 = paramsCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "createLyonHydraEndpointWithProxy w/ params %@", buf, 0xCu);
     }
 
-    v14 = [v9 objectForKeyedSubscript:@"readerGroupIdentifier"];
-    v15 = [v14 hexStringAsData];
+    v14 = [paramsCopy objectForKeyedSubscript:@"readerGroupIdentifier"];
+    hexStringAsData = [v14 hexStringAsData];
 
-    v16 = [v9 objectForKeyedSubscript:@"readerGroupPublicKey"];
-    v17 = [v16 hexStringAsData];
+    v16 = [paramsCopy objectForKeyedSubscript:@"readerGroupPublicKey"];
+    hexStringAsData2 = [v16 hexStringAsData];
 
-    v18 = [v9 objectForKeyedSubscript:@"readerCAMaxDepth"];
-    v19 = [v9 objectForKeyedSubscript:@"privMailboxSize"];
-    v46 = [v19 unsignedIntValue];
+    v18 = [paramsCopy objectForKeyedSubscript:@"readerCAMaxDepth"];
+    v19 = [paramsCopy objectForKeyedSubscript:@"privMailboxSize"];
+    unsignedIntValue = [v19 unsignedIntValue];
 
-    v20 = [v9 objectForKeyedSubscript:@"privMailboxOffset"];
-    v44 = [v20 unsignedIntValue];
+    v20 = [paramsCopy objectForKeyedSubscript:@"privMailboxOffset"];
+    unsignedIntValue2 = [v20 unsignedIntValue];
 
-    v21 = [v9 objectForKeyedSubscript:@"privMailboxLength"];
-    v42 = [v21 unsignedIntValue];
+    v21 = [paramsCopy objectForKeyedSubscript:@"privMailboxLength"];
+    unsignedIntValue3 = [v21 unsignedIntValue];
 
-    v22 = [v9 objectForKeyedSubscript:@"option1"];
-    v23 = [v9 objectForKeyedSubscript:@"enableSSO"];
+    v22 = [paramsCopy objectForKeyedSubscript:@"option1"];
+    v23 = [paramsCopy objectForKeyedSubscript:@"enableSSO"];
     v24 = v23;
     v25 = v22 || [v23 BOOLValue];
-    v26 = v8;
+    v26 = proxyCopy;
     v49 = v24;
     v50 = v22;
-    if (v15 && v17 && v18)
+    if (hexStringAsData && hexStringAsData2 && v18)
     {
       v41 = v25;
-      if ([v15 length] == 16)
+      if ([hexStringAsData length] == 16)
       {
-        if ([v17 length] == 64)
+        if ([hexStringAsData2 length] == 64)
         {
           v27 = [NSMutableData dataWithCapacity:65];
           [v27 appendU8:4];
-          [v27 appendData:v17];
+          [v27 appendData:hexStringAsData2];
 
-          v17 = v27;
+          hexStringAsData2 = v27;
         }
 
-        else if ([v17 length] != 65)
+        else if ([hexStringAsData2 length] != 65)
         {
           v30 = v18;
-          v31 = SESDefaultLogObject();
-          [v17 length];
+          asHexString = SESDefaultLogObject();
+          [hexStringAsData2 length];
           goto LABEL_27;
         }
 
         v40 = v18;
         if ([v18 unsignedIntValue] >= 2)
         {
-          v31 = SESDefaultLogObject();
+          asHexString = SESDefaultLogObject();
           v30 = v40;
           [v40 unsignedIntValue];
 LABEL_27:
-          v32 = SESCreateAndLogError();
-          v10[2](v10, 0, v32);
+          asHexString2 = SESCreateAndLogError();
+          replyCopy[2](replyCopy, 0, asHexString2);
           goto LABEL_19;
         }
 
         v34 = [NSData randomData:4];
-        v31 = [v34 asHexString];
+        asHexString = [v34 asHexString];
 
-        v35 = [v15 subdataWithRange:{0, 8}];
-        v32 = [v35 asHexString];
+        v35 = [hexStringAsData subdataWithRange:{0, 8}];
+        asHexString2 = [v35 asHexString];
 
-        v39 = [NSString stringWithFormat:@"LY-%@-%@", v32, v31];
-        v37 = [NSString stringWithFormat:@"LYCA-%@-%@", v32, v31];
+        v39 = [NSString stringWithFormat:@"LY-%@-%@", asHexString2, asHexString];
+        v37 = [NSString stringWithFormat:@"LYCA-%@-%@", asHexString2, asHexString];
         v36 = +[SEEndPointConfiguration lyonHydraDefaults];
-        v8 = v26;
+        proxyCopy = v26;
         v38 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEEndPointXPC) createLyonHydraEndpointWithProxy:serverParams:reply:]"];
         v51[0] = _NSConcreteStackBlock;
         v51[1] = 3221225472;
         v51[2] = sub_100020040;
         v51[3] = &unk_1004C1AA0;
-        v62 = v10;
-        v51[4] = v48;
+        v62 = replyCopy;
+        v51[4] = selfCopy;
         v52 = v37;
         v53 = v12;
         v54 = v39;
         v55 = v36;
-        v56 = v9;
+        v56 = paramsCopy;
         v66 = v41;
-        v57 = v15;
-        v17 = v17;
-        v58 = v17;
+        v57 = hexStringAsData;
+        hexStringAsData2 = hexStringAsData2;
+        v58 = hexStringAsData2;
         v59 = @"20000101000000Z";
         v60 = @"99991231235959Z";
-        v63 = v46;
+        v63 = unsignedIntValue;
         v30 = v40;
         v61 = v40;
-        v64 = v42;
-        v65 = v44;
+        v64 = unsignedIntValue3;
+        v65 = unsignedIntValue2;
         v47 = v36;
         v45 = v39;
         v43 = v37;
-        [(SESEndpointAndKeyXPCServer *)v48 proximityAndEndpointService:v26 reason:v38 completion:v51];
+        [(SESEndpointAndKeyXPCServer *)selfCopy proximityAndEndpointService:v26 reason:v38 completion:v51];
 
 LABEL_19:
         goto LABEL_20;
       }
 
       v30 = v18;
-      v31 = SESDefaultLogObject();
-      [v15 length];
-      v32 = SESCreateAndLogError();
-      v10[2](v10, 0, v32);
+      asHexString = SESDefaultLogObject();
+      [hexStringAsData length];
+      asHexString2 = SESCreateAndLogError();
+      replyCopy[2](replyCopy, 0, asHexString2);
     }
 
     else
     {
       v30 = v18;
-      v31 = SESDefaultLogObject();
-      v32 = [v9 allKeys];
+      asHexString = SESDefaultLogObject();
+      asHexString2 = [paramsCopy allKeys];
       v33 = SESCreateAndLogError();
-      v10[2](v10, 0, v33);
+      replyCopy[2](replyCopy, 0, v33);
     }
 
-    v8 = v26;
+    proxyCopy = v26;
     goto LABEL_19;
   }
 
   v28 = SESDefaultLogObject();
   v29 = SESCreateAndLogError();
-  v10[2](v10, 0, v29);
+  replyCopy[2](replyCopy, 0, v29);
 
 LABEL_20:
 }
 
-- (unint64_t)_existsDuplicateInDatabase:(id)a3 withIdentifier:(id)a4 orReaderIdentifier:(id)a5 outError:(id *)a6
+- (unint64_t)_existsDuplicateInDatabase:(id)database withIdentifier:(id)identifier orReaderIdentifier:(id)readerIdentifier outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v12);
+  databaseCopy = database;
+  identifierCopy = identifier;
+  readerIdentifierCopy = readerIdentifier;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
-  v13 = [v9 endPoints];
+  endPoints = [databaseCopy endPoints];
   v23 = _NSConcreteStackBlock;
   v24 = 3221225472;
   v25 = sub_100020FB4;
   v26 = &unk_1004C1AC8;
-  v14 = v9;
+  v14 = databaseCopy;
   v27 = v14;
-  v15 = v10;
+  v15 = identifierCopy;
   v28 = v15;
-  v16 = v11;
+  v16 = readerIdentifierCopy;
   v29 = v16;
   v17 = Find();
   if (!v17 || !SESInternalVariant())
@@ -3933,27 +3933,27 @@ LABEL_9:
   return v20;
 }
 
-- (id)_ensureCAExistsAndValid:(id)a3 clientName:(id)a4 secureElement:(id)a5 handle:(id)a6 forEndPointType:(int64_t)a7 error:(id *)a8
+- (id)_ensureCAExistsAndValid:(id)valid clientName:(id)name secureElement:(id)element handle:(id)handle forEndPointType:(int64_t)type error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v18);
+  validCopy = valid;
+  nameCopy = name;
+  elementCopy = element;
+  handleCopy = handle;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v34 = 0;
-  v19 = sub_1000431F8(SESEndpointDatabase, v14, v15, v17, &v34);
+  v19 = sub_1000431F8(SESEndpointDatabase, validCopy, nameCopy, handleCopy, &v34);
   v20 = v34;
   if (v20)
   {
     v21 = v20;
-    if (a8)
+    if (error)
     {
 LABEL_3:
       v22 = v21;
       v23 = 0;
-      *a8 = v21;
+      *error = v21;
       goto LABEL_22;
     }
 
@@ -3964,7 +3964,7 @@ LABEL_3:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v36 = v14;
+    v36 = validCopy;
     v37 = 1024;
     v38 = v19 != 0;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Ensuring CA for %@ -- existing? %d", buf, 0x12u);
@@ -3973,13 +3973,13 @@ LABEL_3:
   if (!v19)
   {
     v33 = 0;
-    v29 = [(SESEndpointAndKeyXPCServer *)self _createEndPointCA:v16 handle:v17 clientName:v15 identifier:v14 subjectIdentifier:v14 forEndPointType:a7 error:&v33];
+    v29 = [(SESEndpointAndKeyXPCServer *)self _createEndPointCA:elementCopy handle:handleCopy clientName:nameCopy identifier:validCopy subjectIdentifier:validCopy forEndPointType:type error:&v33];
     v30 = v33;
     v21 = v30;
-    if (a8)
+    if (error)
     {
       v31 = v30;
-      *a8 = v21;
+      *error = v21;
     }
 
     v28 = v29;
@@ -3987,7 +3987,7 @@ LABEL_3:
     goto LABEL_18;
   }
 
-  if ((a7 - 3) <= 1 || ([(SESEndpointAndKeyXPCServer *)self _renewEndPointCAIfExpired:v19 secureElement:v16 forEndPointType:a7 handle:v17], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((type - 3) <= 1 || ([(SESEndpointAndKeyXPCServer *)self _renewEndPointCAIfExpired:v19 secureElement:elementCopy forEndPointType:type handle:handleCopy], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_14:
     v28 = v19;
@@ -4015,7 +4015,7 @@ LABEL_18:
     }
   }
 
-  if (a8)
+  if (error)
   {
     goto LABEL_3;
   }
@@ -4027,24 +4027,24 @@ LABEL_22:
   return v23;
 }
 
-- (void)configureEndpointWithProxy:(id)a3 identifier:(id)a4 privateData:(id)a5 confidentialData:(id)a6 contactlessVolatileVisibility:(id)a7 contactlessPersistentVisibility:(id)a8 wiredVolatileVisibility:(id)a9 wiredPersistentVisibility:(id)a10 keySlot:(id)a11 nfcExpressOnlyInLPM:(id)a12 reply:(id)a13
+- (void)configureEndpointWithProxy:(id)proxy identifier:(id)identifier privateData:(id)data confidentialData:(id)confidentialData contactlessVolatileVisibility:(id)visibility contactlessPersistentVisibility:(id)persistentVisibility wiredVolatileVisibility:(id)volatileVisibility wiredPersistentVisibility:(id)self0 keySlot:(id)self1 nfcExpressOnlyInLPM:(id)self2 reply:(id)self3
 {
-  v42 = a4;
-  v40 = a5;
-  v39 = a6;
-  v37 = a7;
-  v36 = a8;
-  v33 = a9;
-  v18 = a10;
-  v31 = a11;
-  v29 = a12;
-  v19 = a13;
-  v35 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
+  confidentialDataCopy = confidentialData;
+  visibilityCopy = visibility;
+  persistentVisibilityCopy = persistentVisibility;
+  volatileVisibilityCopy = volatileVisibility;
+  wiredPersistentVisibilityCopy = wiredPersistentVisibility;
+  slotCopy = slot;
+  mCopy = m;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v20 = SESDefaultLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v54 = v42;
+    v54 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4055,42 +4055,42 @@ LABEL_22:
   v43[1] = 3221225472;
   v43[2] = sub_10002169C;
   v43[3] = &unk_1004C1AF0;
-  v44 = v40;
-  v45 = v39;
-  v46 = v36;
-  v47 = v37;
-  v48 = v18;
-  v49 = v33;
-  v50 = v31;
-  v51 = v29;
-  v52 = v19;
-  v30 = v29;
-  v32 = v31;
-  v34 = v33;
-  v23 = v18;
-  v38 = v37;
-  v24 = v36;
-  v25 = v39;
-  v26 = v40;
-  v27 = v19;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v42 proxy:v35 clientInfo:v21 reason:v22 reply:v43];
+  v44 = dataCopy;
+  v45 = confidentialDataCopy;
+  v46 = persistentVisibilityCopy;
+  v47 = visibilityCopy;
+  v48 = wiredPersistentVisibilityCopy;
+  v49 = volatileVisibilityCopy;
+  v50 = slotCopy;
+  v51 = mCopy;
+  v52 = replyCopy;
+  v30 = mCopy;
+  v32 = slotCopy;
+  v34 = volatileVisibilityCopy;
+  v23 = wiredPersistentVisibilityCopy;
+  v38 = visibilityCopy;
+  v24 = persistentVisibilityCopy;
+  v25 = confidentialDataCopy;
+  v26 = dataCopy;
+  v27 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:identifierCopy proxy:proxyCopy clientInfo:v21 reason:v22 reply:v43];
 }
 
-- (id)getEncryptedCarOEMProprietaryData:(id)a3 withEndpointEntity:(id)a4 withSecureElement:(id)a5
+- (id)getEncryptedCarOEMProprietaryData:(id)data withEndpointEntity:(id)entity withSecureElement:(id)element
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 carOEMProprietaryData];
+  dataCopy = data;
+  entityCopy = entity;
+  elementCopy = element;
+  carOEMProprietaryData = [dataCopy carOEMProprietaryData];
 
-  if (v10)
+  if (carOEMProprietaryData)
   {
-    v11 = [v7 carOEMProprietaryData];
+    carOEMProprietaryData2 = [dataCopy carOEMProprietaryData];
     goto LABEL_26;
   }
 
-  v12 = [v8 privacyEncryptionPK];
-  if (!v12)
+  privacyEncryptionPK = [entityCopy privacyEncryptionPK];
+  if (!privacyEncryptionPK)
   {
     v19 = SESDefaultLogObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -4102,13 +4102,13 @@ LABEL_23:
     }
 
 LABEL_24:
-    v11 = 0;
+    carOEMProprietaryData2 = 0;
     goto LABEL_25;
   }
 
-  v13 = [v7 mailboxMapping];
+  mailboxMapping = [dataCopy mailboxMapping];
 
-  if (!v13)
+  if (!mailboxMapping)
   {
     v19 = SESDefaultLogObject();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -4121,12 +4121,12 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v14 = [v8 instance];
-  v15 = [v14 identifier];
-  v16 = [v15 hexStringAsData];
-  v17 = [v7 publicKeyIdentifier];
+  instance = [entityCopy instance];
+  identifier = [instance identifier];
+  hexStringAsData = [identifier hexStringAsData];
+  publicKeyIdentifier = [dataCopy publicKeyIdentifier];
   v47 = 0;
-  v18 = sub_100046338(v9, v16, v17, 0, 1, &v47);
+  v18 = sub_100046338(elementCopy, hexStringAsData, publicKeyIdentifier, 0, 1, &v47);
   v19 = v47;
 
   if (v19 || [v18 length] != 1)
@@ -4134,9 +4134,9 @@ LABEL_24:
     v24 = SESDefaultLogObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v18 asHexString];
+      asHexString = [v18 asHexString];
       *buf = 138412546;
-      *v49 = v30;
+      *v49 = asHexString;
       *&v49[8] = 2112;
       *&v49[10] = v19;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Failed to retrieve private mailbox first byte %@ error %@", buf, 0x16u);
@@ -4147,7 +4147,7 @@ LABEL_24:
   {
     v20 = [v18 u8:0];
     v21 = [KmlMailboxMappingData alloc];
-    v22 = [v7 mailboxMapping];
+    mailboxMapping2 = [dataCopy mailboxMapping];
     if (v20 == 128)
     {
       v23 = 768;
@@ -4158,32 +4158,32 @@ LABEL_24:
       v23 = 256;
     }
 
-    v24 = [v21 initWithData:v22 preferredVersion:v23];
+    v24 = [v21 initWithData:mailboxMapping2 preferredVersion:v23];
 
-    v25 = [v24 vehicleProprietaryDataOffset];
-    v26 = [v24 keyAttestationStartOffset];
-    if (!v25 || (v27 = v26) == 0)
+    vehicleProprietaryDataOffset = [v24 vehicleProprietaryDataOffset];
+    keyAttestationStartOffset = [v24 keyAttestationStartOffset];
+    if (!vehicleProprietaryDataOffset || (v27 = keyAttestationStartOffset) == 0)
     {
       v28 = SESDefaultLogObject();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v32 = [v7 mailboxMapping];
-        v33 = [v32 asHexString];
+        mailboxMapping3 = [dataCopy mailboxMapping];
+        asHexString2 = [mailboxMapping3 asHexString];
         *buf = 138412290;
-        *v49 = v33;
+        *v49 = asHexString2;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Failed to retrieve private mailbox offsets %@", buf, 0xCu);
       }
 
       goto LABEL_31;
     }
 
-    if (v26 < v25)
+    if (keyAttestationStartOffset < vehicleProprietaryDataOffset)
     {
       v28 = SESDefaultLogObject();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109376;
-        *v49 = v25;
+        *v49 = vehicleProprietaryDataOffset;
         *&v49[4] = 1024;
         *&v49[6] = v27;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Invalid private mailbox offsets car OEM data %d key attestation %d", buf, 0xEu);
@@ -4191,22 +4191,22 @@ LABEL_24:
 
 LABEL_31:
       v19 = 0;
-      v11 = 0;
+      carOEMProprietaryData2 = 0;
 LABEL_32:
 
       goto LABEL_20;
     }
 
-    if (v26 != v25)
+    if (keyAttestationStartOffset != vehicleProprietaryDataOffset)
     {
-      v34 = (v26 - v25);
-      v44 = [v8 instance];
-      v42 = [v44 identifier];
-      v35 = [v42 hexStringAsData];
-      v36 = [v7 publicKeyIdentifier];
+      v34 = (keyAttestationStartOffset - vehicleProprietaryDataOffset);
+      instance2 = [entityCopy instance];
+      identifier2 = [instance2 identifier];
+      hexStringAsData2 = [identifier2 hexStringAsData];
+      publicKeyIdentifier2 = [dataCopy publicKeyIdentifier];
       v46 = 0;
       v41 = v34;
-      v28 = sub_100046338(v9, v35, v36, v25, v34, &v46);
+      v28 = sub_100046338(elementCopy, hexStringAsData2, publicKeyIdentifier2, vehicleProprietaryDataOffset, v34, &v46);
       v19 = v46;
 
       if (v19)
@@ -4238,14 +4238,14 @@ LABEL_32:
             }
 
             v39 = v38;
-            v11 = 0;
+            carOEMProprietaryData2 = 0;
           }
 
           else
           {
-            v43 = [v12 ses_sha256];
-            v11 = [SEEndPointPrivacyEncryptResponse responseWithCipherText:v37 ephemeralPublicKeyData:v45 receiverPublicKeyHash:v43];
-            v39 = v43;
+            ses_sha256 = [privacyEncryptionPK ses_sha256];
+            carOEMProprietaryData2 = [SEEndPointPrivacyEncryptResponse responseWithCipherText:v37 ephemeralPublicKeyData:v45 receiverPublicKeyHash:ses_sha256];
+            v39 = ses_sha256;
           }
 
           goto LABEL_48;
@@ -4265,7 +4265,7 @@ LABEL_32:
         v19 = 0;
       }
 
-      v11 = 0;
+      carOEMProprietaryData2 = 0;
 LABEL_48:
 
       goto LABEL_32;
@@ -4274,27 +4274,27 @@ LABEL_48:
     v19 = 0;
   }
 
-  v11 = 0;
+  carOEMProprietaryData2 = 0;
 LABEL_20:
 
 LABEL_25:
 LABEL_26:
 
-  return v11;
+  return carOEMProprietaryData2;
 }
 
-- (void)updateLyonCredentialDocumentStatusWithProxy:(id)a3 endpointIdentifier:(id)a4 accessDocumentPresent:(BOOL)a5 accessDocumentSignedTimestamp:(id)a6 revocationDocumentPresent:(BOOL)a7 revocationDocumentSignedTimestamp:(id)a8 reply:(id)a9
+- (void)updateLyonCredentialDocumentStatusWithProxy:(id)proxy endpointIdentifier:(id)identifier accessDocumentPresent:(BOOL)present accessDocumentSignedTimestamp:(id)timestamp revocationDocumentPresent:(BOOL)documentPresent revocationDocumentSignedTimestamp:(id)signedTimestamp reply:(id)reply
 {
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = a9;
-  v19 = a3;
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
+  signedTimestampCopy = signedTimestamp;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v20 = SESDefaultLogObject();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v34 = v15;
+    v34 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4303,30 +4303,30 @@ LABEL_26:
   v26[1] = 3221225472;
   v26[2] = sub_100022114;
   v26[3] = &unk_1004C1B18;
-  v31 = a5;
-  v32 = a7;
-  v27 = v16;
-  v28 = v17;
-  v29 = v15;
-  v30 = v18;
-  v22 = v15;
-  v23 = v17;
-  v24 = v16;
-  v25 = v18;
-  [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:v19 reason:v21 reply:v26];
+  presentCopy = present;
+  documentPresentCopy = documentPresent;
+  v27 = timestampCopy;
+  v28 = signedTimestampCopy;
+  v29 = identifierCopy;
+  v30 = replyCopy;
+  v22 = identifierCopy;
+  v23 = signedTimestampCopy;
+  v24 = timestampCopy;
+  v25 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:proxyCopy reason:v21 reply:v26];
 }
 
-- (void)revokeEndPointWithIdentifier:(id)a3 nonce:(id)a4 metaData:(id)a5 reply:(id)a6
+- (void)revokeEndPointWithIdentifier:(id)identifier nonce:(id)nonce metaData:(id)data reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nonceCopy = nonce;
+  dataCopy = data;
+  replyCopy = reply;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v26 = v10;
+    v26 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4338,26 +4338,26 @@ LABEL_26:
   v21[2] = sub_1000226C0;
   v21[3] = &unk_1004C1B40;
   v21[4] = self;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = v13;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v10 clientInfo:v16 reason:v17 reply:v21];
+  v22 = nonceCopy;
+  v23 = dataCopy;
+  v24 = replyCopy;
+  v18 = dataCopy;
+  v19 = nonceCopy;
+  v20 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:identifierCopy clientInfo:v16 reason:v17 reply:v21];
 }
 
-- (void)signatureWithEndPointIdentifier:(id)a3 metaDataHash:(id)a4 authorization:(id)a5 reply:(id)a6
+- (void)signatureWithEndPointIdentifier:(id)identifier metaDataHash:(id)hash authorization:(id)authorization reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  hashCopy = hash;
+  authorizationCopy = authorization;
+  replyCopy = reply;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v28 = v10;
+    v28 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4368,27 +4368,27 @@ LABEL_26:
   v22[1] = 3221225472;
   v22[2] = sub_100022CE4;
   v22[3] = &unk_1004C1B40;
-  v23 = v11;
-  v24 = v12;
-  v25 = v10;
-  v26 = v13;
-  v18 = v10;
-  v19 = v12;
-  v20 = v11;
-  v21 = v13;
+  v23 = hashCopy;
+  v24 = authorizationCopy;
+  v25 = identifierCopy;
+  v26 = replyCopy;
+  v18 = identifierCopy;
+  v19 = authorizationCopy;
+  v20 = hashCopy;
+  v21 = replyCopy;
   [(SESEndpointAndKeyXPCServer *)self endPointAction:v18 clientInfo:v16 reason:v17 reply:v22];
 }
 
-- (void)signatureISO18013WithEndPointIdentifier:(id)a3 toBeSigned:(id)a4 reply:(id)a5
+- (void)signatureISO18013WithEndPointIdentifier:(id)identifier toBeSigned:(id)signed reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  signedCopy = signed;
+  replyCopy = reply;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v23 = v8;
+    v23 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4399,26 +4399,26 @@ LABEL_26:
   v18[1] = 3221225472;
   v18[2] = sub_100023074;
   v18[3] = &unk_1004C1B68;
-  v20 = v8;
-  v21 = v10;
-  v19 = v9;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
+  v20 = identifierCopy;
+  v21 = replyCopy;
+  v19 = signedCopy;
+  v15 = identifierCopy;
+  v16 = signedCopy;
+  v17 = replyCopy;
   [(SESEndpointAndKeyXPCServer *)self endPointAction:v15 clientInfo:v13 reason:v14 reply:v18];
 }
 
-- (void)setPrivateDataWithProxy:(id)a3 identifier:(id)a4 privateData:(id)a5 privateDataOffset:(unsigned __int16)a6 reply:(id)a7
+- (void)setPrivateDataWithProxy:(id)proxy identifier:(id)identifier privateData:(id)data privateDataOffset:(unsigned __int16)offset reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v16 = SESDefaultLogObject();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v27 = v12;
+    v27 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4430,55 +4430,55 @@ LABEL_26:
   v22[1] = 3221225472;
   v22[2] = sub_10002340C;
   v22[3] = &unk_1004C1B90;
-  v25 = a6;
-  v23 = v13;
-  v24 = v14;
-  v20 = v13;
-  v21 = v14;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v12 proxy:v15 clientInfo:v18 reason:v19 reply:v22];
+  offsetCopy = offset;
+  v23 = dataCopy;
+  v24 = replyCopy;
+  v20 = dataCopy;
+  v21 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:identifierCopy proxy:proxyCopy clientInfo:v18 reason:v19 reply:v22];
 }
 
-- (void)updateEndpoint:(id)a3 reply:(id)a4
+- (void)updateEndpoint:(id)endpoint reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  endpointCopy = endpoint;
+  replyCopy = reply;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 publicKeyIdentifier];
-    v10 = [v9 asHexString];
+    publicKeyIdentifier = [endpointCopy publicKeyIdentifier];
+    asHexString = [publicKeyIdentifier asHexString];
     *buf = 138412290;
-    v22 = v10;
+    v22 = asHexString;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "updateEndpoint %@", buf, 0xCu);
   }
 
   v11 = +[NSXPCConnection currentConnection];
   v12 = sub_100035A18(SESClientInfo, v11);
 
-  v13 = [v6 publicKeyIdentifier];
-  v14 = [v13 asHexString];
+  publicKeyIdentifier2 = [endpointCopy publicKeyIdentifier];
+  asHexString2 = [publicKeyIdentifier2 asHexString];
   v15 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEEndPointXPC) updateEndpoint:reply:]"];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100023890;
   v18[3] = &unk_1004C1BB8;
-  v19 = v6;
-  v20 = v7;
-  v16 = v6;
-  v17 = v7;
-  [(SESEndpointAndKeyXPCServer *)self endPointDBAction:v14 clientInfo:v12 reason:v15 reply:v18];
+  v19 = endpointCopy;
+  v20 = replyCopy;
+  v16 = endpointCopy;
+  v17 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointDBAction:asHexString2 clientInfo:v12 reason:v15 reply:v18];
 }
 
-- (void)getPrivateDataWithProxy:(id)a3 identifier:(id)a4 privateDataOffset:(unsigned __int16)a5 privateDataLength:(unsigned __int16)a6 reply:(id)a7
+- (void)getPrivateDataWithProxy:(id)proxy identifier:(id)identifier privateDataOffset:(unsigned __int16)offset privateDataLength:(unsigned __int16)length reply:(id)reply
 {
-  v12 = a4;
-  v13 = a7;
-  v14 = a3;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v15 = SESDefaultLogObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v12;
+    v25 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4490,23 +4490,23 @@ LABEL_26:
   v20[1] = 3221225472;
   v20[2] = sub_100023C14;
   v20[3] = &unk_1004C1BE0;
-  v21 = v13;
-  v22 = a5;
-  v23 = a6;
-  v19 = v13;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v12 proxy:v14 clientInfo:v17 reason:v18 reply:v20];
+  v21 = replyCopy;
+  offsetCopy = offset;
+  lengthCopy = length;
+  v19 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:identifierCopy proxy:proxyCopy clientInfo:v17 reason:v18 reply:v20];
 }
 
-- (void)createEncryptionKeyEndPointWithProxy:(id)a3 identifier:(id)a4 reply:(id)a5
+- (void)createEncryptionKeyEndPointWithProxy:(id)proxy identifier:(id)identifier reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4518,17 +4518,17 @@ LABEL_26:
   v16[1] = 3221225472;
   v16[2] = sub_100024050;
   v16[3] = &unk_1004C1C08;
-  v17 = v9;
-  v15 = v9;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v8 proxy:v10 clientInfo:v13 reason:v14 reply:v16];
+  v17 = replyCopy;
+  v15 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:identifierCopy proxy:proxyCopy clientInfo:v13 reason:v14 reply:v16];
 }
 
-- (void)setConfidentialDataEndPointWithIdentifier:(id)a3 senderEphemeralPublicKey:(id)a4 encryptedData:(id)a5 offset:(unsigned __int16)a6 reply:(id)a7
+- (void)setConfidentialDataEndPointWithIdentifier:(id)identifier senderEphemeralPublicKey:(id)key encryptedData:(id)data offset:(unsigned __int16)offset reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a3;
+  keyCopy = key;
+  dataCopy = data;
+  replyCopy = reply;
+  identifierCopy = identifier;
   v16 = +[NSXPCConnection currentConnection];
   v17 = sub_100035A18(SESClientInfo, v16);
 
@@ -4537,22 +4537,22 @@ LABEL_26:
   v22[1] = 3221225472;
   v22[2] = sub_100024310;
   v22[3] = &unk_1004C1C30;
-  v24 = v13;
-  v25 = v14;
-  v23 = v12;
-  v26 = a6;
-  v19 = v13;
-  v20 = v12;
-  v21 = v14;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v15 clientInfo:v17 reason:v18 reply:v22];
+  v24 = dataCopy;
+  v25 = replyCopy;
+  v23 = keyCopy;
+  offsetCopy = offset;
+  v19 = dataCopy;
+  v20 = keyCopy;
+  v21 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:identifierCopy clientInfo:v17 reason:v18 reply:v22];
 }
 
-- (void)updateHydraMailboxesWithProxy:(id)a3 identifier:(id)a4 encryptedSEBlob:(id)a5 reply:(id)a6
+- (void)updateHydraMailboxesWithProxy:(id)proxy identifier:(id)identifier encryptedSEBlob:(id)blob reply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  identifierCopy = identifier;
+  blobCopy = blob;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -4568,21 +4568,21 @@ LABEL_26:
   v21[1] = 3221225472;
   v21[2] = sub_10002468C;
   v21[3] = &unk_1004C1B40;
-  v22 = v11;
-  v23 = self;
-  v24 = v10;
-  v25 = v12;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v18 proxy:v13 clientInfo:v16 reason:v17 reply:v21];
+  v22 = blobCopy;
+  selfCopy = self;
+  v24 = identifierCopy;
+  v25 = replyCopy;
+  v18 = identifierCopy;
+  v19 = blobCopy;
+  v20 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:v18 proxy:proxyCopy clientInfo:v16 reason:v17 reply:v21];
 }
 
-- (id)_applyPrivateMailboxContents:(id *)a3 secureElement:(id)a4 instanceAID:(id)a5 keyIdentifier:(id)a6
+- (id)_applyPrivateMailboxContents:(id *)contents secureElement:(id)element instanceAID:(id)d keyIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  elementCopy = element;
+  dCopy = d;
+  identifierCopy = identifier;
   v14 = 0u;
   DERParseSequenceSpecContent();
   v11 = SESDefaultLogObject();
@@ -4591,11 +4591,11 @@ LABEL_26:
   return v12;
 }
 
-- (id)_applyConfidentialMailboxContents:(id *)a3 secureElement:(id)a4 instanceAID:(id)a5 keyIdentifier:(id)a6
+- (id)_applyConfidentialMailboxContents:(id *)contents secureElement:(id)element instanceAID:(id)d keyIdentifier:(id)identifier
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  elementCopy = element;
+  dCopy = d;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   DERParseSequenceSpecContent();
@@ -4605,22 +4605,22 @@ LABEL_26:
   return v12;
 }
 
-- (void)createEndPointAuthorizationID:(id)a3 userAuth:(id)a4 reply:(id)a5
+- (void)createEndPointAuthorizationID:(id)d userAuth:(id)auth reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  authCopy = auth;
+  replyCopy = reply;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v21 = v8;
+    v21 = dCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = authCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@ %@", buf, 0x16u);
   }
 
-  if (v8 && v9)
+  if (dCopy && authCopy)
   {
     v12 = +[NSXPCConnection currentConnection];
     v13 = sub_100035A18(SESClientInfo, v12);
@@ -4630,9 +4630,9 @@ LABEL_26:
     v16[1] = 3221225472;
     v16[2] = sub_1000251F0;
     v16[3] = &unk_1004C1B68;
-    v19 = v10;
-    v17 = v8;
-    v18 = v9;
+    v19 = replyCopy;
+    v17 = dCopy;
+    v18 = authCopy;
     [(SESEndpointAndKeyXPCServer *)self endPointAction:v17 clientInfo:v13 reason:v14 reply:v16];
 
     v15 = v19;
@@ -4642,13 +4642,13 @@ LABEL_26:
   {
     v13 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, v15);
   }
 }
 
-- (void)listEndPointAuthorizations:(id)a3
+- (void)listEndPointAuthorizations:(id)authorizations
 {
-  v4 = a3;
+  authorizationsCopy = authorizations;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -4661,20 +4661,20 @@ LABEL_26:
   v8[1] = 3221225472;
   v8[2] = sub_100025448;
   v8[3] = &unk_1004C0CE0;
-  v9 = v4;
-  v7 = v4;
+  v9 = authorizationsCopy;
+  v7 = authorizationsCopy;
   [(SESEndpointAndKeyXPCServer *)self secureElementService:v6 reply:v8];
 }
 
-- (void)deleteEndPointAuthorizationID:(id)a3 reply:(id)a4
+- (void)deleteEndPointAuthorizationID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4683,26 +4683,26 @@ LABEL_26:
   v12[1] = 3221225472;
   v12[2] = sub_10002567C;
   v12[3] = &unk_1004C0BC8;
-  v13 = v6;
-  v14 = v7;
-  v10 = v6;
-  v11 = v7;
+  v13 = dCopy;
+  v14 = replyCopy;
+  v10 = dCopy;
+  v11 = replyCopy;
   [(SESEndpointAndKeyXPCServer *)self secureElementService:v9 reply:v12];
 }
 
-- (void)preAuthorizeEndpointWithProxy:(id)a3 keyIdentifier:(id)a4 bindingAttestation:(id)a5 reply:(id)a6
+- (void)preAuthorizeEndpointWithProxy:(id)proxy keyIdentifier:(id)identifier bindingAttestation:(id)attestation reply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  identifierCopy = identifier;
+  attestationCopy = attestation;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 67109378;
-    v26 = v13 != 0;
+    v26 = proxyCopy != 0;
     v27 = 2112;
-    v28 = v10;
+    v28 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "preAuthorizeEndpointWithProxy %d keyIdentifier %@", buf, 0x12u);
   }
 
@@ -4714,40 +4714,40 @@ LABEL_26:
   v21[1] = 3221225472;
   v21[2] = sub_100025960;
   v21[3] = &unk_1004C1B68;
-  v23 = v11;
-  v24 = v12;
-  v22 = v10;
-  v18 = v11;
-  v19 = v10;
-  v20 = v12;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v19 proxy:v13 clientInfo:v16 reason:v17 reply:v21];
+  v23 = attestationCopy;
+  v24 = replyCopy;
+  v22 = identifierCopy;
+  v18 = attestationCopy;
+  v19 = identifierCopy;
+  v20 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:v19 proxy:proxyCopy clientInfo:v16 reason:v17 reply:v21];
 }
 
-- (void)authorizeEndPointWithProxy:(id)a3 version:(unsigned __int8)a4 identifier:(id)a5 externalCA:(id)a6 instanceCA:(id)a7 endpointCertificate:(id)a8 encryptionKeyAttestation:(id)a9 bindingAttestation:(id)a10 bindingAttestationToken:(id)a11 confidentialDataOffset:(unsigned __int16)a12 confidentialDataLength:(unsigned __int16)a13 metaData:(id)a14 authorizationID:(id)a15 reply:(id)a16
+- (void)authorizeEndPointWithProxy:(id)proxy version:(unsigned __int8)version identifier:(id)identifier externalCA:(id)a instanceCA:(id)cA endpointCertificate:(id)certificate encryptionKeyAttestation:(id)attestation bindingAttestation:(id)self0 bindingAttestationToken:(id)self1 confidentialDataOffset:(unsigned __int16)self2 confidentialDataLength:(unsigned __int16)self3 metaData:(id)self4 authorizationID:(id)self5 reply:(id)self6
 {
-  v46 = a5;
-  v43 = a6;
-  v40 = a7;
-  v44 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a14;
-  v24 = a15;
-  v25 = a16;
-  v26 = a3;
+  identifierCopy = identifier;
+  aCopy = a;
+  cACopy = cA;
+  certificateCopy = certificate;
+  attestationCopy = attestation;
+  bindingAttestationCopy = bindingAttestation;
+  tokenCopy = token;
+  dataCopy = data;
+  dCopy = d;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v27 = SESDefaultLogObject();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
     *buf = 67109378;
-    v61 = v26 != 0;
+    v61 = proxyCopy != 0;
     v62 = 2112;
-    v63 = v46;
+    v63 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "authorizeEndPointWithProxy %d keyIdentifier %@", buf, 0x12u);
   }
 
   +[NSXPCConnection currentConnection];
-  v28 = v37 = v26;
+  v28 = v37 = proxyCopy;
   v36 = sub_100035A18(SESClientInfo, v28);
 
   v29 = [NSString stringWithUTF8String:"[SESEndpointAndKeyXPCServer(SEEndPointXPC) authorizeEndPointWithProxy:version:identifier:externalCA:instanceCA:endpointCertificate:encryptionKeyAttestation:bindingAttestation:bindingAttestationToken:confidentialDataOffset:confidentialDataLength:metaData:authorizationID:reply:]"];
@@ -4755,41 +4755,41 @@ LABEL_26:
   v47[1] = 3221225472;
   v47[2] = sub_100025D88;
   v47[3] = &unk_1004C1C80;
-  v55 = v24;
-  v56 = v25;
-  v57 = a13;
-  v58 = a12;
-  v48 = v44;
-  v49 = v21;
-  v59 = a4;
-  v50 = v22;
-  v51 = v43;
-  v52 = v40;
-  v53 = v20;
-  v54 = v23;
-  v42 = v24;
-  v39 = v23;
-  v38 = v20;
-  v30 = v40;
-  v31 = v43;
-  v32 = v22;
-  v33 = v21;
-  v34 = v44;
-  v35 = v25;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v46 proxy:v37 clientInfo:v36 reason:v29 reply:v47];
+  v55 = dCopy;
+  v56 = replyCopy;
+  lengthCopy = length;
+  offsetCopy = offset;
+  v48 = certificateCopy;
+  v49 = bindingAttestationCopy;
+  versionCopy = version;
+  v50 = tokenCopy;
+  v51 = aCopy;
+  v52 = cACopy;
+  v53 = attestationCopy;
+  v54 = dataCopy;
+  v42 = dCopy;
+  v39 = dataCopy;
+  v38 = attestationCopy;
+  v30 = cACopy;
+  v31 = aCopy;
+  v32 = tokenCopy;
+  v33 = bindingAttestationCopy;
+  v34 = certificateCopy;
+  v35 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:identifierCopy proxy:v37 clientInfo:v36 reason:v29 reply:v47];
 }
 
-- (void)privacyDecryptDataWithEndPoint:(id)a3 data:(id)a4 ephemeralPublicKey:(id)a5 reply:(id)a6
+- (void)privacyDecryptDataWithEndPoint:(id)point data:(id)data ephemeralPublicKey:(id)key reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pointCopy = point;
+  dataCopy = data;
+  keyCopy = key;
+  replyCopy = reply;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v26 = v10;
+    v26 = pointCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4801,22 +4801,22 @@ LABEL_26:
   v21[1] = 3221225472;
   v21[2] = sub_10002639C;
   v21[3] = &unk_1004C1CA8;
-  v23 = v12;
-  v24 = v13;
-  v22 = v11;
-  v18 = v12;
-  v19 = v11;
-  v20 = v13;
-  [(SESEndpointAndKeyXPCServer *)self endPointDBAction:v10 clientInfo:v16 reason:v17 reply:v21];
+  v23 = keyCopy;
+  v24 = replyCopy;
+  v22 = dataCopy;
+  v18 = keyCopy;
+  v19 = dataCopy;
+  v20 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointDBAction:pointCopy clientInfo:v16 reason:v17 reply:v21];
 }
 
-- (void)privacyDecryptDataWithKeyPair:(id)a3 secretKey:(id)a4 data:(id)a5 ephemeralPublicKey:(id)a6 reply:(id)a7
+- (void)privacyDecryptDataWithKeyPair:(id)pair secretKey:(id)key data:(id)data ephemeralPublicKey:(id)publicKey reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v28 = a5;
-  v13 = a6;
-  v14 = a7;
+  pairCopy = pair;
+  keyCopy = key;
+  dataCopy = data;
+  publicKeyCopy = publicKey;
+  replyCopy = reply;
   v15 = SESDefaultLogObject();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -4829,10 +4829,10 @@ LABEL_26:
 
   if (sub_1003AD208(v17) & 1) != 0 || (sub_1003AD230(v17))
   {
-    v27 = v11;
-    v18 = [v11 mutableCopy];
-    v19 = v12;
-    [v18 appendData:v12];
+    v27 = pairCopy;
+    v18 = [pairCopy mutableCopy];
+    v19 = keyCopy;
+    [v18 appendData:keyCopy];
     v30[0] = kSecAttrKeyClass;
     v30[1] = kSecAttrKeyType;
     v31[0] = kSecAttrKeyClassPrivate;
@@ -4848,42 +4848,42 @@ LABEL_26:
     {
       v25 = SESDefaultLogObject();
       v26 = SESCreateAndLogError();
-      v14[2](v14, 0, v26);
+      replyCopy[2](replyCopy, 0, v26);
 
-      v24 = v28;
+      v24 = dataCopy;
     }
 
     else
     {
-      v24 = v28;
+      v24 = dataCopy;
       v23 = decryptPrivacyData();
       v25 = 0;
-      (v14)[2](v14, v25, v23);
+      (replyCopy)[2](replyCopy, v25, v23);
     }
 
-    v11 = v27;
-    v12 = v19;
+    pairCopy = v27;
+    keyCopy = v19;
   }
 
   else
   {
     v18 = SESDefaultLogObject();
     v20 = SESCreateAndLogError();
-    v14[2](v14, 0, v20);
-    v24 = v28;
+    replyCopy[2](replyCopy, 0, v20);
+    v24 = dataCopy;
   }
 }
 
-- (void)privacyEncryptDataWithEndPoint:(id)a3 data:(id)a4 reply:(id)a5
+- (void)privacyEncryptDataWithEndPoint:(id)point data:(id)data reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pointCopy = point;
+  dataCopy = data;
+  replyCopy = reply;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v23 = v8;
+    v23 = pointCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
@@ -4895,31 +4895,31 @@ LABEL_26:
   v18[1] = 3221225472;
   v18[2] = sub_100026AFC;
   v18[3] = &unk_1004C1CA8;
-  v20 = v9;
-  v21 = v10;
-  v19 = v8;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
+  v20 = dataCopy;
+  v21 = replyCopy;
+  v19 = pointCopy;
+  v15 = dataCopy;
+  v16 = pointCopy;
+  v17 = replyCopy;
   [(SESEndpointAndKeyXPCServer *)self endPointDBAction:v16 clientInfo:v13 reason:v14 reply:v18];
 }
 
-- (void)privacyEncryptDataWithManufacturer:(id)a3 environment:(id)a4 region:(id)a5 data:(id)a6 reply:(id)a7
+- (void)privacyEncryptDataWithManufacturer:(id)manufacturer environment:(id)environment region:(id)region data:(id)data reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  manufacturerCopy = manufacturer;
+  environmentCopy = environment;
+  regionCopy = region;
+  dataCopy = data;
+  replyCopy = reply;
   v16 = SESDefaultLogObject();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v31 = v11;
+    v31 = manufacturerCopy;
     v32 = 2112;
-    v33 = v12;
+    v33 = environmentCopy;
     v34 = 2112;
-    v35 = v13;
+    v35 = regionCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%@ %@ %@", buf, 0x20u);
   }
 
@@ -4930,17 +4930,17 @@ LABEL_26:
   {
     v19 = objc_opt_new();
     v29 = 0;
-    v20 = [v19 getEncryptionCertificateFor:v11 environment:v12 region:v13 error:&v29];
+    v20 = [v19 getEncryptionCertificateFor:manufacturerCopy environment:environmentCopy region:regionCopy error:&v29];
     v21 = v29;
     if (v21)
     {
       v22 = v21;
-      v15[2](v15, 0, v21);
+      replyCopy[2](replyCopy, 0, v21);
     }
 
     else
     {
-      v28 = v14;
+      v28 = dataCopy;
       v23 = getCertificatePublicKey();
       if (v23)
       {
@@ -4949,14 +4949,14 @@ LABEL_26:
         v27 = 0;
         if (v22)
         {
-          v15[2](v15, 0, v22);
+          replyCopy[2](replyCopy, 0, v22);
         }
 
         else
         {
-          v26 = [v23 ses_sha256];
-          v25 = [SEEndPointPrivacyEncryptResponse responseWithCipherText:v27 ephemeralPublicKeyData:v24 receiverPublicKeyHash:v26];
-          (v15)[2](v15, v25, 0);
+          ses_sha256 = [v23 ses_sha256];
+          v25 = [SEEndPointPrivacyEncryptResponse responseWithCipherText:v27 ephemeralPublicKeyData:v24 receiverPublicKeyHash:ses_sha256];
+          (replyCopy)[2](replyCopy, v25, 0);
         }
       }
 
@@ -4964,11 +4964,11 @@ LABEL_26:
       {
         v27 = SESDefaultLogObject();
         v24 = SESCreateAndLogError();
-        v15[2](v15, 0, v24);
+        replyCopy[2](replyCopy, 0, v24);
         v22 = 0;
       }
 
-      v14 = v28;
+      dataCopy = v28;
     }
   }
 
@@ -4976,13 +4976,13 @@ LABEL_26:
   {
     v19 = SESDefaultLogObject();
     v22 = SESCreateAndLogError();
-    v15[2](v15, 0, v22);
+    replyCopy[2](replyCopy, 0, v22);
   }
 }
 
-- (void)deleteEndPointWithPublicKey:(id)a3 reply:(id)a4
+- (void)deleteEndPointWithPublicKey:(id)key reply:(id)reply
 {
-  v4 = a4;
+  replyCopy = reply;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -4991,12 +4991,12 @@ LABEL_26:
   }
 
   v6 = [NSError errorWithDomain:@"seserviced" code:-1 userInfo:0];
-  v4[2](v4, 0, v6);
+  replyCopy[2](replyCopy, 0, v6);
 }
 
-- (void)deleteEndPointWithPublicKeyIdentifier:(id)a3 reply:(id)a4
+- (void)deleteEndPointWithPublicKeyIdentifier:(id)identifier reply:(id)reply
 {
-  v4 = a4;
+  replyCopy = reply;
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -5005,24 +5005,24 @@ LABEL_26:
   }
 
   v6 = [NSError errorWithDomain:@"seserviced" code:-1 userInfo:0];
-  v4[2](v4, 0, v6);
+  replyCopy[2](replyCopy, 0, v6);
 }
 
-- (void)deleteEndPointWithProxy:(id)a3 identifier:(id)a4 mustBeTerminated:(BOOL)a5 reply:(id)a6
+- (void)deleteEndPointWithProxy:(id)proxy identifier:(id)identifier mustBeTerminated:(BOOL)terminated reply:(id)reply
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = a3;
+  terminatedCopy = terminated;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v13 = SESDefaultLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v27 = v10;
+    v27 = identifierCopy;
     v28 = 1024;
-    v29 = v12 != 0;
+    v29 = proxyCopy != 0;
     v30 = 1024;
-    v31 = v7;
+    v31 = terminatedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[deleteEndPointWithProxy] identifier %@ proxy %d mustBeTerminated %d", buf, 0x18u);
   }
 
@@ -5034,24 +5034,24 @@ LABEL_26:
   v20[1] = 3221225472;
   v20[2] = sub_100027374;
   v20[3] = &unk_1004C1CD0;
-  v25 = v7;
-  v21 = v10;
-  v22 = self;
+  v25 = terminatedCopy;
+  v21 = identifierCopy;
+  selfCopy = self;
   v23 = v15;
-  v24 = v11;
+  v24 = replyCopy;
   v17 = v15;
-  v18 = v10;
-  v19 = v11;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v18 proxy:v12 clientInfo:v17 reason:v16 reply:v20];
+  v18 = identifierCopy;
+  v19 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:v18 proxy:proxyCopy clientInfo:v17 reason:v16 reply:v20];
 }
 
-- (void)remoteTerminationRequestWithProxy:(id)a3 remoteTerminationRequest:(id)a4 publicKeyIdentifier:(id)a5 taskID:(id)a6 reply:(id)a7
+- (void)remoteTerminationRequestWithProxy:(id)proxy remoteTerminationRequest:(id)request publicKeyIdentifier:(id)identifier taskID:(id)d reply:(id)reply
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a3;
+  requestCopy = request;
+  identifierCopy = identifier;
+  dCopy = d;
+  replyCopy = reply;
+  proxyCopy = proxy;
   v17 = +[NSXPCConnection currentConnection];
   v18 = sub_100035A18(SESClientInfo, v17);
 
@@ -5060,13 +5060,13 @@ LABEL_26:
   {
     v21 = sub_1003AD1F4(v18, v20);
     *buf = 138413058;
-    v36 = v13;
+    v36 = identifierCopy;
     v37 = 2112;
     v38 = v21;
     v39 = 2112;
-    v40 = v14;
+    v40 = dCopy;
     v41 = 1024;
-    v42 = v12 != 0;
+    v42 = requestCopy != 0;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "key %@ client %@ task %@ hasRTR %d", buf, 0x26u);
   }
 
@@ -5075,101 +5075,101 @@ LABEL_26:
   v28[1] = 3221225472;
   v28[2] = sub_100027AA4;
   v28[3] = &unk_1004C1CF8;
-  v29 = v13;
-  v30 = v12;
-  v31 = self;
-  v32 = v14;
+  v29 = identifierCopy;
+  v30 = requestCopy;
+  selfCopy = self;
+  v32 = dCopy;
   v33 = v18;
-  v34 = v15;
+  v34 = replyCopy;
   v23 = v18;
-  v24 = v14;
-  v25 = v12;
-  v26 = v13;
-  v27 = v15;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v26 proxy:v16 clientInfo:v23 reason:v22 reply:v28];
+  v24 = dCopy;
+  v25 = requestCopy;
+  v26 = identifierCopy;
+  v27 = replyCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:v26 proxy:proxyCopy clientInfo:v23 reason:v22 reply:v28];
 }
 
-- (id)revokeRemoteTerminationRequestEndPoints:(id)a3 handle:(id)a4 identifier:(id)a5 taskID:(id)a6 clientInfo:(id)a7 outError:(id *)a8
+- (id)revokeRemoteTerminationRequestEndPoints:(id)points handle:(id)handle identifier:(id)identifier taskID:(id)d clientInfo:(id)info outError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v52 = a6;
-  v17 = a7;
-  v18 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v18);
+  pointsCopy = points;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  dCopy = d;
+  infoCopy = info;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
-  v19 = [v16 asHexString];
+  asHexString = [identifierCopy asHexString];
   v54 = 0;
   v55 = 0;
-  v20 = [(SESEndpointAndKeyXPCServer *)self _getEndPointAndValidateAccess:v15 identifier:v19 clientInfo:v17 outEndPointEntity:&v55 outEndPoint:&v54];
+  v20 = [(SESEndpointAndKeyXPCServer *)self _getEndPointAndValidateAccess:handleCopy identifier:asHexString clientInfo:infoCopy outEndPointEntity:&v55 outEndPoint:&v54];
 
   v21 = v55;
   v22 = v54;
 
   if (!v20 && v22 && v21)
   {
-    v23 = [v22 revocationAttestation];
+    revocationAttestation = [v22 revocationAttestation];
 
-    if (!v23)
+    if (!revocationAttestation)
     {
-      v48 = v16;
-      v49 = v15;
-      v51 = [v22 readerInfo];
-      v31 = [v22 bleAddress];
+      v48 = identifierCopy;
+      v49 = handleCopy;
+      readerInfo = [v22 readerInfo];
+      bleAddress = [v22 bleAddress];
       v32 = 3;
-      if (!v31)
+      if (!bleAddress)
       {
         v32 = 1;
       }
 
       v47 = v32;
 
-      v33 = [(SESEndpointAndKeyXPCServer *)self getEncryptedCarOEMProprietaryData:v22 withEndpointEntity:v21 withSecureElement:v14];
+      v33 = [(SESEndpointAndKeyXPCServer *)self getEncryptedCarOEMProprietaryData:v22 withEndpointEntity:v21 withSecureElement:pointsCopy];
       [v22 setCarOEMProprietaryData:v33];
 
-      v27 = [NSData randomData:16];
-      v34 = [v21 instance];
-      [v34 identifier];
-      v36 = v35 = v14;
-      v37 = [v36 hexStringAsData];
-      v38 = [v22 publicKeyIdentifier];
+      bleAddress2 = [NSData randomData:16];
+      instance = [v21 instance];
+      [instance identifier];
+      v36 = v35 = pointsCopy;
+      hexStringAsData = [v36 hexStringAsData];
+      publicKeyIdentifier = [v22 publicKeyIdentifier];
       v53 = 0;
       v50 = v35;
-      v39 = sub_10004993C(v35, v37, v38, v27, 0, &v53);
+      v39 = sub_10004993C(v35, hexStringAsData, publicKeyIdentifier, bleAddress2, 0, &v53);
       v20 = v53;
 
       if (v20 || !v39)
       {
-        if (a8)
+        if (error)
         {
           v42 = SESDefaultLogObject();
-          v43 = [v22 publicKeyIdentifier];
-          v46 = [v43 asHexString];
-          *a8 = SESCreateAndLogError();
+          publicKeyIdentifier2 = [v22 publicKeyIdentifier];
+          asHexString2 = [publicKeyIdentifier2 asHexString];
+          *error = SESCreateAndLogError();
         }
 
-        sub_10004CE08(SESDAnalyticsLogger, 2, v51, v47, 3);
+        sub_10004CE08(SESDAnalyticsLogger, 2, readerInfo, v47, 3);
         v29 = 0;
-        v15 = v49;
-        v14 = v50;
-        v16 = v48;
-        v30 = v52;
+        handleCopy = v49;
+        pointsCopy = v50;
+        identifierCopy = v48;
+        v30 = dCopy;
       }
 
       else
       {
         [v22 setRevocationAttestation:?];
-        v15 = v49;
-        v30 = v52;
-        if (v52)
+        handleCopy = v49;
+        v30 = dCopy;
+        if (dCopy)
         {
-          [v22 setTerminatedByTaskID:v52];
+          [v22 setTerminatedByTaskID:dCopy];
         }
 
         v20 = sub_10003D080(SESEndpointDatabase, v21, v22, v49);
-        v14 = v50;
-        v16 = v48;
+        pointsCopy = v50;
+        identifierCopy = v48;
         if (v20)
         {
           v40 = SESDefaultLogObject();
@@ -5189,25 +5189,25 @@ LABEL_26:
         }
 
         [_TtC10seserviced13EndpointStore removeWithEndpoint:v22];
-        sub_10004CE08(SESDAnalyticsLogger, 2, v51, v47, v41);
+        sub_10004CE08(SESDAnalyticsLogger, 2, readerInfo, v47, v41);
         v29 = v39;
       }
 
-      v26 = v51;
+      readerInfo2 = readerInfo;
       goto LABEL_31;
     }
 
-    if (a8)
+    if (error)
     {
       v24 = SESDefaultLogObject();
-      v25 = [v22 publicKeyIdentifier];
-      v45 = [v25 asHexString];
-      *a8 = SESCreateAndLogError();
+      publicKeyIdentifier3 = [v22 publicKeyIdentifier];
+      asHexString3 = [publicKeyIdentifier3 asHexString];
+      *error = SESCreateAndLogError();
     }
 
-    v26 = [v22 readerInfo];
-    v27 = [v22 bleAddress];
-    if (v27)
+    readerInfo2 = [v22 readerInfo];
+    bleAddress2 = [v22 bleAddress];
+    if (bleAddress2)
     {
       v28 = 3;
     }
@@ -5217,27 +5217,27 @@ LABEL_26:
       v28 = 1;
     }
 
-    sub_10004CE08(SESDAnalyticsLogger, 2, v26, v28, 2);
+    sub_10004CE08(SESDAnalyticsLogger, 2, readerInfo2, v28, 2);
     v20 = 0;
     v29 = 0;
   }
 
   else
   {
-    if (!a8)
+    if (!error)
     {
       v29 = 0;
-      v30 = v52;
+      v30 = dCopy;
       goto LABEL_32;
     }
 
-    v26 = SESDefaultLogObject();
-    v27 = [v16 asHexString];
+    readerInfo2 = SESDefaultLogObject();
+    bleAddress2 = [identifierCopy asHexString];
     SESCreateAndLogError();
-    *a8 = v29 = 0;
+    *error = v29 = 0;
   }
 
-  v30 = v52;
+  v30 = dCopy;
 LABEL_31:
 
 LABEL_32:
@@ -5245,9 +5245,9 @@ LABEL_32:
   return v29;
 }
 
-- (void)getInvitations:(id)a3
+- (void)getInvitations:(id)invitations
 {
-  v4 = a3;
+  invitationsCopy = invitations;
   v5 = +[NSXPCConnection currentConnection];
   v6 = sub_100035A18(SESClientInfo, v5);
 
@@ -5258,7 +5258,7 @@ LABEL_32:
     v10[1] = 3221225472;
     v10[2] = sub_100028724;
     v10[3] = &unk_1004C16B0;
-    v12 = v4;
+    v12 = invitationsCopy;
     v11 = v6;
     [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:v7 reply:v10];
   }
@@ -5267,14 +5267,14 @@ LABEL_32:
   {
     v8 = SESDefaultLogObject();
     v9 = SESCreateAndLogError();
-    (*(v4 + 2))(v4, 0, v9);
+    (*(invitationsCopy + 2))(invitationsCopy, 0, v9);
   }
 }
 
-- (void)getInvitationWithId:(id)a3 reply:(id)a4
+- (void)getInvitationWithId:(id)id reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
   v9 = sub_100035A18(SESClientInfo, v8);
 
@@ -5285,8 +5285,8 @@ LABEL_32:
     v13[1] = 3221225472;
     v13[2] = sub_100028A48;
     v13[3] = &unk_1004C1D20;
-    v16 = v7;
-    v14 = v6;
+    v16 = replyCopy;
+    v14 = idCopy;
     v15 = v9;
     [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:v10 reply:v13];
   }
@@ -5295,15 +5295,15 @@ LABEL_32:
   {
     v11 = SESDefaultLogObject();
     v12 = SESCreateAndLogError();
-    (*(v7 + 2))(v7, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
-- (void)addInvitationWithId:(id)a3 data:(id)a4 reply:(id)a5
+- (void)addInvitationWithId:(id)id data:(id)data reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  dataCopy = data;
+  replyCopy = reply;
   v11 = +[NSXPCConnection currentConnection];
   v12 = sub_100035A18(SESClientInfo, v11);
 
@@ -5314,9 +5314,9 @@ LABEL_32:
     v16[1] = 3221225472;
     v16[2] = sub_100028D98;
     v16[3] = &unk_1004C17C8;
-    v20 = v10;
-    v17 = v8;
-    v18 = v9;
+    v20 = replyCopy;
+    v17 = idCopy;
+    v18 = dataCopy;
     v19 = v12;
     [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:v13 reply:v16];
   }
@@ -5325,14 +5325,14 @@ LABEL_32:
   {
     v14 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, v15);
   }
 }
 
-- (void)deleteInvitationWithId:(id)a3 reply:(id)a4
+- (void)deleteInvitationWithId:(id)id reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
   v9 = sub_100035A18(SESClientInfo, v8);
 
@@ -5343,8 +5343,8 @@ LABEL_32:
     v13[1] = 3221225472;
     v13[2] = sub_10002905C;
     v13[3] = &unk_1004C1D20;
-    v16 = v7;
-    v14 = v6;
+    v16 = replyCopy;
+    v14 = idCopy;
     v15 = v9;
     [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:v10 reply:v13];
   }
@@ -5353,14 +5353,14 @@ LABEL_32:
   {
     v11 = SESDefaultLogObject();
     v12 = SESCreateAndLogError();
-    (*(v7 + 2))(v7, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
-- (void)getEndpointIdWithUuid:(id)a3 reply:(id)a4
+- (void)getEndpointIdWithUuid:(id)uuid reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
   v9 = sub_100035A18(SESClientInfo, v8);
 
@@ -5371,8 +5371,8 @@ LABEL_32:
     v13[1] = 3221225472;
     v13[2] = sub_100029310;
     v13[3] = &unk_1004C1D20;
-    v16 = v7;
-    v14 = v6;
+    v16 = replyCopy;
+    v14 = uuidCopy;
     v15 = v9;
     [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:v10 reply:v13];
   }
@@ -5381,15 +5381,15 @@ LABEL_32:
   {
     v11 = SESDefaultLogObject();
     v12 = SESCreateAndLogError();
-    (*(v7 + 2))(v7, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
-- (void)addEndpointId:(id)a3 withUuid:(id)a4 reply:(id)a5
+- (void)addEndpointId:(id)id withUuid:(id)uuid reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v11 = +[NSXPCConnection currentConnection];
   v12 = sub_100035A18(SESClientInfo, v11);
 
@@ -5400,9 +5400,9 @@ LABEL_32:
     v16[1] = 3221225472;
     v16[2] = sub_100029658;
     v16[3] = &unk_1004C17C8;
-    v20 = v10;
-    v17 = v8;
-    v18 = v9;
+    v20 = replyCopy;
+    v17 = idCopy;
+    v18 = uuidCopy;
     v19 = v12;
     [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:v13 reply:v16];
   }
@@ -5411,14 +5411,14 @@ LABEL_32:
   {
     v14 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, v15);
   }
 }
 
-- (void)deleteEndpointIdWithUuid:(id)a3 reply:(id)a4
+- (void)deleteEndpointIdWithUuid:(id)uuid reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v8 = +[NSXPCConnection currentConnection];
   v9 = sub_100035A18(SESClientInfo, v8);
 
@@ -5429,8 +5429,8 @@ LABEL_32:
     v13[1] = 3221225472;
     v13[2] = sub_10002991C;
     v13[3] = &unk_1004C1D20;
-    v16 = v7;
-    v14 = v6;
+    v16 = replyCopy;
+    v14 = uuidCopy;
     v15 = v9;
     [(SESEndpointAndKeyXPCServer *)self databaseServiceWithProxy:0 isReconcileRequired:0 reason:v10 reply:v13];
   }
@@ -5439,15 +5439,15 @@ LABEL_32:
   {
     v11 = SESDefaultLogObject();
     v12 = SESCreateAndLogError();
-    (*(v7 + 2))(v7, 0, v12);
+    (*(replyCopy + 2))(replyCopy, 0, v12);
   }
 }
 
-- (void)getEndpointBindingAttestationRequestWithProxy:(id)a3 authorityIdentifier:(id)a4 reply:(id)a5
+- (void)getEndpointBindingAttestationRequestWithProxy:(id)proxy authorityIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  proxyCopy = proxy;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v11 = +[NSXPCConnection currentConnection];
   v12 = sub_100035A18(SESClientInfo, v11);
 
@@ -5457,9 +5457,9 @@ LABEL_32:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 67109378;
-      v21 = v8 != 0;
+      v21 = proxyCopy != 0;
       v22 = 2112;
-      v23 = v9;
+      v23 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "getEndpointBindingAttestationRequestWithProxy %d authorityIdentifier %@", buf, 0x12u);
     }
 
@@ -5467,24 +5467,24 @@ LABEL_32:
     v16[1] = 3221225472;
     v16[2] = sub_100029C5C;
     v16[3] = &unk_1004C1D48;
-    v19 = v10;
-    v17 = v9;
+    v19 = replyCopy;
+    v17 = identifierCopy;
     v18 = v12;
-    [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:v8 reason:@"getEndpointBindingAttestationRequestWithProxy" reply:v16];
+    [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:proxyCopy reason:@"getEndpointBindingAttestationRequestWithProxy" reply:v16];
   }
 
   else
   {
     v14 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    (*(v10 + 2))(v10, 0, v15);
+    (*(replyCopy + 2))(replyCopy, 0, v15);
   }
 }
 
-- (void)listEndPointContainers:(id)a3 reply:(id)a4
+- (void)listEndPointContainers:(id)containers reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  containersCopy = containers;
+  replyCopy = reply;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -5502,8 +5502,8 @@ LABEL_32:
     v14[1] = 3221225472;
     v14[2] = sub_10002A0D8;
     v14[3] = &unk_1004C1D70;
-    v15 = v7;
-    [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:v6 reason:v11 reply:v14];
+    v15 = replyCopy;
+    [(SESEndpointAndKeyXPCServer *)self endPointServiceAvailableWithProxy:containersCopy reason:v11 reply:v14];
 
     v12 = v15;
   }
@@ -5512,16 +5512,16 @@ LABEL_32:
   {
     v12 = SESDefaultLogObject();
     v13 = SESCreateAndLogError();
-    (*(v7 + 2))(v7, 0, v13);
+    (*(replyCopy + 2))(replyCopy, 0, v13);
   }
 }
 
-- (void)isCarKeySupported:(id)a3 brand:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)isCarKeySupported:(id)supported brand:(id)brand uuid:(id)uuid reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  supportedCopy = supported;
+  brandCopy = brand;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v13 = SESDefaultLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -5536,45 +5536,45 @@ LABEL_32:
   {
     v19 = SESDefaultLogObject();
     v21 = SESCreateAndLogError();
-    v12[2](v12, 0, v21);
+    replyCopy[2](replyCopy, 0, v21);
     goto LABEL_13;
   }
 
   v16 = objc_opt_new();
   v17 = v16;
-  if (v10 && v11)
+  if (brandCopy && uuidCopy)
   {
     v23 = 0;
-    v18 = [v16 BOOLValueForSetting:8 manufacturer:v9 brand:v10 uuid:v11 error:&v23];
+    v18 = [v16 BOOLValueForSetting:8 manufacturer:supportedCopy brand:brandCopy uuid:uuidCopy error:&v23];
     v19 = v23;
-    v20 = [v18 BOOLValue];
+    bOOLValue = [v18 BOOLValue];
   }
 
   else
   {
     v22 = 0;
-    v20 = [v16 isDCKConfigurationAvailableFor:v9 error:&v22];
+    bOOLValue = [v16 isDCKConfigurationAvailableFor:supportedCopy error:&v22];
     v19 = v22;
   }
 
   +[_TtC10seserviced15SESAssetManager syncMobileAssetUserInitiated];
   if (!v19)
   {
-    v21 = [NSNumber numberWithBool:v20];
-    (v12)[2](v12, v21, 0);
+    v21 = [NSNumber numberWithBool:bOOLValue];
+    (replyCopy)[2](replyCopy, v21, 0);
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v12[2](v12, 0, v19);
+  replyCopy[2](replyCopy, 0, v19);
 LABEL_14:
 }
 
-- (void)getSESEndpointTSMDictionary:(id)a3 reply:(id)a4
+- (void)getSESEndpointTSMDictionary:(id)dictionary reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  replyCopy = reply;
   v8 = SESDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -5586,26 +5586,26 @@ LABEL_14:
   v11[1] = 3221225472;
   v11[2] = sub_10002A780;
   v11[3] = &unk_1004C1DD8;
-  v12 = v6;
-  v13 = v7;
+  v12 = dictionaryCopy;
+  v13 = replyCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dictionaryCopy;
+  v10 = replyCopy;
   [(SESEndpointAndKeyXPCServer *)self listEndPointsWithProxy:v9 mandatoryReconciliation:1 reply:v11];
 }
 
-- (void)isSharingEnabledForManufacturer:(id)a3 brand:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)isSharingEnabledForManufacturer:(id)manufacturer brand:(id)brand uuid:(id)uuid reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  manufacturerCopy = manufacturer;
+  brandCopy = brand;
+  replyCopy = reply;
   v11 = SESDefaultLogObject();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v16 = 138412546;
-    v17 = v8;
+    v17 = manufacturerCopy;
     v18 = 2112;
-    v19 = v9;
+    v19 = brandCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%@ - %@", &v16, 0x16u);
   }
 
@@ -5616,30 +5616,30 @@ LABEL_14:
   {
     +[_TtC10seserviced15SESAssetManager syncMobileAssetUserInitiated];
     v14 = [NSNumber numberWithBool:1];
-    v10[2](v10, v14, 0);
+    replyCopy[2](replyCopy, v14, 0);
   }
 
   else
   {
     v14 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    (v10)[2](v10, 0, v15);
+    (replyCopy)[2](replyCopy, 0, v15);
   }
 }
 
-- (void)carKeyDowngradeVersionSetting:(id)a3 brand:(id)a4 uuid:(id)a5 reply:(id)a6
+- (void)carKeyDowngradeVersionSetting:(id)setting brand:(id)brand uuid:(id)uuid reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  settingCopy = setting;
+  brandCopy = brand;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v13 = SESDefaultLogObject();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v23 = v9;
+    v23 = settingCopy;
     v24 = 2112;
-    v25 = v10;
+    v25 = brandCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%@ - %@", buf, 0x16u);
   }
 
@@ -5650,51 +5650,51 @@ LABEL_14:
   {
     v18 = SESDefaultLogObject();
     v20 = SESCreateAndLogError();
-    v12[2](v12, 0, v20);
+    replyCopy[2](replyCopy, 0, v20);
 
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!settingCopy)
   {
     +[_TtC10seserviced15SESAssetManager syncMobileAssetUserInitiated];
-    v19 = 0;
+    bOOLValue = 0;
     goto LABEL_9;
   }
 
   v16 = objc_opt_new();
   v21 = 0;
-  v17 = [v16 BOOLValueForSetting:2 manufacturer:v9 brand:v10 uuid:v11 error:&v21];
+  v17 = [v16 BOOLValueForSetting:2 manufacturer:settingCopy brand:brandCopy uuid:uuidCopy error:&v21];
   v18 = v21;
-  v19 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
   +[_TtC10seserviced15SESAssetManager syncMobileAssetUserInitiated];
   if (!v18)
   {
 LABEL_9:
-    v18 = [NSNumber numberWithBool:v19];
-    (v12)[2](v12, v18, 0);
+    v18 = [NSNumber numberWithBool:bOOLValue];
+    (replyCopy)[2](replyCopy, v18, 0);
     goto LABEL_12;
   }
 
-  v12[2](v12, 0, v18);
+  replyCopy[2](replyCopy, 0, v18);
 LABEL_12:
 }
 
-- (void)convertEndpointWithProxy:(id)a3 keyIdentifier:(id)a4 notBeforeDate:(id)a5 reply:(id)a6
+- (void)convertEndpointWithProxy:(id)proxy keyIdentifier:(id)identifier notBeforeDate:(id)date reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  proxyCopy = proxy;
+  identifierCopy = identifier;
+  dateCopy = date;
+  replyCopy = reply;
   v14 = SESDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v12 asHexString];
+    asHexString = [dateCopy asHexString];
     *buf = 138412546;
-    v26 = v11;
+    v26 = identifierCopy;
     v27 = 2112;
-    v28 = v15;
+    v28 = asHexString;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "convertEndpointWithProxy %@ notBeforeDate %@", buf, 0x16u);
   }
 
@@ -5706,15 +5706,15 @@ LABEL_12:
     v19 = SESDefaultLogObject();
 LABEL_10:
     v20 = SESCreateAndLogError();
-    v13[2](v13, 0, v20);
+    replyCopy[2](replyCopy, 0, v20);
 
     goto LABEL_11;
   }
 
-  if ([v12 length] != 13 && objc_msgSend(v12, "length") != 15)
+  if ([dateCopy length] != 13 && objc_msgSend(dateCopy, "length") != 15)
   {
     v19 = SESDefaultLogObject();
-    [v12 length];
+    [dateCopy length];
     goto LABEL_10;
   }
 
@@ -5723,20 +5723,20 @@ LABEL_10:
   v21[1] = 3221225472;
   v21[2] = sub_10002B9A0;
   v21[3] = &unk_1004C1B68;
-  v24 = v13;
-  v22 = v11;
-  v23 = v12;
-  [(SESEndpointAndKeyXPCServer *)self endPointAction:v22 proxy:v10 clientInfo:v17 reason:v18 reply:v21];
+  v24 = replyCopy;
+  v22 = identifierCopy;
+  v23 = dateCopy;
+  [(SESEndpointAndKeyXPCServer *)self endPointAction:v22 proxy:proxyCopy clientInfo:v17 reason:v18 reply:v21];
 
   v19 = v24;
 LABEL_11:
 }
 
-- (void)triggerHeadUnitPairing:(id)a3 data:(id)a4 reply:(id)a5
+- (void)triggerHeadUnitPairing:(id)pairing data:(id)data reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  pairingCopy = pairing;
+  dataCopy = data;
+  replyCopy = reply;
   v10 = SESDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -5747,27 +5747,27 @@ LABEL_11:
   v11 = +[NSXPCConnection currentConnection];
   v12 = sub_100035A18(SESClientInfo, v11);
 
-  if ((sub_1003AD208(v12) & 1) != 0 || (sub_1003AD230(v12)) && v7)
+  if ((sub_1003AD208(v12) & 1) != 0 || (sub_1003AD230(v12)) && pairingCopy)
   {
     v13 = +[_TtC10seserviced14AlishaExternal shared];
-    [v13 triggerHeadUnitPairingWith:v8 keyIdentifier:v7];
+    [v13 triggerHeadUnitPairingWith:dataCopy keyIdentifier:pairingCopy];
 
-    v9[2](v9, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
   }
 
   else
   {
     v14 = SESDefaultLogObject();
     v15 = SESCreateAndLogError();
-    (v9)[2](v9, 0, v15);
+    (replyCopy)[2](replyCopy, 0, v15);
   }
 }
 
-- (void)sendDeviceIntentWithConfidence:(id)a3 keyIdentifier:(id)a4 reply:(id)a5
+- (void)sendDeviceIntentWithConfidence:(id)confidence keyIdentifier:(id)identifier reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  confidenceCopy = confidence;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v10 = SESDefaultLogObject();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -5780,19 +5780,19 @@ LABEL_11:
 
   if (sub_1003AD208(v12) & 1) != 0 || (sub_1003AD230(v12))
   {
-    if (v7 && v8)
+    if (confidenceCopy && identifierCopy)
     {
-      if ([v7 unsignedIntValue] < 3)
+      if ([confidenceCopy unsignedIntValue] < 3)
       {
         v15 = +[_TtC10seserviced14AlishaExternal shared];
-        [v15 sendDeviceIntentFor:v8];
+        [v15 sendDeviceIntentFor:identifierCopy];
 
-        v9[2](v9, 1, 0);
+        replyCopy[2](replyCopy, 1, 0);
         goto LABEL_13;
       }
 
       v13 = SESDefaultLogObject();
-      [v7 unsignedIntValue];
+      [confidenceCopy unsignedIntValue];
     }
 
     else
@@ -5807,21 +5807,21 @@ LABEL_11:
   }
 
   v14 = SESCreateAndLogError();
-  (v9)[2](v9, 0, v14);
+  (replyCopy)[2](replyCopy, 0, v14);
 
 LABEL_13:
 }
 
-- (void)notifyEndpointTracked:(id)a3 reply:(id)a4
+- (void)notifyEndpointTracked:(id)tracked reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  trackedCopy = tracked;
+  replyCopy = reply;
   v7 = SESDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v5 asHexString];
+    asHexString = [trackedCopy asHexString];
     v14 = 138412290;
-    v15 = v8;
+    v15 = asHexString;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Tracking completed for key %@", &v14, 0xCu);
   }
 
@@ -5831,29 +5831,29 @@ LABEL_13:
   if (sub_1003AD208(v10) & 1) != 0 || (sub_1003AD230(v10))
   {
     v11 = +[_TtC10seserviced14AlishaExternal shared];
-    [v11 onTrackingCompleteFor:v5];
+    [v11 onTrackingCompleteFor:trackedCopy];
 
-    v6[2](v6, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
   }
 
   else
   {
     v12 = SESDefaultLogObject();
     v13 = SESCreateAndLogError();
-    (v6)[2](v6, 0, v13);
+    (replyCopy)[2](replyCopy, 0, v13);
   }
 }
 
-- (void)notifyPassAdded:(id)a3 reply:(id)a4
+- (void)notifyPassAdded:(id)added reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  addedCopy = added;
+  replyCopy = reply;
   v7 = SESDefaultLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v5 asHexString];
+    asHexString = [addedCopy asHexString];
     v15 = 138412290;
-    v16 = v8;
+    v16 = asHexString;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Pass added for key %@", &v15, 0xCu);
   }
 
@@ -5863,62 +5863,62 @@ LABEL_13:
   if (sub_1003AD208(v10) & 1) != 0 || (sub_1003AD230(v10))
   {
     v11 = +[_TtC10seserviced21AlishaPairingExternal shared];
-    [v11 onPassAddedFor:v5];
+    [v11 onPassAddedFor:addedCopy];
 
     v12 = +[_SESSessionManager sessionManager];
-    [v12 didCreateKey:v5];
+    [v12 didCreateKey:addedCopy];
 
-    v6[2](v6, 1, 0);
+    replyCopy[2](replyCopy, 1, 0);
   }
 
   else
   {
     v13 = SESDefaultLogObject();
     v14 = SESCreateAndLogError();
-    (v6)[2](v6, 0, v14);
+    (replyCopy)[2](replyCopy, 0, v14);
   }
 }
 
-- (void)getSupportedAliroVersionsWithReply:(id)a3
+- (void)getSupportedAliroVersionsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v6 = +[_TtC10seserviced12LyonExternal shared];
-  v5 = [v6 getSupportedAliroVersions];
-  (*(a3 + 2))(v4, v5, 0);
+  getSupportedAliroVersions = [v6 getSupportedAliroVersions];
+  (*(reply + 2))(replyCopy, getSupportedAliroVersions, 0);
 }
 
-- (void)getEndpoints:(id)a3 completion:(id)a4
+- (void)getEndpoints:(id)endpoints completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  endpointsCopy = endpoints;
+  completionCopy = completion;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002C778;
   block[3] = &unk_1004C0F68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = endpointsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = endpointsCopy;
+  dispatch_async(messageQueue, block);
 }
 
-- (void)cleanupAppletsWithNoEndpoints:(id)a3 completion:(id)a4
+- (void)cleanupAppletsWithNoEndpoints:(id)endpoints completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  endpointsCopy = endpoints;
+  completionCopy = completion;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002CB8C;
   block[3] = &unk_1004C0F68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = endpointsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = endpointsCopy;
+  dispatch_async(messageQueue, block);
 }
 
 + (id)createServer
@@ -5932,47 +5932,47 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(__CFString *)v5 processIdentifier];
-  v7 = [(__CFString *)v5 valueForEntitlement:@"application-identifier"];
+  connectionCopy = connection;
+  processIdentifier = [(__CFString *)connectionCopy processIdentifier];
+  v7 = [(__CFString *)connectionCopy valueForEntitlement:@"application-identifier"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v33 = self;
+    selfCopy = self;
     v8 = SESDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
       v43 = v7;
       v44 = 2112;
-      v45 = v5;
+      v45 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Added connection from %@ (%@)", buf, 0x16u);
     }
 
     v40[0] = &off_1004DC9A8;
-    v9 = [NSNumber numberWithInt:v6];
+    v9 = [NSNumber numberWithInt:processIdentifier];
     v40[1] = &off_1004DC9C0;
     v41[0] = v9;
     v41[1] = v7;
     v10 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
-    [(__CFString *)v5 setUserInfo:v10];
+    [(__CFString *)connectionCopy setUserInfo:v10];
 
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_1000367F0;
     v37[3] = &unk_1004C2258;
-    v39 = v6;
+    v39 = processIdentifier;
     v11 = v7;
     v38 = v11;
-    [(__CFString *)v5 setInvalidationHandler:v37];
+    [(__CFString *)connectionCopy setInvalidationHandler:v37];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_1000368A8;
     v34[3] = &unk_1004C2258;
-    v36 = v6;
+    v36 = processIdentifier;
     v35 = v11;
-    [(__CFString *)v5 setInterruptionHandler:v34];
+    [(__CFString *)connectionCopy setInterruptionHandler:v34];
     v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SEEndpointAndKeyXPCInterface];
     v13 = objc_opt_class();
     v14 = objc_opt_class();
@@ -6037,9 +6037,9 @@ LABEL_13:
     [v12 setInterface:v30 forSelector:"preAuthorizeEndpointWithProxy:keyIdentifier:bindingAttestation:reply:" argumentIndex:0 ofReply:0];
     [v12 setInterface:v30 forSelector:"authorizeEndPointWithProxy:version:identifier:externalCA:instanceCA:endpointCertificate:encryptionKeyAttestation:bindingAttestation:bindingAttestationToken:confidentialDataOffset:confidentialDataLength:metaData:authorizationID:reply:" argumentIndex:0 ofReply:0];
     [v12 setInterface:v30 forSelector:"signPrecomputedWithSELegacyKey:keySlot:metaData:authorization:authorizationType:reply:" argumentIndex:0 ofReply:0];
-    [(__CFString *)v5 setExportedInterface:v12];
-    [(__CFString *)v5 setExportedObject:v33];
-    [(__CFString *)v5 resume];
+    [(__CFString *)connectionCopy setExportedInterface:v12];
+    [(__CFString *)connectionCopy setExportedObject:selfCopy];
+    [(__CFString *)connectionCopy resume];
 
     v31 = v38;
   }
@@ -6076,26 +6076,26 @@ LABEL_13:
 
 - (void)onFirstUnlock
 {
-  v3 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100036B68;
   block[3] = &unk_1004C08D8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(messageQueue, block);
 
   v4 = +[_TtC10seserviced3DSK queue];
   dispatch_async(v4, &stru_1004C22C8);
 
   if (([SESBootUUID isFirstLaunchAfterBootForKey:@"applet.personalization.last.check.uuid"]& 1) != 0)
   {
-    v5 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+    messageQueue2 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100037044;
     v7[3] = &unk_1004C2340;
     v7[4] = self;
-    [SESProximityChip cacheProximityChipData:v5 completion:v7];
+    [SESProximityChip cacheProximityChipData:messageQueue2 completion:v7];
   }
 
   else
@@ -6111,11 +6111,11 @@ LABEL_13:
   }
 }
 
-- (void)fixEndpointSignatureCertificatePK:(id)a3
+- (void)fixEndpointSignatureCertificatePK:(id)k
 {
-  v4 = a3;
-  v5 = [(SESEndpointAndKeyXPCServer *)self messageQueue];
-  dispatch_assert_queue_V2(v5);
+  kCopy = k;
+  messageQueue = [(SESEndpointAndKeyXPCServer *)self messageQueue];
+  dispatch_assert_queue_V2(messageQueue);
 
   v6 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.seserviced"];
   if (([v6 BOOLForKey:@"SignatureCertificatePKsHaveBeenFixed"] & 1) == 0)
@@ -6134,7 +6134,7 @@ LABEL_13:
     v28 = sub_100042BC8;
     v29 = 0;
     obj = 0;
-    v8 = sub_1000598B8(SESEndpointDatabase, @"A000000809434343444B417631", v4, &obj);
+    v8 = sub_1000598B8(SESEndpointDatabase, @"A000000809434343444B417631", kCopy, &obj);
     objc_storeStrong(&v29, obj);
     if (*(v25 + 5))
     {
@@ -6160,7 +6160,7 @@ LABEL_13:
       v9 = v11;
       v21 = v9;
       v22 = buf;
-      sub_1003AD2A8(v4, &v16);
+      sub_1003AD2A8(kCopy, &v16);
       if (*(v25 + 5))
       {
         v13 = SESDefaultLogObject();
@@ -6190,11 +6190,11 @@ LABEL_13:
   }
 }
 
-+ (id)createServerWithMachServiceName:(id)a3 storagePath:(id)a4
++ (id)createServerWithMachServiceName:(id)name storagePath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = sub_1003AD3E8([SESEndpointAndKeyXPCServer alloc], v6, v5);
+  pathCopy = path;
+  nameCopy = name;
+  v7 = sub_1003AD3E8([SESEndpointAndKeyXPCServer alloc], nameCopy, pathCopy);
 
   v8 = qword_10050CC30;
   qword_10050CC30 = v7;

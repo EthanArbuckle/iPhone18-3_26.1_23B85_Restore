@@ -1,42 +1,42 @@
 @interface SBAmbientTransientOverlayViewController
 - (BOOL)_canAddPrimaryActivityItem;
-- (BOOL)_canAddSecondaryActivityItem:(id)a3;
+- (BOOL)_canAddSecondaryActivityItem:(id)item;
 - (BOOL)_isShowingFullActivityOverlay;
-- (BOOL)_isShowingFullActivityOverlayForItem:(id)a3;
-- (BOOL)_itemIsFirstPartyActivity:(id)a3;
+- (BOOL)_isShowingFullActivityOverlayForItem:(id)item;
+- (BOOL)_itemIsFirstPartyActivity:(id)activity;
 - (BOOL)_shouldDisableIdleTimer;
-- (BOOL)activityAmbientViewControllerCanBeginFullOverlayDismissGesture:(id)a3;
-- (BOOL)ambientViewController:(id)a3 isApplicationVisibleWithBundleIdentifier:(id)a4;
-- (BOOL)ambientViewController:(id)a3 wantsBiometricAuthenticationBlockedForDeepUserInteraction:(BOOL)a4;
-- (BOOL)ambientViewControllerIsAuthenticated:(id)a3;
+- (BOOL)activityAmbientViewControllerCanBeginFullOverlayDismissGesture:(id)gesture;
+- (BOOL)ambientViewController:(id)controller isApplicationVisibleWithBundleIdentifier:(id)identifier;
+- (BOOL)ambientViewController:(id)controller wantsBiometricAuthenticationBlockedForDeepUserInteraction:(BOOL)interaction;
+- (BOOL)ambientViewControllerIsAuthenticated:(id)authenticated;
 - (BOOL)isForegroundActive;
 - (SBAmbientTransientOverlayViewController)init;
 - (SBAmbientTransientOverlayViewControllerDelegate)delegate;
-- (id)_newBackgroundBlurMaterialViewWithInitialWeighting:(double)a3 parentView:(id)a4;
-- (id)_newContentBlurMaterialViewWithInitialWeighting:(double)a3 parentView:(id)a4;
-- (id)ambientDefaultsForAmbientViewController:(id)a3;
-- (id)ambientViewControllerRequestsConnectedChargerId:(id)a3;
+- (id)_newBackgroundBlurMaterialViewWithInitialWeighting:(double)weighting parentView:(id)view;
+- (id)_newContentBlurMaterialViewWithInitialWeighting:(double)weighting parentView:(id)view;
+- (id)ambientDefaultsForAmbientViewController:(id)controller;
+- (id)ambientViewControllerRequestsConnectedChargerId:(id)id;
 - (id)associatedBundleIdentifiersToSuppressInSystemAperture;
 - (id)associatedSceneIdentifiersToSuppressInSystemAperture;
-- (id)defaultWidgetDescriptorStacksForAmbientViewController:(id)a3;
+- (id)defaultWidgetDescriptorStacksForAmbientViewController:(id)controller;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
-- (id)widgetHostManagerForAmbientViewController:(id)a3;
+- (id)widgetHostManagerForAmbientViewController:(id)controller;
 - (int64_t)idleTimerDuration;
 - (int64_t)idleTimerMode;
 - (int64_t)idleWarnMode;
-- (void)_addActivityViewControllerWithPrimaryItem:(id)a3 withOverlayMode:(int64_t)a4 completion:(id)a5;
-- (void)_addNewPrimaryActivityWithItem:(id)a3 forOngoingActivity:(BOOL)a4;
+- (void)_addActivityViewControllerWithPrimaryItem:(id)item withOverlayMode:(int64_t)mode completion:(id)completion;
+- (void)_addNewPrimaryActivityWithItem:(id)item forOngoingActivity:(BOOL)activity;
 - (void)_addProudLockViewControllerIfNecessary;
-- (void)_animateDismissalOfActivityView:(id)a3 withCompletion:(id)a4;
-- (void)_animatePresentationOfActivityView:(id)a3;
-- (void)_backlightLuminanceDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_animateDismissalOfActivityView:(id)view withCompletion:(id)completion;
+- (void)_animatePresentationOfActivityView:(id)view;
+- (void)_backlightLuminanceDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_clearContentBlurMaterialViewIfNecessary;
-- (void)_configureActivityViewBlurMaterialWithInitialWeighting:(double)a3 parentView:(id)a4;
-- (void)_configureBlurMaterialView:(id)a3 withParentView:(id)a4;
-- (void)_configureTransitionAnimationBackgroundBlurMaterialViewWithInitialWeighting:(double)a3;
-- (void)_configureTransitionAnimationContentBlurMaterialViewWithInitialWeighting:(double)a3;
-- (void)_decrementActivityPresentationAnimationCountAndPerformAnimationCleanUpIfNecessaryForActivityView:(id)a3 withCompletion:(id)a4;
+- (void)_configureActivityViewBlurMaterialWithInitialWeighting:(double)weighting parentView:(id)view;
+- (void)_configureBlurMaterialView:(id)view withParentView:(id)parentView;
+- (void)_configureTransitionAnimationBackgroundBlurMaterialViewWithInitialWeighting:(double)weighting;
+- (void)_configureTransitionAnimationContentBlurMaterialViewWithInitialWeighting:(double)weighting;
+- (void)_decrementActivityPresentationAnimationCountAndPerformAnimationCleanUpIfNecessaryForActivityView:(id)view withCompletion:(id)completion;
 - (void)_decrementTransitionAnimationCountAndPerformAnimationCleanUpIfNecessary;
 - (void)_dismissActivityViewController;
 - (void)_registerForFirstPresentationStateChange;
@@ -45,36 +45,36 @@
 - (void)_removeContentBlurMaterialView;
 - (void)_removeProudLockViewController;
 - (void)_requestZStackParticipantPreferencesUpdate;
-- (void)_setActivityViewHidden:(BOOL)a3;
-- (void)_setProudLockAuthenticated:(BOOL)a3;
+- (void)_setActivityViewHidden:(BOOL)hidden;
+- (void)_setProudLockAuthenticated:(BOOL)authenticated;
 - (void)_setupAmbientDefaults;
-- (void)_stopAlertingForActivityIdentifier:(id)a3;
-- (void)addActivityItem:(id)a3 forOngoingActivity:(BOOL)a4;
-- (void)ambientViewController:(id)a3 didSetBiometricAuthenticationDisabled:(BOOL)a4;
-- (void)ambientViewController:(id)a3 didSetInlineAuthenticationViewVisible:(BOOL)a4;
-- (void)ambientViewController:(id)a3 didUpdateActiveConfiguration:(id)a4 withMetadata:(id)a5;
-- (void)ambientViewController:(id)a3 isTransitioningSettled:(BOOL)a4;
-- (void)ambientViewController:(id)a3 requestsUnlock:(id)a4 withCompletion:(id)a5;
-- (void)ambientViewControllerWillBeginConfiguration:(id)a3;
-- (void)ambientViewControllerWillEndConfiguration:(id)a3;
-- (void)attemptUnlockForSender:(id)a3 forBioUnlock:(BOOL)a4 completion:(id)a5;
+- (void)_stopAlertingForActivityIdentifier:(id)identifier;
+- (void)addActivityItem:(id)item forOngoingActivity:(BOOL)activity;
+- (void)ambientViewController:(id)controller didSetBiometricAuthenticationDisabled:(BOOL)disabled;
+- (void)ambientViewController:(id)controller didSetInlineAuthenticationViewVisible:(BOOL)visible;
+- (void)ambientViewController:(id)controller didUpdateActiveConfiguration:(id)configuration withMetadata:(id)metadata;
+- (void)ambientViewController:(id)controller isTransitioningSettled:(BOOL)settled;
+- (void)ambientViewController:(id)controller requestsUnlock:(id)unlock withCompletion:(id)completion;
+- (void)ambientViewControllerWillBeginConfiguration:(id)configuration;
+- (void)ambientViewControllerWillEndConfiguration:(id)configuration;
+- (void)attemptUnlockForSender:(id)sender forBioUnlock:(BOOL)unlock completion:(id)completion;
 - (void)dealloc;
-- (void)dismissAmbientActivityAlert:(id)a3;
+- (void)dismissAmbientActivityAlert:(id)alert;
 - (void)invalidate;
 - (void)loadView;
-- (void)onboardingViewController:(id)a3 requestsDismissalWithUserIntent:(BOOL)a4;
-- (void)presentAmbientActivityAlert:(id)a3;
-- (void)removeActivityItem:(id)a3;
-- (void)setAmbientIdleTimerBehaviorProvider:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)onboardingViewController:(id)controller requestsDismissalWithUserIntent:(BOOL)intent;
+- (void)presentAmbientActivityAlert:(id)alert;
+- (void)removeActivityItem:(id)item;
+- (void)setAmbientIdleTimerBehaviorProvider:(id)provider;
+- (void)setDelegate:(id)delegate;
 - (void)setNeedsIdleTimerReset;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBAmbientTransientOverlayViewController
@@ -98,8 +98,8 @@
     [(SBActivityAmbientObserver *)v2->_ambientActivityObserver setDelegate:v2];
     [(SBActivityManager *)v2->_activityManager addObserver:v2->_ambientActivityObserver];
     [(SBActivityManager *)v2->_activityManager setEnvironment:1];
-    v7 = [MEMORY[0x277D65ED8] sharedInstance];
-    [v7 addObserver:v2];
+    mEMORY[0x277D65ED8] = [MEMORY[0x277D65ED8] sharedInstance];
+    [mEMORY[0x277D65ED8] addObserver:v2];
     [(SBTransientOverlayViewController *)v2 setPresentationAllowsHomeGrabberAutoHide:1];
     v8 = objc_opt_self();
     v13[0] = v8;
@@ -125,16 +125,16 @@
   [(SBTransientOverlayViewController *)&v4 dealloc];
 }
 
-- (void)setAmbientIdleTimerBehaviorProvider:(id)a3
+- (void)setAmbientIdleTimerBehaviorProvider:(id)provider
 {
-  objc_storeStrong(&self->_ambientIdleTimerBehaviorProvider, a3);
-  v5 = [(SBTransientOverlayViewController *)self idleTimerCoordinator];
-  v4 = [v5 idleTimerProvider:self didProposeBehavior:self forReason:@"SBAmbientTransientOverlayViewController"];
+  objc_storeStrong(&self->_ambientIdleTimerBehaviorProvider, provider);
+  idleTimerCoordinator = [(SBTransientOverlayViewController *)self idleTimerCoordinator];
+  v4 = [idleTimerCoordinator idleTimerProvider:self didProposeBehavior:self forReason:@"SBAmbientTransientOverlayViewController"];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -148,11 +148,11 @@
 
 - (BOOL)isForegroundActive
 {
-  v2 = self;
-  v3 = [(SBTransientOverlayViewController *)self transientOverlayDelegate];
-  LOBYTE(v2) = [v3 transientOverlayViewControllerIsForegroundActive:v2];
+  selfCopy = self;
+  transientOverlayDelegate = [(SBTransientOverlayViewController *)self transientOverlayDelegate];
+  LOBYTE(selfCopy) = [transientOverlayDelegate transientOverlayViewControllerIsForegroundActive:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)loadView
@@ -160,15 +160,15 @@
   v9.receiver = self;
   v9.super_class = SBAmbientTransientOverlayViewController;
   [(SBAmbientTransientOverlayViewController *)&v9 loadView];
-  v3 = [(SBAmbientTransientOverlayViewController *)self view];
-  [v3 frame];
+  view = [(SBAmbientTransientOverlayViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
   if (v5 < v7)
   {
-    v8 = [(SBAmbientTransientOverlayViewController *)self view];
-    [v8 setFrame:{0.0, 0.0, v7, v5}];
+    view2 = [(SBAmbientTransientOverlayViewController *)self view];
+    [view2 setFrame:{0.0, 0.0, v7, v5}];
   }
 }
 
@@ -177,8 +177,8 @@
   v23.receiver = self;
   v23.super_class = SBAmbientTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v23 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [v3 setAccessibilityIdentifier:@"sb-ambient-transient-overlay-view"];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView setAccessibilityIdentifier:@"sb-ambient-transient-overlay-view"];
   v4 = objc_alloc_init(MEMORY[0x277CEA600]);
   ambientViewController = self->_ambientViewController;
   self->_ambientViewController = v4;
@@ -194,7 +194,7 @@
   v21[2] = __54__SBAmbientTransientOverlayViewController_viewDidLoad__block_invoke;
   v21[3] = &unk_2783A9460;
   v21[4] = self;
-  v9 = v3;
+  v9 = contentView;
   v22 = v9;
   [(SBAmbientTransientOverlayViewController *)self bs_addChildViewController:v8 withSuperview:v9 animated:0 transitionBlock:v21];
   if ([(SBAmbientTransientOverlayViewController *)self _isFirstPresentation])
@@ -210,7 +210,7 @@
     v16 = 3221225472;
     v17 = __54__SBAmbientTransientOverlayViewController_viewDidLoad__block_invoke_2;
     v18 = &unk_2783A9460;
-    v19 = self;
+    selfCopy = self;
     v13 = v9;
     v20 = v13;
     [(SBAmbientTransientOverlayViewController *)self bs_addChildViewController:v12 withSuperview:v13 animated:0 transitionBlock:&v15];
@@ -243,24 +243,24 @@ void __54__SBAmbientTransientOverlayViewController_viewDidLoad__block_invoke_2(u
   v4[2](v4);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBAmbientTransientOverlayViewController;
   [(SBAmbientTransientOverlayViewController *)&v6 viewWillAppear:?];
-  v5 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v5 ambientTransientOverlayViewController:self viewWillAppear:v3];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewController:self viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBAmbientTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v6 viewDidAppear:?];
-  v5 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v5 ambientTransientOverlayViewController:self viewDidAppear:v3];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewController:self viewDidAppear:appearCopy];
 
   if (([(AMUIAmbientViewController *)self->_ambientViewController bs_isAppearingOrAppeared]& 1) == 0)
   {
@@ -268,24 +268,24 @@ void __54__SBAmbientTransientOverlayViewController_viewDidLoad__block_invoke_2(u
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBAmbientTransientOverlayViewController;
   [(SBAmbientTransientOverlayViewController *)&v6 viewWillDisappear:?];
-  v5 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v5 ambientTransientOverlayViewController:self viewWillDisappear:v3];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewController:self viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBAmbientTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v6 viewDidDisappear:?];
-  v5 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v5 ambientTransientOverlayViewController:self viewDidDisappear:v3];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewController:self viewDidDisappear:disappearCopy];
 }
 
 - (void)viewDidLayoutSubviews
@@ -293,8 +293,8 @@ void __54__SBAmbientTransientOverlayViewController_viewDidLoad__block_invoke_2(u
   v14.receiver = self;
   v14.super_class = SBAmbientTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v14 viewDidLayoutSubviews];
-  v3 = [(SBAmbientTransientOverlayViewController *)self view];
-  [v3 bounds];
+  view = [(SBAmbientTransientOverlayViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
@@ -302,35 +302,35 @@ void __54__SBAmbientTransientOverlayViewController_viewDidLoad__block_invoke_2(u
   v9 = v8;
   v11 = v10;
   v12 = hypot(v5, v7);
-  v13 = [(SBTransientOverlayViewController *)self backgroundView];
-  [v13 setBounds:{0.0, 0.0, v12, v12}];
-  [v13 setCenter:{v9, v11}];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+  [backgroundView setBounds:{0.0, 0.0, v12, v12}];
+  [backgroundView setCenter:{v9, v11}];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBAmbientTransientOverlayViewController;
-  v5 = a3;
-  [(SBTransientOverlayViewController *)&v6 viewDidMoveToWindow:v5 shouldAppearOrDisappear:v4];
-  [v5 setClipsToBounds:{0, v6.receiver, v6.super_class}];
+  windowCopy = window;
+  [(SBTransientOverlayViewController *)&v6 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  [windowCopy setClipsToBounds:{0, v6.receiver, v6.super_class}];
 }
 
 - (id)newTransientOverlayPresentationTransitionCoordinator
 {
   v3 = objc_alloc_init(SBTransientOverlayBlockTransitionCoordinator);
-  v4 = [(SBTransientOverlayViewController *)self contentView];
-  v5 = [(SBTransientOverlayViewController *)self backgroundView];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __95__SBAmbientTransientOverlayViewController_newTransientOverlayPresentationTransitionCoordinator__block_invoke;
   v9[3] = &unk_2783C1188;
-  v10 = v4;
-  v11 = v5;
-  v12 = self;
-  v6 = v5;
-  v7 = v4;
+  v10 = contentView;
+  v11 = backgroundView;
+  selfCopy = self;
+  v6 = backgroundView;
+  v7 = contentView;
   [(SBTransientOverlayBlockTransitionCoordinator *)v3 setStartTransitionHandler:v9];
 
   return v3;
@@ -501,18 +501,18 @@ uint64_t __95__SBAmbientTransientOverlayViewController_newTransientOverlayPresen
 - (id)newTransientOverlayDismissalTransitionCoordinator
 {
   v3 = objc_alloc_init(SBTransientOverlayBlockTransitionCoordinator);
-  v4 = [(SBTransientOverlayViewController *)self contentView];
-  v5 = [(SBTransientOverlayViewController *)self backgroundView];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
   [(AMUIAmbientViewController *)self->_ambientViewController setNotificationCount:0];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __92__SBAmbientTransientOverlayViewController_newTransientOverlayDismissalTransitionCoordinator__block_invoke;
   v9[3] = &unk_2783C1188;
   v9[4] = self;
-  v10 = v4;
-  v11 = v5;
-  v6 = v5;
-  v7 = v4;
+  v10 = contentView;
+  v11 = backgroundView;
+  v6 = backgroundView;
+  v7 = contentView;
   [(SBTransientOverlayBlockTransitionCoordinator *)v3 setStartTransitionHandler:v9];
 
   return v3;
@@ -658,22 +658,22 @@ uint64_t __92__SBAmbientTransientOverlayViewController_newTransientOverlayDismis
 - (id)associatedBundleIdentifiersToSuppressInSystemAperture
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
-  v5 = [v4 descriptor];
-  v6 = [v5 platterTargetBundleIdentifier];
+  primaryActivityItem = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
+  descriptor = [primaryActivityItem descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-  if (v6)
+  if (platterTargetBundleIdentifier)
   {
-    [v3 addObject:v6];
+    [v3 addObject:platterTargetBundleIdentifier];
   }
 
-  v7 = [(SBActivityAmbientViewController *)self->_activityViewController secondaryActivityItem];
-  v8 = [v7 descriptor];
-  v9 = [v8 platterTargetBundleIdentifier];
+  secondaryActivityItem = [(SBActivityAmbientViewController *)self->_activityViewController secondaryActivityItem];
+  descriptor2 = [secondaryActivityItem descriptor];
+  platterTargetBundleIdentifier2 = [descriptor2 platterTargetBundleIdentifier];
 
-  if (v9)
+  if (platterTargetBundleIdentifier2)
   {
-    [v3 addObject:v9];
+    [v3 addObject:platterTargetBundleIdentifier2];
   }
 
   return v3;
@@ -682,15 +682,15 @@ uint64_t __92__SBAmbientTransientOverlayViewController_newTransientOverlayDismis
 - (id)associatedSceneIdentifiersToSuppressInSystemAperture
 {
   v3 = [MEMORY[0x277CBEB98] set];
-  v4 = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
-  v5 = [v4 descriptor];
-  v6 = [v5 platterTargetBundleIdentifier];
+  primaryActivityItem = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
+  descriptor = [primaryActivityItem descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-  v7 = [(SBActivityAmbientViewController *)self->_activityViewController secondaryActivityItem];
-  v8 = [v7 descriptor];
-  v9 = [v8 platterTargetBundleIdentifier];
+  secondaryActivityItem = [(SBActivityAmbientViewController *)self->_activityViewController secondaryActivityItem];
+  descriptor2 = [secondaryActivityItem descriptor];
+  platterTargetBundleIdentifier2 = [descriptor2 platterTargetBundleIdentifier];
 
-  if (([v6 isEqualToString:@"com.apple.InCallService"] & 1) != 0 || objc_msgSend(v9, "isEqualToString:", @"com.apple.InCallService"))
+  if (([platterTargetBundleIdentifier isEqualToString:@"com.apple.InCallService"] & 1) != 0 || objc_msgSend(platterTargetBundleIdentifier2, "isEqualToString:", @"com.apple.InCallService"))
   {
     v10 = MEMORY[0x277CBEB98];
     v11 = [@"SBAmbientFullScreenPresentationInCallSceneIdentifier" copy];
@@ -707,8 +707,8 @@ uint64_t __92__SBAmbientTransientOverlayViewController_newTransientOverlayDismis
   v4.receiver = self;
   v4.super_class = SBAmbientTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v4 setNeedsIdleTimerReset];
-  v3 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v3 ambientTransientOverlayViewController:self didUpdatedWantsIdleTimerDisabled:{-[SBAmbientTransientOverlayViewController wantsIdleTimerDisabled](self, "wantsIdleTimerDisabled")}];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewController:self didUpdatedWantsIdleTimerDisabled:{-[SBAmbientTransientOverlayViewController wantsIdleTimerDisabled](self, "wantsIdleTimerDisabled")}];
 }
 
 - (int64_t)idleTimerMode
@@ -747,29 +747,29 @@ uint64_t __92__SBAmbientTransientOverlayViewController_newTransientOverlayDismis
   return [(SBFIdleTimerBehaviorProviding *)ambientIdleTimerBehaviorProvider idleWarnMode];
 }
 
-- (void)addActivityItem:(id)a3 forOngoingActivity:(BOOL)a4
+- (void)addActivityItem:(id)item forOngoingActivity:(BOOL)activity
 {
-  v4 = a4;
-  v6 = a3;
+  activityCopy = activity;
+  itemCopy = item;
   if ([(SBAmbientTransientOverlayViewController *)self _canAddPrimaryActivityItem])
   {
-    [(SBAmbientTransientOverlayViewController *)self _addNewPrimaryActivityWithItem:v6 forOngoingActivity:v4];
+    [(SBAmbientTransientOverlayViewController *)self _addNewPrimaryActivityWithItem:itemCopy forOngoingActivity:activityCopy];
   }
 
-  else if ([(SBAmbientTransientOverlayViewController *)self _canAddSecondaryActivityItem:v6])
+  else if ([(SBAmbientTransientOverlayViewController *)self _canAddSecondaryActivityItem:itemCopy])
   {
-    [(SBActivityAmbientViewController *)self->_activityViewController addOverlayForSecondaryActivityItem:v6];
+    [(SBActivityAmbientViewController *)self->_activityViewController addOverlayForSecondaryActivityItem:itemCopy];
   }
 
   else
   {
-    [(SBActivityAmbientObserver *)self->_ambientActivityObserver addPendingItem:v6];
+    [(SBActivityAmbientObserver *)self->_ambientActivityObserver addPendingItem:itemCopy];
   }
 
   [(SBAmbientTransientOverlayViewController *)self _requestZStackParticipantPreferencesUpdate];
 }
 
-- (void)removeActivityItem:(id)a3
+- (void)removeActivityItem:(id)item
 {
   activityViewController = self->_activityViewController;
   v7[0] = MEMORY[0x277D85DD0];
@@ -777,12 +777,12 @@ uint64_t __92__SBAmbientTransientOverlayViewController_newTransientOverlayDismis
   v7[2] = __62__SBAmbientTransientOverlayViewController_removeActivityItem___block_invoke;
   v7[3] = &unk_2783A8C18;
   v7[4] = self;
-  v5 = a3;
-  [(SBActivityAmbientViewController *)activityViewController removeOverlayForActivityItem:v5 withCompletion:v7];
+  itemCopy = item;
+  [(SBActivityAmbientViewController *)activityViewController removeOverlayForActivityItem:itemCopy withCompletion:v7];
   [(SBAmbientTransientOverlayViewController *)self _requestZStackParticipantPreferencesUpdate];
-  v6 = [v5 identifier];
+  identifier = [itemCopy identifier];
 
-  [(SBAmbientTransientOverlayViewController *)self _stopAlertingForActivityIdentifier:v6];
+  [(SBAmbientTransientOverlayViewController *)self _stopAlertingForActivityIdentifier:identifier];
 }
 
 void __62__SBAmbientTransientOverlayViewController_removeActivityItem___block_invoke(uint64_t a1)
@@ -800,10 +800,10 @@ void __62__SBAmbientTransientOverlayViewController_removeActivityItem___block_in
   }
 }
 
-- (void)presentAmbientActivityAlert:(id)a3
+- (void)presentAmbientActivityAlert:(id)alert
 {
-  v4 = a3;
-  v3 = v4;
+  alertCopy = alert;
+  v3 = alertCopy;
   BSDispatchMain();
 }
 
@@ -856,10 +856,10 @@ void __71__SBAmbientTransientOverlayViewController_presentAmbientActivityAlert__
   objc_storeStrong(WeakRetained + 193, *(a1 + 32));
 }
 
-- (void)dismissAmbientActivityAlert:(id)a3
+- (void)dismissAmbientActivityAlert:(id)alert
 {
-  v4 = a3;
-  v3 = v4;
+  alertCopy = alert;
+  v3 = alertCopy;
   BSDispatchMain();
 }
 
@@ -935,43 +935,43 @@ void __71__SBAmbientTransientOverlayViewController_dismissAmbientActivityAlert__
   }
 }
 
-- (BOOL)activityAmbientViewControllerCanBeginFullOverlayDismissGesture:(id)a3
+- (BOOL)activityAmbientViewControllerCanBeginFullOverlayDismissGesture:(id)gesture
 {
-  v3 = self;
-  v4 = [(SBTransientOverlayViewController *)self transientOverlayDelegate];
-  LOBYTE(v3) = [v4 transientOverlayViewControllerIsForegroundActive:v3];
+  selfCopy = self;
+  transientOverlayDelegate = [(SBTransientOverlayViewController *)self transientOverlayDelegate];
+  LOBYTE(selfCopy) = [transientOverlayDelegate transientOverlayViewControllerIsForegroundActive:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)_canAddPrimaryActivityItem
 {
-  v2 = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
-  v3 = v2 == 0;
+  primaryActivityItem = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
+  v3 = primaryActivityItem == 0;
 
   return v3;
 }
 
-- (BOOL)_canAddSecondaryActivityItem:(id)a3
+- (BOOL)_canAddSecondaryActivityItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SBActivityAmbientViewController *)self->_activityViewController secondaryActivityItem];
-  v6 = [(SBActivityAmbientViewController *)self->_activityViewController overlayMode];
-  if (v5)
+  itemCopy = item;
+  secondaryActivityItem = [(SBActivityAmbientViewController *)self->_activityViewController secondaryActivityItem];
+  overlayMode = [(SBActivityAmbientViewController *)self->_activityViewController overlayMode];
+  if (secondaryActivityItem)
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = v6 == 0;
-    v9 = [v4 descriptor];
-    v10 = [v9 platterTargetBundleIdentifier];
+    v8 = overlayMode == 0;
+    descriptor = [itemCopy descriptor];
+    platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-    v11 = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
-    v12 = [v11 descriptor];
-    v13 = [v12 platterTargetBundleIdentifier];
-    v14 = [v13 isEqualToString:v10];
+    primaryActivityItem = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
+    descriptor2 = [primaryActivityItem descriptor];
+    platterTargetBundleIdentifier2 = [descriptor2 platterTargetBundleIdentifier];
+    v14 = [platterTargetBundleIdentifier2 isEqualToString:platterTargetBundleIdentifier];
 
     v7 = v8 & ~v14;
   }
@@ -979,47 +979,47 @@ void __71__SBAmbientTransientOverlayViewController_dismissAmbientActivityAlert__
   return v7;
 }
 
-- (void)_addNewPrimaryActivityWithItem:(id)a3 forOngoingActivity:(BOOL)a4
+- (void)_addNewPrimaryActivityWithItem:(id)item forOngoingActivity:(BOOL)activity
 {
-  v4 = a4;
-  v6 = a3;
-  [(SBAmbientTransientOverlayViewController *)self _addActivityViewControllerWithPrimaryItem:v6 withOverlayMode:[(SBAmbientTransientOverlayViewController *)self _itemIsFirstPartyActivity:v6]^ 1 | v4 completion:0];
+  activityCopy = activity;
+  itemCopy = item;
+  [(SBAmbientTransientOverlayViewController *)self _addActivityViewControllerWithPrimaryItem:itemCopy withOverlayMode:[(SBAmbientTransientOverlayViewController *)self _itemIsFirstPartyActivity:itemCopy]^ 1 | activityCopy completion:0];
 }
 
-- (void)_addActivityViewControllerWithPrimaryItem:(id)a3 withOverlayMode:(int64_t)a4 completion:(id)a5
+- (void)_addActivityViewControllerWithPrimaryItem:(id)item withOverlayMode:(int64_t)mode completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   activityViewController = self->_activityViewController;
   if (activityViewController)
   {
-    [(SBActivityAmbientViewController *)activityViewController addOverlayForPrimaryActivityItem:v8 withOverlayMode:a4];
-    if (v9)
+    [(SBActivityAmbientViewController *)activityViewController addOverlayForPrimaryActivityItem:itemCopy withOverlayMode:mode];
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    v11 = [[SBActivityAmbientViewController alloc] initWithPrimaryActivityItem:v8 overlayMode:a4];
+    v11 = [[SBActivityAmbientViewController alloc] initWithPrimaryActivityItem:itemCopy overlayMode:mode];
     [(SBActivityAmbientViewController *)v11 setDelegate:self];
     objc_storeStrong(&self->_activityViewController, v11);
     if ([(SBAmbientTransientOverlayViewController *)self isConfiguringUIVisible])
     {
-      v12 = [(SBActivityAmbientViewController *)v11 view];
-      [v12 setAlpha:0.0];
+      view = [(SBActivityAmbientViewController *)v11 view];
+      [view setAlpha:0.0];
     }
 
-    v13 = [(SBTransientOverlayViewController *)self contentView];
+    contentView = [(SBTransientOverlayViewController *)self contentView];
     v14 = self->_activityViewController;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __112__SBAmbientTransientOverlayViewController__addActivityViewControllerWithPrimaryItem_withOverlayMode_completion___block_invoke;
     v16[3] = &unk_2783A9460;
     v16[4] = self;
-    v17 = v13;
-    v15 = v13;
+    v17 = contentView;
+    v15 = contentView;
     [(SBAmbientTransientOverlayViewController *)self bs_addChildViewController:v14 withSuperview:v15 animated:1 transitionBlock:v16];
   }
 }
@@ -1038,25 +1038,25 @@ void __112__SBAmbientTransientOverlayViewController__addActivityViewControllerWi
   }
 }
 
-- (BOOL)_itemIsFirstPartyActivity:(id)a3
+- (BOOL)_itemIsFirstPartyActivity:(id)activity
 {
-  v3 = [a3 descriptor];
-  v4 = [v3 platterTargetBundleIdentifier];
+  descriptor = [activity descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
   v5 = +[SBActivityManager sharedInstance];
-  v6 = [v5 firstPartyActivityGroupingIdentifiers];
-  v7 = [v6 containsObject:v4];
+  firstPartyActivityGroupingIdentifiers = [v5 firstPartyActivityGroupingIdentifiers];
+  v7 = [firstPartyActivityGroupingIdentifiers containsObject:platterTargetBundleIdentifier];
 
   return v7;
 }
 
-- (void)_stopAlertingForActivityIdentifier:(id)a3
+- (void)_stopAlertingForActivityIdentifier:(id)identifier
 {
   activeAlert = self->_activeAlert;
-  v5 = a3;
-  v6 = [(SBActivityAlert *)activeAlert item];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqualToString:v5];
+  identifierCopy = identifier;
+  item = [(SBActivityAlert *)activeAlert item];
+  identifier = [item identifier];
+  v8 = [identifier isEqualToString:identifierCopy];
 
   if (v8)
   {
@@ -1066,123 +1066,123 @@ void __112__SBAmbientTransientOverlayViewController__addActivityViewControllerWi
   }
 }
 
-- (BOOL)ambientViewControllerIsAuthenticated:(id)a3
+- (BOOL)ambientViewControllerIsAuthenticated:(id)authenticated
 {
-  v3 = [SBApp authenticationController];
-  v4 = [v3 isAuthenticated];
+  authenticationController = [SBApp authenticationController];
+  isAuthenticated = [authenticationController isAuthenticated];
 
-  return v4;
+  return isAuthenticated;
 }
 
-- (void)ambientViewController:(id)a3 isTransitioningSettled:(BOOL)a4
+- (void)ambientViewController:(id)controller isTransitioningSettled:(BOOL)settled
 {
-  if (self->_isPerformingPresentationAnimation && !a4)
+  if (self->_isPerformingPresentationAnimation && !settled)
   {
-    v6 = [(SBTransientOverlayViewController *)self backgroundView];
-    v5 = [MEMORY[0x277D75348] blackColor];
-    [v6 setBackgroundColor:v5];
+    backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [backgroundView setBackgroundColor:blackColor];
   }
 }
 
-- (id)ambientViewControllerRequestsConnectedChargerId:(id)a3
+- (id)ambientViewControllerRequestsConnectedChargerId:(id)id
 {
-  v4 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  v5 = [v4 ambientTransientOverlayViewControllerRequestsConnectedChargerId:self];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  v5 = [delegate ambientTransientOverlayViewControllerRequestsConnectedChargerId:self];
 
   return v5;
 }
 
-- (void)ambientViewController:(id)a3 requestsUnlock:(id)a4 withCompletion:(id)a5
+- (void)ambientViewController:(id)controller requestsUnlock:(id)unlock withCompletion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
+  completionCopy = completion;
+  unlockCopy = unlock;
   v11 = objc_alloc_init(SBLockScreenUnlockRequest);
   [(SBLockScreenUnlockRequest *)v11 setSource:13];
   [(SBLockScreenUnlockRequest *)v11 setIntent:2];
-  v8 = [v7 name];
-  [(SBLockScreenUnlockRequest *)v11 setName:v8];
+  name = [unlockCopy name];
+  [(SBLockScreenUnlockRequest *)v11 setName:name];
 
   [(SBLockScreenUnlockRequest *)v11 setWantsBiometricPresentation:1];
   [(SBLockScreenUnlockRequest *)v11 setConfirmedNotInPocket:1];
-  v9 = [v7 unlockDestination];
+  unlockDestination = [unlockCopy unlockDestination];
 
-  [(SBLockScreenUnlockRequest *)v11 setUnlockDestination:v9];
+  [(SBLockScreenUnlockRequest *)v11 setUnlockDestination:unlockDestination];
   v10 = +[SBLockScreenManager sharedInstance];
-  [v10 unlockWithRequest:v11 completion:v6];
+  [v10 unlockWithRequest:v11 completion:completionCopy];
 }
 
-- (void)ambientViewControllerWillBeginConfiguration:(id)a3
+- (void)ambientViewControllerWillBeginConfiguration:(id)configuration
 {
   [(SBAmbientTransientOverlayViewController *)self setConfiguringUIVisible:1];
   [(SBAmbientTransientOverlayViewController *)self setNeedsIdleTimerReset];
   [(SBAmbientTransientOverlayViewController *)self _setActivityViewHidden:1];
-  v4 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v4 ambientTransientOverlayViewControllerWillBeginConfiguration:self];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewControllerWillBeginConfiguration:self];
 }
 
-- (void)ambientViewControllerWillEndConfiguration:(id)a3
+- (void)ambientViewControllerWillEndConfiguration:(id)configuration
 {
   [(SBAmbientTransientOverlayViewController *)self setConfiguringUIVisible:0];
   [(SBAmbientTransientOverlayViewController *)self setNeedsIdleTimerReset];
   [(SBAmbientTransientOverlayViewController *)self _setActivityViewHidden:0];
-  v4 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v4 ambientTransientOverlayViewControllerWillEndConfiguration:self];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewControllerWillEndConfiguration:self];
 }
 
-- (id)widgetHostManagerForAmbientViewController:(id)a3
+- (id)widgetHostManagerForAmbientViewController:(id)controller
 {
-  v4 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  v5 = [v4 widgetHostManagerForAmbientTransientOverlayViewController:self];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  v5 = [delegate widgetHostManagerForAmbientTransientOverlayViewController:self];
 
   return v5;
 }
 
-- (id)ambientDefaultsForAmbientViewController:(id)a3
+- (id)ambientDefaultsForAmbientViewController:(id)controller
 {
-  v4 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  v5 = [v4 ambientDefaultsForAmbientTransientOverlayViewController:self];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  v5 = [delegate ambientDefaultsForAmbientTransientOverlayViewController:self];
 
   return v5;
 }
 
-- (id)defaultWidgetDescriptorStacksForAmbientViewController:(id)a3
+- (id)defaultWidgetDescriptorStacksForAmbientViewController:(id)controller
 {
-  v4 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  v5 = [v4 defaultWidgetDescriptorStacksForAmbientTransientOverlayViewController:self];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  v5 = [delegate defaultWidgetDescriptorStacksForAmbientTransientOverlayViewController:self];
 
   return v5;
 }
 
-- (void)ambientViewController:(id)a3 didSetInlineAuthenticationViewVisible:(BOOL)a4
+- (void)ambientViewController:(id)controller didSetInlineAuthenticationViewVisible:(BOOL)visible
 {
-  v4 = a4;
-  [(SBAmbientTransientOverlayViewController *)self _setActivityViewHidden:a4];
-  v6 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v6 ambientTransientOverlayViewController:self didSetInlineAuthenticationViewVisible:v4];
+  visibleCopy = visible;
+  [(SBAmbientTransientOverlayViewController *)self _setActivityViewHidden:visible];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewController:self didSetInlineAuthenticationViewVisible:visibleCopy];
 }
 
-- (BOOL)ambientViewController:(id)a3 isApplicationVisibleWithBundleIdentifier:(id)a4
+- (BOOL)ambientViewController:(id)controller isApplicationVisibleWithBundleIdentifier:(id)identifier
 {
-  v4 = a4;
+  identifierCopy = identifier;
   v5 = +[SBIconController sharedIconRepository];
-  v6 = [v5 isApplicationIconVisibleForBundleIdentifier:v4];
+  v6 = [v5 isApplicationIconVisibleForBundleIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (void)ambientViewController:(id)a3 didSetBiometricAuthenticationDisabled:(BOOL)a4
+- (void)ambientViewController:(id)controller didSetBiometricAuthenticationDisabled:(BOOL)disabled
 {
-  v4 = a4;
-  v6 = a3;
+  disabledCopy = disabled;
+  controllerCopy = controller;
   lockElementBloomSuppressionAssertion = self->_lockElementBloomSuppressionAssertion;
-  if (v4)
+  if (disabledCopy)
   {
     if (lockElementBloomSuppressionAssertion)
     {
       goto LABEL_6;
     }
 
-    v11 = v6;
+    v11 = controllerCopy;
     v8 = +[SBLockScreenManager sharedInstance];
     v9 = [v8 acquireSystemApertureLockElementBloomSuppressionAssertionWithReason:@"Domino inline biometric auth disabled"];
     v10 = self->_lockElementBloomSuppressionAssertion;
@@ -1191,45 +1191,45 @@ void __112__SBAmbientTransientOverlayViewController__addActivityViewControllerWi
 
   else
   {
-    v11 = v6;
+    v11 = controllerCopy;
     [(BSInvalidatable *)lockElementBloomSuppressionAssertion invalidate];
     v8 = self->_lockElementBloomSuppressionAssertion;
     self->_lockElementBloomSuppressionAssertion = 0;
   }
 
-  v6 = v11;
+  controllerCopy = v11;
 LABEL_6:
 }
 
-- (BOOL)ambientViewController:(id)a3 wantsBiometricAuthenticationBlockedForDeepUserInteraction:(BOOL)a4
+- (BOOL)ambientViewController:(id)controller wantsBiometricAuthenticationBlockedForDeepUserInteraction:(BOOL)interaction
 {
-  if (a4)
+  if (interaction)
   {
     return 0;
   }
 
   v5 = +[SBLockScreenManager sharedInstance];
-  v6 = [v5 biometricAuthenticationCoordinator];
-  v7 = [v6 isAutoUnlockingDisabled];
+  biometricAuthenticationCoordinator = [v5 biometricAuthenticationCoordinator];
+  isAutoUnlockingDisabled = [biometricAuthenticationCoordinator isAutoUnlockingDisabled];
 
-  v8 = [MEMORY[0x277D67C98] sharedInstance];
-  LOBYTE(v6) = [v8 hasPearlSupport];
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  LOBYTE(biometricAuthenticationCoordinator) = [mEMORY[0x277D67C98] hasPearlSupport];
 
-  return v7 & v6;
+  return isAutoUnlockingDisabled & biometricAuthenticationCoordinator;
 }
 
-- (void)attemptUnlockForSender:(id)a3 forBioUnlock:(BOOL)a4 completion:(id)a5
+- (void)attemptUnlockForSender:(id)sender forBioUnlock:(BOOL)unlock completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  if (a4)
+  senderCopy = sender;
+  completionCopy = completion;
+  if (unlock)
   {
-    v9 = 0;
+    passcode = 0;
   }
 
   else
   {
-    v9 = [v7 passcode];
+    passcode = [senderCopy passcode];
   }
 
   v10 = +[SBLockScreenManager sharedInstance];
@@ -1237,11 +1237,11 @@ LABEL_6:
   v13[1] = 3221225472;
   v13[2] = __90__SBAmbientTransientOverlayViewController_attemptUnlockForSender_forBioUnlock_completion___block_invoke;
   v13[3] = &unk_2783AE668;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
-  [v10 attemptUnlockWithPasscode:v9 finishUIUnlock:0 completion:v13];
+  v14 = senderCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = senderCopy;
+  [v10 attemptUnlockWithPasscode:passcode finishUIUnlock:0 completion:v13];
 }
 
 uint64_t __90__SBAmbientTransientOverlayViewController_attemptUnlockForSender_forBioUnlock_completion___block_invoke(uint64_t a1, uint64_t a2, int a3)
@@ -1262,19 +1262,19 @@ uint64_t __90__SBAmbientTransientOverlayViewController_attemptUnlockForSender_fo
   return v5();
 }
 
-- (void)ambientViewController:(id)a3 didUpdateActiveConfiguration:(id)a4 withMetadata:(id)a5
+- (void)ambientViewController:(id)controller didUpdateActiveConfiguration:(id)configuration withMetadata:(id)metadata
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  [v9 ambientTransientOverlayViewController:self didUpdateActiveConfiguration:v8 withMetadata:v7];
+  metadataCopy = metadata;
+  configurationCopy = configuration;
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  [delegate ambientTransientOverlayViewController:self didUpdateActiveConfiguration:configurationCopy withMetadata:metadataCopy];
 }
 
-- (void)onboardingViewController:(id)a3 requestsDismissalWithUserIntent:(BOOL)a4
+- (void)onboardingViewController:(id)controller requestsDismissalWithUserIntent:(BOOL)intent
 {
   if (self->_onboardingViewController)
   {
-    [(SBAmbientTransientOverlayViewController *)self bs_removeChildViewController:a3, a4];
+    [(SBAmbientTransientOverlayViewController *)self bs_removeChildViewController:controller, intent];
     onboardingViewController = self->_onboardingViewController;
     self->_onboardingViewController = 0;
   }
@@ -1325,8 +1325,8 @@ uint64_t __90__SBAmbientTransientOverlayViewController_attemptUnlockForSender_fo
 
 - (BOOL)_isShowingFullActivityOverlay
 {
-  v3 = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
-  if (v3)
+  primaryActivityItem = [(SBActivityAmbientViewController *)self->_activityViewController primaryActivityItem];
+  if (primaryActivityItem)
   {
     v4 = [(SBActivityAmbientViewController *)self->_activityViewController overlayMode]== 0;
   }
@@ -1339,28 +1339,28 @@ uint64_t __90__SBAmbientTransientOverlayViewController_attemptUnlockForSender_fo
   return v4;
 }
 
-- (BOOL)_isShowingFullActivityOverlayForItem:(id)a3
+- (BOOL)_isShowingFullActivityOverlayForItem:(id)item
 {
   activityViewController = self->_activityViewController;
-  v5 = a3;
-  v6 = [(SBActivityAmbientViewController *)activityViewController primaryActivityItem];
+  itemCopy = item;
+  primaryActivityItem = [(SBActivityAmbientViewController *)activityViewController primaryActivityItem];
 
-  v7 = v6 == v5 && [(SBAmbientTransientOverlayViewController *)self _isShowingFullActivityOverlay];
+  v7 = primaryActivityItem == itemCopy && [(SBAmbientTransientOverlayViewController *)self _isShowingFullActivityOverlay];
   return v7;
 }
 
-- (void)_backlightLuminanceDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_backlightLuminanceDidChange:(id)change previousTraitCollection:(id)collection
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  collectionCopy = collection;
   v8 = SBLogAmbientPresentation();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v6 traitCollection];
-    v11 = [v9 numberWithInteger:{objc_msgSend(v10, "_backlightLuminance")}];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v7, "_backlightLuminance")}];
+    traitCollection = [changeCopy traitCollection];
+    v11 = [v9 numberWithInteger:{objc_msgSend(traitCollection, "_backlightLuminance")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(collectionCopy, "_backlightLuminance")}];
     *buf = 138412546;
     v19 = v11;
     v20 = 2112;
@@ -1368,12 +1368,12 @@ uint64_t __90__SBAmbientTransientOverlayViewController_attemptUnlockForSender_fo
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "Backlight trait changed. New luminance: %@ old: %@", buf, 0x16u);
   }
 
-  v13 = [v6 traitCollection];
-  v14 = [v13 _backlightLuminance];
+  traitCollection2 = [changeCopy traitCollection];
+  _backlightLuminance = [traitCollection2 _backlightLuminance];
 
-  if (v14)
+  if (_backlightLuminance)
   {
-    if (![v7 _backlightLuminance])
+    if (![collectionCopy _backlightLuminance])
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -1422,8 +1422,8 @@ uint64_t __96__SBAmbientTransientOverlayViewController__backlightLuminanceDidCha
 
 - (void)_requestZStackParticipantPreferencesUpdate
 {
-  v3 = [(SBTransientOverlayViewController *)self transientOverlayDelegate];
-  [v3 transientOverlayViewController:self requestZStackParticipantPreferencesUpdateWithReason:@"Ambient Activities Updated"];
+  transientOverlayDelegate = [(SBTransientOverlayViewController *)self transientOverlayDelegate];
+  [transientOverlayDelegate transientOverlayViewController:self requestZStackParticipantPreferencesUpdateWithReason:@"Ambient Activities Updated"];
 }
 
 - (BOOL)_shouldDisableIdleTimer
@@ -1497,13 +1497,13 @@ void __83__SBAmbientTransientOverlayViewController__registerForFirstPresentation
   }
 }
 
-- (void)_setActivityViewHidden:(BOOL)a3
+- (void)_setActivityViewHidden:(BOOL)hidden
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __66__SBAmbientTransientOverlayViewController__setActivityViewHidden___block_invoke;
   v3[3] = &unk_2783A9F58;
-  v4 = a3;
+  hiddenCopy = hidden;
   v3[4] = self;
   [MEMORY[0x277D75D18] animateWithDuration:v3 animations:0.2];
 }
@@ -1526,8 +1526,8 @@ void __66__SBAmbientTransientOverlayViewController__setActivityViewHidden___bloc
 
 - (void)_setupAmbientDefaults
 {
-  v3 = [(SBAmbientTransientOverlayViewController *)self delegate];
-  v4 = [v3 ambientDefaultsForAmbientTransientOverlayViewController:self];
+  delegate = [(SBAmbientTransientOverlayViewController *)self delegate];
+  v4 = [delegate ambientDefaultsForAmbientTransientOverlayViewController:self];
   ambientDefaults = self->_ambientDefaults;
   self->_ambientDefaults = v4;
 
@@ -1544,13 +1544,13 @@ void __66__SBAmbientTransientOverlayViewController__setActivityViewHidden___bloc
     self->_proudLockViewController = v3;
 
     v5 = self->_proudLockViewController;
-    v6 = [(SBTransientOverlayViewController *)self contentView];
+    contentView = [(SBTransientOverlayViewController *)self contentView];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __81__SBAmbientTransientOverlayViewController__addProudLockViewControllerIfNecessary__block_invoke;
     v7[3] = &unk_2783AA930;
     v7[4] = self;
-    [(SBAmbientTransientOverlayViewController *)self bs_addChildViewController:v5 withSuperview:v6 animated:0 transitionBlock:v7];
+    [(SBAmbientTransientOverlayViewController *)self bs_addChildViewController:v5 withSuperview:contentView animated:0 transitionBlock:v7];
   }
 }
 
@@ -1596,9 +1596,9 @@ uint64_t __81__SBAmbientTransientOverlayViewController__addProudLockViewControll
   }
 }
 
-- (void)_setProudLockAuthenticated:(BOOL)a3
+- (void)_setProudLockAuthenticated:(BOOL)authenticated
 {
-  v3 = a3;
+  authenticatedCopy = authenticated;
   objc_initWeak(&location, self);
   proudLockViewController = self->_proudLockViewController;
   v6[0] = MEMORY[0x277D85DD0];
@@ -1606,7 +1606,7 @@ uint64_t __81__SBAmbientTransientOverlayViewController__addProudLockViewControll
   v6[2] = __70__SBAmbientTransientOverlayViewController__setProudLockAuthenticated___block_invoke;
   v6[3] = &unk_2783A8C68;
   objc_copyWeak(&v7, &location);
-  [(SBAmbientProudLockViewController *)proudLockViewController setAuthenticated:v3 completion:v6];
+  [(SBAmbientProudLockViewController *)proudLockViewController setAuthenticated:authenticatedCopy completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -1631,53 +1631,53 @@ void __70__SBAmbientTransientOverlayViewController__setProudLockAuthenticated___
   }
 }
 
-- (id)_newContentBlurMaterialViewWithInitialWeighting:(double)a3 parentView:(id)a4
+- (id)_newContentBlurMaterialViewWithInitialWeighting:(double)weighting parentView:(id)view
 {
   v6 = MEMORY[0x277D26718];
   v7 = MEMORY[0x277CCA8D8];
-  v8 = a4;
+  viewCopy = view;
   v9 = [v7 bundleForClass:objc_opt_class()];
-  v10 = [v6 materialViewWithRecipeNamed:@"ambientContentOverlay" inBundle:v9 options:0 initialWeighting:0 scaleAdjustment:a3];
+  v10 = [v6 materialViewWithRecipeNamed:@"ambientContentOverlay" inBundle:v9 options:0 initialWeighting:0 scaleAdjustment:weighting];
 
   [v10 setZoomEnabled:{-[SBAmbientTransientOverlayViewController _isPresentingOnboardingView](self, "_isPresentingOnboardingView")}];
-  [(SBAmbientTransientOverlayViewController *)self _configureBlurMaterialView:v10 withParentView:v8];
+  [(SBAmbientTransientOverlayViewController *)self _configureBlurMaterialView:v10 withParentView:viewCopy];
 
   return v10;
 }
 
-- (id)_newBackgroundBlurMaterialViewWithInitialWeighting:(double)a3 parentView:(id)a4
+- (id)_newBackgroundBlurMaterialViewWithInitialWeighting:(double)weighting parentView:(id)view
 {
   v6 = MEMORY[0x277D26718];
-  v7 = a4;
+  viewCopy = view;
   v8 = SBHBundle();
-  v9 = [v6 materialViewWithRecipeNamed:@"homeScreenOverlay" inBundle:v8 options:0 initialWeighting:&__block_literal_global_381 scaleAdjustment:a3];
+  v9 = [v6 materialViewWithRecipeNamed:@"homeScreenOverlay" inBundle:v8 options:0 initialWeighting:&__block_literal_global_381 scaleAdjustment:weighting];
 
-  [(SBAmbientTransientOverlayViewController *)self _configureBlurMaterialView:v9 withParentView:v7];
+  [(SBAmbientTransientOverlayViewController *)self _configureBlurMaterialView:v9 withParentView:viewCopy];
   return v9;
 }
 
-- (void)_configureBlurMaterialView:(id)a3 withParentView:(id)a4
+- (void)_configureBlurMaterialView:(id)view withParentView:(id)parentView
 {
-  v5 = a4;
-  v14 = a3;
-  [v5 addSubview:v14];
-  [v5 bringSubviewToFront:v14];
-  [v5 bounds];
+  parentViewCopy = parentView;
+  viewCopy = view;
+  [parentViewCopy addSubview:viewCopy];
+  [parentViewCopy bringSubviewToFront:viewCopy];
+  [parentViewCopy bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  [v14 setFrame:{v7, v9, v11, v13}];
-  [v14 setAutoresizingMask:18];
+  [viewCopy setFrame:{v7, v9, v11, v13}];
+  [viewCopy setAutoresizingMask:18];
 }
 
-- (void)_configureTransitionAnimationBackgroundBlurMaterialViewWithInitialWeighting:(double)a3
+- (void)_configureTransitionAnimationBackgroundBlurMaterialViewWithInitialWeighting:(double)weighting
 {
   if (!self->_backgroundBlurMaterialView)
   {
-    v7 = [(SBTransientOverlayViewController *)self backgroundView];
-    v5 = [(SBAmbientTransientOverlayViewController *)self _newBackgroundBlurMaterialViewWithInitialWeighting:v7 parentView:a3];
+    backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+    v5 = [(SBAmbientTransientOverlayViewController *)self _newBackgroundBlurMaterialViewWithInitialWeighting:backgroundView parentView:weighting];
     backgroundBlurMaterialView = self->_backgroundBlurMaterialView;
     self->_backgroundBlurMaterialView = v5;
   }
@@ -1694,20 +1694,20 @@ void __70__SBAmbientTransientOverlayViewController__setProudLockAuthenticated___
   }
 }
 
-- (void)_configureTransitionAnimationContentBlurMaterialViewWithInitialWeighting:(double)a3
+- (void)_configureTransitionAnimationContentBlurMaterialViewWithInitialWeighting:(double)weighting
 {
   if (!self->_contentBlurMaterialView)
   {
-    v5 = [(SBTransientOverlayViewController *)self contentView];
-    v6 = [(SBAmbientTransientOverlayViewController *)self _newContentBlurMaterialViewWithInitialWeighting:v5 parentView:a3];
+    contentView = [(SBTransientOverlayViewController *)self contentView];
+    v6 = [(SBAmbientTransientOverlayViewController *)self _newContentBlurMaterialViewWithInitialWeighting:contentView parentView:weighting];
     contentBlurMaterialView = self->_contentBlurMaterialView;
     self->_contentBlurMaterialView = v6;
 
     if (self->_onboardingViewController)
     {
-      v9 = [(SBTransientOverlayViewController *)self contentView];
-      v8 = [(AMUIOnboardingViewController *)self->_onboardingViewController view];
-      [v9 bringSubviewToFront:v8];
+      contentView2 = [(SBTransientOverlayViewController *)self contentView];
+      view = [(AMUIOnboardingViewController *)self->_onboardingViewController view];
+      [contentView2 bringSubviewToFront:view];
     }
   }
 }
@@ -1738,18 +1738,18 @@ void __70__SBAmbientTransientOverlayViewController__setProudLockAuthenticated___
         [(SBAmbientTransientOverlayViewController *)self _removeContentBlurMaterialView];
       }
 
-      v6 = [(SBTransientOverlayViewController *)self contentView];
-      v5 = [v6 layer];
-      [v5 setAllowsGroupOpacity:0];
+      contentView = [(SBTransientOverlayViewController *)self contentView];
+      layer = [contentView layer];
+      [layer setAllowsGroupOpacity:0];
     }
   }
 }
 
-- (void)_configureActivityViewBlurMaterialWithInitialWeighting:(double)a3 parentView:(id)a4
+- (void)_configureActivityViewBlurMaterialWithInitialWeighting:(double)weighting parentView:(id)view
 {
   if (!self->_activityBlurMaterialView)
   {
-    v5 = [(SBAmbientTransientOverlayViewController *)self _newContentBlurMaterialViewWithInitialWeighting:a4 parentView:a3];
+    v5 = [(SBAmbientTransientOverlayViewController *)self _newContentBlurMaterialViewWithInitialWeighting:view parentView:weighting];
     activityBlurMaterialView = self->_activityBlurMaterialView;
     self->_activityBlurMaterialView = v5;
   }
@@ -1766,17 +1766,17 @@ void __70__SBAmbientTransientOverlayViewController__setProudLockAuthenticated___
   }
 }
 
-- (void)_animatePresentationOfActivityView:(id)a3
+- (void)_animatePresentationOfActivityView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = MEMORY[0x277D75D18];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __78__SBAmbientTransientOverlayViewController__animatePresentationOfActivityView___block_invoke;
   v24[3] = &unk_2783A92D8;
-  v6 = v4;
+  v6 = viewCopy;
   v25 = v6;
-  v26 = self;
+  selfCopy = self;
   [v5 performWithoutAnimation:v24];
   [(SBAmbientTransientOverlayViewController *)self _incrementActivityPresentationAnimationCount];
   v7 = MEMORY[0x277D75D18];
@@ -1847,18 +1847,18 @@ uint64_t __78__SBAmbientTransientOverlayViewController__animatePresentationOfAct
   return [v1 setTransform:v4];
 }
 
-- (void)_animateDismissalOfActivityView:(id)a3 withCompletion:(id)a4
+- (void)_animateDismissalOfActivityView:(id)view withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   v8 = MEMORY[0x277D75D18];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __90__SBAmbientTransientOverlayViewController__animateDismissalOfActivityView_withCompletion___block_invoke;
   v33[3] = &unk_2783A92D8;
-  v9 = v6;
+  v9 = viewCopy;
   v34 = v9;
-  v35 = self;
+  selfCopy = self;
   [v8 performWithoutAnimation:v33];
   [(SBAmbientTransientOverlayViewController *)self _incrementActivityPresentationAnimationCount];
   v10 = MEMORY[0x277D75D18];
@@ -1874,7 +1874,7 @@ uint64_t __78__SBAmbientTransientOverlayViewController__animatePresentationOfAct
   v28[4] = self;
   v11 = v32;
   v29 = v11;
-  v12 = v7;
+  v12 = completionCopy;
   v30 = v12;
   [v10 _animateUsingSpringWithDuration:2 delay:v31 options:v28 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:50.0 completion:0.0];
   [(SBAmbientTransientOverlayViewController *)self _incrementActivityPresentationAnimationCount];
@@ -1928,10 +1928,10 @@ uint64_t __90__SBAmbientTransientOverlayViewController__animateDismissalOfActivi
   return [v1 setTransform:&v3];
 }
 
-- (void)_decrementActivityPresentationAnimationCountAndPerformAnimationCleanUpIfNecessaryForActivityView:(id)a3 withCompletion:(id)a4
+- (void)_decrementActivityPresentationAnimationCountAndPerformAnimationCleanUpIfNecessaryForActivityView:(id)view withCompletion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   activityPresentationAnimationCount = self->_activityPresentationAnimationCount;
   if (activityPresentationAnimationCount)
   {
@@ -1940,12 +1940,12 @@ uint64_t __90__SBAmbientTransientOverlayViewController__animateDismissalOfActivi
     if (!v8)
     {
       [(SBAmbientTransientOverlayViewController *)self _removeActivityViewBlurMaterialView];
-      v9 = [v10 layer];
-      [v9 setAllowsGroupOpacity:0];
+      layer = [viewCopy layer];
+      [layer setAllowsGroupOpacity:0];
 
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
     }
   }

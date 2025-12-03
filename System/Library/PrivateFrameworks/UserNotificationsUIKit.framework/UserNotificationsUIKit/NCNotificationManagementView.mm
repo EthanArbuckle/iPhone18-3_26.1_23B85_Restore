@@ -1,16 +1,16 @@
 @interface NCNotificationManagementView
-- (CGSize)_explanationSizeForPlatterWidth:(double)a3;
-- (CGSize)_titleSizeForPlatterWidth:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationManagementView)initWithIcon:(id)a3 title:(id)a4 subtitle:(id)a5 sectionSettings:(id)a6 criticalAlert:(BOOL)a7;
+- (CGSize)_explanationSizeForPlatterWidth:(double)width;
+- (CGSize)_titleSizeForPlatterWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationManagementView)initWithIcon:(id)icon title:(id)title subtitle:(id)subtitle sectionSettings:(id)settings criticalAlert:(BOOL)alert;
 - (id)_newSeparatorView;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (void)_configureDeliveryButtonIfNeccessary:(id)a3;
-- (void)_configureExplanationIfNeccessary:(id)a3;
-- (void)_configureIconIfNeccessary:(id)a3;
-- (void)_configureOnOffToggleButtonIfNeccessary:(id)a3;
-- (void)_configureSubtitleIfNeccessary:(id)a3;
-- (void)_configureTitleIfNeccessary:(id)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (void)_configureDeliveryButtonIfNeccessary:(id)neccessary;
+- (void)_configureExplanationIfNeccessary:(id)neccessary;
+- (void)_configureIconIfNeccessary:(id)neccessary;
+- (void)_configureOnOffToggleButtonIfNeccessary:(id)neccessary;
+- (void)_configureSubtitleIfNeccessary:(id)neccessary;
+- (void)_configureTitleIfNeccessary:(id)neccessary;
 - (void)_configureTopSeparatorIfNeccessary;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateExplanationVisualStyling;
@@ -20,39 +20,39 @@
 
 @implementation NCNotificationManagementView
 
-- (NCNotificationManagementView)initWithIcon:(id)a3 title:(id)a4 subtitle:(id)a5 sectionSettings:(id)a6 criticalAlert:(BOOL)a7
+- (NCNotificationManagementView)initWithIcon:(id)icon title:(id)title subtitle:(id)subtitle sectionSettings:(id)settings criticalAlert:(BOOL)alert
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  iconCopy = icon;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  settingsCopy = settings;
   v20.receiver = self;
   v20.super_class = NCNotificationManagementView;
   v16 = [(NCNotificationManagementView *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    v16->_isCriticalAlert = a7;
-    [(NCNotificationManagementView *)v16 _configureIconIfNeccessary:v12];
-    [(NCNotificationManagementView *)v17 _configureTitleIfNeccessary:v13];
-    [(NCNotificationManagementView *)v17 _configureSubtitleIfNeccessary:v14];
-    [(NCNotificationManagementView *)v17 _configureDeliveryButtonIfNeccessary:v15];
-    [(NCNotificationManagementView *)v17 _configureExplanationIfNeccessary:v15];
-    [(NCNotificationManagementView *)v17 _configureOnOffToggleButtonIfNeccessary:v15];
-    v18 = [(NCNotificationManagementView *)v17 layer];
-    [v18 setAllowsGroupBlending:0];
+    v16->_isCriticalAlert = alert;
+    [(NCNotificationManagementView *)v16 _configureIconIfNeccessary:iconCopy];
+    [(NCNotificationManagementView *)v17 _configureTitleIfNeccessary:titleCopy];
+    [(NCNotificationManagementView *)v17 _configureSubtitleIfNeccessary:subtitleCopy];
+    [(NCNotificationManagementView *)v17 _configureDeliveryButtonIfNeccessary:settingsCopy];
+    [(NCNotificationManagementView *)v17 _configureExplanationIfNeccessary:settingsCopy];
+    [(NCNotificationManagementView *)v17 _configureOnOffToggleButtonIfNeccessary:settingsCopy];
+    layer = [(NCNotificationManagementView *)v17 layer];
+    [layer setAllowsGroupBlending:0];
   }
 
   return v17;
 }
 
-- (void)_configureIconIfNeccessary:(id)a3
+- (void)_configureIconIfNeccessary:(id)neccessary
 {
   if (!self->_icon)
   {
     v4 = MEMORY[0x277D755E8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithImage:v5];
+    neccessaryCopy = neccessary;
+    v6 = [[v4 alloc] initWithImage:neccessaryCopy];
 
     icon = self->_icon;
     self->_icon = v6;
@@ -63,20 +63,20 @@
   }
 }
 
-- (void)_configureTitleIfNeccessary:(id)a3
+- (void)_configureTitleIfNeccessary:(id)neccessary
 {
   if (!self->_titleLabel)
   {
     v4 = MEMORY[0x277D74310];
     v5 = *MEMORY[0x277D76A00];
-    v6 = a3;
+    neccessaryCopy = neccessary;
     v16 = [v4 preferredFontDescriptorWithTextStyle:v5 addingSymbolicTraits:2 options:0];
     v7 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76A20] addingSymbolicTraits:2 options:0];
     v8 = objc_alloc_init(MEMORY[0x277D756B8]);
     titleLabel = self->_titleLabel;
     self->_titleLabel = v8;
 
-    [(UILabel *)self->_titleLabel setText:v6];
+    [(UILabel *)self->_titleLabel setText:neccessaryCopy];
     v10 = self->_titleLabel;
     v11 = [MEMORY[0x277D74300] fontWithDescriptor:v16 size:0.0];
     [(UILabel *)v10 setFont:v11];
@@ -91,17 +91,17 @@
   }
 }
 
-- (void)_configureSubtitleIfNeccessary:(id)a3
+- (void)_configureSubtitleIfNeccessary:(id)neccessary
 {
   if (!self->_subtitleLabel)
   {
     v4 = MEMORY[0x277D756B8];
-    v5 = a3;
+    neccessaryCopy = neccessary;
     v6 = objc_alloc_init(v4);
     subtitleLabel = self->_subtitleLabel;
     self->_subtitleLabel = v6;
 
-    [(UILabel *)self->_subtitleLabel setText:v5];
+    [(UILabel *)self->_subtitleLabel setText:neccessaryCopy];
     v8 = self->_subtitleLabel;
     v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(UILabel *)v8 setFont:v9];
@@ -116,9 +116,9 @@
 {
   if (!self->_topSeparator)
   {
-    v3 = [(NCNotificationManagementView *)self _newSeparatorView];
+    _newSeparatorView = [(NCNotificationManagementView *)self _newSeparatorView];
     topSeparator = self->_topSeparator;
-    self->_topSeparator = v3;
+    self->_topSeparator = _newSeparatorView;
 
     [(NCNotificationManagementView *)self addSubview:self->_topSeparator];
 
@@ -126,16 +126,16 @@
   }
 }
 
-- (void)_configureDeliveryButtonIfNeccessary:(id)a3
+- (void)_configureDeliveryButtonIfNeccessary:(id)neccessary
 {
-  v4 = a3;
+  neccessaryCopy = neccessary;
   if (!self->_deliveryButton && !self->_isCriticalAlert)
   {
-    v12 = v4;
-    v5 = [v4 isDeliveredQuietly];
+    v12 = neccessaryCopy;
+    isDeliveredQuietly = [neccessaryCopy isDeliveredQuietly];
     v6 = NCUserNotificationsUIKitFrameworkBundle();
     v7 = v6;
-    if (v5)
+    if (isDeliveredQuietly)
     {
       v8 = @"NOTIFICATION_MANAGEMENT_DELIVER_PROMINENTLY";
     }
@@ -152,21 +152,21 @@
     self->_deliveryButton = v10;
 
     [(NCNotificationManagementView *)self addSubview:self->_deliveryButton];
-    v4 = v12;
+    neccessaryCopy = v12;
   }
 }
 
-- (void)_configureOnOffToggleButtonIfNeccessary:(id)a3
+- (void)_configureOnOffToggleButtonIfNeccessary:(id)neccessary
 {
-  v4 = a3;
+  neccessaryCopy = neccessary;
   if (!self->_onOffToggleButton)
   {
-    v12 = v4;
+    v12 = neccessaryCopy;
     if (self->_isCriticalAlert)
     {
-      v5 = [v4 criticalAlertsEnabled];
+      criticalAlertsEnabled = [neccessaryCopy criticalAlertsEnabled];
       v6 = NCUserNotificationsUIKitFrameworkBundle();
-      if (v5)
+      if (criticalAlertsEnabled)
       {
         v7 = @"NOTIFICATION_MANAGEMENT_TURN_OFF_CRITICAL_ALERTS";
       }
@@ -179,9 +179,9 @@
 
     else
     {
-      v8 = [v4 notificationsEnabled];
+      notificationsEnabled = [neccessaryCopy notificationsEnabled];
       v6 = NCUserNotificationsUIKitFrameworkBundle();
-      if (v8)
+      if (notificationsEnabled)
       {
         v7 = @"NOTIFICATION_MANAGEMENT_TURN_OFF_DEFAULT";
       }
@@ -199,7 +199,7 @@
     self->_onOffToggleButton = v10;
 
     [(NCNotificationManagementView *)self addSubview:self->_onOffToggleButton];
-    v4 = v12;
+    neccessaryCopy = v12;
   }
 }
 
@@ -214,22 +214,22 @@
   }
 }
 
-- (void)_configureExplanationIfNeccessary:(id)a3
+- (void)_configureExplanationIfNeccessary:(id)neccessary
 {
-  v4 = a3;
+  neccessaryCopy = neccessary;
   if (!self->_explanation)
   {
-    v18 = v4;
+    v18 = neccessaryCopy;
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
     explanation = self->_explanation;
     self->_explanation = v5;
 
     if (self->_isCriticalAlert)
     {
-      v7 = [MEMORY[0x277CF0CA8] sharedInstance];
-      v8 = [v7 deviceClass];
+      mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+      deviceClass = [mEMORY[0x277CF0CA8] deviceClass];
 
-      if (v8 == 2)
+      if (deviceClass == 2)
       {
         v9 = NCUserNotificationsUIKitFrameworkBundle();
         v10 = v9;
@@ -240,23 +240,23 @@ LABEL_12:
         [(UILabel *)self->_explanation setText:v15];
         [(UILabel *)self->_explanation setContentMode:4];
         [(UILabel *)self->_explanation setTextAlignment:1];
-        v16 = [MEMORY[0x277CF0D60] preferredFontProvider];
-        v17 = [v16 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
+        preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+        v17 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:8];
 
         [(UILabel *)self->_explanation setFont:v17];
         [(UILabel *)self->_explanation setNumberOfLines:0];
         [(NCNotificationManagementView *)self _updateExplanationVisualStyling];
         [(NCNotificationManagementView *)self addSubview:self->_explanation];
 
-        v4 = v18;
+        neccessaryCopy = v18;
         goto LABEL_13;
       }
 
-      v13 = [MEMORY[0x277CF0CA8] sharedInstance];
-      v14 = [v13 deviceClass];
+      mEMORY[0x277CF0CA8]2 = [MEMORY[0x277CF0CA8] sharedInstance];
+      deviceClass2 = [mEMORY[0x277CF0CA8]2 deviceClass];
 
       v10 = NCUserNotificationsUIKitFrameworkBundle();
-      if (v14 == 1)
+      if (deviceClass2 == 1)
       {
         v11 = @"NOTIFICATION_MANAGEMENT_CRITICAL_EXPLANATION_IPOD";
       }
@@ -269,9 +269,9 @@ LABEL_12:
 
     else
     {
-      v12 = [v18 isDeliveredQuietly];
+      isDeliveredQuietly = [v18 isDeliveredQuietly];
       v10 = NCUserNotificationsUIKitFrameworkBundle();
-      if (v12)
+      if (isDeliveredQuietly)
       {
         v11 = @"NOTIFICATION_MANAGEMENT_PROMINENT_EXPLANATION";
       }
@@ -305,15 +305,15 @@ LABEL_13:
   v2 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v2 setUserInteractionEnabled:0];
   [v2 setAutoresizingMask:2];
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  [v2 setBackgroundColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v2 setBackgroundColor:whiteColor];
 
   return v2;
 }
 
-- (CGSize)_titleSizeForPlatterWidth:(double)a3
+- (CGSize)_titleSizeForPlatterWidth:(double)width
 {
-  v3 = a3 + -32.0 + -40.0 + -16.0;
+  v3 = width + -32.0 + -40.0 + -16.0;
   [(UILabel *)self->_titleLabel sizeThatFits:v3, 1.79769313e308];
   _NCMainScreenScale();
   UISizeRoundToScale();
@@ -327,10 +327,10 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)_explanationSizeForPlatterWidth:(double)a3
+- (CGSize)_explanationSizeForPlatterWidth:(double)width
 {
-  v3 = a3 + -32.0;
-  [(UILabel *)self->_explanation sizeThatFits:a3 + -32.0, 1.79769313e308];
+  v3 = width + -32.0;
+  [(UILabel *)self->_explanation sizeThatFits:width + -32.0, 1.79769313e308];
   _NCMainScreenScale();
   UISizeRoundToScale();
   v5 = v3;
@@ -349,7 +349,7 @@ LABEL_13:
   Width = CGRectGetWidth(v37);
   v35.receiver = self;
   v35.super_class = NCNotificationManagementView;
-  v4 = [(NCNotificationManagementView *)&v35 _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(NCNotificationManagementView *)&v35 _shouldReverseLayoutDirection];
   _NCMainScreenScale();
   UIRectIntegralWithScale();
   v32 = v6;
@@ -357,7 +357,7 @@ LABEL_13:
   v30 = v8;
   v31 = v7;
   [(UIImageView *)self->_icon setFrame:?];
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     [(UILabel *)self->_titleLabel frame];
     v9 = CGRectGetWidth(v38);
@@ -372,8 +372,8 @@ LABEL_13:
   UIRectIntegralWithScale();
   [(UILabel *)titleLabel setFrame:?];
   [(UILabel *)self->_titleLabel _firstLineBaselineOffsetFromBoundsTop];
-  v12 = [(UILabel *)self->_subtitleLabel font];
-  [v12 _scaledValueForValue:24.0];
+  font = [(UILabel *)self->_subtitleLabel font];
+  [font _scaledValueForValue:24.0];
 
   v34 = Width;
   v13 = NCRectWithSize();
@@ -382,7 +382,7 @@ LABEL_13:
   v19 = v18;
   [(UILabel *)self->_subtitleLabel setBounds:?];
   [(UILabel *)self->_subtitleLabel _firstLineBaselineOffsetFromBoundsTop];
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v39.origin.x = v13;
     v39.origin.y = v15;
@@ -400,8 +400,8 @@ LABEL_13:
   _NCMainScreenScale();
   UIRectIntegralWithScale();
   [(UILabel *)subtitleLabel setFrame:?];
-  v21 = [(UILabel *)self->_subtitleLabel font];
-  [v21 _scaledValueForValue:8.0];
+  font2 = [(UILabel *)self->_subtitleLabel font];
+  [font2 _scaledValueForValue:8.0];
 
   _NCMainScreenScale();
   UIPointRoundToScale();
@@ -429,14 +429,14 @@ LABEL_13:
   [(UILabel *)explanation setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(NCNotificationManagementView *)self _configureTopSeparatorIfNeccessary:a3.width];
+  width = fits.width;
+  [(NCNotificationManagementView *)self _configureTopSeparatorIfNeccessary:fits.width];
   [(NCNotificationManagementView *)self _titleSizeForPlatterWidth:width];
   v6 = fmax(v5, 44.0) + 16.0;
-  v7 = [(UILabel *)self->_subtitleLabel font];
-  [v7 _scaledValueForValue:32.0];
+  font = [(UILabel *)self->_subtitleLabel font];
+  [font _scaledValueForValue:32.0];
   v9 = v6 + v8;
 
   [(NCNotificationManagementView *)self _separatorHeight];
@@ -465,7 +465,7 @@ LABEL_13:
   [(NCNotificationManagementView *)self _updateExplanationVisualStyling];
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   if (!self->_categoriesToProviders)
   {
@@ -474,13 +474,13 @@ LABEL_13:
     self->_categoriesToProviders = v5;
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:category];
   v8 = [(NSMutableDictionary *)self->_categoriesToProviders objectForKey:v7];
   if (!v8)
   {
     v9 = MEMORY[0x277D26740];
-    v10 = [(NCNotificationManagementView *)self traitCollection];
-    v8 = [v9 _visualStylingProviderForRecipe:53 category:a3 andUserInterfaceStyle:{objc_msgSend(v10, "userInterfaceStyle")}];
+    traitCollection = [(NCNotificationManagementView *)self traitCollection];
+    v8 = [v9 _visualStylingProviderForRecipe:53 category:category andUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
     if (v8)
     {

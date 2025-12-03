@@ -1,47 +1,47 @@
 @interface PKFlightActivityItemSource
-+ (id)placeholderForInvitation:(id)a3;
-- (PKFlightActivityItemSource)initWithInvitation:(id)a3;
-- (id)activityViewControllerLinkMetadata:(id)a3;
++ (id)placeholderForInvitation:(id)invitation;
+- (PKFlightActivityItemSource)initWithInvitation:(id)invitation;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 @end
 
 @implementation PKFlightActivityItemSource
 
-- (PKFlightActivityItemSource)initWithInvitation:(id)a3
+- (PKFlightActivityItemSource)initWithInvitation:(id)invitation
 {
-  v4 = a3;
+  invitationCopy = invitation;
   v35.receiver = self;
   v35.super_class = PKFlightActivityItemSource;
   v5 = [(PKFlightActivityItemSource *)&v35 init];
   if (v5)
   {
-    v6 = [v4 flight];
+    flight = [invitationCopy flight];
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [v6 airlineName];
-    v9 = [v6 airlineCode];
-    v10 = [v7 stringWithFormat:@"%@ • %@ %d", v8, v9, objc_msgSend(v6, "flightNumber")];
+    airlineName = [flight airlineName];
+    airlineCode = [flight airlineCode];
+    v10 = [v7 stringWithFormat:@"%@ • %@ %d", airlineName, airlineCode, objc_msgSend(flight, "flightNumber")];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v6 arrival];
-    v13 = [v12 currentGateTime];
-    v14 = v13;
-    if (v13)
+    arrival = [flight arrival];
+    currentGateTime = [arrival currentGateTime];
+    v14 = currentGateTime;
+    if (currentGateTime)
     {
-      v15 = v13;
+      scheduledGateTime = currentGateTime;
     }
 
     else
     {
-      v16 = [v6 arrival];
-      v15 = [v16 scheduledGateTime];
+      arrival2 = [flight arrival];
+      scheduledGateTime = [arrival2 scheduledGateTime];
     }
 
     v17 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v18 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [v17 setLocale:v18];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [v17 setLocale:autoupdatingCurrentLocale];
 
     [v17 setLocalizedDateFormatFromTemplate:@"M/d/yy"];
-    v19 = [v17 stringFromDate:v15];
+    v19 = [v17 stringFromDate:scheduledGateTime];
     v20 = PKLocalizedFlightString(&cfstr_FlightShareShe.isa, &stru_1F3BD5BF0.isa, v19);
     subtitle = v5->_subtitle;
     v5->_subtitle = v20;
@@ -50,10 +50,10 @@
     value = v5->_value;
     v5->_value = v22;
 
-    v24 = [v4 placeholderImageData];
-    if (v24)
+    placeholderImageData = [invitationCopy placeholderImageData];
+    if (placeholderImageData)
     {
-      v25 = [MEMORY[0x1E69DCAB8] imageWithData:v24 scale:PKUIScreenScale()];
+      v25 = [MEMORY[0x1E69DCAB8] imageWithData:placeholderImageData scale:PKUIScreenScale()];
       v26 = 0;
       iconImage = v5->_iconImage;
       v5->_iconImage = v25;
@@ -89,15 +89,15 @@
   return v5;
 }
 
-+ (id)placeholderForInvitation:(id)a3
++ (id)placeholderForInvitation:(id)invitation
 {
-  v3 = a3;
-  v4 = [[PKFlightActivityItemSource alloc] initWithInvitation:v3];
+  invitationCopy = invitation;
+  v4 = [[PKFlightActivityItemSource alloc] initWithInvitation:invitationCopy];
 
   return v4;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v4 = objc_alloc_init(MEMORY[0x1E696EC98]);
   [v4 setTitle:self->_title];

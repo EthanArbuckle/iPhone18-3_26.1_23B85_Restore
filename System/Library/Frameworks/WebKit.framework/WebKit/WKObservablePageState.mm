@@ -3,7 +3,7 @@
 - (BOOL)isLoading;
 - (NSString)title;
 - (NSURL)URL;
-- (WKObservablePageState)initWithPage:(void *)a3;
+- (WKObservablePageState)initWithPage:(void *)page;
 - (double)estimatedProgress;
 - (id).cxx_construct;
 - (uint64_t)dealloc;
@@ -12,7 +12,7 @@
 
 @implementation WKObservablePageState
 
-- (WKObservablePageState)initWithPage:(void *)a3
+- (WKObservablePageState)initWithPage:(void *)page
 {
   v13.receiver = self;
   v13.super_class = WKObservablePageState;
@@ -20,8 +20,8 @@
   v6 = v4;
   if (v4)
   {
-    v7 = *a3;
-    *a3 = 0;
+    v7 = *page;
+    *page = 0;
     m_ptr = v4->_page.m_ptr;
     v4->_page.m_ptr = v7;
     if (m_ptr)
@@ -62,23 +62,23 @@
 
 - (void)dealloc
 {
-  *a1 = &unk_1F10F3280;
-  v2 = a1[2];
-  a1[2] = 0;
+  *self = &unk_1F10F3280;
+  v2 = self[2];
+  self[2] = 0;
   if (v2 && atomic_fetch_add(v2 + 4, 0xFFFFFFFF) == 1)
   {
     atomic_store(1u, v2 + 4);
     (*(*v2 + 24))(v2);
   }
 
-  v3 = a1[1];
-  a1[1] = 0;
+  v3 = self[1];
+  self[1] = 0;
   if (v3)
   {
     CFRelease(*(v3 + 8));
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)isLoading

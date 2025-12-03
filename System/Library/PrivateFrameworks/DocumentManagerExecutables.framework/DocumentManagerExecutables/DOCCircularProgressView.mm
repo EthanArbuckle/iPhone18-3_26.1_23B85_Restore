@@ -1,6 +1,6 @@
 @interface DOCCircularProgressView
-- (_TtC26DocumentManagerExecutablesP33_37D8B6C95894D6D839B43B1D63EDC43423DOCCircularProgressView)initWithFrame:(CGRect)a3;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (_TtC26DocumentManagerExecutablesP33_37D8B6C95894D6D839B43B1D63EDC43423DOCCircularProgressView)initWithFrame:(CGRect)frame;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)tintColorDidChange;
 @end
 
@@ -15,14 +15,14 @@
   DOCCircularProgressView.updateColors()();
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  DOCCircularProgressView.layoutSublayers(of:)(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  DOCCircularProgressView.layoutSublayers(of:)(layerCopy);
 }
 
-- (_TtC26DocumentManagerExecutablesP33_37D8B6C95894D6D839B43B1D63EDC43423DOCCircularProgressView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutablesP33_37D8B6C95894D6D839B43B1D63EDC43423DOCCircularProgressView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

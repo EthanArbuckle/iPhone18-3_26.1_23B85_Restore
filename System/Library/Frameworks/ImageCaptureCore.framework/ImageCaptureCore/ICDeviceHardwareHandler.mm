@@ -1,7 +1,7 @@
 @interface ICDeviceHardwareHandler
 - (ICDeviceHardwareHandler)init;
-- (void)addDeviceContext:(id)a3;
-- (void)removeDeviceContext:(id)a3;
+- (void)addDeviceContext:(id)context;
+- (void)removeDeviceContext:(id)context;
 @end
 
 @implementation ICDeviceHardwareHandler
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (void)addDeviceContext:(id)a3
+- (void)addDeviceContext:(id)context
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   __ICOSLogCreate();
   v5 = @"addDeviceContext";
   if ([@"addDeviceContext" length] >= 0x15)
@@ -40,8 +40,8 @@
   }
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
-  v9 = [v4 objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
+  v8 = [contextCopy objectForKeyedSubscript:@"ICDeviceHandle"];
+  v9 = [contextCopy objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
   v10 = [v7 stringWithFormat:@"Handle: %@ | Identifier: %@", v8, v9];
 
   v11 = *MEMORY[0x1E69A8B08];
@@ -50,14 +50,14 @@
     v12 = v5;
     v13 = v11;
     *buf = 136446466;
-    v57 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v58 = 2114;
     v59 = v10;
     _os_log_impl(&dword_1C6F19000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_deviceContextsLock);
-  v49 = self;
+  selfCopy = self;
   v14 = [(NSMutableArray *)self->_deviceContexts copy];
   v51 = 0u;
   v52 = 0u;
@@ -80,11 +80,11 @@ LABEL_7:
 
       v19 = *(*(&v51 + 1) + 8 * v18);
       v20 = [v19 objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
-      v21 = [v4 objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
+      v21 = [contextCopy objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
       v22 = [v20 isEqualToString:v21];
 
       v23 = [v19 objectForKeyedSubscript:@"ICDeviceHandle"];
-      v24 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
+      v24 = [contextCopy objectForKeyedSubscript:@"ICDeviceHandle"];
       v25 = [v23 isEqualToString:v24];
 
       if (v22 & 1) != 0 || (v25)
@@ -106,9 +106,9 @@ LABEL_7:
 
     if (v22)
     {
-      v27 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
-      v26 = v49;
-      [(NSMutableArray *)v49->_disabledContexts addObject:v4];
+      v27 = [contextCopy objectForKeyedSubscript:@"ICDeviceHandle"];
+      v26 = selfCopy;
+      [(NSMutableArray *)selfCopy->_disabledContexts addObject:contextCopy];
       __ICOSLogCreate();
       v28 = @"adding (disabled)";
       if ([@"adding (disabled)" length] >= 0x15)
@@ -127,9 +127,9 @@ LABEL_7:
       {
         v35 = v28;
         v36 = v34;
-        v37 = [(__CFString *)v28 UTF8String];
+        uTF8String2 = [(__CFString *)v28 UTF8String];
         *buf = 136446466;
-        v57 = v37;
+        uTF8String = uTF8String2;
         v58 = 2114;
         v59 = v33;
         _os_log_impl(&dword_1C6F19000, v36, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -138,7 +138,7 @@ LABEL_7:
       goto LABEL_27;
     }
 
-    v26 = v49;
+    v26 = selfCopy;
     if (v25)
     {
       goto LABEL_28;
@@ -149,11 +149,11 @@ LABEL_7:
   {
 LABEL_14:
 
-    v26 = v49;
+    v26 = selfCopy;
   }
 
-  [(NSMutableArray *)v26->_deviceContexts addObject:v4];
-  v27 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
+  [(NSMutableArray *)v26->_deviceContexts addObject:contextCopy];
+  v27 = [contextCopy objectForKeyedSubscript:@"ICDeviceHandle"];
   __ICOSLogCreate();
   v38 = @"adding (new)";
   if ([@"adding (new)" length] >= 0x15)
@@ -172,15 +172,15 @@ LABEL_14:
   {
     v45 = v38;
     v46 = v44;
-    v47 = [(__CFString *)v38 UTF8String];
+    uTF8String3 = [(__CFString *)v38 UTF8String];
     *buf = 136446466;
-    v57 = v47;
+    uTF8String = uTF8String3;
     v58 = 2114;
     v59 = v43;
     _os_log_impl(&dword_1C6F19000, v46, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  v28 = [v4 objectForKeyedSubscript:@"ICDeviceDelegate"];
+  v28 = [contextCopy objectForKeyedSubscript:@"ICDeviceDelegate"];
   [(__CFString *)v28 openDeviceHandle:v27];
 LABEL_27:
 
@@ -190,10 +190,10 @@ LABEL_28:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeDeviceContext:(id)a3
+- (void)removeDeviceContext:(id)context
 {
   v91 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   __ICOSLogCreate();
   v5 = @"removeDeviceContext";
   if ([@"removeDeviceContext" length] >= 0x15)
@@ -203,8 +203,8 @@ LABEL_28:
   }
 
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
-  v9 = [v4 objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
+  v8 = [contextCopy objectForKeyedSubscript:@"ICDeviceHandle"];
+  v9 = [contextCopy objectForKeyedSubscript:@"ICDevicePrimaryIdentifier"];
   v10 = [v7 stringWithFormat:@"Handle: %@ | Identifier: %@", v8, v9];
 
   v11 = *MEMORY[0x1E69A8B08];
@@ -213,14 +213,14 @@ LABEL_28:
     v12 = v5;
     v13 = v11;
     *buf = 136446466;
-    v88 = [(__CFString *)v5 UTF8String];
+    uTF8String = [(__CFString *)v5 UTF8String];
     v89 = 2114;
     v90 = v10;
     _os_log_impl(&dword_1C6F19000, v13, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_deviceContextsLock);
-  v71 = self;
+  selfCopy = self;
   v14 = [(NSMutableArray *)self->_disabledContexts copy];
   v80 = 0u;
   v81 = 0u;
@@ -243,12 +243,12 @@ LABEL_28:
 
         v20 = *(*(&v80 + 1) + 8 * i);
         v21 = [v20 objectForKeyedSubscript:@"ICDeviceHandle"];
-        v22 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
+        v22 = [contextCopy objectForKeyedSubscript:@"ICDeviceHandle"];
         v23 = [v21 isEqualToString:v22];
 
         if (v23)
         {
-          [(NSMutableArray *)v71->_disabledContexts removeObject:v20];
+          [(NSMutableArray *)selfCopy->_disabledContexts removeObject:v20];
           __ICOSLogCreate();
           v36 = @"removing (disabled)";
           if ([@"removing (disabled)" length] >= 0x15)
@@ -267,15 +267,15 @@ LABEL_28:
           {
             v43 = v36;
             v44 = v42;
-            v45 = [(__CFString *)v36 UTF8String];
+            uTF8String2 = [(__CFString *)v36 UTF8String];
             *buf = 136446466;
-            v88 = v45;
+            uTF8String = uTF8String2;
             v89 = 2114;
             v90 = v41;
             _os_log_impl(&dword_1C6F19000, v44, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
           }
 
-          os_unfair_lock_unlock(&v71->_deviceContextsLock);
+          os_unfair_lock_unlock(&selfCopy->_deviceContextsLock);
           goto LABEL_48;
         }
       }
@@ -290,8 +290,8 @@ LABEL_28:
     }
   }
 
-  v24 = v71;
-  v25 = [(NSMutableArray *)v71->_deviceContexts copy];
+  v24 = selfCopy;
+  v25 = [(NSMutableArray *)selfCopy->_deviceContexts copy];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
@@ -314,7 +314,7 @@ LABEL_28:
 
         v31 = *(*(&v76 + 1) + 8 * j);
         v32 = [v31 objectForKeyedSubscript:@"ICDeviceHandle"];
-        v33 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
+        v33 = [contextCopy objectForKeyedSubscript:@"ICDeviceHandle"];
         v34 = [v32 isEqualToString:v33];
 
         if (v34)
@@ -323,11 +323,11 @@ LABEL_28:
           v35 = [v46 copy];
 
           v47 = [v31 objectForKeyedSubscript:@"ICDeviceDelegate"];
-          v48 = [v4 objectForKeyedSubscript:@"ICDeviceHandle"];
+          v48 = [contextCopy objectForKeyedSubscript:@"ICDeviceHandle"];
           [v47 closeDeviceHandle:v48];
 
-          v24 = v71;
-          [(NSMutableArray *)v71->_deviceContexts removeObject:v31];
+          v24 = selfCopy;
+          [(NSMutableArray *)selfCopy->_deviceContexts removeObject:v31];
 
           goto LABEL_28;
         }
@@ -343,7 +343,7 @@ LABEL_28:
     }
 
     v35 = 0;
-    v24 = v71;
+    v24 = selfCopy;
 LABEL_28:
     v15 = v70;
   }
@@ -392,7 +392,7 @@ LABEL_28:
             }
 
             v60 = MEMORY[0x1E696AEC0];
-            v24 = v71;
+            v24 = selfCopy;
             v61 = objc_opt_class();
             v62 = NSStringFromClass(v61);
             v63 = [v60 stringWithFormat:@"%@ -> %@", v62, v57];
@@ -403,16 +403,16 @@ LABEL_28:
             {
               v65 = v58;
               v66 = v64;
-              v67 = [(__CFString *)v58 UTF8String];
+              uTF8String3 = [(__CFString *)v58 UTF8String];
               *buf = 136446466;
-              v88 = v67;
+              uTF8String = uTF8String3;
               v89 = 2114;
               v90 = v63;
               _os_log_impl(&dword_1C6F19000, v66, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
             }
 
             v51 = [v54 copy];
-            [(NSMutableArray *)v71->_disabledContexts removeObject:v54];
+            [(NSMutableArray *)selfCopy->_disabledContexts removeObject:v54];
 
             goto LABEL_45;
           }
@@ -428,7 +428,7 @@ LABEL_28:
       }
 
       v15 = v70;
-      v24 = v71;
+      v24 = selfCopy;
     }
 
 LABEL_45:

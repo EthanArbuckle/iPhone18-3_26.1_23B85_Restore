@@ -1,17 +1,17 @@
 @interface VCCannedVideoCaptureSource
-- (VCCannedVideoCaptureSource)initWithVideo:(id)a3 callbackContext:(id)a4 frameCallback:(void *)a5 shouldScaleAndPad:(BOOL)a6;
+- (VCCannedVideoCaptureSource)initWithVideo:(id)video callbackContext:(id)context frameCallback:(void *)callback shouldScaleAndPad:(BOOL)pad;
 - (int)start;
 - (int)stop;
 - (void)dealloc;
-- (void)setContext:(id)a3 frameCallback:(void *)a4;
+- (void)setContext:(id)context frameCallback:(void *)callback;
 - (void)start;
 @end
 
 @implementation VCCannedVideoCaptureSource
 
-- (VCCannedVideoCaptureSource)initWithVideo:(id)a3 callbackContext:(id)a4 frameCallback:(void *)a5 shouldScaleAndPad:(BOOL)a6
+- (VCCannedVideoCaptureSource)initWithVideo:(id)video callbackContext:(id)context frameCallback:(void *)callback shouldScaleAndPad:(BOOL)pad
 {
-  v6 = a6;
+  padCopy = pad;
   v28 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = VCCannedVideoCaptureSource;
@@ -22,7 +22,7 @@
     goto LABEL_18;
   }
 
-  v11 = [CannedVideoCapture cannedVideoTypeForPath:a3];
+  v11 = [CannedVideoCapture cannedVideoTypeForPath:video];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v12 = VRTraceErrorLogLevelToCSTR();
@@ -43,7 +43,7 @@
 
   if (v11 == 2)
   {
-    v14 = [[CannedEncodedVideoCapture alloc] initWithPath:a3 shouldScaleAndPad:v6];
+    v14 = [[CannedEncodedVideoCapture alloc] initWithPath:video shouldScaleAndPad:padCopy];
   }
 
   else
@@ -54,7 +54,7 @@
       goto LABEL_17;
     }
 
-    v14 = [[CannedRawVideoCapture alloc] initWithPath:a3];
+    v14 = [[CannedRawVideoCapture alloc] initWithPath:video];
   }
 
   v10->_frameFeeder = v14;
@@ -88,7 +88,7 @@ LABEL_18:
     *(v15 + i) = -1;
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:a4];
+  v17 = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:context];
   v10->_weakCallbackContext = v17;
   if (!v17)
   {
@@ -96,7 +96,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v10->_frameCallback = a5;
+  v10->_frameCallback = callback;
   v10->_stateLock._os_unfair_lock_opaque = 0;
   return v10;
 }
@@ -253,7 +253,7 @@ LABEL_11:
   return 0;
 }
 
-- (void)setContext:(id)a3 frameCallback:(void *)a4
+- (void)setContext:(id)context frameCallback:(void *)callback
 {
   os_unfair_lock_lock(&self->_stateLock);
   if ([(VCWeakObjectHolder *)self->_weakCallbackContext strong]|| self->_frameCallback)
@@ -264,8 +264,8 @@ LABEL_11:
   else
   {
 
-    self->_weakCallbackContext = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:a3];
-    self->_frameCallback = a4;
+    self->_weakCallbackContext = [objc_alloc(MEMORY[0x1E6986630]) initWithObject:context];
+    self->_frameCallback = callback;
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
@@ -379,7 +379,7 @@ void ___VCCannedVideoCaptureSource_ConsumerThread_block_invoke(uint64_t a1)
     }
   }
 
-  *a1 = 4;
+  *self = 4;
 }
 
 - (void)setContext:frameCallback:.cold.1()

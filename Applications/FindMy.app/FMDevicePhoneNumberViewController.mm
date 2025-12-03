@@ -1,30 +1,30 @@
 @interface FMDevicePhoneNumberViewController
-- (_TtC6FindMy33FMDevicePhoneNumberViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy33FMDevicePhoneNumberViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (_TtC6FindMy33FMDevicePhoneNumberViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy33FMDevicePhoneNumberViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)handleUseEmailAction;
 - (void)nextAction;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FMDevicePhoneNumberViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10030962C(a3);
+  selfCopy = self;
+  sub_10030962C(appear);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_10030A0B0(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_10030A0B0(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
@@ -33,17 +33,17 @@
 
 - (void)nextAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_10030CE08();
 }
 
 - (void)handleUseEmailAction
 {
-  v5 = self;
-  v2 = [(FMDevicePhoneNumberViewController *)v5 parentViewController];
-  if (v2)
+  selfCopy = self;
+  parentViewController = [(FMDevicePhoneNumberViewController *)selfCopy parentViewController];
+  if (parentViewController)
   {
-    v3 = v2;
+    v3 = parentViewController;
     objc_opt_self();
     if (swift_dynamicCastObjCClass())
     {
@@ -53,20 +53,20 @@
 
     else
     {
-      v4 = v5;
-      v5 = v3;
+      v4 = selfCopy;
+      selfCopy = v3;
     }
   }
 }
 
-- (_TtC6FindMy33FMDevicePhoneNumberViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy33FMDevicePhoneNumberViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -74,12 +74,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_10030D054(v9, v11, a4, v13, v14, v16, a6);
+    return sub_10030D054(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -87,16 +87,16 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return sub_10030D054(v9, v11, a4, v13, v14, v16, a6);
+  return sub_10030D054(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC6FindMy33FMDevicePhoneNumberViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy33FMDevicePhoneNumberViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    text = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -105,8 +105,8 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return sub_10030D2A4(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return sub_10030D2A4(v9, v11, text, v13, icon, layout);
 }
 
 @end

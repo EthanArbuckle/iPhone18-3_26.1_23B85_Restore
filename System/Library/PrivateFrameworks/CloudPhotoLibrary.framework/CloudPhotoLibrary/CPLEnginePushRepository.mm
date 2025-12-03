@@ -1,44 +1,44 @@
 @interface CPLEnginePushRepository
-- (BOOL)acknowledgeContributorsUpdates:(id)a3 error:(id *)a4;
-- (BOOL)checkInBatchStorage:(id)a3 error:(id *)a4;
-- (BOOL)deleteAllChangesWithError:(id *)a3;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)deleteSharingFlagsWithMaxCount:(unint64_t)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)discardChangeWithScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)getRelatedScopedIdentifier:(id *)a3 forRecordWithScopedIdentifier:(id)a4;
-- (BOOL)hasAnyChangeWithRelatedScopedIdentifier:(id)a3;
-- (BOOL)hasChangesInScopeWithIdentifier:(id)a3;
-- (BOOL)hasChangesWithPriorityGreaterThanPriority:(unint64_t)a3 inScopeWithIdentifier:(id)a4;
-- (BOOL)hasChangesWithPriorityLowerThanPriority:(unint64_t)a3 inScopeWithIdentifier:(id)a4;
-- (BOOL)hasChangesWithRelatedScopedIdentifier:(id)a3 class:(Class)a4;
-- (BOOL)hasChangesWithScopeFilter:(id)a3;
-- (BOOL)hasSomeChangeWithScopedIdentifier:(id)a3;
-- (BOOL)reinjectChange:(id)a3 dequeueOrder:(int64_t)a4 overwrittenRecord:(BOOL *)a5 error:(id *)a6;
-- (BOOL)reinjectChange:(id)a3 priority:(unint64_t)a4 error:(id *)a5;
-- (BOOL)reinjectExtractedBatch:(id)a3 overwrittenRecordIdentifiers:(id *)a4 error:(id *)a5;
-- (BOOL)resetPriorityForScopeWithIdentifier:(id)a3 maxCount:(unint64_t)a4 hasMore:(BOOL *)a5 error:(id *)a6;
-- (BOOL)storeChange:(id)a3 pushContext:(id)a4 error:(id *)a5;
-- (BOOL)storeExtractedBatch:(id)a3 error:(id *)a4;
-- (CPLEnginePushRepository)initWithEngineStore:(id)a3 name:(id)a4;
+- (BOOL)acknowledgeContributorsUpdates:(id)updates error:(id *)error;
+- (BOOL)checkInBatchStorage:(id)storage error:(id *)error;
+- (BOOL)deleteAllChangesWithError:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)deleteSharingFlagsWithMaxCount:(unint64_t)count deletedCount:(unint64_t *)deletedCount error:(id *)error;
+- (BOOL)discardChangeWithScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)getRelatedScopedIdentifier:(id *)identifier forRecordWithScopedIdentifier:(id)scopedIdentifier;
+- (BOOL)hasAnyChangeWithRelatedScopedIdentifier:(id)identifier;
+- (BOOL)hasChangesInScopeWithIdentifier:(id)identifier;
+- (BOOL)hasChangesWithPriorityGreaterThanPriority:(unint64_t)priority inScopeWithIdentifier:(id)identifier;
+- (BOOL)hasChangesWithPriorityLowerThanPriority:(unint64_t)priority inScopeWithIdentifier:(id)identifier;
+- (BOOL)hasChangesWithRelatedScopedIdentifier:(id)identifier class:(Class)class;
+- (BOOL)hasChangesWithScopeFilter:(id)filter;
+- (BOOL)hasSomeChangeWithScopedIdentifier:(id)identifier;
+- (BOOL)reinjectChange:(id)change dequeueOrder:(int64_t)order overwrittenRecord:(BOOL *)record error:(id *)error;
+- (BOOL)reinjectChange:(id)change priority:(unint64_t)priority error:(id *)error;
+- (BOOL)reinjectExtractedBatch:(id)batch overwrittenRecordIdentifiers:(id *)identifiers error:(id *)error;
+- (BOOL)resetPriorityForScopeWithIdentifier:(id)identifier maxCount:(unint64_t)count hasMore:(BOOL *)more error:(id *)error;
+- (BOOL)storeChange:(id)change pushContext:(id)context error:(id *)error;
+- (BOOL)storeExtractedBatch:(id)batch error:(id *)error;
+- (CPLEnginePushRepository)initWithEngineStore:(id)store name:(id)name;
 - (id)_outgoingResources;
 - (id)_timingStatisticStatuses;
-- (id)allChangesWithClass:(Class)a3 relatedScopedIdentifier:(id)a4;
-- (id)allChangesWithScopeIdentifier:(id)a3;
-- (id)changeWithScopedIdentifier:(id)a3;
-- (id)checkOutBatchStorageWithPriority:(unint64_t)a3 error:(id *)a4;
-- (id)contributorsUpdatesForScopeWithIdentifier:(id)a3 maxCount:(unint64_t)a4;
-- (id)countPerFlagsForScopeWithIdentifier:(id)a3;
-- (id)scopedIdentifiersForChangesWithFlag:(int64_t)a3 forScopeWithIdentifier:(id)a4;
+- (id)allChangesWithClass:(Class)class relatedScopedIdentifier:(id)identifier;
+- (id)allChangesWithScopeIdentifier:(id)identifier;
+- (id)changeWithScopedIdentifier:(id)identifier;
+- (id)checkOutBatchStorageWithPriority:(unint64_t)priority error:(id *)error;
+- (id)contributorsUpdatesForScopeWithIdentifier:(id)identifier maxCount:(unint64_t)count;
+- (id)countPerFlagsForScopeWithIdentifier:(id)identifier;
+- (id)scopedIdentifiersForChangesWithFlag:(int64_t)flag forScopeWithIdentifier:(id)identifier;
 - (id)status;
 - (id)storedExtractedBatch;
-- (unint64_t)countOfChangesInScopeWithIdentifier:(id)a3;
-- (unint64_t)maximumResourceSizePerBatchForRemainingTime:(double)a3;
-- (unint64_t)minimumPriorityForChangesInScopeWithIdentifier:(id)a3;
-- (void)addPushObserver:(id)a3 withIdentifier:(id)a4;
+- (unint64_t)countOfChangesInScopeWithIdentifier:(id)identifier;
+- (unint64_t)maximumResourceSizePerBatchForRemainingTime:(double)time;
+- (unint64_t)minimumPriorityForChangesInScopeWithIdentifier:(id)identifier;
+- (void)addPushObserver:(id)observer withIdentifier:(id)identifier;
 - (void)notePushRepositoryStoredSomeChanges;
-- (void)setExtractionStrategy:(id)a3;
-- (void)updateApproximativeUploadRate:(double)a3;
-- (void)updateTimingStatisticForKey:(id)a3 duration:(double)a4 recordCount:(unint64_t)a5 error:(BOOL)a6 cancelled:(BOOL)a7;
+- (void)setExtractionStrategy:(id)strategy;
+- (void)updateApproximativeUploadRate:(double)rate;
+- (void)updateTimingStatisticForKey:(id)key duration:(double)duration recordCount:(unint64_t)count error:(BOOL)error cancelled:(BOOL)cancelled;
 @end
 
 @implementation CPLEnginePushRepository
@@ -47,15 +47,15 @@
 {
   v19.receiver = self;
   v19.super_class = CPLEnginePushRepository;
-  v3 = [(CPLEngineStorage *)&v19 status];
-  v4 = [v3 mutableCopy];
+  status = [(CPLEngineStorage *)&v19 status];
+  v4 = [status mutableCopy];
 
   extractionStrategy = self->_extractionStrategy;
   if (extractionStrategy)
   {
-    v6 = [(CPLBatchExtractionStrategy *)extractionStrategy name];
-    v7 = [(CPLBatchExtractionStrategy *)self->_extractionStrategy currentStepDescription];
-    [v4 appendFormat:@"\nCurrent strategy: %@ (step: %@)", v6, v7];
+    name = [(CPLBatchExtractionStrategy *)extractionStrategy name];
+    currentStepDescription = [(CPLBatchExtractionStrategy *)self->_extractionStrategy currentStepDescription];
+    [v4 appendFormat:@"\nCurrent strategy: %@ (step: %@)", name, currentStepDescription];
   }
 
   else if (self->_lastStrategyName)
@@ -75,17 +75,17 @@
   v10 = [MEMORY[0x1E696AAF0] stringFromByteCount:-[CPLEnginePushRepository maximumResourceSizePerBatchForRemainingTime:](self countStyle:{"maximumResourceSizePerBatchForRemainingTime:", 3600.0), 1}];
   [v9 appendFormat:@"\nBatch max size: %@", v10];
 
-  v11 = [(CPLEnginePushRepository *)self _timingStatisticStatuses];
-  if ([v11 count])
+  _timingStatisticStatuses = [(CPLEnginePushRepository *)self _timingStatisticStatuses];
+  if ([_timingStatisticStatuses count])
   {
-    v12 = [v11 componentsJoinedByString:@"\n\t"];
+    v12 = [_timingStatisticStatuses componentsJoinedByString:@"\n\t"];
     [v9 appendFormat:@"\nTiming stats:\n\t%@", v12];
   }
 
   if ([(NSMutableDictionary *)self->_pushObservers count])
   {
-    v13 = [(NSMutableDictionary *)self->_pushObservers allKeys];
-    v14 = [v13 componentsJoinedByString:{@", "}];
+    allKeys = [(NSMutableDictionary *)self->_pushObservers allKeys];
+    v14 = [allKeys componentsJoinedByString:{@", "}];
     [v9 appendFormat:@"\nObservers: %@", v14];
   }
 
@@ -106,10 +106,10 @@ void __33__CPLEnginePushRepository_status__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addPushObserver:(id)a3 withIdentifier:(id)a4
+- (void)addPushObserver:(id)observer withIdentifier:(id)identifier
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  identifierCopy = identifier;
   if (!self->_pushObservers)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -117,62 +117,62 @@ void __33__CPLEnginePushRepository_status__block_invoke(uint64_t a1)
     self->_pushObservers = v7;
   }
 
-  v9 = [v11 copy];
+  v9 = [observerCopy copy];
   v10 = MEMORY[0x1E128EBA0]();
-  [(NSMutableDictionary *)self->_pushObservers setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_pushObservers setObject:v10 forKeyedSubscript:identifierCopy];
 }
 
-- (BOOL)acknowledgeContributorsUpdates:(id)a3 error:(id *)a4
+- (BOOL)acknowledgeContributorsUpdates:(id)updates error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 acknowledgeContributorsUpdates:v6 error:a4];
+  updatesCopy = updates;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject acknowledgeContributorsUpdates:updatesCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)contributorsUpdatesForScopeWithIdentifier:(id)a3 maxCount:(unint64_t)a4
+- (id)contributorsUpdatesForScopeWithIdentifier:(id)identifier maxCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 contributorsUpdatesForScopeWithIdentifier:v6 maxCount:a4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject contributorsUpdatesForScopeWithIdentifier:identifierCopy maxCount:count];
 
   return v8;
 }
 
-- (BOOL)deleteSharingFlagsWithMaxCount:(unint64_t)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteSharingFlagsWithMaxCount:(unint64_t)count deletedCount:(unint64_t *)deletedCount error:(id *)error
 {
-  v8 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a5) = [v8 deleteSharingFlagsWithMaxCount:a3 deletedCount:a4 error:a5];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject deleteSharingFlagsWithMaxCount:count deletedCount:deletedCount error:error];
 
-  return a5;
+  return error;
 }
 
-- (id)scopedIdentifiersForChangesWithFlag:(int64_t)a3 forScopeWithIdentifier:(id)a4
+- (id)scopedIdentifiersForChangesWithFlag:(int64_t)flag forScopeWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 scopedIdentifiersForChangesWithFlag:a3 forScopeWithIdentifier:v6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject scopedIdentifiersForChangesWithFlag:flag forScopeWithIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (id)countPerFlagsForScopeWithIdentifier:(id)a3
+- (id)countPerFlagsForScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 countPerFlagsForScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject countPerFlagsForScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)getRelatedScopedIdentifier:(id *)a3 forRecordWithScopedIdentifier:(id)a4
+- (BOOL)getRelatedScopedIdentifier:(id *)identifier forRecordWithScopedIdentifier:(id)scopedIdentifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a3) = [v7 getRelatedScopedIdentifier:a3 forRecordWithScopedIdentifier:v6];
+  scopedIdentifierCopy = scopedIdentifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(identifier) = [platformObject getRelatedScopedIdentifier:identifier forRecordWithScopedIdentifier:scopedIdentifierCopy];
 
-  return a3;
+  return identifier;
 }
 
 - (id)_timingStatisticStatuses
@@ -230,21 +230,21 @@ void __51__CPLEnginePushRepository__timingStatisticStatuses__block_invoke_2(uint
   [v4 addObject:v8];
 }
 
-- (void)updateTimingStatisticForKey:(id)a3 duration:(double)a4 recordCount:(unint64_t)a5 error:(BOOL)a6 cancelled:(BOOL)a7
+- (void)updateTimingStatisticForKey:(id)key duration:(double)duration recordCount:(unint64_t)count error:(BOOL)error cancelled:(BOOL)cancelled
 {
-  v12 = a3;
+  keyCopy = key;
   timingStatisticQueue = self->_timingStatisticQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__CPLEnginePushRepository_updateTimingStatisticForKey_duration_recordCount_error_cancelled___block_invoke;
   block[3] = &unk_1E861BA88;
   block[4] = self;
-  v16 = v12;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v14 = v12;
+  v16 = keyCopy;
+  durationCopy = duration;
+  countCopy = count;
+  errorCopy = error;
+  cancelledCopy = cancelled;
+  v14 = keyCopy;
   dispatch_sync(timingStatisticQueue, block);
 }
 
@@ -262,15 +262,15 @@ void __92__CPLEnginePushRepository_updateTimingStatisticForKey_duration_recordCo
   [v2 updateWithDuration:*(a1 + 56) recordCount:*(a1 + 64) error:*(a1 + 65) cancelled:*(a1 + 48)];
 }
 
-- (unint64_t)maximumResourceSizePerBatchForRemainingTime:(double)a3
+- (unint64_t)maximumResourceSizePerBatchForRemainingTime:(double)time
 {
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 engineLibrary];
-  v7 = [v6 systemMonitor];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  engineLibrary = [engineStore engineLibrary];
+  systemMonitor = [engineLibrary systemMonitor];
 
-  if (![v7 isOnCellularOrUnknown])
+  if (![systemMonitor isOnCellularOrUnknown])
   {
-    if (a3 < 10.0)
+    if (time < 10.0)
     {
       v9 = 10485760;
       goto LABEL_8;
@@ -288,16 +288,16 @@ LABEL_7:
     block[3] = &unk_1E861BA60;
     block[4] = self;
     block[5] = &v13;
-    block[6] = fmin(a3, 120.0);
+    block[6] = fmin(time, 120.0);
     dispatch_sync(uploadRateQueue, block);
     v9 = v14[3];
     _Block_object_dispose(&v13, 8);
     goto LABEL_8;
   }
 
-  v8 = [v7 isDataBudgetOverriden];
+  isDataBudgetOverriden = [systemMonitor isDataBudgetOverriden];
   v9 = 10485760;
-  if (a3 >= 10.0 && (v8 & 1) != 0)
+  if (time >= 10.0 && (isDataBudgetOverriden & 1) != 0)
   {
     goto LABEL_7;
   }
@@ -333,9 +333,9 @@ void *__71__CPLEnginePushRepository_maximumResourceSizePerBatchForRemainingTime_
   return result;
 }
 
-- (void)updateApproximativeUploadRate:(double)a3
+- (void)updateApproximativeUploadRate:(double)rate
 {
-  if (a3 > 0.0)
+  if (rate > 0.0)
   {
     v15[6] = v6;
     v15[7] = v5;
@@ -347,14 +347,14 @@ void *__71__CPLEnginePushRepository_maximumResourceSizePerBatchForRemainingTime_
     v15[2] = __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invoke;
     v15[3] = &unk_1E861B100;
     v15[4] = self;
-    *&v15[5] = a3;
+    *&v15[5] = rate;
     dispatch_async(uploadRateQueue, v15);
-    v10 = [(CPLEngineStorage *)self engineStore];
-    v11 = [v10 engineLibrary];
-    v12 = [v11 scheduler];
-    v13 = [v12 predictor];
-    v14 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
-    [v13 updatePredictedValue:v14 forType:@"uploadSpeed"];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    engineLibrary = [engineStore engineLibrary];
+    scheduler = [engineLibrary scheduler];
+    predictor = [scheduler predictor];
+    v14 = [MEMORY[0x1E696AD98] numberWithLongLong:rate];
+    [predictor updatePredictedValue:v14 forType:@"uploadSpeed"];
   }
 }
 
@@ -370,58 +370,58 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
   return result;
 }
 
-- (BOOL)hasAnyChangeWithRelatedScopedIdentifier:(id)a3
+- (BOOL)hasAnyChangeWithRelatedScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasAnyChangeWithRelatedScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasAnyChangeWithRelatedScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)hasChangesWithRelatedScopedIdentifier:(id)a3 class:(Class)a4
+- (BOOL)hasChangesWithRelatedScopedIdentifier:(id)identifier class:(Class)class
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 hasChangesWithRelatedScopedIdentifier:v6 class:a4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(class) = [platformObject hasChangesWithRelatedScopedIdentifier:identifierCopy class:class];
 
-  return a4;
+  return class;
 }
 
-- (id)allChangesWithScopeIdentifier:(id)a3
+- (id)allChangesWithScopeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 allChangesWithScopeIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject allChangesWithScopeIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)allChangesWithClass:(Class)a3 relatedScopedIdentifier:(id)a4
+- (id)allChangesWithClass:(Class)class relatedScopedIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  v8 = [v7 allChangesWithClass:a3 relatedScopedIdentifier:v6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v8 = [platformObject allChangesWithClass:class relatedScopedIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (id)changeWithScopedIdentifier:(id)a3
+- (id)changeWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 changeWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject changeWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (void)setExtractionStrategy:(id)a3
+- (void)setExtractionStrategy:(id)strategy
 {
-  v5 = a3;
+  strategyCopy = strategy;
   extractionStrategy = self->_extractionStrategy;
-  if (extractionStrategy != v5)
+  if (extractionStrategy != strategyCopy)
   {
-    if (v5)
+    if (strategyCopy)
     {
       lastStrategyName = self->_lastStrategyName;
       self->_lastStrategyName = 0;
@@ -435,44 +435,44 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
       self->_lastStrategyName = v8;
     }
 
-    objc_storeStrong(&self->_extractionStrategy, a3);
+    objc_storeStrong(&self->_extractionStrategy, strategy);
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)checkInBatchStorage:(id)a3 error:(id *)a4
+- (BOOL)checkInBatchStorage:(id)storage error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a4) = [v7 checkInBatchStorage:v6 error:a4];
+  storageCopy = storage;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject checkInBatchStorage:storageCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (id)checkOutBatchStorageWithPriority:(unint64_t)a3 error:(id *)a4
+- (id)checkOutBatchStorageWithPriority:(unint64_t)priority error:(id *)error
 {
-  v6 = [(CPLEngineStorage *)self platformObject];
-  v7 = [v6 checkOutBatchStorageWithPriority:a3 error:a4];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v7 = [platformObject checkOutBatchStorageWithPriority:priority error:error];
 
   return v7;
 }
 
-- (BOOL)resetPriorityForScopeWithIdentifier:(id)a3 maxCount:(unint64_t)a4 hasMore:(BOOL *)a5 error:(id *)a6
+- (BOOL)resetPriorityForScopeWithIdentifier:(id)identifier maxCount:(unint64_t)count hasMore:(BOOL *)more error:(id *)error
 {
-  v10 = a3;
-  v11 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a6) = [v11 resetPriorityForScopeWithIdentifier:v10 maxCount:a4 hasMore:a5 error:a6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject resetPriorityForScopeWithIdentifier:identifierCopy maxCount:count hasMore:more error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)reinjectChange:(id)a3 priority:(unint64_t)a4 error:(id *)a5
+- (BOOL)reinjectChange:(id)change priority:(unint64_t)priority error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [v9 _pushContext];
-  if (!v10)
+  changeCopy = change;
+  _pushContext = [changeCopy _pushContext];
+  if (!_pushContext)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -480,20 +480,20 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v26 = v9;
+        v26 = changeCopy;
         _os_log_impl(&dword_1DC05A000, v18, OS_LOG_TYPE_ERROR, "%@ should have a push context here", buf, 0xCu);
       }
     }
 
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEnginePushRepository.m"];
-    [v19 handleFailureInMethod:a2 object:self file:v20 lineNumber:254 description:{@"%@ should have a push context here", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v20 lineNumber:254 description:{@"%@ should have a push context here", changeCopy}];
 
     abort();
   }
 
-  v11 = v10;
-  if ([v10 priority] > a4)
+  v11 = _pushContext;
+  if ([_pushContext priority] > priority)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -501,25 +501,25 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v26 = v9;
+        v26 = changeCopy;
         v27 = 2048;
-        v28 = a4;
+        priorityCopy2 = priority;
         v29 = 2048;
-        v30 = [v11 priority];
+        priority = [v11 priority];
         _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_ERROR, "Trying to re-inject %@ with priority %lu while its priority is already %lu", buf, 0x20u);
       }
     }
 
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEnginePushRepository.m"];
-    [v22 handleFailureInMethod:a2 object:self file:v23 lineNumber:255 description:{@"Trying to re-inject %@ with priority %lu while its priority is already %lu", v9, a4, objc_msgSend(v11, "priority")}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:v23 lineNumber:255 description:{@"Trying to re-inject %@ with priority %lu while its priority is already %lu", changeCopy, priority, objc_msgSend(v11, "priority")}];
 
     abort();
   }
 
-  v12 = [v11 copyContextWithPriority:a4];
-  [v9 _setPushContext:v12];
-  v13 = [v9 dequeueOrder];
+  v12 = [v11 copyContextWithPriority:priority];
+  [changeCopy _setPushContext:v12];
+  dequeueOrder = [changeCopy dequeueOrder];
   v24 = 0;
   if ((_CPLSilentLogging & 1) == 0)
   {
@@ -527,16 +527,16 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v26 = v9;
+      v26 = changeCopy;
       v27 = 2048;
-      v28 = a4;
+      priorityCopy2 = priority;
       v29 = 2048;
-      v30 = [v11 priority];
+      priority = [v11 priority];
       _os_log_impl(&dword_1DC05A000, v14, OS_LOG_TYPE_DEFAULT, "Re-injecting %@ with priority %lu (previously was %lu)", buf, 0x20u);
     }
   }
 
-  v15 = [(CPLEnginePushRepository *)self reinjectChange:v9 dequeueOrder:v13 overwrittenRecord:&v24 error:a5];
+  v15 = [(CPLEnginePushRepository *)self reinjectChange:changeCopy dequeueOrder:dequeueOrder overwrittenRecord:&v24 error:error];
 
   v16 = *MEMORY[0x1E69E9840];
   return v15;
@@ -544,23 +544,23 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
 
 - (id)storedExtractedBatch
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 storedExtractedBatch];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  storedExtractedBatch = [platformObject storedExtractedBatch];
 
-  return v3;
+  return storedExtractedBatch;
 }
 
-- (BOOL)reinjectExtractedBatch:(id)a3 overwrittenRecordIdentifiers:(id *)a4 error:(id *)a5
+- (BOOL)reinjectExtractedBatch:(id)batch overwrittenRecordIdentifiers:(id *)identifiers error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(CPLEngineStorage *)self engineStore];
-  v11 = [v10 resourceStorage];
-  v12 = [v11 fileStorage];
-  [v12 setTrackAllStoresAndDeletesUntilEndOfTransaction:1];
+  batchCopy = batch;
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  resourceStorage = [engineStore resourceStorage];
+  fileStorage = [resourceStorage fileStorage];
+  [fileStorage setTrackAllStoresAndDeletesUntilEndOfTransaction:1];
 
-  v13 = [v9 clientCacheIdentifier];
-  if (!v13)
+  clientCacheIdentifier = [batchCopy clientCacheIdentifier];
+  if (!clientCacheIdentifier)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -572,36 +572,36 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
       }
     }
 
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEnginePushRepository.m"];
-    [v39 handleFailureInMethod:a2 object:self file:v40 lineNumber:214 description:@"Can't re-inject an extracted batch without a client cache identifier"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v40 lineNumber:214 description:@"Can't re-inject an extracted batch without a client cache identifier"];
 
     abort();
   }
 
-  v14 = v13;
-  v15 = [(CPLEngineStorage *)self engineStore];
-  v16 = [v15 clientCacheIdentifier];
+  v14 = clientCacheIdentifier;
+  engineStore2 = [(CPLEngineStorage *)self engineStore];
+  clientCacheIdentifier2 = [engineStore2 clientCacheIdentifier];
 
-  if (v16 && ([v14 isEqual:v16] & 1) != 0)
+  if (clientCacheIdentifier2 && ([v14 isEqual:clientCacheIdentifier2] & 1) != 0)
   {
     v41 = v14;
-    v42 = a4;
+    identifiersCopy = identifiers;
     v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v43 = v9;
-    v18 = [v9 batch];
-    v19 = [v18 records];
+    v43 = batchCopy;
+    batch = [batchCopy batch];
+    records = [batch records];
 
-    v20 = [MEMORY[0x1E695DF00] date];
-    [v20 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     v22 = v21;
-    v23 = [v19 count];
+    v23 = [records count];
 
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v24 = v19;
+    v24 = records;
     v25 = [v24 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v25)
     {
@@ -619,19 +619,19 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
 
           v30 = *(*(&v44 + 1) + 8 * i);
           buf[0] = 0;
-          if (![(CPLEnginePushRepository *)self reinjectChange:v30 dequeueOrder:v27 overwrittenRecord:buf error:a5])
+          if (![(CPLEnginePushRepository *)self reinjectChange:v30 dequeueOrder:v27 overwrittenRecord:buf error:error])
           {
 
             v35 = v17;
             v33 = 0;
-            *v42 = v17;
+            *identifiersCopy = v17;
             goto LABEL_21;
           }
 
           if (buf[0] == 1)
           {
-            v31 = [v30 scopedIdentifier];
-            [v17 addObject:v31];
+            scopedIdentifier = [v30 scopedIdentifier];
+            [v17 addObject:scopedIdentifier];
           }
 
           --v27;
@@ -648,12 +648,12 @@ double __57__CPLEnginePushRepository_updateApproximativeUploadRate___block_invok
     }
 
     v32 = v17;
-    *v42 = v17;
+    *identifiersCopy = v17;
     [(CPLEnginePushRepository *)self notePushRepositoryStoredSomeChanges];
     v33 = 1;
 LABEL_21:
 
-    v9 = v43;
+    batchCopy = v43;
     v14 = v41;
   }
 
@@ -669,7 +669,7 @@ LABEL_21:
       }
     }
 
-    *a4 = MEMORY[0x1E695E0F0];
+    *identifiers = MEMORY[0x1E695E0F0];
     v33 = 1;
   }
 
@@ -677,25 +677,25 @@ LABEL_21:
   return v33;
 }
 
-- (BOOL)storeExtractedBatch:(id)a3 error:(id *)a4
+- (BOOL)storeExtractedBatch:(id)batch error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  batchCopy = batch;
+  if (batchCopy)
   {
-    v8 = [(CPLEngineStorage *)self engineStore];
-    v9 = [v8 clientCacheIdentifier];
+    engineStore = [(CPLEngineStorage *)self engineStore];
+    clientCacheIdentifier = [engineStore clientCacheIdentifier];
 
-    v10 = [v7 clientCacheIdentifier];
+    clientCacheIdentifier2 = [batchCopy clientCacheIdentifier];
 
-    if (v10)
+    if (clientCacheIdentifier2)
     {
-      v11 = v9;
-      v12 = [v7 clientCacheIdentifier];
-      v13 = v12;
-      if (v11 && v12)
+      v11 = clientCacheIdentifier;
+      clientCacheIdentifier3 = [batchCopy clientCacheIdentifier];
+      v13 = clientCacheIdentifier3;
+      if (v11 && clientCacheIdentifier3)
       {
-        v14 = [v11 isEqual:v12];
+        v14 = [v11 isEqual:clientCacheIdentifier3];
 
         if ((v14 & 1) == 0)
         {
@@ -714,19 +714,19 @@ LABEL_6:
             v15 = __CPLStorageOSLogDomain_909();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
             {
-              v16 = [v7 clientCacheIdentifier];
+              clientCacheIdentifier4 = [batchCopy clientCacheIdentifier];
               *buf = 138412546;
               v28 = v11;
               v29 = 2112;
-              v30 = v16;
+              v30 = clientCacheIdentifier4;
               _os_log_impl(&dword_1DC05A000, v15, OS_LOG_TYPE_ERROR, "Trying to store extracted batch with the wrong client cache identifier (%@ vs. %@)", buf, 0x16u);
             }
           }
 
-          v17 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEnginePushRepository.m"];
-          v19 = [v7 clientCacheIdentifier];
-          [v17 handleFailureInMethod:a2 object:self file:v18 lineNumber:194 description:{@"Trying to store extracted batch with the wrong client cache identifier (%@ vs. %@)", v11, v19}];
+          clientCacheIdentifier5 = [batchCopy clientCacheIdentifier];
+          [currentHandler handleFailureInMethod:a2 object:self file:v18 lineNumber:194 description:{@"Trying to store extracted batch with the wrong client cache identifier (%@ vs. %@)", v11, clientCacheIdentifier5}];
 
           abort();
         }
@@ -735,7 +735,7 @@ LABEL_6:
 
     else
     {
-      if (!v9)
+      if (!clientCacheIdentifier)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -747,64 +747,64 @@ LABEL_6:
           }
         }
 
-        v25 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEnginePushRepository.m"];
-        [v25 handleFailureInMethod:a2 object:self file:v26 lineNumber:198 description:@"Trying to store an extracted batch but we don't have a client cache identifier"];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:v26 lineNumber:198 description:@"Trying to store an extracted batch but we don't have a client cache identifier"];
 
         abort();
       }
 
-      [v7 setClientCacheIdentifier:v9];
+      [batchCopy setClientCacheIdentifier:clientCacheIdentifier];
     }
   }
 
-  v20 = [(CPLEngineStorage *)self platformObject];
-  v21 = [v20 storeExtractedBatch:v7 error:a4];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v21 = [platformObject storeExtractedBatch:batchCopy error:error];
 
   v22 = *MEMORY[0x1E69E9840];
   return v21;
 }
 
-- (BOOL)deleteAllChangesWithError:(id *)a3
+- (BOOL)deleteAllChangesWithError:(id *)error
 {
-  v4 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a3) = [v4 deleteAllChangesWithError:a3];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(error) = [platformObject deleteAllChangesWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)discardChangeWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)discardChangeWithScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CPLEngineStorage *)self platformObject];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v12 = 0;
-  v8 = [v7 deleteChangeWithScopedIdentifier:v6 discardedUploadIdentifier:&v12 error:a4];
+  v8 = [platformObject deleteChangeWithScopedIdentifier:identifierCopy discardedUploadIdentifier:&v12 error:error];
 
   v9 = v12;
   if (v8 && v9)
   {
-    v10 = [(CPLEnginePushRepository *)self _outgoingResources];
-    LOBYTE(v8) = [v10 deleteResourcesToUploadWithUploadIdentifier:v9 error:a4];
+    _outgoingResources = [(CPLEnginePushRepository *)self _outgoingResources];
+    LOBYTE(v8) = [_outgoingResources deleteResourcesToUploadWithUploadIdentifier:v9 error:error];
   }
 
   return v8;
 }
 
-- (BOOL)hasSomeChangeWithScopedIdentifier:(id)a3
+- (BOOL)hasSomeChangeWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasSomeChangeWithScopedIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasSomeChangeWithScopedIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)reinjectChange:(id)a3 dequeueOrder:(int64_t)a4 overwrittenRecord:(BOOL *)a5 error:(id *)a6
+- (BOOL)reinjectChange:(id)change dequeueOrder:(int64_t)order overwrittenRecord:(BOOL *)record error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = [v11 _pushContext];
-  if (!v12)
+  changeCopy = change;
+  _pushContext = [changeCopy _pushContext];
+  if (!_pushContext)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -812,26 +812,26 @@ LABEL_6:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v29 = v11;
+        v29 = changeCopy;
         _os_log_impl(&dword_1DC05A000, v24, OS_LOG_TYPE_ERROR, "%@ should come with a push context", buf, 0xCu);
       }
     }
 
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEnginePushRepository.m"];
-    [v25 handleFailureInMethod:a2 object:self file:v26 lineNumber:149 description:{@"%@ should come with a push context", v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v26 lineNumber:149 description:{@"%@ should come with a push context", changeCopy}];
 
     abort();
   }
 
-  v13 = v12;
-  if ([v11 supportsResources])
+  v13 = _pushContext;
+  if ([changeCopy supportsResources])
   {
-    if ([v11 hasChangeType:8])
+    if ([changeCopy hasChangeType:8])
     {
-      v14 = [v13 uploadIdentifier];
+      uploadIdentifier = [v13 uploadIdentifier];
 
-      if (!v14)
+      if (!uploadIdentifier)
       {
         if ((_CPLSilentLogging & 1) == 0)
         {
@@ -839,16 +839,16 @@ LABEL_6:
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v29 = v11;
+            v29 = changeCopy;
             _os_log_impl(&dword_1DC05A000, v21, OS_LOG_TYPE_ERROR, "Trying to reinject %@ without an upload identifier", buf, 0xCu);
           }
         }
 
-        if (a6)
+        if (error)
         {
           [CPLErrors cplErrorWithCode:100 description:@"Trying to reinject a resourceful change without an upload identifier"];
           v17 = 0;
-          *a6 = v20 = 0;
+          *error = v20 = 0;
           goto LABEL_19;
         }
 
@@ -858,15 +858,15 @@ LABEL_6:
     }
   }
 
-  v15 = [(CPLEngineStorage *)self platformObject];
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v27 = 0;
-  v16 = [v15 reinjectChange:v11 dequeueOrder:a4 discardedUploadIdentifier:&v27 overwrittenRecord:a5 error:a6];
+  v16 = [platformObject reinjectChange:changeCopy dequeueOrder:order discardedUploadIdentifier:&v27 overwrittenRecord:record error:error];
   v17 = v27;
 
   if (v16 && v17)
   {
-    v18 = [(CPLEnginePushRepository *)self _outgoingResources];
-    v19 = [v18 deleteResourcesToUploadWithUploadIdentifier:v17 error:a6];
+    _outgoingResources = [(CPLEnginePushRepository *)self _outgoingResources];
+    v19 = [_outgoingResources deleteResourcesToUploadWithUploadIdentifier:v17 error:error];
 
     if ((v19 & 1) == 0)
     {
@@ -884,7 +884,7 @@ LABEL_18:
   }
 
 LABEL_10:
-  [(CPLBatchExtractionStrategy *)self->_extractionStrategy resetConditionallyFromNewIncomingChange:v11];
+  [(CPLBatchExtractionStrategy *)self->_extractionStrategy resetConditionallyFromNewIncomingChange:changeCopy];
   [(CPLEnginePushRepository *)self notePushRepositoryStoredSomeChanges];
   v20 = 1;
 LABEL_19:
@@ -893,12 +893,12 @@ LABEL_19:
   return v20;
 }
 
-- (BOOL)storeChange:(id)a3 pushContext:(id)a4 error:(id *)a5
+- (BOOL)storeChange:(id)change pushContext:(id)context error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  changeCopy = change;
+  contextCopy = context;
+  if (!contextCopy)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -906,37 +906,37 @@ LABEL_19:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v31 = v9;
+        v31 = changeCopy;
         _os_log_impl(&dword_1DC05A000, v23, OS_LOG_TYPE_ERROR, "%@ should be pushed with push context", buf, 0xCu);
       }
     }
 
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEnginePushRepository.m"];
-    [v24 handleFailureInMethod:a2 object:self file:v25 lineNumber:123 description:{@"%@ should be pushed with push context", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:v25 lineNumber:123 description:{@"%@ should be pushed with push context", changeCopy}];
 
     abort();
   }
 
-  v11 = v10;
-  if ([v9 supportsResources])
+  v11 = contextCopy;
+  if ([changeCopy supportsResources])
   {
-    if ([v9 hasChangeType:8])
+    if ([changeCopy hasChangeType:8])
     {
-      v12 = [v11 uploadIdentifier];
+      uploadIdentifier = [v11 uploadIdentifier];
 
-      if (!v12)
+      if (!uploadIdentifier)
       {
-        v13 = [v11 pushContextAddingUploadIdentifier];
+        pushContextAddingUploadIdentifier = [v11 pushContextAddingUploadIdentifier];
 
-        v11 = v13;
+        v11 = pushContextAddingUploadIdentifier;
       }
     }
   }
 
-  v14 = [(CPLEngineStorage *)self platformObject];
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v29 = 0;
-  v15 = [v14 storeChange:v9 pushContext:v11 discardedUploadIdentifier:&v29 error:a5];
+  v15 = [platformObject storeChange:changeCopy pushContext:v11 discardedUploadIdentifier:&v29 error:error];
   v16 = v29;
 
   if (!v15 || !v16)
@@ -947,13 +947,13 @@ LABEL_19:
     }
 
 LABEL_11:
-    [(CPLBatchExtractionStrategy *)self->_extractionStrategy resetConditionallyFromNewIncomingChange:v9];
+    [(CPLBatchExtractionStrategy *)self->_extractionStrategy resetConditionallyFromNewIncomingChange:changeCopy];
     pushObservers = self->_pushObservers;
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __57__CPLEnginePushRepository_storeChange_pushContext_error___block_invoke;
     v26[3] = &unk_1E861BA38;
-    v27 = v9;
+    v27 = changeCopy;
     v28 = v11;
     [(NSMutableDictionary *)pushObservers enumerateKeysAndObjectsUsingBlock:v26];
     [(CPLEnginePushRepository *)self notePushRepositoryStoredSomeChanges];
@@ -962,8 +962,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v17 = [(CPLEnginePushRepository *)self _outgoingResources];
-  v18 = [v17 deleteResourcesToUploadWithUploadIdentifier:v16 error:a5];
+  _outgoingResources = [(CPLEnginePushRepository *)self _outgoingResources];
+  v18 = [_outgoingResources deleteResourcesToUploadWithUploadIdentifier:v16 error:error];
 
   if (v18)
   {
@@ -978,73 +978,73 @@ LABEL_12:
   return v19;
 }
 
-- (BOOL)hasChangesWithScopeFilter:(id)a3
+- (BOOL)hasChangesWithScopeFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasChangesWithScopeFilter:v4];
+  filterCopy = filter;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasChangesWithScopeFilter:filterCopy];
 
   return v6;
 }
 
-- (BOOL)hasChangesWithPriorityGreaterThanPriority:(unint64_t)a3 inScopeWithIdentifier:(id)a4
+- (BOOL)hasChangesWithPriorityGreaterThanPriority:(unint64_t)priority inScopeWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a3) = [v7 hasChangesWithPriorityGreaterThanPriority:a3 inScopeWithIdentifier:v6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(priority) = [platformObject hasChangesWithPriorityGreaterThanPriority:priority inScopeWithIdentifier:identifierCopy];
 
-  return a3;
+  return priority;
 }
 
-- (BOOL)hasChangesWithPriorityLowerThanPriority:(unint64_t)a3 inScopeWithIdentifier:(id)a4
+- (BOOL)hasChangesWithPriorityLowerThanPriority:(unint64_t)priority inScopeWithIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(CPLEngineStorage *)self platformObject];
-  LOBYTE(a3) = [v7 hasChangesWithPriorityLowerThanPriority:a3 inScopeWithIdentifier:v6];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  LOBYTE(priority) = [platformObject hasChangesWithPriorityLowerThanPriority:priority inScopeWithIdentifier:identifierCopy];
 
-  return a3;
+  return priority;
 }
 
-- (unint64_t)minimumPriorityForChangesInScopeWithIdentifier:(id)a3
+- (unint64_t)minimumPriorityForChangesInScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 minimumPriorityForChangesInScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject minimumPriorityForChangesInScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)hasChangesInScopeWithIdentifier:(id)a3
+- (BOOL)hasChangesInScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 hasChangesInScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject hasChangesInScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (unint64_t)countOfChangesInScopeWithIdentifier:(id)a3
+- (unint64_t)countOfChangesInScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CPLEngineStorage *)self platformObject];
-  v6 = [v5 countOfChangesInScopeWithIdentifier:v4];
+  identifierCopy = identifier;
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v6 = [platformObject countOfChangesInScopeWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v11 = [(CPLEngineStorage *)self platformObject];
+  platformObject = [(CPLEngineStorage *)self platformObject];
   v26 = 0;
-  LODWORD(a4) = [v11 deleteRecordsForScopeIndex:a3 maxCount:a4 deletedCount:a5 discardedUploadIdentifiers:&v26 error:a6];
+  LODWORD(count) = [platformObject deleteRecordsForScopeIndex:index maxCount:count deletedCount:deletedCount discardedUploadIdentifiers:&v26 error:error];
   v12 = v26;
 
-  if (a4)
+  if (count)
   {
     if ([v12 count])
     {
-      v13 = [(CPLEnginePushRepository *)self _outgoingResources];
+      _outgoingResources = [(CPLEnginePushRepository *)self _outgoingResources];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
@@ -1064,7 +1064,7 @@ LABEL_12:
               objc_enumerationMutation(v14);
             }
 
-            if (![v13 deleteResourcesToUploadWithUploadIdentifier:*(*(&v22 + 1) + 8 * i) error:{a6, v22}])
+            if (![_outgoingResources deleteResourcesToUploadWithUploadIdentifier:*(*(&v22 + 1) + 8 * i) error:{error, v22}])
             {
               v19 = 0;
               goto LABEL_14;
@@ -1102,23 +1102,23 @@ LABEL_14:
 
 - (void)notePushRepositoryStoredSomeChanges
 {
-  v2 = [(CPLEngineStorage *)self engineStore];
-  [v2 notePushRepositoryStoredSomeChanges];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  [engineStore notePushRepositoryStoredSomeChanges];
 }
 
 - (id)_outgoingResources
 {
-  v2 = [(CPLEngineStorage *)self engineStore];
-  v3 = [v2 outgoingResources];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  outgoingResources = [engineStore outgoingResources];
 
-  return v3;
+  return outgoingResources;
 }
 
-- (CPLEnginePushRepository)initWithEngineStore:(id)a3 name:(id)a4
+- (CPLEnginePushRepository)initWithEngineStore:(id)store name:(id)name
 {
   v14.receiver = self;
   v14.super_class = CPLEnginePushRepository;
-  v4 = [(CPLEngineStorage *)&v14 initWithEngineStore:a3 name:a4];
+  v4 = [(CPLEngineStorage *)&v14 initWithEngineStore:store name:name];
   if (v4)
   {
     v5 = CPLCopyDefaultSerialQueueAttributes();

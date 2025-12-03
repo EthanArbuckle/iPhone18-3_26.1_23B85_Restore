@@ -1,21 +1,21 @@
 @interface MKURLSerializer
-+ (id)stringForDirectionsType:(unint64_t)a3;
-+ (id)stringForMapType:(unint64_t)a3;
-- (id)mapItemsFromUrl:(id)a3 options:(id *)a4;
-- (id)urlForDirectionsFromMapItem:(id)a3 toMapItem:(id)a4 transportType:(unint64_t)a5 options:(id)a6;
-- (id)urlForDirectionsWithMapItems:(id)a3 transportType:(unint64_t)a4 options:(id)a5;
-- (id)urlForOpeningMapItems:(id)a3 options:(id)a4;
++ (id)stringForDirectionsType:(unint64_t)type;
++ (id)stringForMapType:(unint64_t)type;
+- (id)mapItemsFromUrl:(id)url options:(id *)options;
+- (id)urlForDirectionsFromMapItem:(id)item toMapItem:(id)mapItem transportType:(unint64_t)type options:(id)options;
+- (id)urlForDirectionsWithMapItems:(id)items transportType:(unint64_t)type options:(id)options;
+- (id)urlForOpeningMapItems:(id)items options:(id)options;
 @end
 
 @implementation MKURLSerializer
 
-+ (id)stringForDirectionsType:(unint64_t)a3
++ (id)stringForDirectionsType:(unint64_t)type
 {
   v4 = @"p";
   IsEnabled_URLUnification = MapsFeature_IsEnabled_URLUnification();
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v6 = @"r";
       v7 = @"transit";
@@ -23,7 +23,7 @@
 
     else
     {
-      if (a3 != 8)
+      if (type != 8)
       {
         goto LABEL_13;
       }
@@ -33,7 +33,7 @@
     }
   }
 
-  else if (a3 == 1)
+  else if (type == 1)
   {
     v6 = @"d";
     v7 = @"driving";
@@ -41,7 +41,7 @@
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_13;
     }
@@ -61,13 +61,13 @@ LABEL_13:
   return v4;
 }
 
-+ (id)stringForMapType:(unint64_t)a3
++ (id)stringForMapType:(unint64_t)type
 {
   v4 = @"h";
   IsEnabled_URLUnification = MapsFeature_IsEnabled_URLUnification();
-  if (a3 > 3)
+  if (type > 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 4uLL:
         goto LABEL_14;
@@ -86,14 +86,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       goto LABEL_14;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       goto LABEL_10;
     }
@@ -113,18 +113,18 @@ LABEL_14:
   return v4;
 }
 
-- (id)mapItemsFromUrl:(id)a3 options:(id *)a4
+- (id)mapItemsFromUrl:(id)url options:(id *)options
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  urlCopy = url;
   v43 = 0;
   v44 = 0;
-  v6 = [MEMORY[0x1E69A21F0] mapItemsFromURL:v5 currentLocationIndices:&v44 options:&v43];
+  v6 = [MEMORY[0x1E69A21F0] mapItemsFromURL:urlCopy currentLocationIndices:&v44 options:&v43];
   v7 = v44;
   v8 = v43;
   if (v6)
   {
-    v27 = v5;
+    v27 = urlCopy;
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count") + 1}];
     v39 = 0u;
     v40 = 0u;
@@ -165,10 +165,10 @@ LABEL_14:
       [v7 enumerateIndexesUsingBlock:v37];
     }
 
-    v5 = v27;
-    if (a4)
+    urlCopy = v27;
+    if (options)
     {
-      *a4 = [v8 launchOptions];
+      *options = [v8 launchOptions];
     }
 
     v16 = v7;
@@ -179,14 +179,14 @@ LABEL_14:
   {
     v35 = v8;
     v36 = v7;
-    v18 = [MEMORY[0x1E69A2348] _placesFromURL:v5 currentLocationIndices:&v36 options:&v35];
+    v18 = [MEMORY[0x1E69A2348] _placesFromURL:urlCopy currentLocationIndices:&v36 options:&v35];
     v16 = v36;
 
     v17 = v35;
     if (v18)
     {
-      v26 = a4;
-      v28 = v5;
+      optionsCopy = options;
+      v28 = urlCopy;
       v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v18, "count") + 1}];
       v31 = 0u;
       v32 = 0u;
@@ -227,12 +227,12 @@ LABEL_14:
         [v16 enumerateIndexesUsingBlock:v29];
       }
 
-      if (v26)
+      if (optionsCopy)
       {
-        *v26 = [v17 launchOptions];
+        *optionsCopy = [v17 launchOptions];
       }
 
-      v5 = v28;
+      urlCopy = v28;
     }
 
     else
@@ -274,12 +274,12 @@ void __43__MKURLSerializer_mapItemsFromUrl_options___block_invoke_2(uint64_t a1,
   }
 }
 
-- (id)urlForDirectionsWithMapItems:(id)a3 transportType:(unint64_t)a4 options:(id)a5
+- (id)urlForDirectionsWithMapItems:(id)items transportType:(unint64_t)type options:(id)options
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 count] < 2)
+  itemsCopy = items;
+  optionsCopy = options;
+  if ([itemsCopy count] < 2)
   {
     v9 = 0;
     goto LABEL_30;
@@ -293,15 +293,15 @@ void __43__MKURLSerializer_mapItemsFromUrl_options___block_invoke_2(uint64_t a1,
   v27[1] = 3221225472;
   v27[2] = __70__MKURLSerializer_urlForDirectionsWithMapItems_transportType_options___block_invoke;
   v27[3] = &unk_1E76CCAF8;
-  v10 = v7;
+  v10 = itemsCopy;
   v28 = v10;
   v29 = &v30;
   [v10 enumerateObjectsUsingBlock:v27];
   if ((v31[3] & 1) == 0)
   {
-    if (v8)
+    if (optionsCopy)
     {
-      v11 = [objc_alloc(MEMORY[0x1E69A26E0]) initWithLaunchOptions:v8];
+      v11 = [objc_alloc(MEMORY[0x1E69A26E0]) initWithLaunchOptions:optionsCopy];
     }
 
     else
@@ -309,7 +309,7 @@ void __43__MKURLSerializer_mapItemsFromUrl_options___block_invoke_2(uint64_t a1,
       v11 = 0;
     }
 
-    if (a4 - 1 > 7)
+    if (type - 1 > 7)
     {
       v12 = 4;
       if (!v11)
@@ -321,7 +321,7 @@ LABEL_12:
 
     else
     {
-      v12 = dword_1A30F7AE8[a4 - 1];
+      v12 = dword_1A30F7AE8[type - 1];
       if (!v11)
       {
         goto LABEL_12;
@@ -356,23 +356,23 @@ LABEL_12:
           v18 = *(*(&v23 + 1) + 8 * i);
           if ([v18 isCurrentLocation])
           {
-            v19 = [MEMORY[0x1E69A2348] _urlRepresentationForCurrentLocation];
-            [v13 addObject:v19];
+            _urlRepresentationForCurrentLocation = [MEMORY[0x1E69A2348] _urlRepresentationForCurrentLocation];
+            [v13 addObject:_urlRepresentationForCurrentLocation];
           }
 
           else
           {
-            v20 = [v18 place];
+            place = [v18 place];
 
-            if (!v20)
+            if (!place)
             {
 
               v9 = 0;
               goto LABEL_28;
             }
 
-            v19 = [v18 place];
-            [v13 addObject:v19];
+            _urlRepresentationForCurrentLocation = [v18 place];
+            [v13 addObject:_urlRepresentationForCurrentLocation];
           }
         }
 
@@ -419,37 +419,37 @@ void __70__MKURLSerializer_urlForDirectionsWithMapItems_transportType_options___
   }
 }
 
-- (id)urlForDirectionsFromMapItem:(id)a3 toMapItem:(id)a4 transportType:(unint64_t)a5 options:(id)a6
+- (id)urlForDirectionsFromMapItem:(id)item toMapItem:(id)mapItem transportType:(unint64_t)type options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
+  itemCopy = item;
+  mapItemCopy = mapItem;
   v12 = MEMORY[0x1E695DF70];
-  v13 = a6;
+  optionsCopy = options;
   v14 = [[v12 alloc] initWithCapacity:2];
   v15 = v14;
-  if (v10)
+  if (itemCopy)
   {
-    [v14 addObject:v10];
+    [v14 addObject:itemCopy];
   }
 
-  if (v11)
+  if (mapItemCopy)
   {
-    [v15 addObject:v11];
+    [v15 addObject:mapItemCopy];
   }
 
   v16 = [v15 copy];
-  v17 = [(MKURLSerializer *)self urlForDirectionsWithMapItems:v16 transportType:a5 options:v13];
+  v17 = [(MKURLSerializer *)self urlForDirectionsWithMapItems:v16 transportType:type options:optionsCopy];
 
   return v17;
 }
 
-- (id)urlForOpeningMapItems:(id)a3 options:(id)a4
+- (id)urlForOpeningMapItems:(id)items options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  itemsCopy = items;
+  optionsCopy = options;
+  v7 = [itemsCopy count];
   v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
-  v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v9 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   if (v7)
   {
     v10 = 0;
@@ -457,18 +457,18 @@ void __70__MKURLSerializer_urlForDirectionsWithMapItems_transportType_options___
     v12 = 0;
     do
     {
-      v13 = [v5 objectAtIndexedSubscript:v10];
+      v13 = [itemsCopy objectAtIndexedSubscript:v10];
       if (([v9 containsObject:v13] & 1) == 0)
       {
         [v9 addObject:v13];
         if (v11 & 1 | (([v13 isCurrentLocation] & 1) == 0))
         {
-          v14 = [v13 place];
+          place = [v13 place];
 
-          if (v14)
+          if (place)
           {
-            v15 = [v13 place];
-            [v8 addObject:v15];
+            place2 = [v13 place];
+            [v8 addObject:place2];
           }
         }
 
@@ -483,7 +483,7 @@ void __70__MKURLSerializer_urlForDirectionsWithMapItems_transportType_options___
     }
 
     while (v7 != v10);
-    if (v6)
+    if (optionsCopy)
     {
       goto LABEL_10;
     }
@@ -493,10 +493,10 @@ void __70__MKURLSerializer_urlForDirectionsWithMapItems_transportType_options___
   {
     v12 = 0;
     v11 = 0;
-    if (v6)
+    if (optionsCopy)
     {
 LABEL_10:
-      v16 = [objc_alloc(MEMORY[0x1E69A26E0]) initWithLaunchOptions:v6];
+      v16 = [objc_alloc(MEMORY[0x1E69A26E0]) initWithLaunchOptions:optionsCopy];
       goto LABEL_13;
     }
   }

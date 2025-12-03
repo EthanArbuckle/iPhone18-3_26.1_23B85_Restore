@@ -1,33 +1,33 @@
 @interface _SFPBRFAppIconImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFAppIconImage)initWithDictionary:(id)a3;
-- (_SFPBRFAppIconImage)initWithFacade:(id)a3;
-- (_SFPBRFAppIconImage)initWithJSON:(id)a3;
+- (_SFPBRFAppIconImage)initWithDictionary:(id)dictionary;
+- (_SFPBRFAppIconImage)initWithFacade:(id)facade;
+- (_SFPBRFAppIconImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setApplication_bundle_identifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplication_bundle_identifier:(id)application_bundle_identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFAppIconImage
 
-- (_SFPBRFAppIconImage)initWithFacade:(id)a3
+- (_SFPBRFAppIconImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFAppIconImage *)self init];
   if (v5)
   {
-    v6 = [v4 application_bundle_identifier];
+    application_bundle_identifier = [facadeCopy application_bundle_identifier];
 
-    if (v6)
+    if (application_bundle_identifier)
     {
-      v7 = [v4 application_bundle_identifier];
-      [(_SFPBRFAppIconImage *)v5 setApplication_bundle_identifier:v7];
+      application_bundle_identifier2 = [facadeCopy application_bundle_identifier];
+      [(_SFPBRFAppIconImage *)v5 setApplication_bundle_identifier:application_bundle_identifier2];
     }
 
-    if ([v4 hasImage_style])
+    if ([facadeCopy hasImage_style])
     {
-      -[_SFPBRFAppIconImage setImage_style:](v5, "setImage_style:", [v4 image_style]);
+      -[_SFPBRFAppIconImage setImage_style:](v5, "setImage_style:", [facadeCopy image_style]);
     }
 
     v8 = v5;
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (_SFPBRFAppIconImage)initWithDictionary:(id)a3
+- (_SFPBRFAppIconImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBRFAppIconImage;
   v5 = [(_SFPBRFAppIconImage *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"applicationBundleIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"applicationBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(_SFPBRFAppIconImage *)v5 setApplication_bundle_identifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"imageStyle"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"imageStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (_SFPBRFAppIconImage)initWithJSON:(id)a3
+- (_SFPBRFAppIconImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFAppIconImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFAppIconImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFAppIconImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,57 +101,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_application_bundle_identifier)
   {
-    v4 = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    application_bundle_identifier = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
+    v5 = [application_bundle_identifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_image_style)
   {
-    v6 = [(_SFPBRFAppIconImage *)self image_style];
-    if (v6 < 0x2A && ((0x3FFDFFFFFFFuLL >> v6) & 1) != 0)
+    image_style = [(_SFPBRFAppIconImage *)self image_style];
+    if (image_style < 0x2A && ((0x3FFDFFFFFFFuLL >> image_style) & 1) != 0)
     {
-      v7 = off_1E7ACE270[v6];
+      v7 = off_1E7ACE270[image_style];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", image_style];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"imageStyle"];
+    [dictionary setObject:v7 forKeyedSubscript:@"imageStyle"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
-    v6 = [v4 application_bundle_identifier];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    application_bundle_identifier = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
+    application_bundle_identifier2 = [equalCopy application_bundle_identifier];
+    v7 = application_bundle_identifier2;
+    if ((application_bundle_identifier != 0) != (application_bundle_identifier2 == 0))
     {
-      v8 = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
-      if (!v8)
+      application_bundle_identifier3 = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
+      if (!application_bundle_identifier3)
       {
 
 LABEL_10:
         image_style = self->_image_style;
-        v13 = image_style == [v4 image_style];
+        v13 = image_style == [equalCopy image_style];
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
-      v11 = [v4 application_bundle_identifier];
-      v12 = [v10 isEqual:v11];
+      v9 = application_bundle_identifier3;
+      application_bundle_identifier4 = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
+      application_bundle_identifier5 = [equalCopy application_bundle_identifier];
+      v12 = [application_bundle_identifier4 isEqual:application_bundle_identifier5];
 
       if (v12)
       {
@@ -170,11 +170,11 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
-  if (v4)
+  toCopy = to;
+  application_bundle_identifier = [(_SFPBRFAppIconImage *)self application_bundle_identifier];
+  if (application_bundle_identifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -185,9 +185,9 @@ LABEL_8:
   }
 }
 
-- (void)setApplication_bundle_identifier:(id)a3
+- (void)setApplication_bundle_identifier:(id)application_bundle_identifier
 {
-  v4 = [a3 copy];
+  v4 = [application_bundle_identifier copy];
   application_bundle_identifier = self->_application_bundle_identifier;
   self->_application_bundle_identifier = v4;
 

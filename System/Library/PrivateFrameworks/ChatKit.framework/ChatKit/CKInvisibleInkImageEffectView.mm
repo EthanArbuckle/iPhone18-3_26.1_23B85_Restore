@@ -1,89 +1,89 @@
 @interface CKInvisibleInkImageEffectView
-- (CKInvisibleInkImageEffectView)initWithFrame:(CGRect)a3;
-- (void)addDustRandomEmitterAnimationsWithSize:(CGSize)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (CKInvisibleInkImageEffectView)initWithFrame:(CGRect)frame;
+- (void)addDustRandomEmitterAnimationsWithSize:(CGSize)size;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)disableBlending;
 - (void)enableBlending;
 - (void)endDrawEmitterEffects;
 - (void)endDustEmitterFingerEffects;
-- (void)endEmittersForTouchesCancelled:(id)a3;
-- (void)endEmittersForTouchesEnded:(id)a3;
+- (void)endEmittersForTouchesCancelled:(id)cancelled;
+- (void)endEmittersForTouchesEnded:(id)ended;
 - (void)layoutSubviews;
-- (void)moveEmittersForTouchesBegan:(id)a3;
-- (void)moveEmittersForTouchesMoved:(id)a3;
-- (void)moveEmittersWithTouches:(id)a3;
+- (void)moveEmittersForTouchesBegan:(id)began;
+- (void)moveEmittersForTouchesMoved:(id)moved;
+- (void)moveEmittersWithTouches:(id)touches;
 - (void)reset;
-- (void)setImage:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setRandomAttractorsEnabled:(BOOL)a3;
-- (void)setSuspended:(BOOL)a3;
+- (void)setImage:(id)image;
+- (void)setPaused:(BOOL)paused;
+- (void)setRandomAttractorsEnabled:(BOOL)enabled;
+- (void)setSuspended:(BOOL)suspended;
 - (void)setupDrawEmitter;
 - (void)setupDustEmitter;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CKInvisibleInkImageEffectView
 
-- (CKInvisibleInkImageEffectView)initWithFrame:(CGRect)a3
+- (CKInvisibleInkImageEffectView)initWithFrame:(CGRect)frame
 {
   v28[1] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = CKInvisibleInkImageEffectView;
-  v3 = [(CKInvisibleInkEffectView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKInvisibleInkEffectView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E6979398] layer];
-    [(CKInvisibleInkImageEffectView *)v3 setBlurredImageContainerLayer:v4];
+    layer = [MEMORY[0x1E6979398] layer];
+    [(CKInvisibleInkImageEffectView *)v3 setBlurredImageContainerLayer:layer];
 
     v5 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979928]];
     [v5 setValue:&unk_1F04E8400 forKey:@"inputRadius"];
     [v5 setValue:MEMORY[0x1E695E118] forKey:@"inputNormalizeEdges"];
-    v6 = [MEMORY[0x1E6979398] layer];
-    [(CKInvisibleInkImageEffectView *)v3 setBlurredImageLayer:v6];
+    layer2 = [MEMORY[0x1E6979398] layer];
+    [(CKInvisibleInkImageEffectView *)v3 setBlurredImageLayer:layer2];
 
     v7 = *MEMORY[0x1E6979DF0];
-    v8 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
-    [v8 setContentsGravity:v7];
+    blurredImageLayer = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
+    [blurredImageLayer setContentsGravity:v7];
 
-    v9 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
-    [v9 setShouldRasterize:1];
+    blurredImageLayer2 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
+    [blurredImageLayer2 setShouldRasterize:1];
 
-    v10 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
-    [v10 setRasterizationScale:0.5];
+    blurredImageLayer3 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
+    [blurredImageLayer3 setRasterizationScale:0.5];
 
     v28[0] = v5;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-    v12 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
-    [v12 setFilters:v11];
+    blurredImageLayer4 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
+    [blurredImageLayer4 setFilters:v11];
 
-    v13 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
-    [v13 setMasksToBounds:1];
+    blurredImageLayer5 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
+    [blurredImageLayer5 setMasksToBounds:1];
 
     [(CKInvisibleInkImageEffectView *)v3 setupDrawEmitter];
     [(CKInvisibleInkImageEffectView *)v3 setupDustEmitter];
-    v14 = [(CKInvisibleInkImageEffectView *)v3 layer];
-    v15 = [(CKInvisibleInkImageEffectView *)v3 blurredImageContainerLayer];
-    [v14 addSublayer:v15];
+    layer3 = [(CKInvisibleInkImageEffectView *)v3 layer];
+    blurredImageContainerLayer = [(CKInvisibleInkImageEffectView *)v3 blurredImageContainerLayer];
+    [layer3 addSublayer:blurredImageContainerLayer];
 
-    v16 = [(CKInvisibleInkImageEffectView *)v3 blurredImageContainerLayer];
-    v17 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
-    [v16 addSublayer:v17];
+    blurredImageContainerLayer2 = [(CKInvisibleInkImageEffectView *)v3 blurredImageContainerLayer];
+    blurredImageLayer6 = [(CKInvisibleInkImageEffectView *)v3 blurredImageLayer];
+    [blurredImageContainerLayer2 addSublayer:blurredImageLayer6];
 
-    v18 = [(CKInvisibleInkImageEffectView *)v3 blurredImageContainerLayer];
-    v19 = [(CKInvisibleInkImageEffectView *)v3 drawEmitterContainerLayer];
-    [v18 addSublayer:v19];
+    blurredImageContainerLayer3 = [(CKInvisibleInkImageEffectView *)v3 blurredImageContainerLayer];
+    drawEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)v3 drawEmitterContainerLayer];
+    [blurredImageContainerLayer3 addSublayer:drawEmitterContainerLayer];
 
-    v20 = [(CKInvisibleInkImageEffectView *)v3 drawEmitterContainerLayer];
-    v21 = [(CKInvisibleInkImageEffectView *)v3 drawEmitterLayer];
-    [v20 addSublayer:v21];
+    drawEmitterContainerLayer2 = [(CKInvisibleInkImageEffectView *)v3 drawEmitterContainerLayer];
+    drawEmitterLayer = [(CKInvisibleInkImageEffectView *)v3 drawEmitterLayer];
+    [drawEmitterContainerLayer2 addSublayer:drawEmitterLayer];
 
-    v22 = [(CKInvisibleInkImageEffectView *)v3 layer];
-    v23 = [(CKInvisibleInkImageEffectView *)v3 dustEmitterContainerLayer];
-    [v22 addSublayer:v23];
+    layer4 = [(CKInvisibleInkImageEffectView *)v3 layer];
+    dustEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)v3 dustEmitterContainerLayer];
+    [layer4 addSublayer:dustEmitterContainerLayer];
 
-    v24 = [(CKInvisibleInkImageEffectView *)v3 dustEmitterContainerLayer];
-    v25 = [(CKInvisibleInkImageEffectView *)v3 dustEmitterLayer];
-    [v24 addSublayer:v25];
+    dustEmitterContainerLayer2 = [(CKInvisibleInkImageEffectView *)v3 dustEmitterContainerLayer];
+    dustEmitterLayer = [(CKInvisibleInkImageEffectView *)v3 dustEmitterLayer];
+    [dustEmitterContainerLayer2 addSublayer:dustEmitterLayer];
   }
 
   return v3;
@@ -92,32 +92,32 @@
 - (void)setupDrawEmitter
 {
   v33[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6979398] layer];
-  [(CKInvisibleInkImageEffectView *)self setDrawEmitterContainerLayer:v3];
+  layer = [MEMORY[0x1E6979398] layer];
+  [(CKInvisibleInkImageEffectView *)self setDrawEmitterContainerLayer:layer];
 
-  v4 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v4 setMasksToBounds:1];
+  drawEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer setMasksToBounds:1];
 
-  v5 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v5 setRasterizationScale:0.25];
+  drawEmitterContainerLayer2 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer2 setRasterizationScale:0.25];
 
-  v6 = [MEMORY[0x1E6979360] emitterCell];
+  emitterCell = [MEMORY[0x1E6979360] emitterCell];
   v7 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"blurLarge"];
-  [v6 setContents:{objc_msgSend(v7, "CGImage")}];
+  [emitterCell setContents:{objc_msgSend(v7, "CGImage")}];
 
   LODWORD(v8) = 1114636288;
-  [v6 setBirthRate:v8];
-  [v6 setDuration:INFINITY];
-  [v6 setEmissionRange:0.785398163];
+  [emitterCell setBirthRate:v8];
+  [emitterCell setDuration:INFINITY];
+  [emitterCell setEmissionRange:0.785398163];
   LODWORD(v9) = 2.0;
-  [v6 setLifetime:v9];
+  [emitterCell setLifetime:v9];
   LODWORD(v10) = 2.0;
-  [v6 setLifetimeRange:v10];
-  [v6 setScale:4.4];
-  [v6 setVelocityRange:45.0];
-  [v6 setEmissionRange:0.785398163];
-  [v6 setParticleType:*MEMORY[0x1E6979778]];
-  [v6 setName:@"drawCell"];
+  [emitterCell setLifetimeRange:v10];
+  [emitterCell setScale:4.4];
+  [emitterCell setVelocityRange:45.0];
+  [emitterCell setEmissionRange:0.785398163];
+  [emitterCell setParticleType:*MEMORY[0x1E6979778]];
+  [emitterCell setName:@"drawCell"];
   v11 = [MEMORY[0x1E6979358] behaviorWithType:*MEMORY[0x1E6979750]];
   v12 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:1.0];
   v33[0] = [v12 CGColor];
@@ -132,86 +132,86 @@
   [v15 setValue:@"scale" forKey:@"keyPath"];
   [v15 setValue:&unk_1F04E73B0 forKey:@"values"];
   [v15 setValue:&unk_1F04E73C8 forKey:@"locations"];
-  v16 = [MEMORY[0x1E6979368] layer];
-  [(CKInvisibleInkImageEffectView *)self setDrawEmitterLayer:v16];
+  layer2 = [MEMORY[0x1E6979368] layer];
+  [(CKInvisibleInkImageEffectView *)self setDrawEmitterLayer:layer2];
 
-  v17 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v17 setInheritsTiming:0];
+  drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer setInheritsTiming:0];
 
   v18 = CACurrentMediaTime();
-  v19 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v19 setBeginTime:v18];
+  drawEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer2 setBeginTime:v18];
 
-  v20 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v20 setLifetime:0.0];
+  drawEmitterLayer3 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer3 setLifetime:0.0];
 
   v21 = *MEMORY[0x1E69797A8];
-  v22 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v22 setEmitterMode:v21];
+  drawEmitterLayer4 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer4 setEmitterMode:v21];
 
-  v23 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v23 setRenderMode:@"cheapAdditive"];
+  drawEmitterLayer5 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer5 setRenderMode:@"cheapAdditive"];
 
-  v32 = v6;
+  v32 = emitterCell;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
-  v25 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v25 setEmitterCells:v24];
+  drawEmitterLayer6 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer6 setEmitterCells:v24];
 
   v31[0] = v11;
   v31[1] = v15;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
-  v27 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v27 setEmitterBehaviors:v26];
+  drawEmitterLayer7 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer7 setEmitterBehaviors:v26];
 
   [objc_opt_class() updateInterval];
   v29 = v28;
-  v30 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v30 setUpdateInterval:v29];
+  drawEmitterLayer8 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer8 setUpdateInterval:v29];
 }
 
 - (void)setupDustEmitter
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E6979398] layer];
-  [(CKInvisibleInkImageEffectView *)self setDustEmitterContainerLayer:v3];
+  layer = [MEMORY[0x1E6979398] layer];
+  [(CKInvisibleInkImageEffectView *)self setDustEmitterContainerLayer:layer];
 
-  v4 = [(CKInvisibleInkImageEffectView *)self dustEmitterContainerLayer];
+  dustEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterContainerLayer];
   v5 = 1;
-  [v4 setMasksToBounds:1];
+  [dustEmitterContainerLayer setMasksToBounds:1];
 
-  v47 = self;
-  v6 = [(CKInvisibleInkImageEffectView *)self dustEmitterContainerLayer];
-  [v6 setAllowsGroupBlending:0];
+  selfCopy = self;
+  dustEmitterContainerLayer2 = [(CKInvisibleInkImageEffectView *)self dustEmitterContainerLayer];
+  [dustEmitterContainerLayer2 setAllowsGroupBlending:0];
 
-  v7 = [MEMORY[0x1E6979360] emitterCell];
+  emitterCell = [MEMORY[0x1E6979360] emitterCell];
   v8 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"speckle"];
-  [v7 setContents:{objc_msgSend(v8, "CGImage")}];
+  [emitterCell setContents:{objc_msgSend(v8, "CGImage")}];
 
   LODWORD(v9) = 1150681088;
-  [v7 setBirthRate:v9];
-  [v7 setContentsScale:1.79999995];
-  [v7 setEmissionRange:6.28318531];
+  [emitterCell setBirthRate:v9];
+  [emitterCell setContentsScale:1.79999995];
+  [emitterCell setEmissionRange:6.28318531];
   LODWORD(v10) = 1008981770;
-  [v7 setMassRange:v10];
+  [emitterCell setMassRange:v10];
   LODWORD(v11) = 8.0;
-  [v7 setLifetime:v11];
-  [v7 setScale:0.5];
-  [v7 setVelocityRange:0.0];
-  [v7 setName:@"dustCell"];
-  v12 = [MEMORY[0x1E69DC888] whiteColor];
-  v13 = [v12 colorWithAlphaComponent:0.0];
-  [v7 setColor:{objc_msgSend(v13, "CGColor")}];
+  [emitterCell setLifetime:v11];
+  [emitterCell setScale:0.5];
+  [emitterCell setVelocityRange:0.0];
+  [emitterCell setName:@"dustCell"];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v13 = [whiteColor colorWithAlphaComponent:0.0];
+  [emitterCell setColor:{objc_msgSend(v13, "CGColor")}];
 
   LODWORD(v14) = 1.0;
-  [v7 setAlphaRange:v14];
-  v46 = v7;
-  [v7 setParticleType:*MEMORY[0x1E6979778]];
-  v15 = [MEMORY[0x1E695DF70] array];
+  [emitterCell setAlphaRange:v14];
+  v46 = emitterCell;
+  [emitterCell setParticleType:*MEMORY[0x1E6979778]];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = *MEMORY[0x1E6979758];
   v17 = [MEMORY[0x1E6979358] behaviorWithType:*MEMORY[0x1E6979758]];
   [v17 setName:@"fingerAttractor"];
   v45 = v17;
-  [v15 addObject:v17];
+  [array addObject:v17];
   v18 = *MEMORY[0x1E6979760];
   v19 = [MEMORY[0x1E6979358] behaviorWithType:*MEMORY[0x1E6979760]];
   [v19 setName:@"alphaBehavior"];
@@ -219,14 +219,14 @@
   [v19 setValue:&unk_1F04E73E0 forKey:@"values"];
   [v19 setValue:MEMORY[0x1E695E118] forKey:@"additive"];
   v44 = v19;
-  [v15 addObject:v19];
+  [array addObject:v19];
   v20 = [MEMORY[0x1E6979358] behaviorWithType:v18];
   [v20 setName:@"scaleBehavior"];
   [v20 setValue:@"scale" forKey:@"keyPath"];
   [v20 setValue:&unk_1F04E73F8 forKey:@"values"];
   [v20 setValue:&unk_1F04E7410 forKey:@"locations"];
   v43 = v20;
-  [v15 addObject:v20];
+  [array addObject:v20];
   v21 = 0;
   v22 = *MEMORY[0x1E695EFF8];
   v23 = *(MEMORY[0x1E695EFF8] + 8);
@@ -242,86 +242,86 @@
     v27 = [MEMORY[0x1E696B098] valueWithCGPoint:{v22, v23}];
     [v26 setValue:v27 forKey:@"position"];
 
-    [v15 addObject:v26];
+    [array addObject:v26];
     v5 = 0;
     v21 = 1;
   }
 
   while ((v24 & 1) != 0);
-  v28 = [MEMORY[0x1E6979368] layer];
-  [(CKInvisibleInkImageEffectView *)v47 setDustEmitterLayer:v28];
+  layer2 = [MEMORY[0x1E6979368] layer];
+  [(CKInvisibleInkImageEffectView *)selfCopy setDustEmitterLayer:layer2];
 
-  v29 = [(CKInvisibleInkImageEffectView *)v47 dustEmitterLayer];
-  [v29 setInheritsTiming:0];
+  dustEmitterLayer = [(CKInvisibleInkImageEffectView *)selfCopy dustEmitterLayer];
+  [dustEmitterLayer setInheritsTiming:0];
 
   v30 = CACurrentMediaTime();
-  v31 = [(CKInvisibleInkImageEffectView *)v47 dustEmitterLayer];
-  [v31 setBeginTime:v30];
+  dustEmitterLayer2 = [(CKInvisibleInkImageEffectView *)selfCopy dustEmitterLayer];
+  [dustEmitterLayer2 setBeginTime:v30];
 
-  v32 = [(CKInvisibleInkImageEffectView *)v47 dustEmitterLayer];
-  [v32 setMasksToBounds:1];
+  dustEmitterLayer3 = [(CKInvisibleInkImageEffectView *)selfCopy dustEmitterLayer];
+  [dustEmitterLayer3 setMasksToBounds:1];
 
   v48[0] = v46;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
-  v34 = [(CKInvisibleInkImageEffectView *)v47 dustEmitterLayer];
-  [v34 setEmitterCells:v33];
+  dustEmitterLayer4 = [(CKInvisibleInkImageEffectView *)selfCopy dustEmitterLayer];
+  [dustEmitterLayer4 setEmitterCells:v33];
 
-  v35 = [(CKInvisibleInkImageEffectView *)v47 dustEmitterLayer];
-  [v35 setEmitterBehaviors:v15];
+  dustEmitterLayer5 = [(CKInvisibleInkImageEffectView *)selfCopy dustEmitterLayer];
+  [dustEmitterLayer5 setEmitterBehaviors:array];
 
   v36 = *MEMORY[0x1E69797B0];
-  v37 = [(CKInvisibleInkImageEffectView *)v47 dustEmitterLayer];
-  [v37 setEmitterShape:v36];
+  dustEmitterLayer6 = [(CKInvisibleInkImageEffectView *)selfCopy dustEmitterLayer];
+  [dustEmitterLayer6 setEmitterShape:v36];
 
   v38 = *MEMORY[0x1E6979790];
-  v39 = [(CKInvisibleInkImageEffectView *)v47 dustEmitterLayer];
-  [v39 setRenderMode:v38];
+  dustEmitterLayer7 = [(CKInvisibleInkImageEffectView *)selfCopy dustEmitterLayer];
+  [dustEmitterLayer7 setRenderMode:v38];
 
   [objc_opt_class() updateInterval];
   v41 = v40;
-  v42 = [(CKInvisibleInkImageEffectView *)v47 dustEmitterLayer];
-  [v42 setUpdateInterval:v41];
+  dustEmitterLayer8 = [(CKInvisibleInkImageEffectView *)selfCopy dustEmitterLayer];
+  [dustEmitterLayer8 setUpdateInterval:v41];
 
-  [(CKInvisibleInkImageEffectView *)v47 endDustEmitterFingerEffects];
+  [(CKInvisibleInkImageEffectView *)selfCopy endDustEmitterFingerEffects];
 }
 
-- (void)addDustRandomEmitterAnimationsWithSize:(CGSize)a3
+- (void)addDustRandomEmitterAnimationsWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v32 = [MEMORY[0x1E6979318] animation];
+  height = size.height;
+  width = size.width;
+  animation = [MEMORY[0x1E6979318] animation];
   v5 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-  [v32 setTimingFunction:v5];
+  [animation setTimingFunction:v5];
 
-  [v32 setFromValue:&unk_1F04E84A8];
-  [v32 setToValue:&unk_1F04E84C0];
-  [v32 setDuration:2.0];
+  [animation setFromValue:&unk_1F04E84A8];
+  [animation setToValue:&unk_1F04E84C0];
+  [animation setDuration:2.0];
   LODWORD(v6) = 2139095040;
-  [v32 setRepeatCount:v6];
+  [animation setRepeatCount:v6];
   v7 = 1;
-  [v32 setAutoreverses:1];
-  [v32 setRemovedOnCompletion:0];
+  [animation setAutoreverses:1];
+  [animation setRemovedOnCompletion:0];
   v8 = *MEMORY[0x1E69797E0];
-  [v32 setFillMode:*MEMORY[0x1E69797E0]];
-  v9 = [MEMORY[0x1E6979390] animation];
-  [v9 setCalculationMode:*MEMORY[0x1E69795A0]];
-  [v9 setDuration:3.0];
+  [animation setFillMode:*MEMORY[0x1E69797E0]];
+  animation2 = [MEMORY[0x1E6979390] animation];
+  [animation2 setCalculationMode:*MEMORY[0x1E69795A0]];
+  [animation2 setDuration:3.0];
   LODWORD(v10) = 2139095040;
-  [v9 setRepeatCount:v10];
-  [v9 setAutoreverses:1];
-  [v9 setRemovedOnCompletion:0];
-  [v9 setFillMode:v8];
+  [animation2 setRepeatCount:v10];
+  [animation2 setAutoreverses:1];
+  [animation2 setRemovedOnCompletion:0];
+  [animation2 setFillMode:v8];
   v11 = 0;
   v12 = 0.5;
   do
   {
     v13 = v7;
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"emitterBehaviors.randomAttractor%d.falloff", v11];
-    [v32 setKeyPath:v14];
+    [animation setKeyPath:v14];
 
-    v15 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-    v16 = [v32 keyPath];
-    [v15 addAnimation:v32 forKey:v16];
+    dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+    keyPath = [animation keyPath];
+    [dustEmitterLayer addAnimation:animation forKey:keyPath];
 
     v33 = dbl_190DD1B88[v11];
     v34 = dbl_190DD1B68[v11];
@@ -347,13 +347,13 @@
     }
 
     while (v17);
-    [v9 setValues:v18];
+    [animation2 setValues:v18];
     v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"emitterBehaviors.randomAttractor%d.position", v11];
-    [v9 setKeyPath:v28];
+    [animation2 setKeyPath:v28];
 
-    v29 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-    v30 = [v9 keyPath];
-    [v29 addAnimation:v9 forKey:v30];
+    dustEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+    keyPath2 = [animation2 keyPath];
+    [dustEmitterLayer2 addAnimation:animation2 forKey:keyPath2];
 
     v7 = 0;
     v11 = 1;
@@ -362,19 +362,19 @@
   while ((v13 & 1) != 0);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v8.receiver = self;
   v8.super_class = CKInvisibleInkImageEffectView;
-  v4 = a3;
-  [(CKInvisibleInkEffectView *)&v8 setImage:v4];
-  v5 = v4;
-  v6 = [v5 CGImage];
+  imageCopy = image;
+  [(CKInvisibleInkEffectView *)&v8 setImage:imageCopy];
+  v5 = imageCopy;
+  cGImage = [v5 CGImage];
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v7 = [(CKInvisibleInkImageEffectView *)self blurredImageLayer];
-  [v7 setContents:v6];
+  blurredImageLayer = [(CKInvisibleInkImageEffectView *)self blurredImageLayer];
+  [blurredImageLayer setContents:cGImage];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -390,11 +390,11 @@
   v4 = v3;
   [(CKInvisibleInkImageEffectView *)self bounds];
   v6 = v5;
-  v7 = [(CKInvisibleInkImageEffectView *)self blurredImageLayer];
-  [v7 setFrame:{0.0, 0.0, v4, v6}];
+  blurredImageLayer = [(CKInvisibleInkImageEffectView *)self blurredImageLayer];
+  [blurredImageLayer setFrame:{0.0, 0.0, v4, v6}];
 
-  v8 = [(CKInvisibleInkImageEffectView *)self blurredImageContainerLayer];
-  [v8 setFrame:{0.0, 0.0, v4, v6}];
+  blurredImageContainerLayer = [(CKInvisibleInkImageEffectView *)self blurredImageContainerLayer];
+  [blurredImageContainerLayer setFrame:{0.0, 0.0, v4, v6}];
 
   v31.origin.x = 0.0;
   v31.origin.y = 0.0;
@@ -405,8 +405,8 @@
   y = v32.origin.y;
   width = v32.size.width;
   height = v32.size.height;
-  v13 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v13 setFrame:{x, y, width, height}];
+  drawEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer setFrame:{x, y, width, height}];
 
   v33.origin.x = 0.0;
   v33.origin.y = 0.0;
@@ -417,20 +417,20 @@
   v15 = v34.origin.y;
   v16 = v34.size.width;
   v17 = v34.size.height;
-  v18 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v18 setFrame:{v14, v15, v16, v17}];
+  drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer setFrame:{v14, v15, v16, v17}];
 
-  v19 = [(CKInvisibleInkImageEffectView *)self dustEmitterContainerLayer];
-  [v19 setFrame:{0.0, 0.0, v4, v6}];
+  dustEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterContainerLayer];
+  [dustEmitterContainerLayer setFrame:{0.0, 0.0, v4, v6}];
 
-  v20 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v20 setFrame:{0.0, 0.0, v4, v6}];
+  dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer setFrame:{0.0, 0.0, v4, v6}];
 
-  v21 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v21 setEmitterPosition:{v4 * 0.5, v6 * 0.5}];
+  dustEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer2 setEmitterPosition:{v4 * 0.5, v6 * 0.5}];
 
-  v22 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v22 setEmitterSize:{v4, v6}];
+  dustEmitterLayer3 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer3 setEmitterSize:{v4, v6}];
 
   v35.origin.x = 0.0;
   v35.origin.y = 0.0;
@@ -441,12 +441,12 @@
   v24 = v36.origin.y;
   v25 = v36.size.width;
   v26 = v36.size.height;
-  v27 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v27 setCullRect:{v23, v24, v25, v26}];
+  dustEmitterLayer4 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer4 setCullRect:{v23, v24, v25, v26}];
 
-  v28 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  dustEmitterLayer5 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
   v29 = [MEMORY[0x1E696AD98] numberWithDouble:v4 * 1200.0 * v6 / 50000.0];
-  [v28 setValue:v29 forKeyPath:@"emitterCells.dustCell.birthRate"];
+  [dustEmitterLayer5 setValue:v29 forKeyPath:@"emitterCells.dustCell.birthRate"];
 
   [(CKInvisibleInkImageEffectView *)self addDustRandomEmitterAnimationsWithSize:v4, v6];
   [MEMORY[0x1E6979518] commit];
@@ -454,69 +454,69 @@
 
 - (void)enableBlending
 {
-  v3 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v3 removeAnimationForKey:@"disableBlending"];
+  drawEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer removeAnimationForKey:@"disableBlending"];
 
   v4 = *MEMORY[0x1E69798E8];
-  v5 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v5 setCompositingFilter:v4];
+  drawEmitterContainerLayer2 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer2 setCompositingFilter:v4];
 
-  v6 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v6 setShouldRasterize:1];
+  drawEmitterContainerLayer3 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer3 setShouldRasterize:1];
 
-  v7 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v7 setUpdateInterval:0.0];
+  drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer setUpdateInterval:0.0];
 
-  v8 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v8 setUpdateInterval:0.0];
+  dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer setUpdateInterval:0.0];
 }
 
 - (void)disableBlending
 {
-  v3 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v3 setCompositingFilter:0];
+  drawEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer setCompositingFilter:0];
 
-  v4 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v4 setShouldRasterize:0];
+  drawEmitterContainerLayer2 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer2 setShouldRasterize:0];
 
-  v5 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v5 setCompositingFilter:0];
+  drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer setCompositingFilter:0];
 
   [objc_opt_class() updateInterval];
   v7 = v6;
-  v8 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v8 setUpdateInterval:v7];
+  drawEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer2 setUpdateInterval:v7];
 
-  v9 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v9 setUpdateInterval:v7];
+  dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer setUpdateInterval:v7];
 }
 
 - (void)endDrawEmitterEffects
 {
   if (![(CKInvisibleInkEffectView *)self isSuspended])
   {
-    v3 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-    [v3 setLifetime:0.0];
+    drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+    [drawEmitterLayer setLifetime:0.0];
 
-    v5 = [MEMORY[0x1E6979300] animation];
-    [v5 setDuration:4.0];
-    [v5 setDelegate:self];
-    v4 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-    [v4 addAnimation:v5 forKey:@"disableBlending"];
+    animation = [MEMORY[0x1E6979300] animation];
+    [animation setDuration:4.0];
+    [animation setDelegate:self];
+    drawEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+    [drawEmitterContainerLayer addAnimation:animation forKey:@"disableBlending"];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
     [(CKInvisibleInkImageEffectView *)self disableBlending];
   }
 }
 
-- (void)setRandomAttractorsEnabled:(BOOL)a3
+- (void)setRandomAttractorsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = 5;
   }
@@ -528,40 +528,40 @@
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:v4];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"emitterBehaviors.randomAttractor%d.stiffness", 0];
-  v6 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v6 setValue:v9 forKeyPath:v5];
+  dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer setValue:v9 forKeyPath:v5];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"emitterBehaviors.randomAttractor%d.stiffness", 1];
-  v8 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v8 setValue:v9 forKeyPath:v7];
+  dustEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer2 setValue:v9 forKeyPath:v7];
 }
 
 - (void)endDustEmitterFingerEffects
 {
-  v3 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v3 setValue:&unk_1F04E8418 forKeyPath:@"emitterBehaviors.fingerAttractor.stiffness"];
+  dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer setValue:&unk_1F04E8418 forKeyPath:@"emitterBehaviors.fingerAttractor.stiffness"];
 
-  v4 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v4 setValue:MEMORY[0x1E695E110] forKeyPath:@"emitterBehaviors.fingerAttractor.enabled"];
+  dustEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer2 setValue:MEMORY[0x1E695E110] forKeyPath:@"emitterBehaviors.fingerAttractor.enabled"];
 
   [(CKInvisibleInkImageEffectView *)self setRandomAttractorsEnabled:1];
 }
 
-- (void)moveEmittersWithTouches:(id)a3
+- (void)moveEmittersWithTouches:(id)touches
 {
-  v22 = a3;
+  touchesCopy = touches;
   if (![(CKInvisibleInkEffectView *)self isSuspended])
   {
-    v4 = [v22 anyObject];
-    [v4 locationInView:self];
+    anyObject = [touchesCopy anyObject];
+    [anyObject locationInView:self];
     v6 = v5;
     v8 = v7;
-    [v4 force];
+    [anyObject force];
     v10 = fmin(fmax(v9 / 3.8, 0.0), 1.0);
-    v11 = [(CKInvisibleInkImageEffectView *)self traitCollection];
-    v12 = [v11 forceTouchCapability];
+    traitCollection = [(CKInvisibleInkImageEffectView *)self traitCollection];
+    forceTouchCapability = [traitCollection forceTouchCapability];
 
-    if (v12 == 2)
+    if (forceTouchCapability == 2)
     {
       v13 = v10;
     }
@@ -571,81 +571,81 @@
       v13 = 0.5;
     }
 
-    v14 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-    [v14 setEmitterPosition:{v6, v8}];
+    drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+    [drawEmitterLayer setEmitterPosition:{v6, v8}];
 
-    v15 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+    dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
     v16 = [MEMORY[0x1E696AD98] numberWithDouble:v13 * 130.0 + 190.0];
-    [v15 setValue:v16 forKeyPath:@"emitterBehaviors.fingerAttractor.radius"];
+    [dustEmitterLayer setValue:v16 forKeyPath:@"emitterBehaviors.fingerAttractor.radius"];
 
-    v17 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+    dustEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
     v18 = [MEMORY[0x1E696AD98] numberWithDouble:v13 * -65.0 + -95.0];
-    [v17 setValue:v18 forKeyPath:@"emitterBehaviors.fingerAttractor.falloff"];
+    [dustEmitterLayer2 setValue:v18 forKeyPath:@"emitterBehaviors.fingerAttractor.falloff"];
 
-    v19 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+    dustEmitterLayer3 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
     v20 = [MEMORY[0x1E696B098] valueWithCGPoint:{v6, v8}];
-    [v19 setValue:v20 forKeyPath:@"emitterBehaviors.fingerAttractor.position"];
+    [dustEmitterLayer3 setValue:v20 forKeyPath:@"emitterBehaviors.fingerAttractor.position"];
 
-    v21 = [(CKInvisibleInkEffectView *)self coverageTracker];
-    [v21 recordTouchAtPoint:{v6, v8}];
+    coverageTracker = [(CKInvisibleInkEffectView *)self coverageTracker];
+    [coverageTracker recordTouchAtPoint:{v6, v8}];
   }
 }
 
-- (void)moveEmittersForTouchesBegan:(id)a3
+- (void)moveEmittersForTouchesBegan:(id)began
 {
   v4 = MEMORY[0x1E6979518];
-  v5 = a3;
+  beganCopy = began;
   [v4 begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   LODWORD(v4) = CKIsRunningInMacCatalyst();
-  v6 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  v7 = v6;
+  drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  v7 = drawEmitterLayer;
   LODWORD(v8) = 3.0;
   if (!v4)
   {
     *&v8 = 1.0;
   }
 
-  [v6 setLifetime:v8];
+  [drawEmitterLayer setLifetime:v8];
 
-  v9 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v9 setValue:&unk_1F04E84D8 forKeyPath:@"emitterBehaviors.fingerAttractor.stiffness"];
+  dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer setValue:&unk_1F04E84D8 forKeyPath:@"emitterBehaviors.fingerAttractor.stiffness"];
 
-  v10 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v10 setValue:MEMORY[0x1E695E118] forKeyPath:@"emitterBehaviors.fingerAttractor.enabled"];
+  dustEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer2 setValue:MEMORY[0x1E695E118] forKeyPath:@"emitterBehaviors.fingerAttractor.enabled"];
 
   [(CKInvisibleInkImageEffectView *)self setRandomAttractorsEnabled:0];
   [(CKInvisibleInkImageEffectView *)self enableBlending];
-  [(CKInvisibleInkImageEffectView *)self moveEmittersWithTouches:v5];
+  [(CKInvisibleInkImageEffectView *)self moveEmittersWithTouches:beganCopy];
 
   v11 = MEMORY[0x1E6979518];
 
   [v11 commit];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CKInvisibleInkImageEffectView;
-  v6 = a3;
-  [(CKInvisibleInkImageEffectView *)&v7 touchesMoved:v6 withEvent:a4];
-  [(CKInvisibleInkImageEffectView *)self moveEmittersForTouchesMoved:v6, v7.receiver, v7.super_class];
+  movedCopy = moved;
+  [(CKInvisibleInkImageEffectView *)&v7 touchesMoved:movedCopy withEvent:event];
+  [(CKInvisibleInkImageEffectView *)self moveEmittersForTouchesMoved:movedCopy, v7.receiver, v7.super_class];
 }
 
-- (void)moveEmittersForTouchesMoved:(id)a3
+- (void)moveEmittersForTouchesMoved:(id)moved
 {
   v4 = MEMORY[0x1E6979518];
-  v5 = a3;
+  movedCopy = moved;
   [v4 begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  [(CKInvisibleInkImageEffectView *)self moveEmittersWithTouches:v5];
+  [(CKInvisibleInkImageEffectView *)self moveEmittersWithTouches:movedCopy];
 
   v6 = MEMORY[0x1E6979518];
 
   [v6 commit];
 }
 
-- (void)endEmittersForTouchesEnded:(id)a3
+- (void)endEmittersForTouchesEnded:(id)ended
 {
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
@@ -656,7 +656,7 @@
   [v4 commit];
 }
 
-- (void)endEmittersForTouchesCancelled:(id)a3
+- (void)endEmittersForTouchesCancelled:(id)cancelled
 {
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
@@ -674,52 +674,52 @@
   [(CKInvisibleInkEffectView *)&v13 reset];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v3 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v3 setLifetime:0.0];
+  drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer setLifetime:0.0];
 
-  v4 = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
-  [v4 removeAnimationForKey:@"disableBlending"];
+  drawEmitterContainerLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterContainerLayer];
+  [drawEmitterContainerLayer removeAnimationForKey:@"disableBlending"];
 
   [(CKInvisibleInkImageEffectView *)self disableBlending];
   [(CKInvisibleInkImageEffectView *)self endDustEmitterFingerEffects];
-  v5 = [(CKInvisibleInkImageEffectView *)self layer];
-  [v5 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(CKInvisibleInkImageEffectView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v7 = v6;
-  v8 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-  [v8 setBeginTime:v7];
+  drawEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+  [drawEmitterLayer2 setBeginTime:v7];
 
-  v9 = [(CKInvisibleInkImageEffectView *)self layer];
-  [v9 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer2 = [(CKInvisibleInkImageEffectView *)self layer];
+  [layer2 convertTime:0 fromLayer:CACurrentMediaTime()];
   v11 = v10;
-  v12 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-  [v12 setBeginTime:v11];
+  dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+  [dustEmitterLayer setBeginTime:v11];
 
   [MEMORY[0x1E6979518] commit];
   [(CKInvisibleInkImageEffectView *)self setNeedsLayout];
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
-  v5 = [(CKInvisibleInkEffectView *)self isSuspended];
+  suspendedCopy = suspended;
+  isSuspended = [(CKInvisibleInkEffectView *)self isSuspended];
   v37.receiver = self;
   v37.super_class = CKInvisibleInkImageEffectView;
-  [(CKInvisibleInkEffectView *)&v37 setSuspended:v3];
-  if (v5 != v3)
+  [(CKInvisibleInkEffectView *)&v37 setSuspended:suspendedCopy];
+  if (isSuspended != suspendedCopy)
   {
-    v6 = !v3;
-    [(CKInvisibleInkImageEffectView *)self setUserInteractionEnabled:v3 ^ 1];
+    v6 = !suspendedCopy;
+    [(CKInvisibleInkImageEffectView *)self setUserInteractionEnabled:suspendedCopy ^ 1];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v7 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-    v8 = v7;
+    dustEmitterLayer = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+    v8 = dustEmitterLayer;
     if (v6)
     {
-      [v7 setValue:MEMORY[0x1E695E110] forKeyPath:@"emitterBehaviors.fingerAttractor.enabled"];
+      [dustEmitterLayer setValue:MEMORY[0x1E695E110] forKeyPath:@"emitterBehaviors.fingerAttractor.enabled"];
 
-      v27 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+      dustEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
       LODWORD(v28) = 1.0;
-      [v27 setBirthRate:v28];
+      [dustEmitterLayer2 setBirthRate:v28];
 
       v23 = [MEMORY[0x1E6979318] animationWithKeyPath:@"birthRate"];
       [v23 setDuration:1.0];
@@ -729,62 +729,62 @@
 
       [v23 setFromValue:&unk_1F04E8418];
       [v23 setToValue:&unk_1F04E8430];
-      v31 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-      v32 = [v23 keyPath];
-      [v31 addAnimation:v23 forKey:v32];
+      dustEmitterLayer3 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+      keyPath = [v23 keyPath];
+      [dustEmitterLayer3 addAnimation:v23 forKey:keyPath];
 
       [(CKInvisibleInkImageEffectView *)self setRandomAttractorsEnabled:1];
-      v33 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-      [v33 setValue:&unk_1F04E7440 forKeyPath:@"emitterBehaviors.scaleBehavior.values"];
+      drawEmitterLayer = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+      [drawEmitterLayer setValue:&unk_1F04E7440 forKeyPath:@"emitterBehaviors.scaleBehavior.values"];
 
-      v25 = [MEMORY[0x1E6979318] animationWithKeyPath:@"emitterBehaviors.scaleBehavior.values.@index(1)"];
-      [v25 setDuration:2.0];
+      drawEmitterLayer6 = [MEMORY[0x1E6979318] animationWithKeyPath:@"emitterBehaviors.scaleBehavior.values.@index(1)"];
+      [drawEmitterLayer6 setDuration:2.0];
       v34 = [MEMORY[0x1E69793D0] functionWithName:v29];
-      [v25 setTimingFunction:v34];
+      [drawEmitterLayer6 setTimingFunction:v34];
 
-      [v25 setFromValue:&unk_1F04E8E98];
-      [v25 setToValue:&unk_1F04E8E88];
-      v35 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-      v36 = [v25 keyPath];
-      [v35 addAnimation:v25 forKey:v36];
+      [drawEmitterLayer6 setFromValue:&unk_1F04E8E98];
+      [drawEmitterLayer6 setToValue:&unk_1F04E8E88];
+      drawEmitterLayer2 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+      keyPath2 = [drawEmitterLayer6 keyPath];
+      [drawEmitterLayer2 addAnimation:drawEmitterLayer6 forKey:keyPath2];
 
       [(CKInvisibleInkImageEffectView *)self endDrawEmitterEffects];
     }
 
     else
     {
-      [v7 setValue:MEMORY[0x1E695E118] forKeyPath:@"emitterBehaviors.fingerAttractor.enabled"];
+      [dustEmitterLayer setValue:MEMORY[0x1E695E118] forKeyPath:@"emitterBehaviors.fingerAttractor.enabled"];
 
-      v9 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-      [v9 setValue:&unk_1F04E8478 forKeyPath:@"emitterBehaviors.fingerAttractor.stiffness"];
+      dustEmitterLayer4 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+      [dustEmitterLayer4 setValue:&unk_1F04E8478 forKeyPath:@"emitterBehaviors.fingerAttractor.stiffness"];
 
-      v10 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-      [v10 setValue:&unk_1F04E84F0 forKeyPath:@"emitterBehaviors.fingerAttractor.radius"];
+      dustEmitterLayer5 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+      [dustEmitterLayer5 setValue:&unk_1F04E84F0 forKeyPath:@"emitterBehaviors.fingerAttractor.radius"];
 
-      v11 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-      [v11 setValue:&unk_1F04E8508 forKeyPath:@"emitterBehaviors.fingerAttractor.falloff"];
+      dustEmitterLayer6 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+      [dustEmitterLayer6 setValue:&unk_1F04E8508 forKeyPath:@"emitterBehaviors.fingerAttractor.falloff"];
 
       [(CKInvisibleInkImageEffectView *)self bounds];
       v13 = v12 * 0.5;
       [(CKInvisibleInkImageEffectView *)self bounds];
       v15 = v14 * 0.5;
-      v16 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+      dustEmitterLayer7 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
       v17 = [MEMORY[0x1E696B098] valueWithCGPoint:{v13, v15}];
-      [v16 setValue:v17 forKeyPath:@"emitterBehaviors.fingerAttractor.position"];
+      [dustEmitterLayer7 setValue:v17 forKeyPath:@"emitterBehaviors.fingerAttractor.position"];
 
-      v18 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
-      [v18 setBirthRate:0.0];
+      dustEmitterLayer8 = [(CKInvisibleInkImageEffectView *)self dustEmitterLayer];
+      [dustEmitterLayer8 setBirthRate:0.0];
 
       [(CKInvisibleInkImageEffectView *)self setRandomAttractorsEnabled:0];
-      v19 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-      [v19 setEmitterPosition:{v13, v15}];
+      drawEmitterLayer3 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+      [drawEmitterLayer3 setEmitterPosition:{v13, v15}];
 
-      v20 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+      drawEmitterLayer4 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
       LODWORD(v21) = 1.0;
-      [v20 setLifetime:v21];
+      [drawEmitterLayer4 setLifetime:v21];
 
-      v22 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-      [v22 setValue:&unk_1F04E7428 forKeyPath:@"emitterBehaviors.scaleBehavior.values"];
+      drawEmitterLayer5 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+      [drawEmitterLayer5 setValue:&unk_1F04E7428 forKeyPath:@"emitterBehaviors.scaleBehavior.values"];
 
       v23 = [MEMORY[0x1E6979318] animationWithKeyPath:@"emitterBehaviors.scaleBehavior.values.@index(1)"];
       [v23 setDuration:1.0];
@@ -793,55 +793,55 @@
 
       [v23 setFromValue:&unk_1F04E8E88];
       [v23 setToValue:&unk_1F04E8E98];
-      v25 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
-      v26 = [v23 keyPath];
-      [v25 addAnimation:v23 forKey:v26];
+      drawEmitterLayer6 = [(CKInvisibleInkImageEffectView *)self drawEmitterLayer];
+      keyPath3 = [v23 keyPath];
+      [drawEmitterLayer6 addAnimation:v23 forKey:keyPath3];
     }
 
     [MEMORY[0x1E6979518] commit];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
-  v5 = [(CKInvisibleInkEffectView *)self isPaused];
+  pausedCopy = paused;
+  isPaused = [(CKInvisibleInkEffectView *)self isPaused];
   v19.receiver = self;
   v19.super_class = CKInvisibleInkImageEffectView;
-  [(CKInvisibleInkEffectView *)&v19 setPaused:v3];
-  if (v5 != v3)
+  [(CKInvisibleInkEffectView *)&v19 setPaused:pausedCopy];
+  if (isPaused != pausedCopy)
   {
     [MEMORY[0x1E6979518] begin];
-    v6 = [(CKInvisibleInkImageEffectView *)self layer];
-    v8 = v6;
-    if (v3)
+    layer = [(CKInvisibleInkImageEffectView *)self layer];
+    v8 = layer;
+    if (pausedCopy)
     {
-      [v6 setSpeed:0.0];
+      [layer setSpeed:0.0];
 
-      v9 = [(CKInvisibleInkImageEffectView *)self layer];
-      v10 = [(CKInvisibleInkImageEffectView *)self layer];
-      v11 = [v10 superlayer];
-      [v11 convertTime:0 fromLayer:CACurrentMediaTime()];
+      layer2 = [(CKInvisibleInkImageEffectView *)self layer];
+      layer3 = [(CKInvisibleInkImageEffectView *)self layer];
+      superlayer = [layer3 superlayer];
+      [superlayer convertTime:0 fromLayer:CACurrentMediaTime()];
       v13 = v12;
-      [v9 timeOffset];
+      [layer2 timeOffset];
       v15 = v13 + v14;
     }
 
     else
     {
       LODWORD(v7) = 1.0;
-      [v6 setSpeed:v7];
+      [layer setSpeed:v7];
 
-      v9 = [(CKInvisibleInkImageEffectView *)self layer];
-      v10 = [(CKInvisibleInkImageEffectView *)self layer];
-      v11 = [v10 superlayer];
-      [v11 convertTime:0 fromLayer:CACurrentMediaTime()];
+      layer2 = [(CKInvisibleInkImageEffectView *)self layer];
+      layer3 = [(CKInvisibleInkImageEffectView *)self layer];
+      superlayer = [layer3 superlayer];
+      [superlayer convertTime:0 fromLayer:CACurrentMediaTime()];
       v17 = v16;
-      [v9 timeOffset];
+      [layer2 timeOffset];
       v15 = v18 - v17;
     }
 
-    [v9 setTimeOffset:v15];
+    [layer2 setTimeOffset:v15];
 
     [MEMORY[0x1E6979518] commit];
   }

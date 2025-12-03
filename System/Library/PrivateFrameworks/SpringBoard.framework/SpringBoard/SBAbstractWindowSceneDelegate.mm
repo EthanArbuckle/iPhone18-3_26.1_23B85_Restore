@@ -1,6 +1,6 @@
 @interface SBAbstractWindowSceneDelegate
 - (BNBannerController)bannerController;
-- (BOOL)_isWindowContentVisible:(id)a3;
+- (BOOL)_isWindowContentVisible:(id)visible;
 - (CSCoverSheetViewController)coverSheetViewController;
 - (FBSDisplayLayoutPublishing)displayLayoutPublisher;
 - (SBAbstractWindowSceneDelegate)init;
@@ -47,294 +47,294 @@
 - (SBWindowSceneAccessorySceneProvider)accessorySceneProvider;
 - (SBWindowScenePIPManager)pictureInPictureManager;
 - (TRAArbiter)traitsArbiter;
-- (double)_windowScene:(id)a3 levelForWindow:(id)a4 preferredLevel:(double)a5;
-- (id)_acquireParticipantForWindow:(id)a3 reason:(id)a4;
-- (id)_createTraitsArbiterWithPipelineManager:(id)a3;
-- (id)_displayLayoutPublisherForWindowScene:(id)a3;
-- (id)_participantForWindow:(id)a3;
+- (double)_windowScene:(id)scene levelForWindow:(id)window preferredLevel:(double)level;
+- (id)_acquireParticipantForWindow:(id)window reason:(id)reason;
+- (id)_createTraitsArbiterWithPipelineManager:(id)manager;
+- (id)_displayLayoutPublisherForWindowScene:(id)scene;
+- (id)_participantForWindow:(id)window;
 - (id)_pipelineManager;
-- (id)_sceneManagerForConnectingWindowScene:(id)a3;
-- (id)_traitsDelegateForWindowRole:(id)a3;
-- (void)_commonSceneSetupForScene:(id)a3;
-- (void)_configureForConnectingWindowScene:(id)a3 windowSceneContext:(id)a4;
-- (void)_setParticipant:(id)a3 forWindow:(id)a4;
-- (void)_windowScene:(id)a3 window:(id)a4 didUpdateSupportedInterfaceOrientations:(unint64_t)a5 preferredOrientation:(int64_t)a6;
-- (void)_windowScene:(id)a3 windowDidBecomeVisible:(id)a4;
-- (void)_windowScene:(id)a3 windowWillAttach:(id)a4;
-- (void)_windowScene:(id)a3 windowWillBecomeHidden:(id)a4;
-- (void)_windowScene:(id)a3 windowWillBecomeVisible:(id)a4;
-- (void)_windowScene:(id)a3 windowWillDetach:(id)a4;
+- (id)_sceneManagerForConnectingWindowScene:(id)scene;
+- (id)_traitsDelegateForWindowRole:(id)role;
+- (void)_commonSceneSetupForScene:(id)scene;
+- (void)_configureForConnectingWindowScene:(id)scene windowSceneContext:(id)context;
+- (void)_setParticipant:(id)participant forWindow:(id)window;
+- (void)_windowScene:(id)scene window:(id)window didUpdateSupportedInterfaceOrientations:(unint64_t)orientations preferredOrientation:(int64_t)orientation;
+- (void)_windowScene:(id)scene windowDidBecomeVisible:(id)visible;
+- (void)_windowScene:(id)scene windowWillAttach:(id)attach;
+- (void)_windowScene:(id)scene windowWillBecomeHidden:(id)hidden;
+- (void)_windowScene:(id)scene windowWillBecomeVisible:(id)visible;
+- (void)_windowScene:(id)scene windowWillDetach:(id)detach;
 - (void)dealloc;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)setWindowScene:(id)a3;
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)setWindowScene:(id)scene;
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
 @end
 
 @implementation SBAbstractWindowSceneDelegate
 
 - (SBHomeScreenController)homeScreenController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 homeScreenController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  homeScreenController = [_sbWindowSceneContext homeScreenController];
 
-  return v3;
+  return homeScreenController;
 }
 
 - (SBLayoutStateTransitionCoordinator)layoutStateTransitionCoordinator
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 layoutStateTransitionCoordinator];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  layoutStateTransitionCoordinator = [_sbWindowSceneContext layoutStateTransitionCoordinator];
 
-  return v3;
+  return layoutStateTransitionCoordinator;
 }
 
 - (SBSwitcherController)switcherController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 switcherController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  switcherController = [_sbWindowSceneContext switcherController];
 
-  return v3;
+  return switcherController;
 }
 
 - (SBSceneManager)sceneManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 sceneManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  sceneManager = [_sbWindowSceneContext sceneManager];
 
-  return v3;
+  return sceneManager;
 }
 
 - (SBTransientOverlayPresenting)transientOverlayPresenter
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 transientOverlayPresenter];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  transientOverlayPresenter = [_sbWindowSceneContext transientOverlayPresenter];
 
-  return v3;
+  return transientOverlayPresenter;
 }
 
 - (SBSceneLayoutStateProvider)layoutStateProvider
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 layoutStateProvider];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  layoutStateProvider = [_sbWindowSceneContext layoutStateProvider];
 
-  return v3;
+  return layoutStateProvider;
 }
 
 - (SBMainDisplayLayoutStateManager)layoutStateManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 layoutStateManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  layoutStateManager = [_sbWindowSceneContext layoutStateManager];
 
-  return v3;
+  return layoutStateManager;
 }
 
 - (FBSDisplayLayoutPublishing)displayLayoutPublisher
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 displayLayoutPublisher];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  displayLayoutPublisher = [_sbWindowSceneContext displayLayoutPublisher];
 
-  return v3;
+  return displayLayoutPublisher;
 }
 
 - (SBLockStateProviding)uiLockStateProvider
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 uiLockStateProvider];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  uiLockStateProvider = [_sbWindowSceneContext uiLockStateProvider];
 
-  return v3;
+  return uiLockStateProvider;
 }
 
 - (SBTraitsPipelineManager)traitsPipelineManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 traitsPipelineManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  traitsPipelineManager = [_sbWindowSceneContext traitsPipelineManager];
 
-  return v3;
+  return traitsPipelineManager;
 }
 
 - (SBFloatingDockController)floatingDockController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 floatingDockController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  floatingDockController = [_sbWindowSceneContext floatingDockController];
 
-  return v3;
+  return floatingDockController;
 }
 
 - (SBFAuthenticationStatusProvider)authenticationStatusProvider
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 authenticationStatusProvider];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  authenticationStatusProvider = [_sbWindowSceneContext authenticationStatusProvider];
 
-  return v3;
+  return authenticationStatusProvider;
 }
 
 - (SBFSecureDisplayStateProviding)secureDisplayStateProvider
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 secureDisplayStateProvider];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  secureDisplayStateProvider = [_sbWindowSceneContext secureDisplayStateProvider];
 
-  return v3;
+  return secureDisplayStateProvider;
 }
 
 - (SBWindowScenePIPManager)pictureInPictureManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 pictureInPictureManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  pictureInPictureManager = [_sbWindowSceneContext pictureInPictureManager];
 
-  return v3;
+  return pictureInPictureManager;
 }
 
 - (SBCommandTabController)commandTabController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 commandTabController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  commandTabController = [_sbWindowSceneContext commandTabController];
 
-  return v3;
+  return commandTabController;
 }
 
 - (SBAssistantSceneControlling)assistantController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 assistantController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  assistantController = [_sbWindowSceneContext assistantController];
 
-  return v3;
+  return assistantController;
 }
 
 - (SBSystemGestureManager)systemGestureManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 systemGestureManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  systemGestureManager = [_sbWindowSceneContext systemGestureManager];
 
-  return v3;
+  return systemGestureManager;
 }
 
 - (SBRecordingIndicatorManager)recordingIndicatorManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 recordingIndicatorManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  recordingIndicatorManager = [_sbWindowSceneContext recordingIndicatorManager];
 
-  return v3;
+  return recordingIndicatorManager;
 }
 
 - (SBIconController)iconController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 iconController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  iconController = [_sbWindowSceneContext iconController];
 
-  return v3;
+  return iconController;
 }
 
 - (SBMedusaHostedKeyboardWindowController)medusaHostedKeyboardWindowController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 medusaHostedKeyboardWindowController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  medusaHostedKeyboardWindowController = [_sbWindowSceneContext medusaHostedKeyboardWindowController];
 
-  return v3;
+  return medusaHostedKeyboardWindowController;
 }
 
 - (SBHardwareButtonBezelEffectsCoordinator)hardwareButtonBezelEffectsCoordinator
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 hardwareButtonBezelEffectsCoordinator];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  hardwareButtonBezelEffectsCoordinator = [_sbWindowSceneContext hardwareButtonBezelEffectsCoordinator];
 
-  return v3;
+  return hardwareButtonBezelEffectsCoordinator;
 }
 
 - (SBHomeAffordanceInteractionManager)homeAffordanceInteractionManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 homeAffordanceInteractionManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  homeAffordanceInteractionManager = [_sbWindowSceneContext homeAffordanceInteractionManager];
 
-  return v3;
+  return homeAffordanceInteractionManager;
 }
 
 - (SBSystemPointerInteractionManager)systemPointerInteractionManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 systemPointerInteractionManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  systemPointerInteractionManager = [_sbWindowSceneContext systemPointerInteractionManager];
 
-  return v3;
+  return systemPointerInteractionManager;
 }
 
 - (SBModalLibraryController)modalLibraryController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 modalLibraryController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  modalLibraryController = [_sbWindowSceneContext modalLibraryController];
 
-  return v3;
+  return modalLibraryController;
 }
 
 - (SBLockScreenManager)lockScreenManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 lockScreenManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  lockScreenManager = [_sbWindowSceneContext lockScreenManager];
 
-  return v3;
+  return lockScreenManager;
 }
 
 - (SBSystemApertureController)systemApertureController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 systemApertureController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  systemApertureController = [_sbWindowSceneContext systemApertureController];
 
-  return v3;
+  return systemApertureController;
 }
 
 - (BNBannerController)bannerController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 bannerController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  bannerController = [_sbWindowSceneContext bannerController];
 
-  return v3;
+  return bannerController;
 }
 
 - (SBAmbientPresentationController)ambientPresentationController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 ambientPresentationController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  ambientPresentationController = [_sbWindowSceneContext ambientPresentationController];
 
-  return v3;
+  return ambientPresentationController;
 }
 
 - (SBFZStackResolver)zStackResolver
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 zStackResolver];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  zStackResolver = [_sbWindowSceneContext zStackResolver];
 
-  return v3;
+  return zStackResolver;
 }
 
 - (SBWindowHidingManager)windowHidingManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 windowHidingManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  windowHidingManager = [_sbWindowSceneContext windowHidingManager];
 
-  return v3;
+  return windowHidingManager;
 }
 
 - (TRAArbiter)traitsArbiter
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 traitsArbiter];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  traitsArbiter = [_sbWindowSceneContext traitsArbiter];
 
-  return v3;
+  return traitsArbiter;
 }
 
 - (SBControlCenterController)controlCenterController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 controlCenterController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  controlCenterController = [_sbWindowSceneContext controlCenterController];
 
-  return v3;
+  return controlCenterController;
 }
 
 - (CSCoverSheetViewController)coverSheetViewController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 coverSheetViewController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  coverSheetViewController = [_sbWindowSceneContext coverSheetViewController];
 
-  return v3;
+  return coverSheetViewController;
 }
 
 - (SBWindowScene)windowScene
@@ -346,98 +346,98 @@
 
 - (SBTransientUIInteractionManager)transientUIInteractionManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 transientUIInteractionManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  transientUIInteractionManager = [_sbWindowSceneContext transientUIInteractionManager];
 
-  return v3;
+  return transientUIInteractionManager;
 }
 
 - (SBAlertItemsController)alertItemsController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 alertItemsController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  alertItemsController = [_sbWindowSceneContext alertItemsController];
 
-  return v3;
+  return alertItemsController;
 }
 
 - (SBDisplayAppInteractionEventSource)appInteractionEventSource
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 appInteractionEventSource];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  appInteractionEventSource = [_sbWindowSceneContext appInteractionEventSource];
 
-  return v3;
+  return appInteractionEventSource;
 }
 
 - (SBCoverSheetPresentationManager)coverSheetPresentationManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 coverSheetPresentationManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  coverSheetPresentationManager = [_sbWindowSceneContext coverSheetPresentationManager];
 
-  return v3;
+  return coverSheetPresentationManager;
 }
 
 - (SBLockedPointerManager)lockedPointerManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 lockedPointerManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  lockedPointerManager = [_sbWindowSceneContext lockedPointerManager];
 
-  return v3;
+  return lockedPointerManager;
 }
 
 - (SBModalAlertPresentationCoordinator)modalAlertPresentationCoordinator
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 modalAlertPresentationCoordinator];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  modalAlertPresentationCoordinator = [_sbWindowSceneContext modalAlertPresentationCoordinator];
 
-  return v3;
+  return modalAlertPresentationCoordinator;
 }
 
 - (SBModalUIFluidDismissGestureManager)modalUIFluidDismissGestureManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 modalUIFluidDismissGestureManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  modalUIFluidDismissGestureManager = [_sbWindowSceneContext modalUIFluidDismissGestureManager];
 
-  return v3;
+  return modalUIFluidDismissGestureManager;
 }
 
 - (SBReachabilitySceneOffsetProviding)reachabilitySceneOffsetProvider
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 reachabilitySceneOffsetProvider];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  reachabilitySceneOffsetProvider = [_sbWindowSceneContext reachabilitySceneOffsetProvider];
 
-  return v3;
+  return reachabilitySceneOffsetProvider;
 }
 
 - (SBWallpaperController)wallpaperController
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 wallpaperController];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  wallpaperController = [_sbWindowSceneContext wallpaperController];
 
-  return v3;
+  return wallpaperController;
 }
 
 - (SBUICommandValidating)commandValidator
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 commandValidator];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  commandValidator = [_sbWindowSceneContext commandValidator];
 
-  return v3;
+  return commandValidator;
 }
 
 - (SBMenuBarManager)menuBarManager
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 menuBarManager];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  menuBarManager = [_sbWindowSceneContext menuBarManager];
 
-  return v3;
+  return menuBarManager;
 }
 
 - (SBWindowSceneAccessorySceneProvider)accessorySceneProvider
 {
-  v2 = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
-  v3 = [v2 accessorySceneProvider];
+  _sbWindowSceneContext = [(SBAbstractWindowSceneDelegate *)self _sbWindowSceneContext];
+  accessorySceneProvider = [_sbWindowSceneContext accessorySceneProvider];
 
-  return v3;
+  return accessorySceneProvider;
 }
 
 - (SBAbstractWindowSceneDelegate)init
@@ -448,9 +448,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SBAbstractWindowSceneDelegate *)v2 _pipelineManager];
+    _pipelineManager = [(SBAbstractWindowSceneDelegate *)v2 _pipelineManager];
     pipelineManager = v3->_pipelineManager;
-    v3->_pipelineManager = v4;
+    v3->_pipelineManager = _pipelineManager;
 
     v6 = [(SBAbstractWindowSceneDelegate *)v3 _createTraitsArbiterWithPipelineManager:v3->_pipelineManager];
     traitsArbiter = v3->_traitsArbiter;
@@ -541,9 +541,9 @@ void __40__SBAbstractWindowSceneDelegate_dealloc__block_invoke(void *a1)
   *(v8 + 40) = 0;
 }
 
-- (void)setWindowScene:(id)a3
+- (void)setWindowScene:(id)scene
 {
-  obj = a3;
+  obj = scene;
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
   if (WeakRetained != obj)
   {
@@ -551,98 +551,98 @@ void __40__SBAbstractWindowSceneDelegate_dealloc__block_invoke(void *a1)
   }
 }
 
-- (id)_sceneManagerForConnectingWindowScene:(id)a3
+- (id)_sceneManagerForConnectingWindowScene:(id)scene
 {
-  v3 = a3;
+  sceneCopy = scene;
   if (SBFIsShellSceneKitAvailable())
   {
-    v4 = +[SBSceneManagerCoordinator sharedInstance];
-    v5 = [v3 _FBSScene];
-    v6 = [v5 settings];
-    v7 = [v6 displayIdentity];
-    v8 = [v4 sceneManagerForDisplayIdentity:v7];
+    _FBSScene2 = +[SBSceneManagerCoordinator sharedInstance];
+    _FBSScene = [sceneCopy _FBSScene];
+    settings = [_FBSScene settings];
+    displayIdentity = [settings displayIdentity];
+    v8 = [_FBSScene2 sceneManagerForDisplayIdentity:displayIdentity];
   }
 
   else
   {
-    v4 = [v3 _FBSScene];
-    v5 = [v4 settings];
-    v6 = [v5 transientLocalSettings];
-    v8 = [v6 objectForSetting:4444];
+    _FBSScene2 = [sceneCopy _FBSScene];
+    _FBSScene = [_FBSScene2 settings];
+    settings = [_FBSScene transientLocalSettings];
+    v8 = [settings objectForSetting:4444];
   }
 
   return v8;
 }
 
-- (id)_displayLayoutPublisherForWindowScene:(id)a3
+- (id)_displayLayoutPublisherForWindowScene:(id)scene
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBAbstractWindowSceneDelegate.m" lineNumber:161 description:@"For subclasses to implement"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAbstractWindowSceneDelegate.m" lineNumber:161 description:@"For subclasses to implement"];
 
   return 0;
 }
 
-- (void)_configureForConnectingWindowScene:(id)a3 windowSceneContext:(id)a4
+- (void)_configureForConnectingWindowScene:(id)scene windowSceneContext:(id)context
 {
-  v38 = a3;
-  v6 = a4;
-  [v6 setTraitsArbiter:self->_traitsArbiter];
-  [v6 setTraitsPipelineManager:self->_pipelineManager];
-  v7 = [(SBAbstractWindowSceneDelegate *)self _sceneManagerForConnectingWindowScene:v38];
-  [v6 setSceneManager:v7];
-  [(SBAbstractWindowSceneDelegate *)self _configureNewPresentationBinderForWindowScene:v38 sceneManager:v7];
-  v8 = [(SBAbstractWindowSceneDelegate *)self _displayLayoutPublisherForConnectingWindowScene:v38];
-  [v6 setDisplayLayoutPublisher:v8];
+  sceneCopy = scene;
+  contextCopy = context;
+  [contextCopy setTraitsArbiter:self->_traitsArbiter];
+  [contextCopy setTraitsPipelineManager:self->_pipelineManager];
+  v7 = [(SBAbstractWindowSceneDelegate *)self _sceneManagerForConnectingWindowScene:sceneCopy];
+  [contextCopy setSceneManager:v7];
+  [(SBAbstractWindowSceneDelegate *)self _configureNewPresentationBinderForWindowScene:sceneCopy sceneManager:v7];
+  v8 = [(SBAbstractWindowSceneDelegate *)self _displayLayoutPublisherForConnectingWindowScene:sceneCopy];
+  [contextCopy setDisplayLayoutPublisher:v8];
 
   if (SBFIsShellSceneKitAvailable())
   {
-    v9 = [SBApp windowSceneManager];
-    [v9 connectedWindowScenes];
+    windowSceneManager = [SBApp windowSceneManager];
+    [windowSceneManager connectedWindowScenes];
   }
 
   else
   {
-    v11 = [SBApp displayManager];
-    v9 = [v11 connectedIdentities];
+    displayManager = [SBApp displayManager];
+    windowSceneManager = [displayManager connectedIdentities];
 
-    [v9 bs_filter:&__block_literal_global_66];
+    [windowSceneManager bs_filter:&__block_literal_global_66];
   }
   v10 = ;
   v12 = [v10 count];
 
-  v13 = [v38 isExternalDisplayWindowScene];
+  isExternalDisplayWindowScene = [sceneCopy isExternalDisplayWindowScene];
   v14 = [SBSceneLayoutStateProvider alloc];
-  v15 = [SBMainDisplayLayoutStateManager _initialLayoutStateWithDisplayOrdinal:v12 - 1 isDisplayExternal:v13];
+  v15 = [SBMainDisplayLayoutStateManager _initialLayoutStateWithDisplayOrdinal:v12 - 1 isDisplayExternal:isExternalDisplayWindowScene];
   v16 = [(SBSceneLayoutStateProvider *)v14 initWithLayoutState:v15];
-  [v6 setLayoutStateProvider:v16];
+  [contextCopy setLayoutStateProvider:v16];
 
   v17 = objc_alloc_init(SBMainDisplayLayoutStateManager);
-  [v6 setLayoutStateManager:v17];
+  [contextCopy setLayoutStateManager:v17];
 
-  v18 = [[SBLayoutStateTransitionCoordinator alloc] initWithWindowScene:v38];
-  [v6 setLayoutStateTransitionCoordinator:v18];
+  v18 = [[SBLayoutStateTransitionCoordinator alloc] initWithWindowScene:sceneCopy];
+  [contextCopy setLayoutStateTransitionCoordinator:v18];
 
-  v19 = [[SBAssistantSceneController alloc] initWithWindowScene:v38];
-  [v6 setAssistantController:v19];
+  v19 = [[SBAssistantSceneController alloc] initWithWindowScene:sceneCopy];
+  [contextCopy setAssistantController:v19];
 
   v20 = [SBWindowScenePIPManager alloc];
-  v21 = [SBApp pictureInPictureCoordinator];
-  v22 = [(SBWindowScenePIPManager *)v20 initWithGlobalCoordinator:v21];
+  pictureInPictureCoordinator = [SBApp pictureInPictureCoordinator];
+  v22 = [(SBWindowScenePIPManager *)v20 initWithGlobalCoordinator:pictureInPictureCoordinator];
 
-  [v6 setPictureInPictureManager:v22];
+  [contextCopy setPictureInPictureManager:v22];
   v23 = objc_alloc_init(MEMORY[0x277D65FE0]);
-  [v6 setZStackResolver:v23];
-  v24 = [[SBWindowHidingManager alloc] initWithWindowScene:v38];
-  [v6 setWindowHidingManager:v24];
+  [contextCopy setZStackResolver:v23];
+  v24 = [[SBWindowHidingManager alloc] initWithWindowScene:sceneCopy];
+  [contextCopy setWindowHidingManager:v24];
 
   v25 = objc_alloc_init(SBReachabilityUnsupportedSceneOffsetProvider);
-  [v6 setReachabilitySceneOffsetProvider:v25];
+  [contextCopy setReachabilitySceneOffsetProvider:v25];
 
   v26 = objc_alloc_init(SBPassthroughUICommandValidator);
-  [v6 setCommandValidator:v26];
+  [contextCopy setCommandValidator:v26];
 
-  v27 = [SBApp mousePointerManager];
-  v28 = [v27 requestPointerActivationForScene:v38];
+  mousePointerManager = [SBApp mousePointerManager];
+  v28 = [mousePointerManager requestPointerActivationForScene:sceneCopy];
   pointerAssertion = self->_pointerAssertion;
   self->_pointerAssertion = v28;
 
@@ -652,40 +652,40 @@ void __40__SBAbstractWindowSceneDelegate_dealloc__block_invoke(void *a1)
   hardwareButtonZStackClient = self->_hardwareButtonZStackClient;
   self->_hardwareButtonZStackClient = v32;
 
-  v34 = [SBApp systemUIScenesCoordinator];
-  [v34 windowSceneDidConnect:v38];
+  systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+  [systemUIScenesCoordinator windowSceneDidConnect:sceneCopy];
 
   v35 = +[SBKeyboardFocusCoordinator sharedInstance];
-  [v35 windowSceneDidConnect:v38];
+  [v35 windowSceneDidConnect:sceneCopy];
 
-  v36 = [[SBLockedPointerManager alloc] initWithWindowScene:v38];
-  [v6 setLockedPointerManager:v36];
-  v37 = [[SBWindowSceneAccessorySceneProvider alloc] initWithSBWindowScene:v38];
-  [v6 setAccessorySceneProvider:v37];
+  v36 = [[SBLockedPointerManager alloc] initWithWindowScene:sceneCopy];
+  [contextCopy setLockedPointerManager:v36];
+  v37 = [[SBWindowSceneAccessorySceneProvider alloc] initWithSBWindowScene:sceneCopy];
+  [contextCopy setAccessorySceneProvider:v37];
 
-  [v7 windowSceneDidConnect:v38];
+  [v7 windowSceneDidConnect:sceneCopy];
 }
 
 - (id)_pipelineManager
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBAbstractWindowSceneDelegate.m" lineNumber:224 description:@"For subclasses to define"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAbstractWindowSceneDelegate.m" lineNumber:224 description:@"For subclasses to define"];
 
   return 0;
 }
 
-- (id)_traitsDelegateForWindowRole:(id)a3
+- (id)_traitsDelegateForWindowRole:(id)role
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"SBAbstractWindowSceneDelegate.m" lineNumber:229 description:@"For subclasses to define"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAbstractWindowSceneDelegate.m" lineNumber:229 description:@"For subclasses to define"];
 
   return 0;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sceneCopy = scene;
   v7 = SBLogStartup();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -693,17 +693,17 @@ void __40__SBAbstractWindowSceneDelegate_dealloc__block_invoke(void *a1)
     v14 = 138543874;
     v15 = v8;
     v16 = 2114;
-    v17 = v6;
+    v17 = sceneCopy;
     v18 = 2114;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] connecting for: %{public}@; %{public}@", &v14, 0x20u);
   }
 
-  v9 = [SBApp windowSceneManager];
-  [v9 _sceneWillConnect:v6];
+  windowSceneManager = [SBApp windowSceneManager];
+  [windowSceneManager _sceneWillConnect:sceneCopy];
 
   v10 = objc_opt_class();
-  v11 = v6;
+  v11 = sceneCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -731,11 +731,11 @@ void __40__SBAbstractWindowSceneDelegate_dealloc__block_invoke(void *a1)
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = objc_opt_class();
-  v29 = v4;
+  v29 = disconnectCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -757,74 +757,74 @@ void __40__SBAbstractWindowSceneDelegate_dealloc__block_invoke(void *a1)
   v7 = v6;
 
   v8 = +[SBMainWorkspace sharedInstanceIfExists];
-  v9 = [v8 keyboardFocusController];
+  keyboardFocusController = [v8 keyboardFocusController];
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v7 screen];
-  v14 = [v13 displayIdentity];
-  v15 = [v10 stringWithFormat:@"%@ - %@", v12, v14];
-  v16 = [v9 suppressKeyboardFocusEvaluationForReason:v15];
+  screen = [v7 screen];
+  displayIdentity = [screen displayIdentity];
+  v15 = [v10 stringWithFormat:@"%@ - %@", v12, displayIdentity];
+  v16 = [keyboardFocusController suppressKeyboardFocusEvaluationForReason:v15];
 
   [(BSInvalidatable *)self->_pointerAssertion invalidate];
-  v17 = [SBApp windowSceneManager];
-  [v17 _sceneDidDisconnect:v29];
+  windowSceneManager = [SBApp windowSceneManager];
+  [windowSceneManager _sceneDidDisconnect:v29];
 
-  v18 = [v7 sceneManager];
-  [v18 windowSceneDidDisconnect:v7];
+  sceneManager = [v7 sceneManager];
+  [sceneManager windowSceneDidDisconnect:v7];
 
-  v19 = [v7 pictureInPictureManager];
-  [v19 windowSceneDidDisconnect:v7];
+  pictureInPictureManager = [v7 pictureInPictureManager];
+  [pictureInPictureManager windowSceneDidDisconnect:v7];
 
-  v20 = [v7 assistantController];
-  [v20 invalidate];
+  assistantController = [v7 assistantController];
+  [assistantController invalidate];
 
-  v21 = [v8 transientOverlayPresentationManager];
-  [v21 windowSceneDidDisconnect:v7];
+  transientOverlayPresentationManager = [v8 transientOverlayPresentationManager];
+  [transientOverlayPresentationManager windowSceneDidDisconnect:v7];
 
-  v22 = [v8 keyboardFocusController];
-  [v22 windowSceneDidDisconnect:v7];
+  keyboardFocusController2 = [v8 keyboardFocusController];
+  [keyboardFocusController2 windowSceneDidDisconnect:v7];
 
-  v23 = [SBApp bannerManager];
-  [v23 dismissAllBannersInWindowScene:v7 animated:0 reason:@"sceneDidDisconnect"];
+  bannerManager = [SBApp bannerManager];
+  [bannerManager dismissAllBannersInWindowScene:v7 animated:0 reason:@"sceneDidDisconnect"];
 
-  v24 = [SBApp systemUIScenesCoordinator];
-  [v24 windowSceneDidDisconnect:v7];
+  systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+  [systemUIScenesCoordinator windowSceneDidDisconnect:v7];
 
-  v25 = [v7 homeScreenController];
-  [v25 windowSceneDidDisconnect:v7];
+  homeScreenController = [v7 homeScreenController];
+  [homeScreenController windowSceneDidDisconnect:v7];
 
-  v26 = [v7 menuBarManager];
-  [v26 windowSceneDidDisconnect:v7];
+  menuBarManager = [v7 menuBarManager];
+  [menuBarManager windowSceneDidDisconnect:v7];
 
-  v27 = [v7 lockedPointerManager];
-  [v27 invalidate];
+  lockedPointerManager = [v7 lockedPointerManager];
+  [lockedPointerManager invalidate];
 
-  v28 = [v7 medusaHostedKeyboardWindowController];
-  [v28 invalidate];
+  medusaHostedKeyboardWindowController = [v7 medusaHostedKeyboardWindowController];
+  [medusaHostedKeyboardWindowController invalidate];
 
   [v16 invalidate];
 }
 
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 interfaceOrientation];
-  v11 = [v8 coordinateSpace];
-  v12 = __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace_interfaceOrientation_traitCollection___block_invoke(v11, v10, v11);
+  sceneCopy = scene;
+  spaceCopy = space;
+  interfaceOrientation = [sceneCopy interfaceOrientation];
+  coordinateSpace = [sceneCopy coordinateSpace];
+  v12 = __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace_interfaceOrientation_traitCollection___block_invoke(coordinateSpace, interfaceOrientation, coordinateSpace);
   v14 = v13;
 
-  v17 = __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace_interfaceOrientation_traitCollection___block_invoke(v15, a5, v9);
+  v17 = __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace_interfaceOrientation_traitCollection___block_invoke(v15, orientation, spaceCopy);
   v18 = v16;
   if (v12 != v17 || v14 != v16)
   {
     v19 = SBLogDisplayScaleMapping();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v8 _sbDisplayConfiguration];
-      v21 = [v20 identity];
+      _sbDisplayConfiguration = [sceneCopy _sbDisplayConfiguration];
+      identity = [_sbDisplayConfiguration identity];
       v32.width = v17;
       v32.height = v18;
       v22 = NSStringFromCGSize(v32);
@@ -832,7 +832,7 @@ void __40__SBAbstractWindowSceneDelegate_dealloc__block_invoke(void *a1)
       v33.height = v14;
       v23 = NSStringFromCGSize(v33);
       v25 = 138543874;
-      v26 = v21;
+      v26 = identity;
       v27 = 2112;
       v28 = v22;
       v29 = 2112;
@@ -840,8 +840,8 @@ void __40__SBAbstractWindowSceneDelegate_dealloc__block_invoke(void *a1)
       _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ changed from %@ to %@", &v25, 0x20u);
     }
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 postNotificationName:@"SBWindowSceneSessionRoleExternalDisplay" object:v8];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBWindowSceneSessionRoleExternalDisplay" object:sceneCopy];
   }
 }
 
@@ -859,21 +859,21 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
   return v6;
 }
 
-- (void)_windowScene:(id)a3 windowWillAttach:(id)a4
+- (void)_windowScene:(id)scene windowWillAttach:(id)attach
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  attachCopy = attach;
   v7 = SBLogTraitsArbiter();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [(SBAbstractWindowSceneDelegate *)v9 _windowScene:v15 windowWillAttach:v6, v7];
+    [(SBAbstractWindowSceneDelegate *)v9 _windowScene:v15 windowWillAttach:attachCopy, v7];
   }
 
   v10 = objc_opt_class();
-  v11 = v5;
+  v11 = sceneCopy;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -896,33 +896,33 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
 
   if (v13)
   {
-    v14 = [v13 windowHidingManager];
-    [v14 _window:v6 willAttachToScene:v11];
+    windowHidingManager = [v13 windowHidingManager];
+    [windowHidingManager _window:attachCopy willAttachToScene:v11];
   }
 }
 
-- (void)_windowScene:(id)a3 windowWillDetach:(id)a4
+- (void)_windowScene:(id)scene windowWillDetach:(id)detach
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  detachCopy = detach;
   v8 = SBLogTraitsArbiter();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v7 _roleHint];
-    [(SBAbstractWindowSceneDelegate *)v7 _windowScene:v9 windowWillDetach:v17];
+    _roleHint = [detachCopy _roleHint];
+    [(SBAbstractWindowSceneDelegate *)detachCopy _windowScene:_roleHint windowWillDetach:v17];
   }
 
-  v10 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:v7];
+  v10 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:detachCopy];
   v11 = v10;
   if (v10)
   {
     [v10 invalidate];
-    [(SBAbstractWindowSceneDelegate *)self _setParticipant:0 forWindow:v7];
+    [(SBAbstractWindowSceneDelegate *)self _setParticipant:0 forWindow:detachCopy];
   }
 
   v12 = objc_opt_class();
-  v13 = v6;
+  v13 = sceneCopy;
   if (v12)
   {
     if (objc_opt_isKindOfClass())
@@ -945,17 +945,17 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
 
   if (v15)
   {
-    v16 = [v15 windowHidingManager];
-    [v16 _window:v7 willDetachFromScene:v13];
+    windowHidingManager = [v15 windowHidingManager];
+    [windowHidingManager _window:detachCopy willDetachFromScene:v13];
   }
 }
 
-- (void)_windowScene:(id)a3 windowWillBecomeVisible:(id)a4
+- (void)_windowScene:(id)scene windowWillBecomeVisible:(id)visible
 {
-  v5 = a4;
+  visibleCopy = visible;
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v5 _roleHint];
-  v8 = [v6 stringWithFormat:@"Window(%p) with role(%@) will become visible.", v5, v7];
+  _roleHint = [visibleCopy _roleHint];
+  v8 = [v6 stringWithFormat:@"Window(%p) with role(%@) will become visible.", visibleCopy, _roleHint];
 
   v9 = SBLogTraitsArbiter();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -963,28 +963,28 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
     [SBAbstractWindowSceneDelegate _windowScene:windowWillBecomeVisible:];
   }
 
-  v10 = [v5 _roleHint];
-  v11 = v10;
-  if (v10 && SBTraitsArbiterOrientationActuationEnabledForRole(v10))
+  _roleHint2 = [visibleCopy _roleHint];
+  v11 = _roleHint2;
+  if (_roleHint2 && SBTraitsArbiterOrientationActuationEnabledForRole(_roleHint2))
   {
-    if ([v5 autorotates])
+    if ([visibleCopy autorotates])
     {
-      [v5 setAutorotates:0 forceUpdateInterfaceOrientation:1];
+      [visibleCopy setAutorotates:0 forceUpdateInterfaceOrientation:1];
     }
 
-    if (([v5 isInterfaceAutorotationDisabled] & 1) == 0)
+    if (([visibleCopy isInterfaceAutorotationDisabled] & 1) == 0)
     {
-      [v5 beginDisablingInterfaceAutorotation];
+      [visibleCopy beginDisablingInterfaceAutorotation];
     }
   }
 
   if ([(SBAbstractWindowSceneDelegate *)self _shouldManageParticipantWithRole:v11])
   {
-    v12 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:v5];
-    if (v12 || ([(SBAbstractWindowSceneDelegate *)self _acquireParticipantForWindow:v5 reason:v8], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    v12 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:visibleCopy];
+    if (v12 || ([(SBAbstractWindowSceneDelegate *)self _acquireParticipantForWindow:visibleCopy reason:v8], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v13 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:v11];
-      [v13 windowWillBecomeVisible:v5 ownedParticipant:v12];
+      [v13 windowWillBecomeVisible:visibleCopy ownedParticipant:v12];
 
       [v12 setNeedsUpdatePreferencesWithReason:v8 force:1 animate:0];
     }
@@ -996,24 +996,24 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
   }
 }
 
-- (void)_windowScene:(id)a3 windowDidBecomeVisible:(id)a4
+- (void)_windowScene:(id)scene windowDidBecomeVisible:(id)visible
 {
   v7[3] = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  visibleCopy = visible;
   v5 = SBLogTraitsArbiter();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 _roleHint];
-    [(SBAbstractWindowSceneDelegate *)v4 _windowScene:v6 windowDidBecomeVisible:v7];
+    _roleHint = [visibleCopy _roleHint];
+    [(SBAbstractWindowSceneDelegate *)visibleCopy _windowScene:_roleHint windowDidBecomeVisible:v7];
   }
 }
 
-- (void)_windowScene:(id)a3 windowWillBecomeHidden:(id)a4
+- (void)_windowScene:(id)scene windowWillBecomeHidden:(id)hidden
 {
-  v5 = a4;
+  hiddenCopy = hidden;
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v5 _roleHint];
-  v8 = [v6 stringWithFormat:@"Window(%p) with role(%@) will become hidden.", v5, v7];
+  _roleHint = [hiddenCopy _roleHint];
+  v8 = [v6 stringWithFormat:@"Window(%p) with role(%@) will become hidden.", hiddenCopy, _roleHint];
 
   v9 = SBLogTraitsArbiter();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1021,30 +1021,30 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
     [SBAbstractWindowSceneDelegate _windowScene:windowWillBecomeVisible:];
   }
 
-  v10 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:v5];
+  v10 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:hiddenCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 role];
-    v13 = [(SBAbstractWindowSceneDelegate *)self _shouldHandleWindowWillBecomeHiddenForRole:v12];
+    role = [v10 role];
+    v13 = [(SBAbstractWindowSceneDelegate *)self _shouldHandleWindowWillBecomeHiddenForRole:role];
 
     if (v13)
     {
-      v14 = [v11 role];
-      v15 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:v14];
-      [v15 windowWillBecomeHidden:v5 ownedParticipant:v11];
+      role2 = [v11 role];
+      v15 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:role2];
+      [v15 windowWillBecomeHidden:hiddenCopy ownedParticipant:v11];
 
       [v11 setNeedsUpdatePreferencesWithReason:v8];
     }
   }
 }
 
-- (double)_windowScene:(id)a3 levelForWindow:(id)a4 preferredLevel:(double)a5
+- (double)_windowScene:(id)scene levelForWindow:(id)window preferredLevel:(double)level
 {
-  v7 = a4;
+  windowCopy = window;
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v7 _roleHint];
-  v10 = [v8 stringWithFormat:@"Window(%p) with role(%@) did update windowLevel(%.1f)", v7, v9, *&a5];
+  _roleHint = [windowCopy _roleHint];
+  v10 = [v8 stringWithFormat:@"Window(%p) with role(%@) did update windowLevel(%.1f)", windowCopy, _roleHint, *&level];
 
   v11 = SBLogTraitsArbiter();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -1052,30 +1052,30 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
     [SBAbstractWindowSceneDelegate _windowScene:windowWillBecomeVisible:];
   }
 
-  v12 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:v7];
+  v12 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:windowCopy];
   v13 = v12;
   if (v12)
   {
-    v14 = [v12 role];
-    v15 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:v14];
-    [v15 windowDidUpdatePreferredWindowLevel:v13 ownedParticipant:a5];
+    role = [v12 role];
+    v15 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:role];
+    [v15 windowDidUpdatePreferredWindowLevel:v13 ownedParticipant:level];
 
     [v13 setNeedsUpdatePreferencesWithReason:v10];
     [v13 updatePreferencesIfNeeded];
     [v13 currentZOrderLevel];
-    a5 = v16;
+    level = v16;
   }
 
-  return a5;
+  return level;
 }
 
-- (void)_windowScene:(id)a3 window:(id)a4 didUpdateSupportedInterfaceOrientations:(unint64_t)a5 preferredOrientation:(int64_t)a6
+- (void)_windowScene:(id)scene window:(id)window didUpdateSupportedInterfaceOrientations:(unint64_t)orientations preferredOrientation:(int64_t)orientation
 {
-  v8 = a4;
+  windowCopy = window;
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v8 _roleHint];
+  _roleHint = [windowCopy _roleHint];
   v11 = BSInterfaceOrientationMaskDescription();
-  v12 = [v9 stringWithFormat:@"Window(%p) with role(%@) did update supportedInterfaceOrientations(%@)"], v8, v10, v11);
+  v12 = [v9 stringWithFormat:@"Window(%p) with role(%@) did update supportedInterfaceOrientations(%@)"], windowCopy, _roleHint, v11);
 
   v13 = SBLogTraitsArbiter();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1083,35 +1083,35 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
     [SBAbstractWindowSceneDelegate _windowScene:windowWillBecomeVisible:];
   }
 
-  v14 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:v8];
+  v14 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:windowCopy];
   if (v14)
   {
-    v15 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-    v16 = [v14 role];
-    v17 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:v16];
-    [v17 windowDidUpdateSupportedOrientations:a5 ownedParticipant:v14];
+    areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+    role = [v14 role];
+    v17 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:role];
+    [v17 windowDidUpdateSupportedOrientations:orientations ownedParticipant:v14];
 
-    [v14 setNeedsUpdatePreferencesWithReason:v12 animate:{-[SBAbstractWindowSceneDelegate _isWindowContentVisible:](self, "_isWindowContentVisible:", v8) & v15}];
+    [v14 setNeedsUpdatePreferencesWithReason:v12 animate:{-[SBAbstractWindowSceneDelegate _isWindowContentVisible:](self, "_isWindowContentVisible:", windowCopy) & areAnimationsEnabled}];
     [v14 updatePreferencesIfNeeded];
   }
 }
 
-- (void)_commonSceneSetupForScene:(id)a3
+- (void)_commonSceneSetupForScene:(id)scene
 {
-  v7 = a3;
-  v4 = [[SBWindowSceneContext alloc] initWithScene:v7];
+  sceneCopy = scene;
+  v4 = [[SBWindowSceneContext alloc] initWithScene:sceneCopy];
   windowSceneContext = self->_windowSceneContext;
   self->_windowSceneContext = v4;
   v6 = v4;
 
-  [(SBAbstractWindowSceneDelegate *)self _configureForConnectingWindowScene:v7 windowSceneContext:v6];
+  [(SBAbstractWindowSceneDelegate *)self _configureForConnectingWindowScene:sceneCopy windowSceneContext:v6];
 }
 
-- (id)_participantForWindow:(id)a3
+- (id)_participantForWindow:(id)window
 {
-  v3 = a3;
+  windowCopy = window;
   v4 = objc_opt_class();
-  v5 = SBSafeCast(v4, v3);
+  v5 = SBSafeCast(v4, windowCopy);
   v6 = v5;
   if (v5)
   {
@@ -1120,81 +1120,81 @@ double __107__SBAbstractWindowSceneDelegate_windowScene_didUpdateCoordinateSpace
 
   else
   {
-    [v3 sb_traitsParticipant];
+    [windowCopy sb_traitsParticipant];
   }
   v7 = ;
 
   return v7;
 }
 
-- (void)_setParticipant:(id)a3 forWindow:(id)a4
+- (void)_setParticipant:(id)participant forWindow:(id)window
 {
-  v9 = a3;
-  v5 = a4;
+  participantCopy = participant;
+  windowCopy = window;
   v6 = objc_opt_class();
-  v7 = SBSafeCast(v6, v5);
+  v7 = SBSafeCast(v6, windowCopy);
   v8 = v7;
   if (v7)
   {
-    [v7 _setTraitsParticipant:v9];
+    [v7 _setTraitsParticipant:participantCopy];
   }
 
   else
   {
-    [v5 sb_setTraitsParticipant:v9];
+    [windowCopy sb_setTraitsParticipant:participantCopy];
   }
 }
 
-- (id)_acquireParticipantForWindow:(id)a3 reason:(id)a4
+- (id)_acquireParticipantForWindow:(id)window reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:v6];
-  v9 = [v6 _roleHint];
-  if (v9 && !v8)
+  windowCopy = window;
+  reasonCopy = reason;
+  v8 = [(SBAbstractWindowSceneDelegate *)self _participantForWindow:windowCopy];
+  _roleHint = [windowCopy _roleHint];
+  if (_roleHint && !v8)
   {
-    v10 = [v6 _sbWindowScene];
-    v11 = [v10 traitsArbiter];
-    v12 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:v9];
-    v8 = [v11 acquireParticipantWithRole:v9 delegate:v12];
+    _sbWindowScene = [windowCopy _sbWindowScene];
+    traitsArbiter = [_sbWindowScene traitsArbiter];
+    v12 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:_roleHint];
+    v8 = [traitsArbiter acquireParticipantWithRole:_roleHint delegate:v12];
 
-    [(SBAbstractWindowSceneDelegate *)self _setParticipant:v8 forWindow:v6];
-    v13 = [v8 role];
-    v14 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:v13];
-    [v14 setParticipant:v8 ownedByWindow:v6];
+    [(SBAbstractWindowSceneDelegate *)self _setParticipant:v8 forWindow:windowCopy];
+    role = [v8 role];
+    v14 = [(SBAbstractWindowSceneDelegate *)self _traitsDelegateForWindowRole:role];
+    [v14 setParticipant:v8 ownedByWindow:windowCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_isWindowContentVisible:(id)a3
+- (BOOL)_isWindowContentVisible:(id)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v4 = objc_opt_self();
-  v5 = SBSafeCast(v4, v3);
+  v5 = SBSafeCast(v4, visibleCopy);
 
   if (v5)
   {
-    v6 = [v5 isContentHidden];
+    isContentHidden = [v5 isContentHidden];
   }
 
   else
   {
-    v6 = [v3 isHidden];
+    isContentHidden = [visibleCopy isHidden];
   }
 
-  v7 = v6;
+  v7 = isContentHidden;
 
   return v7 ^ 1;
 }
 
-- (id)_createTraitsArbiterWithPipelineManager:(id)a3
+- (id)_createTraitsArbiterWithPipelineManager:(id)manager
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277D73490]) initWithRolesProvider:v4 inputsDataSource:v4 drawingDataSource:v4];
-  [v4 setSceneDelegate:self];
-  [v4 setArbiter:v5];
-  [v4 setupDefaultPipelineForArbiter:v5];
+  managerCopy = manager;
+  v5 = [objc_alloc(MEMORY[0x277D73490]) initWithRolesProvider:managerCopy inputsDataSource:managerCopy drawingDataSource:managerCopy];
+  [managerCopy setSceneDelegate:self];
+  [managerCopy setArbiter:v5];
+  [managerCopy setupDefaultPipelineForArbiter:v5];
 
   return v5;
 }

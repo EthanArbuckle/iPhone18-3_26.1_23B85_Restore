@@ -1,6 +1,6 @@
 @interface HMDAccessCodeManagerUtilities
-+ (BOOL)allModificationRequests:(id)a3 areAddingAccessCode:(id)a4;
-+ (id)filteredFetchResponses:(id)a3 forUser:(id)a4 flow:(id)a5;
++ (BOOL)allModificationRequests:(id)requests areAddingAccessCode:(id)code;
++ (id)filteredFetchResponses:(id)responses forUser:(id)user flow:(id)flow;
 + (id)logCategory;
 @end
 
@@ -26,18 +26,18 @@ void __44__HMDAccessCodeManagerUtilities_logCategory__block_invoke()
   logCategory__hmf_once_v10 = v1;
 }
 
-+ (BOOL)allModificationRequests:(id)a3 areAddingAccessCode:(id)a4
++ (BOOL)allModificationRequests:(id)requests areAddingAccessCode:(id)code
 {
-  v5 = a4;
+  codeCopy = code;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__HMDAccessCodeManagerUtilities_allModificationRequests_areAddingAccessCode___block_invoke;
   v8[3] = &unk_27866E578;
-  v9 = v5;
-  v6 = v5;
-  LOBYTE(a3) = [a3 na_all:v8];
+  v9 = codeCopy;
+  v6 = codeCopy;
+  LOBYTE(requests) = [requests na_all:v8];
 
-  return a3;
+  return requests;
 }
 
 uint64_t __77__HMDAccessCodeManagerUtilities_allModificationRequests_areAddingAccessCode___block_invoke(uint64_t a1, void *a2)
@@ -80,35 +80,35 @@ BOOL __55__HMDAccessCodeManagerUtilities_anyModificationFailed___block_invoke(ui
   return v3;
 }
 
-+ (id)filteredFetchResponses:(id)a3 forUser:(id)a4 flow:(id)a5
++ (id)filteredFetchResponses:(id)responses forUser:(id)user flow:(id)flow
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 isAdministrator];
+  responsesCopy = responses;
+  userCopy = user;
+  flowCopy = flow;
+  isAdministrator = [userCopy isAdministrator];
   v12 = objc_autoreleasePoolPush();
-  v13 = a1;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
-  if (v11)
+  if (isAdministrator)
   {
     if (v15)
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v10 UUID];
-      v18 = [v9 uuid];
+      uUID = [flowCopy UUID];
+      uuid = [userCopy uuid];
       *buf = 138543874;
       v28 = v16;
       v29 = 2112;
-      v30 = v17;
+      v30 = uUID;
       v31 = 2112;
-      v32 = v18;
+      v32 = uuid;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] User: %@ is an admin, so we can safely send all the fetch responses.", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v19 = v8;
+    v19 = responsesCopy;
   }
 
   else
@@ -116,14 +116,14 @@ BOOL __55__HMDAccessCodeManagerUtilities_anyModificationFailed___block_invoke(ui
     if (v15)
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v10 UUID];
-      v22 = [v9 uuid];
+      uUID2 = [flowCopy UUID];
+      uuid2 = [userCopy uuid];
       *buf = 138543874;
       v28 = v20;
       v29 = 2112;
-      v30 = v21;
+      v30 = uUID2;
       v31 = 2112;
-      v32 = v22;
+      v32 = uuid2;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@[Flow: %@] User: %@ is not an admin, so redact all access codes except the user's own.", buf, 0x20u);
     }
 
@@ -132,8 +132,8 @@ BOOL __55__HMDAccessCodeManagerUtilities_anyModificationFailed___block_invoke(ui
     v25[1] = 3221225472;
     v25[2] = __69__HMDAccessCodeManagerUtilities_filteredFetchResponses_forUser_flow___block_invoke;
     v25[3] = &unk_27866E130;
-    v26 = v9;
-    v19 = [v8 na_map:v25];
+    v26 = userCopy;
+    v19 = [responsesCopy na_map:v25];
   }
 
   v23 = *MEMORY[0x277D85DE8];

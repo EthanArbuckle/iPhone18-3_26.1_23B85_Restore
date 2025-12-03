@@ -1,12 +1,12 @@
 @interface UARPTLVPersonalizationECIDOS
 + (id)metaDataTableEntry;
-+ (id)tlvFromPropertyListValue:(id)a3;
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4;
++ (id)tlvFromPropertyListValue:(id)value;
++ (id)tlvWithLength:(unint64_t)length value:(void *)value;
 - (UARPTLVPersonalizationECIDOS)init;
 - (id)description;
 - (id)generateTLV;
 - (id)tlvValue;
-- (void)setEcID:(unint64_t)a3;
+- (void)setEcID:(unint64_t)d;
 @end
 
 @implementation UARPTLVPersonalizationECIDOS
@@ -18,12 +18,12 @@
   return [(UARPMetaDataTLV64OS *)&v3 init];
 }
 
-- (void)setEcID:(unint64_t)a3
+- (void)setEcID:(unint64_t)d
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_ecID = a3;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_ecID = d;
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -72,17 +72,17 @@
   return v3;
 }
 
-+ (id)tlvFromPropertyListValue:(id)a3
++ (id)tlvFromPropertyListValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
     v5 = objc_opt_new();
-    v6 = [v4 unsignedLongLongValue];
+    unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-    [v5 setEcID:v6];
+    [v5 setEcID:unsignedLongLongValue];
   }
 
   else
@@ -93,12 +93,12 @@
   return v5;
 }
 
-+ (id)tlvWithLength:(unint64_t)a3 value:(void *)a4
++ (id)tlvWithLength:(unint64_t)length value:(void *)value
 {
-  if (a3 == 8)
+  if (length == 8)
   {
     v5 = objc_opt_new();
-    [v5 setEcID:uarpHtonll(*a4)];
+    [v5 setEcID:uarpHtonll(*value)];
   }
 
   else

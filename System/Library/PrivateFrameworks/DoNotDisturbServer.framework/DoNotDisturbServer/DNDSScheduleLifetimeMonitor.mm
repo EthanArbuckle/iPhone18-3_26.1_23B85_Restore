@@ -1,18 +1,18 @@
 @interface DNDSScheduleLifetimeMonitor
-- (id)_activeDateIntervalForScheduleLifetime:(id)a3 assertionStartDate:(id)a4 date:(id)a5 scheduleSettings:(id)a6 calendar:(id)a7 ignoreMatchScheduleStartDate:(BOOL)a8;
-- (id)updateForModeAssertions:(id)a3 date:(id)a4;
-- (void)setDelegate:(id)a3;
+- (id)_activeDateIntervalForScheduleLifetime:(id)lifetime assertionStartDate:(id)date date:(id)a5 scheduleSettings:(id)settings calendar:(id)calendar ignoreMatchScheduleStartDate:(BOOL)startDate;
+- (id)updateForModeAssertions:(id)assertions date:(id)date;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation DNDSScheduleLifetimeMonitor
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = DNDSScheduleLifetimeMonitor;
-  [(DNDSBaseLifetimeMonitor *)&v8 setDelegate:v4];
-  if (v4)
+  [(DNDSBaseLifetimeMonitor *)&v8 setDelegate:delegateCopy];
+  if (delegateCopy)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x277D85DD0];
@@ -20,7 +20,7 @@
     v5[2] = __43__DNDSScheduleLifetimeMonitor_setDelegate___block_invoke;
     v5[3] = &unk_278F8A438;
     objc_copyWeak(&v6, &location);
-    [v4 lifetimeMonitor:self registerTimerHandlerWithServiceIdentifier:@"com.apple.donotdisturb.server.ScheduleLifetimeMonitor.timer" handler:v5];
+    [delegateCopy lifetimeMonitor:self registerTimerHandlerWithServiceIdentifier:@"com.apple.donotdisturb.server.ScheduleLifetimeMonitor.timer" handler:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -36,39 +36,39 @@ void __43__DNDSScheduleLifetimeMonitor_setDelegate___block_invoke(uint64_t a1, v
   }
 }
 
-- (id)_activeDateIntervalForScheduleLifetime:(id)a3 assertionStartDate:(id)a4 date:(id)a5 scheduleSettings:(id)a6 calendar:(id)a7 ignoreMatchScheduleStartDate:(BOOL)a8
+- (id)_activeDateIntervalForScheduleLifetime:(id)lifetime assertionStartDate:(id)date date:(id)a5 scheduleSettings:(id)settings calendar:(id)calendar ignoreMatchScheduleStartDate:(BOOL)startDate
 {
-  v13 = a4;
+  dateCopy = date;
   v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [a3 behavior];
-  if (v17 == 1)
+  settingsCopy = settings;
+  calendarCopy = calendar;
+  behavior = [lifetime behavior];
+  if (behavior == 1)
   {
-    v18 = [MEMORY[0x277CCA970] dnds_dateIntervalUntilEndOfScheduleForScheduleSettings:v15 startDate:v13 calendar:v16];
+    v18 = [MEMORY[0x277CCA970] dnds_dateIntervalUntilEndOfScheduleForScheduleSettings:settingsCopy startDate:dateCopy calendar:calendarCopy];
     if (v18)
     {
       goto LABEL_11;
     }
 
     v23 = objc_alloc(MEMORY[0x277CCA970]);
-    v19 = [MEMORY[0x277CBEAA8] distantFuture];
-    v18 = [v23 initWithStartDate:v13 endDate:v19];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    v18 = [v23 initWithStartDate:dateCopy endDate:distantFuture];
     goto LABEL_9;
   }
 
-  if (!v17)
+  if (!behavior)
   {
-    v18 = [MEMORY[0x277CCA970] dnds_dateIntervalForScheduleSettings:v15 date:v14 calendar:v16];
-    if (a8)
+    v18 = [MEMORY[0x277CCA970] dnds_dateIntervalForScheduleSettings:settingsCopy date:v14 calendar:calendarCopy];
+    if (startDate)
     {
       goto LABEL_11;
     }
 
-    v19 = [v15 creationDate];
-    if ([v19 compare:v13] == -1)
+    distantFuture = [settingsCopy creationDate];
+    if ([distantFuture compare:dateCopy] == -1)
     {
-      v20 = [v18 containsDate:v13];
+      v20 = [v18 containsDate:dateCopy];
 
       if (!v20)
       {
@@ -76,8 +76,8 @@ void __43__DNDSScheduleLifetimeMonitor_setDelegate___block_invoke(uint64_t a1, v
       }
 
       v21 = MEMORY[0x277CCA970];
-      v19 = [v18 endDate];
-      v22 = [v21 dnds_dateIntervalForScheduleSettings:v15 date:v19 calendar:v16];
+      distantFuture = [v18 endDate];
+      v22 = [v21 dnds_dateIntervalForScheduleSettings:settingsCopy date:distantFuture calendar:calendarCopy];
 
       v18 = v22;
     }
@@ -93,26 +93,26 @@ LABEL_11:
   return v18;
 }
 
-- (id)updateForModeAssertions:(id)a3 date:(id)a4
+- (id)updateForModeAssertions:(id)assertions date:(id)date
 {
   v105 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v86 = self;
-  v8 = [(DNDSBaseLifetimeMonitor *)self queue];
-  dispatch_assert_queue_V2(v8);
+  assertionsCopy = assertions;
+  dateCopy = date;
+  selfCopy = self;
+  queue = [(DNDSBaseLifetimeMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = DNDSLogScheduleLifetimeMonitor;
   if (os_log_type_enabled(DNDSLogScheduleLifetimeMonitor, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v104 = v7;
+    v104 = dateCopy;
     _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Refreshing monitor, date=%{public}@", buf, 0xCu);
   }
 
-  v10 = [(DNDSBaseLifetimeMonitor *)v86 dataSource];
-  calendar = v86->_calendar;
-  v85 = v7;
+  dataSource = [(DNDSBaseLifetimeMonitor *)selfCopy dataSource];
+  calendar = selfCopy->_calendar;
+  v85 = dateCopy;
   if (calendar)
   {
     v12 = calendar;
@@ -124,14 +124,14 @@ LABEL_11:
   }
 
   v84 = v12;
-  v70 = v10;
-  v76 = [v10 scheduleSettingsByModeIdentifierForScheduleLifetimeMonitor:v86];
-  v80 = [MEMORY[0x277CBEB38] dictionary];
+  v70 = dataSource;
+  v76 = [dataSource scheduleSettingsByModeIdentifierForScheduleLifetimeMonitor:selfCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v13 = v6;
+  v13 = assertionsCopy;
   v14 = [v13 countByEnumeratingWithState:&v95 objects:v102 count:16];
   if (v14)
   {
@@ -147,19 +147,19 @@ LABEL_11:
         }
 
         v18 = *(*(&v95 + 1) + 8 * i);
-        v19 = [v18 details];
-        v20 = [v19 modeIdentifier];
+        details = [v18 details];
+        modeIdentifier = [details modeIdentifier];
 
-        v21 = [v80 objectForKeyedSubscript:v20];
-        v22 = [v21 BOOLValue];
+        v21 = [dictionary objectForKeyedSubscript:modeIdentifier];
+        bOOLValue = [v21 BOOLValue];
 
-        v23 = [v18 details];
-        v24 = [v23 lifetime];
+        details2 = [v18 details];
+        lifetime = [details2 lifetime];
 
         v25 = MEMORY[0x277CCABB0];
-        v26 = (v22 & 1) != 0 || [v24 behavior] == 1;
+        v26 = (bOOLValue & 1) != 0 || [lifetime behavior] == 1;
         v27 = [v25 numberWithInt:v26];
-        [v80 setObject:v27 forKey:v20];
+        [dictionary setObject:v27 forKey:modeIdentifier];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v95 objects:v102 count:16];
@@ -168,9 +168,9 @@ LABEL_11:
     while (v15);
   }
 
-  v83 = [MEMORY[0x277CBEAA8] distantFuture];
-  v71 = [MEMORY[0x277CBEB18] array];
-  v81 = [MEMORY[0x277CBEB18] array];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
@@ -192,17 +192,17 @@ LABEL_11:
         }
 
         v29 = *(*(&v91 + 1) + 8 * j);
-        v30 = [v29 details];
-        v31 = [v30 modeIdentifier];
+        details3 = [v29 details];
+        modeIdentifier2 = [details3 modeIdentifier];
 
-        if ([v31 isEqualToString:v74])
+        if ([modeIdentifier2 isEqualToString:v74])
         {
           v32 = v72;
 
-          v31 = v32;
+          modeIdentifier2 = v32;
         }
 
-        v33 = [v76 objectForKeyedSubscript:v31];
+        v33 = [v76 objectForKeyedSubscript:modeIdentifier2];
         v34 = v33;
         if (v33)
         {
@@ -216,11 +216,11 @@ LABEL_11:
           v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v100 count:1];
         }
 
-        v37 = [v29 details];
-        v38 = [v37 lifetime];
+        details4 = [v29 details];
+        lifetime2 = [details4 lifetime];
 
-        v39 = [v80 objectForKeyedSubscript:v31];
-        v40 = [v39 BOOLValue];
+        v39 = [dictionary objectForKeyedSubscript:modeIdentifier2];
+        bOOLValue2 = [v39 BOOLValue];
 
         v89 = 0u;
         v90 = 0u;
@@ -230,14 +230,14 @@ LABEL_11:
         v42 = [v41 countByEnumeratingWithState:&v87 objects:v99 count:16];
         if (!v42)
         {
-          v56 = v41;
+          uUID2 = v41;
 LABEL_48:
 
           goto LABEL_50;
         }
 
         v43 = v42;
-        v78 = v31;
+        v78 = modeIdentifier2;
         v79 = j;
         v82 = 0;
         v44 = *v88;
@@ -252,18 +252,18 @@ LABEL_48:
             }
 
             v46 = *(*(&v87 + 1) + 8 * v45);
-            v47 = [v29 startDate];
-            v48 = [(DNDSScheduleLifetimeMonitor *)v86 _activeDateIntervalForScheduleLifetime:v38 assertionStartDate:v47 date:v85 scheduleSettings:v46 calendar:v84 ignoreMatchScheduleStartDate:v40];
+            startDate = [v29 startDate];
+            v48 = [(DNDSScheduleLifetimeMonitor *)selfCopy _activeDateIntervalForScheduleLifetime:lifetime2 assertionStartDate:startDate date:v85 scheduleSettings:v46 calendar:v84 ignoreMatchScheduleStartDate:bOOLValue2];
 
             if (v48)
             {
               v49 = [v48 dnds_lifetimePhaseForDate:v85];
               if (v49 == 2)
               {
-                if ([(NSDate *)v38 behavior]== 1)
+                if ([(NSDate *)lifetime2 behavior]== 1)
                 {
-                  v54 = [v29 UUID];
-                  [v81 addObject:v54];
+                  uUID = [v29 UUID];
+                  [array2 addObject:uUID];
                 }
               }
 
@@ -271,8 +271,8 @@ LABEL_48:
               {
                 if (v49 == 1)
                 {
-                  v53 = [v48 endDate];
-                  v51 = [(NSDate *)v83 earlierDate:v53];
+                  endDate = [v48 endDate];
+                  v51 = [(NSDate *)distantFuture earlierDate:endDate];
 
                   v82 = 1;
                 }
@@ -284,11 +284,11 @@ LABEL_48:
                     goto LABEL_40;
                   }
 
-                  v50 = [v48 startDate];
-                  v51 = [(NSDate *)v83 earlierDate:v50];
+                  startDate2 = [v48 startDate];
+                  v51 = [(NSDate *)distantFuture earlierDate:startDate2];
                 }
 
-                v83 = v51;
+                distantFuture = v51;
               }
             }
 
@@ -298,7 +298,7 @@ LABEL_48:
               if (os_log_type_enabled(DNDSLogScheduleLifetimeMonitor, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v104 = v38;
+                v104 = lifetime2;
                 _os_log_impl(&dword_24912E000, v52, OS_LOG_TYPE_DEFAULT, "Skipping inactive lifetime, lifetime=%{public}@", buf, 0xCu);
               }
             }
@@ -317,14 +317,14 @@ LABEL_40:
 
         if (v82)
         {
-          v56 = [v29 UUID];
-          [v71 addObject:v56];
-          v31 = v78;
+          uUID2 = [v29 UUID];
+          [array addObject:uUID2];
+          modeIdentifier2 = v78;
           j = v79;
           goto LABEL_48;
         }
 
-        v31 = v78;
+        modeIdentifier2 = v78;
         j = v79;
 LABEL_50:
       }
@@ -335,46 +335,46 @@ LABEL_50:
     while (v77);
   }
 
-  v57 = [MEMORY[0x277CBEAA8] distantFuture];
-  v58 = [(NSDate *)v83 isEqualToDate:v57];
+  distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+  v58 = [(NSDate *)distantFuture isEqualToDate:distantFuture2];
 
-  v59 = [(NSDate *)v83 isEqualToDate:v86->_lifetimeTimerFireDate];
-  v60 = [(DNDSBaseLifetimeMonitor *)v86 delegate];
+  v59 = [(NSDate *)distantFuture isEqualToDate:selfCopy->_lifetimeTimerFireDate];
+  delegate = [(DNDSBaseLifetimeMonitor *)selfCopy delegate];
   if (v58 || !v59)
   {
     v61 = DNDSLogScheduleLifetimeMonitor;
     if (os_log_type_enabled(DNDSLogScheduleLifetimeMonitor, OS_LOG_TYPE_DEFAULT))
     {
-      lifetimeTimerFireDate = v86->_lifetimeTimerFireDate;
+      lifetimeTimerFireDate = selfCopy->_lifetimeTimerFireDate;
       *buf = 138543362;
       v104 = lifetimeTimerFireDate;
       _os_log_impl(&dword_24912E000, v61, OS_LOG_TYPE_DEFAULT, "Invalidating existing timer; fireDate=%{public}@", buf, 0xCu);
     }
 
     v63 = [[DNDSXPCTimer alloc] initWithFireDate:0 serviceIdentifier:@"com.apple.donotdisturb.server.ScheduleLifetimeMonitor.timer" userVisible:1];
-    [v60 lifetimeMonitor:v86 setTimer:v63];
+    [delegate lifetimeMonitor:selfCopy setTimer:v63];
 
-    v64 = v86->_lifetimeTimerFireDate;
-    v86->_lifetimeTimerFireDate = 0;
+    v64 = selfCopy->_lifetimeTimerFireDate;
+    selfCopy->_lifetimeTimerFireDate = 0;
   }
 
-  if (!v58 && (v86->_lifetimeTimerFireDate == 0 || !v59))
+  if (!v58 && (selfCopy->_lifetimeTimerFireDate == 0 || !v59))
   {
     v65 = DNDSLogScheduleLifetimeMonitor;
     if (os_log_type_enabled(DNDSLogScheduleLifetimeMonitor, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v104 = v83;
+      v104 = distantFuture;
       _os_log_impl(&dword_24912E000, v65, OS_LOG_TYPE_DEFAULT, "Scheduling timer; nextUpdateDate=%{public}@", buf, 0xCu);
     }
 
-    v66 = [[DNDSXPCTimer alloc] initWithFireDate:v83 serviceIdentifier:@"com.apple.donotdisturb.server.ScheduleLifetimeMonitor.timer" userVisible:1];
-    [v60 lifetimeMonitor:v86 setTimer:v66];
+    v66 = [[DNDSXPCTimer alloc] initWithFireDate:distantFuture serviceIdentifier:@"com.apple.donotdisturb.server.ScheduleLifetimeMonitor.timer" userVisible:1];
+    [delegate lifetimeMonitor:selfCopy setTimer:v66];
 
-    objc_storeStrong(&v86->_lifetimeTimerFireDate, v83);
+    objc_storeStrong(&selfCopy->_lifetimeTimerFireDate, distantFuture);
   }
 
-  v67 = [[DNDSLifetimeMonitorResult alloc] initWithActiveUUIDs:v71 expiredUUIDs:v81];
+  v67 = [[DNDSLifetimeMonitorResult alloc] initWithActiveUUIDs:array expiredUUIDs:array2];
 
   v68 = *MEMORY[0x277D85DE8];
 

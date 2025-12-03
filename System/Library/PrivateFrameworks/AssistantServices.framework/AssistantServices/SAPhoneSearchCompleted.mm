@@ -6,8 +6,8 @@
 
 - (int64_t)resultCallbackCode
 {
-  v2 = [(SAPhoneSearchCompleted *)self phoneSearchResults];
-  v3 = [v2 count];
+  phoneSearchResults = [(SAPhoneSearchCompleted *)self phoneSearchResults];
+  v3 = [phoneSearchResults count];
   v4 = &SAPhonePhoneSearchHasResultsErrorCode;
   if (!v3)
   {

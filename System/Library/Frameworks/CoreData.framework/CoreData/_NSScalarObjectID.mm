@@ -1,19 +1,19 @@
 @interface _NSScalarObjectID
-- (_NSScalarObjectID)initWithPK64:(int64_t)a3;
+- (_NSScalarObjectID)initWithPK64:(int64_t)k64;
 - (id)_referenceData;
 - (id)_retainedURIString;
 - (int64_t)_referenceData64;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation _NSScalarObjectID
 
 - (id)_retainedURIString
 {
-  v3 = [(_NSCoreManagedObjectID *)self _storeIdentifier];
-  if (v3)
+  _storeIdentifier = [(_NSCoreManagedObjectID *)self _storeIdentifier];
+  if (_storeIdentifier)
   {
-    v4 = v3;
+    v4 = _storeIdentifier;
   }
 
   else
@@ -27,9 +27,9 @@
 - (id)_referenceData
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(_NSScalarObjectID *)self _referenceData64];
+  _referenceData64 = [(_NSScalarObjectID *)self _referenceData64];
 
-  return [v2 numberWithLongLong:v3];
+  return [v2 numberWithLongLong:_referenceData64];
 }
 
 - (int64_t)_referenceData64
@@ -46,7 +46,7 @@
   }
 }
 
-- (_NSScalarObjectID)initWithPK64:(int64_t)a3
+- (_NSScalarObjectID)initWithPK64:(int64_t)k64
 {
   v10.receiver = self;
   v10.super_class = _NSScalarObjectID;
@@ -59,7 +59,7 @@
   v5 = v4;
   Class = object_getClass(v4);
   atomic_fetch_add_explicit(object_getIndexedIvars(Class), 1u, memory_order_relaxed);
-  v7 = _PFSetPrimaryKey(v5, a3);
+  v7 = _PFSetPrimaryKey(v5, k64);
   v8 = v7;
   if (v5 != v7)
   {
@@ -69,7 +69,7 @@
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -77,25 +77,25 @@
     goto LABEL_17;
   }
 
-  v5 = [(_NSCoreManagedObjectID *)self _storeIdentifier];
-  v6 = [a3 _storeIdentifier];
-  v7 = [(_NSCoreManagedObjectID *)self entity];
-  if (v7)
+  _storeIdentifier = [(_NSCoreManagedObjectID *)self _storeIdentifier];
+  _storeIdentifier2 = [compare _storeIdentifier];
+  entity = [(_NSCoreManagedObjectID *)self entity];
+  if (entity)
   {
-    if (atomic_load(v7 + 124))
+    if (atomic_load(entity + 124))
     {
-      v9 = *(v7 + 9);
+      v9 = *(entity + 9);
     }
 
     else
     {
       do
       {
-        v9 = v7;
-        v7 = [v7 superentity];
+        v9 = entity;
+        entity = [entity superentity];
       }
 
-      while (v7);
+      while (entity);
     }
   }
 
@@ -104,23 +104,23 @@
     v9 = 0;
   }
 
-  v10 = [a3 entity];
-  if (v10)
+  entity2 = [compare entity];
+  if (entity2)
   {
-    if (atomic_load((v10 + 124)))
+    if (atomic_load((entity2 + 124)))
     {
-      v12 = *(v10 + 72);
+      v12 = *(entity2 + 72);
     }
 
     else
     {
       do
       {
-        v12 = v10;
-        v10 = [v10 superentity];
+        v12 = entity2;
+        entity2 = [entity2 superentity];
       }
 
-      while (v10);
+      while (entity2);
     }
   }
 
@@ -129,33 +129,33 @@
     v12 = 0;
   }
 
-  if (v5 == v6 && v9 == v12)
+  if (_storeIdentifier == _storeIdentifier2 && v9 == v12)
   {
-    v13 = [(_NSScalarObjectID *)self _referenceData64];
-    v14 = [a3 _referenceData64];
-    return (v13 > v14) - (v13 < v14);
+    _referenceData64 = [(_NSScalarObjectID *)self _referenceData64];
+    _referenceData642 = [compare _referenceData64];
+    return (_referenceData64 > _referenceData642) - (_referenceData64 < _referenceData642);
   }
 
-  if (v5 == v6)
+  if (_storeIdentifier == _storeIdentifier2)
   {
-    v18 = [v9 name];
-    v17 = [v12 name];
-    v16 = v18;
+    name = [v9 name];
+    name2 = [v12 name];
+    v16 = name;
   }
 
   else
   {
-    v16 = v5;
-    v17 = v6;
+    v16 = _storeIdentifier;
+    name2 = _storeIdentifier2;
   }
 
-  result = [v16 compare:v17];
+  result = [v16 compare:name2];
   if (!result)
   {
 LABEL_17:
     v19.receiver = self;
     v19.super_class = _NSScalarObjectID;
-    return [(NSManagedObjectID *)&v19 compare:a3];
+    return [(NSManagedObjectID *)&v19 compare:compare];
   }
 
   return result;

@@ -1,18 +1,18 @@
 @interface IMLockFile
-- (BOOL)_lock:(BOOL)a3 blocking:(BOOL)a4;
-- (IMLockFile)initWithPath:(id)a3;
+- (BOOL)_lock:(BOOL)_lock blocking:(BOOL)blocking;
+- (IMLockFile)initWithPath:(id)path;
 - (void)dealloc;
 - (void)unlock;
 @end
 
 @implementation IMLockFile
 
-- (IMLockFile)initWithPath:(id)a3
+- (IMLockFile)initWithPath:(id)path
 {
   v4 = [(IMLockFile *)self init];
   if (v4)
   {
-    v4->_path = a3;
+    v4->_path = path;
     v4->_fd = -1;
     v4->_locked = 0;
   }
@@ -29,10 +29,10 @@
   [(IMLockFile *)&v3 dealloc];
 }
 
-- (BOOL)_lock:(BOOL)a3 blocking:(BOOL)a4
+- (BOOL)_lock:(BOOL)_lock blocking:(BOOL)blocking
 {
-  v4 = a4;
-  v5 = a3;
+  blockingCopy = blocking;
+  _lockCopy = _lock;
   if (![(IMLockFile *)self locked])
   {
     if ([(NSString *)[(IMLockFile *)self path] length])
@@ -41,8 +41,8 @@
       self->_fd = v7;
       if (v7 != -1)
       {
-        v8 = v5 ? 2 : 1;
-        v9 = v4 ? 0 : 4;
+        v8 = _lockCopy ? 2 : 1;
+        v9 = blockingCopy ? 0 : 4;
         self->_locked = flock(v7, v9 | v8) != -1;
         if (![(IMLockFile *)self locked])
         {

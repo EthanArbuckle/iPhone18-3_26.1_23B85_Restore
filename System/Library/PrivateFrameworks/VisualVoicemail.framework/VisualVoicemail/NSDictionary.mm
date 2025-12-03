@@ -1,17 +1,17 @@
 @interface NSDictionary
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation NSDictionary
 
-- (BOOL)writeToFile:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)writeToFile:(id)file options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [NSPropertyListSerialization dataWithPropertyList:self format:100 options:0 error:a5];
+  fileCopy = file;
+  v9 = [NSPropertyListSerialization dataWithPropertyList:self format:100 options:0 error:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 writeToFile:v8 options:a4 error:a5];
+    v11 = [v9 writeToFile:fileCopy options:options error:error];
   }
 
   else

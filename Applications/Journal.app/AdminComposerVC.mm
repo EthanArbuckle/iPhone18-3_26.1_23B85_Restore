@@ -1,15 +1,15 @@
 @interface AdminComposerVC
-- (_TtC7Journal15AdminComposerVC)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (_TtC7Journal15AdminComposerVC)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)doRedo;
 - (void)doSave;
 - (void)doUndo;
 - (void)save;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)textViewDidChange:(id)a3;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)textViewDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -17,25 +17,25 @@
 
 - (void)doUndo
 {
-  v2 = self;
+  selfCopy = self;
   sub_100788518();
 }
 
 - (void)doRedo
 {
-  v2 = self;
+  selfCopy = self;
   sub_100788518();
 }
 
 - (void)doSave
 {
-  v2 = self;
+  selfCopy = self;
   sub_10074DBA4();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100788B40();
 }
 
@@ -47,26 +47,26 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_1003E9628(0, 0, v5, &unk_100967968, v9);
 }
 
-- (_TtC7Journal15AdminComposerVC)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal15AdminComposerVC)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10078A514();
   v8 = v7;
 
@@ -83,7 +83,7 @@
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7Journal15AdminComposerVC_model);
   v5 = OBJC_IVAR____TtC7Journal14EntryViewModel_allAssets;
@@ -100,15 +100,15 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_10078A5E8();
 
   (*(v7 + 8))(v9, v6);
@@ -116,23 +116,23 @@
   return v12;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v14 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
-  sub_10078B2DC(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10078B2DC(style);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v33 = self;
+  selfCopy = self;
   v5 = sub_1000F24EC(&qword_100AD5170);
   __chkstk_darwin(v5 - 8);
   v7 = &v30 - v6;
@@ -157,7 +157,7 @@
   v21(v13, v19, v8);
   v21(&v30 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0), v16, v8);
   type metadata accessor for MainActor();
-  v22 = v33;
+  v22 = selfCopy;
   v23 = static MainActor.shared.getter();
   v24 = *(v9 + 80);
   v25 = (v24 + 40) & ~v24;
@@ -176,11 +176,11 @@
   v29(v19, v8);
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_100789CE0(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100789CE0(changeCopy);
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface AwardProgressProvider
-- (BOOL)providesProgressForTemplate:(id)a3;
+- (BOOL)providesProgressForTemplate:(id)template;
 - (id)providerIdentifier;
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3;
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates;
 @end
 
 @implementation AwardProgressProvider
 
-- (BOOL)providesProgressForTemplate:(id)a3
+- (BOOL)providesProgressForTemplate:(id)template
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_23397F490(v4);
+  templateCopy = template;
+  selfCopy = self;
+  v6 = sub_23397F490(templateCopy);
 
   return v6 & 1;
 }
 
-- (void)requestAchievementProgressUpdatesForTemplates:(id)a3
+- (void)requestAchievementProgressUpdatesForTemplates:(id)templates
 {
   sub_23397F5C8(0, &qword_2813064C0, 0x277CE8D50);
   v4 = sub_2339816C4();
-  v5 = self;
+  selfCopy = self;
   sub_23397F610(v4);
 }
 

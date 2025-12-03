@@ -6,7 +6,7 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (id)description;
-- (void)addStoreResponse:(id)a3;
+- (void)addStoreResponse:(id)response;
 @end
 
 @implementation ASEnhancedSearchResponse
@@ -20,7 +20,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_14 = v2;
     acceptsTopLevelLeaves___haveChecked_14 = 1;
   }
@@ -37,7 +37,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_14 = v2;
     parsingLeafNode___haveChecked_14 = 1;
   }
@@ -54,7 +54,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_14 = v2;
     parsingWithSubItems___haveChecked_14 = 1;
   }
@@ -71,7 +71,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_14 = v2;
     frontingBasicTypes___haveChecked_14 = 1;
   }
@@ -88,7 +88,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_14 = v2;
     notifyOfUnknownTokens___haveChecked_14 = 1;
   }
@@ -102,37 +102,37 @@
   v8.receiver = self;
   v8.super_class = ASEnhancedSearchResponse;
   v4 = [(ASEnhancedSearchResponse *)&v8 description];
-  v5 = [(ASEnhancedSearchResponse *)self stores];
-  v6 = [v3 stringWithFormat:@"%@: All stores: %@", v4, v5];
+  stores = [(ASEnhancedSearchResponse *)self stores];
+  v6 = [v3 stringWithFormat:@"%@: All stores: %@", v4, stores];
 
   return v6;
 }
 
-- (void)addStoreResponse:(id)a3
+- (void)addStoreResponse:(id)response
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = responseCopy;
     _os_log_impl(&dword_24A0AC000, v5, v6, "Adding enhanced search response: %@", &v11, 0xCu);
   }
 
-  v7 = [(ASEnhancedSearchResponse *)self mResults];
+  mResults = [(ASEnhancedSearchResponse *)self mResults];
 
-  if (!v7)
+  if (!mResults)
   {
     v8 = objc_opt_new();
     [(ASEnhancedSearchResponse *)self setMResults:v8];
   }
 
-  if (v4)
+  if (responseCopy)
   {
-    v9 = [(ASEnhancedSearchResponse *)self mResults];
-    [v9 addObject:v4];
+    mResults2 = [(ASEnhancedSearchResponse *)self mResults];
+    [mResults2 addObject:responseCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -141,7 +141,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -154,7 +154,7 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 

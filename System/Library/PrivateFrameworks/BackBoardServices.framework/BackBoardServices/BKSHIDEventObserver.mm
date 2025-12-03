@@ -3,15 +3,15 @@
 - (BKSHIDEventObserver)init;
 - (BOOL)hasReceivedLatestDeferringObservationsFromServer;
 - (NSSet)deferringObservations;
-- (id)_initWithConnectionFactory:(id)a3;
-- (id)addDeferringObserver:(id)a3;
-- (id)addObservingClient:(id)a3 forChainObserver:(id)a4;
+- (id)_initWithConnectionFactory:(id)factory;
+- (id)addDeferringObserver:(id)observer;
+- (id)addObservingClient:(id)client forChainObserver:(id)observer;
 - (void)_lock_disableObservation;
 - (void)_lock_enableObservation;
 - (void)_lock_flushInitialStateToServer;
 - (void)_lock_resetChainObserverPredicates;
-- (void)didUpdateDeferringChains:(id)a3;
-- (void)didUpdateDeferringObservations:(id)a3;
+- (void)didUpdateDeferringChains:(id)chains;
+- (void)didUpdateDeferringObservations:(id)observations;
 @end
 
 @implementation BKSHIDEventObserver
@@ -71,8 +71,8 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_lock_waitingOnServerHandshake)
   {
-    v3 = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
-    v6 = [v3 setObservesDeferringResolutions:MEMORY[0x1E695E118]];
+    remoteTarget = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
+    v6 = [remoteTarget setObservesDeferringResolutions:MEMORY[0x1E695E118]];
 
     self->_lock_hasReceivedLatestDeferringObservationsFromServer = 1;
     if (v6)
@@ -90,10 +90,10 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
   }
 }
 
-- (void)didUpdateDeferringChains:(id)a3
+- (void)didUpdateDeferringChains:(id)chains
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  chainsCopy = chains;
   os_unfair_lock_lock(&self->_lock);
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = [(NSMutableDictionary *)self->_lock_identityToChainMatches mutableCopy];
@@ -101,7 +101,7 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = v4;
+  v7 = chainsCopy;
   v8 = [v7 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v8)
   {
@@ -117,11 +117,11 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
         }
 
         v12 = *(*(&v37 + 1) + 8 * i);
-        v13 = [v12 identity];
-        [v5 setObject:v12 forKey:v13];
+        identity = [v12 identity];
+        [v5 setObject:v12 forKey:identity];
 
-        v14 = [v12 identity];
-        [v6 removeObjectForKey:v14];
+        identity2 = [v12 identity];
+        [v6 removeObjectForKey:identity2];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -158,22 +158,22 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
         }
 
         v23 = *(*(&v33 + 1) + 8 * j);
-        v24 = [v23 requestedChainIdentity];
-        v25 = [v6 objectForKey:v24];
+        requestedChainIdentity = [v23 requestedChainIdentity];
+        v25 = [v6 objectForKey:requestedChainIdentity];
 
         if (v25)
         {
-          v26 = [v23 observingClient];
-          v27 = [v23 observerInterface];
-          [v26 observer:v27 deliveryChainDidUpdate:0];
+          observingClient = [v23 observingClient];
+          observerInterface = [v23 observerInterface];
+          [observingClient observer:observerInterface deliveryChainDidUpdate:0];
         }
 
-        v28 = [v5 objectForKey:v24];
+        v28 = [v5 objectForKey:requestedChainIdentity];
         if (v28)
         {
-          v29 = [v23 observingClient];
-          v30 = [v23 observerInterface];
-          [v29 observer:v30 deliveryChainDidUpdate:v28];
+          observingClient2 = [v23 observingClient];
+          observerInterface2 = [v23 observerInterface];
+          [observingClient2 observer:observerInterface2 deliveryChainDidUpdate:v28];
         }
       }
 
@@ -186,13 +186,13 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateDeferringObservations:(id)a3
+- (void)didUpdateDeferringObservations:(id)observations
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  observationsCopy = observations;
+  if (!observationsCopy)
   {
-    v4 = [MEMORY[0x1E695DFD8] set];
+    observationsCopy = [MEMORY[0x1E695DFD8] set];
   }
 
   os_unfair_lock_assert_not_owner(&self->_lock);
@@ -205,7 +205,7 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
 
   else
   {
-    v7 = [v4 copy];
+    v7 = [observationsCopy copy];
     v8 = self->_lock_deferringObservations;
     self->_lock_deferringObservations = v7;
 
@@ -214,8 +214,8 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(NSMapTable *)self->_lock_deferringAssertionsToObservers objectEnumerator];
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    objectEnumerator = [(NSMapTable *)self->_lock_deferringAssertionsToObservers objectEnumerator];
+    v10 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v10)
     {
       v11 = v10;
@@ -227,14 +227,14 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [v6 addObject:*(*(&v24 + 1) + 8 * v13++)];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v11 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v11);
@@ -280,8 +280,8 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
   os_unfair_lock_assert_owner(&self->_lock);
   if (!self->_lock_waitingOnServerHandshake)
   {
-    v3 = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
-    v4 = [v3 setObservesDeferringResolutions:MEMORY[0x1E695E110]];
+    remoteTarget = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
+    v4 = [remoteTarget setObservesDeferringResolutions:MEMORY[0x1E695E110]];
 
     lock_deferringObservations = self->_lock_deferringObservations;
     self->_lock_deferringObservations = 0;
@@ -321,8 +321,8 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
         }
 
         v10 = self->_lock_allChainObserverPredicates;
-        v11 = [*(*(&v15 + 1) + 8 * v9) requestedChainIdentity];
-        [(NSMutableSet *)v10 addObject:v11];
+        requestedChainIdentity = [*(*(&v15 + 1) + 8 * v9) requestedChainIdentity];
+        [(NSMutableSet *)v10 addObject:requestedChainIdentity];
 
         ++v9;
       }
@@ -336,9 +336,9 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
 
   if (!self->_lock_waitingOnServerHandshake)
   {
-    v12 = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
-    v13 = [(NSMutableSet *)self->_lock_allChainObserverPredicates allObjects];
-    [v12 setObservesDeferringChainIdentities:v13];
+    remoteTarget = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
+    allObjects = [(NSMutableSet *)self->_lock_allChainObserverPredicates allObjects];
+    [remoteTarget setObservesDeferringChainIdentities:allObjects];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -354,18 +354,18 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
 
   if ([(NSMutableSet *)self->_lock_allChainObserverPredicates count])
   {
-    v4 = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
-    v3 = [(NSMutableSet *)self->_lock_allChainObserverPredicates allObjects];
-    [v4 setObservesDeferringChainIdentities:v3];
+    remoteTarget = [(BSServiceInitiatingConnection *)self->_connection remoteTarget];
+    allObjects = [(NSMutableSet *)self->_lock_allChainObserverPredicates allObjects];
+    [remoteTarget setObservesDeferringChainIdentities:allObjects];
   }
 }
 
-- (id)addObservingClient:(id)a3 forChainObserver:(id)a4
+- (id)addObservingClient:(id)client forChainObserver:(id)observer
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  clientCopy = client;
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v20 = MEMORY[0x1E696AEC0];
     objc_opt_class();
@@ -383,7 +383,7 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
       v40 = 2114;
       v41 = v26;
       v42 = 2048;
-      v43 = self;
+      selfCopy2 = self;
       v44 = 2114;
       v45 = @"BKSHIDEventObserver.m";
       v46 = 1024;
@@ -399,19 +399,19 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
     JUMPOUT(0x186376270);
   }
 
-  v9 = v8;
+  v9 = observerCopy;
   objc_opt_class();
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v27 = MEMORY[0x1E696AEC0];
-    v28 = [v9 classForCoder];
-    if (!v28)
+    classForCoder = [v9 classForCoder];
+    if (!classForCoder)
     {
-      v28 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v29 = NSStringFromClass(v28);
+    v29 = NSStringFromClass(classForCoder);
     objc_opt_class();
     v30 = objc_opt_class();
     v31 = NSStringFromClass(v30);
@@ -427,7 +427,7 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
       v40 = 2114;
       v41 = v35;
       v42 = 2048;
-      v43 = self;
+      selfCopy2 = self;
       v44 = 2114;
       v45 = @"BKSHIDEventObserver.m";
       v46 = 1024;
@@ -445,9 +445,9 @@ void __37__BKSHIDEventObserver_sharedInstance__block_invoke()
 
   os_unfair_lock_lock(&self->_lock);
   v10 = objc_alloc_init(_BKChainObserverContainer);
-  [(_BKChainObserverContainer *)v10 setObservingClient:v7];
-  v11 = [v9 chainIdentity];
-  [(_BKChainObserverContainer *)v10 setRequestedChainIdentity:v11];
+  [(_BKChainObserverContainer *)v10 setObservingClient:clientCopy];
+  chainIdentity = [v9 chainIdentity];
+  [(_BKChainObserverContainer *)v10 setRequestedChainIdentity:chainIdentity];
 
   [(_BKChainObserverContainer *)v10 setObserverInterface:v9];
   lock_chainObserverContainers = self->_lock_chainObserverContainers;
@@ -489,11 +489,11 @@ void __59__BKSHIDEventObserver_addObservingClient_forChainObserver___block_invok
   os_unfair_lock_unlock(v2);
 }
 
-- (id)addDeferringObserver:(id)a3
+- (id)addDeferringObserver:(id)observer
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"observer"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -506,7 +506,7 @@ void __59__BKSHIDEventObserver_addObservingClient_forChainObserver___block_invok
       v19 = 2114;
       v20 = v15;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = @"BKSHIDEventObserver.m";
       v25 = 1024;
@@ -522,7 +522,7 @@ void __59__BKSHIDEventObserver_addObservingClient_forChainObserver___block_invok
     JUMPOUT(0x186376664);
   }
 
-  v6 = v5;
+  v6 = observerCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v7 = objc_alloc(MEMORY[0x1E698E778]);
@@ -570,13 +570,13 @@ void __44__BKSHIDEventObserver_addDeferringObserver___block_invoke(uint64_t a1, 
   os_unfair_lock_unlock((*(a1 + 32) + 12));
 }
 
-- (id)_initWithConnectionFactory:(id)a3
+- (id)_initWithConnectionFactory:(id)factory
 {
-  v5 = a3;
-  if (!v5)
+  factoryCopy = factory;
+  if (!factoryCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"BKSHIDEventObserver.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"connectionFactory"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BKSHIDEventObserver.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"connectionFactory"}];
   }
 
   v26.receiver = self;
@@ -586,9 +586,9 @@ void __44__BKSHIDEventObserver_addDeferringObserver___block_invoke(uint64_t a1, 
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     lock_deferringAssertionsToObservers = v7->_lock_deferringAssertionsToObservers;
-    v7->_lock_deferringAssertionsToObservers = v8;
+    v7->_lock_deferringAssertionsToObservers = weakToWeakObjectsMapTable;
 
     v10 = [MEMORY[0x1E695DFD8] set];
     lock_deferringObservations = v7->_lock_deferringObservations;
@@ -596,7 +596,7 @@ void __44__BKSHIDEventObserver_addDeferringObserver___block_invoke(uint64_t a1, 
 
     objc_initWeak(&location, v7);
     v7->_isNonLaunchingServer = 0;
-    v12 = [v5 clientConnectionForServiceWithName:@"BKHIDEventDeliveryObserver" isNonLaunching:&v7->_isNonLaunchingServer];
+    v12 = [factoryCopy clientConnectionForServiceWithName:@"BKHIDEventDeliveryObserver" isNonLaunching:&v7->_isNonLaunchingServer];
     connection = v7->_connection;
     v7->_connection = v12;
 
@@ -749,7 +749,7 @@ void __50__BKSHIDEventObserver__initWithConnectionFactory___block_invoke_107(uin
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventObserver.m";
     v17 = 1024;

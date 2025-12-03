@@ -1,39 +1,39 @@
 @interface _SFPBClearProactiveCategoryCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBClearProactiveCategoryCommand)initWithDictionary:(id)a3;
-- (_SFPBClearProactiveCategoryCommand)initWithFacade:(id)a3;
-- (_SFPBClearProactiveCategoryCommand)initWithJSON:(id)a3;
+- (_SFPBClearProactiveCategoryCommand)initWithDictionary:(id)dictionary;
+- (_SFPBClearProactiveCategoryCommand)initWithFacade:(id)facade;
+- (_SFPBClearProactiveCategoryCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setProactiveIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setProactiveIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBClearProactiveCategoryCommand
 
-- (_SFPBClearProactiveCategoryCommand)initWithFacade:(id)a3
+- (_SFPBClearProactiveCategoryCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBClearProactiveCategoryCommand *)self init];
   if (v5)
   {
-    if ([v4 hasCategory])
+    if ([facadeCopy hasCategory])
     {
-      -[_SFPBClearProactiveCategoryCommand setCategory:](v5, "setCategory:", [v4 category]);
+      -[_SFPBClearProactiveCategoryCommand setCategory:](v5, "setCategory:", [facadeCopy category]);
     }
 
-    if ([v4 hasShouldClearWholeSection])
+    if ([facadeCopy hasShouldClearWholeSection])
     {
-      -[_SFPBClearProactiveCategoryCommand setShouldClearWholeSection:](v5, "setShouldClearWholeSection:", [v4 shouldClearWholeSection]);
+      -[_SFPBClearProactiveCategoryCommand setShouldClearWholeSection:](v5, "setShouldClearWholeSection:", [facadeCopy shouldClearWholeSection]);
     }
 
-    v6 = [v4 proactiveIdentifier];
+    proactiveIdentifier = [facadeCopy proactiveIdentifier];
 
-    if (v6)
+    if (proactiveIdentifier)
     {
-      v7 = [v4 proactiveIdentifier];
-      [(_SFPBClearProactiveCategoryCommand *)v5 setProactiveIdentifier:v7];
+      proactiveIdentifier2 = [facadeCopy proactiveIdentifier];
+      [(_SFPBClearProactiveCategoryCommand *)v5 setProactiveIdentifier:proactiveIdentifier2];
     }
 
     v8 = v5;
@@ -42,29 +42,29 @@
   return v5;
 }
 
-- (_SFPBClearProactiveCategoryCommand)initWithDictionary:(id)a3
+- (_SFPBClearProactiveCategoryCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBClearProactiveCategoryCommand;
   v5 = [(_SFPBClearProactiveCategoryCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"category"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"category"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBClearProactiveCategoryCommand setCategory:](v5, "setCategory:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"shouldClearWholeSection"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"shouldClearWholeSection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBClearProactiveCategoryCommand setShouldClearWholeSection:](v5, "setShouldClearWholeSection:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"proactiveIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"proactiveIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,30 +78,30 @@
   return v5;
 }
 
-- (_SFPBClearProactiveCategoryCommand)initWithJSON:(id)a3
+- (_SFPBClearProactiveCategoryCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBClearProactiveCategoryCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBClearProactiveCategoryCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBClearProactiveCategoryCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -114,37 +114,37 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_category)
   {
-    v4 = [(_SFPBClearProactiveCategoryCommand *)self category];
-    if (v4 >= 7)
+    category = [(_SFPBClearProactiveCategoryCommand *)self category];
+    if (category >= 7)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", category];
     }
 
     else
     {
-      v5 = off_1E7ACE4C8[v4];
+      v5 = off_1E7ACE4C8[category];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"category"];
+    [dictionary setObject:v5 forKeyedSubscript:@"category"];
   }
 
   if (self->_proactiveIdentifier)
   {
-    v6 = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"proactiveIdentifier"];
+    proactiveIdentifier = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
+    v7 = [proactiveIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"proactiveIdentifier"];
   }
 
   if (self->_shouldClearWholeSection)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBClearProactiveCategoryCommand shouldClearWholeSection](self, "shouldClearWholeSection")}];
-    [v3 setObject:v8 forKeyedSubscript:@"shouldClearWholeSection"];
+    [dictionary setObject:v8 forKeyedSubscript:@"shouldClearWholeSection"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -163,24 +163,24 @@
   return v3 ^ [(NSString *)self->_proactiveIdentifier hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     category = self->_category;
-    if (category == [v4 category])
+    if (category == [equalCopy category])
     {
       shouldClearWholeSection = self->_shouldClearWholeSection;
-      if (shouldClearWholeSection == [v4 shouldClearWholeSection])
+      if (shouldClearWholeSection == [equalCopy shouldClearWholeSection])
       {
-        v7 = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
-        v8 = [v4 proactiveIdentifier];
-        v9 = v8;
-        if ((v7 != 0) != (v8 == 0))
+        proactiveIdentifier = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
+        proactiveIdentifier2 = [equalCopy proactiveIdentifier];
+        v9 = proactiveIdentifier2;
+        if ((proactiveIdentifier != 0) != (proactiveIdentifier2 == 0))
         {
-          v10 = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
-          if (!v10)
+          proactiveIdentifier3 = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
+          if (!proactiveIdentifier3)
           {
 
 LABEL_12:
@@ -188,10 +188,10 @@ LABEL_12:
             goto LABEL_10;
           }
 
-          v11 = v10;
-          v12 = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
-          v13 = [v4 proactiveIdentifier];
-          v14 = [v12 isEqual:v13];
+          v11 = proactiveIdentifier3;
+          proactiveIdentifier4 = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
+          proactiveIdentifier5 = [equalCopy proactiveIdentifier];
+          v14 = [proactiveIdentifier4 isEqual:proactiveIdentifier5];
 
           if (v14)
           {
@@ -212,9 +212,9 @@ LABEL_10:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_SFPBClearProactiveCategoryCommand *)self category])
   {
     PBDataWriterWriteInt32Field();
@@ -225,16 +225,16 @@ LABEL_10:
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
-  if (v4)
+  proactiveIdentifier = [(_SFPBClearProactiveCategoryCommand *)self proactiveIdentifier];
+  if (proactiveIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setProactiveIdentifier:(id)a3
+- (void)setProactiveIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   proactiveIdentifier = self->_proactiveIdentifier;
   self->_proactiveIdentifier = v4;
 

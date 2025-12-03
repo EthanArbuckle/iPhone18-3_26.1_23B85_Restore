@@ -12,8 +12,8 @@
   v2 = [(BCSItem *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] distantPast];
-    [(BCSItem *)v2 setExpirationDate:v3];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    [(BCSItem *)v2 setExpirationDate:distantPast];
   }
 
   return v2;
@@ -21,9 +21,9 @@
 
 - (BOOL)isExpired
 {
-  v2 = [(BCSItem *)self expirationDate];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 compare:v3] == -1;
+  expirationDate = [(BCSItem *)self expirationDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [expirationDate compare:date] == -1;
 
   return v4;
 }

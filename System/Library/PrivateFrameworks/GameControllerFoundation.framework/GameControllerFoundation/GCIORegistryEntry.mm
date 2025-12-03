@@ -1,10 +1,10 @@
 @interface GCIORegistryEntry
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSString)name;
-- (id)propertyForKey:(id)a3;
-- (id)propertyForKey:(id)a3 inPlane:(const char *)a4 options:(unsigned int)a5;
+- (id)propertyForKey:(id)key;
+- (id)propertyForKey:(id)key inPlane:(const char *)plane options:(unsigned int)options;
 - (id)redactedDescription;
 @end
 
@@ -13,8 +13,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCIOObject *)self className];
-  v5 = [v3 stringWithFormat:@"<Kernel/%@ registryEntryID='%#010llx'>", v4, -[GCIORegistryEntry registryEntryID](self, "registryEntryID")];
+  className = [(GCIOObject *)self className];
+  v5 = [v3 stringWithFormat:@"<Kernel/%@ registryEntryID='%#010llx'>", className, -[GCIORegistryEntry registryEntryID](self, "registryEntryID")];
 
   return v5;
 }
@@ -22,8 +22,8 @@
 - (id)redactedDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCIOObject *)self className];
-  v5 = [v3 stringWithFormat:@"<Kernel/%@ registryEntryID='%#010llx'>", v4, -[GCIORegistryEntry registryEntryID](self, "registryEntryID")];
+  className = [(GCIOObject *)self className];
+  v5 = [v3 stringWithFormat:@"<Kernel/%@ registryEntryID='%#010llx'>", className, -[GCIORegistryEntry registryEntryID](self, "registryEntryID")];
 
   return v5;
 }
@@ -33,40 +33,40 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCIOObject *)self className];
-  v7 = [v3 stringWithFormat:@"<%@ %p Kernel/%@ registryEntryID='%#010llx'>", v5, self, v6, -[GCIORegistryEntry registryEntryID](self, "registryEntryID")];
+  className = [(GCIOObject *)self className];
+  v7 = [v3 stringWithFormat:@"<%@ %p Kernel/%@ registryEntryID='%#010llx'>", v5, self, className, -[GCIORegistryEntry registryEntryID](self, "registryEntryID")];
 
   return v7;
 }
 
-- (id)propertyForKey:(id)a3 inPlane:(const char *)a4 options:(unsigned int)a5
+- (id)propertyForKey:(id)key inPlane:(const char *)plane options:(unsigned int)options
 {
-  v8 = a3;
-  v9 = [(GCIOObject *)self port];
-  v10 = IORegistryEntrySearchCFProperty(v9, a4, v8, *MEMORY[0x1E695E480], a5);
+  keyCopy = key;
+  port = [(GCIOObject *)self port];
+  v10 = IORegistryEntrySearchCFProperty(port, plane, keyCopy, *MEMORY[0x1E695E480], options);
 
   return v10;
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GCIOObject *)self port];
-  CFProperty = IORegistryEntryCreateCFProperty(v5, v4, *MEMORY[0x1E695E480], 0);
+  keyCopy = key;
+  port = [(GCIOObject *)self port];
+  CFProperty = IORegistryEntryCreateCFProperty(port, keyCopy, *MEMORY[0x1E695E480], 0);
 
   return CFProperty;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GCIOObject *)self port];
-  v9 = IORegistryEntrySetCFProperty(v8, v6, v7);
+  keyCopy = key;
+  propertyCopy = property;
+  port = [(GCIOObject *)self port];
+  v9 = IORegistryEntrySetCFProperty(port, keyCopy, propertyCopy);
 
   if (v9)
   {
-    [(GCIORegistryEntry *)self setProperty:v6 forKey:v9];
+    [(GCIORegistryEntry *)self setProperty:keyCopy forKey:v9];
   }
 
   return v9 == 0;
@@ -76,8 +76,8 @@
 {
   v7 = *MEMORY[0x1E69E9840];
   memset(v6, 0, sizeof(v6));
-  v2 = [(GCIOObject *)self port];
-  if (MEMORY[0x1D38AAC10](v2, v6))
+  port = [(GCIOObject *)self port];
+  if (MEMORY[0x1D38AAC10](port, v6))
   {
     v3 = 0;
   }

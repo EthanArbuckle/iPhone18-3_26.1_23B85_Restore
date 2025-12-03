@@ -1,19 +1,19 @@
 @interface TSULinkedPointerSetEntry
-- (TSULinkedPointerSetEntry)initWithObject:(id)a3 previousEntry:(id)a4;
+- (TSULinkedPointerSetEntry)initWithObject:(id)object previousEntry:(id)entry;
 - (void)dealloc;
 @end
 
 @implementation TSULinkedPointerSetEntry
 
-- (TSULinkedPointerSetEntry)initWithObject:(id)a3 previousEntry:(id)a4
+- (TSULinkedPointerSetEntry)initWithObject:(id)object previousEntry:(id)entry
 {
   v8.receiver = self;
   v8.super_class = TSULinkedPointerSetEntry;
   v6 = [(TSULinkedPointerSetEntry *)&v8 init];
   if (v6)
   {
-    v6->mObject = a3;
-    v6->mPrevious = a4;
+    v6->mObject = object;
+    v6->mPrevious = entry;
     v6->mNext = 0;
   }
 

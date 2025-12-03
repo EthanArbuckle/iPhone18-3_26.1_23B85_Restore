@@ -1,8 +1,8 @@
 @interface GuidedAccessTimeRestrictionsController
-- (id)nameOfTimeRestrictionsAlertToneForSpecifier:(id)a3;
-- (id)shouldSpeakForTimeRestrictionsAlertPreferenceForSpecifier:(id)a3;
+- (id)nameOfTimeRestrictionsAlertToneForSpecifier:(id)specifier;
+- (id)shouldSpeakForTimeRestrictionsAlertPreferenceForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)setShouldSpeakForTimeRestrictionsAlertPreference:(id)a3 specifier:(id)a4;
+- (void)setShouldSpeakForTimeRestrictionsAlertPreference:(id)preference specifier:(id)specifier;
 @end
 
 @implementation GuidedAccessTimeRestrictionsController
@@ -23,17 +23,17 @@
   return v4;
 }
 
-- (id)nameOfTimeRestrictionsAlertToneForSpecifier:(id)a3
+- (id)nameOfTimeRestrictionsAlertToneForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 guidedAccessToneIdentifierForTimeRestrictionEvents];
+  guidedAccessToneIdentifierForTimeRestrictionEvents = [v3 guidedAccessToneIdentifierForTimeRestrictionEvents];
   v5 = +[TLToneManager sharedToneManager];
-  v6 = [v5 nameForToneIdentifier:v4];
+  v6 = [v5 nameForToneIdentifier:guidedAccessToneIdentifierForTimeRestrictionEvents];
 
   return v6;
 }
 
-- (id)shouldSpeakForTimeRestrictionsAlertPreferenceForSpecifier:(id)a3
+- (id)shouldSpeakForTimeRestrictionsAlertPreferenceForSpecifier:(id)specifier
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 guidedAccessShouldSpeakForTimeRestrictionEvents]);
@@ -41,11 +41,11 @@
   return v4;
 }
 
-- (void)setShouldSpeakForTimeRestrictionsAlertPreference:(id)a3 specifier:(id)a4
+- (void)setShouldSpeakForTimeRestrictionsAlertPreference:(id)preference specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [preference BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setGuidedAccessShouldSpeakForTimeRestrictionEvents:v4];
+  [v5 setGuidedAccessShouldSpeakForTimeRestrictionEvents:bOOLValue];
 }
 
 @end

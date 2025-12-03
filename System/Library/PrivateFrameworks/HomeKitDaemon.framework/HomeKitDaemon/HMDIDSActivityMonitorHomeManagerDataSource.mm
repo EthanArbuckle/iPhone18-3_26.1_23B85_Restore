@@ -1,18 +1,18 @@
 @interface HMDIDSActivityMonitorHomeManagerDataSource
 + (id)logCategory;
 - (HMDIDSActivityMonitorBroadcasterPushTokenDataSourceDelegate)delegate;
-- (HMDIDSActivityMonitorHomeManagerDataSource)initWithHomeManager:(id)a3 appleAccountManager:(id)a4;
+- (HMDIDSActivityMonitorHomeManagerDataSource)initWithHomeManager:(id)manager appleAccountManager:(id)accountManager;
 - (dispatch_queue_t)pushTokens;
-- (void)_handleCurrentDeviceOrAccountUpdated:(id)a3;
-- (void)_handleDeviceAdded:(id)a3;
-- (void)_handleDeviceRemoved:(id)a3;
-- (void)_handleHomeAdded:(id)a3;
+- (void)_handleCurrentDeviceOrAccountUpdated:(id)updated;
+- (void)_handleDeviceAdded:(id)added;
+- (void)_handleDeviceRemoved:(id)removed;
+- (void)_handleHomeAdded:(id)added;
 - (void)_startUpdateTask;
-- (void)_updatePushTokens:(void *)a3 completionHandler:;
-- (void)_updateWithCompletionHandler:(uint64_t)a1;
-- (void)pushTokensForDevicesObservingSubjectDevice:(id)a3 subActivity:(id)a4 queue:(id)a5 completionHandler:(id)a6;
+- (void)_updatePushTokens:(void *)tokens completionHandler:;
+- (void)_updateWithCompletionHandler:(uint64_t)handler;
+- (void)pushTokensForDevicesObservingSubjectDevice:(id)device subActivity:(id)activity queue:(id)queue completionHandler:(id)handler;
 - (void)start;
-- (void)startWithNotificationCenter:(id)a3;
+- (void)startWithNotificationCenter:(id)center;
 @end
 
 @implementation HMDIDSActivityMonitorHomeManagerDataSource
@@ -24,12 +24,12 @@
   return WeakRetained;
 }
 
-- (void)_handleHomeAdded:(id)a3
+- (void)_handleHomeAdded:(id)added
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -40,23 +40,23 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v6)
+  if (selfCopy)
   {
-    [(HMDIDSActivityMonitorHomeManagerDataSource *)v6 _updateWithCompletionHandler:?];
+    [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy _updateWithCompletionHandler:?];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithCompletionHandler:(uint64_t)a1
+- (void)_updateWithCompletionHandler:(uint64_t)handler
 {
   v3 = a2;
-  v4 = *(a1 + 40);
+  v4 = *(handler + 40);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __75__HMDIDSActivityMonitorHomeManagerDataSource__updateWithCompletionHandler___block_invoke;
   v6[3] = &unk_27868A7A0;
-  v6[4] = a1;
+  v6[4] = handler;
   v5 = v3;
   v7 = v5;
   dispatch_async(v4, v6);
@@ -179,29 +179,29 @@ void __75__HMDIDSActivityMonitorHomeManagerDataSource__updateWithCompletionHandl
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updatePushTokens:(void *)a3 completionHandler:
+- (void)_updatePushTokens:(void *)tokens completionHandler:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  tokensCopy = tokens;
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 40));
+    dispatch_assert_queue_V2(*(self + 40));
     if (!v5)
     {
       v5 = [MEMORY[0x277CBEB98] set];
     }
 
     v7 = v5;
-    v8 = [(HMDIDSActivityMonitorHomeManagerDataSource *)a1 pushTokens];
-    v9 = [v8 isEqual:v7];
+    pushTokens = [(HMDIDSActivityMonitorHomeManagerDataSource *)self pushTokens];
+    v9 = [pushTokens isEqual:v7];
 
     v5 = v7;
-    dispatch_assert_queue_V2(*(a1 + 40));
-    objc_storeStrong((a1 + 16), v7);
+    dispatch_assert_queue_V2(*(self + 40));
+    objc_storeStrong((self + 16), v7);
 
     if ((v9 & 1) == 0)
     {
-      if (v6)
+      if (tokensCopy)
       {
         v10 = 9;
       }
@@ -216,13 +216,13 @@ void __75__HMDIDSActivityMonitorHomeManagerDataSource__updateWithCompletionHandl
       block[1] = 3221225472;
       block[2] = __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completionHandler___block_invoke;
       block[3] = &unk_27868A728;
-      block[4] = a1;
+      block[4] = self;
       dispatch_async(v11, block);
     }
 
-    if (v6)
+    if (tokensCopy)
     {
-      v6[2](v6, 1);
+      tokensCopy[2](tokensCopy, 1);
     }
   }
 }
@@ -395,15 +395,15 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updateOnQueueWithCompleti
 
 - (dispatch_queue_t)pushTokens
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    dispatch_assert_queue_V2(a1[5]);
-    a1 = v2[2];
+    selfCopy = self;
+    dispatch_assert_queue_V2(self[5]);
+    self = selfCopy[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completionHandler___block_invoke(uint64_t a1)
@@ -412,12 +412,12 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
   [v2 dataSourceDidUpdate:*(a1 + 32)];
 }
 
-- (void)_handleCurrentDeviceOrAccountUpdated:(id)a3
+- (void)_handleCurrentDeviceOrAccountUpdated:(id)updated
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -428,18 +428,18 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v6)
+  if (selfCopy)
   {
-    [(HMDIDSActivityMonitorHomeManagerDataSource *)v6 _updateWithCompletionHandler:?];
+    [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy _updateWithCompletionHandler:?];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeviceRemoved:(id)a3
+- (void)_handleDeviceRemoved:(id)removed
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  removedCopy = removed;
   if (self)
   {
     appleAccountManager = self->_appleAccountManager;
@@ -450,14 +450,14 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
     appleAccountManager = 0;
   }
 
-  v6 = [(HMDAppleAccountManager *)appleAccountManager account];
-  v7 = [v4 object];
-  v8 = [v6 isEqual:v7];
+  account = [(HMDAppleAccountManager *)appleAccountManager account];
+  object = [removedCopy object];
+  v8 = [account isEqual:object];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"HMDDeviceNotificationKey"];
+    userInfo = [removedCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"HMDDeviceNotificationKey"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -473,7 +473,7 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
     v12 = v11;
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -488,17 +488,17 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
     objc_autoreleasePoolPop(v13);
     if (self)
     {
-      [(HMDIDSActivityMonitorHomeManagerDataSource *)v14 _updateWithCompletionHandler:?];
+      [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy _updateWithCompletionHandler:?];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeviceAdded:(id)a3
+- (void)_handleDeviceAdded:(id)added
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   if (self)
   {
     appleAccountManager = self->_appleAccountManager;
@@ -509,14 +509,14 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
     appleAccountManager = 0;
   }
 
-  v6 = [(HMDAppleAccountManager *)appleAccountManager account];
-  v7 = [v4 object];
-  v8 = [v6 isEqual:v7];
+  account = [(HMDAppleAccountManager *)appleAccountManager account];
+  object = [addedCopy object];
+  v8 = [account isEqual:object];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"HMDDeviceNotificationKey"];
+    userInfo = [addedCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"HMDDeviceNotificationKey"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -532,7 +532,7 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
     v12 = v11;
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -547,17 +547,17 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
     objc_autoreleasePoolPop(v13);
     if (self)
     {
-      [(HMDIDSActivityMonitorHomeManagerDataSource *)v14 _updateWithCompletionHandler:?];
+      [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy _updateWithCompletionHandler:?];
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pushTokensForDevicesObservingSubjectDevice:(id)a3 subActivity:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)pushTokensForDevicesObservingSubjectDevice:(id)device subActivity:(id)activity queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a6;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (self)
   {
     workQueue = self->_workQueue;
@@ -573,10 +573,10 @@ void __82__HMDIDSActivityMonitorHomeManagerDataSource__updatePushTokens_completi
   block[2] = __125__HMDIDSActivityMonitorHomeManagerDataSource_pushTokensForDevicesObservingSubjectDevice_subActivity_queue_completionHandler___block_invoke;
   block[3] = &unk_278689F98;
   block[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = queueCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = queueCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -616,20 +616,20 @@ void __125__HMDIDSActivityMonitorHomeManagerDataSource_pushTokensForDevicesObser
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)startWithNotificationCenter:(id)a3
+- (void)startWithNotificationCenter:(id)center
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSActivityMonitorHomeManagerDataSource *)self homeManager];
-  v6 = [v5 capabilitiesController];
-  v7 = [v6 currentResidentCapabilities];
-  v8 = [v7 isResidentCapable];
+  centerCopy = center;
+  homeManager = [(HMDIDSActivityMonitorHomeManagerDataSource *)self homeManager];
+  capabilitiesController = [homeManager capabilitiesController];
+  currentResidentCapabilities = [capabilitiesController currentResidentCapabilities];
+  isResidentCapable = [currentResidentCapabilities isResidentCapable];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-  if (v8)
+  if (isResidentCapable)
   {
     if (v12)
     {
@@ -640,22 +640,22 @@ void __125__HMDIDSActivityMonitorHomeManagerDataSource_pushTokensForDevicesObser
     }
 
     objc_autoreleasePoolPop(v9);
-    [v4 addObserver:v10 selector:sel__handleDeviceAdded_ name:@"HMDAccountAddedDeviceNotification" object:0];
-    [v4 addObserver:v10 selector:sel__handleDeviceRemoved_ name:@"HMDAccountRemovedDeviceNotification" object:0];
-    if (v10)
+    [centerCopy addObserver:selfCopy selector:sel__handleDeviceAdded_ name:@"HMDAccountAddedDeviceNotification" object:0];
+    [centerCopy addObserver:selfCopy selector:sel__handleDeviceRemoved_ name:@"HMDAccountRemovedDeviceNotification" object:0];
+    if (selfCopy)
     {
-      [v4 addObserver:v10 selector:sel__handleCurrentDeviceOrAccountUpdated_ name:@"HMDAppleAccountManagerDeviceUpdatedNotification" object:v10->_appleAccountManager];
-      [v4 addObserver:v10 selector:sel__handleCurrentDeviceOrAccountUpdated_ name:@"HMDAppleAccountManagerAccountUpdatedNotification" object:v10->_appleAccountManager];
-      [v4 addObserver:v10 selector:sel__handleHomeAdded_ name:@"HMDHomeAddedNotification" object:0];
-      [(HMDIDSActivityMonitorHomeManagerDataSource *)&v10->super.isa _startUpdateTask];
-      [(HMDIDSActivityMonitorHomeManagerDataSource *)v10 _updateWithCompletionHandler:?];
+      [centerCopy addObserver:selfCopy selector:sel__handleCurrentDeviceOrAccountUpdated_ name:@"HMDAppleAccountManagerDeviceUpdatedNotification" object:selfCopy->_appleAccountManager];
+      [centerCopy addObserver:selfCopy selector:sel__handleCurrentDeviceOrAccountUpdated_ name:@"HMDAppleAccountManagerAccountUpdatedNotification" object:selfCopy->_appleAccountManager];
+      [centerCopy addObserver:selfCopy selector:sel__handleHomeAdded_ name:@"HMDHomeAddedNotification" object:0];
+      [(HMDIDSActivityMonitorHomeManagerDataSource *)&selfCopy->super.isa _startUpdateTask];
+      [(HMDIDSActivityMonitorHomeManagerDataSource *)selfCopy _updateWithCompletionHandler:?];
     }
 
     else
     {
-      [v4 addObserver:0 selector:sel__handleCurrentDeviceOrAccountUpdated_ name:@"HMDAppleAccountManagerDeviceUpdatedNotification" object:0];
-      [v4 addObserver:0 selector:sel__handleCurrentDeviceOrAccountUpdated_ name:@"HMDAppleAccountManagerAccountUpdatedNotification" object:0];
-      [v4 addObserver:0 selector:sel__handleHomeAdded_ name:@"HMDHomeAddedNotification" object:0];
+      [centerCopy addObserver:0 selector:sel__handleCurrentDeviceOrAccountUpdated_ name:@"HMDAppleAccountManagerDeviceUpdatedNotification" object:0];
+      [centerCopy addObserver:0 selector:sel__handleCurrentDeviceOrAccountUpdated_ name:@"HMDAppleAccountManagerAccountUpdatedNotification" object:0];
+      [centerCopy addObserver:0 selector:sel__handleHomeAdded_ name:@"HMDHomeAddedNotification" object:0];
     }
   }
 
@@ -670,9 +670,9 @@ void __125__HMDIDSActivityMonitorHomeManagerDataSource_pushTokensForDevicesObser
     }
 
     objc_autoreleasePoolPop(v9);
-    if (v10)
+    if (selfCopy)
     {
-      workQueue = v10->_workQueue;
+      workQueue = selfCopy->_workQueue;
     }
 
     else
@@ -684,7 +684,7 @@ void __125__HMDIDSActivityMonitorHomeManagerDataSource_pushTokensForDevicesObser
     block[1] = 3221225472;
     block[2] = __74__HMDIDSActivityMonitorHomeManagerDataSource_startWithNotificationCenter___block_invoke;
     block[3] = &unk_27868A728;
-    block[4] = v10;
+    block[4] = selfCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -693,7 +693,7 @@ void __125__HMDIDSActivityMonitorHomeManagerDataSource_pushTokensForDevicesObser
 
 - (void)_startUpdateTask
 {
-  if (a1)
+  if (self)
   {
     objc_opt_class();
     v2 = objc_opt_self();
@@ -712,9 +712,9 @@ void __125__HMDIDSActivityMonitorHomeManagerDataSource_pushTokensForDevicesObser
     [v4 setRepeats:1];
     [v4 setInterval:v3];
     [v4 setTolerance:v3 * 0.25];
-    objc_storeStrong(a1 + 6, v4);
+    objc_storeStrong(self + 6, v4);
     objc_initWeak(location, v4);
-    objc_initWeak(&from, a1);
+    objc_initWeak(&from, self);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __62__HMDIDSActivityMonitorHomeManagerDataSource__startUpdateTask__block_invoke;
@@ -827,28 +827,28 @@ void __64__HMDIDSActivityMonitorHomeManagerDataSource_updateTaskInterval__block_
 
 - (void)start
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [(HMDIDSActivityMonitorHomeManagerDataSource *)self startWithNotificationCenter:v3];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [(HMDIDSActivityMonitorHomeManagerDataSource *)self startWithNotificationCenter:defaultCenter];
 }
 
-- (HMDIDSActivityMonitorHomeManagerDataSource)initWithHomeManager:(id)a3 appleAccountManager:(id)a4
+- (HMDIDSActivityMonitorHomeManagerDataSource)initWithHomeManager:(id)manager appleAccountManager:(id)accountManager
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  managerCopy = manager;
+  accountManagerCopy = accountManager;
+  if (managerCopy)
   {
-    v9 = v8;
+    v9 = accountManagerCopy;
     v17.receiver = self;
     v17.super_class = HMDIDSActivityMonitorHomeManagerDataSource;
     v10 = [(HMDIDSActivityMonitorHomeManagerDataSource *)&v17 init];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_homeManager, a3);
-      objc_storeStrong(&v11->_appleAccountManager, a4);
-      v12 = [v7 workQueue];
+      objc_storeStrong(&v10->_homeManager, manager);
+      objc_storeStrong(&v11->_appleAccountManager, accountManager);
+      workQueue = [managerCopy workQueue];
       workQueue = v11->_workQueue;
-      v11->_workQueue = v12;
+      v11->_workQueue = workQueue;
     }
 
     return v11;

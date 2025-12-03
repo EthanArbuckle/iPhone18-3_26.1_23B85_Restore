@@ -1,19 +1,19 @@
 @interface PAECompoundBlur
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAECompoundBlur)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAECompoundBlur)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAECompoundBlur
 
-- (PAECompoundBlur)initWithAPIManager:(id)a3
+- (PAECompoundBlur)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAECompoundBlur;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -62,30 +62,30 @@ uint64_t __29__PAECompoundBlur_properties__block_invoke()
   return 1;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
-  if ([(PAESharedDefaultBase *)self getRenderMode:a6->var0.var1])
+  if ([(PAESharedDefaultBase *)self getRenderMode:info->var0.var1])
   {
-    *a3 = a5->var0;
-    *a4 = a5->var1;
+    *width = input->var0;
+    *height = input->var1;
     return 1;
   }
 
   v11 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B780];
   result = 0;
-  if (a4 && a3 && v11)
+  if (height && width && v11)
   {
     v20 = 0.0;
-    [v11 getFloatValue:&v20 fromParm:1 atFxTime:a6->var0.var1];
+    [v11 getFloatValue:&v20 fromParm:1 atFxTime:info->var0.var1];
     v19 = 0.0;
-    [v11 getFloatValue:&v19 fromParm:6 atFxTime:a6->var0.var1];
+    [v11 getFloatValue:&v19 fromParm:6 atFxTime:info->var0.var1];
     v19 = v19 * 0.01;
     v18 = 0.0;
-    [v11 getFloatValue:&v18 fromParm:7 atFxTime:a6->var0.var1];
+    [v11 getFloatValue:&v18 fromParm:7 atFxTime:info->var0.var1];
     v18 = v18 * 0.01;
     v17 = 0;
-    [v11 getBoolValue:&v17 fromParm:5 atFxTime:a6->var0.var1];
-    v13 = *&a5->var0;
+    [v11 getBoolValue:&v17 fromParm:5 atFxTime:info->var0.var1];
+    v13 = *&input->var0;
     if ((v17 & 1) == 0)
     {
       v14.f64[0] = v19;
@@ -95,18 +95,18 @@ uint64_t __29__PAECompoundBlur_properties__block_invoke()
       v13 = vaddw_s32(v13, vadd_s32(v16, v16));
     }
 
-    *a3 = v13.i64[0];
-    *a4 = v13.u64[1];
+    *width = v13.i64[0];
+    *height = v13.u64[1];
     return 1;
   }
 
   return result;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+  v9 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B780];
   if (!v10)
   {
@@ -114,7 +114,7 @@ uint64_t __29__PAECompoundBlur_properties__block_invoke()
   }
 
   v11 = v10;
-  [(PAESharedDefaultBase *)self getScaleForImage:a4];
+  [(PAESharedDefaultBase *)self getScaleForImage:input];
   v13 = v42;
   v12 = v43;
   if (v42 <= v43)
@@ -128,25 +128,25 @@ uint64_t __29__PAECompoundBlur_properties__block_invoke()
   }
 
   __x = 0.0;
-  [v11 getFloatValue:&__x fromParm:1 atFxTime:a5->var0.var1];
+  [v11 getFloatValue:&__x fromParm:1 atFxTime:info->var0.var1];
   __x = __x * 0.5;
   v40 = 0.0;
-  [v11 getFloatValue:&v40 fromParm:6 atFxTime:a5->var0.var1];
+  [v11 getFloatValue:&v40 fromParm:6 atFxTime:info->var0.var1];
   v40 = v13 / v14 * (v40 * 0.01);
   v39 = 0.0;
-  [v11 getFloatValue:&v39 fromParm:7 atFxTime:a5->var0.var1];
+  [v11 getFloatValue:&v39 fromParm:7 atFxTime:info->var0.var1];
   v39 = v12 / v14 * (v39 * 0.01);
   v38 = 0;
-  [v11 getIntValue:&v38 fromParm:3 atFxTime:a5->var0.var1];
+  [v11 getIntValue:&v38 fromParm:3 atFxTime:info->var0.var1];
   v37 = 0;
-  [v11 getBoolValue:&v37 fromParm:4 atFxTime:a5->var0.var1];
+  [v11 getBoolValue:&v37 fromParm:4 atFxTime:info->var0.var1];
   v36 = 0;
-  [v11 getBoolValue:&v36 fromParm:5 atFxTime:a5->var0.var1];
-  v15 = [a4 imageType];
+  [v11 getBoolValue:&v36 fromParm:5 atFxTime:info->var0.var1];
+  imageType = [input imageType];
   DWORD1(v16) = HIDWORD(__x);
   if (__x > 0.0)
   {
-    v17 = v15;
+    v17 = imageType;
     LODWORD(v16) = 1.0;
     if (v37)
     {
@@ -172,7 +172,7 @@ uint64_t __29__PAECompoundBlur_properties__block_invoke()
         *&v16 = *&v33 * 0.6094;
         HIDWORD(v18) = 0;
         *&v18 = *&v33 * 0.082;
-        [a4 pixelAspect];
+        [input pixelAspect];
         goto LABEL_25;
       }
     }
@@ -181,7 +181,7 @@ uint64_t __29__PAECompoundBlur_properties__block_invoke()
     {
       if (v38 == 1)
       {
-        [a4 pixelAspect];
+        [input pixelAspect];
         goto LABEL_25;
       }
 
@@ -197,7 +197,7 @@ LABEL_23:
 
     v16 = v33;
 LABEL_24:
-    [a4 pixelAspect];
+    [input pixelAspect];
 LABEL_25:
     v20 = v19;
     LOBYTE(v10) = 0;
@@ -213,9 +213,9 @@ LABEL_25:
 
     if (v9 && v17 == 3)
     {
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
       }
 
       else
@@ -223,21 +223,21 @@ LABEL_25:
         v35 = 0;
       }
 
-      v34 = 0;
-      v22 = *&a5->var2;
-      v23 = *&a5->var4;
-      v44[0] = *&a5->var0.var0;
+      inputCopy = 0;
+      v22 = *&info->var2;
+      v23 = *&info->var4;
+      v44[0] = *&info->var0.var0;
       v44[1] = v22;
       v44[2] = v23;
-      [(PAESharedDefaultBase *)self getHeliumImage:&v34 layerOffsetX:0 layerOffsetY:0 requestInfo:v44 fromParm:2 atTime:a5->var0.var1];
-      if (v34)
+      [(PAESharedDefaultBase *)self getHeliumImage:&inputCopy layerOffsetX:0 layerOffsetY:0 requestInfo:v44 fromParm:2 atTime:info->var0.var1];
+      if (inputCopy)
       {
-        [v34 heliumRef];
+        [inputCopy heliumRef];
       }
 
       else
       {
-        v34 = a4;
+        inputCopy = input;
         if (v35)
         {
           (*(*v35 + 16))(v35);
@@ -269,9 +269,9 @@ LABEL_25:
     return v10;
   }
 
-  if (a4)
+  if (input)
   {
-    [a4 heliumRef];
+    [input heliumRef];
   }
 
   else
@@ -279,7 +279,7 @@ LABEL_25:
     *&v44[0] = 0;
   }
 
-  [a3 setHeliumRef:v44];
+  [output setHeliumRef:v44];
   if (*&v44[0])
   {
     (*(**&v44[0] + 24))(*&v44[0]);
@@ -289,15 +289,15 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

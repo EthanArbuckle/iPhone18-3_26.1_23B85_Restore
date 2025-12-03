@@ -1,7 +1,7 @@
 @interface PuzzleStreakBackgroundWorkerManager
 - (_TtC7NewsUI235PuzzleStreakBackgroundWorkerManager)init;
-- (void)bundleSubscriptionDidExpire:(id)a3;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
+- (void)bundleSubscriptionDidExpire:(id)expire;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
 @end
 
 @implementation PuzzleStreakBackgroundWorkerManager
@@ -13,10 +13,10 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
   v3 = qword_280E8D870;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -27,10 +27,10 @@
   sub_218F97108();
 }
 
-- (void)bundleSubscriptionDidExpire:(id)a3
+- (void)bundleSubscriptionDidExpire:(id)expire
 {
   v3 = qword_280E8D870;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -41,7 +41,7 @@
   sub_219BE5314();
   v6 = OBJC_IVAR____TtC7NewsUI235PuzzleStreakBackgroundWorkerManager_registeredWorkers;
   swift_beginAccess();
-  *(&v4->super.isa + v6) = v5;
+  *(&selfCopy->super.isa + v6) = v5;
 }
 
 @end

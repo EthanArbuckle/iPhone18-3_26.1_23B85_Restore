@@ -1,10 +1,10 @@
 @interface IssueListOfflineContentContributor
-- (void)offlineIssueList:(id)a3 didAddIssues:(id)a4 removeIssues:(id)a5;
+- (void)offlineIssueList:(id)list didAddIssues:(id)issues removeIssues:(id)removeIssues;
 @end
 
 @implementation IssueListOfflineContentContributor
 
-- (void)offlineIssueList:(id)a3 didAddIssues:(id)a4 removeIssues:(id)a5
+- (void)offlineIssueList:(id)list didAddIssues:(id)issues removeIssues:(id)removeIssues
 {
 
   sub_219A78368();

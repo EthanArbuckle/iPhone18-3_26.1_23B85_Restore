@@ -1,44 +1,44 @@
 @interface ATXNotificationEventProvider
-- (ATXNotificationEventProvider)initWithEventType:(int64_t)a3 contactStore:(id)a4;
-- (ATXNotificationEventProvider)initWithEventTypes:(id)a3 contactStore:(id)a4;
-- (BOOL)isEventFromProvider:(id)a3;
+- (ATXNotificationEventProvider)initWithEventType:(int64_t)type contactStore:(id)store;
+- (ATXNotificationEventProvider)initWithEventTypes:(id)types contactStore:(id)store;
+- (BOOL)isEventFromProvider:(id)provider;
 - (NSString)description;
-- (double)secondsSinceReceiptForModeEvent:(id)a3;
-- (id)aggregationEventsFromEvent:(id)a3;
-- (id)biomePublisherWithBookmark:(id)a3;
-- (id)dateIntervalFromEvent:(id)a3;
+- (double)secondsSinceReceiptForModeEvent:(id)event;
+- (id)aggregationEventsFromEvent:(id)event;
+- (id)biomePublisherWithBookmark:(id)bookmark;
+- (id)dateIntervalFromEvent:(id)event;
 - (id)eventsFromPublisher;
-- (void)updateEntitySpecificFeaturesDict:(id)a3 aggregationEvent:(id)a4 isLocalToMode:(BOOL)a5;
+- (void)updateEntitySpecificFeaturesDict:(id)dict aggregationEvent:(id)event isLocalToMode:(BOOL)mode;
 @end
 
 @implementation ATXNotificationEventProvider
 
-- (ATXNotificationEventProvider)initWithEventType:(int64_t)a3 contactStore:(id)a4
+- (ATXNotificationEventProvider)initWithEventType:(int64_t)type contactStore:(id)store
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
+  storeCopy = store;
+  v8 = [v6 numberWithInteger:type];
   v13[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-  v10 = [(ATXNotificationEventProvider *)self initWithEventTypes:v9 contactStore:v7];
+  v10 = [(ATXNotificationEventProvider *)self initWithEventTypes:v9 contactStore:storeCopy];
 
   v11 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (ATXNotificationEventProvider)initWithEventTypes:(id)a3 contactStore:(id)a4
+- (ATXNotificationEventProvider)initWithEventTypes:(id)types contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  typesCopy = types;
+  storeCopy = store;
   v14.receiver = self;
   v14.super_class = ATXNotificationEventProvider;
   v9 = [(ATXNotificationEventProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventTypes, a3);
-    v11 = [[ATXStableContactRepresentationDatastore alloc] initWithContactStore:v8];
+    objc_storeStrong(&v9->_eventTypes, types);
+    v11 = [[ATXStableContactRepresentationDatastore alloc] initWithContactStore:storeCopy];
     stableContactRepresentationProvider = v10->_stableContactRepresentationProvider;
     v10->_stableContactRepresentationProvider = v11;
   }
@@ -46,9 +46,9 @@
   return v10;
 }
 
-- (id)biomePublisherWithBookmark:(id)a3
+- (id)biomePublisherWithBookmark:(id)bookmark
 {
-  v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{a3, -2419200.0}];
+  v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:{bookmark, -2419200.0}];
   v5 = objc_opt_new();
   v6 = [v5 publisherFromStartTime:v4 endTime:0 maxEvents:0 lastN:2000 reversed:0];
   v9[0] = MEMORY[0x277D85DD0];
@@ -163,13 +163,13 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
   }
 }
 
-- (BOOL)isEventFromProvider:(id)a3
+- (BOOL)isEventFromProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 eventBody];
+    eventBody = [providerCopy eventBody];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -182,40 +182,40 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
   return isKindOfClass & 1;
 }
 
-- (id)aggregationEventsFromEvent:(id)a3
+- (id)aggregationEventsFromEvent:(id)event
 {
-  v4 = a3;
-  if ([(ATXNotificationEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXNotificationEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = [v4 eventBody];
+    eventBody = [eventCopy eventBody];
     v6 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v5 timestamp];
+    [eventBody timestamp];
     v7 = [v6 initWithTimeIntervalSinceReferenceDate:?];
-    v8 = [v5 notification];
-    v9 = [v8 bundleID];
+    notification = [eventBody notification];
+    bundleID = [notification bundleID];
 
-    if (v9)
+    if (bundleID)
     {
-      v10 = [objc_alloc(MEMORY[0x277CEB390]) initWithBundleId:v9];
+      v10 = [objc_alloc(MEMORY[0x277CEB390]) initWithBundleId:bundleID];
       if (v10)
       {
-        v11 = [v5 notification];
-        v12 = [v11 isMessage];
+        notification2 = [eventBody notification];
+        isMessage = [notification2 isMessage];
 
-        if (v12)
+        if (isMessage)
         {
-          v13 = [v5 notification];
-          v14 = [v13 isGroupMessage];
+          notification3 = [eventBody notification];
+          isGroupMessage = [notification3 isGroupMessage];
 
-          v15 = [v5 notification];
-          v16 = v15;
-          if (v14)
+          notification4 = [eventBody notification];
+          v16 = notification4;
+          if (isGroupMessage)
           {
-            v17 = [v15 threadID];
+            threadID = [notification4 threadID];
 
-            if (v17)
+            if (threadID)
             {
-              v18 = [objc_alloc(MEMORY[0x277CEB420]) initWithDisplayName:0 rawIdentifier:v17 cnContactId:0];
+              v18 = [objc_alloc(MEMORY[0x277CEB420]) initWithDisplayName:0 rawIdentifier:threadID cnContactId:0];
             }
 
             else
@@ -226,18 +226,18 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
 
           else
           {
-            v20 = [v15 contactIDs];
-            v17 = [v20 firstObject];
+            contactIDs = [notification4 contactIDs];
+            threadID = [contactIDs firstObject];
 
-            v21 = [v5 notification];
-            v22 = [v21 rawIdentifiers];
-            v23 = [v22 firstObject];
+            notification5 = [eventBody notification];
+            rawIdentifiers = [notification5 rawIdentifiers];
+            firstObject = [rawIdentifiers firstObject];
 
-            if (v17)
+            if (threadID)
             {
-              v24 = [(ATXStableContactRepresentationProviderProtocol *)self->_stableContactRepresentationProvider stableContactRepresentationForCnContactId:v17 rawIdentifier:v23];
-              v25 = [v24 stableContactIdentifier];
-              v18 = [objc_alloc(MEMORY[0x277CEB420]) initWithDisplayName:0 rawIdentifier:v23 cnContactId:v17 stableContactIdentifier:v25];
+              v24 = [(ATXStableContactRepresentationProviderProtocol *)self->_stableContactRepresentationProvider stableContactRepresentationForCnContactId:threadID rawIdentifier:firstObject];
+              stableContactIdentifier = [v24 stableContactIdentifier];
+              v18 = [objc_alloc(MEMORY[0x277CEB420]) initWithDisplayName:0 rawIdentifier:firstObject cnContactId:threadID stableContactIdentifier:stableContactIdentifier];
             }
 
             else
@@ -245,7 +245,7 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
               v26 = __atxlog_handle_notification_management();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
-                [ATXNotificationEventProvider aggregationEventsFromEvent:v5];
+                [ATXNotificationEventProvider aggregationEventsFromEvent:eventBody];
               }
 
               v18 = 0;
@@ -260,8 +260,8 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
 
         v19 = objc_opt_new();
         v27 = [objc_alloc(MEMORY[0x277CEB720]) initWithAppEntity:v10 contactEntity:0];
-        v28 = [v5 notification];
-        [v28 timestamp];
+        notification6 = [eventBody notification];
+        [notification6 timestamp];
         [v27 setReceiveTimestamp:?];
 
         if (v27)
@@ -274,8 +274,8 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
         {
           v30 = [objc_alloc(MEMORY[0x277CEB720]) initWithAppEntity:v10 contactEntity:v18];
 
-          v31 = [v5 notification];
-          [v31 timestamp];
+          notification7 = [eventBody notification];
+          [notification7 timestamp];
           [v30 setReceiveTimestamp:?];
 
           if (v30)
@@ -286,8 +286,8 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
 
           v27 = [objc_alloc(MEMORY[0x277CEB720]) initWithAppEntity:0 contactEntity:v18];
 
-          v33 = [v5 notification];
-          [v33 timestamp];
+          notification8 = [eventBody notification];
+          [notification8 timestamp];
           [v27 setReceiveTimestamp:?];
 
           if (v27)
@@ -318,14 +318,14 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
   return v19;
 }
 
-- (id)dateIntervalFromEvent:(id)a3
+- (id)dateIntervalFromEvent:(id)event
 {
-  v4 = a3;
-  if ([(ATXNotificationEventProvider *)self isEventFromProvider:v4])
+  eventCopy = event;
+  if ([(ATXNotificationEventProvider *)self isEventFromProvider:eventCopy])
   {
-    v5 = [v4 eventBody];
+    eventBody = [eventCopy eventBody];
     v6 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v5 timestamp];
+    [eventBody timestamp];
     v7 = [v6 initWithTimeIntervalSinceReferenceDate:?];
     v8 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 endDate:v7];
   }
@@ -338,35 +338,35 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
   return v8;
 }
 
-- (void)updateEntitySpecificFeaturesDict:(id)a3 aggregationEvent:(id)a4 isLocalToMode:(BOOL)a5
+- (void)updateEntitySpecificFeaturesDict:(id)dict aggregationEvent:(id)event isLocalToMode:(BOOL)mode
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  modeCopy = mode;
+  dictCopy = dict;
+  eventCopy = event;
+  v10 = eventCopy;
+  if (modeCopy)
   {
-    v11 = [v9 entity];
-    v12 = [v8 objectForKeyedSubscript:v11];
+    entity = [eventCopy entity];
+    v12 = [dictCopy objectForKeyedSubscript:entity];
 
     if (!v12)
     {
       v13 = objc_opt_new();
-      v14 = [v10 entity];
-      [v8 setObject:v13 forKeyedSubscript:v14];
+      entity2 = [v10 entity];
+      [dictCopy setObject:v13 forKeyedSubscript:entity2];
     }
 
-    v15 = [v10 entity];
-    v16 = [v8 objectForKeyedSubscript:v15];
+    entity3 = [v10 entity];
+    v16 = [dictCopy objectForKeyedSubscript:entity3];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v16 secondsToEngagement];
+      secondsToEngagement = [v16 secondsToEngagement];
       v18 = MEMORY[0x277CCABB0];
       [(ATXNotificationEventProvider *)self secondsSinceReceiptForModeEvent:v10];
       v19 = [v18 numberWithDouble:?];
-      [v17 addObject:v19];
+      [secondsToEngagement addObject:v19];
     }
 
     else
@@ -380,16 +380,16 @@ void __51__ATXNotificationEventProvider_eventsFromPublisher__block_invoke_2(uint
   }
 }
 
-- (double)secondsSinceReceiptForModeEvent:(id)a3
+- (double)secondsSinceReceiptForModeEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 entity];
-  v5 = [v3 startDate];
+  eventCopy = event;
+  entity = [eventCopy entity];
+  startDate = [eventCopy startDate];
 
   v6 = objc_alloc(MEMORY[0x277CBEAA8]);
-  [v4 receiveTimestamp];
+  [entity receiveTimestamp];
   v7 = [v6 initWithTimeIntervalSinceReferenceDate:?];
-  [v5 timeIntervalSinceDate:v7];
+  [startDate timeIntervalSinceDate:v7];
   v9 = v8;
 
   return v9;

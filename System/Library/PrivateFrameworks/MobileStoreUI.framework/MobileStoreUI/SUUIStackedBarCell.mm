@@ -1,19 +1,19 @@
 @interface SUUIStackedBarCell
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SUUIStackedBarCell)initWithFrame:(CGRect)a3;
+- (SUUIStackedBarCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title forState:(unint64_t)state;
 @end
 
 @implementation SUUIStackedBarCell
 
-- (SUUIStackedBarCell)initWithFrame:(CGRect)a3
+- (SUUIStackedBarCell)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = SUUIStackedBarCell;
-  v3 = [(SUUIStackedBarCell *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIStackedBarCell *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -45,32 +45,32 @@
     [(UILabel *)v15 setFont:v16];
 
     [(SUUIStackedBarCell *)v3 addSubview:v3->_expandedLabel];
-    v17 = [(SUUIStackedBarCell *)v3 tintColor];
-    [(SUUIStackedBarCell *)v3 setTitleColor:v17 forState:0];
+    tintColor = [(SUUIStackedBarCell *)v3 tintColor];
+    [(SUUIStackedBarCell *)v3 setTitleColor:tintColor forState:0];
 
-    v18 = [(SUUIStackedBarCell *)v3 titleLabel];
+    titleLabel = [(SUUIStackedBarCell *)v3 titleLabel];
     v19 = [MEMORY[0x277D74300] systemFontOfSize:12.0];
-    [v18 setFont:v19];
+    [titleLabel setFont:v19];
 
-    v20 = [(SUUIStackedBarCell *)v3 titleLabel];
-    [v20 setTextAlignment:1];
+    titleLabel2 = [(SUUIStackedBarCell *)v3 titleLabel];
+    [titleLabel2 setTextAlignment:1];
   }
 
   return v3;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   if (!self->_expanded)
   {
     v5 = [MEMORY[0x277D75348] colorWithWhite:0.8824 alpha:0.82];
     v6 = 0.25;
-    if (!a3)
+    if (!highlighted)
     {
-      v7 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
 
       v6 = 0.47;
-      v5 = v7;
+      v5 = clearColor;
     }
 
     v8 = MEMORY[0x277D75D18];
@@ -85,11 +85,11 @@
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  self->_expanded = a3;
+  self->_expanded = expanded;
   expandedLabel = self->_expandedLabel;
-  if (a3)
+  if (expanded)
   {
     v5 = 1.0;
     CGAffineTransformMakeScale(&v8, 1.0, 1.0);
@@ -106,19 +106,19 @@
   }
 
   [(UILabel *)self->_expandedLabel setAlpha:v5];
-  v7 = [(SUUIStackedBarCell *)self titleLabel];
-  [v7 setAlpha:v6];
+  titleLabel = [(SUUIStackedBarCell *)self titleLabel];
+  [titleLabel setAlpha:v6];
 
   [(UIButton *)self->_backButton setAlpha:v5];
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4
+- (void)setTitle:(id)title forState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = SUUIStackedBarCell;
-  v6 = a3;
-  [(SUUIStackedBarCell *)&v7 setTitle:v6 forState:a4];
-  [(UILabel *)self->_expandedLabel setText:v6, v7.receiver, v7.super_class];
+  titleCopy = title;
+  [(SUUIStackedBarCell *)&v7 setTitle:titleCopy forState:state];
+  [(UILabel *)self->_expandedLabel setText:titleCopy, v7.receiver, v7.super_class];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result
@@ -146,8 +146,8 @@
   v11 = *(MEMORY[0x277CBF3A0] + 8);
   [(SUUIStackedBarCell *)self bounds];
   Width = CGRectGetWidth(v21);
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v15 = 1.0 / v14;
 
   [(SUUIStackedBarCell *)self bounds];
@@ -161,8 +161,8 @@
   [(UIButton *)self->_backButton setFrame:SUUIRectByApplyingStoreUserInterfaceLayoutDirectionInRect(0.0, 0.0, 47.0, 42.0, v4, v6, v8, v10)];
   [(UILabel *)self->_expandedLabel sizeToFit];
   expandedLabel = self->_expandedLabel;
-  v19 = [(SUUIStackedBarCell *)self titleLabel];
-  [v19 center];
+  titleLabel = [(SUUIStackedBarCell *)self titleLabel];
+  [titleLabel center];
   [(UILabel *)expandedLabel setCenter:?];
 }
 

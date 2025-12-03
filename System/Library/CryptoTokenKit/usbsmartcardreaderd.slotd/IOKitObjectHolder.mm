@@ -1,7 +1,7 @@
 @interface IOKitObjectHolder
 - (IOKitObjectHolder)init;
-- (IOKitObjectHolder)initWithObject:(unsigned int)a3;
-- (IOKitObjectHolder)initWithRetainedObject:(unsigned int)a3;
+- (IOKitObjectHolder)initWithObject:(unsigned int)object;
+- (IOKitObjectHolder)initWithRetainedObject:(unsigned int)object;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (IOKitObjectHolder)initWithObject:(unsigned int)a3
+- (IOKitObjectHolder)initWithObject:(unsigned int)object
 {
   v9.receiver = self;
   v9.super_class = IOKitObjectHolder;
@@ -32,10 +32,10 @@
     goto LABEL_8;
   }
 
-  v4->_holder = a3;
-  if (a3)
+  v4->_holder = object;
+  if (object)
   {
-    if (IOObjectRetain(a3))
+    if (IOObjectRetain(object))
     {
       v6 = sub_100001170();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -58,13 +58,13 @@ LABEL_9:
   return v7;
 }
 
-- (IOKitObjectHolder)initWithRetainedObject:(unsigned int)a3
+- (IOKitObjectHolder)initWithRetainedObject:(unsigned int)object
 {
   v8.receiver = self;
   v8.super_class = IOKitObjectHolder;
   v4 = [(IOKitObjectHolder *)&v8 init];
   v5 = v4;
-  if (v4 && (v4->_holder = a3) == 0)
+  if (v4 && (v4->_holder = object) == 0)
   {
     v6 = 0;
   }

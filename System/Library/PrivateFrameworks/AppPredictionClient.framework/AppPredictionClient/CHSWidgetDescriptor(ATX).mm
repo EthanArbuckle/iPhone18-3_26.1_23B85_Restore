@@ -12,7 +12,7 @@
   v4 = &v3;
   v5 = 0x2020000000;
   v6 = 0;
-  [a1 supportedFamilies];
+  [self supportedFamilies];
   CHSWidgetFamilyMaskEnumerateFamilies();
   v1 = *(v4 + 24);
   _Block_object_dispose(&v3, 8);
@@ -25,7 +25,7 @@
   v4 = &v3;
   v5 = 0x2020000000;
   v6 = 1;
-  [a1 supportedFamilies];
+  [self supportedFamilies];
   CHSWidgetFamilyMaskEnumerateFamilies();
   v1 = *(v4 + 24);
   _Block_object_dispose(&v3, 8);
@@ -38,7 +38,7 @@
   v4 = &v3;
   v5 = 0x2020000000;
   v6 = 1;
-  [a1 supportedFamilies];
+  [self supportedFamilies];
   CHSWidgetFamilyMaskEnumerateFamilies();
   v1 = *(v4 + 24);
   _Block_object_dispose(&v3, 8);

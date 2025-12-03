@@ -1,10 +1,10 @@
 @interface NEExtensionTunnelProviderHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)didSetReasserting:(BOOL)a3;
-- (void)establishIPCWithCompletionHandler:(id)a3;
+- (void)didSetReasserting:(BOOL)reasserting;
+- (void)establishIPCWithCompletionHandler:(id)handler;
 - (void)handleIPCDetached;
-- (void)setTunnelConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)setTunnelConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation NEExtensionTunnelProviderHostContext
@@ -49,51 +49,51 @@ uint64_t __73__NEExtensionTunnelProviderHostContext__extensionAuxiliaryVendorPro
 
 - (void)handleIPCDetached
 {
-  v3 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
-  [v3 extensionDidDetachIPC:self];
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
+  [delegate extensionDidDetachIPC:self];
 }
 
-- (void)establishIPCWithCompletionHandler:(id)a3
+- (void)establishIPCWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
-  [v5 establishIPCWithCompletionHandler:v4];
+  handlerCopy = handler;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.isa vendorContext];
+  [vendorContext establishIPCWithCompletionHandler:handlerCopy];
 }
 
-- (void)setTunnelConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setTunnelConfiguration:(id)configuration completionHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  configurationCopy = configuration;
   v8 = ne_log_obj();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v8, OS_LOG_TYPE_DEFAULT, "%@: setting tunnel configuration", &v11, 0xCu);
   }
 
-  v9 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
-  [v9 extension:self didSetTunnelConfiguration:v7 completionHandler:v6];
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
+  [delegate extension:self didSetTunnelConfiguration:configurationCopy completionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didSetReasserting:(BOOL)a3
+- (void)didSetReasserting:(BOOL)reasserting
 {
-  v3 = a3;
+  reassertingCopy = reasserting;
   v13 = *MEMORY[0x1E69E9840];
   v5 = ne_log_obj();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
-    v12 = v3;
+    v12 = reassertingCopy;
     _os_log_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEFAULT, "%@: setting reasserting %d", &v9, 0x12u);
   }
 
-  if (v3)
+  if (reassertingCopy)
   {
     v6 = 5;
   }
@@ -103,8 +103,8 @@ uint64_t __73__NEExtensionTunnelProviderHostContext__extensionAuxiliaryVendorPro
     v6 = 4;
   }
 
-  v7 = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
-  [v7 extension:self didSetStatus:v6];
+  delegate = [(NEExtensionProviderHostContext *)&self->super.super.super.isa delegate];
+  [delegate extension:self didSetStatus:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 }

@@ -1,17 +1,17 @@
 @interface APStorageFile
-+ (__sFILE)_constructFileForURL:(id)a3 forMode:(char *)a4 error:(id *)a5;
-- (BOOL)addData:(id)a3 error:(id *)a4;
-- (BOOL)addObject:(id)a3 error:(id *)a4;
-- (id)_initForWritingFile:(__sFILE *)a3 forURL:(id)a4 loggablePath:(id)a5;
-- (id)_initWithFile:(__sFILE *)a3 forURL:(id)a4 loggablePath:(id)a5;
++ (__sFILE)_constructFileForURL:(id)l forMode:(char *)mode error:(id *)error;
+- (BOOL)addData:(id)data error:(id *)error;
+- (BOOL)addObject:(id)object error:(id *)error;
+- (id)_initForWritingFile:(__sFILE *)file forURL:(id)l loggablePath:(id)path;
+- (id)_initWithFile:(__sFILE *)file forURL:(id)l loggablePath:(id)path;
 - (id)allObjects;
-- (id)initForAppendingAtURL:(id)a3;
-- (id)initForMode:(int64_t)a3 atURL:(id)a4;
-- (id)initForReadingAtURL:(id)a3;
-- (id)initForWritingAtURL:(id)a3;
+- (id)initForAppendingAtURL:(id)l;
+- (id)initForMode:(int64_t)mode atURL:(id)l;
+- (id)initForReadingAtURL:(id)l;
+- (id)initForWritingAtURL:(id)l;
 - (id)nextObject;
 - (id)nextObjectData;
-- (void)_removeCorruptedFile:(id)a3;
+- (void)_removeCorruptedFile:(id)file;
 - (void)close;
 - (void)dealloc;
 @end
@@ -36,12 +36,12 @@
   }
 }
 
-- (id)initForWritingAtURL:(id)a3
+- (id)initForWritingAtURL:(id)l
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v8 = objc_msgSend_safePath(v4, v5, v6, v7);
-  v12 = objc_msgSend_URLByDeletingLastPathComponent(v4, v9, v10, v11);
+  lCopy = l;
+  v8 = objc_msgSend_safePath(lCopy, v5, v6, v7);
+  v12 = objc_msgSend_URLByDeletingLastPathComponent(lCopy, v9, v10, v11);
   v13 = objc_alloc_init(MEMORY[0x1E696AC08]);
   v24 = 0;
   objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v13, v14, v12, 1, 0, &v24);
@@ -50,12 +50,12 @@
   if (!v15)
   {
     v23 = 0;
-    v18 = objc_msgSend__constructFileForURL_forMode_error_(APStorageFile, v16, v4, "w", &v23);
+    v18 = objc_msgSend__constructFileForURL_forMode_error_(APStorageFile, v16, lCopy, "w", &v23);
     v15 = v23;
     if (v18)
     {
-      self = objc_msgSend__initForWritingFile_forURL_loggablePath_(self, v19, v18, v4, v8);
-      v17 = self;
+      self = objc_msgSend__initForWritingFile_forURL_loggablePath_(self, v19, v18, lCopy, v8);
+      selfCopy = self;
       goto LABEL_5;
     }
 
@@ -70,37 +70,37 @@
     }
   }
 
-  v17 = 0;
+  selfCopy = 0;
 LABEL_5:
 
   v20 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
-- (id)_initForWritingFile:(__sFILE *)a3 forURL:(id)a4 loggablePath:(id)a5
+- (id)_initForWritingFile:(__sFILE *)file forURL:(id)l loggablePath:(id)path
 {
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = APStorageFile;
   v11 = [(APStorageFile *)&v14 init];
   p_isa = &v11->super.isa;
   if (v11)
   {
-    v11->_fp = a3;
-    objc_storeStrong(&v11->_fileURL, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    v11->_fp = file;
+    objc_storeStrong(&v11->_fileURL, l);
+    objc_storeStrong(p_isa + 3, path);
   }
 
   return p_isa;
 }
 
-- (id)initForAppendingAtURL:(id)a3
+- (id)initForAppendingAtURL:(id)l
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v9 = objc_msgSend_safePath(v5, v6, v7, v8);
-  v13 = objc_msgSend_URLByDeletingLastPathComponent(v5, v10, v11, v12);
+  lCopy = l;
+  v9 = objc_msgSend_safePath(lCopy, v6, v7, v8);
+  v13 = objc_msgSend_URLByDeletingLastPathComponent(lCopy, v10, v11, v12);
   v14 = objc_alloc_init(MEMORY[0x1E696AC08]);
   v36 = 0;
   objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v14, v15, v13, 1, 0, &v36);
@@ -127,7 +127,7 @@ LABEL_3:
   }
 
   v35 = 0;
-  v22 = objc_msgSend__constructFileForURL_forMode_error_(APStorageFile, v17, v5, "a+", &v35);
+  v22 = objc_msgSend__constructFileForURL_forMode_error_(APStorageFile, v17, lCopy, "a+", &v35);
   v16 = v35;
   if (!v22)
   {
@@ -175,7 +175,7 @@ LABEL_3:
       if (v31)
       {
         v31->_fp = v22;
-        objc_storeStrong(&v31->_fileURL, a3);
+        objc_storeStrong(&v31->_fileURL, l);
         objc_storeStrong(p_isa + 3, v9);
       }
 
@@ -184,7 +184,7 @@ LABEL_3:
 
     else
     {
-      v33 = objc_msgSend__initForWritingFile_forURL_loggablePath_(self, v30, v22, v5, v9);
+      v33 = objc_msgSend__initForWritingFile_forURL_loggablePath_(self, v30, v22, lCopy, v9);
     }
 
     self = v33;
@@ -197,12 +197,12 @@ LABEL_5:
   return v19;
 }
 
-- (id)initForReadingAtURL:(id)a3
+- (id)initForReadingAtURL:(id)l
 {
-  v5 = a3;
-  v9 = objc_msgSend_safePath(v5, v6, v7, v8);
+  lCopy = l;
+  v9 = objc_msgSend_safePath(lCopy, v6, v7, v8);
   v18 = 0;
-  v11 = objc_msgSend__constructFileForURL_forMode_error_(APStorageFile, v10, v5, "r", &v18);
+  v11 = objc_msgSend__constructFileForURL_forMode_error_(APStorageFile, v10, lCopy, "r", &v18);
   v12 = v18;
   if (v11)
   {
@@ -213,35 +213,35 @@ LABEL_5:
     if (v13)
     {
       v13->_fp = v11;
-      objc_storeStrong(&v13->_fileURL, a3);
+      objc_storeStrong(&v13->_fileURL, l);
       objc_storeStrong(p_isa + 3, v9);
     }
 
     self = p_isa;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (id)initForMode:(int64_t)a3 atURL:(id)a4
+- (id)initForMode:(int64_t)mode atURL:(id)l
 {
-  v8 = a4;
-  switch(a3)
+  lCopy = l;
+  switch(mode)
   {
     case 'a':
-      v9 = objc_msgSend_initForAppendingAtURL_(self, v6, v8, v7);
+      v9 = objc_msgSend_initForAppendingAtURL_(self, v6, lCopy, v7);
       goto LABEL_7;
     case 'w':
-      v9 = objc_msgSend_initForWritingAtURL_(self, v6, v8, v7);
+      v9 = objc_msgSend_initForWritingAtURL_(self, v6, lCopy, v7);
       goto LABEL_7;
     case 'r':
-      v9 = objc_msgSend_initForReadingAtURL_(self, v6, v8, v7);
+      v9 = objc_msgSend_initForReadingAtURL_(self, v6, lCopy, v7);
 LABEL_7:
       self = v9;
       break;
@@ -250,30 +250,30 @@ LABEL_7:
   return self;
 }
 
-- (id)_initWithFile:(__sFILE *)a3 forURL:(id)a4 loggablePath:(id)a5
+- (id)_initWithFile:(__sFILE *)file forURL:(id)l loggablePath:(id)path
 {
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = APStorageFile;
   v11 = [(APStorageFile *)&v14 init];
   p_isa = &v11->super.isa;
   if (v11)
   {
-    v11->_fp = a3;
-    objc_storeStrong(&v11->_fileURL, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    v11->_fp = file;
+    objc_storeStrong(&v11->_fileURL, l);
+    objc_storeStrong(p_isa + 3, path);
   }
 
   return p_isa;
 }
 
-- (BOOL)addObject:(id)a3 error:(id *)a4
+- (BOOL)addObject:(id)object error:(id *)error
 {
-  v7 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], a2, a3, 1, a4);
+  v7 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x1E696ACC8], a2, object, 1, error);
   if (v7)
   {
-    v8 = objc_msgSend_addData_error_(self, v6, v7, a4);
+    v8 = objc_msgSend_addData_error_(self, v6, v7, error);
   }
 
   else
@@ -383,18 +383,18 @@ LABEL_7:
   return v28;
 }
 
-- (BOOL)addData:(id)a3 error:(id *)a4
+- (BOOL)addData:(id)data error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v10 = objc_msgSend_length(v6, v7, v8, v9);
+  dataCopy = data;
+  v10 = objc_msgSend_length(dataCopy, v7, v8, v9);
   v14 = v10;
   if (v10 <= 0x10000)
   {
     if (!v10)
     {
 LABEL_11:
-      LOBYTE(a4) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_19;
     }
   }
@@ -412,12 +412,12 @@ LABEL_11:
     }
   }
 
-  __ptr = objc_msgSend_length(v6, v11, v12, v13);
+  __ptr = objc_msgSend_length(dataCopy, v11, v12, v13);
   if (fwrite(&__ptr, 4uLL, 1uLL, self->_fp) == 1)
   {
-    v16 = v6;
+    v16 = dataCopy;
     v20 = objc_msgSend_bytes(v16, v17, v18, v19);
-    v24 = objc_msgSend_length(v6, v21, v22, v23);
+    v24 = objc_msgSend_length(dataCopy, v21, v22, v23);
     v25 = fwrite(v20, 1uLL, v24, self->_fp);
     v26 = APLogForCategory(0x33uLL);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -427,13 +427,13 @@ LABEL_11:
       _os_log_impl(&dword_1BADC1000, v26, OS_LOG_TYPE_DEBUG, "bytesWritten = %zu", buf, 0xCu);
     }
 
-    if (v25 == objc_msgSend_length(v6, v27, v28, v29))
+    if (v25 == objc_msgSend_length(dataCopy, v27, v28, v29))
     {
       fflush(self->_fp);
       goto LABEL_11;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -443,11 +443,11 @@ LABEL_11:
     v45 = @"reason";
     v46 = @"Bytes written did not match expectation for encrypted data.";
     v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v30, &v46, &v45, 1);
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v37, v40, @"com.apple.ap.StorageFileSystem", v38, v39);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v37, v40, @"com.apple.ap.StorageFileSystem", v38, v39);
 
     objc_msgSend_sendAnalyticError_domain_code_(APStorageManager, v41, @"Failed", @"SFS", 16104);
 LABEL_18:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_19;
   }
 
@@ -458,14 +458,14 @@ LABEL_18:
     _os_log_impl(&dword_1BADC1000, v31, OS_LOG_TYPE_ERROR, "Can't write header for data object", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     v33 = MEMORY[0x1E696ABC0];
     v34 = kSFSWritingToFileError;
     v47 = @"reason";
     v48 = @"Couldn't write header for data object.";
     v35 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v32, &v48, &v47, 1);
-    *a4 = objc_msgSend_errorWithDomain_code_userInfo_(v33, v36, @"com.apple.ap.StorageFileSystem", v34, v35);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v33, v36, @"com.apple.ap.StorageFileSystem", v34, v35);
 
     goto LABEL_18;
   }
@@ -473,7 +473,7 @@ LABEL_18:
 LABEL_19:
 
   v42 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)nextObjectData
@@ -646,28 +646,28 @@ LABEL_19:
   return v13;
 }
 
-+ (__sFILE)_constructFileForURL:(id)a3 forMode:(char *)a4 error:(id *)a5
++ (__sFILE)_constructFileForURL:(id)l forMode:(char *)mode error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v11 = objc_msgSend_fileSystemRepresentation(v7, v8, v9, v10);
-  v12 = fopen(v11, a4);
+  lCopy = l;
+  v11 = objc_msgSend_fileSystemRepresentation(lCopy, v8, v9, v10);
+  v12 = fopen(v11, mode);
   v14 = v12;
-  if (a5 && !v12)
+  if (error && !v12)
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = kSFSInvalidPathError;
     v21 = @"reason";
     v22[0] = @"Invalid path for SFS.";
     v17 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v13, v22, &v21, 1);
-    *a5 = objc_msgSend_errorWithDomain_code_userInfo_(v15, v18, @"com.apple.ap.StorageFileSystem", v16, v17);
+    *error = objc_msgSend_errorWithDomain_code_userInfo_(v15, v18, @"com.apple.ap.StorageFileSystem", v16, v17);
   }
 
   v19 = *MEMORY[0x1E69E9840];
   return v14;
 }
 
-- (void)_removeCorruptedFile:(id)a3
+- (void)_removeCorruptedFile:(id)file
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = APLogForCategory(0x33uLL);

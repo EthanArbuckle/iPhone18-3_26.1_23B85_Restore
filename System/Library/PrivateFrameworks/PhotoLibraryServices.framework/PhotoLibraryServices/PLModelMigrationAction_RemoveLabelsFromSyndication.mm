@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_RemoveLabelsFromSyndication
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveLabelsFromSyndication
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v104 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v65 = 0;
   v66 = &v65;
   v67 = 0x2020000000;
@@ -35,7 +35,7 @@
   v51[1] = 3221225472;
   v51[2] = __98__PLModelMigrationAction_RemoveLabelsFromSyndication_performActionWithManagedObjectContext_error___block_invoke;
   v51[3] = &unk_1E7575B30;
-  v52 = v6;
+  v52 = contextCopy;
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __98__PLModelMigrationAction_RemoveLabelsFromSyndication_performActionWithManagedObjectContext_error___block_invoke_2;
@@ -68,8 +68,8 @@
       goto LABEL_16;
     }
 
-    v19 = [(PLModelMigrationActionCore *)self logger];
-    v20 = v19 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v20 = logger == 0;
 
     if (!v20)
     {
@@ -106,9 +106,9 @@
       memset(buf, 0, sizeof(buf));
       v21 = PLMigrationGetLog();
       os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-      v22 = [v54[5] totalUnitCount];
+      totalUnitCount = [v54[5] totalUnitCount];
       v69 = 134217984;
-      v70 = v22;
+      v70 = totalUnitCount;
       LODWORD(v43) = 12;
       v23 = _os_log_send_and_compose_impl();
 
@@ -121,9 +121,9 @@
     v34 = PLMigrationGetLog();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [v54[5] totalUnitCount];
+      totalUnitCount2 = [v54[5] totalUnitCount];
       *buf = 134217984;
-      *&buf[4] = v35;
+      *&buf[4] = totalUnitCount2;
       _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_DEFAULT, "Removed %lld member labels from Syndication library.", buf, 0xCu);
     }
 
@@ -141,8 +141,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v27 = [(PLModelMigrationActionCore *)self logger];
-  v28 = v27 == 0;
+  logger2 = [(PLModelMigrationActionCore *)self logger];
+  v28 = logger2 == 0;
 
   if (v28)
   {
@@ -217,10 +217,10 @@ LABEL_8:
 LABEL_16:
   v39 = v66[3];
   v40 = v60[5];
-  if (v39 != 1 && a4)
+  if (v39 != 1 && error)
   {
     v40 = v40;
-    *a4 = v40;
+    *error = v40;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

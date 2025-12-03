@@ -1,34 +1,34 @@
 @interface HDMedicationDoseEventDailyAnalytics
-+ (id)_countOfDoseEventsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)_doseEventCountLoggedSinceDate:(id)a3 transaction:(id)a4;
-+ (id)_predicateForDoseEventsBetweenDate:(id)a3 andDate:(id)a4;
-+ (id)_predicateForDoseEventsLoggedSinceDate:(id)a3;
-- (HDMedicationDoseEventDailyAnalytics)initWithProfile:(id)a3 calendar:(id)a4 currentDate:(id)a5;
++ (id)_countOfDoseEventsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error;
++ (id)_doseEventCountLoggedSinceDate:(id)date transaction:(id)transaction;
++ (id)_predicateForDoseEventsBetweenDate:(id)date andDate:(id)andDate;
++ (id)_predicateForDoseEventsLoggedSinceDate:(id)date;
+- (HDMedicationDoseEventDailyAnalytics)initWithProfile:(id)profile calendar:(id)calendar currentDate:(id)date;
 - (NSString)eventName;
-- (id)_hasLoggedAllScheduledMedsInPreviousDayPayloadWithTransaction:(id)a3;
-- (id)_hasLoggedMedsInPastPayloadWithTransaction:(id)a3;
+- (id)_hasLoggedAllScheduledMedsInPreviousDayPayloadWithTransaction:(id)transaction;
+- (id)_hasLoggedMedsInPastPayloadWithTransaction:(id)transaction;
 - (id)_weeksSinceFirstLoggedMedPayload;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 - (void)_weeksSinceFirstLoggedMedPayload;
 @end
 
 @implementation HDMedicationDoseEventDailyAnalytics
 
-- (HDMedicationDoseEventDailyAnalytics)initWithProfile:(id)a3 calendar:(id)a4 currentDate:(id)a5
+- (HDMedicationDoseEventDailyAnalytics)initWithProfile:(id)profile calendar:(id)calendar currentDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  calendarCopy = calendar;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = HDMedicationDoseEventDailyAnalytics;
   v11 = [(HDMedicationDoseEventDailyAnalytics *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
-    objc_storeStrong(&v12->_calendar, a4);
-    objc_storeStrong(&v12->_currentDate, a5);
+    objc_storeWeak(&v11->_profile, profileCopy);
+    objc_storeStrong(&v12->_calendar, calendar);
+    objc_storeStrong(&v12->_currentDate, date);
   }
 
   return v12;
@@ -44,13 +44,13 @@
   return 0;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = MEMORY[0x277D10768];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
-  v16 = self;
+  database = [WeakRetained database];
+  selfCopy = self;
   v17 = 0;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -58,7 +58,7 @@
   v14[3] = &unk_2796CD5C8;
   v15 = v5;
   v9 = v5;
-  LODWORD(v5) = [v6 performReadTransactionWithHealthDatabase:v8 error:&v17 block:v14];
+  LODWORD(v5) = [v6 performReadTransactionWithHealthDatabase:database error:&v17 block:v14];
   v10 = v17;
 
   if (v5)
@@ -85,13 +85,13 @@ uint64_t __88__HDMedicationDoseEventDailyAnalytics_makeUnrestrictedEventPayloadW
   return 1;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = MEMORY[0x277D10768];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
-  v16 = self;
+  database = [WeakRetained database];
+  selfCopy = self;
   v17 = 0;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -99,7 +99,7 @@ uint64_t __88__HDMedicationDoseEventDailyAnalytics_makeUnrestrictedEventPayloadW
   v14[3] = &unk_2796CD5C8;
   v15 = v5;
   v9 = v5;
-  LODWORD(v5) = [v6 performReadTransactionWithHealthDatabase:v8 error:&v17 block:v14];
+  LODWORD(v5) = [v6 performReadTransactionWithHealthDatabase:database error:&v17 block:v14];
   v10 = v17;
 
   if (v5)
@@ -132,13 +132,13 @@ uint64_t __84__HDMedicationDoseEventDailyAnalytics_makeIHAGatedEventPayloadWithD
   return 1;
 }
 
-- (id)_hasLoggedMedsInPastPayloadWithTransaction:(id)a3
+- (id)_hasLoggedMedsInPastPayloadWithTransaction:(id)transaction
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-1 toDate:self->_currentDate];
-  v7 = [objc_opt_class() _doseEventCountLoggedSinceDate:v6 transaction:v4];
+  v7 = [objc_opt_class() _doseEventCountLoggedSinceDate:v6 transaction:transactionCopy];
   v8 = v7;
   if (v7)
   {
@@ -159,13 +159,13 @@ uint64_t __84__HDMedicationDoseEventDailyAnalytics_makeIHAGatedEventPayloadWithD
   }
 
   v11 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-7 toDate:self->_currentDate];
-  v12 = [objc_opt_class() _doseEventCountLoggedSinceDate:v11 transaction:v4];
+  v12 = [objc_opt_class() _doseEventCountLoggedSinceDate:v11 transaction:transactionCopy];
   v13 = v12;
   if (!v12)
   {
 LABEL_9:
     v16 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-30 toDate:self->_currentDate];
-    v17 = [objc_opt_class() _doseEventCountLoggedSinceDate:v16 transaction:v4];
+    v17 = [objc_opt_class() _doseEventCountLoggedSinceDate:v16 transaction:transactionCopy];
     v18 = v17;
     if (v17)
     {
@@ -186,7 +186,7 @@ LABEL_28:
     }
 
     v54 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-180 toDate:self->_currentDate];
-    v21 = [objc_opt_class() _doseEventCountLoggedSinceDate:v54 transaction:v4];
+    v21 = [objc_opt_class() _doseEventCountLoggedSinceDate:v54 transaction:transactionCopy];
     v22 = v21;
     if (v21)
     {
@@ -208,7 +208,7 @@ LABEL_27:
 
     v51 = v18;
     v52 = [(NSCalendar *)self->_calendar hk_dateByAddingDays:-365 toDate:self->_currentDate];
-    v26 = [objc_opt_class() _doseEventCountLoggedSinceDate:v52 transaction:v4];
+    v26 = [objc_opt_class() _doseEventCountLoggedSinceDate:v52 transaction:transactionCopy];
     v53 = v22;
     v50 = v26;
     if (v26)
@@ -229,8 +229,8 @@ LABEL_26:
     }
 
     v45 = v16;
-    v29 = [MEMORY[0x277CCD658] medicationDoseEventType];
-    v57[0] = v29;
+    medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
+    v57[0] = medicationDoseEventType;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:1];
     v31 = HDSampleEntityPredicateForDataTypes();
 
@@ -244,10 +244,10 @@ LABEL_26:
     v35 = [v33 predicateMatchingAllPredicates:v34];
 
     v36 = objc_opt_class();
-    v37 = [v4 protectedDatabase];
+    protectedDatabase = [transactionCopy protectedDatabase];
     v55 = 0;
     v47 = v35;
-    v38 = [v36 anyInDatabase:v37 predicate:v35 error:&v55];
+    v38 = [v36 anyInDatabase:protectedDatabase predicate:v35 error:&v55];
     v44 = v55;
 
     v46 = v38;
@@ -309,18 +309,18 @@ LABEL_30:
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = [(NSCalendar *)self->_calendar startOfDayForDate:self->_currentDate];
   v5 = HDMedicationDoseEventEntityPredicateForStatuses();
-  v6 = [MEMORY[0x277CCD658] medicationDoseEventType];
+  medicationDoseEventType = [MEMORY[0x277CCD658] medicationDoseEventType];
   v7 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_profile);
   v17 = 0;
-  v9 = [v7 oldestSampleWithType:v6 profile:WeakRetained encodingOptions:0 predicate:v5 error:&v17];
+  v9 = [v7 oldestSampleWithType:medicationDoseEventType profile:WeakRetained encodingOptions:0 predicate:v5 error:&v17];
   v10 = v17;
 
   if (v9)
   {
     calendar = self->_calendar;
-    v12 = [v9 _creationDate];
-    v13 = [(NSCalendar *)calendar startOfDayForDate:v12];
+    _creationDate = [v9 _creationDate];
+    v13 = [(NSCalendar *)calendar startOfDayForDate:_creationDate];
 
     v14 = self->_calendar;
     v15 = HKMedicationAnalyticsWeeksBetweenDates();
@@ -343,10 +343,10 @@ LABEL_30:
   return v3;
 }
 
-- (id)_hasLoggedAllScheduledMedsInPreviousDayPayloadWithTransaction:(id)a3
+- (id)_hasLoggedAllScheduledMedsInPreviousDayPayloadWithTransaction:(id)transaction
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = [(NSCalendar *)self->_calendar dateByAddingUnit:16 value:-1 toDate:self->_currentDate options:0];
   v7 = [(NSCalendar *)self->_calendar startOfDayForDate:v6];
@@ -368,7 +368,7 @@ LABEL_30:
 
   v15 = objc_opt_class();
   v16 = *MEMORY[0x277D10420];
-  v17 = [v4 databaseForEntityClass:v15];
+  v17 = [transactionCopy databaseForEntityClass:v15];
   v40 = 0;
   v34 = v14;
   v18 = [v15 countValueForProperty:v16 predicate:v14 database:v17 error:&v40];
@@ -383,7 +383,7 @@ LABEL_30:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v43 = self;
+        selfCopy = self;
         _os_log_impl(&dword_25181C000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] No scheduled dose events found for yesterday", buf, 0xCu);
       }
     }
@@ -392,14 +392,14 @@ LABEL_30:
     {
       v33 = v5;
       v20 = HDMedicationDoseEventEntityPredicateForStatuses();
-      v21 = v4;
+      v21 = transactionCopy;
       v22 = MEMORY[0x277D10B20];
       v41[0] = v38;
       v41[1] = v37;
       v41[2] = v20;
       v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:3];
       v24 = v22;
-      v4 = v21;
+      transactionCopy = v21;
       v25 = [v24 predicateMatchingAllPredicates:v23];
 
       v26 = [v21 databaseForEntityClass:v15];
@@ -445,14 +445,14 @@ LABEL_13:
   return v29;
 }
 
-+ (id)_doseEventCountLoggedSinceDate:(id)a3 transaction:(id)a4
++ (id)_doseEventCountLoggedSinceDate:(id)date transaction:(id)transaction
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _predicateForDoseEventsLoggedSinceDate:v6];
+  dateCopy = date;
+  transactionCopy = transaction;
+  v8 = [objc_opt_class() _predicateForDoseEventsLoggedSinceDate:dateCopy];
   v15 = 0;
-  v9 = [objc_opt_class() _countOfDoseEventsWithPredicate:v8 transaction:v7 error:&v15];
+  v9 = [objc_opt_class() _countOfDoseEventsWithPredicate:v8 transaction:transactionCopy error:&v15];
 
   v10 = v15;
   if (v9)
@@ -467,9 +467,9 @@ LABEL_13:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v17 = a1;
+      selfCopy = self;
       v18 = 2114;
-      v19 = v6;
+      v19 = dateCopy;
       v20 = 2114;
       v21 = v10;
       _os_log_error_impl(&dword_25181C000, v12, OS_LOG_TYPE_ERROR, "[%{public}@] Error when determining if logged medications since date: %{public}@, continuing daily analytics submission: %{public}@", buf, 0x20u);
@@ -481,26 +481,26 @@ LABEL_13:
   return v9;
 }
 
-+ (id)_countOfDoseEventsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)_countOfDoseEventsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  transactionCopy = transaction;
+  predicateCopy = predicate;
   v9 = objc_opt_class();
   v10 = *MEMORY[0x277D10420];
-  v11 = [v7 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  v12 = [v9 countDistinctForProperty:v10 predicate:v8 database:v11 error:a5];
+  v12 = [v9 countDistinctForProperty:v10 predicate:predicateCopy database:protectedDatabase error:error];
 
   return v12;
 }
 
-+ (id)_predicateForDoseEventsLoggedSinceDate:(id)a3
++ (id)_predicateForDoseEventsLoggedSinceDate:(id)date
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCD658];
-  v4 = a3;
-  v5 = [v3 medicationDoseEventType];
-  v16[0] = v5;
+  dateCopy = date;
+  medicationDoseEventType = [v3 medicationDoseEventType];
+  v16[0] = medicationDoseEventType;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   v7 = HDSampleEntityPredicateForDataTypes();
 
@@ -519,14 +519,14 @@ LABEL_13:
   return v12;
 }
 
-+ (id)_predicateForDoseEventsBetweenDate:(id)a3 andDate:(id)a4
++ (id)_predicateForDoseEventsBetweenDate:(id)date andDate:(id)andDate
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCD658];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 medicationDoseEventType];
-  v19[0] = v8;
+  andDateCopy = andDate;
+  dateCopy = date;
+  medicationDoseEventType = [v5 medicationDoseEventType];
+  v19[0] = medicationDoseEventType;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
   v10 = HDSampleEntityPredicateForDataTypes();
 

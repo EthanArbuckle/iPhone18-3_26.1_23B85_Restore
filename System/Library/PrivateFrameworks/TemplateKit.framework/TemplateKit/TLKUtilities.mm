@@ -1,6 +1,6 @@
 @interface TLKUtilities
 + (BOOL)deviceSupportsRotation;
-+ (BOOL)isHiddenView:(id)a3;
++ (BOOL)isHiddenView:(id)view;
 + (BOOL)isIpad;
 + (BOOL)isLargePhone;
 + (BOOL)isPhone;
@@ -10,17 +10,17 @@
 + (BOOL)isSiri;
 + (BOOL)isSpotlightApp;
 + (BOOL)isSpotlightUICLI;
-+ (BOOL)recursivelyCheckIfSubviewTapped:(id)a3 forTappedView:(id)a4;
++ (BOOL)recursivelyCheckIfSubviewTapped:(id)tapped forTappedView:(id)view;
 + (double)appIconCornerRadiusRatio;
-+ (double)pixelWidthForView:(id)a3;
++ (double)pixelWidthForView:(id)view;
 + (double)standardRoundedCornerRadiusRatio;
 + (double)standardTableCellContentInset;
-+ (id)testImageWithSize:(CGSize)a3 text:(id)a4 color:(id)a5;
-+ (void)dispatchAsync:(id)a3;
-+ (void)dispatchAsyncIfNecessary:(id)a3;
-+ (void)dispatchMainIfNecessary:(id)a3;
-+ (void)executeBlock:(id)a3 async:(BOOL)a4;
-+ (void)performAnimatableChanges:(id)a3 animated:(BOOL)a4 completion:(id)a5;
++ (id)testImageWithSize:(CGSize)size text:(id)text color:(id)color;
++ (void)dispatchAsync:(id)async;
++ (void)dispatchAsyncIfNecessary:(id)necessary;
++ (void)dispatchMainIfNecessary:(id)necessary;
++ (void)executeBlock:(id)block async:(BOOL)async;
++ (void)performAnimatableChanges:(id)changes animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation TLKUtilities
@@ -54,8 +54,8 @@ void __30__TLKUtilities_isSpotlightApp__block_invoke()
 
 + (BOOL)isIpad
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
@@ -64,9 +64,9 @@ void __30__TLKUtilities_isSpotlightApp__block_invoke()
 {
   if (!_UISolariumEnabled() || !+[TLKUtilities isIpad](TLKUtilities, "isIpad") || (v4 = +[TLKUtilities isSiri], result = 22.0, v4))
   {
-    v5 = [a1 isLargePhone];
+    isLargePhone = [self isLargePhone];
     result = 16.0;
-    if (v5)
+    if (isLargePhone)
     {
       return 20.0;
     }
@@ -77,8 +77,8 @@ void __30__TLKUtilities_isSpotlightApp__block_invoke()
 
 + (BOOL)isLargePhone
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   v3 = CGRectGetWidth(v5) >= 414.0;
 
   return v3;
@@ -120,14 +120,14 @@ void __42__TLKUtilities_isRenderingForRemoteDevice__block_invoke()
   return isRenderingForRemoteDevice_isRenderingForRemoteDevice;
 }
 
-+ (void)dispatchAsync:(id)a3
++ (void)dispatchAsync:(id)async
 {
   v3 = dispatchAsync__onceToken;
-  v4 = a3;
-  v6 = v4;
+  asyncCopy = async;
+  v6 = asyncCopy;
   if (v3 == -1)
   {
-    v5 = v4;
+    v5 = asyncCopy;
   }
 
   else
@@ -149,32 +149,32 @@ void __30__TLKUtilities_dispatchAsync___block_invoke()
   dispatchAsync__queue = v1;
 }
 
-+ (void)dispatchAsyncIfNecessary:(id)a3
++ (void)dispatchAsyncIfNecessary:(id)necessary
 {
   v4 = MEMORY[0x1E696AF00];
-  v7 = a3;
-  v5 = [v4 currentThread];
-  v6 = [v5 isMainThread];
+  necessaryCopy = necessary;
+  currentThread = [v4 currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v6)
+  if (isMainThread)
   {
-    [a1 dispatchAsync:v7];
+    [self dispatchAsync:necessaryCopy];
   }
 
   else
   {
-    v7[2]();
+    necessaryCopy[2]();
   }
 }
 
-+ (void)dispatchMainIfNecessary:(id)a3
++ (void)dispatchMainIfNecessary:(id)necessary
 {
   v3 = MEMORY[0x1E696AF00];
-  block = a3;
-  v4 = [v3 currentThread];
-  v5 = [v4 isMainThread];
+  block = necessary;
+  currentThread = [v3 currentThread];
+  isMainThread = [currentThread isMainThread];
 
-  if (v5)
+  if (isMainThread)
   {
     block[2]();
   }
@@ -185,31 +185,31 @@ void __30__TLKUtilities_dispatchAsync___block_invoke()
   }
 }
 
-+ (void)executeBlock:(id)a3 async:(BOOL)a4
++ (void)executeBlock:(id)block async:(BOOL)async
 {
-  if (a4)
+  if (async)
   {
-    [a1 dispatchAsyncIfNecessary:a3];
+    [self dispatchAsyncIfNecessary:block];
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 
 + (BOOL)deviceSupportsRotation
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _referenceBounds];
   v3 = CGRectGetHeight(v5) > 667.0;
 
   return v3;
 }
 
-+ (double)pixelWidthForView:(id)a3
++ (double)pixelWidthForView:(id)view
 {
-  [a3 tlks_scale];
+  [view tlks_scale];
   if (v3 == 0.0)
   {
     v4 = objc_opt_new();
@@ -230,7 +230,7 @@ void __30__TLKUtilities_dispatchAsync___block_invoke()
   if (!+[TLKUtilities isSiri](TLKUtilities, "isSiri") && _os_feature_enabled_impl() && +[TLKUtilities isMacOS]|| _UISolariumEnabled())
   {
 
-    [a1 appIconCornerRadiusRatio];
+    [self appIconCornerRadiusRatio];
   }
 
   else
@@ -246,24 +246,24 @@ void __30__TLKUtilities_dispatchAsync___block_invoke()
   return result;
 }
 
-+ (id)testImageWithSize:(CGSize)a3 text:(id)a4 color:(id)a5
++ (id)testImageWithSize:(CGSize)size text:(id)text color:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  height = size.height;
+  width = size.width;
+  textCopy = text;
+  colorCopy = color;
+  v10 = colorCopy;
+  if (colorCopy)
   {
-    v11 = v9;
+    blackColor = colorCopy;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  v12 = v11;
+  v12 = blackColor;
   v13 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{width, height}];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
@@ -274,10 +274,10 @@ void __30__TLKUtilities_dispatchAsync___block_invoke()
   v28 = width;
   v29 = height;
   v24 = v12;
-  v25 = v8;
+  v25 = textCopy;
   v30 = width;
   v31 = height;
-  v14 = v8;
+  v14 = textCopy;
   v15 = v12;
   v16 = [v13 imageWithActions:&v20];
   v17 = [TLKImage alloc];
@@ -337,20 +337,20 @@ void __45__TLKUtilities_testImageWithSize_text_color___block_invoke(uint64_t a1,
   }
 }
 
-+ (BOOL)recursivelyCheckIfSubviewTapped:(id)a3 forTappedView:(id)a4
++ (BOOL)recursivelyCheckIfSubviewTapped:(id)tapped forTappedView:(id)view
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6 == v7)
+  tappedCopy = tapped;
+  viewCopy = view;
+  if (tappedCopy == viewCopy)
   {
     LOBYTE(v13) = 1;
   }
 
   else
   {
-    v8 = [v6 subviews];
-    v9 = [v8 count];
+    subviews = [tappedCopy subviews];
+    v9 = [subviews count];
 
     if (v9)
     {
@@ -358,8 +358,8 @@ void __45__TLKUtilities_testImageWithSize_text_color___block_invoke(uint64_t a1,
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v10 = [v6 subviews];
-      v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      subviews2 = [tappedCopy subviews];
+      v11 = [subviews2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
         v12 = v11;
@@ -371,13 +371,13 @@ void __45__TLKUtilities_testImageWithSize_text_color___block_invoke(uint64_t a1,
           {
             if (*v18 != v14)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(subviews2);
             }
 
-            v13 |= [a1 recursivelyCheckIfSubviewTapped:*(*(&v17 + 1) + 8 * i) forTappedView:v7];
+            v13 |= [self recursivelyCheckIfSubviewTapped:*(*(&v17 + 1) + 8 * i) forTappedView:viewCopy];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v12 = [subviews2 countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v12);
@@ -398,26 +398,26 @@ void __45__TLKUtilities_testImageWithSize_text_color___block_invoke(uint64_t a1,
   return v13 & 1;
 }
 
-+ (void)performAnimatableChanges:(id)a3 animated:(BOOL)a4 completion:(id)a5
++ (void)performAnimatableChanges:(id)changes animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v6)
+  animatedCopy = animated;
+  changesCopy = changes;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (animatedCopy)
   {
     v10 = MEMORY[0x1E69DD250];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __61__TLKUtilities_performAnimatableChanges_animated_completion___block_invoke;
     v11[3] = &unk_1E7FD8F88;
-    v12 = v8;
-    [v10 _animateUsingDefaultTimingWithOptions:6 animations:v7 completion:v11];
+    v12 = completionCopy;
+    [v10 _animateUsingDefaultTimingWithOptions:6 animations:changesCopy completion:v11];
   }
 
   else
   {
-    v7[2](v7);
+    changesCopy[2](changesCopy);
     if (v9)
     {
       v9[2](v9);
@@ -438,8 +438,8 @@ uint64_t __61__TLKUtilities_performAnimatableChanges_animated_completion___block
 
 + (BOOL)isPhone
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 0;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 0;
 
   return v3;
 }
@@ -495,11 +495,11 @@ void __32__TLKUtilities_isSpotlightUICLI__block_invoke()
   isSpotlightUICLI_isSpotlightUICLI = [v0 isEqualToString:@"com.apple.spotlightui.cli"];
 }
 
-+ (BOOL)isHiddenView:(id)a3
++ (BOOL)isHiddenView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    return [a3 isHidden];
+    return [view isHidden];
   }
 
   else

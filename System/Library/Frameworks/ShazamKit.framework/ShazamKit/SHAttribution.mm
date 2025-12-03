@@ -1,15 +1,15 @@
 @interface SHAttribution
-+ (BOOL)requiresMediaLibraryAttributionForBundleIdentifier:(id)a3;
-+ (BOOL)requiresMusicRecognitionSensorActivityAttributionForBundleIdentifier:(id)a3;
-+ (id)findContainingAppBundleIdentifierForIdentifier:(id)a3;
++ (BOOL)requiresMediaLibraryAttributionForBundleIdentifier:(id)identifier;
++ (BOOL)requiresMusicRecognitionSensorActivityAttributionForBundleIdentifier:(id)identifier;
++ (id)findContainingAppBundleIdentifierForIdentifier:(id)identifier;
 + (id)mediaLibraryAttributionExceptionPlist;
 + (id)musicRecognitionSensorActivityAttributionExceptionPlist;
-+ (id)productNameForBundleIdentifier:(id)a3;
++ (id)productNameForBundleIdentifier:(id)identifier;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
 - (SHAttribution)init;
-- (SHAttribution)initWithBundleIdentifier:(id)a3 containingAppBundleIdentifier:(id)a4 teamIdentifier:(id)a5 productName:(id)a6;
-- (SHAttribution)initWithConnection:(id)a3;
-- (SHAttribution)initWithTask:(__SecTask *)a3;
+- (SHAttribution)initWithBundleIdentifier:(id)identifier containingAppBundleIdentifier:(id)bundleIdentifier teamIdentifier:(id)teamIdentifier productName:(id)name;
+- (SHAttribution)initWithConnection:(id)connection;
+- (SHAttribution)initWithTask:(__SecTask *)task;
 @end
 
 @implementation SHAttribution
@@ -22,13 +22,13 @@
   return v4;
 }
 
-- (SHAttribution)initWithConnection:(id)a3
+- (SHAttribution)initWithConnection:(id)connection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  connectionCopy = connection;
+  v5 = connectionCopy;
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   else
@@ -60,7 +60,7 @@
 
     CFRelease(v7);
     self = v8;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -72,17 +72,17 @@
       _os_log_impl(&dword_230F52000, v9, OS_LOG_TYPE_ERROR, "Unable to create SecTask for audit token", &v13, 2u);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (SHAttribution)initWithTask:(__SecTask *)a3
+- (SHAttribution)initWithTask:(__SecTask *)task
 {
   v16 = *MEMORY[0x277D85DE8];
   error = 0;
-  v4 = SecTaskCopySigningIdentifier(a3, &error);
+  v4 = SecTaskCopySigningIdentifier(task, &error);
   if (v4)
   {
     v5 = [objc_opt_class() findContainingAppBundleIdentifierForIdentifier:v4];
@@ -98,8 +98,8 @@
       }
     }
 
-    v8 = [(SHAttribution *)self bundleIdentifier];
-    v9 = [SHAttribution productNameForBundleIdentifier:v8];
+    bundleIdentifier = [(SHAttribution *)self bundleIdentifier];
+    v9 = [SHAttribution productNameForBundleIdentifier:bundleIdentifier];
 
     if (error)
     {
@@ -108,7 +108,7 @@
 
     self = [(SHAttribution *)self initWithBundleIdentifier:v4 containingAppBundleIdentifier:v5 teamIdentifier:v6 productName:v9];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -121,20 +121,20 @@
       _os_log_impl(&dword_230F52000, v5, OS_LOG_TYPE_ERROR, "Unable to get signing identifier from task: %{public}@", buf, 0xCu);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return selfCopy;
 }
 
-- (SHAttribution)initWithBundleIdentifier:(id)a3 containingAppBundleIdentifier:(id)a4 teamIdentifier:(id)a5 productName:(id)a6
+- (SHAttribution)initWithBundleIdentifier:(id)identifier containingAppBundleIdentifier:(id)bundleIdentifier teamIdentifier:(id)teamIdentifier productName:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  teamIdentifierCopy = teamIdentifier;
+  nameCopy = name;
+  if (identifierCopy)
   {
     v19.receiver = self;
     v19.super_class = SHAttribution;
@@ -142,30 +142,30 @@
     p_isa = &v15->super.isa;
     if (v15)
     {
-      objc_storeStrong(&v15->_bundleIdentifier, a3);
-      objc_storeStrong(p_isa + 4, a4);
-      objc_storeStrong(p_isa + 2, a5);
-      objc_storeStrong(p_isa + 3, a6);
+      objc_storeStrong(&v15->_bundleIdentifier, identifier);
+      objc_storeStrong(p_isa + 4, bundleIdentifier);
+      objc_storeStrong(p_isa + 2, teamIdentifier);
+      objc_storeStrong(p_isa + 3, name);
     }
 
     self = p_isa;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-+ (id)findContainingAppBundleIdentifierForIdentifier:(id)a3
++ (id)findContainingAppBundleIdentifierForIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v20 = 0;
-  v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:v3 allowPlaceholder:0 error:&v20];
+  v4 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v20];
   v5 = v20;
   if (!v4)
   {
@@ -184,7 +184,7 @@ LABEL_10:
 
 LABEL_11:
 
-    v16 = v3;
+    v16 = identifierCopy;
     goto LABEL_20;
   }
 
@@ -205,16 +205,16 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v6 = [v4 containingBundleRecord];
+  containingBundleRecord = [v4 containingBundleRecord];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 bundleIdentifier];
-    v8 = v7;
-    if (v7)
+    bundleIdentifier = [containingBundleRecord bundleIdentifier];
+    v8 = bundleIdentifier;
+    if (bundleIdentifier)
     {
-      v9 = v7;
-      v10 = v3;
+      v9 = bundleIdentifier;
+      v10 = identifierCopy;
     }
 
     else
@@ -226,7 +226,7 @@ LABEL_11:
         _os_log_impl(&dword_230F52000, v10, OS_LOG_TYPE_ERROR, "Client app is an app extension, but no containing app bundle identifier", buf, 2u);
       }
 
-      v9 = v3;
+      v9 = identifierCopy;
     }
 
     v16 = v9;
@@ -241,7 +241,7 @@ LABEL_11:
       _os_log_impl(&dword_230F52000, v17, OS_LOG_TYPE_ERROR, "Client is an app extension, but has a containing bundle that's not an application", buf, 2u);
     }
 
-    v16 = v3;
+    v16 = identifierCopy;
   }
 
 LABEL_20:
@@ -250,36 +250,36 @@ LABEL_20:
   return v16;
 }
 
-+ (id)productNameForBundleIdentifier:(id)a3
++ (id)productNameForBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
+  identifierCopy = identifier;
   v8 = 0;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v8];
+  v5 = [[v3 alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v8];
 
-  v6 = [v5 localizedName];
+  localizedName = [v5 localizedName];
 
-  return v6;
+  return localizedName;
 }
 
-+ (BOOL)requiresMediaLibraryAttributionForBundleIdentifier:(id)a3
++ (BOOL)requiresMediaLibraryAttributionForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 mediaLibraryAttributionExceptionPlist];
-  v6 = [v5 objectForKey:@"com.apple.private.shazamkit.exception.medialibraryattribution"];
+  identifierCopy = identifier;
+  mediaLibraryAttributionExceptionPlist = [self mediaLibraryAttributionExceptionPlist];
+  v6 = [mediaLibraryAttributionExceptionPlist objectForKey:@"com.apple.private.shazamkit.exception.medialibraryattribution"];
 
-  LOBYTE(v5) = [v6 containsObject:v4];
-  return v5 ^ 1;
+  LOBYTE(mediaLibraryAttributionExceptionPlist) = [v6 containsObject:identifierCopy];
+  return mediaLibraryAttributionExceptionPlist ^ 1;
 }
 
-+ (BOOL)requiresMusicRecognitionSensorActivityAttributionForBundleIdentifier:(id)a3
++ (BOOL)requiresMusicRecognitionSensorActivityAttributionForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 musicRecognitionSensorActivityAttributionExceptionPlist];
-  v6 = [v5 objectForKey:@"com.apple.private.shazamkit.musicrecognitionsensoractivity"];
+  identifierCopy = identifier;
+  musicRecognitionSensorActivityAttributionExceptionPlist = [self musicRecognitionSensorActivityAttributionExceptionPlist];
+  v6 = [musicRecognitionSensorActivityAttributionExceptionPlist objectForKey:@"com.apple.private.shazamkit.musicrecognitionsensoractivity"];
 
-  LOBYTE(v5) = [v6 containsObject:v4];
-  return v5;
+  LOBYTE(musicRecognitionSensorActivityAttributionExceptionPlist) = [v6 containsObject:identifierCopy];
+  return musicRecognitionSensorActivityAttributionExceptionPlist;
 }
 
 + (id)musicRecognitionSensorActivityAttributionExceptionPlist
@@ -288,7 +288,7 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __72__SHAttribution_musicRecognitionSensorActivityAttributionExceptionPlist__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (musicRecognitionSensorActivityAttributionExceptionPlist_onceToken != -1)
   {
     dispatch_once(&musicRecognitionSensorActivityAttributionExceptionPlist_onceToken, block);
@@ -317,7 +317,7 @@ void __72__SHAttribution_musicRecognitionSensorActivityAttributionExceptionPlist
   block[1] = 3221225472;
   block[2] = __54__SHAttribution_mediaLibraryAttributionExceptionPlist__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mediaLibraryAttributionExceptionPlist_onceToken != -1)
   {
     dispatch_once(&mediaLibraryAttributionExceptionPlist_onceToken, block);

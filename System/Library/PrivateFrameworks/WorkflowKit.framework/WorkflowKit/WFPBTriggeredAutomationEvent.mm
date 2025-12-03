@@ -1,42 +1,42 @@
 @interface WFPBTriggeredAutomationEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)key;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBatchDroppedCount:(BOOL)a3;
-- (void)setHasRequiredRuntimeConfirmation:(BOOL)a3;
-- (void)setHasShowsNotification:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBatchDroppedCount:(BOOL)count;
+- (void)setHasRequiredRuntimeConfirmation:(BOOL)confirmation;
+- (void)setHasShowsNotification:(BOOL)notification;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFPBTriggeredAutomationEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(WFPBTriggeredAutomationEvent *)self setKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(WFPBTriggeredAutomationEvent *)self setTriggerType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) != 0)
   {
-    self->_requiredRuntimeConfirmation = *(v4 + 32);
+    self->_requiredRuntimeConfirmation = *(fromCopy + 32);
     *&self->_has |= 4u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 1) == 0)
     {
 LABEL_7:
@@ -49,14 +49,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 36) & 1) == 0)
+  else if ((*(fromCopy + 36) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_batchCount = *(v4 + 2);
+  self->_batchCount = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_8:
@@ -69,12 +69,12 @@ LABEL_8:
   }
 
 LABEL_15:
-  self->_batchDroppedCount = *(v4 + 3);
+  self->_batchDroppedCount = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_9:
-    self->_showsNotification = *(v4 + 33);
+    self->_showsNotification = *(fromCopy + 33);
     *&self->_has |= 8u;
   }
 
@@ -137,16 +137,16 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   key = self->_key;
-  if (key | *(v4 + 2))
+  if (key | *(equalCopy + 2))
   {
     if (![(NSString *)key isEqual:?])
     {
@@ -155,7 +155,7 @@ LABEL_5:
   }
 
   triggerType = self->_triggerType;
-  if (triggerType | *(v4 + 3))
+  if (triggerType | *(equalCopy + 3))
   {
     if (![(NSString *)triggerType isEqual:?])
     {
@@ -165,71 +165,71 @@ LABEL_5:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
       goto LABEL_26;
     }
 
-    v7 = *(v4 + 32);
+    v7 = *(equalCopy + 32);
     if (self->_requiredRuntimeConfirmation)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_batchCount != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_batchCount != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_batchDroppedCount != *(v4 + 3))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_batchDroppedCount != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_26;
   }
 
-  v8 = (*(v4 + 36) & 8) == 0;
+  v8 = (*(equalCopy + 36) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) != 0)
+    if ((*(equalCopy + 36) & 8) != 0)
     {
       if (self->_showsNotification)
       {
-        if ((*(v4 + 33) & 1) == 0)
+        if ((*(equalCopy + 33) & 1) == 0)
         {
           goto LABEL_26;
         }
       }
 
-      else if (*(v4 + 33))
+      else if (*(equalCopy + 33))
       {
         goto LABEL_26;
       }
@@ -247,14 +247,14 @@ LABEL_27:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_triggerType copyWithZone:a3];
+  v8 = [(NSString *)self->_triggerType copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -308,27 +308,27 @@ LABEL_5:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v6;
+    [toCopy setKey:?];
+    toCopy = v6;
   }
 
   if (self->_triggerType)
   {
     [v6 setTriggerType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 32) = self->_requiredRuntimeConfirmation;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 32) = self->_requiredRuntimeConfirmation;
+    *(toCopy + 36) |= 4u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -347,8 +347,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 2) = self->_batchCount;
-  *(v4 + 36) |= 1u;
+  *(toCopy + 2) = self->_batchCount;
+  *(toCopy + 36) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -362,32 +362,32 @@ LABEL_8:
   }
 
 LABEL_15:
-  *(v4 + 3) = self->_batchDroppedCount;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 3) = self->_batchDroppedCount;
+  *(toCopy + 36) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
-    *(v4 + 33) = self->_showsNotification;
-    *(v4 + 36) |= 8u;
+    *(toCopy + 33) = self->_showsNotification;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_10:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_triggerType)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -395,7 +395,7 @@ LABEL_10:
   {
     requiredRuntimeConfirmation = self->_requiredRuntimeConfirmation;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -416,7 +416,7 @@ LABEL_7:
 
   batchCount = self->_batchCount;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -432,13 +432,13 @@ LABEL_8:
 LABEL_15:
   batchDroppedCount = self->_batchDroppedCount;
   PBDataWriterWriteUint32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_9:
     showsNotification = self->_showsNotification;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_10:
@@ -446,12 +446,12 @@ LABEL_10:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   triggerType = self->_triggerType;
@@ -521,15 +521,15 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = WFPBTriggeredAutomationEvent;
   v4 = [(WFPBTriggeredAutomationEvent *)&v8 description];
-  v5 = [(WFPBTriggeredAutomationEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFPBTriggeredAutomationEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasShowsNotification:(BOOL)a3
+- (void)setHasShowsNotification:(BOOL)notification
 {
-  if (a3)
+  if (notification)
   {
     v3 = 8;
   }
@@ -542,9 +542,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasBatchDroppedCount:(BOOL)a3
+- (void)setHasBatchDroppedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -557,9 +557,9 @@ LABEL_10:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRequiredRuntimeConfirmation:(BOOL)a3
+- (void)setHasRequiredRuntimeConfirmation:(BOOL)confirmation
 {
-  if (a3)
+  if (confirmation)
   {
     v3 = 4;
   }

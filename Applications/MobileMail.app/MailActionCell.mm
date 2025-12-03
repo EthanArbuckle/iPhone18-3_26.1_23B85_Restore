@@ -1,33 +1,33 @@
 @interface MailActionCell
 + (double)approximateHeightForAccessibilityContentSizeCategory;
-- (MailActionCell)initWithFrame:(CGRect)a3;
+- (MailActionCell)initWithFrame:(CGRect)frame;
 - (_MailActionCellTitleLabel)titleLabel;
-- (id)_temporaryTrimmingTitle:(id)a3;
+- (id)_temporaryTrimmingTitle:(id)title;
 - (void)_updateDynamicConstraints;
 - (void)_updateImageViewSymbolConfiguration;
 - (void)_updateImageViewTintColor;
 - (void)_updateTitleLabelTextColor;
 - (void)configureConstraints;
 - (void)prepareForReuse;
-- (void)setCardAction:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setUseActionSheetStyle:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCardAction:(id)action;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setUseActionSheetStyle:(BOOL)style;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MailActionCell
 
-- (MailActionCell)initWithFrame:(CGRect)a3
+- (MailActionCell)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = MailActionCell;
-  v3 = [(MailActionCell *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MailActionCell *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MailActionCell *)v3 setClipsToBounds:1];
-    v5 = [(MailActionCell *)v4 contentView];
+    contentView = [(MailActionCell *)v4 contentView];
     if (MUISolariumFeatureEnabled())
     {
       v6 = 26.0;
@@ -38,28 +38,28 @@
       v6 = 10.0;
     }
 
-    v7 = [v5 superview];
-    v8 = [v7 layer];
-    [v8 setCornerRadius:v6];
+    superview = [contentView superview];
+    layer = [superview layer];
+    [layer setCornerRadius:v6];
 
-    v9 = [v5 superview];
-    v10 = [v9 layer];
-    [v10 setCornerCurve:kCACornerCurveContinuous];
+    superview2 = [contentView superview];
+    layer2 = [superview2 layer];
+    [layer2 setCornerCurve:kCACornerCurveContinuous];
 
     v11 = objc_opt_new();
     displayMetrics = v4->_displayMetrics;
     v4->_displayMetrics = v11;
 
-    v13 = [(MailActionCell *)v4 titleLabel];
+    titleLabel = [(MailActionCell *)v4 titleLabel];
     [(MailActionCell *)v4 _updateTitleLabelTextColor];
     if (MUISolariumFeatureEnabled())
     {
       [(MailActionCell *)v4 _updateImageViewTintColor];
     }
 
-    if (v13)
+    if (titleLabel)
     {
-      [v5 addSubview:v13];
+      [contentView addSubview:titleLabel];
     }
 
     v14 = objc_alloc_init(UIImageView);
@@ -67,13 +67,13 @@
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v14 setContentMode:4];
     [(MailActionCell *)v4 setImageView:v14];
-    [v5 addSubview:v14];
+    [contentView addSubview:v14];
     [(MailActionCell *)v4 _updateImageViewSymbolConfiguration];
     [(MailActionCell *)v4 configureConstraints];
     if ([(MailActionCell *)v4 isHorizontalActionCell])
     {
-      v15 = [(MailActionCell *)v4 traitOverrides];
-      [v15 setListEnvironment:4];
+      traitOverrides = [(MailActionCell *)v4 traitOverrides];
+      [traitOverrides setListEnvironment:4];
     }
   }
 
@@ -82,92 +82,92 @@
 
 - (void)configureConstraints
 {
-  v26 = [(MailActionCell *)self contentView];
+  contentView = [(MailActionCell *)self contentView];
   v3 = +[NSMutableArray array];
-  v4 = [(MailActionCell *)self titleLabel];
-  v5 = v4;
-  if (v4)
+  titleLabel = [(MailActionCell *)self titleLabel];
+  v5 = titleLabel;
+  if (titleLabel)
   {
-    v6 = [v4 leadingAnchor];
-    v7 = [v26 layoutMarginsGuide];
-    v8 = [v7 leadingAnchor];
-    v9 = [v6 constraintEqualToAnchor:v8 constant:8.0];
+    leadingAnchor = [titleLabel leadingAnchor];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:8.0];
     [v3 addObject:v9];
   }
 
   [(MailActionCell *)self _updateDynamicConstraints];
-  v10 = [(MailActionCell *)self dynamicConstraints];
-  [v3 addObjectsFromArray:v10];
+  dynamicConstraints = [(MailActionCell *)self dynamicConstraints];
+  [v3 addObjectsFromArray:dynamicConstraints];
 
-  v11 = [(MailActionCell *)self imageView];
-  v12 = v11;
+  imageView = [(MailActionCell *)self imageView];
+  v12 = imageView;
   if (v5)
   {
-    v13 = [v11 leadingAnchor];
-    v14 = [v5 trailingAnchor];
-    v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14 constant:16.0];
+    leadingAnchor3 = [imageView leadingAnchor];
+    trailingAnchor = [v5 trailingAnchor];
+    v15 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor constant:16.0];
     [v3 addObject:v15];
   }
 
-  v16 = [v12 centerXAnchor];
-  v17 = [v26 trailingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:-28.0];
+  centerXAnchor = [v12 centerXAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:trailingAnchor2 constant:-28.0];
   [v3 addObject:v18];
 
-  v19 = [v12 centerYAnchor];
-  v20 = [v26 centerYAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerYAnchor = [v12 centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v3 addObject:v21];
 
-  v22 = [v12 widthAnchor];
-  v23 = [v22 constraintEqualToConstant:40.0];
+  widthAnchor = [v12 widthAnchor];
+  v23 = [widthAnchor constraintEqualToConstant:40.0];
   [v3 addObject:v23];
 
-  v24 = [v12 heightAnchor];
-  v25 = [v24 constraintEqualToConstant:40.0];
+  heightAnchor = [v12 heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:40.0];
   [v3 addObject:v25];
 
   [NSLayoutConstraint activateConstraints:v3];
 }
 
-- (void)setCardAction:(id)a3
+- (void)setCardAction:(id)action
 {
-  v14 = a3;
+  actionCopy = action;
   if (([(MFCardAction *)self->_cardAction isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_cardAction, a3);
+    objc_storeStrong(&self->_cardAction, action);
   }
 
   if ([(MailActionCell *)self isHorizontalActionCell])
   {
-    [v14 shortTitle];
+    [actionCopy shortTitle];
   }
 
   else
   {
-    [v14 title];
+    [actionCopy title];
   }
   v5 = ;
   v6 = [(MailActionCell *)self _temporaryTrimmingTitle:v5];
-  v7 = [(MailActionCell *)self titleLabel];
-  [v7 setText:v6];
+  titleLabel = [(MailActionCell *)self titleLabel];
+  [titleLabel setText:v6];
 
-  v8 = [v14 imageName];
-  v9 = [v8 containsString:@"custom"];
+  imageName = [actionCopy imageName];
+  v9 = [imageName containsString:@"custom"];
 
-  v10 = [v14 imageName];
+  imageName2 = [actionCopy imageName];
   if (v9)
   {
-    [UIImage imageNamed:v10 inBundle:0 withConfiguration:0];
+    [UIImage imageNamed:imageName2 inBundle:0 withConfiguration:0];
   }
 
   else
   {
-    [UIImage systemImageNamed:v10 withConfiguration:0];
+    [UIImage systemImageNamed:imageName2 withConfiguration:0];
   }
   v11 = ;
-  v12 = [(MailActionCell *)self imageView];
-  [v12 setImage:v11];
+  imageView = [(MailActionCell *)self imageView];
+  [imageView setImage:v11];
 
   if (MUISolariumFeatureEnabled())
   {
@@ -175,21 +175,21 @@
   }
 
   [(MailActionCell *)self _updateImageViewTintColor];
-  v13 = [v14 accessibilityIdentifier];
-  [(MailActionCell *)self setAccessibilityIdentifier:v13];
+  accessibilityIdentifier = [actionCopy accessibilityIdentifier];
+  [(MailActionCell *)self setAccessibilityIdentifier:accessibilityIdentifier];
 }
 
-- (id)_temporaryTrimmingTitle:(id)a3
+- (id)_temporaryTrimmingTitle:(id)title
 {
-  v3 = [a3 ef_stringByTrimmingWhitespaceAndNewlineCharacters];
-  if ([v3 isEqualToString:@"Notify Me…"])
+  ef_stringByTrimmingWhitespaceAndNewlineCharacters = [title ef_stringByTrimmingWhitespaceAndNewlineCharacters];
+  if ([ef_stringByTrimmingWhitespaceAndNewlineCharacters isEqualToString:@"Notify Me…"])
   {
     v4 = @"Notify Me of Replies";
   }
 
   else
   {
-    if (![v3 isEqualToString:@"Move Message…"])
+    if (![ef_stringByTrimmingWhitespaceAndNewlineCharacters isEqualToString:@"Move Message…"])
     {
       goto LABEL_6;
     }
@@ -197,10 +197,10 @@
     v4 = @"Move Message";
   }
 
-  v3 = v4;
+  ef_stringByTrimmingWhitespaceAndNewlineCharacters = v4;
 LABEL_6:
 
-  return v3;
+  return ef_stringByTrimmingWhitespaceAndNewlineCharacters;
 }
 
 - (void)prepareForReuse
@@ -208,132 +208,132 @@ LABEL_6:
   v11.receiver = self;
   v11.super_class = MailActionCell;
   [(MailActionCell *)&v11 prepareForReuse];
-  v3 = [(MailActionCell *)self titleLabel];
-  [v3 setText:0];
+  titleLabel = [(MailActionCell *)self titleLabel];
+  [titleLabel setText:0];
 
-  v4 = [(MailActionCell *)self titleLabel];
-  v5 = [v4 layer];
-  [v5 setContents:0];
+  titleLabel2 = [(MailActionCell *)self titleLabel];
+  layer = [titleLabel2 layer];
+  [layer setContents:0];
 
-  v6 = [(MailActionCell *)self titleLabel];
-  [v6 setTextColor:0];
+  titleLabel3 = [(MailActionCell *)self titleLabel];
+  [titleLabel3 setTextColor:0];
 
-  v7 = [(MailActionCell *)self imageView];
-  [v7 setImage:0];
+  imageView = [(MailActionCell *)self imageView];
+  [imageView setImage:0];
 
-  v8 = [(MailActionCell *)self imageView];
-  v9 = [v8 layer];
-  [v9 setContents:0];
+  imageView2 = [(MailActionCell *)self imageView];
+  layer2 = [imageView2 layer];
+  [layer2 setContents:0];
 
-  v10 = [(MailActionCell *)self imageView];
-  [v10 setTintColor:0];
+  imageView3 = [(MailActionCell *)self imageView];
+  [imageView3 setTintColor:0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(MailActionCell *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(MailActionCell *)self isHighlighted]!= highlighted)
   {
-    v5 = [(MailActionCell *)self titleLabel];
-    v6 = [v5 layer];
-    v7 = [v6 contents];
+    titleLabel = [(MailActionCell *)self titleLabel];
+    layer = [titleLabel layer];
+    contents = [layer contents];
 
     v10.receiver = self;
     v10.super_class = MailActionCell;
-    [(MailActionCell *)&v10 setHighlighted:v3];
-    v8 = [(MailActionCell *)self titleLabel];
-    v9 = [v8 layer];
-    [v9 setContents:v7];
+    [(MailActionCell *)&v10 setHighlighted:highlightedCopy];
+    titleLabel2 = [(MailActionCell *)self titleLabel];
+    layer2 = [titleLabel2 layer];
+    [layer2 setContents:contents];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(MailActionCell *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(MailActionCell *)self isSelected]!= selected)
   {
-    v5 = [(MailActionCell *)self titleLabel];
-    v6 = [v5 layer];
-    v7 = [v6 contents];
+    titleLabel = [(MailActionCell *)self titleLabel];
+    layer = [titleLabel layer];
+    contents = [layer contents];
 
     v10.receiver = self;
     v10.super_class = MailActionCell;
-    [(MailActionCell *)&v10 setSelected:v3];
-    v8 = [(MailActionCell *)self titleLabel];
-    v9 = [v8 layer];
-    [v9 setContents:v7];
+    [(MailActionCell *)&v10 setSelected:selectedCopy];
+    titleLabel2 = [(MailActionCell *)self titleLabel];
+    layer2 = [titleLabel2 layer];
+    [layer2 setContents:contents];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = MailActionCell;
-  [(MailActionCell *)&v13 traitCollectionDidChange:v4];
+  [(MailActionCell *)&v13 traitCollectionDidChange:changeCopy];
   [(MailActionCell *)self _updateImageViewTintColor];
   [(MailActionCell *)self _updateImageViewSymbolConfiguration];
   [(MailActionCell *)self _updateTitleLabelTextColor];
-  v5 = [(MailActionCell *)self dynamicConstraints];
+  dynamicConstraints = [(MailActionCell *)self dynamicConstraints];
 
-  if (v5)
+  if (dynamicConstraints)
   {
-    v6 = [v4 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+    preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    v8 = [(MailActionCell *)self traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
-    v10 = UIContentSizeCategoryIsAccessibilityCategory(v9);
+    traitCollection = [(MailActionCell *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+    v10 = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
 
     if (IsAccessibilityCategory != v10)
     {
-      v11 = [(MailActionCell *)self dynamicConstraints];
-      [NSLayoutConstraint deactivateConstraints:v11];
+      dynamicConstraints2 = [(MailActionCell *)self dynamicConstraints];
+      [NSLayoutConstraint deactivateConstraints:dynamicConstraints2];
 
       [(MailActionCell *)self _updateDynamicConstraints];
-      v12 = [(MailActionCell *)self dynamicConstraints];
-      [NSLayoutConstraint activateConstraints:v12];
+      dynamicConstraints3 = [(MailActionCell *)self dynamicConstraints];
+      [NSLayoutConstraint activateConstraints:dynamicConstraints3];
     }
   }
 }
 
 - (void)_updateDynamicConstraints
 {
-  v18 = [(MailActionCell *)self titleLabel];
-  if (v18)
+  titleLabel = [(MailActionCell *)self titleLabel];
+  if (titleLabel)
   {
     v3 = +[NSMutableArray array];
-    v4 = [(MailActionCell *)self contentView];
-    v5 = [(MailActionCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+    contentView = [(MailActionCell *)self contentView];
+    traitCollection = [(MailActionCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
-      v8 = [v18 topAnchor];
-      v9 = [v4 topAnchor];
-      v10 = [v8 constraintEqualToAnchor:v9 constant:15.0];
+      topAnchor = [titleLabel topAnchor];
+      topAnchor2 = [contentView topAnchor];
+      v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:15.0];
       [v3 addObject:v10];
 
-      v11 = [v4 bottomAnchor];
-      v12 = [v18 bottomAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12 constant:15.0];
-      [v3 addObject:v13];
+      bottomAnchor = [contentView bottomAnchor];
+      bottomAnchor2 = [titleLabel bottomAnchor];
+      lastBaselineAnchor = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:15.0];
+      [v3 addObject:lastBaselineAnchor];
     }
 
     else
     {
-      v11 = [(MailActionCell *)self displayMetrics];
-      v14 = [v18 firstBaselineAnchor];
-      v15 = [v4 topAnchor];
-      [v11 topToFirstBaselineSpacingInMailActionCardVerticalGroup];
-      v16 = [v14 constraintEqualToAnchor:v15 constant:?];
+      bottomAnchor = [(MailActionCell *)self displayMetrics];
+      firstBaselineAnchor = [titleLabel firstBaselineAnchor];
+      topAnchor3 = [contentView topAnchor];
+      [bottomAnchor topToFirstBaselineSpacingInMailActionCardVerticalGroup];
+      v16 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:?];
       [v3 addObject:v16];
 
-      v12 = [v4 bottomAnchor];
-      v13 = [v18 lastBaselineAnchor];
-      [v11 bottomToLastBaselineInMailActionCardVerticalGroup];
-      v17 = [v12 constraintEqualToAnchor:v13 constant:?];
+      bottomAnchor2 = [contentView bottomAnchor];
+      lastBaselineAnchor = [titleLabel lastBaselineAnchor];
+      [bottomAnchor bottomToLastBaselineInMailActionCardVerticalGroup];
+      v17 = [bottomAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
       [v3 addObject:v17];
     }
 
@@ -344,13 +344,13 @@ LABEL_6:
 + (double)approximateHeightForAccessibilityContentSizeCategory
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
     v11 = +[NSAssertionHandler currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"MailActionCell.m" lineNumber:238 description:@"Unexpectedly attempted to calculate approximate height for non-accessibility text sizes"];
+    [v11 handleFailureInMethod:a2 object:self file:@"MailActionCell.m" lineNumber:238 description:@"Unexpectedly attempted to calculate approximate height for non-accessibility text sizes"];
   }
 
   v7 = +[_MailActionCellTitleLabel preferredFontForDefaultTitle];
@@ -360,14 +360,14 @@ LABEL_6:
   return v9;
 }
 
-- (void)setUseActionSheetStyle:(BOOL)a3
+- (void)setUseActionSheetStyle:(BOOL)style
 {
-  if (self->_useActionSheetStyle != a3)
+  if (self->_useActionSheetStyle != style)
   {
-    v3 = a3;
-    self->_useActionSheetStyle = a3;
-    v4 = [(MailActionCell *)self titleLabel];
-    [v4 setUseActionSheetStyle:v3];
+    styleCopy = style;
+    self->_useActionSheetStyle = style;
+    titleLabel = [(MailActionCell *)self titleLabel];
+    [titleLabel setUseActionSheetStyle:styleCopy];
   }
 }
 
@@ -399,7 +399,7 @@ LABEL_6:
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if ((isKindOfClass & 1) != 0 && (-[MailActionCell cardAction](self, "cardAction"), v10 = objc_claimAutoreleasedReturnValue(), [v10 isDestructive]))
+    if ((isKindOfClass & 1) != 0 && (-[MailActionCell cardAction](self, "cardAction"), traitCollection = objc_claimAutoreleasedReturnValue(), [traitCollection isDestructive]))
     {
       v4 = +[UIColor mailDestructiveActionColor];
       v5 = 0;
@@ -413,8 +413,8 @@ LABEL_6:
       v5 = 1;
     }
 
-    v7 = [(MailActionCell *)self titleLabel];
-    [v7 setTextColor:v4];
+    titleLabel = [(MailActionCell *)self titleLabel];
+    [titleLabel setTextColor:v4];
 
     if (v5)
     {
@@ -444,8 +444,8 @@ LABEL_10:
 
   else
   {
-    v10 = [(MailActionCell *)self traitCollection];
-    if ([v10 userInterfaceStyle] == 2)
+    traitCollection = [(MailActionCell *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       +[UIColor systemWhiteColor];
     }
@@ -455,8 +455,8 @@ LABEL_10:
       +[UIColor systemBlueColor];
     }
     v8 = ;
-    v9 = [(MailActionCell *)self titleLabel];
-    [v9 setTextColor:v8];
+    titleLabel2 = [(MailActionCell *)self titleLabel];
+    [titleLabel2 setTextColor:v8];
   }
 
 LABEL_16:
@@ -464,28 +464,28 @@ LABEL_16:
 
 - (void)_updateImageViewSymbolConfiguration
 {
-  v3 = [(MailActionCell *)self imageView];
+  imageView = [(MailActionCell *)self imageView];
   v2 = [UIImage mf_symbolConfigurationForView:19];
-  [v3 setPreferredSymbolConfiguration:v2];
+  [imageView setPreferredSymbolConfiguration:v2];
 }
 
 - (void)_updateImageViewTintColor
 {
-  v3 = [(MailActionCell *)self cardAction];
-  v12 = [v3 tintColor];
+  cardAction = [(MailActionCell *)self cardAction];
+  tintColor = [cardAction tintColor];
 
   if (!MUISolariumFeatureEnabled())
   {
-    if (v12)
+    if (tintColor)
     {
       v8 = 0;
-      v9 = v12;
+      v9 = tintColor;
     }
 
     else
     {
-      v3 = [(MailActionCell *)self traitCollection];
-      if ([v3 userInterfaceStyle] == 1)
+      cardAction = [(MailActionCell *)self traitCollection];
+      if ([cardAction userInterfaceStyle] == 1)
       {
         v8 = 0;
         v9 = 0;
@@ -498,14 +498,14 @@ LABEL_16:
       }
     }
 
-    v11 = [(MailActionCell *)self imageView];
-    [v11 setTintColor:v9];
+    imageView = [(MailActionCell *)self imageView];
+    [imageView setTintColor:v9];
 
     if (v8)
     {
     }
 
-    if (v12)
+    if (tintColor)
     {
       goto LABEL_12;
     }
@@ -517,7 +517,7 @@ LABEL_11:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if ((isKindOfClass & 1) != 0 && (-[MailActionCell cardAction](self, "cardAction"), v3 = objc_claimAutoreleasedReturnValue(), [v3 isDestructive]))
+  if ((isKindOfClass & 1) != 0 && (-[MailActionCell cardAction](self, "cardAction"), cardAction = objc_claimAutoreleasedReturnValue(), [cardAction isDestructive]))
   {
     v5 = +[UIColor mailDestructiveActionColor];
     v6 = 0;
@@ -531,8 +531,8 @@ LABEL_11:
     v6 = 1;
   }
 
-  v10 = [(MailActionCell *)self imageView];
-  [v10 setTintColor:v5];
+  imageView2 = [(MailActionCell *)self imageView];
+  [imageView2 setTintColor:v5];
 
   if (v6)
   {

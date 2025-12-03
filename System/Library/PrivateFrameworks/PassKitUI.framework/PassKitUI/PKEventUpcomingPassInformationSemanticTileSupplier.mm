@@ -1,5 +1,5 @@
 @interface PKEventUpcomingPassInformationSemanticTileSupplier
-+ (id)createSupplierForPass:(id)a3 fromUpcomingPassInformationEntry:(id)a4;
++ (id)createSupplierForPass:(id)pass fromUpcomingPassInformationEntry:(id)entry;
 - (CLLocation)location;
 - (MKLocalSearchRequest)mapsSearchRequest;
 - (MKMapItemRequest)mapsItemRequest;
@@ -18,58 +18,58 @@
 - (NSURL)venueEmailURL;
 - (NSURL)venuePhoneNumberURL;
 - (NSURL)venueWebsiteURL;
-- (PKEventUpcomingPassInformationSemanticTileSupplier)initWithPass:(id)a3 upcomingPassInformationEntry:(id)a4;
+- (PKEventUpcomingPassInformationSemanticTileSupplier)initWithPass:(id)pass upcomingPassInformationEntry:(id)entry;
 - (PKPassUpcomingPassInformationImageManifest)venueMapImageManifest;
 - (id)venueMapImageIfExists;
-- (id)weatherFetchDateForDate:(id)a3;
+- (id)weatherFetchDateForDate:(id)date;
 @end
 
 @implementation PKEventUpcomingPassInformationSemanticTileSupplier
 
-+ (id)createSupplierForPass:(id)a3 fromUpcomingPassInformationEntry:(id)a4
++ (id)createSupplierForPass:(id)pass fromUpcomingPassInformationEntry:(id)entry
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 metadata];
-  v8 = [v7 type];
+  passCopy = pass;
+  entryCopy = entry;
+  metadata = [entryCopy metadata];
+  type = [metadata type];
 
-  if (!v8)
+  if (!type)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  v10 = [v6 content];
-  v11 = [v10 type];
+  content = [entryCopy content];
+  type2 = [content type];
 
-  if (!v11)
+  if (!type2)
   {
 LABEL_7:
     __break(1u);
     return result;
   }
 
-  v12 = [[PKEventUpcomingPassInformationSemanticTileSupplier alloc] initWithPass:v5 upcomingPassInformationEntry:v6];
+  v12 = [[PKEventUpcomingPassInformationSemanticTileSupplier alloc] initWithPass:passCopy upcomingPassInformationEntry:entryCopy];
 
   return v12;
 }
 
-- (PKEventUpcomingPassInformationSemanticTileSupplier)initWithPass:(id)a3 upcomingPassInformationEntry:(id)a4
+- (PKEventUpcomingPassInformationSemanticTileSupplier)initWithPass:(id)pass upcomingPassInformationEntry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  entryCopy = entry;
   v15.receiver = self;
   v15.super_class = PKEventUpcomingPassInformationSemanticTileSupplier;
   v9 = [(PKEventUpcomingPassInformationSemanticTileSupplier *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_upcomingPassInformationEntry, a4);
-    objc_storeStrong(&v10->_pass, a3);
-    v11 = [(PKPassUpcomingPassInformationEntry *)v10->_upcomingPassInformationEntry metadata];
-    v12 = [v11 semantics];
+    objc_storeStrong(&v9->_upcomingPassInformationEntry, entry);
+    objc_storeStrong(&v10->_pass, pass);
+    metadata = [(PKPassUpcomingPassInformationEntry *)v10->_upcomingPassInformationEntry metadata];
+    semantics = [metadata semantics];
     semantics = v10->_semantics;
-    v10->_semantics = v12;
+    v10->_semantics = semantics;
   }
 
   return v10;
@@ -77,21 +77,21 @@ LABEL_7:
 
 - (NSString)identifier
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
-  v3 = [v2 identifier];
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
+  identifier = [metadata identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (MKMapItemRequest)mapsItemRequest
 {
   v2 = [(NSDictionary *)self->_semantics objectForKeyedSubscript:*MEMORY[0x1E69BBF00]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  if (v3)
+  if (stringValue)
   {
     v4 = objc_alloc(MEMORY[0x1E696F290]);
-    v5 = [objc_alloc(MEMORY[0x1E696F280]) initWithIdentifierString:v3];
+    v5 = [objc_alloc(MEMORY[0x1E696F280]) initWithIdentifierString:stringValue];
     v6 = [v4 initWithMapItemIdentifier:v5];
   }
 
@@ -105,16 +105,16 @@ LABEL_7:
 
 - (MKLocalSearchRequest)mapsSearchRequest
 {
-  v3 = [(PKEventUpcomingPassInformationSemanticTileSupplier *)self venueName];
-  if (v3)
+  venueName = [(PKEventUpcomingPassInformationSemanticTileSupplier *)self venueName];
+  if (venueName)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696F260]);
-    [v4 setNaturalLanguageQuery:v3];
-    v5 = [(PKEventUpcomingPassInformationSemanticTileSupplier *)self location];
-    v6 = v5;
-    if (v5)
+    [v4 setNaturalLanguageQuery:venueName];
+    location = [(PKEventUpcomingPassInformationSemanticTileSupplier *)self location];
+    v6 = location;
+    if (location)
     {
-      MEMORY[0x1BFB41730]([v5 coordinate]);
+      MEMORY[0x1BFB41730]([location coordinate]);
       [v4 setRegion:?];
     }
   }
@@ -130,185 +130,185 @@ LABEL_7:
 - (NSString)eventName
 {
   v3 = [(NSDictionary *)self->_semantics objectForKeyedSubscript:*MEMORY[0x1E69BBE18]];
-  v4 = [v3 stringValue];
-  v5 = v4;
-  if (v4)
+  stringValue = [v3 stringValue];
+  v5 = stringValue;
+  if (stringValue)
   {
-    v6 = v4;
+    name = stringValue;
   }
 
   else
   {
-    v7 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
-    v8 = [v7 eventMetadata];
-    v6 = [v8 name];
+    metadata = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
+    eventMetadata = [metadata eventMetadata];
+    name = [eventMetadata name];
   }
 
-  return v6;
+  return name;
 }
 
 - (NSString)venueName
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
-  v3 = [v2 eventMetadata];
-  v4 = [v3 venueName];
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
+  eventMetadata = [metadata eventMetadata];
+  venueName = [eventMetadata venueName];
 
-  return v4;
+  return venueName;
 }
 
 - (CLLocation)location
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
-  v3 = [v2 eventMetadata];
-  v4 = [v3 venueLocation];
-  v5 = [v4 CLLocation];
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
+  eventMetadata = [metadata eventMetadata];
+  venueLocation = [eventMetadata venueLocation];
+  cLLocation = [venueLocation CLLocation];
 
-  return v5;
+  return cLLocation;
 }
 
 - (NSURL)bagPolicyURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 bagPolicyURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  bagPolicyURL = [eventContent bagPolicyURL];
 
-  return v4;
+  return bagPolicyURL;
 }
 
 - (NSURL)orderFoodURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 orderFoodURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  orderFoodURL = [eventContent orderFoodURL];
 
-  return v4;
+  return orderFoodURL;
 }
 
 - (NSURL)transitInformationURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 transitInformationURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  transitInformationURL = [eventContent transitInformationURL];
 
-  return v4;
+  return transitInformationURL;
 }
 
 - (NSURL)parkingInformationURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 parkingInformationURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  parkingInformationURL = [eventContent parkingInformationURL];
 
-  return v4;
+  return parkingInformationURL;
 }
 
 - (NSURL)directionsInformationURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 directionsInformationURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  directionsInformationURL = [eventContent directionsInformationURL];
 
-  return v4;
+  return directionsInformationURL;
 }
 
 - (NSURL)merchandiseURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 merchandiseURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  merchandiseURL = [eventContent merchandiseURL];
 
-  return v4;
+  return merchandiseURL;
 }
 
 - (NSURL)accessibilityURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 accessibilityURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  accessibilityURL = [eventContent accessibilityURL];
 
-  return v4;
+  return accessibilityURL;
 }
 
 - (NSURL)purchaseParkingURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 purchaseParkingURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  purchaseParkingURL = [eventContent purchaseParkingURL];
 
-  return v4;
+  return purchaseParkingURL;
 }
 
 - (NSURL)partnerAddOnURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 partnerAddOnURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  partnerAddOnURL = [eventContent partnerAddOnURL];
 
-  return v4;
+  return partnerAddOnURL;
 }
 
 - (NSURL)venueEmailURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 venueEmailURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  venueEmailURL = [eventContent venueEmailURL];
 
-  return v4;
+  return venueEmailURL;
 }
 
 - (NSURL)venuePhoneNumberURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 venuePhoneNumberURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  venuePhoneNumberURL = [eventContent venuePhoneNumberURL];
 
-  return v4;
+  return venuePhoneNumberURL;
 }
 
 - (NSURL)venueWebsiteURL
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 venueWebsiteURL];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  venueWebsiteURL = [eventContent venueWebsiteURL];
 
-  return v4;
+  return venueWebsiteURL;
 }
 
 - (PKPassUpcomingPassInformationImageManifest)venueMapImageManifest
 {
-  v2 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v3 = [v2 eventContent];
-  v4 = [v3 venueMapImageManifest];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
+  venueMapImageManifest = [eventContent venueMapImageManifest];
 
-  return v4;
+  return venueMapImageManifest;
 }
 
 - (id)venueMapImageIfExists
 {
-  v3 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
-  v4 = [v3 eventContent];
+  content = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry content];
+  eventContent = [content eventContent];
 
-  v5 = [v4 venueMapImageManifest];
-  if ([v5 reuseExisting])
+  venueMapImageManifest = [eventContent venueMapImageManifest];
+  if ([venueMapImageManifest reuseExisting])
   {
-    v6 = [(PKPass *)self->_pass venueMapImage];
+    venueMapImage = [(PKPass *)self->_pass venueMapImage];
   }
 
   else
   {
-    v7 = [v5 itemClosestMatchingScreenScale:PKUIScreenScale()];
-    v6 = [v7 sessionCachedImageIfExists];
+    v7 = [venueMapImageManifest itemClosestMatchingScreenScale:PKUIScreenScale()];
+    venueMapImage = [v7 sessionCachedImageIfExists];
   }
 
-  return v6;
+  return venueMapImage;
 }
 
-- (id)weatherFetchDateForDate:(id)a3
+- (id)weatherFetchDateForDate:(id)date
 {
-  v3 = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
-  v4 = [v3 date];
+  metadata = [(PKPassUpcomingPassInformationEntry *)self->_upcomingPassInformationEntry metadata];
+  date = [metadata date];
 
-  return v4;
+  return date;
 }
 
 @end

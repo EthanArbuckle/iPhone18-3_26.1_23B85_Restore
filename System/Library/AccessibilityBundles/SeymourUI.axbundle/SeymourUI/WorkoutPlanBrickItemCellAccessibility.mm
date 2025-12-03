@@ -1,20 +1,20 @@
 @interface WorkoutPlanBrickItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation WorkoutPlanBrickItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" hasSwiftField:@"swapButton" withSwiftType:"IconButton"];
-  [v3 validateClass:@"SeymourUI.IconButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" hasSwiftField:@"actionButtonContainerView" withSwiftType:"ActionButtonContainerView"];
-  [v3 validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" hasSwiftField:@"subtitleLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" isKindOfClass:@"UICollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" hasSwiftField:@"swapButton" withSwiftType:"IconButton"];
+  [validationsCopy validateClass:@"SeymourUI.IconButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" hasSwiftField:@"actionButtonContainerView" withSwiftType:"ActionButtonContainerView"];
+  [validationsCopy validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" hasSwiftField:@"titleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" hasSwiftField:@"subtitleLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"SeymourUI.WorkoutPlanBrickItemCell" isKindOfClass:@"UICollectionViewCell"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

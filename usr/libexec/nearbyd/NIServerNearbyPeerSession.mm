@@ -3,54 +3,54 @@
 - (BOOL)_peerSupportsLongRange;
 - (BOOL)_shouldBypassBluetoothDiscovery;
 - (BOOL)isExtendedDistanceMeasurementEnabled;
-- (BOOL)isLegacyDiscoveryToken:(id)a3;
-- (BOOL)shouldInitiate:(id)a3 peerDiscoveryToken:(id)a4 error:(id *)a5;
-- (NIServerNearbyPeerSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
+- (BOOL)isLegacyDiscoveryToken:(id)token;
+- (BOOL)shouldInitiate:(id)initiate peerDiscoveryToken:(id)token error:(id *)error;
+- (NIServerNearbyPeerSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
 - (id).cxx_construct;
-- (id)_addPeers:(id)a3;
-- (id)_disableAllServicesAndSendHangupSignal:(BOOL)a3;
-- (id)_processFindingEvent:(id)a3;
+- (id)_addPeers:(id)peers;
+- (id)_disableAllServicesAndSendHangupSignal:(BOOL)signal;
+- (id)_processFindingEvent:(id)event;
 - (id)configure;
 - (id)getResourcesManager;
-- (id)objectFromIdentifier:(unint64_t)a3;
-- (id)pauseWithSource:(int64_t)a3;
+- (id)objectFromIdentifier:(unint64_t)identifier;
+- (id)pauseWithSource:(int64_t)source;
 - (id)printableState;
 - (id)run;
-- (id)setDataFrame:(const void *)a3 forPeer:(id)a4;
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3;
+- (id)setDataFrame:(const void *)frame forPeer:(id)peer;
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token;
 - (unint64_t)requiresNarrowbandToRun;
 - (unint64_t)requiresUWBToRun;
 - (void)_activateSensors;
 - (void)_deactivateSensors;
-- (void)_peerHungUp:(id)a3;
-- (void)_removePeerObject:(id)a3 withReason:(unint64_t)a4;
+- (void)_peerHungUp:(id)up;
+- (void)_removePeerObject:(id)object withReason:(unint64_t)reason;
 - (void)_startAltitudeUpdates;
 - (void)_startDeviceMotionUpdates;
 - (void)_startDevicePDRUpdates;
 - (void)_startMotionActivityUpdates;
 - (void)_startPedometerDataUpdates;
 - (void)_startPedometerEventUpdates;
-- (void)device:(id)a3 rediscovered:(id)a4;
-- (void)deviceDiscovered:(id)a3;
+- (void)device:(id)device rediscovered:(id)rediscovered;
+- (void)deviceDiscovered:(id)discovered;
 - (void)didInvalidateUWBSession;
-- (void)didReceiveNewSolution:(const void *)a3;
-- (void)didReceiveRemoteData:(const void *)a3;
-- (void)didReceiveUnsuccessfulSolution:(const void *)a3;
-- (void)didServiceRequestUpdateStatus:(ServiceRequestStatusUpdate)a3;
+- (void)didReceiveNewSolution:(const void *)solution;
+- (void)didReceiveRemoteData:(const void *)data;
+- (void)didReceiveUnsuccessfulSolution:(const void *)solution;
+- (void)didServiceRequestUpdateStatus:(ServiceRequestStatusUpdate)status;
 - (void)invalidate;
-- (void)peerInactivityPeriodExceeded:(id)a3;
-- (void)processVisionInput:(id)a3;
-- (void)updatesEngine:(id)a3 didUpdateAlgorithmConvergenceState:(id)a4 forObject:(id)a5;
-- (void)updatesEngine:(id)a3 didUpdateFindeeData:(const void *)a4 forToken:(id)a5;
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4;
+- (void)peerInactivityPeriodExceeded:(id)exceeded;
+- (void)processVisionInput:(id)input;
+- (void)updatesEngine:(id)engine didUpdateAlgorithmConvergenceState:(id)state forObject:(id)object;
+- (void)updatesEngine:(id)engine didUpdateFindeeData:(const void *)data forToken:(id)token;
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects;
 @end
 
 @implementation NIServerNearbyPeerSession
 
-- (NIServerNearbyPeerSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerNearbyPeerSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v45 = a4;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v10 = objc_opt_class();
   if (v10 != objc_opt_class())
   {
@@ -58,9 +58,9 @@
     [v43 handleFailureInMethod:a2 object:self file:@"NIServerNearbyPeerSession.mm" lineNumber:105 description:@"NIServerNearbyPeerSession given invalid configuration."];
   }
 
-  v11 = [v9 serverSessionIdentifier];
+  serverSessionIdentifier = [managerCopy serverSessionIdentifier];
 
-  if (!v11)
+  if (!serverSessionIdentifier)
   {
     v44 = +[NSAssertionHandler currentHandler];
     [v44 handleFailureInMethod:a2 object:self file:@"NIServerNearbyPeerSession.mm" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"resourcesManager.serverSessionIdentifier"}];
@@ -68,34 +68,34 @@
 
   v48.receiver = self;
   v48.super_class = NIServerNearbyPeerSession;
-  v12 = [(NIServerBaseSession *)&v48 initWithResourcesManager:v9 configuration:v45 error:a5];
+  v12 = [(NIServerBaseSession *)&v48 initWithResourcesManager:managerCopy configuration:configurationCopy error:error];
   v13 = v12;
   if (!v12)
   {
     goto LABEL_16;
   }
 
-  v14 = [v9 clientConnectionQueue];
+  clientConnectionQueue = [managerCopy clientConnectionQueue];
   v15 = *(v12 + 8);
-  *(v12 + 8) = v14;
+  *(v12 + 8) = clientConnectionQueue;
 
-  v16 = [v45 copy];
+  v16 = [configurationCopy copy];
   v17 = *(v12 + 54);
   *(v12 + 54) = v16;
 
-  v18 = [v9 serverSessionIdentifier];
-  v19 = [v18 UUIDString];
+  serverSessionIdentifier2 = [managerCopy serverSessionIdentifier];
+  uUIDString = [serverSessionIdentifier2 UUIDString];
   v20 = *(v12 + 9);
-  *(v12 + 9) = v19;
+  *(v12 + 9) = uUIDString;
 
   [*(v12 + 54) setSupportsCameraAssistance:{+[NIPlatformInfo supportsSyntheticAperture](NIPlatformInfo, "supportsSyntheticAperture")}];
   v21 = [NINearbyUpdatesEngine alloc];
   v22 = *(v12 + 54);
   v23 = *(v12 + 8);
-  v24 = [v9 analytics];
-  if (v9)
+  analytics = [managerCopy analytics];
+  if (managerCopy)
   {
-    [v9 protobufLogger];
+    [managerCopy protobufLogger];
   }
 
   else
@@ -104,7 +104,7 @@
     v47 = 0;
   }
 
-  v25 = [(NINearbyUpdatesEngine *)v21 initWithConfiguration:v22 queue:v23 delegate:v12 dataSource:v12 analyticsManager:v24 protobufLogger:&v46 error:a5];
+  v25 = [(NINearbyUpdatesEngine *)v21 initWithConfiguration:v22 queue:v23 delegate:v12 dataSource:v12 analyticsManager:analytics protobufLogger:&v46 error:error];
   v26 = *(v12 + 6);
   *(v12 + 6) = v25;
 
@@ -133,9 +133,9 @@ LABEL_16:
 
   [*(v12 + 16) setUnderlyingQueue:*(v12 + 8)];
   v12[224] = 0;
-  if (v9)
+  if (managerCopy)
   {
-    [v9 powerBudgetProvider];
+    [managerCopy powerBudgetProvider];
     v29 = *buf;
   }
 
@@ -171,10 +171,10 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "#ses-nrby-peer,Power budget reporting to CPMS is supported: %@", buf, 0xCu);
   }
 
-  v36 = [v13[54] isExtendedDistanceMeasurementEnabled];
+  isExtendedDistanceMeasurementEnabled = [v13[54] isExtendedDistanceMeasurementEnabled];
   v37 = qword_1009F9820;
   v38 = os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT);
-  if (v36)
+  if (isExtendedDistanceMeasurementEnabled)
   {
     if (v38)
     {
@@ -253,15 +253,15 @@ LABEL_33:
     sub_1004B78F8();
   }
 
-  v4 = [(NINearbyPeerConfiguration *)configuration peerDiscoveryToken];
-  if (!v4)
+  peerDiscoveryToken = [(NINearbyPeerConfiguration *)configuration peerDiscoveryToken];
+  if (!peerDiscoveryToken)
   {
     goto LABEL_4;
   }
 
-  v5 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-  v6 = [v5 rawToken];
-  v7 = [v6 length];
+  peerDiscoveryToken2 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+  rawToken = [peerDiscoveryToken2 rawToken];
+  v7 = [rawToken length];
 
   if (v7 <= 0xF)
   {
@@ -269,14 +269,14 @@ LABEL_4:
     v29 = NSLocalizedFailureReasonErrorKey;
     v30 = @"Peer discovery token nil or invalid.";
     v8 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    v9 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v8];
+    configure = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v8];
 LABEL_26:
-    v22 = v9;
+    v22 = configure;
     goto LABEL_27;
   }
 
-  v10 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-  v11 = sub_1003005A0(v10);
+  peerDiscoveryToken3 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+  v11 = sub_1003005A0(peerDiscoveryToken3);
   v12 = v11;
   if (v11)
   {
@@ -341,8 +341,8 @@ LABEL_26:
       sub_1004B785C();
     }
 
-    v9 = v8;
-    v8 = v9;
+    configure = v8;
+    v8 = configure;
     goto LABEL_26;
   }
 
@@ -363,7 +363,7 @@ LABEL_26:
 
   if (![(NINearbyPeerConfiguration *)self->_configuration backgroundMode])
   {
-    v9 = [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession configure];
+    configure = [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession configure];
     goto LABEL_26;
   }
 
@@ -380,8 +380,8 @@ LABEL_27:
 - (id)run
 {
   dispatch_assert_queue_V2(self->_clientQueue);
-  v3 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-  v16 = v3;
+  peerDiscoveryToken = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+  v16 = peerDiscoveryToken;
   v4 = [NSArray arrayWithObjects:&v16 count:1];
   v5 = [(NIServerNearbyPeerSession *)self _addPeers:v4];
 
@@ -390,16 +390,16 @@ LABEL_27:
     v5 = [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession run];
     if (!v5)
     {
-      v6 = [(NIServerNearbyPeerSession *)self getResourcesManager];
-      v7 = [v6 lifecycleSupervisor];
-      v8 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-      v15 = v8;
+      getResourcesManager = [(NIServerNearbyPeerSession *)self getResourcesManager];
+      lifecycleSupervisor = [getResourcesManager lifecycleSupervisor];
+      peerDiscoveryToken2 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+      v15 = peerDiscoveryToken2;
       v9 = [NSArray arrayWithObjects:&v15 count:1];
-      [v7 startedDiscoveringPeersWithTokens:v9];
+      [lifecycleSupervisor startedDiscoveringPeersWithTokens:v9];
 
-      v10 = [(NIServerNearbyPeerSession *)self getResourcesManager];
-      v11 = [v10 lifecycleSupervisor];
-      [v11 runWithConfigurationCalled];
+      getResourcesManager2 = [(NIServerNearbyPeerSession *)self getResourcesManager];
+      lifecycleSupervisor2 = [getResourcesManager2 lifecycleSupervisor];
+      [lifecycleSupervisor2 runWithConfigurationCalled];
 
       if (![(NINearbyPeerConfiguration *)self->_configuration useCase])
       {
@@ -417,16 +417,16 @@ LABEL_27:
   return v5;
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   dispatch_assert_queue_V2(self->_clientQueue);
   self->_shouldDeliverUpdates = 0;
   v4 = [(NIServerNearbyPeerSession *)self _disableAllServicesAndSendHangupSignal:0];
   v8.receiver = self;
   v8.super_class = NIServerNearbyPeerSession;
-  v5 = [(NIServerBaseSession *)&v8 resourcesManager];
-  v6 = [v5 lifecycleSupervisor];
-  [v6 pauseCalled];
+  resourcesManager = [(NIServerBaseSession *)&v8 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+  [lifecycleSupervisor pauseCalled];
 
   return v4;
 }
@@ -434,39 +434,39 @@ LABEL_27:
 - (void)invalidate
 {
   dispatch_assert_queue_V2(self->_clientQueue);
-  v3 = [(NIServerNearbyPeerSession *)self disableAllServices];
+  disableAllServices = [(NIServerNearbyPeerSession *)self disableAllServices];
   v4.receiver = self;
   v4.super_class = NIServerNearbyPeerSession;
   [(NIServerBaseSession *)&v4 invalidate];
   self->_shouldDeliverUpdates = 0;
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
-  v5 = a3;
+  discoveredCopy = discovered;
   dispatch_assert_queue_V2(self->_clientQueue);
   if (![(NIServerNearbyPeerSession *)self _shouldBypassBluetoothDiscovery])
   {
     subspecializedPeerSession = self->_subspecializedPeerSession;
     if (objc_opt_respondsToSelector())
     {
-      [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession deviceDiscovered:v5];
+      [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession deviceDiscovered:discoveredCopy];
     }
   }
 }
 
-- (void)device:(id)a3 rediscovered:(id)a4
+- (void)device:(id)device rediscovered:(id)rediscovered
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  rediscoveredCopy = rediscovered;
   dispatch_assert_queue_V2(self->_clientQueue);
   v8 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138478083;
-    v11 = v7;
+    v11 = rediscoveredCopy;
     v12 = 2113;
-    v13 = v6;
+    v13 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-nrby-peer,discoveredDevice:didUpdate: new: %{private}@, cached: %{private}@", &v10, 0x16u);
   }
 
@@ -475,7 +475,7 @@ LABEL_27:
     subspecializedPeerSession = self->_subspecializedPeerSession;
     if (objc_opt_respondsToSelector())
     {
-      [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession device:v6 rediscovered:v7];
+      [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession device:deviceCopy rediscovered:rediscoveredCopy];
     }
   }
 }
@@ -488,8 +488,8 @@ LABEL_27:
   v5 = [NSString stringWithFormat:@"Subspecialized session: %@", objc_opt_class()];
   [v3 addObject:v5];
 
-  v6 = [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession printableState];
-  [v3 addObjectsFromArray:v6];
+  printableState = [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession printableState];
+  [v3 addObjectsFromArray:printableState];
 
   return v3;
 }
@@ -505,56 +505,56 @@ LABEL_27:
 {
   v4.receiver = self;
   v4.super_class = NIServerNearbyPeerSession;
-  v2 = [(NIServerBaseSession *)&v4 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v4 resourcesManager];
 
-  return v2;
+  return resourcesManager;
 }
 
-- (BOOL)isLegacyDiscoveryToken:(id)a3
+- (BOOL)isLegacyDiscoveryToken:(id)token
 {
-  v3 = [a3 objectInRawTokenOPACKDictForKey:&off_1009C4058];
+  v3 = [token objectInRawTokenOPACKDictForKey:&off_1009C4058];
   v4 = v3 == 0;
 
   return v4;
 }
 
-- (BOOL)shouldInitiate:(id)a3 peerDiscoveryToken:(id)a4 error:(id *)a5
+- (BOOL)shouldInitiate:(id)initiate peerDiscoveryToken:(id)token error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  initiateCopy = initiate;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_clientQueue);
-  v10 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
-  if (!v10)
+  debugParameters = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
+  if (!debugParameters)
   {
     goto LABEL_6;
   }
 
-  v11 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
-  v12 = [v11 objectForKey:@"role"];
+  debugParameters2 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
+  v12 = [debugParameters2 objectForKey:@"role"];
 
   if (!v12)
   {
     goto LABEL_6;
   }
 
-  v13 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
-  v14 = [v13 objectForKey:@"role"];
+  debugParameters3 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
+  v14 = [debugParameters3 objectForKey:@"role"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v16 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
-    v17 = [v16 objectForKey:@"role"];
-    v18 = [v17 intValue];
+    debugParameters4 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
+    v17 = [debugParameters4 objectForKey:@"role"];
+    intValue = [v17 intValue];
 
-    v19 = v18 == 0;
-    if (v18 >= 2)
+    v19 = intValue == 0;
+    if (intValue >= 2)
     {
       v61 = NSLocalizedFailureReasonErrorKey;
       v62 = @"Invalid debugParameters role";
       v20 = [NSDictionary dictionaryWithObjects:&v62 forKeys:&v61 count:1];
-      *a5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v20];
+      *error = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v20];
 
       goto LABEL_26;
     }
@@ -563,22 +563,22 @@ LABEL_27:
   else
   {
 LABEL_6:
-    v21 = [v8 rawToken];
-    v22 = [v9 rawToken];
-    v23 = [v21 isEqualToData:v22];
+    rawToken = [initiateCopy rawToken];
+    rawToken2 = [tokenCopy rawToken];
+    v23 = [rawToken isEqualToData:rawToken2];
 
     if (v23)
     {
       v59 = NSLocalizedFailureReasonErrorKey;
       v60 = @"Peer and local discovery token are identical";
       v24 = [NSDictionary dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-      *a5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10012 userInfo:v24];
+      *error = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10012 userInfo:v24];
 
       goto LABEL_26;
     }
 
-    v25 = [v8 objectInRawTokenOPACKDictForKey:&off_1009C4058];
-    if (!v25 || ([v9 objectInRawTokenOPACKDictForKey:&off_1009C4058], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, !v26))
+    v25 = [initiateCopy objectInRawTokenOPACKDictForKey:&off_1009C4058];
+    if (!v25 || ([tokenCopy objectInRawTokenOPACKDictForKey:&off_1009C4058], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, !v26))
     {
       v30 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -587,44 +587,44 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "#ses-nrby-peer,shouldInitiate using legacy initiator selection logic", buf, 2u);
       }
 
-      v31 = [v8 rawToken];
-      if ([v31 length] <= 7)
+      rawToken3 = [initiateCopy rawToken];
+      if ([rawToken3 length] <= 7)
       {
       }
 
       else
       {
-        v32 = [v9 rawToken];
-        v33 = [v32 length] < 8;
+        rawToken4 = [tokenCopy rawToken];
+        v33 = [rawToken4 length] < 8;
 
         if (!v33)
         {
-          v34 = [v8 rawToken];
-          v35 = v34;
-          v36 = *[v34 bytes];
+          rawToken5 = [initiateCopy rawToken];
+          v35 = rawToken5;
+          v36 = *[rawToken5 bytes];
 
-          v37 = [v9 rawToken];
-          v38 = v37;
-          v39 = *[v37 bytes];
+          rawToken6 = [tokenCopy rawToken];
+          v38 = rawToken6;
+          v39 = *[rawToken6 bytes];
 
           if (v36 == v39)
           {
-            v40 = [v8 rawToken];
-            v41 = [v40 _reverse];
+            rawToken7 = [initiateCopy rawToken];
+            _reverse = [rawToken7 _reverse];
 
-            v42 = [v9 rawToken];
-            v43 = [v42 _reverse];
+            rawToken8 = [tokenCopy rawToken];
+            _reverse2 = [rawToken8 _reverse];
 
-            v44 = v41;
-            v36 = *[v41 bytes];
-            v45 = v43;
-            v39 = *[v43 bytes];
+            v44 = _reverse;
+            v36 = *[_reverse bytes];
+            v45 = _reverse2;
+            v39 = *[_reverse2 bytes];
             if (v36 == v39)
             {
               v55 = NSLocalizedFailureReasonErrorKey;
               v56 = @"Relevant parts of discovery token are identical to local token";
               v46 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-              *a5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10012 userInfo:v46];
+              *error = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10012 userInfo:v46];
 
               if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
               {
@@ -643,25 +643,25 @@ LABEL_6:
       v57 = NSLocalizedFailureReasonErrorKey;
       v58 = @"Discovery token are too short";
       v47 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-      *a5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10012 userInfo:v47];
+      *error = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10012 userInfo:v47];
 
 LABEL_26:
       v19 = 0;
       goto LABEL_27;
     }
 
-    v27 = [v8 getIRK];
-    v28 = [v9 getIRK];
-    if ([v27 length] == 16 && objc_msgSend(v28, "length") == 16 && !objc_msgSend(v27, "isEqualToData:", v28))
+    getIRK = [initiateCopy getIRK];
+    getIRK2 = [tokenCopy getIRK];
+    if ([getIRK length] == 16 && objc_msgSend(getIRK2, "length") == 16 && !objc_msgSend(getIRK, "isEqualToData:", getIRK2))
     {
       v51 = 0;
       *buf = 0;
       v49 = 0;
       v50 = 0;
-      [v27 getBytes:&v51 range:{0, 8}];
-      [v27 getBytes:buf range:{8, 8}];
-      [v28 getBytes:&v49 range:{0, 8}];
-      [v28 getBytes:&v50 range:{8, 8}];
+      [getIRK getBytes:&v51 range:{0, 8}];
+      [getIRK getBytes:buf range:{8, 8}];
+      [getIRK2 getBytes:&v49 range:{0, 8}];
+      [getIRK2 getBytes:&v50 range:{8, 8}];
       if (*buf == v50)
       {
         v19 = v51 > v49;
@@ -678,7 +678,7 @@ LABEL_26:
       v53 = NSLocalizedFailureReasonErrorKey;
       v54 = @"Peer and local discovery token IRKs are identical or invalid";
       v29 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
-      *a5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v29];
+      *error = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v29];
 
       v19 = 0;
     }
@@ -689,12 +689,12 @@ LABEL_27:
   return v19;
 }
 
-- (void)didReceiveNewSolution:(const void *)a3
+- (void)didReceiveNewSolution:(const void *)solution
 {
-  if (*(a3 + 24))
+  if (*(solution + 24))
   {
-    v5 = *(a3 + 2);
-    self->_cachedSolutionMacAddr = *(a3 + 5);
+    v5 = *(solution + 2);
+    self->_cachedSolutionMacAddr = *(solution + 5);
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
     {
       sub_1004B7994(&self->_cachedSolutionMacAddr);
@@ -705,51 +705,51 @@ LABEL_27:
     {
       v21.receiver = self;
       v21.super_class = NIServerNearbyPeerSession;
-      v7 = [(NIServerBaseSession *)&v21 resourcesManager];
-      v8 = [v7 lifecycleSupervisor];
-      v9 = [v8 isTrackingPeer:v6];
+      resourcesManager = [(NIServerBaseSession *)&v21 resourcesManager];
+      lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+      v9 = [lifecycleSupervisor isTrackingPeer:v6];
 
       if (v9)
       {
-        v10 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
-        if (!v10)
+        debugParameters = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
+        if (!debugParameters)
         {
           goto LABEL_13;
         }
 
-        v11 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
-        v12 = [v11 objectForKey:@"enableAdditionalUWBSignalFeatures"];
+        debugParameters2 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
+        v12 = [debugParameters2 objectForKey:@"enableAdditionalUWBSignalFeatures"];
 
         if (!v12)
         {
           goto LABEL_13;
         }
 
-        v13 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
-        v14 = [v13 objectForKey:@"enableAdditionalUWBSignalFeatures"];
+        debugParameters3 = [(NINearbyPeerConfiguration *)self->_configuration debugParameters];
+        v14 = [debugParameters3 objectForKey:@"enableAdditionalUWBSignalFeatures"];
 
         if (v14 && (v15 = [v14 BOOLValue], v14, (v15 & 1) != 0))
         {
           v19 = xmmword_1005691B8;
           v20 = 1;
-          [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:a3 withProcessingOptions:&v19];
+          [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:solution withProcessingOptions:&v19];
         }
 
         else
         {
 LABEL_13:
-          [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:a3];
+          [(NINearbyUpdatesEngine *)self->_updatesEngine acceptRoseSolution:solution];
         }
 
-        v16 = [v7 lifecycleSupervisor];
-        [v16 measurementReceivedForToken:v6 contTimestamp:v5];
+        lifecycleSupervisor2 = [resourcesManager lifecycleSupervisor];
+        [lifecycleSupervisor2 measurementReceivedForToken:v6 contTimestamp:v5];
 
         if (self->_shouldDeliverUpdates && !self->_firstSolutionReceived)
         {
           self->_firstSolutionReceived = 1;
-          v17 = [v7 remote];
+          remote = [resourcesManager remote];
           v18 = [[NINearbyObject alloc] initWithToken:v6];
-          [v17 didDiscoverNearbyObject:v18];
+          [remote didDiscoverNearbyObject:v18];
         }
       }
     }
@@ -761,28 +761,28 @@ LABEL_13:
   }
 }
 
-- (void)didReceiveUnsuccessfulSolution:(const void *)a3
+- (void)didReceiveUnsuccessfulSolution:(const void *)solution
 {
-  if (*(a3 + 24) == 1)
+  if (*(solution + 24) == 1)
   {
-    v5 = [(NIServerNearbyPeerSession *)self discoveryTokenFromIdentifier:*(a3 + 5)];
+    v5 = [(NIServerNearbyPeerSession *)self discoveryTokenFromIdentifier:*(solution + 5)];
     if (v5)
     {
       v9.receiver = self;
       v9.super_class = NIServerNearbyPeerSession;
-      v6 = [(NIServerBaseSession *)&v9 resourcesManager];
-      v7 = [v6 lifecycleSupervisor];
-      v8 = [v7 isTrackingPeer:v5];
+      resourcesManager = [(NIServerBaseSession *)&v9 resourcesManager];
+      lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+      v8 = [lifecycleSupervisor isTrackingPeer:v5];
 
       if (v8)
       {
-        [(NINearbyUpdatesEngine *)self->_updatesEngine acceptUnsuccessfulRoseSolution:a3];
+        [(NINearbyUpdatesEngine *)self->_updatesEngine acceptUnsuccessfulRoseSolution:solution];
       }
     }
   }
 }
 
-- (void)didReceiveRemoteData:(const void *)a3
+- (void)didReceiveRemoteData:(const void *)data
 {
   if (self->_configuration)
   {
@@ -793,16 +793,16 @@ LABEL_13:
         sub_1004B7A44();
       }
 
-      v5 = [(NIServerNearbyPeerSession *)self discoveryTokenFromIdentifier:*(a3 + 5)];
+      v5 = [(NIServerNearbyPeerSession *)self discoveryTokenFromIdentifier:*(data + 5)];
       if (v5)
       {
-        v6 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-        v7 = [v5 isEqual:v6];
+        peerDiscoveryToken = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+        v7 = [v5 isEqual:peerDiscoveryToken];
 
         if (v7)
         {
           sub_100004A08(__p, "Receive");
-          sub_10026EDAC(__p, a3 + 1);
+          sub_10026EDAC(__p, data + 1);
           if (v25 < 0)
           {
             operator delete(*__p);
@@ -823,9 +823,9 @@ LABEL_13:
           v9 = sub_100003AA8(v8[144]);
           v20 = 0;
           v21 = v9;
-          if (sub_10026E5F4(a3 + 1, __p, &v20))
+          if (sub_10026E5F4(data + 1, __p, &v20))
           {
-            v30 = *(a3 + 4);
+            v30 = *(data + 4);
             LOBYTE(v31) = 1;
             [(NINearbyUpdatesEngine *)self->_updatesEngine acceptPeerData:__p fromPeer:v5];
             if (BYTE1(v20) == 1 && v20 == 1)
@@ -850,14 +850,14 @@ LABEL_13:
 
       else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
-        sub_1004B7A78(a3 + 5);
+        sub_1004B7A78(data + 5);
       }
     }
 
     else
     {
-      v11 = *(a3 + 1);
-      if (*(a3 + 2) - v11 > 0xFuLL)
+      v11 = *(data + 1);
+      if (*(data + 2) - v11 > 0xFuLL)
       {
         if (*v11 == 2)
         {
@@ -867,8 +867,8 @@ LABEL_13:
             sub_1004B7A44();
           }
 
-          v15 = *(a3 + 5);
-          v14 = (a3 + 40);
+          v15 = *(data + 5);
+          v14 = (data + 40);
           v16 = [(NIServerNearbyPeerSession *)self discoveryTokenFromIdentifier:v15];
           if (v16)
           {
@@ -906,21 +906,21 @@ LABEL_13:
         v12 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
         {
-          sub_1004B7AE8(a3 + 4, a3 + 2, v12);
+          sub_1004B7AE8(data + 4, data + 2, v12);
         }
       }
     }
   }
 }
 
-- (void)didServiceRequestUpdateStatus:(ServiceRequestStatusUpdate)a3
+- (void)didServiceRequestUpdateStatus:(ServiceRequestStatusUpdate)status
 {
-  var2 = a3.var2;
-  v4 = *&a3.var0;
+  var2 = status.var2;
+  v4 = *&status.var0;
   v21.receiver = self;
   v21.super_class = NIServerNearbyPeerSession;
-  v6 = [(NIServerBaseSession *)&v21 resourcesManager];
-  v7 = [v6 lifecycleSupervisor];
+  resourcesManager = [(NIServerBaseSession *)&v21 resourcesManager];
+  lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
 
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -963,12 +963,12 @@ LABEL_13:
 
   if (HIDWORD(v4) == 3)
   {
-    [v7 positioningSensorSessionStopped];
+    [lifecycleSupervisor positioningSensorSessionStopped];
   }
 
   else if (HIDWORD(v4) == 1)
   {
-    [v7 positioningSensorSessionStarted];
+    [lifecycleSupervisor positioningSensorSessionStarted];
     if ([(NIServerNearbyPeerSession *)self isExtendedDistanceMeasurementEnabled])
     {
       [(NIServerNearbyPeerSession *)self _activateSensors];
@@ -980,13 +980,13 @@ LABEL_13:
     configuration = self->_configuration;
     if (configuration)
     {
-      v14 = [(NINearbyPeerConfiguration *)configuration peerDiscoveryToken];
-      v22 = v14;
+      peerDiscoveryToken = [(NINearbyPeerConfiguration *)configuration peerDiscoveryToken];
+      v22 = peerDiscoveryToken;
       v15 = [NSArray arrayWithObjects:&v22 count:1];
-      [v7 stoppedDiscoveringPeersWithTokens:v15];
+      [lifecycleSupervisor stoppedDiscoveringPeersWithTokens:v15];
 
-      v16 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-      [(NIServerNearbyPeerSession *)self peerInactivityPeriodExceeded:v16];
+      peerDiscoveryToken2 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+      [(NIServerNearbyPeerSession *)self peerInactivityPeriodExceeded:peerDiscoveryToken2];
     }
   }
 }
@@ -1003,22 +1003,22 @@ LABEL_13:
   [(NIServerNearbyPeerSession *)self invalidate];
   v6.receiver = self;
   v6.super_class = NIServerNearbyPeerSession;
-  v4 = [(NIServerBaseSession *)&v6 invalidationHandler];
+  invalidationHandler = [(NIServerBaseSession *)&v6 invalidationHandler];
   v5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:0];
-  (v4)[2](v4, v5);
+  (invalidationHandler)[2](invalidationHandler, v5);
 }
 
 - (BOOL)_longRangeEnabled
 {
-  v3 = [(NIServerBaseSession *)self resourcesManager];
-  v4 = [v3 longRangeEnabled];
+  resourcesManager = [(NIServerBaseSession *)self resourcesManager];
+  longRangeEnabled = [resourcesManager longRangeEnabled];
 
-  v5 = [(NINearbyPeerConfiguration *)self->_configuration isLongRangeEnabled];
-  v6 = [(NIServerNearbyPeerSession *)self _peerSupportsLongRange];
-  v7 = v6;
-  if ((v4 & v5 & 1) == 0)
+  isLongRangeEnabled = [(NINearbyPeerConfiguration *)self->_configuration isLongRangeEnabled];
+  _peerSupportsLongRange = [(NIServerNearbyPeerSession *)self _peerSupportsLongRange];
+  v7 = _peerSupportsLongRange;
+  if ((longRangeEnabled & isLongRangeEnabled & 1) == 0)
   {
-    if (v6)
+    if (_peerSupportsLongRange)
     {
       v8 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -1029,7 +1029,7 @@ LABEL_13:
     }
   }
 
-  if (((v4 & v5 ^ 1 | v7) & 1) == 0)
+  if (((longRangeEnabled & isLongRangeEnabled ^ 1 | v7) & 1) == 0)
   {
     v9 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -1039,7 +1039,7 @@ LABEL_13:
     }
   }
 
-  return v4 & v7 & v5;
+  return longRangeEnabled & v7 & isLongRangeEnabled;
 }
 
 - (BOOL)_peerSupportsLongRange
@@ -1066,17 +1066,17 @@ LABEL_13:
   return v3;
 }
 
-- (id)_disableAllServicesAndSendHangupSignal:(BOOL)a3
+- (id)_disableAllServicesAndSendHangupSignal:(BOOL)signal
 {
   if (self->_configuration)
   {
-    v3 = a3;
+    signalCopy = signal;
     v24.receiver = self;
     v24.super_class = NIServerNearbyPeerSession;
-    v5 = [(NIServerBaseSession *)&v24 disableAllServices];
+    disableAllServices = [(NIServerBaseSession *)&v24 disableAllServices];
     if ([(NIServerNearbyPeerSession *)self isExtendedDistanceMeasurementEnabled])
     {
-      if (v3)
+      if (signalCopy)
       {
         if (!self->_currentFindeeData.__engaged_)
         {
@@ -1140,8 +1140,8 @@ LABEL_13:
           sub_1000195BC();
         }
 
-        v17 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-        v18 = [(NIServerNearbyPeerSession *)self setDataFrame:&self->_currentFindeeData forPeer:v17];
+        peerDiscoveryToken = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+        v18 = [(NIServerNearbyPeerSession *)self setDataFrame:&self->_currentFindeeData forPeer:peerDiscoveryToken];
 
         v19.__rep_ = [(NIServerNearbyPeerSession *)self nominalCycleRate];
         if (v19.__rep_ >= 1)
@@ -1170,7 +1170,7 @@ LABEL_13:
       [(NIServerNearbyPeerSession *)self _deactivateSensors];
     }
 
-    else if (![(NIServerNearbyPeerSession *)self _longRangeEnabled]&& v3)
+    else if (![(NIServerNearbyPeerSession *)self _longRangeEnabled]&& signalCopy)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
       {
@@ -1222,23 +1222,23 @@ LABEL_13:
 
   else
   {
-    v5 = 0;
+    disableAllServices = 0;
   }
 
-  return v5;
+  return disableAllServices;
 }
 
-- (id)_addPeers:(id)a3
+- (id)_addPeers:(id)peers
 {
-  v4 = a3;
+  peersCopy = peers;
   v19.receiver = self;
   v19.super_class = NIServerNearbyPeerSession;
-  v5 = [(NIServerBaseSession *)&v19 resourcesManager];
+  resourcesManager = [(NIServerBaseSession *)&v19 resourcesManager];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = peersCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v20 count:16];
   if (v7)
   {
@@ -1253,9 +1253,9 @@ LABEL_3:
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
-      v11 = [v5 btResource];
-      v12 = [v10 rawToken];
-      v13 = [v11 addPeerDiscoveryToken:v12];
+      btResource = [resourcesManager btResource];
+      rawToken = [v10 rawToken];
+      v13 = [btResource addPeerDiscoveryToken:rawToken];
 
       if (v13)
       {
@@ -1284,44 +1284,44 @@ LABEL_9:
   return v13;
 }
 
-- (void)_peerHungUp:(id)a3
+- (void)_peerHungUp:(id)up
 {
-  v4 = a3;
+  upCopy = up;
   v11.receiver = self;
   v11.super_class = NIServerNearbyPeerSession;
-  v5 = [(NIServerBaseSession *)&v11 resourcesManager];
-  v6 = [v5 btResource];
-  v7 = [v6 deviceCache];
-  v8 = [v4 rawToken];
-  v9 = [v7 isCachedByTokenData:v8];
+  resourcesManager = [(NIServerBaseSession *)&v11 resourcesManager];
+  btResource = [resourcesManager btResource];
+  deviceCache = [btResource deviceCache];
+  rawToken = [upCopy rawToken];
+  v9 = [deviceCache isCachedByTokenData:rawToken];
 
   if (v9)
   {
-    v10 = [v5 lifecycleSupervisor];
-    [v10 peerHangupReceived:v4];
+    lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+    [lifecycleSupervisor peerHangupReceived:upCopy];
 
-    [(NIServerNearbyPeerSession *)self _removePeerObject:v4 withReason:1];
+    [(NIServerNearbyPeerSession *)self _removePeerObject:upCopy withReason:1];
   }
 }
 
-- (void)_removePeerObject:(id)a3 withReason:(unint64_t)a4
+- (void)_removePeerObject:(id)object withReason:(unint64_t)reason
 {
-  v6 = a3;
-  [(NINearbyUpdatesEngine *)self->_updatesEngine clearStateForToken:v6];
+  objectCopy = object;
+  [(NINearbyUpdatesEngine *)self->_updatesEngine clearStateForToken:objectCopy];
   v22.receiver = self;
   v22.super_class = NIServerNearbyPeerSession;
-  v7 = [(NIServerBaseSession *)&v22 resourcesManager];
-  v8 = [v7 btResource];
-  v9 = [v8 deviceCache];
-  v10 = [v6 rawToken];
-  v11 = [v9 uncacheDeviceByTokenData:v10];
+  resourcesManager = [(NIServerBaseSession *)&v22 resourcesManager];
+  btResource = [resourcesManager btResource];
+  deviceCache = [btResource deviceCache];
+  rawToken = [objectCopy rawToken];
+  v11 = [deviceCache uncacheDeviceByTokenData:rawToken];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [v7 lifecycleSupervisor];
-    v13 = [v12 isTracking];
+    lifecycleSupervisor = [resourcesManager lifecycleSupervisor];
+    isTracking = [lifecycleSupervisor isTracking];
 
-    if (v13)
+    if (isTracking)
     {
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -1330,22 +1330,22 @@ LABEL_9:
     }
   }
 
-  v14 = [[NINearbyObject alloc] initWithToken:v6];
-  v15 = [v7 remote];
+  v14 = [[NINearbyObject alloc] initWithToken:objectCopy];
+  remote = [resourcesManager remote];
   v27 = v14;
   v16 = [NSArray arrayWithObjects:&v27 count:1];
-  [v15 didRemoveNearbyObjects:v16 withReason:a4];
+  [remote didRemoveNearbyObjects:v16 withReason:reason];
 
-  if (a4)
+  if (reason)
   {
-    if (a4 == 1)
+    if (reason == 1)
     {
       v17 = @"Hangup";
     }
 
     else
     {
-      if (a4 == 2)
+      if (reason == 2)
       {
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
         {
@@ -1389,7 +1389,7 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "#ses-nrby-peer,_removePeerObject: %@ with reason: %@ for session identifier: %@", buf, 0x20u);
   }
 
-  v20 = [(NIServerNearbyPeerSession *)self _disableAllServicesAndSendHangupSignal:a4 != 1];
+  v20 = [(NIServerNearbyPeerSession *)self _disableAllServicesAndSendHangupSignal:reason != 1];
   if (v20 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
     sub_1004B7C94();
@@ -1398,9 +1398,9 @@ LABEL_9:
 
 - (BOOL)_shouldBypassBluetoothDiscovery
 {
-  v2 = [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession shouldBypassBleDiscovery];
+  shouldBypassBleDiscovery = [(NIServerNearbyPeerSubspecializationProtocol *)self->_subspecializedPeerSession shouldBypassBleDiscovery];
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = v2 | [v3 BOOLForKey:@"FindingBypassDiscovery"];
+  v4 = shouldBypassBleDiscovery | [v3 BOOLForKey:@"FindingBypassDiscovery"];
 
   v5 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -1413,33 +1413,33 @@ LABEL_9:
   return v4;
 }
 
-- (id)setDataFrame:(const void *)a3 forPeer:(id)a4
+- (id)setDataFrame:(const void *)frame forPeer:(id)peer
 {
-  v6 = a4;
-  v7 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-  v8 = [v6 isEqual:v7];
+  peerCopy = peer;
+  peerDiscoveryToken = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+  v8 = [peerCopy isEqual:peerDiscoveryToken];
 
   if (v8)
   {
     p_currentFindeeData = &self->_currentFindeeData;
-    v10 = *a3;
-    v11 = *(a3 + 2);
+    v10 = *frame;
+    v11 = *(frame + 2);
     if (self->_currentFindeeData.__engaged_)
     {
-      *&self->_currentFindeeData.var0.__val_.bounded_displacement.__engaged_ = *(a3 + 1);
+      *&self->_currentFindeeData.var0.__val_.bounded_displacement.__engaged_ = *(frame + 1);
       *&self->_currentFindeeData.var0.__val_.measured_displacement.var0.__val_.applicabilityTimestamp = v11;
       *&p_currentFindeeData->var0.__null_state_ = v10;
-      v12 = *(a3 + 3);
-      v13 = *(a3 + 4);
-      v14 = *(a3 + 6);
-      *&self->_currentFindeeData.var0.__val_.measured_velocity_change.var0.__null_state_ = *(a3 + 5);
+      v12 = *(frame + 3);
+      v13 = *(frame + 4);
+      v14 = *(frame + 6);
+      *&self->_currentFindeeData.var0.__val_.measured_velocity_change.var0.__null_state_ = *(frame + 5);
       *&self->_currentFindeeData.var0.__val_.measured_velocity_change.var0.__val_.velocityChangeH1 = v14;
       *&self->_currentFindeeData.var0.__val_.measured_displacement.var0.__val_.displacementH1 = v12;
       *&self->_currentFindeeData.var0.__val_.measured_displacement.var0.__val_.displacementV = v13;
-      v15 = *(a3 + 7);
-      v16 = *(a3 + 8);
-      v17 = *(a3 + 9);
-      *(&self->_currentFindeeData.var0.__val_.location_data.var0.__val_.uncertainty + 2) = *(a3 + 154);
+      v15 = *(frame + 7);
+      v16 = *(frame + 8);
+      v17 = *(frame + 9);
+      *(&self->_currentFindeeData.var0.__val_.location_data.var0.__val_.uncertainty + 2) = *(frame + 154);
       *&self->_currentFindeeData.var0.__val_.mach_absolute_receipt_timestamp.__engaged_ = v16;
       *&self->_currentFindeeData.var0.__val_.location_data.var0.__val_.easterlyOffsetM = v17;
       *&self->_currentFindeeData.var0.__val_.measured_velocity_change.__engaged_ = v15;
@@ -1447,20 +1447,20 @@ LABEL_9:
 
     else
     {
-      *&self->_currentFindeeData.var0.__val_.bounded_displacement.__engaged_ = *(a3 + 1);
+      *&self->_currentFindeeData.var0.__val_.bounded_displacement.__engaged_ = *(frame + 1);
       *&self->_currentFindeeData.var0.__val_.measured_displacement.var0.__val_.applicabilityTimestamp = v11;
       *&p_currentFindeeData->var0.__null_state_ = v10;
-      v20 = *(a3 + 3);
-      v21 = *(a3 + 4);
-      v22 = *(a3 + 6);
-      *&self->_currentFindeeData.var0.__val_.measured_velocity_change.var0.__null_state_ = *(a3 + 5);
+      v20 = *(frame + 3);
+      v21 = *(frame + 4);
+      v22 = *(frame + 6);
+      *&self->_currentFindeeData.var0.__val_.measured_velocity_change.var0.__null_state_ = *(frame + 5);
       *&self->_currentFindeeData.var0.__val_.measured_velocity_change.var0.__val_.velocityChangeH1 = v22;
       *&self->_currentFindeeData.var0.__val_.measured_displacement.var0.__val_.displacementH1 = v20;
       *&self->_currentFindeeData.var0.__val_.measured_displacement.var0.__val_.displacementV = v21;
-      v23 = *(a3 + 7);
-      v24 = *(a3 + 8);
-      v25 = *(a3 + 10);
-      *&self->_currentFindeeData.var0.__val_.location_data.var0.__val_.easterlyOffsetM = *(a3 + 9);
+      v23 = *(frame + 7);
+      v24 = *(frame + 8);
+      v25 = *(frame + 10);
+      *&self->_currentFindeeData.var0.__val_.location_data.var0.__val_.easterlyOffsetM = *(frame + 9);
       *&self->_currentFindeeData.var0.__val_.location_data.__engaged_ = v25;
       *&self->_currentFindeeData.var0.__val_.measured_velocity_change.__engaged_ = v23;
       *&self->_currentFindeeData.var0.__val_.mach_absolute_receipt_timestamp.__engaged_ = v24;
@@ -1809,18 +1809,18 @@ LABEL_32:
   }
 }
 
-- (void)processVisionInput:(id)a3
+- (void)processVisionInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   dispatch_assert_queue_V2(self->_clientQueue);
-  [(NINearbyUpdatesEngine *)self->_updatesEngine acceptVisionInput:v4];
+  [(NINearbyUpdatesEngine *)self->_updatesEngine acceptVisionInput:inputCopy];
 }
 
-- (id)_processFindingEvent:(id)a3
+- (id)_processFindingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_clientQueue);
-  if (!v4)
+  if (!eventCopy)
   {
     __assert_rtn("[NIServerNearbyPeerSession _processFindingEvent:]", "NIServerNearbyPeerSession.mm", 1232, "event");
   }
@@ -1830,14 +1830,14 @@ LABEL_32:
   {
     if ([(NINearbyPeerConfiguration *)configuration useCase])
     {
-      v6 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_EventType"];
-      v7 = [v6 integerValue];
+      v6 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_EventType"];
+      integerValue = [v6 integerValue];
 
-      v8 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_ObjectDiscoveryToken"];
-      v9 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_Location"];
-      v10 = [v4 objectForKeyedSubscript:@"FindingEventDictKey_Heading"];
+      v8 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_ObjectDiscoveryToken"];
+      v9 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_Location"];
+      v10 = [eventCopy objectForKeyedSubscript:@"FindingEventDictKey_Heading"];
       v11 = v10;
-      if (v7 == 2)
+      if (integerValue == 2)
       {
         if (v9)
         {
@@ -1845,8 +1845,8 @@ LABEL_32:
           v66 = v41;
           [v9 longitude];
           v64 = v42;
-          v43 = [v9 timestamp];
-          [v43 timeIntervalSinceReferenceDate];
+          timestamp = [v9 timestamp];
+          [timestamp timeIntervalSinceReferenceDate];
           v62 = v44;
           [v9 course];
           v46 = v45;
@@ -1874,15 +1874,15 @@ LABEL_32:
           v75 = v56;
           v76 = v58;
           v77 = v59;
-          v78 = [v9 floor];
-          v79 = [v9 locationType];
-          v80 = [v9 signalEnvironment];
+          floor = [v9 floor];
+          locationType = [v9 locationType];
+          signalEnvironment = [v9 signalEnvironment];
 
           [(NINearbyUpdatesEngine *)self->_updatesEngine acceptSelfLocationData:&v67];
         }
       }
 
-      else if (v7 == 3)
+      else if (integerValue == 3)
       {
         if (v10)
         {
@@ -1892,8 +1892,8 @@ LABEL_32:
           v36 = v35;
           [v11 headingAccuracy];
           v38 = v37;
-          v39 = [v11 timestamp];
-          [v39 timeIntervalSinceReferenceDate];
+          timestamp2 = [v11 timestamp];
+          [timestamp2 timeIntervalSinceReferenceDate];
           v67 = v34;
           v68 = v36;
           v69 = v38;
@@ -1903,12 +1903,12 @@ LABEL_32:
         }
       }
 
-      else if (v7 == 4)
+      else if (integerValue == 4)
       {
         if (v9)
         {
-          v12 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-          v13 = [v12 isEqual:v8];
+          peerDiscoveryToken = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+          v13 = [peerDiscoveryToken isEqual:v8];
 
           if (v13)
           {
@@ -1916,8 +1916,8 @@ LABEL_32:
             v65 = v14;
             [v9 longitude];
             v63 = v15;
-            v16 = [v9 timestamp];
-            [v16 timeIntervalSinceReferenceDate];
+            timestamp3 = [v9 timestamp];
+            [timestamp3 timeIntervalSinceReferenceDate];
             v61 = v17;
             [v9 course];
             v19 = v18;
@@ -1945,9 +1945,9 @@ LABEL_32:
             v75 = v29;
             v76 = v31;
             v77 = v32;
-            v78 = [v9 floor];
-            v79 = [v9 locationType];
-            v80 = [v9 signalEnvironment];
+            floor = [v9 floor];
+            locationType = [v9 locationType];
+            signalEnvironment = [v9 signalEnvironment];
 
             [(NINearbyUpdatesEngine *)self->_updatesEngine acceptPeerLocationData:&v67 forPeer:v8];
           }
@@ -1969,11 +1969,11 @@ LABEL_32:
   return 0;
 }
 
-- (void)updatesEngine:(id)a3 didUpdateNearbyObjects:(id)a4
+- (void)updatesEngine:(id)engine didUpdateNearbyObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_updatesEngine != v6)
+  engineCopy = engine;
+  objectsCopy = objects;
+  if (self->_updatesEngine != engineCopy)
   {
     __assert_rtn("[NIServerNearbyPeerSession updatesEngine:didUpdateNearbyObjects:]", "NIServerNearbyPeerSession.mm", 1317, "engine == _updatesEngine");
   }
@@ -1984,17 +1984,17 @@ LABEL_32:
   v10[2] = sub_1002BC478;
   v10[3] = &unk_10098A2E8;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = objectsCopy;
+  v9 = objectsCopy;
   dispatch_async(clientQueue, v10);
 }
 
-- (void)updatesEngine:(id)a3 didUpdateAlgorithmConvergenceState:(id)a4 forObject:(id)a5
+- (void)updatesEngine:(id)engine didUpdateAlgorithmConvergenceState:(id)state forObject:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_updatesEngine != v8)
+  engineCopy = engine;
+  stateCopy = state;
+  objectCopy = object;
+  if (self->_updatesEngine != engineCopy)
   {
     __assert_rtn("[NIServerNearbyPeerSession updatesEngine:didUpdateAlgorithmConvergenceState:forObject:]", "NIServerNearbyPeerSession.mm", 1361, "engine == _updatesEngine");
   }
@@ -2005,23 +2005,23 @@ LABEL_32:
   block[2] = sub_1002BC654;
   block[3] = &unk_10099BB28;
   block[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = stateCopy;
+  v16 = objectCopy;
+  v12 = objectCopy;
+  v13 = stateCopy;
   dispatch_async(clientQueue, block);
 }
 
-- (void)updatesEngine:(id)a3 didUpdateFindeeData:(const void *)a4 forToken:(id)a5
+- (void)updatesEngine:(id)engine didUpdateFindeeData:(const void *)data forToken:(id)token
 {
-  v7 = a5;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_clientQueue);
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEBUG))
   {
     sub_1004B8444();
   }
 
-  v8 = [(NIServerNearbyPeerSession *)self setDataFrame:a4 forPeer:v7];
+  v8 = [(NIServerNearbyPeerSession *)self setDataFrame:data forPeer:tokenCopy];
   if (v8)
   {
     v9 = qword_1009F9820;
@@ -2030,18 +2030,18 @@ LABEL_32:
       v10 = [v8 description];
       v11 = v10;
       v12 = 136315138;
-      v13 = [v10 UTF8String];
+      uTF8String = [v10 UTF8String];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#ses-nrby-peer,sent peer data to ranging provider with error: %s", &v12, 0xCu);
     }
   }
 }
 
-- (id)objectFromIdentifier:(unint64_t)a3
+- (id)objectFromIdentifier:(unint64_t)identifier
 {
-  v3 = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
-  if (v3)
+  peerDiscoveryToken = [(NINearbyPeerConfiguration *)self->_configuration peerDiscoveryToken];
+  if (peerDiscoveryToken)
   {
-    v4 = [[NINearbyObject alloc] initWithToken:v3];
+    v4 = [[NINearbyObject alloc] initWithToken:peerDiscoveryToken];
   }
 
   else
@@ -2052,7 +2052,7 @@ LABEL_32:
   return v4;
 }
 
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token
 {
   cachedSolutionMacAddr = self->_cachedSolutionMacAddr;
   v4 = 1;
@@ -2061,11 +2061,11 @@ LABEL_32:
   return result;
 }
 
-- (void)peerInactivityPeriodExceeded:(id)a3
+- (void)peerInactivityPeriodExceeded:(id)exceeded
 {
-  v4 = a3;
+  exceededCopy = exceeded;
   dispatch_assert_queue_V2(self->_clientQueue);
-  [(NIServerNearbyPeerSession *)self _removePeerObject:v4 withReason:0];
+  [(NIServerNearbyPeerSession *)self _removePeerObject:exceededCopy withReason:0];
 }
 
 - (id).cxx_construct

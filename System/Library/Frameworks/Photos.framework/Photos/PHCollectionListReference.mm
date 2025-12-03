@@ -1,25 +1,25 @@
 @interface PHCollectionListReference
-+ (id)referenceForCollectionList:(id)a3;
++ (id)referenceForCollectionList:(id)list;
 - (BOOL)transient;
-- (PHCollectionListReference)initWithDictionary:(id)a3 referenceType:(id)a4;
-- (PHCollectionListReference)initWithLocalIdentifier:(id)a3 libraryURL:(id)a4 collectionListType:(int64_t)a5 collectionListSubtype:(int64_t)a6 collectionReferences:(id)a7 transientIdentifier:(id)a8 transientTitle:(id)a9;
-- (id)_transientCollectionInLibrary:(id)a3;
-- (id)dictionaryForReferenceType:(id)a3;
+- (PHCollectionListReference)initWithDictionary:(id)dictionary referenceType:(id)type;
+- (PHCollectionListReference)initWithLocalIdentifier:(id)identifier libraryURL:(id)l collectionListType:(int64_t)type collectionListSubtype:(int64_t)subtype collectionReferences:(id)references transientIdentifier:(id)transientIdentifier transientTitle:(id)title;
+- (id)_transientCollectionInLibrary:(id)library;
+- (id)dictionaryForReferenceType:(id)type;
 @end
 
 @implementation PHCollectionListReference
 
-- (id)_transientCollectionInLibrary:(id)a3
+- (id)_transientCollectionInLibrary:(id)library
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHCollectionListReference *)self transientCollectionReferences];
-  v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  libraryCopy = library;
+  transientCollectionReferences = [(PHCollectionListReference *)self transientCollectionReferences];
+  v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(transientCollectionReferences, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v5;
+  v6 = transientCollectionReferences;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v7)
   {
@@ -40,7 +40,7 @@
         {
           v26 = v11;
           v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-          v13 = [PHAssetCollection fetchAssetCollectionsForReferences:v12 photoLibrary:v4];
+          v13 = [PHAssetCollection fetchAssetCollectionsForReferences:v12 photoLibrary:libraryCopy];
         }
 
         else
@@ -53,15 +53,15 @@
 
           v25 = v11;
           v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-          v13 = [PHCollectionList fetchCollectionListsForReferences:v12 photoLibrary:v4];
+          v13 = [PHCollectionList fetchCollectionListsForReferences:v12 photoLibrary:libraryCopy];
         }
 
         v14 = v13;
-        v15 = [v13 firstObject];
+        firstObject = [v13 firstObject];
 
-        if (v15)
+        if (firstObject)
         {
-          [v20 addObject:v15];
+          [v20 addObject:firstObject];
         }
       }
 
@@ -71,26 +71,26 @@
     while (v8);
   }
 
-  v16 = [(PHCollectionReference *)self transientTitle];
-  v17 = [(PHCollectionReference *)self transientIdentifier];
-  v18 = [PHCollectionList transientCollectionListWithCollections:v20 title:v16 identifier:v17 photoLibrary:v4];
+  transientTitle = [(PHCollectionReference *)self transientTitle];
+  transientIdentifier = [(PHCollectionReference *)self transientIdentifier];
+  v18 = [PHCollectionList transientCollectionListWithCollections:v20 title:transientTitle identifier:transientIdentifier photoLibrary:libraryCopy];
 
   return v18;
 }
 
 - (BOOL)transient
 {
-  v2 = [(PHCollectionListReference *)self transientCollectionReferences];
-  v3 = v2 != 0;
+  transientCollectionReferences = [(PHCollectionListReference *)self transientCollectionReferences];
+  v3 = transientCollectionReferences != 0;
 
   return v3;
 }
 
-- (id)dictionaryForReferenceType:(id)a3
+- (id)dictionaryForReferenceType:(id)type
 {
   v10.receiver = self;
   v10.super_class = PHCollectionListReference;
-  v4 = [(PHCollectionReference *)&v10 dictionaryForReferenceType:a3];
+  v4 = [(PHCollectionReference *)&v10 dictionaryForReferenceType:type];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PHCollectionListReference collectionListType](self, "collectionListType")}];
   [v4 setObject:v5 forKeyedSubscript:@"collectionListType"];
 
@@ -99,28 +99,28 @@
 
   if ([(PHCollectionListReference *)self transient])
   {
-    v7 = [(PHCollectionListReference *)self transientCollectionReferences];
-    v8 = PHObjectReferenceDictionariesForReferences(v7);
+    transientCollectionReferences = [(PHCollectionListReference *)self transientCollectionReferences];
+    v8 = PHObjectReferenceDictionariesForReferences(transientCollectionReferences);
     [v4 setObject:v8 forKeyedSubscript:@"transientCollectionReferences"];
   }
 
   return v4;
 }
 
-- (PHCollectionListReference)initWithDictionary:(id)a3 referenceType:(id)a4
+- (PHCollectionListReference)initWithDictionary:(id)dictionary referenceType:(id)type
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PHCollectionListReference;
-  v7 = [(PHCollectionReference *)&v17 initWithDictionary:v6 referenceType:a4];
+  v7 = [(PHCollectionReference *)&v17 initWithDictionary:dictionaryCopy referenceType:type];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"collectionListType"];
-    v9 = [v6 objectForKeyedSubscript:@"collectionListSubtype"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"collectionListType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"collectionListSubtype"];
     v7->_collectionListType = [v8 integerValue];
     v7->_collectionListSubtype = [v9 integerValue];
-    v10 = [v6 objectForKeyedSubscript:@"transientCollectionReferences"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"transientCollectionReferences"];
     v18[0] = @"com.apple.photos.object-reference.assetcollection";
     v11 = objc_opt_class();
     v18[1] = @"com.apple.photos.object-reference.collectionlist";
@@ -136,18 +136,18 @@
   return v7;
 }
 
-- (PHCollectionListReference)initWithLocalIdentifier:(id)a3 libraryURL:(id)a4 collectionListType:(int64_t)a5 collectionListSubtype:(int64_t)a6 collectionReferences:(id)a7 transientIdentifier:(id)a8 transientTitle:(id)a9
+- (PHCollectionListReference)initWithLocalIdentifier:(id)identifier libraryURL:(id)l collectionListType:(int64_t)type collectionListSubtype:(int64_t)subtype collectionReferences:(id)references transientIdentifier:(id)transientIdentifier transientTitle:(id)title
 {
-  v15 = a7;
+  referencesCopy = references;
   v21.receiver = self;
   v21.super_class = PHCollectionListReference;
-  v16 = [(PHCollectionReference *)&v21 initWithLocalIdentifier:a3 libraryURL:a4 transientIdentifier:a8 transientTitle:a9];
+  v16 = [(PHCollectionReference *)&v21 initWithLocalIdentifier:identifier libraryURL:l transientIdentifier:transientIdentifier transientTitle:title];
   v17 = v16;
   if (v16)
   {
-    v16->_collectionListType = a5;
-    v16->_collectionListSubtype = a6;
-    v18 = [v15 copy];
+    v16->_collectionListType = type;
+    v16->_collectionListSubtype = subtype;
+    v18 = [referencesCopy copy];
     transientCollectionReferences = v17->_transientCollectionReferences;
     v17->_transientCollectionReferences = v18;
   }
@@ -155,15 +155,15 @@
   return v17;
 }
 
-+ (id)referenceForCollectionList:(id)a3
++ (id)referenceForCollectionList:(id)list
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isTransient])
+  listCopy = list;
+  if ([listCopy isTransient])
   {
-    v5 = [v4 transientIdentifier];
-    v6 = [v4 localizedTitle];
-    v7 = [PHCollectionList fetchCollectionsInCollectionList:v4 options:0];
+    transientIdentifier = [listCopy transientIdentifier];
+    localizedTitle = [listCopy localizedTitle];
+    v7 = [PHCollectionList fetchCollectionsInCollectionList:listCopy options:0];
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
     v21 = 0u;
     v22 = 0u;
@@ -184,8 +184,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v21 + 1) + 8 * i) objectReference];
-          [v8 addObject:v14];
+          objectReference = [*(*(&v21 + 1) + 8 * i) objectReference];
+          [v8 addObject:objectReference];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -197,16 +197,16 @@
 
   else
   {
-    v6 = 0;
-    v5 = 0;
+    localizedTitle = 0;
+    transientIdentifier = 0;
     v8 = 0;
   }
 
-  v15 = [a1 alloc];
-  v16 = [v4 localIdentifier];
-  v17 = [v4 photoLibrary];
-  v18 = [v17 photoLibraryURL];
-  v19 = [v15 initWithLocalIdentifier:v16 libraryURL:v18 collectionListType:objc_msgSend(v4 collectionListSubtype:"collectionListType") collectionReferences:objc_msgSend(v4 transientIdentifier:"collectionListSubtype") transientTitle:{v8, v5, v6}];
+  v15 = [self alloc];
+  localIdentifier = [listCopy localIdentifier];
+  photoLibrary = [listCopy photoLibrary];
+  photoLibraryURL = [photoLibrary photoLibraryURL];
+  v19 = [v15 initWithLocalIdentifier:localIdentifier libraryURL:photoLibraryURL collectionListType:objc_msgSend(listCopy collectionListSubtype:"collectionListType") collectionReferences:objc_msgSend(listCopy transientIdentifier:"collectionListSubtype") transientTitle:{v8, transientIdentifier, localizedTitle}];
 
   return v19;
 }

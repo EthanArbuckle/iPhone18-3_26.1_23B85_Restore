@@ -1,12 +1,12 @@
 @interface SKReach
-+ (id)reachTo:(CGPoint)a3 rootNode:(id)a4 duration:(double)a5;
-+ (id)reachTo:(CGPoint)a3 rootNode:(id)a4 duration:(double)a5 maxZRotationSpeed:(double)a6;
-+ (id)reachTo:(CGPoint)a3 rootNode:(id)a4 velocity:(double)a5;
++ (id)reachTo:(CGPoint)to rootNode:(id)node duration:(double)duration;
++ (id)reachTo:(CGPoint)to rootNode:(id)node duration:(double)duration maxZRotationSpeed:(double)speed;
++ (id)reachTo:(CGPoint)to rootNode:(id)node velocity:(double)velocity;
 - (SKReach)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)solveIKWithTarget:(id)a3;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)solveIKWithTarget:(id)target;
+- (void)updateWithTarget:(id)target forTime:(double)time;
+- (void)willStartWithTarget:(id)target atTime:(double)time;
 @end
 
 @implementation SKReach
@@ -31,75 +31,75 @@
   return v3;
 }
 
-+ (id)reachTo:(CGPoint)a3 rootNode:(id)a4 duration:(double)a5 maxZRotationSpeed:(double)a6
++ (id)reachTo:(CGPoint)to rootNode:(id)node duration:(double)duration maxZRotationSpeed:(double)speed
 {
-  y = a3.y;
-  x = a3.x;
-  v10 = a4;
+  y = to.y;
+  x = to.x;
+  nodeCopy = node;
   v11 = objc_alloc_init(SKReach);
   v11->_goalPosition.x = x;
   v11->_goalPosition.y = y;
-  objc_storeWeak(&v11->_ikRoot, v10);
-  v11->_zRotationSpeed = a6;
-  [(SKAction *)v11 setDuration:a5];
+  objc_storeWeak(&v11->_ikRoot, nodeCopy);
+  v11->_zRotationSpeed = speed;
+  [(SKAction *)v11 setDuration:duration];
 
   return v11;
 }
 
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4
+- (void)willStartWithTarget:(id)target atTime:(double)time
 {
-  v6 = a3;
+  targetCopy = target;
   WeakRetained = objc_loadWeakRetained(&self->_ikRoot);
 
-  if (WeakRetained == v6)
+  if (WeakRetained == targetCopy)
   {
     NSLog(&cfstr_WarningReachto.isa);
   }
 
   v8.receiver = self;
   v8.super_class = SKReach;
-  [(SKAction *)&v8 willStartWithTarget:v6 atTime:a4];
-  [(SKReach *)self solveIKWithTarget:v6];
+  [(SKAction *)&v8 willStartWithTarget:targetCopy atTime:time];
+  [(SKReach *)self solveIKWithTarget:targetCopy];
 }
 
-+ (id)reachTo:(CGPoint)a3 rootNode:(id)a4 duration:(double)a5
++ (id)reachTo:(CGPoint)to rootNode:(id)node duration:(double)duration
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = to.y;
+  x = to.x;
+  nodeCopy = node;
   v9 = objc_alloc_init(SKReach);
   v9->_goalPosition.x = x;
   v9->_goalPosition.y = y;
-  objc_storeWeak(&v9->_ikRoot, v8);
-  [(SKAction *)v9 setDuration:a5];
+  objc_storeWeak(&v9->_ikRoot, nodeCopy);
+  [(SKAction *)v9 setDuration:duration];
 
   return v9;
 }
 
-+ (id)reachTo:(CGPoint)a3 rootNode:(id)a4 velocity:(double)a5
++ (id)reachTo:(CGPoint)to rootNode:(id)node velocity:(double)velocity
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = to.y;
+  x = to.x;
+  nodeCopy = node;
   v9 = objc_alloc_init(SKReach);
   v9->_goalPosition.x = x;
   v9->_goalPosition.y = y;
-  objc_storeWeak(&v9->_ikRoot, v8);
-  v9->_velocity = a5;
+  objc_storeWeak(&v9->_ikRoot, nodeCopy);
+  v9->_velocity = velocity;
   v9->_timeConstrained = 0;
-  v10 = v8;
+  v10 = nodeCopy;
   for (i = v10; ; i = v15)
   {
-    v12 = [i children];
-    v13 = [v12 count];
+    children = [i children];
+    v13 = [children count];
 
     if (!v13)
     {
       break;
     }
 
-    v14 = [i children];
-    v15 = [v14 objectAtIndexedSubscript:0];
+    children2 = [i children];
+    v15 = [children2 objectAtIndexedSubscript:0];
   }
 
   [(SKReach *)v9 solveIKWithTarget:i];
@@ -107,14 +107,14 @@
   return v9;
 }
 
-- (void)solveIKWithTarget:(id)a3
+- (void)solveIKWithTarget:(id)target
 {
-  v150 = a3;
+  targetCopy = target;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   ikChain = self->_ikChain;
   self->_ikChain = v4;
 
-  v6 = v150;
+  v6 = targetCopy;
   v151 = v6;
   if (v6)
   {
@@ -123,16 +123,16 @@
     v9 = v6;
     while (1)
     {
-      v10 = [v9 reachConstraints];
+      reachConstraints = [v9 reachConstraints];
 
-      if (v10)
+      if (reachConstraints)
       {
-        v11 = [v9 reachConstraints];
-        [v11 lowerAngleLimit];
+        reachConstraints2 = [v9 reachConstraints];
+        [reachConstraints2 lowerAngleLimit];
         v13 = v12;
 
-        v14 = [v9 reachConstraints];
-        [v14 upperAngleLimit];
+        reachConstraints3 = [v9 reachConstraints];
+        [reachConstraints3 upperAngleLimit];
         v16 = v15;
 
         [v9 zRotation];
@@ -160,14 +160,14 @@
         {
           if (6.28318531 - v22 <= (v22 - v20))
           {
-            v23 = [v9 reachConstraints];
-            [v23 lowerAngleLimit];
+            reachConstraints4 = [v9 reachConstraints];
+            [reachConstraints4 lowerAngleLimit];
           }
 
           else
           {
-            v23 = [v9 reachConstraints];
-            [v23 upperAngleLimit];
+            reachConstraints4 = [v9 reachConstraints];
+            [reachConstraints4 upperAngleLimit];
           }
 
           [v9 setZRotation:?];
@@ -178,8 +178,8 @@
       v25 = *v8;
       v26 = v8[1];
       WeakRetained = objc_loadWeakRetained(&self->_ikRoot);
-      v28 = [WeakRetained parent];
-      [v9 convertPoint:v28 toNode:{v25, v26}];
+      parent = [WeakRetained parent];
+      [v9 convertPoint:parent toNode:{v25, v26}];
       v30 = v29;
       v32 = v31;
 
@@ -198,11 +198,11 @@
         v41 = COERCE_DOUBLE(vpadd_f32(v40, v40));
         *&v41 = sqrtf(*&v41);
         [(IKLink *)v24 setLength:v41];
-        v42 = [(IKLink *)v7 node];
-        [v42 position];
+        node = [(IKLink *)v7 node];
+        [node position];
         v44 = v43;
-        v45 = [(IKLink *)v7 node];
-        [v45 position];
+        node2 = [(IKLink *)v7 node];
+        [node2 position];
         *&v46 = v44;
         *&v47 = v47;
         [(IKLink *)v24 setSize:v46, v47];
@@ -216,11 +216,11 @@
         break;
       }
 
-      v49 = [v9 parent];
+      parent2 = [v9 parent];
 
-      v9 = v49;
+      v9 = parent2;
       v7 = v24;
-      if (!v49)
+      if (!parent2)
       {
         goto LABEL_25;
       }
@@ -246,12 +246,12 @@ LABEL_25:
   [v52 setLength:0.0];
   v152 = v52;
   v53 = objc_loadWeakRetained(&self->_ikRoot);
-  v54 = [v53 parent];
+  parent3 = [v53 parent];
   x = self->_goalPosition.x;
   y = self->_goalPosition.y;
   v57 = objc_loadWeakRetained(&self->_ikRoot);
-  v58 = [v57 scene];
-  [v54 convertPoint:v58 fromNode:{x, y}];
+  scene = [v57 scene];
+  [parent3 convertPoint:scene fromNode:{x, y}];
   v155 = v60;
   v160 = v59;
 
@@ -392,14 +392,14 @@ LABEL_41:
   if (!self->_timeConstrained)
   {
     v110 = objc_loadWeakRetained(&self->_ikRoot);
-    v111 = [v110 parent];
-    v112 = [v152 node];
-    [v112 position];
+    parent4 = [v110 parent];
+    node3 = [v152 node];
+    [node3 position];
     v114 = v113;
     v116 = v115;
-    v117 = [v152 node];
-    v118 = [v117 parent];
-    [v111 convertPoint:v118 fromNode:{v114, v116}];
+    node4 = [v152 node];
+    parent5 = [node4 parent];
+    [parent4 convertPoint:parent5 fromNode:{v114, v116}];
     v157 = v120;
     v163 = v119;
 
@@ -462,12 +462,12 @@ LABEL_41:
 LABEL_54:
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
   v20.receiver = self;
   v20.super_class = SKReach;
-  [(SKAction *)&v20 updateWithTarget:a3 forTime:?];
-  [(SKAction *)self ratioForTime:a4];
+  [(SKAction *)&v20 updateWithTarget:target forTime:?];
+  [(SKAction *)self ratioForTime:time];
   v7 = v6;
   v8 = [(NSMutableArray *)self->_ikChain count];
   if (v8)
@@ -484,8 +484,8 @@ LABEL_54:
       v16 = v15;
       [v12 angleInitial];
       v18 = v17;
-      v19 = [v12 node];
-      [v19 setZRotation:(v14 + (v11 * (v16 - v18)))];
+      node = [v12 node];
+      [node setZRotation:(v14 + (v11 * (v16 - v18)))];
 
       ++v10;
     }
@@ -494,11 +494,11 @@ LABEL_54:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SKReach;
-  v4 = [(SKAction *)&v9 copyWithZone:a3];
+  v4 = [(SKAction *)&v9 copyWithZone:zone];
   WeakRetained = objc_loadWeakRetained(&self->_ikRoot);
   objc_storeWeak(v4 + 2, WeakRetained);
 

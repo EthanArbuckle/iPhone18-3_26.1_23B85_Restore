@@ -1,24 +1,24 @@
 @interface _UIContextMenuUIControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)platterContainerView;
 - (uint64_t)_axPerformEscape;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_createMenuViewIfNecessaryForMenu:(id)a3;
-- (void)contextMenuView:(id)a3 didSelectElement:(id)a4;
+- (void)_createMenuViewIfNecessaryForMenu:(id)menu;
+- (void)contextMenuView:(id)view didSelectElement:(id)element;
 - (void)dismissalTransitionDidEnd;
 - (void)presentationTransitionDidEnd;
 @end
 
 @implementation _UIContextMenuUIControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = @"_UIContextMenuUIController";
   v4 = @"platterContainerView";
   v5 = "@";
@@ -43,10 +43,10 @@
 
 - (uint64_t)_axPerformEscape
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = MEMORY[0x29EDC9748](v3);
+    v2 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     v4 = 1;
     objc_storeStrong(&v2, 0);
@@ -62,13 +62,13 @@
 
 - (id)platterContainerView
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v12.receiver = self;
   v12.super_class = _UIContextMenuUIControllerAccessibility;
   v13[0] = [(_UIContextMenuUIControllerAccessibility *)&v12 platterContainerView];
   [v13[0] setAccessibilityViewIsModal:1];
-  objc_initWeak(&location, v14);
+  objc_initWeak(&location, selfCopy);
   v4 = v13[0];
   v5 = MEMORY[0x29EDCA5F8];
   v6 = -1073741824;
@@ -87,12 +87,12 @@
 
 - (void)presentationTransitionDidEnd
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
   v9.receiver = self;
   v9.super_class = _UIContextMenuUIControllerAccessibility;
   [(_UIContextMenuUIControllerAccessibility *)&v9 presentationTransitionDidEnd];
-  v2 = [(_UIContextMenuUIControllerAccessibility *)v11 safeValueForKey:@"platterContainerView"];
+  v2 = [(_UIContextMenuUIControllerAccessibility *)selfCopy safeValueForKey:@"platterContainerView"];
   [*MEMORY[0x29EDC8008] _accessibilitySetContainerToStopVisibilityCheck:?];
   MEMORY[0x29EDC9740](v2);
   v3 = MEMORY[0x29EDCA5F8];
@@ -100,7 +100,7 @@
   v5 = 0;
   v6 = __71___UIContextMenuUIControllerAccessibility_presentationTransitionDidEnd__block_invoke;
   v7 = &unk_29F30C7C8;
-  v8 = MEMORY[0x29EDC9748](v11);
+  v8 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThreadAfterDelay();
   MEMORY[0x29ED3DFA0](*MEMORY[0x29EDC7F10]);
   objc_storeStrong(&v8, 0);
@@ -108,7 +108,7 @@
 
 - (void)dismissalTransitionDidEnd
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIContextMenuUIControllerAccessibility;
@@ -120,20 +120,20 @@
 - (void)_accessibilityLoadAccessibilityInformation
 {
   v32[1] = *MEMORY[0x29EDCA608];
-  v31 = self;
+  selfCopy = self;
   v30 = a2;
   v29.receiver = self;
   v29.super_class = _UIContextMenuUIControllerAccessibility;
   [(_UIContextMenuUIControllerAccessibility *)&v29 _accessibilityLoadAccessibilityInformation];
-  v11 = [(_UIContextMenuUIControllerAccessibility *)v31 safeValueForKey:@"menuConfiguration"];
+  v11 = [(_UIContextMenuUIControllerAccessibility *)selfCopy safeValueForKey:@"menuConfiguration"];
   v28 = [v11 safeValueForKey:@"menu"];
   *&v2 = MEMORY[0x29EDC9740](v11).n128_u64[0];
-  v27 = [(_UIContextMenuUIControllerAccessibility *)v31 safeValueForKey:@"platterContainerView", v2];
+  v27 = [(_UIContextMenuUIControllerAccessibility *)selfCopy safeValueForKey:@"platterContainerView", v2];
   if (v27)
   {
-    v10 = [v28 accessibilityIdentifier];
+    accessibilityIdentifier = [v28 accessibilityIdentifier];
     [v27 setAccessibilityIdentifier:?];
-    MEMORY[0x29EDC9740](v10);
+    MEMORY[0x29EDC9740](accessibilityIdentifier);
     v26 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:v27];
     objc_initWeak(&location, v27);
     v9 = v26;
@@ -155,7 +155,7 @@
     [v7 _accessibilitySetAdditionalElements:?];
     *&v4 = MEMORY[0x29EDC9740](v6).n128_u64[0];
     [v26 _accessibilitySetSortPriority:{-1, v4}];
-    objc_initWeak(&from, v31);
+    objc_initWeak(&from, selfCopy);
     v5 = v26;
     v12 = MEMORY[0x29EDCA5F8];
     v13 = -1073741824;
@@ -175,28 +175,28 @@
   objc_storeStrong(&v28, 0);
 }
 
-- (void)_createMenuViewIfNecessaryForMenu:(id)a3
+- (void)_createMenuViewIfNecessaryForMenu:(id)menu
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, menu);
+  v3.receiver = selfCopy;
   v3.super_class = _UIContextMenuUIControllerAccessibility;
   [(_UIContextMenuUIControllerAccessibility *)&v3 _createMenuViewIfNecessaryForMenu:location[0]];
-  [(_UIContextMenuUIControllerAccessibility *)v5 _accessibilityLoadAccessibilityInformation];
+  [(_UIContextMenuUIControllerAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
   objc_storeStrong(location, 0);
 }
 
-- (void)contextMenuView:(id)a3 didSelectElement:(id)a4
+- (void)contextMenuView:(id)view didSelectElement:(id)element
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5.receiver = v8;
+  objc_storeStrong(&v6, element);
+  v5.receiver = selfCopy;
   v5.super_class = _UIContextMenuUIControllerAccessibility;
   [(_UIContextMenuUIControllerAccessibility *)&v5 contextMenuView:location[0] didSelectElement:v6];
   if (([v6 safeBoolForKey:@"_isLeaf"] & 1) == 0)

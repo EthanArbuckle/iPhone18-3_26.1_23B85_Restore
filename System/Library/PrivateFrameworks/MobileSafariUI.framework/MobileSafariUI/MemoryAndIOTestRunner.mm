@@ -1,32 +1,32 @@
 @interface MemoryAndIOTestRunner
-- (MemoryAndIOTestRunner)initWithTestName:(id)a3 browserController:(id)a4 type:(unint64_t)a5;
+- (MemoryAndIOTestRunner)initWithTestName:(id)name browserController:(id)controller type:(unint64_t)type;
 - (NSURL)testPageURL;
 - (unint64_t)_collectCurrentLiveTabs;
-- (void)_collectIOUsageInfo:(id)a3;
-- (void)_collectMemoryUsageInfo:(id)a3;
+- (void)_collectIOUsageInfo:(id)info;
+- (void)_collectMemoryUsageInfo:(id)info;
 - (void)_collectTestResults;
 - (void)_openNewTabAndLoadTestURL;
-- (void)runTestWithCompletion:(id)a3;
+- (void)runTestWithCompletion:(id)completion;
 @end
 
 @implementation MemoryAndIOTestRunner
 
-- (MemoryAndIOTestRunner)initWithTestName:(id)a3 browserController:(id)a4 type:(unint64_t)a5
+- (MemoryAndIOTestRunner)initWithTestName:(id)name browserController:(id)controller type:(unint64_t)type
 {
-  v9 = a3;
-  v10 = a4;
+  nameCopy = name;
+  controllerCopy = controller;
   v30.receiver = self;
   v30.super_class = MemoryAndIOTestRunner;
   v11 = [(MemoryAndIOTestRunner *)&v30 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_browserController, v10);
-    objc_storeStrong(&v12->_testName, a3);
-    v12->_type = a5;
-    if (a5)
+    objc_storeWeak(&v11->_browserController, controllerCopy);
+    objc_storeStrong(&v12->_testName, name);
+    v12->_type = type;
+    if (type)
     {
-      if (a5 != 1)
+      if (type != 1)
       {
 LABEL_7:
         v24 = 0;
@@ -35,8 +35,8 @@ LABEL_7:
         v27 = __Block_byref_object_copy__6;
         v28 = __Block_byref_object_dispose__6;
         v29 = 0;
-        v14 = [MEMORY[0x277CCAB98] defaultCenter];
-        v15 = [MEMORY[0x277CCABD8] mainQueue];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        mainQueue = [MEMORY[0x277CCABD8] mainQueue];
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __65__MemoryAndIOTestRunner_initWithTestName_browserController_type___block_invoke;
@@ -44,7 +44,7 @@ LABEL_7:
         v23 = &v24;
         v16 = v12;
         v22 = v16;
-        v17 = [v14 addObserverForName:@"WebProcessDidCrashNotification" object:0 queue:v15 usingBlock:v21];
+        v17 = [defaultCenter addObserverForName:@"WebProcessDidCrashNotification" object:0 queue:mainQueue usingBlock:v21];
         v18 = v25[5];
         v25[5] = v17;
 
@@ -92,9 +92,9 @@ uint64_t __65__MemoryAndIOTestRunner_initWithTestName_browserController_type___b
   return result;
 }
 
-- (void)runTestWithCompletion:(id)a3
+- (void)runTestWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v4;
 
@@ -104,22 +104,22 @@ uint64_t __65__MemoryAndIOTestRunner_initWithTestName_browserController_type___b
 - (void)_openNewTabAndLoadTestURL
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
+  tabController = [WeakRetained tabController];
 
-  [v4 openNewTabWithOptions:0 completionHandler:0];
-  v5 = [v4 tabDocuments];
-  v6 = [v5 lastObject];
+  [tabController openNewTabWithOptions:0 completionHandler:0];
+  tabDocuments = [tabController tabDocuments];
+  lastObject = [tabDocuments lastObject];
 
-  v7 = [(MemoryAndIOTestRunner *)self testPageURL];
+  testPageURL = [(MemoryAndIOTestRunner *)self testPageURL];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke;
   v9[3] = &unk_2781D81D8;
   v9[4] = self;
-  [v6 loadTestURL:v7 withInjectedBundle:1 withCallback:v9];
+  [lastObject loadTestURL:testPageURL withInjectedBundle:1 withCallback:v9];
 
-  v8 = [v6 pageLoadStatistics];
-  [v8 setPageLoadingTimeoutInterval:5.0];
+  pageLoadStatistics = [lastObject pageLoadStatistics];
+  [pageLoadStatistics setPageLoadingTimeoutInterval:5.0];
 }
 
 void __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke(uint64_t a1)
@@ -166,9 +166,9 @@ void __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke(uint64_
   return v2;
 }
 
-- (void)_collectMemoryUsageInfo:(id)a3
+- (void)_collectMemoryUsageInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v32 = 0;
   v30 = 0u;
   v31 = 0u;
@@ -197,28 +197,28 @@ void __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke(uint64_
   if (!task_info(*MEMORY[0x277D85F48], 0x16u, task_info_out, &task_info_outCnt))
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(&v10 + 1) >> 20];
-    [v3 setObject:v4 forKeyedSubscript:@"residentPeak"];
+    [infoCopy setObject:v4 forKeyedSubscript:@"residentPeak"];
 
-    [v3 setObject:@"MB" forKeyedSubscript:@"residentPeakUnits"];
+    [infoCopy setObject:@"MB" forKeyedSubscript:@"residentPeakUnits"];
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v10 >> 20];
-    [v3 setObject:v5 forKeyedSubscript:@"residentMemory"];
+    [infoCopy setObject:v5 forKeyedSubscript:@"residentMemory"];
 
-    [v3 setObject:@"MB" forKeyedSubscript:@"residentMemoryUnits"];
+    [infoCopy setObject:@"MB" forKeyedSubscript:@"residentMemoryUnits"];
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v18 >> 20];
-    [v3 setObject:v6 forKeyedSubscript:@"physicMemory"];
+    [infoCopy setObject:v6 forKeyedSubscript:@"physicMemory"];
 
-    [v3 setObject:@"MB" forKeyedSubscript:@"physicMemoryUnits"];
+    [infoCopy setObject:@"MB" forKeyedSubscript:@"physicMemoryUnits"];
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*(&v12 + 1) >> 20];
-    [v3 setObject:v7 forKeyedSubscript:@"internalPeak"];
+    [infoCopy setObject:v7 forKeyedSubscript:@"internalPeak"];
 
-    [v3 setObject:@"MB" forKeyedSubscript:@"internalPeakUnits"];
+    [infoCopy setObject:@"MB" forKeyedSubscript:@"internalPeakUnits"];
   }
 }
 
-- (void)_collectIOUsageInfo:(id)a3
+- (void)_collectIOUsageInfo:(id)info
 {
   v4 = MEMORY[0x277CCABB0];
-  v10 = a3;
+  infoCopy = info;
   v5 = totalWrites();
   writesAtStart = self->writesAtStart;
   v7 = __OFSUB__(v5, writesAtStart);
@@ -229,9 +229,9 @@ void __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke(uint64_
   }
 
   v9 = [v4 numberWithInt:(v8 >> 10)];
-  [v10 setObject:v9 forKeyedSubscript:@"logicalWrites"];
+  [infoCopy setObject:v9 forKeyedSubscript:@"logicalWrites"];
 
-  [v10 setObject:@"KB" forKeyedSubscript:@"logicalWritesUnits"];
+  [infoCopy setObject:@"KB" forKeyedSubscript:@"logicalWritesUnits"];
 }
 
 - (unint64_t)_collectCurrentLiveTabs
@@ -242,10 +242,10 @@ void __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke(uint64_
   v16 = 0u;
   v17 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 tabDocuments];
+  tabController = [WeakRetained tabController];
+  tabDocuments = [tabController tabDocuments];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [tabDocuments countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -257,7 +257,7 @@ void __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke(uint64_
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tabDocuments);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -267,7 +267,7 @@ void __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke(uint64_
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [tabDocuments countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -290,28 +290,28 @@ void __50__MemoryAndIOTestRunner__openNewTabAndLoadTestURL__block_invoke(uint64_
 
 - (void)_collectTestResults
 {
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_liveTabs];
-  [v10 setObject:v3 forKeyedSubscript:@"liveTabs"];
+  [dictionary setObject:v3 forKeyedSubscript:@"liveTabs"];
 
-  [v10 setObject:@"Tabs" forKeyedSubscript:@"liveTabsUnits"];
+  [dictionary setObject:@"Tabs" forKeyedSubscript:@"liveTabsUnits"];
   v4 = MEMORY[0x277CCABB0];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained tabController];
-  v7 = [v6 tabDocuments];
-  v8 = [v4 numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
-  [v10 setObject:v8 forKeyedSubscript:@"allTabs"];
+  tabController = [WeakRetained tabController];
+  tabDocuments = [tabController tabDocuments];
+  v8 = [v4 numberWithUnsignedInteger:{objc_msgSend(tabDocuments, "count")}];
+  [dictionary setObject:v8 forKeyedSubscript:@"allTabs"];
 
-  [v10 setObject:@"Tabs" forKeyedSubscript:@"allTabsUnits"];
+  [dictionary setObject:@"Tabs" forKeyedSubscript:@"allTabsUnits"];
   type = self->_type;
   if (type == 1)
   {
-    [(MemoryAndIOTestRunner *)self _collectIOUsageInfo:v10];
+    [(MemoryAndIOTestRunner *)self _collectIOUsageInfo:dictionary];
   }
 
   else if (!type)
   {
-    [(MemoryAndIOTestRunner *)self _collectMemoryUsageInfo:v10];
+    [(MemoryAndIOTestRunner *)self _collectMemoryUsageInfo:dictionary];
   }
 
   (*(self->_completionHandler + 2))();

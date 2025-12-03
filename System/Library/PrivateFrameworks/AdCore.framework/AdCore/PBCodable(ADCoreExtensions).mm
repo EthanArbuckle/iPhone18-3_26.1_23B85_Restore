@@ -6,10 +6,10 @@
 
 - (id)AD_jsonString
 {
-  v1 = [a1 dictionaryRepresentation];
-  v2 = [v1 AD_dictionaryForJSON];
+  dictionaryRepresentation = [self dictionaryRepresentation];
+  aD_dictionaryForJSON = [dictionaryRepresentation AD_dictionaryForJSON];
 
-  v3 = [v2 AD_jsonStringWithPrettyPrint:1];
+  v3 = [aD_dictionaryForJSON AD_jsonStringWithPrettyPrint:1];
 
   return v3;
 }

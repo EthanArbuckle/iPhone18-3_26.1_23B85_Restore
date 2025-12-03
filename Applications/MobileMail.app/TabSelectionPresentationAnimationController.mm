@@ -1,54 +1,54 @@
 @interface TabSelectionPresentationAnimationController
-- (TabSelectionPresentationAnimationController)initWithSourceView:(id)a3;
-- (void)animateTransition:(id)a3;
+- (TabSelectionPresentationAnimationController)initWithSourceView:(id)view;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation TabSelectionPresentationAnimationController
 
-- (TabSelectionPresentationAnimationController)initWithSourceView:(id)a3
+- (TabSelectionPresentationAnimationController)initWithSourceView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = TabSelectionPresentationAnimationController;
   v6 = [(TabSelectionPresentationAnimationController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceView, a3);
+    objc_storeStrong(&v6->_sourceView, view);
   }
 
   return v7;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  [(TabSelectionPresentationAnimationController *)self transitionDuration:v4];
+  transitionCopy = transition;
+  [(TabSelectionPresentationAnimationController *)self transitionDuration:transitionCopy];
   v6 = v5;
-  v7 = [v4 viewForKey:UITransitionContextToViewKey];
-  v8 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v9 = [v4 containerView];
-  v10 = [(TabSelectionPresentationAnimationController *)self sourceView];
-  v11 = [v10 window];
-  v12 = [(TabSelectionPresentationAnimationController *)self sourceView];
-  [v12 frame];
-  [v11 convertRect:v9 toView:?];
+  v7 = [transitionCopy viewForKey:UITransitionContextToViewKey];
+  v8 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  containerView = [transitionCopy containerView];
+  sourceView = [(TabSelectionPresentationAnimationController *)self sourceView];
+  window = [sourceView window];
+  sourceView2 = [(TabSelectionPresentationAnimationController *)self sourceView];
+  [sourceView2 frame];
+  [window convertRect:containerView toView:?];
   x = v13;
   y = v15;
   width = v17;
   height = v19;
 
-  v21 = [(TabSelectionPresentationAnimationController *)self sourceView];
-  v22 = [v21 superview];
+  sourceView3 = [(TabSelectionPresentationAnimationController *)self sourceView];
+  superview = [sourceView3 superview];
   objc_opt_class();
-  LOBYTE(v12) = objc_opt_isKindOfClass();
+  LOBYTE(sourceView2) = objc_opt_isKindOfClass();
 
-  if (v12)
+  if (sourceView2)
   {
-    v23 = [(TabSelectionPresentationAnimationController *)self sourceView];
-    v24 = [v23 superview];
+    sourceView4 = [(TabSelectionPresentationAnimationController *)self sourceView];
+    superview2 = [sourceView4 superview];
 
-    [v24 contentOffset];
+    [superview2 contentOffset];
     v26 = -v25;
     v28 = -v27;
     v108.origin.x = x;
@@ -72,11 +72,11 @@
   v103 = v29;
   v100 = v29;
   v101 = v29;
-  v30 = [(TabSelectionPresentationAnimationController *)self sourceView];
-  v31 = v30;
-  if (v30)
+  sourceView5 = [(TabSelectionPresentationAnimationController *)self sourceView];
+  v31 = sourceView5;
+  if (sourceView5)
   {
-    [v30 transform3D];
+    [sourceView5 transform3D];
   }
 
   else
@@ -91,25 +91,25 @@
     v101 = 0u;
   }
 
-  v32 = [(TabSelectionPresentationAnimationController *)self sourceView];
-  v33 = [v32 layer];
+  sourceView6 = [(TabSelectionPresentationAnimationController *)self sourceView];
+  layer = [sourceView6 layer];
   v65 = v6;
-  [v33 anchorPoint];
+  [layer anchorPoint];
   v35 = v34;
   v37 = v36;
 
-  [v4 finalFrameForViewController:v8];
+  [transitionCopy finalFrameForViewController:v8];
   v63 = v39;
   v64 = v38;
   v41 = v40;
   v43 = v42;
-  v44 = [(TabSelectionPresentationAnimationController *)self sourceView];
-  v45 = [v44 superview];
-  v46 = [v45 layer];
-  v47 = v46;
-  if (v46)
+  sourceView7 = [(TabSelectionPresentationAnimationController *)self sourceView];
+  superview3 = [sourceView7 superview];
+  layer2 = [superview3 layer];
+  v47 = layer2;
+  if (layer2)
   {
-    [v46 sublayerTransform];
+    [layer2 sublayerTransform];
   }
 
   else
@@ -124,7 +124,7 @@
     v93 = 0u;
   }
 
-  v48 = [v9 layer];
+  layer3 = [containerView layer];
   v88 = v96;
   v89 = v97;
   v90 = v98;
@@ -133,14 +133,14 @@
   v85 = v93;
   v86 = v94;
   v87 = v95;
-  [v48 setSublayerTransform:&v84];
+  [layer3 setSublayerTransform:&v84];
 
-  [v9 addSubview:v7];
-  v49 = [(TabSelectionPresentationAnimationController *)self sourceView];
-  [v49 setHidden:1];
+  [containerView addSubview:v7];
+  sourceView8 = [(TabSelectionPresentationAnimationController *)self sourceView];
+  [sourceView8 setHidden:1];
 
-  v50 = [v7 layer];
-  [v50 setAnchorPoint:{v35, v37}];
+  layer4 = [v7 layer];
+  [layer4 setAnchorPoint:{v35, v37}];
 
   v88 = v104;
   v89 = v105;
@@ -182,7 +182,7 @@
   v66[1] = 3221225472;
   v66[2] = sub_100251584;
   v66[3] = &unk_10064FC70;
-  v61 = v4;
+  v61 = transitionCopy;
   v67 = v61;
   v62 = v8;
   v68 = v62;

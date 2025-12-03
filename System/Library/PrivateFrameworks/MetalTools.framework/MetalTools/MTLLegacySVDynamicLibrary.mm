@@ -1,16 +1,16 @@
 @interface MTLLegacySVDynamicLibrary
-- (MTLLegacySVDynamicLibrary)initWithDynamicLibrary:(id)a3 device:(id)a4;
+- (MTLLegacySVDynamicLibrary)initWithDynamicLibrary:(id)library device:(id)device;
 - (void)dealloc;
 - (void)prepareForUsage;
 @end
 
 @implementation MTLLegacySVDynamicLibrary
 
-- (MTLLegacySVDynamicLibrary)initWithDynamicLibrary:(id)a3 device:(id)a4
+- (MTLLegacySVDynamicLibrary)initWithDynamicLibrary:(id)library device:(id)device
 {
   v5.receiver = self;
   v5.super_class = MTLLegacySVDynamicLibrary;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:library parent:device];
 }
 
 - (void)prepareForUsage
@@ -25,9 +25,9 @@
     }
 
     imageData = self->_imageData;
-    v6 = [(MTLDebugInstrumentationData *)[(MTLToolsDynamicLibrary *)self debugInstrumentationData] globalConstantsData];
+    globalConstantsData = [(MTLDebugInstrumentationData *)[(MTLToolsDynamicLibrary *)self debugInstrumentationData] globalConstantsData];
 
-    [(MTLLegacySVImageData *)imageData setConstantData:v6];
+    [(MTLLegacySVImageData *)imageData setConstantData:globalConstantsData];
   }
 }
 

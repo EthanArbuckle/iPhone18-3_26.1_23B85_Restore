@@ -9,40 +9,40 @@
 
 - (uint64_t)_sf_longPressEnabled
 {
-  v1 = [a1 _gestureRecognizers];
-  v2 = [v1 firstObject];
+  _gestureRecognizers = [self _gestureRecognizers];
+  firstObject = [_gestureRecognizers firstObject];
 
-  v3 = [v2 isEnabled];
-  return v3;
+  isEnabled = [firstObject isEnabled];
+  return isEnabled;
 }
 
 - (void)_sf_setLongPressEnabled:()SafariServicesExtras
 {
-  v4 = [a1 _gestureRecognizers];
-  v5 = [v4 firstObject];
+  _gestureRecognizers = [self _gestureRecognizers];
+  firstObject = [_gestureRecognizers firstObject];
 
-  [v5 setEnabled:a3];
+  [firstObject setEnabled:a3];
 }
 
 - (void)_sf_setTarget:()SafariServicesExtras touchDownAction:longPressAction:
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v6 = [SFBarButtonItemLongPressGestureRecognizer gestureRecognizerTarget:a3 longPressAction:a5 touchDownAction:a4 attachedToBarButtonItem:a1];
+  v6 = [SFBarButtonItemLongPressGestureRecognizer gestureRecognizerTarget:a3 longPressAction:a5 touchDownAction:a4 attachedToBarButtonItem:self];
   v8[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  [a1 _setGestureRecognizers:v7];
+  [self _setGestureRecognizers:v7];
 }
 
 - (void)_sf_test_simulateLongPressInvocation
 {
-  v1 = [a1 _gestureRecognizers];
-  v3 = [v1 firstObject];
+  _gestureRecognizers = [self _gestureRecognizers];
+  firstObject = [_gestureRecognizers firstObject];
 
-  v2 = v3;
-  if (v3)
+  v2 = firstObject;
+  if (firstObject)
   {
-    [v3 _invokeLongPressAction];
-    v2 = v3;
+    [firstObject _invokeLongPressAction];
+    v2 = firstObject;
   }
 }
 

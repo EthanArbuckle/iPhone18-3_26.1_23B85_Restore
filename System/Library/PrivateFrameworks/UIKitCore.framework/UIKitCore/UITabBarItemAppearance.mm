@@ -1,15 +1,15 @@
 @interface UITabBarItemAppearance
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UITabBarAppearance)_owningAppearance;
 - (UITabBarItemAppearance)copy;
 - (UITabBarItemAppearance)initWithCoder:(NSCoder *)coder;
 - (UITabBarItemAppearance)initWithStyle:(UITabBarItemAppearanceStyle)style;
-- (id)_initWithTabBarItemData:(id)a3;
-- (id)_proxyForState:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithTabBarItemData:(id)data;
+- (id)_proxyForState:(int64_t)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_updateDataTo:(id)a3;
-- (void)_writeToStorage:(id)a3;
+- (void)_updateDataTo:(id)to;
+- (void)_writeToStorage:(id)storage;
 - (void)configureWithDefaultForStyle:(UITabBarItemAppearanceStyle)style;
 - (void)dealloc;
 @end
@@ -43,13 +43,13 @@
   return v4;
 }
 
-- (id)_initWithTabBarItemData:(id)a3
+- (id)_initWithTabBarItemData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [(UITabBarItemAppearance *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dataCopy copy];
     data = v5->_data;
     v5->_data = v6;
   }
@@ -80,7 +80,7 @@
   return [(UITabBarItemAppearance *)&v3 copy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
@@ -99,16 +99,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (self == v4)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.isa;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && [(UITabBarItemAppearance *)v4 isMemberOfClass:objc_opt_class()])
+  else if (equalCopy && [(UITabBarItemAppearance *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v6 = [p_isa[6] isEqual:self->_data];
   }
@@ -121,47 +121,47 @@
   return v6;
 }
 
-- (void)_updateDataTo:(id)a3
+- (void)_updateDataTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   data = self->_data;
-  if (data != v5)
+  if (data != toCopy)
   {
-    v9 = v5;
+    v9 = toCopy;
     v7 = data;
-    objc_storeStrong(&self->_data, a3);
+    objc_storeStrong(&self->_data, to);
     for (i = 8; i != 48; i += 8)
     {
       [*(&self->super.isa + i) _setData:self->_data];
     }
 
-    v5 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)_writeToStorage:(id)a3
+- (void)_writeToStorage:(id)storage
 {
   data = self->_data;
-  v5 = a3;
-  v6 = [(_UIBarAppearanceData *)data writableInstance];
-  [(UITabBarItemAppearance *)self _updateDataTo:v6];
+  storageCopy = storage;
+  writableInstance = [(_UIBarAppearanceData *)data writableInstance];
+  [(UITabBarItemAppearance *)self _updateDataTo:writableInstance];
 
-  v5[2](v5);
+  storageCopy[2](storageCopy);
   WeakRetained = objc_loadWeakRetained(&self->_owningAppearance);
   [WeakRetained _tabBarItemDataChanged:self];
 }
 
-- (id)_proxyForState:(int64_t)a3
+- (id)_proxyForState:(int64_t)state
 {
   states = self->_states;
-  v5 = self->_states[a3];
+  v5 = self->_states[state];
   if (!v5)
   {
-    v7 = [[UITabBarItemStateAppearance alloc] _initWithOwner:self data:self->_data state:a3];
-    v8 = states[a3];
-    states[a3] = v7;
+    v7 = [[UITabBarItemStateAppearance alloc] _initWithOwner:self data:self->_data state:state];
+    v8 = states[state];
+    states[state] = v7;
 
-    v5 = states[a3];
+    v5 = states[state];
   }
 
   return v5;

@@ -8,18 +8,18 @@
 
 - (uint64_t)bs_bytesForMIG
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 bytes];
+  return [selfCopy bytes];
 }
 
 - (unint64_t)bs_lengthForMIG
 {
-  v4 = [a1 length];
+  v4 = [self length];
   if (HIDWORD(v4))
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"NSData+MIG.m" lineNumber:39 description:{@"length is too long : %llu", v4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSData+MIG.m" lineNumber:39 description:{@"length is too long : %llu", v4}];
   }
 
   return v4;

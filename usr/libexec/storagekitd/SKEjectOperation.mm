@@ -1,23 +1,23 @@
 @interface SKEjectOperation
 - (BOOL)run;
-- (SKEjectOperation)initWithDisk:(id)a3 withCompletionBlock:(id)a4;
+- (SKEjectOperation)initWithDisk:(id)disk withCompletionBlock:(id)block;
 - (id)_wholeDisksToEject;
 - (id)description;
-- (void)_deepUnmountWithWholeDisk:(id)a3;
+- (void)_deepUnmountWithWholeDisk:(id)disk;
 @end
 
 @implementation SKEjectOperation
 
-- (SKEjectOperation)initWithDisk:(id)a3 withCompletionBlock:(id)a4
+- (SKEjectOperation)initWithDisk:(id)disk withCompletionBlock:(id)block
 {
-  v6 = a3;
+  diskCopy = disk;
   v14.receiver = self;
   v14.super_class = SKEjectOperation;
-  v7 = [(SKBaseDiskArbOperation *)&v14 initWithTarget:v6 options:&__NSDictionary0__struct callbackBlock:a4];
+  v7 = [(SKBaseDiskArbOperation *)&v14 initWithTarget:diskCopy options:&__NSDictionary0__struct callbackBlock:block];
   if (v7)
   {
     v8 = +[SKDaemonManager sharedManager];
-    v9 = [v8 wholeDiskForDisk:v6];
+    v9 = [v8 wholeDiskForDisk:diskCopy];
 
     if (v9)
     {
@@ -26,7 +26,7 @@
 
     else
     {
-      v10 = v6;
+      v10 = diskCopy;
     }
 
     v11 = v10;
@@ -41,21 +41,21 @@
 {
   v3 = +[SKDaemonManager sharedManager];
   v4 = +[NSMutableSet set];
-  v5 = [(SKEjectOperation *)self diskToEject];
-  v6 = [(SKEjectOperation *)self diskToEject];
+  diskToEject = [(SKEjectOperation *)self diskToEject];
+  diskToEject2 = [(SKEjectOperation *)self diskToEject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v8 = [(SKEjectOperation *)self diskToEject];
-  v9 = v8;
+  diskToEject3 = [(SKEjectOperation *)self diskToEject];
+  v9 = diskToEject3;
   if (isKindOfClass)
   {
-    v10 = [v8 physicalStores];
+    physicalStores = [diskToEject3 physicalStores];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    v11 = [physicalStores countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v11)
     {
       v12 = v11;
@@ -63,27 +63,27 @@
       do
       {
         v14 = 0;
-        v15 = v5;
+        v15 = diskToEject;
         do
         {
           if (*v32 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(physicalStores);
           }
 
-          v5 = [v3 wholeDiskForDisk:*(*(&v31 + 1) + 8 * v14)];
+          diskToEject = [v3 wholeDiskForDisk:*(*(&v31 + 1) + 8 * v14)];
 
-          if (v5)
+          if (diskToEject)
           {
-            [v4 addObject:v5];
+            [v4 addObject:diskToEject];
           }
 
           v14 = v14 + 1;
-          v15 = v5;
+          v15 = diskToEject;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v12 = [physicalStores countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v12);
@@ -92,19 +92,19 @@
 
   else
   {
-    [v4 addObject:v8];
+    [v4 addObject:diskToEject3];
   }
 
   v16 = +[NSMutableArray array];
-  v17 = [v5 children];
-  v18 = v17;
-  if (v17)
+  children = [diskToEject children];
+  v18 = children;
+  if (children)
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v19 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    v19 = [children countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v19)
     {
       v20 = v19;
@@ -122,10 +122,10 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = [v23 container];
-            if (v24)
+            container = [v23 container];
+            if (container)
             {
-              [v16 addObject:v24];
+              [v16 addObject:container];
             }
           }
         }
@@ -137,23 +137,23 @@
     }
   }
 
-  v25 = [v4 allObjects];
-  [v16 addObjectsFromArray:v25];
+  allObjects = [v4 allObjects];
+  [v16 addObjectsFromArray:allObjects];
 
   return v16;
 }
 
-- (void)_deepUnmountWithWholeDisk:(id)a3
+- (void)_deepUnmountWithWholeDisk:(id)disk
 {
-  v3 = a3;
+  diskCopy = disk;
   v4 = +[NSMutableArray array];
-  v5 = [v3 children];
-  if (v5)
+  children = [diskCopy children];
+  if (children)
   {
-    [v4 addObjectsFromArray:v5];
+    [v4 addObjectsFromArray:children];
   }
 
-  [v4 addObject:v3];
+  [v4 addObject:diskCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -190,14 +190,14 @@
 
 - (BOOL)run
 {
-  v3 = [(SKEjectOperation *)self _wholeDisksToEject];
+  _wholeDisksToEject = [(SKEjectOperation *)self _wholeDisksToEject];
   v4 = sub_10000BFD0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v30 = "[SKEjectOperation run]";
     v31 = 1024;
-    LODWORD(v32) = [v3 count];
+    LODWORD(v32) = [_wholeDisksToEject count];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s: Ejecting %d disks", buf, 0x12u);
   }
 
@@ -205,7 +205,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v3;
+  v5 = _wholeDisksToEject;
   v6 = [v5 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (!v6)
   {
@@ -248,8 +248,8 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s: Ejecting %@", buf, 0x16u);
     }
 
-    v12 = [v10 daDisk];
-    if (!v12)
+    daDisk = [v10 daDisk];
+    if (!daDisk)
     {
       goto LABEL_20;
     }
@@ -257,7 +257,7 @@ LABEL_5:
     v13 = [NSString stringWithFormat:@"Eject of %@", v10];
     [(SKBaseDiskArbOperation *)self setCurrentOperationName:v13];
 
-    DADiskEject(v12, 0, sub_100017B5C, self);
+    DADiskEject(daDisk, 0, sub_100017B5C, self);
     if (![(SKBaseDiskArbOperation *)self completeDiskArbOp])
     {
       break;
@@ -285,8 +285,8 @@ LABEL_20:
     }
   }
 
-  v14 = [(SKEjectOperation *)self diskToEject];
-  if (([v10 isEqual:v14] & 1) == 0)
+  diskToEject = [(SKEjectOperation *)self diskToEject];
+  if (([v10 isEqual:diskToEject] & 1) == 0)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -311,16 +311,16 @@ LABEL_20:
   }
 
 LABEL_24:
-  v18 = [(SKBaseDiskArbOperation *)self newDAError];
+  newDAError = [(SKBaseDiskArbOperation *)self newDAError];
 
   v5 = v23;
-  if (!v18)
+  if (!newDAError)
   {
     goto LABEL_26;
   }
 
-  v19 = [(SKBaseDiskArbOperation *)self callbackBlock];
-  (v19)[2](v19, v18);
+  callbackBlock = [(SKBaseDiskArbOperation *)self callbackBlock];
+  (callbackBlock)[2](callbackBlock, newDAError);
 
   [(SKManagerOperation *)self finished];
   v20 = 0;
@@ -331,8 +331,8 @@ LABEL_27:
 
 - (id)description
 {
-  v2 = [(SKEjectOperation *)self diskToEject];
-  v3 = [NSString stringWithFormat:@"Eject Operation for %@", v2];
+  diskToEject = [(SKEjectOperation *)self diskToEject];
+  v3 = [NSString stringWithFormat:@"Eject Operation for %@", diskToEject];
 
   return v3;
 }

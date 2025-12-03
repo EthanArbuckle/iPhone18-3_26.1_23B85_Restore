@@ -1,5 +1,5 @@
 @interface ModeControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateSelectedButton;
 - (void)updateHighlightState;
@@ -7,24 +7,24 @@
 
 @implementation ModeControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.ModeControl" hasInstanceMethod:@"selectedSegmentIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"Measure.ModeControl" hasInstanceMethod:@"buttons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Measure.ModeControl" hasInstanceMethod:@"updateHighlightState" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.ModeControl" hasInstanceMethod:@"selectedSegmentIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"Measure.ModeControl" hasInstanceMethod:@"buttons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Measure.ModeControl" hasInstanceMethod:@"updateHighlightState" withFullSignature:{"v", 0}];
 }
 
 - (void)_axAnnotateSelectedButton
 {
   v3 = [(ModeControlAccessibility *)self safeIntegerForKey:@"selectedSegmentIndex"];
-  v4 = [(ModeControlAccessibility *)self _axButtons];
+  _axButtons = [(ModeControlAccessibility *)self _axButtons];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __53__ModeControlAccessibility__axAnnotateSelectedButton__block_invoke;
   v5[3] = &__block_descriptor_40_e15_v32__0_8Q16_B24l;
   v5[4] = v3;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [_axButtons enumerateObjectsUsingBlock:v5];
 }
 
 void __53__ModeControlAccessibility__axAnnotateSelectedButton__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -47,8 +47,8 @@ void __53__ModeControlAccessibility__axAnnotateSelectedButton__block_invoke(uint
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(ModeControlAccessibility *)self _axButtons];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  _axButtons = [(ModeControlAccessibility *)self _axButtons];
+  v4 = [_axButtons countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -60,14 +60,14 @@ void __53__ModeControlAccessibility__axAnnotateSelectedButton__block_invoke(uint
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_axButtons);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) _accessibilityDidMoveToTabBar];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [_axButtons countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);

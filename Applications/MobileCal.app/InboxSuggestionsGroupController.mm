@@ -1,5 +1,5 @@
 @interface InboxSuggestionsGroupController
-- (id)filteredNotificationsFromArray:(id)a3;
+- (id)filteredNotificationsFromArray:(id)array;
 - (id)titleForHeader;
 @end
 
@@ -13,11 +13,11 @@
   return v3;
 }
 
-- (id)filteredNotificationsFromArray:(id)a3
+- (id)filteredNotificationsFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = [NSPredicate predicateWithBlock:&stru_100211E28];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [arrayCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }

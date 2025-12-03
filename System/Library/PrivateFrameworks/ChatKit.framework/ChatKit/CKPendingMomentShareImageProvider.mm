@@ -1,21 +1,21 @@
 @interface CKPendingMomentShareImageProvider
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
 @end
 
 @implementation CKPendingMomentShareImageProvider
 
-- (int64_t)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int64_t)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a7;
+  assetCopy = asset;
+  handlerCopy = handler;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v13 = objc_opt_isKindOfClass();
   if (isKindOfClass & 1) != 0 || (v13)
   {
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -28,13 +28,13 @@ LABEL_10:
     }
 
 LABEL_11:
-    v14 = [v10 placeholderImage];
-    v11[2](v11, v14, 0);
+    placeholderImage = [assetCopy placeholderImage];
+    handlerCopy[2](handlerCopy, placeholderImage, 0);
     goto LABEL_12;
   }
 
   [CKPendingMomentShareImageProvider requestImageForAsset:a2 targetSize:self contentMode:? options:? resultHandler:?];
-  if (!v11)
+  if (!handlerCopy)
   {
     goto LABEL_10;
   }
@@ -46,29 +46,29 @@ LABEL_4:
   }
 
 LABEL_5:
-  v14 = v10;
-  if ([v14 isPreviewImageDataAvailable])
+  placeholderImage = assetCopy;
+  if ([placeholderImage isPreviewImageDataAvailable])
   {
-    v15 = [v14 previewImage];
-    v11[2](v11, v15, 0);
+    previewImage = [placeholderImage previewImage];
+    handlerCopy[2](handlerCopy, previewImage, 0);
   }
 
   else
   {
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [v14 momentShare];
-    v15 = [v16 stringWithFormat:@"No preview image data available for moment share: %@", v17];
+    momentShare = [placeholderImage momentShare];
+    previewImage = [v16 stringWithFormat:@"No preview image data available for moment share: %@", momentShare];
 
     v18 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A278];
-    v26[0] = v15;
+    v26[0] = previewImage;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v20 = [v18 errorWithDomain:@"CKPendingMomentShareImageProviderErrorDomain" code:-1 userInfo:v19];
 
     v23 = *MEMORY[0x1E6978DF0];
     v24 = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    (v11)[2](v11, 0, v21);
+    (handlerCopy)[2](handlerCopy, 0, v21);
   }
 
 LABEL_12:

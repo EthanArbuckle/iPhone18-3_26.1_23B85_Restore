@@ -1,9 +1,9 @@
 @interface SBLegacyVOIPRefreshWakeTracker
-- (BOOL)beginWakeForApplication:(id)a3;
-- (id)_createAssertionForAppProcessIdentity:(id)a3;
+- (BOOL)beginWakeForApplication:(id)application;
+- (id)_createAssertionForAppProcessIdentity:(id)identity;
 - (void)dealloc;
 - (void)endWake;
-- (void)setAppKeepAliveAssertion:(id)a3;
+- (void)setAppKeepAliveAssertion:(id)assertion;
 @end
 
 @implementation SBLegacyVOIPRefreshWakeTracker
@@ -16,19 +16,19 @@
   [(SBLegacyVOIPRefreshWakeTracker *)&v3 dealloc];
 }
 
-- (BOOL)beginWakeForApplication:(id)a3
+- (BOOL)beginWakeForApplication:(id)application
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationCopy = application;
   BSDispatchQueueAssertMain();
-  v5 = [v4 info];
-  v6 = [v5 processIdentity];
+  info = [applicationCopy info];
+  processIdentity = [info processIdentity];
 
   v7 = SBLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v6;
+    v17 = processIdentity;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "SBLegacyVOIPRefreshWakeTracker: waking %{public}@.", buf, 0xCu);
   }
 
@@ -37,11 +37,11 @@
   v12[1] = 3221225472;
   v12[2] = __58__SBLegacyVOIPRefreshWakeTracker_beginWakeForApplication___block_invoke;
   v12[3] = &unk_2783AD9F0;
-  v13 = v4;
-  v14 = self;
-  v15 = v6;
-  v9 = v6;
-  v10 = v4;
+  v13 = applicationCopy;
+  selfCopy = self;
+  v15 = processIdentity;
+  v9 = processIdentity;
+  v10 = applicationCopy;
   [v8 requestTransitionWithBuilder:v12];
 
   return 1;
@@ -110,34 +110,34 @@ void __58__SBLegacyVOIPRefreshWakeTracker_beginWakeForApplication___block_invoke
   [(SBLegacyVOIPRefreshWakeTracker *)self setAppKeepAliveAssertion:0];
 }
 
-- (void)setAppKeepAliveAssertion:(id)a3
+- (void)setAppKeepAliveAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   BSDispatchQueueAssertMain();
   appKeepAliveAssertion = self->_appKeepAliveAssertion;
-  if (appKeepAliveAssertion != v4)
+  if (appKeepAliveAssertion != assertionCopy)
   {
     [(RBSAssertion *)appKeepAliveAssertion invalidate];
   }
 
   v6 = self->_appKeepAliveAssertion;
-  self->_appKeepAliveAssertion = v4;
+  self->_appKeepAliveAssertion = assertionCopy;
 }
 
-- (id)_createAssertionForAppProcessIdentity:(id)a3
+- (id)_createAssertionForAppProcessIdentity:(id)identity
 {
   v22[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identityCopy = identity;
   BSDispatchQueueAssertMain();
-  v5 = [MEMORY[0x277D47008] targetWithProcessIdentity:v4];
-  v6 = [MEMORY[0x277D46DF0] grantUserInitiated];
-  v22[0] = v6;
+  v5 = [MEMORY[0x277D47008] targetWithProcessIdentity:identityCopy];
+  grantUserInitiated = [MEMORY[0x277D46DF0] grantUserInitiated];
+  v22[0] = grantUserInitiated;
   v7 = [MEMORY[0x277D46FD0] withReason:10003];
   v22[1] = v7;
-  v8 = [MEMORY[0x277D46E30] grant];
-  v22[2] = v8;
-  v9 = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
-  v22[3] = v9;
+  grant = [MEMORY[0x277D46E30] grant];
+  v22[2] = grant;
+  grantWithForegroundPriority = [MEMORY[0x277D46EA8] grantWithForegroundPriority];
+  v22[3] = grantWithForegroundPriority;
   v10 = [MEMORY[0x277D46FC0] grantWithResistance:30];
   v22[4] = v10;
   v11 = MEMORY[0x277D46E48];
@@ -152,7 +152,7 @@ void __58__SBLegacyVOIPRefreshWakeTracker_beginWakeForApplication___block_invoke
   v20[2] = __72__SBLegacyVOIPRefreshWakeTracker__createAssertionForAppProcessIdentity___block_invoke;
   v20[3] = &unk_2783ADA18;
   v20[4] = self;
-  v15 = v4;
+  v15 = identityCopy;
   v21 = v15;
   [v14 setInvalidationHandler:v20];
   v19 = 0;

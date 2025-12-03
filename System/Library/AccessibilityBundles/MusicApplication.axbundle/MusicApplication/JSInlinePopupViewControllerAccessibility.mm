@@ -1,18 +1,18 @@
 @interface JSInlinePopupViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation JSInlinePopupViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.JSInlinePopupViewController" hasInstanceMethod:@"accessibilityContainerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.JSInlinePopupViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MusicApplication.JSInlinePopupViewController" hasInstanceMethod:@"accessibilityCloseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.JSInlinePopupViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.JSInlinePopupViewController" hasInstanceMethod:@"accessibilityContainerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.JSInlinePopupViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MusicApplication.JSInlinePopupViewController" hasInstanceMethod:@"accessibilityCloseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.JSInlinePopupViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -29,14 +29,14 @@
   v7 = accessibilityMusicLocalizedString(@"close.button");
   [v6 setAccessibilityLabel:v7];
 
-  v8 = [MEMORY[0x29EDB8DE8] array];
-  [v8 axSafelyAddObject:v5];
-  [v8 axSafelyAddObject:v6];
+  array = [MEMORY[0x29EDB8DE8] array];
+  [array axSafelyAddObject:v5];
+  [array axSafelyAddObject:v6];
   objc_opt_class();
   v9 = [(JSInlinePopupViewControllerAccessibility *)self safeValueForKey:@"view"];
   v10 = __UIAccessibilityCastAsClass();
 
-  [v10 setAccessibilityElements:v8];
+  [v10 setAccessibilityElements:array];
 }
 
 - (void)viewDidLoad

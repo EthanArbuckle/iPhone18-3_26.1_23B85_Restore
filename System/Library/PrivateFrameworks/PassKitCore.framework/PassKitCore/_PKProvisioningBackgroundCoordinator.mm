@@ -1,12 +1,12 @@
 @interface _PKProvisioningBackgroundCoordinator
 - (_PKProvisioningBackgroundCoordinator)init;
-- (_PKProvisioningBackgroundCoordinator)initWithPkContext:(id)a3 credential:(id)a4 previouslyAcceptedTerms:(BOOL)a5;
+- (_PKProvisioningBackgroundCoordinator)initWithPkContext:(id)context credential:(id)credential previouslyAcceptedTerms:(BOOL)terms;
 - (id)archivedState;
 - (id)onRecoverableCheckpointReached;
 - (void)cancel;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setOnRecoverableCheckpointReached:(id)a3;
+- (void)setOnRecoverableCheckpointReached:(id)reached;
 @end
 
 @implementation _PKProvisioningBackgroundCoordinator
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (void)setOnRecoverableCheckpointReached:(id)a3
+- (void)setOnRecoverableCheckpointReached:(id)reached
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reached);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -55,17 +55,17 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1AD3C5FB8(v7);
 }
 
-- (_PKProvisioningBackgroundCoordinator)initWithPkContext:(id)a3 credential:(id)a4 previouslyAcceptedTerms:(BOOL)a5
+- (_PKProvisioningBackgroundCoordinator)initWithPkContext:(id)context credential:(id)credential previouslyAcceptedTerms:(BOOL)terms
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = _s11PassKitCore19ProvisioningContextC02pkE0ACSo014PKProvisioningE0C_tcfC_0(v7);
+  contextCopy = context;
+  credentialCopy = credential;
+  v9 = _s11PassKitCore19ProvisioningContextC02pkE0ACSo014PKProvisioningE0C_tcfC_0(contextCopy);
   v10 = objc_allocWithZone(type metadata accessor for ProvisioningBackgroundCoordinator());
-  v11 = sub_1AD451764(v9, v8, a5);
+  v11 = sub_1AD451764(v9, credentialCopy, terms);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
@@ -74,22 +74,22 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AD44D228();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ProvisioningBackgroundCoordinator();
   [(_PKProvisioningBackgroundCoordinator *)&v3 dealloc];
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AD44C3D0();
 }
 
 - (id)archivedState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AD44C514();
 
   return v3;
@@ -97,7 +97,7 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AD44D228();
 }
 

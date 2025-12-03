@@ -1,52 +1,52 @@
 @interface TUForwardingTouchToolbar
 - (BOOL)accessibilityElementsHidden;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)accessibilityContainerType;
 @end
 
 @implementation TUForwardingTouchToolbar
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v15.value.super.isa = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v15.value.super.isa = event;
   ForwardingTouchToolbar.hitTest(_:with:)(v10, __PAIR128__(*&y, *&x), v15);
   v12 = v11;
 
   return v12;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v11.value.super.isa = v4;
-  LOBYTE(v4) = ForwardingTouchToolbar.point(inside:with:)(__PAIR128__(*&y, *&x), v11);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  v11.value.super.isa = eventCopy;
+  LOBYTE(eventCopy) = ForwardingTouchToolbar.point(inside:with:)(__PAIR128__(*&y, *&x), v11);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
 - (int64_t)accessibilityContainerType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ForwardingTouchToolbar.accessibilityContainerType.getter();
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = ForwardingTouchToolbar.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -58,7 +58,7 @@
 
 - (BOOL)accessibilityElementsHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ForwardingTouchToolbar.accessibilityElementsHidden.getter();
 
   return v3 & 1;

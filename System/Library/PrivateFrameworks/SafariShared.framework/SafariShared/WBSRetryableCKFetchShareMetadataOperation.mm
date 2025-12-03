@@ -6,13 +6,13 @@
 - (id)_makeOperation;
 - (id)fetchShareMetadataCompletionBlock;
 - (id)perShareMetadataBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setFetchShareMetadataCompletionBlock:(id)a3;
-- (void)setPerShareMetadataBlock:(id)a3;
-- (void)setRootRecordDesiredKeys:(id)a3;
-- (void)setShareInvitationTokensByShareURL:(id)a3;
-- (void)setShareURLs:(id)a3;
-- (void)setShouldFetchRootRecord:(BOOL)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setFetchShareMetadataCompletionBlock:(id)block;
+- (void)setPerShareMetadataBlock:(id)block;
+- (void)setRootRecordDesiredKeys:(id)keys;
+- (void)setShareInvitationTokensByShareURL:(id)l;
+- (void)setShareURLs:(id)ls;
+- (void)setShouldFetchRootRecord:(BOOL)record;
 @end
 
 @implementation WBSRetryableCKFetchShareMetadataOperation
@@ -26,11 +26,11 @@
   return v3;
 }
 
-- (void)setShareURLs:(id)a3
+- (void)setShareURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [lsCopy copy];
 
   shareURLs = self->_shareURLs;
   self->_shareURLs = v5;
@@ -49,11 +49,11 @@
   return v3;
 }
 
-- (void)setShareInvitationTokensByShareURL:(id)a3
+- (void)setShareInvitationTokensByShareURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [lCopy copy];
 
   shareInvitationTokensByShareURL = self->_shareInvitationTokensByShareURL;
   self->_shareInvitationTokensByShareURL = v5;
@@ -71,10 +71,10 @@
   return shouldFetchRootRecord;
 }
 
-- (void)setShouldFetchRootRecord:(BOOL)a3
+- (void)setShouldFetchRootRecord:(BOOL)record
 {
   os_unfair_lock_lock(&self->super._internalLock);
-  self->_shouldFetchRootRecord = a3;
+  self->_shouldFetchRootRecord = record;
   [(NSMutableSet *)self->super._explicitlySetProperties addObject:@"shouldFetchRootRecord"];
 
   os_unfair_lock_unlock(&self->super._internalLock);
@@ -89,11 +89,11 @@
   return v3;
 }
 
-- (void)setRootRecordDesiredKeys:(id)a3
+- (void)setRootRecordDesiredKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [keysCopy copy];
 
   rootRecordDesiredKeys = self->_rootRecordDesiredKeys;
   self->_rootRecordDesiredKeys = v5;
@@ -112,11 +112,11 @@
   return v3;
 }
 
-- (void)setPerShareMetadataBlock:(id)a3
+- (void)setPerShareMetadataBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perShareMetadataBlock = self->_perShareMetadataBlock;
   self->_perShareMetadataBlock = v5;
@@ -135,11 +135,11 @@
   return v3;
 }
 
-- (void)setFetchShareMetadataCompletionBlock:(id)a3
+- (void)setFetchShareMetadataCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   fetchShareMetadataCompletionBlock = self->_fetchShareMetadataCompletionBlock;
   self->_fetchShareMetadataCompletionBlock = v5;
@@ -156,30 +156,30 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v10.receiver = self;
   v10.super_class = WBSRetryableCKFetchShareMetadataOperation;
-  [(WBSRetryableCKOperation *)&v10 _setUpOperation:v4];
+  [(WBSRetryableCKOperation *)&v10 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super._explicitlySetProperties containsObject:@"shareURLs"])
   {
-    [v4 setShareURLs:self->_shareURLs];
+    [operationCopy setShareURLs:self->_shareURLs];
   }
 
   if ([(NSMutableSet *)self->super._explicitlySetProperties containsObject:@"shareInvitationTokensByShareURL"])
   {
-    [v4 setShareInvitationTokensByShareURL:self->_shareInvitationTokensByShareURL];
+    [operationCopy setShareInvitationTokensByShareURL:self->_shareInvitationTokensByShareURL];
   }
 
   if ([(NSMutableSet *)self->super._explicitlySetProperties containsObject:@"shouldFetchRootRecord"])
   {
-    [v4 setShouldFetchRootRecord:self->_shouldFetchRootRecord];
+    [operationCopy setShouldFetchRootRecord:self->_shouldFetchRootRecord];
   }
 
   if ([(NSMutableSet *)self->super._explicitlySetProperties containsObject:@"rootRecordDesiredKeys"])
   {
-    [v4 setRootRecordDesiredKeys:self->_rootRecordDesiredKeys];
+    [operationCopy setRootRecordDesiredKeys:self->_rootRecordDesiredKeys];
   }
 
   if (self->_perShareMetadataBlock)
@@ -190,7 +190,7 @@
     v7[2] = __61__WBSRetryableCKFetchShareMetadataOperation__setUpOperation___block_invoke;
     v7[3] = &unk_1E7FCA018;
     objc_copyWeak(&v8, &location);
-    [v4 setPerShareMetadataBlock:v7];
+    [operationCopy setPerShareMetadataBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -201,7 +201,7 @@
   v5[2] = __61__WBSRetryableCKFetchShareMetadataOperation__setUpOperation___block_invoke_3;
   v5[3] = &unk_1E7FC9DC0;
   objc_copyWeak(&v6, &location);
-  [v4 setFetchShareMetadataCompletionBlock:v5];
+  [operationCopy setFetchShareMetadataCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

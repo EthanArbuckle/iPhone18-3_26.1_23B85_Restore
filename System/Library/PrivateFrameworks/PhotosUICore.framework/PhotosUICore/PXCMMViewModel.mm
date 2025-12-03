@@ -1,51 +1,51 @@
 @interface PXCMMViewModel
 - (int64_t)aggregateMediaType;
 - (int64_t)aggregateMediaTypeForSelection;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setContainsUnverifiedPersons:(BOOL)a3;
-- (void)setDisabledActionTypes:(id)a3;
-- (void)setEndDate:(id)a3;
-- (void)setLoadingPeopleSuggestions:(BOOL)a3;
-- (void)setNumberOfReceivedAssets:(unint64_t)a3;
-- (void)setOneUpDisabled:(BOOL)a3;
-- (void)setOriginalTitle:(id)a3;
-- (void)setOriginatorRecipient:(id)a3;
-- (void)setPhotosCount:(int64_t)a3;
-- (void)setPosterAsset:(id)a3 posterMediaProvider:(id)a4;
-- (void)setRecipients:(id)a3;
-- (void)setSelectedCount:(int64_t)a3;
-- (void)setSelectedPhotosCount:(int64_t)a3;
-- (void)setSelectedVideosCount:(int64_t)a3;
-- (void)setSelecting:(BOOL)a3;
-- (void)setSelectionEnabled:(BOOL)a3;
-- (void)setSelectionManager:(id)a3;
-- (void)setShareURL:(id)a3;
-- (void)setShareUUID:(id)a3;
-- (void)setShouldShowPlaceholder:(BOOL)a3;
-- (void)setStartDate:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTotalCount:(int64_t)a3;
-- (void)setVideosCount:(int64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setContainsUnverifiedPersons:(BOOL)persons;
+- (void)setDisabledActionTypes:(id)types;
+- (void)setEndDate:(id)date;
+- (void)setLoadingPeopleSuggestions:(BOOL)suggestions;
+- (void)setNumberOfReceivedAssets:(unint64_t)assets;
+- (void)setOneUpDisabled:(BOOL)disabled;
+- (void)setOriginalTitle:(id)title;
+- (void)setOriginatorRecipient:(id)recipient;
+- (void)setPhotosCount:(int64_t)count;
+- (void)setPosterAsset:(id)asset posterMediaProvider:(id)provider;
+- (void)setRecipients:(id)recipients;
+- (void)setSelectedCount:(int64_t)count;
+- (void)setSelectedPhotosCount:(int64_t)count;
+- (void)setSelectedVideosCount:(int64_t)count;
+- (void)setSelecting:(BOOL)selecting;
+- (void)setSelectionEnabled:(BOOL)enabled;
+- (void)setSelectionManager:(id)manager;
+- (void)setShareURL:(id)l;
+- (void)setShareUUID:(id)d;
+- (void)setShouldShowPlaceholder:(BOOL)placeholder;
+- (void)setStartDate:(id)date;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setTotalCount:(int64_t)count;
+- (void)setVideosCount:(int64_t)count;
 @end
 
 @implementation PXCMMViewModel
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXSelectionManagerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXSelectionManagerObservationContext != context)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXCMMViewModel.m" lineNumber:369 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewModel.m" lineNumber:369 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -53,16 +53,16 @@
     v18[3] = &unk_1E7746A48;
     v18[4] = self;
     [(PXCMMViewModel *)self performChanges:v18];
-    v11 = [(PXCMMViewModel *)self selectionManager];
-    v12 = [v11 selectionSnapshot];
-    v13 = [v12 dataSource];
+    selectionManager = [(PXCMMViewModel *)self selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
+    dataSource = [selectionSnapshot dataSource];
 
-    v14 = [v13 containsAnyItems];
+    containsAnyItems = [dataSource containsAnyItems];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __47__PXCMMViewModel_observable_didChange_context___block_invoke_2;
     v16[3] = &__block_descriptor_33_e33_v16__0___PXCMMMutableViewModel__8l;
-    v17 = v14 ^ 1;
+    v17 = containsAnyItems ^ 1;
     [(PXCMMViewModel *)self performChanges:v16];
   }
 }
@@ -77,164 +77,164 @@ void __47__PXCMMViewModel_observable_didChange_context___block_invoke(uint64_t a
   PXCMMUpdateCountsWithSelectionSnapshot(v3, v5);
 }
 
-- (void)setOneUpDisabled:(BOOL)a3
+- (void)setOneUpDisabled:(BOOL)disabled
 {
-  if (self->_oneUpDisabled != a3)
+  if (self->_oneUpDisabled != disabled)
   {
-    self->_oneUpDisabled = a3;
+    self->_oneUpDisabled = disabled;
     [(PXCMMViewModel *)self signalChange:0x20000];
   }
 }
 
-- (void)setDisabledActionTypes:(id)a3
+- (void)setDisabledActionTypes:(id)types
 {
-  v5 = a3;
-  if (self->_disabledActionTypes != v5)
+  typesCopy = types;
+  if (self->_disabledActionTypes != typesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_disabledActionTypes, a3);
+    v6 = typesCopy;
+    objc_storeStrong(&self->_disabledActionTypes, types);
     [(PXCMMViewModel *)self signalChange:0x2000];
-    v5 = v6;
+    typesCopy = v6;
   }
 }
 
-- (void)setContainsUnverifiedPersons:(BOOL)a3
+- (void)setContainsUnverifiedPersons:(BOOL)persons
 {
-  if (self->_containsUnverifiedPersons != a3)
+  if (self->_containsUnverifiedPersons != persons)
   {
-    self->_containsUnverifiedPersons = a3;
+    self->_containsUnverifiedPersons = persons;
     [(PXCMMViewModel *)self signalChange:0x8000];
   }
 }
 
-- (void)setShouldShowPlaceholder:(BOOL)a3
+- (void)setShouldShowPlaceholder:(BOOL)placeholder
 {
-  if (self->_shouldShowPlaceholder != a3)
+  if (self->_shouldShowPlaceholder != placeholder)
   {
-    self->_shouldShowPlaceholder = a3;
+    self->_shouldShowPlaceholder = placeholder;
     [(PXCMMViewModel *)self signalChange:4096];
   }
 }
 
-- (void)setLoadingPeopleSuggestions:(BOOL)a3
+- (void)setLoadingPeopleSuggestions:(BOOL)suggestions
 {
-  if (self->_loadingPeopleSuggestions != a3)
+  if (self->_loadingPeopleSuggestions != suggestions)
   {
-    self->_loadingPeopleSuggestions = a3;
+    self->_loadingPeopleSuggestions = suggestions;
     [(PXCMMViewModel *)self signalChange:2048];
   }
 }
 
-- (void)setTotalCount:(int64_t)a3
+- (void)setTotalCount:(int64_t)count
 {
-  if (self->_totalCount != a3)
+  if (self->_totalCount != count)
   {
-    self->_totalCount = a3;
+    self->_totalCount = count;
     [(PXCMMViewModel *)self signalChange:512];
   }
 }
 
-- (void)setVideosCount:(int64_t)a3
+- (void)setVideosCount:(int64_t)count
 {
-  if (self->_videosCount != a3)
+  if (self->_videosCount != count)
   {
-    self->_videosCount = a3;
+    self->_videosCount = count;
     [(PXCMMViewModel *)self signalChange:512];
   }
 }
 
-- (void)setPhotosCount:(int64_t)a3
+- (void)setPhotosCount:(int64_t)count
 {
-  if (self->_photosCount != a3)
+  if (self->_photosCount != count)
   {
-    self->_photosCount = a3;
+    self->_photosCount = count;
     [(PXCMMViewModel *)self signalChange:512];
   }
 }
 
-- (void)setSelectedCount:(int64_t)a3
+- (void)setSelectedCount:(int64_t)count
 {
-  if (self->_selectedCount != a3)
+  if (self->_selectedCount != count)
   {
-    self->_selectedCount = a3;
+    self->_selectedCount = count;
     [(PXCMMViewModel *)self signalChange:0x10000];
   }
 }
 
-- (void)setSelectedVideosCount:(int64_t)a3
+- (void)setSelectedVideosCount:(int64_t)count
 {
-  if (self->_selectedVideosCount != a3)
+  if (self->_selectedVideosCount != count)
   {
-    self->_selectedVideosCount = a3;
+    self->_selectedVideosCount = count;
     [(PXCMMViewModel *)self signalChange:0x10000];
   }
 }
 
-- (void)setSelectedPhotosCount:(int64_t)a3
+- (void)setSelectedPhotosCount:(int64_t)count
 {
-  if (self->_selectedPhotosCount != a3)
+  if (self->_selectedPhotosCount != count)
   {
-    self->_selectedPhotosCount = a3;
+    self->_selectedPhotosCount = count;
     [(PXCMMViewModel *)self signalChange:0x10000];
   }
 }
 
-- (void)setEndDate:(id)a3
+- (void)setEndDate:(id)date
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_endDate != v5)
+  dateCopy = date;
+  v6 = dateCopy;
+  if (self->_endDate != dateCopy)
   {
-    v8 = v5;
-    v7 = [(NSDate *)v5 isEqual:?];
+    v8 = dateCopy;
+    v7 = [(NSDate *)dateCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_endDate, a3);
+      objc_storeStrong(&self->_endDate, date);
       [(PXCMMViewModel *)self signalChange:256];
       v6 = v8;
     }
   }
 }
 
-- (void)setStartDate:(id)a3
+- (void)setStartDate:(id)date
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_startDate != v5)
+  dateCopy = date;
+  v6 = dateCopy;
+  if (self->_startDate != dateCopy)
   {
-    v8 = v5;
-    v7 = [(NSDate *)v5 isEqual:?];
+    v8 = dateCopy;
+    v7 = [(NSDate *)dateCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_startDate, a3);
+      objc_storeStrong(&self->_startDate, date);
       [(PXCMMViewModel *)self signalChange:256];
       v6 = v8;
     }
   }
 }
 
-- (void)setPosterAsset:(id)a3 posterMediaProvider:(id)a4
+- (void)setPosterAsset:(id)asset posterMediaProvider:(id)provider
 {
-  v8 = a3;
-  v7 = a4;
-  if (self->_posterAsset != v8 && ![(PXDisplayAsset *)v8 isEqual:?]|| self->_posterMediaProvider != v7 && ([(PXUIImageProvider *)v7 isEqual:?]& 1) == 0)
+  assetCopy = asset;
+  providerCopy = provider;
+  if (self->_posterAsset != assetCopy && ![(PXDisplayAsset *)assetCopy isEqual:?]|| self->_posterMediaProvider != providerCopy && ([(PXUIImageProvider *)providerCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_posterAsset, a3);
-    objc_storeStrong(&self->_posterMediaProvider, a4);
+    objc_storeStrong(&self->_posterAsset, asset);
+    objc_storeStrong(&self->_posterMediaProvider, provider);
     [(PXCMMViewModel *)self signalChange:128];
   }
 }
 
-- (void)setShareUUID:(id)a3
+- (void)setShareUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_shareUUID != v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (self->_shareUUID != dCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqual:?];
+    v9 = dCopy;
+    v6 = [(NSString *)dCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -248,14 +248,14 @@ void __47__PXCMMViewModel_observable_didChange_context___block_invoke(uint64_t a
   }
 }
 
-- (void)setShareURL:(id)a3
+- (void)setShareURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_shareURL != v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (self->_shareURL != lCopy)
   {
-    v9 = v4;
-    v6 = [(NSURL *)v4 isEqual:?];
+    v9 = lCopy;
+    v6 = [(NSURL *)lCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -269,33 +269,33 @@ void __47__PXCMMViewModel_observable_didChange_context___block_invoke(uint64_t a
   }
 }
 
-- (void)setNumberOfReceivedAssets:(unint64_t)a3
+- (void)setNumberOfReceivedAssets:(unint64_t)assets
 {
-  if (self->_numberOfReceivedAssets != a3)
+  if (self->_numberOfReceivedAssets != assets)
   {
-    self->_numberOfReceivedAssets = a3;
+    self->_numberOfReceivedAssets = assets;
     [(PXCMMViewModel *)self signalChange:16];
   }
 }
 
-- (void)setOriginatorRecipient:(id)a3
+- (void)setOriginatorRecipient:(id)recipient
 {
-  v5 = a3;
-  if (self->_originatorRecipient != v5)
+  recipientCopy = recipient;
+  if (self->_originatorRecipient != recipientCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_originatorRecipient, a3);
+    v6 = recipientCopy;
+    objc_storeStrong(&self->_originatorRecipient, recipient);
     [(PXCMMViewModel *)self signalChange:8];
-    v5 = v6;
+    recipientCopy = v6;
   }
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v6 = a3;
+  recipientsCopy = recipients;
   if (![(NSArray *)self->_recipients isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [recipientsCopy copy];
     recipients = self->_recipients;
     self->_recipients = v4;
 
@@ -303,62 +303,62 @@ void __47__PXCMMViewModel_observable_didChange_context___block_invoke(uint64_t a
   }
 }
 
-- (void)setSelectionEnabled:(BOOL)a3
+- (void)setSelectionEnabled:(BOOL)enabled
 {
-  if (self->_selectionEnabled != a3)
+  if (self->_selectionEnabled != enabled)
   {
-    self->_selectionEnabled = a3;
+    self->_selectionEnabled = enabled;
     [(PXCMMViewModel *)self signalChange:0x4000];
   }
 }
 
-- (void)setSelecting:(BOOL)a3
+- (void)setSelecting:(BOOL)selecting
 {
-  if (self->_selecting != a3)
+  if (self->_selecting != selecting)
   {
-    self->_selecting = a3;
+    self->_selecting = selecting;
     [(PXCMMViewModel *)self signalChange:1024];
   }
 }
 
-- (void)setSelectionManager:(id)a3
+- (void)setSelectionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   selectionManager = self->_selectionManager;
-  if (selectionManager != v5)
+  if (selectionManager != managerCopy)
   {
-    v9 = v5;
+    v9 = managerCopy;
     [(PXSectionedSelectionManager *)selectionManager unregisterChangeObserver:self context:PXSelectionManagerObservationContext];
-    objc_storeStrong(&self->_selectionManager, a3);
-    v7 = [(PXSectionedSelectionManager *)v9 selectionSnapshot];
-    PXCMMUpdateCountsWithSelectionSnapshot(self, v7);
-    v8 = [v7 dataSource];
-    -[PXCMMViewModel setShouldShowPlaceholder:](self, "setShouldShowPlaceholder:", [v8 containsAnyItems] ^ 1);
+    objc_storeStrong(&self->_selectionManager, manager);
+    selectionSnapshot = [(PXSectionedSelectionManager *)v9 selectionSnapshot];
+    PXCMMUpdateCountsWithSelectionSnapshot(self, selectionSnapshot);
+    dataSource = [selectionSnapshot dataSource];
+    -[PXCMMViewModel setShouldShowPlaceholder:](self, "setShouldShowPlaceholder:", [dataSource containsAnyItems] ^ 1);
 
     [(PXSectionedSelectionManager *)self->_selectionManager registerChangeObserver:self context:PXSelectionManagerObservationContext];
     [(PXCMMViewModel *)self signalChange:2];
 
-    v5 = v9;
+    managerCopy = v9;
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
-  if (!v5)
+  subtitleCopy = subtitle;
+  if (!subtitleCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMViewModel.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"subtitle"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewModel.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"subtitle"}];
 
-    v5 = 0;
+    subtitleCopy = 0;
   }
 
   subtitle = self->_subtitle;
-  if (subtitle != v5)
+  if (subtitle != subtitleCopy)
   {
-    v11 = v5;
-    v7 = [(NSString *)subtitle isEqualToString:v5];
-    v5 = v11;
+    v11 = subtitleCopy;
+    v7 = [(NSString *)subtitle isEqualToString:subtitleCopy];
+    subtitleCopy = v11;
     if (!v7)
     {
       v8 = [(NSString *)v11 copy];
@@ -366,28 +366,28 @@ void __47__PXCMMViewModel_observable_didChange_context___block_invoke(uint64_t a
       self->_subtitle = v8;
 
       [(PXCMMViewModel *)self signalChange:1];
-      v5 = v11;
+      subtitleCopy = v11;
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (!v5)
+  titleCopy = title;
+  if (!titleCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMViewModel.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMViewModel.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
-    v5 = 0;
+    titleCopy = 0;
   }
 
   title = self->_title;
-  if (title != v5)
+  if (title != titleCopy)
   {
-    v11 = v5;
-    v7 = [(NSString *)title isEqualToString:v5];
-    v5 = v11;
+    v11 = titleCopy;
+    v7 = [(NSString *)title isEqualToString:titleCopy];
+    titleCopy = v11;
     if (!v7)
     {
       v8 = [(NSString *)v11 copy];
@@ -395,20 +395,20 @@ void __47__PXCMMViewModel_observable_didChange_context___block_invoke(uint64_t a
       self->_title = v8;
 
       [(PXCMMViewModel *)self signalChange:1];
-      v5 = v11;
+      titleCopy = v11;
     }
   }
 }
 
-- (void)setOriginalTitle:(id)a3
+- (void)setOriginalTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   originalTitle = self->_originalTitle;
-  if (originalTitle != v4)
+  if (originalTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)originalTitle isEqualToString:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSString *)originalTitle isEqualToString:titleCopy];
+    titleCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -416,28 +416,28 @@ void __47__PXCMMViewModel_observable_didChange_context___block_invoke(uint64_t a
       self->_originalTitle = v7;
 
       [(PXCMMViewModel *)self signalChange:1];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCMMViewModel;
-  [(PXCMMViewModel *)&v3 performChanges:a3];
+  [(PXCMMViewModel *)&v3 performChanges:changes];
 }
 
 - (int64_t)aggregateMediaTypeForSelection
 {
-  v3 = [(PXCMMViewModel *)self selectedPhotosCount];
-  v4 = [(PXCMMViewModel *)self selectedVideosCount];
+  selectedPhotosCount = [(PXCMMViewModel *)self selectedPhotosCount];
+  selectedVideosCount = [(PXCMMViewModel *)self selectedVideosCount];
   result = [(PXCMMViewModel *)self selectedCount];
   if (result)
   {
-    if (v4 || v3 != result)
+    if (selectedVideosCount || selectedPhotosCount != result)
     {
-      if (v4 == result && v3 == 0)
+      if (selectedVideosCount == result && selectedPhotosCount == 0)
       {
         return 2;
       }
@@ -459,14 +459,14 @@ void __47__PXCMMViewModel_observable_didChange_context___block_invoke(uint64_t a
 
 - (int64_t)aggregateMediaType
 {
-  v3 = [(PXCMMViewModel *)self photosCount];
-  v4 = [(PXCMMViewModel *)self videosCount];
+  photosCount = [(PXCMMViewModel *)self photosCount];
+  videosCount = [(PXCMMViewModel *)self videosCount];
   result = [(PXCMMViewModel *)self totalCount];
   if (result)
   {
-    if (v4 || v3 != result)
+    if (videosCount || photosCount != result)
     {
-      if (v4 == result && v3 == 0)
+      if (videosCount == result && photosCount == 0)
       {
         return 2;
       }

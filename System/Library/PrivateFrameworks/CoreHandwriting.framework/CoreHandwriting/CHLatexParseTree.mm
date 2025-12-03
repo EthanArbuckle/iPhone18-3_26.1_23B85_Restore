@@ -1,10 +1,10 @@
 @interface CHLatexParseTree
-- (id)_evaluationRecursive:(id)a3 withVariables:(id)a4;
-- (id)_functionRepresentationRecursive:(id)a3;
-- (id)_latexRepresentationRecursive:(id)a3;
-- (id)evaluateOpExpPriority:(id)a3;
-- (id)evaluateVerticalMath:(id)a3;
-- (id)evaluationWithVariables:(id)a3 caseSensitive:(BOOL)a4;
+- (id)_evaluationRecursive:(id)recursive withVariables:(id)variables;
+- (id)_functionRepresentationRecursive:(id)recursive;
+- (id)_latexRepresentationRecursive:(id)recursive;
+- (id)evaluateOpExpPriority:(id)priority;
+- (id)evaluateVerticalMath:(id)math;
+- (id)evaluationWithVariables:(id)variables caseSensitive:(BOOL)sensitive;
 - (id)functionRepresentation;
 - (id)latexRepresentation;
 @end
@@ -19,17 +19,17 @@
   return v12;
 }
 
-- (id)_latexRepresentationRecursive:(id)a3
+- (id)_latexRepresentationRecursive:(id)recursive
 {
-  v4 = a3;
+  recursiveCopy = recursive;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8, v9))
+  if (objc_msgSend_isMemberOfClass_(recursiveCopy, v6, v5, v7, v8, v9))
   {
-    v15 = objc_msgSend_name(v4, v10, v11, v12, v13, v14);
+    v15 = objc_msgSend_name(recursiveCopy, v10, v11, v12, v13, v14);
     goto LABEL_30;
   }
 
-  v16 = v4;
+  v16 = recursiveCopy;
   v22 = objc_msgSend_rightNode(v16, v17, v18, v19, v20, v21);
 
   v28 = objc_msgSend_leftNode(v16, v23, v24, v25, v26, v27);
@@ -171,17 +171,17 @@ LABEL_10:
   return v15;
 }
 
-- (id)_functionRepresentationRecursive:(id)a3
+- (id)_functionRepresentationRecursive:(id)recursive
 {
-  v4 = a3;
+  recursiveCopy = recursive;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5, v7, v8, v9))
+  if (objc_msgSend_isMemberOfClass_(recursiveCopy, v6, v5, v7, v8, v9))
   {
-    v15 = objc_msgSend_name(v4, v10, v11, v12, v13, v14);
+    v15 = objc_msgSend_name(recursiveCopy, v10, v11, v12, v13, v14);
     goto LABEL_26;
   }
 
-  v16 = v4;
+  v16 = recursiveCopy;
   v22 = objc_msgSend_rightNode(v16, v17, v18, v19, v20, v21);
 
   v28 = objc_msgSend_leftNode(v16, v23, v24, v25, v26, v27);
@@ -356,12 +356,12 @@ LABEL_26:
   return v15;
 }
 
-- (id)evaluationWithVariables:(id)a3 caseSensitive:(BOOL)a4
+- (id)evaluationWithVariables:(id)variables caseSensitive:(BOOL)sensitive
 {
-  self->__caseSensitive = a4;
-  v5 = a3;
+  self->__caseSensitive = sensitive;
+  variablesCopy = variables;
   v11 = objc_msgSend_root(self, v6, v7, v8, v9, v10);
-  v15 = objc_msgSend__evaluationRecursive_withVariables_(self, v12, v11, v5, v13, v14);
+  v15 = objc_msgSend__evaluationRecursive_withVariables_(self, v12, v11, variablesCopy, v13, v14);
 
   if (objc_msgSend_isEqualToString_(v15, v16, @"STOP", v17, v18, v19))
   {
@@ -381,17 +381,17 @@ LABEL_26:
   return v24;
 }
 
-- (id)_evaluationRecursive:(id)a3 withVariables:(id)a4
+- (id)_evaluationRecursive:(id)recursive withVariables:(id)variables
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  recursiveCopy = recursive;
+  variablesCopy = variables;
+  v8 = recursiveCopy;
   v14 = objc_msgSend_rightNode(v8, v9, v10, v11, v12, v13);
 
   if (v14)
   {
     v20 = objc_msgSend_leftNode(v8, v15, v16, v17, v18, v19);
-    v24 = objc_msgSend__evaluationRecursive_withVariables_(self, v21, v20, v7, v22, v23);
+    v24 = objc_msgSend__evaluationRecursive_withVariables_(self, v21, v20, variablesCopy, v22, v23);
 
     if (objc_msgSend_isEqualToString_(v24, v25, @"STOP", v26, v27, v28))
     {
@@ -401,7 +401,7 @@ LABEL_26:
     }
 
     v81 = objc_msgSend_rightNode(v8, v29, v30, v31, v32, v33);
-    v70 = objc_msgSend__evaluationRecursive_withVariables_(self, v82, v81, v7, v83, v84);
+    v70 = objc_msgSend__evaluationRecursive_withVariables_(self, v82, v81, variablesCopy, v83, v84);
 
     if (objc_msgSend_isEqualToString_(v70, v85, @"STOP", v86, v87, v88))
     {
@@ -465,7 +465,7 @@ LABEL_24:
       if (v241)
       {
         v247 = objc_msgSend_rightNode(v224, v242, v243, v244, v245, v246);
-        v251 = objc_msgSend__evaluationRecursive_withVariables_(self, v248, v247, v7, v249, v250);
+        v251 = objc_msgSend__evaluationRecursive_withVariables_(self, v248, v247, variablesCopy, v249, v250);
 
         v257 = objc_msgSend_formatter(self, v252, v253, v254, v255, v256);
         v262 = objc_msgSend_numberFromString_(v257, v258, v24, v259, v260, v261);
@@ -806,10 +806,10 @@ LABEL_80:
     {
       v794 = objc_msgSend_rightNode(v8, v789, v790, v791, v792, v793);
       v800 = objc_msgSend_leftNode(v794, v795, v796, v797, v798, v799);
-      v804 = objc_msgSend__evaluationRecursive_withVariables_(self, v801, v800, v7, v802, v803);
+      v804 = objc_msgSend__evaluationRecursive_withVariables_(self, v801, v800, variablesCopy, v802, v803);
 
       v810 = objc_msgSend_rightNode(v794, v805, v806, v807, v808, v809);
-      v814 = objc_msgSend__evaluationRecursive_withVariables_(self, v811, v810, v7, v812, v813);
+      v814 = objc_msgSend__evaluationRecursive_withVariables_(self, v811, v810, variablesCopy, v812, v813);
 
       v34 = @"STOP";
       if ((objc_msgSend_isEqualToString_(v804, v815, @"STOP", v816, v817, v818) & 1) == 0 && (objc_msgSend_isEqualToString_(v814, v819, @"STOP", v820, v821, v822) & 1) == 0)
@@ -1249,11 +1249,11 @@ LABEL_172:
     v24 = v59;
   }
 
-  v64 = objc_msgSend_objectForKeyedSubscript_(v7, v60, v24, v61, v62, v63);
+  v64 = objc_msgSend_objectForKeyedSubscript_(variablesCopy, v60, v24, v61, v62, v63);
 
   if (v64)
   {
-    v70 = objc_msgSend_objectForKeyedSubscript_(v7, v65, v24, v67, v68, v69);
+    v70 = objc_msgSend_objectForKeyedSubscript_(variablesCopy, v65, v24, v67, v68, v69);
     v76 = objc_msgSend_formatter(self, v71, v72, v73, v74, v75);
     v34 = objc_msgSend_stringFromNumber_(v76, v77, v70, v78, v79, v80);
 
@@ -1289,10 +1289,10 @@ LABEL_17:
   return v34;
 }
 
-- (id)evaluateOpExpPriority:(id)a3
+- (id)evaluateOpExpPriority:(id)priority
 {
-  v4 = a3;
-  v9 = objc_msgSend_componentsSeparatedByString_(v4, v5, @" ", v6, v7, v8);
+  priorityCopy = priority;
+  v9 = objc_msgSend_componentsSeparatedByString_(priorityCopy, v5, @" ", v6, v7, v8);
   v15 = objc_msgSend_mutableCopy(v9, v10, v11, v12, v13, v14);
 
   if (objc_msgSend_count(v15, v16, v17, v18, v19, v20) != 1)
@@ -1486,7 +1486,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v26 = v4;
+  v26 = priorityCopy;
 LABEL_26:
   v32 = v26;
 LABEL_27:
@@ -1494,19 +1494,19 @@ LABEL_27:
   return v32;
 }
 
-- (id)evaluateVerticalMath:(id)a3
+- (id)evaluateVerticalMath:(id)math
 {
   v155 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  mathCopy = math;
   if (qword_1EA84D058 != -1)
   {
-    v147 = v4;
+    v147 = mathCopy;
     dispatch_once(&qword_1EA84D058, &unk_1EF1BEA90);
-    v4 = v147;
+    mathCopy = v147;
   }
 
-  v149 = v4;
-  v9 = objc_msgSend_componentsSeparatedByString_(v4, v5, @" ", v6, v7, v8);
+  v149 = mathCopy;
+  v9 = objc_msgSend_componentsSeparatedByString_(mathCopy, v5, @" ", v6, v7, v8);
   v15 = objc_msgSend_mutableCopy(v9, v10, v11, v12, v13, v14);
 
   v152 = 0u;

@@ -1,6 +1,6 @@
 @interface WFTimer
 - (BOOL)shouldHaveTimeout;
-- (WFTimer)initWithHandler:(id)a3 duration:(double)a4;
+- (WFTimer)initWithHandler:(id)handler duration:(double)duration;
 - (WFTimerHandler)handler;
 - (void)cancel;
 - (void)restart;
@@ -18,7 +18,7 @@
 
 - (BOOL)shouldHaveTimeout
 {
-  v3 = [(WFTimer *)self handler];
+  handler = [(WFTimer *)self handler];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -26,20 +26,20 @@
     return 1;
   }
 
-  v5 = [(WFTimer *)self handler];
-  v6 = [v5 timerShouldStart:self];
+  handler2 = [(WFTimer *)self handler];
+  v6 = [handler2 timerShouldStart:self];
 
   return v6;
 }
 
 - (void)cancel
 {
-  v3 = [(WFTimer *)self timeoutTimer];
+  timeoutTimer = [(WFTimer *)self timeoutTimer];
 
-  if (v3)
+  if (timeoutTimer)
   {
-    v4 = [(WFTimer *)self timeoutTimer];
-    dispatch_source_cancel(v4);
+    timeoutTimer2 = [(WFTimer *)self timeoutTimer];
+    dispatch_source_cancel(timeoutTimer2);
 
     [(WFTimer *)self setTimeoutTimer:0];
   }
@@ -57,23 +57,23 @@
   if ([(WFTimer *)self shouldHaveTimeout])
   {
     objc_initWeak(&location, self);
-    v3 = [(WFTimer *)self timerQueue];
-    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v3);
+    timerQueue = [(WFTimer *)self timerQueue];
+    v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, timerQueue);
     [(WFTimer *)self setTimeoutTimer:v4];
 
     [(WFTimer *)self duration];
     v6 = v5;
-    v7 = [(WFTimer *)self timeoutTimer];
+    timeoutTimer = [(WFTimer *)self timeoutTimer];
     v8 = dispatch_time(0, (v6 * 1000000000.0));
-    dispatch_source_set_timer(v7, v8, (v6 * 1000000000.0), 0x3B9ACA00uLL);
+    dispatch_source_set_timer(timeoutTimer, v8, (v6 * 1000000000.0), 0x3B9ACA00uLL);
 
-    v9 = [(WFTimer *)self timeoutTimer];
+    timeoutTimer2 = [(WFTimer *)self timeoutTimer];
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __16__WFTimer_start__block_invoke;
     v14 = &unk_1E837B8F8;
     objc_copyWeak(&v15, &location);
-    dispatch_source_set_event_handler(v9, &v11);
+    dispatch_source_set_event_handler(timeoutTimer2, &v11);
 
     v10 = [(WFTimer *)self timeoutTimer:v11];
     dispatch_activate(v10);
@@ -90,13 +90,13 @@ void __16__WFTimer_start__block_invoke(uint64_t a1)
   [v1 timerDidFire:WeakRetained];
 }
 
-- (WFTimer)initWithHandler:(id)a3 duration:(double)a4
+- (WFTimer)initWithHandler:(id)handler duration:(double)duration
 {
-  v7 = a3;
-  if (!v7)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFTimer.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTimer.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v16.receiver = self;
@@ -105,8 +105,8 @@ void __16__WFTimer_start__block_invoke(uint64_t a1)
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_handler, v7);
-    v9->_duration = a4;
+    objc_storeWeak(&v8->_handler, handlerCopy);
+    v9->_duration = duration;
     v10 = dispatch_get_global_queue(21, 0);
     v11 = dispatch_queue_create_with_target_V2("com.apple.WorkflowKit.WFTimer", 0, v10);
     timerQueue = v9->_timerQueue;

@@ -9,7 +9,7 @@
 + (BOOL)canTriggerSOSWithSideButton;
 + (BOOL)deviceHasDynamicIsland;
 + (BOOL)deviceHasHomeButton;
-+ (BOOL)hasActiveSIMForClient:(id)a3;
++ (BOOL)hasActiveSIMForClient:(id)client;
 + (BOOL)hasEmergencyContacts;
 + (BOOL)hasMultiPressResetLogicRun;
 + (BOOL)hasNewtonTriggersEmergencySOSWorkoutsSetting;
@@ -35,7 +35,7 @@
 + (BOOL)newtonTriggersEmergencySOSWorkouts;
 + (BOOL)shouldAllowSOSStatusReset;
 + (BOOL)shouldBlockNonEmergencyCalls;
-+ (BOOL)shouldForceDisableAutoCallForClient:(id)a3;
++ (BOOL)shouldForceDisableAutoCallForClient:(id)client;
 + (BOOL)shouldPlayAudioDuringCountdown;
 + (BOOL)shouldSilenceSOSFlow;
 + (BOOL)shouldSkipNewtonCall;
@@ -105,58 +105,58 @@
 + (double)getShortSOSNotificationDisplayTimestamp;
 + (double)mountProbabilityThreshold;
 + (id)_SOSDomainAccessor;
-+ (id)_overrideForDefaultsKey:(id)a3 expectedClass:(Class)a4 defaultValue:(id)a5;
-+ (id)_sosPrefsValueForKey:(id)a3;
++ (id)_overrideForDefaultsKey:(id)key expectedClass:(Class)class defaultValue:(id)value;
++ (id)_sosPrefsValueForKey:(id)key;
 + (id)_userFriendsDomainAccessor;
 + (id)_userSOSDefaults;
 + (id)activeDevice;
 + (id)crashDetectionThirdPartyBundleId;
-+ (id)crashDetectionThirdPartyStopSharingDescriptionPhoneWithAppName:(id)a3;
-+ (id)crashDetectionThirdPartyStopSharingDescriptionWatchWithAppName:(id)a3;
-+ (id)fetchSOSStatusWithKey:(id)a3;
-+ (id)numberOverrideForDefaultsKey:(id)a3 defaultValue:(id)a4;
++ (id)crashDetectionThirdPartyStopSharingDescriptionPhoneWithAppName:(id)name;
++ (id)crashDetectionThirdPartyStopSharingDescriptionWatchWithAppName:(id)name;
++ (id)fetchSOSStatusWithKey:(id)key;
++ (id)numberOverrideForDefaultsKey:(id)key defaultValue:(id)value;
 + (id)phoneAssetName;
 + (id)sosLocationBundle;
-+ (id)stringOverrideForDefaultsKey:(id)a3 defaultValue:(id)a4;
-+ (id)thirdPartySettingsSpecifiersWithTarget:(id)a3 forApp:(id)a4 disableAction:(SEL)a5;
-+ (id)watchAssetNameWithCrownOrientationOnRightSide:(BOOL)a3 layoutLeftToRight:(BOOL)a4;
-+ (int64_t)SOSFlowStateForString:(id)a3;
-+ (int64_t)SOSProgressionForString:(id)a3;
-+ (int64_t)SOSResolutionForString:(id)a3;
++ (id)stringOverrideForDefaultsKey:(id)key defaultValue:(id)value;
++ (id)thirdPartySettingsSpecifiersWithTarget:(id)target forApp:(id)app disableAction:(SEL)action;
++ (id)watchAssetNameWithCrownOrientationOnRightSide:(BOOL)side layoutLeftToRight:(BOOL)right;
++ (int64_t)SOSFlowStateForString:(id)string;
++ (int64_t)SOSProgressionForString:(id)string;
++ (int64_t)SOSResolutionForString:(id)string;
 + (int64_t)SOSSelectableTriggerMechanismCapability;
 + (int64_t)SOSTriggerClickCount;
-+ (int64_t)SOSTriggerMechanismForClickCount:(int64_t)a3;
-+ (int64_t)SOSTriggerMechanismForString:(id)a3;
++ (int64_t)SOSTriggerMechanismForClickCount:(int64_t)count;
++ (int64_t)SOSTriggerMechanismForString:(id)string;
 + (int64_t)currentSOSTriggerMechanism;
 + (int64_t)defaultSOSTriggerMechanism;
 + (int64_t)getSettingsResetFollowUpState;
 + (int64_t)mostRecentlyUsedSOSTriggerMechanism;
 + (void)activeDeviceHasMandrake;
-+ (void)getAssetViewForPhoneWithCompletion:(id)a3;
-+ (void)openEmergencyContactsFooterLinkOnViewController:(id)a3;
-+ (void)presentConfirmationOnViewController:(id)a3 title:(id)a4 message:(id)a5 cancelTitle:(id)a6 cancelHandler:(id)a7 confirmTitle:(id)a8 confirmHandler:(id)a9;
-+ (void)presentStewieDemoUnavailableAlertOnViewController:(id)a3 reason:(int64_t)a4;
-+ (void)presentStewieLearnMoreLinkOnViewController:(id)a3;
-+ (void)setCallWithSideButtonPresses:(BOOL)a3 presentErrorAlertOnViewController:(id)a4 completion:(id)a5;
-+ (void)setCurrentSOSTriggerMechanism:(int64_t)a3;
-+ (void)setKappaThirdPartyActive:(BOOL)a3 forApp:(id)a4 forPairedDevice:(BOOL)a5 presentConfirmationOnViewController:(id)a6 completion:(id)a7;
-+ (void)setKappaTriggersEmergencySOS:(BOOL)a3 confirmationDelegate:(id)a4 completion:(id)a5;
-+ (void)setKappaTriggersEmergencySOS:(BOOL)a3 isWristDetectionEnabled:(BOOL)a4 confirmationDelegate:(id)a5 completion:(id)a6;
-+ (void)setNewtonTriggersEmergencySOS:(BOOL)a3 isWristDetectionEnabled:(BOOL)a4 doesNewtonRequireConfirmation:(BOOL)a5 presentConfirmationOnViewController:(id)a6 completion:(id)a7;
-+ (void)setNewtonTriggersEmergencySOS:(BOOL)a3 isWristDetectionEnabled:(BOOL)a4 newtonEligibility:(unint64_t)a5 confirmationDelegate:(id)a6 completion:(id)a7;
-+ (void)setNewtonTriggersEmergencySOSNumber:(id)a3;
-+ (void)setNumberOfSideButtonPresses:(int64_t)a3;
-+ (void)setSOSStatus:(id)a3 withKey:(id)a4;
-+ (void)setSettingsResetFollowUpState:(int64_t)a3;
++ (void)getAssetViewForPhoneWithCompletion:(id)completion;
++ (void)openEmergencyContactsFooterLinkOnViewController:(id)controller;
++ (void)presentConfirmationOnViewController:(id)controller title:(id)title message:(id)message cancelTitle:(id)cancelTitle cancelHandler:(id)handler confirmTitle:(id)confirmTitle confirmHandler:(id)confirmHandler;
++ (void)presentStewieDemoUnavailableAlertOnViewController:(id)controller reason:(int64_t)reason;
++ (void)presentStewieLearnMoreLinkOnViewController:(id)controller;
++ (void)setCallWithSideButtonPresses:(BOOL)presses presentErrorAlertOnViewController:(id)controller completion:(id)completion;
++ (void)setCurrentSOSTriggerMechanism:(int64_t)mechanism;
++ (void)setKappaThirdPartyActive:(BOOL)active forApp:(id)app forPairedDevice:(BOOL)device presentConfirmationOnViewController:(id)controller completion:(id)completion;
++ (void)setKappaTriggersEmergencySOS:(BOOL)s confirmationDelegate:(id)delegate completion:(id)completion;
++ (void)setKappaTriggersEmergencySOS:(BOOL)s isWristDetectionEnabled:(BOOL)enabled confirmationDelegate:(id)delegate completion:(id)completion;
++ (void)setNewtonTriggersEmergencySOS:(BOOL)s isWristDetectionEnabled:(BOOL)enabled doesNewtonRequireConfirmation:(BOOL)confirmation presentConfirmationOnViewController:(id)controller completion:(id)completion;
++ (void)setNewtonTriggersEmergencySOS:(BOOL)s isWristDetectionEnabled:(BOOL)enabled newtonEligibility:(unint64_t)eligibility confirmationDelegate:(id)delegate completion:(id)completion;
++ (void)setNewtonTriggersEmergencySOSNumber:(id)number;
++ (void)setNumberOfSideButtonPresses:(int64_t)presses;
++ (void)setSOSStatus:(id)status withKey:(id)key;
++ (void)setSettingsResetFollowUpState:(int64_t)state;
 + (void)setShortSOSNotificationDisplayTimestamp;
-+ (void)thirdPartySettingsSpecifiersForRemoteDeviceWithTarget:(id)a3 forApp:(id)a4 disableAction:(SEL)a5 withCompletion:(id)a6;
++ (void)thirdPartySettingsSpecifiersForRemoteDeviceWithTarget:(id)target forApp:(id)app disableAction:(SEL)action withCompletion:(id)completion;
 @end
 
 @implementation SOSUtilities
 
 + (BOOL)kappaTriggersEmergencySOS
 {
-  v2 = [a1 _sosPrefsValueForKey:@"SOSKappaTriggersEmergencySOSKey"];
+  v2 = [self _sosPrefsValueForKey:@"SOSKappaTriggersEmergencySOSKey"];
   v3 = v2;
   if (!v2)
   {
@@ -178,38 +178,38 @@
 
 + (id)_userSOSDefaults
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.SOS"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.SOS"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   }
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.SOS"];
+    standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.SOS"];
   }
 
-  return v5;
+  return standardUserDefaults;
 }
 
 + (NSString)getKappaThirdPartyDisplayNameForApp
 {
-  v2 = [a1 getKappaThirdPartyApp];
-  v3 = [v2 getLocalizedName];
+  getKappaThirdPartyApp = [self getKappaThirdPartyApp];
+  getLocalizedName = [getKappaThirdPartyApp getLocalizedName];
 
-  return v3;
+  return getLocalizedName;
 }
 
 + (SABundleManagerApp)getKappaThirdPartyApp
 {
-  v2 = [getSABundleManagerClass() crashDetectionManager];
-  v3 = [v2 approvedApps];
-  v4 = [v3 firstObject];
+  crashDetectionManager = [getSABundleManagerClass() crashDetectionManager];
+  approvedApps = [crashDetectionManager approvedApps];
+  firstObject = [approvedApps firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 + (BOOL)shouldBlockNonEmergencyCalls
@@ -246,24 +246,24 @@
   v4 = v3;
   if (v2)
   {
-    v5 = [v2 timeOfDetection];
+    timeOfDetection = [v2 timeOfDetection];
 
     v4 = v3;
-    if (v5)
+    if (timeOfDetection)
     {
       v4 = v2;
       if (v3)
       {
-        v6 = [v3 timeOfDetection];
+        timeOfDetection2 = [v3 timeOfDetection];
 
         v4 = v2;
-        if (v6)
+        if (timeOfDetection2)
         {
-          v7 = [v2 timeOfDetection];
-          [v7 timeIntervalSince1970];
+          timeOfDetection3 = [v2 timeOfDetection];
+          [timeOfDetection3 timeIntervalSince1970];
           v9 = v8;
-          v10 = [v3 timeOfDetection];
-          [v10 timeIntervalSince1970];
+          timeOfDetection4 = [v3 timeOfDetection];
+          [timeOfDetection4 timeIntervalSince1970];
           v12 = v11;
 
           if (v9 >= v12)
@@ -288,8 +288,8 @@
 + (id)_SOSDomainAccessor
 {
   v3 = objc_alloc(MEMORY[0x277D2BA58]);
-  v4 = [a1 activeDevice];
-  v5 = [v3 initWithDomain:@"com.apple.SOS" pdrDevice:v4];
+  activeDevice = [self activeDevice];
+  v5 = [v3 initWithDomain:@"com.apple.SOS" pdrDevice:activeDevice];
 
   return v5;
 }
@@ -297,15 +297,15 @@
 + (id)_userFriendsDomainAccessor
 {
   v3 = objc_alloc(MEMORY[0x277D2BA58]);
-  v4 = [a1 activeDevice];
-  v5 = [v3 initWithDomain:@"com.apple.mobilephone" pdrDevice:v4];
+  activeDevice = [self activeDevice];
+  v5 = [v3 initWithDomain:@"com.apple.mobilephone" pdrDevice:activeDevice];
 
   return v5;
 }
 
-+ (id)_sosPrefsValueForKey:(id)a3
++ (id)_sosPrefsValueForKey:(id)key
 {
-  v3 = CFPreferencesCopyValue(a3, @"com.apple.SOS", @"mobile", *MEMORY[0x277CBF030]);
+  v3 = CFPreferencesCopyValue(key, @"com.apple.SOS", @"mobile", *MEMORY[0x277CBF030]);
 
   return v3;
 }
@@ -336,8 +336,8 @@
 
 + (BOOL)longPressTriggersEmergencySOS
 {
-  v2 = [a1 _userFriendsDomainAccessor];
-  v3 = [v2 objectForKey:@"SOSLongPressTriggersEmergencySOSKey"];
+  _userFriendsDomainAccessor = [self _userFriendsDomainAccessor];
+  v3 = [_userFriendsDomainAccessor objectForKey:@"SOSLongPressTriggersEmergencySOSKey"];
   if (v3)
   {
     v4 = v3;
@@ -348,9 +348,9 @@
     v4 = MEMORY[0x277CBEC38];
   }
 
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 void __49__SOSUtilities_setLongPressTriggersEmergencySOS___block_invoke(uint64_t a1)
@@ -387,7 +387,7 @@ void __49__SOSUtilities_setLongPressTriggersEmergencySOS___block_invoke(uint64_t
 
 + (NSString)fallDetectionFooterDescription
 {
-  if ([a1 activeDeviceSupportsNewtonWorkoutsOnly])
+  if ([self activeDeviceSupportsNewtonWorkoutsOnly])
   {
     if (+[SOSUtilities newtonTriggersEmergencySOS])
     {
@@ -421,36 +421,36 @@ void __49__SOSUtilities_setLongPressTriggersEmergencySOS___block_invoke(uint64_t
 
 + (NSNumber)newtonTriggersEmergencySOSNumber
 {
-  v2 = [a1 _SOSDomainAccessor];
-  v3 = [v2 objectForKey:@"SOSNewtonTriggersEmergencySOSKey"];
+  _SOSDomainAccessor = [self _SOSDomainAccessor];
+  v3 = [_SOSDomainAccessor objectForKey:@"SOSNewtonTriggersEmergencySOSKey"];
 
   return v3;
 }
 
-+ (void)setNewtonTriggersEmergencySOSNumber:(id)a3
++ (void)setNewtonTriggersEmergencySOSNumber:(id)number
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v13 = [v4 BOOLValue];
+    bOOLValue = [numberCopy BOOLValue];
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "newton status change: %d", buf, 8u);
   }
 
-  v6 = [a1 _SOSDomainAccessor];
-  v7 = [v6 objectForKey:@"SOSNewtonTriggersEmergencySOSKey"];
-  if (([v7 isEqual:v4] & 1) == 0)
+  _SOSDomainAccessor = [self _SOSDomainAccessor];
+  v7 = [_SOSDomainAccessor objectForKey:@"SOSNewtonTriggersEmergencySOSKey"];
+  if (([v7 isEqual:numberCopy] & 1) == 0)
   {
-    +[SOSCoreAnalyticsReporter reportSOSAutomaticNewtonEnabled:](SOSCoreAnalyticsReporter, "reportSOSAutomaticNewtonEnabled:", [v4 BOOLValue]);
-    [v6 setObject:v4 forKey:@"SOSNewtonTriggersEmergencySOSKey"];
+    +[SOSCoreAnalyticsReporter reportSOSAutomaticNewtonEnabled:](SOSCoreAnalyticsReporter, "reportSOSAutomaticNewtonEnabled:", [numberCopy BOOLValue]);
+    [_SOSDomainAccessor setObject:numberCopy forKey:@"SOSNewtonTriggersEmergencySOSKey"];
     v8 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__SOSUtilities_setNewtonTriggersEmergencySOSNumber___block_invoke;
     block[3] = &unk_279B532A0;
-    v11 = v6;
+    v11 = _SOSDomainAccessor;
     dispatch_async(v8, block);
   }
 
@@ -490,66 +490,66 @@ void __52__SOSUtilities_setNewtonTriggersEmergencySOSNumber___block_invoke_2()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (int64_t)SOSTriggerMechanismForString:(id)a3
++ (int64_t)SOSTriggerMechanismForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SOSTriggerMechanismNone"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"SOSTriggerMechanismNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismThreeClicks"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismThreeClicks"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismFiveClicks"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismFiveClicks"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismVolumeLockHold"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismVolumeLockHold"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismButtonTrigger"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismButtonTrigger"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismNewton"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismNewton"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismCinnamon"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismCinnamon"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismKappa"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismKappa"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismMandrake"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismMandrake"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SOSTriggerMechanismUnknown"])
+  else if ([stringCopy isEqualToString:@"SOSTriggerMechanismUnknown"])
   {
     v4 = 9;
   }
@@ -562,25 +562,25 @@ void __52__SOSUtilities_setNewtonTriggersEmergencySOSNumber___block_invoke_2()
   return v4;
 }
 
-+ (int64_t)SOSProgressionForString:(id)a3
++ (int64_t)SOSProgressionForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SOSProgressionUnknown"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"SOSProgressionUnknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SOSProgressionSOSTriggered"])
+  else if ([stringCopy isEqualToString:@"SOSProgressionSOSTriggered"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SOSProgressionThirdParty"])
+  else if ([stringCopy isEqualToString:@"SOSProgressionThirdParty"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SOSProgressionFlowStateUpdate"])
+  else if ([stringCopy isEqualToString:@"SOSProgressionFlowStateUpdate"])
   {
     v4 = 3;
   }
@@ -593,30 +593,30 @@ void __52__SOSUtilities_setNewtonTriggersEmergencySOSNumber___block_invoke_2()
   return v4;
 }
 
-+ (int64_t)SOSResolutionForString:(id)a3
++ (int64_t)SOSResolutionForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SOSResolutionNone"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"SOSResolutionNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SOSResolutionSystemCompleted"])
+  else if ([stringCopy isEqualToString:@"SOSResolutionSystemCompleted"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SOSResolutionUserCompleted"])
+  else if ([stringCopy isEqualToString:@"SOSResolutionUserCompleted"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SOSResolutionUserDismissed"])
+  else if ([stringCopy isEqualToString:@"SOSResolutionUserDismissed"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SOSResolutionUserDisabled"])
+  else if ([stringCopy isEqualToString:@"SOSResolutionUserDisabled"])
   {
     v4 = 4;
   }
@@ -629,80 +629,80 @@ void __52__SOSUtilities_setNewtonTriggersEmergencySOSNumber___block_invoke_2()
   return v4;
 }
 
-+ (int64_t)SOSFlowStateForString:(id)a3
++ (int64_t)SOSFlowStateForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SOSFlowStateNone"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"SOSFlowStateNone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateUserCheckIn"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateUserCheckIn"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateCallCountdown"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateCallCountdown"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateCallUserInitiated"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateCallUserInitiated"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateCallAutoInitiated"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateCallAutoInitiated"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateContactCountdown"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateContactCountdown"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateCancelled"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateCancelled"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateDone"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateDone"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateVoiceLoopTester"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateVoiceLoopTester"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateMedicalID"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateMedicalID"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateUnresponsiveResting"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateUnresponsiveResting"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateStewieResting"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateStewieResting"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateMotionCancelled"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateMotionCancelled"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateSliderView"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateSliderView"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"SOSFlowStateTriggered"])
+  else if ([stringCopy isEqualToString:@"SOSFlowStateTriggered"])
   {
     v4 = 14;
   }
@@ -717,17 +717,17 @@ void __52__SOSUtilities_setNewtonTriggersEmergencySOSNumber___block_invoke_2()
 
 + (BOOL)newtonTriggersEmergencySOSWorkouts
 {
-  v2 = [a1 _SOSDomainAccessor];
-  v3 = [v2 objectForKey:@"SOSNewtonWorkoutTriggersEmergencySOSKey"];
-  v4 = [v3 BOOLValue];
+  _SOSDomainAccessor = [self _SOSDomainAccessor];
+  v3 = [_SOSDomainAccessor objectForKey:@"SOSNewtonWorkoutTriggersEmergencySOSKey"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)hasNewtonTriggersEmergencySOSWorkoutsSetting
 {
-  v2 = [a1 _SOSDomainAccessor];
-  v3 = [v2 objectForKey:@"SOSNewtonWorkoutTriggersEmergencySOSKey"];
+  _SOSDomainAccessor = [self _SOSDomainAccessor];
+  v3 = [_SOSDomainAccessor objectForKey:@"SOSNewtonWorkoutTriggersEmergencySOSKey"];
   v4 = v3 != 0;
 
   return v4;
@@ -754,40 +754,40 @@ void __54__SOSUtilities_setNewtonTriggersEmergencySOSWorkouts___block_invoke_2()
 
 + (BOOL)newtonTriggersEmergencySOS
 {
-  v2 = [a1 newtonTriggersEmergencySOSNumber];
-  v3 = v2;
+  newtonTriggersEmergencySOSNumber = [self newtonTriggersEmergencySOSNumber];
+  v3 = newtonTriggersEmergencySOSNumber;
   v4 = MEMORY[0x277CBEC28];
-  if (v2)
+  if (newtonTriggersEmergencySOSNumber)
   {
-    v4 = v2;
+    v4 = newtonTriggersEmergencySOSNumber;
   }
 
   v5 = v4;
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
-+ (void)setNewtonTriggersEmergencySOS:(BOOL)a3 isWristDetectionEnabled:(BOOL)a4 doesNewtonRequireConfirmation:(BOOL)a5 presentConfirmationOnViewController:(id)a6 completion:(id)a7
++ (void)setNewtonTriggersEmergencySOS:(BOOL)s isWristDetectionEnabled:(BOOL)enabled doesNewtonRequireConfirmation:(BOOL)confirmation presentConfirmationOnViewController:(id)controller completion:(id)completion
 {
-  v8 = a5;
-  v10 = a3;
-  v12 = a6;
-  v13 = a7;
+  confirmationCopy = confirmation;
+  sCopy = s;
+  controllerCopy = controller;
+  completionCopy = completion;
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __147__SOSUtilities_setNewtonTriggersEmergencySOS_isWristDetectionEnabled_doesNewtonRequireConfirmation_presentConfirmationOnViewController_completion___block_invoke;
   v40[3] = &unk_279B532F0;
-  v44 = v10;
-  v45 = a4;
-  v43 = a1;
-  v14 = v13;
+  v44 = sCopy;
+  enabledCopy = enabled;
+  selfCopy = self;
+  v14 = completionCopy;
   v42 = v14;
-  v15 = v12;
+  v15 = controllerCopy;
   v41 = v15;
   v16 = MEMORY[0x266735F90](v40);
   v17 = v16;
-  if (v10 && v8)
+  if (sCopy && confirmationCopy)
   {
     UIAlertControllerClass = getUIAlertControllerClass();
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -803,7 +803,7 @@ void __54__SOSUtilities_setNewtonTriggersEmergencySOSWorkouts___block_invoke_2()
     v37[1] = 3221225472;
     v37[2] = __147__SOSUtilities_setNewtonTriggersEmergencySOS_isWristDetectionEnabled_doesNewtonRequireConfirmation_presentConfirmationOnViewController_completion___block_invoke_3;
     v37[3] = &unk_279B53318;
-    v39 = a1;
+    selfCopy2 = self;
     v38 = v14;
     v27 = [UIAlertActionClass actionWithTitle:v26 style:1 handler:v37];
     [v23 addAction:v27];
@@ -884,51 +884,51 @@ uint64_t __147__SOSUtilities_setNewtonTriggersEmergencySOS_isWristDetectionEnabl
   return v2();
 }
 
-+ (void)presentConfirmationOnViewController:(id)a3 title:(id)a4 message:(id)a5 cancelTitle:(id)a6 cancelHandler:(id)a7 confirmTitle:(id)a8 confirmHandler:(id)a9
++ (void)presentConfirmationOnViewController:(id)controller title:(id)title message:(id)message cancelTitle:(id)cancelTitle cancelHandler:(id)handler confirmTitle:(id)confirmTitle confirmHandler:(id)confirmHandler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a5;
+  controllerCopy = controller;
+  titleCopy = title;
+  cancelTitleCopy = cancelTitle;
+  handlerCopy = handler;
+  confirmTitleCopy = confirmTitle;
+  confirmHandlerCopy = confirmHandler;
+  messageCopy = message;
   v21 = sos_default_log();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v15;
+    v36 = titleCopy;
     _os_log_impl(&dword_264323000, v21, OS_LOG_TYPE_DEFAULT, "Presenting confirmation with title: %@", buf, 0xCu);
   }
 
-  v22 = [getUIAlertControllerClass() alertControllerWithTitle:v15 message:v20 preferredStyle:1];
+  v22 = [getUIAlertControllerClass() alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
 
-  if ([v16 length])
+  if ([cancelTitleCopy length])
   {
     UIAlertActionClass = getUIAlertActionClass();
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __120__SOSUtilities_presentConfirmationOnViewController_title_message_cancelTitle_cancelHandler_confirmTitle_confirmHandler___block_invoke;
     v33[3] = &unk_279B53340;
-    v34 = v17;
-    v24 = [UIAlertActionClass actionWithTitle:v16 style:1 handler:v33];
+    v34 = handlerCopy;
+    v24 = [UIAlertActionClass actionWithTitle:cancelTitleCopy style:1 handler:v33];
     [v22 addAction:v24];
   }
 
-  if ([v18 length])
+  if ([confirmTitleCopy length])
   {
     v25 = getUIAlertActionClass();
     v28 = MEMORY[0x277D85DD0];
     v29 = 3221225472;
     v30 = __120__SOSUtilities_presentConfirmationOnViewController_title_message_cancelTitle_cancelHandler_confirmTitle_confirmHandler___block_invoke_2;
     v31 = &unk_279B53340;
-    v32 = v19;
-    v26 = [v25 actionWithTitle:v18 style:0 handler:&v28];
+    v32 = confirmHandlerCopy;
+    v26 = [v25 actionWithTitle:confirmTitleCopy style:0 handler:&v28];
     [v22 addAction:{v26, v28, v29, v30, v31}];
   }
 
-  [v14 presentViewController:v22 animated:1 completion:0];
+  [controllerCopy presentViewController:v22 animated:1 completion:0];
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -955,48 +955,48 @@ uint64_t __120__SOSUtilities_presentConfirmationOnViewController_title_message_c
   return result;
 }
 
-+ (void)setNewtonTriggersEmergencySOS:(BOOL)a3 isWristDetectionEnabled:(BOOL)a4 newtonEligibility:(unint64_t)a5 confirmationDelegate:(id)a6 completion:(id)a7
++ (void)setNewtonTriggersEmergencySOS:(BOOL)s isWristDetectionEnabled:(BOOL)enabled newtonEligibility:(unint64_t)eligibility confirmationDelegate:(id)delegate completion:(id)completion
 {
-  v9 = a4;
-  v10 = a3;
+  enabledCopy = enabled;
+  sCopy = s;
   v50 = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = a7;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v14 = sos_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109890;
-    *v46 = v10;
+    *v46 = sCopy;
     *&v46[4] = 1024;
-    *&v46[6] = v9;
+    *&v46[6] = enabledCopy;
     *v47 = 2048;
-    *&v47[2] = a5;
+    *&v47[2] = eligibility;
     v48 = 2112;
-    v49 = v12;
+    v49 = delegateCopy;
     _os_log_impl(&dword_264323000, v14, OS_LOG_TYPE_DEFAULT, "setNewtonTriggersEmergencySOS:%d isWristDetectionEnabled:%d newtonEligibility:%zd confirmationDelegate:%@", buf, 0x22u);
   }
 
-  v15 = [a1 newtonTriggersEmergencySOSWorkouts];
+  newtonTriggersEmergencySOSWorkouts = [self newtonTriggersEmergencySOSWorkouts];
   v16 = sos_default_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     *v46 = "+[SOSUtilities setNewtonTriggersEmergencySOS:isWristDetectionEnabled:newtonEligibility:confirmationDelegate:completion:]";
     *&v46[8] = 1024;
-    *v47 = v15;
+    *v47 = newtonTriggersEmergencySOSWorkouts;
     _os_log_impl(&dword_264323000, v16, OS_LOG_TYPE_DEFAULT, "%s - newtonTriggersEmergencySOSWorkoutsOnly:%d", buf, 0x12u);
   }
 
-  if (([a1 hasNewtonTriggersEmergencySOSWorkoutsSetting] & 1) == 0 && objc_msgSend(a1, "activeDeviceSupportsNewtonWorkoutsOnly"))
+  if (([self hasNewtonTriggersEmergencySOSWorkoutsSetting] & 1) == 0 && objc_msgSend(self, "activeDeviceSupportsNewtonWorkoutsOnly"))
   {
-    v15 = [a1 defaultToWorkoutsOnlyForEligibility:a5];
+    newtonTriggersEmergencySOSWorkouts = [self defaultToWorkoutsOnlyForEligibility:eligibility];
     v17 = sos_default_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       *v46 = "+[SOSUtilities setNewtonTriggersEmergencySOS:isWristDetectionEnabled:newtonEligibility:confirmationDelegate:completion:]";
       *&v46[8] = 1024;
-      *v47 = v15;
+      *v47 = newtonTriggersEmergencySOSWorkouts;
       _os_log_impl(&dword_264323000, v17, OS_LOG_TYPE_DEFAULT, "%s - !hasNewtonTriggersEmergencySOSWorkoutsSetting, set default newtonTriggersEmergencySOSWorkoutsOnly:%d", buf, 0x12u);
     }
   }
@@ -1005,16 +1005,16 @@ uint64_t __120__SOSUtilities_presentConfirmationOnViewController_title_message_c
   v38[1] = 3221225472;
   v38[2] = __120__SOSUtilities_setNewtonTriggersEmergencySOS_isWristDetectionEnabled_newtonEligibility_confirmationDelegate_completion___block_invoke;
   v38[3] = &unk_279B53390;
-  v42 = v10;
-  v43 = v9;
-  v18 = v12;
+  v42 = sCopy;
+  v43 = enabledCopy;
+  v18 = delegateCopy;
   v39 = v18;
-  v41 = a1;
-  v44 = v15;
-  v19 = v13;
+  selfCopy = self;
+  v44 = newtonTriggersEmergencySOSWorkouts;
+  v19 = completionCopy;
   v40 = v19;
   v20 = MEMORY[0x266735F90](v38);
-  if (v10 && (v15 & 1) == 0 && [a1 newtonAlwaysOnRequiresConfirmationForEligibility:a5])
+  if (sCopy && (newtonTriggersEmergencySOSWorkouts & 1) == 0 && [self newtonAlwaysOnRequiresConfirmationForEligibility:eligibility])
   {
     v21 = sos_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1034,7 +1034,7 @@ uint64_t __120__SOSUtilities_presentConfirmationOnViewController_title_message_c
     v34[1] = 3221225472;
     v34[2] = __120__SOSUtilities_setNewtonTriggersEmergencySOS_isWristDetectionEnabled_newtonEligibility_confirmationDelegate_completion___block_invoke_607;
     v34[3] = &unk_279B533B8;
-    v36 = a1;
+    selfCopy2 = self;
     v37 = 0;
     v35 = v19;
     v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1230,8 +1230,8 @@ void __29__SOSUtilities_isSmallScreen__block_invoke()
   v4 = MEMORY[0x277CCACA8];
   if (v3)
   {
-    v5 = [getUIScreenClass() mainScreen];
-    [v5 scale];
+    mainScreen = [getUIScreenClass() mainScreen];
+    [mainScreen scale];
     v7 = [v4 stringWithFormat:@"home_hold@%dx", v6];
 
     if (+[SOSUtilities deviceHasHomeButton])
@@ -1240,7 +1240,7 @@ void __29__SOSUtilities_isSmallScreen__block_invoke()
     }
 
     v8 = MEMORY[0x277CCACA8];
-    if ([a1 deviceHasDynamicIsland])
+    if ([self deviceHasDynamicIsland])
     {
       v9 = @"slot_";
     }
@@ -1250,8 +1250,8 @@ void __29__SOSUtilities_isSmallScreen__block_invoke()
       v9 = &stru_2875C9CD8;
     }
 
-    v10 = [getUIScreenClass() mainScreen];
-    [v10 scale];
+    mainScreen2 = [getUIScreenClass() mainScreen];
+    [mainScreen2 scale];
     v12 = [v8 stringWithFormat:@"%@homeless_hold@%dx", v9, v11];
 
     v7 = v12;
@@ -1259,7 +1259,7 @@ void __29__SOSUtilities_isSmallScreen__block_invoke()
 
   else
   {
-    if ([a1 isSmallScreen])
+    if ([self isSmallScreen])
     {
       v13 = @"top_";
     }
@@ -1269,10 +1269,10 @@ void __29__SOSUtilities_isSmallScreen__block_invoke()
       v13 = &stru_2875C9CD8;
     }
 
-    v14 = [a1 SOSTriggerClickCount];
-    v10 = [getUIScreenClass() mainScreen];
-    [v10 scale];
-    v7 = [v4 stringWithFormat:@"home_%@%ld@%dx", v13, v14, v15];
+    sOSTriggerClickCount = [self SOSTriggerClickCount];
+    mainScreen2 = [getUIScreenClass() mainScreen];
+    [mainScreen2 scale];
+    v7 = [v4 stringWithFormat:@"home_%@%ld@%dx", v13, sOSTriggerClickCount, v15];
   }
 
 LABEL_12:
@@ -1280,21 +1280,21 @@ LABEL_12:
   return v7;
 }
 
-+ (void)getAssetViewForPhoneWithCompletion:(id)a3
++ (void)getAssetViewForPhoneWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 phoneAssetName];
+  completionCopy = completion;
+  phoneAssetName = [self phoneAssetName];
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = phoneAssetName;
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "Loading SOSTriggerAnimation asset %@", &buf, 0xCu);
   }
 
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v8 = [v7 URLForResource:v5 withExtension:@"caar"];
+  v8 = [v7 URLForResource:phoneAssetName withExtension:@"caar"];
 
   v18 = 0;
   v19 = &v18;
@@ -1318,11 +1318,11 @@ LABEL_12:
   v14[1] = 3221225472;
   v14[2] = __51__SOSUtilities_getAssetViewForPhoneWithCompletion___block_invoke;
   v14[3] = &unk_279B53408;
-  v16 = v4;
-  v17 = a1;
-  v15 = v5;
-  v11 = v4;
-  v12 = v5;
+  v16 = completionCopy;
+  selfCopy = self;
+  v15 = phoneAssetName;
+  v11 = completionCopy;
+  v12 = phoneAssetName;
   [v9 loadPackageViewWithContentsOfURL:v8 publishedObjectViewClassMap:0 completion:v14];
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1383,11 +1383,11 @@ void __51__SOSUtilities_getAssetViewForPhoneWithCompletion___block_invoke(void *
 
 + (NSString)phoneTriggerAnimationFooterDescription
 {
-  if ([a1 canTriggerSOSWithVolumeLockHold])
+  if ([self canTriggerSOSWithVolumeLockHold])
   {
-    v3 = [a1 autoCallRequiresSIM];
+    autoCallRequiresSIM = [self autoCallRequiresSIM];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v3)
+    if (autoCallRequiresSIM)
     {
       v5 = @"PHONE_TRIGGER_ANIMATION_VOLUME_LOCK_HOLD_FOOTER_REQUIRE_SIM";
     }
@@ -1418,16 +1418,16 @@ void __51__SOSUtilities_getAssetViewForPhoneWithCompletion___block_invoke(void *
   return v7;
 }
 
-+ (id)watchAssetNameWithCrownOrientationOnRightSide:(BOOL)a3 layoutLeftToRight:(BOOL)a4
++ (id)watchAssetNameWithCrownOrientationOnRightSide:(BOOL)side layoutLeftToRight:(BOOL)right
 {
   v4 = @"crownLeft";
-  if (a3)
+  if (side)
   {
     v4 = @"crownRight";
   }
 
   v5 = @"RTL";
-  if (a4)
+  if (right)
   {
     v5 = @"LTR";
   }
@@ -1449,15 +1449,15 @@ void __51__SOSUtilities_getAssetViewForPhoneWithCompletion___block_invoke(void *
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 trigger];
+    trigger = [v2 trigger];
   }
 
   else
   {
-    v4 = 0;
+    trigger = 0;
   }
 
-  return v4;
+  return trigger;
 }
 
 + (BOOL)isIndiaSKU
@@ -1470,25 +1470,25 @@ void __51__SOSUtilities_getAssetViewForPhoneWithCompletion___block_invoke(void *
 
 + (BOOL)canTriggerSOSWithSideButton
 {
-  v3 = [a1 currentSOSTriggerMechanism];
-  if (v3 != 1)
+  currentSOSTriggerMechanism = [self currentSOSTriggerMechanism];
+  if (currentSOSTriggerMechanism != 1)
   {
-    LOBYTE(v3) = [a1 currentSOSTriggerMechanism] == 2;
+    LOBYTE(currentSOSTriggerMechanism) = [self currentSOSTriggerMechanism] == 2;
   }
 
-  return v3;
+  return currentSOSTriggerMechanism;
 }
 
 + (int64_t)SOSTriggerClickCount
 {
-  v2 = [a1 currentSOSTriggerMechanism];
+  currentSOSTriggerMechanism = [self currentSOSTriggerMechanism];
   v3 = 5;
-  if (v2 != 2)
+  if (currentSOSTriggerMechanism != 2)
   {
     v3 = 0;
   }
 
-  if (v2 == 1)
+  if (currentSOSTriggerMechanism == 1)
   {
     return 3;
   }
@@ -1509,7 +1509,7 @@ void __51__SOSUtilities_getAssetViewForPhoneWithCompletion___block_invoke(void *
 
 + (NSString)callWithSideButtonFooterDescription
 {
-  if ([a1 SOSSelectableTriggerMechanismCapability] == 4)
+  if ([self SOSSelectableTriggerMechanismCapability] == 4)
   {
     v3 = @"ALSO_WORKS_THREE_CLICKS_FOOTER";
 LABEL_5:
@@ -1519,7 +1519,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([a1 SOSSelectableTriggerMechanismCapability] == 3)
+  if ([self SOSSelectableTriggerMechanismCapability] == 3)
   {
     v3 = @"ALSO_WORKS_FIVE_CLICKS_FOOTER";
     goto LABEL_5;
@@ -1533,12 +1533,12 @@ LABEL_7:
 
 + (BOOL)_potentialForAccessibilityConflict
 {
-  if ([a1 deviceHasHomeButton])
+  if ([self deviceHasHomeButton])
   {
     return 0;
   }
 
-  return [a1 mustAllowThreeClickTrigger];
+  return [self mustAllowThreeClickTrigger];
 }
 
 + (BOOL)_hasAccessibilityConflict
@@ -1549,32 +1549,32 @@ LABEL_7:
   return v3;
 }
 
-+ (void)setCallWithSideButtonPresses:(BOOL)a3 presentErrorAlertOnViewController:(id)a4 completion:(id)a5
++ (void)setCallWithSideButtonPresses:(BOOL)presses presentErrorAlertOnViewController:(id)controller completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (!a3)
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (!presses)
   {
-    [a1 setCallWithSideButtonPressesEnabled:0];
-    if ([a1 _potentialForAccessibilityConflict])
+    [self setCallWithSideButtonPressesEnabled:0];
+    if ([self _potentialForAccessibilityConflict])
     {
-      v25 = a1;
+      selfCopy2 = self;
       v26 = 3;
 LABEL_9:
-      [v25 setCurrentSOSTriggerMechanism:v26];
+      [selfCopy2 setCurrentSOSTriggerMechanism:v26];
     }
 
 LABEL_10:
-    v9[2](v9, 1);
+    completionCopy[2](completionCopy, 1);
     goto LABEL_11;
   }
 
-  if (![a1 _potentialForAccessibilityConflict] || !objc_msgSend(a1, "_hasAccessibilityConflict"))
+  if (![self _potentialForAccessibilityConflict] || !objc_msgSend(self, "_hasAccessibilityConflict"))
   {
-    [a1 setCallWithSideButtonPressesEnabled:1];
-    if ([a1 _potentialForAccessibilityConflict])
+    [self setCallWithSideButtonPressesEnabled:1];
+    if ([self _potentialForAccessibilityConflict])
     {
-      v25 = a1;
+      selfCopy2 = self;
       v26 = 1;
       goto LABEL_9;
     }
@@ -1596,7 +1596,7 @@ LABEL_10:
   v34[1] = 3221225472;
   v34[2] = __90__SOSUtilities_setCallWithSideButtonPresses_presentErrorAlertOnViewController_completion___block_invoke;
   v34[3] = &unk_279B53340;
-  v19 = v9;
+  v19 = completionCopy;
   v35 = v19;
   v20 = [UIAlertActionClass actionWithTitle:v18 style:1 handler:v34];
   [v15 addAction:v20];
@@ -1608,13 +1608,13 @@ LABEL_10:
   v28 = 3221225472;
   v29 = __90__SOSUtilities_setCallWithSideButtonPresses_presentErrorAlertOnViewController_completion___block_invoke_2;
   v30 = &unk_279B532C8;
-  v32 = a1;
-  v33 = a3;
+  selfCopy3 = self;
+  pressesCopy = presses;
   v31 = v19;
   v24 = [v21 actionWithTitle:v23 style:0 handler:&v27];
   [v15 addAction:{v24, v27, v28, v29, v30}];
 
-  [v8 presentViewController:v15 animated:1 completion:0];
+  [controllerCopy presentViewController:v15 animated:1 completion:0];
 LABEL_11:
 }
 
@@ -1628,14 +1628,14 @@ uint64_t __90__SOSUtilities_setCallWithSideButtonPresses_presentErrorAlertOnView
   return v2();
 }
 
-+ (void)setNumberOfSideButtonPresses:(int64_t)a3
++ (void)setNumberOfSideButtonPresses:(int64_t)presses
 {
-  if ([a1 mustAllowThreeClickTrigger] && !objc_msgSend(a1, "isDeviceD2xOrNewer"))
+  if ([self mustAllowThreeClickTrigger] && !objc_msgSend(self, "isDeviceD2xOrNewer"))
   {
-    if ((a3 - 3) > 0xFFFFFFFFFFFFFFFDLL)
+    if ((presses - 3) > 0xFFFFFFFFFFFFFFFDLL)
     {
 
-      [a1 setCurrentSOSTriggerMechanism:a3];
+      [self setCurrentSOSTriggerMechanism:presses];
     }
 
     else
@@ -1660,140 +1660,140 @@ uint64_t __90__SOSUtilities_setCallWithSideButtonPresses_presentErrorAlertOnView
 
 + (int64_t)currentSOSTriggerMechanism
 {
-  v3 = [a1 _sosPrefsValueForKey:@"SOSTriggerMechanismKey"];
-  v4 = [v3 integerValue];
+  v3 = [self _sosPrefsValueForKey:@"SOSTriggerMechanismKey"];
+  integerValue = [v3 integerValue];
 
-  if (v4 > 1)
+  if (integerValue > 1)
   {
-    if (v4 == 2)
+    if (integerValue == 2)
     {
-      if (![a1 mustAllowThreeClickTrigger])
+      if (![self mustAllowThreeClickTrigger])
       {
         return 2;
       }
 
-      v9 = [a1 isDeviceD2xOrNewer];
+      isDeviceD2xOrNewer = [self isDeviceD2xOrNewer];
     }
 
     else
     {
-      if (v4 != 3)
+      if (integerValue != 3)
       {
-        return v4;
+        return integerValue;
       }
 
-      if (([a1 isDeviceD2xOrNewer] & 1) == 0)
+      if (([self isDeviceD2xOrNewer] & 1) == 0)
       {
 LABEL_11:
-        if ([a1 mustAllowThreeClickTrigger])
+        if ([self mustAllowThreeClickTrigger])
         {
           keyExistsAndHasValidFormat = 0;
           AppIntegerValue = CFPreferencesGetAppIntegerValue(@"SBNumberOfPressesToTriggerSOS", @"com.apple.springboard", &keyExistsAndHasValidFormat);
           if (keyExistsAndHasValidFormat)
           {
-            v6 = [a1 SOSTriggerMechanismForClickCount:AppIntegerValue];
-            if ([a1 isDeviceD2xOrNewer])
+            defaultSOSTriggerMechanism = [self SOSTriggerMechanismForClickCount:AppIntegerValue];
+            if ([self isDeviceD2xOrNewer])
             {
-              v7 = [a1 _sosPrefsValueForKey:@"SOSTriggerMechanismD2xKey"];
-              v8 = [v7 integerValue];
+              v7 = [self _sosPrefsValueForKey:@"SOSTriggerMechanismD2xKey"];
+              integerValue2 = [v7 integerValue];
 
-              if (!v8)
+              if (!integerValue2)
               {
-                [a1 _setSOSPrefsValue:&unk_2875D2938 forKey:@"SOSTriggerMechanismD2xKey"];
-                if ([a1 mustAllowThreeClickTrigger])
+                [self _setSOSPrefsValue:&unk_2875D2938 forKey:@"SOSTriggerMechanismD2xKey"];
+                if ([self mustAllowThreeClickTrigger])
                 {
-                  if (v6 == 2)
+                  if (defaultSOSTriggerMechanism == 2)
                   {
-                    v6 = 1;
+                    defaultSOSTriggerMechanism = 1;
                     goto LABEL_25;
                   }
                 }
               }
             }
 
-            if (v6)
+            if (defaultSOSTriggerMechanism)
             {
               goto LABEL_25;
             }
           }
         }
 
-        v6 = [a1 defaultSOSTriggerMechanism];
+        defaultSOSTriggerMechanism = [self defaultSOSTriggerMechanism];
         goto LABEL_25;
       }
 
-      if ([a1 _potentialForAccessibilityConflict])
+      if ([self _potentialForAccessibilityConflict])
       {
         return 3;
       }
 
-      v9 = [a1 mustAllowThreeClickTrigger];
+      isDeviceD2xOrNewer = [self mustAllowThreeClickTrigger];
     }
 
-    if (v9)
+    if (isDeviceD2xOrNewer)
     {
-      v6 = 1;
+      defaultSOSTriggerMechanism = 1;
     }
 
     else
     {
-      v6 = 2;
+      defaultSOSTriggerMechanism = 2;
     }
 
 LABEL_25:
-    if (v4 == v6)
+    if (integerValue == defaultSOSTriggerMechanism)
     {
-      return v4;
+      return integerValue;
     }
 
     goto LABEL_26;
   }
 
-  if (!v4)
+  if (!integerValue)
   {
     goto LABEL_11;
   }
 
-  if (v4 == 1)
+  if (integerValue == 1)
   {
-    if ([a1 mustAllowThreeClickTrigger])
+    if ([self mustAllowThreeClickTrigger])
     {
       return 1;
     }
 
-    v6 = 2;
+    defaultSOSTriggerMechanism = 2;
 LABEL_26:
-    [a1 setCurrentSOSTriggerMechanism:v6];
-    return v6;
+    [self setCurrentSOSTriggerMechanism:defaultSOSTriggerMechanism];
+    return defaultSOSTriggerMechanism;
   }
 
-  return v4;
+  return integerValue;
 }
 
-+ (void)setCurrentSOSTriggerMechanism:(int64_t)a3
++ (void)setCurrentSOSTriggerMechanism:(int64_t)mechanism
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [a1 _setSOSPrefsValue:v4 forKey:@"SOSTriggerMechanismKey"];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:mechanism];
+  [self _setSOSPrefsValue:v4 forKey:@"SOSTriggerMechanismKey"];
 
   +[SOSManager notifySOSTriggerMechanismChanged];
 }
 
-+ (int64_t)SOSTriggerMechanismForClickCount:(int64_t)a3
++ (int64_t)SOSTriggerMechanismForClickCount:(int64_t)count
 {
-  if (a3 == 3)
+  if (count == 3)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 5);
+    return 2 * (count == 5);
   }
 }
 
 + (int64_t)defaultSOSTriggerMechanism
 {
-  if ([a1 mustAllowThreeClickTrigger])
+  if ([self mustAllowThreeClickTrigger])
   {
     return 1;
   }
@@ -1843,7 +1843,7 @@ uint64_t __38__SOSUtilities_deviceHasDynamicIsland__block_invoke()
 
   else
   {
-    result = [a1 deviceHasHomeButton] ^ 1;
+    result = [self deviceHasHomeButton] ^ 1;
   }
 
   v4 = *MEMORY[0x277D85DE8];
@@ -1869,21 +1869,21 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
 
 + (int64_t)SOSSelectableTriggerMechanismCapability
 {
-  v3 = [a1 mustAllowThreeClickTrigger];
-  v4 = [a1 isDeviceD2xOrNewer];
+  mustAllowThreeClickTrigger = [self mustAllowThreeClickTrigger];
+  isDeviceD2xOrNewer = [self isDeviceD2xOrNewer];
   v5 = 1;
-  if (v3)
+  if (mustAllowThreeClickTrigger)
   {
     v5 = 2;
   }
 
   v6 = 3;
-  if (v3)
+  if (mustAllowThreeClickTrigger)
   {
     v6 = 4;
   }
 
-  if (v4)
+  if (isDeviceD2xOrNewer)
   {
     return v6;
   }
@@ -1894,9 +1894,9 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
   }
 }
 
-+ (BOOL)shouldForceDisableAutoCallForClient:(id)a3
++ (BOOL)shouldForceDisableAutoCallForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.InCallService"];
   v6 = [v5 BOOLForKey:@"shouldDisableSOSAutoCall"];
 
@@ -1905,9 +1905,9 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
     LOBYTE(v7) = 1;
   }
 
-  else if ([a1 autoCallRequiresSIM])
+  else if ([self autoCallRequiresSIM])
   {
-    v7 = [a1 hasActiveSIMForClient:v4] ^ 1;
+    v7 = [self hasActiveSIMForClient:clientCopy] ^ 1;
   }
 
   else
@@ -1918,14 +1918,14 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
   return v7;
 }
 
-+ (BOOL)hasActiveSIMForClient:(id)a3
++ (BOOL)hasActiveSIMForClient:(id)client
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  clientCopy = client;
   v37 = 0;
-  v4 = [v3 getSubscriptionInfoWithError:&v37];
+  v4 = [clientCopy getSubscriptionInfoWithError:&v37];
   v5 = v37;
-  v6 = v5;
+  subscriptions = v5;
   if (v4)
   {
 
@@ -1933,8 +1933,8 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v6 = [v4 subscriptions];
-    v7 = [v6 countByEnumeratingWithState:&v33 objects:v42 count:16];
+    subscriptions = [v4 subscriptions];
+    v7 = [subscriptions countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (!v7)
     {
       v24 = 0;
@@ -1946,19 +1946,19 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
     v9 = 0;
     v10 = *v34;
     v30 = *MEMORY[0x277CC3ED8];
-    v29 = v3;
+    v29 = clientCopy;
     while (2)
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v34 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subscriptions);
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
         v32 = v9;
-        v13 = [v3 getSIMStatus:v12 error:&v32];
+        v13 = [clientCopy getSIMStatus:v12 error:&v32];
         v14 = v32;
 
         if (v14)
@@ -1990,7 +1990,7 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
         else
         {
           v31 = 0;
-          v15 = [v3 getSimLabel:v12 error:&v31];
+          v15 = [clientCopy getSimLabel:v12 error:&v31];
           v16 = v31;
           v9 = v16;
           if (v15)
@@ -2005,9 +2005,9 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
 
           if (v17)
           {
-            v19 = v6;
-            v20 = [v15 unique_id];
-            v21 = [v20 isEqualToString:@"00000000-0000-0000-0000-000000000000"];
+            v19 = subscriptions;
+            unique_id = [v15 unique_id];
+            v21 = [unique_id isEqualToString:@"00000000-0000-0000-0000-000000000000"];
 
             v18 = sos_default_log();
             v22 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -2015,9 +2015,9 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
             {
               if (v22)
               {
-                v25 = [v15 unique_id];
+                unique_id2 = [v15 unique_id];
                 *buf = 138412546;
-                v39 = v25;
+                v39 = unique_id2;
                 v40 = 2112;
                 v41 = v12;
                 _os_log_impl(&dword_264323000, v18, OS_LOG_TYPE_DEFAULT, "Successfully retrieved SIM label %@ for context: %@", buf, 0x16u);
@@ -2025,23 +2025,23 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
 
               v24 = 1;
               v4 = v28;
-              v6 = v19;
-              v3 = v29;
+              subscriptions = v19;
+              clientCopy = v29;
               goto LABEL_36;
             }
 
             if (v22)
             {
-              v23 = [v15 unique_id];
+              unique_id3 = [v15 unique_id];
               *buf = 138412546;
-              v39 = v23;
+              v39 = unique_id3;
               v40 = 2112;
               v41 = v12;
               _os_log_impl(&dword_264323000, v18, OS_LOG_TYPE_DEFAULT, "retrieved SIM label %@ for context: %@", buf, 0x16u);
             }
 
-            v6 = v19;
-            v3 = v29;
+            subscriptions = v19;
+            clientCopy = v29;
           }
 
           else
@@ -2057,7 +2057,7 @@ uint64_t __35__SOSUtilities_deviceHasHomeButton__block_invoke()
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      v8 = [subscriptions countByEnumeratingWithState:&v33 objects:v42 count:16];
       if (v8)
       {
         continue;
@@ -2100,14 +2100,14 @@ LABEL_39:
 + (BOOL)hasEmergencyContacts
 {
   v2 = objc_alloc_init(SOSContactsManager);
-  v3 = [(SOSContactsManager *)v2 SOSContactsExist];
+  sOSContactsExist = [(SOSContactsManager *)v2 SOSContactsExist];
 
-  return v3;
+  return sOSContactsExist;
 }
 
 + (NSString)emergencyContactsSectionDescription
 {
-  if ([a1 hasEmergencyContacts])
+  if ([self hasEmergencyContacts])
   {
     v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v3 = [v2 localizedStringForKey:@"EMERGENCY_CONTACTS" value:&stru_2875C9CD8 table:0];
@@ -2123,10 +2123,10 @@ LABEL_39:
 
 + (NSString)emergencyContactsEditDescription
 {
-  v2 = [a1 hasEmergencyContacts];
+  hasEmergencyContacts = [self hasEmergencyContacts];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (hasEmergencyContacts)
   {
     v5 = @"OPEN_HEALTH_HAS_EMERGENCY_CONTACTS";
   }
@@ -2147,8 +2147,8 @@ LABEL_39:
   v4 = [v3 localizedStringForKey:@"SOS_PRIVACY_EMERGENCY_CONTACTS" value:&stru_2875C9CD8 table:0];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [a1 emergencyContactsFooterLinkTitle];
-  v7 = [v5 stringWithFormat:v4, v6];
+  emergencyContactsFooterLinkTitle = [self emergencyContactsFooterLinkTitle];
+  v7 = [v5 stringWithFormat:v4, emergencyContactsFooterLinkTitle];
 
   return v7;
 }
@@ -2161,18 +2161,18 @@ LABEL_39:
   return v3;
 }
 
-+ (void)openEmergencyContactsFooterLinkOnViewController:(id)a3
++ (void)openEmergencyContactsFooterLinkOnViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = [getOBPrivacyPresenterClass() presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.emergencysos"];
-  [v4 setPresentingViewController:v3];
+  [v4 setPresentingViewController:controllerCopy];
 
   [v4 present];
 }
 
 + (NSString)callWithHoldTitleDescription
 {
-  [a1 clawReleaseToCallSupport];
+  [self clawReleaseToCallSupport];
   v3 = v2;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
@@ -2193,7 +2193,7 @@ LABEL_39:
 
 + (NSString)callWithHoldFooterDescription
 {
-  [a1 clawReleaseToCallSupport];
+  [self clawReleaseToCallSupport];
   v3 = v2;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
@@ -2214,50 +2214,50 @@ LABEL_39:
 
 + (BOOL)isCallWithVolumeLockHoldEnabled
 {
-  v3 = [a1 _sosPrefsValueForKey:@"SOSCallWithVolumeLockHoldKey"];
+  v3 = [self _sosPrefsValueForKey:@"SOSCallWithVolumeLockHoldKey"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
-  else if ([a1 isDeviceD2xOrNewer])
+  else if ([self isDeviceD2xOrNewer])
   {
-    v6 = [a1 _sosPrefsValueForKey:@"SOSAutomaticCallCountdownEnabledKey"];
+    v6 = [self _sosPrefsValueForKey:@"SOSAutomaticCallCountdownEnabledKey"];
     if (v6)
     {
-      v7 = [a1 _sosPrefsValueForKey:@"SOSAutoCallD2xKey"];
-      v8 = [v7 integerValue];
+      v7 = [self _sosPrefsValueForKey:@"SOSAutoCallD2xKey"];
+      integerValue = [v7 integerValue];
 
-      if (v8 || ([a1 _setSOSPrefsValue:&unk_2875D2938 forKey:@"SOSAutoCallD2xKey"], (objc_msgSend(a1, "mustAllowThreeClickTrigger") & 1) != 0) || (objc_msgSend(v6, "BOOLValue") & 1) != 0)
+      if (integerValue || ([self _setSOSPrefsValue:&unk_2875D2938 forKey:@"SOSAutoCallD2xKey"], (objc_msgSend(self, "mustAllowThreeClickTrigger") & 1) != 0) || (objc_msgSend(v6, "BOOLValue") & 1) != 0)
       {
-        v5 = [v6 BOOLValue];
+        bOOLValue = [v6 BOOLValue];
       }
 
       else
       {
-        v5 = 1;
-        [a1 setCallWithVolumeLockHoldEnabled:1];
+        bOOLValue = 1;
+        [self setCallWithVolumeLockHoldEnabled:1];
       }
     }
 
     else
     {
-      v5 = 1;
+      bOOLValue = 1;
     }
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (double)clawReleaseToCallSupport
 {
-  v2 = [a1 _sosPrefsValueForKey:@"SOSClawReleaseToCallSupportKey"];
+  v2 = [self _sosPrefsValueForKey:@"SOSClawReleaseToCallSupportKey"];
   v3 = v2;
   if (v2)
   {
@@ -2299,7 +2299,7 @@ LABEL_39:
 
 + (NSString)callWithPressesTitleDescription
 {
-  if ([a1 currentSOSTriggerMechanism] == 1 || objc_msgSend(a1, "mustAllowThreeClickTrigger") && (objc_msgSend(a1, "isDeviceD2xOrNewer") & 1) != 0)
+  if ([self currentSOSTriggerMechanism] == 1 || objc_msgSend(self, "mustAllowThreeClickTrigger") && (objc_msgSend(self, "isDeviceD2xOrNewer") & 1) != 0)
   {
     v3 = @"CALL_WITH_THREE_PRESSES";
   }
@@ -2317,7 +2317,7 @@ LABEL_39:
 
 + (NSString)callWithPressesFooterDescription
 {
-  if ([a1 currentSOSTriggerMechanism] == 1 || objc_msgSend(a1, "mustAllowThreeClickTrigger") && (objc_msgSend(a1, "isDeviceD2xOrNewer") & 1) != 0)
+  if ([self currentSOSTriggerMechanism] == 1 || objc_msgSend(self, "mustAllowThreeClickTrigger") && (objc_msgSend(self, "isDeviceD2xOrNewer") & 1) != 0)
   {
     v3 = @"CALL_WITH_THREE_PRESSES_FOOTER";
   }
@@ -2335,10 +2335,10 @@ LABEL_39:
 
 + (BOOL)isCallWithSideButtonPressesEnabled
 {
-  v3 = [a1 mustAllowThreeClickTrigger];
-  v4 = [a1 _sosPrefsValueForKey:@"SOSCallWithSideButtonPressesKey"];
-  v5 = [a1 _sosPrefsValueForKey:@"SOSAutomaticCallCountdownEnabledKey"];
-  if (![a1 _potentialForAccessibilityConflict] || !objc_msgSend(a1, "_hasAccessibilityConflict"))
+  mustAllowThreeClickTrigger = [self mustAllowThreeClickTrigger];
+  v4 = [self _sosPrefsValueForKey:@"SOSCallWithSideButtonPressesKey"];
+  v5 = [self _sosPrefsValueForKey:@"SOSAutomaticCallCountdownEnabledKey"];
+  if (![self _potentialForAccessibilityConflict] || !objc_msgSend(self, "_hasAccessibilityConflict"))
   {
     if (v4)
     {
@@ -2355,19 +2355,19 @@ LABEL_39:
       v6 = v5;
     }
 
-    v3 = [v6 BOOLValue];
+    mustAllowThreeClickTrigger = [v6 BOOLValue];
     goto LABEL_9;
   }
 
-  [a1 setCallWithSideButtonPressesEnabled:0];
-  v3 = 0;
+  [self setCallWithSideButtonPressesEnabled:0];
+  mustAllowThreeClickTrigger = 0;
 LABEL_9:
-  if ([a1 isDeviceD2xOrNewer] && (objc_msgSend(a1, "mustAllowThreeClickTrigger") & 1) == 0 && (objc_msgSend(a1, "hasMultiPressResetLogicRun") & 1) == 0)
+  if ([self isDeviceD2xOrNewer] && (objc_msgSend(self, "mustAllowThreeClickTrigger") & 1) == 0 && (objc_msgSend(self, "hasMultiPressResetLogicRun") & 1) == 0)
   {
-    [a1 setHasMultiPressResetLogicRun:1];
-    if (v3)
+    [self setHasMultiPressResetLogicRun:1];
+    if (mustAllowThreeClickTrigger)
     {
-      [a1 setCallWithSideButtonPressesEnabled:0];
+      [self setCallWithSideButtonPressesEnabled:0];
       v7 = 1;
     }
 
@@ -2376,11 +2376,11 @@ LABEL_9:
       v7 = 4;
     }
 
-    [a1 setSettingsResetFollowUpState:v7];
-    LOBYTE(v3) = 0;
+    [self setSettingsResetFollowUpState:v7];
+    LOBYTE(mustAllowThreeClickTrigger) = 0;
   }
 
-  return v3;
+  return mustAllowThreeClickTrigger;
 }
 
 + (NSString)autoCallTitleDescription
@@ -2393,10 +2393,10 @@ LABEL_9:
 
 + (NSString)autoCallFooterDescription
 {
-  v2 = [a1 autoCallRequiresSIM];
+  autoCallRequiresSIM = [self autoCallRequiresSIM];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (autoCallRequiresSIM)
   {
     v5 = @"AUTO_CALL_FOOTER_REQUIRE_SIM";
   }
@@ -2413,16 +2413,16 @@ LABEL_9:
 
 + (BOOL)isAutomaticCallCountdownEnabled
 {
-  if ([a1 isDeviceD2xOrNewer])
+  if ([self isDeviceD2xOrNewer])
   {
 
-    return [a1 isCallWithVolumeLockHoldEnabled];
+    return [self isCallWithVolumeLockHoldEnabled];
   }
 
   else
   {
 
-    return [a1 isCallWithSideButtonPressesEnabled];
+    return [self isCallWithSideButtonPressesEnabled];
   }
 }
 
@@ -2436,13 +2436,13 @@ LABEL_9:
 
 + (NSString)countdownSoundFooterDescription
 {
-  [a1 clawReleaseToCallSupport];
+  [self clawReleaseToCallSupport];
   if (v3 == 0.0)
   {
     v4 = @"ALARM_SOUND_FOOTER";
   }
 
-  else if ([a1 currentSOSTriggerMechanism] == 1 || objc_msgSend(a1, "mustAllowThreeClickTrigger") && (objc_msgSend(a1, "isDeviceD2xOrNewer") & 1) != 0)
+  else if ([self currentSOSTriggerMechanism] == 1 || objc_msgSend(self, "mustAllowThreeClickTrigger") && (objc_msgSend(self, "isDeviceD2xOrNewer") & 1) != 0)
   {
     v4 = @"ALARM_SOUND_RELEASE_TO_CALL_THREE_PRESSES_FOOTER";
   }
@@ -2460,7 +2460,7 @@ LABEL_9:
 
 + (BOOL)shouldPlayAudioDuringCountdown
 {
-  if ([a1 shouldSilenceSOSFlow])
+  if ([self shouldSilenceSOSFlow])
   {
     v3 = sos_default_log();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -2474,7 +2474,7 @@ LABEL_9:
 
   else
   {
-    v5 = [a1 _sosPrefsValueForKey:@"SOSPlayAudioDuringCountdownKey"];
+    v5 = [self _sosPrefsValueForKey:@"SOSPlayAudioDuringCountdownKey"];
     if (v5)
     {
       v6 = v5;
@@ -2485,9 +2485,9 @@ LABEL_9:
       v6 = MEMORY[0x277CBEC38];
     }
 
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    return v7;
+    return bOOLValue;
   }
 }
 
@@ -2501,32 +2501,32 @@ LABEL_9:
 
 + (NSString)accidentalCallNotificationBody
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v4 setDateStyle:0];
   [v4 setTimeStyle:1];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:date];
   v6 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v6 setLocalizedDateFormatFromTemplate:@"j"];
-  v7 = [v6 stringFromDate:v3];
-  v8 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-  v9 = [v8 invertedSet];
+  v7 = [v6 stringFromDate:date];
+  decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+  invertedSet = [decimalDigitCharacterSet invertedSet];
 
   v28 = v7;
-  v10 = [v7 componentsSeparatedByCharactersInSet:v9];
+  v10 = [v7 componentsSeparatedByCharactersInSet:invertedSet];
   v11 = [v10 componentsJoinedByString:&stru_2875C9CD8];
 
   v12 = objc_alloc_init(MEMORY[0x277CCABB8]);
   v13 = [v12 numberFromString:v11];
 
-  v14 = [a1 mostRecentlyUsedSOSTriggerMechanism];
-  v15 = [v13 intValue];
-  v29 = v9;
-  if (v14 == 1)
+  mostRecentlyUsedSOSTriggerMechanism = [self mostRecentlyUsedSOSTriggerMechanism];
+  intValue = [v13 intValue];
+  v29 = invertedSet;
+  if (mostRecentlyUsedSOSTriggerMechanism == 1)
   {
     v16 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v15 == 1)
+    if (intValue == 1)
     {
       v18 = @"ACCIDENTAL_SOS_NOTIF_BODY_THREE_PRESSES_WITH_TIME_%@_SINGULAR";
     }
@@ -2539,14 +2539,14 @@ LABEL_9:
 
   else
   {
-    if (v14 != 2)
+    if (mostRecentlyUsedSOSTriggerMechanism != 2)
     {
       +[SOSUtilities clawReleaseToCallSupport];
       v20 = v19;
       v27 = MEMORY[0x277CCACA8];
       v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v17 = v21;
-      if (v15 == 1)
+      if (intValue == 1)
       {
         v22 = v28;
         if (v20 == 0.0)
@@ -2581,7 +2581,7 @@ LABEL_9:
 
     v16 = MEMORY[0x277CCACA8];
     v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    if (v15 == 1)
+    if (intValue == 1)
     {
       v18 = @"ACCIDENTAL_SOS_NOTIF_BODY_FIVE_PRESSES_WITH_TIME_%@_SINGULAR";
     }
@@ -2603,12 +2603,12 @@ LABEL_18:
 + (void)setShortSOSNotificationDisplayTimestamp
 {
   v3 = [MEMORY[0x277CCABB0] numberWithDouble:CFAbsoluteTimeGetCurrent()];
-  [a1 _setSOSPrefsValue:v3 forKey:@"SOSNotificationDisplayedTimestampKey"];
+  [self _setSOSPrefsValue:v3 forKey:@"SOSNotificationDisplayedTimestampKey"];
 }
 
 + (double)getShortSOSNotificationDisplayTimestamp
 {
-  v2 = [a1 _sosPrefsValueForKey:@"SOSNotificationDisplayedTimestampKey"];
+  v2 = [self _sosPrefsValueForKey:@"SOSNotificationDisplayedTimestampKey"];
   v3 = v2;
   if (v2)
   {
@@ -2634,59 +2634,59 @@ LABEL_18:
 
 + (BOOL)hasMultiPressResetLogicRun
 {
-  v3 = [a1 _sosPrefsValueForKey:@"SOSMultiPressResetKey"];
+  v3 = [self _sosPrefsValueForKey:@"SOSMultiPressResetKey"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    [a1 setHasMultiPressResetLogicRun:0];
-    v5 = 0;
+    [self setHasMultiPressResetLogicRun:0];
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (int64_t)getSettingsResetFollowUpState
 {
-  v3 = [a1 _sosPrefsValueForKey:@"SOSSettingsResetFollowUpStateKey"];
+  v3 = [self _sosPrefsValueForKey:@"SOSSettingsResetFollowUpStateKey"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
-  else if ([a1 hasMultiPressResetLogicRun])
+  else if ([self hasMultiPressResetLogicRun])
   {
-    v5 = 4;
-    [a1 setSettingsResetFollowUpState:4];
+    intValue = 4;
+    [self setSettingsResetFollowUpState:4];
   }
 
   else
   {
-    [a1 setSettingsResetFollowUpState:0];
-    v5 = 0;
+    [self setSettingsResetFollowUpState:0];
+    intValue = 0;
   }
 
-  return v5;
+  return intValue;
 }
 
-+ (void)setSettingsResetFollowUpState:(int64_t)a3
++ (void)setSettingsResetFollowUpState:(int64_t)state
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = sos_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_264323000, v5, OS_LOG_TYPE_DEFAULT, "SOSUtilities,setting FollowUp state to %ld", &v9, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [a1 _setSOSPrefsValue:v6 forKey:@"SOSSettingsResetFollowUpStateKey"];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:state];
+  [self _setSOSPrefsValue:v6 forKey:@"SOSSettingsResetFollowUpStateKey"];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"SOSSettingsResetFollowUpStateChangedNotification", 0, 0, 1u);
@@ -2728,7 +2728,7 @@ LABEL_18:
 + (BOOL)isAllowedToMessageSOSContacts
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [a1 _sosPrefsValueForKey:@"SOSAllowedToMessageSOSContactsKey"];
+  v3 = [self _sosPrefsValueForKey:@"SOSAllowedToMessageSOSContactsKey"];
   if (v3)
   {
     v4 = v3;
@@ -2739,7 +2739,7 @@ LABEL_18:
     v4 = MEMORY[0x277CBEC28];
   }
 
-  if ([a1 isActivePairedDeviceTinker])
+  if ([self isActivePairedDeviceTinker])
   {
     v5 = sos_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2754,15 +2754,15 @@ LABEL_18:
   v6 = sos_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
     v11[0] = 67109120;
-    v11[1] = v7;
+    v11[1] = bOOLValue;
     _os_log_impl(&dword_264323000, v6, OS_LOG_TYPE_DEFAULT, "isAllowedToMessageSOSContacts: %d", v11, 8u);
   }
 
-  v8 = [v4 BOOLValue];
+  bOOLValue2 = [v4 BOOLValue];
   v9 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue2;
 }
 
 + (BOOL)shouldSilenceSOSFlow
@@ -2772,58 +2772,58 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [a1 _sosPrefsValueForKey:@"SOSSilenceSOSFlowKey"];
+  v3 = [self _sosPrefsValueForKey:@"SOSSilenceSOSFlowKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)isActivePairedDeviceTinker
 {
-  v2 = [a1 activeDevice];
-  v3 = [v2 valueForProperty:*MEMORY[0x277D37BB0]];
-  v4 = [v3 BOOLValue];
+  activeDevice = [self activeDevice];
+  v3 = [activeDevice valueForProperty:*MEMORY[0x277D37BB0]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)activeDeviceSupportsNewton
 {
-  v2 = [a1 activeDevice];
-  v3 = [v2 supportsCapability:2528173432];
+  activeDevice = [self activeDevice];
+  v3 = [activeDevice supportsCapability:2528173432];
 
   return v3;
 }
 
 + (BOOL)activeDeviceSupportsNewtonWorkoutsOnly
 {
-  v3 = [a1 activeDeviceSupportsNewton];
-  if (v3)
+  activeDeviceSupportsNewton = [self activeDeviceSupportsNewton];
+  if (activeDeviceSupportsNewton)
   {
-    v4 = [a1 activeDevice];
-    v5 = [v4 supportsCapability:2554371099];
+    activeDevice = [self activeDevice];
+    v5 = [activeDevice supportsCapability:2554371099];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(activeDeviceSupportsNewton) = v5;
   }
 
-  return v3;
+  return activeDeviceSupportsNewton;
 }
 
 + (id)activeDevice
 {
-  v2 = [MEMORY[0x277D37B50] sharedInstance];
-  v3 = [v2 getActivePairedDeviceIncludingAltAccount];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+  getActivePairedDeviceIncludingAltAccount = [mEMORY[0x277D37B50] getActivePairedDeviceIncludingAltAccount];
 
-  v4 = [v3 valueForProperty:*MEMORY[0x277D2BB30]];
+  v4 = [getActivePairedDeviceIncludingAltAccount valueForProperty:*MEMORY[0x277D2BB30]];
   if ([v4 BOOLValue])
   {
     v5 = 0;
@@ -2831,7 +2831,7 @@ LABEL_18:
 
   else
   {
-    v5 = v3;
+    v5 = getActivePairedDeviceIncludingAltAccount;
   }
 
   v6 = v5;
@@ -2877,8 +2877,8 @@ LABEL_18:
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"STEWIE_FOOTNOTE_DESCRIPTION_%@" value:&stru_2875C9CD8 table:@"Localizable-stewie"];
-  v6 = [a1 stewieFooterLinkTitle];
-  v7 = [v3 localizedStringWithFormat:v5, v6];
+  stewieFooterLinkTitle = [self stewieFooterLinkTitle];
+  v7 = [v3 localizedStringWithFormat:v5, stewieFooterLinkTitle];
 
   return v7;
 }
@@ -2891,21 +2891,21 @@ LABEL_18:
   return v3;
 }
 
-+ (void)presentStewieDemoUnavailableAlertOnViewController:(id)a3 reason:(int64_t)a4
++ (void)presentStewieDemoUnavailableAlertOnViewController:(id)controller reason:(int64_t)reason
 {
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a3;
+  controllerCopy = controller;
   v7 = [v5 bundleForClass:objc_opt_class()];
   v16 = [v7 localizedStringForKey:@"STEWIE_DEMO_ERROR_ALERT_TITLE" value:&stru_2875C9CD8 table:@"Localizable-stewie"];
 
-  if (a4 > 0xB)
+  if (reason > 0xB)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = *(&off_279B536E8 + a4);
+    v8 = *(&off_279B536E8 + reason);
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:v8 value:&stru_2875C9CD8 table:@"Localizable-stewie"];
   }
@@ -2917,22 +2917,22 @@ LABEL_18:
   v15 = [UIAlertActionClass actionWithTitle:v14 style:1 handler:&__block_literal_global_880];
   [v11 addAction:v15];
 
-  [v6 presentViewController:v11 animated:1 completion:0];
+  [controllerCopy presentViewController:v11 animated:1 completion:0];
 }
 
-+ (void)presentStewieLearnMoreLinkOnViewController:(id)a3
++ (void)presentStewieLearnMoreLinkOnViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = [getOBPrivacyPresenterClass() presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.safetyFeatures"];
-  [v4 setPresentingViewController:v3];
+  [v4 setPresentingViewController:controllerCopy];
 
   [v4 present];
 }
 
 + (BOOL)kappaTriggersEmergencySOSTinker
 {
-  v2 = [a1 _SOSDomainAccessor];
-  v3 = [v2 objectForKey:@"SOSKappaTriggersEmergencySOSKeyTinker"];
+  _SOSDomainAccessor = [self _SOSDomainAccessor];
+  v3 = [_SOSDomainAccessor objectForKey:@"SOSKappaTriggersEmergencySOSKeyTinker"];
 
   if (v3)
   {
@@ -2997,22 +2997,22 @@ void __52__SOSUtilities__setKappaTriggersEmergencySOSTinker___block_invoke_2()
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"SOSKappaStateChangedNotification", 0, 0, 1u);
 }
 
-+ (void)setKappaTriggersEmergencySOS:(BOOL)a3 isWristDetectionEnabled:(BOOL)a4 confirmationDelegate:(id)a5 completion:(id)a6
++ (void)setKappaTriggersEmergencySOS:(BOOL)s isWristDetectionEnabled:(BOOL)enabled confirmationDelegate:(id)delegate completion:(id)completion
 {
-  v7 = a4;
-  v8 = a3;
+  enabledCopy = enabled;
+  sCopy = s;
   v38 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v12 = sos_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109634;
-    *v35 = v8;
+    *v35 = sCopy;
     *&v35[4] = 1024;
-    *&v35[6] = v7;
+    *&v35[6] = enabledCopy;
     v36 = 2112;
-    v37 = v10;
+    v37 = delegateCopy;
     _os_log_impl(&dword_264323000, v12, OS_LOG_TYPE_DEFAULT, "setKappaTriggersEmergencySOS:%d isWristDetectionEnabled:%d confirmationDelegate:%@", buf, 0x18u);
   }
 
@@ -3020,11 +3020,11 @@ void __52__SOSUtilities__setKappaTriggersEmergencySOSTinker___block_invoke_2()
   v33[1] = 3221225472;
   v33[2] = __101__SOSUtilities_setKappaTriggersEmergencySOS_isWristDetectionEnabled_confirmationDelegate_completion___block_invoke;
   v33[3] = &__block_descriptor_40_e8_v12__0B8l;
-  v33[4] = a1;
+  v33[4] = self;
   v13 = MEMORY[0x266735F90](v33);
   v14 = sos_default_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (sCopy)
   {
     if (v15)
     {
@@ -3034,12 +3034,12 @@ void __52__SOSUtilities__setKappaTriggersEmergencySOSTinker___block_invoke_2()
     }
 
     v13[2](v13, 1);
-    v11[2](v11, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
   {
-    v25 = v11;
+    v25 = completionCopy;
     if (v15)
     {
       *buf = 136315138;
@@ -3060,7 +3060,7 @@ void __52__SOSUtilities__setKappaTriggersEmergencySOSTinker___block_invoke_2()
     v30[2] = __101__SOSUtilities_setKappaTriggersEmergencySOS_isWristDetectionEnabled_confirmationDelegate_completion___block_invoke_904;
     v30[3] = &unk_279B53470;
     v31 = v13;
-    v32 = v11;
+    v32 = completionCopy;
     v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v21 = [v20 localizedStringForKey:@"SOS_KAPPA_CONFIRM_OK" value:&stru_2875C9CD8 table:@"Localizable-kappa"];
     v26[0] = MEMORY[0x277D85DD0];
@@ -3070,9 +3070,9 @@ void __52__SOSUtilities__setKappaTriggersEmergencySOSTinker___block_invoke_2()
     v27 = v31;
     v29 = 0;
     v28 = v32;
-    [v10 presentConfirmationWithTitle:v24 message:v23 cancelTitle:v19 cancelHandler:v30 confirmTitle:v21 confirmHandler:v26];
+    [delegateCopy presentConfirmationWithTitle:v24 message:v23 cancelTitle:v19 cancelHandler:v30 confirmTitle:v21 confirmHandler:v26];
 
-    v11 = v25;
+    completionCopy = v25;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -3130,15 +3130,15 @@ uint64_t __101__SOSUtilities_setKappaTriggersEmergencySOS_isWristDetectionEnable
   return result;
 }
 
-+ (void)setKappaTriggersEmergencySOS:(BOOL)a3 confirmationDelegate:(id)a4 completion:(id)a5
++ (void)setKappaTriggersEmergencySOS:(BOOL)s confirmationDelegate:(id)delegate completion:(id)completion
 {
-  v6 = a3;
+  sCopy = s;
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v10 = sos_default_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!sCopy)
   {
     if (v11)
     {
@@ -3150,19 +3150,19 @@ uint64_t __101__SOSUtilities_setKappaTriggersEmergencySOS_isWristDetectionEnable
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v21 = [v12 localizedStringForKey:@"SOS_KAPPA_CONFIRM_TITLE" value:&stru_2875C9CD8 table:@"Localizable-kappa"];
 
-    if ([a1 isKappaDetectionSupportedOnPhone] && (objc_msgSend(a1, "isKappaDetectionSupportedOnActiveWatch") & 1) != 0)
+    if ([self isKappaDetectionSupportedOnPhone] && (objc_msgSend(self, "isKappaDetectionSupportedOnActiveWatch") & 1) != 0)
     {
       v13 = @"SOS_KAPPA_CONFIRM_DETAIL_BOTH";
     }
 
-    else if ([a1 isKappaDetectionSupportedOnPhone])
+    else if ([self isKappaDetectionSupportedOnPhone])
     {
       v13 = @"SOS_KAPPA_CONFIRM_DETAIL_PHONE";
     }
 
     else
     {
-      if (![a1 isKappaDetectionSupportedOnActiveWatch])
+      if (![self isKappaDetectionSupportedOnActiveWatch])
       {
         v15 = &stru_2875C9CD8;
         goto LABEL_15;
@@ -3181,17 +3181,17 @@ LABEL_15:
     v25[1] = 3221225472;
     v25[2] = __77__SOSUtilities_setKappaTriggersEmergencySOS_confirmationDelegate_completion___block_invoke;
     v25[3] = &unk_279B534C0;
-    v27 = a1;
-    v26 = v9;
+    selfCopy = self;
+    v26 = completionCopy;
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"SOS_KAPPA_CONFIRM_OK" value:&stru_2875C9CD8 table:@"Localizable-kappa"];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __77__SOSUtilities_setKappaTriggersEmergencySOS_confirmationDelegate_completion___block_invoke_915;
     v22[3] = &unk_279B534C0;
-    v24 = a1;
+    selfCopy2 = self;
     v23 = v26;
-    [v8 presentConfirmationWithTitle:v21 message:v15 cancelTitle:v17 cancelHandler:v25 confirmTitle:v19 confirmHandler:v22];
+    [delegateCopy presentConfirmationWithTitle:v21 message:v15 cancelTitle:v17 cancelHandler:v25 confirmTitle:v19 confirmHandler:v22];
 
     goto LABEL_16;
   }
@@ -3203,8 +3203,8 @@ LABEL_15:
     _os_log_impl(&dword_264323000, v10, OS_LOG_TYPE_DEFAULT, "%s - no confirmation needed", buf, 0xCu);
   }
 
-  [a1 _setKappaTriggersEmergencySOS:1];
-  (*(v9 + 2))(v9, 1);
+  [self _setKappaTriggersEmergencySOS:1];
+  (*(completionCopy + 2))(completionCopy, 1);
 LABEL_16:
 
   v20 = *MEMORY[0x277D85DE8];
@@ -3286,18 +3286,18 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (BOOL)isKappaDetectionSupportedOnActiveWatch
 {
-  v2 = [a1 activeDevice];
-  v3 = [v2 supportsCapability:2300382856];
+  activeDevice = [self activeDevice];
+  v3 = [activeDevice supportsCapability:2300382856];
 
   return v3;
 }
 
 + (NSString)crashDetectionPhoneFooterDesription
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_FOOTER_PHONE";
   }
@@ -3314,10 +3314,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionPhoneWatchFooterDescription
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_FOOTER_BOTH";
   }
@@ -3334,7 +3334,7 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionTitleDescription
 {
-  if ([a1 isKappaUnmasked])
+  if ([self isKappaUnmasked])
   {
     v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v3 = [v2 localizedStringForKey:@"SOS_KAPPA_TITLE" value:&stru_2875C9CD8 table:@"Localizable-kappa"];
@@ -3350,10 +3350,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionSwitchDescription
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_CELL_TITLE";
   }
@@ -3370,10 +3370,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionWatchFooterDescription
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_FOOTER_WATCH";
   }
@@ -3390,10 +3390,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionFooterLinkDescription
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_FOOTER_LINK";
   }
@@ -3410,10 +3410,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionThirdPartyDescription
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_THIRD_PARTY_CELL_TITLE";
   }
@@ -3430,10 +3430,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionThirdPartyCellTitle
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_THIRD_PARTY_CELL_TITLE";
   }
@@ -3450,10 +3450,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionThirdPartyNavigationTitle
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_THIRD_PARTY_NAVIGATION_TITLE";
   }
@@ -3478,10 +3478,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionThirdPartyFooterDescriptionPhone
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_THIRD_PARTY_FOOTER_PHONE";
   }
@@ -3498,10 +3498,10 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
 
 + (NSString)crashDetectionThirdPartyFooterDescriptionWatch
 {
-  v2 = [a1 isKappaUnmasked];
+  isKappaUnmasked = [self isKappaUnmasked];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (isKappaUnmasked)
   {
     v5 = @"SOS_KAPPA_THIRD_PARTY_FOOTER_WATCH";
   }
@@ -3532,14 +3532,14 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
   return v3;
 }
 
-+ (id)crashDetectionThirdPartyStopSharingDescriptionPhoneWithAppName:(id)a3
++ (id)crashDetectionThirdPartyStopSharingDescriptionPhoneWithAppName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 isKappaUnmasked];
+  nameCopy = name;
+  isKappaUnmasked = [self isKappaUnmasked];
   v6 = MEMORY[0x277CCACA8];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = v7;
-  if (v5)
+  if (isKappaUnmasked)
   {
     v9 = @"KAPPA_THIRD_PARTY_STOP_SHARING_TITLE_PHONE";
   }
@@ -3550,19 +3550,19 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
   }
 
   v10 = [v7 localizedStringForKey:v9 value:&stru_2875C9CD8 table:@"Localizable-kappa"];
-  v11 = [v6 stringWithFormat:v10, v4];
+  nameCopy = [v6 stringWithFormat:v10, nameCopy];
 
-  return v11;
+  return nameCopy;
 }
 
-+ (id)crashDetectionThirdPartyStopSharingDescriptionWatchWithAppName:(id)a3
++ (id)crashDetectionThirdPartyStopSharingDescriptionWatchWithAppName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 isKappaUnmasked];
+  nameCopy = name;
+  isKappaUnmasked = [self isKappaUnmasked];
   v6 = MEMORY[0x277CCACA8];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = v7;
-  if (v5)
+  if (isKappaUnmasked)
   {
     v9 = @"KAPPA_THIRD_PARTY_STOP_SHARING_TITLE_WATCH";
   }
@@ -3573,36 +3573,36 @@ void __56__SOSUtilities_isKappaDetectionSupportedOnCurrentDevice__block_invoke()
   }
 
   v10 = [v7 localizedStringForKey:v9 value:&stru_2875C9CD8 table:@"Localizable-kappa"];
-  v11 = [v6 stringWithFormat:v10, v4];
+  nameCopy = [v6 stringWithFormat:v10, nameCopy];
 
-  return v11;
+  return nameCopy;
 }
 
 + (id)crashDetectionThirdPartyBundleId
 {
-  v2 = [getSABundleManagerClass() crashDetectionManager];
-  v3 = [v2 approvedApps];
-  v4 = [v3 firstObject];
-  v5 = [v4 bundleId];
+  crashDetectionManager = [getSABundleManagerClass() crashDetectionManager];
+  approvedApps = [crashDetectionManager approvedApps];
+  firstObject = [approvedApps firstObject];
+  bundleId = [firstObject bundleId];
 
-  return v5;
+  return bundleId;
 }
 
-+ (void)thirdPartySettingsSpecifiersForRemoteDeviceWithTarget:(id)a3 forApp:(id)a4 disableAction:(SEL)a5 withCompletion:(id)a6
++ (void)thirdPartySettingsSpecifiersForRemoteDeviceWithTarget:(id)target forApp:(id)app disableAction:(SEL)action withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  targetCopy = target;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __106__SOSUtilities_thirdPartySettingsSpecifiersForRemoteDeviceWithTarget_forApp_disableAction_withCompletion___block_invoke;
   v14[3] = &unk_279B534E8;
-  v15 = v10;
-  v16 = v11;
-  v17 = a1;
-  v18 = a5;
-  v12 = v10;
-  v13 = v11;
-  [a4 getLocalizedNameForPairedDeviceWithCompletion:v14];
+  v15 = targetCopy;
+  v16 = completionCopy;
+  selfCopy = self;
+  actionCopy = action;
+  v12 = targetCopy;
+  v13 = completionCopy;
+  [app getLocalizedNameForPairedDeviceWithCompletion:v14];
 }
 
 void __106__SOSUtilities_thirdPartySettingsSpecifiersForRemoteDeviceWithTarget_forApp_disableAction_withCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3612,11 +3612,11 @@ void __106__SOSUtilities_thirdPartySettingsSpecifiersForRemoteDeviceWithTarget_f
   (*(v2 + 16))(v2, v3);
 }
 
-+ (id)thirdPartySettingsSpecifiersWithTarget:(id)a3 forApp:(id)a4 disableAction:(SEL)a5
++ (id)thirdPartySettingsSpecifiersWithTarget:(id)target forApp:(id)app disableAction:(SEL)action
 {
-  v8 = a3;
-  v9 = [a4 getLocalizedName];
-  v10 = [a1 thirdPartySettingsSpecifiersWithTarget:v8 displayName:v9 forPairedDevice:0 disableAction:a5];
+  targetCopy = target;
+  getLocalizedName = [app getLocalizedName];
+  v10 = [self thirdPartySettingsSpecifiersWithTarget:targetCopy displayName:getLocalizedName forPairedDevice:0 disableAction:action];
 
   return v10;
 }
@@ -3656,7 +3656,7 @@ LABEL_4:
 
         v14 = CFBundleGetIdentifier(v13);
         v15 = [v12 objectForKeyedSubscript:*v10];
-        v16 = [v15 BOOLValue];
+        bOOLValue = [v15 BOOLValue];
 
         v17 = sos_default_log();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -3664,11 +3664,11 @@ LABEL_4:
           *buf = v20;
           v26 = v14;
           v27 = 1024;
-          v28 = v16;
+          v28 = bOOLValue;
           _os_log_impl(&dword_264323000, v17, OS_LOG_TYPE_DEFAULT, "KappaThirdParty,getKappaThirdPartyActiveAppBundle, bundleID:%@, grant status: %d", buf, 0x12u);
         }
 
-        if (((v13 != 0) & v16) != 0)
+        if (((v13 != 0) & bOOLValue) != 0)
         {
           break;
         }
@@ -3709,14 +3709,14 @@ LABEL_12:
   return v13;
 }
 
-+ (void)setKappaThirdPartyActive:(BOOL)a3 forApp:(id)a4 forPairedDevice:(BOOL)a5 presentConfirmationOnViewController:(id)a6 completion:(id)a7
++ (void)setKappaThirdPartyActive:(BOOL)active forApp:(id)app forPairedDevice:(BOOL)device presentConfirmationOnViewController:(id)controller completion:(id)completion
 {
-  v9 = a5;
-  v10 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if (v10)
+  deviceCopy = device;
+  activeCopy = active;
+  appCopy = app;
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (activeCopy)
   {
     v15 = sos_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -3725,7 +3725,7 @@ LABEL_12:
       _os_log_impl(&dword_264323000, v15, OS_LOG_TYPE_DEFAULT, "KappaThirdParty,setKappaThirdPartyActiveApp,the request is invalid", buf, 2u);
     }
 
-    v14[2](v14, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -3734,22 +3734,22 @@ LABEL_12:
     v19[1] = 3221225472;
     v19[2] = __111__SOSUtilities_setKappaThirdPartyActive_forApp_forPairedDevice_presentConfirmationOnViewController_completion___block_invoke;
     v19[3] = &unk_279B53538;
-    v23 = a1;
-    v24 = v9;
-    v20 = v13;
-    v22 = v14;
-    v16 = v12;
+    selfCopy = self;
+    v24 = deviceCopy;
+    v20 = controllerCopy;
+    v22 = completionCopy;
+    v16 = appCopy;
     v21 = v16;
     v17 = MEMORY[0x266735F90](v19);
-    if (v9)
+    if (deviceCopy)
     {
       [v16 getLocalizedNameForPairedDeviceWithCompletion:v17];
     }
 
     else
     {
-      v18 = [v16 getLocalizedName];
-      (v17)[2](v17, v18);
+      getLocalizedName = [v16 getLocalizedName];
+      (v17)[2](v17, getLocalizedName);
     }
   }
 }
@@ -3848,8 +3848,8 @@ uint64_t __111__SOSUtilities_setKappaThirdPartyActive_forApp_forPairedDevice_pre
 
 + (BOOL)activeDeviceSupportsMandrake
 {
-  v2 = [a1 activeDevice];
-  v3 = [v2 supportsCapability:1262879885];
+  activeDevice = [self activeDevice];
+  v3 = [activeDevice supportsCapability:1262879885];
 
   return v3;
 }
@@ -3857,15 +3857,15 @@ uint64_t __111__SOSUtilities_setKappaThirdPartyActive_forApp_forPairedDevice_pre
 + (BOOL)activeDeviceHasMandrake
 {
   v16 = *MEMORY[0x277D85DE8];
-  if ([a1 activeDeviceSupportsMandrake])
+  if ([self activeDeviceSupportsMandrake])
   {
     buf[0] = 0;
-    v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v3 = [v2 getActivePairedDeviceExcludingAltAccount];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDeviceExcludingAltAccount = [mEMORY[0x277D2BCF8] getActivePairedDeviceExcludingAltAccount];
 
-    v4 = [getACXDeviceConnectionClass() sharedDeviceConnection];
+    sharedDeviceConnection = [getACXDeviceConnectionClass() sharedDeviceConnection];
     v13 = 0;
-    v5 = [v4 getApplicationIsInstalled:buf withBundleID:@"com.apple.Mandrake" onPairedDevice:v3 error:&v13];
+    v5 = [sharedDeviceConnection getApplicationIsInstalled:buf withBundleID:@"com.apple.Mandrake" onPairedDevice:getActivePairedDeviceExcludingAltAccount error:&v13];
     v6 = v13;
 
     if (v5)
@@ -3914,20 +3914,20 @@ uint64_t __111__SOSUtilities_setKappaThirdPartyActive_forApp_forPairedDevice_pre
 
 + (BOOL)longPressTriggersMandrake
 {
-  v2 = [a1 _SOSDomainAccessor];
-  v3 = [v2 objectForKey:@"SOSLongPressTriggersMandrakeKey"];
+  _SOSDomainAccessor = [self _SOSDomainAccessor];
+  v3 = [_SOSDomainAccessor objectForKey:@"SOSLongPressTriggersMandrakeKey"];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 void __45__SOSUtilities_setLongPressTriggersMandrake___block_invoke(uint64_t a1)
@@ -3951,24 +3951,24 @@ void __45__SOSUtilities_setLongPressTriggersMandrake___block_invoke_2()
 
 + (BOOL)isSOSMessagesUrgentAlertingEnabled
 {
-  if (![a1 isSOSMessagesUrgentAlertingAvailable])
+  if (![self isSOSMessagesUrgentAlertingAvailable])
   {
     return 0;
   }
 
-  v3 = [a1 _sosPrefsValueForKey:@"SOSMessagesUrgentAlertingEnabledKey"];
+  v3 = [self _sosPrefsValueForKey:@"SOSMessagesUrgentAlertingEnabledKey"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 void __52__SOSUtilities_setSOSMessagesUrgentAlertingEnabled___block_invoke(uint64_t a1)
@@ -3992,24 +3992,24 @@ void __52__SOSUtilities_setSOSMessagesUrgentAlertingEnabled___block_invoke_2()
 
 + (BOOL)sosMessagesUrgentAlertingBypassesMute
 {
-  if (![a1 isSOSMessagesUrgentAlertingAvailable])
+  if (![self isSOSMessagesUrgentAlertingAvailable])
   {
     return 0;
   }
 
-  v3 = [a1 _sosPrefsValueForKey:@"SOSMessagesUrgentAlertingBypassesMuteKey"];
+  v3 = [self _sosPrefsValueForKey:@"SOSMessagesUrgentAlertingBypassesMuteKey"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 void __57__SOSUtilities_setSOSMessagesUrgentAlertingBypassesMute___block_invoke(uint64_t a1)
@@ -4120,11 +4120,11 @@ LABEL_3:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)fetchSOSStatusWithKey:(id)a3
++ (id)fetchSOSStatusWithKey:(id)key
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _sosPrefsValueForKey:v4];
+  keyCopy = key;
+  v5 = [self _sosPrefsValueForKey:keyCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CCAAC8];
@@ -4140,17 +4140,17 @@ LABEL_3:
 
     if (v10)
     {
-      v12 = [v10 isValid];
+      isValid = [v10 isValid];
       v13 = sos_default_log();
       v14 = v13;
-      if ((v12 & 1) == 0)
+      if ((isValid & 1) == 0)
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           +[SOSUtilities fetchSOSStatusWithKey:];
         }
 
-        [a1 _setSOSPrefsValue:0 forKey:v4];
+        [self _setSOSPrefsValue:0 forKey:keyCopy];
         v15 = 0;
         goto LABEL_15;
       }
@@ -4190,12 +4190,12 @@ LABEL_16:
   return v15;
 }
 
-+ (void)setSOSStatus:(id)a3 withKey:(id)a4
++ (void)setSOSStatus:(id)status withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  statusCopy = status;
+  keyCopy = key;
   v14 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v14];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:statusCopy requiringSecureCoding:1 error:&v14];
   v9 = v14;
   v10 = sos_default_log();
   v11 = v10;
@@ -4206,7 +4206,7 @@ LABEL_16:
       +[SOSUtilities setSOSStatus:withKey:];
     }
 
-    [a1 _setSOSPrefsValue:v8 forKey:v7];
+    [self _setSOSPrefsValue:v8 forKey:keyCopy];
   }
 
   else
@@ -4222,14 +4222,14 @@ LABEL_16:
   v13[1] = 3221225472;
   v13[2] = __37__SOSUtilities_setSOSStatus_withKey___block_invoke;
   v13[3] = &__block_descriptor_40_e5_v8__0l;
-  v13[4] = a1;
+  v13[4] = self;
   dispatch_async(v12, v13);
 }
 
 + (BOOL)isMessagesAppInstalled
 {
-  v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v3 = [v2 applicationIsInstalled:@"com.apple.MobileSMS"];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v3 = [defaultWorkspace applicationIsInstalled:@"com.apple.MobileSMS"];
 
   return v3;
 }
@@ -4239,20 +4239,20 @@ LABEL_16:
   v20 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
   {
-    v2 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v3 = v2;
-    if (v2)
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v3 = defaultWorkspace;
+    if (defaultWorkspace)
     {
-      if (([v2 canChangeDefaultAppForCategory:10]& 1) != 0)
+      if (([defaultWorkspace canChangeDefaultAppForCategory:10]& 1) != 0)
       {
         v15 = 0;
         v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:@"com.apple.MobileSMS" allowPlaceholder:0 error:&v15];
         v5 = v15;
         if (v4)
         {
-          v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
+          defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
           v14 = v5;
-          v7 = [v6 defaultApplicationForCategory:10 error:&v14];
+          v7 = [defaultWorkspace2 defaultApplicationForCategory:10 error:&v14];
           v8 = v14;
 
           v9 = [v7 isEqual:v4];
@@ -4339,24 +4339,24 @@ LABEL_22:
   return v3;
 }
 
-+ (id)_overrideForDefaultsKey:(id)a3 expectedClass:(Class)a4 defaultValue:(id)a5
++ (id)_overrideForDefaultsKey:(id)key expectedClass:(Class)class defaultValue:(id)value
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (![a1 _isInternalDevice])
+  keyCopy = key;
+  valueCopy = value;
+  if (![self _isInternalDevice])
   {
     goto LABEL_9;
   }
 
-  v9 = [SOSUtilities _sosPrefsValueForKey:v7];
+  v9 = [SOSUtilities _sosPrefsValueForKey:keyCopy];
   v10 = sos_config_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v14 = 138543874;
-    v15 = v7;
+    v15 = keyCopy;
     v16 = 2114;
-    v17 = v8;
+    v17 = valueCopy;
     v18 = 2114;
     v19 = v9;
     _os_log_debug_impl(&dword_264323000, v10, OS_LOG_TYPE_DEBUG, "#debugOverride - _overrideForDefaultsKey:%{public}@ (default %{public}@, testing %{public}@)", &v14, 0x20u);
@@ -4366,7 +4366,7 @@ LABEL_22:
   {
 
 LABEL_9:
-    v9 = v8;
+    v9 = valueCopy;
     goto LABEL_10;
   }
 
@@ -4374,9 +4374,9 @@ LABEL_9:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543874;
-    v15 = v7;
+    v15 = keyCopy;
     v16 = 2114;
-    v17 = v8;
+    v17 = valueCopy;
     v18 = 2114;
     v19 = v9;
     _os_log_impl(&dword_264323000, v11, OS_LOG_TYPE_DEFAULT, "#debugOverride - _overrideForDefaultsKey:%{public}@ (%{public}@ => %{public}@)", &v14, 0x20u);
@@ -4388,44 +4388,44 @@ LABEL_10:
   return v9;
 }
 
-+ (id)numberOverrideForDefaultsKey:(id)a3 defaultValue:(id)a4
++ (id)numberOverrideForDefaultsKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _overrideForDefaultsKey:v7 expectedClass:objc_opt_class() defaultValue:v6];
+  valueCopy = value;
+  keyCopy = key;
+  v8 = [self _overrideForDefaultsKey:keyCopy expectedClass:objc_opt_class() defaultValue:valueCopy];
 
   return v8;
 }
 
-+ (id)stringOverrideForDefaultsKey:(id)a3 defaultValue:(id)a4
++ (id)stringOverrideForDefaultsKey:(id)key defaultValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _overrideForDefaultsKey:v7 expectedClass:objc_opt_class() defaultValue:v6];
+  valueCopy = value;
+  keyCopy = key;
+  v8 = [self _overrideForDefaultsKey:keyCopy expectedClass:objc_opt_class() defaultValue:valueCopy];
 
   return v8;
 }
 
 + (BOOL)isMountStateTrackingEnabled
 {
-  v2 = [a1 _sosPrefsValueForKey:@"SOSMountStateTrackingKey"];
+  v2 = [self _sosPrefsValueForKey:@"SOSMountStateTrackingKey"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (double)mountProbabilityThreshold
 {
-  v2 = [a1 _sosPrefsValueForKey:@"SOSMountProbabilityThresholdKey"];
+  v2 = [self _sosPrefsValueForKey:@"SOSMountProbabilityThresholdKey"];
   v3 = v2;
   if (v2)
   {

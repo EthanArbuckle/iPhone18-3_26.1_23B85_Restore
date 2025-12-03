@@ -1,14 +1,14 @@
 @interface EKEventViewControllerDefaultImpl
-+ (id)_orderedActionsForMask:(int64_t)a3;
-+ (void)adjustLayoutForCell:(id)a3 tableViewWidth:(double)a4 numRowsInSection:(unint64_t)a5 cellRow:(unint64_t)a6 forceLayout:(BOOL)a7;
-+ (void)setDefaultDatesForEvent:(id)a3;
++ (id)_orderedActionsForMask:(int64_t)mask;
++ (void)adjustLayoutForCell:(id)cell tableViewWidth:(double)width numRowsInSection:(unint64_t)section cellRow:(unint64_t)row forceLayout:(BOOL)layout;
++ (void)setDefaultDatesForEvent:(id)event;
 - (BOOL)_backingEventAllowsEditing;
 - (BOOL)_canPerformEditKeyCommand;
 - (BOOL)_isDisplayingDeletableEvent;
 - (BOOL)_isDisplayingInvitation;
 - (BOOL)_isDisplayingSuggestion;
 - (BOOL)_navigationBarShouldBeHidden;
-- (BOOL)_performSave:(int64_t)a3 animated:(BOOL)a4;
+- (BOOL)_performSave:(int64_t)save animated:(BOOL)animated;
 - (BOOL)_presentedInAPopOver;
 - (BOOL)_refreshEventAndReload;
 - (BOOL)_shouldDisplayDelegateOrOutOfDateMessage;
@@ -18,12 +18,12 @@
 - (BOOL)_shouldShowEditButton;
 - (BOOL)_shouldShowInlineButtonFromDelegate;
 - (BOOL)allowsCalendarPreview;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)eventDetailItemShouldPresentShareSheet:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)eventDetailItemShouldPresentShareSheet:(id)sheet;
 - (BOOL)shouldShowEditButtonInline;
 - (BOOL)shouldShowNextButton;
 - (BOOL)shouldShowPreviousButton;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (CGSize)_idealSize;
 - (CGSize)calculatePreferredContentSize;
 - (EKEventViewControllerDefaultImpl)init;
@@ -31,17 +31,17 @@
 - (EKUIViewControllerNavigationDelegate)navigationDelegate;
 - (UIEdgeInsets)_customInsets;
 - (UIViewController)presentationSourceViewController;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (double)tableViewSectionContentWidth;
 - (id)_detachSheetHandler;
-- (id)_footerLabelContainingText:(id)a3;
+- (id)_footerLabelContainingText:(id)text;
 - (id)_indexPathForAttendeesDetailItem;
-- (id)_indexPathForSection:(unint64_t)a3;
-- (id)_itemAtIndexPath:(id)a3 section:(id *)a4 subitemIndex:(unint64_t *)a5;
+- (id)_indexPathForSection:(unint64_t)section;
+- (id)_itemAtIndexPath:(id)path section:(id *)section subitemIndex:(unint64_t *)index;
 - (id)_proposedDate;
-- (id)_sectionAtIndex:(int64_t)a3;
+- (id)_sectionAtIndex:(int64_t)index;
 - (id)_statusButtonsContainerView;
 - (id)_statusButtonsView;
 - (id)_viewControllerForEditorPresentation;
@@ -50,146 +50,146 @@
 - (id)items;
 - (id)navigationController;
 - (id)navigationItem;
-- (id)pasteboardManagerForEventEditViewController:(id)a3;
+- (id)pasteboardManagerForEventEditViewController:(id)controller;
 - (id)presentationNavigationDelegate;
 - (id)statusButtonActions;
 - (id)tableView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)toolbarItems;
 - (id)viewTitle;
 - (int64_t)_actionsMask;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_acceptProposedTimeWithSourceViewForPopover:(id)a3;
-- (void)_addToCalendarClicked:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_acceptProposedTimeWithSourceViewForPopover:(id)popover;
+- (void)_addToCalendarClicked:(id)clicked;
 - (void)_annotateEventEntityIfNeeded;
 - (void)_cancelProposedTime;
 - (void)_clearCustomTitle;
-- (void)_configureItemsForStoreConstraintsGivenCalendar:(id)a3;
+- (void)_configureItemsForStoreConstraintsGivenCalendar:(id)calendar;
 - (void)_configureStatusButtonsToolbar;
-- (void)_contentSizeCategoryChanged:(id)a3;
+- (void)_contentSizeCategoryChanged:(id)changed;
 - (void)_createAndAddHeaderView;
-- (void)_deleteClicked:(id)a3;
-- (void)_deleteSuggestionTapped:(id)a3;
-- (void)_dismissEditor:(BOOL)a3 deleted:(BOOL)a4;
-- (void)_doneButtonTapped:(id)a3;
-- (void)_eventEditViewControllerDidCompleteWithAction:(int64_t)a3;
-- (void)_keyboardWasHidden:(id)a3;
-- (void)_keyboardWasShown:(id)a3;
+- (void)_deleteClicked:(id)clicked;
+- (void)_deleteSuggestionTapped:(id)tapped;
+- (void)_dismissEditor:(BOOL)editor deleted:(BOOL)deleted;
+- (void)_doneButtonTapped:(id)tapped;
+- (void)_eventEditViewControllerDidCompleteWithAction:(int64_t)action;
+- (void)_keyboardWasHidden:(id)hidden;
+- (void)_keyboardWasShown:(id)shown;
 - (void)_localeChanged;
 - (void)_notifyDetailItemsOfVisibilityOnScreen;
-- (void)_performDelete:(int64_t)a3 editor:(id)a4;
+- (void)_performDelete:(int64_t)delete editor:(id)editor;
 - (void)_performEditKeyCommand;
 - (void)_pop;
 - (void)_prepareEventForEdit;
-- (void)_presentDetachSheetFromBarButtonItem:(id)a3;
-- (void)_presentDetachSheetFromView:(id)a3;
+- (void)_presentDetachSheetFromBarButtonItem:(id)item;
+- (void)_presentDetachSheetFromView:(id)view;
 - (void)_rejectProposedTime;
 - (void)_reloadIfNeeded;
-- (void)_saveStatus:(int64_t)a3 sourceViewForPopover:(id)a4;
-- (void)_saveStatus:(int64_t)a3 span:(int64_t)a4;
+- (void)_saveStatus:(int64_t)status sourceViewForPopover:(id)popover;
+- (void)_saveStatus:(int64_t)status span:(int64_t)span;
 - (void)_setNeedsReloadIncludingItems;
-- (void)_setNeedsReloadIncludingItems:(BOOL)a3;
-- (void)_setObservesKeyboardNotifications:(BOOL)a3;
+- (void)_setNeedsReloadIncludingItems:(BOOL)items;
+- (void)_setObservesKeyboardNotifications:(BOOL)notifications;
 - (void)_setUpForEvent;
-- (void)_storeChanged:(id)a3;
+- (void)_storeChanged:(id)changed;
 - (void)_teardownTableView;
-- (void)_unsubscribeClicked:(id)a3;
-- (void)_updateAccessDeniedViewWithNewStatus:(int64_t)a3;
+- (void)_unsubscribeClicked:(id)clicked;
+- (void)_updateAccessDeniedViewWithNewStatus:(int64_t)status;
 - (void)_updateHeaderAndFooterIfNeeded;
-- (void)_updateNavBarAnimated:(BOOL)a3;
+- (void)_updateNavBarAnimated:(BOOL)animated;
 - (void)_updateResponse;
 - (void)_updateResponseVisibility;
 - (void)_updateStatusButtonsActions;
-- (void)_updateTableContentInsetForKeyboard:(id)a3;
+- (void)_updateTableContentInsetForKeyboard:(id)keyboard;
 - (void)attemptDisplayReviewPrompt;
-- (void)completeWithAction:(int64_t)a3;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
+- (void)completeWithAction:(int64_t)action;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
 - (void)dealloc;
-- (void)detailItem:(id)a3 performActionsOnCellAtIndexPath:(id)a4 actions:(id)a5;
-- (void)detailItem:(id)a3 wantsIndexPathsScrolledToVisible:(id)a4;
-- (void)detailItem:(id)a3 wantsRowInsertions:(id)a4 rowDeletions:(id)a5 rowReloads:(id)a6;
-- (void)detailItem:(id)a3 wantsRowReload:(id)a4;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)detailItem:(id)item performActionsOnCellAtIndexPath:(id)path actions:(id)actions;
+- (void)detailItem:(id)item wantsIndexPathsScrolledToVisible:(id)visible;
+- (void)detailItem:(id)item wantsRowInsertions:(id)insertions rowDeletions:(id)deletions rowReloads:(id)reloads;
+- (void)detailItem:(id)item wantsRowReload:(id)reload;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)dismissJunkView;
 - (void)doneButtonTapped;
 - (void)editButtonPressed;
 - (void)editButtonTapped;
-- (void)eventDetailItem:(id)a3 requestPresentShareSheetWithActivityItems:(id)a4 withPopoverSourceView:(id)a5;
-- (void)eventDetailItemAccessoryButtonTapped:(id)a3;
+- (void)eventDetailItem:(id)item requestPresentShareSheetWithActivityItems:(id)items withPopoverSourceView:(id)view;
+- (void)eventDetailItemAccessoryButtonTapped:(id)tapped;
 - (void)eventDetailItemWantsRefeshForHeightChange;
-- (void)eventDetailItemWantsRefresh:(id)a3;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5;
-- (void)eventItem:(id)a3 wantsViewControllerPresented:(id)a4;
-- (void)eventItemDidCommit:(id)a3;
-- (void)eventItemDidEndEditing:(id)a3;
-- (void)eventItemDidSave:(id)a3;
-- (void)fullReloadWithNewEvent:(id)a3;
-- (void)invokeAction:(int64_t)a3 eventStatusButtonsView:(id)a4;
+- (void)eventDetailItemWantsRefresh:(id)refresh;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler;
+- (void)eventItem:(id)item wantsViewControllerPresented:(id)presented;
+- (void)eventItemDidCommit:(id)commit;
+- (void)eventItemDidEndEditing:(id)editing;
+- (void)eventItemDidSave:(id)save;
+- (void)fullReloadWithNewEvent:(id)event;
+- (void)invokeAction:(int64_t)action eventStatusButtonsView:(id)view;
 - (void)loadView;
 - (void)nextButtonPressed;
 - (void)openAttendeesDetailItem;
-- (void)pasteboardManager:(id)a3 presentAlert:(id)a4;
+- (void)pasteboardManager:(id)manager presentAlert:(id)alert;
 - (void)performAddToCalendar;
-- (void)presentEditorAnimated:(BOOL)a3;
+- (void)presentEditorAnimated:(BOOL)animated;
 - (void)previousButtonPressed;
-- (void)reloadReminderWithEKEvent:(id)a3;
+- (void)reloadReminderWithEKEvent:(id)event;
 - (void)resetBackgroundColor;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setActiveEventEditor:(id)a3;
-- (void)setAllowsCalendarPreview:(BOOL)a3;
-- (void)setAllowsEditing:(BOOL)a3;
-- (void)setAllowsInviteResponses:(BOOL)a3;
-- (void)setCalendarPreviewIsInlineDayView:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEvent:(id)a3;
-- (void)setHideCalendarPreview:(BOOL)a3;
-- (void)setICSPreview:(BOOL)a3;
-- (void)setInlineDayViewRespectsSelectedCalendarsFilter:(BOOL)a3;
-- (void)setMinimalMode:(BOOL)a3;
-- (void)setNoninteractivePlatterMode:(BOOL)a3;
-- (void)setShowsAddToCalendarForICSPreview:(BOOL)a3;
-- (void)setShowsDelegateMessage:(BOOL)a3;
-- (void)setShowsDelegatorMessage:(BOOL)a3;
-- (void)setShowsDeleteForICSPreview:(BOOL)a3;
-- (void)setShowsDoneButton:(BOOL)a3;
-- (void)setShowsOutOfDateMessage:(BOOL)a3;
-- (void)setShowsUpdateCalendarForICSPreview:(BOOL)a3;
-- (void)setToolbarItems:(id)a3;
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4;
-- (void)setTopInset:(double)a3;
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUnhighlightRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)uneditableButtonDetailItem:(id)a3 requestsShowEvent:(id)a4;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setActiveEventEditor:(id)editor;
+- (void)setAllowsCalendarPreview:(BOOL)preview;
+- (void)setAllowsEditing:(BOOL)editing;
+- (void)setAllowsInviteResponses:(BOOL)responses;
+- (void)setCalendarPreviewIsInlineDayView:(BOOL)view;
+- (void)setDelegate:(id)delegate;
+- (void)setEvent:(id)event;
+- (void)setHideCalendarPreview:(BOOL)preview;
+- (void)setICSPreview:(BOOL)preview;
+- (void)setInlineDayViewRespectsSelectedCalendarsFilter:(BOOL)filter;
+- (void)setMinimalMode:(BOOL)mode;
+- (void)setNoninteractivePlatterMode:(BOOL)mode;
+- (void)setShowsAddToCalendarForICSPreview:(BOOL)preview;
+- (void)setShowsDelegateMessage:(BOOL)message;
+- (void)setShowsDelegatorMessage:(BOOL)message;
+- (void)setShowsDeleteForICSPreview:(BOOL)preview;
+- (void)setShowsDoneButton:(BOOL)button;
+- (void)setShowsOutOfDateMessage:(BOOL)message;
+- (void)setShowsUpdateCalendarForICSPreview:(BOOL)preview;
+- (void)setToolbarItems:(id)items;
+- (void)setToolbarItems:(id)items animated:(BOOL)animated;
+- (void)setTopInset:(double)inset;
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUnhighlightRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)uneditableButtonDetailItem:(id)item requestsShowEvent:(id)event;
 - (void)updateStatusButtonsView;
-- (void)updateTitleWithScrollView:(id)a3 animation:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateTitleWithScrollView:(id)view animation:(BOOL)animation;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation EKEventViewControllerDefaultImpl
 
-+ (void)setDefaultDatesForEvent:(id)a3
++ (void)setDefaultDatesForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v6 = CUIKDateRangeForNewEventOnDay();
-  v4 = [v6 startDate];
-  [v3 setStartDate:v4];
+  startDate = [v6 startDate];
+  [eventCopy setStartDate:startDate];
 
-  v5 = [v6 endDate];
-  [v3 setEndDateUnadjustedForLegacyClients:v5];
+  endDate = [v6 endDate];
+  [eventCopy setEndDateUnadjustedForLegacyClients:endDate];
 }
 
 - (EKEventViewControllerDefaultImpl)init
@@ -206,10 +206,10 @@
     cellHeights = v3->_cellHeights;
     v3->_cellHeights = v4;
 
-    v6 = [MEMORY[0x1E6993470] sharedPreferences];
-    v7 = [v6 hideInlineDayViewInEventDetails];
+    mEMORY[0x1E6993470] = [MEMORY[0x1E6993470] sharedPreferences];
+    hideInlineDayViewInEventDetails = [mEMORY[0x1E6993470] hideInlineDayViewInEventDetails];
 
-    if (v7)
+    if (hideInlineDayViewInEventDetails)
     {
       [(EKEventViewControllerDefaultImpl *)v3 setHideCalendarPreview:1];
     }
@@ -349,12 +349,12 @@ LABEL_23:
 - (void)dealloc
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
   self->_dead = 1;
   [(EKUIRecurrenceAlertController *)self->_recurrenceAlertController cancelAnimated:0];
-  v4 = [EKWeakLinkClass() defaultContextManager];
-  [v4 removeContextProvider:self];
+  defaultContextManager = [EKWeakLinkClass() defaultContextManager];
+  [defaultContextManager removeContextProvider:self];
 
   items = self->_items;
   if (items)
@@ -412,13 +412,13 @@ LABEL_23:
   v32.super_class = EKEventViewControllerDefaultImpl;
   [(EKEventViewControllerDefaultImpl *)&v32 loadView];
   v3 = objc_alloc(MEMORY[0x1E69DD020]);
-  v4 = [(EKEventViewControllerDefaultImpl *)self view];
-  v5 = [v4 frame];
+  view = [(EKEventViewControllerDefaultImpl *)self view];
+  frame = [view frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  if (MEMORY[0x1D38B98D0](v5))
+  if (MEMORY[0x1D38B98D0](frame))
   {
     v14 = 2;
   }
@@ -456,17 +456,17 @@ LABEL_23:
   +[EKEventDetailCell detailsCellDefaultHeight];
   [(UITableView *)self->_tableView setEstimatedRowHeight:?];
   [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [(EKEventViewControllerDefaultImpl *)self view];
-  [v18 addSubview:self->_tableView];
+  view2 = [(EKEventViewControllerDefaultImpl *)self view];
+  [view2 addSubview:self->_tableView];
 
   v19 = _NSDictionaryOfVariableBindings(&cfstr_Tableview.isa, self->_tableView, 0);
   [(EKEventViewControllerDefaultImpl *)self resetBackgroundColor];
-  v20 = [(EKEventViewControllerDefaultImpl *)self event];
-  if ([v20 couldBeJunk])
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  if ([event couldBeJunk])
   {
-    v21 = [(EKEventViewControllerDefaultImpl *)self minimalMode];
+    minimalMode = [(EKEventViewControllerDefaultImpl *)self minimalMode];
 
-    if (!v21)
+    if (!minimalMode)
     {
       [(EKEventViewControllerDefaultImpl *)self _createAndAddHeaderView];
     }
@@ -497,18 +497,18 @@ LABEL_23:
 
   if (lastAuthorizationStatus <= 2)
   {
-    v27 = [(EKEventViewControllerDefaultImpl *)self view];
-    v28 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
-    [v27 addSubview:v28];
+    view3 = [(EKEventViewControllerDefaultImpl *)self view];
+    accessDeniedView = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
+    [view3 addSubview:accessDeniedView];
 
-    v29 = [(EKEventViewControllerDefaultImpl *)self view];
-    v30 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
-    [v29 bringSubviewToFront:v30];
+    view4 = [(EKEventViewControllerDefaultImpl *)self view];
+    accessDeniedView2 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
+    [view4 bringSubviewToFront:accessDeniedView2];
 
     if (self->_lastAuthorizationStatus == 1)
     {
-      v31 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
-      [v31 setMessage:@" "];
+      accessDeniedView3 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
+      [accessDeniedView3 setMessage:@" "];
     }
   }
 
@@ -526,8 +526,8 @@ LABEL_23:
   LODWORD(v5) = 1148846080;
   [(UIView *)self->_headerView setContentCompressionResistancePriority:1 forAxis:v5];
   v6 = [EKEventReportJunkView alloc];
-  v7 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v8 = [(EKEventReportJunkView *)v6 initWithViewController:v7];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  v8 = [(EKEventReportJunkView *)v6 initWithViewController:_ekEventViewController];
 
   junkView = self->_junkView;
   self->_junkView = v8;
@@ -538,13 +538,13 @@ LABEL_23:
   [(UIView *)self->_headerView addSubview:v10];
   v11 = objc_alloc(MEMORY[0x1E69DD250]);
   v12 = [v11 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  v13 = [MEMORY[0x1E69DC888] tableSeparatorLightColor];
-  [v12 setBackgroundColor:v13];
+  tableSeparatorLightColor = [MEMORY[0x1E69DC888] tableSeparatorLightColor];
+  [v12 setBackgroundColor:tableSeparatorLightColor];
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_headerView addSubview:v12];
-  v14 = [(EKEventViewControllerDefaultImpl *)self view];
-  [v14 addSubview:self->_headerView];
+  view = [(EKEventViewControllerDefaultImpl *)self view];
+  [view addSubview:self->_headerView];
 
   v15 = _NSDictionaryOfVariableBindings(&cfstr_TableviewHeade.isa, self->_tableView, self->_headerView, v10, v12, 0);
   v37 = @"separatorLineThickness";
@@ -576,8 +576,8 @@ LABEL_23:
 
   v28 = MEMORY[0x1E696ACD8];
   v29 = self->_headerView;
-  v30 = [(EKEventViewControllerDefaultImpl *)self view];
-  v31 = [v28 constraintWithItem:v29 attribute:3 relatedBy:0 toItem:v30 attribute:15 multiplier:1.0 constant:0.0];
+  view2 = [(EKEventViewControllerDefaultImpl *)self view];
+  v31 = [v28 constraintWithItem:v29 attribute:3 relatedBy:0 toItem:view2 attribute:15 multiplier:1.0 constant:0.0];
   v35 = v31;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
   headerConstraints = self->_headerConstraints;
@@ -591,8 +591,8 @@ LABEL_23:
   if ([(UIViewController *)self isPresentedInsidePopover]&& MEMORY[0x1D38B98D0]())
   {
     [(UITableView *)self->_tableView setBackgroundColor:0];
-    v5 = [(EKEventViewControllerDefaultImpl *)self view];
-    [v5 setBackgroundColor:0];
+    view = [(EKEventViewControllerDefaultImpl *)self view];
+    [view setBackgroundColor:0];
   }
 
   else
@@ -606,17 +606,17 @@ LABEL_23:
     {
       [MEMORY[0x1E69DC888] tableBackgroundColor];
     }
-    v5 = ;
-    [(UITableView *)self->_tableView setBackgroundColor:v5];
-    v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v4 = [(EKEventViewControllerDefaultImpl *)self view];
-    [v4 setBackgroundColor:v3];
+    view = ;
+    [(UITableView *)self->_tableView setBackgroundColor:view];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    view2 = [(EKEventViewControllerDefaultImpl *)self view];
+    [view2 setBackgroundColor:systemBackgroundColor];
   }
 }
 
-- (id)_indexPathForSection:(unint64_t)a3
+- (id)_indexPathForSection:(unint64_t)section
 {
-  if (a3)
+  if (section)
   {
     v7 = 0;
     v8 = &v7;
@@ -628,7 +628,7 @@ LABEL_23:
     v6[2] = __57__EKEventViewControllerDefaultImpl__indexPathForSection___block_invoke;
     v6[3] = &unk_1E8441EB8;
     v6[4] = &v7;
-    v6[5] = a3;
+    v6[5] = section;
     [(NSArray *)currentSections enumerateObjectsUsingBlock:v6];
     v4 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:v8[3]];
     _Block_object_dispose(&v7, 8);
@@ -714,10 +714,10 @@ void __68__EKEventViewControllerDefaultImpl__indexPathForAttendeesDetailItem__bl
 
   else
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)self _reminderMode];
+    _reminderMode = [(EKEventViewControllerDefaultImpl *)self _reminderMode];
     v5 = EventKitUIBundle();
     v6 = v5;
-    if (v4)
+    if (_reminderMode)
     {
       v7 = @"Reminder Details";
     }
@@ -757,10 +757,10 @@ void __68__EKEventViewControllerDefaultImpl__indexPathForAttendeesDetailItem__bl
       goto LABEL_10;
     }
 
-    v4 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    v5 = [v4 isNavigationBarHidden];
+    navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    isNavigationBarHidden = [navigationController isNavigationBarHidden];
 
-    v6 = (v5 & 1) == 0;
+    v6 = (isNavigationBarHidden & 1) == 0;
     v7 = 0.0;
     v8 = 23.0;
     goto LABEL_7;
@@ -768,8 +768,8 @@ void __68__EKEventViewControllerDefaultImpl__indexPathForAttendeesDetailItem__bl
 
   if ([(EKEventViewControllerDefaultImpl *)self isLargeDayView])
   {
-    v19 = [(EKEventViewControllerDefaultImpl *)self view];
-    IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v19);
+    view = [(EKEventViewControllerDefaultImpl *)self view];
+    IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view);
 
     v2 = -12.0;
     if (IsRegularInViewHierarchy)
@@ -778,25 +778,25 @@ void __68__EKEventViewControllerDefaultImpl__indexPathForAttendeesDetailItem__bl
     }
   }
 
-  v21 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v22 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-  v23 = [v22 viewControllers];
-  v24 = [v23 objectAtIndex:0];
-  if (v21 == v24)
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  navigationController2 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+  viewControllers = [navigationController2 viewControllers];
+  v24 = [viewControllers objectAtIndex:0];
+  if (_ekEventViewController == v24)
   {
     goto LABEL_19;
   }
 
-  v25 = [(EKEventViewControllerDefaultImpl *)self presentingViewController];
-  if (v25)
+  presentingViewController = [(EKEventViewControllerDefaultImpl *)self presentingViewController];
+  if (presentingViewController)
   {
 
 LABEL_19:
     goto LABEL_20;
   }
 
-  v34 = [(EKEventViewControllerDefaultImpl *)self view];
-  IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy(v34);
+  view2 = [(EKEventViewControllerDefaultImpl *)self view];
+  IsCompactInViewHierarchy = EKUICurrentWidthSizeClassIsCompactInViewHierarchy(view2);
 
   if (IsCompactInViewHierarchy)
   {
@@ -819,13 +819,13 @@ LABEL_7:
   }
 
 LABEL_20:
-  v26 = [(EKEventViewControllerDefaultImpl *)self presentingViewController];
-  if (v26)
+  presentingViewController2 = [(EKEventViewControllerDefaultImpl *)self presentingViewController];
+  if (presentingViewController2)
   {
-    v27 = v26;
-    v28 = [(EKEventViewControllerDefaultImpl *)self sheetPresentationController];
+    v27 = presentingViewController2;
+    sheetPresentationController = [(EKEventViewControllerDefaultImpl *)self sheetPresentationController];
 
-    if (v28)
+    if (sheetPresentationController)
     {
       goto LABEL_28;
     }
@@ -836,21 +836,21 @@ LABEL_20:
   {
     if ([(EKEventViewControllerDefaultImpl *)self _shouldDisplayStatusButtons])
     {
-      v29 = [(EKEventViewControllerDefaultImpl *)self presentationController];
-      if (v29)
+      presentationController = [(EKEventViewControllerDefaultImpl *)self presentationController];
+      if (presentationController)
       {
-        v30 = v29;
-        v31 = [(EKEventViewControllerDefaultImpl *)self presentationController];
-        if ([v31 presentationStyle] != 2)
+        v30 = presentationController;
+        presentationController2 = [(EKEventViewControllerDefaultImpl *)self presentationController];
+        if ([presentationController2 presentationStyle] != 2)
         {
 
           goto LABEL_10;
         }
 
-        v32 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-        v33 = [v32 isNavigationBarHidden];
+        navigationController3 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+        isNavigationBarHidden2 = [navigationController3 isNavigationBarHidden];
 
-        v6 = (v33 & 1) == 0;
+        v6 = (isNavigationBarHidden2 & 1) == 0;
         v7 = -34.0;
         v8 = 0.0;
         goto LABEL_7;
@@ -863,8 +863,8 @@ LABEL_10:
   if (headerView && ![(UIView *)headerView isHidden])
   {
     junkView = self->_junkView;
-    v11 = [(EKEventViewControllerDefaultImpl *)self view];
-    [v11 frame];
+    view3 = [(EKEventViewControllerDefaultImpl *)self view];
+    [view3 frame];
     [(EKEventReportJunkView *)junkView systemLayoutSizeFittingSize:v12, 1.79769313e308];
     v14 = v13;
 
@@ -888,9 +888,9 @@ LABEL_13:
   v5.receiver = self;
   v5.super_class = EKEventViewControllerDefaultImpl;
   [(EKEventViewControllerDefaultImpl *)&v5 viewDidLoad];
-  v3 = [(EKEventViewControllerDefaultImpl *)self viewTitle];
-  v4 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  [v4 setTitle:v3];
+  viewTitle = [(EKEventViewControllerDefaultImpl *)self viewTitle];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  [_ekEventViewController setTitle:viewTitle];
 
   [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
   [(EKEventViewControllerDefaultImpl *)self _annotateEventEntityIfNeeded];
@@ -900,23 +900,23 @@ LABEL_13:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v22.receiver = self;
   v22.super_class = EKEventViewControllerDefaultImpl;
-  [(EKEventViewControllerDefaultImpl *)&v22 viewWillAppear:a3];
+  [(EKEventViewControllerDefaultImpl *)&v22 viewWillAppear:appear];
   [(UITableView *)self->_tableView setPreservesSuperviewLayoutMargins:1];
-  v4 = [(UIViewController *)self EKUI_viewHierarchy];
-  EKUIPushFallbackSizingContextWithViewHierarchy(v4);
-  v5 = [v4 ekui_interfaceOrientation];
+  eKUI_viewHierarchy = [(UIViewController *)self EKUI_viewHierarchy];
+  EKUIPushFallbackSizingContextWithViewHierarchy(eKUI_viewHierarchy);
+  ekui_interfaceOrientation = [eKUI_viewHierarchy ekui_interfaceOrientation];
   lastOrientation = self->_lastOrientation;
-  if (v5 != lastOrientation)
+  if (ekui_interfaceOrientation != lastOrientation)
   {
-    v7 = v5;
+    v7 = ekui_interfaceOrientation;
     if (lastOrientation)
     {
-      v8 = [(EKEventViewControllerDefaultImpl *)self view];
-      [v8 bounds];
+      view = [(EKEventViewControllerDefaultImpl *)self view];
+      [view bounds];
       v10 = v9;
       v12 = v11;
       v13 = objc_opt_new();
@@ -932,10 +932,10 @@ LABEL_13:
   {
     if ([(EKEventViewControllerDefaultImpl *)self useDynamicPocket])
     {
-      v14 = [(EKEventViewControllerDefaultImpl *)self traitCollection];
-      v15 = [v14 userInterfaceIdiom];
+      traitCollection = [(EKEventViewControllerDefaultImpl *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v15 == 1)
+      if (userInterfaceIdiom == 1)
       {
         [(UITableView *)self->_tableView setContentInsetAdjustmentBehavior:2];
       }
@@ -948,60 +948,60 @@ LABEL_13:
   v16 = [(EKEventViewControllerDefaultImpl *)self _indexPathForSection:self->_scrollToSection];
   if (v16)
   {
-    v17 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v17 scrollToRowAtIndexPath:v16 atScrollPosition:1 animated:0];
+    tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView scrollToRowAtIndexPath:v16 atScrollPosition:1 animated:0];
   }
 
-  v18 = [EKWeakLinkClass() defaultContextManager];
-  [v18 addContextProvider:self];
+  defaultContextManager = [EKWeakLinkClass() defaultContextManager];
+  [defaultContextManager addContextProvider:self];
 
-  v19 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v19 addObserver:self selector:sel__localeChanged name:*MEMORY[0x1E6993308] object:0];
-  [v19 addObserver:self selector:sel__storeChanged_ name:*MEMORY[0x1E6966928] object:0];
-  [v19 addObserver:self selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__localeChanged name:*MEMORY[0x1E6993308] object:0];
+  [defaultCenter addObserver:self selector:sel__storeChanged_ name:*MEMORY[0x1E6966928] object:0];
+  [defaultCenter addObserver:self selector:sel__contentSizeCategoryChanged_ name:*MEMORY[0x1E69DDC48] object:0];
   [(EKEventViewControllerDefaultImpl *)self _setObservesKeyboardNotifications:1];
   [(EKEventViewControllerDefaultImpl *)self _updateNavBarAnimated:0];
   [(EKEventViewControllerDefaultImpl *)self _updateResponseVisibility];
-  v20 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-  [v20 setNavigationBarHidden:-[EKEventViewControllerDefaultImpl _shouldShowInlineButtonFromDelegate](self animated:{"_shouldShowInlineButtonFromDelegate"), 0}];
+  navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+  [navigationController setNavigationBarHidden:-[EKEventViewControllerDefaultImpl _shouldShowInlineButtonFromDelegate](self animated:{"_shouldShowInlineButtonFromDelegate"), 0}];
 
-  v21 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-  [v21 setNavigationBarHidden:-[EKEventViewControllerDefaultImpl _navigationBarShouldBeHidden](self animated:{"_navigationBarShouldBeHidden"), 1}];
+  navigationController2 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+  [navigationController2 setNavigationBarHidden:-[EKEventViewControllerDefaultImpl _navigationBarShouldBeHidden](self animated:{"_navigationBarShouldBeHidden"), 1}];
 
   [(EKEventTitleDetailItem *)self->_titleItem setHidesTopSeparator:1];
   self->_viewIsVisible = 1;
   [(EKEventViewControllerDefaultImpl *)self _reloadIfNeeded];
-  EKUIPopFallbackSizingContextWithViewHierarchy(v4);
+  EKUIPopFallbackSizingContextWithViewHierarchy(eKUI_viewHierarchy);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = EKEventViewControllerDefaultImpl;
-  [(EKEventViewControllerDefaultImpl *)&v12 viewDidAppear:a3];
+  [(EKEventViewControllerDefaultImpl *)&v12 viewDidAppear:appear];
   self->_didAppear = 1;
   if (self->_autoPop)
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    v5 = [v4 popViewControllerAnimated:1];
+    navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    v5 = [navigationController popViewControllerAnimated:1];
   }
 
   if (!self->_countedAppearance)
   {
     self->_countedAppearance = 1;
-    v6 = [(EKEvent *)self->_event suggestionInfo];
-    if (v6)
+    suggestionInfo = [(EKEvent *)self->_event suggestionInfo];
+    if (suggestionInfo)
     {
-      v7 = v6;
-      v8 = [MEMORY[0x1E6992FA0] currentProcessIsFirstPartyCalendarApp];
+      v7 = suggestionInfo;
+      currentProcessIsFirstPartyCalendarApp = [MEMORY[0x1E6992FA0] currentProcessIsFirstPartyCalendarApp];
 
-      if (v8)
+      if (currentProcessIsFirstPartyCalendarApp)
       {
         [MEMORY[0x1E69930D0] trackPseudoEventDetailsOpened];
         v9 = MEMORY[0x1E69930D8];
-        v10 = [(EKEvent *)self->_event suggestionInfo];
-        v11 = [v10 uniqueKey];
-        [v9 logEventShowedDetailsWithUniqueKey:v11];
+        suggestionInfo2 = [(EKEvent *)self->_event suggestionInfo];
+        uniqueKey = [suggestionInfo2 uniqueKey];
+        [v9 logEventShowedDetailsWithUniqueKey:uniqueKey];
       }
     }
   }
@@ -1023,8 +1023,8 @@ LABEL_13:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    v7 = [WeakRetained eventViewControllerPresentedInAPopover:v6];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    v7 = [WeakRetained eventViewControllerPresentedInAPopover:_ekEventViewController];
   }
 
   else
@@ -1046,8 +1046,8 @@ LABEL_13:
     if (v5)
     {
       v6 = objc_loadWeakRetained(&self->_delegate);
-      v7 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      v8 = [v6 eventViewControllerShouldAlwaysShowNavBar:v7];
+      _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      v8 = [v6 eventViewControllerShouldAlwaysShowNavBar:_ekEventViewController];
 
       if (v8)
       {
@@ -1078,32 +1078,32 @@ LABEL_13:
 
     if ((v13 & 1) == 0)
     {
-      v14 = 0;
+      eventViewControllerPresentationWantsHiddenNavBarForSingleController = 0;
       goto LABEL_15;
     }
 
     v11 = objc_loadWeakRetained(&self->_delegate);
-    v14 = [v11 eventViewControllerPresentationWantsHiddenNavBarForSingleController];
+    eventViewControllerPresentationWantsHiddenNavBarForSingleController = [v11 eventViewControllerPresentationWantsHiddenNavBarForSingleController];
   }
 
   else
   {
-    v14 = 0;
+    eventViewControllerPresentationWantsHiddenNavBarForSingleController = 0;
   }
 
 LABEL_15:
-  v15 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-  if (v15)
+  navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+  if (navigationController)
   {
-    v16 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    v17 = [v16 viewControllers];
-    if ([v17 count] == 1)
+    navigationController2 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    viewControllers = [navigationController2 viewControllers];
+    if ([viewControllers count] == 1)
     {
-      v18 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-      v19 = [v18 viewControllers];
-      v20 = [v19 firstObject];
-      v21 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      v22 = v20 == v21;
+      navigationController3 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+      viewControllers2 = [navigationController3 viewControllers];
+      firstObject = [viewControllers2 firstObject];
+      _ekEventViewController2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      v22 = firstObject == _ekEventViewController2;
     }
 
     else
@@ -1117,16 +1117,16 @@ LABEL_15:
     v22 = 1;
   }
 
-  return v10 & v14 & v22;
+  return v10 & eventViewControllerPresentationWantsHiddenNavBarForSingleController & v22;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   self->_viewIsVisible = 0;
   [(EKEventViewControllerDefaultImpl *)self _setObservesKeyboardNotifications:0];
-  v5 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-  [v5 setNavigationBarHidden:-[EKEventViewControllerDefaultImpl _navigationBarShouldBeHidden](self animated:{"_navigationBarShouldBeHidden"), 1}];
+  navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+  [navigationController setNavigationBarHidden:-[EKEventViewControllerDefaultImpl _navigationBarShouldBeHidden](self animated:{"_navigationBarShouldBeHidden"), 1}];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -1144,45 +1144,45 @@ LABEL_15:
 
   v11.receiver = self;
   v11.super_class = EKEventViewControllerDefaultImpl;
-  [(EKEventViewControllerDefaultImpl *)&v11 viewWillDisappear:v3];
+  [(EKEventViewControllerDefaultImpl *)&v11 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = EKEventViewControllerDefaultImpl;
-  [(EKEventViewControllerDefaultImpl *)&v5 viewDidDisappear:a3];
+  [(EKEventViewControllerDefaultImpl *)&v5 viewDidDisappear:disappear];
   self->_didAppear = 0;
-  v4 = [EKWeakLinkClass() defaultContextManager];
-  [v4 removeContextProvider:self];
+  defaultContextManager = [EKWeakLinkClass() defaultContextManager];
+  [defaultContextManager removeContextProvider:self];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  v5 = [(EKEventViewControllerDefaultImpl *)self tableView:a4];
+  v5 = [(EKEventViewControllerDefaultImpl *)self tableView:coordinator];
   [(EKEventViewControllerDefaultImpl *)self updateTitleWithScrollView:v5 animation:0];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5.receiver = self;
   v5.super_class = EKEventViewControllerDefaultImpl;
-  [(EKEventViewControllerDefaultImpl *)&v5 didMoveToParentViewController:v4];
-  if (v4)
+  [(EKEventViewControllerDefaultImpl *)&v5 didMoveToParentViewController:controllerCopy];
+  if (controllerCopy)
   {
     [(EKEventViewControllerDefaultImpl *)self _updateNavBarAnimated:0];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 isNavigationBarHidden] & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([controllerCopy isNavigationBarHidden] & 1) == 0)
     {
       [(EKEventViewControllerDefaultImpl *)self setMinimalMode:0];
     }
   }
 }
 
-- (void)_contentSizeCategoryChanged:(id)a3
+- (void)_contentSizeCategoryChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   headerView = self->_headerView;
   if (headerView && ![(UIView *)headerView isHidden])
   {
@@ -1195,28 +1195,28 @@ LABEL_15:
   [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
 }
 
-- (void)_updateTableContentInsetForKeyboard:(id)a3
+- (void)_updateTableContentInsetForKeyboard:(id)keyboard
 {
-  v34 = a3;
+  keyboardCopy = keyboard;
   if (![(UIViewController *)self isPresentedInsidePopover])
   {
     [(UITableView *)self->_tableView contentInset];
     v5 = v4;
     v7 = v6;
     v9 = v8;
-    v10 = [v34 userInfo];
-    v11 = [v10 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [keyboardCopy userInfo];
+    v11 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
     [v11 CGRectValue];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
-    v20 = [v34 object];
-    v21 = [v20 coordinateSpace];
+    object = [keyboardCopy object];
+    coordinateSpace = [object coordinateSpace];
 
     v22 = self->_tableView;
-    [v21 convertRect:v22 toCoordinateSpace:{v13, v15, v17, v19}];
+    [coordinateSpace convertRect:v22 toCoordinateSpace:{v13, v15, v17, v19}];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -1230,8 +1230,8 @@ LABEL_15:
     height = v37.size.height;
     if (CGRectIsEmpty(v37))
     {
-      v32 = [(EKEventViewControllerDefaultImpl *)self tableView];
-      [v32 safeAreaInsets];
+      tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+      [tableView safeAreaInsets];
       height = v33;
     }
 
@@ -1241,24 +1241,24 @@ LABEL_15:
 
 - (BOOL)_shouldDisplayDoneButton
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-  v4 = [v3 leftBarButtonItem];
+  navigationItem = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
   if ([(EKEventViewControllerDefaultImpl *)self useDynamicPocket]|| !self->_showsDoneButton)
   {
     goto LABEL_8;
   }
 
-  if (([v3 hidesBackButton] & 1) == 0 && (!v4 || !objc_msgSend(v4, "systemItem")))
+  if (([navigationItem hidesBackButton] & 1) == 0 && (!leftBarButtonItem || !objc_msgSend(leftBarButtonItem, "systemItem")))
   {
-    v5 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    v6 = [v5 viewControllers];
+    navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    viewControllers = [navigationController viewControllers];
 
-    if ([v6 count])
+    if ([viewControllers count])
     {
-      v7 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      v8 = [v6 objectAtIndex:0];
+      _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      v8 = [viewControllers objectAtIndex:0];
 
-      if (v7 != v8)
+      if (_ekEventViewController != v8)
       {
 LABEL_8:
         v9 = 0;
@@ -1271,9 +1271,9 @@ LABEL_8:
     }
   }
 
-  if (![v4 systemItem])
+  if (![leftBarButtonItem systemItem])
   {
-    [v3 setLeftBarButtonItem:0];
+    [navigationItem setLeftBarButtonItem:0];
   }
 
   v9 = 1;
@@ -1282,53 +1282,53 @@ LABEL_13:
   return v9;
 }
 
-- (void)_updateNavBarAnimated:(BOOL)a3
+- (void)_updateNavBarAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(EKEventViewControllerDefaultImpl *)self _shouldShowEditButton])
   {
-    v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:2 target:self action:sel_editButtonTapped];
+    navigationItem5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:2 target:self action:sel_editButtonTapped];
     if ([(EKEventViewControllerDefaultImpl *)self _shouldDisplayDoneButton])
     {
-      v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
-      v6 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-      [v6 setLeftBarButtonItem:v9 animated:v3];
+      navigationItem3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
+      navigationItem = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+      [navigationItem setLeftBarButtonItem:navigationItem5 animated:animatedCopy];
 
-      v7 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-      [v7 setRightBarButtonItem:v5 animated:v3];
+      navigationItem2 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:navigationItem3 animated:animatedCopy];
     }
 
     else
     {
-      v5 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-      [v5 setRightBarButtonItem:v9 animated:v3];
+      navigationItem3 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+      [navigationItem3 setRightBarButtonItem:navigationItem5 animated:animatedCopy];
     }
   }
 
   else if ([(EKEventViewControllerDefaultImpl *)self _shouldDisplayDoneButton])
   {
-    v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
-    v8 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-    [v8 setRightBarButtonItem:v9 animated:v3];
+    navigationItem5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonTapped_];
+    navigationItem4 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+    [navigationItem4 setRightBarButtonItem:navigationItem5 animated:animatedCopy];
   }
 
   else
   {
-    v9 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-    [v9 setRightBarButtonItem:0 animated:v3];
+    navigationItem5 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+    [navigationItem5 setRightBarButtonItem:0 animated:animatedCopy];
   }
 }
 
 - (BOOL)_shouldShowEditButton
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self allowsEditing];
-  if (v3)
+  allowsEditing = [(EKEventViewControllerDefaultImpl *)self allowsEditing];
+  if (allowsEditing)
   {
 
-    LOBYTE(v3) = [(EKEventViewControllerDefaultImpl *)self _backingEventAllowsEditing];
+    LOBYTE(allowsEditing) = [(EKEventViewControllerDefaultImpl *)self _backingEventAllowsEditing];
   }
 
-  return v3;
+  return allowsEditing;
 }
 
 - (CGSize)_idealSize
@@ -1336,31 +1336,31 @@ LABEL_13:
   v40 = *MEMORY[0x1E69E9840];
   [(EKEventViewControllerDefaultImpl *)self _reloadIfNeeded];
   [(EKEventViewControllerDefaultImpl *)self _updateResponseVisibility];
-  v3 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v3 layoutIfNeeded];
+  tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView layoutIfNeeded];
 
   if (MEMORY[0x1D38B98D0]())
   {
     noninteractivePlatterMode = self->_noninteractivePlatterMode;
     v5 = EKUIContainedControllerIdealWidth();
-    v6 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v6 contentSize];
+    tableView2 = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView2 contentSize];
     v8 = v7;
     if (!noninteractivePlatterMode)
     {
-      v9 = [(EKEventViewControllerDefaultImpl *)self tableView];
-      [v9 contentInset];
+      tableView3 = [(EKEventViewControllerDefaultImpl *)self tableView];
+      [tableView3 contentInset];
       v11 = v8 + v10;
-      v12 = [(EKEventViewControllerDefaultImpl *)self tableView];
-      [v12 contentInset];
+      tableView4 = [(EKEventViewControllerDefaultImpl *)self tableView];
+      [tableView4 contentInset];
       v8 = v11 + v13;
     }
   }
 
   else
   {
-    v14 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v14 bounds];
+    tableView5 = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView5 bounds];
     if (v15 <= EKUIContainedControllerIdealWidth())
     {
       v18 = EKUIContainedControllerIdealWidth();
@@ -1368,16 +1368,16 @@ LABEL_13:
 
     else
     {
-      v16 = [(EKEventViewControllerDefaultImpl *)self tableView];
-      [v16 bounds];
+      tableView6 = [(EKEventViewControllerDefaultImpl *)self tableView];
+      [tableView6 bounds];
       v18 = v17;
     }
 
-    v19 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v19 contentInset];
+    tableView7 = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView7 contentInset];
     v21 = v20;
-    v22 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v22 contentInset];
+    tableView8 = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView8 contentInset];
     v8 = v21 + v23;
 
     v37 = 0u;
@@ -1454,8 +1454,8 @@ LABEL_13:
   }
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  v8 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v9 = [v7 eventViewControllerShouldDismissSelf:v8];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  v9 = [v7 eventViewControllerShouldDismissSelf:_ekEventViewController];
 
   return v9;
 }
@@ -1485,24 +1485,24 @@ LABEL_13:
       return;
     }
 
-    v6 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    v7 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    v8 = [v6 popToViewController:v7 animated:0];
+    navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    v8 = [navigationController popToViewController:_ekEventViewController animated:0];
 
-    v9 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    v10 = [v9 viewControllers];
-    v11 = [v10 count];
+    navigationController2 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    viewControllers = [navigationController2 viewControllers];
+    v11 = [viewControllers count];
 
-    v12 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    v5 = v12;
+    navigationController3 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    v5 = navigationController3;
     if (v11 < 2)
     {
-      [v12 dismissViewControllerAnimated:1 completion:0];
+      [navigationController3 dismissViewControllerAnimated:1 completion:0];
     }
 
     else
     {
-      v13 = [v12 popViewControllerAnimated:1];
+      v13 = [navigationController3 popViewControllerAnimated:1];
     }
   }
 }
@@ -1527,13 +1527,13 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   [v3 eventViewController:v4 didSelectSubitem:v5];
 }
 
-- (void)_setNeedsReloadIncludingItems:(BOOL)a3
+- (void)_setNeedsReloadIncludingItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   if ([(EKEventViewControllerDefaultImpl *)self isViewLoaded])
   {
     self->_needsReload = 1;
-    if (v3)
+    if (itemsCopy)
     {
       self->_itemsNeedReload = 1;
     }
@@ -1593,8 +1593,8 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
     {
       if (self->_items)
       {
-        v10 = [(EKEvent *)self->_event calendar];
-        [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:v10];
+        calendar = [(EKEvent *)self->_event calendar];
+        [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:calendar];
       }
 
       else
@@ -1605,8 +1605,8 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
 
     self->_itemsNeedReload = 0;
     self->_needsReload = 0;
-    v11 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v11 reloadData];
+    tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView reloadData];
 
     [(EKEventViewControllerDefaultImpl *)self _updateStatusButtonsActions];
     [(EKEventViewControllerDefaultImpl *)self calculatePreferredContentSize];
@@ -1614,25 +1614,25 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   }
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     event = self->_event;
-    if (event != v5)
+    if (event != eventCopy)
     {
       v7 = MEMORY[0x1E6966918];
       if (event)
       {
-        v8 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v8 removeObserver:self name:*v7 object:self->_event];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:self name:*v7 object:self->_event];
       }
 
-      [(EKEventViewControllerDefaultImpl *)self reloadReminderWithEKEvent:v5];
-      objc_storeStrong(&self->_event, a3);
+      [(EKEventViewControllerDefaultImpl *)self reloadReminderWithEKEvent:eventCopy];
+      objc_storeStrong(&self->_event, event);
       cachedShowNext = self->_cachedShowNext;
       self->_cachedShowNext = 0;
 
@@ -1642,23 +1642,23 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
       [(EKEventViewControllerDefaultImpl *)self _setUpForEvent];
       if (self->_event)
       {
-        v11 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v11 addObserver:self selector:sel_setNeedsReload name:*v7 object:self->_event];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 addObserver:self selector:sel_setNeedsReload name:*v7 object:self->_event];
       }
 
       if ([(EKEventViewControllerDefaultImpl *)self isViewLoaded])
       {
-        v12 = [(EKEventViewControllerDefaultImpl *)self tableView];
-        [v12 reloadData];
+        tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+        [tableView reloadData];
 
-        v13 = [(EKEventViewControllerDefaultImpl *)self tableView];
-        [v13 selectRowAtIndexPath:0 animated:0 scrollPosition:0];
+        tableView2 = [(EKEventViewControllerDefaultImpl *)self tableView];
+        [tableView2 selectRowAtIndexPath:0 animated:0 scrollPosition:0];
 
         [(EKEventViewControllerDefaultImpl *)self _updateResponseVisibility];
         [(EKEventViewControllerDefaultImpl *)self _updateResponse];
       }
 
-      [(UIResponder *)self EKUI_setDataOwnersFromEvent:v5];
+      [(UIResponder *)self EKUI_setDataOwnersFromEvent:eventCopy];
       [(EKEventViewControllerDefaultImpl *)self _annotateEventEntityIfNeeded];
     }
   }
@@ -1672,21 +1672,21 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
       v17 = 138412546;
       v18 = objc_opt_class();
       v19 = 2112;
-      v20 = v5;
+      v20 = eventCopy;
       v16 = v18;
       _os_log_impl(&dword_1D3400000, v15, OS_LOG_TYPE_ERROR, "Error: EKEventViewController setEvent given object of class %@. Description: %@", &v17, 0x16u);
     }
   }
 }
 
-- (void)reloadReminderWithEKEvent:(id)a3
+- (void)reloadReminderWithEKEvent:(id)event
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isReminderIntegrationEvent])
+  eventCopy = event;
+  if ([eventCopy isReminderIntegrationEvent])
   {
-    v5 = [v4 uniqueID];
-    v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+    uniqueID = [eventCopy uniqueID];
+    v6 = [MEMORY[0x1E695DFF8] URLWithString:uniqueID];
     v21 = 0;
     v22 = &v21;
     v23 = 0x2050000000;
@@ -1763,7 +1763,7 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v4;
+      *&buf[4] = eventCopy;
       _os_log_impl(&dword_1D3400000, v19, OS_LOG_TYPE_ERROR, "Trying to reload reminder with EKEvent, but it's not a reminder. %@", buf, 0xCu);
     }
   }
@@ -1771,19 +1771,19 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
 
 - (void)_annotateEventEntityIfNeeded
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self event];
-  [(UIViewController *)self EKUI_annotateIfNeededWithAppEntityForEvent:v3 isEditing:0];
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  [(UIViewController *)self EKUI_annotateIfNeededWithAppEntityForEvent:event isEditing:0];
 }
 
 - (BOOL)_backingEventAllowsEditing
 {
   if ((![(EKEvent *)self->_event isReminderIntegrationEvent]|| [(EKEvent *)self->_event CUIK_reminderShouldBeEditable]) && [(EKEvent *)self->_event isEditable])
   {
-    v3 = [(EKEvent *)self->_event eventStore];
-    if (v3)
+    eventStore = [(EKEvent *)self->_event eventStore];
+    if (eventStore)
     {
-      v4 = [(EKEvent *)self->_event calendar];
-      v5 = [v4 isSuggestedEventCalendar] ^ 1;
+      calendar = [(EKEvent *)self->_event calendar];
+      v5 = [calendar isSuggestedEventCalendar] ^ 1;
     }
 
     else
@@ -1800,24 +1800,24 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   return v5;
 }
 
-- (void)setAllowsEditing:(BOOL)a3
+- (void)setAllowsEditing:(BOOL)editing
 {
-  if (self->_allowsEditing != a3)
+  if (self->_allowsEditing != editing)
   {
-    self->_allowsEditing = a3;
+    self->_allowsEditing = editing;
     [(EKEventViewControllerDefaultImpl *)self setAllowsInviteResponses:?];
     if ([(EKEventViewControllerDefaultImpl *)self isViewLoaded]&& [(EKEventViewControllerDefaultImpl *)self viewIsVisible])
     {
       [(EKEventViewControllerDefaultImpl *)self _updateNavBarAnimated:1];
     }
 
-    v4 = [(EKEvent *)self->_event calendar];
+    calendar = [(EKEvent *)self->_event calendar];
 
-    if (v4)
+    if (calendar)
     {
       v5 = [(NSArray *)self->_currentSections count];
-      v6 = [(EKEvent *)self->_event calendar];
-      [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:v6];
+      calendar2 = [(EKEvent *)self->_event calendar];
+      [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:calendar2];
 
       if (v5 != [(NSArray *)self->_currentSections count])
       {
@@ -1828,11 +1828,11 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   }
 }
 
-- (void)setAllowsInviteResponses:(BOOL)a3
+- (void)setAllowsInviteResponses:(BOOL)responses
 {
-  if (self->_allowsInviteResponses != a3)
+  if (self->_allowsInviteResponses != responses)
   {
-    self->_allowsInviteResponses = a3;
+    self->_allowsInviteResponses = responses;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
   }
 }
@@ -1841,8 +1841,8 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
 {
   if (self->_showsPreview)
   {
-    v2 = [(EKEventViewControllerDefaultImpl *)self event];
-    v3 = [v2 isAllDay] ^ 1;
+    event = [(EKEventViewControllerDefaultImpl *)self event];
+    v3 = [event isAllDay] ^ 1;
   }
 
   else
@@ -1853,21 +1853,21 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   return v3;
 }
 
-- (void)setAllowsCalendarPreview:(BOOL)a3
+- (void)setAllowsCalendarPreview:(BOOL)preview
 {
-  if (!self->_hidePreview && self->_showsPreview != a3)
+  if (!self->_hidePreview && self->_showsPreview != preview)
   {
-    self->_showsPreview = a3;
+    self->_showsPreview = preview;
     [(EKEventViewControllerDefaultImpl *)self _setNeedsReloadIncludingItems:1];
   }
 }
 
-- (void)setHideCalendarPreview:(BOOL)a3
+- (void)setHideCalendarPreview:(BOOL)preview
 {
-  if (self->_hidePreview != a3)
+  if (self->_hidePreview != preview)
   {
-    self->_hidePreview = a3;
-    if (a3)
+    self->_hidePreview = preview;
+    if (preview)
     {
       self->_showsPreview = 0;
     }
@@ -1876,117 +1876,117 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   }
 }
 
-- (void)setCalendarPreviewIsInlineDayView:(BOOL)a3
+- (void)setCalendarPreviewIsInlineDayView:(BOOL)view
 {
-  if (self->_calendarPreviewIsInlineDayView != a3)
+  if (self->_calendarPreviewIsInlineDayView != view)
   {
-    self->_calendarPreviewIsInlineDayView = a3;
+    self->_calendarPreviewIsInlineDayView = view;
     [(EKEventViewControllerDefaultImpl *)self _setNeedsReloadIncludingItems:1];
   }
 }
 
-- (void)setInlineDayViewRespectsSelectedCalendarsFilter:(BOOL)a3
+- (void)setInlineDayViewRespectsSelectedCalendarsFilter:(BOOL)filter
 {
-  if (self->_inlineDayViewRespectsSelectedCalendarsFilter != a3)
+  if (self->_inlineDayViewRespectsSelectedCalendarsFilter != filter)
   {
-    self->_inlineDayViewRespectsSelectedCalendarsFilter = a3;
+    self->_inlineDayViewRespectsSelectedCalendarsFilter = filter;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
   }
 }
 
-- (void)setICSPreview:(BOOL)a3
+- (void)setICSPreview:(BOOL)preview
 {
-  if (self->_ICSPreview != a3)
+  if (self->_ICSPreview != preview)
   {
-    self->_ICSPreview = a3;
+    self->_ICSPreview = preview;
     self->_scrollToSection = 1;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
   }
 }
 
-- (void)setShowsAddToCalendarForICSPreview:(BOOL)a3
+- (void)setShowsAddToCalendarForICSPreview:(BOOL)preview
 {
-  if (self->_showsAddToCalendarForICSPreview != a3)
+  if (self->_showsAddToCalendarForICSPreview != preview)
   {
-    self->_showsAddToCalendarForICSPreview = a3;
+    self->_showsAddToCalendarForICSPreview = preview;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
   }
 }
 
-- (void)setShowsUpdateCalendarForICSPreview:(BOOL)a3
+- (void)setShowsUpdateCalendarForICSPreview:(BOOL)preview
 {
-  if (self->_showsUpdateCalendarForICSPreview != a3)
+  if (self->_showsUpdateCalendarForICSPreview != preview)
   {
-    self->_showsUpdateCalendarForICSPreview = a3;
+    self->_showsUpdateCalendarForICSPreview = preview;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
   }
 }
 
-- (void)setShowsDeleteForICSPreview:(BOOL)a3
+- (void)setShowsDeleteForICSPreview:(BOOL)preview
 {
-  if (self->_showsDeleteForICSPreview != a3)
+  if (self->_showsDeleteForICSPreview != preview)
   {
-    self->_showsDeleteForICSPreview = a3;
+    self->_showsDeleteForICSPreview = preview;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
   }
 }
 
-- (void)setShowsDoneButton:(BOOL)a3
+- (void)setShowsDoneButton:(BOOL)button
 {
-  if (self->_showsDoneButton != a3)
+  if (self->_showsDoneButton != button)
   {
-    self->_showsDoneButton = a3;
+    self->_showsDoneButton = button;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
   }
 }
 
-- (void)setShowsOutOfDateMessage:(BOOL)a3
+- (void)setShowsOutOfDateMessage:(BOOL)message
 {
-  if (self->_showsOutOfDateMessage != a3)
+  if (self->_showsOutOfDateMessage != message)
   {
-    self->_showsOutOfDateMessage = a3;
-    [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
-
-    [(EKEventViewControllerDefaultImpl *)self _updateStatusButtonsActions];
-  }
-}
-
-- (void)setShowsDelegatorMessage:(BOOL)a3
-{
-  if (self->_showsDelegatorMessage != a3)
-  {
-    self->_showsDelegatorMessage = a3;
+    self->_showsOutOfDateMessage = message;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
 
     [(EKEventViewControllerDefaultImpl *)self _updateStatusButtonsActions];
   }
 }
 
-- (void)setShowsDelegateMessage:(BOOL)a3
+- (void)setShowsDelegatorMessage:(BOOL)message
 {
-  if (self->_showsDelegateMessage != a3)
+  if (self->_showsDelegatorMessage != message)
   {
-    self->_showsDelegateMessage = a3;
+    self->_showsDelegatorMessage = message;
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
 
     [(EKEventViewControllerDefaultImpl *)self _updateStatusButtonsActions];
   }
 }
 
-- (void)setMinimalMode:(BOOL)a3
+- (void)setShowsDelegateMessage:(BOOL)message
 {
-  if (self->_minimalMode != a3)
+  if (self->_showsDelegateMessage != message)
   {
-    self->_minimalMode = a3;
+    self->_showsDelegateMessage = message;
+    [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
+
+    [(EKEventViewControllerDefaultImpl *)self _updateStatusButtonsActions];
+  }
+}
+
+- (void)setMinimalMode:(BOOL)mode
+{
+  if (self->_minimalMode != mode)
+  {
+    self->_minimalMode = mode;
     [(EKEventViewControllerDefaultImpl *)self _setNeedsReloadIncludingItems];
   }
 }
 
-- (void)setNoninteractivePlatterMode:(BOOL)a3
+- (void)setNoninteractivePlatterMode:(BOOL)mode
 {
-  if (self->_noninteractivePlatterMode != a3)
+  if (self->_noninteractivePlatterMode != mode)
   {
-    self->_noninteractivePlatterMode = a3;
+    self->_noninteractivePlatterMode = mode;
     [(EKEventViewControllerDefaultImpl *)self _setNeedsReloadIncludingItems];
   }
 }
@@ -2001,21 +2001,21 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   [(EKEventViewControllerDefaultImpl *)self _setNeedsReloadIncludingItems:1];
 }
 
-- (void)completeWithAction:(int64_t)a3
+- (void)completeWithAction:(int64_t)action
 {
-  if (a3 == 2)
+  if (action == 2)
   {
     self->_ignoreDBChanges = 1;
     recurrenceAlertController = self->_recurrenceAlertController;
     if (recurrenceAlertController)
     {
-      v6 = [(EKUIRecurrenceAlertController *)recurrenceAlertController alertController];
-      v7 = [v6 presentingViewController];
-      [v7 dismissViewControllerAnimated:0 completion:0];
+      alertController = [(EKUIRecurrenceAlertController *)recurrenceAlertController alertController];
+      presentingViewController = [alertController presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:0 completion:0];
     }
   }
 
-  [(EKEventViewControllerDefaultImpl *)self _dismissEditor:0 deleted:a3 == 2];
+  [(EKEventViewControllerDefaultImpl *)self _dismissEditor:0 deleted:action == 2];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -2023,13 +2023,13 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
     v10 = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(EKEventViewControllerDefaultImpl *)self _shouldPopSelf];
+      _shouldPopSelf = [(EKEventViewControllerDefaultImpl *)self _shouldPopSelf];
 
-      if (!v11)
+      if (!_shouldPopSelf)
       {
         v13 = objc_loadWeakRetained(&self->_delegate);
-        v12 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-        [v13 eventViewController:v12 didCompleteWithAction:a3];
+        _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+        [v13 eventViewController:_ekEventViewController didCompleteWithAction:action];
 
         return;
       }
@@ -2049,8 +2049,8 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   if (!accessDeniedView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD328]);
-    v5 = [(EKEventViewControllerDefaultImpl *)self view];
-    [v5 bounds];
+    view = [(EKEventViewControllerDefaultImpl *)self view];
+    [view bounds];
     v6 = [v4 initWithFrame:?];
     v7 = self->_accessDeniedView;
     self->_accessDeniedView = v6;
@@ -2066,17 +2066,17 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   return accessDeniedView;
 }
 
-- (void)setTopInset:(double)a3
+- (void)setTopInset:(double)inset
 {
   [(UITableView *)self->_tableView contentInset];
   tableView = self->_tableView;
 
-  [(UITableView *)tableView setContentInset:a3];
+  [(UITableView *)tableView setContentInset:inset];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -2092,24 +2092,24 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   }
 }
 
-- (void)_setObservesKeyboardNotifications:(BOOL)a3
+- (void)_setObservesKeyboardNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  if (v3)
+  notificationsCopy = notifications;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  if (notificationsCopy)
   {
-    [v5 addObserver:self selector:sel__updateTableContentInsetForKeyboard_ name:*MEMORY[0x1E69DE080] object:0];
-    [v5 addObserver:self selector:sel__updateTableContentInsetForKeyboard_ name:*MEMORY[0x1E69DE078] object:0];
-    [v5 addObserver:self selector:sel__keyboardWasShown_ name:*MEMORY[0x1E69DDF78] object:0];
-    [v5 addObserver:self selector:sel__keyboardWasHidden_ name:*MEMORY[0x1E69DDF70] object:0];
+    [defaultCenter addObserver:self selector:sel__updateTableContentInsetForKeyboard_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:self selector:sel__updateTableContentInsetForKeyboard_ name:*MEMORY[0x1E69DE078] object:0];
+    [defaultCenter addObserver:self selector:sel__keyboardWasShown_ name:*MEMORY[0x1E69DDF78] object:0];
+    [defaultCenter addObserver:self selector:sel__keyboardWasHidden_ name:*MEMORY[0x1E69DDF70] object:0];
   }
 
   else
   {
-    [v5 removeObserver:self name:*MEMORY[0x1E69DE080] object:0];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE078] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF78] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDF70] object:0];
   }
 }
 
@@ -2135,8 +2135,8 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(EKEventViewControllerDefaultImpl *)self items];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    items = [(EKEventViewControllerDefaultImpl *)self items];
+    v7 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2148,14 +2148,14 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(items);
           }
 
           [*(*(&v12 + 1) + 8 * v10++) refreshCopiedEvents];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [items countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -2167,13 +2167,13 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   return v3;
 }
 
-- (void)_storeChanged:(id)a3
+- (void)_storeChanged:(id)changed
 {
-  v9 = a3;
+  changedCopy = changed;
   if (![(EKEventViewControllerDefaultImpl *)self eventEditViewPresented]&& !self->_ignoreDBChanges && ([(EKEvent *)self->_event isNew]& 1) == 0)
   {
-    v4 = [v9 userInfo];
-    v5 = [v4 objectForKey:*MEMORY[0x1E6966930]];
+    userInfo = [changedCopy userInfo];
+    v5 = [userInfo objectForKey:*MEMORY[0x1E6966930]];
 
     if (!v5 || (-[EKEvent objectID](self->_event, "objectID"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 containsObject:v6], v6, v7))
     {
@@ -2202,36 +2202,36 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
   }
 }
 
-- (void)_updateAccessDeniedViewWithNewStatus:(int64_t)a3
+- (void)_updateAccessDeniedViewWithNewStatus:(int64_t)status
 {
-  if (self->_lastAuthorizationStatus != a3)
+  if (self->_lastAuthorizationStatus != status)
   {
     accessDeniedView = self->_accessDeniedView;
-    if (a3 < 3)
+    if (status < 3)
     {
       if (accessDeniedView)
       {
         goto LABEL_9;
       }
 
-      v7 = [(EKEventViewControllerDefaultImpl *)self firstResponder];
-      [v7 resignFirstResponder];
+      firstResponder = [(EKEventViewControllerDefaultImpl *)self firstResponder];
+      [firstResponder resignFirstResponder];
 
-      v8 = [(EKEventViewControllerDefaultImpl *)self view];
-      v9 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
-      [v8 addSubview:v9];
+      view = [(EKEventViewControllerDefaultImpl *)self view];
+      accessDeniedView = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
+      [view addSubview:accessDeniedView];
 
-      v10 = [(EKEventViewControllerDefaultImpl *)self view];
-      v11 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
-      [v10 bringSubviewToFront:v11];
+      view2 = [(EKEventViewControllerDefaultImpl *)self view];
+      accessDeniedView2 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
+      [view2 bringSubviewToFront:accessDeniedView2];
 
-      if (a3 != 1)
+      if (status != 1)
       {
         goto LABEL_9;
       }
 
-      v6 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
-      [v6 setMessage:@" "];
+      accessDeniedView3 = [(EKEventViewControllerDefaultImpl *)self accessDeniedView];
+      [accessDeniedView3 setMessage:@" "];
     }
 
     else
@@ -2239,12 +2239,12 @@ void __59__EKEventViewControllerDefaultImpl_openAttendeesDetailItem__block_invok
       if (!accessDeniedView)
       {
 LABEL_9:
-        self->_lastAuthorizationStatus = a3;
+        self->_lastAuthorizationStatus = status;
         return;
       }
 
       [(_UIAccessDeniedView *)accessDeniedView removeFromSuperview];
-      v6 = self->_accessDeniedView;
+      accessDeniedView3 = self->_accessDeniedView;
       self->_accessDeniedView = 0;
     }
 
@@ -2259,8 +2259,8 @@ LABEL_9:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(EKEventViewControllerDefaultImpl *)self items];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  items = [(EKEventViewControllerDefaultImpl *)self items];
+  v4 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2272,34 +2272,34 @@ LABEL_9:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) reset];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v8 reloadData];
+  tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)_keyboardWasShown:(id)a3
+- (void)_keyboardWasShown:(id)shown
 {
-  v4 = [(EKEventViewControllerDefaultImpl *)self view];
-  v5 = [v4 window];
-  v8 = [v5 firstResponder];
+  view = [(EKEventViewControllerDefaultImpl *)self view];
+  window = [view window];
+  firstResponder = [window firstResponder];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    v7 = [v8 isDescendantOfView:v6];
+    tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+    v7 = [firstResponder isDescendantOfView:tableView];
 
     if (v7)
     {
@@ -2308,7 +2308,7 @@ LABEL_9:
   }
 }
 
-- (void)_keyboardWasHidden:(id)a3
+- (void)_keyboardWasHidden:(id)hidden
 {
   if (self->_tableIsBeingEdited)
   {
@@ -2330,12 +2330,12 @@ LABEL_9:
 
     [(EKEventTitleDetailItem *)self->_titleItem setEditDelegate:self];
     [(EKEventTitleDetailItem *)self->_titleItem setNonInteractivePlatterMode:[(EKEventViewControllerDefaultImpl *)self noninteractivePlatterMode]];
-    v6 = [(EKEventViewControllerDefaultImpl *)self context];
-    v7 = [v6 objectForKeyedSubscript:@"EKUIEventDetailsFromTravelAdvisoryContext"];
+    context = [(EKEventViewControllerDefaultImpl *)self context];
+    v7 = [context objectForKeyedSubscript:@"EKUIEventDetailsFromTravelAdvisoryContext"];
 
     v45 = v7;
-    v8 = [v7 BOOLValue];
-    [(EKEventTitleDetailItem *)self->_titleItem setHasMapItemLaunchOptionFromTimeToLeaveNotification:v8];
+    bOOLValue = [v7 BOOLValue];
+    [(EKEventTitleDetailItem *)self->_titleItem setHasMapItemLaunchOptionFromTimeToLeaveNotification:bOOLValue];
     if ([(EKEventViewControllerDefaultImpl *)self noninteractivePlatterMode])
     {
       v9 = 3;
@@ -2356,15 +2356,15 @@ LABEL_9:
     self->_conferenceCallItem = v12;
 
     v62 = objc_alloc_init(EKEventMapDetailItem);
-    [(EKEventMapDetailItem *)v62 setHasMapItemLaunchOptionFromTimeToLeaveNotification:v8];
+    [(EKEventMapDetailItem *)v62 setHasMapItemLaunchOptionFromTimeToLeaveNotification:bOOLValue];
     v63 = objc_alloc_init(EKEventCalendarDetailItem);
     v61 = objc_alloc_init(EKEventAlarmDetailItem);
     [(EKEventDetailItem *)v61 setViewControllerToPresentFrom:self];
     v60 = objc_alloc_init(EKEventAvailabilityDetailItem);
     v59 = objc_alloc_init(EKEventTravelDetailItem);
     v58 = objc_alloc_init(EKEventCommentDetailItem);
-    v14 = [(EKEventViewControllerDefaultImpl *)self optionalModel];
-    v57 = [[EKEventProposeNewTimeItem alloc] initWithModel:v14];
+    optionalModel = [(EKEventViewControllerDefaultImpl *)self optionalModel];
+    v57 = [[EKEventProposeNewTimeItem alloc] initWithModel:optionalModel];
     v56 = objc_alloc_init(EKEventProposedTimeDetailItem);
     v15 = objc_alloc_init(EKEventOrganizerDetailItem);
     v16 = objc_alloc_init(EKEventAttendeesDetailItem);
@@ -2372,10 +2372,10 @@ LABEL_9:
     v55 = objc_alloc_init(EKEventAttendeeCommentsDetailItem);
     [(EKEventDetailItem *)v55 setViewControllerToPresentFrom:self];
     v54 = objc_alloc_init(EKEventAttachmentDetailItem);
-    v43 = [[EKEventPreviewDetailItem alloc] initWithModel:v14];
+    v43 = [[EKEventPreviewDetailItem alloc] initWithModel:optionalModel];
     objc_storeStrong(&self->_previewItem, v43);
-    v41 = v14;
-    v53 = [[EKEventShowInCalendarDetailItem alloc] initWithModel:v14];
+    v41 = optionalModel;
+    v53 = [[EKEventShowInCalendarDetailItem alloc] initWithModel:optionalModel];
     v52 = objc_alloc_init(EKEventURLDetailItem);
     v51 = objc_alloc_init(EKEventEditedByDetailItem);
     v50 = objc_alloc_init(EKEventNotesDetailItem);
@@ -2395,15 +2395,15 @@ LABEL_9:
     v20 = [EKReminderUneditableButtonDetailItem alloc];
     if ([(EKEventViewControllerDefaultImpl *)self noninteractivePlatterMode])
     {
-      v21 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v21 = self;
+      selfCopy = self;
     }
 
-    v22 = [(EKReminderUneditableButtonDetailItem *)v20 initWithUneditableButtonDetailItemDelegate:v21];
+    v22 = [(EKReminderUneditableButtonDetailItem *)v20 initWithUneditableButtonDetailItemDelegate:selfCopy];
     v44 = v16;
     if ([(EKEventViewControllerDefaultImpl *)self noninteractivePlatterMode])
     {
@@ -2443,13 +2443,13 @@ LABEL_21:
     else
     {
       v39 = v15;
-      v29 = [(EKEventViewControllerDefaultImpl *)self minimalMode];
-      v30 = [(EKEventViewControllerDefaultImpl *)self _reminderMode];
-      if (v29)
+      minimalMode = [(EKEventViewControllerDefaultImpl *)self minimalMode];
+      _reminderMode = [(EKEventViewControllerDefaultImpl *)self _reminderMode];
+      if (minimalMode)
       {
         v38 = v19;
         v31 = v18;
-        if (v30)
+        if (_reminderMode)
         {
           v67[0] = v17;
           v67[1] = v22;
@@ -2478,7 +2478,7 @@ LABEL_21:
       }
 
       v25 = v43;
-      if (v30)
+      if (_reminderMode)
       {
         v65[0] = v17;
         v65[1] = v22;
@@ -2538,13 +2538,13 @@ LABEL_22:
   return items;
 }
 
-- (void)_configureItemsForStoreConstraintsGivenCalendar:(id)a3
+- (void)_configureItemsForStoreConstraintsGivenCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   if (self->_items)
   {
-    v71 = v4;
-    v5 = [(EKEventViewControllerDefaultImpl *)self items];
+    v71 = calendarCopy;
+    items = [(EKEventViewControllerDefaultImpl *)self items];
     v6 = 0x1E695D000uLL;
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -2571,7 +2571,7 @@ LABEL_22:
     v70 = [v7 objectAtIndexedSubscript:0];
     v69 = [v7 objectAtIndexedSubscript:8];
     v13 = MEMORY[0x1D38B98D0]();
-    v14 = [v5 count];
+    v14 = [items count];
     v68 = v8;
     if (v13)
     {
@@ -2582,10 +2582,10 @@ LABEL_22:
         v17 = EKUIAutocompleteTracker.cache;
         v18 = &OBJC_IVAR___EKUIViewHierarchyFromComponents__ekui_tintColor;
         v19 = &OBJC_IVAR___EKUIViewHierarchyFromComponents__ekui_tintColor;
-        v67 = self;
+        selfCopy = self;
         do
         {
-          v20 = [v5 objectAtIndexedSubscript:v15];
+          v20 = [items objectAtIndexedSubscript:v15];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0 || [(EKEventViewControllerDefaultImpl *)self allowsCalendarPreview]&& [(EKEventViewControllerDefaultImpl *)self calendarPreviewIsInlineDayView])
           {
@@ -2595,7 +2595,7 @@ LABEL_22:
               if ([v20 configureWithEvent:*(&self->super.super.super.isa + v18[608]) calendar:v71 preview:*(&self->super.super.super.isa + v19[624])])
               {
                 [v7 objectAtIndexedSubscript:{objc_msgSend(v20, "section")}];
-                v21 = v5;
+                v21 = items;
                 v22 = v6;
                 v23 = v7;
                 v24 = v19;
@@ -2610,12 +2610,12 @@ LABEL_22:
                 v19 = v24;
                 v7 = v23;
                 v6 = v22;
-                v5 = v21;
-                self = v67;
+                items = v21;
+                self = selfCopy;
                 objc_opt_class();
-                if ((objc_opt_isKindOfClass() & 1) != 0 && [(EKEventViewControllerDefaultImpl *)v67 allowsCalendarPreview]&& [(EKEventViewControllerDefaultImpl *)v67 calendarPreviewIsInlineDayView])
+                if ((objc_opt_isKindOfClass() & 1) != 0 && [(EKEventViewControllerDefaultImpl *)selfCopy allowsCalendarPreview]&& [(EKEventViewControllerDefaultImpl *)selfCopy calendarPreviewIsInlineDayView])
                 {
-                  [v20 setInlineDayViewRespectsSelectedCalendarsFilter:{-[EKEventViewControllerDefaultImpl inlineDayViewRespectsSelectedCalendarsFilter](v67, "inlineDayViewRespectsSelectedCalendarsFilter")}];
+                  [v20 setInlineDayViewRespectsSelectedCalendarsFilter:{-[EKEventViewControllerDefaultImpl inlineDayViewRespectsSelectedCalendarsFilter](selfCopy, "inlineDayViewRespectsSelectedCalendarsFilter")}];
                 }
               }
             }
@@ -2624,7 +2624,7 @@ LABEL_22:
           ++v15;
         }
 
-        while (v15 < [v5 count]);
+        while (v15 < [items count]);
       }
 
 LABEL_102:
@@ -2642,7 +2642,7 @@ LABEL_102:
       self->_currentSections = v62;
       v65 = v62;
 
-      v4 = v71;
+      calendarCopy = v71;
       goto LABEL_103;
     }
 
@@ -2650,18 +2650,18 @@ LABEL_102:
     if (!v14)
     {
 LABEL_94:
-      v52 = [v70 lastObject];
-      if (v52)
+      lastObject = [v70 lastObject];
+      if (lastObject)
       {
-        v53 = v52;
-        v54 = [v70 lastObject];
+        v53 = lastObject;
+        lastObject2 = [v70 lastObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v56 = [v70 lastObject];
-          [v56 setShowExtraSpaceAtBottom:1];
+          lastObject3 = [v70 lastObject];
+          [lastObject3 setShowExtraSpaceAtBottom:1];
         }
       }
 
@@ -2693,19 +2693,19 @@ LABEL_94:
     v30 = 0;
     while (1)
     {
-      v31 = [v5 objectAtIndexedSubscript:v30];
+      v31 = [items objectAtIndexedSubscript:v30];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         if ([(EKEventViewControllerDefaultImpl *)self allowsCalendarPreview]&& [(EKEventViewControllerDefaultImpl *)self calendarPreviewIsInlineDayView]&& [(EKEventTitleDetailItem *)v31 configureWithEvent:self->_event calendar:v29 preview:self->_ICSPreview])
         {
-          v32 = [v70 lastObject];
+          lastObject4 = [v70 lastObject];
           titleItem = self->_titleItem;
 
           [v70 addObject:v31];
           [(EKEventTitleDetailItem *)v31 setCellPosition:2];
           [(EKEventTitleDetailItem *)v31 setInlineDayViewRespectsSelectedCalendarsFilter:[(EKEventViewControllerDefaultImpl *)self inlineDayViewRespectsSelectedCalendarsFilter]];
-          if (v32 == titleItem)
+          if (lastObject4 == titleItem)
           {
             [(EKEventTitleDetailItem *)self->_titleItem setHidesBottomSeparator:1];
           }
@@ -2812,10 +2812,10 @@ LABEL_62:
             goto LABEL_45;
           }
 
-          v41 = [(EKEventViewControllerDefaultImpl *)self event];
-          v42 = [v41 allowsProposedTimeModifications];
+          event = [(EKEventViewControllerDefaultImpl *)self event];
+          allowsProposedTimeModifications = [event allowsProposedTimeModifications];
 
-          if (!v42)
+          if (!allowsProposedTimeModifications)
           {
             goto LABEL_45;
           }
@@ -2833,8 +2833,8 @@ LABEL_64:
           if (objc_opt_isKindOfClass())
           {
             [v70 addObject:v31];
-            v46 = [(EKEventViewControllerDefaultImpl *)self event];
-            if ([v46 isAllDay] && -[EKEventViewControllerDefaultImpl noninteractivePlatterMode](self, "noninteractivePlatterMode"))
+            event2 = [(EKEventViewControllerDefaultImpl *)self event];
+            if ([event2 isAllDay] && -[EKEventViewControllerDefaultImpl noninteractivePlatterMode](self, "noninteractivePlatterMode"))
             {
               if (CUIKCurrentLocaleRequiresIndianLanguageAdjustments())
               {
@@ -2862,8 +2862,8 @@ LABEL_64:
           {
             event = self->_event;
             reminder = self->_reminder;
-            v49 = [(EKEvent *)event eventStore];
-            [(EKEventTitleDetailItem *)v31 setEvent:event reminder:reminder store:v49];
+            eventStore = [(EKEvent *)event eventStore];
+            [(EKEventTitleDetailItem *)v31 setEvent:event reminder:reminder store:eventStore];
 
             [v70 addObject:v31];
             v37 = v31;
@@ -2920,13 +2920,13 @@ LABEL_48:
           goto LABEL_49;
         }
 
-        v43 = [v70 lastObject];
+        lastObject5 = [v70 lastObject];
         v44 = self->_titleItem;
 
         [v70 addObject:v31];
         [(EKEventTitleDetailItem *)v31 setCellPosition:5];
         v29 = v71;
-        if (v43 == v44)
+        if (lastObject5 == v44)
         {
           v45 = self->_titleItem;
 LABEL_74:
@@ -2936,7 +2936,7 @@ LABEL_74:
 
 LABEL_49:
 
-      if (++v30 >= [v5 count])
+      if (++v30 >= [items count])
       {
         goto LABEL_94;
       }
@@ -2959,8 +2959,8 @@ void __84__EKEventViewControllerDefaultImpl__configureItemsForStoreConstraintsGi
 
 - (BOOL)_isDisplayingSuggestion
 {
-  v2 = [(EKEvent *)self->_event calendar];
-  v3 = [v2 type] == 5;
+  calendar = [(EKEvent *)self->_event calendar];
+  v3 = [calendar type] == 5;
 
   return v3;
 }
@@ -2985,12 +2985,12 @@ LABEL_5:
   }
 
   v6 = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v6 eventViewControllerShouldHideDeleteButton];
+  eventViewControllerShouldHideDeleteButton = [v6 eventViewControllerShouldHideDeleteButton];
 
-  v8 = v7 ^ 1;
+  v8 = eventViewControllerShouldHideDeleteButton ^ 1;
 LABEL_6:
-  v9 = [(EKEvent *)self->_event calendar];
-  if ([v9 allowsContentModifications] && (-[EKEvent isPrivateEventSharedToMe](self->_event, "isPrivateEventSharedToMe") & 1) == 0)
+  calendar = [(EKEvent *)self->_event calendar];
+  if ([calendar allowsContentModifications] && (-[EKEvent isPrivateEventSharedToMe](self->_event, "isPrivateEventSharedToMe") & 1) == 0)
   {
     v10 = !self->_minimalMode & v8;
   }
@@ -3018,34 +3018,34 @@ LABEL_6:
     return 0;
   }
 
-  v12 = [(EKEvent *)self->_event calendar];
-  v13 = [v12 source];
-  if ([v13 isDelegate])
+  calendar2 = [(EKEvent *)self->_event calendar];
+  source = [calendar2 source];
+  if ([source isDelegate])
   {
-    v14 = [(EKEvent *)self->_event calendar];
-    v15 = [v14 source];
-    v11 = [v15 isWritable];
+    calendar3 = [(EKEvent *)self->_event calendar];
+    source2 = [calendar3 source];
+    isWritable = [source2 isWritable];
   }
 
   else
   {
-    v11 = 1;
+    isWritable = 1;
   }
 
-  return v11;
+  return isWritable;
 }
 
 - (BOOL)_isDisplayingInvitation
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self allowsInviteResponses];
-  if (v3)
+  allowsInviteResponses = [(EKEventViewControllerDefaultImpl *)self allowsInviteResponses];
+  if (allowsInviteResponses)
   {
     event = self->_event;
 
-    LOBYTE(v3) = [(EKEvent *)event allowsParticipationStatusModifications];
+    LOBYTE(allowsInviteResponses) = [(EKEvent *)event allowsParticipationStatusModifications];
   }
 
-  return v3;
+  return allowsInviteResponses;
 }
 
 - (BOOL)_shouldDisplayDelegateOrOutOfDateMessage
@@ -3077,8 +3077,8 @@ LABEL_6:
     if (!self->_showingBlankFooterView)
     {
       v6 = self->_blankFooterView;
-      v7 = [(EKEventViewControllerDefaultImpl *)self tableView];
-      [v7 setTableFooterView:v6];
+      tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+      [tableView setTableFooterView:v6];
 
       self->_showingBlankFooterView = 1;
     }
@@ -3119,11 +3119,11 @@ LABEL_14:
   v15 = [[v13 alloc] initWithFrame:{0.0, 0.0, 100.0, v12}];
   [v15 addSubview:v14];
 
-  v16 = [(EKEventViewControllerDefaultImpl *)self view];
-  [v16 bounds];
+  view = [(EKEventViewControllerDefaultImpl *)self view];
+  [view bounds];
   v18 = v17;
-  v19 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v19 rowHeight];
+  tableView2 = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView2 rowHeight];
   v21 = v20;
 
   if (v12 >= v21)
@@ -3138,21 +3138,21 @@ LABEL_14:
 
   [v15 setFrame:{0.0, 0.0, v18, v22}];
 
-  v23 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v23 setTableFooterView:v15];
+  tableView3 = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView3 setTableFooterView:v15];
 
   self->_showingBlankFooterView = 0;
 LABEL_18:
-  v27 = [(EKEventViewControllerDefaultImpl *)self event];
-  if ([v27 couldBeJunk])
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  if ([event couldBeJunk])
   {
   }
 
   else
   {
-    v24 = [(UIView *)self->_headerView isHidden];
+    isHidden = [(UIView *)self->_headerView isHidden];
 
-    if (!v24)
+    if (!isHidden)
     {
       [(UIView *)self->_headerView setHidden:1];
       v25 = MEMORY[0x1E696ACD8];
@@ -3163,21 +3163,21 @@ LABEL_18:
   }
 }
 
-- (id)_footerLabelContainingText:(id)a3
+- (id)_footerLabelContainingText:(id)text
 {
   v4 = MEMORY[0x1E69DCC10];
-  v5 = a3;
+  textCopy = text;
   v6 = objc_alloc_init(v4);
-  [v6 setText:v5];
+  [v6 setText:textCopy];
 
   v7 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
   [v6 setFont:v7];
 
-  v8 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v6 setTextColor:v8];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v6 setTextColor:secondaryLabelColor];
 
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   [v6 setNumberOfLines:0];
   v10 = EKUIContainedControllerIdealWidth();
@@ -3194,15 +3194,15 @@ LABEL_18:
 {
   v19 = *MEMORY[0x1E69E9840];
   [(EKEventViewControllerDefaultImpl *)self _prepareEventForEdit];
-  v3 = [(EKEventViewControllerDefaultImpl *)self items];
-  [v3 makeObjectsPerformSelector:sel_setDelegate_ withObject:self];
+  items = [(EKEventViewControllerDefaultImpl *)self items];
+  [items makeObjectsPerformSelector:sel_setDelegate_ withObject:self];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(EKEventViewControllerDefaultImpl *)self items];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items2 = [(EKEventViewControllerDefaultImpl *)self items];
+  v5 = [items2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3213,24 +3213,24 @@ LABEL_18:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items2);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         event = self->_event;
         reminder = self->_reminder;
-        v12 = [(EKEvent *)event eventStore];
-        [v9 setEvent:event reminder:reminder store:v12];
+        eventStore = [(EKEvent *)event eventStore];
+        [v9 setEvent:event reminder:reminder store:eventStore];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [items2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  v13 = [(EKEvent *)self->_event calendar];
-  [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:v13];
+  calendar = [(EKEvent *)self->_event calendar];
+  [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:calendar];
 
   [(EKEventViewControllerDefaultImpl *)self _updateHeaderAndFooterIfNeeded];
   [(EKEventViewControllerDefaultImpl *)self _updateStatusButtonsActions];
@@ -3256,8 +3256,8 @@ LABEL_18:
     goto LABEL_4;
   }
 
-  v3 = [(UIViewController *)self EKUI_viewHierarchy];
-  if ([v3 ekui_interfaceOrientation] == 1)
+  eKUI_viewHierarchy = [(UIViewController *)self EKUI_viewHierarchy];
+  if ([eKUI_viewHierarchy ekui_interfaceOrientation] == 1)
   {
 
 LABEL_4:
@@ -3265,13 +3265,13 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v5 = [(EKEventViewControllerDefaultImpl *)self traitCollection];
-  v4 = [v5 verticalSizeClass] != 1;
+  traitCollection = [(EKEventViewControllerDefaultImpl *)self traitCollection];
+  v4 = [traitCollection verticalSizeClass] != 1;
 
 LABEL_6:
   v6 = [EKUIEventStatusButtonsView alloc];
-  v7 = [(EKEventViewControllerDefaultImpl *)self statusButtonActions];
-  v8 = [(EKUIEventStatusButtonsView *)v6 initWithFrame:v7 actions:self delegate:1 options:v4 textSizeMode:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  statusButtonActions = [(EKEventViewControllerDefaultImpl *)self statusButtonActions];
+  v8 = [(EKUIEventStatusButtonsView *)v6 initWithFrame:statusButtonActions actions:self delegate:1 options:v4 textSizeMode:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   statusButtonsView = self->_statusButtonsView;
   self->_statusButtonsView = v8;
 
@@ -3301,16 +3301,16 @@ LABEL_6:
 
 - (void)_updateStatusButtonsActions
 {
-  v6 = [(EKEventViewControllerDefaultImpl *)self statusButtonActions];
-  v3 = [(EKUIEventStatusButtonsView *)self->_statusButtonsView actions];
-  v4 = [v6 isEqualToArray:v3];
+  statusButtonActions = [(EKEventViewControllerDefaultImpl *)self statusButtonActions];
+  actions = [(EKUIEventStatusButtonsView *)self->_statusButtonsView actions];
+  v4 = [statusButtonActions isEqualToArray:actions];
 
   if ((v4 & 1) == 0)
   {
-    [(EKUIEventStatusButtonsView *)self->_statusButtonsView setActions:v6];
-    v5 = [(EKEventViewControllerDefaultImpl *)self toolbarItems];
+    [(EKUIEventStatusButtonsView *)self->_statusButtonsView setActions:statusButtonActions];
+    toolbarItems = [(EKEventViewControllerDefaultImpl *)self toolbarItems];
 
-    if (v5)
+    if (toolbarItems)
     {
       [(EKEventViewControllerDefaultImpl *)self updateStatusButtonsView];
       [(EKEventViewControllerDefaultImpl *)self _configureStatusButtonsToolbar];
@@ -3320,25 +3320,25 @@ LABEL_6:
 
 - (void)_configureStatusButtonsToolbar
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self _statusButtonsView];
-  v17 = [v3 statusButtons];
+  _statusButtonsView = [(EKEventViewControllerDefaultImpl *)self _statusButtonsView];
+  statusButtons = [_statusButtonsView statusButtons];
 
-  v4 = [(EKEventViewControllerDefaultImpl *)self _statusButtonsView];
-  v5 = [v4 actions];
+  _statusButtonsView2 = [(EKEventViewControllerDefaultImpl *)self _statusButtonsView];
+  actions = [_statusButtonsView2 actions];
 
-  v6 = [v5 containsObject:&unk_1F4F326B0];
+  v6 = [actions containsObject:&unk_1F4F326B0];
   v7 = objc_opt_new();
-  if ([v17 count])
+  if ([statusButtons count])
   {
     v8 = 0;
     do
     {
       v9 = objc_alloc(MEMORY[0x1E69DC708]);
-      v10 = [v17 objectAtIndexedSubscript:v8];
+      v10 = [statusButtons objectAtIndexedSubscript:v8];
       v11 = [v9 initWithCustomView:v10];
 
       [v7 addObject:v11];
-      if ((v6 & 1) == 0 && v8 != [v17 count] - 1)
+      if ((v6 & 1) == 0 && v8 != [statusButtons count] - 1)
       {
         v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:6 menu:0];
         [v7 addObject:v12];
@@ -3347,17 +3347,17 @@ LABEL_6:
       ++v8;
     }
 
-    while ([v17 count] > v8);
+    while ([statusButtons count] > v8);
   }
 
   [(EKEventViewControllerDefaultImpl *)self setToolbarItems:v7 animated:1];
-  v13 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-  v14 = [v13 toolbar];
-  [v14 sizeToFit];
+  navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar sizeToFit];
 
-  v15 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-  v16 = [v15 toolbar];
-  [v16 _setItemDistribution:1];
+  navigationController2 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+  toolbar2 = [navigationController2 toolbar];
+  [toolbar2 _setItemDistribution:1];
 }
 
 - (void)_notifyDetailItemsOfVisibilityOnScreen
@@ -3368,8 +3368,8 @@ LABEL_6:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(UITableView *)self->_tableView indexPathsForVisibleRows];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  indexPathsForVisibleRows = [(UITableView *)self->_tableView indexPathsForVisibleRows];
+  v5 = [indexPathsForVisibleRows countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3380,17 +3380,17 @@ LABEL_6:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleRows);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
         v10 = -[NSArray objectAtIndex:](v3, "objectAtIndex:", [v9 section]);
         v11 = [v10 itemAtIndex:{objc_msgSend(v9, "row")}];
-        v12 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-        [v11 eventViewController:v12 tableViewDidScroll:self->_tableView];
+        _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+        [v11 eventViewController:_ekEventViewController tableViewDidScroll:self->_tableView];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [indexPathsForVisibleRows countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -3399,18 +3399,18 @@ LABEL_6:
 
 - (void)doneButtonTapped
 {
-  v3 = [(EKEventTitleDetailItem *)self->_titleItem sourceViewForPopover];
-  [(EKEventViewControllerDefaultImpl *)self _doneButtonTapped:v3];
+  sourceViewForPopover = [(EKEventTitleDetailItem *)self->_titleItem sourceViewForPopover];
+  [(EKEventViewControllerDefaultImpl *)self _doneButtonTapped:sourceViewForPopover];
 }
 
-- (void)_doneButtonTapped:(id)a3
+- (void)_doneButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   if (!self->_recurrenceAlertController)
   {
     selectedEditItem = self->_selectedEditItem;
-    v8 = v4;
-    if (!selectedEditItem || (v6 = [(EKEventDetailItem *)selectedEditItem saveAndDismissWithForce:0], v4 = v8, v6))
+    v8 = tappedCopy;
+    if (!selectedEditItem || (v6 = [(EKEventDetailItem *)selectedEditItem saveAndDismissWithForce:0], tappedCopy = v8, v6))
     {
       if (![(EKEvent *)self->_event hasChanges])
       {
@@ -3429,13 +3429,13 @@ LABEL_6:
       {
         [(EKEventViewControllerDefaultImpl *)self _presentDetachSheetFromBarButtonItem:v8];
 LABEL_10:
-        v4 = v8;
+        tappedCopy = v8;
         goto LABEL_11;
       }
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v4 = v8;
+      tappedCopy = v8;
       if (isKindOfClass)
       {
         [(EKEventViewControllerDefaultImpl *)self _presentDetachSheetFromView:v8];
@@ -3459,8 +3459,8 @@ LABEL_11:
     if (v6)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      v8 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      v9 = [v7 eventViewControllerEditButtonTemporarilyDisabled:v8];
+      _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      v9 = [v7 eventViewControllerEditButtonTemporarilyDisabled:_ekEventViewController];
 
       if (v9)
       {
@@ -3503,8 +3503,8 @@ LABEL_12:
   }
 
   v18 = objc_loadWeakRetained(&self->_delegate);
-  v19 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v20 = [v18 eventViewDelegateShouldCreateOwnEditViewController:v19];
+  _ekEventViewController2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  v20 = [v18 eventViewDelegateShouldCreateOwnEditViewController:_ekEventViewController2];
 
   if ((v20 & 1) == 0)
   {
@@ -3516,19 +3516,19 @@ LABEL_13:
   [(EKEventViewControllerDefaultImpl *)self presentEditorAnimated:1];
 }
 
-- (void)setActiveEventEditor:(id)a3
+- (void)setActiveEventEditor:(id)editor
 {
-  v4 = a3;
-  [v4 setInternalEditViewDelegate:self];
-  v5 = [(EKEventViewControllerDefaultImpl *)self view];
-  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v5))
+  editorCopy = editor;
+  [editorCopy setInternalEditViewDelegate:self];
+  view = [(EKEventViewControllerDefaultImpl *)self view];
+  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(view))
   {
-    v6 = [(EKEventViewControllerDefaultImpl *)self view];
-    IsRegular = EKUICurrentHeightSizeClassIsRegular(v6);
+    view2 = [(EKEventViewControllerDefaultImpl *)self view];
+    IsRegular = EKUICurrentHeightSizeClassIsRegular(view2);
 
     if (IsRegular)
     {
-      [v4 setModalPresentationStyle:3];
+      [editorCopy setModalPresentationStyle:3];
     }
   }
 
@@ -3536,22 +3536,22 @@ LABEL_13:
   {
   }
 
-  v8 = [(EKEventViewControllerDefaultImpl *)self delegate];
+  delegate = [(EKEventViewControllerDefaultImpl *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [v4 setModalPresentationStyle:{objc_msgSend(WeakRetained, "editorPresentationStyle")}];
+    [editorCopy setModalPresentationStyle:{objc_msgSend(WeakRetained, "editorPresentationStyle")}];
   }
 
   activeEventEditor = self->_activeEventEditor;
-  self->_activeEventEditor = v4;
+  self->_activeEventEditor = editorCopy;
 }
 
-- (void)presentEditorAnimated:(BOOL)a3
+- (void)presentEditorAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v17 = self->_activeEventEditor;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (![WeakRetained conformsToProtocol:&unk_1F4F9EBE0])
@@ -3568,14 +3568,14 @@ LABEL_6:
   }
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  v8 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v9 = [v7 eventViewDelegateShouldHandlePresentationOfEditViewController:v8];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  v9 = [v7 eventViewDelegateShouldHandlePresentationOfEditViewController:_ekEventViewController];
 
   if (v9)
   {
-    v10 = objc_loadWeakRetained(&self->_delegate);
-    v11 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [v10 eventViewController:v11 requestsDisplayOfEditViewController:v17 animated:v3];
+    _viewControllerForEditorPresentation = objc_loadWeakRetained(&self->_delegate);
+    _ekEventViewController2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [_viewControllerForEditorPresentation eventViewController:_ekEventViewController2 requestsDisplayOfEditViewController:v17 animated:animatedCopy];
 
 LABEL_12:
     goto LABEL_13;
@@ -3584,16 +3584,16 @@ LABEL_12:
 LABEL_7:
   if (v17)
   {
-    if (v3 && (v3 = [(EKEventViewControllerDefaultImpl *)self editorShowTransition], v3 == 8))
+    if (animatedCopy && (animatedCopy = [(EKEventViewControllerDefaultImpl *)self editorShowTransition], animatedCopy == 8))
     {
-      v10 = [(EKEventViewControllerDefaultImpl *)self _viewControllerForEditorPresentation];
-      [v10 presentViewController:v17 animated:1 completion:0];
+      _viewControllerForEditorPresentation = [(EKEventViewControllerDefaultImpl *)self _viewControllerForEditorPresentation];
+      [_viewControllerForEditorPresentation presentViewController:v17 animated:1 completion:0];
     }
 
     else
     {
-      v10 = [(EKEventViewControllerDefaultImpl *)self _viewControllerForEditorPresentation];
-      [v10 presentModalViewController:v17 withTransition:v3];
+      _viewControllerForEditorPresentation = [(EKEventViewControllerDefaultImpl *)self _viewControllerForEditorPresentation];
+      [_viewControllerForEditorPresentation presentModalViewController:v17 withTransition:animatedCopy];
     }
 
     goto LABEL_12;
@@ -3617,70 +3617,70 @@ LABEL_13:
 
 - (id)_viewControllerForEditorPresentation
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+  navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
 
-  if (v3)
+  if (navigationController)
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    selfCopy = [(EKEventViewControllerDefaultImpl *)self navigationController];
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)_saveStatus:(int64_t)a3 span:(int64_t)a4
+- (void)_saveStatus:(int64_t)status span:(int64_t)span
 {
-  [(EKEvent *)self->_event setParticipationStatus:a3];
+  [(EKEvent *)self->_event setParticipationStatus:status];
   [(EKEvent *)self->_event setInvitationStatus:0];
 
-  [(EKEventViewControllerDefaultImpl *)self _performSave:a4 animated:1];
+  [(EKEventViewControllerDefaultImpl *)self _performSave:span animated:1];
 }
 
-- (BOOL)_performSave:(int64_t)a3 animated:(BOOL)a4
+- (BOOL)_performSave:(int64_t)save animated:(BOOL)animated
 {
-  v6 = [(UIResponder *)self EKUI_editor:a3];
+  v6 = [(UIResponder *)self EKUI_editor:save];
   event = self->_event;
   v17 = 0;
-  v8 = [v6 saveEvent:event span:a3 error:&v17];
+  v8 = [v6 saveEvent:event span:save error:&v17];
   v9 = v17;
   v10 = v9;
   if ((v8 & 1) == 0)
   {
     if (v9)
     {
-      v11 = [v9 domain];
-      if (v11 != *MEMORY[0x1E6966808])
+      domain = [v9 domain];
+      if (domain != *MEMORY[0x1E6966808])
       {
 LABEL_6:
 
         goto LABEL_11;
       }
 
-      v12 = [v10 code];
+      code = [v10 code];
 
-      if (v12 == 1010)
+      if (code == 1010)
       {
-        v11 = [(EKEvent *)self->_event eventStore];
-        [v11 rollback];
+        domain = [(EKEvent *)self->_event eventStore];
+        [domain rollback];
         goto LABEL_6;
       }
     }
 
     else
     {
-      v13 = [(EKEventViewControllerDefaultImpl *)self canvasView];
-      if (v13 > 5)
+      canvasView = [(EKEventViewControllerDefaultImpl *)self canvasView];
+      if (canvasView > 5)
       {
         v14 = &unk_1F4F326C8;
       }
 
       else
       {
-        v14 = qword_1E8441FE0[v13];
+        v14 = qword_1E8441FE0[canvasView];
       }
 
       v16 = v14;
@@ -3728,12 +3728,12 @@ void __58__EKEventViewControllerDefaultImpl__performSave_animated___block_invoke
   [v9 setObject:*(a1 + 40) forKeyedSubscript:@"currentView"];
 }
 
-- (void)_performDelete:(int64_t)a3 editor:(id)a4
+- (void)_performDelete:(int64_t)delete editor:(id)editor
 {
   v6 = MEMORY[0x1E6966A10];
-  v7 = a4;
-  v8 = [v6 sharedInstance];
-  [v8 handleEventDeletion:self->_event];
+  editorCopy = editor;
+  sharedInstance = [v6 sharedInstance];
+  [sharedInstance handleEventDeletion:self->_event];
 
   v9 = [MEMORY[0x1E695DFD8] setWithObject:self->_event];
   v10[0] = MEMORY[0x1E69E9820];
@@ -3741,7 +3741,7 @@ void __58__EKEventViewControllerDefaultImpl__performSave_animated___block_invoke
   v10[2] = __58__EKEventViewControllerDefaultImpl__performDelete_editor___block_invoke;
   v10[3] = &unk_1E843FF50;
   v10[4] = self;
-  [v7 deleteEvents:v9 span:a3 result:v10];
+  [editorCopy deleteEvents:v9 span:delete result:v10];
 }
 
 void __58__EKEventViewControllerDefaultImpl__performDelete_editor___block_invoke(uint64_t a1, char a2, void *a3)
@@ -3854,8 +3854,8 @@ void __58__EKEventViewControllerDefaultImpl__performDelete_editor___block_invoke
     currentEditItem = self->_currentEditItem;
     if (currentEditItem)
     {
-      v7 = [(EKEventDetailItem *)currentEditItem viewController];
-      [v7 preferredContentSize];
+      viewController = [(EKEventDetailItem *)currentEditItem viewController];
+      [viewController preferredContentSize];
       v9 = v8;
       v11 = v10;
 
@@ -3877,12 +3877,12 @@ void __58__EKEventViewControllerDefaultImpl__performDelete_editor___block_invoke
 
 - (double)tableViewSectionContentWidth
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v3 bounds];
+  tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView bounds];
   v5 = v4;
 
-  v6 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v6 _sectionContentInset];
+  tableView2 = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView2 _sectionContentInset];
   v8 = v7;
   v10 = v9;
 
@@ -3907,23 +3907,23 @@ void __58__EKEventViewControllerDefaultImpl__performDelete_editor___block_invoke
 
   if (v4 >= 1.0)
   {
-    v6 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    v7 = [v6 numberOfSections];
+    tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+    numberOfSections = [tableView numberOfSections];
 
-    if (v7)
+    if (numberOfSections)
     {
-      for (i = 0; i != v7; ++i)
+      for (i = 0; i != numberOfSections; ++i)
       {
-        v9 = [(EKEventViewControllerDefaultImpl *)self tableView];
-        v10 = [v9 numberOfRowsInSection:i];
+        tableView2 = [(EKEventViewControllerDefaultImpl *)self tableView];
+        v10 = [tableView2 numberOfRowsInSection:i];
 
         if (v10)
         {
           for (j = 0; j != v10; ++j)
           {
             v12 = [MEMORY[0x1E696AC88] indexPathForRow:j inSection:i];
-            v13 = [(EKEventViewControllerDefaultImpl *)self tableView];
-            v14 = [(EKEventViewControllerDefaultImpl *)self tableView:v13 cellForRowAtIndexPath:v12];
+            tableView3 = [(EKEventViewControllerDefaultImpl *)self tableView];
+            v14 = [(EKEventViewControllerDefaultImpl *)self tableView:tableView3 cellForRowAtIndexPath:v12];
 
             [objc_opt_class() adjustLayoutForCell:v14 tableViewWidth:v10 numRowsInSection:j cellRow:1 forceLayout:v4];
           }
@@ -3938,25 +3938,25 @@ void __58__EKEventViewControllerDefaultImpl__performDelete_editor___block_invoke
   presentationSourceViewController = self->_presentationSourceViewController;
   if (presentationSourceViewController && (-[UIViewController view](presentationSourceViewController, "view"), v4 = objc_claimAutoreleasedReturnValue(), [v4 window], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = self->_presentationSourceViewController;
+    selfCopy = self->_presentationSourceViewController;
   }
 
   else
   {
-    v7 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
 
-    if (v7)
+    if (navigationController)
     {
-      v6 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+      selfCopy = [(EKEventViewControllerDefaultImpl *)self navigationController];
     }
 
     else
     {
-      v6 = self;
+      selfCopy = self;
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)presentationNavigationDelegate
@@ -3965,35 +3965,35 @@ void __58__EKEventViewControllerDefaultImpl__performDelete_editor___block_invoke
 
   if (WeakRetained)
   {
-    v4 = objc_loadWeakRetained(&self->_navigationDelegate);
+    presentationSourceViewController = objc_loadWeakRetained(&self->_navigationDelegate);
   }
 
   else
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
+    presentationSourceViewController = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
   }
 
-  return v4;
+  return presentationSourceViewController;
 }
 
-- (void)_presentDetachSheetFromBarButtonItem:(id)a3
+- (void)_presentDetachSheetFromBarButtonItem:(id)item
 {
-  v4 = a3;
-  v8 = [(EKEventViewControllerDefaultImpl *)self _detachSheetHandler];
-  v5 = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
-  v6 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v5 barButtonItem:v4 forEvent:self->_event withCompletionHandler:v8];
+  itemCopy = item;
+  _detachSheetHandler = [(EKEventViewControllerDefaultImpl *)self _detachSheetHandler];
+  presentationSourceViewController = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
+  v6 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:presentationSourceViewController barButtonItem:itemCopy forEvent:self->_event withCompletionHandler:_detachSheetHandler];
 
   recurrenceAlertController = self->_recurrenceAlertController;
   self->_recurrenceAlertController = v6;
 }
 
-- (void)_presentDetachSheetFromView:(id)a3
+- (void)_presentDetachSheetFromView:(id)view
 {
-  v4 = a3;
-  v8 = [(EKEventViewControllerDefaultImpl *)self _detachSheetHandler];
-  v5 = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
-  [v4 bounds];
-  v6 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v5 sourceView:v4 sourceRect:self->_event forEvent:v8 withCompletionHandler:?];
+  viewCopy = view;
+  _detachSheetHandler = [(EKEventViewControllerDefaultImpl *)self _detachSheetHandler];
+  presentationSourceViewController = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
+  [viewCopy bounds];
+  v6 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:presentationSourceViewController sourceView:viewCopy sourceRect:self->_event forEvent:_detachSheetHandler withCompletionHandler:?];
 
   recurrenceAlertController = self->_recurrenceAlertController;
   self->_recurrenceAlertController = v6;
@@ -4055,13 +4055,13 @@ LABEL_12:
   *(v7 + 1088) = 0;
 }
 
-- (void)eventDetailItemAccessoryButtonTapped:(id)a3
+- (void)eventDetailItemAccessoryButtonTapped:(id)tapped
 {
-  v10 = a3;
+  tappedCopy = tapped;
   if ([(EKEventViewControllerDefaultImpl *)self allowsSubitems])
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [v10 eventViewControllerDidTapInfoButton:v4];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [tappedCopy eventViewControllerDidTapInfoButton:_ekEventViewController];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
@@ -4089,11 +4089,11 @@ LABEL_12:
 
   else
   {
-    v3 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v3 beginUpdates];
+    tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView beginUpdates];
 
-    v4 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v4 endUpdates];
+    tableView2 = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView2 endUpdates];
   }
 
   [(EKEventViewControllerDefaultImpl *)self calculatePreferredContentSize];
@@ -4101,19 +4101,19 @@ LABEL_12:
   [(EKEventViewControllerDefaultImpl *)self setPreferredContentSize:?];
 }
 
-- (void)eventItemDidSave:(id)a3
+- (void)eventItemDidSave:(id)save
 {
-  v7 = a3;
-  if ([v7 section] == 2)
+  saveCopy = save;
+  if ([saveCopy section] == 2)
   {
     self->_needsReload = 1;
     [(EKEventViewControllerDefaultImpl *)self _reloadIfNeeded];
   }
 
-  else if ([v7 section] == 6)
+  else if ([saveCopy section] == 6)
   {
-    v4 = [(EKEvent *)self->_event calendar];
-    [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:v4];
+    calendar = [(EKEvent *)self->_event calendar];
+    [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:calendar];
 
     [(UIResponder *)self EKUI_setDataOwnersFromEvent:self->_event];
   }
@@ -4125,24 +4125,24 @@ LABEL_12:
     [(EKEventViewControllerDefaultImpl *)self _setUpForEvent];
   }
 
-  v6 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v6 reloadData];
+  tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)eventItemDidCommit:(id)a3
+- (void)eventItemDidCommit:(id)commit
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [WeakRetained eventViewControllerModifiedEventWithoutEditing:v4];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [WeakRetained eventViewControllerModifiedEventWithoutEditing:_ekEventViewController];
   }
 }
 
-- (void)eventDetailItemWantsRefresh:(id)a3
+- (void)eventDetailItemWantsRefresh:(id)refresh
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  refreshCopy = refresh;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -4157,7 +4157,7 @@ LABEL_12:
   v13[2] = __64__EKEventViewControllerDefaultImpl_eventDetailItemWantsRefresh___block_invoke;
   v13[3] = &unk_1E8441FA8;
   v15 = &v17;
-  v6 = v4;
+  v6 = refreshCopy;
   v14 = v6;
   v16 = &v21;
   [(NSArray *)currentSections enumerateObjectsUsingBlock:v13];
@@ -4174,19 +4174,19 @@ LABEL_12:
 
   else
   {
-    v8 = [v6 numberOfSubitems];
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
-    if (v8)
+    numberOfSubitems = [v6 numberOfSubitems];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:numberOfSubitems];
+    if (numberOfSubitems)
     {
-      for (i = 0; i != v8; ++i)
+      for (i = 0; i != numberOfSubitems; ++i)
       {
         v11 = [MEMORY[0x1E696AC88] indexPathForRow:i + v18[3] inSection:v22[3]];
         [v9 addObject:v11];
       }
     }
 
-    v12 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v12 reloadRowsAtIndexPaths:v9 withRowAnimation:0];
+    tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView reloadRowsAtIndexPaths:v9 withRowAnimation:0];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -4227,20 +4227,20 @@ uint64_t __64__EKEventViewControllerDefaultImpl_eventDetailItemWantsRefresh___bl
   return result;
 }
 
-- (void)eventItemDidEndEditing:(id)a3
+- (void)eventItemDidEndEditing:(id)editing
 {
   currentEditItem = self->_currentEditItem;
   self->_currentEditItem = 0;
 }
 
-- (void)eventItem:(id)a3 wantsViewControllerPresented:(id)a4
+- (void)eventItem:(id)item wantsViewControllerPresented:(id)presented
 {
-  v5 = a4;
+  presentedCopy = presented;
   v6 = [EKEditItemViewController preferredViewControllerForPresentationsFromViewController:self];
-  [v6 presentViewController:v5 animated:1 completion:0];
+  [v6 presentViewController:presentedCopy animated:1 completion:0];
 }
 
-- (void)_dismissEditor:(BOOL)a3 deleted:(BOOL)a4
+- (void)_dismissEditor:(BOOL)editor deleted:(BOOL)deleted
 {
   activeEventEditor = self->_activeEventEditor;
   if (!activeEventEditor)
@@ -4248,7 +4248,7 @@ uint64_t __64__EKEventViewControllerDefaultImpl_eventDetailItemWantsRefresh___bl
     return;
   }
 
-  v6 = a4;
+  deletedCopy = deleted;
   if (([(EKEventOrIntegrationEditView *)activeEventEditor isBeingDismissed]& 1) != 0)
   {
     return;
@@ -4263,18 +4263,18 @@ uint64_t __64__EKEventViewControllerDefaultImpl_eventDetailItemWantsRefresh___bl
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_delegate);
-      v14 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      [v13 eventViewControllerWillFinishEditingEvent:v14 deleted:v6];
+      _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      [v13 eventViewControllerWillFinishEditingEvent:_ekEventViewController deleted:deletedCopy];
     }
 
     v15 = objc_loadWeakRetained(&self->_delegate);
     v16 = objc_opt_respondsToSelector();
 
-    v17 = objc_loadWeakRetained(&self->_delegate);
+    presentingViewController2 = objc_loadWeakRetained(&self->_delegate);
     if (v16)
     {
-      v18 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      [v17 eventViewController:v18 requestsDismissalOfEditViewController:self->_activeEventEditor];
+      _ekEventViewController2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      [presentingViewController2 eventViewController:_ekEventViewController2 requestsDismissalOfEditViewController:self->_activeEventEditor];
     }
 
     else
@@ -4284,12 +4284,12 @@ uint64_t __64__EKEventViewControllerDefaultImpl_eventDetailItemWantsRefresh___bl
       if (v20)
       {
         v21 = objc_loadWeakRetained(&self->_delegate);
-        v22 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-        [v21 eventViewController:v22 willDismissEditViewController:self->_activeEventEditor deleted:v6];
+        _ekEventViewController3 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+        [v21 eventViewController:_ekEventViewController3 willDismissEditViewController:self->_activeEventEditor deleted:deletedCopy];
       }
 
-      v23 = [(EKEventOrIntegrationEditView *)self->_activeEventEditor presentingViewController];
-      [v23 dismissViewControllerWithTransition:-[EKEventViewControllerDefaultImpl editorHideTransition](self completion:{"editorHideTransition"), 0}];
+      presentingViewController = [(EKEventOrIntegrationEditView *)self->_activeEventEditor presentingViewController];
+      [presentingViewController dismissViewControllerWithTransition:-[EKEventViewControllerDefaultImpl editorHideTransition](self completion:{"editorHideTransition"), 0}];
 
       v24 = objc_loadWeakRetained(&self->_delegate);
       v25 = objc_opt_respondsToSelector();
@@ -4299,16 +4299,16 @@ uint64_t __64__EKEventViewControllerDefaultImpl_eventDetailItemWantsRefresh___bl
         goto LABEL_12;
       }
 
-      v17 = objc_loadWeakRetained(&self->_delegate);
-      v26 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      [v17 eventViewController:v26 didDismissEditViewController:self->_activeEventEditor deleted:v6];
+      presentingViewController2 = objc_loadWeakRetained(&self->_delegate);
+      _ekEventViewController4 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      [presentingViewController2 eventViewController:_ekEventViewController4 didDismissEditViewController:self->_activeEventEditor deleted:deletedCopy];
     }
   }
 
   else
   {
-    v17 = [(EKEventOrIntegrationEditView *)self->_activeEventEditor presentingViewController];
-    [v17 dismissViewControllerWithTransition:-[EKEventViewControllerDefaultImpl editorHideTransition](self completion:{"editorHideTransition"), 0}];
+    presentingViewController2 = [(EKEventOrIntegrationEditView *)self->_activeEventEditor presentingViewController];
+    [presentingViewController2 dismissViewControllerWithTransition:-[EKEventViewControllerDefaultImpl editorHideTransition](self completion:{"editorHideTransition"), 0}];
   }
 
 LABEL_12:
@@ -4317,11 +4317,11 @@ LABEL_12:
   self->_activeEventEditor = 0;
 }
 
-- (void)fullReloadWithNewEvent:(id)a3
+- (void)fullReloadWithNewEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(EKEventViewControllerDefaultImpl *)self setEvent:v4];
+  eventCopy = event;
+  [(EKEventViewControllerDefaultImpl *)self setEvent:eventCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -4344,8 +4344,8 @@ LABEL_12:
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         reminder = self->_reminder;
-        v12 = [v4 eventStore];
-        [v10 setEvent:v4 reminder:reminder store:v12];
+        eventStore = [eventCopy eventStore];
+        [v10 setEvent:eventCopy reminder:reminder store:eventStore];
 
         ++v9;
       }
@@ -4357,15 +4357,15 @@ LABEL_12:
     while (v7);
   }
 
-  v13 = [(EKEvent *)self->_event calendar];
-  [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:v13];
+  calendar = [(EKEvent *)self->_event calendar];
+  [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:calendar];
 
   [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
-  v14 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v14 reloadData];
+  tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView reloadData];
 }
 
-- (BOOL)eventDetailItemShouldPresentShareSheet:(id)a3
+- (BOOL)eventDetailItemShouldPresentShareSheet:(id)sheet
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -4376,30 +4376,30 @@ LABEL_12:
   }
 
   v6 = objc_loadWeakRetained(&self->_delegate);
-  v7 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v8 = [v6 eventViewControllerShouldPresentShareSheet:v7];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  v8 = [v6 eventViewControllerShouldPresentShareSheet:_ekEventViewController];
 
   return v8;
 }
 
-- (void)eventDetailItem:(id)a3 requestPresentShareSheetWithActivityItems:(id)a4 withPopoverSourceView:(id)a5
+- (void)eventDetailItem:(id)item requestPresentShareSheetWithActivityItems:(id)items withPopoverSourceView:(id)view
 {
-  v12 = a4;
-  v7 = a5;
+  itemsCopy = items;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    v11 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [v10 eventViewController:v11 requestPresentShareSheetWithActivityItems:v12 withPopoverSourceView:v7];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [v10 eventViewController:_ekEventViewController requestPresentShareSheetWithActivityItems:itemsCopy withPopoverSourceView:viewCopy];
   }
 }
 
-- (void)_eventEditViewControllerDidCompleteWithAction:(int64_t)a3
+- (void)_eventEditViewControllerDidCompleteWithAction:(int64_t)action
 {
-  if (a3 == 2)
+  if (action == 2)
   {
 
     [(EKEventViewControllerDefaultImpl *)self completeWithAction:?];
@@ -4409,22 +4409,22 @@ LABEL_12:
   {
     [(EKEventViewControllerDefaultImpl *)self setNeedsReload];
     [(EKEventViewControllerDefaultImpl *)self _dismissEditor:1 deleted:0];
-    if (a3 == 1)
+    if (action == 1)
     {
-      v5 = [(EKEvent *)self->_event calendar];
-      [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:v5];
+      calendar = [(EKEvent *)self->_event calendar];
+      [(EKEventViewControllerDefaultImpl *)self _configureItemsForStoreConstraintsGivenCalendar:calendar];
 
-      v6 = [(EKEventViewControllerDefaultImpl *)self tableView];
-      [v6 reloadData];
+      tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+      [tableView reloadData];
     }
   }
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4 completionHandler:(id)a5
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action completionHandler:(id)handler
 {
-  v16 = a3;
-  v8 = a5;
-  if (v8)
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     objc_opt_class();
@@ -4433,20 +4433,20 @@ LABEL_12:
     if (isKindOfClass)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      v8[2](v8, v11);
+      handlerCopy[2](handlerCopy, v11);
     }
 
     else
     {
-      v8[2](v8, self);
+      handlerCopy[2](handlerCopy, self);
     }
   }
 
   editViewControllerForPasteboard = self->_editViewControllerForPasteboard;
-  if (editViewControllerForPasteboard == v16)
+  if (editViewControllerForPasteboard == controllerCopy)
   {
-    v13 = [(EKEventEditViewController *)editViewControllerForPasteboard presentingViewController];
-    [v13 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(EKEventEditViewController *)editViewControllerForPasteboard presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
     v14 = self->_editViewControllerForPasteboard;
     self->_editViewControllerForPasteboard = 0;
@@ -4457,27 +4457,27 @@ LABEL_12:
 
   else
   {
-    [(EKEventViewControllerDefaultImpl *)self _eventEditViewControllerDidCompleteWithAction:a4];
+    [(EKEventViewControllerDefaultImpl *)self _eventEditViewControllerDidCompleteWithAction:action];
   }
 }
 
-- (id)pasteboardManagerForEventEditViewController:(id)a3
+- (id)pasteboardManagerForEventEditViewController:(id)controller
 {
-  v4 = [(EKEventViewControllerDefaultImpl *)self delegate];
+  delegate = [(EKEventViewControllerDefaultImpl *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [WeakRetained pasteboardManager];
+    pasteboardManager = [WeakRetained pasteboardManager];
   }
 
   else
   {
-    v7 = 0;
+    pasteboardManager = 0;
   }
 
-  return v7;
+  return pasteboardManager;
 }
 
 - (void)attemptDisplayReviewPrompt
@@ -4495,19 +4495,19 @@ LABEL_12:
 - (void)_prepareEventForEdit
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EKEvent *)self->_event calendar];
+  calendar = [(EKEvent *)self->_event calendar];
 
-  if (!v3)
+  if (!calendar)
   {
     event = self->_event;
-    v5 = [(EKEvent *)event eventStore];
-    v6 = [v5 defaultCalendarForNewEvents];
-    [(EKEvent *)event setCalendar:v6];
+    eventStore = [(EKEvent *)event eventStore];
+    defaultCalendarForNewEvents = [eventStore defaultCalendarForNewEvents];
+    [(EKEvent *)event setCalendar:defaultCalendarForNewEvents];
   }
 
-  v7 = [(EKEvent *)self->_event startDate];
+  startDate = [(EKEvent *)self->_event startDate];
 
-  if (!v7)
+  if (!startDate)
   {
     [objc_opt_class() setDefaultDatesForEvent:self->_event];
   }
@@ -4518,23 +4518,23 @@ LABEL_12:
   [(EKEvent *)v8 prefetchAttendeesWithAdditionalProperties:v9];
 }
 
-- (void)invokeAction:(int64_t)a3 eventStatusButtonsView:(id)a4
+- (void)invokeAction:(int64_t)action eventStatusButtonsView:(id)view
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = [a4 buttonForAction:?];
+  v6 = [view buttonForAction:?];
   v7 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
   {
     v9 = 134217984;
-    v10 = a3;
+    actionCopy = action;
     _os_log_impl(&dword_1D3400000, v7, OS_LOG_TYPE_DEBUG, "EKEventViewController invoking action: %ld", &v9, 0xCu);
   }
 
-  if (a3 > 4095)
+  if (action > 4095)
   {
-    if (a3 < 0x10000)
+    if (action < 0x10000)
     {
-      switch(a3)
+      switch(action)
       {
         case 0x1000:
           [(EKEventViewControllerDefaultImpl *)self _acceptProposedTimeWithSourceViewForPopover:v6];
@@ -4548,21 +4548,21 @@ LABEL_12:
       }
     }
 
-    else if (a3 >= 0x80000)
+    else if (action >= 0x80000)
     {
-      if (a3 == 0x80000 || a3 == 0x100000)
+      if (action == 0x80000 || action == 0x100000)
       {
 LABEL_27:
         [(EKEventViewControllerDefaultImpl *)self _deleteClicked:v6];
       }
     }
 
-    else if (a3 == 0x10000)
+    else if (action == 0x10000)
     {
       PresentJunkAlertControllerForEvent(self->_event, v6, self, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
     }
 
-    else if (a3 == 0x40000)
+    else if (action == 0x40000)
     {
       [(EKEventViewControllerDefaultImpl *)self _unsubscribeClicked:v6];
     }
@@ -4570,9 +4570,9 @@ LABEL_27:
 
   else
   {
-    if (a3 <= 7)
+    if (action <= 7)
     {
-      switch(a3)
+      switch(action)
       {
         case 1:
           v8 = 2;
@@ -4591,11 +4591,11 @@ LABEL_27:
       goto LABEL_35;
     }
 
-    if (a3 <= 127)
+    if (action <= 127)
     {
-      if (a3 != 8)
+      if (action != 8)
       {
-        if (a3 != 16)
+        if (action != 16)
         {
           goto LABEL_35;
         }
@@ -4606,13 +4606,13 @@ LABEL_27:
       goto LABEL_24;
     }
 
-    if (a3 == 128)
+    if (action == 128)
     {
       [(EKEventViewControllerDefaultImpl *)self _deleteSuggestionTapped:self];
       goto LABEL_35;
     }
 
-    if (a3 == 2048)
+    if (action == 2048)
     {
 LABEL_24:
       [(EKEventViewControllerDefaultImpl *)self _addToCalendarClicked:self];
@@ -4629,10 +4629,10 @@ LABEL_35:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(EKEventViewControllerDefaultImpl *)self event];
-  v4 = [v3 attendees];
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  attendees = [event attendees];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [attendees countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4643,7 +4643,7 @@ LABEL_35:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attendees);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -4653,8 +4653,8 @@ LABEL_35:
           v10 = v9;
           if ([v10 proposedStartDateStatus] == 1 || !objc_msgSend(v10, "proposedStartDateStatus"))
           {
-            v11 = [(EKEventViewControllerDefaultImpl *)self event];
-            v12 = [v10 proposedStartDateForEvent:v11];
+            event2 = [(EKEventViewControllerDefaultImpl *)self event];
+            v12 = [v10 proposedStartDateForEvent:event2];
 
             if (v12)
             {
@@ -4665,7 +4665,7 @@ LABEL_35:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [attendees countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -4681,29 +4681,29 @@ LABEL_15:
   return v12;
 }
 
-- (void)_acceptProposedTimeWithSourceViewForPopover:(id)a3
+- (void)_acceptProposedTimeWithSourceViewForPopover:(id)popover
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EKEventViewControllerDefaultImpl *)self _proposedDate];
-  if (v5)
+  popoverCopy = popover;
+  _proposedDate = [(EKEventViewControllerDefaultImpl *)self _proposedDate];
+  if (_proposedDate)
   {
-    v6 = [(EKEventViewControllerDefaultImpl *)self event];
-    v7 = [v6 endDateUnadjustedForLegacyClients];
-    v8 = [v6 startDate];
-    [v7 timeIntervalSinceDate:v8];
+    event = [(EKEventViewControllerDefaultImpl *)self event];
+    endDateUnadjustedForLegacyClients = [event endDateUnadjustedForLegacyClients];
+    startDate = [event startDate];
+    [endDateUnadjustedForLegacyClients timeIntervalSinceDate:startDate];
     v10 = v9;
 
-    [v6 setStartDate:v5];
-    v11 = [v5 dateByAddingTimeInterval:v10];
-    [v6 setEndDateUnadjustedForLegacyClients:v11];
+    [event setStartDate:_proposedDate];
+    v11 = [_proposedDate dateByAddingTimeInterval:v10];
+    [event setEndDateUnadjustedForLegacyClients:v11];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [v6 attendees];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    attendees = [event attendees];
+    v13 = [attendees countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -4715,7 +4715,7 @@ LABEL_15:
         {
           if (*v24 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(attendees);
           }
 
           v17 = *(*(&v23 + 1) + 8 * v16);
@@ -4732,23 +4732,23 @@ LABEL_15:
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v14 = [attendees countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v14);
     }
 
-    [v6 dismissAcceptedProposeNewTimeNotification];
-    if ([v6 isOrWasPartOfRecurringSeries])
+    [event dismissAcceptedProposeNewTimeNotification];
+    if ([event isOrWasPartOfRecurringSeries])
     {
-      v19 = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
-      [v4 bounds];
+      presentationSourceViewController = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
+      [popoverCopy bounds];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __80__EKEventViewControllerDefaultImpl__acceptProposedTimeWithSourceViewForPopover___block_invoke;
       v22[3] = &unk_1E843FE10;
       v22[4] = self;
-      v20 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:v19 sourceView:v4 sourceRect:v6 forEvent:v22 withCompletionHandler:?];
+      v20 = [EKUIRecurrenceAlertController presentDetachAlertWithOptions:0 viewController:presentationSourceViewController sourceView:popoverCopy sourceRect:event forEvent:v22 withCompletionHandler:?];
       recurrenceAlertController = self->_recurrenceAlertController;
       self->_recurrenceAlertController = v20;
     }
@@ -4798,10 +4798,10 @@ void __80__EKEventViewControllerDefaultImpl__acceptProposedTimeWithSourceViewFor
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(EKEventViewControllerDefaultImpl *)self event];
-  v4 = [v3 attendees];
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  attendees = [event attendees];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [attendees countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4813,7 +4813,7 @@ void __80__EKEventViewControllerDefaultImpl__acceptProposedTimeWithSourceViewFor
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attendees);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
@@ -4831,14 +4831,14 @@ void __80__EKEventViewControllerDefaultImpl__acceptProposedTimeWithSourceViewFor
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [attendees countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [(EKEventViewControllerDefaultImpl *)self event];
-  if ([v11 isOrWasPartOfRecurringSeries])
+  event2 = [(EKEventViewControllerDefaultImpl *)self event];
+  if ([event2 isOrWasPartOfRecurringSeries])
   {
     v12 = 4;
   }
@@ -4853,18 +4853,18 @@ void __80__EKEventViewControllerDefaultImpl__acceptProposedTimeWithSourceViewFor
 
 - (void)_cancelProposedTime
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self event];
-  [v3 setProposedStartDate:0];
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  [event setProposedStartDate:0];
 
   [(EKEventViewControllerDefaultImpl *)self _performSave:0 animated:0];
 }
 
-- (void)_saveStatus:(int64_t)a3 sourceViewForPopover:(id)a4
+- (void)_saveStatus:(int64_t)status sourceViewForPopover:(id)popover
 {
-  v6 = a4;
-  if (a3)
+  popoverCopy = popover;
+  if (status)
   {
-    v8 = v6;
+    v8 = popoverCopy;
     if (([(EKEvent *)self->_event responseMustApplyToAll]& 1) != 0)
     {
       v7 = 4;
@@ -4874,7 +4874,7 @@ void __80__EKEventViewControllerDefaultImpl__acceptProposedTimeWithSourceViewFor
     {
       if ([(EKEvent *)self->_event isOrWasPartOfRecurringSeries]&& ([(EKEvent *)self->_event isSignificantlyDetached]& 1) == 0)
       {
-        self->_pendingStatus = a3;
+        self->_pendingStatus = status;
         [(EKEventViewControllerDefaultImpl *)self _presentDetachSheetFromView:v8];
         goto LABEL_8;
       }
@@ -4882,25 +4882,25 @@ void __80__EKEventViewControllerDefaultImpl__acceptProposedTimeWithSourceViewFor
       v7 = 0;
     }
 
-    [(EKEventViewControllerDefaultImpl *)self _saveStatus:a3 span:v7];
+    [(EKEventViewControllerDefaultImpl *)self _saveStatus:status span:v7];
 LABEL_8:
-    v6 = v8;
+    popoverCopy = v8;
   }
 }
 
-- (void)_deleteClicked:(id)a3
+- (void)_deleteClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = [(EKEventViewControllerDefaultImpl *)self event];
-  v6 = [v5 status];
+  clickedCopy = clicked;
+  event = [(EKEventViewControllerDefaultImpl *)self event];
+  status = [event status];
 
-  v7 = [(UIResponder *)self EKUI_editor];
+  eKUI_editor = [(UIResponder *)self EKUI_editor];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
     v9 = objc_loadWeakRetained(&self->_delegate);
-    v10 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    v11 = [v9 eventViewDelegateShouldHandlePresentationOfDeleteAlert:v10];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    v11 = [v9 eventViewDelegateShouldHandlePresentationOfDeleteAlert:_ekEventViewController];
   }
 
   else
@@ -4914,11 +4914,11 @@ LABEL_8:
   aBlock[3] = &unk_1E843FF28;
   v25 = v11;
   aBlock[4] = self;
-  v12 = v7;
+  v12 = eKUI_editor;
   v24 = v12;
-  v26 = v6 == 3;
+  v26 = status == 3;
   v13 = _Block_copy(aBlock);
-  if (v6 == 3)
+  if (status == 3)
   {
     v14 = 5;
   }
@@ -4937,9 +4937,9 @@ LABEL_8:
     if (self->_recurrenceAlertController)
     {
       v17 = objc_loadWeakRetained(&self->_delegate);
-      v18 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      v19 = [(EKUIRecurrenceAlertController *)self->_recurrenceAlertController alertController];
-      [v17 eventViewController:v18 requestsDisplayOfDeleteAlert:v19];
+      _ekEventViewController2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      alertController = [(EKUIRecurrenceAlertController *)self->_recurrenceAlertController alertController];
+      [v17 eventViewController:_ekEventViewController2 requestsDisplayOfDeleteAlert:alertController];
     }
 
     else
@@ -4950,9 +4950,9 @@ LABEL_8:
 
   else
   {
-    v20 = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
-    [v4 bounds];
-    v21 = [EKUIRecurrenceAlertController presentDeleteAlertWithOptions:v14 viewController:v20 sourceView:v4 sourceRect:self->_event forEvent:0 stringForDeleteButton:v13 withCompletionHandler:?];
+    presentationSourceViewController = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
+    [clickedCopy bounds];
+    v21 = [EKUIRecurrenceAlertController presentDeleteAlertWithOptions:v14 viewController:presentationSourceViewController sourceView:clickedCopy sourceRect:self->_event forEvent:0 stringForDeleteButton:v13 withCompletionHandler:?];
     v22 = self->_recurrenceAlertController;
     self->_recurrenceAlertController = v21;
   }
@@ -5030,9 +5030,9 @@ uint64_t __51__EKEventViewControllerDefaultImpl__deleteClicked___block_invoke_2(
   return [v4 _performDelete:v2 editor:v3];
 }
 
-- (void)_unsubscribeClicked:(id)a3
+- (void)_unsubscribeClicked:(id)clicked
 {
-  v4 = a3;
+  clickedCopy = clicked;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__EKEventViewControllerDefaultImpl__unsubscribeClicked___block_invoke;
@@ -5047,15 +5047,15 @@ uint64_t __51__EKEventViewControllerDefaultImpl__deleteClicked___block_invoke_2(
   }
 
   v7 = objc_loadWeakRetained(&self->_delegate);
-  v8 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v9 = [v7 eventViewDelegateShouldHandlePresentationOfDeleteAlert:v8];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  v9 = [v7 eventViewDelegateShouldHandlePresentationOfDeleteAlert:_ekEventViewController];
 
   if (!v9)
   {
 LABEL_5:
-    v12 = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
-    [v4 bounds];
-    v15 = [EKUIRecurrenceAlertController presentUnsubscribeAlertWithOptions:4 viewController:v12 sourceView:v4 sourceRect:v5 withCompletionHandler:?];
+    presentationSourceViewController = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
+    [clickedCopy bounds];
+    v15 = [EKUIRecurrenceAlertController presentUnsubscribeAlertWithOptions:4 viewController:presentationSourceViewController sourceView:clickedCopy sourceRect:v5 withCompletionHandler:?];
     recurrenceAlertController = self->_recurrenceAlertController;
     self->_recurrenceAlertController = v15;
     goto LABEL_6;
@@ -5065,10 +5065,10 @@ LABEL_5:
   v11 = self->_recurrenceAlertController;
   self->_recurrenceAlertController = v10;
 
-  v12 = objc_loadWeakRetained(&self->_delegate);
+  presentationSourceViewController = objc_loadWeakRetained(&self->_delegate);
   recurrenceAlertController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v14 = [(EKUIRecurrenceAlertController *)self->_recurrenceAlertController alertController];
-  [v12 eventViewController:recurrenceAlertController requestsDisplayOfDeleteAlert:v14];
+  alertController = [(EKUIRecurrenceAlertController *)self->_recurrenceAlertController alertController];
+  [presentationSourceViewController eventViewController:recurrenceAlertController requestsDisplayOfDeleteAlert:alertController];
 
 LABEL_6:
 }
@@ -5107,25 +5107,25 @@ void __56__EKEventViewControllerDefaultImpl__unsubscribeClicked___block_invoke(u
   }
 }
 
-- (void)_addToCalendarClicked:(id)a3
+- (void)_addToCalendarClicked:(id)clicked
 {
   if ([(EKEventViewControllerDefaultImpl *)self _isDisplayingSuggestion])
   {
-    v4 = [(EKEvent *)self->_event suggestionInfo];
-    [v4 setChangedFields:0];
+    suggestionInfo = [(EKEvent *)self->_event suggestionInfo];
+    [suggestionInfo setChangedFields:0];
 
     [(EKEventViewControllerDefaultImpl *)self attemptDisplayReviewPrompt];
-    v5 = [(EKEvent *)self->_event eventStore];
-    [v5 acceptSuggestedEvent:self->_event];
+    eventStore = [(EKEvent *)self->_event eventStore];
+    [eventStore acceptSuggestedEvent:self->_event];
 
     v6 = MEMORY[0x1E69930D8];
-    v7 = [(EKEvent *)self->_event suggestionInfo];
-    v8 = [v7 uniqueIdentifier];
-    [v6 logEventConfirmedDetailsWithUniqueKey:v8];
+    suggestionInfo2 = [(EKEvent *)self->_event suggestionInfo];
+    uniqueIdentifier = [suggestionInfo2 uniqueIdentifier];
+    [v6 logEventConfirmedDetailsWithUniqueKey:uniqueIdentifier];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [WeakRetained eventViewController:v9 didCompleteWithAction:0];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [WeakRetained eventViewController:_ekEventViewController didCompleteWithAction:0];
   }
 
   else
@@ -5150,24 +5150,24 @@ void __56__EKEventViewControllerDefaultImpl__unsubscribeClicked___block_invoke(u
   }
 }
 
-- (void)_deleteSuggestionTapped:(id)a3
+- (void)_deleteSuggestionTapped:(id)tapped
 {
   if ([(EKEventViewControllerDefaultImpl *)self _isDisplayingSuggestion])
   {
-    v4 = [(EKEvent *)self->_event suggestionInfo];
-    [v4 setChangedFields:0];
+    suggestionInfo = [(EKEvent *)self->_event suggestionInfo];
+    [suggestionInfo setChangedFields:0];
 
     v5 = MEMORY[0x1E69930D8];
-    v6 = [(EKEvent *)self->_event suggestionInfo];
-    v7 = [v6 uniqueIdentifier];
-    [v5 logEventRejectedDetailsWithUniqueKey:v7];
+    suggestionInfo2 = [(EKEvent *)self->_event suggestionInfo];
+    uniqueIdentifier = [suggestionInfo2 uniqueIdentifier];
+    [v5 logEventRejectedDetailsWithUniqueKey:uniqueIdentifier];
 
-    v8 = [(EKEvent *)self->_event eventStore];
-    [v8 deleteSuggestedEvent:self->_event];
+    eventStore = [(EKEvent *)self->_event eventStore];
+    [eventStore deleteSuggestedEvent:self->_event];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [WeakRetained eventViewController:v9 didCompleteWithAction:2];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [WeakRetained eventViewController:_ekEventViewController didCompleteWithAction:2];
   }
 }
 
@@ -5176,12 +5176,12 @@ void __56__EKEventViewControllerDefaultImpl__unsubscribeClicked___block_invoke(u
   v29[4] = *MEMORY[0x1E69E9840];
   if ([(EKEventViewControllerDefaultImpl *)self _shouldDisplayStatusButtons])
   {
-    v3 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    [v3 setToolbarHidden:0];
+    navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    [navigationController setToolbarHidden:0];
 
     v4 = MEMORY[0x1D38B98D0]();
-    v5 = [(EKEventViewControllerDefaultImpl *)self toolbarItems];
-    v6 = v5;
+    toolbarItems = [(EKEventViewControllerDefaultImpl *)self toolbarItems];
+    v6 = toolbarItems;
     if (v4)
     {
 
@@ -5192,32 +5192,32 @@ void __56__EKEventViewControllerDefaultImpl__unsubscribeClicked___block_invoke(u
       }
     }
 
-    else if (!v5 || (statusButtonsContainerView = self->_statusButtonsContainerView, v5, !statusButtonsContainerView))
+    else if (!toolbarItems || (statusButtonsContainerView = self->_statusButtonsContainerView, toolbarItems, !statusButtonsContainerView))
     {
-      v10 = [(EKEventViewControllerDefaultImpl *)self _statusButtonsContainerView];
-      v11 = [(EKEventViewControllerDefaultImpl *)self _statusButtonsView];
-      [v10 addSubview:v11];
+      _statusButtonsContainerView = [(EKEventViewControllerDefaultImpl *)self _statusButtonsContainerView];
+      _statusButtonsView = [(EKEventViewControllerDefaultImpl *)self _statusButtonsView];
+      [_statusButtonsContainerView addSubview:_statusButtonsView];
       v22 = MEMORY[0x1E696ACD8];
-      v27 = [v11 leadingAnchor];
-      v26 = [v10 leadingAnchor];
-      v25 = [v27 constraintEqualToAnchor:v26];
+      leadingAnchor = [_statusButtonsView leadingAnchor];
+      leadingAnchor2 = [_statusButtonsContainerView leadingAnchor];
+      v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v29[0] = v25;
-      v24 = [v11 trailingAnchor];
-      v23 = [v10 trailingAnchor];
-      v21 = [v24 constraintEqualToAnchor:v23];
+      trailingAnchor = [_statusButtonsView trailingAnchor];
+      trailingAnchor2 = [_statusButtonsContainerView trailingAnchor];
+      v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v29[1] = v21;
-      v12 = [v11 topAnchor];
-      v13 = [v10 topAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      topAnchor = [_statusButtonsView topAnchor];
+      topAnchor2 = [_statusButtonsContainerView topAnchor];
+      v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v29[2] = v14;
-      v15 = [v11 bottomAnchor];
-      v16 = [v10 bottomAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16];
+      bottomAnchor = [_statusButtonsView bottomAnchor];
+      bottomAnchor2 = [_statusButtonsContainerView bottomAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v29[3] = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
       [v22 activateConstraints:v18];
 
-      v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v10];
+      v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:_statusButtonsContainerView];
       v28 = v19;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
       [(EKEventViewControllerDefaultImpl *)self setToolbarItems:v20 animated:1];
@@ -5226,12 +5226,12 @@ void __56__EKEventViewControllerDefaultImpl__unsubscribeClicked___block_invoke(u
 
   else
   {
-    v7 = [(EKEventViewControllerDefaultImpl *)self toolbarItems];
+    toolbarItems2 = [(EKEventViewControllerDefaultImpl *)self toolbarItems];
 
-    if (v7)
+    if (toolbarItems2)
     {
-      v8 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-      [v8 setToolbarHidden:1];
+      navigationController2 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+      [navigationController2 setToolbarHidden:1];
 
       [(EKEventViewControllerDefaultImpl *)self setToolbarItems:0 animated:1];
     }
@@ -5240,22 +5240,22 @@ void __56__EKEventViewControllerDefaultImpl__unsubscribeClicked___block_invoke(u
 
 - (void)_updateResponse
 {
-  v11 = [(EKEventViewControllerDefaultImpl *)self _statusButtonsView];
+  _statusButtonsView = [(EKEventViewControllerDefaultImpl *)self _statusButtonsView];
   event = self->_event;
   if (self->_trustsStatus)
   {
-    v4 = [(EKEvent *)event participationStatus];
+    participationStatus = [(EKEvent *)event participationStatus];
   }
 
   else
   {
-    v5 = [(EKEvent *)event calendar];
-    v6 = v5;
-    if (v5)
+    calendar = [(EKEvent *)event calendar];
+    v6 = calendar;
+    if (calendar)
     {
-      v7 = [v5 source];
-      v8 = [v7 constraints];
-      v9 = [v8 statusesAreAccurate] ^ 1;
+      source = [calendar source];
+      constraints = [source constraints];
+      v9 = [constraints statusesAreAccurate] ^ 1;
     }
 
     else
@@ -5263,29 +5263,29 @@ void __56__EKEventViewControllerDefaultImpl__unsubscribeClicked___block_invoke(u
       v9 = 0;
     }
 
-    v4 = [(EKEvent *)self->_event participationStatus];
+    participationStatus = [(EKEvent *)self->_event participationStatus];
     if (v9 && ![(EKEvent *)self->_event isStatusDirty])
     {
       goto LABEL_11;
     }
   }
 
-  if (![(EKEventViewControllerDefaultImpl *)self _isDisplayingSuggestion]&& (v4 - 2) <= 2)
+  if (![(EKEventViewControllerDefaultImpl *)self _isDisplayingSuggestion]&& (participationStatus - 2) <= 2)
   {
-    v10 = qword_1D3600A98[v4 - 2];
+    v10 = qword_1D3600A98[participationStatus - 2];
     goto LABEL_12;
   }
 
 LABEL_11:
   v10 = 0;
 LABEL_12:
-  [v11 setSelectedAction:v10];
+  [_statusButtonsView setSelectedAction:v10];
 }
 
 - (BOOL)_shouldDisplayStatusButtons
 {
-  v2 = [(EKEventViewControllerDefaultImpl *)self statusButtonActions];
-  v3 = [v2 count] != 0;
+  statusButtonActions = [(EKEventViewControllerDefaultImpl *)self statusButtonActions];
+  v3 = [statusButtonActions count] != 0;
 
   return v3;
 }
@@ -5337,10 +5337,10 @@ LABEL_13:
 
       else
       {
-        v6 = [(EKEventViewControllerDefaultImpl *)self event];
-        v7 = [v6 status];
+        event = [(EKEventViewControllerDefaultImpl *)self event];
+        status = [event status];
 
-        if (v7 == 3)
+        if (status == 3)
         {
           v3 |= 0x100000uLL;
         }
@@ -5357,10 +5357,10 @@ LABEL_13:
 
   v3 = 7;
 LABEL_21:
-  v8 = [(EKEventViewControllerDefaultImpl *)self event];
-  v9 = [v8 calendar];
+  event2 = [(EKEventViewControllerDefaultImpl *)self event];
+  calendar = [event2 calendar];
 
-  if ([v9 isSubscribed] && (objc_msgSend(v9, "isSubscribedHolidayCalendar") & 1) == 0 && objc_msgSend(MEMORY[0x1E6992FA0], "currentProcessIsFirstPartyCalendarApp"))
+  if ([calendar isSubscribed] && (objc_msgSend(calendar, "isSubscribedHolidayCalendar") & 1) == 0 && objc_msgSend(MEMORY[0x1E6992FA0], "currentProcessIsFirstPartyCalendarApp"))
   {
     v3 |= 0x40000uLL;
   }
@@ -5368,12 +5368,12 @@ LABEL_21:
   return v3;
 }
 
-+ (id)_orderedActionsForMask:(int64_t)a3
++ (id)_orderedActionsForMask:(int64_t)mask
 {
   v4 = objc_opt_new();
   for (i = 0; i != 15; ++i)
   {
-    if ((_orderedActionsForMask__actionOrder_1[i] & a3) != 0)
+    if ((_orderedActionsForMask__actionOrder_1[i] & mask) != 0)
     {
       v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
       [v4 addObject:v6];
@@ -5385,87 +5385,87 @@ LABEL_21:
 
 - (id)statusButtonActions
 {
-  v2 = [(EKEventViewControllerDefaultImpl *)self _actionsMask];
+  _actionsMask = [(EKEventViewControllerDefaultImpl *)self _actionsMask];
   v3 = objc_opt_class();
 
-  return [v3 _orderedActionsForMask:v2];
+  return [v3 _orderedActionsForMask:_actionsMask];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   if (!self->_showingBlankFooterView)
   {
     lastFooterLayoutWidth = self->_lastFooterLayoutWidth;
     if (lastFooterLayoutWidth != EKUIContainedControllerIdealWidth())
     {
-      self = [(EKEventViewControllerDefaultImpl *)v2 _updateHeaderAndFooterIfNeeded];
+      self = [(EKEventViewControllerDefaultImpl *)selfCopy _updateHeaderAndFooterIfNeeded];
     }
   }
 
   if ((MEMORY[0x1D38B98D0](self, a2) & 1) == 0)
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)v2 navigationController];
-    v6 = [v4 toolbar];
+    navigationController = [(EKEventViewControllerDefaultImpl *)selfCopy navigationController];
+    toolbar = [navigationController toolbar];
 
-    v5 = v6;
-    if (v6)
+    v5 = toolbar;
+    if (toolbar)
     {
-      [(SingleToolbarItemContainerView *)v2->_statusButtonsContainerView setBoundsWithToolbar:v6];
-      v5 = v6;
+      [(SingleToolbarItemContainerView *)selfCopy->_statusButtonsContainerView setBoundsWithToolbar:toolbar];
+      v5 = toolbar;
     }
   }
 }
 
-- (id)_sectionAtIndex:(int64_t)a3
+- (id)_sectionAtIndex:(int64_t)index
 {
   v4 = self->_currentSections;
   v5 = v4;
-  if (a3 < 0 || [(NSArray *)v4 count]<= a3)
+  if (index < 0 || [(NSArray *)v4 count]<= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(NSArray *)v5 objectAtIndexedSubscript:a3];
+    v6 = [(NSArray *)v5 objectAtIndexedSubscript:index];
   }
 
   return v6;
 }
 
-- (id)_itemAtIndexPath:(id)a3 section:(id *)a4 subitemIndex:(unint64_t *)a5
+- (id)_itemAtIndexPath:(id)path section:(id *)section subitemIndex:(unint64_t *)index
 {
-  v8 = a3;
-  v9 = -[EKEventViewControllerDefaultImpl _sectionAtIndex:](self, "_sectionAtIndex:", [v8 section]);
-  v10 = [v8 row];
+  pathCopy = path;
+  v9 = -[EKEventViewControllerDefaultImpl _sectionAtIndex:](self, "_sectionAtIndex:", [pathCopy section]);
+  v10 = [pathCopy row];
 
-  v11 = [v9 itemAtIndex:v10 subitemIndex:a5];
-  if (a4)
+  v11 = [v9 itemAtIndex:v10 subitemIndex:index];
+  if (section)
   {
     v12 = v9;
-    *a4 = v9;
+    *section = v9;
   }
 
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(EKEventViewControllerDefaultImpl *)self _sectionAtIndex:a4];
-  [v6 frame];
+  viewCopy = view;
+  v7 = [(EKEventViewControllerDefaultImpl *)self _sectionAtIndex:section];
+  [viewCopy frame];
   if (v8 > 0.0)
   {
-    [v6 frame];
+    [viewCopy frame];
     [v7 updateCellLayoutsForRowCountIfNeededUsingWidth:v9];
   }
 
-  v10 = [v7 numberOfRows];
-  v11 = v10;
-  if (self->_disclosedTableSection == a4)
+  numberOfRows = [v7 numberOfRows];
+  v11 = numberOfRows;
+  if (self->_disclosedTableSection == section)
   {
-    v11 = self->_disclosedTableRange.length + v10;
+    v11 = self->_disclosedTableRange.length + numberOfRows;
   }
 
   return v11;
@@ -5480,28 +5480,28 @@ LABEL_21:
   v4 = v3;
   if (v3 >= 10.0)
   {
-    v5 = [(EKEventViewControllerDefaultImpl *)self view];
-    v6 = [v5 window];
+    view = [(EKEventViewControllerDefaultImpl *)self view];
+    window = [view window];
 
-    if (v6)
+    if (window)
     {
-      v7 = [(EKEventViewControllerDefaultImpl *)self tableView];
-      v8 = [v7 numberOfSections];
+      tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+      numberOfSections = [tableView numberOfSections];
 
-      if (v8)
+      if (numberOfSections)
       {
-        for (i = 0; i != v8; ++i)
+        for (i = 0; i != numberOfSections; ++i)
         {
-          v10 = [(EKEventViewControllerDefaultImpl *)self tableView];
-          v11 = [v10 numberOfRowsInSection:i];
+          tableView2 = [(EKEventViewControllerDefaultImpl *)self tableView];
+          v11 = [tableView2 numberOfRowsInSection:i];
 
           if (v11)
           {
             for (j = 0; j != v11; ++j)
             {
               v13 = [MEMORY[0x1E696AC88] indexPathForRow:j inSection:i];
-              v14 = [(EKEventViewControllerDefaultImpl *)self tableView];
-              v15 = [(EKEventViewControllerDefaultImpl *)self tableView:v14 cellForRowAtIndexPath:v13];
+              tableView3 = [(EKEventViewControllerDefaultImpl *)self tableView];
+              v15 = [(EKEventViewControllerDefaultImpl *)self tableView:tableView3 cellForRowAtIndexPath:v13];
 
               [objc_opt_class() adjustLayoutForCell:v15 tableViewWidth:v11 numRowsInSection:j cellRow:0 forceLayout:v4];
             }
@@ -5512,40 +5512,40 @@ LABEL_21:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  v9 = [(EKEventViewControllerDefaultImpl *)self _sectionAtIndex:v8];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  v9 = [(EKEventViewControllerDefaultImpl *)self _sectionAtIndex:section];
   if (!v9)
   {
     goto LABEL_24;
   }
 
-  v10 = [v7 row];
-  v11 = [(EKEventViewControllerDefaultImpl *)self view];
-  v12 = [v11 window];
+  v10 = [pathCopy row];
+  view = [(EKEventViewControllerDefaultImpl *)self view];
+  window = [view window];
 
-  if (v12)
+  if (window)
   {
-    v13 = [(EKEventViewControllerDefaultImpl *)self view];
-    v14 = [v13 window];
-    EKUIPushFallbackSizingContextWithViewHierarchy(v14);
+    view2 = [(EKEventViewControllerDefaultImpl *)self view];
+    window2 = [view2 window];
+    EKUIPushFallbackSizingContextWithViewHierarchy(window2);
   }
 
-  v15 = [(EKEventViewControllerDefaultImpl *)self traitCollection];
-  v16 = [v9 cellForSubitemAtIndex:v10 withTraitCollection:v15];
+  traitCollection = [(EKEventViewControllerDefaultImpl *)self traitCollection];
+  v16 = [v9 cellForSubitemAtIndex:v10 withTraitCollection:traitCollection];
 
-  v17 = [(EKEventViewControllerDefaultImpl *)self view];
-  v18 = [v17 window];
+  view3 = [(EKEventViewControllerDefaultImpl *)self view];
+  window3 = [view3 window];
 
-  if (v18)
+  if (window3)
   {
-    v19 = [(EKEventViewControllerDefaultImpl *)self view];
-    v20 = [v19 window];
-    EKUIPopFallbackSizingContextWithViewHierarchy(v20);
+    view4 = [(EKEventViewControllerDefaultImpl *)self view];
+    window4 = [view4 window];
+    EKUIPopFallbackSizingContextWithViewHierarchy(window4);
   }
 
   if (!-[EKEventViewControllerDefaultImpl allowsSubitems](self, "allowsSubitems") && ([v16 accessoryType] == 1 || objc_msgSend(v16, "accessoryType") == 2) || objc_msgSend(v9, "tag") == 8 && !-[EKEventViewControllerDefaultImpl allowsEditing](self, "allowsEditing"))
@@ -5557,33 +5557,33 @@ LABEL_21:
   v22 = v21;
   if (v21 > 10.0)
   {
-    v23 = [v6 numberOfRowsInSection:v8];
-    v24 = [(EKEventViewControllerDefaultImpl *)self view];
-    v25 = [v24 window];
+    v23 = [viewCopy numberOfRowsInSection:section];
+    view5 = [(EKEventViewControllerDefaultImpl *)self view];
+    window5 = [view5 window];
 
-    if (v25)
+    if (window5)
     {
-      v26 = [(EKEventViewControllerDefaultImpl *)self view];
-      v27 = [v26 window];
-      EKUIPushFallbackSizingContextWithViewHierarchy(v27);
+      view6 = [(EKEventViewControllerDefaultImpl *)self view];
+      window6 = [view6 window];
+      EKUIPushFallbackSizingContextWithViewHierarchy(window6);
     }
 
     [objc_opt_class() adjustLayoutForCell:v16 tableViewWidth:v23 numRowsInSection:v10 cellRow:1 forceLayout:v22];
-    v28 = [(EKEventViewControllerDefaultImpl *)self view];
-    v29 = [v28 window];
+    view7 = [(EKEventViewControllerDefaultImpl *)self view];
+    window7 = [view7 window];
 
-    if (v29)
+    if (window7)
     {
-      v30 = [(EKEventViewControllerDefaultImpl *)self view];
-      v31 = [v30 window];
-      EKUIPopFallbackSizingContextWithViewHierarchy(v31);
+      view8 = [(EKEventViewControllerDefaultImpl *)self view];
+      window8 = [view8 window];
+      EKUIPopFallbackSizingContextWithViewHierarchy(window8);
     }
   }
 
   if (![v9 tag] || objc_msgSend(v9, "tag") == 5 || objc_msgSend(v9, "tag") == 4 || objc_msgSend(v9, "tag") == 11)
   {
-    v32 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-    [v16 setBackgroundConfiguration:v32];
+    clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    [v16 setBackgroundConfiguration:clearConfiguration];
   }
 
   if (!v16)
@@ -5593,7 +5593,7 @@ LABEL_24:
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
     {
       v35 = 138412290;
-      v36 = v7;
+      v36 = pathCopy;
       _os_log_impl(&dword_1D3400000, v33, OS_LOG_TYPE_ERROR, "No cell found from EKEventViewController for index path %@.  Using empty cell to prevent crash.", &v35, 0xCu);
     }
 
@@ -5603,19 +5603,19 @@ LABEL_24:
   return v16;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   cellHeights = self->_cellHeights;
   v7 = MEMORY[0x1E696AD98];
-  v8 = a5;
-  [a4 frame];
+  pathCopy = path;
+  [cell frame];
   v10 = [v7 numberWithDouble:v9];
-  [(NSMutableDictionary *)cellHeights setObject:v10 forKey:v8];
+  [(NSMutableDictionary *)cellHeights setObject:v10 forKey:pathCopy];
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v4 = [(NSMutableDictionary *)self->_cellHeights objectForKey:a4];
+  v4 = [(NSMutableDictionary *)self->_cellHeights objectForKey:path];
   v5 = v4;
   if (v4)
   {
@@ -5632,19 +5632,19 @@ LABEL_24:
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 rowHeight];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy rowHeight];
   v9 = v8;
-  v10 = -[EKEventViewControllerDefaultImpl _sectionAtIndex:](self, "_sectionAtIndex:", [v7 section]);
+  v10 = -[EKEventViewControllerDefaultImpl _sectionAtIndex:](self, "_sectionAtIndex:", [pathCopy section]);
   if (v10)
   {
-    v11 = [v7 row];
+    v11 = [pathCopy row];
     [(EKEventViewControllerDefaultImpl *)self tableViewSectionContentWidth];
     v13 = v12;
-    [v6 _backgroundInset];
+    [viewCopy _backgroundInset];
     if (v13 + v14 * -2.0 > 10.0)
     {
       [v10 defaultCellHeightForSubitemAtIndex:v11 forWidth:?];
@@ -5658,9 +5658,9 @@ LABEL_24:
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v4 = MEMORY[0x1D38B98D0](self, a2, a3, a4);
+  v4 = MEMORY[0x1D38B98D0](self, a2, view, section);
   result = 0.0;
   if (v4)
   {
@@ -5670,23 +5670,23 @@ LABEL_24:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v5 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   return v4;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v9 = 0;
-  v5 = [(EKEventViewControllerDefaultImpl *)self _itemAtIndexPath:a4 section:0 subitemIndex:&v9];
+  v5 = [(EKEventViewControllerDefaultImpl *)self _itemAtIndexPath:path section:0 subitemIndex:&v9];
   if (v5)
   {
-    v6 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    v7 = [v5 eventViewController:v6 shouldSelectSubitem:v9];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    v7 = [v5 eventViewController:_ekEventViewController shouldSelectSubitem:v9];
   }
 
   else
@@ -5697,29 +5697,29 @@ LABEL_24:
   return v7;
 }
 
-- (void)tableView:(id)a3 didHighlightRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didHighlightRowAtIndexPath:(id)path
 {
   v7 = 0;
-  v5 = [(EKEventViewControllerDefaultImpl *)self _itemAtIndexPath:a4 section:0 subitemIndex:&v7];
-  v6 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  [v5 eventViewController:v6 didHighlightSubitem:v7];
+  v5 = [(EKEventViewControllerDefaultImpl *)self _itemAtIndexPath:path section:0 subitemIndex:&v7];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  [v5 eventViewController:_ekEventViewController didHighlightSubitem:v7];
 }
 
-- (void)tableView:(id)a3 didUnhighlightRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didUnhighlightRowAtIndexPath:(id)path
 {
   v7 = 0;
-  v5 = [(EKEventViewControllerDefaultImpl *)self _itemAtIndexPath:a4 section:0 subitemIndex:&v7];
-  v6 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  [v5 eventViewController:v6 didUnhighlightSubitem:v7];
+  v5 = [(EKEventViewControllerDefaultImpl *)self _itemAtIndexPath:path section:0 subitemIndex:&v7];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  [v5 eventViewController:_ekEventViewController didUnhighlightSubitem:v7];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v20 = 0;
   v21 = 0;
-  v8 = [(EKEventViewControllerDefaultImpl *)self _itemAtIndexPath:v7 section:&v20 subitemIndex:&v21];
+  v8 = [(EKEventViewControllerDefaultImpl *)self _itemAtIndexPath:pathCopy section:&v20 subitemIndex:&v21];
   v9 = v20;
   currentEditItem = self->_currentEditItem;
   if (currentEditItem)
@@ -5734,15 +5734,15 @@ LABEL_24:
 
   if (v11 || [(EKEventDetailItem *)currentEditItem saveAndDismissWithForce:0])
   {
-    [v6 deselectRowAtIndexPath:v7 animated:1];
-    v12 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [(EKEventDetailItem *)v8 eventViewController:v12 didSelectReadOnlySubitem:v21];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [(EKEventDetailItem *)v8 eventViewController:_ekEventViewController didSelectReadOnlySubitem:v21];
 
-    v13 = [(EKEventViewControllerDefaultImpl *)self _shouldShowEditButton];
-    if (-[EKEventViewControllerDefaultImpl allowsSubitems](self, "allowsSubitems") && (!v13 || [v9 hasSubitemForIndexPathRow:{objc_msgSend(v7, "row")}]) && (objc_msgSend(v9, "tag") != 8 || -[EKEventViewControllerDefaultImpl allowsEditing](self, "allowsEditing")))
+    _shouldShowEditButton = [(EKEventViewControllerDefaultImpl *)self _shouldShowEditButton];
+    if (-[EKEventViewControllerDefaultImpl allowsSubitems](self, "allowsSubitems") && (!_shouldShowEditButton || [v9 hasSubitemForIndexPathRow:{objc_msgSend(pathCopy, "row")}]) && (objc_msgSend(v9, "tag") != 8 || -[EKEventViewControllerDefaultImpl allowsEditing](self, "allowsEditing")))
     {
-      v14 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      [(EKEventDetailItem *)v8 eventViewController:v14 didSelectSubitem:v21];
+      _ekEventViewController2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      [(EKEventDetailItem *)v8 eventViewController:_ekEventViewController2 didSelectSubitem:v21];
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       if (WeakRetained)
@@ -5762,59 +5762,59 @@ LABEL_24:
 
   else
   {
-    [v6 selectRowAtIndexPath:0 animated:1 scrollPosition:0];
+    [viewCopy selectRowAtIndexPath:0 animated:1 scrollPosition:0];
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(EKEventViewControllerDefaultImpl *)self _sectionAtIndex:a4];
-  v5 = [v4 headerTitle];
+  v4 = [(EKEventViewControllerDefaultImpl *)self _sectionAtIndex:section];
+  headerTitle = [v4 headerTitle];
 
-  return v5;
+  return headerTitle;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  headerViewCopy = headerView;
   if (EKUICatalyst())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [v10 backgroundColor];
-      v9 = [v7 contentView];
+      v7 = headerViewCopy;
+      backgroundColor = [viewCopy backgroundColor];
+      contentView = [v7 contentView];
 
-      [v9 setBackgroundColor:v8];
+      [contentView setBackgroundColor:backgroundColor];
     }
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  [(EKEventViewControllerDefaultImpl *)self updateTitleWithScrollView:a3 animation:1];
+  [(EKEventViewControllerDefaultImpl *)self updateTitleWithScrollView:scroll animation:1];
 
   [(EKEventViewControllerDefaultImpl *)self _notifyDetailItemsOfVisibilityOnScreen];
 }
 
-- (void)updateTitleWithScrollView:(id)a3 animation:(BOOL)a4
+- (void)updateTitleWithScrollView:(id)view animation:(BOOL)animation
 {
-  v4 = a4;
-  v6 = a3;
+  animationCopy = animation;
+  viewCopy = view;
   if ([(UIViewController *)self isPresentedInsidePopover])
   {
     goto LABEL_5;
   }
 
-  [v6 contentSize];
+  [viewCopy contentSize];
   v8 = v7;
-  v9 = [(EKEventViewControllerDefaultImpl *)self view];
-  [v9 frame];
+  view = [(EKEventViewControllerDefaultImpl *)self view];
+  [view frame];
   v11 = v10;
-  v12 = [(EKEventViewControllerDefaultImpl *)self view];
-  [v12 safeAreaInsets];
+  view2 = [(EKEventViewControllerDefaultImpl *)self view];
+  [view2 safeAreaInsets];
   if (v8 < v11 - v13)
   {
 
@@ -5823,9 +5823,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v14 = [(EKEventViewControllerDefaultImpl *)self _navigationBarShouldBeHidden];
+  _navigationBarShouldBeHidden = [(EKEventViewControllerDefaultImpl *)self _navigationBarShouldBeHidden];
 
-  if (v14)
+  if (_navigationBarShouldBeHidden)
   {
     goto LABEL_5;
   }
@@ -5835,20 +5835,20 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [v6 contentOffset];
+  [viewCopy contentOffset];
   v16 = v15;
-  v17 = [(EKEventViewControllerDefaultImpl *)self view];
-  [v17 safeAreaInsets];
+  view3 = [(EKEventViewControllerDefaultImpl *)self view];
+  [view3 safeAreaInsets];
   v19 = v16 + v18;
   [(EKEventViewControllerDefaultImpl *)self _customInsets];
   v21 = v19 + v20;
 
   [(EKEventTitleDetailItem *)self->_titleItem titleHeight];
   v23 = v22;
-  v24 = [(EKEventTitleDetailItem *)self->_titleItem titleHeight];
+  titleHeight = [(EKEventTitleDetailItem *)self->_titleItem titleHeight];
   if (v25 == 0.0)
   {
-    v24 = [(EKReminderTitleDetailItem *)self->_reminderTitleItem titleHeight];
+    titleHeight = [(EKReminderTitleDetailItem *)self->_reminderTitleItem titleHeight];
     v27 = v26 + 22.0;
   }
 
@@ -5857,12 +5857,12 @@ LABEL_5:
     v27 = v23 + 16.0;
   }
 
-  v28 = MEMORY[0x1D38B98D0](v24);
+  v28 = MEMORY[0x1D38B98D0](titleHeight);
   if (v21 <= v27)
   {
     if (v28)
     {
-      if (!v4)
+      if (!animationCopy)
       {
         if (!self->_customTitle)
         {
@@ -5872,21 +5872,21 @@ LABEL_5:
         goto LABEL_5;
       }
 
-      v50 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-      v51 = [v50 title];
+      navigationItem = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+      title = [navigationItem title];
 
-      if (v51)
+      if (title)
       {
-        v52 = [MEMORY[0x1E6979538] animation];
-        [v52 setDuration:0.25];
-        [v52 setType:*MEMORY[0x1E697A030]];
-        v53 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-        v54 = [v53 navigationBar];
-        v55 = [v54 layer];
-        [v55 addAnimation:v52 forKey:@"fadeText"];
+        animation = [MEMORY[0x1E6979538] animation];
+        [animation setDuration:0.25];
+        [animation setType:*MEMORY[0x1E697A030]];
+        navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+        navigationBar = [navigationController navigationBar];
+        layer = [navigationBar layer];
+        [layer addAnimation:animation forKey:@"fadeText"];
 
-        v56 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-        [v56 setTitle:0];
+        navigationItem2 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+        [navigationItem2 setTitle:0];
       }
     }
 
@@ -5896,7 +5896,7 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    if (v4)
+    if (animationCopy)
     {
       [(EKCustomTitleView *)customTitle setAnimating:1];
       v58 = self->_customTitle;
@@ -5912,51 +5912,51 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if ((v28 & v4) == 1)
+  if ((v28 & animationCopy) == 1)
   {
-    v29 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-    v30 = [v29 title];
+    navigationItem3 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+    title2 = [navigationItem3 title];
 
-    if (!v30)
+    if (!title2)
     {
-      v31 = [MEMORY[0x1E6979538] animation];
-      [v31 setDuration:0.25];
-      [v31 setType:*MEMORY[0x1E697A030]];
-      v32 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-      v33 = [v32 navigationBar];
-      v34 = [v33 layer];
-      [v34 addAnimation:v31 forKey:@"fadeText"];
+      animation2 = [MEMORY[0x1E6979538] animation];
+      [animation2 setDuration:0.25];
+      [animation2 setType:*MEMORY[0x1E697A030]];
+      navigationController2 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+      navigationBar2 = [navigationController2 navigationBar];
+      layer2 = [navigationBar2 layer];
+      [layer2 addAnimation:animation2 forKey:@"fadeText"];
 
-      v35 = [(EKEventViewControllerDefaultImpl *)self event];
-      v36 = [v35 title];
-      v37 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-      [v37 setTitle:v36];
+      event = [(EKEventViewControllerDefaultImpl *)self event];
+      title3 = [event title];
+      navigationItem4 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+      [navigationItem4 setTitle:title3];
     }
   }
 
   if (!self->_customTitle && (MEMORY[0x1D38B98D0]() & 1) == 0)
   {
     v38 = [EKCustomTitleView alloc];
-    v39 = [(EKEventViewControllerDefaultImpl *)self viewTitle];
-    v40 = [(EKEventViewControllerDefaultImpl *)self event];
-    v41 = [v40 title];
-    v42 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    v43 = [(EKCustomTitleView *)v38 initWithTitle:v39 subTitle:v41 eventViewController:v42];
+    viewTitle = [(EKEventViewControllerDefaultImpl *)self viewTitle];
+    event2 = [(EKEventViewControllerDefaultImpl *)self event];
+    title4 = [event2 title];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    v43 = [(EKCustomTitleView *)v38 initWithTitle:viewTitle subTitle:title4 eventViewController:_ekEventViewController];
     v44 = self->_customTitle;
     self->_customTitle = v43;
 
     v45 = self->_customTitle;
-    v46 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-    [v46 setTitleView:v45];
+    navigationItem5 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+    [navigationItem5 setTitleView:v45];
 
-    v47 = [(EKCustomTitleView *)self->_customTitle window];
+    window = [(EKCustomTitleView *)self->_customTitle window];
 
-    if (!v47)
+    if (!window)
     {
       goto LABEL_5;
     }
 
-    if (v4)
+    if (animationCopy)
     {
       [(EKCustomTitleView *)self->_customTitle setAnimating:1];
       v61[0] = MEMORY[0x1E69E9820];
@@ -6031,32 +6031,32 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
 
 - (void)_clearCustomTitle
 {
-  v3 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-  [v3 setTitle:&stru_1F4EF6790];
+  navigationItem = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+  [navigationItem setTitle:&stru_1F4EF6790];
 
-  v4 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-  [v4 setTitleView:0];
+  navigationItem2 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+  [navigationItem2 setTitleView:0];
 
-  v5 = [(EKEventViewControllerDefaultImpl *)self viewTitle];
-  v6 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  [v6 setTitle:v5];
+  viewTitle = [(EKEventViewControllerDefaultImpl *)self viewTitle];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  [_ekEventViewController setTitle:viewTitle];
 
   customTitle = self->_customTitle;
   self->_customTitle = 0;
 }
 
-+ (void)adjustLayoutForCell:(id)a3 tableViewWidth:(double)a4 numRowsInSection:(unint64_t)a5 cellRow:(unint64_t)a6 forceLayout:(BOOL)a7
++ (void)adjustLayoutForCell:(id)cell tableViewWidth:(double)width numRowsInSection:(unint64_t)section cellRow:(unint64_t)row forceLayout:(BOOL)layout
 {
-  v7 = a7;
-  v14 = a3;
+  layoutCopy = layout;
+  cellCopy = cell;
   if (objc_opt_respondsToSelector())
   {
-    v11 = a5 - 1 == a6 ? 4 : 2;
-    v12 = a6 ? v11 : 1;
-    v13 = a5 == 1 ? 5 : v12;
-    if (([v14 needsLayoutForWidth:v13 position:a4] & 1) != 0 || v7)
+    v11 = section - 1 == row ? 4 : 2;
+    v12 = row ? v11 : 1;
+    v13 = section == 1 ? 5 : v12;
+    if (([cellCopy needsLayoutForWidth:v13 position:width] & 1) != 0 || layoutCopy)
     {
-      [v14 layoutForWidth:v13 position:a4];
+      [cellCopy layoutForWidth:v13 position:width];
     }
   }
 }
@@ -6080,64 +6080,64 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
   if (!v6)
   {
     v7 = v4;
-    v8 = [(EKEvent *)event eventStore];
-    v9 = [v8 timeZone];
-    v10 = v7(event, v9);
+    eventStore = [(EKEvent *)event eventStore];
+    timeZone = [eventStore timeZone];
+    v10 = v7(event, timeZone);
 
-    v11 = [v10 dictionary];
-    if (v11)
+    dictionary = [v10 dictionary];
+    if (dictionary)
     {
-      [v3 addObject:v11];
+      [v3 addObject:dictionary];
     }
   }
 
   return v3;
 }
 
-- (void)detailItem:(id)a3 performActionsOnCellAtIndexPath:(id)a4 actions:(id)a5
+- (void)detailItem:(id)item performActionsOnCellAtIndexPath:(id)path actions:(id)actions
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  v10 = [v9 cellForRowAtIndexPath:v8];
+  actionsCopy = actions;
+  pathCopy = path;
+  tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+  v10 = [tableView cellForRowAtIndexPath:pathCopy];
 
-  v7[2](v7, v10);
+  actionsCopy[2](actionsCopy, v10);
 }
 
-- (void)detailItem:(id)a3 wantsRowReload:(id)a4
+- (void)detailItem:(id)item wantsRowReload:(id)reload
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(EKEventViewControllerDefaultImpl *)self _sectionForDetailItem:a3];
+  reloadCopy = reload;
+  v7 = [(EKEventViewControllerDefaultImpl *)self _sectionForDetailItem:item];
   v8 = MEMORY[0x1E696AC88];
-  v9 = [v6 row];
-  v10 = [v6 section];
+  v9 = [reloadCopy row];
+  section = [reloadCopy section];
 
-  v11 = [v8 indexPathForRow:v9 inSection:v10 + v7];
-  v12 = [(EKEventViewControllerDefaultImpl *)self tableView];
+  v11 = [v8 indexPathForRow:v9 inSection:section + v7];
+  tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
   v14[0] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  [v12 reloadRowsAtIndexPaths:v13 withRowAnimation:0];
+  [tableView reloadRowsAtIndexPaths:v13 withRowAnimation:0];
 }
 
-- (void)detailItem:(id)a3 wantsRowInsertions:(id)a4 rowDeletions:(id)a5 rowReloads:(id)a6
+- (void)detailItem:(id)item wantsRowInsertions:(id)insertions rowDeletions:(id)deletions rowReloads:(id)reloads
 {
   v53 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v37 = a5;
-  v35 = a6;
-  v11 = [(EKEventViewControllerDefaultImpl *)self _sectionForDetailItem:a3];
-  v12 = [(EKEventViewControllerDefaultImpl *)self tableView];
-  [v12 beginUpdates];
-  v36 = v10;
-  if (v10)
+  insertionsCopy = insertions;
+  deletionsCopy = deletions;
+  reloadsCopy = reloads;
+  v11 = [(EKEventViewControllerDefaultImpl *)self _sectionForDetailItem:item];
+  tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+  [tableView beginUpdates];
+  v36 = insertionsCopy;
+  if (insertionsCopy)
   {
-    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    v13 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(insertionsCopy, "count")}];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v14 = v10;
+    v14 = insertionsCopy;
     v15 = [v14 countByEnumeratingWithState:&v46 objects:v52 count:16];
     if (v15)
     {
@@ -6162,17 +6162,17 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
       while (v16);
     }
 
-    [v12 insertRowsAtIndexPaths:v13 withRowAnimation:0];
+    [tableView insertRowsAtIndexPaths:v13 withRowAnimation:0];
   }
 
-  if (v37)
+  if (deletionsCopy)
   {
-    v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v37, "count")}];
+    v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(deletionsCopy, "count")}];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v21 = v37;
+    v21 = deletionsCopy;
     v22 = [v21 countByEnumeratingWithState:&v42 objects:v51 count:16];
     if (v22)
     {
@@ -6197,18 +6197,18 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
       while (v23);
     }
 
-    [v12 deleteRowsAtIndexPaths:v20 withRowAnimation:0];
+    [tableView deleteRowsAtIndexPaths:v20 withRowAnimation:0];
   }
 
-  v27 = v35;
-  if (v35)
+  v27 = reloadsCopy;
+  if (reloadsCopy)
   {
-    v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v35, "count")}];
+    v28 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(reloadsCopy, "count")}];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v29 = v35;
+    v29 = reloadsCopy;
     v30 = [v29 countByEnumeratingWithState:&v38 objects:v50 count:16];
     if (v30)
     {
@@ -6233,18 +6233,18 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
       while (v31);
     }
 
-    [v12 reloadRowsAtIndexPaths:v28 withRowAnimation:0];
-    v27 = v35;
+    [tableView reloadRowsAtIndexPaths:v28 withRowAnimation:0];
+    v27 = reloadsCopy;
   }
 
-  [v12 endUpdates];
+  [tableView endUpdates];
 }
 
-- (void)detailItem:(id)a3 wantsIndexPathsScrolledToVisible:(id)a4
+- (void)detailItem:(id)item wantsIndexPathsScrolledToVisible:(id)visible
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(EKEventViewControllerDefaultImpl *)self _sectionForDetailItem:a3];
+  visibleCopy = visible;
+  v7 = [(EKEventViewControllerDefaultImpl *)self _sectionForDetailItem:item];
   x = *MEMORY[0x1E695F058];
   y = *(MEMORY[0x1E695F058] + 8);
   width = *(MEMORY[0x1E695F058] + 16);
@@ -6253,7 +6253,7 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v6;
+  v12 = visibleCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v13)
   {
@@ -6270,8 +6270,8 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
         }
 
         v17 = [MEMORY[0x1E696AC88] indexPathForRow:objc_msgSend(*(*(&v28 + 1) + 8 * v16) inSection:{"row", v28), objc_msgSend(*(*(&v28 + 1) + 8 * v16), "section") + v7}];
-        v18 = [(EKEventViewControllerDefaultImpl *)self tableView];
-        [v18 rectForRowAtIndexPath:v17];
+        tableView = [(EKEventViewControllerDefaultImpl *)self tableView];
+        [tableView rectForRowAtIndexPath:v17];
         v20 = v19;
         v22 = v21;
         v24 = v23;
@@ -6322,8 +6322,8 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
   v37.size.height = height;
   if (!CGRectIsEmpty(v37))
   {
-    v27 = [(EKEventViewControllerDefaultImpl *)self tableView];
-    [v27 scrollRectToVisible:1 animated:{x + -10.0, y, width, height + 20.0}];
+    tableView2 = [(EKEventViewControllerDefaultImpl *)self tableView];
+    [tableView2 scrollRectToVisible:1 animated:{x + -10.0, y, width, height + 20.0}];
   }
 }
 
@@ -6336,29 +6336,29 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
 
   else
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-    if (v4)
+    navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    if (navigationController)
     {
-      v5 = [(EKEventViewControllerDefaultImpl *)self navigationController];
-      if ([v5 isNavigationBarHidden])
+      navigationController2 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+      if ([navigationController2 isNavigationBarHidden])
       {
         v3 = 0;
       }
 
       else
       {
-        v6 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-        v7 = [v6 rightBarButtonItem];
-        if ([v7 systemItem] == 2)
+        navigationItem = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+        rightBarButtonItem = [navigationItem rightBarButtonItem];
+        if ([rightBarButtonItem systemItem] == 2)
         {
           v3 = 1;
         }
 
         else
         {
-          v8 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
-          v9 = [v8 leftBarButtonItem];
-          v3 = [v9 systemItem] == 2;
+          navigationItem2 = [(EKEventViewControllerDefaultImpl *)self navigationItem];
+          leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+          v3 = [leftBarButtonItem systemItem] == 2;
         }
       }
     }
@@ -6369,7 +6369,7 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
     }
   }
 
-  v10 = [(EKEventViewControllerDefaultImpl *)self _shouldShowInlineButtonFromDelegate];
+  _shouldShowInlineButtonFromDelegate = [(EKEventViewControllerDefaultImpl *)self _shouldShowInlineButtonFromDelegate];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained conformsToProtocol:&unk_1F4F9EBE0])
   {
@@ -6388,8 +6388,8 @@ uint64_t __72__EKEventViewControllerDefaultImpl_updateTitleWithScrollView_animat
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v14 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    v15 = [WeakRetained eventViewControllerShouldShowInlineEditButtonForInvitations:v14];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    v15 = [WeakRetained eventViewControllerShouldShowInlineEditButtonForInvitations:_ekEventViewController];
   }
 
   else
@@ -6405,9 +6405,9 @@ LABEL_18:
   }
 
 LABEL_20:
-  v17 = [(EKEventViewControllerDefaultImpl *)self noninteractivePlatterMode];
+  noninteractivePlatterMode = [(EKEventViewControllerDefaultImpl *)self noninteractivePlatterMode];
   v16 = 0;
-  if (!v17 && v10)
+  if (!noninteractivePlatterMode && _shouldShowInlineButtonFromDelegate)
   {
     v16 = [(EKEventViewControllerDefaultImpl *)self _shouldShowEditButton]| v15;
   }
@@ -6456,14 +6456,14 @@ LABEL_10:
   }
 
   v6 = objc_loadWeakRetained(&self->_delegate);
-  v7 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v8 = [v6 eventViewControllerShouldHandleInlineEdit:v7];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  v8 = [v6 eventViewControllerShouldHandleInlineEdit:_ekEventViewController];
 
   if (v8)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    v9 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [v10 eventViewControllerInlineEditButtonWasTapped:v9];
+    _ekEventViewController2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [v10 eventViewControllerInlineEditButtonWasTapped:_ekEventViewController2];
 
     return;
   }
@@ -6484,20 +6484,20 @@ LABEL_11:
   }
 
   v5 = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v5 eventViewControllerShouldShowNextPreviousRecurrenceButtons];
+  eventViewControllerShouldShowNextPreviousRecurrenceButtons = [v5 eventViewControllerShouldShowNextPreviousRecurrenceButtons];
 
-  if (!v6)
+  if (!eventViewControllerShouldShowNextPreviousRecurrenceButtons)
   {
     return 0;
   }
 
   if (!self->_cachedShowNext)
   {
-    v7 = [(EKEvent *)self->_event nextOccurrence];
+    nextOccurrence = [(EKEvent *)self->_event nextOccurrence];
 
     cachedShowNext = self->_cachedShowNext;
     v9 = MEMORY[0x1E695E118];
-    if (!v7)
+    if (!nextOccurrence)
     {
       v9 = MEMORY[0x1E695E110];
     }
@@ -6521,20 +6521,20 @@ LABEL_11:
   }
 
   v5 = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v5 eventViewControllerShouldShowNextPreviousRecurrenceButtons];
+  eventViewControllerShouldShowNextPreviousRecurrenceButtons = [v5 eventViewControllerShouldShowNextPreviousRecurrenceButtons];
 
-  if (!v6)
+  if (!eventViewControllerShouldShowNextPreviousRecurrenceButtons)
   {
     return 0;
   }
 
   if (!self->_cachedShowPrevious)
   {
-    v7 = [(EKEvent *)self->_event previousOccurrence];
+    previousOccurrence = [(EKEvent *)self->_event previousOccurrence];
 
     cachedShowPrevious = self->_cachedShowPrevious;
     v9 = MEMORY[0x1E695E118];
-    if (!v7)
+    if (!previousOccurrence)
     {
       v9 = MEMORY[0x1E695E110];
     }
@@ -6561,8 +6561,8 @@ LABEL_11:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [WeakRetained eventViewControllerNextButtonWasTapped:v5];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [WeakRetained eventViewControllerNextButtonWasTapped:_ekEventViewController];
   }
 }
 
@@ -6580,16 +6580,16 @@ LABEL_11:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-    [WeakRetained eventViewControllerPreviousButtonWasTapped:v5];
+    _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+    [WeakRetained eventViewControllerPreviousButtonWasTapped:_ekEventViewController];
   }
 }
 
-- (void)uneditableButtonDetailItem:(id)a3 requestsShowEvent:(id)a4
+- (void)uneditableButtonDetailItem:(id)item requestsShowEvent:(id)event
 {
-  v11 = a3;
-  v6 = a4;
-  if (v6)
+  itemCopy = item;
+  eventCopy = event;
+  if (eventCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if ([WeakRetained conformsToProtocol:&unk_1F4F9EBE0])
@@ -6603,8 +6603,8 @@ LABEL_11:
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-      [WeakRetained eventViewController:v10 requestsShowEvent:v6];
+      _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+      [WeakRetained eventViewController:_ekEventViewController requestsShowEvent:eventCopy];
     }
   }
 
@@ -6630,7 +6630,7 @@ LABEL_6:
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([WeakRetained conformsToProtocol:&unk_1F4F9EBE0])
@@ -6651,7 +6651,7 @@ LABEL_6:
   }
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();
@@ -6659,27 +6659,27 @@ LABEL_6:
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    v8 = [v6 pasteboardManager];
+    pasteboardManager = [v6 pasteboardManager];
 
     v7 = [MEMORY[0x1E695DFD8] setWithObject:self->_event];
-    [v8 cutEvents:v7 delegate:self];
+    [pasteboardManager cutEvents:v7 delegate:self];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (sel__performEditKeyCommand == a3)
+  senderCopy = sender;
+  if (sel__performEditKeyCommand == action)
   {
-    v8 = [(EKEventViewControllerDefaultImpl *)self _canPerformEditKeyCommand];
+    _canPerformEditKeyCommand = [(EKEventViewControllerDefaultImpl *)self _canPerformEditKeyCommand];
     goto LABEL_8;
   }
 
   v7 = 0;
-  if (([MEMORY[0x1E6993458] declinesToPerformCutCopyPasteAction:a3 withSender:v6] & 1) == 0 && sel_paste_ != a3)
+  if (([MEMORY[0x1E6993458] declinesToPerformCutCopyPasteAction:action withSender:senderCopy] & 1) == 0 && sel_paste_ != action)
   {
-    if (sel_copy_ == a3)
+    if (sel_copy_ == action)
     {
       v9 = MEMORY[0x1E6993458];
       v17[0] = self->_event;
@@ -6690,13 +6690,13 @@ LABEL_6:
 
     else
     {
-      if (sel_cut_ != a3)
+      if (sel_cut_ != action)
       {
         v15.receiver = self;
         v15.super_class = EKEventViewControllerDefaultImpl;
-        v8 = [(EKEventViewControllerDefaultImpl *)&v15 canPerformAction:a3 withSender:v6];
+        _canPerformEditKeyCommand = [(EKEventViewControllerDefaultImpl *)&v15 canPerformAction:action withSender:senderCopy];
 LABEL_8:
-        v7 = v8;
+        v7 = _canPerformEditKeyCommand;
         goto LABEL_12;
       }
 
@@ -6715,50 +6715,50 @@ LABEL_12:
   return v7;
 }
 
-- (void)pasteboardManager:(id)a3 presentAlert:(id)a4
+- (void)pasteboardManager:(id)manager presentAlert:(id)alert
 {
-  v5 = a4;
-  v6 = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
-  [v5 presentFromSource:v6];
+  alertCopy = alert;
+  presentationSourceViewController = [(EKEventViewControllerDefaultImpl *)self presentationSourceViewController];
+  [alertCopy presentFromSource:presentationSourceViewController];
 }
 
-- (void)setToolbarItems:(id)a3
+- (void)setToolbarItems:(id)items
 {
-  v4 = a3;
-  v5 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  [v5 setToolbarItems:v4];
+  itemsCopy = items;
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  [_ekEventViewController setToolbarItems:itemsCopy];
 }
 
 - (id)toolbarItems
 {
-  v2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v3 = [v2 toolbarItems];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  toolbarItems = [_ekEventViewController toolbarItems];
 
-  return v3;
+  return toolbarItems;
 }
 
-- (void)setToolbarItems:(id)a3 animated:(BOOL)a4
+- (void)setToolbarItems:(id)items animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  [v7 setToolbarItems:v6 animated:v4];
+  animatedCopy = animated;
+  itemsCopy = items;
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  [_ekEventViewController setToolbarItems:itemsCopy animated:animatedCopy];
 }
 
 - (id)navigationItem
 {
-  v2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v3 = [v2 navigationItem];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  navigationItem = [_ekEventViewController navigationItem];
 
-  return v3;
+  return navigationItem;
 }
 
 - (id)navigationController
 {
-  v2 = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
-  v3 = [v2 navigationController];
+  _ekEventViewController = [(EKEventViewControllerDefaultImpl *)self _ekEventViewController];
+  navigationController = [_ekEventViewController navigationController];
 
-  return v3;
+  return navigationController;
 }
 
 - (EKUIViewControllerNavigationDelegate)navigationDelegate
@@ -6767,15 +6767,15 @@ LABEL_12:
 
   if (WeakRetained)
   {
-    v4 = objc_loadWeakRetained(&self->_navigationDelegate);
+    navigationController = objc_loadWeakRetained(&self->_navigationDelegate);
   }
 
   else
   {
-    v4 = [(EKEventViewControllerDefaultImpl *)self navigationController];
+    navigationController = [(EKEventViewControllerDefaultImpl *)self navigationController];
   }
 
-  return v4;
+  return navigationController;
 }
 
 - (EKEventViewDelegate)delegate

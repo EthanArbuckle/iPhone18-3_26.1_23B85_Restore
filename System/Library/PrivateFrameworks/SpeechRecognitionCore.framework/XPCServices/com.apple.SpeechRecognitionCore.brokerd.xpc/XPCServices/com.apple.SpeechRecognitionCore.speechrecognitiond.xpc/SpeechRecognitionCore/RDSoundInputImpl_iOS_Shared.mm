@@ -13,8 +13,8 @@
     sub_1000C8DD8();
   }
 
-  v2 = [qword_10010E440 currentSession];
-  v3 = v2 != 0;
+  currentSession = [qword_10010E440 currentSession];
+  v3 = currentSession != 0;
 
   return v3;
 }
@@ -25,7 +25,7 @@
   if (v3)
   {
 
-    LOBYTE(v3) = [a1 _isCarPlayConnected];
+    LOBYTE(v3) = [self _isCarPlayConnected];
   }
 
   return v3;
@@ -51,10 +51,10 @@
 
   v4 = v3;
   _Block_object_dispose(&v9, 8);
-  v5 = [v3 server];
-  if ([v5 isSystemSleeping])
+  server = [v3 server];
+  if ([server isSystemSleeping])
   {
-    v6 = [a1 isCarPlayActive] ^ 1;
+    v6 = [self isCarPlayActive] ^ 1;
   }
 
   else

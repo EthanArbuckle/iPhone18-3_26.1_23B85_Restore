@@ -5,8 +5,8 @@
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)name;
 - (NSUUID)correlationID;
-- (void)setCorrelationID:(id)a3;
-- (void)setName:(id)a3;
+- (void)setCorrelationID:(id)d;
+- (void)setName:(id)name;
 @end
 
 @implementation APSClientIdentityMetric
@@ -27,7 +27,7 @@
   return v10.super.isa;
 }
 
-- (void)setCorrelationID:(id)a3
+- (void)setCorrelationID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -38,7 +38,7 @@
   v10 = OBJC_IVAR___APSClientIdentityMetric_correlationID;
   swift_beginAccess();
   v11 = *(v5 + 40);
-  v12 = self;
+  selfCopy = self;
   v11(self + v10, v9, v4);
   swift_endAccess();
 }
@@ -46,7 +46,7 @@
 - (NSArray)errors
 {
   v2 = *((swift_isaMask & *self) + 0x148);
-  v3 = self;
+  selfCopy = self;
   v2();
 
   sub_1000C8C30(&unk_1001BD030, &qword_10015D290);
@@ -62,7 +62,7 @@
   v3[2] = 0xD000000000000018;
   v3[3] = 0x8000000100156EB0;
   v3[4] = self;
-  v4 = self;
+  selfCopy = self;
 
   return v3;
 }
@@ -79,7 +79,7 @@
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -92,7 +92,7 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   ClientIdentityMetric.dictionaryRepresentation.getter();
 
   sub_1000C8C30(&unk_1001BD630, &unk_10015DAA0);

@@ -1,15 +1,15 @@
 @interface PLVariationCacheEvictionMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLVariationCacheEvictionMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v3 = [(PLMaintenanceTask *)self libraryBundle];
-  v4 = [v3 variationCache];
+  libraryBundle = [(PLMaintenanceTask *)self libraryBundle];
+  variationCache = [libraryBundle variationCache];
 
-  [v4 evictIfNeeded];
+  [variationCache evictIfNeeded];
   return 1;
 }
 

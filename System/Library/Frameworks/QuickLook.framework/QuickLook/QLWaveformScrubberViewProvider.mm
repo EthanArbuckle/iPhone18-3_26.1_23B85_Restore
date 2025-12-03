@@ -1,11 +1,11 @@
 @interface QLWaveformScrubberViewProvider
-+ (void)generateWaveformForSize:(CGSize)a3 asset:(id)a4 updateHandler:(id)a5;
-- (id)createFilmstripViewForVideoScrubberView:(id)a3;
++ (void)generateWaveformForSize:(CGSize)size asset:(id)asset updateHandler:(id)handler;
+- (id)createFilmstripViewForVideoScrubberView:(id)view;
 @end
 
 @implementation QLWaveformScrubberViewProvider
 
-- (id)createFilmstripViewForVideoScrubberView:(id)a3
+- (id)createFilmstripViewForVideoScrubberView:(id)view
 {
   v3 = [QLWaveformView alloc];
   v4 = [(QLWaveformView *)v3 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -13,12 +13,12 @@
   return v4;
 }
 
-+ (void)generateWaveformForSize:(CGSize)a3 asset:(id)a4 updateHandler:(id)a5
++ (void)generateWaveformForSize:(CGSize)size asset:(id)asset updateHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  handlerCopy = handler;
   v10 = width * 0.25;
   v11 = MEMORY[0x277D43EF8];
   v12 = *MEMORY[0x277D43EF8];
@@ -40,9 +40,9 @@
     v17 = 3221225472;
     v18 = __78__QLWaveformScrubberViewProvider_generateWaveformForSize_asset_updateHandler___block_invoke;
     v19 = &unk_278B57FB8;
-    v20 = v9;
+    v20 = handlerCopy;
     v21 = v10;
-    v13 = v8;
+    v13 = assetCopy;
     v14 = &v16;
     v15 = *MEMORY[0x277CE5E48];
     *buf = MEMORY[0x277D85DD0];

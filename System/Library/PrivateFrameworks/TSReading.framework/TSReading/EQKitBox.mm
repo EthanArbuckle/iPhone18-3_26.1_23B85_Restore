@@ -1,33 +1,33 @@
 @interface EQKitBox
-- (BOOL)isEqual:(id)a3;
-- (CGAffineTransform)transformFromDescendant:(SEL)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGAffineTransform)transformFromDescendant:(SEL)descendant;
 - (CGRect)erasableBounds;
 - (double)layoutDepth;
 - (double)layoutHeight;
 - (double)layoutVSize;
 - (double)vsize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation EQKitBox
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   v4 = objc_opt_class();
 
-  return [a3 isMemberOfClass:v4];
+  return [equal isMemberOfClass:v4];
 }
 
 - (double)vsize
@@ -106,7 +106,7 @@
   return result;
 }
 
-- (CGAffineTransform)transformFromDescendant:(SEL)a3
+- (CGAffineTransform)transformFromDescendant:(SEL)descendant
 {
   v5 = MEMORY[0x277CBF2C0];
   v6 = *(MEMORY[0x277CBF2C0] + 16);

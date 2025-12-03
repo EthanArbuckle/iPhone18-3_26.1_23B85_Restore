@@ -1,14 +1,14 @@
 @interface PXStoryRelatedOverlayItemDecorationSource
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4;
-- (PXStoryRelatedOverlayItemDecorationSource)initWithObservableModel:(id)a3;
-- (PXStoryRelatedOverlayItemDecorationSource)initWithViewModel:(id)a3;
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout;
+- (PXStoryRelatedOverlayItemDecorationSource)initWithObservableModel:(id)model;
+- (PXStoryRelatedOverlayItemDecorationSource)initWithViewModel:(id)model;
 - (PXStoryRelatedOverlayLayout)decoratedLayout;
-- (id)selectedSpriteIndexesInLayout:(id)a3;
+- (id)selectedSpriteIndexesInLayout:(id)layout;
 - (void)_invalidateSelectedRelatedIndex;
 - (void)_updateSelectedRelatedIndex;
-- (void)configureUpdater:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setDecoratedLayout:(id)a3;
+- (void)configureUpdater:(id)updater;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setDecoratedLayout:(id)layout;
 @end
 
 @implementation PXStoryRelatedOverlayItemDecorationSource
@@ -20,12 +20,12 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  if (ViewModelObservationContext_242494 == a5)
+  observableCopy = observable;
+  if (ViewModelObservationContext_242494 == context)
   {
-    if ((a4 & 0x100000000000000) != 0)
+    if ((change & 0x100000000000000) != 0)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
@@ -40,39 +40,39 @@
   {
     v9.receiver = self;
     v9.super_class = PXStoryRelatedOverlayItemDecorationSource;
-    [(PXStoryController *)&v9 observable:v8 didChange:a4 context:a5];
+    [(PXStoryController *)&v9 observable:observableCopy didChange:change context:context];
   }
 }
 
 - (void)_updateSelectedRelatedIndex
 {
-  v3 = [(PXStoryRelatedOverlayItemDecorationSource *)self viewModel];
-  v4 = [v3 highlightedRelatedIndex];
+  viewModel = [(PXStoryRelatedOverlayItemDecorationSource *)self viewModel];
+  highlightedRelatedIndex = [viewModel highlightedRelatedIndex];
   selectedIndex = self->_selectedIndex;
 
-  if (v4 != selectedIndex)
+  if (highlightedRelatedIndex != selectedIndex)
   {
-    v6 = [(PXStoryRelatedOverlayItemDecorationSource *)self viewModel];
-    self->_selectedIndex = [v6 highlightedRelatedIndex];
+    viewModel2 = [(PXStoryRelatedOverlayItemDecorationSource *)self viewModel];
+    self->_selectedIndex = [viewModel2 highlightedRelatedIndex];
 
-    v7 = [(PXStoryRelatedOverlayItemDecorationSource *)self decoratedLayout];
-    v8 = v7;
+    decoratedLayout = [(PXStoryRelatedOverlayItemDecorationSource *)self decoratedLayout];
+    v8 = decoratedLayout;
     v9 = self->_selectedIndex;
     v11 = v9 != 0x7FFFFFFFFFFFFFFFLL && v9 != 0;
-    [v7 showOrHideFullRelated:v11];
+    [decoratedLayout showOrHideFullRelated:v11];
 
-    v12 = [(PXStoryRelatedOverlayItemDecorationSource *)self decoratedLayout];
-    [v12 invalidateDecoration];
+    decoratedLayout2 = [(PXStoryRelatedOverlayItemDecorationSource *)self decoratedLayout];
+    [decoratedLayout2 invalidateDecoration];
   }
 }
 
 - (void)_invalidateSelectedRelatedIndex
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSelectedRelatedIndex];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSelectedRelatedIndex];
 }
 
-- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)a3 inLayout:(id)a4
+- ($C28CD4A45FD07A4F97CC9D5F91F25271)overlayInsetsForSpriteIndex:(unsigned int)index inLayout:(id)layout
 {
   v4 = *off_1E7722000;
   v5 = *(off_1E7722000 + 1);
@@ -85,7 +85,7 @@
   return result;
 }
 
-- (id)selectedSpriteIndexesInLayout:(id)a3
+- (id)selectedSpriteIndexesInLayout:(id)layout
 {
   if (self->_selectedIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -94,59 +94,59 @@
 
   else
   {
-    v5 = [(PXStoryRelatedOverlayItemDecorationSource *)self decoratedLayout];
-    v6 = [v5 relatedSelectionSpriteIndexRange];
+    decoratedLayout = [(PXStoryRelatedOverlayItemDecorationSource *)self decoratedLayout];
+    relatedSelectionSpriteIndexRange = [decoratedLayout relatedSelectionSpriteIndexRange];
 
-    v3 = [MEMORY[0x1E696AC90] indexSetWithIndex:self->_selectedIndex + v6];
+    v3 = [MEMORY[0x1E696AC90] indexSetWithIndex:self->_selectedIndex + relatedSelectionSpriteIndexRange];
   }
 
   return v3;
 }
 
-- (void)setDecoratedLayout:(id)a3
+- (void)setDecoratedLayout:(id)layout
 {
-  obj = a3;
+  obj = layout;
   WeakRetained = objc_loadWeakRetained(&self->_decoratedLayout);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_decoratedLayout, obj);
-    v6 = [(PXStoryRelatedOverlayItemDecorationSource *)self decoratedLayout];
-    [v6 invalidateDecoration];
+    decoratedLayout = [(PXStoryRelatedOverlayItemDecorationSource *)self decoratedLayout];
+    [decoratedLayout invalidateDecoration];
 
     v5 = obj;
   }
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStoryRelatedOverlayItemDecorationSource;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateSelectedRelatedIndex, v4.receiver, v4.super_class}];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateSelectedRelatedIndex, v4.receiver, v4.super_class}];
 }
 
-- (PXStoryRelatedOverlayItemDecorationSource)initWithObservableModel:(id)a3
+- (PXStoryRelatedOverlayItemDecorationSource)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayItemDecorationSource.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryRelatedOverlayItemDecorationSource initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryRelatedOverlayItemDecorationSource.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryRelatedOverlayItemDecorationSource initWithObservableModel:]"}];
 
   abort();
 }
 
-- (PXStoryRelatedOverlayItemDecorationSource)initWithViewModel:(id)a3
+- (PXStoryRelatedOverlayItemDecorationSource)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXStoryRelatedOverlayItemDecorationSource;
-  v6 = [(PXStoryController *)&v9 initWithObservableModel:v5];
+  v6 = [(PXStoryController *)&v9 initWithObservableModel:modelCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
     v7->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
     [(PXStoryViewModel *)v7->_viewModel registerChangeObserver:v7 context:ViewModelObservationContext_242494];
   }

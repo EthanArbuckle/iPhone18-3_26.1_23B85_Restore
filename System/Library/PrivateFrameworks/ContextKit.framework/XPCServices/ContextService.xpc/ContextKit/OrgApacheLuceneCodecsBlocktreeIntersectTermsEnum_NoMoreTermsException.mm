@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneCodecsBlocktreeIntersectTermsEnum_NoMoreTermsException alloc];
     JavaLangRuntimeException_init(v2, v3);

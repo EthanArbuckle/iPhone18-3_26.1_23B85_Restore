@@ -1,16 +1,16 @@
 @interface APSOffloadHeuristics
 + (APSOffloadHeuristics)shared;
-- (BOOL)canOffloadOnInterface:(int64_t)a3;
-- (void)addDelegate:(id)a3;
-- (void)connectionAttemptFailedWithError:(id)a3 interface:(int64_t)a4;
-- (void)connectionDisconnectWithAPSReason:(unsigned int)a3 interface:(int64_t)a4;
-- (void)connectionDisconnectWithError:(id)a3 interface:(int64_t)a4;
-- (void)directConnectionAttemptedOnInterface:(int64_t)a3;
-- (void)keepAliveSendOnInterface:(int64_t)a3 interval:(int64_t)a4;
-- (void)offloadConnectionAttemptedOnInterface:(int64_t)a3;
-- (void)offloadKeepAlivePerformedOnInterface:(int64_t)a3 interval:(int64_t)a4;
-- (void)receivedBytes:(int64_t)a3 onInterface:(int64_t)a4;
-- (void)sentBytes:(int64_t)a3 onInterface:(int64_t)a4;
+- (BOOL)canOffloadOnInterface:(int64_t)interface;
+- (void)addDelegate:(id)delegate;
+- (void)connectionAttemptFailedWithError:(id)error interface:(int64_t)interface;
+- (void)connectionDisconnectWithAPSReason:(unsigned int)reason interface:(int64_t)interface;
+- (void)connectionDisconnectWithError:(id)error interface:(int64_t)interface;
+- (void)directConnectionAttemptedOnInterface:(int64_t)interface;
+- (void)keepAliveSendOnInterface:(int64_t)interface interval:(int64_t)interval;
+- (void)offloadConnectionAttemptedOnInterface:(int64_t)interface;
+- (void)offloadKeepAlivePerformedOnInterface:(int64_t)interface interval:(int64_t)interval;
+- (void)receivedBytes:(int64_t)bytes onInterface:(int64_t)interface;
+- (void)sentBytes:(int64_t)bytes onInterface:(int64_t)interface;
 @end
 
 @implementation APSOffloadHeuristics
@@ -35,11 +35,11 @@
   return v2;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v4 = *((swift_isaMask & self->super.isa) + 0x70);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = v4(v10);
   v8 = v7;
   swift_unknownObjectRetain();
@@ -55,68 +55,68 @@
   swift_unknownObjectRelease();
 }
 
-- (BOOL)canOffloadOnInterface:(int64_t)a3
+- (BOOL)canOffloadOnInterface:(int64_t)interface
 {
-  v4 = self;
-  LOBYTE(a3) = OffloadHeuristics.canOffload(onInterface:)(a3);
+  selfCopy = self;
+  LOBYTE(interface) = OffloadHeuristics.canOffload(onInterface:)(interface);
 
-  return a3 & 1;
+  return interface & 1;
 }
 
-- (void)offloadConnectionAttemptedOnInterface:(int64_t)a3
+- (void)offloadConnectionAttemptedOnInterface:(int64_t)interface
 {
-  v4 = self;
-  OffloadHeuristics.offloadConnectionAttempted(onInterface:)(a3);
+  selfCopy = self;
+  OffloadHeuristics.offloadConnectionAttempted(onInterface:)(interface);
 }
 
-- (void)directConnectionAttemptedOnInterface:(int64_t)a3
+- (void)directConnectionAttemptedOnInterface:(int64_t)interface
 {
-  v4 = self;
-  OffloadHeuristics.directConnectionAttempted(onInterface:)(a3);
+  selfCopy = self;
+  OffloadHeuristics.directConnectionAttempted(onInterface:)(interface);
 }
 
-- (void)connectionAttemptFailedWithError:(id)a3 interface:(int64_t)a4
+- (void)connectionAttemptFailedWithError:(id)error interface:(int64_t)interface
 {
-  v6 = self;
-  v7 = a3;
-  OffloadHeuristics.connectionAttemptFailed(error:interface:)(a3, a4);
+  selfCopy = self;
+  errorCopy = error;
+  OffloadHeuristics.connectionAttemptFailed(error:interface:)(error, interface);
 }
 
-- (void)connectionDisconnectWithError:(id)a3 interface:(int64_t)a4
+- (void)connectionDisconnectWithError:(id)error interface:(int64_t)interface
 {
-  v7 = a3;
-  v6 = self;
-  OffloadHeuristics.connectionDisconnect(withError:interface:)(v7, a4);
+  errorCopy = error;
+  selfCopy = self;
+  OffloadHeuristics.connectionDisconnect(withError:interface:)(errorCopy, interface);
 }
 
-- (void)connectionDisconnectWithAPSReason:(unsigned int)a3 interface:(int64_t)a4
+- (void)connectionDisconnectWithAPSReason:(unsigned int)reason interface:(int64_t)interface
 {
-  v6 = self;
-  OffloadHeuristics.connectionDisconnect(withAPSReason:interface:)(a3, a4);
+  selfCopy = self;
+  OffloadHeuristics.connectionDisconnect(withAPSReason:interface:)(reason, interface);
 }
 
-- (void)keepAliveSendOnInterface:(int64_t)a3 interval:(int64_t)a4
+- (void)keepAliveSendOnInterface:(int64_t)interface interval:(int64_t)interval
 {
-  v6 = self;
-  OffloadHeuristics.keepAliveSend(onInterface:interval:)(a3, a4);
+  selfCopy = self;
+  OffloadHeuristics.keepAliveSend(onInterface:interval:)(interface, interval);
 }
 
-- (void)offloadKeepAlivePerformedOnInterface:(int64_t)a3 interval:(int64_t)a4
+- (void)offloadKeepAlivePerformedOnInterface:(int64_t)interface interval:(int64_t)interval
 {
-  v6 = self;
-  OffloadHeuristics.offloadKeepAlivePerformed(onInterface:interval:)(a3, a4);
+  selfCopy = self;
+  OffloadHeuristics.offloadKeepAlivePerformed(onInterface:interval:)(interface, interval);
 }
 
-- (void)receivedBytes:(int64_t)a3 onInterface:(int64_t)a4
+- (void)receivedBytes:(int64_t)bytes onInterface:(int64_t)interface
 {
-  v6 = self;
-  OffloadHeuristics.received(bytes:onInterface:)(a3, a4);
+  selfCopy = self;
+  OffloadHeuristics.received(bytes:onInterface:)(bytes, interface);
 }
 
-- (void)sentBytes:(int64_t)a3 onInterface:(int64_t)a4
+- (void)sentBytes:(int64_t)bytes onInterface:(int64_t)interface
 {
-  v6 = self;
-  OffloadHeuristics.sent(bytes:onInterface:)(a3, a4);
+  selfCopy = self;
+  OffloadHeuristics.sent(bytes:onInterface:)(bytes, interface);
 }
 
 @end

@@ -12,55 +12,55 @@
 - (ICAssetGenerationManager)fallbackImageGenerationManager
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttachment *)self account];
-  v4 = v3;
-  if (v3)
+  account = [(ICAttachment *)self account];
+  v4 = account;
+  if (account)
   {
-    v5 = v3;
+    account3 = account;
   }
 
   else
   {
-    v6 = [(ICAttachment *)self note];
-    v7 = [v6 account];
-    v8 = v7;
-    if (v7)
+    note = [(ICAttachment *)self note];
+    account2 = [note account];
+    v8 = account2;
+    if (account2)
     {
-      v5 = v7;
+      account3 = account2;
     }
 
     else
     {
-      v9 = [(ICAttachment *)self note];
-      v10 = [v9 folder];
-      v5 = [v10 account];
+      note2 = [(ICAttachment *)self note];
+      folder = [note2 folder];
+      account3 = [folder account];
     }
   }
 
-  v11 = [(ICAttachment *)self identifier];
+  identifier = [(ICAttachment *)self identifier];
 
   v12 = 0;
-  if (v11 && v5)
+  if (identifier && account3)
   {
     fallbackImageGenerationManager = self->_fallbackImageGenerationManager;
     if (!fallbackImageGenerationManager)
     {
       v14 = NSStringFromSelector(sel_fallbackImageGeneration);
       v15 = objc_opt_class();
-      v16 = [(ICAttachment *)self identifier];
-      v17 = [v15 fallbackImageContainerURLForIdentifier:v16 account:v5];
+      identifier2 = [(ICAttachment *)self identifier];
+      v17 = [v15 fallbackImageContainerURLForIdentifier:identifier2 account:account3];
 
       v18 = [[ICAssetGenerationManager alloc] initWithObject:self generationKeyPath:v14 containerURL:v17];
       v19 = self->_fallbackImageGenerationManager;
       self->_fallbackImageGenerationManager = v18;
 
       v20 = objc_opt_class();
-      v21 = [(ICAttachment *)self identifier];
-      v22 = [v20 fallbackImageFallbackURLForIdentifier:v21 account:v5];
+      identifier3 = [(ICAttachment *)self identifier];
+      v22 = [v20 fallbackImageFallbackURLForIdentifier:identifier3 account:account3];
       v28[0] = v22;
       v23 = objc_opt_class();
-      v24 = [(ICAttachment *)self identifier];
-      v25 = [v23 fallbackImageEncryptedFallbackURLForIdentifier:v24 account:v5];
+      identifier4 = [(ICAttachment *)self identifier];
+      v25 = [v23 fallbackImageEncryptedFallbackURLForIdentifier:identifier4 account:account3];
       v28[1] = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
       [(ICAssetGenerationManager *)self->_fallbackImageGenerationManager setFallbackURLs:v26];
@@ -77,55 +77,55 @@
 - (ICAssetGenerationManager)fallbackPDFGenerationManager
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttachment *)self account];
-  v4 = v3;
-  if (v3)
+  account = [(ICAttachment *)self account];
+  v4 = account;
+  if (account)
   {
-    v5 = v3;
+    account3 = account;
   }
 
   else
   {
-    v6 = [(ICAttachment *)self note];
-    v7 = [v6 account];
-    v8 = v7;
-    if (v7)
+    note = [(ICAttachment *)self note];
+    account2 = [note account];
+    v8 = account2;
+    if (account2)
     {
-      v5 = v7;
+      account3 = account2;
     }
 
     else
     {
-      v9 = [(ICAttachment *)self note];
-      v10 = [v9 folder];
-      v5 = [v10 account];
+      note2 = [(ICAttachment *)self note];
+      folder = [note2 folder];
+      account3 = [folder account];
     }
   }
 
-  v11 = [(ICAttachment *)self identifier];
+  identifier = [(ICAttachment *)self identifier];
 
   v12 = 0;
-  if (v11 && v5)
+  if (identifier && account3)
   {
     fallbackPDFGenerationManager = self->_fallbackPDFGenerationManager;
     if (!fallbackPDFGenerationManager)
     {
       v14 = NSStringFromSelector(sel_fallbackPDFGeneration);
       v15 = objc_opt_class();
-      v16 = [(ICAttachment *)self identifier];
-      v17 = [v15 fallbackPDFContainerURLForIdentifier:v16 account:v5];
+      identifier2 = [(ICAttachment *)self identifier];
+      v17 = [v15 fallbackPDFContainerURLForIdentifier:identifier2 account:account3];
 
       v18 = [[ICAssetGenerationManager alloc] initWithObject:self generationKeyPath:v14 containerURL:v17];
       v19 = self->_fallbackPDFGenerationManager;
       self->_fallbackPDFGenerationManager = v18;
 
       v20 = objc_opt_class();
-      v21 = [(ICAttachment *)self identifier];
-      v22 = [v20 fallbackPDFFallbackURLForIdentifier:v21 account:v5];
+      identifier3 = [(ICAttachment *)self identifier];
+      v22 = [v20 fallbackPDFFallbackURLForIdentifier:identifier3 account:account3];
       v28[0] = v22;
       v23 = objc_opt_class();
-      v24 = [(ICAttachment *)self identifier];
-      v25 = [v23 fallbackPDFEncryptedFallbackURLForIdentifier:v24 account:v5];
+      identifier4 = [(ICAttachment *)self identifier];
+      v25 = [v23 fallbackPDFEncryptedFallbackURLForIdentifier:identifier4 account:account3];
       v28[1] = v25;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
       [(ICAssetGenerationManager *)self->_fallbackPDFGenerationManager setFallbackURLs:v26];
@@ -141,7 +141,7 @@
 
 - (void)fallbackImageData
 {
-  v1 = [a1 shortLoggingDescription];
+  shortLoggingDescription = [self shortLoggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -165,7 +165,7 @@
 
 - (void)fallbackPDFData
 {
-  v1 = [a1 shortLoggingDescription];
+  shortLoggingDescription = [self shortLoggingDescription];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -198,7 +198,7 @@
 {
   v5 = *(*a2 + 40);
   *buf = 138412546;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2112;
   *(buf + 14) = v5;
   _os_log_error_impl(&dword_214D51000, log, OS_LOG_TYPE_ERROR, "Cannot remove temporary paper bundle {attachment: %@, error: %@}", buf, 0x16u);

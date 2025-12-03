@@ -1,43 +1,43 @@
 @interface CLKComplicationClient
-- (CLKComplicationClient)initWithConnection:(id)a3;
+- (CLKComplicationClient)initWithConnection:(id)connection;
 - (CLKComplicationClientDelegate)delegate;
 - (void)_handleConnectionInvalidated;
-- (void)addInvalidationObserver:(id)a3;
-- (void)checkinWithClientIdentifier:(id)a3 bundlePath:(id)a4;
-- (void)extendTimelineForComplication:(id)a3;
-- (void)getAlwaysOnTemplateForComplication:(id)a3 withHandler:(id)a4;
-- (void)getComplicationDescriptorsWithHandler:(id)a3;
-- (void)getCurrentTimelineEntryForComplication:(id)a3 withHandler:(id)a4;
-- (void)getLocalizableSampleTemplateForComplication:(id)a3 withHandler:(id)a4;
-- (void)getNextRequestedUpdateDateWithHandler:(id)a3;
-- (void)getPrivacyBehaviorForComplication:(id)a3 withHandler:(id)a4;
-- (void)getTimelineAnimationBehaviorForComplication:(id)a3 withHandler:(id)a4;
-- (void)getTimelineEndDateForComplication:(id)a3 withHandler:(id)a4;
-- (void)getTimelineEntriesForComplication:(id)a3 afterDate:(id)a4 limit:(unint64_t)a5 withHandler:(id)a6;
-- (void)getWidgetMigrationConfigurationFrom:(id)a3 withHandler:(id)a4;
-- (void)handleSharedComplicationDescriptors:(id)a3;
-- (void)notifyDebugTimeoutWithCharging:(BOOL)a3;
+- (void)addInvalidationObserver:(id)observer;
+- (void)checkinWithClientIdentifier:(id)identifier bundlePath:(id)path;
+- (void)extendTimelineForComplication:(id)complication;
+- (void)getAlwaysOnTemplateForComplication:(id)complication withHandler:(id)handler;
+- (void)getComplicationDescriptorsWithHandler:(id)handler;
+- (void)getCurrentTimelineEntryForComplication:(id)complication withHandler:(id)handler;
+- (void)getLocalizableSampleTemplateForComplication:(id)complication withHandler:(id)handler;
+- (void)getNextRequestedUpdateDateWithHandler:(id)handler;
+- (void)getPrivacyBehaviorForComplication:(id)complication withHandler:(id)handler;
+- (void)getTimelineAnimationBehaviorForComplication:(id)complication withHandler:(id)handler;
+- (void)getTimelineEndDateForComplication:(id)complication withHandler:(id)handler;
+- (void)getTimelineEntriesForComplication:(id)complication afterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler;
+- (void)getWidgetMigrationConfigurationFrom:(id)from withHandler:(id)handler;
+- (void)handleSharedComplicationDescriptors:(id)descriptors;
+- (void)notifyDebugTimeoutWithCharging:(BOOL)charging;
 - (void)reloadComplicationDescriptors;
-- (void)reloadTimelineForComplication:(id)a3;
-- (void)removeInvalidationObserver:(id)a3;
+- (void)reloadTimelineForComplication:(id)complication;
+- (void)removeInvalidationObserver:(id)observer;
 - (void)requestedUpdateBudgetExhausted;
 - (void)requestedUpdateDidBegin;
-- (void)setActiveComplications:(id)a3;
+- (void)setActiveComplications:(id)complications;
 @end
 
 @implementation CLKComplicationClient
 
-- (CLKComplicationClient)initWithConnection:(id)a3
+- (CLKComplicationClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v26.receiver = self;
   v26.super_class = CLKComplicationClient;
   v6 = [(CLKComplicationClient *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
-    v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "processIdentifier")}];
+    objc_storeStrong(&v6->_connection, connection);
+    v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(connectionCopy, "processIdentifier")}];
     pid = v7->_pid;
     v7->_pid = v8;
 
@@ -90,32 +90,32 @@ void __44__CLKComplicationClient_initWithConnection___block_invoke_2(uint64_t a1
   [WeakRetained _handleConnectionInvalidated];
 }
 
-- (void)setActiveComplications:(id)a3
+- (void)setActiveComplications:(id)complications
 {
-  objc_storeStrong(&self->_activeComplications, a3);
-  v5 = a3;
-  v6 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v6 setActiveComplications:v5];
+  objc_storeStrong(&self->_activeComplications, complications);
+  complicationsCopy = complications;
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy setActiveComplications:complicationsCopy];
 }
 
-- (void)addInvalidationObserver:(id)a3
+- (void)addInvalidationObserver:(id)observer
 {
   invalidationObserversLock = self->_invalidationObserversLock;
-  v5 = a3;
+  observerCopy = observer;
   [(NSLock *)invalidationObserversLock lock];
-  [(NSHashTable *)self->_invalidationObservers addObject:v5];
+  [(NSHashTable *)self->_invalidationObservers addObject:observerCopy];
 
   v6 = self->_invalidationObserversLock;
 
   [(NSLock *)v6 unlock];
 }
 
-- (void)removeInvalidationObserver:(id)a3
+- (void)removeInvalidationObserver:(id)observer
 {
   invalidationObserversLock = self->_invalidationObserversLock;
-  v5 = a3;
+  observerCopy = observer;
   [(NSLock *)invalidationObserversLock lock];
-  [(NSHashTable *)self->_invalidationObservers removeObject:v5];
+  [(NSHashTable *)self->_invalidationObservers removeObject:observerCopy];
 
   v6 = self->_invalidationObserversLock;
 
@@ -150,13 +150,13 @@ void __44__CLKComplicationClient_initWithConnection___block_invoke_2(uint64_t a1
     self->_checkinHandler = 0;
 
     [(NSLock *)self->_invalidationObserversLock lock];
-    v7 = [(NSHashTable *)self->_invalidationObservers allObjects];
+    allObjects = [(NSHashTable *)self->_invalidationObservers allObjects];
     [(NSLock *)self->_invalidationObserversLock unlock];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v7;
+    v8 = allObjects;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -188,19 +188,19 @@ void __44__CLKComplicationClient_initWithConnection___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)checkinWithClientIdentifier:(id)a3 bundlePath:(id)a4
+- (void)checkinWithClientIdentifier:(id)identifier bundlePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__CLKComplicationClient_checkinWithClientIdentifier_bundlePath___block_invoke;
   block[3] = &unk_278A1F568;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = pathCopy;
+  v8 = pathCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -218,16 +218,16 @@ void __64__CLKComplicationClient_checkinWithClientIdentifier_bundlePath___block_
   }
 }
 
-- (void)reloadTimelineForComplication:(id)a3
+- (void)reloadTimelineForComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__CLKComplicationClient_reloadTimelineForComplication___block_invoke;
   v6[3] = &unk_278A1F590;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = complicationCopy;
+  selfCopy = self;
+  v5 = complicationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -247,16 +247,16 @@ void __55__CLKComplicationClient_reloadTimelineForComplication___block_invoke(ui
   [WeakRetained complicationClient:*(a1 + 40) reloadTimelineForComplication:*(a1 + 32)];
 }
 
-- (void)extendTimelineForComplication:(id)a3
+- (void)extendTimelineForComplication:(id)complication
 {
-  v4 = a3;
+  complicationCopy = complication;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__CLKComplicationClient_extendTimelineForComplication___block_invoke;
   v6[3] = &unk_278A1F590;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = complicationCopy;
+  selfCopy = self;
+  v5 = complicationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -299,13 +299,13 @@ void __54__CLKComplicationClient_reloadComplicationDescriptors__block_invoke(uin
   [WeakRetained reloadComplicationDescriptorsForComplicationClient:*(a1 + 32)];
 }
 
-- (void)getTimelineEndDateForComplication:(id)a3 withHandler:(id)a4
+- (void)getTimelineEndDateForComplication:(id)complication withHandler:(id)handler
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  complicationCopy = complication;
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_12];
-  [v8 getTimelineEndDateForComplication:v7 withHandler:v6];
+  [v8 getTimelineEndDateForComplication:complicationCopy withHandler:handlerCopy];
 }
 
 void __71__CLKComplicationClient_getTimelineEndDateForComplication_withHandler___block_invoke(uint64_t a1, void *a2)
@@ -318,13 +318,13 @@ void __71__CLKComplicationClient_getTimelineEndDateForComplication_withHandler__
   }
 }
 
-- (void)getPrivacyBehaviorForComplication:(id)a3 withHandler:(id)a4
+- (void)getPrivacyBehaviorForComplication:(id)complication withHandler:(id)handler
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  complicationCopy = complication;
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_5];
-  [v8 getPrivacyBehaviorForComplication:v7 withHandler:v6];
+  [v8 getPrivacyBehaviorForComplication:complicationCopy withHandler:handlerCopy];
 }
 
 void __71__CLKComplicationClient_getPrivacyBehaviorForComplication_withHandler___block_invoke(uint64_t a1, void *a2)
@@ -337,13 +337,13 @@ void __71__CLKComplicationClient_getPrivacyBehaviorForComplication_withHandler__
   }
 }
 
-- (void)getAlwaysOnTemplateForComplication:(id)a3 withHandler:(id)a4
+- (void)getAlwaysOnTemplateForComplication:(id)complication withHandler:(id)handler
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  complicationCopy = complication;
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
-  [v8 getAlwaysOnTemplateForComplication:v7 withHandler:v6];
+  [v8 getAlwaysOnTemplateForComplication:complicationCopy withHandler:handlerCopy];
 }
 
 void __72__CLKComplicationClient_getAlwaysOnTemplateForComplication_withHandler___block_invoke(uint64_t a1, void *a2)
@@ -356,13 +356,13 @@ void __72__CLKComplicationClient_getAlwaysOnTemplateForComplication_withHandler_
   }
 }
 
-- (void)getTimelineAnimationBehaviorForComplication:(id)a3 withHandler:(id)a4
+- (void)getTimelineAnimationBehaviorForComplication:(id)complication withHandler:(id)handler
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  complicationCopy = complication;
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_9];
-  [v8 getTimelineAnimationBehaviorForComplication:v7 withHandler:v6];
+  [v8 getTimelineAnimationBehaviorForComplication:complicationCopy withHandler:handlerCopy];
 }
 
 void __81__CLKComplicationClient_getTimelineAnimationBehaviorForComplication_withHandler___block_invoke(uint64_t a1, void *a2)
@@ -375,13 +375,13 @@ void __81__CLKComplicationClient_getTimelineAnimationBehaviorForComplication_wit
   }
 }
 
-- (void)getCurrentTimelineEntryForComplication:(id)a3 withHandler:(id)a4
+- (void)getCurrentTimelineEntryForComplication:(id)complication withHandler:(id)handler
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  complicationCopy = complication;
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
-  [v8 getCurrentTimelineEntryForComplication:v7 withHandler:v6];
+  [v8 getCurrentTimelineEntryForComplication:complicationCopy withHandler:handlerCopy];
 }
 
 void __76__CLKComplicationClient_getCurrentTimelineEntryForComplication_withHandler___block_invoke(uint64_t a1, void *a2)
@@ -394,14 +394,14 @@ void __76__CLKComplicationClient_getCurrentTimelineEntryForComplication_withHand
   }
 }
 
-- (void)getTimelineEntriesForComplication:(id)a3 afterDate:(id)a4 limit:(unint64_t)a5 withHandler:(id)a6
+- (void)getTimelineEntriesForComplication:(id)complication afterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler
 {
   connection = self->_connection;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  dateCopy = date;
+  complicationCopy = complication;
   v13 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_13];
-  [v13 getTimelineEntriesForComplication:v12 afterDate:v11 limit:a5 withHandler:v10];
+  [v13 getTimelineEntriesForComplication:complicationCopy afterDate:dateCopy limit:limit withHandler:handlerCopy];
 }
 
 void __87__CLKComplicationClient_getTimelineEntriesForComplication_afterDate_limit_withHandler___block_invoke(uint64_t a1, void *a2)
@@ -414,12 +414,12 @@ void __87__CLKComplicationClient_getTimelineEntriesForComplication_afterDate_lim
   }
 }
 
-- (void)getNextRequestedUpdateDateWithHandler:(id)a3
+- (void)getNextRequestedUpdateDateWithHandler:(id)handler
 {
   connection = self->_connection;
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_15];
-  [v5 getNextRequestedUpdateDateWithHandler:v4];
+  [v5 getNextRequestedUpdateDateWithHandler:handlerCopy];
 }
 
 void __63__CLKComplicationClient_getNextRequestedUpdateDateWithHandler___block_invoke(uint64_t a1, void *a2)
@@ -434,23 +434,23 @@ void __63__CLKComplicationClient_getNextRequestedUpdateDateWithHandler___block_i
 
 - (void)requestedUpdateDidBegin
 {
-  v2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v2 requestedUpdateDidBegin];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy requestedUpdateDidBegin];
 }
 
 - (void)requestedUpdateBudgetExhausted
 {
-  v2 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v2 requestedUpdateBudgetExhausted];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy requestedUpdateBudgetExhausted];
 }
 
-- (void)getLocalizableSampleTemplateForComplication:(id)a3 withHandler:(id)a4
+- (void)getLocalizableSampleTemplateForComplication:(id)complication withHandler:(id)handler
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  complicationCopy = complication;
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_17];
-  [v8 getLocalizableSampleTemplateForComplication:v7 withHandler:v6];
+  [v8 getLocalizableSampleTemplateForComplication:complicationCopy withHandler:handlerCopy];
 }
 
 void __81__CLKComplicationClient_getLocalizableSampleTemplateForComplication_withHandler___block_invoke(uint64_t a1, void *a2)
@@ -463,12 +463,12 @@ void __81__CLKComplicationClient_getLocalizableSampleTemplateForComplication_wit
   }
 }
 
-- (void)getComplicationDescriptorsWithHandler:(id)a3
+- (void)getComplicationDescriptorsWithHandler:(id)handler
 {
   connection = self->_connection;
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_19_0];
-  [v5 getComplicationDescriptorsWithHandler:v4];
+  [v5 getComplicationDescriptorsWithHandler:handlerCopy];
 }
 
 void __63__CLKComplicationClient_getComplicationDescriptorsWithHandler___block_invoke(uint64_t a1, void *a2)
@@ -481,12 +481,12 @@ void __63__CLKComplicationClient_getComplicationDescriptorsWithHandler___block_i
   }
 }
 
-- (void)handleSharedComplicationDescriptors:(id)a3
+- (void)handleSharedComplicationDescriptors:(id)descriptors
 {
   connection = self->_connection;
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v5 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_21];
-  [v5 handleSharedComplicationDescriptors:v4];
+  [v5 handleSharedComplicationDescriptors:descriptorsCopy];
 }
 
 void __61__CLKComplicationClient_handleSharedComplicationDescriptors___block_invoke(uint64_t a1, void *a2)
@@ -499,11 +499,11 @@ void __61__CLKComplicationClient_handleSharedComplicationDescriptors___block_inv
   }
 }
 
-- (void)notifyDebugTimeoutWithCharging:(BOOL)a3
+- (void)notifyDebugTimeoutWithCharging:(BOOL)charging
 {
-  v3 = a3;
+  chargingCopy = charging;
   v4 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_23];
-  [v4 notifyDebugTimeoutWithCharging:v3];
+  [v4 notifyDebugTimeoutWithCharging:chargingCopy];
 }
 
 void __56__CLKComplicationClient_notifyDebugTimeoutWithCharging___block_invoke(uint64_t a1, void *a2)
@@ -516,13 +516,13 @@ void __56__CLKComplicationClient_notifyDebugTimeoutWithCharging___block_invoke(u
   }
 }
 
-- (void)getWidgetMigrationConfigurationFrom:(id)a3 withHandler:(id)a4
+- (void)getWidgetMigrationConfigurationFrom:(id)from withHandler:(id)handler
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  fromCopy = from;
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:&__block_literal_global_25_0];
-  [v8 getWidgetMigrationConfigurationFrom:v7 withHandler:v6];
+  [v8 getWidgetMigrationConfigurationFrom:fromCopy withHandler:handlerCopy];
 }
 
 void __73__CLKComplicationClient_getWidgetMigrationConfigurationFrom_withHandler___block_invoke(uint64_t a1, void *a2)

@@ -1,35 +1,35 @@
 @interface _INPBSettingMetadata
-- (BOOL)isEqual:(id)a3;
-- (_INPBSettingMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSettingMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSettingId:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSettingId:(id)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSettingMetadata
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_settingId)
   {
-    v4 = [(_INPBSettingMetadata *)self settingId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"settingId"];
+    settingId = [(_INPBSettingMetadata *)self settingId];
+    v5 = [settingId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"settingId"];
   }
 
-  v6 = [(_INPBSettingMetadata *)self targetApp];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"targetApp"];
+  targetApp = [(_INPBSettingMetadata *)self targetApp];
+  dictionaryRepresentation = [targetApp dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"targetApp"];
 
-  v8 = [(_INPBSettingMetadata *)self targetDevice];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"targetDevice"];
+  targetDevice = [(_INPBSettingMetadata *)self targetDevice];
+  dictionaryRepresentation2 = [targetDevice dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"targetDevice"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -39,28 +39,28 @@
   return v4 ^ [(_INPBDevice *)self->_targetDevice hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBSettingMetadata *)self settingId];
-  v6 = [v4 settingId];
-  if ((v5 != 0) == (v6 == 0))
+  settingId = [(_INPBSettingMetadata *)self settingId];
+  settingId2 = [equalCopy settingId];
+  if ((settingId != 0) == (settingId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBSettingMetadata *)self settingId];
-  if (v7)
+  settingId3 = [(_INPBSettingMetadata *)self settingId];
+  if (settingId3)
   {
-    v8 = v7;
-    v9 = [(_INPBSettingMetadata *)self settingId];
-    v10 = [v4 settingId];
-    v11 = [v9 isEqual:v10];
+    v8 = settingId3;
+    settingId4 = [(_INPBSettingMetadata *)self settingId];
+    settingId5 = [equalCopy settingId];
+    v11 = [settingId4 isEqual:settingId5];
 
     if (!v11)
     {
@@ -72,20 +72,20 @@
   {
   }
 
-  v5 = [(_INPBSettingMetadata *)self targetApp];
-  v6 = [v4 targetApp];
-  if ((v5 != 0) == (v6 == 0))
+  settingId = [(_INPBSettingMetadata *)self targetApp];
+  settingId2 = [equalCopy targetApp];
+  if ((settingId != 0) == (settingId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBSettingMetadata *)self targetApp];
-  if (v12)
+  targetApp = [(_INPBSettingMetadata *)self targetApp];
+  if (targetApp)
   {
-    v13 = v12;
-    v14 = [(_INPBSettingMetadata *)self targetApp];
-    v15 = [v4 targetApp];
-    v16 = [v14 isEqual:v15];
+    v13 = targetApp;
+    targetApp2 = [(_INPBSettingMetadata *)self targetApp];
+    targetApp3 = [equalCopy targetApp];
+    v16 = [targetApp2 isEqual:targetApp3];
 
     if (!v16)
     {
@@ -97,12 +97,12 @@
   {
   }
 
-  v5 = [(_INPBSettingMetadata *)self targetDevice];
-  v6 = [v4 targetDevice];
-  if ((v5 != 0) != (v6 == 0))
+  settingId = [(_INPBSettingMetadata *)self targetDevice];
+  settingId2 = [equalCopy targetDevice];
+  if ((settingId != 0) != (settingId2 == 0))
   {
-    v17 = [(_INPBSettingMetadata *)self targetDevice];
-    if (!v17)
+    targetDevice = [(_INPBSettingMetadata *)self targetDevice];
+    if (!targetDevice)
     {
 
 LABEL_20:
@@ -110,10 +110,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBSettingMetadata *)self targetDevice];
-    v20 = [v4 targetDevice];
-    v21 = [v19 isEqual:v20];
+    v18 = targetDevice;
+    targetDevice2 = [(_INPBSettingMetadata *)self targetDevice];
+    targetDevice3 = [equalCopy targetDevice];
+    v21 = [targetDevice2 isEqual:targetDevice3];
 
     if (v21)
     {
@@ -133,79 +133,79 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSettingMetadata allocWithZone:](_INPBSettingMetadata init];
-  v6 = [(NSString *)self->_settingId copyWithZone:a3];
+  v6 = [(NSString *)self->_settingId copyWithZone:zone];
   [(_INPBSettingMetadata *)v5 setSettingId:v6];
 
-  v7 = [(_INPBAppIdentifier *)self->_targetApp copyWithZone:a3];
+  v7 = [(_INPBAppIdentifier *)self->_targetApp copyWithZone:zone];
   [(_INPBSettingMetadata *)v5 setTargetApp:v7];
 
-  v8 = [(_INPBDevice *)self->_targetDevice copyWithZone:a3];
+  v8 = [(_INPBDevice *)self->_targetDevice copyWithZone:zone];
   [(_INPBSettingMetadata *)v5 setTargetDevice:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSettingMetadata *)self data];
+  coderCopy = coder;
+  data = [(_INPBSettingMetadata *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSettingMetadata)initWithCoder:(id)a3
+- (_INPBSettingMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSettingMetadata *)self initWithData:v6];
+    self = [(_INPBSettingMetadata *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBSettingMetadata *)self settingId];
+  toCopy = to;
+  settingId = [(_INPBSettingMetadata *)self settingId];
 
-  if (v4)
+  if (settingId)
   {
     settingId = self->_settingId;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBSettingMetadata *)self targetApp];
+  targetApp = [(_INPBSettingMetadata *)self targetApp];
 
-  if (v6)
+  if (targetApp)
   {
-    v7 = [(_INPBSettingMetadata *)self targetApp];
+    targetApp2 = [(_INPBSettingMetadata *)self targetApp];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBSettingMetadata *)self targetDevice];
+  targetDevice = [(_INPBSettingMetadata *)self targetDevice];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (targetDevice)
   {
-    v10 = [(_INPBSettingMetadata *)self targetDevice];
+    targetDevice2 = [(_INPBSettingMetadata *)self targetDevice];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setSettingId:(id)a3
+- (void)setSettingId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   settingId = self->_settingId;
   self->_settingId = v4;
 

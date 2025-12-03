@@ -5,11 +5,11 @@
 - (NSString)contentId;
 - (int64_t)metric;
 - (int64_t)purpose;
-- (void)setContentId:(id)a3;
-- (void)setMetric:(int64_t)a3;
-- (void)setProperties:(id)a3;
-- (void)setPurpose:(int64_t)a3;
-- (void)setTimestamp:(id)a3;
+- (void)setContentId:(id)id;
+- (void)setMetric:(int64_t)metric;
+- (void)setProperties:(id)properties;
+- (void)setPurpose:(int64_t)purpose;
+- (void)setTimestamp:(id)timestamp;
 @end
 
 @implementation APPCMetric
@@ -21,11 +21,11 @@
   return *(self + v3);
 }
 
-- (void)setPurpose:(int64_t)a3
+- (void)setPurpose:(int64_t)purpose
 {
   v5 = OBJC_IVAR___APPCMetric_purpose;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = purpose;
 }
 
 - (int64_t)metric
@@ -35,11 +35,11 @@
   return *(self + v3);
 }
 
-- (void)setMetric:(int64_t)a3
+- (void)setMetric:(int64_t)metric
 {
   v5 = OBJC_IVAR___APPCMetric_metric;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = metric;
 }
 
 - (NSDate)timestamp
@@ -58,7 +58,7 @@
   return v9;
 }
 
-- (void)setTimestamp:(id)a3
+- (void)setTimestamp:(id)timestamp
 {
   v4 = sub_1C1B94588();
   v5 = *(v4 - 8);
@@ -69,7 +69,7 @@
   v9 = OBJC_IVAR___APPCMetric_timestamp;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
@@ -93,9 +93,9 @@
   return v4;
 }
 
-- (void)setContentId:(id)a3
+- (void)setContentId:(id)id
 {
-  if (a3)
+  if (id)
   {
     v4 = sub_1C1B94D88();
     v6 = v5;
@@ -132,9 +132,9 @@
   return v4;
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
-  if (a3)
+  if (properties)
   {
     v4 = sub_1C1B94CB8();
   }

@@ -1,6 +1,6 @@
 @interface WMEnumProperty
-- (WMEnumProperty)initWithEnum:(unint64_t)a3;
-- (id)cssStringForName:(id)a3;
+- (WMEnumProperty)initWithEnum:(unint64_t)enum;
+- (id)cssStringForName:(id)name;
 - (id)mapCellTextVAlign;
 - (id)mapJustification;
 - (id)mapUnderline;
@@ -71,55 +71,55 @@
   }
 }
 
-- (WMEnumProperty)initWithEnum:(unint64_t)a3
+- (WMEnumProperty)initWithEnum:(unint64_t)enum
 {
   v5.receiver = self;
   v5.super_class = WMEnumProperty;
   result = [(WMEnumProperty *)&v5 init];
   if (result)
   {
-    result->wdValue = a3;
+    result->wdValue = enum;
   }
 
   return result;
 }
 
-- (id)cssStringForName:(id)a3
+- (id)cssStringForName:(id)name
 {
-  v4 = a3;
-  if ([v4 compare:0x286F08230])
+  nameCopy = name;
+  if ([nameCopy compare:0x286F08230])
   {
-    if ([v4 compare:0x286F077D0])
+    if ([nameCopy compare:0x286F077D0])
     {
-      if ([v4 compare:@"underline"])
+      if ([nameCopy compare:@"underline"])
       {
-        if ([v4 compare:0x286F08350])
+        if ([nameCopy compare:0x286F08350])
         {
           v5 = 0;
           goto LABEL_11;
         }
 
-        v6 = [(WMEnumProperty *)self mapCellTextVAlign];
+        mapCellTextVAlign = [(WMEnumProperty *)self mapCellTextVAlign];
       }
 
       else
       {
-        v6 = [(WMEnumProperty *)self mapUnderline];
+        mapCellTextVAlign = [(WMEnumProperty *)self mapUnderline];
       }
     }
 
     else
     {
-      v6 = [(WMEnumProperty *)self mapVerticalAlign];
+      mapCellTextVAlign = [(WMEnumProperty *)self mapVerticalAlign];
     }
   }
 
   else
   {
-    v6 = [(WMEnumProperty *)self mapJustification];
+    mapCellTextVAlign = [(WMEnumProperty *)self mapJustification];
   }
 
-  v5 = v6;
+  v5 = mapCellTextVAlign;
 LABEL_11:
 
   return v5;

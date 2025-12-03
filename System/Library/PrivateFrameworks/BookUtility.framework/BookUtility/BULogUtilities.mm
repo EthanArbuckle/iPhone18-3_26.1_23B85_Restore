@@ -2,10 +2,10 @@
 + (id)shared;
 - (BOOL)verboseLoggingEnabled;
 - (BULogUtilities)init;
-- (BULogUtilities)initWithUserDefaults:(id)a3 keyPath:(id)a4;
+- (BULogUtilities)initWithUserDefaults:(id)defaults keyPath:(id)path;
 - (void)dealloc;
 - (void)observeDefaults;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation BULogUtilities
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_241DA98F4;
   block[3] = &unk_278D1CD30;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280BC5DA8 != -1)
   {
     dispatch_once(&qword_280BC5DA8, block);
@@ -62,21 +62,21 @@
   return v3;
 }
 
-- (BULogUtilities)initWithUserDefaults:(id)a3 keyPath:(id)a4
+- (BULogUtilities)initWithUserDefaults:(id)defaults keyPath:(id)path
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  defaultsCopy = defaults;
+  pathCopy = path;
   v30.receiver = self;
   v30.super_class = BULogUtilities;
   v8 = [(BULogUtilities *)&v30 init];
   v10 = v8;
   if (v8)
   {
-    objc_msgSend_setDefaults_(v8, v9, v6);
-    objc_msgSend_setKeyPath_(v10, v11, v7);
+    objc_msgSend_setDefaults_(v8, v9, defaultsCopy);
+    objc_msgSend_setKeyPath_(v10, v11, pathCopy);
     v14 = objc_msgSend_defaults(v10, v12, v13);
-    v16 = objc_msgSend_BOOLForKey_(v14, v15, v7);
+    v16 = objc_msgSend_BOOLForKey_(v14, v15, pathCopy);
     objc_msgSend_setBuVerboseLoggingEnabled_(v10, v17, v16);
 
     v18 = dispatch_queue_create("BULogUtilities.access", MEMORY[0x277D85CD8]);
@@ -111,13 +111,13 @@
   [(BULogUtilities *)&v9 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
+  changeCopy = change;
+  pathCopy = path;
   v10 = objc_opt_class();
-  v12 = objc_msgSend_objectForKeyedSubscript_(v8, v11, *MEMORY[0x277CCA2F0]);
+  v12 = objc_msgSend_objectForKeyedSubscript_(changeCopy, v11, *MEMORY[0x277CCA2F0]);
 
   v13 = BUDynamicCast(v10, v12);
   v16 = objc_msgSend_BOOLValue(v13, v14, v15);
@@ -134,7 +134,7 @@
   }
 
   v23 = objc_msgSend_keyPath(self, v21, v22);
-  isEqualToString = objc_msgSend_isEqualToString_(v9, v24, v23);
+  isEqualToString = objc_msgSend_isEqualToString_(pathCopy, v24, v23);
 
   if (isEqualToString)
   {

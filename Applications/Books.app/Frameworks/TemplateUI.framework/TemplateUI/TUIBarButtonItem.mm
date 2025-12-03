@@ -5,63 +5,63 @@
 - (id)accessibilityValue;
 - (void)_postDebouncedMenuUpdateNotification;
 - (void)dealloc;
-- (void)imageResourceDidChangeImage:(id)a3;
-- (void)setAxAttributes:(id)a3;
-- (void)setCustomView:(id)a3;
-- (void)setImageModelIDToResource:(id)a3;
-- (void)setMenuModel:(id)a3;
+- (void)imageResourceDidChangeImage:(id)image;
+- (void)setAxAttributes:(id)attributes;
+- (void)setCustomView:(id)view;
+- (void)setImageModelIDToResource:(id)resource;
+- (void)setMenuModel:(id)model;
 @end
 
 @implementation TUIBarButtonItem
 
-- (void)setAxAttributes:(id)a3
+- (void)setAxAttributes:(id)attributes
 {
-  if (self->_axAttributes != a3)
+  if (self->_axAttributes != attributes)
   {
-    v4 = [a3 copy];
+    v4 = [attributes copy];
     axAttributes = self->_axAttributes;
     self->_axAttributes = v4;
   }
 }
 
-- (void)setCustomView:(id)a3
+- (void)setCustomView:(id)view
 {
   v3.receiver = self;
   v3.super_class = TUIBarButtonItem;
-  [(TUIBarButtonItem *)&v3 setCustomView:a3];
+  [(TUIBarButtonItem *)&v3 setCustomView:view];
 }
 
-- (void)setMenuModel:(id)a3
+- (void)setMenuModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   menuModel = self->_menuModel;
-  if (menuModel != v5)
+  if (menuModel != modelCopy)
   {
-    v9 = v5;
-    v7 = [(TUIMenuModel *)menuModel isEqual:v5];
-    v5 = v9;
+    v9 = modelCopy;
+    v7 = [(TUIMenuModel *)menuModel isEqual:modelCopy];
+    modelCopy = v9;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_menuModel, a3);
+      objc_storeStrong(&self->_menuModel, model);
       if ([(NSDictionary *)self->_imageModelIDToResource count])
       {
         [(TUIMenuModel *)self->_menuModel loadImagesFromResourceMap:self->_imageModelIDToResource];
       }
 
-      v8 = [(TUIMenuModel *)v9 newUIMenuElement];
-      [(TUIBarButtonItem *)self setMenu:v8];
+      newUIMenuElement = [(TUIMenuModel *)v9 newUIMenuElement];
+      [(TUIBarButtonItem *)self setMenu:newUIMenuElement];
 
-      v5 = v9;
+      modelCopy = v9;
     }
   }
 }
 
-- (void)setImageModelIDToResource:(id)a3
+- (void)setImageModelIDToResource:(id)resource
 {
-  v4 = a3;
-  if (![(NSDictionary *)self->_imageModelIDToResource isEqualToDictionary:v4])
+  resourceCopy = resource;
+  if (![(NSDictionary *)self->_imageModelIDToResource isEqualToDictionary:resourceCopy])
   {
-    [v4 enumerateKeysAndObjectsUsingBlock:&stru_25DD70];
+    [resourceCopy enumerateKeysAndObjectsUsingBlock:&stru_25DD70];
     imageModelIDToResource = self->_imageModelIDToResource;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -74,8 +74,8 @@
     v9[2] = sub_13044;
     v9[3] = &unk_25DD98;
     v9[4] = self;
-    [v4 enumerateKeysAndObjectsUsingBlock:v9];
-    v6 = [v4 copy];
+    [resourceCopy enumerateKeysAndObjectsUsingBlock:v9];
+    v6 = [resourceCopy copy];
     v7 = self->_imageModelIDToResource;
     self->_imageModelIDToResource = v6;
 
@@ -84,8 +84,8 @@
       if ([(NSDictionary *)self->_imageModelIDToResource count])
       {
         [(TUIMenuModel *)self->_menuModel loadImagesFromResourceMap:self->_imageModelIDToResource];
-        v8 = [(TUIMenuModel *)self->_menuModel newUIMenuElement];
-        [(TUIBarButtonItem *)self setMenu:v8];
+        newUIMenuElement = [(TUIMenuModel *)self->_menuModel newUIMenuElement];
+        [(TUIBarButtonItem *)self setMenu:newUIMenuElement];
       }
     }
   }
@@ -106,15 +106,15 @@
   [(TUIBarButtonItem *)&v4 dealloc];
 }
 
-- (void)imageResourceDidChangeImage:(id)a3
+- (void)imageResourceDidChangeImage:(id)image
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_131F0;
   v4[3] = &unk_25DCA0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  imageCopy = image;
+  v3 = imageCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
@@ -129,78 +129,78 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(TUIBarButtonItem *)self customView];
-  v4 = [v3 accessibilityLabel];
+  customView = [(TUIBarButtonItem *)self customView];
+  accessibilityLabel = [customView accessibilityLabel];
 
-  if (v4)
+  if (accessibilityLabel)
   {
-    v5 = [(TUIBarButtonItem *)self customView];
-    v6 = [v5 accessibilityLabel];
+    customView2 = [(TUIBarButtonItem *)self customView];
+    accessibilityLabel2 = [customView2 accessibilityLabel];
   }
 
   else
   {
-    v6 = [(TUIAXAttributes *)self->_axAttributes axLabel];
+    accessibilityLabel2 = [(TUIAXAttributes *)self->_axAttributes axLabel];
   }
 
-  return v6;
+  return accessibilityLabel2;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(TUIBarButtonItem *)self customView];
-  v4 = [v3 accessibilityValue];
+  customView = [(TUIBarButtonItem *)self customView];
+  accessibilityValue = [customView accessibilityValue];
 
-  if (v4)
+  if (accessibilityValue)
   {
-    v5 = [(TUIBarButtonItem *)self customView];
-    v6 = [v5 accessibilityValue];
+    customView2 = [(TUIBarButtonItem *)self customView];
+    accessibilityValue2 = [customView2 accessibilityValue];
   }
 
   else
   {
-    v6 = [(TUIAXAttributes *)self->_axAttributes axValue];
+    accessibilityValue2 = [(TUIAXAttributes *)self->_axAttributes axValue];
   }
 
-  return v6;
+  return accessibilityValue2;
 }
 
 - (id)accessibilityHint
 {
-  v3 = [(TUIBarButtonItem *)self customView];
-  v4 = [v3 accessibilityHint];
+  customView = [(TUIBarButtonItem *)self customView];
+  accessibilityHint = [customView accessibilityHint];
 
-  if (v4)
+  if (accessibilityHint)
   {
-    v5 = [(TUIBarButtonItem *)self customView];
-    v6 = [v5 accessibilityHint];
+    customView2 = [(TUIBarButtonItem *)self customView];
+    accessibilityHint2 = [customView2 accessibilityHint];
   }
 
   else
   {
-    v6 = [(TUIAXAttributes *)self->_axAttributes axHint];
+    accessibilityHint2 = [(TUIAXAttributes *)self->_axAttributes axHint];
   }
 
-  return v6;
+  return accessibilityHint2;
 }
 
 - (id)accessibilityIdentifier
 {
-  v3 = [(TUIBarButtonItem *)self customView];
-  v4 = [v3 accessibilityIdentifier];
+  customView = [(TUIBarButtonItem *)self customView];
+  accessibilityIdentifier = [customView accessibilityIdentifier];
 
-  if (v4)
+  if (accessibilityIdentifier)
   {
-    v5 = [(TUIBarButtonItem *)self customView];
-    v6 = [v5 accessibilityIdentifier];
+    customView2 = [(TUIBarButtonItem *)self customView];
+    accessibilityIdentifier2 = [customView2 accessibilityIdentifier];
   }
 
   else
   {
-    v6 = [(TUIAXAttributes *)self->_axAttributes axIdentifier];
+    accessibilityIdentifier2 = [(TUIAXAttributes *)self->_axAttributes axIdentifier];
   }
 
-  return v6;
+  return accessibilityIdentifier2;
 }
 
 @end

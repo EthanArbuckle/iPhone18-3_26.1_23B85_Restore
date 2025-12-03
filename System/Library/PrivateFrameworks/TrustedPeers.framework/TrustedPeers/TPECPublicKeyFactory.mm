@@ -1,15 +1,15 @@
 @interface TPECPublicKeyFactory
-- (id)keyFromSPKI:(id)a3;
+- (id)keyFromSPKI:(id)i;
 @end
 
 @implementation TPECPublicKeyFactory
 
-- (id)keyFromSPKI:(id)a3
+- (id)keyFromSPKI:(id)i
 {
-  v3 = a3;
-  if ([v3 length])
+  iCopy = i;
+  if ([iCopy length])
   {
-    v4 = [MEMORY[0x277D4D2F0] keyWithSubjectPublicKeyInfo:v3];
+    v4 = [MEMORY[0x277D4D2F0] keyWithSubjectPublicKeyInfo:iCopy];
   }
 
   else

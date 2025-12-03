@@ -2,17 +2,17 @@
 + (void)initialize;
 - (AVAssetInspectorLoader)init;
 - (Class)_classForTrackInspectors;
-- (id)_createAVErrorForError:(id)a3 andFigErrorCode:(int)a4;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
+- (id)_createAVErrorForError:(id)error andFigErrorCode:(int)code;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation AVAssetInspectorLoader
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -41,14 +41,14 @@
   [(AVAssetInspectorLoader *)&v3 dealloc];
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
   v6 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v6);
   return 0;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
   v6 = objc_opt_class();
 
@@ -62,7 +62,7 @@
   return 0;
 }
 
-- (id)_createAVErrorForError:(id)a3 andFigErrorCode:(int)a4
+- (id)_createAVErrorForError:(id)error andFigErrorCode:(int)code
 {
   v6 = [(AVAssetInspectorLoader *)self URL];
   if (v6)
@@ -70,7 +70,7 @@
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObject:v6 forKey:*MEMORY[0x1E696A998]];
   }
 
-  return AVErrorWithNSErrorAndOSStatus(a3, a4, v6);
+  return AVErrorWithNSErrorAndOSStatus(error, code, v6);
 }
 
 @end

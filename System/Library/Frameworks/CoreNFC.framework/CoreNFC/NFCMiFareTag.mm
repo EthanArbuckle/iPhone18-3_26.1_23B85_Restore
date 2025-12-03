@@ -1,28 +1,28 @@
 @interface NFCMiFareTag
-- (NFCMiFareTag)initWithSession:(id)a3 tag:(id)a4 startupConfig:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)sendMiFareCommand:(id)a3 completionHandler:(id)a4;
-- (void)sendMiFareISO7816Command:(id)a3 completionHandler:(id)a4;
+- (NFCMiFareTag)initWithSession:(id)session tag:(id)tag startupConfig:(int64_t)config;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)sendMiFareCommand:(id)command completionHandler:(id)handler;
+- (void)sendMiFareISO7816Command:(id)command completionHandler:(id)handler;
 @end
 
 @implementation NFCMiFareTag
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = NFCMiFareTag;
-  return [(NFCTag *)&v4 copyWithZone:a3];
+  return [(NFCTag *)&v4 copyWithZone:zone];
 }
 
-- (NFCMiFareTag)initWithSession:(id)a3 tag:(id)a4 startupConfig:(int64_t)a5
+- (NFCMiFareTag)initWithSession:(id)session tag:(id)tag startupConfig:(int64_t)config
 {
-  v8 = a4;
+  tagCopy = tag;
   v13.receiver = self;
   v13.super_class = NFCMiFareTag;
-  v9 = [(NFCTag *)&v13 initWithSession:a3 tag:v8 startupConfig:a5];
+  v9 = [(NFCTag *)&v13 initWithSession:session tag:tagCopy startupConfig:config];
   if (v9)
   {
-    v10 = [v8 type] - 14;
+    v10 = [tagCopy type] - 14;
     if (v10 >= 3)
     {
       v11 = 1;
@@ -39,10 +39,10 @@
   return v9;
 }
 
-- (void)sendMiFareCommand:(id)a3 completionHandler:(id)a4
+- (void)sendMiFareCommand:(id)command completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  commandCopy = command;
   v8 = _os_activity_create(&dword_23728C000, "NFCMiFareTag sendMiFareCommand:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -53,15 +53,15 @@
   v10[1] = 3221225472;
   v10[2] = sub_2372AC4F4;
   v10[3] = &unk_278A29C10;
-  v11 = v6;
-  v9 = v6;
-  [(NFCTag *)self _transceiveWithData:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(NFCTag *)self _transceiveWithData:commandCopy completionHandler:v10];
 }
 
-- (void)sendMiFareISO7816Command:(id)a3 completionHandler:(id)a4
+- (void)sendMiFareISO7816Command:(id)command completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_23728C000, "NFCMiFareTag sendMiFareISO7816Command:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -74,15 +74,15 @@
     v10[1] = 3221225472;
     v10[2] = sub_2372AC628;
     v10[3] = &unk_278A29C38;
-    v11 = v7;
+    v11 = handlerCopy;
     [(NFCTag *)self dispatchOnDelegateQueueAsync:v10];
-    v9 = v11;
+    asData = v11;
   }
 
   else
   {
-    v9 = [v6 asData];
-    [(NFCTag *)self _sendAPDU:v9 completionHandler:v7];
+    asData = [commandCopy asData];
+    [(NFCTag *)self _sendAPDU:asData completionHandler:handlerCopy];
   }
 }
 

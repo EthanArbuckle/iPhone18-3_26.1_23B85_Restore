@@ -1,5 +1,5 @@
 @interface SSSScreenshotsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,17 +7,17 @@
 
 @implementation SSSScreenshotsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SSSScreenshotsView" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SSSScreenshotsView" hasInstanceMethod:@"numberOfScreenshotImages" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SSSScreenshotsView" hasInstanceMethod:@"currentScreenshotView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SSSScreenshotView" hasInstanceVariable:@"_imageCropController" withType:"SSSCropController"];
-  [v3 validateClass:@"SSSCropControllerRootView" hasInstanceVariable:@"_overlayView" withType:"SSSCropOverlayView"];
-  [v3 validateClass:@"SSSCropController" hasInstanceVariable:@"_rootView" withType:"SSSCropControllerRootView"];
-  [v3 validateClass:@"SSSCropOverlayView" hasInstanceVariable:@"_grabberViews" withType:"NSArray"];
-  [v3 validateClass:@"SSSCropOverlayView" hasInstanceVariable:@"_cornerViews" withType:"NSArray"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SSSScreenshotsView" hasInstanceMethod:@"state" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SSSScreenshotsView" hasInstanceMethod:@"numberOfScreenshotImages" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SSSScreenshotsView" hasInstanceMethod:@"currentScreenshotView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SSSScreenshotView" hasInstanceVariable:@"_imageCropController" withType:"SSSCropController"];
+  [validationsCopy validateClass:@"SSSCropControllerRootView" hasInstanceVariable:@"_overlayView" withType:"SSSCropOverlayView"];
+  [validationsCopy validateClass:@"SSSCropController" hasInstanceVariable:@"_rootView" withType:"SSSCropControllerRootView"];
+  [validationsCopy validateClass:@"SSSCropOverlayView" hasInstanceVariable:@"_grabberViews" withType:"NSArray"];
+  [validationsCopy validateClass:@"SSSCropOverlayView" hasInstanceVariable:@"_cornerViews" withType:"NSArray"];
 }
 
 - (id)accessibilityLabel
@@ -37,9 +37,9 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(SSSScreenshotsViewAccessibility *)self isAccessibilityElement];
+  isAccessibilityElement = [(SSSScreenshotsViewAccessibility *)self isAccessibilityElement];
   v3 = MEMORY[0x29EDC7F70];
-  if (!v2)
+  if (!isAccessibilityElement)
   {
     v3 = MEMORY[0x29EDC7FA0];
   }
@@ -61,10 +61,10 @@
     v8 = [v5 safeValueForKey:@"_overlayView"];
     v9 = [v8 safeArrayForKey:@"_cornerViews"];
 
-    v10 = [MEMORY[0x29EDB8DE8] array];
-    [v10 axSafelyAddObjectsFromArray:v7];
-    [v10 axSafelyAddObjectsFromArray:v9];
-    v11 = [v10 sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
+    array = [MEMORY[0x29EDB8DE8] array];
+    [array axSafelyAddObjectsFromArray:v7];
+    [array axSafelyAddObjectsFromArray:v9];
+    v11 = [array sortedArrayUsingSelector:sel_accessibilityCompareGeometry_];
   }
 
   else

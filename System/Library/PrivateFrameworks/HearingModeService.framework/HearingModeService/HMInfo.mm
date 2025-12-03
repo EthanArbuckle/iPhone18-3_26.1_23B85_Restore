@@ -1,14 +1,14 @@
 @interface HMInfo
-- (HMInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConstantsWith:(unsigned int)a3;
+- (HMInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConstantsWith:(unsigned int)with;
 @end
 
 @implementation HMInfo
 
-- (HMInfo)initWithCoder:(id)a3
+- (HMInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(HMInfo *)self init];
   if (v5)
   {
@@ -44,110 +44,110 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   transparencyModeLowerBound = self->_transparencyModeLowerBound;
-  v18 = v4;
+  v18 = coderCopy;
   if (transparencyModeLowerBound)
   {
-    [v4 encodeObject:transparencyModeLowerBound forKey:@"tLwr"];
-    v4 = v18;
+    [coderCopy encodeObject:transparencyModeLowerBound forKey:@"tLwr"];
+    coderCopy = v18;
   }
 
   transparencyModeUpperBound = self->_transparencyModeUpperBound;
   if (transparencyModeUpperBound)
   {
     [v18 encodeObject:transparencyModeUpperBound forKey:@"tUpr"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   transparencyModeHours = self->_transparencyModeHours;
   if (transparencyModeHours)
   {
     [v18 encodeObject:transparencyModeHours forKey:@"tHrs"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   transparencyModeDays = self->_transparencyModeDays;
   if (transparencyModeDays)
   {
     [v18 encodeObject:transparencyModeDays forKey:@"tDay"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   adaptiveModeLowerBound = self->_adaptiveModeLowerBound;
   if (adaptiveModeLowerBound)
   {
     [v18 encodeObject:adaptiveModeLowerBound forKey:@"aLwr"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   adaptiveModeUpperBound = self->_adaptiveModeUpperBound;
   if (adaptiveModeUpperBound)
   {
     [v18 encodeObject:adaptiveModeUpperBound forKey:@"aUpr"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   adaptiveModeHours = self->_adaptiveModeHours;
   if (adaptiveModeHours)
   {
     [v18 encodeObject:adaptiveModeHours forKey:@"aHrs"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   adaptiveModeDays = self->_adaptiveModeDays;
   if (adaptiveModeDays)
   {
     [v18 encodeObject:adaptiveModeDays forKey:@"aDay"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   noiseCancellationModeLowerBound = self->_noiseCancellationModeLowerBound;
   if (noiseCancellationModeLowerBound)
   {
     [v18 encodeObject:noiseCancellationModeLowerBound forKey:@"nLwr"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   noiseCancellationModeUpperBound = self->_noiseCancellationModeUpperBound;
   if (noiseCancellationModeUpperBound)
   {
     [v18 encodeObject:noiseCancellationModeUpperBound forKey:@"nUpr"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   noiseCancellationModeHours = self->_noiseCancellationModeHours;
   if (noiseCancellationModeHours)
   {
     [v18 encodeObject:noiseCancellationModeHours forKey:@"nHrs"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   noiseCancellationModeDays = self->_noiseCancellationModeDays;
   if (noiseCancellationModeDays)
   {
     [v18 encodeObject:noiseCancellationModeDays forKey:@"nDay"];
-    v4 = v18;
+    coderCopy = v18;
   }
 
   noiseReductionRating = self->_noiseReductionRating;
   if (noiseReductionRating)
   {
     [v18 encodeObject:noiseReductionRating forKey:@"nRR"];
-    v4 = v18;
+    coderCopy = v18;
   }
 }
 
-- (void)setConstantsWith:(unsigned int)a3
+- (void)setConstantsWith:(unsigned int)with
 {
   if (gLogCategory_HMDeviceRecord <= 50 && (gLogCategory_HMDeviceRecord != -1 || _LogCategory_Initialize()))
   {
     [HMInfo setConstantsWith:];
   }
 
-  if (a3 - 8231 < 2)
+  if (with - 8231 < 2)
   {
     if (gLogCategory_HMDeviceRecord <= 50 && (gLogCategory_HMDeviceRecord != -1 || _LogCategory_Initialize()))
     {
@@ -167,7 +167,7 @@
     v14 = &unk_286437B18;
   }
 
-  else if (a3 == 8212 || a3 == 8228)
+  else if (with == 8212 || with == 8228)
   {
     if (gLogCategory_HMDeviceRecord <= 50 && (gLogCategory_HMDeviceRecord != -1 || _LogCategory_Initialize()))
     {

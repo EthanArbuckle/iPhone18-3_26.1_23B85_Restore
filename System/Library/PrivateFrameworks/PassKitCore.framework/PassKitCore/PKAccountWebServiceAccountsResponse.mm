@@ -1,27 +1,27 @@
 @interface PKAccountWebServiceAccountsResponse
-- (PKAccountWebServiceAccountsResponse)initWithData:(id)a3;
+- (PKAccountWebServiceAccountsResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceAccountsResponse
 
-- (PKAccountWebServiceAccountsResponse)initWithData:(id)a3
+- (PKAccountWebServiceAccountsResponse)initWithData:(id)data
 {
   v45 = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = PKAccountWebServiceAccountsResponse;
-  v3 = [(PKWebServiceResponse *)&v39 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v39 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKStringForKey:@"lastUpdated"];
+      v6 = [jSONObject PKStringForKey:@"lastUpdated"];
       lastUpdated = v4->_lastUpdated;
       v4->_lastUpdated = v6;
 
-      v8 = [v5 objectForKey:@"accounts"];
+      v8 = [jSONObject objectForKey:@"accounts"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -68,7 +68,7 @@
         accounts = v4->_accounts;
         v4->_accounts = v18;
 
-        v20 = [v5 objectForKey:@"featureFailures"];
+        v20 = [jSONObject objectForKey:@"featureFailures"];
         if (v20)
         {
           objc_opt_class();

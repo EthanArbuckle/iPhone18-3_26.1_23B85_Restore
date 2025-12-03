@@ -1,51 +1,51 @@
 @interface GKDashboardLeaderboardListDataSource
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (GKDashboardLeaderboardListDataSource)initWithGameRecord:(id)a3 leaderboardSet:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)itemForIndexPath:(id)a3;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (GKDashboardLeaderboardListDataSource)initWithGameRecord:(id)record leaderboardSet:(id)set;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)itemForIndexPath:(id)path;
 - (id)sectionHeaderText;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)loadDataWithCompletionHandler:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)loadDataWithCompletionHandler:(id)handler;
 - (void)removeLeaderboardsWithoutImages;
-- (void)setupCollectionView:(id)a3;
+- (void)setupCollectionView:(id)view;
 @end
 
 @implementation GKDashboardLeaderboardListDataSource
 
-- (GKDashboardLeaderboardListDataSource)initWithGameRecord:(id)a3 leaderboardSet:(id)a4
+- (GKDashboardLeaderboardListDataSource)initWithGameRecord:(id)record leaderboardSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  setCopy = set;
   v11.receiver = self;
   v11.super_class = GKDashboardLeaderboardListDataSource;
   v8 = [(GKCollectionDataSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(GKDashboardLeaderboardListDataSource *)v8 setGameRecord:v6];
-    [(GKDashboardLeaderboardListDataSource *)v9 setLeaderboardSet:v7];
+    [(GKDashboardLeaderboardListDataSource *)v8 setGameRecord:recordCopy];
+    [(GKDashboardLeaderboardListDataSource *)v9 setLeaderboardSet:setCopy];
     [(GKCollectionDataSource *)v9 setUseStandardHeaders:1];
   }
 
   return v9;
 }
 
-- (void)setupCollectionView:(id)a3
+- (void)setupCollectionView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 _gkFocusingLayout];
-  [v5 setFocusScaleFactor:1.0];
+  viewCopy = view;
+  _gkFocusingLayout = [viewCopy _gkFocusingLayout];
+  [_gkFocusingLayout setFocusScaleFactor:1.0];
   v6 = +[GKDashboardLeaderboardCell];
-  [v4 registerNib:v6 forCellWithReuseIdentifier:@"leaderboardListCell"];
+  [viewCopy registerNib:v6 forCellWithReuseIdentifier:@"leaderboardListCell"];
   v7.receiver = self;
   v7.super_class = GKDashboardLeaderboardListDataSource;
-  [(GKCollectionDataSource *)&v7 setupCollectionView:v4];
+  [(GKCollectionDataSource *)&v7 setupCollectionView:viewCopy];
 }
 
-- (void)loadDataWithCompletionHandler:(id)a3
+- (void)loadDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -68,7 +68,7 @@
   v11[2] = __70__GKDashboardLeaderboardListDataSource_loadDataWithCompletionHandler___block_invoke_5;
   v11[3] = &unk_27966AC88;
   v11[4] = self;
-  v9 = v4;
+  v9 = handlerCopy;
   v13 = v9;
   v14 = v18;
   v10 = v8;
@@ -160,8 +160,8 @@ void __70__GKDashboardLeaderboardListDataSource_loadDataWithCompletionHandler___
 
         v9 = *(*(&v13 + 1) + 8 * i);
         assetNames = self->_assetNames;
-        v11 = [v9 identifier];
-        v12 = [(NSDictionary *)assetNames objectForKeyedSubscript:v11];
+        identifier = [v9 identifier];
+        v12 = [(NSDictionary *)assetNames objectForKeyedSubscript:identifier];
 
         if (v12)
         {
@@ -178,18 +178,18 @@ void __70__GKDashboardLeaderboardListDataSource_loadDataWithCompletionHandler___
   [(GKDashboardLeaderboardListDataSource *)self setLeaderboards:v3];
 }
 
-- (id)itemForIndexPath:(id)a3
+- (id)itemForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(NSArray *)self->_leaderboards count];
-  if (v5 <= [v4 item])
+  if (v5 <= [pathCopy item])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_leaderboards, "objectAtIndexedSubscript:", [v4 item]);
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_leaderboards, "objectAtIndexedSubscript:", [pathCopy item]);
   }
 
   return v6;
@@ -208,30 +208,30 @@ void __70__GKDashboardLeaderboardListDataSource_loadDataWithCompletionHandler___
   return v6;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"leaderboardListCell" forIndexPath:v6];
-  v8 = [v6 item];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"leaderboardListCell" forIndexPath:pathCopy];
+  item = [pathCopy item];
 
-  if ([(NSArray *)self->_leaderboards count]<= v8)
+  if ([(NSArray *)self->_leaderboards count]<= item)
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKDashboardLeaderboardListDataSource.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = [v9 stringWithFormat:@"%@ (_leaderboards.count > index)\n[%s (%s:%d)]", v10, "-[GKDashboardLeaderboardListDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(v12, "UTF8String"), 153];
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = [v9 stringWithFormat:@"%@ (_leaderboards.count > index)\n[%s (%s:%d)]", v10, "-[GKDashboardLeaderboardListDataSource collectionView:cellForItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 153];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v13}];
   }
 
-  v14 = [(NSArray *)self->_leaderboards objectAtIndexedSubscript:v8];
-  v15 = [(GKGameRecord *)self->_gameRecord bundleIdentifier];
-  [v7 setBundleIdentifier:v15];
+  v14 = [(NSArray *)self->_leaderboards objectAtIndexedSubscript:item];
+  bundleIdentifier = [(GKGameRecord *)self->_gameRecord bundleIdentifier];
+  [v7 setBundleIdentifier:bundleIdentifier];
 
   assetNames = self->_assetNames;
-  v17 = [v14 identifier];
-  v18 = [(NSDictionary *)assetNames objectForKeyedSubscript:v17];
+  identifier = [v14 identifier];
+  v18 = [(NSDictionary *)assetNames objectForKeyedSubscript:identifier];
   [v7 setImageName:v18];
 
   [v7 setLeaderboard:v14];
@@ -239,7 +239,7 @@ void __70__GKDashboardLeaderboardListDataSource_loadDataWithCompletionHandler___
   return v7;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v5 = 58.0;
   v6 = 0.0;
@@ -248,40 +248,40 @@ void __70__GKDashboardLeaderboardListDataSource_loadDataWithCompletionHandler___
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v4 = [a3 indexPathsForSelectedItems];
-  v5 = [v4 count] == 0;
+  indexPathsForSelectedItems = [view indexPathsForSelectedItems];
+  v5 = [indexPathsForSelectedItems count] == 0;
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v16 = a4;
-  v5 = [(GKCollectionDataSource *)self presentationViewController];
+  pathCopy = path;
+  presentationViewController = [(GKCollectionDataSource *)self presentationViewController];
 
-  v6 = v16;
-  if (v5)
+  v6 = pathCopy;
+  if (presentationViewController)
   {
-    v7 = [v16 item];
-    if ([(NSArray *)self->_leaderboards count]<= v7)
+    item = [pathCopy item];
+    if ([(NSArray *)self->_leaderboards count]<= item)
     {
       v8 = MEMORY[0x277CCACA8];
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/TVDashboard/GKDashboardLeaderboardListDataSource.m"];
-      v11 = [v10 lastPathComponent];
-      v12 = [v8 stringWithFormat:@"%@ (_leaderboards.count > index)\n[%s (%s:%d)]", v9, "-[GKDashboardLeaderboardListDataSource collectionView:didSelectItemAtIndexPath:]", objc_msgSend(v11, "UTF8String"), 186];
+      lastPathComponent = [v10 lastPathComponent];
+      v12 = [v8 stringWithFormat:@"%@ (_leaderboards.count > index)\n[%s (%s:%d)]", v9, "-[GKDashboardLeaderboardListDataSource collectionView:didSelectItemAtIndexPath:]", objc_msgSend(lastPathComponent, "UTF8String"), 186];
 
       [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v12}];
     }
 
-    v13 = [(NSArray *)self->_leaderboards objectAtIndexedSubscript:v7];
+    v13 = [(NSArray *)self->_leaderboards objectAtIndexedSubscript:item];
     v14 = [[GKDashboardLeaderboardScoreViewController alloc] initWithGameRecord:self->_gameRecord leaderboard:v13];
-    v15 = [(GKCollectionDataSource *)self presentationViewController];
-    [v15 _gkPushViewController:v14 animated:1];
+    presentationViewController2 = [(GKCollectionDataSource *)self presentationViewController];
+    [presentationViewController2 _gkPushViewController:v14 animated:1];
 
-    v6 = v16;
+    v6 = pathCopy;
   }
 }
 

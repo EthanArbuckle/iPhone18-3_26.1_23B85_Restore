@@ -1,26 +1,26 @@
 @interface BMMLSEDurableFeatureStoreFeatureValue
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMLSEDurableFeatureStoreFeatureValue)initWithIntValue:(id)a3 doubleValue:(id)a4 stringValue:(id)a5 BOOLValue:(id)a6 histogramValue:(id)a7 missingReason:(int)a8;
-- (BMMLSEDurableFeatureStoreFeatureValue)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMMLSEDurableFeatureStoreFeatureValue)initWithIntValue:(id)value doubleValue:(id)doubleValue stringValue:(id)stringValue BOOLValue:(id)lValue histogramValue:(id)histogramValue missingReason:(int)reason;
+- (BMMLSEDurableFeatureStoreFeatureValue)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMLSEDurableFeatureStoreFeatureValue
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMMLSEDurableFeatureStoreFeatureValue hasIntValue](self, "hasIntValue") || [v5 hasIntValue])
     {
       if (![(BMMLSEDurableFeatureStoreFeatureValue *)self hasIntValue])
@@ -33,8 +33,8 @@
         goto LABEL_24;
       }
 
-      v6 = [(BMMLSEDurableFeatureStoreFeatureValue *)self intValue];
-      if (v6 != [v5 intValue])
+      intValue = [(BMMLSEDurableFeatureStoreFeatureValue *)self intValue];
+      if (intValue != [v5 intValue])
       {
         goto LABEL_24;
       }
@@ -61,18 +61,18 @@
       }
     }
 
-    v10 = [(BMMLSEDurableFeatureStoreFeatureValue *)self stringValue];
-    v11 = [v5 stringValue];
-    v12 = v11;
-    if (v10 == v11)
+    stringValue = [(BMMLSEDurableFeatureStoreFeatureValue *)self stringValue];
+    stringValue2 = [v5 stringValue];
+    v12 = stringValue2;
+    if (stringValue == stringValue2)
     {
     }
 
     else
     {
-      v13 = [(BMMLSEDurableFeatureStoreFeatureValue *)self stringValue];
-      v14 = [v5 stringValue];
-      v15 = [v13 isEqual:v14];
+      stringValue3 = [(BMMLSEDurableFeatureStoreFeatureValue *)self stringValue];
+      stringValue4 = [v5 stringValue];
+      v15 = [stringValue3 isEqual:stringValue4];
 
       if (!v15)
       {
@@ -92,25 +92,25 @@
         goto LABEL_24;
       }
 
-      v17 = [(BMMLSEDurableFeatureStoreFeatureValue *)self BOOLValue];
-      if (v17 != [v5 BOOLValue])
+      bOOLValue = [(BMMLSEDurableFeatureStoreFeatureValue *)self BOOLValue];
+      if (bOOLValue != [v5 BOOLValue])
       {
         goto LABEL_24;
       }
     }
 
-    v18 = [(BMMLSEDurableFeatureStoreFeatureValue *)self histogramValue];
-    v19 = [v5 histogramValue];
-    v20 = v19;
-    if (v18 == v19)
+    histogramValue = [(BMMLSEDurableFeatureStoreFeatureValue *)self histogramValue];
+    histogramValue2 = [v5 histogramValue];
+    v20 = histogramValue2;
+    if (histogramValue == histogramValue2)
     {
     }
 
     else
     {
-      v21 = [(BMMLSEDurableFeatureStoreFeatureValue *)self histogramValue];
-      v22 = [v5 histogramValue];
-      v23 = [v21 isEqual:v22];
+      histogramValue3 = [(BMMLSEDurableFeatureStoreFeatureValue *)self histogramValue];
+      histogramValue4 = [v5 histogramValue];
+      v23 = [histogramValue3 isEqual:histogramValue4];
 
       if (!v23)
       {
@@ -122,8 +122,8 @@ LABEL_25:
       }
     }
 
-    v25 = [(BMMLSEDurableFeatureStoreFeatureValue *)self missingReason];
-    v16 = v25 == [v5 missingReason];
+    missingReason = [(BMMLSEDurableFeatureStoreFeatureValue *)self missingReason];
+    v16 = missingReason == [v5 missingReason];
     goto LABEL_25;
   }
 
@@ -159,7 +159,7 @@ LABEL_26:
     v6 = [v5 numberWithDouble:?];
   }
 
-  v7 = [(BMMLSEDurableFeatureStoreFeatureValue *)self stringValue];
+  stringValue = [(BMMLSEDurableFeatureStoreFeatureValue *)self stringValue];
   if ([(BMMLSEDurableFeatureStoreFeatureValue *)self hasBoolValue])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMLSEDurableFeatureStoreFeatureValue BOOLValue](self, "BOOLValue")}];
@@ -170,65 +170,65 @@ LABEL_26:
     v8 = 0;
   }
 
-  v9 = [(BMMLSEDurableFeatureStoreFeatureValue *)self histogramValue];
-  v10 = [v9 jsonDictionary];
+  histogramValue = [(BMMLSEDurableFeatureStoreFeatureValue *)self histogramValue];
+  jsonDictionary = [histogramValue jsonDictionary];
 
   v11 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMLSEDurableFeatureStoreFeatureValue missingReason](self, "missingReason")}];
   v25[0] = @"intValue";
-  v12 = v3;
+  null = v3;
   if (!v3)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v12;
+  v23 = null;
   v24 = v3;
-  v26[0] = v12;
+  v26[0] = null;
   v25[1] = @"doubleValue";
-  v13 = v6;
+  null2 = v6;
   if (!v6)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v13;
-  v26[1] = v13;
+  v21 = null2;
+  v26[1] = null2;
   v25[2] = @"stringValue";
-  v14 = v7;
-  if (!v7)
+  null3 = stringValue;
+  if (!stringValue)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[2] = v14;
+  v26[2] = null3;
   v25[3] = @"BOOLValue";
-  v15 = v8;
+  null4 = v8;
   if (!v8)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[3] = v15;
+  v26[3] = null4;
   v25[4] = @"histogramValue";
-  v16 = v10;
-  if (!v10)
+  null5 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[4] = v16;
+  v26[4] = null5;
   v25[5] = @"missingReason";
-  v17 = v11;
+  null6 = v11;
   if (!v11)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v26[5] = v17;
+  v26[5] = null6;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:{6, v21}];
   if (v11)
   {
-    if (v10)
+    if (jsonDictionary)
     {
       goto LABEL_25;
     }
@@ -237,7 +237,7 @@ LABEL_26:
   else
   {
 
-    if (v10)
+    if (jsonDictionary)
     {
 LABEL_25:
       if (v8)
@@ -252,7 +252,7 @@ LABEL_25:
   if (v8)
   {
 LABEL_26:
-    if (v7)
+    if (stringValue)
     {
       goto LABEL_27;
     }
@@ -269,7 +269,7 @@ LABEL_36:
 
 LABEL_35:
 
-  if (!v7)
+  if (!stringValue)
   {
     goto LABEL_36;
   }
@@ -292,29 +292,29 @@ LABEL_28:
   return v18;
 }
 
-- (BMMLSEDurableFeatureStoreFeatureValue)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMLSEDurableFeatureStoreFeatureValue)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v66[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"intValue"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"intValue"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"doubleValue"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"doubleValue"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v21 = 0;
           goto LABEL_53;
         }
 
         v24 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v44 = a4;
+        errorCopy = error;
         v25 = v8;
         v26 = *MEMORY[0x1E698F240];
         v63 = *MEMORY[0x1E696A578];
@@ -324,8 +324,8 @@ LABEL_4:
         v27 = v26;
         v8 = v25;
         v21 = 0;
-        a4 = 0;
-        *v44 = [v24 initWithDomain:v27 code:2 userInfo:v10];
+        error = 0;
+        *errorCopy = [v24 initWithDomain:v27 code:2 userInfo:v10];
         goto LABEL_52;
       }
 
@@ -337,14 +337,14 @@ LABEL_4:
       v52 = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"stringValue"];
-    v53 = self;
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"stringValue"];
+    errorCopy3 = self;
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
           v21 = v52;
@@ -352,7 +352,7 @@ LABEL_4:
         }
 
         v29 = objc_alloc(MEMORY[0x1E696ABC0]);
-        v45 = a4;
+        errorCopy2 = error;
         v30 = v8;
         v31 = *MEMORY[0x1E698F240];
         v61 = *MEMORY[0x1E696A578];
@@ -362,8 +362,8 @@ LABEL_4:
         v32 = v31;
         v8 = v30;
         v11 = 0;
-        a4 = 0;
-        *v45 = [v29 initWithDomain:v32 code:2 userInfo:v12];
+        error = 0;
+        *errorCopy2 = [v29 initWithDomain:v32 code:2 userInfo:v12];
         goto LABEL_59;
       }
 
@@ -375,7 +375,7 @@ LABEL_4:
       v11 = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"BOOLValue"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"BOOLValue"];
     v49 = v8;
     v50 = v11;
     if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -389,7 +389,7 @@ LABEL_4:
     {
       v51 = v12;
 LABEL_13:
-      v13 = [v6 objectForKeyedSubscript:@"histogramValue"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"histogramValue"];
       if (!v13 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v14 = 0;
@@ -405,19 +405,19 @@ LABEL_13:
         v18 = v54;
         if (v18)
         {
-          if (a4)
+          if (error)
           {
             v18 = v18;
-            *a4 = v18;
+            *error = v18;
           }
 
-          a4 = 0;
+          error = 0;
           v13 = v17;
           goto LABEL_49;
         }
 
 LABEL_16:
-        v15 = [v6 objectForKeyedSubscript:@"missingReason"];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"missingReason"];
         if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
@@ -431,7 +431,7 @@ LABEL_16:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a4)
+              if (error)
               {
                 v48 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v43 = *MEMORY[0x1E698F240];
@@ -439,11 +439,11 @@ LABEL_16:
                 v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (corresponding to enum value), or NSString (string version of enum)", objc_opt_class(), @"missingReason"];
                 v56 = v42;
                 [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-                v41 = v40 = a4;
+                v41 = v40 = error;
                 *v40 = [v48 initWithDomain:v43 code:2 userInfo:v41];
 
                 v16 = 0;
-                a4 = 0;
+                error = 0;
               }
 
               else
@@ -465,14 +465,14 @@ LABEL_16:
           v16 = 0;
         }
 
-        a4 = -[BMMLSEDurableFeatureStoreFeatureValue initWithIntValue:doubleValue:stringValue:BOOLValue:histogramValue:missingReason:](v53, "initWithIntValue:doubleValue:stringValue:BOOLValue:histogramValue:missingReason:", v49, v52, v50, v51, v14, [v16 intValue]);
-        v53 = a4;
+        error = -[BMMLSEDurableFeatureStoreFeatureValue initWithIntValue:doubleValue:stringValue:BOOLValue:histogramValue:missingReason:](errorCopy3, "initWithIntValue:doubleValue:stringValue:BOOLValue:histogramValue:missingReason:", v49, v52, v50, v51, v14, [v16 intValue]);
+        errorCopy3 = error;
 LABEL_48:
 
         goto LABEL_49;
       }
 
-      if (!a4)
+      if (!error)
       {
 LABEL_50:
         v21 = v52;
@@ -480,7 +480,7 @@ LABEL_50:
         v11 = v50;
 LABEL_51:
 
-        self = v53;
+        self = errorCopy3;
 LABEL_52:
 
         goto LABEL_53;
@@ -492,19 +492,19 @@ LABEL_52:
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"histogramValue"];
       v58 = v14;
       v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
-      *a4 = [v47 initWithDomain:v36 code:2 userInfo:v37];
+      *error = [v47 initWithDomain:v36 code:2 userInfo:v37];
 
-      a4 = 0;
+      error = 0;
 LABEL_49:
 
       v8 = v49;
       goto LABEL_50;
     }
 
-    if (a4)
+    if (error)
     {
       v33 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v46 = a4;
+      errorCopy4 = error;
       v34 = *MEMORY[0x1E698F240];
       v59 = *MEMORY[0x1E696A578];
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"BOOLValue"];
@@ -512,8 +512,8 @@ LABEL_49:
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
       v35 = [v33 initWithDomain:v34 code:2 userInfo:v14];
       v51 = 0;
-      a4 = 0;
-      *v46 = v35;
+      error = 0;
+      *errorCopy4 = v35;
       goto LABEL_49;
     }
 
@@ -530,7 +530,7 @@ LABEL_59:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
     goto LABEL_54;
@@ -544,28 +544,28 @@ LABEL_59:
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:&v65 count:1];
   v22 = [v19 initWithDomain:v20 code:2 userInfo:v9];
   v8 = 0;
-  v23 = a4;
-  a4 = 0;
-  *v23 = v22;
+  errorCopy5 = error;
+  error = 0;
+  *errorCopy5 = v22;
 LABEL_53:
 
 LABEL_54:
   v38 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMLSEDurableFeatureStoreFeatureValue *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_hasIntValue)
   {
     intValue = self->_intValue;
@@ -592,7 +592,7 @@ LABEL_54:
   if (self->_histogramValue)
   {
     PBDataWriterPlaceMark();
-    [(BMMLSEDurableFeatureStoreFeatureValueHistogram *)self->_histogramValue writeTo:v4];
+    [(BMMLSEDurableFeatureStoreFeatureValueHistogram *)self->_histogramValue writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 
@@ -600,9 +600,9 @@ LABEL_54:
   PBDataWriterWriteUint32Field();
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v47.receiver = self;
   v47.super_class = BMMLSEDurableFeatureStoreFeatureValue;
   v5 = [(BMEventBase *)&v47 init];
@@ -611,12 +611,12 @@ LABEL_54:
     goto LABEL_76;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -627,18 +627,18 @@ LABEL_54:
       while (1)
       {
         LOBYTE(v48[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v48 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v48[0] & 0x7F) << v7;
@@ -656,9 +656,9 @@ LABEL_54:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -676,18 +676,18 @@ LABEL_16:
             while (1)
             {
               LOBYTE(v48[0]) = 0;
-              v35 = [v4 position] + 1;
-              if (v35 >= [v4 position] && (v36 = objc_msgSend(v4, "position") + 1, v36 <= objc_msgSend(v4, "length")))
+              v35 = [fromCopy position] + 1;
+              if (v35 >= [fromCopy position] && (v36 = objc_msgSend(fromCopy, "position") + 1, v36 <= objc_msgSend(fromCopy, "length")))
               {
-                v37 = [v4 data];
-                [v37 getBytes:v48 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v34 |= (v48[0] & 0x7F) << v32;
@@ -705,7 +705,7 @@ LABEL_16:
               }
             }
 
-            v38 = (v34 != 0) & ~[v4 hasError];
+            v38 = (v34 != 0) & ~[fromCopy hasError];
 LABEL_66:
             v5->_BOOLValue = v38;
             break;
@@ -717,7 +717,7 @@ LABEL_66:
               goto LABEL_75;
             }
 
-            v41 = [[BMMLSEDurableFeatureStoreFeatureValueHistogram alloc] initByReadFrom:v4];
+            v41 = [[BMMLSEDurableFeatureStoreFeatureValueHistogram alloc] initByReadFrom:fromCopy];
             if (!v41)
             {
               goto LABEL_75;
@@ -735,18 +735,18 @@ LABEL_66:
             while (1)
             {
               LOBYTE(v48[0]) = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:v48 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (v48[0] & 0x7F) << v18;
@@ -762,7 +762,7 @@ LABEL_66:
               }
             }
 
-            if (([v4 hasError] & 1) != 0 || v20 > 1)
+            if (([fromCopy hasError] & 1) != 0 || v20 > 1)
             {
 LABEL_69:
               LODWORD(v20) = 0;
@@ -793,18 +793,18 @@ LABEL_53:
             while (1)
             {
               LOBYTE(v48[0]) = 0;
-              v28 = [v4 position] + 1;
-              if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+              v28 = [fromCopy position] + 1;
+              if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
               {
-                v30 = [v4 data];
-                [v30 getBytes:v48 range:{objc_msgSend(v4, "position"), 1}];
+                data4 = [fromCopy data];
+                [data4 getBytes:v48 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v27 |= (v48[0] & 0x7F) << v25;
@@ -822,7 +822,7 @@ LABEL_53:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v31 = 0;
             }
@@ -838,18 +838,18 @@ LABEL_64:
           case 2:
             v5->_hasDoubleValue = 1;
             v48[0] = 0;
-            v39 = [v4 position] + 8;
-            if (v39 >= [v4 position] && (v40 = objc_msgSend(v4, "position") + 8, v40 <= objc_msgSend(v4, "length")))
+            v39 = [fromCopy position] + 8;
+            if (v39 >= [fromCopy position] && (v40 = objc_msgSend(fromCopy, "position") + 8, v40 <= objc_msgSend(fromCopy, "length")))
             {
-              v43 = [v4 data];
-              [v43 getBytes:v48 range:{objc_msgSend(v4, "position"), 8}];
+              data5 = [fromCopy data];
+              [data5 getBytes:v48 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             *&v5->_doubleValue = v48[0];
@@ -865,13 +865,13 @@ LABEL_64:
         }
       }
 
-      v44 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v44 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_75:
     v45 = 0;
@@ -893,45 +893,45 @@ LABEL_76:
   v5 = MEMORY[0x1E696AD98];
   [(BMMLSEDurableFeatureStoreFeatureValue *)self doubleValue];
   v6 = [v5 numberWithDouble:?];
-  v7 = [(BMMLSEDurableFeatureStoreFeatureValue *)self stringValue];
+  stringValue = [(BMMLSEDurableFeatureStoreFeatureValue *)self stringValue];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMMLSEDurableFeatureStoreFeatureValue BOOLValue](self, "BOOLValue")}];
-  v9 = [(BMMLSEDurableFeatureStoreFeatureValue *)self histogramValue];
+  histogramValue = [(BMMLSEDurableFeatureStoreFeatureValue *)self histogramValue];
   v10 = BMMLSEDurableFeatureStoreFeatureValueMissingReasonAsString([(BMMLSEDurableFeatureStoreFeatureValue *)self missingReason]);
-  v11 = [v3 initWithFormat:@"BMMLSEDurableFeatureStoreFeatureValue with intValue: %@, doubleValue: %@, stringValue: %@, BOOLValue: %@, histogramValue: %@, missingReason: %@", v4, v6, v7, v8, v9, v10];
+  v11 = [v3 initWithFormat:@"BMMLSEDurableFeatureStoreFeatureValue with intValue: %@, doubleValue: %@, stringValue: %@, BOOLValue: %@, histogramValue: %@, missingReason: %@", v4, v6, stringValue, v8, histogramValue, v10];
 
   return v11;
 }
 
-- (BMMLSEDurableFeatureStoreFeatureValue)initWithIntValue:(id)a3 doubleValue:(id)a4 stringValue:(id)a5 BOOLValue:(id)a6 histogramValue:(id)a7 missingReason:(int)a8
+- (BMMLSEDurableFeatureStoreFeatureValue)initWithIntValue:(id)value doubleValue:(id)doubleValue stringValue:(id)stringValue BOOLValue:(id)lValue histogramValue:(id)histogramValue missingReason:(int)reason
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  valueCopy = value;
+  doubleValueCopy = doubleValue;
+  stringValueCopy = stringValue;
+  lValueCopy = lValue;
+  histogramValueCopy = histogramValue;
   v23.receiver = self;
   v23.super_class = BMMLSEDurableFeatureStoreFeatureValue;
   v19 = [(BMEventBase *)&v23 init];
   if (v19)
   {
     v19->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v14)
+    if (valueCopy)
     {
       v19->_hasIntValue = 1;
-      v20 = [v14 unsignedIntValue];
+      unsignedIntValue = [valueCopy unsignedIntValue];
     }
 
     else
     {
-      v20 = 0;
+      unsignedIntValue = 0;
       v19->_hasIntValue = 0;
     }
 
-    v19->_intValue = v20;
-    if (v15)
+    v19->_intValue = unsignedIntValue;
+    if (doubleValueCopy)
     {
       v19->_hasDoubleValue = 1;
-      [v15 doubleValue];
+      [doubleValueCopy doubleValue];
     }
 
     else
@@ -941,11 +941,11 @@ LABEL_76:
     }
 
     v19->_doubleValue = v21;
-    objc_storeStrong(&v19->_stringValue, a5);
-    if (v17)
+    objc_storeStrong(&v19->_stringValue, stringValue);
+    if (lValueCopy)
     {
       v19->_hasBoolValue = 1;
-      v19->_BOOLValue = [v17 BOOLValue];
+      v19->_BOOLValue = [lValueCopy BOOLValue];
     }
 
     else
@@ -954,8 +954,8 @@ LABEL_76:
       v19->_BOOLValue = 0;
     }
 
-    objc_storeStrong(&v19->_histogramValue, a7);
-    v19->_missingReason = a8;
+    objc_storeStrong(&v19->_histogramValue, histogramValue);
+    v19->_missingReason = reason;
   }
 
   return v19;
@@ -1015,9 +1015,9 @@ id __48__BMMLSEDurableFeatureStoreFeatureValue_columns__block_invoke(uint64_t a1
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1025,8 +1025,8 @@ id __48__BMMLSEDurableFeatureStoreFeatureValue_columns__block_invoke(uint64_t a1
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMLSEDurableFeatureStoreFeatureValue alloc] initByReadFrom:v7];
     v4 = v8;

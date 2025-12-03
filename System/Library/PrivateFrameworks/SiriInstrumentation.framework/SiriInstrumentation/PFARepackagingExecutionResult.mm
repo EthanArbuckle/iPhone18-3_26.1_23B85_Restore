@@ -1,45 +1,45 @@
 @interface PFARepackagingExecutionResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (PFARepackagingExecutionFailure)failure;
-- (PFARepackagingExecutionResult)initWithDictionary:(id)a3;
-- (PFARepackagingExecutionResult)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PFARepackagingExecutionResult)initWithDictionary:(id)dictionary;
+- (PFARepackagingExecutionResult)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteFailure;
 - (void)deleteSuccess;
-- (void)setFailure:(id)a3;
-- (void)setSuccess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setFailure:(id)failure;
+- (void)setSuccess:(BOOL)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFARepackagingExecutionResult
 
-- (PFARepackagingExecutionResult)initWithDictionary:(id)a3
+- (PFARepackagingExecutionResult)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PFARepackagingExecutionResult;
   v5 = [(PFARepackagingExecutionResult *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"samplingResult"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"samplingResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PFARepackagingExecutionResult setSamplingResult:](v5, "setSamplingResult:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"success"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"success"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PFARepackagingExecutionResult setSuccess:](v5, "setSuccess:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"failure"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"failure"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (PFARepackagingExecutionResult)initWithJSON:(id)a3
+- (PFARepackagingExecutionResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFARepackagingExecutionResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFARepackagingExecutionResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFARepackagingExecutionResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,33 +89,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_failure)
   {
-    v4 = [(PFARepackagingExecutionResult *)self failure];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    failure = [(PFARepackagingExecutionResult *)self failure];
+    dictionaryRepresentation = [failure dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"failure"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"failure"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"failure"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"failure"];
     }
   }
 
   if (*&self->_has)
   {
-    v7 = [(PFARepackagingExecutionResult *)self samplingResult];
+    samplingResult = [(PFARepackagingExecutionResult *)self samplingResult];
     v8 = @"UNKNOWN";
-    if (v7 == 1)
+    if (samplingResult == 1)
     {
       v8 = @"Sampled";
     }
 
-    if (v7 == 2)
+    if (samplingResult == 2)
     {
       v9 = @"NotSampled";
     }
@@ -125,18 +125,18 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"samplingResult"];
+    [dictionary setObject:v9 forKeyedSubscript:@"samplingResult"];
   }
 
   if (self->_whichSuccessorfail == 101)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[PFARepackagingExecutionResult success](self, "success")}];
-    [v3 setObject:v10 forKeyedSubscript:@"success"];
+    [dictionary setObject:v10 forKeyedSubscript:@"success"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -164,26 +164,26 @@
   return v7 ^ v6 ^ [(PFARepackagingExecutionFailure *)self->_failure hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichSuccessorfail = self->_whichSuccessorfail;
-    if (whichSuccessorfail == [v4 whichSuccessorfail] && (*&self->_has & 1) == (v4[24] & 1))
+    if (whichSuccessorfail == [equalCopy whichSuccessorfail] && (*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (samplingResult = self->_samplingResult, samplingResult == [v4 samplingResult]))
+      if ((*&self->_has & 1) == 0 || (samplingResult = self->_samplingResult, samplingResult == [equalCopy samplingResult]))
       {
         success = self->_success;
-        if (success == [v4 success])
+        if (success == [equalCopy success])
         {
-          v8 = [(PFARepackagingExecutionResult *)self failure];
-          v9 = [v4 failure];
-          v10 = v9;
-          if ((v8 != 0) != (v9 == 0))
+          failure = [(PFARepackagingExecutionResult *)self failure];
+          failure2 = [equalCopy failure];
+          v10 = failure2;
+          if ((failure != 0) != (failure2 == 0))
           {
-            v11 = [(PFARepackagingExecutionResult *)self failure];
-            if (!v11)
+            failure3 = [(PFARepackagingExecutionResult *)self failure];
+            if (!failure3)
             {
 
 LABEL_15:
@@ -191,10 +191,10 @@ LABEL_15:
               goto LABEL_13;
             }
 
-            v12 = v11;
-            v13 = [(PFARepackagingExecutionResult *)self failure];
-            v14 = [v4 failure];
-            v15 = [v13 isEqual:v14];
+            v12 = failure3;
+            failure4 = [(PFARepackagingExecutionResult *)self failure];
+            failure5 = [equalCopy failure];
+            v15 = [failure4 isEqual:failure5];
 
             if (v15)
             {
@@ -216,9 +216,9 @@ LABEL_13:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -229,15 +229,15 @@ LABEL_13:
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(PFARepackagingExecutionResult *)self failure];
+  failure = [(PFARepackagingExecutionResult *)self failure];
 
-  v5 = v7;
-  if (v4)
+  v5 = toCopy;
+  if (failure)
   {
-    v6 = [(PFARepackagingExecutionResult *)self failure];
+    failure2 = [(PFARepackagingExecutionResult *)self failure];
     PBDataWriterWriteSubmessage();
 
-    v5 = v7;
+    v5 = toCopy;
   }
 }
 
@@ -266,17 +266,17 @@ LABEL_13:
   return v3;
 }
 
-- (void)setFailure:(id)a3
+- (void)setFailure:(id)failure
 {
   self->_success = 0;
   v3 = 102;
-  if (!a3)
+  if (!failure)
   {
     v3 = 0;
   }
 
   self->_whichSuccessorfail = v3;
-  objc_storeStrong(&self->_failure, a3);
+  objc_storeStrong(&self->_failure, failure);
 }
 
 - (void)deleteSuccess
@@ -288,26 +288,26 @@ LABEL_13:
   }
 }
 
-- (void)setSuccess:(BOOL)a3
+- (void)setSuccess:(BOOL)success
 {
   failure = self->_failure;
   self->_failure = 0;
 
   self->_whichSuccessorfail = 101;
-  self->_success = a3;
+  self->_success = success;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PFARepackagingExecutionResult;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PFARepackagingExecutionResult *)self failure:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(PFARepackagingExecutionResult *)self deleteFailure];
   }

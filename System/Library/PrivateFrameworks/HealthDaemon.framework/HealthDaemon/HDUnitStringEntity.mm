@@ -1,13 +1,13 @@
 @interface HDUnitStringEntity
-+ (id)storeUnitString:(id)a3 database:(id)a4 error:(id *)a5;
++ (id)storeUnitString:(id)string database:(id)database error:(id *)error;
 @end
 
 @implementation HDUnitStringEntity
 
-+ (id)storeUnitString:(id)a3 database:(id)a4 error:(id *)a5
++ (id)storeUnitString:(id)string database:(id)database error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  stringCopy = string;
+  databaseCopy = database;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -18,14 +18,14 @@
   v18[1] = 3221225472;
   v18[2] = __53__HDUnitStringEntity_storeUnitString_database_error___block_invoke;
   v18[3] = &unk_278614860;
-  v9 = v7;
+  v9 = stringCopy;
   v19 = v9;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __53__HDUnitStringEntity_storeUnitString_database_error___block_invoke_2;
   v17[3] = &unk_278614620;
   v17[4] = &v20;
-  [v8 executeSQL:@"SELECT ROWID FROM unit_strings WHERE unit_string=?" error:a5 bindingHandler:v18 enumerationHandler:v17];
+  [databaseCopy executeSQL:@"SELECT ROWID FROM unit_strings WHERE unit_string=?" error:error bindingHandler:v18 enumerationHandler:v17];
   v10 = v21[5];
   if (!v10)
   {
@@ -34,11 +34,11 @@
     v15[2] = __53__HDUnitStringEntity_storeUnitString_database_error___block_invoke_3;
     v15[3] = &unk_278614860;
     v16 = v9;
-    if ([v8 executeSQL:@"INSERT INTO unit_strings (unit_string) VALUES (?)" error:a5 bindingHandler:v15 enumerationHandler:0])
+    if ([databaseCopy executeSQL:@"INSERT INTO unit_strings (unit_string) VALUES (?)" error:error bindingHandler:v15 enumerationHandler:0])
     {
-      v11 = [v8 lastInsertRowID];
+      lastInsertRowID = [databaseCopy lastInsertRowID];
       v12 = v21[5];
-      v21[5] = v11;
+      v21[5] = lastInsertRowID;
     }
 
     v10 = v21[5];

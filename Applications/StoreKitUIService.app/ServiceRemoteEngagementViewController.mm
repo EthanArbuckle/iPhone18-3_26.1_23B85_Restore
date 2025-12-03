@@ -1,16 +1,16 @@
 @interface ServiceRemoteEngagementViewController
-- (id)_engagementTaskForRequest:(id)a3 error:(id *)a4;
+- (id)_engagementTaskForRequest:(id)request error:(id *)error;
 - (void)_dismissPresentedViewController;
-- (void)presentEngagementRequestData:(id)a3 completion:(id)a4;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)presentEngagementRequestData:(id)data completion:(id)completion;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation ServiceRemoteEngagementViewController
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = ServiceRemoteEngagementViewController;
   [(ServiceRemoteEngagementViewController *)&v8 setPreferredContentSize:?];
@@ -23,43 +23,43 @@
   [v6 preferredContentSizeDidChange:{width, height}];
 }
 
-- (void)presentEngagementRequestData:(id)a3 completion:(id)a4
+- (void)presentEngagementRequestData:(id)data completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   [(ServiceRemoteEngagementViewController *)self _dismissPresentedViewController];
   v20 = 0;
-  v8 = [(ServiceRemoteEngagementViewController *)self _engagementTaskForRequest:v7 error:&v20];
+  v8 = [(ServiceRemoteEngagementViewController *)self _engagementTaskForRequest:dataCopy error:&v20];
 
   v9 = v20;
   if (!v9)
   {
-    v17 = [v8 presentEngagement];
+    presentEngagement = [v8 presentEngagement];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100022D04;
     v19[3] = &unk_100051E08;
     v19[4] = self;
-    [v17 addFinishBlock:v19];
+    [presentEngagement addFinishBlock:v19];
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_13;
   }
 
   v10 = +[SSLogConfig sharedConfig];
-  v11 = [v10 shouldLog];
+  shouldLog = [v10 shouldLog];
   if ([v10 shouldLogToDisk])
   {
-    v12 = v11 | 2;
+    v12 = shouldLog | 2;
   }
 
   else
   {
-    v12 = v11;
+    v12 = shouldLog;
   }
 
-  v13 = [v10 OSLogObject];
-  if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v10 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v12 &= 2u;
   }
@@ -80,40 +80,40 @@
 
   if (v16)
   {
-    v13 = [NSString stringWithCString:v16 encoding:4, &v21, v18];
+    oSLogObject = [NSString stringWithCString:v16 encoding:4, &v21, v18];
     free(v16);
     SSFileLog();
 LABEL_10:
   }
 
-  (v6)[2](v6, v9);
+  (completionCopy)[2](completionCopy, v9);
 LABEL_13:
 }
 
 - (void)_dismissPresentedViewController
 {
-  v2 = [(ServiceRemoteEngagementViewController *)self childViewControllers];
-  v4 = [v2 firstObject];
+  childViewControllers = [(ServiceRemoteEngagementViewController *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  v3 = [v4 view];
-  [v3 removeFromSuperview];
+  view = [firstObject view];
+  [view removeFromSuperview];
 
-  [v4 removeFromParentViewController];
+  [firstObject removeFromParentViewController];
 }
 
-- (id)_engagementTaskForRequest:(id)a3 error:(id *)a4
+- (id)_engagementTaskForRequest:(id)request error:(id *)error
 {
-  if (a3)
+  if (request)
   {
-    v6 = self;
-    v7 = a3;
+    selfCopy = self;
+    requestCopy = request;
     v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
   }
 
   else
   {
-    v11 = self;
+    selfCopy2 = self;
     v8 = 0;
     v10 = 0xF000000000000000;
   }

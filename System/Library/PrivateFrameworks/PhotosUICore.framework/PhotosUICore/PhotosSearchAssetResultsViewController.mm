@@ -1,16 +1,16 @@
 @interface PhotosSearchAssetResultsViewController
-- (_TtC12PhotosUICore38PhotosSearchAssetResultsViewController)initWithCoder:(id)a3;
-- (_TtC12PhotosUICore38PhotosSearchAssetResultsViewController)initWithConfiguration:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (_TtC12PhotosUICore38PhotosSearchAssetResultsViewController)initWithCoder:(id)coder;
+- (_TtC12PhotosUICore38PhotosSearchAssetResultsViewController)initWithConfiguration:(id)configuration;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)presentTTRWorkflow;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation PhotosSearchAssetResultsViewController
 
-- (_TtC12PhotosUICore38PhotosSearchAssetResultsViewController)initWithCoder:(id)a3
+- (_TtC12PhotosUICore38PhotosSearchAssetResultsViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super._responderFlags + OBJC_IVAR____TtC12PhotosUICore38PhotosSearchAssetResultsViewController_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -27,18 +27,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A42E5624();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v10.receiver = self;
   v10.super_class = type metadata accessor for PhotosSearchAssetResultsViewController();
   v4 = v10.receiver;
-  [(PXPhotosUIViewController *)&v10 viewIsAppearing:v3];
-  v5 = [v4 viewModel];
+  [(PXPhotosUIViewController *)&v10 viewIsAppearing:appearingCopy];
+  viewModel = [v4 viewModel];
   v6 = swift_allocObject();
   *(v6 + 16) = v4;
   v9[4] = sub_1A42E6474;
@@ -50,16 +50,16 @@
   v7 = _Block_copy(v9);
   v8 = v4;
 
-  [v5 performChanges_];
+  [viewModel performChanges_];
 
   _Block_release(v7);
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v8 = a3;
-  v9 = self;
-  sub_1A42E58E0(v8, a4, a5);
+  observableCopy = observable;
+  selfCopy = self;
+  sub_1A42E58E0(observableCopy, change, context);
 }
 
 - (void)viewDidLayoutSubviews
@@ -83,7 +83,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12PhotosUICore38PhotosSearchAssetResultsViewController_onTapToRadar);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_1A3D607F0(v2);
     v2(v4);
 
@@ -91,7 +91,7 @@
   }
 }
 
-- (_TtC12PhotosUICore38PhotosSearchAssetResultsViewController)initWithConfiguration:(id)a3
+- (_TtC12PhotosUICore38PhotosSearchAssetResultsViewController)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

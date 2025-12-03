@@ -1,35 +1,35 @@
 @interface GATSchemaGATPnRMetrics
-- (BOOL)isEqual:(id)a3;
-- (GATSchemaGATPnRMetrics)initWithDictionary:(id)a3;
-- (GATSchemaGATPnRMetrics)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GATSchemaGATPnRMetrics)initWithDictionary:(id)dictionary;
+- (GATSchemaGATPnRMetrics)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFileCount:(BOOL)a3;
-- (void)setHasGenerativeRequestDurationInSeconds:(BOOL)a3;
-- (void)setHasGenerativeResultCharactersCount:(BOOL)a3;
-- (void)setHasImageCount:(BOOL)a3;
-- (void)setHasImageResizingDurationInSeconds:(BOOL)a3;
-- (void)setHasImageResizingRateKBsPerSecond:(BOOL)a3;
-- (void)setHasLoadScreenContentDurationInSeconds:(BOOL)a3;
-- (void)setHasLoadScreenContentRateKBsPerSecond:(BOOL)a3;
-- (void)setHasRegisterMediaDurationInSeconds:(BOOL)a3;
-- (void)setHasRegisterMediaRateKBsPerSecond:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFileCount:(BOOL)count;
+- (void)setHasGenerativeRequestDurationInSeconds:(BOOL)seconds;
+- (void)setHasGenerativeResultCharactersCount:(BOOL)count;
+- (void)setHasImageCount:(BOOL)count;
+- (void)setHasImageResizingDurationInSeconds:(BOOL)seconds;
+- (void)setHasImageResizingRateKBsPerSecond:(BOOL)second;
+- (void)setHasLoadScreenContentDurationInSeconds:(BOOL)seconds;
+- (void)setHasLoadScreenContentRateKBsPerSecond:(BOOL)second;
+- (void)setHasRegisterMediaDurationInSeconds:(BOOL)seconds;
+- (void)setHasRegisterMediaRateKBsPerSecond:(BOOL)second;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GATSchemaGATPnRMetrics
 
-- (GATSchemaGATPnRMetrics)initWithDictionary:(id)a3
+- (GATSchemaGATPnRMetrics)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = GATSchemaGATPnRMetrics;
   v5 = [(GATSchemaGATPnRMetrics *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startSiriSessionDurationInSeconds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startSiriSessionDurationInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(GATSchemaGATPnRMetrics *)v5 setStartSiriSessionDurationInSeconds:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"generativeRequestDurationInSeconds"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"generativeRequestDurationInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(GATSchemaGATPnRMetrics *)v5 setGenerativeRequestDurationInSeconds:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"loadScreenContentDurationInSeconds"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"loadScreenContentDurationInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(GATSchemaGATPnRMetrics *)v5 setLoadScreenContentDurationInSeconds:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"imageResizingDurationInSeconds"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"imageResizingDurationInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(GATSchemaGATPnRMetrics *)v5 setImageResizingDurationInSeconds:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"registerMediaDurationInSeconds"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"registerMediaDurationInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(GATSchemaGATPnRMetrics *)v5 setRegisterMediaDurationInSeconds:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:{@"loadScreenContentRateKBsPerSecond", v10}];
+    v11 = [dictionaryCopy objectForKeyedSubscript:{@"loadScreenContentRateKBsPerSecond", v10}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(GATSchemaGATPnRMetrics *)v5 setLoadScreenContentRateKBsPerSecond:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"registerMediaRateKBsPerSecond"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"registerMediaRateKBsPerSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
     }
 
     v23 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"generativeResultCharactersCount"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"generativeResultCharactersCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,7 +95,7 @@
 
     v21 = v9;
     v22 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"imageResizingRateKBsPerSecond"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"imageResizingRateKBsPerSecond"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,14 +104,14 @@
     }
 
     v15 = v8;
-    v16 = [v4 objectForKeyedSubscript:@"imageCount"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"imageCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GATSchemaGATPnRMetrics setImageCount:](v5, "setImageCount:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"fileCount"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"fileCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,30 +124,30 @@
   return v5;
 }
 
-- (GATSchemaGATPnRMetrics)initWithJSON:(id)a3
+- (GATSchemaGATPnRMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GATSchemaGATPnRMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GATSchemaGATPnRMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GATSchemaGATPnRMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -160,12 +160,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x400) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[GATSchemaGATPnRMetrics fileCount](self, "fileCount")}];
-    [v3 setObject:v8 forKeyedSubscript:@"fileCount"];
+    [dictionary setObject:v8 forKeyedSubscript:@"fileCount"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -188,7 +188,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(GATSchemaGATPnRMetrics *)self generativeRequestDurationInSeconds];
   v10 = [v9 numberWithDouble:?];
-  [v3 setObject:v10 forKeyedSubscript:@"generativeRequestDurationInSeconds"];
+  [dictionary setObject:v10 forKeyedSubscript:@"generativeRequestDurationInSeconds"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -204,7 +204,7 @@ LABEL_4:
 
 LABEL_18:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[GATSchemaGATPnRMetrics generativeResultCharactersCount](self, "generativeResultCharactersCount")}];
-  [v3 setObject:v11 forKeyedSubscript:@"generativeResultCharactersCount"];
+  [dictionary setObject:v11 forKeyedSubscript:@"generativeResultCharactersCount"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -220,7 +220,7 @@ LABEL_5:
 
 LABEL_19:
   v12 = [MEMORY[0x1E696AD98] numberWithInt:{-[GATSchemaGATPnRMetrics imageCount](self, "imageCount")}];
-  [v3 setObject:v12 forKeyedSubscript:@"imageCount"];
+  [dictionary setObject:v12 forKeyedSubscript:@"imageCount"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -238,7 +238,7 @@ LABEL_20:
   v13 = MEMORY[0x1E696AD98];
   [(GATSchemaGATPnRMetrics *)self imageResizingDurationInSeconds];
   v14 = [v13 numberWithDouble:?];
-  [v3 setObject:v14 forKeyedSubscript:@"imageResizingDurationInSeconds"];
+  [dictionary setObject:v14 forKeyedSubscript:@"imageResizingDurationInSeconds"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -256,7 +256,7 @@ LABEL_21:
   v15 = MEMORY[0x1E696AD98];
   [(GATSchemaGATPnRMetrics *)self imageResizingRateKBsPerSecond];
   v16 = [v15 numberWithDouble:?];
-  [v3 setObject:v16 forKeyedSubscript:@"imageResizingRateKBsPerSecond"];
+  [dictionary setObject:v16 forKeyedSubscript:@"imageResizingRateKBsPerSecond"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -274,7 +274,7 @@ LABEL_22:
   v17 = MEMORY[0x1E696AD98];
   [(GATSchemaGATPnRMetrics *)self loadScreenContentDurationInSeconds];
   v18 = [v17 numberWithDouble:?];
-  [v3 setObject:v18 forKeyedSubscript:@"loadScreenContentDurationInSeconds"];
+  [dictionary setObject:v18 forKeyedSubscript:@"loadScreenContentDurationInSeconds"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -292,7 +292,7 @@ LABEL_23:
   v19 = MEMORY[0x1E696AD98];
   [(GATSchemaGATPnRMetrics *)self loadScreenContentRateKBsPerSecond];
   v20 = [v19 numberWithDouble:?];
-  [v3 setObject:v20 forKeyedSubscript:@"loadScreenContentRateKBsPerSecond"];
+  [dictionary setObject:v20 forKeyedSubscript:@"loadScreenContentRateKBsPerSecond"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -310,7 +310,7 @@ LABEL_24:
   v21 = MEMORY[0x1E696AD98];
   [(GATSchemaGATPnRMetrics *)self registerMediaDurationInSeconds];
   v22 = [v21 numberWithDouble:?];
-  [v3 setObject:v22 forKeyedSubscript:@"registerMediaDurationInSeconds"];
+  [dictionary setObject:v22 forKeyedSubscript:@"registerMediaDurationInSeconds"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -328,7 +328,7 @@ LABEL_25:
   v23 = MEMORY[0x1E696AD98];
   [(GATSchemaGATPnRMetrics *)self registerMediaRateKBsPerSecond];
   v24 = [v23 numberWithDouble:?];
-  [v3 setObject:v24 forKeyedSubscript:@"registerMediaRateKBsPerSecond"];
+  [dictionary setObject:v24 forKeyedSubscript:@"registerMediaRateKBsPerSecond"];
 
   if (*&self->_has)
   {
@@ -336,13 +336,13 @@ LABEL_12:
     v5 = MEMORY[0x1E696AD98];
     [(GATSchemaGATPnRMetrics *)self startSiriSessionDurationInSeconds];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"startSiriSessionDurationInSeconds"];
+    [dictionary setObject:v6 forKeyedSubscript:@"startSiriSessionDurationInSeconds"];
   }
 
 LABEL_13:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -656,16 +656,16 @@ LABEL_67:
   return v9 ^ v5 ^ v13 ^ v17 ^ v21 ^ v25 ^ v29 ^ v33 ^ v37 ^ v38 ^ v39;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
   has = self->_has;
-  v6 = v4[44];
+  v6 = equalCopy[44];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_46;
@@ -674,14 +674,14 @@ LABEL_67:
   if (*&has)
   {
     startSiriSessionDurationInSeconds = self->_startSiriSessionDurationInSeconds;
-    [v4 startSiriSessionDurationInSeconds];
+    [equalCopy startSiriSessionDurationInSeconds];
     if (startSiriSessionDurationInSeconds != v8)
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -693,14 +693,14 @@ LABEL_67:
   if (v9)
   {
     generativeRequestDurationInSeconds = self->_generativeRequestDurationInSeconds;
-    [v4 generativeRequestDurationInSeconds];
+    [equalCopy generativeRequestDurationInSeconds];
     if (generativeRequestDurationInSeconds != v11)
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v12 = (*&has >> 2) & 1;
@@ -712,14 +712,14 @@ LABEL_67:
   if (v12)
   {
     loadScreenContentDurationInSeconds = self->_loadScreenContentDurationInSeconds;
-    [v4 loadScreenContentDurationInSeconds];
+    [equalCopy loadScreenContentDurationInSeconds];
     if (loadScreenContentDurationInSeconds != v14)
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v15 = (*&has >> 3) & 1;
@@ -731,14 +731,14 @@ LABEL_67:
   if (v15)
   {
     imageResizingDurationInSeconds = self->_imageResizingDurationInSeconds;
-    [v4 imageResizingDurationInSeconds];
+    [equalCopy imageResizingDurationInSeconds];
     if (imageResizingDurationInSeconds != v17)
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v18 = (*&has >> 4) & 1;
@@ -750,14 +750,14 @@ LABEL_67:
   if (v18)
   {
     registerMediaDurationInSeconds = self->_registerMediaDurationInSeconds;
-    [v4 registerMediaDurationInSeconds];
+    [equalCopy registerMediaDurationInSeconds];
     if (registerMediaDurationInSeconds != v20)
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v21 = (*&has >> 5) & 1;
@@ -769,14 +769,14 @@ LABEL_67:
   if (v21)
   {
     loadScreenContentRateKBsPerSecond = self->_loadScreenContentRateKBsPerSecond;
-    [v4 loadScreenContentRateKBsPerSecond];
+    [equalCopy loadScreenContentRateKBsPerSecond];
     if (loadScreenContentRateKBsPerSecond != v23)
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v24 = (*&has >> 6) & 1;
@@ -788,14 +788,14 @@ LABEL_67:
   if (v24)
   {
     registerMediaRateKBsPerSecond = self->_registerMediaRateKBsPerSecond;
-    [v4 registerMediaRateKBsPerSecond];
+    [equalCopy registerMediaRateKBsPerSecond];
     if (registerMediaRateKBsPerSecond != v26)
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v27 = (*&has >> 7) & 1;
@@ -807,13 +807,13 @@ LABEL_67:
   if (v27)
   {
     generativeResultCharactersCount = self->_generativeResultCharactersCount;
-    if (generativeResultCharactersCount != [v4 generativeResultCharactersCount])
+    if (generativeResultCharactersCount != [equalCopy generativeResultCharactersCount])
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v29 = (*&has >> 8) & 1;
@@ -825,14 +825,14 @@ LABEL_67:
   if (v29)
   {
     imageResizingRateKBsPerSecond = self->_imageResizingRateKBsPerSecond;
-    [v4 imageResizingRateKBsPerSecond];
+    [equalCopy imageResizingRateKBsPerSecond];
     if (imageResizingRateKBsPerSecond != v31)
     {
       goto LABEL_46;
     }
 
     has = self->_has;
-    v6 = v4[44];
+    v6 = equalCopy[44];
   }
 
   v32 = (*&has >> 9) & 1;
@@ -844,10 +844,10 @@ LABEL_67:
   if (v32)
   {
     imageCount = self->_imageCount;
-    if (imageCount == [v4 imageCount])
+    if (imageCount == [equalCopy imageCount])
     {
       has = self->_has;
-      v6 = v4[44];
+      v6 = equalCopy[44];
       goto LABEL_42;
     }
 
@@ -866,7 +866,7 @@ LABEL_42:
   if (v34)
   {
     fileCount = self->_fileCount;
-    if (fileCount != [v4 fileCount])
+    if (fileCount != [equalCopy fileCount])
     {
       goto LABEL_46;
     }
@@ -878,9 +878,9 @@ LABEL_47:
   return v36;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1025,9 +1025,9 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setHasFileCount:(BOOL)a3
+- (void)setHasFileCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -1040,9 +1040,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasImageCount:(BOOL)a3
+- (void)setHasImageCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -1055,9 +1055,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasImageResizingRateKBsPerSecond:(BOOL)a3
+- (void)setHasImageResizingRateKBsPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 256;
   }
@@ -1070,9 +1070,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasGenerativeResultCharactersCount:(BOOL)a3
+- (void)setHasGenerativeResultCharactersCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -1085,9 +1085,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRegisterMediaRateKBsPerSecond:(BOOL)a3
+- (void)setHasRegisterMediaRateKBsPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 64;
   }
@@ -1100,9 +1100,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasLoadScreenContentRateKBsPerSecond:(BOOL)a3
+- (void)setHasLoadScreenContentRateKBsPerSecond:(BOOL)second
 {
-  if (a3)
+  if (second)
   {
     v3 = 32;
   }
@@ -1115,9 +1115,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRegisterMediaDurationInSeconds:(BOOL)a3
+- (void)setHasRegisterMediaDurationInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 16;
   }
@@ -1130,9 +1130,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasImageResizingDurationInSeconds:(BOOL)a3
+- (void)setHasImageResizingDurationInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 8;
   }
@@ -1145,9 +1145,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLoadScreenContentDurationInSeconds:(BOOL)a3
+- (void)setHasLoadScreenContentDurationInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4;
   }
@@ -1160,9 +1160,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasGenerativeRequestDurationInSeconds:(BOOL)a3
+- (void)setHasGenerativeRequestDurationInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }

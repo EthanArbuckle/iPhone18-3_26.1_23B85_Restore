@@ -1,85 +1,85 @@
 @interface MCContainerEffect
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
-- (MCContainerEffect)initWithImprint:(id)a3 andMontage:(id)a4;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
+- (MCContainerEffect)initWithImprint:(id)imprint andMontage:(id)montage;
 - (NSArray)orderedSlides;
 - (NSArray)orderedTexts;
 - (NSDictionary)actions;
 - (NSDictionary)effectAttributes;
 - (NSSet)slides;
 - (NSSet)texts;
-- (id)actionForKey:(id)a3;
+- (id)actionForKey:(id)key;
 - (id)addSlide;
-- (id)addSlideForAsset:(id)a3;
-- (id)addSlideForContainer:(id)a3;
-- (id)addSlides:(int64_t)a3;
-- (id)addSlidesForAssets:(id)a3;
-- (id)addTextForAsset:(id)a3 andKey:(id)a4;
-- (id)addTextForAttributedString:(id)a3;
-- (id)addTextsForAssets:(id)a3 andKey:(id)a4;
-- (id)addTextsForAttributedStrings:(id)a3;
-- (id)effectAttributeForKey:(id)a3;
+- (id)addSlideForAsset:(id)asset;
+- (id)addSlideForContainer:(id)container;
+- (id)addSlides:(int64_t)slides;
+- (id)addSlidesForAssets:(id)assets;
+- (id)addTextForAsset:(id)asset andKey:(id)key;
+- (id)addTextForAttributedString:(id)string;
+- (id)addTextsForAssets:(id)assets andKey:(id)key;
+- (id)addTextsForAttributedStrings:(id)strings;
+- (id)effectAttributeForKey:(id)key;
 - (id)imprint;
 - (id)imprintsForActions;
-- (id)insertSlideAtIndex:(int64_t)a3;
-- (id)insertSlideForAsset:(id)a3 atIndex:(unint64_t)a4;
-- (id)insertSlideForContainer:(id)a3 atIndex:(unint64_t)a4;
-- (id)insertSlidesForAssets:(id)a3 atIndex:(unint64_t)a4;
-- (id)insertTextForAsset:(id)a3 andKey:(id)a4 atIndex:(unint64_t)a5;
-- (id)insertTextForAttributedString:(id)a3 atIndex:(unint64_t)a4;
-- (id)insertTextsForAssets:(id)a3 andKey:(id)a4 atIndex:(unint64_t)a5;
-- (id)insertTextsForAttributedStrings:(id)a3 atIndex:(unint64_t)a4;
-- (id)slideAtIndex:(unint64_t)a3;
-- (id)textAtIndex:(unint64_t)a3;
+- (id)insertSlideAtIndex:(int64_t)index;
+- (id)insertSlideForAsset:(id)asset atIndex:(unint64_t)index;
+- (id)insertSlideForContainer:(id)container atIndex:(unint64_t)index;
+- (id)insertSlidesForAssets:(id)assets atIndex:(unint64_t)index;
+- (id)insertTextForAsset:(id)asset andKey:(id)key atIndex:(unint64_t)index;
+- (id)insertTextForAttributedString:(id)string atIndex:(unint64_t)index;
+- (id)insertTextsForAssets:(id)assets andKey:(id)key atIndex:(unint64_t)index;
+- (id)insertTextsForAttributedStrings:(id)strings atIndex:(unint64_t)index;
+- (id)slideAtIndex:(unint64_t)index;
+- (id)textAtIndex:(unint64_t)index;
 - (unint64_t)countOfActions;
 - (unint64_t)countOfSlides;
 - (unint64_t)countOfTexts;
 - (unint64_t)nextAvailableSlideIndex;
 - (unint64_t)nextAvailableTextIndex;
-- (void)addEffectAttributes:(id)a3;
+- (void)addEffectAttributes:(id)attributes;
 - (void)demolish;
 - (void)demolishActions;
-- (void)initActionsWithImprints:(id)a3;
-- (void)moveSlidesAtIndices:(id)a3 toIndex:(unint64_t)a4;
-- (void)moveTextsAtIndices:(id)a3 toIndex:(unint64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeActionForKey:(id)a3;
+- (void)initActionsWithImprints:(id)imprints;
+- (void)moveSlidesAtIndices:(id)indices toIndex:(unint64_t)index;
+- (void)moveTextsAtIndices:(id)indices toIndex:(unint64_t)index;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeActionForKey:(id)key;
 - (void)removeAllActions;
 - (void)removeAllSlides;
 - (void)removeAllTexts;
-- (void)removeSlidesAtIndices:(id)a3;
-- (void)removeTextsAtIndices:(id)a3;
-- (void)setAction:(id)a3 forKey:(id)a4;
-- (void)setEffectAttribute:(id)a3 forKey:(id)a4;
-- (void)setEffectAttributes:(id)a3;
+- (void)removeSlidesAtIndices:(id)indices;
+- (void)removeTextsAtIndices:(id)indices;
+- (void)setAction:(id)action forKey:(id)key;
+- (void)setEffectAttribute:(id)attribute forKey:(id)key;
+- (void)setEffectAttributes:(id)attributes;
 @end
 
 @implementation MCContainerEffect
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"orderedSlides"])
+  if ([key isEqualToString:@"orderedSlides"])
   {
     return [NSSet setWithObjects:@"slides", 0];
   }
 
-  if ([a3 isEqualToString:@"orderedTexts"])
+  if ([key isEqualToString:@"orderedTexts"])
   {
     return [NSSet setWithObjects:@"texts", 0];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MCContainerEffect;
-  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", a3);
+  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", key);
 }
 
-- (MCContainerEffect)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCContainerEffect)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v31.receiver = self;
   v31.super_class = MCContainerEffect;
   v6 = [MCContainer initWithImprint:"initWithImprint:andMontage:" andMontage:?];
   if (v6)
   {
-    v7 = [a3 objectForKey:@"slides"];
+    v7 = [imprint objectForKey:@"slides"];
     if (v7)
     {
       v8 = v7;
@@ -104,7 +104,7 @@
                 objc_enumerationMutation(v8);
               }
 
-              v13 = [MCObject objectWithImprint:*(*(&v27 + 1) + 8 * i) andMontage:a4];
+              v13 = [MCObject objectWithImprint:*(*(&v27 + 1) + 8 * i) andMontage:montage];
               [(NSMutableArray *)v6->mSlides addObject:v13];
               [(MCObject *)v13 setContainer:v6];
             }
@@ -117,7 +117,7 @@
       }
     }
 
-    v14 = [a3 objectForKey:@"texts"];
+    v14 = [imprint objectForKey:@"texts"];
     if (v14)
     {
       v15 = v14;
@@ -142,7 +142,7 @@
                 objc_enumerationMutation(v15);
               }
 
-              v20 = [MCObject objectWithImprint:*(*(&v23 + 1) + 8 * j) andMontage:a4];
+              v20 = [MCObject objectWithImprint:*(*(&v23 + 1) + 8 * j) andMontage:montage];
               [(NSMutableArray *)v6->mTexts addObject:v20];
               [(MCObject *)v20 setContainer:v6];
               if (![(MCObject *)v6 isSnapshot])
@@ -159,14 +159,14 @@
       }
     }
 
-    v21 = [a3 objectForKey:@"actions"];
+    v21 = [imprint objectForKey:@"actions"];
     if (v21)
     {
       [(MCContainerEffect *)v6 initActionsWithImprints:v21];
     }
 
-    v6->mEffectID = [a3 objectForKey:@"effectID"];
-    v6->mEffectAttributes = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(a3, "objectForKey:", @"effectAttributes"}];
+    v6->mEffectID = [imprint objectForKey:@"effectID"];
+    v6->mEffectAttributes = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(imprint, "objectForKey:", @"effectAttributes"}];
   }
 
   return v6;
@@ -261,17 +261,17 @@
 {
   v26.receiver = self;
   v26.super_class = MCContainerEffect;
-  v3 = [(MCContainer *)&v26 imprint];
+  imprint = [(MCContainer *)&v26 imprint];
   v4 = objc_autoreleasePoolPush();
-  v5 = [(MCContainerEffect *)self slides];
-  if ([(NSSet *)v5 count])
+  slides = [(MCContainerEffect *)self slides];
+  if ([(NSSet *)slides count])
   {
     v6 = +[NSMutableArray array];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v7 = [(NSSet *)v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+    v7 = [(NSSet *)slides countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v7)
     {
       v8 = v7;
@@ -283,7 +283,7 @@
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(slides);
           }
 
           [v6 addObject:{objc_msgSend(*(*(&v22 + 1) + 8 * v10), "imprint")}];
@@ -291,24 +291,24 @@
         }
 
         while (v8 != v10);
-        v8 = [(NSSet *)v5 countByEnumeratingWithState:&v22 objects:v28 count:16];
+        v8 = [(NSSet *)slides countByEnumeratingWithState:&v22 objects:v28 count:16];
       }
 
       while (v8);
     }
 
-    [v3 setObject:v6 forKey:@"slides"];
+    [imprint setObject:v6 forKey:@"slides"];
   }
 
   v11 = +[NSMutableArray array];
-  v12 = [(MCContainerEffect *)self texts];
-  if ([(NSSet *)v12 count])
+  texts = [(MCContainerEffect *)self texts];
+  if ([(NSSet *)texts count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = [(NSSet *)v12 countByEnumeratingWithState:&v18 objects:v27 count:16];
+    v13 = [(NSSet *)texts countByEnumeratingWithState:&v18 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -320,7 +320,7 @@
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(texts);
           }
 
           [v11 addObject:{objc_msgSend(*(*(&v18 + 1) + 8 * v16), "imprint")}];
@@ -328,27 +328,27 @@
         }
 
         while (v14 != v16);
-        v14 = [(NSSet *)v12 countByEnumeratingWithState:&v18 objects:v27 count:16];
+        v14 = [(NSSet *)texts countByEnumeratingWithState:&v18 objects:v27 count:16];
       }
 
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"texts"];
+    [imprint setObject:v11 forKey:@"texts"];
   }
 
   if ([(NSMutableDictionary *)self->mActions count])
   {
-    [v3 setObject:-[MCContainerEffect imprintsForActions](self forKey:{"imprintsForActions"), @"actions"}];
+    [imprint setObject:-[MCContainerEffect imprintsForActions](self forKey:{"imprintsForActions"), @"actions"}];
   }
 
-  [v3 setObject:self->mEffectID forKey:@"effectID"];
-  [v3 setObject:self->mEffectAttributes forKey:@"effectAttributes"];
+  [imprint setObject:self->mEffectID forKey:@"effectID"];
+  [imprint setObject:self->mEffectAttributes forKey:@"effectAttributes"];
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return imprint;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -444,10 +444,10 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) index];
-          if (v7 <= v10 + 1)
+          index = [*(*(&v12 + 1) + 8 * i) index];
+          if (v7 <= index + 1)
           {
-            v7 = v10 + 1;
+            v7 = index + 1;
           }
         }
 
@@ -472,7 +472,7 @@
   return v7;
 }
 
-- (id)slideAtIndex:(unint64_t)a3
+- (id)slideAtIndex:(unint64_t)index
 {
   mSlides = self->mSlides;
   if (mSlides)
@@ -480,9 +480,9 @@
     objc_sync_enter(self->mSlides);
     if (self->super.mFlags)
     {
-      if ([(NSMutableArray *)self->mSlides count]> a3)
+      if ([(NSMutableArray *)self->mSlides count]> index)
       {
-        v12 = [(NSMutableArray *)self->mSlides objectAtIndex:a3];
+        v12 = [(NSMutableArray *)self->mSlides objectAtIndex:index];
 LABEL_17:
         v11 = v12;
         goto LABEL_18;
@@ -510,7 +510,7 @@ LABEL_17:
             }
 
             v10 = *(*(&v14 + 1) + 8 * i);
-            if ([v10 index] == a3)
+            if ([v10 index] == index)
             {
               v12 = v10;
               goto LABEL_17;
@@ -546,13 +546,13 @@ LABEL_18:
   return [v2 objectAtIndex:0];
 }
 
-- (id)addSlides:(int64_t)a3
+- (id)addSlides:(int64_t)slides
 {
   v5 = +[NSMutableArray array];
-  v6 = [(MCContainerEffect *)self nextAvailableSlideIndex];
-  if (a3)
+  nextAvailableSlideIndex = [(MCContainerEffect *)self nextAvailableSlideIndex];
+  if (slides)
   {
-    v7 = v6;
+    v7 = nextAvailableSlideIndex;
     do
     {
       v8 = [(MCObject *)[MCSlide alloc] initFromScratchWithMontage:self->super.super.mMontage];
@@ -561,10 +561,10 @@ LABEL_18:
       [v8 setContainer:self];
 
       ++v7;
-      --a3;
+      --slides;
     }
 
-    while (a3);
+    while (slides);
   }
 
   if ([v5 count])
@@ -602,10 +602,10 @@ LABEL_18:
   return v5;
 }
 
-- (id)insertSlideAtIndex:(int64_t)a3
+- (id)insertSlideAtIndex:(int64_t)index
 {
   v5 = [(MCObject *)[MCSlide alloc] initFromScratchWithMontage:self->super.super.mMontage];
-  [v5 setIndex:a3];
+  [v5 setIndex:index];
   [v5 setContainer:self];
   v6 = [[NSSet alloc] initWithObjects:{v5, 0}];
   [(MCContainerEffect *)self willChangeValueForKey:@"slides" withSetMutation:1 usingObjects:v6];
@@ -643,7 +643,7 @@ LABEL_18:
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          if ([v14 index] >= a3)
+          if ([v14 index] >= index)
           {
             [v14 setIndex:{objc_msgSend(v14, "index") + 1}];
           }
@@ -656,7 +656,7 @@ LABEL_18:
     }
 
     [(NSMutableArray *)self->mSlides addObject:v5];
-    v15 = v17;
+    selfCopy = v17;
   }
 
   else
@@ -664,46 +664,46 @@ LABEL_18:
     objc_sync_enter(self);
     self->mSlides = [[NSMutableArray alloc] initWithObjects:{v5, 0}];
     self->super.mFlags |= 1u;
-    v15 = self;
+    selfCopy = self;
   }
 
-  objc_sync_exit(v15);
+  objc_sync_exit(selfCopy);
   [(MCContainerEffect *)self didChangeValueForKey:@"slides" withSetMutation:1 usingObjects:v6];
 
   return v5;
 }
 
-- (id)addSlideForAsset:(id)a3
+- (id)addSlideForAsset:(id)asset
 {
-  v4 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v4 = [[NSArray alloc] initWithObjects:{asset, 0}];
   v5 = [(MCContainerEffect *)self insertSlidesForAssets:v4 atIndex:[(MCContainerEffect *)self nextAvailableSlideIndex]];
 
   return [v5 objectAtIndex:0];
 }
 
-- (id)addSlidesForAssets:(id)a3
+- (id)addSlidesForAssets:(id)assets
 {
-  v5 = [(MCContainerEffect *)self nextAvailableSlideIndex];
+  nextAvailableSlideIndex = [(MCContainerEffect *)self nextAvailableSlideIndex];
 
-  return [(MCContainerEffect *)self insertSlidesForAssets:a3 atIndex:v5];
+  return [(MCContainerEffect *)self insertSlidesForAssets:assets atIndex:nextAvailableSlideIndex];
 }
 
-- (id)insertSlideForAsset:(id)a3 atIndex:(unint64_t)a4
+- (id)insertSlideForAsset:(id)asset atIndex:(unint64_t)index
 {
-  v6 = [[NSArray alloc] initWithObjects:{a3, 0}];
-  v7 = [(MCContainerEffect *)self insertSlidesForAssets:v6 atIndex:a4];
+  v6 = [[NSArray alloc] initWithObjects:{asset, 0}];
+  v7 = [(MCContainerEffect *)self insertSlidesForAssets:v6 atIndex:index];
 
   return [v7 objectAtIndex:0];
 }
 
-- (id)insertSlidesForAssets:(id)a3 atIndex:(unint64_t)a4
+- (id)insertSlidesForAssets:(id)assets atIndex:(unint64_t)index
 {
   v23 = +[NSMutableArray array];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v6 = [assets countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
     v7 = 0;
@@ -714,20 +714,20 @@ LABEL_18:
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(assets);
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = [(MCObject *)[MCSlide alloc] initFromScratchWithMontage:self->super.super.mMontage];
         [v11 setAsset:v10];
-        [v11 setIndex:a4 + v7];
+        [v11 setIndex:index + v7];
         [v23 addObject:v11];
         [v11 setContainer:self];
 
         ++v7;
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v6 = [assets countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v6);
@@ -769,7 +769,7 @@ LABEL_18:
               }
 
               v20 = *(*(&v25 + 1) + 8 * j);
-              if ([v20 index] >= a4)
+              if ([v20 index] >= index)
               {
                 [v20 setIndex:{objc_msgSend(v20, "index") + v7}];
               }
@@ -801,21 +801,21 @@ LABEL_18:
   return v23;
 }
 
-- (id)addSlideForContainer:(id)a3
+- (id)addSlideForContainer:(id)container
 {
-  v5 = [(MCContainerEffect *)self nextAvailableSlideIndex];
+  nextAvailableSlideIndex = [(MCContainerEffect *)self nextAvailableSlideIndex];
 
-  return [(MCContainerEffect *)self insertSlideForContainer:a3 atIndex:v5];
+  return [(MCContainerEffect *)self insertSlideForContainer:container atIndex:nextAvailableSlideIndex];
 }
 
-- (id)insertSlideForContainer:(id)a3 atIndex:(unint64_t)a4
+- (id)insertSlideForContainer:(id)container atIndex:(unint64_t)index
 {
   v7 = [(MCObject *)[MCSlide alloc] initFromScratchWithMontage:self->super.super.mMontage];
   v8 = [(MCObject *)[MCPlugSlide alloc] initFromScratchWithMontage:self->super.super.mMontage];
-  [v8 setContainer:a3];
+  [v8 setContainer:container];
   [v7 setPlug:v8];
 
-  [v7 setIndex:a4];
+  [v7 setIndex:index];
   [v7 setContainer:self];
   v9 = [[NSSet alloc] initWithObjects:{v7, 0}];
   [(MCContainerEffect *)self willChangeValueForKey:@"slides" withSetMutation:1 usingObjects:v9];
@@ -853,7 +853,7 @@ LABEL_18:
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
-          if ([v17 index] >= a4)
+          if ([v17 index] >= index)
           {
             [v17 setIndex:{objc_msgSend(v17, "index") + 1}];
           }
@@ -866,7 +866,7 @@ LABEL_18:
     }
 
     [(NSMutableArray *)self->mSlides addObject:v7];
-    v18 = v20;
+    selfCopy = v20;
   }
 
   else
@@ -874,16 +874,16 @@ LABEL_18:
     objc_sync_enter(self);
     self->mSlides = [[NSMutableArray alloc] initWithObjects:{v7, 0}];
     self->super.mFlags |= 1u;
-    v18 = self;
+    selfCopy = self;
   }
 
-  objc_sync_exit(v18);
+  objc_sync_exit(selfCopy);
   [(MCContainerEffect *)self didChangeValueForKey:@"slides" withSetMutation:1 usingObjects:v9];
 
   return v7;
 }
 
-- (void)removeSlidesAtIndices:(id)a3
+- (void)removeSlidesAtIndices:(id)indices
 {
   mSlides = self->mSlides;
   if (mSlides)
@@ -910,14 +910,14 @@ LABEL_18:
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
-          if ([a3 containsIndex:{objc_msgSend(v11, "index")}])
+          if ([indices containsIndex:{objc_msgSend(v11, "index")}])
           {
             [v6 addObject:v11];
           }
 
           else if (!self->mIsLive)
           {
-            [v11 setIndex:{objc_msgSend(v11, "index") - objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v11, "index"))}];
+            [v11 setIndex:{objc_msgSend(v11, "index") - objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v11, "index"))}];
           }
         }
 
@@ -977,7 +977,7 @@ LABEL_18:
   [(MCContainerEffect *)self removeSlidesAtIndices:v3];
 }
 
-- (void)moveSlidesAtIndices:(id)a3 toIndex:(unint64_t)a4
+- (void)moveSlidesAtIndices:(id)indices toIndex:(unint64_t)index
 {
   if (self->mSlides)
   {
@@ -1004,18 +1004,18 @@ LABEL_18:
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if ([a3 containsIndex:{objc_msgSend(v12, "index")}])
+          if ([indices containsIndex:{objc_msgSend(v12, "index")}])
           {
-            [v12 setIndex:{objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + a4}];
+            [v12 setIndex:{objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + index}];
           }
 
           else
           {
-            v13 = [v12 index];
-            v14 = v13 - [a3 countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
-            if (v14 >= a4)
+            index = [v12 index];
+            v14 = index - [indices countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
+            if (v14 >= index)
             {
-              v14 += [a3 count];
+              v14 += [indices count];
             }
 
             [v12 setIndex:v14];
@@ -1117,10 +1117,10 @@ LABEL_18:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) index];
-          if (v7 <= v10 + 1)
+          index = [*(*(&v12 + 1) + 8 * i) index];
+          if (v7 <= index + 1)
           {
-            v7 = v10 + 1;
+            v7 = index + 1;
           }
         }
 
@@ -1145,7 +1145,7 @@ LABEL_18:
   return v7;
 }
 
-- (id)textAtIndex:(unint64_t)a3
+- (id)textAtIndex:(unint64_t)index
 {
   mTexts = self->mTexts;
   if (mTexts)
@@ -1153,9 +1153,9 @@ LABEL_18:
     objc_sync_enter(self->mTexts);
     if ((self->super.mFlags & 2) != 0)
     {
-      if ([(NSMutableArray *)self->mTexts count]> a3)
+      if ([(NSMutableArray *)self->mTexts count]> index)
       {
-        v12 = [(NSMutableArray *)self->mTexts objectAtIndex:a3];
+        v12 = [(NSMutableArray *)self->mTexts objectAtIndex:index];
 LABEL_17:
         v11 = v12;
         goto LABEL_18;
@@ -1183,7 +1183,7 @@ LABEL_17:
             }
 
             v10 = *(*(&v14 + 1) + 8 * i);
-            if ([v10 index] == a3)
+            if ([v10 index] == index)
             {
               v12 = v10;
               goto LABEL_17;
@@ -1212,49 +1212,49 @@ LABEL_18:
   return v11;
 }
 
-- (id)addTextForAttributedString:(id)a3
+- (id)addTextForAttributedString:(id)string
 {
-  v3 = [(MCContainerEffect *)self insertTextsForAttributedStrings:[NSArray atIndex:"arrayWithObject:" arrayWithObject:a3], [(MCContainerEffect *)self nextAvailableTextIndex]];
+  v3 = [(MCContainerEffect *)self insertTextsForAttributedStrings:[NSArray atIndex:"arrayWithObject:" arrayWithObject:string], [(MCContainerEffect *)self nextAvailableTextIndex]];
 
   return [v3 objectAtIndex:0];
 }
 
-- (id)addTextsForAttributedStrings:(id)a3
+- (id)addTextsForAttributedStrings:(id)strings
 {
-  v5 = [(MCContainerEffect *)self nextAvailableTextIndex];
+  nextAvailableTextIndex = [(MCContainerEffect *)self nextAvailableTextIndex];
 
-  return [(MCContainerEffect *)self insertTextsForAttributedStrings:a3 atIndex:v5];
+  return [(MCContainerEffect *)self insertTextsForAttributedStrings:strings atIndex:nextAvailableTextIndex];
 }
 
-- (id)addTextForAsset:(id)a3 andKey:(id)a4
+- (id)addTextForAsset:(id)asset andKey:(id)key
 {
-  v4 = [(MCContainerEffect *)self insertTextsForAssets:[NSArray arrayWithObject:?], a4, [(MCContainerEffect *)self nextAvailableTextIndex]];
+  v4 = [(MCContainerEffect *)self insertTextsForAssets:[NSArray arrayWithObject:?], key, [(MCContainerEffect *)self nextAvailableTextIndex]];
 
   return [v4 objectAtIndex:0];
 }
 
-- (id)addTextsForAssets:(id)a3 andKey:(id)a4
+- (id)addTextsForAssets:(id)assets andKey:(id)key
 {
-  v7 = [(MCContainerEffect *)self nextAvailableTextIndex];
+  nextAvailableTextIndex = [(MCContainerEffect *)self nextAvailableTextIndex];
 
-  return [(MCContainerEffect *)self insertTextsForAssets:a3 andKey:a4 atIndex:v7];
+  return [(MCContainerEffect *)self insertTextsForAssets:assets andKey:key atIndex:nextAvailableTextIndex];
 }
 
-- (id)insertTextForAttributedString:(id)a3 atIndex:(unint64_t)a4
+- (id)insertTextForAttributedString:(id)string atIndex:(unint64_t)index
 {
-  v4 = [(MCContainerEffect *)self insertTextsForAttributedStrings:[NSArray atIndex:"arrayWithObject:" arrayWithObject:a3], a4];
+  index = [(MCContainerEffect *)self insertTextsForAttributedStrings:[NSArray atIndex:"arrayWithObject:" arrayWithObject:string], index];
 
-  return [v4 objectAtIndex:0];
+  return [index objectAtIndex:0];
 }
 
-- (id)insertTextsForAttributedStrings:(id)a3 atIndex:(unint64_t)a4
+- (id)insertTextsForAttributedStrings:(id)strings atIndex:(unint64_t)index
 {
   v22 = +[NSMutableArray array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v5 = [strings countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
   {
     v6 = 0;
@@ -1265,13 +1265,13 @@ LABEL_18:
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(strings);
         }
 
         v9 = *(*(&v28 + 1) + 8 * i);
         v10 = [(MCObject *)[MCText alloc] initFromScratchWithMontage:self->super.super.mMontage];
         [v10 setAttributedString:v9];
-        [v10 setIndex:a4 + v6];
+        [v10 setIndex:index + v6];
         [v22 addObject:v10];
         [v10 setContainer:self];
         [v10 addObserver:self forKeyPath:@"attributedString" options:0 context:0];
@@ -1279,7 +1279,7 @@ LABEL_18:
         ++v6;
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v5 = [strings countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v5);
@@ -1320,7 +1320,7 @@ LABEL_18:
               }
 
               v19 = *(*(&v24 + 1) + 8 * j);
-              if ([v19 index] >= a4)
+              if ([v19 index] >= index)
               {
                 [v19 setIndex:{objc_msgSend(v19, "index") + v6}];
               }
@@ -1351,34 +1351,34 @@ LABEL_18:
   return v22;
 }
 
-- (id)insertTextForAsset:(id)a3 andKey:(id)a4 atIndex:(unint64_t)a5
+- (id)insertTextForAsset:(id)asset andKey:(id)key atIndex:(unint64_t)index
 {
-  v5 = [(MCContainerEffect *)self insertTextsForAssets:[NSArray arrayWithObject:?], a4, a5];
+  index = [(MCContainerEffect *)self insertTextsForAssets:[NSArray arrayWithObject:?], key, index];
 
-  return [v5 objectAtIndex:0];
+  return [index objectAtIndex:0];
 }
 
-- (id)insertTextsForAssets:(id)a3 andKey:(id)a4 atIndex:(unint64_t)a5
+- (id)insertTextsForAssets:(id)assets andKey:(id)key atIndex:(unint64_t)index
 {
-  v7 = [NSMutableArray array:a3];
+  v7 = [NSMutableArray array:assets];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v8 = [assets countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
     v22 = 0;
     v9 = *v30;
     do
     {
-      v10 = a5 + v22;
+      v10 = index + v22;
       v22 += v8;
       do
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(assets);
         }
 
         v11 = [(MCObject *)[MCText alloc] initFromScratchWithMontage:self->super.super.mMontage];
@@ -1392,7 +1392,7 @@ LABEL_18:
       }
 
       while (v8);
-      v8 = [a3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [assets countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v8);
@@ -1433,7 +1433,7 @@ LABEL_18:
               }
 
               v20 = *(*(&v25 + 1) + 8 * i);
-              if ([v20 index] >= a5)
+              if ([v20 index] >= index)
               {
                 [v20 setIndex:{objc_msgSend(v20, "index") + v23}];
               }
@@ -1464,7 +1464,7 @@ LABEL_18:
   return v7;
 }
 
-- (void)removeTextsAtIndices:(id)a3
+- (void)removeTextsAtIndices:(id)indices
 {
   mTexts = self->mTexts;
   if (mTexts)
@@ -1491,7 +1491,7 @@ LABEL_18:
           }
 
           v11 = *(*(&v23 + 1) + 8 * i);
-          if ([a3 containsIndex:{objc_msgSend(v11, "index")}])
+          if ([indices containsIndex:{objc_msgSend(v11, "index")}])
           {
             [v6 addObject:v11];
             [v11 removeObserver:self forKeyPath:@"attributedString"];
@@ -1499,7 +1499,7 @@ LABEL_18:
 
           else if (!self->mIsLive)
           {
-            [v11 setIndex:{objc_msgSend(v11, "index") - objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v11, "index"))}];
+            [v11 setIndex:{objc_msgSend(v11, "index") - objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v11, "index"))}];
           }
         }
 
@@ -1559,7 +1559,7 @@ LABEL_18:
   [(MCContainerEffect *)self removeTextsAtIndices:v3];
 }
 
-- (void)moveTextsAtIndices:(id)a3 toIndex:(unint64_t)a4
+- (void)moveTextsAtIndices:(id)indices toIndex:(unint64_t)index
 {
   [(MCContainerEffect *)self willChangeValueForKey:@"orderedTexts"];
   mTexts = self->mTexts;
@@ -1584,18 +1584,18 @@ LABEL_18:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([a3 containsIndex:{objc_msgSend(v12, "index")}])
+        if ([indices containsIndex:{objc_msgSend(v12, "index")}])
         {
-          [v12 setIndex:{objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + a4}];
+          [v12 setIndex:{objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + index}];
         }
 
         else
         {
-          v13 = [v12 index];
-          v14 = v13 - [a3 countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
-          if (v14 >= a4)
+          index = [v12 index];
+          v14 = index - [indices countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
+          if (v14 >= index)
           {
-            v14 += [a3 count];
+            v14 += [indices count];
           }
 
           [v12 setIndex:v14];
@@ -1612,36 +1612,36 @@ LABEL_18:
   [(MCContainerEffect *)self didChangeValueForKey:@"orderedTexts"];
 }
 
-- (id)effectAttributeForKey:(id)a3
+- (id)effectAttributeForKey:(id)key
 {
   objc_sync_enter(self);
-  v5 = [(NSMutableDictionary *)self->mEffectAttributes objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->mEffectAttributes objectForKey:key];
   objc_sync_exit(self);
 
   return v5;
 }
 
-- (void)setEffectAttribute:(id)a3 forKey:(id)a4
+- (void)setEffectAttribute:(id)attribute forKey:(id)key
 {
   [(MCContainerEffect *)self willChangeValueForKey:@"effectAttributes"];
   objc_sync_enter(self);
   mEffectAttributes = self->mEffectAttributes;
-  if (a3)
+  if (attribute)
   {
     if (mEffectAttributes)
     {
-      [(NSMutableDictionary *)mEffectAttributes setObject:a3 forKey:a4];
+      [(NSMutableDictionary *)mEffectAttributes setObject:attribute forKey:key];
     }
 
     else
     {
-      self->mEffectAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{a3, a4, 0}];
+      self->mEffectAttributes = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{attribute, key, 0}];
     }
   }
 
   else if (mEffectAttributes)
   {
-    [(NSMutableDictionary *)mEffectAttributes removeObjectForKey:a4];
+    [(NSMutableDictionary *)mEffectAttributes removeObjectForKey:key];
   }
 
   objc_sync_exit(self);
@@ -1649,21 +1649,21 @@ LABEL_18:
   [(MCContainerEffect *)self didChangeValueForKey:@"effectAttributes"];
 }
 
-- (void)addEffectAttributes:(id)a3
+- (void)addEffectAttributes:(id)attributes
 {
-  if (a3 && [a3 count])
+  if (attributes && [attributes count])
   {
     [(MCContainerEffect *)self willChangeValueForKey:@"effectAttributes"];
     objc_sync_enter(self);
     mEffectAttributes = self->mEffectAttributes;
     if (mEffectAttributes)
     {
-      [(NSMutableDictionary *)mEffectAttributes addEntriesFromDictionary:a3];
+      [(NSMutableDictionary *)mEffectAttributes addEntriesFromDictionary:attributes];
     }
 
     else
     {
-      self->mEffectAttributes = [[NSMutableDictionary alloc] initWithDictionary:a3];
+      self->mEffectAttributes = [[NSMutableDictionary alloc] initWithDictionary:attributes];
     }
 
     objc_sync_exit(self);
@@ -1680,31 +1680,31 @@ LABEL_18:
   return v3;
 }
 
-- (void)setEffectAttributes:(id)a3
+- (void)setEffectAttributes:(id)attributes
 {
   objc_sync_enter(self);
 
   self->mEffectAttributes = 0;
-  if (a3)
+  if (attributes)
   {
-    self->mEffectAttributes = [[NSMutableDictionary alloc] initWithDictionary:a3];
+    self->mEffectAttributes = [[NSMutableDictionary alloc] initWithDictionary:attributes];
   }
 
   objc_sync_exit(self);
 }
 
-- (void)initActionsWithImprints:(id)a3
+- (void)initActionsWithImprints:(id)imprints
 {
-  if (a3)
+  if (imprints)
   {
-    if ([a3 count])
+    if ([imprints count])
     {
       self->mActions = objc_alloc_init(NSMutableDictionary);
       v9 = 0u;
       v10 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [imprints countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         v6 = v5;
@@ -1716,15 +1716,15 @@ LABEL_18:
           {
             if (*v10 != v7)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(imprints);
             }
 
-            -[NSMutableDictionary setObject:forKey:](self->mActions, "setObject:forKey:", +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [a3 objectForKey:*(*(&v9 + 1) + 8 * v8)]), *(*(&v9 + 1) + 8 * v8));
+            -[NSMutableDictionary setObject:forKey:](self->mActions, "setObject:forKey:", +[MCObjectLight objectWithImprint:](MCObjectLight, "objectWithImprint:", [imprints objectForKey:*(*(&v9 + 1) + 8 * v8)]), *(*(&v9 + 1) + 8 * v8));
             v8 = v8 + 1;
           }
 
           while (v6 != v8);
-          v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+          v6 = [imprints countByEnumeratingWithState:&v9 objects:v13 count:16];
         }
 
         while (v6);
@@ -1777,12 +1777,12 @@ LABEL_18:
 - (id)imprintsForActions
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MCContainerEffect *)self actions];
+  actions = [(MCContainerEffect *)self actions];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSDictionary *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [(NSDictionary *)actions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1794,15 +1794,15 @@ LABEL_18:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actions);
         }
 
-        [v3 setObject:objc_msgSend(-[NSDictionary objectForKey:](v4 forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * v8)), "imprint"), *(*(&v10 + 1) + 8 * v8)}];
+        [v3 setObject:objc_msgSend(-[NSDictionary objectForKey:](actions forKey:{"objectForKey:", *(*(&v10 + 1) + 8 * v8)), "imprint"), *(*(&v10 + 1) + 8 * v8)}];
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSDictionary *)actions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1814,9 +1814,9 @@ LABEL_18:
 - (NSDictionary)actions
 {
   v3 = sEmptyDictionary;
-  v4 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mActions = self->mActions;
-  if ((v4 & 1) == 0)
+  if ((isSnapshot & 1) == 0)
   {
     if (mActions)
     {
@@ -1837,9 +1837,9 @@ LABEL_18:
 
 - (unint64_t)countOfActions
 {
-  v3 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mActions = self->mActions;
-  if (v3)
+  if (isSnapshot)
   {
     v5 = self->mActions;
 
@@ -1860,15 +1860,15 @@ LABEL_18:
   }
 }
 
-- (id)actionForKey:(id)a3
+- (id)actionForKey:(id)key
 {
-  v5 = [(MCObject *)self isSnapshot];
+  isSnapshot = [(MCObject *)self isSnapshot];
   mActions = self->mActions;
-  if (v5)
+  if (isSnapshot)
   {
     v7 = self->mActions;
 
-    return [(NSMutableDictionary *)v7 objectForKey:a3];
+    return [(NSMutableDictionary *)v7 objectForKey:key];
   }
 
   else
@@ -1879,13 +1879,13 @@ LABEL_18:
     }
 
     objc_sync_enter(self->mActions);
-    v9 = [(NSMutableDictionary *)self->mActions objectForKey:a3];
+    v9 = [(NSMutableDictionary *)self->mActions objectForKey:key];
     objc_sync_exit(mActions);
     return v9;
   }
 }
 
-- (void)setAction:(id)a3 forKey:(id)a4
+- (void)setAction:(id)action forKey:(id)key
 {
   [(MCContainerEffect *)self willChangeValueForKey:@"actions"];
   mActions = self->mActions;
@@ -1898,20 +1898,20 @@ LABEL_18:
   }
 
   objc_sync_enter(mActions);
-  [(NSMutableDictionary *)self->mActions setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)self->mActions setObject:action forKey:key];
   objc_sync_exit(mActions);
 
   [(MCContainerEffect *)self didChangeValueForKey:@"actions"];
 }
 
-- (void)removeActionForKey:(id)a3
+- (void)removeActionForKey:(id)key
 {
   if (self->mActions)
   {
     [(MCContainerEffect *)self willChangeValueForKey:@"actions"];
     mActions = self->mActions;
     objc_sync_enter(mActions);
-    [(NSMutableDictionary *)self->mActions removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->mActions removeObjectForKey:key];
     objc_sync_exit(mActions);
 
     [(MCContainerEffect *)self didChangeValueForKey:@"actions"];

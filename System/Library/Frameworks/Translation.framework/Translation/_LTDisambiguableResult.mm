@@ -1,39 +1,39 @@
 @interface _LTDisambiguableResult
 + (BOOL)isGenderDisambiguationEnabled;
-+ (id)combineResults:(id)a3 joinedWithString:(id)a4;
-+ (id)combinedDisambiguableResultFromTranslationResults:(id)a3 joinedWithString:(id)a4;
-- (BOOL)hasDisambiguationsOfType:(unint64_t)a3;
++ (id)combineResults:(id)results joinedWithString:(id)string;
++ (id)combinedDisambiguableResultFromTranslationResults:(id)results joinedWithString:(id)string;
+- (BOOL)hasDisambiguationsOfType:(unint64_t)type;
 - (NSArray)observers;
 - (NSString)description;
 - (NSString)romanization;
 - (NSString)sourceText;
 - (NSString)targetText;
-- (_LTDisambiguableResult)initWithCoder:(id)a3;
-- (_LTDisambiguableResult)initWithDictionary:(id)a3;
-- (_LTDisambiguableResult)initWithSentences:(id)a3;
-- (_LTDisambiguableResult)initWithSentences:(id)a3 joinedWithString:(id)a4;
+- (_LTDisambiguableResult)initWithCoder:(id)coder;
+- (_LTDisambiguableResult)initWithDictionary:(id)dictionary;
+- (_LTDisambiguableResult)initWithSentences:(id)sentences;
+- (_LTDisambiguableResult)initWithSentences:(id)sentences joinedWithString:(id)string;
 - (_LTDisambiguableResultDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)excludedTypesForDisambiguableSentence:(id)a3;
-- (id)generateAttributedStringForLocation:(unint64_t)a3 withGlobalAttributes:(id)a4 attributeProvider:(id)a5;
-- (id)sentenceWithUUID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)excludedTypesForDisambiguableSentence:(id)sentence;
+- (id)generateAttributedStringForLocation:(unint64_t)location withGlobalAttributes:(id)attributes attributeProvider:(id)provider;
+- (id)sentenceWithUUID:(id)d;
 - (void)_commonInit;
-- (void)_insertPrefix:(id)a3;
-- (void)disambiguableSentence:(id)a3 didSelectNode:(id)a4 atIndex:(unint64_t)a5 withSelection:(id)a6;
+- (void)_insertPrefix:(id)prefix;
+- (void)disambiguableSentence:(id)sentence didSelectNode:(id)node atIndex:(unint64_t)index withSelection:(id)selection;
 @end
 
 @implementation _LTDisambiguableResult
 
-- (_LTDisambiguableResult)initWithDictionary:(id)a3
+- (_LTDisambiguableResult)initWithDictionary:(id)dictionary
 {
   v128 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = dictionaryCopy;
     }
 
     else
@@ -62,7 +62,7 @@
         goto LABEL_128;
       }
 
-      v106 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (![v9 count])
       {
         goto LABEL_107;
@@ -149,7 +149,7 @@ LABEL_126:
           goto LABEL_127;
         }
 
-        v99 = [MEMORY[0x277CBEB18] array];
+        array2 = [MEMORY[0x277CBEB18] array];
         v120 = 0u;
         v121 = 0u;
         v122 = 0u;
@@ -232,7 +232,7 @@ LABEL_122:
 
             v90 = v35;
             v91 = v34;
-            v37 = [MEMORY[0x277CBEB18] array];
+            array3 = [MEMORY[0x277CBEB18] array];
             v22 = v110;
             v38 = [v110 objectForKeyedSubscript:@"alternatives"];
             if (!v38 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -256,7 +256,7 @@ LABEL_121:
             }
 
             v41 = *v116;
-            v94 = v37;
+            v94 = array3;
             v95 = v9;
             v92 = v39;
             v88 = *v116;
@@ -403,10 +403,10 @@ LABEL_52:
                   goto LABEL_118;
                 }
 
-                v58 = [v48 unsignedIntegerValue];
-                v84 = [v54 unsignedIntegerValue];
-                v83 = [v57 unsignedIntegerValue];
-                v59 = [v7 objectAtIndexedSubscript:v58];
+                unsignedIntegerValue = [v48 unsignedIntegerValue];
+                unsignedIntegerValue2 = [v54 unsignedIntegerValue];
+                unsignedIntegerValue3 = [v57 unsignedIntegerValue];
+                v59 = [v7 objectAtIndexedSubscript:unsignedIntegerValue];
                 if (!v59)
                 {
                   v64 = 0;
@@ -418,7 +418,7 @@ LABEL_119:
                   v22 = v110;
 LABEL_120:
 
-                  v37 = v94;
+                  array3 = v94;
                   v9 = v95;
                   v38 = v93;
                   goto LABEL_121;
@@ -444,8 +444,8 @@ LABEL_116:
                 if (v60 && v61)
                 {
                   v62 = v61;
-                  v63 = +[_LTUnvalidatedEdgeInfo genderEdgeInfoWithTargetPhraseIndex:targetLinkIndex:gender:defaultGender:](_LTUnvalidatedEdgeInfo, "genderEdgeInfoWithTargetPhraseIndex:targetLinkIndex:gender:defaultGender:", v84, v83, [v60 unsignedIntegerValue], objc_msgSend(v61, "unsignedIntegerValue"));
-                  v37 = v94;
+                  v63 = +[_LTUnvalidatedEdgeInfo genderEdgeInfoWithTargetPhraseIndex:targetLinkIndex:gender:defaultGender:](_LTUnvalidatedEdgeInfo, "genderEdgeInfoWithTargetPhraseIndex:targetLinkIndex:gender:defaultGender:", unsignedIntegerValue2, unsignedIntegerValue3, [v60 unsignedIntegerValue], objc_msgSend(v61, "unsignedIntegerValue"));
+                  array3 = v94;
                   [v94 addObject:v63];
                   goto LABEL_100;
                 }
@@ -468,7 +468,7 @@ LABEL_116:
                 {
                   v79 = v66;
                   v67 = [v66 objectForKeyedSubscript:@"type"];
-                  v37 = v94;
+                  array3 = v94;
                   if (!v67)
                   {
                     v69 = 0;
@@ -498,7 +498,7 @@ LABEL_94:
                       v63 = 0;
 LABEL_96:
 
-                      v37 = v94;
+                      array3 = v94;
                     }
 
                     else
@@ -517,7 +517,7 @@ LABEL_96:
                 }
 
                 v63 = 0;
-                v37 = v94;
+                array3 = v94;
 LABEL_98:
 
                 if (!v63)
@@ -526,8 +526,8 @@ LABEL_98:
                   goto LABEL_116;
                 }
 
-                v70 = [_LTUnvalidatedEdgeInfo meaningEdgeInfoWithTargetPhraseIndex:v84 targetLinkIndex:v83 meaningDescription:v63];
-                [v37 addObject:v70];
+                v70 = [_LTUnvalidatedEdgeInfo meaningEdgeInfoWithTargetPhraseIndex:unsignedIntegerValue2 targetLinkIndex:unsignedIntegerValue3 meaningDescription:v63];
+                [array3 addObject:v70];
 
                 v62 = v80;
 LABEL_100:
@@ -546,8 +546,8 @@ LABEL_100:
             while (v40);
 LABEL_104:
 
-            v71 = [[_LTDisambiguationLinkConfiguration alloc] initWithSourceRange:v101 targetRange:v100 unvalidatedAdjacencyList:v91, v90, v37];
-            [v99 addObject:v71];
+            v71 = [[_LTDisambiguationLinkConfiguration alloc] initWithSourceRange:v101 targetRange:v100 unvalidatedAdjacencyList:v91, v90, array3];
+            [array2 addObject:v71];
 
             v36 = v110;
             v14 = v107;
@@ -564,14 +564,14 @@ LABEL_39:
           {
 LABEL_106:
 
-            v73 = [[_LTDisambiguationNode alloc] initWithText:v14 links:v99 romanization:v98];
-            [v106 addObject:v73];
+            v73 = [[_LTDisambiguationNode alloc] initWithText:v14 links:array2 romanization:v98];
+            [array addObject:v73];
 
             v10 = v96 + 1;
             if (v96 + 1 >= [v9 count])
             {
 LABEL_107:
-              v74 = [[_LTDisambiguableSentence alloc] initWithSourceText:v8 targetPhrases:v106 selectedPhraseIndex:0];
+              v74 = [[_LTDisambiguableSentence alloc] initWithSourceText:v8 targetPhrases:array selectedPhraseIndex:0];
               v75 = [_LTDisambiguableResult alloc];
               v105 = v74;
               v124 = v74;
@@ -607,9 +607,9 @@ LABEL_128:
   return v12;
 }
 
-- (_LTDisambiguableResult)initWithSentences:(id)a3
+- (_LTDisambiguableResult)initWithSentences:(id)sentences
 {
-  v4 = a3;
+  sentencesCopy = sentences;
   v12.receiver = self;
   v12.super_class = _LTDisambiguableResult;
   v5 = [(_LTDisambiguableResult *)&v12 init];
@@ -620,7 +620,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (![v4 count])
+  if (![sentencesCopy count])
   {
     v9 = _LTOSLogDisambiguation();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -632,7 +632,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v6 = [v4 copy];
+  v6 = [sentencesCopy copy];
   sentences = v5->_sentences;
   v5->_sentences = v6;
 
@@ -643,48 +643,48 @@ LABEL_7:
   return v8;
 }
 
-- (_LTDisambiguableResult)initWithSentences:(id)a3 joinedWithString:(id)a4
+- (_LTDisambiguableResult)initWithSentences:(id)sentences joinedWithString:(id)string
 {
-  v6 = a4;
+  stringCopy = string;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+  sentencesCopy = sentences;
+  v9 = [[v7 alloc] initWithCapacity:{objc_msgSend(sentencesCopy, "count")}];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __61___LTDisambiguableResult_initWithSentences_joinedWithString___block_invoke;
   v17 = &unk_278B6C960;
-  v18 = v6;
+  v18 = stringCopy;
   v19 = v9;
   v10 = v9;
-  v11 = v6;
-  [v8 enumerateObjectsUsingBlock:&v14];
+  v11 = stringCopy;
+  [sentencesCopy enumerateObjectsUsingBlock:&v14];
 
   v12 = [(_LTDisambiguableResult *)self initWithSentences:v10, v14, v15, v16, v17];
   return v12;
 }
 
-+ (id)combineResults:(id)a3 joinedWithString:(id)a4
++ (id)combineResults:(id)results joinedWithString:(id)string
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  resultsCopy = results;
+  stringCopy = string;
+  array = [MEMORY[0x277CBEB18] array];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __58___LTDisambiguableResult_combineResults_joinedWithString___block_invoke;
   v22 = &unk_278B6C988;
-  v23 = v7;
-  v9 = v8;
+  v23 = stringCopy;
+  v9 = array;
   v24 = v9;
-  v10 = v7;
-  [v6 enumerateObjectsUsingBlock:&v19];
-  v11 = [a1 alloc];
+  v10 = stringCopy;
+  [resultsCopy enumerateObjectsUsingBlock:&v19];
+  v11 = [self alloc];
   v12 = [v11 initWithSentences:{v9, v19, v20, v21, v22}];
   v13 = _LTOSLogDisambiguation();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v16 = v13;
-    v17 = [v6 count];
+    v17 = [resultsCopy count];
     v18 = [v9 count];
     *buf = 134218498;
     v26 = v17;
@@ -700,22 +700,22 @@ LABEL_7:
   return v12;
 }
 
-+ (id)combinedDisambiguableResultFromTranslationResults:(id)a3 joinedWithString:(id)a4
++ (id)combinedDisambiguableResultFromTranslationResults:(id)results joinedWithString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 _ltCompactMap:&__block_literal_global_1];
+  resultsCopy = results;
+  v5 = [resultsCopy _ltCompactMap:&__block_literal_global_1];
   v6 = [v5 count];
-  if (v6 == [v4 count])
+  if (v6 == [resultsCopy count])
   {
     v7 = [_LTDisambiguableResult combineResults:v5 joinedWithString:@" "];
-    v8 = [v7 hasDisambiguations];
+    hasDisambiguations = [v7 hasDisambiguations];
     v9 = _LTOSLogDisambiguation();
     v10 = v9;
-    if (v8)
+    if (hasDisambiguations)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        [(_LTDisambiguableResult *)v7 combinedDisambiguableResultFromTranslationResults:v10 joinedWithString:v4];
+        [(_LTDisambiguableResult *)v7 combinedDisambiguableResultFromTranslationResults:v10 joinedWithString:resultsCopy];
       }
     }
 
@@ -731,7 +731,7 @@ LABEL_7:
     v11 = _LTOSLogDisambiguation();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(_LTDisambiguableResult *)v11 combinedDisambiguableResultFromTranslationResults:v5 joinedWithString:v4];
+      [(_LTDisambiguableResult *)v11 combinedDisambiguableResultFromTranslationResults:v5 joinedWithString:resultsCopy];
     }
 
     v7 = 0;
@@ -740,18 +740,18 @@ LABEL_7:
   return v7;
 }
 
-- (id)sentenceWithUUID:(id)a3
+- (id)sentenceWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     sentences = self->_sentences;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __43___LTDisambiguableResult_sentenceWithUUID___block_invoke;
     v9[3] = &unk_278B6C9B0;
-    v10 = v4;
+    v10 = dCopy;
     v7 = [(NSArray *)sentences lt_firstObjectPassingTest:v9];
   }
 
@@ -766,7 +766,7 @@ LABEL_7:
 - (NSString)targetText
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -786,8 +786,8 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) targetText];
-        [v3 appendString:v9];
+        targetText = [*(*(&v13 + 1) + 8 * i) targetText];
+        [string appendString:targetText];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -796,7 +796,7 @@ LABEL_7:
     while (v6);
   }
 
-  v10 = [v3 copy];
+  v10 = [string copy];
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
@@ -805,7 +805,7 @@ LABEL_7:
 - (NSString)sourceText
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -825,8 +825,8 @@ LABEL_7:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) sourceText];
-        [v3 appendString:v9];
+        sourceText = [*(*(&v13 + 1) + 8 * i) sourceText];
+        [string appendString:sourceText];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -835,7 +835,7 @@ LABEL_7:
     while (v6);
   }
 
-  v10 = [v3 copy];
+  v10 = [string copy];
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
@@ -874,11 +874,11 @@ LABEL_7:
   return v5;
 }
 
-- (id)generateAttributedStringForLocation:(unint64_t)a3 withGlobalAttributes:(id)a4 attributeProvider:(id)a5
+- (id)generateAttributedStringForLocation:(unint64_t)location withGlobalAttributes:(id)attributes attributeProvider:(id)provider
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  attributesCopy = attributes;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v21 = WeakRetained;
   if (objc_opt_respondsToSelector())
@@ -911,7 +911,7 @@ LABEL_7:
           objc_enumerationMutation(obj);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * i) _generateAttributedStringForLocation:a3 result:self excludedTypes:v11 globalAttributes:v8 attributeProvider:{v9, v21}];
+        v17 = [*(*(&v23 + 1) + 8 * i) _generateAttributedStringForLocation:location result:self excludedTypes:v11 globalAttributes:attributesCopy attributeProvider:{providerCopy, v21}];
         [v12 appendAttributedString:v17];
       }
 
@@ -927,14 +927,14 @@ LABEL_7:
   return v18;
 }
 
-- (BOOL)hasDisambiguationsOfType:(unint64_t)a3
+- (BOOL)hasDisambiguationsOfType:(unint64_t)type
 {
   sentences = self->_sentences;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51___LTDisambiguableResult_hasDisambiguationsOfType___block_invoke;
   v5[3] = &__block_descriptor_40_e34_B16__0___LTDisambiguableSentence_8l;
-  v5[4] = a3;
+  v5[4] = type;
   return [(NSArray *)sentences lt_hasObjectPassingTest:v5];
 }
 
@@ -950,8 +950,8 @@ LABEL_7:
 
 - (NSArray)observers
 {
-  v2 = [(NSHashTable *)self->_observers allObjects];
-  v3 = [v2 copy];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v3 = [allObjects copy];
 
   return v3;
 }
@@ -969,33 +969,33 @@ LABEL_7:
   return v8;
 }
 
-- (void)_insertPrefix:(id)a3
+- (void)_insertPrefix:(id)prefix
 {
   sentences = self->_sentences;
-  v4 = a3;
-  v5 = [(NSArray *)sentences firstObject];
-  [v5 _insertPrefix:v4];
+  prefixCopy = prefix;
+  firstObject = [(NSArray *)sentences firstObject];
+  [firstObject _insertPrefix:prefixCopy];
 }
 
-- (void)disambiguableSentence:(id)a3 didSelectNode:(id)a4 atIndex:(unint64_t)a5 withSelection:(id)a6
+- (void)disambiguableSentence:(id)sentence didSelectNode:(id)node atIndex:(unint64_t)index withSelection:(id)selection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a6;
+  sentenceCopy = sentence;
+  selectionCopy = selection;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
     v11 = objc_loadWeakRetained(&self->_delegate);
-    [v11 disambiguableResult:self didChangeResultForSentence:v8 withSelection:v9];
+    [v11 disambiguableResult:self didChangeResultForSentence:sentenceCopy withSelection:selectionCopy];
   }
 
-  v19 = v8;
+  v19 = sentenceCopy;
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [(NSHashTable *)self->_observers allObjects];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v13 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1007,7 +1007,7 @@ LABEL_7:
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allObjects);
         }
 
         v17 = *(*(&v20 + 1) + 8 * v16);
@@ -1020,7 +1020,7 @@ LABEL_7:
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v14 = [allObjects countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v14);
@@ -1029,7 +1029,7 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)excludedTypesForDisambiguableSentence:(id)a3
+- (id)excludedTypesForDisambiguableSentence:(id)sentence
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1045,10 +1045,10 @@ LABEL_7:
   return v5;
 }
 
-- (_LTDisambiguableResult)initWithCoder:(id)a3
+- (_LTDisambiguableResult)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _LTDisambiguableResult;
   v5 = [(_LTDisambiguableResult *)&v14 init];
@@ -1060,7 +1060,7 @@ LABEL_7:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"sentences"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"sentences"];
     sentences = v5->_sentences;
     v5->_sentences = v9;
 
@@ -1072,10 +1072,10 @@ LABEL_7:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_msgSend(MEMORY[0x277CBEA60] "allocWithZone:{"initWithArray:copyItems:", self->_sentences, 1}")];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithSentences:", v4}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithSentences:", v4}];
 
   return v5;
 }
@@ -1083,9 +1083,9 @@ LABEL_7:
 - (void)_commonInit
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   observers = self->_observers;
-  self->_observers = v3;
+  self->_observers = weakObjectsHashTable;
 
   v13 = 0u;
   v14 = 0u;

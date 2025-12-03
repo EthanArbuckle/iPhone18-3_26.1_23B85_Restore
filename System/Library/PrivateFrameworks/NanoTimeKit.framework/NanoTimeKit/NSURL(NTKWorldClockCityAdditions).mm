@@ -9,10 +9,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-  v5 = [v4 stringValue];
+  stringValue = [v4 stringValue];
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:a2];
-  v7 = [v6 stringValue];
-  v8 = [v3 stringWithFormat:@"%@/%@/%@", @"nwc://curLoc", v5, v7];
+  stringValue2 = [v6 stringValue];
+  v8 = [v3 stringWithFormat:@"%@/%@/%@", @"nwc://curLoc", stringValue, stringValue2];
 
   v9 = [MEMORY[0x277CBEBC0] URLWithString:v8];
 

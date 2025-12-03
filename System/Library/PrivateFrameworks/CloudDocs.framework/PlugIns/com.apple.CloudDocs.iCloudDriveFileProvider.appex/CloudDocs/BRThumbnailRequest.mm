@@ -1,21 +1,21 @@
 @interface BRThumbnailRequest
-- (BRThumbnailRequest)initWithIdentifier:(id)a3 version:(id)a4;
+- (BRThumbnailRequest)initWithIdentifier:(id)identifier version:(id)version;
 @end
 
 @implementation BRThumbnailRequest
 
-- (BRThumbnailRequest)initWithIdentifier:(id)a3 version:(id)a4
+- (BRThumbnailRequest)initWithIdentifier:(id)identifier version:(id)version
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  versionCopy = version;
   v12.receiver = self;
   v12.super_class = BRThumbnailRequest;
   v9 = [(BRThumbnailRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_version, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_version, version);
   }
 
   return v10;

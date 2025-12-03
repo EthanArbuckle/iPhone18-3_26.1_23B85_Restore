@@ -4,13 +4,13 @@
 + (Class)_axTextViewModelClass;
 + (id)_axKeysInOrder;
 - (BOOL)_axContainedInCatchUpToLiveViewController;
-- (id)_axButtonViewModel:(id)a3;
+- (id)_axButtonViewModel:(id)model;
 - (id)_axCurrentMetadata;
-- (id)_axLabelForGenericViewModel:(id)a3;
-- (id)_axLabelForImageViewModel:(id)a3;
-- (id)_axLabelForTextViewModel:(id)a3;
+- (id)_axLabelForGenericViewModel:(id)model;
+- (id)_axLabelForImageViewModel:(id)model;
+- (id)_axLabelForTextViewModel:(id)model;
 - (id)_axMediaTagsLabel;
-- (id)_axNSStringKeyedDictionary:(id)a3;
+- (id)_axNSStringKeyedDictionary:(id)dictionary;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
@@ -94,9 +94,9 @@
     abort();
   }
 
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -134,16 +134,16 @@
   return self;
 }
 
-- (id)_axNSStringKeyedDictionary:(id)a3
+- (id)_axNSStringKeyedDictionary:(id)dictionary
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionaryCopy = dictionary;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -161,7 +161,7 @@
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [v5 objectForKeyedSubscript:{v10, v15}];
         v12 = [v10 description];
-        [v4 setObject:v11 forKeyedSubscript:v12];
+        [dictionary setObject:v11 forKeyedSubscript:v12];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -172,14 +172,14 @@
 
   v13 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return dictionary;
 }
 
-- (id)_axButtonViewModel:(id)a3
+- (id)_axButtonViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v5 = [v4 safeSwiftValueForKey:@"childrenDictionary"];
+  v5 = [modelCopy safeSwiftValueForKey:@"childrenDictionary"];
   v6 = __UIAccessibilityCastAsClass();
 
   v7 = [(PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility *)self _axNSStringKeyedDictionary:v6];
@@ -189,11 +189,11 @@
   return v8;
 }
 
-- (id)_axLabelForGenericViewModel:(id)a3
+- (id)_axLabelForGenericViewModel:(id)model
 {
   v45 = *MEMORY[0x29EDCA608];
-  v33 = a3;
-  v4 = [v33 safeSwiftValueForKey:@"protectedMembers"];
+  modelCopy = model;
+  v4 = [modelCopy safeSwiftValueForKey:@"protectedMembers"];
   v42 = 0;
   objc_opt_class();
   v31 = v4;
@@ -202,13 +202,13 @@
 
   v32 = [(PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility *)self _axNSStringKeyedDictionary:v6];
 
-  v7 = [MEMORY[0x29EDB8E10] orderedSet];
+  orderedSet = [MEMORY[0x29EDB8E10] orderedSet];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v8 = [objc_opt_class() _axKeysInOrder];
-  v9 = [v8 countByEnumeratingWithState:&v38 objects:v44 count:16];
+  _axKeysInOrder = [objc_opt_class() _axKeysInOrder];
+  v9 = [_axKeysInOrder countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v9)
   {
     v10 = v9;
@@ -219,24 +219,24 @@
       {
         if (*v39 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_axKeysInOrder);
         }
 
         v13 = *(*(&v38 + 1) + 8 * i);
         if ([v13 isEqualToString:@"mediaTags"])
         {
-          v14 = [(PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility *)self _axCurrentMetadata];
+          _axCurrentMetadata = [(PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility *)self _axCurrentMetadata];
 
-          if (v14 != v33)
+          if (_axCurrentMetadata != modelCopy)
           {
             continue;
           }
 
-          v15 = [(PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility *)self _axMediaTagsLabel];
-          v16 = v15;
-          if (v15 && [v15 length])
+          _axMediaTagsLabel = [(PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility *)self _axMediaTagsLabel];
+          v16 = _axMediaTagsLabel;
+          if (_axMediaTagsLabel && [_axMediaTagsLabel length])
           {
-            [v7 addObject:v16];
+            [orderedSet addObject:v16];
           }
 
           goto LABEL_22;
@@ -270,14 +270,14 @@ LABEL_18:
           v18 = v17;
           if (v17 && [v17 length])
           {
-            [v7 addObject:v18];
+            [orderedSet addObject:v18];
           }
         }
 
 LABEL_22:
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v38 objects:v44 count:16];
+      v10 = [_axKeysInOrder countByEnumeratingWithState:&v38 objects:v44 count:16];
     }
 
     while (v10);
@@ -326,7 +326,7 @@ LABEL_22:
       v26 = v25;
       if (v25 && [v25 length])
       {
-        [v7 addObject:v26];
+        [orderedSet addObject:v26];
       }
     }
 
@@ -335,19 +335,19 @@ LABEL_22:
 
   while (v21);
 LABEL_40:
-  v27 = [v7 array];
-  v28 = [v27 componentsJoinedByString:{@", "}];
+  array = [orderedSet array];
+  v28 = [array componentsJoinedByString:{@", "}];
 
   v29 = *MEMORY[0x29EDCA608];
 
   return v28;
 }
 
-- (id)_axLabelForTextViewModel:(id)a3
+- (id)_axLabelForTextViewModel:(id)model
 {
   v33 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v22 = [v3 safeSwiftValueForKey:@"viewLayout"];
+  modelCopy = model;
+  v22 = [modelCopy safeSwiftValueForKey:@"viewLayout"];
   [v22 safeSwiftDictionaryForKey:@"propertyStore"];
   v30 = 0u;
   v31 = 0u;
@@ -401,8 +401,8 @@ LABEL_40:
           if ([v14 isEqualToString:@"true"])
           {
 
-            v13 = 0;
-            v15 = v4;
+            string = 0;
+            safeSwiftEnumAssociatedObject = v4;
             goto LABEL_24;
           }
 
@@ -414,7 +414,7 @@ LABEL_40:
           }
         }
 
-        v13 = 0;
+        string = 0;
         goto LABEL_25;
       }
     }
@@ -431,14 +431,14 @@ LABEL_40:
 LABEL_11:
 
 LABEL_18:
-  v17 = [v3 safeSwiftValueForKey:@"textValue"];
-  v15 = [v17 safeSwiftEnumAssociatedObject];
+  v17 = [modelCopy safeSwiftValueForKey:@"textValue"];
+  safeSwiftEnumAssociatedObject = [v17 safeSwiftEnumAssociatedObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v15;
-    v13 = v15;
+    safeSwiftEnumAssociatedObject = safeSwiftEnumAssociatedObject;
+    string = safeSwiftEnumAssociatedObject;
   }
 
   else
@@ -455,12 +455,12 @@ LABEL_18:
       }
 
       v19 = v18;
-      v13 = [v18 string];
+      string = [v18 string];
     }
 
     else
     {
-      v13 = 0;
+      string = 0;
     }
   }
 
@@ -469,14 +469,14 @@ LABEL_24:
 LABEL_25:
   v20 = *MEMORY[0x29EDCA608];
 
-  return v13;
+  return string;
 }
 
-- (id)_axLabelForImageViewModel:(id)a3
+- (id)_axLabelForImageViewModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v4 = [v3 safeSwiftValueForKey:@"accessibilityText"];
+  v4 = [modelCopy safeSwiftValueForKey:@"accessibilityText"];
   v5 = __UIAccessibilityCastAsClass();
 
   return v5;
@@ -487,8 +487,8 @@ LABEL_25:
   v4.receiver = self;
   v4.super_class = PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility;
   [(PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility *)&v4 layoutSubviews];
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:self selector:sel__accessibilityLoadAccessibilityInformation name:*MEMORY[0x29EDC7EB8] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accessibilityLoadAccessibilityInformation name:*MEMORY[0x29EDC7EB8] object:0];
 
   [(PaginatedMediaMetadataContainerView_MediaShowcasingMetadataViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }

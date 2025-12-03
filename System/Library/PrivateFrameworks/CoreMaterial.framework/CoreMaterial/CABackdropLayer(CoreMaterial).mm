@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __63__CABackdropLayer_CoreMaterial__mt_orderedFilterTypesBlurAtEnd__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (mt_orderedFilterTypesBlurAtEnd_onceToken != -1)
   {
     dispatch_once(&mt_orderedFilterTypesBlurAtEnd_onceToken, block);
@@ -54,7 +54,7 @@
   {
     v35 = @"not ";
     *buf = 138543874;
-    v60 = a1;
+    selfCopy = self;
     if (a4)
     {
       v35 = &stru_1F3DFC648;
@@ -67,8 +67,8 @@
     _os_log_debug_impl(&dword_1BF527000, v7, OS_LOG_TYPE_DEBUG, "%{public}@: applying backdrop settings (%@removing if identity): %{public}@", buf, 0x20u);
   }
 
-  v8 = [a1 filters];
-  v9 = [v8 mutableCopy];
+  filters = [self filters];
+  v9 = [filters mutableCopy];
 
   v54 = 0u;
   v55 = 0u;
@@ -121,7 +121,7 @@
                   objc_enumerationMutation(obj);
                 }
 
-                [a1 _mt_applyFilterDescription:*(*(&v48 + 1) + 8 * i) remainingExistingFilters:v9 filterOrder:v17 removingIfIdentity:a4];
+                [self _mt_applyFilterDescription:*(*(&v48 + 1) + 8 * i) remainingExistingFilters:v9 filterOrder:v17 removingIfIdentity:a4];
               }
 
               v18 = obj;
@@ -153,20 +153,20 @@
                 }
 
                 v28 = *(*(&v44 + 1) + 8 * j);
-                v29 = [v28 name];
-                if (([v29 isEqualToString:@"opacityColorMatrix"] & 1) == 0)
+                name = [v28 name];
+                if (([name isEqualToString:@"opacityColorMatrix"] & 1) == 0)
                 {
-                  v30 = [v28 name];
-                  v31 = [v30 isEqualToString:@"inoperativeColorMatrix"];
+                  name2 = [v28 name];
+                  v31 = [name2 isEqualToString:@"inoperativeColorMatrix"];
 
                   if (v31)
                   {
                     continue;
                   }
 
-                  v29 = [v28 type];
-                  v32 = [v28 name];
-                  [a1 _mt_removeFilterOfType:v29 ifNecessaryWithName:v32];
+                  name = [v28 type];
+                  name3 = [v28 name];
+                  [self _mt_removeFilterOfType:name ifNecessaryWithName:name3];
                 }
               }
 
@@ -188,7 +188,7 @@
         else
         {
           v33 = [v10 objectForKey:v15];
-          [a1 setValue:v33 forKey:v15];
+          [self setValue:v33 forKey:v15];
         }
 
         ++v14;
@@ -206,8 +206,8 @@
 
 - (double)mt_colorMatrixDrivenOpacity
 {
-  v2 = [objc_opt_class() mt_keyPathForColorMatrixDrivenOpacity];
-  v3 = [a1 valueForKeyPath:v2];
+  mt_keyPathForColorMatrixDrivenOpacity = [objc_opt_class() mt_keyPathForColorMatrixDrivenOpacity];
+  v3 = [self valueForKeyPath:mt_keyPathForColorMatrixDrivenOpacity];
 
   if (v3)
   {
@@ -245,19 +245,19 @@
     v10 = 0u;
   }
 
-  [a1 _mt_removeFilterOfType:*MEMORY[0x1E6979880] ifNecessaryWithName:@"opacityColorMatrix"];
+  [self _mt_removeFilterOfType:*MEMORY[0x1E6979880] ifNecessaryWithName:@"opacityColorMatrix"];
   v9[2] = v12;
   v9[3] = v13;
   v9[4] = v14;
   v9[0] = v10;
   v9[1] = v11;
-  return [a1 _mt_setColorMatrix:v9 withName:@"opacityColorMatrix" filterOrder:0 removingIfIdentity:a4];
+  return [self _mt_setColorMatrix:v9 withName:@"opacityColorMatrix" filterOrder:0 removingIfIdentity:a4];
 }
 
 - (double)mt_colorMatrixDrivenInoperativeOpacity
 {
-  v2 = [objc_opt_class() mt_keyPathForColorMatrixDrivenInoperativeOpacity];
-  v3 = [a1 valueForKeyPath:v2];
+  mt_keyPathForColorMatrixDrivenInoperativeOpacity = [objc_opt_class() mt_keyPathForColorMatrixDrivenInoperativeOpacity];
+  v3 = [self valueForKeyPath:mt_keyPathForColorMatrixDrivenInoperativeOpacity];
 
   if (v3)
   {
@@ -295,13 +295,13 @@
     v10 = 0u;
   }
 
-  [a1 _mt_removeFilterOfType:*MEMORY[0x1E6979880] ifNecessaryWithName:@"inoperativeColorMatrix"];
+  [self _mt_removeFilterOfType:*MEMORY[0x1E6979880] ifNecessaryWithName:@"inoperativeColorMatrix"];
   v9[2] = v12;
   v9[3] = v13;
   v9[4] = v14;
   v9[0] = v10;
   v9[1] = v11;
-  return [a1 _mt_setColorMatrix:v9 withName:@"inoperativeColorMatrix" filterOrder:0 removingIfIdentity:a4];
+  return [self _mt_setColorMatrix:v9 withName:@"inoperativeColorMatrix" filterOrder:0 removingIfIdentity:a4];
 }
 
 - (void)_mt_configureFilterOfType:()CoreMaterial ifNecessaryWithName:andFilterOrder:
@@ -320,11 +320,11 @@
   }
 
   v12 = MTFilterKeyPathForFilter(v11);
-  v13 = [a1 valueForKeyPath:v12];
+  v13 = [self valueForKeyPath:v12];
   if (!v13)
   {
-    v14 = [a1 filters];
-    v15 = [v14 mutableCopy];
+    filters = [self filters];
+    v15 = [filters mutableCopy];
     v16 = v15;
     if (v15)
     {
@@ -357,7 +357,7 @@
       [v18 sortUsingComparator:v21];
     }
 
-    [a1 setFilters:v18];
+    [self setFilters:v18];
   }
 }
 
@@ -366,11 +366,11 @@
   v9 = a3;
   v6 = a4;
   v7 = MTFilterKeyPathForFilter(v9);
-  v8 = [a1 valueForKeyPath:v7];
+  v8 = [self valueForKeyPath:v7];
 
   if (!v8)
   {
-    [a1 _mt_configureFilterOfType:v9 ifNecessaryWithName:0 andFilterOrder:v6];
+    [self _mt_configureFilterOfType:v9 ifNecessaryWithName:0 andFilterOrder:v6];
   }
 }
 
@@ -378,8 +378,8 @@
 {
   v12 = a3;
   v6 = a4;
-  v7 = [a1 filters];
-  v8 = [v7 mutableCopy];
+  filters = [self filters];
+  v8 = [filters mutableCopy];
 
   if (v6)
   {
@@ -392,10 +392,10 @@
   }
 
   v10 = MTFilterKeyPathForFilter(v9);
-  v11 = [a1 valueForKeyPath:v10];
+  v11 = [self valueForKeyPath:v10];
   [v8 removeObject:v11];
 
-  [a1 setFilters:v8];
+  [self setFilters:v8];
 }
 
 - (void)_mt_applyFilterDescription:()CoreMaterial remainingExistingFilters:filterOrder:removingIfIdentity:
@@ -404,14 +404,14 @@
   v9 = a3;
   v10 = a4;
   v38 = a5;
-  v11 = [v9 allKeys];
-  v12 = [v11 mutableCopy];
+  allKeys = [v9 allKeys];
+  v12 = [allKeys mutableCopy];
 
   v13 = v9;
   v14 = [v9 objectForKey:@"type"];
   v15 = MTFilterKeyPathForFilter(v14);
-  v16 = a1;
-  v17 = [a1 valueForKeyPath:v15];
+  selfCopy = self;
+  v17 = [self valueForKeyPath:v15];
   [v10 removeObject:v17];
 
   [v12 removeObject:@"type"];
@@ -427,12 +427,12 @@
     v23 = a6;
     if (!a6 || v22)
     {
-      [v16 _mt_configureFilterOfType:v14 ifNecessaryWithFilterOrder:v38];
+      [selfCopy _mt_configureFilterOfType:v14 ifNecessaryWithFilterOrder:v38];
     }
 
     else
     {
-      [v16 _mt_removeFilterOfTypeIfNecessary:v14];
+      [selfCopy _mt_removeFilterOfTypeIfNecessary:v14];
     }
   }
 
@@ -443,16 +443,16 @@
     if (v24)
     {
       v25 = [v9 objectForKey:v24];
-      v26 = a1;
+      selfCopy2 = self;
       v23 = a6;
-      [v26 _mt_setValue:v25 forFilterOfType:v14 valueKey:v24 filterOrder:v38 removingIfIdentity:a6];
+      [selfCopy2 _mt_setValue:v25 forFilterOfType:v14 valueKey:v24 filterOrder:v38 removingIfIdentity:a6];
     }
 
     else
     {
-      v27 = a1;
+      selfCopy3 = self;
       v23 = a6;
-      [v27 _mt_setValue:0 forFilterOfType:v14 valueKey:0 filterOrder:v38 removingIfIdentity:a6];
+      [selfCopy3 _mt_setValue:0 forFilterOfType:v14 valueKey:0 filterOrder:v38 removingIfIdentity:a6];
     }
   }
 
@@ -477,7 +477,7 @@
 
         v33 = *(*(&v39 + 1) + 8 * i);
         v34 = [v13 objectForKey:v33];
-        [v16 _mt_setValue:v34 forFilterOfType:v14 valueKey:v33 filterOrder:v38 removingIfIdentity:v23];
+        [selfCopy _mt_setValue:v34 forFilterOfType:v14 valueKey:v33 filterOrder:v38 removingIfIdentity:v23];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -521,23 +521,23 @@
   if (_IsValueIdentity(v24, v12, v13))
   {
 LABEL_6:
-    [a1 _mt_removeFilterOfTypeIfNecessary:v12];
+    [self _mt_removeFilterOfTypeIfNecessary:v12];
     goto LABEL_18;
   }
 
 LABEL_8:
   if (IsIdentityProperty)
   {
-    [a1 _mt_configureFilterOfType:v12 ifNecessaryWithFilterOrder:v14];
+    [self _mt_configureFilterOfType:v12 ifNecessaryWithFilterOrder:v14];
   }
 
   v17 = MTFilterKeyPathForFilter(v12);
   v18 = [v17 stringByAppendingFormat:@".%@", v13];
-  v19 = [a1 valueForKeyPath:v17];
+  v19 = [self valueForKeyPath:v17];
   if (v19)
   {
     v20 = v19;
-    v21 = [a1 valueForKeyPath:v18];
+    v21 = [self valueForKeyPath:v18];
     v22 = v24;
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
@@ -551,7 +551,7 @@ LABEL_8:
 
     if ((v23 & 1) == 0)
     {
-      [a1 setValue:v22 forKeyPath:v18];
+      [self setValue:v22 forKeyPath:v18];
     }
   }
 
@@ -574,15 +574,15 @@ LABEL_18:
   v16 = *MEMORY[0x1E6979880];
   if (a6 && _IsValueIdentity(v14, *MEMORY[0x1E6979880], @"inputColorMatrix"))
   {
-    [a1 _mt_removeFilterOfType:v16 ifNecessaryWithName:v10];
+    [self _mt_removeFilterOfType:v16 ifNecessaryWithName:v10];
   }
 
   else
   {
-    [a1 _mt_configureFilterOfType:v16 ifNecessaryWithName:v10 andFilterOrder:v11];
+    [self _mt_configureFilterOfType:v16 ifNecessaryWithName:v10 andFilterOrder:v11];
     v17 = MTFilterKeyPathForFilter(v10);
     v18 = [v17 stringByAppendingFormat:@".%@", @"inputColorMatrix"];
-    [a1 setValue:v15 forKeyPath:v18];
+    [self setValue:v15 forKeyPath:v18];
   }
 }
 

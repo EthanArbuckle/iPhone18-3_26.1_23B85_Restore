@@ -1,10 +1,10 @@
 @interface PKAddressSearchRequest
-- (PKAddressSearchRequest)initWithEmailAddress:(id)a3;
-- (PKAddressSearchRequest)initWithFullText:(id)a3;
-- (PKAddressSearchRequest)initWithNameComponents:(id)a3;
-- (PKAddressSearchRequest)initWithPhoneNumber:(id)a3;
-- (PKAddressSearchRequest)initWithPostalAddress:(id)a3;
-- (id)_contactPropertyFilterForKey:(id)a3 propertyName:(id)a4;
+- (PKAddressSearchRequest)initWithEmailAddress:(id)address;
+- (PKAddressSearchRequest)initWithFullText:(id)text;
+- (PKAddressSearchRequest)initWithNameComponents:(id)components;
+- (PKAddressSearchRequest)initWithPhoneNumber:(id)number;
+- (PKAddressSearchRequest)initWithPostalAddress:(id)address;
+- (id)_contactPropertyFilterForKey:(id)key propertyName:(id)name;
 - (id)allKeys;
 - (id)contactKeys;
 - (id)postalAddressKeys;
@@ -12,9 +12,9 @@
 
 @implementation PKAddressSearchRequest
 
-- (PKAddressSearchRequest)initWithFullText:(id)a3
+- (PKAddressSearchRequest)initWithFullText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v17.receiver = self;
   v17.super_class = PKAddressSearchRequest;
   v5 = [(PKAddressSearchRequest *)&v17 init];
@@ -22,17 +22,17 @@
   if (v5)
   {
     v5->_type = 0;
-    v7 = [v4 copy];
+    v7 = [textCopy copy];
     fragment = v6->_fragment;
     v6->_fragment = v7;
 
-    v9 = [MEMORY[0x1E695CD58] predicateForContactsMatchingFullTextSearch:v4 containerIdentifiers:0 groupIdentifiers:0];
+    v9 = [MEMORY[0x1E695CD58] predicateForContactsMatchingFullTextSearch:textCopy containerIdentifiers:0 groupIdentifiers:0];
     predicate = v6->_predicate;
     v6->_predicate = v9;
 
-    v11 = [(PKAddressSearchRequest *)v6 allKeys];
+    allKeys = [(PKAddressSearchRequest *)v6 allKeys];
     keysToFetch = v6->_keysToFetch;
-    v6->_keysToFetch = v11;
+    v6->_keysToFetch = allKeys;
 
     v13 = [(PKAddressSearchRequest *)v6 _contactPropertyFilterForKey:*MEMORY[0x1E695C360] propertyName:@"postalAddresses"];
     v14 = [v13 copy];
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (PKAddressSearchRequest)initWithNameComponents:(id)a3
+- (PKAddressSearchRequest)initWithNameComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v17.receiver = self;
   v17.super_class = PKAddressSearchRequest;
   v5 = [(PKAddressSearchRequest *)&v17 init];
@@ -53,7 +53,7 @@
   if (v5)
   {
     v5->_type = 1;
-    v7 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:v4 style:2 options:0];
+    v7 = [MEMORY[0x1E696ADF8] localizedStringFromPersonNameComponents:componentsCopy style:2 options:0];
     fragment = v6->_fragment;
     v6->_fragment = v7;
 
@@ -61,9 +61,9 @@
     predicate = v6->_predicate;
     v6->_predicate = v9;
 
-    v11 = [(PKAddressSearchRequest *)v6 allKeys];
+    allKeys = [(PKAddressSearchRequest *)v6 allKeys];
     keysToFetch = v6->_keysToFetch;
-    v6->_keysToFetch = v11;
+    v6->_keysToFetch = allKeys;
 
     v13 = [(PKAddressSearchRequest *)v6 _contactPropertyFilterForKey:*MEMORY[0x1E695C360] propertyName:@"postalAddresses"];
     v14 = [v13 copy];
@@ -74,9 +74,9 @@
   return v6;
 }
 
-- (PKAddressSearchRequest)initWithPostalAddress:(id)a3
+- (PKAddressSearchRequest)initWithPostalAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v18.receiver = self;
   v18.super_class = PKAddressSearchRequest;
   v5 = [(PKAddressSearchRequest *)&v18 init];
@@ -84,17 +84,17 @@
   if (v5)
   {
     v5->_type = 2;
-    v7 = [MEMORY[0x1E695CF68] singleLineStringFromPostalAddress:v4 addCountryName:0];
+    v7 = [MEMORY[0x1E695CF68] singleLineStringFromPostalAddress:addressCopy addCountryName:0];
     fragment = v6->_fragment;
     v6->_fragment = v7;
 
-    v9 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPostalAddress:v4];
+    v9 = [MEMORY[0x1E695CD58] predicateForContactsMatchingPostalAddress:addressCopy];
     predicate = v6->_predicate;
     v6->_predicate = v9;
 
-    v11 = [(PKAddressSearchRequest *)v6 postalAddressKeys];
+    postalAddressKeys = [(PKAddressSearchRequest *)v6 postalAddressKeys];
     keysToFetch = v6->_keysToFetch;
-    v6->_keysToFetch = v11;
+    v6->_keysToFetch = postalAddressKeys;
 
     v13 = *MEMORY[0x1E695C360];
     v14 = [(PKAddressSearchRequest *)v6 _contactPropertyFilterForKey:*MEMORY[0x1E695C360] propertyName:@"postalAddresses"];
@@ -108,9 +108,9 @@
   return v6;
 }
 
-- (PKAddressSearchRequest)initWithEmailAddress:(id)a3
+- (PKAddressSearchRequest)initWithEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v18.receiver = self;
   v18.super_class = PKAddressSearchRequest;
   v5 = [(PKAddressSearchRequest *)&v18 init];
@@ -118,17 +118,17 @@
   if (v5)
   {
     v5->_type = 3;
-    v7 = [v4 copy];
+    v7 = [addressCopy copy];
     fragment = v6->_fragment;
     v6->_fragment = v7;
 
-    v9 = [MEMORY[0x1E695CD58] pk_predicateForContactsMatchingEmailAddress:v4];
+    v9 = [MEMORY[0x1E695CD58] pk_predicateForContactsMatchingEmailAddress:addressCopy];
     predicate = v6->_predicate;
     v6->_predicate = v9;
 
-    v11 = [(PKAddressSearchRequest *)v6 contactKeys];
+    contactKeys = [(PKAddressSearchRequest *)v6 contactKeys];
     keysToFetch = v6->_keysToFetch;
-    v6->_keysToFetch = v11;
+    v6->_keysToFetch = contactKeys;
 
     v13 = *MEMORY[0x1E695C208];
     v14 = [(PKAddressSearchRequest *)v6 _contactPropertyFilterForKey:*MEMORY[0x1E695C208] propertyName:@"emailAddresses"];
@@ -142,9 +142,9 @@
   return v6;
 }
 
-- (PKAddressSearchRequest)initWithPhoneNumber:(id)a3
+- (PKAddressSearchRequest)initWithPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v18.receiver = self;
   v18.super_class = PKAddressSearchRequest;
   v5 = [(PKAddressSearchRequest *)&v18 init];
@@ -152,17 +152,17 @@
   if (v5)
   {
     v5->_type = 4;
-    v7 = [v4 stringValue];
+    stringValue = [numberCopy stringValue];
     fragment = v6->_fragment;
-    v6->_fragment = v7;
+    v6->_fragment = stringValue;
 
-    v9 = [MEMORY[0x1E695CD58] pk_predicateForContactsMatchingPhoneNumber:v4];
+    v9 = [MEMORY[0x1E695CD58] pk_predicateForContactsMatchingPhoneNumber:numberCopy];
     predicate = v6->_predicate;
     v6->_predicate = v9;
 
-    v11 = [(PKAddressSearchRequest *)v6 contactKeys];
+    contactKeys = [(PKAddressSearchRequest *)v6 contactKeys];
     keysToFetch = v6->_keysToFetch;
-    v6->_keysToFetch = v11;
+    v6->_keysToFetch = contactKeys;
 
     v13 = *MEMORY[0x1E695C330];
     v14 = [(PKAddressSearchRequest *)v6 _contactPropertyFilterForKey:*MEMORY[0x1E695C330] propertyName:@"phoneNumbers"];
@@ -231,18 +231,18 @@
   return v5;
 }
 
-- (id)_contactPropertyFilterForKey:(id)a3 propertyName:(id)a4
+- (id)_contactPropertyFilterForKey:(id)key propertyName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  nameCopy = name;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PKAddressSearchRequest__contactPropertyFilterForKey_propertyName___block_invoke;
   v11[3] = &unk_1E79D5640;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = keyCopy;
+  v13 = nameCopy;
+  v7 = nameCopy;
+  v8 = keyCopy;
   v9 = _Block_copy(v11);
 
   return v9;

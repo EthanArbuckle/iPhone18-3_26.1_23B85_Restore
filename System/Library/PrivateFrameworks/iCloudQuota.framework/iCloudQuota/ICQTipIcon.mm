@@ -1,26 +1,26 @@
 @interface ICQTipIcon
-- (ICQTipIcon)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ICQTipIcon)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ICQTipIcon
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQTipIcon);
   [(ICQTipIcon *)v4 setType:self->_type];
   return v4;
 }
 
-- (ICQTipIcon)initWithCoder:(id)a3
+- (ICQTipIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICQTipIcon;
   v5 = [(ICQTipIcon *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v6;
   }

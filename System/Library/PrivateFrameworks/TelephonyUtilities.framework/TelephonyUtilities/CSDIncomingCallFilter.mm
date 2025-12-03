@@ -1,18 +1,18 @@
 @interface CSDIncomingCallFilter
-- (BOOL)_doNotDisturbAllowsCallFromSourceAddress:(id)a3 providerIdentifier:(id)a4;
-- (BOOL)callDirectoryAllowsCallFromSourceAddress:(id)a3;
-- (BOOL)callDirectoryAllowsCallFromSourceAddress:(id)a3 countryCode:(id)a4;
-- (BOOL)callDirectoryExtensionsAllowCallFromPhoneNumbers:(id)a3 error:(id *)a4;
+- (BOOL)_doNotDisturbAllowsCallFromSourceAddress:(id)address providerIdentifier:(id)identifier;
+- (BOOL)callDirectoryAllowsCallFromSourceAddress:(id)address;
+- (BOOL)callDirectoryAllowsCallFromSourceAddress:(id)address countryCode:(id)code;
+- (BOOL)callDirectoryExtensionsAllowCallFromPhoneNumbers:(id)numbers error:(id *)error;
 - (BOOL)isOnEmergencyCall;
-- (BOOL)liveLookupExtensionsAllowCallFromHandle:(id)a3;
-- (BOOL)systemAllowsCallsFromSourceAddress:(id)a3 providerIdentifier:(id)a4;
+- (BOOL)liveLookupExtensionsAllowCallFromHandle:(id)handle;
+- (BOOL)systemAllowsCallsFromSourceAddress:(id)address providerIdentifier:(id)identifier;
 - (CSDIncomingCallFilter)init;
-- (CSDIncomingCallFilter)initWithDataSource:(id)a3 deviceLockObserver:(id)a4 callCenterObserver:(id)a5 callDirectoryStoreBuilder:(id)a6 callDirectoryManager:(id)a7 contactStore:(id)a8 featureFlags:(id)a9 queue:(id)a10;
-- (id)_callDirectoryPhoneNumberVariantsForSourceAddress:(id)a3 countryCode:(id)a4;
+- (CSDIncomingCallFilter)initWithDataSource:(id)source deviceLockObserver:(id)observer callCenterObserver:(id)centerObserver callDirectoryStoreBuilder:(id)builder callDirectoryManager:(id)manager contactStore:(id)store featureFlags:(id)flags queue:(id)self0;
+- (id)_callDirectoryPhoneNumberVariantsForSourceAddress:(id)address countryCode:(id)code;
 - (id)_callFilterBlock;
-- (id)blockedByExtension:(id)a3;
-- (void)callsChangedForCallCenterObserver:(id)a3;
-- (void)setOnEmergencyCall:(BOOL)a3;
+- (id)blockedByExtension:(id)extension;
+- (void)callsChangedForCallCenterObserver:(id)observer;
+- (void)setOnEmergencyCall:(BOOL)call;
 @end
 
 @implementation CSDIncomingCallFilter
@@ -29,10 +29,10 @@
   block[1] = 3221225472;
   block[2] = sub_1001ADD7C;
   block[3] = &unk_10061ABF0;
-  v8 = self;
+  selfCopy = self;
   v9 = &v10;
   v7 = dispatch_queue_create("com.apple.telephonyutilities.callservicesd.incomingcallfilter", 0);
-  v2 = v8;
+  v2 = selfCopy;
   v3 = v7;
   dispatch_sync(v3, block);
   v4 = v11[5];
@@ -41,35 +41,35 @@
   return v4;
 }
 
-- (CSDIncomingCallFilter)initWithDataSource:(id)a3 deviceLockObserver:(id)a4 callCenterObserver:(id)a5 callDirectoryStoreBuilder:(id)a6 callDirectoryManager:(id)a7 contactStore:(id)a8 featureFlags:(id)a9 queue:(id)a10
+- (CSDIncomingCallFilter)initWithDataSource:(id)source deviceLockObserver:(id)observer callCenterObserver:(id)centerObserver callDirectoryStoreBuilder:(id)builder callDirectoryManager:(id)manager contactStore:(id)store featureFlags:(id)flags queue:(id)self0
 {
-  v38 = a3;
-  v37 = a4;
-  v36 = a5;
-  v17 = a6;
-  v35 = a7;
-  v34 = a8;
-  v33 = a9;
-  v18 = a10;
+  sourceCopy = source;
+  observerCopy = observer;
+  centerObserverCopy = centerObserver;
+  builderCopy = builder;
+  managerCopy = manager;
+  storeCopy = store;
+  flagsCopy = flags;
+  queueCopy = queue;
   v43.receiver = self;
   v43.super_class = CSDIncomingCallFilter;
   v19 = [(CSDIncomingCallFilter *)&v43 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_queue, a10);
-    objc_storeStrong(&v20->_dataSource, a3);
-    objc_storeStrong(&v20->_featureFlags, a9);
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v20->_dataSource, source);
+    objc_storeStrong(&v20->_featureFlags, flags);
     if (([(TUFeatureFlags *)v20->_featureFlags communicationTrustAdoption]& 1) == 0)
     {
       dataSource = v20->_dataSource;
-      v22 = [(CSDIncomingCallFilter *)v20 _callFilterBlock];
-      [(CSDIncomingCallFilterDataSource *)dataSource setFilterBlock:v22];
+      _callFilterBlock = [(CSDIncomingCallFilter *)v20 _callFilterBlock];
+      [(CSDIncomingCallFilterDataSource *)dataSource setFilterBlock:_callFilterBlock];
     }
 
     v20->_twoTimeCallthroughInterval = 180.0;
-    objc_storeStrong(&v20->_deviceLockObserver, a4);
-    objc_storeStrong(&v20->_callCenterObserver, a5);
+    objc_storeStrong(&v20->_deviceLockObserver, observer);
+    objc_storeStrong(&v20->_callCenterObserver, centerObserver);
     [(CSDCallCenterObserver *)v20->_callCenterObserver setTriggers:1];
     [(CSDCallCenterObserver *)v20->_callCenterObserver setDelegate:v20];
     v23 = objc_alloc_init(CXCallDirectorySanitizer);
@@ -80,14 +80,14 @@
     callProviderManager = v20->_callProviderManager;
     v20->_callProviderManager = v25;
 
-    v27 = [(TUCallProviderManager *)v20->_callProviderManager emergencyProvider];
-    v28 = [v27 identifier];
-    v29 = [v28 copy];
+    emergencyProvider = [(TUCallProviderManager *)v20->_callProviderManager emergencyProvider];
+    identifier = [emergencyProvider identifier];
+    v29 = [identifier copy];
     emergencyProviderIdentifier = v20->_emergencyProviderIdentifier;
     v20->_emergencyProviderIdentifier = v29;
 
-    objc_storeStrong(&v20->_callDirectoryManager, a7);
-    objc_storeStrong(&v20->_contactStore, a8);
+    objc_storeStrong(&v20->_callDirectoryManager, manager);
+    objc_storeStrong(&v20->_contactStore, store);
     objc_initWeak(&location, v20);
     deviceLockObserver = v20->_deviceLockObserver;
     v39[0] = _NSConcreteStackBlock;
@@ -95,7 +95,7 @@
     v39[2] = sub_1001AE23C;
     v39[3] = &unk_10061D920;
     objc_copyWeak(&v41, &location);
-    v40 = v17;
+    v40 = builderCopy;
     [(CSDDeviceLockStateObserver *)deviceLockObserver performBlockAfterFirstUnlock:v39];
 
     objc_destroyWeak(&v41);
@@ -120,47 +120,47 @@
   return v2;
 }
 
-- (BOOL)_doNotDisturbAllowsCallFromSourceAddress:(id)a3 providerIdentifier:(id)a4
+- (BOOL)_doNotDisturbAllowsCallFromSourceAddress:(id)address providerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  v8 = [(CSDIncomingCallFilter *)self queue];
+  queue = [(CSDIncomingCallFilter *)self queue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001AE6F8;
   v12[3] = &unk_10061D970;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
+  v13 = identifierCopy;
+  v14 = addressCopy;
   v15 = &v16;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, v12);
+  v9 = addressCopy;
+  v10 = identifierCopy;
+  dispatch_sync(queue, v12);
 
   LOBYTE(self) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
   return self;
 }
 
-- (BOOL)callDirectoryAllowsCallFromSourceAddress:(id)a3
+- (BOOL)callDirectoryAllowsCallFromSourceAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CSDIncomingCallFilter *)self dataSource];
-  v6 = [v5 networkCountryCode];
-  LOBYTE(self) = [(CSDIncomingCallFilter *)self callDirectoryAllowsCallFromSourceAddress:v4 countryCode:v6];
+  addressCopy = address;
+  dataSource = [(CSDIncomingCallFilter *)self dataSource];
+  networkCountryCode = [dataSource networkCountryCode];
+  LOBYTE(self) = [(CSDIncomingCallFilter *)self callDirectoryAllowsCallFromSourceAddress:addressCopy countryCode:networkCountryCode];
 
   return self;
 }
 
-- (BOOL)callDirectoryAllowsCallFromSourceAddress:(id)a3 countryCode:(id)a4
+- (BOOL)callDirectoryAllowsCallFromSourceAddress:(id)address countryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 destinationIdIsPhoneNumber])
+  addressCopy = address;
+  codeCopy = code;
+  if ([addressCopy destinationIdIsPhoneNumber])
   {
     v8 = sub_100004778();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -169,10 +169,10 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "sourceAddress is phone number, continuing", buf, 2u);
     }
 
-    v9 = [(CSDIncomingCallFilter *)self contactStore];
+    contactStore = [(CSDIncomingCallFilter *)self contactStore];
     v42 = CNContactPhoneNumbersKey;
     v10 = [NSArray arrayWithObjects:&v42 count:1];
-    v11 = [v9 contactForDestinationId:v6 keysToFetch:v10];
+    v11 = [contactStore contactForDestinationId:addressCopy keysToFetch:v10];
 
     v12 = sub_100004778();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -190,12 +190,12 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    v14 = [v6 copy];
-    v15 = [(CSDIncomingCallFilter *)self callDirectoryStore];
+    v14 = [addressCopy copy];
+    callDirectoryStore = [(CSDIncomingCallFilter *)self callDirectoryStore];
 
-    if (v15)
+    if (callDirectoryStore)
     {
-      v16 = [(CSDIncomingCallFilter *)self _callDirectoryPhoneNumberVariantsForSourceAddress:v6 countryCode:v7];
+      v16 = [(CSDIncomingCallFilter *)self _callDirectoryPhoneNumberVariantsForSourceAddress:addressCopy countryCode:codeCopy];
       v17 = sub_100004778();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -240,7 +240,7 @@ LABEL_38:
 
               v25 = *(*(&v34 + 1) + 8 * i);
               v26 = [v25 length];
-              if (v26 > [v6 length])
+              if (v26 > [addressCopy length])
               {
                 v27 = [v25 copy];
 
@@ -266,9 +266,9 @@ LABEL_38:
       }
     }
 
-    v28 = [(CSDIncomingCallFilter *)self callDirectoryManager];
+    callDirectoryManager = [(CSDIncomingCallFilter *)self callDirectoryManager];
 
-    if (!v28)
+    if (!callDirectoryManager)
     {
       goto LABEL_33;
     }
@@ -295,7 +295,7 @@ LABEL_34:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v6;
+      v41 = addressCopy;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Disallowing call from source address %@ since blocked by call directory or live caller id lookup", buf, 0xCu);
     }
 
@@ -309,21 +309,21 @@ LABEL_39:
   return v13;
 }
 
-- (BOOL)callDirectoryExtensionsAllowCallFromPhoneNumbers:(id)a3 error:(id *)a4
+- (BOOL)callDirectoryExtensionsAllowCallFromPhoneNumbers:(id)numbers error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CSDIncomingCallFilter *)self callDirectoryStore];
-  LOBYTE(a4) = [v7 containsBlockingEntryForEnabledExtensionWithPhoneNumberInArray:v6 error:a4];
+  numbersCopy = numbers;
+  callDirectoryStore = [(CSDIncomingCallFilter *)self callDirectoryStore];
+  LOBYTE(error) = [callDirectoryStore containsBlockingEntryForEnabledExtensionWithPhoneNumberInArray:numbersCopy error:error];
 
-  return a4 ^ 1;
+  return error ^ 1;
 }
 
-- (BOOL)liveLookupExtensionsAllowCallFromHandle:(id)a3
+- (BOOL)liveLookupExtensionsAllowCallFromHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(CSDIncomingCallFilter *)self callDirectoryManager];
+  handleCopy = handle;
+  callDirectoryManager = [(CSDIncomingCallFilter *)self callDirectoryManager];
 
-  if (!v5)
+  if (!callDirectoryManager)
   {
     goto LABEL_8;
   }
@@ -332,12 +332,12 @@ LABEL_39:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v4;
+    v13 = handleCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Checking live blocking info using handle: %@", &v12, 0xCu);
   }
 
-  v7 = [(CSDIncomingCallFilter *)self callDirectoryManager];
-  v8 = [v7 fetchLiveBlockingInfoForHandle:v4];
+  callDirectoryManager2 = [(CSDIncomingCallFilter *)self callDirectoryManager];
+  v8 = [callDirectoryManager2 fetchLiveBlockingInfoForHandle:handleCopy];
 
   if (v8)
   {
@@ -345,7 +345,7 @@ LABEL_39:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = handleCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Disallowing call from source address %@ since blocked by live caller id lookup", &v12, 0xCu);
     }
 
@@ -361,17 +361,17 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)systemAllowsCallsFromSourceAddress:(id)a3 providerIdentifier:(id)a4
+- (BOOL)systemAllowsCallsFromSourceAddress:(id)address providerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(CSDIncomingCallFilter *)self _doNotDisturbAllowsCallFromSourceAddress:v6 providerIdentifier:a4];
+  addressCopy = address;
+  v7 = [(CSDIncomingCallFilter *)self _doNotDisturbAllowsCallFromSourceAddress:addressCopy providerIdentifier:identifier];
   if (!v7)
   {
     v8 = sub_100004778();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = addressCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Disallowing call with sourceAddress %@ since _doNotDisturbAllowsCallFromSourceAddress returned NO", &v10, 0xCu);
     }
   }
@@ -379,15 +379,15 @@ LABEL_8:
   return v7;
 }
 
-- (id)blockedByExtension:(id)a3
+- (id)blockedByExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(CSDIncomingCallFilter *)self callDirectoryStore];
-  if (!v5 || (v6 = v5, v7 = [v4 destinationIdIsPhoneNumber], v6, !v7))
+  extensionCopy = extension;
+  callDirectoryStore = [(CSDIncomingCallFilter *)self callDirectoryStore];
+  if (!callDirectoryStore || (v6 = callDirectoryStore, v7 = [extensionCopy destinationIdIsPhoneNumber], v6, !v7))
   {
 LABEL_13:
-    v17 = [(CSDIncomingCallFilter *)self callDirectoryManager];
-    if (v17 && (v18 = v17, v19 = [v4 destinationIdIsPhoneNumber], v18, v19))
+    callDirectoryManager = [(CSDIncomingCallFilter *)self callDirectoryManager];
+    if (callDirectoryManager && (v18 = callDirectoryManager, v19 = [extensionCopy destinationIdIsPhoneNumber], v18, v19))
     {
       v20 = sub_100004778();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -396,8 +396,8 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "callDirectory allowed call, checking live blocking info", buf, 2u);
       }
 
-      v21 = [(CSDIncomingCallFilter *)self callDirectoryManager];
-      v14 = [v21 firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:v4];
+      callDirectoryManager2 = [(CSDIncomingCallFilter *)self callDirectoryManager];
+      v14 = [callDirectoryManager2 firstEnabledLiveBlockingExtensionIdentifierForPhoneNumber:extensionCopy];
     }
 
     else
@@ -408,9 +408,9 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v8 = [(CSDIncomingCallFilter *)self dataSource];
-  v9 = [v8 networkCountryCode];
-  v10 = [(CSDIncomingCallFilter *)self _callDirectoryPhoneNumberVariantsForSourceAddress:v4 countryCode:v9];
+  dataSource = [(CSDIncomingCallFilter *)self dataSource];
+  networkCountryCode = [dataSource networkCountryCode];
+  v10 = [(CSDIncomingCallFilter *)self _callDirectoryPhoneNumberVariantsForSourceAddress:extensionCopy countryCode:networkCountryCode];
 
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -426,10 +426,10 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v12 = [(CSDIncomingCallFilter *)self callDirectoryStore];
+  callDirectoryStore2 = [(CSDIncomingCallFilter *)self callDirectoryStore];
   v13 = [v10 objectAtIndexedSubscript:0];
   v23 = 0;
-  v14 = [v12 firstEnabledBlockingExtensionIdentifierForPhoneNumber:v13 error:&v23];
+  v14 = [callDirectoryStore2 firstEnabledBlockingExtensionIdentifierForPhoneNumber:v13 error:&v23];
   v15 = v23;
 
   if (v15)
@@ -451,32 +451,32 @@ LABEL_19:
   return v14;
 }
 
-- (id)_callDirectoryPhoneNumberVariantsForSourceAddress:(id)a3 countryCode:(id)a4
+- (id)_callDirectoryPhoneNumberVariantsForSourceAddress:(id)address countryCode:(id)code
 {
-  v6 = a4;
-  v7 = a3;
+  codeCopy = code;
+  addressCopy = address;
   v8 = +[NSMutableArray array];
-  v9 = [[TUPhoneNumber alloc] initWithDigits:v7 countryCode:v6];
+  v9 = [[TUPhoneNumber alloc] initWithDigits:addressCopy countryCode:codeCopy];
 
-  v10 = [v9 digits];
+  digits = [v9 digits];
 
-  if (v10)
+  if (digits)
   {
-    v11 = [(CSDIncomingCallFilter *)self callDirectorySanitizer];
-    v12 = [v9 digits];
-    v10 = [v11 canonicalizedPhoneNumber:v12];
+    callDirectorySanitizer = [(CSDIncomingCallFilter *)self callDirectorySanitizer];
+    digits2 = [v9 digits];
+    digits = [callDirectorySanitizer canonicalizedPhoneNumber:digits2];
 
-    if (v10)
+    if (digits)
     {
-      [v8 addObject:v10];
+      [v8 addObject:digits];
     }
   }
 
-  v13 = [v9 unformattedInternationalRepresentation];
-  if (v13)
+  unformattedInternationalRepresentation = [v9 unformattedInternationalRepresentation];
+  if (unformattedInternationalRepresentation)
   {
-    v14 = [(CSDIncomingCallFilter *)self callDirectorySanitizer];
-    v15 = [v14 canonicalizedPhoneNumber:v13];
+    callDirectorySanitizer2 = [(CSDIncomingCallFilter *)self callDirectorySanitizer];
+    v15 = [callDirectorySanitizer2 canonicalizedPhoneNumber:unformattedInternationalRepresentation];
 
     if (!v15)
     {
@@ -486,12 +486,12 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  if (v10)
+  if (digits)
   {
-    v16 = [NSLocale ITUCountryCodeForISOCountryCode:v6];
+    v16 = [NSLocale ITUCountryCodeForISOCountryCode:codeCopy];
     if (v16 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v15 = [NSString stringWithFormat:@"%ld%@", v16, v10];
+      v15 = [NSString stringWithFormat:@"%ld%@", v16, digits];
 LABEL_10:
       [v8 addObject:v15];
 LABEL_11:
@@ -505,33 +505,33 @@ LABEL_11:
 
 - (BOOL)isOnEmergencyCall
 {
-  v3 = [(CSDIncomingCallFilter *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDIncomingCallFilter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   return self->_onEmergencyCall;
 }
 
-- (void)setOnEmergencyCall:(BOOL)a3
+- (void)setOnEmergencyCall:(BOOL)call
 {
-  v5 = [(CSDIncomingCallFilter *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CSDIncomingCallFilter *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  self->_onEmergencyCall = a3;
+  self->_onEmergencyCall = call;
 }
 
-- (void)callsChangedForCallCenterObserver:(id)a3
+- (void)callsChangedForCallCenterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = +[TUCallCenter sharedInstance];
-  v6 = [v5 queue];
+  queue = [v5 queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001AF544;
   v8[3] = &unk_100619D88;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = observerCopy;
+  selfCopy = self;
+  v7 = observerCopy;
+  dispatch_async(queue, v8);
 }
 
 @end

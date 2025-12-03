@@ -1,12 +1,12 @@
 @interface HDCloudSyncLookupParticipantOperation
-- (HDCloudSyncLookupParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncLookupParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 identityLookupInfo:(id)a5;
+- (HDCloudSyncLookupParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncLookupParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state identityLookupInfo:(id)info;
 - (void)main;
 @end
 
 @implementation HDCloudSyncLookupParticipantOperation
 
-- (HDCloudSyncLookupParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncLookupParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,16 +16,16 @@
   return 0;
 }
 
-- (HDCloudSyncLookupParticipantOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 identityLookupInfo:(id)a5
+- (HDCloudSyncLookupParticipantOperation)initWithConfiguration:(id)configuration cloudState:(id)state identityLookupInfo:(id)info
 {
-  v9 = a5;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = HDCloudSyncLookupParticipantOperation;
-  v10 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:a3 cloudState:a4];
+  v10 = [(HDCloudSyncOperation *)&v13 initWithConfiguration:configuration cloudState:state];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identityLookupInfo, a5);
+    objc_storeStrong(&v10->_identityLookupInfo, info);
   }
 
   return v11;
@@ -51,15 +51,15 @@
   v12[3] = &unk_2786138D0;
   v12[4] = self;
   [v5 setFetchShareParticipantsCompletionBlock:v12];
-  v6 = [(HDCloudSyncOperation *)self configuration];
-  v7 = [v6 operationGroup];
-  [v5 setGroup:v7];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  operationGroup = [configuration operationGroup];
+  [v5 setGroup:operationGroup];
 
-  v8 = [(HDCloudSyncOperation *)self configuration];
-  v9 = [v8 repository];
-  v10 = [v9 primaryCKContainer];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  primaryCKContainer = [repository primaryCKContainer];
 
-  [v10 addOperation:v5];
+  [primaryCKContainer addOperation:v5];
   v11 = *MEMORY[0x277D85DE8];
 }
 

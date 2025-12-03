@@ -1,17 +1,17 @@
 @interface PKPaymentSetupCategoriesSectionController
-- (BOOL)shouldHighlightItem:(id)a3;
-- (BOOL)updateWithRequirements:(unint64_t)a3 provisioningController:(id)a4 paymentSetupProductModel:(id)a5 forceProductConfiguration:(BOOL)a6;
+- (BOOL)shouldHighlightItem:(id)item;
+- (BOOL)updateWithRequirements:(unint64_t)requirements provisioningController:(id)controller paymentSetupProductModel:(id)model forceProductConfiguration:(BOOL)configuration;
 - (PKPaymentSetupCategoriesSectionController)init;
 - (PKPaymentSetupCategoriesSectionControllerDelegate)delegate;
-- (id)_listItemForItemIdentifier:(id)a3 paymentSetupProductModel:(id)a4;
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
+- (id)_listItemForItemIdentifier:(id)identifier paymentSetupProductModel:(id)model;
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
 - (id)orderedAnalyticsProductCategories;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_updateItemIdentifier:(id)a3 loadingIndicatorVisibility:(BOOL)a4 animated:(BOOL)a5;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
-- (void)didSelectItem:(id)a3;
-- (void)hideLoadingIndicatorsAnimated:(BOOL)a3;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_updateItemIdentifier:(id)identifier loadingIndicatorVisibility:(BOOL)visibility animated:(BOOL)animated;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
+- (void)hideLoadingIndicatorsAnimated:(BOOL)animated;
 @end
 
 @implementation PKPaymentSetupCategoriesSectionController
@@ -39,13 +39,13 @@
   return v3;
 }
 
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 identifier];
+  cellCopy = cell;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
   v10 = *MEMORY[0x1E69BC2B0];
-  v11 = v9;
+  v11 = identifier;
   v12 = v11;
   if (v11 == v10)
   {
@@ -63,34 +63,34 @@
     }
 
 LABEL_7:
-    [(PKPaymentSetupListSectionController *)&v19 decoratePaymentSetListCell:v7 forItem:v8 style:1, v18.receiver, v18.super_class, self, PKPaymentSetupCategoriesSectionController];
+    [(PKPaymentSetupListSectionController *)&v19 decoratePaymentSetListCell:cellCopy forItem:itemCopy style:1, v18.receiver, v18.super_class, self, PKPaymentSetupCategoriesSectionController];
     goto LABEL_10;
   }
 
 LABEL_9:
-  [(PKPaymentSetupListSectionController *)&v18 decoratePaymentSetListCell:v7 forItem:v8 style:0, self, PKPaymentSetupCategoriesSectionController, v19.receiver, v19.super_class];
+  [(PKPaymentSetupListSectionController *)&v18 decoratePaymentSetListCell:cellCopy forItem:itemCopy style:0, self, PKPaymentSetupCategoriesSectionController, v19.receiver, v19.super_class];
   v14 = LABEL_10:;
-  v15 = [v14 imageProperties];
+  imageProperties = [v14 imageProperties];
   p_iconSize = &self->_iconSize;
-  [v15 setMaximumSize:{p_iconSize->width, p_iconSize->height}];
-  [v15 setReservedLayoutSize:{p_iconSize->width, p_iconSize->height}];
-  [v15 setCornerRadius:6.0];
-  [v7 setContentConfiguration:v14];
+  [imageProperties setMaximumSize:{p_iconSize->width, p_iconSize->height}];
+  [imageProperties setReservedLayoutSize:{p_iconSize->width, p_iconSize->height}];
+  [imageProperties setCornerRadius:6.0];
+  [cellCopy setContentConfiguration:v14];
 
   return v14;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(NSMutableDictionary *)self->_sectionIdentifiersToItemIdentifierMapping objectForKey:v5, 0];
+  v8 = [(NSMutableDictionary *)self->_sectionIdentifiersToItemIdentifierMapping objectForKey:identifierCopy, 0];
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -120,15 +120,15 @@ LABEL_9:
   return v6;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentSetupListSectionController *)self defaultListLayout];
-  v9 = [(NSMutableDictionary *)self->_sectionIdentifierToSectionTitleMapping objectForKey:v6];
+  identifierCopy = identifier;
+  environmentCopy = environment;
+  defaultListLayout = [(PKPaymentSetupListSectionController *)self defaultListLayout];
+  v9 = [(NSMutableDictionary *)self->_sectionIdentifierToSectionTitleMapping objectForKey:identifierCopy];
 
-  [v8 setHeaderMode:{objc_msgSend(v9, "length") != 0}];
-  v10 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:v7];
+  [defaultListLayout setHeaderMode:{objc_msgSend(v9, "length") != 0}];
+  v10 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:environmentCopy];
 
   [v10 contentInsets];
   [v10 setContentInsets:PKSetupViewConstantsListSectionInset(v11)];
@@ -136,15 +136,15 @@ LABEL_9:
   return v10;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
   v20[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69DCC28];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 headerConfiguration];
-  [v10 setAxesPreservingSuperviewLayoutMargins:0];
-  v11 = [(NSMutableDictionary *)self->_sectionIdentifierToSectionTitleMapping objectForKey:v8];
+  identifierCopy = identifier;
+  registrationCopy = registration;
+  headerConfiguration = [v7 headerConfiguration];
+  [headerConfiguration setAxesPreservingSuperviewLayoutMargins:0];
+  v11 = [(NSMutableDictionary *)self->_sectionIdentifierToSectionTitleMapping objectForKey:identifierCopy];
 
   if ([v11 length])
   {
@@ -157,7 +157,7 @@ LABEL_9:
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
 
     v15 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11 attributes:v14];
-    [v10 setAttributedText:v15];
+    [headerConfiguration setAttributedText:v15];
 
     v16 = PKSetupViewConstantsViewMargin();
     v17 = PKSetupListViewConstantsViewMargin();
@@ -167,23 +167,23 @@ LABEL_9:
       v18 = 0.0;
     }
 
-    [v10 setDirectionalLayoutMargins:{10.0, v18, 10.0, v18}];
+    [headerConfiguration setDirectionalLayoutMargins:{10.0, v18, 10.0, v18}];
   }
 
   else
   {
-    [v10 setAttributedText:0];
+    [headerConfiguration setAttributedText:0];
   }
 
-  [v9 setContentConfiguration:v10];
+  [registrationCopy setContentConfiguration:headerConfiguration];
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   self->_didHideLoadingIndicators = 0;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69BC2B0]];
+  identifier = [itemCopy identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x1E69BC2B0]];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained;
   if (v6)
@@ -193,19 +193,19 @@ LABEL_9:
 
   else
   {
-    v9 = [v4 category];
+    category = [itemCopy category];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __59__PKPaymentSetupCategoriesSectionController_didSelectItem___block_invoke;
     v15 = &unk_1E8012FD0;
-    v16 = self;
-    v10 = v5;
+    selfCopy = self;
+    v10 = identifier;
     v17 = v10;
-    v11 = [v8 didSelectCategory:v9 completion:&v12];
+    v11 = [v8 didSelectCategory:category completion:&v12];
 
     if (v11 && !self->_didHideLoadingIndicators)
     {
-      [(PKPaymentSetupCategoriesSectionController *)self _updateItemIdentifier:v10 loadingIndicatorVisibility:1 animated:0, v12, v13, v14, v15, v16];
+      [(PKPaymentSetupCategoriesSectionController *)self _updateItemIdentifier:v10 loadingIndicatorVisibility:1 animated:0, v12, v13, v14, v15, selfCopy];
     }
   }
 }
@@ -220,10 +220,10 @@ uint64_t __59__PKPaymentSetupCategoriesSectionController_didSelectItem___block_i
   return result;
 }
 
-- (BOOL)shouldHighlightItem:(id)a3
+- (BOOL)shouldHighlightItem:(id)item
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:*MEMORY[0x1E69BC2B0]])
+  identifier = [item identifier];
+  if ([identifier isEqualToString:*MEMORY[0x1E69BC2B0]])
   {
     hasCardsOnFileSelectable = self->_hasCardsOnFileSelectable;
   }
@@ -236,34 +236,34 @@ uint64_t __59__PKPaymentSetupCategoriesSectionController_didSelectItem___block_i
   return hasCardsOnFileSelectable;
 }
 
-- (void)_updateItemIdentifier:(id)a3 loadingIndicatorVisibility:(BOOL)a4 animated:(BOOL)a5
+- (void)_updateItemIdentifier:(id)identifier loadingIndicatorVisibility:(BOOL)visibility animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v12 = a3;
+  animatedCopy = animated;
+  visibilityCopy = visibility;
+  identifierCopy = identifier;
   v8 = [(NSMutableDictionary *)self->_itemIdentifierToItemMapping objectForKey:?];
   v9 = v8;
-  if (v8 && [v8 loadingIndicatorVisible] != v6)
+  if (v8 && [v8 loadingIndicatorVisible] != visibilityCopy)
   {
     v10 = [v9 copy];
-    [v10 setLoadingIndicatorVisible:v6];
-    [(NSMutableDictionary *)self->_itemIdentifierToItemMapping setObject:v10 forKey:v12];
+    [v10 setLoadingIndicatorVisible:visibilityCopy];
+    [(NSMutableDictionary *)self->_itemIdentifierToItemMapping setObject:v10 forKey:identifierCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained reloadItem:v10 animated:v5];
+    [WeakRetained reloadItem:v10 animated:animatedCopy];
   }
 }
 
-- (void)hideLoadingIndicatorsAnimated:(BOOL)a3
+- (void)hideLoadingIndicatorsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v19 = *MEMORY[0x1E69E9840];
   self->_didHideLoadingIndicators = 1;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(NSMutableDictionary *)self->_itemIdentifierToItemMapping allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [(NSMutableDictionary *)self->_itemIdentifierToItemMapping allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -276,7 +276,7 @@ uint64_t __59__PKPaymentSetupCategoriesSectionController_didSelectItem___block_i
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
@@ -291,7 +291,7 @@ uint64_t __59__PKPaymentSetupCategoriesSectionController_didSelectItem___block_i
           {
 
 LABEL_15:
-            [(PKPaymentSetupCategoriesSectionController *)self _updateItemIdentifier:v12 loadingIndicatorVisibility:0 animated:v3];
+            [(PKPaymentSetupCategoriesSectionController *)self _updateItemIdentifier:v12 loadingIndicatorVisibility:0 animated:animatedCopy];
             goto LABEL_16;
           }
 
@@ -313,7 +313,7 @@ LABEL_16:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -327,19 +327,19 @@ LABEL_16:
   return v2;
 }
 
-- (BOOL)updateWithRequirements:(unint64_t)a3 provisioningController:(id)a4 paymentSetupProductModel:(id)a5 forceProductConfiguration:(BOOL)a6
+- (BOOL)updateWithRequirements:(unint64_t)requirements provisioningController:(id)controller paymentSetupProductModel:(id)model forceProductConfiguration:(BOOL)configuration
 {
   v169 = *MEMORY[0x1E69E9840];
-  v101 = a4;
-  v128 = a5;
-  v9 = a6 || (a3 & 2) != 0 && (self->_currentConfiguredRequirements & 2) == 0 || (a3 & 8) != 0 && (self->_currentConfiguredRequirements & 8) == 0;
+  controllerCopy = controller;
+  modelCopy = model;
+  v9 = configuration || (requirements & 2) != 0 && (self->_currentConfiguredRequirements & 2) == 0 || (requirements & 8) != 0 && (self->_currentConfiguredRequirements & 8) == 0;
   v10 = self->_sectionIdentifierToSectionTitleMapping;
   v11 = self->_itemIdentifierToItemMapping;
   v99 = 80;
   v12 = self->_sectionIdentifiersToItemIdentifierMapping;
   v13 = self->_orderedSectionIdentifiers;
   v14 = v13;
-  v119 = self;
+  selfCopy = self;
   if (v9)
   {
     v103 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -352,7 +352,7 @@ LABEL_16:
     v160 = 0u;
     v157 = 0u;
     v158 = 0u;
-    obj = [v128 allSections];
+    obj = [modelCopy allSections];
     v108 = [obj countByEnumeratingWithState:&v157 objects:v168 count:16];
     if (!v108)
     {
@@ -383,8 +383,8 @@ LABEL_16:
         v155 = 0u;
         v156 = 0u;
         v109 = v18;
-        v117 = [v18 categories];
-        v20 = [v117 countByEnumeratingWithState:&v153 objects:v167 count:16];
+        categories = [v18 categories];
+        v20 = [categories countByEnumeratingWithState:&v153 objects:v167 count:16];
         v114 = v19;
         if (v20)
         {
@@ -399,13 +399,13 @@ LABEL_16:
             {
               if (*v154 != v22)
               {
-                objc_enumerationMutation(v117);
+                objc_enumerationMutation(categories);
               }
 
               v24 = *(*(&v153 + 1) + 8 * v23);
-              v25 = [v24 identifier];
-              [v121 appendString:v25];
-              v26 = [(NSMutableDictionary *)self->_itemIdentifierToItemMapping objectForKey:v25];
+              identifier = [v24 identifier];
+              [v121 appendString:identifier];
+              v26 = [(NSMutableDictionary *)self->_itemIdentifierToItemMapping objectForKey:identifier];
               v123 = v26;
               if (v26)
               {
@@ -414,12 +414,12 @@ LABEL_16:
 
               else
               {
-                v27 = [(PKPaymentSetupCategoriesSectionController *)self _listItemForItemIdentifier:v25 paymentSetupProductModel:v128];
-                [v27 setIdentifier:v25];
+                v27 = [(PKPaymentSetupCategoriesSectionController *)self _listItemForItemIdentifier:identifier paymentSetupProductModel:modelCopy];
+                [v27 setIdentifier:identifier];
                 [v27 setDisplayChevron:1];
               }
 
-              if (v25)
+              if (identifier)
               {
                 v28 = v27 == 0;
               }
@@ -431,27 +431,27 @@ LABEL_16:
 
               if (!v28)
               {
-                [(NSMutableDictionary *)v15 setObject:v27 forKey:v25];
-                [v19 addObject:v25];
+                [(NSMutableDictionary *)v15 setObject:v27 forKey:identifier];
+                [v19 addObject:identifier];
                 [v116 addObject:v27];
                 [v27 setCategory:v24];
-                v29 = [v24 localizedDisplayName];
-                if (v29)
+                localizedDisplayName = [v24 localizedDisplayName];
+                if (localizedDisplayName)
                 {
-                  [v27 setTitle:v29];
+                  [v27 setTitle:localizedDisplayName];
                 }
 
-                v120 = v29;
+                v120 = localizedDisplayName;
                 v122 = v27;
                 v151 = 0u;
                 v152 = 0u;
                 v149 = 0u;
                 v150 = 0u;
-                v30 = [v24 productIdentifiers];
-                v129 = [v30 countByEnumeratingWithState:&v149 objects:v166 count:16];
+                productIdentifiers = [v24 productIdentifiers];
+                v129 = [productIdentifiers countByEnumeratingWithState:&v149 objects:v166 count:16];
                 if (v129)
                 {
-                  v124 = v30;
+                  v124 = productIdentifiers;
                   v118 = v23;
                   v31 = 0;
                   v126 = *v150;
@@ -464,14 +464,14 @@ LABEL_16:
                         objc_enumerationMutation(v124);
                       }
 
-                      v33 = v25;
-                      v34 = [v128 productForProductIdentifier:*(*(&v149 + 1) + 8 * i)];
+                      v33 = identifier;
+                      v34 = [modelCopy productForProductIdentifier:*(*(&v149 + 1) + 8 * i)];
                       v145 = 0u;
                       v146 = 0u;
                       v147 = 0u;
                       v148 = 0u;
-                      v35 = [v34 featureApplications];
-                      v36 = [v35 countByEnumeratingWithState:&v145 objects:v165 count:16];
+                      featureApplications = [v34 featureApplications];
+                      v36 = [featureApplications countByEnumeratingWithState:&v145 objects:v165 count:16];
                       if (v36)
                       {
                         v37 = v36;
@@ -483,7 +483,7 @@ LABEL_16:
                           {
                             if (*v146 != v39)
                             {
-                              objc_enumerationMutation(v35);
+                              objc_enumerationMutation(featureApplications);
                             }
 
                             v41 = *(*(&v145 + 1) + 8 * j);
@@ -493,7 +493,7 @@ LABEL_16:
                             }
                           }
 
-                          v37 = [v35 countByEnumeratingWithState:&v145 objects:v165 count:16];
+                          v37 = [featureApplications countByEnumeratingWithState:&v145 objects:v165 count:16];
                         }
 
                         while (v37);
@@ -504,7 +504,7 @@ LABEL_16:
                         v38 = 0;
                       }
 
-                      v42 = [v34 provisioningStatus];
+                      provisioningStatus = [v34 provisioningStatus];
                       if (v38 <= 1)
                       {
                         v43 = 1;
@@ -522,7 +522,7 @@ LABEL_16:
 
                       else
                       {
-                        v44 = v42 > 1;
+                        v44 = provisioningStatus > 1;
                       }
 
                       if (!v44)
@@ -532,7 +532,7 @@ LABEL_16:
 
                       v31 += v43;
 
-                      v25 = v33;
+                      identifier = v33;
                     }
 
                     v129 = [v124 countByEnumeratingWithState:&v149 objects:v166 count:16];
@@ -553,7 +553,7 @@ LABEL_16:
                     [v122 setBadgeText:v47];
 
 LABEL_59:
-                    self = v119;
+                    self = selfCopy;
 
                     v27 = v122;
                     goto LABEL_60;
@@ -574,7 +574,7 @@ LABEL_60:
             }
 
             while (v23 != v21);
-            v21 = [v117 countByEnumeratingWithState:&v153 objects:v167 count:16];
+            v21 = [categories countByEnumeratingWithState:&v153 objects:v167 count:16];
           }
 
           while (v21);
@@ -605,7 +605,7 @@ LABEL_60:
               if (![v54 isLoadingIcon])
               {
                 [v54 setIsLoadingIcon:1];
-                v55 = [v54 category];
+                category = [v54 category];
                 v139[0] = MEMORY[0x1E69E9820];
                 v139[1] = 3221225472;
                 v139[2] = __142__PKPaymentSetupCategoriesSectionController_updateWithRequirements_provisioningController_paymentSetupProductModel_forceProductConfiguration___block_invoke;
@@ -613,7 +613,7 @@ LABEL_60:
                 v139[4] = v54;
                 v139[5] = self;
                 v140 = v50;
-                v56 = [v55 logoCachedImage:v139];
+                v56 = [category logoCachedImage:v139];
                 if (v56)
                 {
                   [v54 setIcon:v56];
@@ -624,7 +624,7 @@ LABEL_60:
                   v57 = PKUIImageNamed(@"default_welcome_icon");
                   [v54 setIcon:v57];
 
-                  self = v119;
+                  self = selfCopy;
                 }
 
                 v50 = v121;
@@ -650,10 +650,10 @@ LABEL_60:
             [(NSMutableArray *)v105 addObject:v121];
           }
 
-          v58 = [v109 localizedTitle];
-          if (v58)
+          localizedTitle = [v109 localizedTitle];
+          if (localizedTitle)
           {
-            [(NSMutableDictionary *)v103 setObject:v58 forKey:v121];
+            [(NSMutableDictionary *)v103 setObject:localizedTitle forKey:v121];
           }
 
           [(NSMutableDictionary *)v111 setObject:v114 forKey:v121];
@@ -679,14 +679,14 @@ LABEL_84:
   v15 = v11;
   v103 = v10;
 LABEL_86:
-  v59 = [v101 associatedCredentials];
-  v60 = [v59 count];
+  associatedCredentials = [controllerCopy associatedCredentials];
+  v60 = [associatedCredentials count];
 
   v61 = *MEMORY[0x1E69BC2B0];
   v62 = [(NSMutableDictionary *)v15 objectForKey:*MEMORY[0x1E69BC2B0]];
   if (v62)
   {
-    v63 = v62;
+    firstObject = v62;
     v64 = [v62 copy];
   }
 
@@ -700,10 +700,10 @@ LABEL_86:
 
     [(PKPaymentSetupListItem *)v64 setIdentifier:v61];
     [(PKPaymentSetupListItem *)v64 setDisplayChevron:1];
-    v63 = [(NSMutableArray *)v105 firstObject];
-    if (v63)
+    firstObject = [(NSMutableArray *)v105 firstObject];
+    if (firstObject)
     {
-      [(NSMutableDictionary *)v103 removeObjectForKey:v63];
+      [(NSMutableDictionary *)v103 removeObjectForKey:firstObject];
     }
 
     v163 = v61;
@@ -711,10 +711,10 @@ LABEL_86:
     [(NSMutableDictionary *)v111 setObject:v69 forKey:v61];
 
     [(NSMutableArray *)v105 insertObject:v61 atIndex:0];
-    self = v119;
+    self = selfCopy;
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((requirements & 0x20) != 0)
   {
     if (v60)
     {
@@ -743,7 +743,7 @@ LABEL_86:
   }
 
   self->_hasCardsOnFileSelectable = v70;
-  [(PKPaymentSetupListItem *)v64 setLoadingIndicatorVisible:(a3 & 0x20) == 0];
+  [(PKPaymentSetupListItem *)v64 setLoadingIndicatorVisible:(requirements & 0x20) == 0];
   v125 = v64;
   [(NSMutableDictionary *)v15 setObject:v64 forKey:v61];
   v74 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -807,28 +807,28 @@ LABEL_86:
     while (v76);
   }
 
-  itemIdentifierToItemMapping = v119->_itemIdentifierToItemMapping;
-  v119->_itemIdentifierToItemMapping = v15;
+  itemIdentifierToItemMapping = selfCopy->_itemIdentifierToItemMapping;
+  selfCopy->_itemIdentifierToItemMapping = v15;
   v88 = v15;
 
-  v89 = *(&v119->super.super.isa + v100);
-  *(&v119->super.super.isa + v100) = v111;
+  v89 = *(&selfCopy->super.super.isa + v100);
+  *(&selfCopy->super.super.isa + v100) = v111;
   v90 = v111;
 
-  sectionIdentifierToSectionTitleMapping = v119->_sectionIdentifierToSectionTitleMapping;
-  v119->_sectionIdentifierToSectionTitleMapping = v103;
+  sectionIdentifierToSectionTitleMapping = selfCopy->_sectionIdentifierToSectionTitleMapping;
+  selfCopy->_sectionIdentifierToSectionTitleMapping = v103;
   v92 = v103;
 
-  orderedSectionIdentifiers = v119->_orderedSectionIdentifiers;
-  v119->_orderedSectionIdentifiers = v127;
+  orderedSectionIdentifiers = selfCopy->_orderedSectionIdentifiers;
+  selfCopy->_orderedSectionIdentifiers = v127;
   v94 = v127;
 
-  orderedAnalyticsProductCategories = v119->_orderedAnalyticsProductCategories;
-  v119->_orderedAnalyticsProductCategories = v74;
+  orderedAnalyticsProductCategories = selfCopy->_orderedAnalyticsProductCategories;
+  selfCopy->_orderedAnalyticsProductCategories = v74;
   v96 = v74;
 
-  v119->_currentConfiguredRequirements = a3;
-  v97 = [(NSMutableArray *)v119->_orderedSectionIdentifiers count];
+  selfCopy->_currentConfiguredRequirements = requirements;
+  v97 = [(NSMutableArray *)selfCopy->_orderedSectionIdentifiers count];
 
   return v97 != 0;
 }
@@ -850,20 +850,20 @@ void __142__PKPaymentSetupCategoriesSectionController_updateWithRequirements_pro
   }
 }
 
-- (id)_listItemForItemIdentifier:(id)a3 paymentSetupProductModel:(id)a4
+- (id)_listItemForItemIdentifier:(id)identifier paymentSetupProductModel:(id)model
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:*MEMORY[0x1E69BC278]])
+  identifierCopy = identifier;
+  modelCopy = model;
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69BC278]])
   {
     v7 = PKLocalizedPaymentString(&cfstr_PaymentSetupAp_2.isa);
-    v8 = [v6 productsForFeatureIdentifier:2];
+    v8 = [modelCopy productsForFeatureIdentifier:2];
     if ([v8 count])
     {
-      v9 = [v8 firstObject];
-      v10 = [v9 displayName];
+      firstObject = [v8 firstObject];
+      displayName = [firstObject displayName];
 
-      v7 = v10;
+      v7 = displayName;
     }
 
     v11 = [PKPaymentSetupCategoriesListItem alloc];
@@ -874,7 +874,7 @@ void __142__PKPaymentSetupCategoriesSectionController_updateWithRequirements_pro
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69BC270]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69BC270]])
   {
     v7 = PKLocalizedAppleBalanceString(&cfstr_ApplyFlowNewAp.isa);
     v14 = [PKPaymentSetupCategoriesListItem alloc];
@@ -887,7 +887,7 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69BC288]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69BC288]])
   {
     v16 = [PKPaymentSetupCategoriesListItem alloc];
     v17 = PKLocalizedPaymentString(&cfstr_PaymentSetupCr.isa);
@@ -900,7 +900,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69BC2A8]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69BC2A8]])
   {
     v16 = [PKPaymentSetupCategoriesListItem alloc];
     v17 = PKLocalizedPaymentString(&cfstr_PaymentSetupRi.isa);
@@ -908,7 +908,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69BC280]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69BC280]])
   {
     v16 = [PKPaymentSetupCategoriesListItem alloc];
     v17 = PKLocalizedPaymentString(&cfstr_PaymentSetupCa.isa);
@@ -916,7 +916,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69BC298]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69BC298]])
   {
     v16 = [PKPaymentSetupCategoriesListItem alloc];
     v17 = PKLocalizedIdentityString(&cfstr_PaymentSetupId.isa);
@@ -924,7 +924,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69BC290]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69BC290]])
   {
     v16 = [PKPaymentSetupCategoriesListItem alloc];
     v17 = PKLocalizedPaymentString(&cfstr_PaymentSetupEm.isa);
@@ -932,7 +932,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69BC2A0]])
+  if ([identifierCopy isEqualToString:*MEMORY[0x1E69BC2A0]])
   {
     v16 = [PKPaymentSetupCategoriesListItem alloc];
     v17 = PKLocalizedPaymentOffersString(&cfstr_PaymentSetupIs.isa);

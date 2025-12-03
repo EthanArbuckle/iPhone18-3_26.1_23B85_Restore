@@ -1,19 +1,19 @@
 @interface CNPhotoPickerActionsViewController
 + (id)log;
-- (CNPhotoPickerActionsViewController)initWithActionsModel:(id)a3;
+- (CNPhotoPickerActionsViewController)initWithActionsModel:(id)model;
 - (CNPhotoPickerActionsViewControllerDelegate)delegate;
-- (void)actionsModel:(id)a3 didAssignToContact:(id)a4 atIndexPath:(id)a5;
-- (void)actionsModel:(id)a3 didDelete:(id)a4 atIndexPath:(id)a5 withSourceView:(id)a6;
-- (void)actionsModel:(id)a3 didDuplicate:(id)a4 atIndexPath:(id)a5 completionBlock:(id)a6;
-- (void)actionsModel:(id)a3 didEdit:(id)a4 atIndexPath:(id)a5;
-- (void)applyLayout:(id)a3;
+- (void)actionsModel:(id)model didAssignToContact:(id)contact atIndexPath:(id)path;
+- (void)actionsModel:(id)model didDelete:(id)delete atIndexPath:(id)path withSourceView:(id)view;
+- (void)actionsModel:(id)model didDuplicate:(id)duplicate atIndexPath:(id)path completionBlock:(id)block;
+- (void)actionsModel:(id)model didEdit:(id)edit atIndexPath:(id)path;
+- (void)applyLayout:(id)layout;
 - (void)didTapDone;
-- (void)layoutViewFromModel:(id)a3;
-- (void)performDeleteTransitionToItem:(id)a3;
-- (void)performDuplicateTransitionToItem:(id)a3 fromView:(id)a4 completionBlock:(id)a5;
-- (void)presentDeleteConfirmationWithSourceView:(id)a3 withCompletion:(id)a4;
-- (void)updateActionsModelWithProviderItem:(id)a3;
-- (void)updateButtonsFromModel:(id)a3;
+- (void)layoutViewFromModel:(id)model;
+- (void)performDeleteTransitionToItem:(id)item;
+- (void)performDuplicateTransitionToItem:(id)item fromView:(id)view completionBlock:(id)block;
+- (void)presentDeleteConfirmationWithSourceView:(id)view withCompletion:(id)completion;
+- (void)updateActionsModelWithProviderItem:(id)item;
+- (void)updateButtonsFromModel:(id)model;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -27,20 +27,20 @@
   return WeakRetained;
 }
 
-- (void)actionsModel:(id)a3 didDelete:(id)a4 atIndexPath:(id)a5 withSourceView:(id)a6
+- (void)actionsModel:(id)model didDelete:(id)delete atIndexPath:(id)path withSourceView:(id)view
 {
-  v9 = a4;
-  v10 = a5;
+  deleteCopy = delete;
+  pathCopy = path;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __88__CNPhotoPickerActionsViewController_actionsModel_didDelete_atIndexPath_withSourceView___block_invoke;
   v13[3] = &unk_1E74E6E20;
   v13[4] = self;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  [(CNPhotoPickerActionsViewController *)self presentDeleteConfirmationWithSourceView:a6 withCompletion:v13];
+  v14 = deleteCopy;
+  v15 = pathCopy;
+  v11 = pathCopy;
+  v12 = deleteCopy;
+  [(CNPhotoPickerActionsViewController *)self presentDeleteConfirmationWithSourceView:view withCompletion:v13];
 }
 
 void __88__CNPhotoPickerActionsViewController_actionsModel_didDelete_atIndexPath_withSourceView___block_invoke(uint64_t a1)
@@ -49,24 +49,24 @@ void __88__CNPhotoPickerActionsViewController_actionsModel_didDelete_atIndexPath
   [v2 photoPickerActionsViewController:*(a1 + 32) didPerformAction:3 withProviderItem:*(a1 + 40) atIndexPath:*(a1 + 48)];
 }
 
-- (void)actionsModel:(id)a3 didDuplicate:(id)a4 atIndexPath:(id)a5 completionBlock:(id)a6
+- (void)actionsModel:(id)model didDuplicate:(id)duplicate atIndexPath:(id)path completionBlock:(id)block
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  duplicateCopy = duplicate;
+  pathCopy = path;
+  blockCopy = block;
+  imageContainerView = [(CNPhotoPickerActionsViewController *)self imageContainerView];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __92__CNPhotoPickerActionsViewController_actionsModel_didDuplicate_atIndexPath_completionBlock___block_invoke;
   v16[3] = &unk_1E74E5E08;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  [(CNPhotoPickerActionsViewController *)self performDuplicateTransitionToItem:v15 fromView:v12 completionBlock:v16];
+  v17 = duplicateCopy;
+  v18 = pathCopy;
+  v19 = blockCopy;
+  v13 = blockCopy;
+  v14 = pathCopy;
+  v15 = duplicateCopy;
+  [(CNPhotoPickerActionsViewController *)self performDuplicateTransitionToItem:v15 fromView:imageContainerView completionBlock:v16];
 }
 
 uint64_t __92__CNPhotoPickerActionsViewController_actionsModel_didDuplicate_atIndexPath_completionBlock___block_invoke(uint64_t a1)
@@ -79,78 +79,78 @@ uint64_t __92__CNPhotoPickerActionsViewController_actionsModel_didDuplicate_atIn
   return v3();
 }
 
-- (void)actionsModel:(id)a3 didEdit:(id)a4 atIndexPath:(id)a5
+- (void)actionsModel:(id)model didEdit:(id)edit atIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CNPhotoPickerActionsViewController *)self delegate];
-  [v9 photoPickerActionsViewController:self didPerformAction:1 withProviderItem:v8 atIndexPath:v7];
+  pathCopy = path;
+  editCopy = edit;
+  delegate = [(CNPhotoPickerActionsViewController *)self delegate];
+  [delegate photoPickerActionsViewController:self didPerformAction:1 withProviderItem:editCopy atIndexPath:pathCopy];
 }
 
-- (void)actionsModel:(id)a3 didAssignToContact:(id)a4 atIndexPath:(id)a5
+- (void)actionsModel:(id)model didAssignToContact:(id)contact atIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(CNPhotoPickerActionsViewController *)self delegate];
-  [v9 photoPickerActionsViewController:self didPerformAction:0 withProviderItem:v8 atIndexPath:v7];
+  pathCopy = path;
+  contactCopy = contact;
+  delegate = [(CNPhotoPickerActionsViewController *)self delegate];
+  [delegate photoPickerActionsViewController:self didPerformAction:0 withProviderItem:contactCopy atIndexPath:pathCopy];
 }
 
-- (void)performDuplicateTransitionToItem:(id)a3 fromView:(id)a4 completionBlock:(id)a5
+- (void)performDuplicateTransitionToItem:(id)item fromView:(id)view completionBlock:(id)block
 {
-  v7 = a5;
-  v8 = [a4 snapshotView];
-  v9 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+  blockCopy = block;
+  snapshotView = [view snapshotView];
+  transitionContainerView = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
 
-  if (!v9)
+  if (!transitionContainerView)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(CNPhotoPickerActionsViewController *)self setTransitionContainerView:v10];
 
-    v11 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-    [v11 frame];
+    imageContainerView = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+    [imageContainerView frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
-    [v20 setFrame:{v13, v15, v17, v19}];
+    transitionContainerView2 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+    [transitionContainerView2 setFrame:{v13, v15, v17, v19}];
   }
 
-  v21 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
-  [v21 frame];
+  transitionContainerView3 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+  [transitionContainerView3 frame];
   v57 = CGRectInset(v56, 20.0, 20.0);
   x = v57.origin.x;
   y = v57.origin.y;
   width = v57.size.width;
   height = v57.size.height;
 
-  v25 = [(CNPhotoPickerActionsViewController *)self view];
-  [v25 bounds];
+  view = [(CNPhotoPickerActionsViewController *)self view];
+  [view bounds];
   v27 = v26;
 
   memset(&v55, 0, sizeof(v55));
   CGAffineTransformMakeScale(&v55, 0.0, 0.0);
-  [(CNPhotoPickerActionsViewController *)self setTransitionContainerView:v8];
-  v28 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-  [v28 frame];
+  [(CNPhotoPickerActionsViewController *)self setTransitionContainerView:snapshotView];
+  imageContainerView2 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  [imageContainerView2 frame];
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v37 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
-  [v37 setFrame:{v30, v32, v34, v36}];
+  transitionContainerView4 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+  [transitionContainerView4 setFrame:{v30, v32, v34, v36}];
 
-  v38 = [(CNPhotoPickerActionsViewController *)self view];
-  v39 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
-  [v38 addSubview:v39];
+  view2 = [(CNPhotoPickerActionsViewController *)self view];
+  transitionContainerView5 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+  [view2 addSubview:transitionContainerView5];
 
   v54 = v55;
-  v40 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  imageContainerView3 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
   v53 = v54;
-  [v40 setTransform:&v53];
+  [imageContainerView3 setTransform:&v53];
 
-  v41 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-  [v41 setAlpha:0.0];
+  imageContainerView4 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  [imageContainerView4 setAlpha:0.0];
 
   v42 = MEMORY[0x1E69DD250];
   v52[0] = MEMORY[0x1E69E9820];
@@ -171,8 +171,8 @@ uint64_t __92__CNPhotoPickerActionsViewController_actionsModel_didDuplicate_atIn
   v50[2] = __96__CNPhotoPickerActionsViewController_performDuplicateTransitionToItem_fromView_completionBlock___block_invoke_5;
   v50[3] = &unk_1E74E6FB0;
   v50[4] = self;
-  v51 = v7;
-  v43 = v7;
+  v51 = blockCopy;
+  v43 = blockCopy;
   [v42 animateKeyframesWithDuration:0 delay:v52 options:v50 animations:0.84 completion:0.0];
   v44 = MEMORY[0x1E69DD250];
   [(CNPhotoPickerActionsViewController *)self duplicateScaleDuration];
@@ -289,43 +289,43 @@ void __96__CNPhotoPickerActionsViewController_performDuplicateTransitionToItem_f
   [v1 setAlpha:1.0];
 }
 
-- (void)performDeleteTransitionToItem:(id)a3
+- (void)performDeleteTransitionToItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-  v6 = [v5 snapshotView];
+  itemCopy = item;
+  imageContainerView = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  snapshotView = [imageContainerView snapshotView];
 
-  [(CNPhotoPickerActionsViewController *)self updateActionsModelWithProviderItem:v4];
-  v7 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+  [(CNPhotoPickerActionsViewController *)self updateActionsModelWithProviderItem:itemCopy];
+  transitionContainerView = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
 
-  if (!v7)
+  if (!transitionContainerView)
   {
     v8 = objc_alloc_init(MEMORY[0x1E69DD250]);
     [(CNPhotoPickerActionsViewController *)self setTransitionContainerView:v8];
   }
 
-  v9 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-  [v9 frame];
+  imageContainerView2 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  [imageContainerView2 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  transitionContainerView2 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+  [transitionContainerView2 setFrame:{v11, v13, v15, v17}];
 
-  v19 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-  [v19 frame];
+  imageContainerView3 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  [imageContainerView3 frame];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
 
-  v28 = [(CNPhotoPickerActionsViewController *)self view];
-  [v28 bounds];
+  view = [(CNPhotoPickerActionsViewController *)self view];
+  [view bounds];
   v30 = v29;
 
-  v31 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-  [v31 setFrame:{v30, v23, v25, v27}];
+  imageContainerView4 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  [imageContainerView4 setFrame:{v30, v23, v25, v27}];
 
   v53.origin.x = v21;
   v53.origin.y = v23;
@@ -336,16 +336,16 @@ void __96__CNPhotoPickerActionsViewController_performDuplicateTransitionToItem_f
   x = v54.origin.x;
   width = v54.size.width;
   height = v54.size.height;
-  [(CNPhotoPickerActionsViewController *)self setTransitionContainerView:v6];
-  v33 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
-  [v33 setFrame:{v21, v23, v25, v27}];
+  [(CNPhotoPickerActionsViewController *)self setTransitionContainerView:snapshotView];
+  transitionContainerView3 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+  [transitionContainerView3 setFrame:{v21, v23, v25, v27}];
 
-  v34 = [(CNPhotoPickerActionsViewController *)self view];
-  v35 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
-  [v34 addSubview:v35];
+  view2 = [(CNPhotoPickerActionsViewController *)self view];
+  transitionContainerView4 = [(CNPhotoPickerActionsViewController *)self transitionContainerView];
+  [view2 addSubview:transitionContainerView4];
 
-  v36 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-  [v36 setAlpha:0.0];
+  imageContainerView5 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  [imageContainerView5 setAlpha:0.0];
 
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
@@ -473,20 +473,20 @@ void __68__CNPhotoPickerActionsViewController_performDeleteTransitionToItem___bl
   [v7 setAlpha:0.0];
 }
 
-- (void)updateActionsModelWithProviderItem:(id)a3
+- (void)updateActionsModelWithProviderItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerActionsViewController *)self actionsModel];
-  [v5 updateProviderItem:v4];
+  itemCopy = item;
+  actionsModel = [(CNPhotoPickerActionsViewController *)self actionsModel];
+  [actionsModel updateProviderItem:itemCopy];
 
-  v6 = [(CNPhotoPickerActionsViewController *)self actionsModel];
-  v7 = [v6 providerItem];
+  actionsModel2 = [(CNPhotoPickerActionsViewController *)self actionsModel];
+  providerItem = [actionsModel2 providerItem];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__CNPhotoPickerActionsViewController_updateActionsModelWithProviderItem___block_invoke;
   v8[3] = &unk_1E74E73E8;
   v8[4] = self;
-  [v7 thumbnailViewWithCompletion:v8];
+  [providerItem thumbnailViewWithCompletion:v8];
 }
 
 void __73__CNPhotoPickerActionsViewController_updateActionsModelWithProviderItem___block_invoke(uint64_t a1, void *a2)
@@ -513,16 +513,16 @@ void __73__CNPhotoPickerActionsViewController_updateActionsModelWithProviderItem
   [v12 updateButtonsFromModel:v13];
 }
 
-- (void)presentDeleteConfirmationWithSourceView:(id)a3 withCompletion:(id)a4
+- (void)presentDeleteConfirmationWithSourceView:(id)view withCompletion:(id)completion
 {
-  v28 = a3;
+  viewCopy = view;
   v6 = MEMORY[0x1E69DC650];
-  v7 = a4;
+  completionCopy = completion;
   v8 = [v6 alertControllerWithTitle:0 message:0 preferredStyle:0];
   v9 = MEMORY[0x1E69DC648];
   v10 = CNContactsUIBundle();
   v11 = [v10 localizedStringForKey:@"PHOTO_ACTION_DELETE" value:&stru_1F0CE7398 table:@"Localized"];
-  v12 = [v9 actionWithTitle:v11 style:2 handler:v7];
+  v12 = [v9 actionWithTitle:v11 style:2 handler:completionCopy];
 
   [v8 addAction:v12];
   v13 = MEMORY[0x1E69DC648];
@@ -531,21 +531,21 @@ void __73__CNPhotoPickerActionsViewController_updateActionsModelWithProviderItem
   v16 = [v13 actionWithTitle:v15 style:1 handler:0];
 
   [v8 addAction:v16];
-  if (v28)
+  if (viewCopy)
   {
-    v17 = [v8 popoverPresentationController];
-    [v17 setSourceView:v28];
+    popoverPresentationController = [v8 popoverPresentationController];
+    [popoverPresentationController setSourceView:viewCopy];
 
-    [v28 bounds];
+    [viewCopy bounds];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [v8 popoverPresentationController];
-    [v26 setSourceRect:{v19, v21, v23, v25}];
+    popoverPresentationController2 = [v8 popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{v19, v21, v23, v25}];
 
-    v27 = [v8 popoverPresentationController];
-    [v27 setPermittedArrowDirections:15];
+    popoverPresentationController3 = [v8 popoverPresentationController];
+    [popoverPresentationController3 setPermittedArrowDirections:15];
   }
 
   [(CNPhotoPickerActionsViewController *)self presentViewController:v8 animated:1 completion:0];
@@ -553,118 +553,118 @@ void __73__CNPhotoPickerActionsViewController_updateActionsModelWithProviderItem
 
 - (void)didTapDone
 {
-  v3 = [(CNPhotoPickerActionsViewController *)self delegate];
-  [v3 photoPickerActionsViewControllerDidFinish:self];
+  delegate = [(CNPhotoPickerActionsViewController *)self delegate];
+  [delegate photoPickerActionsViewControllerDidFinish:self];
 }
 
-- (void)applyLayout:(id)a3
+- (void)applyLayout:(id)layout
 {
-  if (a3)
+  if (layout)
   {
-    v27 = a3;
-    [v27 imageContainerViewFrame];
+    layoutCopy = layout;
+    [layoutCopy imageContainerViewFrame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-    [v12 setFrame:{v5, v7, v9, v11}];
+    imageContainerView = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+    [imageContainerView setFrame:{v5, v7, v9, v11}];
 
     v13 = MEMORY[0x1E69DC728];
-    v14 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-    [v14 bounds];
+    imageContainerView2 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+    [imageContainerView2 bounds];
     v15 = [v13 bezierPathWithOvalInRect:?];
-    v16 = [v15 CGPath];
-    v17 = [(CNPhotoPickerActionsViewController *)self clippingLayer];
-    [v17 setPath:v16];
+    cGPath = [v15 CGPath];
+    clippingLayer = [(CNPhotoPickerActionsViewController *)self clippingLayer];
+    [clippingLayer setPath:cGPath];
 
-    [v27 actionButtonsViewFrame];
+    [layoutCopy actionButtonsViewFrame];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(CNPhotoPickerActionsViewController *)self buttonsView];
-    [v26 setFrame:{v19, v21, v23, v25}];
+    buttonsView = [(CNPhotoPickerActionsViewController *)self buttonsView];
+    [buttonsView setFrame:{v19, v21, v23, v25}];
 
-    [(CNPhotoPickerActionsViewController *)self setCurrentLayout:v27];
+    [(CNPhotoPickerActionsViewController *)self setCurrentLayout:layoutCopy];
   }
 }
 
-- (void)updateButtonsFromModel:(id)a3
+- (void)updateButtonsFromModel:(id)model
 {
-  v8 = [a3 inlineActionButtons];
-  v4 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v8];
+  inlineActionButtons = [model inlineActionButtons];
+  v4 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:inlineActionButtons];
   [v4 setAxis:1];
   [v4 setDistribution:1];
   [v4 setSpacing:10.0];
-  v5 = [(CNPhotoPickerActionsViewController *)self view];
-  [v5 addSubview:v4];
+  view = [(CNPhotoPickerActionsViewController *)self view];
+  [view addSubview:v4];
 
-  v6 = [(CNPhotoPickerActionsViewController *)self buttonsView];
+  buttonsView = [(CNPhotoPickerActionsViewController *)self buttonsView];
 
-  if (v6)
+  if (buttonsView)
   {
-    v7 = [(CNPhotoPickerActionsViewController *)self buttonsView];
-    [v7 removeFromSuperview];
+    buttonsView2 = [(CNPhotoPickerActionsViewController *)self buttonsView];
+    [buttonsView2 removeFromSuperview];
   }
 
   [(CNPhotoPickerActionsViewController *)self setButtonsView:v4];
 }
 
-- (void)layoutViewFromModel:(id)a3
+- (void)layoutViewFromModel:(id)model
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+  modelCopy = model;
+  imageContainerView = [(CNPhotoPickerActionsViewController *)self imageContainerView];
 
-  if (!v5)
+  if (!imageContainerView)
   {
     v6 = objc_alloc(MEMORY[0x1E69DD250]);
-    v7 = [(CNPhotoPickerActionsViewController *)self view];
-    [v7 bounds];
+    view = [(CNPhotoPickerActionsViewController *)self view];
+    [view bounds];
     v8 = [v6 initWithFrame:?];
     [(CNPhotoPickerActionsViewController *)self setImageContainerView:v8];
 
     v9 = objc_alloc_init(MEMORY[0x1E69794A0]);
     [(CNPhotoPickerActionsViewController *)self setClippingLayer:v9];
 
-    v10 = [(CNPhotoPickerActionsViewController *)self clippingLayer];
-    v11 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-    v12 = [v11 layer];
-    [v12 setMask:v10];
+    clippingLayer = [(CNPhotoPickerActionsViewController *)self clippingLayer];
+    imageContainerView2 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+    layer = [imageContainerView2 layer];
+    [layer setMask:clippingLayer];
 
-    v13 = [(CNPhotoPickerActionsViewController *)self view];
-    v14 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
-    [v13 addSubview:v14];
+    view2 = [(CNPhotoPickerActionsViewController *)self view];
+    imageContainerView3 = [(CNPhotoPickerActionsViewController *)self imageContainerView];
+    [view2 addSubview:imageContainerView3];
   }
 
-  v15 = [(CNPhotoPickerActionsViewController *)self actionsModel];
-  v16 = [v15 providerItem];
+  actionsModel = [(CNPhotoPickerActionsViewController *)self actionsModel];
+  providerItem = [actionsModel providerItem];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __58__CNPhotoPickerActionsViewController_layoutViewFromModel___block_invoke;
   v24[3] = &unk_1E74E73E8;
   v24[4] = self;
-  [v16 thumbnailViewWithCompletion:v24];
+  [providerItem thumbnailViewWithCompletion:v24];
 
-  [(CNPhotoPickerActionsViewController *)self updateButtonsFromModel:v4];
+  [(CNPhotoPickerActionsViewController *)self updateButtonsFromModel:modelCopy];
   v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_didTapDone];
-  v18 = [(CNPhotoPickerActionsViewController *)self navigationItem];
-  [v18 setRightBarButtonItem:v17];
+  navigationItem = [(CNPhotoPickerActionsViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v17];
 
-  v19 = [(CNPhotoPickerActionsViewController *)self navigationItem];
-  [v19 _setBackgroundHidden:1];
+  navigationItem2 = [(CNPhotoPickerActionsViewController *)self navigationItem];
+  [navigationItem2 _setBackgroundHidden:1];
 
-  v20 = [(CNPhotoPickerActionsViewController *)self navigationController];
-  v21 = [v20 navigationBar];
-  v22 = [v21 isTranslucent];
+  navigationController = [(CNPhotoPickerActionsViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  isTranslucent = [navigationBar isTranslucent];
 
-  if ((v22 & 1) == 0)
+  if ((isTranslucent & 1) == 0)
   {
     [(CNPhotoPickerActionsViewController *)self setExtendedLayoutIncludesOpaqueBars:1];
   }
 
-  v23 = [(CNPhotoPickerActionsViewController *)self currentLayout];
-  [(CNPhotoPickerActionsViewController *)self applyLayout:v23];
+  currentLayout = [(CNPhotoPickerActionsViewController *)self currentLayout];
+  [(CNPhotoPickerActionsViewController *)self applyLayout:currentLayout];
 }
 
 void __58__CNPhotoPickerActionsViewController_layoutViewFromModel___block_invoke(uint64_t a1, void *a2)
@@ -685,19 +685,19 @@ void __58__CNPhotoPickerActionsViewController_layoutViewFromModel___block_invoke
   v21.super_class = CNPhotoPickerActionsViewController;
   [(CNPhotoPickerActionsViewController *)&v21 viewDidLayoutSubviews];
   v3 = [CNPhotoPickerActionsViewControllerLayout alloc];
-  v4 = [(CNPhotoPickerActionsViewController *)self view];
-  [v4 bounds];
+  view = [(CNPhotoPickerActionsViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(CNPhotoPickerActionsViewController *)self view];
-  [v9 safeAreaInsets];
+  view2 = [(CNPhotoPickerActionsViewController *)self view];
+  [view2 safeAreaInsets];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(CNPhotoPickerActionsViewController *)self buttonsView];
-  v19 = [v18 arrangedSubviews];
-  v20 = -[CNPhotoPickerActionsViewControllerLayout initWithContainerSize:insets:buttonCount:](v3, "initWithContainerSize:insets:buttonCount:", [v19 count], v6, v8, v11, v13, v15, v17);
+  buttonsView = [(CNPhotoPickerActionsViewController *)self buttonsView];
+  arrangedSubviews = [buttonsView arrangedSubviews];
+  v20 = -[CNPhotoPickerActionsViewControllerLayout initWithContainerSize:insets:buttonCount:](v3, "initWithContainerSize:insets:buttonCount:", [arrangedSubviews count], v6, v8, v11, v13, v15, v17);
 
   [(CNPhotoPickerActionsViewController *)self applyLayout:v20];
 }
@@ -707,28 +707,28 @@ void __58__CNPhotoPickerActionsViewController_layoutViewFromModel___block_invoke
   v8.receiver = self;
   v8.super_class = CNPhotoPickerActionsViewController;
   [(CNPhotoPickerActionsViewController *)&v8 viewDidLoad];
-  v3 = [(CNPhotoPickerActionsViewController *)self actionsModel];
-  [(CNPhotoPickerActionsViewController *)self layoutViewFromModel:v3];
+  actionsModel = [(CNPhotoPickerActionsViewController *)self actionsModel];
+  [(CNPhotoPickerActionsViewController *)self layoutViewFromModel:actionsModel];
 
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  v5 = [(CNPhotoPickerActionsViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  view = [(CNPhotoPickerActionsViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  v6 = [(CNPhotoPickerActionsViewController *)self navigationController];
-  v7 = [v6 presentationController];
-  [v7 setDelegate:self];
+  navigationController = [(CNPhotoPickerActionsViewController *)self navigationController];
+  presentationController = [navigationController presentationController];
+  [presentationController setDelegate:self];
 }
 
-- (CNPhotoPickerActionsViewController)initWithActionsModel:(id)a3
+- (CNPhotoPickerActionsViewController)initWithActionsModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = CNPhotoPickerActionsViewController;
   v6 = [(CNPhotoPickerActionsViewController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actionsModel, a3);
+    objc_storeStrong(&v6->_actionsModel, model);
     [(CNPhotoPickerActionsModel *)v7->_actionsModel setDelegate:v7];
     v8 = v7;
   }

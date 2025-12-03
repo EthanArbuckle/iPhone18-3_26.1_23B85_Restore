@@ -1,16 +1,16 @@
 @interface CKSyndicationContentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CKSyndicationContentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKSyndicationContentViewController" isKindOfClass:@"OBWelcomeController"];
-  [v3 validateClass:@"CKSyndicationContentViewController" hasInstanceMethod:@"micropillView1" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKSyndicationContentViewController" hasInstanceMethod:@"micropillView2" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKSyndicationContentViewController" isKindOfClass:@"OBWelcomeController"];
+  [validationsCopy validateClass:@"CKSyndicationContentViewController" hasInstanceMethod:@"micropillView1" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKSyndicationContentViewController" hasInstanceMethod:@"micropillView2" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

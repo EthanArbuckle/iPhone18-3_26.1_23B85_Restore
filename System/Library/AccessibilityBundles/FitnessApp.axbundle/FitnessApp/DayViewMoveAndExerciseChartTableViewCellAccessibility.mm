@@ -1,17 +1,17 @@
 @interface DayViewMoveAndExerciseChartTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 @end
 
 @implementation DayViewMoveAndExerciseChartTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitnessApp.DayViewMoveAndExerciseChartTableViewCell" hasInstanceMethod:@"chartView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.DayViewMoveAndExerciseChartTableViewCell" hasInstanceMethod:@"auxiliaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.DayViewMoveAndExerciseChartTableViewCell" hasInstanceMethod:@"labelPair" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.DayViewTitleAndValueLabelPair"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitnessApp.DayViewMoveAndExerciseChartTableViewCell" hasInstanceMethod:@"chartView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.DayViewMoveAndExerciseChartTableViewCell" hasInstanceMethod:@"auxiliaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.DayViewMoveAndExerciseChartTableViewCell" hasInstanceMethod:@"labelPair" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.DayViewTitleAndValueLabelPair"];
 }
 
 - (id)accessibilityElements

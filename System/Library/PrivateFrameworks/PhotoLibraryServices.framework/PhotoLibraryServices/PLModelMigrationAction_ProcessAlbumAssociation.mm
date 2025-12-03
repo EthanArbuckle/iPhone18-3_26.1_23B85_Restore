@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_ProcessAlbumAssociation
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ProcessAlbumAssociation
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -26,7 +26,7 @@
   v28[1] = 3221225472;
   v28[2] = __94__PLModelMigrationAction_ProcessAlbumAssociation_performActionWithManagedObjectContext_error___block_invoke;
   v28[3] = &unk_1E756C8F0;
-  v11 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v9 pendingParentUnitCount:0 error:&v29 processingBlock:v28];
+  v11 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v9 pendingParentUnitCount:0 error:&v29 processingBlock:v28];
   v12 = v29;
   if (v11 == 1)
   {
@@ -35,8 +35,8 @@
 
     if (v14)
     {
-      v15 = [(PLModelMigrationActionCore *)self logger];
-      v16 = v15 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v16 = logger == 0;
 
       if (v16)
       {
@@ -106,10 +106,10 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v23 = v12;
   v24 = v23;
-  if (v11 != 1 && a4)
+  if (v11 != 1 && error)
   {
     v25 = v23;
-    *a4 = v24;
+    *error = v24;
   }
 
   _Block_object_dispose(&v30, 8);

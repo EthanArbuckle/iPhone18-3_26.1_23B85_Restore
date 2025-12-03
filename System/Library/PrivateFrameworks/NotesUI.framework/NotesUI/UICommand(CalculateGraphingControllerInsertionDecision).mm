@@ -7,7 +7,7 @@
 - (id)calculateGraphingControllerInsertionDecision
 {
   objc_opt_class();
-  v2 = [a1 propertyList];
+  propertyList = [self propertyList];
   v3 = ICDynamicCast();
 
   v4 = [v3 objectForKeyedSubscript:@"cacheKey"];

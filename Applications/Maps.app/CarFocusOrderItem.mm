@@ -1,40 +1,40 @@
 @interface CarFocusOrderItem
-+ (CarFocusOrderItem)itemWithFocusItem:(id)a3;
-+ (CarFocusOrderItem)itemWithRepresentativeItemType:(unint64_t)a3;
++ (CarFocusOrderItem)itemWithFocusItem:(id)item;
++ (CarFocusOrderItem)itemWithRepresentativeItemType:(unint64_t)type;
 - (BOOL)flipForRHD;
 - (unint64_t)representativeItemType;
-- (void)ifFocusItem:(id)a3 ifRepresentativeItem:(id)a4;
+- (void)ifFocusItem:(id)item ifRepresentativeItem:(id)representativeItem;
 @end
 
 @implementation CarFocusOrderItem
 
-+ (CarFocusOrderItem)itemWithRepresentativeItemType:(unint64_t)a3
++ (CarFocusOrderItem)itemWithRepresentativeItemType:(unint64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = objc_alloc_init(self);
+  v5 = [NSNumber numberWithUnsignedInteger:type];
   [v4 setRepresentativeItemTypeNumber:v5];
 
   return v4;
 }
 
-+ (CarFocusOrderItem)itemWithFocusItem:(id)a3
++ (CarFocusOrderItem)itemWithFocusItem:(id)item
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setFocusItem:v4];
+  itemCopy = item;
+  v5 = objc_alloc_init(self);
+  [v5 setFocusItem:itemCopy];
 
   [v5 setRepresentativeItemTypeNumber:&off_1016E9A88];
 
   return v5;
 }
 
-- (void)ifFocusItem:(id)a3 ifRepresentativeItem:(id)a4
+- (void)ifFocusItem:(id)item ifRepresentativeItem:(id)representativeItem
 {
-  v8 = a3;
-  v6 = a4;
+  itemCopy = item;
+  representativeItemCopy = representativeItem;
   if (self->_focusItem)
   {
-    v7 = v8[2];
+    v7 = itemCopy[2];
   }
 
   else
@@ -45,7 +45,7 @@
     }
 
     [(CarFocusOrderItem *)self representativeItemType];
-    v7 = v6[2];
+    v7 = representativeItemCopy[2];
   }
 
   v7();
@@ -60,17 +60,17 @@ LABEL_6:
   }
 
   v2 = +[MapsExternalDevice sharedInstance];
-  v3 = [v2 rightHandDrive];
+  rightHandDrive = [v2 rightHandDrive];
 
-  return v3;
+  return rightHandDrive;
 }
 
 - (unint64_t)representativeItemType
 {
-  v2 = [(CarFocusOrderItem *)self representativeItemTypeNumber];
-  v3 = [v2 unsignedIntegerValue];
+  representativeItemTypeNumber = [(CarFocusOrderItem *)self representativeItemTypeNumber];
+  unsignedIntegerValue = [representativeItemTypeNumber unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 @end

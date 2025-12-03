@@ -1,13 +1,13 @@
 @interface PFStateCaptureEventDescription
 - (NSString)description;
-- (PFStateCaptureEventDescription)initWithStartTimestamp:(double)a3;
-- (id)appendAbsoluteTimestamp:(double)a3;
-- (id)appendBool:(BOOL)a3;
-- (id)appendEndTimestamp:(double)a3;
-- (id)appendNumber:(id)a3;
-- (id)appendQoSClass:(unsigned int)a3;
-- (id)appendRelativeTimestamp:(double)a3;
-- (id)appendString:(id)a3;
+- (PFStateCaptureEventDescription)initWithStartTimestamp:(double)timestamp;
+- (id)appendAbsoluteTimestamp:(double)timestamp;
+- (id)appendBool:(BOOL)bool;
+- (id)appendEndTimestamp:(double)timestamp;
+- (id)appendNumber:(id)number;
+- (id)appendQoSClass:(unsigned int)class;
+- (id)appendRelativeTimestamp:(double)timestamp;
+- (id)appendString:(id)string;
 @end
 
 @implementation PFStateCaptureEventDescription
@@ -19,9 +19,9 @@
   return v2;
 }
 
-- (id)appendBool:(BOOL)a3
+- (id)appendBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     v3 = @"Y";
   }
@@ -34,9 +34,9 @@
   return [(PFStateCaptureEventDescription *)self appendString:v3];
 }
 
-- (id)appendEndTimestamp:(double)a3
+- (id)appendEndTimestamp:(double)timestamp
 {
-  if (a3 <= 0.0)
+  if (timestamp <= 0.0)
   {
     v6 = [(PFStateCaptureEventDescription *)self appendString:@" now: "];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -47,43 +47,43 @@
   {
     v5 = [(PFStateCaptureEventDescription *)self appendString:@" end: "];
     v6 = v5;
-    v7 = a3;
+    timestampCopy = timestamp;
   }
 
-  v8 = [v5 appendRelativeTimestamp:v7];
+  v8 = [v5 appendRelativeTimestamp:timestampCopy];
 
   return self;
 }
 
-- (id)appendRelativeTimestamp:(double)a3
+- (id)appendRelativeTimestamp:(double)timestamp
 {
   description = self->_description;
-  if (a3 == 0.0)
+  if (timestamp == 0.0)
   {
     [(NSMutableString *)description appendString:@"INV"];
   }
 
   else
   {
-    [(NSMutableString *)description appendFormat:@"%+.3f", a3 - self->_startTimestamp];
+    [(NSMutableString *)description appendFormat:@"%+.3f", timestamp - self->_startTimestamp];
   }
 
   return self;
 }
 
-- (id)appendAbsoluteTimestamp:(double)a3
+- (id)appendAbsoluteTimestamp:(double)timestamp
 {
-  v4 = [PFStateCaptureHandler stringFromTimestamp:a3];
+  v4 = [PFStateCaptureHandler stringFromTimestamp:timestamp];
   v5 = [(PFStateCaptureEventDescription *)self appendString:v4];
 
   return v5;
 }
 
-- (id)appendQoSClass:(unsigned int)a3
+- (id)appendQoSClass:(unsigned int)class
 {
-  if (a3 <= 16)
+  if (class <= 16)
   {
-    switch(a3)
+    switch(class)
     {
       case 0u:
         v3 = @"UN";
@@ -101,15 +101,15 @@ LABEL_15:
     return [(PFStateCaptureEventDescription *)self appendString:v3];
   }
 
-  if (a3 > 24)
+  if (class > 24)
   {
-    if (a3 == 33)
+    if (class == 33)
     {
       v3 = @"UI";
       return [(PFStateCaptureEventDescription *)self appendString:v3];
     }
 
-    if (a3 == 25)
+    if (class == 25)
     {
       v3 = @"IN";
       return [(PFStateCaptureEventDescription *)self appendString:v3];
@@ -118,13 +118,13 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a3 == 17)
+  if (class == 17)
   {
     v3 = @"UT";
     return [(PFStateCaptureEventDescription *)self appendString:v3];
   }
 
-  if (a3 != 21)
+  if (class != 21)
   {
     goto LABEL_15;
   }
@@ -133,12 +133,12 @@ LABEL_15:
   return [(PFStateCaptureEventDescription *)self appendString:v3];
 }
 
-- (id)appendNumber:(id)a3
+- (id)appendNumber:(id)number
 {
   description = self->_description;
-  if (a3)
+  if (number)
   {
-    [(NSMutableString *)description appendFormat:@"%@", a3];
+    [(NSMutableString *)description appendFormat:@"%@", number];
   }
 
   else
@@ -149,19 +149,19 @@ LABEL_15:
   return self;
 }
 
-- (id)appendString:(id)a3
+- (id)appendString:(id)string
 {
   description = self->_description;
-  if (!a3)
+  if (!string)
   {
-    a3 = @"<nil>";
+    string = @"<nil>";
   }
 
-  [(NSMutableString *)description appendString:a3];
+  [(NSMutableString *)description appendString:string];
   return self;
 }
 
-- (PFStateCaptureEventDescription)initWithStartTimestamp:(double)a3
+- (PFStateCaptureEventDescription)initWithStartTimestamp:(double)timestamp
 {
   v12.receiver = self;
   v12.super_class = PFStateCaptureEventDescription;
@@ -169,13 +169,13 @@ LABEL_15:
   v5 = v4;
   if (v4)
   {
-    v4->_startTimestamp = a3;
+    v4->_startTimestamp = timestamp;
     v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
     description = v5->_description;
     v5->_description = v6;
 
     v8 = v5->_description;
-    v9 = [PFStateCaptureHandler stringFromTimestamp:a3];
+    v9 = [PFStateCaptureHandler stringFromTimestamp:timestamp];
     [(NSMutableString *)v8 appendFormat:@"%@:", v9];
 
     v10 = v5;

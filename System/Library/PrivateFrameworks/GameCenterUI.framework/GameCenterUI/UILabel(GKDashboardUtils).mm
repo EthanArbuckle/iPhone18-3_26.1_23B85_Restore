@@ -8,24 +8,24 @@
 {
   if (a3)
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
-    v6 = [v3 CGColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    cGColor = [blackColor CGColor];
   }
 
   else
   {
-    v6 = 0;
+    cGColor = 0;
   }
 
-  v7 = [a1 layer];
-  [v7 setShadowColor:v6];
+  layer = [self layer];
+  [layer setShadowColor:cGColor];
 
   if (a3)
   {
 
-    v8 = [a1 layer];
+    layer2 = [self layer];
     LODWORD(v9) = 1053609165;
-    [v8 setShadowOpacity:v9];
+    [layer2 setShadowOpacity:v9];
 
     v10 = 0.0;
     v11 = 2.0;
@@ -34,20 +34,20 @@
 
   else
   {
-    v13 = [a1 layer];
+    layer3 = [self layer];
     LODWORD(v14) = 1053609165;
-    [v13 setShadowOpacity:v14];
+    [layer3 setShadowOpacity:v14];
 
     v10 = *MEMORY[0x277CBF3A8];
     v11 = *(MEMORY[0x277CBF3A8] + 8);
     v12 = 0.0;
   }
 
-  v15 = [a1 layer];
-  [v15 setShadowOffset:{v10, v11}];
+  layer4 = [self layer];
+  [layer4 setShadowOffset:{v10, v11}];
 
-  v16 = [a1 layer];
-  [v16 setShadowRadius:v12];
+  layer5 = [self layer];
+  [layer5 setShadowRadius:v12];
 }
 
 @end

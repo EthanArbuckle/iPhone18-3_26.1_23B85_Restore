@@ -1,8 +1,8 @@
 @interface XRMobileAgent
 + (void)initialize;
-- (id)activateUsingCompletionOperationAtStop:(id)a3 activationTicket:(id)a4;
+- (id)activateUsingCompletionOperationAtStop:(id)stop activationTicket:(id)ticket;
 - (void)__park;
-- (void)executeStopOnItinerary:(id)a3;
+- (void)executeStopOnItinerary:(id)itinerary;
 - (void)goodbye;
 - (void)hello;
 @end
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_new();
     v3 = qword_27EE869F8;
@@ -57,14 +57,14 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)executeStopOnItinerary:(id)a3
+- (void)executeStopOnItinerary:(id)itinerary
 {
-  v13 = a3;
+  itineraryCopy = itinerary;
   v8 = objc_msgSend_mode(self, v4, v5, v6, v7);
   v12 = v8;
   if (v8 != @"Activating" && (v8 == @"Failed" || v8 == @"Finished"))
   {
-    objc_msgSend_finishedWithMode_(v13, v9, v8, v10, v11);
+    objc_msgSend_finishedWithMode_(itineraryCopy, v9, v8, v10, v11);
   }
 }
 
@@ -145,19 +145,19 @@
   }
 }
 
-- (id)activateUsingCompletionOperationAtStop:(id)a3 activationTicket:(id)a4
+- (id)activateUsingCompletionOperationAtStop:(id)stop activationTicket:(id)ticket
 {
-  v6 = a4;
-  v7 = a3;
+  ticketCopy = ticket;
+  stopCopy = stop;
   v9 = objc_opt_new();
-  if (v7)
+  if (stopCopy)
   {
-    objc_msgSend_activateAtStop_activationTicket_finalDestination_finalTicket_(self, v8, v7, v6, qword_27EE86A00, v9);
+    objc_msgSend_activateAtStop_activationTicket_finalDestination_finalTicket_(self, v8, stopCopy, ticketCopy, qword_27EE86A00, v9);
   }
 
   else
   {
-    objc_msgSend_activateAtStop_activationTicket_finalDestination_finalTicket_(self, v8, qword_27EE869F8, v6, qword_27EE86A00, v9);
+    objc_msgSend_activateAtStop_activationTicket_finalDestination_finalTicket_(self, v8, qword_27EE869F8, ticketCopy, qword_27EE86A00, v9);
   }
 
   return v9;

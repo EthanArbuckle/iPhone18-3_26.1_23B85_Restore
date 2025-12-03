@@ -23,7 +23,7 @@
 {
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __47__NEHotspotHelperResponse_denyResponseDelivery__block_invoke;
@@ -46,7 +46,7 @@
       return;
     }
 
-    self = v2->_response;
+    self = selfCopy->_response;
   }
 
   MEMORY[0x1EEDF2FC8](self, a2);

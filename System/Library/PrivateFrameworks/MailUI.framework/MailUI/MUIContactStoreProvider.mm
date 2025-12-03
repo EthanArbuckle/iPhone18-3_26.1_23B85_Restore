@@ -1,9 +1,9 @@
 @interface MUIContactStoreProvider
 + (OS_os_log)log;
-- (BOOL)contactExistsForEmailAddress:(id)a3;
-- (MUIContactStoreProvider)initWithContactStore:(id)a3;
-- (id)_contactForEmailAddress:(id)a3;
-- (id)contactResultForContext:(id)a3;
+- (BOOL)contactExistsForEmailAddress:(id)address;
+- (MUIContactStoreProvider)initWithContactStore:(id)store;
+- (id)_contactForEmailAddress:(id)address;
+- (id)contactResultForContext:(id)context;
 @end
 
 @implementation MUIContactStoreProvider
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __30__MUIContactStoreProvider_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_10 != -1)
   {
     dispatch_once(&log_onceToken_10, block);
@@ -34,19 +34,19 @@ void __30__MUIContactStoreProvider_log__block_invoke(uint64_t a1)
   log_log_10 = v2;
 }
 
-- (MUIContactStoreProvider)initWithContactStore:(id)a3
+- (MUIContactStoreProvider)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = MUIContactStoreProvider;
   v6 = [(MUIContactStoreProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     v8 = objc_alloc(MEMORY[0x277CBDBD0]);
-    v9 = [MEMORY[0x277CBDBD8] defaultSettings];
-    v10 = [v8 initWithSettings:v9];
+    defaultSettings = [MEMORY[0x277CBDBD8] defaultSettings];
+    v10 = [v8 initWithSettings:defaultSettings];
     renderer = v7->_renderer;
     v7->_renderer = v10;
   }
@@ -54,25 +54,25 @@ void __30__MUIContactStoreProvider_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)contactExistsForEmailAddress:(id)a3
+- (BOOL)contactExistsForEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(MUIContactStoreProvider *)self contactStore];
-  v6 = [v5 contactExistsForEmailAddress:v4];
+  addressCopy = address;
+  contactStore = [(MUIContactStoreProvider *)self contactStore];
+  v6 = [contactStore contactExistsForEmailAddress:addressCopy];
 
   return v6;
 }
 
-- (id)contactResultForContext:(id)a3
+- (id)contactResultForContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 emailAddress];
-  v6 = [v5 emailAddressValue];
+  contextCopy = context;
+  emailAddress = [contextCopy emailAddress];
+  emailAddressValue = [emailAddress emailAddressValue];
 
-  if (v6)
+  if (emailAddressValue)
   {
-    v7 = [(MUIContactStoreProvider *)self _contactForEmailAddress:v6];
+    v7 = [(MUIContactStoreProvider *)self _contactForEmailAddress:emailAddressValue];
   }
 
   else
@@ -90,8 +90,8 @@ void __30__MUIContactStoreProvider_log__block_invoke(uint64_t a1)
 
   v9 = v7;
   v10 = MEMORY[0x277CBDBE0];
-  [v4 scale];
-  v12 = [v10 scopeWithPointSize:objc_msgSend(v4 scale:"isRTL") rightToLeft:0 style:{45.0, 45.0, v11}];
+  [contextCopy scale];
+  v12 = [v10 scopeWithPointSize:objc_msgSend(contextCopy scale:"isRTL") rightToLeft:0 style:{45.0, 45.0, v11}];
   objc_initWeak(buf, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -104,8 +104,8 @@ void __30__MUIContactStoreProvider_log__block_invoke(uint64_t a1)
   v22 = v14;
   v15 = _Block_copy(aBlock);
   v16 = [MUIAvatarImageGeneratorResult alloc];
-  v17 = [v4 emailAddress];
-  v18 = [(MUIAvatarImageGeneratorResult *)v16 initWithContact:v13 address:v17 imageProvider:v15 style:0];
+  emailAddress2 = [contextCopy emailAddress];
+  v18 = [(MUIAvatarImageGeneratorResult *)v16 initWithContact:v13 address:emailAddress2 imageProvider:v15 style:0];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(buf);
@@ -125,15 +125,15 @@ id __51__MUIContactStoreProvider_contactResultForContext___block_invoke(uint64_t
   return v5;
 }
 
-- (id)_contactForEmailAddress:(id)a3
+- (id)_contactForEmailAddress:(id)address
 {
   v3 = MEMORY[0x277CBDA58];
-  v4 = a3;
-  v5 = [v4 displayName];
-  v6 = [v5 ec_personNameComponents];
-  v7 = [v4 simpleAddress];
+  addressCopy = address;
+  displayName = [addressCopy displayName];
+  ec_personNameComponents = [displayName ec_personNameComponents];
+  simpleAddress = [addressCopy simpleAddress];
 
-  v8 = [v3 em_contactWithPersonNameComponents:v6 emailAddress:v7 emailAddressLabel:0 allowInvalidEmailAddress:1];
+  v8 = [v3 em_contactWithPersonNameComponents:ec_personNameComponents emailAddress:simpleAddress emailAddressLabel:0 allowInvalidEmailAddress:1];
 
   return v8;
 }

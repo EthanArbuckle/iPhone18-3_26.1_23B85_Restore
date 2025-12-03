@@ -1,26 +1,26 @@
 @interface CKDModifyRecordZonesOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)_saveZonesToServer;
-- (BOOL)_shouldUseZoneishPCSForZone:(id)a3;
-- (BOOL)_updateZone:(id)a3 withNewPCS:(id)a4 error:(id *)a5;
-- (BOOL)isOperationType:(int)a3;
+- (BOOL)_shouldUseZoneishPCSForZone:(id)zone;
+- (BOOL)_updateZone:(id)zone withNewPCS:(id)s error:(id *)error;
+- (BOOL)isOperationType:(int)type;
 - (BOOL)makeStateTransition;
 - (BOOL)needsUserKeySyncToPopulateServiceIdentity;
-- (CKDModifyRecordZonesOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (id)_addParentPCS:(id)a3 toZonePCS:(id)a4;
-- (id)_locallyCreatedParentPCSDataForZone:(id)a3 error:(id *)a4;
+- (CKDModifyRecordZonesOperation)initWithOperationInfo:(id)info container:(id)container;
+- (id)_addParentPCS:(id)s toZonePCS:(id)cS;
+- (id)_locallyCreatedParentPCSDataForZone:(id)zone error:(id *)error;
 - (id)_topoSortRecordZones;
 - (id)activityCreate;
 - (id)relevantZoneIDs;
 - (int)operationType;
 - (void)_checkAndPrepareZones;
 - (void)_checkCurrentPCSIdentity;
-- (void)_createNewPCSForZone:(id)a3 completionHandler:(id)a4;
-- (void)_fetchPCSDataForZone:(id)a3 completion:(id)a4;
+- (void)_createNewPCSForZone:(id)zone completionHandler:(id)handler;
+- (void)_fetchPCSDataForZone:(id)zone completion:(id)completion;
 - (void)_fetchPCSDataForZonesFromServer;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleParentPCSForZone:(id)a3 completion:(id)a4;
-- (void)_handleRecordZoneDeleted:(id)a3 responseCode:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleParentPCSForZone:(id)zone completion:(id)completion;
+- (void)_handleRecordZoneDeleted:(id)deleted responseCode:(id)code;
 - (void)_sendCoreAnalyticsEventForKeySync;
 - (void)_sendErrorForFailedZones;
 - (void)_synchronizeSigningIdentitiesIfNeeded;
@@ -30,29 +30,29 @@
 
 @implementation CKDModifyRecordZonesOperation
 
-- (CKDModifyRecordZonesOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDModifyRecordZonesOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v59.receiver = self;
   v59.super_class = CKDModifyRecordZonesOperation;
-  v9 = [(CKDDatabaseOperation *)&v59 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v59 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordZonesToSave(v6, v7, v8);
+    v10 = objc_msgSend_recordZonesToSave(infoCopy, v7, v8);
     v13 = objc_msgSend_mutableCopy(v10, v11, v12);
     recordZonesToSave = v9->_recordZonesToSave;
     v9->_recordZonesToSave = v13;
 
     v9->_hasZoneSaves = objc_msgSend_count(v9->_recordZonesToSave, v15, v16) != 0;
-    v19 = objc_msgSend_recordZoneIDsToDelete(v6, v17, v18);
+    v19 = objc_msgSend_recordZoneIDsToDelete(infoCopy, v17, v18);
     recordZoneIDsToDelete = v9->_recordZoneIDsToDelete;
     v9->_recordZoneIDsToDelete = v19;
 
     v9->_hasZoneDeletes = objc_msgSend_count(v9->_recordZoneIDsToDelete, v21, v22) != 0;
-    v9->_allowDefaultZoneSave = objc_msgSend_allowDefaultZoneSave(v6, v23, v24);
-    v9->_markZonesAsUserPurged = objc_msgSend_markZonesAsUserPurged(v6, v25, v26);
-    v29 = objc_msgSend_maxZoneSaveAttempts(v6, v27, v28);
+    v9->_allowDefaultZoneSave = objc_msgSend_allowDefaultZoneSave(infoCopy, v23, v24);
+    v9->_markZonesAsUserPurged = objc_msgSend_markZonesAsUserPurged(infoCopy, v25, v26);
+    v29 = objc_msgSend_maxZoneSaveAttempts(infoCopy, v27, v28);
     v9->_maxZoneSaveAttempts = v29;
     if (v29 <= 0)
     {
@@ -60,7 +60,7 @@
       v9->_maxZoneSaveAttempts = objc_msgSend_PCSRetryCount(v32, v33, v34);
     }
 
-    v9->_dontFetchFromServer = objc_msgSend_dontFetchFromServer(v6, v30, v31);
+    v9->_dontFetchFromServer = objc_msgSend_dontFetchFromServer(infoCopy, v30, v31);
     v35 = objc_opt_new();
     recordZonesByZoneID = v9->_recordZonesByZoneID;
     v9->_recordZonesByZoneID = v35;
@@ -205,20 +205,20 @@ LABEL_22:
   return v2;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 6)
+  if (state - 2 >= 6)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDModifyRecordZonesOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_27854B108[a3 - 2];
+    v5 = off_27854B108[state - 2];
   }
 
   return v5;
@@ -655,12 +655,12 @@ LABEL_10:
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleRecordZoneDeleted:(id)a3 responseCode:(id)a4
+- (void)_handleRecordZoneDeleted:(id)deleted responseCode:(id)code
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_code(v7, v8, v9);
+  deletedCopy = deleted;
+  codeCopy = code;
+  v10 = objc_msgSend_code(codeCopy, v8, v9);
   v11 = *MEMORY[0x277CBC878];
   v12 = *MEMORY[0x277CBC880];
   if (v10 == 1)
@@ -674,17 +674,17 @@ LABEL_10:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v51 = v6;
+      v51 = deletedCopy;
       _os_log_impl(&dword_22506F000, v13, OS_LOG_TYPE_INFO, "RecordZone %@ was successfully deleted from the server", buf, 0xCu);
     }
 
-    objc_msgSend_setPCSData_forFetchedZoneID_(self, v14, 0, v6);
+    objc_msgSend_setPCSData_forFetchedZoneID_(self, v14, 0, deletedCopy);
     v17 = objc_msgSend_container(self, v15, v16);
     v20 = objc_msgSend_pcsCache(v17, v18, v19);
-    objc_msgSend_removePCSDataForItemsInZoneWithID_(v20, v21, v6);
+    objc_msgSend_removePCSDataForItemsInZoneWithID_(v20, v21, deletedCopy);
 
     v24 = objc_msgSend_recordCache(v17, v22, v23);
-    objc_msgSend_clearAllRecordsForContainer_zoneWithID_(v24, v25, v17, v6);
+    objc_msgSend_clearAllRecordsForContainer_zoneWithID_(v24, v25, v17, deletedCopy);
     v26 = 0;
   }
 
@@ -699,20 +699,20 @@ LABEL_10:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v51 = v7;
+      v51 = codeCopy;
       v52 = 2112;
-      v53 = v6;
+      v53 = deletedCopy;
       _os_log_impl(&dword_22506F000, v27, OS_LOG_TYPE_INFO, "Error %@ when deleting record zone %@ from the server", buf, 0x16u);
     }
 
     v28 = MEMORY[0x277CBC560];
     v29 = *MEMORY[0x277CBC120];
-    v30 = sub_2253962A4(v7);
+    v30 = sub_2253962A4(codeCopy);
     v17 = objc_msgSend_request(self, v31, v32);
-    v24 = sub_225395734(v17, v7);
-    v35 = objc_msgSend_error(v7, v33, v34);
+    v24 = sub_225395734(v17, codeCopy);
+    v35 = objc_msgSend_error(codeCopy, v33, v34);
     v38 = objc_msgSend_errorDescription(v35, v36, v37);
-    v26 = objc_msgSend_errorWithDomain_code_userInfo_format_(v28, v39, v29, v30, v24, @"Error deleting record zone %@: %@", v6, v38);
+    v26 = objc_msgSend_errorWithDomain_code_userInfo_format_(v28, v39, v29, v30, v24, @"Error deleting record zone %@: %@", deletedCopy, v38);
   }
 
   v42 = objc_msgSend_deleteCompletionBlock(self, v40, v41);
@@ -725,7 +725,7 @@ LABEL_10:
     block[2] = sub_22524F774;
     block[3] = &unk_278546990;
     block[4] = self;
-    v48 = v6;
+    v48 = deletedCopy;
     v49 = v26;
     dispatch_async(v45, block);
   }
@@ -993,16 +993,16 @@ LABEL_41:
   return 0;
 }
 
-- (BOOL)isOperationType:(int)a3
+- (BOOL)isOperationType:(int)type
 {
-  if (a3 == 200)
+  if (type == 200)
   {
     v3 = &OBJC_IVAR___CKDModifyRecordZonesOperation__hasZoneSaves;
   }
 
   else
   {
-    if (a3 != 202)
+    if (type != 202)
     {
       v4 = 0;
       return v4 & 1;
@@ -1015,29 +1015,29 @@ LABEL_41:
   return v4 & 1;
 }
 
-- (BOOL)_shouldUseZoneishPCSForZone:(id)a3
+- (BOOL)_shouldUseZoneishPCSForZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v7 = objc_msgSend_container(self, v5, v6);
   v10 = objc_msgSend_options(v7, v8, v9);
-  v15 = (objc_msgSend_useZoneWidePCS(v10, v11, v12) & 1) != 0 || objc_msgSend_encryptionScope(v4, v13, v14) == 1;
+  v15 = (objc_msgSend_useZoneWidePCS(v10, v11, v12) & 1) != 0 || objc_msgSend_encryptionScope(zoneCopy, v13, v14) == 1;
 
   return v15;
 }
 
-- (id)_locallyCreatedParentPCSDataForZone:(id)a3 error:(id *)a4
+- (id)_locallyCreatedParentPCSDataForZone:(id)zone error:(id *)error
 {
-  v6 = a3;
-  v9 = objc_msgSend_parent(v6, v7, v8);
+  zoneCopy = zone;
+  v9 = objc_msgSend_parent(zoneCopy, v7, v8);
   if (v9)
   {
     v12 = v9;
-    v13 = objc_msgSend_parent(v6, v10, v11);
+    v13 = objc_msgSend_parent(zoneCopy, v10, v11);
     v16 = objc_msgSend_zoneID(v13, v14, v15);
 
     if (v16)
     {
-      v17 = objc_msgSend_parent(v6, v10, v11);
+      v17 = objc_msgSend_parent(zoneCopy, v10, v11);
       v20 = objc_msgSend_zoneID(v17, v18, v19);
 
       v23 = objc_msgSend_recordZonesByZoneID(self, v21, v22);
@@ -1060,18 +1060,18 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        if (a4)
+        if (error)
         {
           objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v31, *MEMORY[0x277CBC120], 5005, @"Parent zone %@ has no PCS data", v20);
           goto LABEL_13;
         }
       }
 
-      else if (a4)
+      else if (error)
       {
         objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v29, *MEMORY[0x277CBC120], 2036, @"Parent zone %@ not found in recordZonesByZoneID", v20);
 LABEL_13:
-        *a4 = v32 = 0;
+        *error = v32 = 0;
         goto LABEL_15;
       }
 
@@ -1080,7 +1080,7 @@ LABEL_13:
     }
   }
 
-  if (!a4)
+  if (!error)
   {
     v32 = 0;
     goto LABEL_17;
@@ -1088,9 +1088,9 @@ LABEL_13:
 
   v41 = MEMORY[0x277CBC560];
   v42 = *MEMORY[0x277CBC120];
-  v20 = objc_msgSend_zoneID(v6, v10, v11);
+  v20 = objc_msgSend_zoneID(zoneCopy, v10, v11);
   objc_msgSend_errorWithDomain_code_format_(v41, v43, v42, 1017, @"Zone %@ has no parent", v20);
-  *a4 = v32 = 0;
+  *error = v32 = 0;
 LABEL_16:
 
 LABEL_17:
@@ -1098,19 +1098,19 @@ LABEL_17:
   return v32;
 }
 
-- (BOOL)_updateZone:(id)a3 withNewPCS:(id)a4 error:(id *)a5
+- (BOOL)_updateZone:(id)zone withNewPCS:(id)s error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = objc_msgSend_pcs(v9, v10, v11);
-  objc_msgSend_setZonePCS_(v8, v13, v12);
-  v16 = objc_msgSend_zoneishPCS(v9, v14, v15);
+  zoneCopy = zone;
+  sCopy = s;
+  v12 = objc_msgSend_pcs(sCopy, v10, v11);
+  objc_msgSend_setZonePCS_(zoneCopy, v13, v12);
+  v16 = objc_msgSend_zoneishPCS(sCopy, v14, v15);
 
-  objc_msgSend_setZoneishPCS_(v8, v17, v16);
+  objc_msgSend_setZoneishPCS_(zoneCopy, v17, v16);
   v20 = objc_msgSend_container(self, v18, v19);
   v23 = objc_msgSend_pcsManager(v20, v21, v22);
-  v26 = objc_msgSend_zonePCS(v8, v24, v25);
-  v28 = objc_msgSend_dataFromZonePCS_error_(v23, v27, v26, a5);
+  v26 = objc_msgSend_zonePCS(zoneCopy, v24, v25);
+  v28 = objc_msgSend_dataFromZonePCS_error_(v23, v27, v26, error);
 
   if (!v28)
   {
@@ -1118,23 +1118,23 @@ LABEL_17:
     goto LABEL_7;
   }
 
-  objc_msgSend_setProtectionData_(v8, v29, v28);
+  objc_msgSend_setProtectionData_(zoneCopy, v29, v28);
   v31 = objc_msgSend_etagFromPCSData_(CKDPCSManager, v30, v28);
-  objc_msgSend_setProtectionEtag_(v8, v32, v31);
+  objc_msgSend_setProtectionEtag_(zoneCopy, v32, v31);
 
-  if (!objc_msgSend__shouldUseZoneishPCSForZone_(self, v33, v8))
+  if (!objc_msgSend__shouldUseZoneishPCSForZone_(self, v33, zoneCopy))
   {
     goto LABEL_5;
   }
 
   v36 = objc_msgSend_container(self, v34, v35);
   v39 = objc_msgSend_pcsManager(v36, v37, v38);
-  v42 = objc_msgSend_zoneishPCS(v8, v40, v41);
-  v44 = objc_msgSend_dataFromRecordPCS_error_(v39, v43, v42, a5);
+  v42 = objc_msgSend_zoneishPCS(zoneCopy, v40, v41);
+  v44 = objc_msgSend_dataFromRecordPCS_error_(v39, v43, v42, error);
 
   if (v44)
   {
-    objc_msgSend_setZoneishProtectionData_(v8, v45, v44);
+    objc_msgSend_setZoneishProtectionData_(zoneCopy, v45, v44);
 
 LABEL_5:
     LOBYTE(v44) = 1;
@@ -1145,15 +1145,15 @@ LABEL_7:
   return v44;
 }
 
-- (void)_handleParentPCSForZone:(id)a3 completion:(id)a4
+- (void)_handleParentPCSForZone:(id)zone completion:(id)completion
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend_dataWithZone_(CKDZonePCSData, v8, v6);
-  v12 = objc_msgSend_zonePCS(v6, v10, v11);
+  zoneCopy = zone;
+  completionCopy = completion;
+  v9 = objc_msgSend_dataWithZone_(CKDZonePCSData, v8, zoneCopy);
+  v12 = objc_msgSend_zonePCS(zoneCopy, v10, v11);
   objc_msgSend_setPcs_(v9, v13, v12);
-  v16 = objc_msgSend_zoneishPCS(v6, v14, v15);
+  v16 = objc_msgSend_zoneishPCS(zoneCopy, v14, v15);
   objc_msgSend_setZoneishPCS_(v9, v17, v16);
   v18 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
@@ -1166,8 +1166,8 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v46 = v20;
-    v49 = objc_msgSend_zoneID(v6, v47, v48);
-    v52 = objc_msgSend_parent(v6, v50, v51);
+    v49 = objc_msgSend_zoneID(zoneCopy, v47, v48);
+    v52 = objc_msgSend_parent(zoneCopy, v50, v51);
     v55 = objc_msgSend_zoneID(v52, v53, v54);
     *buf = 138412546;
     v68 = v49;
@@ -1177,7 +1177,7 @@ LABEL_7:
   }
 
   v66 = 0;
-  v22 = objc_msgSend__locallyCreatedParentPCSDataForZone_error_(self, v21, v6, &v66);
+  v22 = objc_msgSend__locallyCreatedParentPCSDataForZone_error_(self, v21, zoneCopy, &v66);
   v24 = v66;
   if (v22)
   {
@@ -1203,7 +1203,7 @@ LABEL_7:
     else
     {
       v65 = 0;
-      updated = objc_msgSend__updateZone_withNewPCS_error_(self, v26, v6, v9, &v65);
+      updated = objc_msgSend__updateZone_withNewPCS_error_(self, v26, zoneCopy, v9, &v65);
       v27 = v65;
       if ((updated & 1) == 0)
       {
@@ -1220,7 +1220,7 @@ LABEL_7:
           v29 = "Error updating zone with new PCS: %@";
 LABEL_24:
           _os_log_debug_impl(&dword_22506F000, v28, OS_LOG_TYPE_DEBUG, v29, buf, 0xCu);
-          if (!v7)
+          if (!completionCopy)
           {
             goto LABEL_22;
           }
@@ -1230,10 +1230,10 @@ LABEL_24:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
 LABEL_21:
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -1248,7 +1248,7 @@ LABEL_21:
     if (os_log_type_enabled(*v19, OS_LOG_TYPE_DEBUG))
     {
       v56 = v30;
-      v59 = objc_msgSend_zoneID(v6, v57, v58);
+      v59 = objc_msgSend_zoneID(zoneCopy, v57, v58);
       *buf = 138412290;
       v68 = v59;
       _os_log_debug_impl(&dword_22506F000, v56, OS_LOG_TYPE_DEBUG, "No locally created parent PCS found for zone %@. Fetching from pcsCache", buf, 0xCu);
@@ -1256,15 +1256,15 @@ LABEL_21:
 
     v33 = objc_msgSend_container(self, v31, v32);
     v36 = objc_msgSend_pcsCache(v33, v34, v35);
-    v39 = objc_msgSend_parent(v6, v37, v38);
+    v39 = objc_msgSend_parent(zoneCopy, v37, v38);
     v42 = objc_msgSend_zoneID(v39, v40, v41);
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = sub_225250C9C;
     v60[3] = &unk_27854B048;
-    v61 = v6;
-    v62 = self;
-    v64 = v7;
+    v61 = zoneCopy;
+    selfCopy = self;
+    v64 = completionCopy;
     v63 = v9;
     objc_msgSend_fetchPCSForZoneWithID_forOperation_options_withCompletionHandler_(v36, v43, v42, self, 0, v60);
 
@@ -1276,11 +1276,11 @@ LABEL_22:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createNewPCSForZone:(id)a3 completionHandler:(id)a4
+- (void)_createNewPCSForZone:(id)zone completionHandler:(id)handler
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  handlerCopy = handler;
   v66[0] = 0;
   v66[1] = v66;
   v66[2] = 0x3032000000;
@@ -1318,7 +1318,7 @@ LABEL_22:
   v27 = *MEMORY[0x277CBC858];
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
-    v30 = objc_msgSend_zoneID(v6, v28, v29);
+    v30 = objc_msgSend_zoneID(zoneCopy, v28, v29);
     *buf = 138412290;
     v69 = v30;
     _os_log_impl(&dword_22506F000, v27, OS_LOG_TYPE_INFO, "Creating new PCS data for zone %@", buf, 0xCu);
@@ -1346,13 +1346,13 @@ LABEL_22:
   block[2] = sub_2252514A4;
   block[3] = &unk_27854B098;
   v52 = v12;
-  v53 = v6;
+  v53 = zoneCopy;
   v56 = v64;
   v57 = v66;
-  v54 = self;
-  v55 = v7;
-  v47 = v7;
-  v48 = v6;
+  selfCopy = self;
+  v55 = handlerCopy;
+  v47 = handlerCopy;
+  v48 = zoneCopy;
   v49 = v12;
   dispatch_group_notify(v42, v46, block);
 
@@ -1365,10 +1365,10 @@ LABEL_22:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchPCSDataForZone:(id)a3 completion:(id)a4
+- (void)_fetchPCSDataForZone:(id)zone completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  zoneCopy = zone;
+  completionCopy = completion;
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x3032000000;
@@ -1385,15 +1385,15 @@ LABEL_22:
   dispatch_group_enter(v8);
   v11 = objc_msgSend_container(self, v9, v10);
   v14 = objc_msgSend_pcsCache(v11, v12, v13);
-  v17 = objc_msgSend_zoneID(v6, v15, v16);
+  v17 = objc_msgSend_zoneID(zoneCopy, v15, v16);
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = sub_225252000;
   v32[3] = &unk_27854B0C0;
   v36 = v38;
-  v18 = v6;
+  v18 = zoneCopy;
   v33 = v18;
-  v34 = self;
+  selfCopy = self;
   v37 = v40;
   v19 = v8;
   v35 = v19;
@@ -1406,10 +1406,10 @@ LABEL_22:
   v26[3] = &unk_27854B0E8;
   v31 = v38;
   v27 = v18;
-  v28 = self;
-  v29 = v7;
+  selfCopy2 = self;
+  v29 = completionCopy;
   v30 = v40;
-  v24 = v7;
+  v24 = completionCopy;
   v25 = v18;
   dispatch_group_notify(v19, v23, v26);
 
@@ -1467,7 +1467,7 @@ LABEL_22:
       v28 = objc_msgSend_stateTransitionGroup(self, v20, v21);
       dispatch_group_enter(v28);
 
-      v29 = self;
+      selfCopy = self;
       v32 = objc_msgSend_recordZonesToSave(self, v30, v31);
       v35 = objc_msgSend_copy(v32, v33, v34);
 
@@ -1524,7 +1524,7 @@ LABEL_22:
               v67[2] = sub_2252533AC;
               v67[3] = &unk_278545A00;
               v68 = v36;
-              objc_msgSend__fetchPCSDataForZone_completion_(v29, v54, v47, v67);
+              objc_msgSend__fetchPCSDataForZone_completion_(selfCopy, v54, v47, v67);
             }
 
             ++v46;
@@ -1549,13 +1549,13 @@ LABEL_22:
         _os_log_impl(&dword_22506F000, v55, OS_LOG_TYPE_INFO, "Waiting to fetch zone PCS data", buf, 2u);
       }
 
-      v58 = objc_msgSend_callbackQueue(v29, v56, v57);
+      v58 = objc_msgSend_callbackQueue(selfCopy, v56, v57);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_2252533B4;
       block[3] = &unk_278545898;
       v65 = v37;
-      v66 = v29;
+      v66 = selfCopy;
       v59 = v37;
       dispatch_group_notify(v36, v58, block);
 
@@ -1597,11 +1597,11 @@ LABEL_39:
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_addParentPCS:(id)a3 toZonePCS:(id)a4
+- (id)_addParentPCS:(id)s toZonePCS:(id)cS
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sCopy = s;
+  cSCopy = cS;
   v8 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -1613,19 +1613,19 @@ LABEL_39:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     v56 = v10;
-    v59 = objc_msgSend_zoneID(v7, v57, v58);
+    v59 = objc_msgSend_zoneID(cSCopy, v57, v58);
     *buf = 138412546;
-    v62 = v6;
+    v62 = sCopy;
     v63 = 2112;
     v64 = v59;
     _os_log_debug_impl(&dword_22506F000, v56, OS_LOG_TYPE_DEBUG, "Adding parent PCS data %@ to PCS for zone %@", buf, 0x16u);
   }
 
-  if (!objc_msgSend_pcs(v6, v11, v12))
+  if (!objc_msgSend_pcs(sCopy, v11, v12))
   {
     v41 = MEMORY[0x277CBC560];
     v42 = *MEMORY[0x277CBC120];
-    v32 = objc_msgSend_zoneID(v6, v13, v14);
+    v32 = objc_msgSend_zoneID(sCopy, v13, v14);
     v27 = objc_msgSend_errorWithDomain_code_format_(v41, v43, v42, 5004, @"Parent PCS data is missing PCS for zone %@", v32);
 LABEL_17:
 
@@ -1634,15 +1634,15 @@ LABEL_17:
 
   v15 = objc_msgSend_container(self, v13, v14);
   v18 = objc_msgSend_pcsManager(v15, v16, v17);
-  v21 = objc_msgSend_pcs(v6, v19, v20);
-  v24 = objc_msgSend_pcs(v7, v22, v23);
+  v21 = objc_msgSend_pcs(sCopy, v19, v20);
+  v24 = objc_msgSend_pcs(cSCopy, v22, v23);
   v60 = 0;
   v26 = objc_msgSend_addParentZonePCS_toChildZonePCS_error_(v18, v25, v21, v24, &v60);
   v27 = v60;
 
   if (v26)
   {
-    v30 = objc_msgSend_pcs(v6, v28, v29);
+    v30 = objc_msgSend_pcs(sCopy, v28, v29);
     v32 = objc_msgSend_publicKeyIDFromIdentity_(CKDPCSManager, v31, v30);
     if (*v8 != -1)
     {
@@ -1653,8 +1653,8 @@ LABEL_17:
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEBUG))
     {
       v34 = v33;
-      v37 = objc_msgSend_zoneID(v6, v35, v36);
-      v40 = objc_msgSend_zoneID(v7, v38, v39);
+      v37 = objc_msgSend_zoneID(sCopy, v35, v36);
+      v40 = objc_msgSend_zoneID(cSCopy, v38, v39);
       *buf = 138412802;
       v62 = v37;
       v63 = 2112;
@@ -1676,9 +1676,9 @@ LABEL_17:
   if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v62 = v6;
+    v62 = sCopy;
     v63 = 2112;
-    v64 = v7;
+    v64 = cSCopy;
     v65 = 2112;
     v66 = v27;
     _os_log_debug_impl(&dword_22506F000, v44, OS_LOG_TYPE_DEBUG, "Error adding parent PCS %@ to zone PCS %@: %@", buf, 0x20u);
@@ -1695,8 +1695,8 @@ LABEL_17:
 LABEL_16:
     v47 = MEMORY[0x277CBC560];
     v48 = *MEMORY[0x277CBC120];
-    v32 = objc_msgSend_zoneID(v6, v45, v46);
-    v51 = objc_msgSend_zoneID(v7, v49, v50);
+    v32 = objc_msgSend_zoneID(sCopy, v45, v46);
+    v51 = objc_msgSend_zoneID(cSCopy, v49, v50);
     v27 = objc_msgSend_errorWithDomain_code_format_(v47, v52, v48, 5005, @"Couldn't add parent PCS data from zone %@ to zone %@", v32, v51);
 
     goto LABEL_17;
@@ -1796,10 +1796,10 @@ LABEL_18:
   objc_msgSend_makeStateTransition_(self, v15, v11);
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  errorCopy = error;
   v8 = objc_msgSend_recordZonesByZoneID(self, v6, v7);
   v11 = objc_msgSend_allKeys(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v4, v12, v11);
@@ -1818,7 +1818,7 @@ LABEL_18:
   objc_msgSend_setDeleteCompletionBlock_(self, v18, 0);
   v19.receiver = self;
   v19.super_class = CKDModifyRecordZonesOperation;
-  [(CKDOperation *)&v19 _finishOnCallbackQueueWithError:v5];
+  [(CKDOperation *)&v19 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 @end

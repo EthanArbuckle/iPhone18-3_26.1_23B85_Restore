@@ -1,8 +1,8 @@
 @interface SESDarwinNotificationMonitor
-+ (BOOL)registerDelegate:(id)a3 forEvent:(id)a4;
++ (BOOL)registerDelegate:(id)delegate forEvent:(id)event;
 + (id)sharedObject;
-- (SESDarwinNotificationMonitor)initWithQueue:(id)a3;
-- (void)_handleEvent:(id)a3;
+- (SESDarwinNotificationMonitor)initWithQueue:(id)queue;
+- (void)_handleEvent:(id)event;
 @end
 
 @implementation SESDarwinNotificationMonitor
@@ -19,16 +19,16 @@
   return v3;
 }
 
-- (SESDarwinNotificationMonitor)initWithQueue:(id)a3
+- (SESDarwinNotificationMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = SESDarwinNotificationMonitor;
   v6 = [(SESDarwinNotificationMonitor *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = +[NSMapTable strongToWeakObjectsMapTable];
     registeredDelegates = v7->_registeredDelegates;
     v7->_registeredDelegates = v8;
@@ -49,12 +49,12 @@
   return v7;
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
   queue = self->_queue;
-  v5 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(queue);
-  string = xpc_dictionary_get_string(v5, _xpc_event_key_name);
+  string = xpc_dictionary_get_string(eventCopy, _xpc_event_key_name);
 
   if (string)
   {
@@ -92,10 +92,10 @@
   }
 }
 
-+ (BOOL)registerDelegate:(id)a3 forEvent:(id)a4
++ (BOOL)registerDelegate:(id)delegate forEvent:(id)event
 {
-  v5 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  eventCopy = event;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -109,9 +109,9 @@
   v16[3] = &unk_1004C2120;
   v9 = v7;
   v17 = v9;
-  v10 = v5;
+  v10 = delegateCopy;
   v18 = v10;
-  v11 = v6;
+  v11 = eventCopy;
   v19 = v11;
   v20 = &v21;
   dispatch_sync(v8, v16);

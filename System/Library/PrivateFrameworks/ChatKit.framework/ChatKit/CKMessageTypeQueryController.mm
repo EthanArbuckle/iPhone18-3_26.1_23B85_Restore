@@ -1,16 +1,16 @@
 @interface CKMessageTypeQueryController
 + (id)timeRankedQueries;
-+ (unint64_t)recencyRankedTargetResultCountForMode:(unint64_t)a3;
++ (unint64_t)recencyRankedTargetResultCountForMode:(unint64_t)mode;
 - (id)createFoundItemsHandler;
-- (id)queryResultsForItems:(id)a3;
-- (id)rankingQueriesWithText:(id)a3;
+- (id)queryResultsForItems:(id)items;
+- (id)rankingQueriesWithText:(id)text;
 - (id)tokenFilterQueries;
 - (id)zkwFilterQueries;
-- (unint64_t)maxResultsForMode:(unint64_t)a3;
-- (void)_asyncCheckIfResultsExistOnDisk:(id)a3 firstBatch:(BOOL)a4;
-- (void)checkIfResultsExistOnDiskAndNotify:(id)a3;
+- (unint64_t)maxResultsForMode:(unint64_t)mode;
+- (void)_asyncCheckIfResultsExistOnDisk:(id)disk firstBatch:(BOOL)batch;
+- (void)checkIfResultsExistOnDiskAndNotify:(id)notify;
 - (void)searchEnded;
-- (void)searchWithText:(id)a3;
+- (void)searchWithText:(id)text;
 @end
 
 @implementation CKMessageTypeQueryController
@@ -18,8 +18,8 @@
 - (id)zkwFilterQueries
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKQueryController *)self delegate];
-  v4 = [v3 searchTokenFiltersForQueryController:self];
+  delegate = [(CKQueryController *)self delegate];
+  v4 = [delegate searchTokenFiltersForQueryController:self];
   v5 = [v4 count];
 
   if (v5)
@@ -40,19 +40,19 @@
   return v6;
 }
 
-- (id)rankingQueriesWithText:(id)a3
+- (id)rankingQueriesWithText:(id)text
 {
   if ([(CKQueryController *)self mode]== 1 || [(CKQueryController *)self mode]== 3 || [(CKQueryController *)self mode]== 2)
   {
-    v4 = [objc_opt_class() timeRankedQueries];
+    timeRankedQueries = [objc_opt_class() timeRankedQueries];
   }
 
   else
   {
-    v4 = 0;
+    timeRankedQueries = 0;
   }
 
-  return v4;
+  return timeRankedQueries;
 }
 
 + (id)timeRankedQueries
@@ -75,14 +75,14 @@
   return v2;
 }
 
-- (unint64_t)maxResultsForMode:(unint64_t)a3
+- (unint64_t)maxResultsForMode:(unint64_t)mode
 {
-  v5 = [(CKQueryController *)self delegate];
-  v6 = [v5 layoutWidthForQueryController:self];
+  delegate = [(CKQueryController *)self delegate];
+  v6 = [delegate layoutWidthForQueryController:self];
 
-  if (a3 <= 1)
+  if (mode <= 1)
   {
-    if (!a3)
+    if (!mode)
     {
       if (v6)
       {
@@ -95,7 +95,7 @@
       }
     }
 
-    if (a3 != 1)
+    if (mode != 1)
     {
       return 0;
     }
@@ -103,14 +103,14 @@
 
   else
   {
-    if (a3 == 2)
+    if (mode == 2)
     {
       return 500;
     }
 
-    if (a3 != 3)
+    if (mode != 3)
     {
-      if (a3 == 4)
+      if (mode == 4)
       {
         return 0x7FFFFFFFLL;
       }
@@ -130,14 +130,14 @@
   }
 
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 searchDefaultMaxResults];
+  searchDefaultMaxResults = [v8 searchDefaultMaxResults];
 
-  return v9;
+  return searchDefaultMaxResults;
 }
 
-+ (unint64_t)recencyRankedTargetResultCountForMode:(unint64_t)a3
++ (unint64_t)recencyRankedTargetResultCountForMode:(unint64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 500;
   }
@@ -151,8 +151,8 @@
 - (id)tokenFilterQueries
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(CKQueryController *)self delegate];
-  v4 = [v3 searchTokenFiltersForQueryController:self];
+  delegate = [(CKQueryController *)self delegate];
+  v4 = [delegate searchTokenFiltersForQueryController:self];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -212,7 +212,7 @@ LABEL_11:
         v14 = *(*(&v23 + 1) + 8 * i);
         if ([v14 contentType] == 8)
         {
-          v15 = [v14 queryStringForDateTypeSearch];
+          queryStringForDateTypeSearch = [v14 queryStringForDateTypeSearch];
           if (([v14 filterOptions] & 0x10) != 0)
           {
             v16 = v6;
@@ -223,7 +223,7 @@ LABEL_11:
             v16 = v5;
           }
 
-          [v16 addObject:v15];
+          [v16 addObject:queryStringForDateTypeSearch];
         }
       }
 
@@ -243,14 +243,14 @@ LABEL_11:
   v19 = v18;
   if (v18)
   {
-    v20 = [v18 __ck_stringByRedactingQuotedSubstrings];
+    __ck_stringByRedactingQuotedSubstrings = [v18 __ck_stringByRedactingQuotedSubstrings];
     if (IMOSLoggingEnabled())
     {
       v21 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v29 = v20;
+        v29 = __ck_stringByRedactingQuotedSubstrings;
         _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "Generated final query: {%@}", buf, 0xCu);
       }
     }
@@ -259,9 +259,9 @@ LABEL_11:
   return v19;
 }
 
-- (void)searchWithText:(id)a3
+- (void)searchWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(MEMORY[0x1E69A6170]);
   [(CKMessageTypeQueryController *)self setTimingCollection:v5];
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-Search", objc_opt_class()];
@@ -271,7 +271,7 @@ LABEL_11:
   [v5 startTimingForKey:v7];
 
   objc_initWeak(&location, self);
-  v8 = [(CKMessageTypeQueryController *)self createFoundItemsHandler];
+  createFoundItemsHandler = [(CKMessageTypeQueryController *)self createFoundItemsHandler];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__CKMessageTypeQueryController_searchWithText___block_invoke;
@@ -280,16 +280,16 @@ LABEL_11:
   v9 = v5;
   v16 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [(CKMessageTypeQueryController *)self itemsVerifiedOnDiskCache];
+  itemsVerifiedOnDiskCache = [(CKMessageTypeQueryController *)self itemsVerifiedOnDiskCache];
 
-  if (!v11)
+  if (!itemsVerifiedOnDiskCache)
   {
     v12 = objc_opt_new();
     [(CKMessageTypeQueryController *)self setItemsVerifiedOnDiskCache:v12];
   }
 
   [(CKMessageTypeQueryController *)self setSearchTerminated:0];
-  [(CKQueryController *)self setQueryFoundItemHandler:v8];
+  [(CKQueryController *)self setQueryFoundItemHandler:createFoundItemsHandler];
   [(CKQueryController *)self setQueryCompletionHandler:v10];
   v13 = [MEMORY[0x1E695DFD8] set];
   [(CKMessageTypeQueryController *)self setIntermediaryResults:v13];
@@ -301,7 +301,7 @@ LABEL_11:
   {
     v14.receiver = self;
     v14.super_class = CKMessageTypeQueryController;
-    [(CKQueryController *)&v14 searchWithText:v4];
+    [(CKQueryController *)&v14 searchWithText:textCopy];
   }
 
   else
@@ -496,15 +496,15 @@ void __55__CKMessageTypeQueryController_createFoundItemsHandler__block_invoke(ui
   if ([(CKQueryController *)self shouldResetSearchResultsWhenEnded])
   {
     [(CKQueryController *)self setResults:MEMORY[0x1E695E0F0]];
-    v3 = [(CKQueryController *)self delegate];
-    [v3 searchQueryResultsDidChange:self];
+    delegate = [(CKQueryController *)self delegate];
+    [delegate searchQueryResultsDidChange:self];
   }
 }
 
-- (id)queryResultsForItems:(id)a3
+- (id)queryResultsForItems:(id)items
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = CKSearchSignpostLogHandle();
   v6 = os_signpost_id_generate(v5);
 
@@ -518,12 +518,12 @@ void __55__CKMessageTypeQueryController_createFoundItemsHandler__block_invoke(ui
     _os_signpost_emit_with_name_impl(&dword_19020E000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "queryResultsForItems", "", buf, 2u);
   }
 
-  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = v4;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v47 objects:v60 count:16];
   if (v11)
   {
@@ -538,9 +538,9 @@ void __55__CKMessageTypeQueryController_createFoundItemsHandler__block_invoke(ui
         }
 
         v14 = *(*(&v47 + 1) + 8 * i);
-        v15 = [(CKMessageTypeQueryController *)self chatGUIDForSearchableItem:v14, spid];
-        v16 = v15;
-        if (v15 && [v15 length])
+        spid = [(CKMessageTypeQueryController *)self chatGUIDForSearchableItem:v14, spid];
+        v16 = spid;
+        if (spid && [spid length])
         {
           [v9 addObject:v14];
         }
@@ -590,9 +590,9 @@ void __55__CKMessageTypeQueryController_createFoundItemsHandler__block_invoke(ui
         }
 
         v23 = *(*(&v43 + 1) + 8 * j);
-        v24 = [(CKMessageTypeQueryController *)self chatGUIDForSearchableItem:v23, spid];
-        v25 = [(CKQueryController *)self delegate];
-        v26 = [v25 queryController:self conversationForChatGUID:v24];
+        spid2 = [(CKMessageTypeQueryController *)self chatGUIDForSearchableItem:v23, spid];
+        delegate = [(CKQueryController *)self delegate];
+        v26 = [delegate queryController:self conversationForChatGUID:spid2];
 
         if (IMOSLoggingEnabled())
         {
@@ -600,17 +600,17 @@ void __55__CKMessageTypeQueryController_createFoundItemsHandler__block_invoke(ui
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
             v28 = objc_opt_class();
-            v29 = [v26 isBlockedByCommunicationLimits];
+            isBlockedByCommunicationLimits = [v26 isBlockedByCommunicationLimits];
             *buf = 138413058;
             v30 = @"NO";
-            if (v29)
+            if (isBlockedByCommunicationLimits)
             {
               v30 = @"YES";
             }
 
             v52 = v28;
             v53 = 2112;
-            v54 = v24;
+            v54 = spid2;
             v55 = 2048;
             v56 = v26;
             v57 = 2112;
@@ -624,13 +624,13 @@ void __55__CKMessageTypeQueryController_createFoundItemsHandler__block_invoke(ui
           if (([v26 isBlockedByCommunicationLimits] & 1) == 0)
           {
             v31 = [CKSpotlightQueryResult alloc];
-            v32 = [(CKQueryController *)self queryTypeIdentifier];
-            v33 = [(CKSpotlightQueryResult *)v31 initWithSearchableItem:v23 queryType:v32 withConversation:v26];
+            queryTypeIdentifier = [(CKQueryController *)self queryTypeIdentifier];
+            v33 = [(CKSpotlightQueryResult *)v31 initWithSearchableItem:v23 queryType:queryTypeIdentifier withConversation:v26];
 
             [v42 addObject:v33];
-            LODWORD(v32) = [v42 count] < v40;
+            LODWORD(queryTypeIdentifier) = [v42 count] < v40;
 
-            if (!v32)
+            if (!queryTypeIdentifier)
             {
 
               goto LABEL_36;
@@ -664,16 +664,16 @@ LABEL_36:
   return v36;
 }
 
-- (void)checkIfResultsExistOnDiskAndNotify:(id)a3
+- (void)checkIfResultsExistOnDiskAndNotify:(id)notify
 {
-  v4 = a3;
-  [(CKMessageTypeQueryController *)self setResultsToCheck:v4];
-  [(CKMessageTypeQueryController *)self _asyncCheckIfResultsExistOnDisk:v4 firstBatch:1];
+  notifyCopy = notify;
+  [(CKMessageTypeQueryController *)self setResultsToCheck:notifyCopy];
+  [(CKMessageTypeQueryController *)self _asyncCheckIfResultsExistOnDisk:notifyCopy firstBatch:1];
 }
 
-- (void)_asyncCheckIfResultsExistOnDisk:(id)a3 firstBatch:(BOOL)a4
+- (void)_asyncCheckIfResultsExistOnDisk:(id)disk firstBatch:(BOOL)batch
 {
-  if (a4)
+  if (batch)
   {
     v5 = 100;
   }
@@ -683,8 +683,8 @@ LABEL_36:
     v5 = 1000;
   }
 
-  v6 = a3;
-  v7 = [v6 count];
+  diskCopy = disk;
+  v7 = [diskCopy count];
   if (v5 >= v7)
   {
     v8 = v7;
@@ -695,8 +695,8 @@ LABEL_36:
     v8 = v5;
   }
 
-  v9 = [v6 subarrayWithRange:{0, v8}];
-  v10 = [v6 mutableCopy];
+  v9 = [diskCopy subarrayWithRange:{0, v8}];
+  v10 = [diskCopy mutableCopy];
 
   [v10 removeObjectsInArray:v9];
   [(CKMessageTypeQueryController *)self setResultsToCheck:v10];

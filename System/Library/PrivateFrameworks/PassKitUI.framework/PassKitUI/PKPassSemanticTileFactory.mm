@@ -1,96 +1,96 @@
 @interface PKPassSemanticTileFactory
-+ (id)analyticsTileAvailabilityForPass:(id)a3;
-- (BOOL)coalesceFetchForContentWithIdentifier:(id)a3 descriptor:(id)a4 context:(int64_t)a5 completion:(id)a6;
-- (BOOL)descriptorCanCreateAdditionalServicesTile:(id)a3;
-- (BOOL)descriptorCanCreateAirlineUpgradesTile:(id)a3;
-- (BOOL)descriptorCanCreateBoardingInformationTiles:(id)a3;
-- (BOOL)descriptorCanCreateBoardingPassIssuerActionsTileGroup:(id)a3;
-- (BOOL)descriptorCanCreateEventInformationTileGroup:(id)a3;
-- (BOOL)descriptorCanCreateEventTicketIssuerActionsTileGroup:(id)a3;
-- (BOOL)descriptorCanCreateExploreGuidesTile:(id)a3;
-- (BOOL)descriptorCanCreateLoungeTile:(id)a3;
-- (BOOL)descriptorCanCreateMapsTile:(id)a3;
-- (BOOL)descriptorCanCreateMusicTile:(id)a3;
-- (BOOL)descriptorCanCreateWeatherTile:(id)a3;
-- (BOOL)descriptorRequiresRemoteVenueMapImage:(id)a3;
++ (id)analyticsTileAvailabilityForPass:(id)pass;
+- (BOOL)coalesceFetchForContentWithIdentifier:(id)identifier descriptor:(id)descriptor context:(int64_t)context completion:(id)completion;
+- (BOOL)descriptorCanCreateAdditionalServicesTile:(id)tile;
+- (BOOL)descriptorCanCreateAirlineUpgradesTile:(id)tile;
+- (BOOL)descriptorCanCreateBoardingInformationTiles:(id)tiles;
+- (BOOL)descriptorCanCreateBoardingPassIssuerActionsTileGroup:(id)group;
+- (BOOL)descriptorCanCreateEventInformationTileGroup:(id)group;
+- (BOOL)descriptorCanCreateEventTicketIssuerActionsTileGroup:(id)group;
+- (BOOL)descriptorCanCreateExploreGuidesTile:(id)tile;
+- (BOOL)descriptorCanCreateLoungeTile:(id)tile;
+- (BOOL)descriptorCanCreateMapsTile:(id)tile;
+- (BOOL)descriptorCanCreateMusicTile:(id)tile;
+- (BOOL)descriptorCanCreateWeatherTile:(id)tile;
+- (BOOL)descriptorRequiresRemoteVenueMapImage:(id)image;
 - (PKPassSemanticTileFactory)init;
-- (id)_additionalServicesGroupTileFromDescriptor:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5;
-- (id)_airlineUpgradesTileFooterTextForDescriptor:(id)a3;
-- (id)_baggageInformationGroupTileFromDescriptor:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5;
-- (id)_boardingInformationGroupTileFromDescriptor:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5;
-- (id)_boardingPassDashboardTilesForDescriptor:(id)a3 mapsItem:(id)a4 exploreGuidesResponse:(id)a5;
-- (id)_boardingPassIssuerActionTilesForDescriptor:(id)a3;
-- (id)_cacheKeyForDescriptor:(id)a3 context:(int64_t)a4 contentIdentifier:(id)a5;
-- (id)_cacheKeysForPassUniqueIdentifier:(id)a3;
-- (id)_createTilesFromDescriptor:(id)a3 context:(int64_t)a4 queueUpdates:(BOOL)a5;
-- (id)_dashboardEventGuideTilesForDescriptor:(id)a3 weatherItem:(id)a4 musicItem:(id)a5;
-- (id)_eventInformationEntriesFromDescriptor:(id)a3;
-- (id)_eventTicketDashboardTilesForDescriptor:(id)a3 mapsItem:(id)a4;
-- (id)_eventTicketIssuerActionTilesForDescriptor:(id)a3 context:(int64_t)a4;
-- (id)_loungeTileFromDescriptor:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5;
-- (id)_upcomingPassInformationEventGuideTilesForDescriptor:(id)a3 weatherItem:(id)a4 venueMapImage:(id)a5 musicItem:(id)a6;
-- (id)_upcomingPassInformationTilesForDescriptor:(id)a3 mapsItem:(id)a4;
-- (id)additionalInfoFieldsGroupTilesForPass:(id)a3;
-- (id)additionalInfoFieldsTileForPass:(id)a3 context:(int64_t)a4 title:(id)a5;
-- (id)additionalInfoTileForFields:(id)a3;
-- (id)cachedContentForIdentifier:(id)a3 descriptor:(id)a4 context:(int64_t)a5;
-- (id)cachedVenueMapImageForDescriptor:(id)a3 context:(int64_t)a4;
-- (id)createAdditionalInfoGroupTilesFromInformation:(id)a3;
-- (id)eventInformationGroupTileFromDescriptor:(id)a3 tileIdentifier:(id)a4 groupIdentifier:(id)a5 context:(int64_t)a6;
-- (id)fetchDashboardAirlineUpgradesTilesFromFlightTilesDescriptor:(id)a3;
-- (id)fetchDashboardDetailsTilesForDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)fetchDashboardEventGuideTilesFromEventTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)fetchDashboardTilesForDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)fetchDashboardTilesFromEventTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)fetchDashboardTilesFromFlightTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)fetchUpcomingPassInformationDetailsTilesForDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)fetchUpcomingPassInformationEventGuideTilesFromEventTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)fetchUpcomingPassInformationTilesForDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)fetchUpcomingPassInformationTilesFromEventTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4;
-- (id)findMyFriendsGroupTileFromFooterText:(id)a3 tileIdentifier:(id)a4 groupIdentifier:(id)a5 context:(int64_t)a6;
-- (id)issuerActionsGroupTileFromTiles:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5;
-- (id)musicGroupTileFromItem:(id)a3 tileIdentifier:(id)a4 groupIdentifier:(id)a5 context:(int64_t)a6;
-- (id)tableViewTileFromEntries:(id)a3 tileIdentifier:(id)a4 context:(int64_t)a5;
-- (id)venueMapGroupTileFromImage:(id)a3 titleText:(id)a4 tileIdentifier:(id)a5 groupIdentifier:(id)a6 context:(int64_t)a7;
-- (id)weatherGroupTileFromItem:(id)a3 tileIdentifier:(id)a4 groupIdentifier:(id)a5 context:(int64_t)a6;
-- (void)_cacheTileContent:(id)a3 withIdentifier:(id)a4 forDescriptor:(id)a5 context:(int64_t)a6;
-- (void)_fetchLookupItemsFromDescriptor:(id)a3 completion:(id)a4;
-- (void)_fetchMapItemForMapsTileSupplier:(id)a3 completion:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
-- (void)clearCacheOfDescriptorsWithPassUniqueIdentifier:(id)a3;
-- (void)didCompleteFetchForItem:(id)a3 withIdentifier:(id)a4 descriptor:(id)a5 context:(int64_t)a6;
-- (void)didFinishContentFetchFromTilesFetchForContext:(int64_t)a3 descriptor:(id)a4;
-- (void)discardCachedContentForKey:(id)a3;
-- (void)fetchExploreGuidesForDescriptor:(id)a3 contentIdentifier:(id)a4 tileContext:(int64_t)a5 completion:(id)a6;
-- (void)fetchTilesForDescriptor:(id)a3 context:(int64_t)a4 queueUpdates:(BOOL)a5 completion:(id)a6;
-- (void)fetchVenueMapImageForDescriptor:(id)a3 context:(int64_t)a4 completion:(id)a5;
-- (void)prewarmDashboardDetailsTilesForDescriptor:(id)a3;
-- (void)prewarmEventTileContentForDescriptor:(id)a3 context:(int64_t)a4;
-- (void)prewarmTileContentForDescriptor:(id)a3 context:(int64_t)a4;
-- (void)prewarmUpcomingPassInformationDetailsTilesForDescriptor:(id)a3;
-- (void)reloadMapsInformationForDescriptor:(id)a3 contentIdentifier:(id)a4 tileContext:(int64_t)a5 completion:(id)a6;
-- (void)reloadMusicInformationForDescriptor:(id)a3 context:(int64_t)a4 completion:(id)a5;
-- (void)reloadWeatherInformationForDescriptor:(id)a3 context:(int64_t)a4 completion:(id)a5;
+- (id)_additionalServicesGroupTileFromDescriptor:(id)descriptor groupIdentifier:(id)identifier context:(int64_t)context;
+- (id)_airlineUpgradesTileFooterTextForDescriptor:(id)descriptor;
+- (id)_baggageInformationGroupTileFromDescriptor:(id)descriptor groupIdentifier:(id)identifier context:(int64_t)context;
+- (id)_boardingInformationGroupTileFromDescriptor:(id)descriptor groupIdentifier:(id)identifier context:(int64_t)context;
+- (id)_boardingPassDashboardTilesForDescriptor:(id)descriptor mapsItem:(id)item exploreGuidesResponse:(id)response;
+- (id)_boardingPassIssuerActionTilesForDescriptor:(id)descriptor;
+- (id)_cacheKeyForDescriptor:(id)descriptor context:(int64_t)context contentIdentifier:(id)identifier;
+- (id)_cacheKeysForPassUniqueIdentifier:(id)identifier;
+- (id)_createTilesFromDescriptor:(id)descriptor context:(int64_t)context queueUpdates:(BOOL)updates;
+- (id)_dashboardEventGuideTilesForDescriptor:(id)descriptor weatherItem:(id)item musicItem:(id)musicItem;
+- (id)_eventInformationEntriesFromDescriptor:(id)descriptor;
+- (id)_eventTicketDashboardTilesForDescriptor:(id)descriptor mapsItem:(id)item;
+- (id)_eventTicketIssuerActionTilesForDescriptor:(id)descriptor context:(int64_t)context;
+- (id)_loungeTileFromDescriptor:(id)descriptor groupIdentifier:(id)identifier context:(int64_t)context;
+- (id)_upcomingPassInformationEventGuideTilesForDescriptor:(id)descriptor weatherItem:(id)item venueMapImage:(id)image musicItem:(id)musicItem;
+- (id)_upcomingPassInformationTilesForDescriptor:(id)descriptor mapsItem:(id)item;
+- (id)additionalInfoFieldsGroupTilesForPass:(id)pass;
+- (id)additionalInfoFieldsTileForPass:(id)pass context:(int64_t)context title:(id)title;
+- (id)additionalInfoTileForFields:(id)fields;
+- (id)cachedContentForIdentifier:(id)identifier descriptor:(id)descriptor context:(int64_t)context;
+- (id)cachedVenueMapImageForDescriptor:(id)descriptor context:(int64_t)context;
+- (id)createAdditionalInfoGroupTilesFromInformation:(id)information;
+- (id)eventInformationGroupTileFromDescriptor:(id)descriptor tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context;
+- (id)fetchDashboardAirlineUpgradesTilesFromFlightTilesDescriptor:(id)descriptor;
+- (id)fetchDashboardDetailsTilesForDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)fetchDashboardEventGuideTilesFromEventTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)fetchDashboardTilesForDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)fetchDashboardTilesFromEventTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)fetchDashboardTilesFromFlightTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)fetchUpcomingPassInformationDetailsTilesForDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)fetchUpcomingPassInformationEventGuideTilesFromEventTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)fetchUpcomingPassInformationTilesForDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)fetchUpcomingPassInformationTilesFromEventTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates;
+- (id)findMyFriendsGroupTileFromFooterText:(id)text tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context;
+- (id)issuerActionsGroupTileFromTiles:(id)tiles groupIdentifier:(id)identifier context:(int64_t)context;
+- (id)musicGroupTileFromItem:(id)item tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context;
+- (id)tableViewTileFromEntries:(id)entries tileIdentifier:(id)identifier context:(int64_t)context;
+- (id)venueMapGroupTileFromImage:(id)image titleText:(id)text tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context;
+- (id)weatherGroupTileFromItem:(id)item tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context;
+- (void)_cacheTileContent:(id)content withIdentifier:(id)identifier forDescriptor:(id)descriptor context:(int64_t)context;
+- (void)_fetchLookupItemsFromDescriptor:(id)descriptor completion:(id)completion;
+- (void)_fetchMapItemForMapsTileSupplier:(id)supplier completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)cache:(id)cache willEvictObject:(id)object;
+- (void)clearCacheOfDescriptorsWithPassUniqueIdentifier:(id)identifier;
+- (void)didCompleteFetchForItem:(id)item withIdentifier:(id)identifier descriptor:(id)descriptor context:(int64_t)context;
+- (void)didFinishContentFetchFromTilesFetchForContext:(int64_t)context descriptor:(id)descriptor;
+- (void)discardCachedContentForKey:(id)key;
+- (void)fetchExploreGuidesForDescriptor:(id)descriptor contentIdentifier:(id)identifier tileContext:(int64_t)context completion:(id)completion;
+- (void)fetchTilesForDescriptor:(id)descriptor context:(int64_t)context queueUpdates:(BOOL)updates completion:(id)completion;
+- (void)fetchVenueMapImageForDescriptor:(id)descriptor context:(int64_t)context completion:(id)completion;
+- (void)prewarmDashboardDetailsTilesForDescriptor:(id)descriptor;
+- (void)prewarmEventTileContentForDescriptor:(id)descriptor context:(int64_t)context;
+- (void)prewarmTileContentForDescriptor:(id)descriptor context:(int64_t)context;
+- (void)prewarmUpcomingPassInformationDetailsTilesForDescriptor:(id)descriptor;
+- (void)reloadMapsInformationForDescriptor:(id)descriptor contentIdentifier:(id)identifier tileContext:(int64_t)context completion:(id)completion;
+- (void)reloadMusicInformationForDescriptor:(id)descriptor context:(int64_t)context completion:(id)completion;
+- (void)reloadWeatherInformationForDescriptor:(id)descriptor context:(int64_t)context completion:(id)completion;
 @end
 
 @implementation PKPassSemanticTileFactory
 
-- (void)prewarmEventTileContentForDescriptor:(id)a3 context:(int64_t)a4
+- (void)prewarmEventTileContentForDescriptor:(id)descriptor context:(int64_t)context
 {
-  v6 = a3;
-  if (a4 == 5 || a4 == 2)
+  descriptorCopy = descriptor;
+  if (context == 5 || context == 2)
   {
     objc_initWeak(&location, self);
-    v7 = [(PKPassSemanticTileFactory *)self workQueue];
+    workQueue = [(PKPassSemanticTileFactory *)self workQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __81__PKPassSemanticTileFactory_Event__prewarmEventTileContentForDescriptor_context___block_invoke;
     v8[3] = &unk_1E8011408;
     objc_copyWeak(v10, &location);
-    v9 = v6;
-    v10[1] = a4;
-    dispatch_async(v7, v8);
+    v9 = descriptorCopy;
+    v10[1] = context;
+    dispatch_async(workQueue, v8);
 
     objc_destroyWeak(v10);
     objc_destroyWeak(&location);
@@ -133,21 +133,21 @@ void __81__PKPassSemanticTileFactory_Event__prewarmEventTileContentForDescriptor
   }
 }
 
-- (id)fetchDashboardTilesFromEventTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchDashboardTilesFromEventTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__PKPassSemanticTileFactory_Event__fetchDashboardTilesFromEventTilesDescriptor_queueUpdates___block_invoke;
   aBlock[3] = &unk_1E80110E0;
   objc_copyWeak(&v14, &location);
-  v7 = v6;
+  v7 = descriptorCopy;
   v13 = v7;
   v8 = _Block_copy(aBlock);
   v9 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"mapsContentIdentifier" descriptor:v7 context:1];
-  if (!v9 && v4)
+  if (!v9 && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self reloadMapsInformationForDescriptor:v7 contentIdentifier:@"mapsContentIdentifier" tileContext:1 completion:v8];
   }
@@ -171,22 +171,22 @@ void __93__PKPassSemanticTileFactory_Event__fetchDashboardTilesFromEventTilesDes
   }
 }
 
-- (id)_eventTicketDashboardTilesForDescriptor:(id)a3 mapsItem:(id)a4
+- (id)_eventTicketDashboardTilesForDescriptor:(id)descriptor mapsItem:(id)item
 {
   v64[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  itemCopy = item;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v6 pass];
+  pass = [descriptorCopy pass];
   v10 = PKLocalizedTicketingString(&cfstr_TileAdditional.isa);
-  v11 = [(PKPassSemanticTileFactory *)self additionalInfoFieldsTileForPass:v9 context:1 title:v10];
+  v11 = [(PKPassSemanticTileFactory *)self additionalInfoFieldsTileForPass:pass context:1 title:v10];
 
   [v8 safelyAddObject:v11];
-  v12 = [v6 additionalTilesContentSupplier];
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
   v62 = v11;
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateMapsTile:v6])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateMapsTile:descriptorCopy])
   {
-    v59 = v12;
+    v59 = additionalTilesContentSupplier;
     v58 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:@"PKPassTileContextDashboard.mapsTileIdentifier" context:1];
     [v58 setPreferredStyle:1];
     v13 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
@@ -196,43 +196,43 @@ void __93__PKPassSemanticTileFactory_Event__fetchDashboardTilesFromEventTilesDes
     v16 = [v14 createWithContent:v15];
     [v13 setFooter:v16];
 
-    v57 = [MEMORY[0x1E69A1DB0] addressMarkerStyleAttributes];
-    v17 = [MEMORY[0x1E696F220] imageForStyle:v57 size:3 forScale:0 format:PKUIScreenScale()];
+    addressMarkerStyleAttributes = [MEMORY[0x1E69A1DB0] addressMarkerStyleAttributes];
+    v17 = [MEMORY[0x1E696F220] imageForStyle:addressMarkerStyleAttributes size:3 forScale:0 format:PKUIScreenScale()];
     v18 = objc_alloc(MEMORY[0x1E69B8948]);
-    v19 = [v17 CGImage];
+    cGImage = [v17 CGImage];
     [v17 scale];
-    v20 = [v18 initWithCGImage:v19 scale:1 orientation:?];
+    v20 = [v18 initWithCGImage:cGImage scale:1 orientation:?];
     v21 = [MEMORY[0x1E69B8AA8] createImageWithImage:v20 tintColor:0 hasColorContent:1];
     [v13 setIcon:v21];
 
-    if ([v7 isValid])
+    if ([itemCopy isValid])
     {
-      v22 = [v7 mapItem];
+      mapItem = [itemCopy mapItem];
       v23 = MEMORY[0x1E69B8AC8];
-      [v22 name];
-      v24 = v60 = v7;
+      [mapItem name];
+      v24 = v60 = itemCopy;
       v25 = [v23 createWithContent:v24];
       [v13 setTitle:v25];
 
-      v26 = [MEMORY[0x1E696F270] urlForMapItem:v22 options:0];
+      v26 = [MEMORY[0x1E696F270] urlForMapItem:mapItem options:0];
       v27 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithExternalURL:v26 title:0];
       v64[0] = v27;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:1];
       [v13 setActions:v28];
 
-      v7 = v60;
+      itemCopy = v60;
     }
 
     else
     {
-      if (v7)
+      if (itemCopy)
       {
         v29 = [MEMORY[0x1E69B8AA8] createWithSymbolName:@"mappin.circle.fill" tintColor:23];
         [v13 setIcon:v29];
       }
 
-      v22 = [v59 mapsTileTitle];
-      v26 = [MEMORY[0x1E69B8AC8] createWithContent:v22];
+      mapItem = [v59 mapsTileTitle];
+      v26 = [MEMORY[0x1E69B8AC8] createWithContent:mapItem];
       [v13 setTitle:v26];
     }
 
@@ -241,14 +241,14 @@ void __93__PKPassSemanticTileFactory_Event__fetchDashboardTilesFromEventTilesDes
     [v8 addObject:v30];
 
     v11 = v62;
-    v12 = v59;
+    additionalTilesContentSupplier = v59;
   }
 
-  v31 = [v12 eventName];
-  v32 = v31;
-  if (v31)
+  eventName = [additionalTilesContentSupplier eventName];
+  v32 = eventName;
+  if (eventName)
   {
-    v33 = [v31 length] == 0;
+    v33 = [eventName length] == 0;
   }
 
   else
@@ -256,8 +256,8 @@ void __93__PKPassSemanticTileFactory_Event__fetchDashboardTilesFromEventTilesDes
     v33 = 1;
   }
 
-  v34 = [(PKPassSemanticTileFactory *)self descriptorCanCreateEventTicketIssuerActionsTileGroup:v6];
-  v35 = [(PKPassSemanticTileFactory *)self descriptorCanCreateEventInformationTileGroup:v6];
+  v34 = [(PKPassSemanticTileFactory *)self descriptorCanCreateEventTicketIssuerActionsTileGroup:descriptorCopy];
+  v35 = [(PKPassSemanticTileFactory *)self descriptorCanCreateEventInformationTileGroup:descriptorCopy];
   if (!v33 && v34 && v35)
   {
     v36 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:@"PKPassTileContextDashboard.eventGuideTileIdentifier" context:1];
@@ -273,12 +273,12 @@ void __93__PKPassSemanticTileFactory_Event__fetchDashboardTilesFromEventTilesDes
     [v37 setFooter:v41];
 
     PKUIImageNamed(@"EventGuide");
-    v42 = v61 = v7;
+    v42 = v61 = itemCopy;
     v43 = objc_alloc(MEMORY[0x1E69B8948]);
-    v44 = [v42 CGImage];
+    cGImage2 = [v42 CGImage];
     [v42 scale];
-    v45 = v12;
-    v46 = [v43 initWithCGImage:v44 scale:1 orientation:?];
+    v45 = additionalTilesContentSupplier;
+    v46 = [v43 initWithCGImage:cGImage2 scale:1 orientation:?];
     v47 = [MEMORY[0x1E69B8AA8] createImageWithImage:v46 tintColor:0 hasColorContent:1];
     [v37 setIcon:v47];
 
@@ -291,8 +291,8 @@ void __93__PKPassSemanticTileFactory_Event__fetchDashboardTilesFromEventTilesDes
     [v50 setAnalyticsIdentifier:@"eventGuideTile"];
     [v8 addObject:v50];
 
-    v12 = v45;
-    v7 = v61;
+    additionalTilesContentSupplier = v45;
+    itemCopy = v61;
     v11 = v62;
   }
 
@@ -317,27 +317,27 @@ void __93__PKPassSemanticTileFactory_Event__fetchDashboardTilesFromEventTilesDes
   return v55;
 }
 
-- (id)fetchDashboardEventGuideTilesFromEventTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchDashboardEventGuideTilesFromEventTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__PKPassSemanticTileFactory_Event__fetchDashboardEventGuideTilesFromEventTilesDescriptor_queueUpdates___block_invoke;
   aBlock[3] = &unk_1E80110E0;
   objc_copyWeak(&v15, &location);
-  v7 = v6;
+  v7 = descriptorCopy;
   v14 = v7;
   v8 = _Block_copy(aBlock);
   v9 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"weatherContentIdentifier" descriptor:v7 context:2];
-  if (!v9 && v4)
+  if (!v9 && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self reloadWeatherInformationForDescriptor:v7 context:2 completion:v8];
   }
 
   v10 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"musicContentIdentifier" descriptor:v7 context:2];
-  if (!v10 && v4)
+  if (!v10 && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self reloadMusicInformationForDescriptor:v7 context:2 completion:v8];
   }
@@ -361,46 +361,46 @@ void __103__PKPassSemanticTileFactory_Event__fetchDashboardEventGuideTilesFromEv
   }
 }
 
-- (id)_dashboardEventGuideTilesForDescriptor:(id)a3 weatherItem:(id)a4 musicItem:(id)a5
+- (id)_dashboardEventGuideTilesForDescriptor:(id)descriptor weatherItem:(id)item musicItem:(id)musicItem
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptorCopy = descriptor;
+  itemCopy = item;
+  musicItemCopy = musicItem;
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateEventTicketIssuerActionsTileGroup:v8])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateEventTicketIssuerActionsTileGroup:descriptorCopy])
   {
-    v12 = [(PKPassSemanticTileFactory *)self _eventTicketIssuerActionTilesForDescriptor:v8 context:2];
+    v12 = [(PKPassSemanticTileFactory *)self _eventTicketIssuerActionTilesForDescriptor:descriptorCopy context:2];
     v13 = [(PKPassSemanticTileFactory *)self issuerActionsGroupTileFromTiles:v12 groupIdentifier:@"PKPassTileContextDashboardDetails.issuerActionGroupTileIdentifier" context:2];
     [v11 addObject:v13];
   }
 
-  if (v9)
+  if (itemCopy)
   {
-    v14 = [(PKPassSemanticTileFactory *)self weatherGroupTileFromItem:v9 tileIdentifier:@"PKPassTileContextDashboardDetails.weatherTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.weatherGroupTileIdentifier" context:2];
+    v14 = [(PKPassSemanticTileFactory *)self weatherGroupTileFromItem:itemCopy tileIdentifier:@"PKPassTileContextDashboardDetails.weatherTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.weatherGroupTileIdentifier" context:2];
     [v11 addObject:v14];
   }
 
-  v15 = [v8 additionalTilesContentSupplier];
-  v16 = [v15 venueName];
-  v17 = [v15 venueMapImageIfExists];
-  if (v17)
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  venueName = [additionalTilesContentSupplier venueName];
+  venueMapImageIfExists = [additionalTilesContentSupplier venueMapImageIfExists];
+  if (venueMapImageIfExists)
   {
-    v18 = [(PKPassSemanticTileFactory *)self venueMapGroupTileFromImage:v17 titleText:v16 tileIdentifier:0 groupIdentifier:@"PKPassTileContextDashboardDetails.venueMapGroupTileIdentifier" context:2];
+    v18 = [(PKPassSemanticTileFactory *)self venueMapGroupTileFromImage:venueMapImageIfExists titleText:venueName tileIdentifier:0 groupIdentifier:@"PKPassTileContextDashboardDetails.venueMapGroupTileIdentifier" context:2];
     [v11 addObject:v18];
   }
 
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateEventInformationTileGroup:v8])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateEventInformationTileGroup:descriptorCopy])
   {
-    v19 = [(PKPassSemanticTileFactory *)self eventInformationGroupTileFromDescriptor:v8 tileIdentifier:@"PKPassTileContextDashboardDetails.eventInformationTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.eventInformationGroupTileIdentifier" context:2];
+    v19 = [(PKPassSemanticTileFactory *)self eventInformationGroupTileFromDescriptor:descriptorCopy tileIdentifier:@"PKPassTileContextDashboardDetails.eventInformationTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.eventInformationGroupTileIdentifier" context:2];
     [v11 addObject:v19];
   }
 
-  v20 = [(PKPassSemanticTileFactory *)self findMyFriendsGroupTileFromFooterText:v16 tileIdentifier:0 groupIdentifier:@"PKPassTileContextDashboardDetails.findMyGroupTileIdentifier" context:2];
+  v20 = [(PKPassSemanticTileFactory *)self findMyFriendsGroupTileFromFooterText:venueName tileIdentifier:0 groupIdentifier:@"PKPassTileContextDashboardDetails.findMyGroupTileIdentifier" context:2];
   [v11 addObject:v20];
 
-  if (v10)
+  if (musicItemCopy)
   {
-    v21 = [(PKPassSemanticTileFactory *)self musicGroupTileFromItem:v10 tileIdentifier:@"PKPassTileContextDashboardDetails.musicTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.musicGroupTileIdentifier" context:2];
+    v21 = [(PKPassSemanticTileFactory *)self musicGroupTileFromItem:musicItemCopy tileIdentifier:@"PKPassTileContextDashboardDetails.musicTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.musicGroupTileIdentifier" context:2];
     [v11 addObject:v21];
   }
 
@@ -409,21 +409,21 @@ void __103__PKPassSemanticTileFactory_Event__fetchDashboardEventGuideTilesFromEv
   return v22;
 }
 
-- (id)fetchUpcomingPassInformationTilesFromEventTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchUpcomingPassInformationTilesFromEventTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFromEventTilesDescriptor_queueUpdates___block_invoke;
   aBlock[3] = &unk_1E80110E0;
   objc_copyWeak(&v14, &location);
-  v7 = v6;
+  v7 = descriptorCopy;
   v13 = v7;
   v8 = _Block_copy(aBlock);
   v9 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"mapsContentIdentifier" descriptor:v7 context:4];
-  if (!v9 && v4)
+  if (!v9 && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self reloadMapsInformationForDescriptor:v7 contentIdentifier:@"mapsContentIdentifier" tileContext:4 completion:v8];
   }
@@ -447,17 +447,17 @@ void __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFr
   }
 }
 
-- (id)_upcomingPassInformationTilesForDescriptor:(id)a3 mapsItem:(id)a4
+- (id)_upcomingPassInformationTilesForDescriptor:(id)descriptor mapsItem:(id)item
 {
   v60[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  itemCopy = item;
   v8 = 0x1E695D000uLL;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [v6 additionalTilesContentSupplier];
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
   v57 = v9;
-  v58 = v10;
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateMapsTile:v6])
+  v58 = additionalTilesContentSupplier;
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateMapsTile:descriptorCopy])
   {
     v56 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:@"PKPassTileContextUpcomingPassInformation.mapsTileIdentifier" context:4];
     [v56 setPreferredStyle:1];
@@ -465,35 +465,35 @@ void __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFr
     [v11 setPreferredStyle:5];
     v12 = MEMORY[0x1E69B8AC8];
     PKLocalizedTicketingString(&cfstr_TileViewInMaps.isa);
-    v14 = v13 = v7;
+    v14 = v13 = itemCopy;
     v15 = [v12 createWithContent:v14];
     [v11 setFooter:v15];
 
-    v7 = v13;
-    v55 = [MEMORY[0x1E69A1DB0] addressMarkerStyleAttributes];
-    v16 = [MEMORY[0x1E696F220] imageForStyle:v55 size:3 forScale:0 format:PKUIScreenScale()];
+    itemCopy = v13;
+    addressMarkerStyleAttributes = [MEMORY[0x1E69A1DB0] addressMarkerStyleAttributes];
+    v16 = [MEMORY[0x1E696F220] imageForStyle:addressMarkerStyleAttributes size:3 forScale:0 format:PKUIScreenScale()];
     v17 = objc_alloc(MEMORY[0x1E69B8948]);
-    v18 = [v16 CGImage];
+    cGImage = [v16 CGImage];
     [v16 scale];
-    v19 = [v17 initWithCGImage:v18 scale:1 orientation:?];
+    v19 = [v17 initWithCGImage:cGImage scale:1 orientation:?];
     v20 = [MEMORY[0x1E69B8AA8] createImageWithImage:v19 tintColor:0 hasColorContent:1];
     [v11 setIcon:v20];
 
     if ([v13 isValid])
     {
-      v21 = [v13 mapItem];
+      mapItem = [v13 mapItem];
       v22 = MEMORY[0x1E69B8AC8];
-      v23 = [v21 name];
-      v24 = [v22 createWithContent:v23];
+      name = [mapItem name];
+      v24 = [v22 createWithContent:name];
       [v11 setTitle:v24];
 
-      v25 = [MEMORY[0x1E696F270] urlForMapItem:v21 options:0];
+      v25 = [MEMORY[0x1E696F270] urlForMapItem:mapItem options:0];
       v26 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithExternalURL:v25 title:0];
       v60[0] = v26;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:1];
       [v11 setActions:v27];
 
-      v7 = v13;
+      itemCopy = v13;
     }
 
     else
@@ -504,8 +504,8 @@ void __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFr
         [v11 setIcon:v28];
       }
 
-      v21 = [v58 mapsTileTitle];
-      v25 = [MEMORY[0x1E69B8AC8] createWithContent:v21];
+      mapItem = [v58 mapsTileTitle];
+      v25 = [MEMORY[0x1E69B8AC8] createWithContent:mapItem];
       [v11 setTitle:v25];
     }
 
@@ -514,15 +514,15 @@ void __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFr
     [v29 setAnalyticsIdentifier:@"mapsTile"];
     [v57 addObject:v29];
 
-    v10 = v58;
+    additionalTilesContentSupplier = v58;
     v8 = 0x1E695D000;
   }
 
-  v30 = [v10 eventName];
-  v31 = v30;
-  if (v30)
+  eventName = [additionalTilesContentSupplier eventName];
+  v31 = eventName;
+  if (eventName)
   {
-    v32 = [v30 length] == 0;
+    v32 = [eventName length] == 0;
   }
 
   else
@@ -530,8 +530,8 @@ void __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFr
     v32 = 1;
   }
 
-  v33 = [(PKPassSemanticTileFactory *)self descriptorCanCreateEventTicketIssuerActionsTileGroup:v6];
-  v34 = [(PKPassSemanticTileFactory *)self descriptorCanCreateEventInformationTileGroup:v6];
+  v33 = [(PKPassSemanticTileFactory *)self descriptorCanCreateEventTicketIssuerActionsTileGroup:descriptorCopy];
+  v34 = [(PKPassSemanticTileFactory *)self descriptorCanCreateEventInformationTileGroup:descriptorCopy];
   if (!v32 && v33 && v34)
   {
     v35 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:@"PKPassTileContextUpcomingPassInformation.mapsTileIdentifier" context:4];
@@ -548,9 +548,9 @@ void __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFr
 
     v41 = PKUIImageNamed(@"EventGuide");
     v42 = objc_alloc(MEMORY[0x1E69B8948]);
-    v43 = [v41 CGImage];
+    cGImage2 = [v41 CGImage];
     [v41 scale];
-    v44 = [v42 initWithCGImage:v43 scale:1 orientation:?];
+    v44 = [v42 initWithCGImage:cGImage2 scale:1 orientation:?];
     v45 = [MEMORY[0x1E69B8AA8] createImageWithImage:v44 tintColor:0 hasColorContent:1];
     [v36 setIcon:v45];
 
@@ -564,7 +564,7 @@ void __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFr
     [v48 setAnalyticsIdentifier:@"eventGuideTile"];
     [v57 addObject:v48];
 
-    v10 = v58;
+    additionalTilesContentSupplier = v58;
     v8 = 0x1E695D000uLL;
   }
 
@@ -589,33 +589,33 @@ void __107__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationTilesFr
   return v53;
 }
 
-- (id)fetchUpcomingPassInformationEventGuideTilesFromEventTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchUpcomingPassInformationEventGuideTilesFromEventTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __117__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationEventGuideTilesFromEventTilesDescriptor_queueUpdates___block_invoke;
   aBlock[3] = &unk_1E80110E0;
   objc_copyWeak(&v16, &location);
-  v7 = v6;
+  v7 = descriptorCopy;
   v15 = v7;
   v8 = _Block_copy(aBlock);
   v9 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"weatherContentIdentifier" descriptor:v7 context:5];
-  if (!v9 && v4)
+  if (!v9 && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self reloadWeatherInformationForDescriptor:v7 context:5 completion:v8];
   }
 
   v10 = [(PKPassSemanticTileFactory *)self cachedVenueMapImageForDescriptor:v7 context:5];
-  if (!v10 && v4)
+  if (!v10 && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self fetchVenueMapImageForDescriptor:v7 context:5 completion:v8];
   }
 
   v11 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"musicContentIdentifier" descriptor:v7 context:5];
-  if (!v11 && v4)
+  if (!v11 && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self reloadMusicInformationForDescriptor:v7 context:5 completion:v8];
   }
@@ -639,46 +639,46 @@ void __117__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationEventGu
   }
 }
 
-- (id)_upcomingPassInformationEventGuideTilesForDescriptor:(id)a3 weatherItem:(id)a4 venueMapImage:(id)a5 musicItem:(id)a6
+- (id)_upcomingPassInformationEventGuideTilesForDescriptor:(id)descriptor weatherItem:(id)item venueMapImage:(id)image musicItem:(id)musicItem
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  descriptorCopy = descriptor;
+  itemCopy = item;
+  imageCopy = image;
+  musicItemCopy = musicItem;
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateEventTicketIssuerActionsTileGroup:v10])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateEventTicketIssuerActionsTileGroup:descriptorCopy])
   {
-    v15 = [(PKPassSemanticTileFactory *)self _eventTicketIssuerActionTilesForDescriptor:v10 context:5];
+    v15 = [(PKPassSemanticTileFactory *)self _eventTicketIssuerActionTilesForDescriptor:descriptorCopy context:5];
     v16 = [(PKPassSemanticTileFactory *)self issuerActionsGroupTileFromTiles:v15 groupIdentifier:@"PKPassTileContextDashboardDetails.issuerActionGroupTileIdentifier" context:5];
     [v14 addObject:v16];
   }
 
-  if (v11)
+  if (itemCopy)
   {
-    v17 = [(PKPassSemanticTileFactory *)self weatherGroupTileFromItem:v11 tileIdentifier:@"PKPassTileContextDashboardDetails.weatherTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.weatherGroupTileIdentifier" context:5];
+    v17 = [(PKPassSemanticTileFactory *)self weatherGroupTileFromItem:itemCopy tileIdentifier:@"PKPassTileContextDashboardDetails.weatherTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.weatherGroupTileIdentifier" context:5];
     [v14 addObject:v17];
   }
 
-  v18 = [v10 additionalTilesContentSupplier];
-  v19 = [v18 venueName];
-  if (v12)
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  venueName = [additionalTilesContentSupplier venueName];
+  if (imageCopy)
   {
-    v20 = [(PKPassSemanticTileFactory *)self venueMapGroupTileFromImage:v12 titleText:v19 tileIdentifier:0 groupIdentifier:@"PKPassTileContextDashboardDetails.venueMapGroupTileIdentifier" context:5];
+    v20 = [(PKPassSemanticTileFactory *)self venueMapGroupTileFromImage:imageCopy titleText:venueName tileIdentifier:0 groupIdentifier:@"PKPassTileContextDashboardDetails.venueMapGroupTileIdentifier" context:5];
     [v14 addObject:v20];
   }
 
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateEventInformationTileGroup:v10])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateEventInformationTileGroup:descriptorCopy])
   {
-    v21 = [(PKPassSemanticTileFactory *)self eventInformationGroupTileFromDescriptor:v10 tileIdentifier:@"PKPassTileContextDashboardDetails.eventInformationTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.eventInformationGroupTileIdentifier" context:5];
+    v21 = [(PKPassSemanticTileFactory *)self eventInformationGroupTileFromDescriptor:descriptorCopy tileIdentifier:@"PKPassTileContextDashboardDetails.eventInformationTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.eventInformationGroupTileIdentifier" context:5];
     [v14 addObject:v21];
   }
 
-  v22 = [(PKPassSemanticTileFactory *)self findMyFriendsGroupTileFromFooterText:v19 tileIdentifier:0 groupIdentifier:@"PKPassTileContextDashboardDetails.findMyGroupTileIdentifier" context:5];
+  v22 = [(PKPassSemanticTileFactory *)self findMyFriendsGroupTileFromFooterText:venueName tileIdentifier:0 groupIdentifier:@"PKPassTileContextDashboardDetails.findMyGroupTileIdentifier" context:5];
   [v14 addObject:v22];
 
-  if (v13)
+  if (musicItemCopy)
   {
-    v23 = [(PKPassSemanticTileFactory *)self musicGroupTileFromItem:v13 tileIdentifier:@"PKPassTileContextDashboardDetails.musicTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.musicGroupTileIdentifier" context:5];
+    v23 = [(PKPassSemanticTileFactory *)self musicGroupTileFromItem:musicItemCopy tileIdentifier:@"PKPassTileContextDashboardDetails.musicTileIdentifier" groupIdentifier:@"PKPassTileContextDashboardDetails.musicGroupTileIdentifier" context:5];
     [v14 addObject:v23];
   }
 
@@ -687,22 +687,22 @@ void __117__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationEventGu
   return v24;
 }
 
-- (id)_eventTicketIssuerActionTilesForDescriptor:(id)a3 context:(int64_t)a4
+- (id)_eventTicketIssuerActionTilesForDescriptor:(id)descriptor context:(int64_t)context
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v28 = a3;
+  descriptorCopy = descriptor;
   v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
   for (i = 0; i != 12; ++i)
   {
-    v5 = [v28 additionalTilesContentSupplier];
-    v6 = PKEventTileIssuerActionURLForTypeInDescriptor(i, v5);
+    additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+    v6 = PKEventTileIssuerActionURLForTypeInDescriptor(i, additionalTilesContentSupplier);
 
     if (v6)
     {
-      v7 = [MEMORY[0x1E696AFB0] UUID];
-      v8 = [v7 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v9 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:v8 context:a4];
+      v9 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:uUIDString context:context];
       [v9 setPreferredStyle:1];
       v10 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
       [v10 setPreferredStyle:5];
@@ -714,18 +714,18 @@ void __117__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationEventGu
       v14 = MEMORY[0x1E69B8AA8];
       v15 = PKEventTileIssuerActionSymbolForType(i);
       v16 = PKEventTileIssuerActionSymbolForType(i);
-      v17 = [v16 pathExtension];
-      if ([v17 isEqualToString:@"fill"])
+      pathExtension = [v16 pathExtension];
+      if ([pathExtension isEqualToString:@"fill"])
       {
-        v18 = [v16 stringByDeletingPathExtension];
+        stringByDeletingPathExtension = [v16 stringByDeletingPathExtension];
       }
 
       else
       {
-        v18 = v16;
+        stringByDeletingPathExtension = v16;
       }
 
-      v19 = v18;
+      v19 = stringByDeletingPathExtension;
 
       v20 = [v14 createWithSymbolName:v15 contextMenuSymbolName:v19 tintColor:5];
       [v10 setIcon:v20];
@@ -735,7 +735,7 @@ void __117__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationEventGu
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
       [v10 setActions:v22];
 
-      v23 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v9 childTiles:0 stateIdentifier:v8 state:v10 inProgress:0];
+      v23 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v9 childTiles:0 stateIdentifier:uUIDString state:v10 inProgress:0];
       v24 = qword_1E80116F0[i];
       [v23 setAnalyticsIdentifier:off_1E8011690[i]];
       [v23 setAxID:*v24];
@@ -746,13 +746,13 @@ void __117__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationEventGu
   return v27;
 }
 
-- (BOOL)descriptorCanCreateEventTicketIssuerActionsTileGroup:(id)a3
+- (BOOL)descriptorCanCreateEventTicketIssuerActionsTileGroup:(id)group
 {
   v4 = 0;
   for (i = 0; i != 12; ++i)
   {
-    v6 = [a3 additionalTilesContentSupplier];
-    v7 = PKEventTileIssuerActionURLForTypeInDescriptor(i, v6);
+    additionalTilesContentSupplier = [group additionalTilesContentSupplier];
+    v7 = PKEventTileIssuerActionURLForTypeInDescriptor(i, additionalTilesContentSupplier);
 
     if (v7)
     {
@@ -763,64 +763,64 @@ void __117__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationEventGu
   return v4 != 0;
 }
 
-- (id)weatherGroupTileFromItem:(id)a3 tileIdentifier:(id)a4 groupIdentifier:(id)a5 context:(int64_t)a6
+- (id)weatherGroupTileFromItem:(id)item tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  itemCopy = item;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  if (itemCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
-      v12 = v10;
+      uUIDString = identifierCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AFB0] UUID];
-      v12 = [v14 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    v31 = v10;
-    v33 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:v12 context:a6];
+    v31 = identifierCopy;
+    v33 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:uUIDString context:context];
     [v33 setPreferredStyle:0];
-    v15 = [v9 weatherInformation];
+    weatherInformation = [itemCopy weatherInformation];
     v16 = MEMORY[0x1E69B8AC0];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __100__PKPassSemanticTileFactory_Event__weatherGroupTileFromItem_tileIdentifier_groupIdentifier_context___block_invoke;
     v34[3] = &unk_1E8011430;
-    v17 = v15;
+    v17 = weatherInformation;
     v35 = v17;
     v18 = [v16 createWithPreferredStyle:4 adaptorProvider:v34];
     [v18 setFullBleed:1];
-    v19 = [v17 weatherURL];
-    v32 = v11;
-    if (v19)
+    weatherURL = [v17 weatherURL];
+    v32 = groupIdentifierCopy;
+    if (weatherURL)
     {
-      v20 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithExternalURL:v19 title:0];
+      v20 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithExternalURL:weatherURL title:0];
       v37[0] = v20;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
       [v18 setActions:v21];
 
-      v11 = v32;
+      groupIdentifierCopy = v32;
     }
 
-    v30 = v12;
-    v22 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v33 childTiles:0 stateIdentifier:v12 state:v18 inProgress:0];
-    if (v11)
+    v30 = uUIDString;
+    v22 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v33 childTiles:0 stateIdentifier:uUIDString state:v18 inProgress:0];
+    if (groupIdentifierCopy)
     {
-      v23 = v11;
+      uUIDString2 = groupIdentifierCopy;
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AFB0] UUID];
-      v23 = [v24 UUIDString];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString2 = [uUID2 UUIDString];
     }
 
-    v25 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v23 context:a6];
+    v25 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:uUIDString2 context:context];
     [v25 setPreferredStyle:0];
     [v25 setShowInPrearm:0];
     [v25 setColumns:1];
@@ -831,10 +831,10 @@ void __117__PKPassSemanticTileFactory_Event__fetchUpcomingPassInformationEventGu
     v27 = objc_alloc(MEMORY[0x1E69B8A90]);
     v36 = v22;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
-    v13 = [v27 _initWithMetadata:v25 childTiles:v28 stateIdentifier:v23 state:v26 inProgress:0];
+    v13 = [v27 _initWithMetadata:v25 childTiles:v28 stateIdentifier:uUIDString2 state:v26 inProgress:0];
 
-    v10 = v31;
-    v11 = v32;
+    identifierCopy = v31;
+    groupIdentifierCopy = v32;
   }
 
   else
@@ -854,11 +854,11 @@ uint64_t __100__PKPassSemanticTileFactory_Event__weatherGroupTileFromItem_tileId
   return v4;
 }
 
-- (void)reloadWeatherInformationForDescriptor:(id)a3 context:(int64_t)a4 completion:(id)a5
+- (void)reloadWeatherInformationForDescriptor:(id)descriptor context:(int64_t)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateWeatherTile:v8])
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateWeatherTile:descriptorCopy])
   {
     objc_initWeak(&location, self);
     v10 = objc_alloc_init(MEMORY[0x1E69B8658]);
@@ -867,10 +867,10 @@ uint64_t __100__PKPassSemanticTileFactory_Event__weatherGroupTileFromItem_tileId
     v25[2] = __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescriptor_context_completion___block_invoke;
     v25[3] = &unk_1E8011458;
     objc_copyWeak(v28, &location);
-    v11 = v8;
+    v11 = descriptorCopy;
     v26 = v11;
-    v28[1] = a4;
-    v27 = v9;
+    v28[1] = context;
+    v27 = completionCopy;
     [v10 addOperation:v25];
     v23[0] = 0;
     v23[1] = v23;
@@ -887,7 +887,7 @@ uint64_t __100__PKPassSemanticTileFactory_Event__weatherGroupTileFromItem_tileId
     v20 = v12;
     v21 = v23;
     [v10 addOperation:v19];
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescriptor_context_completion___block_invoke_4;
@@ -895,8 +895,8 @@ uint64_t __100__PKPassSemanticTileFactory_Event__weatherGroupTileFromItem_tileId
     objc_copyWeak(v18, &location);
     v17 = v23;
     v16 = v12;
-    v18[1] = a4;
-    v14 = [v10 evaluateWithInput:v13 completion:v15];
+    v18[1] = context;
+    v14 = [v10 evaluateWithInput:null completion:v15];
 
     objc_destroyWeak(v18);
     objc_destroyWeak(&v22);
@@ -906,9 +906,9 @@ uint64_t __100__PKPassSemanticTileFactory_Event__weatherGroupTileFromItem_tileId
     objc_destroyWeak(&location);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1014,23 +1014,23 @@ void __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescripto
   }
 }
 
-- (BOOL)descriptorCanCreateWeatherTile:(id)a3
+- (BOOL)descriptorCanCreateWeatherTile:(id)tile
 {
-  v4 = a3;
-  v5 = [(PKPassSemanticTileFactory *)self featureOverrides];
-  if (v5 && (v6 = v5, -[PKPassSemanticTileFactory featureOverrides](self, "featureOverrides"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isIntegrationTypeSupported:1], v7, v6, !v8))
+  tileCopy = tile;
+  featureOverrides = [(PKPassSemanticTileFactory *)self featureOverrides];
+  if (featureOverrides && (v6 = featureOverrides, -[PKPassSemanticTileFactory featureOverrides](self, "featureOverrides"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isIntegrationTypeSupported:1], v7, v6, !v8))
   {
     v14 = 0;
   }
 
   else
   {
-    v9 = [v4 additionalTilesContentSupplier];
-    v10 = [v9 location];
-    v11 = [MEMORY[0x1E695DF00] date];
-    v12 = [v9 weatherFetchDateForDate:v11];
+    additionalTilesContentSupplier = [tileCopy additionalTilesContentSupplier];
+    location = [additionalTilesContentSupplier location];
+    date = [MEMORY[0x1E695DF00] date];
+    v12 = [additionalTilesContentSupplier weatherFetchDateForDate:date];
 
-    if (v10)
+    if (location)
     {
       v13 = v12 == 0;
     }
@@ -1046,61 +1046,61 @@ void __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescripto
   return v14;
 }
 
-- (id)venueMapGroupTileFromImage:(id)a3 titleText:(id)a4 tileIdentifier:(id)a5 groupIdentifier:(id)a6 context:(int64_t)a7
+- (id)venueMapGroupTileFromImage:(id)image titleText:(id)text tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  imageCopy = image;
+  textCopy = text;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  if (imageCopy)
   {
-    v37 = v13;
-    if (v13)
+    v37 = identifierCopy;
+    if (identifierCopy)
     {
-      v15 = v13;
+      uUIDString = identifierCopy;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E696AFB0] UUID];
-      v15 = [v17 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    v18 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:v15 context:a7];
+    v18 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:uUIDString context:context];
     [v18 setPreferredStyle:0];
     v19 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
     [v19 setPreferredStyle:4];
     [v19 setFullBleed:1];
-    v20 = [MEMORY[0x1E69B8AA8] createImageWithImage:v11 tintColor:0 hasColorContent:1];
+    v20 = [MEMORY[0x1E69B8AA8] createImageWithImage:imageCopy tintColor:0 hasColorContent:1];
     [v19 setBodyImage:v20];
 
     v33 = [MEMORY[0x1E69B8AA8] createWithSymbolName:@"arrow.up.backward.and.arrow.down.forward" tintColor:5];
     v21 = [MEMORY[0x1E69B8AA0] createAccessoryImageWithImage:?];
     [v19 setSecondaryAccessory:v21];
 
-    v22 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithImage:v11 title:v12];
+    v22 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithImage:imageCopy title:textCopy];
     v39[0] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
     [v19 setActions:v23];
 
     v34 = v18;
-    v35 = v15;
-    v24 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v18 childTiles:0 stateIdentifier:v15 state:v19 inProgress:0];
+    v35 = uUIDString;
+    v24 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v18 childTiles:0 stateIdentifier:uUIDString state:v19 inProgress:0];
     [v24 setAnalyticsIdentifier:@"venueMapTile"];
-    v36 = v14;
-    if (v14)
+    v36 = groupIdentifierCopy;
+    if (groupIdentifierCopy)
     {
-      v25 = v14;
+      uUIDString2 = groupIdentifierCopy;
     }
 
     else
     {
-      v26 = [MEMORY[0x1E696AFB0] UUID];
-      v25 = [v26 UUIDString];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString2 = [uUID2 UUIDString];
     }
 
-    v27 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v25 context:a7];
+    v27 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:uUIDString2 context:context];
     [v27 setPreferredStyle:0];
     [v27 setShowInPrearm:0];
     [v27 setColumns:1];
@@ -1110,18 +1110,18 @@ void __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescripto
     [v27 setGroupStyle:2];
     v28 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:3];
     v29 = v28;
-    if (v12)
+    if (textCopy)
     {
-      [v28 setHeader:v12];
+      [v28 setHeader:textCopy];
     }
 
     v30 = objc_alloc(MEMORY[0x1E69B8A90]);
     v38 = v24;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
-    v16 = [v30 _initWithMetadata:v27 childTiles:v31 stateIdentifier:v25 state:v29 inProgress:0];
+    v16 = [v30 _initWithMetadata:v27 childTiles:v31 stateIdentifier:uUIDString2 state:v29 inProgress:0];
 
-    v14 = v36;
-    v13 = v37;
+    groupIdentifierCopy = v36;
+    identifierCopy = v37;
   }
 
   else
@@ -1132,40 +1132,40 @@ void __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescripto
   return v16;
 }
 
-- (id)cachedVenueMapImageForDescriptor:(id)a3 context:(int64_t)a4
+- (id)cachedVenueMapImageForDescriptor:(id)descriptor context:(int64_t)context
 {
-  v6 = a3;
-  v7 = [v6 additionalTilesContentSupplier];
-  v8 = [v7 venueMapImageIfExists];
-  v9 = v8;
-  if (v8)
+  descriptorCopy = descriptor;
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  venueMapImageIfExists = [additionalTilesContentSupplier venueMapImageIfExists];
+  v9 = venueMapImageIfExists;
+  if (venueMapImageIfExists)
   {
-    v10 = v8;
+    venueMapImage = venueMapImageIfExists;
   }
 
-  else if ([(PKPassSemanticTileFactory *)self descriptorRequiresRemoteVenueMapImage:v6])
+  else if ([(PKPassSemanticTileFactory *)self descriptorRequiresRemoteVenueMapImage:descriptorCopy])
   {
-    v11 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"venueMapContentIdentifier" descriptor:v6 context:a4];
-    v10 = [v11 venueMapImage];
+    v11 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"venueMapContentIdentifier" descriptor:descriptorCopy context:context];
+    venueMapImage = [v11 venueMapImage];
   }
 
   else
   {
-    v10 = 0;
+    venueMapImage = 0;
   }
 
-  return v10;
+  return venueMapImage;
 }
 
-- (void)fetchVenueMapImageForDescriptor:(id)a3 context:(int64_t)a4 completion:(id)a5
+- (void)fetchVenueMapImageForDescriptor:(id)descriptor context:(int64_t)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(PKPassSemanticTileFactory *)self descriptorRequiresRemoteVenueMapImage:v8])
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  if ([(PKPassSemanticTileFactory *)self descriptorRequiresRemoteVenueMapImage:descriptorCopy])
   {
-    v10 = [v8 additionalTilesContentSupplier];
-    v11 = [v10 venueMapImageManifest];
-    v12 = [v11 itemClosestMatchingScreenScale:PKUIScreenScale()];
+    additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+    venueMapImageManifest = [additionalTilesContentSupplier venueMapImageManifest];
+    v12 = [venueMapImageManifest itemClosestMatchingScreenScale:PKUIScreenScale()];
     if (v12)
     {
       objc_initWeak(location, self);
@@ -1175,10 +1175,10 @@ void __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescripto
       v27[2] = __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_context_completion___block_invoke;
       v27[3] = &unk_1E8011458;
       objc_copyWeak(v30, location);
-      v14 = v8;
+      v14 = descriptorCopy;
       v28 = v14;
-      v30[1] = a4;
-      v29 = v9;
+      v30[1] = context;
+      v29 = completionCopy;
       [v13 addOperation:v27];
       v25[0] = 0;
       v25[1] = v25;
@@ -1194,7 +1194,7 @@ void __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescripto
       v22 = v12;
       v23 = v25;
       [v13 addOperation:v21];
-      v15 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_context_completion___block_invoke_215;
@@ -1202,8 +1202,8 @@ void __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescripto
       objc_copyWeak(v20, location);
       v19 = v25;
       v18 = v14;
-      v20[1] = a4;
-      v16 = [v13 evaluateWithInput:v15 completion:v17];
+      v20[1] = context;
+      v16 = [v13 evaluateWithInput:null completion:v17];
 
       objc_destroyWeak(v20);
       objc_destroyWeak(&v24);
@@ -1214,9 +1214,9 @@ void __93__PKPassSemanticTileFactory_Event__reloadWeatherInformationForDescripto
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1325,13 +1325,13 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   }
 }
 
-- (BOOL)descriptorRequiresRemoteVenueMapImage:(id)a3
+- (BOOL)descriptorRequiresRemoteVenueMapImage:(id)image
 {
-  v3 = [a3 additionalTilesContentSupplier];
+  additionalTilesContentSupplier = [image additionalTilesContentSupplier];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 venueMapImageManifest];
-    v5 = v4 != 0;
+    venueMapImageManifest = [additionalTilesContentSupplier venueMapImageManifest];
+    v5 = venueMapImageManifest != 0;
   }
 
   else
@@ -1342,17 +1342,17 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   return v5;
 }
 
-- (id)eventInformationGroupTileFromDescriptor:(id)a3 tileIdentifier:(id)a4 groupIdentifier:(id)a5 context:(int64_t)a6
+- (id)eventInformationGroupTileFromDescriptor:(id)descriptor tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(PKPassSemanticTileFactory *)self _eventInformationEntriesFromDescriptor:a3];
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  v12 = [(PKPassSemanticTileFactory *)self _eventInformationEntriesFromDescriptor:descriptor];
   if ([v12 count])
   {
-    v13 = [(PKPassSemanticTileFactory *)self tableViewTileFromEntries:v12 tileIdentifier:v10 context:a6];
+    v13 = [(PKPassSemanticTileFactory *)self tableViewTileFromEntries:v12 tileIdentifier:identifierCopy context:context];
     [v13 setAnalyticsIdentifier:@"additionalInformationTile"];
-    v14 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v11 context:a6];
+    v14 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:groupIdentifierCopy context:context];
     [v14 setPreferredStyle:0];
     [v14 setShowInPrearm:0];
     [v14 setColumns:1];
@@ -1363,7 +1363,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
     v16 = objc_alloc(MEMORY[0x1E69B8A90]);
     v20[0] = v13;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    v18 = [v16 _initWithMetadata:v14 childTiles:v17 stateIdentifier:v11 state:v15 inProgress:0];
+    v18 = [v16 _initWithMetadata:v14 childTiles:v17 stateIdentifier:groupIdentifierCopy state:v15 inProgress:0];
   }
 
   else
@@ -1374,21 +1374,21 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   return v18;
 }
 
-- (id)_eventInformationEntriesFromDescriptor:(id)a3
+- (id)_eventInformationEntriesFromDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v5 setDateStyle:0];
   [v5 setTimeStyle:1];
   [v5 setDoesRelativeDateFormatting:0];
-  v6 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v5 setLocale:v6];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v5 setLocale:autoupdatingCurrentLocale];
 
-  v7 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-  [v5 setCalendar:v7];
+  autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+  [v5 setCalendar:autoupdatingCurrentCalendar];
 
-  v8 = [v3 numberForSemanticKey:*MEMORY[0x1E69BBCE0]];
+  v8 = [descriptorCopy numberForSemanticKey:*MEMORY[0x1E69BBCE0]];
   if (v8)
   {
     v9 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1408,7 +1408,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
     [v4 addObject:v13];
   }
 
-  v14 = [v3 dateForSemanticKey:*MEMORY[0x1E69BBC88]];
+  v14 = [descriptorCopy dateForSemanticKey:*MEMORY[0x1E69BBC88]];
   if (v14)
   {
     v15 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1420,7 +1420,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
 
   v57 = v14;
   v58 = v8;
-  v19 = [v3 dateForSemanticKey:*MEMORY[0x1E69BBC98]];
+  v19 = [descriptorCopy dateForSemanticKey:*MEMORY[0x1E69BBC98]];
   if (v19)
   {
     v20 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1431,7 +1431,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   }
 
   v56 = v19;
-  v24 = [v3 dateForSemanticKey:*MEMORY[0x1E69BBCA8]];
+  v24 = [descriptorCopy dateForSemanticKey:*MEMORY[0x1E69BBCA8]];
   if (v24)
   {
     v25 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1441,7 +1441,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
     [v4 addObject:v28];
   }
 
-  v29 = [v3 dateForSemanticKey:{*MEMORY[0x1E69BBC78], v24}];
+  v29 = [descriptorCopy dateForSemanticKey:{*MEMORY[0x1E69BBC78], v24}];
   if (v29)
   {
     v30 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1451,7 +1451,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
     [v4 addObject:v33];
   }
 
-  v34 = [v3 dateForSemanticKey:*MEMORY[0x1E69BBC90]];
+  v34 = [descriptorCopy dateForSemanticKey:*MEMORY[0x1E69BBC90]];
   if (v34)
   {
     v35 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1461,7 +1461,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
     [v4 addObject:v38];
   }
 
-  v39 = [v3 dateForSemanticKey:*MEMORY[0x1E69BBCA0]];
+  v39 = [descriptorCopy dateForSemanticKey:*MEMORY[0x1E69BBCA0]];
   if (v39)
   {
     v40 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1471,7 +1471,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
     [v4 addObject:v43];
   }
 
-  v44 = [v3 dateForSemanticKey:*MEMORY[0x1E69BBC80]];
+  v44 = [descriptorCopy dateForSemanticKey:*MEMORY[0x1E69BBC80]];
   if (v44)
   {
     v45 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1481,7 +1481,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
     [v4 addObject:v48];
   }
 
-  v49 = [v3 stringForSemanticKey:*MEMORY[0x1E69BBE08]];
+  v49 = [descriptorCopy stringForSemanticKey:*MEMORY[0x1E69BBE08]];
   if (v49)
   {
     v50 = [PKTileContextDetailsTableViewEntry alloc];
@@ -1495,10 +1495,10 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   return v53;
 }
 
-- (BOOL)descriptorCanCreateEventInformationTileGroup:(id)a3
+- (BOOL)descriptorCanCreateEventInformationTileGroup:(id)group
 {
   v22[9] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  groupCopy = group;
   v4 = *MEMORY[0x1E69BBC88];
   v22[0] = *MEMORY[0x1E69BBCE0];
   v22[1] = v4;
@@ -1513,8 +1513,8 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   v22[7] = v7;
   v22[8] = *MEMORY[0x1E69BBE08];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:9];
-  v9 = [v3 semantics];
-  v10 = [v9 allKeys];
+  semantics = [groupCopy semantics];
+  allKeys = [semantics allKeys];
 
   v19 = 0u;
   v20 = 0u;
@@ -1535,7 +1535,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
           objc_enumerationMutation(v11);
         }
 
-        v13 += [v10 containsObject:{*(*(&v17 + 1) + 8 * i), v17}];
+        v13 += [allKeys containsObject:{*(*(&v17 + 1) + 8 * i), v17}];
       }
 
       v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -1548,32 +1548,32 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   return v12;
 }
 
-- (id)findMyFriendsGroupTileFromFooterText:(id)a3 tileIdentifier:(id)a4 groupIdentifier:(id)a5 context:(int64_t)a6
+- (id)findMyFriendsGroupTileFromFooterText:(id)text tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v32 = v10;
-  if (v10)
+  textCopy = text;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  v32 = identifierCopy;
+  if (identifierCopy)
   {
-    v12 = v10;
+    uUIDString = identifierCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v13 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  v14 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:v12 context:a6];
+  v14 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:uUIDString context:context];
   [v14 setPreferredStyle:0];
   v15 = MEMORY[0x1E69B8AC0];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFooterText_tileIdentifier_groupIdentifier_context___block_invoke;
   v33[3] = &unk_1E8011430;
-  v30 = v9;
+  v30 = textCopy;
   v34 = v30;
   v16 = [v15 createWithPreferredStyle:4 adaptorProvider:v33];
   [v16 setFullBleed:1];
@@ -1583,22 +1583,22 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
   [v16 setActions:v18];
 
-  v31 = v12;
-  v19 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v14 childTiles:0 stateIdentifier:v12 state:v16 inProgress:0];
+  v31 = uUIDString;
+  v19 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v14 childTiles:0 stateIdentifier:uUIDString state:v16 inProgress:0];
   [v19 setAnalyticsIdentifier:@"findMyTile"];
-  v20 = v11;
-  if (v11)
+  v20 = groupIdentifierCopy;
+  if (groupIdentifierCopy)
   {
-    v21 = v11;
+    uUIDString2 = groupIdentifierCopy;
   }
 
   else
   {
-    v22 = [MEMORY[0x1E696AFB0] UUID];
-    v21 = [v22 UUIDString];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
   }
 
-  v23 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v21 context:a6];
+  v23 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:uUIDString2 context:context];
   [v23 setPreferredStyle:0];
   [v23 setShowInPrearm:0];
   [v23 setColumns:1];
@@ -1609,7 +1609,7 @@ void __87__PKPassSemanticTileFactory_Event__fetchVenueMapImageForDescriptor_cont
   v25 = objc_alloc(MEMORY[0x1E69B8A90]);
   v35 = v19;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
-  v27 = [v25 _initWithMetadata:v23 childTiles:v26 stateIdentifier:v21 state:v24 inProgress:0];
+  v27 = [v25 _initWithMetadata:v23 childTiles:v26 stateIdentifier:uUIDString2 state:v24 inProgress:0];
 
   return v27;
 }
@@ -1623,34 +1623,34 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
   return v4;
 }
 
-- (id)musicGroupTileFromItem:(id)a3 tileIdentifier:(id)a4 groupIdentifier:(id)a5 context:(int64_t)a6
+- (id)musicGroupTileFromItem:(id)item tileIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier context:(int64_t)context
 {
   v46[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  itemCopy = item;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  if (itemCopy)
   {
-    v43 = v10;
-    v44 = v11;
-    if (v10)
+    v43 = identifierCopy;
+    v44 = groupIdentifierCopy;
+    if (identifierCopy)
     {
-      v12 = v10;
+      uUIDString = identifierCopy;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AFB0] UUID];
-      v12 = [v14 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    v15 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:v12 context:a6];
+    v15 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:uUIDString context:context];
     [v15 setPreferredStyle:0];
-    v16 = [v9 musicItem];
+    musicItem = [itemCopy musicItem];
     v17 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
     v18 = objc_alloc(MEMORY[0x1E69B8948]);
-    v19 = [v16 artwork];
-    v20 = [v18 initWithData:v19 scale:PKUIScreenScale()];
+    artwork = [musicItem artwork];
+    v20 = [v18 initWithData:artwork scale:PKUIScreenScale()];
 
     [v17 setFullBleed:1];
     [v17 setPreferredStyle:4];
@@ -1659,8 +1659,8 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
     [v17 setBodyImage:v21];
 
     v22 = objc_alloc(MEMORY[0x1E69B8D10]);
-    v23 = [v16 musicURL];
-    v24 = [v22 _initWithExternalURL:v23 title:0];
+    musicURL = [musicItem musicURL];
+    v24 = [v22 _initWithExternalURL:musicURL title:0];
 
     v39 = v24;
     v46[0] = v24;
@@ -1668,20 +1668,20 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
     [v17 setActions:v25];
 
     v41 = v15;
-    v42 = v12;
-    v26 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v15 childTiles:0 stateIdentifier:v12 state:v17 inProgress:0];
+    v42 = uUIDString;
+    v26 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v15 childTiles:0 stateIdentifier:uUIDString state:v17 inProgress:0];
     if (v44)
     {
-      v27 = v44;
+      uUIDString2 = v44;
     }
 
     else
     {
-      v28 = [MEMORY[0x1E696AFB0] UUID];
-      v27 = [v28 UUIDString];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString2 = [uUID2 UUIDString];
     }
 
-    v29 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v27 context:a6];
+    v29 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:uUIDString2 context:context];
     [v29 setPreferredStyle:0];
     [v29 setShowInPrearm:0];
     [v29 setColumns:1];
@@ -1690,33 +1690,33 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
     [v29 setHeightClass:3];
     [v29 setGroupStyle:0];
     v30 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:3];
-    v31 = [v16 type];
+    type = [musicItem type];
     v32 = 0;
-    if (v31 <= 2)
+    if (type <= 2)
     {
-      v32 = PKLocalizedTicketingString(&off_1E8011678[v31]->isa);
+      v32 = PKLocalizedTicketingString(&off_1E8011678[type]->isa);
     }
 
     [v30 setHeader:v32];
-    if (([v16 appleCurated] & 1) == 0)
+    if (([musicItem appleCurated] & 1) == 0)
     {
       v33 = PKLocalizedTicketingString(&cfstr_TileMusicHeade_2.isa);
       [v30 setHeaderActionTitle:v33];
     }
 
-    v34 = [v16 displayName];
-    [v30 setFooterActionTitle:v34];
+    displayName = [musicItem displayName];
+    [v30 setFooterActionTitle:displayName];
 
-    v35 = [v16 itemDescription];
-    [v30 setFooter:v35];
+    itemDescription = [musicItem itemDescription];
+    [v30 setFooter:itemDescription];
 
     v36 = objc_alloc(MEMORY[0x1E69B8A90]);
     v45 = v26;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
-    v13 = [v36 _initWithMetadata:v29 childTiles:v37 stateIdentifier:v27 state:v30 inProgress:0];
+    v13 = [v36 _initWithMetadata:v29 childTiles:v37 stateIdentifier:uUIDString2 state:v30 inProgress:0];
 
-    v10 = v43;
-    v11 = v44;
+    identifierCopy = v43;
+    groupIdentifierCopy = v44;
   }
 
   else
@@ -1727,11 +1727,11 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
   return v13;
 }
 
-- (void)reloadMusicInformationForDescriptor:(id)a3 context:(int64_t)a4 completion:(id)a5
+- (void)reloadMusicInformationForDescriptor:(id)descriptor context:(int64_t)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateMusicTile:v8])
+  descriptorCopy = descriptor;
+  completionCopy = completion;
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateMusicTile:descriptorCopy])
   {
     objc_initWeak(&location, self);
     v10 = objc_alloc_init(MEMORY[0x1E69B8658]);
@@ -1740,10 +1740,10 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
     v25[2] = __91__PKPassSemanticTileFactory_Event__reloadMusicInformationForDescriptor_context_completion___block_invoke;
     v25[3] = &unk_1E8011458;
     objc_copyWeak(v28, &location);
-    v11 = v8;
+    v11 = descriptorCopy;
     v26 = v11;
-    v28[1] = a4;
-    v27 = v9;
+    v28[1] = context;
+    v27 = completionCopy;
     [v10 addOperation:v25];
     v23[0] = 0;
     v23[1] = v23;
@@ -1760,7 +1760,7 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
     v20 = v12;
     v21 = v23;
     [v10 addOperation:v19];
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __91__PKPassSemanticTileFactory_Event__reloadMusicInformationForDescriptor_context_completion___block_invoke_5;
@@ -1768,8 +1768,8 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
     objc_copyWeak(v18, &location);
     v17 = v23;
     v16 = v12;
-    v18[1] = a4;
-    v14 = [v10 evaluateWithInput:v13 completion:v15];
+    v18[1] = context;
+    v14 = [v10 evaluateWithInput:null completion:v15];
 
     objc_destroyWeak(v18);
     objc_destroyWeak(&v22);
@@ -1779,9 +1779,9 @@ uint64_t __112__PKPassSemanticTileFactory_Event__findMyFriendsGroupTileFromFoote
     objc_destroyWeak(&location);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1884,15 +1884,15 @@ void __91__PKPassSemanticTileFactory_Event__reloadMusicInformationForDescriptor_
   }
 }
 
-- (void)_fetchLookupItemsFromDescriptor:(id)a3 completion:(id)a4
+- (void)_fetchLookupItemsFromDescriptor:(id)descriptor completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  descriptorCopy = descriptor;
   v7 = 1;
   v8 = [[PKAMSMediaRequestArtworkConfiguration alloc] initWithArtworkSize:0 artworkCropType:1 animatedArtworkType:2048.0, 2048.0];
-  v9 = [v6 stringsForSemanticKey:*MEMORY[0x1E69BBF20]];
-  v10 = [v6 stringsForSemanticKey:*MEMORY[0x1E69BBF18]];
-  v11 = [v6 stringsForSemanticKey:*MEMORY[0x1E69BBF60]];
+  v9 = [descriptorCopy stringsForSemanticKey:*MEMORY[0x1E69BBF20]];
+  v10 = [descriptorCopy stringsForSemanticKey:*MEMORY[0x1E69BBF18]];
+  v11 = [descriptorCopy stringsForSemanticKey:*MEMORY[0x1E69BBF60]];
 
   v12 = v11;
   if (![v11 count])
@@ -1927,7 +1927,7 @@ void __91__PKPassSemanticTileFactory_Event__reloadMusicInformationForDescriptor_
     v19[2] = __79__PKPassSemanticTileFactory_Event___fetchLookupItemsFromDescriptor_completion___block_invoke;
     v19[3] = &unk_1E8010DF8;
     v20 = v16;
-    v21 = v5;
+    v21 = completionCopy;
     v17 = v16;
     v18 = [(PKAMSMediaItemsService *)v17 fetchItemsWithRequest:v15 completion:v19];
   }
@@ -1943,53 +1943,53 @@ void __79__PKPassSemanticTileFactory_Event___fetchLookupItemsFromDescriptor_comp
   (*(v2 + 16))(v2, v3);
 }
 
-- (BOOL)descriptorCanCreateMusicTile:(id)a3
+- (BOOL)descriptorCanCreateMusicTile:(id)tile
 {
-  v4 = a3;
-  v5 = [(PKPassSemanticTileFactory *)self featureOverrides];
-  if (v5 && (v6 = v5, -[PKPassSemanticTileFactory featureOverrides](self, "featureOverrides"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isIntegrationTypeSupported:2], v7, v6, !v8))
+  tileCopy = tile;
+  featureOverrides = [(PKPassSemanticTileFactory *)self featureOverrides];
+  if (featureOverrides && (v6 = featureOverrides, -[PKPassSemanticTileFactory featureOverrides](self, "featureOverrides"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isIntegrationTypeSupported:2], v7, v6, !v8))
   {
     v12 = 0;
   }
 
   else
   {
-    v9 = [v4 stringsForSemanticKey:*MEMORY[0x1E69BBF20]];
-    v10 = [v4 stringsForSemanticKey:*MEMORY[0x1E69BBF18]];
-    v11 = [v4 stringsForSemanticKey:*MEMORY[0x1E69BBF60]];
+    v9 = [tileCopy stringsForSemanticKey:*MEMORY[0x1E69BBF20]];
+    v10 = [tileCopy stringsForSemanticKey:*MEMORY[0x1E69BBF18]];
+    v11 = [tileCopy stringsForSemanticKey:*MEMORY[0x1E69BBF60]];
     v12 = [v9 count] || objc_msgSend(v10, "count") || objc_msgSend(v11, "count") != 0;
   }
 
   return v12;
 }
 
-- (id)fetchDashboardTilesFromFlightTilesDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchDashboardTilesFromFlightTilesDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__PKPassSemanticTileFactory_Flight__fetchDashboardTilesFromFlightTilesDescriptor_queueUpdates___block_invoke;
   aBlock[3] = &unk_1E80110E0;
   objc_copyWeak(&v16, &location);
-  v7 = v6;
+  v7 = descriptorCopy;
   v15 = v7;
   v8 = _Block_copy(aBlock);
   v9 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"mapsContentIdentifier" descriptor:v7 context:1];
-  if (!v9 && v4)
+  if (!v9 && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self reloadMapsInformationForDescriptor:v7 contentIdentifier:@"mapsContentIdentifier" tileContext:1 completion:v8];
   }
 
   v10 = [(PKPassSemanticTileFactory *)self cachedContentForIdentifier:@"exploreGuidesContentIdentifier" descriptor:v7 context:1];
-  v11 = [v10 response];
-  if (!v11 && v4)
+  response = [v10 response];
+  if (!response && updatesCopy)
   {
     [(PKPassSemanticTileFactory *)self fetchExploreGuidesForDescriptor:v7 contentIdentifier:@"exploreGuidesContentIdentifier" tileContext:1 completion:v8];
   }
 
-  v12 = [(PKPassSemanticTileFactory *)self _boardingPassDashboardTilesForDescriptor:v7 mapsItem:v9 exploreGuidesResponse:v11];
+  v12 = [(PKPassSemanticTileFactory *)self _boardingPassDashboardTilesForDescriptor:v7 mapsItem:v9 exploreGuidesResponse:response];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -2008,27 +2008,27 @@ void __95__PKPassSemanticTileFactory_Flight__fetchDashboardTilesFromFlightTilesD
   }
 }
 
-- (id)_boardingPassDashboardTilesForDescriptor:(id)a3 mapsItem:(id)a4 exploreGuidesResponse:(id)a5
+- (id)_boardingPassDashboardTilesForDescriptor:(id)descriptor mapsItem:(id)item exploreGuidesResponse:(id)response
 {
   v113[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v98 = a4;
-  v99 = a5;
+  descriptorCopy = descriptor;
+  itemCopy = item;
+  responseCopy = response;
   v102 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v101 = [v7 additionalTilesContentSupplier];
-  v8 = [v101 flight];
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  flight = [additionalTilesContentSupplier flight];
 
   v9 = 0x1E69B8000;
   v10 = 0x1E69B8000uLL;
-  v103 = v7;
-  if (v8)
+  v103 = descriptorCopy;
+  if (flight)
   {
     v11 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:@"PKPassTileContextDashboard.shareTileIdentifier" context:1];
     [v11 setPreferredStyle:0];
     v12 = [MEMORY[0x1E69B8AC0] createWithPreferredStyle:4 adaptorProvider:&__block_literal_global_130];
     [v12 setFullBleed:1];
-    v13 = [objc_alloc(MEMORY[0x1E69B8D10]) _initForFlightSharing];
-    v113[0] = v13;
+    _initForFlightSharing = [objc_alloc(MEMORY[0x1E69B8D10]) _initForFlightSharing];
+    v113[0] = _initForFlightSharing;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v113 count:1];
     [v12 setActions:v14];
 
@@ -2063,14 +2063,14 @@ void __95__PKPassSemanticTileFactory_Flight__fetchDashboardTilesFromFlightTilesD
     [v23 setPreferredStyle:5];
     v24 = PKUIImageNamed(@"MapsArrow");
     v25 = objc_alloc(MEMORY[0x1E69B8948]);
-    v26 = [v24 CGImage];
+    cGImage = [v24 CGImage];
     [v24 scale];
-    v27 = [v25 initWithCGImage:v26 scale:1 orientation:?];
+    v27 = [v25 initWithCGImage:cGImage scale:1 orientation:?];
     v28 = [MEMORY[0x1E69B8AA8] createImageWithImage:v27 tintColor:0 hasColorContent:1];
     [v23 setIcon:v28];
 
-    v29 = [v101 mapsTileTitle];
-    v30 = [MEMORY[0x1E69B8AC8] createWithContent:v29];
+    mapsTileTitle = [additionalTilesContentSupplier mapsTileTitle];
+    v30 = [MEMORY[0x1E69B8AC8] createWithContent:mapsTileTitle];
     [v23 setTitle:v30];
 
     v31 = MEMORY[0x1E69B8AC8];
@@ -2078,10 +2078,10 @@ void __95__PKPassSemanticTileFactory_Flight__fetchDashboardTilesFromFlightTilesD
     v33 = [v31 createWithContent:v32];
     [v23 setFooter:v33];
 
-    if ([v98 isValid])
+    if ([itemCopy isValid])
     {
-      v34 = [v98 mapItem];
-      v35 = [MEMORY[0x1E696F270] urlForMapItem:v34 options:0];
+      mapItem = [itemCopy mapItem];
+      v35 = [MEMORY[0x1E696F270] urlForMapItem:mapItem options:0];
       v36 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithExternalURL:v35 title:0];
       v111 = v36;
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v111 count:1];
@@ -2093,7 +2093,7 @@ void __95__PKPassSemanticTileFactory_Flight__fetchDashboardTilesFromFlightTilesD
     else
     {
       v38 = 0x1E69B8000uLL;
-      if (!v98)
+      if (!itemCopy)
       {
 LABEL_9:
         v39 = [objc_alloc(*(v38 + 2704)) _initWithMetadata:v22 childTiles:0 stateIdentifier:@"PKPassTileContextDashboard.mapsTileIdentifier" state:v23 inProgress:0];
@@ -2105,8 +2105,8 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v34 = [MEMORY[0x1E69B8AA8] createWithSymbolName:@"mappin.circle.fill" tintColor:23];
-      [v23 setIcon:v34];
+      mapItem = [MEMORY[0x1E69B8AA8] createWithSymbolName:@"mappin.circle.fill" tintColor:23];
+      [v23 setIcon:mapItem];
     }
 
     goto LABEL_9;
@@ -2129,9 +2129,9 @@ LABEL_10:
 
   v48 = PKUIImageNamed(@"AirTag");
   v49 = objc_alloc(MEMORY[0x1E69B8948]);
-  v50 = [v48 CGImage];
+  cGImage2 = [v48 CGImage];
   [v48 scale];
-  v51 = [v49 initWithCGImage:v50 scale:1 orientation:?];
+  v51 = [v49 initWithCGImage:cGImage2 scale:1 orientation:?];
   v52 = [MEMORY[0x1E69B8AA8] createImageWithImage:v51 tintColor:0 hasColorContent:1];
   [v41 setIcon:v52];
 
@@ -2161,12 +2161,12 @@ LABEL_10:
   {
     v61 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:@"PKPassTileContextDashboard.airlineUpgradesTileIdentifier" context:1];
     [v61 setPreferredStyle:0];
-    v97 = [v101 transitProviderName];
-    v62 = [v101 transitProviderIcon];
+    transitProviderName = [additionalTilesContentSupplier transitProviderName];
+    transitProviderIcon = [additionalTilesContentSupplier transitProviderIcon];
     v63 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
     [v63 setPreferredStyle:4];
     v64 = MEMORY[0x1E69B8AC8];
-    v65 = PKLocalizedFlightString(&cfstr_PassDashboardF_4.isa, &stru_1F3BD5BF0.isa, v97);
+    v65 = PKLocalizedFlightString(&cfstr_PassDashboardF_4.isa, &stru_1F3BD5BF0.isa, transitProviderName);
     v66 = [v64 createWithContent:v65];
     [v63 setTitle:v66];
 
@@ -2175,7 +2175,7 @@ LABEL_10:
     v69 = [v67 createWithContent:v68];
     [v63 setFooter:v69];
 
-    v70 = [MEMORY[0x1E69B8AA8] createImageWithImage:v62 tintColor:0 hasColorContent:1];
+    v70 = [MEMORY[0x1E69B8AA8] createImageWithImage:transitProviderIcon tintColor:0 hasColorContent:1];
     [v63 setIcon:v70];
 
     v71 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithContext:2];
@@ -2202,23 +2202,23 @@ LABEL_10:
     v60 = v102;
   }
 
-  v79 = v99;
-  v80 = v101;
-  if (v99)
+  v79 = responseCopy;
+  v80 = additionalTilesContentSupplier;
+  if (responseCopy)
   {
     v81 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:@"PKPassTileContextDashboard.exploreGuidesTileIdentifier" context:1];
     [v81 setPreferredStyle:0];
     v82 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v83 = [v101 destinationAirportCode];
-    v84 = [v101 destinationCityName];
-    v85 = [v82 initWithFormat:@"%@.%@", v83, v84];
+    destinationAirportCode = [additionalTilesContentSupplier destinationAirportCode];
+    destinationCityName = [additionalTilesContentSupplier destinationCityName];
+    v85 = [v82 initWithFormat:@"%@.%@", destinationAirportCode, destinationCityName];
 
     v86 = MEMORY[0x1E69B8AC0];
     v104[0] = MEMORY[0x1E69E9820];
     v104[1] = 3221225472;
     v104[2] = __109__PKPassSemanticTileFactory_Flight___boardingPassDashboardTilesForDescriptor_mapsItem_exploreGuidesResponse___block_invoke_2;
     v104[3] = &unk_1E801B320;
-    v105 = v99;
+    v105 = responseCopy;
     v106 = v85;
     v87 = v85;
     v88 = [v86 createWithPreferredStyle:4 adaptorProvider:v104];
@@ -2238,10 +2238,10 @@ LABEL_10:
     v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v107 count:1];
     v94 = [v92 _initWithMetadata:v90 childTiles:v93 stateIdentifier:@"PKPassTileContextDashboard.exploreGuidesGroupTileIdentifier" state:v91 inProgress:0];
 
-    v80 = v101;
+    v80 = additionalTilesContentSupplier;
     [v60 addObject:v94];
 
-    v79 = v99;
+    v79 = responseCopy;
   }
 
   return v60;
@@ -2271,12 +2271,12 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
   return v5;
 }
 
-- (BOOL)descriptorCanCreateAirlineUpgradesTile:(id)a3
+- (BOOL)descriptorCanCreateAirlineUpgradesTile:(id)tile
 {
-  v4 = a3;
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingPassIssuerActionsTileGroup:v4])
+  tileCopy = tile;
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingPassIssuerActionsTileGroup:tileCopy])
   {
-    v5 = [(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingInformationTiles:v4]|| [(PKPassSemanticTileFactory *)self descriptorCanCreateAdditionalServicesTile:v4];
+    v5 = [(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingInformationTiles:tileCopy]|| [(PKPassSemanticTileFactory *)self descriptorCanCreateAdditionalServicesTile:tileCopy];
   }
 
   else
@@ -2287,35 +2287,35 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
   return v5;
 }
 
-- (id)fetchDashboardAirlineUpgradesTilesFromFlightTilesDescriptor:(id)a3
+- (id)fetchDashboardAirlineUpgradesTilesFromFlightTilesDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingPassIssuerActionsTileGroup:v4])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingPassIssuerActionsTileGroup:descriptorCopy])
   {
-    v6 = [(PKPassSemanticTileFactory *)self _boardingPassIssuerActionTilesForDescriptor:v4];
+    v6 = [(PKPassSemanticTileFactory *)self _boardingPassIssuerActionTilesForDescriptor:descriptorCopy];
     v7 = [(PKPassSemanticTileFactory *)self issuerActionsGroupTileFromTiles:v6 groupIdentifier:@"PKPassTileContextDashboardDetails.issuerActionGroupTileIdentifier" context:2];
     [v5 addObject:v7];
   }
 
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateLoungeTile:v4])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateLoungeTile:descriptorCopy])
   {
-    v8 = [(PKPassSemanticTileFactory *)self _loungeTileFromDescriptor:v4 groupIdentifier:@"PKPassTileContextDashboardDetails.loungeGroupTileIdentifier" context:2];
+    v8 = [(PKPassSemanticTileFactory *)self _loungeTileFromDescriptor:descriptorCopy groupIdentifier:@"PKPassTileContextDashboardDetails.loungeGroupTileIdentifier" context:2];
     [v5 addObject:v8];
   }
 
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingInformationTiles:v4])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingInformationTiles:descriptorCopy])
   {
-    v9 = [(PKPassSemanticTileFactory *)self _boardingInformationGroupTileFromDescriptor:v4 groupIdentifier:@"PKPassTileContextDashboardDetails.boardingInformationGroupTileIdentifier" context:2];
+    v9 = [(PKPassSemanticTileFactory *)self _boardingInformationGroupTileFromDescriptor:descriptorCopy groupIdentifier:@"PKPassTileContextDashboardDetails.boardingInformationGroupTileIdentifier" context:2];
     [v5 addObject:v9];
   }
 
-  v10 = [(PKPassSemanticTileFactory *)self _baggageInformationGroupTileFromDescriptor:v4 groupIdentifier:@"PKPassTileContextDashboardDetails.baggageInformationGroupTileIdentifier" context:2];
+  v10 = [(PKPassSemanticTileFactory *)self _baggageInformationGroupTileFromDescriptor:descriptorCopy groupIdentifier:@"PKPassTileContextDashboardDetails.baggageInformationGroupTileIdentifier" context:2];
   [v5 addObject:v10];
 
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateAdditionalServicesTile:v4])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateAdditionalServicesTile:descriptorCopy])
   {
-    v11 = [(PKPassSemanticTileFactory *)self _additionalServicesGroupTileFromDescriptor:v4 groupIdentifier:@"PKPassTileContextDashboardDetails.additionalServicesGroupTileIdentifier" context:2];
+    v11 = [(PKPassSemanticTileFactory *)self _additionalServicesGroupTileFromDescriptor:descriptorCopy groupIdentifier:@"PKPassTileContextDashboardDetails.additionalServicesGroupTileIdentifier" context:2];
     [v5 addObject:v11];
   }
 
@@ -2324,17 +2324,17 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
   return v12;
 }
 
-- (id)_airlineUpgradesTileFooterTextForDescriptor:(id)a3
+- (id)_airlineUpgradesTileFooterTextForDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingPassIssuerActionsTileGroup:v4])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingPassIssuerActionsTileGroup:descriptorCopy])
   {
     v6 = PKLocalizedFlightString(&cfstr_PassDashboardF_5.isa);
     [v5 addObject:v6];
   }
 
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingInformationTiles:v4])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateBoardingInformationTiles:descriptorCopy])
   {
     v7 = PKLocalizedFlightString(&cfstr_PassDashboardF_6.isa);
     [v5 addObject:v7];
@@ -2343,7 +2343,7 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
   v8 = PKLocalizedFlightString(&cfstr_PassDashboardD.isa);
   [v5 addObject:v8];
 
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateAdditionalServicesTile:v4])
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateAdditionalServicesTile:descriptorCopy])
   {
     v9 = PKLocalizedFlightString(&cfstr_PassDashboardD_0.isa);
     [v5 addObject:v9];
@@ -2361,17 +2361,17 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
   return v11;
 }
 
-- (BOOL)descriptorCanCreateExploreGuidesTile:(id)a3
+- (BOOL)descriptorCanCreateExploreGuidesTile:(id)tile
 {
-  v3 = [a3 additionalTilesContentSupplier];
-  v4 = [v3 destinationLocation];
-  if (v4)
+  additionalTilesContentSupplier = [tile additionalTilesContentSupplier];
+  destinationLocation = [additionalTilesContentSupplier destinationLocation];
+  if (destinationLocation)
   {
-    v5 = [v3 destinationAirportCode];
-    if (v5)
+    destinationAirportCode = [additionalTilesContentSupplier destinationAirportCode];
+    if (destinationAirportCode)
     {
-      v6 = [v3 destinationCityName];
-      v7 = v6 != 0;
+      destinationCityName = [additionalTilesContentSupplier destinationCityName];
+      v7 = destinationCityName != 0;
     }
 
     else
@@ -2388,12 +2388,12 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
   return v7;
 }
 
-- (void)fetchExploreGuidesForDescriptor:(id)a3 contentIdentifier:(id)a4 tileContext:(int64_t)a5 completion:(id)a6
+- (void)fetchExploreGuidesForDescriptor:(id)descriptor contentIdentifier:(id)identifier tileContext:(int64_t)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateExploreGuidesTile:v10])
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateExploreGuidesTile:descriptorCopy])
   {
     objc_initWeak(location, self);
     v13 = objc_alloc_init(MEMORY[0x1E69B8658]);
@@ -2402,24 +2402,24 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
     v42[2] = __110__PKPassSemanticTileFactory_Flight__fetchExploreGuidesForDescriptor_contentIdentifier_tileContext_completion___block_invoke;
     v42[3] = &unk_1E801B348;
     objc_copyWeak(v46, location);
-    v14 = v11;
+    v14 = identifierCopy;
     v43 = v14;
-    v15 = v10;
+    v15 = descriptorCopy;
     v44 = v15;
-    v46[1] = a5;
-    v45 = v12;
+    v46[1] = context;
+    v45 = completionCopy;
     [v13 addOperation:v42];
-    v29 = v11;
-    v30 = a5;
-    v16 = [v15 additionalTilesContentSupplier];
+    v29 = identifierCopy;
+    contextCopy = context;
+    additionalTilesContentSupplier = [v15 additionalTilesContentSupplier];
     v17 = objc_alloc(MEMORY[0x1E696F1E0]);
-    v18 = [v16 destinationLocation];
-    [v18 coordinate];
+    destinationLocation = [additionalTilesContentSupplier destinationLocation];
+    [destinationLocation coordinate];
     v20 = v19;
     v22 = v21;
-    v23 = [v16 destinationAirportCode];
-    v24 = [v16 destinationCityName];
-    v25 = [v17 initWithReferenceLocation:v23 airportCode:v24 cityName:2 supportedPunchoutType:{v20, v22}];
+    destinationAirportCode = [additionalTilesContentSupplier destinationAirportCode];
+    destinationCityName = [additionalTilesContentSupplier destinationCityName];
+    v25 = [v17 initWithReferenceLocation:destinationAirportCode airportCode:destinationCityName cityName:2 supportedPunchoutType:{v20, v22}];
 
     v40[0] = 0;
     v40[1] = v40;
@@ -2436,7 +2436,7 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
     v37 = v26;
     v38 = v40;
     [v13 addOperation:v36];
-    v27 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __110__PKPassSemanticTileFactory_Flight__fetchExploreGuidesForDescriptor_contentIdentifier_tileContext_completion___block_invoke_4;
@@ -2445,8 +2445,8 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
     v34 = v40;
     v32 = v14;
     v33 = v15;
-    v35[1] = v30;
-    v28 = [v13 evaluateWithInput:v27 completion:v31];
+    v35[1] = contextCopy;
+    v28 = [v13 evaluateWithInput:null completion:v31];
 
     objc_destroyWeak(v35);
     objc_destroyWeak(&v39);
@@ -2454,12 +2454,12 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__109__PKPassSemanticTileFactory_F
 
     objc_destroyWeak(v46);
     objc_destroyWeak(location);
-    v11 = v29;
+    identifierCopy = v29;
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -2560,10 +2560,10 @@ void __110__PKPassSemanticTileFactory_Flight__fetchExploreGuidesForDescriptor_co
   }
 }
 
-- (BOOL)descriptorCanCreateBoardingPassIssuerActionsTileGroup:(id)a3
+- (BOOL)descriptorCanCreateBoardingPassIssuerActionsTileGroup:(id)group
 {
-  v4 = [a3 additionalTilesContentSupplier];
-  v5 = PKFlightTileIssuerActionForTypeInDescriptor(0, v4);
+  additionalTilesContentSupplier = [group additionalTilesContentSupplier];
+  v5 = PKFlightTileIssuerActionForTypeInDescriptor(0, additionalTilesContentSupplier);
 
   if (v5)
   {
@@ -2580,30 +2580,30 @@ void __110__PKPassSemanticTileFactory_Flight__fetchExploreGuidesForDescriptor_co
     }
 
     ++v7;
-    v9 = [a3 additionalTilesContentSupplier];
-    v10 = PKFlightTileIssuerActionForTypeInDescriptor(v8 + 1, v9);
+    additionalTilesContentSupplier2 = [group additionalTilesContentSupplier];
+    v10 = PKFlightTileIssuerActionForTypeInDescriptor(v8 + 1, additionalTilesContentSupplier2);
   }
 
   while (!v10);
   return v8 < 7;
 }
 
-- (id)_boardingPassIssuerActionTilesForDescriptor:(id)a3
+- (id)_boardingPassIssuerActionTilesForDescriptor:(id)descriptor
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  descriptorCopy = descriptor;
   v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
   for (i = 0; i != 8; ++i)
   {
-    v5 = [v3 additionalTilesContentSupplier];
-    v6 = PKFlightTileIssuerActionForTypeInDescriptor(i, v5);
+    additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+    v6 = PKFlightTileIssuerActionForTypeInDescriptor(i, additionalTilesContentSupplier);
 
     if (v6)
     {
-      v7 = [MEMORY[0x1E696AFB0] UUID];
-      v8 = [v7 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v9 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:v8 context:2];
+      v9 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:uUIDString context:2];
       [v9 setPreferredStyle:1];
       v10 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
       [v10 setPreferredStyle:5];
@@ -2689,7 +2689,7 @@ void __110__PKPassSemanticTileFactory_Flight__fetchExploreGuidesForDescriptor_co
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
       [v10 setActions:v23];
 
-      v24 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v9 childTiles:0 stateIdentifier:v8 state:v10 inProgress:0];
+      v24 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v9 childTiles:0 stateIdentifier:uUIDString state:v10 inProgress:0];
       v25 = qword_1E801B438[i];
       [v24 setAnalyticsIdentifier:off_1E801B3F8[i]];
       [v24 setAxID:*v25];
@@ -2700,24 +2700,24 @@ void __110__PKPassSemanticTileFactory_Flight__fetchExploreGuidesForDescriptor_co
   return v27;
 }
 
-- (BOOL)descriptorCanCreateLoungeTile:(id)a3
+- (BOOL)descriptorCanCreateLoungeTile:(id)tile
 {
-  v3 = [a3 stringsForSemanticKey:*MEMORY[0x1E69BBF38]];
+  v3 = [tile stringsForSemanticKey:*MEMORY[0x1E69BBF38]];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (id)_loungeTileFromDescriptor:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5
+- (id)_loungeTileFromDescriptor:(id)descriptor groupIdentifier:(id)identifier context:(int64_t)context
 {
   v31[1] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69B8AB0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 _createMetadataForType:0 identifier:@"PKPassTileContextDashboardDetails.loungeMapTileIdentifier" context:a5];
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  v10 = [v7 _createMetadataForType:0 identifier:@"PKPassTileContextDashboardDetails.loungeMapTileIdentifier" context:context];
   [v10 setPreferredStyle:0];
-  v11 = [v9 stringsForSemanticKey:*MEMORY[0x1E69BBF38]];
-  v12 = [v9 stringForSemanticKey:*MEMORY[0x1E69BBD90]];
+  v11 = [descriptorCopy stringsForSemanticKey:*MEMORY[0x1E69BBF38]];
+  v12 = [descriptorCopy stringForSemanticKey:*MEMORY[0x1E69BBD90]];
 
   v13 = MEMORY[0x1E69B8AC0];
   v25 = MEMORY[0x1E69E9820];
@@ -2731,7 +2731,7 @@ void __110__PKPassSemanticTileFactory_Flight__fetchExploreGuidesForDescriptor_co
   v16 = [v13 createWithPreferredStyle:4 adaptorProvider:&v25];
   [v16 setFullBleed:{1, v25, v26, v27, v28}];
   v17 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v10 childTiles:0 stateIdentifier:@"PKPassTileContextDashboardDetails.loungeMapTileIdentifier" state:v16 inProgress:0];
-  v18 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v8 context:a5];
+  v18 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:identifierCopy context:context];
   [v18 setPreferredStyle:0];
   [v18 setShowInPrearm:0];
   [v18 setColumns:1];
@@ -2746,7 +2746,7 @@ void __110__PKPassSemanticTileFactory_Flight__fetchExploreGuidesForDescriptor_co
   v21 = objc_alloc(MEMORY[0x1E69B8A90]);
   v31[0] = v17;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
-  v23 = [v21 _initWithMetadata:v18 childTiles:v22 stateIdentifier:v8 state:v19 inProgress:0];
+  v23 = [v21 _initWithMetadata:v18 childTiles:v22 stateIdentifier:identifierCopy state:v19 inProgress:0];
 
   return v23;
 }
@@ -2762,37 +2762,37 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   return v5;
 }
 
-- (BOOL)descriptorCanCreateBoardingInformationTiles:(id)a3
+- (BOOL)descriptorCanCreateBoardingInformationTiles:(id)tiles
 {
-  v3 = [a3 additionalTilesContentSupplier];
-  v4 = [v3 upgradeURL];
-  if (v4)
+  additionalTilesContentSupplier = [tiles additionalTilesContentSupplier];
+  upgradeURL = [additionalTilesContentSupplier upgradeURL];
+  if (upgradeURL)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 changeSeatURL];
-    v5 = v6 != 0;
+    changeSeatURL = [additionalTilesContentSupplier changeSeatURL];
+    v5 = changeSeatURL != 0;
   }
 
   return v5;
 }
 
-- (id)_boardingInformationGroupTileFromDescriptor:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5
+- (id)_boardingInformationGroupTileFromDescriptor:(id)descriptor groupIdentifier:(id)identifier context:(int64_t)context
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
   v56 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [v7 semantics];
-  v10 = [v7 additionalTilesContentSupplier];
+  semantics = [descriptorCopy semantics];
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v51 = [v7 stringsForSemanticKey:*MEMORY[0x1E69BBF40]];
-  LOBYTE(a4) = PKPassengerCapabilitiesFromStrings();
+  v51 = [descriptorCopy stringsForSemanticKey:*MEMORY[0x1E69BBF40]];
+  LOBYTE(identifier) = PKPassengerCapabilitiesFromStrings();
   v12 = [PKTileContextDetailsTableViewEntry alloc];
   v13 = PKLocalizedFlightString(&cfstr_PassDashboardD_2.isa);
-  if ((a4 & 8) != 0)
+  if ((identifier & 8) != 0)
   {
     v14 = @"PASS_DASHBOARD_DETAILS_TILE_INCLUDED_LABEL";
   }
@@ -2806,24 +2806,24 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   v16 = [(PKTileContextDetailsTableViewEntry *)v12 initWithTitle:v13 detail:v15 style:0 axID:@"priorityBoarding"];
   [v11 addObject:v16];
 
-  v17 = [v10 upgradeURL];
-  if (v17 && [v11 count])
+  upgradeURL = [additionalTilesContentSupplier upgradeURL];
+  if (upgradeURL && [v11 count])
   {
     v18 = [PKTileContextDetailsTableViewEntry alloc];
     v19 = PKLocalizedFlightString(&cfstr_PassDashboardD_5.isa);
-    v20 = [(PKTileContextDetailsTableViewEntry *)v18 initWithTitle:v19 actionURL:v17 axID:@"changeSeat"];
+    v20 = [(PKTileContextDetailsTableViewEntry *)v18 initWithTitle:v19 actionURL:upgradeURL axID:@"changeSeat"];
     [v11 addObject:v20];
 
-    v21 = [(PKPassSemanticTileFactory *)self tableViewTileFromEntries:v11 tileIdentifier:@"PKPassTileContextDashboardDetails.priorityBoardingTileIdentifier" context:a5];
+    v21 = [(PKPassSemanticTileFactory *)self tableViewTileFromEntries:v11 tileIdentifier:@"PKPassTileContextDashboardDetails.priorityBoardingTileIdentifier" context:context];
     [v56 addObject:v21];
   }
 
-  v46 = self;
-  v50 = v17;
+  selfCopy = self;
+  v50 = upgradeURL;
   v52 = v11;
-  v22 = v8;
+  v22 = identifierCopy;
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v24 = [v7 stringForSemanticKey:*MEMORY[0x1E69BBE98]];
+  v24 = [descriptorCopy stringForSemanticKey:*MEMORY[0x1E69BBE98]];
   if (v24)
   {
     v25 = [PKTileContextDetailsTableViewEntry alloc];
@@ -2833,36 +2833,36 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   }
 
   v49 = v24;
-  v54 = v9;
-  v48 = [v9 objectForKeyedSubscript:{*MEMORY[0x1E69BBCB0], v46}];
+  v54 = semantics;
+  v48 = [semantics objectForKeyedSubscript:{*MEMORY[0x1E69BBCB0], selfCopy}];
   v28 = [objc_alloc(MEMORY[0x1E69B91D8]) initFromSemantic:v48];
   v29 = [v28 firstSeatContainingAttributes:3];
-  v30 = [v29 airlineSeat];
-  if (v30)
+  airlineSeat = [v29 airlineSeat];
+  if (airlineSeat)
   {
     v31 = [PKTileContextDetailsTableViewEntry alloc];
     v32 = PKLocalizedFlightString(&cfstr_PassDashboardD_7.isa);
-    v33 = [(PKTileContextDetailsTableViewEntry *)v31 initWithTitle:v32 detail:v30 style:0 axID:@"seat"];
+    v33 = [(PKTileContextDetailsTableViewEntry *)v31 initWithTitle:v32 detail:airlineSeat style:0 axID:@"seat"];
     [v23 addObject:v33];
   }
 
-  v53 = v10;
-  v34 = [v10 changeSeatURL];
+  v53 = additionalTilesContentSupplier;
+  changeSeatURL = [additionalTilesContentSupplier changeSeatURL];
   v35 = v56;
-  if (v34 && [v23 count])
+  if (changeSeatURL && [v23 count])
   {
     v36 = [PKTileContextDetailsTableViewEntry alloc];
     v37 = PKLocalizedFlightString(&cfstr_PassDashboardD_8.isa);
-    v38 = [(PKTileContextDetailsTableViewEntry *)v36 initWithTitle:v37 actionURL:v34 axID:@"changeSeat"];
+    v38 = [(PKTileContextDetailsTableViewEntry *)v36 initWithTitle:v37 actionURL:changeSeatURL axID:@"changeSeat"];
     [v23 addObject:v38];
 
-    v39 = [v47 tableViewTileFromEntries:v23 tileIdentifier:@"PKPassTileContextDashboardDetails.classSeatUpgradeTileIdentifier" context:a5];
+    v39 = [v47 tableViewTileFromEntries:v23 tileIdentifier:@"PKPassTileContextDashboardDetails.classSeatUpgradeTileIdentifier" context:context];
     [v56 addObject:v39];
   }
 
   if ([v56 count])
   {
-    v40 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v22 context:a5];
+    v40 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v22 context:context];
     [v40 setPreferredStyle:0];
     [v40 setShowInPrearm:0];
     [v40 setColumns:1];
@@ -2889,13 +2889,13 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   return v44;
 }
 
-- (id)_baggageInformationGroupTileFromDescriptor:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5
+- (id)_baggageInformationGroupTileFromDescriptor:(id)descriptor groupIdentifier:(id)identifier context:(int64_t)context
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v52 = a4;
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v50 = [v7 stringsForSemanticKey:*MEMORY[0x1E69BBF40]];
+  v50 = [descriptorCopy stringsForSemanticKey:*MEMORY[0x1E69BBF40]];
   v9 = PKPassengerCapabilitiesFromStrings();
   v10 = [PKTileContextDetailsTableViewEntry alloc];
   v11 = PKLocalizedFlightString(&cfstr_PassDashboardD_11.isa);
@@ -2929,39 +2929,39 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   v19 = [(PKTileContextDetailsTableViewEntry *)v15 initWithTitle:v16 detail:v18 style:0 axID:@"carryon"];
   [v8 addObject:v19];
 
-  v51 = v7;
-  v20 = [v7 additionalTilesContentSupplier];
-  v21 = [v20 purchaseAdditionalBaggageURL];
-  if (v21)
+  v51 = descriptorCopy;
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  purchaseAdditionalBaggageURL = [additionalTilesContentSupplier purchaseAdditionalBaggageURL];
+  if (purchaseAdditionalBaggageURL)
   {
     v22 = [PKTileContextDetailsTableViewEntry alloc];
     v23 = PKLocalizedFlightString(&cfstr_PassDashboardD_13.isa);
-    v24 = [(PKTileContextDetailsTableViewEntry *)v22 initWithTitle:v23 actionURL:v21 axID:@"addBags"];
+    v24 = [(PKTileContextDetailsTableViewEntry *)v22 initWithTitle:v23 actionURL:purchaseAdditionalBaggageURL axID:@"addBags"];
     [v8 addObject:v24];
   }
 
-  v49 = v21;
-  v25 = [v20 trackBagsURL];
-  if (v25)
+  v49 = purchaseAdditionalBaggageURL;
+  trackBagsURL = [additionalTilesContentSupplier trackBagsURL];
+  if (trackBagsURL)
   {
     v26 = [PKTileContextDetailsTableViewEntry alloc];
-    v27 = [v20 transitProviderName];
-    v28 = PKLocalizedFlightString(&cfstr_PassDashboardD_14.isa, &stru_1F3BD5BF0.isa, v27);
-    v29 = [(PKTileContextDetailsTableViewEntry *)v26 initWithTitle:v28 actionURL:v25 axID:@"trackBags"];
+    transitProviderName = [additionalTilesContentSupplier transitProviderName];
+    v28 = PKLocalizedFlightString(&cfstr_PassDashboardD_14.isa, &stru_1F3BD5BF0.isa, transitProviderName);
+    v29 = [(PKTileContextDetailsTableViewEntry *)v26 initWithTitle:v28 actionURL:trackBagsURL axID:@"trackBags"];
     [v8 addObject:v29];
   }
 
-  v30 = [v20 reportLostBagURL];
-  if (v30)
+  reportLostBagURL = [additionalTilesContentSupplier reportLostBagURL];
+  if (reportLostBagURL)
   {
     v31 = [PKTileContextDetailsTableViewEntry alloc];
     v32 = PKLocalizedFlightString(&cfstr_PassDashboardD_15.isa);
-    v33 = [(PKTileContextDetailsTableViewEntry *)v31 initWithTitle:v32 actionURL:v30 axID:@"reportLostBaggage"];
+    v33 = [(PKTileContextDetailsTableViewEntry *)v31 initWithTitle:v32 actionURL:reportLostBagURL axID:@"reportLostBaggage"];
     [v8 addObject:v33];
   }
 
-  v34 = [(PKPassSemanticTileFactory *)self tableViewTileFromEntries:v8 tileIdentifier:@"PKPassTileContextDashboardDetails.baggageInformationTileIdentifier" context:a5];
-  v35 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v52 context:a5];
+  v34 = [(PKPassSemanticTileFactory *)self tableViewTileFromEntries:v8 tileIdentifier:@"PKPassTileContextDashboardDetails.baggageInformationTileIdentifier" context:context];
+  v35 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:identifierCopy context:context];
   [v35 setPreferredStyle:0];
   [v35 setShowInPrearm:0];
   [v35 setColumns:1];
@@ -2973,15 +2973,15 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   v37 = PKLocalizedFlightString(&cfstr_PassDashboardD.isa);
   [v36 setHeader:v37];
 
-  v38 = [v20 bagPolicyURL];
-  if (v38)
+  bagPolicyURL = [additionalTilesContentSupplier bagPolicyURL];
+  if (bagPolicyURL)
   {
     v39 = PKLocalizedFlightString(&cfstr_PassDashboardD_16.isa);
     [v36 setFooter:v39];
 
     v40 = objc_alloc(MEMORY[0x1E69B8D10]);
     v41 = PKLocalizedFlightString(&cfstr_PassDashboardD_17.isa);
-    v42 = [v40 _initWithExternalURL:v38 title:v41];
+    v42 = [v40 _initWithExternalURL:bagPolicyURL title:v41];
 
     v54[0] = v42;
     v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
@@ -2991,40 +2991,40 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   v44 = objc_alloc(MEMORY[0x1E69B8A90]);
   v53 = v34;
   v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-  v46 = [v44 _initWithMetadata:v35 childTiles:v45 stateIdentifier:v52 state:v36 inProgress:0];
+  v46 = [v44 _initWithMetadata:v35 childTiles:v45 stateIdentifier:identifierCopy state:v36 inProgress:0];
 
   return v46;
 }
 
-- (BOOL)descriptorCanCreateAdditionalServicesTile:(id)a3
+- (BOOL)descriptorCanCreateAdditionalServicesTile:(id)tile
 {
-  v3 = [a3 additionalTilesContentSupplier];
-  v4 = [v3 accessibilityURL];
-  if (v4)
+  additionalTilesContentSupplier = [tile additionalTilesContentSupplier];
+  accessibilityURL = [additionalTilesContentSupplier accessibilityURL];
+  if (accessibilityURL)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 requestWheelchairURL];
-    if (v6)
+    requestWheelchairURL = [additionalTilesContentSupplier requestWheelchairURL];
+    if (requestWheelchairURL)
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v3 registerServiceAnimalURL];
-      if (v7)
+      registerServiceAnimalURL = [additionalTilesContentSupplier registerServiceAnimalURL];
+      if (registerServiceAnimalURL)
       {
         v5 = 1;
       }
 
       else
       {
-        v8 = [v3 purchaseLoungeAccessURL];
-        v5 = v8 != 0;
+        purchaseLoungeAccessURL = [additionalTilesContentSupplier purchaseLoungeAccessURL];
+        v5 = purchaseLoungeAccessURL != 0;
       }
     }
   }
@@ -3032,54 +3032,54 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   return v5;
 }
 
-- (id)_additionalServicesGroupTileFromDescriptor:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5
+- (id)_additionalServicesGroupTileFromDescriptor:(id)descriptor groupIdentifier:(id)identifier context:(int64_t)context
 {
   v38[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E695DF70];
-  v36 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
   v10 = objc_alloc_init(v8);
-  v11 = [v9 additionalTilesContentSupplier];
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
 
-  v12 = [v11 accessibilityURL];
-  if (v12)
+  accessibilityURL = [additionalTilesContentSupplier accessibilityURL];
+  if (accessibilityURL)
   {
     v13 = [PKTileContextDetailsTableViewEntry alloc];
     v14 = PKLocalizedFlightString(&cfstr_PassDashboardD_18.isa);
-    v15 = [(PKTileContextDetailsTableViewEntry *)v13 initWithTitle:v14 actionURL:v12 axID:@"specialAssistance"];
+    v15 = [(PKTileContextDetailsTableViewEntry *)v13 initWithTitle:v14 actionURL:accessibilityURL axID:@"specialAssistance"];
     [v10 addObject:v15];
   }
 
-  v37 = v12;
-  v16 = [v11 requestWheelchairURL];
-  if (v16)
+  v37 = accessibilityURL;
+  requestWheelchairURL = [additionalTilesContentSupplier requestWheelchairURL];
+  if (requestWheelchairURL)
   {
     v17 = [PKTileContextDetailsTableViewEntry alloc];
     v18 = PKLocalizedFlightString(&cfstr_PassDashboardD_19.isa);
-    v19 = [(PKTileContextDetailsTableViewEntry *)v17 initWithTitle:v18 actionURL:v16 axID:@"wheelchair"];
+    v19 = [(PKTileContextDetailsTableViewEntry *)v17 initWithTitle:v18 actionURL:requestWheelchairURL axID:@"wheelchair"];
     [v10 addObject:v19];
   }
 
-  v20 = [v11 registerServiceAnimalURL];
-  if (v20)
+  registerServiceAnimalURL = [additionalTilesContentSupplier registerServiceAnimalURL];
+  if (registerServiceAnimalURL)
   {
     v21 = [PKTileContextDetailsTableViewEntry alloc];
     v22 = PKLocalizedFlightString(&cfstr_PassDashboardD_20.isa);
-    v23 = [(PKTileContextDetailsTableViewEntry *)v21 initWithTitle:v22 actionURL:v20 axID:@"serviceAnimal"];
+    v23 = [(PKTileContextDetailsTableViewEntry *)v21 initWithTitle:v22 actionURL:registerServiceAnimalURL axID:@"serviceAnimal"];
     [v10 addObject:v23];
   }
 
-  v24 = [v11 purchaseLoungeAccessURL];
-  if (v24)
+  purchaseLoungeAccessURL = [additionalTilesContentSupplier purchaseLoungeAccessURL];
+  if (purchaseLoungeAccessURL)
   {
     v25 = [PKTileContextDetailsTableViewEntry alloc];
     v26 = PKLocalizedFlightString(&cfstr_PassDashboardD_21.isa);
-    v27 = [(PKTileContextDetailsTableViewEntry *)v25 initWithTitle:v26 actionURL:v24 axID:@"loungePass"];
+    v27 = [(PKTileContextDetailsTableViewEntry *)v25 initWithTitle:v26 actionURL:purchaseLoungeAccessURL axID:@"loungePass"];
     [v10 addObject:v27];
   }
 
-  v28 = [(PKPassSemanticTileFactory *)self tableViewTileFromEntries:v10 tileIdentifier:@"PKPassTileContextDashboardDetails.additionalServicesTileIdentifier" context:a5];
-  v29 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v36 context:a5];
+  v28 = [(PKPassSemanticTileFactory *)self tableViewTileFromEntries:v10 tileIdentifier:@"PKPassTileContextDashboardDetails.additionalServicesTileIdentifier" context:context];
+  v29 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:identifierCopy context:context];
   [v29 setPreferredStyle:0];
   [v29 setShowInPrearm:0];
   [v29 setColumns:1];
@@ -3094,7 +3094,7 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   v32 = objc_alloc(MEMORY[0x1E69B8A90]);
   v38[0] = v28;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:1];
-  v34 = [v32 _initWithMetadata:v29 childTiles:v33 stateIdentifier:v36 state:v30 inProgress:0];
+  v34 = [v32 _initWithMetadata:v29 childTiles:v33 stateIdentifier:identifierCopy state:v30 inProgress:0];
 
   return v34;
 }
@@ -3106,9 +3106,9 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   v2 = [(PKPassSemanticTileFactory *)&v18 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     currentlyCachedKeys = v2->_currentlyCachedKeys;
@@ -3130,8 +3130,8 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
     workQueue = v2->_workQueue;
     v2->_workQueue = v12;
 
-    v14 = [MEMORY[0x1E69B8EF8] sharedService];
-    v15 = [v14 supportedRegionFeatureOfType:18 didFailOSVersionRequirements:0];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    v15 = [mEMORY[0x1E69B8EF8] supportedRegionFeatureOfType:18 didFailOSVersionRequirements:0];
     featureOverrides = v2->_featureOverrides;
     v2->_featureOverrides = v15;
   }
@@ -3139,80 +3139,80 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__87__PKPassSemanticTileFactory_Fl
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (![(NSHashTable *)self->_observers containsObject:?])
   {
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
   }
 }
 
-- (void)prewarmTileContentForDescriptor:(id)a3 context:(int64_t)a4
+- (void)prewarmTileContentForDescriptor:(id)descriptor context:(int64_t)context
 {
-  v6 = a3;
-  if (a4 == 5)
+  descriptorCopy = descriptor;
+  if (context == 5)
   {
-    v7 = v6;
-    [(PKPassSemanticTileFactory *)self prewarmUpcomingPassInformationDetailsTilesForDescriptor:v6];
+    v7 = descriptorCopy;
+    [(PKPassSemanticTileFactory *)self prewarmUpcomingPassInformationDetailsTilesForDescriptor:descriptorCopy];
   }
 
   else
   {
-    if (a4 != 2)
+    if (context != 2)
     {
       goto LABEL_6;
     }
 
-    v7 = v6;
-    [(PKPassSemanticTileFactory *)self prewarmDashboardDetailsTilesForDescriptor:v6];
+    v7 = descriptorCopy;
+    [(PKPassSemanticTileFactory *)self prewarmDashboardDetailsTilesForDescriptor:descriptorCopy];
   }
 
-  v6 = v7;
+  descriptorCopy = v7;
 LABEL_6:
 }
 
-- (void)prewarmDashboardDetailsTilesForDescriptor:(id)a3
+- (void)prewarmDashboardDetailsTilesForDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v4 = [v6 additionalTilesContentSupplier];
-  v5 = [v4 conformsToProtocol:&unk_1F3D428D0];
+  descriptorCopy = descriptor;
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  v5 = [additionalTilesContentSupplier conformsToProtocol:&unk_1F3D428D0];
 
   if (v5)
   {
-    [(PKPassSemanticTileFactory *)self prewarmEventTileContentForDescriptor:v6 context:2];
+    [(PKPassSemanticTileFactory *)self prewarmEventTileContentForDescriptor:descriptorCopy context:2];
   }
 }
 
-- (void)prewarmUpcomingPassInformationDetailsTilesForDescriptor:(id)a3
+- (void)prewarmUpcomingPassInformationDetailsTilesForDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v4 = [v6 additionalTilesContentSupplier];
-  v5 = [v4 conformsToProtocol:&unk_1F3D428D0];
+  descriptorCopy = descriptor;
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  v5 = [additionalTilesContentSupplier conformsToProtocol:&unk_1F3D428D0];
 
   if (v5)
   {
-    [(PKPassSemanticTileFactory *)self prewarmEventTileContentForDescriptor:v6 context:5];
+    [(PKPassSemanticTileFactory *)self prewarmEventTileContentForDescriptor:descriptorCopy context:5];
   }
 }
 
-- (void)fetchTilesForDescriptor:(id)a3 context:(int64_t)a4 queueUpdates:(BOOL)a5 completion:(id)a6
+- (void)fetchTilesForDescriptor:(id)descriptor context:(int64_t)context queueUpdates:(BOOL)updates completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__PKPassSemanticTileFactory_fetchTilesForDescriptor_context_queueUpdates_completion___block_invoke;
   v15[3] = &unk_1E801C0D8;
-  v17 = v11;
-  v13 = v11;
+  v17 = completionCopy;
+  v13 = completionCopy;
   objc_copyWeak(v18, &location);
-  v16 = v10;
-  v18[1] = a4;
-  v19 = a5;
-  v14 = v10;
+  v16 = descriptorCopy;
+  v18[1] = context;
+  updatesCopy = updates;
+  v14 = descriptorCopy;
   dispatch_async(workQueue, v15);
 
   objc_destroyWeak(v18);
@@ -3227,44 +3227,44 @@ void __85__PKPassSemanticTileFactory_fetchTilesForDescriptor_context_queueUpdate
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)_createTilesFromDescriptor:(id)a3 context:(int64_t)a4 queueUpdates:(BOOL)a5
+- (id)_createTilesFromDescriptor:(id)descriptor context:(int64_t)context queueUpdates:(BOOL)updates
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = v8;
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
+  v9 = descriptorCopy;
   v10 = MEMORY[0x1E695E0F0];
-  if (a4 <= 2)
+  if (context <= 2)
   {
-    if (a4 == 1)
+    if (context == 1)
     {
-      v11 = [(PKPassSemanticTileFactory *)self fetchDashboardTilesForDescriptor:v8 queueUpdates:v5];
+      v11 = [(PKPassSemanticTileFactory *)self fetchDashboardTilesForDescriptor:descriptorCopy queueUpdates:updatesCopy];
     }
 
     else
     {
-      if (a4 != 2)
+      if (context != 2)
       {
         goto LABEL_13;
       }
 
-      v11 = [(PKPassSemanticTileFactory *)self fetchDashboardDetailsTilesForDescriptor:v8 queueUpdates:v5];
+      v11 = [(PKPassSemanticTileFactory *)self fetchDashboardDetailsTilesForDescriptor:descriptorCopy queueUpdates:updatesCopy];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(context)
     {
       case 3:
-        v12 = [v8 pass];
-        v10 = [(PKPassSemanticTileFactory *)self additionalInfoFieldsGroupTilesForPass:v12];
+        pass = [descriptorCopy pass];
+        v10 = [(PKPassSemanticTileFactory *)self additionalInfoFieldsGroupTilesForPass:pass];
 
         goto LABEL_13;
       case 4:
-        v11 = [(PKPassSemanticTileFactory *)self fetchUpcomingPassInformationTilesForDescriptor:v8 queueUpdates:v5];
+        v11 = [(PKPassSemanticTileFactory *)self fetchUpcomingPassInformationTilesForDescriptor:descriptorCopy queueUpdates:updatesCopy];
         break;
       case 5:
-        v11 = [(PKPassSemanticTileFactory *)self fetchUpcomingPassInformationDetailsTilesForDescriptor:v8 queueUpdates:v5];
+        v11 = [(PKPassSemanticTileFactory *)self fetchUpcomingPassInformationDetailsTilesForDescriptor:descriptorCopy queueUpdates:updatesCopy];
         break;
       default:
         goto LABEL_13;
@@ -3277,27 +3277,27 @@ LABEL_13:
   return v10;
 }
 
-- (id)fetchDashboardTilesForDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchDashboardTilesForDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 additionalTilesContentSupplier];
-  v8 = [v7 conformsToProtocol:&unk_1F3D428D0];
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  v8 = [additionalTilesContentSupplier conformsToProtocol:&unk_1F3D428D0];
 
   if (v8)
   {
-    v9 = [(PKPassSemanticTileFactory *)self fetchDashboardTilesFromEventTilesDescriptor:v6 queueUpdates:v4];
+    v9 = [(PKPassSemanticTileFactory *)self fetchDashboardTilesFromEventTilesDescriptor:descriptorCopy queueUpdates:updatesCopy];
 LABEL_5:
     v12 = v9;
     goto LABEL_7;
   }
 
-  v10 = [v6 additionalTilesContentSupplier];
-  v11 = [v10 conformsToProtocol:&unk_1F3D5D580];
+  additionalTilesContentSupplier2 = [descriptorCopy additionalTilesContentSupplier];
+  v11 = [additionalTilesContentSupplier2 conformsToProtocol:&unk_1F3D5D580];
 
   if (v11)
   {
-    v9 = [(PKPassSemanticTileFactory *)self fetchDashboardTilesFromFlightTilesDescriptor:v6 queueUpdates:v4];
+    v9 = [(PKPassSemanticTileFactory *)self fetchDashboardTilesFromFlightTilesDescriptor:descriptorCopy queueUpdates:updatesCopy];
     goto LABEL_5;
   }
 
@@ -3307,27 +3307,27 @@ LABEL_7:
   return v12;
 }
 
-- (id)fetchDashboardDetailsTilesForDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchDashboardDetailsTilesForDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 additionalTilesContentSupplier];
-  v8 = [v7 conformsToProtocol:&unk_1F3D428D0];
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  v8 = [additionalTilesContentSupplier conformsToProtocol:&unk_1F3D428D0];
 
   if (v8)
   {
-    v9 = [(PKPassSemanticTileFactory *)self fetchDashboardEventGuideTilesFromEventTilesDescriptor:v6 queueUpdates:v4];
+    v9 = [(PKPassSemanticTileFactory *)self fetchDashboardEventGuideTilesFromEventTilesDescriptor:descriptorCopy queueUpdates:updatesCopy];
 LABEL_5:
     v12 = v9;
     goto LABEL_7;
   }
 
-  v10 = [v6 additionalTilesContentSupplier];
-  v11 = [v10 conformsToProtocol:&unk_1F3D5D580];
+  additionalTilesContentSupplier2 = [descriptorCopy additionalTilesContentSupplier];
+  v11 = [additionalTilesContentSupplier2 conformsToProtocol:&unk_1F3D5D580];
 
   if (v11)
   {
-    v9 = [(PKPassSemanticTileFactory *)self fetchDashboardAirlineUpgradesTilesFromFlightTilesDescriptor:v6];
+    v9 = [(PKPassSemanticTileFactory *)self fetchDashboardAirlineUpgradesTilesFromFlightTilesDescriptor:descriptorCopy];
     goto LABEL_5;
   }
 
@@ -3337,16 +3337,16 @@ LABEL_7:
   return v12;
 }
 
-- (id)fetchUpcomingPassInformationTilesForDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchUpcomingPassInformationTilesForDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 additionalTilesContentSupplier];
-  v8 = [v7 conformsToProtocol:&unk_1F3D428D0];
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  v8 = [additionalTilesContentSupplier conformsToProtocol:&unk_1F3D428D0];
 
   if (v8)
   {
-    v9 = [(PKPassSemanticTileFactory *)self fetchUpcomingPassInformationTilesFromEventTilesDescriptor:v6 queueUpdates:v4];
+    v9 = [(PKPassSemanticTileFactory *)self fetchUpcomingPassInformationTilesFromEventTilesDescriptor:descriptorCopy queueUpdates:updatesCopy];
   }
 
   else
@@ -3357,16 +3357,16 @@ LABEL_7:
   return v9;
 }
 
-- (id)fetchUpcomingPassInformationDetailsTilesForDescriptor:(id)a3 queueUpdates:(BOOL)a4
+- (id)fetchUpcomingPassInformationDetailsTilesForDescriptor:(id)descriptor queueUpdates:(BOOL)updates
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 additionalTilesContentSupplier];
-  v8 = [v7 conformsToProtocol:&unk_1F3D428D0];
+  updatesCopy = updates;
+  descriptorCopy = descriptor;
+  additionalTilesContentSupplier = [descriptorCopy additionalTilesContentSupplier];
+  v8 = [additionalTilesContentSupplier conformsToProtocol:&unk_1F3D428D0];
 
   if (v8)
   {
-    v9 = [(PKPassSemanticTileFactory *)self fetchUpcomingPassInformationEventGuideTilesFromEventTilesDescriptor:v6 queueUpdates:v4];
+    v9 = [(PKPassSemanticTileFactory *)self fetchUpcomingPassInformationEventGuideTilesFromEventTilesDescriptor:descriptorCopy queueUpdates:updatesCopy];
   }
 
   else
@@ -3377,33 +3377,33 @@ LABEL_7:
   return v9;
 }
 
-- (id)additionalInfoFieldsTileForPass:(id)a3 context:(int64_t)a4 title:(id)a5
+- (id)additionalInfoFieldsTileForPass:(id)pass context:(int64_t)context title:(id)title
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a5;
-  v8 = [v6 additionalInfoFields];
-  if (![v8 count])
+  passCopy = pass;
+  titleCopy = title;
+  additionalInfoFields = [passCopy additionalInfoFields];
+  if (![additionalInfoFields count])
   {
     v32 = 0;
     goto LABEL_37;
   }
 
-  [v6 upcomingPassInformation];
-  v55 = v54 = v7;
-  v53 = v8;
+  [passCopy upcomingPassInformation];
+  v55 = v54 = titleCopy;
+  v53 = additionalInfoFields;
   if (v55)
   {
     v64 = 0u;
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v9 = [v55 groups];
-    v10 = [v9 countByEnumeratingWithState:&v62 objects:v71 count:16];
+    groups = [v55 groups];
+    v10 = [groups countByEnumeratingWithState:&v62 objects:v71 count:16];
     if (v10)
     {
       v11 = v10;
-      v52 = v6;
+      v52 = passCopy;
       v56 = 0;
       v57 = *v63;
       do
@@ -3412,7 +3412,7 @@ LABEL_7:
         {
           if (*v63 != v57)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(groups);
           }
 
           v13 = *(*(&v62 + 1) + 8 * i);
@@ -3420,12 +3420,12 @@ LABEL_7:
           v59 = 0u;
           v60 = 0u;
           v61 = 0u;
-          v14 = [v13 entries];
-          v15 = [v14 countByEnumeratingWithState:&v58 objects:v70 count:16];
+          entries = [v13 entries];
+          v15 = [entries countByEnumeratingWithState:&v58 objects:v70 count:16];
           if (v15)
           {
             v16 = v15;
-            v17 = v9;
+            v17 = groups;
             v18 = *v59;
             while (2)
             {
@@ -3433,15 +3433,15 @@ LABEL_7:
               {
                 if (*v59 != v18)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(entries);
                 }
 
                 v20 = *(*(&v58 + 1) + 8 * j);
                 if ([v20 isActive])
                 {
-                  v21 = [v20 content];
-                  v22 = [v21 additionalInfoFields];
-                  v23 = [v22 count];
+                  content = [v20 content];
+                  additionalInfoFields2 = [content additionalInfoFields];
+                  v23 = [additionalInfoFields2 count];
 
                   if (v23)
                   {
@@ -3451,7 +3451,7 @@ LABEL_7:
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v58 objects:v70 count:16];
+              v16 = [entries countByEnumeratingWithState:&v58 objects:v70 count:16];
               if (v16)
               {
                 continue;
@@ -3461,18 +3461,18 @@ LABEL_7:
             }
 
 LABEL_19:
-            v9 = v17;
+            groups = v17;
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v62 objects:v71 count:16];
+        v11 = [groups countByEnumeratingWithState:&v62 objects:v71 count:16];
       }
 
       while (v11);
 
-      v6 = v52;
-      v8 = v53;
-      v7 = v54;
+      passCopy = v52;
+      additionalInfoFields = v53;
+      titleCopy = v54;
       if (v56)
       {
         v24 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
@@ -3485,16 +3485,16 @@ LABEL_19:
         v28 = [v26 createWithContent:v27];
         [v24 setFooter:v28];
 
-        v29 = [MEMORY[0x1E69B8AA0] createDefaultDisclosureAccessoryImage];
-        [v24 setAccessory:v29];
+        createDefaultDisclosureAccessoryImage = [MEMORY[0x1E69B8AA0] createDefaultDisclosureAccessoryImage];
+        [v24 setAccessory:createDefaultDisclosureAccessoryImage];
 
-        v30 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithContext:3];
-        v69 = v30;
-        v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
-        [v24 setActions:v31];
+        firstObject = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithContext:3];
+        v69 = firstObject;
+        value = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
+        [v24 setActions:value];
 LABEL_35:
 
-        v8 = v53;
+        additionalInfoFields = v53;
         goto LABEL_36;
       }
     }
@@ -3504,66 +3504,66 @@ LABEL_35:
     }
   }
 
-  if ([v8 count] == 1)
+  if ([additionalInfoFields count] == 1)
   {
     v24 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
     [v24 setPreferredStyle:4];
-    v30 = [v8 firstObject];
+    firstObject = [additionalInfoFields firstObject];
     v33 = MEMORY[0x1E69B8AC8];
-    v34 = [v30 label];
-    v35 = [v33 createWithContent:v34];
+    label = [firstObject label];
+    v35 = [v33 createWithContent:label];
     [v24 setTitle:v35];
 
     v36 = MEMORY[0x1E69B8AC8];
-    v31 = [v30 value];
-    v37 = [v36 createWithContent:v31];
+    value = [firstObject value];
+    v37 = [v36 createWithContent:value];
     [v24 setFooter:v37];
 LABEL_34:
 
     goto LABEL_35;
   }
 
-  if ([v8 count] >= 2)
+  if ([additionalInfoFields count] >= 2)
   {
     v24 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:1];
     [v24 setPreferredStyle:4];
-    v38 = [MEMORY[0x1E69B8AC8] createWithContent:v7];
+    v38 = [MEMORY[0x1E69B8AC8] createWithContent:titleCopy];
     [v24 setTitle:v38];
 
-    v39 = [v8 count];
-    v40 = [v8 objectAtIndexedSubscript:0];
-    v41 = [v40 label];
-    v42 = v41;
+    v39 = [additionalInfoFields count];
+    v40 = [additionalInfoFields objectAtIndexedSubscript:0];
+    label2 = [v40 label];
+    v42 = label2;
     if (v39 < 3)
     {
-      v67[0] = v41;
-      v43 = [v8 objectAtIndexedSubscript:1];
-      v44 = [v43 label];
-      v67[1] = v44;
-      v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
+      v67[0] = label2;
+      v43 = [additionalInfoFields objectAtIndexedSubscript:1];
+      label3 = [v43 label];
+      v67[1] = label3;
+      firstObject = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
     }
 
     else
     {
-      v68[0] = v41;
-      v43 = [v8 objectAtIndexedSubscript:1];
-      v44 = [v43 label];
-      v68[1] = v44;
+      v68[0] = label2;
+      v43 = [additionalInfoFields objectAtIndexedSubscript:1];
+      label3 = [v43 label];
+      v68[1] = label3;
       v45 = PKLocalizedTicketingString(&cfstr_TileAdditional_0.isa);
       v68[2] = v45;
-      v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:3];
+      firstObject = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:3];
     }
 
     v46 = MEMORY[0x1E69B8AC8];
-    v47 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v30];
+    v47 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:firstObject];
     v48 = [v46 createWithContent:v47];
     [v24 setFooter:v48];
 
-    v49 = [MEMORY[0x1E69B8AA0] createDefaultDisclosureAccessoryImage];
-    [v24 setAccessory:v49];
+    createDefaultDisclosureAccessoryImage2 = [MEMORY[0x1E69B8AA0] createDefaultDisclosureAccessoryImage];
+    [v24 setAccessory:createDefaultDisclosureAccessoryImage2];
 
-    v31 = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithContext:3];
-    v66 = v31;
+    value = [objc_alloc(MEMORY[0x1E69B8D10]) _initWithContext:3];
+    v66 = value;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v66 count:1];
     [v24 setActions:v37];
     goto LABEL_34;
@@ -3576,32 +3576,32 @@ LABEL_36:
   v32 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v50 childTiles:0 stateIdentifier:@"PKPassTileContextDashboard.additionalInfoFieldsTileIdentifier" state:v24 inProgress:0];
   [v32 setAnalyticsIdentifier:@"additionalInfoTile"];
 
-  v7 = v54;
+  titleCopy = v54;
 LABEL_37:
 
   return v32;
 }
 
-- (id)additionalInfoFieldsGroupTilesForPass:(id)a3
+- (id)additionalInfoFieldsGroupTilesForPass:(id)pass
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passCopy = pass;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 upcomingPassInformation];
-  if (v6)
+  upcomingPassInformation = [passCopy upcomingPassInformation];
+  if (upcomingPassInformation)
   {
-    v7 = [(PKPassSemanticTileFactory *)self createAdditionalInfoGroupTilesFromInformation:v6];
+    v7 = [(PKPassSemanticTileFactory *)self createAdditionalInfoGroupTilesFromInformation:upcomingPassInformation];
     [v5 addObjectsFromArray:v7];
   }
 
-  v8 = [v4 additionalInfoFields];
-  v9 = [(PKPassSemanticTileFactory *)self additionalInfoTileForFields:v8];
+  additionalInfoFields = [passCopy additionalInfoFields];
+  v9 = [(PKPassSemanticTileFactory *)self additionalInfoTileForFields:additionalInfoFields];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v12 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v11 context:3];
+    v12 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:uUIDString context:3];
     [v12 setPreferredStyle:0];
     [v12 setColumns:1];
     [v12 setMaximumRows:1];
@@ -3611,14 +3611,14 @@ LABEL_37:
     v13 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:3];
     if ([v5 count])
     {
-      v14 = [v4 eventName];
-      [v13 setHeader:v14];
+      eventName = [passCopy eventName];
+      [v13 setHeader:eventName];
     }
 
     v15 = objc_alloc(MEMORY[0x1E69B8A90]);
     v19[0] = v9;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    v17 = [v15 _initWithMetadata:v12 childTiles:v16 stateIdentifier:v11 state:v13 inProgress:0];
+    v17 = [v15 _initWithMetadata:v12 childTiles:v16 stateIdentifier:uUIDString state:v13 inProgress:0];
 
     [v5 insertObject:v17 atIndex:0];
   }
@@ -3626,19 +3626,19 @@ LABEL_37:
   return v5;
 }
 
-- (id)createAdditionalInfoGroupTilesFromInformation:(id)a3
+- (id)createAdditionalInfoGroupTilesFromInformation:(id)information
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  informationCopy = information;
+  if (informationCopy)
   {
     v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v26 = v3;
-    obj = [v3 groups];
+    v26 = informationCopy;
+    obj = [informationCopy groups];
     v29 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v29)
     {
@@ -3659,8 +3659,8 @@ LABEL_37:
           v36 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v33 = [v5 entries];
-          v6 = [v33 countByEnumeratingWithState:&v35 objects:v44 count:16];
+          entries = [v5 entries];
+          v6 = [entries countByEnumeratingWithState:&v35 objects:v44 count:16];
           if (v6)
           {
             v7 = v6;
@@ -3671,23 +3671,23 @@ LABEL_37:
               {
                 if (*v36 != v8)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(entries);
                 }
 
                 v10 = *(*(&v35 + 1) + 8 * i);
                 if ([v10 isActive])
                 {
-                  v11 = [v10 content];
-                  v12 = [v11 additionalInfoFields];
+                  content = [v10 content];
+                  additionalInfoFields = [content additionalInfoFields];
 
-                  if ([v12 count])
+                  if ([additionalInfoFields count])
                   {
-                    v34 = [v10 metadata];
-                    v13 = [(PKPassSemanticTileFactory *)self additionalInfoTileForFields:v12];
-                    v14 = [MEMORY[0x1E696AFB0] UUID];
-                    v15 = [v14 UUIDString];
+                    metadata = [v10 metadata];
+                    v13 = [(PKPassSemanticTileFactory *)self additionalInfoTileForFields:additionalInfoFields];
+                    uUID = [MEMORY[0x1E696AFB0] UUID];
+                    uUIDString = [uUID UUIDString];
 
-                    v16 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v15 context:3];
+                    v16 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:uUIDString context:3];
                     [v16 setPreferredStyle:0];
                     [v16 setColumns:1];
                     [v16 setMaximumRows:1];
@@ -3695,7 +3695,7 @@ LABEL_37:
                     [v16 setHeightClass:3];
                     [v16 setGroupStyle:0];
                     v17 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:3];
-                    [v34 name];
+                    [metadata name];
                     v19 = v18 = v8;
                     [v17 setHeader:v19];
 
@@ -3703,7 +3703,7 @@ LABEL_37:
                     v43 = v13;
                     [MEMORY[0x1E695DEC8] arrayWithObjects:&v43 count:1];
                     v22 = v21 = v7;
-                    v23 = [v20 _initWithMetadata:v16 childTiles:v22 stateIdentifier:v15 state:v17 inProgress:0];
+                    v23 = [v20 _initWithMetadata:v16 childTiles:v22 stateIdentifier:uUIDString state:v17 inProgress:0];
 
                     v7 = v21;
                     [v32 addObject:v23];
@@ -3713,7 +3713,7 @@ LABEL_37:
                 }
               }
 
-              v7 = [v33 countByEnumeratingWithState:&v35 objects:v44 count:16];
+              v7 = [entries countByEnumeratingWithState:&v35 objects:v44 count:16];
             }
 
             while (v7);
@@ -3730,7 +3730,7 @@ LABEL_37:
     }
 
     v24 = [v32 copy];
-    v3 = v26;
+    informationCopy = v26;
   }
 
   else
@@ -3741,17 +3741,17 @@ LABEL_37:
   return v24;
 }
 
-- (id)additionalInfoTileForFields:(id)a3
+- (id)additionalInfoTileForFields:(id)fields
 {
-  v3 = a3;
-  if ([v3 count])
+  fieldsCopy = fields;
+  if ([fieldsCopy count])
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v6 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:v5 context:3];
+    v6 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:uUIDString context:3];
     [v6 setPreferredStyle:0];
-    v7 = [v3 pk_arrayByApplyingBlock:&__block_literal_global_146];
+    v7 = [fieldsCopy pk_arrayByApplyingBlock:&__block_literal_global_146];
     v8 = MEMORY[0x1E69B8AC0];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -3761,7 +3761,7 @@ LABEL_37:
     v9 = v7;
     v10 = [v8 createWithPreferredStyle:4 adaptorProvider:v13];
     [v10 setFullBleed:1];
-    v11 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v6 childTiles:0 stateIdentifier:v5 state:v10 inProgress:0];
+    v11 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v6 childTiles:0 stateIdentifier:uUIDString state:v10 inProgress:0];
   }
 
   else
@@ -3795,12 +3795,12 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__57__PKPassSemanticTileFactory_ad
   return v4;
 }
 
-- (void)reloadMapsInformationForDescriptor:(id)a3 contentIdentifier:(id)a4 tileContext:(int64_t)a5 completion:(id)a6
+- (void)reloadMapsInformationForDescriptor:(id)descriptor contentIdentifier:(id)identifier tileContext:(int64_t)context completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateMapsTile:v10])
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([(PKPassSemanticTileFactory *)self descriptorCanCreateMapsTile:descriptorCopy])
   {
     objc_initWeak(location, self);
     v13 = objc_alloc_init(MEMORY[0x1E69B8658]);
@@ -3809,12 +3809,12 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__57__PKPassSemanticTileFactory_ad
     v30[2] = __105__PKPassSemanticTileFactory_reloadMapsInformationForDescriptor_contentIdentifier_tileContext_completion___block_invoke;
     v30[3] = &unk_1E801B348;
     objc_copyWeak(v34, location);
-    v14 = v11;
+    v14 = identifierCopy;
     v31 = v14;
-    v15 = v10;
+    v15 = descriptorCopy;
     v32 = v15;
-    v34[1] = a5;
-    v33 = v12;
+    v34[1] = context;
+    v33 = completionCopy;
     [v13 addOperation:v30];
     v28[0] = 0;
     v28[1] = v28;
@@ -3831,7 +3831,7 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__57__PKPassSemanticTileFactory_ad
     v25 = v16;
     v26 = v28;
     [v13 addOperation:v24];
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __105__PKPassSemanticTileFactory_reloadMapsInformationForDescriptor_contentIdentifier_tileContext_completion___block_invoke_3;
@@ -3840,8 +3840,8 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__57__PKPassSemanticTileFactory_ad
     v22 = v28;
     v20 = v14;
     v21 = v16;
-    v23[1] = a5;
-    v18 = [v13 evaluateWithInput:v17 completion:v19];
+    v23[1] = context;
+    v18 = [v13 evaluateWithInput:null completion:v19];
 
     objc_destroyWeak(v23);
     objc_destroyWeak(&v27);
@@ -3851,9 +3851,9 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__57__PKPassSemanticTileFactory_ad
     objc_destroyWeak(location);
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -3930,20 +3930,20 @@ void __105__PKPassSemanticTileFactory_reloadMapsInformationForDescriptor_content
   }
 }
 
-- (void)_fetchMapItemForMapsTileSupplier:(id)a3 completion:(id)a4
+- (void)_fetchMapItemForMapsTileSupplier:(id)supplier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  supplierCopy = supplier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PKPassSemanticTileFactory__fetchMapItemForMapsTileSupplier_completion___block_invoke;
   aBlock[3] = &unk_1E801C148;
-  v8 = v7;
+  v8 = completionCopy;
   v21 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [v6 mapsItemRequest];
+  mapsItemRequest = [supplierCopy mapsItemRequest];
   workQueue = self->_workQueue;
-  if (v10)
+  if (mapsItemRequest)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -3952,7 +3952,7 @@ void __105__PKPassSemanticTileFactory_reloadMapsInformationForDescriptor_content
     v12 = &v19;
     v19 = v9;
     v13 = v9;
-    [v10 getMapItemWithQueue:workQueue completionHandler:v18];
+    [mapsItemRequest getMapItemWithQueue:workQueue completionHandler:v18];
   }
 
   else
@@ -3962,7 +3962,7 @@ void __105__PKPassSemanticTileFactory_reloadMapsInformationForDescriptor_content
     v15[2] = __73__PKPassSemanticTileFactory__fetchMapItemForMapsTileSupplier_completion___block_invoke_3;
     v15[3] = &unk_1E8010DD0;
     v12 = &v16;
-    v16 = v6;
+    v16 = supplierCopy;
     v17 = v9;
     v14 = v9;
     dispatch_async(workQueue, v15);
@@ -4008,9 +4008,9 @@ void __73__PKPassSemanticTileFactory__fetchMapItemForMapsTileSupplier_completion
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)descriptorCanCreateMapsTile:(id)a3
+- (BOOL)descriptorCanCreateMapsTile:(id)tile
 {
-  v4 = a3;
+  tileCopy = tile;
   featureOverrides = self->_featureOverrides;
   if (featureOverrides && ![(PKWebServiceTicketingFeature *)featureOverrides isIntegrationTypeSupported:0])
   {
@@ -4019,20 +4019,20 @@ void __73__PKPassSemanticTileFactory__fetchMapItemForMapsTileSupplier_completion
 
   else
   {
-    v6 = [v4 additionalTilesContentSupplier];
-    v7 = [v6 mapsTileTitle];
-    if (v7)
+    additionalTilesContentSupplier = [tileCopy additionalTilesContentSupplier];
+    mapsTileTitle = [additionalTilesContentSupplier mapsTileTitle];
+    if (mapsTileTitle)
     {
-      v8 = [v6 mapsItemRequest];
-      if (v8)
+      mapsItemRequest = [additionalTilesContentSupplier mapsItemRequest];
+      if (mapsItemRequest)
       {
         v9 = 1;
       }
 
       else
       {
-        v10 = [v6 mapsSearchRequest];
-        v9 = v10 != 0;
+        mapsSearchRequest = [additionalTilesContentSupplier mapsSearchRequest];
+        v9 = mapsSearchRequest != 0;
       }
     }
 
@@ -4045,25 +4045,25 @@ void __73__PKPassSemanticTileFactory__fetchMapItemForMapsTileSupplier_completion
   return v9;
 }
 
-- (id)issuerActionsGroupTileFromTiles:(id)a3 groupIdentifier:(id)a4 context:(int64_t)a5
+- (id)issuerActionsGroupTileFromTiles:(id)tiles groupIdentifier:(id)identifier context:(int64_t)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
+  tilesCopy = tiles;
+  identifierCopy = identifier;
+  v9 = [tilesCopy count];
   if (v9)
   {
-    if (v8)
+    if (identifierCopy)
     {
-      v10 = v8;
+      uUIDString = identifierCopy;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AFB0] UUID];
-      v10 = [v11 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    v12 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:v10 context:a5];
+    v12 = [MEMORY[0x1E69B8AB0] _createMetadataForType:2 identifier:uUIDString context:context];
     [v12 setPreferredStyle:1];
     [v12 setShowInPrearm:0];
     if (v9 >= 4)
@@ -4082,29 +4082,29 @@ void __73__PKPassSemanticTileFactory__fetchMapItemForMapsTileSupplier_completion
     [v12 setHeightClass:3];
     [v12 setGroupStyle:1];
     v14 = [MEMORY[0x1E69B8AB8] createResolvedStateWithType:3];
-    v9 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v12 childTiles:v7 stateIdentifier:v10 state:v14 inProgress:0];
+    v9 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v12 childTiles:tilesCopy stateIdentifier:uUIDString state:v14 inProgress:0];
   }
 
   return v9;
 }
 
-- (id)tableViewTileFromEntries:(id)a3 tileIdentifier:(id)a4 context:(int64_t)a5
+- (id)tableViewTileFromEntries:(id)entries tileIdentifier:(id)identifier context:(int64_t)context
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  entriesCopy = entries;
+  identifierCopy = identifier;
+  if ([entriesCopy count])
   {
-    v9 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:v8 context:a5];
+    v9 = [MEMORY[0x1E69B8AB0] _createMetadataForType:0 identifier:identifierCopy context:context];
     [v9 setPreferredStyle:0];
     v10 = MEMORY[0x1E69B8AC0];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __77__PKPassSemanticTileFactory_tableViewTileFromEntries_tileIdentifier_context___block_invoke;
     v14[3] = &unk_1E8011430;
-    v15 = v7;
+    v15 = entriesCopy;
     v11 = [v10 createWithPreferredStyle:4 adaptorProvider:v14];
     [v11 setFullBleed:1];
-    v12 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v9 childTiles:0 stateIdentifier:v8 state:v11 inProgress:0];
+    v12 = [objc_alloc(MEMORY[0x1E69B8A90]) _initWithMetadata:v9 childTiles:0 stateIdentifier:identifierCopy state:v11 inProgress:0];
   }
 
   else
@@ -4125,10 +4125,10 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__77__PKPassSemanticTileFactory_ta
   return v4;
 }
 
-- (void)clearCacheOfDescriptorsWithPassUniqueIdentifier:(id)a3
+- (void)clearCacheOfDescriptorsWithPassUniqueIdentifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [(PKPassSemanticTileFactory *)self _cacheKeysForPassUniqueIdentifier:a3];
+  v4 = [(PKPassSemanticTileFactory *)self _cacheKeysForPassUniqueIdentifier:identifier];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -4159,32 +4159,32 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__77__PKPassSemanticTileFactory_ta
   }
 }
 
-- (id)_cacheKeysForPassUniqueIdentifier:(id)a3
+- (id)_cacheKeysForPassUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_tileUpdatesLock);
   currentlyCachedKeys = self->_currentlyCachedKeys;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__PKPassSemanticTileFactory__cacheKeysForPassUniqueIdentifier___block_invoke;
   v9[3] = &unk_1E801C1C0;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [(NSMutableArray *)currentlyCachedKeys pk_objectsPassingTest:v9];
   os_unfair_lock_unlock(&self->_tileUpdatesLock);
 
   return v7;
 }
 
-- (id)_cacheKeyForDescriptor:(id)a3 context:(int64_t)a4 contentIdentifier:(id)a5
+- (id)_cacheKeyForDescriptor:(id)descriptor context:(int64_t)context contentIdentifier:(id)identifier
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [a3 identifier];
-  v12[0] = v7;
+  identifierCopy = identifier;
+  identifier = [descriptor identifier];
+  v12[0] = identifier;
   v8 = PKPassTileContextToString();
   v12[1] = v8;
-  v12[2] = v6;
+  v12[2] = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
 
   v10 = [v9 componentsJoinedByString:{@".", v12[0]}];
@@ -4192,9 +4192,9 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__77__PKPassSemanticTileFactory_ta
   return v10;
 }
 
-- (id)cachedContentForIdentifier:(id)a3 descriptor:(id)a4 context:(int64_t)a5
+- (id)cachedContentForIdentifier:(id)identifier descriptor:(id)descriptor context:(int64_t)context
 {
-  v6 = [(PKPassSemanticTileFactory *)self _cacheKeyForDescriptor:a4 context:a5 contentIdentifier:a3];
+  v6 = [(PKPassSemanticTileFactory *)self _cacheKeyForDescriptor:descriptor context:context contentIdentifier:identifier];
   v7 = [(NSCache *)self->_tileContentCache objectForKey:v6];
   if ([v7 isContentDiscarded])
   {
@@ -4211,12 +4211,12 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__77__PKPassSemanticTileFactory_ta
   return v8;
 }
 
-- (void)_cacheTileContent:(id)a3 withIdentifier:(id)a4 forDescriptor:(id)a5 context:(int64_t)a6
+- (void)_cacheTileContent:(id)content withIdentifier:(id)identifier forDescriptor:(id)descriptor context:(int64_t)context
 {
-  v11 = a3;
-  v10 = [(PKPassSemanticTileFactory *)self _cacheKeyForDescriptor:a5 context:a6 contentIdentifier:a4];
-  [v11 setCacheKey:v10];
-  if (v11 && v10)
+  contentCopy = content;
+  v10 = [(PKPassSemanticTileFactory *)self _cacheKeyForDescriptor:descriptor context:context contentIdentifier:identifier];
+  [contentCopy setCacheKey:v10];
+  if (contentCopy && v10)
   {
     os_unfair_lock_lock(&self->_tileUpdatesLock);
     if (([(NSMutableArray *)self->_currentlyCachedKeys containsObject:v10]& 1) == 0)
@@ -4225,22 +4225,22 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__77__PKPassSemanticTileFactory_ta
     }
 
     os_unfair_lock_unlock(&self->_tileUpdatesLock);
-    [(NSCache *)self->_tileContentCache setObject:v11 forKey:v10];
+    [(NSCache *)self->_tileContentCache setObject:contentCopy forKey:v10];
   }
 }
 
-- (void)discardCachedContentForKey:(id)a3
+- (void)discardCachedContentForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     [(NSCache *)self->_tileContentCache removeObjectForKey:?];
   }
 }
 
-- (BOOL)coalesceFetchForContentWithIdentifier:(id)a3 descriptor:(id)a4 context:(int64_t)a5 completion:(id)a6
+- (BOOL)coalesceFetchForContentWithIdentifier:(id)identifier descriptor:(id)descriptor context:(int64_t)context completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(PKPassSemanticTileFactory *)self _cacheKeyForDescriptor:a4 context:a5 contentIdentifier:a3];
+  completionCopy = completion;
+  v11 = [(PKPassSemanticTileFactory *)self _cacheKeyForDescriptor:descriptor context:context contentIdentifier:identifier];
   os_unfair_lock_lock(&self->_tileUpdatesLock);
   v12 = [(NSMutableDictionary *)self->_outstandingContentFetchCompletions objectForKeyedSubscript:v11];
   v13 = v12;
@@ -4249,9 +4249,9 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__77__PKPassSemanticTileFactory_ta
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v14 = _Block_copy(v10);
+    v14 = _Block_copy(completionCopy);
     [v13 addObject:v14];
 
     [(NSMutableDictionary *)self->_outstandingContentFetchCompletions setObject:v13 forKeyedSubscript:v11];
@@ -4262,13 +4262,13 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__77__PKPassSemanticTileFactory_ta
   return v12 != 0;
 }
 
-- (void)didCompleteFetchForItem:(id)a3 withIdentifier:(id)a4 descriptor:(id)a5 context:(int64_t)a6
+- (void)didCompleteFetchForItem:(id)item withIdentifier:(id)identifier descriptor:(id)descriptor context:(int64_t)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  [(PKPassSemanticTileFactory *)self _cacheTileContent:a3 withIdentifier:v10 forDescriptor:v11 context:a6];
-  v12 = [(PKPassSemanticTileFactory *)self _cacheKeyForDescriptor:v11 context:a6 contentIdentifier:v10];
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  [(PKPassSemanticTileFactory *)self _cacheTileContent:item withIdentifier:identifierCopy forDescriptor:descriptorCopy context:context];
+  v12 = [(PKPassSemanticTileFactory *)self _cacheKeyForDescriptor:descriptorCopy context:context contentIdentifier:identifierCopy];
   os_unfair_lock_lock(&self->_tileUpdatesLock);
   v13 = [(NSMutableDictionary *)self->_outstandingContentFetchCompletions objectForKeyedSubscript:v12];
   [(NSMutableDictionary *)self->_outstandingContentFetchCompletions removeObjectForKey:v12];
@@ -4305,19 +4305,19 @@ _TtC9PassKitUI28PKPassTileForeignViewAdaptor *__77__PKPassSemanticTileFactory_ta
   }
 }
 
-- (void)didFinishContentFetchFromTilesFetchForContext:(int64_t)a3 descriptor:(id)a4
+- (void)didFinishContentFetchFromTilesFetchForContext:(int64_t)context descriptor:(id)descriptor
 {
-  v6 = a4;
+  descriptorCopy = descriptor;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__PKPassSemanticTileFactory_didFinishContentFetchFromTilesFetchForContext_descriptor___block_invoke;
   v8[3] = &unk_1E801C1E8;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
-  v7 = v6;
+  v10[1] = context;
+  v7 = descriptorCopy;
   v9 = v7;
-  [(PKPassSemanticTileFactory *)self fetchTilesForDescriptor:v7 context:a3 queueUpdates:0 completion:v8];
+  [(PKPassSemanticTileFactory *)self fetchTilesForDescriptor:v7 context:context queueUpdates:0 completion:v8];
 
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -4391,38 +4391,38 @@ void __86__PKPassSemanticTileFactory_didFinishContentFetchFromTilesFetchForConte
   }
 }
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
-  v8 = a4;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = v8;
+  v6 = objectCopy;
   if (isKindOfClass)
   {
-    v7 = [v8 cacheKey];
+    cacheKey = [objectCopy cacheKey];
     os_unfair_lock_lock(&self->_tileUpdatesLock);
-    if ([(NSMutableArray *)self->_currentlyCachedKeys containsObject:v7])
+    if ([(NSMutableArray *)self->_currentlyCachedKeys containsObject:cacheKey])
     {
-      [(NSMutableArray *)self->_currentlyCachedKeys removeObject:v7];
+      [(NSMutableArray *)self->_currentlyCachedKeys removeObject:cacheKey];
     }
 
     os_unfair_lock_unlock(&self->_tileUpdatesLock);
 
-    v6 = v8;
+    v6 = objectCopy;
   }
 }
 
-+ (id)analyticsTileAvailabilityForPass:(id)a3
++ (id)analyticsTileAvailabilityForPass:(id)pass
 {
   v62 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [PKEventTicketSemanticTileSupplier createSupplierForPass:v3];
+  passCopy = pass;
+  v4 = [PKEventTicketSemanticTileSupplier createSupplierForPass:passCopy];
   if (v4)
   {
-    v5 = [v3 semantics];
+    semantics = [passCopy semantics];
     v35 = v4;
-    v36 = v3;
-    v6 = [PKPassSemanticTileDescriptor createWithPass:v3 semantics:v5 additionalTilesContentSupplier:v4];
+    v36 = passCopy;
+    v6 = [PKPassSemanticTileDescriptor createWithPass:passCopy semantics:semantics additionalTilesContentSupplier:v4];
 
     v41 = objc_alloc_init(PKPassSemanticTileFactory);
     v7 = [(PKPassSemanticTileFactory *)v41 _createTilesFromDescriptor:v6 context:1 queueUpdates:0];
@@ -4451,8 +4451,8 @@ void __86__PKPassSemanticTileFactory_didFinishContentFetchFromTilesFetchForConte
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
-          v14 = [v13 tiles];
-          v15 = [v14 countByEnumeratingWithState:&v50 objects:v60 count:16];
+          tiles = [v13 tiles];
+          v15 = [tiles countByEnumeratingWithState:&v50 objects:v60 count:16];
           if (v15)
           {
             v16 = v15;
@@ -4463,14 +4463,14 @@ void __86__PKPassSemanticTileFactory_didFinishContentFetchFromTilesFetchForConte
               {
                 if (*v51 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(tiles);
                 }
 
-                v19 = [*(*(&v50 + 1) + 8 * j) analyticsIdentifier];
-                [v8 safelyAddObject:v19];
+                analyticsIdentifier = [*(*(&v50 + 1) + 8 * j) analyticsIdentifier];
+                [v8 safelyAddObject:analyticsIdentifier];
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v50 objects:v60 count:16];
+              v16 = [tiles countByEnumeratingWithState:&v50 objects:v60 count:16];
             }
 
             while (v16);
@@ -4513,8 +4513,8 @@ void __86__PKPassSemanticTileFactory_didFinishContentFetchFromTilesFetchForConte
           v43 = 0u;
           v44 = 0u;
           v45 = 0u;
-          v28 = [v27 tiles];
-          v29 = [v28 countByEnumeratingWithState:&v42 objects:v58 count:16];
+          tiles2 = [v27 tiles];
+          v29 = [tiles2 countByEnumeratingWithState:&v42 objects:v58 count:16];
           if (v29)
           {
             v30 = v29;
@@ -4525,14 +4525,14 @@ void __86__PKPassSemanticTileFactory_didFinishContentFetchFromTilesFetchForConte
               {
                 if (*v43 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(tiles2);
                 }
 
-                v33 = [*(*(&v42 + 1) + 8 * k) analyticsIdentifier];
-                [v8 safelyAddObject:v33];
+                analyticsIdentifier2 = [*(*(&v42 + 1) + 8 * k) analyticsIdentifier];
+                [v8 safelyAddObject:analyticsIdentifier2];
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v42 objects:v58 count:16];
+              v30 = [tiles2 countByEnumeratingWithState:&v42 objects:v58 count:16];
             }
 
             while (v30);
@@ -4569,7 +4569,7 @@ void __86__PKPassSemanticTileFactory_didFinishContentFetchFromTilesFetchForConte
     }
 
     v4 = v35;
-    v3 = v36;
+    passCopy = v36;
   }
 
   else

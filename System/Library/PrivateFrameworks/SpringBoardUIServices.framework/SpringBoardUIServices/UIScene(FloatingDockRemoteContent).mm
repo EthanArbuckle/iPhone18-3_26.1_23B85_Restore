@@ -6,9 +6,9 @@
 
 - (void)floatingDockRemoteContentClientComponent
 {
-  v1 = [a1 _FBSScene];
+  _FBSScene = [self _FBSScene];
   v2 = objc_opt_class();
-  v3 = [v1 componentForExtension:v2 ofClass:objc_opt_class()];
+  v3 = [_FBSScene componentForExtension:v2 ofClass:objc_opt_class()];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)

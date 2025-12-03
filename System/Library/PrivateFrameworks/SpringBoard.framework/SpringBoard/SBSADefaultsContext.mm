@@ -1,50 +1,50 @@
 @interface SBSADefaultsContext
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBSADefaultsContext)initWithDefaultsContext:(id)a3;
-- (id)copyBySettingAlwaysRenderSystemApertureFillOnGPU:(BOOL)a3;
-- (id)copyBySettingAlwaysShowSystemApertureInSnapshots:(BOOL)a3;
-- (id)copyBySettingAlwaysShowSystemApertureOnClonedDisplays:(BOOL)a3;
-- (id)copyBySettingEnableSystemApertureStateCollection:(BOOL)a3;
-- (id)copyBySettingNeverRenderSystemApertureFillOnGPU:(BOOL)a3;
-- (id)copyBySettingSuppressDynamicIslandCompletely:(BOOL)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
+- (SBSADefaultsContext)initWithDefaultsContext:(id)context;
+- (id)copyBySettingAlwaysRenderSystemApertureFillOnGPU:(BOOL)u;
+- (id)copyBySettingAlwaysShowSystemApertureInSnapshots:(BOOL)snapshots;
+- (id)copyBySettingAlwaysShowSystemApertureOnClonedDisplays:(BOOL)displays;
+- (id)copyBySettingEnableSystemApertureStateCollection:(BOOL)collection;
+- (id)copyBySettingNeverRenderSystemApertureFillOnGPU:(BOOL)u;
+- (id)copyBySettingSuppressDynamicIslandCompletely:(BOOL)completely;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBSADefaultsContext
 
-- (SBSADefaultsContext)initWithDefaultsContext:(id)a3
+- (SBSADefaultsContext)initWithDefaultsContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = SBSADefaultsContext;
   v5 = [(SBSADefaultsContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    v5->_suppressDynamicIslandCompletely = v4[8];
-    v5->_alwaysShowSystemApertureOnClonedDisplays = v4[9];
-    v5->_alwaysShowSystemApertureInSnapshots = v4[10];
-    v5->_alwaysRenderSystemApertureFillOnGPU = v4[11];
-    v5->_neverRenderSystemApertureFillOnGPU = v4[12];
-    v5->_enableSystemApertureStateCollection = v4[13];
+    v5->_suppressDynamicIslandCompletely = contextCopy[8];
+    v5->_alwaysShowSystemApertureOnClonedDisplays = contextCopy[9];
+    v5->_alwaysShowSystemApertureInSnapshots = contextCopy[10];
+    v5->_alwaysRenderSystemApertureFillOnGPU = contextCopy[11];
+    v5->_neverRenderSystemApertureFillOnGPU = contextCopy[12];
+    v5->_enableSystemApertureStateCollection = contextCopy[13];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   suppressDynamicIslandCompletely = self->_suppressDynamicIslandCompletely;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __31__SBSADefaultsContext_isEqual___block_invoke;
   v35[3] = &unk_2783ACE58;
-  v7 = v4;
+  v7 = equalCopy;
   v36 = v7;
   v8 = [v5 appendBool:suppressDynamicIslandCompletely counterpart:v35];
   alwaysShowSystemApertureOnClonedDisplays = self->_alwaysShowSystemApertureOnClonedDisplays;
@@ -94,8 +94,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_suppressDynamicIslandCompletely];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_suppressDynamicIslandCompletely];
   v5 = [v4 appendBool:self->_alwaysShowSystemApertureOnClonedDisplays];
   v6 = [v5 appendBool:self->_alwaysShowSystemApertureInSnapshots];
   v7 = [v6 appendBool:self->_alwaysRenderSystemApertureFillOnGPU];
@@ -106,92 +106,92 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithDefaultsContext:self];
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSADefaultsContext *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;
 }
 
-- (id)copyBySettingSuppressDynamicIslandCompletely:(BOOL)a3
+- (id)copyBySettingSuppressDynamicIslandCompletely:(BOOL)completely
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __68__SBSADefaultsContext_copyBySettingSuppressDynamicIslandCompletely___block_invoke;
   v4[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v5 = a3;
+  completelyCopy = completely;
   return [(SBSADefaultsContext *)self copyWithBlock:v4];
 }
 
-- (id)copyBySettingAlwaysShowSystemApertureOnClonedDisplays:(BOOL)a3
+- (id)copyBySettingAlwaysShowSystemApertureOnClonedDisplays:(BOOL)displays
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __77__SBSADefaultsContext_copyBySettingAlwaysShowSystemApertureOnClonedDisplays___block_invoke;
   v4[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v5 = a3;
+  displaysCopy = displays;
   return [(SBSADefaultsContext *)self copyWithBlock:v4];
 }
 
-- (id)copyBySettingAlwaysShowSystemApertureInSnapshots:(BOOL)a3
+- (id)copyBySettingAlwaysShowSystemApertureInSnapshots:(BOOL)snapshots
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __72__SBSADefaultsContext_copyBySettingAlwaysShowSystemApertureInSnapshots___block_invoke;
   v4[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v5 = a3;
+  snapshotsCopy = snapshots;
   return [(SBSADefaultsContext *)self copyWithBlock:v4];
 }
 
-- (id)copyBySettingAlwaysRenderSystemApertureFillOnGPU:(BOOL)a3
+- (id)copyBySettingAlwaysRenderSystemApertureFillOnGPU:(BOOL)u
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __72__SBSADefaultsContext_copyBySettingAlwaysRenderSystemApertureFillOnGPU___block_invoke;
   v4[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v5 = a3;
+  uCopy = u;
   return [(SBSADefaultsContext *)self copyWithBlock:v4];
 }
 
-- (id)copyBySettingNeverRenderSystemApertureFillOnGPU:(BOOL)a3
+- (id)copyBySettingNeverRenderSystemApertureFillOnGPU:(BOOL)u
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __71__SBSADefaultsContext_copyBySettingNeverRenderSystemApertureFillOnGPU___block_invoke;
   v4[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v5 = a3;
+  uCopy = u;
   return [(SBSADefaultsContext *)self copyWithBlock:v4];
 }
 
-- (id)copyBySettingEnableSystemApertureStateCollection:(BOOL)a3
+- (id)copyBySettingEnableSystemApertureStateCollection:(BOOL)collection
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __72__SBSADefaultsContext_copyBySettingEnableSystemApertureStateCollection___block_invoke;
   v4[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v5 = a3;
+  collectionCopy = collection;
   return [(SBSADefaultsContext *)self copyWithBlock:v4];
 }
 

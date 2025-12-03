@@ -1,24 +1,24 @@
 @interface ATXContextWebsiteSuggestionProducer
-- (ATXContextWebsiteSuggestionProducer)initWithValidDateInterval:(id)a3 reasonCode:(int64_t)a4 score:(double)a5;
-- (id)_suggestionWithWebsite:(id)a3 titlesAndSubtitles:(id)a4;
-- (id)titleAndSubtitleForUrl:(id)a3 titlesAndSubtitles:(id)a4;
+- (ATXContextWebsiteSuggestionProducer)initWithValidDateInterval:(id)interval reasonCode:(int64_t)code score:(double)score;
+- (id)_suggestionWithWebsite:(id)website titlesAndSubtitles:(id)subtitles;
+- (id)titleAndSubtitleForUrl:(id)url titlesAndSubtitles:(id)subtitles;
 - (id)websiteSuggestions;
 @end
 
 @implementation ATXContextWebsiteSuggestionProducer
 
-- (ATXContextWebsiteSuggestionProducer)initWithValidDateInterval:(id)a3 reasonCode:(int64_t)a4 score:(double)a5
+- (ATXContextWebsiteSuggestionProducer)initWithValidDateInterval:(id)interval reasonCode:(int64_t)code score:(double)score
 {
-  v9 = a3;
+  intervalCopy = interval;
   v13.receiver = self;
   v13.super_class = ATXContextWebsiteSuggestionProducer;
   v10 = [(ATXContextWebsiteSuggestionProducer *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_validDateInterval, a3);
-    v11->_reasonCode = a4;
-    v11->_score = a5;
+    objc_storeStrong(&v10->_validDateInterval, interval);
+    v11->_reasonCode = code;
+    v11->_score = score;
   }
 
   return v11;
@@ -89,20 +89,20 @@ id __57__ATXContextWebsiteSuggestionProducer_websiteSuggestions__block_invoke(ui
   return v6;
 }
 
-- (id)_suggestionWithWebsite:(id)a3 titlesAndSubtitles:(id)a4
+- (id)_suggestionWithWebsite:(id)website titlesAndSubtitles:(id)subtitles
 {
-  v6 = a3;
-  v7 = [(ATXContextWebsiteSuggestionProducer *)self titleAndSubtitleForUrl:v6 titlesAndSubtitles:a4];
+  websiteCopy = website;
+  v7 = [(ATXContextWebsiteSuggestionProducer *)self titleAndSubtitleForUrl:websiteCopy titlesAndSubtitles:subtitles];
   if ([v7 count] == 2)
   {
     v8 = [v7 objectAtIndexedSubscript:0];
     v9 = [v7 objectAtIndexedSubscript:1];
     v10 = objc_alloc(MEMORY[0x277CEB2D0]);
-    v11 = [(NSDateInterval *)self->_validDateInterval startDate];
-    v12 = [(NSDateInterval *)self->_validDateInterval endDate];
-    v13 = [v10 initWithStartDate:v11 endDate:v12 lockScreenEligible:0 predicate:0];
+    startDate = [(NSDateInterval *)self->_validDateInterval startDate];
+    endDate = [(NSDateInterval *)self->_validDateInterval endDate];
+    v13 = [v10 initWithStartDate:startDate endDate:endDate lockScreenEligible:0 predicate:0];
 
-    v14 = [ATXContextHeuristicSuggestionProducer suggestionWithURL:v6 actionTitle:v8 subtitle:v9 bundleID:@"com.apple.mobilesafari" score:1 << self->_reasonCode predictionReasons:v13 criteria:self->_score dateInterval:0];
+    v14 = [ATXContextHeuristicSuggestionProducer suggestionWithURL:websiteCopy actionTitle:v8 subtitle:v9 bundleID:@"com.apple.mobilesafari" score:1 << self->_reasonCode predictionReasons:v13 criteria:self->_score dateInterval:0];
   }
 
   else
@@ -113,16 +113,16 @@ id __57__ATXContextWebsiteSuggestionProducer_websiteSuggestions__block_invoke(ui
   return v14;
 }
 
-- (id)titleAndSubtitleForUrl:(id)a3 titlesAndSubtitles:(id)a4
+- (id)titleAndSubtitleForUrl:(id)url titlesAndSubtitles:(id)subtitles
 {
   v26 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  urlCopy = url;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  subtitlesCopy = subtitles;
+  v6 = [subtitlesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -134,17 +134,17 @@ id __57__ATXContextWebsiteSuggestionProducer_websiteSuggestions__block_invoke(ui
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subtitlesCopy);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
         v12 = [v11 URLByAppendingPathComponent:&stru_2850AD368];
-        v13 = [v20 URLByAppendingPathComponent:&stru_2850AD368];
+        v13 = [urlCopy URLByAppendingPathComponent:&stru_2850AD368];
         v14 = [v12 isEqual:v13];
 
         if (v14)
         {
-          v15 = [v5 objectForKeyedSubscript:v11];
+          v15 = [subtitlesCopy objectForKeyedSubscript:v11];
           v16 = [v15 count];
 
           if (v16 != 2)
@@ -152,13 +152,13 @@ id __57__ATXContextWebsiteSuggestionProducer_websiteSuggestions__block_invoke(ui
             goto LABEL_13;
           }
 
-          v17 = [v5 objectForKeyedSubscript:v11];
+          v17 = [subtitlesCopy objectForKeyedSubscript:v11];
 
           v8 = v17;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [subtitlesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v7);

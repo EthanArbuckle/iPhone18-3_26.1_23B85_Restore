@@ -1,8 +1,8 @@
 @interface CDMBaseCommand
 - (CDMBaseCommand)init;
-- (CDMBaseCommand)initWithCoder:(id)a3;
+- (CDMBaseCommand)initWithCoder:(id)coder;
 - (NSString)commandName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CDMBaseCommand
@@ -14,10 +14,10 @@
   v2 = [(CDMBaseCommand *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uuid = v2->_uuid;
-    v2->_uuid = v4;
+    v2->_uuid = uUIDString;
 
     cmdError = v2->_cmdError;
     v2->_cmdError = 0;
@@ -33,27 +33,27 @@
   return NSStringFromClass(v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_cmdError forKey:@"cmdError"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_cmdError forKey:@"cmdError"];
 }
 
-- (CDMBaseCommand)initWithCoder:(id)a3
+- (CDMBaseCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CDMBaseCommand;
   v5 = [(CDMBaseCommand *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cmdError"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cmdError"];
     cmdError = v5->_cmdError;
     v5->_cmdError = v8;
   }

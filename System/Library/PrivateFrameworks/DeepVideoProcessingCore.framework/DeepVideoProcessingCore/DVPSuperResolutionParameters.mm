@@ -1,16 +1,16 @@
 @interface DVPSuperResolutionParameters
-- (DVPSuperResolutionParameters)initWithSourceFrame:(id)a3 previousFrame:(id)a4 previousOutputFrame:(id)a5 opticalFlow:(id)a6 submissionMode:(int64_t)a7 destinationFrame:(id)a8;
+- (DVPSuperResolutionParameters)initWithSourceFrame:(id)frame previousFrame:(id)previousFrame previousOutputFrame:(id)outputFrame opticalFlow:(id)flow submissionMode:(int64_t)mode destinationFrame:(id)destinationFrame;
 @end
 
 @implementation DVPSuperResolutionParameters
 
-- (DVPSuperResolutionParameters)initWithSourceFrame:(id)a3 previousFrame:(id)a4 previousOutputFrame:(id)a5 opticalFlow:(id)a6 submissionMode:(int64_t)a7 destinationFrame:(id)a8
+- (DVPSuperResolutionParameters)initWithSourceFrame:(id)frame previousFrame:(id)previousFrame previousOutputFrame:(id)outputFrame opticalFlow:(id)flow submissionMode:(int64_t)mode destinationFrame:(id)destinationFrame
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v23 = a6;
-  v22 = a8;
+  frameCopy = frame;
+  previousFrameCopy = previousFrame;
+  outputFrameCopy = outputFrame;
+  flowCopy = flow;
+  destinationFrameCopy = destinationFrame;
   v24.receiver = self;
   v24.super_class = DVPSuperResolutionParameters;
   v18 = [(DVPSuperResolutionParameters *)&v24 init];
@@ -21,13 +21,13 @@
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v18->_sourceFrame, a3);
-  objc_storeStrong(&v19->_previousFrame, a4);
-  objc_storeStrong(&v19->_previousOutputFrame, a5);
-  objc_storeStrong(&v19->_opticalFlow, a6);
-  v19->_submissionMode = a7;
-  objc_storeStrong(&v19->_destinationFrame, a8);
-  if (!isSameFormat([v15 buffer], objc_msgSend(v16, "buffer")) || !isSameFormat(objc_msgSend(v16, "buffer"), objc_msgSend(v17, "buffer")))
+  objc_storeStrong(&v18->_sourceFrame, frame);
+  objc_storeStrong(&v19->_previousFrame, previousFrame);
+  objc_storeStrong(&v19->_previousOutputFrame, outputFrame);
+  objc_storeStrong(&v19->_opticalFlow, flow);
+  v19->_submissionMode = mode;
+  objc_storeStrong(&v19->_destinationFrame, destinationFrame);
+  if (!isSameFormat([frameCopy buffer], objc_msgSend(previousFrameCopy, "buffer")) || !isSameFormat(objc_msgSend(previousFrameCopy, "buffer"), objc_msgSend(outputFrameCopy, "buffer")))
   {
     NSLog(&cfstr_FailToInitiali_0.isa);
 LABEL_8:

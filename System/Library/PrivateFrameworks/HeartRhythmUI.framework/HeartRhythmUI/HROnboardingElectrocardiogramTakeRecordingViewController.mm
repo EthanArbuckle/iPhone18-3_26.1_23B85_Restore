@@ -3,33 +3,33 @@
 - (id)_bodyFont;
 - (id)_recordingStepFont;
 - (id)_titleFont;
-- (id)_titleForOnboarding:(BOOL)a3;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (id)_titleForOnboarding:(BOOL)onboarding;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (void)_setUpElectrocardiogramQuery;
-- (void)_stepForwardWithElectrocardiogramRecorded:(BOOL)a3;
+- (void)_stepForwardWithElectrocardiogramRecorded:(BOOL)recorded;
 - (void)_stopElectrocardiogramQuery;
 - (void)heartRhythmAvailabilityDidUpdate;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)skipButtonTapped:(id)a3;
+- (void)skipButtonTapped:(id)tapped;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation HROnboardingElectrocardiogramTakeRecordingViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v4 = a3;
+  onboardingCopy = onboarding;
   v10.receiver = self;
   v10.super_class = HROnboardingElectrocardiogramTakeRecordingViewController;
-  v5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)&v10 initForOnboarding:a3 upgradingFromAlgorithmVersion:a4];
+  v5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)&v10 initForOnboarding:onboarding upgradingFromAlgorithmVersion:version];
   v6 = v5;
   if (v5)
   {
-    v7 = !v4;
+    v7 = !onboardingCopy;
   }
 
   else
@@ -40,8 +40,8 @@
   if (!v7)
   {
     [v5 setRightButtonType:4];
-    v8 = [v6 navigationItem];
-    [v8 setHidesBackButton:1];
+    navigationItem = [v6 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     v6[1088] = 0;
   }
@@ -57,27 +57,27 @@
   if ([(HROnboardingElectrocardiogramTakeRecordingViewController *)self isOnboarding])
   {
     v3 = objc_alloc(MEMORY[0x277CCD530]);
-    v4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
-    v5 = [v4 healthStore];
-    v6 = [v3 initWithHealthStore:v5];
+    delegate = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
+    healthStore = [delegate healthStore];
+    v6 = [v3 initWithHealthStore:healthStore];
     [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setAvailability:v6];
 
-    v7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self availability];
-    [v7 addHeartRhythmAvailabilityObserver:self];
+    availability = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self availability];
+    [availability addHeartRhythmAvailabilityObserver:self];
 
     [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _setUpElectrocardiogramQuery];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HROnboardingElectrocardiogramTakeRecordingViewController;
-  [(HROnboardingElectrocardiogramTakeRecordingViewController *)&v5 viewDidDisappear:a3];
+  [(HROnboardingElectrocardiogramTakeRecordingViewController *)&v5 viewDidDisappear:disappear];
   if ([(HROnboardingElectrocardiogramTakeRecordingViewController *)self isOnboarding])
   {
-    v4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self availability];
-    [v4 removeHeartRhythmAvailabilityObserver:self];
+    availability = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self availability];
+    [availability removeHeartRhythmAvailabilityObserver:self];
 
     [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _stopElectrocardiogramQuery];
   }
@@ -93,154 +93,154 @@
   [(HROnboardingWristImageView *)v3 setContentMode:1];
   [(HROnboardingWristImageView *)v3 setTimeRemaining:26.0];
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setAssetView:v3];
-  v4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  v5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self assetView];
-  [v4 addSubview:v5];
+  contentView = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  assetView = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self assetView];
+  [contentView addSubview:assetView];
 
   v6 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setTitleLabel:v6];
 
-  v7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
-  v8 = -[HROnboardingElectrocardiogramTakeRecordingViewController _titleForOnboarding:](self, "_titleForOnboarding:", [v7 firstTimeOnboarding]);
-  v9 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v9 setText:v8];
+  delegate = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
+  v8 = -[HROnboardingElectrocardiogramTakeRecordingViewController _titleForOnboarding:](self, "_titleForOnboarding:", [delegate firstTimeOnboarding]);
+  titleLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [titleLabel setText:v8];
 
-  v10 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v10 setTextAlignment:4];
+  titleLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [titleLabel2 setTextAlignment:4];
 
-  v11 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _titleFont];
-  v12 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v12 setFont:v11];
+  _titleFont = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _titleFont];
+  titleLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [titleLabel3 setFont:_titleFont];
 
-  v13 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v13 setAdjustsFontForContentSizeCategory:1];
+  titleLabel4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [titleLabel4 setAdjustsFontForContentSizeCategory:1];
 
-  v14 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v15 setNumberOfLines:0];
+  titleLabel6 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [titleLabel6 setNumberOfLines:0];
 
-  v16 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
-  v17 = [v16 stringByAppendingString:@".Title"];
-  v18 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v18 setAccessibilityIdentifier:v17];
+  identifierBundle = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
+  v17 = [identifierBundle stringByAppendingString:@".Title"];
+  titleLabel7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [titleLabel7 setAccessibilityIdentifier:v17];
 
-  v19 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  v20 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v19 addSubview:v20];
+  contentView2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  titleLabel8 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [contentView2 addSubview:titleLabel8];
 
   v21 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setBodyLabel:v21];
 
   v22 = HRUIECGLocalizedString(@"ECG_ONBOARDING_5_BODY");
-  v23 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v23 setText:v22];
+  bodyLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [bodyLabel setText:v22];
 
-  v24 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v24 setTextAlignment:4];
+  bodyLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [bodyLabel2 setTextAlignment:4];
 
-  v25 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v26 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v26 setTextColor:v25];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  bodyLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [bodyLabel3 setTextColor:secondaryLabelColor];
 
-  v27 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _bodyFont];
-  v28 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v28 setFont:v27];
+  _bodyFont = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _bodyFont];
+  bodyLabel4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [bodyLabel4 setFont:_bodyFont];
 
-  v29 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v29 setAdjustsFontForContentSizeCategory:1];
+  bodyLabel5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [bodyLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v30 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel6 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [bodyLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v31 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v31 setNumberOfLines:0];
+  bodyLabel7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [bodyLabel7 setNumberOfLines:0];
 
-  v32 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
-  v33 = [v32 stringByAppendingString:@".Description"];
-  v34 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v34 setAccessibilityIdentifier:v33];
+  identifierBundle2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
+  v33 = [identifierBundle2 stringByAppendingString:@".Description"];
+  bodyLabel8 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [bodyLabel8 setAccessibilityIdentifier:v33];
 
-  v35 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  v36 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  [v35 addSubview:v36];
+  contentView3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  bodyLabel9 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  [contentView3 addSubview:bodyLabel9];
 
   v37 = [HRImageLabel alloc];
-  v38 = [MEMORY[0x277D755B8] hrui_ECGAppIconImage];
+  hrui_ECGAppIconImage = [MEMORY[0x277D755B8] hrui_ECGAppIconImage];
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _takeRecordingImageDimension];
   v40 = v39;
   v42 = v41;
   v43 = HRUIECGLocalizedString(@"ECG_ONBOARDING_5_LIST_ITEM_STEP-1");
-  v44 = [(HRImageLabel *)v37 initWithImage:v38 size:v43 text:v40, v42];
+  v44 = [(HRImageLabel *)v37 initWithImage:hrui_ECGAppIconImage size:v43 text:v40, v42];
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setRecordingStep1ImageLabel:v44];
 
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _takeRecordingImageDimension];
   v46 = v45 * 0.5;
-  v47 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  v48 = [v47 imageView];
-  [v48 hrui_maskAllCornersWithRadius:v46];
+  recordingStep1ImageLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  imageView = [recordingStep1ImageLabel imageView];
+  [imageView hrui_maskAllCornersWithRadius:v46];
 
-  v49 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  [v49 setBoldText:0];
+  recordingStep1ImageLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  [recordingStep1ImageLabel2 setBoldText:0];
 
-  v50 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  [v50 setImageAlignment:0];
+  recordingStep1ImageLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  [recordingStep1ImageLabel3 setImageAlignment:0];
 
-  v51 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v52 = [v51 CGColor];
-  v53 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  v54 = [v53 imageView];
-  v55 = [v54 layer];
-  [v55 setBorderColor:v52];
+  secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+  cGColor = [secondaryLabelColor2 CGColor];
+  recordingStep1ImageLabel4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  imageView2 = [recordingStep1ImageLabel4 imageView];
+  layer = [imageView2 layer];
+  [layer setBorderColor:cGColor];
 
   HKUIOnePixel();
   v57 = v56;
-  v58 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  v59 = [v58 imageView];
-  v60 = [v59 layer];
-  [v60 setBorderWidth:v57];
+  recordingStep1ImageLabel5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  imageView3 = [recordingStep1ImageLabel5 imageView];
+  layer2 = [imageView3 layer];
+  [layer2 setBorderWidth:v57];
 
-  v61 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  [v61 setTranslatesAutoresizingMaskIntoConstraints:0];
+  recordingStep1ImageLabel6 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  [recordingStep1ImageLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v62 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
-  v63 = [v62 stringByAppendingString:@".StepOne"];
-  v64 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  v65 = [v64 textLabel];
-  [v65 setAccessibilityIdentifier:v63];
+  identifierBundle3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
+  v63 = [identifierBundle3 stringByAppendingString:@".StepOne"];
+  recordingStep1ImageLabel7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  textLabel = [recordingStep1ImageLabel7 textLabel];
+  [textLabel setAccessibilityIdentifier:v63];
 
-  v66 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  v67 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  [v66 addSubview:v67];
+  contentView4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  recordingStep1ImageLabel8 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  [contentView4 addSubview:recordingStep1ImageLabel8];
 
   v68 = [HRImageLabel alloc];
-  v69 = [MEMORY[0x277D755B8] hrui_fingerCrownImage];
+  hrui_fingerCrownImage = [MEMORY[0x277D755B8] hrui_fingerCrownImage];
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _takeRecordingImageDimension];
   v71 = v70;
   v73 = v72;
   v74 = HRUIECGLocalizedString(@"ECG_ONBOARDING_5_LIST_ITEM_STEP-2");
-  v75 = [(HRImageLabel *)v68 initWithImage:v69 size:v74 text:v71, v73];
+  v75 = [(HRImageLabel *)v68 initWithImage:hrui_fingerCrownImage size:v74 text:v71, v73];
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setRecordingStep2ImageLabel:v75];
 
-  v76 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
-  [v76 setBoldText:0];
+  recordingStep2ImageLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
+  [recordingStep2ImageLabel setBoldText:0];
 
-  v77 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
-  [v77 setImageAlignment:0];
+  recordingStep2ImageLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
+  [recordingStep2ImageLabel2 setImageAlignment:0];
 
-  v78 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
-  [v78 setTranslatesAutoresizingMaskIntoConstraints:0];
+  recordingStep2ImageLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
+  [recordingStep2ImageLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v79 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
-  v80 = [v79 stringByAppendingString:@".StepTwo"];
-  v81 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
-  v82 = [v81 textLabel];
-  [v82 setAccessibilityIdentifier:v80];
+  identifierBundle4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
+  v80 = [identifierBundle4 stringByAppendingString:@".StepTwo"];
+  recordingStep2ImageLabel4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
+  textLabel2 = [recordingStep2ImageLabel4 textLabel];
+  [textLabel2 setAccessibilityIdentifier:v80];
 
-  v83 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  v84 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
-  [v83 addSubview:v84];
+  contentView5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  recordingStep2ImageLabel5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
+  [contentView5 addSubview:recordingStep2ImageLabel5];
 
   v85 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setWristSettingsLabel:v85];
@@ -248,26 +248,26 @@
   v86 = MEMORY[0x277CCAB48];
   v87 = HRUIECGLocalizedString(@"ECG_ONBOARDING_5_FOOTER");
   v88 = *MEMORY[0x277D769D0];
-  v89 = [MEMORY[0x277D75348] secondaryLabelColor];
+  secondaryLabelColor3 = [MEMORY[0x277D75348] secondaryLabelColor];
   v90 = HRUIECGLocalizedString(@"ECG_ONBOARDING_5_BOLD_FOOTER");
-  v91 = [v86 hrui_attributedStringForText:v87 style:v88 color:v89 boldText:v90];
-  v92 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
-  [v92 setAttributedText:v91];
+  v91 = [v86 hrui_attributedStringForText:v87 style:v88 color:secondaryLabelColor3 boldText:v90];
+  wristSettingsLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
+  [wristSettingsLabel setAttributedText:v91];
 
-  v93 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
-  [v93 setTranslatesAutoresizingMaskIntoConstraints:0];
+  wristSettingsLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
+  [wristSettingsLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v94 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
-  [v94 setNumberOfLines:0];
+  wristSettingsLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
+  [wristSettingsLabel3 setNumberOfLines:0];
 
-  v95 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
-  v96 = [v95 stringByAppendingString:@".Footer"];
-  v97 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
-  [v97 setAccessibilityIdentifier:v96];
+  identifierBundle5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self identifierBundle];
+  v96 = [identifierBundle5 stringByAppendingString:@".Footer"];
+  wristSettingsLabel4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
+  [wristSettingsLabel4 setAccessibilityIdentifier:v96];
 
-  v98 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  v99 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
-  [v98 addSubview:v99];
+  contentView6 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  wristSettingsLabel5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
+  [contentView6 addSubview:wristSettingsLabel5];
 }
 
 - (void)setUpConstraints
@@ -275,85 +275,85 @@
   v50.receiver = self;
   v50.super_class = HROnboardingElectrocardiogramTakeRecordingViewController;
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)&v50 setUpConstraints];
-  v3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self assetView];
-  v4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  [v3 hk_alignHorizontalConstraintsWithView:v4 margin:0.0];
+  assetView = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self assetView];
+  contentView = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  [assetView hk_alignHorizontalConstraintsWithView:contentView margin:0.0];
 
-  v5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self assetView];
-  v6 = [v5 topAnchor];
-  v7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  assetView2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self assetView];
+  topAnchor = [assetView2 topAnchor];
+  contentView2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  v11 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  titleLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  contentView3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v10 hrui_alignHorizontalConstraintsWithView:v11 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView3 insets:?];
 
-  v12 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  v13 = [v12 topAnchor];
-  v14 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self assetView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:29.0];
+  titleLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  topAnchor3 = [titleLabel2 topAnchor];
+  assetView3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self assetView];
+  bottomAnchor = [assetView3 bottomAnchor];
+  v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:29.0];
   [v16 setActive:1];
 
-  v17 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  v18 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v17 hk_alignHorizontalConstraintsWithView:v18 margin:0.0];
+  bodyLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  titleLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel3 margin:0.0];
 
-  v19 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  v20 = [v19 topAnchor];
-  v21 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:15.0];
+  bodyLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  topAnchor4 = [bodyLabel2 topAnchor];
+  titleLabel4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  bottomAnchor2 = [titleLabel4 bottomAnchor];
+  v23 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:15.0];
   [v23 setActive:1];
 
-  v24 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  v25 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v24 hk_alignHorizontalConstraintsWithView:v25 margin:0.0];
+  recordingStep1ImageLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  titleLabel5 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [recordingStep1ImageLabel hk_alignHorizontalConstraintsWithView:titleLabel5 margin:0.0];
 
-  v26 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  v27 = [v26 topAnchor];
-  v28 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
-  v29 = [v28 bottomAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:20.0];
+  recordingStep1ImageLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  topAnchor5 = [recordingStep1ImageLabel2 topAnchor];
+  bodyLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self bodyLabel];
+  bottomAnchor3 = [bodyLabel3 bottomAnchor];
+  v30 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:20.0];
   [v30 setActive:1];
 
-  v31 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
-  v32 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v31 hk_alignHorizontalConstraintsWithView:v32 margin:0.0];
+  recordingStep2ImageLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
+  titleLabel6 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [recordingStep2ImageLabel hk_alignHorizontalConstraintsWithView:titleLabel6 margin:0.0];
 
-  v33 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
-  v34 = [v33 topAnchor];
-  v35 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
-  v36 = [v35 bottomAnchor];
-  v37 = [v34 constraintEqualToAnchor:v36 constant:20.0];
+  recordingStep2ImageLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
+  topAnchor6 = [recordingStep2ImageLabel2 topAnchor];
+  recordingStep1ImageLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep1ImageLabel];
+  bottomAnchor4 = [recordingStep1ImageLabel3 bottomAnchor];
+  v37 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:20.0];
   [v37 setActive:1];
 
-  v38 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
-  v39 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
-  [v38 hk_alignHorizontalConstraintsWithView:v39 margin:0.0];
+  wristSettingsLabel = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
+  titleLabel7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self titleLabel];
+  [wristSettingsLabel hk_alignHorizontalConstraintsWithView:titleLabel7 margin:0.0];
 
-  v40 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
-  v41 = [v40 topAnchor];
-  v42 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
-  v43 = [v42 bottomAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43 constant:20.0];
+  wristSettingsLabel2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
+  topAnchor7 = [wristSettingsLabel2 topAnchor];
+  recordingStep2ImageLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self recordingStep2ImageLabel];
+  bottomAnchor5 = [recordingStep2ImageLabel3 bottomAnchor];
+  v44 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:20.0];
   [v44 setActive:1];
 
-  v45 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
-  v46 = [v45 bottomAnchor];
-  v47 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
-  v48 = [v47 bottomAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48 constant:*MEMORY[0x277D12778]];
+  contentView4 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self contentView];
+  bottomAnchor6 = [contentView4 bottomAnchor];
+  wristSettingsLabel3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self wristSettingsLabel];
+  bottomAnchor7 = [wristSettingsLabel3 bottomAnchor];
+  v49 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:*MEMORY[0x277D12778]];
   [v49 setActive:1];
 }
 
-- (void)skipButtonTapped:(id)a3
+- (void)skipButtonTapped:(id)tapped
 {
   v4 = MEMORY[0x277D75110];
-  v5 = a3;
+  tappedCopy = tapped;
   v6 = HRUIECGLocalizedString(@"ECG_ONBOARDING_SKIP_DESCRIPTION");
   v7 = [v4 alertControllerWithTitle:0 message:v6 preferredStyle:0];
 
@@ -373,8 +373,8 @@
 
   [v7 addAction:v10];
   [v7 addAction:v14];
-  v15 = [v7 popoverPresentationController];
-  [v15 setSourceItem:v5];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setSourceItem:tappedCopy];
 
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self presentViewController:v7 animated:1 completion:0];
 }
@@ -415,9 +415,9 @@ void __92__HROnboardingElectrocardiogramTakeRecordingViewController_heartRhythmA
   }
 }
 
-- (id)_titleForOnboarding:(BOOL)a3
+- (id)_titleForOnboarding:(BOOL)onboarding
 {
-  if (a3)
+  if (onboarding)
   {
     v3 = @"ECG_ONBOARDING_5_TITLE";
   }
@@ -441,28 +441,28 @@ void __92__HROnboardingElectrocardiogramTakeRecordingViewController_heartRhythmA
   return result;
 }
 
-- (void)_stepForwardWithElectrocardiogramRecorded:(BOOL)a3
+- (void)_stepForwardWithElectrocardiogramRecorded:(BOOL)recorded
 {
-  v3 = a3;
+  recordedCopy = recorded;
   if (![(HROnboardingElectrocardiogramTakeRecordingViewController *)self didStepForward])
   {
     [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setDidStepForward:1];
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-    v6 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
-    v7 = [v6 userInfo];
-    [v7 setObject:v5 forKeyedSubscript:@"HROnboardingElectrocardiogramDidCompleteRecordingKey"];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:recordedCopy];
+    delegate = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
+    userInfo = [delegate userInfo];
+    [userInfo setObject:v5 forKeyedSubscript:@"HROnboardingElectrocardiogramDidCompleteRecordingKey"];
 
-    v8 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
-    [v8 stepForward];
+    delegate2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
+    [delegate2 stepForward];
   }
 }
 
 - (void)_setUpElectrocardiogramQuery
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"HROnboardingElectrocardiogramStartDateKey"];
+  delegate = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
+  userInfo = [delegate userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"HROnboardingElectrocardiogramStartDateKey"];
 
   v6 = [MEMORY[0x277CCD838] predicateForSamplesWithStartDate:v5 endDate:0 options:0];
   objc_initWeak(&location, self);
@@ -480,14 +480,14 @@ void __92__HROnboardingElectrocardiogramTakeRecordingViewController_heartRhythmA
   }
 
   v10 = objc_alloc(MEMORY[0x277CCCFF0]);
-  v11 = [MEMORY[0x277CCD3A8] electrocardiogramType];
+  electrocardiogramType = [MEMORY[0x277CCD3A8] electrocardiogramType];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __88__HROnboardingElectrocardiogramTakeRecordingViewController__setUpElectrocardiogramQuery__block_invoke;
   v19[3] = &unk_2796FB7C8;
   v19[4] = self;
   objc_copyWeak(&v20, &location);
-  v12 = [v10 initWithType:v11 predicate:v6 anchor:0 limit:0 resultsHandler:v19];
+  v12 = [v10 initWithType:electrocardiogramType predicate:v6 anchor:0 limit:0 resultsHandler:v19];
   [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setElectrocardiogramQuery:v12];
 
   v17 = MEMORY[0x277D85DD0];
@@ -495,10 +495,10 @@ void __92__HROnboardingElectrocardiogramTakeRecordingViewController_heartRhythmA
   v13 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self electrocardiogramQuery:v17];
   [v13 setUpdateHandler:&v17];
 
-  v14 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
-  v15 = [v14 healthStore];
-  v16 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self electrocardiogramQuery];
-  [v15 executeQuery:v16];
+  delegate2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
+  healthStore = [delegate2 healthStore];
+  electrocardiogramQuery = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self electrocardiogramQuery];
+  [healthStore executeQuery:electrocardiogramQuery];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v20);
@@ -678,9 +678,9 @@ void __88__HROnboardingElectrocardiogramTakeRecordingViewController__setUpElectr
 - (void)_stopElectrocardiogramQuery
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self electrocardiogramQuery];
+  electrocardiogramQuery = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self electrocardiogramQuery];
 
-  if (v3)
+  if (electrocardiogramQuery)
   {
     _HKInitializeLogging();
     v4 = *MEMORY[0x277CCC2D8];
@@ -693,10 +693,10 @@ void __88__HROnboardingElectrocardiogramTakeRecordingViewController__setUpElectr
       _os_log_impl(&dword_2521E7000, v5, OS_LOG_TYPE_DEFAULT, "[%@]: Stopping query for new electrocardiograms", v10, 0xCu);
     }
 
-    v7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
-    v8 = [v7 healthStore];
-    v9 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self electrocardiogramQuery];
-    [v8 stopQuery:v9];
+    delegate = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self delegate];
+    healthStore = [delegate healthStore];
+    electrocardiogramQuery2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self electrocardiogramQuery];
+    [healthStore stopQuery:electrocardiogramQuery2];
 
     [(HROnboardingElectrocardiogramTakeRecordingViewController *)self setElectrocardiogramQuery:0];
   }
@@ -705,8 +705,8 @@ void __88__HROnboardingElectrocardiogramTakeRecordingViewController__setUpElectr
 - (id)_titleFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _titleFontTextStyle];
-  v4 = [v2 hk_scalableFontForTextStyle:v3 symbolicTraits:32770];
+  _titleFontTextStyle = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _titleFontTextStyle];
+  v4 = [v2 hk_scalableFontForTextStyle:_titleFontTextStyle symbolicTraits:32770];
 
   return v4;
 }
@@ -714,8 +714,8 @@ void __88__HROnboardingElectrocardiogramTakeRecordingViewController__setUpElectr
 - (id)_bodyFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _bodyFontTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _bodyFontTextStyle = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _bodyFontTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_bodyFontTextStyle];
 
   return v4;
 }
@@ -723,8 +723,8 @@ void __88__HROnboardingElectrocardiogramTakeRecordingViewController__setUpElectr
 - (id)_recordingStepFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _bodyFontTextStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3 symbolicTraits:2];
+  _bodyFontTextStyle = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self _bodyFontTextStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_bodyFontTextStyle symbolicTraits:2];
 
   return v4;
 }
@@ -742,8 +742,8 @@ void __88__HROnboardingElectrocardiogramTakeRecordingViewController__setUpElectr
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -757,8 +757,8 @@ void __96__HROnboardingElectrocardiogramTakeRecordingViewController_viewControll
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(HROnboardingElectrocardiogramTakeRecordingViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 @end

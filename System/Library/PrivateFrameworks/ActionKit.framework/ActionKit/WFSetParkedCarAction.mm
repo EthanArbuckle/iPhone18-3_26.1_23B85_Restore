@@ -1,9 +1,9 @@
 @interface WFSetParkedCarAction
 - (BOOL)locationParameterIsCurrentLocation;
 - (id)missingLocationError;
-- (id)resizedCompressedJPEGImageDataWithWFImage:(id)a3;
-- (void)fetchLastParkedCarContentItemWithCompletionHandler:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (id)resizedCompressedJPEGImageDataWithWFImage:(id)image;
+- (void)fetchLastParkedCarContentItemWithCompletionHandler:(id)handler;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFSetParkedCarAction
@@ -11,23 +11,23 @@
 - (BOOL)locationParameterIsCurrentLocation
 {
   v2 = [(WFSetParkedCarAction *)self parameterStateForKey:@"WFLocation"];
-  v3 = [v2 value];
-  v4 = [v3 isCurrentLocation];
+  value = [v2 value];
+  isCurrentLocation = [value isCurrentLocation];
 
-  return v4;
+  return isCurrentLocation;
 }
 
-- (void)fetchLastParkedCarContentItemWithCompletionHandler:(id)a3
+- (void)fetchLastParkedCarContentItemWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_time(0, 500000000);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__WFSetParkedCarAction_fetchLastParkedCarContentItemWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C22448;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_after(v5, MEMORY[0x277D85CD0], v7);
 }
 
@@ -78,16 +78,16 @@ void __75__WFSetParkedCarAction_fetchLastParkedCarContentItemWithCompletionHandl
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resizedCompressedJPEGImageDataWithWFImage:(id)a3
+- (id)resizedCompressedJPEGImageDataWithWFImage:(id)image
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [a3 UIImage];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  uIImage = [image UIImage];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v9 = v8;
 
   if (v6 >= v9)
@@ -100,11 +100,11 @@ void __75__WFSetParkedCarAction_fetchLastParkedCarContentItemWithCompletionHandl
     v10 = v9;
   }
 
-  [v3 size];
+  [uIImage size];
   v12 = v11;
-  [v3 size];
+  [uIImage size];
   v14 = v13;
-  [v3 size];
+  [uIImage size];
   if (v12 <= v14)
   {
     v15 = v16;
@@ -121,9 +121,9 @@ void __75__WFSetParkedCarAction_fetchLastParkedCarContentItemWithCompletionHandl
     v18 = 1.0;
   }
 
-  [v3 size];
+  [uIImage size];
   v20 = v19 / v18;
-  [v3 size];
+  [uIImage size];
   v38.size.height = v21 / v18;
   v38.origin.x = 0.0;
   v38.origin.y = 0.0;
@@ -131,12 +131,12 @@ void __75__WFSetParkedCarAction_fetchLastParkedCarContentItemWithCompletionHandl
   v39 = CGRectIntegral(v38);
   width = v39.size.width;
   height = v39.size.height;
-  [v3 scale];
+  [uIImage scale];
   v25 = v24;
   v37.width = width;
   v37.height = height;
   UIGraphicsBeginImageContextWithOptions(v37, 1, v25);
-  [v3 drawInRect:{0.0, 0.0, width, height}];
+  [uIImage drawInRect:{0.0, 0.0, width, height}];
   v26 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   if (v26)
@@ -199,11 +199,11 @@ LABEL_18:
   return v8;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 numberOfItems])
+  inputCopy = input;
+  if ([inputCopy numberOfItems])
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -228,7 +228,7 @@ LABEL_18:
 
     v6 = v5;
     _Block_object_dispose(&v11, 8);
-    [v4 getObjectRepresentation:v10 forClass:objc_opt_class()];
+    [inputCopy getObjectRepresentation:v10 forClass:objc_opt_class()];
   }
 
   else
@@ -241,8 +241,8 @@ LABEL_18:
       _os_log_impl(&dword_23DE30000, v7, OS_LOG_TYPE_ERROR, "%s No input provided to WFSetParkedCarAction", &buf, 0xCu);
     }
 
-    v8 = [(WFSetParkedCarAction *)self missingLocationError];
-    [(WFSetParkedCarAction *)self finishRunningWithError:v8];
+    missingLocationError = [(WFSetParkedCarAction *)self missingLocationError];
+    [(WFSetParkedCarAction *)self finishRunningWithError:missingLocationError];
   }
 
   v9 = *MEMORY[0x277D85DE8];

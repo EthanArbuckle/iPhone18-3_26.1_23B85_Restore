@@ -1,13 +1,13 @@
 @interface WBSAutoFillQuirksSnapshotTransformer
-- (id)objectFromData:(id)a3;
+- (id)objectFromData:(id)data;
 @end
 
 @implementation WBSAutoFillQuirksSnapshotTransformer
 
-- (id)objectFromData:(id)a3
+- (id)objectFromData:(id)data
 {
-  v3 = a3;
-  v4 = [[WBSAutoFillQuirksSnapshot alloc] initWithSnapshotData:v3 error:0];
+  dataCopy = data;
+  v4 = [[WBSAutoFillQuirksSnapshot alloc] initWithSnapshotData:dataCopy error:0];
 
   return v4;
 }

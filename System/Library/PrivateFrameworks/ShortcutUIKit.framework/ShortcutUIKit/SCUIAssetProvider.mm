@@ -1,15 +1,15 @@
 @interface SCUIAssetProvider
-- (SCUIAssetProvider)initWithBundleURL:(id)a3;
+- (SCUIAssetProvider)initWithBundleURL:(id)l;
 - (id)_assetManager;
-- (id)imageNamed:(id)a3;
+- (id)imageNamed:(id)named;
 @end
 
 @implementation SCUIAssetProvider
 
-- (SCUIAssetProvider)initWithBundleURL:(id)a3
+- (SCUIAssetProvider)initWithBundleURL:(id)l
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     [(SCUIAssetProvider *)a2 initWithBundleURL:?];
   }
@@ -20,23 +20,23 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_bundleURL, a3);
+    objc_storeStrong(&v7->_bundleURL, l);
   }
 
   return v8;
 }
 
-- (id)imageNamed:(id)a3
+- (id)imageNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(SCUIAssetProvider *)self _assetManager];
-  v6 = [v5 imageNamed:v4 withTrait:0];
+  namedCopy = named;
+  _assetManager = [(SCUIAssetProvider *)self _assetManager];
+  v6 = [_assetManager imageNamed:namedCopy withTrait:0];
   if (!v6)
   {
-    v7 = [(NSURL *)self->_bundleURL URLByAppendingPathComponent:v4];
+    v7 = [(NSURL *)self->_bundleURL URLByAppendingPathComponent:namedCopy];
     v8 = MEMORY[0x277D755B8];
-    v9 = [v7 path];
-    v6 = [v8 imageWithContentsOfFile:v9];
+    path = [v7 path];
+    v6 = [v8 imageWithContentsOfFile:path];
   }
 
   return v6;
@@ -48,10 +48,10 @@
   if (!assetManager)
   {
     v4 = [(NSURL *)self->_bundleURL URLByAppendingPathComponent:@"Assets.car"];
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    v7 = [objc_alloc(MEMORY[0x277D75DE0]) initWithURL:v4 idiom:v6 error:0];
+    v7 = [objc_alloc(MEMORY[0x277D75DE0]) initWithURL:v4 idiom:userInterfaceIdiom error:0];
     v8 = self->_assetManager;
     self->_assetManager = v7;
 

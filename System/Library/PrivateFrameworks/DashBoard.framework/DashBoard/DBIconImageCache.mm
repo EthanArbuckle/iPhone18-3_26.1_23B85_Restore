@@ -1,34 +1,34 @@
 @interface DBIconImageCache
 + (id)_iconImageCache;
-- (id)iconImageForBundleIdentifier:(id)a3 inVehicle:(id)a4;
-- (void)setIconImage:(id)a3 forBundleIdentifier:(id)a4 inVehicle:(id)a5;
+- (id)iconImageForBundleIdentifier:(id)identifier inVehicle:(id)vehicle;
+- (void)setIconImage:(id)image forBundleIdentifier:(id)identifier inVehicle:(id)vehicle;
 @end
 
 @implementation DBIconImageCache
 
-- (id)iconImageForBundleIdentifier:(id)a3 inVehicle:(id)a4
+- (id)iconImageForBundleIdentifier:(id)identifier inVehicle:(id)vehicle
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _imageKeyForBundleIdentifier:v6 inVehicle:v5];
+  vehicleCopy = vehicle;
+  identifierCopy = identifier;
+  v7 = [objc_opt_class() _imageKeyForBundleIdentifier:identifierCopy inVehicle:vehicleCopy];
 
-  v8 = [objc_opt_class() _iconImageCache];
-  v9 = [v8 imageForKey:v7];
+  _iconImageCache = [objc_opt_class() _iconImageCache];
+  v9 = [_iconImageCache imageForKey:v7];
 
   return v9;
 }
 
-- (void)setIconImage:(id)a3 forBundleIdentifier:(id)a4 inVehicle:(id)a5
+- (void)setIconImage:(id)image forBundleIdentifier:(id)identifier inVehicle:(id)vehicle
 {
-  if (a3)
+  if (image)
   {
-    v7 = a5;
-    v8 = a4;
-    v9 = a3;
-    v11 = [objc_opt_class() _imageKeyForBundleIdentifier:v8 inVehicle:v7];
+    vehicleCopy = vehicle;
+    identifierCopy = identifier;
+    imageCopy = image;
+    v11 = [objc_opt_class() _imageKeyForBundleIdentifier:identifierCopy inVehicle:vehicleCopy];
 
-    v10 = [objc_opt_class() _iconImageCache];
-    [v10 setImage:v9 forKey:v11 withPersistenceOptions:1];
+    _iconImageCache = [objc_opt_class() _iconImageCache];
+    [_iconImageCache setImage:imageCopy forKey:v11 withPersistenceOptions:1];
   }
 }
 

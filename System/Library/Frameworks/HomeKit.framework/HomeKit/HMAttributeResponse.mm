@@ -1,13 +1,13 @@
 @interface HMAttributeResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation HMAttributeResponse
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -17,7 +17,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -28,11 +28,11 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMResponseBase *)self request];
+      request = [(HMResponseBase *)self request];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = v7;
+        v8 = request;
       }
 
       else
@@ -42,11 +42,11 @@
 
       v9 = v8;
 
-      v10 = [(HMResponseBase *)v6 request];
+      request2 = [(HMResponseBase *)v6 request];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = request2;
       }
 
       else
@@ -56,13 +56,13 @@
 
       v12 = v11;
 
-      v13 = [v9 accessoryProfile];
-      v14 = [v12 accessoryProfile];
-      if ([v13 isEqual:v14])
+      accessoryProfile = [v9 accessoryProfile];
+      accessoryProfile2 = [v12 accessoryProfile];
+      if ([accessoryProfile isEqual:accessoryProfile2])
       {
-        v15 = [v9 attribute];
-        v16 = [v12 attribute];
-        v17 = [v15 isEqual:v16];
+        attribute = [v9 attribute];
+        attribute2 = [v12 attribute];
+        v17 = [attribute isEqual:attribute2];
       }
 
       else

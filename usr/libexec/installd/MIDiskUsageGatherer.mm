@@ -1,55 +1,55 @@
 @interface MIDiskUsageGatherer
-- (MIDiskUsageGatherer)initWithIdentifiers:(id)a3 options:(id)a4;
-- (id)_gatherForIdentifier:(id)a3;
-- (id)gatherUsageInfoWithError:(id *)a3;
+- (MIDiskUsageGatherer)initWithIdentifiers:(id)identifiers options:(id)options;
+- (id)_gatherForIdentifier:(id)identifier;
+- (id)gatherUsageInfoWithError:(id *)error;
 @end
 
 @implementation MIDiskUsageGatherer
 
-- (MIDiskUsageGatherer)initWithIdentifiers:(id)a3 options:(id)a4
+- (MIDiskUsageGatherer)initWithIdentifiers:(id)identifiers options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = MIDiskUsageGatherer;
   v9 = [(MIDiskUsageGatherer *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifiers, a3);
-    v11 = [v8 objectForKeyedSubscript:@"DynamicDiskUsage"];
+    objc_storeStrong(&v9->_identifiers, identifiers);
+    v11 = [optionsCopy objectForKeyedSubscript:@"DynamicDiskUsage"];
     v10->_calcDynamic = sub_100010A60(v11, 0);
 
-    v12 = [v8 objectForKeyedSubscript:@"SharedDiskUsage"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"SharedDiskUsage"];
     v10->_calcShared = sub_100010A60(v12, 0);
 
-    v13 = [v8 objectForKeyedSubscript:@"StaticDiskUsage"];
+    v13 = [optionsCopy objectForKeyedSubscript:@"StaticDiskUsage"];
     v10->_calcStatic = sub_100010A60(v13, 0);
   }
 
   return v10;
 }
 
-- (id)_gatherForIdentifier:(id)a3
+- (id)_gatherForIdentifier:(id)identifier
 {
-  v26 = a3;
-  sub_100054628(v26);
-  v4 = [(MIDiskUsageGatherer *)self calcDynamic];
-  v5 = [(MIDiskUsageGatherer *)self calcShared];
-  v6 = [(MIDiskUsageGatherer *)self calcStatic];
+  identifierCopy = identifier;
+  sub_100054628(identifierCopy);
+  calcDynamic = [(MIDiskUsageGatherer *)self calcDynamic];
+  calcShared = [(MIDiskUsageGatherer *)self calcShared];
+  calcStatic = [(MIDiskUsageGatherer *)self calcStatic];
   v7 = 2;
-  if (!v4)
+  if (!calcDynamic)
   {
     v7 = 0;
   }
 
-  if (v5)
+  if (calcShared)
   {
     v7 |= 8uLL;
   }
 
   v31 = 0;
-  v8 = [MIContainer allContainersForAllPersonasForIdentifier:v26 options:v7 | v6 error:&v31];
+  v8 = [MIContainer allContainersForAllPersonasForIdentifier:identifierCopy options:v7 | calcStatic error:&v31];
   v25 = v31;
   if (v8)
   {
@@ -141,7 +141,7 @@
     v21 = 8;
   }
 
-  sub_100054780(v26);
+  sub_100054780(identifierCopy);
   if ((v21 | 8) == 8)
   {
     v22 = v25;
@@ -156,14 +156,14 @@
   return v8;
 }
 
-- (id)gatherUsageInfoWithError:(id *)a3
+- (id)gatherUsageInfoWithError:(id *)error
 {
   v5 = objc_opt_new();
   if (![(MIDiskUsageGatherer *)self calcDynamic]&& ![(MIDiskUsageGatherer *)self calcStatic]&& ![(MIDiskUsageGatherer *)self calcShared])
   {
     v15 = sub_100010734("[MIDiskUsageGatherer gatherUsageInfoWithError:]", 138, MIInstallerErrorDomain, 25, 0, 0, @"No usage type to fetch specified.", v6, v17);
     v14 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -175,8 +175,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(MIDiskUsageGatherer *)self identifiers];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  identifiers = [(MIDiskUsageGatherer *)self identifiers];
+  v8 = [identifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -187,7 +187,7 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(identifiers);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -202,7 +202,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [identifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -210,13 +210,13 @@
 
   v14 = v5;
   v15 = 0;
-  if (a3)
+  if (error)
   {
 LABEL_16:
     if (!v14)
     {
       v15 = v15;
-      *a3 = v15;
+      *error = v15;
     }
   }
 

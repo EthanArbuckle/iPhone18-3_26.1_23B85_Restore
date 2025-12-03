@@ -1,78 +1,78 @@
 @interface ATXContextMediaSuggestionProducer
-- (ATXContextMediaSuggestionProducer)initWithMediaRemoteContentItem:(id)a3 destDisplayName:(id)a4 expirationDate:(id)a5;
-- (id)suggestionForArtistWithReason:(unint64_t)a3 score:(double)a4;
-- (id)suggestionForTrackWithReason:(unint64_t)a3 score:(double)a4;
+- (ATXContextMediaSuggestionProducer)initWithMediaRemoteContentItem:(id)item destDisplayName:(id)name expirationDate:(id)date;
+- (id)suggestionForArtistWithReason:(unint64_t)reason score:(double)score;
+- (id)suggestionForTrackWithReason:(unint64_t)reason score:(double)score;
 - (uint64_t)_localizedReason;
 @end
 
 @implementation ATXContextMediaSuggestionProducer
 
-- (ATXContextMediaSuggestionProducer)initWithMediaRemoteContentItem:(id)a3 destDisplayName:(id)a4 expirationDate:(id)a5
+- (ATXContextMediaSuggestionProducer)initWithMediaRemoteContentItem:(id)item destDisplayName:(id)name expirationDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  nameCopy = name;
+  dateCopy = date;
   v23.receiver = self;
   v23.super_class = ATXContextMediaSuggestionProducer;
   v11 = [(ATXContextMediaSuggestionProducer *)&v23 init];
   if (v11)
   {
-    v12 = [v8 metadata];
-    v11->_mediaType = [v12 mediaType];
-    v11->_mediaSubType = [v12 mediaSubType];
-    v13 = [v12 title];
+    metadata = [itemCopy metadata];
+    v11->_mediaType = [metadata mediaType];
+    v11->_mediaSubType = [metadata mediaSubType];
+    title = [metadata title];
     trackName = v11->_trackName;
-    v11->_trackName = v13;
+    v11->_trackName = title;
 
-    if ([v12 hasITunesStoreIdentifier])
+    if ([metadata hasITunesStoreIdentifier])
     {
-      v15 = [v12 iTunesStoreIdentifier];
+      iTunesStoreIdentifier = [metadata iTunesStoreIdentifier];
     }
 
     else
     {
-      v15 = 0;
+      iTunesStoreIdentifier = 0;
     }
 
-    v11->_trackAdamId = v15;
-    v16 = [v12 trackArtistName];
+    v11->_trackAdamId = iTunesStoreIdentifier;
+    trackArtistName = [metadata trackArtistName];
     artistName = v11->_artistName;
-    v11->_artistName = v16;
+    v11->_artistName = trackArtistName;
 
-    if ([v12 hasITunesStoreArtistIdentifier])
+    if ([metadata hasITunesStoreArtistIdentifier])
     {
-      v18 = [v12 iTunesStoreArtistIdentifier];
+      iTunesStoreArtistIdentifier = [metadata iTunesStoreArtistIdentifier];
     }
 
     else
     {
-      v18 = 0;
+      iTunesStoreArtistIdentifier = 0;
     }
 
-    v11->_artistAdamId = v18;
-    v19 = [v12 albumName];
+    v11->_artistAdamId = iTunesStoreArtistIdentifier;
+    albumName = [metadata albumName];
     albumName = v11->_albumName;
-    v11->_albumName = v19;
+    v11->_albumName = albumName;
 
-    if ([v12 hasITunesStoreAlbumIdentifier])
+    if ([metadata hasITunesStoreAlbumIdentifier])
     {
-      v21 = [v12 iTunesStoreAlbumIdentifier];
+      iTunesStoreAlbumIdentifier = [metadata iTunesStoreAlbumIdentifier];
     }
 
     else
     {
-      v21 = 0;
+      iTunesStoreAlbumIdentifier = 0;
     }
 
-    v11->_albumAdamId = v21;
-    objc_storeStrong(&v11->_destDisplayName, a4);
-    objc_storeStrong(&v11->_expirationDate, a5);
+    v11->_albumAdamId = iTunesStoreAlbumIdentifier;
+    objc_storeStrong(&v11->_destDisplayName, name);
+    objc_storeStrong(&v11->_expirationDate, date);
   }
 
   return v11;
 }
 
-- (id)suggestionForTrackWithReason:(unint64_t)a3 score:(double)a4
+- (id)suggestionForTrackWithReason:(unint64_t)reason score:(double)score
 {
   trackName = self->_trackName;
   if (trackName && (trackAdamId = self->_trackAdamId) != 0 && self->_mediaType == 2 && ((mediaSubType = self->_mediaSubType, (mediaSubType - 3) >= 2) ? (v8 = mediaSubType == 1) : (v8 = 1), !v8))
@@ -87,8 +87,8 @@
       v13 = 2;
     }
 
-    v14 = [(ATXContextMediaSuggestionProducer *)self _localizedReason];
-    v9 = [ATXContextHeuristicSuggestionProducer mediaWithName:trackName type:v13 adamIdentifier:trackAdamId predictionReasons:a3 localizedReason:v14 score:self->_expirationDate expirationDate:a4];
+    _localizedReason = [(ATXContextMediaSuggestionProducer *)self _localizedReason];
+    v9 = [ATXContextHeuristicSuggestionProducer mediaWithName:trackName type:v13 adamIdentifier:trackAdamId predictionReasons:reason localizedReason:_localizedReason score:self->_expirationDate expirationDate:score];
   }
 
   else
@@ -99,7 +99,7 @@
   return v9;
 }
 
-- (id)suggestionForArtistWithReason:(unint64_t)a3 score:(double)a4
+- (id)suggestionForArtistWithReason:(unint64_t)reason score:(double)score
 {
   artistName = self->_artistName;
   if (!artistName)
@@ -141,8 +141,8 @@ LABEL_9:
 LABEL_13:
   v13 = 6;
 LABEL_15:
-  v14 = [(ATXContextMediaSuggestionProducer *)self _localizedReason];
-  v11 = [ATXContextHeuristicSuggestionProducer mediaWithName:artistName type:v13 adamIdentifier:artistAdamId predictionReasons:a3 localizedReason:v14 score:self->_expirationDate expirationDate:a4];
+  _localizedReason = [(ATXContextMediaSuggestionProducer *)self _localizedReason];
+  v11 = [ATXContextHeuristicSuggestionProducer mediaWithName:artistName type:v13 adamIdentifier:artistAdamId predictionReasons:reason localizedReason:_localizedReason score:self->_expirationDate expirationDate:score];
 
 LABEL_10:
 
@@ -151,27 +151,27 @@ LABEL_10:
 
 - (uint64_t)_localizedReason
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[10];
+    v2 = self[10];
     v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v4 = v3;
     if (v2)
     {
       v5 = [v3 localizedStringForKey:@"NOW_PLAYING_DEST" value:&stru_2850AD368 table:0];
 
-      v1 = _PASValidatedFormat(v5, v6, v7, v8, v9, v10, v11, v12, v1[10]);
+      selfCopy = _PASValidatedFormat(v5, v6, v7, v8, v9, v10, v11, v12, selfCopy[10]);
       v4 = v5;
     }
 
     else
     {
-      v1 = [v3 localizedStringForKey:@"NOW_PLAYING_NO_DEST" value:&stru_2850AD368 table:0];
+      selfCopy = [v3 localizedStringForKey:@"NOW_PLAYING_NO_DEST" value:&stru_2850AD368 table:0];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

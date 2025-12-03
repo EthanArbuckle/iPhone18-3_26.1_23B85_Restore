@@ -1,7 +1,7 @@
 @interface UARPMetaDataInformationAssetIdentifier
 - (UARPMetaDataInformationAssetIdentifier)init;
-- (UARPMetaDataInformationAssetIdentifier)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataInformationAssetIdentifier)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataInformationAssetIdentifier)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataInformationAssetIdentifier)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataInformationAssetIdentifier)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataInformationAssetIdentifier)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataInformationAssetIdentifier *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataInformationAssetIdentifier;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     assetIdentifier = v7->_assetIdentifier;
     v7->_assetIdentifier = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataInformationAssetIdentifier)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataInformationAssetIdentifier)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataInformationAssetIdentifier *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     assetIdentifier = v6->_assetIdentifier;
     v6->_assetIdentifier = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataInformationAssetIdentifier *)self assetIdentifier];
+  assetIdentifier = [(UARPMetaDataInformationAssetIdentifier *)self assetIdentifier];
   v6.receiver = self;
   v6.super_class = UARPMetaDataInformationAssetIdentifier;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:assetIdentifier];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataInformationAssetIdentifier *)self assetIdentifier];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  assetIdentifier = [(UARPMetaDataInformationAssetIdentifier *)self assetIdentifier];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, assetIdentifier];
 
   return v5;
 }

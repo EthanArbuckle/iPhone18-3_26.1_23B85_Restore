@@ -1,13 +1,13 @@
 @interface ICSubscribedContainersRequest
-- (id)_bodyDataForContainerIDs:(id)a3;
+- (id)_bodyDataForContainerIDs:(id)ds;
 @end
 
 @implementation ICSubscribedContainersRequest
 
-- (id)_bodyDataForContainerIDs:(id)a3
+- (id)_bodyDataForContainerIDs:(id)ds
 {
-  v6 = a3;
-  v3 = v6;
+  dsCopy = ds;
+  v3 = dsCopy;
   v4 = ICDAAPUtilitiesCreateDataForItemKindContainer();
 
   return v4;

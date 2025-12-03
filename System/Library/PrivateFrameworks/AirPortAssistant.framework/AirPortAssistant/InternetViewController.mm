@@ -1,16 +1,16 @@
 @interface InternetViewController
-- (void)addInformationalDiagramWithWANConnectedBaseProductID:(unsigned int)a3 replacementProductID:(unsigned int)a4;
+- (void)addInformationalDiagramWithWANConnectedBaseProductID:(unsigned int)d replacementProductID:(unsigned int)iD;
 - (void)addInternetNotWorkingUI;
 - (void)addInternetWANPluginUI;
 - (void)addSwapCablingUI;
 - (void)dealloc;
-- (void)determineInfoForDevice:(id)a3 deviceDiagramInfo:(id *)a4;
+- (void)determineInfoForDevice:(id)device deviceDiagramInfo:(id *)info;
 - (void)loadView;
 - (void)presentSwapCablingCompleteUI;
-- (void)setCommonTraitsForLabel:(id)a3 forSize:(double)a4;
-- (void)startAnimatingCablingForView:(id)a3 startingOpacity:(float)a4 endingOpacity:(float)a5 duration:(double)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setCommonTraitsForLabel:(id)label forSize:(double)size;
+- (void)startAnimatingCablingForView:(id)view startingOpacity:(float)opacity endingOpacity:(float)endingOpacity duration:(double)duration;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation InternetViewController
@@ -59,21 +59,21 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = objc_msgSend_layer(self->cablingImageLastFrame, a2, a3);
+  disappearCopy = disappear;
+  v5 = objc_msgSend_layer(self->cablingImageLastFrame, a2, disappear);
   objc_msgSend_removeAllAnimations(v5, v6, v7);
   v8.receiver = self;
   v8.super_class = InternetViewController;
-  [(AUUITableViewController *)&v8 viewWillDisappear:v3];
+  [(AUUITableViewController *)&v8 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = InternetViewController;
-  [(InternetViewController *)&v15 viewDidAppear:a3];
+  [(InternetViewController *)&v15 viewDidAppear:appear];
   objc_msgSend_bounds(self->tableHeaderContainerView, v4, v5);
   v7 = v6;
   v9 = v8;
@@ -113,34 +113,34 @@
   objc_msgSend_stopAnimating(spinnerWithStatusAdjacentSpinner, v30, v31);
 }
 
-- (void)determineInfoForDevice:(id)a3 deviceDiagramInfo:(id *)a4
+- (void)determineInfoForDevice:(id)device deviceDiagramInfo:(id *)info
 {
-  a4->var1 = sub_23EB6A2C0(a3, a2, a3, a4, v4, v5, v6, v7);
-  a4->var2 = sub_23EB6B128(a3, v10, v11, v12, v13, v14, v15, v16);
-  a4->var4 = sub_23EB6A294(a3, v17, v18, v19, v20, v21, v22, v23);
-  v24 = sub_23EB4BDDC(a4->var1);
-  a4->var3 = v24;
-  a4->var0 = 1;
+  info->var1 = sub_23EB6A2C0(device, a2, device, info, v4, v5, v6, v7);
+  info->var2 = sub_23EB6B128(device, v10, v11, v12, v13, v14, v15, v16);
+  info->var4 = sub_23EB6A294(device, v17, v18, v19, v20, v21, v22, v23);
+  v24 = sub_23EB4BDDC(info->var1);
+  info->var3 = v24;
+  info->var0 = 1;
   if (v24)
   {
-    a4->var0 = sub_23EB4BDAC(a4->var1);
+    info->var0 = sub_23EB4BDAC(info->var1);
   }
 }
 
-- (void)startAnimatingCablingForView:(id)a3 startingOpacity:(float)a4 endingOpacity:(float)a5 duration:(double)a6
+- (void)startAnimatingCablingForView:(id)view startingOpacity:(float)opacity endingOpacity:(float)endingOpacity duration:(double)duration
 {
-  v10 = objc_msgSend_layer(a3, a2, a3);
-  *&v11 = a4;
+  v10 = objc_msgSend_layer(view, a2, view);
+  *&v11 = opacity;
   objc_msgSend_setOpacity_(v10, v12, v13, v11);
   v15 = objc_msgSend_animationWithKeyPath_(MEMORY[0x277CD9E10], v14, @"opacity");
   LODWORD(v16) = 2139095040;
   objc_msgSend_setRepeatCount_(v15, v17, v18, v16);
   objc_msgSend_setAutoreverses_(v15, v19, 1);
-  objc_msgSend_setDuration_(v15, v20, v21, a6);
-  *&v22 = a5;
+  objc_msgSend_setDuration_(v15, v20, v21, duration);
+  *&v22 = endingOpacity;
   v25 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v23, v24, v22);
   objc_msgSend_setToValue_(v15, v26, v25);
-  v29 = objc_msgSend_layer(a3, v27, v28);
+  v29 = objc_msgSend_layer(view, v27, v28);
 
   MEMORY[0x2821F9670](v29, sel_addAnimation_forKey_, v15);
 }
@@ -207,10 +207,10 @@
   objc_msgSend_addInformationalDiagramWithWANConnectedBaseProductID_replacementProductID_(self, v25, v27, 0);
 }
 
-- (void)addInformationalDiagramWithWANConnectedBaseProductID:(unsigned int)a3 replacementProductID:(unsigned int)a4
+- (void)addInformationalDiagramWithWANConnectedBaseProductID:(unsigned int)d replacementProductID:(unsigned int)iD
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&iD;
+  v5 = *&d;
   v7 = [InfoDiagramView alloc];
   objc_msgSend_frame(self->diagramContainerView, v8, v9);
   v11 = objc_msgSend_initWithFrame_wanConnectedBaseProductID_replacementProductID_(v7, v10, v5, v4);
@@ -268,16 +268,16 @@
   MEMORY[0x2821F9670](self, sel_startAnimatingCablingForView_startingOpacity_endingOpacity_duration_, cablingImageLastFrame);
 }
 
-- (void)setCommonTraitsForLabel:(id)a3 forSize:(double)a4
+- (void)setCommonTraitsForLabel:(id)label forSize:(double)size
 {
-  objc_msgSend_setTextAlignment_(a3, a2, 1);
-  objc_msgSend_setLineBreakMode_(a3, v6, 0);
+  objc_msgSend_setTextAlignment_(label, a2, 1);
+  objc_msgSend_setLineBreakMode_(label, v6, 0);
   v9 = objc_msgSend__secondaryLabelColor(MEMORY[0x277D75348], v7, v8);
-  objc_msgSend_setTextColor_(a3, v10, v9);
-  objc_msgSend_setNumberOfLines_(a3, v11, 0);
-  v15 = objc_msgSend_systemFontOfSize_(MEMORY[0x277D74300], v12, v13, a4);
+  objc_msgSend_setTextColor_(label, v10, v9);
+  objc_msgSend_setNumberOfLines_(label, v11, 0);
+  v15 = objc_msgSend_systemFontOfSize_(MEMORY[0x277D74300], v12, v13, size);
 
-  objc_msgSend_setFont_(a3, v14, v15);
+  objc_msgSend_setFont_(label, v14, v15);
 }
 
 - (void)addInternetNotWorkingUI

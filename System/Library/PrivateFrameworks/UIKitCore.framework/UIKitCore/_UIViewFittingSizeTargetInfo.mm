@@ -1,20 +1,20 @@
 @interface _UIViewFittingSizeTargetInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTargetInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTargetInfo:(id)info;
 - (id)description;
 @end
 
 @implementation _UIViewFittingSizeTargetInfo
 
-- (BOOL)isEqualToTargetInfo:(id)a3
+- (BOOL)isEqualToTargetInfo:(id)info
 {
-  if (a3 == self)
+  if (info == self)
   {
     return 1;
   }
 
   horizontalPriority = self->_horizontalPriority;
-  if (!a3)
+  if (!info)
   {
     if (horizontalPriority == 0.0)
     {
@@ -29,19 +29,19 @@
     return 0;
   }
 
-  if (horizontalPriority != *(a3 + 3) || self->_verticalPriority != *(a3 + 4))
+  if (horizontalPriority != *(info + 3) || self->_verticalPriority != *(info + 4))
   {
     return 0;
   }
 
-  v5 = *(a3 + 3);
-  v4 = *(a3 + 4);
+  v5 = *(info + 3);
+  v4 = *(info + 4);
   return self->_targetSize.height == v4 && self->_targetSize.width == v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -52,7 +52,7 @@
     return 0;
   }
 
-  return [(_UIViewFittingSizeTargetInfo *)self isEqualToTargetInfo:a3];
+  return [(_UIViewFittingSizeTargetInfo *)self isEqualToTargetInfo:equal];
 }
 
 - (id)description

@@ -1,7 +1,7 @@
 @interface RCBlockScheduler
 - (RCBlockScheduler)init;
 - (void)resume;
-- (void)scheduleBlock:(id)a3;
+- (void)scheduleBlock:(id)block;
 - (void)suspend;
 @end
 
@@ -56,17 +56,17 @@
   }
 }
 
-- (void)scheduleBlock:(id)a3
+- (void)scheduleBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   schedulerQueue = self->_schedulerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__RCBlockScheduler_scheduleBlock___block_invoke;
   v7[3] = &unk_279E44640;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(schedulerQueue, v7);
 }
 

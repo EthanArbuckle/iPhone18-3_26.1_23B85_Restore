@@ -1,9 +1,9 @@
 @interface CACVoiceOverShortDescriptionGenerator
 + (id)sharedInstance;
-- (id)_items:(id)a3 byKeyGeneratedUsingBlock:(id)a4;
-- (id)_lowerPitchForString:(id)a3;
-- (id)shortDescriptionsForItems:(id)a3 style:(int64_t)a4;
-- (void)_addToItemShortDescriptionPairs:(id)a3 foritems:(id)a4 keyGenerationBlocks:(id)a5 shortDescriptionGenerationBlocks:(id)a6 lastResortShortDescriptionGenerationBlock:(id)a7;
+- (id)_items:(id)_items byKeyGeneratedUsingBlock:(id)block;
+- (id)_lowerPitchForString:(id)string;
+- (id)shortDescriptionsForItems:(id)items style:(int64_t)style;
+- (void)_addToItemShortDescriptionPairs:(id)pairs foritems:(id)foritems keyGenerationBlocks:(id)blocks shortDescriptionGenerationBlocks:(id)generationBlocks lastResortShortDescriptionGenerationBlock:(id)block;
 @end
 
 @implementation CACVoiceOverShortDescriptionGenerator
@@ -27,17 +27,17 @@ uint64_t __55__CACVoiceOverShortDescriptionGenerator_sharedInstance__block_invok
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_items:(id)a3 byKeyGeneratedUsingBlock:(id)a4
+- (id)_items:(id)_items byKeyGeneratedUsingBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  _itemsCopy = _items;
+  blockCopy = block;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v5;
+  v8 = _itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -53,17 +53,17 @@ uint64_t __55__CACVoiceOverShortDescriptionGenerator_sharedInstance__block_invok
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = v6[2](v6, v13);
+        v14 = blockCopy[2](blockCopy, v13);
         if (v14)
         {
-          v15 = [v7 objectForKeyedSubscript:{v14, v17}];
-          if (!v15)
+          array = [dictionary objectForKeyedSubscript:{v14, v17}];
+          if (!array)
           {
-            v15 = [MEMORY[0x277CBEB18] array];
-            [v7 setObject:v15 forKeyedSubscript:v14];
+            array = [MEMORY[0x277CBEB18] array];
+            [dictionary setObject:array forKeyedSubscript:v14];
           }
 
-          [v15 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -73,23 +73,23 @@ uint64_t __55__CACVoiceOverShortDescriptionGenerator_sharedInstance__block_invok
     while (v10);
   }
 
-  return v7;
+  return dictionary;
 }
 
-- (void)_addToItemShortDescriptionPairs:(id)a3 foritems:(id)a4 keyGenerationBlocks:(id)a5 shortDescriptionGenerationBlocks:(id)a6 lastResortShortDescriptionGenerationBlock:(id)a7
+- (void)_addToItemShortDescriptionPairs:(id)pairs foritems:(id)foritems keyGenerationBlocks:(id)blocks shortDescriptionGenerationBlocks:(id)generationBlocks lastResortShortDescriptionGenerationBlock:(id)block
 {
   v59 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v42 = a6;
-  v15 = a7;
-  v16 = [v14 firstObject];
-  v39 = self;
-  v37 = v13;
-  v17 = [(CACVoiceOverShortDescriptionGenerator *)self _items:v13 byKeyGeneratedUsingBlock:v16];
+  pairsCopy = pairs;
+  foritemsCopy = foritems;
+  blocksCopy = blocks;
+  generationBlocksCopy = generationBlocks;
+  blockCopy = block;
+  firstObject = [blocksCopy firstObject];
+  selfCopy = self;
+  v37 = foritemsCopy;
+  v17 = [(CACVoiceOverShortDescriptionGenerator *)self _items:foritemsCopy byKeyGeneratedUsingBlock:firstObject];
 
-  v18 = v14;
+  v18 = blocksCopy;
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -100,7 +100,7 @@ uint64_t __55__CACVoiceOverShortDescriptionGenerator_sharedInstance__block_invok
   {
     v43 = *v52;
     v41 = v19;
-    v38 = v14;
+    v38 = blocksCopy;
     do
     {
       v20 = 0;
@@ -115,10 +115,10 @@ uint64_t __55__CACVoiceOverShortDescriptionGenerator_sharedInstance__block_invok
         if ([v21 count] == 1)
         {
           v22 = objc_alloc_init(CACVoiceOverItemShortDescriptionPair);
-          v23 = [v21 firstObject];
-          [(CACVoiceOverItemShortDescriptionPair *)v22 setItem:v23];
-          v24 = [v42 firstObject];
-          (v24)[2](v24, v23);
+          firstObject2 = [v21 firstObject];
+          [(CACVoiceOverItemShortDescriptionPair *)v22 setItem:firstObject2];
+          firstObject3 = [generationBlocksCopy firstObject];
+          (firstObject3)[2](firstObject3, firstObject2);
           v45 = v21;
           v25 = v18;
           v27 = v26 = v20;
@@ -127,7 +127,7 @@ uint64_t __55__CACVoiceOverShortDescriptionGenerator_sharedInstance__block_invok
           v20 = v26;
           v18 = v25;
           v21 = v45;
-          [v12 addObject:v22];
+          [pairsCopy addObject:v22];
 
           v19 = v41;
           goto LABEL_8;
@@ -169,10 +169,10 @@ uint64_t __55__CACVoiceOverShortDescriptionGenerator_sharedInstance__block_invok
                   v33 = *(*(&v47 + 1) + 8 * i);
                   v34 = objc_alloc_init(CACVoiceOverItemShortDescriptionPair);
                   [(CACVoiceOverItemShortDescriptionPair *)v34 setItem:v33];
-                  v35 = v15[2](v15, v33);
+                  v35 = blockCopy[2](blockCopy, v33);
                   [(CACVoiceOverItemShortDescriptionPair *)v34 setShortDescription:v35];
 
-                  [v12 addObject:v34];
+                  [pairsCopy addObject:v34];
                 }
 
                 v30 = [(CACVoiceOverItemShortDescriptionPair *)v22 countByEnumeratingWithState:&v47 objects:v55 count:16];
@@ -189,8 +189,8 @@ uint64_t __55__CACVoiceOverShortDescriptionGenerator_sharedInstance__block_invok
           else
           {
             v22 = [v18 subarrayWithRange:{1, objc_msgSend(v18, "count") - 1}];
-            v23 = [v42 subarrayWithRange:{1, objc_msgSend(v42, "count") - 1}];
-            [(CACVoiceOverShortDescriptionGenerator *)v39 _addToItemShortDescriptionPairs:v12 foritems:v21 keyGenerationBlocks:v22 shortDescriptionGenerationBlocks:v23 lastResortShortDescriptionGenerationBlock:v15];
+            firstObject2 = [generationBlocksCopy subarrayWithRange:{1, objc_msgSend(generationBlocksCopy, "count") - 1}];
+            [(CACVoiceOverShortDescriptionGenerator *)selfCopy _addToItemShortDescriptionPairs:pairsCopy foritems:v21 keyGenerationBlocks:v22 shortDescriptionGenerationBlocks:firstObject2 lastResortShortDescriptionGenerationBlock:blockCopy];
 LABEL_8:
           }
         }
@@ -207,13 +207,13 @@ LABEL_8:
   }
 }
 
-- (id)_lowerPitchForString:(id)a3
+- (id)_lowerPitchForString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = MEMORY[0x277CE6B98];
-    v4 = a3;
-    v5 = [[v3 alloc] initWithString:v4];
+    stringCopy = string;
+    v5 = [[v3 alloc] initWithString:stringCopy];
 
     [v5 setAttribute:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CE6C50]];
   }
@@ -226,16 +226,16 @@ LABEL_8:
   return v5;
 }
 
-- (id)shortDescriptionsForItems:(id)a3 style:(int64_t)a4
+- (id)shortDescriptionsForItems:(id)items style:(int64_t)style
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v8 = v6;
+  v8 = itemsCopy;
   v9 = [v8 countByEnumeratingWithState:&v69 objects:v75 count:16];
   if (v9)
   {
@@ -253,7 +253,7 @@ LABEL_8:
         v13 = *(*(&v69 + 1) + 8 * i);
         if ([v13 conformsToProtocol:&unk_287C09818])
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
@@ -267,14 +267,14 @@ LABEL_8:
   aBlock[1] = 3221225472;
   aBlock[2] = __73__CACVoiceOverShortDescriptionGenerator_shortDescriptionsForItems_style___block_invoke;
   aBlock[3] = &__block_descriptor_40_e45___NSString_16__0___CACVoiceOverDescribable__8l;
-  aBlock[4] = a4;
+  aBlock[4] = style;
   v14 = _Block_copy(aBlock);
   v65[0] = MEMORY[0x277D85DD0];
   v65[1] = 3221225472;
   v65[2] = __73__CACVoiceOverShortDescriptionGenerator_shortDescriptionsForItems_style___block_invoke_2;
   v65[3] = &unk_279CEC218;
   v66 = v14;
-  v67 = a4;
+  styleCopy = style;
   v65[4] = self;
   v45 = v14;
   v15 = _Block_copy(v65);
@@ -282,7 +282,7 @@ LABEL_8:
   v61[1] = 3221225472;
   v61[2] = __73__CACVoiceOverShortDescriptionGenerator_shortDescriptionsForItems_style___block_invoke_4;
   v61[3] = &unk_279CEC260;
-  v64 = a4;
+  styleCopy2 = style;
   v61[4] = self;
   v62 = &__block_literal_global_327;
   v16 = v15;
@@ -304,19 +304,19 @@ LABEL_8:
   v18 = v17;
   v55[4] = self;
   v56 = v18;
-  v35 = self;
-  v43 = a4;
+  selfCopy = self;
+  styleCopy3 = style;
   v57 = &__block_literal_global_331;
   v39 = _Block_copy(v55);
-  v19 = [MEMORY[0x277CE6BA0] systemWideElement];
-  v20 = [v19 systemApplication];
-  v21 = [v20 applicationOrientation];
+  systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+  systemApplication = [systemWideElement systemApplication];
+  applicationOrientation = [systemApplication applicationOrientation];
 
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __73__CACVoiceOverShortDescriptionGenerator_shortDescriptionsForItems_style___block_invoke_9;
   v54[3] = &__block_descriptor_40_e45___NSString_16__0___CACVoiceOverDescribable__8l;
-  v54[4] = v21;
+  v54[4] = applicationOrientation;
   v22 = _Block_copy(v54);
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
@@ -328,7 +328,7 @@ LABEL_8:
   v42 = v22;
   v23 = v18;
   v38 = _Block_copy(v51);
-  v44 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v37 = _Block_copy(v45);
   v74[0] = v37;
   v74[1] = &__block_literal_global_327;
@@ -349,21 +349,21 @@ LABEL_8:
   v29 = _Block_copy(v38);
   v73[4] = v29;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:5];
-  [(CACVoiceOverShortDescriptionGenerator *)v35 _addToItemShortDescriptionPairs:v44 foritems:v7 keyGenerationBlocks:v24 shortDescriptionGenerationBlocks:v30 lastResortShortDescriptionGenerationBlock:v23];
+  [(CACVoiceOverShortDescriptionGenerator *)selfCopy _addToItemShortDescriptionPairs:array2 foritems:array keyGenerationBlocks:v24 shortDescriptionGenerationBlocks:v30 lastResortShortDescriptionGenerationBlock:v23];
 
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __73__CACVoiceOverShortDescriptionGenerator_shortDescriptionsForItems_style___block_invoke_11;
   v48[3] = &unk_279CEC2B0;
-  v49 = v7;
-  v50 = v43;
-  v31 = v7;
-  v32 = [v44 sortedArrayUsingComparator:v48];
+  v49 = array;
+  v50 = styleCopy3;
+  v31 = array;
+  v32 = [array2 sortedArrayUsingComparator:v48];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __73__CACVoiceOverShortDescriptionGenerator_shortDescriptionsForItems_style___block_invoke_12;
   v47[3] = &__block_descriptor_40_e46__16__0__CACVoiceOverItemShortDescriptionPair_8l;
-  v47[4] = v43;
+  v47[4] = styleCopy3;
   v33 = [v32 ax_flatMappedArrayUsingBlock:v47];
 
   return v33;

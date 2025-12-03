@@ -1,22 +1,22 @@
 @interface CKAttachmentSaver
-- (CKAttachmentSaver)initWithAttachments:(id)a3;
+- (CKAttachmentSaver)initWithAttachments:(id)attachments;
 - (void)_pop;
-- (void)_saveCompletion:(id)a3;
+- (void)_saveCompletion:(id)completion;
 - (void)_saveNextAttachment;
 - (void)popAndSaveNextAttachment;
 @end
 
 @implementation CKAttachmentSaver
 
-- (CKAttachmentSaver)initWithAttachments:(id)a3
+- (CKAttachmentSaver)initWithAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   v9.receiver = self;
   v9.super_class = CKAttachmentSaver;
   v5 = [(CKAttachmentSaver *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [attachmentsCopy mutableCopy];
     attachments = v5->_attachments;
     v5->_attachments = v6;
   }
@@ -45,7 +45,7 @@
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = 138412802;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2112;
   v6 = a2;
   v7 = 2112;
@@ -84,11 +84,11 @@ void __40__CKAttachmentSaver__saveNextAttachment__block_invoke_2(uint64_t a1, in
   [*(a1 + 40) popAndSaveNextAttachment];
 }
 
-- (void)_saveCompletion:(id)a3
+- (void)_saveCompletion:(id)completion
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -97,14 +97,14 @@ void __40__CKAttachmentSaver__saveNextAttachment__block_invoke_2(uint64_t a1, in
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v8 = v4;
+        v8 = completionCopy;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_DEBUG, "Unexpected error saving attachment. Skipping. Error: %@", buf, 0xCu);
       }
     }
 
     if (os_log_shim_legacy_logging_enabled() && _CKShouldLog())
     {
-      v6 = v4;
+      v6 = completionCopy;
       _CKLog();
     }
   }

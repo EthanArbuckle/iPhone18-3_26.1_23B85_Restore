@@ -1,21 +1,21 @@
 @interface HKPrescriptionPickerCell
-- (HKPrescriptionPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKPrescriptionPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HKPrescriptionPickerCellDelegate)delegate;
 - (void)_didTapShowDetailsButton;
-- (void)_didToggleSwitch:(id)a3;
+- (void)_didToggleSwitch:(id)switch;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)prepareForReuse;
-- (void)setPrescription:(id)a3;
+- (void)setPrescription:(id)prescription;
 @end
 
 @implementation HKPrescriptionPickerCell
 
-- (HKPrescriptionPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKPrescriptionPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = HKPrescriptionPickerCell;
-  v4 = [(HKPrescriptionPickerCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKPrescriptionPickerCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -31,13 +31,13 @@
   v48[3] = *MEMORY[0x1E69E9840];
   [(HKPrescriptionPickerCell *)self _setContinuousCornerRadius:10.0];
   [(HKPrescriptionPickerCell *)self setSelectionStyle:0];
-  v3 = [(HKPrescriptionPickerCell *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(HKPrescriptionPickerCell *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    v5 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(HKPrescriptionPickerCell *)self setBackgroundColor:v5];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(HKPrescriptionPickerCell *)self setBackgroundColor:secondarySystemBackgroundColor];
   }
 
   v6 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -55,8 +55,8 @@
   [(UILabel *)self->_primaryLabel setFont:v14];
 
   [(UILabel *)self->_primaryLabel setNumberOfLines:0];
-  v15 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_primaryLabel setTextColor:v15];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_primaryLabel setTextColor:labelColor];
 
   [(UILabel *)self->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v16 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
@@ -68,22 +68,22 @@
   v18 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v13];
   [(UILabel *)self->_secondaryLabel setFont:v18];
 
-  v19 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)self->_secondaryLabel setTextColor:v19];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)self->_secondaryLabel setTextColor:labelColor2];
 
   [(UILabel *)self->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v20 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   v43 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDD08]];
   v21 = [MEMORY[0x1E69DCAD8] configurationWithFont:v43];
   v22 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"doc.text" withConfiguration:v21];
-  [v20 setImage:v22];
+  [plainButtonConfiguration setImage:v22];
 
   v23 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v24 = [v23 localizedStringForKey:@"VIEW_PRESCRIPTION" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-VRX"];
-  [v20 setTitle:v24];
+  [plainButtonConfiguration setTitle:v24];
 
-  [v20 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  [v20 setImagePadding:3.0];
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  [plainButtonConfiguration setImagePadding:3.0];
   objc_initWeak(&location, self);
   v25 = MEMORY[0x1E69DC628];
   v44[0] = MEMORY[0x1E69E9820];
@@ -92,7 +92,7 @@
   v44[3] = &unk_1E81B6A10;
   objc_copyWeak(&v45, &location);
   v26 = [v25 actionWithHandler:v44];
-  v27 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v20 primaryAction:v26];
+  v27 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v26];
   showDetailsButton = self->_showDetailsButton;
   self->_showDetailsButton = v27;
 
@@ -137,8 +137,8 @@
   [(UIStackView *)self->_contentStackView setSpacing:5.0];
   [(UIStackView *)self->_contentStackView setLayoutMarginsRelativeArrangement:1];
   [(UIStackView *)self->_contentStackView setDirectionalLayoutMargins:16.0, 16.0, 16.0, 16.0];
-  v42 = [(HKPrescriptionPickerCell *)self contentView];
-  [v42 addSubview:self->_contentStackView];
+  contentView = [(HKPrescriptionPickerCell *)self contentView];
+  [contentView addSubview:self->_contentStackView];
 
   objc_destroyWeak(&v45);
   objc_destroyWeak(&location);
@@ -153,8 +153,8 @@ void __42__HKPrescriptionPickerCell__setupSubviews__block_invoke(uint64_t a1)
 - (void)_setupConstraints
 {
   contentStackView = self->_contentStackView;
-  v3 = [(HKPrescriptionPickerCell *)self contentView];
-  [(UIStackView *)contentStackView hk_alignConstraintsWithView:v3];
+  contentView = [(HKPrescriptionPickerCell *)self contentView];
+  [(UIStackView *)contentStackView hk_alignConstraintsWithView:contentView];
 }
 
 - (void)prepareForReuse
@@ -186,9 +186,9 @@ void __42__HKPrescriptionPickerCell__setupSubviews__block_invoke(uint64_t a1)
   objc_destroyWeak(&to);
 }
 
-- (void)_didToggleSwitch:(id)a3
+- (void)_didToggleSwitch:(id)switch
 {
-  v4 = a3;
+  switchCopy = switch;
   objc_copyWeak(&to, &self->_delegate);
   v5 = objc_loadWeakRetained(&to);
   v6 = objc_opt_respondsToSelector();
@@ -202,33 +202,33 @@ void __42__HKPrescriptionPickerCell__setupSubviews__block_invoke(uint64_t a1)
   objc_destroyWeak(&to);
 }
 
-- (void)setPrescription:(id)a3
+- (void)setPrescription:(id)prescription
 {
-  v19 = a3;
-  objc_storeStrong(&self->_prescription, a3);
-  v5 = v19;
-  if (v19)
+  prescriptionCopy = prescription;
+  objc_storeStrong(&self->_prescription, prescription);
+  v5 = prescriptionCopy;
+  if (prescriptionCopy)
   {
-    v6 = HKVisionPrescriptionTypeDetailedLongLocalizedString(v19);
+    v6 = HKVisionPrescriptionTypeDetailedLongLocalizedString(prescriptionCopy);
     [(UILabel *)self->_primaryLabel setText:v6];
 
-    v7 = [v19 dateIssued];
-    v8 = HKLocalizedStringForDateAndTemplate(v7, 10);
+    dateIssued = [prescriptionCopy dateIssued];
+    v8 = HKLocalizedStringForDateAndTemplate(dateIssued, 10);
     [(UILabel *)self->_secondaryLabel setText:v8];
 
-    v9 = [(HKVisionPrescription *)self->_prescription prescriptionType];
+    prescriptionType = [(HKVisionPrescription *)self->_prescription prescriptionType];
     v10 = @"UIA.Health.Contacts";
-    if (v9 == HKVisionPrescriptionTypeGlasses)
+    if (prescriptionType == HKVisionPrescriptionTypeGlasses)
     {
       v10 = @"UIA.Health.Glasses";
     }
 
     v11 = v10;
-    v12 = HKVisionPrescriptionRawDescription(v19);
+    v12 = HKVisionPrescriptionRawDescription(prescriptionCopy);
     if (v12)
     {
-      v13 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v14 = [v12 hk_stringByRemovingCharactersInSet:v13];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v14 = [v12 hk_stringByRemovingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v11, v12];
 
@@ -244,7 +244,7 @@ void __42__HKPrescriptionPickerCell__setupSubviews__block_invoke(uint64_t a1)
     v18 = [(__CFString *)v11 stringByAppendingString:@".ViewPrescription.Button"];
     [(UIButton *)self->_showDetailsButton setAccessibilityIdentifier:v18];
 
-    v5 = v19;
+    v5 = prescriptionCopy;
   }
 }
 

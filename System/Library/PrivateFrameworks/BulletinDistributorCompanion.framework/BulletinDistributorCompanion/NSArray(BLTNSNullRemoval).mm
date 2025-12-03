@@ -9,25 +9,25 @@
 {
   if (a3)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    *a3 = v5;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    *a3 = dictionary;
   }
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __49__NSArray_BLTNSNullRemoval__objectWithNoNSNulls___block_invoke;
   v16 = &unk_278D330B8;
-  v7 = v6;
+  v7 = array;
   v17 = v7;
-  v8 = v5;
+  v8 = dictionary;
   v18 = v8;
-  [a1 enumerateObjectsUsingBlock:&v13];
+  [self enumerateObjectsUsingBlock:&v13];
   v9 = [v8 count];
   if (a3 && !v9)
   {
@@ -44,18 +44,18 @@
 {
   v38 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   if ([v4 count])
   {
-    v6 = [v5 mutableCopy];
+    v6 = [selfCopy mutableCopy];
 
-    v7 = [v4 allKeys];
-    v8 = [MEMORY[0x277CBEB18] array];
+    allKeys = [v4 allKeys];
+    array = [MEMORY[0x277CBEB18] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    obj = v7;
+    obj = allKeys;
     v9 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v9)
     {
@@ -70,7 +70,7 @@
             objc_enumerationMutation(obj);
           }
 
-          [v8 insertObject:*(*(&v32 + 1) + 8 * i) atIndex:{objc_msgSend(v8, "indexOfObject:inSortedRange:options:usingComparator:", *(*(&v32 + 1) + 8 * i), 0, objc_msgSend(v8, "count"), 1024, &__block_literal_global_18)}];
+          [array insertObject:*(*(&v32 + 1) + 8 * i) atIndex:{objc_msgSend(array, "indexOfObject:inSortedRange:options:usingComparator:", *(*(&v32 + 1) + 8 * i), 0, objc_msgSend(array, "count"), 1024, &__block_literal_global_18)}];
         }
 
         v10 = [obj countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -83,7 +83,7 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v26 = v8;
+    v26 = array;
     v13 = [v26 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v13)
     {
@@ -100,19 +100,19 @@
 
           v17 = *(*(&v28 + 1) + 8 * j);
           v18 = [v4 objectForKeyedSubscript:v17];
-          v19 = [v17 integerValue];
-          v20 = [v18 objectSentinelNull];
-          if (v20)
+          integerValue = [v17 integerValue];
+          objectSentinelNull = [v18 objectSentinelNull];
+          if (objectSentinelNull)
           {
-            [v6 insertObject:v20 atIndex:v19];
+            [v6 insertObject:objectSentinelNull atIndex:integerValue];
           }
 
           else
           {
-            [v6 objectAtIndexedSubscript:v19];
+            [v6 objectAtIndexedSubscript:integerValue];
             v22 = v21 = v4;
             v23 = [v22 objectWithNSNulls:v18];
-            [v6 setObject:v23 atIndexedSubscript:v19];
+            [v6 setObject:v23 atIndexedSubscript:integerValue];
 
             v4 = v21;
           }
@@ -127,7 +127,7 @@
 
   else
   {
-    v6 = v5;
+    v6 = selfCopy;
   }
 
   v24 = *MEMORY[0x277D85DE8];

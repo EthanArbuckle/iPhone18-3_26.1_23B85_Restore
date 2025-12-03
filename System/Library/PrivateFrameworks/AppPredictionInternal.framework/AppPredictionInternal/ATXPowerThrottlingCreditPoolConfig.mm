@@ -1,11 +1,11 @@
 @interface ATXPowerThrottlingCreditPoolConfig
 - (ATXPowerThrottlingCreditPoolConfig)init;
-- (ATXPowerThrottlingCreditPoolConfig)initWithIdentifier:(id)a3 maxCredits:(int64_t)a4 secondsToReplenishOneCredit:(int64_t)a5 loggingSubsystem:(id)a6 loggingCategory:(id)a7;
+- (ATXPowerThrottlingCreditPoolConfig)initWithIdentifier:(id)identifier maxCredits:(int64_t)credits secondsToReplenishOneCredit:(int64_t)credit loggingSubsystem:(id)subsystem loggingCategory:(id)category;
 @end
 
 @implementation ATXPowerThrottlingCreditPoolConfig
 
-- (ATXPowerThrottlingCreditPoolConfig)initWithIdentifier:(id)a3 maxCredits:(int64_t)a4 secondsToReplenishOneCredit:(int64_t)a5 loggingSubsystem:(id)a6 loggingCategory:(id)a7
+- (ATXPowerThrottlingCreditPoolConfig)initWithIdentifier:(id)identifier maxCredits:(int64_t)credits secondsToReplenishOneCredit:(int64_t)credit loggingSubsystem:(id)subsystem loggingCategory:(id)category
 {
   v10 = sub_226836408();
   v12 = v11;
@@ -15,8 +15,8 @@
   v17 = (self + OBJC_IVAR___ATXPowerThrottlingCreditPoolConfig_identifier);
   *v17 = v10;
   v17[1] = v12;
-  *(&self->super.isa + OBJC_IVAR___ATXPowerThrottlingCreditPoolConfig_maxCredits) = a4;
-  *(&self->super.isa + OBJC_IVAR___ATXPowerThrottlingCreditPoolConfig_secondsToReplenishOneCredit) = a5;
+  *(&self->super.isa + OBJC_IVAR___ATXPowerThrottlingCreditPoolConfig_maxCredits) = credits;
+  *(&self->super.isa + OBJC_IVAR___ATXPowerThrottlingCreditPoolConfig_secondsToReplenishOneCredit) = credit;
   v18 = (self + OBJC_IVAR___ATXPowerThrottlingCreditPoolConfig_loggingSubsystem);
   *v18 = v13;
   v18[1] = v15;

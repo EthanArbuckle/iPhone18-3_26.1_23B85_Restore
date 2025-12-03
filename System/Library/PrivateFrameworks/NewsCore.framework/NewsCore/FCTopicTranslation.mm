@@ -1,7 +1,7 @@
 @interface FCTopicTranslation
 - (FCTopicTranslation)init;
-- (FCTopicTranslation)initWithLanguageBucket:(id)a3;
-- (FCTopicTranslation)initWithTagID:(id)a3;
+- (FCTopicTranslation)initWithLanguageBucket:(id)bucket;
+- (FCTopicTranslation)initWithTagID:(id)d;
 - (NTPBArticleTopic)articleTopic;
 - (id)description;
 @end
@@ -34,15 +34,15 @@
   objc_exception_throw(v6);
 }
 
-- (FCTopicTranslation)initWithTagID:(id)a3
+- (FCTopicTranslation)initWithTagID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = FCTopicTranslation;
   v5 = [(FCTopicTranslation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     tagID = v5->_tagID;
     v5->_tagID = v6;
   }
@@ -50,22 +50,22 @@
   return v5;
 }
 
-- (FCTopicTranslation)initWithLanguageBucket:(id)a3
+- (FCTopicTranslation)initWithLanguageBucket:(id)bucket
 {
-  v4 = a3;
-  v5 = [v4 key];
+  bucketCopy = bucket;
+  v5 = [bucketCopy key];
   v6 = [(FCTopicTranslation *)self initWithTagID:v5];
 
   if (v6)
   {
-    v7 = [v4 groupingFlags];
-    -[FCTopicTranslation setIsHidden:](v6, "setIsHidden:", [v7 isHidden]);
+    groupingFlags = [bucketCopy groupingFlags];
+    -[FCTopicTranslation setIsHidden:](v6, "setIsHidden:", [groupingFlags isHidden]);
 
-    v8 = [v4 groupingFlags];
-    -[FCTopicTranslation setIsEligibleForGrouping:](v6, "setIsEligibleForGrouping:", [v8 isEligibleForGrouping]);
+    groupingFlags2 = [bucketCopy groupingFlags];
+    -[FCTopicTranslation setIsEligibleForGrouping:](v6, "setIsEligibleForGrouping:", [groupingFlags2 isEligibleForGrouping]);
 
-    v9 = [v4 groupingFlags];
-    -[FCTopicTranslation setIsEligibleForGroupingIfFavorited:](v6, "setIsEligibleForGroupingIfFavorited:", [v9 isEligibleForGroupingIfFavorited]);
+    groupingFlags3 = [bucketCopy groupingFlags];
+    -[FCTopicTranslation setIsEligibleForGroupingIfFavorited:](v6, "setIsEligibleForGroupingIfFavorited:", [groupingFlags3 isEligibleForGroupingIfFavorited]);
   }
 
   return v6;
@@ -77,8 +77,8 @@
   if (!articleTopic)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69B6D00]);
-    v5 = [(FCTopicTranslation *)self tagID];
-    [v4 setTagID:v5];
+    tagID = [(FCTopicTranslation *)self tagID];
+    [v4 setTagID:tagID];
 
     [v4 setIsHidden:{-[FCTopicTranslation isHidden](self, "isHidden")}];
     [v4 setIsEligibleForGrouping:{-[FCTopicTranslation isEligibleForGrouping](self, "isEligibleForGrouping")}];
@@ -95,8 +95,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(FCTopicTranslation *)self tagID];
-  v5 = [v3 stringWithFormat:@"TopicTranslation tagID: %@ isHidden: %d isEligibleForGrouping: %d isEligibleForGroupingIfFavorited: %d", v4, -[FCTopicTranslation isHidden](self, "isHidden"), -[FCTopicTranslation isEligibleForGrouping](self, "isEligibleForGrouping"), -[FCTopicTranslation isEligibleForGroupingIfFavorited](self, "isEligibleForGroupingIfFavorited")];
+  tagID = [(FCTopicTranslation *)self tagID];
+  v5 = [v3 stringWithFormat:@"TopicTranslation tagID: %@ isHidden: %d isEligibleForGrouping: %d isEligibleForGroupingIfFavorited: %d", tagID, -[FCTopicTranslation isHidden](self, "isHidden"), -[FCTopicTranslation isEligibleForGrouping](self, "isEligibleForGrouping"), -[FCTopicTranslation isEligibleForGroupingIfFavorited](self, "isEligibleForGroupingIfFavorited")];
 
   return v5;
 }

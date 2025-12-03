@@ -6,7 +6,7 @@
 - (BOOL)usePlatterStyle;
 - (BOOL)wantsConfirmationInsets;
 - (BOOL)wantsToManageBackgroundColor;
-- (SiriUILegacyCardSnippetViewController)initWithSnippet:(id)a3;
+- (SiriUILegacyCardSnippetViewController)initWithSnippet:(id)snippet;
 - (id)_backingSnippetViewController;
 - (id)_legacyCardSectionViewController;
 - (id)attributedSubtitle;
@@ -17,22 +17,22 @@
 - (id)snippetPunchOut;
 - (id)subtitle;
 - (void)_legacyCardSectionViewController;
-- (void)_setVirgin:(BOOL)a3;
-- (void)cardViewControllerDidLoad:(id)a3;
-- (void)configureContentWithSizeClass:(int64_t)a3;
-- (void)endEditingAndCorrect:(BOOL)a3;
-- (void)setAttributedSubtitle:(id)a3;
-- (void)setCancelled:(BOOL)a3;
-- (void)setConfirmed:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderPunchOut:(id)a3;
-- (void)setIsFullPadWidth:(BOOL)a3;
-- (void)setNavigationTitle:(id)a3;
-- (void)setRequestContext:(id)a3;
-- (void)setSnippet:(id)a3;
-- (void)setSnippetPunchOut:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setWantsConfirmationInsets:(BOOL)a3;
+- (void)_setVirgin:(BOOL)virgin;
+- (void)cardViewControllerDidLoad:(id)load;
+- (void)configureContentWithSizeClass:(int64_t)class;
+- (void)endEditingAndCorrect:(BOOL)correct;
+- (void)setAttributedSubtitle:(id)subtitle;
+- (void)setCancelled:(BOOL)cancelled;
+- (void)setConfirmed:(BOOL)confirmed;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderPunchOut:(id)out;
+- (void)setIsFullPadWidth:(BOOL)width;
+- (void)setNavigationTitle:(id)title;
+- (void)setRequestContext:(id)context;
+- (void)setSnippet:(id)snippet;
+- (void)setSnippetPunchOut:(id)out;
+- (void)setSubtitle:(id)subtitle;
+- (void)setWantsConfirmationInsets:(BOOL)insets;
 - (void)siriDidDeactivate;
 - (void)siriDidLayoutSnippetView;
 - (void)siriWillLayoutSnippetView;
@@ -43,40 +43,40 @@
 
 @implementation SiriUILegacyCardSnippetViewController
 
-- (SiriUILegacyCardSnippetViewController)initWithSnippet:(id)a3
+- (SiriUILegacyCardSnippetViewController)initWithSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   v8.receiver = self;
   v8.super_class = SiriUILegacyCardSnippetViewController;
   v5 = [(SiriUICardSnippetViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(SiriUILegacyCardSnippetViewController *)v5 setSnippet:v4];
+    [(SiriUILegacyCardSnippetViewController *)v5 setSnippet:snippetCopy];
   }
 
   return v6;
 }
 
-- (void)configureContentWithSizeClass:(int64_t)a3
+- (void)configureContentWithSizeClass:(int64_t)class
 {
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v6 = [v5 conformsToProtocol:&unk_287A30D78];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  v6 = [_backingSnippetViewController conformsToProtocol:&unk_287A30D78];
 
   if (v6)
   {
-    v7 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-    [v7 configureContentWithSizeClass:a3];
+    _backingSnippetViewController2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+    [_backingSnippetViewController2 configureContentWithSizeClass:class];
   }
 }
 
 - (id)_legacyCardSectionViewController
 {
-  v2 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 _legacyCardSectionViewController];
+    _legacyCardSectionViewController = [_cardViewController _legacyCardSectionViewController];
   }
 
   else
@@ -87,30 +87,30 @@
       [(SiriUILegacyCardSnippetViewController *)v4 _legacyCardSectionViewController];
     }
 
-    v3 = 0;
+    _legacyCardSectionViewController = 0;
   }
 
-  return v3;
+  return _legacyCardSectionViewController;
 }
 
 - (id)_backingSnippetViewController
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _legacyCardSectionViewController];
-  v3 = [v2 backingSnippetViewController];
+  _legacyCardSectionViewController = [(SiriUILegacyCardSnippetViewController *)self _legacyCardSectionViewController];
+  backingSnippetViewController = [_legacyCardSectionViewController backingSnippetViewController];
 
-  return v3;
+  return backingSnippetViewController;
 }
 
-- (void)setSnippet:(id)a3
+- (void)setSnippet:(id)snippet
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (self->_snippet != v6)
+  snippetCopy = snippet;
+  if (self->_snippet != snippetCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&self->_snippet, a3);
+      objc_storeStrong(&self->_snippet, snippet);
       v7 = objc_alloc(MEMORY[0x277CD3D58]);
       v8 = objc_alloc_init(MEMORY[0x277CD3D30]);
       v9 = [v7 initWithIntent:v8 response:0];
@@ -126,185 +126,185 @@
       [v11 setInteractions:v13];
 
       v14 = [objc_alloc(MEMORY[0x277CF93C0]) _initWithCard:v11 delegate:self loadProvidersImmediately:1];
-      v15 = [v14 _legacyCardSectionViewController];
-      if (!v15)
+      _legacyCardSectionViewController = [v14 _legacyCardSectionViewController];
+      if (!_legacyCardSectionViewController)
       {
         [(SiriUILegacyCardSnippetViewController *)a2 setSnippet:?];
       }
 
-      [v15 setContainingSnippetViewController:self];
-      v16 = [v15 backingSnippetViewController];
-      [v16 setSnippet:v6];
+      [_legacyCardSectionViewController setContainingSnippetViewController:self];
+      backingSnippetViewController = [_legacyCardSectionViewController backingSnippetViewController];
+      [backingSnippetViewController setSnippet:snippetCopy];
 
       [(SiriUICardSnippetViewController *)self _setCardViewController:v14];
     }
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = SiriUILegacyCardSnippetViewController;
-  [(SiriUIBaseSnippetViewController *)&v6 setDelegate:a3];
-  v4 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _legacyCardSectionViewController];
-  [v4 setDelegate:v5];
+  [(SiriUIBaseSnippetViewController *)&v6 setDelegate:delegate];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  _legacyCardSectionViewController = [(SiriUILegacyCardSnippetViewController *)self _legacyCardSectionViewController];
+  [_backingSnippetViewController setDelegate:_legacyCardSectionViewController];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v5 setSubtitle:v4];
+  subtitleCopy = subtitle;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setSubtitle:subtitleCopy];
 }
 
 - (id)subtitle
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 subtitle];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  subtitle = [_backingSnippetViewController subtitle];
 
-  return v3;
+  return subtitle;
 }
 
-- (void)setAttributedSubtitle:(id)a3
+- (void)setAttributedSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v5 setAttributedSubtitle:v4];
+  subtitleCopy = subtitle;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setAttributedSubtitle:subtitleCopy];
 }
 
 - (id)attributedSubtitle
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 attributedSubtitle];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  attributedSubtitle = [_backingSnippetViewController attributedSubtitle];
 
-  return v3;
+  return attributedSubtitle;
 }
 
-- (void)setNavigationTitle:(id)a3
+- (void)setNavigationTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v5 setNavigationTitle:v4];
+  titleCopy = title;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setNavigationTitle:titleCopy];
 }
 
 - (id)navigationTitle
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 navigationTitle];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  navigationTitle = [_backingSnippetViewController navigationTitle];
 
-  return v3;
+  return navigationTitle;
 }
 
-- (void)setRequestContext:(id)a3
+- (void)setRequestContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v5 setRequestContext:v4];
+  contextCopy = context;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setRequestContext:contextCopy];
 }
 
 - (id)requestContext
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 requestContext];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  requestContext = [_backingSnippetViewController requestContext];
 
-  return v3;
+  return requestContext;
 }
 
-- (void)setHeaderPunchOut:(id)a3
+- (void)setHeaderPunchOut:(id)out
 {
-  v4 = a3;
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v5 setHeaderPunchOut:v4];
+  outCopy = out;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setHeaderPunchOut:outCopy];
 }
 
 - (id)headerPunchOut
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 headerPunchOut];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  headerPunchOut = [_backingSnippetViewController headerPunchOut];
 
-  return v3;
+  return headerPunchOut;
 }
 
-- (void)setSnippetPunchOut:(id)a3
+- (void)setSnippetPunchOut:(id)out
 {
-  v4 = a3;
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v5 setSnippetPunchOut:v4];
+  outCopy = out;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setSnippetPunchOut:outCopy];
 }
 
 - (id)snippetPunchOut
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 snippetPunchOut];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  snippetPunchOut = [_backingSnippetViewController snippetPunchOut];
 
-  return v3;
+  return snippetPunchOut;
 }
 
-- (void)setWantsConfirmationInsets:(BOOL)a3
+- (void)setWantsConfirmationInsets:(BOOL)insets
 {
-  v3 = a3;
-  v4 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v4 setWantsConfirmationInsets:v3];
+  insetsCopy = insets;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setWantsConfirmationInsets:insetsCopy];
 }
 
 - (BOOL)wantsConfirmationInsets
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 wantsConfirmationInsets];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  wantsConfirmationInsets = [_backingSnippetViewController wantsConfirmationInsets];
 
-  return v3;
+  return wantsConfirmationInsets;
 }
 
-- (void)setIsFullPadWidth:(BOOL)a3
+- (void)setIsFullPadWidth:(BOOL)width
 {
-  v3 = a3;
-  v4 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v4 setIsFullPadWidth:v3];
+  widthCopy = width;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setIsFullPadWidth:widthCopy];
 }
 
 - (BOOL)isFullPadWidth
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 isFullPadWidth];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  isFullPadWidth = [_backingSnippetViewController isFullPadWidth];
 
-  return v3;
+  return isFullPadWidth;
 }
 
-- (void)setConfirmed:(BOOL)a3
+- (void)setConfirmed:(BOOL)confirmed
 {
-  v3 = a3;
-  v4 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v4 setConfirmed:v3];
+  confirmedCopy = confirmed;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setConfirmed:confirmedCopy];
 }
 
 - (BOOL)isConfirmed
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 isConfirmed];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  isConfirmed = [_backingSnippetViewController isConfirmed];
 
-  return v3;
+  return isConfirmed;
 }
 
-- (void)setCancelled:(BOOL)a3
+- (void)setCancelled:(BOOL)cancelled
 {
-  v3 = a3;
-  v4 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v4 setCancelled:v3];
+  cancelledCopy = cancelled;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController setCancelled:cancelledCopy];
 }
 
 - (BOOL)isCancelled
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 isCancelled];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  isCancelled = [_backingSnippetViewController isCancelled];
 
-  return v3;
+  return isCancelled;
 }
 
 - (void)willConfirm
 {
-  v3 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v3 willConfirm];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController willConfirm];
 
   v4.receiver = self;
   v4.super_class = SiriUILegacyCardSnippetViewController;
@@ -313,25 +313,25 @@
 
 - (void)willCancel
 {
-  v3 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v3 willCancel];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController willCancel];
 
   v4.receiver = self;
   v4.super_class = SiriUILegacyCardSnippetViewController;
   [(SiriUICardSnippetViewController *)&v4 willCancel];
 }
 
-- (void)_setVirgin:(BOOL)a3
+- (void)_setVirgin:(BOOL)virgin
 {
-  v3 = a3;
-  v4 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v4 _setVirgin:v3];
+  virginCopy = virgin;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController _setVirgin:virginCopy];
 }
 
 - (void)siriWillLayoutSnippetView
 {
-  v3 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v3 siriWillLayoutSnippetView];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController siriWillLayoutSnippetView];
 
   v4.receiver = self;
   v4.super_class = SiriUILegacyCardSnippetViewController;
@@ -340,8 +340,8 @@
 
 - (void)siriDidLayoutSnippetView
 {
-  v3 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v3 siriDidLayoutSnippetView];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController siriDidLayoutSnippetView];
 
   v4.receiver = self;
   v4.super_class = SiriUILegacyCardSnippetViewController;
@@ -350,15 +350,15 @@
 
 - (BOOL)removedAfterDialogProgresses
 {
-  v2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v3 = [v2 removedAfterDialogProgresses];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  removedAfterDialogProgresses = [_backingSnippetViewController removedAfterDialogProgresses];
 
-  return v3;
+  return removedAfterDialogProgresses;
 }
 
 - (BOOL)usePlatterStyle
 {
-  v3 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -366,23 +366,23 @@
     return 1;
   }
 
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  v6 = [v5 usePlatterStyle];
+  _backingSnippetViewController2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  usePlatterStyle = [_backingSnippetViewController2 usePlatterStyle];
 
-  return v6;
+  return usePlatterStyle;
 }
 
 - (BOOL)wantsToManageBackgroundColor
 {
-  v3 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-    v6 = [v5 wantsToManageBackgroundColor];
+    _backingSnippetViewController2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+    wantsToManageBackgroundColor = [_backingSnippetViewController2 wantsToManageBackgroundColor];
 
-    return v6;
+    return wantsToManageBackgroundColor;
   }
 
   else
@@ -393,16 +393,16 @@
   }
 }
 
-- (void)endEditingAndCorrect:(BOOL)a3
+- (void)endEditingAndCorrect:(BOOL)correct
 {
-  v3 = a3;
-  v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  correctCopy = correct;
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-    [v7 endEditingAndCorrect:v3];
+    _backingSnippetViewController2 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+    [_backingSnippetViewController2 endEditingAndCorrect:correctCopy];
   }
 }
 
@@ -410,16 +410,16 @@
 {
   v9.receiver = self;
   v9.super_class = SiriUILegacyCardSnippetViewController;
-  v3 = [(SiriUIBaseSnippetViewController *)&v9 sashItem];
-  v4 = v3;
-  if (!v3 || [v3 isDefault])
+  sashItem = [(SiriUIBaseSnippetViewController *)&v9 sashItem];
+  v4 = sashItem;
+  if (!sashItem || [sashItem isDefault])
   {
-    v5 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-    v6 = [v5 sashItem];
+    _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+    sashItem2 = [_backingSnippetViewController sashItem];
 
-    if (v6)
+    if (sashItem2)
     {
-      v7 = v6;
+      v7 = sashItem2;
 
       v4 = v7;
     }
@@ -430,8 +430,8 @@
 
 - (void)siriDidDeactivate
 {
-  v3 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v3 siriDidDeactivate];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController siriDidDeactivate];
 
   v4.receiver = self;
   v4.super_class = SiriUILegacyCardSnippetViewController;
@@ -440,40 +440,40 @@
 
 - (void)wasAddedToTranscript
 {
-  v3 = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
-  [v3 wasAddedToTranscript];
+  _backingSnippetViewController = [(SiriUILegacyCardSnippetViewController *)self _backingSnippetViewController];
+  [_backingSnippetViewController wasAddedToTranscript];
 
   v4.receiver = self;
   v4.super_class = SiriUILegacyCardSnippetViewController;
   [(SiriUICardSnippetViewController *)&v4 wasAddedToTranscript];
 }
 
-- (void)cardViewControllerDidLoad:(id)a3
+- (void)cardViewControllerDidLoad:(id)load
 {
-  v4 = a3;
-  v5 = [(SiriUICardSnippetViewController *)self _cardViewController];
+  loadCopy = load;
+  _cardViewController = [(SiriUICardSnippetViewController *)self _cardViewController];
 
-  if (!v5)
+  if (!_cardViewController)
   {
-    [(SiriUICardSnippetViewController *)self _setCardViewController:v4];
+    [(SiriUICardSnippetViewController *)self _setCardViewController:loadCopy];
   }
 
   v6.receiver = self;
   v6.super_class = SiriUILegacyCardSnippetViewController;
-  [(SiriUICardSnippetViewController *)&v6 cardViewControllerDidLoad:v4];
+  [(SiriUICardSnippetViewController *)&v6 cardViewControllerDidLoad:loadCopy];
 }
 
 - (void)_legacyCardSectionViewController
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v4 = 136315394;
   v5 = "[SiriUILegacyCardSnippetViewController _legacyCardSectionViewController]";
   v6 = 2112;
   v7 = v3;
-  _os_log_error_impl(&dword_26948D000, v1, OS_LOG_TYPE_ERROR, "%s #cards The card view controller in this legacy snippet is not a CRKCardViewController, but instead a %@. This is a bug and we can't get a legacy card section view controller in this case.", &v4, 0x16u);
+  _os_log_error_impl(&dword_26948D000, selfCopy, OS_LOG_TYPE_ERROR, "%s #cards The card view controller in this legacy snippet is not a CRKCardViewController, but instead a %@. This is a bug and we can't get a legacy card section view controller in this case.", &v4, 0x16u);
 }
 
 - (void)setSnippet:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

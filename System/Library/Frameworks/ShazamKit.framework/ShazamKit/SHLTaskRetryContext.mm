@@ -1,21 +1,21 @@
 @interface SHLTaskRetryContext
-- (SHLTaskRetryContext)initWithOutcome:(id)a3 retryBlock:(id)a4;
+- (SHLTaskRetryContext)initWithOutcome:(id)outcome retryBlock:(id)block;
 @end
 
 @implementation SHLTaskRetryContext
 
-- (SHLTaskRetryContext)initWithOutcome:(id)a3 retryBlock:(id)a4
+- (SHLTaskRetryContext)initWithOutcome:(id)outcome retryBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  outcomeCopy = outcome;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = SHLTaskRetryContext;
   v9 = [(SHLTaskRetryContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_outcome, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_outcome, outcome);
+    v11 = objc_retainBlock(blockCopy);
     retryBlock = v10->_retryBlock;
     v10->_retryBlock = v11;
   }

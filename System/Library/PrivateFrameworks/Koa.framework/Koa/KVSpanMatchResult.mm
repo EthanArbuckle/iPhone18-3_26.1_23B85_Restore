@@ -1,8 +1,8 @@
 @interface KVSpanMatchResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSpanMatchResult:(id)a3;
-- (KVSpanMatchResult)initWithSpanMatchResult:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSpanMatchResult:(id)result;
+- (KVSpanMatchResult)initWithSpanMatchResult:(id)result;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)fieldMatches;
 - (id)itemInfo;
 - (id)spanInfo;
@@ -10,25 +10,25 @@
 
 @implementation KVSpanMatchResult
 
-- (BOOL)isEqualToSpanMatchResult:(id)a3
+- (BOOL)isEqualToSpanMatchResult:(id)result
 {
   spanMatchResult = self->_spanMatchResult;
-  v7 = objc_msgSend_spanMatchResult(a3, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_spanMatchResult(result, a2, result, v3, v4, v5);
   LOBYTE(spanMatchResult) = objc_msgSend_isEqual_(spanMatchResult, v8, v7, v9, v10, v11);
 
   return spanMatchResult;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToSpanMatchResult = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToSpanMatchResult = objc_msgSend_isEqualToSpanMatchResult_(self, v6, v5, v7, v8, v9);
   }
@@ -41,11 +41,11 @@
   return isEqualToSpanMatchResult;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9);
-  v15 = objc_msgSend_copyWithZone_(self->_spanMatchResult, v11, a3, v12, v13, v14);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9);
+  v15 = objc_msgSend_copyWithZone_(self->_spanMatchResult, v11, zone, v12, v13, v14);
   v16 = v10[1];
   v10[1] = v15;
 
@@ -117,15 +117,15 @@
   return v14;
 }
 
-- (KVSpanMatchResult)initWithSpanMatchResult:(id)a3
+- (KVSpanMatchResult)initWithSpanMatchResult:(id)result
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  resultCopy = result;
   v33.receiver = self;
   v33.super_class = KVSpanMatchResult;
   v6 = [(KVSpanMatchResult *)&v33 init];
   p_isa = &v6->super.isa;
-  if (v6 && (objc_storeStrong(&v6->_spanMatchResult, a3), objc_msgSend_entityInfo(p_isa[1], v8, v9, v10, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend_entityType(v13, v14, v15, v16, v17, v18), v13, v19 != 1))
+  if (v6 && (objc_storeStrong(&v6->_spanMatchResult, result), objc_msgSend_entityInfo(p_isa[1], v8, v9, v10, v11, v12), v13 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend_entityType(v13, v14, v15, v16, v17, v18), v13, v19 != 1))
   {
     v21 = qword_28106B3C0;
     if (os_log_type_enabled(qword_28106B3C0, OS_LOG_TYPE_ERROR))

@@ -1,7 +1,7 @@
 @interface TRIExperimentIdentifiers
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToExperimentIdentifiers:(id)a3;
-- (TRIExperimentIdentifiers)initWithExperimentId:(id)a3 deploymentId:(int)a4 treatmentId:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToExperimentIdentifiers:(id)identifiers;
+- (TRIExperimentIdentifiers)initWithExperimentId:(id)id deploymentId:(int)deploymentId treatmentId:(id)treatmentId;
 - (id)asFactorsState;
 - (id)description;
 - (unint64_t)hash;
@@ -9,36 +9,36 @@
 
 @implementation TRIExperimentIdentifiers
 
-- (TRIExperimentIdentifiers)initWithExperimentId:(id)a3 deploymentId:(int)a4 treatmentId:(id)a5
+- (TRIExperimentIdentifiers)initWithExperimentId:(id)id deploymentId:(int)deploymentId treatmentId:(id)treatmentId
 {
-  v9 = a3;
-  v10 = a5;
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
   v14.receiver = self;
   v14.super_class = TRIExperimentIdentifiers;
   v11 = [(TRIExperimentIdentifiers *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_experimentId, a3);
-    v12->_deploymentId = a4;
-    objc_storeStrong(&v12->_treatmentId, a5);
+    objc_storeStrong(&v11->_experimentId, id);
+    v12->_deploymentId = deploymentId;
+    objc_storeStrong(&v12->_treatmentId, treatmentId);
   }
 
   return v12;
 }
 
-- (BOOL)isEqualToExperimentIdentifiers:(id)a3
+- (BOOL)isEqualToExperimentIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
+  if (!identifiersCopy)
   {
     goto LABEL_9;
   }
 
   v6 = self->_experimentId == 0;
-  v7 = [v4 experimentId];
-  v8 = v7 != 0;
+  experimentId = [identifiersCopy experimentId];
+  v8 = experimentId != 0;
 
   if (v6 == v8)
   {
@@ -48,8 +48,8 @@
   experimentId = self->_experimentId;
   if (experimentId)
   {
-    v10 = [v5 experimentId];
-    v11 = [(NSString *)experimentId isEqual:v10];
+    experimentId2 = [v5 experimentId];
+    v11 = [(NSString *)experimentId isEqual:experimentId2];
 
     if (!v11)
     {
@@ -69,8 +69,8 @@ LABEL_9:
     treatmentId = self->_treatmentId;
     if (treatmentId)
     {
-      v17 = [v5 treatmentId];
-      v18 = [(NSString *)treatmentId isEqual:v17];
+      treatmentId = [v5 treatmentId];
+      v18 = [(NSString *)treatmentId isEqual:treatmentId];
     }
 
     else
@@ -82,18 +82,18 @@ LABEL_9:
   return v18 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIExperimentIdentifiers *)self isEqualToExperimentIdentifiers:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIExperimentIdentifiers *)self isEqualToExperimentIdentifiers:v5];
   }
 
   return v6;

@@ -1,32 +1,32 @@
 @interface CRFormContentTypeModelOutput
-- (CRFormContentTypeModelOutput)initWithScore:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (CRFormContentTypeModelOutput)initWithScore:(id)score;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation CRFormContentTypeModelOutput
 
-- (CRFormContentTypeModelOutput)initWithScore:(id)a3
+- (CRFormContentTypeModelOutput)initWithScore:(id)score
 {
-  v5 = a3;
+  scoreCopy = score;
   v9.receiver = self;
   v9.super_class = CRFormContentTypeModelOutput;
   v6 = [(CRFormContentTypeModelOutput *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_score, a3);
+    objc_storeStrong(&v6->_score, score);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"score"])
+  if ([name isEqualToString:@"score"])
   {
     v4 = MEMORY[0x1E695FE60];
-    v5 = [(CRFormContentTypeModelOutput *)self score];
-    v6 = [v4 featureValueWithMultiArray:v5];
+    score = [(CRFormContentTypeModelOutput *)self score];
+    v6 = [v4 featureValueWithMultiArray:score];
   }
 
   else

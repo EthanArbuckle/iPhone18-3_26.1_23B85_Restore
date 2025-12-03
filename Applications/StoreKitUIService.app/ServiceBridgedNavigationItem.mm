@@ -1,38 +1,38 @@
 @interface ServiceBridgedNavigationItem
-+ (id)itemFromItem:(id)a3;
++ (id)itemFromItem:(id)item;
 - (ServiceBridgedNavigationItemProxy)proxyHandler;
 - (id)rightBarButtonItem;
-- (void)setBackButtonTitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBackButtonTitle:(id)title;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ServiceBridgedNavigationItem
 
-+ (id)itemFromItem:(id)a3
++ (id)itemFromItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = objc_alloc_init(objc_opt_class());
-  if (v3)
+  if (itemCopy)
   {
-    v5 = [v3 backButtonTitle];
-    [v4 setBackButtonTitle:v5];
+    backButtonTitle = [itemCopy backButtonTitle];
+    [v4 setBackButtonTitle:backButtonTitle];
 
-    [v4 setHidesBackButton:{objc_msgSend(v3, "hidesBackButton")}];
-    v6 = [v3 leftBarButtonItems];
-    [v4 setLeftBarButtonItems:v6];
+    [v4 setHidesBackButton:{objc_msgSend(itemCopy, "hidesBackButton")}];
+    leftBarButtonItems = [itemCopy leftBarButtonItems];
+    [v4 setLeftBarButtonItems:leftBarButtonItems];
 
-    [v4 setLeftItemsSupplementBackButton:{objc_msgSend(v3, "leftItemsSupplementBackButton")}];
-    v7 = [v3 prompt];
-    [v4 setPrompt:v7];
+    [v4 setLeftItemsSupplementBackButton:{objc_msgSend(itemCopy, "leftItemsSupplementBackButton")}];
+    prompt = [itemCopy prompt];
+    [v4 setPrompt:prompt];
 
-    v8 = [v3 rightBarButtonItems];
-    [v4 setRightBarButtonItems:v8];
+    rightBarButtonItems = [itemCopy rightBarButtonItems];
+    [v4 setRightBarButtonItems:rightBarButtonItems];
 
-    v9 = [v3 title];
-    [v4 setTitle:v9];
+    title = [itemCopy title];
+    [v4 setTitle:title];
 
-    v10 = [v3 titleView];
-    [v4 setTitleView:v10];
+    titleView = [itemCopy titleView];
+    [v4 setTitleView:titleView];
   }
 
   return v4;
@@ -42,31 +42,31 @@
 {
   v7.receiver = self;
   v7.super_class = ServiceBridgedNavigationItem;
-  v3 = [(ServiceBridgedNavigationItem *)&v7 rightBarButtonItem];
-  v4 = [ServiceBridgedBarButtonItem itemFromItem:v3];
+  rightBarButtonItem = [(ServiceBridgedNavigationItem *)&v7 rightBarButtonItem];
+  v4 = [ServiceBridgedBarButtonItem itemFromItem:rightBarButtonItem];
 
-  v5 = [(ServiceBridgedNavigationItem *)self proxyHandler];
-  [v4 setProxyHandler:v5];
+  proxyHandler = [(ServiceBridgedNavigationItem *)self proxyHandler];
+  [v4 setProxyHandler:proxyHandler];
 
   return v4;
 }
 
-- (void)setBackButtonTitle:(id)a3
+- (void)setBackButtonTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = ServiceBridgedNavigationItem;
-  [(ServiceBridgedNavigationItem *)&v5 setBackButtonTitle:a3];
-  v4 = [(ServiceBridgedNavigationItem *)self proxyHandler];
-  [v4 navigationItemUpdated];
+  [(ServiceBridgedNavigationItem *)&v5 setBackButtonTitle:title];
+  proxyHandler = [(ServiceBridgedNavigationItem *)self proxyHandler];
+  [proxyHandler navigationItemUpdated];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = ServiceBridgedNavigationItem;
-  [(ServiceBridgedNavigationItem *)&v5 setTitle:a3];
-  v4 = [(ServiceBridgedNavigationItem *)self proxyHandler];
-  [v4 navigationItemUpdated];
+  [(ServiceBridgedNavigationItem *)&v5 setTitle:title];
+  proxyHandler = [(ServiceBridgedNavigationItem *)self proxyHandler];
+  [proxyHandler navigationItemUpdated];
 }
 
 - (ServiceBridgedNavigationItemProxy)proxyHandler

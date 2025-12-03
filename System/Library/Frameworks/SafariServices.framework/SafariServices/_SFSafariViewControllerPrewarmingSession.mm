@@ -1,25 +1,25 @@
 @interface _SFSafariViewControllerPrewarmingSession
-+ (id)_sharedSessionCreateIfNeeded:(BOOL)a3;
++ (id)_sharedSessionCreateIfNeeded:(BOOL)needed;
 - (BOOL)_hasValidTokens;
 - (_SFSafariViewControllerPrewarmingSession)init;
 - (id)_validTokens;
-- (id)prewarmConnectionsToURLs:(id)a3;
+- (id)prewarmConnectionsToURLs:(id)ls;
 - (void)_connectToService;
 - (void)_disconnectFromService;
 - (void)_resume;
 - (void)_suspend;
 - (void)dealloc;
-- (void)remoteViewController:(id)a3 viewServiceDidTerminateWithError:(id)a4;
+- (void)remoteViewController:(id)controller viewServiceDidTerminateWithError:(id)error;
 - (void)restart;
-- (void)serviceProxyWillQueueInvocation:(id)a3;
-- (void)tokenWithIDDidInvalidate:(unint64_t)a3;
+- (void)serviceProxyWillQueueInvocation:(id)invocation;
+- (void)tokenWithIDDidInvalidate:(unint64_t)invalidate;
 @end
 
 @implementation _SFSafariViewControllerPrewarmingSession
 
-+ (id)_sharedSessionCreateIfNeeded:(BOOL)a3
++ (id)_sharedSessionCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && _sharedSessionCreateIfNeeded__onceToken != -1)
+  if (needed && _sharedSessionCreateIfNeeded__onceToken != -1)
   {
     +[_SFSafariViewControllerPrewarmingSession _sharedSessionCreateIfNeeded:];
   }
@@ -41,13 +41,13 @@
     v2->_serviceProxy = v3;
 
     [(SFServiceViewControllerProtocol *)v2->_serviceProxy setDelegate:v2];
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     tokens = v2->_tokens;
-    v2->_tokens = v5;
+    v2->_tokens = weakObjectsHashTable;
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel__suspend name:*MEMORY[0x1E69DDAC8] object:0];
-    [v7 addObserver:v2 selector:sel__resume name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__suspend name:*MEMORY[0x1E69DDAC8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__resume name:*MEMORY[0x1E69DDBC0] object:0];
     v8 = v2;
   }
 
@@ -56,23 +56,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _SFSafariViewControllerPrewarmingSession;
   [(_SFSafariViewControllerPrewarmingSession *)&v4 dealloc];
 }
 
-- (id)prewarmConnectionsToURLs:(id)a3
+- (id)prewarmConnectionsToURLs:(id)ls
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
+  lsCopy = ls;
+  v5 = [lsCopy count];
   v6 = [SFSafariViewControllerPrewarmingToken alloc];
   if (v5)
   {
-    v7 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v4];
+    v7 = [MEMORY[0x1E695DFB8] orderedSetWithArray:lsCopy];
     v8 = [(SFSafariViewControllerPrewarmingToken *)v6 initWithURLs:v7];
 
     [(NSHashTable *)self->_tokens addObject:v8];
@@ -92,18 +92,18 @@
 
   else
   {
-    v11 = [MEMORY[0x1E695DFB8] orderedSet];
-    v8 = [(SFSafariViewControllerPrewarmingToken *)v6 initWithURLs:v11];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
+    v8 = [(SFSafariViewControllerPrewarmingToken *)v6 initWithURLs:orderedSet];
   }
 
   return v8;
 }
 
-- (void)tokenWithIDDidInvalidate:(unint64_t)a3
+- (void)tokenWithIDDidInvalidate:(unint64_t)invalidate
 {
   if (self->_remoteViewController)
   {
-    [(SFServiceViewControllerProtocol *)self->_serviceProxy invalidatePrewarmingTokenWithID:a3];
+    [(SFServiceViewControllerProtocol *)self->_serviceProxy invalidatePrewarmingTokenWithID:invalidate];
   }
 
   block[0] = MEMORY[0x1E69E9820];
@@ -144,11 +144,11 @@
   }
 
   self->_suspended = 0;
-  v4 = [(_SFSafariViewControllerPrewarmingSession *)self _validTokens];
-  if ([v4 count])
+  _validTokens = [(_SFSafariViewControllerPrewarmingSession *)self _validTokens];
+  if ([_validTokens count])
   {
     [(_SFSafariViewControllerPrewarmingSession *)self _connectToService];
-    [(SFServiceViewControllerProtocol *)self->_serviceProxy requestPrewarmingWithTokens:v4];
+    [(SFServiceViewControllerProtocol *)self->_serviceProxy requestPrewarmingWithTokens:_validTokens];
   }
 }
 
@@ -197,15 +197,15 @@ LABEL_11:
 
 - (id)_validTokens
 {
-  v2 = [(NSHashTable *)self->_tokens allObjects];
-  v3 = [v2 safari_filterObjectsUsingBlock:&__block_literal_global_103];
+  allObjects = [(NSHashTable *)self->_tokens allObjects];
+  v3 = [allObjects safari_filterObjectsUsingBlock:&__block_literal_global_103];
 
   return v3;
 }
 
 - (void)_disconnectFromService
 {
-  v3 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
   cancelViewServiceRequest = self->_cancelViewServiceRequest;
   self->_cancelViewServiceRequest = 0;
 
@@ -216,7 +216,7 @@ LABEL_11:
 
 - (void)_connectToService
 {
-  v3 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __61___SFSafariViewControllerPrewarmingSession__connectToService__block_invoke;
@@ -231,7 +231,7 @@ LABEL_11:
   [(SFServiceViewControllerProtocol *)serviceProxy setConfiguration:v7];
 }
 
-- (void)serviceProxyWillQueueInvocation:(id)a3
+- (void)serviceProxyWillQueueInvocation:(id)invocation
 {
   if (!self->_cancelViewServiceRequest)
   {
@@ -239,11 +239,11 @@ LABEL_11:
   }
 }
 
-- (void)remoteViewController:(id)a3 viewServiceDidTerminateWithError:(id)a4
+- (void)remoteViewController:(id)controller viewServiceDidTerminateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_remoteViewController == v6)
+  controllerCopy = controller;
+  errorCopy = error;
+  if (self->_remoteViewController == controllerCopy)
   {
     objc_initWeak(&location, self);
     [(_SFSafariViewControllerPrewarmingSession *)self _suspend];

@@ -1,5 +1,5 @@
 @interface PGGraphHighlightChange
-- (PGGraphHighlightChange)initWithHighlightUUID:(id)a3 updateTypes:(unint64_t)a4;
+- (PGGraphHighlightChange)initWithHighlightUUID:(id)d updateTypes:(unint64_t)types;
 - (id)description;
 @end
 
@@ -16,17 +16,17 @@
   return v5;
 }
 
-- (PGGraphHighlightChange)initWithHighlightUUID:(id)a3 updateTypes:(unint64_t)a4
+- (PGGraphHighlightChange)initWithHighlightUUID:(id)d updateTypes:(unint64_t)types
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = PGGraphHighlightChange;
   v8 = [(PGGraphHighlightChange *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_highlightUUID, a3);
-    v9->_updateTypes = a4;
+    objc_storeStrong(&v8->_highlightUUID, d);
+    v9->_updateTypes = types;
   }
 
   return v9;

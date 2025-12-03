@@ -1,29 +1,29 @@
 @interface HDHRBloodPressureJournalManager
-- (BOOL)closeAllExpiredJournalsBy:(id)a3 error:(id *)a4;
-- (BOOL)enumerateJournalsWithPredicate:(id)a3 limit:(int64_t)a4 orderingTerms:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-- (BOOL)insertBloodPressureJournals:(id)a3 isUserInitiated:(BOOL)a4 error:(id *)a5 onCommit:(id)a6 onRollback:(id)a7;
-- (HDHRBloodPressureJournalManager)initWithProfile:(id)a3;
-- (id)bloodPressureJournalWithIdentifier:(id)a3 error:(id *)a4;
-- (id)bloodPressureJournalsWithError:(id *)a3;
-- (id)bloodPressureJournalsWithPredicate:(id)a3 error:(id *)a4;
-- (id)latestActiveBloodPressureJournalWithError:(id *)a3;
-- (void)_rescheduleNotificationandIsUserInitated:(BOOL)a3;
-- (void)notifyObserversOfAddOrModifyJournals:(id)a3;
-- (void)updateNotificationSyncManagerWithClosedJournals:(id)a3;
+- (BOOL)closeAllExpiredJournalsBy:(id)by error:(id *)error;
+- (BOOL)enumerateJournalsWithPredicate:(id)predicate limit:(int64_t)limit orderingTerms:(id)terms error:(id *)error enumerationHandler:(id)handler;
+- (BOOL)insertBloodPressureJournals:(id)journals isUserInitiated:(BOOL)initiated error:(id *)error onCommit:(id)commit onRollback:(id)rollback;
+- (HDHRBloodPressureJournalManager)initWithProfile:(id)profile;
+- (id)bloodPressureJournalWithIdentifier:(id)identifier error:(id *)error;
+- (id)bloodPressureJournalsWithError:(id *)error;
+- (id)bloodPressureJournalsWithPredicate:(id)predicate error:(id *)error;
+- (id)latestActiveBloodPressureJournalWithError:(id *)error;
+- (void)_rescheduleNotificationandIsUserInitated:(BOOL)initated;
+- (void)notifyObserversOfAddOrModifyJournals:(id)journals;
+- (void)updateNotificationSyncManagerWithClosedJournals:(id)journals;
 @end
 
 @implementation HDHRBloodPressureJournalManager
 
-- (HDHRBloodPressureJournalManager)initWithProfile:(id)a3
+- (HDHRBloodPressureJournalManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HDHRBloodPressureJournalManager;
   v5 = [(HDHRBloodPressureJournalManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = NSStringFromProtocol(&unk_283CE26E0);
     v9 = HKLogBloodPressureJournal();
@@ -35,34 +35,34 @@
   return v6;
 }
 
-- (BOOL)enumerateJournalsWithPredicate:(id)a3 limit:(int64_t)a4 orderingTerms:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
+- (BOOL)enumerateJournalsWithPredicate:(id)predicate limit:(int64_t)limit orderingTerms:(id)terms error:(id *)error enumerationHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  predicateCopy = predicate;
+  termsCopy = terms;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v16 = [WeakRetained database];
+  database = [WeakRetained database];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __111__HDHRBloodPressureJournalManager_enumerateJournalsWithPredicate_limit_orderingTerms_error_enumerationHandler___block_invoke;
   v21[3] = &unk_27865FDD0;
   v21[4] = self;
-  v22 = v12;
-  v24 = v14;
-  v25 = a4;
-  v23 = v13;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
-  LOBYTE(a6) = [(HDHealthEntity *)HDHRHeartCLogEntity performReadTransactionWithHealthDatabase:v16 error:a6 block:v21];
+  v22 = predicateCopy;
+  v24 = handlerCopy;
+  limitCopy = limit;
+  v23 = termsCopy;
+  v17 = handlerCopy;
+  v18 = termsCopy;
+  v19 = predicateCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDHRHeartCLogEntity performReadTransactionWithHealthDatabase:database error:error block:v21];
 
-  return a6;
+  return error;
 }
 
-- (id)bloodPressureJournalWithIdentifier:(id)a3 error:(id *)a4
+- (id)bloodPressureJournalWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = HDHRBloodPressureJournalPredicateForIdentifier(v6, 1);
+  identifierCopy = identifier;
+  v7 = HDHRBloodPressureJournalPredicateForIdentifier(identifierCopy, 1);
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -74,7 +74,7 @@
   v11[2] = __76__HDHRBloodPressureJournalManager_bloodPressureJournalWithIdentifier_error___block_invoke;
   v11[3] = &unk_27865FDF8;
   v11[4] = &v12;
-  if ([(HDHRBloodPressureJournalManager *)self enumerateJournalsWithPredicate:v7 limit:0 orderingTerms:0 error:a4 enumerationHandler:v11])
+  if ([(HDHRBloodPressureJournalManager *)self enumerateJournalsWithPredicate:v7 limit:0 orderingTerms:0 error:error enumerationHandler:v11])
   {
     v8 = v13[5];
   }
@@ -90,7 +90,7 @@
   return v9;
 }
 
-- (id)bloodPressureJournalsWithError:(id *)a3
+- (id)bloodPressureJournalsWithError:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v11 = 0;
@@ -98,7 +98,7 @@
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v5 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"modified_date" entityClass:objc_opt_class() ascending:1];
   v17[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -108,7 +108,7 @@
   v10[2] = __66__HDHRBloodPressureJournalManager_bloodPressureJournalsWithError___block_invoke;
   v10[3] = &unk_27865FDF8;
   v10[4] = &v11;
-  if ([(HDHRBloodPressureJournalManager *)self enumerateJournalsWithPredicate:0 limit:0 orderingTerms:v6 error:a3 enumerationHandler:v10])
+  if ([(HDHRBloodPressureJournalManager *)self enumerateJournalsWithPredicate:0 limit:0 orderingTerms:v6 error:error enumerationHandler:v10])
   {
     v7 = [v12[5] copy];
   }
@@ -124,7 +124,7 @@
   return v7;
 }
 
-- (id)latestActiveBloodPressureJournalWithError:(id *)a3
+- (id)latestActiveBloodPressureJournalWithError:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v5 = HDHRBloodPressureJournalPredicateForState(0, 1);
@@ -143,7 +143,7 @@
   v12[2] = __77__HDHRBloodPressureJournalManager_latestActiveBloodPressureJournalWithError___block_invoke;
   v12[3] = &unk_27865FDF8;
   v12[4] = &v13;
-  if ([(HDHRBloodPressureJournalManager *)self enumerateJournalsWithPredicate:v5 limit:0 orderingTerms:v7 error:a3 enumerationHandler:v12])
+  if ([(HDHRBloodPressureJournalManager *)self enumerateJournalsWithPredicate:v5 limit:0 orderingTerms:v7 error:error enumerationHandler:v12])
   {
     v8 = v14[5];
   }
@@ -161,21 +161,21 @@
   return v9;
 }
 
-- (id)bloodPressureJournalsWithPredicate:(id)a3 error:(id *)a4
+- (id)bloodPressureJournalsWithPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __76__HDHRBloodPressureJournalManager_bloodPressureJournalsWithPredicate_error___block_invoke;
   v9[3] = &unk_27865FDF8;
   v9[4] = &v10;
-  if ([(HDHRBloodPressureJournalManager *)self enumerateJournalsWithPredicate:v6 limit:0 orderingTerms:0 error:a4 enumerationHandler:v9])
+  if ([(HDHRBloodPressureJournalManager *)self enumerateJournalsWithPredicate:predicateCopy limit:0 orderingTerms:0 error:error enumerationHandler:v9])
   {
     v7 = [v11[5] copy];
   }
@@ -190,28 +190,28 @@
   return v7;
 }
 
-- (BOOL)insertBloodPressureJournals:(id)a3 isUserInitiated:(BOOL)a4 error:(id *)a5 onCommit:(id)a6 onRollback:(id)a7
+- (BOOL)insertBloodPressureJournals:(id)journals isUserInitiated:(BOOL)initiated error:(id *)error onCommit:(id)commit onRollback:(id)rollback
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  journalsCopy = journals;
+  commitCopy = commit;
+  rollbackCopy = rollback;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v16 = [WeakRetained database];
+  database = [WeakRetained database];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __105__HDHRBloodPressureJournalManager_insertBloodPressureJournals_isUserInitiated_error_onCommit_onRollback___block_invoke;
   v21[3] = &unk_27865FE70;
   v21[4] = self;
-  v22 = v12;
-  v25 = a4;
-  v23 = v13;
-  v24 = v14;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
-  LOBYTE(a5) = [(HDHealthEntity *)HDHRHeartCLogEntity performWriteTransactionWithHealthDatabase:v16 error:a5 block:v21];
+  v22 = journalsCopy;
+  initiatedCopy = initiated;
+  v23 = commitCopy;
+  v24 = rollbackCopy;
+  v17 = rollbackCopy;
+  v18 = commitCopy;
+  v19 = journalsCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDHRHeartCLogEntity performWriteTransactionWithHealthDatabase:database error:error block:v21];
 
-  return a5;
+  return error;
 }
 
 uint64_t __105__HDHRBloodPressureJournalManager_insertBloodPressureJournals_isUserInitiated_error_onCommit_onRollback___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -324,21 +324,21 @@ uint64_t __105__HDHRBloodPressureJournalManager_insertBloodPressureJournals_isUs
   return result;
 }
 
-- (BOOL)closeAllExpiredJournalsBy:(id)a3 error:(id *)a4
+- (BOOL)closeAllExpiredJournalsBy:(id)by error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = [a3 dateByAddingTimeInterval:*MEMORY[0x277D12EE8] * -86400.0];
+  v6 = [by dateByAddingTimeInterval:*MEMORY[0x277D12EE8] * -86400.0];
   v7 = HDHRBloodPressureJournalPredicateForStartDate(v6, 4);
   v33 = 0;
   v8 = [(HDHRBloodPressureJournalManager *)self bloodPressureJournalsWithPredicate:v7 error:&v33];
   v9 = v33;
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v10 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -350,7 +350,7 @@ uint64_t __105__HDHRBloodPressureJournalManager_insertBloodPressureJournals_isUs
 
   else if (v8 && [v8 count])
   {
-    v25 = self;
+    selfCopy = self;
     v26 = v6;
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v29 = 0u;
@@ -372,8 +372,8 @@ uint64_t __105__HDHRBloodPressureJournalManager_insertBloodPressureJournals_isUs
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v29 + 1) + 8 * i) closedJournal];
-          [v12 addObject:v18];
+          closedJournal = [*(*(&v29 + 1) + 8 * i) closedJournal];
+          [v12 addObject:closedJournal];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -386,10 +386,10 @@ uint64_t __105__HDHRBloodPressureJournalManager_insertBloodPressureJournals_isUs
     v27[1] = 3221225472;
     v27[2] = __67__HDHRBloodPressureJournalManager_closeAllExpiredJournalsBy_error___block_invoke;
     v27[3] = &unk_27865FE98;
-    v27[4] = v25;
+    v27[4] = selfCopy;
     v28 = v12;
     v19 = v12;
-    v11 = [(HDHRBloodPressureJournalManager *)v25 insertBloodPressureJournals:v19 error:a4 onCommit:v27 onRollback:0];
+    v11 = [(HDHRBloodPressureJournalManager *)selfCopy insertBloodPressureJournals:v19 error:error onCommit:v27 onRollback:0];
 
     v6 = v26;
   }
@@ -407,7 +407,7 @@ uint64_t __105__HDHRBloodPressureJournalManager_insertBloodPressureJournals_isUs
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v36 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_229486000, v22, OS_LOG_TYPE_INFO, "%{public}@: There are no expired journals to close. ", buf, 0xCu);
       }
     }
@@ -426,26 +426,26 @@ void __67__HDHRBloodPressureJournalManager_closeAllExpiredJournalsBy_error___blo
   [v3 requestStateSyncWithReason:@"Blood Pressure journal is expired and closed"];
 }
 
-- (void)updateNotificationSyncManagerWithClosedJournals:(id)a3
+- (void)updateNotificationSyncManagerWithClosedJournals:(id)journals
 {
-  v4 = a3;
+  journalsCopy = journals;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained heartHealthProfileExtension];
-  v7 = [v6 bloodPressureJournalNotificationSyncManager];
+  heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+  bloodPressureJournalNotificationSyncManager = [heartHealthProfileExtension bloodPressureJournalNotificationSyncManager];
 
-  [v7 bloodPressureJournalsClosed:v4];
+  [bloodPressureJournalNotificationSyncManager bloodPressureJournalsClosed:journalsCopy];
 }
 
-- (void)_rescheduleNotificationandIsUserInitated:(BOOL)a3
+- (void)_rescheduleNotificationandIsUserInitated:(BOOL)initated
 {
-  v3 = a3;
+  initatedCopy = initated;
   v20 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained heartHealthProfileExtension];
-  v7 = [v6 bloodPressureJournalNotificationManager];
+  heartHealthProfileExtension = [WeakRetained heartHealthProfileExtension];
+  bloodPressureJournalNotificationManager = [heartHealthProfileExtension bloodPressureJournalNotificationManager];
 
   v15 = 0;
-  v8 = [v7 scheduleNotificationsWithReason:v3 error:&v15];
+  v8 = [bloodPressureJournalNotificationManager scheduleNotificationsWithReason:initatedCopy error:&v15];
   v9 = v15;
   if (v9)
   {
@@ -467,7 +467,7 @@ void __67__HDHRBloodPressureJournalManager_closeAllExpiredJournalsBy_error___blo
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v17 = self;
+      selfCopy = self;
       v18 = 1024;
       v19 = v8;
       _os_log_impl(&dword_229486000, v13, OS_LOG_TYPE_INFO, "[%{public}@] Completed schedule notifications with success state: %d", buf, 0x12u);
@@ -477,17 +477,17 @@ void __67__HDHRBloodPressureJournalManager_closeAllExpiredJournalsBy_error___blo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyObserversOfAddOrModifyJournals:(id)a3
+- (void)notifyObserversOfAddOrModifyJournals:(id)journals
 {
-  v4 = a3;
+  journalsCopy = journals;
   observers = self->_observers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__HDHRBloodPressureJournalManager_notifyObserversOfAddOrModifyJournals___block_invoke;
   v7[3] = &unk_27865FEC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = journalsCopy;
+  v6 = journalsCopy;
   [(HDHRBloodPressureJournalObserver *)observers notifyObservers:v7];
 }
 

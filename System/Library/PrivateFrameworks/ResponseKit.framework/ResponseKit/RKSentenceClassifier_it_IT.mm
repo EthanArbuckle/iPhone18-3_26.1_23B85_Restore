@@ -1,28 +1,28 @@
 @interface RKSentenceClassifier_it_IT
-- (id)addSentenceTerminatorQuestion:(id)a3;
+- (id)addSentenceTerminatorQuestion:(id)question;
 - (id)classifySentence;
-- (id)lexicalEntitiesFromString:(id)a3;
+- (id)lexicalEntitiesFromString:(id)string;
 - (void)analyzeSentence;
 @end
 
 @implementation RKSentenceClassifier_it_IT
 
-- (id)addSentenceTerminatorQuestion:(id)a3
+- (id)addSentenceTerminatorQuestion:(id)question
 {
   v6.receiver = self;
   v6.super_class = RKSentenceClassifier_it_IT;
-  v3 = [(RKSentenceClassifier *)&v6 addSentenceTerminatorQuestion:a3];
+  v3 = [(RKSentenceClassifier *)&v6 addSentenceTerminatorQuestion:question];
   v4 = [v3 stringByAppendingString:@"?"];
 
   return v4;
 }
 
-- (id)lexicalEntitiesFromString:(id)a3
+- (id)lexicalEntitiesFromString:(id)string
 {
-  v4 = [a3 stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
-  v5 = [v4 lowercaseString];
+  v4 = [string stringByReplacingOccurrencesOfString:@"’" withString:@"'"];
+  lowercaseString = [v4 lowercaseString];
 
-  v6 = [v5 stringByReplacingOccurrencesOfString:@"cos'è" withString:@"cosa è"];
+  v6 = [lowercaseString stringByReplacingOccurrencesOfString:@"cos'è" withString:@"cosa è"];
 
   v7 = [v6 stringByReplacingOccurrencesOfString:@"com'è" withString:@"come è"];
 
@@ -46,37 +46,37 @@
 {
   v12.receiver = self;
   v12.super_class = RKSentenceClassifier_it_IT;
-  v3 = [(RKSentenceClassifier *)&v12 classifySentence];
-  if (![v3 sentenceType])
+  classifySentence = [(RKSentenceClassifier *)&v12 classifySentence];
+  if (![classifySentence sentenceType])
   {
-    v4 = [(RKSentenceClassifier *)self interrogatives];
+    interrogatives = [(RKSentenceClassifier *)self interrogatives];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __46__RKSentenceClassifier_it_IT_classifySentence__block_invoke;
     v10[3] = &unk_279B0FD90;
-    v11 = v3;
-    [v4 enumerateObjectsUsingBlock:v10];
+    v11 = classifySentence;
+    [interrogatives enumerateObjectsUsingBlock:v10];
   }
 
-  if ([v3 sentenceType] == 11)
+  if ([classifySentence sentenceType] == 11)
   {
     v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"partOfSpeech == %@ && ((word == 'ti') || (word == 'tu'))", *MEMORY[0x277CCA3C8]];
-    v6 = [(RKSentenceClassifier *)self sentenceEntities];
-    v7 = [v6 filteredArrayUsingPredicate:v5];
+    sentenceEntities = [(RKSentenceClassifier *)self sentenceEntities];
+    v7 = [sentenceEntities filteredArrayUsingPredicate:v5];
     v8 = [v7 count];
 
     if (v8)
     {
-      [v3 setSentenceType:12];
+      [classifySentence setSentenceType:12];
     }
   }
 
-  if (![v3 sentenceType] && -[RKSentenceClassifier sentenceHasQuestionTerminator](self, "sentenceHasQuestionTerminator"))
+  if (![classifySentence sentenceType] && -[RKSentenceClassifier sentenceHasQuestionTerminator](self, "sentenceHasQuestionTerminator"))
   {
-    [v3 setSentenceType:1];
+    [classifySentence setSentenceType:1];
   }
 
-  return v3;
+  return classifySentence;
 }
 
 @end

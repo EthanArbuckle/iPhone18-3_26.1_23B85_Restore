@@ -1,26 +1,26 @@
 @interface PKAlignedContentContainerView
-- (PKAlignedContentContainerView)initWithContentView:(id)a3 alignment:(id)a4 size:(CGSize)a5;
+- (PKAlignedContentContainerView)initWithContentView:(id)view alignment:(id)alignment size:(CGSize)size;
 - (void)layoutSubviews;
 @end
 
 @implementation PKAlignedContentContainerView
 
-- (PKAlignedContentContainerView)initWithContentView:(id)a3 alignment:(id)a4 size:(CGSize)a5
+- (PKAlignedContentContainerView)initWithContentView:(id)view alignment:(id)alignment size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = PKAlignedContentContainerView;
   v11 = [(PKAlignedContentContainerView *)&v14 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_contentView, a3);
-    v12->_alignment = a4;
+    objc_storeStrong(&v11->_contentView, view);
+    v12->_alignment = alignment;
     v12->_size.width = width;
     v12->_size.height = height;
-    [(PKAlignedContentContainerView *)v12 addSubview:v10];
+    [(PKAlignedContentContainerView *)v12 addSubview:viewCopy];
   }
 
   return v12;

@@ -1,15 +1,15 @@
 @interface ICSystemPaperDocument
-+ (id)assetsDirectoryAt:(id)a3;
-+ (id)databaseDirectoryAt:(id)a3;
-+ (void)closeContextForNote:(id)a3;
-- (BOOL)writeNewVersionFromSyncArchive:(id)a3 error:(id *)a4;
++ (id)assetsDirectoryAt:(id)at;
++ (id)databaseDirectoryAt:(id)at;
++ (void)closeContextForNote:(id)note;
+- (BOOL)writeNewVersionFromSyncArchive:(id)archive error:(id *)error;
 - (CRContext)coherenceContext;
 - (_TtC11NotesShared21ICSystemPaperDocument)init;
-- (_TtC11NotesShared21ICSystemPaperDocument)initWithPaperAttachment:(id)a3;
-- (id)archiveBundleForSyncAndReturnError:(id *)a3;
+- (_TtC11NotesShared21ICSystemPaperDocument)initWithPaperAttachment:(id)attachment;
+- (id)archiveBundleForSyncAndReturnError:(id *)error;
 - (id)toFallbackPDFData;
 - (void)removeStrokesFromStyleInventory;
-- (void)updateGraphDestinationsUsingInlineAttachmentIdentifierMap:(id)a3 completion:(id)a4;
+- (void)updateGraphDestinationsUsingInlineAttachmentIdentifierMap:(id)map completion:(id)completion;
 @end
 
 @implementation ICSystemPaperDocument
@@ -17,12 +17,12 @@
 - (CRContext)coherenceContext
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC11NotesShared21ICSystemPaperDocument_attachment);
-  v3 = self;
-  v4 = [v2 managedObjectContext];
-  if (v4)
+  selfCopy = self;
+  managedObjectContext = [v2 managedObjectContext];
+  if (managedObjectContext)
   {
-    v5 = v4;
-    MEMORY[0x28223BE20](v4);
+    v5 = managedObjectContext;
+    MEMORY[0x28223BE20](managedObjectContext);
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA43500);
     sub_2150A56D0();
 
@@ -38,34 +38,34 @@
   return v6;
 }
 
-- (_TtC11NotesShared21ICSystemPaperDocument)initWithPaperAttachment:(id)a3
+- (_TtC11NotesShared21ICSystemPaperDocument)initWithPaperAttachment:(id)attachment
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC11NotesShared21ICSystemPaperDocument_attachment) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC11NotesShared21ICSystemPaperDocument_attachment) = attachment;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = a3;
+  attachmentCopy = attachment;
   return [(ICSystemPaperDocument *)&v8 init];
 }
 
-- (id)archiveBundleForSyncAndReturnError:(id *)a3
+- (id)archiveBundleForSyncAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = ICSystemPaperDocument.archiveBundleForSync()();
 
   return v4;
 }
 
-- (BOOL)writeNewVersionFromSyncArchive:(id)a3 error:(id *)a4
+- (BOOL)writeNewVersionFromSyncArchive:(id)archive error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  ICSystemPaperDocument.writeNewVersionFromSyncArchive(_:)(v5);
+  archiveCopy = archive;
+  selfCopy = self;
+  ICSystemPaperDocument.writeNewVersionFromSyncArchive(_:)(archiveCopy);
 
   return 1;
 }
 
-+ (id)databaseDirectoryAt:(id)a3
++ (id)databaseDirectoryAt:(id)at
 {
   v3 = sub_2150A3750();
   v4 = *(v3 - 8);
@@ -83,7 +83,7 @@
   return v11;
 }
 
-+ (id)assetsDirectoryAt:(id)a3
++ (id)assetsDirectoryAt:(id)at
 {
   v3 = sub_2150A3750();
   v4 = *(v3 - 8);
@@ -105,9 +105,9 @@
   return v14;
 }
 
-- (void)updateGraphDestinationsUsingInlineAttachmentIdentifierMap:(id)a3 completion:(id)a4
+- (void)updateGraphDestinationsUsingInlineAttachmentIdentifierMap:(id)map completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = sub_2150A4920();
   if (v5)
   {
@@ -121,26 +121,26 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   ICSystemPaperDocument.updateGraphDestinations(usingInlineAttachmentIdentifierMap:completion:)(v6, v5, v7);
   sub_214D6AB7C(v5);
 }
 
-+ (void)closeContextForNote:(id)a3
++ (void)closeContextForNote:(id)note
 {
-  v3 = a3;
-  _s11NotesShared21ICSystemPaperDocumentC12closeContext3forySo6ICNoteC_tFZ_0(v3);
+  noteCopy = note;
+  _s11NotesShared21ICSystemPaperDocumentC12closeContext3forySo6ICNoteC_tFZ_0(noteCopy);
 }
 
 - (void)removeStrokesFromStyleInventory
 {
-  v2 = self;
+  selfCopy = self;
   ICSystemPaperDocument.removeStrokesFromStyleInventory()();
 }
 
 - (id)toFallbackPDFData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ICSystemPaperDocument.toFallbackPDFData()();
   v5 = v4;
 

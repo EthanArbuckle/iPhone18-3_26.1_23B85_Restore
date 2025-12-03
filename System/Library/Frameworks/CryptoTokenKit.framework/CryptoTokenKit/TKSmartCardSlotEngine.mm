@@ -1,41 +1,41 @@
 @interface TKSmartCardSlotEngine
-- (BOOL)_setupWithName:(id)a3 delegate:(id)a4;
+- (BOOL)_setupWithName:(id)name delegate:(id)delegate;
 - (BOOL)canSimulateCardReinsertion;
-- (BOOL)connectCardSessionWithParameters:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)connectCardSessionWithParameters:(id)parameters;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)reset;
-- (BOOL)setProtocol:(unint64_t)a3;
-- (BOOL)setupWithName:(id)a3 delegate:(id)a4;
+- (BOOL)setProtocol:(unint64_t)protocol;
+- (BOOL)setupWithName:(id)name delegate:(id)delegate;
 - (TKSmartCardSessionEngine)session;
-- (TKSmartCardSlotEngine)initWithSlotParameters:(id)a3;
+- (TKSmartCardSlotEngine)initWithSlotParameters:(id)parameters;
 - (TKSmartCardSlotEngineDelegate)delegate;
-- (id)_findReservation:(id)a3 connection:(id)a4;
+- (id)_findReservation:(id)reservation connection:(id)connection;
 - (id)_getReservationId;
-- (id)dictionaryForState:(int64_t)a3;
-- (void)_changeStateTo:(id)a3 forClient:(id)a4;
-- (void)cardPresent:(BOOL)a3;
-- (void)changeStateTo:(int64_t)a3 powerState:(int64_t)a4;
+- (id)dictionaryForState:(int64_t)state;
+- (void)_changeStateTo:(id)to forClient:(id)client;
+- (void)cardPresent:(BOOL)present;
+- (void)changeStateTo:(int64_t)to powerState:(int64_t)state;
 - (void)dealloc;
-- (void)leaveSession:(id)a3;
-- (void)logWithBytes:(id)a3 handler:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reserveProtocols:(id)a3 reservationId:(id)a4 exclusive:(BOOL)a5 reply:(id)a6;
+- (void)leaveSession:(id)session;
+- (void)logWithBytes:(id)bytes handler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reserveProtocols:(id)protocols reservationId:(id)id exclusive:(BOOL)exclusive reply:(id)reply;
 - (void)reset;
-- (void)runUserInteraction:(id)a3 reply:(id)a4;
+- (void)runUserInteraction:(id)interaction reply:(id)reply;
 - (void)scheduleIdlePowerDown;
-- (void)sessionWithParameters:(id)a3 reply:(id)a4;
-- (void)setupSlotWithReply:(id)a3;
-- (void)simulateCardReinsertionWithReply:(id)a3;
+- (void)sessionWithParameters:(id)parameters reply:(id)reply;
+- (void)setupSlotWithReply:(id)reply;
+- (void)simulateCardReinsertionWithReply:(id)reply;
 - (void)terminate;
-- (void)waitForNextState:(int64_t)a3 reply:(id)a4;
-- (void)waitForStateFlushedWithReply:(id)a3;
+- (void)waitForNextState:(int64_t)state reply:(id)reply;
+- (void)waitForStateFlushedWithReply:(id)reply;
 @end
 
 @implementation TKSmartCardSlotEngine
 
-- (TKSmartCardSlotEngine)initWithSlotParameters:(id)a3
+- (TKSmartCardSlotEngine)initWithSlotParameters:(id)parameters
 {
-  v5 = a3;
+  parametersCopy = parameters;
   v11.receiver = self;
   v11.super_class = TKSmartCardSlotEngine;
   v6 = [(TKSmartCardSlotEngine *)&v11 init];
@@ -43,46 +43,46 @@
   if (v6)
   {
     v6->_lastId = 0;
-    v8 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     lastCardReinsertionSimulationCallTime = v7->_lastCardReinsertionSimulationCallTime;
-    v7->_lastCardReinsertionSimulationCallTime = v8;
+    v7->_lastCardReinsertionSimulationCallTime = distantPast;
 
     v7->_cardReinsertionSimulationCallInterval = 10.0;
     v7->_powerDownIdleTimeout = 5.0;
-    objc_storeStrong(&v7->_slotParameters, a3);
+    objc_storeStrong(&v7->_slotParameters, parameters);
   }
 
   return v7;
 }
 
-- (void)logWithBytes:(id)a3 handler:(id)a4
+- (void)logWithBytes:(id)bytes handler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  bytesCopy = bytes;
+  handlerCopy = handler;
   if (self->_log)
   {
-    v7 = [MEMORY[0x1E696AD60] string];
-    v8 = v11;
-    v9 = [v11 bytes];
-    if ([v11 length])
+    string = [MEMORY[0x1E696AD60] string];
+    v8 = bytesCopy;
+    bytes = [bytesCopy bytes];
+    if ([bytesCopy length])
     {
       v10 = 0;
       do
       {
-        [v7 appendFormat:@" %02x", *(v9 + v10++)];
+        [string appendFormat:@" %02x", *(bytes + v10++)];
       }
 
-      while (v10 < [v11 length]);
+      while (v10 < [bytesCopy length]);
     }
 
-    v6[2](v6, self->_log, [v7 UTF8String]);
+    handlerCopy[2](handlerCopy, self->_log, [string UTF8String]);
   }
 }
 
-- (BOOL)setupWithName:(id)a3 delegate:(id)a4
+- (BOOL)setupWithName:(id)name delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  delegateCopy = delegate;
   v8 = TK_LOG_token_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -91,18 +91,18 @@
 
   [(TKSlotParameters *)self->_slotParameters setDelegateWithEscapeMethod:objc_opt_respondsToSelector() & 1];
   [(TKSlotParameters *)self->_slotParameters setDelegateWithControlMethod:objc_opt_respondsToSelector() & 1];
-  v9 = [(TKSmartCardSlotEngine *)self _setupWithName:v6 delegate:v7];
+  v9 = [(TKSmartCardSlotEngine *)self _setupWithName:nameCopy delegate:delegateCopy];
 
   return v9;
 }
 
-- (BOOL)_setupWithName:(id)a3 delegate:(id)a4
+- (BOOL)_setupWithName:(id)name delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  nameCopy = name;
+  delegateCopy = delegate;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = NSHomeDirectoryForUser(&cfstr_Root.isa);
-  v11 = [v9 fileExistsAtPath:v10 isDirectory:0];
+  v11 = [defaultManager fileExistsAtPath:v10 isDirectory:0];
 
   if ((v11 & 1) == 0)
   {
@@ -113,18 +113,18 @@
       _os_log_impl(&dword_1DF413000, v12, OS_LOG_TYPE_INFO, "Call 'setupWithName' was postponed, because root's home directory does not exist", buf, 2u);
     }
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v14 = NSHomeDirectoryForUser(&cfstr_Root.isa);
-    v15 = [v13 fileExistsAtPath:v14 isDirectory:0];
+    v15 = [defaultManager2 fileExistsAtPath:v14 isDirectory:0];
 
     if ((v15 & 1) == 0)
     {
       do
       {
         sleep(1u);
-        v16 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
         v17 = NSHomeDirectoryForUser(&cfstr_Root.isa);
-        v18 = [v16 fileExistsAtPath:v17 isDirectory:0];
+        v18 = [defaultManager3 fileExistsAtPath:v17 isDirectory:0];
       }
 
       while (!v18);
@@ -138,13 +138,13 @@
     }
   }
 
-  objc_storeWeak(&self->_delegate, v8);
-  objc_storeStrong(&self->_name, a3);
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  objc_storeStrong(&self->_name, name);
   self->_previousState = 1;
   *&self->_state = xmmword_1DF4615A0;
-  v20 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   sessionRequests = self->_sessionRequests;
-  self->_sessionRequests = v20;
+  self->_sessionRequests = array;
 
   v22 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:5 valueOptions:0];
   stateRequests = self->_stateRequests;
@@ -154,13 +154,13 @@
   v25 = qos_class_main();
   v26 = dispatch_queue_attr_make_with_qos_class(v24, v25, 0);
 
-  v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.scslot:%@", v7];
-  v28 = dispatch_queue_create([v27 UTF8String], v26);
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.scslot:%@", nameCopy];
+  v28 = dispatch_queue_create([nameCopy UTF8String], v26);
   queue = self->_queue;
   self->_queue = v28;
 
-  v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.scpwr:%@", v7];
-  v31 = dispatch_queue_create([v30 UTF8String], v26);
+  nameCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.scpwr:%@", nameCopy];
+  v31 = dispatch_queue_create([nameCopy2 UTF8String], v26);
   powerRequestsQueue = self->_powerRequestsQueue;
   self->_powerRequestsQueue = v31;
 
@@ -180,21 +180,21 @@
   v40 = NSStringFromSelector(sel_awaken);
   [(TKPowerMonitor *)v39 addObserver:self forKeyPath:v40 options:5 context:0];
 
-  v41 = [MEMORY[0x1E696B0D8] anonymousListener];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
   listener = self->_listener;
-  self->_listener = v41;
+  self->_listener = anonymousListener;
 
   [(NSXPCListener *)self->_listener setDelegate:self];
   [(NSXPCListener *)self->_listener _setQueue:self->_queue];
   [(NSXPCListener *)self->_listener resume];
-  v43 = [(TKSmartCardSlotEngine *)self serverEndpoint];
+  serverEndpoint = [(TKSmartCardSlotEngine *)self serverEndpoint];
 
   v44 = objc_alloc(MEMORY[0x1E696B0B8]);
   v45 = v44;
-  if (v43)
+  if (serverEndpoint)
   {
-    v46 = [(TKSmartCardSlotEngine *)self serverEndpoint];
-    v47 = [v45 initWithListenerEndpoint:v46];
+    serverEndpoint2 = [(TKSmartCardSlotEngine *)self serverEndpoint];
+    v47 = [v45 initWithListenerEndpoint:serverEndpoint2];
     registrationConnection = self->_registrationConnection;
     self->_registrationConnection = v47;
   }
@@ -202,7 +202,7 @@
   else
   {
     v49 = [v44 initWithMachServiceName:@"com.apple.ctkd.slot-registry" options:4096];
-    v46 = self->_registrationConnection;
+    serverEndpoint2 = self->_registrationConnection;
     self->_registrationConnection = v49;
   }
 
@@ -218,18 +218,18 @@
   v57[1] = 3221225472;
   v57[2] = __49__TKSmartCardSlotEngine__setupWithName_delegate___block_invoke;
   v57[3] = &unk_1E86B76B0;
-  v51 = v7;
+  v51 = nameCopy;
   v58 = v51;
-  v59 = self;
+  selfCopy = self;
   v52 = [(TKSmartCardSlotEngine *)self slotRegistryWithErrorHandler:v57];
-  v53 = [(NSXPCListener *)self->_listener endpoint];
+  endpoint = [(NSXPCListener *)self->_listener endpoint];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __49__TKSmartCardSlotEngine__setupWithName_delegate___block_invoke_132;
   v56[3] = &unk_1E86B7700;
   v56[4] = self;
   v56[5] = buf;
-  [v52 addSlotWithEndpoint:v53 name:v51 type:@"smartcard" reply:v56];
+  [v52 addSlotWithEndpoint:endpoint name:v51 type:@"smartcard" reply:v56];
 
   v54 = v61[24];
   _Block_object_dispose(buf, 8);
@@ -282,48 +282,48 @@ void __49__TKSmartCardSlotEngine__setupWithName_delegate___block_invoke_135(uint
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5A8A8B0];
   v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5A8AD38];
   [v8 setInterface:v9 forSelector:sel_sessionWithParameters_reply_ argumentIndex:0 ofReply:1];
 
-  [v7 setExportedInterface:v8];
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedInterface:v8];
+  [connectionCopy setExportedObject:self];
   v10 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5A87BE0];
-  [v7 setRemoteObjectInterface:v10];
+  [connectionCopy setRemoteObjectInterface:v10];
 
   v11 = self->_clients;
   objc_sync_enter(v11);
-  [(NSHashTable *)self->_clients addObject:v7];
+  [(NSHashTable *)self->_clients addObject:connectionCopy];
   objc_sync_exit(v11);
 
-  [v7 _setQueue:self->_queue];
+  [connectionCopy _setQueue:self->_queue];
   v12 = TK_LOG_token_0();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [TKSmartCardSlotEngine listener:? shouldAcceptNewConnection:?];
   }
 
-  [v7 resume];
+  [connectionCopy resume];
   return 1;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a5;
-  v9 = a3;
+  changeCopy = change;
+  pathCopy = path;
   v10 = NSStringFromSelector(sel_awaken);
-  v11 = [v9 isEqualToString:v10];
+  v11 = [pathCopy isEqualToString:v10];
 
   if (v11)
   {
-    v12 = [v8 objectForKey:*MEMORY[0x1E696A4F0]];
-    v13 = [v12 BOOLValue];
+    v12 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       if (self->_listener)
       {
@@ -366,32 +366,32 @@ LABEL_12:
   }
 }
 
-- (id)dictionaryForState:(int64_t)a3
+- (id)dictionaryForState:(int64_t)state
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v6 forKey:@"state"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  [dictionary setObject:v6 forKey:@"state"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_previousState];
-  [v5 setObject:v7 forKey:@"prevstate"];
+  [dictionary setObject:v7 forKey:@"prevstate"];
 
-  if (a3 == 4 || a3 == 2)
+  if (state == 4 || state == 2)
   {
     atr = self->_atr;
     if (atr)
     {
-      v9 = [(TKSmartCardATR *)atr bytes];
-      [v5 setObject:v9 forKey:@"atr"];
+      bytes = [(TKSmartCardATR *)atr bytes];
+      [dictionary setObject:bytes forKey:@"atr"];
     }
 
-    v10 = [(NSMapTable *)self->_reservations objectEnumerator];
-    v11 = [v10 nextObject];
-    v12 = [v11 objectEnumerator];
-    v13 = [v12 nextObject];
+    objectEnumerator = [(NSMapTable *)self->_reservations objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    objectEnumerator2 = [nextObject objectEnumerator];
+    nextObject2 = [objectEnumerator2 nextObject];
 
-    if (v13)
+    if (nextObject2)
     {
-      if ([v13 exclusive])
+      if ([nextObject2 exclusive])
       {
         v14 = 2;
       }
@@ -408,31 +408,31 @@ LABEL_12:
     }
 
     v15 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
-    [v5 setObject:v15 forKey:@"share"];
+    [dictionary setObject:v15 forKey:@"share"];
 
     v16 = [MEMORY[0x1E696AD98] numberWithInteger:self->_powerState];
-    [v5 setObject:v16 forKey:@"power"];
+    [dictionary setObject:v16 forKey:@"power"];
   }
 
-  return v5;
+  return dictionary;
 }
 
-- (void)_changeStateTo:(id)a3 forClient:(id)a4
+- (void)_changeStateTo:(id)to forClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 remoteObjectProxy];
+  toCopy = to;
+  clientCopy = client;
+  remoteObjectProxy = [clientCopy remoteObjectProxy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__TKSmartCardSlotEngine__changeStateTo_forClient___block_invoke;
   v12[3] = &unk_1E86B7728;
   v12[4] = self;
-  v13 = v8;
-  v14 = v7;
+  v13 = clientCopy;
+  v14 = toCopy;
   v15 = a2;
-  v10 = v7;
-  v11 = v8;
-  [v9 notifyWithParameters:v10 reply:v12];
+  v10 = toCopy;
+  v11 = clientCopy;
+  [remoteObjectProxy notifyWithParameters:v10 reply:v12];
 }
 
 void __50__TKSmartCardSlotEngine__changeStateTo_forClient___block_invoke(uint64_t a1)
@@ -488,11 +488,11 @@ void __50__TKSmartCardSlotEngine__changeStateTo_forClient___block_invoke(uint64_
   objc_sync_exit(v2);
 }
 
-- (void)changeStateTo:(int64_t)a3 powerState:(int64_t)a4
+- (void)changeStateTo:(int64_t)to powerState:(int64_t)state
 {
   v33 = *MEMORY[0x1E69E9840];
   state = self->_state;
-  self->_powerState = a4;
+  self->_powerState = state;
   self->_previousState = state;
   v6 = [(TKSmartCardSlotEngine *)self dictionaryForState:?];
   v7 = TK_LOG_token_0();
@@ -572,26 +572,26 @@ void __50__TKSmartCardSlotEngine__changeStateTo_forClient___block_invoke(uint64_
   objc_sync_exit(v23);
   v20 = self->_stateRequests;
   objc_sync_enter(v20);
-  self->_state = a3;
+  self->_state = to;
   objc_sync_exit(v20);
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)waitForNextState:(int64_t)a3 reply:(id)a4
+- (void)waitForNextState:(int64_t)state reply:(id)reply
 {
-  v10 = a4;
+  replyCopy = reply;
   v6 = self->_stateRequests;
   objc_sync_enter(v6);
-  if (self->_state == a3)
+  if (self->_state == state)
   {
-    v7 = [MEMORY[0x1E696B0B8] currentConnection];
-    v8 = [(NSMapTable *)self->_stateRequests objectForKey:v7];
+    currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+    v8 = [(NSMapTable *)self->_stateRequests objectForKey:currentConnection];
     if (v8)
     {
       v9 = objc_opt_new();
 
-      [(NSMapTable *)self->_stateRequests setObject:v9 forKey:v7];
+      [(NSMapTable *)self->_stateRequests setObject:v9 forKey:currentConnection];
     }
 
     else
@@ -599,43 +599,43 @@ void __50__TKSmartCardSlotEngine__changeStateTo_forClient___block_invoke(uint64_
       v9 = 0;
     }
 
-    [v9 setStateWhenRequested:a3];
-    [v9 setReplyNextState:v10];
+    [v9 setStateWhenRequested:state];
+    [v9 setReplyNextState:replyCopy];
   }
 
   else
   {
-    v10[2]();
+    replyCopy[2]();
   }
 
   objc_sync_exit(v6);
 }
 
-- (void)waitForStateFlushedWithReply:(id)a3
+- (void)waitForStateFlushedWithReply:(id)reply
 {
-  v8 = a3;
+  replyCopy = reply;
   v4 = self->_stateRequests;
   objc_sync_enter(v4);
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
-  v6 = [(NSMapTable *)self->_stateRequests objectForKey:v5];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v6 = [(NSMapTable *)self->_stateRequests objectForKey:currentConnection];
   v7 = v6;
   if (v6 && [v6 activeStateNotifications])
   {
-    [v7 setReplyFlushedState:v8];
+    [v7 setReplyFlushedState:replyCopy];
   }
 
   else
   {
-    v8[2]();
+    replyCopy[2]();
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)simulateCardReinsertionWithReply:(id)a3
+- (void)simulateCardReinsertionWithReply:(id)reply
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (!WeakRetained)
   {
@@ -652,17 +652,17 @@ void __50__TKSmartCardSlotEngine__changeStateTo_forClient___block_invoke(uint64_
   {
     if (objc_opt_respondsToSelector() & 1) == 0 || ([WeakRetained engineSimulateCardReinsertion:self])
     {
-      v6 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       lastCardReinsertionSimulationCallTime = self->_lastCardReinsertionSimulationCallTime;
-      self->_lastCardReinsertionSimulationCallTime = v6;
+      self->_lastCardReinsertionSimulationCallTime = date;
 
-      v4[2](v4, 1, 0);
+      replyCopy[2](replyCopy, 1, 0);
       goto LABEL_11;
     }
 
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1001 userInfo:0];
 LABEL_7:
-    (v4)[2](v4, 0, v10);
+    (replyCopy)[2](replyCopy, 0, v10);
 
     goto LABEL_11;
   }
@@ -679,7 +679,7 @@ LABEL_7:
     [TKSmartCardSlotEngine simulateCardReinsertionWithReply:?];
   }
 
-  (v4)[2](v4, 0, v14);
+  (replyCopy)[2](replyCopy, 0, v14);
 LABEL_11:
 
   v16 = *MEMORY[0x1E69E9840];
@@ -687,8 +687,8 @@ LABEL_11:
 
 - (BOOL)canSimulateCardReinsertion
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSinceDate:self->_lastCardReinsertionSimulationCallTime];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_lastCardReinsertionSimulationCallTime];
   LOBYTE(self) = v4 >= self->_cardReinsertionSimulationCallInterval;
 
   return self;
@@ -719,8 +719,8 @@ LABEL_11:
       objc_storeStrong(&self->_atr, v5);
       if (v5)
       {
-        v7 = [v5 bytes];
-        [(TKSmartCardSlotEngine *)self logWithBytes:v7 handler:&__block_literal_global_209];
+        bytes = [v5 bytes];
+        [(TKSmartCardSlotEngine *)self logWithBytes:bytes handler:&__block_literal_global_209];
 
         v8 = 1;
         [(TKSmartCardSlotEngine *)self changeStateTo:4 powerState:1];
@@ -771,7 +771,7 @@ void __30__TKSmartCardSlotEngine_reset__block_invoke_210(int a1, os_log_t oslog)
   }
 }
 
-- (BOOL)setProtocol:(unint64_t)a3
+- (BOOL)setProtocol:(unint64_t)protocol
 {
   v5 = TK_LOG_token_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -779,13 +779,13 @@ void __30__TKSmartCardSlotEngine_reset__block_invoke_210(int a1, os_log_t oslog)
     [TKSmartCardSlotEngine setProtocol:?];
   }
 
-  if (a3)
+  if (protocol)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      v8 = [v7 engine:self setProtocol:a3];
+      v8 = [v7 engine:self setProtocol:protocol];
 
       if (self->_state == 4)
       {
@@ -913,7 +913,7 @@ void __46__TKSmartCardSlotEngine_scheduleIdlePowerDown__block_invoke(uint64_t a1
   dispatch_sync(v6, block);
 }
 
-- (void)cardPresent:(BOOL)a3
+- (void)cardPresent:(BOOL)present
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -921,7 +921,7 @@ void __46__TKSmartCardSlotEngine_scheduleIdlePowerDown__block_invoke(uint64_t a1
   v4[2] = __37__TKSmartCardSlotEngine_cardPresent___block_invoke;
   v4[3] = &unk_1E86B77B0;
   v4[4] = self;
-  v5 = a3;
+  presentCopy = present;
   dispatch_async(queue, v4);
 }
 
@@ -1051,16 +1051,16 @@ void __37__TKSmartCardSlotEngine_cardPresent___block_invoke_223(int a1, os_log_t
   }
 }
 
-- (void)setupSlotWithReply:(id)a3
+- (void)setupSlotWithReply:(id)reply
 {
   state = self->_state;
-  v5 = a3;
+  replyCopy = reply;
   v6 = [(TKSmartCardSlotEngine *)self dictionaryForState:state];
   p_name = &self->_name;
   [v6 setObject:self->_name forKey:@"name"];
-  v8 = [(TKSmartCardSlotEngine *)self slotParameters];
-  v9 = [v8 getDictionaryParameters];
-  [v6 setObject:v9 forKey:@"params"];
+  slotParameters = [(TKSmartCardSlotEngine *)self slotParameters];
+  getDictionaryParameters = [slotParameters getDictionaryParameters];
+  [v6 setObject:getDictionaryParameters forKey:@"params"];
 
   v10 = TK_LOG_token_0();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1068,24 +1068,24 @@ void __37__TKSmartCardSlotEngine_cardPresent___block_invoke_223(int a1, os_log_t
     [TKSmartCardSlotEngine setupSlotWithReply:?];
   }
 
-  v5[2](v5, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (BOOL)connectCardSessionWithParameters:(id)a3
+- (BOOL)connectCardSessionWithParameters:(id)parameters
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"sensitive"];
-  v6 = [v4 objectForKeyedSubscript:@"protocol"];
+  parametersCopy = parameters;
+  v5 = [parametersCopy objectForKeyedSubscript:@"sensitive"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"protocol"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0xFFFFLL;
+    unsignedIntegerValue = 0xFFFFLL;
   }
 
   v9 = TK_LOG_token_0();
@@ -1095,7 +1095,7 @@ void __37__TKSmartCardSlotEngine_cardPresent___block_invoke_223(int a1, os_log_t
     *buf = 138543874;
     *&buf[4] = name;
     *&buf[12] = 1024;
-    *&buf[14] = v8;
+    *&buf[14] = unsignedIntegerValue;
     *&buf[18] = 2112;
     *&buf[20] = v5;
     _os_log_debug_impl(&dword_1DF413000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: connectCardSession:proto=%04x, sensitive=%@", buf, 0x1Cu);
@@ -1129,7 +1129,7 @@ LABEL_12:
     v24[3] = &unk_1E86B77D8;
     v24[4] = self;
     v24[5] = buf;
-    v25[1] = v8;
+    v25[1] = unsignedIntegerValue;
     objc_copyWeak(v25, &location);
     dispatch_sync(v12, v24);
     objc_destroyWeak(v25);
@@ -1149,7 +1149,7 @@ LABEL_12:
     v22[3] = &unk_1E86B7800;
     v22[4] = self;
     v22[5] = buf;
-    v23[1] = v8;
+    v23[1] = unsignedIntegerValue;
     objc_copyWeak(v23, &location);
     dispatch_sync(v17, v22);
     objc_destroyWeak(v23);
@@ -1161,7 +1161,7 @@ LABEL_12:
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   buf[24] = 0;
-  if ((protocol & ~v8) != 0)
+  if ((protocol & ~unsignedIntegerValue) != 0)
   {
     goto LABEL_12;
   }
@@ -1170,8 +1170,8 @@ LABEL_12:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v15 = objc_loadWeakRetained(&location);
-    v16 = [v15 name];
-    [(TKSmartCardSlotEngine *)v16 connectCardSessionWithParameters:v28, v14, v15];
+    name = [v15 name];
+    [(TKSmartCardSlotEngine *)name connectCardSessionWithParameters:v28, v14, v15];
   }
 
   *(*&buf[8] + 24) = 1;
@@ -1230,19 +1230,19 @@ void __58__TKSmartCardSlotEngine_connectCardSessionWithParameters___block_invoke
   }
 }
 
-- (void)leaveSession:(id)a3
+- (void)leaveSession:(id)session
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (!sessionCopy)
   {
     v8 = 0;
     goto LABEL_21;
   }
 
-  v6 = [v4 endPolicy];
-  if ((v6 - 2) < 2)
+  endPolicy = [sessionCopy endPolicy];
+  if ((endPolicy - 2) < 2)
   {
     v9 = TK_LOG_token_0();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1257,14 +1257,14 @@ void __58__TKSmartCardSlotEngine_connectCardSessionWithParameters___block_invoke
     v34 = __38__TKSmartCardSlotEngine_leaveSession___block_invoke_228;
     v35 = &unk_1E86B77B0;
     v12 = v10;
-    v36 = self;
+    selfCopy = self;
     v37 = v12;
     dispatch_sync(powerRequestsQueue, &v32);
   }
 
   else
   {
-    if (v6 == 1)
+    if (endPolicy == 1)
     {
       v13 = TK_LOG_token_0();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -1282,7 +1282,7 @@ void __58__TKSmartCardSlotEngine_connectCardSessionWithParameters___block_invoke
       goto LABEL_19;
     }
 
-    if (!v6)
+    if (!endPolicy)
     {
       v7 = TK_LOG_token_0();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1306,51 +1306,51 @@ LABEL_21:
     v15 = [(NSMutableArray *)self->_sessionRequests objectAtIndexedSubscript:0];
     [(NSMutableArray *)self->_sessionRequests removeObjectAtIndex:0];
     v16 = [TKSmartCardSessionEngine alloc];
-    v17 = [v15 connection];
-    v18 = [(TKSmartCardSessionEngine *)v16 initWithSlot:self connection:v17];
+    connection = [v15 connection];
+    v18 = [(TKSmartCardSessionEngine *)v16 initWithSlot:self connection:connection];
 
     objc_storeWeak(&self->_session, v18);
-    v19 = [v15 parameters];
-    v20 = [v19 objectForKeyedSubscript:@"endpolicy"];
+    parameters = [v15 parameters];
+    v20 = [parameters objectForKeyedSubscript:@"endpolicy"];
 
     if (v20)
     {
-      v21 = [v20 unsignedIntegerValue];
+      unsignedIntegerValue = [v20 unsignedIntegerValue];
     }
 
     else
     {
-      v21 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    [(TKSmartCardSessionEngine *)v18 setEndPolicy:v21];
-    v22 = [v15 parameters];
-    v23 = [(TKSmartCardSlotEngine *)self connectCardSessionWithParameters:v22];
+    [(TKSmartCardSessionEngine *)v18 setEndPolicy:unsignedIntegerValue];
+    parameters2 = [v15 parameters];
+    v23 = [(TKSmartCardSlotEngine *)self connectCardSessionWithParameters:parameters2];
 
     if (v23)
     {
       [(TKSmartCardSessionEngine *)v18 setActive:1];
-      v24 = [v15 reply];
+      reply = [v15 reply];
       v39 = @"protocol";
       v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_protocol];
       v40[0] = v25;
       v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-      (v24)[2](v24, v18, v26, 0);
+      (reply)[2](reply, v18, v26, 0);
 
       if ([(NSMutableArray *)self->_sessionRequests count])
       {
-        v27 = [(TKSmartCardSessionEngine *)v18 connection];
-        v28 = [v27 remoteObjectProxy];
+        connection2 = [(TKSmartCardSessionEngine *)v18 connection];
+        remoteObjectProxy = [connection2 remoteObjectProxy];
 
-        [v28 cardSessionRequested];
+        [remoteObjectProxy cardSessionRequested];
       }
     }
 
     else
     {
-      v29 = [v15 reply];
+      reply2 = [v15 reply];
       v30 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-2 userInfo:0];
-      (v29)[2](v29, 0, 0, v30);
+      (reply2)[2](reply2, 0, 0, v30);
 
       [(TKSmartCardSlotEngine *)self leaveSession:0];
     }
@@ -1364,26 +1364,26 @@ LABEL_21:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sessionWithParameters:(id)a3 reply:(id)a4
+- (void)sessionWithParameters:(id)parameters reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  parametersCopy = parameters;
   v13 = objc_alloc_init(TKSmartCardSessionRequest);
-  [(TKSmartCardSessionRequest *)v13 setParameters:v7];
+  [(TKSmartCardSessionRequest *)v13 setParameters:parametersCopy];
 
-  [(TKSmartCardSessionRequest *)v13 setReply:v6];
-  v8 = [MEMORY[0x1E696B0B8] currentConnection];
-  [(TKSmartCardSessionRequest *)v13 setConnection:v8];
+  [(TKSmartCardSessionRequest *)v13 setReply:replyCopy];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  [(TKSmartCardSessionRequest *)v13 setConnection:currentConnection];
 
   [(NSMutableArray *)self->_sessionRequests addObject:v13];
   WeakRetained = objc_loadWeakRetained(&self->_session);
   v10 = WeakRetained;
   if (WeakRetained)
   {
-    v11 = [WeakRetained connection];
-    v12 = [v11 remoteObjectProxy];
+    connection = [WeakRetained connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
 
-    [v12 cardSessionRequested];
+    [remoteObjectProxy cardSessionRequested];
   }
 
   else
@@ -1392,16 +1392,16 @@ LABEL_21:
   }
 }
 
-- (id)_findReservation:(id)a3 connection:(id)a4
+- (id)_findReservation:(id)reservation connection:(id)connection
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  reservationCopy = reservation;
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v8 = v7;
-    v9 = [(NSMapTable *)self->_reservations objectForKey:v7];
-    v10 = [v9 objectForKey:v6];
+    v8 = connectionCopy;
+    v9 = [(NSMapTable *)self->_reservations objectForKey:connectionCopy];
+    v10 = [v9 objectForKey:reservationCopy];
   }
 
   else
@@ -1430,7 +1430,7 @@ LABEL_5:
         v8 = *(*(&v20 + 1) + 8 * v15);
 
         v17 = [(NSMapTable *)self->_reservations objectForKey:v8, v20];
-        v10 = [v17 objectForKey:v6];
+        v10 = [v17 objectForKey:reservationCopy];
 
         if (v10)
         {
@@ -1482,46 +1482,46 @@ LABEL_12:
   return [v6 numberWithUnsignedInteger:lastId];
 }
 
-- (void)reserveProtocols:(id)a3 reservationId:(id)a4 exclusive:(BOOL)a5 reply:(id)a6
+- (void)reserveProtocols:(id)protocols reservationId:(id)id exclusive:(BOOL)exclusive reply:(id)reply
 {
-  v26 = a5;
+  exclusiveCopy = exclusive;
   v57 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v33 = a4;
-  v28 = a6;
-  v27 = [MEMORY[0x1E696B0B8] currentConnection];
-  if (v33)
+  protocolsCopy = protocols;
+  idCopy = id;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  if (idCopy)
   {
-    v30 = [(TKSmartCardSlotEngine *)self _findReservation:v33 connection:v27];
+    v30 = [(TKSmartCardSlotEngine *)self _findReservation:idCopy connection:currentConnection];
     v8 = v30;
     if (!v30)
     {
-      (*(v28 + 2))(v28, 0, 0, 3);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 3);
       v30 = 0;
       goto LABEL_38;
     }
 
-    if (!v29)
+    if (!protocolsCopy)
     {
-      v9 = [(NSMapTable *)self->_reservations objectForKey:v27];
-      [v9 removeObjectForKey:v33];
+      v9 = [(NSMapTable *)self->_reservations objectForKey:currentConnection];
+      [v9 removeObjectForKey:idCopy];
       if (![v9 count])
       {
-        [(NSMapTable *)self->_reservations removeObjectForKey:v27];
+        [(NSMapTable *)self->_reservations removeObjectForKey:currentConnection];
       }
 
-      (*(v28 + 2))(v28, 0, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0);
       goto LABEL_37;
     }
   }
 
   else
   {
-    if (!v29)
+    if (!protocolsCopy)
     {
-      (*(v28 + 2))(v28, 0, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0);
       v30 = 0;
-      v33 = 0;
+      idCopy = 0;
       goto LABEL_38;
     }
 
@@ -1564,7 +1564,7 @@ LABEL_12:
         v35[1] = 3221225472;
         v35[2] = __72__TKSmartCardSlotEngine_reserveProtocols_reservationId_exclusive_reply___block_invoke;
         v35[3] = &unk_1E86B7828;
-        v36 = v33;
+        v36 = idCopy;
         v37 = &v44;
         v38 = &v48;
         v39 = &v52;
@@ -1577,12 +1577,12 @@ LABEL_12:
     while (v10);
   }
 
-  if (!v26)
+  if (!exclusiveCopy)
   {
     if ((v49[3] & 1) == 0)
     {
       v16 = v45[3];
-      if (([v29 unsignedIntegerValue] & v16) != 0)
+      if (([protocolsCopy unsignedIntegerValue] & v16) != 0)
       {
         goto LABEL_25;
       }
@@ -1590,7 +1590,7 @@ LABEL_12:
       if ((v49[3] & 1) == 0)
       {
         v25 = v45[3];
-        if (([v29 unsignedIntegerValue] & v25) != 0)
+        if (([protocolsCopy unsignedIntegerValue] & v25) != 0)
         {
           v14 = 3;
         }
@@ -1607,7 +1607,7 @@ LABEL_12:
 LABEL_20:
     v14 = 2;
 LABEL_21:
-    (*(v28 + 2))(v28, 0, 0, v14);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v14);
     v15 = 0;
     goto LABEL_36;
   }
@@ -1620,50 +1620,50 @@ LABEL_21:
 LABEL_25:
   if (!v30)
   {
-    v20 = [MEMORY[0x1E696B0B8] currentConnection];
-    v21 = [(NSMapTable *)self->_reservations objectForKey:v20];
-    if (!v21)
+    currentConnection2 = [MEMORY[0x1E696B0B8] currentConnection];
+    dictionary = [(NSMapTable *)self->_reservations objectForKey:currentConnection2];
+    if (!dictionary)
     {
-      v21 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMapTable *)self->_reservations setObject:v21 forKey:v20];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMapTable *)self->_reservations setObject:dictionary forKey:currentConnection2];
     }
 
     v30 = objc_alloc_init(_TKSmartCardSlotReservation);
-    [(_TKSmartCardSlotReservation *)v30 setProtocols:v29];
-    [(_TKSmartCardSlotReservation *)v30 setExclusive:v26];
-    v19 = [(TKSmartCardSlotEngine *)self _getReservationId];
+    [(_TKSmartCardSlotReservation *)v30 setProtocols:protocolsCopy];
+    [(_TKSmartCardSlotReservation *)v30 setExclusive:exclusiveCopy];
+    _getReservationId = [(TKSmartCardSlotEngine *)self _getReservationId];
 
-    [v21 setObject:v30 forKey:v19];
+    [dictionary setObject:v30 forKey:_getReservationId];
     goto LABEL_34;
   }
 
-  v17 = [(_TKSmartCardSlotReservation *)v30 protocols];
-  if (![v17 isEqual:v29])
+  protocols = [(_TKSmartCardSlotReservation *)v30 protocols];
+  if (![protocols isEqual:protocolsCopy])
   {
 
     goto LABEL_33;
   }
 
-  v18 = [(_TKSmartCardSlotReservation *)v30 exclusive];
+  exclusive = [(_TKSmartCardSlotReservation *)v30 exclusive];
 
-  if ((v18 ^ v26))
+  if ((exclusive ^ exclusiveCopy))
   {
 LABEL_33:
-    [(_TKSmartCardSlotReservation *)v30 setProtocols:v29];
-    v19 = v33;
-    [(_TKSmartCardSlotReservation *)v30 setExclusive:v26];
+    [(_TKSmartCardSlotReservation *)v30 setProtocols:protocolsCopy];
+    _getReservationId = idCopy;
+    [(_TKSmartCardSlotReservation *)v30 setExclusive:exclusiveCopy];
 LABEL_34:
     v15 = 1;
     goto LABEL_35;
   }
 
   v15 = 0;
-  v19 = v33;
+  _getReservationId = idCopy;
 LABEL_35:
-  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v29, "unsignedIntegerValue") & v45[3]}];
-  (*(v28 + 2))(v28, v22, v19, 0);
+  v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(protocolsCopy, "unsignedIntegerValue") & v45[3]}];
+  (*(replyCopy + 2))(replyCopy, v22, _getReservationId, 0);
 
-  v33 = v19;
+  idCopy = _getReservationId;
 LABEL_36:
   _Block_object_dispose(&v44, 8);
   _Block_object_dispose(&v48, 8);
@@ -1699,10 +1699,10 @@ void __72__TKSmartCardSlotEngine_reserveProtocols_reservationId_exclusive_reply_
   }
 }
 
-- (void)runUserInteraction:(id)a3 reply:(id)a4
+- (void)runUserInteraction:(id)interaction reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_opt_respondsToSelector();
 
@@ -1710,7 +1710,7 @@ void __72__TKSmartCardSlotEngine_reserveProtocols_reservationId_exclusive_reply_
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
     v13 = 0;
-    v11 = [v10 engine:self runUserInteraction:v6 error:&v13];
+    v11 = [v10 engine:self runUserInteraction:interactionCopy error:&v13];
     v12 = v13;
   }
 
@@ -1720,7 +1720,7 @@ void __72__TKSmartCardSlotEngine_reserveProtocols_reservationId_exclusive_reply_
     v11 = 0;
   }
 
-  v7[2](v7, v11, v12);
+  replyCopy[2](replyCopy, v11, v12);
 }
 
 - (void)terminate
@@ -1801,7 +1801,7 @@ void __34__TKSmartCardSlotEngine_terminate__block_invoke_239(int a1, os_log_t os
 
 - (void)dealloc
 {
-  OUTLINED_FUNCTION_3_1(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3_1(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_1();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
@@ -1913,7 +1913,7 @@ void __49__TKSmartCardSlotEngine__setupWithName_delegate___block_invoke_135_cold
 
 - (void)reset
 {
-  OUTLINED_FUNCTION_3_1(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_3_1(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_2_1();
   OUTLINED_FUNCTION_4();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0x16u);

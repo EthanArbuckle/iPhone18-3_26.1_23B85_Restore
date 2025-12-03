@@ -1,18 +1,18 @@
 @interface SrvStatDuration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRat:(id)a3;
-- (int)StringAsStat:(id)a3;
+- (int)StringAsRat:(id)rat;
+- (int)StringAsStat:(id)stat;
 - (int)rat;
 - (int)stat;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRat:(BOOL)a3;
-- (void)setHasStat:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRat:(BOOL)rat;
+- (void)setHasStat:(BOOL)stat;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SrvStatDuration
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasRat:(BOOL)a3
+- (void)setHasRat:(BOOL)rat
 {
-  if (a3)
+  if (rat)
   {
     v3 = 2;
   }
@@ -45,55 +45,55 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsRat:(id)a3
+- (int)StringAsRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AWD_SS_RAT_NO_SERVICE"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"AWD_SS_RAT_NO_SERVICE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_CDMA"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_CDMA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_GSM"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_GSM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_WCDMA"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_WCDMA"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_LTE"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_LTE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_HDR"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_HDR"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_LTE_V2"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_LTE_V2"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_UMTS"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_UMTS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_EHRPD"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_EHRPD"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_RAT_MAX"])
+  else if ([ratCopy isEqualToString:@"AWD_SS_RAT_MAX"])
   {
     v4 = 9;
   }
@@ -119,9 +119,9 @@
   }
 }
 
-- (void)setHasStat:(BOOL)a3
+- (void)setHasStat:(BOOL)stat
 {
-  if (a3)
+  if (stat)
   {
     v3 = 4;
   }
@@ -134,50 +134,50 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsStat:(id)a3
+- (int)StringAsStat:(id)stat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AWD_SS_STAT_NO_SERVICE"])
+  statCopy = stat;
+  if ([statCopy isEqualToString:@"AWD_SS_STAT_NO_SERVICE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_STAT_LIMITED"])
+  else if ([statCopy isEqualToString:@"AWD_SS_STAT_LIMITED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_STAT_CAMPED"])
+  else if ([statCopy isEqualToString:@"AWD_SS_STAT_CAMPED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_STAT_LIMITED_REGIONAL"])
+  else if ([statCopy isEqualToString:@"AWD_SS_STAT_LIMITED_REGIONAL"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_STAT_PWR_SAVE"])
+  else if ([statCopy isEqualToString:@"AWD_SS_STAT_PWR_SAVE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_STAT_CS_ONLY"])
+  else if ([statCopy isEqualToString:@"AWD_SS_STAT_CS_ONLY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_STAT_PS_ONLY"])
+  else if ([statCopy isEqualToString:@"AWD_SS_STAT_PS_ONLY"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_STAT_CS_PS"])
+  else if ([statCopy isEqualToString:@"AWD_SS_STAT_CS_PS"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AWD_SS_STAT_MAX"])
+  else if ([statCopy isEqualToString:@"AWD_SS_STAT_MAX"])
   {
     v4 = 8;
   }
@@ -195,8 +195,8 @@
   v7.receiver = self;
   v7.super_class = SrvStatDuration;
   v3 = [(SrvStatDuration *)&v7 description];
-  v4 = [(SrvStatDuration *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SrvStatDuration *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -265,16 +265,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     rat = self->_rat;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -295,26 +295,26 @@ LABEL_3:
 
   stat = self->_stat;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     durationMs = self->_durationMs;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_rat;
-    *(v4 + 20) |= 2u;
+    toCopy[3] = self->_rat;
+    *(toCopy + 20) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -333,21 +333,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[4] = self->_stat;
-  *(v4 + 20) |= 4u;
+  toCopy[4] = self->_stat;
+  *(toCopy + 20) |= 4u;
   if (*&self->_has)
   {
 LABEL_4:
-    v4[2] = self->_durationMs;
-    *(v4 + 20) |= 1u;
+    toCopy[2] = self->_durationMs;
+    *(toCopy + 20) |= 1u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -384,23 +384,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_rat != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_rat != *(equalCopy + 3))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -409,21 +409,21 @@ LABEL_16:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0 || self->_stat != *(v4 + 4))
+    if ((*(equalCopy + 20) & 4) == 0 || self->_stat != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 20) & 4) != 0)
+  else if ((*(equalCopy + 20) & 4) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 20) & 1) == 0;
+  v5 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_durationMs != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_durationMs != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
@@ -476,15 +476,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if ((v5 & 2) != 0)
   {
-    self->_rat = *(v4 + 3);
+    self->_rat = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -497,17 +497,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 4) == 0)
+  else if ((*(fromCopy + 20) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_stat = *(v4 + 4);
+  self->_stat = *(fromCopy + 4);
   *&self->_has |= 4u;
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
 LABEL_4:
-    self->_durationMs = *(v4 + 2);
+    self->_durationMs = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 

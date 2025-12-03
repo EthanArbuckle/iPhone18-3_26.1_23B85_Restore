@@ -1,6 +1,6 @@
 @interface VMAssetMgmtController
-- (BOOL)isInferredLanguage:(id)a3;
-- (BOOL)updateControllerWithLocale:(id)a3 assetIdentifier:(id)a4;
+- (BOOL)isInferredLanguage:(id)language;
+- (BOOL)updateControllerWithLocale:(id)locale assetIdentifier:(id)identifier;
 - (VMAssetMgmtController)init;
 - (id)getAssetFreqMap;
 - (void)updateSystemContext;
@@ -36,10 +36,10 @@
 - (void)updateSystemContext
 {
   v3 = +[NSLocale currentLocale];
-  v4 = [v3 languageCode];
-  v5 = [v4 lowercaseString];
+  languageCode = [v3 languageCode];
+  lowercaseString = [languageCode lowercaseString];
   systemLanguage = self->_systemLanguage;
-  self->_systemLanguage = v5;
+  self->_systemLanguage = lowercaseString;
 
   v7 = objc_alloc_init(NSMutableArray);
   preferredLanguages = self->_preferredLanguages;
@@ -97,24 +97,24 @@
 
 - (void)updateVMContextLanguage
 {
-  v3 = [(VMContextLRUCache *)self->_vmContextLRUCache getLatestNode];
-  v4 = v3;
-  if (v3 && ([v3 language], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v6))
+  getLatestNode = [(VMContextLRUCache *)self->_vmContextLRUCache getLatestNode];
+  v4 = getLatestNode;
+  if (getLatestNode && ([getLatestNode language], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "length"), v5, v6))
   {
-    v7 = [v4 language];
-    v8 = [NSLocale localeWithLocaleIdentifier:v7];
+    language = [v4 language];
+    v8 = [NSLocale localeWithLocaleIdentifier:language];
 
     if (v8)
     {
-      v9 = [v8 languageCode];
-      v10 = [v9 lowercaseString];
+      languageCode = [v8 languageCode];
+      lowercaseString = [languageCode lowercaseString];
       vmContextLanguage = self->_vmContextLanguage;
-      self->_vmContextLanguage = v10;
+      self->_vmContextLanguage = lowercaseString;
     }
 
     else
     {
-      v9 = self->_vmContextLanguage;
+      languageCode = self->_vmContextLanguage;
       self->_vmContextLanguage = &stru_1000F0098;
     }
   }
@@ -135,17 +135,17 @@
   }
 }
 
-- (BOOL)isInferredLanguage:(id)a3
+- (BOOL)isInferredLanguage:(id)language
 {
-  v4 = a3;
-  v5 = [v4 languageCode];
-  v6 = [v5 lowercaseString];
+  languageCopy = language;
+  languageCode = [languageCopy languageCode];
+  lowercaseString = [languageCode lowercaseString];
 
-  if (v6)
+  if (lowercaseString)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [(VMAssetMgmtController *)self systemLanguage];
-    v9 = [v8 isEqual:v6];
+    systemLanguage = [(VMAssetMgmtController *)self systemLanguage];
+    v9 = [systemLanguage isEqual:lowercaseString];
 
     if (v9)
     {
@@ -153,7 +153,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 138412290;
-        v23 = v6;
+        v23 = lowercaseString;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "isInferredLanguage: %@ is system language", &v22, 0xCu);
       }
 
@@ -162,17 +162,17 @@
 
     else
     {
-      v13 = [(VMAssetMgmtController *)self preferredLanguages];
-      v10 = [NSMutableSet setWithArray:v13];
+      preferredLanguages = [(VMAssetMgmtController *)self preferredLanguages];
+      v10 = [NSMutableSet setWithArray:preferredLanguages];
 
-      if ([v10 containsObject:v6])
+      if ([v10 containsObject:lowercaseString])
       {
-        v14 = sub_100002740();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+        getMegadomeLanguages = sub_100002740();
+        if (os_log_type_enabled(getMegadomeLanguages, OS_LOG_TYPE_DEFAULT))
         {
           v22 = 138412290;
-          v23 = v6;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "isInferredLanguage: %@ is preferred language", &v22, 0xCu);
+          v23 = lowercaseString;
+          _os_log_impl(&_mh_execute_header, getMegadomeLanguages, OS_LOG_TYPE_DEFAULT, "isInferredLanguage: %@ is preferred language", &v22, 0xCu);
         }
 
         LOBYTE(v11) = 1;
@@ -180,11 +180,11 @@
 
       else
       {
-        v15 = [(VMAssetMgmtController *)self megadomeClient];
-        v14 = [v15 getMegadomeLanguages];
+        megadomeClient = [(VMAssetMgmtController *)self megadomeClient];
+        getMegadomeLanguages = [megadomeClient getMegadomeLanguages];
 
-        v16 = [NSMutableSet setWithArray:v14];
-        v11 = [v16 containsObject:v6];
+        v16 = [NSMutableSet setWithArray:getMegadomeLanguages];
+        v11 = [v16 containsObject:lowercaseString];
         v17 = sub_100002740();
         v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
         if (v11)
@@ -192,23 +192,23 @@
           if (v18)
           {
             v22 = 138412290;
-            v23 = v6;
+            v23 = lowercaseString;
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "isInferredLanguage: %@ found in megadome context", &v22, 0xCu);
           }
         }
 
         else if (v18)
         {
-          v19 = [(VMAssetMgmtController *)self systemLanguage];
-          v20 = [(VMAssetMgmtController *)self preferredLanguages];
+          systemLanguage2 = [(VMAssetMgmtController *)self systemLanguage];
+          preferredLanguages2 = [(VMAssetMgmtController *)self preferredLanguages];
           v22 = 138413058;
-          v23 = v6;
+          v23 = lowercaseString;
           v24 = 2112;
-          v25 = v19;
+          v25 = systemLanguage2;
           v26 = 2112;
-          v27 = v20;
+          v27 = preferredLanguages2;
           v28 = 2112;
-          v29 = v14;
+          v29 = getMegadomeLanguages;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "updateSystemContext: %@ not found, systemLang: %@, preferredLangs: %@, megadomeLangs: %@", &v22, 0x2Au);
         }
       }
@@ -232,22 +232,22 @@
   return v11;
 }
 
-- (BOOL)updateControllerWithLocale:(id)a3 assetIdentifier:(id)a4
+- (BOOL)updateControllerWithLocale:(id)locale assetIdentifier:(id)identifier
 {
   vmContextLRUCache = self->_vmContextLRUCache;
-  v6 = a4;
-  v7 = [a3 languageIdentifier];
-  LOBYTE(vmContextLRUCache) = [(VMContextLRUCache *)vmContextLRUCache updateLanguageCount:v7 assetIdentifier:v6];
+  identifierCopy = identifier;
+  languageIdentifier = [locale languageIdentifier];
+  LOBYTE(vmContextLRUCache) = [(VMContextLRUCache *)vmContextLRUCache updateLanguageCount:languageIdentifier assetIdentifier:identifierCopy];
 
   return vmContextLRUCache;
 }
 
 - (id)getAssetFreqMap
 {
-  v2 = [(VMContextLRUCache *)self->_vmContextLRUCache freqMap];
-  v3 = [v2 modelMap];
+  freqMap = [(VMContextLRUCache *)self->_vmContextLRUCache freqMap];
+  modelMap = [freqMap modelMap];
 
-  return v3;
+  return modelMap;
 }
 
 @end

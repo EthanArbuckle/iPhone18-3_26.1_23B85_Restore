@@ -1,49 +1,49 @@
 @interface ODDSiriSchemaODDAdaptiveVolumeProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDAdaptiveVolumeProperties)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDAdaptiveVolumeProperties)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDAdaptiveVolumeProperties)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDAdaptiveVolumeProperties)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAdaptiveVolume:(BOOL)a3;
-- (void)setHasIsPermanentOffsetEnabled:(BOOL)a3;
-- (void)setHasPermanentOffsetFactor:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAdaptiveVolume:(BOOL)volume;
+- (void)setHasIsPermanentOffsetEnabled:(BOOL)enabled;
+- (void)setHasPermanentOffsetFactor:(BOOL)factor;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDAdaptiveVolumeProperties
 
-- (ODDSiriSchemaODDAdaptiveVolumeProperties)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDAdaptiveVolumeProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODDSiriSchemaODDAdaptiveVolumeProperties;
   v5 = [(ODDSiriSchemaODDAdaptiveVolumeProperties *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isAdaptiveVolumeEnabled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isAdaptiveVolumeEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAdaptiveVolumeProperties setIsAdaptiveVolumeEnabled:](v5, "setIsAdaptiveVolumeEnabled:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"adaptiveVolume"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"adaptiveVolume"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAdaptiveVolumeProperties setAdaptiveVolume:](v5, "setAdaptiveVolume:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isPermanentOffsetEnabled"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isPermanentOffsetEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDAdaptiveVolumeProperties setIsPermanentOffsetEnabled:](v5, "setIsPermanentOffsetEnabled:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"permanentOffsetFactor"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"permanentOffsetFactor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDAdaptiveVolumeProperties)initWithJSON:(id)a3
+- (ODDSiriSchemaODDAdaptiveVolumeProperties)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDAdaptiveVolumeProperties *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDAdaptiveVolumeProperties *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDAdaptiveVolumeProperties *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,7 +93,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -108,14 +108,14 @@
       v6 = off_1E78DC910[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"adaptiveVolume"];
+    [dictionary setObject:v6 forKeyedSubscript:@"adaptiveVolume"];
     has = self->_has;
   }
 
   if (has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAdaptiveVolumeProperties isAdaptiveVolumeEnabled](self, "isAdaptiveVolumeEnabled")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isAdaptiveVolumeEnabled"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isAdaptiveVolumeEnabled"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -136,7 +136,7 @@ LABEL_8:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDAdaptiveVolumeProperties isPermanentOffsetEnabled](self, "isPermanentOffsetEnabled")}];
-  [v3 setObject:v11 forKeyedSubscript:@"isPermanentOffsetEnabled"];
+  [dictionary setObject:v11 forKeyedSubscript:@"isPermanentOffsetEnabled"];
 
   if ((*&self->_has & 8) != 0)
   {
@@ -144,13 +144,13 @@ LABEL_9:
     v7 = MEMORY[0x1E696AD98];
     [(ODDSiriSchemaODDAdaptiveVolumeProperties *)self permanentOffsetFactor];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"permanentOffsetFactor"];
+    [dictionary setObject:v8 forKeyedSubscript:@"permanentOffsetFactor"];
   }
 
 LABEL_10:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -236,16 +236,16 @@ LABEL_5:
   return v5 ^ v4 ^ v6 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_17;
@@ -254,13 +254,13 @@ LABEL_5:
   if (*&has)
   {
     isAdaptiveVolumeEnabled = self->_isAdaptiveVolumeEnabled;
-    if (isAdaptiveVolumeEnabled != [v4 isAdaptiveVolumeEnabled])
+    if (isAdaptiveVolumeEnabled != [equalCopy isAdaptiveVolumeEnabled])
     {
       goto LABEL_17;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -269,13 +269,13 @@ LABEL_5:
     if (v8)
     {
       adaptiveVolume = self->_adaptiveVolume;
-      if (adaptiveVolume != [v4 adaptiveVolume])
+      if (adaptiveVolume != [equalCopy adaptiveVolume])
       {
         goto LABEL_17;
       }
 
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -284,19 +284,19 @@ LABEL_5:
       if (v10)
       {
         isPermanentOffsetEnabled = self->_isPermanentOffsetEnabled;
-        if (isPermanentOffsetEnabled != [v4 isPermanentOffsetEnabled])
+        if (isPermanentOffsetEnabled != [equalCopy isPermanentOffsetEnabled])
         {
           goto LABEL_17;
         }
 
         has = self->_has;
-        v6 = v4[24];
+        v6 = equalCopy[24];
       }
 
       v12 = (*&has >> 3) & 1;
       if (v12 == ((v6 >> 3) & 1))
       {
-        if (!v12 || (permanentOffsetFactor = self->_permanentOffsetFactor, [v4 permanentOffsetFactor], permanentOffsetFactor == v14))
+        if (!v12 || (permanentOffsetFactor = self->_permanentOffsetFactor, [equalCopy permanentOffsetFactor], permanentOffsetFactor == v14))
         {
           v15 = 1;
           goto LABEL_18;
@@ -312,9 +312,9 @@ LABEL_18:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -361,9 +361,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasPermanentOffsetFactor:(BOOL)a3
+- (void)setHasPermanentOffsetFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 8;
   }
@@ -376,9 +376,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsPermanentOffsetEnabled:(BOOL)a3
+- (void)setHasIsPermanentOffsetEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 4;
   }
@@ -391,9 +391,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAdaptiveVolume:(BOOL)a3
+- (void)setHasAdaptiveVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 2;
   }

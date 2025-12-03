@@ -1,33 +1,33 @@
 @interface IFTSchemaIFTIndexExpression
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTIndexExpression)initWithDictionary:(id)a3;
-- (IFTSchemaIFTIndexExpression)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTIndexExpression)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTIndexExpression)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTIndexExpression
 
-- (IFTSchemaIFTIndexExpression)initWithDictionary:(id)a3
+- (IFTSchemaIFTIndexExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTIndexExpression;
   v5 = [(IFTSchemaIFTIndexExpression *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IFTSchemaIFTIndexExpression setExists:](v5, "setExists:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"previousStatementId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"previousStatementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(IFTSchemaIFTIndexExpression *)v5 setPreviousStatementId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"statementId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"statementId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTIndexExpression)initWithJSON:(id)a3
+- (IFTSchemaIFTIndexExpression)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTIndexExpression *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTIndexExpression *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTIndexExpression *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTIndexExpression exists](self, "exists")}];
-    [v3 setObject:v4 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v4 forKeyedSubscript:@"exists"];
   }
 
   if (self->_previousStatementId)
   {
-    v5 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    previousStatementId = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
+    dictionaryRepresentation = [previousStatementId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"previousStatementId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"previousStatementId"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"previousStatementId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"previousStatementId"];
     }
   }
 
   if (self->_statementId)
   {
-    v8 = [(IFTSchemaIFTIndexExpression *)self statementId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    statementId = [(IFTSchemaIFTIndexExpression *)self statementId];
+    dictionaryRepresentation2 = [statementId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"statementId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"statementId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"statementId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"statementId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -145,15 +145,15 @@
   return v4 ^ [(IFTSchemaIFTStatementId *)self->_statementId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -161,26 +161,26 @@
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
-  v7 = [v4 previousStatementId];
-  if ((v6 != 0) == (v7 == 0))
+  previousStatementId = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
+  previousStatementId2 = [equalCopy previousStatementId];
+  if ((previousStatementId != 0) == (previousStatementId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
-  if (v8)
+  previousStatementId3 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
+  if (previousStatementId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
-    v11 = [v4 previousStatementId];
-    v12 = [v10 isEqual:v11];
+    v9 = previousStatementId3;
+    previousStatementId4 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
+    previousStatementId5 = [equalCopy previousStatementId];
+    v12 = [previousStatementId4 isEqual:previousStatementId5];
 
     if (!v12)
     {
@@ -192,12 +192,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTIndexExpression *)self statementId];
-  v7 = [v4 statementId];
-  if ((v6 != 0) != (v7 == 0))
+  previousStatementId = [(IFTSchemaIFTIndexExpression *)self statementId];
+  previousStatementId2 = [equalCopy statementId];
+  if ((previousStatementId != 0) != (previousStatementId2 == 0))
   {
-    v13 = [(IFTSchemaIFTIndexExpression *)self statementId];
-    if (!v13)
+    statementId = [(IFTSchemaIFTIndexExpression *)self statementId];
+    if (!statementId)
     {
 
 LABEL_18:
@@ -205,10 +205,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(IFTSchemaIFTIndexExpression *)self statementId];
-    v16 = [v4 statementId];
-    v17 = [v15 isEqual:v16];
+    v14 = statementId;
+    statementId2 = [(IFTSchemaIFTIndexExpression *)self statementId];
+    statementId3 = [equalCopy statementId];
+    v17 = [statementId2 isEqual:statementId3];
 
     if (v17)
     {
@@ -228,54 +228,54 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v4 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
+  previousStatementId = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
 
-  if (v4)
+  if (previousStatementId)
   {
-    v5 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
+    previousStatementId2 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTIndexExpression *)self statementId];
+  statementId = [(IFTSchemaIFTIndexExpression *)self statementId];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (statementId)
   {
-    v8 = [(IFTSchemaIFTIndexExpression *)self statementId];
+    statementId2 = [(IFTSchemaIFTIndexExpression *)self statementId];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = IFTSchemaIFTIndexExpression;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  previousStatementId = [(IFTSchemaIFTIndexExpression *)self previousStatementId];
+  v7 = [previousStatementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTIndexExpression *)self deletePreviousStatementId];
   }
 
-  v9 = [(IFTSchemaIFTIndexExpression *)self statementId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  statementId = [(IFTSchemaIFTIndexExpression *)self statementId];
+  v10 = [statementId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTIndexExpression *)self deleteStatementId];
   }

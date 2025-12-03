@@ -1,24 +1,24 @@
 @interface OPackCoder
-- (id)pack:(id)a3 status:(int *)a4;
-- (id)unpack:(id)a3 status:(int *)a4;
+- (id)pack:(id)pack status:(int *)status;
+- (id)unpack:(id)unpack status:(int *)status;
 @end
 
 @implementation OPackCoder
 
-- (id)unpack:(id)a3 status:(int *)a4
+- (id)unpack:(id)unpack status:(int *)status
 {
-  v4 = a3;
-  [v4 bytes];
-  [v4 length];
+  unpackCopy = unpack;
+  [unpackCopy bytes];
+  [unpackCopy length];
 
   v5 = OPACKDecodeBytes();
 
   return v5;
 }
 
-- (id)pack:(id)a3 status:(int *)a4
+- (id)pack:(id)pack status:(int *)status
 {
-  v4 = MEMORY[0x216055DF0](a3, 0, a4);
+  v4 = MEMORY[0x216055DF0](pack, 0, status);
 
   return v4;
 }

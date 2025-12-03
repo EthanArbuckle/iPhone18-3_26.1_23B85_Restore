@@ -1,12 +1,12 @@
 @interface CMBikeSensorData
 + (BOOL)isAvailable;
-- (CMBikeSensorData)initWithCoder:(id)a3;
-- (CMBikeSensorData)initWithTimestamp:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMBikeSensorData)initWithCoder:(id)coder;
+- (CMBikeSensorData)initWithTimestamp:(id)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)newFitnessMachineDataFromBikeSensorData;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMBikeSensorData
@@ -21,9 +21,9 @@
   return 0;
 }
 
-- (CMBikeSensorData)initWithTimestamp:(id)a3
+- (CMBikeSensorData)initWithTimestamp:(id)timestamp
 {
-  if (!a3)
+  if (!timestamp)
   {
     v11 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v11, v12, a2, self, @"CMBikeSensorData.mm", 45, @"Invalid parameter not satisfying: %@", @"timestamp");
@@ -34,7 +34,7 @@
   v7 = [(CMBikeSensorData *)&v13 init];
   if (v7)
   {
-    objc_msgSend_timeIntervalSinceReferenceDate(a3, v5, v6);
+    objc_msgSend_timeIntervalSinceReferenceDate(timestamp, v5, v6);
     v7->fTimestamp = v8;
     *&v7->_instantaneousCadence = vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL);
     v7->_instantaneousSpeed = 1.79769313e308;
@@ -53,33 +53,33 @@
   [(CMBikeSensorData *)&v2 dealloc];
 }
 
-- (CMBikeSensorData)initWithCoder:(id)a3
+- (CMBikeSensorData)initWithCoder:(id)coder
 {
   v17.receiver = self;
   v17.super_class = CMBikeSensorData;
   v5 = [(CMBikeSensorData *)&v17 init];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"kCMBikeSensorDataKeyTimestamp");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"kCMBikeSensorDataKeyTimestamp");
     v5->fTimestamp = v6;
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"kCMBikeSensorDataKeyInstantaneousSpeed");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"kCMBikeSensorDataKeyInstantaneousSpeed");
     v5->_instantaneousSpeed = v8;
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"kCMBikeSensorDataKeyInstantaneousCadence");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"kCMBikeSensorDataKeyInstantaneousCadence");
     v5->_instantaneousCadence = v10;
-    objc_msgSend_decodeDoubleForKey_(a3, v11, @"kCMBikeSensorDataKeyInstantaneousPower");
+    objc_msgSend_decodeDoubleForKey_(coder, v11, @"kCMBikeSensorDataKeyInstantaneousPower");
     v5->_instantaneousPower = v12;
-    v5->_model = objc_msgSend_decodeObjectForKey_(a3, v13, @"kCMBikeSensorDataKeyModel");
-    v5->_deviceIdentifier = objc_msgSend_decodeObjectForKey_(a3, v14, @"kCMBikeSensorDataKeyDeviceIdentifier");
-    v5->_manufacturer = objc_msgSend_decodeObjectForKey_(a3, v15, @"kCMBikeSensorDataKeyManufacturer");
+    v5->_model = objc_msgSend_decodeObjectForKey_(coder, v13, @"kCMBikeSensorDataKeyModel");
+    v5->_deviceIdentifier = objc_msgSend_decodeObjectForKey_(coder, v14, @"kCMBikeSensorDataKeyDeviceIdentifier");
+    v5->_manufacturer = objc_msgSend_decodeObjectForKey_(coder, v15, @"kCMBikeSensorDataKeyManufacturer");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x1E695DF00], v8, v9, self->fTimestamp);
   v12 = objc_msgSend_initWithTimestamp_(v7, v11, v10);
   objc_msgSend_setInstantaneousSpeed_(v12, v13, v14, self->_instantaneousSpeed);
@@ -91,17 +91,17 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeDouble_forKey_(a3, a2, @"kCMBikeSensorDataKeyTimestamp", self->fTimestamp);
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kCMBikeSensorDataKeyInstantaneousSpeed", self->_instantaneousSpeed);
-  objc_msgSend_encodeDouble_forKey_(a3, v6, @"kCMBikeSensorDataKeyInstantaneousCadence", self->_instantaneousCadence);
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"kCMBikeSensorDataKeyInstantaneousPower", self->_instantaneousPower);
-  objc_msgSend_encodeObject_forKey_(a3, v8, self->_model, @"kCMBikeSensorDataKeyModel");
-  objc_msgSend_encodeObject_forKey_(a3, v9, self->_deviceIdentifier, @"kCMBikeSensorDataKeyDeviceIdentifier");
+  objc_msgSend_encodeDouble_forKey_(coder, a2, @"kCMBikeSensorDataKeyTimestamp", self->fTimestamp);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kCMBikeSensorDataKeyInstantaneousSpeed", self->_instantaneousSpeed);
+  objc_msgSend_encodeDouble_forKey_(coder, v6, @"kCMBikeSensorDataKeyInstantaneousCadence", self->_instantaneousCadence);
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"kCMBikeSensorDataKeyInstantaneousPower", self->_instantaneousPower);
+  objc_msgSend_encodeObject_forKey_(coder, v8, self->_model, @"kCMBikeSensorDataKeyModel");
+  objc_msgSend_encodeObject_forKey_(coder, v9, self->_deviceIdentifier, @"kCMBikeSensorDataKeyDeviceIdentifier");
   manufacturer = self->_manufacturer;
 
-  objc_msgSend_encodeObject_forKey_(a3, v10, manufacturer, @"kCMBikeSensorDataKeyManufacturer");
+  objc_msgSend_encodeObject_forKey_(coder, v10, manufacturer, @"kCMBikeSensorDataKeyManufacturer");
 }
 
 - (id)description

@@ -1,37 +1,37 @@
 @interface WiFiAwareDataSessionIssueReport
-- (BOOL)isEqual:(id)a3;
-- (BOOL)rtpSequenceNumberEquals:(id)a3;
-- (BOOL)rtpStartTimeEquals:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)rtpSequenceNumberEquals:(id)equals;
+- (BOOL)rtpStartTimeEquals:(id)equals;
 - (WiFiAwareDataSessionIssueReport)init;
-- (WiFiAwareDataSessionIssueReport)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WiFiAwareDataSessionIssueReport)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwareDataSessionIssueReport
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
-  [v4 encodeObject:v5 forKey:@"WiFiAwareDataSessionIssueReport.rtpSequenceNumber"];
+  coderCopy = coder;
+  rtpSequenceNumber = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
+  [coderCopy encodeObject:rtpSequenceNumber forKey:@"WiFiAwareDataSessionIssueReport.rtpSequenceNumber"];
 
-  v6 = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
-  [v4 encodeObject:v6 forKey:@"WiFiAwareDataSessionIssueReport.rtpStartTime"];
+  rtpStartTime = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
+  [coderCopy encodeObject:rtpStartTime forKey:@"WiFiAwareDataSessionIssueReport.rtpStartTime"];
 }
 
-- (WiFiAwareDataSessionIssueReport)initWithCoder:(id)a3
+- (WiFiAwareDataSessionIssueReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WiFiAwareDataSessionIssueReport *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionIssueReport.rtpSequenceNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionIssueReport.rtpSequenceNumber"];
     rtpSequenceNumber = v5->_rtpSequenceNumber;
     v5->_rtpSequenceNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionIssueReport.rtpStartTime"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwareDataSessionIssueReport.rtpStartTime"];
     rtpStartTime = v5->_rtpStartTime;
     v5->_rtpStartTime = v8;
   }
@@ -57,50 +57,50 @@
   return v3;
 }
 
-- (BOOL)rtpSequenceNumberEquals:(id)a3
+- (BOOL)rtpSequenceNumberEquals:(id)equals
 {
-  v4 = a3;
-  v5 = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
-  v6 = [v4 rtpSequenceNumber];
-  if (v5 == v6)
+  equalsCopy = equals;
+  rtpSequenceNumber = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
+  rtpSequenceNumber2 = [equalsCopy rtpSequenceNumber];
+  if (rtpSequenceNumber == rtpSequenceNumber2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
-    v8 = [v4 rtpSequenceNumber];
-    v9 = [v7 isEqual:v8];
+    rtpSequenceNumber3 = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
+    rtpSequenceNumber4 = [equalsCopy rtpSequenceNumber];
+    v9 = [rtpSequenceNumber3 isEqual:rtpSequenceNumber4];
   }
 
   return v9;
 }
 
-- (BOOL)rtpStartTimeEquals:(id)a3
+- (BOOL)rtpStartTimeEquals:(id)equals
 {
-  v4 = a3;
-  v5 = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
-  v6 = [v4 rtpStartTime];
-  if (v5 == v6)
+  equalsCopy = equals;
+  rtpStartTime = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
+  rtpStartTime2 = [equalsCopy rtpStartTime];
+  if (rtpStartTime == rtpStartTime2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
-    v8 = [v4 rtpStartTime];
-    v9 = [v7 isEqual:v8];
+    rtpStartTime3 = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
+    rtpStartTime4 = [equalsCopy rtpStartTime];
+    v9 = [rtpStartTime3 isEqual:rtpStartTime4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_7:
@@ -116,7 +116,7 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if ([(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumberEquals:v5]&& [(WiFiAwareDataSessionIssueReport *)self rtpStartTimeEquals:v5])
   {
     goto LABEL_7;
@@ -131,21 +131,21 @@ LABEL_9:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
-  v5 = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
-  v6 = [v3 stringWithFormat:@"<WiFiAwareDataSessionIssueReport: rtpSequenceNumber:%@, rtpStartTime:%@>", v4, v5];
+  rtpSequenceNumber = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
+  rtpStartTime = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
+  v6 = [v3 stringWithFormat:@"<WiFiAwareDataSessionIssueReport: rtpSequenceNumber:%@, rtpStartTime:%@>", rtpSequenceNumber, rtpStartTime];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(WiFiAwareDataSessionIssueReport);
-  v5 = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
-  [(WiFiAwareDataSessionIssueReport *)v4 setRtpSequenceNumber:v5];
+  rtpSequenceNumber = [(WiFiAwareDataSessionIssueReport *)self rtpSequenceNumber];
+  [(WiFiAwareDataSessionIssueReport *)v4 setRtpSequenceNumber:rtpSequenceNumber];
 
-  v6 = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
-  [(WiFiAwareDataSessionIssueReport *)v4 setRtpStartTime:v6];
+  rtpStartTime = [(WiFiAwareDataSessionIssueReport *)self rtpStartTime];
+  [(WiFiAwareDataSessionIssueReport *)v4 setRtpStartTime:rtpStartTime];
 
   return v4;
 }

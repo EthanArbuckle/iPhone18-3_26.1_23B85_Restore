@@ -1,22 +1,22 @@
 @interface DICreateASIFParams
-- (DICreateASIFParams)initWithURL:(id)a3 numBlocks:(unint64_t)a4 error:(id *)a5;
+- (DICreateASIFParams)initWithURL:(id)l numBlocks:(unint64_t)blocks error:(id *)error;
 - (void)createDiskImageParamsXPC;
 @end
 
 @implementation DICreateASIFParams
 
-- (DICreateASIFParams)initWithURL:(id)a3 numBlocks:(unint64_t)a4 error:(id *)a5
+- (DICreateASIFParams)initWithURL:(id)l numBlocks:(unint64_t)blocks error:(id *)error
 {
   v6.receiver = self;
   v6.super_class = DICreateASIFParams;
-  return [(DICreateParams *)&v6 initWithURL:a3 numBlocks:a4 error:a5];
+  return [(DICreateParams *)&v6 initWithURL:l numBlocks:blocks error:error];
 }
 
 - (void)createDiskImageParamsXPC
 {
   v3 = [FileLocalXPC alloc];
-  v4 = [(DIBaseParams *)self inputURL];
-  v5 = [(FileLocalXPC *)v3 initWithURL:v4 fileOpenFlags:514];
+  inputURL = [(DIBaseParams *)self inputURL];
+  v5 = [(FileLocalXPC *)v3 initWithURL:inputURL fileOpenFlags:514];
 
   v8 = 0;
   v6 = [[DiskImageParamsASIF_XPC alloc] initWithBackendXPC:v5 header:&v8];

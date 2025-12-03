@@ -6,7 +6,7 @@
 - (uint64_t)receivedAllFrames;
 - (uint64_t)useFrameForMultiFrameProcessing:(uint64_t)result;
 - (void)dealloc;
-- (void)initWithInput:(void *)a3 output:(void *)a4 deepFusionOutput:(char)a5 processErrorRecoveryFrame:(char)a6 processOriginalImage:(char)a7 processSemanticRendering:(char)a8 provideInferenceInputImageForProcessing:(char)a9 inferencesAvailable:(void *)a10 delegate:;
+- (void)initWithInput:(void *)input output:(void *)output deepFusionOutput:(char)fusionOutput processErrorRecoveryFrame:(char)frame processOriginalImage:(char)image processSemanticRendering:(char)rendering provideInferenceInputImageForProcessing:(char)processing inferencesAvailable:(void *)self0 delegate:;
 @end
 
 @implementation BWUBProcessorRequest
@@ -52,27 +52,27 @@
   return [v3 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@, %@, errorRecovery=%d, original=%d semanticRendering=%d inferenceInput=%d inferences=%d", v4, self, -[BWStillImageCaptureSettings settingsID](-[BWStillImageProcessorControllerInput captureSettings](self->_input, "captureSettings"), "settingsID"), BWPhotoEncoderStringFromEncodingScheme(-[BWStillImageCaptureStreamSettings captureType](-[BWStillImageProcessorControllerInput captureStreamSettings](self->_input, "captureStreamSettings"), "captureType")), -[BWStillImageCaptureStreamSettings portType](-[BWStillImageProcessorControllerInput captureStreamSettings](self->_input, "captureStreamSettings"), "portType"), self->_processErrorRecoveryFrame, self->_processOriginalImage, self->_processSemanticRendering, self->_provideInferenceInputImageForProcessing, self->_inferencesAvailable];
 }
 
-- (void)initWithInput:(void *)a3 output:(void *)a4 deepFusionOutput:(char)a5 processErrorRecoveryFrame:(char)a6 processOriginalImage:(char)a7 processSemanticRendering:(char)a8 provideInferenceInputImageForProcessing:(char)a9 inferencesAvailable:(void *)a10 delegate:
+- (void)initWithInput:(void *)input output:(void *)output deepFusionOutput:(char)fusionOutput processErrorRecoveryFrame:(char)frame processOriginalImage:(char)image processSemanticRendering:(char)rendering provideInferenceInputImageForProcessing:(char)processing inferencesAvailable:(void *)self0 delegate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = BWUBProcessorRequest;
   v17 = objc_msgSendSuper2(&v19, sel_init);
   if (v17)
   {
     v17[1] = a2;
-    v17[2] = a3;
-    v17[3] = a4;
-    *(v17 + 32) = a5;
-    *(v17 + 33) = a6;
-    *(v17 + 34) = a7;
-    *(v17 + 35) = a8;
-    *(v17 + 36) = a9;
-    v17[5] = a10;
+    v17[2] = input;
+    v17[3] = output;
+    *(v17 + 32) = fusionOutput;
+    *(v17 + 33) = frame;
+    *(v17 + 34) = image;
+    *(v17 + 35) = rendering;
+    *(v17 + 36) = processing;
+    v17[5] = available;
     *(v17 + 60) = 0x8000007F7FFFFFLL;
   }
 
@@ -159,9 +159,9 @@
     v1 = result;
     if ([(BWUBNRFProcessorRequest *)result processingType])
     {
-      v2 = [*(v1 + 8) captureStreamSettings];
+      captureStreamSettings = [*(v1 + 8) captureStreamSettings];
 
-      return [v2 expectedFrameCount];
+      return [captureStreamSettings expectedFrameCount];
     }
 
     else
@@ -180,16 +180,16 @@
     v2 = result;
     if (*(result + 32) == 1)
     {
-      v3 = [*(result + 8) errorRecoveryFrame];
-      return v3 != 0;
+      errorRecoveryFrame = [*(result + 8) errorRecoveryFrame];
+      return errorRecoveryFrame != 0;
     }
 
     v4 = *(result + 33);
     v5 = *(result + 8);
     if (v4 == 1)
     {
-      v3 = [v5 originalImage];
-      return v3 != 0;
+      errorRecoveryFrame = [v5 originalImage];
+      return errorRecoveryFrame != 0;
     }
 
     v6 = [objc_msgSend(v5 "captureStreamSettings")];

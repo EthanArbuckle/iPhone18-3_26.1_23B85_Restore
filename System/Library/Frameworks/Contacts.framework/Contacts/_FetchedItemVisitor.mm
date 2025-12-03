@@ -1,8 +1,8 @@
 @interface _FetchedItemVisitor
 - (NSArray)visitedItems;
 - (_FetchedItemVisitor)init;
-- (void)visitImage:(id)a3;
-- (void)visitPoster:(id)a3;
+- (void)visitImage:(id)image;
+- (void)visitPoster:(id)poster;
 @end
 
 @implementation _FetchedItemVisitor
@@ -31,18 +31,18 @@
   return v2;
 }
 
-- (void)visitImage:(id)a3
+- (void)visitImage:(id)image
 {
-  v4 = a3;
-  v5 = [[CNContactImage alloc] initWithManagedObject:v4];
+  imageCopy = image;
+  v5 = [[CNContactImage alloc] initWithManagedObject:imageCopy];
 
   [(NSMutableArray *)self->_items _cn_addNonNilObject:v5];
 }
 
-- (void)visitPoster:(id)a3
+- (void)visitPoster:(id)poster
 {
-  v4 = a3;
-  v5 = [[CNContactPoster alloc] initWithManagedObject:v4];
+  posterCopy = poster;
+  v5 = [[CNContactPoster alloc] initWithManagedObject:posterCopy];
 
   [(NSMutableArray *)self->_items _cn_addNonNilObject:v5];
 }

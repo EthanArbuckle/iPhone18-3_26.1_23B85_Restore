@@ -1,42 +1,42 @@
 @interface BNPanGestureLocalProxy
-- (BNPanGestureLocalProxy)initWithPanGestureRecognizer:(id)a3 containerView:(id)a4;
+- (BNPanGestureLocalProxy)initWithPanGestureRecognizer:(id)recognizer containerView:(id)view;
 - (BNPanGestureProxyDelegate)delegate;
-- (CGPoint)locationInCoordinateSpace:(id)a3;
-- (CGPoint)translationInCoordinateSpace:(id)a3;
-- (CGPoint)velocityInCoordinateSpace:(id)a3;
-- (CGPoint)visualTranslationInCoordinateSpace:(id)a3;
-- (void)_handlePan:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
+- (CGPoint)translationInCoordinateSpace:(id)space;
+- (CGPoint)velocityInCoordinateSpace:(id)space;
+- (CGPoint)visualTranslationInCoordinateSpace:(id)space;
+- (void)_handlePan:(id)pan;
 - (void)sendAction;
 @end
 
 @implementation BNPanGestureLocalProxy
 
-- (BNPanGestureLocalProxy)initWithPanGestureRecognizer:(id)a3 containerView:(id)a4
+- (BNPanGestureLocalProxy)initWithPanGestureRecognizer:(id)recognizer containerView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = BNPanGestureLocalProxy;
   v8 = [(BNPanGestureLocalProxy *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v10 = objc_storeWeak(&v8->_panGesture, v6);
-    [v6 addTarget:v9 action:sel__handlePan_];
+    v10 = objc_storeWeak(&v8->_panGesture, recognizerCopy);
+    [recognizerCopy addTarget:v9 action:sel__handlePan_];
 
-    objc_storeWeak(&v9->_containerView, v7);
+    objc_storeWeak(&v9->_containerView, viewCopy);
   }
 
   return v9;
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained gestureRecognizerProxy:self locationForTouch:0 inCoordinateSpace:v4];
+    [WeakRetained gestureRecognizerProxy:self locationForTouch:0 inCoordinateSpace:spaceCopy];
     v7 = v6;
     v9 = v8;
   }
@@ -44,9 +44,9 @@
   else
   {
     v10 = objc_loadWeakRetained(&self->_panGesture);
-    v11 = [v10 view];
-    [v10 locationInView:v11];
-    [v11 convertPoint:v4 toCoordinateSpace:?];
+    view = [v10 view];
+    [v10 locationInView:view];
+    [view convertPoint:spaceCopy toCoordinateSpace:?];
     v7 = v12;
     v9 = v13;
   }
@@ -58,13 +58,13 @@
   return result;
 }
 
-- (CGPoint)translationInCoordinateSpace:(id)a3
+- (CGPoint)translationInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained gestureRecognizerProxy:self translationInCoordinateSpace:v4];
+    [WeakRetained gestureRecognizerProxy:self translationInCoordinateSpace:spaceCopy];
     v7 = v6;
     v9 = v8;
   }
@@ -72,9 +72,9 @@
   else
   {
     v10 = objc_loadWeakRetained(&self->_panGesture);
-    v11 = [v10 view];
-    [v10 translationInView:v11];
-    [v11 convertPoint:v4 toCoordinateSpace:?];
+    view = [v10 view];
+    [v10 translationInView:view];
+    [view convertPoint:spaceCopy toCoordinateSpace:?];
     v7 = v12;
     v9 = v13;
   }
@@ -86,18 +86,18 @@
   return result;
 }
 
-- (CGPoint)visualTranslationInCoordinateSpace:(id)a3
+- (CGPoint)visualTranslationInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained gestureRecognizerProxy:self visualTranslationInCoordinateSpace:v4];
+    [WeakRetained gestureRecognizerProxy:self visualTranslationInCoordinateSpace:spaceCopy];
   }
 
   else
   {
-    [(BNPanGestureLocalProxy *)self translationInCoordinateSpace:v4];
+    [(BNPanGestureLocalProxy *)self translationInCoordinateSpace:spaceCopy];
   }
 
   v8 = v6;
@@ -110,13 +110,13 @@
   return result;
 }
 
-- (CGPoint)velocityInCoordinateSpace:(id)a3
+- (CGPoint)velocityInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained gestureRecognizerProxy:self velocityInCoordinateSpace:v4];
+    [WeakRetained gestureRecognizerProxy:self velocityInCoordinateSpace:spaceCopy];
     v7 = v6;
     v9 = v8;
   }
@@ -124,10 +124,10 @@
   else
   {
     v10 = objc_loadWeakRetained(&self->_panGesture);
-    v11 = [v10 view];
+    view = [v10 view];
     v12 = objc_loadWeakRetained(&self->_panGesture);
-    [v12 velocityInView:v11];
-    [v11 convertPoint:v4 toCoordinateSpace:?];
+    [v12 velocityInView:view];
+    [view convertPoint:spaceCopy toCoordinateSpace:?];
     v7 = v13;
     v9 = v14;
   }
@@ -145,11 +145,11 @@
   [(BNPanGestureLocalProxy *)self _handlePan:WeakRetained];
 }
 
-- (void)_handlePan:(id)a3
+- (void)_handlePan:(id)pan
 {
-  v4 = [a3 state];
-  self->_state = v4;
-  if (v4 == 2)
+  state = [pan state];
+  self->_state = state;
+  if (state == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containerView);
     [(BNPanGestureLocalProxy *)self visualTranslationInCoordinateSpace:WeakRetained];

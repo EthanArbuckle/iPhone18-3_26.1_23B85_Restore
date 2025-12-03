@@ -38,7 +38,7 @@
   v15 = v18;
   v16 = &v21;
   v17 = v20;
-  [a1 enumerateAttribute:v9 inRange:a4 options:a5 usingBlock:{0, v13}];
+  [self enumerateAttribute:v9 inRange:a4 options:a5 usingBlock:{0, v13}];
   v11 = v22[5];
 
   _Block_object_dispose(v18, 8);
@@ -53,7 +53,7 @@
   v25 = a4;
   v38 = *MEMORY[0x1E69E9840];
   v5 = a3;
-  v27 = [a1 length];
+  v27 = [self length];
   if (v27)
   {
     v6 = 0;
@@ -64,19 +64,19 @@
     {
       v35 = 0;
       v36 = 0;
-      v9 = [a1 attribute:v26 atIndex:v8 effectiveRange:{&v35, v25}];
-      v10 = [v9 textBlocks];
-      if ([v10 count])
+      v9 = [self attribute:v26 atIndex:v8 effectiveRange:{&v35, v25}];
+      textBlocks = [v9 textBlocks];
+      if ([textBlocks count])
       {
-        v29 = v10;
+        v29 = textBlocks;
         v30 = v9;
-        v11 = [v10 objectAtIndex:0];
-        v12 = [v11 table];
+        v11 = [textBlocks objectAtIndex:0];
+        table = [v11 table];
 
-        v28 = v12;
-        v13 = [a1 rangeOfTextTable:v12 atIndex:v35];
+        v28 = table;
+        v13 = [self rangeOfTextTable:table atIndex:v35];
         v15 = v14;
-        v16 = [a1 ic_textTablesInRange:{v13, v14}];
+        v16 = [self ic_textTablesInRange:{v13, v14}];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
@@ -98,7 +98,7 @@
               v21 = *(*(&v31 + 1) + 8 * i);
               if (!v5 || v21 == v5)
               {
-                v22 = [a1 ic_tableSizeForTextTable:v21 inRange:{v13, v15}];
+                v22 = [self ic_tableSizeForTextTable:v21 inRange:{v13, v15}];
                 if (v6 <= v22)
                 {
                   v6 = v22;
@@ -116,7 +116,7 @@
 
         v8 = v13 + v15;
 
-        v10 = v29;
+        textBlocks = v29;
         v9 = v30;
       }
 
@@ -151,20 +151,20 @@
 
 - (id)ic_nextTableStringFromIndex:()ICTableAdditions tableRange:
 {
-  v6 = [a1 length];
+  v6 = [self length];
   v7 = *MEMORY[0x1E69DB688];
   while (a3 < v6)
   {
-    v8 = [a1 attribute:v7 atIndex:? effectiveRange:?];
-    v9 = [v8 textBlocks];
-    if ([v9 count])
+    v8 = [self attribute:v7 atIndex:? effectiveRange:?];
+    textBlocks = [v8 textBlocks];
+    if ([textBlocks count])
     {
-      v10 = [v9 objectAtIndex:0];
-      v11 = [v10 table];
+      v10 = [textBlocks objectAtIndex:0];
+      table = [v10 table];
 
-      v12 = [a1 rangeOfTextTable:v11 atIndex:a3];
+      v12 = [self rangeOfTextTable:table atIndex:a3];
       v14 = v13;
-      v15 = [a1 attributedSubstringFromRange:{v12, v13}];
+      v15 = [self attributedSubstringFromRange:{v12, v13}];
       v16 = v15;
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -224,7 +224,7 @@ LABEL_18:
   v3 = a3;
   v14 = a3;
   v15 = 0;
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 <= v3)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -234,9 +234,9 @@ LABEL_18:
   v7 = *MEMORY[0x1E69DB688];
   while (1)
   {
-    v8 = [a1 attribute:v7 atIndex:v3 effectiveRange:&v14];
-    v9 = [v8 textBlocks];
-    if ([v9 count])
+    v8 = [self attribute:v7 atIndex:v3 effectiveRange:&v14];
+    textBlocks = [v8 textBlocks];
+    if ([textBlocks count])
     {
       break;
     }
@@ -248,21 +248,21 @@ LABEL_18:
     }
   }
 
-  v11 = [v9 objectAtIndex:0];
-  v12 = [v11 table];
+  v11 = [textBlocks objectAtIndex:0];
+  table = [v11 table];
 
-  v10 = [a1 rangeOfTextTable:v12 atIndex:v14];
+  v10 = [self rangeOfTextTable:table atIndex:v14];
   return v10;
 }
 
 - (uint64_t)ic_numberOfTables
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [a1 length];
+  v2 = [self length];
   if (!v2)
   {
     return 0;
@@ -275,7 +275,7 @@ LABEL_18:
   {
     v8 = 0;
     v9 = 0;
-    v6 = [a1 ic_nextTableStringFromIndex:v5 tableRange:&v8];
+    v6 = [self ic_nextTableStringFromIndex:v5 tableRange:&v8];
     if (v6)
     {
       ++v4;
@@ -295,7 +295,7 @@ LABEL_18:
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__78;
   v17 = __Block_byref_object_dispose__78;
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
@@ -309,7 +309,7 @@ LABEL_18:
   v10[3] = &unk_1E846E4D8;
   v10[4] = v11;
   v10[5] = &v13;
-  [a1 enumerateAttribute:v7 inRange:a3 options:a4 usingBlock:{0, v10}];
+  [self enumerateAttribute:v7 inRange:a3 options:a4 usingBlock:{0, v10}];
   v8 = v14[5];
   _Block_object_dispose(v11, 8);
 

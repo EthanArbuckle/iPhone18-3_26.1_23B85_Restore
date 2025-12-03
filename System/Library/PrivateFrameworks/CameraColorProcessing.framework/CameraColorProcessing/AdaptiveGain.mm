@@ -1,7 +1,7 @@
 @interface AdaptiveGain
-- (AdaptiveGain)initWithMetalContext:(id)a3;
+- (AdaptiveGain)initWithMetalContext:(id)context;
 - (int)allocInternalData;
-- (int)computeGain:(float *)a3 withTargetRange:(float)a4;
+- (int)computeGain:(float *)gain withTargetRange:(float)range;
 - (int)configure;
 - (int)createShaders;
 - (uint64_t)createShaders;
@@ -25,10 +25,10 @@
   return v6;
 }
 
-- (AdaptiveGain)initWithMetalContext:(id)a3
+- (AdaptiveGain)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     FigDebugAssert3();
     v14 = 0;
@@ -42,7 +42,7 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  objc_storeStrong(&self->_metalContext, a3);
+  objc_storeStrong(&self->_metalContext, context);
   v12.receiver = self;
   v12.super_class = AdaptiveGain;
   v6 = [(AdaptiveGain *)&v12 init];
@@ -53,17 +53,17 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v8 = [(AdaptiveGain *)v6 createShaders];
-  if (v8)
+  createShaders = [(AdaptiveGain *)v6 createShaders];
+  if (createShaders)
   {
-    [(AdaptiveGain *)v8 initWithMetalContext:v7];
+    [(AdaptiveGain *)createShaders initWithMetalContext:v7];
     goto LABEL_10;
   }
 
-  v9 = [(AdaptiveGain *)v7 configure];
-  if (v9)
+  configure = [(AdaptiveGain *)v7 configure];
+  if (configure)
   {
-    [(AdaptiveGain *)v9 initWithMetalContext:v7];
+    [(AdaptiveGain *)configure initWithMetalContext:v7];
     goto LABEL_10;
   }
 
@@ -82,8 +82,8 @@ LABEL_5:
 
 - (int)allocInternalData
 {
-  v3 = [(FigMetalContext *)self->_metalContext device];
-  v4 = [v3 newBufferWithLength:4096 options:0];
+  device = [(FigMetalContext *)self->_metalContext device];
+  v4 = [device newBufferWithLength:4096 options:0];
   globalHistBuffer = self->_globalHistBuffer;
   self->_globalHistBuffer = v4;
 
@@ -96,31 +96,31 @@ LABEL_5:
   return -1;
 }
 
-- (int)computeGain:(float *)a3 withTargetRange:(float)a4
+- (int)computeGain:(float *)gain withTargetRange:(float)range
 {
   v4 = MEMORY[0x1EEE9AC00](self);
   v6 = v5;
   v8 = v7;
   v9 = v4;
-  v10 = [v4 allocInternalData];
-  if (v10)
+  allocInternalData = [v4 allocInternalData];
+  if (allocInternalData)
   {
-    v33 = v10;
+    v33 = allocInternalData;
     [AdaptiveGain computeGain:withTargetRange:];
     return v33;
   }
 
-  v11 = [v9[1] commandQueue];
-  v12 = [v11 commandBuffer];
+  commandQueue = [v9[1] commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v12)
+  if (!commandBuffer)
   {
     [AdaptiveGain computeGain:withTargetRange:];
     return -1;
   }
 
-  v13 = [v12 blitCommandEncoder];
-  if (!v13)
+  blitCommandEncoder = [commandBuffer blitCommandEncoder];
+  if (!blitCommandEncoder)
   {
     FigDebugAssert3();
     v44 = 0;
@@ -133,11 +133,11 @@ LABEL_28:
     return -1;
   }
 
-  v14 = v13;
-  -[NSObject fillBuffer:range:value:](v13, "fillBuffer:range:value:", v9[6], 0, [v9[6] length], 0);
+  v14 = blitCommandEncoder;
+  -[NSObject fillBuffer:range:value:](blitCommandEncoder, "fillBuffer:range:value:", v9[6], 0, [v9[6] length], 0);
   [v14 endEncoding];
-  v15 = [v12 computeCommandEncoder];
-  if (!v15)
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     FigDebugAssert3();
     v44 = 0;
@@ -149,25 +149,25 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v16 = v15;
-  [v15 setComputePipelineState:v9[2]];
+  v16 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:v9[2]];
   [v16 setTexture:v9[3] atIndex:0];
   [v16 setBuffer:v9[6] offset:0 atIndex:1];
   [v16 setBytes:v9 + 7 length:32 atIndex:2];
-  v17 = [v9[2] threadExecutionWidth];
-  v18 = [v9[2] maxTotalThreadsPerThreadgroup] / v17;
-  v19 = [v9[3] width];
-  v20 = [v9[3] height];
-  v42[0] = v19;
-  v42[1] = v20;
+  threadExecutionWidth = [v9[2] threadExecutionWidth];
+  v18 = [v9[2] maxTotalThreadsPerThreadgroup] / threadExecutionWidth;
+  width = [v9[3] width];
+  height = [v9[3] height];
+  v42[0] = width;
+  v42[1] = height;
   v42[2] = 1;
-  v41[0] = v17;
+  v41[0] = threadExecutionWidth;
   v41[1] = v18;
   v41[2] = 1;
   [v16 dispatchThreads:v42 threadsPerThreadgroup:v41];
   [v16 endEncoding];
-  [v12 commit];
-  [v12 waitUntilCompleted];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
   for (i = 0; i != 4096; i += 4)
   {
     *&v40[i] = *([v9[6] contents] + i);
@@ -240,7 +240,7 @@ LABEL_22:
 {
   FigDebugAssert3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 

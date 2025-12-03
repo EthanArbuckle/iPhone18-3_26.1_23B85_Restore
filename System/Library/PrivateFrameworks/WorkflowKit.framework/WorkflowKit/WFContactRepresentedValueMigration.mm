@@ -1,23 +1,23 @@
 @interface WFContactRepresentedValueMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFContactRepresentedValueMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"309") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"309") == 3)
   {
-    if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.phonenumber", v5))
+    if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.phonenumber", migrationCopy))
     {
       HasActionsWithIdentifier = 1;
     }
 
     else
     {
-      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.email", v5);
+      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.email", migrationCopy);
     }
   }
 
@@ -31,13 +31,13 @@
 
 - (void)migrateWorkflow
 {
-  v3 = [(WFWorkflowMigration *)self actions];
+  actions = [(WFWorkflowMigration *)self actions];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __53__WFContactRepresentedValueMigration_migrateWorkflow__block_invoke;
   v4[3] = &unk_1E837F7F8;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [actions enumerateObjectsUsingBlock:v4];
 
   [(WFWorkflowMigration *)self finish];
 }

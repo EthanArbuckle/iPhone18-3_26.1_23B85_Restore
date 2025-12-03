@@ -18,8 +18,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = a1;
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  selfCopy = self;
+  v9 = [selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -31,24 +31,24 @@
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(selfCopy);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 storageIdentifier];
-        v16 = [v6 containsObject:v15];
+        storageIdentifier = [v14 storageIdentifier];
+        v16 = [v6 containsObject:storageIdentifier];
 
         if (v16)
         {
           v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
-          v18 = [v14 storageIdentifier];
-          [v7 setObject:v17 forKeyedSubscript:v18];
+          storageIdentifier2 = [v14 storageIdentifier];
+          [v7 setObject:v17 forKeyedSubscript:storageIdentifier2];
         }
 
         ++v11;
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
@@ -67,8 +67,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -82,12 +82,12 @@ LABEL_3:
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(selfCopy);
       }
 
-      v12 = [*(*(&v17 + 1) + 8 * v10) storageIdentifier];
-      v13 = [v4 storageIdentifier];
-      v14 = [v12 isEqual:v13];
+      storageIdentifier = [*(*(&v17 + 1) + 8 * v10) storageIdentifier];
+      storageIdentifier2 = [v4 storageIdentifier];
+      v14 = [storageIdentifier isEqual:storageIdentifier2];
 
       if (v14)
       {
@@ -97,7 +97,7 @@ LABEL_3:
       ++v11;
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -127,7 +127,7 @@ LABEL_9:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = a1;
+  obj = self;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {

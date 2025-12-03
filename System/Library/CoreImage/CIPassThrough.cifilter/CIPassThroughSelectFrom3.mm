@@ -10,18 +10,18 @@
   {
     if ([(NSNumber *)self->inputSelected intValue]< 0)
     {
-      v3 = 0;
+      intValue = 0;
     }
 
     else
     {
-      v3 = [(NSNumber *)self->inputSelected intValue];
+      intValue = [(NSNumber *)self->inputSelected intValue];
     }
   }
 
   else
   {
-    v3 = 2;
+    intValue = 2;
   }
 
   inputImage = self->inputImage;
@@ -104,7 +104,7 @@
     v42[0] = v6;
     v42[1] = v9;
     v42[2] = v12;
-    v39 = [NSNumber numberWithInt:v3];
+    v39 = [NSNumber numberWithInt:intValue];
     v42[3] = v39;
     v40 = [NSArray arrayWithObjects:v42 count:4];
     v37 = [v38 applyWithExtent:v40 arguments:{v33, v34, v35, v36}];

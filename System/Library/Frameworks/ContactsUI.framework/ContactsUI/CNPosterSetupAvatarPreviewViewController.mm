@@ -1,37 +1,37 @@
 @interface CNPosterSetupAvatarPreviewViewController
 + (CGSize)defaultItemSize;
-+ (unint64_t)defaultImageTypeForWallpaperType:(id)a3;
++ (unint64_t)defaultImageTypeForWallpaperType:(id)type;
 - (CGRect)cropRect;
-- (CNPosterSetupAvatarPreviewViewController)initWithContactImage:(id)a3 imageType:(unint64_t)a4 forEditingContact:(id)a5;
-- (CNPosterSetupAvatarPreviewViewController)initWithPosterConfiguration:(id)a3 forEditingContact:(id)a4;
+- (CNPosterSetupAvatarPreviewViewController)initWithContactImage:(id)image imageType:(unint64_t)type forEditingContact:(id)contact;
+- (CNPosterSetupAvatarPreviewViewController)initWithPosterConfiguration:(id)configuration forEditingContact:(id)contact;
 - (CNPosterSetupAvatarPreviewViewControllerDelegate)delegate;
-- (id)animojiProviderItem:(id)a3 backgroundColor:(id)a4;
-- (id)animojiProviderItemForAvatarImageData:(id)a3 backgroundColor:(id)a4;
-- (id)closestColor:(id)a3 inColors:(id)a4;
-- (id)editorViewControllerForProviderItem:(id)a3;
-- (id)memojiEditingManagerForAvatarRecord:(id)a3 poseConfiguration:(id)a4;
-- (id)monogramProviderItemForInitials:(id)a3 backgroundColor:(id)a4;
-- (id)photoProviderItemForFullImageFromPosterConfiguration:(id)a3;
+- (id)animojiProviderItem:(id)item backgroundColor:(id)color;
+- (id)animojiProviderItemForAvatarImageData:(id)data backgroundColor:(id)color;
+- (id)closestColor:(id)color inColors:(id)colors;
+- (id)editorViewControllerForProviderItem:(id)item;
+- (id)memojiEditingManagerForAvatarRecord:(id)record poseConfiguration:(id)configuration;
+- (id)monogramProviderItemForInitials:(id)initials backgroundColor:(id)color;
+- (id)photoProviderItemForFullImageFromPosterConfiguration:(id)configuration;
 - (id)providerItemForRandomColoredMonogram;
-- (id)providerItemWithSnapshotImage:(id)a3;
-- (void)avatarEditingManager:(id)a3 didFinishWithProviderItem:(id)a4;
-- (void)avatarPreviewViewDidFinishWithImageData:(id)a3 cropRect:(CGRect)a4;
+- (id)providerItemWithSnapshotImage:(id)image;
+- (void)avatarEditingManager:(id)manager didFinishWithProviderItem:(id)item;
+- (void)avatarPreviewViewDidFinishWithImageData:(id)data cropRect:(CGRect)rect;
 - (void)avatarPreviewViewDidSelectChangeScale;
 - (void)avatarPreviewViewDidSelectCustomizePhoto;
 - (void)didTapCancel;
-- (void)imagePickerController:(id)a3 didFinishWithProviderItem:(id)a4;
-- (void)photoPickerProviderItemFromPosterConfiguration:(id)a3 completionBlock:(id)a4;
-- (void)photoProviderItemForSnapshotFromPosterConfiguration:(id)a3 completionBlock:(id)a4;
-- (void)photoProviderItemFromPosterConfiguration:(id)a3 completionBlock:(id)a4;
-- (void)presentPhotoFilterEditorForProviderItem:(id)a3;
-- (void)setCropRect:(CGRect)a3;
-- (void)setImageData:(id)a3;
-- (void)setImageType:(unint64_t)a3;
+- (void)imagePickerController:(id)controller didFinishWithProviderItem:(id)item;
+- (void)photoPickerProviderItemFromPosterConfiguration:(id)configuration completionBlock:(id)block;
+- (void)photoProviderItemForSnapshotFromPosterConfiguration:(id)configuration completionBlock:(id)block;
+- (void)photoProviderItemFromPosterConfiguration:(id)configuration completionBlock:(id)block;
+- (void)presentPhotoFilterEditorForProviderItem:(id)item;
+- (void)setCropRect:(CGRect)rect;
+- (void)setImageData:(id)data;
+- (void)setImageType:(unint64_t)type;
 - (void)skipStep;
-- (void)updateMemojiEditingManagerForProviderItem:(id)a3;
-- (void)updateWithProviderItem:(id)a3;
+- (void)updateMemojiEditingManagerForProviderItem:(id)item;
+- (void)updateWithProviderItem:(id)item;
 - (void)viewDidLoad;
-- (void)visualIdentityEditorController:(id)a3 didFinishWithProviderItem:(id)a4;
+- (void)visualIdentityEditorController:(id)controller didFinishWithProviderItem:(id)item;
 @end
 
 @implementation CNPosterSetupAvatarPreviewViewController
@@ -56,48 +56,48 @@
   return result;
 }
 
-- (void)avatarEditingManager:(id)a3 didFinishWithProviderItem:(id)a4
+- (void)avatarEditingManager:(id)manager didFinishWithProviderItem:(id)item
 {
-  v5 = a4;
-  [(CNPosterSetupAvatarPreviewViewController *)self updateWithProviderItem:v5];
-  v6 = [(CNPosterSetupAvatarPreviewViewController *)self memojiImagePickerController];
+  itemCopy = item;
+  [(CNPosterSetupAvatarPreviewViewController *)self updateWithProviderItem:itemCopy];
+  memojiImagePickerController = [(CNPosterSetupAvatarPreviewViewController *)self memojiImagePickerController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __91__CNPosterSetupAvatarPreviewViewController_avatarEditingManager_didFinishWithProviderItem___block_invoke;
   v8[3] = &unk_1E74E77C0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 dismissViewControllerAnimated:1 completion:v8];
+  v9 = itemCopy;
+  v7 = itemCopy;
+  [memojiImagePickerController dismissViewControllerAnimated:1 completion:v8];
 }
 
-- (void)visualIdentityEditorController:(id)a3 didFinishWithProviderItem:(id)a4
+- (void)visualIdentityEditorController:(id)controller didFinishWithProviderItem:(id)item
 {
-  v6 = a3;
-  [(CNPosterSetupAvatarPreviewViewController *)self updateWithProviderItem:a4];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  controllerCopy = controller;
+  [(CNPosterSetupAvatarPreviewViewController *)self updateWithProviderItem:item];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)imagePickerController:(id)a3 didFinishWithProviderItem:(id)a4
+- (void)imagePickerController:(id)controller didFinishWithProviderItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  [(CNPosterSetupAvatarPreviewViewController *)self updateWithProviderItem:v6];
+  itemCopy = item;
+  controllerCopy = controller;
+  [(CNPosterSetupAvatarPreviewViewController *)self updateWithProviderItem:itemCopy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __92__CNPosterSetupAvatarPreviewViewController_imagePickerController_didFinishWithProviderItem___block_invoke;
   v9[3] = &unk_1E74E77C0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 dismissViewControllerAnimated:1 completion:v9];
+  v10 = itemCopy;
+  v8 = itemCopy;
+  [controllerCopy dismissViewControllerAnimated:1 completion:v9];
 }
 
-- (id)editorViewControllerForProviderItem:(id)a3
+- (id)editorViewControllerForProviderItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(CNPhotoPickerVariantsManager);
-  v6 = [[CNVisualIdentityItemEditorViewController alloc] initWithProviderItem:v4 variantsManager:v5];
+  v6 = [[CNVisualIdentityItemEditorViewController alloc] initWithProviderItem:itemCopy variantsManager:v5];
 
   v7 = CNContactsUIBundle();
   v8 = [v7 localizedStringForKey:@"DONE" value:&stru_1F0CE7398 table:@"Localized"];
@@ -108,77 +108,77 @@
   return v6;
 }
 
-- (void)presentPhotoFilterEditorForProviderItem:(id)a3
+- (void)presentPhotoFilterEditorForProviderItem:(id)item
 {
-  v5 = [(CNPosterSetupAvatarPreviewViewController *)self editorViewControllerForProviderItem:a3];
+  v5 = [(CNPosterSetupAvatarPreviewViewController *)self editorViewControllerForProviderItem:item];
   v4 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
   [(CNPosterSetupAvatarPreviewViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
 - (void)avatarPreviewViewDidSelectCustomizePhoto
 {
-  v3 = [(CNPosterSetupAvatarPreviewViewController *)self delegate];
-  [v3 avatarPreviewViewControllerDidSelectCustomizePhoto:self];
+  delegate = [(CNPosterSetupAvatarPreviewViewController *)self delegate];
+  [delegate avatarPreviewViewControllerDidSelectCustomizePhoto:self];
 }
 
 - (void)avatarPreviewViewDidSelectChangeScale
 {
   v20 = objc_alloc_init(CNVisualIdentityImagePickerController);
-  v3 = [(CNPosterSetupAvatarPreviewViewController *)self contactImage];
-  v4 = [v3 source];
+  contactImage = [(CNPosterSetupAvatarPreviewViewController *)self contactImage];
+  source = [contactImage source];
 
-  if (v4 == 3)
+  if (source == 3)
   {
-    v5 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
-    v6 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
-    v7 = [v6 originalItem];
-    v8 = [v5 imagePickerForItem:v7];
+    memojiEditingManager = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
+    memojiEditingManager2 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
+    originalItem = [memojiEditingManager2 originalItem];
+    imageData = [memojiEditingManager imagePickerForItem:originalItem];
 
-    [(CNVisualIdentityImagePickerController *)v20 presentImagePicker:v8 withStyle:6 fromViewController:self];
-    [(CNPosterSetupAvatarPreviewViewController *)self setMemojiImagePickerController:v8];
+    [(CNVisualIdentityImagePickerController *)v20 presentImagePicker:imageData withStyle:6 fromViewController:self];
+    [(CNPosterSetupAvatarPreviewViewController *)self setMemojiImagePickerController:imageData];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
-    v10 = [(CNPosterSetupAvatarPreviewViewController *)self editingContact];
-    -[CNVisualIdentityImagePickerController setIsMeContact:](v20, "setIsMeContact:", [v9 isMeContact:v10]);
+    unifiedMeContactMonitor = [MEMORY[0x1E6996BA8] unifiedMeContactMonitor];
+    editingContact = [(CNPosterSetupAvatarPreviewViewController *)self editingContact];
+    -[CNVisualIdentityImagePickerController setIsMeContact:](v20, "setIsMeContact:", [unifiedMeContactMonitor isMeContact:editingContact]);
 
-    v8 = [(CNPosterSetupAvatarPreviewViewController *)self imageData];
+    imageData = [(CNPosterSetupAvatarPreviewViewController *)self imageData];
     [(CNPosterSetupAvatarPreviewViewController *)self cropRect];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(CNPosterSetupAvatarPreviewViewController *)self imagePickerCustomBackgroundColor];
-    [(CNVisualIdentityImagePickerController *)v20 presentMoveAndScaleForImageData:v8 withCropRect:self fromViewController:v19 backgroundColor:v12, v14, v16, v18];
+    imagePickerCustomBackgroundColor = [(CNPosterSetupAvatarPreviewViewController *)self imagePickerCustomBackgroundColor];
+    [(CNVisualIdentityImagePickerController *)v20 presentMoveAndScaleForImageData:imageData withCropRect:self fromViewController:imagePickerCustomBackgroundColor backgroundColor:v12, v14, v16, v18];
   }
 
   [(CNVisualIdentityImagePickerController *)v20 setDelegate:self];
   [(CNPosterSetupAvatarPreviewViewController *)self setImagePicker:v20];
 }
 
-- (void)avatarPreviewViewDidFinishWithImageData:(id)a3 cropRect:(CGRect)a4
+- (void)avatarPreviewViewDidFinishWithImageData:(id)data cropRect:(CGRect)rect
 {
-  v6 = [(CNPosterSetupAvatarPreviewViewController *)self delegate:a3];
-  v5 = [(CNPosterSetupAvatarPreviewViewController *)self contactImage];
-  [v6 avatarPreviewViewController:self didFinishWithContactImage:v5];
+  v6 = [(CNPosterSetupAvatarPreviewViewController *)self delegate:data];
+  contactImage = [(CNPosterSetupAvatarPreviewViewController *)self contactImage];
+  [v6 avatarPreviewViewController:self didFinishWithContactImage:contactImage];
 }
 
-- (id)closestColor:(id)a3 inColors:(id)a4
+- (id)closestColor:(id)color inColors:(id)colors
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  colorCopy = color;
+  colorsCopy = colors;
   v27 = 0;
   v28 = 0.0;
   v26 = 0;
-  [v5 getHue:&v28 saturation:&v27 brightness:&v26 alpha:0];
+  [colorCopy getHue:&v28 saturation:&v27 brightness:&v26 alpha:0];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v6;
+  v7 = colorsCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v29 count:16];
   if (v8)
   {
@@ -199,8 +199,8 @@
         v20 = 0;
         v21 = 0.0;
         v19 = 0;
-        v15 = [v14 color];
-        [v15 getHue:&v21 saturation:&v20 brightness:&v19 alpha:0];
+        color = [v14 color];
+        [color getHue:&v21 saturation:&v20 brightness:&v19 alpha:0];
 
         v16 = vabdd_f64(v28, v21);
         if (v16 < v12)
@@ -226,28 +226,28 @@
   return v10;
 }
 
-- (id)monogramProviderItemForInitials:(id)a3 backgroundColor:(id)a4
+- (id)monogramProviderItemForInitials:(id)initials backgroundColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  initialsCopy = initials;
   v8 = objc_alloc_init(CNVisualIdentity);
-  [(CNVisualIdentity *)v8 setAbbreviatedName:v7];
+  [(CNVisualIdentity *)v8 setAbbreviatedName:initialsCopy];
 
-  v9 = [MEMORY[0x1E69BDC50] availableColors];
-  v10 = [v9 _cn_map:&__block_literal_global_36585];
+  availableColors = [MEMORY[0x1E69BDC50] availableColors];
+  v10 = [availableColors _cn_map:&__block_literal_global_36585];
 
-  v11 = [(CNPosterSetupAvatarPreviewViewController *)self closestColor:v6 inColors:v10];
+  v11 = [(CNPosterSetupAvatarPreviewViewController *)self closestColor:colorCopy inColors:v10];
 
   v12 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1;
   [objc_opt_class() defaultItemSize];
   v14 = v13;
   v16 = v15;
-  v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v17 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v19 = v18;
   v20 = objc_alloc(MEMORY[0x1E69BDC50]);
-  v21 = [v11 colorName];
-  v22 = [v20 initWithColorName:v21];
+  colorName = [v11 colorName];
+  v22 = [v20 initWithColorName:colorName];
   v23 = [CNPhotoPickerMonogramProvider providerItemForVisualIdentity:v8 size:v12 scale:v22 RTL:v14 backgroundColor:v16, v19];
 
   return v23;
@@ -268,8 +268,8 @@ CNPhotoPickerColorVariant *__92__CNPosterSetupAvatarPreviewViewController_monogr
 - (id)providerItemForRandomColoredMonogram
 {
   v3 = [CNVisualIdentity alloc];
-  v4 = [(CNPosterSetupAvatarPreviewViewController *)self editingContact];
-  v5 = [(CNVisualIdentity *)v3 initWithContact:v4];
+  editingContact = [(CNPosterSetupAvatarPreviewViewController *)self editingContact];
+  v5 = [(CNVisualIdentity *)v3 initWithContact:editingContact];
 
   v6 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1;
   [objc_opt_class() defaultItemSize];
@@ -278,19 +278,19 @@ CNPhotoPickerColorVariant *__92__CNPosterSetupAvatarPreviewViewController_monogr
   return v7;
 }
 
-- (id)animojiProviderItemForAvatarImageData:(id)a3 backgroundColor:(id)a4
+- (id)animojiProviderItemForAvatarImageData:(id)data backgroundColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  colorCopy = color;
   v8 = objc_alloc_init(CNPhotoPickerVariantsManager);
-  v9 = [(CNPhotoPickerVariantsManager *)v8 avatarBackgrounds];
-  v10 = [(CNPosterSetupAvatarPreviewViewController *)self closestColor:v7 inColors:v9];
+  avatarBackgrounds = [(CNPhotoPickerVariantsManager *)v8 avatarBackgrounds];
+  v10 = [(CNPosterSetupAvatarPreviewViewController *)self closestColor:colorCopy inColors:avatarBackgrounds];
 
-  v11 = [v10 color];
-  v12 = [CNPhotoPickerVariantsManager nonAlphaColorForBackgroundColor:v11];
+  color = [v10 color];
+  v12 = [CNPhotoPickerVariantsManager nonAlphaColorForBackgroundColor:color];
   [(CNPosterSetupAvatarPreviewViewController *)self setImagePickerCustomBackgroundColor:v12];
 
-  v13 = [MEMORY[0x1E69DCAB8] imageWithData:v6];
+  v13 = [MEMORY[0x1E69DCAB8] imageWithData:dataCopy];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -304,14 +304,14 @@ CNPhotoPickerColorVariant *__92__CNPosterSetupAvatarPreviewViewController_monogr
   v14 = *(MEMORY[0x1E695F058] + 16);
   v25 = *MEMORY[0x1E695F058];
   v26 = v14;
-  v15 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
+  memojiEditingManager = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __98__CNPosterSetupAvatarPreviewViewController_animojiProviderItemForAvatarImageData_backgroundColor___block_invoke;
   v20[3] = &unk_1E74E46C0;
   v20[4] = &v27;
   v20[5] = &v21;
-  [v15 prepareAvatarImageForPicker:v13 synchronousCompletion:v20];
+  [memojiEditingManager prepareAvatarImageForPicker:v13 synchronousCompletion:v20];
 
   v16 = [CNPhotoPickerAnimojiProviderItem alloc];
   v17 = UIImagePNGRepresentation(v28[5]);
@@ -334,13 +334,13 @@ void __98__CNPosterSetupAvatarPreviewViewController_animojiProviderItemForAvatar
   v13[7] = a6;
 }
 
-- (id)animojiProviderItem:(id)a3 backgroundColor:(id)a4
+- (id)animojiProviderItem:(id)item backgroundColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
+  colorCopy = color;
+  itemCopy = item;
   objc_opt_class();
-  v8 = [v7 imageData];
-  v9 = [(CNPosterSetupAvatarPreviewViewController *)self animojiProviderItemForAvatarImageData:v8 backgroundColor:v6];
+  imageData = [itemCopy imageData];
+  v9 = [(CNPosterSetupAvatarPreviewViewController *)self animojiProviderItemForAvatarImageData:imageData backgroundColor:colorCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -354,23 +354,23 @@ void __98__CNPosterSetupAvatarPreviewViewController_animojiProviderItemForAvatar
 
   v11 = v10;
 
-  v12 = [v7 poseConfiguration];
-  [v11 setPoseConfiguration:v12];
+  poseConfiguration = [itemCopy poseConfiguration];
+  [v11 setPoseConfiguration:poseConfiguration];
 
-  v13 = [v7 avatarRecord];
+  avatarRecord = [itemCopy avatarRecord];
 
-  [v11 setAvatarRecord:v13];
+  [v11 setAvatarRecord:avatarRecord];
 
   return v11;
 }
 
-- (id)providerItemWithSnapshotImage:(id)a3
+- (id)providerItemWithSnapshotImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 cnui_CGImageSnapshot];
+  imageCopy = image;
+  cnui_CGImageSnapshot = [imageCopy cnui_CGImageSnapshot];
   v5 = objc_opt_new();
   v6 = CGImageDestinationCreateWithData(v5, @"public.png", 1uLL, 0);
-  CGImageDestinationAddImage(v6, v4, 0);
+  CGImageDestinationAddImage(v6, cnui_CGImageSnapshot, 0);
   CGImageDestinationFinalize(v6);
   if (v6)
   {
@@ -378,15 +378,15 @@ void __98__CNPosterSetupAvatarPreviewViewController_animojiProviderItemForAvatar
   }
 
   v7 = MEMORY[0x1E6996738];
-  [v3 size];
+  [imageCopy size];
   v9 = v8;
-  [v3 size];
+  [imageCopy size];
   [v7 centeredSquareCropRectInRect:{0.0, 0.0, v9, v10}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v17 = objc_opt_class();
-  [v3 size];
+  [imageCopy size];
   v19 = v18;
 
   [v17 twentyFourPointFivePercentOfHeight:v19];
@@ -395,14 +395,14 @@ void __98__CNPosterSetupAvatarPreviewViewController_animojiProviderItemForAvatar
   return v21;
 }
 
-- (void)photoProviderItemForSnapshotFromPosterConfiguration:(id)a3 completionBlock:(id)a4
+- (void)photoProviderItemForSnapshotFromPosterConfiguration:(id)configuration completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  configurationCopy = configuration;
   v8 = +[CNPRUISIncomingCallPosterContext emptyContext];
   v9 = [CNPRUISIncomingCallSnapshotDefinition contentsOnlySnapshotDefinitionWithContext:v8 attachmentIdentifiers:0];
 
-  v10 = [CNPRUISPosterSnapshotRequest requestForConfiguration:v7 definition:v9 interfaceOrientation:1];
+  v10 = [CNPRUISPosterSnapshotRequest requestForConfiguration:configurationCopy definition:v9 interfaceOrientation:1];
 
   v11 = objc_alloc_init(CNPRUISPosterSnapshotController);
   v26 = 0;
@@ -410,7 +410,7 @@ void __98__CNPosterSetupAvatarPreviewViewController_animojiProviderItemForAvatar
   v13 = v26;
   if (v12 && ([v9 levelSets], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "snapshotForLevelSet:", v15), v16 = objc_claimAutoreleasedReturnValue(), v15, v14, v16))
   {
-    v17 = [MEMORY[0x1E6996818] mainThreadScheduler];
+    mainThreadScheduler = [MEMORY[0x1E6996818] mainThreadScheduler];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapshotFromPosterConfiguration_completionBlock___block_invoke;
@@ -418,8 +418,8 @@ void __98__CNPosterSetupAvatarPreviewViewController_animojiProviderItemForAvatar
     v23[4] = self;
     v18 = v16;
     v24 = v18;
-    v25 = v6;
-    [v17 performBlock:v23];
+    v25 = blockCopy;
+    [mainThreadScheduler performBlock:v23];
   }
 
   else
@@ -428,9 +428,9 @@ void __98__CNPosterSetupAvatarPreviewViewController_animojiProviderItemForAvatar
     v19[1] = 3221225472;
     v19[2] = __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapshotFromPosterConfiguration_completionBlock___block_invoke_2;
     v19[3] = &unk_1E74E4698;
-    v22 = v6;
+    v22 = blockCopy;
     v20 = v9;
-    v21 = self;
+    selfCopy = self;
     [(CNPRUISPosterSnapshotController *)v11 executeSnapshotRequest:v10 completion:v19];
 
     v18 = 0;
@@ -518,14 +518,14 @@ void __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapsho
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)photoProviderItemFromPosterConfiguration:(id)a3 completionBlock:(id)a4
+- (void)photoProviderItemFromPosterConfiguration:(id)configuration completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNPosterSetupAvatarPreviewViewController *)self photoProviderItemForFullImageFromPosterConfiguration:v6];
+  configurationCopy = configuration;
+  blockCopy = block;
+  v8 = [(CNPosterSetupAvatarPreviewViewController *)self photoProviderItemForFullImageFromPosterConfiguration:configurationCopy];
   if (v8)
   {
-    v7[2](v7, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   else
@@ -537,16 +537,16 @@ void __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapsho
       _os_log_impl(&dword_199A75000, v9, OS_LOG_TYPE_DEFAULT, "Unable to get original image data for Photos poster, falling back to poster snapshot", v10, 2u);
     }
 
-    [(CNPosterSetupAvatarPreviewViewController *)self photoProviderItemForSnapshotFromPosterConfiguration:v6 completionBlock:v7];
+    [(CNPosterSetupAvatarPreviewViewController *)self photoProviderItemForSnapshotFromPosterConfiguration:configurationCopy completionBlock:blockCopy];
   }
 }
 
-- (id)photoProviderItemForFullImageFromPosterConfiguration:(id)a3
+- (id)photoProviderItemForFullImageFromPosterConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[CNPhotosPosterConfigurationReader alloc] initWithPosterConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[CNPhotosPosterConfigurationReader alloc] initWithPosterConfiguration:configurationCopy];
 
-  v5 = [(CNPhotosPosterConfigurationReader *)v4 fullExtentPreviewImageData];
+  fullExtentPreviewImageData = [(CNPhotosPosterConfigurationReader *)v4 fullExtentPreviewImageData];
   [(CNPhotosPosterConfigurationReader *)v4 fullExtentPreviewImageSize];
   v7 = v6;
   v9 = v8;
@@ -564,19 +564,19 @@ void __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapsho
     height = v17;
   }
 
-  v18 = [[CNPhotoPickerProviderItem alloc] initWithImageData:v5 thumbnailImageData:0 fullscreenImageData:0 cropRect:x, y, width, height];
+  height = [[CNPhotoPickerProviderItem alloc] initWithImageData:fullExtentPreviewImageData thumbnailImageData:0 fullscreenImageData:0 cropRect:x, y, width, height];
 
-  return v18;
+  return height;
 }
 
-- (void)photoPickerProviderItemFromPosterConfiguration:(id)a3 completionBlock:(id)a4
+- (void)photoPickerProviderItemFromPosterConfiguration:(id)configuration completionBlock:(id)block
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   [(CNPosterSetupAvatarPreviewViewController *)self setImagePickerCustomBackgroundColor:0];
   v43 = 0;
-  v8 = [v6 loadUserInfoWithError:&v43];
+  v8 = [configurationCopy loadUserInfoWithError:&v43];
   v9 = v43;
   v10 = (*(*MEMORY[0x1E6996548] + 16))();
   if (v10)
@@ -585,43 +585,43 @@ void __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapsho
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = configurationCopy;
       _os_log_error_impl(&dword_199A75000, v11, OS_LOG_TYPE_ERROR, "Error loading user info for configuration: %@", &buf, 0xCu);
     }
   }
 
-  v12 = [MEMORY[0x1E695CFC8] wallpaperTypeFromConfiguration:v6];
+  v12 = [MEMORY[0x1E695CFC8] wallpaperTypeFromConfiguration:configurationCopy];
   if (((v10 | [v12 isEqualToString:*MEMORY[0x1E695CCE8]] ^ 1) & 1) != 0 || !+[CNMonogramPosterConfigurationReader canReadConfiguration](_TtC10ContactsUI35CNMonogramPosterConfigurationReader, "canReadConfiguration"))
   {
     if (((v10 | [v12 isEqualToString:*MEMORY[0x1E695CCE0]] ^ 1) & 1) != 0 || !+[CNMemojiPosterConfigurationReader canReadConfiguration](_TtC10ContactsUI33CNMemojiPosterConfigurationReader, "canReadConfiguration"))
     {
       if ([v12 isEqualToString:*MEMORY[0x1E695CCF0]])
       {
-        [(CNPosterSetupAvatarPreviewViewController *)self photoProviderItemFromPosterConfiguration:v6 completionBlock:v7];
+        [(CNPosterSetupAvatarPreviewViewController *)self photoProviderItemFromPosterConfiguration:configurationCopy completionBlock:blockCopy];
       }
 
       else
       {
-        v23 = [(CNPosterSetupAvatarPreviewViewController *)self providerItemForRandomColoredMonogram];
-        v7[2](v7, v23);
+        providerItemForRandomColoredMonogram = [(CNPosterSetupAvatarPreviewViewController *)self providerItemForRandomColoredMonogram];
+        blockCopy[2](blockCopy, providerItemForRandomColoredMonogram);
       }
     }
 
     else
     {
       v42 = [[_TtC10ContactsUI33CNMemojiPosterConfigurationReader alloc] initWithPosterConfigurationUserInfo:v8];
-      v17 = [(CNMemojiPosterConfigurationReader *)v42 avatarRecordData];
+      avatarRecordData = [(CNMemojiPosterConfigurationReader *)v42 avatarRecordData];
       v18 = *MEMORY[0x1E6996540];
-      v19 = (*(*MEMORY[0x1E6996540] + 16))(*MEMORY[0x1E6996540], v17);
+      v19 = (*(*MEMORY[0x1E6996540] + 16))(*MEMORY[0x1E6996540], avatarRecordData);
 
       if (v19)
       {
-        v20 = [(CNMemojiPosterConfigurationReader *)v42 avatarImageData];
-        v21 = (*(v18 + 16))(v18, v20);
+        avatarImageData = [(CNMemojiPosterConfigurationReader *)v42 avatarImageData];
+        v21 = (*(v18 + 16))(v18, avatarImageData);
 
         if (v21)
         {
-          v22 = [(CNPosterSetupAvatarPreviewViewController *)self providerItemForRandomColoredMonogram];
+          providerItemForRandomColoredMonogram2 = [(CNPosterSetupAvatarPreviewViewController *)self providerItemForRandomColoredMonogram];
         }
 
         else
@@ -630,9 +630,9 @@ void __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapsho
           memojiEditingManager = self->_memojiEditingManager;
           self->_memojiEditingManager = v37;
 
-          v39 = [(CNMemojiPosterConfigurationReader *)v42 avatarImageData];
-          v40 = [(CNMemojiPosterConfigurationReader *)v42 backgroundColor];
-          v22 = [(CNPosterSetupAvatarPreviewViewController *)self animojiProviderItemForAvatarImageData:v39 backgroundColor:v40];
+          avatarImageData2 = [(CNMemojiPosterConfigurationReader *)v42 avatarImageData];
+          backgroundColor = [(CNMemojiPosterConfigurationReader *)v42 backgroundColor];
+          providerItemForRandomColoredMonogram2 = [(CNPosterSetupAvatarPreviewViewController *)self animojiProviderItemForAvatarImageData:avatarImageData2 backgroundColor:backgroundColor];
         }
       }
 
@@ -656,55 +656,55 @@ void __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapsho
 
         v25 = v24;
         _Block_object_dispose(&v44, 8);
-        v26 = [(CNMemojiPosterConfigurationReader *)v42 avatarRecordData];
-        v27 = [v24 avatarRecordFromData:v26];
+        avatarRecordData2 = [(CNMemojiPosterConfigurationReader *)v42 avatarRecordData];
+        v27 = [v24 avatarRecordFromData:avatarRecordData2];
 
         v28 = MEMORY[0x1E695CF08];
-        v29 = [(CNMemojiPosterConfigurationReader *)v42 avatarPoseData];
-        v41 = [v28 poseConfigurationForData:v29 withAvatarRecord:v27];
+        avatarPoseData = [(CNMemojiPosterConfigurationReader *)v42 avatarPoseData];
+        v41 = [v28 poseConfigurationForData:avatarPoseData withAvatarRecord:v27];
 
         v30 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManagerForAvatarRecord:v27 poseConfiguration:v41];
         v31 = self->_memojiEditingManager;
         self->_memojiEditingManager = v30;
 
-        v32 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
-        v33 = [v32 originalItem];
+        memojiEditingManager = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
+        originalItem = [memojiEditingManager originalItem];
 
-        [v33 setPoseConfiguration:v41];
-        v34 = [v33 generateImageDataIfNeeded];
-        v35 = [(CNMemojiPosterConfigurationReader *)v42 backgroundColor];
-        v22 = [(CNPosterSetupAvatarPreviewViewController *)self animojiProviderItem:v33 backgroundColor:v35];
+        [originalItem setPoseConfiguration:v41];
+        generateImageDataIfNeeded = [originalItem generateImageDataIfNeeded];
+        backgroundColor2 = [(CNMemojiPosterConfigurationReader *)v42 backgroundColor];
+        providerItemForRandomColoredMonogram2 = [(CNPosterSetupAvatarPreviewViewController *)self animojiProviderItem:originalItem backgroundColor:backgroundColor2];
 
-        v36 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
-        [v36 setOriginalItem:v22];
+        memojiEditingManager2 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManager];
+        [memojiEditingManager2 setOriginalItem:providerItemForRandomColoredMonogram2];
       }
 
-      v7[2](v7, v22);
+      blockCopy[2](blockCopy, providerItemForRandomColoredMonogram2);
     }
   }
 
   else
   {
     v13 = [[_TtC10ContactsUI35CNMonogramPosterConfigurationReader alloc] initWithPosterConfigurationUserInfo:v8];
-    v14 = [(CNMonogramPosterConfigurationReader *)v13 initials];
-    v15 = [(CNMonogramPosterConfigurationReader *)v13 backgroundColor];
-    v16 = [(CNPosterSetupAvatarPreviewViewController *)self monogramProviderItemForInitials:v14 backgroundColor:v15];
+    initials = [(CNMonogramPosterConfigurationReader *)v13 initials];
+    backgroundColor3 = [(CNMonogramPosterConfigurationReader *)v13 backgroundColor];
+    v16 = [(CNPosterSetupAvatarPreviewViewController *)self monogramProviderItemForInitials:initials backgroundColor:backgroundColor3];
 
-    v7[2](v7, v16);
+    blockCopy[2](blockCopy, v16);
   }
 }
 
 - (void)didTapCancel
 {
   [(CNPosterSetupAvatarPreviewViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v3 = [(CNPosterSetupAvatarPreviewViewController *)self delegate];
-  [v3 avatarPreviewViewControllerDidCancel:self];
+  delegate = [(CNPosterSetupAvatarPreviewViewController *)self delegate];
+  [delegate avatarPreviewViewControllerDidCancel:self];
 }
 
 - (void)skipStep
 {
-  v3 = [(CNPosterSetupAvatarPreviewViewController *)self delegate];
-  [v3 avatarPreviewViewControllerDidSelectCustomizeLater:self];
+  delegate = [(CNPosterSetupAvatarPreviewViewController *)self delegate];
+  [delegate avatarPreviewViewControllerDidSelectCustomizeLater:self];
 }
 
 - (void)viewDidLoad
@@ -717,127 +717,127 @@ void __112__CNPosterSetupAvatarPreviewViewController_photoProviderItemForSnapsho
   v4 = [v3 localizedStringForKey:@"SNAP_POSTER_AVATAR_PREVIEW_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
   [(CNPosterSetupAvatarPreviewViewController *)self setTitle:v4];
 
-  v5 = [(CNPosterSetupAvatarPreviewViewController *)self navigationController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 firstObject];
-  if (v7 != self)
+  navigationController = [(CNPosterSetupAvatarPreviewViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
+  if (firstObject != self)
   {
-    v8 = [(CNPosterSetupAvatarPreviewViewController *)self hideSkipOption];
+    hideSkipOption = [(CNPosterSetupAvatarPreviewViewController *)self hideSkipOption];
 
-    if (v8)
+    if (hideSkipOption)
     {
       goto LABEL_5;
     }
 
     v9 = objc_alloc(MEMORY[0x1E69DC708]);
-    v5 = CNContactsUIBundle();
-    v6 = [v5 localizedStringForKey:@"SNAP_POSTER_PREVIEW_SKIP" value:&stru_1F0CE7398 table:@"Localized"];
-    v7 = [v9 initWithTitle:v6 style:0 target:self action:sel_skipStep];
-    v10 = [(CNPosterSetupAvatarPreviewViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:v7];
+    navigationController = CNContactsUIBundle();
+    viewControllers = [navigationController localizedStringForKey:@"SNAP_POSTER_PREVIEW_SKIP" value:&stru_1F0CE7398 table:@"Localized"];
+    firstObject = [v9 initWithTitle:viewControllers style:0 target:self action:sel_skipStep];
+    navigationItem = [(CNPosterSetupAvatarPreviewViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:firstObject];
   }
 
 LABEL_5:
   if ([(CNPosterSetupAvatarPreviewViewController *)self shouldShowCancelButton])
   {
     v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_didTapCancel];
-    v12 = [(CNPosterSetupAvatarPreviewViewController *)self navigationItem];
-    [v12 setLeftBarButtonItem:v11];
+    navigationItem2 = [(CNPosterSetupAvatarPreviewViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v11];
   }
 
-  v13 = [(CNPosterSetupAvatarPreviewViewController *)self imageData];
-  v14 = [(CNPosterSetupAvatarPreviewViewController *)self contactImage];
-  v15 = [v14 variant];
-  v47 = [CNPhotoPickerProviderItem generateImageDataWithData:v13 filterName:v15];
+  imageData = [(CNPosterSetupAvatarPreviewViewController *)self imageData];
+  contactImage = [(CNPosterSetupAvatarPreviewViewController *)self contactImage];
+  variant = [contactImage variant];
+  v47 = [CNPhotoPickerProviderItem generateImageDataWithData:imageData filterName:variant];
 
   v16 = [_TtC10ContactsUI37CNPosterSetupAvatarPreviewViewWrapper alloc];
   [(CNPosterSetupAvatarPreviewViewController *)self cropRect];
   v21 = [(CNPosterSetupAvatarPreviewViewWrapper *)v16 initWithImageData:v47 cropRect:[(CNPosterSetupAvatarPreviewViewController *)self imageType] imageType:self delegate:v17, v18, v19, v20];
-  v22 = [(CNPosterSetupAvatarPreviewViewWrapper *)v21 hostingController];
-  v23 = [v22 view];
+  hostingController = [(CNPosterSetupAvatarPreviewViewWrapper *)v21 hostingController];
+  view = [hostingController view];
 
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CNPosterSetupAvatarPreviewViewController *)self setAvatarPreviewView:v21];
-  v24 = [(CNPosterSetupAvatarPreviewViewWrapper *)v21 hostingController];
-  [v24 willMoveToParentViewController:self];
+  hostingController2 = [(CNPosterSetupAvatarPreviewViewWrapper *)v21 hostingController];
+  [hostingController2 willMoveToParentViewController:self];
 
   v46 = v21;
-  v25 = [(CNPosterSetupAvatarPreviewViewWrapper *)v21 hostingController];
-  [(CNPosterSetupAvatarPreviewViewController *)self addChildViewController:v25];
+  hostingController3 = [(CNPosterSetupAvatarPreviewViewWrapper *)v21 hostingController];
+  [(CNPosterSetupAvatarPreviewViewController *)self addChildViewController:hostingController3];
 
-  v26 = [(CNPosterSetupAvatarPreviewViewController *)self view];
-  [v26 addSubview:v23];
+  view2 = [(CNPosterSetupAvatarPreviewViewController *)self view];
+  [view2 addSubview:view];
 
-  v27 = [(CNPosterSetupAvatarPreviewViewWrapper *)v21 hostingController];
-  [v27 didMoveToParentViewController:self];
+  hostingController4 = [(CNPosterSetupAvatarPreviewViewWrapper *)v21 hostingController];
+  [hostingController4 didMoveToParentViewController:self];
 
   v38 = MEMORY[0x1E696ACD8];
-  v44 = [v23 leadingAnchor];
-  v45 = [(CNPosterSetupAvatarPreviewViewController *)self view];
-  v43 = [v45 leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  leadingAnchor = [view leadingAnchor];
+  view3 = [(CNPosterSetupAvatarPreviewViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v49[0] = v42;
-  v40 = [v23 trailingAnchor];
-  v41 = [(CNPosterSetupAvatarPreviewViewController *)self view];
-  v39 = [v41 trailingAnchor];
-  v37 = [v40 constraintEqualToAnchor:v39];
+  trailingAnchor = [view trailingAnchor];
+  view4 = [(CNPosterSetupAvatarPreviewViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v49[1] = v37;
-  v28 = [v23 topAnchor];
-  v29 = [(CNPosterSetupAvatarPreviewViewController *)self view];
-  v30 = [v29 topAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  topAnchor = [view topAnchor];
+  view5 = [(CNPosterSetupAvatarPreviewViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v49[2] = v31;
-  v32 = [v23 bottomAnchor];
-  v33 = [(CNPosterSetupAvatarPreviewViewController *)self view];
-  v34 = [v33 bottomAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  bottomAnchor = [view bottomAnchor];
+  view6 = [(CNPosterSetupAvatarPreviewViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v49[3] = v35;
   v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
   [v38 activateConstraints:v36];
 }
 
-- (void)updateWithProviderItem:(id)a3
+- (void)updateWithProviderItem:(id)item
 {
-  v6 = a3;
-  v4 = [v6 imageData];
-  [(CNPosterSetupAvatarPreviewViewController *)self setImageData:v4];
+  itemCopy = item;
+  imageData = [itemCopy imageData];
+  [(CNPosterSetupAvatarPreviewViewController *)self setImageData:imageData];
 
-  [v6 cropRect];
+  [itemCopy cropRect];
   [(CNPosterSetupAvatarPreviewViewController *)self setCropRect:?];
-  -[CNPosterSetupAvatarPreviewViewController setImageType:](self, "setImageType:", [v6 imageType]);
-  v5 = [v6 contactImageForMetadataStore];
-  [(CNPosterSetupAvatarPreviewViewController *)self setContactImage:v5];
+  -[CNPosterSetupAvatarPreviewViewController setImageType:](self, "setImageType:", [itemCopy imageType]);
+  contactImageForMetadataStore = [itemCopy contactImageForMetadataStore];
+  [(CNPosterSetupAvatarPreviewViewController *)self setContactImage:contactImageForMetadataStore];
 
-  [(CNPosterSetupAvatarPreviewViewController *)self updateMemojiEditingManagerForProviderItem:v6];
+  [(CNPosterSetupAvatarPreviewViewController *)self updateMemojiEditingManagerForProviderItem:itemCopy];
 }
 
-- (id)memojiEditingManagerForAvatarRecord:(id)a3 poseConfiguration:(id)a4
+- (id)memojiEditingManagerForAvatarRecord:(id)record poseConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNPosterSetupAvatarPreviewViewController *)self variantsManager];
+  configurationCopy = configuration;
+  recordCopy = record;
+  variantsManager = [(CNPosterSetupAvatarPreviewViewController *)self variantsManager];
 
-  if (!v8)
+  if (!variantsManager)
   {
     v9 = objc_alloc_init(CNPhotoPickerVariantsManager);
     variantsManager = self->_variantsManager;
     self->_variantsManager = v9;
   }
 
-  v11 = [[CNAvatarEditingManager alloc] initWithAvatarRecord:v7 poseConfiguration:v6 variantsManager:self->_variantsManager];
+  v11 = [[CNAvatarEditingManager alloc] initWithAvatarRecord:recordCopy poseConfiguration:configurationCopy variantsManager:self->_variantsManager];
 
   [(CNAvatarEditingManager *)v11 setDelegate:self];
 
   return v11;
 }
 
-- (void)updateMemojiEditingManagerForProviderItem:(id)a3
+- (void)updateMemojiEditingManagerForProviderItem:(id)item
 {
-  v11 = a3;
+  itemCopy = item;
   if ([(CNPosterSetupAvatarPreviewViewController *)self imageType]== 3)
   {
     objc_opt_class();
-    v4 = v11;
+    v4 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
@@ -852,9 +852,9 @@ LABEL_5:
 
     if (v6)
     {
-      v7 = [v6 avatarRecord];
-      v8 = [v6 poseConfiguration];
-      v9 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManagerForAvatarRecord:v7 poseConfiguration:v8];
+      avatarRecord = [v6 avatarRecord];
+      poseConfiguration = [v6 poseConfiguration];
+      v9 = [(CNPosterSetupAvatarPreviewViewController *)self memojiEditingManagerForAvatarRecord:avatarRecord poseConfiguration:poseConfiguration];
 
       [(CNAvatarEditingManager *)v9 setOriginalItem:v6];
     }
@@ -874,72 +874,72 @@ LABEL_5:
   self->_memojiEditingManager = v9;
 }
 
-- (void)setImageType:(unint64_t)a3
+- (void)setImageType:(unint64_t)type
 {
-  self->_imageType = a3;
-  v4 = [(CNPosterSetupAvatarPreviewViewController *)self avatarPreviewView];
-  [v4 setImageType:a3];
+  self->_imageType = type;
+  avatarPreviewView = [(CNPosterSetupAvatarPreviewViewController *)self avatarPreviewView];
+  [avatarPreviewView setImageType:type];
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_cropRect = a3;
-  v7 = [(CNPosterSetupAvatarPreviewViewController *)self avatarPreviewView];
-  [v7 setCropRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  self->_cropRect = rect;
+  avatarPreviewView = [(CNPosterSetupAvatarPreviewViewController *)self avatarPreviewView];
+  [avatarPreviewView setCropRect:{x, y, width, height}];
 }
 
-- (void)setImageData:(id)a3
+- (void)setImageData:(id)data
 {
-  objc_storeStrong(&self->_imageData, a3);
-  v5 = a3;
-  v6 = [(CNPosterSetupAvatarPreviewViewController *)self avatarPreviewView];
-  [v6 setImageData:v5];
+  objc_storeStrong(&self->_imageData, data);
+  dataCopy = data;
+  avatarPreviewView = [(CNPosterSetupAvatarPreviewViewController *)self avatarPreviewView];
+  [avatarPreviewView setImageData:dataCopy];
 }
 
-- (CNPosterSetupAvatarPreviewViewController)initWithContactImage:(id)a3 imageType:(unint64_t)a4 forEditingContact:(id)a5
+- (CNPosterSetupAvatarPreviewViewController)initWithContactImage:(id)image imageType:(unint64_t)type forEditingContact:(id)contact
 {
-  v9 = a3;
-  v10 = a5;
+  imageCopy = image;
+  contactCopy = contact;
   v21.receiver = self;
   v21.super_class = CNPosterSetupAvatarPreviewViewController;
   v11 = [(CNPosterSetupAvatarPreviewViewController *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_editingContact, a5);
-    objc_storeStrong(&v12->_contactImage, a3);
-    v13 = [v9 imageData];
+    objc_storeStrong(&v11->_editingContact, contact);
+    objc_storeStrong(&v12->_contactImage, image);
+    imageData = [imageCopy imageData];
     imageData = v12->_imageData;
-    v12->_imageData = v13;
+    v12->_imageData = imageData;
 
-    [v9 cropRect];
+    [imageCopy cropRect];
     v12->_cropRect.origin.x = v15;
     v12->_cropRect.origin.y = v16;
     v12->_cropRect.size.width = v17;
     v12->_cropRect.size.height = v18;
-    v12->_imageType = a4;
+    v12->_imageType = type;
     v19 = v12;
   }
 
   return v12;
 }
 
-- (CNPosterSetupAvatarPreviewViewController)initWithPosterConfiguration:(id)a3 forEditingContact:(id)a4
+- (CNPosterSetupAvatarPreviewViewController)initWithPosterConfiguration:(id)configuration forEditingContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  contactCopy = contact;
   v21.receiver = self;
   v21.super_class = CNPosterSetupAvatarPreviewViewController;
   v8 = [(CNPosterSetupAvatarPreviewViewController *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_editingContact, a4);
-    v10 = [MEMORY[0x1E695CFC8] wallpaperTypeFromConfiguration:v6];
+    objc_storeStrong(&v8->_editingContact, contact);
+    v10 = [MEMORY[0x1E695CFC8] wallpaperTypeFromConfiguration:configurationCopy];
     wallpaperType = v9->_wallpaperType;
     v9->_wallpaperType = v10;
 
@@ -952,7 +952,7 @@ LABEL_5:
     v16[3] = &unk_1E74E7290;
     v13 = v9;
     v17 = v13;
-    v18 = v6;
+    v18 = configurationCopy;
     objc_copyWeak(&v19, &location);
     dispatch_async(v12, v16);
 
@@ -1011,15 +1011,15 @@ void __90__CNPosterSetupAvatarPreviewViewController_initWithPosterConfiguration_
   return result;
 }
 
-+ (unint64_t)defaultImageTypeForWallpaperType:(id)a3
++ (unint64_t)defaultImageTypeForWallpaperType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E695CCE0]])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:*MEMORY[0x1E695CCE0]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E695CCE8]])
+  else if ([typeCopy isEqualToString:*MEMORY[0x1E695CCE8]])
   {
     v4 = 2;
   }

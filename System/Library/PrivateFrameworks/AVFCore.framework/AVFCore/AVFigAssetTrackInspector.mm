@@ -8,40 +8,40 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)uneditedDuration;
 - (BOOL)_isDefunct;
 - (BOOL)hasSeamSamples;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresFrameReordering;
 - (CGAffineTransform)preferredTransform;
 - (CGSize)dimensions;
 - (CGSize)naturalSize;
 - (OpaqueFigFormatReader)_figFormatReader;
-- (OpaqueFigSampleCursorService)_getFigSampleCursorServiceReportingTimeAccuracy:(BOOL *)a3;
+- (OpaqueFigSampleCursorService)_getFigSampleCursorServiceReportingTimeAccuracy:(BOOL *)accuracy;
 - (OpaqueFigTrackReader)_figTrackReader;
 - (__CFString)figAssetPropertyForSegments;
 - (float)nominalFrameRate;
 - (float)preferredVolume;
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
-- (id)_segmentsForProperty:(__CFString *)a3;
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
+- (id)_segmentsForProperty:(__CFString *)property;
 - (id)availableMetadataFormats;
 - (id)commonMetadata;
 - (id)extendedLanguageTag;
 - (id)formatDescriptions;
 - (id)languageCode;
-- (id)metadataForFormat:(id)a3;
-- (id)segmentForTrackTime:(id *)a3;
+- (id)metadataForFormat:(id)format;
+- (id)segmentForTrackTime:(id *)time;
 - (id)segments;
 - (int)naturalTimeScale;
 - (int)trackID;
-- (int64_t)_loadStatusForFigAssetTrackProperty:(id)a3 error:(id *)a4;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
+- (int64_t)_loadStatusForFigAssetTrackProperty:(id)property error:(id *)error;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
 - (int64_t)totalSampleDataLength;
 - (unint64_t)hash;
 - (void)_addFigNotifications;
-- (void)_invokeCompletionHandlerForLoadingBatches:(id)a3;
+- (void)_invokeCompletionHandlerForLoadingBatches:(id)batches;
 - (void)_removeFigNotifications;
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3;
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3 propertyString:(id)a4;
+- (void)_valueAsCFTypeForProperty:(__CFString *)property;
+- (void)_valueAsCFTypeForProperty:(__CFString *)property propertyString:(id)string;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation AVFigAssetTrackInspector
@@ -51,13 +51,13 @@
   if (self->_figAsset && self->_figAssetTrack)
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAssetTrackInspector *)self _weakReference];
-    CFRetain(v4);
-    [v3 addListenerWithWeakReference:v4 callback:handleFigAssetTrackNotification name:*MEMORY[0x1E6971478] object:self->_figAssetTrack flags:0];
+    _weakReference = [(AVAssetTrackInspector *)self _weakReference];
+    CFRetain(_weakReference);
+    [v3 addListenerWithWeakReference:_weakReference callback:handleFigAssetTrackNotification name:*MEMORY[0x1E6971478] object:self->_figAssetTrack flags:0];
     v5 = *MEMORY[0x1E6970EC8];
     figAsset = self->_figAsset;
 
-    [v3 addListenerWithWeakReference:v4 callback:handleFigAssetNotification name:v5 object:figAsset flags:0];
+    [v3 addListenerWithWeakReference:_weakReference callback:handleFigAssetNotification name:v5 object:figAsset flags:0];
   }
 }
 
@@ -75,22 +75,22 @@
   return v5;
 }
 
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
-  v6 = *&a4;
+  v6 = *&d;
   v28.receiver = self;
   v28.super_class = AVFigAssetTrackInspector;
   v8 = [AVAssetTrackInspector _initWithAsset:sel__initWithAsset_trackID_trackIndex_ trackID:? trackIndex:?];
   if (v8)
   {
-    if (a3)
+    if (asset)
     {
       ValueAtIndex = 0;
-      v9 = [a3 _figAsset];
+      _figAsset = [asset _figAsset];
       v26 = 0;
-      if (v9)
+      if (_figAsset)
       {
-        v10 = v9;
+        v10 = _figAsset;
         if (v6)
         {
           v11 = *(*(CMBaseObjectGetVTable() + 16) + 40);
@@ -100,7 +100,7 @@
           }
         }
 
-        else if ((a5 & 0x8000000000000000) == 0)
+        else if ((index & 0x8000000000000000) == 0)
         {
           cf = 0;
           CMBaseObject = FigAssetGetCMBaseObject();
@@ -128,9 +128,9 @@
               {
                 Count = CFArrayGetCount(cf);
                 v15 = cf;
-                if (Count > a5)
+                if (Count > index)
                 {
-                  ValueAtIndex = CFArrayGetValueAtIndex(cf, a5);
+                  ValueAtIndex = CFArrayGetValueAtIndex(cf, index);
                   v15 = cf;
                 }
               }
@@ -154,11 +154,11 @@
         }
 
         v22 = CFRetain(v10);
-        v9 = ValueAtIndex;
+        _figAsset = ValueAtIndex;
         v8[4] = v22;
-        if (v9)
+        if (_figAsset)
         {
-          v9 = CFRetain(v9);
+          _figAsset = CFRetain(_figAsset);
         }
       }
 
@@ -167,13 +167,13 @@
         v8[4] = 0;
       }
 
-      v8[5] = v9;
+      v8[5] = _figAsset;
       v8[6] = objc_alloc_init(AVDispatchOnce);
       v8[8] = objc_alloc_init(AVDispatchOnce);
       v8[10] = objc_alloc_init(AVDispatchOnce);
       *(v8 + 32) = v26;
-      *(v8 + 144) = [a3 _prefersNominalDurations];
-      v8[17] = [a3 _weakReference];
+      *(v8 + 144) = [asset _prefersNominalDurations];
+      v8[17] = [asset _weakReference];
       v8[13] = FigSimpleMutexCreate();
       v8[15] = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:0];
       v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -246,15 +246,15 @@
   if (self->_figAsset && self->_figAssetTrack)
   {
     v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v4 = [(AVAssetTrackInspector *)self _weakReference];
-    [v3 removeListenerWithWeakReference:v4 callback:handleFigAssetTrackNotification name:*MEMORY[0x1E6971478] object:self->_figAssetTrack];
-    [v3 removeListenerWithWeakReference:v4 callback:handleFigAssetNotification name:*MEMORY[0x1E6970EC8] object:self->_figAsset];
+    _weakReference = [(AVAssetTrackInspector *)self _weakReference];
+    [v3 removeListenerWithWeakReference:_weakReference callback:handleFigAssetTrackNotification name:*MEMORY[0x1E6971478] object:self->_figAssetTrack];
+    [v3 removeListenerWithWeakReference:_weakReference callback:handleFigAssetNotification name:*MEMORY[0x1E6970EC8] object:self->_figAsset];
 
-    CFRelease(v4);
+    CFRelease(_weakReference);
   }
 }
 
-- (int64_t)_loadStatusForFigAssetTrackProperty:(id)a3 error:(id *)a4
+- (int64_t)_loadStatusForFigAssetTrackProperty:(id)property error:(id *)error
 {
   v12 = 0;
   v13 = 0;
@@ -266,7 +266,7 @@
     v8 = -12782;
 LABEL_6:
     v10 = 3;
-    if (!a4)
+    if (!error)
     {
       return v10;
     }
@@ -274,14 +274,14 @@ LABEL_6:
 LABEL_7:
     if (v10 == 3)
     {
-      *a4 = AVErrorWithNSErrorAndOSStatus(v9, v8, 0);
+      *error = AVErrorWithNSErrorAndOSStatus(v9, v8, 0);
       return 3;
     }
 
     return v10;
   }
 
-  v8 = v7(figAssetTrack, a3, &v13 + 4, &v13, &v12);
+  v8 = v7(figAssetTrack, property, &v13 + 4, &v13, &v12);
   v9 = v12;
   if (v8)
   {
@@ -304,7 +304,7 @@ LABEL_7:
     v8 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     goto LABEL_7;
   }
@@ -312,7 +312,7 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v24 = 0;
@@ -328,7 +328,7 @@ LABEL_7:
     v8 = &dictionaryOfFigAssetTrackPropertiesForTrackKeys_sFigAssetTrackPropertiesForTrackKeys;
   }
 
-  v9 = [*v8 objectForKey:a3];
+  v9 = [*v8 objectForKey:key];
   if (v9)
   {
     v10 = v9;
@@ -379,25 +379,25 @@ LABEL_8:
     }
 
     FigSimpleMutexUnlock();
-    if (a4 && v14 == 3)
+    if (error && v14 == 3)
     {
-      *a4 = v24;
+      *error = v24;
     }
   }
 
   else
   {
-    NSLog(&cfstr_AvassettrackSt.isa, a3);
+    NSLog(&cfstr_AvassettrackSt.isa, key);
     return 2;
   }
 
   return v14;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
   FigSimpleMutexLock();
-  if (a3)
+  if (keys)
   {
     v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:0];
     prefersNominalDurations = self->_prefersNominalDurations;
@@ -422,14 +422,14 @@ LABEL_8:
     v22[4] = v10;
     v22[5] = v12;
     v22[6] = v11;
-    [a3 enumerateObjectsUsingBlock:v22];
+    [keys enumerateObjectsUsingBlock:v22];
     if ([v11 count])
     {
       NSLog(&cfstr_AvassettrackLo.isa, [v11 allObjects]);
     }
 
-    v13 = [v12 allObjects];
-    if ([v13 count])
+    allObjects = [v12 allObjects];
+    if ([allObjects count])
     {
       valuePtr = 0;
       v20 = 0;
@@ -437,7 +437,7 @@ LABEL_8:
       v15 = *(*(CMBaseObjectGetVTable() + 16) + 16);
       if (v15)
       {
-        if (!v15(figAssetTrack, v13, &v20, &valuePtr) && v20 == 0)
+        if (!v15(figAssetTrack, allObjects, &v20, &valuePtr) && v20 == 0)
         {
           v17 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt32Type, &valuePtr);
           if (v17)
@@ -458,9 +458,9 @@ LABEL_8:
 
   if ([v7 count])
   {
-    if (a4)
+    if (handler)
     {
-      v19 = [a4 copy];
+      v19 = [handler copy];
       [v7 setObject:v19 forKey:0x1F0A9BAB0];
     }
 
@@ -471,9 +471,9 @@ LABEL_8:
   else
   {
     FigSimpleMutexUnlock();
-    if (a4)
+    if (handler)
     {
-      (*(a4 + 2))(a4);
+      (*(handler + 2))(handler);
     }
   }
 }
@@ -578,7 +578,7 @@ uint64_t __43__AVFigAssetTrackInspector__figTrackReader__block_invoke(uint64_t a
   return result;
 }
 
-- (OpaqueFigSampleCursorService)_getFigSampleCursorServiceReportingTimeAccuracy:(BOOL *)a3
+- (OpaqueFigSampleCursorService)_getFigSampleCursorServiceReportingTimeAccuracy:(BOOL *)accuracy
 {
   copySampleCursorServiceOnce = self->_copySampleCursorServiceOnce;
   v7[0] = MEMORY[0x1E69E9820];
@@ -587,9 +587,9 @@ uint64_t __43__AVFigAssetTrackInspector__figTrackReader__block_invoke(uint64_t a
   v7[3] = &unk_1E7460C00;
   v7[4] = self;
   [(AVDispatchOnce *)copySampleCursorServiceOnce runBlockOnce:v7];
-  if (a3)
+  if (accuracy)
   {
-    *a3 = self->_sampleCursorTimeAccuracyIsExact;
+    *accuracy = self->_sampleCursorTimeAccuracyIsExact;
   }
 
   return self->_figSampleCursorService;
@@ -633,7 +633,7 @@ void __76__AVFigAssetTrackInspector__getFigSampleCursorServiceReportingTimeAccur
   }
 }
 
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3
+- (void)_valueAsCFTypeForProperty:(__CFString *)property
 {
   v7 = 0;
   result = [(AVFigAssetTrackInspector *)self _figAssetTrack];
@@ -643,7 +643,7 @@ void __76__AVFigAssetTrackInspector__getFigSampleCursorServiceReportingTimeAccur
     v6 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v6)
     {
-      v6(CMBaseObject, a3, *MEMORY[0x1E695E480], &v7);
+      v6(CMBaseObject, property, *MEMORY[0x1E695E480], &v7);
       return v7;
     }
 
@@ -656,21 +656,21 @@ void __76__AVFigAssetTrackInspector__getFigSampleCursorServiceReportingTimeAccur
   return result;
 }
 
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3 propertyString:(id)a4
+- (void)_valueAsCFTypeForProperty:(__CFString *)property propertyString:(id)string
 {
   cf = 0;
   v11 = 0;
-  v6 = [(AVFigAssetTrackInspector *)self _figAssetTrack];
-  if (v6)
+  _figAssetTrack = [(AVFigAssetTrackInspector *)self _figAssetTrack];
+  if (_figAssetTrack)
   {
-    v7 = v6;
+    v7 = _figAssetTrack;
     v8 = *(*(CMBaseObjectGetVTable() + 16) + 48);
     if (v8)
     {
-      v8(v7, a3, *MEMORY[0x1E695E480], &v11, &cf);
+      v8(v7, property, *MEMORY[0x1E695E480], &v11, &cf);
       if (cf)
       {
-        AVLogRuntimeIssueIndicatingAssetTrackPropertyLoadHangRisk(a4);
+        AVLogRuntimeIssueIndicatingAssetTrackPropertyLoadHangRisk(string);
         CFRelease(cf);
       }
     }
@@ -919,9 +919,9 @@ void __76__AVFigAssetTrackInspector__getFigSampleCursorServiceReportingTimeAccur
   return self;
 }
 
-- (id)_segmentsForProperty:(__CFString *)a3
+- (id)_segmentsForProperty:(__CFString *)property
 {
-  v4 = [(AVFigObjectInspector *)self _dataForProperty:a3];
+  v4 = [(AVFigObjectInspector *)self _dataForProperty:property];
 
   return [(AVAssetTrackInspector *)self _segmentsForSegmentData:v4];
 }
@@ -943,12 +943,12 @@ void __76__AVFigAssetTrackInspector__getFigSampleCursorServiceReportingTimeAccur
 
 - (id)segments
 {
-  v3 = [(AVFigAssetTrackInspector *)self figAssetPropertyForSegments];
+  figAssetPropertyForSegments = [(AVFigAssetTrackInspector *)self figAssetPropertyForSegments];
 
-  return [(AVFigAssetTrackInspector *)self _segmentsForProperty:v3];
+  return [(AVFigAssetTrackInspector *)self _segmentsForProperty:figAssetPropertyForSegments];
 }
 
-- (id)segmentForTrackTime:(id *)a3
+- (id)segmentForTrackTime:(id *)time
 {
   v4 = [(AVFigObjectInspector *)self _dataForProperty:[(AVFigAssetTrackInspector *)self figAssetPropertyForSegments]];
   v5 = [v4 length];
@@ -958,14 +958,14 @@ void __76__AVFigAssetTrackInspector__getFigSampleCursorServiceReportingTimeAccur
   }
 
   v7 = v5 / 0x60;
-  v8 = [v4 bytes];
-  v9 = v8;
+  bytes = [v4 bytes];
+  v9 = bytes;
   v10 = v7;
   while (1)
   {
     time2 = *(v9 + 48);
     v24 = time2;
-    time = *a3;
+    time = *time;
     if (CMTimeRangeContainsTime(&v24, &time))
     {
       break;
@@ -997,10 +997,10 @@ void __76__AVFigAssetTrackInspector__getFigSampleCursorServiceReportingTimeAccur
 
 LABEL_8:
   v16 = v7 - 1;
-  *&v24.start.value = *&a3->var0;
-  v24.start.epoch = a3->var3;
-  *&time2.start.value = *(v8 + 48);
-  time2.start.epoch = *(v8 + 64);
+  *&v24.start.value = *&time->var0;
+  v24.start.epoch = time->var3;
+  *&time2.start.value = *(bytes + 48);
+  time2.start.epoch = *(bytes + 64);
   if (CMTimeCompare(&v24.start, &time2.start) < 0)
   {
     v17 = 0;
@@ -1012,7 +1012,7 @@ LABEL_8:
   }
 
   v18 = [AVAssetTrackSegment alloc];
-  v19 = (v8 + 96 * v17);
+  v19 = (bytes + 96 * v17);
   v20 = v19[1];
   *&v24.start.value = *v19;
   *&v24.start.epoch = v20;
@@ -1091,11 +1091,11 @@ LABEL_8:
   return [(AVFigObjectInspector *)self _nonNilArrayForProperty:v3 propertyString:v4];
 }
 
-- (id)metadataForFormat:(id)a3
+- (id)metadataForFormat:(id)format
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
-  if ([a3 isEqualToString:@"com.apple.quicktime.udta"])
+  if ([format isEqualToString:@"com.apple.quicktime.udta"])
   {
     v6 = MEMORY[0x1E69714E8];
 LABEL_5:
@@ -1103,13 +1103,13 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if ([a3 isEqualToString:@"org.mp4ra"])
+  if ([format isEqualToString:@"org.mp4ra"])
   {
     v6 = MEMORY[0x1E69714B0];
     goto LABEL_5;
   }
 
-  if ([a3 isEqualToString:@"com.apple.quicktime.mdta"])
+  if ([format isEqualToString:@"com.apple.quicktime.mdta"])
   {
     v7 = *MEMORY[0x1E69714E0];
   }
@@ -1193,7 +1193,7 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1201,20 +1201,20 @@ LABEL_9:
     return 0;
   }
 
-  v5 = [(AVFigAssetTrackInspector *)self _figAssetTrack];
-  v6 = [a3 _figAssetTrack];
-  if (v5 == v6)
+  _figAssetTrack = [(AVFigAssetTrackInspector *)self _figAssetTrack];
+  _figAssetTrack2 = [equal _figAssetTrack];
+  if (_figAssetTrack == _figAssetTrack2)
   {
     return 1;
   }
 
-  v7 = v6;
+  v7 = _figAssetTrack2;
   result = 0;
-  if (v5)
+  if (_figAssetTrack)
   {
     if (v7)
     {
-      return CFEqual(v5, v7) != 0;
+      return CFEqual(_figAssetTrack, v7) != 0;
     }
   }
 
@@ -1223,11 +1223,11 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(AVFigAssetTrackInspector *)self _figAssetTrack];
-  if (v3)
+  _figAssetTrack = [(AVFigAssetTrackInspector *)self _figAssetTrack];
+  if (_figAssetTrack)
   {
 
-    return CFHash(v3);
+    return CFHash(_figAssetTrack);
   }
 
   else
@@ -1238,14 +1238,14 @@ LABEL_9:
   }
 }
 
-- (void)_invokeCompletionHandlerForLoadingBatches:(id)a3
+- (void)_invokeCompletionHandlerForLoadingBatches:(id)batches
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [batches countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1257,7 +1257,7 @@ LABEL_9:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(batches);
         }
 
         v9 = [*(*(&v10 + 1) + 8 * v8) objectForKey:0x1F0A9BAB0];
@@ -1270,7 +1270,7 @@ LABEL_9:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [batches countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1280,7 +1280,7 @@ LABEL_9:
 - (BOOL)_isDefunct
 {
   v8 = 0;
-  v2 = [(AVFigAssetTrackInspector *)self _figAssetTrack];
+  _figAssetTrack = [(AVFigAssetTrackInspector *)self _figAssetTrack];
   v3 = *(CMBaseObjectGetVTable() + 8);
   if (*v3 < 5uLL)
   {
@@ -1293,7 +1293,7 @@ LABEL_9:
     v4 = v3[11];
     if (v4)
     {
-      LOBYTE(v4) = v4(v2, &v8) == 0;
+      LOBYTE(v4) = v4(_figAssetTrack, &v8) == 0;
       v5 = v8;
     }
 

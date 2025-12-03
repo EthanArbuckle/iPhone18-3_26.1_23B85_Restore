@@ -1,22 +1,22 @@
 @interface NSLayoutManagerTextBlockRowArrayCache
-- (NSLayoutManagerTextBlockRowArrayCache)initWithRowCharRange:(_NSRange)a3 containerWidth:(double)a4 rowArray:(id)a5 collapseBorders:(BOOL)a6;
+- (NSLayoutManagerTextBlockRowArrayCache)initWithRowCharRange:(_NSRange)range containerWidth:(double)width rowArray:(id)array collapseBorders:(BOOL)borders;
 - (void)dealloc;
 @end
 
 @implementation NSLayoutManagerTextBlockRowArrayCache
 
-- (NSLayoutManagerTextBlockRowArrayCache)initWithRowCharRange:(_NSRange)a3 containerWidth:(double)a4 rowArray:(id)a5 collapseBorders:(BOOL)a6
+- (NSLayoutManagerTextBlockRowArrayCache)initWithRowCharRange:(_NSRange)range containerWidth:(double)width rowArray:(id)array collapseBorders:(BOOL)borders
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13.receiver = self;
   v13.super_class = NSLayoutManagerTextBlockRowArrayCache;
   v11 = [(NSLayoutManagerTextBlockRowArrayCache *)&v13 init];
   v11->_rowCharRange.location = location;
   v11->_rowCharRange.length = length;
-  v11->_containerWidth = a4;
-  v11->_rowArray = a5;
-  v11->_collapseBorders = a6;
+  v11->_containerWidth = width;
+  v11->_rowArray = array;
+  v11->_collapseBorders = borders;
   return v11;
 }
 

@@ -1,6 +1,6 @@
 @interface PLVideoPlaybackResourceChoiceOptimizer
 - (NSArray)preferredVideoResources;
-- (PLVideoPlaybackResourceChoiceOptimizer)initWithVideoResources:(id)a3;
+- (PLVideoPlaybackResourceChoiceOptimizer)initWithVideoResources:(id)resources;
 @end
 
 @implementation PLVideoPlaybackResourceChoiceOptimizer
@@ -47,8 +47,8 @@
       while (v6);
     }
 
-    v10 = [(NSArray *)self->_videoResources firstObject];
-    v11 = [objc_opt_class() deviceSupportsHDR];
+    firstObject = [(NSArray *)self->_videoResources firstObject];
+    deviceSupportsHDR = [objc_opt_class() deviceSupportsHDR];
 
     v12 = [(NSArray *)self->_videoResources indexOfObjectPassingTest:&__block_literal_global_63305]!= 0x7FFFFFFFFFFFFFFFLL;
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -57,7 +57,7 @@
     v19[1] = 3221225472;
     v19[2] = __65__PLVideoPlaybackResourceChoiceOptimizer_preferredVideoResources__block_invoke_2;
     v19[3] = &unk_1E756EFA8;
-    v21 = v11;
+    v21 = deviceSupportsHDR;
     v22 = v12;
     v19[4] = self;
     v15 = v13;
@@ -119,16 +119,16 @@ LABEL_12:
 LABEL_13:
 }
 
-- (PLVideoPlaybackResourceChoiceOptimizer)initWithVideoResources:(id)a3
+- (PLVideoPlaybackResourceChoiceOptimizer)initWithVideoResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = PLVideoPlaybackResourceChoiceOptimizer;
   v6 = [(PLVideoPlaybackResourceChoiceOptimizer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_videoResources, a3);
+    objc_storeStrong(&v6->_videoResources, resources);
   }
 
   return v7;

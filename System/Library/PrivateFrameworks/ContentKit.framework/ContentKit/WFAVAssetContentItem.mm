@@ -1,41 +1,41 @@
 @interface WFAVAssetContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
 - (AVAsset)asset;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
+- (BOOL)canGenerateRepresentationForType:(id)type;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
 - (CLLocation)location;
 - (WFFileType)preferredFileType;
 - (id)duration;
 - (id)frameRate;
-- (id)generateExportSessionForType:(id)a3;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (id)metadataItemForCommonKey:(id)a3;
+- (id)generateExportSessionForType:(id)type;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
+- (id)metadataItemForCommonKey:(id)key;
 - (id)supportedTypes;
-- (void)generateFileRepresentation:(id)a3 forType:(id)a4 metadata:(id)a5 options:(id)a6;
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)getPreferredFileSize:(id)a3;
+- (void)generateFileRepresentation:(id)representation forType:(id)type metadata:(id)metadata options:(id)options;
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class;
+- (void)getPreferredFileSize:(id)size;
 @end
 
 @implementation WFAVAssetContentItem
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()])
+  typeCopy = type;
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
     v5 = [(WFAVAssetContentItem *)self metadataItemForCommonKey:@"artwork"];
     v6 = v5 != 0;
   }
 
-  else if ([v4 isEqualToUTType:*MEMORY[0x277CE1D08]] & 1) != 0 || (objc_msgSend(v4, "isEqualToUTType:", *MEMORY[0x277CE1D00]) & 1) != 0 || (objc_msgSend(v4, "isEqualToUTType:", *MEMORY[0x277CE1EC0]))
+  else if ([typeCopy isEqualToUTType:*MEMORY[0x277CE1D08]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToUTType:", *MEMORY[0x277CE1D00]) & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToUTType:", *MEMORY[0x277CE1EC0]))
   {
     v6 = 0;
   }
@@ -44,7 +44,7 @@
   {
     v8.receiver = self;
     v8.super_class = WFAVAssetContentItem;
-    v6 = [(WFGenericFileContentItem *)&v8 canGenerateRepresentationForType:v4];
+    v6 = [(WFGenericFileContentItem *)&v8 canGenerateRepresentationForType:typeCopy];
   }
 
   return v6;
@@ -55,8 +55,8 @@
   v3 = objc_opt_new();
   v4 = MEMORY[0x277D79F68];
   v5 = [(WFAVAssetContentItem *)self generateExportSessionForType:0];
-  v6 = [v5 supportedFileTypes];
-  v7 = [v4 typesFromStrings:v6];
+  supportedFileTypes = [v5 supportedFileTypes];
+  v7 = [v4 typesFromStrings:supportedFileTypes];
   [v3 addObjectsFromArray:v7];
 
   v8 = [MEMORY[0x277D79F68] typeWithString:*MEMORY[0x277D7A418]];
@@ -91,32 +91,32 @@
   return v3;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = NSStringFromClass(a3);
+  v7 = NSStringFromClass(class);
   v8 = [@"AVAsset" isEqualToString:v7];
 
   if (v8)
   {
-    v9 = [(WFContentItem *)self internalRepresentationType];
-    v10 = [(WFContentItem *)self fileRepresentationForType:v9];
+    internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+    v10 = [(WFContentItem *)self fileRepresentationForType:internalRepresentationType];
 
     if (v10)
     {
-      v11 = [v10 fileURL];
+      fileURL = [v10 fileURL];
       v12 = MEMORY[0x277CBEBC0];
       v13 = NSHomeDirectory();
       v14 = [v12 fileURLWithPath:v13 isDirectory:1];
-      if ([v11 wf_isContainedByDirectoryAtURL:v14])
+      if ([fileURL wf_isContainedByDirectoryAtURL:v14])
       {
       }
 
       else
       {
-        v20 = [v10 fileURL];
+        fileURL2 = [v10 fileURL];
         v21 = +[WFTemporaryFileManager sharedAppGroupDirectoryURL];
-        v22 = [v20 wf_isContainedByDirectoryAtURL:v21];
+        v22 = [fileURL2 wf_isContainedByDirectoryAtURL:v21];
 
         if ((v22 & 1) == 0)
         {
@@ -124,19 +124,19 @@
 
           v31 = v23;
           v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
-          v25 = [(WFContentItem *)self internalRepresentationType];
-          [(WFContentItem *)self setFileRepresentations:v24 forType:v25];
+          internalRepresentationType2 = [(WFContentItem *)self internalRepresentationType];
+          [(WFContentItem *)self setFileRepresentations:v24 forType:internalRepresentationType2];
 
           v10 = v23;
         }
       }
 
       AVURLAssetClass_9810 = getAVURLAssetClass_9810();
-      v27 = [v10 fileURL];
-      v28 = [AVURLAssetClass_9810 assetWithURL:v27];
+      fileURL3 = [v10 fileURL];
+      v28 = [AVURLAssetClass_9810 assetWithURL:fileURL3];
 
-      v29 = [v10 wfName];
-      v15 = [WFObjectRepresentation object:v28 named:v29];
+      wfName = [v10 wfName];
+      v15 = [WFObjectRepresentation object:v28 named:wfName];
     }
 
     else
@@ -155,23 +155,23 @@
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v15 = 0;
       goto LABEL_21;
     }
 
     v10 = [(WFAVAssetContentItem *)self metadataItemForCommonKey:@"artwork"];
-    v16 = [v10 value];
+    value = [v10 value];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v16 objectForKey:@"data"];
+      v17 = [value objectForKey:@"data"];
       v18 = [MEMORY[0x277D79FC8] imageWithData:v17];
       if (v18)
       {
-        v19 = [(WFContentItem *)self name];
-        v15 = [WFObjectRepresentation object:v18 named:v19];
+        name = [(WFContentItem *)self name];
+        v15 = [WFObjectRepresentation object:v18 named:name];
       }
 
       else
@@ -191,25 +191,25 @@ LABEL_21:
   return v15;
 }
 
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class
 {
-  v7 = a3;
-  if ([(objc_class *)a5 isSubclassOfClass:getAVMutableMovieClass()])
+  representationCopy = representation;
+  if ([(objc_class *)class isSubclassOfClass:getAVMutableMovieClass()])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __70__WFAVAssetContentItem_generateObjectRepresentation_options_forClass___block_invoke;
     v9[3] = &unk_278346B40;
-    v11 = a5;
+    classCopy = class;
     v9[4] = self;
-    v10 = v7;
+    v10 = representationCopy;
     [(WFContentItem *)self getFileRepresentation:v9 forType:0];
   }
 
   else
   {
-    v8 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-    (*(v7 + 2))(v7, 0, 0, v8);
+    v8 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+    (*(representationCopy + 2))(representationCopy, 0, 0, v8);
   }
 }
 
@@ -261,27 +261,27 @@ void __70__WFAVAssetContentItem_generateObjectRepresentation_options_forClass___
   }
 }
 
-- (void)generateFileRepresentation:(id)a3 forType:(id)a4 metadata:(id)a5 options:(id)a6
+- (void)generateFileRepresentation:(id)representation forType:(id)type metadata:(id)metadata options:(id)options
 {
   v179 = *MEMORY[0x277D85DE8];
-  v139 = a3;
-  v10 = a4;
-  v140 = a5;
-  v134 = v10;
-  v135 = a6;
-  if (v10)
+  representationCopy = representation;
+  typeCopy = type;
+  metadataCopy = metadata;
+  v134 = typeCopy;
+  optionsCopy = options;
+  if (typeCopy)
   {
-    v11 = v10;
+    preferredFileType = typeCopy;
   }
 
   else
   {
-    v11 = [(WFAVAssetContentItem *)self preferredFileType];
+    preferredFileType = [(WFAVAssetContentItem *)self preferredFileType];
   }
 
-  v12 = v11;
-  v137 = v11;
-  if ([v11 conformsToUTType:*MEMORY[0x277CE1DE0]])
+  v12 = preferredFileType;
+  v137 = preferredFileType;
+  if ([preferredFileType conformsToUTType:*MEMORY[0x277CE1DE0]])
   {
     v13 = [MEMORY[0x277D79F68] typeWithString:*MEMORY[0x277D7A418]];
   }
@@ -292,17 +292,17 @@ void __70__WFAVAssetContentItem_generateObjectRepresentation_options_forClass___
   }
 
   v14 = v13;
-  v15 = [(WFContentItem *)self name];
-  v16 = [WFFileRepresentation proposedFilenameForFile:v15 ofType:v14];
+  name = [(WFContentItem *)self name];
+  v16 = [WFFileRepresentation proposedFilenameForFile:name ofType:v14];
   v138 = [WFTemporaryFileManager proposedTemporaryFileURLForFilename:v16];
 
-  v17 = [(WFAVAssetContentItem *)self asset];
-  if (v17)
+  asset = [(WFAVAssetContentItem *)self asset];
+  if (asset)
   {
     getAVURLAssetClass_9810();
     if (objc_opt_isKindOfClass())
     {
-      v18 = v17;
+      v18 = asset;
     }
 
     else
@@ -320,15 +320,15 @@ void __70__WFAVAssetContentItem_generateObjectRepresentation_options_forClass___
 
   v136 = v19;
   v20 = [v19 URL];
-  v21 = [v20 wfFileType];
-  v22 = [v14 isEqualToType:v21];
+  wfFileType = [v20 wfFileType];
+  v22 = [v14 isEqualToType:wfFileType];
 
-  if (v22 && ![v140 count])
+  if (v22 && ![metadataCopy count])
   {
-    v96 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v97 = [v136 URL];
     v149 = 0;
-    v98 = [v96 copyItemAtURL:v97 toURL:v138 error:&v149];
+    v98 = [defaultManager copyItemAtURL:v97 toURL:v138 error:&v149];
     v99 = v149;
 
     if (v98)
@@ -338,12 +338,12 @@ void __70__WFAVAssetContentItem_generateObjectRepresentation_options_forClass___
       v101 = [MEMORY[0x277CBEA60] arrayWithObjects:&v168 count:1];
       [(WFContentItem *)self setFileRepresentations:v101 forType:v137];
 
-      v139[2](v139, v100, 0);
+      representationCopy[2](representationCopy, v100, 0);
     }
 
     else
     {
-      (v139)[2](v139, 0, v99);
+      (representationCopy)[2](representationCopy, 0, v99);
     }
   }
 
@@ -355,12 +355,12 @@ void __70__WFAVAssetContentItem_generateObjectRepresentation_options_forClass___
 
     if (v24)
     {
-      v25 = [(WFAVAssetContentItem *)self asset];
-      v26 = [(WFContentItem *)self name];
-      v27 = v25;
-      v28 = v26;
-      v127 = v140;
-      v132 = v139;
+      asset2 = [(WFAVAssetContentItem *)self asset];
+      name2 = [(WFContentItem *)self name];
+      v27 = asset2;
+      v28 = name2;
+      v127 = metadataCopy;
+      v132 = representationCopy;
       v171 = 0;
       v172 = &v171;
       v173 = 0x2050000000;
@@ -384,9 +384,9 @@ void __70__WFAVAssetContentItem_generateObjectRepresentation_options_forClass___
       v131 = v163;
       v31 = getAVMediaTypeAudio();
       v32 = [v27 tracksWithMediaType:v31];
-      v133 = [v32 firstObject];
+      firstObject = [v32 firstObject];
 
-      if (!v133 || ([v133 formatDescriptions], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "count") == 1, v33, !v34))
+      if (!firstObject || ([firstObject formatDescriptions], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "count") == 1, v33, !v34))
       {
         v132[2](v132, 0, 0);
 LABEL_73:
@@ -622,7 +622,7 @@ LABEL_73:
 
                       v70 = v69;
                       _Block_object_dispose(&v164, 8);
-                      v126 = [v69 assetReaderTrackOutputWithTrack:v133 outputSettings:v124];
+                      v126 = [v69 assetReaderTrackOutputWithTrack:firstObject outputSettings:v124];
                       if (([v130 canAddOutput:v126] & 1) == 0)
                       {
                         (v132)[2](v132, 0, v131);
@@ -708,7 +708,7 @@ LABEL_72:
                         [v84 setExpectsMediaDataInRealTime:0];
                         if ([v79 canAddInput:v84] & 1) != 0 && (objc_msgSend(v79, "addInput:", v84), (objc_msgSend(v79, "startWriting")) && (objc_msgSend(v130, "startReading"))
                         {
-                          soft_CMTimeMake_4661(&v150, [v133 naturalTimeScale]);
+                          soft_CMTimeMake_4661(&v150, [firstObject naturalTimeScale]);
                           [v79 startSessionAtSourceTime:&v150];
                           v85 = dispatch_get_global_queue(0, 0);
                           v150 = MEMORY[0x277D85DD0];
@@ -736,72 +736,72 @@ LABEL_72:
                         goto LABEL_72;
                       }
 
-                      v118 = [MEMORY[0x277CCA890] currentHandler];
+                      currentHandler = [MEMORY[0x277CCA890] currentHandler];
                       v119 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVFileType getAVFileTypeAIFF(void)"];
-                      [v118 handleFailureInFunction:v119 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:30 description:{@"%s", dlerror()}];
+                      [currentHandler handleFailureInFunction:v119 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:30 description:{@"%s", dlerror()}];
                     }
 
                     else
                     {
-                      v116 = [MEMORY[0x277CCA890] currentHandler];
+                      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
                       v117 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVChannelLayoutKey(void)"];
-                      [v116 handleFailureInFunction:v117 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:33 description:{@"%s", dlerror(), v42, v120, v121}];
+                      [currentHandler2 handleFailureInFunction:v117 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:33 description:{@"%s", dlerror(), v42, v120, v121}];
                     }
                   }
 
                   else
                   {
-                    v114 = [MEMORY[0x277CCA890] currentHandler];
+                    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
                     v115 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVNumberOfChannelsKey(void)"];
-                    [v114 handleFailureInFunction:v115 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:32 description:{@"%s", dlerror()}];
+                    [currentHandler3 handleFailureInFunction:v115 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:32 description:{@"%s", dlerror()}];
                   }
                 }
 
                 else
                 {
-                  v112 = [MEMORY[0x277CCA890] currentHandler];
+                  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
                   v113 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVSampleRateKey(void)"];
-                  [v112 handleFailureInFunction:v113 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:31 description:{@"%s", dlerror()}];
+                  [currentHandler4 handleFailureInFunction:v113 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:31 description:{@"%s", dlerror()}];
                 }
               }
 
               else
               {
-                v110 = [MEMORY[0x277CCA890] currentHandler];
+                currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
                 v111 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVLinearPCMIsBigEndianKey(void)"];
-                [v110 handleFailureInFunction:v111 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:29 description:{@"%s", dlerror()}];
+                [currentHandler5 handleFailureInFunction:v111 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:29 description:{@"%s", dlerror()}];
               }
             }
 
             else
             {
-              v108 = [MEMORY[0x277CCA890] currentHandler];
+              currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
               v109 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVLinearPCMIsNonInterleaved(void)"];
-              [v108 handleFailureInFunction:v109 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:28 description:{@"%s", dlerror()}];
+              [currentHandler6 handleFailureInFunction:v109 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:28 description:{@"%s", dlerror()}];
             }
           }
 
           else
           {
-            v106 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
             v107 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVLinearPCMBitDepthKey(void)"];
-            [v106 handleFailureInFunction:v107 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:27 description:{@"%s", dlerror()}];
+            [currentHandler7 handleFailureInFunction:v107 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:27 description:{@"%s", dlerror()}];
           }
         }
 
         else
         {
-          v104 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
           v105 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVLinearPCMIsFloatKey(void)"];
-          [v104 handleFailureInFunction:v105 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:26 description:{@"%s", dlerror()}];
+          [currentHandler8 handleFailureInFunction:v105 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:26 description:{@"%s", dlerror()}];
         }
       }
 
       else
       {
-        v102 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler9 = [MEMORY[0x277CCA890] currentHandler];
         v103 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVFormatIDKey(void)"];
-        [v102 handleFailureInFunction:v103 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:25 description:{@"%s", dlerror()}];
+        [currentHandler9 handleFailureInFunction:v103 file:@"WFAudioInterchangeFormatEncoder.m" lineNumber:25 description:{@"%s", dlerror()}];
       }
 
       __break(1u);
@@ -809,14 +809,14 @@ LABEL_72:
 
     v87 = [(WFAVAssetContentItem *)self generateExportSessionForType:v14];
     [v87 setOutputURL:v138];
-    if (v140)
+    if (metadataCopy)
     {
       [v87 setMetadata:?];
     }
 
     v88 = MEMORY[0x277D79F68];
-    v89 = [v87 supportedFileTypes];
-    v90 = [v88 typesFromStrings:v89];
+    supportedFileTypes = [v87 supportedFileTypes];
+    v90 = [v88 typesFromStrings:supportedFileTypes];
     v147[0] = MEMORY[0x277D85DD0];
     v147[1] = 3221225472;
     v147[2] = __76__WFAVAssetContentItem_generateFileRepresentation_forType_metadata_options___block_invoke;
@@ -829,23 +829,23 @@ LABEL_72:
     if (v93)
     {
       v95 = [objc_opt_class() badCoercionErrorForType:v137];
-      (v139)[2](v139, 0, v95);
+      (representationCopy)[2](representationCopy, 0, v95);
     }
 
     else
     {
-      v94 = [v91 string];
-      [v87 setOutputFileType:v94];
+      string = [v91 string];
+      [v87 setOutputFileType:string];
 
       v141[0] = MEMORY[0x277D85DD0];
       v141[1] = 3221225472;
       v141[2] = __76__WFAVAssetContentItem_generateFileRepresentation_forType_metadata_options___block_invoke_2;
       v141[3] = &unk_278346B18;
       v142 = v87;
-      v146 = v139;
+      v146 = representationCopy;
       v143 = v138;
       v144 = v137;
-      v145 = self;
+      selfCopy = self;
       [v142 exportAsynchronouslyWithCompletionHandler:v141];
 
       v95 = v142;
@@ -879,39 +879,39 @@ void __76__WFAVAssetContentItem_generateFileRepresentation_forType_metadata_opti
   }
 }
 
-- (id)metadataItemForCommonKey:(id)a3
+- (id)metadataItemForCommonKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFAVAssetContentItem *)self asset];
-  v6 = [v5 commonMetadata];
+  keyCopy = key;
+  asset = [(WFAVAssetContentItem *)self asset];
+  commonMetadata = [asset commonMetadata];
 
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"commonKey = %@", v4];
+  keyCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"commonKey = %@", keyCopy];
 
-  v8 = [v6 filteredArrayUsingPredicate:v7];
-  v9 = [v8 firstObject];
+  v8 = [commonMetadata filteredArrayUsingPredicate:keyCopy];
+  firstObject = [v8 firstObject];
 
-  return v9;
+  return firstObject;
 }
 
-- (id)generateExportSessionForType:(id)a3
+- (id)generateExportSessionForType:(id)type
 {
-  v4 = a3;
-  v5 = [(WFAVAssetContentItem *)self asset];
+  typeCopy = type;
+  asset = [(WFAVAssetContentItem *)self asset];
   getAVURLAssetClass_9810();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(WFAVAssetContentItem *)self asset];
+    asset2 = [(WFAVAssetContentItem *)self asset];
   }
 
   else
   {
-    v6 = 0;
+    asset2 = 0;
   }
 
   v7 = MEMORY[0x277D79F68];
-  v8 = [v6 URL];
-  v9 = [v8 pathExtension];
-  v10 = [v7 typeFromFileExtension:v9];
+  v8 = [asset2 URL];
+  pathExtension = [v8 pathExtension];
+  v10 = [v7 typeFromFileExtension:pathExtension];
 
   v34 = 0;
   v35 = &v34;
@@ -934,9 +934,9 @@ void __76__WFAVAssetContentItem_generateFileRepresentation_forType_metadata_opti
   _Block_object_dispose(&v34, 8);
   if (!v11)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVAssetExportPresetPassthrough(void)"];
-    [v27 handleFailureInFunction:v28 file:@"WFAVAssetContentItem.m" lineNumber:48 description:{@"%s", dlerror(), v29, v30, v31, v32}];
+    [currentHandler handleFailureInFunction:v28 file:@"WFAVAssetContentItem.m" lineNumber:48 description:{@"%s", dlerror(), v29, v30, v31, v32}];
     goto LABEL_28;
   }
 
@@ -962,16 +962,16 @@ void __76__WFAVAssetContentItem_generateFileRepresentation_forType_metadata_opti
   _Block_object_dispose(&v34, 8);
   if (!v14)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVFileType getAVFileTypeAppleM4A(void)"];
-    [v27 handleFailureInFunction:v28 file:@"WFAVAssetContentItem.m" lineNumber:49 description:{@"%s", dlerror(), v29, v30, v31, v32}];
+    [currentHandler handleFailureInFunction:v28 file:@"WFAVAssetContentItem.m" lineNumber:49 description:{@"%s", dlerror(), v29, v30, v31, v32}];
     goto LABEL_28;
   }
 
   v16 = *v14;
-  if (v4)
+  if (typeCopy)
   {
-    v17 = v4;
+    v17 = typeCopy;
   }
 
   else
@@ -1010,9 +1010,9 @@ LABEL_16:
       goto LABEL_20;
     }
 
-    v27 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getAVAssetExportPresetAppleM4A(void)"];
-    [v27 handleFailureInFunction:v28 file:@"WFAVAssetContentItem.m" lineNumber:50 description:{@"%s", dlerror(), v29, v30, v31, v32}];
+    [currentHandler handleFailureInFunction:v28 file:@"WFAVAssetContentItem.m" lineNumber:50 description:{@"%s", dlerror(), v29, v30, v31, v32}];
 LABEL_28:
 
     __break(1u);
@@ -1045,8 +1045,8 @@ LABEL_20:
 
   v23 = v22;
   _Block_object_dispose(&v34, 8);
-  v24 = [(WFAVAssetContentItem *)self asset];
-  v25 = [v22 exportSessionWithAsset:v24 presetName:v13];
+  asset3 = [(WFAVAssetContentItem *)self asset];
+  v25 = [v22 exportSessionWithAsset:asset3 presetName:v13];
 
   return v25;
 }
@@ -1055,45 +1055,45 @@ LABEL_20:
 {
   v3 = [WFObjectType typeWithClass:getAVAssetClass()];
   v4 = [(WFContentItem *)self getRepresentationsForType:v3 error:0];
-  v5 = [v4 firstObject];
-  v6 = [v5 object];
+  firstObject = [v4 firstObject];
+  object = [firstObject object];
 
-  return v6;
+  return object;
 }
 
 - (WFFileType)preferredFileType
 {
-  v3 = [(WFContentItem *)self internalRepresentationType];
+  internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(WFContentItem *)self internalRepresentationType];
+    internalRepresentationType2 = [(WFContentItem *)self internalRepresentationType];
   }
 
   else
   {
-    v6 = [(WFContentItem *)self internalRepresentation];
-    v7 = [v6 wfType];
-    v8 = [v7 conformsToClass:getAVURLAssetClass_9810()];
+    internalRepresentation = [(WFContentItem *)self internalRepresentation];
+    wfType = [internalRepresentation wfType];
+    v8 = [wfType conformsToClass:getAVURLAssetClass_9810()];
 
     if (v8)
     {
-      v9 = [(WFAVAssetContentItem *)self asset];
-      v10 = [v9 URL];
-      v11 = [v10 wfFileType];
+      asset = [(WFAVAssetContentItem *)self asset];
+      v10 = [asset URL];
+      wfFileType = [v10 wfFileType];
 
-      if (v11)
+      if (wfFileType)
       {
-        if ([v11 conformsToUTType:*MEMORY[0x277CE1DE0]])
+        if ([wfFileType conformsToUTType:*MEMORY[0x277CE1DE0]])
         {
-          v12 = [MEMORY[0x277D79F68] typeWithString:*MEMORY[0x277D7A418]];
+          preferredFileType = [MEMORY[0x277D79F68] typeWithString:*MEMORY[0x277D7A418]];
         }
 
         else
         {
-          v12 = v11;
+          preferredFileType = wfFileType;
         }
       }
 
@@ -1101,20 +1101,20 @@ LABEL_20:
       {
         v16.receiver = self;
         v16.super_class = WFAVAssetContentItem;
-        v12 = [(WFContentItem *)&v16 preferredFileType];
+        preferredFileType = [(WFContentItem *)&v16 preferredFileType];
       }
 
-      v13 = v12;
+      v13 = preferredFileType;
 
       goto LABEL_12;
     }
 
     v15.receiver = self;
     v15.super_class = WFAVAssetContentItem;
-    v5 = [(WFContentItem *)&v15 preferredFileType];
+    internalRepresentationType2 = [(WFContentItem *)&v15 preferredFileType];
   }
 
-  v13 = v5;
+  v13 = internalRepresentationType2;
 LABEL_12:
 
   return v13;
@@ -1123,8 +1123,8 @@ LABEL_12:
 - (CLLocation)location
 {
   AVMetadataItemClass = getAVMetadataItemClass();
-  v4 = [(WFAVAssetContentItem *)self asset];
-  v5 = [v4 metadata];
+  asset = [(WFAVAssetContentItem *)self asset];
+  metadata = [asset metadata];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -1148,17 +1148,17 @@ LABEL_12:
   {
     v8 = *v6;
     v9 = getAVMetadataKeySpaceCommon();
-    v10 = [AVMetadataItemClass metadataItemsFromArray:v5 withKey:v8 keySpace:v9];
+    v10 = [AVMetadataItemClass metadataItemsFromArray:metadata withKey:v8 keySpace:v9];
 
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
 
-    if (v11)
+    if (firstObject)
     {
-      v12 = [v11 stringValue];
-      if ([v12 length] >= 0x11)
+      stringValue = [firstObject stringValue];
+      if ([stringValue length] >= 0x11)
       {
-        v14 = [v12 substringToIndex:8];
-        v15 = [v12 substringWithRange:{8, 9}];
+        v14 = [stringValue substringToIndex:8];
+        v15 = [stringValue substringWithRange:{8, 9}];
         v30 = 0;
         v31 = &v30;
         v32 = 0x2050000000;
@@ -1200,9 +1200,9 @@ LABEL_12:
 
   else
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataKey getAVMetadataCommonKeyLocation(void)"];
-    [v23 handleFailureInFunction:v24 file:@"WFAVAssetContentItem.m" lineNumber:47 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v24 file:@"WFAVAssetContentItem.m" lineNumber:47 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -1212,11 +1212,11 @@ LABEL_12:
 
 - (id)duration
 {
-  v2 = [(WFAVAssetContentItem *)self asset];
-  v3 = v2;
-  if (v2)
+  asset = [(WFAVAssetContentItem *)self asset];
+  v3 = asset;
+  if (asset)
   {
-    [v2 duration];
+    [asset duration];
   }
 
   else
@@ -1250,11 +1250,11 @@ LABEL_12:
     v21 = v19;
     v6 = v4(&v20);
 
-    v7 = [MEMORY[0x277CBEAA8] date];
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
-    v9 = [v7 dateByAddingTimeInterval:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v9 = [date dateByAddingTimeInterval:v6];
     v10 = 224;
-    v11 = [v8 components:224 fromDate:v7 toDate:v9 options:0];
+    v11 = [currentCalendar components:224 fromDate:date toDate:v9 options:0];
 
     if ([v11 hour])
     {
@@ -1263,8 +1263,8 @@ LABEL_12:
 
     else
     {
-      v13 = [v11 minute];
-      if (v13)
+      minute = [v11 minute];
+      if (minute)
       {
         v12 = 1;
       }
@@ -1274,7 +1274,7 @@ LABEL_12:
         v12 = 0x10000;
       }
 
-      if (v13)
+      if (minute)
       {
         v10 = 224;
       }
@@ -1292,9 +1292,9 @@ LABEL_12:
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Float64 soft_CMTimeGetSeconds(CMTime)"];
-    [v16 handleFailureInFunction:v17 file:@"WFAVAssetContentItem.m" lineNumber:25 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v17 file:@"WFAVAssetContentItem.m" lineNumber:25 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -1302,10 +1302,10 @@ LABEL_12:
   return result;
 }
 
-- (void)getPreferredFileSize:(id)a3
+- (void)getPreferredFileSize:(id)size
 {
-  v4 = a3;
-  v5 = [(WFContentItem *)self internalRepresentation];
+  sizeCopy = size;
+  internalRepresentation = [(WFContentItem *)self internalRepresentation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1313,7 +1313,7 @@ LABEL_12:
   {
     v24.receiver = self;
     v24.super_class = WFAVAssetContentItem;
-    [(WFContentItem *)&v24 getPreferredFileSize:v4];
+    [(WFContentItem *)&v24 getPreferredFileSize:sizeCopy];
 LABEL_13:
 
     return;
@@ -1343,11 +1343,11 @@ LABEL_13:
   {
     v21 = *v8;
     v22 = *(v8 + 16);
-    v10 = [v7 asset];
-    v11 = v10;
-    if (v10)
+    asset = [v7 asset];
+    v11 = asset;
+    if (asset)
     {
-      [v10 duration];
+      [asset duration];
     }
 
     else
@@ -1387,20 +1387,20 @@ LABEL_13:
       v18 = v23[2];
       [v7 setTimeRange:&v16];
 
-      (*(v4 + 2))(v4, [v7 estimatedOutputFileLength]);
+      (*(sizeCopy + 2))(sizeCopy, [v7 estimatedOutputFileLength]);
       goto LABEL_13;
     }
 
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CMTimeRange soft_CMTimeRangeMake(CMTime, CMTime)"}];
-    [v14 handleFailureInFunction:v15 file:@"WFAVAssetContentItem.m" lineNumber:26 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v15 file:@"WFAVAssetContentItem.m" lineNumber:26 description:{@"%s", dlerror()}];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"CMTime getkCMTimeZero(void)"];
-    [v14 handleFailureInFunction:v15 file:@"WFAVAssetContentItem.m" lineNumber:24 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v15 file:@"WFAVAssetContentItem.m" lineNumber:24 description:{@"%s", dlerror()}];
   }
 
   __break(1u);
@@ -1408,7 +1408,7 @@ LABEL_13:
 
 - (id)frameRate
 {
-  v2 = [(WFAVAssetContentItem *)self asset];
+  asset = [(WFAVAssetContentItem *)self asset];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1425,9 +1425,9 @@ LABEL_13:
   _Block_object_dispose(&v14, 8);
   if (v3)
   {
-    v5 = [v2 tracksWithMediaType:*v3];
-    v6 = [v5 firstObject];
-    [v6 nominalFrameRate];
+    v5 = [asset tracksWithMediaType:*v3];
+    firstObject = [v5 firstObject];
+    [firstObject nominalFrameRate];
     v8 = v7;
 
     LODWORD(v9) = v8;
@@ -1438,9 +1438,9 @@ LABEL_13:
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMediaType getAVMediaTypeVideo(void)"];
-    [v12 handleFailureInFunction:v13 file:@"WFAVAssetContentItem.m" lineNumber:36 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v13 file:@"WFAVAssetContentItem.m" lineNumber:36 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -1448,20 +1448,20 @@ LABEL_13:
   return result;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Media (plural)", @"Media");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Media (singular)", @"Media");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -1495,19 +1495,19 @@ LABEL_13:
   return v5;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "isEqualToUTType:", *MEMORY[0x277CE1D08]) & 1) != 0 || (objc_msgSend(v4, "isEqualToUTType:", *MEMORY[0x277CE1D00]) & 1) != 0 || (objc_msgSend(v4, "isEqualToUTType:", *MEMORY[0x277CE1EC0]))
+  instanceCopy = instance;
+  if ([instanceCopy isEqualToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToUTType:", *MEMORY[0x277CE1D08]) & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToUTType:", *MEMORY[0x277CE1D00]) & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToUTType:", *MEMORY[0x277CE1EC0]))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFAVAssetContentItem;
-    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, instanceCopy);
   }
 
   return v5;
@@ -1515,7 +1515,7 @@ LABEL_13:
 
 + (id)stringConversionBehavior
 {
-  v2 = [a1 propertyForName:@"Name"];
+  v2 = [self propertyForName:@"Name"];
   v3 = [WFContentItemStringConversionBehavior accessingProperty:v2];
 
   return v3;
@@ -1550,9 +1550,9 @@ LABEL_13:
   _Block_object_dispose(&v36, 8);
   if (!v2)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataKey getAVMetadataCommonKeyTitle(void)"];
-    [v18 handleFailureInFunction:v19 file:@"WFAVAssetContentItem.m" lineNumber:43 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v19 file:@"WFAVAssetContentItem.m" lineNumber:43 description:{@"%s", dlerror()}];
 
     goto LABEL_16;
   }
@@ -1578,9 +1578,9 @@ LABEL_13:
   _Block_object_dispose(&v36, 8);
   if (!v4)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataKey getAVMetadataCommonKeyArtist(void)"];
-    [v20 handleFailureInFunction:v21 file:@"WFAVAssetContentItem.m" lineNumber:44 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v21 file:@"WFAVAssetContentItem.m" lineNumber:44 description:{@"%s", dlerror()}];
 
     goto LABEL_16;
   }
@@ -1606,9 +1606,9 @@ LABEL_13:
   _Block_object_dispose(&v36, 8);
   if (!v10)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataKey getAVMetadataCommonKeyAlbumName(void)"];
-    [v22 handleFailureInFunction:v23 file:@"WFAVAssetContentItem.m" lineNumber:45 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v23 file:@"WFAVAssetContentItem.m" lineNumber:45 description:{@"%s", dlerror()}];
 
 LABEL_16:
     __break(1u);
@@ -1725,14 +1725,14 @@ void __40__WFAVAssetContentItem_propertyBuilders__block_invoke_2(uint64_t a1)
   (*(v8 + 16))(v8, v9);
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
-  v5 = [(WFAVAssetContentItem *)self asset];
-  v6 = v5;
-  if (v5)
+  textCopy = text;
+  asset = [(WFAVAssetContentItem *)self asset];
+  v6 = asset;
+  if (asset)
   {
-    [v5 duration];
+    [asset duration];
   }
 
   else
@@ -1765,9 +1765,9 @@ void __40__WFAVAssetContentItem_propertyBuilders__block_invoke_2(uint64_t a1)
     v8 = v7(&v15);
     v9 = WFChooseFromListFormatPlaybackDuration(v8);
 
-    if (v4)
+    if (textCopy)
     {
-      v4[2](v4, v9);
+      textCopy[2](textCopy, v9);
     }
 
     return 1;
@@ -1775,9 +1775,9 @@ void __40__WFAVAssetContentItem_propertyBuilders__block_invoke_2(uint64_t a1)
 
   else
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"Float64 soft_CMTimeGetSeconds(CMTime)"];
-    [v11 handleFailureInFunction:v12 file:@"WFContentItem+ChooseFromList.m" lineNumber:31 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v12 file:@"WFContentItem+ChooseFromList.m" lineNumber:31 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -1785,9 +1785,9 @@ void __40__WFAVAssetContentItem_propertyBuilders__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2050000000;
@@ -1806,8 +1806,8 @@ void __40__WFAVAssetContentItem_propertyBuilders__block_invoke_2(uint64_t a1)
 
   v6 = v5;
   _Block_object_dispose(&v28, 8);
-  v7 = [(WFAVAssetContentItem *)self asset];
-  v8 = [v7 commonMetadata];
+  asset = [(WFAVAssetContentItem *)self asset];
+  commonMetadata = [asset commonMetadata];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -1830,9 +1830,9 @@ void __40__WFAVAssetContentItem_propertyBuilders__block_invoke_2(uint64_t a1)
   _Block_object_dispose(&v28, 8);
   if (!v9)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataKey getAVMetadataCommonKeyArtist(void)"];
-    [v21 handleFailureInFunction:v22 file:@"WFContentItem+ChooseFromList.m" lineNumber:36 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v22 file:@"WFContentItem+ChooseFromList.m" lineNumber:36 description:{@"%s", dlerror()}];
 LABEL_18:
 
     __break(1u);
@@ -1862,21 +1862,21 @@ LABEL_18:
   _Block_object_dispose(&v28, 8);
   if (!v13)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"AVMetadataKeySpace getAVMetadataKeySpaceCommon(void)"];
-    [v21 handleFailureInFunction:v22 file:@"WFContentItem+ChooseFromList.m" lineNumber:35 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v22 file:@"WFContentItem+ChooseFromList.m" lineNumber:35 description:{@"%s", dlerror()}];
     goto LABEL_18;
   }
 
-  v16 = [v5 metadataItemsFromArray:v8 withKey:v12 keySpace:*v13];
-  v17 = [v16 firstObject];
-  v18 = [v17 value];
+  v16 = [v5 metadataItemsFromArray:commonMetadata withKey:v12 keySpace:*v13];
+  firstObject = [v16 firstObject];
+  value = [firstObject value];
 
-  if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (v4)
+    if (subtitleCopy)
     {
-      v4[2](v4, v18);
+      subtitleCopy[2](subtitleCopy, value);
     }
 
     v19 = 1;

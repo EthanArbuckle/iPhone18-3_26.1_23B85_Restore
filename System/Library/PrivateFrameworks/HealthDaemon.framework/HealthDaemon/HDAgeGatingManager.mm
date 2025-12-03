@@ -1,49 +1,49 @@
 @interface HDAgeGatingManager
-- (HDAgeGatingManager)initWithProfile:(id)a3;
-- (HDAgeGatingManager)initWithProfile:(id)a3 userDefaults:(id)a4 queue:(id)a5;
-- (id)ageInYearsWithError:(id *)a3;
+- (HDAgeGatingManager)initWithProfile:(id)profile;
+- (HDAgeGatingManager)initWithProfile:(id)profile userDefaults:(id)defaults queue:(id)queue;
+- (id)ageInYearsWithError:(id *)error;
 - (void)_queue_updateAgeGating;
 - (void)_updateAgeGatingOnQueue;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)didReceiveDayChangeNotification:(id)a3;
-- (void)profileDidBecomeReady:(id)a3;
+- (void)didReceiveDayChangeNotification:(id)notification;
+- (void)profileDidBecomeReady:(id)ready;
 - (void)unitTesting_updateAgeGates;
 @end
 
 @implementation HDAgeGatingManager
 
-- (HDAgeGatingManager)initWithProfile:(id)a3
+- (HDAgeGatingManager)initWithProfile:(id)profile
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
+  profileCopy = profile;
   v6 = [v4 alloc];
   v7 = [v6 initWithSuiteName:*MEMORY[0x277CCE228]];
   v8 = HKCreateSerialDispatchQueue();
-  v9 = [(HDAgeGatingManager *)self initWithProfile:v5 userDefaults:v7 queue:v8];
+  v9 = [(HDAgeGatingManager *)self initWithProfile:profileCopy userDefaults:v7 queue:v8];
 
   return v9;
 }
 
-- (HDAgeGatingManager)initWithProfile:(id)a3 userDefaults:(id)a4 queue:(id)a5
+- (HDAgeGatingManager)initWithProfile:(id)profile userDefaults:(id)defaults queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  profileCopy = profile;
+  defaultsCopy = defaults;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = HDAgeGatingManager;
   v12 = [(HDAgeGatingManager *)&v16 init];
   if (v12)
   {
-    if (!v9)
+    if (!profileCopy)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v12 file:@"HDAgeGatingManager.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:@"HDAgeGatingManager.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"profile != nil"}];
     }
 
-    objc_storeWeak(&v12->_profile, v9);
-    objc_storeStrong(&v12->_userDefaults, a4);
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeWeak(&v12->_profile, profileCopy);
+    objc_storeStrong(&v12->_userDefaults, defaults);
+    objc_storeStrong(&v12->_queue, queue);
     WeakRetained = objc_loadWeakRetained(&v12->_profile);
     [WeakRetained registerProfileReadyObserver:v12 queue:0];
   }
@@ -65,8 +65,8 @@
       notify_cancel(self->_userCharacteristicsDidChangeNotificationToken);
     }
 
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277CBE580] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277CBE580] object:0];
   }
 
   v4.receiver = self;
@@ -74,7 +74,7 @@
   [(HDAgeGatingManager *)&v4 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   if (self)
   {
@@ -97,8 +97,8 @@
     v16[1] = v4;
     objc_copyWeak(v16, &location);
     notify_register_dispatch(v6, &self->_userCharacteristicsDidChangeNotificationToken, v7, v15);
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel_didReceiveDayChangeNotification_ name:*MEMORY[0x277CBE580] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_didReceiveDayChangeNotification_ name:*MEMORY[0x277CBE580] object:0];
 
     objc_destroyWeak(v16);
     objc_destroyWeak(v21);
@@ -113,13 +113,13 @@
     v11 = [HDMaintenanceOperation maintenanceOperationWithName:v9 queue:v10 synchronousBlock:&handler];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v13 = [WeakRetained daemon];
-    v14 = [v13 maintenanceWorkCoordinator];
-    [v14 enqueueMaintenanceOperation:v11];
+    daemon = [WeakRetained daemon];
+    maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v11];
   }
 }
 
-- (void)didReceiveDayChangeNotification:(id)a3
+- (void)didReceiveDayChangeNotification:(id)notification
 {
   v11 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -140,14 +140,14 @@
 
 - (void)_updateAgeGatingOnQueue
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 16);
+    v1 = *(self + 16);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __45__HDAgeGatingManager__updateAgeGatingOnQueue__block_invoke;
     block[3] = &unk_278613968;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -166,20 +166,20 @@
 - (void)_queue_updateAgeGating
 {
   v67[12] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(self + 16));
     v47 = 0;
-    v2 = [a1 ageInYearsWithError:&v47];
+    v2 = [self ageInYearsWithError:&v47];
     v3 = v47;
     v4 = v3;
     v46 = v2;
     if (v2 || !v3)
     {
       v43 = v3;
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v12 = [WeakRetained database];
-      [v12 removeProtectedDataObserver:a1];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      database = [WeakRetained database];
+      [database removeProtectedDataObserver:self];
 
       v45 = v46;
       v66[0] = *MEMORY[0x277CCE238];
@@ -243,8 +243,8 @@
             v27 = [v21 objectForKeyedSubscript:v26];
             if (v46)
             {
-              v28 = [v45 integerValue];
-              v29 = v28 < [v27 integerValue];
+              integerValue = [v45 integerValue];
+              v29 = integerValue < [v27 integerValue];
             }
 
             else
@@ -252,7 +252,7 @@
               v29 = 0;
             }
 
-            [*(a1 + 32) setBool:v29 forKey:v26];
+            [*(self + 32) setBool:v29 forKey:v26];
             _HKInitializeLogging();
             v30 = HKLogInfrastructure();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -295,11 +295,11 @@
 
     else
     {
-      v5 = [v3 hk_isDatabaseAccessibilityError];
+      hk_isDatabaseAccessibilityError = [v3 hk_isDatabaseAccessibilityError];
       _HKInitializeLogging();
       v6 = HKLogInfrastructure();
       v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-      if (v5)
+      if (hk_isDatabaseAccessibilityError)
       {
         if (v7)
         {
@@ -312,22 +312,22 @@
           _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}s] Protected data not accessible. Adding observer.", buf, 0x16u);
         }
 
-        v6 = objc_loadWeakRetained((a1 + 8));
-        v10 = [v6 database];
-        [v10 addProtectedDataObserver:a1];
+        v6 = objc_loadWeakRetained((self + 8));
+        database2 = [v6 database];
+        [database2 addProtectedDataObserver:self];
       }
 
       else if (v7)
       {
         v36 = objc_opt_class();
         v37 = v36;
-        v38 = [v4 localizedDescription];
+        localizedDescription = [v4 localizedDescription];
         *buf = 138543874;
         v61 = v36;
         v62 = 2082;
         v63 = "[HDAgeGatingManager _queue_updateAgeGating]";
         v64 = 2114;
-        v65 = v38;
+        v65 = localizedDescription;
         _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@ %{public}s] While fetching date of birth components, received error: %{public}@", buf, 0x20u);
       }
     }
@@ -336,13 +336,13 @@
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)ageInYearsWithError:(id *)a3
+- (id)ageInYearsWithError:(id *)error
 {
   v5 = [MEMORY[0x277CCD720] characteristicTypeForIdentifier:*MEMORY[0x277CCBB18]];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained userCharacteristicsManager];
+  userCharacteristicsManager = [WeakRetained userCharacteristicsManager];
   v20 = 0;
-  v8 = [v7 userCharacteristicForType:v5 error:&v20];
+  v8 = [userCharacteristicsManager userCharacteristicForType:v5 error:&v20];
   v9 = v20;
 
   if (v8)
@@ -362,21 +362,21 @@
     {
       v12 = MEMORY[0x277CBEA80];
       v13 = v8;
-      v14 = [v12 hk_gregorianCalendarWithLocalTimeZone];
-      v15 = [MEMORY[0x277CBEAA8] date];
-      v16 = [v14 hk_dateOfBirthDateComponentsWithDate:v15];
+      hk_gregorianCalendarWithLocalTimeZone = [v12 hk_gregorianCalendarWithLocalTimeZone];
+      date = [MEMORY[0x277CBEAA8] date];
+      v16 = [hk_gregorianCalendarWithLocalTimeZone hk_dateOfBirthDateComponentsWithDate:date];
 
-      v17 = [v14 components:4 fromDateComponents:v13 toDateComponents:v16 options:0];
+      v17 = [hk_gregorianCalendarWithLocalTimeZone components:4 fromDateComponents:v13 toDateComponents:v16 options:0];
 
       v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v17, "year")}];
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v18 = v9;
     v11 = 0;
-    *a3 = v9;
+    *error = v9;
   }
 
   else
@@ -426,9 +426,9 @@ void __47__HDAgeGatingManager__registerForNotifications__block_invoke_312(uint64
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  if (a4)
+  if (available)
   {
     [(HDAgeGatingManager *)self _updateAgeGatingOnQueue];
   }

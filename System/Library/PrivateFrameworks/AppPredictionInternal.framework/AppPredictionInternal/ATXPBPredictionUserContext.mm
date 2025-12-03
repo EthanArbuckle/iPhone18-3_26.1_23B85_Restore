@@ -1,20 +1,20 @@
 @interface ATXPBPredictionUserContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLastUnlockDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLastUnlockDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBPredictionUserContext
 
-- (void)setHasLastUnlockDate:(BOOL)a3
+- (void)setHasLastUnlockDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -33,123 +33,123 @@
   v8.receiver = self;
   v8.super_class = ATXPBPredictionUserContext;
   v4 = [(ATXPBPredictionUserContext *)&v8 description];
-  v5 = [(ATXPBPredictionUserContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBPredictionUserContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lastUnlockDate];
-    [v3 setObject:v4 forKey:@"lastUnlockDate"];
+    [dictionary setObject:v4 forKey:@"lastUnlockDate"];
   }
 
   lastAppLaunch = self->_lastAppLaunch;
   if (lastAppLaunch)
   {
-    [v3 setObject:lastAppLaunch forKey:@"lastAppLaunch"];
+    [dictionary setObject:lastAppLaunch forKey:@"lastAppLaunch"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lastAppLaunchDate];
-    [v3 setObject:v6 forKey:@"lastAppLaunchDate"];
+    [dictionary setObject:v6 forKey:@"lastAppLaunchDate"];
   }
 
   secondMostRecentAppLaunch = self->_secondMostRecentAppLaunch;
   if (secondMostRecentAppLaunch)
   {
-    [v3 setObject:secondMostRecentAppLaunch forKey:@"secondMostRecentAppLaunch"];
+    [dictionary setObject:secondMostRecentAppLaunch forKey:@"secondMostRecentAppLaunch"];
   }
 
   lastAppActionLaunch = self->_lastAppActionLaunch;
   if (lastAppActionLaunch)
   {
-    [v3 setObject:lastAppActionLaunch forKey:@"lastAppActionLaunch"];
+    [dictionary setObject:lastAppActionLaunch forKey:@"lastAppActionLaunch"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     lastUnlockDate = self->_lastUnlockDate;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_lastAppLaunch)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     lastAppLaunchDate = self->_lastAppLaunchDate;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_secondMostRecentAppLaunch)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_lastAppActionLaunch)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = *&self->_lastUnlockDate;
-    *(v4 + 48) |= 2u;
+    toCopy[2] = *&self->_lastUnlockDate;
+    *(toCopy + 48) |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_lastAppLaunch)
   {
-    [v4 setLastAppLaunch:?];
-    v4 = v5;
+    [toCopy setLastAppLaunch:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[1] = *&self->_lastAppLaunchDate;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = *&self->_lastAppLaunchDate;
+    *(toCopy + 48) |= 1u;
   }
 
   if (self->_secondMostRecentAppLaunch)
   {
     [v5 setSecondMostRecentAppLaunch:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_lastAppActionLaunch)
   {
     [v5 setLastAppActionLaunch:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -157,7 +157,7 @@
     *(v5 + 48) |= 2u;
   }
 
-  v7 = [(NSString *)self->_lastAppLaunch copyWithZone:a3];
+  v7 = [(NSString *)self->_lastAppLaunch copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -167,42 +167,42 @@
     *(v6 + 48) |= 1u;
   }
 
-  v9 = [(NSString *)self->_secondMostRecentAppLaunch copyWithZone:a3];
+  v9 = [(NSString *)self->_secondMostRecentAppLaunch copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
-  v11 = [(NSString *)self->_lastAppActionLaunch copyWithZone:a3];
+  v11 = [(NSString *)self->_lastAppActionLaunch copyWithZone:zone];
   v12 = *(v6 + 24);
   *(v6 + 24) = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   has = self->_has;
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_lastUnlockDate != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_lastUnlockDate != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   lastAppLaunch = self->_lastAppLaunch;
-  if (lastAppLaunch | *(v4 + 4))
+  if (lastAppLaunch | *(equalCopy + 4))
   {
     if (![(NSString *)lastAppLaunch isEqual:?])
     {
@@ -214,28 +214,28 @@ LABEL_19:
     has = self->_has;
   }
 
-  v8 = *(v4 + 48);
+  v8 = *(equalCopy + 48);
   if (has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_lastAppLaunchDate != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_lastAppLaunchDate != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_19;
   }
 
   secondMostRecentAppLaunch = self->_secondMostRecentAppLaunch;
-  if (secondMostRecentAppLaunch | *(v4 + 5) && ![(NSString *)secondMostRecentAppLaunch isEqual:?])
+  if (secondMostRecentAppLaunch | *(equalCopy + 5) && ![(NSString *)secondMostRecentAppLaunch isEqual:?])
   {
     goto LABEL_19;
   }
 
   lastAppActionLaunch = self->_lastAppActionLaunch;
-  if (lastAppActionLaunch | *(v4 + 3))
+  if (lastAppActionLaunch | *(equalCopy + 3))
   {
     v11 = [(NSString *)lastAppActionLaunch isEqual:?];
   }
@@ -323,38 +323,38 @@ LABEL_20:
   return v16 ^ [(NSString *)self->_lastAppActionLaunch hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[6] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[6] & 2) != 0)
   {
-    self->_lastUnlockDate = v4[2];
+    self->_lastUnlockDate = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (*(v4 + 4))
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(ATXPBPredictionUserContext *)self setLastAppLaunch:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
-    self->_lastAppLaunchDate = v4[1];
+    self->_lastAppLaunchDate = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXPBPredictionUserContext *)self setSecondMostRecentAppLaunch:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ATXPBPredictionUserContext *)self setLastAppActionLaunch:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

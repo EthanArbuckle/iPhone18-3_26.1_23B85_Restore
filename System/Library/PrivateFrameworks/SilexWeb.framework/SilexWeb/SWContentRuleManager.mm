@@ -1,22 +1,22 @@
 @interface SWContentRuleManager
-- (SWContentRuleManager)initWithUserContentController:(id)a3;
+- (SWContentRuleManager)initWithUserContentController:(id)controller;
 - (id)configureContentRules;
-- (void)addContentRuleList:(id)a3 identifier:(id)a4;
-- (void)removeContentListForIdentifier:(id)a3;
+- (void)addContentRuleList:(id)list identifier:(id)identifier;
+- (void)removeContentListForIdentifier:(id)identifier;
 @end
 
 @implementation SWContentRuleManager
 
-- (SWContentRuleManager)initWithUserContentController:(id)a3
+- (SWContentRuleManager)initWithUserContentController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SWContentRuleManager;
   v6 = [(SWContentRuleManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userContentController, a3);
+    objc_storeStrong(&v6->_userContentController, controller);
     v8 = dispatch_group_create();
     dispatchGroup = v7->_dispatchGroup;
     v7->_dispatchGroup = v8;
@@ -25,20 +25,20 @@
   return v7;
 }
 
-- (void)addContentRuleList:(id)a3 identifier:(id)a4
+- (void)addContentRuleList:(id)list identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWContentRuleManager *)self dispatchGroup];
-  dispatch_group_enter(v8);
+  identifierCopy = identifier;
+  listCopy = list;
+  dispatchGroup = [(SWContentRuleManager *)self dispatchGroup];
+  dispatch_group_enter(dispatchGroup);
 
-  v9 = [MEMORY[0x1E6985310] defaultStore];
+  defaultStore = [MEMORY[0x1E6985310] defaultStore];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__SWContentRuleManager_addContentRuleList_identifier___block_invoke;
   v10[3] = &unk_1E84DB460;
   v10[4] = self;
-  [v9 compileContentRuleListForIdentifier:v6 encodedContentRuleList:v7 completionHandler:v10];
+  [defaultStore compileContentRuleListForIdentifier:identifierCopy encodedContentRuleList:listCopy completionHandler:v10];
 }
 
 void __54__SWContentRuleManager_addContentRuleList_identifier___block_invoke(uint64_t a1, void *a2)
@@ -55,19 +55,19 @@ void __54__SWContentRuleManager_addContentRuleList_identifier___block_invoke(uin
   dispatch_group_leave(v6);
 }
 
-- (void)removeContentListForIdentifier:(id)a3
+- (void)removeContentListForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SWContentRuleManager *)self dispatchGroup];
-  dispatch_group_enter(v5);
+  identifierCopy = identifier;
+  dispatchGroup = [(SWContentRuleManager *)self dispatchGroup];
+  dispatch_group_enter(dispatchGroup);
 
-  v6 = [MEMORY[0x1E6985310] defaultStore];
+  defaultStore = [MEMORY[0x1E6985310] defaultStore];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__SWContentRuleManager_removeContentListForIdentifier___block_invoke;
   v7[3] = &unk_1E84DB460;
   v7[4] = self;
-  [v6 lookUpContentRuleListForIdentifier:v4 completionHandler:v7];
+  [defaultStore lookUpContentRuleListForIdentifier:identifierCopy completionHandler:v7];
 }
 
 void __55__SWContentRuleManager_removeContentListForIdentifier___block_invoke(uint64_t a1, void *a2)

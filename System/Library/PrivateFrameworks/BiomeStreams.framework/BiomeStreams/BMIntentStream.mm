@@ -1,8 +1,8 @@
 @interface BMIntentStream
 - (BMIntentStream)init;
 - (id)publisher;
-- (void)deleteIntentsWithGroupIdentifiers:(id)a3 bundleID:(id)a4;
-- (void)deleteIntentsWithIdentifiers:(id)a3 bundleID:(id)a4;
+- (void)deleteIntentsWithGroupIdentifiers:(id)identifiers bundleID:(id)d;
+- (void)deleteIntentsWithIdentifiers:(id)identifiers bundleID:(id)d;
 @end
 
 @implementation BMIntentStream
@@ -16,8 +16,8 @@
   {
     v3 = BMRootLibraryBridge();
     v4 = [v3 App];
-    v5 = [v4 Intent];
-    v6 = [v5 storeStreamWithLegacyClass:objc_opt_class()];
+    intent = [v4 Intent];
+    v6 = [intent storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v6;
 
@@ -37,18 +37,18 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMIntentStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMIntentStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }
 
-- (void)deleteIntentsWithIdentifiers:(id)a3 bundleID:(id)a4
+- (void)deleteIntentsWithIdentifiers:(id)identifiers bundleID:(id)d
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  identifiersCopy = identifiers;
+  dCopy = d;
+  v8 = [identifiersCopy count];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -68,9 +68,9 @@
   v23 = 3221225472;
   v24 = __56__BMIntentStream_deleteIntentsWithIdentifiers_bundleID___block_invoke;
   v25 = &unk_1E6E52F28;
-  v11 = v7;
+  v11 = dCopy;
   v26 = v11;
-  v12 = v6;
+  v12 = identifiersCopy;
   v27 = v12;
   v28 = &v30;
   v29 = v8;
@@ -228,26 +228,26 @@ LABEL_21:
   return v13;
 }
 
-- (void)deleteIntentsWithGroupIdentifiers:(id)a3 bundleID:(id)a4
+- (void)deleteIntentsWithGroupIdentifiers:(id)identifiers bundleID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__2;
   v23 = __Block_byref_object_dispose__2;
   v24 = objc_opt_new();
-  if ([v6 count])
+  if ([identifiersCopy count])
   {
     storeStream = self->_storeStream;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __61__BMIntentStream_deleteIntentsWithGroupIdentifiers_bundleID___block_invoke;
     v15[3] = &unk_1E6E52F50;
-    v16 = v7;
-    v9 = v6;
+    v16 = dCopy;
+    v9 = identifiersCopy;
     v17 = v9;
     v18 = &v19;
     [(BMStoreStream *)storeStream pruneWithPredicateBlock:v15];

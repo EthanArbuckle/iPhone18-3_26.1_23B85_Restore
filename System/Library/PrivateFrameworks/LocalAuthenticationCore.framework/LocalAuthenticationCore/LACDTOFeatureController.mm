@@ -1,62 +1,62 @@
 @interface LACDTOFeatureController
-- (LACDTOFeatureController)initWithKVStore:(id)a3 requirementsDataSource:(id)a4 featureFlags:(id)a5 workQueue:(id)a6;
-- (void)_checkIsFeatureEnabledWithCompletion:(id)a3;
-- (void)_enableFeatureActivatingGracePeriod:(BOOL)a3 completion:(id)a4;
-- (void)_fetchDeviceHintsCurrentConnection:(id)a3 completion:(id)a4;
-- (void)_fetchRequirementsWithCompletion:(id)a3;
-- (void)_setFeatureEnablementMode:(id)a3 context:(id)a4 connection:(id)a5 completion:(id)a6;
-- (void)_setFeatureStrictModeEnabled:(BOOL)a3 context:(id)a4 connection:(id)a5 completion:(id)a6;
-- (void)_setValue:(id)a3 forKey:(int64_t)a4 contextUUID:(id)a5 connection:(id)a6 completion:(id)a7;
-- (void)checkCanEnableFeatureWithCompletion:(id)a3;
-- (void)checkIsFeatureAvailableWithCompletion:(id)a3;
-- (void)checkIsFeatureEnabledWithCompletion:(id)a3;
-- (void)checkIsFeatureStrictModeEnabledWithCompletion:(id)a3;
-- (void)checkIsFeatureSupportedWithCompletion:(id)a3;
-- (void)disableFeatureStrictModeWithContext:(id)a3 completion:(id)a4;
-- (void)disableFeatureWithContext:(id)a3 completion:(id)a4;
-- (void)enableFeatureActivatingGracePeriodWithCompletion:(id)a3;
-- (void)enableFeatureStrictModeWithCompletion:(id)a3;
-- (void)enableFeatureWithCompletion:(id)a3;
-- (void)fetchStateWithCompletion:(id)a3;
+- (LACDTOFeatureController)initWithKVStore:(id)store requirementsDataSource:(id)source featureFlags:(id)flags workQueue:(id)queue;
+- (void)_checkIsFeatureEnabledWithCompletion:(id)completion;
+- (void)_enableFeatureActivatingGracePeriod:(BOOL)period completion:(id)completion;
+- (void)_fetchDeviceHintsCurrentConnection:(id)connection completion:(id)completion;
+- (void)_fetchRequirementsWithCompletion:(id)completion;
+- (void)_setFeatureEnablementMode:(id)mode context:(id)context connection:(id)connection completion:(id)completion;
+- (void)_setFeatureStrictModeEnabled:(BOOL)enabled context:(id)context connection:(id)connection completion:(id)completion;
+- (void)_setValue:(id)value forKey:(int64_t)key contextUUID:(id)d connection:(id)connection completion:(id)completion;
+- (void)checkCanEnableFeatureWithCompletion:(id)completion;
+- (void)checkIsFeatureAvailableWithCompletion:(id)completion;
+- (void)checkIsFeatureEnabledWithCompletion:(id)completion;
+- (void)checkIsFeatureStrictModeEnabledWithCompletion:(id)completion;
+- (void)checkIsFeatureSupportedWithCompletion:(id)completion;
+- (void)disableFeatureStrictModeWithContext:(id)context completion:(id)completion;
+- (void)disableFeatureWithContext:(id)context completion:(id)completion;
+- (void)enableFeatureActivatingGracePeriodWithCompletion:(id)completion;
+- (void)enableFeatureStrictModeWithCompletion:(id)completion;
+- (void)enableFeatureWithCompletion:(id)completion;
+- (void)fetchStateWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOFeatureController
 
-- (LACDTOFeatureController)initWithKVStore:(id)a3 requirementsDataSource:(id)a4 featureFlags:(id)a5 workQueue:(id)a6
+- (LACDTOFeatureController)initWithKVStore:(id)store requirementsDataSource:(id)source featureFlags:(id)flags workQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  sourceCopy = source;
+  flagsCopy = flags;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = LACDTOFeatureController;
   v15 = [(LACDTOFeatureController *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_kvStore, a3);
-    objc_storeStrong(&v16->_requirementsDataSource, a4);
-    objc_storeStrong(&v16->_featureFlags, a5);
+    objc_storeStrong(&v15->_kvStore, store);
+    objc_storeStrong(&v16->_requirementsDataSource, source);
+    objc_storeStrong(&v16->_featureFlags, flags);
     v17 = objc_alloc_init(LACDTOFeatureEnablementModeCoder);
     enablementModeCoder = v16->_enablementModeCoder;
     v16->_enablementModeCoder = v17;
 
-    objc_storeStrong(&v16->_workQueue, a6);
+    objc_storeStrong(&v16->_workQueue, queue);
   }
 
   return v16;
 }
 
-- (void)fetchStateWithCompletion:(id)a3
+- (void)fetchStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__LACDTOFeatureController_fetchStateWithCompletion___block_invoke;
   v6[3] = &unk_1E7A97FB0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(LACDTOFeatureController *)self checkIsFeatureSupportedWithCompletion:v6];
 
@@ -163,16 +163,16 @@ LACDTOMutableFeatureState *__52__LACDTOFeatureController_fetchStateWithCompletio
   return v2;
 }
 
-- (void)checkIsFeatureEnabledWithCompletion:(id)a3
+- (void)checkIsFeatureEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__LACDTOFeatureController_checkIsFeatureEnabledWithCompletion___block_invoke;
   v6[3] = &unk_1E7A97FD8;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(LACDTOFeatureController *)self _checkIsFeatureEnabledWithCompletion:v6];
 }
 
@@ -183,9 +183,9 @@ void __63__LACDTOFeatureController_checkIsFeatureEnabledWithCompletion___block_i
   (*(v4 + 16))(v4, [a2 isEnabled], v5);
 }
 
-- (void)checkIsFeatureStrictModeEnabledWithCompletion:(id)a3
+- (void)checkIsFeatureStrictModeEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
   objc_initWeak(&location, self);
   kvStore = self->_kvStore;
@@ -194,7 +194,7 @@ void __63__LACDTOFeatureController_checkIsFeatureEnabledWithCompletion___block_i
   v7[2] = __73__LACDTOFeatureController_checkIsFeatureStrictModeEnabledWithCompletion___block_invoke;
   v7[3] = &unk_1E7A959C0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(LACDTOKVStore *)kvStore valueForKey:4 completion:v7];
 
@@ -249,11 +249,11 @@ void __73__LACDTOFeatureController_checkIsFeatureStrictModeEnabledWithCompletion
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkIsFeatureSupportedWithCompletion:(id)a3
+- (void)checkIsFeatureSupportedWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
   workQueue = self->_workQueue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(workQueue);
   if ([(LACDTOFeatureRequirementsDataSource *)self->_requirementsDataSource isPhone])
   {
@@ -264,8 +264,8 @@ void __73__LACDTOFeatureController_checkIsFeatureStrictModeEnabledWithCompletion
       _os_log_impl(&dword_1B0233000, v6, OS_LOG_TYPE_DEFAULT, "isFeatureSupported: YES", &v11, 2u);
     }
 
-    v5[2](v5, 1, 0);
-    v7 = v5;
+    completionCopy[2](completionCopy, 1, 0);
+    v7 = completionCopy;
   }
 
   else
@@ -281,15 +281,15 @@ void __73__LACDTOFeatureController_checkIsFeatureStrictModeEnabledWithCompletion
       _os_log_impl(&dword_1B0233000, v9, OS_LOG_TYPE_DEFAULT, "isFeatureSupported: NO (%{public}@)", &v11, 0xCu);
     }
 
-    (v5)[2](v5, 0, v7);
+    (completionCopy)[2](completionCopy, 0, v7);
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkIsFeatureAvailableWithCompletion:(id)a3
+- (void)checkIsFeatureAvailableWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
@@ -297,7 +297,7 @@ void __73__LACDTOFeatureController_checkIsFeatureStrictModeEnabledWithCompletion
   v6[2] = __65__LACDTOFeatureController_checkIsFeatureAvailableWithCompletion___block_invoke;
   v6[3] = &unk_1E7A97FB0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(LACDTOFeatureController *)self checkIsFeatureSupportedWithCompletion:v6];
 
@@ -399,20 +399,20 @@ void __65__LACDTOFeatureController_checkIsFeatureAvailableWithCompletion___block
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkCanEnableFeatureWithCompletion:(id)a3
+- (void)checkCanEnableFeatureWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
-  v5 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__LACDTOFeatureController_checkCanEnableFeatureWithCompletion___block_invoke;
   v8[3] = &unk_1E7A98000;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v10 = v6;
-  v7 = v5;
+  v7 = currentConnection;
   v9 = v7;
   [(LACDTOFeatureController *)self checkIsFeatureAvailableWithCompletion:v8];
 
@@ -455,55 +455,55 @@ void __63__LACDTOFeatureController_checkCanEnableFeatureWithCompletion___block_i
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableFeatureWithCompletion:(id)a3
+- (void)enableFeatureWithCompletion:(id)completion
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(workQueue);
-  [(LACDTOFeatureController *)self _enableFeatureActivatingGracePeriod:0 completion:v5];
+  [(LACDTOFeatureController *)self _enableFeatureActivatingGracePeriod:0 completion:completionCopy];
 }
 
-- (void)enableFeatureActivatingGracePeriodWithCompletion:(id)a3
+- (void)enableFeatureActivatingGracePeriodWithCompletion:(id)completion
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(workQueue);
-  [(LACDTOFeatureController *)self _enableFeatureActivatingGracePeriod:1 completion:v5];
+  [(LACDTOFeatureController *)self _enableFeatureActivatingGracePeriod:1 completion:completionCopy];
 }
 
-- (void)disableFeatureWithContext:(id)a3 completion:(id)a4
+- (void)disableFeatureWithContext:(id)context completion:(id)completion
 {
   workQueue = self->_workQueue;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   dispatch_assert_queue_V2(workQueue);
   v10 = +[LACDTOFeatureEnablementMode disabled];
-  v9 = [MEMORY[0x1E696B0B8] currentConnection];
-  [(LACDTOFeatureController *)self _setFeatureEnablementMode:v10 context:v8 connection:v9 completion:v7];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  [(LACDTOFeatureController *)self _setFeatureEnablementMode:v10 context:contextCopy connection:currentConnection completion:completionCopy];
 }
 
-- (void)enableFeatureStrictModeWithCompletion:(id)a3
+- (void)enableFeatureStrictModeWithCompletion:(id)completion
 {
   workQueue = self->_workQueue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(workQueue);
-  v6 = [MEMORY[0x1E696B0B8] currentConnection];
-  [(LACDTOFeatureController *)self _setFeatureStrictModeEnabled:1 context:0 connection:v6 completion:v5];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  [(LACDTOFeatureController *)self _setFeatureStrictModeEnabled:1 context:0 connection:currentConnection completion:completionCopy];
 }
 
-- (void)disableFeatureStrictModeWithContext:(id)a3 completion:(id)a4
+- (void)disableFeatureStrictModeWithContext:(id)context completion:(id)completion
 {
   workQueue = self->_workQueue;
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   dispatch_assert_queue_V2(workQueue);
-  v9 = [MEMORY[0x1E696B0B8] currentConnection];
-  [(LACDTOFeatureController *)self _setFeatureStrictModeEnabled:0 context:v8 connection:v9 completion:v7];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  [(LACDTOFeatureController *)self _setFeatureStrictModeEnabled:0 context:contextCopy connection:currentConnection completion:completionCopy];
 }
 
-- (void)_checkIsFeatureEnabledWithCompletion:(id)a3
+- (void)_checkIsFeatureEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
   objc_initWeak(&location, self);
   kvStore = self->_kvStore;
@@ -512,7 +512,7 @@ void __63__LACDTOFeatureController_checkCanEnableFeatureWithCompletion___block_i
   v7[2] = __64__LACDTOFeatureController__checkIsFeatureEnabledWithCompletion___block_invoke;
   v7[3] = &unk_1E7A959C0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(LACDTOKVStore *)kvStore valueForKey:0 completion:v7];
 
@@ -558,21 +558,21 @@ void __64__LACDTOFeatureController__checkIsFeatureEnabledWithCompletion___block_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_enableFeatureActivatingGracePeriod:(BOOL)a3 completion:(id)a4
+- (void)_enableFeatureActivatingGracePeriod:(BOOL)period completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_workQueue);
-  v7 = [MEMORY[0x1E696B0B8] currentConnection];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__LACDTOFeatureController__enableFeatureActivatingGracePeriod_completion___block_invoke;
   v10[3] = &unk_1E7A98050;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v12 = v8;
-  v14 = a3;
-  v9 = v7;
+  periodCopy = period;
+  v9 = currentConnection;
   v11 = v9;
   [(LACDTOFeatureController *)self checkCanEnableFeatureWithCompletion:v10];
 
@@ -686,25 +686,25 @@ void __74__LACDTOFeatureController__enableFeatureActivatingGracePeriod_completio
   }
 }
 
-- (void)_setFeatureEnablementMode:(id)a3 context:(id)a4 connection:(id)a5 completion:(id)a6
+- (void)_setFeatureEnablementMode:(id)mode context:(id)context connection:(id)connection completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modeCopy = mode;
+  contextCopy = context;
+  connectionCopy = connection;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__LACDTOFeatureController__setFeatureEnablementMode_context_connection_completion___block_invoke;
   v18[3] = &unk_1E7A98078;
   objc_copyWeak(&v23, &location);
-  v14 = v13;
+  v14 = completionCopy;
   v22 = v14;
-  v15 = v10;
+  v15 = modeCopy;
   v19 = v15;
-  v16 = v11;
+  v16 = contextCopy;
   v20 = v16;
-  v17 = v12;
+  v17 = connectionCopy;
   v21 = v17;
   [(LACDTOFeatureController *)self _checkIsFeatureEnabledWithCompletion:v18];
 
@@ -771,23 +771,23 @@ void __83__LACDTOFeatureController__setFeatureEnablementMode_context_connection_
   }
 }
 
-- (void)_setFeatureStrictModeEnabled:(BOOL)a3 context:(id)a4 connection:(id)a5 completion:(id)a6
+- (void)_setFeatureStrictModeEnabled:(BOOL)enabled context:(id)context connection:(id)connection completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  connectionCopy = connection;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __86__LACDTOFeatureController__setFeatureStrictModeEnabled_context_connection_completion___block_invoke;
   v16[3] = &unk_1E7A980C8;
   objc_copyWeak(&v20, &location);
-  v13 = v12;
+  v13 = completionCopy;
   v19 = v13;
-  v21 = a3;
-  v14 = v10;
+  enabledCopy = enabled;
+  v14 = contextCopy;
   v17 = v14;
-  v15 = v11;
+  v15 = connectionCopy;
   v18 = v15;
   [(LACDTOFeatureController *)self checkIsFeatureStrictModeEnabledWithCompletion:v16];
 
@@ -854,24 +854,24 @@ void __86__LACDTOFeatureController__setFeatureStrictModeEnabled_context_connecti
   }
 }
 
-- (void)_setValue:(id)a3 forKey:(int64_t)a4 contextUUID:(id)a5 connection:(id)a6 completion:(id)a7
+- (void)_setValue:(id)value forKey:(int64_t)key contextUUID:(id)d connection:(id)connection completion:(id)completion
 {
   kvStore = self->_kvStore;
-  if (a5)
+  if (d)
   {
-    [(LACDTOKVStore *)kvStore setValue:a3 forKey:a4 contextUUID:a5 connection:a6 completion:a7];
+    [(LACDTOKVStore *)kvStore setValue:value forKey:key contextUUID:d connection:connection completion:completion];
   }
 
   else
   {
-    [(LACDTOKVStore *)kvStore setValue:a3 forKey:a4 connection:a6 completion:a7];
+    [(LACDTOKVStore *)kvStore setValue:value forKey:key connection:connection completion:completion];
   }
 }
 
-- (void)_fetchDeviceHintsCurrentConnection:(id)a3 completion:(id)a4
+- (void)_fetchDeviceHintsCurrentConnection:(id)connection completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = 0;
   v14[1] = v14;
@@ -886,9 +886,9 @@ void __86__LACDTOFeatureController__setFeatureStrictModeEnabled_context_connecti
   v10[3] = &unk_1E7A98118;
   objc_copyWeak(&v13, &location);
   v12 = v14;
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
-  [(LACDTOKVStore *)kvStore valueForKey:3 connection:v6 completion:v10];
+  [(LACDTOKVStore *)kvStore valueForKey:3 connection:connectionCopy completion:v10];
 
   objc_destroyWeak(&v13);
   _Block_object_dispose(v14, 8);
@@ -994,13 +994,13 @@ void __73__LACDTOFeatureController__fetchDeviceHintsCurrentConnection_completion
   }
 }
 
-- (void)_fetchRequirementsWithCompletion:(id)a3
+- (void)_fetchRequirementsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(LACDTOMutableFeatureRequirements);
   [(LACDTOMutableFeatureRequirements *)v5 setHasPasscodeSet:[(LACDTOFeatureRequirementsDataSource *)self->_requirementsDataSource hasPasscodeSetForCurrentUser]];
   [(LACDTOMutableFeatureRequirements *)v5 setHasBiometricEnrollments:[(LACDTOFeatureRequirementsDataSource *)self->_requirementsDataSource hasBiometricEnrollmentsForCurrentUser]];
-  v4[2](v4, v5);
+  completionCopy[2](completionCopy, v5);
 }
 
 void __73__LACDTOFeatureController_checkIsFeatureStrictModeEnabledWithCompletion___block_invoke_cold_1()

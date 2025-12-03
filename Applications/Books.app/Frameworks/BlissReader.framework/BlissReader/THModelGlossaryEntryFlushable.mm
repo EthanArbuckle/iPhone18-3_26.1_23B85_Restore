@@ -1,19 +1,19 @@
 @interface THModelGlossaryEntryFlushable
 - (BOOL)hasCachedVersion;
-- (BOOL)readFromApplePubWithDelegate:(id)a3 error:(id *)a4;
+- (BOOL)readFromApplePubWithDelegate:(id)delegate error:(id *)error;
 - (THModelGlossaryEntryBody)body;
-- (THModelGlossaryEntryFlushable)initWithParent:(id)a3;
+- (THModelGlossaryEntryFlushable)initWithParent:(id)parent;
 - (id)applePubEntry;
 - (id)applePubURL;
 - (void)dealloc;
 - (void)p_clearFlushableMembers;
 - (void)p_populate;
-- (void)p_populateParagraphStyle:(id)a3;
+- (void)p_populateParagraphStyle:(id)style;
 @end
 
 @implementation THModelGlossaryEntryFlushable
 
-- (THModelGlossaryEntryFlushable)initWithParent:(id)a3
+- (THModelGlossaryEntryFlushable)initWithParent:(id)parent
 {
   v7.receiver = self;
   v7.super_class = THModelGlossaryEntryFlushable;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    [(THModelGlossaryEntryFlushable *)v4 setParent:a3];
+    [(THModelGlossaryEntryFlushable *)v4 setParent:parent];
   }
 
   return v5;
@@ -58,18 +58,18 @@
   return self->mBody;
 }
 
-- (void)p_populateParagraphStyle:(id)a3
+- (void)p_populateParagraphStyle:(id)style
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1E47F4;
   v7[3] = &unk_45B500;
-  v7[4] = a3;
+  v7[4] = style;
   [+[TSWPParagraphStyle paragraphProperties](TSWPParagraphStyle "paragraphProperties")];
-  v5 = [(THBookDescription *)[(THDocumentRoot *)[[(THModelGlossaryEntry *)self->mParent glossary] documentRoot] bookDescription] language];
-  if (v5)
+  language = [(THBookDescription *)[(THDocumentRoot *)[[(THModelGlossaryEntry *)self->mParent glossary] documentRoot] bookDescription] language];
+  if (language)
   {
-    v6 = v5;
+    v6 = language;
   }
 
   else
@@ -77,51 +77,51 @@
     v6 = @"en";
   }
 
-  [a3 setBoxedValue:v6 forProperty:39];
+  [style setBoxedValue:v6 forProperty:39];
 }
 
 - (void)p_populate
 {
-  v3 = [(THModelGlossaryEntryFlushable *)self body];
-  v4 = [(THModelGlossaryEntryBody *)v3 context];
-  v12 = [[TSSStylesheet alloc] initWithContext:v4 canCullStyles:0];
+  body = [(THModelGlossaryEntryFlushable *)self body];
+  context = [(THModelGlossaryEntryBody *)body context];
+  v12 = [[TSSStylesheet alloc] initWithContext:context canCullStyles:0];
   [v12 setParent:{-[THDocumentRoot stylesheet](-[THModelGlossary documentRoot](-[THModelGlossaryEntry glossary](self->mParent, "glossary"), "documentRoot"), "stylesheet")}];
-  [(THModelGlossaryEntryBody *)v3 setStylesheet:v12];
-  v5 = [TSWPParagraphStyle defaultStyleWithContext:v4];
+  [(THModelGlossaryEntryBody *)body setStylesheet:v12];
+  v5 = [TSWPParagraphStyle defaultStyleWithContext:context];
   [(THModelGlossaryEntryFlushable *)self p_populateParagraphStyle:v5];
   [v12 addStyle:v5 withIdentifier:kTSWPDefaultGlossaryParagraphStyleIdentifier];
-  v6 = [TSWPListStyle defaultStyleWithContext:v4];
+  v6 = [TSWPListStyle defaultStyleWithContext:context];
   [v12 addStyle:v6 withIdentifier:TSWPDefaultListStyleIdentifier];
-  v7 = [TSWPColumnStyle defaultStyleWithContext:v4];
+  v7 = [TSWPColumnStyle defaultStyleWithContext:context];
   [v12 addStyle:v7 withIdentifier:kTSWPDefaultGlossaryColumnStyleIdentifier];
-  v8 = [[THWPStorage alloc] initWithContext:v4 string:0 kind:0 stylesheet:v12 paragraphStyle:v5 listStyle:v6 section:0 columnStyle:v7];
-  v9 = [[THWPStorage alloc] initWithContext:v4 string:0 kind:0 stylesheet:v12 paragraphStyle:v5 listStyle:v6 section:0 columnStyle:v7];
-  v10 = [[THWPStorage alloc] initWithContext:v4 string:0 kind:0 stylesheet:v12 paragraphStyle:v5 listStyle:v6 section:0 columnStyle:v7];
-  v11 = [[THWPStorage alloc] initWithContext:v4 string:0 kind:0 stylesheet:v12 paragraphStyle:v5 listStyle:v6 section:0 columnStyle:v7];
-  [(THModelGlossaryEntryBody *)v3 setHeaderInfo:v8];
-  [(THModelGlossaryEntryBody *)v3 setBodyStorage:v9];
-  [(THModelGlossaryEntryBody *)v3 setRelatedTermsInfo:v10];
-  [(THModelGlossaryEntryBody *)v3 setLinksInfo:v11];
+  v8 = [[THWPStorage alloc] initWithContext:context string:0 kind:0 stylesheet:v12 paragraphStyle:v5 listStyle:v6 section:0 columnStyle:v7];
+  v9 = [[THWPStorage alloc] initWithContext:context string:0 kind:0 stylesheet:v12 paragraphStyle:v5 listStyle:v6 section:0 columnStyle:v7];
+  v10 = [[THWPStorage alloc] initWithContext:context string:0 kind:0 stylesheet:v12 paragraphStyle:v5 listStyle:v6 section:0 columnStyle:v7];
+  v11 = [[THWPStorage alloc] initWithContext:context string:0 kind:0 stylesheet:v12 paragraphStyle:v5 listStyle:v6 section:0 columnStyle:v7];
+  [(THModelGlossaryEntryBody *)body setHeaderInfo:v8];
+  [(THModelGlossaryEntryBody *)body setBodyStorage:v9];
+  [(THModelGlossaryEntryBody *)body setRelatedTermsInfo:v10];
+  [(THModelGlossaryEntryBody *)body setLinksInfo:v11];
 }
 
 - (id)applePubURL
 {
-  v2 = [[[(THModelGlossaryEntryFlushable *)self parent] glossary] applePubURL];
+  applePubURL = [[[(THModelGlossaryEntryFlushable *)self parent] glossary] applePubURL];
 
-  return [(NSURL *)v2 path];
+  return [(NSURL *)applePubURL path];
 }
 
 - (id)applePubEntry
 {
-  v2 = [(THModelGlossaryEntryFlushable *)self parent];
+  parent = [(THModelGlossaryEntryFlushable *)self parent];
 
-  return [(THModelGlossaryEntry *)v2 applePubRelativePath];
+  return [(THModelGlossaryEntry *)parent applePubRelativePath];
 }
 
-- (BOOL)readFromApplePubWithDelegate:(id)a3 error:(id *)a4
+- (BOOL)readFromApplePubWithDelegate:(id)delegate error:(id *)error
 {
-  v5 = [(THModelGlossaryEntryFlushable *)self applePubURL:a3];
-  v6 = [(THModelGlossaryEntryFlushable *)self applePubEntry];
+  v5 = [(THModelGlossaryEntryFlushable *)self applePubURL:delegate];
+  applePubEntry = [(THModelGlossaryEntryFlushable *)self applePubEntry];
   v7 = objc_alloc_init(NSAutoreleasePool);
   v8 = [[PFXArchive alloc] initWithPath:v5];
   if (![(PFXArchive *)v8 isValid])
@@ -138,7 +138,7 @@ LABEL_9:
   }
 
   [(THModelGlossaryEntryFlushable *)self p_populate];
-  v9 = [[PFAIGlossaryState alloc] initWithEntryBody:[(THModelGlossaryEntryFlushable *)self body] documentRoot:[[(THModelGlossaryEntry *)self->mParent glossary] documentRoot] archive:v8 documentEntryUri:v6];
+  v9 = [[PFAIGlossaryState alloc] initWithEntryBody:[(THModelGlossaryEntryFlushable *)self body] documentRoot:[[(THModelGlossaryEntry *)self->mParent glossary] documentRoot] archive:v8 documentEntryUri:applePubEntry];
   [(PFXHtmlReaderState *)v9 setPageContentWidth:600.0];
   if (![(PFXXmlStreamReaderState *)v9 streamAPI])
   {
@@ -158,15 +158,15 @@ LABEL_10:
 
 - (BOOL)hasCachedVersion
 {
-  v3 = [(THModelGlossaryEntryFlushable *)self applePubURL];
-  v4 = [(THModelGlossaryEntryFlushable *)self applePubEntry];
+  applePubURL = [(THModelGlossaryEntryFlushable *)self applePubURL];
+  applePubEntry = [(THModelGlossaryEntryFlushable *)self applePubEntry];
   v5 = 0;
-  if (v3)
+  if (applePubURL)
   {
-    v6 = v4;
-    if (v4)
+    v6 = applePubEntry;
+    if (applePubEntry)
     {
-      v7 = [[PFXArchive alloc] initWithPath:v3];
+      v7 = [[PFXArchive alloc] initWithPath:applePubURL];
       v5 = [(PFXArchive *)v7 decryptEntryWithName:v6 error:0]!= 0;
     }
   }

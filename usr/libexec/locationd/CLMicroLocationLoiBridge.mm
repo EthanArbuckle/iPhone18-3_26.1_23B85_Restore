@@ -1,41 +1,41 @@
 @interface CLMicroLocationLoiBridge
 - (id)generateLocationManagerNotAvailableError;
 - (id)generateRegionMonitorNotAvailableError;
-- (id)initInUniverse:(id)a3;
+- (id)initInUniverse:(id)universe;
 - (id)retrieveAllActiveGeofences;
-- (unint64_t)convertMonitoringEventToGeofenceState:(id)a3;
+- (unint64_t)convertMonitoringEventToGeofenceState:(id)state;
 - (void)dealloc;
-- (void)fetchLocationOfInterestAtLocation:(id)a3;
+- (void)fetchLocationOfInterestAtLocation:(id)location;
 - (void)fetchPlaceInferenceAtCurrentLocation;
-- (void)fetchRelatedLoisForLoi:(id)a3;
-- (void)generateGeofenceUpdateToClient:(id)a3;
+- (void)fetchRelatedLoisForLoi:(id)loi;
+- (void)generateGeofenceUpdateToClient:(id)client;
 - (void)getAllActiveGeofences;
 - (void)getCurrentLocation;
 - (void)invalidateFetchPlaceInferenceTimer;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)onVisit:(id)a3;
-- (void)regionMonitor:(id)a3 didGenerateEvent:(id)a4;
-- (void)removeGeofenceWithRegionId:(id)a3;
-- (void)removeGeofencesNearLocationWithLatitude:(double)a3 andLongitude:(double)a4;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)onVisit:(id)visit;
+- (void)regionMonitor:(id)monitor didGenerateEvent:(id)event;
+- (void)removeGeofenceWithRegionId:(id)id;
+- (void)removeGeofencesNearLocationWithLatitude:(double)latitude andLongitude:(double)longitude;
 - (void)requestBootstrapWithLastGeofenceStates;
-- (void)setGeofenceAtLocation:(id)a3;
+- (void)setGeofenceAtLocation:(id)location;
 - (void)startVisitMonitoring;
 @end
 
 @implementation CLMicroLocationLoiBridge
 
-- (id)initInUniverse:(id)a3
+- (id)initInUniverse:(id)universe
 {
   v28.receiver = self;
   v28.super_class = CLMicroLocationLoiBridge;
   v4 = [(CLMicroLocationLoiBridge *)&v28 init];
   if (v4)
   {
-    v4->_universe = a3;
-    v5 = [a3 silo];
-    v4->_silo = v5;
-    v4->_queue = [(CLDispatchSilo *)v5 queue];
+    v4->_universe = universe;
+    silo = [universe silo];
+    v4->_silo = silo;
+    v4->_queue = [(CLDispatchSilo *)silo queue];
     v4->_fetchPlaceInferenceTimer = 0;
     *&v4->_bridgeReady = 256;
     v6 = [-[CLIntersiloUniverse vendor](v4->_universe "vendor")];
@@ -143,8 +143,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(CLMonitor *)regionMonitor monitoredIdentifiers];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    monitoredIdentifiers = [(CLMonitor *)regionMonitor monitoredIdentifiers];
+    v5 = [(NSArray *)monitoredIdentifiers countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -155,7 +155,7 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(monitoredIdentifiers);
           }
 
           v9 = [(CLMonitor *)self->_regionMonitor monitoringRecordForIdentifier:*(*(&v13 + 1) + 8 * i)];
@@ -172,7 +172,7 @@
           }
         }
 
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v6 = [(NSArray *)monitoredIdentifiers countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v6);
@@ -250,31 +250,31 @@
   return [v3 initWithDomain:kCLErrorDomainPrivate code:3 userInfo:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v7, &v6, 1)}];
 }
 
-- (void)generateGeofenceUpdateToClient:(id)a3
+- (void)generateGeofenceUpdateToClient:(id)client
 {
   v5 = [(CLMicroLocationLoiBridge *)self convertMonitoringEventToGeofenceState:?];
   microlocationLoiClient = self->_microlocationLoiClient;
-  v7 = [a3 identifier];
+  identifier = [client identifier];
   v8 = *(microlocationLoiClient->var0 + 7);
 
-  v8(microlocationLoiClient, v7, v5);
+  v8(microlocationLoiClient, identifier, v5);
 }
 
-- (unint64_t)convertMonitoringEventToGeofenceState:(id)a3
+- (unint64_t)convertMonitoringEventToGeofenceState:(id)state
 {
-  v3 = [a3 state];
-  if (v3 == 1)
+  state = [state state];
+  if (state == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 == 2);
+    return 2 * (state == 2);
   }
 }
 
-- (void)regionMonitor:(id)a3 didGenerateEvent:(id)a4
+- (void)regionMonitor:(id)monitor didGenerateEvent:(id)event
 {
   if (qword_1025D46D0 != -1)
   {
@@ -289,13 +289,13 @@
     v8 = 2082;
     v9 = "";
     v10 = 2081;
-    v11 = [objc_msgSend(a4 "identifier")];
+    v11 = [objc_msgSend(event "identifier")];
     v12 = 1025;
-    v13 = [a4 state];
+    state = [event state];
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_INFO, "{msg%{public}.0s:LOI Bridge, got geofence update, Geofence Id:%{private, location:escape_only}s, state:%{private}d}", v7, 0x22u);
   }
 
-  [(CLMicroLocationLoiBridge *)self generateGeofenceUpdateToClient:a4];
+  [(CLMicroLocationLoiBridge *)self generateGeofenceUpdateToClient:event];
 }
 
 - (void)startVisitMonitoring
@@ -328,14 +328,14 @@
       [(CLDispatchSilo *)silo async:v10];
     }
 
-    v4 = [(CLDispatchSilo *)self->_silo newTimer];
-    self->_fetchPlaceInferenceTimer = v4;
+    newTimer = [(CLDispatchSilo *)self->_silo newTimer];
+    self->_fetchPlaceInferenceTimer = newTimer;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100396BF8;
     v9[3] = &unk_102447418;
     v9[4] = self;
-    [(CLTimer *)v4 setHandler:v9];
+    [(CLTimer *)newTimer setHandler:v9];
     [(CLTimer *)self->_fetchPlaceInferenceTimer setNextFireDelay:5.0];
     clLocationManager = self->_clLocationManager;
     v8[0] = _NSConcreteStackBlock;
@@ -364,7 +364,7 @@
   }
 }
 
-- (void)fetchLocationOfInterestAtLocation:(id)a3
+- (void)fetchLocationOfInterestAtLocation:(id)location
 {
   routineMonitor = self->_routineMonitor;
   if (!routineMonitor)
@@ -379,7 +379,7 @@
     v10[2] = sub_1003971CC;
     v10[3] = &unk_102447468;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = location;
     v10[6] = v7;
     [(CLDispatchSilo *)silo async:v10];
     routineMonitor = self->_routineMonitor;
@@ -390,11 +390,11 @@
   v9[2] = sub_100397204;
   v9[3] = &unk_102447490;
   v9[4] = self;
-  v9[5] = a3;
-  [(CLRoutineMonitorServiceProtocol *)routineMonitor fetchLocationOfInterestAtLocation:a3 withReply:v9];
+  v9[5] = location;
+  [(CLRoutineMonitorServiceProtocol *)routineMonitor fetchLocationOfInterestAtLocation:location withReply:v9];
 }
 
-- (void)fetchRelatedLoisForLoi:(id)a3
+- (void)fetchRelatedLoisForLoi:(id)loi
 {
   routineMonitor = self->_routineMonitor;
   if (!routineMonitor)
@@ -419,7 +419,7 @@
   v9[2] = sub_100397464;
   v9[3] = &unk_102447440;
   v9[4] = self;
-  [(CLRoutineMonitorServiceProtocol *)routineMonitor fetchDedupedLocationOfInterestIdentifiersWithIdentifier:a3 withReply:v9];
+  [(CLRoutineMonitorServiceProtocol *)routineMonitor fetchDedupedLocationOfInterestIdentifiersWithIdentifier:loi withReply:v9];
 }
 
 - (id)retrieveAllActiveGeofences
@@ -429,8 +429,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(CLMonitor *)self->_regionMonitor monitoredIdentifiers];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v30 count:16];
+  monitoredIdentifiers = [(CLMonitor *)self->_regionMonitor monitoredIdentifiers];
+  v5 = [(NSArray *)monitoredIdentifiers countByEnumeratingWithState:&v21 objects:v30 count:16];
   if (v5)
   {
     v6 = v5;
@@ -442,20 +442,20 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(monitoredIdentifiers);
         }
 
         v9 = *(*(&v21 + 1) + 8 * v8);
         v10 = [(CLMonitor *)self->_regionMonitor monitoringRecordForIdentifier:v9];
         if (v10)
         {
-          v11 = [(CLMonitoringRecord *)v10 condition];
+          condition = [(CLMonitoringRecord *)v10 condition];
           v12 = objc_alloc_init(CLMicroLocationGeofence);
           [(CLMicroLocationGeofence *)v12 setRegionId:v9];
           v13 = [CLLocation alloc];
-          [(CLCondition *)v11 center];
+          [(CLCondition *)condition center];
           v15 = v14;
-          [(CLCondition *)v11 center];
+          [(CLCondition *)condition center];
           -[CLMicroLocationGeofence setRegionCenterLocation:](v12, "setRegionCenterLocation:", [v13 initWithLatitude:v15 longitude:?]);
           [v3 addObject:v12];
         }
@@ -470,12 +470,12 @@
           v16 = qword_1025D46D8;
           if (os_log_type_enabled(qword_1025D46D8, OS_LOG_TYPE_ERROR))
           {
-            v17 = [v9 UTF8String];
+            uTF8String = [v9 UTF8String];
             *buf = 68289282;
             v26 = 2082;
             v27 = "";
             v28 = 2082;
-            v29 = v17;
+            v29 = uTF8String;
             _os_log_impl(dword_100000000, v16, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#LoiBridge, was unable to retrieve monitor record for valid region identifier, identifier:%{public, location:escape_only}s}", buf, 0x1Cu);
             if (qword_1025D46D0 != -1)
             {
@@ -486,12 +486,12 @@
           v18 = qword_1025D46D8;
           if (os_signpost_enabled(qword_1025D46D8))
           {
-            v19 = [v9 UTF8String];
+            uTF8String2 = [v9 UTF8String];
             *buf = 68289282;
             v26 = 2082;
             v27 = "";
             v28 = 2082;
-            v29 = v19;
+            v29 = uTF8String2;
             _os_signpost_emit_with_name_impl(dword_100000000, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#LoiBridge, was unable to retrieve monitor record for valid region identifier", "{msg%{public}.0s:#LoiBridge, was unable to retrieve monitor record for valid region identifier, identifier:%{public, location:escape_only}s}", buf, 0x1Cu);
           }
         }
@@ -500,7 +500,7 @@
       }
 
       while (v6 != v8);
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      v6 = [(NSArray *)monitoredIdentifiers countByEnumeratingWithState:&v21 objects:v30 count:16];
     }
 
     while (v6);
@@ -513,14 +513,14 @@
 {
   if (self->_regionMonitor)
   {
-    v3 = [(CLMicroLocationLoiBridge *)self retrieveAllActiveGeofences];
-    v4 = 0;
+    retrieveAllActiveGeofences = [(CLMicroLocationLoiBridge *)self retrieveAllActiveGeofences];
+    generateRegionMonitorNotAvailableError = 0;
   }
 
   else
   {
-    v4 = [(CLMicroLocationLoiBridge *)self generateRegionMonitorNotAvailableError];
-    v3 = 0;
+    generateRegionMonitorNotAvailableError = [(CLMicroLocationLoiBridge *)self generateRegionMonitorNotAvailableError];
+    retrieveAllActiveGeofences = 0;
   }
 
   silo = self->_silo;
@@ -529,21 +529,21 @@
   v6[2] = sub_100397990;
   v6[3] = &unk_102447468;
   v6[4] = self;
-  v6[5] = v3;
-  v6[6] = v4;
+  v6[5] = retrieveAllActiveGeofences;
+  v6[6] = generateRegionMonitorNotAvailableError;
   [(CLDispatchSilo *)silo async:v6];
 }
 
-- (void)removeGeofencesNearLocationWithLatitude:(double)a3 andLongitude:(double)a4
+- (void)removeGeofencesNearLocationWithLatitude:(double)latitude andLongitude:(double)longitude
 {
   if (self->_regionMonitor)
   {
-    v7 = [(CLMicroLocationLoiBridge *)self retrieveAllActiveGeofences];
+    retrieveAllActiveGeofences = [(CLMicroLocationLoiBridge *)self retrieveAllActiveGeofences];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v24 objects:v36 count:16];
+    v8 = [retrieveAllActiveGeofences countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v8)
     {
       v10 = v8;
@@ -557,14 +557,14 @@
         {
           if (*v25 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(retrieveAllActiveGeofences);
           }
 
           v13 = *(*(&v24 + 1) + 8 * v12);
           [objc_msgSend(v13 regionCenterLocation];
           v15 = v14;
           [objc_msgSend(v13 "regionCenterLocation")];
-          v17 = sub_100117154(a3, a4, v15, v16);
+          v17 = sub_100117154(latitude, longitude, v15, v16);
           sub_100397C6C();
           if (v17 <= v18 + v18)
           {
@@ -618,7 +618,7 @@
         }
 
         while (v10 != v12);
-        v10 = [v7 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        v10 = [retrieveAllActiveGeofences countByEnumeratingWithState:&v24 objects:v36 count:16];
       }
 
       while (v10);
@@ -680,7 +680,7 @@
   }
 }
 
-- (void)setGeofenceAtLocation:(id)a3
+- (void)setGeofenceAtLocation:(id)location
 {
   v5 = -[NSString uppercaseString]([+[NSUUID UUID](NSUUID UUIDString], "uppercaseString");
   if (qword_1025D46D0 != -1)
@@ -691,9 +691,9 @@
   v6 = qword_1025D46D8;
   if (os_log_type_enabled(qword_1025D46D8, OS_LOG_TYPE_INFO))
   {
-    [a3 coordinate];
+    [location coordinate];
     v8 = v7;
-    [a3 coordinate];
+    [location coordinate];
     *buf = 68289539;
     v22 = 0;
     v23 = 2082;
@@ -727,17 +727,17 @@
     }
 
     v13 = [CLCircularGeographicCondition alloc];
-    [a3 coordinate];
+    [location coordinate];
     -[CLMonitor addConditionForMonitoring:identifier:](self->_regionMonitor, "addConditionForMonitoring:identifier:", [v13 initWithCenter:? radius:?], v5);
-    v14 = [(NSString *)v5 UTF8String];
-    v15 = strlen(v14);
-    v17 = sub_10039885C(buf, v14, &v14[v15]);
-    v18 = 0;
+    uTF8String = [(NSString *)v5 UTF8String];
+    v15 = strlen(uTF8String);
+    v17 = sub_10039885C(buf, uTF8String, &uTF8String[v15]);
+    generateRegionMonitorNotAvailableError = 0;
   }
 
   else
   {
-    v18 = [(CLMicroLocationLoiBridge *)self generateRegionMonitorNotAvailableError];
+    generateRegionMonitorNotAvailableError = [(CLMicroLocationLoiBridge *)self generateRegionMonitorNotAvailableError];
     v17 = 0;
     v16 = 0;
   }
@@ -748,25 +748,25 @@
   v20[2] = sub_1003981E0;
   v20[3] = &unk_1024474B8;
   v20[4] = self;
-  v20[5] = a3;
+  v20[5] = location;
   v20[7] = v17;
   v20[8] = v16;
-  v20[6] = v18;
+  v20[6] = generateRegionMonitorNotAvailableError;
   [(CLDispatchSilo *)silo async:v20];
 }
 
-- (void)removeGeofenceWithRegionId:(id)a3
+- (void)removeGeofenceWithRegionId:(id)id
 {
   regionMonitor = self->_regionMonitor;
   if (regionMonitor)
   {
-    [(CLMonitor *)regionMonitor removeConditionFromMonitoringWithIdentifier:a3];
-    v6 = 0;
+    [(CLMonitor *)regionMonitor removeConditionFromMonitoringWithIdentifier:id];
+    generateRegionMonitorNotAvailableError = 0;
   }
 
   else
   {
-    v6 = [(CLMicroLocationLoiBridge *)self generateRegionMonitorNotAvailableError];
+    generateRegionMonitorNotAvailableError = [(CLMicroLocationLoiBridge *)self generateRegionMonitorNotAvailableError];
   }
 
   silo = self->_silo;
@@ -775,19 +775,19 @@
   v8[2] = sub_1003982C0;
   v8[3] = &unk_102447468;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = v6;
+  v8[5] = id;
+  v8[6] = generateRegionMonitorNotAvailableError;
   [(CLDispatchSilo *)silo async:v8];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   if (self->_waitingOnLocationUpdate)
   {
     self->_waitingOnLocationUpdate = 0;
-    if (a4 && [a4 count])
+    if (locations && [locations count])
     {
-      v6 = [a4 objectAtIndexedSubscript:0];
+      v6 = [locations objectAtIndexedSubscript:0];
       v7 = 0;
     }
 
@@ -844,7 +844,7 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   if (qword_1025D46D0 != -1)
   {
@@ -859,7 +859,7 @@
     v9 = 2082;
     v10 = "";
     v11 = 2113;
-    v12 = a4;
+    errorCopy2 = error;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#LOI Bridge: location manager failed, error::%{private, location:escape_only}@}", &v7, 0x1Cu);
     if (qword_1025D46D0 != -1)
     {
@@ -875,14 +875,14 @@
     v9 = 2082;
     v10 = "";
     v11 = 2113;
-    v12 = a4;
+    errorCopy2 = error;
     _os_signpost_emit_with_name_impl(dword_100000000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#LOI Bridge: location manager failed", "{msg%{public}.0s:#LOI Bridge: location manager failed, error::%{private, location:escape_only}@}", &v7, 0x1Cu);
   }
 }
 
-- (void)onVisit:(id)a3
+- (void)onVisit:(id)visit
 {
-  if (a3)
+  if (visit)
   {
     if (qword_1025D46D0 != -1)
     {
@@ -901,7 +901,7 @@
       sub_101871AF8();
     }
 
-    (*self->_microlocationLoiClient->var0)(self->_microlocationLoiClient, a3);
+    (*self->_microlocationLoiClient->var0)(self->_microlocationLoiClient, visit);
   }
 
   else

@@ -9,9 +9,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC5Heart26HeartPromotionAvailability_heartRhythmAvailability);
-  v3 = self;
+  selfCopy = self;
   [v2 removeHeartRhythmAvailabilityObserver_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for HeartPromotionAvailability();
   [(HeartPromotionAvailability *)&v4 dealloc];
 }
@@ -25,7 +25,7 @@
 
 - (void)heartRhythmAvailabilityDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D8856E8();
 }
 

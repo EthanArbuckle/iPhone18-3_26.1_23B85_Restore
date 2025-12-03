@@ -1,6 +1,6 @@
 @interface IMDChatUtilities
 + (IMDChatUtilities)sharedUtilities;
-+ (id)_stringForChatIDs:(id)a3 onServices:(id)a4;
++ (id)_stringForChatIDs:(id)ds onServices:(id)services;
 @end
 
 @implementation IMDChatUtilities
@@ -17,18 +17,18 @@
   return v3;
 }
 
-+ (id)_stringForChatIDs:(id)a3 onServices:(id)a4
++ (id)_stringForChatIDs:(id)ds onServices:(id)services
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && objc_msgSend(v6, "count"))
+  dsCopy = ds;
+  servicesCopy = services;
+  if ([dsCopy count] && objc_msgSend(servicesCopy, "count"))
   {
     v7 = [&stru_100083400 mutableCopy];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v5;
+    v8 = dsCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v9)
     {
@@ -56,7 +56,7 @@
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = v6;
+    v13 = servicesCopy;
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v14)
     {

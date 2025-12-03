@@ -1,15 +1,15 @@
 @interface MFSenderBlockingTriageInteraction
-+ (id)interactionWithMessageListItemSelection:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 blockSender:(BOOL)a7;
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 blockSender:(BOOL)a7;
++ (id)interactionWithMessageListItemSelection:(id)selection undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor blockSender:(BOOL)sender;
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor blockSender:(BOOL)sender;
 - (BOOL)_requiresConfirmationPrompt;
 - (BOOL)isDestructive;
-- (id)sendersForMessageListItems:(id)a3;
+- (id)sendersForMessageListItems:(id)items;
 - (id)shortTitle;
 - (id)title;
 - (id)triageAction;
-- (void)_dispatchInteractionWithCompletion:(id)a3;
-- (void)_performContinuation:(id)a3 withAlertController:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)_dispatchInteractionWithCompletion:(id)completion;
+- (void)_performContinuation:(id)continuation withAlertController:(id)controller;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation MFSenderBlockingTriageInteraction
@@ -20,8 +20,8 @@
   if (!triageAction)
   {
     v4 = [MSSenderBlockingTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [v4 initWithMessageListSelection:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self blockSender:{"actor"), self, self->_blockSender}];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    v6 = [v4 initWithMessageListSelection:messageListItemSelection origin:-[MFTriageInteraction origin](self actor:"origin") delegate:-[MFTriageInteraction actor](self blockSender:{"actor"), self, self->_blockSender}];
     v7 = self->_triageAction;
     self->_triageAction = v6;
 
@@ -31,51 +31,51 @@
   return triageAction;
 }
 
-+ (id)interactionWithMessageListItemSelection:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 blockSender:(BOOL)a7
++ (id)interactionWithMessageListItemSelection:(id)selection undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor blockSender:(BOOL)sender
 {
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___MFSenderBlockingTriageInteraction;
-  v8 = objc_msgSendSuper2(&v13, "interactionWithMessageListItemSelection:undoManager:origin:actor:", a3, a4, a5, a6);
-  v9 = [v8 messageListItemSelection];
-  v10 = [v9 messageListItems];
-  v11 = [v8 sendersForMessageListItems:v10];
+  v8 = objc_msgSendSuper2(&v13, "interactionWithMessageListItemSelection:undoManager:origin:actor:", selection, manager, origin, actor);
+  messageListItemSelection = [v8 messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  v11 = [v8 sendersForMessageListItems:messageListItems];
   [v8 setSenders:v11];
 
   if (v8)
   {
-    v8[88] = a7;
+    v8[88] = sender;
   }
 
   return v8;
 }
 
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 blockSender:(BOOL)a7
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor blockSender:(BOOL)sender
 {
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &OBJC_METACLASS___MFSenderBlockingTriageInteraction;
-  v8 = objc_msgSendSuper2(&v13, "interactionWithMessageListItems:undoManager:origin:actor:", a3, a4, a5, a6);
-  v9 = [v8 messageListItemSelection];
-  v10 = [v9 messageListItems];
-  v11 = [v8 sendersForMessageListItems:v10];
+  v8 = objc_msgSendSuper2(&v13, "interactionWithMessageListItems:undoManager:origin:actor:", items, manager, origin, actor);
+  messageListItemSelection = [v8 messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  v11 = [v8 sendersForMessageListItems:messageListItems];
   [v8 setSenders:v11];
 
   if (v8)
   {
-    v8[88] = a7;
+    v8[88] = sender;
   }
 
   return v8;
 }
 
-- (id)sendersForMessageListItems:(id)a3
+- (id)sendersForMessageListItems:(id)items
 {
-  v15 = a3;
+  itemsCopy = items;
   v3 = objc_alloc_init(NSMutableSet);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v15;
+  v4 = itemsCopy;
   v5 = [v4 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
@@ -94,8 +94,8 @@
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v9 = [v8 senderList];
-        v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        senderList = [v8 senderList];
+        v10 = [senderList countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v10)
         {
           v11 = *v17;
@@ -105,17 +105,17 @@
             {
               if (*v17 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(senderList);
               }
 
-              v13 = [*(*(&v16 + 1) + 8 * j) emailAddressValue];
-              if (v13)
+              emailAddressValue = [*(*(&v16 + 1) + 8 * j) emailAddressValue];
+              if (emailAddressValue)
               {
-                [v3 addObject:v13];
+                [v3 addObject:emailAddressValue];
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v10 = [senderList countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v10);
@@ -147,8 +147,8 @@
   }
   v6 = ;
 
-  v7 = [(MFSenderBlockingTriageInteraction *)self senders];
-  v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v7 count]);
+  senders = [(MFSenderBlockingTriageInteraction *)self senders];
+  v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [senders count]);
 
   return v8;
 }
@@ -169,53 +169,53 @@
   }
   v6 = ;
 
-  v7 = [(MFSenderBlockingTriageInteraction *)self senders];
-  v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [v7 count]);
+  senders = [(MFSenderBlockingTriageInteraction *)self senders];
+  v8 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v6, [senders count]);
 
   return v8;
 }
 
-- (void)_performContinuation:(id)a3 withAlertController:(id)a4
+- (void)_performContinuation:(id)continuation withAlertController:(id)controller
 {
-  v10 = a3;
-  v6 = a4;
+  continuationCopy = continuation;
+  controllerCopy = controller;
   v7 = +[_TtC10MobileMail25MFSafetyCheckWhenBlocking shared];
   [v7 prefetchSharing];
 
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"BLOCK_SENDER_CONFIRMATION" value:&stru_100662A88 table:@"Main"];
 
-  [(MFTriageInteraction *)self _performContinuation:v10 withAlertController:v6 title:v9 shouldDismissPresentingViewController:1];
+  [(MFTriageInteraction *)self _performContinuation:continuationCopy withAlertController:controllerCopy title:v9 shouldDismissPresentingViewController:1];
 }
 
-- (void)_dispatchInteractionWithCompletion:(id)a3
+- (void)_dispatchInteractionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(MFSenderBlockingTriageInteraction *)self triageAction];
-  v6 = [(MFTriageInteraction *)self undoManager];
-  v7 = [(MFTriageInteraction *)self undoTitle];
+  triageAction = [(MFSenderBlockingTriageInteraction *)self triageAction];
+  undoManager = [(MFTriageInteraction *)self undoManager];
+  undoTitle = [(MFTriageInteraction *)self undoTitle];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100216590;
   v9[3] = &unk_10064D130;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
-  [v5 performWithUndoManager:v6 actionName:v7 completion:v9];
+  [triageAction performWithUndoManager:undoManager actionName:undoTitle completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(MFSenderBlockingTriageInteraction *)self interactionCompletion];
+  interactionCompletion = [(MFSenderBlockingTriageInteraction *)self interactionCompletion];
 
-  if (v4)
+  if (interactionCompletion)
   {
-    v5 = [(MFSenderBlockingTriageInteraction *)self interactionCompletion];
-    v5[2]();
+    interactionCompletion2 = [(MFSenderBlockingTriageInteraction *)self interactionCompletion];
+    interactionCompletion2[2]();
   }
 }
 

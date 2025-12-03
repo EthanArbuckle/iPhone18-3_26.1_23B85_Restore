@@ -1,5 +1,5 @@
 @interface VKNotificationObserver
-- (VKNotificationObserver)initWithTarget:(id)a3 taskContext:(const void *)a4;
+- (VKNotificationObserver)initWithTarget:(id)target taskContext:(const void *)context;
 - (void)_receivedFlushTileCachesNotification;
 - (void)_receivedLocalChangedNotification;
 - (void)_receivedMemoryNotification;
@@ -107,37 +107,37 @@
   memoryNotificationEventSource = self->_memoryNotificationEventSource;
   self->_memoryNotificationEventSource = 0;
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"VKDidReceiveMemoryWarningNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"VKDidReceiveMemoryWarningNotification" object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"VKShouldFlushTileCachesNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"VKShouldFlushTileCachesNotification" object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x1E696A7D8] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 removeObserver:self name:*MEMORY[0x1E696A7D8] object:0];
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 removeObserver:self name:*MEMORY[0x1E696A7E0] object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 removeObserver:self name:*MEMORY[0x1E696A7E0] object:0];
 
   v9.receiver = self;
   v9.super_class = VKNotificationObserver;
   [(VKNotificationObserver *)&v9 dealloc];
 }
 
-- (VKNotificationObserver)initWithTarget:(id)a3 taskContext:(const void *)a4
+- (VKNotificationObserver)initWithTarget:(id)target taskContext:(const void *)context
 {
-  v6 = a3;
+  targetCopy = target;
   v27.receiver = self;
   v27.super_class = VKNotificationObserver;
   v7 = [(VKNotificationObserver *)&v27 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    v9 = *a4;
+    objc_storeWeak(&v7->_target, targetCopy);
+    v9 = *context;
     v10 = dispatch_source_create(MEMORY[0x1E69E96E8], 0, 6uLL, v9);
     memoryNotificationEventSource = v8->_memoryNotificationEventSource;
     v8->_memoryNotificationEventSource = v10;
@@ -151,26 +151,26 @@
     objc_copyWeak(&v25, &location);
     dispatch_source_set_event_handler(v12, &v21);
     dispatch_resume(v8->_memoryNotificationEventSource);
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v8 selector:sel__receivedMemoryNotification name:@"VKDidReceiveMemoryWarningNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__receivedMemoryNotification name:@"VKDidReceiveMemoryWarningNotification" object:0];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v8 selector:sel__receivedFlushTileCachesNotification name:@"VKShouldFlushTileCachesNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel__receivedFlushTileCachesNotification name:@"VKShouldFlushTileCachesNotification" object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v8 selector:sel__receivedLocalChangedNotification name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v8 selector:sel__receivedLocalChangedNotification name:*MEMORY[0x1E695D8F0] object:0];
 
-    v16 = [MEMORY[0x1E696AE30] processInfo];
-    [v16 thermalState];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo thermalState];
 
-    v17 = [MEMORY[0x1E696AE30] processInfo];
-    [v17 isLowPowerModeEnabled];
+    processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo2 isLowPowerModeEnabled];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v8 selector:sel__receivedThermalStateDidChangeNotification name:*MEMORY[0x1E696A7E0] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v8 selector:sel__receivedThermalStateDidChangeNotification name:*MEMORY[0x1E696A7E0] object:0];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v8 selector:sel__receivedPowerStateDidChangeNotification name:*MEMORY[0x1E696A7D8] object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v8 selector:sel__receivedPowerStateDidChangeNotification name:*MEMORY[0x1E696A7D8] object:0];
 
     [(VKNotificationObserver *)v8 _receivedThermalStateDidChangeNotification];
     [(VKNotificationObserver *)v8 _receivedPowerStateDidChangeNotification];

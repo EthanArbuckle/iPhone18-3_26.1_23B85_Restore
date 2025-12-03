@@ -6,10 +6,10 @@
 
 - (id)commandIdentifier
 {
-  v2 = [(SAIntentGroupChoiceSettingSnippetTemplate *)self updateSlotCommand];
-  v3 = [v2 aceId];
+  updateSlotCommand = [(SAIntentGroupChoiceSettingSnippetTemplate *)self updateSlotCommand];
+  aceId = [updateSlotCommand aceId];
 
-  return v3;
+  return aceId;
 }
 
 @end

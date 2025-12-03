@@ -1,17 +1,17 @@
 @interface TXRImageIndependent
-- (TXRImageIndependent)initWithCGImage:(CGImage *)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6;
-- (TXRImageIndependent)initWithCGImage:(CGImage *)a3 pixelFormat:(unint64_t)a4 bufferAllocator:(id)a5 options:(id)a6 error:(id *)a7;
-- (TXRImageIndependent)initWithDimensions:(unint64_t)a3 pixelFormat:(unint64_t)a4 alphaInfo:(id)a5 bufferAllocator:;
-- (TXRImageIndependent)initWithDimensions:(unint64_t)a3 pixelFormat:(unint64_t)a4 alphaInfo:(unint64_t)a5 bytesPerRow:(unint64_t)a6 bytesPerImage:(id)a7 buffer:(unint64_t)a8 offset:;
-- (TXRImageIndependent)initWithImage:(id)a3 dimensions:(unint64_t)a4 pixelFormat:(unint64_t)a5 alphaInfo:;
+- (TXRImageIndependent)initWithCGImage:(CGImage *)image bufferAllocator:(id)allocator options:(id)options error:(id *)error;
+- (TXRImageIndependent)initWithCGImage:(CGImage *)image pixelFormat:(unint64_t)format bufferAllocator:(id)allocator options:(id)options error:(id *)error;
+- (TXRImageIndependent)initWithDimensions:(unint64_t)dimensions pixelFormat:(unint64_t)format alphaInfo:(id)info bufferAllocator:;
+- (TXRImageIndependent)initWithDimensions:(unint64_t)dimensions pixelFormat:(unint64_t)format alphaInfo:(unint64_t)info bytesPerRow:(unint64_t)row bytesPerImage:(id)image buffer:(unint64_t)buffer offset:;
+- (TXRImageIndependent)initWithImage:(id)image dimensions:(unint64_t)dimensions pixelFormat:(unint64_t)format alphaInfo:;
 @end
 
 @implementation TXRImageIndependent
 
-- (TXRImageIndependent)initWithImage:(id)a3 dimensions:(unint64_t)a4 pixelFormat:(unint64_t)a5 alphaInfo:
+- (TXRImageIndependent)initWithImage:(id)image dimensions:(unint64_t)dimensions pixelFormat:(unint64_t)format alphaInfo:
 {
   v15 = v5;
-  v9 = a3;
+  imageCopy = image;
   v16.receiver = self;
   v16.super_class = TXRImageIndependent;
   v10 = [(TXRImageIndependent *)&v16 init];
@@ -19,24 +19,24 @@
   if (v10)
   {
     *v10->_dimensions = v15;
-    v10->_pixelFormat = a4;
-    v10->_alphaInfo = a5;
-    v10->super._bytesPerRow = [v9 bytesPerRow];
-    v11->super._bytesPerImage = [v9 bytesPerImage];
-    v12 = [v9 buffer];
+    v10->_pixelFormat = dimensions;
+    v10->_alphaInfo = format;
+    v10->super._bytesPerRow = [imageCopy bytesPerRow];
+    v11->super._bytesPerImage = [imageCopy bytesPerImage];
+    buffer = [imageCopy buffer];
     buffer = v11->super._buffer;
-    v11->super._buffer = v12;
+    v11->super._buffer = buffer;
 
-    v11->super._offset = [v9 offset];
+    v11->super._offset = [imageCopy offset];
   }
 
   return v11;
 }
 
-- (TXRImageIndependent)initWithDimensions:(unint64_t)a3 pixelFormat:(unint64_t)a4 alphaInfo:(unint64_t)a5 bytesPerRow:(unint64_t)a6 bytesPerImage:(id)a7 buffer:(unint64_t)a8 offset:
+- (TXRImageIndependent)initWithDimensions:(unint64_t)dimensions pixelFormat:(unint64_t)format alphaInfo:(unint64_t)info bytesPerRow:(unint64_t)row bytesPerImage:(id)image buffer:(unint64_t)buffer offset:
 {
   v20 = v8;
-  v16 = a7;
+  imageCopy = image;
   v21.receiver = self;
   v21.super_class = TXRImageIndependent;
   v17 = [(TXRImageIndependent *)&v21 init];
@@ -45,56 +45,56 @@
   {
     *v17->_dimensions = v20;
     *&v17->_dimensions[8] = DWORD2(v20);
-    v17->_pixelFormat = a3;
-    v17->_alphaInfo = a4;
-    v17->super._bytesPerRow = a5;
-    v17->super._bytesPerImage = a6;
-    objc_storeStrong(&v17->super._buffer, a7);
-    v18->super._offset = a8;
+    v17->_pixelFormat = dimensions;
+    v17->_alphaInfo = format;
+    v17->super._bytesPerRow = info;
+    v17->super._bytesPerImage = row;
+    objc_storeStrong(&v17->super._buffer, image);
+    v18->super._offset = buffer;
   }
 
   return v18;
 }
 
-- (TXRImageIndependent)initWithCGImage:(CGImage *)a3 bufferAllocator:(id)a4 options:(id)a5 error:(id *)a6
+- (TXRImageIndependent)initWithCGImage:(CGImage *)image bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  allocatorCopy = allocator;
+  optionsCopy = options;
+  if (!allocatorCopy)
   {
-    v10 = objc_alloc_init(TXRDefaultBufferAllocator);
+    allocatorCopy = objc_alloc_init(TXRDefaultBufferAllocator);
   }
 
-  v12 = [TXRParserImageIO decodeCGImage:a3 desiredPixelFormat:0 bufferAllocator:v10 options:v11 error:a6];
+  v12 = [TXRParserImageIO decodeCGImage:image desiredPixelFormat:0 bufferAllocator:allocatorCopy options:optionsCopy error:error];
 
   return v12;
 }
 
-- (TXRImageIndependent)initWithCGImage:(CGImage *)a3 pixelFormat:(unint64_t)a4 bufferAllocator:(id)a5 options:(id)a6 error:(id *)a7
+- (TXRImageIndependent)initWithCGImage:(CGImage *)image pixelFormat:(unint64_t)format bufferAllocator:(id)allocator options:(id)options error:(id *)error
 {
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  allocatorCopy = allocator;
+  optionsCopy = options;
+  if (!allocatorCopy)
   {
-    v12 = objc_alloc_init(TXRDefaultBufferAllocator);
+    allocatorCopy = objc_alloc_init(TXRDefaultBufferAllocator);
   }
 
-  v14 = [TXRParserImageIO decodeCGImage:a3 desiredPixelFormat:a4 bufferAllocator:v12 options:v13 error:a7];
+  v14 = [TXRParserImageIO decodeCGImage:image desiredPixelFormat:format bufferAllocator:allocatorCopy options:optionsCopy error:error];
 
-  if (v14 && v14->_pixelFormat != a4)
+  if (v14 && v14->_pixelFormat != format)
   {
-    v15 = [TXRDataConverter newImageFromSourceImage:v14 newPixelFormat:a4 bufferAllocator:v12 multiplyAlpha:0 gammaDegamma:0 error:a7];
+    v15 = [TXRDataConverter newImageFromSourceImage:v14 newPixelFormat:format bufferAllocator:allocatorCopy multiplyAlpha:0 gammaDegamma:0 error:error];
     [(TXRImageIndependent *)v14 dimensions];
-    v14 = [(TXRImageIndependent *)v14 initWithImage:v15 dimensions:a4 pixelFormat:[(TXRImageIndependent *)v14 alphaInfo] alphaInfo:v16];
+    v14 = [(TXRImageIndependent *)v14 initWithImage:v15 dimensions:format pixelFormat:[(TXRImageIndependent *)v14 alphaInfo] alphaInfo:v16];
   }
 
   return v14;
 }
 
-- (TXRImageIndependent)initWithDimensions:(unint64_t)a3 pixelFormat:(unint64_t)a4 alphaInfo:(id)a5 bufferAllocator:
+- (TXRImageIndependent)initWithDimensions:(unint64_t)dimensions pixelFormat:(unint64_t)format alphaInfo:(id)info bufferAllocator:
 {
   v16 = v5;
-  v9 = a5;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = TXRImageIndependent;
   v10 = [(TXRImageIndependent *)&v17 init];
@@ -102,11 +102,11 @@
   if (v10)
   {
     *v10->_dimensions = v16;
-    v10->_pixelFormat = a3;
-    v10->_alphaInfo = a4;
-    v10->super._bytesPerRow = [TXRPixelFormatInfo packedMemoryLayoutForFormat:a3 dimensions:?];
+    v10->_pixelFormat = dimensions;
+    v10->_alphaInfo = format;
+    v10->super._bytesPerRow = [TXRPixelFormatInfo packedMemoryLayoutForFormat:dimensions dimensions:?];
     v11->super._bytesPerImage = v12;
-    v13 = [v9 newBufferWithLength:v12 * DWORD2(v16)];
+    v13 = [infoCopy newBufferWithLength:v12 * DWORD2(v16)];
     buffer = v11->super._buffer;
     v11->super._buffer = v13;
 

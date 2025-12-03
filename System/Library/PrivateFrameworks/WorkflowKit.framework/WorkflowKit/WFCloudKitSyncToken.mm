@@ -1,11 +1,11 @@
 @interface WFCloudKitSyncToken
-+ (id)accountForContainerEnvironmentString:(id)a3 userRecordID:(id)a4;
++ (id)accountForContainerEnvironmentString:(id)string userRecordID:(id)d;
 + (id)defaultIdentifier;
 - (CKServerChangeToken)serverChangeToken;
 - (NSOrderedSet)lastOrdering;
 - (id)newTokenWithCopiedPayload;
-- (void)setLastOrdering:(id)a3;
-- (void)setServerChangeToken:(id)a3;
+- (void)setLastOrdering:(id)ordering;
+- (void)setServerChangeToken:(id)token;
 @end
 
 @implementation WFCloudKitSyncToken
@@ -13,24 +13,24 @@
 - (id)newTokenWithCopiedPayload
 {
   v3 = objc_opt_new();
-  v4 = [(WFCloudKitSyncToken *)self account];
-  [v3 setAccount:v4];
+  account = [(WFCloudKitSyncToken *)self account];
+  [v3 setAccount:account];
 
   [v3 setCoherenceSyncEnabled:{-[WFCloudKitSyncToken coherenceSyncEnabled](self, "coherenceSyncEnabled")}];
-  v5 = [(WFCloudKitSyncToken *)self serverChangeTokenData];
-  [v3 setServerChangeTokenData:v5];
+  serverChangeTokenData = [(WFCloudKitSyncToken *)self serverChangeTokenData];
+  [v3 setServerChangeTokenData:serverChangeTokenData];
 
-  v6 = [(WFCloudKitSyncToken *)self lastOrderingData];
-  [v3 setLastOrderingData:v6];
+  lastOrderingData = [(WFCloudKitSyncToken *)self lastOrderingData];
+  [v3 setLastOrderingData:lastOrderingData];
 
-  v7 = [(WFCloudKitSyncToken *)self lastOrderingCloudKitRecordMetadata];
-  [v3 setLastOrderingCloudKitRecordMetadata:v7];
+  lastOrderingCloudKitRecordMetadata = [(WFCloudKitSyncToken *)self lastOrderingCloudKitRecordMetadata];
+  [v3 setLastOrderingCloudKitRecordMetadata:lastOrderingCloudKitRecordMetadata];
 
-  v8 = [(WFCloudKitSyncToken *)self syncEngineMetadata];
-  [v3 setSyncEngineMetadata:v8];
+  syncEngineMetadata = [(WFCloudKitSyncToken *)self syncEngineMetadata];
+  [v3 setSyncEngineMetadata:syncEngineMetadata];
 
-  v9 = [(WFCloudKitSyncToken *)self syncFlagsCloudKitRecordMetadata];
-  [v3 setSyncFlagsCloudKitRecordMetadata:v9];
+  syncFlagsCloudKitRecordMetadata = [(WFCloudKitSyncToken *)self syncFlagsCloudKitRecordMetadata];
+  [v3 setSyncFlagsCloudKitRecordMetadata:syncFlagsCloudKitRecordMetadata];
 
   return v3;
 }
@@ -38,8 +38,8 @@
 - (NSOrderedSet)lastOrdering
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(WFCloudKitSyncToken *)self lastOrderingData];
-  v4 = [v3 length];
+  lastOrderingData = [(WFCloudKitSyncToken *)self lastOrderingData];
+  v4 = [lastOrderingData length];
 
   if (v4)
   {
@@ -47,9 +47,9 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [(WFCloudKitSyncToken *)self lastOrderingData];
+    lastOrderingData2 = [(WFCloudKitSyncToken *)self lastOrderingData];
     v17 = 0;
-    v10 = [v5 unarchivedObjectOfClasses:v8 fromData:v9 error:&v17];
+    v10 = [v5 unarchivedObjectOfClasses:v8 fromData:lastOrderingData2 error:&v17];
     v11 = v17;
 
     if (v10)
@@ -93,12 +93,12 @@
   return v13;
 }
 
-- (void)setLastOrdering:(id)a3
+- (void)setLastOrdering:(id)ordering
 {
-  if (a3)
+  if (ordering)
   {
     v4 = MEMORY[0x1E696ACC8];
-    v7 = [a3 array];
+    array = [ordering array];
     v5 = [v4 archivedDataWithRootObject:? requiringSecureCoding:? error:?];
     if (v5)
     {
@@ -114,24 +114,24 @@
 
   else
   {
-    v7 = objc_opt_new();
-    [(WFCloudKitSyncToken *)self setLastOrderingData:v7];
+    array = objc_opt_new();
+    [(WFCloudKitSyncToken *)self setLastOrderingData:array];
   }
 }
 
 - (CKServerChangeToken)serverChangeToken
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(WFCloudKitSyncToken *)self serverChangeTokenData];
-  v4 = [v3 length];
+  serverChangeTokenData = [(WFCloudKitSyncToken *)self serverChangeTokenData];
+  v4 = [serverChangeTokenData length];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696ACD0];
     v6 = objc_opt_class();
-    v7 = [(WFCloudKitSyncToken *)self serverChangeTokenData];
+    serverChangeTokenData2 = [(WFCloudKitSyncToken *)self serverChangeTokenData];
     v14 = 0;
-    v8 = [v5 unarchivedObjectOfClass:v6 fromData:v7 error:&v14];
+    v8 = [v5 unarchivedObjectOfClass:v6 fromData:serverChangeTokenData2 error:&v14];
     v9 = v14;
 
     if (v8)
@@ -171,25 +171,25 @@
   return v8;
 }
 
-- (void)setServerChangeToken:(id)a3
+- (void)setServerChangeToken:(id)token
 {
-  if (!a3)
+  if (!token)
   {
     v7 = objc_opt_new();
     v10 = v7;
-    v6 = self;
+    selfCopy2 = self;
     goto LABEL_5;
   }
 
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:token requiringSecureCoding:1 error:0];
   if (v4)
   {
     v5 = v4;
-    v6 = self;
+    selfCopy2 = self;
     v10 = v5;
     v7 = v5;
 LABEL_5:
-    [(WFCloudKitSyncToken *)v6 setServerChangeTokenData:v7];
+    [(WFCloudKitSyncToken *)selfCopy2 setServerChangeTokenData:v7];
     v8 = v10;
     goto LABEL_7;
   }
@@ -201,26 +201,26 @@ LABEL_5:
 LABEL_7:
 }
 
-+ (id)accountForContainerEnvironmentString:(id)a3 userRecordID:(id)a4
++ (id)accountForContainerEnvironmentString:(id)string userRecordID:(id)d
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 zoneID];
-  v9 = [v8 zoneName];
-  v10 = [v6 recordName];
+  dCopy = d;
+  stringCopy = string;
+  zoneID = [dCopy zoneID];
+  zoneName = [zoneID zoneName];
+  recordName = [dCopy recordName];
 
-  v11 = [v5 stringWithFormat:@"%@:%@:%@", v7, v9, v10];
+  v11 = [v5 stringWithFormat:@"%@:%@:%@", stringCopy, zoneName, recordName];
 
   return v11;
 }
 
 + (id)defaultIdentifier
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface DOCAttributionPillView
 - (BOOL)isHighlighted;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)handleTap:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation DOCAttributionPillView
@@ -15,27 +15,27 @@
   return [(DOCAttributionPillView *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for DOCAttributionPillView();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(DOCAttributionPillView *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(DOCAttributionPillView *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(DOCAttributionPillView *)&v8 setHighlighted:v3];
-  DOCAttributionPillView.isHighlighted.didset(v7);
+  [(DOCAttributionPillView *)&v8 setHighlighted:highlightedCopy];
+  DOCAttributionPillView.isHighlighted.didset(isHighlighted);
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  selfCopy = self;
+  if ([tapCopy state] == 3)
   {
-    [(DOCAttributionPillView *)v5 sendActionsForControlEvents:64];
+    [(DOCAttributionPillView *)selfCopy sendActionsForControlEvents:64];
   }
 }
 
@@ -50,7 +50,7 @@
   [v3 _setContinuousCornerRadius_];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   type metadata accessor for NSMutableAttributedString(0, &lazy cache variable for type metadata for UIContextMenuConfiguration);
   v4 = swift_allocObject();

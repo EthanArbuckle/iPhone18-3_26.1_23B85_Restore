@@ -1,6 +1,6 @@
 @interface LaunchServicesSatisfyingAppsDataProvider
 - (_TtC21SiriInformationSearch40LaunchServicesSatisfyingAppsDataProvider)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 @end
 
 @implementation LaunchServicesSatisfyingAppsDataProvider
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   type metadata accessor for APSubject();
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

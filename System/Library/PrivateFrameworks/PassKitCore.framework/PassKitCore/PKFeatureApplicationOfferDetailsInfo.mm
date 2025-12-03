@@ -1,17 +1,17 @@
 @interface PKFeatureApplicationOfferDetailsInfo
-- (PKFeatureApplicationOfferDetailsInfo)initWithCoder:(id)a3;
-- (PKFeatureApplicationOfferDetailsInfo)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKFeatureApplicationOfferDetailsInfo)initWithCoder:(id)coder;
+- (PKFeatureApplicationOfferDetailsInfo)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFeatureApplicationOfferDetailsInfo
 
-- (PKFeatureApplicationOfferDetailsInfo)initWithDictionary:(id)a3
+- (PKFeatureApplicationOfferDetailsInfo)initWithDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = PKFeatureApplicationOfferDetailsInfo;
   v5 = [(PKFeatureApplicationOfferDetailsInfo *)&v35 init];
@@ -20,35 +20,35 @@
     goto LABEL_20;
   }
 
-  v6 = [v4 PKStringForKey:@"title"];
+  v6 = [dictionaryCopy PKStringForKey:@"title"];
   title = v5->_title;
   v5->_title = v6;
 
-  v8 = [v4 PKStringForKey:@"body"];
+  v8 = [dictionaryCopy PKStringForKey:@"body"];
   body = v5->_body;
   v5->_body = v8;
 
-  v10 = [v4 PKStringForKey:@"primaryActionTitle"];
+  v10 = [dictionaryCopy PKStringForKey:@"primaryActionTitle"];
   primaryActionTitle = v5->_primaryActionTitle;
   v5->_primaryActionTitle = v10;
 
-  v12 = [v4 PKStringForKey:@"primaryActionIdentifier"];
+  v12 = [dictionaryCopy PKStringForKey:@"primaryActionIdentifier"];
   primaryActionIdentifier = v5->_primaryActionIdentifier;
   v5->_primaryActionIdentifier = v12;
 
-  v14 = [v4 PKStringForKey:@"secondaryActionTitle"];
+  v14 = [dictionaryCopy PKStringForKey:@"secondaryActionTitle"];
   secondaryActionTitle = v5->_secondaryActionTitle;
   v5->_secondaryActionTitle = v14;
 
-  v16 = [v4 PKStringForKey:@"secondaryActionIdentifier"];
+  v16 = [dictionaryCopy PKStringForKey:@"secondaryActionIdentifier"];
   secondaryActionIdentifier = v5->_secondaryActionIdentifier;
   v5->_secondaryActionIdentifier = v16;
 
-  v18 = [v4 PKStringForKey:@"disclosureTitle"];
+  v18 = [dictionaryCopy PKStringForKey:@"disclosureTitle"];
   disclosureTitle = v5->_disclosureTitle;
   v5->_disclosureTitle = v18;
 
-  v20 = [v4 PKStringForKey:@"layout"];
+  v20 = [dictionaryCopy PKStringForKey:@"layout"];
   v21 = v20;
   if (v20 == @"table")
   {
@@ -81,7 +81,7 @@ LABEL_5:
 LABEL_10:
 
   v5->_layout = v23;
-  v27 = [v4 PKDictionaryForKey:@"heroImage"];
+  v27 = [dictionaryCopy PKDictionaryForKey:@"heroImage"];
   if (v27)
   {
     v28 = PKScreenScale();
@@ -122,65 +122,65 @@ LABEL_20:
   return v5;
 }
 
-- (PKFeatureApplicationOfferDetailsInfo)initWithCoder:(id)a3
+- (PKFeatureApplicationOfferDetailsInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PKFeatureApplicationOfferDetailsInfo;
   v5 = [(PKFeatureApplicationOfferDetailsInfo *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
     body = v5->_body;
     v5->_body = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryActionTitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryActionTitle"];
     primaryActionTitle = v5->_primaryActionTitle;
     v5->_primaryActionTitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryActionIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryActionIdentifier"];
     primaryActionIdentifier = v5->_primaryActionIdentifier;
     v5->_primaryActionIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryActionTitle"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryActionTitle"];
     secondaryActionTitle = v5->_secondaryActionTitle;
     v5->_secondaryActionTitle = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryActionIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryActionIdentifier"];
     secondaryActionIdentifier = v5->_secondaryActionIdentifier;
     v5->_secondaryActionIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"disclosureTitle"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"disclosureTitle"];
     disclosureTitle = v5->_disclosureTitle;
     v5->_disclosureTitle = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"heroImageURL"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"heroImageURL"];
     heroImageURL = v5->_heroImageURL;
     v5->_heroImageURL = v20;
 
-    v5->_layout = [v4 decodeIntegerForKey:@"layout"];
+    v5->_layout = [coderCopy decodeIntegerForKey:@"layout"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_body forKey:@"body"];
-  [v5 encodeObject:self->_primaryActionTitle forKey:@"primaryActionTitle"];
-  [v5 encodeObject:self->_primaryActionIdentifier forKey:@"primaryActionIdentifier"];
-  [v5 encodeObject:self->_secondaryActionTitle forKey:@"secondaryActionTitle"];
-  [v5 encodeObject:self->_secondaryActionIdentifier forKey:@"secondaryActionIdentifier"];
-  [v5 encodeObject:self->_disclosureTitle forKey:@"disclosureTitle"];
-  [v5 encodeObject:self->_heroImageURL forKey:@"heroImageURL"];
-  [v5 encodeInteger:self->_layout forKey:@"layout"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_body forKey:@"body"];
+  [coderCopy encodeObject:self->_primaryActionTitle forKey:@"primaryActionTitle"];
+  [coderCopy encodeObject:self->_primaryActionIdentifier forKey:@"primaryActionIdentifier"];
+  [coderCopy encodeObject:self->_secondaryActionTitle forKey:@"secondaryActionTitle"];
+  [coderCopy encodeObject:self->_secondaryActionIdentifier forKey:@"secondaryActionIdentifier"];
+  [coderCopy encodeObject:self->_disclosureTitle forKey:@"disclosureTitle"];
+  [coderCopy encodeObject:self->_heroImageURL forKey:@"heroImageURL"];
+  [coderCopy encodeInteger:self->_layout forKey:@"layout"];
 }
 
 - (id)description
@@ -200,38 +200,38 @@ LABEL_20:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKFeatureApplicationOfferDetailsInfo allocWithZone:](PKFeatureApplicationOfferDetailsInfo init];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v6;
 
-  v8 = [(NSString *)self->_body copyWithZone:a3];
+  v8 = [(NSString *)self->_body copyWithZone:zone];
   body = v5->_body;
   v5->_body = v8;
 
-  v10 = [(NSString *)self->_primaryActionTitle copyWithZone:a3];
+  v10 = [(NSString *)self->_primaryActionTitle copyWithZone:zone];
   primaryActionTitle = v5->_primaryActionTitle;
   v5->_primaryActionTitle = v10;
 
-  v12 = [(NSString *)self->_primaryActionIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_primaryActionIdentifier copyWithZone:zone];
   primaryActionIdentifier = v5->_primaryActionIdentifier;
   v5->_primaryActionIdentifier = v12;
 
-  v14 = [(NSString *)self->_secondaryActionTitle copyWithZone:a3];
+  v14 = [(NSString *)self->_secondaryActionTitle copyWithZone:zone];
   secondaryActionTitle = v5->_secondaryActionTitle;
   v5->_secondaryActionTitle = v14;
 
-  v16 = [(NSString *)self->_secondaryActionIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_secondaryActionIdentifier copyWithZone:zone];
   secondaryActionIdentifier = v5->_secondaryActionIdentifier;
   v5->_secondaryActionIdentifier = v16;
 
-  v18 = [(NSString *)self->_disclosureTitle copyWithZone:a3];
+  v18 = [(NSString *)self->_disclosureTitle copyWithZone:zone];
   disclosureTitle = v5->_disclosureTitle;
   v5->_disclosureTitle = v18;
 
-  v20 = [(NSString *)self->_heroImageURL copyWithZone:a3];
+  v20 = [(NSString *)self->_heroImageURL copyWithZone:zone];
   heroImageURL = v5->_heroImageURL;
   v5->_heroImageURL = v20;
 

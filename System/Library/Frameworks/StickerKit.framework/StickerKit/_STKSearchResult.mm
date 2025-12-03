@@ -1,7 +1,7 @@
 @interface _STKSearchResult
 - (NSArray)results;
 - (_STKSearchResult)init;
-- (_STKSearchResult)initWithOriginalQuery:(id)a3 results:(id)a4;
+- (_STKSearchResult)initWithOriginalQuery:(id)query results:(id)results;
 @end
 
 @implementation _STKSearchResult
@@ -15,15 +15,15 @@
   return v2;
 }
 
-- (_STKSearchResult)initWithOriginalQuery:(id)a3 results:(id)a4
+- (_STKSearchResult)initWithOriginalQuery:(id)query results:(id)results
 {
   type metadata accessor for ImageGlyph(0);
   v6 = sub_19A7AB254();
-  *(self + OBJC_IVAR____STKSearchResult_originalQuery) = a3;
+  *(self + OBJC_IVAR____STKSearchResult_originalQuery) = query;
   *(self + OBJC_IVAR____STKSearchResult_results) = v6;
   v9.receiver = self;
   v9.super_class = type metadata accessor for _STKSearchResult();
-  v7 = a3;
+  queryCopy = query;
   return [(_STKSearchResult *)&v9 init];
 }
 

@@ -1,6 +1,6 @@
 @interface CheckInOnboardingViewController2
-- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController2)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController2)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController2)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController2)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)continueButtonAction;
 - (void)notNowButtonAction;
 - (void)viewDidLoad;
@@ -10,35 +10,35 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CheckInOnboardingViewController2.viewDidLoad()();
 }
 
 - (void)continueButtonAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_2646E0288();
 }
 
 - (void)notNowButtonAction
 {
-  v4 = self;
-  v2 = [(CheckInOnboardingViewController2 *)v4 navigationController];
-  if (v2)
+  selfCopy = self;
+  navigationController = [(CheckInOnboardingViewController2 *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
-    [v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = navigationController;
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController2)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController2)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController2)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC15SafetyMonitorUI32CheckInOnboardingViewController2)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,6 +1,6 @@
 @interface MKFCKSharedUserPhotosPerson
 - (id)createHMPerson;
-- (void)updateWithHMPerson:(id)a3;
+- (void)updateWithHMPerson:(id)person;
 @end
 
 @implementation MKFCKSharedUserPhotosPerson
@@ -8,41 +8,41 @@
 - (id)createHMPerson
 {
   v3 = objc_alloc(MEMORY[0x277CD1C70]);
-  v4 = [(MKFCKSharedUserPhotosPerson *)self modelID];
-  v5 = [v3 initWithUUID:v4];
+  modelID = [(MKFCKSharedUserPhotosPerson *)self modelID];
+  v5 = [v3 initWithUUID:modelID];
 
-  v6 = [(MKFCKSharedUserPhotosPerson *)self name];
-  [v5 setName:v6];
+  name = [(MKFCKSharedUserPhotosPerson *)self name];
+  [v5 setName:name];
 
-  v7 = [(MKFCKSharedUserPhotosPerson *)self photoLibraryPersonUUID];
-  [v5 setExternalPersonUUID:v7];
+  photoLibraryPersonUUID = [(MKFCKSharedUserPhotosPerson *)self photoLibraryPersonUUID];
+  [v5 setExternalPersonUUID:photoLibraryPersonUUID];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (void)updateWithHMPerson:(id)a3
+- (void)updateWithHMPerson:(id)person
 {
-  v12 = a3;
-  v4 = [(MKFCKSharedUserPhotosPerson *)self name];
-  v5 = [v12 name];
+  personCopy = person;
+  name = [(MKFCKSharedUserPhotosPerson *)self name];
+  name2 = [personCopy name];
   v6 = HMFEqualObjects();
 
   if ((v6 & 1) == 0)
   {
-    v7 = [v12 name];
-    [(MKFCKSharedUserPhotosPerson *)self setName:v7];
+    name3 = [personCopy name];
+    [(MKFCKSharedUserPhotosPerson *)self setName:name3];
   }
 
-  v8 = [(MKFCKSharedUserPhotosPerson *)self photoLibraryPersonUUID];
-  v9 = [v12 externalPersonUUID];
+  photoLibraryPersonUUID = [(MKFCKSharedUserPhotosPerson *)self photoLibraryPersonUUID];
+  externalPersonUUID = [personCopy externalPersonUUID];
   v10 = HMFEqualObjects();
 
   if ((v10 & 1) == 0)
   {
-    v11 = [v12 externalPersonUUID];
-    [(MKFCKSharedUserPhotosPerson *)self setPhotoLibraryPersonUUID:v11];
+    externalPersonUUID2 = [personCopy externalPersonUUID];
+    [(MKFCKSharedUserPhotosPerson *)self setPhotoLibraryPersonUUID:externalPersonUUID2];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface DOMTextEvent
 - (NSString)data;
-- (void)initTextEvent:(id)a3 canBubbleArg:(BOOL)a4 cancelableArg:(BOOL)a5 viewArg:(id)a6 dataArg:(id)a7;
+- (void)initTextEvent:(id)event canBubbleArg:(BOOL)arg cancelableArg:(BOOL)cancelableArg viewArg:(id)viewArg dataArg:(id)dataArg;
 @end
 
 @implementation DOMTextEvent
@@ -47,17 +47,17 @@
   return v5;
 }
 
-- (void)initTextEvent:(id)a3 canBubbleArg:(BOOL)a4 cancelableArg:(BOOL)a5 viewArg:(id)a6 dataArg:(id)a7
+- (void)initTextEvent:(id)event canBubbleArg:(BOOL)arg cancelableArg:(BOOL)cancelableArg viewArg:(id)viewArg dataArg:(id)dataArg
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v22);
-  WTF::AtomStringImpl::add(&v23, a3, v10);
+  WTF::AtomStringImpl::add(&v23, event, v10);
   v21 = v23;
-  if (!a6)
+  if (!viewArg)
   {
     goto LABEL_7;
   }
 
-  v11 = *(a6 + 2);
+  v11 = *(viewArg + 2);
   if (!v11)
   {
     goto LABEL_8;
@@ -80,7 +80,7 @@ LABEL_7:
 
 LABEL_8:
   v23 = v11;
-  MEMORY[0x1CCA63A40](&v20, a7);
+  MEMORY[0x1CCA63A40](&v20, dataArg);
   WebCore::TextEvent::initTextEvent();
   v15 = v20;
   v20 = 0;

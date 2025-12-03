@@ -1,10 +1,10 @@
 @interface IMExtensionNotificationManager
 + (id)sharedInstance;
-- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)a3;
-- (BOOL)shouldRetractedMessageForBalloonBundleID:(id)a3;
+- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)d;
+- (BOOL)shouldRetractedMessageForBalloonBundleID:(id)d;
 - (IMExtensionNotificationManager)init;
 - (id)notificationCategories;
-- (void)populateUserInfoForNotificationContent:(id)a3 messageBalloonBundleID:(id)a4 payloadData:(id)a5 chatIdentifier:(id)a6 isUrgentMessageTrigger:(BOOL *)a7 shouldSuppressNotification:(BOOL *)a8;
+- (void)populateUserInfoForNotificationContent:(id)content messageBalloonBundleID:(id)d payloadData:(id)data chatIdentifier:(id)identifier isUrgentMessageTrigger:(BOOL *)trigger shouldSuppressNotification:(BOOL *)notification;
 @end
 
 @implementation IMExtensionNotificationManager
@@ -58,15 +58,15 @@
   return v2;
 }
 
-- (void)populateUserInfoForNotificationContent:(id)a3 messageBalloonBundleID:(id)a4 payloadData:(id)a5 chatIdentifier:(id)a6 isUrgentMessageTrigger:(BOOL *)a7 shouldSuppressNotification:(BOOL *)a8
+- (void)populateUserInfoForNotificationContent:(id)content messageBalloonBundleID:(id)d payloadData:(id)data chatIdentifier:(id)identifier isUrgentMessageTrigger:(BOOL *)trigger shouldSuppressNotification:(BOOL *)notification
 {
-  v26 = a7;
-  v27 = a8;
+  triggerCopy = trigger;
+  notificationCopy = notification;
   v33 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  contentCopy = content;
+  dCopy = d;
+  dataCopy = data;
+  identifierCopy = identifier;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -87,16 +87,16 @@
         }
 
         v23 = *(*(&v28 + 1) + 8 * i);
-        if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(v23, v19, v13, v26, v27, v28))
+        if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(v23, v19, dCopy, triggerCopy, notificationCopy, v28))
         {
           if (objc_opt_respondsToSelector())
           {
-            objc_msgSend_populateUserInfoForNotificationContent_messageBalloonBundleID_payloadData_chatIdentifier_isUrgentMessageTrigger_shouldSuppressNotification_(v23, v24, v12, v13, v14, v15, v26, v27);
+            objc_msgSend_populateUserInfoForNotificationContent_messageBalloonBundleID_payloadData_chatIdentifier_isUrgentMessageTrigger_shouldSuppressNotification_(v23, v24, contentCopy, dCopy, dataCopy, identifierCopy, triggerCopy, notificationCopy);
           }
 
           else
           {
-            objc_msgSend_populateUserInfoForNotificationContent_messageBalloonBundleID_payloadData_(v23, v24, v12, v13, v14);
+            objc_msgSend_populateUserInfoForNotificationContent_messageBalloonBundleID_payloadData_(v23, v24, contentCopy, dCopy, dataCopy);
           }
         }
       }
@@ -148,10 +148,10 @@
   return v3;
 }
 
-- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)a3
+- (BOOL)canPopulateUserInfoForMessageBalloonBundleID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -171,9 +171,9 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(v11, v7, v4, v14))
+        if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(v11, v7, dCopy, v14))
         {
-          LOBYTE(v8) = objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(v11, v7, v4);
+          LOBYTE(v8) = objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(v11, v7, dCopy);
           goto LABEL_11;
         }
       }
@@ -194,10 +194,10 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)shouldRetractedMessageForBalloonBundleID:(id)a3
+- (BOOL)shouldRetractedMessageForBalloonBundleID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -217,7 +217,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(*(*(&v15 + 1) + 8 * i), v8, v4, v15))
+        if (objc_msgSend_canPopulateUserInfoForMessageBalloonBundleID_(*(*(&v15 + 1) + 8 * i), v8, dCopy, v15))
         {
           v12 = 0;
           goto LABEL_11;

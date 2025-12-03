@@ -1,7 +1,7 @@
 @interface BWInferenceDataRequirement
 - (BWInferenceDataRequirement)init;
-- (BWInferenceDataRequirement)initWithDataRequirement:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BWInferenceDataRequirement)initWithDataRequirement:(id)requirement;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BWInferenceDataRequirement
@@ -19,22 +19,22 @@
   return result;
 }
 
-- (BWInferenceDataRequirement)initWithDataRequirement:(id)a3
+- (BWInferenceDataRequirement)initWithDataRequirement:(id)requirement
 {
   v6.receiver = self;
   v6.super_class = BWInferenceDataRequirement;
   v4 = [(BWInferenceDataRequirement *)&v6 init];
   if (v4)
   {
-    v4->_identifier = [a3 identifier];
+    v4->_identifier = [requirement identifier];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithDataRequirement:self];
 }

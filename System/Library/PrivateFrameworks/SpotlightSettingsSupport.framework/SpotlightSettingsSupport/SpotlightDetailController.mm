@@ -1,17 +1,17 @@
 @interface SpotlightDetailController
-- (BOOL)_isApplicationHiddenCheck:(id)a3;
-- (BOOL)_isApplicationLockedCheck:(id)a3;
+- (BOOL)_isApplicationHiddenCheck:(id)check;
+- (BOOL)_isApplicationLockedCheck:(id)check;
 - (id)_appName;
 - (id)_bundleId;
 - (id)specifiers;
-- (id)whileSearchingShowAppEnabled:(id)a3;
-- (id)whileSearchingShowContentEnabled:(id)a3;
-- (void)_addWhileSearchingSpecifiersToSpecifiers:(id)a3;
-- (void)_authenticateForBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)_saveWhileSearchingShowAppEnabled:(BOOL)a3;
-- (void)_saveWhileSearchingShowContentEnabled:(BOOL)a3;
-- (void)setWhileSearchingShowAppEnabled:(id)a3 specifier:(id)a4;
-- (void)setWhileSearchingShowContentEnabled:(id)a3 specifier:(id)a4;
+- (id)whileSearchingShowAppEnabled:(id)enabled;
+- (id)whileSearchingShowContentEnabled:(id)enabled;
+- (void)_addWhileSearchingSpecifiersToSpecifiers:(id)specifiers;
+- (void)_authenticateForBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)_saveWhileSearchingShowAppEnabled:(BOOL)enabled;
+- (void)_saveWhileSearchingShowContentEnabled:(BOOL)enabled;
+- (void)setWhileSearchingShowAppEnabled:(id)enabled specifier:(id)specifier;
+- (void)setWhileSearchingShowContentEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation SpotlightDetailController
@@ -52,16 +52,16 @@
     if (self->_disabledSpotlightApps)
     {
 LABEL_12:
-      v13 = [(SpotlightDetailController *)self _bundleId];
-      self->_isApplicationHidden = [(SpotlightDetailController *)self _isApplicationHiddenCheck:v13];
+      _bundleId = [(SpotlightDetailController *)self _bundleId];
+      self->_isApplicationHidden = [(SpotlightDetailController *)self _isApplicationHiddenCheck:_bundleId];
 
-      v14 = [(SpotlightDetailController *)self _bundleId];
-      self->_isApplicationLocked = [(SpotlightDetailController *)self _isApplicationLockedCheck:v14];
+      _bundleId2 = [(SpotlightDetailController *)self _bundleId];
+      self->_isApplicationLocked = [(SpotlightDetailController *)self _isApplicationLockedCheck:_bundleId2];
 
-      v15 = [MEMORY[0x277CBEB18] array];
-      [(SpotlightDetailController *)self _addWhileSearchingSpecifiersToSpecifiers:v15];
+      array = [MEMORY[0x277CBEB18] array];
+      [(SpotlightDetailController *)self _addWhileSearchingSpecifiersToSpecifiers:array];
       v16 = *(&self->super.super.super.super.super.isa + v3);
-      *(&self->super.super.super.super.super.isa + v3) = v15;
+      *(&self->super.super.super.super.super.isa + v3) = array;
 
       v4 = *(&self->super.super.super.super.super.isa + v3);
       goto LABEL_13;
@@ -91,9 +91,9 @@ LABEL_12:
     }
 
 LABEL_17:
-    v18 = [SpotlightAppClipSettingsController specifiers];
+    specifiers = [SpotlightAppClipSettingsController specifiers];
     _Block_object_dispose(&v19, 8);
-    _Unwind_Resume(v18);
+    _Unwind_Resume(specifiers);
   }
 
 LABEL_13:
@@ -101,27 +101,27 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)_isApplicationHiddenCheck:(id)a3
+- (BOOL)_isApplicationHiddenCheck:(id)check
 {
-  v3 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:a3];
-  v4 = [MEMORY[0x277CEBE80] hiddenApplications];
-  v5 = [v4 containsObject:v3];
+  v3 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:check];
+  hiddenApplications = [MEMORY[0x277CEBE80] hiddenApplications];
+  v5 = [hiddenApplications containsObject:v3];
 
   return v5;
 }
 
-- (BOOL)_isApplicationLockedCheck:(id)a3
+- (BOOL)_isApplicationLockedCheck:(id)check
 {
-  v3 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:a3];
-  v4 = [MEMORY[0x277CEBE80] lockedApplications];
-  v5 = [v4 containsObject:v3];
+  v3 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:check];
+  lockedApplications = [MEMORY[0x277CEBE80] lockedApplications];
+  v5 = [lockedApplications containsObject:v3];
 
   return v5;
 }
 
-- (void)_addWhileSearchingSpecifiersToSpecifiers:(id)a3
+- (void)_addWhileSearchingSpecifiersToSpecifiers:(id)specifiers
 {
-  v29 = a3;
+  specifiersCopy = specifiers;
   v4 = MEMORY[0x277D3FAD8];
   v5 = +[SpotlightSettingsController bundle];
   v6 = [v5 localizedStringForKey:@"SEARCH_PERAPP_WHILESEARCHING_HEADER" value:&stru_287C45188 table:@"SpotlightSettings"];
@@ -129,7 +129,7 @@ LABEL_13:
   whileSearchingGroup = self->_whileSearchingGroup;
   self->_whileSearchingGroup = v7;
 
-  [v29 addObject:self->_whileSearchingGroup];
+  [specifiersCopy addObject:self->_whileSearchingGroup];
   v9 = MEMORY[0x277D3FAD8];
   v10 = +[SpotlightSettingsController bundle];
   v11 = [v10 localizedStringForKey:@"SEARCH_PERAPP_WHILESEARCHING_SHOWAPP_TOGGLE" value:&stru_287C45188 table:@"SpotlightSettings"];
@@ -157,41 +157,41 @@ LABEL_13:
     [(PSSpecifier *)self->_whileSearchingShowContentSpecifier setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
   }
 
-  [v29 addObject:self->_whileSearchingShowAppSpecifier];
+  [specifiersCopy addObject:self->_whileSearchingShowAppSpecifier];
   v20 = [(SpotlightDetailController *)self whileSearchingShowAppEnabled:0];
-  v21 = [v20 BOOLValue];
+  bOOLValue = [v20 BOOLValue];
 
-  if (v21)
+  if (bOOLValue)
   {
-    [v29 addObject:self->_whileSearchingShowContentSpecifier];
+    [specifiersCopy addObject:self->_whileSearchingShowContentSpecifier];
   }
 
   v22 = self->_whileSearchingGroup;
   v23 = MEMORY[0x277CCACA8];
   v24 = +[SpotlightSettingsController bundle];
   v25 = [v24 localizedStringForKey:@"SEARCH_PERAPP_WHILESEARCHING_FOOTER" value:&stru_287C45188 table:@"SpotlightSettings"];
-  v26 = [(SpotlightDetailController *)self _appName];
-  v27 = [(SpotlightDetailController *)self _appName];
-  v28 = [v23 stringWithFormat:v25, v26, v27];
+  _appName = [(SpotlightDetailController *)self _appName];
+  _appName2 = [(SpotlightDetailController *)self _appName];
+  v28 = [v23 stringWithFormat:v25, _appName, _appName2];
   [(PSSpecifier *)v22 setProperty:v28 forKey:*MEMORY[0x277D3FF88]];
 }
 
-- (id)whileSearchingShowAppEnabled:(id)a3
+- (id)whileSearchingShowAppEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   disabledSpotlightApps = self->_disabledSpotlightApps;
-  v5 = [(SpotlightDetailController *)self _bundleId];
-  v6 = [v3 numberWithInt:{-[NSMutableSet containsObject:](disabledSpotlightApps, "containsObject:", v5) ^ 1}];
+  _bundleId = [(SpotlightDetailController *)self _bundleId];
+  v6 = [v3 numberWithInt:{-[NSMutableSet containsObject:](disabledSpotlightApps, "containsObject:", _bundleId) ^ 1}];
 
   return v6;
 }
 
-- (void)_authenticateForBundleIdentifier:(id)a3 completion:(id)a4
+- (void)_authenticateForBundleIdentifier:(id)identifier completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_isApplicationLocked)
   {
     v9 = spotlightSettingsLogHandles;
@@ -204,23 +204,23 @@ LABEL_13:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v6;
+      v16 = identifierCopy;
       _os_log_impl(&dword_26B81B000, v9, OS_LOG_TYPE_DEFAULT, "Authenticating via APGuard for locked bundleIdentifier=%@", buf, 0xCu);
     }
 
-    v10 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v6];
-    v11 = [MEMORY[0x277CEBE98] sharedGuard];
+    v10 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:identifierCopy];
+    mEMORY[0x277CEBE98] = [MEMORY[0x277CEBE98] sharedGuard];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __73__SpotlightDetailController__authenticateForBundleIdentifier_completion___block_invoke;
     v13[3] = &unk_279D04A08;
     v14 = v8;
-    [v11 authenticateForSubject:v10 relayingAuditToken:1 completion:v13];
+    [mEMORY[0x277CEBE98] authenticateForSubject:v10 relayingAuditToken:1 completion:v13];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -251,17 +251,17 @@ void __73__SpotlightDetailController__authenticateForBundleIdentifier_completion
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWhileSearchingShowAppEnabled:(id)a3 specifier:(id)a4
+- (void)setWhileSearchingShowAppEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __71__SpotlightDetailController_setWhileSearchingShowAppEnabled_specifier___block_invoke;
   v19[3] = &unk_279D04A30;
   objc_copyWeak(&v21, &location);
-  v8 = v6;
+  v8 = enabledCopy;
   v20 = v8;
   v9 = MEMORY[0x26D6824D0](v19);
   v17[0] = MEMORY[0x277D85DD0];
@@ -270,7 +270,7 @@ void __73__SpotlightDetailController__authenticateForBundleIdentifier_completion
   v17[3] = &unk_279D04A58;
   objc_copyWeak(&v18, &location);
   v10 = MEMORY[0x26D6824D0](v17);
-  v11 = [(SpotlightDetailController *)self _bundleId];
+  _bundleId = [(SpotlightDetailController *)self _bundleId];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__SpotlightDetailController_setWhileSearchingShowAppEnabled_specifier___block_invoke_3;
@@ -279,7 +279,7 @@ void __73__SpotlightDetailController__authenticateForBundleIdentifier_completion
   v15 = v12;
   v13 = v10;
   v16 = v13;
-  [(SpotlightDetailController *)self _authenticateForBundleIdentifier:v11 completion:v14];
+  [(SpotlightDetailController *)self _authenticateForBundleIdentifier:_bundleId completion:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v21);
@@ -332,20 +332,20 @@ void __71__SpotlightDetailController_setWhileSearchingShowAppEnabled_specifier__
   dispatch_async(MEMORY[0x277D85CD0], *(a1 + v2));
 }
 
-- (void)_saveWhileSearchingShowAppEnabled:(BOOL)a3
+- (void)_saveWhileSearchingShowAppEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SpotlightDetailController *)self _bundleId];
+  _bundleId = [(SpotlightDetailController *)self _bundleId];
   disabledSpotlightApps = self->_disabledSpotlightApps;
-  if (v3)
+  if (enabledCopy)
   {
-    [(NSMutableSet *)disabledSpotlightApps removeObject:v5];
+    [(NSMutableSet *)disabledSpotlightApps removeObject:_bundleId];
   }
 
   else
   {
-    [(NSMutableSet *)disabledSpotlightApps addObject:v5];
+    [(NSMutableSet *)disabledSpotlightApps addObject:_bundleId];
   }
 
   CFPreferencesSetAppValue(@"SBSearchDisabledApps", [(NSMutableSet *)self->_disabledSpotlightApps allObjects], @"com.apple.spotlightui");
@@ -357,27 +357,27 @@ void __71__SpotlightDetailController_setWhileSearchingShowAppEnabled_specifier__
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)whileSearchingShowContentEnabled:(id)a3
+- (id)whileSearchingShowContentEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   disabledSpotlightBundles = self->_disabledSpotlightBundles;
-  v5 = [(SpotlightDetailController *)self _bundleId];
-  v6 = [v3 numberWithInt:{-[NSMutableSet containsObject:](disabledSpotlightBundles, "containsObject:", v5) ^ 1}];
+  _bundleId = [(SpotlightDetailController *)self _bundleId];
+  v6 = [v3 numberWithInt:{-[NSMutableSet containsObject:](disabledSpotlightBundles, "containsObject:", _bundleId) ^ 1}];
 
   return v6;
 }
 
-- (void)setWhileSearchingShowContentEnabled:(id)a3 specifier:(id)a4
+- (void)setWhileSearchingShowContentEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __75__SpotlightDetailController_setWhileSearchingShowContentEnabled_specifier___block_invoke;
   v19[3] = &unk_279D04A30;
   objc_copyWeak(&v21, &location);
-  v8 = v6;
+  v8 = enabledCopy;
   v20 = v8;
   v9 = MEMORY[0x26D6824D0](v19);
   v17[0] = MEMORY[0x277D85DD0];
@@ -386,7 +386,7 @@ void __71__SpotlightDetailController_setWhileSearchingShowAppEnabled_specifier__
   v17[3] = &unk_279D04A58;
   objc_copyWeak(&v18, &location);
   v10 = MEMORY[0x26D6824D0](v17);
-  v11 = [(SpotlightDetailController *)self _bundleId];
+  _bundleId = [(SpotlightDetailController *)self _bundleId];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __75__SpotlightDetailController_setWhileSearchingShowContentEnabled_specifier___block_invoke_3;
@@ -395,7 +395,7 @@ void __71__SpotlightDetailController_setWhileSearchingShowAppEnabled_specifier__
   v15 = v12;
   v13 = v10;
   v16 = v13;
-  [(SpotlightDetailController *)self _authenticateForBundleIdentifier:v11 completion:v14];
+  [(SpotlightDetailController *)self _authenticateForBundleIdentifier:_bundleId completion:v14];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&v21);
@@ -426,20 +426,20 @@ void __75__SpotlightDetailController_setWhileSearchingShowContentEnabled_specifi
   dispatch_async(MEMORY[0x277D85CD0], *(a1 + v2));
 }
 
-- (void)_saveWhileSearchingShowContentEnabled:(BOOL)a3
+- (void)_saveWhileSearchingShowContentEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v9[1] = *MEMORY[0x277D85DE8];
-  v5 = [(SpotlightDetailController *)self _bundleId];
+  _bundleId = [(SpotlightDetailController *)self _bundleId];
   disabledSpotlightBundles = self->_disabledSpotlightBundles;
-  if (v3)
+  if (enabledCopy)
   {
-    [(NSMutableSet *)disabledSpotlightBundles removeObject:v5];
+    [(NSMutableSet *)disabledSpotlightBundles removeObject:_bundleId];
   }
 
   else
   {
-    [(NSMutableSet *)disabledSpotlightBundles addObject:v5];
+    [(NSMutableSet *)disabledSpotlightBundles addObject:_bundleId];
   }
 
   CFPreferencesSetAppValue(@"SBSearchDisabledBundles", [(NSMutableSet *)self->_disabledSpotlightBundles allObjects], @"com.apple.spotlightui");
@@ -453,16 +453,16 @@ void __75__SpotlightDetailController_setWhileSearchingShowContentEnabled_specifi
 
 - (id)_bundleId
 {
-  v2 = [(SpotlightDetailController *)self specifier];
-  v3 = [v2 propertyForKey:@"BUNDLE_ID"];
+  specifier = [(SpotlightDetailController *)self specifier];
+  v3 = [specifier propertyForKey:@"BUNDLE_ID"];
 
   return v3;
 }
 
 - (id)_appName
 {
-  v2 = [(SpotlightDetailController *)self specifier];
-  v3 = [v2 propertyForKey:@"APP_NAME"];
+  specifier = [(SpotlightDetailController *)self specifier];
+  v3 = [specifier propertyForKey:@"APP_NAME"];
 
   return v3;
 }

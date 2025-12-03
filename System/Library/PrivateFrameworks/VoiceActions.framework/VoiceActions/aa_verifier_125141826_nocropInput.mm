@@ -1,6 +1,6 @@
 @interface aa_verifier_125141826_nocropInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation aa_verifier_125141826_nocropInput
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_27237782C();
   v5 = v4;

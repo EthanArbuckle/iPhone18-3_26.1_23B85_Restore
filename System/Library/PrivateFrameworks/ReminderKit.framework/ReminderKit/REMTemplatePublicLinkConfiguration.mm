@@ -1,24 +1,24 @@
 @interface REMTemplatePublicLinkConfiguration
-- (BOOL)isEqual:(id)a3;
-- (REMTemplatePublicLinkConfiguration)initWithCoder:(id)a3;
-- (REMTemplatePublicLinkConfiguration)initWithShouldIncludeHashtags:(BOOL)a3 shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:(BOOL)a4 shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMTemplatePublicLinkConfiguration)initWithCoder:(id)coder;
+- (REMTemplatePublicLinkConfiguration)initWithShouldIncludeHashtags:(BOOL)hashtags shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:(BOOL)interval shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:(BOOL)vehicle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMTemplatePublicLinkConfiguration
 
-- (REMTemplatePublicLinkConfiguration)initWithShouldIncludeHashtags:(BOOL)a3 shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:(BOOL)a4 shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:(BOOL)a5
+- (REMTemplatePublicLinkConfiguration)initWithShouldIncludeHashtags:(BOOL)hashtags shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:(BOOL)interval shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:(BOOL)vehicle
 {
   v9.receiver = self;
   v9.super_class = REMTemplatePublicLinkConfiguration;
   result = [(REMTemplatePublicLinkConfiguration *)&v9 init];
   if (result)
   {
-    result->_shouldIncludeHashtags = a3;
-    result->_shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval = a4;
-    result->_shouldIncludeAlarmTriggersBasedOnLocationOrVehicle = a5;
+    result->_shouldIncludeHashtags = hashtags;
+    result->_shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval = interval;
+    result->_shouldIncludeAlarmTriggersBasedOnLocationOrVehicle = vehicle;
   }
 
   return result;
@@ -37,14 +37,14 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[REMTemplatePublicLinkConfiguration shouldIncludeHashtags](self, "shouldIncludeHashtags"), v5 == [v4 shouldIncludeHashtags]) && (v6 = -[REMTemplatePublicLinkConfiguration shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval](self, "shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval"), v6 == objc_msgSend(v4, "shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = -[REMTemplatePublicLinkConfiguration shouldIncludeHashtags](self, "shouldIncludeHashtags"), v5 == [equalCopy shouldIncludeHashtags]) && (v6 = -[REMTemplatePublicLinkConfiguration shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval](self, "shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval"), v6 == objc_msgSend(equalCopy, "shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval")))
   {
-    v9 = [(REMTemplatePublicLinkConfiguration *)self shouldIncludeAlarmTriggersBasedOnLocationOrVehicle];
-    v7 = v9 ^ [v4 shouldIncludeAlarmTriggersBasedOnLocationOrVehicle] ^ 1;
+    shouldIncludeAlarmTriggersBasedOnLocationOrVehicle = [(REMTemplatePublicLinkConfiguration *)self shouldIncludeAlarmTriggersBasedOnLocationOrVehicle];
+    v7 = shouldIncludeAlarmTriggersBasedOnLocationOrVehicle ^ [equalCopy shouldIncludeAlarmTriggersBasedOnLocationOrVehicle] ^ 1;
   }
 
   else
@@ -55,32 +55,32 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMTemplatePublicLinkConfiguration alloc];
-  v5 = [(REMTemplatePublicLinkConfiguration *)self shouldIncludeHashtags];
-  v6 = [(REMTemplatePublicLinkConfiguration *)self shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval];
-  v7 = [(REMTemplatePublicLinkConfiguration *)self shouldIncludeAlarmTriggersBasedOnLocationOrVehicle];
+  shouldIncludeHashtags = [(REMTemplatePublicLinkConfiguration *)self shouldIncludeHashtags];
+  shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval = [(REMTemplatePublicLinkConfiguration *)self shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval];
+  shouldIncludeAlarmTriggersBasedOnLocationOrVehicle = [(REMTemplatePublicLinkConfiguration *)self shouldIncludeAlarmTriggersBasedOnLocationOrVehicle];
 
-  return [(REMTemplatePublicLinkConfiguration *)v4 initWithShouldIncludeHashtags:v5 shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:v6 shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:v7];
+  return [(REMTemplatePublicLinkConfiguration *)v4 initWithShouldIncludeHashtags:shouldIncludeHashtags shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:shouldIncludeAlarmTriggersBasedOnLocationOrVehicle];
 }
 
-- (REMTemplatePublicLinkConfiguration)initWithCoder:(id)a3
+- (REMTemplatePublicLinkConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"shouldIncludeHashtags"];
-  v6 = [v4 decodeBoolForKey:@"shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval"];
-  v7 = [v4 decodeBoolForKey:@"shouldIncludeAlarmTriggersBasedOnLocationOrVehicle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"shouldIncludeHashtags"];
+  v6 = [coderCopy decodeBoolForKey:@"shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval"];
+  v7 = [coderCopy decodeBoolForKey:@"shouldIncludeAlarmTriggersBasedOnLocationOrVehicle"];
 
   return [(REMTemplatePublicLinkConfiguration *)self initWithShouldIncludeHashtags:v5 shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval:v6 shouldIncludeAlarmTriggersBasedOnLocationOrVehicle:v7];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[REMTemplatePublicLinkConfiguration shouldIncludeHashtags](self forKey:{"shouldIncludeHashtags"), @"shouldIncludeHashtags"}];
-  [v4 encodeBool:-[REMTemplatePublicLinkConfiguration shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval](self forKey:{"shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval"), @"shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval"}];
-  [v4 encodeBool:-[REMTemplatePublicLinkConfiguration shouldIncludeAlarmTriggersBasedOnLocationOrVehicle](self forKey:{"shouldIncludeAlarmTriggersBasedOnLocationOrVehicle"), @"shouldIncludeAlarmTriggersBasedOnLocationOrVehicle"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[REMTemplatePublicLinkConfiguration shouldIncludeHashtags](self forKey:{"shouldIncludeHashtags"), @"shouldIncludeHashtags"}];
+  [coderCopy encodeBool:-[REMTemplatePublicLinkConfiguration shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval](self forKey:{"shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval"), @"shouldIncludeAlarmTriggersBasedOnDateOrTimeInterval"}];
+  [coderCopy encodeBool:-[REMTemplatePublicLinkConfiguration shouldIncludeAlarmTriggersBasedOnLocationOrVehicle](self forKey:{"shouldIncludeAlarmTriggersBasedOnLocationOrVehicle"), @"shouldIncludeAlarmTriggersBasedOnLocationOrVehicle"}];
 }
 
 @end

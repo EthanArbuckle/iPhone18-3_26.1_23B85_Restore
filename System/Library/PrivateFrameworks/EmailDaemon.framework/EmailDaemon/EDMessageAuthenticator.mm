@@ -1,17 +1,17 @@
 @interface EDMessageAuthenticator
 + (OS_os_log)log;
 + (OS_os_log)signpostLog;
-- (BOOL)_isICloudHideMyEmailMessage:(void *)a3 sender:;
-- (BOOL)_isTemporaryDKIMError:(uint64_t)a1;
-- (BOOL)_shouldAuthenticateNewMessage:(uint64_t)a1;
-- (BOOL)authenticateMessage:(id)a3;
-- (BOOL)authenticateMessages:(id)a3 trustingServer:(BOOL)a4 cancelationToken:(id)a5;
-- (EDMessageAuthenticator)initWithMessagePersistence:(id)a3 hookRegistry:(id)a4;
-- (id)_mostAlignedDKIMServerStatementFromAuthenticationResult:(void *)a3 forSender:;
-- (unint64_t)_authenticationStateForMessage:(int)a3 trustingServer:;
-- (unint64_t)_messageAuthenticationStateForAuthenticationResult:(void *)a3 sender:(int)a4 trustingServer:;
+- (BOOL)_isICloudHideMyEmailMessage:(void *)message sender:;
+- (BOOL)_isTemporaryDKIMError:(uint64_t)error;
+- (BOOL)_shouldAuthenticateNewMessage:(uint64_t)message;
+- (BOOL)authenticateMessage:(id)message;
+- (BOOL)authenticateMessages:(id)messages trustingServer:(BOOL)server cancelationToken:(id)token;
+- (EDMessageAuthenticator)initWithMessagePersistence:(id)persistence hookRegistry:(id)registry;
+- (id)_mostAlignedDKIMServerStatementFromAuthenticationResult:(void *)result forSender:;
+- (unint64_t)_authenticationStateForMessage:(int)message trustingServer:;
+- (unint64_t)_messageAuthenticationStateForAuthenticationResult:(void *)result sender:(int)sender trustingServer:;
 - (unint64_t)signpostID;
-- (void)persistenceWillAddNewMessages:(id)a3;
+- (void)persistenceWillAddNewMessages:(id)messages;
 @end
 
 @implementation EDMessageAuthenticator
@@ -29,7 +29,7 @@ void ___ef_log_EDMessageAuthenticator_block_invoke()
   block[1] = 3221225472;
   block[2] = __29__EDMessageAuthenticator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_57 != -1)
   {
     dispatch_once(&log_onceToken_57, block);
@@ -54,7 +54,7 @@ void __29__EDMessageAuthenticator_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__EDMessageAuthenticator_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_1 != -1)
   {
     dispatch_once(&signpostLog_onceToken_1, block);
@@ -75,38 +75,38 @@ void __37__EDMessageAuthenticator_signpostLog__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (EDMessageAuthenticator)initWithMessagePersistence:(id)a3 hookRegistry:(id)a4
+- (EDMessageAuthenticator)initWithMessagePersistence:(id)persistence hookRegistry:(id)registry
 {
-  v7 = a3;
-  v8 = a4;
+  persistenceCopy = persistence;
+  registryCopy = registry;
   v14.receiver = self;
   v14.super_class = EDMessageAuthenticator;
   v9 = [(EDMessageAuthenticator *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_messagePersistence, a3);
+    objc_storeStrong(&v9->_messagePersistence, persistence);
     v11 = objc_alloc_init(MEMORY[0x1E699B2E0]);
     authenticator = v10->_authenticator;
     v10->_authenticator = v11;
 
-    [v8 registerMessageChangeHookResponder:v10];
+    [registryCopy registerMessageChangeHookResponder:v10];
   }
 
   return v10;
 }
 
-- (BOOL)authenticateMessage:(id)a3
+- (BOOL)authenticateMessage:(id)message
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EDMessageAuthenticator *)self _authenticationStateForMessage:v4 trustingServer:0];
+  messageCopy = message;
+  v5 = [(EDMessageAuthenticator *)self _authenticationStateForMessage:messageCopy trustingServer:0];
   if (self)
   {
     messagePersistence = self->_messagePersistence;
@@ -117,7 +117,7 @@ void __37__EDMessageAuthenticator_signpostLog__block_invoke(uint64_t a1)
     messagePersistence = 0;
   }
 
-  v7 = [(EDMessagePersistence *)messagePersistence persistMessageAuthenticationState:v5 forMessage:v4];
+  v7 = [(EDMessagePersistence *)messagePersistence persistMessageAuthenticationState:v5 forMessage:messageCopy];
   v8 = _ef_log_EDMessageAuthenticator();
   v9 = v8;
   if (v7)
@@ -129,35 +129,35 @@ void __37__EDMessageAuthenticator_signpostLog__block_invoke(uint64_t a1)
       v14 = 2048;
       v15 = v5 & 0xE28;
       v16 = 2114;
-      v17 = v4;
+      v17 = messageCopy;
       _os_log_impl(&dword_1C61EF000, v9, OS_LOG_TYPE_DEFAULT, "Persisted message authentication state %lld (on-device: %lld) for message: %{public}@", &v12, 0x20u);
     }
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(EDMessageAuthenticator *)v5 authenticateMessage:v4, v9];
+    [(EDMessageAuthenticator *)v5 authenticateMessage:messageCopy, v9];
   }
 
   v10 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (unint64_t)_authenticationStateForMessage:(int)a3 trustingServer:
+- (unint64_t)_authenticationStateForMessage:(int)message trustingServer:
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
-    v7 = [v5 senders];
-    v8 = [v7 firstObject];
+    senders = [v5 senders];
+    firstObject = [senders firstObject];
 
-    v21 = v8;
-    v9 = [(EDMessageAuthenticator *)a1 _isICloudHideMyEmailMessage:v6 sender:&v21];
+    v21 = firstObject;
+    v9 = [(EDMessageAuthenticator *)self _isICloudHideMyEmailMessage:v6 sender:&v21];
     v10 = v21;
 
-    if (v9 && (a3 & 1) == 0)
+    if (v9 && (message & 1) == 0)
     {
       v11 = _ef_log_EDMessageAuthenticator();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -167,10 +167,10 @@ void __37__EDMessageAuthenticator_signpostLog__block_invoke(uint64_t a1)
         _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "Trusting server results for iCloud HME message: %{public}@", buf, 0xCu);
       }
 
-      a3 = 1;
+      message = 1;
     }
 
-    if ([MEMORY[0x1E699ACE8] preferenceEnabled:35] && (objc_msgSend(*(a1 + 8), "fullDataIfAvailableForMessage:", v6), (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([MEMORY[0x1E699ACE8] preferenceEnabled:35] && (objc_msgSend(*(self + 8), "fullDataIfAvailableForMessage:", v6), (encodedHeaders = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v13 = _ef_log_EDMessageAuthenticator();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -185,19 +185,19 @@ LABEL_14:
 
     else
     {
-      v15 = [v6 headers];
-      v12 = [v15 encodedHeaders];
+      headers = [v6 headers];
+      encodedHeaders = [headers encodedHeaders];
 
       v16 = _ef_log_EDMessageAuthenticator();
       v13 = v16;
-      if (!v12)
+      if (!encodedHeaders)
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           [EDMessageAuthenticator _authenticationStateForMessage:v6 trustingServer:v13];
         }
 
-        v12 = 0;
+        encodedHeaders = 0;
         goto LABEL_18;
       }
 
@@ -213,20 +213,20 @@ LABEL_14:
 LABEL_18:
 
     v17 = EMRecodeDataToNetwork();
-    v18 = [*(a1 + 16) authenticateMessageData:v17 onDevice:a3 ^ 1u sender:v10];
-    a1 = [(EDMessageAuthenticator *)a1 _messageAuthenticationStateForAuthenticationResult:v18 sender:v10 trustingServer:a3];
+    v18 = [*(self + 16) authenticateMessageData:v17 onDevice:message ^ 1u sender:v10];
+    self = [(EDMessageAuthenticator *)self _messageAuthenticationStateForAuthenticationResult:v18 sender:v10 trustingServer:message];
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
-- (BOOL)authenticateMessages:(id)a3 trustingServer:(BOOL)a4 cancelationToken:(id)a5
+- (BOOL)authenticateMessages:(id)messages trustingServer:(BOOL)server cancelationToken:(id)token
 {
-  v6 = a4;
+  serverCopy = server;
   v39 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v28 = a5;
+  messagesCopy = messages;
+  tokenCopy = token;
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v9 = +[EDMessageAuthenticator signpostLog];
   v10 = os_signpost_id_make_with_pointer(v9, [MEMORY[0x1E696AFB0] UUID]);
@@ -236,7 +236,7 @@ LABEL_18:
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     *buf = 134349056;
-    v38 = [v27 count];
+    v38 = [messagesCopy count];
     _os_signpost_emit_with_name_impl(&dword_1C61EF000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "EDMessageAuthenticator", "Begin message authentication (count=%{public,signpost.telemetry:number1}lu) enableTelemetry=YES ", buf, 0xCu);
   }
 
@@ -245,7 +245,7 @@ LABEL_18:
   aBlock[2] = __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelationToken___block_invoke;
   aBlock[3] = &unk_1E8253848;
   v35 = v10;
-  v13 = v27;
+  v13 = messagesCopy;
   v34 = v13;
   v26 = _Block_copy(aBlock);
   v31 = 0u;
@@ -267,10 +267,10 @@ LABEL_6:
       }
 
       v18 = *(*(&v29 + 1) + 8 * v17);
-      v19 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[EDMessageAuthenticator _authenticationStateForMessage:trustingServer:](self, v18, v6)}];
+      v19 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[EDMessageAuthenticator _authenticationStateForMessage:trustingServer:](self, v18, serverCopy)}];
       [v8 setObject:v19 forKeyedSubscript:v18];
 
-      if ([v28 isCanceled])
+      if ([tokenCopy isCanceled])
       {
         break;
       }
@@ -340,20 +340,20 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isICloudHideMyEmailMessage:(void *)a3 sender:
+- (BOOL)_isICloudHideMyEmailMessage:(void *)message sender:
 {
   v5 = a2;
   v6 = v5;
-  if (a1 && ([v5 account], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "baseAccount"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isAppleAccount"), v8, v7, (v9 & 1) != 0))
+  if (self && ([v5 account], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "baseAccount"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isAppleAccount"), v8, v7, (v9 & 1) != 0))
   {
-    v10 = [v6 headers];
-    v11 = [v10 firstHeaderForKey:*MEMORY[0x1E699B0E8]];
+    headers = [v6 headers];
+    v11 = [headers firstHeaderForKey:*MEMORY[0x1E699B0E8]];
 
     v12 = v11 != 0;
-    if (a3 && v11)
+    if (message && v11)
     {
       v13 = [MEMORY[0x1E699B340] tagValueListFromString:v11 error:0];
-      *a3 = [v13 objectForKeyedSubscript:*MEMORY[0x1E699A760]];
+      *message = [v13 objectForKeyedSubscript:*MEMORY[0x1E699A760]];
     }
   }
 
@@ -365,25 +365,25 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
   return v12;
 }
 
-- (unint64_t)_messageAuthenticationStateForAuthenticationResult:(void *)a3 sender:(int)a4 trustingServer:
+- (unint64_t)_messageAuthenticationStateForAuthenticationResult:(void *)result sender:(int)sender trustingServer:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  resultCopy = result;
+  if (self)
   {
-    v9 = [(EDMessageAuthenticator *)a1 _mostAlignedDKIMServerStatementFromAuthenticationResult:v7 forSender:v8];
+    v9 = [(EDMessageAuthenticator *)self _mostAlignedDKIMServerStatementFromAuthenticationResult:v7 forSender:resultCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 dkimServerResult];
-      if (v11 == 1)
+      dkimServerResult = [v9 dkimServerResult];
+      if (dkimServerResult == 1)
       {
         v12 = 3;
       }
 
       else
       {
-        v12 = v11 == 2;
+        v12 = dkimServerResult == 2;
       }
     }
 
@@ -393,13 +393,13 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
     }
 
     v13 = v12 & 0xFFFFFFFFFFFFFE3FLL | (([v7 dmarcServerStatus] & 7) << 6);
-    if (a4)
+    if (sender)
     {
       if (v10)
       {
-        v14 = [v10 dkimServerResult];
+        dkimServerResult2 = [v10 dkimServerResult];
         v15 = 20;
-        if (v14 == 1)
+        if (dkimServerResult2 == 1)
         {
           v15 = 60;
         }
@@ -407,10 +407,10 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
         v13 |= v15;
       }
 
-      v16 = [v7 dmarcServerStatus];
-      v17 = [v7 dmarcServerStatus];
-      v18 = (v16 & 7) << 9;
-      if (!v17)
+      dmarcServerStatus = [v7 dmarcServerStatus];
+      dmarcServerStatus2 = [v7 dmarcServerStatus];
+      v18 = (dmarcServerStatus & 7) << 9;
+      if (!dmarcServerStatus2)
       {
         v18 = 512;
       }
@@ -420,16 +420,16 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
 
     else
     {
-      v20 = [v7 dkimError];
-      v21 = [(EDMessageAuthenticator *)a1 _isTemporaryDKIMError:v20];
+      dkimError = [v7 dkimError];
+      v21 = [(EDMessageAuthenticator *)self _isTemporaryDKIMError:dkimError];
 
       if (!v21)
       {
         if ([v7 dkimAttemptedHeaderVerification])
         {
-          v22 = [v7 dkimHeadersVerified];
+          dkimHeadersVerified = [v7 dkimHeadersVerified];
           v23 = 4;
-          if (v22)
+          if (dkimHeadersVerified)
           {
             v23 = 12;
           }
@@ -439,9 +439,9 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
 
         if ([v7 dkimAttemptedBodyVerification])
         {
-          v24 = [v7 dkimBodyVerified];
+          dkimBodyVerified = [v7 dkimBodyVerified];
           v25 = 16;
-          if (v24)
+          if (dkimBodyVerified)
           {
             v25 = 48;
           }
@@ -451,19 +451,19 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
 
         else
         {
-          v26 = [v7 bestDKIMSignatureHeader];
-          v27 = [v26 bodyLength];
+          bestDKIMSignatureHeader = [v7 bestDKIMSignatureHeader];
+          bodyLength = [bestDKIMSignatureHeader bodyLength];
 
-          if (v27)
+          if (bodyLength)
           {
             v13 |= 0x10uLL;
           }
         }
       }
 
-      v28 = [v7 dmarcStatus];
-      v29 = [v7 dmarcIdentifierAlignment];
-      v19 = v13 & 0xFFFFFFFFFFFF01FFLL | ((v28 & 7) << 9) & 0xFFF | ((v29 & 3) << 12) & 0x3FFF | (([v7 dmarcReceiverPolicy] & 3) << 14);
+      dmarcStatus = [v7 dmarcStatus];
+      dmarcIdentifierAlignment = [v7 dmarcIdentifierAlignment];
+      v19 = v13 & 0xFFFFFFFFFFFF01FFLL | ((dmarcStatus & 7) << 9) & 0xFFF | ((dmarcIdentifierAlignment & 3) << 12) & 0x3FFF | (([v7 dmarcReceiverPolicy] & 3) << 14);
     }
   }
 
@@ -475,29 +475,29 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
   return v19;
 }
 
-- (id)_mostAlignedDKIMServerStatementFromAuthenticationResult:(void *)a3 forSender:
+- (id)_mostAlignedDKIMServerStatementFromAuthenticationResult:(void *)result forSender:
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
+  resultCopy = result;
   v23 = v5;
-  v24 = v6;
-  if (a1)
+  v24 = resultCopy;
+  if (self)
   {
-    v7 = v6;
-    v8 = [v5 dkimServerStatements];
-    if ([v8 count])
+    v7 = resultCopy;
+    dkimServerStatements = [v5 dkimServerStatements];
+    if ([dkimServerStatements count])
     {
-      v9 = [v7 emailAddressValue];
-      v10 = [v9 domain];
+      emailAddressValue = [v7 emailAddressValue];
+      domain = [emailAddressValue domain];
 
-      if ([v10 length])
+      if ([domain length])
       {
         v27 = 0u;
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v11 = v8;
+        v11 = dkimServerStatements;
         v12 = 0;
         v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v13)
@@ -513,10 +513,10 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
               }
 
               v16 = *(*(&v25 + 1) + 8 * i);
-              v17 = [v16 dkimServerSigningDomain];
-              if ([v17 length])
+              dkimServerSigningDomain = [v16 dkimServerSigningDomain];
+              if ([dkimServerSigningDomain length])
               {
-                v18 = [MEMORY[0x1E699B238] alignmentForDKIMSigningDomain:v17 andSenderDomain:v10];
+                v18 = [MEMORY[0x1E699B238] alignmentForDKIMSigningDomain:dkimServerSigningDomain andSenderDomain:domain];
                 if (v18 == 1)
                 {
                   v19 = v16;
@@ -526,7 +526,7 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
 
                 else if (v18 == 2)
                 {
-                  v20 = v16;
+                  firstObject = v16;
 
                   goto LABEL_19;
                 }
@@ -540,40 +540,40 @@ void __79__EDMessageAuthenticator_authenticateMessages_trustingServer_cancelatio
         }
 
         v12 = v12;
-        v20 = v12;
+        firstObject = v12;
 LABEL_19:
       }
 
       else
       {
-        v20 = [v8 firstObject];
+        firstObject = [dkimServerStatements firstObject];
       }
     }
 
     else
     {
-      v20 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v20 = 0;
+    firstObject = 0;
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v20;
+  return firstObject;
 }
 
-- (BOOL)_isTemporaryDKIMError:(uint64_t)a1
+- (BOOL)_isTemporaryDKIMError:(uint64_t)error
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (error)
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:*MEMORY[0x1E699B030]])
+    domain = [v3 domain];
+    if ([domain isEqualToString:*MEMORY[0x1E699B030]])
     {
       v6 = [v4 code] == 0;
     }
@@ -592,15 +592,15 @@ LABEL_19:
   return v6;
 }
 
-- (void)persistenceWillAddNewMessages:(id)a3
+- (void)persistenceWillAddNewMessages:(id)messages
 {
   v23 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v22 count:16];
+  messagesCopy = messages;
+  v5 = [messagesCopy countByEnumeratingWithState:&v12 objects:v22 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -610,7 +610,7 @@ LABEL_19:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(messagesCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -632,7 +632,7 @@ LABEL_19:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v22 count:16];
+      v5 = [messagesCopy countByEnumeratingWithState:&v12 objects:v22 count:16];
     }
 
     while (v5);
@@ -641,10 +641,10 @@ LABEL_19:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldAuthenticateNewMessage:(uint64_t)a1
+- (BOOL)_shouldAuthenticateNewMessage:(uint64_t)message
 {
   v3 = a2;
-  if (a1)
+  if (message)
   {
     if (_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl() && (EMIsGreymatterSupported())
     {
@@ -653,8 +653,8 @@ LABEL_19:
 
     else
     {
-      v5 = [v3 headers];
-      v6 = [v5 firstHeaderForKey:*MEMORY[0x1E699B090]];
+      headers = [v3 headers];
+      v6 = [headers firstHeaderForKey:*MEMORY[0x1E699B090]];
       v4 = v6 != 0;
     }
   }

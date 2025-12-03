@@ -1,20 +1,20 @@
 @interface NUNIAstronomyVistaConfiguration
-+ (id)defaultConfigurationWithDevice:(id)a3;
-- (NUNIAstronomyVistaConfiguration)initWithDevice:(id)a3;
++ (id)defaultConfigurationWithDevice:(id)device;
+- (NUNIAstronomyVistaConfiguration)initWithDevice:(id)device;
 @end
 
 @implementation NUNIAstronomyVistaConfiguration
 
-- (NUNIAstronomyVistaConfiguration)initWithDevice:(id)a3
+- (NUNIAstronomyVistaConfiguration)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = NUNIAstronomyVistaConfiguration;
   v6 = [(NUNIAstronomyVistaConfiguration *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v7->_rendererStyle = 0;
     v7->_colorSpace = 0;
     textureSuffix = v7->_textureSuffix;
@@ -24,10 +24,10 @@
   return v7;
 }
 
-+ (id)defaultConfigurationWithDevice:(id)a3
++ (id)defaultConfigurationWithDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NUNIAstronomyVistaConfiguration alloc] initWithDevice:v3];
+  deviceCopy = device;
+  v4 = [[NUNIAstronomyVistaConfiguration alloc] initWithDevice:deviceCopy];
   if (defaultConfigurationWithDevice__onceToken[0] != -1)
   {
     +[NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:];
@@ -35,7 +35,7 @@
 
   [(NUNIAstronomyVistaConfiguration *)v4 setIsRTLLayout:CLKLayoutIsRTL()];
   [(NUNIAstronomyVistaConfiguration *)v4 setIsGPUEnabled:defaultConfigurationWithDevice__gpuIsEnabled];
-  [v3 screenScale];
+  [deviceCopy screenScale];
   [(NUNIAstronomyVistaConfiguration *)v4 setScreenScale:?];
   [(NUNIAstronomyVistaConfiguration *)v4 setQuadViewOptions:32];
 

@@ -1,26 +1,26 @@
 @interface NDScoringServiceEnvironment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC10NewsDaemon27NDScoringServiceEnvironment)init;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NDScoringServiceEnvironment
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v5 = sub_25BE4B6FC();
   v6 = sub_25BE4BA3C();
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_25BE4BC6C();
     swift_unknownObjectRelease();
@@ -29,7 +29,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = NDScoringServiceEnvironment.isEqual(_:)(v8);
@@ -43,7 +43,7 @@
   sub_25BE4BFCC();
   sub_25BE4B73C();
   sub_25BE2E174(&unk_27FBE06E0);
-  v3 = self;
+  selfCopy = self;
   sub_25BE4BA2C();
   v4 = sub_25BE4BFAC();
 

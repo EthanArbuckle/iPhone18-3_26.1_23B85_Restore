@@ -1,13 +1,13 @@
 @interface ASPasskeyRegistrationCredential
 + (ASPasskeyRegistrationCredential)credentialWithRelyingParty:(NSString *)relyingParty clientDataHash:(NSData *)clientDataHash credentialID:(NSData *)credentialID attestationObject:(NSData *)attestationObject;
 + (NSArray)_defaultTransports;
-- (ASPasskeyRegistrationCredential)initWithCoder:(id)a3;
+- (ASPasskeyRegistrationCredential)initWithCoder:(id)coder;
 - (ASPasskeyRegistrationCredential)initWithRelyingParty:(NSString *)relyingParty clientDataHash:(NSData *)clientDataHash credentialID:(NSData *)credentialID attestationObject:(NSData *)attestationObject;
-- (ASPasskeyRegistrationCredential)initWithRelyingParty:(id)a3 clientDataHash:(id)a4 credentialID:(id)a5 attestationObject:(id)a6 extensionOutput:(id)a7;
-- (BOOL)_validateWithError:(id *)a3;
+- (ASPasskeyRegistrationCredential)initWithRelyingParty:(id)party clientDataHash:(id)hash credentialID:(id)d attestationObject:(id)object extensionOutput:(id)output;
+- (BOOL)_validateWithError:(id *)error;
 - (_TtC26AuthenticationServicesCore50ASCPublicKeyCredentialRegistrationExtensionOutputs)coreExtensions;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASPasskeyRegistrationCredential
@@ -45,13 +45,13 @@
   return v14;
 }
 
-- (ASPasskeyRegistrationCredential)initWithRelyingParty:(id)a3 clientDataHash:(id)a4 credentialID:(id)a5 attestationObject:(id)a6 extensionOutput:(id)a7
+- (ASPasskeyRegistrationCredential)initWithRelyingParty:(id)party clientDataHash:(id)hash credentialID:(id)d attestationObject:(id)object extensionOutput:(id)output
 {
-  v12 = a7;
-  v13 = [(ASPasskeyRegistrationCredential *)self initWithRelyingParty:a3 clientDataHash:a4 credentialID:a5 attestationObject:a6];
+  outputCopy = output;
+  v13 = [(ASPasskeyRegistrationCredential *)self initWithRelyingParty:party clientDataHash:hash credentialID:d attestationObject:object];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [outputCopy copy];
     extensionOutput = v13->_extensionOutput;
     v13->_extensionOutput = v14;
 
@@ -67,12 +67,12 @@
   v11 = credentialID;
   v12 = clientDataHash;
   v13 = relyingParty;
-  v14 = [[a1 alloc] initWithRelyingParty:v13 clientDataHash:v12 credentialID:v11 attestationObject:v10];
+  v14 = [[self alloc] initWithRelyingParty:v13 clientDataHash:v12 credentialID:v11 attestationObject:v10];
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   relyingParty = self->_relyingParty;
@@ -83,25 +83,25 @@
   return [v4 initWithRelyingParty:relyingParty clientDataHash:clientDataHash credentialID:credentialID attestationObject:attestationObject];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   relyingParty = self->_relyingParty;
-  v5 = a3;
-  [v5 encodeObject:relyingParty forKey:@"relyingParty"];
-  [v5 encodeObject:self->_clientDataHash forKey:@"clientDataHash"];
-  [v5 encodeObject:self->_credentialID forKey:@"credentialID"];
-  [v5 encodeObject:self->_attestationObject forKey:@"attestationObject"];
-  [v5 encodeObject:self->_extensionOutput forKey:@"extensionOutput"];
+  coderCopy = coder;
+  [coderCopy encodeObject:relyingParty forKey:@"relyingParty"];
+  [coderCopy encodeObject:self->_clientDataHash forKey:@"clientDataHash"];
+  [coderCopy encodeObject:self->_credentialID forKey:@"credentialID"];
+  [coderCopy encodeObject:self->_attestationObject forKey:@"attestationObject"];
+  [coderCopy encodeObject:self->_extensionOutput forKey:@"extensionOutput"];
 }
 
-- (ASPasskeyRegistrationCredential)initWithCoder:(id)a3
+- (ASPasskeyRegistrationCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingParty"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDataHash"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attestationObject"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionOutput"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingParty"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDataHash"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attestationObject"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionOutput"];
 
   v10 = [(ASPasskeyRegistrationCredential *)self initWithRelyingParty:v5 clientDataHash:v6 credentialID:v7 attestationObject:v8 extensionOutput:v9];
   return v10;
@@ -115,9 +115,9 @@
   return v2;
 }
 
-- (BOOL)_validateWithError:(id *)a3
+- (BOOL)_validateWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B1D2A1F4();
 
   return 1;
@@ -125,11 +125,11 @@
 
 - (_TtC26AuthenticationServicesCore50ASCPublicKeyCredentialRegistrationExtensionOutputs)coreExtensions
 {
-  v2 = [(ASPasskeyRegistrationCredential *)self extensionOutput];
-  if (v2)
+  extensionOutput = [(ASPasskeyRegistrationCredential *)self extensionOutput];
+  if (extensionOutput)
   {
-    v3 = v2;
-    v4 = *(&v2->super.isa + OBJC_IVAR___ASPasskeyRegistrationCredentialExtensionOutput_coreExtensions);
+    v3 = extensionOutput;
+    v4 = *(&extensionOutput->super.isa + OBJC_IVAR___ASPasskeyRegistrationCredentialExtensionOutput_coreExtensions);
   }
 
   else

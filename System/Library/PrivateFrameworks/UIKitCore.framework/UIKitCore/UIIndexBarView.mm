@@ -1,25 +1,25 @@
 @interface UIIndexBarView
-+ (id)_visualStyleForIdiom:(uint64_t)a1;
-+ (id)visualStyleForIndexBarView:(id)a3;
-+ (void)makeIndexBarView:(id *)a3 containerView:(id *)a4 forTraits:(id)a5;
-+ (void)registerVisualStyle:(Class)a3 forIdiom:(int64_t)a4;
++ (id)_visualStyleForIdiom:(uint64_t)idiom;
++ (id)visualStyleForIndexBarView:(id)view;
++ (void)makeIndexBarView:(id *)view containerView:(id *)containerView forTraits:(id)traits;
++ (void)registerVisualStyle:(Class)style forIdiom:(int64_t)idiom;
 - (BOOL)_defaultCanBecomeFocused;
-- (BOOL)_didSelectEntry:(id)a3 atIndex:(int64_t)a4 location:(CGPoint)a5;
-- (BOOL)_selectEntry:(id)a3 atIndex:(int64_t)a4;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)_didSelectEntry:(id)entry atIndex:(int64_t)index location:(CGPoint)location;
+- (BOOL)_selectEntry:(id)entry atIndex:(int64_t)index;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)canBecomeFocused;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGPoint)trackingStartLocationInWindow;
 - (CGRect)effectiveBounds;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)indexColor;
 - (UIEdgeInsets)drawingInsets;
-- (UIIndexBarView)initWithFrame:(CGRect)a3;
+- (UIIndexBarView)initWithFrame:(CGRect)frame;
 - (UIIndexBarViewDelegate)delegate;
 - (double)displayHighlightedIndex;
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4;
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point;
 - (id)backgroundColor;
-- (void)_handleTouches:(id)a3 withEvent:(id)a4;
+- (void)_handleTouches:(id)touches withEvent:(id)event;
 - (void)_horizontalSizeClassDidChange;
 - (void)_legibilityWeightOrPreferredContentSizeTraitsDidChange;
 - (void)_setupAXHUDGestureIfNecessary;
@@ -27,27 +27,27 @@
 - (void)_updateDisplayEntries;
 - (void)_userInteractionStarted;
 - (void)_userInteractionStopped;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)resetDeflection:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDeflection:(double)a3;
-- (void)setDisplayEntries:(id)a3;
-- (void)setDrawingInsets:(UIEdgeInsets)a3;
-- (void)setEntries:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightStyle:(int64_t)a3;
-- (void)setHighlightedIndex:(double)a3;
-- (void)setIndexColor:(id)a3;
-- (void)setTrackingBackgroundColor:(id)a3;
-- (void)setVisualStyle:(id)a3;
+- (void)resetDeflection:(BOOL)deflection;
+- (void)setBackgroundColor:(id)color;
+- (void)setDeflection:(double)deflection;
+- (void)setDisplayEntries:(id)entries;
+- (void)setDrawingInsets:(UIEdgeInsets)insets;
+- (void)setEntries:(id)entries;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightStyle:(int64_t)style;
+- (void)setHighlightedIndex:(double)index;
+- (void)setIndexColor:(id)color;
+- (void)setTrackingBackgroundColor:(id)color;
+- (void)setVisualStyle:(id)style;
 - (void)tintColorDidChange;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIIndexBarView
@@ -64,8 +64,8 @@ LABEL_3:
     return;
   }
 
-  v4 = [(UIIndexBarView *)self visualStyle];
-  [v4 minLineHeight];
+  visualStyle = [(UIIndexBarView *)self visualStyle];
+  [visualStyle minLineHeight];
   v6 = v5;
 
   if (v6 <= 0.0)
@@ -75,11 +75,11 @@ LABEL_3:
       v40 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
       {
-        v41 = [(UIIndexBarView *)self visualStyle];
+        visualStyle2 = [(UIIndexBarView *)self visualStyle];
         *buf = 138412546;
         *&buf[4] = self;
         *&buf[12] = 2112;
-        *&buf[14] = v41;
+        *&buf[14] = visualStyle2;
         _os_log_fault_impl(&dword_188A29000, v40, OS_LOG_TYPE_FAULT, "UIIndexBarView visual style returned line height <= 0.0. Index bar view: %@; Visual style: %@", buf, 0x16u);
       }
     }
@@ -90,11 +90,11 @@ LABEL_3:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v13 = v12;
-        v14 = [(UIIndexBarView *)self visualStyle];
+        visualStyle3 = [(UIIndexBarView *)self visualStyle];
         *buf = 138412546;
         *&buf[4] = self;
         *&buf[12] = 2112;
-        *&buf[14] = v14;
+        *&buf[14] = visualStyle3;
         _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "UIIndexBarView visual style returned line height <= 0.0. Index bar view: %@; Visual style: %@", buf, 0x16u);
       }
     }
@@ -104,13 +104,13 @@ LABEL_3:
 
   else
   {
-    v7 = [(UIIndexBarView *)self drawingInsetsMask];
+    drawingInsetsMask = [(UIIndexBarView *)self drawingInsetsMask];
     [(UIIndexBarView *)self effectiveBounds];
     v9 = v8;
     v10 = vcvtmd_u64_f64(v8 / v6);
     if ([(NSArray *)self->_entries count]<= v10)
     {
-      if ((v7 & 1) == 0)
+      if ((drawingInsetsMask & 1) == 0)
       {
         [(UIIndexBarView *)self drawingInsets];
         v9 = v9 - v15;
@@ -123,7 +123,7 @@ LABEL_3:
       }
     }
 
-    else if (v7)
+    else if (drawingInsetsMask)
     {
       [(UIIndexBarView *)self setDrawingInsetsMask:[(UIIndexBarView *)self drawingInsetsMask]& 0xFFFFFFFFFFFFFFFELL];
       [(UIIndexBarView *)self drawingInsets];
@@ -149,8 +149,8 @@ LABEL_3:
     while (1)
     {
       context = objc_autoreleasePoolPush();
-      v18 = [(UIIndexBarView *)self visualStyle];
-      [v18 lineSpacing];
+      visualStyle4 = [(UIIndexBarView *)self visualStyle];
+      [visualStyle4 lineSpacing];
       v20 = v19;
 
       v62[3] = 0.0;
@@ -164,7 +164,7 @@ LABEL_3:
       v52[1] = 3221225472;
       v53 = __39__UIIndexBarView__updateDisplayEntries__block_invoke;
       v54 = &unk_1E712A550;
-      v55 = self;
+      selfCopy = self;
       v57 = v60;
       v17 = v21;
       v56 = v17;
@@ -192,23 +192,23 @@ LABEL_3:
         v22 = [(NSArray *)self->_entries count];
         v67 = 0;
         v68 = v22;
-        v23 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v24 = self->_entries;
         v49[0] = MEMORY[0x1E69E9820];
         v49[1] = 3221225472;
         v49[2] = __39__UIIndexBarView__updateDisplayEntries__block_invoke_2;
         v49[3] = &unk_1E712A578;
-        v25 = v23;
+        v25 = array;
         v50 = v25;
         v51 = buf;
         [(NSArray *)v24 enumerateObjectsUsingBlock:v49];
-        v26 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v27 = self->_entries;
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __39__UIIndexBarView__updateDisplayEntries__block_invoke_3;
         v46[3] = &unk_1E712A578;
-        v28 = v26;
+        v28 = array2;
         v47 = v28;
         v48 = buf;
         [(NSArray *)v27 enumerateObjectsWithOptions:2 usingBlock:v46];
@@ -293,23 +293,23 @@ LABEL_35:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UIIndexBarView *)self drawingInsetsMask];
-  if ((v11 & 8) == 0)
+  drawingInsetsMask = [(UIIndexBarView *)self drawingInsetsMask];
+  if ((drawingInsetsMask & 8) == 0)
   {
     v10 = 0.0;
   }
 
-  if ((v11 & 4) == 0)
+  if ((drawingInsetsMask & 4) == 0)
   {
     v8 = 0.0;
   }
 
-  if ((v11 & 2) == 0)
+  if ((drawingInsetsMask & 2) == 0)
   {
     v6 = 0.0;
   }
 
-  if ((v11 & 1) == 0)
+  if ((drawingInsetsMask & 1) == 0)
   {
     v4 = 0.0;
   }
@@ -372,10 +372,10 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke(uint64_t a1, void 
   {
     if (dyld_program_sdk_at_least())
     {
-      v3 = [(UIView *)self traitCollection];
-      v4 = [v3 _isLargeContentViewerEnabled];
+      traitCollection = [(UIView *)self traitCollection];
+      _isLargeContentViewerEnabled = [traitCollection _isLargeContentViewerEnabled];
 
-      if (v4)
+      if (_isLargeContentViewerEnabled)
       {
         v5 = [[UIAccessibilityHUDGestureManager alloc] initWithView:self delegate:self];
         axHUDGestureManager = self->_axHUDGestureManager;
@@ -392,8 +392,8 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke(uint64_t a1, void 
   [(UIView *)&v4 tintColorDidChange];
   if (!self->_indexColor && (*&self->_visualStyleImplements & 0x2000) != 0)
   {
-    v3 = [(UIIndexBarView *)self visualStyle];
-    [v3 indexColorUpdated];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle indexColorUpdated];
   }
 }
 
@@ -401,8 +401,8 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke(uint64_t a1, void 
 {
   if ((*&self->_visualStyleImplements & 0x40) != 0)
   {
-    v2 = [(UIIndexBarView *)self visualStyle];
-    [v2 layoutSubviews];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle layoutSubviews];
   }
 
   else
@@ -415,9 +415,9 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke(uint64_t a1, void 
 
 - (id)backgroundColor
 {
-  v3 = [(UIControl *)self isTracking];
+  isTracking = [(UIControl *)self isTracking];
   v4 = 12;
-  if (v3)
+  if (isTracking)
   {
     v4 = 11;
   }
@@ -432,23 +432,23 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke(uint64_t a1, void 
   indexColor = self->_indexColor;
   if (indexColor)
   {
-    v3 = indexColor;
+    _inheritedInteractionTintColor = indexColor;
   }
 
   else
   {
-    v3 = [(UIView *)self _inheritedInteractionTintColor];
+    _inheritedInteractionTintColor = [(UIView *)self _inheritedInteractionTintColor];
   }
 
-  return v3;
+  return _inheritedInteractionTintColor;
 }
 
-+ (void)makeIndexBarView:(id *)a3 containerView:(id *)a4 forTraits:(id)a5
++ (void)makeIndexBarView:(id *)view containerView:(id *)containerView forTraits:(id)traits
 {
-  v16 = a5;
-  if (a3)
+  traitsCopy = traits;
+  if (view)
   {
-    if (a4)
+    if (containerView)
     {
       goto LABEL_3;
     }
@@ -456,21 +456,21 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke(uint64_t a1, void 
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"UIIndexBarView.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"index != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIIndexBarView.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"index != nil"}];
 
-    if (a4)
+    if (containerView)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"UIIndexBarView.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIIndexBarView.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
 
 LABEL_3:
-  v9 = objc_alloc_init(a1);
-  v10 = +[UIIndexBarView _visualStyleForIdiom:](a1, [v16 userInterfaceIdiom]);
+  v9 = objc_alloc_init(self);
+  v10 = +[UIIndexBarView _visualStyleForIdiom:](self, [traitsCopy userInterfaceIdiom]);
   if (objc_opt_respondsToSelector())
   {
     v11 = [v10 containerViewForIndexBar:v9];
@@ -482,7 +482,7 @@ LABEL_3:
   }
 
   v12 = v9;
-  *a3 = v9;
+  *view = v9;
   if (v11)
   {
     v13 = v11;
@@ -493,10 +493,10 @@ LABEL_3:
     v13 = v9;
   }
 
-  *a4 = v13;
+  *containerView = v13;
 }
 
-+ (id)_visualStyleForIdiom:(uint64_t)a1
++ (id)_visualStyleForIdiom:(uint64_t)idiom
 {
   objc_opt_self();
   v3 = __IdiomsToVisualStyles;
@@ -511,12 +511,12 @@ LABEL_3:
   return v5;
 }
 
-- (UIIndexBarView)initWithFrame:(CGRect)a3
+- (UIIndexBarView)initWithFrame:(CGRect)frame
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = UIIndexBarView;
-  v3 = [(UIControl *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIControl *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [objc_opt_class() visualStyleForIndexBarView:v3];
   [(UIIndexBarView *)v3 setVisualStyle:v4];
 
@@ -535,8 +535,8 @@ LABEL_3:
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v10 = [(UIView *)v3 _registerForTraitTokenChanges:v9 withTarget:v3 action:sel__setupAXHUDGestureIfNecessary];
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:v3 selector:sel__largeContentViewerEnabledStatusDidChange_ name:@"UILargeContentViewerInteractionEnabledStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v3 selector:sel__largeContentViewerEnabledStatusDidChange_ name:@"UILargeContentViewerInteractionEnabledStatusDidChangeNotification" object:0];
 
   v19[0] = 0x1EFE32440;
   v19[1] = 0x1EFE324A0;
@@ -550,10 +550,10 @@ LABEL_3:
   return v3;
 }
 
-- (void)setVisualStyle:(id)a3
+- (void)setVisualStyle:(id)style
 {
-  objc_storeStrong(&self->_visualStyle, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_visualStyle, style);
+  styleCopy = style;
   *&self->_visualStyleImplements = *&self->_visualStyleImplements & 0xFFFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -713,50 +713,50 @@ LABEL_3:
   *&self->_visualStyleImplements = *&self->_visualStyleImplements & 0xBFFF | v20;
 }
 
-- (void)setEntries:(id)a3
+- (void)setEntries:(id)entries
 {
-  v5 = a3;
-  if (self->_entries != v5)
+  entriesCopy = entries;
+  if (self->_entries != entriesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_entries, a3);
+    v7 = entriesCopy;
+    objc_storeStrong(&self->_entries, entries);
     self->_cachedDisplayHighlightedIndex = -1.0;
     if (*&self->_visualStyleImplements)
     {
-      v6 = [(UIIndexBarView *)self visualStyle];
-      [v6 entriesUpdated];
+      visualStyle = [(UIIndexBarView *)self visualStyle];
+      [visualStyle entriesUpdated];
     }
 
     [(UIIndexBarView *)self _updateDisplayEntries];
-    v5 = v7;
+    entriesCopy = v7;
   }
 }
 
-- (void)setDisplayEntries:(id)a3
+- (void)setDisplayEntries:(id)entries
 {
-  v5 = a3;
-  if (self->_displayEntries != v5)
+  entriesCopy = entries;
+  if (self->_displayEntries != entriesCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_displayEntries, a3);
-    v5 = v7;
+    v7 = entriesCopy;
+    objc_storeStrong(&self->_displayEntries, entries);
+    entriesCopy = v7;
     self->_cachedDisplayHighlightedIndex = -1.0;
     if ((*&self->_visualStyleImplements & 2) != 0)
     {
-      v6 = [(UIIndexBarView *)self visualStyle];
-      [v6 displayEntriesUpdated];
+      visualStyle = [(UIIndexBarView *)self visualStyle];
+      [visualStyle displayEntriesUpdated];
 
-      v5 = v7;
+      entriesCopy = v7;
     }
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = UIIndexBarView;
   [(UIView *)&v17 frame];
@@ -779,8 +779,8 @@ LABEL_3:
     {
       if ((*&self->_visualStyleImplements & 4) != 0)
       {
-        v15 = [(UIIndexBarView *)self visualStyle];
-        [v15 sizeUpdated];
+        visualStyle = [(UIIndexBarView *)self visualStyle];
+        [visualStyle sizeUpdated];
       }
 
       [(UIIndexBarView *)self _updateDisplayEntries];
@@ -788,50 +788,50 @@ LABEL_3:
   }
 }
 
-- (void)setHighlightedIndex:(double)a3
+- (void)setHighlightedIndex:(double)index
 {
-  if (self->_highlightedIndex != a3)
+  if (self->_highlightedIndex != index)
   {
-    self->_highlightedIndex = a3;
+    self->_highlightedIndex = index;
     self->_cachedDisplayHighlightedIndex = -1.0;
     if ((*&self->_visualStyleImplements & 8) != 0)
     {
-      v4 = [(UIIndexBarView *)self visualStyle];
-      [v4 highlightedIndexUpdated];
+      visualStyle = [(UIIndexBarView *)self visualStyle];
+      [visualStyle highlightedIndexUpdated];
     }
   }
 }
 
-- (void)setDeflection:(double)a3
+- (void)setDeflection:(double)deflection
 {
-  if (self->_deflection != a3)
+  if (self->_deflection != deflection)
   {
-    self->_deflection = a3;
+    self->_deflection = deflection;
     if ((*&self->_visualStyleImplements & 0x10) != 0)
     {
-      v4 = [(UIIndexBarView *)self visualStyle];
-      [v4 deflectionUpdated];
+      visualStyle = [(UIIndexBarView *)self visualStyle];
+      [visualStyle deflectionUpdated];
     }
   }
 }
 
-- (void)resetDeflection:(BOOL)a3
+- (void)resetDeflection:(BOOL)deflection
 {
   self->_deflection = 0.0;
   if ((*&self->_visualStyleImplements & 0x20) != 0)
   {
-    v4 = a3;
-    v5 = [(UIIndexBarView *)self visualStyle];
-    [v5 deflectionReset:v4];
+    deflectionCopy = deflection;
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle deflectionReset:deflectionCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UIIndexBarView *)self visualStyle];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  visualStyle = [(UIIndexBarView *)self visualStyle];
+  [visualStyle sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -844,10 +844,10 @@ LABEL_3:
 
 - (BOOL)canBecomeFocused
 {
-  v2 = [(UIIndexBarView *)self visualStyle];
-  v3 = [v2 canBecomeFocused];
+  visualStyle = [(UIIndexBarView *)self visualStyle];
+  canBecomeFocused = [visualStyle canBecomeFocused];
 
-  return v3;
+  return canBecomeFocused;
 }
 
 - (BOOL)_defaultCanBecomeFocused
@@ -857,36 +857,36 @@ LABEL_3:
   return [(UIControl *)&v3 canBecomeFocused];
 }
 
-- (void)setDrawingInsets:(UIEdgeInsets)a3
+- (void)setDrawingInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_drawingInsets.top), vceqq_f64(v4, *&self->_drawingInsets.bottom)))) & 1) == 0)
   {
-    self->_drawingInsets = a3;
+    self->_drawingInsets = insets;
     [(UIIndexBarView *)self _updateDisplayEntries];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ((*&self->_visualStyleImplements & 0x80) != 0)
   {
-    v7 = [(UIIndexBarView *)self visualStyle];
-    [v7 drawRect:{x, y, width, height}];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle drawRect:{x, y, width, height}];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIIndexBarView;
-    [(UIView *)&v8 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(UIView *)&v8 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   }
 }
 
@@ -894,8 +894,8 @@ LABEL_3:
 {
   if ((*&self->_visualStyleImplements & 0x4000) != 0)
   {
-    v3 = [(UIIndexBarView *)self visualStyle];
-    [v3 legibilityWeightOrPreferredContentSizeUpdated];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle legibilityWeightOrPreferredContentSizeUpdated];
   }
 
   [(UIIndexBarView *)self _updateDisplayEntries];
@@ -905,8 +905,8 @@ LABEL_3:
 {
   if ((*&self->_visualStyleImplements & 4) != 0)
   {
-    v3 = [(UIIndexBarView *)self visualStyle];
-    [v3 sizeUpdated];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle sizeUpdated];
   }
 }
 
@@ -961,8 +961,8 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
     return cachedDisplayHighlightedIndex;
   }
 
-  v4 = [(UIIndexBarView *)self entries];
-  v5 = [v4 count];
+  entries = [(UIIndexBarView *)self entries];
+  v5 = [entries count];
   if (v5 == [(NSArray *)self->_displayEntries count]|| ((highlightedIndex = self->_highlightedIndex, highlightedIndex != -1.0) ? (v7 = highlightedIndex == -2.0) : (v7 = 1), v7))
   {
 
@@ -989,12 +989,12 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
     do
     {
       v14 = [(NSArray *)self->_displayEntries objectAtIndexedSubscript:v13];
-      v15 = [v14 entryIndex];
+      entryIndex = [v14 entryIndex];
 
       v16 = self->_highlightedIndex;
-      if (v16 <= v15)
+      if (v16 <= entryIndex)
       {
-        if (v16 < v15)
+        if (v16 < entryIndex)
         {
           v17 = v13 - 1;
           v9 = v13;
@@ -1029,48 +1029,48 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
   else
   {
     v19 = [(NSArray *)self->_displayEntries objectAtIndexedSubscript:v12];
-    v20 = [v19 entryIndex];
+    entryIndex2 = [v19 entryIndex];
 
     v21 = [(NSArray *)self->_displayEntries objectAtIndexedSubscript:v9];
-    v22 = [v21 entryIndex];
+    entryIndex3 = [v21 entryIndex];
 
-    cachedDisplayHighlightedIndex = (self->_highlightedIndex - v20) / (v22 - v20) + v12;
+    cachedDisplayHighlightedIndex = (self->_highlightedIndex - entryIndex2) / (entryIndex3 - entryIndex2) + v12;
   }
 
   self->_cachedDisplayHighlightedIndex = cachedDisplayHighlightedIndex;
   return cachedDisplayHighlightedIndex;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIView *)self window];
-  [v6 locationInView:v8];
+  touchCopy = touch;
+  eventCopy = event;
+  window = [(UIView *)self window];
+  [touchCopy locationInView:window];
   self->_trackingStartLocationInWindow.x = v9;
   self->_trackingStartLocationInWindow.y = v10;
 
   visualStyleImplements = self->_visualStyleImplements;
   if ((visualStyleImplements & 0x100) != 0)
   {
-    v12 = [(UIIndexBarView *)self visualStyle];
-    [v12 trackingDidBegin];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle trackingDidBegin];
 
     visualStyleImplements = self->_visualStyleImplements;
   }
 
   if ((visualStyleImplements & 0x800) != 0 && [(NSArray *)self->_entries count])
   {
-    v13 = [(UIIndexBarView *)self visualStyle];
-    [v13 updateSectionForTouch:v6 withEvent:v7];
+    visualStyle2 = [(UIIndexBarView *)self visualStyle];
+    [visualStyle2 updateSectionForTouch:touchCopy withEvent:eventCopy];
 
-    v14 = [(UIIndexBarView *)self visualStyle];
+    visualStyle3 = [(UIIndexBarView *)self visualStyle];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(UIIndexBarView *)self visualStyle];
-      [v16 setExpanded:1];
+      visualStyle4 = [(UIIndexBarView *)self visualStyle];
+      [visualStyle4 setExpanded:1];
     }
 
     [(UIIndexBarView *)self _updateBackgroundColor];
@@ -1086,21 +1086,21 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
   return v17;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   visualStyleImplements = self->_visualStyleImplements;
   if ((*&visualStyleImplements & 0x800) != 0)
   {
-    if ((*&visualStyleImplements & 0x200) == 0 || (-[UIView window](self, "window"), v9 = objc_claimAutoreleasedReturnValue(), [v6 locationInView:v9], v11 = v10, v13 = v12, v9, -[UIIndexBarVisualStyle trackingChangeHysteresis](self->_visualStyle, "trackingChangeHysteresis"), fabs(sqrt((self->_trackingStartLocationInWindow.x - v11) * (self->_trackingStartLocationInWindow.x - v11) + (self->_trackingStartLocationInWindow.y - v13) * (self->_trackingStartLocationInWindow.y - v13))) > v14))
+    if ((*&visualStyleImplements & 0x200) == 0 || (-[UIView window](self, "window"), v9 = objc_claimAutoreleasedReturnValue(), [touchCopy locationInView:v9], v11 = v10, v13 = v12, v9, -[UIIndexBarVisualStyle trackingChangeHysteresis](self->_visualStyle, "trackingChangeHysteresis"), fabs(sqrt((self->_trackingStartLocationInWindow.x - v11) * (self->_trackingStartLocationInWindow.x - v11) + (self->_trackingStartLocationInWindow.y - v13) * (self->_trackingStartLocationInWindow.y - v13))) > v14))
     {
-      v15 = [(UIIndexBarView *)self visualStyle];
-      v16 = [v15 updateSectionForTouch:v6 withEvent:v7];
+      visualStyle = [(UIIndexBarView *)self visualStyle];
+      v16 = [visualStyle updateSectionForTouch:touchCopy withEvent:eventCopy];
 
       if (v16)
       {
-        [(UIControl *)self _sendActionsForEvents:4096 withEvent:v7];
+        [(UIControl *)self _sendActionsForEvents:4096 withEvent:eventCopy];
       }
     }
   }
@@ -1108,34 +1108,34 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
   return (*&visualStyleImplements >> 11) & 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  touchCopy = touch;
+  eventCopy = event;
   visualStyleImplements = self->_visualStyleImplements;
   if ((visualStyleImplements & 0x400) != 0)
   {
-    v9 = [(UIIndexBarView *)self visualStyle];
-    [v9 trackingDidEnd];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle trackingDidEnd];
 
     visualStyleImplements = self->_visualStyleImplements;
   }
 
   if ((visualStyleImplements & 0x800) != 0)
   {
-    if ((visualStyleImplements & 0x200) == 0 || (-[UIView window](self, "window"), v10 = objc_claimAutoreleasedReturnValue(), [v6 locationInView:v10], v12 = v11, v14 = v13, v10, -[UIIndexBarVisualStyle trackingChangeHysteresis](self->_visualStyle, "trackingChangeHysteresis"), fabs(sqrt((self->_trackingStartLocationInWindow.x - v12) * (self->_trackingStartLocationInWindow.x - v12) + (self->_trackingStartLocationInWindow.y - v14) * (self->_trackingStartLocationInWindow.y - v14))) > v15))
+    if ((visualStyleImplements & 0x200) == 0 || (-[UIView window](self, "window"), v10 = objc_claimAutoreleasedReturnValue(), [touchCopy locationInView:v10], v12 = v11, v14 = v13, v10, -[UIIndexBarVisualStyle trackingChangeHysteresis](self->_visualStyle, "trackingChangeHysteresis"), fabs(sqrt((self->_trackingStartLocationInWindow.x - v12) * (self->_trackingStartLocationInWindow.x - v12) + (self->_trackingStartLocationInWindow.y - v14) * (self->_trackingStartLocationInWindow.y - v14))) > v15))
     {
-      v16 = [(UIIndexBarView *)self visualStyle];
-      [v16 updateSectionForTouch:v6 withEvent:v7];
+      visualStyle2 = [(UIIndexBarView *)self visualStyle];
+      [visualStyle2 updateSectionForTouch:touchCopy withEvent:eventCopy];
     }
 
-    v17 = [(UIIndexBarView *)self visualStyle];
+    visualStyle3 = [(UIIndexBarView *)self visualStyle];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(UIIndexBarView *)self visualStyle];
-      [v19 setExpanded:0];
+      visualStyle4 = [(UIIndexBarView *)self visualStyle];
+      [visualStyle4 setExpanded:0];
     }
 
     [(UIIndexBarView *)self _updateBackgroundColor];
@@ -1143,83 +1143,83 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
 
   v20.receiver = self;
   v20.super_class = UIIndexBarView;
-  [(UIControl *)&v20 endTrackingWithTouch:v6 withEvent:v7];
+  [(UIControl *)&v20 endTrackingWithTouch:touchCopy withEvent:eventCopy];
   [(UIIndexBarView *)self _userInteractionStopped];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   visualStyleImplements = self->_visualStyleImplements;
   if ((visualStyleImplements & 0x400) != 0)
   {
-    v6 = [(UIIndexBarView *)self visualStyle];
-    [v6 trackingDidEnd];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
+    [visualStyle trackingDidEnd];
 
     visualStyleImplements = self->_visualStyleImplements;
   }
 
   if ((visualStyleImplements & 0x800) != 0)
   {
-    v7 = [(UIIndexBarView *)self visualStyle];
-    [v7 updateSectionForTouch:0 withEvent:v4];
+    visualStyle2 = [(UIIndexBarView *)self visualStyle];
+    [visualStyle2 updateSectionForTouch:0 withEvent:eventCopy];
 
     [(UIIndexBarView *)self _updateBackgroundColor];
   }
 
   v8.receiver = self;
   v8.super_class = UIIndexBarView;
-  [(UIControl *)&v8 cancelTrackingWithEvent:v4];
+  [(UIControl *)&v8 cancelTrackingWithEvent:eventCopy];
   [(UIIndexBarView *)self _userInteractionStopped];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UIIndexBarView;
-  v6 = a4;
-  v7 = a3;
-  [(UIControl *)&v8 touchesBegan:v7 withEvent:v6];
-  [(UIIndexBarView *)self _handleTouches:v7 withEvent:v6, v8.receiver, v8.super_class];
+  eventCopy = event;
+  beganCopy = began;
+  [(UIControl *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
+  [(UIIndexBarView *)self _handleTouches:beganCopy withEvent:eventCopy, v8.receiver, v8.super_class];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = UIIndexBarView;
-  v6 = a4;
-  v7 = a3;
-  [(UIControl *)&v8 touchesMoved:v7 withEvent:v6];
-  [(UIIndexBarView *)self _handleTouches:v7 withEvent:v6, v8.receiver, v8.super_class];
+  eventCopy = event;
+  movedCopy = moved;
+  [(UIControl *)&v8 touchesMoved:movedCopy withEvent:eventCopy];
+  [(UIIndexBarView *)self _handleTouches:movedCopy withEvent:eventCopy, v8.receiver, v8.super_class];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = UIIndexBarView;
-  v6 = a4;
-  [(UIControl *)&v7 touchesEnded:a3 withEvent:v6];
-  [(UIIndexBarView *)self _handleTouches:0 withEvent:v6, v7.receiver, v7.super_class];
+  eventCopy = event;
+  [(UIControl *)&v7 touchesEnded:ended withEvent:eventCopy];
+  [(UIIndexBarView *)self _handleTouches:0 withEvent:eventCopy, v7.receiver, v7.super_class];
 }
 
-- (void)_handleTouches:(id)a3 withEvent:(id)a4
+- (void)_handleTouches:(id)touches withEvent:(id)event
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  eventCopy = event;
+  v7 = eventCopy;
+  if (touches)
   {
-    v17 = [v6 _firstTouchForView:self];
-    [v17 locationInView:self];
+    visualStyle4 = [eventCopy _firstTouchForView:self];
+    [visualStyle4 locationInView:self];
     v9 = v8;
     v11 = v10;
-    v12 = [(UIIndexBarView *)self visualStyle];
+    visualStyle = [(UIIndexBarView *)self visualStyle];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v14 = [(UIIndexBarView *)self visualStyle];
-      v15 = [v14 _indexForEntryAtPoint:{v9, v11}];
+      visualStyle2 = [(UIIndexBarView *)self visualStyle];
+      v15 = [visualStyle2 _indexForEntryAtPoint:{v9, v11}];
     }
 
     else
@@ -1227,60 +1227,60 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
       v15 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v16 = [(UIIndexBarView *)self visualStyle];
-    [v16 handleTouch:v17 withEvent:v7 touchedEntryIndex:v15];
+    visualStyle3 = [(UIIndexBarView *)self visualStyle];
+    [visualStyle3 handleTouch:visualStyle4 withEvent:v7 touchedEntryIndex:v15];
 
-    v7 = v16;
+    v7 = visualStyle3;
   }
 
   else
   {
-    v17 = [(UIIndexBarView *)self visualStyle];
-    [v17 handleTouch:0 withEvent:v7 touchedEntryIndex:0x7FFFFFFFFFFFFFFFLL];
+    visualStyle4 = [(UIIndexBarView *)self visualStyle];
+    [visualStyle4 handleTouch:0 withEvent:v7 touchedEntryIndex:0x7FFFFFFFFFFFFFFFLL];
   }
 }
 
-+ (void)registerVisualStyle:(Class)a3 forIdiom:(int64_t)a4
++ (void)registerVisualStyle:(Class)style forIdiom:(int64_t)idiom
 {
   if (!__IdiomsToVisualStyles)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = __IdiomsToVisualStyles;
-    __IdiomsToVisualStyles = v8;
+    __IdiomsToVisualStyles = dictionary;
   }
 
-  if (([(objc_class *)a3 conformsToProtocol:&unk_1F00F8540]& 1) == 0)
+  if (([(objc_class *)style conformsToProtocol:&unk_1F00F8540]& 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    v12 = NSStringFromClass(a3);
-    [v11 handleFailureInMethod:a2 object:a1 file:@"UIIndexBarView.m" lineNumber:659 description:{@"visualStyle of type %@ does not conform to UIIndexBarVisualStyle.", v12}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v12 = NSStringFromClass(style);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIIndexBarView.m" lineNumber:659 description:{@"visualStyle of type %@ does not conform to UIIndexBarVisualStyle.", v12}];
   }
 
   v10 = __IdiomsToVisualStyles;
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v10 setObject:a3 forKey:v13];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v10 setObject:style forKey:v13];
 }
 
-+ (id)visualStyleForIndexBarView:(id)a3
++ (id)visualStyleForIndexBarView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 traitCollection];
-  v6 = +[UIIndexBarView _visualStyleForIdiom:](a1, [v5 userInterfaceIdiom]);
+  viewCopy = view;
+  traitCollection = [viewCopy traitCollection];
+  v6 = +[UIIndexBarView _visualStyleForIdiom:](self, [traitCollection userInterfaceIdiom]);
 
-  v7 = [[v6 alloc] initWithView:v4];
+  v7 = [[v6 alloc] initWithView:viewCopy];
 
   return v7;
 }
 
-- (void)setHighlightStyle:(int64_t)a3
+- (void)setHighlightStyle:(int64_t)style
 {
-  if (self->_highlightStyle != a3)
+  if (self->_highlightStyle != style)
   {
-    self->_highlightStyle = a3;
+    self->_highlightStyle = style;
     if ((*&self->_visualStyleImplements & 0x1000) != 0)
     {
-      v4 = [(UIIndexBarView *)self visualStyle];
-      [v4 highlightStyleUpdated];
+      visualStyle = [(UIIndexBarView *)self visualStyle];
+      [visualStyle highlightStyleUpdated];
     }
   }
 }
@@ -1298,67 +1298,67 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
   }
 }
 
-- (void)setIndexColor:(id)a3
+- (void)setIndexColor:(id)color
 {
-  v5 = a3;
-  if (self->_indexColor != v5)
+  colorCopy = color;
+  if (self->_indexColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_indexColor, a3);
-    v5 = v7;
+    v7 = colorCopy;
+    objc_storeStrong(&self->_indexColor, color);
+    colorCopy = v7;
     if ((*&self->_visualStyleImplements & 0x2000) != 0)
     {
-      v6 = [(UIIndexBarView *)self visualStyle];
-      [v6 indexColorUpdated];
+      visualStyle = [(UIIndexBarView *)self visualStyle];
+      [visualStyle indexColorUpdated];
 
-      v5 = v7;
+      colorCopy = v7;
     }
   }
 }
 
-- (void)setTrackingBackgroundColor:(id)a3
+- (void)setTrackingBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_trackingBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_trackingBackgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_trackingBackgroundColor, a3);
-    v6 = [(UIControl *)self isTracking];
-    v5 = v7;
-    if (v6)
+    v7 = colorCopy;
+    objc_storeStrong(&self->_trackingBackgroundColor, color);
+    isTracking = [(UIControl *)self isTracking];
+    colorCopy = v7;
+    if (isTracking)
     {
       [(UIIndexBarView *)self _updateBackgroundColor];
-      v5 = v7;
+      colorCopy = v7;
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_nonTrackingBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_nonTrackingBackgroundColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_nonTrackingBackgroundColor, a3);
-    v6 = [(UIControl *)self isTracking];
-    v5 = v7;
-    if (!v6)
+    v7 = colorCopy;
+    objc_storeStrong(&self->_nonTrackingBackgroundColor, color);
+    isTracking = [(UIControl *)self isTracking];
+    colorCopy = v7;
+    if (!isTracking)
     {
       [(UIIndexBarView *)self _updateBackgroundColor];
-      v5 = v7;
+      colorCopy = v7;
     }
   }
 }
 
 - (void)_userInteractionStarted
 {
-  v3 = [(UIIndexBarView *)self delegate];
+  delegate = [(UIIndexBarView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIIndexBarView *)self delegate];
-    [v5 userInteractionStartedWithIndexBarView:self];
+    delegate2 = [(UIIndexBarView *)self delegate];
+    [delegate2 userInteractionStartedWithIndexBarView:self];
   }
 
   selectionFeedbackGenerator = self->_selectionFeedbackGenerator;
@@ -1368,13 +1368,13 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
 
 - (void)_userInteractionStopped
 {
-  v3 = [(UIIndexBarView *)self delegate];
+  delegate = [(UIIndexBarView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIIndexBarView *)self delegate];
-    [v5 userInteractionStoppedWithIndexBarView:self];
+    delegate2 = [(UIIndexBarView *)self delegate];
+    [delegate2 userInteractionStoppedWithIndexBarView:self];
   }
 
   selectionFeedbackGenerator = self->_selectionFeedbackGenerator;
@@ -1382,11 +1382,11 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
   [(UISelectionFeedbackGenerator *)selectionFeedbackGenerator userInteractionEnded];
 }
 
-- (BOOL)_didSelectEntry:(id)a3 atIndex:(int64_t)a4 location:(CGPoint)a5
+- (BOOL)_didSelectEntry:(id)entry atIndex:(int64_t)index location:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = [(UIIndexBarView *)self _selectEntry:a3 atIndex:a4];
+  y = location.y;
+  x = location.x;
+  v8 = [(UIIndexBarView *)self _selectEntry:entry atIndex:index];
   if (v8)
   {
     [(UISelectionFeedbackGenerator *)self->_selectionFeedbackGenerator selectionChangedAtLocation:x, y];
@@ -1395,16 +1395,16 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
   return v8;
 }
 
-- (BOOL)_selectEntry:(id)a3 atIndex:(int64_t)a4
+- (BOOL)_selectEntry:(id)entry atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(UIIndexBarView *)self delegate];
+  entryCopy = entry;
+  delegate = [(UIIndexBarView *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(UIIndexBarView *)self delegate];
-    v10 = [v9 indexBarView:self didSelectEntry:v6 atIndex:a4];
+    delegate2 = [(UIIndexBarView *)self delegate];
+    v10 = [delegate2 indexBarView:self didSelectEntry:entryCopy atIndex:index];
   }
 
   else
@@ -1415,22 +1415,22 @@ void __39__UIIndexBarView__updateDisplayEntries__block_invoke_5(uint64_t a1, voi
   return v10;
 }
 
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(UIIndexBarView *)self visualStyle];
+  y = point.y;
+  x = point.x;
+  visualStyle = [(UIIndexBarView *)self visualStyle];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) != 0 && (-[UIIndexBarView visualStyle](self, "visualStyle"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 _accessibility_indexForEntryAtPoint:{x, y}], v9, v10 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v12 = [(UIIndexBarView *)self entries];
-    v13 = [v12 objectAtIndex:v10];
+    entries = [(UIIndexBarView *)self entries];
+    v13 = [entries objectAtIndex:v10];
 
     v14 = [UIAccessibilityHUDItem alloc];
-    v15 = [v13 title];
-    v16 = [v13 image];
-    v11 = [(UIAccessibilityHUDItem *)v14 initWithTitle:v15 image:v16 imageInsets:0.0, 0.0, 0.0, 0.0];
+    title = [v13 title];
+    image = [v13 image];
+    v11 = [(UIAccessibilityHUDItem *)v14 initWithTitle:title image:image imageInsets:0.0, 0.0, 0.0, 0.0];
   }
 
   else

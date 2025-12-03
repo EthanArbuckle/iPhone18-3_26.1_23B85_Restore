@@ -1,6 +1,6 @@
 @interface VTLowLatencySuperResolutionScalerImplementation
-- (BOOL)processWithParams:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4;
+- (BOOL)processWithParams:(id)params error:(id *)error;
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error;
 - (VTLowLatencySuperResolutionScalerImplementation)init;
 - (void)dealloc;
 @end
@@ -25,17 +25,17 @@
   return self;
 }
 
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error
 {
   vcpSuperResolutionProcessor = self->_vcpSuperResolutionProcessor;
-  v6 = [a3 vcpConfiguration];
+  vcpConfiguration = [configuration vcpConfiguration];
 
-  return [(VCPFrameSuperResolutionProcessor *)vcpSuperResolutionProcessor startSessionWithConfigurationMode:v6 error:a4];
+  return [(VCPFrameSuperResolutionProcessor *)vcpSuperResolutionProcessor startSessionWithConfigurationMode:vcpConfiguration error:error];
 }
 
-- (BOOL)processWithParams:(id)a3 error:(id *)a4
+- (BOOL)processWithParams:(id)params error:(id *)error
 {
-  v7 = [objc_msgSend(a3 "sourceFrame")];
+  v7 = [objc_msgSend(params "sourceFrame")];
   if (v7)
   {
     v8 = CFRetain(v7);
@@ -46,14 +46,14 @@
     v8 = 0;
   }
 
-  v9 = [objc_msgSend(a3 "destinationFrame")];
+  v9 = [objc_msgSend(params "destinationFrame")];
   if (v9)
   {
     v10 = CFRetain(v9);
     v11 = v10;
     if (v8 && v10)
     {
-      v12 = [(VCPFrameSuperResolutionProcessor *)self->_vcpSuperResolutionProcessor processWithSourceFrame:v8 destinationframe:v10 error:a4];
+      v12 = [(VCPFrameSuperResolutionProcessor *)self->_vcpSuperResolutionProcessor processWithSourceFrame:v8 destinationframe:v10 error:error];
       CFRelease(v8);
       v8 = v11;
 LABEL_9:

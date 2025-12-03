@@ -1,28 +1,28 @@
 @interface CPLPrequeliteIgnoredRecords
 - (BOOL)_isEmpty;
-- (BOOL)addIgnoredRecord:(id)a3 ignoredDate:(id)a4 otherScopeIndex:(int64_t)a5 error:(id *)a6;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3;
+- (BOOL)addIgnoredRecord:(id)record ignoredDate:(id)date otherScopeIndex:(int64_t)index error:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier;
 - (BOOL)initializeStorage;
-- (BOOL)popCloudScopedIdentifiersToCheck:(id *)a3 otherScopeIndex:(int64_t)a4 maxCount:(int64_t)a5 deletedCount:(int64_t *)a6 error:(id *)a7;
-- (BOOL)removeRecordWithScopedIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)scopeIdentifier:(id)a3 hasIgnoredRecordsBeforeDate:(id)a4;
-- (BOOL)setIgnoredDate:(id)a3 forRecordWithScopedIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)upgradeStorageToVersion:(int64_t)a3;
-- (CPLPrequeliteIgnoredRecords)initWithAbstractObject:(id)a3;
-- (id)ignoredRecordWithScopedIdentifier:(id)a3;
-- (id)ignoredRecordsBeforeDate:(id)a3 scopeIdentifier:(id)a4 maximumCount:(unint64_t)a5;
+- (BOOL)popCloudScopedIdentifiersToCheck:(id *)check otherScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
+- (BOOL)removeRecordWithScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)scopeIdentifier:(id)identifier hasIgnoredRecordsBeforeDate:(id)date;
+- (BOOL)setIgnoredDate:(id)date forRecordWithScopedIdentifier:(id)identifier error:(id *)error;
+- (BOOL)upgradeStorageToVersion:(int64_t)version;
+- (CPLPrequeliteIgnoredRecords)initWithAbstractObject:(id)object;
+- (id)ignoredRecordWithScopedIdentifier:(id)identifier;
+- (id)ignoredRecordsBeforeDate:(id)date scopeIdentifier:(id)identifier maximumCount:(unint64_t)count;
 - (id)status;
 - (void)writeTransactionDidFail;
 @end
 
 @implementation CPLPrequeliteIgnoredRecords
 
-- (CPLPrequeliteIgnoredRecords)initWithAbstractObject:(id)a3
+- (CPLPrequeliteIgnoredRecords)initWithAbstractObject:(id)object
 {
   v8.receiver = self;
   v8.super_class = CPLPrequeliteIgnoredRecords;
-  v3 = [(CPLPrequeliteStorage *)&v8 initWithAbstractObject:a3];
+  v3 = [(CPLPrequeliteStorage *)&v8 initWithAbstractObject:object];
   if (v3)
   {
     v4 = +[CPLPrequeliteType integerType];
@@ -43,9 +43,9 @@
   v6[3] = &unk_10027BCC8;
   v6[4] = self;
   v3 = [v2 valueWithConstructor:v6];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)initializeStorage
@@ -57,19 +57,19 @@
     return 0;
   }
 
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [v3 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v5 = [(CPLPrequeliteStorage *)self mainTable];
-  v6 = [CPLPrequeliteVariable indexVariableForVariableWithName:@"ignoredDate" forTable:v5];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v6 = [CPLPrequeliteVariable indexVariableForVariableWithName:@"ignoredDate" forTable:mainTable];
 
-  v7 = [(CPLPrequeliteStorage *)self mainTable];
-  v8 = [v4 cplExecute:{@"CREATE INDEX %@ ON %@ (scopeIndex, ignoredDate ASC) WHERE shadowed != 0", v6, v7}];
+  mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+  v8 = [pqlConnection cplExecute:{@"CREATE INDEX %@ ON %@ (scopeIndex, ignoredDate ASC) WHERE shadowed != 0", v6, mainTable2}];
 
   return v8;
 }
 
-- (BOOL)upgradeStorageToVersion:(int64_t)a3
+- (BOOL)upgradeStorageToVersion:(int64_t)version
 {
   v52.receiver = self;
   v52.super_class = CPLPrequeliteIgnoredRecords;
@@ -79,9 +79,9 @@
   }
 
   v5 = 1;
-  if (a3 > 75)
+  if (version > 75)
   {
-    if (a3 == 76)
+    if (version == 76)
     {
       if (![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
       {
@@ -90,44 +90,44 @@
 
       +[NSDate timeIntervalSinceReferenceDate];
       v25 = v24;
-      v26 = [(CPLPrequeliteStorage *)self pqStore];
-      v7 = [v26 pqlConnection];
+      pqStore = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore pqlConnection];
 
-      v27 = [(CPLPrequeliteStorage *)self mainTable];
-      v28 = [v7 cplExecute:{@"ALTER TABLE %@ ADD COLUMN ignoredDate TIMESTAMP DEFAULT 0", v27}];
+      mainTable = [(CPLPrequeliteStorage *)self mainTable];
+      v28 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN ignoredDate TIMESTAMP DEFAULT 0", mainTable}];
 
       if (!v28)
       {
         goto LABEL_25;
       }
 
-      v29 = [(CPLPrequeliteStorage *)self mainTable];
-      v30 = [v7 cplExecute:{@"UPDATE %@ SET ignoredDate = %ld", v29, v25}];
+      mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+      v30 = [pqlConnection cplExecute:{@"UPDATE %@ SET ignoredDate = %ld", mainTable2, v25}];
 
       if (!v30)
       {
         goto LABEL_25;
       }
 
-      v31 = [(CPLPrequeliteStorage *)self mainTable];
-      v15 = [CPLPrequeliteVariable indexVariableForVariableWithName:@"ignoredDate" forTable:v31];
+      mainTable3 = [(CPLPrequeliteStorage *)self mainTable];
+      scopes = [CPLPrequeliteVariable indexVariableForVariableWithName:@"ignoredDate" forTable:mainTable3];
 
-      v32 = [(CPLPrequeliteStorage *)self mainTable];
-      v5 = [v7 cplExecute:{@"CREATE INDEX %@ ON %@ (scopeIndex, ignoredDate ASC) WHERE shadowed != 0", v15, v32}];
+      mainTable4 = [(CPLPrequeliteStorage *)self mainTable];
+      v5 = [pqlConnection cplExecute:{@"CREATE INDEX %@ ON %@ (scopeIndex, ignoredDate ASC) WHERE shadowed != 0", scopes, mainTable4}];
     }
 
     else
     {
-      if (a3 != 78 || ![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
+      if (version != 78 || ![(CPLPrequeliteStorage *)self shouldUpgradeSchema])
       {
         return v5;
       }
 
-      v10 = [(CPLPrequeliteStorage *)self pqStore];
-      v7 = [v10 pqlConnection];
+      pqStore2 = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore2 pqlConnection];
 
-      v11 = [(CPLPrequeliteStorage *)self mainTable];
-      v12 = [v7 cplExecute:{@"ALTER TABLE %@ ADD COLUMN otherScopeIndex INTEGER DEFAULT 0", v11}];
+      mainTable5 = [(CPLPrequeliteStorage *)self mainTable];
+      v12 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN otherScopeIndex INTEGER DEFAULT 0", mainTable5}];
 
       if (!v12 || ![(CPLPrequeliteStorage *)self createIndexOnColumn:@"otherScopeIndex" error:0])
       {
@@ -139,23 +139,23 @@
         goto LABEL_26;
       }
 
-      v13 = [(CPLPrequeliteStorage *)self pqStore];
-      v14 = [v13 abstractObject];
-      v15 = [v14 scopes];
+      pqStore3 = [(CPLPrequeliteStorage *)self pqStore];
+      abstractObject = [pqStore3 abstractObject];
+      scopes = [abstractObject scopes];
 
-      v16 = [v15 primaryScope];
-      if (v16)
+      primaryScope = [scopes primaryScope];
+      if (primaryScope)
       {
-        v17 = [v15 sharingScopeForScope:v16];
+        v17 = [scopes sharingScopeForScope:primaryScope];
         if (v17)
         {
-          v18 = [(CPLPrequeliteStorage *)self mainTable];
-          v19 = [v7 cplExecute:{@"UPDATE %@ SET otherScopeIndex = %ld WHERE scopeIndex = %ld", v18, objc_msgSend(v16, "cloudIndex"), objc_msgSend(v17, "cloudIndex")}];
+          mainTable6 = [(CPLPrequeliteStorage *)self mainTable];
+          v19 = [pqlConnection cplExecute:{@"UPDATE %@ SET otherScopeIndex = %ld WHERE scopeIndex = %ld", mainTable6, objc_msgSend(primaryScope, "cloudIndex"), objc_msgSend(v17, "cloudIndex")}];
 
-          if (v19 && (v20 = [v7 changes], -[CPLPrequeliteStorage mainTable](self, "mainTable"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v7, "cplExecute:", @"UPDATE %@ SET otherScopeIndex = %ld WHERE scopeIndex = %ld", v21, objc_msgSend(v17, "cloudIndex"), objc_msgSend(v16, "cloudIndex")), v21, v22))
+          if (v19 && (v20 = [pqlConnection changes], -[CPLPrequeliteStorage mainTable](self, "mainTable"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(pqlConnection, "cplExecute:", @"UPDATE %@ SET otherScopeIndex = %ld WHERE scopeIndex = %ld", v21, objc_msgSend(v17, "cloudIndex"), objc_msgSend(primaryScope, "cloudIndex")), v21, v22))
           {
-            v23 = [(CPLPrequeliteStorage *)self pqStore];
-            [v23 recordUpgradeEvent:{@"Updated other scope index for %lld shared records and %lld private records", v20, objc_msgSend(v7, "changes")}];
+            pqStore4 = [(CPLPrequeliteStorage *)self pqStore];
+            [pqStore4 recordUpgradeEvent:{@"Updated other scope index for %lld shared records and %lld private records", v20, objc_msgSend(pqlConnection, "changes")}];
           }
 
           else
@@ -164,16 +164,16 @@
           }
         }
 
-        else if (([v15 valueForFlag:16 forScope:v16] & 1) == 0)
+        else if (([scopes valueForFlag:16 forScope:primaryScope] & 1) == 0)
         {
           context = objc_autoreleasePoolPush();
-          v34 = [(CPLPrequeliteStorage *)self pqStore];
-          v51 = [v34 transientPullRepository];
+          pqStore5 = [(CPLPrequeliteStorage *)self pqStore];
+          transientPullRepository = [pqStore5 transientPullRepository];
 
-          v35 = [v16 cloudIndex];
-          v36 = [(CPLPrequeliteStorage *)self mainTable];
-          v49 = v35;
-          v37 = [v7 cplFetch:{@"SELECT serializedRecord FROM %@ WHERE scopeIndex = %ld", v36, v35}];
+          cloudIndex = [primaryScope cloudIndex];
+          mainTable7 = [(CPLPrequeliteStorage *)self mainTable];
+          v49 = cloudIndex;
+          v37 = [pqlConnection cplFetch:{@"SELECT serializedRecord FROM %@ WHERE scopeIndex = %ld", mainTable7, cloudIndex}];
 
           v38 = objc_alloc_init(CPLChangeBatch);
           v39 = 0;
@@ -200,7 +200,7 @@
               }
             }
 
-            v48 = [v51 appendBatch:v38 alreadyMingled:0 error:0];
+            v48 = [transientPullRepository appendBatch:v38 alreadyMingled:0 error:0];
             v42 = objc_alloc_init(CPLChangeBatch);
 
             objc_autoreleasePoolPop(v40);
@@ -214,18 +214,18 @@
           }
 
 LABEL_38:
-          if ((![v38 count] || objc_msgSend(v51, "appendBatch:alreadyMingled:error:", v38, 0, 0)) && (-[CPLPrequeliteStorage mainTable](self, "mainTable"), v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v7, "cplExecute:", @"DELETE FROM %@ WHERE scopeIndex = %ld", v43, v49), v43, v44))
+          if ((![v38 count] || objc_msgSend(transientPullRepository, "appendBatch:alreadyMingled:error:", v38, 0, 0)) && (-[CPLPrequeliteStorage mainTable](self, "mainTable"), v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(pqlConnection, "cplExecute:", @"DELETE FROM %@ WHERE scopeIndex = %ld", v43, v49), v43, v44))
           {
-            v45 = [v7 changes];
-            v46 = [(CPLPrequeliteStorage *)self pqStore];
-            if (v39 == v45)
+            changes = [pqlConnection changes];
+            pqStore6 = [(CPLPrequeliteStorage *)self pqStore];
+            if (v39 == changes)
             {
-              [v46 recordUpgradeEvent:{@"Transferred %lu private records to transient pull repository", v39, v47}];
+              [pqStore6 recordUpgradeEvent:{@"Transferred %lu private records to transient pull repository", v39, v47}];
             }
 
             else
             {
-              [v46 recordUpgradeEvent:{@"Transferred %lu private records to transient pull repository (deleted %lld)", v39, objc_msgSend(v7, "changes")}];
+              [pqStore6 recordUpgradeEvent:{@"Transferred %lu private records to transient pull repository (deleted %lld)", v39, objc_msgSend(pqlConnection, "changes")}];
             }
 
             v5 = 1;
@@ -247,18 +247,18 @@ LABEL_46:
     goto LABEL_26;
   }
 
-  if (a3 == 73)
+  if (version == 73)
   {
     return [(CPLPrequeliteStorage *)self createStorage];
   }
 
-  if (a3 == 74 && [(CPLPrequeliteStorage *)self shouldUpgradeSchema])
+  if (version == 74 && [(CPLPrequeliteStorage *)self shouldUpgradeSchema])
   {
-    v6 = [(CPLPrequeliteStorage *)self pqStore];
-    v7 = [v6 pqlConnection];
+    pqStore7 = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore7 pqlConnection];
 
-    v8 = [(CPLPrequeliteStorage *)self mainTable];
-    v9 = [v7 cplExecute:{@"ALTER TABLE %@ ADD COLUMN shadowed INTEGER DEFAULT 1", v8}];
+    mainTable8 = [(CPLPrequeliteStorage *)self mainTable];
+    v9 = [pqlConnection cplExecute:{@"ALTER TABLE %@ ADD COLUMN shadowed INTEGER DEFAULT 1", mainTable8}];
 
     if (v9)
     {
@@ -276,10 +276,10 @@ LABEL_25:
   return v5;
 }
 
-- (id)ignoredRecordWithScopedIdentifier:(id)a3
+- (id)ignoredRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(CPLPrequeliteIgnoredRecords *)self _isEmpty]|| (v5 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:v4], v5 == 0x7FFFFFFFFFFFFFFFLL))
+  identifierCopy = identifier;
+  if ([(CPLPrequeliteIgnoredRecords *)self _isEmpty]|| (v5 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:identifierCopy], v5 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v6 = 0;
   }
@@ -287,17 +287,17 @@ LABEL_25:
   else
   {
     v7 = v5;
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [v8 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100173690;
     v14[3] = &unk_10027B218;
-    v15 = v4;
-    v10 = [(CPLPrequeliteStorage *)self mainTable];
-    v11 = [v15 identifier];
-    v6 = [v9 cplFetchObject:v14 sql:{@"SELECT scopeIndex, identifier, serializedRecord, ignoredDate FROM %@ WHERE identifier = %@ AND scopeIndex = %ld", v10, v11, v7}];
+    v15 = identifierCopy;
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [v15 identifier];
+    v6 = [pqlConnection cplFetchObject:v14 sql:{@"SELECT scopeIndex, identifier, serializedRecord, ignoredDate FROM %@ WHERE identifier = %@ AND scopeIndex = %ld", mainTable, identifier, v7}];
 
     v12 = +[NSNull null];
 
@@ -311,10 +311,10 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)hasRecordWithScopedIdentifier:(id)a3
+- (BOOL)hasRecordWithScopedIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(CPLPrequeliteIgnoredRecords *)self _isEmpty]|| (v5 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:v4], v5 == 0x7FFFFFFFFFFFFFFFLL))
+  identifierCopy = identifier;
+  if ([(CPLPrequeliteIgnoredRecords *)self _isEmpty]|| (v5 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:identifierCopy], v5 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v6 = 0;
   }
@@ -322,28 +322,28 @@ LABEL_25:
   else
   {
     v7 = v5;
-    v8 = [(CPLPrequeliteStorage *)self pqStore];
-    v9 = [(CPLPrequeliteStorage *)self mainTable];
-    v10 = [v4 identifier];
-    v11 = [PQLFormatInjection formatInjection:@"identifier = %@ AND scopeIndex = %ld", v10, v7];
-    v6 = [v8 table:v9 hasRecordsMatchingQuery:v11];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [identifierCopy identifier];
+    v11 = [PQLFormatInjection formatInjection:@"identifier = %@ AND scopeIndex = %ld", identifier, v7];
+    v6 = [pqStore table:mainTable hasRecordsMatchingQuery:v11];
   }
 
   return v6;
 }
 
-- (BOOL)addIgnoredRecord:(id)a3 ignoredDate:(id)a4 otherScopeIndex:(int64_t)a5 error:(id *)a6
+- (BOOL)addIgnoredRecord:(id)record ignoredDate:(id)date otherScopeIndex:(int64_t)index error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 scopedIdentifier];
-  v13 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:v12];
+  recordCopy = record;
+  dateCopy = date;
+  scopedIdentifier = [recordCopy scopedIdentifier];
+  v13 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:scopedIdentifier];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a6)
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopedIdentifier:v12];
-      *a6 = v14 = 0;
+      [CPLErrors invalidScopeErrorWithScopedIdentifier:scopedIdentifier];
+      *error = v14 = 0;
     }
 
     else
@@ -355,43 +355,43 @@ LABEL_25:
   else
   {
     v15 = v13;
-    v27 = a6;
-    v29 = [v10 supportsSharingScopedIdentifier];
-    v28 = a5;
-    v16 = [v10 copy];
+    errorCopy = error;
+    supportsSharingScopedIdentifier = [recordCopy supportsSharingScopedIdentifier];
+    indexCopy = index;
+    v16 = [recordCopy copy];
     [v16 prepareForStorage];
     v17 = [CPLArchiver archivedDataWithRootObject:v16];
     [(CPLPrequeliteStorage *)self pqStore];
-    v19 = v18 = v11;
-    v20 = [v19 pqlConnection];
+    v19 = v18 = dateCopy;
+    pqlConnection = [v19 pqlConnection];
 
-    v21 = [(CPLPrequeliteStorage *)self mainTable];
-    v22 = [v12 identifier];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    identifier = [scopedIdentifier identifier];
     v30 = v18;
     v23 = v18;
     v24 = v17;
     [v23 timeIntervalSinceReferenceDate];
-    v14 = [v20 cplExecute:{@"INSERT OR REPLACE INTO %@ (scopeIndex, identifier, serializedRecord, shadowed, ignoredDate, otherScopeIndex) VALUES (%ld, %@, %@, %d, %ld, %ld)", v21, v15, v22, v17, v29, v25, v28}];
+    v14 = [pqlConnection cplExecute:{@"INSERT OR REPLACE INTO %@ (scopeIndex, identifier, serializedRecord, shadowed, ignoredDate, otherScopeIndex) VALUES (%ld, %@, %@, %d, %ld, %ld)", mainTable, v15, identifier, v17, supportsSharingScopedIdentifier, v25, indexCopy}];
 
     if (v14)
     {
       [*(&self->super._shouldUpgradeSchema + 1) setValue:&__kCFBooleanFalse];
     }
 
-    else if (v27)
+    else if (errorCopy)
     {
-      *v27 = [v20 lastCPLError];
+      *errorCopy = [pqlConnection lastCPLError];
     }
 
-    v11 = v30;
+    dateCopy = v30;
   }
 
   return v14;
 }
 
-- (BOOL)removeRecordWithScopedIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeRecordWithScopedIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(CPLPrequeliteIgnoredRecords *)self _isEmpty])
   {
     v7 = 1;
@@ -399,13 +399,13 @@ LABEL_25:
 
   else
   {
-    v8 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:v6];
+    v8 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:identifierCopy];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (a4)
+      if (error)
       {
-        [CPLErrors invalidScopeErrorWithScopedIdentifier:v6];
-        *a4 = v7 = 0;
+        [CPLErrors invalidScopeErrorWithScopedIdentifier:identifierCopy];
+        *error = v7 = 0;
       }
 
       else
@@ -417,16 +417,16 @@ LABEL_25:
     else
     {
       v9 = v8;
-      v10 = [(CPLPrequeliteStorage *)self pqStore];
-      v11 = [v10 pqlConnection];
+      pqStore = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore pqlConnection];
 
-      v12 = [(CPLPrequeliteStorage *)self mainTable];
-      v13 = [v6 identifier];
-      v7 = [v11 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld AND identifier = %@", v12, v9, v13}];
+      mainTable = [(CPLPrequeliteStorage *)self mainTable];
+      identifier = [identifierCopy identifier];
+      v7 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld AND identifier = %@", mainTable, v9, identifier}];
 
-      if (a4 && (v7 & 1) == 0)
+      if (error && (v7 & 1) == 0)
       {
-        *a4 = [v11 lastCPLError];
+        *error = [pqlConnection lastCPLError];
       }
 
       [*(&self->super._shouldUpgradeSchema + 1) discardCachedValue];
@@ -436,11 +436,11 @@ LABEL_25:
   return v7;
 }
 
-- (id)ignoredRecordsBeforeDate:(id)a3 scopeIdentifier:(id)a4 maximumCount:(unint64_t)a5
+- (id)ignoredRecordsBeforeDate:(id)date scopeIdentifier:(id)identifier maximumCount:(unint64_t)count
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CPLPrequeliteStorage *)self cloudScopeIndexForScopeIdentifier:v9];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v10 = [(CPLPrequeliteStorage *)self cloudScopeIndexForScopeIdentifier:identifierCopy];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = &__NSArray0__struct;
@@ -449,14 +449,14 @@ LABEL_25:
   else
   {
     v12 = v10;
-    v13 = [[NSMutableArray alloc] initWithCapacity:a5];
-    v14 = [(CPLPrequeliteStorage *)self pqStore];
-    v15 = [v14 pqlConnection];
+    v13 = [[NSMutableArray alloc] initWithCapacity:count];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v16 = [(CPLPrequeliteStorage *)self mainTable];
-    [v8 timeIntervalSinceReferenceDate];
-    v27 = v15;
-    v18 = [v15 cplFetch:{@"SELECT scopeIndex, identifier, serializedRecord, ignoredDate FROM %@ WHERE shadowed != 0 AND scopeIndex = %ld AND ignoredDate < %ld LIMIT %ld", v16, v12, v17, a5}];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    [dateCopy timeIntervalSinceReferenceDate];
+    v27 = pqlConnection;
+    v18 = [pqlConnection cplFetch:{@"SELECT scopeIndex, identifier, serializedRecord, ignoredDate FROM %@ WHERE shadowed != 0 AND scopeIndex = %ld AND ignoredDate < %ld LIMIT %ld", mainTable, v12, v17, count}];
 
     v33 = 0u;
     v34 = 0u;
@@ -466,7 +466,7 @@ LABEL_25:
     v28[1] = 3221225472;
     v28[2] = sub_100173DFC;
     v28[3] = &unk_10027B9D8;
-    v29 = v9;
+    v29 = identifierCopy;
     v30 = v12;
     v19 = [v18 enumerateObjects:v28];
     v20 = [v19 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -504,17 +504,17 @@ LABEL_25:
   return v11;
 }
 
-- (BOOL)setIgnoredDate:(id)a3 forRecordWithScopedIdentifier:(id)a4 error:(id *)a5
+- (BOOL)setIgnoredDate:(id)date forRecordWithScopedIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:v9];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v10 = [(CPLPrequeliteStorage *)self scopeIndexForCloudScopedIdentifier:identifierCopy];
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a5)
+    if (error)
     {
-      [CPLErrors invalidScopeErrorWithScopedIdentifier:v9];
-      *a5 = v11 = 0;
+      [CPLErrors invalidScopeErrorWithScopedIdentifier:identifierCopy];
+      *error = v11 = 0;
     }
 
     else
@@ -526,28 +526,28 @@ LABEL_25:
   else
   {
     v12 = v10;
-    v13 = [(CPLPrequeliteStorage *)self pqStore];
-    v14 = [v13 pqlConnection];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection = [pqStore pqlConnection];
 
-    v15 = [(CPLPrequeliteStorage *)self mainTable];
-    [v8 timeIntervalSinceReferenceDate];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    [dateCopy timeIntervalSinceReferenceDate];
     v17 = v16;
-    v18 = [v9 identifier];
-    v11 = [v14 cplExecute:{@"UPDATE %@ SET ignoredDate = %ld WHERE scopeIndex = %ld AND identifier = %@", v15, v17, v12, v18}];
+    identifier = [identifierCopy identifier];
+    v11 = [pqlConnection cplExecute:{@"UPDATE %@ SET ignoredDate = %ld WHERE scopeIndex = %ld AND identifier = %@", mainTable, v17, v12, identifier}];
 
-    if (a5 && (v11 & 1) == 0)
+    if (error && (v11 & 1) == 0)
     {
-      *a5 = [v14 lastCPLError];
+      *error = [pqlConnection lastCPLError];
     }
   }
 
   return v11;
 }
 
-- (BOOL)scopeIdentifier:(id)a3 hasIgnoredRecordsBeforeDate:(id)a4
+- (BOOL)scopeIdentifier:(id)identifier hasIgnoredRecordsBeforeDate:(id)date
 {
-  v6 = a4;
-  v7 = [(CPLPrequeliteStorage *)self cloudScopeIndexForScopeIdentifier:a3];
+  dateCopy = date;
+  v7 = [(CPLPrequeliteStorage *)self cloudScopeIndexForScopeIdentifier:identifier];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -556,32 +556,32 @@ LABEL_25:
   else
   {
     v9 = v7;
-    v10 = [(CPLPrequeliteStorage *)self pqStore];
-    v11 = [(CPLPrequeliteStorage *)self mainTable];
-    [v6 timeIntervalSinceReferenceDate];
+    pqStore = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable = [(CPLPrequeliteStorage *)self mainTable];
+    [dateCopy timeIntervalSinceReferenceDate];
     v13 = [PQLFormatInjection formatInjection:@"shadowed != 0 AND scopeIndex = %ld AND ignoredDate < %ld", v9, v12];
-    v8 = [v10 table:v11 hasRecordsMatchingQuery:v13];
+    v8 = [pqStore table:mainTable hasRecordsMatchingQuery:v13];
   }
 
   return v8;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v11 = [(CPLPrequeliteStorage *)self pqStore];
-  v12 = [v11 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v13 = [(CPLPrequeliteStorage *)self mainTable];
-  v14 = [v12 cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", v13, a3, a4}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v14 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE scopeIndex = %ld LIMIT %ld", mainTable, index, count}];
 
   if (v14)
   {
-    *a5 = [v12 changes];
+    *deletedCount = [pqlConnection changes];
   }
 
-  else if (a6)
+  else if (error)
   {
-    *a6 = [v12 lastError];
+    *error = [pqlConnection lastError];
   }
 
   [*(&self->super._shouldUpgradeSchema + 1) discardCachedValue];
@@ -589,15 +589,15 @@ LABEL_25:
   return v14;
 }
 
-- (BOOL)popCloudScopedIdentifiersToCheck:(id *)a3 otherScopeIndex:(int64_t)a4 maxCount:(int64_t)a5 deletedCount:(int64_t *)a6 error:(id *)a7
+- (BOOL)popCloudScopedIdentifiersToCheck:(id *)check otherScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v10 = [(CPLPrequeliteStorage *)self pqStore];
-  v11 = [v10 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v12 = [[NSMutableArray alloc] initWithCapacity:a5];
+  v12 = [[NSMutableArray alloc] initWithCapacity:count];
   v13 = objc_alloc_init(NSMutableIndexSet);
-  v14 = [(CPLPrequeliteStorage *)self mainTable];
-  v15 = [v11 cplFetch:{@"SELECT rowid, scopeIndex, identifier FROM %@ WHERE otherScopeIndex = %ld LIMIT %lu", v14, a4, a5}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v15 = [pqlConnection cplFetch:{@"SELECT rowid, scopeIndex, identifier FROM %@ WHERE otherScopeIndex = %ld LIMIT %lu", mainTable, index, count}];
 
   if ([v15 next])
   {
@@ -609,16 +609,16 @@ LABEL_25:
       v18 = [v15 integerAtIndex:1];
       if (v18 != v16)
       {
-        v19 = [(CPLPrequeliteIgnoredRecords *)self abstractObject];
-        v20 = [v19 engineStore];
-        v21 = [v20 scopes];
+        abstractObject = [(CPLPrequeliteIgnoredRecords *)self abstractObject];
+        engineStore = [abstractObject engineStore];
+        scopes = [engineStore scopes];
 
-        v22 = [v21 scopeIdentifierForCloudScopeIndex:v18];
+        v22 = [scopes scopeIdentifierForCloudScopeIndex:v18];
 
         if (v22)
         {
-          v23 = [v21 scopeWithIdentifier:v22];
-          if (!v23 || [v21 valueForFlag:16 forScope:v23])
+          v23 = [scopes scopeWithIdentifier:v22];
+          if (!v23 || [scopes valueForFlag:16 forScope:v23])
           {
 
             v22 = 0;
@@ -659,14 +659,14 @@ LABEL_25:
   v44 = 0;
   if ([v13 count])
   {
-    v27 = [(CPLPrequeliteStorage *)self mainTable];
+    mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
     v34[2] = sub_1001745E4;
     v34[3] = &unk_10027B1F0;
     v37 = &v45;
-    v35 = v11;
-    v28 = v27;
+    v35 = pqlConnection;
+    v28 = mainTable2;
     v36 = v28;
     v38 = &v39;
     [v13 enumerateIndexesUsingBlock:v34];
@@ -674,13 +674,13 @@ LABEL_25:
 
   if (*(v46 + 24) == 1)
   {
-    *a3 = [v12 copy];
-    *a6 = [v13 count];
+    *check = [v12 copy];
+    *deletedCount = [v13 count];
   }
 
-  else if (a7)
+  else if (error)
   {
-    *a7 = v40[5];
+    *error = v40[5];
   }
 
   v29 = *(v46 + 24);
@@ -692,40 +692,40 @@ LABEL_25:
 
 - (id)status
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
-  v5 = [v3 tableCountOfRecords:v4];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v5 = [pqStore tableCountOfRecords:mainTable];
 
   if (v5)
   {
-    v6 = [(CPLPrequeliteStorage *)self pqStore];
-    v7 = [(CPLPrequeliteStorage *)self mainTable];
+    pqStore2 = [(CPLPrequeliteStorage *)self pqStore];
+    mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
     v8 = [PQLFormatInjection formatInjection:@"shadowed = 1"];
-    v9 = [v6 table:v7 countOfRecordsMatchingQuery:v8];
+    v9 = [pqStore2 table:mainTable2 countOfRecordsMatchingQuery:v8];
 
     if (v5 == v9)
     {
-      v10 = [(CPLPrequeliteIgnoredRecords *)self recordsDesignation];
-      [NSString stringWithFormat:@"%lu %@ (all shadowed)", v5, v10, v16, v17];
+      recordsDesignation = [(CPLPrequeliteIgnoredRecords *)self recordsDesignation];
+      [NSString stringWithFormat:@"%lu %@ (all shadowed)", v5, recordsDesignation, v16, v17];
     }
 
     else
     {
-      v11 = [(CPLPrequeliteIgnoredRecords *)self recordsDesignation];
-      v10 = v11;
+      recordsDesignation2 = [(CPLPrequeliteIgnoredRecords *)self recordsDesignation];
+      recordsDesignation = recordsDesignation2;
       if (v9)
       {
         v16 = v9;
         v17 = v5 - v9;
         v14 = v5;
-        v15 = v11;
+        v15 = recordsDesignation2;
         v12 = @"%lu %@ (%lu shadowed - %lu split)";
       }
 
       else
       {
         v14 = v5;
-        v15 = v11;
+        v15 = recordsDesignation2;
         v12 = @"%lu %@ (all split)";
       }
 

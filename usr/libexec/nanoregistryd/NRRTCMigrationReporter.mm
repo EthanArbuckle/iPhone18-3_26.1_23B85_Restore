@@ -1,27 +1,27 @@
 @interface NRRTCMigrationReporter
-- (BOOL)setCurrentMigrationID:(id)a3;
-- (NRRTCMigrationReporter)initWithServiceRegistry:(id)a3;
-- (id)_deviceDetailsFromCollectionHistory:(id)a3;
-- (id)_migrationMetricKeyFromTransactionName:(id)a3;
+- (BOOL)setCurrentMigrationID:(id)d;
+- (NRRTCMigrationReporter)initWithServiceRegistry:(id)registry;
+- (id)_deviceDetailsFromCollectionHistory:(id)history;
+- (id)_migrationMetricKeyFromTransactionName:(id)name;
 - (id)mostRecentError;
 - (void)_clearMigrationData;
 - (void)_submitRTCMetric;
-- (void)addTransactionError:(id)a3;
-- (void)checkInWithCompletedMigrationTransaction:(id)a3 routingSlipEntry:(id)a4 forPairingID:(id)a5;
-- (void)checkInWithMigrationTransactionRollback:(id)a3 routingSlipEntry:(id)a4 forPairingID:(id)a5;
-- (void)fileEarlyMigrationFailure:(unint64_t)a3 withDeviceHistory:(id)a4 forPairingID:(id)a5;
-- (void)finishMigrationMetricWithDeviceHistory:(id)a3 success:(BOOL)a4 error:(id)a5;
-- (void)migrationWillBeginOnCompanionForPairingID:(id)a3;
-- (void)migrationWillBeginOnCompanionForPairingID:(id)a3 withDeviceHistory:(id)a4;
-- (void)setSessionID:(id)a3;
-- (void)setSessionIDFromRemoteDevice:(id)a3;
+- (void)addTransactionError:(id)error;
+- (void)checkInWithCompletedMigrationTransaction:(id)transaction routingSlipEntry:(id)entry forPairingID:(id)d;
+- (void)checkInWithMigrationTransactionRollback:(id)rollback routingSlipEntry:(id)entry forPairingID:(id)d;
+- (void)fileEarlyMigrationFailure:(unint64_t)failure withDeviceHistory:(id)history forPairingID:(id)d;
+- (void)finishMigrationMetricWithDeviceHistory:(id)history success:(BOOL)success error:(id)error;
+- (void)migrationWillBeginOnCompanionForPairingID:(id)d;
+- (void)migrationWillBeginOnCompanionForPairingID:(id)d withDeviceHistory:(id)history;
+- (void)setSessionID:(id)d;
+- (void)setSessionIDFromRemoteDevice:(id)device;
 @end
 
 @implementation NRRTCMigrationReporter
 
-- (NRRTCMigrationReporter)initWithServiceRegistry:(id)a3
+- (NRRTCMigrationReporter)initWithServiceRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v12.receiver = self;
   v12.super_class = NRRTCMigrationReporter;
   v6 = [(NRRTCMigrationReporter *)&v12 init];
@@ -31,7 +31,7 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_serviceRegistry, a3);
+    objc_storeStrong(&v6->_serviceRegistry, registry);
     v9 = objc_opt_new();
     transactionErrors = v6->_transactionErrors;
     v6->_transactionErrors = v9;
@@ -40,69 +40,69 @@
   return v6;
 }
 
-- (void)migrationWillBeginOnCompanionForPairingID:(id)a3
+- (void)migrationWillBeginOnCompanionForPairingID:(id)d
 {
   if (!self->_migrationReportManager)
   {
-    v4 = a3;
-    v5 = [[BRRTCMigrationReportManager alloc] initWithPairingID:v4];
+    dCopy = d;
+    v5 = [[BRRTCMigrationReportManager alloc] initWithPairingID:dCopy];
 
     migrationReportManager = self->_migrationReportManager;
     self->_migrationReportManager = v5;
   }
 
-  v7 = [(NRRTCMigrationReporter *)self migrationReportManager];
-  [v7 setMigrationBegan:1];
+  migrationReportManager = [(NRRTCMigrationReporter *)self migrationReportManager];
+  [migrationReportManager setMigrationBegan:1];
 }
 
-- (void)migrationWillBeginOnCompanionForPairingID:(id)a3 withDeviceHistory:(id)a4
+- (void)migrationWillBeginOnCompanionForPairingID:(id)d withDeviceHistory:(id)history
 {
-  v15 = a3;
-  v6 = a4;
+  dCopy = d;
+  historyCopy = history;
   if (!self->_migrationReportManager)
   {
-    v7 = [[BRRTCMigrationReportManager alloc] initWithPairingID:v15];
+    v7 = [[BRRTCMigrationReportManager alloc] initWithPairingID:dCopy];
     migrationReportManager = self->_migrationReportManager;
     self->_migrationReportManager = v7;
   }
 
-  v9 = [v6 deviceCollection];
-  v10 = [v9 objectForKeyedSubscript:v15];
+  deviceCollection = [historyCopy deviceCollection];
+  v10 = [deviceCollection objectForKeyedSubscript:dCopy];
 
   v11 = [v10 objectForKeyedSubscript:NRDevicePropertyLastActiveDate];
-  v12 = [v11 value];
+  value = [v11 value];
 
-  v13 = [(NRRTCMigrationReporter *)self migrationReportManager];
-  [v13 setLastActiveDate:v12];
+  migrationReportManager = [(NRRTCMigrationReporter *)self migrationReportManager];
+  [migrationReportManager setLastActiveDate:value];
 
-  v14 = [(NRRTCMigrationReporter *)self migrationReportManager];
-  [v14 setMigrationBegan:1];
+  migrationReportManager2 = [(NRRTCMigrationReporter *)self migrationReportManager];
+  [migrationReportManager2 setMigrationBegan:1];
 }
 
-- (void)finishMigrationMetricWithDeviceHistory:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)finishMigrationMetricWithDeviceHistory:(id)history success:(BOOL)success error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  historyCopy = history;
+  errorCopy = error;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100084E34;
   v13[3] = &unk_100175CE0;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = historyCopy;
+  successCopy = success;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = historyCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)checkInWithCompletedMigrationTransaction:(id)a3 routingSlipEntry:(id)a4 forPairingID:(id)a5
+- (void)checkInWithCompletedMigrationTransaction:(id)transaction routingSlipEntry:(id)entry forPairingID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([(NRRTCMigrationReporter *)self setCurrentMigrationID:v9])
+  entryCopy = entry;
+  dCopy = d;
+  transactionCopy = transaction;
+  if ([(NRRTCMigrationReporter *)self setCurrentMigrationID:dCopy])
   {
     v11 = sub_1000034AC();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -113,25 +113,25 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 138412290;
-        v20 = v9;
+        v20 = dCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "migration device id unexpectedly changed to %@", &v19, 0xCu);
       }
     }
   }
 
-  v14 = NSStringFromClass([v8 transactionClass]);
+  v14 = NSStringFromClass([entryCopy transactionClass]);
   v15 = [(NRRTCMigrationReporter *)self _migrationMetricKeyFromTransactionName:v14];
 
-  v16 = [v10 getLastFirstError];
+  getLastFirstError = [transactionCopy getLastFirstError];
 
-  if (v16)
+  if (getLastFirstError)
   {
-    v17 = [(NRRTCMigrationReporter *)self mostRecentError];
-    v18 = [v16 isEqual:v17];
+    mostRecentError = [(NRRTCMigrationReporter *)self mostRecentError];
+    v18 = [getLastFirstError isEqual:mostRecentError];
 
     if ((v18 & 1) == 0)
     {
-      [(NRRTCMigrationReporter *)self addTransactionError:v16];
+      [(NRRTCMigrationReporter *)self addTransactionError:getLastFirstError];
     }
   }
 
@@ -143,11 +143,11 @@
   [(NRRTCMigrationReporter *)self _checkInWithCompletedMigrationTransaction:v15 withSuccess:v18];
 }
 
-- (void)checkInWithMigrationTransactionRollback:(id)a3 routingSlipEntry:(id)a4 forPairingID:(id)a5
+- (void)checkInWithMigrationTransactionRollback:(id)rollback routingSlipEntry:(id)entry forPairingID:(id)d
 {
-  v7 = a4;
-  v8 = a5;
-  if ([(NRRTCMigrationReporter *)self setCurrentMigrationID:v8])
+  entryCopy = entry;
+  dCopy = d;
+  if ([(NRRTCMigrationReporter *)self setCurrentMigrationID:dCopy])
   {
     v9 = sub_1000034AC();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -158,66 +158,66 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v8;
+        v15 = dCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "migration device id changed to %@", &v14, 0xCu);
       }
     }
   }
 
-  v12 = NSStringFromClass([v7 transactionClass]);
+  v12 = NSStringFromClass([entryCopy transactionClass]);
   v13 = [(NRRTCMigrationReporter *)self _migrationMetricKeyFromTransactionName:v12];
 
   [(NRRTCMigrationReporter *)self _checkInWithCompletedMigrationTransaction:v13 withSuccess:0];
 }
 
-- (void)fileEarlyMigrationFailure:(unint64_t)a3 withDeviceHistory:(id)a4 forPairingID:(id)a5
+- (void)fileEarlyMigrationFailure:(unint64_t)failure withDeviceHistory:(id)history forPairingID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
+  historyCopy = history;
+  dCopy = d;
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100085498;
   v13[3] = &unk_100178570;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v16 = a3;
-  v11 = v8;
-  v12 = v9;
+  v14 = dCopy;
+  v15 = historyCopy;
+  failureCopy = failure;
+  v11 = historyCopy;
+  v12 = dCopy;
   dispatch_async(queue, v13);
 }
 
-- (void)addTransactionError:(id)a3
+- (void)addTransactionError:(id)error
 {
-  v4 = a3;
-  v5 = [(NRRTCMigrationReporter *)self transactionErrors];
-  [v5 addObject:v4];
+  errorCopy = error;
+  transactionErrors = [(NRRTCMigrationReporter *)self transactionErrors];
+  [transactionErrors addObject:errorCopy];
 }
 
 - (id)mostRecentError
 {
-  v2 = [(NRRTCMigrationReporter *)self transactionErrors];
-  v3 = [v2 lastObject];
+  transactionErrors = [(NRRTCMigrationReporter *)self transactionErrors];
+  lastObject = [transactionErrors lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (BOOL)setCurrentMigrationID:(id)a3
+- (BOOL)setCurrentMigrationID:(id)d
 {
-  v4 = a3;
-  v5 = [(NRRTCMigrationReporter *)self currentMigrationPairingID];
-  if (v5)
+  dCopy = d;
+  currentMigrationPairingID = [(NRRTCMigrationReporter *)self currentMigrationPairingID];
+  if (currentMigrationPairingID)
   {
 
 LABEL_5:
-    [(NRRTCMigrationReporter *)self setCurrentMigrationPairingID:v4];
+    [(NRRTCMigrationReporter *)self setCurrentMigrationPairingID:dCopy];
     v8 = 1;
     goto LABEL_6;
   }
 
-  v6 = [(NRRTCMigrationReporter *)self currentMigrationPairingID];
-  v7 = [v6 isEqual:v4];
+  currentMigrationPairingID2 = [(NRRTCMigrationReporter *)self currentMigrationPairingID];
+  v7 = [currentMigrationPairingID2 isEqual:dCopy];
 
   if ((v7 & 1) == 0)
   {
@@ -230,65 +230,65 @@ LABEL_6:
   return v8;
 }
 
-- (id)_deviceDetailsFromCollectionHistory:(id)a3
+- (id)_deviceDetailsFromCollectionHistory:(id)history
 {
-  v3 = a3;
-  v4 = [v3 deviceCollection];
-  v5 = [v4 activeDevice];
+  historyCopy = history;
+  deviceCollection = [historyCopy deviceCollection];
+  activeDevice = [deviceCollection activeDevice];
 
   v6 = objc_opt_new();
-  v7 = [v5 objectForKeyedSubscript:NRDevicePropertyAdvertisedName];
-  v8 = [v7 value];
+  v7 = [activeDevice objectForKeyedSubscript:NRDevicePropertyAdvertisedName];
+  value = [v7 value];
 
-  v9 = [v5 pairingID];
-  v10 = [v9 UUIDString];
-  v11 = [NSString stringWithFormat:@"%@%@", v10, v8];
+  pairingID = [activeDevice pairingID];
+  uUIDString = [pairingID UUIDString];
+  v11 = [NSString stringWithFormat:@"%@%@", uUIDString, value];
   v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 hash]);
 
-  if (v5)
+  if (activeDevice)
   {
-    v13 = [v5 objectForKeyedSubscript:NRDevicePropertySystemBuildVersion];
-    v14 = [v13 value];
-    [v6 setGizmoBuild:v14];
+    v13 = [activeDevice objectForKeyedSubscript:NRDevicePropertySystemBuildVersion];
+    value2 = [v13 value];
+    [v6 setGizmoBuild:value2];
 
-    v15 = [v5 objectForKeyedSubscript:NRDevicePropertyHWModelString];
-    v16 = [v15 value];
-    [v6 setGizmoHardware:v16];
+    v15 = [activeDevice objectForKeyedSubscript:NRDevicePropertyHWModelString];
+    value3 = [v15 value];
+    [v6 setGizmoHardware:value3];
 
-    v17 = [v3 deviceCollection];
-    v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v17 count]);
+    deviceCollection2 = [historyCopy deviceCollection];
+    v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [deviceCollection2 count]);
     [v6 setPairedDeviceCount:v18];
 
-    v19 = [v5 objectForKeyedSubscript:NRDevicePropertyMaxPairingCompatibilityVersion];
-    v20 = [v19 value];
-    [v6 setGizmoMaxPairingVersion:v20];
+    v19 = [activeDevice objectForKeyedSubscript:NRDevicePropertyMaxPairingCompatibilityVersion];
+    value4 = [v19 value];
+    [v6 setGizmoMaxPairingVersion:value4];
 
-    v21 = [v5 objectForKeyedSubscript:NRDevicePropertyBuildType];
-    v22 = [v21 value];
-    [v6 setGizmoBuildType:v22];
+    v21 = [activeDevice objectForKeyedSubscript:NRDevicePropertyBuildType];
+    value5 = [v21 value];
+    [v6 setGizmoBuildType:value5];
 
-    v23 = [v5 objectForKeyedSubscript:NRDevicePropertyEnclosureMaterial];
-    v24 = [v23 value];
-    [v6 setGizmoEnclosureMaterial:v24];
+    v23 = [activeDevice objectForKeyedSubscript:NRDevicePropertyEnclosureMaterial];
+    value6 = [v23 value];
+    [v6 setGizmoEnclosureMaterial:value6];
 
-    if (([v5 isAltAccount] & 1) == 0)
+    if (([activeDevice isAltAccount] & 1) == 0)
     {
       [v6 setMigratingDeviceId:v12];
     }
   }
 
-  if (v3)
+  if (historyCopy)
   {
-    v25 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 switchIndex]);
+    v25 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [historyCopy switchIndex]);
     [v6 setSwitchCounter:v25];
   }
 
   return v6;
 }
 
-- (void)setSessionIDFromRemoteDevice:(id)a3
+- (void)setSessionIDFromRemoteDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = nr_framework_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -302,12 +302,12 @@ LABEL_6:
     }
   }
 
-  [(NRRTCMigrationReporter *)self setSessionID:v4];
+  [(NRRTCMigrationReporter *)self setSessionID:deviceCopy];
 }
 
-- (void)setSessionID:(id)a3
+- (void)setSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (_NRIsInternalInstall())
   {
     v5 = nr_framework_log();
@@ -319,20 +319,20 @@ LABEL_6:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138412290;
-        v10 = v4;
+        v10 = dCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "setting migration metric session id to %@", &v9, 0xCu);
       }
     }
   }
 
-  v8 = [(NRRTCMigrationReporter *)self migrationReportManager];
-  [v8 setSessionID:v4];
+  migrationReportManager = [(NRRTCMigrationReporter *)self migrationReportManager];
+  [migrationReportManager setSessionID:dCopy];
 }
 
 - (void)_submitRTCMetric
 {
-  v3 = [(NRRTCMigrationReporter *)self migrationReportManager];
-  [v3 submitMetic];
+  migrationReportManager = [(NRRTCMigrationReporter *)self migrationReportManager];
+  [migrationReportManager submitMetic];
 
   [(NRRTCMigrationReporter *)self _clearMigrationData];
 }
@@ -344,10 +344,10 @@ LABEL_6:
   _objc_release_x1();
 }
 
-- (id)_migrationMetricKeyFromTransactionName:(id)a3
+- (id)_migrationMetricKeyFromTransactionName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 substringFromIndex:{objc_msgSend(@"EPSagaTransaction", "length")}];
+  nameCopy = name;
+  v4 = [nameCopy substringFromIndex:{objc_msgSend(@"EPSagaTransaction", "length")}];
 
   v5 = [NSString stringWithFormat:@"%@%@", @"MigrationPhonePhase", v4];
 

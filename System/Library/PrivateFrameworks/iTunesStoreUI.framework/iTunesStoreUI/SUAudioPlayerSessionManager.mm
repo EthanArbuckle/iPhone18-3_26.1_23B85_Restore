@@ -1,11 +1,11 @@
 @interface SUAudioPlayerSessionManager
 + (id)sessionManager;
 - (SUAudioPlayerSessionManager)init;
-- (id)audioPlayerForURL:(id)a3;
-- (id)endSessionForURL:(id)a3;
-- (id)startSessionWithURL:(id)a3;
+- (id)audioPlayerForURL:(id)l;
+- (id)endSessionForURL:(id)l;
+- (id)startSessionWithURL:(id)l;
 - (id)stopAllAudioPlayerSessions;
-- (void)_audioPlayerStatusChangeNotification:(id)a3;
+- (void)_audioPlayerStatusChangeNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __45__SUAudioPlayerSessionManager_sessionManager__block_invoke;
   block[3] = &unk_1E8164348;
-  block[4] = a1;
+  block[4] = self;
   if (sessionManager_sOnce != -1)
   {
     dispatch_once(&sessionManager_sOnce, block);
@@ -55,22 +55,22 @@ id __45__SUAudioPlayerSessionManager_sessionManager__block_invoke()
   return result;
 }
 
-- (id)audioPlayerForURL:(id)a3
+- (id)audioPlayerForURL:(id)l
 {
-  v3 = [(NSMutableDictionary *)self->_sessions objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_sessions objectForKey:l];
 
   return v3;
 }
 
-- (id)endSessionForURL:(id)a3
+- (id)endSessionForURL:(id)l
 {
   v5 = [(NSMutableDictionary *)self->_sessions objectForKey:?];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"SUAudioPlayerStatusChangeNotification" object:v5];
-    [(NSMutableDictionary *)self->_sessions removeObjectForKey:a3];
-    [v6 postNotificationName:@"SUAudioPlayerSessionsChangedNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SUAudioPlayerStatusChangeNotification" object:v5];
+    [(NSMutableDictionary *)self->_sessions removeObjectForKey:l];
+    [defaultCenter postNotificationName:@"SUAudioPlayerSessionsChangedNotification" object:self];
     if (![(NSMutableDictionary *)self->_sessions count])
     {
       [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
@@ -80,21 +80,21 @@ id __45__SUAudioPlayerSessionManager_sessionManager__block_invoke()
   return v5;
 }
 
-- (id)startSessionWithURL:(id)a3
+- (id)startSessionWithURL:(id)l
 {
   v5 = [(NSMutableDictionary *)self->_sessions objectForKey:?];
   if (!v5)
   {
-    v5 = [[SUAudioPlayer alloc] initWithURL:a3];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:@"SUAudioPlayerStatusChangeNotification" object:v5];
+    v5 = [[SUAudioPlayer alloc] initWithURL:l];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__audioPlayerStatusChangeNotification_ name:@"SUAudioPlayerStatusChangeNotification" object:v5];
     if (![(NSMutableDictionary *)self->_sessions count])
     {
       [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
     }
 
-    [(NSMutableDictionary *)self->_sessions setObject:v5 forKey:a3];
-    [v6 postNotificationName:@"SUAudioPlayerSessionsChangedNotification" object:self];
+    [(NSMutableDictionary *)self->_sessions setObject:v5 forKey:l];
+    [defaultCenter postNotificationName:@"SUAudioPlayerSessionsChangedNotification" object:self];
   }
 
   return v5;
@@ -102,25 +102,25 @@ id __45__SUAudioPlayerSessionManager_sessionManager__block_invoke()
 
 - (id)stopAllAudioPlayerSessions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSMutableDictionary *)self->_sessions count])
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     sessions = self->_sessions;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __57__SUAudioPlayerSessionManager_stopAllAudioPlayerSessions__block_invoke;
     v7[3] = &unk_1E8167028;
-    v7[4] = v4;
+    v7[4] = defaultCenter;
     v7[5] = self;
-    v7[6] = v3;
+    v7[6] = array;
     [(NSMutableDictionary *)sessions enumerateKeysAndObjectsUsingBlock:v7];
     [(NSMutableDictionary *)self->_sessions removeAllObjects];
-    [v4 postNotificationName:@"SUAudioPlayerSessionsChangedNotification" object:self];
+    [defaultCenter postNotificationName:@"SUAudioPlayerSessionsChangedNotification" object:self];
     [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __57__SUAudioPlayerSessionManager_stopAllAudioPlayerSessions__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -131,12 +131,12 @@ uint64_t __57__SUAudioPlayerSessionManager_stopAllAudioPlayerSessions__block_inv
   return [a3 stop];
 }
 
-- (void)_audioPlayerStatusChangeNotification:(id)a3
+- (void)_audioPlayerStatusChangeNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (([objc_msgSend(v4 "playerStatus")] & 0xFFFFFFFFFFFFFFFELL) == 4)
+  object = [notification object];
+  if (([objc_msgSend(object "playerStatus")] & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v5 = [v4 URL];
+    v5 = [object URL];
 
     [(SUAudioPlayerSessionManager *)self endSessionForURL:v5];
   }

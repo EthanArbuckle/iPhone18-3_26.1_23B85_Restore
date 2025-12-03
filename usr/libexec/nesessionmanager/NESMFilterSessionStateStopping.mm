@@ -1,7 +1,7 @@
 @interface NESMFilterSessionStateStopping
 - (NESMFilterSessionStateStopping)init;
-- (void)enterWithSession:(id)a3;
-- (void)handlePluginDisposeComplete:(id)a3;
+- (void)enterWithSession:(id)session;
+- (void)handlePluginDisposeComplete:(id)complete;
 - (void)handleTimeout;
 @end
 
@@ -75,11 +75,11 @@
   }
 }
 
-- (void)handlePluginDisposeComplete:(id)a3
+- (void)handlePluginDisposeComplete:(id)complete
 {
   v9.receiver = self;
   v9.super_class = NESMFilterSessionStateStopping;
-  [(NESMFilterSessionState *)&v9 handlePluginDisposeComplete:a3];
+  [(NESMFilterSessionState *)&v9 handlePluginDisposeComplete:complete];
   if (self)
   {
     if (!--self->_pendingDisposeCount)
@@ -101,12 +101,12 @@
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v33.receiver = self;
   v33.super_class = NESMFilterSessionStateStopping;
-  [(NESMFilterSessionState *)&v33 enterWithSession:v4];
+  [(NESMFilterSessionState *)&v33 enterWithSession:sessionCopy];
   if (self)
   {
     Property = objc_getProperty(self, v5, 16, 1);
@@ -117,11 +117,11 @@
     Property = 0;
   }
 
-  v7 = [Property server];
-  v9 = v7;
+  server = [Property server];
+  v9 = server;
   if (self)
   {
-    [v7 requestUninstallForSession:{objc_getProperty(self, v8, 16, 1)}];
+    [server requestUninstallForSession:{objc_getProperty(self, v8, 16, 1)}];
 
     self->_pendingDisposeCount = 0;
     v11 = objc_getProperty(self, v10, 16, 1);
@@ -133,7 +133,7 @@
 
   else
   {
-    [v7 requestUninstallForSession:0];
+    [server requestUninstallForSession:0];
 
     v11 = 0;
   }
@@ -218,13 +218,13 @@
     }
 
 LABEL_25:
-    v31 = [v4 queue];
+    queue = [sessionCopy queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100068C40;
     block[3] = &unk_1000EB1C0;
     block[4] = self;
-    dispatch_async(v31, block);
+    dispatch_async(queue, block);
   }
 }
 

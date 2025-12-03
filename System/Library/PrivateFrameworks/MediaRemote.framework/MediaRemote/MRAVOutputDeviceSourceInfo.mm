@@ -1,20 +1,20 @@
 @interface MRAVOutputDeviceSourceInfo
-- (BOOL)isEqual:(id)a3;
-- (MRAVOutputDeviceSourceInfo)initWithMultipleBuiltInDevices:(BOOL)a3 sourceType:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (MRAVOutputDeviceSourceInfo)initWithMultipleBuiltInDevices:(BOOL)devices sourceType:(int64_t)type;
 - (id)description;
 @end
 
 @implementation MRAVOutputDeviceSourceInfo
 
-- (MRAVOutputDeviceSourceInfo)initWithMultipleBuiltInDevices:(BOOL)a3 sourceType:(int64_t)a4
+- (MRAVOutputDeviceSourceInfo)initWithMultipleBuiltInDevices:(BOOL)devices sourceType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = MRAVOutputDeviceSourceInfo;
   result = [(MRAVOutputDeviceSourceInfo *)&v7 init];
   if (result)
   {
-    result->_multipleBuiltInDevices = a3;
-    result->_sourceType = a4;
+    result->_multipleBuiltInDevices = devices;
+    result->_sourceType = type;
   }
 
   return result;
@@ -37,13 +37,13 @@
   return [v3 stringWithFormat:@"<%@:%p multipleBuiltIn = %s>", v4, self, v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = self->_multipleBuiltInDevices == [v5 multipleBuiltInDevices] && objc_msgSend(v5, "sourceType") == self->_sourceType;
   }
 

@@ -1,12 +1,12 @@
 @interface CPLCloudKitResourceInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CPLCloudKitResourceInfo
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = CPLCloudKitResourceInfo;
   v3 = [(CPLCloudKitResourceInfo *)&v7 description];
-  v4 = [(CPLCloudKitResourceInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CPLCloudKitResourceInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -34,8 +34,8 @@
   imageDimensions = self->_imageDimensions;
   if (imageDimensions)
   {
-    v6 = [(CPLCloudKitResourceInfoImageDimensions *)imageDimensions dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"imageDimensions"];
+    dictionaryRepresentation = [(CPLCloudKitResourceInfoImageDimensions *)imageDimensions dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"imageDimensions"];
   }
 
   fileUTI = self->_fileUTI;
@@ -53,68 +53,68 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     fileSize = self->_fileSize;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_imageDimensions)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_fileUTI)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_stableHash)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_fileSize;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_fileSize;
+    *(toCopy + 40) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_imageDimensions)
   {
-    [v4 setImageDimensions:?];
-    v4 = v5;
+    [toCopy setImageDimensions:?];
+    toCopy = v5;
   }
 
   if (self->_fileUTI)
   {
     [v5 setFileUTI:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_stableHash)
   {
     [v5 setStableHash:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -122,39 +122,39 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(CPLCloudKitResourceInfoImageDimensions *)self->_imageDimensions copyWithZone:a3];
+  v7 = [(CPLCloudKitResourceInfoImageDimensions *)self->_imageDimensions copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
-  v9 = [(NSString *)self->_fileUTI copyWithZone:a3];
+  v9 = [(NSString *)self->_fileUTI copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(NSString *)self->_stableHash copyWithZone:a3];
+  v11 = [(NSString *)self->_stableHash copyWithZone:zone];
   v12 = v6[4];
   v6[4] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_fileSize != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_fileSize != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -162,13 +162,13 @@ LABEL_13:
   }
 
   imageDimensions = self->_imageDimensions;
-  if (imageDimensions | *(v4 + 3) && ![(CPLCloudKitResourceInfoImageDimensions *)imageDimensions isEqual:?])
+  if (imageDimensions | *(equalCopy + 3) && ![(CPLCloudKitResourceInfoImageDimensions *)imageDimensions isEqual:?])
   {
     goto LABEL_13;
   }
 
   fileUTI = self->_fileUTI;
-  if (fileUTI | *(v4 + 2))
+  if (fileUTI | *(equalCopy + 2))
   {
     if (![(NSString *)fileUTI isEqual:?])
     {
@@ -177,7 +177,7 @@ LABEL_13:
   }
 
   stableHash = self->_stableHash;
-  if (stableHash | *(v4 + 4))
+  if (stableHash | *(equalCopy + 4))
   {
     v9 = [(NSString *)stableHash isEqual:?];
   }
@@ -209,13 +209,13 @@ LABEL_14:
   return v4 ^ v5 ^ [(NSString *)self->_stableHash hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[5])
   {
-    self->_fileSize = v4[1];
+    self->_fileSize = fromCopy[1];
     *&self->_has |= 1u;
   }
 

@@ -1,47 +1,47 @@
 @interface WFContextualActionRunRequest
-- (WFContextualActionRunRequest)initWithAction:(id)a3 actionContext:(id)a4;
-- (WFContextualActionRunRequest)initWithCoder:(id)a3;
+- (WFContextualActionRunRequest)initWithAction:(id)action actionContext:(id)context;
+- (WFContextualActionRunRequest)initWithCoder:(id)coder;
 - (id)queueIdentifier;
-- (void)encodeWithCoder:(id)a3;
-- (void)getInputWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)getInputWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFContextualActionRunRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFContextualActionRunRequest;
-  v4 = a3;
-  [(WFWorkflowRunRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFWorkflowRunRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [(WFContextualActionRunRequest *)self actionContext:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"actionContext"];
+  [coderCopy encodeObject:v5 forKey:@"actionContext"];
 
-  v6 = [(WFContextualActionRunRequest *)self action];
-  [v4 encodeObject:v6 forKey:@"action"];
+  action = [(WFContextualActionRunRequest *)self action];
+  [coderCopy encodeObject:action forKey:@"action"];
 }
 
-- (WFContextualActionRunRequest)initWithCoder:(id)a3
+- (WFContextualActionRunRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"actionContext"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"actionContext"];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
-  if (v6 && (v11.receiver = self, v11.super_class = WFContextualActionRunRequest, v8 = [(WFWorkflowRunRequest *)&v11 initWithCoder:v4], (self = v8) != 0))
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+  if (v6 && (v11.receiver = self, v11.super_class = WFContextualActionRunRequest, v8 = [(WFWorkflowRunRequest *)&v11 initWithCoder:coderCopy], (self = v8) != 0))
   {
     objc_storeStrong(&v8->_action, v7);
     objc_storeStrong(&self->_actionContext, v6);
     self = self;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)queueIdentifier
@@ -52,10 +52,10 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(WFContextualActionRunRequest *)self actionContext];
-  v5 = [v4 files];
+  actionContext = [(WFContextualActionRunRequest *)self actionContext];
+  files = [actionContext files];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [files countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -66,15 +66,15 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(files);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) fileURL];
-        v11 = [v10 absoluteString];
-        [v3 addObject:v11];
+        fileURL = [*(*(&v15 + 1) + 8 * i) fileURL];
+        absoluteString = [fileURL absoluteString];
+        [v3 addObject:absoluteString];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [files countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -86,29 +86,29 @@
   return v12;
 }
 
-- (void)getInputWithCompletionHandler:(id)a3
+- (void)getInputWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WFContextualActionRunRequest *)self input];
+  handlerCopy = handler;
+  input = [(WFContextualActionRunRequest *)self input];
 
-  if (v5)
+  if (input)
   {
-    v6 = [(WFContextualActionRunRequest *)self input];
-    v4[2](v4, v6, 0);
+    input2 = [(WFContextualActionRunRequest *)self input];
+    handlerCopy[2](handlerCopy, input2, 0);
   }
 
   else
   {
-    v7 = [(WFContextualActionRunRequest *)self action];
+    action = [(WFContextualActionRunRequest *)self action];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __62__WFContextualActionRunRequest_getInputWithCompletionHandler___block_invoke;
     v8[3] = &unk_1E7B00638;
     v8[4] = self;
-    v9 = v7;
-    v10 = v4;
-    v6 = v7;
-    [v6 getInputWithCompletionHandler:v8];
+    v9 = action;
+    v10 = handlerCopy;
+    input2 = action;
+    [input2 getInputWithCompletionHandler:v8];
   }
 }
 
@@ -320,17 +320,17 @@ LABEL_37:
   v40 = *MEMORY[0x1E69E9840];
 }
 
-- (WFContextualActionRunRequest)initWithAction:(id)a3 actionContext:(id)a4
+- (WFContextualActionRunRequest)initWithAction:(id)action actionContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  actionCopy = action;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFContextualActionRunRequest.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"actionContext"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContextualActionRunRequest.m" lineNumber:67 description:{@"Invalid parameter not satisfying: %@", @"actionContext"}];
   }
 
-  if ([v8 showsUserInterfaceWhenRunning])
+  if ([actionCopy showsUserInterfaceWhenRunning])
   {
     v10 = 0;
   }
@@ -340,7 +340,7 @@ LABEL_37:
     v10 = 3;
   }
 
-  if ([v9 surface] == 5 || objc_msgSend(v9, "surface") == 16 || objc_msgSend(v9, "surface") == 18)
+  if ([contextCopy surface] == 5 || objc_msgSend(contextCopy, "surface") == 16 || objc_msgSend(contextCopy, "surface") == 18)
   {
     v10 = 1;
   }
@@ -351,20 +351,20 @@ LABEL_37:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_action, a3);
-    objc_storeStrong(&v12->_actionContext, a4);
-    v13 = [v9 surface];
-    if (v13 > 0x12)
+    objc_storeStrong(&v11->_action, action);
+    objc_storeStrong(&v12->_actionContext, context);
+    surface = [contextCopy surface];
+    if (surface > 0x12)
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = *off_1E7B00670[v13];
+      v14 = *off_1E7B00670[surface];
     }
 
-    v15 = [v9 surface] == 5 || objc_msgSend(v9, "surface") == 6 || objc_msgSend(v9, "surface") == 16 || objc_msgSend(v9, "surface") == 10 || objc_msgSend(v9, "surface") == 11 || objc_msgSend(v9, "surface") == 15 || objc_msgSend(v9, "surface") == 12 || objc_msgSend(v9, "surface") == 13 || objc_msgSend(v9, "surface") == 18;
+    v15 = [contextCopy surface] == 5 || objc_msgSend(contextCopy, "surface") == 6 || objc_msgSend(contextCopy, "surface") == 16 || objc_msgSend(contextCopy, "surface") == 10 || objc_msgSend(contextCopy, "surface") == 11 || objc_msgSend(contextCopy, "surface") == 15 || objc_msgSend(contextCopy, "surface") == 12 || objc_msgSend(contextCopy, "surface") == 13 || objc_msgSend(contextCopy, "surface") == 18;
     [(WFWorkflowRunRequest *)v12 setRunSource:v14];
     [(WFWorkflowRunRequest *)v12 setAllowsDialogNotifications:v15];
     [(WFWorkflowRunRequest *)v12 setOutputBehavior:2];

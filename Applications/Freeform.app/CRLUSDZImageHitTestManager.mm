@@ -1,38 +1,38 @@
 @interface CRLUSDZImageHitTestManager
-+ (CGRect)p_visibleBoundsInContext:(CGContext *)a3 naturalRect:(CGRect)a4 canvasViewScale:(double)a5;
-+ (CGRect)p_visibleBoundsInContext:(CGContext *)a3 withImageProvider:(id)a4 canvasViewScale:(double)a5;
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
++ (CGRect)p_visibleBoundsInContext:(CGContext *)context naturalRect:(CGRect)rect canvasViewScale:(double)scale;
++ (CGRect)p_visibleBoundsInContext:(CGContext *)context withImageProvider:(id)provider canvasViewScale:(double)scale;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
 - (CGRect)naturalBounds;
 - (CGRect)visibleBounds;
 - (CGRect)visibleContentRect;
-- (CRLUSDZImageHitTestManager)initWith:(id)a3 naturalBounds:(CGRect)a4 canvasViewScale:(double)a5;
+- (CRLUSDZImageHitTestManager)initWith:(id)with naturalBounds:(CGRect)bounds canvasViewScale:(double)scale;
 - (void)dealloc;
-- (void)setNaturalBounds:(CGRect)a3;
+- (void)setNaturalBounds:(CGRect)bounds;
 @end
 
 @implementation CRLUSDZImageHitTestManager
 
-- (CRLUSDZImageHitTestManager)initWith:(id)a3 naturalBounds:(CGRect)a4 canvasViewScale:(double)a5
+- (CRLUSDZImageHitTestManager)initWith:(id)with naturalBounds:(CGRect)bounds canvasViewScale:(double)scale
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  withCopy = with;
   v34.receiver = self;
   v34.super_class = CRLUSDZImageHitTestManager;
   v13 = [(CRLUSDZImageHitTestManager *)&v34 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_imageAsset, a3);
+    objc_storeStrong(&v13->_imageAsset, with);
     v14->_naturalBounds.origin.y = y;
     v14->_naturalBounds.size.width = width;
     v14->_naturalBounds.size.height = height;
-    v14->_canvasViewScale = a5;
+    v14->_canvasViewScale = scale;
     v14->_naturalBounds.origin.x = x;
     v15 = +[CRLImageProviderPool sharedPool];
-    v16 = [v15 temporaryProviderForAsset:v12 shouldValidate:1];
+    v16 = [v15 temporaryProviderForAsset:withCopy shouldValidate:1];
 
     if (v16 && ([v16 isError] & 1) == 0)
     {
@@ -43,7 +43,7 @@
       v14->_imageNaturalRect.size.height = v32;
       v14->_ctx = sub_10050DF80(2, v31, v32);
       p_imageVisibleRect = &v14->_imageVisibleRect;
-      [objc_opt_class() p_visibleBoundsInContext:v14->_ctx withImageProvider:v16 canvasViewScale:a5];
+      [objc_opt_class() p_visibleBoundsInContext:v14->_ctx withImageProvider:v16 canvasViewScale:scale];
       v26 = 1;
       v27 = 64;
       v28 = 56;
@@ -89,15 +89,15 @@
   [(CRLUSDZImageHitTestManager *)&v4 dealloc];
 }
 
-- (void)setNaturalBounds:(CGRect)a3
+- (void)setNaturalBounds:(CGRect)bounds
 {
-  self->_naturalBounds = a3;
+  self->_naturalBounds = bounds;
   __asm { FMOV            V1.2D, #1.0 }
 
-  if (a3.size.width != 0.0 && a3.size.height != 0.0)
+  if (bounds.size.width != 0.0 && bounds.size.height != 0.0)
   {
-    v9.f64[0] = a3.size.width;
-    v9.f64[1] = a3.size.height;
+    v9.f64[0] = bounds.size.width;
+    v9.f64[1] = bounds.size.height;
     _Q1 = vdivq_f64(v9, self->_imageNaturalRect.size);
   }
 
@@ -114,13 +114,13 @@
   self->_visibleContentRect.size.height = v15;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  precisionCopy = precision;
+  y = point.y;
+  x = point.x;
   ctx = self->_ctx;
-  v9 = CGRectContainsPoint(self->_visibleBounds, a3);
+  v9 = CGRectContainsPoint(self->_visibleBounds, point);
   result = ctx == 0 && v9;
   if (ctx && v9)
   {
@@ -154,7 +154,7 @@
     }
 
     v20 = &unk_101466738;
-    if (!v4)
+    if (!precisionCopy)
     {
       v20 = &unk_101466730;
     }
@@ -212,21 +212,21 @@
   return result;
 }
 
-+ (CGRect)p_visibleBoundsInContext:(CGContext *)a3 withImageProvider:(id)a4 canvasViewScale:(double)a5
++ (CGRect)p_visibleBoundsInContext:(CGContext *)context withImageProvider:(id)provider canvasViewScale:(double)scale
 {
-  v8 = a4;
-  CGContextSaveGState(a3);
-  CGContextSetInterpolationQuality(a3, kCGInterpolationNone);
-  [v8 naturalSize];
+  providerCopy = provider;
+  CGContextSaveGState(context);
+  CGContextSetInterpolationQuality(context, kCGInterpolationNone);
+  [providerCopy naturalSize];
   v9 = sub_10011ECB4();
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v8 drawImageInContext:a3 rect:?];
+  [providerCopy drawImageInContext:context rect:?];
 
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 
-  [a1 p_visibleBoundsInContext:a3 naturalRect:v9 canvasViewScale:{v11, v13, v15, a5}];
+  [self p_visibleBoundsInContext:context naturalRect:v9 canvasViewScale:{v11, v13, v15, scale}];
   result.size.height = v19;
   result.size.width = v18;
   result.origin.y = v17;
@@ -234,12 +234,12 @@
   return result;
 }
 
-+ (CGRect)p_visibleBoundsInContext:(CGContext *)a3 naturalRect:(CGRect)a4 canvasViewScale:(double)a5
++ (CGRect)p_visibleBoundsInContext:(CGContext *)context naturalRect:(CGRect)rect canvasViewScale:(double)scale
 {
-  Data = CGBitmapContextGetData(a3);
-  Width = CGBitmapContextGetWidth(a3);
-  Height = CGBitmapContextGetHeight(a3);
-  BytesPerRow = CGBitmapContextGetBytesPerRow(a3);
+  Data = CGBitmapContextGetData(context);
+  Width = CGBitmapContextGetWidth(context);
+  Height = CGBitmapContextGetHeight(context);
+  BytesPerRow = CGBitmapContextGetBytesPerRow(context);
   if (Height)
   {
     v13 = Height;
@@ -394,7 +394,7 @@ LABEL_46:
     v37.origin.x = v33 + v28;
     v37.origin.y = v34 + (Height - v13);
     v37.size.height = (v13 - v18);
-    *&v33 = CGRectInset(v37, a5 * -25.0, a5 * -25.0);
+    *&v33 = CGRectInset(v37, scale * -25.0, scale * -25.0);
   }
 
   result.size.height = v36;

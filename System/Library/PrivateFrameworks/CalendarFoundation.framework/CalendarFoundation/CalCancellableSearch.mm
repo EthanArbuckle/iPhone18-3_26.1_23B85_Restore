@@ -1,20 +1,20 @@
 @interface CalCancellableSearch
-- (CalCancellableSearch)initWithCancellationBlock:(id)a3;
+- (CalCancellableSearch)initWithCancellationBlock:(id)block;
 - (void)cancel;
 @end
 
 @implementation CalCancellableSearch
 
-- (CalCancellableSearch)initWithCancellationBlock:(id)a3
+- (CalCancellableSearch)initWithCancellationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = CalCancellableSearch;
   v5 = [(CalCancellableSearch *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CalCancellableSearch *)v5 setCancellationBlock:v4];
+    [(CalCancellableSearch *)v5 setCancellationBlock:blockCopy];
   }
 
   return v6;
@@ -22,12 +22,12 @@
 
 - (void)cancel
 {
-  v3 = [(CalCancellableSearch *)self cancellationBlock];
+  cancellationBlock = [(CalCancellableSearch *)self cancellationBlock];
 
-  if (v3)
+  if (cancellationBlock)
   {
-    v4 = [(CalCancellableSearch *)self cancellationBlock];
-    v4[2]();
+    cancellationBlock2 = [(CalCancellableSearch *)self cancellationBlock];
+    cancellationBlock2[2]();
   }
 }
 

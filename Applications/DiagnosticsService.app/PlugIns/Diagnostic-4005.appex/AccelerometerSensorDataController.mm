@@ -1,6 +1,6 @@
 @interface AccelerometerSensorDataController
 - (void)finish;
-- (void)handleHIDEvent:(__IOHIDEvent *)a3;
+- (void)handleHIDEvent:(__IOHIDEvent *)event;
 - (void)start;
 - (void)teardown;
 @end
@@ -13,14 +13,14 @@
   v3 = +[DAHIDEventMonitor sharedInstance];
   [(AccelerometerSensorDataController *)self setEventMonitor:v3];
 
-  v4 = [(AccelerometerSensorDataController *)self eventMonitor];
-  [v4 setDelegate:self];
+  eventMonitor = [(AccelerometerSensorDataController *)self eventMonitor];
+  [eventMonitor setDelegate:self];
 
   if (([(AccelerometerSensorDataController *)self isCancelled]& 1) == 0)
   {
-    v5 = [(AccelerometerSensorDataController *)self eventMonitor];
+    eventMonitor2 = [(AccelerometerSensorDataController *)self eventMonitor];
     v6 = [NSSet setWithObject:&off_1000044D0];
-    v7 = [v5 startMonitoringWithHIDEvents:v6];
+    v7 = [eventMonitor2 startMonitoringWithHIDEvents:v6];
 
     if (v7 && (-[AccelerometerSensorDataController eventMonitor](self, "eventMonitor"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 serviceClientSetPropertyValue:+[NSNumber numberWithInt:](NSNumber forKey:"numberWithInt:" forHIDEvent:{10000), @"ReportInterval", 0}], v8, v9))
     {
@@ -35,15 +35,15 @@
 
     else
     {
-      v11 = [(AccelerometerSensorDataController *)self result];
-      [v11 setStatusCode:&off_1000044E8];
+      result = [(AccelerometerSensorDataController *)self result];
+      [result setStatusCode:&off_1000044E8];
 
       [(AccelerometerSensorDataController *)self setFinished:1];
     }
   }
 }
 
-- (void)handleHIDEvent:(__IOHIDEvent *)a3
+- (void)handleHIDEvent:(__IOHIDEvent *)event
 {
   if (([(AccelerometerSensorDataController *)self isCancelled]& 1) == 0 && IOHIDEventGetType() == 13)
   {
@@ -61,10 +61,10 @@
   if (([(AccelerometerSensorDataController *)self isCancelled]& 1) == 0)
   {
     [(AccelerometerSensorDataController *)self teardown];
-    v3 = [(AccelerometerSensorDataController *)self accelerometerDataCount];
+    accelerometerDataCount = [(AccelerometerSensorDataController *)self accelerometerDataCount];
     v4 = DiagnosticLogHandleForCategory();
     v5 = v4;
-    if (v3 < 1)
+    if (accelerometerDataCount < 1)
     {
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
       {
@@ -86,8 +86,8 @@
       v6 = &off_100004500;
     }
 
-    v7 = [(AccelerometerSensorDataController *)self result];
-    [v7 setStatusCode:v6];
+    result = [(AccelerometerSensorDataController *)self result];
+    [result setStatusCode:v6];
   }
 
   [(AccelerometerSensorDataController *)self setFinished:1];
@@ -95,17 +95,17 @@
 
 - (void)teardown
 {
-  v3 = [(AccelerometerSensorDataController *)self eventMonitor];
+  eventMonitor = [(AccelerometerSensorDataController *)self eventMonitor];
 
-  if (v3)
+  if (eventMonitor)
   {
-    v4 = [(AccelerometerSensorDataController *)self eventMonitor];
-    v5 = [v4 currentlyMonitoring];
+    eventMonitor2 = [(AccelerometerSensorDataController *)self eventMonitor];
+    currentlyMonitoring = [eventMonitor2 currentlyMonitoring];
 
-    if (v5)
+    if (currentlyMonitoring)
     {
-      v6 = [(AccelerometerSensorDataController *)self eventMonitor];
-      [v6 stopMonitoring];
+      eventMonitor3 = [(AccelerometerSensorDataController *)self eventMonitor];
+      [eventMonitor3 stopMonitoring];
     }
 
     [(AccelerometerSensorDataController *)self setEventMonitor:0];

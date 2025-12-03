@@ -1,17 +1,17 @@
 @interface HDMedicalIDSetupStatusTaskServer
-+ (BOOL)validateClient:(id)a3 error:(id *)a4;
-- (void)remote_medicalIDSetUpStatusWithCompletion:(id)a3;
++ (BOOL)validateClient:(id)client error:(id *)error;
+- (void)remote_medicalIDSetUpStatusWithCompletion:(id)completion;
 @end
 
 @implementation HDMedicalIDSetupStatusTaskServer
 
-+ (BOOL)validateClient:(id)a3 error:(id *)a4
++ (BOOL)validateClient:(id)client error:(id *)error
 {
-  v5 = a3;
+  clientCopy = client;
   v6 = *MEMORY[0x277CCC368];
-  if ([v5 hasRequiredEntitlement:*MEMORY[0x277CCC368] error:a4])
+  if ([clientCopy hasRequiredEntitlement:*MEMORY[0x277CCC368] error:error])
   {
-    v7 = [v5 valueForEntitlement:v6];
+    v7 = [clientCopy valueForEntitlement:v6];
     objc_opt_class();
     v8 = objc_opt_isKindOfClass() ^ 1;
   }
@@ -21,37 +21,37 @@
     LOBYTE(v8) = 0;
   }
 
-  v9 = [v5 hasRequiredArrayEntitlement:v6 containing:*MEMORY[0x277CCBD48] error:a4] | v8;
+  v9 = [clientCopy hasRequiredArrayEntitlement:v6 containing:*MEMORY[0x277CCBD48] error:error] | v8;
 
   return v9 & 1;
 }
 
-- (void)remote_medicalIDSetUpStatusWithCompletion:(id)a3
+- (void)remote_medicalIDSetUpStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (self)
   {
-    v5 = [(HDStandardTaskServer *)self profile];
-    v6 = [v5 medicalIDDataManager];
+    profile = [(HDStandardTaskServer *)self profile];
+    medicalIDDataManager = [profile medicalIDDataManager];
 
-    if (v6)
+    if (medicalIDDataManager)
     {
-      v7 = [(HDStandardTaskServer *)self profile];
-      self = [v7 medicalIDDataManager];
+      profile2 = [(HDStandardTaskServer *)self profile];
+      self = [profile2 medicalIDDataManager];
       v8 = 0;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
-      v8 = v9;
-      if (v9)
+      hk_featureUnavailableForProfileError = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
+      v8 = hk_featureUnavailableForProfileError;
+      if (hk_featureUnavailableForProfileError)
       {
-        v10 = v9;
+        v10 = hk_featureUnavailableForProfileError;
       }
 
       self = 0;
-      v7 = v8;
+      profile2 = v8;
     }
   }
 
@@ -76,7 +76,7 @@
     v13 = 0;
   }
 
-  v4[2](v4, v13);
+  completionCopy[2](completionCopy, v13);
 }
 
 @end

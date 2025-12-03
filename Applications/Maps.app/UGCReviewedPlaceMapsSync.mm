@@ -1,17 +1,17 @@
 @interface UGCReviewedPlaceMapsSync
 + (UGCReviewedPlaceMapsSync)sharedInstance;
 - (UGCReviewedPlaceMapsSync)init;
-- (id)_fetchMSReviewedPlaceWithMuids:(id)a3 error:(id)a4;
-- (void)_buildMapsSyncReviewedPlace:(id)a3 communityID:(id)a4 completion:(id)a5;
-- (void)_dispatchToWorkQueueWithCompletion:(id)a3;
-- (void)_usingOfflineMapsDidChange:(id)a3;
-- (void)addOrEditReviewedPlace:(id)a3 completion:(id)a4;
+- (id)_fetchMSReviewedPlaceWithMuids:(id)muids error:(id)error;
+- (void)_buildMapsSyncReviewedPlace:(id)place communityID:(id)d completion:(id)completion;
+- (void)_dispatchToWorkQueueWithCompletion:(id)completion;
+- (void)_usingOfflineMapsDidChange:(id)change;
+- (void)addOrEditReviewedPlace:(id)place completion:(id)completion;
 - (void)clearAllUserData;
-- (void)fetchAllHistoryObjectsFromStorageWithCompletion:(id)a3;
-- (void)fetchReviewedPlaceForMUID:(unint64_t)a3 muidHistory:(id)a4 completion:(id)a5;
-- (void)registerObserver:(id)a3;
-- (void)removeReviewedPlaceWithMUID:(unint64_t)a3 completion:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)fetchAllHistoryObjectsFromStorageWithCompletion:(id)completion;
+- (void)fetchReviewedPlaceForMUID:(unint64_t)d muidHistory:(id)history completion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)removeReviewedPlaceWithMUID:(unint64_t)d completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation UGCReviewedPlaceMapsSync
@@ -33,9 +33,9 @@
   [v9 fetchWithOptions:v8 completionHandler:&stru_101632B10];
 }
 
-- (void)_dispatchToWorkQueueWithCompletion:(id)a3
+- (void)_dispatchToWorkQueueWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (qword_10195E320 != -1)
   {
     dispatch_once(&qword_10195E320, &stru_101632AF0);
@@ -46,18 +46,18 @@
   block[1] = 3221225472;
   block[2] = sub_100A619B8;
   block[3] = &unk_101661760;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
-- (void)_buildMapsSyncReviewedPlace:(id)a3 communityID:(id)a4 completion:(id)a5
+- (void)_buildMapsSyncReviewedPlace:(id)place communityID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  placeCopy = place;
+  dCopy = d;
+  completionCopy = completion;
   v11 = objc_alloc_init(NSMutableArray);
-  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 muid]);
+  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [placeCopy muid]);
   v32 = v12;
   v13 = [NSArray arrayWithObjects:&v32 count:1];
   v14 = [(UGCReviewedPlaceMapsSync *)self _fetchMSReviewedPlaceWithMuids:v13 error:0];
@@ -69,9 +69,9 @@
     if (v16)
     {
       *buf = 138412546;
-      v29 = v8;
+      v29 = placeCopy;
       v30 = 2048;
-      v31 = [v8 muid];
+      muid = [placeCopy muid];
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "We found a synced reviewed place %@ with muid %llu", buf, 0x16u);
     }
   }
@@ -90,14 +90,14 @@
     [v11 addObject:v15];
   }
 
-  [v14 setMuid:{objc_msgSend(v8, "muid")}];
+  [v14 setMuid:{objc_msgSend(placeCopy, "muid")}];
   [v14 setHasUserReviewed:1];
-  v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 recommendState]);
+  v17 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [placeCopy recommendState]);
   [v14 setRating:v17];
 
-  [v14 setUploadedPhotosCount:{objc_msgSend(v8, "numberOfPhotosAdded")}];
-  [v14 setVersion:{objc_msgSend(v8, "version")}];
-  v18 = [[GEOMapItemIdentifier alloc] initWithMUID:objc_msgSend(v8 resultProviderID:"muid") coordinate:{0, -180.0, -180.0}];
+  [v14 setUploadedPhotosCount:{objc_msgSend(placeCopy, "numberOfPhotosAdded")}];
+  [v14 setVersion:{objc_msgSend(placeCopy, "version")}];
+  v18 = [[GEOMapItemIdentifier alloc] initWithMUID:objc_msgSend(placeCopy resultProviderID:"muid") coordinate:{0, -180.0, -180.0}];
   [v14 setMuid:{objc_msgSend(v18, "muid")}];
   v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v18 resultProviderID]);
   [v14 setResultProviderIdentifier:v19];
@@ -110,18 +110,18 @@
   v22 = [NSNumber numberWithDouble:v21];
   [v14 setLongitude:v22];
 
-  v23 = [v18 comparableRepresentation];
-  [v14 setMapItemIdComparableRepresentation:v23];
+  comparableRepresentation = [v18 comparableRepresentation];
+  [v14 setMapItemIdComparableRepresentation:comparableRepresentation];
 
-  [v14 setCommunityID:v9];
+  [v14 setCommunityID:dCopy];
   if (v14)
   {
     [v11 addObject:v14];
   }
 
-  if (v9)
+  if (dCopy)
   {
-    [v11 addObject:v9];
+    [v11 addObject:dCopy];
   }
 
   v24 = +[_TtC8MapsSync13MapsSyncStore sharedStore];
@@ -129,42 +129,42 @@
   v26[1] = 3221225472;
   v26[2] = sub_100A61E30;
   v26[3] = &unk_1016610B8;
-  v27 = v10;
-  v25 = v10;
+  v27 = completionCopy;
+  v25 = completionCopy;
   [v24 saveWithObjects:v11 completionHandler:v26];
 }
 
-- (void)addOrEditReviewedPlace:(id)a3 completion:(id)a4
+- (void)addOrEditReviewedPlace:(id)place completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 communityIdentifier];
+  placeCopy = place;
+  completionCopy = completion;
+  [placeCopy communityIdentifier];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100A6203C;
   v12 = v11[3] = &unk_101660380;
-  v13 = self;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  selfCopy = self;
+  v14 = placeCopy;
+  v15 = completionCopy;
+  v8 = completionCopy;
+  v9 = placeCopy;
   v10 = v12;
   [(UGCReviewedPlaceMapsSync *)self _dispatchToWorkQueueWithCompletion:v11];
 }
 
-- (void)removeReviewedPlaceWithMUID:(unint64_t)a3 completion:(id)a4
+- (void)removeReviewedPlaceWithMUID:(unint64_t)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 && v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (d && completionCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100A623A8;
     v8[3] = &unk_1016589F8;
     v8[4] = self;
-    v10 = a3;
-    v9 = v6;
+    dCopy = d;
+    v9 = completionCopy;
     [(UGCReviewedPlaceMapsSync *)self _dispatchToWorkQueueWithCompletion:v8];
   }
 
@@ -175,9 +175,9 @@
   }
 }
 
-- (void)fetchAllHistoryObjectsFromStorageWithCompletion:(id)a3
+- (void)fetchAllHistoryObjectsFromStorageWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -190,18 +190,18 @@
   v6[2] = sub_100A628A4;
   v6[3] = &unk_101638908;
   v8 = v9;
-  v5 = v3;
+  v5 = completionCopy;
   v7 = v5;
   [v4 fetchWithCompletionHandler:v6];
 
   _Block_object_dispose(v9, 8);
 }
 
-- (id)_fetchMSReviewedPlaceWithMuids:(id)a3 error:(id)a4
+- (id)_fetchMSReviewedPlaceWithMuids:(id)muids error:(id)error
 {
-  v4 = a3;
+  muidsCopy = muids;
   v5 = [[_TtC8MapsSync13MapsSyncRange alloc] initWithOffset:0 limit:1];
-  v15 = v4;
+  v15 = muidsCopy;
   v6 = [NSArray arrayWithObjects:&v15 count:1];
   v7 = [_TtC8MapsSync22MapsSyncQueryPredicate queryPredicateWithFormat:@"muid IN %@" argumentArray:v6];
 
@@ -210,28 +210,28 @@
   v14 = 0;
   v10 = [v9 fetchSyncWithOptions:v8 error:&v14];
   v11 = v14;
-  v12 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
   if (v11)
   {
     NSLog(@"%@", v11);
   }
 
-  return v12;
+  return firstObject;
 }
 
-- (void)fetchReviewedPlaceForMUID:(unint64_t)a3 muidHistory:(id)a4 completion:(id)a5
+- (void)fetchReviewedPlaceForMUID:(unint64_t)d muidHistory:(id)history completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 && v9)
+  historyCopy = history;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (d && completionCopy)
   {
     v11 = objc_alloc_init(NSMutableArray);
-    v12 = [NSNumber numberWithUnsignedLongLong:a3];
+    v12 = [NSNumber numberWithUnsignedLongLong:d];
     [v11 addObject:v12];
 
-    [v11 addObjectsFromArray:v8];
+    [v11 addObjectsFromArray:historyCopy];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100A62C1C;
@@ -239,7 +239,7 @@
     v14[4] = self;
     v15 = v11;
     v16 = v10;
-    v17 = a3;
+    dCopy = d;
     v13 = v11;
     [(UGCReviewedPlaceMapsSync *)self _dispatchToWorkQueueWithCompletion:v14];
   }
@@ -251,21 +251,21 @@
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(UGCReviewedPlaceMapsSync *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(UGCReviewedPlaceMapsSync *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(UGCReviewedPlaceMapsSync *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(UGCReviewedPlaceMapsSync *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)_usingOfflineMapsDidChange:(id)a3
+- (void)_usingOfflineMapsDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

@@ -1,11 +1,11 @@
 @interface CKBusinessChatController
 - (BOOL)canShowBusinessOnboarding;
 - (int64_t)preferredStatusBarStyle;
-- (void)_handleAddressBookChangedNotification:(id)a3;
+- (void)_handleAddressBookChangedNotification:(id)notification;
 - (void)_updateNavigationUI;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CKBusinessChatController
@@ -18,11 +18,11 @@
   [(CKBusinessChatController *)self setupBizNavBarIfNecessary];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CKBusinessChatController;
-  [(CKChatController *)&v4 viewWillDisappear:a3];
+  [(CKChatController *)&v4 viewWillDisappear:disappear];
   [(CKBusinessChatController *)self cleanUpBizNavBarIfNecessary];
 }
 
@@ -41,11 +41,11 @@
   return [(CKChatController *)&v3 preferredStatusBarStyle];
 }
 
-- (void)_handleAddressBookChangedNotification:(id)a3
+- (void)_handleAddressBookChangedNotification:(id)notification
 {
   v4.receiver = self;
   v4.super_class = CKBusinessChatController;
-  [(CKChatController *)&v4 _handleAddressBookChangedNotification:a3];
+  [(CKChatController *)&v4 _handleAddressBookChangedNotification:notification];
   [(CKBusinessChatController *)self setupBizNavBarIfNecessary];
 }
 
@@ -59,10 +59,10 @@
 
 - (BOOL)canShowBusinessOnboarding
 {
-  v2 = [(CKCoreChatController *)self conversation];
-  v3 = [v2 isMapKitBusinessConversation];
+  conversation = [(CKCoreChatController *)self conversation];
+  isMapKitBusinessConversation = [conversation isMapKitBusinessConversation];
 
-  return v3;
+  return isMapKitBusinessConversation;
 }
 
 @end

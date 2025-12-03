@@ -1,16 +1,16 @@
 @interface HKTitledLogoBuddyHeaderView
-- (HKTitledLogoBuddyHeaderView)initWithTopInset:(double)a3 linkButtonTitle:(id)a4;
+- (HKTitledLogoBuddyHeaderView)initWithTopInset:(double)inset linkButtonTitle:(id)title;
 - (void)_updateForCurrentSizeCategory;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKTitledLogoBuddyHeaderView
 
-- (HKTitledLogoBuddyHeaderView)initWithTopInset:(double)a3 linkButtonTitle:(id)a4
+- (HKTitledLogoBuddyHeaderView)initWithTopInset:(double)inset linkButtonTitle:(id)title
 {
   v19.receiver = self;
   v19.super_class = HKTitledLogoBuddyHeaderView;
-  v4 = [(HKTitledBuddyHeaderView *)&v19 initWithTopInset:a4 linkButtonTitle:a3];
+  v4 = [(HKTitledBuddyHeaderView *)&v19 initWithTopInset:title linkButtonTitle:inset];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -19,23 +19,23 @@
 
     [(UIImageView *)v4->_logoImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HKTitledLogoBuddyHeaderView *)v4 addSubview:v4->_logoImageView];
-    v7 = [(UIImageView *)v4->_logoImageView centerXAnchor];
-    v8 = [(HKTitledLogoBuddyHeaderView *)v4 centerXAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    centerXAnchor = [(UIImageView *)v4->_logoImageView centerXAnchor];
+    centerXAnchor2 = [(HKTitledLogoBuddyHeaderView *)v4 centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v9 setActive:1];
 
-    v10 = [(HKTitledBuddyHeaderView *)v4 titleLabel];
-    v11 = [v10 firstBaselineAnchor];
-    v12 = [(UIImageView *)v4->_logoImageView bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:0.0];
+    titleLabel = [(HKTitledBuddyHeaderView *)v4 titleLabel];
+    firstBaselineAnchor = [titleLabel firstBaselineAnchor];
+    bottomAnchor = [(UIImageView *)v4->_logoImageView bottomAnchor];
+    v13 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:0.0];
     titleLabelFirstBaselineAnchor = v4->_titleLabelFirstBaselineAnchor;
     v4->_titleLabelFirstBaselineAnchor = v13;
 
     [(NSLayoutConstraint *)v4->_titleLabelFirstBaselineAnchor setActive:1];
     [(HKTitledLogoBuddyHeaderView *)v4 _updateForCurrentSizeCategory];
-    v15 = [(UIImageView *)v4->_logoImageView topAnchor];
-    v16 = [(HKTitledLogoBuddyHeaderView *)v4 topAnchor];
-    v17 = [v15 constraintGreaterThanOrEqualToAnchor:v16];
+    topAnchor = [(UIImageView *)v4->_logoImageView topAnchor];
+    topAnchor2 = [(HKTitledLogoBuddyHeaderView *)v4 topAnchor];
+    v17 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     [v17 setActive:1];
   }
 
@@ -52,22 +52,22 @@
   [(NSLayoutConstraint *)self->_titleLabelFirstBaselineAnchor setConstant:?];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  if (v4)
+  changeCopy = change;
+  if (changeCopy)
   {
-    v9 = v4;
-    v5 = [(HKTitledLogoBuddyHeaderView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v9 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    v9 = changeCopy;
+    traitCollection = [(HKTitledLogoBuddyHeaderView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [v9 preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
-    v4 = v9;
+    changeCopy = v9;
     if ((v8 & 1) == 0)
     {
       [(HKTitledLogoBuddyHeaderView *)self _updateForCurrentSizeCategory];
-      v4 = v9;
+      changeCopy = v9;
     }
   }
 }

@@ -12,15 +12,15 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  if ([a1 count])
+  if ([self count])
   {
-    v5 = [a1 objectAtIndexedSubscript:0];
+    v5 = [self objectAtIndexedSubscript:0];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -31,7 +31,7 @@
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -43,7 +43,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -62,7 +62,7 @@
 
 - (BOOL)hasObjectPassingTest:()Filtering
 {
-  v1 = [a1 firstObjectPassingTest:?];
+  v1 = [self firstObjectPassingTest:?];
   v2 = v1 != 0;
 
   return v2;
@@ -70,10 +70,10 @@
 
 - (id)firstObjectPassingTest:()Filtering
 {
-  v1 = [a1 objectsPassingTest:?];
-  v2 = [v1 firstObject];
+  v1 = [self objectsPassingTest:?];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (id)objectsPassingTest:()Filtering
@@ -87,7 +87,7 @@
   v11 = v4;
   v6 = v4;
   v7 = [v5 predicateWithBlock:v10];
-  v8 = [a1 filteredArrayUsingPredicate:v7];
+  v8 = [self filteredArrayUsingPredicate:v7];
 
   return v8;
 }
@@ -101,8 +101,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -113,7 +113,7 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v15 + 1) + 8 * i));
@@ -123,7 +123,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

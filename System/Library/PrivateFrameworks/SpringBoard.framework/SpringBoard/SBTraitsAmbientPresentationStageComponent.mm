@@ -1,19 +1,19 @@
 @interface SBTraitsAmbientPresentationStageComponent
 - (NSString)description;
-- (SBTraitsAmbientPresentationStageComponent)initWithComponentOrder:(id)a3;
+- (SBTraitsAmbientPresentationStageComponent)initWithComponentOrder:(id)order;
 @end
 
 @implementation SBTraitsAmbientPresentationStageComponent
 
-- (SBTraitsAmbientPresentationStageComponent)initWithComponentOrder:(id)a3
+- (SBTraitsAmbientPresentationStageComponent)initWithComponentOrder:(id)order
 {
-  v4 = a3;
+  orderCopy = order;
   v9.receiver = self;
   v9.super_class = SBTraitsAmbientPresentationStageComponent;
   v5 = [(SBTraitsAmbientPresentationStageComponent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [orderCopy copy];
     componentOrder = v5->_componentOrder;
     v5->_componentOrder = v6;
   }
@@ -29,8 +29,8 @@
   v4 = [(SBTraitsAmbientPresentationStageComponent *)&v8 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(NSNumber *)self->_componentOrder stringValue];
-  [v5 appendFormat:@" order: %@", v6];
+  stringValue = [(NSNumber *)self->_componentOrder stringValue];
+  [v5 appendFormat:@" order: %@", stringValue];
 
   return v5;
 }

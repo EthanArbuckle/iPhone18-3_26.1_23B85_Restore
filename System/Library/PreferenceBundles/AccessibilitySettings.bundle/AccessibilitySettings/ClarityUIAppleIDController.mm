@@ -1,20 +1,20 @@
 @interface ClarityUIAppleIDController
-- (ClarityUIAppleIDController)initWithAppleID:(id)a3 delegate:(id)a4 andCompletion:(id)a5;
+- (ClarityUIAppleIDController)initWithAppleID:(id)d delegate:(id)delegate andCompletion:(id)completion;
 - (ClarityUIOnboardingDismissalDelegate)delegate;
-- (void)_changeButtonTapped:(id)a3;
+- (void)_changeButtonTapped:(id)tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation ClarityUIAppleIDController
 
-- (ClarityUIAppleIDController)initWithAppleID:(id)a3 delegate:(id)a4 andCompletion:(id)a5
+- (ClarityUIAppleIDController)initWithAppleID:(id)d delegate:(id)delegate andCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 clarityUI_shortName];
-  v12 = [v8 appleID];
-  if ([v11 length])
+  dCopy = d;
+  delegateCopy = delegate;
+  completionCopy = completion;
+  clarityUI_shortName = [dCopy clarityUI_shortName];
+  appleID = [dCopy appleID];
+  if ([clarityUI_shortName length])
   {
     v13 = AXLocStringKeyForModel();
     v14 = settingsLocString(v13, @"ClarityUISettings");
@@ -28,7 +28,7 @@
   }
 
   v16 = settingsLocString(@"APPLE_ID_TEXT", @"ClarityUISettings");
-  v17 = [NSString localizedStringWithFormat:v16, v12];
+  v17 = [NSString localizedStringWithFormat:v16, appleID];
   v41.receiver = self;
   v41.super_class = ClarityUIAppleIDController;
   v18 = [(ClarityUIAppleIDController *)&v41 initWithTitle:v15 detailText:v17 icon:0];
@@ -36,10 +36,10 @@
   if (v18)
   {
     v35 = v15;
-    v36 = v12;
-    v37 = v9;
-    objc_storeWeak(&v18->_delegate, v9);
-    v19 = objc_retainBlock(v10);
+    v36 = appleID;
+    v37 = delegateCopy;
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    v19 = objc_retainBlock(completionCopy);
     completionHandler = v18->_completionHandler;
     v18->_completionHandler = v19;
 
@@ -48,8 +48,8 @@
     [v21 setTitle:v22 forState:0];
 
     [v21 addTarget:v18 action:"_nextButtonTapped:" forControlEvents:0x2000];
-    v23 = [(ClarityUIAppleIDController *)v18 buttonTray];
-    [v23 addButton:v21];
+    buttonTray = [(ClarityUIAppleIDController *)v18 buttonTray];
+    [buttonTray addButton:v21];
 
     objc_initWeak(&location, v18);
     v38[0] = _NSConcreteStackBlock;
@@ -63,8 +63,8 @@
     [v25 setTitle:v26 forState:0];
 
     [v25 addAction:v24 forControlEvents:0x2000];
-    v27 = [(ClarityUIAppleIDController *)v18 buttonTray];
-    [v27 addButton:v25];
+    buttonTray2 = [(ClarityUIAppleIDController *)v18 buttonTray];
+    [buttonTray2 addButton:v25];
 
     v28 = settingsLocString(@"APPLE_ID_TITLE_1", @"ClarityUISettings");
     v29 = settingsLocString(@"APPLE_ID_VALUE_1", @"ClarityUISettings");
@@ -79,9 +79,9 @@
     objc_destroyWeak(&v39);
     objc_destroyWeak(&location);
 
-    v9 = v37;
+    delegateCopy = v37;
     v15 = v35;
-    v12 = v36;
+    appleID = v36;
   }
 
   return v18;
@@ -110,14 +110,14 @@ void __69__ClarityUIAppleIDController_initWithAppleID_delegate_andCompletion___b
   v4 = settingsLocString(@"CANCEL", @"ClarityUISettings");
   v5 = [v3 initWithTitle:v4 style:2 target:self action:"_cancelButtonTapped:"];
 
-  v6 = [(ClarityUIAppleIDController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  navigationItem = [(ClarityUIAppleIDController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
-- (void)_changeButtonTapped:(id)a3
+- (void)_changeButtonTapped:(id)tapped
 {
-  v3 = [(ClarityUIAppleIDController *)self delegate];
-  [v3 dimissOnboardingControllerEarlyWithCompletion:&__block_literal_global_36];
+  delegate = [(ClarityUIAppleIDController *)self delegate];
+  [delegate dimissOnboardingControllerEarlyWithCompletion:&__block_literal_global_36];
 }
 
 void __50__ClarityUIAppleIDController__changeButtonTapped___block_invoke(id a1)

@@ -1,20 +1,20 @@
 @interface TSDAbstractLayout
 - (id)firstTarget;
 - (id)lastTarget;
-- (id)nextTargetFromLayout:(id)a3 column:(id)a4;
-- (id)previousTargetFromLayout:(id)a3 column:(id)a4;
+- (id)nextTargetFromLayout:(id)layout column:(id)column;
+- (id)previousTargetFromLayout:(id)layout column:(id)column;
 @end
 
 @implementation TSDAbstractLayout
 
-- (id)nextTargetFromLayout:(id)a3 column:(id)a4
+- (id)nextTargetFromLayout:(id)layout column:(id)column
 {
-  v5 = [-[TSDAbstractLayout navigableLayouts](self navigableLayouts];
-  if (!v5 || (result = [v5 firstTarget]) == 0)
+  navigableLayouts = [-[TSDAbstractLayout navigableLayouts](self navigableLayouts];
+  if (!navigableLayouts || (result = [navigableLayouts firstTarget]) == 0)
   {
-    v7 = [(TSDAbstractLayout *)self parent];
+    parent = [(TSDAbstractLayout *)self parent];
 
-    return [v7 nextTargetFromLayout:self column:0];
+    return [parent nextTargetFromLayout:self column:0];
   }
 
   return result;
@@ -27,14 +27,14 @@
   return [v2 firstTarget];
 }
 
-- (id)previousTargetFromLayout:(id)a3 column:(id)a4
+- (id)previousTargetFromLayout:(id)layout column:(id)column
 {
-  v5 = [-[TSDAbstractLayout navigableLayouts](self navigableLayouts];
-  if (!v5 || (result = [v5 lastTarget]) == 0)
+  navigableLayouts = [-[TSDAbstractLayout navigableLayouts](self navigableLayouts];
+  if (!navigableLayouts || (result = [navigableLayouts lastTarget]) == 0)
   {
-    v7 = [(TSDAbstractLayout *)self parent];
+    parent = [(TSDAbstractLayout *)self parent];
 
-    return [v7 previousTargetFromLayout:self column:0];
+    return [parent previousTargetFromLayout:self column:0];
   }
 
   return result;

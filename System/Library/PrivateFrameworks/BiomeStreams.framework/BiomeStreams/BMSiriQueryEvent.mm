@@ -1,38 +1,38 @@
 @interface BMSiriQueryEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSiriQueryEvent)initWithCoder:(id)a3;
-- (BMSiriQueryEvent)initWithProto:(id)a3;
-- (BMSiriQueryEvent)initWithProtoData:(id)a3;
-- (BMSiriQueryEvent)initWithUniqueId:(id)a3 personaId:(id)a4 absoluteTimestamp:(double)a5 query:(id)a6 results:(id)a7 contentProtection:(id)a8;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSiriQueryEvent)initWithCoder:(id)coder;
+- (BMSiriQueryEvent)initWithProto:(id)proto;
+- (BMSiriQueryEvent)initWithProtoData:(id)data;
+- (BMSiriQueryEvent)initWithUniqueId:(id)id personaId:(id)personaId absoluteTimestamp:(double)timestamp query:(id)query results:(id)results contentProtection:(id)protection;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMSiriQueryEvent
 
-- (BMSiriQueryEvent)initWithUniqueId:(id)a3 personaId:(id)a4 absoluteTimestamp:(double)a5 query:(id)a6 results:(id)a7 contentProtection:(id)a8
+- (BMSiriQueryEvent)initWithUniqueId:(id)id personaId:(id)personaId absoluteTimestamp:(double)timestamp query:(id)query results:(id)results contentProtection:(id)protection
 {
-  v15 = a3;
-  v23 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v15)
+  idCopy = id;
+  personaIdCopy = personaId;
+  queryCopy = query;
+  resultsCopy = results;
+  protectionCopy = protection;
+  if (idCopy)
   {
-    if (v16)
+    if (queryCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [BMSiriQueryEvent initWithUniqueId:personaId:absoluteTimestamp:query:results:contentProtection:];
-    if (v17)
+    if (resultsCopy)
     {
       goto LABEL_4;
     }
@@ -41,13 +41,13 @@ LABEL_8:
   }
 
   [BMSiriQueryEvent initWithUniqueId:personaId:absoluteTimestamp:query:results:contentProtection:];
-  if (!v16)
+  if (!queryCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v17)
+  if (resultsCopy)
   {
     goto LABEL_4;
   }
@@ -61,23 +61,23 @@ LABEL_4:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_uniqueId, a3);
-    objc_storeStrong(&v20->_personaId, a4);
-    v20->_absoluteTimestamp = a5;
-    objc_storeStrong(&v20->_query, a6);
-    objc_storeStrong(&v20->_results, a7);
-    objc_storeStrong(&v20->_contentProtection, a8);
+    objc_storeStrong(&v19->_uniqueId, id);
+    objc_storeStrong(&v20->_personaId, personaId);
+    v20->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v20->_query, query);
+    objc_storeStrong(&v20->_results, results);
+    objc_storeStrong(&v20->_contentProtection, protection);
   }
 
   return v20;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -96,18 +96,18 @@ LABEL_4:
 
 - (id)jsonDict
 {
-  v2 = [(BMSiriQueryEvent *)self proto];
-  v3 = [v2 dictionaryRepresentation];
+  proto = [(BMSiriQueryEvent *)self proto];
+  dictionaryRepresentation = [proto dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMSiriQueryEvent *)self jsonDict];
+  jsonDict = [(BMSiriQueryEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -122,70 +122,70 @@ LABEL_4:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMSiriQueryEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMSiriQueryEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMSiriQueryEvent)initWithCoder:(id)a3
+- (BMSiriQueryEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMSiriQueryEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSiriQueryEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSiriQueryEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSiriQueryEvent)initWithProto:(id)a3
+- (BMSiriQueryEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasUniqueId])
       {
         [v5 absoluteTimestamp];
         if (v6 != 0.0)
         {
-          v7 = [v5 query];
+          query = [v5 query];
 
-          if (v7)
+          if (query)
           {
-            v8 = [v5 uniqueId];
-            v9 = [v5 personaId];
+            uniqueId = [v5 uniqueId];
+            personaId = [v5 personaId];
             [v5 absoluteTimestamp];
             v11 = v10;
-            v12 = [v5 query];
-            v13 = [v5 results];
-            v14 = [v13 _pas_mappedArrayWithTransform:&__block_literal_global];
-            v15 = [v5 contentProtection];
-            self = [(BMSiriQueryEvent *)self initWithUniqueId:v8 personaId:v9 absoluteTimestamp:v12 query:v14 results:v15 contentProtection:v11];
+            query2 = [v5 query];
+            results = [v5 results];
+            v14 = [results _pas_mappedArrayWithTransform:&__block_literal_global];
+            contentProtection = [v5 contentProtection];
+            self = [(BMSiriQueryEvent *)self initWithUniqueId:uniqueId personaId:personaId absoluteTimestamp:query2 query:v14 results:contentProtection contentProtection:v11];
 
-            v16 = self;
+            selfCopy = self;
 LABEL_14:
 
             goto LABEL_15;
@@ -209,14 +209,14 @@ LABEL_14:
       }
     }
 
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_14;
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v16;
+  return selfCopy;
 }
 
 BMSiriQueryResult *__34__BMSiriQueryEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -227,46 +227,46 @@ BMSiriQueryResult *__34__BMSiriQueryEvent_initWithProto___block_invoke(uint64_t 
   return v3;
 }
 
-- (BMSiriQueryEvent)initWithProtoData:(id)a3
+- (BMSiriQueryEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSiriQueryEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSiriQueryEvent alloc] initWithData:dataCopy];
 
     self = [(BMSiriQueryEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMSiriQueryEvent *)self uniqueId];
-  [v3 setUniqueId:v4];
+  uniqueId = [(BMSiriQueryEvent *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
-  v5 = [(BMSiriQueryEvent *)self personaId];
-  [v3 setPersonaId:v5];
+  personaId = [(BMSiriQueryEvent *)self personaId];
+  [v3 setPersonaId:personaId];
 
   [(BMSiriQueryEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v6 = [(BMSiriQueryEvent *)self query];
-  [v3 setQuery:v6];
+  query = [(BMSiriQueryEvent *)self query];
+  [v3 setQuery:query];
 
-  v7 = [(BMSiriQueryEvent *)self results];
-  v8 = [v7 _pas_mappedArrayWithTransform:&__block_literal_global_150];
+  results = [(BMSiriQueryEvent *)self results];
+  v8 = [results _pas_mappedArrayWithTransform:&__block_literal_global_150];
   v9 = [v8 mutableCopy];
   [v3 setResults:v9];
 
-  v10 = [(BMSiriQueryEvent *)self contentProtection];
-  [v3 setContentProtection:v10];
+  contentProtection = [(BMSiriQueryEvent *)self contentProtection];
+  [v3 setContentProtection:contentProtection];
 
   return v3;
 }
@@ -280,17 +280,17 @@ BMSiriQueryResult *__34__BMSiriQueryEvent_initWithProto___block_invoke(uint64_t 
   return v5 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriQueryEvent *)self proto];
-    v7 = [v5 proto];
+    v5 = equalCopy;
+    proto = [(BMSiriQueryEvent *)self proto];
+    proto2 = [v5 proto];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [proto isEqual:proto2];
   }
 
   else
@@ -301,18 +301,18 @@ BMSiriQueryResult *__34__BMSiriQueryEvent_initWithProto___block_invoke(uint64_t 
   return v8;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if (self->_uniqueId && self->_query && [(NSArray *)self->_results count])
   {
     v7 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

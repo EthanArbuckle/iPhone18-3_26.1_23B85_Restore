@@ -1,39 +1,39 @@
 @interface VNPersonsModelAlgorithmVIPv3
-- (BOOL)isEqual:(id)a3;
-- (VNPersonsModelAlgorithmVIPv3)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNPersonsModelAlgorithmVIPv3)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNPersonsModelAlgorithmVIPv3
 
-- (VNPersonsModelAlgorithmVIPv3)initWithCoder:(id)a3
+- (VNPersonsModelAlgorithmVIPv3)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = VNPersonsModelAlgorithmVIPv3;
-  v5 = [(VNPersonsModelAlgorithm *)&v7 initWithCoder:v4];
+  v5 = [(VNPersonsModelAlgorithm *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_indexType = [v4 decodeIntegerForKey:@"indexType"];
+    v5->_indexType = [coderCopy decodeIntegerForKey:@"indexType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNPersonsModelAlgorithmVIPv3;
-  [(VNPersonsModelAlgorithm *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_indexType forKey:@"indexType"];
+  [(VNPersonsModelAlgorithm *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_indexType forKey:@"indexType"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -43,9 +43,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VNPersonsModelAlgorithmVIPv3 *)self indexType];
-      v7 = v6 == [(VNPersonsModelAlgorithmVIPv3 *)v5 indexType];
+      v5 = equalCopy;
+      indexType = [(VNPersonsModelAlgorithmVIPv3 *)self indexType];
+      v7 = indexType == [(VNPersonsModelAlgorithmVIPv3 *)v5 indexType];
     }
 
     else
@@ -65,10 +65,10 @@
   v4 = [(VNPersonsModelAlgorithm *)&v9 description];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(VNPersonsModelAlgorithmVIPv3 *)self indexType];
-  if (v6)
+  indexType = [(VNPersonsModelAlgorithmVIPv3 *)self indexType];
+  if (indexType)
   {
-    if (v6 != 1)
+    if (indexType != 1)
     {
       goto LABEL_6;
     }

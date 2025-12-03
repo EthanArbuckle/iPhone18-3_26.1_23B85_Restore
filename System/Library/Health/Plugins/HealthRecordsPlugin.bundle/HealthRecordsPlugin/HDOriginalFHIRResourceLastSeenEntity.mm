@@ -1,31 +1,31 @@
 @interface HDOriginalFHIRResourceLastSeenEntity
-+ (id)insertOrUpdateLastSeenDate:(id)a3 resourcePersistentID:(id)a4 database:(id)a5 error:(id *)a6;
-+ (id)lastSeenDateForResourceWithPersistentID:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)resourceEntitiesNotSeenSince:(id)a3 accountIdentifier:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)resourceLastSeenObjectsForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5;
++ (id)insertOrUpdateLastSeenDate:(id)date resourcePersistentID:(id)d database:(id)database error:(id *)error;
++ (id)lastSeenDateForResourceWithPersistentID:(id)d database:(id)database error:(id *)error;
++ (id)resourceEntitiesNotSeenSince:(id)since accountIdentifier:(id)identifier profile:(id)profile error:(id *)error;
++ (id)resourceLastSeenObjectsForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDOriginalFHIRResourceLastSeenEntity
 
-+ (id)resourceLastSeenObjectsForAccountIdentifier:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)resourceLastSeenObjectsForAccountIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  profileCopy = profile;
   v10 = objc_alloc_init(NSMutableArray);
-  v11 = [v9 database];
+  database = [profileCopy database];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1A388;
   v17[3] = &unk_106500;
   v19 = v10;
-  v20 = a1;
-  v18 = v8;
+  selfCopy = self;
+  v18 = identifierCopy;
   v12 = v10;
-  v13 = v8;
-  LODWORD(a5) = [a1 performReadTransactionWithHealthDatabase:v11 error:a5 block:v17];
+  v13 = identifierCopy;
+  LODWORD(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v17];
 
-  if (a5)
+  if (error)
   {
     v14 = v12;
   }
@@ -40,29 +40,29 @@
   return v14;
 }
 
-+ (id)resourceEntitiesNotSeenSince:(id)a3 accountIdentifier:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)resourceEntitiesNotSeenSince:(id)since accountIdentifier:(id)identifier profile:(id)profile error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v11)
+  sinceCopy = since;
+  identifierCopy = identifier;
+  profileCopy = profile;
+  if (!sinceCopy)
   {
-    sub_9DE88(a2, a1);
+    sub_9DE88(a2, self);
   }
 
   v14 = objc_alloc_init(NSMutableArray);
-  v15 = [v13 database];
+  database = [profileCopy database];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1A8A4;
   v23[3] = &unk_106570;
-  v24 = v12;
-  v25 = v11;
+  v24 = identifierCopy;
+  v25 = sinceCopy;
   v26 = v14;
   v16 = v14;
-  v17 = v11;
-  v18 = v12;
-  v19 = [a1 performReadTransactionWithHealthDatabase:v15 error:a6 block:v23];
+  v17 = sinceCopy;
+  v18 = identifierCopy;
+  v19 = [self performReadTransactionWithHealthDatabase:database error:error block:v23];
 
   if (v19)
   {
@@ -79,14 +79,14 @@
   return v20;
 }
 
-+ (id)insertOrUpdateLastSeenDate:(id)a3 resourcePersistentID:(id)a4 database:(id)a5 error:(id *)a6
++ (id)insertOrUpdateLastSeenDate:(id)date resourcePersistentID:(id)d database:(id)database error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v12)
+  dateCopy = date;
+  dCopy = d;
+  databaseCopy = database;
+  if (!dCopy)
   {
-    sub_9DF04(a2, a1);
+    sub_9DF04(a2, self);
   }
 
   v43 = 0;
@@ -101,7 +101,7 @@
   v40 = sub_1B090;
   v41 = sub_1B0A0;
   v42 = 0;
-  v35[4] = a1;
+  v35[4] = self;
   v36 = 0;
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
@@ -111,7 +111,7 @@
   v33[1] = 3221225472;
   v33[2] = sub_1B14C;
   v33[3] = &unk_105DB8;
-  v14 = v12;
+  v14 = dCopy;
   v34 = v14;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
@@ -119,7 +119,7 @@
   v32[3] = &unk_1065B8;
   v32[4] = &v43;
   v32[5] = &v37;
-  v15 = [v13 executeCachedStatementForKey:&unk_E4072 error:&v36 SQLGenerator:v35 bindingHandler:v33 enumerationHandler:v32];
+  v15 = [databaseCopy executeCachedStatementForKey:&unk_E4072 error:&v36 SQLGenerator:v35 bindingHandler:v33 enumerationHandler:v32];
   v16 = v36;
   if ((v15 & 1) == 0)
   {
@@ -128,7 +128,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = HKSensitiveLogItem();
-      sub_9DF80(a1, v18, buf, v17);
+      sub_9DF80(self, v18, buf, v17);
     }
   }
 
@@ -153,8 +153,8 @@
       v27[1] = 3221225472;
       v27[2] = sub_1B22C;
       v27[3] = &unk_105B80;
-      v28 = v11;
-      if ([v19 updateProperties:v22 database:v13 error:a6 bindingHandler:v27])
+      v28 = dateCopy;
+      if ([v19 updateProperties:v22 database:databaseCopy error:error bindingHandler:v27])
       {
         v23 = v19;
       }
@@ -178,8 +178,8 @@
     v29[2] = sub_1B1CC;
     v29[3] = &unk_1065E0;
     v30 = v14;
-    v31 = v11;
-    v19 = [a1 insertOrReplaceEntity:0 database:v13 properties:v25 error:a6 bindingHandler:v29];
+    v31 = dateCopy;
+    v19 = [self insertOrReplaceEntity:0 database:databaseCopy properties:v25 error:error bindingHandler:v29];
 
     v24 = v19;
   }
@@ -190,13 +190,13 @@
   return v24;
 }
 
-+ (id)lastSeenDateForResourceWithPersistentID:(id)a3 database:(id)a4 error:(id *)a5
++ (id)lastSeenDateForResourceWithPersistentID:(id)d database:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  dCopy = d;
+  databaseCopy = database;
+  if (!dCopy)
   {
-    sub_9DFE8(a2, a1);
+    sub_9DFE8(a2, self);
   }
 
   v20 = 0;
@@ -210,19 +210,19 @@
   v18[1] = 3221225472;
   v18[2] = sub_1B45C;
   v18[3] = &unk_106590;
-  v18[4] = a1;
+  v18[4] = self;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1B4F0;
   v16[3] = &unk_105DB8;
-  v10 = v8;
+  v10 = dCopy;
   v17 = v10;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1B500;
   v15[3] = &unk_106608;
   v15[4] = &v20;
-  v11 = [v9 executeCachedStatementForKey:&unk_E4073 error:&v19 SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15];
+  v11 = [databaseCopy executeCachedStatementForKey:&unk_E4073 error:&v19 SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15];
   v12 = v19;
   if (v11)
   {

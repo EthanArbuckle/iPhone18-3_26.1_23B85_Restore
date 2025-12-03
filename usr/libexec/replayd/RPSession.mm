@@ -1,68 +1,68 @@
 @interface RPSession
-+ (unint64_t)getFileSizeForURL:(id)a3;
-- (BOOL)checkContextIDsMatch:(id)a3;
-- (BOOL)dispatchLimitReached:(int64_t)a3;
++ (unint64_t)getFileSizeForURL:(id)l;
+- (BOOL)checkContextIDsMatch:(id)match;
+- (BOOL)dispatchLimitReached:(int64_t)reached;
 - (BOOL)shouldBypassAlertForTest;
 - (BOOL)shouldSupressAlert;
-- (BOOL)showAlertRecordingCaptureSessionWithError:(id)a3;
+- (BOOL)showAlertRecordingCaptureSessionWithError:(id)error;
 - (BOOL)showStopSystemSessionAlert;
-- (BOOL)statusBarCoordinator:(id)a3 receivedTapWithContext:(id)a4 completionBlock:(id)a5;
-- (CGAffineTransform)CGAffineTransformFromFigTransformFlags:(SEL)a3;
+- (BOOL)statusBarCoordinator:(id)coordinator receivedTapWithContext:(id)context completionBlock:(id)block;
+- (CGAffineTransform)CGAffineTransformFromFigTransformFlags:(SEL)flags;
 - (CGSize)windowSize;
-- (RPSession)initWithClientProxy:(id)a3 sessionType:(int)a4 callingPID:(int)a5 bundleID:(id)a6 delegate:(id)a7;
+- (RPSession)initWithClientProxy:(id)proxy sessionType:(int)type callingPID:(int)d bundleID:(id)iD delegate:(id)delegate;
 - (id)checkApplicationForegroundRequirement;
-- (id)checkCaptureRequirementsWithMicrophoneEnabled:(BOOL)a3 cameraEnabled:(BOOL)a4 windowSize:(CGSize)a5;
+- (id)checkCaptureRequirementsWithMicrophoneEnabled:(BOOL)enabled cameraEnabled:(BOOL)cameraEnabled windowSize:(CGSize)size;
 - (id)checkContextIDRequirement;
 - (id)checkDeviceLockedRequirement;
-- (id)checkMinWindowSizeRequirement:(CGSize)a3;
+- (id)checkMinWindowSizeRequirement:(CGSize)requirement;
 - (id)checkMultiWindowRequirement;
 - (id)checkSufficientFreeSpace;
 - (id)getCallingConnectionBundleID;
-- (id)getNotificationBodyTextForSessionType:(int)a3 cameraEnabled:(BOOL)a4 microphoneEnabled:(BOOL)a5;
-- (id)getNotificationTitleTextForSessionType:(int)a3 bundleID:(id)a4;
+- (id)getNotificationBodyTextForSessionType:(int)type cameraEnabled:(BOOL)enabled microphoneEnabled:(BOOL)microphoneEnabled;
+- (id)getNotificationTitleTextForSessionType:(int)type bundleID:(id)d;
 - (id)serviceNameForReporting;
 - (void)addObserversForSession;
-- (void)callObserver:(id)a3 callChanged:(id)a4;
-- (void)checkAndPlaySystemSessionSound:(BOOL)a3;
-- (void)checkAndPlaySystemSessionSoundForRecordingOn:(BOOL)a3;
+- (void)callObserver:(id)observer callChanged:(id)changed;
+- (void)checkAndPlaySystemSessionSound:(BOOL)sound;
+- (void)checkAndPlaySystemSessionSoundForRecordingOn:(BOOL)on;
 - (void)checkForAcknowledgementAlertTimeout;
 - (void)clearBackgroundActivityUI;
 - (void)clearSystemRecordingUI;
 - (void)clientApplicationDidEnterBackground;
 - (void)clientApplicationDidEnterForeground;
 - (void)dealloc;
-- (void)dispatchCompleted:(int64_t)a3;
-- (void)frontmostApplicationDidChange:(id)a3;
-- (void)handleDisplayBacklightUpdate:(id)a3;
-- (void)handleUpdateDisplayLayout:(id)a3;
+- (void)dispatchCompleted:(int64_t)completed;
+- (void)frontmostApplicationDidChange:(id)change;
+- (void)handleDisplayBacklightUpdate:(id)update;
+- (void)handleUpdateDisplayLayout:(id)layout;
 - (void)invalidate;
-- (void)notifyClientSessionDidStopWithError:(int64_t)a3 movieURL:(id)a4 showAlert:(BOOL)a5;
+- (void)notifyClientSessionDidStopWithError:(int64_t)error movieURL:(id)l showAlert:(BOOL)alert;
 - (void)pauseSession;
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 transformFlags:(unint64_t)a4 movieWriter:(id)a5;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags movieWriter:(id)writer;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
 - (void)removeObserversForSession;
-- (void)reportSessionEndReason:(id)a3;
-- (void)reportSummaryEvent:(int64_t)a3 recordedFileSize:(int64_t)a4;
-- (void)resumeSessionWithWindowLayerContextID:(id)a3 completionHandler:(id)a4;
-- (void)sendBiomeEventWithSessionState:(int)a3;
-- (void)sessionReportCameraUsage:(int64_t)a3;
+- (void)reportSessionEndReason:(id)reason;
+- (void)reportSummaryEvent:(int64_t)event recordedFileSize:(int64_t)size;
+- (void)resumeSessionWithWindowLayerContextID:(id)d completionHandler:(id)handler;
+- (void)sendBiomeEventWithSessionState:(int)state;
+- (void)sessionReportCameraUsage:(int64_t)usage;
 - (void)setUpDeviceLockNotifications;
 - (void)setUpFrontBoardServices;
-- (void)setUpStatusBarAssertionWithServiceName:(id)a3;
+- (void)setUpStatusBarAssertionWithServiceName:(id)name;
 - (void)startAcknowledgementAlertTimer;
-- (void)startWithContextID:(id)a3 windowSize:(CGSize)a4;
-- (void)updatePauseOffsetForSampleBuffer:(opaqueCMSampleBuffer *)a3 withSampleType:(int)a4 handler:(id)a5;
-- (void)updatePauseOffsetFromVideoBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)updateReportingSampleCount:(int)a3;
+- (void)startWithContextID:(id)d windowSize:(CGSize)size;
+- (void)updatePauseOffsetForSampleBuffer:(opaqueCMSampleBuffer *)buffer withSampleType:(int)type handler:(id)handler;
+- (void)updatePauseOffsetFromVideoBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)updateReportingSampleCount:(int)count;
 @end
 
 @implementation RPSession
 
-- (RPSession)initWithClientProxy:(id)a3 sessionType:(int)a4 callingPID:(int)a5 bundleID:(id)a6 delegate:(id)a7
+- (RPSession)initWithClientProxy:(id)proxy sessionType:(int)type callingPID:(int)d bundleID:(id)iD delegate:(id)delegate
 {
-  v33 = a3;
-  v13 = a6;
-  v14 = a7;
+  proxyCopy = proxy;
+  iDCopy = iD;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = RPSession;
   v15 = [(RPSession *)&v34 init];
@@ -97,20 +97,20 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", buf, 0x26u);
   }
 
-  objc_storeStrong(v15 + 2, a3);
+  objc_storeStrong(v15 + 2, proxy);
   v20 = *(v15 + 47);
   *(v15 + 47) = 0;
 
   *(v15 + 392) = CGSizeZero;
-  objc_storeStrong(v15 + 46, a6);
-  *(v15 + 21) = a4;
+  objc_storeStrong(v15 + 46, iD);
+  *(v15 + 21) = type;
   v21 = [RPReportingAgent alloc];
-  v22 = [v15 serviceNameForReporting];
-  v23 = [(RPReportingAgent *)v21 initWithServiceName:v22];
+  serviceNameForReporting = [v15 serviceNameForReporting];
+  v23 = [(RPReportingAgent *)v21 initWithServiceName:serviceNameForReporting];
   v24 = *(v15 + 48);
   *(v15 + 48) = v23;
 
-  objc_storeStrong(v15 + 3, a7);
+  objc_storeStrong(v15 + 3, delegate);
   v25 = *(v15 + 12);
   *(v15 + 12) = 0;
 
@@ -124,7 +124,7 @@
   *(v15 + 165) = 0;
   *(v15 + 88) = 0;
   *(v15 + 84) = 3;
-  *(v15 + 2) = a5;
+  *(v15 + 2) = d;
   v26 = objc_alloc_init(RPApplicationStateMonitor);
   v27 = *(v15 + 16);
   *(v15 + 16) = v26;
@@ -173,7 +173,7 @@ LABEL_15:
     v9 = 2112;
     v10 = v4;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v5, 0x26u);
   }
 
@@ -197,7 +197,7 @@ LABEL_15:
     v10 = 2112;
     v11 = v4;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", buf, 0x26u);
   }
 
@@ -214,11 +214,11 @@ LABEL_15:
   [(RPSession *)&v5 dealloc];
 }
 
-- (void)startWithContextID:(id)a3 windowSize:(CGSize)a4
+- (void)startWithContextID:(id)d windowSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  dCopy = d;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
@@ -230,11 +230,11 @@ LABEL_15:
     v19 = 2112;
     v20 = *&v10;
     v21 = 2048;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v15, 0x26u);
   }
 
-  objc_storeStrong(&self->_contextID, a3);
+  objc_storeStrong(&self->_contextID, d);
   sessionType = self->_sessionType;
   if (sessionType == 5 || sessionType == 8)
   {
@@ -247,7 +247,7 @@ LABEL_15:
       v19 = 2048;
       v20 = width;
       v21 = 2048;
-      v22 = *&height;
+      selfCopy = *&height;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d use requested window size width:%lf x height:%lf", &v15, 0x26u);
     }
 
@@ -285,7 +285,7 @@ LABEL_15:
     v10 = 2112;
     v11 = v4;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v6, 0x26u);
   }
 
@@ -307,7 +307,7 @@ LABEL_15:
     v10 = 2112;
     v11 = v4;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v6, 0x26u);
   }
 
@@ -316,25 +316,25 @@ LABEL_15:
   [v5 removeObserver:self];
 }
 
-- (void)reportSessionEndReason:(id)a3
+- (void)reportSessionEndReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(RPSession *)self serviceNameForReporting];
-  [RPReportingAgent reportSessionEnded:2 endReason:v4 withServiceName:v5 clientBundleId:self->_bundleID];
+  reasonCopy = reason;
+  serviceNameForReporting = [(RPSession *)self serviceNameForReporting];
+  [RPReportingAgent reportSessionEnded:2 endReason:reasonCopy withServiceName:serviceNameForReporting clientBundleId:self->_bundleID];
 }
 
-- (void)reportSummaryEvent:(int64_t)a3 recordedFileSize:(int64_t)a4
+- (void)reportSummaryEvent:(int64_t)event recordedFileSize:(int64_t)size
 {
-  v7 = [(RPSession *)self reportingAgent];
-  [v7 setRecordedFileSize:a4];
+  reportingAgent = [(RPSession *)self reportingAgent];
+  [reportingAgent setRecordedFileSize:size];
 
-  v8 = [(RPSession *)self reportingAgent];
-  [v8 setEndReason:a3];
+  reportingAgent2 = [(RPSession *)self reportingAgent];
+  [reportingAgent2 setEndReason:event];
 
-  v11 = [(RPSession *)self reportingAgent];
-  v9 = [(RPSession *)self reportingAgent];
-  v10 = [v9 collectSummaryEventMetrics];
-  [v11 reportEventWithType:1 dictionary:v10 clientBundleId:self->_bundleID];
+  reportingAgent3 = [(RPSession *)self reportingAgent];
+  reportingAgent4 = [(RPSession *)self reportingAgent];
+  collectSummaryEventMetrics = [reportingAgent4 collectSummaryEventMetrics];
+  [reportingAgent3 reportEventWithType:1 dictionary:collectSummaryEventMetrics clientBundleId:self->_bundleID];
 }
 
 - (void)checkForAcknowledgementAlertTimeout
@@ -437,35 +437,35 @@ LABEL_15:
   }
 }
 
-- (void)updateReportingSampleCount:(int)a3
+- (void)updateReportingSampleCount:(int)count
 {
-  if (a3 == 2)
+  if (count == 2)
   {
-    v3 = [(RPSession *)self reportingAgent];
-    [v3 setMicFrameCount:{objc_msgSend(v3, "micFrameCount") + 1}];
+    reportingAgent = [(RPSession *)self reportingAgent];
+    [reportingAgent setMicFrameCount:{objc_msgSend(reportingAgent, "micFrameCount") + 1}];
   }
 
-  else if (a3 == 1)
+  else if (count == 1)
   {
-    v3 = [(RPSession *)self reportingAgent];
-    [v3 setAppAudioFrameCount:{objc_msgSend(v3, "appAudioFrameCount") + 1}];
+    reportingAgent = [(RPSession *)self reportingAgent];
+    [reportingAgent setAppAudioFrameCount:{objc_msgSend(reportingAgent, "appAudioFrameCount") + 1}];
   }
 
   else
   {
-    if (a3)
+    if (count)
     {
       return;
     }
 
-    v3 = [(RPSession *)self reportingAgent];
-    [v3 setVideoFrameCount:{objc_msgSend(v3, "videoFrameCount") + 1}];
+    reportingAgent = [(RPSession *)self reportingAgent];
+    [reportingAgent setVideoFrameCount:{objc_msgSend(reportingAgent, "videoFrameCount") + 1}];
   }
 }
 
-- (void)setUpStatusBarAssertionWithServiceName:(id)a3
+- (void)setUpStatusBarAssertionWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   [@"com.apple.replayd" UTF8String];
   if (!os_variant_allows_internal_security_policies())
   {
@@ -495,7 +495,7 @@ LABEL_7:
     [(RPStatusBarAssertion *)self->_statusBarAssertion setDelegate:self];
     [(RPStatusBarAssertion *)self->_statusBarAssertion setAssertionDelegate:self];
     [(RPStatusBarAssertion *)self->_statusBarAssertion setBroadcasting:self->_sessionType == 6];
-    [(RPStatusBarAssertion *)self->_statusBarAssertion setBroadcastServiceName:v4];
+    [(RPStatusBarAssertion *)self->_statusBarAssertion setBroadcastServiceName:nameCopy];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10001259C;
@@ -520,7 +520,7 @@ LABEL_7:
       v10 = 2112;
       v11 = v4;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p stop monitoring foreground apps", &v6, 0x26u);
     }
 
@@ -534,15 +534,15 @@ LABEL_7:
   }
 }
 
-- (void)notifyClientSessionDidStopWithError:(int64_t)a3 movieURL:(id)a4 showAlert:(BOOL)a5
+- (void)notifyClientSessionDidStopWithError:(int64_t)error movieURL:(id)l showAlert:(BOOL)alert
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [NSError _rpUserErrorForCode:a3 userInfo:0];
+  alertCopy = alert;
+  lCopy = l;
+  v9 = [NSError _rpUserErrorForCode:error userInfo:0];
   [(RPSessionDelegate *)self->_delegate sessionDidStop];
-  [(RPClientProtocol *)self->_clientProxy recordingDidStopWithError:v9 movieURL:v8];
+  [(RPClientProtocol *)self->_clientProxy recordingDidStopWithError:v9 movieURL:lCopy];
 
-  if (v5)
+  if (alertCopy)
   {
     [(RPSession *)self showAlertRecordingCaptureSessionWithError:v9];
   }
@@ -561,7 +561,7 @@ LABEL_7:
     v9 = 2112;
     v10 = v4;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v5, 0x26u);
   }
 
@@ -569,10 +569,10 @@ LABEL_7:
   [(RPStatusBarAssertion *)self->_statusBarAssertion pauseSession];
 }
 
-- (void)resumeSessionWithWindowLayerContextID:(id)a3 completionHandler:(id)a4
+- (void)resumeSessionWithWindowLayerContextID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
@@ -584,14 +584,14 @@ LABEL_7:
     v20 = 2112;
     v21 = v9;
     v22 = 2048;
-    v23 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v16, 0x26u);
   }
 
   if (self->_sessionState == 4)
   {
     [(RPSession *)self checkForAcknowledgementAlertTimeout];
-    [(RPSession *)self setContextID:v6];
+    [(RPSession *)self setContextID:dCopy];
     microphoneEnabled = self->_microphoneEnabled;
     if ([(RPSession *)self getAcknowledgementAlertResultsWithMicrophone:self->_microphoneEnabled cameraEnabled:self->_cameraEnabled])
     {
@@ -608,18 +608,18 @@ LABEL_7:
           v20 = 2112;
           v21 = v15;
           v22 = 2048;
-          v23 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p resume capture with mic, but session will silence mic", &v16, 0x26u);
         }
 
         self->_microphoneEnabled = 1;
-        [(RPSession *)self handleResumeCaptureWithCompletionHandler:v7];
+        [(RPSession *)self handleResumeCaptureWithCompletionHandler:handlerCopy];
         self->_microphoneEnabled = 0;
       }
 
       else
       {
-        [(RPSession *)self handleResumeCaptureWithCompletionHandler:v7];
+        [(RPSession *)self handleResumeCaptureWithCompletionHandler:handlerCopy];
       }
 
       [(RPStatusBarAssertion *)self->_statusBarAssertion resumeSession];
@@ -627,7 +627,7 @@ LABEL_7:
     }
 
     [(RPSession *)self setSessionState:3];
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_19;
     }
@@ -635,7 +635,7 @@ LABEL_7:
     v12 = -5801;
 LABEL_18:
     v13 = [NSError _rpUserErrorForCode:v12 userInfo:0];
-    v7[2](v7, v13);
+    handlerCopy[2](handlerCopy, v13);
 
     goto LABEL_19;
   }
@@ -652,7 +652,7 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Cannot resume session as it was not in paused state. Session state:%d", &v16, 0x18u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v12 = -5832;
     goto LABEL_18;
@@ -661,10 +661,10 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)updatePauseOffsetFromVideoBuffer:(opaqueCMSampleBuffer *)a3
+- (void)updatePauseOffsetFromVideoBuffer:(opaqueCMSampleBuffer *)buffer
 {
   memset(&v8, 0, sizeof(v8));
-  CMSampleBufferGetPresentationTimeStamp(&v8, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v8, buffer);
   if (self->_sessionIsResuming)
   {
     memset(&v7, 0, sizeof(v7));
@@ -694,16 +694,16 @@ LABEL_19:
   }
 }
 
-- (void)updatePauseOffsetForSampleBuffer:(opaqueCMSampleBuffer *)a3 withSampleType:(int)a4 handler:(id)a5
+- (void)updatePauseOffsetForSampleBuffer:(opaqueCMSampleBuffer *)buffer withSampleType:(int)type handler:(id)handler
 {
-  v8 = a5;
-  v9 = v8;
-  if (!a4)
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!type)
   {
-    [(RPSession *)self updatePauseOffsetFromVideoBuffer:a3];
+    [(RPSession *)self updatePauseOffsetFromVideoBuffer:buffer];
 LABEL_5:
     memset(&v16, 0, sizeof(v16));
-    CMSampleBufferGetPresentationTimeStamp(&v16, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v16, buffer);
     time1 = self->_sampleTimeOffset;
     time2 = kCMTimeZero;
     if (CMTimeCompare(&time1, &time2))
@@ -716,7 +716,7 @@ LABEL_5:
       sampleTimeOffset = time1;
       CMTimeConvertScale(&time2, &sampleTimeOffset, v16.timescale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
       sampleTimeOffset = time2;
-      v10 = sub_100057350(a3, &sampleTimeOffset);
+      v10 = sub_100057350(buffer, &sampleTimeOffset);
       v11 = v9[2];
       if (v10)
       {
@@ -732,7 +732,7 @@ LABEL_5:
       v11 = v9[2];
     }
 
-    v11(v9, a3);
+    v11(v9, buffer);
     goto LABEL_10;
   }
 
@@ -741,13 +741,13 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  (v8[2])(v8, 0);
+  (handlerCopy[2])(handlerCopy, 0);
 LABEL_10:
 }
 
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3 transformFlags:(unint64_t)a4 movieWriter:(id)a5
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer transformFlags:(unint64_t)flags movieWriter:(id)writer
 {
-  v8 = a5;
+  writerCopy = writer;
   if (self->_sessionState == 4)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -768,17 +768,17 @@ LABEL_10:
     v12 = *&CGAffineTransformIdentity.tx;
     if ((self->_sessionType - 5) <= 2)
     {
-      [(RPSession *)self CGAffineTransformFromFigTransformFlags:a4];
+      [(RPSession *)self CGAffineTransformFromFigTransformFlags:flags];
     }
 
     v10[0] = *buf;
     v10[1] = *&buf[16];
     v10[2] = v12;
-    [v8 appendVideoSampleBuffer:a3 withWindowTransform:v10];
+    [writerCopy appendVideoSampleBuffer:buffer withWindowTransform:v10];
   }
 }
 
-- (CGAffineTransform)CGAffineTransformFromFigTransformFlags:(SEL)a3
+- (CGAffineTransform)CGAffineTransformFromFigTransformFlags:(SEL)flags
 {
   v4 = a4;
   v6 = *&CGAffineTransformIdentity.a;
@@ -867,12 +867,12 @@ LABEL_13:
   return self;
 }
 
-- (void)checkAndPlaySystemSessionSound:(BOOL)a3
+- (void)checkAndPlaySystemSessionSound:(BOOL)sound
 {
-  v3 = a3;
+  soundCopy = sound;
   if ((+[RPHardwareUtility supportsShutterSound](RPHardwareUtility, "supportsShutterSound") || +[RPHardwareUtility isVoiceOverRunning]) && (self->_sessionType - 5) <= 2)
   {
-    if (v3)
+    if (soundCopy)
     {
       v5 = 1117;
     }
@@ -886,9 +886,9 @@ LABEL_13:
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  v5 = [MCProfileConnection sharedConnection:a3];
+  v5 = [MCProfileConnection sharedConnection:notification];
   if ([v5 effectiveBoolValueForSetting:MCFeatureScreenRecordingAllowed] == 2)
   {
     [(RPSession *)self handleDeviceRestrictionWarning];
@@ -908,7 +908,7 @@ LABEL_13:
     v14 = 2112;
     v15 = v4;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", buf, 0x26u);
   }
 
@@ -979,26 +979,26 @@ LABEL_13:
   v8 = 3221225472;
   v9 = sub_100013AC4;
   v10 = &unk_1000A16A0;
-  v11 = self;
+  selfCopy = self;
   v12 = dispatch_semaphore_create(0);
   v4 = v12;
   [v3 setTransitionHandler:&v7];
-  v5 = [FBSDisplayLayoutMonitor monitorWithConfiguration:v3, v7, v8, v9, v10, v11];
+  selfCopy = [FBSDisplayLayoutMonitor monitorWithConfiguration:v3, v7, v8, v9, v10, selfCopy];
   layoutMonitor = self->_layoutMonitor;
-  self->_layoutMonitor = v5;
+  self->_layoutMonitor = selfCopy;
 
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)handleUpdateDisplayLayout:(id)a3
+- (void)handleUpdateDisplayLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = +[RPFeatureFlagUtility sharedInstance];
-  v6 = [v5 systemBannerEnabled];
+  systemBannerEnabled = [v5 systemBannerEnabled];
 
-  if (v6)
+  if (systemBannerEnabled)
   {
-    [(RPSession *)self handleDisplayBacklightUpdate:v4];
+    [(RPSession *)self handleDisplayBacklightUpdate:layoutCopy];
   }
 
   if ([(RPSession *)self checkMultiWindow])
@@ -1007,8 +1007,8 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v4 elements];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+    elements = [layoutCopy elements];
+    v8 = [elements countByEnumeratingWithState:&v15 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1020,12 +1020,12 @@ LABEL_13:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(elements);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) bundleIdentifier];
+          bundleIdentifier = [*(*(&v15 + 1) + 8 * i) bundleIdentifier];
 
-          if (v13)
+          if (bundleIdentifier)
           {
             v10 = (v10 + 1);
           }
@@ -1036,7 +1036,7 @@ LABEL_13:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v25 count:16];
+        v9 = [elements countByEnumeratingWithState:&v15 objects:v25 count:16];
       }
 
       while (v9);
@@ -1073,10 +1073,10 @@ LABEL_13:
 LABEL_21:
 }
 
-- (void)handleDisplayBacklightUpdate:(id)a3
+- (void)handleDisplayBacklightUpdate:(id)update
 {
-  v4 = a3;
-  if ([v4 displayBacklightLevel])
+  updateCopy = update;
+  if ([updateCopy displayBacklightLevel])
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -1085,7 +1085,7 @@ LABEL_21:
       v7 = 1024;
       v8 = 824;
       v9 = 1024;
-      v10 = [v4 displayBacklightLevel];
+      displayBacklightLevel = [updateCopy displayBacklightLevel];
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Display layout updated displayBacklightLevel=%d", &v5, 0x18u);
     }
   }
@@ -1108,19 +1108,19 @@ LABEL_21:
   }
 }
 
-- (void)callObserver:(id)a3 callChanged:(id)a4
+- (void)callObserver:(id)observer callChanged:(id)changed
 {
-  v5 = a4;
-  if (([v5 isOutgoing] & 1) == 0 && (objc_msgSend(v5, "hasEnded") & 1) == 0)
+  changedCopy = changed;
+  if (([changedCopy isOutgoing] & 1) == 0 && (objc_msgSend(changedCopy, "hasEnded") & 1) == 0)
   {
     [(RPSession *)self handleIncomingCallWarning];
   }
 }
 
-- (id)checkCaptureRequirementsWithMicrophoneEnabled:(BOOL)a3 cameraEnabled:(BOOL)a4 windowSize:(CGSize)a5
+- (id)checkCaptureRequirementsWithMicrophoneEnabled:(BOOL)enabled cameraEnabled:(BOOL)cameraEnabled windowSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
@@ -1132,29 +1132,29 @@ LABEL_21:
     v20 = 2112;
     v21 = v9;
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v16, 0x26u);
   }
 
-  v10 = [(RPSession *)self checkSufficientFreeSpace];
-  if ((self->_sessionType - 9) <= 0xFFFFFFFB && v10 == 0)
+  checkSufficientFreeSpace = [(RPSession *)self checkSufficientFreeSpace];
+  if ((self->_sessionType - 9) <= 0xFFFFFFFB && checkSufficientFreeSpace == 0)
   {
-    v10 = [(RPSession *)self checkContextIDRequirement];
-    if (!v10)
+    checkSufficientFreeSpace = [(RPSession *)self checkContextIDRequirement];
+    if (!checkSufficientFreeSpace)
     {
-      v10 = [(RPSession *)self checkApplicationForegroundRequirement];
-      if (!v10)
+      checkSufficientFreeSpace = [(RPSession *)self checkApplicationForegroundRequirement];
+      if (!checkSufficientFreeSpace)
       {
-        v10 = [(RPSession *)self checkMultiWindowRequirement];
+        checkSufficientFreeSpace = [(RPSession *)self checkMultiWindowRequirement];
       }
     }
   }
 
-  v12 = v10;
+  height = checkSufficientFreeSpace;
   sessionType = self->_sessionType;
   if ((sessionType - 5) < 3)
   {
-    if (v10)
+    if (checkSufficientFreeSpace)
     {
       goto LABEL_20;
     }
@@ -1162,32 +1162,32 @@ LABEL_21:
     goto LABEL_17;
   }
 
-  if (sessionType == 8 && !v10)
+  if (sessionType == 8 && !checkSufficientFreeSpace)
   {
 LABEL_17:
-    v14 = [(RPSession *)self checkDeviceLockedRequirement];
+    checkDeviceLockedRequirement = [(RPSession *)self checkDeviceLockedRequirement];
 
-    v12 = v14;
+    height = checkDeviceLockedRequirement;
   }
 
-  if (!v12)
+  if (!height)
   {
-    v12 = [(RPSession *)self checkMinWindowSizeRequirement:width, height];
+    height = [(RPSession *)self checkMinWindowSizeRequirement:width, height];
   }
 
 LABEL_20:
-  if (v12 && dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
+  if (height && dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136446722;
     v17 = "[RPSession checkCaptureRequirementsWithMicrophoneEnabled:cameraEnabled:windowSize:]";
     v18 = 1024;
     v19 = 889;
     v20 = 2112;
-    v21 = v12;
+    v21 = height;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d Check requirements error %@", &v16, 0x1Cu);
   }
 
-  return v12;
+  return height;
 }
 
 - (id)checkDeviceLockedRequirement
@@ -1216,12 +1216,12 @@ LABEL_20:
 
 - (id)checkContextIDRequirement
 {
-  v2 = self;
+  selfCopy = self;
   contextID = self->_contextID;
   v3 = [NSArray arrayWithObjects:&contextID count:1];
-  LOBYTE(v2) = [(RPSession *)v2 checkContextIDsMatch:v3];
+  LOBYTE(selfCopy) = [(RPSession *)selfCopy checkContextIDsMatch:v3];
 
-  if (v2)
+  if (selfCopy)
   {
     v4 = 0;
   }
@@ -1243,14 +1243,14 @@ LABEL_20:
   return v4;
 }
 
-- (BOOL)checkContextIDsMatch:(id)a3
+- (BOOL)checkContextIDsMatch:(id)match
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  matchCopy = match;
+  v5 = [matchCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1261,7 +1261,7 @@ LABEL_3:
     {
       if (*v15 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(matchCopy);
       }
 
       v9 = [RPStringUtility numberFromString:*(*(&v14 + 1) + 8 * v8), v14];
@@ -1274,9 +1274,9 @@ LABEL_3:
       }
 
       v11 = [RPConnectionManager uniqueClientIdentifierWithPID:CARenderServerGetClientProcessId()];
-      v12 = [(RPSession *)self getCallingConnectionBundleID];
+      getCallingConnectionBundleID = [(RPSession *)self getCallingConnectionBundleID];
       mach_port_deallocate(mach_task_self_, ClientPort);
-      ClientPort = [v11 isEqualToString:v12];
+      ClientPort = [v11 isEqualToString:getCallingConnectionBundleID];
 
       if (!ClientPort)
       {
@@ -1285,7 +1285,7 @@ LABEL_3:
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [matchCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
         LOBYTE(ClientPort) = 1;
         if (v6)
         {
@@ -1308,9 +1308,9 @@ LABEL_3:
 - (id)getCallingConnectionBundleID
 {
   v2 = +[RPConnectionManager sharedInstance];
-  v3 = [v2 currentConnection];
+  currentConnection = [v2 currentConnection];
 
-  v4 = +[RPConnectionManager uniqueClientIdentifierWithPID:](RPConnectionManager, "uniqueClientIdentifierWithPID:", [v3 processIdentifier]);
+  v4 = +[RPConnectionManager uniqueClientIdentifierWithPID:](RPConnectionManager, "uniqueClientIdentifierWithPID:", [currentConnection processIdentifier]);
 
   return v4;
 }
@@ -1318,9 +1318,9 @@ LABEL_3:
 - (id)checkSufficientFreeSpace
 {
   v2 = +[NSFileManager defaultManager];
-  v3 = [v2 _srDeviceHasSufficientFreeSpaceForRecording];
+  _srDeviceHasSufficientFreeSpaceForRecording = [v2 _srDeviceHasSufficientFreeSpaceForRecording];
 
-  if (v3)
+  if (_srDeviceHasSufficientFreeSpaceForRecording)
   {
     v4 = 0;
   }
@@ -1399,9 +1399,9 @@ LABEL_3:
   return v2;
 }
 
-- (id)checkMinWindowSizeRequirement:(CGSize)a3
+- (id)checkMinWindowSizeRequirement:(CGSize)requirement
 {
-  if (a3.height <= 0.0 || a3.width <= 0.0)
+  if (requirement.height <= 0.0 || requirement.width <= 0.0)
   {
     if (dword_1000B6840 <= 2 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
@@ -1468,9 +1468,9 @@ LABEL_3:
   return v4;
 }
 
-- (id)getNotificationTitleTextForSessionType:(int)a3 bundleID:(id)a4
+- (id)getNotificationTitleTextForSessionType:(int)type bundleID:(id)d
 {
-  v5 = [NSBundle _rpLocalizedAppNameFromBundleID:self->_bundleID, a4];
+  v5 = [NSBundle _rpLocalizedAppNameFromBundleID:self->_bundleID, d];
   v6 = self->_sessionType - 1;
   if (v6 > 3)
   {
@@ -1486,15 +1486,15 @@ LABEL_3:
   return v8;
 }
 
-- (id)getNotificationBodyTextForSessionType:(int)a3 cameraEnabled:(BOOL)a4 microphoneEnabled:(BOOL)a5
+- (id)getNotificationBodyTextForSessionType:(int)type cameraEnabled:(BOOL)enabled microphoneEnabled:(BOOL)microphoneEnabled
 {
-  v5 = a5;
-  v6 = a4;
+  microphoneEnabledCopy = microphoneEnabled;
+  enabledCopy = enabled;
   v8 = self->_sessionType - 1;
   if (v8 <= 3)
   {
     v9 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:off_1000A16E0[v8]];
-    if (!v6)
+    if (!enabledCopy)
     {
       goto LABEL_3;
     }
@@ -1514,13 +1514,13 @@ LABEL_9:
   }
 
   v9 = 0;
-  if (a4)
+  if (enabled)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (!v5)
+  if (!microphoneEnabledCopy)
   {
     goto LABEL_11;
   }
@@ -1545,8 +1545,8 @@ LABEL_11:
 
 - (BOOL)shouldBypassAlertForTest
 {
-  v2 = [(RPSession *)self bundleID];
-  v3 = [v2 isEqualToString:@"com.apple.replayKit.ReplayKitTestRunneriOS"];
+  bundleID = [(RPSession *)self bundleID];
+  v3 = [bundleID isEqualToString:@"com.apple.replayKit.ReplayKitTestRunneriOS"];
 
   return v3;
 }
@@ -1564,7 +1564,7 @@ LABEL_11:
     v28 = 2112;
     v29 = v4;
     v30 = 2048;
-    v31 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", buf, 0x26u);
   }
 
@@ -1582,7 +1582,7 @@ LABEL_11:
       v28 = 2112;
       v29 = v13;
       v30 = 2048;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 1024;
       v33 = sessionState;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p ignore stop session in state %d", buf, 0x2Cu);
@@ -1617,8 +1617,8 @@ LABEL_14:
 
   v6 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_STATUSBAR_TAPPED_ALERT_TITLE"];
   v7 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_STATUSBAR_TAPPED_ALERT_BODY"];
-  v8 = [(RPStatusBarAssertion *)self->_statusBarAssertion broadcastServiceName];
-  v9 = [NSString stringWithFormat:v7, v8];
+  broadcastServiceName = [(RPStatusBarAssertion *)self->_statusBarAssertion broadcastServiceName];
+  v9 = [NSString stringWithFormat:v7, broadcastServiceName];
 
   v10 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_STATUSBAR_TAPPED_ALERT_DECLINE_BUTTON"];
   v11 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:@"BROADCAST_STATUSBAR_TAPPED_ALERT_ACCEPT_BUTTON"];
@@ -1715,39 +1715,39 @@ LABEL_35:
   }
 }
 
-- (void)sessionReportCameraUsage:(int64_t)a3
+- (void)sessionReportCameraUsage:(int64_t)usage
 {
-  if (a3 == 1)
+  if (usage == 1)
   {
-    v4 = [(RPSession *)self reportingAgent];
-    v5 = [v4 backCameraUsed];
+    reportingAgent = [(RPSession *)self reportingAgent];
+    backCameraUsed = [reportingAgent backCameraUsed];
   }
 
   else
   {
-    if (a3 != 2)
+    if (usage != 2)
     {
       return;
     }
 
-    v4 = [(RPSession *)self reportingAgent];
-    v5 = [v4 frontCameraUsed];
+    reportingAgent = [(RPSession *)self reportingAgent];
+    backCameraUsed = [reportingAgent frontCameraUsed];
   }
 
-  v6 = v5;
+  v6 = backCameraUsed;
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(RPSession *)self reportingAgent];
-    [v7 setFrontCameraUsed:1];
+    reportingAgent2 = [(RPSession *)self reportingAgent];
+    [reportingAgent2 setFrontCameraUsed:1];
   }
 }
 
-- (BOOL)showAlertRecordingCaptureSessionWithError:(id)a3
+- (BOOL)showAlertRecordingCaptureSessionWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(RPSession *)self shouldBypassAlertForTest];
-  if (!v5)
+  errorCopy = error;
+  shouldBypassAlertForTest = [(RPSession *)self shouldBypassAlertForTest];
+  if (!shouldBypassAlertForTest)
   {
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -1760,7 +1760,7 @@ LABEL_35:
       v28 = 2112;
       v29 = v7;
       v30 = 2048;
-      v31 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", buf, 0x26u);
     }
 
@@ -1783,8 +1783,8 @@ LABEL_35:
 
     v11 = v10;
     v12 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v9];
-    v13 = [v4 localizedDescription];
-    v14 = [NSString stringWithFormat:v12, v13];
+    localizedDescription = [errorCopy localizedDescription];
+    v14 = [NSString stringWithFormat:v12, localizedDescription];
 
     v15 = [NSBundle _rpLocalizedStringFromFrameworkBundleWithKey:v11];
 
@@ -1820,15 +1820,15 @@ LABEL_35:
     }
   }
 
-  return v5;
+  return shouldBypassAlertForTest;
 }
 
-- (void)checkAndPlaySystemSessionSoundForRecordingOn:(BOOL)a3
+- (void)checkAndPlaySystemSessionSoundForRecordingOn:(BOOL)on
 {
-  v3 = a3;
+  onCopy = on;
   if (+[RPHardwareUtility supportsShutterSound](RPHardwareUtility, "supportsShutterSound") || +[RPHardwareUtility isVoiceOverRunning])
   {
-    if (v3)
+    if (onCopy)
     {
       v4 = 1117;
     }
@@ -1842,17 +1842,17 @@ LABEL_35:
   }
 }
 
-+ (unint64_t)getFileSizeForURL:(id)a3
++ (unint64_t)getFileSizeForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v9 = 0;
   v8 = 0;
-  [v3 getResourceValue:&v9 forKey:NSURLFileSizeKey error:&v8];
+  [lCopy getResourceValue:&v9 forKey:NSURLFileSizeKey error:&v8];
   v4 = v9;
   v5 = v8;
   if (v4)
   {
-    v6 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
     if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446978;
@@ -1860,9 +1860,9 @@ LABEL_35:
       v12 = 1024;
       v13 = 1515;
       v14 = 2048;
-      v15 = v6;
+      v15 = unsignedIntegerValue;
       v16 = 2112;
-      v17 = v3;
+      v17 = lCopy;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d recordedFileSize for URL %lu bytes URL: %@", buf, 0x26u);
     }
   }
@@ -1874,24 +1874,24 @@ LABEL_35:
       sub_100060A0C(v5);
     }
 
-    v6 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)statusBarCoordinator:(id)a3 receivedTapWithContext:(id)a4 completionBlock:(id)a5
+- (BOOL)statusBarCoordinator:(id)coordinator receivedTapWithContext:(id)context completionBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   [(RPSession *)self showStopSystemSessionAlert];
-  v6[2](v6);
+  blockCopy[2](blockCopy);
 
   return 1;
 }
 
-- (void)frontmostApplicationDidChange:(id)a3
+- (void)frontmostApplicationDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (dword_1000B6840 <= 1 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
@@ -1903,11 +1903,11 @@ LABEL_35:
     v11 = 2112;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v7, 0x26u);
   }
 
-  [(RPSession *)self handleFrontmostApplicationDidChange:v4];
+  [(RPSession *)self handleFrontmostApplicationDidChange:changeCopy];
 }
 
 - (void)clientApplicationDidEnterBackground
@@ -1923,7 +1923,7 @@ LABEL_35:
     v9 = 2112;
     v10 = v4;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v5, 0x26u);
   }
 
@@ -1944,7 +1944,7 @@ LABEL_35:
     v9 = 2112;
     v10 = v4;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@ %p", &v5, 0x26u);
   }
 
@@ -1953,21 +1953,21 @@ LABEL_35:
 
 - (void)clearBackgroundActivityUI
 {
-  v3 = [(RPSession *)self elapsedTimeTimer];
-  [v3 invalidate];
+  elapsedTimeTimer = [(RPSession *)self elapsedTimeTimer];
+  [elapsedTimeTimer invalidate];
 
   [(RPSession *)self setElapsedTimeTimer:0];
-  v4 = [(RPSession *)self backgroundActivity];
-  [v4 deactivate];
+  backgroundActivity = [(RPSession *)self backgroundActivity];
+  [backgroundActivity deactivate];
 
   [(RPSession *)self setBackgroundActivity:0];
 
   [(RPSession *)self setRecordingStartTime:0.0];
 }
 
-- (BOOL)dispatchLimitReached:(int64_t)a3
+- (BOOL)dispatchLimitReached:(int64_t)reached
 {
-  if (a3 == 1)
+  if (reached == 1)
   {
     v4 = 184;
   }
@@ -1977,7 +1977,7 @@ LABEL_35:
     v4 = 192;
   }
 
-  if (a3 == 1)
+  if (reached == 1)
   {
     v5 = 200;
   }
@@ -2004,9 +2004,9 @@ LABEL_35:
   return v6 > 4;
 }
 
-- (void)dispatchCompleted:(int64_t)a3
+- (void)dispatchCompleted:(int64_t)completed
 {
-  if (a3 == 1)
+  if (completed == 1)
   {
     v4 = 200;
   }
@@ -2016,7 +2016,7 @@ LABEL_35:
     v4 = 264;
   }
 
-  if (a3 == 1)
+  if (completed == 1)
   {
     v5 = 184;
   }
@@ -2032,11 +2032,11 @@ LABEL_35:
   pthread_mutex_unlock((self + v4));
 }
 
-- (void)sendBiomeEventWithSessionState:(int)a3
+- (void)sendBiomeEventWithSessionState:(int)state
 {
-  if (a3 <= 4 && ((1 << a3) & 0x1A) != 0)
+  if (state <= 4 && ((1 << state) & 0x1A) != 0)
   {
-    [(RPSession *)self sendBiomeEventIsStarting:a3 == 1];
+    [(RPSession *)self sendBiomeEventIsStarting:state == 1];
   }
 }
 

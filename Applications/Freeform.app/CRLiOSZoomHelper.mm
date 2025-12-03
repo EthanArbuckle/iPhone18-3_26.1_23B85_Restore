@@ -1,18 +1,18 @@
 @interface CRLiOSZoomHelper
-+ (id)zoomLevels:(double)a3 maxRange:(double)a4 zoomScale:(double)a5;
++ (id)zoomLevels:(double)levels maxRange:(double)range zoomScale:(double)scale;
 - (_TtC8Freeform16CRLiOSZoomHelper)init;
-- (_TtC8Freeform16CRLiOSZoomHelper)initWithInteractiveCanvasController:(id)a3 zoomTrackerDelegate:(id)a4;
+- (_TtC8Freeform16CRLiOSZoomHelper)initWithInteractiveCanvasController:(id)controller zoomTrackerDelegate:(id)delegate;
 - (void)decrementZoomLevel;
 - (void)incrementZoomLevel;
 @end
 
 @implementation CRLiOSZoomHelper
 
-- (_TtC8Freeform16CRLiOSZoomHelper)initWithInteractiveCanvasController:(id)a3 zoomTrackerDelegate:(id)a4
+- (_TtC8Freeform16CRLiOSZoomHelper)initWithInteractiveCanvasController:(id)controller zoomTrackerDelegate:(id)delegate
 {
-  v4 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v5 = sub_101245E78(v4);
+  v5 = sub_101245E78(controllerCopy);
 
   swift_unknownObjectRelease();
   return v5;
@@ -20,19 +20,19 @@
 
 - (void)incrementZoomLevel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1012453C4();
 }
 
 - (void)decrementZoomLevel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1012454E0();
 }
 
-+ (id)zoomLevels:(double)a3 maxRange:(double)a4 zoomScale:(double)a5
++ (id)zoomLevels:(double)levels maxRange:(double)range zoomScale:(double)scale
 {
-  sub_101245D40(a3, a4, a5);
+  sub_101245D40(levels, range, scale);
   v5.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
   return v5.super.isa;

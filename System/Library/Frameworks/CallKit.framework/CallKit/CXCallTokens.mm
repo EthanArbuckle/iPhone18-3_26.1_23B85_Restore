@@ -1,11 +1,11 @@
 @interface CXCallTokens
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCallTokens:(id)a3;
-- (CXCallTokens)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCallTokens:(id)tokens;
+- (CXCallTokens)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXCallTokens
@@ -16,50 +16,50 @@
   [v3 appendFormat:@" uplinkStreamToken=%ld", -[CXCallTokens uplinkStreamToken](self, "uplinkStreamToken")];
   [v3 appendFormat:@" downlinkStreamToken=%ld", -[CXCallTokens downlinkStreamToken](self, "downlinkStreamToken")];
   [v3 appendFormat:@" combinedAudioStreamToken=%ld", -[CXCallTokens combinedAudioStreamToken](self, "combinedAudioStreamToken")];
-  v4 = [(CXCallTokens *)self streamTokensByParticipantID];
-  [v3 appendFormat:@" streamTokensByParticipantID=%@", v4];
+  streamTokensByParticipantID = [(CXCallTokens *)self streamTokensByParticipantID];
+  [v3 appendFormat:@" streamTokensByParticipantID=%@", streamTokensByParticipantID];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
-  v6 = a3;
-  [(CXCallTokens *)self updateSanitizedCopy:v6 withZone:a4];
-  [v6 setUplinkStreamToken:{-[CXCallTokens uplinkStreamToken](self, "uplinkStreamToken")}];
-  [v6 setDownlinkStreamToken:{-[CXCallTokens downlinkStreamToken](self, "downlinkStreamToken")}];
-  [v6 setCombinedAudioStreamToken:{-[CXCallTokens combinedAudioStreamToken](self, "combinedAudioStreamToken")}];
-  v7 = [(CXCallTokens *)self streamTokensByParticipantID];
-  [v6 setStreamTokensByParticipantID:v7];
+  copyCopy = copy;
+  [(CXCallTokens *)self updateSanitizedCopy:copyCopy withZone:zone];
+  [copyCopy setUplinkStreamToken:{-[CXCallTokens uplinkStreamToken](self, "uplinkStreamToken")}];
+  [copyCopy setDownlinkStreamToken:{-[CXCallTokens downlinkStreamToken](self, "downlinkStreamToken")}];
+  [copyCopy setCombinedAudioStreamToken:{-[CXCallTokens combinedAudioStreamToken](self, "combinedAudioStreamToken")}];
+  streamTokensByParticipantID = [(CXCallTokens *)self streamTokensByParticipantID];
+  [copyCopy setStreamTokensByParticipantID:streamTokensByParticipantID];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  [(CXCallTokens *)self updateCopy:v5 withZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  [(CXCallTokens *)self updateCopy:v5 withZone:zone];
   return v5;
 }
 
-- (CXCallTokens)initWithCoder:(id)a3
+- (CXCallTokens)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CXCallTokens *)self init];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_uplinkStreamToken);
-    v5->_uplinkStreamToken = [v4 decodeIntegerForKey:v6];
+    v5->_uplinkStreamToken = [coderCopy decodeIntegerForKey:v6];
 
     v7 = NSStringFromSelector(sel_downlinkStreamToken);
-    v5->_downlinkStreamToken = [v4 decodeIntegerForKey:v7];
+    v5->_downlinkStreamToken = [coderCopy decodeIntegerForKey:v7];
 
     v8 = NSStringFromSelector(sel_combinedAudioStreamToken);
-    v5->_combinedAudioStreamToken = [v4 decodeIntegerForKey:v8];
+    v5->_combinedAudioStreamToken = [coderCopy decodeIntegerForKey:v8];
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_streamTokensByParticipantID);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     streamTokensByParticipantID = v5->_streamTokensByParticipantID;
     v5->_streamTokensByParticipantID = v11;
   }
@@ -67,30 +67,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CXCallTokens *)self uplinkStreamToken];
+  coderCopy = coder;
+  uplinkStreamToken = [(CXCallTokens *)self uplinkStreamToken];
   v6 = NSStringFromSelector(sel_uplinkStreamToken);
-  [v4 encodeInteger:v5 forKey:v6];
+  [coderCopy encodeInteger:uplinkStreamToken forKey:v6];
 
-  v7 = [(CXCallTokens *)self downlinkStreamToken];
+  downlinkStreamToken = [(CXCallTokens *)self downlinkStreamToken];
   v8 = NSStringFromSelector(sel_downlinkStreamToken);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:downlinkStreamToken forKey:v8];
 
-  v9 = [(CXCallTokens *)self combinedAudioStreamToken];
+  combinedAudioStreamToken = [(CXCallTokens *)self combinedAudioStreamToken];
   v10 = NSStringFromSelector(sel_combinedAudioStreamToken);
-  [v4 encodeInteger:v9 forKey:v10];
+  [coderCopy encodeInteger:combinedAudioStreamToken forKey:v10];
 
-  v12 = [(CXCallTokens *)self streamTokensByParticipantID];
+  streamTokensByParticipantID = [(CXCallTokens *)self streamTokensByParticipantID];
   v11 = NSStringFromSelector(sel_streamTokensByParticipantID);
-  [v4 encodeObject:v12 forKey:v11];
+  [coderCopy encodeObject:streamTokensByParticipantID forKey:v11];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -98,21 +98,21 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXCallTokens *)self isEqualToCallTokens:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CXCallTokens *)self isEqualToCallTokens:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToCallTokens:(id)a3
+- (BOOL)isEqualToCallTokens:(id)tokens
 {
-  v4 = a3;
-  v5 = [(CXCallTokens *)self uplinkStreamToken];
-  if (v5 == [v4 uplinkStreamToken] && (v6 = -[CXCallTokens downlinkStreamToken](self, "downlinkStreamToken"), v6 == objc_msgSend(v4, "downlinkStreamToken")) && (v7 = -[CXCallTokens combinedAudioStreamToken](self, "combinedAudioStreamToken"), v7 == objc_msgSend(v4, "combinedAudioStreamToken")))
+  tokensCopy = tokens;
+  uplinkStreamToken = [(CXCallTokens *)self uplinkStreamToken];
+  if (uplinkStreamToken == [tokensCopy uplinkStreamToken] && (v6 = -[CXCallTokens downlinkStreamToken](self, "downlinkStreamToken"), v6 == objc_msgSend(tokensCopy, "downlinkStreamToken")) && (v7 = -[CXCallTokens combinedAudioStreamToken](self, "combinedAudioStreamToken"), v7 == objc_msgSend(tokensCopy, "combinedAudioStreamToken")))
   {
-    v8 = [(CXCallTokens *)self streamTokensByParticipantID];
-    v9 = [v4 streamTokensByParticipantID];
-    v10 = v8 == v9;
+    streamTokensByParticipantID = [(CXCallTokens *)self streamTokensByParticipantID];
+    streamTokensByParticipantID2 = [tokensCopy streamTokensByParticipantID];
+    v10 = streamTokensByParticipantID == streamTokensByParticipantID2;
   }
 
   else

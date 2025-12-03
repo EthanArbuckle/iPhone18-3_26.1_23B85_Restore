@@ -1,34 +1,34 @@
 @interface ITIdleTimerConfiguration
 + (id)configurationToDisableIdleTimer;
-- (ITIdleTimerConfiguration)initWithBSXPCCoder:(id)a3;
-- (ITIdleTimerConfiguration)initWithConfiguration:(id)a3;
+- (ITIdleTimerConfiguration)initWithBSXPCCoder:(id)coder;
+- (ITIdleTimerConfiguration)initWithConfiguration:(id)configuration;
 - (id)_copyWithNewIdentifier;
-- (id)_uniquedReason:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_uniquedReason:(id)reason;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation ITIdleTimerConfiguration
 
-- (ITIdleTimerConfiguration)initWithConfiguration:(id)a3
+- (ITIdleTimerConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = ITIdleTimerConfiguration;
   v5 = [(ITIdleTimerConfiguration *)&v12 init];
   if (v5)
   {
-    v6 = [v4 _identifier];
+    _identifier = [configurationCopy _identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = _identifier;
 
-    v5->_disablesTimer = [v4 disablesTimer];
-    v5->_idleEventMask = [v4 _idleEventMask];
-    v8 = [v4 _idleEventHandlerBlock];
-    v9 = [v8 copy];
+    v5->_disablesTimer = [configurationCopy disablesTimer];
+    v5->_idleEventMask = [configurationCopy _idleEventMask];
+    _idleEventHandlerBlock = [configurationCopy _idleEventHandlerBlock];
+    v9 = [_idleEventHandlerBlock copy];
     idleEventHandlerBlock = v5->_idleEventHandlerBlock;
     v5->_idleEventHandlerBlock = v9;
   }
@@ -38,7 +38,7 @@
 
 + (id)configurationToDisableIdleTimer
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setDisablesTimer:1];
 
   return v2;
@@ -46,10 +46,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(ITIdleTimerConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(ITIdleTimerConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -66,69 +66,69 @@
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(ITIdleTimerConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(ITIdleTimerConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithConfiguration:self];
 }
 
-- (ITIdleTimerConfiguration)initWithBSXPCCoder:(id)a3
+- (ITIdleTimerConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ITIdleTimerConfiguration;
   v5 = [(ITIdleTimerConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeStringForKey:@"identifier"];
+    v6 = [coderCopy decodeStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_disablesTimer = [v4 decodeBoolForKey:@"disablesIdleTimer"];
-    v5->_idleEventMask = [v4 decodeUInt64ForKey:@"idleEventMask"];
+    v5->_disablesTimer = [coderCopy decodeBoolForKey:@"disablesIdleTimer"];
+    v5->_idleEventMask = [coderCopy decodeUInt64ForKey:@"idleEventMask"];
   }
 
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  if (a3)
+  if (coder)
   {
     identifier = self->_identifier;
-    v5 = a3;
-    [v5 encodeObject:identifier forKey:@"identifier"];
-    [v5 encodeBool:self->_disablesTimer forKey:@"disablesIdleTimer"];
-    [v5 encodeUInt64:self->_idleEventMask forKey:@"idleEventMask"];
+    coderCopy = coder;
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
+    [coderCopy encodeBool:self->_disablesTimer forKey:@"disablesIdleTimer"];
+    [coderCopy encodeUInt64:self->_idleEventMask forKey:@"idleEventMask"];
   }
 }
 
 - (id)_copyWithNewIdentifier
 {
   v2 = [(ITIdleTimerConfiguration *)self copy];
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v5 = v2[2];
-  v2[2] = v4;
+  v2[2] = uUIDString;
 
   return v2;
 }
 
-- (id)_uniquedReason:(id)a3
+- (id)_uniquedReason:(id)reason
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(ITIdleTimerConfiguration *)self _identifier];
-  v7 = [v4 stringWithFormat:@"%@-%@", v5, v6];
+  reasonCopy = reason;
+  _identifier = [(ITIdleTimerConfiguration *)self _identifier];
+  v7 = [v4 stringWithFormat:@"%@-%@", reasonCopy, _identifier];
 
   return v7;
 }

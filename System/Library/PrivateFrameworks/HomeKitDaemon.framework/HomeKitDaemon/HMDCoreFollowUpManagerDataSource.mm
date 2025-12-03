@@ -1,8 +1,8 @@
 @interface HMDCoreFollowUpManagerDataSource
 - (BOOL)currentDeviceSupportsDeviceSetup;
-- (id)followUpActionForDeviceSetupManager:(id)a3;
-- (id)followUpControllerForDeviceSetupManager:(id)a3;
-- (id)followUpItemForDeviceSetupManager:(id)a3;
+- (id)followUpActionForDeviceSetupManager:(id)manager;
+- (id)followUpControllerForDeviceSetupManager:(id)manager;
+- (id)followUpItemForDeviceSetupManager:(id)manager;
 @end
 
 @implementation HMDCoreFollowUpManagerDataSource
@@ -10,26 +10,26 @@
 - (BOOL)currentDeviceSupportsDeviceSetup
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 supportsDeviceSetup];
+  supportsDeviceSetup = [v2 supportsDeviceSetup];
 
-  return v3;
+  return supportsDeviceSetup;
 }
 
-- (id)followUpActionForDeviceSetupManager:(id)a3
+- (id)followUpActionForDeviceSetupManager:(id)manager
 {
   v3 = objc_alloc_init(MEMORY[0x277CFE4F8]);
 
   return v3;
 }
 
-- (id)followUpItemForDeviceSetupManager:(id)a3
+- (id)followUpItemForDeviceSetupManager:(id)manager
 {
   v3 = objc_alloc_init(MEMORY[0x277CFE508]);
 
   return v3;
 }
 
-- (id)followUpControllerForDeviceSetupManager:(id)a3
+- (id)followUpControllerForDeviceSetupManager:(id)manager
 {
   v3 = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:@"com.apple.HomeKit"];
 

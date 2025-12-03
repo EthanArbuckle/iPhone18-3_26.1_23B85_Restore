@@ -1,5 +1,5 @@
 @interface CRLShadowAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)crlaxIsShadowEnabled;
 - (CRLColorAccessibility)_crlaxShadowColor;
 - (NSString)crlaxShadowAngleDescription;
@@ -11,21 +11,21 @@
 
 @implementation CRLShadowAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (BOOL)crlaxIsShadowEnabled
 {
-  v2 = [(CRLShadowAccessibility *)self crlaxTarget];
-  v3 = [v2 isEnabled];
+  crlaxTarget = [(CRLShadowAccessibility *)self crlaxTarget];
+  isEnabled = [crlaxTarget isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (NSString)crlaxShadowTypeDescription
@@ -57,26 +57,26 @@
 
 - (NSString)crlaxShadowColorDescription
 {
-  v2 = [(CRLShadowAccessibility *)self _crlaxShadowColor];
-  v3 = [v2 crlaxStyleInfoDescription];
+  _crlaxShadowColor = [(CRLShadowAccessibility *)self _crlaxShadowColor];
+  crlaxStyleInfoDescription = [_crlaxShadowColor crlaxStyleInfoDescription];
 
-  return v3;
+  return crlaxStyleInfoDescription;
 }
 
 - (NSString)crlaxStyleInfoDescription
 {
   if ([(CRLShadowAccessibility *)self crlaxIsShadowEnabled])
   {
-    v3 = [(CRLShadowAccessibility *)self crlaxShadowTypeDescription];
-    v4 = [(CRLShadowAccessibility *)self crlaxShadowAngleDescription];
-    v13 = [(CRLShadowAccessibility *)self crlaxShadowColorDescription];
-    v11 = __CRLAccessibilityStringForVariables(1, v3, v5, v6, v7, v8, v9, v10, v4);
+    crlaxShadowTypeDescription = [(CRLShadowAccessibility *)self crlaxShadowTypeDescription];
+    crlaxShadowAngleDescription = [(CRLShadowAccessibility *)self crlaxShadowAngleDescription];
+    crlaxShadowColorDescription = [(CRLShadowAccessibility *)self crlaxShadowColorDescription];
+    v11 = __CRLAccessibilityStringForVariables(1, crlaxShadowTypeDescription, v5, v6, v7, v8, v9, v10, crlaxShadowAngleDescription);
   }
 
   else
   {
-    v3 = +[NSBundle mainBundle];
-    v11 = [v3 localizedStringForKey:@"No shadow" value:0 table:0];
+    crlaxShadowTypeDescription = +[NSBundle mainBundle];
+    v11 = [crlaxShadowTypeDescription localizedStringForKey:@"No shadow" value:0 table:0];
   }
 
   return v11;
@@ -84,8 +84,8 @@
 
 - (double)_crlaxShadowAngle
 {
-  v2 = [(CRLShadowAccessibility *)self crlaxTarget];
-  [v2 angle];
+  crlaxTarget = [(CRLShadowAccessibility *)self crlaxTarget];
+  [crlaxTarget angle];
   v4 = v3;
 
   return v4;
@@ -94,11 +94,11 @@
 - (CRLColorAccessibility)_crlaxShadowColor
 {
   v8 = 0;
-  v2 = [(CRLShadowAccessibility *)self crlaxTarget];
-  v3 = [v2 color];
+  crlaxTarget = [(CRLShadowAccessibility *)self crlaxTarget];
+  color = [crlaxTarget color];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, color, 1, &v8);
   if (v8 == 1)
   {
     abort();

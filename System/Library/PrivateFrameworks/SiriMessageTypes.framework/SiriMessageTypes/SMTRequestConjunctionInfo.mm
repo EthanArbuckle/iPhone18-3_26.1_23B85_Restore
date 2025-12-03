@@ -1,21 +1,21 @@
 @interface SMTRequestConjunctionInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMTRequestConjunctionInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  RequestConjunctionInfo.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  RequestConjunctionInfo.encode(with:)(coderCopy);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   RequestConjunctionInfo.debugDescription.getter();
 
   v3 = sub_2232000A4();
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_223200314();
     swift_unknownObjectRelease();
@@ -36,7 +36,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = RequestConjunctionInfo.isEqual(_:)(v8);

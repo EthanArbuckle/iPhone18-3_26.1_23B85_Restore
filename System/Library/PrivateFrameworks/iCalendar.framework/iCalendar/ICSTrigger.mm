@@ -1,10 +1,10 @@
 @interface ICSTrigger
-- (ICSTrigger)initWithDate:(id)a3;
-- (ICSTrigger)initWithDuration:(id)a3;
-- (ICSTrigger)initWithDuration:(id)a3 travelRelativeDuration:(id)a4;
+- (ICSTrigger)initWithDate:(id)date;
+- (ICSTrigger)initWithDuration:(id)duration;
+- (ICSTrigger)initWithDuration:(id)duration travelRelativeDuration:(id)relativeDuration;
 - (void)fixAlarmTrigger;
-- (void)setDate:(id)a3;
-- (void)setDuration:(id)a3;
+- (void)setDate:(id)date;
+- (void)setDuration:(id)duration;
 @end
 
 @implementation ICSTrigger
@@ -27,58 +27,58 @@
   }
 }
 
-- (ICSTrigger)initWithDate:(id)a3
+- (ICSTrigger)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = ICSTrigger;
   v5 = [(ICSTrigger *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICSTrigger *)v5 setDate:v4];
+    [(ICSTrigger *)v5 setDate:dateCopy];
   }
 
   return v6;
 }
 
-- (ICSTrigger)initWithDuration:(id)a3
+- (ICSTrigger)initWithDuration:(id)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   v8.receiver = self;
   v8.super_class = ICSTrigger;
   v5 = [(ICSTrigger *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICSTrigger *)v5 setDuration:v4];
+    [(ICSTrigger *)v5 setDuration:durationCopy];
   }
 
   return v6;
 }
 
-- (ICSTrigger)initWithDuration:(id)a3 travelRelativeDuration:(id)a4
+- (ICSTrigger)initWithDuration:(id)duration travelRelativeDuration:(id)relativeDuration
 {
-  v6 = a4;
-  v7 = [(ICSTrigger *)self initWithDuration:a3];
-  [(ICSProperty *)v7 setParameterValue:v6 forName:@"X-APPLE-RELATED-TRAVEL"];
+  relativeDurationCopy = relativeDuration;
+  v7 = [(ICSTrigger *)self initWithDuration:duration];
+  [(ICSProperty *)v7 setParameterValue:relativeDurationCopy forName:@"X-APPLE-RELATED-TRAVEL"];
 
   return v7;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
-  -[ICSProperty setValue:type:](self, "setValue:type:", v4, [v4 dateType]);
+  dateCopy = date;
+  -[ICSProperty setValue:type:](self, "setValue:type:", dateCopy, [dateCopy dateType]);
 
   [(ICSProperty *)self setParameterValue:@"DATE-TIME" forName:@"VALUE"];
 
   [(ICSProperty *)self removeParameterValueForName:@"RELATED"];
 }
 
-- (void)setDuration:(id)a3
+- (void)setDuration:(id)duration
 {
-  [(ICSProperty *)self setValue:a3 type:5011];
+  [(ICSProperty *)self setValue:duration type:5011];
 
   [(ICSProperty *)self removeParameterValueForName:@"VALUE"];
 }

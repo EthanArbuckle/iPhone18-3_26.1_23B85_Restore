@@ -5,30 +5,30 @@
 - (CGPoint)center;
 - (CGRect)bounds;
 - (CGRect)frame;
-- (DRPDropletContainerView)initWithCoder:(id)a3;
-- (DRPDropletContainerView)initWithFrame:(CGRect)a3;
+- (DRPDropletContainerView)initWithCoder:(id)coder;
+- (DRPDropletContainerView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)boundaryOutsets;
 - (UIView)contentView;
 - (double)_continuousCornerRadius;
 - (unint64_t)boundaryEdges;
-- (void)_removeAllRetargetableAnimations:(BOOL)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setVelocity:(id)a3 forKey:(id)a4;
+- (void)_removeAllRetargetableAnimations:(BOOL)animations;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setVelocity:(id)velocity forKey:(id)key;
 - (void)layoutSubviews;
-- (void)setBoundaryEdges:(unint64_t)a3;
-- (void)setBoundaryOutsets:(UIEdgeInsets)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setContentView:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setTransform3D:(CATransform3D *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setBoundaryEdges:(unint64_t)edges;
+- (void)setBoundaryOutsets:(UIEdgeInsets)outsets;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenter:(CGPoint)center;
+- (void)setContentView:(id)view;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setTransform3D:(CATransform3D *)d;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation DRPDropletContainerView
 
-- (DRPDropletContainerView)initWithFrame:(CGRect)a3
+- (DRPDropletContainerView)initWithFrame:(CGRect)frame
 {
   *(&self->super.super.super.isa + OBJC_IVAR___DRPDropletContainerView_contentView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___DRPDropletContainerView_boundaryEdges) = 0;
@@ -39,10 +39,10 @@
   *(&self->super.super.super.isa + OBJC_IVAR___DRPDropletContainerView_participantViews) = MEMORY[0x277D84F90];
   v6.receiver = self;
   v6.super_class = DRPDropletContainerView;
-  return [(DRPDropletContainerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(DRPDropletContainerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (DRPDropletContainerView)initWithCoder:(id)a3
+- (DRPDropletContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___DRPDropletContainerView_contentView) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR___DRPDropletContainerView_boundaryEdges) = 0;
@@ -63,14 +63,14 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
   v5 = OBJC_IVAR___DRPDropletContainerView_contentView;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.isa + v5) = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_249EB1570(v6);
 }
 
@@ -82,9 +82,9 @@
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  v3 = self;
+  selfCopy = self;
   DRPDropletContainerView._continuousCornerRadius.setter();
 }
 
@@ -95,10 +95,10 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setBoundaryEdges:(unint64_t)a3
+- (void)setBoundaryEdges:(unint64_t)edges
 {
-  v4 = self;
-  DRPDropletContainerView.boundaryEdges.setter(a3);
+  selfCopy = self;
+  DRPDropletContainerView.boundaryEdges.setter(edges);
 }
 
 - (UIEdgeInsets)boundaryOutsets
@@ -116,13 +116,13 @@
   return result;
 }
 
-- (void)setBoundaryOutsets:(UIEdgeInsets)a3
+- (void)setBoundaryOutsets:(UIEdgeInsets)outsets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  selfCopy = self;
   DRPDropletContainerView.boundaryOutsets.setter(top, left, bottom, right);
 }
 
@@ -138,9 +138,9 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = self;
+  selfCopy = self;
   DRPDropletContainerView.frame.setter();
 }
 
@@ -156,9 +156,9 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  v3 = self;
+  selfCopy = self;
   DRPDropletContainerView.bounds.setter();
 }
 
@@ -172,9 +172,9 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  v3 = self;
+  selfCopy = self;
   DRPDropletContainerView.center.setter();
 }
 
@@ -191,13 +191,13 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->c;
-  v5[0] = *&a3->a;
+  v3 = *&transform->c;
+  v5[0] = *&transform->a;
   v5[1] = v3;
-  v5[2] = *&a3->tx;
-  v4 = self;
+  v5[2] = *&transform->tx;
+  selfCopy = self;
   DRPDropletContainerView.transform.setter(v5);
 }
 
@@ -208,10 +208,10 @@
   return [(DRPDropletContainerView *)&v3 isHidden];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = self;
-  DRPDropletContainerView.isHidden.setter(a3);
+  selfCopy = self;
+  DRPDropletContainerView.isHidden.setter(hidden);
 }
 
 - (CATransform3D)transform3D
@@ -237,32 +237,32 @@
   return result;
 }
 
-- (void)setTransform3D:(CATransform3D *)a3
+- (void)setTransform3D:(CATransform3D *)d
 {
-  v3 = *&a3->m13;
-  v8[0] = *&a3->m11;
+  v3 = *&d->m13;
+  v8[0] = *&d->m11;
   v8[1] = v3;
-  v4 = *&a3->m23;
-  v8[2] = *&a3->m21;
+  v4 = *&d->m23;
+  v8[2] = *&d->m21;
   v8[3] = v4;
-  v5 = *&a3->m33;
-  v8[4] = *&a3->m31;
+  v5 = *&d->m33;
+  v8[4] = *&d->m31;
   v8[5] = v5;
-  v6 = *&a3->m43;
-  v8[6] = *&a3->m41;
+  v6 = *&d->m43;
+  v8[6] = *&d->m41;
   v8[7] = v6;
-  v7 = self;
+  selfCopy = self;
   DRPDropletContainerView.transform3D.setter(v8);
 }
 
-- (void)_setVelocity:(id)a3 forKey:(id)a4
+- (void)_setVelocity:(id)velocity forKey:(id)key
 {
-  if (!a3)
+  if (!velocity)
   {
     memset(v13, 0, sizeof(v13));
-    v11 = a4;
-    v12 = self;
-    if (a4)
+    keyCopy = key;
+    selfCopy = self;
+    if (key)
     {
       goto LABEL_3;
     }
@@ -273,12 +273,12 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = a4;
-  v7 = self;
+  keyCopy2 = key;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   sub_249ED6D90();
   swift_unknownObjectRelease();
-  if (!a4)
+  if (!key)
   {
     goto LABEL_5;
   }
@@ -293,15 +293,15 @@ LABEL_6:
   sub_249EB371C(v13, &unk_27EF299E0, &qword_249ED8EB0);
 }
 
-- (void)_removeAllRetargetableAnimations:(BOOL)a3
+- (void)_removeAllRetargetableAnimations:(BOOL)animations
 {
-  v4 = self;
-  DRPDropletContainerView._removeAllRetargetableAnimations(_:)(a3);
+  selfCopy = self;
+  DRPDropletContainerView._removeAllRetargetableAnimations(_:)(animations);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DRPDropletContainerView.layoutSubviews()();
 }
 

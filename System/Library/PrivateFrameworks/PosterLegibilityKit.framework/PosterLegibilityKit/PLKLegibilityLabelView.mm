@@ -1,26 +1,26 @@
 @interface PLKLegibilityLabelView
-- (void)setAttributedText:(id)a3 legibilityDescriptor:(id)a4;
+- (void)setAttributedText:(id)text legibilityDescriptor:(id)descriptor;
 @end
 
 @implementation PLKLegibilityLabelView
 
-- (void)setAttributedText:(id)a3 legibilityDescriptor:(id)a4
+- (void)setAttributedText:(id)text legibilityDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  textCopy = text;
+  descriptorCopy = descriptor;
+  if (!textCopy)
   {
     [PLKLegibilityLabelView setAttributedText:a2 legibilityDescriptor:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = descriptorCopy;
+  if (!descriptorCopy)
   {
     [PLKLegibilityLabelView setAttributedText:a2 legibilityDescriptor:?];
   }
 
   v10 = +[PLKLegibilityContentDataSource attributedStringContentDataSource];
-  v11 = [v10 legibilityContentForObject:v7 legibilityDescriptor:v9];
+  v11 = [v10 legibilityContentForObject:textCopy legibilityDescriptor:v9];
   v12.receiver = self;
   v12.super_class = PLKLegibilityLabelView;
   [(PLKLegibilityView *)&v12 setContent:v11];

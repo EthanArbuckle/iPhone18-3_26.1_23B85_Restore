@@ -1,37 +1,37 @@
 @interface AVMobileGlassPlaybackControlsView
-- (AVMobileGlassPlaybackControlsView)initWithStyleSheet:(id)a3;
+- (AVMobileGlassPlaybackControlsView)initWithStyleSheet:(id)sheet;
 - (AVMobileGlassPlaybackControlsViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
 - (uint64_t)_updateExtendedDynamicRangeGain;
-- (void)_addPlaybackControlViews:(id)a3;
+- (void)_addPlaybackControlViews:(id)views;
 - (void)_setUpShadowAppearance;
-- (void)_setupPointerInteractionForButton:(void *)a1;
+- (void)_setupPointerInteractionForButton:(void *)button;
 - (void)_updateBackwardSecondaryControlIcon;
 - (void)_updateForwardSecondaryControlIcon;
 - (void)_updateShadowAppearanceState;
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3;
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated;
 - (void)backwardsSecondaryControlWasPressed;
 - (void)didMoveToWindow;
 - (void)forwardSecondaryControlWasPressed;
 - (void)layoutSubviews;
 - (void)playPauseButtonWasPressed;
-- (void)setAvkit_extendedDynamicRangeGain:(double)a3;
-- (void)setBackwardSecondaryControlEnabled:(BOOL)a3;
-- (void)setBackwardSecondaryControlIcon:(unint64_t)a3;
-- (void)setBackwardSecondaryControlSkipInterval:(id *)a3;
-- (void)setForwardSecondaryControlEnabled:(BOOL)a3;
-- (void)setForwardSecondaryControlIcon:(unint64_t)a3;
-- (void)setForwardSecondaryControlSkipInterval:(id *)a3;
-- (void)setFullscreen:(BOOL)a3;
-- (void)setPlayPauseButtonShowsPlayIcon:(BOOL)a3;
-- (void)setShowsBackwardSecondaryPlaybackButton:(BOOL)a3;
-- (void)setShowsForwardSecondaryPlaybackButton:(BOOL)a3;
-- (void)setShowsPlayPauseButton:(BOOL)a3;
-- (void)setStyleSheet:(id)a3;
+- (void)setAvkit_extendedDynamicRangeGain:(double)gain;
+- (void)setBackwardSecondaryControlEnabled:(BOOL)enabled;
+- (void)setBackwardSecondaryControlIcon:(unint64_t)icon;
+- (void)setBackwardSecondaryControlSkipInterval:(id *)interval;
+- (void)setForwardSecondaryControlEnabled:(BOOL)enabled;
+- (void)setForwardSecondaryControlIcon:(unint64_t)icon;
+- (void)setForwardSecondaryControlSkipInterval:(id *)interval;
+- (void)setFullscreen:(BOOL)fullscreen;
+- (void)setPlayPauseButtonShowsPlayIcon:(BOOL)icon;
+- (void)setShowsBackwardSecondaryPlaybackButton:(BOOL)button;
+- (void)setShowsForwardSecondaryPlaybackButton:(BOOL)button;
+- (void)setShowsPlayPauseButton:(BOOL)button;
+- (void)setStyleSheet:(id)sheet;
 - (void)triggerBackwardSecondaryControlIconAnimation;
 - (void)triggerForwardSecondaryControlIconAnimation;
 - (void)updateBackgroundMaterial;
-- (void)viewIsOverVideoDidChange:(id)a3;
+- (void)viewIsOverVideoDidChange:(id)change;
 @end
 
 @implementation AVMobileGlassPlaybackControlsView
@@ -43,10 +43,10 @@
   return WeakRetained;
 }
 
-- (void)viewIsOverVideoDidChange:(id)a3
+- (void)viewIsOverVideoDidChange:(id)change
 {
-  v4 = a3;
-  if ([v4 isOverVideo])
+  changeCopy = change;
+  if ([changeCopy isOverVideo])
   {
     v3 = 2;
   }
@@ -56,7 +56,7 @@
     v3 = 0;
   }
 
-  [v4 setOverrideUserInterfaceStyle:v3];
+  [changeCopy setOverrideUserInterfaceStyle:v3];
 }
 
 - (void)_updateForwardSecondaryControlIcon
@@ -109,32 +109,32 @@ LABEL_8:
 
 - (void)_setUpShadowAppearance
 {
-  v5 = [(AVMobileGlassPlaybackControlButton *)self->_playPauseButton layer];
-  v3 = [(AVMobileGlassPlaybackControlButton *)self->_backwardSecondaryButton layer];
-  v4 = [(AVMobileGlassPlaybackControlButton *)self->_forwardSecondaryButton layer];
-  [v5 setShadowOffset:{0.0, 2.0}];
-  [v5 setShadowRadius:8.0];
-  [v3 setShadowOffset:{0.0, 2.0}];
-  [v3 setShadowRadius:8.0];
-  [v4 setShadowOffset:{0.0, 2.0}];
-  [v4 setShadowRadius:8.0];
+  layer = [(AVMobileGlassPlaybackControlButton *)self->_playPauseButton layer];
+  layer2 = [(AVMobileGlassPlaybackControlButton *)self->_backwardSecondaryButton layer];
+  layer3 = [(AVMobileGlassPlaybackControlButton *)self->_forwardSecondaryButton layer];
+  [layer setShadowOffset:{0.0, 2.0}];
+  [layer setShadowRadius:8.0];
+  [layer2 setShadowOffset:{0.0, 2.0}];
+  [layer2 setShadowRadius:8.0];
+  [layer3 setShadowOffset:{0.0, 2.0}];
+  [layer3 setShadowRadius:8.0];
   [(AVMobileGlassPlaybackControlsView *)&self->super.super.super.super.super.isa _updateShadowAppearanceState];
 }
 
 - (void)_updateShadowAppearanceState
 {
-  if (a1)
+  if (self)
   {
-    v13 = [a1[71] layer];
-    v2 = [a1[72] layer];
-    v3 = [a1[73] layer];
-    v4 = [a1 traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    layer = [self[71] layer];
+    layer2 = [self[72] layer];
+    layer3 = [self[73] layer];
+    traitCollection = [self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5 == 1)
+    if (userInterfaceStyle == 1)
     {
-      v6 = [MEMORY[0x1E69DC888] blackColor];
-      v7 = [v6 CGColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      cGColor = [blackColor CGColor];
 
       v8 = 1050253722;
       v9 = 1041865114;
@@ -142,32 +142,32 @@ LABEL_8:
 
     else
     {
-      v7 = 0;
+      cGColor = 0;
       v9 = 0;
       v8 = 0;
     }
 
-    [v13 setShadowColor:v7];
+    [layer setShadowColor:cGColor];
     LODWORD(v10) = v9;
-    [v13 setShadowOpacity:v10];
-    [v2 setShadowColor:v7];
+    [layer setShadowOpacity:v10];
+    [layer2 setShadowColor:cGColor];
     LODWORD(v11) = v8;
-    [v2 setShadowOpacity:v11];
-    [v3 setShadowColor:v7];
+    [layer2 setShadowOpacity:v11];
+    [layer3 setShadowColor:cGColor];
     LODWORD(v12) = v8;
-    [v3 setShadowOpacity:v12];
+    [layer3 setShadowOpacity:v12];
   }
 }
 
-- (void)_addPlaybackControlViews:(id)a3
+- (void)_addPlaybackControlViews:(id)views
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewsCopy = views;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [viewsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -179,14 +179,14 @@ LABEL_8:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewsCopy);
         }
 
         [(AVMobileGlassPlaybackControlsView *)self addSubview:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [viewsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -195,13 +195,13 @@ LABEL_8:
 
 - (void)forwardSecondaryControlWasPressed
 {
-  v3 = [(AVMobileGlassPlaybackControlsView *)self delegate];
+  delegate = [(AVMobileGlassPlaybackControlsView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVMobileGlassPlaybackControlsView *)self delegate];
-    [v5 playbackControlsViewForwardSecondaryControlWasPressed:self];
+    delegate2 = [(AVMobileGlassPlaybackControlsView *)self delegate];
+    [delegate2 playbackControlsViewForwardSecondaryControlWasPressed:self];
 
     [(AVMobileGlassPlaybackControlsView *)self triggerForwardSecondaryControlIconAnimation];
   }
@@ -209,13 +209,13 @@ LABEL_8:
 
 - (void)backwardsSecondaryControlWasPressed
 {
-  v3 = [(AVMobileGlassPlaybackControlsView *)self delegate];
+  delegate = [(AVMobileGlassPlaybackControlsView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVMobileGlassPlaybackControlsView *)self delegate];
-    [v5 playbackControlsViewBackwardSecondaryControlWasPressed:self];
+    delegate2 = [(AVMobileGlassPlaybackControlsView *)self delegate];
+    [delegate2 playbackControlsViewBackwardSecondaryControlWasPressed:self];
 
     [(AVMobileGlassPlaybackControlsView *)self triggerBackwardSecondaryControlIconAnimation];
   }
@@ -223,13 +223,13 @@ LABEL_8:
 
 - (void)playPauseButtonWasPressed
 {
-  v3 = [(AVMobileGlassPlaybackControlsView *)self delegate];
+  delegate = [(AVMobileGlassPlaybackControlsView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVMobileGlassPlaybackControlsView *)self delegate];
-    [v5 playbackControlsViewPlayPauseButtonWasPressed:self];
+    delegate2 = [(AVMobileGlassPlaybackControlsView *)self delegate];
+    [delegate2 playbackControlsViewPlayPauseButtonWasPressed:self];
   }
 }
 
@@ -378,12 +378,12 @@ LABEL_15:
   [(AVMobileGlassPlaybackControlsView *)self _setUpShadowAppearance];
 }
 
-- (void)_setupPointerInteractionForButton:(void *)a1
+- (void)_setupPointerInteractionForButton:(void *)button
 {
   v3 = a2;
-  if (a1)
+  if (button)
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, button);
     v5 = MEMORY[0x1E69E9820];
     v6 = 3221225472;
     v7 = __71__AVMobileGlassPlaybackControlsView__setupPointerInteractionForButton___block_invoke;
@@ -457,21 +457,21 @@ id __71__AVMobileGlassPlaybackControlsView__setupPointerInteractionForButton___b
   return v22;
 }
 
-- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)a3
+- (void)avkit_intrinsicContentSizeOfSubviewWasInvalidated:(id)invalidated
 {
-  v4 = a3;
+  invalidatedCopy = invalidated;
   [(AVMobileGlassPlaybackControlsView *)self invalidateIntrinsicContentSize];
-  v5 = [(AVMobileGlassPlaybackControlsView *)self superview];
-  [v5 avkit_intrinsicContentSizeOfSubviewWasInvalidated:v4];
+  superview = [(AVMobileGlassPlaybackControlsView *)self superview];
+  [superview avkit_intrinsicContentSizeOfSubviewWasInvalidated:invalidatedCopy];
 
   [(AVMobileGlassPlaybackControlsView *)self setNeedsLayout];
 }
 
-- (void)setAvkit_extendedDynamicRangeGain:(double)a3
+- (void)setAvkit_extendedDynamicRangeGain:(double)gain
 {
-  if (self->_extendedDynamicRangeGain != a3)
+  if (self->_extendedDynamicRangeGain != gain)
   {
-    self->_extendedDynamicRangeGain = a3;
+    self->_extendedDynamicRangeGain = gain;
     [(AVMobileGlassPlaybackControlsView *)self _updateExtendedDynamicRangeGain];
   }
 }
@@ -494,16 +494,16 @@ id __71__AVMobileGlassPlaybackControlsView__setupPointerInteractionForButton___b
 
 - (void)updateBackgroundMaterial
 {
-  v3 = [(AVGlassBackedView *)self backgroundMaterialStyle];
-  v4 = [(AVGlassBackedView *)self backgroundMaterialized];
-  [(AVGlassBackedButton *)self->_playPauseButton setBackgroundMaterialStyle:v3];
-  [(AVGlassBackedButton *)self->_backwardSecondaryButton setBackgroundMaterialStyle:v3];
-  [(AVGlassBackedButton *)self->_forwardSecondaryButton setBackgroundMaterialStyle:v3];
-  [(AVGlassBackedButton *)self->_playPauseButton setBackgroundMaterialized:v4];
-  [(AVGlassBackedButton *)self->_backwardSecondaryButton setBackgroundMaterialized:v4];
+  backgroundMaterialStyle = [(AVGlassBackedView *)self backgroundMaterialStyle];
+  backgroundMaterialized = [(AVGlassBackedView *)self backgroundMaterialized];
+  [(AVGlassBackedButton *)self->_playPauseButton setBackgroundMaterialStyle:backgroundMaterialStyle];
+  [(AVGlassBackedButton *)self->_backwardSecondaryButton setBackgroundMaterialStyle:backgroundMaterialStyle];
+  [(AVGlassBackedButton *)self->_forwardSecondaryButton setBackgroundMaterialStyle:backgroundMaterialStyle];
+  [(AVGlassBackedButton *)self->_playPauseButton setBackgroundMaterialized:backgroundMaterialized];
+  [(AVGlassBackedButton *)self->_backwardSecondaryButton setBackgroundMaterialized:backgroundMaterialized];
   forwardSecondaryButton = self->_forwardSecondaryButton;
 
-  [(AVGlassBackedButton *)forwardSecondaryButton setBackgroundMaterialized:v4];
+  [(AVGlassBackedButton *)forwardSecondaryButton setBackgroundMaterialized:backgroundMaterialized];
 }
 
 - (void)triggerForwardSecondaryControlIconAnimation
@@ -544,136 +544,136 @@ id __71__AVMobileGlassPlaybackControlsView__setupPointerInteractionForButton___b
   [(AVMobileGlassPlaybackControlButton *)backwardSecondaryButton setPlaybackControlButtonIconState:backwardIntervalSkipGlyphState];
 }
 
-- (void)setFullscreen:(BOOL)a3
+- (void)setFullscreen:(BOOL)fullscreen
 {
-  if (self->_fullscreen != a3)
+  if (self->_fullscreen != fullscreen)
   {
-    v4 = a3;
-    self->_fullscreen = a3;
+    fullscreenCopy = fullscreen;
+    self->_fullscreen = fullscreen;
     [(AVMobileGlassPlaybackControlButton *)self->_playPauseButton setFullscreen:?];
-    [(AVMobileGlassPlaybackControlButton *)self->_backwardSecondaryButton setFullscreen:v4];
+    [(AVMobileGlassPlaybackControlButton *)self->_backwardSecondaryButton setFullscreen:fullscreenCopy];
     forwardSecondaryButton = self->_forwardSecondaryButton;
 
-    [(AVMobileGlassPlaybackControlButton *)forwardSecondaryButton setFullscreen:v4];
+    [(AVMobileGlassPlaybackControlButton *)forwardSecondaryButton setFullscreen:fullscreenCopy];
   }
 }
 
-- (void)setStyleSheet:(id)a3
+- (void)setStyleSheet:(id)sheet
 {
-  v5 = a3;
-  if (self->_styleSheet != v5)
+  sheetCopy = sheet;
+  if (self->_styleSheet != sheetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_styleSheet, a3);
+    v6 = sheetCopy;
+    objc_storeStrong(&self->_styleSheet, sheet);
     [(AVMobileGlassPlaybackControlButton *)self->_playPauseButton setStyleSheet:self->_styleSheet];
     [(AVMobileGlassPlaybackControlButton *)self->_forwardSecondaryButton setStyleSheet:self->_styleSheet];
     [(AVMobileGlassPlaybackControlButton *)self->_backwardSecondaryButton setStyleSheet:self->_styleSheet];
     [(AVMobileGlassPlaybackControlsView *)self setNeedsLayout];
-    v5 = v6;
+    sheetCopy = v6;
   }
 }
 
-- (void)setForwardSecondaryControlSkipInterval:(id *)a3
+- (void)setForwardSecondaryControlSkipInterval:(id *)interval
 {
   p_forwardSecondaryControlSkipInterval = &self->_forwardSecondaryControlSkipInterval;
   time1 = self->_forwardSecondaryControlSkipInterval;
-  v8 = *a3;
+  v8 = *interval;
   if (CMTimeCompare(&time1, &v8))
   {
-    v6 = *&a3->var0;
-    p_forwardSecondaryControlSkipInterval->epoch = a3->var3;
+    v6 = *&interval->var0;
+    p_forwardSecondaryControlSkipInterval->epoch = interval->var3;
     *&p_forwardSecondaryControlSkipInterval->value = v6;
     forwardSecondaryButton = self->_forwardSecondaryButton;
-    time1 = *a3;
+    time1 = *interval;
     [(AVMobileGlassPlaybackControlButton *)forwardSecondaryButton setSkipInterval:&time1];
   }
 }
 
-- (void)setBackwardSecondaryControlSkipInterval:(id *)a3
+- (void)setBackwardSecondaryControlSkipInterval:(id *)interval
 {
   p_backwardSecondaryControlSkipInterval = &self->_backwardSecondaryControlSkipInterval;
   time1 = self->_backwardSecondaryControlSkipInterval;
-  v8 = *a3;
+  v8 = *interval;
   if (CMTimeCompare(&time1, &v8))
   {
-    v6 = *&a3->var0;
-    p_backwardSecondaryControlSkipInterval->epoch = a3->var3;
+    v6 = *&interval->var0;
+    p_backwardSecondaryControlSkipInterval->epoch = interval->var3;
     *&p_backwardSecondaryControlSkipInterval->value = v6;
     backwardSecondaryButton = self->_backwardSecondaryButton;
-    time1 = *a3;
+    time1 = *interval;
     [(AVMobileGlassPlaybackControlButton *)backwardSecondaryButton setSkipInterval:&time1];
   }
 }
 
-- (void)setBackwardSecondaryControlEnabled:(BOOL)a3
+- (void)setBackwardSecondaryControlEnabled:(BOOL)enabled
 {
-  if (self->_backwardSecondaryControlEnabled != a3)
+  if (self->_backwardSecondaryControlEnabled != enabled)
   {
-    self->_backwardSecondaryControlEnabled = a3;
+    self->_backwardSecondaryControlEnabled = enabled;
     [(AVMobileGlassPlaybackControlButton *)self->_backwardSecondaryButton setEnabled:?];
   }
 }
 
-- (void)setForwardSecondaryControlEnabled:(BOOL)a3
+- (void)setForwardSecondaryControlEnabled:(BOOL)enabled
 {
-  if (self->_forwardSecondaryControlEnabled != a3)
+  if (self->_forwardSecondaryControlEnabled != enabled)
   {
-    self->_forwardSecondaryControlEnabled = a3;
+    self->_forwardSecondaryControlEnabled = enabled;
     [(AVMobileGlassPlaybackControlButton *)self->_forwardSecondaryButton setEnabled:?];
   }
 }
 
-- (void)setBackwardSecondaryControlIcon:(unint64_t)a3
+- (void)setBackwardSecondaryControlIcon:(unint64_t)icon
 {
-  if (self->_backwardSecondaryControlIcon != a3)
+  if (self->_backwardSecondaryControlIcon != icon)
   {
-    self->_backwardSecondaryControlIcon = a3;
+    self->_backwardSecondaryControlIcon = icon;
     [(AVMobileGlassPlaybackControlsView *)self _updateBackwardSecondaryControlIcon];
   }
 }
 
-- (void)setForwardSecondaryControlIcon:(unint64_t)a3
+- (void)setForwardSecondaryControlIcon:(unint64_t)icon
 {
-  if (self->_forwardSecondaryControlIcon != a3)
+  if (self->_forwardSecondaryControlIcon != icon)
   {
-    self->_forwardSecondaryControlIcon = a3;
+    self->_forwardSecondaryControlIcon = icon;
     [(AVMobileGlassPlaybackControlsView *)self _updateForwardSecondaryControlIcon];
   }
 }
 
-- (void)setShowsForwardSecondaryPlaybackButton:(BOOL)a3
+- (void)setShowsForwardSecondaryPlaybackButton:(BOOL)button
 {
-  if (self->_showsForwardSecondaryPlaybackButton != a3)
+  if (self->_showsForwardSecondaryPlaybackButton != button)
   {
-    self->_showsForwardSecondaryPlaybackButton = a3;
+    self->_showsForwardSecondaryPlaybackButton = button;
     [(AVMobileGlassPlaybackControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsBackwardSecondaryPlaybackButton:(BOOL)a3
+- (void)setShowsBackwardSecondaryPlaybackButton:(BOOL)button
 {
-  if (self->_showsBackwardSecondaryPlaybackButton != a3)
+  if (self->_showsBackwardSecondaryPlaybackButton != button)
   {
-    self->_showsBackwardSecondaryPlaybackButton = a3;
+    self->_showsBackwardSecondaryPlaybackButton = button;
     [(AVMobileGlassPlaybackControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowsPlayPauseButton:(BOOL)a3
+- (void)setShowsPlayPauseButton:(BOOL)button
 {
-  if (self->_showsPlayPauseButton != a3)
+  if (self->_showsPlayPauseButton != button)
   {
-    self->_showsPlayPauseButton = a3;
+    self->_showsPlayPauseButton = button;
     [(AVMobileGlassPlaybackControlsView *)self setNeedsLayout];
   }
 }
 
-- (void)setPlayPauseButtonShowsPlayIcon:(BOOL)a3
+- (void)setPlayPauseButtonShowsPlayIcon:(BOOL)icon
 {
-  if (self->_playPauseButtonShowsPlayIcon != a3)
+  if (self->_playPauseButtonShowsPlayIcon != icon)
   {
-    self->_playPauseButtonShowsPlayIcon = a3;
-    if (a3)
+    self->_playPauseButtonShowsPlayIcon = icon;
+    if (icon)
     {
       v4 = @"play";
     }
@@ -702,17 +702,17 @@ id __71__AVMobileGlassPlaybackControlsView__setupPointerInteractionForButton___b
   }
 }
 
-- (AVMobileGlassPlaybackControlsView)initWithStyleSheet:(id)a3
+- (AVMobileGlassPlaybackControlsView)initWithStyleSheet:(id)sheet
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sheetCopy = sheet;
   v25.receiver = self;
   v25.super_class = AVMobileGlassPlaybackControlsView;
   v6 = [(AVGlassBackedView *)&v25 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_styleSheet, a3);
+    objc_storeStrong(&v6->_styleSheet, sheet);
     memset(&v24, 0, sizeof(v24));
     CMTimeMakeWithSeconds(&v24, 10.0, 600);
     v8 = *&v24.value;
@@ -723,19 +723,19 @@ id __71__AVMobileGlassPlaybackControlsView__setupPointerInteractionForButton___b
     *(v7 + 616) = v9;
     *(v7 + 544) = 0;
     *(v7 + 552) = 0;
-    v10 = [AVMobileGlassPlaybackControlButton playPauseButtonWithStyleSheet:v5];
+    v10 = [AVMobileGlassPlaybackControlButton playPauseButtonWithStyleSheet:sheetCopy];
     v11 = *(v7 + 568);
     *(v7 + 568) = v10;
 
     [*(v7 + 568) addTarget:v7 action:sel_playPauseButtonWasPressed forControlEvents:0x2000];
     [*(v7 + 568) setContentIntersectingDelegate:v7];
-    v12 = [AVMobileGlassPlaybackControlButton forwardSecondaryButtonWithStyleSheet:v5];
+    v12 = [AVMobileGlassPlaybackControlButton forwardSecondaryButtonWithStyleSheet:sheetCopy];
     v13 = *(v7 + 584);
     *(v7 + 584) = v12;
 
     [*(v7 + 584) addTarget:v7 action:sel_forwardSecondaryControlWasPressed forControlEvents:0x2000];
     [*(v7 + 584) setContentIntersectingDelegate:v7];
-    v14 = [AVMobileGlassPlaybackControlButton backwardSecondaryButtonWithStyleSheet:v5];
+    v14 = [AVMobileGlassPlaybackControlButton backwardSecondaryButtonWithStyleSheet:sheetCopy];
     v15 = *(v7 + 576);
     *(v7 + 576) = v14;
 

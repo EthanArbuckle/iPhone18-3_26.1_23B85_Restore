@@ -8,12 +8,12 @@
 - (id)endpointComponents
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PKPaymentRewrapRequestBase *)self type];
-  if (v4 <= 1)
+  type = [(PKPaymentRewrapRequestBase *)self type];
+  if (type <= 1)
   {
-    if (v4)
+    if (type)
     {
-      if (v4 != 1)
+      if (type != 1)
       {
         goto LABEL_13;
       }
@@ -29,7 +29,7 @@
 
   else
   {
-    switch(v4)
+    switch(type)
     {
       case 2:
         v5 = @"secureVirtualCardRefresh";
@@ -56,30 +56,30 @@ LABEL_13:
 
 - (id)bodyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [(NSString *)self->_merchantIdentifier dataUsingEncoding:4];
-  v5 = [v4 SHA256Hash];
-  v6 = [v5 hexEncoding];
+  sHA256Hash = [v4 SHA256Hash];
+  hexEncoding = [sHA256Hash hexEncoding];
 
-  [v3 setValue:v6 forKey:@"merchantId"];
+  [dictionary setValue:hexEncoding forKey:@"merchantId"];
   hostApplicationIdentifier = self->_hostApplicationIdentifier;
   if (hostApplicationIdentifier)
   {
-    [v3 setObject:hostApplicationIdentifier forKey:@"applicationId"];
+    [dictionary setObject:hostApplicationIdentifier forKey:@"applicationId"];
   }
 
   merchantDisplayName = self->_merchantDisplayName;
   if (merchantDisplayName)
   {
-    [v3 setObject:merchantDisplayName forKey:@"displayName"];
+    [dictionary setObject:merchantDisplayName forKey:@"displayName"];
   }
 
   v12.receiver = self;
   v12.super_class = PKPaymentRewrapRequest;
-  v9 = [(PKPaymentRewrapRequestBase *)&v12 bodyDictionary];
-  [v3 addEntriesFromDictionary:v9];
+  bodyDictionary = [(PKPaymentRewrapRequestBase *)&v12 bodyDictionary];
+  [dictionary addEntriesFromDictionary:bodyDictionary];
 
-  v10 = [v3 copy];
+  v10 = [dictionary copy];
 
   return v10;
 }

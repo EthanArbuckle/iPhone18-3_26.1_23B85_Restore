@@ -2,10 +2,10 @@
 + (id)_screenCache;
 - (unint64_t)deviceSize;
 - (void)applyScreenStyle;
-- (void)setAssociatedDevice:(id)a3;
-- (void)setScreenStyle:(unint64_t)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)setWatchFaceFilePath:(id)a3;
+- (void)setAssociatedDevice:(id)device;
+- (void)setScreenStyle:(unint64_t)style;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)setWatchFaceFilePath:(id)path;
 - (void)updateWatchFace;
 @end
 
@@ -25,14 +25,14 @@
 
 - (void)applyScreenStyle
 {
-  v3 = [(COSWatchView *)self watchScreenImageView];
+  watchScreenImageView = [(COSWatchView *)self watchScreenImageView];
 
-  if (v3)
+  if (watchScreenImageView)
   {
     screenStyle = self->_screenStyle;
-    v8 = [(COSWatchView *)self watchScreenImageView];
-    v5 = [v8 layer];
-    v6 = v5;
+    watchScreenImageView2 = [(COSWatchView *)self watchScreenImageView];
+    layer = [watchScreenImageView2 layer];
+    v6 = layer;
     if (screenStyle == 1)
     {
       v7 = [CAFilter filterWithType:kCAFilterMultiplyBlendMode];
@@ -41,29 +41,29 @@
 
     else
     {
-      [v5 setCompositingFilter:0];
+      [layer setCompositingFilter:0];
     }
   }
 }
 
-- (void)setScreenStyle:(unint64_t)a3
+- (void)setScreenStyle:(unint64_t)style
 {
   screenStyle = self->_screenStyle;
-  self->_screenStyle = a3;
-  if (screenStyle != a3)
+  self->_screenStyle = style;
+  if (screenStyle != style)
   {
     [(COSWatchView *)self applyScreenStyle];
   }
 }
 
-- (void)setAssociatedDevice:(id)a3
+- (void)setAssociatedDevice:(id)device
 {
-  v5 = a3;
-  objc_storeStrong(&self->_associatedDevice, a3);
+  deviceCopy = device;
+  objc_storeStrong(&self->_associatedDevice, device);
   v6 = [(NRDevice *)self->_associatedDevice valueForProperty:NRDevicePropertyIsAltAccount];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     snapshotProvider = self->_snapshotProvider;
     self->_snapshotProvider = 0;
@@ -104,9 +104,9 @@
   }
 }
 
-- (void)setWatchFaceFilePath:(id)a3
+- (void)setWatchFaceFilePath:(id)path
 {
-  objc_storeStrong(&self->_watchFaceFilePath, a3);
+  objc_storeStrong(&self->_watchFaceFilePath, path);
 
   [(COSWatchView *)self updateWatchFace];
 }
@@ -188,9 +188,9 @@
     v4 = v3;
     if (v3)
     {
-      v5 = [(NSString *)v3 UUIDString];
+      uUIDString = [(NSString *)v3 UUIDString];
       v6 = [NSNumber numberWithUnsignedInteger:[(COSWatchView *)self style]];
-      v7 = [NSString stringWithFormat:@"%@.%@", v5, v6];
+      v7 = [NSString stringWithFormat:@"%@.%@", uUIDString, v6];
     }
 
     else
@@ -198,13 +198,13 @@
       v7 = 0;
     }
 
-    v26 = [(NTKLibrarySelectedFaceSnapshotProvider *)self->_snapshotProvider snapshotImage];
+    snapshotImage = [(NTKLibrarySelectedFaceSnapshotProvider *)self->_snapshotProvider snapshotImage];
     [(COSWatchView *)self screenImageSize];
-    if (v26)
+    if (snapshotImage)
     {
       v29 = v27;
       v30 = v28;
-      v18 = [v26 imageByPreparingThumbnailOfSize:?];
+      v18 = [snapshotImage imageByPreparingThumbnailOfSize:?];
 
       v31 = pbb_bridge_log();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -364,19 +364,19 @@ LABEL_7:
   v18 = [BPSThumbnailGenerator scaledImageForImage:v11 desiredSize:v14 scale:v15, v17];
 
 LABEL_40:
-  v45 = [(COSWatchView *)self watchScreenImageView];
+  watchScreenImageView = [(COSWatchView *)self watchScreenImageView];
   v46 = 1;
-  [v45 setContentMode:1];
+  [watchScreenImageView setContentMode:1];
 
-  v47 = [(COSWatchView *)self watchScreenImageView];
-  [v47 setImage:v18];
+  watchScreenImageView2 = [(COSWatchView *)self watchScreenImageView];
+  [watchScreenImageView2 setImage:v18];
 
   [(COSWatchView *)self layoutWatchScreenImageView];
-  v48 = [(COSWatchView *)self deviceSize];
+  deviceSize = [(COSWatchView *)self deviceSize];
   v49 = 18.0;
-  if (v48 != 19 && v48 != 25)
+  if (deviceSize != 19 && deviceSize != 25)
   {
-    if ((v48 & 0xFFFFFFFFFFFFFFFELL) == 0x14)
+    if ((deviceSize & 0xFFFFFFFFFFFFFFFELL) == 0x14)
     {
       v49 = 18.0;
     }
@@ -386,7 +386,7 @@ LABEL_40:
       v49 = 12.0;
     }
 
-    if (v48 <= 0x15 && ((1 << v48) & 0x306000) != 0)
+    if (deviceSize <= 0x15 && ((1 << deviceSize) & 0x306000) != 0)
     {
       v46 = 1;
     }
@@ -398,25 +398,25 @@ LABEL_40:
     }
   }
 
-  v50 = [(COSWatchView *)self watchScreenImageView];
-  v51 = [v50 layer];
-  [v51 setCornerRadius:v49];
+  watchScreenImageView3 = [(COSWatchView *)self watchScreenImageView];
+  layer = [watchScreenImageView3 layer];
+  [layer setCornerRadius:v49];
 
-  v52 = [(COSWatchView *)self watchScreenImageView];
-  [v52 setClipsToBounds:v46];
+  watchScreenImageView4 = [(COSWatchView *)self watchScreenImageView];
+  [watchScreenImageView4 setClipsToBounds:v46];
 
   [(COSWatchView *)self setNeedsLayout];
   [(COSWatchView *)self applyScreenStyle];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = COSWatchView;
   [(COSWatchView *)&v6 setUserInteractionEnabled:?];
   v5 = 0.5;
-  if (v3)
+  if (enabledCopy)
   {
     v5 = 1.0;
   }

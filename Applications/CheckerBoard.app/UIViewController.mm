@@ -4,8 +4,8 @@
 - (void)_remoteSetupCompleted;
 - (void)_remoteSetupConfiguring;
 - (void)_remoteSetupFailed;
-- (void)_remoteSetupPresentAuthentication:(id)a3;
-- (void)_remoteSetupRequestAuthentication:(id)a3;
+- (void)_remoteSetupPresentAuthentication:(id)authentication;
+- (void)_remoteSetupRequestAuthentication:(id)authentication;
 - (void)configureForRemoteSetup;
 - (void)unConfigureForRemoteSetup;
 @end
@@ -70,30 +70,30 @@
   [v8 removeObserver:self name:@"CBRemoteSetupCancelledNotification" object:0];
 }
 
-- (void)_remoteSetupPresentAuthentication:(id)a3
+- (void)_remoteSetupPresentAuthentication:(id)authentication
 {
-  v4 = a3;
+  authenticationCopy = authentication;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 userInfo];
+    userInfo = [authenticationCopy userInfo];
     v26 = 138412290;
-    v27 = v6;
+    v27 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Remote setup is requesting we present authentication with info: %@", &v26, 0xCu);
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"type"];
+  userInfo2 = [authenticationCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"type"];
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:@"pin"];
+  userInfo3 = [authenticationCopy userInfo];
+  v10 = [userInfo3 objectForKeyedSubscript:@"pin"];
 
-  v11 = [(UIViewController *)self remoteSetupAuthController];
+  remoteSetupAuthController = [(UIViewController *)self remoteSetupAuthController];
 
-  if (v11)
+  if (remoteSetupAuthController)
   {
-    v12 = [(UIViewController *)self remoteSetupAuthController];
-    [v12 dismissViewControllerAnimated:1 completion:0];
+    remoteSetupAuthController2 = [(UIViewController *)self remoteSetupAuthController];
+    [remoteSetupAuthController2 dismissViewControllerAnimated:1 completion:0];
   }
 
   if (v10)
@@ -108,8 +108,8 @@
 
   if (v13)
   {
-    v14 = CheckerBoardLogHandleForCategory();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    remoteSetupManager = CheckerBoardLogHandleForCategory();
+    if (os_log_type_enabled(remoteSetupManager, OS_LOG_TYPE_ERROR))
     {
       sub_100044E04();
     }
@@ -123,23 +123,23 @@
       v16 = @"REMOTE_SETUP_PIN_AUTH_TITLE";
 LABEL_16:
       v17 = +[NSBundle mainBundle];
-      v14 = [v17 localizedStringForKey:v16 value:&stru_10007EAB0 table:0];
+      remoteSetupManager = [v17 localizedStringForKey:v16 value:&stru_10007EAB0 table:0];
 
       v18 = +[NSBundle mainBundle];
       v19 = [v18 localizedStringForKey:v15 value:&stru_10007EAB0 table:0];
 
-      v20 = [[CBRemoteSetupAuthenticationViewController alloc] initWithTitle:v14 detailText:v19 icon:0];
+      v20 = [[CBRemoteSetupAuthenticationViewController alloc] initWithTitle:remoteSetupManager detailText:v19 icon:0];
       [(UIViewController *)self setRemoteSetupAuthController:v20];
 
-      v21 = [(UIViewController *)self remoteSetupAuthController];
-      [v21 setPairingCode:v10];
+      remoteSetupAuthController3 = [(UIViewController *)self remoteSetupAuthController];
+      [remoteSetupAuthController3 setPairingCode:v10];
 
-      v22 = [v8 intValue];
-      v23 = [(UIViewController *)self remoteSetupAuthController];
-      [v23 setPasswordType:v22];
+      intValue = [v8 intValue];
+      remoteSetupAuthController4 = [(UIViewController *)self remoteSetupAuthController];
+      [remoteSetupAuthController4 setPasswordType:intValue];
 
-      v24 = [(UIViewController *)self remoteSetupAuthController];
-      [(UIViewController *)self presentViewController:v24 animated:1 completion:0];
+      remoteSetupAuthController5 = [(UIViewController *)self remoteSetupAuthController];
+      [(UIViewController *)self presentViewController:remoteSetupAuthController5 animated:1 completion:0];
 
       goto LABEL_20;
     }
@@ -157,26 +157,26 @@ LABEL_16:
       sub_100044E44();
     }
 
-    v14 = [(UIViewController *)self remoteSetupManager];
-    [v14 setupFailed];
+    remoteSetupManager = [(UIViewController *)self remoteSetupManager];
+    [remoteSetupManager setupFailed];
   }
 
 LABEL_20:
 }
 
-- (void)_remoteSetupRequestAuthentication:(id)a3
+- (void)_remoteSetupRequestAuthentication:(id)authentication
 {
-  v4 = a3;
+  authenticationCopy = authentication;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v4;
+    v31 = authenticationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Remote setup wants us to answer authenticiation with info: %@", buf, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  userInfo = [authenticationCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"type"];
 
   if ([v7 isEqualToValue:&off_100080FB8])
   {
@@ -199,17 +199,17 @@ LABEL_20:
     v8 = @"REMOTE_SETUP_ACC_SCAN_DETAIL";
   }
 
-  v9 = [(UIViewController *)self remoteSetupQRCodeScannerController];
+  remoteSetupQRCodeScannerController = [(UIViewController *)self remoteSetupQRCodeScannerController];
 
-  if (v9)
+  if (remoteSetupQRCodeScannerController)
   {
-    v10 = [(UIViewController *)self remoteSetupQRCodeScannerController];
+    remoteSetupQRCodeScannerController2 = [(UIViewController *)self remoteSetupQRCodeScannerController];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_10000356C;
     v29[3] = &unk_10007D540;
     v29[4] = self;
-    [v10 dismissViewControllerAnimated:1 completion:v29];
+    [remoteSetupQRCodeScannerController2 dismissViewControllerAnimated:1 completion:v29];
 
     [(UIViewController *)self setRemoteSetupQRCodeScannerController:0];
   }
@@ -222,9 +222,9 @@ LABEL_20:
   v11 = [[CBQRCodeScanner alloc] initWithScanCompletion:v28];
   [(UIViewController *)self setRemoteSetupQRCodeScanner:v11];
 
-  v12 = [(UIViewController *)self remoteSetupQRCodeScanner];
+  remoteSetupQRCodeScanner = [(UIViewController *)self remoteSetupQRCodeScanner];
 
-  if (!v12)
+  if (!remoteSetupQRCodeScanner)
   {
     v24 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -234,8 +234,8 @@ LABEL_20:
 
 LABEL_15:
 
-    v25 = [(UIViewController *)self remoteSetupManager];
-    [v25 setupFailed];
+    remoteSetupManager = [(UIViewController *)self remoteSetupManager];
+    [remoteSetupManager setupFailed];
 
     goto LABEL_16;
   }
@@ -244,25 +244,25 @@ LABEL_15:
   v14 = +[NSBundle mainBundle];
   [v14 localizedStringForKey:@"REMOTE_SETUP_QR_SCAN_TITLE" value:&stru_10007EAB0 table:0];
   v26 = v7;
-  v16 = v15 = v4;
+  v16 = v15 = authenticationCopy;
   v17 = +[NSBundle mainBundle];
   v18 = [v17 localizedStringForKey:v8 value:&stru_10007EAB0 table:0];
-  v19 = [(UIViewController *)self remoteSetupManager];
-  v20 = [(UIViewController *)self remoteSetupQRCodeScanner];
-  v21 = [v20 captureSession];
-  v22 = [(CBRemoteSetupQRCodeScanViewController *)v13 initWithTitle:v16 detailText:v18 icon:0 remoteSetupManager:v19 captureSession:v21];
+  remoteSetupManager2 = [(UIViewController *)self remoteSetupManager];
+  remoteSetupQRCodeScanner2 = [(UIViewController *)self remoteSetupQRCodeScanner];
+  captureSession = [remoteSetupQRCodeScanner2 captureSession];
+  v22 = [(CBRemoteSetupQRCodeScanViewController *)v13 initWithTitle:v16 detailText:v18 icon:0 remoteSetupManager:remoteSetupManager2 captureSession:captureSession];
   [(UIViewController *)self setRemoteSetupQRCodeScannerController:v22];
 
-  v4 = v15;
+  authenticationCopy = v15;
   v7 = v26;
 
-  v23 = [(UIViewController *)self remoteSetupQRCodeScannerController];
+  remoteSetupQRCodeScannerController3 = [(UIViewController *)self remoteSetupQRCodeScannerController];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100003724;
   v27[3] = &unk_10007D540;
   v27[4] = self;
-  [(UIViewController *)self presentViewController:v23 animated:1 completion:v27];
+  [(UIViewController *)self presentViewController:remoteSetupQRCodeScannerController3 animated:1 completion:v27];
 
 LABEL_16:
 }
@@ -276,12 +276,12 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Remote setup is now configuring", v13, 2u);
   }
 
-  v4 = [(UIViewController *)self remoteSetupAuthController];
+  remoteSetupAuthController = [(UIViewController *)self remoteSetupAuthController];
 
-  if (v4)
+  if (remoteSetupAuthController)
   {
-    v5 = [(UIViewController *)self remoteSetupAuthController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    remoteSetupAuthController2 = [(UIViewController *)self remoteSetupAuthController];
+    [remoteSetupAuthController2 dismissViewControllerAnimated:1 completion:0];
 
     [(UIViewController *)self setRemoteSetupAuthController:0];
   }
@@ -294,8 +294,8 @@ LABEL_16:
   v11 = [(CBRemoteSetupConfiguringViewController *)v6 initWithTitle:v8 detailText:v10 icon:0];
   [(UIViewController *)self setRemoteSetupConfiguringController:v11];
 
-  v12 = [(UIViewController *)self remoteSetupConfiguringController];
-  [(UIViewController *)self presentViewController:v12 animated:1 completion:0];
+  remoteSetupConfiguringController = [(UIViewController *)self remoteSetupConfiguringController];
+  [(UIViewController *)self presentViewController:remoteSetupConfiguringController animated:1 completion:0];
 }
 
 - (void)_remoteSetupCompleted
@@ -309,10 +309,10 @@ LABEL_16:
 
   v4 = +[NSUserDefaults standardUserDefaults];
   [v4 setBool:1 forKey:@"remoteSetupCompleted"];
-  v5 = [(UIViewController *)self remoteSetupManager];
-  v6 = [v5 remoteLocaleCode];
+  remoteSetupManager = [(UIViewController *)self remoteSetupManager];
+  remoteLocaleCode = [remoteSetupManager remoteLocaleCode];
 
-  if (v6)
+  if (remoteLocaleCode)
   {
     v7 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -322,7 +322,7 @@ LABEL_16:
     }
 
     v8 = +[CBLocationController sharedLocationController];
-    [v8 selectLanguage:v6 restartAfterCompletion:0];
+    [v8 selectLanguage:remoteLocaleCode restartAfterCompletion:0];
   }
 
   v9 = CheckerBoardLogHandleForCategory();
@@ -338,37 +338,37 @@ LABEL_16:
 
 - (void)_clearRemoteSetupUX
 {
-  v3 = [(UIViewController *)self remoteSetupConfiguringController];
+  remoteSetupConfiguringController = [(UIViewController *)self remoteSetupConfiguringController];
 
-  if (v3)
+  if (remoteSetupConfiguringController)
   {
-    v4 = [(UIViewController *)self remoteSetupConfiguringController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    remoteSetupConfiguringController2 = [(UIViewController *)self remoteSetupConfiguringController];
+    [remoteSetupConfiguringController2 dismissViewControllerAnimated:1 completion:0];
 
     [(UIViewController *)self setRemoteSetupConfiguringController:0];
   }
 
-  v5 = [(UIViewController *)self remoteSetupAuthController];
+  remoteSetupAuthController = [(UIViewController *)self remoteSetupAuthController];
 
-  if (v5)
+  if (remoteSetupAuthController)
   {
-    v6 = [(UIViewController *)self remoteSetupAuthController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    remoteSetupAuthController2 = [(UIViewController *)self remoteSetupAuthController];
+    [remoteSetupAuthController2 dismissViewControllerAnimated:1 completion:0];
 
     [(UIViewController *)self setRemoteSetupAuthController:0];
   }
 
-  v7 = [(UIViewController *)self remoteSetupQRCodeScannerController];
+  remoteSetupQRCodeScannerController = [(UIViewController *)self remoteSetupQRCodeScannerController];
 
-  if (v7)
+  if (remoteSetupQRCodeScannerController)
   {
-    v8 = [(UIViewController *)self remoteSetupQRCodeScannerController];
+    remoteSetupQRCodeScannerController2 = [(UIViewController *)self remoteSetupQRCodeScannerController];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100003CA4;
     v9[3] = &unk_10007D540;
     v9[4] = self;
-    [v8 dismissViewControllerAnimated:1 completion:v9];
+    [remoteSetupQRCodeScannerController2 dismissViewControllerAnimated:1 completion:v9];
 
     [(UIViewController *)self setRemoteSetupQRCodeScannerController:0];
   }

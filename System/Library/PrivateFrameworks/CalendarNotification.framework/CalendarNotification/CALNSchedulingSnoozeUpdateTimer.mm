@@ -1,28 +1,28 @@
 @interface CALNSchedulingSnoozeUpdateTimer
-- (CALNSchedulingSnoozeUpdateTimer)initWithDateProvider:(id)a3 scheduler:(id)a4;
+- (CALNSchedulingSnoozeUpdateTimer)initWithDateProvider:(id)provider scheduler:(id)scheduler;
 - (CALNSnoozeUpdateTimerDelegate)delegate;
-- (id)_dequeueEventsDueBy:(id)a3;
+- (id)_dequeueEventsDueBy:(id)by;
 - (void)_scheduleTimer;
 - (void)activityRun;
 - (void)notifyDelegateOfDueAlarmsAndRescheduleTimer;
-- (void)setFireDate:(id)a3 leeway:(double)a4 forEventWithIdentifier:(id)a5;
+- (void)setFireDate:(id)date leeway:(double)leeway forEventWithIdentifier:(id)identifier;
 - (void)significantTimeChange;
 @end
 
 @implementation CALNSchedulingSnoozeUpdateTimer
 
-- (CALNSchedulingSnoozeUpdateTimer)initWithDateProvider:(id)a3 scheduler:(id)a4
+- (CALNSchedulingSnoozeUpdateTimer)initWithDateProvider:(id)provider scheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  schedulerCopy = scheduler;
   v18.receiver = self;
   v18.super_class = CALNSchedulingSnoozeUpdateTimer;
   v9 = [(CALNSchedulingSnoozeUpdateTimer *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dateProvider, a3);
-    objc_storeStrong(&v10->_scheduler, a4);
+    objc_storeStrong(&v9->_dateProvider, provider);
+    objc_storeStrong(&v10->_scheduler, scheduler);
     [(CALNActivityScheduler *)v10->_scheduler setDelegate:v10];
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     fireDates = v10->_fireDates;
@@ -32,9 +32,9 @@
     overdueDates = v10->_overdueDates;
     v10->_overdueDates = v13;
 
-    v15 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     scheduledFireDate = v10->_scheduledFireDate;
-    v10->_scheduledFireDate = v15;
+    v10->_scheduledFireDate = distantFuture;
 
     v10->_lock._os_unfair_lock_opaque = 0;
   }
@@ -42,27 +42,27 @@
   return v10;
 }
 
-- (void)setFireDate:(id)a3 leeway:(double)a4 forEventWithIdentifier:(id)a5
+- (void)setFireDate:(id)date leeway:(double)leeway forEventWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dateCopy = date;
+  identifierCopy = identifier;
   v10 = snoozeLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543874;
-    v14 = v9;
+    v14 = identifierCopy;
     v15 = 2114;
-    v16 = v8;
+    v16 = dateCopy;
     v17 = 2048;
-    v18 = a4;
+    leewayCopy = leeway;
     _os_log_impl(&dword_242909000, v10, OS_LOG_TYPE_DEFAULT, "Setting snooze update fire date for %{public}@ to %{public}@ with leeway = %f", &v13, 0x20u);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_fireDates setObject:v8 forKeyedSubscript:v9];
-  v11 = [v8 dateByAddingTimeInterval:a4];
-  [(NSMutableDictionary *)self->_overdueDates setObject:v11 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_fireDates setObject:dateCopy forKeyedSubscript:identifierCopy];
+  v11 = [dateCopy dateByAddingTimeInterval:leeway];
+  [(NSMutableDictionary *)self->_overdueDates setObject:v11 forKeyedSubscript:identifierCopy];
 
   [(CALNSchedulingSnoozeUpdateTimer *)self _scheduleTimer];
   os_unfair_lock_unlock(&self->_lock);
@@ -136,10 +136,10 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dequeueEventsDueBy:(id)a3
+- (id)_dequeueEventsDueBy:(id)by
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  byCopy = by;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v25 = 0u;
   v26 = 0u;
@@ -162,7 +162,7 @@
 
         v11 = *(*(&v25 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_fireDates objectForKeyedSubscript:v11];
-        if ([v4 CalIsAfterOrSameAsDate:v12])
+        if ([byCopy CalIsAfterOrSameAsDate:v12])
         {
           [v5 addObject:v11];
         }

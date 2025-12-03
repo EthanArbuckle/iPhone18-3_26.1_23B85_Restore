@@ -1,29 +1,29 @@
 @interface HMDRemoteEventRouterProtoChangeRegistrationsMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTopicAdditions:(id)a3;
-- (void)addTopicFilterAdditions:(id)a3;
-- (void)addTopicFilterRemovals:(id)a3;
-- (void)addTopicRemovals:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTopicAdditions:(id)additions;
+- (void)addTopicFilterAdditions:(id)additions;
+- (void)addTopicFilterRemovals:(id)removals;
+- (void)addTopicRemovals:(id)removals;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDRemoteEventRouterProtoChangeRegistrationsMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = v4[2];
+  v5 = fromCopy[2];
   v6 = [v5 countByEnumeratingWithState:&v38 objects:v45 count:16];
   if (v6)
   {
@@ -53,7 +53,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v4[3];
+  v10 = fromCopy[3];
   v11 = [v10 countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v11)
   {
@@ -83,7 +83,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v15 = v4[1];
+  v15 = fromCopy[1];
   v16 = [v15 countByEnumeratingWithState:&v30 objects:v43 count:16];
   if (v16)
   {
@@ -113,7 +113,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v20 = v4[4];
+  v20 = fromCopy[4];
   v21 = [v20 countByEnumeratingWithState:&v26 objects:v42 count:16];
   if (v21)
   {
@@ -150,13 +150,13 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_topicRemovals hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((topicFilterAdditions = self->_topicFilterAdditions, !(topicFilterAdditions | v4[2])) || -[NSMutableArray isEqual:](topicFilterAdditions, "isEqual:")) && ((topicFilterRemovals = self->_topicFilterRemovals, !(topicFilterRemovals | v4[3])) || -[NSMutableArray isEqual:](topicFilterRemovals, "isEqual:")) && ((topicAdditions = self->_topicAdditions, !(topicAdditions | v4[1])) || -[NSMutableArray isEqual:](topicAdditions, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((topicFilterAdditions = self->_topicFilterAdditions, !(topicFilterAdditions | equalCopy[2])) || -[NSMutableArray isEqual:](topicFilterAdditions, "isEqual:")) && ((topicFilterRemovals = self->_topicFilterRemovals, !(topicFilterRemovals | equalCopy[3])) || -[NSMutableArray isEqual:](topicFilterRemovals, "isEqual:")) && ((topicAdditions = self->_topicAdditions, !(topicAdditions | equalCopy[1])) || -[NSMutableArray isEqual:](topicAdditions, "isEqual:")))
   {
     topicRemovals = self->_topicRemovals;
-    if (topicRemovals | v4[4])
+    if (topicRemovals | equalCopy[4])
     {
       v9 = [(NSMutableArray *)topicRemovals isEqual:?];
     }
@@ -175,10 +175,10 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -199,7 +199,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v44 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v44 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addTopicFilterAdditions:v11];
 
         ++v10;
@@ -232,7 +232,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v40 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v40 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addTopicFilterRemovals:v17];
 
         ++v16;
@@ -265,7 +265,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v36 + 1) + 8 * v22) copyWithZone:a3];
+        v23 = [*(*(&v36 + 1) + 8 * v22) copyWithZone:zone];
         [v5 addTopicAdditions:v23];
 
         ++v22;
@@ -298,7 +298,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v32 + 1) + 8 * v28) copyWithZone:{a3, v32}];
+        v29 = [*(*(&v32 + 1) + 8 * v28) copyWithZone:{zone, v32}];
         [v5 addTopicRemovals:v29];
 
         ++v28;
@@ -315,74 +315,74 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v20 = a3;
+  toCopy = to;
   if ([(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicFilterAdditionsCount])
   {
-    [v20 clearTopicFilterAdditions];
-    v4 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicFilterAdditionsCount];
-    if (v4)
+    [toCopy clearTopicFilterAdditions];
+    topicFilterAdditionsCount = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicFilterAdditionsCount];
+    if (topicFilterAdditionsCount)
     {
-      v5 = v4;
+      v5 = topicFilterAdditionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicFilterAdditionsAtIndex:i];
-        [v20 addTopicFilterAdditions:v7];
+        [toCopy addTopicFilterAdditions:v7];
       }
     }
   }
 
   if ([(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicFilterRemovalsCount])
   {
-    [v20 clearTopicFilterRemovals];
-    v8 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicFilterRemovalsCount];
-    if (v8)
+    [toCopy clearTopicFilterRemovals];
+    topicFilterRemovalsCount = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicFilterRemovalsCount];
+    if (topicFilterRemovalsCount)
     {
-      v9 = v8;
+      v9 = topicFilterRemovalsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicFilterRemovalsAtIndex:j];
-        [v20 addTopicFilterRemovals:v11];
+        [toCopy addTopicFilterRemovals:v11];
       }
     }
   }
 
   if ([(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicAdditionsCount])
   {
-    [v20 clearTopicAdditions];
-    v12 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicAdditionsCount];
-    if (v12)
+    [toCopy clearTopicAdditions];
+    topicAdditionsCount = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicAdditionsCount];
+    if (topicAdditionsCount)
     {
-      v13 = v12;
+      v13 = topicAdditionsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicAdditionsAtIndex:k];
-        [v20 addTopicAdditions:v15];
+        [toCopy addTopicAdditions:v15];
       }
     }
   }
 
   if ([(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicRemovalsCount])
   {
-    [v20 clearTopicRemovals];
-    v16 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicRemovalsCount];
-    if (v16)
+    [toCopy clearTopicRemovals];
+    topicRemovalsCount = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicRemovalsCount];
+    if (topicRemovalsCount)
     {
-      v17 = v16;
+      v17 = topicRemovalsCount;
       for (m = 0; m != v17; ++m)
       {
         v19 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self topicRemovalsAtIndex:m];
-        [v20 addTopicRemovals:v19];
+        [toCopy addTopicRemovals:v19];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -517,12 +517,12 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   topicFilterAdditions = self->_topicFilterAdditions;
   if (topicFilterAdditions)
   {
-    [v3 setObject:topicFilterAdditions forKey:@"topicFilterAdditions"];
+    [dictionary setObject:topicFilterAdditions forKey:@"topicFilterAdditions"];
   }
 
   topicFilterRemovals = self->_topicFilterRemovals;
@@ -553,8 +553,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -588,8 +588,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -612,82 +612,82 @@
   v8.receiver = self;
   v8.super_class = HMDRemoteEventRouterProtoChangeRegistrationsMessage;
   v4 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)&v8 description];
-  v5 = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDRemoteEventRouterProtoChangeRegistrationsMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addTopicRemovals:(id)a3
+- (void)addTopicRemovals:(id)removals
 {
-  v4 = a3;
+  removalsCopy = removals;
   topicRemovals = self->_topicRemovals;
-  v8 = v4;
+  v8 = removalsCopy;
   if (!topicRemovals)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_topicRemovals;
     self->_topicRemovals = v6;
 
-    v4 = v8;
+    removalsCopy = v8;
     topicRemovals = self->_topicRemovals;
   }
 
-  [(NSMutableArray *)topicRemovals addObject:v4];
+  [(NSMutableArray *)topicRemovals addObject:removalsCopy];
 }
 
-- (void)addTopicAdditions:(id)a3
+- (void)addTopicAdditions:(id)additions
 {
-  v4 = a3;
+  additionsCopy = additions;
   topicAdditions = self->_topicAdditions;
-  v8 = v4;
+  v8 = additionsCopy;
   if (!topicAdditions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_topicAdditions;
     self->_topicAdditions = v6;
 
-    v4 = v8;
+    additionsCopy = v8;
     topicAdditions = self->_topicAdditions;
   }
 
-  [(NSMutableArray *)topicAdditions addObject:v4];
+  [(NSMutableArray *)topicAdditions addObject:additionsCopy];
 }
 
-- (void)addTopicFilterRemovals:(id)a3
+- (void)addTopicFilterRemovals:(id)removals
 {
-  v4 = a3;
+  removalsCopy = removals;
   topicFilterRemovals = self->_topicFilterRemovals;
-  v8 = v4;
+  v8 = removalsCopy;
   if (!topicFilterRemovals)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_topicFilterRemovals;
     self->_topicFilterRemovals = v6;
 
-    v4 = v8;
+    removalsCopy = v8;
     topicFilterRemovals = self->_topicFilterRemovals;
   }
 
-  [(NSMutableArray *)topicFilterRemovals addObject:v4];
+  [(NSMutableArray *)topicFilterRemovals addObject:removalsCopy];
 }
 
-- (void)addTopicFilterAdditions:(id)a3
+- (void)addTopicFilterAdditions:(id)additions
 {
-  v4 = a3;
+  additionsCopy = additions;
   topicFilterAdditions = self->_topicFilterAdditions;
-  v8 = v4;
+  v8 = additionsCopy;
   if (!topicFilterAdditions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_topicFilterAdditions;
     self->_topicFilterAdditions = v6;
 
-    v4 = v8;
+    additionsCopy = v8;
     topicFilterAdditions = self->_topicFilterAdditions;
   }
 
-  [(NSMutableArray *)topicFilterAdditions addObject:v4];
+  [(NSMutableArray *)topicFilterAdditions addObject:additionsCopy];
 }
 
 @end

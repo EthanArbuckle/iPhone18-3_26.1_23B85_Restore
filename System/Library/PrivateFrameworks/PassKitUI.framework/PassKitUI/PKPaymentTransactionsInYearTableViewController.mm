@@ -1,54 +1,54 @@
 @interface PKPaymentTransactionsInYearTableViewController
-+ (id)titleForYear:(id)a3;
-- (PKPaymentTransactionsInYearTableViewController)initWithDateFromYear:(id)a3 calendar:(id)a4 transactionSourceCollection:(id)a5 familyCollection:(id)a6 detailViewStyle:(int64_t)a7 paymentServiceDataProvider:(id)a8 contactResolver:(id)a9 peerPaymentWebService:(id)a10 account:(id)a11;
-- (id)_transactionDetailViewControllerForTransaction:(id)a3;
++ (id)titleForYear:(id)year;
+- (PKPaymentTransactionsInYearTableViewController)initWithDateFromYear:(id)year calendar:(id)calendar transactionSourceCollection:(id)collection familyCollection:(id)familyCollection detailViewStyle:(int64_t)style paymentServiceDataProvider:(id)provider contactResolver:(id)resolver peerPaymentWebService:(id)self0 account:(id)self1;
+- (id)_transactionDetailViewControllerForTransaction:(id)transaction;
 - (id)_transactionMonthFormatter;
 - (id)_withdrawalFeeMonthYearFormatter;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_fetchDataAndRevealContent;
-- (void)_fetchDataWithCompletion:(id)a3;
-- (void)_loadBankConnectAccountWithCompletion:(id)a3;
-- (void)_updateWithTransactions:(id)a3 completion:(id)a4;
-- (void)bankConnectConsentStatusDidChange:(unint64_t)a3;
-- (void)didUpdateTransactions:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)transactionsChanged:(id)a3;
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3;
+- (void)_fetchDataWithCompletion:(id)completion;
+- (void)_loadBankConnectAccountWithCompletion:(id)completion;
+- (void)_updateWithTransactions:(id)transactions completion:(id)completion;
+- (void)bankConnectConsentStatusDidChange:(unint64_t)change;
+- (void)didUpdateTransactions:(id)transactions;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)transactionsChanged:(id)changed;
+- (void)updateContentUnavailableConfigurationUsingState:(id)state;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentTransactionsInYearTableViewController
 
-- (PKPaymentTransactionsInYearTableViewController)initWithDateFromYear:(id)a3 calendar:(id)a4 transactionSourceCollection:(id)a5 familyCollection:(id)a6 detailViewStyle:(int64_t)a7 paymentServiceDataProvider:(id)a8 contactResolver:(id)a9 peerPaymentWebService:(id)a10 account:(id)a11
+- (PKPaymentTransactionsInYearTableViewController)initWithDateFromYear:(id)year calendar:(id)calendar transactionSourceCollection:(id)collection familyCollection:(id)familyCollection detailViewStyle:(int64_t)style paymentServiceDataProvider:(id)provider contactResolver:(id)resolver peerPaymentWebService:(id)self0 account:(id)self1
 {
-  v17 = a3;
-  v35 = a4;
-  v34 = a5;
-  v30 = a6;
-  v33 = a6;
-  v32 = a8;
-  v18 = a9;
-  v31 = a10;
-  v19 = a11;
+  yearCopy = year;
+  calendarCopy = calendar;
+  collectionCopy = collection;
+  familyCollectionCopy = familyCollection;
+  familyCollectionCopy2 = familyCollection;
+  providerCopy = provider;
+  resolverCopy = resolver;
+  serviceCopy = service;
+  accountCopy = account;
   v36.receiver = self;
   v36.super_class = PKPaymentTransactionsInYearTableViewController;
   v20 = -[PKPaymentTransactionsInYearTableViewController initWithStyle:](&v36, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior]);
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_dateFromYear, a3);
-    objc_storeStrong(&v21->_calendar, a4);
-    objc_storeStrong(&v21->_transactionSourceCollection, a5);
-    objc_storeStrong(&v21->_paymentServiceDataProvider, a8);
-    objc_storeStrong(&v21->_contactResolver, a9);
-    objc_storeStrong(&v21->_peerPaymentWebService, a10);
-    v21->_detailViewStyle = a7;
-    objc_storeStrong(&v21->_familyCollection, v30);
-    v22 = [[PKPaymentTransactionCellController alloc] initWithContactResolver:v18];
+    objc_storeStrong(&v20->_dateFromYear, year);
+    objc_storeStrong(&v21->_calendar, calendar);
+    objc_storeStrong(&v21->_transactionSourceCollection, collection);
+    objc_storeStrong(&v21->_paymentServiceDataProvider, provider);
+    objc_storeStrong(&v21->_contactResolver, resolver);
+    objc_storeStrong(&v21->_peerPaymentWebService, service);
+    v21->_detailViewStyle = style;
+    objc_storeStrong(&v21->_familyCollection, familyCollectionCopy);
+    v22 = [[PKPaymentTransactionCellController alloc] initWithContactResolver:resolverCopy];
     transactionCellController = v21->_transactionCellController;
     v21->_transactionCellController = v22;
 
@@ -61,7 +61,7 @@
     transactionDetailsFactory = v21->_transactionDetailsFactory;
     v21->_transactionDetailsFactory = v26;
 
-    objc_storeStrong(&v21->_account, a11);
+    objc_storeStrong(&v21->_account, account);
   }
 
   return v21;
@@ -73,18 +73,18 @@
   v9.super_class = PKPaymentTransactionsInYearTableViewController;
   [(PKPaymentTransactionsInYearTableViewController *)&v9 viewDidLoad];
   v3 = [objc_opt_class() titleForYear:self->_dateFromYear];
-  v4 = [(PKPaymentTransactionsInYearTableViewController *)self navigationItem];
-  [v4 setTitle:v3];
+  navigationItem = [(PKPaymentTransactionsInYearTableViewController *)self navigationItem];
+  [navigationItem setTitle:v3];
 
-  v5 = [(PKPaymentTransactionsInYearTableViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentTransactionTableCellReuseIdentifier"];
-  [v5 setRowHeight:*MEMORY[0x1E69DE3D0]];
+  tableView = [(PKPaymentTransactionsInYearTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentTransactionTableCellReuseIdentifier"];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
   if (_UISolariumFeatureFlagEnabled())
   {
-    [v5 setSeparatorInset:{0.0, 67.0, 0.0, 16.0}];
+    [tableView setSeparatorInset:{0.0, 67.0, 0.0, 16.0}];
   }
 
-  [v5 pkui_setupForReadableContentGuide];
+  [tableView pkui_setupForReadableContentGuide];
   [(PKPaymentTransactionsInYearTableViewController *)self setNeedsUpdateContentUnavailableConfiguration];
   if (self->_detailViewStyle == 2 || !PKBankConnectEnabled())
   {
@@ -114,13 +114,13 @@ void __61__PKPaymentTransactionsInYearTableViewController_viewDidLoad__block_inv
   }
 }
 
-- (void)_loadBankConnectAccountWithCompletion:(id)a3
+- (void)_loadBankConnectAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v6 = [v5 primaryAccountIdentifier];
+  completionCopy = completion;
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  primaryAccountIdentifier = [paymentPass primaryAccountIdentifier];
 
-  v7 = [objc_alloc(MEMORY[0x1E6967DA0]) initWithPrimaryAccountIdentifier:v6];
+  v7 = [objc_alloc(MEMORY[0x1E6967DA0]) initWithPrimaryAccountIdentifier:primaryAccountIdentifier];
   bankConnectAccountsProvider = self->_bankConnectAccountsProvider;
   self->_bankConnectAccountsProvider = v7;
 
@@ -132,10 +132,10 @@ void __61__PKPaymentTransactionsInYearTableViewController_viewDidLoad__block_inv
   v12[2] = __88__PKPaymentTransactionsInYearTableViewController__loadBankConnectAccountWithCompletion___block_invoke;
   v12[3] = &unk_1E80225E8;
   objc_copyWeak(&v16, &location);
-  v10 = v6;
+  v10 = primaryAccountIdentifier;
   v13 = v10;
-  v14 = self;
-  v11 = v4;
+  selfCopy = self;
+  v11 = completionCopy;
   v15 = v11;
   [(FKBankConnectAccountsProvider *)v9 accountAndReconsentStatusWithCompletion:v12];
 
@@ -244,7 +244,7 @@ void __76__PKPaymentTransactionsInYearTableViewController__fetchDataAndRevealCon
   [v1 reloadData];
 }
 
-- (void)updateContentUnavailableConfigurationUsingState:(id)a3
+- (void)updateContentUnavailableConfigurationUsingState:(id)state
 {
   if (self->_contentRevealed)
   {
@@ -258,12 +258,12 @@ void __76__PKPaymentTransactionsInYearTableViewController__fetchDataAndRevealCon
 
   else
   {
-    v4 = [MEMORY[0x1E69DC8C8] loadingConfiguration];
-    [(PKPaymentTransactionsInYearTableViewController *)self setContentUnavailableConfiguration:v4];
+    loadingConfiguration = [MEMORY[0x1E69DC8C8] loadingConfiguration];
+    [(PKPaymentTransactionsInYearTableViewController *)self setContentUnavailableConfiguration:loadingConfiguration];
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = [(NSArray *)self->_transactionsByMonth count];
   if ([(NSArray *)self->_instantWithdrawalFeesTransactionGroups count])
@@ -277,9 +277,9 @@ void __76__PKPaymentTransactionsInYearTableViewController__fetchDataAndRevealCon
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(PKPaymentTransactionsInYearTableViewController *)self _sectionTypeForSection:a4];
+  v6 = [(PKPaymentTransactionsInYearTableViewController *)self _sectionTypeForSection:section];
   if (v6 == 1)
   {
     instantWithdrawalFeesTransactionGroups = self->_instantWithdrawalFeesTransactionGroups;
@@ -294,28 +294,28 @@ void __76__PKPaymentTransactionsInYearTableViewController__fetchDataAndRevealCon
 
   else
   {
-    v7 = [(NSArray *)self->_transactionsByMonth objectAtIndexedSubscript:a4];
+    v7 = [(NSArray *)self->_transactionsByMonth objectAtIndexedSubscript:section];
     v8 = [v7 count];
 
     return v8;
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKPaymentTransactionsInYearTableViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKPaymentTransactionsInYearTableViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]);
   if (v8 == 1)
   {
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"PKPaymentInstantWithdrawalTableCellReuseIdentifier"];
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"PKPaymentInstantWithdrawalTableCellReuseIdentifier"];
     if (!v9)
     {
       v9 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1 reuseIdentifier:@"PKPaymentInstantWithdrawalTableCellReuseIdentifier"];
     }
 
-    v10 = -[NSArray objectAtIndex:](self->_instantWithdrawalFeesTransactionGroups, "objectAtIndex:", [v7 row]);
-    v15 = [v7 row];
+    v10 = -[NSArray objectAtIndex:](self->_instantWithdrawalFeesTransactionGroups, "objectAtIndex:", [pathCopy row]);
+    v15 = [pathCopy row];
     if (v15 == [(NSArray *)self->_instantWithdrawalFeesTransactionGroups count]- 1)
     {
       v11 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPas_12.isa);
@@ -323,18 +323,18 @@ void __76__PKPaymentTransactionsInYearTableViewController__fetchDataAndRevealCon
 
     else
     {
-      v16 = [(PKPaymentTransactionsInYearTableViewController *)self _withdrawalFeeMonthYearFormatter];
-      v17 = [v10 startDate];
-      v11 = [v16 stringFromDate:v17];
+      _withdrawalFeeMonthYearFormatter = [(PKPaymentTransactionsInYearTableViewController *)self _withdrawalFeeMonthYearFormatter];
+      startDate = [v10 startDate];
+      v11 = [_withdrawalFeeMonthYearFormatter stringFromDate:startDate];
     }
 
-    v18 = [v9 textLabel];
-    [v18 setText:v11];
+    textLabel = [v9 textLabel];
+    [textLabel setText:v11];
 
-    v19 = [v9 detailTextLabel];
-    v20 = [v10 totalAmount];
-    v21 = [v20 formattedStringValue];
-    [v19 setText:v21];
+    detailTextLabel = [v9 detailTextLabel];
+    totalAmount = [v10 totalAmount];
+    formattedStringValue = [totalAmount formattedStringValue];
+    [detailTextLabel setText:formattedStringValue];
   }
 
   else
@@ -345,14 +345,14 @@ void __76__PKPaymentTransactionsInYearTableViewController__fetchDataAndRevealCon
       goto LABEL_15;
     }
 
-    v9 = [v6 dequeueReusableCellWithIdentifier:@"PKPaymentTransactionTableCellReuseIdentifier" forIndexPath:v7];
-    v10 = -[NSArray objectAtIndexedSubscript:](self->_transactionsByMonth, "objectAtIndexedSubscript:", [v7 section]);
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
-    v12 = [(PKPaymentDataProvider *)self->_paymentServiceDataProvider deviceName];
-    v13 = v12;
-    if (v12)
+    v9 = [viewCopy dequeueReusableCellWithIdentifier:@"PKPaymentTransactionTableCellReuseIdentifier" forIndexPath:pathCopy];
+    v10 = -[NSArray objectAtIndexedSubscript:](self->_transactionsByMonth, "objectAtIndexedSubscript:", [pathCopy section]);
+    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    deviceName = [(PKPaymentDataProvider *)self->_paymentServiceDataProvider deviceName];
+    v13 = deviceName;
+    if (deviceName)
     {
-      v14 = v12;
+      v14 = deviceName;
     }
 
     else
@@ -360,14 +360,14 @@ void __76__PKPaymentTransactionsInYearTableViewController__fetchDataAndRevealCon
       v14 = PKDeviceName();
     }
 
-    v19 = v14;
+    detailTextLabel = v14;
 
     transactionSourceCollection = self->_transactionSourceCollection;
-    v23 = [v11 transactionSourceIdentifier];
-    v20 = [(PKTransactionSourceCollection *)transactionSourceCollection transactionSourceForTransactionSourceIdentifier:v23];
+    transactionSourceIdentifier = [v11 transactionSourceIdentifier];
+    totalAmount = [(PKTransactionSourceCollection *)transactionSourceCollection transactionSourceForTransactionSourceIdentifier:transactionSourceIdentifier];
 
-    v21 = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForTransactionSource:v20];
-    [(PKPaymentTransactionCellController *)self->_transactionCellController configureCell:v9 forTransaction:v11 transactionSource:v20 familyMember:v21 account:self->_account detailStyle:self->_detailViewStyle deviceName:v19 avatarViewDelegate:self];
+    formattedStringValue = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForTransactionSource:totalAmount];
+    [(PKPaymentTransactionCellController *)self->_transactionCellController configureCell:v9 forTransaction:v11 transactionSource:totalAmount familyMember:formattedStringValue account:self->_account detailStyle:self->_detailViewStyle deviceName:detailTextLabel avatarViewDelegate:self];
   }
 
 LABEL_15:
@@ -375,9 +375,9 @@ LABEL_15:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(PKPaymentTransactionsInYearTableViewController *)self _sectionTypeForSection:a4];
+  v6 = [(PKPaymentTransactionsInYearTableViewController *)self _sectionTypeForSection:section];
   if (v6 == 1)
   {
     v11 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPas_13.isa);
@@ -390,58 +390,58 @@ LABEL_15:
 
   else
   {
-    v7 = [(NSArray *)self->_transactionsByMonth objectAtIndexedSubscript:a4];
-    v8 = [v7 firstObject];
-    v9 = [v8 transactionDate];
-    v10 = [(PKPaymentTransactionsInYearTableViewController *)self _transactionMonthFormatter];
-    v11 = [v10 stringFromDate:v9];
+    v7 = [(NSArray *)self->_transactionsByMonth objectAtIndexedSubscript:section];
+    firstObject = [v7 firstObject];
+    transactionDate = [firstObject transactionDate];
+    _transactionMonthFormatter = [(PKPaymentTransactionsInYearTableViewController *)self _transactionMonthFormatter];
+    v11 = [_transactionMonthFormatter stringFromDate:transactionDate];
   }
 
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  [a3 deselectRowAtIndexPath:v12 animated:1];
-  v6 = -[PKPaymentTransactionsInYearTableViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v12 section]);
-  v7 = v12;
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v6 = -[PKPaymentTransactionsInYearTableViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]);
+  v7 = pathCopy;
   if (!v6)
   {
-    v8 = -[NSArray objectAtIndexedSubscript:](self->_transactionsByMonth, "objectAtIndexedSubscript:", [v12 section]);
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v12, "row")}];
+    v8 = -[NSArray objectAtIndexedSubscript:](self->_transactionsByMonth, "objectAtIndexedSubscript:", [pathCopy section]);
+    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     v10 = [(PKPaymentTransactionsInYearTableViewController *)self _transactionDetailViewControllerForTransaction:v9];
-    v11 = [(PKPaymentTransactionsInYearTableViewController *)self navigationController];
-    if ([v11 pk_settings_useStateDrivenNavigation])
+    navigationController = [(PKPaymentTransactionsInYearTableViewController *)self navigationController];
+    if ([navigationController pk_settings_useStateDrivenNavigation])
     {
-      [v11 pk_settings_pushViewController:v10];
+      [navigationController pk_settings_pushViewController:v10];
     }
 
     else
     {
-      [v11 pushViewController:v10 animated:1];
+      [navigationController pushViewController:v10 animated:1];
     }
 
-    v7 = v12;
+    v7 = pathCopy;
   }
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  if (-[PKPaymentTransactionsInYearTableViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [v10 section]))
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  pathCopy = path;
+  if (-[PKPaymentTransactionsInYearTableViewController _sectionTypeForSection:](self, "_sectionTypeForSection:", [pathCopy section]))
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = -[NSArray objectAtIndexedSubscript:](self->_transactionsByMonth, "objectAtIndexedSubscript:", [v10 section]);
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v10, "row")}];
-    v14 = [v9 cellForRowAtIndexPath:v10];
+    v12 = -[NSArray objectAtIndexedSubscript:](self->_transactionsByMonth, "objectAtIndexedSubscript:", [pathCopy section]);
+    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    v14 = [viewCopy cellForRowAtIndexPath:pathCopy];
     v15 = v14;
     if (v13)
     {
@@ -453,7 +453,7 @@ LABEL_15:
       v16 = 1;
     }
 
-    if (!v16 && ([v14 transactionView], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "shouldShowTransactionPreviewForTouchAtPoint:inView:", v9, x, y), v17, v18) && (-[PKPaymentTransactionsInYearTableViewController _transactionDetailViewControllerForTransaction:](self, "_transactionDetailViewControllerForTransaction:", v13), (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (!v16 && ([v14 transactionView], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "shouldShowTransactionPreviewForTouchAtPoint:inView:", viewCopy, x, y), v17, v18) && (-[PKPaymentTransactionsInYearTableViewController _transactionDetailViewControllerForTransaction:](self, "_transactionDetailViewControllerForTransaction:", v13), (v19 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v20 = MEMORY[0x1E69DC8D8];
       v23[0] = MEMORY[0x1E69E9820];
@@ -474,19 +474,19 @@ LABEL_15:
   return v11;
 }
 
-- (id)_transactionDetailViewControllerForTransaction:(id)a3
+- (id)_transactionDetailViewControllerForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   if (self->_peerPaymentWebService)
   {
     MEMORY[0x1BFB41980](*MEMORY[0x1E69BA128], 0);
   }
 
-  if ([v4 transactionType] == 9)
+  if ([transactionCopy transactionType] == 9)
   {
     transactionFetcher = self->_transactionFetcher;
-    v6 = [v4 identifier];
-    v7 = [(PKDashboardTransactionFetcher *)transactionFetcher cashbackGroupForTransactionWithIdentifier:v6 cashbackTransactionSourceCollection:0];
+    identifier = [transactionCopy identifier];
+    v7 = [(PKDashboardTransactionFetcher *)transactionFetcher cashbackGroupForTransactionWithIdentifier:identifier cashbackTransactionSourceCollection:0];
   }
 
   else
@@ -499,23 +499,23 @@ LABEL_15:
   familyCollection = self->_familyCollection;
   account = self->_account;
   bankConnectInstitution = self->_bankConnectInstitution;
-  v13 = [(PKPaymentTransactionsInYearTableViewController *)self navigationController];
-  v14 = [(PKPaymentTransactionDetailsFactory *)transactionDetailsFactory viewControllerForTransaction:v4 sourceCollection:transactionSourceCollection familyCollection:familyCollection account:account accountUserCollection:0 bankConnectInstitution:bankConnectInstitution physicalCards:0 group:v7 navigationController:v13];
+  navigationController = [(PKPaymentTransactionsInYearTableViewController *)self navigationController];
+  v14 = [(PKPaymentTransactionDetailsFactory *)transactionDetailsFactory viewControllerForTransaction:transactionCopy sourceCollection:transactionSourceCollection familyCollection:familyCollection account:account accountUserCollection:0 bankConnectInstitution:bankConnectInstitution physicalCards:0 group:v7 navigationController:navigationController];
 
   return v14;
 }
 
-+ (id)titleForYear:(id)a3
++ (id)titleForYear:(id)year
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  yearCopy = year;
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc(MEMORY[0x1E695DEE8]);
   v7 = [v6 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
   [v5 setCalendar:v7];
 
   [v5 setLocalizedDateFormatFromTemplate:@"y"];
-  v8 = [v5 stringFromDate:v4];
+  v8 = [v5 stringFromDate:yearCopy];
 
   v9 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPas.isa, &stru_1F3BD5BF0.isa, v8);
 
@@ -556,18 +556,18 @@ LABEL_15:
   return withdrawalFeeMonthYearFormatter;
 }
 
-- (void)_fetchDataWithCompletion:(id)a3
+- (void)_fetchDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(NSCalendar *)self->_calendar components:6 fromDate:self->_dateFromYear];
   calendar = self->_calendar;
-  v7 = [MEMORY[0x1E695DF00] distantPast];
-  v8 = [(NSCalendar *)calendar nextDateAfterDate:v7 matchingComponents:v5 options:4098];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v8 = [(NSCalendar *)calendar nextDateAfterDate:distantPast matchingComponents:v5 options:4098];
 
   v9 = [(NSCalendar *)self->_calendar dateByAddingUnit:4 value:1 toDate:v8 options:4098];
-  v10 = [(PKAccount *)self->_account createdDate];
-  v11 = v10;
-  if (v10 && [v10 compare:v8] == 1 && objc_msgSend(v11, "compare:", v9) == -1)
+  createdDate = [(PKAccount *)self->_account createdDate];
+  v11 = createdDate;
+  if (createdDate && [createdDate compare:v8] == 1 && objc_msgSend(v11, "compare:", v9) == -1)
   {
     v12 = v11;
 
@@ -581,20 +581,20 @@ LABEL_15:
   v15[2] = __75__PKPaymentTransactionsInYearTableViewController__fetchDataWithCompletion___block_invoke;
   v15[3] = &unk_1E8010DF8;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
+  v16 = completionCopy;
+  v14 = completionCopy;
   [(PKDashboardTransactionFetcher *)transactionFetcher reloadTransactionsWithCompletion:v15];
 }
 
-- (void)_updateWithTransactions:(id)a3 completion:(id)a4
+- (void)_updateWithTransactions:(id)transactions completion:(id)completion
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  transactionsCopy = transactions;
+  completionCopy = completion;
   v8 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"transactionDate" ascending:0];
   v50[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
-  v10 = [v6 sortedArrayUsingDescriptors:v9];
+  v10 = [transactionsCopy sortedArrayUsingDescriptors:v9];
 
   v11 = 0x1E695D000uLL;
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -603,14 +603,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v34 = v7;
+  v34 = completionCopy;
   v36 = v8;
-  v37 = v6;
-  v12 = [v10 firstObject];
-  v13 = [v12 transactionDate];
+  v37 = transactionsCopy;
+  firstObject = [v10 firstObject];
+  transactionDate = [firstObject transactionDate];
 
   v14 = 1048;
-  v15 = [(NSCalendar *)self->_calendar components:14 fromDate:v13];
+  v15 = [(NSCalendar *)self->_calendar components:14 fromDate:transactionDate];
   v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v45 = 0u;
   v46 = 0u;
@@ -628,7 +628,7 @@ LABEL_15:
   do
   {
     v18 = 0;
-    v19 = v13;
+    v19 = transactionDate;
     do
     {
       if (*v46 != v17)
@@ -637,9 +637,9 @@ LABEL_15:
       }
 
       v20 = *(*(&v45 + 1) + 8 * v18);
-      v13 = [v20 transactionDate];
+      transactionDate = [v20 transactionDate];
 
-      if (([*(&self->super.super.super.super.isa + v14) date:v13 matchesComponents:v15] & 1) == 0)
+      if (([*(&self->super.super.super.super.isa + v14) date:transactionDate matchesComponents:v15] & 1) == 0)
       {
         if (![v16 count])
         {
@@ -650,17 +650,17 @@ LABEL_15:
         [v38 addObject:v21];
 
         v22 = objc_alloc_init(*(v11 + 3952));
-        v23 = [*(&self->super.super.super.super.isa + v14) components:14 fromDate:v13];
+        v23 = [*(&self->super.super.super.super.isa + v14) components:14 fromDate:transactionDate];
         v24 = v15;
         v25 = v17;
         v26 = v14;
         v27 = v11;
-        v28 = self;
+        selfCopy = self;
         v29 = v23;
 
         v16 = v22;
         v30 = v29;
-        self = v28;
+        self = selfCopy;
         v11 = v27;
         v14 = v26;
         v17 = v25;
@@ -670,7 +670,7 @@ LABEL_15:
       [v16 addObject:v20];
 LABEL_11:
       ++v18;
-      v19 = v13;
+      v19 = transactionDate;
     }
 
     while (v40 != v18);
@@ -687,8 +687,8 @@ LABEL_13:
   }
 
   v8 = v36;
-  v6 = v37;
-  v7 = v34;
+  transactionsCopy = v37;
+  completionCopy = v34;
   v10 = v35;
 LABEL_16:
   block[0] = MEMORY[0x1E69E9820];
@@ -696,9 +696,9 @@ LABEL_16:
   block[2] = __85__PKPaymentTransactionsInYearTableViewController__updateWithTransactions_completion___block_invoke;
   block[3] = &unk_1E8012300;
   v42 = v38;
-  v43 = self;
-  v44 = v7;
-  v32 = v7;
+  selfCopy2 = self;
+  v44 = completionCopy;
+  v32 = completionCopy;
   v33 = v38;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
@@ -735,9 +735,9 @@ void __85__PKPaymentTransactionsInYearTableViewController__updateWithTransaction
   }
 }
 
-- (void)transactionsChanged:(id)a3
+- (void)transactionsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
   if (self->_contentRevealed)
   {
@@ -746,7 +746,7 @@ void __85__PKPaymentTransactionsInYearTableViewController__updateWithTransaction
     v5[2] = __70__PKPaymentTransactionsInYearTableViewController_transactionsChanged___block_invoke;
     v5[3] = &unk_1E8011180;
     objc_copyWeak(&v6, &location);
-    [(PKPaymentTransactionsInYearTableViewController *)self _updateWithTransactions:v4 completion:v5];
+    [(PKPaymentTransactionsInYearTableViewController *)self _updateWithTransactions:changedCopy completion:v5];
     objc_destroyWeak(&v6);
   }
 
@@ -766,22 +766,22 @@ void __70__PKPaymentTransactionsInYearTableViewController_transactionsChanged___
   }
 }
 
-- (void)didUpdateTransactions:(id)a3
+- (void)didUpdateTransactions:(id)transactions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  transactionsCopy = transactions;
   if (!self->_contentRevealed)
   {
     self->_contentRevealed = 1;
     [(PKPaymentTransactionsInYearTableViewController *)self setNeedsUpdateContentUnavailableConfiguration];
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(transactionsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = transactionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -807,31 +807,31 @@ void __70__PKPaymentTransactionsInYearTableViewController_transactionsChanged___
   }
 
   v12 = MEMORY[0x1E69B8EA8];
-  v13 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
-  v14 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-  v15 = [v14 uniqueID];
+  transactionSourceIdentifiers = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceIdentifiers];
+  paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+  uniqueID = [paymentPass uniqueID];
   paymentServiceDataProvider = self->_paymentServiceDataProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __72__PKPaymentTransactionsInYearTableViewController_didUpdateTransactions___block_invoke;
   v17[3] = &unk_1E8014878;
   v17[4] = self;
-  [v12 augmentTransactionsIfNeeded:v5 transactionSourceIdentifiers:v13 passUniqueID:v15 usingDataProvider:paymentServiceDataProvider completion:v17];
+  [v12 augmentTransactionsIfNeeded:v5 transactionSourceIdentifiers:transactionSourceIdentifiers passUniqueID:uniqueID usingDataProvider:paymentServiceDataProvider completion:v17];
 }
 
-- (void)bankConnectConsentStatusDidChange:(unint64_t)a3
+- (void)bankConnectConsentStatusDidChange:(unint64_t)change
 {
-  if (a3)
+  if (change)
   {
-    v4 = [(PKPaymentTransactionsInYearTableViewController *)self navigationController];
-    if ([v4 pk_settings_useStateDrivenNavigation])
+    navigationController = [(PKPaymentTransactionsInYearTableViewController *)self navigationController];
+    if ([navigationController pk_settings_useStateDrivenNavigation])
     {
-      [v4 pk_settings_popViewController];
+      [navigationController pk_settings_popViewController];
     }
 
     else
     {
-      v3 = [v4 popViewControllerAnimated:1];
+      v3 = [navigationController popViewControllerAnimated:1];
     }
   }
 }

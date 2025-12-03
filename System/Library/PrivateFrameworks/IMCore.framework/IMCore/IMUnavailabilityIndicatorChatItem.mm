@@ -1,21 +1,21 @@
 @interface IMUnavailabilityIndicatorChatItem
-- (id)_initWithHandle:(id)a3 displayNotifyAnywayButton:(BOOL)a4;
+- (id)_initWithHandle:(id)handle displayNotifyAnywayButton:(BOOL)button;
 - (void)_notifyDelegatesOfStateChange;
 @end
 
 @implementation IMUnavailabilityIndicatorChatItem
 
-- (id)_initWithHandle:(id)a3 displayNotifyAnywayButton:(BOOL)a4
+- (id)_initWithHandle:(id)handle displayNotifyAnywayButton:(BOOL)button
 {
-  v7 = a3;
+  handleCopy = handle;
   v20.receiver = self;
   v20.super_class = IMUnavailabilityIndicatorChatItem;
   v8 = [(IMChatItem *)&v20 _initWithItem:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 8, a3);
-    *(v9 + 56) = a4;
+    objc_storeStrong(v8 + 8, handle);
+    *(v9 + 56) = button;
     v12 = objc_msgSend_ID(v9[8], v10, v11);
     v13 = sub_1A83AC604();
 

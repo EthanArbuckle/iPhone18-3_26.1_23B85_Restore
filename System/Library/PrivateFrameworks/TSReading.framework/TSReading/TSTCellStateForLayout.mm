@@ -57,18 +57,18 @@
   [(TSTCellStateForLayout *)self cellContents];
   if (TSUDynamicCast())
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTCellStateForLayout hasContent]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellStateForLayout.m"), 79, @"expected nil value for '%s'", "TSUCastAsClass(TSWPColumn, [self cellContents])"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTCellStateForLayout.m"), 79, @"expected nil value for '%s'", "TSUCastAsClass(TSWPColumn, [self cellContents])"}];
   }
 
-  v5 = [(TSTCellStateForLayout *)self cellContents];
-  if (v5)
+  cellContents = [(TSTCellStateForLayout *)self cellContents];
+  if (cellContents)
   {
-    LOBYTE(v5) = [-[TSTCellStateForLayout cellContents](self "cellContents")] != 0;
+    LOBYTE(cellContents) = [-[TSTCellStateForLayout cellContents](self "cellContents")] != 0;
   }
 
-  return v5;
+  return cellContents;
 }
 
 - (id)cellContents
@@ -93,16 +93,16 @@
     }
 
 LABEL_10:
-    v6 = NSStringFromNativeTSTCell(mCell);
-    self->mCellContents = v6;
+    string = NSStringFromNativeTSTCell(mCell);
+    self->mCellContents = string;
     goto LABEL_11;
   }
 
   if (v5 == 9)
   {
-    v7 = [(TSTRichTextPayload *)mCell->mPrivate.mRichTextPayload storage];
-    self->mCellContents = v7;
-    v6 = [(TSWPStorage *)v7 string];
+    storage = [(TSTRichTextPayload *)mCell->mPrivate.mRichTextPayload storage];
+    self->mCellContents = storage;
+    string = [(TSWPStorage *)storage string];
     goto LABEL_11;
   }
 
@@ -112,12 +112,12 @@ LABEL_10:
   }
 
 LABEL_7:
-  v6 = 0;
+  string = 0;
   self->mCellContents = 0;
 LABEL_11:
-  if (TSTCellFormatUsesAccountingStyle(&self->mCell->super.isa) && v6 && [(__CFString *)v6 length]&& !self->mForDrawing)
+  if (TSTCellFormatUsesAccountingStyle(&self->mCell->super.isa) && string && [(__CFString *)string length]&& !self->mForDrawing)
   {
-    v8 = [(__CFString *)v6 stringByReplacingOccurrencesOfString:@"\t" withString:&stru_287D36338];
+    v8 = [(__CFString *)string stringByReplacingOccurrencesOfString:@"\t" withString:&stru_287D36338];
 
     self->mCellContents = 0;
     self->mCellContents = v8;

@@ -1,20 +1,20 @@
 @interface VOTUIMapsExplorationRotaryView
-- (VOTUIMapsExplorationRotaryView)initWithFrame:(CGRect)a3 atCenter:(CGPoint)a4;
-- (id)_constraintsToCenterItem:(id)a3 withItem:(id)a4;
-- (id)_segmentImageFrom:(double)a3 to:(double)a4;
-- (void)addSubviewsFromExplorationSegments:(id)a3;
-- (void)handleHighlightChangeWithLastIndex:(int64_t)a3 andNewIndex:(int64_t)a4;
+- (VOTUIMapsExplorationRotaryView)initWithFrame:(CGRect)frame atCenter:(CGPoint)center;
+- (id)_constraintsToCenterItem:(id)item withItem:(id)withItem;
+- (id)_segmentImageFrom:(double)from to:(double)to;
+- (void)addSubviewsFromExplorationSegments:(id)segments;
+- (void)handleHighlightChangeWithLastIndex:(int64_t)index andNewIndex:(int64_t)newIndex;
 @end
 
 @implementation VOTUIMapsExplorationRotaryView
 
-- (VOTUIMapsExplorationRotaryView)initWithFrame:(CGRect)a3 atCenter:(CGPoint)a4
+- (VOTUIMapsExplorationRotaryView)initWithFrame:(CGRect)frame atCenter:(CGPoint)center
 {
-  y = a4.y;
-  x = a4.x;
+  y = center.y;
+  x = center.x;
   v10.receiver = self;
   v10.super_class = VOTUIMapsExplorationRotaryView;
-  v6 = [(VOTUIMapsExplorationRotaryView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(VOTUIMapsExplorationRotaryView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
@@ -25,26 +25,26 @@
   return v7;
 }
 
-- (void)addSubviewsFromExplorationSegments:(id)a3
+- (void)addSubviewsFromExplorationSegments:(id)segments
 {
-  v21 = a3;
-  v4 = [(VOTUIMapsExplorationRotaryView *)self segmentViews];
-  [v4 makeObjectsPerformSelector:"removeFromSuperview"];
+  segmentsCopy = segments;
+  segmentViews = [(VOTUIMapsExplorationRotaryView *)self segmentViews];
+  [segmentViews makeObjectsPerformSelector:"removeFromSuperview"];
 
   v5 = objc_opt_new();
   [(VOTUIMapsExplorationRotaryView *)self setSegmentViews:v5];
 
   v6 = objc_opt_new();
-  v7 = [v21 count];
+  v7 = [segmentsCopy count];
   if (v7 >= 1)
   {
     v8 = v7;
     for (i = 0; i != v8; ++i)
     {
-      v10 = [v21 objectAtIndex:i];
+      v10 = [segmentsCopy objectAtIndex:i];
       v11 = [UIImageView alloc];
-      v12 = [v10 firstObject];
-      [v12 floatValue];
+      firstObject = [v10 firstObject];
+      [firstObject floatValue];
       v14 = v13;
       v15 = [v10 objectAtIndex:1];
       [v15 floatValue];
@@ -55,8 +55,8 @@
       [v18 setAlpha:0.300000012];
       [v18 setClipsToBounds:0];
       [(VOTUIMapsExplorationRotaryView *)self addSubview:v18];
-      v19 = [(VOTUIMapsExplorationRotaryView *)self segmentViews];
-      [v19 addObject:v18];
+      segmentViews2 = [(VOTUIMapsExplorationRotaryView *)self segmentViews];
+      [segmentViews2 addObject:v18];
 
       v20 = [(VOTUIMapsExplorationRotaryView *)self _constraintsToCenterItem:v18 withItem:self];
       [v6 addObjectsFromArray:v20];
@@ -66,24 +66,24 @@
   [(VOTUIMapsExplorationRotaryView *)self addConstraints:v6];
 }
 
-- (id)_segmentImageFrom:(double)a3 to:(double)a4
+- (id)_segmentImageFrom:(double)from to:(double)to
 {
   [(VOTUIMapsExplorationRotaryView *)self frame];
   v8 = v7;
   [(VOTUIMapsExplorationRotaryView *)self frame];
   v10 = v9;
-  v11 = a3;
-  v12 = __sincosf_stret(v11);
+  fromCopy = from;
+  v12 = __sincosf_stret(fromCopy);
   v38 = v10 + (v12.__sinval * 50.0);
   v39 = v8 + (v12.__cosval * 50.0);
-  v13 = a4;
-  v14 = __sincosf_stret(v13);
-  v15 = (a4 - a3) * 0.5;
+  toCopy = to;
+  v14 = __sincosf_stret(toCopy);
+  v15 = (to - from) * 0.5;
   v16 = v15;
   v40 = (tanf(v16) * 50.0);
   v17 = v15;
   v18 = (50.0 / cosf(v17));
-  v19 = v15 + a3;
+  v19 = v15 + from;
   v20 = __sincosf_stret(v19);
   v21 = +[UIScreen mainScreen];
   [v21 scale];
@@ -102,10 +102,10 @@
   CurrentContext = UIGraphicsGetCurrentContext();
   v27 = +[UIColor redColor];
   v28 = [v27 colorWithAlphaComponent:1.0];
-  v29 = [v28 CGColor];
+  cGColor = [v28 CGColor];
   v30 = +[UIColor whiteColor];
   v31 = [v30 colorWithAlphaComponent:0.0];
-  v32 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v29, [v31 CGColor], 0);
+  v32 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor, [v31 CGColor], 0);
 
   *locations = xmmword_2D160;
   v33 = CGGradientCreateWithColors(DeviceRGB, v32, locations);
@@ -129,13 +129,13 @@
   return v36;
 }
 
-- (id)_constraintsToCenterItem:(id)a3 withItem:(id)a4
+- (id)_constraintsToCenterItem:(id)item withItem:(id)withItem
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [NSLayoutConstraint constraintWithItem:v6 attribute:9 relatedBy:0 toItem:v5 attribute:9 multiplier:1.0 constant:0.0];
+  withItemCopy = withItem;
+  itemCopy = item;
+  v7 = [NSLayoutConstraint constraintWithItem:itemCopy attribute:9 relatedBy:0 toItem:withItemCopy attribute:9 multiplier:1.0 constant:0.0];
   v11[0] = v7;
-  v8 = [NSLayoutConstraint constraintWithItem:v6 attribute:10 relatedBy:0 toItem:v5 attribute:10 multiplier:1.0 constant:0.0];
+  v8 = [NSLayoutConstraint constraintWithItem:itemCopy attribute:10 relatedBy:0 toItem:withItemCopy attribute:10 multiplier:1.0 constant:0.0];
 
   v11[1] = v8;
   v9 = [NSArray arrayWithObjects:v11 count:2];
@@ -143,12 +143,12 @@
   return v9;
 }
 
-- (void)handleHighlightChangeWithLastIndex:(int64_t)a3 andNewIndex:(int64_t)a4
+- (void)handleHighlightChangeWithLastIndex:(int64_t)index andNewIndex:(int64_t)newIndex
 {
-  if (a3 != -1)
+  if (index != -1)
   {
-    v7 = [(VOTUIMapsExplorationRotaryView *)self segmentViews];
-    v8 = [v7 objectAtIndex:a3];
+    segmentViews = [(VOTUIMapsExplorationRotaryView *)self segmentViews];
+    v8 = [segmentViews objectAtIndex:index];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -159,10 +159,10 @@
     [UIView animateWithDuration:v15 animations:0.5];
   }
 
-  if (a4 != -1)
+  if (newIndex != -1)
   {
-    v10 = [(VOTUIMapsExplorationRotaryView *)self segmentViews];
-    v11 = [v10 objectAtIndex:a4];
+    segmentViews2 = [(VOTUIMapsExplorationRotaryView *)self segmentViews];
+    v11 = [segmentViews2 objectAtIndex:newIndex];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;

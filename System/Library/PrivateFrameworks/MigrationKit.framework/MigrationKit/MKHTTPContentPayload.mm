@@ -1,25 +1,25 @@
 @interface MKHTTPContentPayload
-- (MKHTTPContentPayload)initWithHeaderValue:(id)a3;
+- (MKHTTPContentPayload)initWithHeaderValue:(id)value;
 @end
 
 @implementation MKHTTPContentPayload
 
-- (MKHTTPContentPayload)initWithHeaderValue:(id)a3
+- (MKHTTPContentPayload)initWithHeaderValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MKHTTPContentPayload;
   v5 = [(MKHTTPContentPayload *)&v15 init];
   if (v5)
   {
-    if (!v4)
+    if (!valueCopy)
     {
 LABEL_12:
       v12 = 0;
       goto LABEL_13;
     }
 
-    v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v4 options:0];
+    v6 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:valueCopy options:0];
     v14 = 0;
     v7 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:0 error:&v14];
     v8 = v14;

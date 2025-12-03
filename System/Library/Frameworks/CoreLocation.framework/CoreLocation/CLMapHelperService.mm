@@ -1,9 +1,9 @@
 @interface CLMapHelperService
 - (CLMapHelperService)init;
-- (id)convertCLMapRoadVectorToRoadDictionaryArray:(void *)a3;
+- (id)convertCLMapRoadVectorToRoadDictionaryArray:(void *)array;
 - (void)cancelRoadDataRequest;
 - (void)clearMemoryAndExitCleanly;
-- (void)constructRouteFromLocation:(CLLocationCoordinate2D)a3 roadID:(unint64_t)a4 clRoadID:(unint64_t)a5 projection:(double)a6 toLocation:(CLLocationCoordinate2D)a7 toRoadID:(unint64_t)a8 toCLRoadID:(unint64_t)a9 toProjection:(double)a10 maxRouteLength:(double)a11 allowNetwork:(BOOL)a12 preferCachedTiles:(BOOL)a13 isPedestrianOrCycling:(BOOL)a14 clearTiles:(BOOL)a15 iOSTime:(double)a16 familiarityData:(id)a17 useMapsAPIForIntersectionQuery:(BOOL)a18 withReply:(id)a19;
+- (void)constructRouteFromLocation:(CLLocationCoordinate2D)location roadID:(unint64_t)d clRoadID:(unint64_t)iD projection:(double)projection toLocation:(CLLocationCoordinate2D)toLocation toRoadID:(unint64_t)roadID toCLRoadID:(unint64_t)lRoadID toProjection:(double)self0 maxRouteLength:(double)self1 allowNetwork:(BOOL)self2 preferCachedTiles:(BOOL)self3 isPedestrianOrCycling:(BOOL)self4 clearTiles:(BOOL)self5 iOSTime:(double)self6 familiarityData:(id)self7 useMapsAPIForIntersectionQuery:(BOOL)self8 withReply:(id)self9;
 - (void)releaseOSTransaction;
 - (void)stopConstructRouteFromLocation;
 - (void)takeOSTransaction;
@@ -42,9 +42,9 @@
 - (void)clearMemoryAndExitCleanly
 {
   NSLog(&cfstr_CltspClmmMaphe.isa, a2);
-  v3 = [(CLMapHelperService *)self releaseOSTransaction];
+  releaseOSTransaction = [(CLMapHelperService *)self releaseOSTransaction];
 
-  MEMORY[0x1EEE75030](v3);
+  MEMORY[0x1EEE75030](releaseOSTransaction);
 }
 
 - (void)takeOSTransaction
@@ -91,13 +91,13 @@
   }
 }
 
-- (id)convertCLMapRoadVectorToRoadDictionaryArray:(void *)a3
+- (id)convertCLMapRoadVectorToRoadDictionaryArray:(void *)array
 {
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = *a3;
-  v16 = *(a3 + 1);
-  v17 = v4;
-  if (*a3 != v16)
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = *array;
+  v16 = *(array + 1);
+  v17 = array;
+  if (*array != v16)
   {
     do
     {
@@ -161,31 +161,31 @@
   return v17;
 }
 
-- (void)constructRouteFromLocation:(CLLocationCoordinate2D)a3 roadID:(unint64_t)a4 clRoadID:(unint64_t)a5 projection:(double)a6 toLocation:(CLLocationCoordinate2D)a7 toRoadID:(unint64_t)a8 toCLRoadID:(unint64_t)a9 toProjection:(double)a10 maxRouteLength:(double)a11 allowNetwork:(BOOL)a12 preferCachedTiles:(BOOL)a13 isPedestrianOrCycling:(BOOL)a14 clearTiles:(BOOL)a15 iOSTime:(double)a16 familiarityData:(id)a17 useMapsAPIForIntersectionQuery:(BOOL)a18 withReply:(id)a19
+- (void)constructRouteFromLocation:(CLLocationCoordinate2D)location roadID:(unint64_t)d clRoadID:(unint64_t)iD projection:(double)projection toLocation:(CLLocationCoordinate2D)toLocation toRoadID:(unint64_t)roadID toCLRoadID:(unint64_t)lRoadID toProjection:(double)self0 maxRouteLength:(double)self1 allowNetwork:(BOOL)self2 preferCachedTiles:(BOOL)self3 isPedestrianOrCycling:(BOOL)self4 clearTiles:(BOOL)self5 iOSTime:(double)self6 familiarityData:(id)self7 useMapsAPIForIntersectionQuery:(BOOL)self8 withReply:(id)self9
 {
-  v36 = a12;
-  v37 = a13;
-  longitude = a7.longitude;
-  latitude = a7.latitude;
-  v29 = a3.longitude;
-  v30 = a3.latitude;
-  if (a14)
+  networkCopy = network;
+  tilesCopy = tiles;
+  longitude = toLocation.longitude;
+  latitude = toLocation.latitude;
+  v29 = location.longitude;
+  v30 = location.latitude;
+  if (cycling)
   {
     if (self->fEnableDebugLogging)
     {
       NSLog(&cfstr_CltspClmmMaphe_15.isa, a2);
     }
 
-    (*(a19 + 2))(a19, 0);
+    (*(reply + 2))(reply, 0);
   }
 
   [(CLMapHelperService *)self takeOSTransaction];
-  LOBYTE(v35) = a18;
-  LOWORD(v34) = __PAIR16__(a15, a14);
-  v32 = [(CLMapHelperService *)self internalConstructVehicularRouteFromLocation:a4 roadID:a5 clRoadID:a8 projection:a9 toLocation:v36 toRoadID:v37 toCLRoadID:v30 toProjection:v29 maxRouteLength:a6 allowNetwork:latitude preferCachedTiles:longitude isPedestrianOrCycling:a10 clearTiles:a11 iOSTime:a16 familiarityData:v34 useMapsAPIForIntersectionQuery:a17, v35];
-  v33 = *(a19 + 2);
+  LOBYTE(v35) = query;
+  LOWORD(v34) = __PAIR16__(clearTiles, cycling);
+  v32 = [(CLMapHelperService *)self internalConstructVehicularRouteFromLocation:d roadID:iD clRoadID:roadID projection:lRoadID toLocation:networkCopy toRoadID:tilesCopy toCLRoadID:v30 toProjection:v29 maxRouteLength:projection allowNetwork:latitude preferCachedTiles:longitude isPedestrianOrCycling:toProjection clearTiles:length iOSTime:time familiarityData:v34 useMapsAPIForIntersectionQuery:data, v35];
+  v33 = *(reply + 2);
 
-  v33(a19, v32);
+  v33(reply, v32);
 }
 
 - (void)stopConstructRouteFromLocation

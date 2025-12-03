@@ -1,26 +1,26 @@
 @interface SearchUIAppClipButtonItemGenerator
 + (id)sharedCache;
 - (TLKAsyncCache)cacheToPrewarm;
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4;
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion;
 @end
 
 @implementation SearchUIAppClipButtonItemGenerator
 
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 command];
-  v8 = [objc_opt_class() sharedCache];
+  itemCopy = item;
+  completionCopy = completion;
+  command = [itemCopy command];
+  sharedCache = [objc_opt_class() sharedCache];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93__SearchUIAppClipButtonItemGenerator_generateSearchUIButtonItemsWithSFButtonItem_completion___block_invoke;
   v11[3] = &unk_1E85B2EC0;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
-  [v8 getObjectForKey:v7 completionHandler:v11];
+  v12 = itemCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = itemCopy;
+  [sharedCache getObjectForKey:command completionHandler:v11];
 }
 
 void __93__SearchUIAppClipButtonItemGenerator_generateSearchUIButtonItemsWithSFButtonItem_completion___block_invoke(uint64_t a1, void *a2)

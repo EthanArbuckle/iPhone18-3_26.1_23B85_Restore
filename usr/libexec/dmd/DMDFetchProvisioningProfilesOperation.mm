@@ -1,6 +1,6 @@
 @interface DMDFetchProvisioningProfilesOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [v5 listInstalledProvisioningProfileUUIDsWithManagedOnly:{objc_msgSend(v4, "managedOnly")}];
+  v6 = [v5 listInstalledProvisioningProfileUUIDsWithManagedOnly:{objc_msgSend(requestCopy, "managedOnly")}];
 
   v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
   v16 = 0u;

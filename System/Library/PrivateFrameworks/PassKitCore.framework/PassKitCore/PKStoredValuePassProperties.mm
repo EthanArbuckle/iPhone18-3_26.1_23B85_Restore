@@ -1,80 +1,80 @@
 @interface PKStoredValuePassProperties
 + (PKStoredValuePassProperties)passPropertiesForPass:(PKPass *)pass;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDecimalNumber)balance;
 - (NSString)currencyCode;
 - (NSString)displayableBalance;
-- (PKStoredValuePassProperties)initWithCoder:(id)a3;
-- (PKStoredValuePassProperties)initWithTransitAppletState:(id)a3 paymentApplication:(id)a4 fieldCollection:(id)a5;
-- (id)balanceWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKStoredValuePassProperties)initWithCoder:(id)coder;
+- (PKStoredValuePassProperties)initWithTransitAppletState:(id)state paymentApplication:(id)application fieldCollection:(id)collection;
+- (id)balanceWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)decimalBalance;
 - (id)primaryCashBalance;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKStoredValuePassProperties
 
-- (PKStoredValuePassProperties)initWithTransitAppletState:(id)a3 paymentApplication:(id)a4 fieldCollection:(id)a5
+- (PKStoredValuePassProperties)initWithTransitAppletState:(id)state paymentApplication:(id)application fieldCollection:(id)collection
 {
   v79 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  applicationCopy = application;
+  collectionCopy = collection;
   v74.receiver = self;
   v74.super_class = PKStoredValuePassProperties;
   v11 = [(PKStoredValuePassProperties *)&v74 init];
   if (v11)
   {
-    v12 = [v9 appletDataFormat];
-    v13 = [v12 copy];
+    appletDataFormat = [applicationCopy appletDataFormat];
+    v13 = [appletDataFormat copy];
     appletFormat = v11->_appletFormat;
     v11->_appletFormat = v13;
 
-    v15 = [v8 balance];
-    v16 = [v8 balances];
-    v17 = [v8 currency];
-    v18 = v17;
-    if (v17)
+    balance = [stateCopy balance];
+    balances = [stateCopy balances];
+    currency = [stateCopy currency];
+    v18 = currency;
+    if (currency)
     {
-      v19 = v17;
+      appletCurrencyCode = currency;
     }
 
     else
     {
-      v19 = [v9 appletCurrencyCode];
+      appletCurrencyCode = [applicationCopy appletCurrencyCode];
     }
 
-    v20 = v19;
+    v20 = appletCurrencyCode;
 
-    if (v15 && v20)
+    if (balance && v20)
     {
-      v21 = PKCurrencyAmountCreate(v15, v20, 0);
+      v21 = PKCurrencyAmountCreate(balance, v20, 0);
       balanceAmount = v11->_balanceAmount;
       v11->_balanceAmount = v21;
     }
 
-    if ([v16 count])
+    if ([balances count])
     {
       v54 = v20;
-      v55 = v15;
+      v55 = balance;
       v57 = v11;
-      v58 = v9;
-      v59 = v8;
-      v56 = v10;
-      v23 = [v10 balanceFields];
-      v65 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v16, "count")}];
+      v58 = applicationCopy;
+      v59 = stateCopy;
+      v56 = collectionCopy;
+      balanceFields = [collectionCopy balanceFields];
+      v65 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(balances, "count")}];
       v70 = 0u;
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
-      obj = v23;
+      obj = balanceFields;
       v63 = [(PKStoredValuePassBalance *)obj countByEnumeratingWithState:&v70 objects:v78 count:16];
       if (v63)
       {
         v61 = *v71;
-        v62 = v16;
+        v62 = balances;
         do
         {
           v24 = 0;
@@ -91,7 +91,7 @@
             v67 = 0u;
             v68 = 0u;
             v69 = 0u;
-            v26 = v16;
+            v26 = balances;
             v27 = [v26 countByEnumeratingWithState:&v66 objects:v77 count:16];
             if (v27)
             {
@@ -107,15 +107,15 @@
                   }
 
                   v31 = *(*(&v66 + 1) + 8 * i);
-                  v32 = [v25 foreignReferenceIdentifiers];
-                  v33 = [v31 identifier];
-                  v34 = [v32 containsObject:v33];
+                  foreignReferenceIdentifiers = [v25 foreignReferenceIdentifiers];
+                  identifier = [v31 identifier];
+                  v34 = [foreignReferenceIdentifiers containsObject:identifier];
 
                   if (v34)
                   {
                     v35 = [[PKStoredValuePassBalance alloc] initWithTransitAppletBalance:v31 balanceField:v25];
-                    v36 = [(PKStoredValuePassBalance *)v35 balanceType];
-                    v37 = [v36 isEqualToString:@"com.apple.wallet.storedvaluepassbalancetype.unknown"];
+                    balanceType = [(PKStoredValuePassBalance *)v35 balanceType];
+                    v37 = [balanceType isEqualToString:@"com.apple.wallet.storedvaluepassbalancetype.unknown"];
 
                     if ((v37 & 1) == 0)
                     {
@@ -131,7 +131,7 @@
             }
 
             v24 = v64 + 1;
-            v16 = v62;
+            balances = v62;
           }
 
           while (v64 + 1 != v63);
@@ -151,19 +151,19 @@
 
       if ([(NSArray *)v57->_balances count])
       {
-        v9 = v58;
-        v8 = v59;
-        v15 = v55;
-        v10 = v56;
+        applicationCopy = v58;
+        stateCopy = v59;
+        balance = v55;
+        collectionCopy = v56;
         v20 = v54;
       }
 
       else
       {
-        v9 = v58;
-        v8 = v59;
-        v15 = v55;
-        v10 = v56;
+        applicationCopy = v58;
+        stateCopy = v59;
+        balance = v55;
+        collectionCopy = v56;
         v20 = v54;
         if (v57->_balanceAmount)
         {
@@ -195,14 +195,14 @@
       v11->_balances = v43;
     }
 
-    v11->_blocked = [v8 isBlacklisted];
-    v47 = [v8 expirationDate];
-    v48 = [v47 copy];
+    v11->_blocked = [stateCopy isBlacklisted];
+    expirationDate = [stateCopy expirationDate];
+    v48 = [expirationDate copy];
     expirationDate = v11->_expirationDate;
     v11->_expirationDate = v48;
 
-    v50 = [v8 enrouteTransitTypes];
-    v51 = [v50 copy];
+    enrouteTransitTypes = [stateCopy enrouteTransitTypes];
+    v51 = [enrouteTransitTypes copy];
     enrouteTransitTypes = v11->_enrouteTransitTypes;
     v11->_enrouteTransitTypes = v51;
   }
@@ -212,24 +212,24 @@
 
 + (PKStoredValuePassProperties)passPropertiesForPass:(PKPass *)pass
 {
-  v3 = [(PKPass *)pass paymentPass];
-  v4 = [v3 transitProperties];
+  paymentPass = [(PKPass *)pass paymentPass];
+  transitProperties = [paymentPass transitProperties];
 
-  return v4;
+  return transitProperties;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       [objc_opt_class() equalityClass];
       if (objc_opt_isKindOfClass())
@@ -333,73 +333,73 @@ LABEL_32:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_expirationDate];
-  [v3 safelyAddObject:self->_appletFormat];
-  [v3 safelyAddObject:self->_balanceAmount];
-  [v3 safelyAddObject:self->_enrouteTransitTypes];
-  [v3 safelyAddObject:self->_balances];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_expirationDate];
+  [array safelyAddObject:self->_appletFormat];
+  [array safelyAddObject:self->_balanceAmount];
+  [array safelyAddObject:self->_enrouteTransitTypes];
+  [array safelyAddObject:self->_balances];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_blocked - v4 + 32 * v4;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appletFormat copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appletFormat copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(PKCurrencyAmount *)self->_balanceAmount copyWithZone:a3];
+  v8 = [(PKCurrencyAmount *)self->_balanceAmount copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSDate *)self->_expirationDate copyWithZone:a3];
+  v10 = [(NSDate *)self->_expirationDate copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
   *(v5 + 8) = self->_blocked;
-  v12 = [(NSArray *)self->_enrouteTransitTypes copyWithZone:a3];
+  v12 = [(NSArray *)self->_enrouteTransitTypes copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
-  v14 = [(NSArray *)self->_balances copyWithZone:a3];
+  v14 = [(NSArray *)self->_balances copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
   return v5;
 }
 
-- (PKStoredValuePassProperties)initWithCoder:(id)a3
+- (PKStoredValuePassProperties)initWithCoder:(id)coder
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PKStoredValuePassProperties;
   v5 = [(PKStoredValuePassProperties *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletFormat"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletFormat"];
     appletFormat = v5->_appletFormat;
     v5->_appletFormat = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"balance"];
     balanceAmount = v5->_balanceAmount;
     v5->_balanceAmount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
     expirationDate = v5->_expirationDate;
     v5->_expirationDate = v10;
 
-    v5->_blocked = [v4 decodeBoolForKey:@"blocked"];
+    v5->_blocked = [coderCopy decodeBoolForKey:@"blocked"];
     v12 = MEMORY[0x1E695DFD8];
     v25[0] = objc_opt_class();
     v25[1] = objc_opt_class();
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"enrouteTransitTypes"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"enrouteTransitTypes"];
     enrouteTransitTypes = v5->_enrouteTransitTypes;
     v5->_enrouteTransitTypes = v15;
 
@@ -408,7 +408,7 @@ LABEL_32:
     v24[1] = objc_opt_class();
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v19 = [v17 setWithArray:v18];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"storedBalances"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"storedBalances"];
     balances = v5->_balances;
     v5->_balances = v20;
   }
@@ -416,79 +416,79 @@ LABEL_32:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appletFormat = self->_appletFormat;
-  v5 = a3;
-  [v5 encodeObject:appletFormat forKey:@"appletFormat"];
-  [v5 encodeObject:self->_balanceAmount forKey:@"balance"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeBool:self->_blocked forKey:@"blocked"];
-  [v5 encodeObject:self->_enrouteTransitTypes forKey:@"enrouteTransitTypes"];
-  [v5 encodeObject:self->_balances forKey:@"storedBalances"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appletFormat forKey:@"appletFormat"];
+  [coderCopy encodeObject:self->_balanceAmount forKey:@"balance"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeBool:self->_blocked forKey:@"blocked"];
+  [coderCopy encodeObject:self->_enrouteTransitTypes forKey:@"enrouteTransitTypes"];
+  [coderCopy encodeObject:self->_balances forKey:@"storedBalances"];
 }
 
 - (NSDecimalNumber)balance
 {
-  v2 = [(PKStoredValuePassProperties *)self balanceAmount];
-  v3 = [v2 amount];
+  balanceAmount = [(PKStoredValuePassProperties *)self balanceAmount];
+  amount = [balanceAmount amount];
 
-  return v3;
+  return amount;
 }
 
 - (NSString)currencyCode
 {
-  v2 = [(PKStoredValuePassProperties *)self balanceAmount];
-  v3 = [v2 currency];
+  balanceAmount = [(PKStoredValuePassProperties *)self balanceAmount];
+  currency = [balanceAmount currency];
 
-  return v3;
+  return currency;
 }
 
 - (NSString)displayableBalance
 {
-  v3 = [(PKStoredValuePassProperties *)self balanceAmount];
+  balanceAmount = [(PKStoredValuePassProperties *)self balanceAmount];
 
-  if (v3)
+  if (balanceAmount)
   {
-    v4 = [(PKStoredValuePassProperties *)self balanceAmount];
-    v5 = [v4 formattedStringValue];
+    balanceAmount2 = [(PKStoredValuePassProperties *)self balanceAmount];
+    formattedStringValue = [balanceAmount2 formattedStringValue];
   }
 
   else
   {
-    v6 = [(PKStoredValuePassProperties *)self primaryCashBalance];
-    v4 = v6;
-    if (v6)
+    primaryCashBalance = [(PKStoredValuePassProperties *)self primaryCashBalance];
+    balanceAmount2 = primaryCashBalance;
+    if (primaryCashBalance)
     {
-      v7 = [v6 amount];
-      v8 = [v4 currencyCode];
-      v9 = PKCurrencyAmountCreate(v7, v8, 0);
+      amount = [primaryCashBalance amount];
+      currencyCode = [balanceAmount2 currencyCode];
+      v9 = PKCurrencyAmountCreate(amount, currencyCode, 0);
 
-      v5 = [v9 formattedStringValue];
+      formattedStringValue = [v9 formattedStringValue];
     }
 
     else
     {
-      v5 = 0;
+      formattedStringValue = 0;
     }
   }
 
-  return v5;
+  return formattedStringValue;
 }
 
 - (id)decimalBalance
 {
-  v2 = [(PKStoredValuePassProperties *)self balanceAmount];
-  v3 = [v2 amount];
+  balanceAmount = [(PKStoredValuePassProperties *)self balanceAmount];
+  amount = [balanceAmount amount];
 
-  return v3;
+  return amount;
 }
 
-- (id)balanceWithIdentifier:(id)a3
+- (id)balanceWithIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -509,8 +509,8 @@ LABEL_32:
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 identifier];
-          v11 = [v10 isEqualToString:v4];
+          identifier = [v9 identifier];
+          v11 = [identifier isEqualToString:identifierCopy];
 
           if (v11)
           {
@@ -542,8 +542,8 @@ LABEL_12:
 
 - (id)primaryCashBalance
 {
-  v2 = [(PKStoredValuePassProperties *)self balances];
-  v3 = [v2 pk_firstObjectPassingTest:&__block_literal_global_175];
+  balances = [(PKStoredValuePassProperties *)self balances];
+  v3 = [balances pk_firstObjectPassingTest:&__block_literal_global_175];
 
   return v3;
 }

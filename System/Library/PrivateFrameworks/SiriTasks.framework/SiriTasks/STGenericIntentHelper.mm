@@ -1,23 +1,23 @@
 @interface STGenericIntentHelper
 + (id)sharedHelper;
-- (BOOL)_invokeHandlerForIntent:(id)a3;
+- (BOOL)_invokeHandlerForIntent:(id)intent;
 - (STGenericIntentHelper)init;
-- (void)_handleIntent:(id)a3 withTask:(id)a4 andApplication:(id)a5;
-- (void)finishedLaunching:(BOOL)a3;
-- (void)forIntent:(id)a3 registerHandler:(id)a4;
-- (void)forIntentParam:(id)a3 predict:(id)a4;
-- (void)handleSiriTask:(id)a3 withApplication:(id)a4;
+- (void)_handleIntent:(id)intent withTask:(id)task andApplication:(id)application;
+- (void)finishedLaunching:(BOOL)launching;
+- (void)forIntent:(id)intent registerHandler:(id)handler;
+- (void)forIntentParam:(id)param predict:(id)predict;
+- (void)handleSiriTask:(id)task withApplication:(id)application;
 @end
 
 @implementation STGenericIntentHelper
 
-- (BOOL)_invokeHandlerForIntent:(id)a3
+- (BOOL)_invokeHandlerForIntent:(id)intent
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intentCopy = intent;
   handlers = self->_handlers;
-  v6 = [v4 name];
-  v7 = [(NSMutableDictionary *)handlers objectForKey:v6];
+  name = [intentCopy name];
+  v7 = [(NSMutableDictionary *)handlers objectForKey:name];
 
   if (v7)
   {
@@ -26,7 +26,7 @@
     v12[2] = __49__STGenericIntentHelper__invokeHandlerForIntent___block_invoke;
     v12[3] = &unk_279C52630;
     v14 = v7;
-    v13 = v4;
+    v13 = intentCopy;
     dispatch_async(MEMORY[0x277D85CD0], v12);
   }
 
@@ -39,7 +39,7 @@
       *buf = 136315650;
       v16 = "[STGenericIntentHelper _invokeHandlerForIntent:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = intentCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_error_impl(&dword_269249000, v8, OS_LOG_TYPE_ERROR, "%s No handler registered for intent %@, registered handlers: %@", buf, 0x20u);
@@ -76,20 +76,20 @@ uint64_t __49__STGenericIntentHelper__invokeHandlerForIntent___block_invoke_2(ui
   return result;
 }
 
-- (void)forIntent:(id)a3 registerHandler:(id)a4
+- (void)forIntent:(id)intent registerHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__STGenericIntentHelper_forIntent_registerHandler___block_invoke;
   block[3] = &unk_279C52608;
-  v12 = v6;
-  v13 = v7;
+  v12 = intentCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = intentCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -100,9 +100,9 @@ void __51__STGenericIntentHelper_forIntent_registerHandler___block_invoke(uint64
   [v2 setObject:v3 forKey:*(a1 + 40)];
 }
 
-- (void)forIntentParam:(id)a3 predict:(id)a4
+- (void)forIntentParam:(id)param predict:(id)predict
 {
-  v5 = [MEMORY[0x277CBEB40] orderedSetWithArray:a4];
+  v5 = [MEMORY[0x277CBEB40] orderedSetWithArray:predict];
   v6 = dispatch_time(0, 10000000000);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -120,51 +120,51 @@ void __48__STGenericIntentHelper_forIntentParam_predict___block_invoke(uint64_t 
   [v2 setCustomPhotoAlbumNames:*(a1 + 32)];
 }
 
-- (void)_handleIntent:(id)a3 withTask:(id)a4 andApplication:(id)a5
+- (void)_handleIntent:(id)intent withTask:(id)task andApplication:(id)application
 {
   v96 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intentCopy = intent;
+  taskCopy = task;
+  applicationCopy = application;
   v11 = *MEMORY[0x277CEF0F8];
   v12 = os_log_type_enabled(*MEMORY[0x277CEF0F8], OS_LOG_TYPE_DEBUG);
-  if (v8)
+  if (intentCopy)
   {
-    v86 = self;
-    v88 = v9;
-    v89 = v10;
+    selfCopy = self;
+    v88 = taskCopy;
+    v89 = applicationCopy;
     if (v12)
     {
       *buf = 136315394;
       v93 = "[STGenericIntentHelper _handleIntent:withTask:andApplication:]";
       v94 = 2112;
-      v95 = v8;
+      v95 = intentCopy;
       _os_log_debug_impl(&dword_269249000, v11, OS_LOG_TYPE_DEBUG, "%s %@", buf, 0x16u);
     }
 
-    v13 = [v8 info];
-    v14 = [v13 objectForKeyedSubscript:@"address"];
+    info = [intentCopy info];
+    v14 = [info objectForKeyedSubscript:@"address"];
     v15 = [v14 objectForKeyedSubscript:@"value"];
 
-    v16 = [v8 info];
-    v17 = [v16 objectForKeyedSubscript:@"photoTopic"];
+    info2 = [intentCopy info];
+    v17 = [info2 objectForKeyedSubscript:@"photoTopic"];
     v18 = [v17 objectForKeyedSubscript:@"value"];
 
-    v19 = [v8 info];
-    v20 = [v19 objectForKeyedSubscript:@"photoAlbumName"];
+    info3 = [intentCopy info];
+    v20 = [info3 objectForKeyedSubscript:@"photoAlbumName"];
     v21 = [v20 objectForKeyedSubscript:@"value"];
 
-    v22 = [v8 info];
-    v23 = [v22 objectForKeyedSubscript:@"photoContact"];
+    info4 = [intentCopy info];
+    v23 = [info4 objectForKeyedSubscript:@"photoContact"];
     v24 = [v23 objectForKeyedSubscript:@"value"];
 
-    v25 = [v8 info];
-    v26 = [v25 objectForKeyedSubscript:@"photoAttributes"];
+    info5 = [intentCopy info];
+    v26 = [info5 objectForKeyedSubscript:@"photoAttributes"];
     v27 = [v26 objectForKeyedSubscript:@"value"];
     v87 = [v27 objectForKeyedSubscript:@"semanticValue"];
 
-    v28 = [v8 info];
-    v29 = [v28 objectForKeyedSubscript:@"photoNoun"];
+    info6 = [intentCopy info];
+    v29 = [info6 objectForKeyedSubscript:@"photoNoun"];
     v30 = [v29 objectForKeyedSubscript:@"value"];
     v90 = [v30 objectForKeyedSubscript:@"semanticValue"];
 
@@ -192,8 +192,8 @@ void __48__STGenericIntentHelper_forIntentParam_predict___block_invoke(uint64_t 
     v34 = [(STGenericIntentPerson *)v33 objectForKeyedSubscript:@"fullName"];
     [(STGenericIntentPerson *)v24 setName:v34];
 
-    v35 = [(STGenericIntentPerson *)v24 name];
-    v36 = [v35 length];
+    name = [(STGenericIntentPerson *)v24 name];
+    v36 = [name length];
 
     if (!v36)
     {
@@ -233,7 +233,7 @@ LABEL_15:
     v85 = v15;
     if (!v15)
     {
-      v44 = 0;
+      lowercaseString = 0;
       goto LABEL_30;
     }
 
@@ -275,7 +275,7 @@ LABEL_15:
             if (!v60)
             {
               v53 = 0;
-              v44 = 0;
+              lowercaseString = 0;
               v50 = 0.0;
               v52 = 0.0;
               goto LABEL_29;
@@ -286,20 +286,20 @@ LABEL_15:
         }
 
         v47 = [(STGenericIntentLocation *)v15 objectForKeyedSubscript:v56];
-        v44 = [v47 lowercaseString];
+        lowercaseString = [v47 lowercaseString];
         v53 = 0;
         v50 = 0.0;
         v52 = 0.0;
 LABEL_28:
 
 LABEL_29:
-        v15 = [[STGenericIntentLocation alloc] initWithName:v44 latitude:v50 longitude:v52];
+        v15 = [[STGenericIntentLocation alloc] initWithName:lowercaseString latitude:v50 longitude:v52];
         [(STGenericIntentLocation *)v15 setIsLatLong:v53];
 LABEL_30:
-        v81 = v44;
+        v81 = lowercaseString;
         v83 = v21;
-        v61 = [v8 info];
-        v62 = [v61 objectForKeyedSubscript:@"photoDate"];
+        info7 = [intentCopy info];
+        v62 = [info7 objectForKeyedSubscript:@"photoDate"];
         v63 = [v62 objectForKeyedSubscript:@"value"];
 
         if (v63)
@@ -317,24 +317,24 @@ LABEL_30:
         }
 
         v69 = [[STGenericIntent alloc] initWithName:@"photosSearch"];
-        v70 = [v8 utterance];
-        [(STGenericIntent *)v69 setUtterance:v70];
+        utterance = [intentCopy utterance];
+        [(STGenericIntent *)v69 setUtterance:utterance];
 
-        v9 = v88;
+        taskCopy = v88;
         [(STGenericIntent *)v69 setSiriTask:v88];
-        [(STGenericIntent *)v69 setIntentRequest:v8];
-        v10 = v89;
+        [(STGenericIntent *)v69 setIntentRequest:intentCopy];
+        applicationCopy = v89;
         -[STGenericIntent setAppInForeground:](v69, "setAppInForeground:", [v89 applicationState] == 0);
-        -[STGenericIntent setIsLaunch:](v69, "setIsLaunch:", [v8 isForegroundLaunch]);
+        -[STGenericIntent setIsLaunch:](v69, "setIsLaunch:", [intentCopy isForegroundLaunch]);
         [(STGenericIntent *)v69 setAttributes:&stru_2879DBC30];
         if ([v90 containsString:@"videos"])
         {
           v71 = MEMORY[0x277CCACA8];
-          v72 = [(STGenericIntent *)v69 attributes];
-          v73 = [v71 stringWithFormat:@" %@ video", v72];
+          attributes = [(STGenericIntent *)v69 attributes];
+          v73 = [v71 stringWithFormat:@" %@ video", attributes];
           [(STGenericIntent *)v69 setAttributes:v73];
 
-          v10 = v89;
+          applicationCopy = v89;
         }
 
         v74 = v87;
@@ -346,8 +346,8 @@ LABEL_30:
         if ([v87 containsString:@"from_front_facing_camera"])
         {
           v75 = MEMORY[0x277CCACA8];
-          v76 = [(STGenericIntent *)v69 attributes];
-          [v75 stringWithFormat:@" %@ selfies", v76, v80];
+          attributes2 = [(STGenericIntent *)v69 attributes];
+          [v75 stringWithFormat:@" %@ selfies", attributes2, v80];
         }
 
         else
@@ -380,20 +380,20 @@ LABEL_41:
               [(STGenericIntent *)v69 addParam:@"byPhotoTopic" withValue:v37];
             }
 
-            [(STGenericIntentHelper *)v86 _invokeHandlerForIntent:v69];
+            [(STGenericIntentHelper *)selfCopy _invokeHandlerForIntent:v69];
 
             goto LABEL_52;
           }
 
           v77 = MEMORY[0x277CCACA8];
-          v76 = [(STGenericIntent *)v69 attributes];
-          [v77 stringWithFormat:@" %@ %@", v76, v87];
+          attributes2 = [(STGenericIntent *)v69 attributes];
+          [v77 stringWithFormat:@" %@ %@", attributes2, v87];
         }
         v78 = ;
         [(STGenericIntent *)v69 setAttributes:v78];
 
-        v9 = v88;
-        v10 = v89;
+        taskCopy = v88;
+        applicationCopy = v89;
         v74 = v87;
         goto LABEL_41;
       }
@@ -406,7 +406,7 @@ LABEL_41:
     [v48 doubleValue];
     v52 = v51;
 
-    v44 = 0;
+    lowercaseString = 0;
     v53 = 1;
     goto LABEL_28;
   }
@@ -423,24 +423,24 @@ LABEL_52:
   v79 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSiriTask:(id)a3 withApplication:(id)a4
+- (void)handleSiriTask:(id)task withApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 request];
+  taskCopy = task;
+  applicationCopy = application;
+  v8 = taskCopy;
+  request = [v8 request];
   queue = self->_queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__STGenericIntentHelper_handleSiriTask_withApplication___block_invoke;
   v14[3] = &unk_279C525E0;
   v14[4] = self;
-  v15 = v9;
+  v15 = request;
   v16 = v8;
-  v17 = v7;
-  v11 = v7;
+  v17 = applicationCopy;
+  v11 = applicationCopy;
   v12 = v8;
-  v13 = v9;
+  v13 = request;
   dispatch_async(queue, v14);
 }
 
@@ -464,7 +464,7 @@ uint64_t __56__STGenericIntentHelper_handleSiriTask_withApplication___block_invo
   return result;
 }
 
-- (void)finishedLaunching:(BOOL)a3
+- (void)finishedLaunching:(BOOL)launching
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

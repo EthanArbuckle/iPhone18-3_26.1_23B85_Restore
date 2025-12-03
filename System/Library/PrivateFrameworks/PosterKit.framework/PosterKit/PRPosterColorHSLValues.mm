@@ -1,20 +1,20 @@
 @interface PRPosterColorHSLValues
-- (PRPosterColorHSLValues)initWithHue:(double)a3 saturation:(double)a4 luminance:(double)a5;
+- (PRPosterColorHSLValues)initWithHue:(double)hue saturation:(double)saturation luminance:(double)luminance;
 - (id)hsbValues;
 @end
 
 @implementation PRPosterColorHSLValues
 
-- (PRPosterColorHSLValues)initWithHue:(double)a3 saturation:(double)a4 luminance:(double)a5
+- (PRPosterColorHSLValues)initWithHue:(double)hue saturation:(double)saturation luminance:(double)luminance
 {
   v9.receiver = self;
   v9.super_class = PRPosterColorHSLValues;
   result = [(PRPosterColorHSLValues *)&v9 init];
   if (result)
   {
-    result->_hue = a3;
-    result->_saturation = a4;
-    result->_luminance = a5;
+    result->_hue = hue;
+    result->_saturation = saturation;
+    result->_luminance = luminance;
   }
 
   return result;

@@ -1,21 +1,21 @@
 @interface _UIBackdropViewSettingsUltraLight
-- (_UIBackdropViewSettingsUltraLight)initWithDefaultValuesForGraphicsQuality:(int64_t)a3;
-- (void)computeOutputSettingsUsingModel:(id)a3;
+- (_UIBackdropViewSettingsUltraLight)initWithDefaultValuesForGraphicsQuality:(int64_t)quality;
+- (void)computeOutputSettingsUsingModel:(id)model;
 - (void)dealloc;
 - (void)setDefaultValues;
 @end
 
 @implementation _UIBackdropViewSettingsUltraLight
 
-- (_UIBackdropViewSettingsUltraLight)initWithDefaultValuesForGraphicsQuality:(int64_t)a3
+- (_UIBackdropViewSettingsUltraLight)initWithDefaultValuesForGraphicsQuality:(int64_t)quality
 {
   v6.receiver = self;
   v6.super_class = _UIBackdropViewSettingsUltraLight;
-  v3 = [(_UIBackdropViewSettings *)&v6 initWithDefaultValuesForGraphicsQuality:a3];
+  v3 = [(_UIBackdropViewSettings *)&v6 initWithDefaultValuesForGraphicsQuality:quality];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__accessibilityButtonShapesDidChangeNotification_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__accessibilityButtonShapesDidChangeNotification_ name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
   }
 
   return v3;
@@ -26,8 +26,8 @@
   v9.receiver = self;
   v9.super_class = _UIBackdropViewSettingsUltraLight;
   [(_UIBackdropViewSettings *)&v9 setDefaultValues];
-  v3 = [(_UIBackdropViewSettings *)self graphicsQuality];
-  if (v3 == 10)
+  graphicsQuality = [(_UIBackdropViewSettings *)self graphicsQuality];
+  if (graphicsQuality == 10)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
     [(_UIBackdropViewSettings *)self setBackdropVisible:0];
@@ -60,7 +60,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v3 == 100)
+  if (graphicsQuality == 100)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
     [(_UIBackdropViewSettings *)self setBackdropVisible:1];
@@ -77,12 +77,12 @@ LABEL_7:
   [(_UIBackdropViewSettings *)self setLegibleColor:v8];
 }
 
-- (void)computeOutputSettingsUsingModel:(id)a3
+- (void)computeOutputSettingsUsingModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v18.receiver = self;
   v18.super_class = _UIBackdropViewSettingsUltraLight;
-  [(_UIBackdropViewSettings *)&v18 computeOutputSettingsUsingModel:v4];
+  [(_UIBackdropViewSettings *)&v18 computeOutputSettingsUsingModel:modelCopy];
   if (![(_UIBackdropViewSettings *)self isEnabled])
   {
     [(_UIBackdropViewSettings *)self setGrayscaleTintLevel:0.6];
@@ -98,15 +98,15 @@ LABEL_7:
     }
 
     [(_UIBackdropViewSettings *)self setColorTint:qword_1ED49C848];
-    v15 = [(_UIBackdropViewSettings *)self graphicsQuality];
-    if (v15 == 10)
+    graphicsQuality = [(_UIBackdropViewSettings *)self graphicsQuality];
+    if (graphicsQuality == 10)
     {
       v16 = 0.96;
     }
 
     else
     {
-      if (v15 != 100)
+      if (graphicsQuality != 100)
       {
         goto LABEL_8;
       }
@@ -120,7 +120,7 @@ LABEL_7:
 
   if ([(_UIBackdropViewSettings *)self isHighlighted])
   {
-    [v4 grayscaleTintAlpha];
+    [modelCopy grayscaleTintAlpha];
     v6 = v5 * 0.6;
 LABEL_7:
     [(_UIBackdropViewSettings *)self setGrayscaleTintAlpha:v6];
@@ -129,12 +129,12 @@ LABEL_7:
 
   if (!_AXSButtonShapesEnabled() && [(_UIBackdropViewSettings *)self graphicsQuality]== 100)
   {
-    v7 = [v4 colorSettings];
-    [v7 averageSaturation];
+    colorSettings = [modelCopy colorSettings];
+    [colorSettings averageSaturation];
     v9 = v8;
 
-    v10 = [v4 colorSettings];
-    [v10 averageBrightness];
+    colorSettings2 = [modelCopy colorSettings];
+    [colorSettings2 averageBrightness];
     v12 = v11;
 
     if (v12 <= 0.84)
@@ -152,13 +152,13 @@ LABEL_23:
         goto LABEL_7;
       }
 
-      [v4 grayscaleTintAlpha];
+      [modelCopy grayscaleTintAlpha];
       v14 = 0.2 - v12;
     }
 
     else
     {
-      [v4 grayscaleTintAlpha];
+      [modelCopy grayscaleTintAlpha];
       v14 = v12 + -0.84;
     }
 
@@ -171,8 +171,8 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIAccessibilityButtonShapesEnabledStatusDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIBackdropViewSettingsUltraLight;

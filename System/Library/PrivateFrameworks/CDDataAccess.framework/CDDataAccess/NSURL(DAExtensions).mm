@@ -19,77 +19,77 @@
 - (uint64_t)da_isEqualToDAVURL:()DAExtensions
 {
   v5 = a3;
-  v6 = [a1 absoluteString];
-  v7 = [v5 absoluteString];
-  v8 = [v6 isEqualToString:v7];
+  absoluteString = [self absoluteString];
+  absoluteString2 = [v5 absoluteString];
+  v8 = [absoluteString isEqualToString:absoluteString2];
 
   if ((v8 & 1) == 0)
   {
-    v10 = [a1 host];
-    v11 = [v5 host];
-    if (v10 != v11)
+    host = [self host];
+    host2 = [v5 host];
+    if (host != host2)
     {
-      v12 = [a1 host];
-      if (!v12)
+      host3 = [self host];
+      if (!host3)
       {
         goto LABEL_45;
       }
 
-      v13 = v12;
-      v14 = [a1 host];
-      v15 = [v5 host];
-      if ([v14 caseInsensitiveCompare:v15])
+      v13 = host3;
+      host4 = [self host];
+      host5 = [v5 host];
+      if ([host4 caseInsensitiveCompare:host5])
       {
 
         goto LABEL_45;
       }
 
-      v44 = v15;
-      v45 = v14;
+      v44 = host5;
+      v45 = host4;
       v46 = v13;
     }
 
-    v16 = [a1 scheme];
-    v17 = [v5 scheme];
-    if (v16 != v17)
+    scheme = [self scheme];
+    scheme2 = [v5 scheme];
+    if (scheme != scheme2)
     {
-      v18 = [a1 scheme];
-      if (!v18)
+      scheme3 = [self scheme];
+      if (!scheme3)
       {
         goto LABEL_24;
       }
 
-      v19 = [a1 scheme];
-      v3 = [v5 scheme];
-      if ([v19 caseInsensitiveCompare:v3])
+      scheme4 = [self scheme];
+      scheme5 = [v5 scheme];
+      if ([scheme4 caseInsensitiveCompare:scheme5])
       {
         v20 = 0;
         goto LABEL_18;
       }
 
-      v40 = v19;
-      v41 = v18;
+      v40 = scheme4;
+      v41 = scheme3;
     }
 
-    v21 = [a1 user];
-    v22 = [v5 user];
-    v23 = v22;
-    if (v21 != v22)
+    user = [self user];
+    user2 = [v5 user];
+    v23 = user2;
+    if (user != user2)
     {
-      v42 = v3;
-      v24 = [a1 user];
-      v25 = [v5 user];
-      v43 = [v24 isEqualToString:v25];
+      v42 = scheme5;
+      user3 = [self user];
+      user4 = [v5 user];
+      v43 = [user3 isEqualToString:user4];
 
-      if (v16 != v17)
+      if (scheme != scheme2)
       {
-        v19 = v40;
-        v18 = v41;
+        scheme4 = v40;
+        scheme3 = v41;
         v20 = v43;
-        v3 = v42;
+        scheme5 = v42;
 LABEL_18:
 
-        if (v10 != v11)
+        if (host != host2)
         {
         }
 
@@ -103,7 +103,7 @@ LABEL_31:
         goto LABEL_47;
       }
 
-      if (v10 != v11)
+      if (host != host2)
       {
       }
 
@@ -113,21 +113,21 @@ LABEL_31:
       }
 
 LABEL_35:
-      v10 = [a1 relativePath];
-      v11 = [v5 relativePath];
-      v26 = [v10 da_appendSlashIfNeeded];
-      v27 = [v11 da_appendSlashIfNeeded];
-      v28 = [v26 isEqualToString:v27];
+      host = [self relativePath];
+      host2 = [v5 relativePath];
+      da_appendSlashIfNeeded = [host da_appendSlashIfNeeded];
+      da_appendSlashIfNeeded2 = [host2 da_appendSlashIfNeeded];
+      v28 = [da_appendSlashIfNeeded isEqualToString:da_appendSlashIfNeeded2];
 
       if (v28)
       {
-        v29 = [a1 port];
-        v30 = [v29 intValue];
+        port = [self port];
+        intValue = [port intValue];
 
-        v31 = [v5 port];
-        v32 = [v31 intValue];
+        port2 = [v5 port];
+        intValue2 = [port2 intValue];
 
-        if (v30 == v32)
+        if (intValue == intValue2)
         {
           v9 = 1;
 LABEL_46:
@@ -135,8 +135,8 @@ LABEL_46:
           goto LABEL_47;
         }
 
-        v33 = [a1 scheme];
-        v34 = [v33 isEqualToString:@"http"];
+        scheme6 = [self scheme];
+        v34 = [scheme6 isEqualToString:@"http"];
 
         if (v34)
         {
@@ -145,8 +145,8 @@ LABEL_46:
 
         else
         {
-          v36 = [a1 scheme];
-          v37 = [v36 isEqualToString:@"https"];
+          scheme7 = [self scheme];
+          v37 = [scheme7 isEqualToString:@"https"];
 
           if (v37)
           {
@@ -159,11 +159,11 @@ LABEL_46:
           }
         }
 
-        if (!v30 || v30 == v35)
+        if (!intValue || intValue == v35)
         {
-          if (v32)
+          if (intValue2)
           {
-            v39 = v32 == v35;
+            v39 = intValue2 == v35;
           }
 
           else
@@ -181,24 +181,24 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    if (v16 == v17)
+    if (scheme == scheme2)
     {
 
-      if (v10 != v11)
+      if (host != host2)
       {
       }
 
       goto LABEL_35;
     }
 
-    LOBYTE(v18) = 1;
+    LOBYTE(scheme3) = 1;
 LABEL_24:
 
-    if (v10 != v11)
+    if (host != host2)
     {
     }
 
-    if ((v18 & 1) == 0)
+    if ((scheme3 & 1) == 0)
     {
       goto LABEL_31;
     }
@@ -215,29 +215,29 @@ LABEL_47:
 - (id)da_urlBySettingScheme:()DAExtensions keepUsername:
 {
   v25 = a3;
-  v6 = [a1 host];
+  host = [self host];
   if (a4)
   {
-    v7 = [a1 user];
+    user = [self user];
 
-    if (v7)
+    if (user)
     {
-      v8 = [a1 user];
-      v9 = [v8 stringByAppendingFormat:@"@%@", v6];
+      user2 = [self user];
+      v9 = [user2 stringByAppendingFormat:@"@%@", host];
 
-      v6 = v9;
+      host = v9;
     }
   }
 
   v23 = MEMORY[0x277CCACA8];
   v24 = MEMORY[0x277CBEBC0];
-  v10 = [a1 port];
-  v11 = &stru_2854B2770;
-  if (v10)
+  port = [self port];
+  query3 = &stru_2854B2770;
+  if (port)
   {
     v12 = MEMORY[0x277CCACA8];
-    v22 = [a1 port];
-    v13 = [v12 stringWithFormat:@":%@", v22];
+    port2 = [self port];
+    v13 = [v12 stringWithFormat:@":%@", port2];
   }
 
   else
@@ -245,9 +245,9 @@ LABEL_47:
     v13 = &stru_2854B2770;
   }
 
-  v14 = [a1 da_rawPath];
-  v15 = [a1 query];
-  if ([v15 length])
+  da_rawPath = [self da_rawPath];
+  query = [self query];
+  if ([query length])
   {
     v16 = @"?";
   }
@@ -257,21 +257,21 @@ LABEL_47:
     v16 = &stru_2854B2770;
   }
 
-  v17 = [a1 query];
-  v18 = [v17 length];
+  query2 = [self query];
+  v18 = [query2 length];
   if (v18)
   {
-    v11 = [a1 query];
+    query3 = [self query];
   }
 
-  v19 = [v23 stringWithFormat:@"%@://%@%@%@%@%@", v25, v6, v13, v14, v16, v11];
+  v19 = [v23 stringWithFormat:@"%@://%@%@%@%@%@", v25, host, v13, da_rawPath, v16, query3];
   v20 = [v24 URLWithString:v19];
 
   if (v18)
   {
   }
 
-  if (v10)
+  if (port)
   {
   }
 
@@ -283,12 +283,12 @@ LABEL_47:
   v6 = a3;
   if (a4)
   {
-    v7 = [a1 user];
+    user = [self user];
 
-    if (v7)
+    if (user)
     {
-      v8 = [a1 user];
-      v9 = [v8 stringByAppendingFormat:@"@%@", v6];
+      user2 = [self user];
+      v9 = [user2 stringByAppendingFormat:@"@%@", v6];
 
       v6 = v9;
     }
@@ -296,14 +296,14 @@ LABEL_47:
 
   v23 = MEMORY[0x277CCACA8];
   v24 = MEMORY[0x277CBEBC0];
-  v25 = [a1 scheme];
-  v10 = [a1 port];
-  v11 = &stru_2854B2770;
-  if (v10)
+  scheme = [self scheme];
+  port = [self port];
+  query3 = &stru_2854B2770;
+  if (port)
   {
     v12 = MEMORY[0x277CCACA8];
-    v22 = [a1 port];
-    v13 = [v12 stringWithFormat:@":%@", v22];
+    port2 = [self port];
+    v13 = [v12 stringWithFormat:@":%@", port2];
   }
 
   else
@@ -311,9 +311,9 @@ LABEL_47:
     v13 = &stru_2854B2770;
   }
 
-  v14 = [a1 da_rawPath];
-  v15 = [a1 query];
-  if ([v15 length])
+  da_rawPath = [self da_rawPath];
+  query = [self query];
+  if ([query length])
   {
     v16 = @"?";
   }
@@ -323,21 +323,21 @@ LABEL_47:
     v16 = &stru_2854B2770;
   }
 
-  v17 = [a1 query];
-  v18 = [v17 length];
+  query2 = [self query];
+  v18 = [query2 length];
   if (v18)
   {
-    v11 = [a1 query];
+    query3 = [self query];
   }
 
-  v19 = [v23 stringWithFormat:@"%@://%@%@%@%@%@", v25, v6, v13, v14, v16, v11];
+  v19 = [v23 stringWithFormat:@"%@://%@%@%@%@%@", scheme, v6, v13, da_rawPath, v16, query3];
   v20 = [v24 URLWithString:v19];
 
   if (v18)
   {
   }
 
-  if (v10)
+  if (port)
   {
   }
 
@@ -347,17 +347,17 @@ LABEL_47:
 - (id)da_urlBySettingPort:()DAExtensions keepUsername:
 {
   v6 = a3;
-  v23 = [a1 host];
+  host = [self host];
   if (a4)
   {
-    v7 = [a1 user];
+    user = [self user];
 
-    if (v7)
+    if (user)
     {
-      v8 = [a1 user];
-      v9 = [v8 stringByAppendingFormat:@"@%@", v23];
+      user2 = [self user];
+      v9 = [user2 stringByAppendingFormat:@"@%@", host];
 
-      v23 = v9;
+      host = v9;
     }
   }
 
@@ -369,8 +369,8 @@ LABEL_47:
 
   v21 = MEMORY[0x277CCACA8];
   v22 = MEMORY[0x277CBEBC0];
-  v10 = [a1 scheme];
-  v11 = &stru_2854B2770;
+  scheme = [self scheme];
+  query3 = &stru_2854B2770;
   if (v6)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@":%@", v6];
@@ -381,9 +381,9 @@ LABEL_47:
     v12 = &stru_2854B2770;
   }
 
-  v13 = [a1 da_rawPath];
-  v14 = [a1 query];
-  if ([v14 length])
+  da_rawPath = [self da_rawPath];
+  query = [self query];
+  if ([query length])
   {
     v15 = @"?";
   }
@@ -393,14 +393,14 @@ LABEL_47:
     v15 = &stru_2854B2770;
   }
 
-  v16 = [a1 query];
-  v17 = [v16 length];
+  query2 = [self query];
+  v17 = [query2 length];
   if (v17)
   {
-    v11 = [a1 query];
+    query3 = [self query];
   }
 
-  v18 = [v21 stringWithFormat:@"%@://%@%@%@%@%@", v10, v23, v12, v13, v15, v11];
+  v18 = [v21 stringWithFormat:@"%@://%@%@%@%@%@", scheme, host, v12, da_rawPath, v15, query3];
   v19 = [v22 URLWithString:v18];
 
   if (v17)
@@ -417,30 +417,30 @@ LABEL_47:
 - (id)da_urlBySettingPath:()DAExtensions keepUsername:
 {
   v25 = a3;
-  v6 = [a1 host];
+  host = [self host];
   if (a4)
   {
-    v7 = [a1 user];
+    user = [self user];
 
-    if (v7)
+    if (user)
     {
-      v8 = [a1 user];
-      v9 = [v8 stringByAppendingFormat:@"@%@", v6];
+      user2 = [self user];
+      v9 = [user2 stringByAppendingFormat:@"@%@", host];
 
-      v6 = v9;
+      host = v9;
     }
   }
 
   v23 = MEMORY[0x277CCACA8];
   v24 = MEMORY[0x277CBEBC0];
-  v10 = [a1 scheme];
-  v11 = [a1 port];
-  v12 = &stru_2854B2770;
-  if (v11)
+  scheme = [self scheme];
+  port = [self port];
+  query3 = &stru_2854B2770;
+  if (port)
   {
     v13 = MEMORY[0x277CCACA8];
-    v22 = [a1 port];
-    v14 = [v13 stringWithFormat:@":%@", v22];
+    port2 = [self port];
+    v14 = [v13 stringWithFormat:@":%@", port2];
   }
 
   else
@@ -448,8 +448,8 @@ LABEL_47:
     v14 = &stru_2854B2770;
   }
 
-  v15 = [a1 query];
-  if ([v15 length])
+  query = [self query];
+  if ([query length])
   {
     v16 = @"?";
   }
@@ -459,21 +459,21 @@ LABEL_47:
     v16 = &stru_2854B2770;
   }
 
-  v17 = [a1 query];
-  v18 = [v17 length];
+  query2 = [self query];
+  v18 = [query2 length];
   if (v18)
   {
-    v12 = [a1 query];
+    query3 = [self query];
   }
 
-  v19 = [v23 stringWithFormat:@"%@://%@%@%@%@%@", v10, v6, v14, v25, v16, v12];
+  v19 = [v23 stringWithFormat:@"%@://%@%@%@%@%@", scheme, host, v14, v25, v16, query3];
   v20 = [v24 URLWithString:v19];
 
   if (v18)
   {
   }
 
-  if (v11)
+  if (port)
   {
   }
 
@@ -483,26 +483,26 @@ LABEL_47:
 - (id)da_urlBySettingUsername:()DAExtensions
 {
   v4 = a3;
-  v5 = [a1 host];
-  v6 = v5;
+  host = [self host];
+  v6 = host;
   v23 = v4;
   if (v4)
   {
-    v7 = [v4 stringByAppendingFormat:@"@%@", v5];
+    v7 = [v4 stringByAppendingFormat:@"@%@", host];
 
     v6 = v7;
   }
 
   v21 = MEMORY[0x277CCACA8];
   v22 = MEMORY[0x277CBEBC0];
-  v24 = [a1 scheme];
-  v8 = [a1 port];
-  v9 = &stru_2854B2770;
-  if (v8)
+  scheme = [self scheme];
+  port = [self port];
+  query3 = &stru_2854B2770;
+  if (port)
   {
     v10 = MEMORY[0x277CCACA8];
-    v20 = [a1 port];
-    v11 = [v10 stringWithFormat:@":%@", v20];
+    port2 = [self port];
+    v11 = [v10 stringWithFormat:@":%@", port2];
   }
 
   else
@@ -510,9 +510,9 @@ LABEL_47:
     v11 = &stru_2854B2770;
   }
 
-  v12 = [a1 da_rawPath];
-  v13 = [a1 query];
-  if ([v13 length])
+  da_rawPath = [self da_rawPath];
+  query = [self query];
+  if ([query length])
   {
     v14 = @"?";
   }
@@ -522,21 +522,21 @@ LABEL_47:
     v14 = &stru_2854B2770;
   }
 
-  v15 = [a1 query];
-  v16 = [v15 length];
+  query2 = [self query];
+  v16 = [query2 length];
   if (v16)
   {
-    v9 = [a1 query];
+    query3 = [self query];
   }
 
-  v17 = [v21 stringWithFormat:@"%@://%@%@%@%@%@", v24, v6, v11, v12, v14, v9];
+  v17 = [v21 stringWithFormat:@"%@://%@%@%@%@%@", scheme, v6, v11, da_rawPath, v14, query3];
   v18 = [v22 URLWithString:v17];
 
   if (v16)
   {
   }
 
-  if (v8)
+  if (port)
   {
   }
 
@@ -547,15 +547,15 @@ LABEL_47:
 {
   v16 = MEMORY[0x277CCACA8];
   v17 = MEMORY[0x277CBEBC0];
-  v18 = [a1 scheme];
-  v2 = [a1 host];
-  v3 = [a1 port];
-  v4 = &stru_2854B2770;
-  if (v3)
+  scheme = [self scheme];
+  host = [self host];
+  port = [self port];
+  query3 = &stru_2854B2770;
+  if (port)
   {
     v5 = MEMORY[0x277CCACA8];
-    v15 = [a1 port];
-    v6 = [v5 stringWithFormat:@":%@", v15];
+    port2 = [self port];
+    v6 = [v5 stringWithFormat:@":%@", port2];
   }
 
   else
@@ -563,9 +563,9 @@ LABEL_47:
     v6 = &stru_2854B2770;
   }
 
-  v7 = [a1 da_rawPath];
-  v8 = [a1 query];
-  if ([v8 length])
+  da_rawPath = [self da_rawPath];
+  query = [self query];
+  if ([query length])
   {
     v9 = @"?";
   }
@@ -575,21 +575,21 @@ LABEL_47:
     v9 = &stru_2854B2770;
   }
 
-  v10 = [a1 query];
-  v11 = [v10 length];
+  query2 = [self query];
+  v11 = [query2 length];
   if (v11)
   {
-    v4 = [a1 query];
+    query3 = [self query];
   }
 
-  v12 = [v16 stringWithFormat:@"%@://%@%@%@%@%@", v18, v2, v6, v7, v9, v4];
+  v12 = [v16 stringWithFormat:@"%@://%@%@%@%@%@", scheme, host, v6, da_rawPath, v9, query3];
   v13 = [v17 URLWithString:v12];
 
   if (v11)
   {
   }
 
-  if (v3)
+  if (port)
   {
   }
 
@@ -603,54 +603,54 @@ LABEL_47:
 
   if (v3)
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v5 = MEMORY[0x277CBEBC0];
     v6 = MEMORY[0x277CCACA8];
-    v7 = [a1 scheme];
-    v8 = [a1 host];
-    v9 = [v6 stringWithFormat:@"%@://%@", v7, v8];
-    v4 = [v5 URLWithString:v9];
+    scheme = [self scheme];
+    host = [self host];
+    v9 = [v6 stringWithFormat:@"%@://%@", scheme, host];
+    selfCopy = [v5 URLWithString:v9];
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (__CFString)da_rawPath
 {
-  v1 = CFURLCopyPath(a1);
+  v1 = CFURLCopyPath(self);
 
   return v1;
 }
 
 - (id)da_pathWithoutTrailingRemovingSlash
 {
-  v2 = [a1 path];
-  if (([v2 hasSuffix:@"/"] & 1) == 0)
+  path = [self path];
+  if (([path hasSuffix:@"/"] & 1) == 0)
   {
-    v3 = [a1 absoluteString];
-    v4 = [v3 hasSuffix:@"/"];
+    absoluteString = [self absoluteString];
+    v4 = [absoluteString hasSuffix:@"/"];
 
     if (v4)
     {
-      v5 = [v2 stringByAppendingString:@"/"];
+      v5 = [path stringByAppendingString:@"/"];
 
-      v2 = v5;
+      path = v5;
     }
   }
 
-  return v2;
+  return path;
 }
 
 + (CFURLRef)da_URLWithDirtyString:()DAExtensions
 {
   v3 = MEMORY[0x277CCA900];
   v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   v7 = [v6 mutableCopy];
   [(__CFString *)v7 replaceOccurrencesOfString:@" " withString:@"%20" options:2 range:0, [(__CFString *)v7 length]];

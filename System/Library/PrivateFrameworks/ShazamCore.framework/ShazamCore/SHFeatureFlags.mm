@@ -1,21 +1,21 @@
 @interface SHFeatureFlags
 - (BOOL)preferDefaultOfferInLiveActivity;
 - (BOOL)shouldDisplayShazamUpsell;
-- (SHFeatureFlags)initWithConfiguration:(id)a3;
+- (SHFeatureFlags)initWithConfiguration:(id)configuration;
 @end
 
 @implementation SHFeatureFlags
 
-- (SHFeatureFlags)initWithConfiguration:(id)a3
+- (SHFeatureFlags)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = SHFeatureFlags;
   v6 = [(SHFeatureFlags *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_featureFlags, a3);
+    objc_storeStrong(&v6->_featureFlags, configuration);
   }
 
   return v7;
@@ -24,30 +24,30 @@
 - (BOOL)shouldDisplayShazamUpsell
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"nativeTrackPage", @"displayShazamUpsell"];
-  v4 = [(SHFeatureFlags *)self featureFlags];
-  v5 = [v4 valueForKeyPath:v3];
-  v6 = [v5 BOOLValue];
+  featureFlags = [(SHFeatureFlags *)self featureFlags];
+  v5 = [featureFlags valueForKeyPath:v3];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)preferDefaultOfferInLiveActivity
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"subscriptions", @"preferDefaultOfferInLiveActivity"];
-  v4 = [(SHFeatureFlags *)self featureFlags];
-  v5 = [v4 valueForKeyPath:v3];
+  featureFlags = [(SHFeatureFlags *)self featureFlags];
+  v5 = [featureFlags valueForKeyPath:v3];
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 @end

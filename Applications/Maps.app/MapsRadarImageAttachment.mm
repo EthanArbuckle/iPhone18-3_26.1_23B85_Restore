@@ -1,29 +1,29 @@
 @interface MapsRadarImageAttachment
-+ (MapsRadarImageAttachment)attachmentWithFileName:(id)a3 image:(id)a4 isScreenshot:(BOOL)a5;
-- (MapsRadarImageAttachment)initWithFileName:(id)a3 image:(id)a4 isScreenshot:(BOOL)a5;
++ (MapsRadarImageAttachment)attachmentWithFileName:(id)name image:(id)image isScreenshot:(BOOL)screenshot;
+- (MapsRadarImageAttachment)initWithFileName:(id)name image:(id)image isScreenshot:(BOOL)screenshot;
 - (id)_imageData;
 - (id)_screenshotData;
 - (id)debugDescription;
 - (id)description;
 - (id)temporaryFileURL;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 - (void)writeToTemporaryFolder;
 @end
 
 @implementation MapsRadarImageAttachment
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = MapsRadarImageAttachment;
-  v4 = a3;
-  [(MapsRadarAttachment *)&v5 _maps_buildDescriptionWithBlock:v4];
-  v4[2](v4, @"image", self->_image);
+  blockCopy = block;
+  [(MapsRadarAttachment *)&v5 _maps_buildDescriptionWithBlock:blockCopy];
+  blockCopy[2](blockCopy, @"image", self->_image);
 }
 
 - (id)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C0D7D0;
@@ -31,8 +31,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarImageAttachment *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarImageAttachment *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -66,7 +66,7 @@ LABEL_9:
 
 - (id)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100C0DA20;
@@ -74,8 +74,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(MapsRadarImageAttachment *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(MapsRadarImageAttachment *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -111,9 +111,9 @@ LABEL_9:
 {
   if ([(MapsRadarImageAttachment *)self isScreenshot])
   {
-    v3 = [(MapsRadarAttachment *)self radarDraft];
+    radarDraft = [(MapsRadarAttachment *)self radarDraft];
 
-    if (!v3)
+    if (!radarDraft)
     {
       v9 = sub_10006D178();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -142,20 +142,20 @@ LABEL_9:
       }
     }
 
-    v4 = [(MapsRadarAttachment *)self radarDraft];
-    v5 = [v4 temporaryScreenshotsFolderURL];
-    v6 = [(MapsRadarAttachment *)self fileName];
-    v7 = [v5 URLByAppendingPathComponent:v6];
+    radarDraft2 = [(MapsRadarAttachment *)self radarDraft];
+    temporaryScreenshotsFolderURL = [radarDraft2 temporaryScreenshotsFolderURL];
+    fileName = [(MapsRadarAttachment *)self fileName];
+    temporaryFileURL = [temporaryScreenshotsFolderURL URLByAppendingPathComponent:fileName];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = MapsRadarImageAttachment;
-    v7 = [(MapsRadarAttachment *)&v12 temporaryFileURL];
+    temporaryFileURL = [(MapsRadarAttachment *)&v12 temporaryFileURL];
   }
 
-  return v7;
+  return temporaryFileURL;
 }
 
 - (id)_screenshotData
@@ -179,12 +179,12 @@ LABEL_9:
     [v5 setObject:v7 forKeyedSubscript:kCGImagePropertyTIFFDictionary];
   }
 
-  v8 = [(MapsRadarImageAttachment *)self image];
-  CGImageDestinationAddImage(v4, [v8 CGImage], v5);
+  image = [(MapsRadarImageAttachment *)self image];
+  CGImageDestinationAddImage(v4, [image CGImage], v5);
 
-  LOBYTE(v8) = CGImageDestinationFinalize(v4);
+  LOBYTE(image) = CGImageDestinationFinalize(v4);
   CFRelease(v4);
-  if (v8)
+  if (image)
   {
     v9 = v3;
   }
@@ -208,8 +208,8 @@ LABEL_9:
 {
   if (![(MapsRadarImageAttachment *)self isScreenshot])
   {
-    v5 = [(MapsRadarImageAttachment *)self image];
-    v6 = UIImagePNGRepresentation(v5);
+    image = [(MapsRadarImageAttachment *)self image];
+    v6 = UIImagePNGRepresentation(image);
     goto LABEL_7;
   }
 
@@ -220,11 +220,11 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Adding metadata to screenshot", buf, 2u);
   }
 
-  v4 = [(MapsRadarImageAttachment *)self _screenshotData];
-  v5 = v4;
-  if (v4)
+  _screenshotData = [(MapsRadarImageAttachment *)self _screenshotData];
+  image = _screenshotData;
+  if (_screenshotData)
   {
-    v6 = v4;
+    v6 = _screenshotData;
 LABEL_7:
     v7 = v6;
     goto LABEL_8;
@@ -252,8 +252,8 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Adding metadata to screenshot failed; will fall back to raw image data", v13, 2u);
     }
 
-    v12 = [(MapsRadarImageAttachment *)self image];
-    v7 = UIImagePNGRepresentation(v12);
+    image2 = [(MapsRadarImageAttachment *)self image];
+    v7 = UIImagePNGRepresentation(image2);
   }
 
 LABEL_8:
@@ -266,25 +266,25 @@ LABEL_8:
   v12.receiver = self;
   v12.super_class = MapsRadarImageAttachment;
   [(MapsRadarAttachment *)&v12 writeToTemporaryFolder];
-  v3 = [(MapsRadarImageAttachment *)self temporaryFileURL];
-  v4 = [(MapsRadarImageAttachment *)self _imageData];
+  temporaryFileURL = [(MapsRadarImageAttachment *)self temporaryFileURL];
+  _imageData = [(MapsRadarImageAttachment *)self _imageData];
   v11 = 0;
-  v5 = [v4 writeToURL:v3 options:1 error:&v11];
+  v5 = [_imageData writeToURL:temporaryFileURL options:1 error:&v11];
   v6 = v11;
   if ((v5 & 1) == 0)
   {
     v7 = sub_100C0DFBC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(MapsRadarAttachment *)self fileName];
-      v9 = [(MapsRadarImageAttachment *)self image];
-      v10 = [v3 path];
+      fileName = [(MapsRadarAttachment *)self fileName];
+      image = [(MapsRadarImageAttachment *)self image];
+      path = [temporaryFileURL path];
       *buf = 138413058;
-      v14 = v8;
+      v14 = fileName;
       v15 = 2112;
-      v16 = v9;
+      v16 = image;
       v17 = 2112;
-      v18 = v10;
+      v18 = path;
       v19 = 2112;
       v20 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to save file with name '%@' from image '%@' at path '%@': %@", buf, 0x2Au);
@@ -292,11 +292,11 @@ LABEL_8:
   }
 }
 
-- (MapsRadarImageAttachment)initWithFileName:(id)a3 image:(id)a4 isScreenshot:(BOOL)a5
+- (MapsRadarImageAttachment)initWithFileName:(id)name image:(id)image isScreenshot:(BOOL)screenshot
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  nameCopy = name;
+  imageCopy = image;
+  if (!imageCopy)
   {
     v13 = sub_10006D178();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -327,23 +327,23 @@ LABEL_8:
 
   v16.receiver = self;
   v16.super_class = MapsRadarImageAttachment;
-  v10 = [(MapsRadarAttachment *)&v16 initWithFileName:v8];
+  v10 = [(MapsRadarAttachment *)&v16 initWithFileName:nameCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_image, a4);
-    v11->_isScreenshot = a5;
+    objc_storeStrong(&v10->_image, image);
+    v11->_isScreenshot = screenshot;
   }
 
   return v11;
 }
 
-+ (MapsRadarImageAttachment)attachmentWithFileName:(id)a3 image:(id)a4 isScreenshot:(BOOL)a5
++ (MapsRadarImageAttachment)attachmentWithFileName:(id)name image:(id)image isScreenshot:(BOOL)screenshot
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithFileName:v9 image:v8 isScreenshot:v5];
+  screenshotCopy = screenshot;
+  imageCopy = image;
+  nameCopy = name;
+  v10 = [[self alloc] initWithFileName:nameCopy image:imageCopy isScreenshot:screenshotCopy];
 
   return v10;
 }

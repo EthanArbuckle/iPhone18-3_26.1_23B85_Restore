@@ -1,13 +1,13 @@
 @interface VISAXNotificationHandler
-+ (id)_safelyGetObserverForIdentifier:(unint64_t)a3;
-+ (unint64_t)_safelyRegisterObserver:(id)a3;
-- (VISAXNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 dispatcher:(id)a5 startObserving:(BOOL)a6;
-- (VISAXNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 handler:(SEL)a5;
++ (id)_safelyGetObserverForIdentifier:(unint64_t)identifier;
++ (unint64_t)_safelyRegisterObserver:(id)observer;
+- (VISAXNotificationHandler)initWithNotificationName:(id)name target:(id)target dispatcher:(id)dispatcher startObserving:(BOOL)observing;
+- (VISAXNotificationHandler)initWithNotificationName:(id)name target:(id)target handler:(SEL)handler;
 - (id)_dispatcher;
 - (id)_notificationTypeDescription;
 - (id)description;
-- (void)_handleNotificationWithName:(id)a3 object:(const void *)a4 userInfo:(id)a5;
-- (void)_setDispatcher:(id)a3;
+- (void)_handleNotificationWithName:(id)name object:(const void *)object userInfo:(id)info;
+- (void)_setDispatcher:(id)dispatcher;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
@@ -15,50 +15,50 @@
 
 @implementation VISAXNotificationHandler
 
-- (VISAXNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 handler:(SEL)a5
+- (VISAXNotificationHandler)initWithNotificationName:(id)name target:(id)target handler:(SEL)handler
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__VISAXNotificationHandler_initWithNotificationName_target_handler___block_invoke;
   v6[3] = &__block_descriptor_40_e40__32__0__NSString_8r_v16__NSDictionary_24l;
-  v6[4] = a5;
-  return [(VISAXNotificationHandler *)self initWithNotificationName:a3 target:a4 dispatcher:v6];
+  v6[4] = handler;
+  return [(VISAXNotificationHandler *)self initWithNotificationName:name target:target dispatcher:v6];
 }
 
-- (VISAXNotificationHandler)initWithNotificationName:(id)a3 target:(id)a4 dispatcher:(id)a5 startObserving:(BOOL)a6
+- (VISAXNotificationHandler)initWithNotificationName:(id)name target:(id)target dispatcher:(id)dispatcher startObserving:(BOOL)observing
 {
-  v6 = a6;
+  observingCopy = observing;
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  targetCopy = target;
+  dispatcherCopy = dispatcher;
   v28.receiver = self;
   v28.super_class = VISAXNotificationHandler;
   v13 = [(VISAXNotificationHandler *)&v28 init];
   v14 = v13;
   if (v13)
   {
-    [(VISAXNotificationHandler *)v13 _setNotificationName:v10];
-    [(VISAXNotificationHandler *)v14 _setTarget:v11];
-    [(VISAXNotificationHandler *)v14 _setDispatcher:v12];
+    [(VISAXNotificationHandler *)v13 _setNotificationName:nameCopy];
+    [(VISAXNotificationHandler *)v14 _setTarget:targetCopy];
+    [(VISAXNotificationHandler *)v14 _setDispatcher:dispatcherCopy];
     v14->_observerIdentifier = [objc_opt_class() _safelyRegisterObserver:v14];
-    if (v6)
+    if (observingCopy)
     {
-      v15 = [MEMORY[0x277CE6998] sharedInstance];
-      v16 = [v15 ignoreLogging];
+      mEMORY[0x277CE6998] = [MEMORY[0x277CE6998] sharedInstance];
+      ignoreLogging = [mEMORY[0x277CE6998] ignoreLogging];
 
-      if ((v16 & 1) == 0)
+      if ((ignoreLogging & 1) == 0)
       {
-        v17 = [MEMORY[0x277CE6998] identifier];
+        identifier = [MEMORY[0x277CE6998] identifier];
         v18 = AXLoggerForFacility();
 
         v19 = AXOSLogLevelFromAXLogLevel();
         if (os_log_type_enabled(v18, v19))
         {
           v20 = AXColorizeFormatLog();
-          v21 = [(VISAXNotificationHandler *)v14 _notificationTypeDescription];
+          _notificationTypeDescription = [(VISAXNotificationHandler *)v14 _notificationTypeDescription];
           [(VISAXNotificationHandler *)v14 _notificationName];
-          v27 = v26 = v21;
+          v27 = v26 = _notificationTypeDescription;
           v25 = v14;
           v22 = _AXStringForArgs();
 
@@ -95,35 +95,35 @@
   return v2;
 }
 
-- (void)_setDispatcher:(id)a3
+- (void)_setDispatcher:(id)dispatcher
 {
-  v4 = a3;
+  dispatcherCopy = dispatcher;
   dispatcher = self->_dispatcher;
-  if (dispatcher != v4)
+  if (dispatcher != dispatcherCopy)
   {
-    v6 = v4;
-    if (v4)
+    v6 = dispatcherCopy;
+    if (dispatcherCopy)
     {
-      v4 = [v4 copy];
+      dispatcherCopy = [dispatcherCopy copy];
       dispatcher = self->_dispatcher;
     }
 
-    self->_dispatcher = v4;
+    self->_dispatcher = dispatcherCopy;
 
-    v4 = v6;
+    dispatcherCopy = v6;
   }
 }
 
 - (id)description
 {
-  v3 = [(VISAXNotificationHandler *)self _target];
+  _target = [(VISAXNotificationHandler *)self _target];
   v4 = MEMORY[0x277CCACA8];
   v10.receiver = self;
   v10.super_class = VISAXNotificationHandler;
   v5 = [(VISAXNotificationHandler *)&v10 description];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v4 stringWithFormat:@"%@ (target: <%@: %p>)", v5, v7, v3];
+  v8 = [v4 stringWithFormat:@"%@ (target: <%@: %p>)", v5, v7, _target];
 
   return v8;
 }
@@ -209,14 +209,14 @@ void __43__VISAXNotificationHandler_processHandler___block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNotificationWithName:(id)a3 object:(const void *)a4 userInfo:(id)a5
+- (void)_handleNotificationWithName:(id)name object:(const void *)object userInfo:(id)info
 {
-  v11 = a3;
-  v8 = a5;
+  nameCopy = name;
+  infoCopy = info;
   dispatcher = self->_dispatcher;
   if (dispatcher)
   {
-    v10 = dispatcher[2](dispatcher, v11, a4, v8);
+    v10 = dispatcher[2](dispatcher, nameCopy, object, infoCopy);
     if (v10)
     {
       [(VISAXNotificationHandler *)self processHandler:v10];
@@ -224,13 +224,13 @@ void __43__VISAXNotificationHandler_processHandler___block_invoke(uint64_t a1)
   }
 }
 
-+ (unint64_t)_safelyRegisterObserver:(id)a3
++ (unint64_t)_safelyRegisterObserver:(id)observer
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v5 = a3;
+  observerCopy = observer;
   AXPerformBlockSynchronouslyOnMainThread();
   v3 = v7[3];
 
@@ -265,7 +265,7 @@ void __63__VISAXNotificationHandler__safelyRemoveObserverForIdentifier___block_i
   }
 }
 
-+ (id)_safelyGetObserverForIdentifier:(unint64_t)a3
++ (id)_safelyGetObserverForIdentifier:(unint64_t)identifier
 {
   v5 = 0;
   v6 = &v5;

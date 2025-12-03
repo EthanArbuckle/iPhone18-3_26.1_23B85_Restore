@@ -1,25 +1,25 @@
 @interface HKWorkoutControl
 + (id)taskIdentifier;
-- (HKWorkoutControl)initWithHealthStore:(id)a3;
-- (void)finishAllWorkoutsWithCompletion:(id)a3;
-- (void)generateFakeDataForActivityType:(int64_t)a3 minutes:(double)a4 completion:(id)a5;
-- (void)generatePauseOrResumeRequestAllowingBackgroundRuntime:(BOOL)a3 metadata:(id)a4 completion:(id)a5;
+- (HKWorkoutControl)initWithHealthStore:(id)store;
+- (void)finishAllWorkoutsWithCompletion:(id)completion;
+- (void)generateFakeDataForActivityType:(int64_t)type minutes:(double)minutes completion:(id)completion;
+- (void)generatePauseOrResumeRequestAllowingBackgroundRuntime:(BOOL)runtime metadata:(id)metadata completion:(id)completion;
 @end
 
 @implementation HKWorkoutControl
 
-- (HKWorkoutControl)initWithHealthStore:(id)a3
+- (HKWorkoutControl)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKWorkoutControl;
   v5 = [(HKWorkoutControl *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
 
@@ -36,9 +36,9 @@
   return NSStringFromClass(v2);
 }
 
-- (void)finishAllWorkoutsWithCompletion:(id)a3
+- (void)finishAllWorkoutsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -54,17 +54,17 @@
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)generatePauseOrResumeRequestAllowingBackgroundRuntime:(BOOL)a3 metadata:(id)a4 completion:(id)a5
+- (void)generatePauseOrResumeRequestAllowingBackgroundRuntime:(BOOL)runtime metadata:(id)metadata completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  metadataCopy = metadata;
+  completionCopy = completion;
   _HKInitializeLogging();
   v10 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19197B000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Pause/resume event requested.", buf, 0xCu);
   }
 
@@ -74,15 +74,15 @@
   v23[2] = __94__HKWorkoutControl_generatePauseOrResumeRequestAllowingBackgroundRuntime_metadata_completion___block_invoke;
   v23[3] = &unk_1E73766A0;
   v23[4] = self;
-  v24 = v9;
+  v24 = completionCopy;
   v12 = [(HKProxyProvider *)proxyProvider clientQueueActionHandlerWithCompletion:v23];
   v13 = self->_proxyProvider;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __94__HKWorkoutControl_generatePauseOrResumeRequestAllowingBackgroundRuntime_metadata_completion___block_invoke_8;
   v19[3] = &unk_1E737BB00;
-  v22 = a3;
-  v20 = v8;
+  runtimeCopy = runtime;
+  v20 = metadataCopy;
   v21 = v12;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -90,7 +90,7 @@
   v17[3] = &unk_1E7376960;
   v18 = v21;
   v14 = v21;
-  v15 = v8;
+  v15 = metadataCopy;
   [(HKProxyProvider *)v13 fetchProxyWithHandler:v19 errorHandler:v17];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -136,16 +136,16 @@ LABEL_6:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateFakeDataForActivityType:(int64_t)a3 minutes:(double)a4 completion:(id)a5
+- (void)generateFakeDataForActivityType:(int64_t)type minutes:(double)minutes completion:(id)completion
 {
-  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a5];
+  v8 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71__HKWorkoutControl_generateFakeDataForActivityType_minutes_completion___block_invoke;
   v13[3] = &unk_1E737BB28;
-  v15 = a3;
-  v16 = a4;
+  typeCopy = type;
+  minutesCopy = minutes;
   v14 = v8;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;

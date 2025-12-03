@@ -1,103 +1,103 @@
 @interface WDParagraphPropertiesValues
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAnchorLock:(BOOL)a3;
-- (void)setAnchorLockOverridden:(BOOL)a3;
-- (void)setBarBorderOverridden:(BOOL)a3;
-- (void)setBetweenBorderOverridden:(BOOL)a3;
-- (void)setBiDi:(BOOL)a3;
-- (void)setBiDiOverridden:(BOOL)a3;
-- (void)setBottomBorderOverridden:(BOOL)a3;
-- (void)setCachedRtl:(BOOL)a3;
-- (void)setContextualSpacing:(BOOL)a3;
-- (void)setContextualSpacingOverridden:(BOOL)a3;
-- (void)setDropCapOverridden:(BOOL)a3;
-- (void)setFirstLineIndentCharsOverridden:(BOOL)a3;
-- (void)setFirstLineIndentOverridden:(BOOL)a3;
-- (void)setFollowingIndentOverridden:(BOOL)a3;
-- (void)setFormattingChangedOverridden:(BOOL)a3;
-- (void)setHeightOverridden:(BOOL)a3;
-- (void)setHeightRuleOverridden:(BOOL)a3;
-- (void)setHorizontalAnchorOverridden:(BOOL)a3;
-- (void)setHorizontalPositionOverridden:(BOOL)a3;
-- (void)setHorizontalSpaceOverridden:(BOOL)a3;
-- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)a3;
-- (void)setJustificationOverridden:(BOOL)a3;
-- (void)setKeepLinesTogetherOverridden:(BOOL)a3;
-- (void)setKeepNextParagraphTogether:(BOOL)a3;
-- (void)setKeepNextParagraphTogetherOverridden:(BOOL)a3;
-- (void)setKinsokuOffOverridden:(BOOL)a3;
-- (void)setLeadingIndentOverridden:(BOOL)a3;
-- (void)setLeftBorderOverridden:(BOOL)a3;
-- (void)setLeftIndentOverridden:(BOOL)a3;
-- (void)setLineSpacingOverridden:(BOOL)a3;
-- (void)setLineSpacingRuleOverridden:(BOOL)a3;
-- (void)setListIndexOverridden:(BOOL)a3;
-- (void)setListLevelOverridden:(BOOL)a3;
-- (void)setOutlineLevelOverridden:(BOOL)a3;
-- (void)setPageBreakBefore:(BOOL)a3;
-- (void)setPageBreakBeforeOverridden:(BOOL)a3;
-- (void)setPhysicalJustificationOverridden:(BOOL)a3;
-- (void)setRightIndentCharsOverridden:(BOOL)a3;
-- (void)setRightIndentOverridden:(BOOL)a3;
-- (void)setShadingOverridden:(BOOL)a3;
-- (void)setSpaceAfterAuto:(BOOL)a3;
-- (void)setSpaceAfterOverridden:(BOOL)a3;
-- (void)setSpaceBeforeAuto:(BOOL)a3;
-- (void)setSpaceBeforeAutoOverridden:(BOOL)a3;
-- (void)setSpaceBeforeOverridden:(BOOL)a3;
-- (void)setSuppressAutoHyphens:(BOOL)a3;
-- (void)setSuppressAutoHyphensOverridden:(BOOL)a3;
-- (void)setSuppressLineNumbers:(BOOL)a3;
-- (void)setSuppressLineNumbersOverridden:(BOOL)a3;
-- (void)setTabStopAddedCountOverridden:(BOOL)a3;
-- (void)setTabStopDeletedCountOverridden:(BOOL)a3;
-- (void)setTopBorderOverridden:(BOOL)a3;
-- (void)setVerticalAnchorOverridden:(BOOL)a3;
-- (void)setVerticalPositionOverridden:(BOOL)a3;
-- (void)setWidowControl:(BOOL)a3;
-- (void)setWidowControlOverridden:(BOOL)a3;
-- (void)setWidthOverridden:(BOOL)a3;
-- (void)setWrap:(BOOL)a3;
-- (void)setWrapOverridden:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAnchorLock:(BOOL)lock;
+- (void)setAnchorLockOverridden:(BOOL)overridden;
+- (void)setBarBorderOverridden:(BOOL)overridden;
+- (void)setBetweenBorderOverridden:(BOOL)overridden;
+- (void)setBiDi:(BOOL)di;
+- (void)setBiDiOverridden:(BOOL)overridden;
+- (void)setBottomBorderOverridden:(BOOL)overridden;
+- (void)setCachedRtl:(BOOL)rtl;
+- (void)setContextualSpacing:(BOOL)spacing;
+- (void)setContextualSpacingOverridden:(BOOL)overridden;
+- (void)setDropCapOverridden:(BOOL)overridden;
+- (void)setFirstLineIndentCharsOverridden:(BOOL)overridden;
+- (void)setFirstLineIndentOverridden:(BOOL)overridden;
+- (void)setFollowingIndentOverridden:(BOOL)overridden;
+- (void)setFormattingChangedOverridden:(BOOL)overridden;
+- (void)setHeightOverridden:(BOOL)overridden;
+- (void)setHeightRuleOverridden:(BOOL)overridden;
+- (void)setHorizontalAnchorOverridden:(BOOL)overridden;
+- (void)setHorizontalPositionOverridden:(BOOL)overridden;
+- (void)setHorizontalSpaceOverridden:(BOOL)overridden;
+- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)overridden;
+- (void)setJustificationOverridden:(BOOL)overridden;
+- (void)setKeepLinesTogetherOverridden:(BOOL)overridden;
+- (void)setKeepNextParagraphTogether:(BOOL)together;
+- (void)setKeepNextParagraphTogetherOverridden:(BOOL)overridden;
+- (void)setKinsokuOffOverridden:(BOOL)overridden;
+- (void)setLeadingIndentOverridden:(BOOL)overridden;
+- (void)setLeftBorderOverridden:(BOOL)overridden;
+- (void)setLeftIndentOverridden:(BOOL)overridden;
+- (void)setLineSpacingOverridden:(BOOL)overridden;
+- (void)setLineSpacingRuleOverridden:(BOOL)overridden;
+- (void)setListIndexOverridden:(BOOL)overridden;
+- (void)setListLevelOverridden:(BOOL)overridden;
+- (void)setOutlineLevelOverridden:(BOOL)overridden;
+- (void)setPageBreakBefore:(BOOL)before;
+- (void)setPageBreakBeforeOverridden:(BOOL)overridden;
+- (void)setPhysicalJustificationOverridden:(BOOL)overridden;
+- (void)setRightIndentCharsOverridden:(BOOL)overridden;
+- (void)setRightIndentOverridden:(BOOL)overridden;
+- (void)setShadingOverridden:(BOOL)overridden;
+- (void)setSpaceAfterAuto:(BOOL)auto;
+- (void)setSpaceAfterOverridden:(BOOL)overridden;
+- (void)setSpaceBeforeAuto:(BOOL)auto;
+- (void)setSpaceBeforeAutoOverridden:(BOOL)overridden;
+- (void)setSpaceBeforeOverridden:(BOOL)overridden;
+- (void)setSuppressAutoHyphens:(BOOL)hyphens;
+- (void)setSuppressAutoHyphensOverridden:(BOOL)overridden;
+- (void)setSuppressLineNumbers:(BOOL)numbers;
+- (void)setSuppressLineNumbersOverridden:(BOOL)overridden;
+- (void)setTabStopAddedCountOverridden:(BOOL)overridden;
+- (void)setTabStopDeletedCountOverridden:(BOOL)overridden;
+- (void)setTopBorderOverridden:(BOOL)overridden;
+- (void)setVerticalAnchorOverridden:(BOOL)overridden;
+- (void)setVerticalPositionOverridden:(BOOL)overridden;
+- (void)setWidowControl:(BOOL)control;
+- (void)setWidowControlOverridden:(BOOL)overridden;
+- (void)setWidthOverridden:(BOOL)overridden;
+- (void)setWrap:(BOOL)wrap;
+- (void)setWrapOverridden:(BOOL)overridden;
 @end
 
 @implementation WDParagraphPropertiesValues
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDParagraphPropertiesValues allocWithZone:?]];
   if (v4)
   {
-    v5 = [(WDParagraphPropertiesValues *)self baseStyle];
-    [(WDParagraphPropertiesValues *)v4 setBaseStyle:v5];
+    baseStyle = [(WDParagraphPropertiesValues *)self baseStyle];
+    [(WDParagraphPropertiesValues *)v4 setBaseStyle:baseStyle];
 
-    v6 = [(WDParagraphPropertiesValues *)self topBorder];
-    [(WDParagraphPropertiesValues *)v4 setTopBorder:v6];
+    topBorder = [(WDParagraphPropertiesValues *)self topBorder];
+    [(WDParagraphPropertiesValues *)v4 setTopBorder:topBorder];
 
-    v7 = [(WDParagraphPropertiesValues *)self leftBorder];
-    [(WDParagraphPropertiesValues *)v4 setLeftBorder:v7];
+    leftBorder = [(WDParagraphPropertiesValues *)self leftBorder];
+    [(WDParagraphPropertiesValues *)v4 setLeftBorder:leftBorder];
 
-    v8 = [(WDParagraphPropertiesValues *)self bottomBorder];
-    [(WDParagraphPropertiesValues *)v4 setBottomBorder:v8];
+    bottomBorder = [(WDParagraphPropertiesValues *)self bottomBorder];
+    [(WDParagraphPropertiesValues *)v4 setBottomBorder:bottomBorder];
 
-    v9 = [(WDParagraphPropertiesValues *)self rightBorder];
-    [(WDParagraphPropertiesValues *)v4 setRightBorder:v9];
+    rightBorder = [(WDParagraphPropertiesValues *)self rightBorder];
+    [(WDParagraphPropertiesValues *)v4 setRightBorder:rightBorder];
 
-    v10 = [(WDParagraphPropertiesValues *)self betweenBorder];
-    [(WDParagraphPropertiesValues *)v4 setBetweenBorder:v10];
+    betweenBorder = [(WDParagraphPropertiesValues *)self betweenBorder];
+    [(WDParagraphPropertiesValues *)v4 setBetweenBorder:betweenBorder];
 
-    v11 = [(WDParagraphPropertiesValues *)self barBorder];
-    [(WDParagraphPropertiesValues *)v4 setBarBorder:v11];
+    barBorder = [(WDParagraphPropertiesValues *)self barBorder];
+    [(WDParagraphPropertiesValues *)v4 setBarBorder:barBorder];
 
-    v12 = [(WDParagraphPropertiesValues *)self shading];
-    [(WDParagraphPropertiesValues *)v4 setShading:v12];
+    shading = [(WDParagraphPropertiesValues *)self shading];
+    [(WDParagraphPropertiesValues *)v4 setShading:shading];
 
     [(WDParagraphPropertiesValues *)v4 setDropCap:[(WDParagraphPropertiesValues *)self dropCap]];
-    v13 = [(WDParagraphPropertiesValues *)self tabStopAddedTable];
-    [(WDParagraphPropertiesValues *)v4 setTabStopAddedTable:v13];
+    tabStopAddedTable = [(WDParagraphPropertiesValues *)self tabStopAddedTable];
+    [(WDParagraphPropertiesValues *)v4 setTabStopAddedTable:tabStopAddedTable];
 
-    v14 = [(WDParagraphPropertiesValues *)self tabStopDeletedTable];
-    [(WDParagraphPropertiesValues *)v4 setTabStopDeletedTable:v14];
+    tabStopDeletedTable = [(WDParagraphPropertiesValues *)self tabStopDeletedTable];
+    [(WDParagraphPropertiesValues *)v4 setTabStopDeletedTable:tabStopDeletedTable];
 
     [(WDParagraphPropertiesValues *)v4 setListIndex:[(WDParagraphPropertiesValues *)self listIndex]];
     [(WDParagraphPropertiesValues *)v4 setTabStopAddedCount:[(WDParagraphPropertiesValues *)self tabStopAddedCount]];
@@ -203,9 +203,9 @@
   return v4;
 }
 
-- (void)setPageBreakBefore:(BOOL)a3
+- (void)setPageBreakBefore:(BOOL)before
 {
-  if (a3)
+  if (before)
   {
     v3 = 2;
   }
@@ -218,9 +218,9 @@
   *(self + 8) = *(self + 8) & 0xFD | v3;
 }
 
-- (void)setPageBreakBeforeOverridden:(BOOL)a3
+- (void)setPageBreakBeforeOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -233,9 +233,9 @@
   *(self + 8) = *(self + 8) & 0xFB | v3;
 }
 
-- (void)setListLevelOverridden:(BOOL)a3
+- (void)setListLevelOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -248,9 +248,9 @@
   *(self + 8) = *(self + 8) & 0xF7 | v3;
 }
 
-- (void)setListIndexOverridden:(BOOL)a3
+- (void)setListIndexOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -263,9 +263,9 @@
   *(self + 8) = *(self + 8) & 0xEF | v3;
 }
 
-- (void)setTopBorderOverridden:(BOOL)a3
+- (void)setTopBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -278,9 +278,9 @@
   *(self + 8) = *(self + 8) & 0xDF | v3;
 }
 
-- (void)setLeftBorderOverridden:(BOOL)a3
+- (void)setLeftBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -293,9 +293,9 @@
   *(self + 8) = *(self + 8) & 0xBF | v3;
 }
 
-- (void)setBottomBorderOverridden:(BOOL)a3
+- (void)setBottomBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -308,9 +308,9 @@
   *(self + 8) = v3 & 0x80 | *(self + 8) & 0x7F;
 }
 
-- (void)setBetweenBorderOverridden:(BOOL)a3
+- (void)setBetweenBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -323,9 +323,9 @@
   *(self + 9) = *(self + 9) & 0xFD | v3;
 }
 
-- (void)setBarBorderOverridden:(BOOL)a3
+- (void)setBarBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -338,9 +338,9 @@
   *(self + 9) = *(self + 9) & 0xFB | v3;
 }
 
-- (void)setShadingOverridden:(BOOL)a3
+- (void)setShadingOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -353,9 +353,9 @@
   *(self + 9) = *(self + 9) & 0xF7 | v3;
 }
 
-- (void)setDropCapOverridden:(BOOL)a3
+- (void)setDropCapOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -368,9 +368,9 @@
   *(self + 9) = *(self + 9) & 0xEF | v3;
 }
 
-- (void)setWidthOverridden:(BOOL)a3
+- (void)setWidthOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -383,9 +383,9 @@
   *(self + 9) = *(self + 9) & 0xDF | v3;
 }
 
-- (void)setHeightOverridden:(BOOL)a3
+- (void)setHeightOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -398,9 +398,9 @@
   *(self + 9) = *(self + 9) & 0xBF | v3;
 }
 
-- (void)setHeightRuleOverridden:(BOOL)a3
+- (void)setHeightRuleOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -413,9 +413,9 @@
   *(self + 9) = v3 & 0x80 | *(self + 9) & 0x7F;
 }
 
-- (void)setHorizontalSpaceOverridden:(BOOL)a3
+- (void)setHorizontalSpaceOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -428,9 +428,9 @@
   *(self + 10) = *(self + 10) & 0xFD | v3;
 }
 
-- (void)setWrap:(BOOL)a3
+- (void)setWrap:(BOOL)wrap
 {
-  if (a3)
+  if (wrap)
   {
     v3 = 4;
   }
@@ -443,9 +443,9 @@
   *(self + 10) = *(self + 10) & 0xFB | v3;
 }
 
-- (void)setWrapOverridden:(BOOL)a3
+- (void)setWrapOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -458,9 +458,9 @@
   *(self + 10) = *(self + 10) & 0xF7 | v3;
 }
 
-- (void)setHorizontalAnchorOverridden:(BOOL)a3
+- (void)setHorizontalAnchorOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -473,9 +473,9 @@
   *(self + 10) = *(self + 10) & 0xEF | v3;
 }
 
-- (void)setVerticalAnchorOverridden:(BOOL)a3
+- (void)setVerticalAnchorOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -488,9 +488,9 @@
   *(self + 10) = *(self + 10) & 0xDF | v3;
 }
 
-- (void)setHorizontalPositionOverridden:(BOOL)a3
+- (void)setHorizontalPositionOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -503,9 +503,9 @@
   *(self + 10) = *(self + 10) & 0xBF | v3;
 }
 
-- (void)setVerticalPositionOverridden:(BOOL)a3
+- (void)setVerticalPositionOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -518,9 +518,9 @@
   *(self + 10) = v3 & 0x80 | *(self + 10) & 0x7F;
 }
 
-- (void)setAnchorLock:(BOOL)a3
+- (void)setAnchorLock:(BOOL)lock
 {
-  if (a3)
+  if (lock)
   {
     v3 = 2;
   }
@@ -533,9 +533,9 @@
   *(self + 11) = *(self + 11) & 0xFD | v3;
 }
 
-- (void)setAnchorLockOverridden:(BOOL)a3
+- (void)setAnchorLockOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -548,9 +548,9 @@
   *(self + 11) = *(self + 11) & 0xFB | v3;
 }
 
-- (void)setSpaceBeforeOverridden:(BOOL)a3
+- (void)setSpaceBeforeOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -563,9 +563,9 @@
   *(self + 11) = *(self + 11) & 0xF7 | v3;
 }
 
-- (void)setSpaceBeforeAuto:(BOOL)a3
+- (void)setSpaceBeforeAuto:(BOOL)auto
 {
-  if (a3)
+  if (auto)
   {
     v3 = 16;
   }
@@ -578,9 +578,9 @@
   *(self + 11) = *(self + 11) & 0xEF | v3;
 }
 
-- (void)setSpaceBeforeAutoOverridden:(BOOL)a3
+- (void)setSpaceBeforeAutoOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -593,9 +593,9 @@
   *(self + 11) = *(self + 11) & 0xDF | v3;
 }
 
-- (void)setSpaceAfterOverridden:(BOOL)a3
+- (void)setSpaceAfterOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -608,9 +608,9 @@
   *(self + 11) = *(self + 11) & 0xBF | v3;
 }
 
-- (void)setSpaceAfterAuto:(BOOL)a3
+- (void)setSpaceAfterAuto:(BOOL)auto
 {
-  if (a3)
+  if (auto)
   {
     v3 = 0x80;
   }
@@ -623,9 +623,9 @@
   *(self + 11) = v3 & 0x80 | *(self + 11) & 0x7F;
 }
 
-- (void)setLineSpacingOverridden:(BOOL)a3
+- (void)setLineSpacingOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -638,9 +638,9 @@
   *(self + 12) = *(self + 12) & 0xFD | v3;
 }
 
-- (void)setLineSpacingRuleOverridden:(BOOL)a3
+- (void)setLineSpacingRuleOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -653,9 +653,9 @@
   *(self + 12) = *(self + 12) & 0xFB | v3;
 }
 
-- (void)setLeftIndentOverridden:(BOOL)a3
+- (void)setLeftIndentOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -668,9 +668,9 @@
   *(self + 12) = *(self + 12) & 0xF7 | v3;
 }
 
-- (void)setRightIndentOverridden:(BOOL)a3
+- (void)setRightIndentOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -683,9 +683,9 @@
   *(self + 12) = *(self + 12) & 0xEF | v3;
 }
 
-- (void)setLeadingIndentOverridden:(BOOL)a3
+- (void)setLeadingIndentOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -698,9 +698,9 @@
   *(self + 12) = *(self + 12) & 0xDF | v3;
 }
 
-- (void)setFollowingIndentOverridden:(BOOL)a3
+- (void)setFollowingIndentOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -713,9 +713,9 @@
   *(self + 12) = *(self + 12) & 0xBF | v3;
 }
 
-- (void)setFirstLineIndentOverridden:(BOOL)a3
+- (void)setFirstLineIndentOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -728,9 +728,9 @@
   *(self + 12) = v3 & 0x80 | *(self + 12) & 0x7F;
 }
 
-- (void)setRightIndentCharsOverridden:(BOOL)a3
+- (void)setRightIndentCharsOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -743,9 +743,9 @@
   *(self + 13) = *(self + 13) & 0xFD | v3;
 }
 
-- (void)setFirstLineIndentCharsOverridden:(BOOL)a3
+- (void)setFirstLineIndentCharsOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -758,9 +758,9 @@
   *(self + 13) = *(self + 13) & 0xFB | v3;
 }
 
-- (void)setJustificationOverridden:(BOOL)a3
+- (void)setJustificationOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -773,9 +773,9 @@
   *(self + 13) = *(self + 13) & 0xF7 | v3;
 }
 
-- (void)setPhysicalJustificationOverridden:(BOOL)a3
+- (void)setPhysicalJustificationOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -788,9 +788,9 @@
   *(self + 13) = *(self + 13) & 0xEF | v3;
 }
 
-- (void)setOutlineLevelOverridden:(BOOL)a3
+- (void)setOutlineLevelOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -803,9 +803,9 @@
   *(self + 13) = *(self + 13) & 0xDF | v3;
 }
 
-- (void)setKeepNextParagraphTogether:(BOOL)a3
+- (void)setKeepNextParagraphTogether:(BOOL)together
 {
-  if (a3)
+  if (together)
   {
     v3 = 64;
   }
@@ -818,9 +818,9 @@
   *(self + 13) = *(self + 13) & 0xBF | v3;
 }
 
-- (void)setKeepNextParagraphTogetherOverridden:(BOOL)a3
+- (void)setKeepNextParagraphTogetherOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -833,9 +833,9 @@
   *(self + 13) = v3 & 0x80 | *(self + 13) & 0x7F;
 }
 
-- (void)setKeepLinesTogetherOverridden:(BOOL)a3
+- (void)setKeepLinesTogetherOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -848,9 +848,9 @@
   *(self + 14) = *(self + 14) & 0xFD | v3;
 }
 
-- (void)setSuppressAutoHyphens:(BOOL)a3
+- (void)setSuppressAutoHyphens:(BOOL)hyphens
 {
-  if (a3)
+  if (hyphens)
   {
     v3 = 4;
   }
@@ -863,9 +863,9 @@
   *(self + 14) = *(self + 14) & 0xFB | v3;
 }
 
-- (void)setSuppressAutoHyphensOverridden:(BOOL)a3
+- (void)setSuppressAutoHyphensOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -878,9 +878,9 @@
   *(self + 14) = *(self + 14) & 0xF7 | v3;
 }
 
-- (void)setSuppressLineNumbers:(BOOL)a3
+- (void)setSuppressLineNumbers:(BOOL)numbers
 {
-  if (a3)
+  if (numbers)
   {
     v3 = 16;
   }
@@ -893,9 +893,9 @@
   *(self + 14) = *(self + 14) & 0xEF | v3;
 }
 
-- (void)setSuppressLineNumbersOverridden:(BOOL)a3
+- (void)setSuppressLineNumbersOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -908,9 +908,9 @@
   *(self + 14) = *(self + 14) & 0xDF | v3;
 }
 
-- (void)setWidowControl:(BOOL)a3
+- (void)setWidowControl:(BOOL)control
 {
-  if (a3)
+  if (control)
   {
     v3 = 64;
   }
@@ -923,9 +923,9 @@
   *(self + 14) = *(self + 14) & 0xBF | v3;
 }
 
-- (void)setWidowControlOverridden:(BOOL)a3
+- (void)setWidowControlOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -938,9 +938,9 @@
   *(self + 14) = v3 & 0x80 | *(self + 14) & 0x7F;
 }
 
-- (void)setKinsokuOffOverridden:(BOOL)a3
+- (void)setKinsokuOffOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -953,9 +953,9 @@
   *(self + 15) = *(self + 15) & 0xFD | v3;
 }
 
-- (void)setTabStopAddedCountOverridden:(BOOL)a3
+- (void)setTabStopAddedCountOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -968,9 +968,9 @@
   *(self + 15) = *(self + 15) & 0xFB | v3;
 }
 
-- (void)setTabStopDeletedCountOverridden:(BOOL)a3
+- (void)setTabStopDeletedCountOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -983,9 +983,9 @@
   *(self + 15) = *(self + 15) & 0xF7 | v3;
 }
 
-- (void)setFormattingChangedOverridden:(BOOL)a3
+- (void)setFormattingChangedOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -998,9 +998,9 @@
   *(self + 15) = *(self + 15) & 0xEF | v3;
 }
 
-- (void)setBiDi:(BOOL)a3
+- (void)setBiDi:(BOOL)di
 {
-  if (a3)
+  if (di)
   {
     v3 = 32;
   }
@@ -1013,9 +1013,9 @@
   *(self + 15) = *(self + 15) & 0xDF | v3;
 }
 
-- (void)setBiDiOverridden:(BOOL)a3
+- (void)setBiDiOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -1028,9 +1028,9 @@
   *(self + 15) = *(self + 15) & 0xBF | v3;
 }
 
-- (void)setCachedRtl:(BOOL)a3
+- (void)setCachedRtl:(BOOL)rtl
 {
-  if (a3)
+  if (rtl)
   {
     v3 = 0x80;
   }
@@ -1043,9 +1043,9 @@
   *(self + 15) = v3 & 0x80 | *(self + 15) & 0x7F;
 }
 
-- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)a3
+- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -1058,9 +1058,9 @@
   *(self + 16) = *(self + 16) & 0xFD | v3;
 }
 
-- (void)setContextualSpacing:(BOOL)a3
+- (void)setContextualSpacing:(BOOL)spacing
 {
-  if (a3)
+  if (spacing)
   {
     v3 = 4;
   }
@@ -1073,9 +1073,9 @@
   *(self + 16) = *(self + 16) & 0xFB | v3;
 }
 
-- (void)setContextualSpacingOverridden:(BOOL)a3
+- (void)setContextualSpacingOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }

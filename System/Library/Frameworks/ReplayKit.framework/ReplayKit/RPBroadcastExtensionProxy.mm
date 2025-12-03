@@ -1,23 +1,23 @@
 @interface RPBroadcastExtensionProxy
-- (RPBroadcastExtensionProxy)initWithBroadcastUploadExtension:(id)a3;
-- (RPBroadcastExtensionProxy)initWithBroadcastUploadListenerEndpoint:(id)a3;
+- (RPBroadcastExtensionProxy)initWithBroadcastUploadExtension:(id)extension;
+- (RPBroadcastExtensionProxy)initWithBroadcastUploadListenerEndpoint:(id)endpoint;
 - (void)dealloc;
-- (void)establishConnectionWithHandler:(id)a3;
-- (void)finishBroadcastWithError:(id)a3;
+- (void)establishConnectionWithHandler:(id)handler;
+- (void)finishBroadcastWithError:(id)error;
 - (void)invalidateConnection;
 - (void)ping;
-- (void)processPayload:(id)a3 completion:(id)a4;
-- (void)setupNewConnection:(id)a3;
-- (void)updateBroadcastURL:(id)a3;
-- (void)updateServiceInfo:(id)a3;
+- (void)processPayload:(id)payload completion:(id)completion;
+- (void)setupNewConnection:(id)connection;
+- (void)updateBroadcastURL:(id)l;
+- (void)updateServiceInfo:(id)info;
 @end
 
 @implementation RPBroadcastExtensionProxy
 
-- (RPBroadcastExtensionProxy)initWithBroadcastUploadExtension:(id)a3
+- (RPBroadcastExtensionProxy)initWithBroadcastUploadExtension:(id)extension
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  extensionCopy = extension;
   v10.receiver = self;
   v10.super_class = RPBroadcastExtensionProxy;
   v5 = [(RPBroadcastExtensionProxy *)&v10 init];
@@ -34,25 +34,25 @@
       _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
     }
 
-    v6 = [MEMORY[0x277CCAE98] anonymousListener];
-    [(RPBroadcastExtensionProxy *)v5 setListener:v6];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    [(RPBroadcastExtensionProxy *)v5 setListener:anonymousListener];
 
     [(NSXPCListener *)v5->_listener resume];
     [(NSXPCListener *)v5->_listener setDelegate:v5];
-    v7 = [(NSXPCListener *)v5->_listener endpoint];
-    [(RPBroadcastExtensionProxy *)v5 setListenerEndpoint:v7];
+    endpoint = [(NSXPCListener *)v5->_listener endpoint];
+    [(RPBroadcastExtensionProxy *)v5 setListenerEndpoint:endpoint];
 
-    [(RPBroadcastExtensionProxy *)v5 setBroadcastUploadExtension:v4];
+    [(RPBroadcastExtensionProxy *)v5 setBroadcastUploadExtension:extensionCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (RPBroadcastExtensionProxy)initWithBroadcastUploadListenerEndpoint:(id)a3
+- (RPBroadcastExtensionProxy)initWithBroadcastUploadListenerEndpoint:(id)endpoint
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = RPBroadcastExtensionProxy;
   v5 = [(RPBroadcastExtensionProxy *)&v9 init];
@@ -71,7 +71,7 @@
 
     if (!v5->_connection)
     {
-      v6 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v4];
+      v6 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:endpointCopy];
       [(RPBroadcastExtensionProxy *)v5 setupNewConnection:v6];
     }
   }
@@ -90,7 +90,7 @@
     v7 = 1024;
     v8 = 63;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p", buf, 0x1Cu);
   }
 
@@ -100,10 +100,10 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)establishConnectionWithHandler:(id)a3
+- (void)establishConnectionWithHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
@@ -113,7 +113,7 @@
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d establishing connection to extension", buf, 0x12u);
   }
 
-  [(RPBroadcastExtensionProxy *)self setConnectionReadyHandler:v4];
+  [(RPBroadcastExtensionProxy *)self setConnectionReadyHandler:handlerCopy];
   v5 = objc_alloc_init(MEMORY[0x277CCA9D8]);
   broadcastUploadExtension = self->_broadcastUploadExtension;
   v12 = v5;
@@ -123,8 +123,8 @@
   v10[2] = __60__RPBroadcastExtensionProxy_establishConnectionWithHandler___block_invoke;
   v10[3] = &unk_278B623D0;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   [(NSExtension *)broadcastUploadExtension beginExtensionRequestWithInputItems:v7 completion:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -216,7 +216,7 @@ intptr_t __60__RPBroadcastExtensionProxy_establishConnectionWithHandler___block_
     v11 = 1024;
     v12 = 100;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
     v16 = connection;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %p invalidating connection=%p with extension", &v9, 0x26u);
@@ -238,17 +238,17 @@ intptr_t __60__RPBroadcastExtensionProxy_establishConnectionWithHandler___block_
   errorHandler = self->_errorHandler;
   self->_errorHandler = 0;
 
-  v7 = [(RPBroadcastExtensionProxy *)self broadcastUploadExtension];
-  [v7 _kill:9];
+  broadcastUploadExtension = [(RPBroadcastExtensionProxy *)self broadcastUploadExtension];
+  [broadcastUploadExtension _kill:9];
 
   [(RPBroadcastExtensionProxy *)self setBroadcastUploadExtension:0];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupNewConnection:(id)a3
+- (void)setupNewConnection:(id)connection
 {
-  v4 = a3;
-  [(RPBroadcastExtensionProxy *)self setConnection:v4];
+  connectionCopy = connection;
+  [(RPBroadcastExtensionProxy *)self setConnection:connectionCopy];
   [(NSXPCConnection *)self->_connection setExportedObject:self];
   v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284D94558];
   [(NSXPCConnection *)self->_connection setExportedInterface:v5];
@@ -296,10 +296,10 @@ void __48__RPBroadcastExtensionProxy_setupNewConnection___block_invoke_64()
   }
 }
 
-- (void)updateServiceInfo:(id)a3
+- (void)updateServiceInfo:(id)info
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446466;
@@ -312,16 +312,16 @@ void __48__RPBroadcastExtensionProxy_setupNewConnection___block_invoke_64()
   serviceInfoHandler = self->_serviceInfoHandler;
   if (serviceInfoHandler)
   {
-    serviceInfoHandler[2](serviceInfoHandler, v4);
+    serviceInfoHandler[2](serviceInfoHandler, infoCopy);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateBroadcastURL:(id)a3
+- (void)updateBroadcastURL:(id)l
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446466;
@@ -334,7 +334,7 @@ void __48__RPBroadcastExtensionProxy_setupNewConnection___block_invoke_64()
   broadcastURLHandler = self->_broadcastURLHandler;
   if (broadcastURLHandler)
   {
-    broadcastURLHandler[2](broadcastURLHandler, v4);
+    broadcastURLHandler[2](broadcastURLHandler, lCopy);
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -358,11 +358,11 @@ void __48__RPBroadcastExtensionProxy_setupNewConnection___block_invoke_64()
     connectionReadyHandler[2](connectionReadyHandler, 0);
   }
 
-  v4 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v5 = +[RPFeatureFlagUtility sharedInstance];
-  v6 = [v5 screenRecordingPassthroughCamera];
+  screenRecordingPassthroughCamera = [v5 screenRecordingPassthroughCamera];
 
-  if (v6)
+  if (screenRecordingPassthroughCamera)
   {
     if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -371,9 +371,9 @@ void __48__RPBroadcastExtensionProxy_setupNewConnection___block_invoke_64()
       v14 = 1024;
       v15 = 172;
       v16 = 2048;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2048;
-      v19 = v4;
+      v19 = currentConnection;
       v7 = MEMORY[0x277D86220];
       v8 = " [INFO] %{public}s:%d %p connection=%p";
       v9 = 38;
@@ -393,9 +393,9 @@ LABEL_13:
       v14 = 1024;
       v15 = 170;
       v16 = 2048;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2048;
-      v19 = v4;
+      v19 = currentConnection;
       v20 = 1024;
       v21 = enableMixedRealityCamera;
       v7 = MEMORY[0x277D86220];
@@ -408,10 +408,10 @@ LABEL_13:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishBroadcastWithError:(id)a3
+- (void)finishBroadcastWithError:(id)error
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446722;
@@ -419,23 +419,23 @@ LABEL_13:
     v9 = 1024;
     v10 = 177;
     v11 = 2112;
-    v12 = v4;
+    v12 = errorCopy;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d received finish request from service due to error %@", &v7, 0x1Cu);
   }
 
   errorHandler = self->_errorHandler;
   if (errorHandler)
   {
-    errorHandler[2](errorHandler, v4);
+    errorHandler[2](errorHandler, errorCopy);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processPayload:(id)a3 completion:(id)a4
+- (void)processPayload:(id)payload completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   connection = self->_connection;
   v11 = MEMORY[0x277D85DD0];
@@ -447,7 +447,7 @@ LABEL_13:
   v10 = v9;
   if (v9)
   {
-    [v9 processPayload:v6 completion:{v7, v11, v12, v13, v14}];
+    [v9 processPayload:payloadCopy completion:{completionCopy, v11, v12, v13, v14}];
   }
 
   objc_destroyWeak(&v15);

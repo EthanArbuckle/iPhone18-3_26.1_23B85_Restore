@@ -1,12 +1,12 @@
 @interface ContactsAppDelegate
 + (OS_os_log)log;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
 - (ContactsAppDelegate)init;
-- (ContactsAppDelegate)initWithCapabilitiesManager:(id)a3 mainBundle:(id)a4 schedulerProvider:(id)a5;
+- (ContactsAppDelegate)initWithCapabilitiesManager:(id)manager mainBundle:(id)bundle schedulerProvider:(id)provider;
 - (ContactsSceneDelegate)mainSceneDelegate;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation ContactsAppDelegate
@@ -16,8 +16,8 @@
   v3 = +[CNCapabilitiesManager defaultCapabilitiesManager];
   v4 = +[NSBundle mainBundle];
   v5 = +[CNUIContactsEnvironment currentEnvironment];
-  v6 = [v5 defaultSchedulerProvider];
-  v7 = [(ContactsAppDelegate *)self initWithCapabilitiesManager:v3 mainBundle:v4 schedulerProvider:v6];
+  defaultSchedulerProvider = [v5 defaultSchedulerProvider];
+  v7 = [(ContactsAppDelegate *)self initWithCapabilitiesManager:v3 mainBundle:v4 schedulerProvider:defaultSchedulerProvider];
 
   return v7;
 }
@@ -34,20 +34,20 @@
   return v3;
 }
 
-- (ContactsAppDelegate)initWithCapabilitiesManager:(id)a3 mainBundle:(id)a4 schedulerProvider:(id)a5
+- (ContactsAppDelegate)initWithCapabilitiesManager:(id)manager mainBundle:(id)bundle schedulerProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  bundleCopy = bundle;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = ContactsAppDelegate;
   v12 = [(ContactsAppDelegate *)&v15 init];
   if (v12)
   {
     kdebug_trace();
-    objc_storeStrong(&v12->_capabilitiesManager, a3);
-    objc_storeStrong(&v12->_mainBundle, a4);
-    objc_storeStrong(&v12->_schedulerProvider, a5);
+    objc_storeStrong(&v12->_capabilitiesManager, manager);
+    objc_storeStrong(&v12->_mainBundle, bundle);
+    objc_storeStrong(&v12->_schedulerProvider, provider);
     kdebug_trace();
     v13 = v12;
   }
@@ -58,13 +58,13 @@
 - (ContactsSceneDelegate)mainSceneDelegate
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
-  v4 = [v3 allObjects];
-  v5 = [v4 firstObject];
+  connectedScenes = [v2 connectedScenes];
+  allObjects = [connectedScenes allObjects];
+  firstObject = [allObjects firstObject];
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 connectedScenes];
-  v8 = [v7 _cn_firstObjectPassingTest:&stru_100020530];
+  connectedScenes2 = [v6 connectedScenes];
+  v8 = [connectedScenes2 _cn_firstObjectPassingTest:&stru_100020530];
 
   objc_opt_class();
   if (v8)
@@ -74,13 +74,13 @@
 
   else
   {
-    v9 = v5;
+    v9 = firstObject;
   }
 
-  v10 = [v9 delegate];
+  delegate = [v9 delegate];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = delegate;
   }
 
   else
@@ -93,17 +93,17 @@
   return v11;
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   kdebug_trace();
   v6 = UIApplicationLaunchOptionsSearchResultIdentifierKey;
-  v7 = [v5 objectForKeyedSubscript:UIApplicationLaunchOptionsSearchResultIdentifierKey];
+  v7 = [optionsCopy objectForKeyedSubscript:UIApplicationLaunchOptionsSearchResultIdentifierKey];
 
   if (v7)
   {
     objc_opt_class();
-    v8 = [v5 objectForKeyedSubscript:v6];
+    v8 = [optionsCopy objectForKeyedSubscript:v6];
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -118,17 +118,17 @@
 
     if ((*(CNIsStringEmpty + 16))(CNIsStringEmpty, v10))
     {
-      v11 = [objc_opt_class() log];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      mainSceneDelegate = [objc_opt_class() log];
+      if (os_log_type_enabled(mainSceneDelegate, OS_LOG_TYPE_ERROR))
       {
-        sub_10000F324(v10, v11);
+        sub_10000F324(v10, mainSceneDelegate);
       }
     }
 
     else
     {
-      v11 = [(ContactsAppDelegate *)self mainSceneDelegate];
-      [v11 showContactWithIdentifier:v10];
+      mainSceneDelegate = [(ContactsAppDelegate *)self mainSceneDelegate];
+      [mainSceneDelegate showContactWithIdentifier:v10];
     }
   }
 
@@ -137,14 +137,14 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v4 = a3;
+  applicationCopy = application;
   kdebug_trace();
   if (+[UIApplication shouldMakeUIForDefaultPNG])
   {
-    v5 = [v4 statusBar];
-    [v5 setAlpha:0.0];
+    statusBar = [applicationCopy statusBar];
+    [statusBar setAlpha:0.0];
   }
 
   kdebug_trace();
@@ -152,33 +152,33 @@
   return 1;
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(ContactsAppDelegate *)self mainSceneDelegate];
-  v10 = [v9 runTest:v8 options:v7];
+  optionsCopy = options;
+  testCopy = test;
+  mainSceneDelegate = [(ContactsAppDelegate *)self mainSceneDelegate];
+  v10 = [mainSceneDelegate runTest:testCopy options:optionsCopy];
 
   return v10;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v10.receiver = self;
   v10.super_class = ContactsAppDelegate;
-  [(ContactsAppDelegate *)&v10 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
+  [(ContactsAppDelegate *)&v10 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
   v6 = +[UIMenuSystem mainSystem];
 
-  if (v5 == v6)
+  if (system == v6)
   {
     v8 = +[CNContactMenuBarManager sharedInstance];
-    v7 = [v8 navigationViewController];
+    navigationViewController = [v8 navigationViewController];
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 setUpMenuBarWithBuilder:v4];
+      [navigationViewController setUpMenuBarWithBuilder:builderCopy];
     }
 
     else
@@ -193,10 +193,10 @@
 
   else
   {
-    v7 = [objc_opt_class() log];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    navigationViewController = [objc_opt_class() log];
+    if (os_log_type_enabled(navigationViewController, OS_LOG_TYPE_ERROR))
     {
-      sub_10000F39C(v7);
+      sub_10000F39C(navigationViewController);
     }
   }
 }

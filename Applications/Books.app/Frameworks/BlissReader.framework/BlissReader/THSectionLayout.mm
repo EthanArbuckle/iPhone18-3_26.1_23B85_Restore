@@ -2,9 +2,9 @@
 - (CGPoint)capturedInfoPositionForAttachment;
 - (id)computeLayoutGeometry;
 - (id)dependentLayouts;
-- (unint64_t)fontSizeForTextSource:(id)a3;
+- (unint64_t)fontSizeForTextSource:(id)source;
 - (void)dealloc;
-- (void)setGeometry:(id)a3;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation THSectionLayout
@@ -17,11 +17,11 @@
   [(THSectionLayout *)&v3 dealloc];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   if ([-[THSectionLayout info](self "info")])
   {
-    v5 = [a3 mutableCopy];
+    v5 = [geometry mutableCopy];
     v6 = *&CGAffineTransformIdentity.c;
     v9[0] = *&CGAffineTransformIdentity.a;
     v9[1] = v6;
@@ -36,7 +36,7 @@
   {
     v7.receiver = self;
     v7.super_class = THSectionLayout;
-    [(THSectionLayout *)&v7 setGeometry:a3];
+    [(THSectionLayout *)&v7 setGeometry:geometry];
   }
 }
 
@@ -84,11 +84,11 @@
   }
 }
 
-- (unint64_t)fontSizeForTextSource:(id)a3
+- (unint64_t)fontSizeForTextSource:(id)source
 {
-  v3 = [objc_msgSend(-[THSectionLayout info](self info];
+  info = [objc_msgSend(-[THSectionLayout info](self info];
 
-  return [v3 fontSize];
+  return [info fontSize];
 }
 
 @end

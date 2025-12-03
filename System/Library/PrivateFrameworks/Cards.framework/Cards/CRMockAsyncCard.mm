@@ -1,13 +1,13 @@
 @interface CRMockAsyncCard
-- (void)loadCardWithCompletion:(id)a3;
+- (void)loadCardWithCompletion:(id)completion;
 @end
 
 @implementation CRMockAsyncCard
 
-- (void)loadCardWithCompletion:(id)a3
+- (void)loadCardWithCompletion:(id)completion
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v29 = a3;
+  completionCopy = completion;
   v3 = objc_alloc_init(CRBasicCard);
   v4 = objc_alloc_init(MEMORY[0x277D4C6A0]);
   [v4 setTitle:@"Title"];
@@ -15,15 +15,15 @@
   v6 = [MEMORY[0x277D4C598] textWithString:@"Text1"];
   [v5 setLeadingText:v6];
 
-  v7 = [v5 leadingText];
-  [v7 setMaxLines:1];
+  leadingText = [v5 leadingText];
+  [leadingText setMaxLines:1];
 
   v8 = objc_alloc_init(MEMORY[0x277D4C5A8]);
   v9 = [MEMORY[0x277D4C598] textWithString:@"Text2"];
   [v8 setLeadingText:v9];
 
-  v10 = [v8 leadingText];
-  [v10 setMaxLines:1];
+  leadingText2 = [v8 leadingText];
+  [leadingText2 setMaxLines:1];
 
   v11 = objc_alloc_init(MEMORY[0x277D4C5A8]);
   v12 = [MEMORY[0x277D4C598] textWithString:@"More Info..."];
@@ -47,11 +47,11 @@
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
   [(CRBasicCard *)v3 setCardSections:v21];
 
-  v22 = [(CRBasicCard *)self interactions];
-  [(CRBasicCard *)v3 setInteractions:v22];
+  interactions = [(CRBasicCard *)self interactions];
+  [(CRBasicCard *)v3 setInteractions:interactions];
 
-  v23 = [(CRBasicCard *)self dismissalCommands];
-  [(CRBasicCard *)v3 setDismissalCommands:v23];
+  dismissalCommands = [(CRBasicCard *)self dismissalCommands];
+  [(CRBasicCard *)v3 setDismissalCommands:dismissalCommands];
 
   v24 = dispatch_time(0, 3000000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -59,9 +59,9 @@
   block[2] = __42__CRMockAsyncCard_loadCardWithCompletion___block_invoke;
   block[3] = &unk_278DA5920;
   v31 = v3;
-  v32 = v29;
+  v32 = completionCopy;
   v25 = v3;
-  v26 = v29;
+  v26 = completionCopy;
   dispatch_after(v24, MEMORY[0x277D85CD0], block);
 
   v27 = *MEMORY[0x277D85DE8];

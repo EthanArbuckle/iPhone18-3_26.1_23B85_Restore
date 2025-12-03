@@ -1,24 +1,24 @@
 @interface AXTwiceCompanionPullToDismissManager
 - (_TtC21AXWatchRemoteScreenUI36AXTwiceCompanionPullToDismissManager)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)interactionControllerForDismissal:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)interactionControllerForDismissal:(id)dismissal;
 @end
 
 @implementation AXTwiceCompanionPullToDismissManager
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_23D6D2670(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v6 = sub_23D6D2670(controllerCopy);
 
   return v6;
 }
 
-- (id)interactionControllerForDismissal:(id)a3
+- (id)interactionControllerForDismissal:(id)dismissal
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_23D6D285C();
   swift_unknownObjectRelease();
 

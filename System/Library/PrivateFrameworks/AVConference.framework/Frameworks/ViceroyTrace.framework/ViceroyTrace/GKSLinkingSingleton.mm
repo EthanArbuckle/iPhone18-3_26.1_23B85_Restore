@@ -1,6 +1,6 @@
 @interface GKSLinkingSingleton
 + (id)defaultGKSLinkingSingleton;
-- (void)handleForBinaryPath:(id)a3;
+- (void)handleForBinaryPath:(id)path;
 @end
 
 @implementation GKSLinkingSingleton
@@ -24,19 +24,19 @@
   return result;
 }
 
-- (void)handleForBinaryPath:(id)a3
+- (void)handleForBinaryPath:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCA8A8]);
   objc_sync_enter(self);
-  v6 = [(NSMutableDictionary *)self->handleSoFar objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->handleSoFar objectForKeyedSubscript:path];
   if (v6)
   {
-    v7 = [v6 dlHandle];
+    dlHandle = [v6 dlHandle];
     goto LABEL_3;
   }
 
-  v7 = dlopen([a3 UTF8String], 1);
+  dlHandle = dlopen([path UTF8String], 1);
   if (VRTraceGetErrorLogLevelForModule("") >= 3 && (v10 = VRTraceErrorLogLevelToCSTR(3u), v11 = gVRTraceOSLog, os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_ERROR)))
   {
     v17 = 136316162;
@@ -46,27 +46,27 @@
     v21 = 1024;
     v22 = 47;
     v23 = 2080;
-    v24 = [a3 UTF8String];
+    uTF8String = [path UTF8String];
     v25 = 2048;
-    v26 = v7;
+    v26 = dlHandle;
     _os_log_error_impl(&dword_23D4DF000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d ViceroyTrace: Attempting to get symbols out of path %s, handle = %p", &v17, 0x30u);
-    if (v7)
+    if (dlHandle)
     {
 LABEL_7:
       if (!self->handleSoFar)
       {
         v12 = objc_alloc_init(GKSDLHandleWrapper);
-        [(GKSDLHandleWrapper *)v12 setDlHandle:v7];
+        [(GKSDLHandleWrapper *)v12 setDlHandle:dlHandle];
         v13 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
         self->handleSoFar = v13;
-        [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:a3];
+        [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:path];
       }
 
       goto LABEL_3;
     }
   }
 
-  else if (v7)
+  else if (dlHandle)
   {
     goto LABEL_7;
   }
@@ -82,12 +82,12 @@ LABEL_7:
     }
   }
 
-  v7 = 0;
+  dlHandle = 0;
 LABEL_3:
   objc_sync_exit(self);
 
   v8 = *MEMORY[0x277D85DE8];
-  return v7;
+  return dlHandle;
 }
 
 - (void)handleForBinaryPath:(uint8_t *)buf .cold.1(uint64_t a1, uint64_t a2, uint8_t *buf, os_log_t log)

@@ -1,40 +1,40 @@
 @interface HDCodableOntologyLocalizedEducationContent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSections:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSections:(id)sections;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableOntologyLocalizedEducationContent
 
-- (void)addSections:(id)a3
+- (void)addSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   sections = self->_sections;
-  v8 = v4;
+  v8 = sectionsCopy;
   if (!sections)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_sections;
     self->_sections = v6;
 
-    v4 = v8;
+    sectionsCopy = v8;
     sections = self->_sections;
   }
 
-  [(NSMutableArray *)sections addObject:v4];
+  [(NSMutableArray *)sections addObject:sectionsCopy];
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 4;
   }
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableOntologyLocalizedEducationContent;
   v4 = [(HDCodableOntologyLocalizedEducationContent *)&v8 description];
-  v5 = [(HDCodableOntologyLocalizedEducationContent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableOntologyLocalizedEducationContent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,7 +77,7 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_sections count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_sections, "count")}];
@@ -100,8 +100,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -110,14 +110,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"sections"];
+    [dictionary setObject:v4 forKey:@"sections"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_version];
-    [v3 setObject:v15 forKey:@"version"];
+    [dictionary setObject:v15 forKey:@"version"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -138,25 +138,25 @@ LABEL_12:
   }
 
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:{self->_timestamp, v17}];
-  [v3 setObject:v16 forKey:@"timestamp"];
+  [dictionary setObject:v16 forKey:@"timestamp"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_13:
     v12 = [MEMORY[0x277CCABB0] numberWithBool:{self->_deleted, v17}];
-    [v3 setObject:v12 forKey:@"deleted"];
+    [dictionary setObject:v12 forKey:@"deleted"];
   }
 
 LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -226,20 +226,20 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(HDCodableOntologyLocalizedEducationContent *)self sectionsCount])
   {
-    [v9 clearSections];
-    v4 = [(HDCodableOntologyLocalizedEducationContent *)self sectionsCount];
-    if (v4)
+    [toCopy clearSections];
+    sectionsCount = [(HDCodableOntologyLocalizedEducationContent *)self sectionsCount];
+    if (sectionsCount)
     {
-      v5 = v4;
+      v5 = sectionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HDCodableOntologyLocalizedEducationContent *)self sectionsAtIndex:i];
-        [v9 addSections:v7];
+        [toCopy addSections:v7];
       }
     }
   }
@@ -247,8 +247,8 @@ LABEL_12:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v9 + 2) = self->_version;
-    *(v9 + 36) |= 2u;
+    *(toCopy + 2) = self->_version;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -267,22 +267,22 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v9 + 1) = *&self->_timestamp;
-  *(v9 + 36) |= 1u;
+  *(toCopy + 1) = *&self->_timestamp;
+  *(toCopy + 36) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
-    *(v9 + 32) = self->_deleted;
-    *(v9 + 36) |= 4u;
+    *(toCopy + 32) = self->_deleted;
+    *(toCopy + 36) |= 4u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -302,7 +302,7 @@ LABEL_9:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{a3, v15}];
+        v11 = [*(*(&v15 + 1) + 8 * i) copyWithZone:{zone, v15}];
         [v5 addSections:v11];
       }
 
@@ -352,16 +352,16 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   sections = self->_sections;
-  if (sections | *(v4 + 3))
+  if (sections | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)sections isEqual:?])
     {
@@ -371,34 +371,34 @@ LABEL_12:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_version != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_version != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_16;
   }
 
-  v6 = (*(v4 + 36) & 4) == 0;
+  v6 = (*(equalCopy + 36) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
 LABEL_16:
       v6 = 0;
@@ -407,13 +407,13 @@ LABEL_16:
 
     if (self->_deleted)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_16;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_16;
     }
@@ -488,15 +488,15 @@ LABEL_9:
   return v6 ^ v3 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -520,18 +520,18 @@ LABEL_9:
     while (v7);
   }
 
-  v10 = *(v4 + 36);
+  v10 = *(fromCopy + 36);
   if ((v10 & 2) == 0)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(fromCopy + 36) & 1) == 0)
     {
       goto LABEL_10;
     }
 
 LABEL_14:
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(fromCopy + 36) & 4) == 0)
     {
       goto LABEL_12;
     }
@@ -539,9 +539,9 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  self->_version = *(v4 + 2);
+  self->_version = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v10 = *(v4 + 36);
+  v10 = *(fromCopy + 36);
   if (v10)
   {
     goto LABEL_14;
@@ -551,7 +551,7 @@ LABEL_10:
   if ((v10 & 4) != 0)
   {
 LABEL_11:
-    self->_deleted = *(v4 + 32);
+    self->_deleted = *(fromCopy + 32);
     *&self->_has |= 4u;
   }
 

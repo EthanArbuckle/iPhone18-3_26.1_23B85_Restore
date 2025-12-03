@@ -1,7 +1,7 @@
 @interface _CUTLockingPromise
 - (_CUTLockingPromise)init;
-- (void)_fulfillWithResult:(id)a3;
-- (void)registerResultBlock:(id)a3;
+- (void)_fulfillWithResult:(id)result;
+- (void)registerResultBlock:(id)block;
 @end
 
 @implementation _CUTLockingPromise
@@ -10,11 +10,11 @@
 {
   v9.receiver = self;
   v9.super_class = _CUTLockingPromise;
-  v2 = [(CUTUnsafePromise *)&v9 _init];
-  v3 = v2;
-  if (v2)
+  _init = [(CUTUnsafePromise *)&v9 _init];
+  v3 = _init;
+  if (_init)
   {
-    v2->_done = 0;
+    _init->_done = 0;
     v4 = objc_alloc_init(MEMORY[0x1E696AE68]);
     lock = v3->_lock;
     v3->_lock = v4;
@@ -27,10 +27,10 @@
   return v3;
 }
 
-- (void)_fulfillWithResult:(id)a3
+- (void)_fulfillWithResult:(id)result
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultCopy = result;
   [(NSRecursiveLock *)self->_lock lock];
   if ([(_CUTLockingPromise *)self done])
   {
@@ -38,7 +38,7 @@
   }
 
   [(_CUTLockingPromise *)self setDone:1];
-  [(_CUTLockingPromise *)self setResult:v5];
+  [(_CUTLockingPromise *)self setResult:resultCopy];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -77,21 +77,21 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerResultBlock:(id)a3
+- (void)registerResultBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSRecursiveLock *)self->_lock lock];
   if ([(_CUTLockingPromise *)self done])
   {
-    v4 = [(_CUTLockingPromise *)self result];
-    v6[2](v6, v4);
+    result = [(_CUTLockingPromise *)self result];
+    blockCopy[2](blockCopy, result);
   }
 
   else
   {
     resultBlocks = self->_resultBlocks;
-    v4 = MEMORY[0x1B2746240](v6);
-    [(NSMutableArray *)resultBlocks addObject:v4];
+    result = MEMORY[0x1B2746240](blockCopy);
+    [(NSMutableArray *)resultBlocks addObject:result];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];

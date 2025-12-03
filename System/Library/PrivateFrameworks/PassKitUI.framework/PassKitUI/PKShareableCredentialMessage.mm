@@ -2,27 +2,27 @@
 - (BOOL)isShareAcceptable;
 - (NSArray)shareableCredentials;
 - (NSString)description;
-- (PKShareableCredentialMessage)initWithURL:(id)a3;
+- (PKShareableCredentialMessage)initWithURL:(id)l;
 - (UIImage)passThumbnailImage;
-- (id)_shareableCredentialMessageDataURLWithData:(id)a3;
-- (id)_shareableCredentialMessageDataWithDataURL:(id)a3;
+- (id)_shareableCredentialMessageDataURLWithData:(id)data;
+- (id)_shareableCredentialMessageDataWithDataURL:(id)l;
 - (id)urlRepresentation;
-- (void)setPassThumbnailImage:(id)a3;
-- (void)setShareableCredentials:(id)a3;
+- (void)setPassThumbnailImage:(id)image;
+- (void)setShareableCredentials:(id)credentials;
 @end
 
 @implementation PKShareableCredentialMessage
 
-- (PKShareableCredentialMessage)initWithURL:(id)a3
+- (PKShareableCredentialMessage)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = PKShareableCredentialMessage;
   v5 = [(PKShareableCredentialMessage *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(PKShareableCredentialMessage *)v5 _shareableCredentialMessageDataWithDataURL:v4];
+    v7 = [(PKShareableCredentialMessage *)v5 _shareableCredentialMessageDataWithDataURL:lCopy];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x1E69B90C0]) initWithData:v7];
@@ -45,8 +45,8 @@
 
 - (id)urlRepresentation
 {
-  v3 = [(PKProtobufShareableCredentialMessage *)self->_protoMessage data];
-  v4 = [(PKShareableCredentialMessage *)self _shareableCredentialMessageDataURLWithData:v3];
+  data = [(PKProtobufShareableCredentialMessage *)self->_protoMessage data];
+  v4 = [(PKShareableCredentialMessage *)self _shareableCredentialMessageDataURLWithData:data];
 
   return v4;
 }
@@ -54,14 +54,14 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKShareableCredentialMessage *)self caption];
-  [v3 appendFormat:@"caption: '%@'; ", v4];
+  caption = [(PKShareableCredentialMessage *)self caption];
+  [v3 appendFormat:@"caption: '%@'; ", caption];
 
-  v5 = [(PKShareableCredentialMessage *)self policyIdentifier];
-  [v3 appendFormat:@"policy identifier: '%@'; ", v5];
+  policyIdentifier = [(PKShareableCredentialMessage *)self policyIdentifier];
+  [v3 appendFormat:@"policy identifier: '%@'; ", policyIdentifier];
 
-  v6 = [(PKShareableCredentialMessage *)self shareableCredentials];
-  [v3 appendFormat:@"credentials: '%@'; ", v6];
+  shareableCredentials = [(PKShareableCredentialMessage *)self shareableCredentials];
+  [v3 appendFormat:@"credentials: '%@'; ", shareableCredentials];
 
   [v3 appendFormat:@">"];
   v7 = [v3 copy];
@@ -72,13 +72,13 @@
 - (NSArray)shareableCredentials
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PKProtobufShareableCredentialMessage *)self->_protoMessage shareableCredentials];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  shareableCredentials = [(PKProtobufShareableCredentialMessage *)self->_protoMessage shareableCredentials];
+  v5 = [shareableCredentials countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -89,29 +89,29 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(shareableCredentials);
         }
 
         v9 = [objc_alloc(MEMORY[0x1E69B9258]) initWithProtoCredential:*(*(&v12 + 1) + 8 * i)];
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [shareableCredentials countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [v3 copy];
+  v10 = [array copy];
 
   return v10;
 }
 
 - (UIImage)passThumbnailImage
 {
-  v2 = [(PKProtobufShareableCredentialMessage *)self->_protoMessage passThumbnailImage];
-  v3 = v2;
-  if (v2 && (v4 = PKCreateCGImage(v2)) != 0)
+  passThumbnailImage = [(PKProtobufShareableCredentialMessage *)self->_protoMessage passThumbnailImage];
+  v3 = passThumbnailImage;
+  if (passThumbnailImage && (v4 = PKCreateCGImage(passThumbnailImage)) != 0)
   {
     v5 = v4;
     v6 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v4];
@@ -128,23 +128,23 @@
 
 - (BOOL)isShareAcceptable
 {
-  v3 = [(PKShareableCredentialMessage *)self shareableCredentials];
-  v4 = [v3 firstObject];
-  v5 = [v4 status];
+  shareableCredentials = [(PKShareableCredentialMessage *)self shareableCredentials];
+  firstObject = [shareableCredentials firstObject];
+  status = [firstObject status];
 
-  return (v5 < 2) & ~self->_isFromMe;
+  return (status < 2) & ~self->_isFromMe;
 }
 
-- (void)setShareableCredentials:(id)a3
+- (void)setShareableCredentials:(id)credentials
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  credentialsCopy = credentials;
   [(PKProtobufShareableCredentialMessage *)self->_protoMessage clearShareableCredentials];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = credentialsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -161,8 +161,8 @@
         }
 
         protoMessage = self->_protoMessage;
-        v11 = [*(*(&v12 + 1) + 8 * v9) protoCredential];
-        [(PKProtobufShareableCredentialMessage *)protoMessage addShareableCredentials:v11];
+        protoCredential = [*(*(&v12 + 1) + 8 * v9) protoCredential];
+        [(PKProtobufShareableCredentialMessage *)protoMessage addShareableCredentials:protoCredential];
 
         ++v9;
       }
@@ -175,18 +175,18 @@
   }
 }
 
-- (void)setPassThumbnailImage:(id)a3
+- (void)setPassThumbnailImage:(id)image
 {
   protoMessage = self->_protoMessage;
-  v4 = UIImagePNGRepresentation(a3);
+  v4 = UIImagePNGRepresentation(image);
   [(PKProtobufShareableCredentialMessage *)protoMessage setPassThumbnailImage:v4];
 }
 
-- (id)_shareableCredentialMessageDataURLWithData:(id)a3
+- (id)_shareableCredentialMessageDataURLWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = [a3 base64EncodedStringWithOptions:0];
+    v3 = [data base64EncodedStringWithOptions:0];
     if (v3)
     {
       v4 = [@"data:application/vnd.apple.pkshareablecredentialbase64 "];;
@@ -207,21 +207,21 @@
   return v5;
 }
 
-- (id)_shareableCredentialMessageDataWithDataURL:(id)a3
+- (id)_shareableCredentialMessageDataWithDataURL:(id)l
 {
-  if (!a3)
+  if (!l)
   {
     v7 = 0;
     goto LABEL_10;
   }
 
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  v5 = [v3 scheme];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  scheme = [lCopy scheme];
 
-  if ([v5 isEqualToString:@"data"])
+  if ([scheme isEqualToString:@"data"])
   {
-    v6 = [v4 hasPrefix:{@"data:application/vnd.apple.pkshareablecredential;base64, "}];
+    v6 = [absoluteString hasPrefix:{@"data:application/vnd.apple.pkshareablecredential;base64, "}];
 
     if (!v6)
     {
@@ -229,8 +229,8 @@
       goto LABEL_9;
     }
 
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"data:application/vnd.apple.pkshareablecredentialbase64, ", "length")}];;
-    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v5 options:1];
+    scheme = [absoluteString substringFromIndex:{objc_msgSend(@"data:application/vnd.apple.pkshareablecredentialbase64, ", "length")}];;
+    v7 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:scheme options:1];
   }
 
   else

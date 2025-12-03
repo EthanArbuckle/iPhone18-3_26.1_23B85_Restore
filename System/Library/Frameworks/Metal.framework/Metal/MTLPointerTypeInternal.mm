@@ -1,9 +1,9 @@
 @interface MTLPointerTypeInternal
-- (BOOL)isEqual:(id)a3;
-- (MTLPointerTypeInternal)initWithElementType:(unint64_t)a3 elementTypeDescription:(id)a4 access:(unint64_t)a5 alignment:(unint64_t)a6 dataSize:(unint64_t)a7 elementIsIndirectArgumentBuffer:(BOOL)a8 isConstantBuffer:(BOOL)a9 doRetain:(BOOL)a10;
+- (BOOL)isEqual:(id)equal;
+- (MTLPointerTypeInternal)initWithElementType:(unint64_t)type elementTypeDescription:(id)description access:(unint64_t)access alignment:(unint64_t)alignment dataSize:(unint64_t)size elementIsIndirectArgumentBuffer:(BOOL)buffer isConstantBuffer:(BOOL)constantBuffer doRetain:(BOOL)self0;
 - (id)elementArrayType;
 - (id)elementStructType;
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4;
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types;
 - (void)dealloc;
 @end
 
@@ -20,25 +20,25 @@
   [(MTLPointerTypeInternal *)&v3 dealloc];
 }
 
-- (MTLPointerTypeInternal)initWithElementType:(unint64_t)a3 elementTypeDescription:(id)a4 access:(unint64_t)a5 alignment:(unint64_t)a6 dataSize:(unint64_t)a7 elementIsIndirectArgumentBuffer:(BOOL)a8 isConstantBuffer:(BOOL)a9 doRetain:(BOOL)a10
+- (MTLPointerTypeInternal)initWithElementType:(unint64_t)type elementTypeDescription:(id)description access:(unint64_t)access alignment:(unint64_t)alignment dataSize:(unint64_t)size elementIsIndirectArgumentBuffer:(BOOL)buffer isConstantBuffer:(BOOL)constantBuffer doRetain:(BOOL)self0
 {
   v18.receiver = self;
   v18.super_class = MTLPointerTypeInternal;
   v16 = [(MTLPointerTypeInternal *)&v18 init];
   v16->_dataType = 60;
-  v16->_elementType = a3;
-  v16->_doRetain = a10;
-  if (a10)
+  v16->_elementType = type;
+  v16->_doRetain = retain;
+  if (retain)
   {
-    a4 = a4;
+    description = description;
   }
 
-  v16->_elementTypeInfo = a4;
-  v16->_access = a5;
-  v16->_alignment = a6;
-  v16->_dataSize = a7;
-  v16->_elementIsArgumentBuffer = a8;
-  v16->_isConstantBuffer = a9;
+  v16->_elementTypeInfo = description;
+  v16->_access = access;
+  v16->_alignment = alignment;
+  v16->_dataSize = size;
+  v16->_elementIsArgumentBuffer = buffer;
+  v16->_isConstantBuffer = constantBuffer;
   return v16;
 }
 
@@ -80,10 +80,10 @@
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v7 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v8 = MEMORY[0x1E696AEC0];
   v15 = v7;
   v16 = @"DataType =";
@@ -94,7 +94,7 @@
   elementTypeInfo = self->_elementTypeInfo;
   if (elementTypeInfo)
   {
-    v10 = [v8 stringWithFormat:@"%@ ElementTypeDescription = %@", v7, -[MTLType formattedDescription:withPrintedTypes:](elementTypeInfo, "formattedDescription:withPrintedTypes:", a3 + 4, a4), v15, v16, v17, v18, v19, v20];
+    v10 = [v8 stringWithFormat:@"%@ ElementTypeDescription = %@", v7, -[MTLType formattedDescription:withPrintedTypes:](elementTypeInfo, "formattedDescription:withPrintedTypes:", description + 4, types), v15, v16, v17, v18, v19, v20];
   }
 
   else
@@ -131,26 +131,26 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     LOBYTE(v6) = 0;
     return v6;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_dataType != *(a3 + 1) || self->_elementType != *(a3 + 2))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_dataType != *(equal + 1) || self->_elementType != *(equal + 2))
   {
     goto LABEL_12;
   }
 
   elementTypeInfo = self->_elementTypeInfo;
-  if (!(elementTypeInfo | *(a3 + 3)) || (v6 = [(MTLType *)elementTypeInfo isEqual:?]) != 0)
+  if (!(elementTypeInfo | *(equal + 3)) || (v6 = [(MTLType *)elementTypeInfo isEqual:?]) != 0)
   {
-    if (self->_access == *(a3 + 4) && self->_alignment == *(a3 + 5) && self->_dataSize == *(a3 + 6) && self->_elementIsArgumentBuffer == *(a3 + 56))
+    if (self->_access == *(equal + 4) && self->_alignment == *(equal + 5) && self->_dataSize == *(equal + 6) && self->_elementIsArgumentBuffer == *(equal + 56))
     {
-      LOBYTE(v6) = self->_isConstantBuffer == *(a3 + 57);
+      LOBYTE(v6) = self->_isConstantBuffer == *(equal + 57);
       return v6;
     }
 

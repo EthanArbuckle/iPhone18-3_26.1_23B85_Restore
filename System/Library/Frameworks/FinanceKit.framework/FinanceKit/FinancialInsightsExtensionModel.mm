@@ -1,18 +1,18 @@
 @interface FinancialInsightsExtensionModel
-- (void)cachedFinancialInsightsWithCompletionHandler:(id)a3;
-- (void)financialInsightsFor:(NSArray *)a3 completionHandler:(id)a4;
+- (void)cachedFinancialInsightsWithCompletionHandler:(id)handler;
+- (void)financialInsightsFor:(NSArray *)for completionHandler:(id)handler;
 @end
 
 @implementation FinancialInsightsExtensionModel
 
-- (void)financialInsightsFor:(NSArray *)a3 completionHandler:(id)a4
+- (void)financialInsightsFor:(NSArray *)for completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB99C280);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = for;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_1B7800DF8();
@@ -27,17 +27,17 @@
   v14[3] = 0;
   v14[4] = &unk_1B78344A0;
   v14[5] = v13;
-  v15 = a3;
+  forCopy = for;
 
   sub_1B77E494C(0, 0, v9, &unk_1B78344A8, v14);
 }
 
-- (void)cachedFinancialInsightsWithCompletionHandler:(id)a3
+- (void)cachedFinancialInsightsWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB99C280);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;

@@ -1,31 +1,31 @@
 @interface VIRefineRegionRequest
 - (CGRect)regionOfInterest;
-- (VIRefineRegionRequest)initWithImage:(id)a3 regionOfInterest:(CGRect)a4 imageType:(int64_t)a5 preferredMetalDevice:(id)a6;
+- (VIRefineRegionRequest)initWithImage:(id)image regionOfInterest:(CGRect)interest imageType:(int64_t)type preferredMetalDevice:(id)device;
 @end
 
 @implementation VIRefineRegionRequest
 
-- (VIRefineRegionRequest)initWithImage:(id)a3 regionOfInterest:(CGRect)a4 imageType:(int64_t)a5 preferredMetalDevice:(id)a6
+- (VIRefineRegionRequest)initWithImage:(id)image regionOfInterest:(CGRect)interest imageType:(int64_t)type preferredMetalDevice:(id)device
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = a6;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  imageCopy = image;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = VIRefineRegionRequest;
   v16 = [(VIRefineRegionRequest *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_image, a3);
+    objc_storeStrong(&v16->_image, image);
     v17->_regionOfInterest.origin.x = x;
     v17->_regionOfInterest.origin.y = y;
     v17->_regionOfInterest.size.width = width;
     v17->_regionOfInterest.size.height = height;
-    v17->_imageType = a5;
-    objc_storeStrong(&v17->_preferredMetalDevice, a6);
+    v17->_imageType = type;
+    objc_storeStrong(&v17->_preferredMetalDevice, device);
   }
 
   return v17;

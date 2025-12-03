@@ -1,25 +1,25 @@
 @interface PLAutoBindingProxyFactory
 + (unint64_t)maxBindAttemptCount;
-- (BOOL)_bindToPhotoLibraryIfNecessaryWithErrorHandler:(id)a3;
-- (BOOL)_isResultAnInterruptionError:(id)a3;
-- (PLAutoBindingProxyFactory)initWithProxyFactory:(id)a3 photoLibraryURL:(id)a4;
+- (BOOL)_bindToPhotoLibraryIfNecessaryWithErrorHandler:(id)handler;
+- (BOOL)_isResultAnInterruptionError:(id)error;
+- (PLAutoBindingProxyFactory)initWithProxyFactory:(id)factory photoLibraryURL:(id)l;
 - (id)_attemptBindToPhotoLibrary;
 - (id)_bindToPhotoLibrary;
 - (id)_bindToPhotoLibraryAndCacheResult;
 - (id)_bindToPhotoLibraryIfNecessary;
-- (id)_blackholeProxyForProxy:(id)a3;
+- (id)_blackholeProxyForProxy:(id)proxy;
 - (id)_cachedBindResult;
 - (id)_lazilyBindToPhotoLibrary;
 - (id)_unboostingRemoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_connectionInterrupted:(id)a3;
-- (void)_updateCachedBindResult:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_connectionInterrupted:(id)interrupted;
+- (void)_updateCachedBindResult:(id)result;
 @end
 
 @implementation PLAutoBindingProxyFactory
 
-- (void)_connectionInterrupted:(id)a3
+- (void)_connectionInterrupted:(id)interrupted
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -83,13 +83,13 @@ id __52__PLAutoBindingProxyFactory__connectionInterrupted___block_invoke_14(uint
   return v3;
 }
 
-- (BOOL)_isResultAnInterruptionError:(id)a3
+- (BOOL)_isResultAnInterruptionError:(id)error
 {
-  v3 = a3;
-  if ([v3 isFailure])
+  errorCopy = error;
+  if ([errorCopy isFailure])
   {
-    v4 = [v3 error];
-    v5 = PLIsErrorEqualToCode(v4, *MEMORY[0x1E696A250], 4097);
+    error = [errorCopy error];
+    v5 = PLIsErrorEqualToCode(error, *MEMORY[0x1E696A250], 4097);
   }
 
   else
@@ -252,20 +252,20 @@ void __55__PLAutoBindingProxyFactory__attemptBindToPhotoLibrary__block_invoke_12
 - (id)_bindToPhotoLibrary
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() maxBindAttemptCount];
-  v4 = 0;
+  maxBindAttemptCount = [objc_opt_class() maxBindAttemptCount];
+  _attemptBindToPhotoLibrary = 0;
   v5 = -1;
   do
   {
-    v6 = v4;
-    v4 = [(PLAutoBindingProxyFactory *)self _attemptBindToPhotoLibrary];
+    v6 = _attemptBindToPhotoLibrary;
+    _attemptBindToPhotoLibrary = [(PLAutoBindingProxyFactory *)self _attemptBindToPhotoLibrary];
 
-    v7 = [(PLAutoBindingProxyFactory *)self _isResultAnInterruptionError:v4];
+    v7 = [(PLAutoBindingProxyFactory *)self _isResultAnInterruptionError:_attemptBindToPhotoLibrary];
     v8 = v5 + 2;
     ++v5;
   }
 
-  while (v7 && v8 < v3);
+  while (v7 && v8 < maxBindAttemptCount);
   if (v5)
   {
     v9 = PLGatekeeperXPCGetLog();
@@ -288,7 +288,7 @@ void __55__PLAutoBindingProxyFactory__attemptBindToPhotoLibrary__block_invoke_12
     }
   }
 
-  return v4;
+  return _attemptBindToPhotoLibrary;
 }
 
 - (id)_lazilyBindToPhotoLibrary
@@ -299,21 +299,21 @@ void __55__PLAutoBindingProxyFactory__attemptBindToPhotoLibrary__block_invoke_12
   v5[3] = &unk_1E79325E0;
   v5[4] = self;
   v2 = PLResultWithUnfairLock(&self->_bindLock, v5);
-  v3 = [v2 objectValue];
+  objectValue = [v2 objectValue];
 
-  return v3;
+  return objectValue;
 }
 
-- (void)_updateCachedBindResult:(id)a3
+- (void)_updateCachedBindResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__PLAutoBindingProxyFactory__updateCachedBindResult___block_invoke;
   v6[3] = &unk_1E7932A28;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = resultCopy;
+  selfCopy = self;
+  v5 = resultCopy;
   PLRunWithUnfairLock(&self->_bindLock, v6);
 }
 
@@ -404,35 +404,35 @@ id __53__PLAutoBindingProxyFactory__updateCachedBindResult___block_invoke_7(uint
 
 - (id)_bindToPhotoLibraryAndCacheResult
 {
-  v3 = [(PLAutoBindingProxyFactory *)self _lazilyBindToPhotoLibrary];
-  [(PLAutoBindingProxyFactory *)self _updateCachedBindResult:v3];
+  _lazilyBindToPhotoLibrary = [(PLAutoBindingProxyFactory *)self _lazilyBindToPhotoLibrary];
+  [(PLAutoBindingProxyFactory *)self _updateCachedBindResult:_lazilyBindToPhotoLibrary];
 
-  return v3;
+  return _lazilyBindToPhotoLibrary;
 }
 
 - (id)_bindToPhotoLibraryIfNecessary
 {
-  v3 = [(PLAutoBindingProxyFactory *)self _cachedBindResult];
-  if (!v3)
+  _cachedBindResult = [(PLAutoBindingProxyFactory *)self _cachedBindResult];
+  if (!_cachedBindResult)
   {
-    v3 = [(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryAndCacheResult];
+    _cachedBindResult = [(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryAndCacheResult];
   }
 
-  return v3;
+  return _cachedBindResult;
 }
 
-- (BOOL)_bindToPhotoLibraryIfNecessaryWithErrorHandler:(id)a3
+- (BOOL)_bindToPhotoLibraryIfNecessaryWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryIfNecessary];
-  v6 = [v5 isSuccess];
-  if ((v6 & 1) == 0)
+  handlerCopy = handler;
+  _bindToPhotoLibraryIfNecessary = [(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryIfNecessary];
+  isSuccess = [_bindToPhotoLibraryIfNecessary isSuccess];
+  if ((isSuccess & 1) == 0)
   {
-    v7 = [v5 error];
-    v4[2](v4, v7);
+    error = [_bindToPhotoLibraryIfNecessary error];
+    handlerCopy[2](handlerCopy, error);
   }
 
-  return v6;
+  return isSuccess;
 }
 
 - (id)_unboostingRemoteObjectProxy
@@ -444,15 +444,15 @@ id __53__PLAutoBindingProxyFactory__updateCachedBindResult___block_invoke_7(uint
   v5[4] = self;
   if ([(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryIfNecessaryWithErrorHandler:v5])
   {
-    v3 = [(PLXPCProxyCreating *)self->_proxyFactory _unboostingRemoteObjectProxy];
+    _unboostingRemoteObjectProxy = [(PLXPCProxyCreating *)self->_proxyFactory _unboostingRemoteObjectProxy];
   }
 
   else
   {
-    v3 = 0;
+    _unboostingRemoteObjectProxy = 0;
   }
 
-  return v3;
+  return _unboostingRemoteObjectProxy;
 }
 
 void __57__PLAutoBindingProxyFactory__unboostingRemoteObjectProxy__block_invoke(uint64_t a1, void *a2)
@@ -471,20 +471,20 @@ void __57__PLAutoBindingProxyFactory__unboostingRemoteObjectProxy__block_invoke(
   }
 }
 
-- (id)_blackholeProxyForProxy:(id)a3
+- (id)_blackholeProxyForProxy:(id)proxy
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = PLGatekeeperXPCGetLog();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (proxyCopy)
   {
     if (v6)
     {
       proxyFactory = self->_proxyFactory;
       photoLibraryURL = self->_photoLibraryURL;
       v13 = 138412802;
-      v14 = v4;
+      v14 = proxyCopy;
       v15 = 2112;
       v16 = proxyFactory;
       v17 = 2112;
@@ -492,7 +492,7 @@ void __57__PLAutoBindingProxyFactory__unboostingRemoteObjectProxy__block_invoke(
       _os_log_impl(&dword_1AA9BD000, v5, OS_LOG_TYPE_DEFAULT, "Creating blackhole proxy for %@ from proxy factory %@ for library URL: %@", &v13, 0x20u);
     }
 
-    v9 = [[PLAutoBindingBlackholeProxy alloc] initWithTargetObject:v4];
+    v9 = [[PLAutoBindingBlackholeProxy alloc] initWithTargetObject:proxyCopy];
   }
 
   else
@@ -514,11 +514,11 @@ void __57__PLAutoBindingProxyFactory__unboostingRemoteObjectProxy__block_invoke(
   return v9;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryIfNecessaryWithErrorHandler:v4];
-  v6 = [(PLXPCProxyCreating *)self->_proxyFactory synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryIfNecessaryWithErrorHandler:handlerCopy];
+  v6 = [(PLXPCProxyCreating *)self->_proxyFactory synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (!v5)
   {
@@ -530,11 +530,11 @@ void __57__PLAutoBindingProxyFactory__unboostingRemoteObjectProxy__block_invoke(
   return v6;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryIfNecessaryWithErrorHandler:v4];
-  v6 = [(PLXPCProxyCreating *)self->_proxyFactory remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  v5 = [(PLAutoBindingProxyFactory *)self _bindToPhotoLibraryIfNecessaryWithErrorHandler:handlerCopy];
+  v6 = [(PLXPCProxyCreating *)self->_proxyFactory remoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (!v5)
   {
@@ -546,17 +546,17 @@ void __57__PLAutoBindingProxyFactory__unboostingRemoteObjectProxy__block_invoke(
   return v6;
 }
 
-- (PLAutoBindingProxyFactory)initWithProxyFactory:(id)a3 photoLibraryURL:(id)a4
+- (PLAutoBindingProxyFactory)initWithProxyFactory:(id)factory photoLibraryURL:(id)l
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  factoryCopy = factory;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = PLAutoBindingProxyFactory;
   v9 = [(PLAutoBindingProxyFactory *)&v22 init];
   if (v9)
   {
-    if (!v7)
+    if (!factoryCopy)
     {
       v10 = PLGatekeeperXPCGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -568,8 +568,8 @@ void __57__PLAutoBindingProxyFactory__unboostingRemoteObjectProxy__block_invoke(
       }
     }
 
-    objc_storeStrong(&v9->_proxyFactory, a3);
-    v12 = [v8 copy];
+    objc_storeStrong(&v9->_proxyFactory, factory);
+    v12 = [lCopy copy];
     v13 = v9->_photoLibraryURL;
     v9->_photoLibraryURL = v12;
 
@@ -588,8 +588,8 @@ void __57__PLAutoBindingProxyFactory__unboostingRemoteObjectProxy__block_invoke(
     lazyBindToPhotoLibrary = v9->_lazyBindToPhotoLibrary;
     v9->_lazyBindToPhotoLibrary = v16;
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v9 selector:sel__connectionInterrupted_ name:@"PLAssetsdClientXPCConnectionInterruptedInternalNotificationName" object:v9->_proxyFactory];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__connectionInterrupted_ name:@"PLAssetsdClientXPCConnectionInterruptedInternalNotificationName" object:v9->_proxyFactory];
   }
 
   return v9;

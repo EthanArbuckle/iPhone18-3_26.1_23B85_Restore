@@ -1,26 +1,26 @@
 @interface CSBackgroundContentActionManager
-- (BOOL)_addAction:(id)a3;
-- (BOOL)handleAction:(id)a3 forProvider:(id)a4;
-- (BOOL)handlesActionWithClass:(Class)a3;
-- (CSBackgroundContentActionManager)initWithDelegate:(id)a3;
+- (BOOL)_addAction:(id)action;
+- (BOOL)handleAction:(id)action forProvider:(id)provider;
+- (BOOL)handlesActionWithClass:(Class)class;
+- (CSBackgroundContentActionManager)initWithDelegate:(id)delegate;
 - (CSBackgroundContentActionManagerDelegate)delegate;
-- (id)validActionWithIdentifierIfExists:(id)a3;
-- (void)_removeAction:(id)a3;
-- (void)setContentActionProvider:(id)a3;
+- (id)validActionWithIdentifierIfExists:(id)exists;
+- (void)_removeAction:(id)action;
+- (void)setContentActionProvider:(id)provider;
 @end
 
 @implementation CSBackgroundContentActionManager
 
-- (CSBackgroundContentActionManager)initWithDelegate:(id)a3
+- (CSBackgroundContentActionManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = CSBackgroundContentActionManager;
   v5 = [(CSBackgroundContentActionManager *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [MEMORY[0x277CBEB58] set];
     activeActions = v6->_activeActions;
     v6->_activeActions = v7;
@@ -29,10 +29,10 @@
   return v6;
 }
 
-- (id)validActionWithIdentifierIfExists:(id)a3
+- (id)validActionWithIdentifierIfExists:(id)exists
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  existsCopy = exists;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -54,8 +54,8 @@
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 isValid])
         {
-          v10 = [v9 identifier];
-          v11 = [v10 isEqualToString:v4];
+          identifier = [v9 identifier];
+          v11 = [identifier isEqualToString:existsCopy];
 
           if (v11)
           {
@@ -80,36 +80,36 @@ LABEL_12:
   return v6;
 }
 
-- (void)setContentActionProvider:(id)a3
+- (void)setContentActionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   contentActionProvider = self->_contentActionProvider;
-  if (contentActionProvider != v5)
+  if (contentActionProvider != providerCopy)
   {
-    v7 = v5;
+    v7 = providerCopy;
     [(SBFActionProviding *)contentActionProvider removeActionHandler:self];
-    objc_storeStrong(&self->_contentActionProvider, a3);
+    objc_storeStrong(&self->_contentActionProvider, provider);
     contentActionProvider = [(SBFActionProviding *)self->_contentActionProvider addActionHandler:self];
-    v5 = v7;
+    providerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](contentActionProvider, v5);
+  MEMORY[0x2821F96F8](contentActionProvider, providerCopy);
 }
 
-- (BOOL)handlesActionWithClass:(Class)a3
+- (BOOL)handlesActionWithClass:(Class)class
 {
   v4 = objc_opt_class();
 
-  return [(objc_class *)a3 isSubclassOfClass:v4];
+  return [(objc_class *)class isSubclassOfClass:v4];
 }
 
-- (BOOL)handleAction:(id)a3 forProvider:(id)a4
+- (BOOL)handleAction:(id)action forProvider:(id)provider
 {
-  v5 = a3;
-  if ([v5 isValid])
+  actionCopy = action;
+  if ([actionCopy isValid])
   {
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = actionCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -130,8 +130,8 @@ LABEL_12:
 
     v10 = v8;
 
-    v11 = [v10 slot];
-    v12 = [v11 isEqualToString:*MEMORY[0x277D67010]];
+    slot = [v10 slot];
+    v12 = [slot isEqualToString:*MEMORY[0x277D67010]];
 
     if (v12)
     {
@@ -152,11 +152,11 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_addAction:(id)a3
+- (BOOL)_addAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, actionCopy);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __47__CSBackgroundContentActionManager__addAction___block_invoke;
@@ -164,10 +164,10 @@ LABEL_12:
   objc_copyWeak(&v12, &location);
   objc_copyWeak(&v13, &from);
   v5 = MEMORY[0x223D698D0](&v8);
-  [v4 setInvalidationHandler:{v5, v8, v9, v10, v11}];
-  [(NSMutableSet *)self->_activeActions addObject:v4];
-  v6 = [(CSBackgroundContentActionManager *)self delegate];
-  [v6 backgroundContentActionManager:self addedAction:v4];
+  [actionCopy setInvalidationHandler:{v5, v8, v9, v10, v11}];
+  [(NSMutableSet *)self->_activeActions addObject:actionCopy];
+  delegate = [(CSBackgroundContentActionManager *)self delegate];
+  [delegate backgroundContentActionManager:self addedAction:actionCopy];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v12);
@@ -197,15 +197,15 @@ void __47__CSBackgroundContentActionManager__addAction___block_invoke_2(uint64_t
   [WeakRetained _removeAction:v2];
 }
 
-- (void)_removeAction:(id)a3
+- (void)_removeAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if ([(NSMutableSet *)self->_activeActions containsObject:v5])
+  if ([(NSMutableSet *)self->_activeActions containsObject:actionCopy])
   {
-    [(NSMutableSet *)self->_activeActions removeObject:v5];
+    [(NSMutableSet *)self->_activeActions removeObject:actionCopy];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained backgroundContentActionManager:self removedAction:v5];
+    [WeakRetained backgroundContentActionManager:self removedAction:actionCopy];
   }
 }
 

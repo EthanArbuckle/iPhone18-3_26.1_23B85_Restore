@@ -1,46 +1,46 @@
 @interface BAMetadataStore
-- (BAMetadataStore)initWithPersistentContainer:(id)a3;
-- (BOOL)q_saveWithMoc:(id)a3 error:(id *)a4;
-- (BOOL)removeAllMigrationInfosExcludingStates:(id)a3 error:(id *)a4;
-- (BOOL)removeMigrationInfoForStoreID:(int64_t)a3 error:(id *)a4;
-- (BOOL)removeRacGUIDForStoreID:(int64_t)a3 error:(id *)a4;
-- (BOOL)setMigrationState:(int64_t)a3 forStoreID:(int64_t)a4 error:(id *)a5;
-- (BOOL)setMigrationState:(int64_t)a3 forStoreIDs:(id)a4 error:(id *)a5;
-- (BOOL)setRacGUID:(id)a3 forStoreID:(int64_t)a4 error:(id *)a5;
-- (id)_fetchRequestForBookletMigrationInfoExcludingStates:(id)a3;
-- (id)_fetchRequestForBookletMigrationInfoWithStates:(id)a3;
-- (id)_fetchRequestForBookletMigrationInfoWithStoreID:(int64_t)a3;
-- (id)_fetchRequestForBookletMigrationInfoWithStoreIDs:(id)a3;
-- (id)_fetchRequestForProductionInfoWithStoreID:(int64_t)a3;
+- (BAMetadataStore)initWithPersistentContainer:(id)container;
+- (BOOL)q_saveWithMoc:(id)moc error:(id *)error;
+- (BOOL)removeAllMigrationInfosExcludingStates:(id)states error:(id *)error;
+- (BOOL)removeMigrationInfoForStoreID:(int64_t)d error:(id *)error;
+- (BOOL)removeRacGUIDForStoreID:(int64_t)d error:(id *)error;
+- (BOOL)setMigrationState:(int64_t)state forStoreID:(int64_t)d error:(id *)error;
+- (BOOL)setMigrationState:(int64_t)state forStoreIDs:(id)ds error:(id *)error;
+- (BOOL)setRacGUID:(id)d forStoreID:(int64_t)iD error:(id *)error;
+- (id)_fetchRequestForBookletMigrationInfoExcludingStates:(id)states;
+- (id)_fetchRequestForBookletMigrationInfoWithStates:(id)states;
+- (id)_fetchRequestForBookletMigrationInfoWithStoreID:(int64_t)d;
+- (id)_fetchRequestForBookletMigrationInfoWithStoreIDs:(id)ds;
+- (id)_fetchRequestForProductionInfoWithStoreID:(int64_t)d;
 - (id)newManagedObjectContext;
-- (id)q_fetchAudiobookProductionInfosWithRequest:(id)a3 error:(id *)a4;
-- (id)q_fetchBookletMigrationInfoWithRequest:(id)a3 error:(id *)a4;
-- (void)migrationInfoWithStoreID:(int64_t)a3 completion:(id)a4;
-- (void)migrationInfosWithStates:(id)a3 completion:(id)a4;
-- (void)migrationInfosWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)racGUIDForStoreID:(int64_t)a3 result:(id)a4;
+- (id)q_fetchAudiobookProductionInfosWithRequest:(id)request error:(id *)error;
+- (id)q_fetchBookletMigrationInfoWithRequest:(id)request error:(id *)error;
+- (void)migrationInfoWithStoreID:(int64_t)d completion:(id)completion;
+- (void)migrationInfosWithStates:(id)states completion:(id)completion;
+- (void)migrationInfosWithStoreIDs:(id)ds completion:(id)completion;
+- (void)racGUIDForStoreID:(int64_t)d result:(id)result;
 @end
 
 @implementation BAMetadataStore
 
-- (BAMetadataStore)initWithPersistentContainer:(id)a3
+- (BAMetadataStore)initWithPersistentContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = BAMetadataStore;
   v6 = [(BAMetadataStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
+    objc_storeStrong(&v6->_container, container);
   }
 
   return v7;
 }
 
-- (BOOL)setRacGUID:(id)a3 forStoreID:(int64_t)a4 error:(id *)a5
+- (BOOL)setRacGUID:(id)d forStoreID:(int64_t)iD error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -55,19 +55,19 @@
   v13[1] = 3221225472;
   v13[2] = sub_10008466C;
   v13[3] = &unk_10011DC28;
-  v9 = [(BAMetadataStore *)self newManagedObjectContext];
-  v14 = v9;
-  v19 = a4;
-  v10 = v8;
+  newManagedObjectContext = [(BAMetadataStore *)self newManagedObjectContext];
+  v14 = newManagedObjectContext;
+  iDCopy = iD;
+  v10 = dCopy;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v17 = &v26;
   v18 = &v20;
-  [v9 performBlockAndWait:v13];
+  [newManagedObjectContext performBlockAndWait:v13];
   v11 = *(v27 + 24);
-  if (a5 && (v27[3] & 1) == 0)
+  if (error && (v27[3] & 1) == 0)
   {
-    *a5 = v21[5];
+    *error = v21[5];
     v11 = *(v27 + 24);
   }
 
@@ -77,10 +77,10 @@
   return v11 & 1;
 }
 
-- (void)racGUIDForStoreID:(int64_t)a3 result:(id)a4
+- (void)racGUIDForStoreID:(int64_t)d result:(id)result
 {
-  v6 = a4;
-  v7 = [(BAMetadataStore *)self newManagedObjectContext];
+  resultCopy = result;
+  newManagedObjectContext = [(BAMetadataStore *)self newManagedObjectContext];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -100,9 +100,9 @@
   v10[4] = self;
   v10[5] = &v11;
   v10[6] = &v17;
-  v10[7] = a3;
-  [v7 performBlockAndWait:v10];
-  v8 = objc_retainBlock(v6);
+  v10[7] = d;
+  [newManagedObjectContext performBlockAndWait:v10];
+  v8 = objc_retainBlock(resultCopy);
   v9 = v8;
   if (v8)
   {
@@ -113,7 +113,7 @@
   _Block_object_dispose(&v17, 8);
 }
 
-- (BOOL)removeRacGUIDForStoreID:(int64_t)a3 error:(id *)a4
+- (BOOL)removeRacGUIDForStoreID:(int64_t)d error:(id *)error
 {
   v16[0] = 0;
   v16[1] = v16;
@@ -130,8 +130,8 @@
   v7[2] = sub_100084AB8;
   v7[3] = &unk_10011DC78;
   v7[4] = self;
-  v11 = a3;
-  v4 = [(BAMetadataStore *)self newManagedObjectContext:a3];
+  dCopy = d;
+  v4 = [(BAMetadataStore *)self newManagedObjectContext:d];
   v8 = v4;
   v9 = &v12;
   v10 = v16;
@@ -144,19 +144,19 @@
   return v5;
 }
 
-- (BOOL)setMigrationState:(int64_t)a3 forStoreID:(int64_t)a4 error:(id *)a5
+- (BOOL)setMigrationState:(int64_t)state forStoreID:(int64_t)d error:(id *)error
 {
-  v8 = [NSNumber numberWithLongLong:a4];
+  v8 = [NSNumber numberWithLongLong:d];
   v9 = [NSSet setWithObject:v8];
 
-  LOBYTE(a5) = [(BAMetadataStore *)self setMigrationState:a3 forStoreIDs:v9 error:a5];
-  return a5;
+  LOBYTE(error) = [(BAMetadataStore *)self setMigrationState:state forStoreIDs:v9 error:error];
+  return error;
 }
 
-- (BOOL)setMigrationState:(int64_t)a3 forStoreIDs:(id)a4 error:(id *)a5
+- (BOOL)setMigrationState:(int64_t)state forStoreIDs:(id)ds error:(id *)error
 {
-  v8 = a4;
-  v9 = [(BAMetadataStore *)self newManagedObjectContext];
+  dsCopy = ds;
+  newManagedObjectContext = [(BAMetadataStore *)self newManagedObjectContext];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -171,19 +171,19 @@
   v14[1] = 3221225472;
   v14[2] = sub_100084E08;
   v14[3] = &unk_10011DC28;
-  v10 = v8;
+  v10 = dsCopy;
   v15 = v10;
-  v11 = v9;
+  v11 = newManagedObjectContext;
   v19 = &v21;
-  v20 = a3;
+  stateCopy = state;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v18 = &v27;
   [v11 performBlockAndWait:v14];
   v12 = *(v28 + 24);
-  if (a5 && (v28[3] & 1) == 0)
+  if (error && (v28[3] & 1) == 0)
   {
-    *a5 = v22[5];
+    *error = v22[5];
     v12 = *(v28 + 24);
   }
 
@@ -193,9 +193,9 @@
   return v12 & 1;
 }
 
-- (void)migrationInfoWithStoreID:(int64_t)a3 completion:(id)a4
+- (void)migrationInfoWithStoreID:(int64_t)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -208,7 +208,7 @@
   v15 = sub_100084654;
   v16 = sub_100084664;
   v17 = 0;
-  v7 = [NSNumber numberWithLongLong:a3];
+  v7 = [NSNumber numberWithLongLong:d];
   v8 = [NSSet setWithObject:v7];
 
   v11[0] = _NSConcreteStackBlock;
@@ -218,7 +218,7 @@
   v11[4] = &v12;
   v11[5] = &v18;
   [(BAMetadataStore *)self migrationInfosWithStoreIDs:v8 completion:v11];
-  v9 = objc_retainBlock(v6);
+  v9 = objc_retainBlock(completionCopy);
   v10 = v9;
   if (v9)
   {
@@ -229,11 +229,11 @@
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)migrationInfosWithStoreIDs:(id)a3 completion:(id)a4
+- (void)migrationInfosWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAMetadataStore *)self newManagedObjectContext];
+  dsCopy = ds;
+  completionCopy = completion;
+  newManagedObjectContext = [(BAMetadataStore *)self newManagedObjectContext];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -251,12 +251,12 @@
   v12[2] = sub_10008538C;
   v12[3] = &unk_10011DCC8;
   v12[4] = self;
-  v9 = v6;
+  v9 = dsCopy;
   v13 = v9;
   v14 = &v16;
   v15 = &v22;
-  [v8 performBlockAndWait:v12];
-  v10 = objc_retainBlock(v7);
+  [newManagedObjectContext performBlockAndWait:v12];
+  v10 = objc_retainBlock(completionCopy);
   v11 = v10;
   if (v10)
   {
@@ -267,11 +267,11 @@
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)migrationInfosWithStates:(id)a3 completion:(id)a4
+- (void)migrationInfosWithStates:(id)states completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BAMetadataStore *)self newManagedObjectContext];
+  statesCopy = states;
+  completionCopy = completion;
+  newManagedObjectContext = [(BAMetadataStore *)self newManagedObjectContext];
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -289,12 +289,12 @@
   v12[2] = sub_1000856F8;
   v12[3] = &unk_10011DCC8;
   v12[4] = self;
-  v9 = v6;
+  v9 = statesCopy;
   v13 = v9;
   v14 = &v16;
   v15 = &v22;
-  [v8 performBlockAndWait:v12];
-  v10 = objc_retainBlock(v7);
+  [newManagedObjectContext performBlockAndWait:v12];
+  v10 = objc_retainBlock(completionCopy);
   v11 = v10;
   if (v10)
   {
@@ -305,7 +305,7 @@
   _Block_object_dispose(&v22, 8);
 }
 
-- (BOOL)removeMigrationInfoForStoreID:(int64_t)a3 error:(id *)a4
+- (BOOL)removeMigrationInfoForStoreID:(int64_t)d error:(id *)error
 {
   v16[0] = 0;
   v16[1] = v16;
@@ -322,8 +322,8 @@
   v7[2] = sub_1000859EC;
   v7[3] = &unk_10011DC78;
   v7[4] = self;
-  v11 = a3;
-  v4 = [(BAMetadataStore *)self newManagedObjectContext:a3];
+  dCopy = d;
+  v4 = [(BAMetadataStore *)self newManagedObjectContext:d];
   v8 = v4;
   v9 = &v12;
   v10 = v16;
@@ -336,15 +336,15 @@
   return v5;
 }
 
-- (BOOL)removeAllMigrationInfosExcludingStates:(id)a3 error:(id *)a4
+- (BOOL)removeAllMigrationInfosExcludingStates:(id)states error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  statesCopy = states;
+  if (!statesCopy)
   {
-    v5 = objc_alloc_init(NSSet);
+    statesCopy = objc_alloc_init(NSSet);
   }
 
-  v6 = [(BAMetadataStore *)self newManagedObjectContext];
+  newManagedObjectContext = [(BAMetadataStore *)self newManagedObjectContext];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -360,33 +360,33 @@
   v10[2] = sub_100085C90;
   v10[3] = &unk_10011DCF0;
   v10[4] = self;
-  v7 = v5;
+  v7 = statesCopy;
   v11 = v7;
-  v8 = v6;
+  v8 = newManagedObjectContext;
   v12 = v8;
   v13 = &v15;
   v14 = v19;
   [v8 performBlockAndWait:v10];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(newManagedObjectContext) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(v19, 8);
 
-  return v6;
+  return newManagedObjectContext;
 }
 
-- (BOOL)q_saveWithMoc:(id)a3 error:(id *)a4
+- (BOOL)q_saveWithMoc:(id)moc error:(id *)error
 {
   v11 = 0;
-  v5 = [a3 save:&v11];
+  v5 = [moc save:&v11];
   v6 = v11;
   v7 = v6;
   if ((v5 & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v8 = v6;
-      *a4 = v7;
+      *error = v7;
     }
 
     v9 = BLServiceMetadataStoreLog();
@@ -401,35 +401,35 @@
   return v5;
 }
 
-- (id)_fetchRequestForProductionInfoWithStoreID:(int64_t)a3
+- (id)_fetchRequestForProductionInfoWithStoreID:(int64_t)d
 {
   v4 = +[BAAudiobookProductionInfo fetchRequest];
-  v5 = [NSPredicate predicateWithFormat:@"%K == %lld", @"storeID", a3];
+  v5 = [NSPredicate predicateWithFormat:@"%K == %lld", @"storeID", d];
   [v4 setPredicate:v5];
 
   return v4;
 }
 
-- (id)q_fetchAudiobookProductionInfosWithRequest:(id)a3 error:(id *)a4
+- (id)q_fetchAudiobookProductionInfosWithRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   v12 = 0;
-  v6 = [v5 execute:&v12];
+  v6 = [requestCopy execute:&v12];
   v7 = v12;
   v8 = v7;
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v8;
+      *error = v8;
     }
 
     v10 = BLServiceMetadataStoreLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = v5;
+      v14 = requestCopy;
       v15 = 2112;
       v16 = v8;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Error performing fetch request %@:  %@", buf, 0x16u);
@@ -441,76 +441,76 @@
 
 - (id)newManagedObjectContext
 {
-  v2 = [(BAMetadataStore *)self container];
-  v3 = [v2 newBackgroundContext];
+  container = [(BAMetadataStore *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
-  [v3 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
-  return v3;
+  [newBackgroundContext setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+  return newBackgroundContext;
 }
 
-- (id)_fetchRequestForBookletMigrationInfoWithStoreID:(int64_t)a3
+- (id)_fetchRequestForBookletMigrationInfoWithStoreID:(int64_t)d
 {
   v4 = +[BABookletMigrationInfo fetchRequest];
-  v5 = [NSNumber numberWithLongLong:a3];
+  v5 = [NSNumber numberWithLongLong:d];
   v6 = [NSPredicate predicateWithFormat:@"%K == %@", @"storeID", v5];
   [v4 setPredicate:v6];
 
   return v4;
 }
 
-- (id)_fetchRequestForBookletMigrationInfoWithStoreIDs:(id)a3
+- (id)_fetchRequestForBookletMigrationInfoWithStoreIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[BABookletMigrationInfo fetchRequest];
-  v5 = [NSPredicate predicateWithFormat:@"%K IN %@", @"storeID", v3];
+  dsCopy = [NSPredicate predicateWithFormat:@"%K IN %@", @"storeID", dsCopy];
 
-  [v4 setPredicate:v5];
+  [v4 setPredicate:dsCopy];
 
   return v4;
 }
 
-- (id)_fetchRequestForBookletMigrationInfoWithStates:(id)a3
+- (id)_fetchRequestForBookletMigrationInfoWithStates:(id)states
 {
-  v3 = a3;
+  statesCopy = states;
   v4 = +[BABookletMigrationInfo fetchRequest];
-  v5 = [NSPredicate predicateWithFormat:@"%K IN %@", @"migrationState", v3];
+  statesCopy = [NSPredicate predicateWithFormat:@"%K IN %@", @"migrationState", statesCopy];
 
-  [v4 setPredicate:v5];
+  [v4 setPredicate:statesCopy];
 
   return v4;
 }
 
-- (id)_fetchRequestForBookletMigrationInfoExcludingStates:(id)a3
+- (id)_fetchRequestForBookletMigrationInfoExcludingStates:(id)states
 {
-  v3 = a3;
+  statesCopy = states;
   v4 = +[BABookletMigrationInfo fetchRequest];
-  v5 = [NSPredicate predicateWithFormat:@"NOT (%K IN %@)", @"migrationState", v3];
+  statesCopy = [NSPredicate predicateWithFormat:@"NOT (%K IN %@)", @"migrationState", statesCopy];
 
-  [v4 setPredicate:v5];
+  [v4 setPredicate:statesCopy];
 
   return v4;
 }
 
-- (id)q_fetchBookletMigrationInfoWithRequest:(id)a3 error:(id *)a4
+- (id)q_fetchBookletMigrationInfoWithRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   v12 = 0;
-  v6 = [v5 execute:&v12];
+  v6 = [requestCopy execute:&v12];
   v7 = v12;
   v8 = v7;
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v8;
+      *error = v8;
     }
 
     v10 = BLServiceMetadataStoreLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = v5;
+      v14 = requestCopy;
       v15 = 2112;
       v16 = v8;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Error performing fetch request %@:  %@", buf, 0x16u);

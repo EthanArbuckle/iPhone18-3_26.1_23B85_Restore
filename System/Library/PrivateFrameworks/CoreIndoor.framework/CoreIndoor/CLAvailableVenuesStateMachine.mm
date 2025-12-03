@@ -1,17 +1,17 @@
 @interface CLAvailableVenuesStateMachine
-+ (double)distBetweenLatLon:(id)a3 latlon1:(id)a4;
-+ (int64_t)getLocationContextFromVenueBounds:(const void *)a3;
-- (BOOL)isVenueDisabled:(id)a3 locationId:(id)a4;
-- (BOOL)shouldRecompute:(id)a3;
++ (double)distBetweenLatLon:(id)lon latlon1:(id)latlon1;
++ (int64_t)getLocationContextFromVenueBounds:(const void *)bounds;
+- (BOOL)isVenueDisabled:(id)disabled locationId:(id)id;
+- (BOOL)shouldRecompute:(id)recompute;
 - (CLAvailableVenuesStateMachine)init;
-- (id)computeAvailableVenues:(id)a3 nearCoordinates:(id)a4;
-- (id)computeAvailableVenues:(id)a3 nearCoordinates:(id)a4 withError:(BOOL *)a5;
-- (id)getNearbyLocationGroups:(id)a3 withUpdatedPos:(id)a4;
-- (id)getNearbyLocationGroups:(id)a3 withUpdatedPos:(id)a4 nearLocationsOfInterest:(id)a5;
-- (id)getNearbyLocationGroupsForTile:(id)a3 withUpdatedPos:(id)a4;
-- (id)getNearbyLocationGroupsForTile:(id)a3 withUpdatedPos:(id)a4 nearLocationsOfInterest:(id)a5;
-- (id)openTileParserAtPath:(id)a3;
-- (id)recomputeIfNecessary:(id)a3 withGlobalAvailabilityTile:(id)a4 andAdditionalLOIs:(id)a5;
+- (id)computeAvailableVenues:(id)venues nearCoordinates:(id)coordinates;
+- (id)computeAvailableVenues:(id)venues nearCoordinates:(id)coordinates withError:(BOOL *)error;
+- (id)getNearbyLocationGroups:(id)groups withUpdatedPos:(id)pos;
+- (id)getNearbyLocationGroups:(id)groups withUpdatedPos:(id)pos nearLocationsOfInterest:(id)interest;
+- (id)getNearbyLocationGroupsForTile:(id)tile withUpdatedPos:(id)pos;
+- (id)getNearbyLocationGroupsForTile:(id)tile withUpdatedPos:(id)pos nearLocationsOfInterest:(id)interest;
+- (id)openTileParserAtPath:(id)path;
+- (id)recomputeIfNecessary:(id)necessary withGlobalAvailabilityTile:(id)tile andAdditionalLOIs:(id)is;
 - (void)clearLastFix;
 @end
 
@@ -45,13 +45,13 @@
   return v3;
 }
 
-+ (double)distBetweenLatLon:(id)a3 latlon1:(id)a4
++ (double)distBetweenLatLon:(id)lon latlon1:(id)latlon1
 {
   v71 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v11 = v6;
-  if (!v5)
+  lonCopy = lon;
+  latlon1Copy = latlon1;
+  v11 = latlon1Copy;
+  if (!lonCopy)
   {
     v58 = sub_245A782E4();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_FAULT))
@@ -101,7 +101,7 @@ LABEL_17:
     __break(1u);
   }
 
-  if (!v6)
+  if (!latlon1Copy)
   {
     v61 = sub_245A782E4();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_FAULT))
@@ -148,10 +148,10 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  objc_msgSend_latitude(v5, v7, v8, v9, v10);
+  objc_msgSend_latitude(lonCopy, v7, v8, v9, v10);
   objc_msgSend_deg2rad_(CLAvailableVenuesStateMachine, v12, v13, v14, v15);
   v17 = v16;
-  objc_msgSend_longitude(v5, v18, v16, v19, v20);
+  objc_msgSend_longitude(lonCopy, v18, v16, v19, v20);
   objc_msgSend_deg2rad_(CLAvailableVenuesStateMachine, v21, v22, v23, v24);
   v26 = v25;
   objc_msgSend_latitude(v11, v27, v25, v28, v29);
@@ -173,14 +173,14 @@ LABEL_17:
   return v55;
 }
 
-- (BOOL)isVenueDisabled:(id)a3 locationId:(id)a4
+- (BOOL)isVenueDisabled:(id)disabled locationId:(id)id
 {
-  v6 = a3;
-  v8 = a4;
+  disabledCopy = disabled;
+  idCopy = id;
   disabledVenues = self->_disabledVenues;
   if (disabledVenues)
   {
-    v13 = objc_msgSend_member_(disabledVenues, v7, v9, v10, v11, v6);
+    v13 = objc_msgSend_member_(disabledVenues, v7, v9, v10, v11, disabledCopy);
     if (v13)
     {
       v18 = 1;
@@ -188,7 +188,7 @@ LABEL_17:
 
     else
     {
-      v19 = objc_msgSend_member_(self->_disabledVenues, v14, v15, v16, v17, v8);
+      v19 = objc_msgSend_member_(self->_disabledVenues, v14, v15, v16, v17, idCopy);
       v18 = v19 != 0;
 
       v13 = 0;
@@ -203,26 +203,26 @@ LABEL_17:
   return v18;
 }
 
-- (id)computeAvailableVenues:(id)a3 nearCoordinates:(id)a4
+- (id)computeAvailableVenues:(id)venues nearCoordinates:(id)coordinates
 {
-  v6 = a3;
-  v7 = a4;
+  venuesCopy = venues;
+  coordinatesCopy = coordinates;
   v28 = 0;
-  v12 = objc_msgSend_computeAvailableVenues_nearCoordinates_withError_(self, v8, v9, v10, v11, v6, v7, &v28);
+  v12 = objc_msgSend_computeAvailableVenues_nearCoordinates_withError_(self, v8, v9, v10, v11, venuesCopy, coordinatesCopy, &v28);
   if (v28 == 1)
   {
     sub_245A785B8();
-    v17 = objc_msgSend_computeAvailableVenues_nearCoordinates_withError_(self, v13, v14, v15, v16, v6, v7, &v28);
+    v17 = objc_msgSend_computeAvailableVenues_nearCoordinates_withError_(self, v13, v14, v15, v16, venuesCopy, coordinatesCopy, &v28);
 
     if (v28 == 1)
     {
       sub_245A785B8();
-      v12 = objc_msgSend_computeAvailableVenues_nearCoordinates_withError_(self, v18, v19, v20, v21, v6, v7, &v28);
+      v12 = objc_msgSend_computeAvailableVenues_nearCoordinates_withError_(self, v18, v19, v20, v21, venuesCopy, coordinatesCopy, &v28);
 
       if (v28 == 1)
       {
         sub_245A785B8();
-        v26 = objc_msgSend_computeAvailableVenues_nearCoordinates_withError_(self, v22, v23, v24, v25, v6, v7, &v28);
+        v26 = objc_msgSend_computeAvailableVenues_nearCoordinates_withError_(self, v22, v23, v24, v25, venuesCopy, coordinatesCopy, &v28);
 
         if (v28 == 1)
         {
@@ -246,13 +246,13 @@ LABEL_17:
   return v12;
 }
 
-- (id)computeAvailableVenues:(id)a3 nearCoordinates:(id)a4 withError:(BOOL *)a5
+- (id)computeAvailableVenues:(id)venues nearCoordinates:(id)coordinates withError:(BOOL *)error
 {
   v356 = *MEMORY[0x277D85DE8];
-  v320 = a3;
-  v309 = a4;
-  v310 = a5;
-  *a5 = 0;
+  venuesCopy = venues;
+  coordinatesCopy = coordinates;
+  errorCopy = error;
+  *error = 0;
   v7 = objc_alloc(MEMORY[0x277CBEB18]);
   v12 = objc_msgSend_initWithCapacity_(v7, v8, v9, v10, v11, 120);
   v13 = 120;
@@ -272,9 +272,9 @@ LABEL_17:
   v329 = objc_alloc_init(ENUCoordinate);
   v312 = objc_alloc_init(ECEFCoordinate);
   v316 = objc_alloc_init(GeographicCoordinate);
-  v315 = objc_msgSend_numVenuesExpected(v320, v24, v25, v26, v27);
+  v315 = objc_msgSend_numVenuesExpected(venuesCopy, v24, v25, v26, v27);
   v317 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v28, v29, v30, v31, v315);
-  v36 = objc_msgSend_numTotalExpectedExteriorsInVenues(v320, v32, v33, v34, v35);
+  v36 = objc_msgSend_numTotalExpectedExteriorsInVenues(venuesCopy, v32, v33, v34, v35);
   if (qword_28144B270 != -1)
   {
     sub_245A8E67C();
@@ -311,9 +311,9 @@ LABEL_17:
     {
       context = objc_autoreleasePoolPush();
       sub_245A3036C(buf);
-      if (objc_msgSend_tileIsOpenForIncrementalIO(v320, v47, v48, v49, v50))
+      if (objc_msgSend_tileIsOpenForIncrementalIO(venuesCopy, v47, v48, v49, v50))
       {
-        if ((objc_msgSend_getNextVenueBoundsIncrementally_(v320, v51, v52, v53, v54, buf) & 1) == 0)
+        if ((objc_msgSend_getNextVenueBoundsIncrementally_(venuesCopy, v51, v52, v53, v54, buf) & 1) == 0)
         {
           if (qword_28144B270 != -1)
           {
@@ -328,14 +328,14 @@ LABEL_17:
           }
 
           v56 = 1;
-          *v310 = 1;
+          *errorCopy = 1;
           goto LABEL_174;
         }
       }
 
       else
       {
-        AvlTile = objc_msgSend_getAvlTile(v320, v51, v52, v53, v54);
+        AvlTile = objc_msgSend_getAvlTile(venuesCopy, v51, v52, v53, v54);
         sub_245A827CC(AvlTile, v321, v346);
         sub_245A89074(buf, v346);
         sub_245A30368(v346);
@@ -847,13 +847,13 @@ LABEL_63:
 
                 objc_msgSend_storeAverage_ofVertices_(CLLocationGroup, v143, v144, v145, v146, v312, v322);
                 objc_msgSend_setFromECEFCoordinate_(v316, v174, v175, v176, v177, v312);
-                if (objc_msgSend_count(v309, v178, v179, v180, v181))
+                if (objc_msgSend_count(coordinatesCopy, v178, v179, v180, v181))
                 {
                   v336 = 0u;
                   v337 = 0u;
                   v334 = 0u;
                   v335 = 0u;
-                  v185 = v309;
+                  v185 = coordinatesCopy;
                   v190 = objc_msgSend_countByEnumeratingWithState_objects_count_(v185, v186, v187, v188, v189, &v334, v345, 16);
                   if (v190)
                   {
@@ -1132,7 +1132,7 @@ LABEL_174:
   v306 = 0;
   v308 = 0;
 LABEL_186:
-  if (objc_msgSend_tileIsOpenForIncrementalIO(v320, v43, v44, v45, v46))
+  if (objc_msgSend_tileIsOpenForIncrementalIO(venuesCopy, v43, v44, v45, v46))
   {
     sub_245A3036C(buf);
     if (qword_28144B270 != -1)
@@ -1147,7 +1147,7 @@ LABEL_186:
       _os_log_impl(&dword_245A2E000, v285, OS_LOG_TYPE_INFO, "@IndoorAvl, load, make sure we have no more venue bounds to read", v346, 2u);
     }
 
-    if (objc_msgSend_getNextVenueBoundsIncrementally_(v320, v286, v287, v288, v289, buf))
+    if (objc_msgSend_getNextVenueBoundsIncrementally_(venuesCopy, v286, v287, v288, v289, buf))
     {
       if (qword_28144B270 != -1)
       {
@@ -1189,17 +1189,17 @@ LABEL_203:
   return v294;
 }
 
-- (id)getNearbyLocationGroupsForTile:(id)a3 withUpdatedPos:(id)a4
+- (id)getNearbyLocationGroupsForTile:(id)tile withUpdatedPos:(id)pos
 {
-  v7 = objc_msgSend_getNearbyLocationGroupsForTile_withUpdatedPos_nearLocationsOfInterest_(self, a2, v4, v5, v6, a3, a4, 0);
+  v7 = objc_msgSend_getNearbyLocationGroupsForTile_withUpdatedPos_nearLocationsOfInterest_(self, a2, v4, v5, v6, tile, pos, 0);
 
   return v7;
 }
 
-- (id)openTileParserAtPath:(id)a3
+- (id)openTileParserAtPath:(id)path
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   if (qword_28144B270 != -1)
   {
     sub_245A8E67C();
@@ -1208,7 +1208,7 @@ LABEL_203:
   v4 = qword_28144B278;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v9 = objc_msgSend_absoluteString(v3, v5, v6, v7, v8);
+    v9 = objc_msgSend_absoluteString(pathCopy, v5, v6, v7, v8);
     v10 = v9;
     v52 = 136315138;
     v53 = objc_msgSend_UTF8String(v10, v11, v12, v13, v14);
@@ -1216,13 +1216,13 @@ LABEL_203:
   }
 
   v19 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v15, v16, v17, v18);
-  v24 = objc_msgSend_path(v3, v20, v21, v22, v23);
+  v24 = objc_msgSend_path(pathCopy, v20, v21, v22, v23);
   v29 = objc_msgSend_fileExistsAtPath_(v19, v25, v26, v27, v28, v24);
 
   if (v29)
   {
     v30 = [CLAvailabilityTileParser alloc];
-    v35 = objc_msgSend_initWithTilePathIncrementalIO_(v30, v31, v32, v33, v34, v3);
+    v35 = objc_msgSend_initWithTilePathIncrementalIO_(v30, v31, v32, v33, v34, pathCopy);
     v36 = v35;
     if (v35)
     {
@@ -1258,7 +1258,7 @@ LABEL_203:
     v36 = qword_28144B278;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
-      v42 = objc_msgSend_path(v3, v38, v39, v40, v41);
+      v42 = objc_msgSend_path(pathCopy, v38, v39, v40, v41);
       v43 = v42;
       v48 = objc_msgSend_UTF8String(v42, v44, v45, v46, v47);
       v52 = 136315138;
@@ -1274,21 +1274,21 @@ LABEL_203:
   return v37;
 }
 
-- (id)getNearbyLocationGroups:(id)a3 withUpdatedPos:(id)a4
+- (id)getNearbyLocationGroups:(id)groups withUpdatedPos:(id)pos
 {
-  v7 = objc_msgSend_getNearbyLocationGroups_withUpdatedPos_nearLocationsOfInterest_(self, a2, v4, v5, v6, a3, a4, 0);
+  v7 = objc_msgSend_getNearbyLocationGroups_withUpdatedPos_nearLocationsOfInterest_(self, a2, v4, v5, v6, groups, pos, 0);
 
   return v7;
 }
 
-- (id)getNearbyLocationGroups:(id)a3 withUpdatedPos:(id)a4 nearLocationsOfInterest:(id)a5
+- (id)getNearbyLocationGroups:(id)groups withUpdatedPos:(id)pos nearLocationsOfInterest:(id)interest
 {
-  v8 = a4;
-  v9 = a5;
-  v15 = objc_msgSend_openTileParserAtPath_(self, v10, v11, v12, v13, a3);
+  posCopy = pos;
+  interestCopy = interest;
+  v15 = objc_msgSend_openTileParserAtPath_(self, v10, v11, v12, v13, groups);
   if (v15)
   {
-    v19 = objc_msgSend_getNearbyLocationGroupsForTile_withUpdatedPos_nearLocationsOfInterest_(self, v14, v16, v17, v18, v15, v8, v9);
+    v19 = objc_msgSend_getNearbyLocationGroupsForTile_withUpdatedPos_nearLocationsOfInterest_(self, v14, v16, v17, v18, v15, posCopy, interestCopy);
   }
 
   else
@@ -1299,14 +1299,14 @@ LABEL_203:
   return v19;
 }
 
-- (BOOL)shouldRecompute:(id)a3
+- (BOOL)shouldRecompute:(id)recompute
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  recomputeCopy = recompute;
   lastFix = self->_lastFix;
   if (lastFix)
   {
-    objc_msgSend_distBetweenLatLon_latlon1_(CLAvailableVenuesStateMachine, v4, v6, v7, v8, lastFix, v5);
+    objc_msgSend_distBetweenLatLon_latlon1_(CLAvailableVenuesStateMachine, v4, v6, v7, v8, lastFix, recomputeCopy);
     v11 = v10;
     if (qword_28144B270 != -1)
     {
@@ -1333,14 +1333,14 @@ LABEL_203:
   return v13;
 }
 
-- (id)getNearbyLocationGroupsForTile:(id)a3 withUpdatedPos:(id)a4 nearLocationsOfInterest:(id)a5
+- (id)getNearbyLocationGroupsForTile:(id)tile withUpdatedPos:(id)pos nearLocationsOfInterest:(id)interest
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tileCopy = tile;
+  posCopy = pos;
+  interestCopy = interest;
   v11 = [CLIndoorAvailabilityTileParams alloc];
-  AvlTile = objc_msgSend_getAvlTile(v8, v12, v13, v14, v15);
+  AvlTile = objc_msgSend_getAvlTile(tileCopy, v12, v13, v14, v15);
   v21 = objc_msgSend_initWithAvailabilityTile_(v11, v17, v18, v19, v20, AvlTile);
   availabilityTileParams = self->_availabilityTileParams;
   self->_availabilityTileParams = v21;
@@ -1381,21 +1381,21 @@ LABEL_203:
     }
   }
 
-  v39 = objc_msgSend_recomputeIfNecessary_withGlobalAvailabilityTile_andAdditionalLOIs_(self, v34, v35, v36, v37, v9, v8, v10);
+  v39 = objc_msgSend_recomputeIfNecessary_withGlobalAvailabilityTile_andAdditionalLOIs_(self, v34, v35, v36, v37, posCopy, tileCopy, interestCopy);
 
   v40 = *MEMORY[0x277D85DE8];
 
   return v39;
 }
 
-- (id)recomputeIfNecessary:(id)a3 withGlobalAvailabilityTile:(id)a4 andAdditionalLOIs:(id)a5
+- (id)recomputeIfNecessary:(id)necessary withGlobalAvailabilityTile:(id)tile andAdditionalLOIs:(id)is
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v16 = v11;
-  if (!v9)
+  necessaryCopy = necessary;
+  tileCopy = tile;
+  isCopy = is;
+  v16 = isCopy;
+  if (!necessaryCopy)
   {
     if (qword_28144B270 != -1)
     {
@@ -1412,7 +1412,7 @@ LABEL_203:
     goto LABEL_18;
   }
 
-  if (v11)
+  if (isCopy)
   {
     if (qword_28144B270 != -1)
     {
@@ -1430,22 +1430,22 @@ LABEL_203:
 LABEL_16:
     _os_log_impl(&dword_245A2E000, v17, OS_LOG_TYPE_DEBUG, v18, &v36, 2u);
 LABEL_17:
-    objc_storeStrong(&self->_lastFix, a3);
+    objc_storeStrong(&self->_lastFix, necessary);
 LABEL_18:
     v20 = objc_alloc(MEMORY[0x277CBEB18]);
     v25 = objc_msgSend_initWithArray_(v20, v21, v22, v23, v24, v16);
     v30 = v25;
-    if (v9)
+    if (necessaryCopy)
     {
-      objc_msgSend_addObject_(v25, v26, v27, v28, v29, v9);
+      objc_msgSend_addObject_(v25, v26, v27, v28, v29, necessaryCopy);
     }
 
-    v31 = objc_msgSend_computeAvailableVenues_nearCoordinates_(self, v26, v27, v28, v29, v10, v30, v36, v37);
+    v31 = objc_msgSend_computeAvailableVenues_nearCoordinates_(self, v26, v27, v28, v29, tileCopy, v30, v36, v37);
 
     goto LABEL_21;
   }
 
-  if (objc_msgSend_shouldRecompute_(self, v12, v13, v14, v15, v9))
+  if (objc_msgSend_shouldRecompute_(self, v12, v13, v14, v15, necessaryCopy))
   {
     if (qword_28144B270 != -1)
     {
@@ -1485,20 +1485,20 @@ LABEL_21:
   return v31;
 }
 
-+ (int64_t)getLocationContextFromVenueBounds:(const void *)a3
++ (int64_t)getLocationContextFromVenueBounds:(const void *)bounds
 {
-  if ((*(a3 + 104) & 8) != 0)
+  if ((*(bounds + 104) & 8) != 0)
   {
-    return *(a3 + 24) != 1;
+    return *(bounds + 24) != 1;
   }
 
-  v6 = *(a3 + 6);
+  v6 = *(bounds + 6);
   if (!v6)
   {
     return 0;
   }
 
-  v7 = *(a3 + 2);
+  v7 = *(bounds + 2);
   v8 = 8 * v6;
   while (1)
   {

@@ -1,29 +1,29 @@
 @interface MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1)initWithDictionary:(id)a3;
-- (MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1)initWithDictionary:(id)dictionary;
+- (MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addActiveSessionDisplayIds:(id)a3;
-- (void)setHasAudioSessionMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addActiveSessionDisplayIds:(id)ids;
+- (void)setHasAudioSessionMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1
 
-- (MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1)initWithDictionary:(id)a3
+- (MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1;
   v5 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"activeSessionDisplayIds"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"activeSessionDisplayIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,14 +74,14 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"audioSessionCategory", v20}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"audioSessionCategory", v20}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 setAudioSessionCategory:](v5, "setAudioSessionCategory:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"audioSessionMode"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"audioSessionMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,30 +94,30 @@
   return v5;
 }
 
-- (MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1)initWithJSON:(id)a3
+- (MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -130,12 +130,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_activeSessionDisplayIds)
   {
-    v4 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self activeSessionDisplayIds];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"activeSessionDisplayIds"];
+    activeSessionDisplayIds = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self activeSessionDisplayIds];
+    v5 = [activeSessionDisplayIds copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"activeSessionDisplayIds"];
   }
 
   has = self->_has;
@@ -152,7 +152,7 @@
       v8 = off_1E78D9070[v7];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"audioSessionCategory"];
+    [dictionary setObject:v8 forKeyedSubscript:@"audioSessionCategory"];
     has = self->_has;
   }
 
@@ -169,28 +169,28 @@
       v10 = off_1E78D9148[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"audioSessionMode"];
+    [dictionary setObject:v10 forKeyedSubscript:@"audioSessionMode"];
   }
 
   if (self->_linkId)
   {
-    v11 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    linkId = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -221,28 +221,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -254,22 +254,22 @@ LABEL_3:
   {
   }
 
-  v5 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self activeSessionDisplayIds];
-  v6 = [v4 activeSessionDisplayIds];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self activeSessionDisplayIds];
+  linkId2 = [equalCopy activeSessionDisplayIds];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self activeSessionDisplayIds];
-  if (v12)
+  activeSessionDisplayIds = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self activeSessionDisplayIds];
+  if (activeSessionDisplayIds)
   {
-    v13 = v12;
-    v14 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self activeSessionDisplayIds];
-    v15 = [v4 activeSessionDisplayIds];
-    v16 = [v14 isEqual:v15];
+    v13 = activeSessionDisplayIds;
+    activeSessionDisplayIds2 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self activeSessionDisplayIds];
+    activeSessionDisplayIds3 = [equalCopy activeSessionDisplayIds];
+    v16 = [activeSessionDisplayIds2 isEqual:activeSessionDisplayIds3];
 
     if (!v16)
     {
@@ -282,25 +282,25 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[32];
+  v20 = equalCopy[32];
   if ((*&has & 1) == (v20 & 1))
   {
     if (*&has)
     {
       audioSessionCategory = self->_audioSessionCategory;
-      if (audioSessionCategory != [v4 audioSessionCategory])
+      if (audioSessionCategory != [equalCopy audioSessionCategory])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[32];
+      v20 = equalCopy[32];
     }
 
     v22 = (*&has >> 1) & 1;
     if (v22 == ((v20 >> 1) & 1))
     {
-      if (!v22 || (audioSessionMode = self->_audioSessionMode, audioSessionMode == [v4 audioSessionMode]))
+      if (!v22 || (audioSessionMode = self->_audioSessionMode, audioSessionMode == [equalCopy audioSessionMode]))
       {
         v17 = 1;
         goto LABEL_13;
@@ -315,15 +315,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
+    linkId2 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -368,9 +368,9 @@ LABEL_13:
   }
 }
 
-- (void)setHasAudioSessionMode:(BOOL)a3
+- (void)setHasAudioSessionMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
@@ -383,40 +383,40 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addActiveSessionDisplayIds:(id)a3
+- (void)addActiveSessionDisplayIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   activeSessionDisplayIds = self->_activeSessionDisplayIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!activeSessionDisplayIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_activeSessionDisplayIds;
-    self->_activeSessionDisplayIds = v6;
+    self->_activeSessionDisplayIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     activeSessionDisplayIds = self->_activeSessionDisplayIds;
   }
 
-  [(NSArray *)activeSessionDisplayIds addObject:v4];
+  [(NSArray *)activeSessionDisplayIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:4])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:4])
   {
     [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self deleteActiveSessionDisplayIds];
   }
 
-  v6 = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MHSchemaMHAssistantDaemonAudioRecordingInterruptionStartedTier1 *)self deleteLinkId];
   }

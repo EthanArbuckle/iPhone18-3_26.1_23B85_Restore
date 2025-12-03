@@ -1,26 +1,26 @@
 @interface CarShareTripContactCell
-- (CarShareTripContactCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CarShareTripContactCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CarShareTripContactCellDelegate)delegate;
-- (id)_sharingLabelColor:(BOOL)a3;
-- (id)_sharingRingColor:(BOOL)a3;
+- (id)_sharingLabelColor:(BOOL)color;
+- (id)_sharingRingColor:(BOOL)color;
 - (id)_subtitleString;
 - (void)_redrawContactImage;
-- (void)_setContactIdentifier:(id)a3;
-- (void)_setSharingState:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_setContactIdentifier:(id)identifier;
+- (void)_setSharingState:(unint64_t)state animated:(BOOL)animated;
 - (void)_updateAppearance;
-- (void)_updateSharingRingAnimated:(BOOL)a3;
+- (void)_updateSharingRingAnimated:(BOOL)animated;
 - (void)_updateSubtitleLabel;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)configureWithMSPSharedTripContact:(id)a3;
-- (void)configureWithSharedTrip:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)configureWithMSPSharedTripContact:(id)contact;
+- (void)configureWithSharedTrip:(id)trip;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setCapabilityType:(unint64_t)a3 serviceName:(id)a4;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSharingState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setShowsSubtitleWhenNotSharing:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCapabilityType:(unint64_t)type serviceName:(id)name;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setSharingState:(unint64_t)state animated:(BOOL)animated;
+- (void)setShowsSubtitleWhenNotSharing:(BOOL)sharing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CarShareTripContactCell
@@ -32,76 +32,76 @@
   return WeakRetained;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
-    v5 = [(CarShareTripContactCell *)self delegate];
-    [v5 carShareTripContactCellDidFinishRingAnimation:self];
+    delegate = [(CarShareTripContactCell *)self delegate];
+    [delegate carShareTripContactCellDidFinishRingAnimation:self];
   }
 }
 
-- (void)setShowsSubtitleWhenNotSharing:(BOOL)a3
+- (void)setShowsSubtitleWhenNotSharing:(BOOL)sharing
 {
-  if (self->_showsSubtitleWhenNotSharing != a3)
+  if (self->_showsSubtitleWhenNotSharing != sharing)
   {
-    self->_showsSubtitleWhenNotSharing = a3;
+    self->_showsSubtitleWhenNotSharing = sharing;
     [(CarShareTripContactCell *)self _updateSubtitleLabel];
   }
 }
 
-- (void)setCapabilityType:(unint64_t)a3 serviceName:(id)a4
+- (void)setCapabilityType:(unint64_t)type serviceName:(id)name
 {
-  v12 = a4;
-  if (self->_capabilityType != a3 || (v6 = self->_serviceName, v7 = v12, v8 = v12, v7 | v6) && (v9 = [v6 isEqual:v7], v7, v6, v8 = v12, (v9 & 1) == 0))
+  nameCopy = name;
+  if (self->_capabilityType != type || (v6 = self->_serviceName, v7 = nameCopy, v8 = nameCopy, v7 | v6) && (v9 = [v6 isEqual:v7], v7, v6, v8 = nameCopy, (v9 & 1) == 0))
   {
-    self->_capabilityType = a3;
+    self->_capabilityType = type;
     v10 = sub_100D12CE0();
     serviceName = self->_serviceName;
     self->_serviceName = v10;
 
-    [(SharedTripCapabilityBadgeView *)self->_capabilityBadgeView setCapabilityType:a3];
+    [(SharedTripCapabilityBadgeView *)self->_capabilityBadgeView setCapabilityType:type];
     [(CarShareTripContactCell *)self _updateSubtitleLabel];
     [(CarShareTripContactCell *)self _updateAppearance];
-    v8 = v12;
+    v8 = nameCopy;
   }
 }
 
-- (void)_setSharingState:(unint64_t)a3 animated:(BOOL)a4
+- (void)_setSharingState:(unint64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_sharingState = a3;
+  animatedCopy = animated;
+  self->_sharingState = state;
   [(CarShareTripContactCell *)self _updateSubtitleLabel];
   [(CarShareTripContactCell *)self _updateAppearance];
 
-  [(CarShareTripContactCell *)self _updateSharingRingAnimated:v4];
+  [(CarShareTripContactCell *)self _updateSharingRingAnimated:animatedCopy];
 }
 
-- (void)setSharingState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setSharingState:(unint64_t)state animated:(BOOL)animated
 {
-  if (self->_sharingState != a3)
+  if (self->_sharingState != state)
   {
     [CarShareTripContactCell _setSharingState:"_setSharingState:animated:" animated:?];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CarShareTripContactCell;
-  [(CarShareTripContactCell *)&v4 traitCollectionDidChange:a3];
+  [(CarShareTripContactCell *)&v4 traitCollectionDidChange:change];
   [(CarShareTripContactCell *)self _updateAppearance];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = CarShareTripContactCell;
-  [(CarShareTripContactCell *)&v10 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
-  v8 = v7;
-  if (v7 == self)
+  [(CarShareTripContactCell *)&v10 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
+  v8 = nextFocusedItem;
+  if (nextFocusedItem == self)
   {
 
 LABEL_5:
@@ -109,9 +109,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v6 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v9 == self)
+  if (previouslyFocusedItem == self)
   {
     goto LABEL_5;
   }
@@ -119,25 +119,25 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = CarShareTripContactCell;
-  [(CarShareTripContactCell *)&v5 setSelected:a3 animated:a4];
+  [(CarShareTripContactCell *)&v5 setSelected:selected animated:animated];
   [(CarShareTripContactCell *)self _updateAppearance];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = CarShareTripContactCell;
-  [(CarShareTripContactCell *)&v5 setHighlighted:a3 animated:a4];
+  [(CarShareTripContactCell *)&v5 setHighlighted:highlighted animated:animated];
   [(CarShareTripContactCell *)self _updateAppearance];
 }
 
-- (id)_sharingRingColor:(BOOL)a3
+- (id)_sharingRingColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     +[UIColor labelColor];
   }
@@ -151,26 +151,26 @@ LABEL_6:
   return v3;
 }
 
-- (id)_sharingLabelColor:(BOOL)a3
+- (id)_sharingLabelColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
-    v3 = +[UIColor _carSystemFocusLabelColor];
+    sharingState = +[UIColor _carSystemFocusLabelColor];
     goto LABEL_8;
   }
 
-  v3 = [(CarShareTripContactCell *)self sharingState];
-  if ((v3 - 1) < 3)
+  sharingState = [(CarShareTripContactCell *)self sharingState];
+  if ((sharingState - 1) < 3)
   {
     goto LABEL_4;
   }
 
-  if (!v3)
+  if (!sharingState)
   {
     capabilityType = self->_capabilityType;
     if (capabilityType == 2)
     {
-      v3 = +[UIColor externalSystemGreenColor];
+      sharingState = +[UIColor externalSystemGreenColor];
     }
 
     else
@@ -178,17 +178,17 @@ LABEL_6:
       if (self->_showsSubtitleWhenNotSharing || capabilityType > 1)
       {
 LABEL_4:
-        v3 = +[UIColor _carSystemFocusColor];
+        sharingState = +[UIColor _carSystemFocusColor];
         goto LABEL_8;
       }
 
-      v3 = +[UIColor secondaryLabelColor];
+      sharingState = +[UIColor secondaryLabelColor];
     }
   }
 
 LABEL_8:
 
-  return v3;
+  return sharingState;
 }
 
 - (void)_redrawContactImage
@@ -223,11 +223,11 @@ LABEL_8:
   }
 }
 
-- (void)_setContactIdentifier:(id)a3
+- (void)_setContactIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   contactIdentifier = self->_contactIdentifier;
-  v10 = v5;
+  v10 = identifierCopy;
   v7 = contactIdentifier;
   v8 = v10;
   if (v10 | v7)
@@ -237,7 +237,7 @@ LABEL_8:
     v8 = v10;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_contactIdentifier, a3);
+      objc_storeStrong(&self->_contactIdentifier, identifier);
       [(CarShareTripContactCell *)self _redrawContactImage];
       v8 = v10;
     }
@@ -275,11 +275,11 @@ LABEL_10:
   if (sharingState == 2)
   {
     v8 = +[CarDisplayController sharedInstance];
-    v9 = [v8 supportsTouchInteractionModel];
+    supportsTouchInteractionModel = [v8 supportsTouchInteractionModel];
 
     v3 = +[NSBundle mainBundle];
     v4 = v3;
-    if (v9)
+    if (supportsTouchInteractionModel)
     {
       v5 = @"CarPlay_SharedTrip_AlreadySharing";
     }
@@ -310,11 +310,11 @@ LABEL_15:
 
 - (void)_updateSubtitleLabel
 {
-  v3 = [(CarShareTripContactCell *)self _subtitleString];
-  [(UILabel *)self->_subtitleLabel setText:v3];
+  _subtitleString = [(CarShareTripContactCell *)self _subtitleString];
+  [(UILabel *)self->_subtitleLabel setText:_subtitleString];
 
-  v4 = [(UILabel *)self->_subtitleLabel text];
-  [(UILabel *)self->_subtitleLabel setHidden:v4 == 0];
+  text = [(UILabel *)self->_subtitleLabel text];
+  [(UILabel *)self->_subtitleLabel setHidden:text == 0];
 
   if (self->_capabilityType == 2)
   {
@@ -353,21 +353,21 @@ LABEL_15:
   self->_monogrammerStyle = v4;
   [(CarShareTripContactCell *)self _redrawContactImage];
   v9 = +[UITraitCollection _currentTraitCollection];
-  v6 = [(CarShareTripContactCell *)self traitCollection];
-  [UITraitCollection _setCurrentTraitCollection:v6];
+  traitCollection = [(CarShareTripContactCell *)self traitCollection];
+  [UITraitCollection _setCurrentTraitCollection:traitCollection];
 
   v7 = [(CarShareTripContactCell *)self _sharingRingColor:v4];
-  v8 = [v7 CGColor];
+  cGColor = [v7 CGColor];
 
   [UITraitCollection _setCurrentTraitCollection:v9];
-  [(CarSharingRingView *)self->_sharingRingView setColor:v8];
+  [(CarSharingRingView *)self->_sharingRingView setColor:cGColor];
 }
 
-- (void)_updateSharingRingAnimated:(BOOL)a3
+- (void)_updateSharingRingAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CarShareTripContactCell *)self sharingState];
-  if (v5 - 2 < 2)
+  animatedCopy = animated;
+  sharingState = [(CarShareTripContactCell *)self sharingState];
+  if (sharingState - 2 < 2)
   {
     sharingRingView = self->_sharingRingView;
     v7 = 1;
@@ -377,9 +377,9 @@ LABEL_6:
     return;
   }
 
-  if (v5 != 1)
+  if (sharingState != 1)
   {
-    if (v5)
+    if (sharingState)
     {
       return;
     }
@@ -391,7 +391,7 @@ LABEL_6:
 
   v8 = self->_sharingRingView;
 
-  [(CarSharingRingView *)v8 setFilled:1 animated:v3];
+  [(CarSharingRingView *)v8 setFilled:1 animated:animatedCopy];
 }
 
 - (void)prepareForReuse
@@ -414,11 +414,11 @@ LABEL_6:
   [(CarShareTripContactCell *)self setSharingHandle:0];
 }
 
-- (CarShareTripContactCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CarShareTripContactCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v121.receiver = self;
   v121.super_class = CarShareTripContactCell;
-  v4 = [(CarShareTripContactCell *)&v121 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CarShareTripContactCell *)&v121 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -433,8 +433,8 @@ LABEL_6:
 
     [(UIImageView *)v5->_contactImageView setAccessibilityIdentifier:@"ContactImageView"];
     [(UIImageView *)v5->_contactImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [(CarShareTripContactCell *)v5 contentView];
-    [v12 addSubview:v5->_contactImageView];
+    contentView = [(CarShareTripContactCell *)v5 contentView];
+    [contentView addSubview:v5->_contactImageView];
 
     v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     contactNameLabel = v5->_contactNameLabel;
@@ -452,17 +452,17 @@ LABEL_6:
     v5->_capabilityBadgeView = v16;
 
     [(SharedTripCapabilityBadgeView *)v5->_capabilityBadgeView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v18 = [(CarShareTripContactCell *)v5 contentView];
-    [v18 addSubview:v5->_capabilityBadgeView];
+    contentView2 = [(CarShareTripContactCell *)v5 contentView];
+    [contentView2 addSubview:v5->_capabilityBadgeView];
 
-    v19 = [[CarSharingRingView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [[CarSharingRingView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     sharingRingView = v5->_sharingRingView;
-    v5->_sharingRingView = v19;
+    v5->_sharingRingView = height;
 
     [(CarSharingRingView *)v5->_sharingRingView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CarSharingRingView *)v5->_sharingRingView setAnimationDelegate:v5];
-    v21 = [(CarShareTripContactCell *)v5 contentView];
-    [v21 insertSubview:v5->_sharingRingView aboveSubview:v5->_contactImageView];
+    contentView3 = [(CarShareTripContactCell *)v5 contentView];
+    [contentView3 insertSubview:v5->_sharingRingView aboveSubview:v5->_contactImageView];
 
     v22 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     subtitleLabel = v5->_subtitleLabel;
@@ -492,106 +492,106 @@ LABEL_6:
     [v27 setContentHuggingPriority:1 forAxis:v28];
     LODWORD(v29) = 1148846080;
     [v27 setContentCompressionResistancePriority:1 forAxis:v29];
-    v30 = [(CarShareTripContactCell *)v5 contentView];
-    [v30 addSubview:v27];
+    contentView4 = [(CarShareTripContactCell *)v5 contentView];
+    [contentView4 addSubview:v27];
 
-    v31 = [(UIImageView *)v5->_contactImageView leadingAnchor];
-    v119 = [(CarShareTripContactCell *)v5 contentView];
-    [v119 leadingAnchor];
-    v118 = v120 = v31;
-    v117 = [v31 constraintEqualToAnchor:6.0 constant:?];
+    leadingAnchor = [(UIImageView *)v5->_contactImageView leadingAnchor];
+    contentView5 = [(CarShareTripContactCell *)v5 contentView];
+    [contentView5 leadingAnchor];
+    v118 = v120 = leadingAnchor;
+    v117 = [leadingAnchor constraintEqualToAnchor:6.0 constant:?];
     v122[0] = v117;
-    v32 = [v27 leadingAnchor];
-    v115 = [(UIImageView *)v5->_contactImageView trailingAnchor];
-    v116 = v32;
-    v114 = [v32 constraintEqualToAnchor:6.0 constant:?];
+    leadingAnchor2 = [v27 leadingAnchor];
+    trailingAnchor = [(UIImageView *)v5->_contactImageView trailingAnchor];
+    v116 = leadingAnchor2;
+    v114 = [leadingAnchor2 constraintEqualToAnchor:6.0 constant:?];
     v122[1] = v114;
-    v113 = [(CarShareTripContactCell *)v5 contentView];
-    v33 = [v113 trailingAnchor];
-    v111 = [v27 trailingAnchor];
-    v112 = v33;
-    v110 = [v33 constraintEqualToAnchor:6.0 constant:?];
+    contentView6 = [(CarShareTripContactCell *)v5 contentView];
+    trailingAnchor2 = [contentView6 trailingAnchor];
+    trailingAnchor3 = [v27 trailingAnchor];
+    v112 = trailingAnchor2;
+    v110 = [trailingAnchor2 constraintEqualToAnchor:6.0 constant:?];
     v122[2] = v110;
-    v34 = [(UIImageView *)v5->_contactImageView topAnchor];
-    v108 = [(CarShareTripContactCell *)v5 contentView];
-    [v108 topAnchor];
-    v107 = v109 = v34;
-    v106 = [v34 constraintGreaterThanOrEqualToAnchor:6.0 constant:?];
+    topAnchor = [(UIImageView *)v5->_contactImageView topAnchor];
+    contentView7 = [(CarShareTripContactCell *)v5 contentView];
+    [contentView7 topAnchor];
+    v107 = v109 = topAnchor;
+    v106 = [topAnchor constraintGreaterThanOrEqualToAnchor:6.0 constant:?];
     v122[3] = v106;
-    v35 = [(UIImageView *)v5->_contactImageView centerYAnchor];
-    v104 = [(CarShareTripContactCell *)v5 contentView];
-    [v104 centerYAnchor];
-    v103 = v105 = v35;
-    v102 = [v35 constraintEqualToAnchor:?];
+    centerYAnchor = [(UIImageView *)v5->_contactImageView centerYAnchor];
+    contentView8 = [(CarShareTripContactCell *)v5 contentView];
+    [contentView8 centerYAnchor];
+    v103 = v105 = centerYAnchor;
+    v102 = [centerYAnchor constraintEqualToAnchor:?];
     v122[4] = v102;
-    v36 = [v27 topAnchor];
-    v100 = [(CarShareTripContactCell *)v5 contentView];
-    [v100 topAnchor];
-    v99 = v101 = v36;
-    v98 = [v36 constraintGreaterThanOrEqualToAnchor:6.0 constant:?];
+    topAnchor2 = [v27 topAnchor];
+    contentView9 = [(CarShareTripContactCell *)v5 contentView];
+    [contentView9 topAnchor];
+    v99 = v101 = topAnchor2;
+    v98 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:6.0 constant:?];
     v122[5] = v98;
-    v37 = [v27 centerYAnchor];
-    v96 = [(UIImageView *)v5->_contactImageView centerYAnchor];
-    v97 = v37;
-    v95 = [v37 constraintEqualToAnchor:?];
+    centerYAnchor2 = [v27 centerYAnchor];
+    centerYAnchor3 = [(UIImageView *)v5->_contactImageView centerYAnchor];
+    v97 = centerYAnchor2;
+    v95 = [centerYAnchor2 constraintEqualToAnchor:?];
     v122[6] = v95;
-    v94 = [(CarShareTripContactCell *)v5 contentView];
-    v38 = [v94 bottomAnchor];
-    v92 = [(UIImageView *)v5->_contactImageView bottomAnchor];
-    v93 = v38;
-    v91 = [v38 constraintGreaterThanOrEqualToAnchor:6.0 constant:?];
+    contentView10 = [(CarShareTripContactCell *)v5 contentView];
+    bottomAnchor = [contentView10 bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)v5->_contactImageView bottomAnchor];
+    v93 = bottomAnchor;
+    v91 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:6.0 constant:?];
     v122[7] = v91;
-    v90 = [(CarShareTripContactCell *)v5 contentView];
-    v39 = [v90 bottomAnchor];
-    v88 = [v27 bottomAnchor];
-    v89 = v39;
-    v87 = [v39 constraintGreaterThanOrEqualToAnchor:6.0 constant:?];
+    contentView11 = [(CarShareTripContactCell *)v5 contentView];
+    bottomAnchor3 = [contentView11 bottomAnchor];
+    bottomAnchor4 = [v27 bottomAnchor];
+    v89 = bottomAnchor3;
+    v87 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:6.0 constant:?];
     v122[8] = v87;
-    v40 = [(UIImageView *)v5->_contactImageView widthAnchor];
-    v85 = [(UIImageView *)v5->_contactImageView heightAnchor];
-    v86 = v40;
-    v84 = [v40 constraintEqualToAnchor:?];
+    widthAnchor = [(UIImageView *)v5->_contactImageView widthAnchor];
+    heightAnchor = [(UIImageView *)v5->_contactImageView heightAnchor];
+    v86 = widthAnchor;
+    v84 = [widthAnchor constraintEqualToAnchor:?];
     v122[9] = v84;
-    v83 = [(UIImageView *)v5->_contactImageView widthAnchor];
-    v82 = [v83 constraintEqualToConstant:34.0];
+    widthAnchor2 = [(UIImageView *)v5->_contactImageView widthAnchor];
+    v82 = [widthAnchor2 constraintEqualToConstant:34.0];
     v122[10] = v82;
-    v41 = [(SharedTripCapabilityBadgeView *)v5->_capabilityBadgeView trailingAnchor];
-    v80 = [(UIImageView *)v5->_contactImageView trailingAnchor];
-    v81 = v41;
-    v79 = [v41 constraintEqualToAnchor:2.0 constant:?];
+    trailingAnchor4 = [(SharedTripCapabilityBadgeView *)v5->_capabilityBadgeView trailingAnchor];
+    trailingAnchor5 = [(UIImageView *)v5->_contactImageView trailingAnchor];
+    v81 = trailingAnchor4;
+    v79 = [trailingAnchor4 constraintEqualToAnchor:2.0 constant:?];
     v122[11] = v79;
-    v42 = [(SharedTripCapabilityBadgeView *)v5->_capabilityBadgeView bottomAnchor];
-    v77 = [(UIImageView *)v5->_contactImageView bottomAnchor];
-    v78 = v42;
-    v76 = [v42 constraintEqualToAnchor:2.0 constant:?];
+    bottomAnchor5 = [(SharedTripCapabilityBadgeView *)v5->_capabilityBadgeView bottomAnchor];
+    bottomAnchor6 = [(UIImageView *)v5->_contactImageView bottomAnchor];
+    v78 = bottomAnchor5;
+    v76 = [bottomAnchor5 constraintEqualToAnchor:2.0 constant:?];
     v122[12] = v76;
-    v43 = [(CarSharingRingView *)v5->_sharingRingView centerXAnchor];
-    v74 = [(UIImageView *)v5->_contactImageView centerXAnchor];
-    v75 = v43;
-    v73 = [v43 constraintEqualToAnchor:?];
+    centerXAnchor = [(CarSharingRingView *)v5->_sharingRingView centerXAnchor];
+    centerXAnchor2 = [(UIImageView *)v5->_contactImageView centerXAnchor];
+    v75 = centerXAnchor;
+    v73 = [centerXAnchor constraintEqualToAnchor:?];
     v122[13] = v73;
-    v44 = [(CarSharingRingView *)v5->_sharingRingView centerYAnchor];
-    v71 = [(UIImageView *)v5->_contactImageView centerYAnchor];
-    v72 = v44;
-    v70 = [v44 constraintEqualToAnchor:?];
+    centerYAnchor4 = [(CarSharingRingView *)v5->_sharingRingView centerYAnchor];
+    centerYAnchor5 = [(UIImageView *)v5->_contactImageView centerYAnchor];
+    v72 = centerYAnchor4;
+    v70 = [centerYAnchor4 constraintEqualToAnchor:?];
     v122[14] = v70;
-    v45 = [(CarSharingRingView *)v5->_sharingRingView widthAnchor];
-    v68 = [(UIImageView *)v5->_contactImageView widthAnchor];
-    v69 = v45;
-    v67 = [v45 constraintEqualToAnchor:4.0 constant:?];
+    widthAnchor3 = [(CarSharingRingView *)v5->_sharingRingView widthAnchor];
+    widthAnchor4 = [(UIImageView *)v5->_contactImageView widthAnchor];
+    v69 = widthAnchor3;
+    v67 = [widthAnchor3 constraintEqualToAnchor:4.0 constant:?];
     v122[15] = v67;
-    v46 = [(CarSharingRingView *)v5->_sharingRingView heightAnchor];
-    v47 = [(UIImageView *)v5->_contactImageView heightAnchor];
-    v66 = v46;
-    v48 = [v46 constraintEqualToAnchor:v47 constant:4.0];
+    heightAnchor2 = [(CarSharingRingView *)v5->_sharingRingView heightAnchor];
+    heightAnchor3 = [(UIImageView *)v5->_contactImageView heightAnchor];
+    v66 = heightAnchor2;
+    v48 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 constant:4.0];
     v122[16] = v48;
-    v49 = [(CarShareTripContactCell *)v5 contentView];
-    v50 = [v49 heightAnchor];
-    v51 = [(UILabel *)v5->_contactNameLabel font];
-    [v51 lineHeight];
+    contentView12 = [(CarShareTripContactCell *)v5 contentView];
+    heightAnchor4 = [contentView12 heightAnchor];
+    font = [(UILabel *)v5->_contactNameLabel font];
+    [font lineHeight];
     v53 = v52;
-    v54 = [(UILabel *)v5->_subtitleLabel font];
-    [v54 lineHeight];
+    font2 = [(UILabel *)v5->_subtitleLabel font];
+    [font2 lineHeight];
     v56 = v55 + v53;
     if (v56 <= 34.0)
     {
@@ -600,15 +600,15 @@ LABEL_6:
 
     else
     {
-      v65 = [(UILabel *)v5->_contactNameLabel font];
-      [v65 lineHeight];
+      font3 = [(UILabel *)v5->_contactNameLabel font];
+      [font3 lineHeight];
       v58 = v57;
-      v64 = [(UILabel *)v5->_subtitleLabel font];
-      [v64 lineHeight];
+      font4 = [(UILabel *)v5->_subtitleLabel font];
+      [font4 lineHeight];
       v60 = v58 + 12.0 + v59;
     }
 
-    v61 = [v50 constraintGreaterThanOrEqualToConstant:v60];
+    v61 = [heightAnchor4 constraintGreaterThanOrEqualToConstant:v60];
     v122[17] = v61;
     v62 = [NSArray arrayWithObjects:v122 count:18];
     [NSLayoutConstraint activateConstraints:v62];
@@ -621,38 +621,38 @@ LABEL_6:
   return v5;
 }
 
-- (void)configureWithSharedTrip:(id)a3
+- (void)configureWithSharedTrip:(id)trip
 {
   self->_sharingState = 0;
-  v4 = a3;
-  v5 = [v4 carPlayListCellTitle];
-  [(UILabel *)self->_contactNameLabel setText:v5];
+  tripCopy = trip;
+  carPlayListCellTitle = [tripCopy carPlayListCellTitle];
+  [(UILabel *)self->_contactNameLabel setText:carPlayListCellTitle];
 
-  v6 = [v4 carPlayListCellSubtitle];
-  [(UILabel *)self->_subtitleLabel setText:v6];
+  carPlayListCellSubtitle = [tripCopy carPlayListCellSubtitle];
+  [(UILabel *)self->_subtitleLabel setText:carPlayListCellSubtitle];
 
   [(UILabel *)self->_subtitleLabel setHidden:0];
   [(CarShareTripContactCell *)self setSharingHandle:0];
-  v8 = [v4 senderInfo];
+  senderInfo = [tripCopy senderInfo];
 
-  v7 = [v8 localContactIdentifier];
-  [(CarShareTripContactCell *)self _setContactIdentifier:v7];
+  localContactIdentifier = [senderInfo localContactIdentifier];
+  [(CarShareTripContactCell *)self _setContactIdentifier:localContactIdentifier];
 }
 
-- (void)configureWithMSPSharedTripContact:(id)a3
+- (void)configureWithMSPSharedTripContact:(id)contact
 {
-  objc_storeStrong(&self->_contactValue, a3);
-  v5 = a3;
-  v6 = [(CarShareTripContactCell *)self _contactNameStringFromContact:v5];
+  objc_storeStrong(&self->_contactValue, contact);
+  contactCopy = contact;
+  v6 = [(CarShareTripContactCell *)self _contactNameStringFromContact:contactCopy];
   [(CarShareTripContactCell *)self setContactName:v6];
 
-  v7 = [v5 stringValue];
-  [(CarShareTripContactCell *)self setSharingHandle:v7];
+  stringValue = [contactCopy stringValue];
+  [(CarShareTripContactCell *)self setSharingHandle:stringValue];
 
-  v9 = [v5 contact];
+  contact = [contactCopy contact];
 
-  v8 = [v9 identifier];
-  [(CarShareTripContactCell *)self _setContactIdentifier:v8];
+  identifier = [contact identifier];
+  [(CarShareTripContactCell *)self _setContactIdentifier:identifier];
 }
 
 @end

@@ -25,10 +25,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SBWindowingLayoutItemRequest *)self bundleID];
+  bundleID = [(SBWindowingLayoutItemRequest *)self bundleID];
   v6 = SBStringFromDisplayItemPreferredTileRole(self->_tileRole);
   v7 = NSStringFromBOOL();
-  v8 = [v3 stringWithFormat:@"<%@: %p> bundleIdentifier:%@ tileRole:%@ wantsFocus:%@", v4, self, v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> bundleIdentifier:%@ tileRole:%@ wantsFocus:%@", v4, self, bundleID, v6, v7];
 
   return v8;
 }

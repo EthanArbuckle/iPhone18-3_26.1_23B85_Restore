@@ -3,8 +3,8 @@
 - (id)_init;
 - (void)_cancel;
 - (void)_invalidate;
-- (void)addCancelAction:(id)a3;
-- (void)performAction:(id)a3;
+- (void)addCancelAction:(id)action;
+- (void)performAction:(id)action;
 @end
 
 @implementation PKAsyncOperationState
@@ -90,24 +90,24 @@
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = a3;
+    actionCopy = action;
     os_unfair_lock_lock(&self->_actionLock);
-    v4[2](v4);
+    actionCopy[2](actionCopy);
 
     os_unfair_lock_unlock(&self->_actionLock);
   }
 }
 
-- (void)addCancelAction:(id)a3
+- (void)addCancelAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    aBlock = v4;
+    aBlock = actionCopy;
     os_unfair_lock_lock(&self->_lock);
     if (self->_canceled || self->_invalidated)
     {

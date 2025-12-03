@@ -1,22 +1,22 @@
 @interface CKDistributedTimestampStateVector
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setBackingState:(id)a3;
-- (void)intersectStateVector:(id)a3;
-- (void)intersectVector:(id)a3;
-- (void)minusStateVector:(id)a3;
-- (void)minusVector:(id)a3;
-- (void)unionStateVector:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setBackingState:(id)state;
+- (void)intersectStateVector:(id)vector;
+- (void)intersectVector:(id)vector;
+- (void)minusStateVector:(id)vector;
+- (void)minusVector:(id)vector;
+- (void)unionStateVector:(id)vector;
 @end
 
 @implementation CKDistributedTimestampStateVector
 
-- (void)_setBackingState:(id)a3
+- (void)_setBackingState:(id)state
 {
-  v5 = objc_msgSend_mutableCopy(a3, a2, a3);
+  v5 = objc_msgSend_mutableCopy(state, a2, state);
   objc_msgSend___setBackingStateNoCopy_(self, v4, v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v7 = objc_msgSend_backingVector(self, v5, v6);
@@ -25,34 +25,34 @@
   return v4;
 }
 
-- (void)intersectVector:(id)a3
+- (void)intersectVector:(id)vector
 {
-  v14 = a3;
+  vectorCopy = vector;
   v6 = objc_msgSend_backingVector(self, v4, v5);
-  v9 = objc_msgSend_backingVector(v14, v7, v8);
+  v9 = objc_msgSend_backingVector(vectorCopy, v7, v8);
   v12 = objc_msgSend_vectorExpansionState(self, v10, v11);
   objc_msgSend_clockVector_intersectVector_withExpansionState_(v6, v13, v9, v12);
 }
 
-- (void)minusVector:(id)a3
+- (void)minusVector:(id)vector
 {
-  v14 = a3;
+  vectorCopy = vector;
   v6 = objc_msgSend_backingVector(self, v4, v5);
-  v9 = objc_msgSend_backingVector(v14, v7, v8);
+  v9 = objc_msgSend_backingVector(vectorCopy, v7, v8);
   v12 = objc_msgSend_vectorExpansionState(self, v10, v11);
   objc_msgSend_clockVector_minusVector_withExpansionState_(v6, v13, v9, v12);
 }
 
-- (void)unionStateVector:(id)a3
+- (void)unionStateVector:(id)vector
 {
   v86 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  vectorCopy = vector;
   v78 = objc_msgSend_backingVector(self, v5, v6);
   objc_sync_enter(v78);
-  obj = objc_msgSend_backingVector(v4, v7, v8);
+  obj = objc_msgSend_backingVector(vectorCopy, v7, v8);
   objc_sync_enter(obj);
   v11 = objc_msgSend_backingVector(self, v9, v10);
-  v14 = objc_msgSend_backingVector(v4, v12, v13);
+  v14 = objc_msgSend_backingVector(vectorCopy, v12, v13);
   objc_msgSend_clockVector_checkInvariantsAgainstVector_(v11, v15, v14);
 
   v16 = objc_opt_new();
@@ -62,7 +62,7 @@
   v25 = objc_msgSend_allKeys(v22, v23, v24);
   objc_msgSend_addObjectsFromArray_(v80, v26, v25);
 
-  v29 = objc_msgSend_backingVector(v4, v27, v28);
+  v29 = objc_msgSend_backingVector(vectorCopy, v27, v28);
   v32 = objc_msgSend_mutableAttributeToSparseVector(v29, v30, v31);
   v35 = objc_msgSend_allKeys(v32, v33, v34);
   objc_msgSend_addObjectsFromArray_(v80, v36, v35);
@@ -95,7 +95,7 @@
         v55 = objc_msgSend_shortValue(v51, v53, v54);
         v57 = objc_msgSend_vectorFilteredByAttribute_(v52, v56, v55);
 
-        v60 = objc_msgSend_backingVector(v4, v58, v59);
+        v60 = objc_msgSend_backingVector(vectorCopy, v58, v59);
         v63 = objc_msgSend_shortValue(v51, v61, v62);
         v65 = objc_msgSend_vectorFilteredByAttribute_(v60, v64, v63);
 
@@ -123,19 +123,19 @@
   v77 = *MEMORY[0x1E69E9840];
 }
 
-- (void)minusStateVector:(id)a3
+- (void)minusStateVector:(id)vector
 {
   v91 = *MEMORY[0x1E69E9840];
-  v84 = a3;
+  vectorCopy = vector;
   v81 = objc_msgSend_backingVector(self, v4, v5);
   objc_sync_enter(v81);
-  obj = objc_msgSend_backingVector(v84, v6, v7);
+  obj = objc_msgSend_backingVector(vectorCopy, v6, v7);
   objc_sync_enter(obj);
   v10 = objc_msgSend_backingVector(self, v8, v9);
-  v13 = objc_msgSend_backingVector(v84, v11, v12);
+  v13 = objc_msgSend_backingVector(vectorCopy, v11, v12);
   objc_msgSend_clockVector_checkInvariantsAgainstVector_(v10, v14, v13);
 
-  v17 = objc_msgSend_backingVector(v84, v15, v16);
+  v17 = objc_msgSend_backingVector(vectorCopy, v15, v16);
   v20 = objc_msgSend_allSiteIdentifiers(self, v18, v19);
   v23 = objc_msgSend_vectorExpansionState(self, v21, v22);
   v25 = objc_msgSend_clockVector_vectorFillingInImplicitClockValuesUsingSiteIdentifiers_withExpansionState_(v17, v24, v20, v23);
@@ -199,24 +199,24 @@
   v80 = *MEMORY[0x1E69E9840];
 }
 
-- (void)intersectStateVector:(id)a3
+- (void)intersectStateVector:(id)vector
 {
-  v52 = a3;
+  vectorCopy = vector;
   v6 = objc_msgSend_backingVector(self, v4, v5);
   objc_sync_enter(v6);
-  v9 = objc_msgSend_backingVector(v52, v7, v8);
+  v9 = objc_msgSend_backingVector(vectorCopy, v7, v8);
   objc_sync_enter(v9);
   v12 = objc_msgSend_backingVector(self, v10, v11);
-  v15 = objc_msgSend_backingVector(v52, v13, v14);
+  v15 = objc_msgSend_backingVector(vectorCopy, v13, v14);
   objc_msgSend_clockVector_checkInvariantsAgainstVector_(v12, v16, v15);
 
   v19 = objc_msgSend_backingVector(self, v17, v18);
-  v22 = objc_msgSend_allSiteIdentifiers(v52, v20, v21);
+  v22 = objc_msgSend_allSiteIdentifiers(vectorCopy, v20, v21);
   v25 = objc_msgSend_vectorExpansionState(self, v23, v24);
   v27 = objc_msgSend_clockVector_vectorFillingInImplicitClockValuesUsingSiteIdentifiers_withExpansionState_(v19, v26, v22, v25);
   v30 = objc_msgSend_mutableCopy(v27, v28, v29);
 
-  v33 = objc_msgSend_backingVector(v52, v31, v32);
+  v33 = objc_msgSend_backingVector(vectorCopy, v31, v32);
   v36 = objc_msgSend_allSiteIdentifiers(self, v34, v35);
   v39 = objc_msgSend_vectorExpansionState(self, v37, v38);
   v41 = objc_msgSend_clockVector_vectorFillingInImplicitClockValuesUsingSiteIdentifiers_withExpansionState_(v33, v40, v36, v39);

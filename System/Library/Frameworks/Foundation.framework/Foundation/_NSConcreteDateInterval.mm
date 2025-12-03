@@ -1,7 +1,7 @@
 @interface _NSConcreteDateInterval
 - (_NSConcreteDateInterval)init;
-- (_NSConcreteDateInterval)initWithStartDate:(id)a3 duration:(double)a4;
-- (_NSConcreteDateInterval)initWithStartDate:(id)a3 endDate:(id)a4;
+- (_NSConcreteDateInterval)initWithStartDate:(id)date duration:(double)duration;
+- (_NSConcreteDateInterval)initWithStartDate:(id)date endDate:(id)endDate;
 - (id)endDate;
 - (void)dealloc;
 @end
@@ -37,24 +37,24 @@
 
 - (_NSConcreteDateInterval)init
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
 
-  return [(_NSConcreteDateInterval *)self initWithStartDate:v3 duration:0.0];
+  return [(_NSConcreteDateInterval *)self initWithStartDate:date duration:0.0];
 }
 
-- (_NSConcreteDateInterval)initWithStartDate:(id)a3 duration:(double)a4
+- (_NSConcreteDateInterval)initWithStartDate:(id)date duration:(double)duration
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!date)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = [NSString stringWithFormat:@"Start date is nil!", _NSMethodExceptionProem(self, a2)];
     goto LABEL_8;
   }
 
-  if (a4 < 0.0)
+  if (duration < 0.0)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = [NSString stringWithFormat:@"Duration is less than 0!", _NSMethodExceptionProem(self, a2)];
 LABEL_8:
     v10 = v9;
@@ -67,17 +67,17 @@ LABEL_8:
   v6 = [(NSDateInterval *)&v11 init];
   if (v6)
   {
-    v6->_startDate = [a3 copy];
-    v6->_duration = a4;
+    v6->_startDate = [date copy];
+    v6->_duration = duration;
   }
 
   return v6;
 }
 
-- (_NSConcreteDateInterval)initWithStartDate:(id)a3 endDate:(id)a4
+- (_NSConcreteDateInterval)initWithStartDate:(id)date endDate:(id)endDate
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!date)
   {
     v11 = [NSString stringWithFormat:@"Start date is nil!", _NSMethodExceptionProem(self, a2)];
 LABEL_9:
@@ -88,13 +88,13 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!endDate)
   {
     v11 = [NSString stringWithFormat:@"End date is nil!", _NSMethodExceptionProem(self, a2)];
     goto LABEL_9;
   }
 
-  if ([a3 compare:a4] == 1)
+  if ([date compare:endDate] == 1)
   {
     v12 = [NSString stringWithFormat:@"Start date cannot be later in time than end date!", _NSMethodExceptionProem(self, a2)];
 
@@ -109,8 +109,8 @@ LABEL_11:
   v8 = [(NSDateInterval *)&v15 init];
   if (v8)
   {
-    v8->_startDate = [a3 copy];
-    [a4 timeIntervalSinceDate:a3];
+    v8->_startDate = [date copy];
+    [endDate timeIntervalSinceDate:date];
     v8->_duration = v9;
   }
 

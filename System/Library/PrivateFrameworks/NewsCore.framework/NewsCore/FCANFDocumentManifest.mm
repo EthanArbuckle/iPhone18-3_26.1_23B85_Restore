@@ -1,31 +1,31 @@
 @interface FCANFDocumentManifest
-- (FCANFDocumentManifest)initWithCoder:(id)a3;
-- (FCANFDocumentManifest)initWithNonImageResourceIDs:(id)a3 optimalImageResourceIDs:(id)a4 smallestImageResourceIDs:(id)a5;
+- (FCANFDocumentManifest)initWithCoder:(id)coder;
+- (FCANFDocumentManifest)initWithNonImageResourceIDs:(id)ds optimalImageResourceIDs:(id)iDs smallestImageResourceIDs:(id)resourceIDs;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCANFDocumentManifest
 
-- (FCANFDocumentManifest)initWithNonImageResourceIDs:(id)a3 optimalImageResourceIDs:(id)a4 smallestImageResourceIDs:(id)a5
+- (FCANFDocumentManifest)initWithNonImageResourceIDs:(id)ds optimalImageResourceIDs:(id)iDs smallestImageResourceIDs:(id)resourceIDs
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  resourceIDsCopy = resourceIDs;
   v19.receiver = self;
   v19.super_class = FCANFDocumentManifest;
   v11 = [(FCANFDocumentManifest *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dsCopy copy];
     nonImageResourceIDs = v11->_nonImageResourceIDs;
     v11->_nonImageResourceIDs = v12;
 
-    v14 = [v9 copy];
+    v14 = [iDsCopy copy];
     optimalImageResourceIDs = v11->_optimalImageResourceIDs;
     v11->_optimalImageResourceIDs = v14;
 
-    v16 = [v10 copy];
+    v16 = [resourceIDsCopy copy];
     smallestImageResourceIDs = v11->_smallestImageResourceIDs;
     v11->_smallestImageResourceIDs = v16;
   }
@@ -37,31 +37,31 @@
 {
   v3 = [[FCDescription alloc] initWithObject:self];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(FCANFDocumentManifest *)self nonImageResourceIDs];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  nonImageResourceIDs = [(FCANFDocumentManifest *)self nonImageResourceIDs];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(nonImageResourceIDs, "count")}];
   [(FCDescription *)v3 addField:@"nonImageResourceIDs" object:v6];
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(FCANFDocumentManifest *)self optimalImageResourceIDs];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+  optimalImageResourceIDs = [(FCANFDocumentManifest *)self optimalImageResourceIDs];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(optimalImageResourceIDs, "count")}];
   [(FCDescription *)v3 addField:@"optimalImageResourceIDs" object:v9];
 
   v10 = MEMORY[0x1E696AD98];
-  v11 = [(FCANFDocumentManifest *)self smallestImageResourceIDs];
-  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
+  smallestImageResourceIDs = [(FCANFDocumentManifest *)self smallestImageResourceIDs];
+  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(smallestImageResourceIDs, "count")}];
   [(FCDescription *)v3 addField:@"smallestImageResourceIDs" object:v12];
 
-  v13 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v13;
+  return descriptionString;
 }
 
-- (FCANFDocumentManifest)initWithCoder:(id)a3
+- (FCANFDocumentManifest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"nonImageResourceIDs"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"optimalImageResourceIDs"];
-  v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"smallestImageResourceIDs"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"nonImageResourceIDs"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"optimalImageResourceIDs"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"smallestImageResourceIDs"];
 
   if (v5)
   {
@@ -98,17 +98,17 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FCANFDocumentManifest *)self nonImageResourceIDs];
-  [v4 encodeObject:v5 forKey:@"nonImageResourceIDs"];
+  coderCopy = coder;
+  nonImageResourceIDs = [(FCANFDocumentManifest *)self nonImageResourceIDs];
+  [coderCopy encodeObject:nonImageResourceIDs forKey:@"nonImageResourceIDs"];
 
-  v6 = [(FCANFDocumentManifest *)self optimalImageResourceIDs];
-  [v4 encodeObject:v6 forKey:@"optimalImageResourceIDs"];
+  optimalImageResourceIDs = [(FCANFDocumentManifest *)self optimalImageResourceIDs];
+  [coderCopy encodeObject:optimalImageResourceIDs forKey:@"optimalImageResourceIDs"];
 
-  v7 = [(FCANFDocumentManifest *)self smallestImageResourceIDs];
-  [v4 encodeObject:v7 forKey:@"smallestImageResourceIDs"];
+  smallestImageResourceIDs = [(FCANFDocumentManifest *)self smallestImageResourceIDs];
+  [coderCopy encodeObject:smallestImageResourceIDs forKey:@"smallestImageResourceIDs"];
 }
 
 @end

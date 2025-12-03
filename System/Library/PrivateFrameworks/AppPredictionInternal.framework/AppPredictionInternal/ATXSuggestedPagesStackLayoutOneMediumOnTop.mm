@@ -1,21 +1,21 @@
 @interface ATXSuggestedPagesStackLayoutOneMediumOnTop
-- (id)makeStacksFromWidgets:(id)a3 pageType:(int64_t)a4 environment:(id)a5;
-- (unint64_t)maxAppRowsForPageType:(int64_t)a3;
+- (id)makeStacksFromWidgets:(id)widgets pageType:(int64_t)type environment:(id)environment;
+- (unint64_t)maxAppRowsForPageType:(int64_t)type;
 @end
 
 @implementation ATXSuggestedPagesStackLayoutOneMediumOnTop
 
-- (id)makeStacksFromWidgets:(id)a3 pageType:(int64_t)a4 environment:(id)a5
+- (id)makeStacksFromWidgets:(id)widgets pageType:(int64_t)type environment:(id)environment
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  widgetsCopy = widgets;
+  environmentCopy = environment;
   v8 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = v6;
+  v9 = widgetsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v10)
   {
@@ -46,8 +46,8 @@
   if ([v8 count])
   {
     v15 = +[ATXSuggestedPagesUtils createMediumStack];
-    v16 = [v7 tunableConstants];
-    v17 = +[ATXSuggestedPagesUtils sortWidgetsByDescendingScore:limit:](ATXSuggestedPagesUtils, "sortWidgetsByDescendingScore:limit:", v8, [v16 maxWidgetsInStack]);
+    tunableConstants = [environmentCopy tunableConstants];
+    v17 = +[ATXSuggestedPagesUtils sortWidgetsByDescendingScore:limit:](ATXSuggestedPagesUtils, "sortWidgetsByDescendingScore:limit:", v8, [tunableConstants maxWidgetsInStack]);
     [v15 setWidgets:v17];
 
     v25 = v15;
@@ -64,7 +64,7 @@
   return v18;
 }
 
-- (unint64_t)maxAppRowsForPageType:(int64_t)a3
+- (unint64_t)maxAppRowsForPageType:(int64_t)type
 {
   if ([MEMORY[0x277D42590] isiPad])
   {

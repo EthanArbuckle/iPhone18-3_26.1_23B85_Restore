@@ -1,7 +1,7 @@
 @interface AVTStickerCamera
-+ (id)cameraFromDictionary:(id)a3 assetsPath:(id)a4;
++ (id)cameraFromDictionary:(id)dictionary assetsPath:(id)path;
 + (id)stickerCameraCache;
-- (AVTStickerCamera)initWithCameraNode:(id)a3;
+- (AVTStickerCamera)initWithCameraNode:(id)node;
 - (id)buildNode;
 @end
 
@@ -26,22 +26,22 @@ uint64_t __38__AVTStickerCamera_stickerCameraCache__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)cameraFromDictionary:(id)a3 assetsPath:(id)a4
++ (id)cameraFromDictionary:(id)dictionary assetsPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKey:@"scene"];
-  v9 = [v7 objectForKey:@"name"];
+  pathCopy = path;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKey:@"scene"];
+  v9 = [dictionaryCopy objectForKey:@"name"];
 
-  v10 = [v6 stringByAppendingPathComponent:v8];
+  v10 = [pathCopy stringByAppendingPathComponent:v8];
 
   v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10 isDirectory:0];
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v11 standardizedURL];
-  v14 = [v12 stringWithFormat:@"%@.%@", v13, v9];
+  standardizedURL = [v11 standardizedURL];
+  v14 = [v12 stringWithFormat:@"%@.%@", standardizedURL, v9];
 
-  v15 = [a1 stickerCameraCache];
-  v16 = [v15 objectForKey:v14];
+  stickerCameraCache = [self stickerCameraCache];
+  v16 = [stickerCameraCache objectForKey:v14];
   if (!v16)
   {
     v22 = 0;
@@ -62,7 +62,7 @@ uint64_t __38__AVTStickerCamera_stickerCameraCache__block_invoke()
     else
     {
       v16 = [[AVTStickerCamera alloc] initWithCameraNode:v17];
-      [v15 setObject:v16 forKey:v14];
+      [stickerCameraCache setObject:v16 forKey:v14];
       v19 = v17;
     }
   }
@@ -70,16 +70,16 @@ uint64_t __38__AVTStickerCamera_stickerCameraCache__block_invoke()
   return v16;
 }
 
-- (AVTStickerCamera)initWithCameraNode:(id)a3
+- (AVTStickerCamera)initWithCameraNode:(id)node
 {
-  v5 = a3;
+  nodeCopy = node;
   v9.receiver = self;
   v9.super_class = AVTStickerCamera;
   v6 = [(AVTStickerCamera *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_node, a3);
+    objc_storeStrong(&v6->_node, node);
   }
 
   return v7;
@@ -87,12 +87,12 @@ uint64_t __38__AVTStickerCamera_stickerCameraCache__block_invoke()
 
 - (id)buildNode
 {
-  v2 = [(AVTStickerCamera *)self node];
-  v3 = [v2 clone];
+  node = [(AVTStickerCamera *)self node];
+  clone = [node clone];
 
-  [v3 enumerateHierarchyUsingBlock:&__block_literal_global_35];
+  [clone enumerateHierarchyUsingBlock:&__block_literal_global_35];
 
-  return v3;
+  return clone;
 }
 
 void __29__AVTStickerCamera_buildNode__block_invoke(uint64_t a1, void *a2)

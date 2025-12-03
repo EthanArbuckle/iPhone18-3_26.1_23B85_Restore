@@ -10,100 +10,100 @@
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
   v6 = objc_alloc_init(v4);
-  if ([a1 year] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self year] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 if_setObjectIfNonNil:0 forKey:@"year"];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "year")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "year")}];
     [v6 if_setObjectIfNonNil:v7 forKey:@"year"];
   }
 
-  if ([a1 month] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self month] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 if_setObjectIfNonNil:0 forKey:@"month"];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "month")}];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "month")}];
     [v6 if_setObjectIfNonNil:v8 forKey:@"month"];
   }
 
-  if ([a1 day] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self day] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 if_setObjectIfNonNil:0 forKey:@"day"];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "day")}];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "day")}];
     [v6 if_setObjectIfNonNil:v9 forKey:@"day"];
   }
 
-  if ([a1 weekday] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self weekday] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 if_setObjectIfNonNil:0 forKey:@"weekday"];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "weekday")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "weekday")}];
     [v6 if_setObjectIfNonNil:v10 forKey:@"weekday"];
   }
 
-  if ([a1 hour] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self hour] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 if_setObjectIfNonNil:0 forKey:@"hour"];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "hour")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "hour")}];
     [v6 if_setObjectIfNonNil:v11 forKey:@"hour"];
   }
 
-  if ([a1 minute] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self minute] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 if_setObjectIfNonNil:0 forKey:@"minute"];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "minute")}];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "minute")}];
     [v6 if_setObjectIfNonNil:v12 forKey:@"minute"];
   }
 
-  if ([a1 second] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self second] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 if_setObjectIfNonNil:0 forKey:@"second"];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "second")}];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "second")}];
     [v6 if_setObjectIfNonNil:v13 forKey:@"second"];
   }
 
-  if ([a1 nanosecond] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self nanosecond] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v6 if_setObjectIfNonNil:0 forKey:@"nanosecond"];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "nanosecond")}];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "nanosecond")}];
     [v6 if_setObjectIfNonNil:v14 forKey:@"nanosecond"];
   }
 
-  v15 = [a1 calendar];
-  v16 = [v5 encodeObject:v15];
+  calendar = [self calendar];
+  v16 = [v5 encodeObject:calendar];
   [v6 if_setObjectIfNonNil:v16 forKey:@"calendar"];
 
-  v17 = [a1 timeZone];
-  v18 = [v5 encodeObject:v17];
+  timeZone = [self timeZone];
+  v18 = [v5 encodeObject:timeZone];
 
   [v6 if_setObjectIfNonNil:v18 forKey:@"timeZone"];
   v19 = [v6 copy];

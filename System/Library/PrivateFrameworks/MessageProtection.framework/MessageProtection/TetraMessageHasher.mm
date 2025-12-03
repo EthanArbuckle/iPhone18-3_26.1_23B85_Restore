@@ -1,13 +1,13 @@
 @interface TetraMessageHasher
-+ (id)hashMessage:(id)a3;
++ (id)hashMessage:(id)message;
 - (_TtC17MessageProtection18TetraMessageHasher)init;
 @end
 
 @implementation TetraMessageHasher
 
-+ (id)hashMessage:(id)a3
++ (id)hashMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = specialized static TetraMessageHasher.hashMessage(_:)();
   v6 = v5;
 

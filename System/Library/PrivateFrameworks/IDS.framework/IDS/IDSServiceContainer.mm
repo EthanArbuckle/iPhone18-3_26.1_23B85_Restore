@@ -1,21 +1,21 @@
 @interface IDSServiceContainer
-- (BOOL)addListenerID:(id)a3;
-- (BOOL)hasListenerID:(id)a3;
-- (BOOL)removeListenerID:(id)a3;
-- (IDSServiceContainer)initWithService:(id)a3;
+- (BOOL)addListenerID:(id)d;
+- (BOOL)hasListenerID:(id)d;
+- (BOOL)removeListenerID:(id)d;
+- (IDSServiceContainer)initWithService:(id)service;
 @end
 
 @implementation IDSServiceContainer
 
-- (IDSServiceContainer)initWithService:(id)a3
+- (IDSServiceContainer)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v11.receiver = self;
   v11.super_class = IDSServiceContainer;
   v5 = [(IDSServiceContainer *)&v11 init];
   if (v5)
   {
-    v6 = [[IDSServiceMonitor alloc] initWithService:v4];
+    v6 = [[IDSServiceMonitor alloc] initWithService:serviceCopy];
     monitor = v5->_monitor;
     v5->_monitor = v6;
 
@@ -27,9 +27,9 @@
   return v5;
 }
 
-- (BOOL)hasListenerID:(id)a3
+- (BOOL)hasListenerID:(id)d
 {
-  if (a3)
+  if (d)
   {
     return [(NSMutableSet *)self->_listeners containsObject:?];
   }
@@ -40,11 +40,11 @@
   }
 }
 
-- (BOOL)addListenerID:(id)a3
+- (BOOL)addListenerID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy && [dCopy length])
   {
     [(NSMutableSet *)self->_listeners addObject:v5];
     v6 = 1;
@@ -58,14 +58,14 @@
   return v6;
 }
 
-- (BOOL)removeListenerID:(id)a3
+- (BOOL)removeListenerID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    [(NSMutableSet *)self->_listeners removeObject:a3];
+    [(NSMutableSet *)self->_listeners removeObject:d];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

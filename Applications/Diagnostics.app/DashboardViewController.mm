@@ -1,13 +1,13 @@
 @interface DashboardViewController
-- (_TtC11Diagnostics23DashboardViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)cancelTappedWithSender:(id)a3;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC11Diagnostics23DashboardViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)cancelTappedWithSender:(id)sender;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DashboardViewController
@@ -25,13 +25,13 @@
   sub_10007E5FC(v4);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for DashboardViewController();
   v4 = v5.receiver;
-  [(DashboardViewController *)&v5 viewDidAppear:v3];
+  [(DashboardViewController *)&v5 viewDidAppear:appearCopy];
   if (qword_1001FC838 != -1)
   {
     swift_once();
@@ -44,38 +44,38 @@
   sub_100150C44();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000809C4(a3);
+  selfCopy = self;
+  sub_1000809C4(appear);
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_100081B38(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100081B38(section);
   v9 = v8;
 
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = self;
-  v6 = sub_100080C98(a4);
+  selfCopy = self;
+  v6 = sub_100080C98(section);
 
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = self;
-  sub_100080AD4(a4);
+  selfCopy = self;
+  sub_100080AD4(section);
   if (v6)
   {
 
-    v7 = sub_100080C98(a4);
+    v7 = sub_100080C98(section);
     [v7 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
     v9 = v8;
   }
@@ -89,7 +89,7 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
   type metadata accessor for DashboardSectionHeaderView();
   v6 = swift_dynamicCastClass();
@@ -106,22 +106,22 @@
     v12[2] = sub_100031FA8;
     v12[3] = &unk_1001C2058;
     v10 = _Block_copy(v12);
-    v11 = a4;
+    headerViewCopy = headerView;
 
     [v9 animateWithDuration:0x10000 delay:v10 options:0 animations:0.375 completion:0.0];
     _Block_release(v10);
   }
 }
 
-- (void)cancelTappedWithSender:(id)a3
+- (void)cancelTappedWithSender:(id)sender
 {
-  v4 = a3;
-  sub_100088E48(0, a3);
+  senderCopy = sender;
+  sub_100088E48(0, sender);
 }
 
-- (_TtC11Diagnostics23DashboardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11Diagnostics23DashboardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -133,8 +133,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000814C8(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000814C8(v5, v7, bundle);
 }
 
 @end

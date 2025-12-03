@@ -6,30 +6,30 @@
 - (BOOL)snapshotsExist;
 - (BOOL)userConfigurationDataExists;
 - (NSSet)roles;
-- (PBFPosterExtensionDataStoreIntrospector)initWithURL:(id)a3 error:(id *)a4;
-- (id)_openDatabaseIfPossible:(id *)a3;
-- (id)associatedPosterForRole:(id)a3 parentPosterUUID:(id)a4;
-- (id)associatedPosterUUIDForPosterUUIDForRole:(id)a3 error:(id *)a4;
-- (id)associatedPosterUUIDForRole:(id)a3 parentPosterUUID:(id)a4 error:(id *)a5;
-- (id)extensionStoreCoordinatorForProvider:(id)a3;
-- (id)legacyAssociatedPosterForParentPosterUUID:(id)a3;
-- (id)legacyAssociatedPosterParentUUIDToChildUUIDWithError:(id *)a3;
-- (id)legacyAssociatedPosterUUIDForPosterUUID:(id)a3 error:(id *)a4;
-- (id)legacySelectedPosterUUIDWithError:(id *)a3;
-- (id)legacySortedPosterUUIDsWithError:(id *)a3;
-- (id)posterWithUUID:(id)a3;
-- (id)selectedPosterUUIDForRole:(id)a3 error:(id *)a4;
-- (id)sortedPosterUUIDsForRole:(id)a3 error:(id *)a4;
-- (unint64_t)numberOfPostersForRole:(id)a3;
+- (PBFPosterExtensionDataStoreIntrospector)initWithURL:(id)l error:(id *)error;
+- (id)_openDatabaseIfPossible:(id *)possible;
+- (id)associatedPosterForRole:(id)role parentPosterUUID:(id)d;
+- (id)associatedPosterUUIDForPosterUUIDForRole:(id)role error:(id *)error;
+- (id)associatedPosterUUIDForRole:(id)role parentPosterUUID:(id)d error:(id *)error;
+- (id)extensionStoreCoordinatorForProvider:(id)provider;
+- (id)legacyAssociatedPosterForParentPosterUUID:(id)d;
+- (id)legacyAssociatedPosterParentUUIDToChildUUIDWithError:(id *)error;
+- (id)legacyAssociatedPosterUUIDForPosterUUID:(id)d error:(id *)error;
+- (id)legacySelectedPosterUUIDWithError:(id *)error;
+- (id)legacySortedPosterUUIDsWithError:(id *)error;
+- (id)posterWithUUID:(id)d;
+- (id)selectedPosterUUIDForRole:(id)role error:(id *)error;
+- (id)sortedPosterUUIDsForRole:(id)role error:(id *)error;
+- (unint64_t)numberOfPostersForRole:(id)role;
 - (void)_hydrate;
 @end
 
 @implementation PBFPosterExtensionDataStoreIntrospector
 
-- (PBFPosterExtensionDataStoreIntrospector)initWithURL:(id)a3 error:(id *)a4
+- (PBFPosterExtensionDataStoreIntrospector)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (![v6 checkResourceIsReachableAndReturnError:a4])
+  lCopy = l;
+  if (![lCopy checkResourceIsReachableAndReturnError:error])
   {
     goto LABEL_6;
   }
@@ -39,7 +39,7 @@
   self = [(PBFPosterExtensionDataStoreIntrospector *)&v18 init];
   if (self)
   {
-    v7 = [v6 copy];
+    v7 = [lCopy copy];
     dataStoreURL = self->_dataStoreURL;
     self->_dataStoreURL = v7;
 
@@ -56,8 +56,8 @@
     self->_extensionStoreCoordinators = v13;
 
     self->_dataStoreDatabaseExists = [(NSURL *)self->_dataStoreDatabaseURL checkResourceIsReachableAndReturnError:0];
-    v15 = [v6 lastPathComponent];
-    self->_dataStoreVersion = [v15 integerValue];
+    lastPathComponent = [lCopy lastPathComponent];
+    self->_dataStoreVersion = [lastPathComponent integerValue];
 
     if ([(NSArray *)self->_extensionStoreCoordinators count])
     {
@@ -66,22 +66,22 @@
     }
 
 LABEL_6:
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
 LABEL_5:
   self = self;
-  v16 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v16;
+  return selfCopy;
 }
 
-- (id)posterWithUUID:(id)a3
+- (id)posterWithUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -101,7 +101,7 @@ LABEL_7:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) latestPosterConfigurationForUUID:{v4, v13}];
+        v10 = [*(*(&v13 + 1) + 8 * i) latestPosterConfigurationForUUID:{dCopy, v13}];
         if (v10)
         {
           v11 = v10;
@@ -125,10 +125,10 @@ LABEL_11:
   return v11;
 }
 
-- (unint64_t)numberOfPostersForRole:(id)a3
+- (unint64_t)numberOfPostersForRole:(id)role
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  roleCopy = role;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -154,7 +154,7 @@ LABEL_11:
         v14[1] = 3221225472;
         v14[2] = __66__PBFPosterExtensionDataStoreIntrospector_numberOfPostersForRole___block_invoke;
         v14[3] = &unk_2782C92A8;
-        v15 = v4;
+        v15 = roleCopy;
         v11 = [v10 bs_filter:v14];
         v7 += [v11 count];
       }
@@ -181,38 +181,38 @@ uint64_t __66__PBFPosterExtensionDataStoreIntrospector_numberOfPostersForRole___
   return v4;
 }
 
-- (id)associatedPosterForRole:(id)a3 parentPosterUUID:(id)a4
+- (id)associatedPosterForRole:(id)role parentPosterUUID:(id)d
 {
-  v6 = a3;
-  if (!v6)
+  roleCopy = role;
+  if (!roleCopy)
   {
-    v6 = *MEMORY[0x277D3EEF0];
+    roleCopy = *MEMORY[0x277D3EEF0];
   }
 
-  v7 = [(PBFPosterExtensionDataStoreIntrospector *)self associatedPosterUUIDForRole:v6 parentPosterUUID:a4 error:0];
+  v7 = [(PBFPosterExtensionDataStoreIntrospector *)self associatedPosterUUIDForRole:roleCopy parentPosterUUID:d error:0];
   v8 = [(PBFPosterExtensionDataStoreIntrospector *)self posterWithUUID:v7];
 
   return v8;
 }
 
-- (id)legacyAssociatedPosterForParentPosterUUID:(id)a3
+- (id)legacyAssociatedPosterForParentPosterUUID:(id)d
 {
-  v4 = [(PBFPosterExtensionDataStoreIntrospector *)self legacyAssociatedPosterUUIDForPosterUUID:a3 error:0];
+  v4 = [(PBFPosterExtensionDataStoreIntrospector *)self legacyAssociatedPosterUUIDForPosterUUID:d error:0];
   v5 = [(PBFPosterExtensionDataStoreIntrospector *)self posterWithUUID:v4];
 
   return v5;
 }
 
-- (id)extensionStoreCoordinatorForProvider:(id)a3
+- (id)extensionStoreCoordinatorForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   extensionStoreCoordinators = self->_extensionStoreCoordinators;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__PBFPosterExtensionDataStoreIntrospector_extensionStoreCoordinatorForProvider___block_invoke;
   v9[3] = &unk_2782C92D0;
-  v10 = v4;
-  v6 = v4;
+  v10 = providerCopy;
+  v6 = providerCopy;
   v7 = [(NSArray *)extensionStoreCoordinators bs_firstObjectPassingTest:v9];
 
   return v7;
@@ -226,7 +226,7 @@ uint64_t __80__PBFPosterExtensionDataStoreIntrospector_extensionStoreCoordinator
   return v4;
 }
 
-- (id)legacySortedPosterUUIDsWithError:(id *)a3
+- (id)legacySortedPosterUUIDsWithError:(id *)error
 {
   legacySortedPosterUUIDs = self->_legacySortedPosterUUIDs;
   if (legacySortedPosterUUIDs)
@@ -280,8 +280,8 @@ uint64_t __80__PBFPosterExtensionDataStoreIntrospector_extensionStoreCoordinator
       if (!v9)
       {
         v16 = MEMORY[0x277CBEB70];
-        v17 = [v15 array];
-        v18 = [v17 bs_mapNoNulls:&__block_literal_global_30];
+        array = [v15 array];
+        v18 = [array bs_mapNoNulls:&__block_literal_global_30];
         v19 = [v16 orderedSetWithArray:v18];
         v20 = self->_legacySortedPosterUUIDs;
         self->_legacySortedPosterUUIDs = v19;
@@ -313,16 +313,16 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
   return v4;
 }
 
-- (id)legacyAssociatedPosterUUIDForPosterUUID:(id)a3 error:(id *)a4
+- (id)legacyAssociatedPosterUUIDForPosterUUID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PBFPosterExtensionDataStoreIntrospector *)self legacyAssociatedPosterParentUUIDToChildUUIDWithError:a4];
-  v8 = [v7 objectForKey:v6];
+  dCopy = d;
+  v7 = [(PBFPosterExtensionDataStoreIntrospector *)self legacyAssociatedPosterParentUUIDToChildUUIDWithError:error];
+  v8 = [v7 objectForKey:dCopy];
 
   return v8;
 }
 
-- (id)legacyAssociatedPosterParentUUIDToChildUUIDWithError:(id *)a3
+- (id)legacyAssociatedPosterParentUUIDToChildUUIDWithError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   legacyPosterToAssociatedPoster = self->_legacyPosterToAssociatedPoster;
@@ -338,7 +338,7 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v23 = self;
+    selfCopy = self;
     obj = self->_extensionStoreCoordinators;
     v7 = [(NSArray *)obj countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v7)
@@ -376,8 +376,8 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
 
                 v16 = *(*(&v26 + 1) + 8 * j);
                 v17 = [v16 objectForKeyedSubscript:@"kConfigurationAssociatedPosterUUIDKey"];
-                v18 = [v16 posterUUID];
-                if (v18)
+                posterUUID = [v16 posterUUID];
+                if (posterUUID)
                 {
                   v19 = v17 == 0;
                 }
@@ -389,7 +389,7 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
 
                 if (!v19)
                 {
-                  [v6 setObject:v18 forKeyedSubscript:v17];
+                  [v6 setObject:posterUUID forKeyedSubscript:v17];
                 }
               }
 
@@ -407,16 +407,16 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
     }
 
     v20 = [v6 copy];
-    v21 = v23->_legacyPosterToAssociatedPoster;
-    v23->_legacyPosterToAssociatedPoster = v20;
+    v21 = selfCopy->_legacyPosterToAssociatedPoster;
+    selfCopy->_legacyPosterToAssociatedPoster = v20;
 
-    v4 = v23->_legacyPosterToAssociatedPoster;
+    v4 = selfCopy->_legacyPosterToAssociatedPoster;
   }
 
   return v4;
 }
 
-- (id)legacySelectedPosterUUIDWithError:(id *)a3
+- (id)legacySelectedPosterUUIDWithError:(id *)error
 {
   legacySelectedPosterUUID = self->_legacySelectedPosterUUID;
   if (legacySelectedPosterUUID)
@@ -429,7 +429,7 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
     v7 = [MEMORY[0x277CBEBC0] pbf_switcherSelectedConfigurationURLForDataStoreURL:self->_dataStoreURL];
     if ([v7 checkResourceIsReachableAndReturnError:0])
     {
-      v8 = [v7 pf_loadFromPlistWithError:a3];
+      v8 = [v7 pf_loadFromPlistWithError:error];
       v9 = objc_opt_class();
       v10 = v8;
       if (v9)
@@ -468,11 +468,11 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
   return v4;
 }
 
-- (id)sortedPosterUUIDsForRole:(id)a3 error:(id *)a4
+- (id)sortedPosterUUIDsForRole:(id)role error:(id *)error
 {
-  v7 = a3;
+  roleCopy = role;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!roleCopy)
   {
     [PBFPosterExtensionDataStoreIntrospector sortedPosterUUIDsForRole:a2 error:?];
   }
@@ -482,13 +482,13 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
     [PBFPosterExtensionDataStoreIntrospector sortedPosterUUIDsForRole:a2 error:?];
   }
 
-  v8 = [(NSMutableDictionary *)self->_roleToSortedPosterUUID objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_roleToSortedPosterUUID objectForKeyedSubscript:roleCopy];
   if (!v8)
   {
     if (self->_dataStoreDatabaseExists)
     {
-      v9 = [(PBFPosterExtensionDataStoreIntrospector *)self _openDatabaseIfPossible:a4];
-      v8 = [v9 sortedPosterUUIDsForRole:v7 error:a4];
+      v9 = [(PBFPosterExtensionDataStoreIntrospector *)self _openDatabaseIfPossible:error];
+      v8 = [v9 sortedPosterUUIDsForRole:roleCopy error:error];
       if (!self->_roleToSortedPosterUUID)
       {
         v10 = objc_opt_new();
@@ -498,7 +498,7 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
 
       if (v8)
       {
-        [(NSMutableDictionary *)self->_roleToSortedPosterUUID setObject:v8 forKey:v7];
+        [(NSMutableDictionary *)self->_roleToSortedPosterUUID setObject:v8 forKey:roleCopy];
       }
 
       [v9 invalidate];
@@ -515,12 +515,12 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
   return v12;
 }
 
-- (id)associatedPosterUUIDForPosterUUIDForRole:(id)a3 error:(id *)a4
+- (id)associatedPosterUUIDForPosterUUIDForRole:(id)role error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  roleCopy = role;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!roleCopy)
   {
     [PBFPosterExtensionDataStoreIntrospector associatedPosterUUIDForPosterUUIDForRole:a2 error:?];
   }
@@ -540,13 +540,13 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
     roleToParentToChildPosterUUID = self->_roleToParentToChildPosterUUID;
   }
 
-  v11 = [(NSMutableDictionary *)roleToParentToChildPosterUUID objectForKey:v7];
+  v11 = [(NSMutableDictionary *)roleToParentToChildPosterUUID objectForKey:roleCopy];
 
   if (!v11 && self->_dataStoreDatabaseExists)
   {
-    v28 = self;
-    v12 = [(PBFPosterExtensionDataStoreIntrospector *)self _openDatabaseIfPossible:a4];
-    v13 = [v12 sortedPosterUUIDsForRole:v7 error:a4];
+    selfCopy = self;
+    v12 = [(PBFPosterExtensionDataStoreIntrospector *)self _openDatabaseIfPossible:error];
+    v13 = [v12 sortedPosterUUIDsForRole:roleCopy error:error];
     v29 = objc_opt_new();
     v31 = 0u;
     v32 = 0u;
@@ -569,20 +569,20 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
           }
 
           v19 = *(*(&v31 + 1) + 8 * i);
-          v20 = [v12 attributeForPoster:v19 roleId:v7 attributeId:v17 error:0];
+          v20 = [v12 attributeForPoster:v19 roleId:roleCopy attributeId:v17 error:0];
           if ([v20 length])
           {
-            v21 = v7;
+            v21 = roleCopy;
             v22 = PRPosterRoleAttributeForData();
-            v23 = [v22 childPosterUUID];
+            childPosterUUID = [v22 childPosterUUID];
 
-            if (v23)
+            if (childPosterUUID)
             {
-              v24 = [v22 childPosterUUID];
-              [v29 setObject:v24 forKeyedSubscript:v19];
+              childPosterUUID2 = [v22 childPosterUUID];
+              [v29 setObject:childPosterUUID2 forKeyedSubscript:v19];
             }
 
-            v7 = v21;
+            roleCopy = v21;
           }
         }
 
@@ -594,20 +594,20 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
 
     [v12 invalidate];
     v25 = [v29 copy];
-    self = v28;
-    [(NSMutableDictionary *)v28->_roleToParentToChildPosterUUID setObject:v25 forKeyedSubscript:v7];
+    self = selfCopy;
+    [(NSMutableDictionary *)selfCopy->_roleToParentToChildPosterUUID setObject:v25 forKeyedSubscript:roleCopy];
   }
 
-  v26 = [(NSMutableDictionary *)self->_roleToParentToChildPosterUUID objectForKeyedSubscript:v7];
+  v26 = [(NSMutableDictionary *)self->_roleToParentToChildPosterUUID objectForKeyedSubscript:roleCopy];
 
   return v26;
 }
 
-- (id)selectedPosterUUIDForRole:(id)a3 error:(id *)a4
+- (id)selectedPosterUUIDForRole:(id)role error:(id *)error
 {
-  v7 = a3;
+  roleCopy = role;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!roleCopy)
   {
     [PBFPosterExtensionDataStoreIntrospector selectedPosterUUIDForRole:a2 error:?];
   }
@@ -617,13 +617,13 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
     [PBFPosterExtensionDataStoreIntrospector selectedPosterUUIDForRole:a2 error:?];
   }
 
-  v8 = [(NSMutableDictionary *)self->_roleToSelectedPosterUUID objectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_roleToSelectedPosterUUID objectForKey:roleCopy];
   if (!v8)
   {
     if (self->_dataStoreDatabaseExists)
     {
-      v9 = [(PBFPosterExtensionDataStoreIntrospector *)self _openDatabaseIfPossible:a4];
-      v8 = [v9 selectedPosterUUIDForRole:v7 error:a4];
+      v9 = [(PBFPosterExtensionDataStoreIntrospector *)self _openDatabaseIfPossible:error];
+      v8 = [v9 selectedPosterUUIDForRole:roleCopy error:error];
       roleToSelectedPosterUUID = self->_roleToSelectedPosterUUID;
       if (!roleToSelectedPosterUUID)
       {
@@ -634,7 +634,7 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
         roleToSelectedPosterUUID = self->_roleToSelectedPosterUUID;
       }
 
-      [(NSMutableDictionary *)roleToSelectedPosterUUID bs_setSafeObject:v8 forKey:v7];
+      [(NSMutableDictionary *)roleToSelectedPosterUUID bs_setSafeObject:v8 forKey:roleCopy];
       [v9 invalidate];
     }
 
@@ -649,11 +649,11 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
   return v13;
 }
 
-- (id)associatedPosterUUIDForRole:(id)a3 parentPosterUUID:(id)a4 error:(id *)a5
+- (id)associatedPosterUUIDForRole:(id)role parentPosterUUID:(id)d error:(id *)error
 {
-  v8 = a4;
-  v9 = [(PBFPosterExtensionDataStoreIntrospector *)self associatedPosterUUIDForPosterUUIDForRole:a3 error:a5];
-  v10 = [v9 objectForKey:v8];
+  dCopy = d;
+  v9 = [(PBFPosterExtensionDataStoreIntrospector *)self associatedPosterUUIDForPosterUUIDForRole:role error:error];
+  v10 = [v9 objectForKey:dCopy];
 
   return v10;
 }
@@ -661,8 +661,8 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
 - (NSSet)roles
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_roleToSortedPosterUUID allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_roleToSortedPosterUUID allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
@@ -679,8 +679,8 @@ id __76__PBFPosterExtensionDataStoreIntrospector_legacySortedPosterUUIDsWithErro
 
   else
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 enumeratorAtURL:self->_dataStoreExtensionsURL includingPropertiesForKeys:0 options:0 errorHandler:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v6 = [defaultManager enumeratorAtURL:self->_dataStoreExtensionsURL includingPropertiesForKeys:0 options:0 errorHandler:0];
 
     v18 = 0u;
     v19 = 0u;
@@ -731,9 +731,9 @@ LABEL_16:
       v14 = self->_snapshotsExistSentinel;
     }
 
-    v15 = [(NSNumber *)v14 BOOLValue];
+    bOOLValue = [(NSNumber *)v14 BOOLValue];
 
-    return v15;
+    return bOOLValue;
   }
 }
 
@@ -871,8 +871,8 @@ LABEL_12:
             v40 = 0u;
             v41 = 0u;
             v42 = 0u;
-            v34 = [v9 allPosterPaths];
-            v10 = [v34 countByEnumeratingWithState:&v39 objects:v52 count:16];
+            allPosterPaths = [v9 allPosterPaths];
+            v10 = [allPosterPaths countByEnumeratingWithState:&v39 objects:v52 count:16];
             if (v10)
             {
               v11 = v10;
@@ -883,18 +883,18 @@ LABEL_17:
               {
                 if (*v40 != v12)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(allPosterPaths);
                 }
 
                 v14 = *(*(&v39 + 1) + 8 * v13);
                 v15 = [MEMORY[0x277D3EDE8] expectedConfigurationFilesForPath:v14];
-                v16 = [v14 contentsURL];
+                contentsURL = [v14 contentsURL];
                 v35 = 0u;
                 v36 = 0u;
                 v37 = 0u;
                 v38 = 0u;
-                v17 = [MEMORY[0x277CCAA00] defaultManager];
-                v18 = [v17 enumeratorAtURL:v16 includingPropertiesForKeys:0 options:0 errorHandler:0];
+                defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+                v18 = [defaultManager enumeratorAtURL:contentsURL includingPropertiesForKeys:0 options:0 errorHandler:0];
 
                 v19 = [v18 countByEnumeratingWithState:&v35 objects:v51 count:16];
                 if (v19)
@@ -939,7 +939,7 @@ LABEL_30:
 
                 if (++v13 == v11)
                 {
-                  v11 = [v34 countByEnumeratingWithState:&v39 objects:v52 count:16];
+                  v11 = [allPosterPaths countByEnumeratingWithState:&v39 objects:v52 count:16];
                   if (v11)
                   {
                     goto LABEL_17;
@@ -1051,8 +1051,8 @@ LABEL_7:
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v20 + 1) + 8 * i) allPosterPaths];
-              v16 = [v15 count];
+              allPosterPaths = [*(*(&v20 + 1) + 8 * i) allPosterPaths];
+              v16 = [allPosterPaths count];
 
               if (v16 >= 2)
               {
@@ -1110,8 +1110,8 @@ LABEL_20:
   legacyPosterToAssociatedPoster = self->_legacyPosterToAssociatedPoster;
   if (!legacyPosterToAssociatedPoster)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [(PBFPosterExtensionDataStoreIntrospector *)self legacyAssociatedPosterUUIDForPosterUUID:v4 error:0];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v5 = [(PBFPosterExtensionDataStoreIntrospector *)self legacyAssociatedPosterUUIDForPosterUUID:uUID error:0];
 
     legacyPosterToAssociatedPoster = self->_legacyPosterToAssociatedPoster;
   }
@@ -1172,13 +1172,13 @@ LABEL_13:
   return v10;
 }
 
-- (id)_openDatabaseIfPossible:(id *)a3
+- (id)_openDatabaseIfPossible:(id *)possible
 {
   if ([(NSURL *)self->_dataStoreDatabaseURL checkResourceIsReachableAndReturnError:?])
   {
-    v5 = [[PBFPosterExtensionDataStoreSQLiteDatabase alloc] initWithURL:self->_dataStoreDatabaseURL options:4 error:a3];
+    v5 = [[PBFPosterExtensionDataStoreSQLiteDatabase alloc] initWithURL:self->_dataStoreDatabaseURL options:4 error:possible];
     v6 = v5;
-    if (v5 && [(PBFPosterExtensionDataStoreSQLiteDatabase *)v5 validateDatabaseWithError:a3])
+    if (v5 && [(PBFPosterExtensionDataStoreSQLiteDatabase *)v5 validateDatabaseWithError:possible])
     {
       v7 = v6;
     }

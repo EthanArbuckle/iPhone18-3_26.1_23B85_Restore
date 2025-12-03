@@ -9,13 +9,13 @@
   v4 = a3;
   if ([v4 isEqualToString:@"birthdays"])
   {
-    v5 = [a1 maximumCountOfValuesForContactProperty:*MEMORY[0x1E695C1D0]];
-    v6 = [a1 maximumCountOfValuesForContactProperty:*MEMORY[0x1E695C318]] + v5;
+    v5 = [self maximumCountOfValuesForContactProperty:*MEMORY[0x1E695C1D0]];
+    v6 = [self maximumCountOfValuesForContactProperty:*MEMORY[0x1E695C318]] + v5;
   }
 
   else
   {
-    v6 = [a1 maximumCountOfValuesForContactProperty:v4];
+    v6 = [self maximumCountOfValuesForContactProperty:v4];
   }
 
   return v6;

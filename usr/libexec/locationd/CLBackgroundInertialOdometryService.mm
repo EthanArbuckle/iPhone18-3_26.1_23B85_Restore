@@ -1,17 +1,17 @@
 @interface CLBackgroundInertialOdometryService
 + (BOOL)isAvailable;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLBackgroundInertialOdometryService)init;
 - (id).cxx_construct;
-- (id)sessionForClient:(id)a3;
+- (id)sessionForClient:(id)client;
 - (void)beginService;
 - (void)dealloc;
 - (void)endService;
-- (void)isAvailableWithReply:(id)a3;
-- (void)onBackgroundBatchData:(const BackgroundInertialOdometryBatch *)a3;
-- (void)startBackgroundInertialOdometryUpdatesForClient:(id)a3 withIdentifier:(id)a4 usingReferenceFrame:(unint64_t)a5;
-- (void)stopBackgroundInertialOdometryUpdatesForClient:(id)a3;
+- (void)isAvailableWithReply:(id)reply;
+- (void)onBackgroundBatchData:(const BackgroundInertialOdometryBatch *)data;
+- (void)startBackgroundInertialOdometryUpdatesForClient:(id)client withIdentifier:(id)identifier usingReferenceFrame:(unint64_t)frame;
+- (void)stopBackgroundInertialOdometryUpdatesForClient:(id)client;
 - (void)toggleUpdates;
 @end
 
@@ -44,12 +44,12 @@
   return v3;
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -146,19 +146,19 @@
   [(CLBackgroundInertialOdometryService *)self toggleUpdates];
 }
 
-- (void)isAvailableWithReply:(id)a3
+- (void)isAvailableWithReply:(id)reply
 {
   v4 = +[CLBackgroundInertialOdometryService isAvailable];
-  v5 = *(a3 + 2);
+  v5 = *(reply + 2);
 
-  v5(a3, v4);
+  v5(reply, v4);
 }
 
-- (void)startBackgroundInertialOdometryUpdatesForClient:(id)a3 withIdentifier:(id)a4 usingReferenceFrame:(unint64_t)a5
+- (void)startBackgroundInertialOdometryUpdatesForClient:(id)client withIdentifier:(id)identifier usingReferenceFrame:(unint64_t)frame
 {
   if (+[CLBackgroundInertialOdometryService isAvailable])
   {
-    if ([(CLBackgroundInertialOdometryService *)self sessionForClient:a3])
+    if ([(CLBackgroundInertialOdometryService *)self sessionForClient:client])
     {
       if (qword_1025D4510 != -1)
       {
@@ -180,7 +180,7 @@
 
     else
     {
-      v10 = [[CLBackgroundInertialOdometryClientSession alloc] initWithClient:a3 withIdentifier:a4 usingReferenceFrame:a5 atMachContinuousTime:sub_1000081AC()];
+      v10 = [[CLBackgroundInertialOdometryClientSession alloc] initWithClient:client withIdentifier:identifier usingReferenceFrame:frame atMachContinuousTime:sub_1000081AC()];
       if (self->_isStatic && [(CLBackgroundInertialOdometryService *)self attitude])
       {
         v11 = [CMOdometry alloc];
@@ -209,11 +209,11 @@
   }
 }
 
-- (void)stopBackgroundInertialOdometryUpdatesForClient:(id)a3
+- (void)stopBackgroundInertialOdometryUpdatesForClient:(id)client
 {
   if (+[CLBackgroundInertialOdometryService isAvailable])
   {
-    v5 = [(CLBackgroundInertialOdometryService *)self sessionForClient:a3];
+    v5 = [(CLBackgroundInertialOdometryService *)self sessionForClient:client];
     if (v5)
     {
       [(NSMutableSet *)[(CLBackgroundInertialOdometryService *)self activeClients] removeObject:v5];
@@ -243,20 +243,20 @@
   }
 }
 
-- (void)onBackgroundBatchData:(const BackgroundInertialOdometryBatch *)a3
+- (void)onBackgroundBatchData:(const BackgroundInertialOdometryBatch *)data
 {
-  if ([(NSMutableSet *)[(CLBackgroundInertialOdometryService *)self activeClients] count]&& a3->var17[1])
+  if ([(NSMutableSet *)[(CLBackgroundInertialOdometryService *)self activeClients] count]&& data->var17[1])
   {
     v4 = 0;
-    v47 = &a3->var12[3] + 1;
-    v53 = &a3->var9[2] + 1;
-    v54 = &a3->var8[2] + 1;
-    v51 = &a3->var11[2] + 1;
-    v52 = &a3->var10[2] + 1;
-    v5 = &a3->var4[2] + 1;
+    v47 = &data->var12[3] + 1;
+    v53 = &data->var9[2] + 1;
+    v54 = &data->var8[2] + 1;
+    v51 = &data->var11[2] + 1;
+    v52 = &data->var10[2] + 1;
+    v5 = &data->var4[2] + 1;
     do
     {
-      v6 = *(&a3->var12[4] + v4 + 1);
+      v6 = *(&data->var12[4] + v4 + 1);
       v71[0] = _NSConcreteStackBlock;
       v71[1] = 3221225472;
       v72 = sub_10063BA1C;
@@ -311,7 +311,7 @@
       LODWORD(v14) = *&v51[4 * v4];
       v76[3] = [NSNumber numberWithFloat:v14];
       [(CLBackgroundInertialOdometryService *)self setAttitude:[NSArray arrayWithObjects:v76 count:4]];
-      v3 = *(&a3->var12[2] + 1) - *(self->_geomagneticModelClient.__ptr_ + 1);
+      v3 = *(&data->var12[2] + 1) - *(self->_geomagneticModelClient.__ptr_ + 1);
       *&v3 = v3;
       self->_rotationArbitraryToTrueNorth = *&v3;
       if ((v10 & 1) == 0 || !self->_isStatic)
@@ -338,7 +338,7 @@
               v62 = [CMOdometry alloc];
               if (v5[v4])
               {
-                LODWORD(v17) = *(&a3->var1[3] + 4 * v4 + 1);
+                LODWORD(v17) = *(&data->var1[3] + 4 * v4 + 1);
                 v18 = [NSNumber numberWithFloat:v17];
               }
 
@@ -350,7 +350,7 @@
               v61 = v72(v71, v18);
               if ((v5[v4] & 2) != 0)
               {
-                *&v19 = *(&a3->var2[v4 + 2] + 1);
+                *&v19 = *(&data->var2[v4 + 2] + 1);
                 v20 = [NSNumber numberWithFloat:v19];
               }
 
@@ -363,7 +363,7 @@
               v63 = v16;
               if ((v5[v4] & 4) != 0)
               {
-                *&v21 = *(&a3->var3[v4 + 2] + 1);
+                *&v21 = *(&data->var3[v4 + 2] + 1);
                 v22 = [NSNumber numberWithFloat:v21];
               }
 
@@ -373,13 +373,13 @@
               }
 
               v59 = v72(v71, v22);
-              *&v23 = *(&a3->var4[v4 + 3] + 1);
+              *&v23 = *(&data->var4[v4 + 3] + 1);
               v24 = [NSNumber numberWithFloat:v23];
               v58 = v72(v71, v24);
-              *&v25 = *(&a3->var6[v4 + 2] + 1);
+              *&v25 = *(&data->var6[v4 + 2] + 1);
               v26 = [NSNumber numberWithFloat:v25];
               v27 = v72(v71, v26);
-              *&v28 = *(&a3->var7[v4 + 2] + 1);
+              *&v28 = *(&data->var7[v4 + 2] + 1);
               v29 = [NSNumber numberWithFloat:v28];
               v30 = v72(v71, v29);
               LODWORD(v31) = *&v54[4 * v4];
@@ -394,12 +394,12 @@
               LODWORD(v40) = *&v51[4 * v4];
               v41 = [NSNumber numberWithFloat:v40];
               v42 = v72(v71, v41);
-              v43 = *(&a3->var12[2] + 1) - *(self->_geomagneticModelClient.__ptr_ + 1);
+              v43 = *(&data->var12[2] + 1) - *(self->_geomagneticModelClient.__ptr_ + 1);
               *&v43 = v43;
-              BYTE2(v46) = a3->var16[v4 + 1];
-              BYTE1(v46) = a3->var15[v4 + 1];
-              LOBYTE(v46) = a3->var14[v4 + 1];
-              v44 = [CMOdometry initWithDeltaPositionX:v62 deltaPositionY:"initWithDeltaPositionX:deltaPositionY:deltaPositionZ:deltaVelocityX:deltaVelocityY:deltaVelocityZ:quaternionX:quaternionY:quaternionZ:quaternionW:rotationArbitraryToTrueNorth:staticFlag:isDOTBiasChangePossible:isMounted:isZUPT:timestamp:" deltaPositionZ:v61 deltaVelocityX:v60 deltaVelocityY:v59 deltaVelocityZ:v58 quaternionX:v27 quaternionY:v30 quaternionZ:v43 quaternionW:*(&a3->var0 + 8 * v4 + 1) * 0.000001 rotationArbitraryToTrueNorth:v33 staticFlag:v36 isDOTBiasChangePossible:v39 isMounted:v42 isZUPT:v50 timestamp:v46];
+              BYTE2(v46) = data->var16[v4 + 1];
+              BYTE1(v46) = data->var15[v4 + 1];
+              LOBYTE(v46) = data->var14[v4 + 1];
+              v44 = [CMOdometry initWithDeltaPositionX:v62 deltaPositionY:"initWithDeltaPositionX:deltaPositionY:deltaPositionZ:deltaVelocityX:deltaVelocityY:deltaVelocityZ:quaternionX:quaternionY:quaternionZ:quaternionW:rotationArbitraryToTrueNorth:staticFlag:isDOTBiasChangePossible:isMounted:isZUPT:timestamp:" deltaPositionZ:v61 deltaVelocityX:v60 deltaVelocityY:v59 deltaVelocityZ:v58 quaternionX:v27 quaternionY:v30 quaternionZ:v43 quaternionW:*(&data->var0 + 8 * v4 + 1) * 0.000001 rotationArbitraryToTrueNorth:v33 staticFlag:v36 isDOTBiasChangePossible:v39 isMounted:v42 isZUPT:v50 timestamp:v46];
               v45 = v44;
               if (v63[1] == 8)
               {
@@ -408,7 +408,7 @@
 
               [objc_msgSend(v63 "client")];
 
-              v5 = &a3->var4[2] + 1;
+              v5 = &data->var4[2] + 1;
             }
 
             v57 = [(NSMutableSet *)obj countByEnumeratingWithState:&v64 objects:v75 count:16];
@@ -421,7 +421,7 @@
       ++v4;
     }
 
-    while (v4 < a3->var17[1]);
+    while (v4 < data->var17[1]);
   }
 }
 
@@ -463,14 +463,14 @@
   }
 }
 
-- (id)sessionForClient:(id)a3
+- (id)sessionForClient:(id)client
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CLBackgroundInertialOdometryService *)self activeClients];
-  v5 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  activeClients = [(CLBackgroundInertialOdometryService *)self activeClients];
+  v5 = [(NSMutableSet *)activeClients countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -484,18 +484,18 @@ LABEL_3:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(activeClients);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 client] == a3)
+    if ([v9 client] == client)
     {
       return v9;
     }
 
     if (v6 == ++v8)
     {
-      v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSMutableSet *)activeClients countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         goto LABEL_3;

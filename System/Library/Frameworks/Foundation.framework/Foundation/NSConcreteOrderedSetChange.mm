@@ -1,11 +1,11 @@
 @interface NSConcreteOrderedSetChange
-- (NSConcreteOrderedSetChange)initWithType:(unint64_t)a3 sourceIndex:(unint64_t)a4 destinationIndex:(unint64_t)a5 value:(id)a6;
+- (NSConcreteOrderedSetChange)initWithType:(unint64_t)type sourceIndex:(unint64_t)index destinationIndex:(unint64_t)destinationIndex value:(id)value;
 - (void)dealloc;
 @end
 
 @implementation NSConcreteOrderedSetChange
 
-- (NSConcreteOrderedSetChange)initWithType:(unint64_t)a3 sourceIndex:(unint64_t)a4 destinationIndex:(unint64_t)a5 value:(id)a6
+- (NSConcreteOrderedSetChange)initWithType:(unint64_t)type sourceIndex:(unint64_t)index destinationIndex:(unint64_t)destinationIndex value:(id)value
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -14,10 +14,10 @@
   v11 = v10;
   if (v10)
   {
-    v10->_changeType = a3;
-    v10->_sourceIndex = a4;
-    v10->_destinationIndex = a5;
-    v10->_value = a6;
+    v10->_changeType = type;
+    v10->_sourceIndex = index;
+    v10->_destinationIndex = destinationIndex;
+    v10->_value = value;
   }
 
   return v11;

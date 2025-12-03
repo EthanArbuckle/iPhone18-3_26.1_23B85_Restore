@@ -1,56 +1,56 @@
 @interface UMEventRecorder
-+ (BOOL)diagnosticsAndUsageAllowed:(id)a3;
-+ (id)recorderWithOptions:(id)a3;
++ (BOOL)diagnosticsAndUsageAllowed:(id)allowed;
++ (id)recorderWithOptions:(id)options;
 + (id)submitQueue;
-+ (int64_t)eventForEventString:(id)a3;
++ (int64_t)eventForEventString:(id)string;
 - (BOOL)_installInProgressAfterApply;
-- (BOOL)_setNvramValue:(id)a3 forKey:(id)a4;
-- (BOOL)_setPermissionsOnURL:(id)a3;
+- (BOOL)_setNvramValue:(id)value forKey:(id)key;
+- (BOOL)_setPermissionsOnURL:(id)l;
 - (BOOL)_syncNvram;
-- (BOOL)_updateRetryInformationForEvents:(id)a3;
-- (UMEventRecorder)initWithOptions:(id)a3;
-- (double)_timeIntervalUntilRetry:(id)a3;
-- (id)_copyEscapeStringsForEventData:(id)a3;
+- (BOOL)_updateRetryInformationForEvents:(id)events;
+- (UMEventRecorder)initWithOptions:(id)options;
+- (double)_timeIntervalUntilRetry:(id)retry;
+- (id)_copyEscapeStringsForEventData:(id)data;
 - (id)_currentEAPFSMode;
 - (id)_currentOSVersion;
 - (id)_defaults;
 - (id)_eventDirectory;
-- (id)_eventDirectoryWithMountPoint:(id)a3;
+- (id)_eventDirectoryWithMountPoint:(id)point;
 - (id)_getDiskUsage;
-- (id)_getGestaltDiskUsageKey:(__CFString *)a3 inDictionary:(id)a4;
-- (id)_getGestaltString:(__CFString *)a3 default:(id)a4;
-- (id)_getGestaltValue:(__CFString *)a3;
+- (id)_getGestaltDiskUsageKey:(__CFString *)key inDictionary:(id)dictionary;
+- (id)_getGestaltString:(__CFString *)string default:(id)default;
+- (id)_getGestaltValue:(__CFString *)value;
 - (id)_installInfoFile;
 - (id)_legacyEventDirectory;
 - (id)_legacyInstallInfoFile;
 - (id)_legacySupportDirectory;
 - (id)_loadUnsubmittedEvents;
-- (id)_nvramValue:(id)a3;
+- (id)_nvramValue:(id)value;
 - (id)_serverURL;
-- (id)_submissionBodyForEvents:(id)a3;
+- (id)_submissionBodyForEvents:(id)events;
 - (id)_supportDirectory;
-- (id)_supportDirectoryWithMountPoint:(id)a3;
+- (id)_supportDirectoryWithMountPoint:(id)point;
 - (int64_t)_uptime;
 - (unint64_t)numUnsubmittedEvents;
 - (void)_cleanupInstallState;
-- (void)_recordEvent:(id)a3 getPowerLog:(BOOL)a4 information:(id)a5 callback:(id)a6;
-- (void)_recordPowerLog:(id)a3 information:(id)a4;
-- (void)_removeEvents:(id)a3;
-- (void)_saveEvent:(id)a3;
+- (void)_recordEvent:(id)event getPowerLog:(BOOL)log information:(id)information callback:(id)callback;
+- (void)_recordPowerLog:(id)log information:(id)information;
+- (void)_removeEvents:(id)events;
+- (void)_saveEvent:(id)event;
 - (void)_scheduleEventSubmissionRetry;
-- (void)_submitEvents:(id)a3 toURL:(id)a4 withOptions:(id)a5 completionHandler:(id)a6;
-- (void)_submitIndividualEvents:(id)a3 toURL:(id)a4 withOptions:(id)a5 completionHandler:(id)a6;
+- (void)_submitEvents:(id)events toURL:(id)l withOptions:(id)options completionHandler:(id)handler;
+- (void)_submitIndividualEvents:(id)events toURL:(id)l withOptions:(id)options completionHandler:(id)handler;
 - (void)_writeInfoFile;
-- (void)addPersistentAttribute:(id)a3 forKey:(id)a4;
-- (void)addPersistentAttributes:(id)a3;
-- (void)commitMetadataToPersistentStorage:(id)a3;
+- (void)addPersistentAttribute:(id)attribute forKey:(id)key;
+- (void)addPersistentAttributes:(id)attributes;
+- (void)commitMetadataToPersistentStorage:(id)storage;
 - (void)dealloc;
-- (void)recordEvent:(id)a3 information:(id)a4 installIsComplete:(BOOL)a5;
-- (void)recordPostUpdateEvent:(id)a3 additionalInfo:(id)a4 withCallback:(id)a5;
-- (void)removePersistentAttributeKey:(id)a3;
-- (void)startRecordingInstall:(id)a3;
-- (void)submitEventsInBackground:(BOOL)a3 withOptions:(id)a4;
-- (void)submitEventsWithUpdateOptions:(id)a3;
+- (void)recordEvent:(id)event information:(id)information installIsComplete:(BOOL)complete;
+- (void)recordPostUpdateEvent:(id)event additionalInfo:(id)info withCallback:(id)callback;
+- (void)removePersistentAttributeKey:(id)key;
+- (void)startRecordingInstall:(id)install;
+- (void)submitEventsInBackground:(BOOL)background withOptions:(id)options;
+- (void)submitEventsWithUpdateOptions:(id)options;
 @end
 
 @implementation UMEventRecorder
@@ -72,13 +72,13 @@ void __30__UMEventRecorder_submitQueue__block_invoke(id a1)
   submitQueue_submit_queue = dispatch_queue_create("com.apple.UpdateMetrics.UMEventRecorderSubmit", v7);
 }
 
-+ (id)recorderWithOptions:(id)a3
++ (id)recorderWithOptions:(id)options
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __39__UMEventRecorder_recorderWithOptions___block_invoke;
   block[3] = &__block_descriptor_40_e8_32o_e5_v8__0l;
-  block[4] = a3;
+  block[4] = options;
   if (recorderWithOptions__once != -1)
   {
     dispatch_once(&recorderWithOptions__once, block);
@@ -95,22 +95,22 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
   return result;
 }
 
-+ (BOOL)diagnosticsAndUsageAllowed:(id)a3
++ (BOOL)diagnosticsAndUsageAllowed:(id)allowed
 {
-  if (a3)
+  if (allowed)
   {
-    v3 = a3;
+    allowedCopy = allowed;
   }
 
   else
   {
-    v3 = @"/private/var";
+    allowedCopy = @"/private/var";
   }
 
-  v4 = [NSDictionary dictionaryWithContentsOfFile:[(__CFString *)v3 stringByAppendingPathComponent:@"/mobile/Library/UserConfigurationProfiles/EffectiveUserSettings.plist"]];
+  v4 = [NSDictionary dictionaryWithContentsOfFile:[(__CFString *)allowedCopy stringByAppendingPathComponent:@"/mobile/Library/UserConfigurationProfiles/EffectiveUserSettings.plist"]];
   if (!v4)
   {
-    v4 = [NSDictionary dictionaryWithContentsOfFile:[(__CFString *)v3 stringByAppendingPathComponent:@"/mobile/Library/ConfigurationProfiles/EffectiveUserSettings.plist"]];
+    v4 = [NSDictionary dictionaryWithContentsOfFile:[(__CFString *)allowedCopy stringByAppendingPathComponent:@"/mobile/Library/ConfigurationProfiles/EffectiveUserSettings.plist"]];
   }
 
   objc_opt_class();
@@ -143,7 +143,7 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
   return [v7 BOOLValue];
 }
 
-- (UMEventRecorder)initWithOptions:(id)a3
+- (UMEventRecorder)initWithOptions:(id)options
 {
   v65.receiver = self;
   v65.super_class = UMEventRecorder;
@@ -152,11 +152,11 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
   if (v4)
   {
     [(UMEventRecorder *)v4 setInstallType:@"ota"];
-    -[UMEventRecorder setSystemMountPoint:](v5, "setSystemMountPoint:", [a3 objectForKey:@"SystemPartitionMountPath"]);
-    -[UMEventRecorder setDataMountPoint:](v5, "setDataMountPoint:", [a3 objectForKey:@"DataPartitionMountPath"]);
-    -[UMEventRecorder setUpdateMountPoint:](v5, "setUpdateMountPoint:", [a3 objectForKey:@"UpdatePartitionMountPath"]);
-    -[UMEventRecorder setNvramPath:](v5, "setNvramPath:", [a3 objectForKey:@"NVRAMShadowPath"]);
-    -[UMEventRecorder setEventAttributes:](v5, "setEventAttributes:", [a3 objectForKeyedSubscript:@"AdditionalEventAttributes"]);
+    -[UMEventRecorder setSystemMountPoint:](v5, "setSystemMountPoint:", [options objectForKey:@"SystemPartitionMountPath"]);
+    -[UMEventRecorder setDataMountPoint:](v5, "setDataMountPoint:", [options objectForKey:@"DataPartitionMountPath"]);
+    -[UMEventRecorder setUpdateMountPoint:](v5, "setUpdateMountPoint:", [options objectForKey:@"UpdatePartitionMountPath"]);
+    -[UMEventRecorder setNvramPath:](v5, "setNvramPath:", [options objectForKey:@"NVRAMShadowPath"]);
+    -[UMEventRecorder setEventAttributes:](v5, "setEventAttributes:", [options objectForKeyedSubscript:@"AdditionalEventAttributes"]);
     v5->_nvramDict = [UMEventCheckpoint lastSyncedNvram:[(UMEventRecorder *)v5 nvramPath]];
     v6 = [NSDictionary dictionaryWithContentsOfURL:[(UMEventRecorder *)v5 _installInfoFile]];
     if (v6)
@@ -180,22 +180,22 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
     v5->_droppedEvents = objc_alloc_init(NSMutableArray);
     v5->_submitter = objc_alloc_init(UMEventSubmitter);
     v5->_callbackQueue = dispatch_queue_create("com.apple.UpdateMetrics.UMEventRecorderCallback", 0);
-    v8 = [(UMEventRecorder *)v5 systemMountPoint];
-    _log(v8, @"%@: initializing event recorder with systemMountPoint: %@", v9, v10, v11, v12, v13, v14, v5);
-    v15 = [(UMEventRecorder *)v5 dataMountPoint];
-    _log(v15, @"%@: initializing event recorder with dataMountPoint: %@", v16, v17, v18, v19, v20, v21, v5);
-    v22 = [(UMEventRecorder *)v5 updateMountPoint];
-    _log(v22, @"%@: initializing event recorder with updateMountPoint: %@", v23, v24, v25, v26, v27, v28, v5);
-    v29 = [(UMEventRecorder *)v5 nvramPath];
-    _log(v29, @"%@: initializing event recorder with nvramPath: %@", v30, v31, v32, v33, v34, v35, v5);
-    v36 = [(UMEventRecorder *)v5 targetOSVersion];
-    _log(v36, @"%@: initializing event recorder with targetOSVersion: %@", v37, v38, v39, v40, v41, v42, v5);
-    v43 = [(UMEventRecorder *)v5 context];
-    _log(v43, @"%@: initializing event recorder with context: %@", v44, v45, v46, v47, v48, v49, v5);
-    v50 = [(UMEventRecorder *)v5 baseServerURL];
-    _log(v50, @"%@: initializing event recorder with baseServerURL: %@", v51, v52, v53, v54, v55, v56, v5);
-    v64 = [(UMEventRecorder *)v5 uuid];
-    _log(v64, @"%@: initializing event recorder with uuid: %@", v57, v58, v59, v60, v61, v62, v5);
+    systemMountPoint = [(UMEventRecorder *)v5 systemMountPoint];
+    _log(systemMountPoint, @"%@: initializing event recorder with systemMountPoint: %@", v9, v10, v11, v12, v13, v14, v5);
+    dataMountPoint = [(UMEventRecorder *)v5 dataMountPoint];
+    _log(dataMountPoint, @"%@: initializing event recorder with dataMountPoint: %@", v16, v17, v18, v19, v20, v21, v5);
+    updateMountPoint = [(UMEventRecorder *)v5 updateMountPoint];
+    _log(updateMountPoint, @"%@: initializing event recorder with updateMountPoint: %@", v23, v24, v25, v26, v27, v28, v5);
+    nvramPath = [(UMEventRecorder *)v5 nvramPath];
+    _log(nvramPath, @"%@: initializing event recorder with nvramPath: %@", v30, v31, v32, v33, v34, v35, v5);
+    targetOSVersion = [(UMEventRecorder *)v5 targetOSVersion];
+    _log(targetOSVersion, @"%@: initializing event recorder with targetOSVersion: %@", v37, v38, v39, v40, v41, v42, v5);
+    context = [(UMEventRecorder *)v5 context];
+    _log(context, @"%@: initializing event recorder with context: %@", v44, v45, v46, v47, v48, v49, v5);
+    baseServerURL = [(UMEventRecorder *)v5 baseServerURL];
+    _log(baseServerURL, @"%@: initializing event recorder with baseServerURL: %@", v51, v52, v53, v54, v55, v56, v5);
+    uuid = [(UMEventRecorder *)v5 uuid];
+    _log(uuid, @"%@: initializing event recorder with uuid: %@", v57, v58, v59, v60, v61, v62, v5);
   }
 
   return v5;
@@ -234,15 +234,15 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
 {
   if ([(UMEventRecorder *)self dataMountPoint])
   {
-    v3 = [(UMEventRecorder *)self dataMountPoint];
+    dataMountPoint = [(UMEventRecorder *)self dataMountPoint];
   }
 
   else
   {
-    v3 = @"/var";
+    dataMountPoint = @"/var";
   }
 
-  return [(UMEventRecorder *)self _supportDirectoryWithMountPoint:v3];
+  return [(UMEventRecorder *)self _supportDirectoryWithMountPoint:dataMountPoint];
 }
 
 - (id)_supportDirectory
@@ -257,26 +257,26 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
   else
   {
     _log(self, @"Permanent update volume present..supportDir will be placed there", v2, v3, v4, v5, v6, v7, v11);
-    v10 = [(UMEventRecorder *)self updateMountPoint];
+    updateMountPoint = [(UMEventRecorder *)self updateMountPoint];
 
-    return [(UMEventRecorder *)self _supportDirectoryWithMountPoint:v10];
+    return [(UMEventRecorder *)self _supportDirectoryWithMountPoint:updateMountPoint];
   }
 }
 
-- (id)_supportDirectoryWithMountPoint:(id)a3
+- (id)_supportDirectoryWithMountPoint:(id)point
 {
   v18 = 0;
-  if (a3)
+  if (point)
   {
-    v8 = a3;
+    pointCopy = point;
   }
 
   else
   {
-    v8 = @"/var/MobileSoftwareUpdate";
+    pointCopy = @"/var/MobileSoftwareUpdate";
   }
 
-  if (!a3)
+  if (!point)
   {
     _log(self, @"%s: mountPoint is nil...Using %@ as the mountPoint", 0, v3, v4, v5, v6, v7, "[UMEventRecorder _supportDirectoryWithMountPoint:]");
   }
@@ -299,19 +299,19 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
 
 - (id)_legacyInstallInfoFile
 {
-  v2 = [(UMEventRecorder *)self _legacySupportDirectory];
+  _legacySupportDirectory = [(UMEventRecorder *)self _legacySupportDirectory];
 
-  return [v2 URLByAppendingPathComponent:@"ota-info.plist"];
+  return [_legacySupportDirectory URLByAppendingPathComponent:@"ota-info.plist"];
 }
 
 - (id)_installInfoFile
 {
-  v2 = [(UMEventRecorder *)self _supportDirectory];
+  _supportDirectory = [(UMEventRecorder *)self _supportDirectory];
 
-  return [v2 URLByAppendingPathComponent:@"ota-info.plist"];
+  return [_supportDirectory URLByAppendingPathComponent:@"ota-info.plist"];
 }
 
-- (BOOL)_setPermissionsOnURL:(id)a3
+- (BOOL)_setPermissionsOnURL:(id)l
 {
   v20 = 0;
   v21[0] = NSFileOwnerAccountName;
@@ -322,17 +322,17 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
   v21[3] = NSFileProtectionKey;
   v22[2] = [NSNumber numberWithInt:438];
   v22[3] = NSFileProtectionNone;
-  v4 = -[NSFileManager setAttributes:ofItemAtPath:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "setAttributes:ofItemAtPath:error:", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v22, v21, 4), [a3 path], &v20);
+  v4 = -[NSFileManager setAttributes:ofItemAtPath:error:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "setAttributes:ofItemAtPath:error:", +[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v22, v21, 4), [l path], &v20);
   if ((v4 & 1) == 0)
   {
-    _log(v4, @"unable to set permissions on %@: %@", v5, v6, v7, v8, v9, v10, a3);
+    _log(v4, @"unable to set permissions on %@: %@", v5, v6, v7, v8, v9, v10, l);
   }
 
-  v11 = [a3 setResourceValue:+[NSNumber numberWithBool:](NSNumber forKey:"numberWithBool:" error:{1), NSURLIsExcludedFromBackupKey, &v20}];
+  v11 = [l setResourceValue:+[NSNumber numberWithBool:](NSNumber forKey:"numberWithBool:" error:{1), NSURLIsExcludedFromBackupKey, &v20}];
   v18 = v11;
   if ((v11 & 1) == 0)
   {
-    _log(v11, @"unable to disable backup for %@: %@", v12, v13, v14, v15, v16, v17, a3);
+    _log(v11, @"unable to disable backup for %@: %@", v12, v13, v14, v15, v16, v17, l);
   }
 
   return v18;
@@ -351,15 +351,15 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
   {
     if ([(UMEventRecorder *)self dataMountPoint])
     {
-      v10 = [(UMEventRecorder *)self dataMountPoint];
+      dataMountPoint = [(UMEventRecorder *)self dataMountPoint];
     }
 
     else
     {
-      v10 = @"/var";
+      dataMountPoint = @"/var";
     }
 
-    return [(UMEventRecorder *)self _eventDirectoryWithMountPoint:v10];
+    return [(UMEventRecorder *)self _eventDirectoryWithMountPoint:dataMountPoint];
   }
 }
 
@@ -374,17 +374,17 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
 
   else
   {
-    v10 = [(UMEventRecorder *)self updateMountPoint];
+    updateMountPoint = [(UMEventRecorder *)self updateMountPoint];
 
-    return [(UMEventRecorder *)self _eventDirectoryWithMountPoint:v10];
+    return [(UMEventRecorder *)self _eventDirectoryWithMountPoint:updateMountPoint];
   }
 }
 
-- (id)_eventDirectoryWithMountPoint:(id)a3
+- (id)_eventDirectoryWithMountPoint:(id)point
 {
   v21 = 0;
   v20 = 0;
-  v3 = [-[UMEventRecorder _supportDirectoryWithMountPoint:](self _supportDirectoryWithMountPoint:{a3), "URLByAppendingPathComponent:", @"Events"}];
+  v3 = [-[UMEventRecorder _supportDirectoryWithMountPoint:](self _supportDirectoryWithMountPoint:{point), "URLByAppendingPathComponent:", @"Events"}];
   v22[0] = NSFileOwnerAccountName;
   v22[1] = NSFileGroupOwnerAccountName;
   v23[0] = @"mobile";
@@ -415,34 +415,34 @@ UMEventRecorder *__39__UMEventRecorder_recorderWithOptions___block_invoke(uint64
   return v3;
 }
 
-- (id)_getGestaltValue:(__CFString *)a3
+- (id)_getGestaltValue:(__CFString *)value
 {
   v3 = MGCopyAnswer();
 
   return v3;
 }
 
-- (id)_getGestaltString:(__CFString *)a3 default:(id)a4
+- (id)_getGestaltString:(__CFString *)string default:(id)default
 {
-  v5 = [(UMEventRecorder *)self _getGestaltValue:a3];
+  v5 = [(UMEventRecorder *)self _getGestaltValue:string];
   if (!v5)
   {
-    return a4;
+    return default;
   }
 
   v6 = v5;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    return a4;
+    return default;
   }
 
   return v6;
 }
 
-- (id)_getGestaltDiskUsageKey:(__CFString *)a3 inDictionary:(id)a4
+- (id)_getGestaltDiskUsageKey:(__CFString *)key inDictionary:(id)dictionary
 {
-  v4 = [objc_msgSend(a4 objectForKey:{a3), "longLongValue"}];
+  v4 = [objc_msgSend(dictionary objectForKey:{key), "longLongValue"}];
 
   return [NSNumber numberWithLongLong:v4 / 0x100000];
 }
@@ -589,20 +589,20 @@ void __36__UMEventRecorder__currentEAPFSMode__block_invoke(id a1)
   }
 }
 
-- (void)_saveEvent:(id)a3
+- (void)_saveEvent:(id)event
 {
   v5 = [-[UMEventRecorder _serverURL](self "_serverURL")];
   if (v5)
   {
     v12 = v5;
-    v13 = [(UMEventRecorder *)self uuid];
-    if (v13)
+    uuid = [(UMEventRecorder *)self uuid];
+    if (uuid)
     {
-      v14 = v13;
+      v14 = uuid;
       v50[0] = @"Event Data";
       v50[1] = @"Install Id";
-      v51[0] = a3;
-      v51[1] = v13;
+      v51[0] = event;
+      v51[1] = uuid;
       v50[2] = @"Submission URL";
       v51[2] = v12;
       v15 = [NSDictionary dictionaryWithObjects:v51 forKeys:v50 count:3];
@@ -657,12 +657,12 @@ void __36__UMEventRecorder__currentEAPFSMode__block_invoke(id a1)
   _log(0, v32, v6, v7, v8, v9, v10, v11, v53);
 }
 
-- (void)_recordEvent:(id)a3 getPowerLog:(BOOL)a4 information:(id)a5 callback:(id)a6
+- (void)_recordEvent:(id)event getPowerLog:(BOOL)log information:(id)information callback:(id)callback
 {
-  v8 = a4;
+  logCopy = log;
   if (![(UMEventRecorder *)self baseServerURL])
   {
-    _log(0, @"event reporting is not enabled, discarding event (%@) - %@\n", v11, v12, v13, v14, v15, v16, a3);
+    _log(0, @"event reporting is not enabled, discarding event (%@) - %@\n", v11, v12, v13, v14, v15, v16, event);
     return;
   }
 
@@ -677,13 +677,13 @@ void __36__UMEventRecorder__currentEAPFSMode__block_invoke(id a1)
   }
 
   v18 = v17;
-  if (a5)
+  if (information)
   {
-    [v17 addEntriesFromDictionary:a5];
+    [v17 addEntriesFromDictionary:information];
   }
 
   [v18 setObject:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", 1), @"reportVersion"}];
-  [v18 setObject:a3 forKey:@"event"];
+  [v18 setObject:event forKey:@"event"];
   [v18 setObject:-[UMEventRecorder installType](self forKey:{"installType"), @"type"}];
   [v18 setObject:-[UMEventRecorder _currentTimeInMilliseconds](self forKey:{"_currentTimeInMilliseconds"), @"eventTime"}];
   [v18 setObject:-[UMEventRecorder _getGestaltString:](self forKey:{"_getGestaltString:", @"DeviceClass", @"deviceClass"}];
@@ -703,8 +703,8 @@ void __36__UMEventRecorder__currentEAPFSMode__block_invoke(id a1)
   }
 
   [v18 setObject:v22 forKey:@"batteryIsCharging"];
-  v23 = [(UMEventRecorder *)self _getDiskUsage];
-  if (v23 && (v24 = v23, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  _getDiskUsage = [(UMEventRecorder *)self _getDiskUsage];
+  if (_getDiskUsage && (v24 = _getDiskUsage, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [v18 setObject:-[UMEventRecorder _getGestaltDiskUsageKey:inDictionary:](self forKey:{"_getGestaltDiskUsageKey:inDictionary:", kMGQDiskUsageTotalDiskCapacity, v24), @"storageCapacity"}];
     [v18 setObject:-[UMEventRecorder _getGestaltDiskUsageKey:inDictionary:](self forKey:{"_getGestaltDiskUsageKey:inDictionary:", kMGQDiskUsageTotalSystemCapacity, v24), @"systemFsCapacity"}];
@@ -842,29 +842,29 @@ LABEL_34:
 LABEL_50:
   _log(v42, @"[%s] (%@) - %@\n", v43, v44, v45, v46, v47, v48, "[UMEventRecorder _recordEvent:getPowerLog:information:callback:]");
   [(UMEventRecorder *)self _saveEvent:v18];
-  if (v8)
+  if (logCopy)
   {
-    [(UMEventRecorder *)self _recordPowerLog:a3 information:v18];
+    [(UMEventRecorder *)self _recordPowerLog:event information:v18];
   }
 
-  if (a6)
+  if (callback)
   {
-    (*(a6 + 2))(a6, v18);
+    (*(callback + 2))(callback, v18);
   }
 }
 
-- (void)_recordPowerLog:(id)a3 information:(id)a4
+- (void)_recordPowerLog:(id)log information:(id)information
 {
   v6 = +[NSMutableDictionary dictionary];
   [v6 setObject:-[NSUUID UUIDString](+[NSUUID UUID](NSUUID forKey:{"UUID"), "UUIDString"), @"RequestUUID"}];
-  if (a4)
+  if (information)
   {
-    [v6 addEntriesFromDictionary:a4];
+    [v6 addEntriesFromDictionary:information];
   }
 
-  if (a3)
+  if (log)
   {
-    [v6 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", +[UMEventRecorder eventForEventString:](UMEventRecorder, "eventForEventString:", a3)), @"event"}];
+    [v6 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", +[UMEventRecorder eventForEventString:](UMEventRecorder, "eventForEventString:", log)), @"event"}];
   }
 
   if (&_PLLogRegisteredEvent)
@@ -874,74 +874,74 @@ LABEL_50:
   }
 }
 
-+ (int64_t)eventForEventString:(id)a3
++ (int64_t)eventForEventString:(id)string
 {
-  if ([a3 isEqualToString:@"purge"])
+  if ([string isEqualToString:@"purge"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"preflightScan"])
+  if ([string isEqualToString:@"preflightScan"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"preflightDownload"])
+  if ([string isEqualToString:@"preflightDownload"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"preflightPersonalize"])
+  if ([string isEqualToString:@"preflightPersonalize"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"preflightFDR"])
+  if ([string isEqualToString:@"preflightFDR"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"preflightWakeup"])
+  if ([string isEqualToString:@"preflightWakeup"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"preflightPrerequisiteCheck"])
+  if ([string isEqualToString:@"preflightPrerequisiteCheck"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"prepareStarted"])
+  if ([string isEqualToString:@"prepareStarted"])
   {
     return 7;
   }
 
-  if ([a3 isEqualToString:@"prepareFinished"])
+  if ([string isEqualToString:@"prepareFinished"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"applyStarted"])
+  if ([string isEqualToString:@"applyStarted"])
   {
     return 9;
   }
 
-  if ([a3 isEqualToString:@"applyFinished"])
+  if ([string isEqualToString:@"applyFinished"])
   {
     return 10;
   }
 
-  if ([a3 isEqualToString:@"CryptegraftStarted"])
+  if ([string isEqualToString:@"CryptegraftStarted"])
   {
     return 11;
   }
 
-  if ([a3 isEqualToString:@"CryptegraftFinshed"])
+  if ([string isEqualToString:@"CryptegraftFinshed"])
   {
     return 12;
   }
 
-  if ([a3 isEqualToString:@"updateFinished"])
+  if ([string isEqualToString:@"updateFinished"])
   {
     return 13;
   }
@@ -949,25 +949,25 @@ LABEL_50:
   return 100;
 }
 
-- (id)_nvramValue:(id)a3
+- (id)_nvramValue:(id)value
 {
   nvramDict = self->_nvramDict;
   if (nvramDict)
   {
-    v5 = [(NSDictionary *)nvramDict objectForKey:a3];
+    v5 = [(NSDictionary *)nvramDict objectForKey:value];
   }
 
   else
   {
-    v5 = copy_nvram_variable(a3);
+    v5 = copy_nvram_variable(value);
   }
 
   v6 = v5;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 bytes];
-    v8 = [[NSString alloc] initWithBytes:v7 length:strnlen(v7 encoding:{objc_msgSend(v6, "length")), 4}];
+    bytes = [v6 bytes];
+    v8 = [[NSString alloc] initWithBytes:bytes length:strnlen(bytes encoding:{objc_msgSend(v6, "length")), 4}];
 LABEL_8:
     v16 = v8;
     goto LABEL_12;
@@ -983,7 +983,7 @@ LABEL_8:
 
   if (v6)
   {
-    _log(isKindOfClass, @"NVRAM variable %@ has unexpected value '%@'", v10, v11, v12, v13, v14, v15, a3);
+    _log(isKindOfClass, @"NVRAM variable %@ has unexpected value '%@'", v10, v11, v12, v13, v14, v15, value);
   }
 
   v16 = 0;
@@ -992,11 +992,11 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)_setNvramValue:(id)a3 forKey:(id)a4
+- (BOOL)_setNvramValue:(id)value forKey:(id)key
 {
-  if (a3)
+  if (value)
   {
-    v9 = set_nvram_object(a4, a3, a3, a4, v4, v5, v6, v7);
+    v9 = set_nvram_object(key, value, value, key, v4, v5, v6, v7);
     if (v9)
     {
       return 1;
@@ -1005,14 +1005,14 @@ LABEL_12:
 
   else
   {
-    v9 = delete_nvram_variable(a4);
+    v9 = delete_nvram_variable(key);
     if (v9)
     {
       return 1;
     }
   }
 
-  _log(v9, @"unable to set %@ to %@", v10, v11, v12, v13, v14, v15, a4);
+  _log(v9, @"unable to set %@ to %@", v10, v11, v12, v13, v14, v15, key);
   return 0;
 }
 
@@ -1095,20 +1095,20 @@ LABEL_12:
   [(UMEventRecorder *)self setAttributeDict:0];
   if (unlink([-[UMEventRecorder _installInfoFile](self "_installInfoFile")]) && *__error() != 2)
   {
-    v11 = [(UMEventRecorder *)self _installInfoFile];
+    _installInfoFile = [(UMEventRecorder *)self _installInfoFile];
     v12 = __error();
     v27 = strerror(*v12);
-    _log(v27, @"unable to remove %@: %s", v13, v14, v15, v16, v17, v18, v11);
+    _log(v27, @"unable to remove %@: %s", v13, v14, v15, v16, v17, v18, _installInfoFile);
   }
 
   if (unlink([-[UMEventRecorder _legacyInstallInfoFile](self "_legacyInstallInfoFile")]))
   {
     if (*__error() != 2)
     {
-      v19 = [(UMEventRecorder *)self _installInfoFile];
+      _installInfoFile2 = [(UMEventRecorder *)self _installInfoFile];
       v20 = __error();
       v28 = strerror(*v20);
-      _log(v28, @"unable to remove %@: %s", v21, v22, v23, v24, v25, v26, v19);
+      _log(v28, @"unable to remove %@: %s", v21, v22, v23, v24, v25, v26, _installInfoFile2);
     }
   }
 }
@@ -1144,9 +1144,9 @@ LABEL_12:
   v4 = [v3 writeToURL:-[UMEventRecorder _installInfoFile](self atomically:{"_installInfoFile"), 1}];
   if (v4)
   {
-    v11 = [(UMEventRecorder *)self _installInfoFile];
+    _installInfoFile = [(UMEventRecorder *)self _installInfoFile];
 
-    [(UMEventRecorder *)self _setPermissionsOnURL:v11];
+    [(UMEventRecorder *)self _setPermissionsOnURL:_installInfoFile];
   }
 
   else
@@ -1156,10 +1156,10 @@ LABEL_12:
   }
 }
 
-- (void)startRecordingInstall:(id)a3
+- (void)startRecordingInstall:(id)install
 {
-  v5 = [a3 objectForKey:@"Build"];
-  if (v5 || (v5 = [a3 objectForKey:@"TargetUpdate"]) != 0)
+  v5 = [install objectForKey:@"Build"];
+  if (v5 || (v5 = [install objectForKey:@"TargetUpdate"]) != 0)
   {
     v12 = v5;
     if ([(UMEventRecorder *)self _installInProgress])
@@ -1173,14 +1173,14 @@ LABEL_12:
       }
     }
 
-    v20 = [a3 objectForKey:@"BrainVersion"];
+    v20 = [install objectForKey:@"BrainVersion"];
     if (v20)
     {
       [(UMEventRecorder *)self setBrainVersion:v20];
     }
 
     v21 = [-[UMEventRecorder _defaults](self "_defaults")];
-    if (v21 || (v21 = [a3 objectForKey:@"_EventRecordingServiceURL"]) != 0)
+    if (v21 || (v21 = [install objectForKey:@"_EventRecordingServiceURL"]) != 0)
     {
       v28 = v21;
     }
@@ -1197,35 +1197,35 @@ LABEL_12:
     {
       [(UMEventRecorder *)self setBaseServerURL:v28];
       [(UMEventRecorder *)self setTargetOSVersion:v12];
-      v36 = [a3 objectForKey:@"UpdateUUID"];
+      v36 = [install objectForKey:@"UpdateUUID"];
       if (v36)
       {
-        v37 = v36;
+        uUIDString = v36;
         objc_opt_class();
         v38 = objc_opt_isKindOfClass();
         if ((v38 & 1) == 0)
         {
 LABEL_25:
-          _log(v38, @"setting uuid in startRecordingInstall to %@", v39, v40, v41, v42, v43, v44, v37);
-          [(UMEventRecorder *)self setUuid:v37];
+          _log(v38, @"setting uuid in startRecordingInstall to %@", v39, v40, v41, v42, v43, v44, uUIDString);
+          [(UMEventRecorder *)self setUuid:uUIDString];
           -[UMEventRecorder setContext:](self, "setContext:", [-[UMEventRecorder _defaults](self "_defaults")]);
 
           [(UMEventRecorder *)self _writeInfoFile];
           return;
         }
 
-        v45 = [[NSUUID alloc] initWithUUIDString:v37];
+        v45 = [[NSUUID alloc] initWithUUIDString:uUIDString];
         if (v45)
         {
 
           goto LABEL_25;
         }
 
-        _log(0, @"unable to convert provided uuid string (%@) to a valid NSUUID class, setting uuid to nil", v46, v47, v48, v49, v50, v51, v37);
+        _log(0, @"unable to convert provided uuid string (%@) to a valid NSUUID class, setting uuid to nil", v46, v47, v48, v49, v50, v51, uUIDString);
       }
 
-      v37 = [+[NSUUID UUID](NSUUID UUIDString];
-      _log(v37, @"generated a new uuid string %@", v52, v53, v54, v55, v56, v57, v37);
+      uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
+      _log(uUIDString, @"generated a new uuid string %@", v52, v53, v54, v55, v56, v57, uUIDString);
       goto LABEL_25;
     }
 
@@ -1241,34 +1241,34 @@ LABEL_25:
   }
 }
 
-- (void)addPersistentAttribute:(id)a3 forKey:(id)a4
+- (void)addPersistentAttribute:(id)attribute forKey:(id)key
 {
-  if (a3)
+  if (attribute)
   {
-    if (a4)
+    if (key)
     {
-      v4 = a4;
-      v5 = a3;
-      [(UMEventRecorder *)self addPersistentAttributes:[NSDictionary dictionaryWithObjects:&v5 forKeys:&v4 count:1]];
+      keyCopy = key;
+      attributeCopy = attribute;
+      [(UMEventRecorder *)self addPersistentAttributes:[NSDictionary dictionaryWithObjects:&attributeCopy forKeys:&keyCopy count:1]];
     }
   }
 }
 
-- (void)addPersistentAttributes:(id)a3
+- (void)addPersistentAttributes:(id)attributes
 {
-  if (a3)
+  if (attributes)
   {
-    v5 = [(UMEventRecorder *)self _installInProgress];
-    if (v5)
+    _installInProgress = [(UMEventRecorder *)self _installInProgress];
+    if (_installInProgress)
     {
       if ([(UMEventRecorder *)self attributeDict])
       {
-        [(NSMutableDictionary *)[(UMEventRecorder *)self attributeDict] addEntriesFromDictionary:a3];
+        [(NSMutableDictionary *)[(UMEventRecorder *)self attributeDict] addEntriesFromDictionary:attributes];
       }
 
       else
       {
-        [(UMEventRecorder *)self setAttributeDict:[NSMutableDictionary dictionaryWithDictionary:a3]];
+        [(UMEventRecorder *)self setAttributeDict:[NSMutableDictionary dictionaryWithDictionary:attributes]];
       }
 
       [(UMEventRecorder *)self _writeInfoFile];
@@ -1276,44 +1276,44 @@ LABEL_25:
 
     else
     {
-      _log(v5, @"Attempt to save attributes %@ when install not in progres", v6, v7, v8, v9, v10, v11, a3);
+      _log(_installInProgress, @"Attempt to save attributes %@ when install not in progres", v6, v7, v8, v9, v10, v11, attributes);
     }
   }
 }
 
-- (void)removePersistentAttributeKey:(id)a3
+- (void)removePersistentAttributeKey:(id)key
 {
   if ([(UMEventRecorder *)self attributeDict])
   {
-    [(NSMutableDictionary *)[(UMEventRecorder *)self attributeDict] removeObjectForKey:a3];
+    [(NSMutableDictionary *)[(UMEventRecorder *)self attributeDict] removeObjectForKey:key];
 
     [(UMEventRecorder *)self _writeInfoFile];
   }
 }
 
-- (void)recordEvent:(id)a3 information:(id)a4 installIsComplete:(BOOL)a5
+- (void)recordEvent:(id)event information:(id)information installIsComplete:(BOOL)complete
 {
-  v5 = a5;
-  [(UMEventRecorder *)self recordEvent:a3 information:a4];
-  if (v5)
+  completeCopy = complete;
+  [(UMEventRecorder *)self recordEvent:event information:information];
+  if (completeCopy)
   {
 
     [(UMEventRecorder *)self _cleanupInstallState];
   }
 }
 
-- (void)recordPostUpdateEvent:(id)a3 additionalInfo:(id)a4 withCallback:(id)a5
+- (void)recordPostUpdateEvent:(id)event additionalInfo:(id)info withCallback:(id)callback
 {
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [a4 objectForKeyedSubscript:@"rapidSecurityResponseUpdate"];
-  v11 = [a4 objectForKeyedSubscript:@"rapidSecurityResponseRollback"];
+  v10 = [info objectForKeyedSubscript:@"rapidSecurityResponseUpdate"];
+  v11 = [info objectForKeyedSubscript:@"rapidSecurityResponseRollback"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v10 BOOLValue] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && objc_msgSend(v11, "BOOLValue"))
   {
-    v72 = a3;
-    v73 = a5;
-    v12 = [a4 objectForKeyedSubscript:@"result"];
-    v59 = [a4 objectForKeyedSubscript:@"failureReason"];
+    eventCopy2 = event;
+    callbackCopy2 = callback;
+    v12 = [info objectForKeyedSubscript:@"result"];
+    v59 = [info objectForKeyedSubscript:@"failureReason"];
     v60 = 0;
     v13 = 0;
     v61 = 0;
@@ -1339,11 +1339,11 @@ LABEL_25:
     goto LABEL_13;
   }
 
-  v19 = [(UMEventRecorder *)self _installInProgressAfterApply];
-  if (v19)
+  _installInProgressAfterApply = [(UMEventRecorder *)self _installInProgressAfterApply];
+  if (_installInProgressAfterApply)
   {
-    v72 = a3;
-    v73 = a5;
+    eventCopy2 = event;
+    callbackCopy2 = callback;
     v26 = objc_opt_new();
     [v26 setFormatterBehavior:{+[NSNumberFormatter defaultFormatterBehavior](NSNumberFormatter, "defaultFormatterBehavior")}];
     v12 = [(UMEventRecorder *)self _nvramValue:@"ota-result"];
@@ -1557,13 +1557,13 @@ LABEL_53:
                   v47 = [v9 addEntriesFromDictionary:v47];
                 }
 
-                if (a4)
+                if (info)
                 {
                   _log(v47, @"Adding dictionary to splunk object", v48, v49, v50, v51, v52, v53, v55);
-                  [v9 addEntriesFromDictionary:a4];
+                  [v9 addEntriesFromDictionary:info];
                 }
 
-                [(UMEventRecorder *)self _recordEvent:v72 information:v9 callback:v73];
+                [(UMEventRecorder *)self _recordEvent:eventCopy2 information:v9 callback:callbackCopy2];
 
                 [(UMEventRecorder *)self _cleanupInstallState];
                 return;
@@ -1595,18 +1595,18 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  _log(v19, @"ignoring call to recordPostUpdateEvent when no install is in progress or we haven't performed the apply operation", v20, v21, v22, v23, v24, v25, v75);
+  _log(_installInProgressAfterApply, @"ignoring call to recordPostUpdateEvent when no install is in progress or we haven't performed the apply operation", v20, v21, v22, v23, v24, v25, v75);
 }
 
-- (id)_copyEscapeStringsForEventData:(id)a3
+- (id)_copyEscapeStringsForEventData:(id)data
 {
   v4 = [NSMutableCharacterSet characterSetWithCharactersInString:@"%\\""];
   [(NSMutableCharacterSet *)v4 formUnionWithCharacterSet:+[NSCharacterSet controlCharacterSet]];
   [(NSMutableCharacterSet *)v4 formUnionWithCharacterSet:+[NSCharacterSet newlineCharacterSet]];
   v5 = [NSMutableCharacterSet characterSetWithRange:0, 127];
   [(NSMutableCharacterSet *)v5 formIntersectionWithCharacterSet:[(NSMutableCharacterSet *)v4 invertedSet]];
-  v6 = [a3 allKeys];
-  v7 = [objc_msgSend(a3 objectsForKeys:v6 notFoundMarker:{+[NSNull null](NSNull, "null")), "mutableCopy"}];
+  allKeys = [data allKeys];
+  v7 = [objc_msgSend(data objectsForKeys:allKeys notFoundMarker:{+[NSNull null](NSNull, "null")), "mutableCopy"}];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3254779904;
   v10[2] = __50__UMEventRecorder__copyEscapeStringsForEventData___block_invoke;
@@ -1614,7 +1614,7 @@ LABEL_18:
   v10[4] = v7;
   v10[5] = v5;
   [v7 enumerateObjectsUsingBlock:v10];
-  v8 = [[NSDictionary alloc] initWithObjects:v7 forKeys:v6];
+  v8 = [[NSDictionary alloc] initWithObjects:v7 forKeys:allKeys];
 
   return v8;
 }
@@ -1635,9 +1635,9 @@ uint64_t __50__UMEventRecorder__copyEscapeStringsForEventData___block_invoke(uin
   return result;
 }
 
-- (id)_submissionBodyForEvents:(id)a3
+- (id)_submissionBodyForEvents:(id)events
 {
-  v5 = [objc_msgSend(a3 objectAtIndex:{0), "objectForKey:", @"Install Id"}];
+  v5 = [objc_msgSend(events objectAtIndex:{0), "objectForKey:", @"Install Id"}];
   v6 = +[NSMutableArray array];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3254779904;
@@ -1645,7 +1645,7 @@ uint64_t __50__UMEventRecorder__copyEscapeStringsForEventData___block_invoke(uin
   v24[3] = &__block_descriptor_48_e8_32o40o_e29_v32__0__NSDictionary_8Q16_B24l;
   v24[4] = self;
   v24[5] = v6;
-  [a3 enumerateObjectsUsingBlock:v24];
+  [events enumerateObjectsUsingBlock:v24];
   v25[0] = @"clientId";
   v25[1] = @"events";
   v26[0] = v5;
@@ -1668,15 +1668,15 @@ void __44__UMEventRecorder__submissionBodyForEvents___block_invoke(uint64_t a1, 
   [*(a1 + 40) addObject:v3];
 }
 
-- (void)_submitIndividualEvents:(id)a3 toURL:(id)a4 withOptions:(id)a5 completionHandler:(id)a6
+- (void)_submitIndividualEvents:(id)events toURL:(id)l withOptions:(id)options completionHandler:(id)handler
 {
   v10 = dispatch_group_create();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
-  v11 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  obj = events;
+  v11 = [events countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1700,7 +1700,7 @@ void __44__UMEventRecorder__submissionBodyForEvents___block_invoke(uint64_t a1, 
         v21[2] = __79__UMEventRecorder__submitIndividualEvents_toURL_withOptions_completionHandler___block_invoke;
         v21[3] = &__block_descriptor_40_e8_32o_e5_v8__0l;
         v21[4] = v10;
-        [(UMEventRecorder *)self _submitEvents:v16 toURL:a4 withOptions:a5 completionHandler:v21];
+        [(UMEventRecorder *)self _submitEvents:v16 toURL:l withOptions:options completionHandler:v21];
         v14 = v14 + 1;
       }
 
@@ -1716,7 +1716,7 @@ void __44__UMEventRecorder__submissionBodyForEvents___block_invoke(uint64_t a1, 
   block[1] = 3254779904;
   block[2] = __79__UMEventRecorder__submitIndividualEvents_toURL_withOptions_completionHandler___block_invoke_2;
   block[3] = &__block_descriptor_40_e8_32b_e5_v8__0l;
-  block[4] = a6;
+  block[4] = handler;
   dispatch_group_notify(v10, global_queue, block);
   dispatch_release(v10);
 }
@@ -1747,14 +1747,14 @@ void __48__UMEventRecorder__scheduleEventSubmissionRetry__block_invoke(uint64_t 
   v2 = *(a1 + 40);
 }
 
-- (BOOL)_updateRetryInformationForEvents:(id)a3
+- (BOOL)_updateRetryInformationForEvents:(id)events
 {
   v23 = +[NSDate date];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v4 = [events countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v4)
   {
     return 0;
@@ -1769,7 +1769,7 @@ void __48__UMEventRecorder__scheduleEventSubmissionRetry__block_invoke(uint64_t 
     {
       if (*v25 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(events);
       }
 
       v9 = *(*(&v24 + 1) + 8 * i);
@@ -1794,20 +1794,20 @@ void __48__UMEventRecorder__scheduleEventSubmissionRetry__block_invoke(uint64_t 
       }
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v5 = [events countByEnumeratingWithState:&v24 objects:v28 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-- (void)_removeEvents:(id)a3
+- (void)_removeEvents:(id)events
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v4 = [events countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1819,7 +1819,7 @@ void __48__UMEventRecorder__scheduleEventSubmissionRetry__block_invoke(uint64_t 
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(events);
         }
 
         v8 = [*(*(&v17 + 1) + 8 * v7) objectForKey:@"Local Path"];
@@ -1834,14 +1834,14 @@ void __48__UMEventRecorder__scheduleEventSubmissionRetry__block_invoke(uint64_t 
       }
 
       while (v5 != v7);
-      v5 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [events countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_submitEvents:(id)a3 toURL:(id)a4 withOptions:(id)a5 completionHandler:(id)a6
+- (void)_submitEvents:(id)events toURL:(id)l withOptions:(id)options completionHandler:(id)handler
 {
   v11 = [(UMEventRecorder *)self _submissionBodyForEvents:?];
   if (v11)
@@ -1851,25 +1851,25 @@ void __48__UMEventRecorder__scheduleEventSubmissionRetry__block_invoke(uint64_t 
     v13[2] = __69__UMEventRecorder__submitEvents_toURL_withOptions_completionHandler___block_invoke;
     v13[3] = &__block_descriptor_72_e8_32o40o48o56o64b_e39_v24__0__NSHTTPURLResponse_8__NSError_16l;
     v13[4] = self;
-    v13[5] = a3;
-    v13[6] = a4;
-    v13[7] = a5;
-    v13[8] = a6;
-    [(UMEventSubmitter *)[(UMEventRecorder *)self submitter] submitEventData:v11 toURL:a4 withOptions:a5 completionHandler:v13];
+    v13[5] = events;
+    v13[6] = l;
+    v13[7] = options;
+    v13[8] = handler;
+    [(UMEventSubmitter *)[(UMEventRecorder *)self submitter] submitEventData:v11 toURL:l withOptions:options completionHandler:v13];
   }
 
-  else if ([a3 count] < 2)
+  else if ([events count] < 2)
   {
-    [(UMEventRecorder *)self _removeEvents:a3];
-    v12 = *(a6 + 2);
+    [(UMEventRecorder *)self _removeEvents:events];
+    v12 = *(handler + 2);
 
-    v12(a6);
+    v12(handler);
   }
 
   else
   {
 
-    [(UMEventRecorder *)self _submitIndividualEvents:a3 toURL:a4 withOptions:a5 completionHandler:a6];
+    [(UMEventRecorder *)self _submitIndividualEvents:events toURL:l withOptions:options completionHandler:handler];
   }
 }
 
@@ -1942,9 +1942,9 @@ LABEL_5:
   return [v23 _submitIndividualEvents:v24 toURL:v36 withOptions:v37 completionHandler:v38];
 }
 
-- (double)_timeIntervalUntilRetry:(id)a3
+- (double)_timeIntervalUntilRetry:(id)retry
 {
-  v4 = [objc_msgSend(a3 objectForKey:{@"Submission Attempts", "intValue"}];
+  v4 = [objc_msgSend(retry objectForKey:{@"Submission Attempts", "intValue"}];
   if (v4 > 4)
   {
     v5 = +[NSDate distantFuture];
@@ -1952,21 +1952,21 @@ LABEL_5:
 
   else
   {
-    v5 = [objc_msgSend(a3 objectForKey:{@"Last Submission Attempt", "dateByAddingTimeInterval:", (60 << v4)}];
+    v5 = [objc_msgSend(retry objectForKey:{@"Last Submission Attempt", "dateByAddingTimeInterval:", (60 << v4)}];
   }
 
   [(NSDate *)v5 timeIntervalSinceNow];
   return result;
 }
 
-- (void)submitEventsInBackground:(BOOL)a3 withOptions:(id)a4
+- (void)submitEventsInBackground:(BOOL)background withOptions:(id)options
 {
-  v4 = a3;
+  backgroundCopy = background;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __56__UMEventRecorder_submitEventsInBackground_withOptions___block_invoke;
   block[3] = &__block_descriptor_49_e8_32o40o_e5_v8__0l;
-  if (a3)
+  if (background)
   {
     v5 = QOS_CLASS_BACKGROUND;
   }
@@ -1976,12 +1976,12 @@ LABEL_5:
     v5 = QOS_CLASS_UTILITY;
   }
 
-  block[4] = a4;
+  block[4] = options;
   block[5] = self;
-  v9 = a3;
+  backgroundCopy2 = background;
   v6 = dispatch_block_create_with_qos_class(0, v5, 0, block);
   v7 = +[UMEventRecorder submitQueue];
-  if (v4)
+  if (backgroundCopy)
   {
     dispatch_async(v7, v6);
   }
@@ -2144,11 +2144,11 @@ id __56__UMEventRecorder_submitEventsInBackground_withOptions___block_invoke_2(u
   return result;
 }
 
-- (void)submitEventsWithUpdateOptions:(id)a3
+- (void)submitEventsWithUpdateOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
-    v5 = [a3 objectForKey:@"SocksProxySettings"];
+    v5 = [options objectForKey:@"SocksProxySettings"];
     if (v5)
     {
       v6 = v5;
@@ -2161,9 +2161,9 @@ id __56__UMEventRecorder_submitEventsInBackground_withOptions___block_invoke_2(u
       v7 = 0;
     }
 
-    if ([a3 objectForKey:@"forceEventResubmission"])
+    if ([options objectForKey:@"forceEventResubmission"])
     {
-      -[NSMutableDictionary setObject:forKey:](v7, "setObject:forKey:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [objc_msgSend(a3 objectForKey:{@"forceEventResubmission", "BOOLValue"}]), @"forceEventResubmission");
+      -[NSMutableDictionary setObject:forKey:](v7, "setObject:forKey:", +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [objc_msgSend(options objectForKey:{@"forceEventResubmission", "BOOLValue"}]), @"forceEventResubmission");
     }
   }
 
@@ -2178,10 +2178,10 @@ id __56__UMEventRecorder_submitEventsInBackground_withOptions___block_invoke_2(u
 - (id)_loadUnsubmittedEvents
 {
   v3 = +[NSMutableArray array];
-  v4 = [(UMEventRecorder *)self _eventDirectory];
-  v5 = [(UMEventRecorder *)self _legacyEventDirectory];
-  _log(v5, @"Loading unsubmitted events from update volume", v6, v7, v8, v9, v10, v11, v60);
-  v12 = [(UMEventRecorder *)self _copyUnsubmittedEventsFromDirectory:v4 skipEventsIfPreviouslySubmittedAndWithinBackoffTime:0 previouslySubmittedEventSkipped:0];
+  _eventDirectory = [(UMEventRecorder *)self _eventDirectory];
+  _legacyEventDirectory = [(UMEventRecorder *)self _legacyEventDirectory];
+  _log(_legacyEventDirectory, @"Loading unsubmitted events from update volume", v6, v7, v8, v9, v10, v11, v60);
+  v12 = [(UMEventRecorder *)self _copyUnsubmittedEventsFromDirectory:_eventDirectory skipEventsIfPreviouslySubmittedAndWithinBackoffTime:0 previouslySubmittedEventSkipped:0];
   if (v12)
   {
     v19 = v12;
@@ -2205,7 +2205,7 @@ id __56__UMEventRecorder_submitEventsInBackground_withOptions___block_invoke_2(u
     _log(0, @"Unable to determine state of unsubmitted events(if any) on update volume", v13, v14, v15, v16, v17, v18, v61);
   }
 
-  v33 = [(UMEventRecorder *)self _copyUnsubmittedEventsFromDirectory:v5 skipEventsIfPreviouslySubmittedAndWithinBackoffTime:0 previouslySubmittedEventSkipped:0];
+  v33 = [(UMEventRecorder *)self _copyUnsubmittedEventsFromDirectory:_legacyEventDirectory skipEventsIfPreviouslySubmittedAndWithinBackoffTime:0 previouslySubmittedEventSkipped:0];
   if (v33)
   {
     v40 = v33;
@@ -2236,12 +2236,12 @@ id __56__UMEventRecorder_submitEventsInBackground_withOptions___block_invoke_2(u
 
 - (unint64_t)numUnsubmittedEvents
 {
-  v2 = [(UMEventRecorder *)self _loadUnsubmittedEvents];
+  _loadUnsubmittedEvents = [(UMEventRecorder *)self _loadUnsubmittedEvents];
 
-  return [v2 count];
+  return [_loadUnsubmittedEvents count];
 }
 
-- (void)commitMetadataToPersistentStorage:(id)a3
+- (void)commitMetadataToPersistentStorage:(id)storage
 {
   if ([(UMEventRecorder *)self uuid]&& [(UMEventRecorder *)self baseServerURL])
   {
@@ -2259,15 +2259,15 @@ id __56__UMEventRecorder_submitEventsInBackground_withOptions___block_invoke_2(u
       [(UMEventRecorder *)self _setNvramValue:[(UMEventRecorder *)self brainVersion] forKey:@"ota-brain-version"];
     }
 
-    -[UMEventRecorder _setNvramValue:forKey:](self, "_setNvramValue:forKey:", [a3 valueForKey:@"controllerVersion"], @"ota-controllerVersion");
-    if ([a3 valueForKey:@"updateType"])
+    -[UMEventRecorder _setNvramValue:forKey:](self, "_setNvramValue:forKey:", [storage valueForKey:@"controllerVersion"], @"ota-controllerVersion");
+    if ([storage valueForKey:@"updateType"])
     {
-      -[UMEventRecorder _setNvramValue:forKey:](self, "_setNvramValue:forKey:", [a3 valueForKey:@"updateType"], @"ota-updateType");
+      -[UMEventRecorder _setNvramValue:forKey:](self, "_setNvramValue:forKey:", [storage valueForKey:@"updateType"], @"ota-updateType");
     }
 
-    if ([a3 valueForKey:@"supervised"])
+    if ([storage valueForKey:@"supervised"])
     {
-      -[UMEventRecorder _setNvramValue:forKey:](self, "_setNvramValue:forKey:", [a3 valueForKey:@"supervised"], @"supervised");
+      -[UMEventRecorder _setNvramValue:forKey:](self, "_setNvramValue:forKey:", [storage valueForKey:@"supervised"], @"supervised");
     }
 
     [(UMEventRecorder *)self _setNvramValue:@"IONVRAM-FORCESYNCNOW-PROPERTY" forKey:@"IONVRAM-FORCESYNCNOW-PROPERTY"];

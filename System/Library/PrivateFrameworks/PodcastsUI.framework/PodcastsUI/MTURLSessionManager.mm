@@ -1,23 +1,23 @@
 @interface MTURLSessionManager
-+ (id)originalURLForTask:(id)a3;
-+ (int64_t)statusCodeForTask:(id)a3;
++ (id)originalURLForTask:(id)task;
++ (int64_t)statusCodeForTask:(id)task;
 + (void)purgeExternalCookies;
 - (MTURLSessionManager)init;
 - (id)backgroundSessionConfigurationIdentifier;
 - (id)sessionCompletionHandler;
-- (id)sessionForConfiguration:(id)a3;
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3;
+- (id)sessionForConfiguration:(id)configuration;
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session;
 - (void)_assertSubclassRequirements;
 - (void)_invokeURLSessionBackgroundEventsCompletionHandler;
-- (void)_showCredentialsActionControllerForHost:(id)a3 signIn:(id)a4 cancel:(id)a5;
+- (void)_showCredentialsActionControllerForHost:(id)host signIn:(id)in cancel:(id)cancel;
 - (void)loadSessionsIfNeeded;
-- (void)setSessionCompletionHandler:(id)a3;
-- (void)startDownloadTaskForURL:(id)a3 userInitiated:(BOOL)a4 useBackgroundFetch:(BOOL)a5 usePrivatePath:(id)a6 downloadStartedBlock:(id)a7;
+- (void)setSessionCompletionHandler:(id)handler;
+- (void)startDownloadTaskForURL:(id)l userInitiated:(BOOL)initiated useBackgroundFetch:(BOOL)fetch usePrivatePath:(id)path downloadStartedBlock:(id)block;
 @end
 
 @implementation MTURLSessionManager
@@ -33,8 +33,8 @@
     [(MTURLSessionManager *)v2 _assertSubclassRequirements];
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [v5 UTF8String];
-    v7 = dispatch_queue_create(v6, MEMORY[0x277D85CD8]);
+    uTF8String = [v5 UTF8String];
+    v7 = dispatch_queue_create(uTF8String, MEMORY[0x277D85CD8]);
     [(MTURLSessionManager *)v3 setStartQueue:v7];
 
     v8 = v3;
@@ -45,11 +45,11 @@
 
 - (void)_assertSubclassRequirements
 {
-  v3 = [(MTURLSessionManager *)self _subclassImplementsDataDidDownload];
-  v4 = [(MTURLSessionManager *)self _subclassImplementsURLDidDownload];
-  v5 = [(MTURLSessionManager *)self _subclassImplementsDidFailWithError];
-  v6 = [(MTURLSessionManager *)self _subclassImplementsConfigureSession];
-  if (v3 && v4)
+  _subclassImplementsDataDidDownload = [(MTURLSessionManager *)self _subclassImplementsDataDidDownload];
+  _subclassImplementsURLDidDownload = [(MTURLSessionManager *)self _subclassImplementsURLDidDownload];
+  _subclassImplementsDidFailWithError = [(MTURLSessionManager *)self _subclassImplementsDidFailWithError];
+  _subclassImplementsConfigureSession = [(MTURLSessionManager *)self _subclassImplementsConfigureSession];
+  if (_subclassImplementsDataDidDownload && _subclassImplementsURLDidDownload)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE648];
@@ -57,7 +57,7 @@
     goto LABEL_11;
   }
 
-  if (!v3 && !v4)
+  if (!_subclassImplementsDataDidDownload && !_subclassImplementsURLDidDownload)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE648];
@@ -65,7 +65,7 @@
     goto LABEL_11;
   }
 
-  if (!v5)
+  if (!_subclassImplementsDidFailWithError)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE648];
@@ -73,7 +73,7 @@
     goto LABEL_11;
   }
 
-  if (!v6)
+  if (!_subclassImplementsConfigureSession)
   {
     v7 = MEMORY[0x277CBEAD8];
     v8 = *MEMORY[0x277CBE648];
@@ -86,40 +86,40 @@ LABEL_11:
 
 - (void)loadSessionsIfNeeded
 {
-  v3 = [(MTURLSessionManager *)self sessionForBackgroundDownloads];
+  sessionForBackgroundDownloads = [(MTURLSessionManager *)self sessionForBackgroundDownloads];
 
-  if (!v3)
+  if (!sessionForBackgroundDownloads)
   {
-    v4 = self;
-    objc_sync_enter(v4);
-    v5 = [(MTURLSessionManager *)v4 sessionForBackgroundDownloads];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    sessionForBackgroundDownloads2 = [(MTURLSessionManager *)selfCopy sessionForBackgroundDownloads];
 
-    if (!v5)
+    if (!sessionForBackgroundDownloads2)
     {
       v6 = MEMORY[0x277CCAD38];
-      v7 = [(MTURLSessionManager *)v4 backgroundSessionConfigurationIdentifier];
-      v8 = [v6 backgroundSessionConfigurationWithIdentifier:v7];
+      backgroundSessionConfigurationIdentifier = [(MTURLSessionManager *)selfCopy backgroundSessionConfigurationIdentifier];
+      v8 = [v6 backgroundSessionConfigurationWithIdentifier:backgroundSessionConfigurationIdentifier];
 
       [v8 set_allowsConstrainedNetworkAccess:0];
-      v9 = [(MTURLSessionManager *)v4 sessionForConfiguration:v8];
-      [(MTURLSessionManager *)v4 setSessionForBackgroundDownloads:v9];
+      v9 = [(MTURLSessionManager *)selfCopy sessionForConfiguration:v8];
+      [(MTURLSessionManager *)selfCopy setSessionForBackgroundDownloads:v9];
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
   }
 
-  v10 = [(MTURLSessionManager *)self sessionForForegroundDownloads];
+  sessionForForegroundDownloads = [(MTURLSessionManager *)self sessionForForegroundDownloads];
 
-  if (!v10)
+  if (!sessionForForegroundDownloads)
   {
     obj = self;
     objc_sync_enter(obj);
-    v11 = [(MTURLSessionManager *)obj sessionForForegroundDownloads];
+    sessionForForegroundDownloads2 = [(MTURLSessionManager *)obj sessionForForegroundDownloads];
 
-    if (!v11)
+    if (!sessionForForegroundDownloads2)
     {
-      v12 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-      v13 = [(MTURLSessionManager *)obj sessionForConfiguration:v12];
+      defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+      v13 = [(MTURLSessionManager *)obj sessionForConfiguration:defaultSessionConfiguration];
       [(MTURLSessionManager *)obj setSessionForForegroundDownloads:v13];
     }
 
@@ -133,26 +133,26 @@ LABEL_11:
   v3 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MTURLSessionManager *)self sessionCompletionHandler];
-    v5 = _Block_copy(v4);
+    sessionCompletionHandler = [(MTURLSessionManager *)self sessionCompletionHandler];
+    v5 = _Block_copy(sessionCompletionHandler);
     *buf = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v5;
     _os_log_impl(&dword_21B365000, v3, OS_LOG_TYPE_DEFAULT, "[BackgroundSession] %@ _invokeURLSessionBackgroundEventsCompletionHandler called with completionHandler: %@.", buf, 0x16u);
   }
 
-  v6 = [(MTURLSessionManager *)self sessionCompletionHandler];
+  sessionCompletionHandler2 = [(MTURLSessionManager *)self sessionCompletionHandler];
 
-  if (v6)
+  if (sessionCompletionHandler2)
   {
-    v7 = [(MTURLSessionManager *)self sessionCompletionHandler];
+    sessionCompletionHandler3 = [(MTURLSessionManager *)self sessionCompletionHandler];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__MTURLSessionManager__invokeURLSessionBackgroundEventsCompletionHandler__block_invoke;
     block[3] = &unk_2782BDFC8;
-    v10 = v7;
-    v8 = v7;
+    v10 = sessionCompletionHandler3;
+    v8 = sessionCompletionHandler3;
     dispatch_async(MEMORY[0x277D85CD0], block);
     [(MTURLSessionManager *)self setSessionCompletionHandler:0];
   }
@@ -160,10 +160,10 @@ LABEL_11:
 
 - (id)sessionCompletionHandler
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = _Block_copy(v2->_sessionCompletionHandler);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = _Block_copy(selfCopy->_sessionCompletionHandler);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -175,17 +175,17 @@ LABEL_11:
   return NSStringFromClass(v2);
 }
 
-- (id)sessionForConfiguration:(id)a3
+- (id)sessionForConfiguration:(id)configuration
 {
-  v4 = a3;
-  [v4 setAllowsCellularAccess:1];
-  [v4 setDiscretionary:0];
-  [v4 setSessionSendsLaunchEvents:1];
-  [v4 setHTTPShouldUsePipelining:1];
-  [v4 setRequestCachePolicy:1];
-  [v4 setHTTPShouldSetCookies:0];
-  [v4 setHTTPCookieAcceptPolicy:1];
-  [(MTURLSessionManager *)self configureSession:v4];
+  configurationCopy = configuration;
+  [configurationCopy setAllowsCellularAccess:1];
+  [configurationCopy setDiscretionary:0];
+  [configurationCopy setSessionSendsLaunchEvents:1];
+  [configurationCopy setHTTPShouldUsePipelining:1];
+  [configurationCopy setRequestCachePolicy:1];
+  [configurationCopy setHTTPShouldSetCookies:0];
+  [configurationCopy setHTTPCookieAcceptPolicy:1];
+  [(MTURLSessionManager *)self configureSession:configurationCopy];
   v5 = objc_opt_new();
   if (isMulticore())
   {
@@ -201,36 +201,36 @@ LABEL_11:
   v7 = MEMORY[0x277CCACA8];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v4 identifier];
-  v11 = [v7 stringWithFormat:@"%@ - %@", v9, v10];
+  identifier = [configurationCopy identifier];
+  v11 = [v7 stringWithFormat:@"%@ - %@", v9, identifier];
   [v5 setName:v11];
 
-  v12 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v4 delegate:self delegateQueue:v5];
+  v12 = [MEMORY[0x277CCAD30] sessionWithConfiguration:configurationCopy delegate:self delegateQueue:v5];
 
   return v12;
 }
 
-- (void)startDownloadTaskForURL:(id)a3 userInitiated:(BOOL)a4 useBackgroundFetch:(BOOL)a5 usePrivatePath:(id)a6 downloadStartedBlock:(id)a7
+- (void)startDownloadTaskForURL:(id)l userInitiated:(BOOL)initiated useBackgroundFetch:(BOOL)fetch usePrivatePath:(id)path downloadStartedBlock:(id)block
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v12 url];
+  lCopy = l;
+  pathCopy = path;
+  blockCopy = block;
+  v15 = [lCopy url];
   if (v15)
   {
-    v16 = [(MTURLSessionManager *)self startQueue];
+    startQueue = [(MTURLSessionManager *)self startQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __116__MTURLSessionManager_startDownloadTaskForURL_userInitiated_useBackgroundFetch_usePrivatePath_downloadStartedBlock___block_invoke;
     v18[3] = &unk_2782BE7C8;
     v18[4] = self;
-    v23 = a5;
+    fetchCopy = fetch;
     v19 = v15;
-    v20 = v12;
-    v21 = v13;
-    v24 = a4;
-    v22 = v14;
-    dispatch_async(v16, v18);
+    v20 = lCopy;
+    v21 = pathCopy;
+    initiatedCopy = initiated;
+    v22 = blockCopy;
+    dispatch_async(startQueue, v18);
   }
 
   else
@@ -242,9 +242,9 @@ LABEL_11:
       _os_log_impl(&dword_21B365000, v17, OS_LOG_TYPE_ERROR, "Download task failed to start. Found nil URL", buf, 2u);
     }
 
-    if (v14)
+    if (blockCopy)
     {
-      (*(v14 + 2))(v14, 0);
+      (*(blockCopy + 2))(blockCopy, 0);
     }
   }
 }
@@ -315,99 +315,99 @@ void __116__MTURLSessionManager_startDownloadTaskForURL_userInitiated_useBackgro
   }
 }
 
-- (void)setSessionCompletionHandler:(id)a3
+- (void)setSessionCompletionHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(handlerCopy);
     v10 = 138412546;
-    v11 = v5;
+    v11 = selfCopy;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_21B365000, v6, OS_LOG_TYPE_DEFAULT, "[BackgroundSession] %@ setting sessionCompletionHandler to %@.", &v10, 0x16u);
   }
 
-  v8 = _Block_copy(v4);
-  sessionCompletionHandler = v5->_sessionCompletionHandler;
-  v5->_sessionCompletionHandler = v8;
+  v8 = _Block_copy(handlerCopy);
+  sessionCompletionHandler = selfCopy->_sessionCompletionHandler;
+  selfCopy->_sessionCompletionHandler = v8;
 
-  objc_sync_exit(v5);
-  [(MTURLSessionManager *)v5 loadSessionsIfNeeded];
+  objc_sync_exit(selfCopy);
+  [(MTURLSessionManager *)selfCopy loadSessionsIfNeeded];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v13 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = taskCopy;
     *&buf[22] = 2112;
-    v52 = v9;
+    v52 = sessionCopy;
     v53 = 2112;
-    v54 = v11;
+    v54 = challengeCopy;
     _os_log_impl(&dword_21B365000, v13, OS_LOG_TYPE_DEFAULT, "[BackgroundSession] %@ didReceiveChallenge called for task %@ with session %@. Challenge: %@", buf, 0x2Au);
   }
 
-  v14 = [v11 proposedCredential];
-  v15 = [v11 protectionSpace];
-  if (!v14)
+  proposedCredential = [challengeCopy proposedCredential];
+  protectionSpace = [challengeCopy protectionSpace];
+  if (!proposedCredential)
   {
-    v16 = [MEMORY[0x277CCACF8] sharedCredentialStorage];
-    v17 = [v16 credentialsForProtectionSpace:v15];
+    mEMORY[0x277CCACF8] = [MEMORY[0x277CCACF8] sharedCredentialStorage];
+    v17 = [mEMORY[0x277CCACF8] credentialsForProtectionSpace:protectionSpace];
 
     if ([v17 count] == 1)
     {
-      v18 = [v17 allValues];
-      v19 = [v18 firstObject];
+      allValues = [v17 allValues];
+      firstObject = [allValues firstObject];
 
       v20 = MEMORY[0x277CCACF0];
-      v21 = [v19 user];
-      v22 = [v19 password];
-      v14 = [v20 credentialWithUser:v21 password:v22 persistence:3];
+      user = [firstObject user];
+      password = [firstObject password];
+      proposedCredential = [v20 credentialWithUser:user password:password persistence:3];
     }
 
     else
     {
-      v14 = 0;
+      proposedCredential = 0;
     }
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  LOBYTE(v52) = [v11 previousFailureCount] > 2;
-  v23 = [v11 failureResponse];
-  if (v23 && [v11 previousFailureCount] >= 1)
+  LOBYTE(v52) = [challengeCopy previousFailureCount] > 2;
+  failureResponse = [challengeCopy failureResponse];
+  if (failureResponse && [challengeCopy previousFailureCount] >= 1)
   {
 
-    if (v14)
+    if (proposedCredential)
     {
-      v24 = [MEMORY[0x277D3DA90] sharedLogger];
-      v25 = [v24 shouldOverrideCondition:@"MAXDEBUG" file:@"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Networking/MTURLSessionManager.m"];
+      mEMORY[0x277D3DA90] = [MEMORY[0x277D3DA90] sharedLogger];
+      v25 = [mEMORY[0x277D3DA90] shouldOverrideCondition:@"MAXDEBUG" file:@"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Networking/MTURLSessionManager.m"];
 
       if (v25)
       {
-        v26 = [MEMORY[0x277D3DA90] sharedLogger];
-        [v26 logFunction:"-[MTURLSessionManager URLSession:task:didReceiveChallenge:completionHandler:]" format:{@"Failing auth due to max failure count: %ld", objc_msgSend(v11, "previousFailureCount")}];
+        mEMORY[0x277D3DA90]2 = [MEMORY[0x277D3DA90] sharedLogger];
+        [mEMORY[0x277D3DA90]2 logFunction:"-[MTURLSessionManager URLSession:task:didReceiveChallenge:completionHandler:]" format:{@"Failing auth due to max failure count: %ld", objc_msgSend(challengeCopy, "previousFailureCount")}];
       }
 
-      [v10 setUserCanceledAuth:1];
+      [taskCopy setUserCanceledAuth:1];
     }
 
-    v14 = 0;
+    proposedCredential = 0;
   }
 
   else
@@ -416,15 +416,15 @@ void __116__MTURLSessionManager_startDownloadTaskForURL_userInitiated_useBackgro
 
   if ([MEMORY[0x277D3DB60] supportsGUI])
   {
-    v27 = [v10 isInteractive];
+    isInteractive = [taskCopy isInteractive];
     v28 = *&buf[8];
-    if (v27 && (*(*&buf[8] + 24) & 1) == 0 && !v14)
+    if (isInteractive && (*(*&buf[8] + 24) & 1) == 0 && !proposedCredential)
     {
-      v29 = [v10 originalRequest];
-      v30 = [v29 URL];
+      originalRequest = [taskCopy originalRequest];
+      v30 = [originalRequest URL];
 
-      v31 = [MEMORY[0x277D3DAE8] sharedInstance];
-      v32 = [v31 importContext];
+      mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+      importContext = [mEMORY[0x277D3DAE8] importContext];
 
       v47 = 0;
       v48 = &v47;
@@ -434,7 +434,7 @@ void __116__MTURLSessionManager_startDownloadTaskForURL_userInitiated_useBackgro
       v43[1] = 3221225472;
       v43[2] = __77__MTURLSessionManager_URLSession_task_didReceiveChallenge_completionHandler___block_invoke;
       v43[3] = &unk_2782BDD40;
-      v33 = v32;
+      v33 = importContext;
       v44 = v33;
       v34 = v30;
       v45 = v34;
@@ -446,10 +446,10 @@ void __116__MTURLSessionManager_startDownloadTaskForURL_userInitiated_useBackgro
         block[1] = 3221225472;
         block[2] = __77__MTURLSessionManager_URLSession_task_didReceiveChallenge_completionHandler___block_invoke_2;
         block[3] = &unk_2782BE818;
-        v38 = v10;
-        v39 = self;
-        v40 = v11;
-        v41 = v12;
+        v38 = taskCopy;
+        selfCopy = self;
+        v40 = challengeCopy;
+        v41 = handlerCopy;
         v42 = buf;
         dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -466,7 +466,7 @@ void __116__MTURLSessionManager_startDownloadTaskForURL_userInitiated_useBackgro
 LABEL_25:
       v35 = 3;
 LABEL_29:
-      (*(v12 + 2))(v12, v35, 0);
+      (*(handlerCopy + 2))(handlerCopy, v35, 0);
       goto LABEL_30;
     }
   }
@@ -481,14 +481,14 @@ LABEL_29:
     goto LABEL_25;
   }
 
-  if (!v14)
+  if (!proposedCredential)
   {
 LABEL_28:
     v35 = 1;
     goto LABEL_29;
   }
 
-  (*(v12 + 2))(v12, 0, v14);
+  (*(handlerCopy + 2))(handlerCopy, 0, proposedCredential);
 LABEL_30:
   _Block_object_dispose(buf, 8);
 }
@@ -550,54 +550,54 @@ uint64_t __77__MTURLSessionManager_URLSession_task_didReceiveChallenge_completio
   return v2();
 }
 
-- (void)_showCredentialsActionControllerForHost:(id)a3 signIn:(id)a4 cancel:(id)a5
+- (void)_showCredentialsActionControllerForHost:(id)host signIn:(id)in cancel:(id)cancel
 {
-  v7 = a4;
-  v8 = a5;
+  inCopy = in;
+  cancelCopy = cancel;
   v9 = MEMORY[0x277CCACA8];
   v10 = MEMORY[0x277CCA8D8];
-  v11 = a3;
-  v12 = [v10 mainBundle];
-  v13 = [v12 localizedStringForKey:@"AUTHENTICATION_MESSAGE" value:&stru_282CBB070 table:0];
-  v14 = [v9 localizedStringWithFormat:v13, v11];
+  hostCopy = host;
+  mainBundle = [v10 mainBundle];
+  v13 = [mainBundle localizedStringForKey:@"AUTHENTICATION_MESSAGE" value:&stru_282CBB070 table:0];
+  hostCopy = [v9 localizedStringWithFormat:v13, hostCopy];
 
   v15 = MEMORY[0x277D75110];
-  v16 = [MEMORY[0x277CCA8D8] mainBundle];
-  v17 = [v16 localizedStringForKey:@"AUTHENTICATION_TITLE" value:&stru_282CBB070 table:0];
-  v18 = [v15 alertControllerWithTitle:v17 message:v14 preferredStyle:1];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v17 = [mainBundle2 localizedStringForKey:@"AUTHENTICATION_TITLE" value:&stru_282CBB070 table:0];
+  v18 = [v15 alertControllerWithTitle:v17 message:hostCopy preferredStyle:1];
 
   v19 = MEMORY[0x277D750F8];
-  v20 = [MEMORY[0x277CCA8D8] mainBundle];
-  v21 = [v20 localizedStringForKey:@"AUTHENTICATION_SIGNIN" value:&stru_282CBB070 table:0];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v21 = [mainBundle3 localizedStringForKey:@"AUTHENTICATION_SIGNIN" value:&stru_282CBB070 table:0];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __77__MTURLSessionManager__showCredentialsActionControllerForHost_signIn_cancel___block_invoke;
   v34[3] = &unk_2782BE840;
   v35 = v18;
-  v36 = v7;
-  v22 = v7;
+  v36 = inCopy;
+  v22 = inCopy;
   v23 = v18;
   v24 = [v19 actionWithTitle:v21 style:0 handler:v34];
   [v23 addAction:v24];
 
   v25 = MEMORY[0x277D750F8];
-  v26 = [MEMORY[0x277CCA8D8] mainBundle];
-  v27 = [v26 localizedStringForKey:@"Cancel" value:&stru_282CBB070 table:0];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v27 = [mainBundle4 localizedStringForKey:@"Cancel" value:&stru_282CBB070 table:0];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __77__MTURLSessionManager__showCredentialsActionControllerForHost_signIn_cancel___block_invoke_2;
   v32[3] = &unk_2782BE868;
-  v33 = v8;
-  v28 = v8;
+  v33 = cancelCopy;
+  v28 = cancelCopy;
   v29 = [v25 actionWithTitle:v27 style:1 handler:v32];
   [v23 addAction:v29];
 
   [v23 addTextFieldWithConfigurationHandler:&__block_literal_global_11];
   [v23 addTextFieldWithConfigurationHandler:&__block_literal_global_72];
-  v30 = [MEMORY[0x277D75D28] mt_rootViewController];
-  v31 = [v30 mt_topViewController];
+  mt_rootViewController = [MEMORY[0x277D75D28] mt_rootViewController];
+  mt_topViewController = [mt_rootViewController mt_topViewController];
 
-  [v31 presentViewController:v23 animated:1 completion:0];
+  [mt_topViewController presentViewController:v23 animated:1 completion:0];
 }
 
 void __77__MTURLSessionManager__showCredentialsActionControllerForHost_signIn_cancel___block_invoke(uint64_t a1)
@@ -649,59 +649,59 @@ void __77__MTURLSessionManager__showCredentialsActionControllerForHost_signIn_ca
   [v2 setPlaceholder:v3];
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v11 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = sessionCopy;
     *&buf[22] = 2112;
-    v36 = v9;
+    v36 = challengeCopy;
     _os_log_impl(&dword_21B365000, v11, OS_LOG_TYPE_DEFAULT, "[BackgroundSession] %@ didReceiveChallenge called for session %@. Challenge: %@", buf, 0x20u);
   }
 
-  v12 = [v9 protectionSpace];
+  protectionSpace = [challengeCopy protectionSpace];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v36 = __Block_byref_object_copy__4;
   v37 = __Block_byref_object_dispose__4;
-  v38 = [v9 proposedCredential];
-  v13 = [v9 previousFailureCount] > 2;
+  proposedCredential = [challengeCopy proposedCredential];
+  v13 = [challengeCopy previousFailureCount] > 2;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__MTURLSessionManager_URLSession_didReceiveChallenge_completionHandler___block_invoke;
   aBlock[3] = &unk_2782BE8B0;
   v34 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v32 = v14;
   v33 = buf;
   v15 = _Block_copy(aBlock);
-  v16 = [v12 authenticationMethod];
-  v17 = [v16 isEqualToString:*MEMORY[0x277CCA720]];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  v17 = [authenticationMethod isEqualToString:*MEMORY[0x277CCA720]];
 
   if (!v17)
   {
     goto LABEL_8;
   }
 
-  v18 = [MEMORY[0x277CF9710] defaultTrustManager];
-  v19 = [v12 serverTrust];
-  v20 = [v12 host];
-  v21 = [v18 actionForTrust:v19 forHost:v20 andService:*MEMORY[0x277CF9718]];
+  defaultTrustManager = [MEMORY[0x277CF9710] defaultTrustManager];
+  serverTrust = [protectionSpace serverTrust];
+  host = [protectionSpace host];
+  v21 = [defaultTrustManager actionForTrust:serverTrust forHost:host andService:*MEMORY[0x277CF9718]];
 
   if (v21 == 1)
   {
     v22 = MEMORY[0x277CCACF0];
-    v23 = [v9 protectionSpace];
-    v24 = [v22 credentialForTrust:{objc_msgSend(v23, "serverTrust")}];
+    protectionSpace2 = [challengeCopy protectionSpace];
+    v24 = [v22 credentialForTrust:{objc_msgSend(protectionSpace2, "serverTrust")}];
     v25 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v24;
 
@@ -719,11 +719,11 @@ LABEL_8:
   v26[1] = 3221225472;
   v26[2] = __72__MTURLSessionManager_URLSession_didReceiveChallenge_completionHandler___block_invoke_2;
   v26[3] = &unk_2782BE8D8;
-  v27 = v9;
-  v28 = v12;
+  v27 = challengeCopy;
+  v28 = protectionSpace;
   v30 = buf;
   v29 = v15;
-  [v8 getAllTasksWithCompletionHandler:v26];
+  [sessionCopy getAllTasksWithCompletionHandler:v26];
 
 LABEL_9:
   _Block_object_dispose(buf, 8);
@@ -807,134 +807,134 @@ LABEL_14:
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   v11 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v9;
+    v25 = taskCopy;
     v26 = 2112;
-    v27 = v8;
+    v27 = sessionCopy;
     v28 = 2112;
-    v29 = v10;
+    v29 = errorCopy;
     _os_log_impl(&dword_21B365000, v11, OS_LOG_TYPE_DEFAULT, "[BackgroundSession] %@ didCompleteWithError called for task %@ with session %@. Error: %@", buf, 0x2Au);
   }
 
-  v12 = [MEMORY[0x277D3DA90] sharedLogger];
-  v13 = [v12 shouldOverrideCondition:@"MAXDEBUG" file:@"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Networking/MTURLSessionManager.m"];
+  mEMORY[0x277D3DA90] = [MEMORY[0x277D3DA90] sharedLogger];
+  v13 = [mEMORY[0x277D3DA90] shouldOverrideCondition:@"MAXDEBUG" file:@"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Networking/MTURLSessionManager.m"];
 
   if (v13)
   {
-    v14 = [MEMORY[0x277D3DA90] sharedLogger];
-    [v14 logFunction:"-[MTURLSessionManager URLSession:task:didCompleteWithError:]" format:{@"Session Did Complete: %@", v8}];
+    mEMORY[0x277D3DA90]2 = [MEMORY[0x277D3DA90] sharedLogger];
+    [mEMORY[0x277D3DA90]2 logFunction:"-[MTURLSessionManager URLSession:task:didCompleteWithError:]" format:{@"Session Did Complete: %@", sessionCopy}];
   }
 
-  v15 = [MEMORY[0x277D3DA90] sharedLogger];
-  v16 = v15;
-  if (v10)
+  mEMORY[0x277D3DA90]3 = [MEMORY[0x277D3DA90] sharedLogger];
+  v16 = mEMORY[0x277D3DA90]3;
+  if (errorCopy)
   {
-    v17 = debuggingInfoForTask(v9);
-    v18 = [v10 description];
+    v17 = debuggingInfoForTask(taskCopy);
+    v18 = [errorCopy description];
     [v16 logFile:"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Networking/MTURLSessionManager.m" lineNumber:487 format:{@"ERROR: %@ (%@)", v17, v18}];
 
     [(MTURLSessionManager *)self _invokeURLSessionBackgroundEventsCompletionHandler];
-    [(MTURLSessionManager *)self task:v9 didFailWithError:v10 orStatusCode:-1];
+    [(MTURLSessionManager *)self task:taskCopy didFailWithError:errorCopy orStatusCode:-1];
   }
 
   else
   {
-    v19 = [v15 shouldOverrideCondition:@"MAXDEBUG" file:@"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Networking/MTURLSessionManager.m"];
+    v19 = [mEMORY[0x277D3DA90]3 shouldOverrideCondition:@"MAXDEBUG" file:@"/Library/Caches/com.apple.xbs/Sources/PodcastsUI/PodcastsUI/PodcastsUI/Networking/MTURLSessionManager.m"];
 
     if (v19)
     {
-      v20 = [MEMORY[0x277D3DA90] sharedLogger];
-      v21 = debuggingInfoForTask(v9);
-      [v20 logFunction:"-[MTURLSessionManager URLSession:task:didCompleteWithError:]" format:{@"SUCCESS: %@", v21}];
+      mEMORY[0x277D3DA90]4 = [MEMORY[0x277D3DA90] sharedLogger];
+      v21 = debuggingInfoForTask(taskCopy);
+      [mEMORY[0x277D3DA90]4 logFunction:"-[MTURLSessionManager URLSession:task:didCompleteWithError:]" format:{@"SUCCESS: %@", v21}];
     }
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
   v11 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138413058;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v9;
+    v17 = taskCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = sessionCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = lCopy;
     _os_log_impl(&dword_21B365000, v11, OS_LOG_TYPE_DEFAULT, "[BackgroundSession] %@ didFinishDownloadingToURL called for task %@ with session %@ and location %@", &v14, 0x2Au);
   }
 
   if ([(MTURLSessionManager *)self _subclassImplementsURLDidDownload])
   {
-    [(MTURLSessionManager *)self task:v9 didCompleteWithDownloadedContentUrl:v10];
+    [(MTURLSessionManager *)self task:taskCopy didCompleteWithDownloadedContentUrl:lCopy];
   }
 
   else
   {
-    v12 = [objc_opt_class() statusCodeForTask:v9];
-    if (v10 && v12 == 200)
+    v12 = [objc_opt_class() statusCodeForTask:taskCopy];
+    if (lCopy && v12 == 200)
     {
-      v13 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v10];
-      [(MTURLSessionManager *)self task:v9 didCompleteWithData:v13];
+      v13 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy];
+      [(MTURLSessionManager *)self task:taskCopy didCompleteWithData:v13];
     }
 
     else
     {
-      [(MTURLSessionManager *)self task:v9 didFailWithError:0 orStatusCode:v12];
+      [(MTURLSessionManager *)self task:taskCopy didFailWithError:0 orStatusCode:v12];
     }
   }
 }
 
-- (void)URLSession:(id)a3 didBecomeInvalidWithError:(id)a4
+- (void)URLSession:(id)session didBecomeInvalidWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = sessionCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = errorCopy;
     _os_log_impl(&dword_21B365000, v8, OS_LOG_TYPE_ERROR, "[BackgroundSession] %@ didBecomeInvalidWithError called for session %@ with error %@.", &v9, 0x20u);
   }
 
   [(MTURLSessionManager *)self _invokeURLSessionBackgroundEventsCompletionHandler];
 }
 
-- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)a3
+- (void)URLSessionDidFinishEventsForBackgroundURLSession:(id)session
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = _MTLogCategoryNetwork();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MTURLSessionManager *)self sessionCompletionHandler];
-    v7 = _Block_copy(v6);
+    sessionCompletionHandler = [(MTURLSessionManager *)self sessionCompletionHandler];
+    v7 = _Block_copy(sessionCompletionHandler);
     v8 = 138412802;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = sessionCopy;
     v12 = 2112;
     v13 = v7;
     _os_log_impl(&dword_21B365000, v5, OS_LOG_TYPE_DEFAULT, "[BackgroundSession] %@ URLSessionDidFinishEventsForBackgroundURLSession called for session %@ with completionHandler: %@.", &v8, 0x20u);
@@ -943,18 +943,18 @@ LABEL_14:
   [(MTURLSessionManager *)self _invokeURLSessionBackgroundEventsCompletionHandler];
 }
 
-+ (int64_t)statusCodeForTask:(id)a3
++ (int64_t)statusCodeForTask:(id)task
 {
-  v3 = [a3 response];
-  v4 = [v3 statusCode];
+  response = [task response];
+  statusCode = [response statusCode];
 
-  return v4;
+  return statusCode;
 }
 
-+ (id)originalURLForTask:(id)a3
++ (id)originalURLForTask:(id)task
 {
-  v3 = [a3 originalRequest];
-  v4 = [v3 URL];
+  originalRequest = [task originalRequest];
+  v4 = [originalRequest URL];
 
   return v4;
 }
@@ -969,13 +969,13 @@ LABEL_14:
     _os_log_impl(&dword_21B365000, v2, OS_LOG_TYPE_DEBUG, "Purging external cookies", buf, 2u);
   }
 
-  v3 = [MEMORY[0x277CCAA38] sharedHTTPCookieStorage];
+  mEMORY[0x277CCAA38] = [MEMORY[0x277CCAA38] sharedHTTPCookieStorage];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 cookies];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  cookies = [mEMORY[0x277CCAA38] cookies];
+  v5 = [cookies countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v5)
   {
     v7 = v5;
@@ -988,32 +988,32 @@ LABEL_14:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cookies);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 domain];
-        v12 = [v11 hasSuffix:@".apple.com"];
+        domain = [v10 domain];
+        v12 = [domain hasSuffix:@".apple.com"];
 
         if ((v12 & 1) == 0)
         {
           v13 = _MTLogCategoryNetwork();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v14 = [v10 domain];
-            v15 = [v10 value];
+            domain2 = [v10 domain];
+            value = [v10 value];
             *buf = v16;
-            v22 = v14;
+            v22 = domain2;
             v23 = 2112;
-            v24 = v15;
+            v24 = value;
             _os_log_impl(&dword_21B365000, v13, OS_LOG_TYPE_DEBUG, "Purging cookie: %@ (%@)", buf, 0x16u);
           }
 
-          [v3 deleteCookie:v10];
+          [mEMORY[0x277CCAA38] deleteCookie:v10];
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v7 = [cookies countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v7);

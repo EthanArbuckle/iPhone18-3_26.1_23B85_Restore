@@ -1,7 +1,7 @@
 @interface MapsActivityViewController
-- (MapsActivityViewController)initWithShareItem:(id)a3;
+- (MapsActivityViewController)initWithShareItem:(id)item;
 - (MapsActivityViewControllerDelegate)mapsActivityDelegate;
-- (void)mapkitActivityViewController:(id)a3 postCompletedActivityOfType:(id)a4 completed:(BOOL)a5;
+- (void)mapkitActivityViewController:(id)controller postCompletedActivityOfType:(id)type completed:(BOOL)completed;
 @end
 
 @implementation MapsActivityViewController
@@ -13,20 +13,20 @@
   return WeakRetained;
 }
 
-- (void)mapkitActivityViewController:(id)a3 postCompletedActivityOfType:(id)a4 completed:(BOOL)a5
+- (void)mapkitActivityViewController:(id)controller postCompletedActivityOfType:(id)type completed:(BOOL)completed
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(MapsActivityViewController *)self mapsActivityDelegate];
+  completedCopy = completed;
+  typeCopy = type;
+  mapsActivityDelegate = [(MapsActivityViewController *)self mapsActivityDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(MapsActivityViewController *)self mapsActivityDelegate];
-    [v10 mapsActivityViewController:self activityCompleted:1];
+    mapsActivityDelegate2 = [(MapsActivityViewController *)self mapsActivityDelegate];
+    [mapsActivityDelegate2 mapsActivityViewController:self activityCompleted:1];
   }
 
-  if ([v7 isEqualToString:UIActivityTypePrint])
+  if ([typeCopy isEqualToString:UIActivityTypePrint])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -36,21 +36,21 @@
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  else if ([SendToRoutingAppActivity isActivityForType:v7])
+  else if ([SendToRoutingAppActivity isActivityForType:typeCopy])
   {
-    v11 = [(MapsActivityViewController *)self mapsActivityDelegate];
+    mapsActivityDelegate3 = [(MapsActivityViewController *)self mapsActivityDelegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(MapsActivityViewController *)self mapsActivityDelegate];
-      [v13 mapsActivityViewControllerPresentRoutingApps:self];
+      mapsActivityDelegate4 = [(MapsActivityViewController *)self mapsActivityDelegate];
+      [mapsActivityDelegate4 mapsActivityViewControllerPresentRoutingApps:self];
     }
   }
 
   v14 = +[MKMapService sharedService];
   v15 = v14;
-  if (v5)
+  if (completedCopy)
   {
     v16 = 17;
   }
@@ -60,15 +60,15 @@
     v16 = 4;
   }
 
-  [v14 captureUserAction:v16 onTarget:622 eventValue:v7];
+  [v14 captureUserAction:v16 onTarget:622 eventValue:typeCopy];
 }
 
-- (MapsActivityViewController)initWithShareItem:(id)a3
+- (MapsActivityViewController)initWithShareItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = MapsActivityViewController;
-  v5 = [(MapsActivityViewController *)&v8 initWithShareItem:v4];
+  v5 = [(MapsActivityViewController *)&v8 initWithShareItem:itemCopy];
   if (v5)
   {
     if (qword_10195D208 != -1)
@@ -82,7 +82,7 @@
       *buf = 134349314;
       v10 = v5;
       v11 = 2112;
-      v12 = v4;
+      v12 = itemCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Initializing with share item: %@", buf, 0x16u);
     }
 

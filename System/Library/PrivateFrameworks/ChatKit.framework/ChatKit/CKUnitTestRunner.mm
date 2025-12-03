@@ -1,8 +1,8 @@
 @interface CKUnitTestRunner
 + (id)sharedInstance;
-- (void)_dumpResults:(id)a3;
-- (void)runUnitTestBundleAtPath:(id)a3 writeToFile:(BOOL)a4;
-- (void)unitTestRunner:(id)a3 didReceiveOutput:(id)a4;
+- (void)_dumpResults:(id)results;
+- (void)runUnitTestBundleAtPath:(id)path writeToFile:(BOOL)file;
+- (void)unitTestRunner:(id)runner didReceiveOutput:(id)output;
 @end
 
 @implementation CKUnitTestRunner
@@ -26,34 +26,34 @@ void __34__CKUnitTestRunner_sharedInstance__block_invoke()
   sharedInstance_sRunner = v0;
 }
 
-- (void)runUnitTestBundleAtPath:(id)a3 writeToFile:(BOOL)a4
+- (void)runUnitTestBundleAtPath:(id)path writeToFile:(BOOL)file
 {
-  v4 = a4;
-  v6 = a3;
-  [(CKUnitTestRunner *)self setShouldWrite:v4];
+  fileCopy = file;
+  pathCopy = path;
+  [(CKUnitTestRunner *)self setShouldWrite:fileCopy];
   v7 = objc_alloc_init(MEMORY[0x1E69A8318]);
   [v7 setDelegate:self];
   [(CKUnitTestRunner *)self setRunner:v7];
-  if (v4)
+  if (fileCopy)
   {
-    v8 = [v6 lastPathComponent];
-    v9 = [v8 stringByDeletingPathExtension];
+    lastPathComponent = [pathCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Results.log", v9];
+    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_Results.log", stringByDeletingPathExtension];
     v11 = [@"/tmp/" stringByAppendingPathComponent:v10];
 
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v12 fileExistsAtPath:v11];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:v11];
 
     if (v13)
     {
-      v14 = [MEMORY[0x1E696AC08] defaultManager];
-      [v14 removeItemAtPath:v11 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 removeItemAtPath:v11 error:0];
     }
 
-    v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"MobileSMS invoking App test for %@\n", v6];
+    pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"MobileSMS invoking App test for %@\n", pathCopy];
     v23 = 0;
-    [v15 writeToFile:v11 atomically:1 encoding:4 error:&v23];
+    [pathCopy writeToFile:v11 atomically:1 encoding:4 error:&v23];
     v16 = v23;
     v17 = [MEMORY[0x1E696AC00] fileHandleForWritingAtPath:v11];
     if (!v17 || v16)
@@ -65,15 +65,15 @@ void __34__CKUnitTestRunner_sharedInstance__block_invoke()
   }
 
   v22 = 0;
-  v18 = [v7 runTestsInBundleAtPath:v6 error:&v22];
+  v18 = [v7 runTestsInBundleAtPath:pathCopy error:&v22];
   v19 = v22;
   [(CKUnitTestRunner *)self _dumpResults:v18];
-  v20 = [(CKUnitTestRunner *)self fileHandle];
+  fileHandle = [(CKUnitTestRunner *)self fileHandle];
 
-  if (v20)
+  if (fileHandle)
   {
-    v21 = [(CKUnitTestRunner *)self fileHandle];
-    [v21 closeFile];
+    fileHandle2 = [(CKUnitTestRunner *)self fileHandle];
+    [fileHandle2 closeFile];
   }
 
   if ([v18 hasSucceeded])
@@ -84,45 +84,45 @@ void __34__CKUnitTestRunner_sharedInstance__block_invoke()
   exit([v18 failureCount]);
 }
 
-- (void)_dumpResults:(id)a3
+- (void)_dumpResults:(id)results
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v5 testCaseCount];
-  v7 = [v5 failureCount];
-  v8 = [v5 hasSucceeded];
+  resultsCopy = results;
+  testCaseCount = [resultsCopy testCaseCount];
+  failureCount = [resultsCopy failureCount];
+  hasSucceeded = [resultsCopy hasSucceeded];
 
   v9 = @"NO";
-  if (v8)
+  if (hasSucceeded)
   {
     v9 = @"YES";
   }
 
-  v13 = [v4 stringWithFormat:@"\n|-----------------Testing Complete--------------------|\n|>>> Test Cases %tu\n|>>> Failed Tests %lu\n|>>> Suite Passed %@\n|-----------------------------------------------------|", v6, v7, v9];
-  v10 = [(CKUnitTestRunner *)self fileHandle];
-  [v10 seekToEndOfFile];
+  v13 = [v4 stringWithFormat:@"\n|-----------------Testing Complete--------------------|\n|>>> Test Cases %tu\n|>>> Failed Tests %lu\n|>>> Suite Passed %@\n|-----------------------------------------------------|", testCaseCount, failureCount, v9];
+  fileHandle = [(CKUnitTestRunner *)self fileHandle];
+  [fileHandle seekToEndOfFile];
 
   v11 = [v13 dataUsingEncoding:4];
-  v12 = [(CKUnitTestRunner *)self fileHandle];
-  [v12 writeData:v11];
+  fileHandle2 = [(CKUnitTestRunner *)self fileHandle];
+  [fileHandle2 writeData:v11];
 }
 
-- (void)unitTestRunner:(id)a3 didReceiveOutput:(id)a4
+- (void)unitTestRunner:(id)runner didReceiveOutput:(id)output
 {
-  v9 = a4;
+  outputCopy = output;
   if ([(CKUnitTestRunner *)self shouldWrite]&& ([(CKUnitTestRunner *)self fileHandle], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(CKUnitTestRunner *)self fileHandle];
-    [v6 seekToEndOfFile];
+    fileHandle = [(CKUnitTestRunner *)self fileHandle];
+    [fileHandle seekToEndOfFile];
 
-    v7 = [v9 dataUsingEncoding:4];
-    v8 = [(CKUnitTestRunner *)self fileHandle];
-    [v8 writeData:v7];
+    v7 = [outputCopy dataUsingEncoding:4];
+    fileHandle2 = [(CKUnitTestRunner *)self fileHandle];
+    [fileHandle2 writeData:v7];
   }
 
   else
   {
-    NSLog(&stru_1F04293B8.isa, v9);
+    NSLog(&stru_1F04293B8.isa, outputCopy);
   }
 }
 

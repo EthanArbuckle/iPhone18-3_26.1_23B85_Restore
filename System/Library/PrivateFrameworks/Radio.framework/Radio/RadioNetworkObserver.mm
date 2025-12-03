@@ -3,7 +3,7 @@
 - (BOOL)isUsingNetwork;
 - (RadioNetworkObserver)init;
 - (id)_init;
-- (void)_cellularNetworkAllowedDidChangeNotification:(id)a3;
+- (void)_cellularNetworkAllowedDidChangeNotification:(id)notification;
 - (void)beginUsingNetwork;
 - (void)dealloc;
 - (void)endUsingNetwork;
@@ -103,7 +103,7 @@ void __41__RadioNetworkObserver_beginUsingNetwork__block_invoke_2(uint64_t a1)
   [v2 postNotificationName:@"RadioNetworkObserverIsUsingNetworkDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_cellularNetworkAllowedDidChangeNotification:(id)a3
+- (void)_cellularNetworkAllowedDidChangeNotification:(id)notification
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
@@ -123,10 +123,10 @@ void __69__RadioNetworkObserver__cellularNetworkAllowedDidChangeNotification___b
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D69E10];
-  v5 = [MEMORY[0x277D69A80] currentDevice];
-  [v3 removeObserver:self name:v4 object:v5];
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  [defaultCenter removeObserver:self name:v4 object:currentDevice];
 
   v6.receiver = self;
   v6.super_class = RadioNetworkObserver;
@@ -144,10 +144,10 @@ void __69__RadioNetworkObserver__cellularNetworkAllowedDidChangeNotification___b
     networkUsageQueue = v2->_networkUsageQueue;
     v2->_networkUsageQueue = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277D69E10];
-    v7 = [MEMORY[0x277D69A80] currentDevice];
-    [v5 addObserver:v2 selector:sel__cellularNetworkAllowedDidChangeNotification_ name:v6 object:v7];
+    currentDevice = [MEMORY[0x277D69A80] currentDevice];
+    [defaultCenter addObserver:v2 selector:sel__cellularNetworkAllowedDidChangeNotification_ name:v6 object:currentDevice];
   }
 
   return v2;

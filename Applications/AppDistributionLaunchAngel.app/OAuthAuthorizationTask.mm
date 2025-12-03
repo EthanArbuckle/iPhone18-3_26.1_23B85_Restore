@@ -1,8 +1,8 @@
 @interface OAuthAuthorizationTask
 - (_TtC26AppDistributionLaunchAngel22OAuthAuthorizationTask)init;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation OAuthAuthorizationTask
@@ -14,26 +14,26 @@
   return result;
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
+  activateCopy = activate;
+  selfCopy = self;
   sub_1000151C0();
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
+  deactivateCopy = deactivate;
+  selfCopy = self;
   sub_100015318();
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_100015468(a4);
+  handleCopy = handle;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100015468(error);
 }
 
 @end

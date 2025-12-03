@@ -1,14 +1,14 @@
 @interface TapUISceneDelegate
 - (_TtC22ProximityReaderSceneUI18TapUISceneDelegate)init;
-- (void)sceneDidDisconnect:(id)a3;
+- (void)sceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation TapUISceneDelegate
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = self;
+  disconnectCopy = disconnect;
+  selfCopy = self;
   sub_10000DFA0();
 }
 

@@ -1,37 +1,37 @@
 @interface MTATabBarController
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4;
-- (MTATabBarController)initWithAlarmManager:(id)a3 alarmDataSource:(id)a4 timerManager:(id)a5 timerDataSource:(id)a6;
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController;
+- (MTATabBarController)initWithAlarmManager:(id)manager alarmDataSource:(id)source timerManager:(id)timerManager timerDataSource:(id)dataSource;
 - (id)alarmTableViewController;
-- (id)navigationControllerForHorizontalSizeClass:(int64_t)a3 verticalSizeClass:(int64_t)a4 atIndex:(unint64_t)a5;
-- (id)navigationControllerForTab:(unint64_t)a3;
-- (id)rootViewControllerForTab:(unint64_t)a3;
-- (id)topViewControllerForTab:(unint64_t)a3;
+- (id)navigationControllerForHorizontalSizeClass:(int64_t)class verticalSizeClass:(int64_t)sizeClass atIndex:(unint64_t)index;
+- (id)navigationControllerForTab:(unint64_t)tab;
+- (id)rootViewControllerForTab:(unint64_t)tab;
+- (id)topViewControllerForTab:(unint64_t)tab;
 - (id)worldClockPadController;
 - (id)worldClockTableViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (unint64_t)tabIndexForAppSection:(int64_t)a3;
+- (unint64_t)tabIndexForAppSection:(int64_t)section;
 - (void)_commandLeftArrowKeyPressed;
 - (void)_commandRightArrowKeyPressed;
-- (void)invalidateViewControllersWithTraitCollection:(id)a3;
-- (void)performActionForIntent:(id)a3;
-- (void)performActionForShortcutItem:(id)a3;
+- (void)invalidateViewControllersWithTraitCollection:(id)collection;
+- (void)performActionForIntent:(id)intent;
+- (void)performActionForShortcutItem:(id)item;
 - (void)populateShortcutItems;
 - (void)populateTabIndexes;
 - (void)prepareStateForUrlLaunch;
 - (void)restoreAddNewAlarm;
-- (void)restoreAlarmEditWithEvent:(id)a3;
+- (void)restoreAlarmEditWithEvent:(id)event;
 - (void)restoreAlarmTabEditMode;
 - (void)restoreSleepEdit;
 - (void)restoreState;
 - (void)restoreWorldClockAdd;
 - (void)restoreWorldClockEdit;
-- (void)restoreWorldClockTabWithEvent:(id)a3;
+- (void)restoreWorldClockTabWithEvent:(id)event;
 - (void)showAddView;
 - (void)showSleepView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTATabBarController
@@ -81,22 +81,22 @@
   [v3 restoreLastEventWithCompletion:v4];
 }
 
-- (MTATabBarController)initWithAlarmManager:(id)a3 alarmDataSource:(id)a4 timerManager:(id)a5 timerDataSource:(id)a6
+- (MTATabBarController)initWithAlarmManager:(id)manager alarmDataSource:(id)source timerManager:(id)timerManager timerDataSource:(id)dataSource
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  sourceCopy = source;
+  timerManagerCopy = timerManager;
+  dataSourceCopy = dataSource;
   v18.receiver = self;
   v18.super_class = MTATabBarController;
   v15 = [(MTATabBarController *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_alarmManager, a3);
-    objc_storeStrong(&v16->_alarmDataSource, a4);
-    objc_storeStrong(&v16->_timerManager, a5);
-    objc_storeStrong(&v16->_timerDataSource, a6);
+    objc_storeStrong(&v15->_alarmManager, manager);
+    objc_storeStrong(&v16->_alarmDataSource, source);
+    objc_storeStrong(&v16->_timerManager, timerManager);
+    objc_storeStrong(&v16->_timerDataSource, dataSource);
     [(MTATabBarController *)v16 setDelegate:v16];
     [(MTATabBarController *)v16 populateTabIndexes];
   }
@@ -104,54 +104,54 @@
   return v16;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = MTATabBarController;
-  [(MTATabBarController *)&v5 viewWillAppear:a3];
-  v4 = [(MTATabBarController *)self traitCollection];
-  [(MTATabBarController *)self invalidateViewControllersWithTraitCollection:v4];
+  [(MTATabBarController *)&v5 viewWillAppear:appear];
+  traitCollection = [(MTATabBarController *)self traitCollection];
+  [(MTATabBarController *)self invalidateViewControllersWithTraitCollection:traitCollection];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MTATabBarController;
-  [(MTATabBarController *)&v6 viewDidAppear:a3];
-  v4 = [(MTATabBarController *)self deferredEditingAction];
+  [(MTATabBarController *)&v6 viewDidAppear:appear];
+  deferredEditingAction = [(MTATabBarController *)self deferredEditingAction];
 
-  if (v4)
+  if (deferredEditingAction)
   {
-    v5 = [(MTATabBarController *)self deferredEditingAction];
-    v5[2]();
+    deferredEditingAction2 = [(MTATabBarController *)self deferredEditingAction];
+    deferredEditingAction2[2]();
 
     [(MTATabBarController *)self setDeferredEditingAction:0];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = MTATabBarController;
-  v7 = a4;
-  [(MTATabBarController *)&v11 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
+  coordinatorCopy = coordinator;
+  [(MTATabBarController *)&v11 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000C888;
   v9[3] = &unk_1000AD9A0;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 animateAlongsideTransition:v9 completion:0];
+  v10 = collectionCopy;
+  v8 = collectionCopy;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:0];
 }
 
-- (void)invalidateViewControllersWithTraitCollection:(id)a3
+- (void)invalidateViewControllersWithTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [v4 horizontalSizeClass];
-  v7 = [v4 verticalSizeClass];
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  verticalSizeClass = [collectionCopy verticalSizeClass];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -171,7 +171,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = -[MTATabBarController navigationControllerForHorizontalSizeClass:verticalSizeClass:atIndex:](self, "navigationControllerForHorizontalSizeClass:verticalSizeClass:atIndex:", v6, v7, [*(*(&v20 + 1) + 8 * i) integerValue]);
+        v12 = -[MTATabBarController navigationControllerForHorizontalSizeClass:verticalSizeClass:atIndex:](self, "navigationControllerForHorizontalSizeClass:verticalSizeClass:atIndex:", horizontalSizeClass, verticalSizeClass, [*(*(&v20 + 1) + 8 * i) integerValue]);
         [v5 na_safeAddObject:v12];
         v13 = [UITraitCollection traitCollectionWithUserInterfaceStyle:2];
         [(MTATabBarController *)self setOverrideTraitCollection:v13 forChildViewController:v12];
@@ -185,24 +185,24 @@
 
   [(MTATabBarController *)self setViewControllers:v5 animated:0];
   v14 = +[UIApplication sharedApplication];
-  v15 = [v14 delegate];
+  delegate = [v14 delegate];
 
   if (MTIdiomIpad())
   {
-    v16 = [(MTATabBarController *)self timerViewController];
-    v17 = [v15 menuBuilder];
-    v18 = [v15 recentTimerIdentifier];
-    [v16 performSelector:"menuBarAppearedWithBuilder:targetMenuIdentifier:" withObject:v17 withObject:v18];
+    timerViewController = [(MTATabBarController *)self timerViewController];
+    menuBuilder = [delegate menuBuilder];
+    recentTimerIdentifier = [delegate recentTimerIdentifier];
+    [timerViewController performSelector:"menuBarAppearedWithBuilder:targetMenuIdentifier:" withObject:menuBuilder withObject:recentTimerIdentifier];
   }
 }
 
 - (void)showSleepView
 {
-  v3 = [(MTATabBarController *)self alarmViewController];
-  v4 = v3;
-  if (v3)
+  alarmViewController = [(MTATabBarController *)self alarmViewController];
+  v4 = alarmViewController;
+  if (alarmViewController)
   {
-    [v3 showSleepView:0];
+    [alarmViewController showSleepView:0];
   }
 
   else
@@ -234,12 +234,12 @@
   _objc_release_x2();
 }
 
-- (id)navigationControllerForHorizontalSizeClass:(int64_t)a3 verticalSizeClass:(int64_t)a4 atIndex:(unint64_t)a5
+- (id)navigationControllerForHorizontalSizeClass:(int64_t)class verticalSizeClass:(int64_t)sizeClass atIndex:(unint64_t)index
 {
   v7 = 0;
-  if (a5 > 1)
+  if (index > 1)
   {
-    if (a5 == 2)
+    if (index == 2)
     {
       stopwatchNavController = self->_stopwatchNavController;
       if (!stopwatchNavController)
@@ -253,10 +253,10 @@
       }
 
       v7 = stopwatchNavController;
-      [(UINavigationController *)v7 setNavigationBarHidden:a3 == 1];
+      [(UINavigationController *)v7 setNavigationBarHidden:class == 1];
     }
 
-    else if (a5 == 3)
+    else if (index == 3)
     {
       if (!self->_siriTipsController)
       {
@@ -286,7 +286,7 @@
 
       v24 = timerNavController;
       v7 = v24;
-      if (a3 == 1)
+      if (class == 1)
       {
         goto LABEL_22;
       }
@@ -295,14 +295,14 @@
 
   else
   {
-    if (a5)
+    if (index)
     {
-      if (a5 != 1)
+      if (index != 1)
       {
         goto LABEL_34;
       }
 
-      if (a3 == 1)
+      if (class == 1)
       {
         p_alarmNavControllerSmall = &self->_alarmNavControllerSmall;
         alarmNavControllerSmall = self->_alarmNavControllerSmall;
@@ -317,11 +317,11 @@
         }
 
         v7 = alarmNavControllerSmall;
-        v13 = [(UINavigationController *)v7 navigationBar];
-        [v13 setPrefersLargeTitles:1];
+        navigationBar = [(UINavigationController *)v7 navigationBar];
+        [navigationBar setPrefersLargeTitles:1];
 
-        v14 = [(UINavigationController *)v7 navigationItem];
-        [v14 setLargeTitleDisplayMode:1];
+        navigationItem = [(UINavigationController *)v7 navigationItem];
+        [navigationItem setLargeTitleDisplayMode:1];
 
         v15 = &OBJC_IVAR___MTATabBarController__alarmNavController;
       }
@@ -344,21 +344,21 @@
         v15 = &OBJC_IVAR___MTATabBarController__alarmNavControllerSmall;
       }
 
-      v39 = [*(&self->super.super.super.super.isa + *v15) viewControllers];
-      v30 = [v39 firstObject];
+      viewControllers = [*(&self->super.super.super.super.isa + *v15) viewControllers];
+      firstObject = [viewControllers firstObject];
 
-      v40 = [*p_alarmNavControllerSmall viewControllers];
-      v41 = [v40 firstObject];
+      viewControllers2 = [*p_alarmNavControllerSmall viewControllers];
+      firstObject2 = [viewControllers2 firstObject];
 
-      if ([v30 conformsToProtocol:&OBJC_PROTOCOL___MTAAlarmEditViewControllerDelegate] && objc_msgSend(v41, "conformsToProtocol:", &OBJC_PROTOCOL___MTAAlarmEditViewControllerDelegate))
+      if ([firstObject conformsToProtocol:&OBJC_PROTOCOL___MTAAlarmEditViewControllerDelegate] && objc_msgSend(firstObject2, "conformsToProtocol:", &OBJC_PROTOCOL___MTAAlarmEditViewControllerDelegate))
       {
-        [v41 handleContentSizeTransitionFrom:v30];
+        [firstObject2 handleContentSizeTransitionFrom:firstObject];
       }
 
       goto LABEL_33;
     }
 
-    if (a3 == 1)
+    if (class == 1)
     {
       worldClockNavControllerSmall = self->_worldClockNavControllerSmall;
       if (!worldClockNavControllerSmall)
@@ -374,11 +374,11 @@
       v24 = worldClockNavControllerSmall;
       v7 = v24;
 LABEL_22:
-      v29 = [(UINavigationController *)v24 navigationBar];
-      [v29 setPrefersLargeTitles:1];
+      navigationBar2 = [(UINavigationController *)v24 navigationBar];
+      [navigationBar2 setPrefersLargeTitles:1];
 
-      v30 = [(UINavigationController *)v7 navigationItem];
-      [v30 setLargeTitleDisplayMode:1];
+      firstObject = [(UINavigationController *)v7 navigationItem];
+      [firstObject setLargeTitleDisplayMode:1];
 LABEL_33:
 
       goto LABEL_34;
@@ -403,14 +403,14 @@ LABEL_34:
   return v7;
 }
 
-- (id)navigationControllerForTab:(unint64_t)a3
+- (id)navigationControllerForTab:(unint64_t)tab
 {
   tabIndexes = self->_tabIndexes;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:tab];
   v6 = [(NSArray *)tabIndexes indexOfObject:v5];
 
-  v7 = [(MTATabBarController *)self viewControllers];
-  v8 = [v7 count];
+  viewControllers = [(MTATabBarController *)self viewControllers];
+  v8 = [viewControllers count];
 
   if (v6 >= v8)
   {
@@ -419,40 +419,40 @@ LABEL_34:
 
   else
   {
-    v9 = [(MTATabBarController *)self viewControllers];
-    v10 = [v9 objectAtIndex:v6];
+    viewControllers2 = [(MTATabBarController *)self viewControllers];
+    v10 = [viewControllers2 objectAtIndex:v6];
   }
 
   return v10;
 }
 
-- (id)topViewControllerForTab:(unint64_t)a3
+- (id)topViewControllerForTab:(unint64_t)tab
 {
-  v3 = [(MTATabBarController *)self navigationControllerForTab:a3];
-  v4 = [v3 topViewController];
+  v3 = [(MTATabBarController *)self navigationControllerForTab:tab];
+  topViewController = [v3 topViewController];
 
-  return v4;
+  return topViewController;
 }
 
-- (id)rootViewControllerForTab:(unint64_t)a3
+- (id)rootViewControllerForTab:(unint64_t)tab
 {
-  v3 = [(MTATabBarController *)self navigationControllerForTab:a3];
-  v4 = [v3 viewControllers];
-  v5 = [v4 firstObject];
+  v3 = [(MTATabBarController *)self navigationControllerForTab:tab];
+  viewControllers = [v3 viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (unint64_t)tabIndexForAppSection:(int64_t)a3
+- (unint64_t)tabIndexForAppSection:(int64_t)section
 {
-  if ((a3 - 1) > 3)
+  if ((section - 1) > 3)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = qword_10008B898[a3 - 1];
+    v7 = qword_10008B898[section - 1];
   }
 
   v12 = v3;
@@ -485,12 +485,12 @@ LABEL_34:
 {
   v15 = objc_opt_new();
   objc_opt_class();
-  v3 = [(MTATabBarController *)self stopwatchViewController];
-  if (v3)
+  stopwatchViewController = [(MTATabBarController *)self stopwatchViewController];
+  if (stopwatchViewController)
   {
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = stopwatchViewController;
     }
 
     else
@@ -510,17 +510,17 @@ LABEL_34:
     v5 = 0;
   }
 
-  v6 = [v5 defaultShortcutItem];
-  [v15 na_safeAddObject:v6];
+  defaultShortcutItem = [v5 defaultShortcutItem];
+  [v15 na_safeAddObject:defaultShortcutItem];
 
   MTUIIsPhoneIdiom();
   v7 = objc_opt_class();
-  v8 = [(MTATabBarController *)self timerViewController];
-  if (v8)
+  timerViewController = [(MTATabBarController *)self timerViewController];
+  if (timerViewController)
   {
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = timerViewController;
     }
 
     else
@@ -542,53 +542,53 @@ LABEL_34:
     v10 = 0;
   }
 
-  v13 = [v10 defaultShortcutItem];
-  [v15 na_safeAddObject:v13];
+  defaultShortcutItem2 = [v10 defaultShortcutItem];
+  [v15 na_safeAddObject:defaultShortcutItem2];
 
   v14 = +[UIApplication sharedApplication];
   [v14 setShortcutItems:v15];
 }
 
-- (void)performActionForShortcutItem:(id)a3
+- (void)performActionForShortcutItem:(id)item
 {
-  v35 = a3;
-  v4 = [(MTATabBarController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 rootViewController];
-  [v6 dismissViewControllerAnimated:0 completion:0];
+  itemCopy = item;
+  view = [(MTATabBarController *)self view];
+  window = [view window];
+  rootViewController = [window rootViewController];
+  [rootViewController dismissViewControllerAnimated:0 completion:0];
 
-  v7 = [v35 type];
-  LODWORD(v5) = [v7 isEqualToString:@"com.apple.mobiletimer.add-alarm"];
+  type = [itemCopy type];
+  LODWORD(window) = [type isEqualToString:@"com.apple.mobiletimer.add-alarm"];
 
-  if (v5)
+  if (window)
   {
     [(MTATabBarController *)self setSelectedIndex:[(NSArray *)self->_tabIndexes indexOfObject:&off_1000B1830]];
-    v8 = [(MTATabBarController *)self alarmViewController];
-    v9 = [v8 conformsToProtocol:&OBJC_PROTOCOL___MTAAddItemController];
+    alarmViewController = [(MTATabBarController *)self alarmViewController];
+    v9 = [alarmViewController conformsToProtocol:&OBJC_PROTOCOL___MTAAddItemController];
 
     if (!v9)
     {
       goto LABEL_47;
     }
 
-    v10 = [(MTATabBarController *)self alarmViewController];
-    [v10 showAddView];
+    alarmViewController2 = [(MTATabBarController *)self alarmViewController];
+    [alarmViewController2 showAddView];
     goto LABEL_46;
   }
 
-  v11 = [v35 type];
-  v12 = [v11 isEqualToString:@"com.apple.mobiletimer.start-stopwatch"];
+  type2 = [itemCopy type];
+  v12 = [type2 isEqualToString:@"com.apple.mobiletimer.start-stopwatch"];
 
   if (v12)
   {
     [(MTATabBarController *)self setSelectedIndex:[(NSArray *)self->_tabIndexes indexOfObject:&off_1000B1848]];
     objc_opt_class();
-    v13 = [(MTATabBarController *)self stopwatchViewController];
-    if (v13)
+    stopwatchViewController = [(MTATabBarController *)self stopwatchViewController];
+    if (stopwatchViewController)
     {
       if (objc_opt_isKindOfClass())
       {
-        v14 = v13;
+        v14 = stopwatchViewController;
       }
 
       else
@@ -596,8 +596,8 @@ LABEL_34:
         v14 = 0;
       }
 
-      v10 = v14;
-      if (!v10)
+      alarmViewController2 = v14;
+      if (!alarmViewController2)
       {
         sub_100072FF0();
       }
@@ -605,26 +605,26 @@ LABEL_34:
 
     else
     {
-      v10 = 0;
+      alarmViewController2 = 0;
     }
 
-    [v10 handleStartStopwatchShortcutAction];
+    [alarmViewController2 handleStartStopwatchShortcutAction];
     goto LABEL_46;
   }
 
-  v15 = [v35 type];
-  v16 = [v15 isEqualToString:@"com.apple.mobiletimer.stop-stopwatch"];
+  type3 = [itemCopy type];
+  v16 = [type3 isEqualToString:@"com.apple.mobiletimer.stop-stopwatch"];
 
   if (v16)
   {
     [(MTATabBarController *)self setSelectedIndex:[(NSArray *)self->_tabIndexes indexOfObject:&off_1000B1848]];
     objc_opt_class();
-    v17 = [(MTATabBarController *)self stopwatchViewController];
-    if (v17)
+    stopwatchViewController2 = [(MTATabBarController *)self stopwatchViewController];
+    if (stopwatchViewController2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v18 = v17;
+        v18 = stopwatchViewController2;
       }
 
       else
@@ -632,8 +632,8 @@ LABEL_34:
         v18 = 0;
       }
 
-      v10 = v18;
-      if (!v10)
+      alarmViewController2 = v18;
+      if (!alarmViewController2)
       {
         sub_100072FF0();
       }
@@ -641,26 +641,26 @@ LABEL_34:
 
     else
     {
-      v10 = 0;
+      alarmViewController2 = 0;
     }
 
-    [v10 handleStopStopwatchShortcutAction];
+    [alarmViewController2 handleStopStopwatchShortcutAction];
     goto LABEL_46;
   }
 
-  v19 = [v35 type];
-  v20 = [v19 isEqualToString:@"com.apple.mobiletimer.lap-stopwatch"];
+  type4 = [itemCopy type];
+  v20 = [type4 isEqualToString:@"com.apple.mobiletimer.lap-stopwatch"];
 
   if (v20)
   {
     [(MTATabBarController *)self setSelectedIndex:[(NSArray *)self->_tabIndexes indexOfObject:&off_1000B1848]];
     objc_opt_class();
-    v21 = [(MTATabBarController *)self stopwatchViewController];
-    if (v21)
+    stopwatchViewController3 = [(MTATabBarController *)self stopwatchViewController];
+    if (stopwatchViewController3)
     {
       if (objc_opt_isKindOfClass())
       {
-        v22 = v21;
+        v22 = stopwatchViewController3;
       }
 
       else
@@ -668,8 +668,8 @@ LABEL_34:
         v22 = 0;
       }
 
-      v10 = v22;
-      if (!v10)
+      alarmViewController2 = v22;
+      if (!alarmViewController2)
       {
         sub_100072FF0();
       }
@@ -677,26 +677,26 @@ LABEL_34:
 
     else
     {
-      v10 = 0;
+      alarmViewController2 = 0;
     }
 
-    [v10 handleLapStopwatchShortcutAction];
+    [alarmViewController2 handleLapStopwatchShortcutAction];
     goto LABEL_46;
   }
 
-  v23 = [v35 type];
-  v24 = [v23 isEqualToString:@"com.apple.mobiletimer.reset-stopwatch"];
+  type5 = [itemCopy type];
+  v24 = [type5 isEqualToString:@"com.apple.mobiletimer.reset-stopwatch"];
 
   if (v24)
   {
     [(MTATabBarController *)self setSelectedIndex:[(NSArray *)self->_tabIndexes indexOfObject:&off_1000B1848]];
     objc_opt_class();
-    v25 = [(MTATabBarController *)self stopwatchViewController];
-    if (v25)
+    stopwatchViewController4 = [(MTATabBarController *)self stopwatchViewController];
+    if (stopwatchViewController4)
     {
       if (objc_opt_isKindOfClass())
       {
-        v26 = v25;
+        v26 = stopwatchViewController4;
       }
 
       else
@@ -704,8 +704,8 @@ LABEL_34:
         v26 = 0;
       }
 
-      v10 = v26;
-      if (!v10)
+      alarmViewController2 = v26;
+      if (!alarmViewController2)
       {
         sub_100072FF0();
       }
@@ -713,20 +713,20 @@ LABEL_34:
 
     else
     {
-      v10 = 0;
+      alarmViewController2 = 0;
     }
 
-    [v10 handleResetStopwatchShortcutAction];
+    [alarmViewController2 handleResetStopwatchShortcutAction];
     goto LABEL_46;
   }
 
-  v27 = [v35 type];
-  v28 = [v27 isEqualToString:kStartTimerActionID];
+  type6 = [itemCopy type];
+  v28 = [type6 isEqualToString:kStartTimerActionID];
 
   if (v28)
   {
     [(MTATabBarController *)self setSelectedIndex:[(NSArray *)self->_tabIndexes indexOfObject:&off_1000B1860]];
-    v29 = [(MTATabBarController *)self timerViewController];
+    timerViewController = [(MTATabBarController *)self timerViewController];
     v30 = objc_opt_respondsToSelector();
 
     if ((v30 & 1) == 0)
@@ -734,24 +734,24 @@ LABEL_34:
       goto LABEL_47;
     }
 
-    v10 = [(MTATabBarController *)self timerViewController];
-    [v10 handleStartTimerShortcutAction];
+    alarmViewController2 = [(MTATabBarController *)self timerViewController];
+    [alarmViewController2 handleStartTimerShortcutAction];
     goto LABEL_46;
   }
 
-  v31 = [v35 type];
-  v32 = [v31 isEqualToString:kStopTimerActionID];
+  type7 = [itemCopy type];
+  v32 = [type7 isEqualToString:kStopTimerActionID];
 
   if (v32)
   {
     [(MTATabBarController *)self setSelectedIndex:[(NSArray *)self->_tabIndexes indexOfObject:&off_1000B1860]];
-    v33 = [(MTATabBarController *)self timerViewController];
+    timerViewController2 = [(MTATabBarController *)self timerViewController];
     v34 = objc_opt_respondsToSelector();
 
     if (v34)
     {
-      v10 = [(MTATabBarController *)self timerViewController];
-      [v10 handleStopTimerShortcutAction];
+      alarmViewController2 = [(MTATabBarController *)self timerViewController];
+      [alarmViewController2 handleStopTimerShortcutAction];
 LABEL_46:
     }
   }
@@ -759,14 +759,14 @@ LABEL_46:
 LABEL_47:
 }
 
-- (void)performActionForIntent:(id)a3
+- (void)performActionForIntent:(id)intent
 {
-  v38 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v4 = v38;
+    v4 = intentCopy;
     if (v4)
     {
       if (objc_opt_isKindOfClass())
@@ -792,38 +792,38 @@ LABEL_47:
     }
 
     [(MTATabBarController *)self setSelectedIndex:1];
-    v12 = [(MTATabBarController *)self alarmViewController];
+    alarmViewController = [(MTATabBarController *)self alarmViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v14 = [v6 time];
+      time = [v6 time];
 
-      if (!v14)
+      if (!time)
       {
-        v15 = [v6 dateComponents];
+        dateComponents = [v6 dateComponents];
 
-        if (v15)
+        if (dateComponents)
         {
-          v16 = [v6 dateComponents];
-          v17 = [v16 hour];
+          dateComponents2 = [v6 dateComponents];
+          hour = [dateComponents2 hour];
 
-          v18 = [v6 dateComponents];
-          v19 = [v18 minute];
+          dateComponents3 = [v6 dateComponents];
+          minute = [dateComponents3 minute];
 
-          v20 = [MTMutableAlarm alarmWithHour:v17 minute:v19];
-          v21 = [v6 label];
-          [v20 setTitle:v21];
+          alarmViewController3 = [MTMutableAlarm alarmWithHour:hour minute:minute];
+          label = [v6 label];
+          [alarmViewController3 setTitle:label];
 
-          v22 = [(MTATabBarController *)self alarmViewController];
-          [v22 showAddViewForAlarm:v20];
+          alarmViewController2 = [(MTATabBarController *)self alarmViewController];
+          [alarmViewController2 showAddViewForAlarm:alarmViewController3];
         }
 
         else
         {
-          v20 = [(MTATabBarController *)self alarmViewController];
-          [v20 showAddView];
+          alarmViewController3 = [(MTATabBarController *)self alarmViewController];
+          [alarmViewController3 showAddView];
         }
 
         goto LABEL_25;
@@ -832,7 +832,7 @@ LABEL_47:
 
     else
     {
-      v23 = [(MTATabBarController *)self alarmViewController];
+      alarmViewController4 = [(MTATabBarController *)self alarmViewController];
       objc_opt_class();
       v24 = objc_opt_isKindOfClass();
 
@@ -843,28 +843,28 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      v25 = [v6 time];
+      time2 = [v6 time];
 
-      if (!v25)
+      if (!time2)
       {
-        v20 = [(MTATabBarController *)self alarmViewController];
-        [v20 showAddViewForAlarm:0];
+        alarmViewController3 = [(MTATabBarController *)self alarmViewController];
+        [alarmViewController3 showAddViewForAlarm:0];
         goto LABEL_25;
       }
     }
 
-    v26 = [v6 time];
-    v27 = [v26 identifier];
-    [v27 doubleValue];
-    v20 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
+    time3 = [v6 time];
+    identifier = [time3 identifier];
+    [identifier doubleValue];
+    alarmViewController3 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
 
-    v28 = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
-    v29 = +[MTMutableAlarm alarmWithHour:minute:](MTMutableAlarm, "alarmWithHour:minute:", [v28 component:32 fromDate:v20], objc_msgSend(v28, "component:fromDate:", 64, v20));
-    v30 = [v6 label];
-    [v29 setTitle:v30];
+    alarmViewController7 = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+    v29 = +[MTMutableAlarm alarmWithHour:minute:](MTMutableAlarm, "alarmWithHour:minute:", [alarmViewController7 component:32 fromDate:alarmViewController3], objc_msgSend(alarmViewController7, "component:fromDate:", 64, alarmViewController3));
+    label2 = [v6 label];
+    [v29 setTitle:label2];
 
-    v31 = [(MTATabBarController *)self alarmViewController];
-    [v31 showAddViewForAlarm:v29];
+    alarmViewController5 = [(MTATabBarController *)self alarmViewController];
+    [alarmViewController5 showAddViewForAlarm:v29];
 
 LABEL_24:
 LABEL_25:
@@ -878,7 +878,7 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v7 = [v38 alarmID];
+      alarmID = [intentCopy alarmID];
     }
 
     else
@@ -889,17 +889,17 @@ LABEL_25:
         goto LABEL_14;
       }
 
-      v7 = [v38 alarm];
+      alarmID = [intentCopy alarm];
     }
 
-    v8 = v7;
-    v9 = [v7 identifier];
+    v8 = alarmID;
+    identifier2 = [alarmID identifier];
 
 LABEL_14:
-    v10 = self;
+    selfCopy2 = self;
     v11 = 1;
 LABEL_15:
-    [(MTATabBarController *)v10 setSelectedIndex:v11];
+    [(MTATabBarController *)selfCopy2 setSelectedIndex:v11];
     goto LABEL_27;
   }
 
@@ -907,7 +907,7 @@ LABEL_15:
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v32 = v38;
+    v32 = intentCopy;
     if (v32)
     {
       if (objc_opt_isKindOfClass())
@@ -932,20 +932,20 @@ LABEL_15:
       v6 = 0;
     }
 
-    v34 = [v6 alarmID];
-    v20 = [v34 identifier];
+    alarmID2 = [v6 alarmID];
+    alarmViewController3 = [alarmID2 identifier];
 
     [(MTATabBarController *)self setSelectedIndex:1];
-    if (!v20)
+    if (!alarmViewController3)
     {
       goto LABEL_25;
     }
 
-    v35 = [(MTATabBarController *)self alarmViewController];
+    alarmViewController6 = [(MTATabBarController *)self alarmViewController];
     objc_opt_class();
     v36 = objc_opt_isKindOfClass();
 
-    v28 = [(MTATabBarController *)self alarmViewController];
+    alarmViewController7 = [(MTATabBarController *)self alarmViewController];
     if ((v36 & 1) == 0)
     {
       objc_opt_class();
@@ -956,17 +956,17 @@ LABEL_15:
         goto LABEL_25;
       }
 
-      v28 = [(MTATabBarController *)self alarmViewController];
+      alarmViewController7 = [(MTATabBarController *)self alarmViewController];
     }
 
-    [v28 showAddViewForAlarmWithID:v20];
+    [alarmViewController7 showAddViewForAlarmWithID:alarmViewController3];
     goto LABEL_24;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = 3;
     goto LABEL_15;
   }
@@ -974,11 +974,11 @@ LABEL_15:
 LABEL_27:
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [a3 selectedViewController];
-  if (v6 != v5)
+  viewControllerCopy = viewController;
+  selectedViewController = [controller selectedViewController];
+  if (selectedViewController != viewControllerCopy)
   {
 LABEL_2:
 
@@ -992,11 +992,11 @@ LABEL_2:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 topViewController];
+      selectedViewController = [viewControllerCopy topViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v6 scrollToTop];
+        [selectedViewController scrollToTop];
       }
 
       goto LABEL_2;
@@ -1010,34 +1010,34 @@ LABEL_7:
 
 - (id)worldClockPadController
 {
-  v2 = [(UINavigationController *)self->_worldClockNavController viewControllers];
-  v3 = [v2 lastObject];
+  viewControllers = [(UINavigationController *)self->_worldClockNavController viewControllers];
+  lastObject = [viewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)worldClockTableViewController
 {
-  v2 = [(UINavigationController *)self->_worldClockNavControllerSmall viewControllers];
-  v3 = [v2 lastObject];
+  viewControllers = [(UINavigationController *)self->_worldClockNavControllerSmall viewControllers];
+  lastObject = [viewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (id)alarmTableViewController
 {
-  v2 = [(UINavigationController *)self->_alarmNavControllerSmall viewControllers];
-  v3 = [v2 lastObject];
+  viewControllers = [(UINavigationController *)self->_alarmNavControllerSmall viewControllers];
+  lastObject = [viewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (void)restoreWorldClockAdd
 {
   if (MTUIIsPadIdiom())
   {
-    v3 = [(MTATabBarController *)self worldClockPadController];
-    objc_initWeak(&location, v3);
+    worldClockPadController = [(MTATabBarController *)self worldClockPadController];
+    objc_initWeak(&location, worldClockPadController);
 
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -1053,14 +1053,14 @@ LABEL_7:
 
   else
   {
-    v5 = [(MTATabBarController *)self worldClockTableViewController];
-    [v5 showAddView];
+    worldClockTableViewController = [(MTATabBarController *)self worldClockTableViewController];
+    [worldClockTableViewController showAddView];
   }
 }
 
 - (void)restoreAddNewAlarm
 {
-  v3 = [(MTATabBarController *)self alarmViewController];
+  alarmViewController = [(MTATabBarController *)self alarmViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1077,22 +1077,22 @@ LABEL_7:
   [v5 showAddView];
 }
 
-- (void)restoreAlarmEditWithEvent:(id)a3
+- (void)restoreAlarmEditWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(MTATabBarController *)self alarmViewController];
+  eventCopy = event;
+  alarmViewController = [(MTATabBarController *)self alarmViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
-    v7 = [v4 identifier];
+    identifier = [eventCopy identifier];
 
-    if (v7)
+    if (identifier)
     {
-      v8 = [(MTATabBarController *)self alarmTableViewController];
-      v9 = [v4 identifier];
-      [v8 showAddViewForAlarmWithID:v9];
+      alarmTableViewController = [(MTATabBarController *)self alarmTableViewController];
+      identifier2 = [eventCopy identifier];
+      [alarmTableViewController showAddViewForAlarmWithID:identifier2];
     }
 
     else
@@ -1108,16 +1108,16 @@ LABEL_7:
 
 - (void)restoreSleepEdit
 {
-  v2 = [(MTATabBarController *)self alarmTableViewController];
-  [v2 showSleepView:0];
+  alarmTableViewController = [(MTATabBarController *)self alarmTableViewController];
+  [alarmTableViewController showSleepView:0];
 }
 
 - (void)restoreWorldClockEdit
 {
   if (MTUIIsPadIdiom())
   {
-    v3 = [(MTATabBarController *)self worldClockPadController];
-    objc_initWeak(&location, v3);
+    worldClockPadController = [(MTATabBarController *)self worldClockPadController];
+    objc_initWeak(&location, worldClockPadController);
 
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
@@ -1133,32 +1133,32 @@ LABEL_7:
 
   else
   {
-    v5 = [(MTATabBarController *)self worldClockTableViewController];
-    [v5 setEditing:1 animated:0];
+    worldClockTableViewController = [(MTATabBarController *)self worldClockTableViewController];
+    [worldClockTableViewController setEditing:1 animated:0];
   }
 }
 
 - (void)restoreAlarmTabEditMode
 {
-  v3 = [(MTATabBarController *)self alarmViewController];
+  alarmViewController = [(MTATabBarController *)self alarmViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(MTATabBarController *)self alarmsCollectionViewController];
+    alarmsCollectionViewController = [(MTATabBarController *)self alarmsCollectionViewController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10000E768;
     v11[3] = &unk_1000AD9F0;
     v11[4] = self;
-    [v5 setAlarmsLoadedAction:v11];
+    [alarmsCollectionViewController setAlarmsLoadedAction:v11];
   }
 
   else
   {
-    v6 = [(MTATabBarController *)self alarmTableViewController];
-    objc_initWeak(&location, v6);
+    alarmTableViewController = [(MTATabBarController *)self alarmTableViewController];
+    objc_initWeak(&location, alarmTableViewController);
 
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -1173,18 +1173,18 @@ LABEL_7:
   }
 }
 
-- (void)restoreWorldClockTabWithEvent:(id)a3
+- (void)restoreWorldClockTabWithEvent:(id)event
 {
-  v7 = a3;
+  eventCopy = event;
   if (MTUIIsPadIdiom())
   {
-    v4 = [v7 indexPath];
+    indexPath = [eventCopy indexPath];
 
-    if (v4)
+    if (indexPath)
     {
-      v5 = [(MTATabBarController *)self worldClockPadController];
-      v6 = [v7 indexPath];
-      [v5 restoreIndexPath:v6];
+      worldClockPadController = [(MTATabBarController *)self worldClockPadController];
+      indexPath2 = [eventCopy indexPath];
+      [worldClockPadController restoreIndexPath:indexPath2];
     }
   }
 }
@@ -1193,8 +1193,8 @@ LABEL_7:
 {
   if (MTUIIsPadIdiom())
   {
-    v3 = [(MTATabBarController *)self worldClockPadController];
-    [v3 prepareStateForUrlLaunch];
+    worldClockPadController = [(MTATabBarController *)self worldClockPadController];
+    [worldClockPadController prepareStateForUrlLaunch];
   }
 }
 

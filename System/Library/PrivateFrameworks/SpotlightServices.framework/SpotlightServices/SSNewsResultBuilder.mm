@@ -1,25 +1,25 @@
 @interface SSNewsResultBuilder
-+ (id)newsFootnoteWithNewsSource:(id)a3 publishedDate:(id)a4;
-- (SSNewsResultBuilder)initWithResult:(id)a3;
++ (id)newsFootnoteWithNewsSource:(id)source publishedDate:(id)date;
+- (SSNewsResultBuilder)initWithResult:(id)result;
 - (id)buildInlineCardSection;
 @end
 
 @implementation SSNewsResultBuilder
 
-+ (id)newsFootnoteWithNewsSource:(id)a3 publishedDate:(id)a4
++ (id)newsFootnoteWithNewsSource:(id)source publishedDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
+  sourceCopy = source;
+  dateCopy = date;
   v7 = objc_opt_new();
   v8 = v7;
-  if (v5)
+  if (sourceCopy)
   {
-    [v7 addObject:v5];
+    [v7 addObject:sourceCopy];
   }
 
-  if (v6)
+  if (dateCopy)
   {
-    v9 = [SSDateFormatManager dynamicCompactStringFromDate:v6];
+    v9 = [SSDateFormatManager dynamicCompactStringFromDate:dateCopy];
     [v8 addObject:v9];
   }
 
@@ -36,21 +36,21 @@
   return v10;
 }
 
-- (SSNewsResultBuilder)initWithResult:(id)a3
+- (SSNewsResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = SSNewsResultBuilder;
-  v5 = [(SSResultBuilder *)&v10 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v10 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6963E78] withType:objc_opt_class()];
     [(SSNewsResultBuilder *)v5 setPublishedDate:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
     [(SSNewsResultBuilder *)v5 setTitle:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x1E6964600] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x1E6964600] withType:objc_opt_class()];
     [(SSNewsResultBuilder *)v5 setNewsSource:v8];
   }
 
@@ -61,11 +61,11 @@
 {
   v5.receiver = self;
   v5.super_class = SSNewsResultBuilder;
-  v2 = [(SSResultBuilder *)&v5 buildInlineCardSection];
-  v3 = [v2 title];
-  [v3 setMaxLines:2];
+  buildInlineCardSection = [(SSResultBuilder *)&v5 buildInlineCardSection];
+  title = [buildInlineCardSection title];
+  [title setMaxLines:2];
 
-  return v2;
+  return buildInlineCardSection;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface UADiagnosticUtils
-+ (unint64_t)absoluteToNSec:(unint64_t)a3;
++ (unint64_t)absoluteToNSec:(unint64_t)sec;
 @end
 
 @implementation UADiagnosticUtils
 
-+ (unint64_t)absoluteToNSec:(unint64_t)a3
++ (unint64_t)absoluteToNSec:(unint64_t)sec
 {
   v4 = dword_1000E5BCC;
   if (!dword_1000E5BCC)
@@ -13,7 +13,7 @@
     v4 = dword_1000E5BCC;
   }
 
-  return dword_1000E5BC8 * a3 / v4;
+  return dword_1000E5BC8 * sec / v4;
 }
 
 @end

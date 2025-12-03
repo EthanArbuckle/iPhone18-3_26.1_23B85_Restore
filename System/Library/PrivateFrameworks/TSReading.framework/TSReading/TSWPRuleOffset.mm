@@ -1,10 +1,10 @@
 @interface TSWPRuleOffset
 + (id)ruleOffset;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)pointValue;
 - (CGSize)sizeValue;
-- (TSWPRuleOffset)initWithDX:(double)a3 dY:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSWPRuleOffset)initWithDX:(double)x dY:(double)y;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -17,21 +17,21 @@
   return v2;
 }
 
-- (TSWPRuleOffset)initWithDX:(double)a3 dY:(double)a4
+- (TSWPRuleOffset)initWithDX:(double)x dY:(double)y
 {
   v7.receiver = self;
   v7.super_class = TSWPRuleOffset;
   result = [(TSWPRuleOffset *)&v7 init];
   if (result)
   {
-    result->_dX = a3;
-    result->_dY = a4;
+    result->_dX = x;
+    result->_dY = y;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   dX = self->_dX;
@@ -40,7 +40,7 @@
   return [v4 initWithDX:dX dY:dY];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();

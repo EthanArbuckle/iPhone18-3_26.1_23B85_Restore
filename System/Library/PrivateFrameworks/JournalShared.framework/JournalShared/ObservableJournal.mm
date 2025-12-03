@@ -1,16 +1,16 @@
 @interface ObservableJournal
-- (void)contextObjectsDidChangeWithNotification:(id)a3;
+- (void)contextObjectsDidChangeWithNotification:(id)notification;
 @end
 
 @implementation ObservableJournal
 
-- (void)contextObjectsDidChangeWithNotification:(id)a3
+- (void)contextObjectsDidChangeWithNotification:(id)notification
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F7BF748, &qword_25575BD20);
   v5 = *(*(v4 - 8) + 64);
   MEMORY[0x28223BE20](v4 - 8);
   v7 = &v10 - v6;
-  if (a3)
+  if (notification)
   {
     sub_25574EB70();
     v8 = sub_25574EBA0();

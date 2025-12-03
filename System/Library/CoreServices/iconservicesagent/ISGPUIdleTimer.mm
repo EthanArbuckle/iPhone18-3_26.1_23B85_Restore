@@ -1,16 +1,16 @@
 @interface ISGPUIdleTimer
-- (ISGPUIdleTimer)initWithQueue:(id)a3;
-- (void)_timerFiredForGeneration:(unint64_t)a3;
+- (ISGPUIdleTimer)initWithQueue:(id)queue;
+- (void)_timerFiredForGeneration:(unint64_t)generation;
 - (void)armTimer;
 - (void)dealloc;
 @end
 
 @implementation ISGPUIdleTimer
 
-- (ISGPUIdleTimer)initWithQueue:(id)a3
+- (ISGPUIdleTimer)initWithQueue:(id)queue
 {
-  v5 = a3;
-  if (!v5)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     sub_100005E6C(a2, self);
   }
@@ -22,7 +22,7 @@
   if (v6)
   {
     v6->_transactionLock._os_unfair_lock_opaque = 0;
-    v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+    v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queueCopy);
     timer = v7->_timer;
     v7->_timer = v8;
 
@@ -82,10 +82,10 @@
   objc_destroyWeak(buf);
 }
 
-- (void)_timerFiredForGeneration:(unint64_t)a3
+- (void)_timerFiredForGeneration:(unint64_t)generation
 {
   os_unfair_lock_lock(&self->_transactionLock);
-  if (self->_generation == a3)
+  if (self->_generation == generation)
   {
     v5 = _ISDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))

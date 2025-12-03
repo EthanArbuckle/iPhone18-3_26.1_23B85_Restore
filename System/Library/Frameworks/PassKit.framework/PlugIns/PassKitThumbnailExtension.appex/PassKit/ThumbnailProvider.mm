@@ -1,27 +1,27 @@
 @interface ThumbnailProvider
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation ThumbnailProvider
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 maximumSize];
+  requestCopy = request;
+  handlerCopy = handler;
+  [requestCopy maximumSize];
   v8 = v7;
   v10 = v9;
-  v11 = [v5 fileURL];
+  fileURL = [requestCopy fileURL];
   v12 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v11;
+    v24 = fileURL;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Generating thumbnail for file URL: %@", buf, 0xCu);
   }
 
   v13 = objc_autoreleasePoolPush();
-  v14 = [NSData dataWithContentsOfURL:v11];
+  v14 = [NSData dataWithContentsOfURL:fileURL];
   v22 = 0;
   v15 = [PKPass createWithData:v14 warnings:0 error:&v22];
   v16 = v22;
@@ -38,7 +38,7 @@
     v18 = v15;
     v20 = v8;
     v21 = v10;
-    v19 = v6;
+    v19 = handlerCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
@@ -53,7 +53,7 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Could not generate thumbnail for invalid pass. Error: %@", buf, 0xCu);
     }
 
-    (*(v6 + 2))(v6, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 }
 

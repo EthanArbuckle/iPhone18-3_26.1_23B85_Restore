@@ -2,24 +2,24 @@
 - (BOOL)topCallFrameIsBoundary;
 - (BOOL)truncated;
 - (NSArray)callFrames;
-- (RWIProtocolConsoleStackTrace)initWithCallFrames:(id)a3;
+- (RWIProtocolConsoleStackTrace)initWithCallFrames:(id)frames;
 - (RWIProtocolConsoleStackTrace)parentStackTrace;
-- (void)setCallFrames:(id)a3;
-- (void)setParentStackTrace:(id)a3;
+- (void)setCallFrames:(id)frames;
+- (void)setParentStackTrace:(id)trace;
 @end
 
 @implementation RWIProtocolConsoleStackTrace
 
-- (RWIProtocolConsoleStackTrace)initWithCallFrames:(id)a3
+- (RWIProtocolConsoleStackTrace)initWithCallFrames:(id)frames
 {
   v25 = *MEMORY[0x277D85DE8];
-  v18 = a3;
+  framesCopy = frames;
   v23.receiver = self;
   v23.super_class = RWIProtocolConsoleStackTrace;
   v4 = [(RWIProtocolJSONObject *)&v23 init];
   if (v4)
   {
-    if (!v18)
+    if (!framesCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"callFrames"}];
     }
@@ -29,7 +29,7 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = v18;
+    v5 = framesCopy;
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v6)
     {
@@ -74,14 +74,14 @@
   return v4;
 }
 
-- (void)setCallFrames:(id)a3
+- (void)setCallFrames:(id)frames
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = frames;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -159,11 +159,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"truncated"];
 }
 
-- (void)setParentStackTrace:(id)a3
+- (void)setParentStackTrace:(id)trace
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolConsoleStackTrace;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"parentStackTrace"];
+  [(RWIProtocolJSONObject *)&v3 setObject:trace forKey:@"parentStackTrace"];
 }
 
 - (RWIProtocolConsoleStackTrace)parentStackTrace

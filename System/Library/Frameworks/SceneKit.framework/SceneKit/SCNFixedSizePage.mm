@@ -1,22 +1,22 @@
 @interface SCNFixedSizePage
-- (SCNFixedSizePage)initWithBuffer:(id)a3 elementSize:(unint64_t)a4;
-- (id)newSubBufferForAllocator:(id)a3;
+- (SCNFixedSizePage)initWithBuffer:(id)buffer elementSize:(unint64_t)size;
+- (id)newSubBufferForAllocator:(id)allocator;
 - (unint64_t)_allocateElement;
 - (void)dealloc;
-- (void)deallocateElementAtOffset:(unint64_t)a3;
+- (void)deallocateElementAtOffset:(unint64_t)offset;
 @end
 
 @implementation SCNFixedSizePage
 
-- (SCNFixedSizePage)initWithBuffer:(id)a3 elementSize:(unint64_t)a4
+- (SCNFixedSizePage)initWithBuffer:(id)buffer elementSize:(unint64_t)size
 {
   v10.receiver = self;
   v10.super_class = SCNFixedSizePage;
   v6 = [(SCNFixedSizePage *)&v10 init];
-  v7 = [a3 length] / a4;
-  v6->_buffer = a3;
+  v7 = [buffer length] / size;
+  v6->_buffer = buffer;
   v8 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, v7}];
-  v6->_elementSize = a4;
+  v6->_elementSize = size;
   v6->_freeIndices = v8;
   return v6;
 }
@@ -42,8 +42,8 @@
   v11 = 0x7FFFFFFFFFFFFFFFLL;
   if ([(NSMutableIndexSet *)self->_freeIndices count])
   {
-    v12 = [(NSMutableIndexSet *)self->_freeIndices firstIndex];
-    if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [(NSMutableIndexSet *)self->_freeIndices firstIndex];
+    if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = scn_default_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -52,18 +52,18 @@
       }
     }
 
-    [(NSMutableIndexSet *)self->_freeIndices removeIndex:v12];
-    return self->_elementSize * v12;
+    [(NSMutableIndexSet *)self->_freeIndices removeIndex:firstIndex];
+    return self->_elementSize * firstIndex;
   }
 
   return v11;
 }
 
-- (void)deallocateElementAtOffset:(unint64_t)a3
+- (void)deallocateElementAtOffset:(unint64_t)offset
 {
   elementSize = self->_elementSize;
-  v5 = a3 / elementSize;
-  if (a3 % elementSize)
+  v5 = offset / elementSize;
+  if (offset % elementSize)
   {
     v6 = scn_default_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -75,9 +75,9 @@
   [(NSMutableIndexSet *)self->_freeIndices addIndex:v5];
 }
 
-- (id)newSubBufferForAllocator:(id)a3
+- (id)newSubBufferForAllocator:(id)allocator
 {
-  v4 = [[SCNMTLBufferAllocatorSubBuffer alloc] initWithPage:self allocator:a3];
+  v4 = [[SCNMTLBufferAllocatorSubBuffer alloc] initWithPage:self allocator:allocator];
   [(SCNMTLBuffer *)v4 setBuffer:self->_buffer];
   [(SCNMTLBuffer *)v4 setOffset:[(SCNFixedSizePage *)self _allocateElement]];
   if ([(SCNMTLBuffer *)v4 offset]== 0x7FFFFFFFFFFFFFFFLL)

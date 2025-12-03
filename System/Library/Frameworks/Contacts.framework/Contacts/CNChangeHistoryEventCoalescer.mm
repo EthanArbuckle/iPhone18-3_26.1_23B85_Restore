@@ -1,14 +1,14 @@
 @interface CNChangeHistoryEventCoalescer
-+ (id)coalesceEvents:(id)a3;
++ (id)coalesceEvents:(id)events;
 + (id)coalescingLog;
 - (CNChangeHistoryEventCoalescer)init;
 - (NSArray)events;
-- (void)visitAddContactEvent:(id)a3;
-- (void)visitAddGroupEvent:(id)a3;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitDeleteGroupEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
-- (void)visitUpdateGroupEvent:(id)a3;
+- (void)visitAddContactEvent:(id)event;
+- (void)visitAddGroupEvent:(id)event;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitDeleteGroupEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
+- (void)visitUpdateGroupEvent:(id)event;
 @end
 
 @implementation CNChangeHistoryEventCoalescer
@@ -34,16 +34,16 @@ uint64_t __46__CNChangeHistoryEventCoalescer_coalescingLog__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)coalesceEvents:(id)a3
++ (id)coalesceEvents:(id)events
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_alloc_init(CNChangeHistoryEventCoalescer);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -67,9 +67,9 @@ uint64_t __46__CNChangeHistoryEventCoalescer_coalescingLog__block_invoke()
     while (v7);
   }
 
-  v10 = [(CNChangeHistoryEventCoalescer *)v4 events];
+  events = [(CNChangeHistoryEventCoalescer *)v4 events];
 
-  return v10;
+  return events;
 }
 
 - (CNChangeHistoryEventCoalescer)init
@@ -129,23 +129,23 @@ uint64_t __46__CNChangeHistoryEventCoalescer_coalescingLog__block_invoke()
 {
   v3 = objc_opt_new();
   [v3 addObjectsFromArray:self->_controlEvents];
-  v4 = [(CNMutableOrderedDictionary *)self->_addedContacts allObjects];
-  [v3 addObjectsFromArray:v4];
+  allObjects = [(CNMutableOrderedDictionary *)self->_addedContacts allObjects];
+  [v3 addObjectsFromArray:allObjects];
 
-  v5 = [(CNMutableOrderedDictionary *)self->_updatedContacts allObjects];
-  [v3 addObjectsFromArray:v5];
+  allObjects2 = [(CNMutableOrderedDictionary *)self->_updatedContacts allObjects];
+  [v3 addObjectsFromArray:allObjects2];
 
-  v6 = [(CNMutableOrderedDictionary *)self->_deletedContacts allObjects];
-  [v3 addObjectsFromArray:v6];
+  allObjects3 = [(CNMutableOrderedDictionary *)self->_deletedContacts allObjects];
+  [v3 addObjectsFromArray:allObjects3];
 
-  v7 = [(CNMutableOrderedDictionary *)self->_addedGroups allObjects];
-  [v3 addObjectsFromArray:v7];
+  allObjects4 = [(CNMutableOrderedDictionary *)self->_addedGroups allObjects];
+  [v3 addObjectsFromArray:allObjects4];
 
-  v8 = [(CNMutableOrderedDictionary *)self->_updatedGroups allObjects];
-  [v3 addObjectsFromArray:v8];
+  allObjects5 = [(CNMutableOrderedDictionary *)self->_updatedGroups allObjects];
+  [v3 addObjectsFromArray:allObjects5];
 
-  v9 = [(CNMutableOrderedDictionary *)self->_deletedGroups allObjects];
-  [v3 addObjectsFromArray:v9];
+  allObjects6 = [(CNMutableOrderedDictionary *)self->_deletedGroups allObjects];
+  [v3 addObjectsFromArray:allObjects6];
 
   [v3 addObjectsFromArray:self->_contactLinkingEvents];
   [v3 addObjectsFromArray:self->_groupMembershipEvents];
@@ -154,115 +154,115 @@ uint64_t __46__CNChangeHistoryEventCoalescer_coalescingLog__block_invoke()
   return v3;
 }
 
-- (void)visitAddContactEvent:(id)a3
+- (void)visitAddContactEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 contact];
-  v6 = [v5 identifier];
+  eventCopy = event;
+  contact = [eventCopy contact];
+  identifier = [contact identifier];
 
-  v7 = [(CNMutableOrderedDictionary *)self->_addedContacts objectForKeyedSubscript:v6];
+  v7 = [(CNMutableOrderedDictionary *)self->_addedContacts objectForKeyedSubscript:identifier];
   if (v7)
   {
-    v8 = [objc_opt_class() coalescingLog];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    coalescingLog = [objc_opt_class() coalescingLog];
+    if (os_log_type_enabled(coalescingLog, OS_LOG_TYPE_ERROR))
     {
       [CNChangeHistoryEventCoalescer visitAddContactEvent:];
     }
 
-    [(CNMutableOrderedDictionary *)self->_addedContacts setObject:v4 forKeyedSubscript:v6];
+    [(CNMutableOrderedDictionary *)self->_addedContacts setObject:eventCopy forKeyedSubscript:identifier];
   }
 
   else
   {
-    v9 = [(CNMutableOrderedDictionary *)self->_updatedContacts objectForKeyedSubscript:v6];
+    v9 = [(CNMutableOrderedDictionary *)self->_updatedContacts objectForKeyedSubscript:identifier];
     if (v9)
     {
-      v10 = [objc_opt_class() coalescingLog];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      coalescingLog2 = [objc_opt_class() coalescingLog];
+      if (os_log_type_enabled(coalescingLog2, OS_LOG_TYPE_ERROR))
       {
         [CNChangeHistoryEventCoalescer visitAddContactEvent:];
       }
 
       v11 = [CNChangeHistoryUpdateContactEvent alloc];
-      v12 = [v4 contact];
-      v13 = [(CNChangeHistoryUpdateContactEvent *)v11 initWithContact:v12 imagesChanged:1];
-      [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:v13 forKeyedSubscript:v6];
+      contact2 = [eventCopy contact];
+      v13 = [(CNChangeHistoryUpdateContactEvent *)v11 initWithContact:contact2 imagesChanged:1];
+      [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:v13 forKeyedSubscript:identifier];
     }
 
     else
     {
-      v12 = [(CNMutableOrderedDictionary *)self->_deletedContacts objectForKeyedSubscript:v6];
-      if (v12)
+      contact2 = [(CNMutableOrderedDictionary *)self->_deletedContacts objectForKeyedSubscript:identifier];
+      if (contact2)
       {
-        v14 = [objc_opt_class() coalescingLog];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+        coalescingLog3 = [objc_opt_class() coalescingLog];
+        if (os_log_type_enabled(coalescingLog3, OS_LOG_TYPE_ERROR))
         {
           [CNChangeHistoryEventCoalescer visitAddContactEvent:];
         }
 
-        [(CNMutableOrderedDictionary *)self->_deletedContacts setObject:0 forKeyedSubscript:v6];
+        [(CNMutableOrderedDictionary *)self->_deletedContacts setObject:0 forKeyedSubscript:identifier];
         v15 = [CNChangeHistoryUpdateContactEvent alloc];
-        v16 = [v4 contact];
-        v17 = [(CNChangeHistoryUpdateContactEvent *)v15 initWithContact:v16 imagesChanged:1];
-        [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:v17 forKeyedSubscript:v6];
+        contact3 = [eventCopy contact];
+        v17 = [(CNChangeHistoryUpdateContactEvent *)v15 initWithContact:contact3 imagesChanged:1];
+        [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:v17 forKeyedSubscript:identifier];
       }
 
       else
       {
-        [(CNMutableOrderedDictionary *)self->_addedContacts setObject:v4 forKeyedSubscript:v6];
+        [(CNMutableOrderedDictionary *)self->_addedContacts setObject:eventCopy forKeyedSubscript:identifier];
       }
     }
   }
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 contact];
-  v6 = [v5 identifier];
+  eventCopy = event;
+  contact = [eventCopy contact];
+  identifier = [contact identifier];
 
-  v7 = [(CNMutableOrderedDictionary *)self->_addedContacts objectForKeyedSubscript:v6];
+  v7 = [(CNMutableOrderedDictionary *)self->_addedContacts objectForKeyedSubscript:identifier];
   if (v7)
   {
-    v8 = [objc_opt_class() coalescingLog];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    coalescingLog = [objc_opt_class() coalescingLog];
+    if (os_log_type_enabled(coalescingLog, OS_LOG_TYPE_DEBUG))
     {
       [CNChangeHistoryEventCoalescer visitUpdateContactEvent:];
     }
 
     v9 = [CNChangeHistoryAddContactEvent alloc];
-    v10 = [v4 contact];
-    v11 = [v7 containerIdentifier];
-    v12 = [(CNChangeHistoryAddContactEvent *)v9 initWithContact:v10 containerIdentifier:v11];
-    [(CNMutableOrderedDictionary *)self->_addedContacts setObject:v12 forKeyedSubscript:v6];
+    contact2 = [eventCopy contact];
+    containerIdentifier = [v7 containerIdentifier];
+    v12 = [(CNChangeHistoryAddContactEvent *)v9 initWithContact:contact2 containerIdentifier:containerIdentifier];
+    [(CNMutableOrderedDictionary *)self->_addedContacts setObject:v12 forKeyedSubscript:identifier];
   }
 
   else
   {
-    v10 = [(CNMutableOrderedDictionary *)self->_updatedContacts objectForKeyedSubscript:v6];
-    if (v10)
+    contact2 = [(CNMutableOrderedDictionary *)self->_updatedContacts objectForKeyedSubscript:identifier];
+    if (contact2)
     {
-      v13 = [objc_opt_class() coalescingLog];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      coalescingLog2 = [objc_opt_class() coalescingLog];
+      if (os_log_type_enabled(coalescingLog2, OS_LOG_TYPE_DEBUG))
       {
         [CNChangeHistoryEventCoalescer visitUpdateContactEvent:];
       }
 
-      [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:v4 forKeyedSubscript:v6];
+      [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:eventCopy forKeyedSubscript:identifier];
     }
 
     else
     {
-      v14 = [(CNMutableOrderedDictionary *)self->_deletedContacts objectForKeyedSubscript:v6];
+      v14 = [(CNMutableOrderedDictionary *)self->_deletedContacts objectForKeyedSubscript:identifier];
       if (v14)
       {
-        v15 = [objc_opt_class() coalescingLog];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        coalescingLog3 = [objc_opt_class() coalescingLog];
+        if (os_log_type_enabled(coalescingLog3, OS_LOG_TYPE_ERROR))
         {
           [CNChangeHistoryEventCoalescer visitUpdateContactEvent:];
         }
 
-        [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:v4 forKeyedSubscript:v6];
+        [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:eventCopy forKeyedSubscript:identifier];
         deletedContacts = self->_deletedContacts;
         v17 = 0;
       }
@@ -270,112 +270,112 @@ uint64_t __46__CNChangeHistoryEventCoalescer_coalescingLog__block_invoke()
       else
       {
         deletedContacts = self->_updatedContacts;
-        v17 = v4;
+        v17 = eventCopy;
       }
 
-      [(CNMutableOrderedDictionary *)deletedContacts setObject:v17 forKeyedSubscript:v6];
+      [(CNMutableOrderedDictionary *)deletedContacts setObject:v17 forKeyedSubscript:identifier];
     }
   }
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
-  v6 = [(CNMutableOrderedDictionary *)self->_addedContacts objectForKeyedSubscript:v5];
+  eventCopy = event;
+  contactIdentifier = [eventCopy contactIdentifier];
+  v6 = [(CNMutableOrderedDictionary *)self->_addedContacts objectForKeyedSubscript:contactIdentifier];
   if (v6)
   {
-    v7 = [objc_opt_class() coalescingLog];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    coalescingLog = [objc_opt_class() coalescingLog];
+    if (os_log_type_enabled(coalescingLog, OS_LOG_TYPE_DEBUG))
     {
       [CNChangeHistoryEventCoalescer visitDeleteContactEvent:];
     }
 
-    [(CNMutableOrderedDictionary *)self->_addedContacts setObject:0 forKeyedSubscript:v5];
+    [(CNMutableOrderedDictionary *)self->_addedContacts setObject:0 forKeyedSubscript:contactIdentifier];
   }
 
   else
   {
-    v8 = [(CNMutableOrderedDictionary *)self->_updatedContacts objectForKeyedSubscript:v5];
+    v8 = [(CNMutableOrderedDictionary *)self->_updatedContacts objectForKeyedSubscript:contactIdentifier];
     if (v8)
     {
-      v9 = [objc_opt_class() coalescingLog];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      coalescingLog2 = [objc_opt_class() coalescingLog];
+      if (os_log_type_enabled(coalescingLog2, OS_LOG_TYPE_DEBUG))
       {
         [CNChangeHistoryEventCoalescer visitDeleteContactEvent:];
       }
 
-      [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:0 forKeyedSubscript:v5];
-      [(CNMutableOrderedDictionary *)self->_deletedContacts setObject:v4 forKeyedSubscript:v5];
+      [(CNMutableOrderedDictionary *)self->_updatedContacts setObject:0 forKeyedSubscript:contactIdentifier];
+      [(CNMutableOrderedDictionary *)self->_deletedContacts setObject:eventCopy forKeyedSubscript:contactIdentifier];
     }
 
     else
     {
-      v10 = [(CNMutableOrderedDictionary *)self->_deletedContacts objectForKeyedSubscript:v5];
+      v10 = [(CNMutableOrderedDictionary *)self->_deletedContacts objectForKeyedSubscript:contactIdentifier];
       if (v10)
       {
-        v11 = [objc_opt_class() coalescingLog];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        coalescingLog3 = [objc_opt_class() coalescingLog];
+        if (os_log_type_enabled(coalescingLog3, OS_LOG_TYPE_ERROR))
         {
           [CNChangeHistoryEventCoalescer visitDeleteContactEvent:];
         }
       }
 
-      [(CNMutableOrderedDictionary *)self->_deletedContacts setObject:v4 forKeyedSubscript:v5];
+      [(CNMutableOrderedDictionary *)self->_deletedContacts setObject:eventCopy forKeyedSubscript:contactIdentifier];
     }
   }
 }
 
-- (void)visitAddGroupEvent:(id)a3
+- (void)visitAddGroupEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 group];
-  v6 = [v5 identifier];
+  eventCopy = event;
+  group = [eventCopy group];
+  identifier = [group identifier];
 
-  v7 = [(CNMutableOrderedDictionary *)self->_addedGroups objectForKeyedSubscript:v6];
+  v7 = [(CNMutableOrderedDictionary *)self->_addedGroups objectForKeyedSubscript:identifier];
   if (v7)
   {
-    v8 = [objc_opt_class() coalescingLog];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    coalescingLog = [objc_opt_class() coalescingLog];
+    if (os_log_type_enabled(coalescingLog, OS_LOG_TYPE_ERROR))
     {
       [CNChangeHistoryEventCoalescer visitAddGroupEvent:];
     }
 
-    [(CNMutableOrderedDictionary *)self->_addedGroups setObject:v4 forKeyedSubscript:v6];
+    [(CNMutableOrderedDictionary *)self->_addedGroups setObject:eventCopy forKeyedSubscript:identifier];
   }
 
   else
   {
-    v9 = [(CNMutableOrderedDictionary *)self->_updatedGroups objectForKeyedSubscript:v6];
+    v9 = [(CNMutableOrderedDictionary *)self->_updatedGroups objectForKeyedSubscript:identifier];
     if (v9)
     {
-      v10 = [objc_opt_class() coalescingLog];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      coalescingLog2 = [objc_opt_class() coalescingLog];
+      if (os_log_type_enabled(coalescingLog2, OS_LOG_TYPE_ERROR))
       {
         [CNChangeHistoryEventCoalescer visitAddGroupEvent:];
       }
 
       v11 = [CNChangeHistoryUpdateGroupEvent alloc];
-      v12 = [v4 group];
-      v13 = [(CNChangeHistoryUpdateGroupEvent *)v11 initWithGroup:v12];
-      [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:v13 forKeyedSubscript:v6];
+      group2 = [eventCopy group];
+      v13 = [(CNChangeHistoryUpdateGroupEvent *)v11 initWithGroup:group2];
+      [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:v13 forKeyedSubscript:identifier];
     }
 
     else
     {
-      v12 = [(CNMutableOrderedDictionary *)self->_deletedGroups objectForKeyedSubscript:v6];
-      if (v12)
+      group2 = [(CNMutableOrderedDictionary *)self->_deletedGroups objectForKeyedSubscript:identifier];
+      if (group2)
       {
-        v14 = [objc_opt_class() coalescingLog];
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+        coalescingLog3 = [objc_opt_class() coalescingLog];
+        if (os_log_type_enabled(coalescingLog3, OS_LOG_TYPE_DEBUG))
         {
           [CNChangeHistoryEventCoalescer visitAddGroupEvent:];
         }
 
         v15 = [CNChangeHistoryUpdateGroupEvent alloc];
-        v16 = [v4 group];
-        v17 = [(CNChangeHistoryUpdateGroupEvent *)v15 initWithGroup:v16];
-        [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:v17 forKeyedSubscript:v6];
+        group3 = [eventCopy group];
+        v17 = [(CNChangeHistoryUpdateGroupEvent *)v15 initWithGroup:group3];
+        [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:v17 forKeyedSubscript:identifier];
 
         deletedGroups = self->_deletedGroups;
         v19 = 0;
@@ -384,62 +384,62 @@ uint64_t __46__CNChangeHistoryEventCoalescer_coalescingLog__block_invoke()
       else
       {
         deletedGroups = self->_addedGroups;
-        v19 = v4;
+        v19 = eventCopy;
       }
 
-      [(CNMutableOrderedDictionary *)deletedGroups setObject:v19 forKeyedSubscript:v6];
+      [(CNMutableOrderedDictionary *)deletedGroups setObject:v19 forKeyedSubscript:identifier];
     }
   }
 }
 
-- (void)visitUpdateGroupEvent:(id)a3
+- (void)visitUpdateGroupEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 group];
-  v6 = [v5 identifier];
+  eventCopy = event;
+  group = [eventCopy group];
+  identifier = [group identifier];
 
-  v7 = [(CNMutableOrderedDictionary *)self->_addedGroups objectForKeyedSubscript:v6];
+  v7 = [(CNMutableOrderedDictionary *)self->_addedGroups objectForKeyedSubscript:identifier];
   if (v7)
   {
-    v8 = [objc_opt_class() coalescingLog];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    coalescingLog = [objc_opt_class() coalescingLog];
+    if (os_log_type_enabled(coalescingLog, OS_LOG_TYPE_DEBUG))
     {
       [CNChangeHistoryEventCoalescer visitUpdateContactEvent:];
     }
 
     v9 = [CNChangeHistoryAddGroupEvent alloc];
-    v10 = [v4 group];
-    v11 = [v7 containerIdentifier];
-    v12 = [(CNChangeHistoryAddGroupEvent *)v9 initWithGroup:v10 containerIdentifier:v11];
-    [(CNMutableOrderedDictionary *)self->_addedGroups setObject:v12 forKeyedSubscript:v6];
+    group2 = [eventCopy group];
+    containerIdentifier = [v7 containerIdentifier];
+    v12 = [(CNChangeHistoryAddGroupEvent *)v9 initWithGroup:group2 containerIdentifier:containerIdentifier];
+    [(CNMutableOrderedDictionary *)self->_addedGroups setObject:v12 forKeyedSubscript:identifier];
   }
 
   else
   {
-    v10 = [(CNMutableOrderedDictionary *)self->_updatedGroups objectForKeyedSubscript:v6];
-    if (v10)
+    group2 = [(CNMutableOrderedDictionary *)self->_updatedGroups objectForKeyedSubscript:identifier];
+    if (group2)
     {
-      v13 = [objc_opt_class() coalescingLog];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+      coalescingLog2 = [objc_opt_class() coalescingLog];
+      if (os_log_type_enabled(coalescingLog2, OS_LOG_TYPE_DEBUG))
       {
         [CNChangeHistoryEventCoalescer visitUpdateContactEvent:];
       }
 
-      [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:v4 forKeyedSubscript:v6];
+      [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:eventCopy forKeyedSubscript:identifier];
     }
 
     else
     {
-      v14 = [(CNMutableOrderedDictionary *)self->_deletedGroups objectForKeyedSubscript:v6];
+      v14 = [(CNMutableOrderedDictionary *)self->_deletedGroups objectForKeyedSubscript:identifier];
       if (v14)
       {
-        v15 = [objc_opt_class() coalescingLog];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        coalescingLog3 = [objc_opt_class() coalescingLog];
+        if (os_log_type_enabled(coalescingLog3, OS_LOG_TYPE_ERROR))
         {
           [CNChangeHistoryEventCoalescer visitUpdateContactEvent:];
         }
 
-        [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:v4 forKeyedSubscript:v6];
+        [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:eventCopy forKeyedSubscript:identifier];
         deletedGroups = self->_deletedGroups;
         v17 = 0;
       }
@@ -447,24 +447,24 @@ uint64_t __46__CNChangeHistoryEventCoalescer_coalescingLog__block_invoke()
       else
       {
         deletedGroups = self->_updatedGroups;
-        v17 = v4;
+        v17 = eventCopy;
       }
 
-      [(CNMutableOrderedDictionary *)deletedGroups setObject:v17 forKeyedSubscript:v6];
+      [(CNMutableOrderedDictionary *)deletedGroups setObject:v17 forKeyedSubscript:identifier];
     }
   }
 }
 
-- (void)visitDeleteGroupEvent:(id)a3
+- (void)visitDeleteGroupEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 groupIdentifier];
-  v6 = [(CNMutableOrderedDictionary *)self->_addedGroups objectForKeyedSubscript:v5];
+  eventCopy = event;
+  groupIdentifier = [eventCopy groupIdentifier];
+  v6 = [(CNMutableOrderedDictionary *)self->_addedGroups objectForKeyedSubscript:groupIdentifier];
   if (v6)
   {
-    [(CNMutableOrderedDictionary *)self->_addedGroups setObject:0 forKeyedSubscript:v5];
-    v7 = [objc_opt_class() coalescingLog];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    [(CNMutableOrderedDictionary *)self->_addedGroups setObject:0 forKeyedSubscript:groupIdentifier];
+    coalescingLog = [objc_opt_class() coalescingLog];
+    if (os_log_type_enabled(coalescingLog, OS_LOG_TYPE_DEBUG))
     {
       [CNChangeHistoryEventCoalescer visitDeleteContactEvent:];
     }
@@ -472,32 +472,32 @@ uint64_t __46__CNChangeHistoryEventCoalescer_coalescingLog__block_invoke()
 
   else
   {
-    v7 = [(CNMutableOrderedDictionary *)self->_updatedGroups objectForKeyedSubscript:v5];
-    if (v7)
+    coalescingLog = [(CNMutableOrderedDictionary *)self->_updatedGroups objectForKeyedSubscript:groupIdentifier];
+    if (coalescingLog)
     {
-      v8 = [objc_opt_class() coalescingLog];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      coalescingLog2 = [objc_opt_class() coalescingLog];
+      if (os_log_type_enabled(coalescingLog2, OS_LOG_TYPE_DEBUG))
       {
         [CNChangeHistoryEventCoalescer visitDeleteContactEvent:];
       }
 
-      [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:0 forKeyedSubscript:v5];
-      [(CNMutableOrderedDictionary *)self->_deletedGroups setObject:v4 forKeyedSubscript:v5];
+      [(CNMutableOrderedDictionary *)self->_updatedGroups setObject:0 forKeyedSubscript:groupIdentifier];
+      [(CNMutableOrderedDictionary *)self->_deletedGroups setObject:eventCopy forKeyedSubscript:groupIdentifier];
     }
 
     else
     {
-      v9 = [(CNMutableOrderedDictionary *)self->_deletedGroups objectForKeyedSubscript:v5];
+      v9 = [(CNMutableOrderedDictionary *)self->_deletedGroups objectForKeyedSubscript:groupIdentifier];
       if (v9)
       {
-        v10 = [objc_opt_class() coalescingLog];
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        coalescingLog3 = [objc_opt_class() coalescingLog];
+        if (os_log_type_enabled(coalescingLog3, OS_LOG_TYPE_ERROR))
         {
           [CNChangeHistoryEventCoalescer visitDeleteContactEvent:];
         }
       }
 
-      [(CNMutableOrderedDictionary *)self->_deletedGroups setObject:v4 forKeyedSubscript:v5];
+      [(CNMutableOrderedDictionary *)self->_deletedGroups setObject:eventCopy forKeyedSubscript:groupIdentifier];
     }
   }
 }

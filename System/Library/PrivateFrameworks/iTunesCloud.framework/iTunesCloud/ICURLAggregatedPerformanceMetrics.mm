@@ -1,8 +1,8 @@
 @interface ICURLAggregatedPerformanceMetrics
-+ (id)aggregatedMetricsFromAggregatedMetrics:(id)a3 addingAggregatedMetrics:(id)a4;
-+ (id)aggregatedMetricsFromAggregatedMetrics:(id)a3 addingMetrics:(id)a4;
++ (id)aggregatedMetricsFromAggregatedMetrics:(id)metrics addingAggregatedMetrics:(id)aggregatedMetrics;
++ (id)aggregatedMetricsFromAggregatedMetrics:(id)metrics addingMetrics:(id)addingMetrics;
 - (BOOL)isNotEmpty;
-- (ICURLAggregatedPerformanceMetrics)initWithURLMetrics:(id)a3;
+- (ICURLAggregatedPerformanceMetrics)initWithURLMetrics:(id)metrics;
 - (double)networkTime;
 @end
 
@@ -10,16 +10,16 @@
 
 - (double)networkTime
 {
-  v2 = [(ICURLAggregatedPerformanceMetrics *)self urlMetrics];
-  v3 = [v2 mutableCopy];
+  urlMetrics = [(ICURLAggregatedPerformanceMetrics *)self urlMetrics];
+  v3 = [urlMetrics mutableCopy];
 
   v4 = 0.0;
   while ([v3 count])
   {
-    v5 = [v3 lastObject];
-    [v5 fetchStartTime];
+    lastObject = [v3 lastObject];
+    [lastObject fetchStartTime];
     v7 = v6;
-    [v5 endTime];
+    [lastObject endTime];
     if (v7 >= v8)
     {
       v9 = v7;
@@ -71,41 +71,41 @@
 
 - (BOOL)isNotEmpty
 {
-  v2 = [(ICURLAggregatedPerformanceMetrics *)self urlMetrics];
-  v3 = [v2 count] != 0;
+  urlMetrics = [(ICURLAggregatedPerformanceMetrics *)self urlMetrics];
+  v3 = [urlMetrics count] != 0;
 
   return v3;
 }
 
-- (ICURLAggregatedPerformanceMetrics)initWithURLMetrics:(id)a3
+- (ICURLAggregatedPerformanceMetrics)initWithURLMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v8.receiver = self;
   v8.super_class = ICURLAggregatedPerformanceMetrics;
   v5 = [(ICURLAggregatedPerformanceMetrics *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICURLAggregatedPerformanceMetrics *)v5 setUrlMetrics:v4];
+    [(ICURLAggregatedPerformanceMetrics *)v5 setUrlMetrics:metricsCopy];
   }
 
   return v6;
 }
 
-+ (id)aggregatedMetricsFromAggregatedMetrics:(id)a3 addingMetrics:(id)a4
++ (id)aggregatedMetricsFromAggregatedMetrics:(id)metrics addingMetrics:(id)addingMetrics
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  metricsCopy = metrics;
+  addingMetricsCopy = addingMetrics;
+  if (addingMetricsCopy)
   {
-    v7 = [v5 urlMetrics];
-    v8 = [v7 count];
+    urlMetrics = [metricsCopy urlMetrics];
+    v8 = [urlMetrics count];
 
     if (v8)
     {
-      v9 = [v5 urlMetrics];
-      v10 = [v9 arrayByAddingObject:v6];
+      urlMetrics2 = [metricsCopy urlMetrics];
+      v10 = [urlMetrics2 arrayByAddingObject:addingMetricsCopy];
 
       v11 = [ICURLAggregatedPerformanceMetrics alloc];
     }
@@ -113,7 +113,7 @@
     else
     {
       v13 = [ICURLAggregatedPerformanceMetrics alloc];
-      v15[0] = v6;
+      v15[0] = addingMetricsCopy;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
       v11 = v13;
     }
@@ -123,40 +123,40 @@
 
   else
   {
-    v12 = v5;
+    v12 = metricsCopy;
   }
 
   return v12;
 }
 
-+ (id)aggregatedMetricsFromAggregatedMetrics:(id)a3 addingAggregatedMetrics:(id)a4
++ (id)aggregatedMetricsFromAggregatedMetrics:(id)metrics addingAggregatedMetrics:(id)aggregatedMetrics
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 urlMetrics];
-  v8 = [v7 count];
+  metricsCopy = metrics;
+  aggregatedMetricsCopy = aggregatedMetrics;
+  urlMetrics = [metricsCopy urlMetrics];
+  v8 = [urlMetrics count];
 
   if (v8)
   {
-    v9 = [v6 urlMetrics];
-    v10 = [v9 count];
+    urlMetrics2 = [aggregatedMetricsCopy urlMetrics];
+    v10 = [urlMetrics2 count];
 
     if (v10)
     {
-      v11 = [v5 urlMetrics];
-      v12 = [v6 urlMetrics];
-      v13 = [v11 arrayByAddingObjectsFromArray:v12];
+      urlMetrics3 = [metricsCopy urlMetrics];
+      urlMetrics4 = [aggregatedMetricsCopy urlMetrics];
+      v13 = [urlMetrics3 arrayByAddingObjectsFromArray:urlMetrics4];
 
       v14 = [[ICURLAggregatedPerformanceMetrics alloc] initWithURLMetrics:v13];
       goto LABEL_7;
     }
 
-    v15 = v5;
+    v15 = metricsCopy;
   }
 
   else
   {
-    v15 = v6;
+    v15 = aggregatedMetricsCopy;
   }
 
   v14 = v15;

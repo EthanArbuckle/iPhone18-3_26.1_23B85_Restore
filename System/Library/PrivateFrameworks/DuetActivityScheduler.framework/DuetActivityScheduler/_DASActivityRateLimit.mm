@@ -1,38 +1,38 @@
 @interface _DASActivityRateLimit
-+ (id)rateLimitWithMaximum:(unint64_t)a3 perWindow:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (_DASActivityRateLimit)initWithCoder:(id)a3;
-- (_DASActivityRateLimit)initWithMaximum:(unint64_t)a3 perWindow:(double)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)rateLimitWithMaximum:(unint64_t)maximum perWindow:(double)window;
+- (BOOL)isEqual:(id)equal;
+- (_DASActivityRateLimit)initWithCoder:(id)coder;
+- (_DASActivityRateLimit)initWithMaximum:(unint64_t)maximum perWindow:(double)window;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DASActivityRateLimit
 
-- (_DASActivityRateLimit)initWithMaximum:(unint64_t)a3 perWindow:(double)a4
+- (_DASActivityRateLimit)initWithMaximum:(unint64_t)maximum perWindow:(double)window
 {
   v7.receiver = self;
   v7.super_class = _DASActivityRateLimit;
   result = [(_DASActivityRateLimit *)&v7 init];
   if (result)
   {
-    result->_maximum = a3;
-    result->_window = a4;
+    result->_maximum = maximum;
+    result->_window = window;
   }
 
   return result;
 }
 
-+ (id)rateLimitWithMaximum:(unint64_t)a3 perWindow:(double)a4
++ (id)rateLimitWithMaximum:(unint64_t)maximum perWindow:(double)window
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithMaximum:a3 perWindow:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithMaximum:maximum perWindow:window];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -42,7 +42,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       maximum = self->_maximum;
       if (maximum == [(_DASActivityRateLimit *)v5 maximum])
       {
@@ -66,28 +66,28 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   maximum = self->_maximum;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:maximum];
-  [v6 encodeObject:v7 forKey:@"maximum"];
+  [coderCopy encodeObject:v7 forKey:@"maximum"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_window];
-  [v6 encodeObject:v8 forKey:@"window"];
+  [coderCopy encodeObject:v8 forKey:@"window"];
 }
 
-- (_DASActivityRateLimit)initWithCoder:(id)a3
+- (_DASActivityRateLimit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _DASActivityRateLimit;
   v5 = [(_DASActivityRateLimit *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximum"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"window"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximum"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"window"];
     v8 = v7;
     if (v6)
     {

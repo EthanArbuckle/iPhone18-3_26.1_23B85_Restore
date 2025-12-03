@@ -1,11 +1,11 @@
 @interface iWorkImportCompatibility
-+ (__CFDictionary)htmlForFileData:(__CFData *)a3 referringURLPrefix:(__CFString *)a4 uti:(__CFString *)a5;
-+ (__CFDictionary)htmlForFileURL:(__CFURL *)a3 referringURLPrefix:(__CFString *)a4 uti:(__CFString *)a5;
++ (__CFDictionary)htmlForFileData:(__CFData *)data referringURLPrefix:(__CFString *)prefix uti:(__CFString *)uti;
++ (__CFDictionary)htmlForFileURL:(__CFURL *)l referringURLPrefix:(__CFString *)prefix uti:(__CFString *)uti;
 @end
 
 @implementation iWorkImportCompatibility
 
-+ (__CFDictionary)htmlForFileURL:(__CFURL *)a3 referringURLPrefix:(__CFString *)a4 uti:(__CFString *)a5
++ (__CFDictionary)htmlForFileURL:(__CFURL *)l referringURLPrefix:(__CFString *)prefix uti:(__CFString *)uti
 {
   if (!sub_232CE4820() || !sub_232CE48F0())
   {
@@ -16,7 +16,7 @@
   if (v8)
   {
 
-    return v8(a3, a4, a5);
+    return v8(l, prefix, uti);
   }
 
   else
@@ -32,7 +32,7 @@
   return result;
 }
 
-+ (__CFDictionary)htmlForFileData:(__CFData *)a3 referringURLPrefix:(__CFString *)a4 uti:(__CFString *)a5
++ (__CFDictionary)htmlForFileData:(__CFData *)data referringURLPrefix:(__CFString *)prefix uti:(__CFString *)uti
 {
   if (!sub_232CE4820() || !sub_232CE4C40())
   {
@@ -43,7 +43,7 @@
   if (v8)
   {
 
-    return v8(a3, a4, a5);
+    return v8(data, prefix, uti);
   }
 
   else

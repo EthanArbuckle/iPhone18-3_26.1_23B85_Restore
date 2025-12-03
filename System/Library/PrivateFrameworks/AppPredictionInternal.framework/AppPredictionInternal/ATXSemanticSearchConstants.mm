@@ -16,9 +16,9 @@
 
   v4 = v9;
   v5 = objc_allocWithZone(MEMORY[0x277CCABB0]);
-  v6 = [v5 initWithInteger_];
+  initWithInteger_ = [v5 initWithInteger_];
 
-  return v6;
+  return initWithInteger_;
 }
 
 + (NSNumber)aNN_max_distance
@@ -32,9 +32,9 @@
   v4 = v10;
   v5 = objc_allocWithZone(MEMORY[0x277CCABB0]);
   LODWORD(v6) = v4;
-  v7 = [v5 initWithFloat_];
+  initWithFloat_ = [v5 initWithFloat_];
 
-  return v7;
+  return initWithFloat_;
 }
 
 - (ATXSemanticSearchConstants)init

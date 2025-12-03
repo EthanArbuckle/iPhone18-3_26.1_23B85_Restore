@@ -1,17 +1,17 @@
 @interface WBSCloudHistoryPushAgent
 - (BOOL)_hasAcknowledgedPushNotifications;
 - (BOOL)_hasUnacknowledgedPushNotifications;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (WBSCloudHistoryPushAgent)init;
 - (id)_userDefaults;
-- (void)_setHasAcknowlegedPushNotifications:(BOOL)a3;
-- (void)_setHasUnacknowledgedPushNotifications:(BOOL)a3;
+- (void)_setHasAcknowlegedPushNotifications:(BOOL)notifications;
+- (void)_setHasUnacknowledgedPushNotifications:(BOOL)notifications;
 - (void)acknowledgePendingPushNotifications;
 - (void)clearAcknowledgedPushNotifications;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)getPushNotifications:(id)a3;
-- (void)queryMemoryFootprint:(id)a3;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)getPushNotifications:(id)notifications;
+- (void)queryMemoryFootprint:(id)footprint;
 @end
 
 @implementation WBSCloudHistoryPushAgent
@@ -48,20 +48,20 @@
   return v2;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v5 = [(WBSCloudHistoryPushAgent *)self _pushTopic:a3];
+  v5 = [(WBSCloudHistoryPushAgent *)self _pushTopic:connection];
   v7[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   [(APSConnection *)self->_pushConnection _setEnabledTopics:v6];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
   v5 = MEMORY[0x1E695B9E0];
-  v6 = [a4 userInfo];
-  v7 = [v5 notificationFromRemoteNotificationDictionary:v6];
+  userInfo = [message userInfo];
+  v7 = [v5 notificationFromRemoteNotificationDictionary:userInfo];
 
   if (!v7)
   {
@@ -76,10 +76,10 @@
     goto LABEL_12;
   }
 
-  v8 = [v7 containerIdentifier];
-  if (![v8 isEqualToString:@"com.apple.SafariShared.History"])
+  containerIdentifier = [v7 containerIdentifier];
+  if (![containerIdentifier isEqualToString:@"com.apple.SafariShared.History"])
   {
-    v11 = [v8 isEqualToString:@"com.apple.SafariShared.WBSCloudHistoryStore"];
+    v11 = [containerIdentifier isEqualToString:@"com.apple.SafariShared.WBSCloudHistoryStore"];
 
     if (v11)
     {
@@ -124,20 +124,20 @@ void __65__WBSCloudHistoryPushAgent_connection_didReceiveIncomingMessage___block
   [v1 postNotificationName:@"com.apple.SafariShared.CloudHistory.PushReceived" object:0];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.safari.can-use-history-push-agent"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.safari.can-use-history-push-agent"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F3AA3B38];
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
   }
 
   else
@@ -145,24 +145,24 @@ void __65__WBSCloudHistoryPushAgent_connection_didReceiveIncomingMessage___block
     v9 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      -[WBSCloudHistoryPushAgent listener:shouldAcceptNewConnection:].cold.1(v11, [v5 processIdentifier], v9);
+      -[WBSCloudHistoryPushAgent listener:shouldAcceptNewConnection:].cold.1(v11, [connectionCopy processIdentifier], v9);
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)getPushNotifications:(id)a3
+- (void)getPushNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   pushNotificationStateQueue = self->_pushNotificationStateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__WBSCloudHistoryPushAgent_getPushNotifications___block_invoke;
   v7[3] = &unk_1E7FB6BC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationsCopy;
+  v6 = notificationsCopy;
   dispatch_async(pushNotificationStateQueue, v7);
 }
 
@@ -176,13 +176,13 @@ uint64_t __49__WBSCloudHistoryPushAgent_getPushNotifications___block_invoke(uint
   return v5(v2, v3, v4);
 }
 
-- (void)queryMemoryFootprint:(id)a3
+- (void)queryMemoryFootprint:(id)footprint
 {
-  v3 = a3;
+  footprintCopy = footprint;
   v6 = 0;
   v4 = [objc_alloc(MEMORY[0x1E69C88E0]) initWithError:&v6];
   v5 = v6;
-  v3[2](v3, v4, v5);
+  footprintCopy[2](footprintCopy, v4, v5);
 }
 
 - (void)acknowledgePendingPushNotifications
@@ -230,32 +230,32 @@ uint64_t __63__WBSCloudHistoryPushAgent_acknowledgePendingPushNotifications__blo
 
 - (BOOL)_hasUnacknowledgedPushNotifications
 {
-  v2 = [(WBSCloudHistoryPushAgent *)self _userDefaults];
-  v3 = [v2 BOOLForKey:@"UnacknowledgedPushNotifications"];
+  _userDefaults = [(WBSCloudHistoryPushAgent *)self _userDefaults];
+  v3 = [_userDefaults BOOLForKey:@"UnacknowledgedPushNotifications"];
 
   return v3;
 }
 
-- (void)_setHasUnacknowledgedPushNotifications:(BOOL)a3
+- (void)_setHasUnacknowledgedPushNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v4 = [(WBSCloudHistoryPushAgent *)self _userDefaults];
-  [v4 setBool:v3 forKey:@"UnacknowledgedPushNotifications"];
+  notificationsCopy = notifications;
+  _userDefaults = [(WBSCloudHistoryPushAgent *)self _userDefaults];
+  [_userDefaults setBool:notificationsCopy forKey:@"UnacknowledgedPushNotifications"];
 }
 
 - (BOOL)_hasAcknowledgedPushNotifications
 {
-  v2 = [(WBSCloudHistoryPushAgent *)self _userDefaults];
-  v3 = [v2 BOOLForKey:@"AcknowledgedPushNotifications"];
+  _userDefaults = [(WBSCloudHistoryPushAgent *)self _userDefaults];
+  v3 = [_userDefaults BOOLForKey:@"AcknowledgedPushNotifications"];
 
   return v3;
 }
 
-- (void)_setHasAcknowlegedPushNotifications:(BOOL)a3
+- (void)_setHasAcknowlegedPushNotifications:(BOOL)notifications
 {
-  v3 = a3;
-  v4 = [(WBSCloudHistoryPushAgent *)self _userDefaults];
-  [v4 setBool:v3 forKey:@"AcknowledgedPushNotifications"];
+  notificationsCopy = notifications;
+  _userDefaults = [(WBSCloudHistoryPushAgent *)self _userDefaults];
+  [_userDefaults setBool:notificationsCopy forKey:@"AcknowledgedPushNotifications"];
 }
 
 - (void)listener:(os_log_t)log shouldAcceptNewConnection:.cold.1(uint8_t *buf, int a2, os_log_t log)

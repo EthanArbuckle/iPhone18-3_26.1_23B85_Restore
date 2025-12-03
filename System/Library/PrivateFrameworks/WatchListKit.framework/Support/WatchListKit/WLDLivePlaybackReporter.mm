@@ -1,38 +1,38 @@
 @interface WLDLivePlaybackReporter
-+ (id)_contentEventFromSummary:(id)a3 schedule:(id)a4 event:(id)a5;
-+ (void)_decorateEBSSummary:(id)a3 completion:(id)a4;
-+ (void)_decorateLiveSummary:(id)a3 completion:(id)a4;
-+ (void)decorateSummary:(id)a3 completion:(id)a4;
-- (WLDLivePlaybackReporter)initWithSessionID:(id)a3;
-- (id)_debugStringForInput:(unint64_t)a3;
++ (id)_contentEventFromSummary:(id)summary schedule:(id)schedule event:(id)event;
++ (void)_decorateEBSSummary:(id)summary completion:(id)completion;
++ (void)_decorateLiveSummary:(id)summary completion:(id)completion;
++ (void)decorateSummary:(id)summary completion:(id)completion;
+- (WLDLivePlaybackReporter)initWithSessionID:(id)d;
+- (id)_debugStringForInput:(unint64_t)input;
 - (id)schedule;
-- (void)_configureTimerForDate:(id)a3 playbackDate:(id)a4 input:(unint64_t)a5;
-- (void)_evaluateEventsForReportingWithPlaybackDate:(id)a3 schedule:(id)a4 completion:(id)a5;
-- (void)_evaluateScheduleWithPlaybackDate:(id)a3;
-- (void)_getScheduleWithPlaybackDate:(id)a3 completion:(id)a4;
-- (void)_handlePlayerStateDidBecomePlayingWithCompletion:(id)a3;
-- (void)_handleTimerFiredAtEventStart:(id)a3;
-- (void)_handleTimerFiredAtScheduleBoundary:(id)a3;
+- (void)_configureTimerForDate:(id)date playbackDate:(id)playbackDate input:(unint64_t)input;
+- (void)_evaluateEventsForReportingWithPlaybackDate:(id)date schedule:(id)schedule completion:(id)completion;
+- (void)_evaluateScheduleWithPlaybackDate:(id)date;
+- (void)_getScheduleWithPlaybackDate:(id)date completion:(id)completion;
+- (void)_handlePlayerStateDidBecomePlayingWithCompletion:(id)completion;
+- (void)_handleTimerFiredAtEventStart:(id)start;
+- (void)_handleTimerFiredAtScheduleBoundary:(id)boundary;
 - (void)_invalidateTimer;
-- (void)_processInput:(unint64_t)a3 completion:(id)a4;
-- (void)_reportPlayEvents:(id)a3 account:(id)a4 completion:(id)a5;
-- (void)getCachedCanonicalIDForSummary:(id)a3 completionHandler:(id)a4;
-- (void)reportPlayback:(id)a3 completion:(id)a4;
-- (void)setSchedule:(id)a3;
+- (void)_processInput:(unint64_t)input completion:(id)completion;
+- (void)_reportPlayEvents:(id)events account:(id)account completion:(id)completion;
+- (void)getCachedCanonicalIDForSummary:(id)summary completionHandler:(id)handler;
+- (void)reportPlayback:(id)playback completion:(id)completion;
+- (void)setSchedule:(id)schedule;
 @end
 
 @implementation WLDLivePlaybackReporter
 
-- (WLDLivePlaybackReporter)initWithSessionID:(id)a3
+- (WLDLivePlaybackReporter)initWithSessionID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = WLDLivePlaybackReporter;
   v6 = [(WLDLivePlaybackReporter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionID, a3);
+    objc_storeStrong(&v6->_sessionID, d);
     v7->_scheduleAlreadyFetchedAtBoundary = 0;
     [(WLDLivePlaybackReporter *)v7 setState:1];
   }
@@ -40,20 +40,20 @@
   return v7;
 }
 
-- (void)reportPlayback:(id)a3 completion:(id)a4
+- (void)reportPlayback:(id)playback completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  playbackCopy = playback;
+  completionCopy = completion;
   v8 = WLDDispatchQueue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __53__WLDLivePlaybackReporter_reportPlayback_completion___block_invoke;
   block[3] = &unk_100044ED8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = playbackCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = playbackCopy;
   dispatch_async(v8, block);
 }
 
@@ -150,76 +150,76 @@ void __53__WLDLivePlaybackReporter_reportPlayback_completion___block_invoke_4(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getCachedCanonicalIDForSummary:(id)a3 completionHandler:(id)a4
+- (void)getCachedCanonicalIDForSummary:(id)summary completionHandler:(id)handler
 {
-  v9 = a4;
-  v5 = [(WLDLivePlaybackReporter *)self schedule];
+  handlerCopy = handler;
+  schedule = [(WLDLivePlaybackReporter *)self schedule];
 
-  if (v5)
+  if (schedule)
   {
-    v6 = [(WLDLivePlaybackReporter *)self schedule];
+    schedule2 = [(WLDLivePlaybackReporter *)self schedule];
     v7 = +[NSDate date];
-    v8 = [v6 eventForDate:v7];
+    v8 = [schedule2 eventForDate:v7];
 
     if (v8)
     {
-      v5 = [v8 canonicalID];
+      schedule = [v8 canonicalID];
     }
 
     else
     {
-      v5 = 0;
+      schedule = 0;
     }
   }
 
-  v9[2](v9, v5, 0);
+  handlerCopy[2](handlerCopy, schedule, 0);
 }
 
 - (id)schedule
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_schedule;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_schedule;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setSchedule:(id)a3
+- (void)setSchedule:(id)schedule
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (([(WLKSchedule *)v5->_schedule isEqual:v6]& 1) == 0)
+  scheduleCopy = schedule;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(WLKSchedule *)selfCopy->_schedule isEqual:scheduleCopy]& 1) == 0)
   {
-    objc_storeStrong(&v5->_schedule, a3);
+    objc_storeStrong(&selfCopy->_schedule, schedule);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-+ (void)decorateSummary:(id)a3 completion:(id)a4
++ (void)decorateSummary:(id)summary completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 playbackType] == 2)
+  summaryCopy = summary;
+  completionCopy = completion;
+  if ([summaryCopy playbackType] == 2)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __54__WLDLivePlaybackReporter_decorateSummary_completion___block_invoke;
     v12[3] = &unk_100044F28;
-    v13 = v7;
-    [a1 _decorateLiveSummary:v6 completion:v12];
+    v13 = completionCopy;
+    [self _decorateLiveSummary:summaryCopy completion:v12];
     v8 = v13;
   }
 
   else
   {
-    if ([v6 playbackType] != 1)
+    if ([summaryCopy playbackType] != 1)
     {
       NSLog(@"WLDLivePlaybackReporter: decorate failed -- unsupported playback type");
       v9 = WLKError();
-      (*(v7 + 2))(v7, 0, v9);
+      (*(completionCopy + 2))(completionCopy, 0, v9);
 
       goto LABEL_7;
     }
@@ -228,17 +228,17 @@ void __53__WLDLivePlaybackReporter_reportPlayback_completion___block_invoke_4(ui
     v10[1] = 3221225472;
     v10[2] = __54__WLDLivePlaybackReporter_decorateSummary_completion___block_invoke_2;
     v10[3] = &unk_100044F28;
-    v11 = v7;
-    [a1 _decorateEBSSummary:v6 completion:v10];
+    v11 = completionCopy;
+    [self _decorateEBSSummary:summaryCopy completion:v10];
     v8 = v11;
   }
 
 LABEL_7:
 }
 
-- (void)_processInput:(unint64_t)a3 completion:(id)a4
+- (void)_processInput:(unint64_t)input completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v7 = WLDDispatchQueue();
   block[0] = _NSConcreteStackBlock;
@@ -246,10 +246,10 @@ LABEL_7:
   block[2] = __52__WLDLivePlaybackReporter__processInput_completion___block_invoke;
   block[3] = &unk_100044F50;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
+  v11[1] = input;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, block);
 
   objc_destroyWeak(v11);
@@ -314,17 +314,17 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)_handlePlayerStateDidBecomePlayingWithCompletion:(id)a3
+- (void)_handlePlayerStateDidBecomePlayingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(WLDLivePlaybackReporter *)self setState:0];
-  v5 = [(WLDLivePlaybackReporter *)self lastSummary];
-  v6 = [v5 currentPlaybackDate];
+  lastSummary = [(WLDLivePlaybackReporter *)self lastSummary];
+  currentPlaybackDate = [lastSummary currentPlaybackDate];
 
-  if (!v6)
+  if (!currentPlaybackDate)
   {
     NSLog(@"WLDLivePlaybackReporter::Falling back to current date and currentPlaybackDate is not available");
-    v6 = +[NSDate date];
+    currentPlaybackDate = +[NSDate date];
   }
 
   v9[0] = _NSConcreteStackBlock;
@@ -332,10 +332,10 @@ LABEL_15:
   v9[2] = __76__WLDLivePlaybackReporter__handlePlayerStateDidBecomePlayingWithCompletion___block_invoke;
   v9[3] = &unk_100044F78;
   v9[4] = self;
-  v10 = v6;
-  v11 = v4;
-  v7 = v4;
-  v8 = v6;
+  v10 = currentPlaybackDate;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = currentPlaybackDate;
   [(WLDLivePlaybackReporter *)self _getScheduleWithPlaybackDate:v8 completion:v9];
 }
 
@@ -365,17 +365,17 @@ void __76__WLDLivePlaybackReporter__handlePlayerStateDidBecomePlayingWithComplet
   }
 }
 
-- (void)_handleTimerFiredAtEventStart:(id)a3
+- (void)_handleTimerFiredAtEventStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = WLDDispatchQueue();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __57__WLDLivePlaybackReporter__handleTimerFiredAtEventStart___block_invoke;
   v7[3] = &unk_100044FC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = startCopy;
+  v6 = startCopy;
   dispatch_async(v5, v7);
 }
 
@@ -427,22 +427,22 @@ void __57__WLDLivePlaybackReporter__handleTimerFiredAtEventStart___block_invoke_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_handleTimerFiredAtScheduleBoundary:(id)a3
+- (void)_handleTimerFiredAtScheduleBoundary:(id)boundary
 {
-  v4 = a3;
+  boundaryCopy = boundary;
   [(WLDLivePlaybackReporter *)self _invalidateTimer];
-  v5 = [(WLDLivePlaybackReporter *)self schedule];
-  v6 = [v5 endDate];
+  schedule = [(WLDLivePlaybackReporter *)self schedule];
+  endDate = [schedule endDate];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __63__WLDLivePlaybackReporter__handleTimerFiredAtScheduleBoundary___block_invoke;
   v9[3] = &unk_100044F78;
   v9[4] = self;
-  v10 = v6;
-  v11 = v4;
-  v7 = v4;
-  v8 = v6;
+  v10 = endDate;
+  v11 = boundaryCopy;
+  v7 = boundaryCopy;
+  v8 = endDate;
   [(WLDLivePlaybackReporter *)self _getScheduleWithPlaybackDate:v8 completion:v9];
 }
 
@@ -472,23 +472,23 @@ void __63__WLDLivePlaybackReporter__handleTimerFiredAtScheduleBoundary___block_i
   }
 }
 
-- (void)_getScheduleWithPlaybackDate:(id)a3 completion:(id)a4
+- (void)_getScheduleWithPlaybackDate:(id)date completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WLDLivePlaybackReporter *)self lastSummary];
-  v9 = [(WLDLivePlaybackReporter *)self schedule];
-  v10 = [v9 endDate];
+  dateCopy = date;
+  completionCopy = completion;
+  lastSummary = [(WLDLivePlaybackReporter *)self lastSummary];
+  schedule = [(WLDLivePlaybackReporter *)self schedule];
+  endDate = [schedule endDate];
 
   v11 = 0;
-  if (v6 && v10)
+  if (dateCopy && endDate)
   {
-    v12 = [v6 laterDate:v10];
-    v11 = v12 == v6;
+    v12 = [dateCopy laterDate:endDate];
+    v11 = v12 == dateCopy;
   }
 
-  v13 = [(WLDLivePlaybackReporter *)self schedule];
-  if (!v13)
+  schedule2 = [(WLDLivePlaybackReporter *)self schedule];
+  if (!schedule2)
   {
     if (!v11)
     {
@@ -506,8 +506,8 @@ LABEL_13:
     v17[2] = __67__WLDLivePlaybackReporter__getScheduleWithPlaybackDate_completion___block_invoke;
     v17[3] = &unk_100044FF0;
     v17[4] = self;
-    v18 = v7;
-    [v16 decorateSummary:v8 completion:v17];
+    v18 = completionCopy;
+    [v16 decorateSummary:lastSummary completion:v17];
 
     goto LABEL_14;
   }
@@ -526,8 +526,8 @@ LABEL_13:
 
 LABEL_11:
   NSLog(@"WLDLivePlaybackReporter: Returning existing schedule");
-  v15 = [(WLDLivePlaybackReporter *)self schedule];
-  (*(v7 + 2))(v7, v15, 0);
+  schedule3 = [(WLDLivePlaybackReporter *)self schedule];
+  (*(completionCopy + 2))(completionCopy, schedule3, 0);
 
 LABEL_14:
 }
@@ -566,16 +566,16 @@ void __67__WLDLivePlaybackReporter__getScheduleWithPlaybackDate_completion___blo
 LABEL_8:
 }
 
-+ (void)_decorateLiveSummary:(id)a3 completion:(id)a4
++ (void)_decorateLiveSummary:(id)summary completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __59__WLDLivePlaybackReporter__decorateLiveSummary_completion___block_invoke;
   v7[3] = &unk_100045040;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  v6 = v9;
+  summaryCopy = summary;
+  completionCopy = completion;
+  v5 = summaryCopy;
+  v6 = completionCopy;
   [v5 resolveChannelID:v7];
 }
 
@@ -634,16 +634,16 @@ void __59__WLDLivePlaybackReporter__decorateLiveSummary_completion___block_invok
   (*(v4 + 16))(v4, v3, v5);
 }
 
-+ (void)_decorateEBSSummary:(id)a3 completion:(id)a4
++ (void)_decorateEBSSummary:(id)summary completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __58__WLDLivePlaybackReporter__decorateEBSSummary_completion___block_invoke;
   v7[3] = &unk_100045040;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  v6 = v9;
+  summaryCopy = summary;
+  completionCopy = completion;
+  v5 = summaryCopy;
+  v6 = completionCopy;
   [v5 resolveChannelID:v7];
 }
 
@@ -702,41 +702,41 @@ void __58__WLDLivePlaybackReporter__decorateEBSSummary_completion___block_invoke
   (*(v4 + 16))(v4, v3, v5);
 }
 
-- (void)_evaluateEventsForReportingWithPlaybackDate:(id)a3 schedule:(id)a4 completion:(id)a5
+- (void)_evaluateEventsForReportingWithPlaybackDate:(id)date schedule:(id)schedule completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(WLDLivePlaybackReporter *)self lastSummary];
+  scheduleCopy = schedule;
+  completionCopy = completion;
+  dateCopy = date;
+  lastSummary = [(WLDLivePlaybackReporter *)self lastSummary];
   v12 = +[NSMutableArray array];
-  v13 = [v8 eventForDate:v10];
+  v13 = [scheduleCopy eventForDate:dateCopy];
 
   if (v13)
   {
     NSLog(@"WLDLivePlaybackReporter: will report event");
-    v14 = [objc_opt_class() _contentEventFromSummary:v11 schedule:v8 event:v13];
+    v14 = [objc_opt_class() _contentEventFromSummary:lastSummary schedule:scheduleCopy event:v13];
     [v12 addObject:v14];
   }
 
   if ([v12 count])
   {
-    v15 = [v11 accountID];
-    v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v15 longLongValue]);
+    accountID = [lastSummary accountID];
+    v16 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [accountID longLongValue]);
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = __91__WLDLivePlaybackReporter__evaluateEventsForReportingWithPlaybackDate_schedule_completion___block_invoke;
     v17[3] = &unk_100044FA0;
-    v18 = v9;
+    v18 = completionCopy;
     [(WLDLivePlaybackReporter *)self _reportPlayEvents:v12 account:v16 completion:v17];
   }
 
   else
   {
     NSLog(@"WLDLivePlaybackReporter: Will not report. We have no events");
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 }
@@ -748,23 +748,23 @@ void __91__WLDLivePlaybackReporter__evaluateEventsForReportingWithPlaybackDate_s
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_reportPlayEvents:(id)a3 account:(id)a4 completion:(id)a5
+- (void)_reportPlayEvents:(id)events account:(id)account completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[WLDPlayActivityReportOperation alloc] initWithLivePlayEvents:v7];
-  [(WLDPlayActivityReportOperation *)v10 setDSID:v8];
+  eventsCopy = events;
+  accountCopy = account;
+  completionCopy = completion;
+  v10 = [[WLDPlayActivityReportOperation alloc] initWithLivePlayEvents:eventsCopy];
+  [(WLDPlayActivityReportOperation *)v10 setDSID:accountCopy];
   objc_initWeak(&location, v10);
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = __64__WLDLivePlaybackReporter__reportPlayEvents_account_completion___block_invoke;
   v16 = &unk_100045018;
   objc_copyWeak(&v18, &location);
-  v11 = v9;
+  v11 = completionCopy;
   v17 = v11;
   [(WLDPlayActivityReportOperation *)v10 setCompletionBlock:&v13];
-  NSLog(@"WLDLivePlaybackReporter: Queueing activity report for events: %p", v7, v13, v14, v15, v16);
+  NSLog(@"WLDLivePlaybackReporter: Queueing activity report for events: %p", eventsCopy, v13, v14, v15, v16);
   v12 = WLDOperationQueue();
   [v12 addOperation:v10];
 
@@ -785,93 +785,93 @@ void __64__WLDLivePlaybackReporter__reportPlayEvents_account_completion___block_
   (*(v4 + 16))(v4, v5 == 0, v6);
 }
 
-- (id)_debugStringForInput:(unint64_t)a3
+- (id)_debugStringForInput:(unint64_t)input
 {
-  if (a3 > 3)
+  if (input > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1000450A8[a3];
+    return off_1000450A8[input];
   }
 }
 
-+ (id)_contentEventFromSummary:(id)a3 schedule:(id)a4 event:(id)a5
++ (id)_contentEventFromSummary:(id)summary schedule:(id)schedule event:(id)event
 {
-  v6 = a5;
-  v7 = a3;
+  eventCopy = event;
+  summaryCopy = summary;
   v8 = +[NSDate date];
   v9 = objc_alloc_init(UWLLiveActivityEvent);
-  v10 = [v7 bundleID];
-  [(UWLLiveActivityEvent *)v9 setBundleId:v10];
+  bundleID = [summaryCopy bundleID];
+  [(UWLLiveActivityEvent *)v9 setBundleId:bundleID];
 
-  v11 = [v7 externalProfileID];
-  [(UWLLiveActivityEvent *)v9 setProfileId:v11];
+  externalProfileID = [summaryCopy externalProfileID];
+  [(UWLLiveActivityEvent *)v9 setProfileId:externalProfileID];
 
-  v12 = [v7 timestamp];
+  timestamp = [summaryCopy timestamp];
 
-  [v8 timeIntervalSinceDate:v12];
+  [v8 timeIntervalSinceDate:timestamp];
   [(UWLLiveActivityEvent *)v9 setMillisecondsSinceEvent:(v13 * 1000.0)];
 
   [(UWLLiveActivityEvent *)v9 setCause:3];
   [(UWLLiveActivityEvent *)v9 setContractOrTimed:1];
-  v14 = [v6 nowPlayingPassThrough];
+  nowPlayingPassThrough = [eventCopy nowPlayingPassThrough];
 
-  [(UWLLiveActivityEvent *)v9 setPassThrough:v14];
+  [(UWLLiveActivityEvent *)v9 setPassThrough:nowPlayingPassThrough];
 
   return v9;
 }
 
-- (void)_evaluateScheduleWithPlaybackDate:(id)a3
+- (void)_evaluateScheduleWithPlaybackDate:(id)date
 {
-  v15 = a3;
-  v4 = [(WLDLivePlaybackReporter *)self schedule];
-  v5 = [v4 eventAfterDate:v15];
+  dateCopy = date;
+  schedule = [(WLDLivePlaybackReporter *)self schedule];
+  v5 = [schedule eventAfterDate:dateCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 startDate];
+    startDate = [v5 startDate];
     v8 = @"_next event begins";
   }
 
   else
   {
     v8 = 0;
-    v7 = 0;
+    startDate = 0;
   }
 
-  v9 = [v4 endDate];
-  v10 = v9;
+  endDate = [schedule endDate];
+  v10 = endDate;
   v11 = 2;
-  v12 = v15;
-  if (v15 && !v7 && v9)
+  v12 = dateCopy;
+  if (dateCopy && !startDate && endDate)
   {
-    if (([v9 isEqual:v15] & 1) != 0 || (objc_msgSend(v10, "laterDate:", v15), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 != v10))
+    if (([endDate isEqual:dateCopy] & 1) != 0 || (objc_msgSend(v10, "laterDate:", dateCopy), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 != v10))
     {
-      v7 = 0;
+      startDate = 0;
       goto LABEL_16;
     }
 
-    v7 = [v4 endDate];
+    startDate = [schedule endDate];
     v8 = @"_no event found";
     v11 = 3;
-    v12 = v15;
+    v12 = dateCopy;
   }
 
   if (v12)
   {
-    if (v7)
+    if (startDate)
     {
-      if (([v7 isEqual:v12] & 1) == 0)
+      if (([startDate isEqual:v12] & 1) == 0)
       {
-        v14 = [v7 laterDate:v15];
+        v14 = [startDate laterDate:dateCopy];
 
-        if (v14 == v7)
+        if (v14 == startDate)
         {
-          NSLog(@"WLDLivePlaybackReporter: Set up timer for %@ context: %@", v7, v8);
-          [(WLDLivePlaybackReporter *)self _configureTimerForDate:v7 playbackDate:v15 input:v11];
+          NSLog(@"WLDLivePlaybackReporter: Set up timer for %@ context: %@", startDate, v8);
+          [(WLDLivePlaybackReporter *)self _configureTimerForDate:startDate playbackDate:dateCopy input:v11];
         }
       }
     }
@@ -880,19 +880,19 @@ void __64__WLDLivePlaybackReporter__reportPlayEvents_account_completion___block_
 LABEL_16:
 }
 
-- (void)_configureTimerForDate:(id)a3 playbackDate:(id)a4 input:(unint64_t)a5
+- (void)_configureTimerForDate:(id)date playbackDate:(id)playbackDate input:(unint64_t)input
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  objc_sync_enter(v11);
-  objc_storeStrong(&v11->_timerEventDate, a3);
+  dateCopy = date;
+  playbackDateCopy = playbackDate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_timerEventDate, date);
   v12 = WLDDispatchQueue();
   v13 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v12);
-  timer = v11->_timer;
-  v11->_timer = v13;
+  timer = selfCopy->_timer;
+  selfCopy->_timer = v13;
 
-  [v9 timeIntervalSinceDate:v10];
+  [dateCopy timeIntervalSinceDate:playbackDateCopy];
   if (v15 <= 0.0)
   {
     NSLog(@"WLDLivePlaybackReporter: Timer fire time cannot be less than or equal to 0, returning early. Investigate this.");
@@ -913,22 +913,22 @@ LABEL_16:
     }
 
     v18 = dispatch_time(0, (v16 * 1000000000.0));
-    dispatch_source_set_timer(v11->_timer, v18, 0xFFFFFFFFFFFFFFFFLL, 0);
-    objc_initWeak(&location, v11);
-    v19 = v11->_timer;
+    dispatch_source_set_timer(selfCopy->_timer, v18, 0xFFFFFFFFFFFFFFFFLL, 0);
+    objc_initWeak(&location, selfCopy);
+    v19 = selfCopy->_timer;
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = __69__WLDLivePlaybackReporter__configureTimerForDate_playbackDate_input___block_invoke;
     handler[3] = &unk_100045088;
     objc_copyWeak(v21, &location);
-    v21[1] = a5;
+    v21[1] = input;
     dispatch_source_set_event_handler(v19, handler);
-    dispatch_activate(v11->_timer);
+    dispatch_activate(selfCopy->_timer);
     objc_destroyWeak(v21);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 void __69__WLDLivePlaybackReporter__configureTimerForDate_playbackDate_input___block_invoke(uint64_t a1)

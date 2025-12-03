@@ -1,14 +1,14 @@
 @interface APNSPackEncoder
-- (APNSPackEncoder)initWithMaxTableSize:(unint64_t)a3;
+- (APNSPackEncoder)initWithMaxTableSize:(unint64_t)size;
 - (APNSPackEncoderDelegate)delegate;
 - (id)copyMessage;
 - (id)errorMessage;
 - (id)keyTable;
 - (id)metrics;
 - (id)valueTable;
-- (void)addBinaryPropertyListWithAttributeId:(unsigned __int8)a3 data:(id)a4 isIndexable:(BOOL)a5;
-- (void)addDataWithAttributeId:(unsigned __int8)a3 data:(id)a4 isIndexable:(BOOL)a5;
-- (void)addStringWithAttributId:(unsigned __int8)a3 string:(id)a4 isIndexable:(BOOL)a5;
+- (void)addBinaryPropertyListWithAttributeId:(unsigned __int8)id data:(id)data isIndexable:(BOOL)indexable;
+- (void)addDataWithAttributeId:(unsigned __int8)id data:(id)data isIndexable:(BOOL)indexable;
+- (void)addStringWithAttributId:(unsigned __int8)id string:(id)string isIndexable:(BOOL)indexable;
 - (void)dealloc;
 @end
 
@@ -82,16 +82,16 @@
   return v3;
 }
 
-- (APNSPackEncoder)initWithMaxTableSize:(unint64_t)a3
+- (APNSPackEncoder)initWithMaxTableSize:(unint64_t)size
 {
   v6.receiver = self;
   v6.super_class = APNSPackEncoder;
   v4 = [(APNSPackEncoder *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (size)
     {
-      v4->_maxTableSize = a3;
+      v4->_maxTableSize = size;
       operator new();
     }
 
@@ -122,29 +122,29 @@
   [(APNSPackEncoder *)&v3 dealloc];
 }
 
-- (void)addDataWithAttributeId:(unsigned __int8)a3 data:(id)a4 isIndexable:(BOOL)a5
+- (void)addDataWithAttributeId:(unsigned __int8)id data:(id)data isIndexable:(BOOL)indexable
 {
-  v5 = a5;
-  v8 = a4;
-  sub_10000BD08(self->_builder, a3, [v8 bytes], objc_msgSend(v8, "length"), v5);
+  indexableCopy = indexable;
+  dataCopy = data;
+  sub_10000BD08(self->_builder, id, [dataCopy bytes], objc_msgSend(dataCopy, "length"), indexableCopy);
 }
 
-- (void)addStringWithAttributId:(unsigned __int8)a3 string:(id)a4 isIndexable:(BOOL)a5
+- (void)addStringWithAttributId:(unsigned __int8)id string:(id)string isIndexable:(BOOL)indexable
 {
-  v5 = a5;
-  v8 = a4;
-  sub_1000135F8(__p, [v8 UTF8String]);
-  sub_100013520(self->_builder, a3, __p, v5);
+  indexableCopy = indexable;
+  stringCopy = string;
+  sub_1000135F8(__p, [stringCopy UTF8String]);
+  sub_100013520(self->_builder, id, __p, indexableCopy);
   if (v10 < 0)
   {
     operator delete(__p[0]);
   }
 }
 
-- (void)addBinaryPropertyListWithAttributeId:(unsigned __int8)a3 data:(id)a4 isIndexable:(BOOL)a5
+- (void)addBinaryPropertyListWithAttributeId:(unsigned __int8)id data:(id)data isIndexable:(BOOL)indexable
 {
-  v7 = a4;
-  sub_100017B6C(self->_builder, a3, [v7 bytes], objc_msgSend(v7, "length"));
+  dataCopy = data;
+  sub_100017B6C(self->_builder, id, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
 }
 
 - (id)errorMessage

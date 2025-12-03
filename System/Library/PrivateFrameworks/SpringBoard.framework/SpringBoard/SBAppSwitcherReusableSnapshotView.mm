@@ -1,61 +1,61 @@
 @interface SBAppSwitcherReusableSnapshotView
-- (BOOL)_doNonUniformScalingForApplication:(id)a3;
-- (BOOL)_isAnimatingTransitionForRole:(int64_t)a3;
-- (BOOL)_isSnapshotSuspendSnapshot:(id)a3;
+- (BOOL)_doNonUniformScalingForApplication:(id)application;
+- (BOOL)_isAnimatingTransitionForRole:(int64_t)role;
+- (BOOL)_isSnapshotSuspendSnapshot:(id)snapshot;
 - (BOOL)contentRequiresGroupOpacity;
 - (CGRect)_frameForBackstopLayer;
-- (CGRect)_frameInLayoutSpaceForRole:(int64_t)a3 inAppLayout:(id)a4 inOrientation:(int64_t)a5;
-- (CGRect)_snapshotImageFrameForCacheEntry:(id)a3;
+- (CGRect)_frameInLayoutSpaceForRole:(int64_t)role inAppLayout:(id)layout inOrientation:(int64_t)orientation;
+- (CGRect)_snapshotImageFrameForCacheEntry:(id)entry;
 - (NSString)description;
-- (SBAppSwitcherReusableSnapshotView)initWithDelegate:(id)a3 snapshotCache:(id)a4 lockoutVCProvider:(id)a5 appClipOverlayCoordinator:(id)a6 containerViewController:(id)a7;
-- (id)_applicationForRole:(int64_t)a3;
-- (id)_cacheEntryForRole:(int64_t)a3;
-- (id)_imageViewForRole:(int64_t)a3;
-- (id)_orientationWrapperForRole:(int64_t)a3;
-- (id)_sceneHandleForRole:(int64_t)a3;
-- (id)_separatorViewBezierPathWithWidth:(double)a3 height:(double)a4;
-- (int64_t)_contentModeForApplication:(id)a3;
-- (int64_t)_contentOrientationForSnapshotCacheEntry:(id)a3;
-- (void)_addAppClipOverlayForRole:(int64_t)a3 bundleIdentifier:(id)a4 sceneIdentifier:(id)a5;
-- (void)_addAppLockoutOverlayIfNecessaryForRole:(int64_t)a3;
-- (void)_addAppProtectionShieldIfNeededForRole:(int64_t)a3;
-- (void)_addOrRemoveAppProtectionShieldForApplication:(id)a3 role:(int64_t)a4;
-- (void)_addOverlayViewController:(id)a3 toOrientationWrapperForRole:(int64_t)a4;
-- (void)_configureSnapshotImageView:(id)a3 cacheEntry:(id)a4;
-- (void)_handleInstalledAppsChanged:(id)a3;
-- (void)_performDeferredSnapshotUpdatesIfNecessaryForRole:(int64_t)a3;
-- (void)_removeAppClipOverlayForRole:(int64_t)a3;
-- (void)_removeAppLockoutOverlayForRole:(int64_t)a3;
-- (void)_removeAppProtectionShieldForRole:(int64_t)a3;
+- (SBAppSwitcherReusableSnapshotView)initWithDelegate:(id)delegate snapshotCache:(id)cache lockoutVCProvider:(id)provider appClipOverlayCoordinator:(id)coordinator containerViewController:(id)controller;
+- (id)_applicationForRole:(int64_t)role;
+- (id)_cacheEntryForRole:(int64_t)role;
+- (id)_imageViewForRole:(int64_t)role;
+- (id)_orientationWrapperForRole:(int64_t)role;
+- (id)_sceneHandleForRole:(int64_t)role;
+- (id)_separatorViewBezierPathWithWidth:(double)width height:(double)height;
+- (int64_t)_contentModeForApplication:(id)application;
+- (int64_t)_contentOrientationForSnapshotCacheEntry:(id)entry;
+- (void)_addAppClipOverlayForRole:(int64_t)role bundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier;
+- (void)_addAppLockoutOverlayIfNecessaryForRole:(int64_t)role;
+- (void)_addAppProtectionShieldIfNeededForRole:(int64_t)role;
+- (void)_addOrRemoveAppProtectionShieldForApplication:(id)application role:(int64_t)role;
+- (void)_addOverlayViewController:(id)controller toOrientationWrapperForRole:(int64_t)role;
+- (void)_configureSnapshotImageView:(id)view cacheEntry:(id)entry;
+- (void)_handleInstalledAppsChanged:(id)changed;
+- (void)_performDeferredSnapshotUpdatesIfNecessaryForRole:(int64_t)role;
+- (void)_removeAppClipOverlayForRole:(int64_t)role;
+- (void)_removeAppLockoutOverlayForRole:(int64_t)role;
+- (void)_removeAppProtectionShieldForRole:(int64_t)role;
 - (void)_requestFreshImages;
-- (void)_setAnimatingTransition:(BOOL)a3 forRole:(int64_t)a4;
-- (void)_setCacheEntry:(id)a3 forRole:(int64_t)a4;
-- (void)_setSceneHandle:(id)a3 forRole:(int64_t)a4;
-- (void)_setupOrientationWrapperAndImageViewForRole:(id)a3;
-- (void)_updateContentOrientationForRole:(int64_t)a3;
+- (void)_setAnimatingTransition:(BOOL)transition forRole:(int64_t)role;
+- (void)_setCacheEntry:(id)entry forRole:(int64_t)role;
+- (void)_setSceneHandle:(id)handle forRole:(int64_t)role;
+- (void)_setupOrientationWrapperAndImageViewForRole:(id)role;
+- (void)_updateContentOrientationForRole:(int64_t)role;
 - (void)_updateCornerRadius;
-- (void)_updateCornerRadiusIfNecessaryForOverlayView:(id)a3 matchingSnapshotImage:(id)a4;
-- (void)_updateCornerRadiusIfNecessaryForSnapshotImageView:(id)a3 cacheEntry:(id)a4;
+- (void)_updateCornerRadiusIfNecessaryForOverlayView:(id)view matchingSnapshotImage:(id)image;
+- (void)_updateCornerRadiusIfNecessaryForSnapshotImageView:(id)view cacheEntry:(id)entry;
 - (void)_updateDivider;
-- (void)_updateSceneHandleForRole:(int64_t)a3;
-- (void)_updateToNewSnapshotImageUsingCacheEntry:(id)a3;
+- (void)_updateSceneHandleForRole:(int64_t)role;
+- (void)_updateToNewSnapshotImageUsingCacheEntry:(id)entry;
 - (void)_updateTranslucency;
-- (void)_windowManagementStyleDidChange:(id)a3;
-- (void)appProtectionAssistantShouldShieldDidChange:(id)a3;
+- (void)_windowManagementStyleDidChange:(id)change;
+- (void)appProtectionAssistantShouldShieldDidChange:(id)change;
 - (void)dealloc;
-- (void)didUpdateCacheEntry:(id)a3;
+- (void)didUpdateCacheEntry:(id)entry;
 - (void)invalidate;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setActive:(BOOL)a3;
-- (void)setAppLayout:(id)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setShouldStretchToBounds:(BOOL)a3;
-- (void)setShouldUseBrightMaterial:(BOOL)a3;
-- (void)setShowingIconOverlayView:(BOOL)a3;
-- (void)setUsesNonuniformScaling:(BOOL)a3;
-- (void)setVisible:(BOOL)a3;
-- (void)setWallpaperStyle:(int64_t)a3;
+- (void)setActive:(BOOL)active;
+- (void)setAppLayout:(id)layout;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setShouldStretchToBounds:(BOOL)bounds;
+- (void)setShouldUseBrightMaterial:(BOOL)material;
+- (void)setShowingIconOverlayView:(BOOL)view;
+- (void)setUsesNonuniformScaling:(BOOL)scaling;
+- (void)setVisible:(BOOL)visible;
+- (void)setWallpaperStyle:(int64_t)style;
 @end
 
 @implementation SBAppSwitcherReusableSnapshotView
@@ -63,14 +63,14 @@
 - (void)_updateTranslucency
 {
   v3 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:1];
-  v4 = [v3 image];
+  image = [v3 image];
 
   v5 = [(SBAppSwitcherReusableSnapshotView *)self _cacheEntryForRole:2];
   if (v5)
   {
     v6 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:2];
-    v7 = [v6 image];
-    v31 = v7 == 0;
+    image2 = [v6 image];
+    v31 = image2 == 0;
   }
 
   else
@@ -82,8 +82,8 @@
   if (v8)
   {
     v9 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:4];
-    v10 = [v9 image];
-    v11 = v10 == 0;
+    image3 = [v9 image];
+    v11 = image3 == 0;
   }
 
   else
@@ -91,22 +91,22 @@
     v11 = 0;
   }
 
-  v12 = [(SBAppSwitcherSettings *)self->_settings shouldSimplifyForOptions:128];
+  currentDevice = [(SBAppSwitcherSettings *)self->_settings shouldSimplifyForOptions:128];
   v13 = [(SBAppSwitcherReusableSnapshotView *)self _cacheEntryForRole:1];
-  if (!v13 || (v14 = v13, -[SBAppSwitcherReusableSnapshotView _cacheEntryForRole:](self, "_cacheEntryForRole:", 1), v15 = objc_claimAutoreleasedReturnValue(), [v15 snapshot], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "backgroundStyle"), v16, v15, v14, !v17))
+  if (!v13 || (v14 = v13, -[SBAppSwitcherReusableSnapshotView _cacheEntryForRole:](self, "_cacheEntryForRole:", 1), v15 = objc_claimAutoreleasedReturnValue(), [v15 snapshot], v16 = objc_claimAutoreleasedReturnValue(), backgroundStyle = objc_msgSend(v16, "backgroundStyle"), v16, v15, v14, !backgroundStyle))
   {
-    v17 = [(SBAppSwitcherReusableSnapshotView *)self _cacheEntryForRole:2];
+    backgroundStyle = [(SBAppSwitcherReusableSnapshotView *)self _cacheEntryForRole:2];
 
-    if (v17)
+    if (backgroundStyle)
     {
       v18 = [(SBAppSwitcherReusableSnapshotView *)self _cacheEntryForRole:2];
-      v19 = [v18 snapshot];
-      v17 = [v19 backgroundStyle];
+      snapshot = [v18 snapshot];
+      backgroundStyle = [snapshot backgroundStyle];
     }
   }
 
   v20 = [(SBAppSwitcherReusableSnapshotView *)self _applicationForRole:1];
-  v21 = [v20 isClassic];
+  isClassic = [v20 isClassic];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -118,8 +118,8 @@
   v34[3] = &unk_2783C3010;
   v34[4] = &v35;
   [(NSMutableDictionary *)imageViewByRole enumerateKeysAndObjectsUsingBlock:v34];
-  v23 = (v4 == 0 || v31 || v11 || v17 == 0) | v12;
-  if ((v4 == 0) | v12 & 1)
+  v23 = (image == 0 || v31 || v11 || backgroundStyle == 0) | currentDevice;
+  if ((image == 0) | currentDevice & 1)
   {
     if ([v20 classicAppPhoneAppRunningOnPad])
     {
@@ -130,15 +130,15 @@
     {
       [MEMORY[0x277D75348] systemBackgroundColor];
     }
-    v24 = ;
+    blackColor = ;
     goto LABEL_33;
   }
 
-  if (!((v4 == 0 || v31 || v11 || v17 == 0) | v12 & 1 | v21 & 1) && *(v36 + 24) != 1 || (v21 & 1) == 0 && ((*(v36 + 24) | (v31 || v11)) & 1) == 0)
+  if (!((image == 0 || v31 || v11 || backgroundStyle == 0) | currentDevice & 1 | isClassic & 1) && *(v36 + 24) != 1 || (isClassic & 1) == 0 && ((*(v36 + 24) | (v31 || v11)) & 1) == 0)
   {
 LABEL_36:
     [(UIView *)self->_solidColorBackstopView setHidden:1];
-    v24 = 0;
+    blackColor = 0;
     if (v23)
     {
       goto LABEL_35;
@@ -149,7 +149,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v24 = [MEMORY[0x277D75348] blackColor];
+  blackColor = [MEMORY[0x277D75348] blackColor];
   v25 = __sb__runningInSpringBoard();
   v26 = v25;
   if (v25)
@@ -162,8 +162,8 @@ LABEL_37:
 
   else
   {
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    if ([v12 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
 LABEL_32:
 
@@ -188,18 +188,18 @@ LABEL_32:
       [MEMORY[0x277D75348] blackColor];
     }
 
-    v24 = v12 = v24;
+    blackColor = currentDevice = blackColor;
     goto LABEL_32;
   }
 
 LABEL_33:
-  if (!v24)
+  if (!blackColor)
   {
     goto LABEL_36;
   }
 
   [(UIView *)self->_solidColorBackstopView setHidden:0];
-  [(UIView *)self->_solidColorBackstopView setBackgroundColor:v24];
+  [(UIView *)self->_solidColorBackstopView setBackgroundColor:blackColor];
   if ((v23 & 1) == 0)
   {
     goto LABEL_37;
@@ -209,13 +209,13 @@ LABEL_35:
   v28 = 1;
 LABEL_38:
   [(SBAppSwitcherReusableSnapshotView *)self setWallpaperStyle:v28];
-  v29 = [(SBAppSwitcherReusableSnapshotView *)self contentRequiresGroupOpacity];
+  contentRequiresGroupOpacity = [(SBAppSwitcherReusableSnapshotView *)self contentRequiresGroupOpacity];
   v30 = self->_imageViewByRole;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __56__SBAppSwitcherReusableSnapshotView__updateTranslucency__block_invoke_2;
   v32[3] = &__block_descriptor_33_e54_v32__0__NSNumber_8__SBSwitcherSnapshotImageView_16_B24l;
-  v33 = v29;
+  v33 = contentRequiresGroupOpacity;
   [(NSMutableDictionary *)v30 enumerateKeysAndObjectsUsingBlock:v32];
 
   _Block_object_dispose(&v35, 8);
@@ -277,15 +277,15 @@ void __56__SBAppSwitcherReusableSnapshotView__requestFreshImages__block_invoke(u
   [(SBSwitcherWallpaperPageContentView *)&v8 _updateCornerRadius];
   [(SBSwitcherWallpaperPageContentView *)self cornerRadius];
   [(SBAppSwitcherReusableSnapshotView *)self _setContinuousCornerRadius:?];
-  v3 = [(SBAppSwitcherReusableSnapshotView *)self layer];
-  [v3 setMaskedCorners:{-[SBSwitcherWallpaperPageContentView maskedCorners](self, "maskedCorners")}];
+  layer = [(SBAppSwitcherReusableSnapshotView *)self layer];
+  [layer setMaskedCorners:{-[SBSwitcherWallpaperPageContentView maskedCorners](self, "maskedCorners")}];
 
-  v4 = [(UIView *)self->_solidColorBackstopView layer];
+  layer2 = [(UIView *)self->_solidColorBackstopView layer];
   [(SBSwitcherWallpaperPageContentView *)self cornerRadius];
-  [v4 setCornerRadius:?];
+  [layer2 setCornerRadius:?];
 
-  v5 = [(UIView *)self->_solidColorBackstopView layer];
-  [v5 setMaskedCorners:{-[SBSwitcherWallpaperPageContentView maskedCorners](self, "maskedCorners")}];
+  layer3 = [(UIView *)self->_solidColorBackstopView layer];
+  [layer3 setMaskedCorners:{-[SBSwitcherWallpaperPageContentView maskedCorners](self, "maskedCorners")}];
 
   imageViewByRole = self->_imageViewByRole;
   v7[0] = MEMORY[0x277D85DD0];
@@ -344,8 +344,8 @@ void __56__SBAppSwitcherReusableSnapshotView__updateCornerRadius__block_invoke(u
 
 - (CGRect)_frameForBackstopLayer
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
 
   [(SBAppSwitcherReusableSnapshotView *)self bounds];
 
@@ -442,25 +442,25 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
 
 - (void)_updateDivider
 {
-  v36 = [(SBAppSwitcherReusableSnapshotView *)self appLayout];
-  v3 = [v36 itemForLayoutRole:2];
+  appLayout = [(SBAppSwitcherReusableSnapshotView *)self appLayout];
+  v3 = [appLayout itemForLayoutRole:2];
 
   [(CAShapeLayer *)self->_medusaDividerLayer setHidden:v3 == 0];
   if (v3)
   {
-    [(SBAppSwitcherReusableSnapshotView *)self _frameInLayoutSpaceForRole:1 inAppLayout:v36 inOrientation:[(SBSwitcherWallpaperPageContentView *)self orientation]];
+    [(SBAppSwitcherReusableSnapshotView *)self _frameInLayoutSpaceForRole:1 inAppLayout:appLayout inOrientation:[(SBSwitcherWallpaperPageContentView *)self orientation]];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    [(SBAppSwitcherReusableSnapshotView *)self _frameInLayoutSpaceForRole:2 inAppLayout:v36 inOrientation:[(SBSwitcherWallpaperPageContentView *)self orientation]];
+    [(SBAppSwitcherReusableSnapshotView *)self _frameInLayoutSpaceForRole:2 inAppLayout:appLayout inOrientation:[(SBSwitcherWallpaperPageContentView *)self orientation]];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v20 = MEMORY[0x277D76620];
-    v21 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-    if (v21 == 1)
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection == 1)
     {
       v22 = v13;
     }
@@ -470,7 +470,7 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
       v22 = v5;
     }
 
-    if (v21 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v23 = v15;
     }
@@ -480,7 +480,7 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
       v23 = v7;
     }
 
-    if (v21 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v24 = v17;
     }
@@ -490,7 +490,7 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
       v24 = v9;
     }
 
-    if (v21 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v25 = v19;
     }
@@ -537,14 +537,14 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
   }
 }
 
-- (SBAppSwitcherReusableSnapshotView)initWithDelegate:(id)a3 snapshotCache:(id)a4 lockoutVCProvider:(id)a5 appClipOverlayCoordinator:(id)a6 containerViewController:(id)a7
+- (SBAppSwitcherReusableSnapshotView)initWithDelegate:(id)delegate snapshotCache:(id)cache lockoutVCProvider:(id)provider appClipOverlayCoordinator:(id)coordinator containerViewController:(id)controller
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v14)
+  delegateCopy = delegate;
+  cacheCopy = cache;
+  providerCopy = provider;
+  coordinatorCopy = coordinator;
+  controllerCopy = controller;
+  if (!cacheCopy)
   {
     [SBAppSwitcherReusableSnapshotView initWithDelegate:a2 snapshotCache:self lockoutVCProvider:? appClipOverlayCoordinator:? containerViewController:?];
   }
@@ -555,14 +555,14 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_delegate, v13);
-    objc_storeWeak(&v19->_snapshotCache, v14);
-    objc_storeStrong(&v19->_lockoutVCProvider, a5);
-    objc_storeStrong(&v19->_appClipOverlayCoordinator, a6);
-    objc_storeWeak(&v19->_containerViewController, v17);
-    v20 = [v17 _sbWindowScene];
-    v21 = [v20 switcherController];
-    v22 = [v21 windowManagementContext];
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    objc_storeWeak(&v19->_snapshotCache, cacheCopy);
+    objc_storeStrong(&v19->_lockoutVCProvider, provider);
+    objc_storeStrong(&v19->_appClipOverlayCoordinator, coordinator);
+    objc_storeWeak(&v19->_containerViewController, controllerCopy);
+    _sbWindowScene = [controllerCopy _sbWindowScene];
+    switcherController = [_sbWindowScene switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
 
     v23 = +[SBAppSwitcherDomain rootSettings];
     settings = v19->_settings;
@@ -572,9 +572,9 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
     medusaSettings = v19->_medusaSettings;
     v19->_medusaSettings = v25;
 
-    v27 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     deferredSnapshotCrossfadeQueue = v19->_deferredSnapshotCrossfadeQueue;
-    v19->_deferredSnapshotCrossfadeQueue = v27;
+    v19->_deferredSnapshotCrossfadeQueue = array;
 
     v29 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
     snapshotViewStateByRole = v19->_snapshotViewStateByRole;
@@ -584,8 +584,8 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
     solidColorBackstopView = v19->_solidColorBackstopView;
     v19->_solidColorBackstopView = v31;
 
-    v33 = [(UIView *)v19->_solidColorBackstopView layer];
-    [v33 setCornerCurve:*MEMORY[0x277CDA138]];
+    layer = [(UIView *)v19->_solidColorBackstopView layer];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
 
     [(SBAppSwitcherReusableSnapshotView *)v19 insertSubview:v19->_solidColorBackstopView atIndex:0];
     v34 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
@@ -599,22 +599,22 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
     v38 = [MEMORY[0x277CCABB0] numberWithInteger:1];
     [(SBAppSwitcherReusableSnapshotView *)v19 _setupOrientationWrapperAndImageViewForRole:v38];
 
-    if ([(SBSwitcherWindowManagementContext *)v22 baseStyle])
+    if ([(SBSwitcherWindowManagementContext *)windowManagementContext baseStyle])
     {
       v39 = [MEMORY[0x277CCABB0] numberWithInteger:2];
       [(SBAppSwitcherReusableSnapshotView *)v19 _setupOrientationWrapperAndImageViewForRole:v39];
 
-      v40 = [MEMORY[0x277CD9F90] layer];
+      layer2 = [MEMORY[0x277CD9F90] layer];
       medusaDividerLayer = v19->_medusaDividerLayer;
-      v19->_medusaDividerLayer = v40;
+      v19->_medusaDividerLayer = layer2;
 
       v42 = v19->_medusaDividerLayer;
-      v43 = [MEMORY[0x277D75348] blackColor];
-      -[CAShapeLayer setFillColor:](v42, "setFillColor:", [v43 CGColor]);
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      -[CAShapeLayer setFillColor:](v42, "setFillColor:", [blackColor CGColor]);
 
       [(CAShapeLayer *)v19->_medusaDividerLayer setHidden:1];
-      v44 = [(SBAppSwitcherReusableSnapshotView *)v19 layer];
-      [v44 addSublayer:v19->_medusaDividerLayer];
+      layer3 = [(SBAppSwitcherReusableSnapshotView *)v19 layer];
+      [layer3 addSublayer:v19->_medusaDividerLayer];
 
       v45 = [MEMORY[0x277CCABB0] numberWithInteger:4];
       [(SBAppSwitcherReusableSnapshotView *)v19 _setupOrientationWrapperAndImageViewForRole:v45];
@@ -626,37 +626,37 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
 
     [(SBAppSwitcherReusableSnapshotView *)v19 setClipsToBounds:0];
     windowManagementContext = v19->_windowManagementContext;
-    v19->_windowManagementContext = v22;
-    v49 = v22;
+    v19->_windowManagementContext = windowManagementContext;
+    v49 = windowManagementContext;
 
-    v50 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v50 addObserver:v19 selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v19 selector:sel__windowManagementStyleDidChange_ name:@"SBSwitcherControllerWindowManagementStyleDidChangeNotification" object:0];
   }
 
   return v19;
 }
 
-- (void)_setupOrientationWrapperAndImageViewForRole:(id)a3
+- (void)_setupOrientationWrapperAndImageViewForRole:(id)role
 {
   v4 = MEMORY[0x277CF0D78];
-  v5 = a3;
+  roleCopy = role;
   v6 = [v4 alloc];
   [(SBAppSwitcherReusableSnapshotView *)self bounds];
   v10 = [v6 initWithFrame:?];
   v7 = [[SBSwitcherSnapshotImageView alloc] initWithImage:0];
   [(SBAppSwitcherReusableSnapshotView *)self addSubview:v10];
   [v10 addContentView:v7];
-  [(NSMutableDictionary *)self->_imageViewByRole setObject:v7 forKey:v5];
-  [(NSMutableDictionary *)self->_orientationWrapperByRole setObject:v10 forKey:v5];
+  [(NSMutableDictionary *)self->_imageViewByRole setObject:v7 forKey:roleCopy];
+  [(NSMutableDictionary *)self->_orientationWrapperByRole setObject:v10 forKey:roleCopy];
   snapshotViewStateByRole = self->_snapshotViewStateByRole;
   v9 = objc_alloc_init(SBAppSwitcherSnapshotViewState);
-  [(NSMutableDictionary *)snapshotViewStateByRole setObject:v9 forKey:v5];
+  [(NSMutableDictionary *)snapshotViewStateByRole setObject:v9 forKey:roleCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBAppSwitcherReusableSnapshotView;
@@ -666,8 +666,8 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBAppLayout *)self->_appLayout succinctDescription];
-  v5 = [v3 appendObject:v4 withName:@"App Layout"];
+  succinctDescription = [(SBAppLayout *)self->_appLayout succinctDescription];
+  v5 = [v3 appendObject:succinctDescription withName:@"App Layout"];
 
   snapshotViewStateByRole = self->_snapshotViewStateByRole;
   v11[0] = MEMORY[0x277D85DD0];
@@ -677,27 +677,27 @@ void __51__SBAppSwitcherReusableSnapshotView_layoutSubviews__block_invoke(uint64
   v12 = v3;
   v7 = v3;
   [(NSMutableDictionary *)snapshotViewStateByRole enumerateKeysAndObjectsUsingBlock:v11];
-  v8 = [v7 appendSuper];
-  v9 = [v7 build];
+  appendSuper = [v7 appendSuper];
+  build = [v7 build];
 
-  return v9;
+  return build;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v8.receiver = self;
   v8.super_class = SBAppSwitcherReusableSnapshotView;
-  v5 = [(SBSwitcherWallpaperPageContentView *)&v8 orientation];
+  orientation = [(SBSwitcherWallpaperPageContentView *)&v8 orientation];
   v7.receiver = self;
   v7.super_class = SBAppSwitcherReusableSnapshotView;
-  [(SBSwitcherWallpaperPageContentView *)&v7 setOrientation:a3];
+  [(SBSwitcherWallpaperPageContentView *)&v7 setOrientation:orientation];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__SBAppSwitcherReusableSnapshotView_setOrientation___block_invoke;
   v6[3] = &unk_2783A8C40;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = v5;
+  v6[5] = orientation;
+  v6[6] = orientation;
   [MEMORY[0x277D75D18] performWithoutAnimation:v6];
 }
 
@@ -735,28 +735,28 @@ uint64_t __52__SBAppSwitcherReusableSnapshotView_setOrientation___block_invoke_3
   return [v4 _updateContentOrientationForRole:v3];
 }
 
-- (void)setAppLayout:(id)a3
+- (void)setAppLayout:(id)layout
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_appLayout] & 1) == 0)
+  layoutCopy = layout;
+  if (([layoutCopy isEqual:self->_appLayout] & 1) == 0)
   {
-    if (v6)
+    if (layoutCopy)
     {
       if (self->_appLayout)
       {
-        v7 = [v6 allItems];
-        v8 = [(SBAppLayout *)self->_appLayout allItems];
-        v9 = [v7 isEqualToArray:v8];
+        allItems = [layoutCopy allItems];
+        allItems2 = [(SBAppLayout *)self->_appLayout allItems];
+        v9 = [allItems isEqualToArray:allItems2];
 
         if ((v9 & 1) == 0)
         {
-          v10 = [MEMORY[0x277CCA890] currentHandler];
-          [v10 handleFailureInMethod:a2 object:self file:@"SBAppSwitcherReusableSnapshotView.m" lineNumber:208 description:@"Does not support setting new appLayout without recycling first (unless both app layouts have the same items)."];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"SBAppSwitcherReusableSnapshotView.m" lineNumber:208 description:@"Does not support setting new appLayout without recycling first (unless both app layouts have the same items)."];
         }
       }
     }
 
-    objc_storeStrong(&self->_appLayout, a3);
+    objc_storeStrong(&self->_appLayout, layout);
     snapshotViewStateByRole = self->_snapshotViewStateByRole;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -807,7 +807,7 @@ void __50__SBAppSwitcherReusableSnapshotView_setAppLayout___block_invoke(uint64_
   [*(a1 + 32) _addOrRemoveAppProtectionShieldForApplication:v10 role:v6];
 }
 
-- (void)_updateSceneHandleForRole:(int64_t)a3
+- (void)_updateSceneHandleForRole:(int64_t)role
 {
   v5 = [(SBAppLayout *)self->_appLayout itemForLayoutRole:?];
   v18 = v5;
@@ -819,8 +819,8 @@ void __50__SBAppSwitcherReusableSnapshotView_setAppLayout___block_invoke(uint64_
   if (![v5 type])
   {
     v6 = +[SBApplicationController sharedInstance];
-    v8 = [v18 bundleIdentifier];
-    v7 = [v6 applicationWithBundleIdentifier:v8];
+    bundleIdentifier = [v18 bundleIdentifier];
+    webApplication = [v6 applicationWithBundleIdentifier:bundleIdentifier];
 
     goto LABEL_7;
   }
@@ -828,26 +828,26 @@ void __50__SBAppSwitcherReusableSnapshotView_setAppLayout___block_invoke(uint64_
   if ([v18 type] != 5)
   {
 LABEL_5:
-    v7 = 0;
+    webApplication = 0;
     goto LABEL_8;
   }
 
   v6 = +[SBApplicationController sharedInstance];
-  v7 = [v6 webApplication];
+  webApplication = [v6 webApplication];
 LABEL_7:
 
 LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = [WeakRetained sceneHandleProviderForSnapshotView:self];
   v11 = [WeakRetained displayIdentityForSnapshotView:self];
-  if (v7)
+  if (webApplication)
   {
-    v12 = [v18 uniqueIdentifier];
-    v13 = [v10 sceneIdentityForApplication:v7 uniqueIdentifier:v12];
+    uniqueIdentifier = [v18 uniqueIdentifier];
+    v13 = [v10 sceneIdentityForApplication:webApplication uniqueIdentifier:uniqueIdentifier];
 
     if (v13)
     {
-      v14 = [SBApplicationSceneHandleRequest defaultRequestForApplication:v7 sceneIdentity:v13 displayIdentity:v11];
+      v14 = [SBApplicationSceneHandleRequest defaultRequestForApplication:webApplication sceneIdentity:v13 displayIdentity:v11];
       v15 = objc_opt_class();
       v16 = [v10 fetchOrCreateApplicationSceneHandleForRequest:v14];
       v17 = SBSafeCast(v15, v16);
@@ -863,13 +863,13 @@ LABEL_8:
 
   v17 = 0;
 LABEL_13:
-  [(SBAppSwitcherReusableSnapshotView *)self _setSceneHandle:v17 forRole:a3];
+  [(SBAppSwitcherReusableSnapshotView *)self _setSceneHandle:v17 forRole:role];
 }
 
 - (void)prepareForReuse
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBAppSwitcherReusableSnapshotView.m" lineNumber:313 description:@"Can't recycle active view"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBAppSwitcherReusableSnapshotView.m" lineNumber:313 description:@"Can't recycle active view"];
 }
 
 void __52__SBAppSwitcherReusableSnapshotView_prepareForReuse__block_invoke_3(uint64_t a1, void *a2, void *a3)
@@ -991,41 +991,41 @@ void __52__SBAppSwitcherReusableSnapshotView_prepareForReuse__block_invoke_8(uin
   [(SBSwitcherWallpaperPageContentView *)&v2 invalidate];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(SBAppSwitcherReusableSnapshotView *)self _updateTranslucency];
     }
   }
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
   v38 = *MEMORY[0x277D85DE8];
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    v3 = a3;
-    v4 = self;
-    self->_visible = a3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = v5;
-    if (v3)
+    visibleCopy = visible;
+    selfCopy = self;
+    self->_visible = visible;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v6 = defaultCenter;
+    if (visibleCopy)
     {
-      [(SBAppSwitcherReusableSnapshotView *)v4 _updateTranslucency];
+      [(SBAppSwitcherReusableSnapshotView *)selfCopy _updateTranslucency];
       v29 = v6;
-      [v6 addObserver:v4 selector:sel__handleInstalledAppsChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+      [v6 addObserver:selfCopy selector:sel__handleInstalledAppsChanged_ name:@"SBInstalledApplicationsDidChangeNotification" object:0];
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v7 = [(SBAppSwitcherReusableSnapshotView *)v4 appLayout];
-      v8 = [v7 allItems];
+      appLayout = [(SBAppSwitcherReusableSnapshotView *)selfCopy appLayout];
+      allItems = [appLayout allItems];
 
-      v9 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v9 = [allItems countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v9)
       {
         v10 = v9;
@@ -1039,37 +1039,37 @@ void __52__SBAppSwitcherReusableSnapshotView_prepareForReuse__block_invoke_8(uin
           {
             if (*v34 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allItems);
             }
 
             v14 = *(*(&v33 + 1) + 8 * v13);
             if (![v14 type])
             {
-              WeakRetained = objc_loadWeakRetained((&v4->super.super.super.super.isa + v12[474]));
-              v16 = [(SBAppSwitcherReusableSnapshotView *)v4 appLayout];
-              v17 = [WeakRetained snapshotView:v4 shouldShowAppClipOverlayForLayout:v16];
+              WeakRetained = objc_loadWeakRetained((&selfCopy->super.super.super.super.isa + v12[474]));
+              appLayout2 = [(SBAppSwitcherReusableSnapshotView *)selfCopy appLayout];
+              v17 = [WeakRetained snapshotView:selfCopy shouldShowAppClipOverlayForLayout:appLayout2];
 
               if (v17)
               {
-                v18 = [v14 bundleIdentifier];
-                v19 = [v14 uniqueIdentifier];
-                v20 = [MEMORY[0x277D0AC98] storeForApplication:v18];
-                v21 = [v20 sceneStoreForIdentifier:v19 creatingIfNecessary:0];
+                bundleIdentifier = [v14 bundleIdentifier];
+                uniqueIdentifier = [v14 uniqueIdentifier];
+                v20 = [MEMORY[0x277D0AC98] storeForApplication:bundleIdentifier];
+                v21 = [v20 sceneStoreForIdentifier:uniqueIdentifier creatingIfNecessary:0];
                 v22 = [v21 objectForKey:@"appClipIdentifier"];
                 if ([v22 length])
                 {
-                  [(SBAppSwitcherReusableSnapshotView *)v4 appLayout];
-                  v31 = v18;
+                  [(SBAppSwitcherReusableSnapshotView *)selfCopy appLayout];
+                  v31 = bundleIdentifier;
                   v23 = v11;
-                  v24 = v8;
-                  v26 = v25 = v4;
+                  v24 = allItems;
+                  v26 = v25 = selfCopy;
                   v27 = [v26 layoutRoleForItem:v14];
 
-                  v4 = v25;
-                  v8 = v24;
+                  selfCopy = v25;
+                  allItems = v24;
                   v11 = v23;
-                  v18 = v31;
-                  [(SBAppSwitcherReusableSnapshotView *)v4 _addAppClipOverlayForRole:v27 bundleIdentifier:v31 sceneIdentifier:v19];
+                  bundleIdentifier = v31;
+                  [(SBAppSwitcherReusableSnapshotView *)selfCopy _addAppClipOverlayForRole:v27 bundleIdentifier:v31 sceneIdentifier:uniqueIdentifier];
                 }
 
                 v10 = v30;
@@ -1081,7 +1081,7 @@ void __52__SBAppSwitcherReusableSnapshotView_prepareForReuse__block_invoke_8(uin
           }
 
           while (v10 != v13);
-          v10 = [v8 countByEnumeratingWithState:&v33 objects:v37 count:16];
+          v10 = [allItems countByEnumeratingWithState:&v33 objects:v37 count:16];
         }
 
         while (v10);
@@ -1092,13 +1092,13 @@ void __52__SBAppSwitcherReusableSnapshotView_prepareForReuse__block_invoke_8(uin
 
     else
     {
-      [v5 removeObserver:v4 name:@"SBInstalledApplicationsDidChangeNotification" object:0];
-      appClipOverlayByRole = v4->_appClipOverlayByRole;
+      [defaultCenter removeObserver:selfCopy name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+      appClipOverlayByRole = selfCopy->_appClipOverlayByRole;
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __48__SBAppSwitcherReusableSnapshotView_setVisible___block_invoke;
       v32[3] = &unk_2783C2EB8;
-      v32[4] = v4;
+      v32[4] = selfCopy;
       [(NSMutableDictionary *)appClipOverlayByRole enumerateKeysAndObjectsUsingBlock:v32];
     }
   }
@@ -1112,31 +1112,31 @@ uint64_t __48__SBAppSwitcherReusableSnapshotView_setVisible___block_invoke(uint6
   return [v4 _removeAppClipOverlayForRole:v3];
 }
 
-- (void)setShouldUseBrightMaterial:(BOOL)a3
+- (void)setShouldUseBrightMaterial:(BOOL)material
 {
-  if (self->_shouldUseBrightMaterial != a3)
+  if (self->_shouldUseBrightMaterial != material)
   {
-    self->_shouldUseBrightMaterial = a3;
+    self->_shouldUseBrightMaterial = material;
     [(SBAppSwitcherReusableSnapshotView *)self _updateTranslucency];
   }
 }
 
-- (void)setShowingIconOverlayView:(BOOL)a3
+- (void)setShowingIconOverlayView:(BOOL)view
 {
-  if (self->_showingIconOverlayView != a3)
+  if (self->_showingIconOverlayView != view)
   {
-    self->_showingIconOverlayView = a3;
+    self->_showingIconOverlayView = view;
     [(SBAppSwitcherReusableSnapshotView *)self setClipsToBounds:?];
   }
 }
 
-- (void)setShouldStretchToBounds:(BOOL)a3
+- (void)setShouldStretchToBounds:(BOOL)bounds
 {
-  if (self->_shouldStretchToBounds != a3)
+  if (self->_shouldStretchToBounds != bounds)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_shouldStretchToBounds = a3;
+    self->_shouldStretchToBounds = bounds;
     imageViewByRole = self->_imageViewByRole;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -1147,26 +1147,26 @@ uint64_t __48__SBAppSwitcherReusableSnapshotView_setVisible___block_invoke(uint6
   }
 }
 
-- (void)setUsesNonuniformScaling:(BOOL)a3
+- (void)setUsesNonuniformScaling:(BOOL)scaling
 {
-  if (self->_usesNonuniformScaling != a3)
+  if (self->_usesNonuniformScaling != scaling)
   {
     v8 = v3;
     v9 = v4;
-    self->_usesNonuniformScaling = a3;
+    self->_usesNonuniformScaling = scaling;
     imageViewByRole = self->_imageViewByRole;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__SBAppSwitcherReusableSnapshotView_setUsesNonuniformScaling___block_invoke;
     v6[3] = &__block_descriptor_33_e54_v32__0__NSNumber_8__SBSwitcherSnapshotImageView_16_B24l;
-    v7 = a3;
+    scalingCopy = scaling;
     [(NSMutableDictionary *)imageViewByRole enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
 
-- (void)didUpdateCacheEntry:(id)a3
+- (void)didUpdateCacheEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
 
     [(SBAppSwitcherReusableSnapshotView *)self _updateToNewSnapshotImageUsingCacheEntry:?];
@@ -1185,7 +1185,7 @@ uint64_t __48__SBAppSwitcherReusableSnapshotView_setVisible___block_invoke(uint6
   }
 }
 
-- (void)appProtectionAssistantShouldShieldDidChange:(id)a3
+- (void)appProtectionAssistantShouldShieldDidChange:(id)change
 {
   snapshotViewStateByRole = self->_snapshotViewStateByRole;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1196,39 +1196,39 @@ uint64_t __48__SBAppSwitcherReusableSnapshotView_setVisible___block_invoke(uint6
   [(NSMutableDictionary *)snapshotViewStateByRole enumerateKeysAndObjectsUsingBlock:v4];
 }
 
-- (void)_addOrRemoveAppProtectionShieldForApplication:(id)a3 role:(int64_t)a4
+- (void)_addOrRemoveAppProtectionShieldForApplication:(id)application role:(int64_t)role
 {
-  v11 = a3;
-  v6 = [v11 appProtectionAssistant];
-  v7 = [v6 shouldShield];
+  applicationCopy = application;
+  appProtectionAssistant = [applicationCopy appProtectionAssistant];
+  shouldShield = [appProtectionAssistant shouldShield];
 
-  if (v7)
+  if (shouldShield)
   {
-    [(SBAppSwitcherReusableSnapshotView *)self _addAppProtectionShieldIfNeededForRole:a4];
+    [(SBAppSwitcherReusableSnapshotView *)self _addAppProtectionShieldIfNeededForRole:role];
   }
 
   else
   {
-    [(SBAppSwitcherReusableSnapshotView *)self _removeAppProtectionShieldForRole:a4];
+    [(SBAppSwitcherReusableSnapshotView *)self _removeAppProtectionShieldForRole:role];
   }
 
-  v8 = [(SBAppSwitcherReusableSnapshotView *)self _applicationForRole:a4];
+  v8 = [(SBAppSwitcherReusableSnapshotView *)self _applicationForRole:role];
 
-  v9 = v11;
-  if (v8 == v11)
+  v9 = applicationCopy;
+  if (v8 == applicationCopy)
   {
-    v10 = [v11 appProtectionAssistant];
-    [v10 addObserver:self];
+    appProtectionAssistant2 = [applicationCopy appProtectionAssistant];
+    [appProtectionAssistant2 addObserver:self];
 
-    v9 = v11;
+    v9 = applicationCopy;
   }
 }
 
-- (void)_handleInstalledAppsChanged:(id)a3
+- (void)_handleInstalledAppsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:@"SBInstalledApplicationsAddedBundleIDs"];
 
   if ([v6 count])
   {
@@ -1241,8 +1241,8 @@ uint64_t __48__SBAppSwitcherReusableSnapshotView_setVisible___block_invoke(uint6
     [(NSMutableDictionary *)snapshotViewStateByRole enumerateKeysAndObjectsUsingBlock:v13];
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
+  userInfo2 = [changedCopy userInfo];
+  v9 = [userInfo2 objectForKey:@"SBInstalledApplicationsUpdatedBundleIDs"];
 
   if ([v9 count])
   {
@@ -1257,79 +1257,79 @@ uint64_t __48__SBAppSwitcherReusableSnapshotView_setVisible___block_invoke(uint6
   }
 }
 
-- (id)_applicationForRole:(int64_t)a3
+- (id)_applicationForRole:(int64_t)role
 {
-  v3 = [(SBAppSwitcherReusableSnapshotView *)self _sceneHandleForRole:a3];
-  v4 = [v3 application];
+  v3 = [(SBAppSwitcherReusableSnapshotView *)self _sceneHandleForRole:role];
+  application = [v3 application];
 
-  return v4;
+  return application;
 }
 
-- (id)_imageViewForRole:(int64_t)a3
+- (id)_imageViewForRole:(int64_t)role
 {
   imageViewByRole = self->_imageViewByRole;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:role];
   v5 = [(NSMutableDictionary *)imageViewByRole objectForKey:v4];
 
   return v5;
 }
 
-- (id)_orientationWrapperForRole:(int64_t)a3
+- (id)_orientationWrapperForRole:(int64_t)role
 {
   orientationWrapperByRole = self->_orientationWrapperByRole;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:role];
   v5 = [(NSMutableDictionary *)orientationWrapperByRole objectForKey:v4];
 
   return v5;
 }
 
-- (void)_configureSnapshotImageView:(id)a3 cacheEntry:(id)a4
+- (void)_configureSnapshotImageView:(id)view cacheEntry:(id)entry
 {
-  v6 = a3;
-  if (v6)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v13 = v6;
-    v7 = a4;
-    v8 = -[SBAppSwitcherReusableSnapshotView _sceneHandleForRole:](self, "_sceneHandleForRole:", [v7 role]);
-    v9 = [v8 application];
-    [(SBAppSwitcherReusableSnapshotView *)self _updateCornerRadiusIfNecessaryForSnapshotImageView:v13 cacheEntry:v7];
+    v13 = viewCopy;
+    entryCopy = entry;
+    v8 = -[SBAppSwitcherReusableSnapshotView _sceneHandleForRole:](self, "_sceneHandleForRole:", [entryCopy role]);
+    application = [v8 application];
+    [(SBAppSwitcherReusableSnapshotView *)self _updateCornerRadiusIfNecessaryForSnapshotImageView:v13 cacheEntry:entryCopy];
 
-    v10 = [(SBSwitcherWallpaperPageContentView *)self wallpaperStyle];
-    v11 = [(SBAppSwitcherReusableSnapshotView *)self _contentModeForApplication:v9];
+    wallpaperStyle = [(SBSwitcherWallpaperPageContentView *)self wallpaperStyle];
+    v11 = [(SBAppSwitcherReusableSnapshotView *)self _contentModeForApplication:application];
     [v13 setContentMode:v11];
     v12 = 0;
-    if (v10 == 1 && v11 != 1)
+    if (wallpaperStyle == 1 && v11 != 1)
     {
       v12 = [v8 isTranslucent] ^ 1;
     }
 
     [v13 setHasOpaqueContents:v12];
 
-    v6 = v13;
+    viewCopy = v13;
   }
 }
 
-- (void)_updateCornerRadiusIfNecessaryForSnapshotImageView:(id)a3 cacheEntry:(id)a4
+- (void)_updateCornerRadiusIfNecessaryForSnapshotImageView:(id)view cacheEntry:(id)entry
 {
-  v26 = a3;
-  v7 = a4;
-  if (v26 && v7)
+  viewCopy = view;
+  entryCopy = entry;
+  if (viewCopy && entryCopy)
   {
-    v8 = -[SBAppSwitcherReusableSnapshotView _applicationForRole:](self, "_applicationForRole:", [v7 role]);
-    v9 = [v7 snapshot];
-    v10 = [(SBAppSwitcherReusableSnapshotView *)self _isSnapshotSuspendSnapshot:v9];
+    v8 = -[SBAppSwitcherReusableSnapshotView _applicationForRole:](self, "_applicationForRole:", [entryCopy role]);
+    snapshot = [entryCopy snapshot];
+    v10 = [(SBAppSwitcherReusableSnapshotView *)self _isSnapshotSuspendSnapshot:snapshot];
 
     if (![v8 isClassic] || (objc_msgSend(v8, "classicAppFullScreen") & 1) != 0 || -[SBSwitcherWindowManagementContext isChamoisOrFlexibleWindowing](self->_windowManagementContext, "isChamoisOrFlexibleWindowing"))
     {
       [(SBSwitcherWallpaperPageContentView *)self cornerRadius];
 LABEL_7:
-      v11 = 0;
+      interfaceOrientation = 0;
       goto LABEL_8;
     }
 
     if (v10)
     {
-      v11 = 0;
+      interfaceOrientation = 0;
     }
 
     else
@@ -1342,42 +1342,42 @@ LABEL_7:
 
       if ([v8 classicAppNonFullScreenWithHomeAffordance] && (objc_msgSend(v8, "classicAppPhoneAppRunningOnPad") & 1) == 0)
       {
-        v23 = [v7 snapshot];
-        v11 = [v23 interfaceOrientation];
+        snapshot2 = [entryCopy snapshot];
+        interfaceOrientation = [snapshot2 interfaceOrientation];
       }
 
       else
       {
-        v11 = 0;
+        interfaceOrientation = 0;
         [v8 classicAppPhoneAppRunningOnPad];
       }
     }
 
 LABEL_8:
-    [v26 setCornerRadius:?];
-    v12 = [v7 appLayout];
+    [viewCopy setCornerRadius:?];
+    appLayout = [entryCopy appLayout];
     v13 = 2;
-    v14 = [v12 itemForLayoutRole:2];
+    v14 = [appLayout itemForLayoutRole:2];
 
     if (!v14)
     {
       v18 = 15;
 LABEL_25:
-      [v26 setMaskedCorners:v18];
-      [v26 setAllowStatusBarToOverlap:{objc_msgSend(v8, "includesStatusBarInClassicJailForInterfaceOrientation:", v11)}];
-      [v26 setOrientationForClassicLayout:v11];
+      [viewCopy setMaskedCorners:v18];
+      [viewCopy setAllowStatusBarToOverlap:{objc_msgSend(v8, "includesStatusBarInClassicJailForInterfaceOrientation:", interfaceOrientation)}];
+      [viewCopy setOrientationForClassicLayout:interfaceOrientation];
 
       goto LABEL_26;
     }
 
     v15 = MEMORY[0x277D76620];
-    v16 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-    if (v16 == 1)
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection == 1)
     {
-      v17 = [v7 displayItem];
-      v4 = [v7 appLayout];
-      v13 = [v4 itemForLayoutRole:2];
-      if ([(SBDisplayItem *)v17 isEqualToItem:v13])
+      displayItem = [entryCopy displayItem];
+      appLayout2 = [entryCopy appLayout];
+      v13 = [appLayout2 itemForLayoutRole:2];
+      if ([(SBDisplayItem *)displayItem isEqualToItem:v13])
       {
 
 LABEL_23:
@@ -1391,7 +1391,7 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v24 = v17;
+      v24 = displayItem;
     }
 
     else if ([*v15 userInterfaceLayoutDirection] == 1)
@@ -1399,12 +1399,12 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v19 = [v7 displayItem];
-    v20 = [v7 appLayout];
-    v21 = [v20 itemForLayoutRole:1];
-    v22 = [v19 isEqual:v21];
+    displayItem2 = [entryCopy displayItem];
+    appLayout3 = [entryCopy appLayout];
+    v21 = [appLayout3 itemForLayoutRole:1];
+    v22 = [displayItem2 isEqual:v21];
 
-    if (v16 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
     }
 
@@ -1421,36 +1421,36 @@ LABEL_24:
 LABEL_26:
 }
 
-- (void)_updateCornerRadiusIfNecessaryForOverlayView:(id)a3 matchingSnapshotImage:(id)a4
+- (void)_updateCornerRadiusIfNecessaryForOverlayView:(id)view matchingSnapshotImage:(id)image
 {
-  v9 = a3;
-  v5 = a4;
-  if (v9)
+  viewCopy = view;
+  imageCopy = image;
+  if (viewCopy)
   {
-    [v5 cornerRadius];
-    [v9 _setContinuousCornerRadius:?];
-    v6 = [v9 layer];
-    v7 = [v5 maskedCorners];
-    v8 = v6;
+    [imageCopy cornerRadius];
+    [viewCopy _setContinuousCornerRadius:?];
+    layer = [viewCopy layer];
+    maskedCorners = [imageCopy maskedCorners];
+    layer2 = layer;
   }
 
   else
   {
     [0 _setContinuousCornerRadius:0.0];
-    v8 = [0 layer];
-    v6 = v8;
-    v7 = 0;
+    layer2 = [0 layer];
+    layer = layer2;
+    maskedCorners = 0;
   }
 
-  [v8 setMaskedCorners:v7];
+  [layer2 setMaskedCorners:maskedCorners];
 }
 
-- (BOOL)_doNonUniformScalingForApplication:(id)a3
+- (BOOL)_doNonUniformScalingForApplication:(id)application
 {
-  v4 = a3;
-  if (SBSIsSystemApertureAvailable() && [v4 classicAppScaled])
+  applicationCopy = application;
+  if (SBSIsSystemApertureAvailable() && [applicationCopy classicAppScaled])
   {
-    LOBYTE(v5) = [v4 classicAppFullScreen];
+    LOBYTE(v5) = [applicationCopy classicAppFullScreen];
   }
 
   else
@@ -1458,34 +1458,34 @@ LABEL_26:
     LOBYTE(v5) = 0;
   }
 
-  if (SBFIsFullScreenLetterboxingAvailable() && [v4 classicAppFullScreen] && (objc_msgSend(v4, "classicAppPhoneAppRunningOnPad") & 1) == 0)
+  if (SBFIsFullScreenLetterboxingAvailable() && [applicationCopy classicAppFullScreen] && (objc_msgSend(applicationCopy, "classicAppPhoneAppRunningOnPad") & 1) == 0)
   {
-    if ([v4 onlySupportsOneOrientation])
+    if ([applicationCopy onlySupportsOneOrientation])
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v6 = [(UIView *)self _sbWindowScene];
-      v5 = [v6 isExtendedDisplayWindowScene] ^ 1;
+      _sbWindowScene = [(UIView *)self _sbWindowScene];
+      v5 = [_sbWindowScene isExtendedDisplayWindowScene] ^ 1;
     }
   }
 
   return v5;
 }
 
-- (int64_t)_contentModeForApplication:(id)a3
+- (int64_t)_contentModeForApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v5 = 0;
   if (SBFIsFullScreenLetterboxingAvailable())
   {
-    if ([v4 classicAppFullScreen])
+    if ([applicationCopy classicAppFullScreen])
     {
-      if (([v4 classicAppPhoneAppRunningOnPad] & 1) == 0)
+      if (([applicationCopy classicAppPhoneAppRunningOnPad] & 1) == 0)
       {
-        if (([v4 onlySupportsOneOrientation] & 1) != 0 || (-[UIView _sbWindowScene](self, "_sbWindowScene"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isExtendedDisplayWindowScene"), v7, v8))
+        if (([applicationCopy onlySupportsOneOrientation] & 1) != 0 || (-[UIView _sbWindowScene](self, "_sbWindowScene"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isExtendedDisplayWindowScene"), v7, v8))
         {
           v5 = 1;
         }
@@ -1496,37 +1496,37 @@ LABEL_26:
   return v5;
 }
 
-- (CGRect)_snapshotImageFrameForCacheEntry:(id)a3
+- (CGRect)_snapshotImageFrameForCacheEntry:(id)entry
 {
   v4 = MEMORY[0x277D759A0];
-  v5 = a3;
-  v6 = [v4 mainScreen];
-  [v6 _referenceBounds];
+  entryCopy = entry;
+  mainScreen = [v4 mainScreen];
+  [mainScreen _referenceBounds];
   v8 = v7;
   v10 = v9;
   v70 = v12;
   v71 = v11;
 
-  v13 = [v5 snapshot];
-  [v13 contentFrame];
+  snapshot = [entryCopy snapshot];
+  [snapshot contentFrame];
   v15 = v14;
   v17 = v16;
-  v18 = [(SBSwitcherWallpaperPageContentView *)self orientation];
-  v19 = [v13 interfaceOrientation];
-  v20 = -[SBAppSwitcherReusableSnapshotView _applicationForRole:](self, "_applicationForRole:", [v5 role]);
-  v21 = [(SBAppSwitcherReusableSnapshotView *)self _isSnapshotSuspendSnapshot:v13];
-  v22 = [v20 classicAppPhoneAppRunningOnPad];
-  v23 = [v5 appLayout];
-  v24 = [v5 displayItem];
+  orientation = [(SBSwitcherWallpaperPageContentView *)self orientation];
+  interfaceOrientation = [snapshot interfaceOrientation];
+  v20 = -[SBAppSwitcherReusableSnapshotView _applicationForRole:](self, "_applicationForRole:", [entryCopy role]);
+  v21 = [(SBAppSwitcherReusableSnapshotView *)self _isSnapshotSuspendSnapshot:snapshot];
+  classicAppPhoneAppRunningOnPad = [v20 classicAppPhoneAppRunningOnPad];
+  appLayout = [entryCopy appLayout];
+  displayItem = [entryCopy displayItem];
 
-  -[SBAppSwitcherReusableSnapshotView _frameInLayoutSpaceForRole:inAppLayout:inOrientation:](self, "_frameInLayoutSpaceForRole:inAppLayout:inOrientation:", [v23 layoutRoleForItem:v24], v23, -[SBSwitcherWallpaperPageContentView orientation](self, "orientation"));
+  -[SBAppSwitcherReusableSnapshotView _frameInLayoutSpaceForRole:inAppLayout:inOrientation:](self, "_frameInLayoutSpaceForRole:inAppLayout:inOrientation:", [appLayout layoutRoleForItem:displayItem], appLayout, -[SBSwitcherWallpaperPageContentView orientation](self, "orientation"));
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  v33 = [(SBSwitcherWindowManagementContext *)self->_windowManagementContext isChamoisOrFlexibleWindowing];
+  isChamoisOrFlexibleWindowing = [(SBSwitcherWindowManagementContext *)self->_windowManagementContext isChamoisOrFlexibleWindowing];
   v34 = [(SBAppSwitcherReusableSnapshotView *)self _doNonUniformScalingForApplication:v20];
-  if (v21 || v33 || v34 || ![v20 isClassic])
+  if (v21 || isChamoisOrFlexibleWindowing || v34 || ![v20 isClassic])
   {
     goto LABEL_23;
   }
@@ -1536,14 +1536,14 @@ LABEL_26:
   v68 = v30;
   v69 = v32;
   v72 = SBUICUnitScaleFactor;
-  [v20 snapshotFrameForClassicInsideBounds:v18 forOrientation:&v72 scaleFactor:1 inReferenceSpace:{v8, v10, v71, v70}];
+  [v20 snapshotFrameForClassicInsideBounds:orientation forOrientation:&v72 scaleFactor:1 inReferenceSpace:{v8, v10, v71, v70}];
   v36 = v35;
   v38 = v37;
   v40 = v39;
   v42 = v41;
-  if (v22 && [v20 classicAppZoomedInOrRequiresHiDPI])
+  if (classicAppPhoneAppRunningOnPad && [v20 classicAppZoomedInOrRequiresHiDPI])
   {
-    *&v72 = SBClassicUtilitiesScaleFactorForPhoneAppZoomedIn(v19, v15, v17);
+    *&v72 = SBClassicUtilitiesScaleFactorForPhoneAppZoomedIn(interfaceOrientation, v15, v17);
     *(&v72 + 1) = v72;
   }
 
@@ -1562,13 +1562,13 @@ LABEL_26:
   v74.size.width = v40;
   v74.size.height = v42;
   v52 = v46 + CGRectGetMinY(v74);
-  if (v18 != 1)
+  if (orientation != 1)
   {
     v55 = v68;
     v54 = v69;
     v57 = v66;
     v56 = v67;
-    if (v22 && (v19 - 3) > 1)
+    if (classicAppPhoneAppRunningOnPad && (interfaceOrientation - 3) > 1)
     {
       goto LABEL_17;
     }
@@ -1576,9 +1576,9 @@ LABEL_26:
     goto LABEL_16;
   }
 
-  if ((v19 - 3) < 2)
+  if ((interfaceOrientation - 3) < 2)
   {
-    v53 = v22;
+    v53 = classicAppPhoneAppRunningOnPad;
   }
 
   else
@@ -1626,11 +1626,11 @@ LABEL_23:
   return result;
 }
 
-- (CGRect)_frameInLayoutSpaceForRole:(int64_t)a3 inAppLayout:(id)a4 inOrientation:(int64_t)a5
+- (CGRect)_frameInLayoutSpaceForRole:(int64_t)role inAppLayout:(id)layout inOrientation:(int64_t)orientation
 {
-  v8 = a4;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained layoutFrameForItemWithRole:a3 inAppLayout:v8 interfaceOrientation:a5 forSnapshotView:self];
+  [WeakRetained layoutFrameForItemWithRole:role inAppLayout:layoutCopy interfaceOrientation:orientation forSnapshotView:self];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1647,16 +1647,16 @@ LABEL_23:
   return result;
 }
 
-- (void)_updateToNewSnapshotImageUsingCacheEntry:(id)a3
+- (void)_updateToNewSnapshotImageUsingCacheEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 role];
-  v38 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:v5];
-  v6 = [(SBAppSwitcherReusableSnapshotView *)self _cacheEntryForRole:v5];
+  entryCopy = entry;
+  role = [entryCopy role];
+  v38 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:role];
+  v6 = [(SBAppSwitcherReusableSnapshotView *)self _cacheEntryForRole:role];
   if (v6)
   {
-    v7 = [v4 snapshot];
-    if ([(SBAppSwitcherReusableSnapshotView *)self _isSnapshotSuspendSnapshot:v7]|| [(SBAppSwitcherSettings *)self->_settings shouldSimplifyForOptions:2])
+    snapshot = [entryCopy snapshot];
+    if ([(SBAppSwitcherReusableSnapshotView *)self _isSnapshotSuspendSnapshot:snapshot]|| [(SBAppSwitcherSettings *)self->_settings shouldSimplifyForOptions:2])
     {
       v8 = 1;
     }
@@ -1664,7 +1664,7 @@ LABEL_23:
     else
     {
       blockingViewControllerByRole = self->_blockingViewControllerByRole;
-      v10 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+      v10 = [MEMORY[0x277CCABB0] numberWithInteger:role];
       v11 = [(NSMutableDictionary *)blockingViewControllerByRole objectForKeyedSubscript:v10];
       if (v11)
       {
@@ -1674,7 +1674,7 @@ LABEL_23:
       else
       {
         appProtectionShieldViewControllerByRole = self->_appProtectionShieldViewControllerByRole;
-        v13 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+        v13 = [MEMORY[0x277CCABB0] numberWithInteger:role];
         v14 = [(NSMutableDictionary *)appProtectionShieldViewControllerByRole objectForKeyedSubscript:v13];
         v8 = v14 != 0;
       }
@@ -1686,12 +1686,12 @@ LABEL_23:
     v8 = 1;
   }
 
-  v15 = [v6 snapshotImage];
-  v16 = [v4 snapshotImage];
-  if (!v8 && (([v15 size], v17 == 0.0) || (objc_msgSend(v16, "size"), v18 == 0.0) || (objc_msgSend(v15, "size"), objc_msgSend(v15, "size"), objc_msgSend(v16, "size"), objc_msgSend(v16, "size"), BSFloatApproximatelyEqualToFloat())) && !self->_shouldStretchToBounds)
+  snapshotImage = [v6 snapshotImage];
+  snapshotImage2 = [entryCopy snapshotImage];
+  if (!v8 && (([snapshotImage size], v17 == 0.0) || (objc_msgSend(snapshotImage2, "size"), v18 == 0.0) || (objc_msgSend(snapshotImage, "size"), objc_msgSend(snapshotImage, "size"), objc_msgSend(snapshotImage2, "size"), objc_msgSend(snapshotImage2, "size"), BSFloatApproximatelyEqualToFloat())) && !self->_shouldStretchToBounds)
   {
     v20 = [(SBAppSwitcherReusableSnapshotView *)self _contentOrientationForSnapshotCacheEntry:v6];
-    v19 = v20 != [(SBAppSwitcherReusableSnapshotView *)self _contentOrientationForSnapshotCacheEntry:v4];
+    v19 = v20 != [(SBAppSwitcherReusableSnapshotView *)self _contentOrientationForSnapshotCacheEntry:entryCopy];
   }
 
   else
@@ -1704,7 +1704,7 @@ LABEL_23:
   v75[1] = 3221225472;
   v75[2] = __78__SBAppSwitcherReusableSnapshotView__updateToNewSnapshotImageUsingCacheEntry___block_invoke;
   v75[3] = &unk_2783C2FC0;
-  v22 = v4;
+  v22 = entryCopy;
   v76 = v22;
   v23 = [(NSMutableArray *)deferredSnapshotCrossfadeQueue bs_filter:v75];
   [(NSMutableArray *)deferredSnapshotCrossfadeQueue removeObjectsInArray:v23];
@@ -1714,11 +1714,11 @@ LABEL_23:
   {
     if (v19 || !self->_visible)
     {
-      [(SBAppSwitcherReusableSnapshotView *)self _setCacheEntry:v22 forRole:v5];
-      v25 = [v38 layer];
-      [v25 removeAllAnimations];
+      [(SBAppSwitcherReusableSnapshotView *)self _setCacheEntry:v22 forRole:role];
+      layer = [v38 layer];
+      [layer removeAllAnimations];
 
-      [v38 setImage:v16];
+      [v38 setImage:snapshotImage2];
       v74[0] = MEMORY[0x277D85DD0];
       v74[1] = 3221225472;
       v74[2] = __78__SBAppSwitcherReusableSnapshotView__updateToNewSnapshotImageUsingCacheEntry___block_invoke_2;
@@ -1731,25 +1731,25 @@ LABEL_23:
       v70[2] = __78__SBAppSwitcherReusableSnapshotView__updateToNewSnapshotImageUsingCacheEntry___block_invoke_3;
       v70[3] = &unk_2783AB2A8;
       v71 = v38;
-      v72 = self;
-      v73 = v5;
+      selfCopy = self;
+      v73 = role;
       [v26 performWithoutAnimation:v70];
       v27 = v71;
     }
 
     else
     {
-      if ([(SBAppSwitcherReusableSnapshotView *)self _isAnimatingTransitionForRole:v5])
+      if ([(SBAppSwitcherReusableSnapshotView *)self _isAnimatingTransitionForRole:role])
       {
         [(NSMutableArray *)self->_deferredSnapshotCrossfadeQueue _sb_enqueue:v22];
         goto LABEL_26;
       }
 
-      [(SBAppSwitcherReusableSnapshotView *)self _setCacheEntry:v22 forRole:v5];
+      [(SBAppSwitcherReusableSnapshotView *)self _setCacheEntry:v22 forRole:role];
       [(SBAppSwitcherReusableSnapshotView *)self setNeedsLayout];
-      v28 = [v38 image];
+      image = [v38 image];
 
-      if (v28)
+      if (image)
       {
         v61[0] = 0;
         v61[1] = v61;
@@ -1774,13 +1774,13 @@ LABEL_23:
         v43[1] = 3221225472;
         v43[2] = __78__SBAppSwitcherReusableSnapshotView__updateToNewSnapshotImageUsingCacheEntry___block_invoke_99;
         v43[3] = &unk_2783C2FE8;
-        v52 = v5;
+        v52 = role;
         v43[4] = self;
         v49 = v61;
-        v44 = v15;
+        v44 = snapshotImage;
         v45 = v6;
         v50 = v59;
-        v46 = v16;
+        v46 = snapshotImage2;
         v47 = v22;
         v30 = v38;
         v48 = v30;
@@ -1798,7 +1798,7 @@ LABEL_23:
         v41 = &v53;
         v39[4] = self;
         v40 = v30;
-        v42 = v5;
+        v42 = role;
         [v33 crossfadeWithCompletion:v39];
 
         _Block_object_dispose(&v53, 8);
@@ -1809,18 +1809,18 @@ LABEL_23:
         goto LABEL_26;
       }
 
-      [(SBAppSwitcherReusableSnapshotView *)self _setAnimatingTransition:1 forRole:v5];
+      [(SBAppSwitcherReusableSnapshotView *)self _setAnimatingTransition:1 forRole:role];
       v34 = MEMORY[0x277D75D18];
       v67[0] = MEMORY[0x277D85DD0];
       v67[1] = 3221225472;
       v67[2] = __78__SBAppSwitcherReusableSnapshotView__updateToNewSnapshotImageUsingCacheEntry___block_invoke_4;
       v67[3] = &unk_2783AB2A8;
       v67[4] = self;
-      v69 = v5;
+      v69 = role;
       v35 = v38;
       v68 = v35;
       [v34 performWithoutAnimation:v67];
-      [v35 setImage:v16];
+      [v35 setImage:snapshotImage2];
       v66[0] = MEMORY[0x277D85DD0];
       v66[1] = 3221225472;
       v66[2] = __78__SBAppSwitcherReusableSnapshotView__updateToNewSnapshotImageUsingCacheEntry___block_invoke_5;
@@ -1840,7 +1840,7 @@ LABEL_23:
       v63[2] = __78__SBAppSwitcherReusableSnapshotView__updateToNewSnapshotImageUsingCacheEntry___block_invoke_7;
       v63[3] = &unk_2783B3C38;
       v63[4] = self;
-      v63[5] = v5;
+      v63[5] = role;
       [v36 animateWithDuration:v64 animations:v63 completion:0.1];
 
       v27 = v68;
@@ -1963,15 +1963,15 @@ void __78__SBAppSwitcherReusableSnapshotView__updateToNewSnapshotImageUsingCache
   }
 }
 
-- (BOOL)_isSnapshotSuspendSnapshot:(id)a3
+- (BOOL)_isSnapshotSuspendSnapshot:(id)snapshot
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"SBSuspendSnapshot"];
+  name = [snapshot name];
+  v4 = [name isEqualToString:@"SBSuspendSnapshot"];
 
   return v4;
 }
 
-- (void)_performDeferredSnapshotUpdatesIfNecessaryForRole:(int64_t)a3
+- (void)_performDeferredSnapshotUpdatesIfNecessaryForRole:(int64_t)role
 {
   v17 = *MEMORY[0x277D85DE8];
   if (![(SBAppSwitcherReusableSnapshotView *)self _isAnimatingTransitionForRole:?])
@@ -1996,7 +1996,7 @@ LABEL_4:
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        if ([v10 role] == a3)
+        if ([v10 role] == role)
         {
           break;
         }
@@ -2029,53 +2029,53 @@ LABEL_13:
   }
 }
 
-- (int64_t)_contentOrientationForSnapshotCacheEntry:(id)a3
+- (int64_t)_contentOrientationForSnapshotCacheEntry:(id)entry
 {
-  v4 = a3;
-  v5 = -[SBAppSwitcherReusableSnapshotView _sceneHandleForRole:](self, "_sceneHandleForRole:", [v4 role]);
-  v6 = [v5 _supportsMixedOrientation];
+  entryCopy = entry;
+  v5 = -[SBAppSwitcherReusableSnapshotView _sceneHandleForRole:](self, "_sceneHandleForRole:", [entryCopy role]);
+  _supportsMixedOrientation = [v5 _supportsMixedOrientation];
 
-  v7 = [v4 snapshot];
-  v8 = [v7 interfaceOrientation];
+  snapshot = [entryCopy snapshot];
+  interfaceOrientation = [snapshot interfaceOrientation];
 
-  v9 = [(SBSwitcherWallpaperPageContentView *)self orientation];
-  if (v9 == XBOppositeInterfaceOrientation())
+  orientation = [(SBSwitcherWallpaperPageContentView *)self orientation];
+  if (orientation == XBOppositeInterfaceOrientation())
   {
-    v10 = v9;
+    v10 = orientation;
   }
 
   else
   {
-    v10 = v8;
+    v10 = interfaceOrientation;
   }
 
   v11 = v10;
-  if (v6)
+  if (_supportsMixedOrientation)
   {
-    v11 = v9;
+    v11 = orientation;
     if ([(SBSwitcherWindowManagementContext *)self->_windowManagementContext isChamoisOrFlexibleWindowing])
     {
-      v12 = [v4 appLayout];
-      v13 = [v12 itemForLayoutRole:{objc_msgSend(v4, "role")}];
+      appLayout = [entryCopy appLayout];
+      v13 = [appLayout itemForLayoutRole:{objc_msgSend(entryCopy, "role")}];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v15 = [WeakRetained layoutAttributesProviderForSnapshotView:self];
 
-      v16 = [v12 preferredDisplayOrdinal];
-      if ((v9 - 1) < 2)
+      preferredDisplayOrdinal = [appLayout preferredDisplayOrdinal];
+      if ((orientation - 1) < 2)
       {
         v17 = 1;
       }
 
       else
       {
-        v17 = 2 * ((v9 - 3) < 2);
+        v17 = 2 * ((orientation - 3) < 2);
       }
 
-      v18 = [v15 layoutAttributesForDisplayItem:v13 inAppLayout:v12 displayOrdinal:v16 orientation:v17];
-      v19 = [(SBHomeScreenConfigurationServer *)v18 authenticator];
-      if (v19 != v9 && v19 == v8)
+      v18 = [v15 layoutAttributesForDisplayItem:v13 inAppLayout:appLayout displayOrdinal:preferredDisplayOrdinal orientation:v17];
+      authenticator = [(SBHomeScreenConfigurationServer *)v18 authenticator];
+      if (authenticator != orientation && authenticator == interfaceOrientation)
       {
-        v11 = v9;
+        v11 = orientation;
       }
 
       else
@@ -2126,11 +2126,11 @@ void __56__SBAppSwitcherReusableSnapshotView__updateTranslucency__block_invoke_2
   }
 }
 
-- (void)setWallpaperStyle:(int64_t)a3
+- (void)setWallpaperStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = SBAppSwitcherReusableSnapshotView;
-  [(SBSwitcherWallpaperPageContentView *)&v6 setWallpaperStyle:a3];
+  [(SBSwitcherWallpaperPageContentView *)&v6 setWallpaperStyle:style];
   imageViewByRole = self->_imageViewByRole;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -2149,12 +2149,12 @@ void __55__SBAppSwitcherReusableSnapshotView_setWallpaperStyle___block_invoke(ui
   [v7 _configureSnapshotImageView:v5 cacheEntry:v8];
 }
 
-- (id)_separatorViewBezierPathWithWidth:(double)a3 height:(double)a4
+- (id)_separatorViewBezierPathWithWidth:(double)width height:(double)height
 {
   SBScreenDisplayCornerRadius();
   if (BSFloatIsZero())
   {
-    v6 = [MEMORY[0x277D75208] bezierPathWithRect:{0.0, 0.0, a3, a4}];
+    v6 = [MEMORY[0x277D75208] bezierPathWithRect:{0.0, 0.0, width, height}];
   }
 
   else
@@ -2163,66 +2163,66 @@ void __55__SBAppSwitcherReusableSnapshotView_setWallpaperStyle___block_invoke(ui
     [v7 cornerRadiusForInnerCorners];
     v9 = v8;
 
-    v6 = [MEMORY[0x277D75208] bezierPathWithRect:{0.0, 0.0, a3 + v9 * 4.0 * 2.0, a4}];
-    v10 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:10 byRoundingCorners:0.0 cornerRadii:{0.0, v9 * 4.0, a4, v9, v9}];
-    v11 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:5 byRoundingCorners:v9 * 4.0 + a3 cornerRadii:{0.0, v9 * 4.0, a4, v9, v9}];
-    v12 = [v10 bezierPathByReversingPath];
-    [v6 appendPath:v12];
+    v6 = [MEMORY[0x277D75208] bezierPathWithRect:{0.0, 0.0, width + v9 * 4.0 * 2.0, height}];
+    v10 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:10 byRoundingCorners:0.0 cornerRadii:{0.0, v9 * 4.0, height, v9, v9}];
+    v11 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:5 byRoundingCorners:v9 * 4.0 + width cornerRadii:{0.0, v9 * 4.0, height, v9, v9}];
+    bezierPathByReversingPath = [v10 bezierPathByReversingPath];
+    [v6 appendPath:bezierPathByReversingPath];
 
-    v13 = [v11 bezierPathByReversingPath];
-    [v6 appendPath:v13];
+    bezierPathByReversingPath2 = [v11 bezierPathByReversingPath];
+    [v6 appendPath:bezierPathByReversingPath2];
   }
 
   return v6;
 }
 
-- (void)_updateContentOrientationForRole:(int64_t)a3
+- (void)_updateContentOrientationForRole:(int64_t)role
 {
   v12 = [(SBAppSwitcherReusableSnapshotView *)self _cacheEntryForRole:?];
-  v5 = [v12 snapshot];
-  if (v5 && (v6 = v5, v7 = [(SBSwitcherWallpaperPageContentView *)self orientation], v6, v7))
+  snapshot = [v12 snapshot];
+  if (snapshot && (v6 = snapshot, v7 = [(SBSwitcherWallpaperPageContentView *)self orientation], v6, v7))
   {
     v8 = [(SBAppSwitcherReusableSnapshotView *)self _contentOrientationForSnapshotCacheEntry:v12];
-    v9 = [(SBAppSwitcherReusableSnapshotView *)self _orientationWrapperForRole:a3];
+    v9 = [(SBAppSwitcherReusableSnapshotView *)self _orientationWrapperForRole:role];
     if ([v9 contentOrientation] != v8)
     {
       [(SBAppSwitcherReusableSnapshotView *)self setNeedsLayout];
     }
 
     v10 = v9;
-    v11 = v8;
+    orientation = v8;
   }
 
   else
   {
-    v9 = [(SBAppSwitcherReusableSnapshotView *)self _orientationWrapperForRole:a3];
-    v11 = [(SBSwitcherWallpaperPageContentView *)self orientation];
+    v9 = [(SBAppSwitcherReusableSnapshotView *)self _orientationWrapperForRole:role];
+    orientation = [(SBSwitcherWallpaperPageContentView *)self orientation];
     v10 = v9;
   }
 
-  [v10 setContentOrientation:v11];
+  [v10 setContentOrientation:orientation];
 }
 
-- (void)_addOverlayViewController:(id)a3 toOrientationWrapperForRole:(int64_t)a4
+- (void)_addOverlayViewController:(id)controller toOrientationWrapperForRole:(int64_t)role
 {
-  v6 = a3;
-  v10 = [v6 view];
-  [v10 setClipsToBounds:1];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view setClipsToBounds:1];
   WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-  [v6 beginAppearanceTransition:1 animated:0];
-  [WeakRetained addChildViewController:v6];
-  v8 = [(SBAppSwitcherReusableSnapshotView *)self _orientationWrapperForRole:a4];
-  [v8 addContentView:v10];
+  [controllerCopy beginAppearanceTransition:1 animated:0];
+  [WeakRetained addChildViewController:controllerCopy];
+  v8 = [(SBAppSwitcherReusableSnapshotView *)self _orientationWrapperForRole:role];
+  [v8 addContentView:view];
 
-  [v10 layoutIfNeeded];
-  [v6 didMoveToParentViewController:WeakRetained];
-  [v6 endAppearanceTransition];
+  [view layoutIfNeeded];
+  [controllerCopy didMoveToParentViewController:WeakRetained];
+  [controllerCopy endAppearanceTransition];
 
-  v9 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:a4];
-  [(SBAppSwitcherReusableSnapshotView *)self _updateCornerRadiusIfNecessaryForOverlayView:v10 matchingSnapshotImage:v9];
+  v9 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:role];
+  [(SBAppSwitcherReusableSnapshotView *)self _updateCornerRadiusIfNecessaryForOverlayView:view matchingSnapshotImage:v9];
 }
 
-- (void)_addAppLockoutOverlayIfNecessaryForRole:(int64_t)a3
+- (void)_addAppLockoutOverlayIfNecessaryForRole:(int64_t)role
 {
   blockingViewControllerByRole = self->_blockingViewControllerByRole;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -2230,25 +2230,25 @@ void __55__SBAppSwitcherReusableSnapshotView_setWallpaperStyle___block_invoke(ui
 
   if (!v7)
   {
-    v8 = [(SBAppSwitcherReusableSnapshotView *)self _applicationForRole:a3];
-    v9 = [v8 info];
-    v10 = [v9 screenTimePolicy];
+    v8 = [(SBAppSwitcherReusableSnapshotView *)self _applicationForRole:role];
+    info = [v8 info];
+    screenTimePolicy = [info screenTimePolicy];
 
     lockoutVCProvider = self->_lockoutVCProvider;
-    v12 = [v8 bundleIdentifier];
-    v13 = [(SBAppSwitcherSnapshotLockoutViewControllerProvider *)lockoutVCProvider blockingViewControllerForBundleIdentifier:v12 screenTimePolicy:v10];
+    bundleIdentifier = [v8 bundleIdentifier];
+    v13 = [(SBAppSwitcherSnapshotLockoutViewControllerProvider *)lockoutVCProvider blockingViewControllerForBundleIdentifier:bundleIdentifier screenTimePolicy:screenTimePolicy];
 
     v14 = self->_blockingViewControllerByRole;
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:role];
     [(NSMutableDictionary *)v14 setObject:v13 forKeyedSubscript:v15];
 
-    v16 = [v13 view];
-    [v16 setClipsToBounds:1];
+    view = [v13 view];
+    [view setClipsToBounds:1];
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
     [v13 beginAppearanceTransition:1 animated:0];
     [WeakRetained addChildViewController:v13];
-    v18 = [(SBAppSwitcherReusableSnapshotView *)self _orientationWrapperForRole:a3];
-    [v18 addContentView:v16];
+    v18 = [(SBAppSwitcherReusableSnapshotView *)self _orientationWrapperForRole:role];
+    [v18 addContentView:view];
 
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
@@ -2259,8 +2259,8 @@ void __55__SBAppSwitcherReusableSnapshotView_setWallpaperStyle___block_invoke(ui
     v19 = WeakRetained;
     v20 = v13;
     [v20 showWithAnimation:0 completionHandler:&v22];
-    v21 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:a3, v22, v23, v24, v25];
-    [(SBAppSwitcherReusableSnapshotView *)self _updateCornerRadiusIfNecessaryForOverlayView:v16 matchingSnapshotImage:v21];
+    v21 = [(SBAppSwitcherReusableSnapshotView *)self _imageViewForRole:role, v22, v23, v24, v25];
+    [(SBAppSwitcherReusableSnapshotView *)self _updateCornerRadiusIfNecessaryForOverlayView:view matchingSnapshotImage:v21];
   }
 }
 
@@ -2272,7 +2272,7 @@ uint64_t __77__SBAppSwitcherReusableSnapshotView__addAppLockoutOverlayIfNecessar
   return [v2 endAppearanceTransition];
 }
 
-- (void)_removeAppLockoutOverlayForRole:(int64_t)a3
+- (void)_removeAppLockoutOverlayForRole:(int64_t)role
 {
   blockingViewControllerByRole = self->_blockingViewControllerByRole;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -2285,8 +2285,8 @@ uint64_t __77__SBAppSwitcherReusableSnapshotView__addAppLockoutOverlayIfNecessar
     v8[2] = __69__SBAppSwitcherReusableSnapshotView__removeAppLockoutOverlayForRole___block_invoke;
     v8[3] = &unk_2783AB2A8;
     v9 = v7;
-    v10 = self;
-    v11 = a3;
+    selfCopy = self;
+    roleCopy = role;
     [v9 hideWithAnimation:0 completionHandler:v8];
   }
 }
@@ -2310,18 +2310,18 @@ uint64_t __69__SBAppSwitcherReusableSnapshotView__removeAppLockoutOverlayForRole
   return [v6 recycleBlockingViewController:v5];
 }
 
-- (void)_addAppClipOverlayForRole:(int64_t)a3 bundleIdentifier:(id)a4 sceneIdentifier:(id)a5
+- (void)_addAppClipOverlayForRole:(int64_t)role bundleIdentifier:(id)identifier sceneIdentifier:(id)sceneIdentifier
 {
-  v20 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
   appClipOverlayByRole = self->_appClipOverlayByRole;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:role];
   v11 = [(NSMutableDictionary *)appClipOverlayByRole objectForKeyedSubscript:v10];
 
   if (!v11)
   {
-    v12 = [[SBAppClipOverlayViewController alloc] initWithCoordinator:self->_appClipOverlayCoordinator bundleIdentifier:v20 sceneIdentifier:v8];
-    v13 = [(SBAppSwitcherReusableSnapshotView *)self _applicationForRole:a3];
+    v12 = [[SBAppClipOverlayViewController alloc] initWithCoordinator:self->_appClipOverlayCoordinator bundleIdentifier:identifierCopy sceneIdentifier:sceneIdentifierCopy];
+    v13 = [(SBAppSwitcherReusableSnapshotView *)self _applicationForRole:role];
 
     v14 = v13 == 0;
     if (v13)
@@ -2346,14 +2346,14 @@ uint64_t __69__SBAppSwitcherReusableSnapshotView__removeAppLockoutOverlayForRole
       v16 = self->_appClipOverlayByRole;
     }
 
-    v19 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v19 = [MEMORY[0x277CCABB0] numberWithInteger:role];
     [(NSMutableDictionary *)v16 setObject:v12 forKeyedSubscript:v19];
 
-    [(SBAppSwitcherReusableSnapshotView *)self _addOverlayViewController:v12 toOrientationWrapperForRole:a3];
+    [(SBAppSwitcherReusableSnapshotView *)self _addOverlayViewController:v12 toOrientationWrapperForRole:role];
   }
 }
 
-- (void)_removeAppClipOverlayForRole:(int64_t)a3
+- (void)_removeAppClipOverlayForRole:(int64_t)role
 {
   appClipOverlayByRole = self->_appClipOverlayByRole;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -2362,15 +2362,15 @@ uint64_t __69__SBAppSwitcherReusableSnapshotView__removeAppLockoutOverlayForRole
   v7 = v12;
   if (v12)
   {
-    v8 = [v12 view];
-    [(SBAppSwitcherReusableSnapshotView *)self _updateCornerRadiusIfNecessaryForOverlayView:v8 matchingSnapshotImage:0];
+    view = [v12 view];
+    [(SBAppSwitcherReusableSnapshotView *)self _updateCornerRadiusIfNecessaryForOverlayView:view matchingSnapshotImage:0];
     [v12 beginAppearanceTransition:0 animated:0];
     [v12 willMoveToParentViewController:0];
-    [v8 removeFromSuperview];
+    [view removeFromSuperview];
     [v12 removeFromParentViewController];
     [v12 endAppearanceTransition];
     v9 = self->_appClipOverlayByRole;
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:role];
     [(NSMutableDictionary *)v9 removeObjectForKey:v10];
 
     if (![(NSMutableDictionary *)self->_appClipOverlayByRole count])
@@ -2383,21 +2383,21 @@ uint64_t __69__SBAppSwitcherReusableSnapshotView__removeAppLockoutOverlayForRole
   }
 }
 
-- (void)_addAppProtectionShieldIfNeededForRole:(int64_t)a3
+- (void)_addAppProtectionShieldIfNeededForRole:(int64_t)role
 {
   v5 = [(SBAppSwitcherReusableSnapshotView *)self _applicationForRole:?];
   if (v5)
   {
     appProtectionShieldViewControllerByRole = self->_appProtectionShieldViewControllerByRole;
     v15 = v5;
-    v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithInteger:role];
     v8 = [(NSMutableDictionary *)appProtectionShieldViewControllerByRole objectForKeyedSubscript:v7];
 
     v5 = v15;
     if (!v8)
     {
-      v9 = [v15 appProtectionAssistant];
-      v10 = [v9 createShieldUIViewController];
+      appProtectionAssistant = [v15 appProtectionAssistant];
+      createShieldUIViewController = [appProtectionAssistant createShieldUIViewController];
 
       v11 = self->_appProtectionShieldViewControllerByRole;
       if (!v11)
@@ -2409,16 +2409,16 @@ uint64_t __69__SBAppSwitcherReusableSnapshotView__removeAppLockoutOverlayForRole
         v11 = self->_appProtectionShieldViewControllerByRole;
       }
 
-      v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-      [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v14];
+      v14 = [MEMORY[0x277CCABB0] numberWithInteger:role];
+      [(NSMutableDictionary *)v11 setObject:createShieldUIViewController forKeyedSubscript:v14];
 
-      [(SBAppSwitcherReusableSnapshotView *)self _addOverlayViewController:v10 toOrientationWrapperForRole:a3];
+      [(SBAppSwitcherReusableSnapshotView *)self _addOverlayViewController:createShieldUIViewController toOrientationWrapperForRole:role];
       v5 = v15;
     }
   }
 }
 
-- (void)_removeAppProtectionShieldForRole:(int64_t)a3
+- (void)_removeAppProtectionShieldForRole:(int64_t)role
 {
   appProtectionShieldViewControllerByRole = self->_appProtectionShieldViewControllerByRole;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -2427,14 +2427,14 @@ uint64_t __69__SBAppSwitcherReusableSnapshotView__removeAppLockoutOverlayForRole
   v7 = v12;
   if (v12)
   {
-    v8 = [v12 view];
+    view = [v12 view];
     [v12 beginAppearanceTransition:0 animated:0];
     [v12 willMoveToParentViewController:0];
-    [v8 removeFromSuperview];
+    [view removeFromSuperview];
     [v12 removeFromParentViewController];
     [v12 endAppearanceTransition];
     v9 = self->_appProtectionShieldViewControllerByRole;
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:role];
     [(NSMutableDictionary *)v9 removeObjectForKey:v10];
 
     if (![(NSMutableDictionary *)self->_appProtectionShieldViewControllerByRole count])
@@ -2447,11 +2447,11 @@ uint64_t __69__SBAppSwitcherReusableSnapshotView__removeAppLockoutOverlayForRole
   }
 }
 
-- (void)_windowManagementStyleDidChange:(id)a3
+- (void)_windowManagementStyleDidChange:(id)change
 {
-  v4 = [(UIView *)self _sbWindowScene];
-  v5 = [v4 switcherController];
-  obj = [v5 windowManagementContext];
+  _sbWindowScene = [(UIView *)self _sbWindowScene];
+  switcherController = [_sbWindowScene switcherController];
+  obj = [switcherController windowManagementContext];
 
   if ((BSEqualObjects() & 1) == 0)
   {
@@ -2590,9 +2590,9 @@ void __65__SBAppSwitcherReusableSnapshotView__handleInstalledAppsChanged___block
   [*(a1 + 32) _addOrRemoveAppProtectionShieldForApplication:v8 role:v6];
 }
 
-- (id)_sceneHandleForRole:(int64_t)a3
+- (id)_sceneHandleForRole:(int64_t)role
 {
-  [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  [MEMORY[0x277CCABB0] numberWithInteger:role];
   objc_claimAutoreleasedReturnValue();
   v4 = [OUTLINED_FUNCTION_0_54() objectForKey:?];
   v5 = v4;
@@ -2611,19 +2611,19 @@ void __65__SBAppSwitcherReusableSnapshotView__handleInstalledAppsChanged___block
   return v6;
 }
 
-- (void)_setSceneHandle:(id)a3 forRole:(int64_t)a4
+- (void)_setSceneHandle:(id)handle forRole:(int64_t)role
 {
   snapshotViewStateByRole = self->_snapshotViewStateByRole;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v9 = [v6 numberWithInteger:a4];
+  handleCopy = handle;
+  v9 = [v6 numberWithInteger:role];
   v8 = [(NSMutableDictionary *)snapshotViewStateByRole objectForKey:v9];
-  [(SBKeyboardClientSettingObserverContext *)v8 setOldClientSettings:v7];
+  [(SBKeyboardClientSettingObserverContext *)v8 setOldClientSettings:handleCopy];
 }
 
-- (id)_cacheEntryForRole:(int64_t)a3
+- (id)_cacheEntryForRole:(int64_t)role
 {
-  [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  [MEMORY[0x277CCABB0] numberWithInteger:role];
   objc_claimAutoreleasedReturnValue();
   v4 = [OUTLINED_FUNCTION_0_54() objectForKey:?];
   v5 = v4;
@@ -2642,19 +2642,19 @@ void __65__SBAppSwitcherReusableSnapshotView__handleInstalledAppsChanged___block
   return v6;
 }
 
-- (void)_setCacheEntry:(id)a3 forRole:(int64_t)a4
+- (void)_setCacheEntry:(id)entry forRole:(int64_t)role
 {
   snapshotViewStateByRole = self->_snapshotViewStateByRole;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v9 = [v6 numberWithInteger:a4];
+  entryCopy = entry;
+  v9 = [v6 numberWithInteger:role];
   v8 = [(NSMutableDictionary *)snapshotViewStateByRole objectForKey:v9];
-  [(SBCameraHardwareButton *)v8 setDispatchingRuleAssertion:v7];
+  [(SBCameraHardwareButton *)v8 setDispatchingRuleAssertion:entryCopy];
 }
 
-- (BOOL)_isAnimatingTransitionForRole:(int64_t)a3
+- (BOOL)_isAnimatingTransitionForRole:(int64_t)role
 {
-  [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  [MEMORY[0x277CCABB0] numberWithInteger:role];
   objc_claimAutoreleasedReturnValue();
   v4 = [OUTLINED_FUNCTION_0_54() objectForKey:?];
   if (v4)
@@ -2670,14 +2670,14 @@ void __65__SBAppSwitcherReusableSnapshotView__handleInstalledAppsChanged___block
   return v5 & 1;
 }
 
-- (void)_setAnimatingTransition:(BOOL)a3 forRole:(int64_t)a4
+- (void)_setAnimatingTransition:(BOOL)transition forRole:(int64_t)role
 {
   snapshotViewStateByRole = self->_snapshotViewStateByRole;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:role];
   v6 = [(NSMutableDictionary *)snapshotViewStateByRole objectForKey:?];
   if (v6)
   {
-    v6[8] = a3;
+    v6[8] = transition;
   }
 }
 

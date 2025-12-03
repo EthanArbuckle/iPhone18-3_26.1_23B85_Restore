@@ -1,8 +1,8 @@
 @interface CNAsynchronousCacheEntryDelegateObservable
 - (CNAsynchronousCacheEntryDelegateObservable)init;
-- (id)subscribe:(id)a3;
-- (void)cacheEntryDidUpdateValue:(id)a3;
-- (void)removeObserver:(id)a3;
+- (id)subscribe:(id)subscribe;
+- (void)cacheEntryDidUpdateValue:(id)value;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation CNAsynchronousCacheEntryDelegateObservable
@@ -24,28 +24,28 @@
   return v2;
 }
 
-- (id)subscribe:(id)a3
+- (id)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = self->_observers;
   objc_sync_enter(v5);
-  [(NSMutableArray *)self->_observers addObject:v4];
+  [(NSMutableArray *)self->_observers addObject:subscribeCopy];
   v6 = self->_currentValue;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __56__CNAsynchronousCacheEntryDelegateObservable_subscribe___block_invoke;
   v14 = &unk_1E6ED5168;
-  v15 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = subscribeCopy;
   v16 = v7;
   v8 = [CNCancelationToken tokenWithCancelationBlock:&v11];
 
   objc_sync_exit(v5);
   if (v6)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v6 != v9)
+    if (v6 != null)
     {
       [v7 observerDidReceiveResult:v6];
     }
@@ -54,29 +54,29 @@
   return v8;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSMutableArray *)self->_observers removeObject:v5];
+  [(NSMutableArray *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)cacheEntryDidUpdateValue:(id)a3
+- (void)cacheEntryDidUpdateValue:(id)value
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   v5 = self->_observers;
   objc_sync_enter(v5);
   v6 = [(NSMutableArray *)self->_observers copy];
-  v7 = [v4 currentValue];
+  currentValue = [valueCopy currentValue];
   currentValue = self->_currentValue;
-  self->_currentValue = v7;
+  self->_currentValue = currentValue;
 
   objc_sync_exit(v5);
-  v9 = [v4 currentValue];
-  v10 = off_1EF4401A8(&__block_literal_global_2_2, v9);
+  currentValue2 = [valueCopy currentValue];
+  v10 = off_1EF4401A8(&__block_literal_global_2_2, currentValue2);
 
   v18 = 0u;
   v19 = 0u;

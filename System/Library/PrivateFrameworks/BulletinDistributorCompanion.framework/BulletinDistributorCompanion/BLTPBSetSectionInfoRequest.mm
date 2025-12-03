@@ -1,32 +1,32 @@
 @interface BLTPBSetSectionInfoRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addKeypaths:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKeypaths:(id)keypaths;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBSetSectionInfoRequest
 
-- (void)addKeypaths:(id)a3
+- (void)addKeypaths:(id)keypaths
 {
-  v4 = a3;
+  keypathsCopy = keypaths;
   keypaths = self->_keypaths;
-  v8 = v4;
+  v8 = keypathsCopy;
   if (!keypaths)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_keypaths;
     self->_keypaths = v6;
 
-    v4 = v8;
+    keypathsCopy = v8;
     keypaths = self->_keypaths;
   }
 
-  [(NSMutableArray *)keypaths addObject:v4];
+  [(NSMutableArray *)keypaths addObject:keypathsCopy];
 }
 
 - (id)description
@@ -35,35 +35,35 @@
   v8.receiver = self;
   v8.super_class = BLTPBSetSectionInfoRequest;
   v4 = [(BLTPBSetSectionInfoRequest *)&v8 description];
-  v5 = [(BLTPBSetSectionInfoRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBSetSectionInfoRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sectionInfo = self->_sectionInfo;
   if (sectionInfo)
   {
-    v5 = [(BLTPBSectionInfo *)sectionInfo dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sectionInfo"];
+    dictionaryRepresentation = [(BLTPBSectionInfo *)sectionInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sectionInfo"];
   }
 
   keypaths = self->_keypaths;
   if (keypaths)
   {
-    [v3 setObject:keypaths forKey:@"keypaths"];
+    [dictionary setObject:keypaths forKey:@"keypaths"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_sectionInfo)
   {
     PBDataWriterWriteSubmessage();
@@ -104,35 +104,35 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_sectionInfo)
   {
-    [v8 setSectionInfo:?];
+    [toCopy setSectionInfo:?];
   }
 
   if ([(BLTPBSetSectionInfoRequest *)self keypathsCount])
   {
-    [v8 clearKeypaths];
-    v4 = [(BLTPBSetSectionInfoRequest *)self keypathsCount];
-    if (v4)
+    [toCopy clearKeypaths];
+    keypathsCount = [(BLTPBSetSectionInfoRequest *)self keypathsCount];
+    if (keypathsCount)
     {
-      v5 = v4;
+      v5 = keypathsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BLTPBSetSectionInfoRequest *)self keypathsAtIndex:i];
-        [v8 addKeypaths:v7];
+        [toCopy addKeypaths:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(BLTPBSectionInfo *)self->_sectionInfo copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(BLTPBSectionInfo *)self->_sectionInfo copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -156,7 +156,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addKeypaths:v13];
 
         ++v12;
@@ -173,13 +173,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((sectionInfo = self->_sectionInfo, !(sectionInfo | v4[2])) || -[BLTPBSectionInfo isEqual:](sectionInfo, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((sectionInfo = self->_sectionInfo, !(sectionInfo | equalCopy[2])) || -[BLTPBSectionInfo isEqual:](sectionInfo, "isEqual:")))
   {
     keypaths = self->_keypaths;
-    if (keypaths | v4[1])
+    if (keypaths | equalCopy[1])
     {
       v7 = [(NSMutableArray *)keypaths isEqual:?];
     }
@@ -198,12 +198,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   sectionInfo = self->_sectionInfo;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (sectionInfo)
   {
     if (v6)
@@ -221,7 +221,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

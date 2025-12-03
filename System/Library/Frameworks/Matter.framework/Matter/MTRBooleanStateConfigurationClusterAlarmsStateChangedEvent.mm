@@ -1,6 +1,6 @@
 @interface MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent
 - (MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent);
-  v5 = [(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent *)self alarmsActive];
-  [(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent *)v4 setAlarmsActive:v5];
+  alarmsActive = [(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent *)self alarmsActive];
+  [(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent *)v4 setAlarmsActive:alarmsActive];
 
-  v6 = [(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent *)self alarmsSuppressed];
-  [(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent *)v4 setAlarmsSuppressed:v6];
+  alarmsSuppressed = [(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent *)self alarmsSuppressed];
+  [(MTRBooleanStateConfigurationClusterAlarmsStateChangedEvent *)v4 setAlarmsSuppressed:alarmsSuppressed];
 
   return v4;
 }

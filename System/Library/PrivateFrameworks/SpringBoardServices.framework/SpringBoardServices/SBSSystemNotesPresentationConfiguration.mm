@@ -1,37 +1,37 @@
 @interface SBSSystemNotesPresentationConfiguration
-- (BOOL)isEqual:(id)a3;
-- (SBSSystemNotesPresentationConfiguration)initWithCoder:(id)a3;
-- (SBSSystemNotesPresentationConfiguration)initWithSceneBundleIdentifier:(id)a3 userActivity:(id)a4 preferredPresentationMode:(int64_t)a5;
-- (SBSSystemNotesPresentationConfiguration)initWithSceneBundleIdentifier:(id)a3 userActivity:(id)a4 preferredPresentationMode:(int64_t)a5 identifier:(id)a6;
-- (SBSSystemNotesPresentationConfiguration)presentationConfigurationWithPreferredPresentationMode:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSSystemNotesPresentationConfiguration)initWithCoder:(id)coder;
+- (SBSSystemNotesPresentationConfiguration)initWithSceneBundleIdentifier:(id)identifier userActivity:(id)activity preferredPresentationMode:(int64_t)mode;
+- (SBSSystemNotesPresentationConfiguration)initWithSceneBundleIdentifier:(id)identifier userActivity:(id)activity preferredPresentationMode:(int64_t)mode identifier:(id)a6;
+- (SBSSystemNotesPresentationConfiguration)presentationConfigurationWithPreferredPresentationMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)encodeWithCoder:(id)a3;
-- (void)prepareForXPCCall:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)prepareForXPCCall:(id)call;
 @end
 
 @implementation SBSSystemNotesPresentationConfiguration
 
-- (SBSSystemNotesPresentationConfiguration)initWithSceneBundleIdentifier:(id)a3 userActivity:(id)a4 preferredPresentationMode:(int64_t)a5
+- (SBSSystemNotesPresentationConfiguration)initWithSceneBundleIdentifier:(id)identifier userActivity:(id)activity preferredPresentationMode:(int64_t)mode
 {
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 UUID];
-  v12 = [(SBSSystemNotesPresentationConfiguration *)self initWithSceneBundleIdentifier:v10 userActivity:v9 preferredPresentationMode:a5 identifier:v11];
+  activityCopy = activity;
+  identifierCopy = identifier;
+  uUID = [v8 UUID];
+  v12 = [(SBSSystemNotesPresentationConfiguration *)self initWithSceneBundleIdentifier:identifierCopy userActivity:activityCopy preferredPresentationMode:mode identifier:uUID];
 
   return v12;
 }
 
-- (SBSSystemNotesPresentationConfiguration)initWithSceneBundleIdentifier:(id)a3 userActivity:(id)a4 preferredPresentationMode:(int64_t)a5 identifier:(id)a6
+- (SBSSystemNotesPresentationConfiguration)initWithSceneBundleIdentifier:(id)identifier userActivity:(id)activity preferredPresentationMode:(int64_t)mode identifier:(id)a6
 {
-  v11 = a3;
-  v12 = a4;
+  identifierCopy = identifier;
+  activityCopy = activity;
   v13 = a6;
-  if (!SBSSystemNotesPresentationModeIsValid(a5))
+  if (!SBSSystemNotesPresentationModeIsValid(mode))
   {
     [SBSSystemNotesPresentationConfiguration initWithSceneBundleIdentifier:a2 userActivity:self preferredPresentationMode:? identifier:?];
   }
@@ -41,22 +41,22 @@
   v14 = [(SBSSystemNotesPresentationConfiguration *)&v18 init];
   if (v14)
   {
-    v15 = [v11 copy];
+    v15 = [identifierCopy copy];
     sceneBundleIdentifier = v14->_sceneBundleIdentifier;
     v14->_sceneBundleIdentifier = v15;
 
-    objc_storeStrong(&v14->_userActivity, a4);
-    v14->_preferredPresentationMode = a5;
+    objc_storeStrong(&v14->_userActivity, activity);
+    v14->_preferredPresentationMode = mode;
     objc_storeStrong(&v14->_identifier, a6);
   }
 
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -64,19 +64,19 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBSSystemNotesPresentationConfiguration *)self isEqualToSystemNotesPresentationConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SBSSystemNotesPresentationConfiguration *)self isEqualToSystemNotesPresentationConfiguration:equalCopy];
   }
 
   return v5;
 }
 
-- (SBSSystemNotesPresentationConfiguration)initWithCoder:(id)a3
+- (SBSSystemNotesPresentationConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneBundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneBundleIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivityData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivityData"];
     v7 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityData:v6];
     v8 = v7;
     if (v6)
@@ -91,13 +91,13 @@
 
     if (v9)
     {
-      v14 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v10 = [v4 decodeIntegerForKey:@"preferredPresentationMode"];
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      v10 = [coderCopy decodeIntegerForKey:@"preferredPresentationMode"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
       v12 = [(SBSSystemNotesPresentationConfiguration *)self initWithSceneBundleIdentifier:v5 userActivity:v8 preferredPresentationMode:v10 identifier:v11];
       v13 = v12;
       if (v12)
@@ -107,29 +107,29 @@
 
       self = v13;
 
-      v14 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = v5;
+  coderCopy = coder;
+  v6 = coderCopy;
   if ((self->_userActivity == 0) != (self->_userActivityData == 0))
   {
     [(SBSSystemNotesPresentationConfiguration *)&self->_userActivity encodeWithCoder:a2, self];
-    v5 = v6;
+    coderCopy = v6;
   }
 
-  [v5 encodeObject:self->_sceneBundleIdentifier forKey:@"sceneBundleIdentifier"];
+  [coderCopy encodeObject:self->_sceneBundleIdentifier forKey:@"sceneBundleIdentifier"];
   [v6 encodeInteger:self->_preferredPresentationMode forKey:@"preferredPresentationMode"];
   if (self->_userActivity)
   {
@@ -139,7 +139,7 @@
   [v6 encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithSceneBundleIdentifier:self->_sceneBundleIdentifier userActivity:self->_userActivity preferredPresentationMode:self->_preferredPresentationMode identifier:self->_identifier];
   objc_storeStrong(v4 + 1, self->_userActivityData);
@@ -148,17 +148,17 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSSystemNotesPresentationConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSSystemNotesPresentationConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(NSUUID *)self->_identifier UUIDString];
-  [v3 appendString:v4 withName:@"identifier"];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
+  [v3 appendString:uUIDString withName:@"identifier"];
 
   [v3 appendString:self->_sceneBundleIdentifier withName:@"sceneBundleIdentifier"];
   v5 = SBSSystemNotesPresentationModeDescription(self->_preferredPresentationMode);
@@ -167,34 +167,34 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSSystemNotesPresentationConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSSystemNotesPresentationConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSSystemNotesPresentationConfiguration *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_userActivity withName:@"userActivity" skipIfNil:1];
+  succinctDescriptionBuilder = [(SBSSystemNotesPresentationConfiguration *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_userActivity withName:@"userActivity" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (SBSSystemNotesPresentationConfiguration)presentationConfigurationWithPreferredPresentationMode:(int64_t)a3
+- (SBSSystemNotesPresentationConfiguration)presentationConfigurationWithPreferredPresentationMode:(int64_t)mode
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithSceneBundleIdentifier:self->_sceneBundleIdentifier userActivity:self->_userActivity preferredPresentationMode:a3 identifier:self->_identifier];
+  v4 = [objc_alloc(objc_opt_class()) initWithSceneBundleIdentifier:self->_sceneBundleIdentifier userActivity:self->_userActivity preferredPresentationMode:mode identifier:self->_identifier];
   objc_storeStrong(v4 + 1, self->_userActivityData);
 
   return v4;
 }
 
-- (void)prepareForXPCCall:(id)a3
+- (void)prepareForXPCCall:(id)call
 {
-  v4 = a3;
-  v5 = v4;
+  callCopy = call;
+  v5 = callCopy;
   userActivity = self->_userActivity;
   if (userActivity && !self->_userActivityData)
   {
@@ -203,13 +203,13 @@
     v7[2] = __61__SBSSystemNotesPresentationConfiguration_prepareForXPCCall___block_invoke;
     v7[3] = &unk_1E7360928;
     v7[4] = self;
-    v8 = v4;
+    v8 = callCopy;
     [(NSUserActivity *)userActivity _createUserActivityDataWithOptions:MEMORY[0x1E695E0F8] completionHandler:v7];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(callCopy + 2))(callCopy, 0);
   }
 }
 

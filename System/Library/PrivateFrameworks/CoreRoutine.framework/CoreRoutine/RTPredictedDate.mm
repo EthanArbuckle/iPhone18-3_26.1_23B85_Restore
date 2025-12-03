@@ -1,72 +1,72 @@
 @interface RTPredictedDate
-- (BOOL)isEqual:(id)a3;
-- (RTPredictedDate)initWithCoder:(id)a3;
-- (RTPredictedDate)initWithDate:(id)a3 uncertainty:(double)a4 confidence:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTPredictedDate)initWithCoder:(id)coder;
+- (RTPredictedDate)initWithDate:(id)date uncertainty:(double)uncertainty confidence:(double)confidence;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPredictedDate
 
-- (RTPredictedDate)initWithCoder:(id)a3
+- (RTPredictedDate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = RTPredictedDate;
   v5 = [(RTPredictedDate *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v6;
 
-    [v4 decodeDoubleForKey:@"uncertainty"];
+    [coderCopy decodeDoubleForKey:@"uncertainty"];
     v5->_uncertainty = v8;
-    [v4 decodeDoubleForKey:@"confidence"];
+    [coderCopy decodeDoubleForKey:@"confidence"];
     v5->_confidence = v9;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"date"];
-  [v5 encodeDouble:@"uncertainty" forKey:self->_uncertainty];
-  [v5 encodeDouble:@"confidence" forKey:self->_confidence];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"date"];
+  [coderCopy encodeDouble:@"uncertainty" forKey:self->_uncertainty];
+  [coderCopy encodeDouble:@"confidence" forKey:self->_confidence];
 }
 
-- (RTPredictedDate)initWithDate:(id)a3 uncertainty:(double)a4 confidence:(double)a5
+- (RTPredictedDate)initWithDate:(id)date uncertainty:(double)uncertainty confidence:(double)confidence
 {
-  v8 = a3;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = RTPredictedDate;
   v9 = [(RTPredictedDate *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dateCopy copy];
     date = v9->_date;
     v9->_date = v10;
 
-    v9->_uncertainty = a4;
-    v9->_confidence = a5;
+    v9->_uncertainty = uncertainty;
+    v9->_confidence = confidence;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RTPredictedDate *)self date];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  date = [(RTPredictedDate *)self date];
   [(RTPredictedDate *)self uncertainty];
   v7 = v6;
   [(RTPredictedDate *)self confidence];
-  v9 = [v4 initWithDate:v5 uncertainty:v7 confidence:v8];
+  v9 = [v4 initWithDate:date uncertainty:v7 confidence:v8];
 
   return v9;
 }
@@ -102,28 +102,28 @@ uint64_t __30__RTPredictedDate_description__block_invoke()
   return [v3 setTimeStyle:3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 == self)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
     goto LABEL_19;
   }
 
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equalCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v12 = 0;
     goto LABEL_19;
   }
 
   v7 = v6;
-  v8 = [(RTPredictedDate *)self date];
-  if (!v8)
+  date = [(RTPredictedDate *)self date];
+  if (!date)
   {
-    v3 = [(RTPredictedDate *)v7 date];
-    if (!v3)
+    date2 = [(RTPredictedDate *)v7 date];
+    if (!date2)
     {
       v11 = 1;
 LABEL_11:
@@ -132,11 +132,11 @@ LABEL_11:
     }
   }
 
-  v9 = [(RTPredictedDate *)self date];
-  v10 = [(RTPredictedDate *)v7 date];
-  v11 = [v9 isEqualToDate:v10];
+  date3 = [(RTPredictedDate *)self date];
+  date4 = [(RTPredictedDate *)v7 date];
+  v11 = [date3 isEqualToDate:date4];
 
-  if (!v8)
+  if (!date)
   {
     goto LABEL_11;
   }
@@ -176,8 +176,8 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(RTPredictedDate *)self date];
-  v4 = [v3 hash];
+  date = [(RTPredictedDate *)self date];
+  v4 = [date hash];
   v5 = MEMORY[0x1E696AD98];
   [(RTPredictedDate *)self uncertainty];
   v6 = [v5 numberWithDouble:?];

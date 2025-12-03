@@ -1,67 +1,67 @@
 @interface AMSKeychainOptions
 + (unint64_t)preferredAttestationStyle;
-- (AMSKeychainOptions)initWithCoder:(id)a3;
-- (AMSKeychainOptions)initWithOptionsDictionary:(id)a3;
-- (BOOL)_compareString:(id)a3 withString:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AMSKeychainOptions)initWithCoder:(id)coder;
+- (AMSKeychainOptions)initWithOptionsDictionary:(id)dictionary;
+- (BOOL)_compareString:(id)string withString:(id)withString;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)optionsDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSKeychainOptions
 
-- (AMSKeychainOptions)initWithOptionsDictionary:(id)a3
+- (AMSKeychainOptions)initWithOptionsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = AMSKeychainOptions;
   v5 = [(AMSKeychainOptions *)&v16 init];
   if (v5)
   {
-    if (!v4)
+    if (!dictionaryCopy)
     {
-      v4 = MEMORY[0x1E695E0F8];
+      dictionaryCopy = MEMORY[0x1E695E0F8];
     }
 
-    v6 = [v4 ams_objectForKey:@"AMSKeychainOptionsAuthenticationFallbackVisible" defaultValue:MEMORY[0x1E695E118]];
+    v6 = [dictionaryCopy ams_objectForKey:@"AMSKeychainOptionsAuthenticationFallbackVisible" defaultValue:MEMORY[0x1E695E118]];
     v5->_authenticationFallbackVisible = [v6 BOOLValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"AMSKeychainOptionsClientCertLabel"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"AMSKeychainOptionsClientCertLabel"];
     if (v7)
     {
       objc_storeStrong(&v5->_clientCertLabel, v7);
     }
 
-    v8 = [v4 ams_objectForKey:@"AMSKeychainOptionsDisplayAuthenticationReason" defaultValue:MEMORY[0x1E695E118]];
+    v8 = [dictionaryCopy ams_objectForKey:@"AMSKeychainOptionsDisplayAuthenticationReason" defaultValue:MEMORY[0x1E695E118]];
     v5->_displayAuthenticationReason = [v8 BOOLValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"AMSKeychainOptionsIntermediateCertLabel"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"AMSKeychainOptionsIntermediateCertLabel"];
     if (v9)
     {
       objc_storeStrong(&v5->_intermediateCertLabel, v9);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"AMSKeychainOptionsLabel"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"AMSKeychainOptionsLabel"];
     if (v10)
     {
       objc_storeStrong(&v5->_label, v10);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"AMSKeychainOptionsPrompt"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"AMSKeychainOptionsPrompt"];
     if (v11)
     {
       objc_storeStrong(&v5->_prompt, v11);
     }
 
-    v12 = [v4 ams_objectForKey:@"AMSKeychainOptionsPurpose" defaultValue:&unk_1F0779640];
+    v12 = [dictionaryCopy ams_objectForKey:@"AMSKeychainOptionsPurpose" defaultValue:&unk_1F0779640];
     v5->_purpose = [v12 unsignedIntegerValue];
 
-    v13 = [v4 ams_objectForKey:@"AMSKeychainOptionsRegenerateKeys" defaultValue:MEMORY[0x1E695E110]];
+    v13 = [dictionaryCopy ams_objectForKey:@"AMSKeychainOptionsRegenerateKeys" defaultValue:MEMORY[0x1E695E110]];
     v5->_regenerateKeys = [v13 BOOLValue];
 
-    v14 = [v4 ams_objectForKey:@"AMSKeychainOptionsStyle" defaultValue:&unk_1F0779640];
+    v14 = [dictionaryCopy ams_objectForKey:@"AMSKeychainOptionsStyle" defaultValue:&unk_1F0779640];
     v5->_style = [v14 unsignedIntegerValue];
   }
 
@@ -74,20 +74,20 @@
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSKeychainOptions authenticationFallbackVisible](self, "authenticationFallbackVisible")}];
   [v3 ams_setNullableObject:v4 forKey:@"AMSKeychainOptionsAuthenticationFallbackVisible"];
 
-  v5 = [(AMSKeychainOptions *)self clientCertLabel];
-  [v3 ams_setNullableObject:v5 forKey:@"AMSKeychainOptionsClientCertLabel"];
+  clientCertLabel = [(AMSKeychainOptions *)self clientCertLabel];
+  [v3 ams_setNullableObject:clientCertLabel forKey:@"AMSKeychainOptionsClientCertLabel"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSKeychainOptions displayAuthenticationReason](self, "displayAuthenticationReason")}];
   [v3 ams_setNullableObject:v6 forKey:@"AMSKeychainOptionsDisplayAuthenticationReason"];
 
-  v7 = [(AMSKeychainOptions *)self intermediateCertLabel];
-  [v3 ams_setNullableObject:v7 forKey:@"AMSKeychainOptionsIntermediateCertLabel"];
+  intermediateCertLabel = [(AMSKeychainOptions *)self intermediateCertLabel];
+  [v3 ams_setNullableObject:intermediateCertLabel forKey:@"AMSKeychainOptionsIntermediateCertLabel"];
 
-  v8 = [(AMSKeychainOptions *)self label];
-  [v3 ams_setNullableObject:v8 forKey:@"AMSKeychainOptionsLabel"];
+  label = [(AMSKeychainOptions *)self label];
+  [v3 ams_setNullableObject:label forKey:@"AMSKeychainOptionsLabel"];
 
-  v9 = [(AMSKeychainOptions *)self prompt];
-  [v3 ams_setNullableObject:v9 forKey:@"AMSKeychainOptionsPrompt"];
+  prompt = [(AMSKeychainOptions *)self prompt];
+  [v3 ams_setNullableObject:prompt forKey:@"AMSKeychainOptionsPrompt"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AMSKeychainOptions purpose](self, "purpose")}];
   [v3 ams_setNullableObject:v10 forKey:@"AMSKeychainOptionsPurpose"];
@@ -119,42 +119,42 @@
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSKeychainOptions authenticationFallbackVisible](self, "authenticationFallbackVisible")}];
   [v3 ams_setNullableObject:v4 forKey:@"authenticationFallbackVisible"];
 
-  v5 = [(AMSKeychainOptions *)self clientCertLabel];
+  clientCertLabel = [(AMSKeychainOptions *)self clientCertLabel];
 
-  if (v5)
+  if (clientCertLabel)
   {
-    v6 = [(AMSKeychainOptions *)self clientCertLabel];
-    v7 = AMSHashIfNeeded(v6);
+    clientCertLabel2 = [(AMSKeychainOptions *)self clientCertLabel];
+    v7 = AMSHashIfNeeded(clientCertLabel2);
     [v3 ams_setNullableObject:v7 forKey:@"clientCertLabel"];
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSKeychainOptions displayAuthenticationReason](self, "displayAuthenticationReason")}];
   [v3 ams_setNullableObject:v8 forKey:@"displayAuthenticationReason"];
 
-  v9 = [(AMSKeychainOptions *)self intermediateCertLabel];
+  intermediateCertLabel = [(AMSKeychainOptions *)self intermediateCertLabel];
 
-  if (v9)
+  if (intermediateCertLabel)
   {
-    v10 = [(AMSKeychainOptions *)self intermediateCertLabel];
-    v11 = AMSHashIfNeeded(v10);
+    intermediateCertLabel2 = [(AMSKeychainOptions *)self intermediateCertLabel];
+    v11 = AMSHashIfNeeded(intermediateCertLabel2);
     [v3 ams_setNullableObject:v11 forKey:@"intermediateCertLabel"];
   }
 
-  v12 = [(AMSKeychainOptions *)self label];
+  label = [(AMSKeychainOptions *)self label];
 
-  if (v12)
+  if (label)
   {
-    v13 = [(AMSKeychainOptions *)self label];
-    v14 = AMSHashIfNeeded(v13);
+    label2 = [(AMSKeychainOptions *)self label];
+    v14 = AMSHashIfNeeded(label2);
     [v3 ams_setNullableObject:v14 forKey:@"label"];
   }
 
-  v15 = [(AMSKeychainOptions *)self prompt];
+  prompt = [(AMSKeychainOptions *)self prompt];
 
-  if (v15)
+  if (prompt)
   {
-    v16 = [(AMSKeychainOptions *)self prompt];
-    v17 = AMSHashIfNeeded(v16);
+    prompt2 = [(AMSKeychainOptions *)self prompt];
+    v17 = AMSHashIfNeeded(prompt2);
     [v3 ams_setNullableObject:v17 forKey:@"prompt"];
   }
 
@@ -172,9 +172,9 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -185,96 +185,96 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v5 = v4;
+  v5 = equalCopy;
 
   if (!v5)
   {
     goto LABEL_13;
   }
 
-  v6 = [(AMSKeychainOptions *)self authenticationFallbackVisible];
-  if (v6 != [v5 authenticationFallbackVisible])
+  authenticationFallbackVisible = [(AMSKeychainOptions *)self authenticationFallbackVisible];
+  if (authenticationFallbackVisible != [v5 authenticationFallbackVisible])
   {
     goto LABEL_13;
   }
 
-  v7 = [(AMSKeychainOptions *)self clientCertLabel];
-  v8 = [v5 clientCertLabel];
-  v9 = [(AMSKeychainOptions *)self _compareString:v7 withString:v8];
+  clientCertLabel = [(AMSKeychainOptions *)self clientCertLabel];
+  clientCertLabel2 = [v5 clientCertLabel];
+  v9 = [(AMSKeychainOptions *)self _compareString:clientCertLabel withString:clientCertLabel2];
 
   if (!v9)
   {
     goto LABEL_13;
   }
 
-  v10 = [(AMSKeychainOptions *)self displayAuthenticationReason];
-  if (v10 != [v5 displayAuthenticationReason])
+  displayAuthenticationReason = [(AMSKeychainOptions *)self displayAuthenticationReason];
+  if (displayAuthenticationReason != [v5 displayAuthenticationReason])
   {
     goto LABEL_13;
   }
 
-  v11 = [(AMSKeychainOptions *)self intermediateCertLabel];
-  v12 = [v5 intermediateCertLabel];
-  v13 = [(AMSKeychainOptions *)self _compareString:v11 withString:v12];
+  intermediateCertLabel = [(AMSKeychainOptions *)self intermediateCertLabel];
+  intermediateCertLabel2 = [v5 intermediateCertLabel];
+  v13 = [(AMSKeychainOptions *)self _compareString:intermediateCertLabel withString:intermediateCertLabel2];
 
   if (!v13)
   {
     goto LABEL_13;
   }
 
-  v14 = [(AMSKeychainOptions *)self label];
-  v15 = [v5 label];
-  v16 = [(AMSKeychainOptions *)self _compareString:v14 withString:v15];
+  label = [(AMSKeychainOptions *)self label];
+  label2 = [v5 label];
+  v16 = [(AMSKeychainOptions *)self _compareString:label withString:label2];
 
   if (!v16)
   {
     goto LABEL_13;
   }
 
-  v17 = [(AMSKeychainOptions *)self prompt];
-  v18 = [v5 prompt];
-  v19 = [(AMSKeychainOptions *)self _compareString:v17 withString:v18];
+  prompt = [(AMSKeychainOptions *)self prompt];
+  prompt2 = [v5 prompt];
+  v19 = [(AMSKeychainOptions *)self _compareString:prompt withString:prompt2];
 
   if (!v19)
   {
     goto LABEL_13;
   }
 
-  v20 = [(AMSKeychainOptions *)self purpose];
-  if (v20 != [v5 purpose])
+  purpose = [(AMSKeychainOptions *)self purpose];
+  if (purpose != [v5 purpose])
   {
     goto LABEL_13;
   }
 
-  v21 = [(AMSKeychainOptions *)self regenerateKeys];
-  if (v21 != [v5 regenerateKeys])
+  regenerateKeys = [(AMSKeychainOptions *)self regenerateKeys];
+  if (regenerateKeys != [v5 regenerateKeys])
   {
     goto LABEL_13;
   }
 
-  v22 = [(AMSKeychainOptions *)self style];
-  v23 = v22 == [v5 style];
+  style = [(AMSKeychainOptions *)self style];
+  v23 = style == [v5 style];
 LABEL_14:
 
   return v23;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSKeychainOptions *)self optionsDictionary];
-  [v4 encodeObject:v5 forKey:@"o"];
+  coderCopy = coder;
+  optionsDictionary = [(AMSKeychainOptions *)self optionsDictionary];
+  [coderCopy encodeObject:optionsDictionary forKey:@"o"];
 }
 
-- (AMSKeychainOptions)initWithCoder:(id)a3
+- (AMSKeychainOptions)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v4 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [v5 decodeObjectOfClasses:v9 forKey:@"o"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"o"];
 
   objc_opt_class();
   v11 = 0;
@@ -287,22 +287,22 @@ LABEL_14:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AMSKeychainOptions *)self optionsDictionary];
-  v6 = [v5 copy];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  optionsDictionary = [(AMSKeychainOptions *)self optionsDictionary];
+  v6 = [optionsDictionary copy];
   v7 = [v4 initWithOptionsDictionary:v6];
 
   return v7;
 }
 
-- (BOOL)_compareString:(id)a3 withString:(id)a4
+- (BOOL)_compareString:(id)string withString:(id)withString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v8 = (v5 || !v6) && (!v5 || !v6 || [v5 isEqualToString:v6]);
+  stringCopy = string;
+  withStringCopy = withString;
+  v7 = withStringCopy;
+  v8 = (stringCopy || !withStringCopy) && (!stringCopy || !withStringCopy || [stringCopy isEqualToString:withStringCopy]);
 
   return v8;
 }

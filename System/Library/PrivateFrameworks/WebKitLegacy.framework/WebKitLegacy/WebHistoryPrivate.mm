@@ -1,38 +1,38 @@
 @interface WebHistoryPrivate
 + (void)initialize;
-- (BOOL)addItem:(id)a3 discardDuplicate:(BOOL)a4;
-- (BOOL)findKey:(int64_t *)a3 forDay:(double)a4;
-- (BOOL)loadHistoryGutsFromURL:(id)a3 savedItemsCount:(int *)a4 collectDiscardedItemsInto:(id)a5 error:(id *)a6;
+- (BOOL)addItem:(id)item discardDuplicate:(BOOL)duplicate;
+- (BOOL)findKey:(int64_t *)key forDay:(double)day;
+- (BOOL)loadHistoryGutsFromURL:(id)l savedItemsCount:(int *)count collectDiscardedItemsInto:(id)into error:(id *)error;
 - (BOOL)removeAllItems;
-- (BOOL)removeItem:(id)a3;
-- (BOOL)removeItemForURLString:(id)a3;
-- (BOOL)removeItemFromDateCaches:(id)a3;
-- (BOOL)removeItems:(id)a3;
-- (BOOL)saveToURL:(id)a3 error:(id *)a4;
+- (BOOL)removeItem:(id)item;
+- (BOOL)removeItemForURLString:(id)string;
+- (BOOL)removeItemFromDateCaches:(id)caches;
+- (BOOL)removeItems:(id)items;
+- (BOOL)saveToURL:(id)l error:(id *)error;
 - (WebHistoryPrivate)init;
 - (id).cxx_construct;
 - (id)ageLimitDate;
 - (id)data;
-- (id)itemForURL:(id)a3;
-- (id)orderedItemsLastVisitedOnDay:(id)a3;
+- (id)itemForURL:(id)l;
+- (id)orderedItemsLastVisitedOnDay:(id)day;
 - (id)orderedLastVisitedDays;
-- (id)visitedURL:(id)a3 withTitle:(id)a4;
+- (id)visitedURL:(id)l withTitle:(id)title;
 - (int)historyAgeInDaysLimit;
 - (int)historyItemLimit;
-- (void)addItemToDateCaches:(id)a3;
-- (void)addItems:(id)a3;
-- (void)addVisitedLinksToVisitedLinkStore:(void *)a3;
-- (void)insertItem:(id)a3 forDateKey:(int64_t)a4;
-- (void)rebuildHistoryByDayIfNeeded:(id)a3;
+- (void)addItemToDateCaches:(id)caches;
+- (void)addItems:(id)items;
+- (void)addVisitedLinksToVisitedLinkStore:(void *)store;
+- (void)insertItem:(id)item forDateKey:(int64_t)key;
+- (void)rebuildHistoryByDayIfNeeded:(id)needed;
 @end
 
 @implementation WebHistoryPrivate
 
 + (void)initialize
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-  [v2 registerDefaults:&unk_1F474C6D8];
+  [standardUserDefaults registerDefaults:&unk_1F474C6D8];
 }
 
 - (WebHistoryPrivate)init
@@ -90,10 +90,10 @@
   return v2;
 }
 
-- (BOOL)findKey:(int64_t *)a3 forDay:(double)a4
+- (BOOL)findKey:(int64_t *)key forDay:(double)day
 {
   v6 = *&beginningOfDay(double)::cachedBeginningOfDay;
-  if (*&beginningOfDay(double)::cachedBeginningOfDay > a4 || *&beginningOfDay(double)::cachedBeginningOfNextDay <= a4)
+  if (*&beginningOfDay(double)::cachedBeginningOfDay > day || *&beginningOfDay(double)::cachedBeginningOfNextDay <= day)
   {
     v8 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
     v9 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
@@ -107,7 +107,7 @@
   }
 
   v11 = v6;
-  *a3 = v6;
+  *key = v6;
   v12 = *self->_entriesByDate.__ptr_;
   if (!v12)
   {
@@ -149,15 +149,15 @@
   return result;
 }
 
-- (void)insertItem:(id)a3 forDateKey:(int64_t)a4
+- (void)insertItem:(id)item forDateKey:(int64_t)key
 {
-  WTF::HashMap<long long,WTF::RetainPtr<NSMutableArray>,WTF::DefaultHash<long long>,WTF::HashTraits<long long>,WTF::HashTraits<WTF::RetainPtr<NSMutableArray>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::get<WTF::IdentityHashTranslator<WTF::HashMap<long long,WTF::RetainPtr<NSMutableArray>,WTF::DefaultHash<long long>,WTF::HashTraits<long long>,WTF::HashTraits<WTF::RetainPtr<NSMutableArray>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<long long>>,long long>(&v14, self->_entriesByDate.__ptr_, a4);
+  WTF::HashMap<long long,WTF::RetainPtr<NSMutableArray>,WTF::DefaultHash<long long>,WTF::HashTraits<long long>,WTF::HashTraits<WTF::RetainPtr<NSMutableArray>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::get<WTF::IdentityHashTranslator<WTF::HashMap<long long,WTF::RetainPtr<NSMutableArray>,WTF::DefaultHash<long long>,WTF::HashTraits<long long>,WTF::HashTraits<WTF::RetainPtr<NSMutableArray>>,WTF::HashTableTraits,(WTF::ShouldValidateKey)1,WTF::FastMalloc>::KeyValuePairTraits,WTF::DefaultHash<long long>>,long long>(&v14, self->_entriesByDate.__ptr_, key);
   v5 = v14;
   if (v14)
   {
   }
 
-  [a3 lastVisitedTimeInterval];
+  [item lastVisitedTimeInterval];
   v7 = v6;
   v8 = [v5 count];
   if (v8 && ([objc_msgSend(v5 objectAtIndex:{0), "lastVisitedTimeInterval"}], v9 >= v7))
@@ -200,13 +200,13 @@
     v10 = 0;
   }
 
-  [v5 insertObject:a3 atIndex:v10];
+  [v5 insertObject:item atIndex:v10];
 }
 
-- (BOOL)removeItemFromDateCaches:(id)a3
+- (BOOL)removeItemFromDateCaches:(id)caches
 {
   v26 = 0;
-  [a3 lastVisitedTimeInterval];
+  [caches lastVisitedTimeInterval];
   v5 = [(WebHistoryPrivate *)self findKey:&v26 forDay:?];
   if (v5)
   {
@@ -256,7 +256,7 @@ LABEL_9:
     }
 
     v16 = v15[1];
-    [v16 removeObjectIdenticalTo:a3];
+    [v16 removeObjectIdenticalTo:caches];
     v17 = [v16 count];
     LOBYTE(v5) = v7;
     if (!v17)
@@ -306,7 +306,7 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)removeItemForURLString:(id)a3
+- (BOOL)removeItemForURLString:(id)string
 {
   v5 = [(NSMutableDictionary *)self->_entriesByURL.m_ptr objectForKey:?];
   if (!v5)
@@ -314,7 +314,7 @@ LABEL_18:
     return v5 != 0;
   }
 
-  [(NSMutableDictionary *)self->_entriesByURL.m_ptr removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_entriesByURL.m_ptr removeObjectForKey:string];
   [(WebHistoryPrivate *)self removeItemFromDateCaches:v5];
   if ([(NSMutableDictionary *)self->_entriesByURL.m_ptr count])
   {
@@ -325,18 +325,18 @@ LABEL_18:
   return v5 != 0;
 }
 
-- (void)addItemToDateCaches:(id)a3
+- (void)addItemToDateCaches:(id)caches
 {
   v30 = 0;
-  v31 = a3;
-  [a3 lastVisitedTimeInterval];
+  cachesCopy = caches;
+  [caches lastVisitedTimeInterval];
   if ([(WebHistoryPrivate *)self findKey:&v30 forDay:?])
   {
-    [(WebHistoryPrivate *)self insertItem:a3 forDateKey:v30];
+    [(WebHistoryPrivate *)self insertItem:caches forDateKey:v30];
     return;
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:&v31 count:1];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:&cachesCopy count:1];
   v6 = v30;
   if (v30 == -1 || !v30)
   {
@@ -476,12 +476,12 @@ LABEL_33:
   }
 }
 
-- (id)visitedURL:(id)a3 withTitle:(id)a4
+- (id)visitedURL:(id)l withTitle:(id)title
 {
-  v6 = [a3 _web_originalDataAsString];
-  if (v6)
+  _web_originalDataAsString = [l _web_originalDataAsString];
+  if (_web_originalDataAsString)
   {
-    v7 = v6;
+    v7 = _web_originalDataAsString;
   }
 
   else
@@ -495,14 +495,14 @@ LABEL_33:
     v9 = v8;
     v10 = v8;
     [(WebHistoryPrivate *)self removeItemFromDateCaches:v9];
-    [(WebHistoryItem *)v9 _visitedWithTitle:a4];
+    [(WebHistoryItem *)v9 _visitedWithTitle:title];
   }
 
   else
   {
     v11 = [WebHistoryItem alloc];
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-    v9 = [(WebHistoryItem *)v11 initWithURLString:v7 title:a4 lastVisitedTimeInterval:?];
+    v9 = [(WebHistoryItem *)v11 initWithURLString:v7 title:title lastVisitedTimeInterval:?];
     [(NSMutableDictionary *)self->_entriesByURL.m_ptr setObject:v9 forKey:v7];
   }
 
@@ -515,39 +515,39 @@ LABEL_33:
   return v9;
 }
 
-- (BOOL)addItem:(id)a3 discardDuplicate:(BOOL)a4
+- (BOOL)addItem:(id)item discardDuplicate:(BOOL)duplicate
 {
-  v7 = [a3 URLString];
-  v8 = [(NSMutableDictionary *)self->_entriesByURL.m_ptr objectForKey:v7];
+  uRLString = [item URLString];
+  v8 = [(NSMutableDictionary *)self->_entriesByURL.m_ptr objectForKey:uRLString];
   if (v8)
   {
     v9 = v8;
     v10 = v8;
-    if (a4 || ([v9 lastVisitedTimeInterval], v12 = v11, objc_msgSend(a3, "lastVisitedTimeInterval"), v12 >= v13))
+    if (duplicate || ([v9 lastVisitedTimeInterval], v12 = v11, objc_msgSend(item, "lastVisitedTimeInterval"), v12 >= v13))
     {
       v14 = 0;
     }
 
     else
     {
-      [(WebHistoryPrivate *)self removeItemForURLString:v7];
-      [(WebHistoryPrivate *)self addItemToDateCaches:a3];
-      [(NSMutableDictionary *)self->_entriesByURL.m_ptr setObject:a3 forKey:v7];
+      [(WebHistoryPrivate *)self removeItemForURLString:uRLString];
+      [(WebHistoryPrivate *)self addItemToDateCaches:item];
+      [(NSMutableDictionary *)self->_entriesByURL.m_ptr setObject:item forKey:uRLString];
       v14 = 1;
     }
   }
 
   else
   {
-    [(WebHistoryPrivate *)self addItemToDateCaches:a3];
-    [(NSMutableDictionary *)self->_entriesByURL.m_ptr setObject:a3 forKey:v7];
+    [(WebHistoryPrivate *)self addItemToDateCaches:item];
+    [(NSMutableDictionary *)self->_entriesByURL.m_ptr setObject:item forKey:uRLString];
     return 1;
   }
 
   return v14;
 }
 
-- (void)rebuildHistoryByDayIfNeeded:(id)a3
+- (void)rebuildHistoryByDayIfNeeded:(id)needed
 {
   v43 = *MEMORY[0x1E69E9840];
   v5 = *self->_entriesByDate.__ptr_;
@@ -701,8 +701,8 @@ LABEL_35:
   {
   }
 
-  v23 = [(NSMutableDictionary *)m_ptr allValues];
-  [a3 _sendNotification:WebHistoryAllItemsRemovedNotification entries:v23];
+  allValues = [(NSMutableDictionary *)m_ptr allValues];
+  [needed _sendNotification:WebHistoryAllItemsRemovedNotification entries:allValues];
   if (m_ptr)
   {
     v24 = m_ptr;
@@ -752,7 +752,7 @@ LABEL_35:
     while (v26 < HIDWORD(v41));
   }
 
-  [a3 _sendNotification:WebHistoryItemsAddedNotification entries:v23];
+  [needed _sendNotification:WebHistoryItemsAddedNotification entries:allValues];
   if (m_ptr)
   {
   }
@@ -785,28 +785,28 @@ LABEL_35:
   }
 }
 
-- (BOOL)removeItem:(id)a3
+- (BOOL)removeItem:(id)item
 {
-  v5 = [a3 URLString];
-  v6 = [(NSMutableDictionary *)self->_entriesByURL.m_ptr objectForKey:v5];
-  if (v6 != a3)
+  uRLString = [item URLString];
+  v6 = [(NSMutableDictionary *)self->_entriesByURL.m_ptr objectForKey:uRLString];
+  if (v6 != item)
   {
     return 0;
   }
 
-  [(WebHistoryPrivate *)self removeItemForURLString:v5];
-  return v6 == a3;
+  [(WebHistoryPrivate *)self removeItemForURLString:uRLString];
+  return v6 == item;
 }
 
-- (BOOL)removeItems:(id)a3
+- (BOOL)removeItems:(id)items
 {
-  v5 = [a3 count];
+  v5 = [items count];
   if (v5)
   {
     v6 = 0;
     do
     {
-      -[WebHistoryPrivate removeItem:](self, "removeItem:", [a3 objectAtIndex:v6++]);
+      -[WebHistoryPrivate removeItem:](self, "removeItem:", [items objectAtIndex:v6++]);
     }
 
     while (v5 != v6);
@@ -848,31 +848,31 @@ LABEL_35:
   }
 
   WTF::fastFree((v3 - 16), a2);
-  v9 = [(NSMutableDictionary *)self->_entriesByURL.m_ptr removeAllObjects];
+  removeAllObjects = [(NSMutableDictionary *)self->_entriesByURL.m_ptr removeAllObjects];
   m_ptr = self->_orderedLastVisitedDays.m_ptr;
   self->_orderedLastVisitedDays.m_ptr = 0;
   if (m_ptr)
   {
   }
 
-  WebVisitedLinkStore::removeAllVisitedLinks(v9, v10);
+  WebVisitedLinkStore::removeAllVisitedLinks(removeAllObjects, v10);
   return 1;
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
-  v4 = [a3 reverseObjectEnumerator];
-  v5 = [v4 nextObject];
-  if (v5)
+  reverseObjectEnumerator = [items reverseObjectEnumerator];
+  nextObject = [reverseObjectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      [(WebHistoryPrivate *)self addItem:v6 discardDuplicate:0];
-      v6 = [v4 nextObject];
+      [(WebHistoryPrivate *)self addItem:nextObject2 discardDuplicate:0];
+      nextObject2 = [reverseObjectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 }
 
@@ -1031,10 +1031,10 @@ LABEL_43:
   return self->_orderedLastVisitedDays.m_ptr;
 }
 
-- (id)orderedItemsLastVisitedOnDay:(id)a3
+- (id)orderedItemsLastVisitedOnDay:(id)day
 {
   v8 = 0;
-  [a3 timeIntervalSinceReferenceDate];
+  [day timeIntervalSinceReferenceDate];
   v4 = [(WebHistoryPrivate *)self findKey:&v8 forDay:?];
   result = 0;
   if (v4)
@@ -1052,11 +1052,11 @@ LABEL_43:
   return result;
 }
 
-- (id)itemForURL:(id)a3
+- (id)itemForURL:(id)l
 {
-  v4 = [a3 _web_originalDataAsString];
+  _web_originalDataAsString = [l _web_originalDataAsString];
 
-  return [(WebHistoryPrivate *)self itemForURLString:v4];
+  return [(WebHistoryPrivate *)self itemForURLString:_web_originalDataAsString];
 }
 
 - (int)historyAgeInDaysLimit
@@ -1087,19 +1087,19 @@ LABEL_43:
 
 - (id)ageLimitDate
 {
-  v3 = [MEMORY[0x1E696AB00] calendarDate];
+  calendarDate = [MEMORY[0x1E696AB00] calendarDate];
   v4 = [(WebHistoryPrivate *)self];
 
-  return [v3 dateByAddingYears:0 months:0 days:v4 hours:0 minutes:0 seconds:0];
+  return [calendarDate dateByAddingYears:0 months:0 days:v4 hours:0 minutes:0 seconds:0];
 }
 
-- (BOOL)loadHistoryGutsFromURL:(id)a3 savedItemsCount:(int *)a4 collectDiscardedItemsInto:(id)a5 error:(id *)a6
+- (BOOL)loadHistoryGutsFromURL:(id)l savedItemsCount:(int *)count collectDiscardedItemsInto:(id)into error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  *a4 = 0;
-  if ([a3 isFileURL])
+  *count = 0;
+  if ([l isFileURL])
   {
-    v9 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:{objc_msgSend(a3, "path")}];
+    v9 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:{objc_msgSend(l, "path")}];
     v10 = v9;
     if (!v9)
     {
@@ -1133,7 +1133,7 @@ LABEL_9:
     }
 
     v13 = [v10 objectForKey:@"WebHistoryDates"];
-    v29 = [(WebHistoryPrivate *)self historyItemLimit];
+    historyItemLimit = [(WebHistoryPrivate *)self historyItemLimit];
     [-[WebHistoryPrivate ageLimitDate](self "ageLimitDate")];
     v15 = v14;
     v32 = 0u;
@@ -1175,14 +1175,14 @@ LABEL_17:
           if (v24 > v15 && !v18)
           {
             v25 = [(WebHistoryPrivate *)self addItem:v23 discardDuplicate:1];
-            v26 = *a4;
+            v26 = *count;
             if (v25)
             {
-              *a4 = ++v26;
+              *count = ++v26;
             }
 
             v17 = 0;
-            v18 = v26 == v29;
+            v18 = v26 == historyItemLimit;
             if (!v23)
             {
               goto LABEL_27;
@@ -1194,7 +1194,7 @@ LABEL_26:
           }
         }
 
-        [a5 addObject:v23];
+        [into addObject:v23];
       }
 
       if (v23)
@@ -1220,7 +1220,7 @@ LABEL_34:
     }
   }
 
-  v11 = [MEMORY[0x1E695AC40] sendSynchronousRequest:objc_msgSend(MEMORY[0x1E695AC68] returningResponse:"requestWithURL:" error:{a3), 0, a6}];
+  v11 = [MEMORY[0x1E695AC40] sendSynchronousRequest:objc_msgSend(MEMORY[0x1E695AC68] returningResponse:"requestWithURL:" error:{l), 0, error}];
   if ([v11 length])
   {
     v10 = [MEMORY[0x1E696AE40] propertyListWithData:v11 options:0 format:0 error:0];
@@ -1444,14 +1444,14 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)saveToURL:(id)a3 error:(id *)a4
+- (BOOL)saveToURL:(id)l error:(id *)error
 {
-  v6 = [(WebHistoryPrivate *)self data];
+  data = [(WebHistoryPrivate *)self data];
 
-  return [v6 writeToURL:a3 options:0 error:a4];
+  return [data writeToURL:l options:0 error:error];
 }
 
-- (void)addVisitedLinksToVisitedLinkStore:(void *)a3
+- (void)addVisitedLinksToVisitedLinkStore:(void *)store
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
@@ -1473,7 +1473,7 @@ LABEL_19:
           objc_enumerationMutation(m_ptr);
         }
 
-        WebVisitedLinkStore::addVisitedLink(a3, *(*(&v9 + 1) + 8 * i));
+        WebVisitedLinkStore::addVisitedLink(store, *(*(&v9 + 1) + 8 * i));
       }
 
       v6 = [(NSMutableDictionary *)m_ptr countByEnumeratingWithState:&v9 objects:v13 count:16];

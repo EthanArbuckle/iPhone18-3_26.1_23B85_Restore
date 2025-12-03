@@ -12,7 +12,7 @@
   v39 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v35.receiver = a1;
+  v35.receiver = self;
   v35.super_class = &off_28488FA90;
   v8 = objc_msgSendSuper2(&v35, sel_init);
   if (v8)
@@ -48,13 +48,13 @@
 
           v18 = *(*(&v31 + 1) + 8 * i);
           v19 = [v11 objectForKeyedSubscript:v18];
-          v20 = [v19 unsignedIntegerValue];
+          unsignedIntegerValue = [v19 unsignedIntegerValue];
 
-          if (v20 > v14)
+          if (unsignedIntegerValue > v14)
           {
             v21 = v18;
 
-            v14 = v20;
+            v14 = unsignedIntegerValue;
             v15 = v21;
           }
         }
@@ -75,10 +75,10 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = v22;
-      v24 = [v8 dominantLocale];
-      v25 = [v24 localeIdentifier];
+      dominantLocale = [v8 dominantLocale];
+      localeIdentifier = [dominantLocale localeIdentifier];
       *buf = 138543362;
-      v37 = v25;
+      v37 = localeIdentifier;
       _os_log_impl(&dword_232E53000, v23, OS_LOG_TYPE_INFO, "Detection result via detected locales: %{public}@", buf, 0xCu);
     }
 
@@ -98,7 +98,7 @@
   v10 = a3;
   v56 = a4;
   v11 = a5;
-  v64.receiver = a1;
+  v64.receiver = self;
   v64.super_class = &off_28488FA90;
   v12 = objc_msgSendSuper2(&v64, sel_init);
   v13 = v12;
@@ -179,13 +179,13 @@
     v28 = _LTLanguageCodeToSupportedLocale();
     if (v51 == 2 && [v57 isEqualToString:@"en"])
     {
-      v29 = [v10 allObjects];
+      allObjects = [v10 allObjects];
       v58[0] = MEMORY[0x277D85DD0];
       v58[1] = 3221225472;
       v58[2] = __113___LTTextLanguageDetectionResult_Daemon__initWithDetectionCounts_availableLocales_lowConfidenceLocales_strategy___block_invoke;
       v58[3] = &unk_2789B7C98;
       v59 = v10;
-      v30 = [v29 sortedArrayWithOptions:16 usingComparator:v58];
+      v30 = [allObjects sortedArrayWithOptions:16 usingComparator:v58];
 
       if ([v30 count] >= 2)
       {
@@ -230,8 +230,8 @@
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
         v39 = v38;
-        v40 = [v13 dominantLocale];
-        [v40 localeIdentifier];
+        dominantLocale = [v13 dominantLocale];
+        [dominantLocale localeIdentifier];
         v42 = v41 = v10;
         *buf = 138543618;
         v66 = v42;
@@ -250,8 +250,8 @@
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
         v44 = v43;
-        v45 = [v13 dominantLocale];
-        [v45 localeIdentifier];
+        dominantLocale2 = [v13 dominantLocale];
+        [dominantLocale2 localeIdentifier];
         v47 = v46 = v10;
         *buf = 138543362;
         v66 = v47;
@@ -274,7 +274,7 @@
   v33 = *MEMORY[0x277D85DE8];
   v8 = a3;
   v9 = a4;
-  v28.receiver = a1;
+  v28.receiver = self;
   v28.super_class = &off_28488FA90;
   v10 = objc_msgSendSuper2(&v28, sel_init);
   if (v10)
@@ -291,8 +291,8 @@
     [v10 setLowConfidenceLocales:v14];
 
     v15 = objc_opt_class();
-    v16 = [v13 languageCode];
-    [v15 sendAnalytics:v16 isSupported:v13 != 0];
+    languageCode = [v13 languageCode];
+    [v15 sendAnalytics:languageCode isSupported:v13 != 0];
 
     if ([v9 count])
     {
@@ -301,10 +301,10 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v19 = v18;
-        v20 = [v10 dominantLocale];
-        v21 = [v20 localeIdentifier];
+        dominantLocale = [v10 dominantLocale];
+        localeIdentifier = [dominantLocale localeIdentifier];
         *buf = 138543618;
-        v30 = v21;
+        v30 = localeIdentifier;
         v31 = 2114;
         v32 = v17;
         _os_log_impl(&dword_232E53000, v19, OS_LOG_TYPE_INFO, "Detection result via weighted locale: %{public}@, however there are low-confidence locales: %{public}@", buf, 0x16u);
@@ -317,9 +317,9 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v23 = v22;
-        v24 = [v13 localeIdentifier];
+        localeIdentifier2 = [v13 localeIdentifier];
         *buf = 138543362;
-        v30 = v24;
+        v30 = localeIdentifier2;
         _os_log_impl(&dword_232E53000, v23, OS_LOG_TYPE_INFO, "Detection result via weighted locale: %{public}@", buf, 0xCu);
       }
     }

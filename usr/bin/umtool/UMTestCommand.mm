@@ -1,14 +1,14 @@
 @interface UMTestCommand
-+ (BOOL)executeWithOutError:(id *)a3;
-+ (id)_spaceForDepth:(unint64_t)a3;
-+ (id)helpDetailsForDepth:(unint64_t)a3;
++ (BOOL)executeWithOutError:(id *)error;
++ (id)_spaceForDepth:(unint64_t)depth;
++ (id)helpDetailsForDepth:(unint64_t)depth;
 @end
 
 @implementation UMTestCommand
 
-+ (id)_spaceForDepth:(unint64_t)a3
++ (id)_spaceForDepth:(unint64_t)depth
 {
-  for (i = objc_opt_new(); a3; --a3)
+  for (i = objc_opt_new(); depth; --depth)
   {
     [i appendString:@"\t"];
   }
@@ -16,36 +16,36 @@
   return i;
 }
 
-+ (id)helpDetailsForDepth:(unint64_t)a3
++ (id)helpDetailsForDepth:(unint64_t)depth
 {
   v5 = objc_opt_new();
-  v6 = [a1 name];
-  if (v6)
+  name = [self name];
+  if (name)
   {
-    v7 = [a1 _spaceForDepth:a3];
-    v8 = [a1 _spaceForDepth:a3 + 1];
-    v9 = [a1 _spaceForDepth:a3 + 2];
-    v10 = [a1 name];
-    [v5 appendFormat:@"%@%@%@", v7, v10, @"\n"];
+    v7 = [self _spaceForDepth:depth];
+    v8 = [self _spaceForDepth:depth + 1];
+    v9 = [self _spaceForDepth:depth + 2];
+    name2 = [self name];
+    [v5 appendFormat:@"%@%@%@", v7, name2, @"\n"];
 
-    v11 = [a1 description];
+    v11 = [self description];
     v12 = v11;
     if (v11)
     {
       [v5 appendFormat:@"%@Description: %@%@", v8, v11, @"\n"];
     }
 
-    v13 = [a1 examples];
-    v39 = v13;
-    if (v13)
+    examples = [self examples];
+    v39 = examples;
+    if (examples)
     {
-      v14 = v13;
-      if ([v13 count])
+      v14 = examples;
+      if ([examples count])
       {
         v31 = v12;
         v33 = v8;
         v35 = v7;
-        v37 = v6;
+        v37 = name;
         [v5 appendFormat:@"%@Examples:%@", v8, @"\n"];
         v46 = 0u;
         v47 = 0u;
@@ -76,20 +76,20 @@
         }
 
         v7 = v35;
-        v6 = v37;
+        name = v37;
         v12 = v31;
         v8 = v33;
       }
     }
 
-    v20 = [a1 subcommands];
-    v21 = v20;
-    if (v20 && [v20 count])
+    subcommands = [self subcommands];
+    v21 = subcommands;
+    if (subcommands && [subcommands count])
     {
       v32 = v12;
       v34 = v8;
       v36 = v7;
-      v38 = v6;
+      v38 = name;
       [v5 appendFormat:@"%@%@Subcommands:%@", @"\n", v8, @"\n"];
       v42 = 0u;
       v43 = 0u;
@@ -111,7 +111,7 @@
               objc_enumerationMutation(v22);
             }
 
-            v27 = [*(*(&v40 + 1) + 8 * j) helpDetailsForDepth:a3 + 2];
+            v27 = [*(*(&v40 + 1) + 8 * j) helpDetailsForDepth:depth + 2];
             [v5 appendFormat:@"%@%@", @"\n", v27];
           }
 
@@ -122,7 +122,7 @@
       }
 
       v7 = v36;
-      v6 = v38;
+      name = v38;
       v12 = v32;
       v8 = v34;
       v21 = v30;
@@ -139,15 +139,15 @@
   return v28;
 }
 
-+ (BOOL)executeWithOutError:(id *)a3
++ (BOOL)executeWithOutError:(id *)error
 {
   v5 = +[UMTestArguments getNextArgument];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a1 subcommands];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  subcommands = [self subcommands];
+  v7 = [subcommands countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -158,12 +158,12 @@ LABEL_3:
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(subcommands);
       }
 
       v11 = *(*(&v17 + 1) + 8 * v10);
-      v12 = [v11 name];
-      v13 = [v12 isEqualToString:v5];
+      name = [v11 name];
+      v13 = [name isEqualToString:v5];
 
       if (v13)
       {
@@ -172,7 +172,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v8 = [subcommands countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -182,7 +182,7 @@ LABEL_3:
       }
     }
 
-    v14 = [v11 executeWithOutError:a3];
+    v14 = [v11 executeWithOutError:error];
 
     if ((v14 & 1) == 0)
     {

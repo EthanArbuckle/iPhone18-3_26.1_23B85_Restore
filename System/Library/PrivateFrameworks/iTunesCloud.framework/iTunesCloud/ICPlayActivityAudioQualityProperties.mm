@@ -1,17 +1,17 @@
 @interface ICPlayActivityAudioQualityProperties
-- (ICPlayActivityAudioQualityProperties)initWithCoder:(id)a3;
+- (ICPlayActivityAudioQualityProperties)initWithCoder:(id)coder;
 - (NSString)codecString;
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4;
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICPlayActivityAudioQualityProperties
 
-- (id)_copyWithClass:(Class)a3 zone:(_NSZone *)a4
+- (id)_copyWithClass:(Class)class zone:(_NSZone *)zone
 {
-  v5 = [[(objc_class *)a3 allocWithZone:a4] init];
+  v5 = [[(objc_class *)class allocWithZone:zone] init];
   v6 = v5;
   if (v5)
   {
@@ -26,45 +26,45 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
-  return [(ICPlayActivityAudioQualityProperties *)self _copyWithClass:v5 zone:a3];
+  return [(ICPlayActivityAudioQualityProperties *)self _copyWithClass:v5 zone:zone];
 }
 
-- (ICPlayActivityAudioQualityProperties)initWithCoder:(id)a3
+- (ICPlayActivityAudioQualityProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ICPlayActivityAudioQualityProperties;
   v5 = [(ICPlayActivityAudioQualityProperties *)&v9 init];
   if (v5)
   {
-    v5->_bitRate = [v4 decodeInt64ForKey:@"bitRate"];
-    v5->_bitDepth = [v4 decodeInt64ForKey:@"bitDepth"];
-    v6 = [v4 decodeObjectForKey:@"channelLayoutDescription"];
+    v5->_bitRate = [coderCopy decodeInt64ForKey:@"bitRate"];
+    v5->_bitDepth = [coderCopy decodeInt64ForKey:@"bitDepth"];
+    v6 = [coderCopy decodeObjectForKey:@"channelLayoutDescription"];
     channelLayoutDescription = v5->_channelLayoutDescription;
     v5->_channelLayoutDescription = v6;
 
-    v5->_codec = [v4 decodeInt32ForKey:@"codec"];
-    v5->_sampleRate = [v4 decodeInt64ForKey:@"sampleRate"];
-    v5->_spatialized = [v4 decodeBoolForKey:@"spatialized"];
+    v5->_codec = [coderCopy decodeInt32ForKey:@"codec"];
+    v5->_sampleRate = [coderCopy decodeInt64ForKey:@"sampleRate"];
+    v5->_spatialized = [coderCopy decodeBoolForKey:@"spatialized"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bitRate = self->_bitRate;
-  v5 = a3;
-  [v5 encodeInt64:bitRate forKey:@"bitRate"];
-  [v5 encodeInt64:self->_bitDepth forKey:@"bitDepth"];
-  [v5 encodeObject:self->_channelLayoutDescription forKey:@"channelLayoutDescription"];
-  [v5 encodeInt32:self->_codec forKey:@"codec"];
-  [v5 encodeInt64:self->_sampleRate forKey:@"sampleRate"];
-  [v5 encodeBool:self->_spatialized forKey:@"spatialized"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:bitRate forKey:@"bitRate"];
+  [coderCopy encodeInt64:self->_bitDepth forKey:@"bitDepth"];
+  [coderCopy encodeObject:self->_channelLayoutDescription forKey:@"channelLayoutDescription"];
+  [coderCopy encodeInt32:self->_codec forKey:@"codec"];
+  [coderCopy encodeInt64:self->_sampleRate forKey:@"sampleRate"];
+  [coderCopy encodeBool:self->_spatialized forKey:@"spatialized"];
 }
 
 - (NSString)codecString

@@ -1,13 +1,13 @@
 @interface PodcastsDiagnosticExtension
 - (_TtC38com_apple_podcasts_DiagnosticExtension27PodcastsDiagnosticExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation PodcastsDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_100002E8C();
   }
@@ -17,7 +17,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_100001560(v4);
 
   if (v6)

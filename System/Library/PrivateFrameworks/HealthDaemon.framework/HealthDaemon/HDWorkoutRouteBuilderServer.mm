@@ -1,41 +1,41 @@
 @interface HDWorkoutRouteBuilderServer
 - (id)seriesSample;
-- (void)_queue_insertRouteData:(void *)a3 completion:;
-- (void)createSeriesSampleIfNeeded:(id)a3 errorHandler:(id)a4;
+- (void)_queue_insertRouteData:(void *)data completion:;
+- (void)createSeriesSampleIfNeeded:(id)needed errorHandler:(id)handler;
 - (void)queue_recoverBuilder;
-- (void)remote_finishRouteWithWorkout:(id)a3 metadata:(id)a4 completion:(id)a5;
-- (void)remote_insertRouteData:(id)a3 completion:(id)a4;
-- (void)server_insertRouteData:(id)a3 completion:(id)a4;
+- (void)remote_finishRouteWithWorkout:(id)workout metadata:(id)metadata completion:(id)completion;
+- (void)remote_insertRouteData:(id)data completion:(id)completion;
+- (void)server_insertRouteData:(id)data completion:(id)completion;
 @end
 
 @implementation HDWorkoutRouteBuilderServer
 
-- (void)remote_insertRouteData:(id)a3 completion:(id)a4
+- (void)remote_insertRouteData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDSeriesBuilderServer *)self queue];
+  dataCopy = data;
+  completionCopy = completion;
+  queue = [(HDSeriesBuilderServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HDWorkoutRouteBuilderServer_remote_insertRouteData_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_queue_insertRouteData:(void *)a3 completion:
+- (void)_queue_insertRouteData:(void *)data completion:
 {
   v39 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dataCopy = data;
+  if (self)
   {
     v33 = 0;
-    v7 = [a1 queue_canInsertDataWithError:&v33];
+    v7 = [self queue_canInsertDataWithError:&v33];
     v8 = v33;
     if (v7)
     {
@@ -108,58 +108,58 @@ LABEL_16:
         aBlock[1] = 3221225472;
         aBlock[2] = __65__HDWorkoutRouteBuilderServer__queue_insertRouteData_completion___block_invoke;
         aBlock[3] = &unk_2786212E0;
-        aBlock[4] = a1;
+        aBlock[4] = self;
         v20 = v9;
         v30 = v20;
-        v21 = v6;
+        v21 = dataCopy;
         v31 = v21;
         v22 = _Block_copy(aBlock);
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __65__HDWorkoutRouteBuilderServer__queue_insertRouteData_completion___block_invoke_6;
         v26[3] = &unk_278616D18;
-        v26[4] = a1;
+        v26[4] = self;
         v28 = v22;
         v27 = v20;
         v23 = v22;
-        [a1 createSeriesSampleIfNeeded:v26 errorHandler:v21];
+        [self createSeriesSampleIfNeeded:v26 errorHandler:v21];
       }
 
-      else if (v6)
+      else if (dataCopy)
       {
-        (*(v6 + 2))(v6, 0, v19);
+        (*(dataCopy + 2))(dataCopy, 0, v19);
       }
 
       v8 = v19;
     }
 
-    else if (v6)
+    else if (dataCopy)
     {
-      (*(v6 + 2))(v6, 0, v8);
+      (*(dataCopy + 2))(dataCopy, 0, v8);
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_finishRouteWithWorkout:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)remote_finishRouteWithWorkout:(id)workout metadata:(id)metadata completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HDSeriesBuilderServer *)self queue];
+  workoutCopy = workout;
+  metadataCopy = metadata;
+  completionCopy = completion;
+  queue = [(HDSeriesBuilderServer *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81__HDWorkoutRouteBuilderServer_remote_finishRouteWithWorkout_metadata_completion___block_invoke;
   v15[3] = &unk_278613680;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = workoutCopy;
+  v17 = metadataCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = metadataCopy;
+  v14 = workoutCopy;
+  dispatch_async(queue, v15);
 }
 
 void __81__HDWorkoutRouteBuilderServer_remote_finishRouteWithWorkout_metadata_completion___block_invoke(uint64_t a1)
@@ -200,21 +200,21 @@ void __81__HDWorkoutRouteBuilderServer_remote_finishRouteWithWorkout_metadata_co
   }
 }
 
-- (void)server_insertRouteData:(id)a3 completion:(id)a4
+- (void)server_insertRouteData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDSeriesBuilderServer *)self queue];
+  dataCopy = data;
+  completionCopy = completion;
+  queue = [(HDSeriesBuilderServer *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HDWorkoutRouteBuilderServer_server_insertRouteData_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dataCopy;
+  dispatch_async(queue, block);
 }
 
 void __65__HDWorkoutRouteBuilderServer__queue_insertRouteData_completion___block_invoke(id *a1, void *a2, void *a3)
@@ -489,52 +489,52 @@ LABEL_17:
   else
   {
     v5 = MEMORY[0x277CCDC70];
-    v6 = [(HDSeriesBuilderServer *)self configuration];
-    v7 = [v6 device];
-    v3 = [v5 _workoutRouteWithDevice:v7 metadata:0];
+    configuration = [(HDSeriesBuilderServer *)self configuration];
+    device = [configuration device];
+    v3 = [v5 _workoutRouteWithDevice:device metadata:0];
 
-    v8 = [(HDStandardTaskServer *)self taskUUID];
-    [(HKWorkoutRoute *)v3 _setUUID:v8];
+    taskUUID = [(HDStandardTaskServer *)self taskUUID];
+    [(HKWorkoutRoute *)v3 _setUUID:taskUUID];
   }
 
   return v3;
 }
 
-- (void)createSeriesSampleIfNeeded:(id)a3 errorHandler:(id)a4
+- (void)createSeriesSampleIfNeeded:(id)needed errorHandler:(id)handler
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  neededCopy = needed;
+  handlerCopy = handler;
   if (self->_route)
   {
-    v7[2](v7);
+    neededCopy[2](neededCopy);
   }
 
   else
   {
     if ([(HDSeriesBuilderServer *)self queue_state])
     {
-      v16 = [MEMORY[0x277CCA890] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"HDWorkoutRouteBuilderServer.m" lineNumber:226 description:@"route missing."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDWorkoutRouteBuilderServer.m" lineNumber:226 description:@"route missing."];
     }
 
-    v9 = [(HDWorkoutRouteBuilderServer *)self seriesSample];
+    seriesSample = [(HDWorkoutRouteBuilderServer *)self seriesSample];
     route = self->_route;
-    self->_route = v9;
+    self->_route = seriesSample;
 
-    v11 = [(HDStandardTaskServer *)self delegate];
-    v12 = [v11 sampleSavingDelegate];
-    v13 = [(HDWorkoutRouteBuilderServer *)self seriesSample];
-    v20[0] = v13;
+    delegate = [(HDStandardTaskServer *)self delegate];
+    sampleSavingDelegate = [delegate sampleSavingDelegate];
+    seriesSample2 = [(HDWorkoutRouteBuilderServer *)self seriesSample];
+    v20[0] = seriesSample2;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __71__HDWorkoutRouteBuilderServer_createSeriesSampleIfNeeded_errorHandler___block_invoke;
     v17[3] = &unk_27861FA38;
     v17[4] = self;
-    v18 = v8;
-    v19 = v7;
-    [v12 saveSamples:v14 databaseAssertion:0 withCompletion:v17];
+    v18 = handlerCopy;
+    v19 = neededCopy;
+    [sampleSavingDelegate saveSamples:v14 databaseAssertion:0 withCompletion:v17];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -599,9 +599,9 @@ void __71__HDWorkoutRouteBuilderServer_createSeriesSampleIfNeeded_errorHandler__
 
 - (void)queue_recoverBuilder
 {
-  v3 = [(HDWorkoutRouteBuilderServer *)self seriesSample];
+  seriesSample = [(HDWorkoutRouteBuilderServer *)self seriesSample];
   route = self->_route;
-  self->_route = v3;
+  self->_route = seriesSample;
 
   v5.receiver = self;
   v5.super_class = HDWorkoutRouteBuilderServer;

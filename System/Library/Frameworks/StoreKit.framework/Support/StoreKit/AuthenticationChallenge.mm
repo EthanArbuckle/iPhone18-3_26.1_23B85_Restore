@@ -1,26 +1,26 @@
 @interface AuthenticationChallenge
-+ (id)_messageForProtectionSpace:(id)a3;
-+ (id)_titleForProtectionSpace:(id)a3;
-- (AuthenticationChallenge)initWithAuthenticationChallenge:(id)a3;
++ (id)_messageForProtectionSpace:(id)space;
++ (id)_titleForProtectionSpace:(id)space;
+- (AuthenticationChallenge)initWithAuthenticationChallenge:(id)challenge;
 - (NSString)user;
 @end
 
 @implementation AuthenticationChallenge
 
-- (AuthenticationChallenge)initWithAuthenticationChallenge:(id)a3
+- (AuthenticationChallenge)initWithAuthenticationChallenge:(id)challenge
 {
-  v5 = a3;
+  challengeCopy = challenge;
   v6 = [(AuthenticationChallenge *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_challenge, a3);
-    v8 = [v5 protectionSpace];
-    v9 = [objc_opt_class() _messageForProtectionSpace:v8];
+    objc_storeStrong(&v6->_challenge, challenge);
+    protectionSpace = [challengeCopy protectionSpace];
+    v9 = [objc_opt_class() _messageForProtectionSpace:protectionSpace];
     localizedMessage = v7->_localizedMessage;
     v7->_localizedMessage = v9;
 
-    v11 = [objc_opt_class() _titleForProtectionSpace:v8];
+    v11 = [objc_opt_class() _titleForProtectionSpace:protectionSpace];
     localizedTitle = v7->_localizedTitle;
     v7->_localizedTitle = v11;
   }
@@ -30,54 +30,54 @@
 
 - (NSString)user
 {
-  v2 = [(NSURLAuthenticationChallenge *)self->_challenge proposedCredential];
-  v3 = [v2 user];
+  proposedCredential = [(NSURLAuthenticationChallenge *)self->_challenge proposedCredential];
+  user = [proposedCredential user];
 
-  return v3;
+  return user;
 }
 
-+ (id)_messageForProtectionSpace:(id)a3
++ (id)_messageForProtectionSpace:(id)space
 {
-  v3 = a3;
+  spaceCopy = space;
   v4 = +[NSMutableString string];
-  v5 = [v3 host];
-  v6 = [v3 port];
-  if (v6 <= 0)
+  host = [spaceCopy host];
+  port = [spaceCopy port];
+  if (port <= 0)
   {
-    v7 = v5;
+    v7 = host;
   }
 
   else
   {
-    v7 = [NSString stringWithFormat:@"%@:%ld", v5, v6];
+    v7 = [NSString stringWithFormat:@"%@:%ld", host, port];
   }
 
   v8 = v7;
-  if ([v3 isProxy])
+  if ([spaceCopy isProxy])
   {
     v9 = ASDLocalizedString();
-    v10 = [v3 protocol];
-    v11 = [NSString stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@" error:0, v10, v8];
+    protocol = [spaceCopy protocol];
+    v11 = [NSString stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@%@" error:0, protocol, v8];
     [v4 appendString:v11];
   }
 
   else
   {
     v9 = ASDLocalizedString();
-    v10 = [NSString stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, v8];
-    [v4 appendString:v10];
+    protocol = [NSString stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, v8];
+    [v4 appendString:protocol];
   }
 
-  [v3 receivesCredentialSecurely];
+  [spaceCopy receivesCredentialSecurely];
   v12 = ASDLocalizedString();
   [v4 appendFormat:@" %@", v12];
 
   return v4;
 }
 
-+ (id)_titleForProtectionSpace:(id)a3
++ (id)_titleForProtectionSpace:(id)space
 {
-  [a3 isProxy];
+  [space isProxy];
 
   return ASDLocalizedString();
 }

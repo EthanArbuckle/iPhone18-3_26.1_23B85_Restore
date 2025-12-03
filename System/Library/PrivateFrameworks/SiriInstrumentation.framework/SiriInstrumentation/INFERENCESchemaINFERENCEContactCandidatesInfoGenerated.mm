@@ -1,29 +1,29 @@
 @interface INFERENCESchemaINFERENCEContactCandidatesInfoGenerated
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addCandidates:(id)a3;
-- (void)setHasIsEntityCandidateRetrievalEnabled:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidates:(id)candidates;
+- (void)setHasIsEntityCandidateRetrievalEnabled:(BOOL)enabled;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEContactCandidatesInfoGenerated
 
-- (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = INFERENCESchemaINFERENCEContactCandidatesInfoGenerated;
   v5 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalResolutionContextId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalResolutionContextId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)v5 setOriginalResolutionContextId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"queryId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"queryId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,7 +39,7 @@
       [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)v5 setQueryId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"contactQueryMetadata"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"contactQueryMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,14 +47,14 @@
       [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)v5 setContactQueryMetadata:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"ontologySource"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"ontologySource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactCandidatesInfoGenerated setOntologySource:](v5, "setOntologySource:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"candidates"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"candidates"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
       v12 = v24;
     }
 
-    v21 = [v4 objectForKeyedSubscript:{@"isEntityCandidateRetrievalEnabled", v24, v25, v26, v27, v28}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"isEntityCandidateRetrievalEnabled", v24, v25, v26, v27, v28}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,30 +114,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEContactCandidatesInfoGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -151,10 +151,10 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_candidates count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
@@ -174,16 +174,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v26 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -193,22 +193,22 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"candidates"];
+    [dictionary setObject:array forKeyedSubscript:@"candidates"];
   }
 
   if (self->_contactQueryMetadata)
   {
-    v12 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    contactQueryMetadata = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
+    dictionaryRepresentation2 = [contactQueryMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"contactQueryMetadata"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contactQueryMetadata"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"contactQueryMetadata"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"contactQueryMetadata"];
     }
   }
 
@@ -216,7 +216,7 @@
   if ((v15 & 2) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactCandidatesInfoGenerated isEntityCandidateRetrievalEnabled](self, "isEntityCandidateRetrievalEnabled")}];
-    [v3 setObject:v16 forKeyedSubscript:@"isEntityCandidateRetrievalEnabled"];
+    [dictionary setObject:v16 forKeyedSubscript:@"isEntityCandidateRetrievalEnabled"];
 
     v15 = *(&self->_isEntityCandidateRetrievalEnabled + 1);
   }
@@ -234,44 +234,44 @@
       v18 = off_1E78D8958[v17];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:{@"ontologySource", v26}];
+    [dictionary setObject:v18 forKeyedSubscript:{@"ontologySource", v26}];
   }
 
   if (self->_originalResolutionContextId)
   {
-    v19 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    originalResolutionContextId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
+    dictionaryRepresentation3 = [originalResolutionContextId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"originalResolutionContextId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"originalResolutionContextId"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"originalResolutionContextId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"originalResolutionContextId"];
     }
   }
 
   if (self->_queryId)
   {
-    v22 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    queryId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
+    dictionaryRepresentation4 = [queryId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"queryId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"queryId"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"queryId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"queryId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v26];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v26];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -303,28 +303,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
-  v6 = [v4 originalResolutionContextId];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
+  originalResolutionContextId2 = [equalCopy originalResolutionContextId];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v7 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
-  if (v7)
+  originalResolutionContextId3 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
+  if (originalResolutionContextId3)
   {
-    v8 = v7;
-    v9 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
-    v10 = [v4 originalResolutionContextId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalResolutionContextId3;
+    originalResolutionContextId4 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
+    originalResolutionContextId5 = [equalCopy originalResolutionContextId];
+    v11 = [originalResolutionContextId4 isEqual:originalResolutionContextId5];
 
     if (!v11)
     {
@@ -336,20 +336,20 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
-  v6 = [v4 queryId];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
+  originalResolutionContextId2 = [equalCopy queryId];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v12 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
-  if (v12)
+  queryId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
+  if (queryId)
   {
-    v13 = v12;
-    v14 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
-    v15 = [v4 queryId];
-    v16 = [v14 isEqual:v15];
+    v13 = queryId;
+    queryId2 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
+    queryId3 = [equalCopy queryId];
+    v16 = [queryId2 isEqual:queryId3];
 
     if (!v16)
     {
@@ -361,20 +361,20 @@
   {
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
-  v6 = [v4 contactQueryMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
+  originalResolutionContextId2 = [equalCopy contactQueryMetadata];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
     goto LABEL_24;
   }
 
-  v17 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
-  if (v17)
+  contactQueryMetadata = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
+  if (contactQueryMetadata)
   {
-    v18 = v17;
-    v19 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
-    v20 = [v4 contactQueryMetadata];
-    v21 = [v19 isEqual:v20];
+    v18 = contactQueryMetadata;
+    contactQueryMetadata2 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
+    contactQueryMetadata3 = [equalCopy contactQueryMetadata];
+    v21 = [contactQueryMetadata2 isEqual:contactQueryMetadata3];
 
     if (!v21)
     {
@@ -386,7 +386,7 @@
   {
   }
 
-  if (*(&self->_isEntityCandidateRetrievalEnabled + 1) != (v4[49] & 1))
+  if (*(&self->_isEntityCandidateRetrievalEnabled + 1) != (equalCopy[49] & 1))
   {
     goto LABEL_25;
   }
@@ -394,28 +394,28 @@
   if (*(&self->_isEntityCandidateRetrievalEnabled + 1))
   {
     ontologySource = self->_ontologySource;
-    if (ontologySource != [v4 ontologySource])
+    if (ontologySource != [equalCopy ontologySource])
     {
       goto LABEL_25;
     }
   }
 
-  v5 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self candidates];
-  v6 = [v4 candidates];
-  if ((v5 != 0) == (v6 == 0))
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self candidates];
+  originalResolutionContextId2 = [equalCopy candidates];
+  if ((originalResolutionContextId != 0) == (originalResolutionContextId2 == 0))
   {
 LABEL_24:
 
     goto LABEL_25;
   }
 
-  v23 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self candidates];
-  if (v23)
+  candidates = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self candidates];
+  if (candidates)
   {
-    v24 = v23;
-    v25 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self candidates];
-    v26 = [v4 candidates];
-    v27 = [v25 isEqual:v26];
+    v24 = candidates;
+    candidates2 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self candidates];
+    candidates3 = [equalCopy candidates];
+    v27 = [candidates2 isEqual:candidates3];
 
     if (!v27)
     {
@@ -428,9 +428,9 @@ LABEL_24:
   }
 
   v30 = (*(&self->_isEntityCandidateRetrievalEnabled + 1) >> 1) & 1;
-  if (v30 == ((v4[49] >> 1) & 1))
+  if (v30 == ((equalCopy[49] >> 1) & 1))
   {
-    if (!v30 || (isEntityCandidateRetrievalEnabled = self->_isEntityCandidateRetrievalEnabled, isEntityCandidateRetrievalEnabled == [v4 isEntityCandidateRetrievalEnabled]))
+    if (!v30 || (isEntityCandidateRetrievalEnabled = self->_isEntityCandidateRetrievalEnabled, isEntityCandidateRetrievalEnabled == [equalCopy isEntityCandidateRetrievalEnabled]))
     {
       v28 = 1;
       goto LABEL_26;
@@ -444,31 +444,31 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
+  toCopy = to;
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
 
-  if (v5)
+  if (originalResolutionContextId)
   {
-    v6 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
+    originalResolutionContextId2 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
+  queryId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
 
-  if (v7)
+  if (queryId)
   {
-    v8 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
+    queryId2 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
+  contactQueryMetadata = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
 
-  if (v9)
+  if (contactQueryMetadata)
   {
-    v10 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
+    contactQueryMetadata2 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -514,9 +514,9 @@ LABEL_26:
   }
 }
 
-- (void)setHasIsEntityCandidateRetrievalEnabled:(BOOL)a3
+- (void)setHasIsEntityCandidateRetrievalEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -529,59 +529,59 @@ LABEL_26:
   *(&self->_isEntityCandidateRetrievalEnabled + 1) = *(&self->_isEntityCandidateRetrievalEnabled + 1) & 0xFD | v3;
 }
 
-- (void)addCandidates:(id)a3
+- (void)addCandidates:(id)candidates
 {
-  v4 = a3;
+  candidatesCopy = candidates;
   candidates = self->_candidates;
-  v8 = v4;
+  v8 = candidatesCopy;
   if (!candidates)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_candidates;
-    self->_candidates = v6;
+    self->_candidates = array;
 
-    v4 = v8;
+    candidatesCopy = v8;
     candidates = self->_candidates;
   }
 
-  [(NSArray *)candidates addObject:v4];
+  [(NSArray *)candidates addObject:candidatesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v18.receiver = self;
   v18.super_class = INFERENCESchemaINFERENCEContactCandidatesInfoGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:v4];
-  v6 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v18 applySensitiveConditionsPolicy:policyCopy];
+  originalResolutionContextId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self originalResolutionContextId];
+  v7 = [originalResolutionContextId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self deleteOriginalResolutionContextId];
   }
 
-  v9 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  queryId = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self queryId];
+  v10 = [queryId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self deleteQueryId];
   }
 
-  v12 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  contactQueryMetadata = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self contactQueryMetadata];
+  v13 = [contactQueryMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self deleteContactQueryMetadata];
   }
 
-  v15 = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self candidates];
-  v16 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v15 underConditions:v4];
+  candidates = [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self candidates];
+  v16 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:candidates underConditions:policyCopy];
   [(INFERENCESchemaINFERENCEContactCandidatesInfoGenerated *)self setCandidates:v16];
 
   return v5;

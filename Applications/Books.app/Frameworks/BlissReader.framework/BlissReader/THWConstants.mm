@@ -1,28 +1,28 @@
 @interface THWConstants
-+ (id)modeStringForMode:(int)a3;
++ (id)modeStringForMode:(int)mode;
 @end
 
 @implementation THWConstants
 
-+ (id)modeStringForMode:(int)a3
++ (id)modeStringForMode:(int)mode
 {
   result = 0;
-  if (a3 > 1)
+  if (mode > 1)
   {
-    if (a3 == 2)
+    if (mode == 2)
     {
       return kTHWidgetModeGutterString;
     }
 
-    else if (a3 == 3)
+    else if (mode == 3)
     {
       return kTHWidgetModeFullScreenString;
     }
   }
 
-  else if (a3)
+  else if (mode)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       return kTHWidgetModeFixedString;
     }

@@ -7,7 +7,7 @@
 - (void)sortUsingDescriptors:()NSKeyValueSorting
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v5 = [a1 count];
+  v5 = [self count];
   v6 = [a3 count];
   if (v6 && v5 >= 2)
   {
@@ -44,7 +44,7 @@
       v12 = 0;
     }
 
-    v13 = [a1 getObjects:v11 range:{0, v5, v9}];
+    v13 = [self getObjects:v11 range:{0, v5, v9}];
     MEMORY[0x1EEE9AC00](v13);
     v14 = v18 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
     v15 = 0;
@@ -56,7 +56,7 @@
     }
 
     _sortedObjectsUsingDescriptors(v11, v5, a3, v14);
-    [a1 replaceObjectsInRange:0 withObjects:v5 count:{v14, v5}];
+    [self replaceObjectsInRange:0 withObjects:v5 count:{v14, v5}];
     free(v15);
     free(v12);
   }

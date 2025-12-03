@@ -1,11 +1,11 @@
 @interface SBCommunicationPolicyManager
 + (id)sharedInstance;
-- (BOOL)shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)a3;
+- (BOOL)shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)identifier;
 - (SBCommunicationPolicyManager)init;
 - (uint64_t)_communicationPolicyForBundleIdentifier:(uint64_t)result;
-- (void)_setPoliciesByBundleIdentifier:(uint64_t)a1;
+- (void)_setPoliciesByBundleIdentifier:(uint64_t)identifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SBCommunicationPolicyManager
@@ -40,8 +40,8 @@ void __46__SBCommunicationPolicyManager_sharedInstance__block_invoke()
     communicationPolicyMonitor = v2->_communicationPolicyMonitor;
     v2->_communicationPolicyMonitor = v3;
 
-    v5 = [(DMFCommunicationPolicyMonitor *)v2->_communicationPolicyMonitor policiesByBundleIdentifier];
-    v6 = [v5 copy];
+    policiesByBundleIdentifier = [(DMFCommunicationPolicyMonitor *)v2->_communicationPolicyMonitor policiesByBundleIdentifier];
+    v6 = [policiesByBundleIdentifier copy];
     policiesByBundleIdentifier = v2->_policiesByBundleIdentifier;
     v2->_policiesByBundleIdentifier = v6;
 
@@ -59,9 +59,9 @@ void __46__SBCommunicationPolicyManager_sharedInstance__block_invoke()
   [(SBCommunicationPolicyManager *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &SBCommunicationPolicyManagerKeyValueObserverContext)
+  if (context == &SBCommunicationPolicyManagerKeyValueObserverContext)
   {
     block[5] = v6;
     block[6] = v7;
@@ -82,27 +82,27 @@ void __79__SBCommunicationPolicyManager_observeValueForKeyPath_ofObject_change_c
   [(SBCommunicationPolicyManager *)v1 _setPoliciesByBundleIdentifier:v2];
 }
 
-- (BOOL)shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)a3
+- (BOOL)shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
-  v5 = [(SBCommunicationPolicyManager *)self _communicationPolicyForBundleIdentifier:v4];
+  v5 = [(SBCommunicationPolicyManager *)self _communicationPolicyForBundleIdentifier:identifierCopy];
 
   return v5 != 0;
 }
 
-- (void)_setPoliciesByBundleIdentifier:(uint64_t)a1
+- (void)_setPoliciesByBundleIdentifier:(uint64_t)identifier
 {
   v42 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (identifier)
   {
     BSDispatchQueueAssertMain();
-    v5 = (a1 + 8);
-    if (([*(a1 + 8) isEqualToDictionary:v4] & 1) == 0)
+    v5 = (identifier + 8);
+    if (([*(identifier + 8) isEqualToDictionary:v4] & 1) == 0)
     {
       obj = a2;
-      v28 = a1;
+      identifierCopy = identifier;
       v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v34 = 0u;
       v35 = 0u;
@@ -180,11 +180,11 @@ void __79__SBCommunicationPolicyManager_observeValueForKeyPath_ofObject_change_c
       }
 
       objc_storeStrong(v5, obj);
-      v25 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v38 = @"SBCommunicationPolicyChangedBundleIdentifiersKey";
       v39 = v6;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
-      [v25 postNotificationName:@"SBCommunicationPolicyDidChangeNotification" object:v28 userInfo:v26];
+      [defaultCenter postNotificationName:@"SBCommunicationPolicyDidChangeNotification" object:identifierCopy userInfo:v26];
 
       v4 = v29;
     }
@@ -196,9 +196,9 @@ void __79__SBCommunicationPolicyManager_observeValueForKeyPath_ofObject_change_c
   if (result)
   {
     v2 = [*(result + 8) objectForKey:a2];
-    v3 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-    return v3;
+    return unsignedIntegerValue;
   }
 
   return result;

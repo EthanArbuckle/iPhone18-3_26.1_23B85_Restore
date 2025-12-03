@@ -1,6 +1,6 @@
 @interface SKAccountPageHandler
 + (id)sharedInstance;
-- (void)accountPageViewControllerDidFinish:(id)a3;
+- (void)accountPageViewControllerDidFinish:(id)finish;
 @end
 
 @implementation SKAccountPageHandler
@@ -24,9 +24,9 @@ void __38__SKAccountPageHandler_sharedInstance__block_invoke()
   sharedInstance_sSharedInstance = v0;
 }
 
-- (void)accountPageViewControllerDidFinish:(id)a3
+- (void)accountPageViewControllerDidFinish:(id)finish
 {
-  v3 = a3;
+  finishCopy = finish;
   v4 = VUIDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -35,10 +35,10 @@ void __38__SKAccountPageHandler_sharedInstance__block_invoke()
   }
 
   v5 = +[VUIInterfaceFactory sharedInstance];
-  v6 = [v5 openURLHandler];
-  [v6 setIsFinished:1];
+  openURLHandler = [v5 openURLHandler];
+  [openURLHandler setIsFinished:1];
 
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

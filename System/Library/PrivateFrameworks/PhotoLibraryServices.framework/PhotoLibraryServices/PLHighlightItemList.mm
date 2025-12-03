@@ -11,13 +11,13 @@
 - (NSSet)removedHighlightItems;
 - (NSString)description;
 - (NSString)uuid;
-- (PLHighlightItemList)initWithParentHighlightItem:(id)a3 childHighlightItems:(id)a4;
+- (PLHighlightItemList)initWithParentHighlightItem:(id)item childHighlightItems:(id)items;
 - (id)initAsNewList;
 - (void)_updateHighlightItemsOrdering;
 - (void)_updateStartEndDates;
-- (void)addHighlightItem:(id)a3;
-- (void)mergeWithHighlightItemList:(id)a3;
-- (void)removeHighlightItem:(id)a3;
+- (void)addHighlightItem:(id)item;
+- (void)mergeWithHighlightItemList:(id)list;
+- (void)removeHighlightItem:(id)item;
 - (void)reset;
 @end
 
@@ -25,9 +25,9 @@
 
 - (void)reset
 {
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   internalHighlightItems = self->_internalHighlightItems;
-  self->_internalHighlightItems = v3;
+  self->_internalHighlightItems = orderedSet;
 
   v5 = [MEMORY[0x1E695DFA8] set];
   internalAddedHighlightItems = self->_internalAddedHighlightItems;
@@ -50,15 +50,15 @@
   self->_groupingEndDate = 0;
 }
 
-- (void)mergeWithHighlightItemList:(id)a3
+- (void)mergeWithHighlightItemList:(id)list
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [a3 internalHighlightItems];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  internalHighlightItems = [list internalHighlightItems];
+  v5 = [internalHighlightItems countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -70,14 +70,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(internalHighlightItems);
         }
 
         [(PLHighlightItemList *)self addHighlightItem:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [internalHighlightItems countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -95,9 +95,9 @@
   startDate = self->_startDate;
   endDate = self->_endDate;
   v7 = [(NSMutableOrderedSet *)self->_internalHighlightItems count];
-  v8 = [(PLHighlightItemList *)self isNewList];
+  isNewList = [(PLHighlightItemList *)self isNewList];
   v9 = @"NO";
-  if (v8)
+  if (isNewList)
   {
     v9 = @"YES";
   }
@@ -114,7 +114,7 @@
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v26 = self;
+  selfCopy = self;
   obj = self->_internalHighlightItems;
   v2 = [(NSMutableOrderedSet *)obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v2)
@@ -140,21 +140,21 @@
         v12 = *(*(&v28 + 1) + 8 * v9);
         if ([v12 kind] != 3)
         {
-          v13 = [v12 startDate];
-          v14 = [v13 earlierDate:v7];
+          startDate = [v12 startDate];
+          v14 = [startDate earlierDate:v7];
 
-          v15 = [v12 endDate];
-          v16 = [v15 laterDate:v4];
+          endDate = [v12 endDate];
+          v16 = [endDate laterDate:v4];
 
           v4 = v16;
           v7 = v14;
         }
 
-        v17 = [v12 startDate];
-        v5 = [v17 earlierDate:v10];
+        startDate2 = [v12 startDate];
+        v5 = [startDate2 earlierDate:v10];
 
-        v18 = [v12 endDate];
-        v6 = [v18 laterDate:v11];
+        endDate2 = [v12 endDate];
+        v6 = [endDate2 laterDate:v11];
 
         ++v9;
         v10 = v5;
@@ -176,77 +176,77 @@
     v7 = 0;
   }
 
-  startDate = v26->_startDate;
-  v26->_startDate = v7;
+  startDate = selfCopy->_startDate;
+  selfCopy->_startDate = v7;
   v20 = v7;
 
-  endDate = v26->_endDate;
-  v26->_endDate = v4;
+  endDate = selfCopy->_endDate;
+  selfCopy->_endDate = v4;
   v22 = v4;
 
-  groupingStartDate = v26->_groupingStartDate;
-  v26->_groupingStartDate = v5;
+  groupingStartDate = selfCopy->_groupingStartDate;
+  selfCopy->_groupingStartDate = v5;
   v24 = v5;
 
-  groupingEndDate = v26->_groupingEndDate;
-  v26->_groupingEndDate = v6;
+  groupingEndDate = selfCopy->_groupingEndDate;
+  selfCopy->_groupingEndDate = v6;
 }
 
 - (void)_updateHighlightItemsOrdering
 {
   internalHighlightItems = self->_internalHighlightItems;
-  v4 = [objc_opt_class() timeSortDescriptors];
-  [(NSMutableOrderedSet *)internalHighlightItems sortUsingDescriptors:v4];
+  timeSortDescriptors = [objc_opt_class() timeSortDescriptors];
+  [(NSMutableOrderedSet *)internalHighlightItems sortUsingDescriptors:timeSortDescriptors];
 
   [(PLHighlightItemList *)self _updateStartEndDates];
 }
 
-- (void)removeHighlightItem:(id)a3
+- (void)removeHighlightItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(NSMutableOrderedSet *)self->_internalHighlightItems containsObject:?])
   {
-    [(NSMutableOrderedSet *)self->_internalHighlightItems removeObject:v4];
-    if ([(NSMutableSet *)self->_internalAddedHighlightItems containsObject:v4])
+    [(NSMutableOrderedSet *)self->_internalHighlightItems removeObject:itemCopy];
+    if ([(NSMutableSet *)self->_internalAddedHighlightItems containsObject:itemCopy])
     {
-      [(NSMutableSet *)self->_internalAddedHighlightItems removeObject:v4];
+      [(NSMutableSet *)self->_internalAddedHighlightItems removeObject:itemCopy];
     }
 
     else
     {
-      [(NSMutableSet *)self->_internalRemovedHighlightItems addObject:v4];
+      [(NSMutableSet *)self->_internalRemovedHighlightItems addObject:itemCopy];
     }
 
     [(PLHighlightItemList *)self _updateStartEndDates];
   }
 }
 
-- (void)addHighlightItem:(id)a3
+- (void)addHighlightItem:(id)item
 {
-  v4 = a3;
-  if (([(NSMutableOrderedSet *)self->_internalHighlightItems containsObject:v4]& 1) == 0)
+  itemCopy = item;
+  if (([(NSMutableOrderedSet *)self->_internalHighlightItems containsObject:itemCopy]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)self->_internalHighlightItems addObject:v4];
-    if ([(NSMutableSet *)self->_internalRemovedHighlightItems containsObject:v4])
+    [(NSMutableOrderedSet *)self->_internalHighlightItems addObject:itemCopy];
+    if ([(NSMutableSet *)self->_internalRemovedHighlightItems containsObject:itemCopy])
     {
-      [(NSMutableSet *)self->_internalRemovedHighlightItems removeObject:v4];
+      [(NSMutableSet *)self->_internalRemovedHighlightItems removeObject:itemCopy];
     }
 
     else
     {
-      [(NSMutableSet *)self->_internalAddedHighlightItems addObject:v4];
+      [(NSMutableSet *)self->_internalAddedHighlightItems addObject:itemCopy];
     }
 
-    v5 = [objc_opt_class() timeSortDescriptors];
+    timeSortDescriptors = [objc_opt_class() timeSortDescriptors];
     internalHighlightItems = self->_internalHighlightItems;
     v7 = [(NSMutableOrderedSet *)internalHighlightItems count];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __40__PLHighlightItemList_addHighlightItem___block_invoke;
     v9[3] = &unk_1E756EF00;
-    v10 = v5;
-    v8 = v5;
-    [(NSMutableOrderedSet *)internalHighlightItems indexOfObject:v4 inSortedRange:0 options:v7 usingComparator:1024, v9];
+    v10 = timeSortDescriptors;
+    v8 = timeSortDescriptors;
+    [(NSMutableOrderedSet *)internalHighlightItems indexOfObject:itemCopy inSortedRange:0 options:v7 usingComparator:1024, v9];
     [(PLHighlightItemList *)self _updateStartEndDates];
   }
 }
@@ -319,8 +319,8 @@ LABEL_11:
 
 - (NSArray)sortedChildHighlightItems
 {
-  v2 = [(NSMutableOrderedSet *)self->_internalHighlightItems array];
-  v3 = [v2 copy];
+  array = [(NSMutableOrderedSet *)self->_internalHighlightItems array];
+  v3 = [array copy];
 
   return v3;
 }
@@ -334,11 +334,11 @@ LABEL_11:
 
   else if (self->_parentHighlightItem && [(NSMutableOrderedSet *)self->_internalHighlightItems count])
   {
-    v5 = [(PLHighlightItem *)self->_parentHighlightItem startDate];
-    if ([v5 isEqualToDate:self->_startDate])
+    startDate = [(PLHighlightItem *)self->_parentHighlightItem startDate];
+    if ([startDate isEqualToDate:self->_startDate])
     {
-      v6 = [(PLHighlightItem *)self->_parentHighlightItem endDate];
-      v3 = [v6 isEqualToDate:self->_endDate] ^ 1;
+      endDate = [(PLHighlightItem *)self->_parentHighlightItem endDate];
+      v3 = [endDate isEqualToDate:self->_endDate] ^ 1;
     }
 
     else
@@ -357,82 +357,82 @@ LABEL_11:
 
 - (NSManagedObjectID)objectID
 {
-  v2 = [(PLHighlightItemList *)self parentHighlightItem];
-  v3 = [v2 objectID];
+  parentHighlightItem = [(PLHighlightItemList *)self parentHighlightItem];
+  objectID = [parentHighlightItem objectID];
 
-  return v3;
+  return objectID;
 }
 
 - (NSString)uuid
 {
-  v2 = [(PLHighlightItemList *)self parentHighlightItem];
-  v3 = [v2 uuid];
+  parentHighlightItem = [(PLHighlightItemList *)self parentHighlightItem];
+  uuid = [parentHighlightItem uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (NSDate)endDate
 {
   if ([(PLHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PLHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 endDate];
+    parentHighlightItem = [(PLHighlightItemList *)self parentHighlightItem];
+    endDate = [parentHighlightItem endDate];
   }
 
   else
   {
-    v4 = self->_endDate;
+    endDate = self->_endDate;
   }
 
-  return v4;
+  return endDate;
 }
 
 - (NSDate)startDate
 {
   if ([(PLHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PLHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 startDate];
+    parentHighlightItem = [(PLHighlightItemList *)self parentHighlightItem];
+    startDate = [parentHighlightItem startDate];
   }
 
   else
   {
-    v4 = self->_startDate;
+    startDate = self->_startDate;
   }
 
-  return v4;
+  return startDate;
 }
 
 - (NSDate)groupingEndDate
 {
   if ([(PLHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PLHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 endDate];
+    parentHighlightItem = [(PLHighlightItemList *)self parentHighlightItem];
+    endDate = [parentHighlightItem endDate];
   }
 
   else
   {
-    v4 = self->_groupingEndDate;
+    endDate = self->_groupingEndDate;
   }
 
-  return v4;
+  return endDate;
 }
 
 - (NSDate)groupingStartDate
 {
   if ([(PLHighlightItemList *)self isCandidateForReuse])
   {
-    v3 = [(PLHighlightItemList *)self parentHighlightItem];
-    v4 = [v3 startDate];
+    parentHighlightItem = [(PLHighlightItemList *)self parentHighlightItem];
+    startDate = [parentHighlightItem startDate];
   }
 
   else
   {
-    v4 = self->_groupingStartDate;
+    startDate = self->_groupingStartDate;
   }
 
-  return v4;
+  return startDate;
 }
 
 - (id)initAsNewList
@@ -442,9 +442,9 @@ LABEL_11:
   v2 = [(PLHighlightItemList *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     internalHighlightItems = v2->_internalHighlightItems;
-    v2->_internalHighlightItems = v3;
+    v2->_internalHighlightItems = orderedSet;
 
     v5 = [MEMORY[0x1E695DFA8] set];
     internalAddedHighlightItems = v2->_internalAddedHighlightItems;
@@ -458,18 +458,18 @@ LABEL_11:
   return v2;
 }
 
-- (PLHighlightItemList)initWithParentHighlightItem:(id)a3 childHighlightItems:(id)a4
+- (PLHighlightItemList)initWithParentHighlightItem:(id)item childHighlightItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  itemsCopy = items;
   v18.receiver = self;
   v18.super_class = PLHighlightItemList;
   v9 = [(PLHighlightItemList *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parentHighlightItem, a3);
-    v11 = [MEMORY[0x1E695DFA0] orderedSetWithArray:v8];
+    objc_storeStrong(&v9->_parentHighlightItem, item);
+    v11 = [MEMORY[0x1E695DFA0] orderedSetWithArray:itemsCopy];
     internalHighlightItems = v10->_internalHighlightItems;
     v10->_internalHighlightItems = v11;
 

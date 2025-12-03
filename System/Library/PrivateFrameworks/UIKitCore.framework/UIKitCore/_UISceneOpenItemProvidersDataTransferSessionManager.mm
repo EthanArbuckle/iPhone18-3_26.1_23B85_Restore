@@ -1,9 +1,9 @@
 @interface _UISceneOpenItemProvidersDataTransferSessionManager
 + (id)sharedInstance;
 - (_UISceneOpenItemProvidersDataTransferSessionManager)init;
-- (void)addSession:(id)a3;
-- (void)dataTransferSessionBeganTransfers:(id)a3;
-- (void)dataTransferSessionFinishedTransfers:(id)a3;
+- (void)addSession:(id)session;
+- (void)dataTransferSessionBeganTransfers:(id)transfers;
+- (void)dataTransferSessionFinishedTransfers:(id)transfers;
 @end
 
 @implementation _UISceneOpenItemProvidersDataTransferSessionManager
@@ -39,24 +39,24 @@
   return v2;
 }
 
-- (void)addSession:(id)a3
+- (void)addSession:(id)session
 {
-  v4 = a3;
-  v5 = [(_UISceneOpenItemProvidersDataTransferSessionManager *)self workQueue];
+  sessionCopy = session;
+  workQueue = [(_UISceneOpenItemProvidersDataTransferSessionManager *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66___UISceneOpenItemProvidersDataTransferSessionManager_addSession___block_invoke;
   v7[3] = &unk_1E70F35B8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = sessionCopy;
+  selfCopy = self;
+  v6 = sessionCopy;
+  dispatch_sync(workQueue, v7);
 }
 
-- (void)dataTransferSessionBeganTransfers:(id)a3
+- (void)dataTransferSessionBeganTransfers:(id)transfers
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  transfersCopy = transfers;
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("OpenItemProviders", &dataTransferSessionBeganTransfers____s_category);
   if (*CategoryCachedImpl)
   {
@@ -64,28 +64,28 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = v5;
-      v7 = [v3 itemCollection];
-      v8 = [v7 UUID];
-      v9 = [v8 UUIDString];
+      itemCollection = [transfersCopy itemCollection];
+      uUID = [itemCollection UUID];
+      uUIDString = [uUID UUIDString];
       v10 = 138412290;
-      v11 = v9;
+      v11 = uUIDString;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "data transfer began for item collection uuid: %@", &v10, 0xCu);
     }
   }
 }
 
-- (void)dataTransferSessionFinishedTransfers:(id)a3
+- (void)dataTransferSessionFinishedTransfers:(id)transfers
 {
-  v4 = a3;
-  v5 = [(_UISceneOpenItemProvidersDataTransferSessionManager *)self workQueue];
+  transfersCopy = transfers;
+  workQueue = [(_UISceneOpenItemProvidersDataTransferSessionManager *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __92___UISceneOpenItemProvidersDataTransferSessionManager_dataTransferSessionFinishedTransfers___block_invoke;
   v7[3] = &unk_1E70F35B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = transfersCopy;
+  v6 = transfersCopy;
+  dispatch_sync(workQueue, v7);
 }
 
 @end

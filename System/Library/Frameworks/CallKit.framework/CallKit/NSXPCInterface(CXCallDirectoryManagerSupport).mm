@@ -16,11 +16,11 @@
 
 - (void)_cx_setAllowedClassesForCallDirectoryManagerDefaultHostProtocol
 {
-  v2 = [a1 _cx_callDirectoryManagerAllowedClasses];
-  [a1 setClasses:v2 forSelector:sel_firstIdentificationEntriesForEnabledExtensionsWithPhoneNumbers_cacheOnly_reply_ argumentIndex:0 ofReply:1];
+  _cx_callDirectoryManagerAllowedClasses = [self _cx_callDirectoryManagerAllowedClasses];
+  [self setClasses:_cx_callDirectoryManagerAllowedClasses forSelector:sel_firstIdentificationEntriesForEnabledExtensionsWithPhoneNumbers_cacheOnly_reply_ argumentIndex:0 ofReply:1];
 
-  v3 = [a1 _cx_callDirectoryManagerAllowedClasses];
-  [a1 setClasses:v3 forSelector:sel_getExtensionsWithReply_ argumentIndex:0 ofReply:1];
+  _cx_callDirectoryManagerAllowedClasses2 = [self _cx_callDirectoryManagerAllowedClasses];
+  [self setClasses:_cx_callDirectoryManagerAllowedClasses2 forSelector:sel_getExtensionsWithReply_ argumentIndex:0 ofReply:1];
 }
 
 - (id)_cx_callDirectoryManagerAllowedClasses
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __87__NSXPCInterface_CXCallDirectoryManagerSupport___cx_callDirectoryManagerAllowedClasses__block_invoke;
   block[3] = &unk_1E7C06CA8;
-  block[4] = a1;
+  block[4] = self;
   if (_cx_callDirectoryManagerAllowedClasses_onceToken != -1)
   {
     dispatch_once(&_cx_callDirectoryManagerAllowedClasses_onceToken, block);

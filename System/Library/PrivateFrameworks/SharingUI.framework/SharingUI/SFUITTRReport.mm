@@ -1,6 +1,6 @@
 @interface SFUITTRReport
 + (id)peopleSuggestionReport;
-- (SFUITTRReport)initWithTitle:(id)a3 desc:(id)a4 component:(id)a5;
+- (SFUITTRReport)initWithTitle:(id)title desc:(id)desc component:(id)component;
 @end
 
 @implementation SFUITTRReport
@@ -14,25 +14,25 @@
   return v4;
 }
 
-- (SFUITTRReport)initWithTitle:(id)a3 desc:(id)a4 component:(id)a5
+- (SFUITTRReport)initWithTitle:(id)title desc:(id)desc component:(id)component
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  descCopy = desc;
+  componentCopy = component;
   v17.receiver = self;
   v17.super_class = SFUITTRReport;
   v11 = [(SFUITTRReport *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [descCopy copy];
     desc = v11->_desc;
     v11->_desc = v14;
 
-    objc_storeStrong(&v11->_component, a5);
+    objc_storeStrong(&v11->_component, component);
   }
 
   return v11;

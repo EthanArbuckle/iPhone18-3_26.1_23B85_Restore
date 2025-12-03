@@ -1,57 +1,57 @@
 @interface NMCRoutePlanningController
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (GEOCompanionRouteContext)companionRouteContext;
 - (NMCRoutePlanningController)init;
-- (id)_messageForNoRoutesWithError:(id)a3 routeContextData:(id)a4;
-- (id)_messageForRouteDetailsData:(id)a3 index:(unint64_t)a4 count:(unint64_t)a5 routeContextData:(id)a6;
-- (id)_replyForMessage:(id)a3 withSafetyWarning:(int64_t)a4 error:(id)a5;
-- (id)companionRouteAtIndex:(unint64_t)a3;
-- (id)companionRouteWithRouteID:(id)a3;
-- (id)startNavigationDetailsForRouteID:(id)a3;
+- (id)_messageForNoRoutesWithError:(id)error routeContextData:(id)data;
+- (id)_messageForRouteDetailsData:(id)data index:(unint64_t)index count:(unint64_t)count routeContextData:(id)contextData;
+- (id)_replyForMessage:(id)message withSafetyWarning:(int64_t)warning error:(id)error;
+- (id)companionRouteAtIndex:(unint64_t)index;
+- (id)companionRouteWithRouteID:(id)d;
+- (id)startNavigationDetailsForRouteID:(id)d;
 - (unint64_t)selectedRouteIndex;
-- (void)_checkinForRoutePlanningWithConnection:(id)a3;
+- (void)_checkinForRoutePlanningWithConnection:(id)connection;
 - (void)_clearLocally;
 - (void)_clearPreviewRoutesIfNeeded;
-- (void)_enumerateMapsConnectionsUnderAssertionNamed:(id)a3 usingBlock:(id)a4;
-- (void)_forgetConnection:(id)a3 reason:(id)a4;
-- (void)_handleIncomingMessage:(id)a3;
-- (void)_handlePreviewNavMessage:(id)a3;
-- (void)_notifyMapsRoutePlanningSessionDidFail:(id)a3;
-- (void)_notifyMapsRoutePlanningSessionDidInvalidate:(id)a3;
-- (void)_notifyMapsRoutePlanningSessionDidSelectRoute:(id)a3;
-- (void)_notifyMapsRoutePlanningSessionDidStartLoading:(id)a3;
-- (void)_notifyMapsRoutePlanningSessionDidUpdateResponse:(id)a3;
-- (void)_notifyNanoMapsRoutePlanningSession:(id)a3 didReceiveRouteUpdatesForRoutes:(id)a4;
-- (void)_notifyNanoMapsRoutePlanningSessionDidFail:(id)a3;
-- (void)_notifyNanoMapsRoutePlanningSessionDidInvalidate:(id)a3;
-- (void)_notifyNanoMapsRoutePlanningSessionDidSelectRoute:(id)a3;
-- (void)_notifyNanoMapsRoutePlanningSessionDidStartLoading:(id)a3;
-- (void)_notifyNanoMapsRoutePlanningSessionDidUpdateResponse:(id)a3 changedRouteIdentifiers:(id)a4;
+- (void)_enumerateMapsConnectionsUnderAssertionNamed:(id)named usingBlock:(id)block;
+- (void)_forgetConnection:(id)connection reason:(id)reason;
+- (void)_handleIncomingMessage:(id)message;
+- (void)_handlePreviewNavMessage:(id)message;
+- (void)_notifyMapsRoutePlanningSessionDidFail:(id)fail;
+- (void)_notifyMapsRoutePlanningSessionDidInvalidate:(id)invalidate;
+- (void)_notifyMapsRoutePlanningSessionDidSelectRoute:(id)route;
+- (void)_notifyMapsRoutePlanningSessionDidStartLoading:(id)loading;
+- (void)_notifyMapsRoutePlanningSessionDidUpdateResponse:(id)response;
+- (void)_notifyNanoMapsRoutePlanningSession:(id)session didReceiveRouteUpdatesForRoutes:(id)routes;
+- (void)_notifyNanoMapsRoutePlanningSessionDidFail:(id)fail;
+- (void)_notifyNanoMapsRoutePlanningSessionDidInvalidate:(id)invalidate;
+- (void)_notifyNanoMapsRoutePlanningSessionDidSelectRoute:(id)route;
+- (void)_notifyNanoMapsRoutePlanningSessionDidStartLoading:(id)loading;
+- (void)_notifyNanoMapsRoutePlanningSessionDidUpdateResponse:(id)response changedRouteIdentifiers:(id)identifiers;
 - (void)_prepareTransitRouteUpdaterIfNeeded;
 - (void)_registerIDSMessageObservers;
 - (void)_registerXPCRoutes;
-- (void)_sendClearPreviewWithContext:(id)a3;
-- (void)_sendPreviewRoutes:(id)a3 atIndexes:(id)a4 error:(id)a5 companionRouteContext:(id)a6 includeSyntheticRoute:(BOOL)a7;
+- (void)_sendClearPreviewWithContext:(id)context;
+- (void)_sendPreviewRoutes:(id)routes atIndexes:(id)indexes error:(id)error companionRouteContext:(id)context includeSyntheticRoute:(BOOL)route;
 - (void)_sendPreviewRoutesIfAvailable;
-- (void)_sendRouteUpdates:(id)a3 context:(id)a4;
-- (void)_sendSelectedPreviewRouteIndex:(unint64_t)a3 context:(id)a4;
-- (void)_setCurrentSessionInputOrigin:(unint64_t)a3;
-- (void)_updateRoutePlanningRequest:(id)a3 withResponse:(id)a4 completionHandler:(id)a5;
-- (void)anticipateRoutePlanningRequest:(id)a3 completionHandler:(id)a4;
+- (void)_sendRouteUpdates:(id)updates context:(id)context;
+- (void)_sendSelectedPreviewRouteIndex:(unint64_t)index context:(id)context;
+- (void)_setCurrentSessionInputOrigin:(unint64_t)origin;
+- (void)_updateRoutePlanningRequest:(id)request withResponse:(id)response completionHandler:(id)handler;
+- (void)anticipateRoutePlanningRequest:(id)request completionHandler:(id)handler;
 - (void)checkinForRoutePlanning;
 - (void)clearLocally;
 - (void)clearPreviewRoutesIfNeeded;
-- (void)clearRoutePlanningWithContext:(id)a3 completionHandler:(id)a4;
-- (void)failRoutePlanningRequest:(id)a3 withResponse:(id)a4 completionHandler:(id)a5;
-- (void)mapsApplicationStateDidChange:(id)a3;
-- (void)routePlanningSession:(id)a3 didFailWithResponse:(id)a4;
-- (void)routePlanningSession:(id)a3 didStartLoadingWithRequest:(id)a4;
-- (void)routePlanningSession:(id)a3 didUpdateWithResponse:(id)a4;
-- (void)routePlanningSessionDidInvalidate:(id)a3;
+- (void)clearRoutePlanningWithContext:(id)context completionHandler:(id)handler;
+- (void)failRoutePlanningRequest:(id)request withResponse:(id)response completionHandler:(id)handler;
+- (void)mapsApplicationStateDidChange:(id)change;
+- (void)routePlanningSession:(id)session didFailWithResponse:(id)response;
+- (void)routePlanningSession:(id)session didStartLoadingWithRequest:(id)request;
+- (void)routePlanningSession:(id)session didUpdateWithResponse:(id)response;
+- (void)routePlanningSessionDidInvalidate:(id)invalidate;
 - (void)sendPreviewRoutesIfAvailable;
-- (void)transitRouteUpdater:(id)a3 didUpdateTransitRoutes:(id)a4;
-- (void)updateRoutePlanningRequest:(id)a3 withResponse:(id)a4 completionHandler:(id)a5;
-- (void)updateRoutePlanningRequest:(id)a3 withSelectedRouteID:(id)a4 completionHandler:(id)a5;
+- (void)transitRouteUpdater:(id)updater didUpdateTransitRoutes:(id)routes;
+- (void)updateRoutePlanningRequest:(id)request withResponse:(id)response completionHandler:(id)handler;
+- (void)updateRoutePlanningRequest:(id)request withSelectedRouteID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation NMCRoutePlanningController
@@ -66,9 +66,9 @@
   {
     v2->_currentSessionInputOrigin = 3;
     v4 = +[NMCGizmoConnection sharedInstance];
-    v5 = [v4 supportsXPCUseMapsForRoutePlanning];
+    supportsXPCUseMapsForRoutePlanning = [v4 supportsXPCUseMapsForRoutePlanning];
 
-    if (v5)
+    if (supportsXPCUseMapsForRoutePlanning)
     {
       [NanoRoutePlanningSession setDefaultClass:objc_opt_class() forSessionState:3];
     }
@@ -125,10 +125,10 @@
   return v3;
 }
 
-- (id)companionRouteAtIndex:(unint64_t)a3
+- (id)companionRouteAtIndex:(unint64_t)index
 {
   dispatch_assert_queue_not_V2(self->_isolationQueue);
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
   }
@@ -148,7 +148,7 @@
     block[3] = &unk_100085DC0;
     block[4] = self;
     block[5] = &v9;
-    block[6] = a3;
+    block[6] = index;
     dispatch_sync(isolationQueue, block);
     v5 = v10[5];
     _Block_object_dispose(&v9, 8);
@@ -157,11 +157,11 @@
   return v5;
 }
 
-- (id)companionRouteWithRouteID:(id)a3
+- (id)companionRouteWithRouteID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
-  if (v4)
+  if (dCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -175,7 +175,7 @@
     block[2] = sub_10001EFCC;
     block[3] = &unk_100085DE8;
     block[4] = self;
-    v9 = v4;
+    v9 = dCopy;
     v10 = &v11;
     dispatch_sync(isolationQueue, block);
     v6 = v12[5];
@@ -191,9 +191,9 @@
   return v6;
 }
 
-- (id)startNavigationDetailsForRouteID:(id)a3
+- (id)startNavigationDetailsForRouteID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v39 = 0;
   v40 = &v39;
@@ -201,10 +201,10 @@
   v42 = sub_10001EB00;
   v43 = sub_10001EB10;
   v44 = 0;
-  if (v4)
+  if (dCopy)
   {
-    v5 = [NSUUID _maps_UUIDWithData:v4];
-    if (v5)
+    selectedRouteID = [NSUUID _maps_UUIDWithData:dCopy];
+    if (selectedRouteID)
     {
       isolationQueue = self->_isolationQueue;
       block[0] = _NSConcreteStackBlock;
@@ -221,7 +221,7 @@
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v47 = v4;
+      v47 = dCopy;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Asked for start navigation details, but route ID is malformed (%@)", buf, 0xCu);
     }
   }
@@ -236,26 +236,26 @@
     v37[4] = self;
     v37[5] = &v39;
     dispatch_sync(v7, v37);
-    v5 = [v40[5] selectedRouteID];
-    if (v5)
+    selectedRouteID = [v40[5] selectedRouteID];
+    if (selectedRouteID)
     {
 LABEL_5:
-      v8 = [v40[5] routes];
+      routes = [v40[5] routes];
       v32 = _NSConcreteStackBlock;
       v33 = 3221225472;
       v34 = sub_10001F7C8;
       v35 = &unk_100085E10;
-      v9 = v5;
+      v9 = selectedRouteID;
       v36 = v9;
-      v10 = [v8 indexOfObjectPassingTest:&v32];
-      if (v10 >= [v8 count])
+      v10 = [routes indexOfObjectPassingTest:&v32];
+      if (v10 >= [routes count])
       {
         v12 = 0;
       }
 
       else
       {
-        v11 = [v8 objectAtIndexedSubscript:v10];
+        v11 = [routes objectAtIndexedSubscript:v10];
         v12 = v11;
         if (v10 != 0x7FFFFFFFFFFFFFFFLL && v11)
         {
@@ -285,15 +285,15 @@ LABEL_5:
           [v14 setRoutes:v16];
 
           [v14 setSelectedRouteIndex:0];
-          v17 = [v12 routeAttributes];
-          [v14 setRouteAttributes:v17];
+          routeAttributes = [v12 routeAttributes];
+          [v14 setRouteAttributes:routeAttributes];
 
           v18 = NavigationConfig_TraceRecordingEnabled[1];
           BOOL = GEOConfigGetBOOL();
           v20 = +[GEOPlatform sharedPlatform];
-          v21 = [v20 isInternalInstall];
+          isInternalInstall = [v20 isInternalInstall];
 
-          if (v21)
+          if (isInternalInstall)
           {
             v22 = NavigationConfig_SimulationEnabled[1];
             if (GEOConfigGetBOOL())
@@ -313,11 +313,11 @@ LABEL_5:
               }
 
               v26 = v25;
-              v27 = [v14 simulationType];
+              simulationType = [v14 simulationType];
               *buf = 138412546;
               v47 = v26;
               v48 = 1024;
-              LODWORD(v49) = v27;
+              LODWORD(v49) = simulationType;
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Internal only: shouldRecordTrace: %@, simulationType: %d", buf, 0x12u);
             }
 
@@ -332,8 +332,8 @@ LABEL_5:
             goto LABEL_27;
           }
 
-          v28 = [v40[5] traceRecordingData];
-          [v14 setTraceRecordingData:v28];
+          traceRecordingData = [v40[5] traceRecordingData];
+          [v14 setTraceRecordingData:traceRecordingData];
 LABEL_26:
 
 LABEL_27:
@@ -341,14 +341,14 @@ LABEL_27:
         }
       }
 
-      v28 = sub_100053324();
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      traceRecordingData = sub_100053324();
+      if (os_log_type_enabled(traceRecordingData, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
         v47 = v10;
         v48 = 2112;
         v49 = v9;
-        _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "Asked for start navigation details, but route not found (index: %lu, routeID: %@)", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, traceRecordingData, OS_LOG_TYPE_ERROR, "Asked for start navigation details, but route not found (index: %lu, routeID: %@)", buf, 0x16u);
       }
 
       v14 = 0;
@@ -389,21 +389,21 @@ LABEL_35:
 - (void)_sendPreviewRoutesIfAvailable
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v3 = [(NanoRoutePlanningSession *)self->_routePlanningSession response];
-  v4 = [v3 companionRoutes];
+  response = [(NanoRoutePlanningSession *)self->_routePlanningSession response];
+  companionRoutes = [response companionRoutes];
 
-  v5 = [(NanoRoutePlanningSession *)self->_routePlanningSession request];
-  v6 = [v5 companionRouteContext];
-  v7 = [v6 copy];
+  request = [(NanoRoutePlanningSession *)self->_routePlanningSession request];
+  companionRouteContext = [request companionRouteContext];
+  v7 = [companionRouteContext copy];
 
-  v8 = [(NanoRoutePlanningSession *)self->_routePlanningSession response];
-  v9 = [v8 selectedRouteID];
+  response2 = [(NanoRoutePlanningSession *)self->_routePlanningSession response];
+  selectedRouteID = [response2 selectedRouteID];
 
-  if (v9)
+  if (selectedRouteID)
   {
-    v10 = [(NanoRoutePlanningSession *)self->_routePlanningSession response];
-    v11 = [v10 routeIDs];
-    v12 = [v11 indexOfObject:v9];
+    response3 = [(NanoRoutePlanningSession *)self->_routePlanningSession response];
+    routeIDs = [response3 routeIDs];
+    v12 = [routeIDs indexOfObject:selectedRouteID];
   }
 
   else
@@ -411,7 +411,7 @@ LABEL_35:
     v12 = 0;
   }
 
-  if ([v4 count])
+  if ([companionRoutes count])
   {
     v13 = sub_100053324();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -420,7 +420,7 @@ LABEL_35:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Connection needs sync: sending latest preview routes", v14, 2u);
     }
 
-    [(NMCRoutePlanningController *)self _sendPreviewRoutes:v4 atIndexes:0 error:0 companionRouteContext:v7 includeSyntheticRoute:1];
+    [(NMCRoutePlanningController *)self _sendPreviewRoutes:companionRoutes atIndexes:0 error:0 companionRouteContext:v7 includeSyntheticRoute:1];
     if (v12 && v12 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NMCRoutePlanningController *)self _sendSelectedPreviewRouteIndex:v12 context:v7];
@@ -452,11 +452,11 @@ LABEL_35:
     v4 = sub_100053324();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(NanoRoutePlanningSession *)v3 request];
-      v6 = [v5 companionRouteContext];
-      v7 = [v6 simpleDescription];
+      request = [(NanoRoutePlanningSession *)v3 request];
+      companionRouteContext = [request companionRouteContext];
+      simpleDescription = [companionRouteContext simpleDescription];
       v8 = 138412290;
-      v9 = v7;
+      v9 = simpleDescription;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Clearing existing route planning session (context: %@)", &v8, 0xCu);
     }
 
@@ -491,37 +491,37 @@ LABEL_35:
 
   if (v8)
   {
-    v5 = [(NanoRoutePlanningSession *)v8 request];
-    v6 = [v5 companionRouteContext];
+    request = [(NanoRoutePlanningSession *)v8 request];
+    companionRouteContext = [request companionRouteContext];
     lastInvalidatedCompanionRouteContext = self->_lastInvalidatedCompanionRouteContext;
-    self->_lastInvalidatedCompanionRouteContext = v6;
+    self->_lastInvalidatedCompanionRouteContext = companionRouteContext;
 
     [(NanoRoutePlanningSession *)v8 unregisterObserver:self];
     [(NanoRoutePlanningSession *)v8 invalidate];
   }
 }
 
-- (void)mapsApplicationStateDidChange:(id)a3
+- (void)mapsApplicationStateDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:BKSApplicationStateKey];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:BKSApplicationStateKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 unsignedIntValue];
+    unsignedIntValue = [v6 unsignedIntValue];
     v8 = sub_100053324();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v12 = 136315394;
       v13 = "[NMCRoutePlanningController mapsApplicationStateDidChange:]";
       v14 = 2048;
-      v15 = v7;
+      v15 = unsignedIntValue;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %lu", &v12, 0x16u);
     }
 
-    v9 = (v7 == 0) | v7;
+    v9 = (unsignedIntValue == 0) | unsignedIntValue;
     if (v9)
     {
       [(NMCRoutePlanningController *)self clearPreviewRoutesIfNeeded];
@@ -535,9 +535,9 @@ LABEL_35:
     v10 = sub_100053324();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v4 userInfo];
+      userInfo2 = [changeCopy userInfo];
       v12 = 138543362;
-      v13 = v11;
+      v13 = userInfo2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Unknown userInfo format: %{public}@", &v12, 0xCu);
     }
   }
@@ -553,22 +553,22 @@ LABEL_35:
   v30[4] = self;
   v3 = objc_retainBlock(v30);
   v4 = self->_routePlanningSession;
-  v5 = [(NanoRoutePlanningSession *)v4 request];
-  v6 = v5;
-  if (v5 && [v5 resolvedTransportType] == 1)
+  request = [(NanoRoutePlanningSession *)v4 request];
+  v6 = request;
+  if (request && [request resolvedTransportType] == 1)
   {
-    v7 = [(NanoRoutePlanningSession *)v4 response];
-    if ([v7 numberOfRoutes] && objc_msgSend(v7, "routeOrigin") == 1)
+    response = [(NanoRoutePlanningSession *)v4 response];
+    if ([response numberOfRoutes] && objc_msgSend(response, "routeOrigin") == 1)
     {
-      v24 = v7;
+      v24 = response;
       v25 = v4;
-      v8 = [v7 routes];
-      v9 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+      routes = [response routes];
+      v9 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(routes, "count")}];
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v10 = v8;
+      v10 = routes;
       v11 = [v10 countByEnumeratingWithState:&v26 objects:v33 count:16];
       if (v11)
       {
@@ -585,8 +585,8 @@ LABEL_35:
             }
 
             v16 = *(*(&v26 + 1) + 8 * i);
-            v17 = [v16 transitRouteUpdateRequest];
-            if (v17)
+            transitRouteUpdateRequest = [v16 transitRouteUpdateRequest];
+            if (transitRouteUpdateRequest)
             {
               if (fabs(v14) < 0.000001)
               {
@@ -594,7 +594,7 @@ LABEL_35:
                 v14 = v18;
               }
 
-              [v9 addObject:v17];
+              [v9 addObject:transitRouteUpdateRequest];
             }
           }
 
@@ -612,7 +612,7 @@ LABEL_35:
       if ([v9 count])
       {
         v19 = sub_100053324();
-        v7 = v24;
+        response = v24;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           v20 = [v9 count];
@@ -637,7 +637,7 @@ LABEL_35:
       else
       {
         (v3[2])(v3);
-        v7 = v24;
+        response = v24;
         v4 = v25;
       }
     }
@@ -654,94 +654,94 @@ LABEL_35:
   }
 }
 
-- (void)transitRouteUpdater:(id)a3 didUpdateTransitRoutes:(id)a4
+- (void)transitRouteUpdater:(id)updater didUpdateTransitRoutes:(id)routes
 {
-  v5 = a4;
+  routesCopy = routes;
   isolationQueue = self->_isolationQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100020478;
   v8[3] = &unk_1000856F8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = routesCopy;
+  v7 = routesCopy;
   dispatch_async(isolationQueue, v8);
 }
 
-- (void)routePlanningSession:(id)a3 didStartLoadingWithRequest:(id)a4
+- (void)routePlanningSession:(id)session didStartLoadingWithRequest:(id)request
 {
-  v5 = a3;
+  sessionCopy = session;
   isolationQueue = self->_isolationQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100020834;
   v8[3] = &unk_1000856F8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(isolationQueue, v8);
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateWithResponse:(id)a4
+- (void)routePlanningSession:(id)session didUpdateWithResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  responseCopy = response;
   isolationQueue = self->_isolationQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100020958;
   block[3] = &unk_100085E38;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = responseCopy;
+  selfCopy = self;
+  v14 = sessionCopy;
+  v9 = sessionCopy;
+  v10 = responseCopy;
   dispatch_async(isolationQueue, block);
 }
 
-- (void)routePlanningSession:(id)a3 didFailWithResponse:(id)a4
+- (void)routePlanningSession:(id)session didFailWithResponse:(id)response
 {
-  v5 = a3;
+  sessionCopy = session;
   isolationQueue = self->_isolationQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100020B1C;
   v8[3] = &unk_1000856F8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = sessionCopy;
+  v7 = sessionCopy;
   dispatch_async(isolationQueue, v8);
 }
 
-- (void)routePlanningSessionDidInvalidate:(id)a3
+- (void)routePlanningSessionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   isolationQueue = self->_isolationQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100020C14;
   v7[3] = &unk_1000856F8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = invalidateCopy;
+  selfCopy = self;
+  v6 = invalidateCopy;
   dispatch_async(isolationQueue, v7);
 }
 
-- (void)_setCurrentSessionInputOrigin:(unint64_t)a3
+- (void)_setCurrentSessionInputOrigin:(unint64_t)origin
 {
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (self->_currentSessionInputOrigin != a3)
+  if (self->_currentSessionInputOrigin != origin)
   {
     v5 = sub_100053324();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = sub_1000134A4(a3);
+      v6 = sub_1000134A4(origin);
       v7 = 138412290;
       v8 = v6;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Switching current session input origin to %@", &v7, 0xCu);
     }
 
-    self->_currentSessionInputOrigin = a3;
+    self->_currentSessionInputOrigin = origin;
   }
 }
 
@@ -779,17 +779,17 @@ LABEL_35:
   objc_destroyWeak(&location);
 }
 
-- (void)_handleIncomingMessage:(id)a3
+- (void)_handleIncomingMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [v4 type];
-  if (v5 > 305)
+  type = [messageCopy type];
+  if (type > 305)
   {
-    switch(v5)
+    switch(type)
     {
       case 306:
-        v16 = [v4 argumentForTag:5];
+        v16 = [messageCopy argumentForTag:5];
         v6 = v16;
         if (v16 && ([(NMReply *)v16 hasBoolValue]& 1) != 0)
         {
@@ -817,30 +817,30 @@ LABEL_35:
             routePlanningSession = self->_routePlanningSession;
             if (routePlanningSession)
             {
-              v20 = [(NanoRoutePlanningSession *)routePlanningSession response];
-              v21 = [v20 routeIDs];
+              response = [(NanoRoutePlanningSession *)routePlanningSession response];
+              routeIDs = [response routeIDs];
               v45[0] = _NSConcreteStackBlock;
               v45[1] = 3221225472;
               v45[2] = sub_100022404;
               v45[3] = &unk_100085E88;
-              v22 = v20;
+              v22 = response;
               v46 = v22;
-              v23 = sub_1000282B8(v21, v45);
+              v23 = sub_1000282B8(routeIDs, v45);
 
               if ([v23 count])
               {
-                v24 = [(NanoRoutePlanningSession *)self->_routePlanningSession request];
-                v25 = [v24 companionRouteContext];
+                request = [(NanoRoutePlanningSession *)self->_routePlanningSession request];
+                companionRouteContext = [request companionRouteContext];
 
                 v26 = sub_100053324();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v50 = v25;
+                  v50 = companionRouteContext;
                   _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Sending all received route updates in session (context: %@)", buf, 0xCu);
                 }
 
-                [(NMCRoutePlanningController *)self _sendRouteUpdates:v23 context:v25];
+                [(NMCRoutePlanningController *)self _sendRouteUpdates:v23 context:companionRouteContext];
               }
             }
           }
@@ -849,11 +849,11 @@ LABEL_35:
           goto LABEL_316;
         }
 
-        v7 = sub_100053324();
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+        companionRouteContext2 = sub_100053324();
+        if (os_log_type_enabled(companionRouteContext2, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "SET_WANTS_ALL_NAV_STATUS_UPDATES message has no flag argument, ignoring", buf, 2u);
+          _os_log_impl(&_mh_execute_header, companionRouteContext2, OS_LOG_TYPE_INFO, "SET_WANTS_ALL_NAV_STATUS_UPDATES message has no flag argument, ignoring", buf, 2u);
         }
 
         goto LABEL_315;
@@ -872,20 +872,20 @@ LABEL_316:
           goto LABEL_317;
         }
 
-        v7 = +[MSPMapsPaths mapsApplicationContainerPaths];
+        companionRouteContext2 = +[MSPMapsPaths mapsApplicationContainerPaths];
         [NSNumber numberWithBool:1];
-        v27 = [v7 homeDirectory];
+        homeDirectory = [companionRouteContext2 homeDirectory];
         _CFPreferencesSetAppValueWithContainer();
 
 LABEL_315:
         goto LABEL_316;
       case 309:
         v6 = objc_alloc_init(NMReply);
-        v7 = objc_alloc_init(NMArgument);
-        [v7 setTag:1];
-        [(NMReply *)v6 addArgument:v7];
-        v8 = +[NMCGizmoConnection sharedInstance];
-        [v8 sendReply:v6 forMessage:v4 options:0];
+        companionRouteContext2 = objc_alloc_init(NMArgument);
+        [companionRouteContext2 setTag:1];
+        [(NMReply *)v6 addArgument:companionRouteContext2];
+        dataValue = +[NMCGizmoConnection sharedInstance];
+        [dataValue sendReply:v6 forMessage:messageCopy options:0];
 LABEL_314:
 
         goto LABEL_315;
@@ -894,26 +894,26 @@ LABEL_314:
     goto LABEL_317;
   }
 
-  if (v5 == 304)
+  if (type == 304)
   {
-    [(NMCRoutePlanningController *)self _handlePreviewNavMessage:v4];
+    [(NMCRoutePlanningController *)self _handlePreviewNavMessage:messageCopy];
     goto LABEL_317;
   }
 
-  if (v5 == 305)
+  if (type == 305)
   {
     v6 = self->_routePlanningSession;
-    v9 = [(NMReply *)v6 request];
-    v7 = [v9 companionRouteContext];
+    request2 = [(NMReply *)v6 request];
+    companionRouteContext2 = [request2 companionRouteContext];
 
-    v10 = [v4 argumentForTag:406];
-    v8 = [v10 dataValue];
+    v10 = [messageCopy argumentForTag:406];
+    dataValue = [v10 dataValue];
 
-    if (v8)
+    if (dataValue)
     {
-      v11 = [[GEOCompanionRouteContext alloc] initWithData:v8];
+      v11 = [[GEOCompanionRouteContext alloc] initWithData:dataValue];
       v12 = v11;
-      if (v7 && [v11 isStaleComparedToContext:v7])
+      if (companionRouteContext2 && [v11 isStaleComparedToContext:companionRouteContext2])
       {
         v13 = sub_100053324();
         if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -923,19 +923,19 @@ LABEL_209:
           goto LABEL_306;
         }
 
-        v14 = [v4 type];
-        if (v14 > 202)
+        type2 = [messageCopy type];
+        if (type2 > 202)
         {
-          if (v14 <= 400)
+          if (type2 <= 400)
           {
-            if (v14 <= 205)
+            if (type2 <= 205)
             {
-              if (v14 == 203)
+              if (type2 == 203)
               {
                 v15 = @"FAILED_TO_UPDATE_LOCATION";
               }
 
-              else if (v14 == 204)
+              else if (type2 == 204)
               {
                 v15 = @"DID_PAUSE_LOCATION_UPDATES";
               }
@@ -948,7 +948,7 @@ LABEL_209:
 
             else
             {
-              switch(v14)
+              switch(type2)
               {
                 case 300:
                   v15 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -999,7 +999,7 @@ LABEL_209:
                   v15 = @"SET_DISPLAYED_STEP";
                   break;
                 default:
-                  if (v14 != 206)
+                  if (type2 != 206)
                   {
                     goto LABEL_168;
                   }
@@ -1012,17 +1012,17 @@ LABEL_209:
             goto LABEL_208;
           }
 
-          if (v14 > 599)
+          if (type2 > 599)
           {
-            if (v14 > 1499)
+            if (type2 > 1499)
             {
-              if (v14 == 1500)
+              if (type2 == 1500)
               {
                 v15 = @"DEBUG_FETCH_CONFIGURATION_INFO";
                 goto LABEL_208;
               }
 
-              if (v14 == 1501)
+              if (type2 == 1501)
               {
                 v15 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
                 goto LABEL_208;
@@ -1031,13 +1031,13 @@ LABEL_209:
 
             else
             {
-              if (v14 == 600)
+              if (type2 == 600)
               {
                 v15 = @"FETCH_ROUTE_GENIUS";
                 goto LABEL_208;
               }
 
-              if (v14 == 1000)
+              if (type2 == 1000)
               {
                 v15 = @"PING";
                 goto LABEL_208;
@@ -1047,15 +1047,15 @@ LABEL_209:
             goto LABEL_168;
           }
 
-          if (v14 > 500)
+          if (type2 > 500)
           {
-            if (v14 == 501)
+            if (type2 == 501)
             {
               v15 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
               goto LABEL_208;
             }
 
-            if (v14 == 502)
+            if (type2 == 502)
             {
               v15 = @"SERVICE_REQUEST";
               goto LABEL_208;
@@ -1064,13 +1064,13 @@ LABEL_209:
             goto LABEL_168;
           }
 
-          if (v14 == 401)
+          if (type2 == 401)
           {
             v15 = @"OPEN_URL";
             goto LABEL_208;
           }
 
-          if (v14 != 500)
+          if (type2 != 500)
           {
             goto LABEL_168;
           }
@@ -1080,11 +1080,11 @@ LABEL_209:
 
         else
         {
-          if (v14 <= 99)
+          if (type2 <= 99)
           {
-            if (v14 > 3)
+            if (type2 > 3)
             {
-              switch(v14)
+              switch(type2)
               {
                 case '2':
                   v15 = @"START_INITIAL_SYNC";
@@ -1140,7 +1140,7 @@ LABEL_209:
                   v15 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
                   break;
                 default:
-                  if (v14 != 4)
+                  if (type2 != 4)
                   {
                     goto LABEL_168;
                   }
@@ -1152,7 +1152,7 @@ LABEL_209:
               goto LABEL_208;
             }
 
-            switch(v14)
+            switch(type2)
             {
               case 1:
                 v15 = @"FETCH_TILES";
@@ -1166,18 +1166,18 @@ LABEL_209:
             }
 
 LABEL_168:
-            v15 = [NSString stringWithFormat:@"(unknown: %i)", v14];
+            v15 = [NSString stringWithFormat:@"(unknown: %i)", type2];
             goto LABEL_208;
           }
 
-          if (v14 <= 102)
+          if (type2 <= 102)
           {
-            if (v14 == 100)
+            if (type2 == 100)
             {
               v15 = @"CHECKIN_WITH_TILE_GROUP";
             }
 
-            else if (v14 == 101)
+            else if (type2 == 101)
             {
               v15 = @"FORCE_UPDATE_MANIFEST";
             }
@@ -1190,9 +1190,9 @@ LABEL_168:
             goto LABEL_208;
           }
 
-          if (v14 > 200)
+          if (type2 > 200)
           {
-            if (v14 == 201)
+            if (type2 == 201)
             {
               v15 = @"STOP_LOCATION_UPDATE";
             }
@@ -1205,13 +1205,13 @@ LABEL_168:
             goto LABEL_208;
           }
 
-          if (v14 == 103)
+          if (type2 == 103)
           {
             v15 = @"FETCH_RESOURCE";
             goto LABEL_208;
           }
 
-          if (v14 != 200)
+          if (type2 != 200)
           {
             goto LABEL_168;
           }
@@ -1220,14 +1220,14 @@ LABEL_168:
         }
 
 LABEL_208:
-        v36 = [v7 simpleDescription];
-        v37 = [v12 simpleDescription];
+        simpleDescription = [companionRouteContext2 simpleDescription];
+        simpleDescription2 = [v12 simpleDescription];
         *buf = 138412802;
         v50 = v15;
         v51 = 2112;
-        v52 = v36;
+        v52 = simpleDescription;
         v53 = 2112;
-        v54 = v37;
+        v54 = simpleDescription2;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Ignoring %@ message; incoming route context is old (current:%@, incoming:%@)", buf, 0x20u);
 
         goto LABEL_209;
@@ -1236,15 +1236,15 @@ LABEL_208:
       goto LABEL_309;
     }
 
-    if (!v7)
+    if (!companionRouteContext2)
     {
       goto LABEL_310;
     }
 
-    v28 = [v7 origin];
+    origin = [companionRouteContext2 origin];
     v12 = sub_100053324();
     v29 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
-    if (v28 == 2)
+    if (origin == 2)
     {
       if (!v29)
       {
@@ -1253,20 +1253,20 @@ LABEL_306:
         goto LABEL_314;
       }
 
-      v30 = [v7 simpleDescription];
-      v31 = [v4 type];
-      if (v31 > 202)
+      simpleDescription3 = [companionRouteContext2 simpleDescription];
+      type3 = [messageCopy type];
+      if (type3 > 202)
       {
-        if (v31 <= 400)
+        if (type3 <= 400)
         {
-          if (v31 <= 205)
+          if (type3 <= 205)
           {
-            if (v31 == 203)
+            if (type3 == 203)
             {
               v32 = @"FAILED_TO_UPDATE_LOCATION";
             }
 
-            else if (v31 == 204)
+            else if (type3 == 204)
             {
               v32 = @"DID_PAUSE_LOCATION_UPDATES";
             }
@@ -1279,7 +1279,7 @@ LABEL_306:
 
           else
           {
-            switch(v31)
+            switch(type3)
             {
               case 300:
                 v32 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -1330,7 +1330,7 @@ LABEL_306:
                 v32 = @"SET_DISPLAYED_STEP";
                 break;
               default:
-                if (v31 != 206)
+                if (type3 != 206)
                 {
                   goto LABEL_224;
                 }
@@ -1343,17 +1343,17 @@ LABEL_306:
           goto LABEL_305;
         }
 
-        if (v31 > 599)
+        if (type3 > 599)
         {
-          if (v31 > 1499)
+          if (type3 > 1499)
           {
-            if (v31 == 1500)
+            if (type3 == 1500)
             {
               v32 = @"DEBUG_FETCH_CONFIGURATION_INFO";
               goto LABEL_305;
             }
 
-            if (v31 == 1501)
+            if (type3 == 1501)
             {
               v32 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
               goto LABEL_305;
@@ -1362,13 +1362,13 @@ LABEL_306:
 
           else
           {
-            if (v31 == 600)
+            if (type3 == 600)
             {
               v32 = @"FETCH_ROUTE_GENIUS";
               goto LABEL_305;
             }
 
-            if (v31 == 1000)
+            if (type3 == 1000)
             {
               v32 = @"PING";
               goto LABEL_305;
@@ -1378,15 +1378,15 @@ LABEL_306:
           goto LABEL_224;
         }
 
-        if (v31 > 500)
+        if (type3 > 500)
         {
-          if (v31 == 501)
+          if (type3 == 501)
           {
             v32 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
             goto LABEL_305;
           }
 
-          if (v31 == 502)
+          if (type3 == 502)
           {
             v32 = @"SERVICE_REQUEST";
             goto LABEL_305;
@@ -1395,13 +1395,13 @@ LABEL_306:
           goto LABEL_224;
         }
 
-        if (v31 == 401)
+        if (type3 == 401)
         {
           v32 = @"OPEN_URL";
           goto LABEL_305;
         }
 
-        if (v31 != 500)
+        if (type3 != 500)
         {
           goto LABEL_224;
         }
@@ -1411,11 +1411,11 @@ LABEL_306:
 
       else
       {
-        if (v31 <= 99)
+        if (type3 <= 99)
         {
-          if (v31 > 3)
+          if (type3 > 3)
           {
-            switch(v31)
+            switch(type3)
             {
               case '2':
                 v32 = @"START_INITIAL_SYNC";
@@ -1471,7 +1471,7 @@ LABEL_306:
                 v32 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
                 break;
               default:
-                if (v31 != 4)
+                if (type3 != 4)
                 {
                   goto LABEL_224;
                 }
@@ -1483,7 +1483,7 @@ LABEL_306:
             goto LABEL_305;
           }
 
-          switch(v31)
+          switch(type3)
           {
             case 1:
               v32 = @"FETCH_TILES";
@@ -1497,18 +1497,18 @@ LABEL_306:
           }
 
 LABEL_224:
-          v32 = [NSString stringWithFormat:@"(unknown: %i)", v31];
+          v32 = [NSString stringWithFormat:@"(unknown: %i)", type3];
           goto LABEL_305;
         }
 
-        if (v31 <= 102)
+        if (type3 <= 102)
         {
-          if (v31 == 100)
+          if (type3 == 100)
           {
             v32 = @"CHECKIN_WITH_TILE_GROUP";
           }
 
-          else if (v31 == 101)
+          else if (type3 == 101)
           {
             v32 = @"FORCE_UPDATE_MANIFEST";
           }
@@ -1521,9 +1521,9 @@ LABEL_224:
           goto LABEL_305;
         }
 
-        if (v31 > 200)
+        if (type3 > 200)
         {
-          if (v31 == 201)
+          if (type3 == 201)
           {
             v32 = @"STOP_LOCATION_UPDATE";
           }
@@ -1536,13 +1536,13 @@ LABEL_224:
           goto LABEL_305;
         }
 
-        if (v31 == 103)
+        if (type3 == 103)
         {
           v32 = @"FETCH_RESOURCE";
           goto LABEL_305;
         }
 
-        if (v31 != 200)
+        if (type3 != 200)
         {
           goto LABEL_224;
         }
@@ -1552,7 +1552,7 @@ LABEL_224:
 
 LABEL_305:
       *buf = 138412546;
-      v50 = v30;
+      v50 = simpleDescription3;
       v51 = 2112;
       v52 = v32;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Was told to clear nav preview without a context and our current context is from companion (%@); dropping (%@) message", buf, 0x16u);
@@ -1573,17 +1573,17 @@ LABEL_310:
 
       if (v6)
       {
-        v40 = [(NMReply *)v6 request];
-        v41 = [v40 companionRouteContext];
+        request3 = [(NMReply *)v6 request];
+        companionRouteContext3 = [request3 companionRouteContext];
         lastInvalidatedCompanionRouteContext = self->_lastInvalidatedCompanionRouteContext;
-        self->_lastInvalidatedCompanionRouteContext = v41;
+        self->_lastInvalidatedCompanionRouteContext = companionRouteContext3;
 
         v43 = sub_100053324();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
         {
-          v44 = [(GEOCompanionRouteContext *)self->_lastInvalidatedCompanionRouteContext simpleDescription];
+          simpleDescription4 = [(GEOCompanionRouteContext *)self->_lastInvalidatedCompanionRouteContext simpleDescription];
           *buf = 138412290;
-          v50 = v44;
+          v50 = simpleDescription4;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "Will clear route planning locally and notify Maps (context: %@)", buf, 0xCu);
         }
 
@@ -1595,20 +1595,20 @@ LABEL_310:
       goto LABEL_314;
     }
 
-    v33 = [v7 simpleDescription];
-    v34 = [v4 type];
-    if (v34 > 202)
+    simpleDescription5 = [companionRouteContext2 simpleDescription];
+    type4 = [messageCopy type];
+    if (type4 > 202)
     {
-      if (v34 <= 400)
+      if (type4 <= 400)
       {
-        if (v34 <= 205)
+        if (type4 <= 205)
         {
-          if (v34 == 203)
+          if (type4 == 203)
           {
             v35 = @"FAILED_TO_UPDATE_LOCATION";
           }
 
-          else if (v34 == 204)
+          else if (type4 == 204)
           {
             v35 = @"DID_PAUSE_LOCATION_UPDATES";
           }
@@ -1621,7 +1621,7 @@ LABEL_310:
 
         else
         {
-          switch(v34)
+          switch(type4)
           {
             case 300:
               v35 = @"UPDATE_NAV_ROUTE_DETAILS";
@@ -1672,7 +1672,7 @@ LABEL_310:
               v35 = @"SET_DISPLAYED_STEP";
               break;
             default:
-              if (v34 != 206)
+              if (type4 != 206)
               {
                 goto LABEL_227;
               }
@@ -1685,17 +1685,17 @@ LABEL_310:
         goto LABEL_308;
       }
 
-      if (v34 > 599)
+      if (type4 > 599)
       {
-        if (v34 > 1499)
+        if (type4 > 1499)
         {
-          if (v34 == 1500)
+          if (type4 == 1500)
           {
             v35 = @"DEBUG_FETCH_CONFIGURATION_INFO";
             goto LABEL_308;
           }
 
-          if (v34 == 1501)
+          if (type4 == 1501)
           {
             v35 = @"DEBUG_FETCH_DIAGNOSTICS_STRING";
             goto LABEL_308;
@@ -1704,13 +1704,13 @@ LABEL_310:
 
         else
         {
-          if (v34 == 600)
+          if (type4 == 600)
           {
             v35 = @"FETCH_ROUTE_GENIUS";
             goto LABEL_308;
           }
 
-          if (v34 == 1000)
+          if (type4 == 1000)
           {
             v35 = @"PING";
             goto LABEL_308;
@@ -1720,15 +1720,15 @@ LABEL_310:
         goto LABEL_227;
       }
 
-      if (v34 > 500)
+      if (type4 > 500)
       {
-        if (v34 == 501)
+        if (type4 == 501)
         {
           v35 = @"PLACE_DATA_IDENTIFIER_LOOKUP";
           goto LABEL_308;
         }
 
-        if (v34 == 502)
+        if (type4 == 502)
         {
           v35 = @"SERVICE_REQUEST";
           goto LABEL_308;
@@ -1737,13 +1737,13 @@ LABEL_310:
         goto LABEL_227;
       }
 
-      if (v34 == 401)
+      if (type4 == 401)
       {
         v35 = @"OPEN_URL";
         goto LABEL_308;
       }
 
-      if (v34 != 500)
+      if (type4 != 500)
       {
         goto LABEL_227;
       }
@@ -1753,11 +1753,11 @@ LABEL_310:
 
     else
     {
-      if (v34 <= 99)
+      if (type4 <= 99)
       {
-        if (v34 > 3)
+        if (type4 > 3)
         {
-          switch(v34)
+          switch(type4)
           {
             case '2':
               v35 = @"START_INITIAL_SYNC";
@@ -1813,7 +1813,7 @@ LABEL_310:
               v35 = @"SET_SUBSCRIPTION_SHOULD_SYNC";
               break;
             default:
-              if (v34 != 4)
+              if (type4 != 4)
               {
                 goto LABEL_227;
               }
@@ -1825,7 +1825,7 @@ LABEL_310:
           goto LABEL_308;
         }
 
-        switch(v34)
+        switch(type4)
         {
           case 1:
             v35 = @"FETCH_TILES";
@@ -1839,18 +1839,18 @@ LABEL_310:
         }
 
 LABEL_227:
-        v35 = [NSString stringWithFormat:@"(unknown: %i)", v34];
+        v35 = [NSString stringWithFormat:@"(unknown: %i)", type4];
         goto LABEL_308;
       }
 
-      if (v34 <= 102)
+      if (type4 <= 102)
       {
-        if (v34 == 100)
+        if (type4 == 100)
         {
           v35 = @"CHECKIN_WITH_TILE_GROUP";
         }
 
-        else if (v34 == 101)
+        else if (type4 == 101)
         {
           v35 = @"FORCE_UPDATE_MANIFEST";
         }
@@ -1863,9 +1863,9 @@ LABEL_227:
         goto LABEL_308;
       }
 
-      if (v34 > 200)
+      if (type4 > 200)
       {
-        if (v34 == 201)
+        if (type4 == 201)
         {
           v35 = @"STOP_LOCATION_UPDATE";
         }
@@ -1878,13 +1878,13 @@ LABEL_227:
         goto LABEL_308;
       }
 
-      if (v34 == 103)
+      if (type4 == 103)
       {
         v35 = @"FETCH_RESOURCE";
         goto LABEL_308;
       }
 
-      if (v34 != 200)
+      if (type4 != 200)
       {
         goto LABEL_227;
       }
@@ -1894,7 +1894,7 @@ LABEL_227:
 
 LABEL_308:
     *buf = 138412546;
-    v50 = v33;
+    v50 = simpleDescription5;
     v51 = 2112;
     v52 = v35;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Was told to clear nav preview without a context but our current context is from gizmo (%@); allowing (%@) message to be sent to Maps", buf, 0x16u);
@@ -1905,45 +1905,45 @@ LABEL_308:
 LABEL_317:
 }
 
-- (void)_handlePreviewNavMessage:(id)a3
+- (void)_handlePreviewNavMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [v4 argumentForTag:417];
-  v6 = [v5 dataListValues];
+  v5 = [messageCopy argumentForTag:417];
+  dataListValues = [v5 dataListValues];
 
-  v7 = [v6 lastObject];
-  v8 = v7;
-  if (v7)
+  lastObject = [dataListValues lastObject];
+  v8 = lastObject;
+  if (lastObject)
   {
-    v9 = v7;
+    dataValue = lastObject;
   }
 
   else
   {
-    v10 = [v4 argumentForTag:405];
-    v9 = [v10 dataValue];
+    v10 = [messageCopy argumentForTag:405];
+    dataValue = [v10 dataValue];
   }
 
-  v11 = [v6 firstObject];
-  if (v11)
+  firstObject = [dataListValues firstObject];
+  if (firstObject)
   {
-    v12 = v11;
-    v13 = v9 == 0;
+    dataValue2 = firstObject;
+    v13 = dataValue == 0;
     goto LABEL_6;
   }
 
-  v16 = [v4 argumentForTag:404];
-  v12 = [v16 dataValue];
+  v16 = [messageCopy argumentForTag:404];
+  dataValue2 = [v16 dataValue];
 
-  v13 = v9 == 0;
-  if (v12 | v9)
+  v13 = dataValue == 0;
+  if (dataValue2 | dataValue)
   {
-    if (!v12)
+    if (!dataValue2)
     {
       v14 = 0;
       v15 = 0;
-      if (!v9)
+      if (!dataValue)
       {
         goto LABEL_13;
       }
@@ -1952,13 +1952,13 @@ LABEL_317:
     }
 
 LABEL_6:
-    v14 = [[GEOMapItemStorage alloc] initWithData:v12];
+    v14 = [[GEOMapItemStorage alloc] initWithData:dataValue2];
     if (v13)
     {
       v15 = 0;
 LABEL_13:
       v78 = v15;
-      if (![v6 count] && !v14 && !v15)
+      if (![dataListValues count] && !v14 && !v15)
       {
         v81 = NSLocalizedDescriptionKey;
         v82 = NSLocalizedFailureReasonErrorKey;
@@ -1971,16 +1971,16 @@ LABEL_13:
         v22 = [[NMArgument alloc] _nm_initWithErrorValue:v19 tag:3];
         [(NMReply *)v21 addArgument:v22];
         v23 = +[NMCGizmoConnection sharedInstance];
-        [v23 sendReply:v21 forMessage:v4 options:0];
+        [v23 sendReply:v21 forMessage:messageCopy options:0];
 LABEL_70:
 
         v18 = v78;
         goto LABEL_71;
       }
 
-      if ([v6 count])
+      if ([dataListValues count])
       {
-        v76 = sub_1000282B8(v6, &stru_100085EC8);
+        v76 = sub_1000282B8(dataListValues, &stru_100085EC8);
       }
 
       else
@@ -2010,18 +2010,18 @@ LABEL_70:
         v76 = [NSArray arrayWithObjects:v80 count:2];
       }
 
-      v26 = [v4 argumentForTag:406];
-      v27 = [v26 dataValue];
+      v26 = [messageCopy argumentForTag:406];
+      dataValue3 = [v26 dataValue];
 
-      v28 = [(NMReply *)v27 length];
-      v69 = v27;
+      v28 = [(NMReply *)dataValue3 length];
+      v69 = dataValue3;
       if (v28)
       {
-        v28 = [[GEOCompanionRouteContext alloc] initWithData:v27];
+        v28 = [[GEOCompanionRouteContext alloc] initWithData:dataValue3];
       }
 
       v75 = v28;
-      v29 = [v4 argumentForTag:407];
+      v29 = [messageCopy argumentForTag:407];
       v72 = v29;
       if (v29)
       {
@@ -2034,7 +2034,7 @@ LABEL_70:
         v77 = 0;
       }
 
-      v30 = [v4 argumentForTag:408];
+      v30 = [messageCopy argumentForTag:408];
       v71 = v30;
       if (v30)
       {
@@ -2047,12 +2047,12 @@ LABEL_70:
         v70 = 0;
       }
 
-      v31 = [v4 argumentForTag:413];
-      v32 = [v31 dataValue];
+      v31 = [messageCopy argumentForTag:413];
+      dataValue4 = [v31 dataValue];
 
-      if (v32)
+      if (dataValue4)
       {
-        v67 = [[GEOAutomobileOptions alloc] initWithData:v32];
+        v67 = [[GEOAutomobileOptions alloc] initWithData:dataValue4];
       }
 
       else
@@ -2060,13 +2060,13 @@ LABEL_70:
         v67 = 0;
       }
 
-      v33 = [v4 argumentForTag:414];
-      v34 = [v33 dataValue];
+      v33 = [messageCopy argumentForTag:414];
+      dataValue5 = [v33 dataValue];
 
-      v66 = v34;
-      if (v34)
+      v66 = dataValue5;
+      if (dataValue5)
       {
-        v65 = [[GEOTransitOptions alloc] initWithData:v34];
+        v65 = [[GEOTransitOptions alloc] initWithData:dataValue5];
       }
 
       else
@@ -2074,12 +2074,12 @@ LABEL_70:
         v65 = 0;
       }
 
-      v35 = [v4 argumentForTag:415];
-      v36 = [v35 dataValue];
+      v35 = [messageCopy argumentForTag:415];
+      dataValue6 = [v35 dataValue];
 
-      if (v36)
+      if (dataValue6)
       {
-        v64 = [[GEOWalkingOptions alloc] initWithData:v36];
+        v64 = [[GEOWalkingOptions alloc] initWithData:dataValue6];
       }
 
       else
@@ -2087,13 +2087,13 @@ LABEL_70:
         v64 = 0;
       }
 
-      v37 = [v4 argumentForTag:416];
-      v38 = [v37 dataValue];
+      v37 = [messageCopy argumentForTag:416];
+      dataValue7 = [v37 dataValue];
 
-      v68 = v32;
-      if (v38)
+      v68 = dataValue4;
+      if (dataValue7)
       {
-        v63 = [[GEOCyclingOptions alloc] initWithData:v38];
+        v63 = [[GEOCyclingOptions alloc] initWithData:dataValue7];
       }
 
       else
@@ -2101,17 +2101,17 @@ LABEL_70:
         v63 = 0;
       }
 
-      v39 = [[NMCRPCGizmoPreviewState alloc] initWithMessage:v4];
+      v39 = [[NMCRPCGizmoPreviewState alloc] initWithMessage:messageCopy];
       gizmoPreviewState = self->_gizmoPreviewState;
       self->_gizmoPreviewState = v39;
 
-      v41 = [v4 argumentForTag:400];
-      v42 = [v41 intValue];
+      v41 = [messageCopy argumentForTag:400];
+      intValue = [v41 intValue];
 
-      v74 = v9;
-      if (v42 <= 3)
+      v74 = dataValue;
+      if (intValue <= 3)
       {
-        if (v42 == 2)
+        if (intValue == 2)
         {
           v43 = 2;
           goto LABEL_56;
@@ -2120,7 +2120,7 @@ LABEL_70:
 
       else
       {
-        switch(v42)
+        switch(intValue)
         {
           case 4:
             v43 = 1;
@@ -2136,32 +2136,32 @@ LABEL_56:
             if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
             {
               v45 = *(&off_100085FF0 + v43);
-              v46 = [v75 simpleDescription];
+              simpleDescription = [v75 simpleDescription];
               *buf = 138412546;
               *&buf[4] = v45;
               *&buf[12] = 2112;
-              *&buf[14] = v46;
+              *&buf[14] = simpleDescription;
               _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_INFO, "Will preview directions (transportType:%@, context:%@)", buf, 0x16u);
             }
 
             routePlanningSession = self->_routePlanningSession;
             if (routePlanningSession)
             {
-              v48 = [(NanoRoutePlanningSession *)routePlanningSession request];
-              v49 = [v48 companionRouteContext];
+              request = [(NanoRoutePlanningSession *)routePlanningSession request];
+              companionRouteContext = [request companionRouteContext];
 
               v50 = sub_100053324();
               if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
               {
-                v51 = [v49 simpleDescription];
+                simpleDescription2 = [companionRouteContext simpleDescription];
                 *buf = 138412290;
-                *&buf[4] = v51;
+                *&buf[4] = simpleDescription2;
                 _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "Invalidating existing route planning session (context, %@)", buf, 0xCu);
               }
 
               lastInvalidatedCompanionRouteContext = self->_lastInvalidatedCompanionRouteContext;
-              self->_lastInvalidatedCompanionRouteContext = v49;
-              v53 = v49;
+              self->_lastInvalidatedCompanionRouteContext = companionRouteContext;
+              v53 = companionRouteContext;
 
               [(NanoRoutePlanningSession *)self->_routePlanningSession unregisterObserver:self];
               [(NanoRoutePlanningSession *)self->_routePlanningSession invalidate];
@@ -2173,9 +2173,9 @@ LABEL_56:
             }
 
             v56 = +[GEOMapService sharedService];
-            v57 = [v56 defaultTraits];
+            defaultTraits = [v56 defaultTraits];
             v22 = v75;
-            v58 = [NanoRoutePlanningRequest requestWithWaypoints:v76 viaTransportType:v43 traits:v57 companionRouteContext:v75];
+            v58 = [NanoRoutePlanningRequest requestWithWaypoints:v76 viaTransportType:v43 traits:defaultTraits companionRouteContext:v75];
 
             if (v77 || v70 || v67 || v65 || v64 || v63)
             {
@@ -2193,7 +2193,7 @@ LABEL_56:
             }
 
             v14 = v73;
-            v9 = v74;
+            dataValue = v74;
             [(NMCRoutePlanningController *)self _setCurrentSessionInputOrigin:3];
             v61 = objc_alloc_init(NanoRoutePlanningSession);
             v62 = self->_routePlanningSession;
@@ -2215,7 +2215,7 @@ LABEL_56:
     }
 
 LABEL_12:
-    v15 = [[GEOMapItemStorage alloc] initWithData:v9];
+    v15 = [[GEOMapItemStorage alloc] initWithData:dataValue];
     goto LABEL_13;
   }
 
@@ -2224,91 +2224,91 @@ LABEL_12:
   *buf = @"No destination was provided";
   *&buf[8] = @"No destination was provided";
   v17 = [NSDictionary dictionaryWithObjects:buf forKeys:&v81 count:2];
-  v12 = [NSError errorWithDomain:@"com.apple.nanomapscd" code:3 userInfo:v17];
+  dataValue2 = [NSError errorWithDomain:@"com.apple.nanomapscd" code:3 userInfo:v17];
 
   v14 = objc_alloc_init(NMReply);
-  v18 = [[NMArgument alloc] _nm_initWithErrorValue:v12 tag:3];
+  v18 = [[NMArgument alloc] _nm_initWithErrorValue:dataValue2 tag:3];
   [(NMReply *)v14 addArgument:v18];
   v19 = +[NMCGizmoConnection sharedInstance];
-  [v19 sendReply:v14 forMessage:v4 options:0];
+  [v19 sendReply:v14 forMessage:messageCopy options:0];
 LABEL_71:
 }
 
-- (void)_notifyNanoMapsRoutePlanningSessionDidStartLoading:(id)a3
+- (void)_notifyNanoMapsRoutePlanningSessionDidStartLoading:(id)loading
 {
-  v4 = a3;
+  loadingCopy = loading;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [v4 request];
+  request = [loadingCopy request];
   v6 = sub_100053324();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 companionRouteContext];
-    v8 = [v7 simpleDescription];
+    companionRouteContext = [request companionRouteContext];
+    simpleDescription = [companionRouteContext simpleDescription];
     *buf = 138412290;
-    v16 = v8;
+    v16 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Notifying NanoMaps: session did start (context:%@)", buf, 0xCu);
   }
 
-  v9 = [v5 requestedCompanionRouteDetails];
-  v10 = v9;
-  if (v9)
+  requestedCompanionRouteDetails = [request requestedCompanionRouteDetails];
+  v10 = requestedCompanionRouteDetails;
+  if (requestedCompanionRouteDetails)
   {
-    v14 = v9;
+    v14 = requestedCompanionRouteDetails;
     v11 = [NSArray arrayWithObjects:&v14 count:1];
-    v12 = [v4 request];
-    v13 = [v12 companionRouteContext];
-    [(NMCRoutePlanningController *)self _sendPreviewRoutes:v11 atIndexes:0 error:0 companionRouteContext:v13 includeSyntheticRoute:0];
+    request2 = [loadingCopy request];
+    companionRouteContext2 = [request2 companionRouteContext];
+    [(NMCRoutePlanningController *)self _sendPreviewRoutes:v11 atIndexes:0 error:0 companionRouteContext:companionRouteContext2 includeSyntheticRoute:0];
   }
 }
 
-- (void)_notifyNanoMapsRoutePlanningSessionDidUpdateResponse:(id)a3 changedRouteIdentifiers:(id)a4
+- (void)_notifyNanoMapsRoutePlanningSessionDidUpdateResponse:(id)response changedRouteIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v8 = sub_100053324();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 request];
-    v10 = [v9 companionRouteContext];
-    v11 = [v10 simpleDescription];
+    request = [responseCopy request];
+    companionRouteContext = [request companionRouteContext];
+    simpleDescription = [companionRouteContext simpleDescription];
     *buf = 138412290;
-    v33 = v11;
+    v33 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Notifying NanoMaps: did receive routes (context:%@)", buf, 0xCu);
   }
 
   gizmoPreviewState = self->_gizmoPreviewState;
   if (gizmoPreviewState)
   {
-    v13 = [(NMCRPCGizmoPreviewState *)gizmoPreviewState message];
-    v14 = [(NMCRPCGizmoPreviewState *)self->_gizmoPreviewState hasShownNavModeAdvisory];
+    message = [(NMCRPCGizmoPreviewState *)gizmoPreviewState message];
+    hasShownNavModeAdvisory = [(NMCRPCGizmoPreviewState *)self->_gizmoPreviewState hasShownNavModeAdvisory];
     v15 = self->_gizmoPreviewState;
     self->_gizmoPreviewState = 0;
 
-    v16 = [v6 response];
-    v17 = [v16 lastError];
-    v18 = [(NMCRoutePlanningController *)self _replyForMessage:v13 withSafetyWarning:v14 << 63 >> 63 error:v17];
+    response = [responseCopy response];
+    lastError = [response lastError];
+    v18 = [(NMCRoutePlanningController *)self _replyForMessage:message withSafetyWarning:hasShownNavModeAdvisory << 63 >> 63 error:lastError];
 
     v19 = +[NMCGizmoConnection sharedInstance];
-    [v19 sendReply:v18 forMessage:v13 options:0];
+    [v19 sendReply:v18 forMessage:message options:0];
   }
 
-  v20 = [v6 response];
-  v21 = [v20 companionRoutes];
+  response2 = [responseCopy response];
+  companionRoutes = [response2 companionRoutes];
 
-  if ([v21 count])
+  if ([companionRoutes count])
   {
-    if (v7)
+    if (identifiersCopy)
     {
-      sub_1000282B8(v7, &stru_100085F08);
+      sub_1000282B8(identifiersCopy, &stru_100085F08);
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
       v30[2] = sub_10002339C;
-      v22 = v30[3] = &unk_100085F30;
-      v31 = v22;
-      v23 = [v21 indexesOfObjectsPassingTest:v30];
+      request2 = v30[3] = &unk_100085F30;
+      v31 = request2;
+      v23 = [companionRoutes indexesOfObjectsPassingTest:v30];
       v24 = [v23 count];
-      if (v24 == [v21 count])
+      if (v24 == [companionRoutes count])
       {
 
         v23 = 0;
@@ -2320,7 +2320,7 @@ LABEL_71:
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
           v26 = [v23 count];
-          v27 = [v21 count];
+          v27 = [companionRoutes count];
           *buf = 134218240;
           v33 = v26;
           v34 = 2048;
@@ -2337,7 +2337,7 @@ LABEL_71:
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "No routes to send after filtering, bailing", buf, 2u);
           }
 
-          v28 = v31;
+          companionRouteContext2 = v31;
           goto LABEL_15;
         }
       }
@@ -2348,62 +2348,62 @@ LABEL_71:
       v23 = 0;
     }
 
-    v22 = [v6 request];
-    v28 = [v22 companionRouteContext];
-    [(NMCRoutePlanningController *)self _sendPreviewRoutes:v21 atIndexes:v23 error:0 companionRouteContext:v28 includeSyntheticRoute:0];
+    request2 = [responseCopy request];
+    companionRouteContext2 = [request2 companionRouteContext];
+    [(NMCRoutePlanningController *)self _sendPreviewRoutes:companionRoutes atIndexes:v23 error:0 companionRouteContext:companionRouteContext2 includeSyntheticRoute:0];
 LABEL_15:
   }
 }
 
-- (void)_notifyNanoMapsRoutePlanningSession:(id)a3 didReceiveRouteUpdatesForRoutes:(id)a4
+- (void)_notifyNanoMapsRoutePlanningSession:(id)session didReceiveRouteUpdatesForRoutes:(id)routes
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  routesCopy = routes;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  [v6 response];
+  [sessionCopy response];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000235C0;
   v17 = v16[3] = &unk_100085E88;
   v8 = v17;
-  v9 = sub_1000282B8(v7, v16);
+  v9 = sub_1000282B8(routesCopy, v16);
   v10 = sub_100053324();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v6 request];
-    v12 = [v11 companionRouteContext];
-    v13 = [v12 simpleDescription];
+    request = [sessionCopy request];
+    companionRouteContext = [request companionRouteContext];
+    simpleDescription = [companionRouteContext simpleDescription];
     *buf = 138412546;
-    v19 = v7;
+    v19 = routesCopy;
     v20 = 2112;
-    v21 = v13;
+    v21 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Notifying NanoMaps: did receive updates for routes: %@ (context:%@)", buf, 0x16u);
   }
 
-  v14 = [v6 request];
-  v15 = [v14 companionRouteContext];
-  [(NMCRoutePlanningController *)self _sendRouteUpdates:v9 context:v15];
+  request2 = [sessionCopy request];
+  companionRouteContext2 = [request2 companionRouteContext];
+  [(NMCRoutePlanningController *)self _sendRouteUpdates:v9 context:companionRouteContext2];
 }
 
-- (void)_notifyNanoMapsRoutePlanningSessionDidSelectRoute:(id)a3
+- (void)_notifyNanoMapsRoutePlanningSessionDidSelectRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v5 = [v4 response];
-  v6 = [v5 routes];
-  v7 = [v4 selectedRoute];
-  v8 = [v6 indexOfObject:v7];
+  response = [routeCopy response];
+  routes = [response routes];
+  selectedRoute = [routeCopy selectedRoute];
+  v8 = [routes indexOfObject:selectedRoute];
 
   v9 = sub_100053324();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v4 request];
-    v11 = [v10 companionRouteContext];
-    v12 = [v11 simpleDescription];
+    request = [routeCopy request];
+    companionRouteContext = [request companionRouteContext];
+    simpleDescription = [companionRouteContext simpleDescription];
     v21 = 134218242;
     v22 = v8;
     v23 = 2112;
-    v24 = v12;
+    v24 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Notifying NanoMaps: did select route (index:%lu, context:%@)", &v21, 0x16u);
   }
 
@@ -2412,93 +2412,93 @@ LABEL_15:
 
   if (v14)
   {
-    v15 = [v4 request];
-    v16 = [v15 companionRouteContext];
-    [(NMCRoutePlanningController *)self _sendSelectedPreviewRouteIndex:v8 context:v16];
+    request2 = [routeCopy request];
+    companionRouteContext2 = [request2 companionRouteContext];
+    [(NMCRoutePlanningController *)self _sendSelectedPreviewRouteIndex:v8 context:companionRouteContext2];
   }
 
   else
   {
-    v17 = [v4 response];
-    v18 = [v17 companionRoutes];
-    v15 = [v18 objectAtIndexedSubscript:v8];
+    response2 = [routeCopy response];
+    companionRoutes = [response2 companionRoutes];
+    request2 = [companionRoutes objectAtIndexedSubscript:v8];
 
-    v16 = +[NMCNavigationProxy sharedInstance];
-    v19 = [v4 request];
-    v20 = [v19 companionRouteContext];
-    [v16 _legacy_sendPreviewRouteDetails:v15 context:v20];
+    companionRouteContext2 = +[NMCNavigationProxy sharedInstance];
+    request3 = [routeCopy request];
+    companionRouteContext3 = [request3 companionRouteContext];
+    [companionRouteContext2 _legacy_sendPreviewRouteDetails:request2 context:companionRouteContext3];
   }
 }
 
-- (void)_notifyNanoMapsRoutePlanningSessionDidFail:(id)a3
+- (void)_notifyNanoMapsRoutePlanningSessionDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = sub_100053324();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 response];
-    v7 = [v6 lastError];
-    v8 = [v4 request];
-    v9 = [v8 companionRouteContext];
-    v10 = [v9 simpleDescription];
+    response = [failCopy response];
+    lastError = [response lastError];
+    request = [failCopy request];
+    companionRouteContext = [request companionRouteContext];
+    simpleDescription = [companionRouteContext simpleDescription];
     v22 = 138412546;
-    v23 = v7;
+    v23 = lastError;
     v24 = 2112;
-    v25 = v10;
+    v25 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Notifying NanoMaps: session failed with error: %@ (context:%@)", &v22, 0x16u);
   }
 
   gizmoPreviewState = self->_gizmoPreviewState;
   if (gizmoPreviewState)
   {
-    v12 = [(NMCRPCGizmoPreviewState *)gizmoPreviewState message];
+    message = [(NMCRPCGizmoPreviewState *)gizmoPreviewState message];
     v13 = self->_gizmoPreviewState;
     self->_gizmoPreviewState = 0;
 
-    v14 = [v4 response];
-    v15 = [v14 lastError];
-    v16 = [(NMCRoutePlanningController *)self _replyForMessage:v12 withSafetyWarning:-1 error:v15];
+    response2 = [failCopy response];
+    lastError2 = [response2 lastError];
+    v16 = [(NMCRoutePlanningController *)self _replyForMessage:message withSafetyWarning:-1 error:lastError2];
 
     v17 = +[NMCGizmoConnection sharedInstance];
-    [v17 sendReply:v16 forMessage:v12 options:0];
+    [v17 sendReply:v16 forMessage:message options:0];
   }
 
-  v18 = [v4 response];
-  v19 = [v18 lastError];
-  v20 = [v4 request];
-  v21 = [v20 companionRouteContext];
-  [(NMCRoutePlanningController *)self _sendPreviewRoutes:0 atIndexes:0 error:v19 companionRouteContext:v21 includeSyntheticRoute:0];
+  response3 = [failCopy response];
+  lastError3 = [response3 lastError];
+  request2 = [failCopy request];
+  companionRouteContext2 = [request2 companionRouteContext];
+  [(NMCRoutePlanningController *)self _sendPreviewRoutes:0 atIndexes:0 error:lastError3 companionRouteContext:companionRouteContext2 includeSyntheticRoute:0];
 }
 
-- (void)_notifyNanoMapsRoutePlanningSessionDidInvalidate:(id)a3
+- (void)_notifyNanoMapsRoutePlanningSessionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = sub_100053324();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 request];
-    v7 = [v6 companionRouteContext];
-    v8 = [v7 simpleDescription];
+    request = [invalidateCopy request];
+    companionRouteContext = [request companionRouteContext];
+    simpleDescription = [companionRouteContext simpleDescription];
     v12 = 138412290;
-    v13 = v8;
+    v13 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Notifying NanoMaps: session invalidated (context:%@)", &v12, 0xCu);
   }
 
-  v9 = [v4 request];
-  v10 = [v9 companionRouteContext];
-  v11 = [v10 data];
-  [(NMCRoutePlanningController *)self _sendClearPreviewWithContext:v11];
+  request2 = [invalidateCopy request];
+  companionRouteContext2 = [request2 companionRouteContext];
+  data = [companionRouteContext2 data];
+  [(NMCRoutePlanningController *)self _sendClearPreviewWithContext:data];
 }
 
-- (void)_sendPreviewRoutes:(id)a3 atIndexes:(id)a4 error:(id)a5 companionRouteContext:(id)a6 includeSyntheticRoute:(BOOL)a7
+- (void)_sendPreviewRoutes:(id)routes atIndexes:(id)indexes error:(id)error companionRouteContext:(id)context includeSyntheticRoute:(BOOL)route
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  routeCopy = route;
+  routesCopy = routes;
+  indexesCopy = indexes;
+  errorCopy = error;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v16 = +[NMCGizmoConnection sharedInstance];
   v17 = [v16 canSendMessageWithType:308];
@@ -2506,19 +2506,19 @@ LABEL_15:
   if ((v17 & 1) == 0)
   {
     v21 = +[NMCNavigationProxy sharedInstance];
-    v22 = [v12 firstObject];
-    [v21 _legacy_sendPreviewRouteDetails:v22 context:v15];
+    firstObject = [routesCopy firstObject];
+    [v21 _legacy_sendPreviewRouteDetails:firstObject context:contextCopy];
 
     goto LABEL_26;
   }
 
   v18 = +[NMCGizmoConnection sharedInstance];
-  v19 = [v12 firstObject];
-  v20 = [v18 supportsTransportType:{objc_msgSend(v19, "transportType")}];
+  firstObject2 = [routesCopy firstObject];
+  v20 = [v18 supportsTransportType:{objc_msgSend(firstObject2, "transportType")}];
 
   if (v20)
   {
-    if (!v15)
+    if (!contextCopy)
     {
       goto LABEL_26;
     }
@@ -2540,18 +2540,18 @@ LABEL_15:
   v24 = [NSDictionary dictionaryWithObjects:buf forKeys:v61 count:2];
   v25 = [NSError errorWithDomain:@"com.apple.nanomapscd" code:7 userInfo:v24];
 
-  v14 = v25;
-  if (v15)
+  errorCopy = v25;
+  if (contextCopy)
   {
 LABEL_9:
     v26 = +[NMCGizmoConnection sharedInstance];
     v59 = @"NMSendMessageOptionTimeout";
     v60 = &off_10008C768;
     v27 = [NSDictionary dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-    v28 = [v15 data];
+    data = [contextCopy data];
     [v26 cancelAllMessagesOfType:308];
     [v26 cancelAllMessagesOfType:312];
-    if (v14)
+    if (errorCopy)
     {
       v29 = sub_100053324();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -2560,60 +2560,60 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Will send no-routes+error to gizmo", buf, 2u);
       }
 
-      v30 = [(NMCRoutePlanningController *)self _messageForNoRoutesWithError:v14 routeContextData:v28];
+      v30 = [(NMCRoutePlanningController *)self _messageForNoRoutesWithError:errorCopy routeContextData:data];
       [v26 sendMessage:v30 options:v27];
     }
 
     else
     {
-      v31 = [v12 count];
+      v31 = [routesCopy count];
       v32 = v31;
-      if (v7)
+      if (routeCopy)
       {
         v47 = v31;
-        v48 = v28;
+        v48 = data;
         v49 = v27;
-        v33 = [v12 firstObject];
+        firstObject3 = [routesCopy firstObject];
         v34 = sub_100053324();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
         {
-          v35 = [v33 composedOrigin];
-          v36 = [v33 composedDestination];
+          composedOrigin = [firstObject3 composedOrigin];
+          composedDestination = [firstObject3 composedDestination];
           *buf = 138412802;
-          *&buf[4] = v33;
+          *&buf[4] = firstObject3;
           *&buf[12] = 2112;
-          *&buf[14] = v35;
+          *&buf[14] = composedOrigin;
           v57 = 2112;
-          v58 = v36;
+          v58 = composedDestination;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEBUG, "Will send synthetic route ahead of full routes: %@, origin: %@, destination: %@", buf, 0x20u);
         }
 
-        [v33 waypoints];
-        v37 = v33;
-        v38 = v46 = v33;
-        v39 = [v37 transportType];
-        v40 = [v37 destinationName];
-        v41 = [GEOCompanionRouteDetails syntheticRouteDetailsWithWaypoints:v38 transportType:v39 destinationName:v40];
+        [firstObject3 waypoints];
+        v37 = firstObject3;
+        v38 = v46 = firstObject3;
+        transportType = [v37 transportType];
+        destinationName = [v37 destinationName];
+        v41 = [GEOCompanionRouteDetails syntheticRouteDetailsWithWaypoints:v38 transportType:transportType destinationName:destinationName];
 
-        v42 = [v41 data];
-        v43 = -[NMCRoutePlanningController _messageForRouteDetailsData:index:count:routeContextData:](self, "_messageForRouteDetailsData:index:count:routeContextData:", v42, 0, [v12 count], v48);
+        data2 = [v41 data];
+        v43 = -[NMCRoutePlanningController _messageForRouteDetailsData:index:count:routeContextData:](self, "_messageForRouteDetailsData:index:count:routeContextData:", data2, 0, [routesCopy count], v48);
 
         [v43 setPriority:300];
         v27 = v49;
         [v26 sendMessage:v43 options:v49];
 
-        v28 = v48;
+        data = v48;
         v32 = v47;
       }
 
       v44 = sub_100053324();
       v45 = os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG);
-      if (v13)
+      if (indexesCopy)
       {
         if (v45)
         {
           *buf = 138412546;
-          *&buf[4] = v13;
+          *&buf[4] = indexesCopy;
           *&buf[12] = 2048;
           *&buf[14] = v32;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEBUG, "Will send routes %@ to gizmo (out of all %lu)", buf, 0x16u);
@@ -2629,7 +2629,7 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEBUG, "Will send %lu routes to gizmo", buf, 0xCu);
         }
 
-        v13 = [NSIndexSet indexSetWithIndexesInRange:0, v32];
+        indexesCopy = [NSIndexSet indexSetWithIndexesInRange:0, v32];
       }
 
       v50[0] = _NSConcreteStackBlock;
@@ -2638,33 +2638,33 @@ LABEL_9:
       v50[3] = &unk_100085F58;
       v50[4] = self;
       v55 = v32;
-      v51 = v28;
-      v13 = v13;
-      v52 = v13;
+      v51 = data;
+      indexesCopy = indexesCopy;
+      v52 = indexesCopy;
       v53 = v26;
       v54 = v27;
-      [v12 enumerateObjectsAtIndexes:v13 options:0 usingBlock:v50];
+      [routesCopy enumerateObjectsAtIndexes:indexesCopy options:0 usingBlock:v50];
     }
   }
 
 LABEL_26:
 }
 
-- (void)_sendSelectedPreviewRouteIndex:(unint64_t)a3 context:(id)a4
+- (void)_sendSelectedPreviewRouteIndex:(unint64_t)index context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && v6)
+  if (index != 0x7FFFFFFFFFFFFFFFLL && contextCopy)
   {
     v7 = objc_alloc_init(NMMessage);
     [(NMMessage *)v7 setType:309];
     v8 = objc_alloc_init(NMArgument);
-    [(NMArgument *)v8 setIntValue:a3];
+    [(NMArgument *)v8 setIntValue:index];
     [(NMArgument *)v8 setTag:409];
     [(NMMessage *)v7 addArgument:v8];
     v9 = objc_alloc_init(NMArgument);
-    v10 = [v6 data];
-    [(NMArgument *)v9 setDataValue:v10];
+    data = [contextCopy data];
+    [(NMArgument *)v9 setDataValue:data];
 
     [(NMArgument *)v9 setTag:406];
     [(NMMessage *)v7 addArgument:v9];
@@ -2676,16 +2676,16 @@ LABEL_26:
   }
 }
 
-- (void)_sendRouteUpdates:(id)a3 context:(id)a4
+- (void)_sendRouteUpdates:(id)updates context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  updatesCopy = updates;
+  contextCopy = context;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v5;
-  v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = updatesCopy;
+  v7 = [updatesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2705,14 +2705,14 @@ LABEL_26:
         [(NMMessage *)v12 setType:312];
         v13 = objc_alloc_init(NMArgument);
         [(NMArgument *)v13 setTag:412];
-        v14 = [v11 data];
-        [(NMArgument *)v13 setDataValue:v14];
+        data = [v11 data];
+        [(NMArgument *)v13 setDataValue:data];
 
         [(NMMessage *)v12 addArgument:v13];
         v15 = objc_alloc_init(NMArgument);
         [(NMArgument *)v15 setTag:406];
-        v16 = [v6 data];
-        [(NMArgument *)v15 setDataValue:v16];
+        data2 = [contextCopy data];
+        [(NMArgument *)v15 setDataValue:data2];
 
         [(NMMessage *)v12 addArgument:v15];
         v17 = +[NMCGizmoConnection sharedInstance];
@@ -2729,16 +2729,16 @@ LABEL_26:
   }
 }
 
-- (void)_sendClearPreviewWithContext:(id)a3
+- (void)_sendClearPreviewWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (v4)
+  if (contextCopy)
   {
     v5 = objc_alloc_init(NMMessage);
     [(NMMessage *)v5 setType:305];
     v6 = objc_alloc_init(NMArgument);
-    [(NMArgument *)v6 setDataValue:v4];
+    [(NMArgument *)v6 setDataValue:contextCopy];
     [(NMArgument *)v6 setTag:406];
     [(NMMessage *)v5 addArgument:v6];
     v7 = +[NMCGizmoConnection sharedInstance];
@@ -2749,27 +2749,27 @@ LABEL_26:
   }
 }
 
-- (id)_messageForRouteDetailsData:(id)a3 index:(unint64_t)a4 count:(unint64_t)a5 routeContextData:(id)a6
+- (id)_messageForRouteDetailsData:(id)data index:(unint64_t)index count:(unint64_t)count routeContextData:(id)contextData
 {
-  v9 = a6;
-  v10 = a3;
+  contextDataCopy = contextData;
+  dataCopy = data;
   v11 = objc_alloc_init(NMMessage);
   [(NMMessage *)v11 setType:308];
   v12 = objc_alloc_init(NMArgument);
-  [(NMArgument *)v12 setDataValue:v10];
+  [(NMArgument *)v12 setDataValue:dataCopy];
 
   [(NMArgument *)v12 setTag:401];
   [(NMMessage *)v11 addArgument:v12 withCompressionType:1];
   v13 = objc_alloc_init(NMArgument);
-  [(NMArgument *)v13 setIntValue:a4];
+  [(NMArgument *)v13 setIntValue:index];
   [(NMArgument *)v13 setTag:409];
   [(NMMessage *)v11 addArgument:v13];
   v14 = objc_alloc_init(NMArgument);
-  [(NMArgument *)v14 setIntValue:a5];
+  [(NMArgument *)v14 setIntValue:count];
   [(NMArgument *)v14 setTag:410];
   [(NMMessage *)v11 addArgument:v14];
   v15 = objc_alloc_init(NMArgument);
-  [(NMArgument *)v15 setDataValue:v9];
+  [(NMArgument *)v15 setDataValue:contextDataCopy];
 
   [(NMArgument *)v15 setTag:406];
   [(NMMessage *)v11 addArgument:v15];
@@ -2777,20 +2777,20 @@ LABEL_26:
   return v11;
 }
 
-- (id)_messageForNoRoutesWithError:(id)a3 routeContextData:(id)a4
+- (id)_messageForNoRoutesWithError:(id)error routeContextData:(id)data
 {
-  v5 = a4;
-  v6 = a3;
+  dataCopy = data;
+  errorCopy = error;
   v7 = objc_alloc_init(NMMessage);
   [(NMMessage *)v7 setType:308];
   v8 = objc_alloc_init(NMArgument);
   [(NMArgument *)v8 setTag:409];
   [(NMMessage *)v7 addArgument:v8];
-  v9 = [[NMArgument alloc] _nm_initWithErrorValue:v6 tag:3];
+  v9 = [[NMArgument alloc] _nm_initWithErrorValue:errorCopy tag:3];
 
   [(NMMessage *)v7 addArgument:v9];
   v10 = objc_alloc_init(NMArgument);
-  [(NMArgument *)v10 setDataValue:v5];
+  [(NMArgument *)v10 setDataValue:dataCopy];
 
   [(NMArgument *)v10 setTag:406];
   [(NMMessage *)v7 addArgument:v10];
@@ -2798,23 +2798,23 @@ LABEL_26:
   return v7;
 }
 
-- (id)_replyForMessage:(id)a3 withSafetyWarning:(int64_t)a4 error:(id)a5
+- (id)_replyForMessage:(id)message withSafetyWarning:(int64_t)warning error:(id)error
 {
-  v7 = a5;
-  if (a3)
+  errorCopy = error;
+  if (message)
   {
-    v8 = a3;
-    a3 = objc_alloc_init(NMReply);
-    if (v7)
+    messageCopy = message;
+    message = objc_alloc_init(NMReply);
+    if (errorCopy)
     {
-      v9 = [[NMArgument alloc] _nm_initWithErrorValue:v7 tag:3];
+      v9 = [[NMArgument alloc] _nm_initWithErrorValue:errorCopy tag:3];
     }
 
     else
     {
       v10 = objc_alloc_init(NMArgument);
       v9 = v10;
-      if (a4 == -1)
+      if (warning == -1)
       {
         [(NMArgument *)v10 setTag:1];
       }
@@ -2822,17 +2822,17 @@ LABEL_26:
       else
       {
         [(NMArgument *)v10 setTag:403];
-        [(NMArgument *)v9 setIntValue:a4];
+        [(NMArgument *)v9 setIntValue:warning];
       }
     }
 
-    [a3 addArgument:v9];
+    [message addArgument:v9];
 
     v11 = +[NMCGizmoConnection sharedInstance];
-    [v11 sendReply:a3 forMessage:v8 options:0];
+    [v11 sendReply:message forMessage:messageCopy options:0];
   }
 
-  return a3;
+  return message;
 }
 
 - (void)_registerXPCRoutes
@@ -2857,37 +2857,37 @@ LABEL_26:
   [(NSXPCListener *)v10 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NanoCompanionXPCRouting];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NanoCompanionXPCRouting];
-  [v7 setRemoteObjectInterface:v9];
+  [connectionCopy setRemoteObjectInterface:v9];
 
-  [v7 _setQueue:self->_isolationQueue];
+  [connectionCopy _setQueue:self->_isolationQueue];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100024E50;
   v17[3] = &unk_100085720;
   objc_copyWeak(&v18, &location);
   objc_copyWeak(&v19, &from);
-  [v7 setInvalidationHandler:v17];
+  [connectionCopy setInvalidationHandler:v17];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100024EBC;
   v14 = &unk_100085720;
   objc_copyWeak(&v15, &location);
   objc_copyWeak(&v16, &from);
-  [v7 setInterruptionHandler:&v11];
-  [(NSMutableSet *)self->_connections addObject:v7, v11, v12, v13, v14];
-  [v7 resume];
+  [connectionCopy setInterruptionHandler:&v11];
+  [(NSMutableSet *)self->_connections addObject:connectionCopy, v11, v12, v13, v14];
+  [connectionCopy resume];
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v19);
@@ -2898,37 +2898,37 @@ LABEL_26:
   return 1;
 }
 
-- (void)_forgetConnection:(id)a3 reason:(id)a4
+- (void)_forgetConnection:(id)connection reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  reasonCopy = reason;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  if (v6)
+  if (connectionCopy)
   {
-    [(NSMutableSet *)self->_connections removeObject:v6];
+    [(NSMutableSet *)self->_connections removeObject:connectionCopy];
     v8 = sub_100053324();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = [(NSMutableSet *)self->_connections count];
       v10 = 138412802;
-      v11 = v7;
+      v11 = reasonCopy;
       v12 = 2048;
       v13 = v9;
       v14 = 2112;
-      v15 = v6;
+      v15 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ XPC connection (%lu remaining peers) %@", &v10, 0x20u);
     }
   }
 }
 
-- (void)_enumerateMapsConnectionsUnderAssertionNamed:(id)a3 usingBlock:(id)a4
+- (void)_enumerateMapsConnectionsUnderAssertionNamed:(id)named usingBlock:(id)block
 {
   isolationQueue = self->_isolationQueue;
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  namedCopy = named;
   dispatch_assert_queue_V2(isolationQueue);
-  v9 = [(NSMutableSet *)self->_connections allObjects];
-  sub_100013B60(v9, v8, v7);
+  allObjects = [(NSMutableSet *)self->_connections allObjects];
+  sub_100013B60(allObjects, namedCopy, blockCopy);
 }
 
 - (void)checkinForRoutePlanning
@@ -2946,92 +2946,92 @@ LABEL_26:
   [(NMCRoutePlanningController *)self _checkinForRoutePlanningWithConnection:v3];
 }
 
-- (void)anticipateRoutePlanningRequest:(id)a3 completionHandler:(id)a4
+- (void)anticipateRoutePlanningRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
+  requestCopy = request;
   isolationQueue = self->_isolationQueue;
-  v8 = a4;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(isolationQueue);
   v9 = sub_100053324();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v6 companionRouteContext];
-    v11 = [v10 simpleDescription];
+    companionRouteContext = [requestCopy companionRouteContext];
+    simpleDescription = [companionRouteContext simpleDescription];
     v12 = 138412290;
-    v13 = v11;
+    v13 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Anticipate request with context: %@", &v12, 0xCu);
   }
 
-  [(NMCRoutePlanningController *)self _updateRoutePlanningRequest:v6 withResponse:0 completionHandler:v8];
+  [(NMCRoutePlanningController *)self _updateRoutePlanningRequest:requestCopy withResponse:0 completionHandler:handlerCopy];
 }
 
-- (void)updateRoutePlanningRequest:(id)a3 withResponse:(id)a4 completionHandler:(id)a5
+- (void)updateRoutePlanningRequest:(id)request withResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
+  requestCopy = request;
   isolationQueue = self->_isolationQueue;
-  v10 = a5;
-  v11 = a4;
+  handlerCopy = handler;
+  responseCopy = response;
   dispatch_assert_queue_V2(isolationQueue);
   v12 = sub_100053324();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 companionRouteContext];
-    v14 = [v13 simpleDescription];
+    companionRouteContext = [requestCopy companionRouteContext];
+    simpleDescription = [companionRouteContext simpleDescription];
     v15 = 138412290;
-    v16 = v14;
+    v16 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "updateRoutePlanningRequest:, Update request/response with context: %@", &v15, 0xCu);
   }
 
-  [(NMCRoutePlanningController *)self _updateRoutePlanningRequest:v8 withResponse:v11 completionHandler:v10];
+  [(NMCRoutePlanningController *)self _updateRoutePlanningRequest:requestCopy withResponse:responseCopy completionHandler:handlerCopy];
 }
 
-- (void)_updateRoutePlanningRequest:(id)a3 withResponse:(id)a4 completionHandler:(id)a5
+- (void)_updateRoutePlanningRequest:(id)request withResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_isolationQueue);
-  v11 = [v8 companionRouteContext];
+  companionRouteContext = [requestCopy companionRouteContext];
   v12 = self->_routePlanningSession;
-  v13 = [(NanoRoutePlanningSession *)v12 request];
-  v14 = [v13 companionRouteContext];
-  lastInvalidatedCompanionRouteContext = v14;
-  if (!v14)
+  request = [(NanoRoutePlanningSession *)v12 request];
+  companionRouteContext2 = [request companionRouteContext];
+  lastInvalidatedCompanionRouteContext = companionRouteContext2;
+  if (!companionRouteContext2)
   {
     lastInvalidatedCompanionRouteContext = self->_lastInvalidatedCompanionRouteContext;
   }
 
   v16 = lastInvalidatedCompanionRouteContext;
 
-  if ([v11 isStaleComparedToContext:v16])
+  if ([companionRouteContext isStaleComparedToContext:v16])
   {
     v17 = sub_100053324();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [(GEOCompanionRouteContext *)v16 simpleDescription];
-      v19 = [v11 simpleDescription];
+      simpleDescription = [(GEOCompanionRouteContext *)v16 simpleDescription];
+      simpleDescription2 = [companionRouteContext simpleDescription];
       *buf = 138412546;
-      v28 = v18;
+      v28 = simpleDescription;
       v29 = 2112;
-      v30 = v19;
+      v30 = simpleDescription2;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "updatePreviewRoutes: incoming route context is old (current:%@, incoming:%@)", buf, 0x16u);
     }
   }
 
   else
   {
-    v26 = v9;
-    if (!v16 || [(GEOCompanionRouteContext *)v16 isStaleComparedToContext:v11])
+    v26 = responseCopy;
+    if (!v16 || [(GEOCompanionRouteContext *)v16 isStaleComparedToContext:companionRouteContext])
     {
       v20 = sub_100053324();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [(GEOCompanionRouteContext *)v16 simpleDescription];
-        v22 = [v11 simpleDescription];
+        simpleDescription3 = [(GEOCompanionRouteContext *)v16 simpleDescription];
+        simpleDescription4 = [companionRouteContext simpleDescription];
         *buf = 138412546;
-        v28 = v21;
+        v28 = simpleDescription3;
         v29 = 2112;
-        v30 = v22;
+        v30 = simpleDescription4;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "updatePreviewRoutes: incoming context is newer, create new session (current:%@, incoming:%@)", buf, 0x16u);
       }
 
@@ -3050,52 +3050,52 @@ LABEL_26:
     v25 = self->_routePlanningSession;
 
     [(NMCRoutePlanningController *)self _setCurrentSessionInputOrigin:1];
-    [(NanoRoutePlanningSession *)v25 updateWithRequest:v8 response:v26];
+    [(NanoRoutePlanningSession *)v25 updateWithRequest:requestCopy response:v26];
     v12 = v25;
-    v9 = v26;
+    responseCopy = v26;
   }
 
-  v10[2](v10);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)failRoutePlanningRequest:(id)a3 withResponse:(id)a4 completionHandler:(id)a5
+- (void)failRoutePlanningRequest:(id)request withResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_isolationQueue);
   if (self->_currentSessionInputOrigin == 1)
   {
-    v11 = [v8 companionRouteContext];
+    companionRouteContext = [requestCopy companionRouteContext];
     v12 = self->_routePlanningSession;
-    v13 = [(NanoRoutePlanningSession *)v12 request];
-    v14 = [v13 companionRouteContext];
-    lastInvalidatedCompanionRouteContext = v14;
-    if (!v14)
+    request = [(NanoRoutePlanningSession *)v12 request];
+    companionRouteContext2 = [request companionRouteContext];
+    lastInvalidatedCompanionRouteContext = companionRouteContext2;
+    if (!companionRouteContext2)
     {
       lastInvalidatedCompanionRouteContext = self->_lastInvalidatedCompanionRouteContext;
     }
 
     v16 = lastInvalidatedCompanionRouteContext;
 
-    if ([v11 isStaleComparedToContext:v16])
+    if ([companionRouteContext isStaleComparedToContext:v16])
     {
       v17 = sub_100053324();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = [(GEOCompanionRouteContext *)v16 simpleDescription];
-        v19 = [v11 simpleDescription];
+        simpleDescription = [(GEOCompanionRouteContext *)v16 simpleDescription];
+        simpleDescription2 = [companionRouteContext simpleDescription];
         *buf = 138412546;
-        v24 = v18;
+        v24 = simpleDescription;
         v25 = 2112;
-        v26 = v19;
+        v26 = simpleDescription2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "failRoutePlanningRequest: incoming context is old (current:%@, incoming:%@)", buf, 0x16u);
       }
     }
 
-    else if (v16 && ![(GEOCompanionRouteContext *)v16 isStaleComparedToContext:v11])
+    else if (v16 && ![(GEOCompanionRouteContext *)v16 isStaleComparedToContext:companionRouteContext])
     {
-      [(NanoRoutePlanningSession *)v12 updateWithRequest:v8 response:v9];
+      [(NanoRoutePlanningSession *)v12 updateWithRequest:requestCopy response:responseCopy];
     }
 
     else
@@ -3103,10 +3103,10 @@ LABEL_26:
       v20 = sub_100053324();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v22 = [(GEOCompanionRouteContext *)v16 simpleDescription];
-        [v11 simpleDescription];
+        simpleDescription3 = [(GEOCompanionRouteContext *)v16 simpleDescription];
+        [companionRouteContext simpleDescription];
         *buf = 138412546;
-        v24 = v22;
+        v24 = simpleDescription3;
         v26 = v25 = 2112;
         v21 = v26;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "failRoutePlanningRequest: incoming context is newer, invalidate current session and ignore incoming (current:%@, incoming:%@)", buf, 0x16u);
@@ -3117,74 +3117,74 @@ LABEL_26:
       [(NanoRoutePlanningSession *)v12 invalidate];
     }
 
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)updateRoutePlanningRequest:(id)a3 withSelectedRouteID:(id)a4 completionHandler:(id)a5
+- (void)updateRoutePlanningRequest:(id)request withSelectedRouteID:(id)d completionHandler:(id)handler
 {
   isolationQueue = self->_isolationQueue;
-  v8 = a5;
-  v9 = a4;
+  handlerCopy = handler;
+  dCopy = d;
   dispatch_assert_queue_V2(isolationQueue);
   [(NMCRoutePlanningController *)self _setCurrentSessionInputOrigin:1];
-  v10 = [NSUUID _maps_UUIDWithData:v9];
+  v10 = [NSUUID _maps_UUIDWithData:dCopy];
 
   [(NanoRoutePlanningSession *)self->_routePlanningSession setSelectedRouteWithRouteID:v10];
-  v8[2](v8);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)clearRoutePlanningWithContext:(id)a3 completionHandler:(id)a4
+- (void)clearRoutePlanningWithContext:(id)context completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v8 = self->_routePlanningSession;
-  v9 = [(NanoRoutePlanningSession *)v8 request];
-  v10 = [v9 companionRouteContext];
-  lastInvalidatedCompanionRouteContext = v10;
-  if (!v10)
+  request = [(NanoRoutePlanningSession *)v8 request];
+  companionRouteContext = [request companionRouteContext];
+  lastInvalidatedCompanionRouteContext = companionRouteContext;
+  if (!companionRouteContext)
   {
     lastInvalidatedCompanionRouteContext = self->_lastInvalidatedCompanionRouteContext;
   }
 
   v12 = lastInvalidatedCompanionRouteContext;
 
-  if ([v6 isStaleComparedToContext:v12])
+  if ([contextCopy isStaleComparedToContext:v12])
   {
     v13 = sub_100053324();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(GEOCompanionRouteContext *)v12 simpleDescription];
-      v15 = [v6 simpleDescription];
+      simpleDescription = [(GEOCompanionRouteContext *)v12 simpleDescription];
+      simpleDescription2 = [contextCopy simpleDescription];
       *buf = 138412546;
-      v27 = v14;
+      v27 = simpleDescription;
       v28 = 2112;
-      v29 = v15;
+      v29 = simpleDescription2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "clearRoutePlanningRequest: incoming context is old (current:%@, incoming:%@)", buf, 0x16u);
     }
 
 LABEL_12:
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
     goto LABEL_13;
   }
 
-  if (!v12 || [(GEOCompanionRouteContext *)v12 isStaleComparedToContext:v6])
+  if (!v12 || [(GEOCompanionRouteContext *)v12 isStaleComparedToContext:contextCopy])
   {
     v16 = sub_100053324();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [(GEOCompanionRouteContext *)v12 simpleDescription];
-      v18 = [v6 simpleDescription];
+      simpleDescription3 = [(GEOCompanionRouteContext *)v12 simpleDescription];
+      simpleDescription4 = [contextCopy simpleDescription];
       *buf = 138412546;
-      v27 = v17;
+      v27 = simpleDescription3;
       v28 = 2112;
-      v29 = v18;
+      v29 = simpleDescription4;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "clearRoutePlanningRequest: incoming context is newer, invalidate current session and ignore incoming (current:%@, incoming:%@)", buf, 0x16u);
     }
 
@@ -3205,11 +3205,11 @@ LABEL_12:
     v22 = sub_100053324();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v25 = [(NanoRoutePlanningSession *)v19 request];
-      v23 = [v25 companionRouteContext];
-      v24 = [v23 simpleDescription];
+      request2 = [(NanoRoutePlanningSession *)v19 request];
+      companionRouteContext2 = [request2 companionRouteContext];
+      simpleDescription5 = [companionRouteContext2 simpleDescription];
       *buf = 138412290;
-      v27 = v24;
+      v27 = simpleDescription5;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Maps asked us to clear route planning (context:%@)", buf, 0xCu);
     }
 
@@ -3219,57 +3219,57 @@ LABEL_12:
     [(NMCRoutePlanningController *)self _notifyNanoMapsRoutePlanningSessionDidInvalidate:v19];
   }
 
-  v7[2](v7);
+  handlerCopy[2](handlerCopy);
 
 LABEL_13:
 }
 
-- (void)_checkinForRoutePlanningWithConnection:(id)a3
+- (void)_checkinForRoutePlanningWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = +[NMCGizmoConnection sharedInstance];
-  v6 = [v5 supportsXPCUseMapsForRoutePlanning];
+  supportsXPCUseMapsForRoutePlanning = [v5 supportsXPCUseMapsForRoutePlanning];
 
-  if ((v6 & 1) == 0)
+  if ((supportsXPCUseMapsForRoutePlanning & 1) == 0)
   {
     routePlanningSession = self->_routePlanningSession;
     if (routePlanningSession)
     {
       v8 = routePlanningSession;
-      v9 = [(NanoRoutePlanningSession *)v8 request];
-      v10 = [(NanoRoutePlanningSession *)v8 response];
+      request = [(NanoRoutePlanningSession *)v8 request];
+      response = [(NanoRoutePlanningSession *)v8 response];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_100025E68;
       v13[3] = &unk_100085F80;
-      v14 = v4;
-      v15 = v9;
-      v16 = v10;
-      v11 = v10;
-      v12 = v9;
+      v14 = connectionCopy;
+      v15 = request;
+      v16 = response;
+      v11 = response;
+      v12 = request;
       sub_100013C38(@"com.apple.Maps.launchFromGizmo.preview.synchronize", v13);
     }
   }
 }
 
-- (void)_notifyMapsRoutePlanningSessionDidStartLoading:(id)a3
+- (void)_notifyMapsRoutePlanningSessionDidStartLoading:(id)loading
 {
-  v4 = a3;
+  loadingCopy = loading;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = +[NMCGizmoConnection sharedInstance];
-  v6 = [v5 supportsXPCUseMapsForRoutePlanning];
+  supportsXPCUseMapsForRoutePlanning = [v5 supportsXPCUseMapsForRoutePlanning];
 
-  if ((v6 & 1) == 0)
+  if ((supportsXPCUseMapsForRoutePlanning & 1) == 0)
   {
-    v7 = [v4 request];
-    v8 = [v7 companionRouteContext];
+    request = [loadingCopy request];
+    companionRouteContext = [request companionRouteContext];
     v9 = sub_100053324();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v8 simpleDescription];
+      simpleDescription = [companionRouteContext simpleDescription];
       *buf = 138412290;
-      v15 = v10;
+      v15 = simpleDescription;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Notifying Maps: session did start (context:%@)", buf, 0xCu);
     }
 
@@ -3277,30 +3277,30 @@ LABEL_13:
     v12[1] = 3221225472;
     v12[2] = sub_1000260CC;
     v12[3] = &unk_100085FA8;
-    v13 = v7;
-    v11 = v7;
+    v13 = request;
+    v11 = request;
     [(NMCRoutePlanningController *)self _enumerateMapsConnectionsUnderAssertionNamed:@"com.apple.Maps.launchFromGizmo.preview.anticipate" usingBlock:v12];
   }
 }
 
-- (void)_notifyMapsRoutePlanningSessionDidUpdateResponse:(id)a3
+- (void)_notifyMapsRoutePlanningSessionDidUpdateResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = +[NMCGizmoConnection sharedInstance];
-  v6 = [v5 supportsXPCUseMapsForRoutePlanning];
+  supportsXPCUseMapsForRoutePlanning = [v5 supportsXPCUseMapsForRoutePlanning];
 
-  if ((v6 & 1) == 0)
+  if ((supportsXPCUseMapsForRoutePlanning & 1) == 0)
   {
-    v7 = [v4 request];
-    v8 = [v4 response];
-    v9 = [v7 companionRouteContext];
+    request = [responseCopy request];
+    response = [responseCopy response];
+    companionRouteContext = [request companionRouteContext];
     v10 = sub_100053324();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v9 simpleDescription];
+      simpleDescription = [companionRouteContext simpleDescription];
       *buf = 138412290;
-      v18 = v11;
+      v18 = simpleDescription;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Notifying Maps: session did receive routes (context:%@)", buf, 0xCu);
     }
 
@@ -3308,34 +3308,34 @@ LABEL_13:
     v14[1] = 3221225472;
     v14[2] = sub_100026368;
     v14[3] = &unk_100085FD0;
-    v15 = v7;
-    v16 = v8;
-    v12 = v8;
-    v13 = v7;
+    v15 = request;
+    v16 = response;
+    v12 = response;
+    v13 = request;
     [(NMCRoutePlanningController *)self _enumerateMapsConnectionsUnderAssertionNamed:@"com.apple.Maps.launchFromGizmo.preview.routes" usingBlock:v14];
   }
 }
 
-- (void)_notifyMapsRoutePlanningSessionDidSelectRoute:(id)a3
+- (void)_notifyMapsRoutePlanningSessionDidSelectRoute:(id)route
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  routeCopy = route;
   dispatch_assert_queue_V2(isolationQueue);
-  v6 = [v5 request];
-  v7 = [v5 selectedRoute];
+  request = [routeCopy request];
+  selectedRoute = [routeCopy selectedRoute];
 
-  v8 = [v7 uniqueRouteID];
-  v9 = [v8 _maps_data];
+  uniqueRouteID = [selectedRoute uniqueRouteID];
+  _maps_data = [uniqueRouteID _maps_data];
 
-  v10 = [v6 companionRouteContext];
+  companionRouteContext = [request companionRouteContext];
   v11 = sub_100053324();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v10 simpleDescription];
+    simpleDescription = [companionRouteContext simpleDescription];
     *buf = 138412546;
-    v19 = v9;
+    v19 = _maps_data;
     v20 = 2112;
-    v21 = v12;
+    v21 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Notifying Maps: did select route (routeID:%@, context:%@)", buf, 0x16u);
   }
 
@@ -3343,34 +3343,34 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = sub_100026610;
   v15[3] = &unk_100085FD0;
-  v16 = v6;
-  v17 = v9;
-  v13 = v9;
-  v14 = v6;
+  v16 = request;
+  v17 = _maps_data;
+  v13 = _maps_data;
+  v14 = request;
   [(NMCRoutePlanningController *)self _enumerateMapsConnectionsUnderAssertionNamed:@"com.apple.Maps.launchFromGizmo.preview.select" usingBlock:v15];
 }
 
-- (void)_notifyMapsRoutePlanningSessionDidFail:(id)a3
+- (void)_notifyMapsRoutePlanningSessionDidFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   dispatch_assert_queue_V2(self->_isolationQueue);
   v5 = +[NMCGizmoConnection sharedInstance];
-  v6 = [v5 supportsXPCUseMapsForRoutePlanning];
+  supportsXPCUseMapsForRoutePlanning = [v5 supportsXPCUseMapsForRoutePlanning];
 
-  if ((v6 & 1) == 0)
+  if ((supportsXPCUseMapsForRoutePlanning & 1) == 0)
   {
-    v7 = [v4 request];
-    v8 = [v4 response];
-    v9 = [v7 companionRouteContext];
+    request = [failCopy request];
+    response = [failCopy response];
+    companionRouteContext = [request companionRouteContext];
     v10 = sub_100053324();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v8 lastError];
-      v12 = [v9 simpleDescription];
+      lastError = [response lastError];
+      simpleDescription = [companionRouteContext simpleDescription];
       *buf = 138412546;
-      v19 = v11;
+      v19 = lastError;
       v20 = 2112;
-      v21 = v12;
+      v21 = simpleDescription;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Notifying Maps: session failed with error: %@ (context:%@)", buf, 0x16u);
     }
 
@@ -3378,29 +3378,29 @@ LABEL_13:
     v15[1] = 3221225472;
     v15[2] = sub_1000268D0;
     v15[3] = &unk_100085FD0;
-    v16 = v7;
-    v17 = v8;
-    v13 = v8;
-    v14 = v7;
+    v16 = request;
+    v17 = response;
+    v13 = response;
+    v14 = request;
     [(NMCRoutePlanningController *)self _enumerateMapsConnectionsUnderAssertionNamed:@"com.apple.Maps.launchFromGizmo.preview.fail" usingBlock:v15];
   }
 }
 
-- (void)_notifyMapsRoutePlanningSessionDidInvalidate:(id)a3
+- (void)_notifyMapsRoutePlanningSessionDidInvalidate:(id)invalidate
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  invalidateCopy = invalidate;
   dispatch_assert_queue_V2(isolationQueue);
-  v6 = [v5 request];
+  request = [invalidateCopy request];
 
-  v7 = [v6 companionRouteContext];
+  companionRouteContext = [request companionRouteContext];
 
   v8 = sub_100053324();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 simpleDescription];
+    simpleDescription = [companionRouteContext simpleDescription];
     *buf = 138412290;
-    v14 = v9;
+    v14 = simpleDescription;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Notifying Maps: session invalidated (context:%@)", buf, 0xCu);
   }
 
@@ -3408,8 +3408,8 @@ LABEL_13:
   v11[1] = 3221225472;
   v11[2] = sub_100026B1C;
   v11[3] = &unk_100085FA8;
-  v12 = v7;
-  v10 = v7;
+  v12 = companionRouteContext;
+  v10 = companionRouteContext;
   [(NMCRoutePlanningController *)self _enumerateMapsConnectionsUnderAssertionNamed:@"com.apple.Maps.launchFromGizmo.preview.clear" usingBlock:v11];
 }
 

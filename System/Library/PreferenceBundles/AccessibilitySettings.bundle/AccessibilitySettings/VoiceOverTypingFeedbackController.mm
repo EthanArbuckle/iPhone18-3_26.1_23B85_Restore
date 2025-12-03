@@ -1,34 +1,34 @@
 @interface VoiceOverTypingFeedbackController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)feedbackTypeForString:(id)a3;
-- (int64_t)rowForTypingFeedbackOption:(int64_t)a3 section:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)feedbackTypeForString:(id)string;
+- (int64_t)rowForTypingFeedbackOption:(int64_t)option section:(int64_t)section;
 - (void)_updateSelectedRows;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VoiceOverTypingFeedbackController
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = OBJC_IVAR___PSListController__specifiers;
   if (!*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers])
   {
     v4 = [(VoiceOverTypingFeedbackController *)self loadSpecifiersFromPlistName:@"VoiceOverTypingFeedback" target:self];
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 voiceOverBrailleGesturesEnabled];
+    voiceOverBrailleGesturesEnabled = [v5 voiceOverBrailleGesturesEnabled];
 
-    if (v6)
+    if (voiceOverBrailleGesturesEnabled)
     {
-      objc_storeStrong(&v2->AXUISettingsBaseListController_opaque[v3], v4);
+      objc_storeStrong(&selfCopy->AXUISettingsBaseListController_opaque[v3], v4);
     }
 
     else
     {
       v20 = v3;
-      v21 = v2;
+      v21 = selfCopy;
       v22 = objc_alloc_init(NSMutableArray);
       v24 = 0u;
       v25 = 0u;
@@ -75,7 +75,7 @@
         while (v8);
       }
 
-      v2 = v21;
+      selfCopy = v21;
       [(VoiceOverTypingFeedbackController *)v21 setAllSpecifiersUnsearchable:v22];
       v3 = v20;
       v16 = *&v21->AXUISettingsBaseListController_opaque[v20];
@@ -85,31 +85,31 @@
     }
   }
 
-  [(VoiceOverTypingFeedbackController *)v2 _updateSelectedRows];
-  v17 = *&v2->AXUISettingsBaseListController_opaque[v3];
+  [(VoiceOverTypingFeedbackController *)selfCopy _updateSelectedRows];
+  v17 = *&selfCopy->AXUISettingsBaseListController_opaque[v3];
 
   return v17;
 }
 
-- (int64_t)feedbackTypeForString:(id)a3
+- (int64_t)feedbackTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"off"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"off"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"characters"])
+  else if ([stringCopy isEqualToString:@"characters"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"words"])
+  else if ([stringCopy isEqualToString:@"words"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"wordsAndCharacters"])
+  else if ([stringCopy isEqualToString:@"wordsAndCharacters"])
   {
     v4 = 2;
   }
@@ -122,13 +122,13 @@
   return v4;
 }
 
-- (int64_t)rowForTypingFeedbackOption:(int64_t)a3 section:(int64_t)a4
+- (int64_t)rowForTypingFeedbackOption:(int64_t)option section:(int64_t)section
 {
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v18 = self;
+  selfCopy = self;
   v5 = *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
@@ -146,17 +146,17 @@ LABEL_3:
       }
 
       v11 = *(*(&v20 + 1) + 8 * v10);
-      v12 = [v11 propertyForKey:{@"layout_type", v18}];
+      v12 = [v11 propertyForKey:{@"layout_type", selfCopy}];
       v13 = v12;
-      if (a4 == 2)
+      if (section == 2)
       {
         if ([v12 isEqualToString:@"braille_gestures"])
         {
 LABEL_14:
           v15 = [v11 propertyForKey:@"option"];
-          v16 = [(VoiceOverTypingFeedbackController *)v18 feedbackTypeForString:v15];
+          v16 = [(VoiceOverTypingFeedbackController *)selfCopy feedbackTypeForString:v15];
 
-          if (v16 == a3)
+          if (v16 == option)
           {
 
             goto LABEL_20;
@@ -168,14 +168,14 @@ LABEL_14:
 
       else
       {
-        if (a4 == 1)
+        if (section == 1)
         {
           v14 = @"hardware";
         }
 
         else
         {
-          if (a4)
+          if (section)
           {
             goto LABEL_16;
           }
@@ -221,20 +221,20 @@ LABEL_20:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = VoiceOverTypingFeedbackController;
-  v7 = [(VoiceOverTypingFeedbackController *)&v14 tableView:a3 cellForRowAtIndexPath:v6];
+  v7 = [(VoiceOverTypingFeedbackController *)&v14 tableView:view cellForRowAtIndexPath:pathCopy];
   v8 = [NSIndexPath indexPathForRow:self->_swSelectedRow inSection:0];
-  if ([v8 isEqual:v6])
+  if ([v8 isEqual:pathCopy])
   {
     goto LABEL_4;
   }
 
   v9 = [NSIndexPath indexPathForRow:self->_hwSelectedRow inSection:1];
-  if ([v9 isEqual:v6])
+  if ([v9 isEqual:pathCopy])
   {
 
 LABEL_4:
@@ -247,7 +247,7 @@ LABEL_5:
   if ([v11 voiceOverBrailleGesturesEnabled])
   {
     v12 = [NSIndexPath indexPathForRow:self->_brailleGesturesSelectedRow inSection:2];
-    v13 = [v12 isEqual:v6];
+    v13 = [v12 isEqual:pathCopy];
 
     if (v13)
     {
@@ -264,7 +264,7 @@ LABEL_6:
   return v7;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = VoiceOverTypingFeedbackController;
@@ -295,18 +295,18 @@ LABEL_6:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = VoiceOverTypingFeedbackController;
-  [(VoiceOverTypingFeedbackController *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  [(VoiceOverTypingFeedbackController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(VoiceOverTypingFeedbackController *)self specifierForIndexPath:v7];
+    v9 = [(VoiceOverTypingFeedbackController *)self specifierForIndexPath:pathCopy];
     v10 = [v9 propertyForKey:@"layout_type"];
     v11 = [v9 propertyForKey:@"option"];
     v12 = [(VoiceOverTypingFeedbackController *)self feedbackTypeForString:v11];
@@ -336,7 +336,7 @@ LABEL_6:
     }
 
     v16 = [NSIndexPath indexPathForRow:swSelectedRow inSection:v15];
-    v17 = [v6 cellForRowAtIndexPath:v16];
+    v17 = [viewCopy cellForRowAtIndexPath:v16];
 
     [v17 setChecked:0];
     [v8 setChecked:1];

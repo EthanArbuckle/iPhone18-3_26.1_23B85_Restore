@@ -1,30 +1,30 @@
 @interface MFDatePickerViewController
 + (OS_os_log)log;
-+ (id)datePickerViewControllerWithType:(int64_t)a3 message:(id)a4;
-- (BOOL)_isDate:(id)a3 time:(id)a4 andTimeZone:(id)a5 earlierThanDate:(id)a6;
-- (BOOL)_presentInvalidDateAlertIfNecessaryFromSender:(id)a3 withContinueBlock:(id)a4 cancelBlock:(id)a5;
-- (MFDatePickerViewController)initWithType:(int64_t)a3 shouldShowDeleteButton:(BOOL)a4 initialDate:(id)a5 shouldDismissCommit:(BOOL)a6;
++ (id)datePickerViewControllerWithType:(int64_t)type message:(id)message;
+- (BOOL)_isDate:(id)date time:(id)time andTimeZone:(id)zone earlierThanDate:(id)thanDate;
+- (BOOL)_presentInvalidDateAlertIfNecessaryFromSender:(id)sender withContinueBlock:(id)block cancelBlock:(id)cancelBlock;
+- (MFDatePickerViewController)initWithType:(int64_t)type shouldShowDeleteButton:(BOOL)button initialDate:(id)date shouldDismissCommit:(BOOL)commit;
 - (MFDatePickerViewControllerDelegate)delegate;
-- (id)_itemOfType:(unint64_t)a3;
-- (id)_itemWithIdentifier:(id)a3;
-- (id)_selectedDateForTimeWheelFromDate:(id)a3;
-- (id)_selectedTimeForTimeWheelFromDate:(id)a3;
+- (id)_itemOfType:(unint64_t)type;
+- (id)_itemWithIdentifier:(id)identifier;
+- (id)_selectedDateForTimeWheelFromDate:(id)date;
+- (id)_selectedTimeForTimeWheelFromDate:(id)date;
 - (id)createCollectionViewLayout;
-- (void)_cancel:(id)a3;
-- (void)_datePicked:(id)a3;
-- (void)_reloadDataSourceAnimated:(void *)a3 update:;
-- (void)_reloadDataSourceAnimated:(void *)a3 update:(void *)a4 completion:;
-- (void)calendarCollectionViewCell:(id)a3 didChangeDate:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)datePickerTimeHeaderCollectionViewCell:(id)a3 showTime:(BOOL)a4;
-- (void)sendLaterHeaderCollectionViewCellDateTapped:(id)a3;
-- (void)sendLaterHeaderCollectionViewCellTimeTapped:(id)a3;
-- (void)setUpDataSourceForCollectionView:(id)a3;
+- (void)_cancel:(id)_cancel;
+- (void)_datePicked:(id)picked;
+- (void)_reloadDataSourceAnimated:(void *)animated update:;
+- (void)_reloadDataSourceAnimated:(void *)animated update:(void *)update completion:;
+- (void)calendarCollectionViewCell:(id)cell didChangeDate:(id)date;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)datePickerTimeHeaderCollectionViewCell:(id)cell showTime:(BOOL)time;
+- (void)sendLaterHeaderCollectionViewCellDateTapped:(id)tapped;
+- (void)sendLaterHeaderCollectionViewCellTimeTapped:(id)tapped;
+- (void)setUpDataSourceForCollectionView:(id)view;
 - (void)setUpItemsProvider;
 - (void)setUpNavigationBar;
-- (void)timeCollectionViewCell:(id)a3 didChangeDate:(id)a4;
-- (void)timeZonePickerViewController:(id)a3 didSelectCity:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)timeCollectionViewCell:(id)cell didChangeDate:(id)date;
+- (void)timeZonePickerViewController:(id)controller didSelectCity:(id)city;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -36,7 +36,7 @@
   block[1] = 3221225472;
   block[2] = __33__MFDatePickerViewController_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_1 != -1)
   {
     dispatch_once(&log_onceToken_1, block);
@@ -55,44 +55,44 @@ void __33__MFDatePickerViewController_log__block_invoke(uint64_t a1)
   log_log_1 = v1;
 }
 
-+ (id)datePickerViewControllerWithType:(int64_t)a3 message:(id)a4
++ (id)datePickerViewControllerWithType:(int64_t)type message:(id)message
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 1)
+  messageCopy = message;
+  v6 = messageCopy;
+  if (type == 1)
   {
-    v8 = [v5 readLater];
-    v7 = [v8 date];
+    readLater = [messageCopy readLater];
+    date = [readLater date];
   }
 
-  else if (a3)
+  else if (type)
   {
-    v7 = 0;
+    date = 0;
   }
 
   else
   {
-    v7 = [v5 sendLaterDate];
+    date = [messageCopy sendLaterDate];
   }
 
-  v9 = [[MFDatePickerViewController alloc] initWithType:a3 shouldShowDeleteButton:1 initialDate:v7];
+  v9 = [[MFDatePickerViewController alloc] initWithType:type shouldShowDeleteButton:1 initialDate:date];
   [(MFDatePickerViewController *)v9 setMessage:v6];
 
   return v9;
 }
 
-- (MFDatePickerViewController)initWithType:(int64_t)a3 shouldShowDeleteButton:(BOOL)a4 initialDate:(id)a5 shouldDismissCommit:(BOOL)a6
+- (MFDatePickerViewController)initWithType:(int64_t)type shouldShowDeleteButton:(BOOL)button initialDate:(id)date shouldDismissCommit:(BOOL)commit
 {
-  v10 = a5;
+  dateCopy = date;
   v29.receiver = self;
   v29.super_class = MFDatePickerViewController;
   v11 = [(MFDatePickerViewController *)&v29 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    v11->_shouldShowDeleteButton = a4;
-    v11->_shouldInvokeDelegate = a6;
+    v11->_type = type;
+    v11->_shouldShowDeleteButton = button;
+    v11->_shouldInvokeDelegate = commit;
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_USER_INITIATED, 0);
     v15 = dispatch_queue_create("com.apple.mail.datepicker.update", v14);
@@ -108,9 +108,9 @@ void __33__MFDatePickerViewController_log__block_invoke(uint64_t a1)
     items = v12->_items;
     v12->_items = v22;
 
-    if (v10 && ![v10 ef_isEarlierThanNow])
+    if (dateCopy && ![dateCopy ef_isEarlierThanNow])
     {
-      v27 = v10;
+      v27 = dateCopy;
       initialDate = v12->_initialDate;
       v12->_initialDate = v27;
       v25 = 1;
@@ -130,32 +130,32 @@ void __33__MFDatePickerViewController_log__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (id)_selectedDateForTimeWheelFromDate:(id)a3
+- (id)_selectedDateForTimeWheelFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = [MEMORY[0x1E695DF00] now];
-  if ([v4 ef_isDateNextDayOrLater:v3])
+  if ([v4 ef_isDateNextDayOrLater:dateCopy])
   {
-    v5 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
   else
   {
-    v5 = v3;
+    distantPast = dateCopy;
   }
 
-  v6 = v5;
+  v6 = distantPast;
 
   return v6;
 }
 
-- (id)_selectedTimeForTimeWheelFromDate:(id)a3
+- (id)_selectedTimeForTimeWheelFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = MEMORY[0x1E695DF00];
   v5 = [MEMORY[0x1E695DF00] now];
-  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v7 = [v4 ef_localCombinedDate:v5 time:v3 timeZone:v6];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v7 = [v4 ef_localCombinedDate:v5 time:dateCopy timeZone:localTimeZone];
 
   return v7;
 }
@@ -163,58 +163,58 @@ void __33__MFDatePickerViewController_log__block_invoke(uint64_t a1)
 - (void)setUpItemsProvider
 {
   v45 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v3 = [(MFDatePickerViewController *)self initialDate];
-  v4 = [MEMORY[0x1E695DFE8] localTimeZone];
-  v5 = [MFTimezoneHelper cityForTimeZone:v4];
+  initialDate = [(MFDatePickerViewController *)self initialDate];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  v5 = [MFTimezoneHelper cityForTimeZone:localTimeZone];
 
   v44 = v5;
   v6 = [MFDatePickerItemIdentifier alloc];
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [(MFDatePickerItemIdentifier *)v6 initWithIdentifier:v7 type:0];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v8 = [(MFDatePickerItemIdentifier *)v6 initWithIdentifier:uUID type:0];
 
   v42 = v8;
-  v41 = [[MFDatePickerItem alloc] initWithIdentifier:v8 selectedDate:v3 selectedTime:v3 selectedCity:v5 datePickerComponentType:0];
+  v41 = [[MFDatePickerItem alloc] initWithIdentifier:v8 selectedDate:initialDate selectedTime:initialDate selectedCity:v5 datePickerComponentType:0];
   [v45 setObject:v41 forKeyedSubscript:v8];
   v9 = [MFDatePickerItemIdentifier alloc];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [(MFDatePickerItemIdentifier *)v9 initWithIdentifier:v10 type:1];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+  v11 = [(MFDatePickerItemIdentifier *)v9 initWithIdentifier:uUID2 type:1];
 
   v40 = v11;
-  v39 = [[MFDatePickerItem alloc] initWithIdentifier:v11 selectedDate:v3 selectedTime:0 selectedCity:0 datePickerComponentType:0];
+  v39 = [[MFDatePickerItem alloc] initWithIdentifier:v11 selectedDate:initialDate selectedTime:0 selectedCity:0 datePickerComponentType:0];
   [v45 setObject:v39 forKeyedSubscript:v11];
   v12 = [MFDatePickerItemIdentifier alloc];
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v43 = [(MFDatePickerItemIdentifier *)v12 initWithIdentifier:v13 type:2];
+  uUID3 = [MEMORY[0x1E696AFB0] UUID];
+  v43 = [(MFDatePickerItemIdentifier *)v12 initWithIdentifier:uUID3 type:2];
 
   v14 = [MFDatePickerItem alloc];
-  v15 = [(MFDatePickerViewController *)self _selectedDateForTimeWheelFromDate:v3];
-  v16 = [(MFDatePickerViewController *)self _selectedTimeForTimeWheelFromDate:v3];
+  v15 = [(MFDatePickerViewController *)self _selectedDateForTimeWheelFromDate:initialDate];
+  v16 = [(MFDatePickerViewController *)self _selectedTimeForTimeWheelFromDate:initialDate];
   v17 = [(MFDatePickerItem *)v14 initWithIdentifier:v43 selectedDate:v15 selectedTime:v16 selectedCity:v44 datePickerComponentType:0];
 
   v38 = v17;
   [v45 setObject:v17 forKeyedSubscript:v43];
   v18 = [MFDatePickerItemIdentifier alloc];
-  v19 = [MEMORY[0x1E696AFB0] UUID];
-  v20 = [(MFDatePickerItemIdentifier *)v18 initWithIdentifier:v19 type:5];
+  uUID4 = [MEMORY[0x1E696AFB0] UUID];
+  v20 = [(MFDatePickerItemIdentifier *)v18 initWithIdentifier:uUID4 type:5];
 
   v37 = v20;
   v36 = [[MFDatePickerItem alloc] initWithIdentifier:v20 selectedDate:0 selectedTime:0 selectedCity:v44 datePickerComponentType:0];
   [v45 setObject:v36 forKeyedSubscript:v20];
   v21 = [MFDatePickerItemIdentifier alloc];
-  v22 = [MEMORY[0x1E696AFB0] UUID];
-  v23 = [(MFDatePickerItemIdentifier *)v21 initWithIdentifier:v22 type:3];
+  uUID5 = [MEMORY[0x1E696AFB0] UUID];
+  v23 = [(MFDatePickerItemIdentifier *)v21 initWithIdentifier:uUID5 type:3];
 
-  v24 = [[MFDatePickerItem alloc] initWithIdentifier:v23 selectedDate:v3 selectedTime:0 selectedCity:0 datePickerComponentType:0];
+  v24 = [[MFDatePickerItem alloc] initWithIdentifier:v23 selectedDate:initialDate selectedTime:0 selectedCity:0 datePickerComponentType:0];
   [v45 setObject:v24 forKeyedSubscript:v23];
   v25 = [MFDatePickerItemIdentifier alloc];
-  v26 = [MEMORY[0x1E696AFB0] UUID];
-  v27 = [(MFDatePickerItemIdentifier *)v25 initWithIdentifier:v26 type:4];
+  uUID6 = [MEMORY[0x1E696AFB0] UUID];
+  v27 = [(MFDatePickerItemIdentifier *)v25 initWithIdentifier:uUID6 type:4];
 
-  v28 = [[MFDatePickerItem alloc] initWithIdentifier:v27 selectedDate:0 selectedTime:v3 selectedCity:0 datePickerComponentType:0 timeSwitchEnabled:[(MFDatePickerViewController *)self timeSwitchEnabled]];
+  v28 = [[MFDatePickerItem alloc] initWithIdentifier:v27 selectedDate:0 selectedTime:initialDate selectedCity:0 datePickerComponentType:0 timeSwitchEnabled:[(MFDatePickerViewController *)self timeSwitchEnabled]];
   [v45 setObject:v28 forKeyedSubscript:v27];
   v29 = [MFDatePickerItemIdentifier alloc];
-  v30 = [MEMORY[0x1E696AFB0] UUID];
-  v31 = [(MFDatePickerItemIdentifier *)v29 initWithIdentifier:v30 type:6];
+  uUID7 = [MEMORY[0x1E696AFB0] UUID];
+  v31 = [(MFDatePickerItemIdentifier *)v29 initWithIdentifier:uUID7 type:6];
 
   v32 = [[MFDatePickerItem alloc] initWithIdentifier:v31 selectedDate:0 selectedTime:0 selectedCity:0 datePickerComponentType:0];
   [v45 setObject:v32 forKeyedSubscript:v31];
@@ -231,93 +231,93 @@ void __33__MFDatePickerViewController_log__block_invoke(uint64_t a1)
   [(MFDatePickerViewController *)&v10 viewDidLoad];
   [(MFDatePickerViewController *)self setUpItemsProvider];
   v3 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v4 = [(MFDatePickerViewController *)self createCollectionViewLayout];
-  v5 = [v3 initWithFrame:v4 collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  createCollectionViewLayout = [(MFDatePickerViewController *)self createCollectionViewLayout];
+  v5 = [v3 initWithFrame:createCollectionViewLayout collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5 setDelegate:self];
   [v5 setShowsVerticalScrollIndicator:0];
   [(MFDatePickerViewController *)self setUpDataSourceForCollectionView:v5];
   [(MFDatePickerViewController *)self setCollectionView:v5];
-  v6 = [(MFDatePickerViewController *)self view];
-  [v6 addSubview:v5];
+  view = [(MFDatePickerViewController *)self view];
+  [view addSubview:v5];
 
-  v7 = [(MFDatePickerViewController *)self collectionView];
-  v8 = [(MFDatePickerViewController *)self view];
-  [v7 mf_pinToView:v8 usingLayoutMargins:0];
+  collectionView = [(MFDatePickerViewController *)self collectionView];
+  view2 = [(MFDatePickerViewController *)self view];
+  [collectionView mf_pinToView:view2 usingLayoutMargins:0];
 
   [(MFDatePickerViewController *)self setUpNavigationBar];
-  v9 = [(MFDatePickerViewController *)self navigationItem];
-  [v9 setHidesBackButton:1];
+  navigationItem = [(MFDatePickerViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v17.receiver = self;
   v17.super_class = MFDatePickerViewController;
-  [(MFDatePickerViewController *)&v17 viewDidDisappear:a3];
-  v4 = [(MFDatePickerViewController *)self delegate];
+  [(MFDatePickerViewController *)&v17 viewDidDisappear:disappear];
+  delegate = [(MFDatePickerViewController *)self delegate];
   if (![(MFDatePickerViewController *)self shouldInvokeDelegate])
   {
     goto LABEL_10;
   }
 
-  v5 = [(MFDatePickerViewController *)self initialDate];
-  v6 = [(MFDatePickerViewController *)self type];
-  if (!v6)
+  initialDate = [(MFDatePickerViewController *)self initialDate];
+  type = [(MFDatePickerViewController *)self type];
+  if (!type)
   {
     v7 = [(MFDatePickerViewController *)self _itemOfType:0];
     v13 = MEMORY[0x1E695DF00];
-    v8 = [v7 selectedDate];
-    v10 = [v7 selectedTime];
-    v11 = [v7 selectedCity];
-    v12 = [v11 timeZone];
-    v14 = [v13 ef_localCombinedDate:v8 time:v10 timeZone:v12];
+    selectedDate = [v7 selectedDate];
+    selectedTime = [v7 selectedTime];
+    selectedCity = [v7 selectedCity];
+    timeZone = [selectedCity timeZone];
+    v14 = [v13 ef_localCombinedDate:selectedDate time:selectedTime timeZone:timeZone];
 
-    v5 = v14;
+    initialDate = v14;
     goto LABEL_6;
   }
 
-  if (v6 == 1)
+  if (type == 1)
   {
     v7 = [(MFDatePickerViewController *)self _itemOfType:3];
-    v8 = [(MFDatePickerViewController *)self _itemOfType:4];
+    selectedDate = [(MFDatePickerViewController *)self _itemOfType:4];
     v9 = MEMORY[0x1E695DF00];
-    v10 = [v7 selectedDate];
-    v11 = [v8 selectedTime];
-    [v9 ef_localCombinedDate:v10 time:v11 timeZone:0];
-    v5 = v12 = v5;
+    selectedTime = [v7 selectedDate];
+    selectedCity = [selectedDate selectedTime];
+    [v9 ef_localCombinedDate:selectedTime time:selectedCity timeZone:0];
+    initialDate = timeZone = initialDate;
 LABEL_6:
   }
 
-  v15 = [(MFDatePickerViewController *)self initialDate];
-  v16 = [v5 isEqualToDate:v15];
+  initialDate2 = [(MFDatePickerViewController *)self initialDate];
+  v16 = [initialDate isEqualToDate:initialDate2];
 
   if ((v16 & 1) == 0)
   {
-    [v4 datePickerViewController:self didSelectDate:v5];
+    [delegate datePickerViewController:self didSelectDate:initialDate];
   }
 
 LABEL_10:
   if (objc_opt_respondsToSelector())
   {
-    [v4 datePickerViewControllerDidDismiss:self];
+    [delegate datePickerViewControllerDidDismiss:self];
   }
 }
 
 - (void)setUpNavigationBar
 {
-  v6 = [(MFDatePickerViewController *)self navigationItem];
+  navigationItem = [(MFDatePickerViewController *)self navigationItem];
   v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancel_];
-  [v6 setLeftBarButtonItem:v3];
+  [navigationItem setLeftBarButtonItem:v3];
 
   v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__datePicked_];
-  [v6 setRightBarButtonItem:v4];
+  [navigationItem setRightBarButtonItem:v4];
 
   if ([(MFDatePickerViewController *)self type]<= 1)
   {
     v5 = _EFLocalizedString();
-    [v6 setTitle:v5];
+    [navigationItem setTitle:v5];
   }
 }
 
@@ -356,10 +356,10 @@ id __56__MFDatePickerViewController_createCollectionViewLayout__block_invoke(uin
   return v4;
 }
 
-- (void)setUpDataSourceForCollectionView:(id)a3
+- (void)setUpDataSourceForCollectionView:(id)view
 {
   v103[1] = *MEMORY[0x1E69E9840];
-  v63 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
   v4 = MEMORY[0x1E69DC870];
   v5 = objc_opt_class();
@@ -431,7 +431,7 @@ id __56__MFDatePickerViewController_createCollectionViewLayout__block_invoke(uin
   v84 = v54;
   v52 = v57;
   v85 = v52;
-  v17 = [v16 initWithCollectionView:v63 cellProvider:v78];
+  v17 = [v16 initWithCollectionView:viewCopy cellProvider:v78];
   v18 = objc_alloc_init(MEMORY[0x1E69955A0]);
   v103[0] = &unk_1F3D16098;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v103 count:1];
@@ -444,10 +444,10 @@ id __56__MFDatePickerViewController_createCollectionViewLayout__block_invoke(uin
   v47 = v61;
   v77 = v47;
   [v17 setSupplementaryViewProvider:v76];
-  v20 = [(MFDatePickerViewController *)self type];
-  if (v20)
+  type = [(MFDatePickerViewController *)self type];
+  if (type)
   {
-    if (v20 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -455,7 +455,7 @@ id __56__MFDatePickerViewController_createCollectionViewLayout__block_invoke(uin
     v46 = [(MFDatePickerViewController *)self _itemOfType:3];
     v45 = [(MFDatePickerViewController *)self _itemOfType:1];
     v21 = [(MFDatePickerViewController *)self _itemOfType:4];
-    v22 = [(MFDatePickerViewController *)self items];
+    items = [(MFDatePickerViewController *)self items];
     v69[0] = MEMORY[0x1E69E9820];
     v69[1] = 3221225472;
     v69[2] = __63__MFDatePickerViewController_setUpDataSourceForCollectionView___block_invoke_12;
@@ -466,14 +466,14 @@ id __56__MFDatePickerViewController_createCollectionViewLayout__block_invoke(uin
     v71 = v24;
     v25 = v21;
     v72 = v25;
-    [v22 performWhileLocked:v69];
+    [items performWhileLocked:v69];
 
-    v26 = [v23 identifier];
-    v101[0] = v26;
-    v27 = [v24 identifier];
-    v101[1] = v27;
-    v28 = [v25 identifier];
-    v101[2] = v28;
+    identifier = [v23 identifier];
+    v101[0] = identifier;
+    identifier2 = [v24 identifier];
+    v101[1] = identifier2;
+    identifier3 = [v25 identifier];
+    v101[2] = identifier3;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v101 count:3];
     [v18 appendItemsWithIdentifiers:v29 intoSectionWithIdentifier:&unk_1F3D16098];
   }
@@ -482,7 +482,7 @@ id __56__MFDatePickerViewController_createCollectionViewLayout__block_invoke(uin
   {
     v30 = [(MFDatePickerViewController *)self _itemOfType:0];
     v31 = [(MFDatePickerViewController *)self _itemOfType:1];
-    v32 = [(MFDatePickerViewController *)self items];
+    items2 = [(MFDatePickerViewController *)self items];
     v73[0] = MEMORY[0x1E69E9820];
     v73[1] = 3221225472;
     v73[2] = __63__MFDatePickerViewController_setUpDataSourceForCollectionView___block_invoke_11;
@@ -491,12 +491,12 @@ id __56__MFDatePickerViewController_createCollectionViewLayout__block_invoke(uin
     v74 = v23;
     v24 = v31;
     v75 = v24;
-    [v32 performWhileLocked:v73];
+    [items2 performWhileLocked:v73];
 
-    v33 = [v23 identifier];
-    v102[0] = v33;
-    v34 = [v24 identifier];
-    v102[1] = v34;
+    identifier4 = [v23 identifier];
+    v102[0] = identifier4;
+    identifier5 = [v24 identifier];
+    v102[1] = identifier5;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v102 count:2];
     [v18 appendItemsWithIdentifiers:v35 intoSectionWithIdentifier:&unk_1F3D16098];
 
@@ -507,28 +507,28 @@ LABEL_6:
   if ([(MFDatePickerViewController *)self shouldShowDeleteButton])
   {
     v36 = [(MFDatePickerViewController *)self _itemOfType:6];
-    v37 = [(MFDatePickerViewController *)self items];
+    items3 = [(MFDatePickerViewController *)self items];
     v67[0] = MEMORY[0x1E69E9820];
     v67[1] = 3221225472;
     v67[2] = __63__MFDatePickerViewController_setUpDataSourceForCollectionView___block_invoke_13;
     v67[3] = &unk_1E806DF50;
     v38 = v36;
     v68 = v38;
-    [v37 performWhileLocked:v67];
+    [items3 performWhileLocked:v67];
 
     v100 = &unk_1F3D160B0;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v100 count:1];
     [v18 appendSectionsWithIdentifiers:v39];
 
-    v40 = [v38 identifier];
-    v99 = v40;
+    identifier6 = [v38 identifier];
+    v99 = identifier6;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v99 count:1];
     [v18 appendItemsWithIdentifiers:v41 intoSectionWithIdentifier:&unk_1F3D160B0];
   }
 
   [(MFDatePickerViewController *)self setDataSource:v17];
-  [v63 setDataSource:v17];
-  v42 = [(MFDatePickerViewController *)self updateQueue];
+  [viewCopy setDataSource:v17];
+  updateQueue = [(MFDatePickerViewController *)self updateQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__MFDatePickerViewController_setUpDataSourceForCollectionView___block_invoke_14;
@@ -537,7 +537,7 @@ LABEL_6:
   v66 = v18;
   v43 = v18;
   v44 = v17;
-  dispatch_sync(v42, block);
+  dispatch_sync(updateQueue, block);
 
   objc_destroyWeak(&v86);
   objc_destroyWeak(&v89);
@@ -709,31 +709,31 @@ void __63__MFDatePickerViewController_setUpDataSourceForCollectionView___block_i
   [v3 addObject:*(a1 + 32)];
 }
 
-- (void)_reloadDataSourceAnimated:(void *)a3 update:
+- (void)_reloadDataSourceAnimated:(void *)animated update:
 {
-  v5 = a3;
-  if (a1)
+  animatedCopy = animated;
+  if (self)
   {
-    [(MFDatePickerViewController *)a1 _reloadDataSourceAnimated:a2 update:v5 completion:0];
+    [(MFDatePickerViewController *)self _reloadDataSourceAnimated:a2 update:animatedCopy completion:0];
   }
 }
 
-- (void)_reloadDataSourceAnimated:(void *)a3 update:(void *)a4 completion:
+- (void)_reloadDataSourceAnimated:(void *)animated update:(void *)update completion:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  animatedCopy = animated;
+  updateCopy = update;
+  if (self)
   {
-    v9 = [a1 updateQueue];
+    updateQueue = [self updateQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __74__MFDatePickerViewController__reloadDataSourceAnimated_update_completion___block_invoke;
     v10[3] = &unk_1E806DF78;
-    v10[4] = a1;
-    v11 = v7;
+    v10[4] = self;
+    v11 = animatedCopy;
     v13 = a2;
-    v12 = v8;
-    dispatch_async(v9, v10);
+    v12 = updateCopy;
+    dispatch_async(updateQueue, v10);
   }
 }
 
@@ -762,56 +762,56 @@ uint64_t __74__MFDatePickerViewController__reloadDataSourceAnimated_update_compl
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__4;
   v28 = __Block_byref_object_dispose__4;
   v29 = 0;
-  v8 = [(MFDatePickerViewController *)self items];
+  items = [(MFDatePickerViewController *)self items];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __70__MFDatePickerViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
   v21 = &unk_1E806DFA0;
   v23 = &v24;
-  v9 = v7;
+  v9 = pathCopy;
   v22 = v9;
-  [v8 performWhileLocked:&v18];
+  [items performWhileLocked:&v18];
 
-  v10 = [v25[5] identifier];
-  v11 = [v10 type];
+  identifier = [v25[5] identifier];
+  type = [identifier type];
 
-  if (v11 == 5)
+  if (type == 5)
   {
     v12 = [MFTimeZonePickerViewController alloc];
-    v13 = [v25[5] selectedCity];
-    v14 = [(MFTimeZonePickerViewController *)v12 initWithCity:v13];
+    selectedCity = [v25[5] selectedCity];
+    delegate = [(MFTimeZonePickerViewController *)v12 initWithCity:selectedCity];
 
-    [(MFTimeZonePickerViewController *)v14 setDelegate:self];
-    v15 = [(MFDatePickerViewController *)self navigationController];
-    [v15 pushViewController:v14 animated:1];
+    [(MFTimeZonePickerViewController *)delegate setDelegate:self];
+    navigationController = [(MFDatePickerViewController *)self navigationController];
+    [navigationController pushViewController:delegate animated:1];
 
-    [v6 deselectItemAtIndexPath:v9 animated:1];
+    [viewCopy deselectItemAtIndexPath:v9 animated:1];
   }
 
   else
   {
-    v16 = [v25[5] identifier];
-    v17 = [v16 type];
+    identifier2 = [v25[5] identifier];
+    type2 = [identifier2 type];
 
-    if (v17 != 6)
+    if (type2 != 6)
     {
-      [v6 deselectItemAtIndexPath:v9 animated:1];
+      [viewCopy deselectItemAtIndexPath:v9 animated:1];
       goto LABEL_7;
     }
 
-    v14 = [(MFDatePickerViewController *)self delegate];
+    delegate = [(MFDatePickerViewController *)self delegate];
     [(MFDatePickerViewController *)self dismissViewControllerAnimated:1 completion:0];
-    [(MFTimeZonePickerViewController *)v14 datePickerViewControllerDidDeleteDate:self];
+    [(MFTimeZonePickerViewController *)delegate datePickerViewControllerDidDeleteDate:self];
   }
 
 LABEL_7:
@@ -828,9 +828,9 @@ void __70__MFDatePickerViewController_collectionView_didSelectItemAtIndexPath___
   *(v5 + 40) = v4;
 }
 
-- (void)_datePicked:(id)a3
+- (void)_datePicked:(id)picked
 {
-  v4 = a3;
+  pickedCopy = picked;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
@@ -838,7 +838,7 @@ void __70__MFDatePickerViewController_collectionView_didSelectItemAtIndexPath___
   v9 = &unk_1E806DB80;
   objc_copyWeak(&v10, &location);
   v5 = _Block_copy(&v6);
-  if (![(MFDatePickerViewController *)self _presentInvalidDateAlertIfNecessaryFromSender:v4 withContinueBlock:v5 cancelBlock:0, v6, v7, v8, v9])
+  if (![(MFDatePickerViewController *)self _presentInvalidDateAlertIfNecessaryFromSender:pickedCopy withContinueBlock:v5 cancelBlock:0, v6, v7, v8, v9])
   {
     v5[2](v5);
   }
@@ -857,14 +857,14 @@ void __42__MFDatePickerViewController__datePicked___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
   [(MFDatePickerViewController *)self setShouldInvokeDelegate:0];
 
   [(MFDatePickerViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)_itemOfType:(unint64_t)a3
+- (id)_itemOfType:(unint64_t)type
 {
   v8 = 0;
   v9 = &v8;
@@ -872,14 +872,14 @@ void __42__MFDatePickerViewController__datePicked___block_invoke(uint64_t a1)
   v11 = __Block_byref_object_copy__4;
   v12 = __Block_byref_object_dispose__4;
   v13 = 0;
-  v4 = [(MFDatePickerViewController *)self allItems];
+  allItems = [(MFDatePickerViewController *)self allItems];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__MFDatePickerViewController__itemOfType___block_invoke;
   v7[3] = &unk_1E806DFF0;
   v7[4] = &v8;
-  v7[5] = a3;
-  [v4 performWhileLocked:v7];
+  v7[5] = type;
+  [allItems performWhileLocked:v7];
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -909,24 +909,24 @@ void __42__MFDatePickerViewController__itemOfType___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (id)_itemWithIdentifier:(id)a3
+- (id)_itemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__4;
   v16 = __Block_byref_object_dispose__4;
   v17 = 0;
-  v5 = [(MFDatePickerViewController *)self allItems];
+  allItems = [(MFDatePickerViewController *)self allItems];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__MFDatePickerViewController__itemWithIdentifier___block_invoke;
   v9[3] = &unk_1E806E018;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
-  [v5 performWhileLocked:v9];
+  [allItems performWhileLocked:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -943,9 +943,9 @@ void __50__MFDatePickerViewController__itemWithIdentifier___block_invoke(uint64_
   *(v4 + 40) = v3;
 }
 
-- (void)sendLaterHeaderCollectionViewCellDateTapped:(id)a3
+- (void)sendLaterHeaderCollectionViewCellDateTapped:(id)tapped
 {
-  [a3 updateActiveComponent:0];
+  [tapped updateActiveComponent:0];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__MFDatePickerViewController_sendLaterHeaderCollectionViewCellDateTapped___block_invoke;
@@ -996,9 +996,9 @@ void __74__MFDatePickerViewController_sendLaterHeaderCollectionViewCellDateTappe
   [v3 addObject:a1[6]];
 }
 
-- (void)sendLaterHeaderCollectionViewCellTimeTapped:(id)a3
+- (void)sendLaterHeaderCollectionViewCellTimeTapped:(id)tapped
 {
-  [a3 updateActiveComponent:1];
+  [tapped updateActiveComponent:1];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__MFDatePickerViewController_sendLaterHeaderCollectionViewCellTimeTapped___block_invoke;
@@ -1049,16 +1049,16 @@ void __74__MFDatePickerViewController_sendLaterHeaderCollectionViewCellTimeTappe
   [v3 addObject:a1[6]];
 }
 
-- (void)calendarCollectionViewCell:(id)a3 didChangeDate:(id)a4
+- (void)calendarCollectionViewCell:(id)cell didChangeDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__MFDatePickerViewController_calendarCollectionViewCell_didChangeDate___block_invoke;
   v7[3] = &unk_1E806E068;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = dateCopy;
+  v6 = dateCopy;
   [(MFDatePickerViewController *)self _reloadDataSourceAnimated:v7 update:?];
 }
 
@@ -1134,16 +1134,16 @@ LABEL_9:
   }
 }
 
-- (void)timeCollectionViewCell:(id)a3 didChangeDate:(id)a4
+- (void)timeCollectionViewCell:(id)cell didChangeDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__MFDatePickerViewController_timeCollectionViewCell_didChangeDate___block_invoke;
   v7[3] = &unk_1E806E068;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = dateCopy;
+  v6 = dateCopy;
   [(MFDatePickerViewController *)self _reloadDataSourceAnimated:v7 update:?];
 }
 
@@ -1186,17 +1186,17 @@ LABEL_5:
   }
 }
 
-- (void)datePickerTimeHeaderCollectionViewCell:(id)a3 showTime:(BOOL)a4
+- (void)datePickerTimeHeaderCollectionViewCell:(id)cell showTime:(BOOL)time
 {
-  v4 = a4;
+  timeCopy = time;
   v6 = [(MFDatePickerViewController *)self _itemOfType:4];
-  [v6 setTimeSwitchEnabled:v4];
+  [v6 setTimeSwitchEnabled:timeCopy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78__MFDatePickerViewController_datePickerTimeHeaderCollectionViewCell_showTime___block_invoke;
   v8[3] = &unk_1E806E090;
   v8[4] = self;
-  v10 = v4;
+  v10 = timeCopy;
   v7 = v6;
   v9 = v7;
   [(MFDatePickerViewController *)self _reloadDataSourceAnimated:v8 update:?];
@@ -1228,16 +1228,16 @@ void __78__MFDatePickerViewController_datePickerTimeHeaderCollectionViewCell_sho
   }
 }
 
-- (void)timeZonePickerViewController:(id)a3 didSelectCity:(id)a4
+- (void)timeZonePickerViewController:(id)controller didSelectCity:(id)city
 {
-  v5 = a4;
+  cityCopy = city;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__MFDatePickerViewController_timeZonePickerViewController_didSelectCity___block_invoke;
   v7[3] = &unk_1E806E068;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = cityCopy;
+  v6 = cityCopy;
   [(MFDatePickerViewController *)self _reloadDataSourceAnimated:v7 update:?];
 }
 
@@ -1274,38 +1274,38 @@ void __73__MFDatePickerViewController_timeZonePickerViewController_didSelectCity
   [v3 reconfigureItemsWithIdentifiers:v17];
 }
 
-- (BOOL)_isDate:(id)a3 time:(id)a4 andTimeZone:(id)a5 earlierThanDate:(id)a6
+- (BOOL)_isDate:(id)date time:(id)time andTimeZone:(id)zone earlierThanDate:(id)thanDate
 {
-  v9 = a6;
-  v10 = [MEMORY[0x1E695DF00] ef_localCombinedDate:a3 time:a4 timeZone:a5];
-  LOBYTE(a4) = [v10 ef_isEarlierThanDate:v9];
+  thanDateCopy = thanDate;
+  v10 = [MEMORY[0x1E695DF00] ef_localCombinedDate:date time:time timeZone:zone];
+  LOBYTE(time) = [v10 ef_isEarlierThanDate:thanDateCopy];
 
-  return a4;
+  return time;
 }
 
-- (BOOL)_presentInvalidDateAlertIfNecessaryFromSender:(id)a3 withContinueBlock:(id)a4 cancelBlock:(id)a5
+- (BOOL)_presentInvalidDateAlertIfNecessaryFromSender:(id)sender withContinueBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  senderCopy = sender;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
   if ([(MFDatePickerViewController *)self type])
   {
-    v11 = 0;
+    isInvalid = 0;
   }
 
   else
   {
     v12 = [(MFDatePickerViewController *)self _itemOfType:0];
-    v11 = [v12 isInvalid];
-    if (v11)
+    isInvalid = [v12 isInvalid];
+    if (isInvalid)
     {
       v30 = _EFLocalizedString();
       v29 = _EFLocalizedString();
       v13 = MEMORY[0x1E69DC650];
       v14 = MEMORY[0x1E696AEC0];
-      v15 = [v12 selectedCity];
-      v16 = [v15 displayName];
-      v17 = [v14 localizedStringWithFormat:v29, v16];
+      selectedCity = [v12 selectedCity];
+      displayName = [selectedCity displayName];
+      v17 = [v14 localizedStringWithFormat:v29, displayName];
       v18 = [v13 alertControllerWithTitle:v30 message:v17 preferredStyle:0];
 
       v19 = _EFLocalizedString();
@@ -1315,7 +1315,7 @@ void __73__MFDatePickerViewController_timeZonePickerViewController_didSelectCity
       v33[2] = __106__MFDatePickerViewController__presentInvalidDateAlertIfNecessaryFromSender_withContinueBlock_cancelBlock___block_invoke;
       v33[3] = &unk_1E806E0B8;
       v33[4] = self;
-      v34 = v9;
+      v34 = blockCopy;
       v27 = v19;
       v28 = [v20 actionWithTitle:v19 style:0 handler:v33];
       v21 = _EFLocalizedString();
@@ -1325,7 +1325,7 @@ void __73__MFDatePickerViewController_timeZonePickerViewController_didSelectCity
       v31[2] = __106__MFDatePickerViewController__presentInvalidDateAlertIfNecessaryFromSender_withContinueBlock_cancelBlock___block_invoke_97;
       v31[3] = &unk_1E806E0B8;
       v31[4] = self;
-      v32 = v10;
+      v32 = cancelBlockCopy;
       v23 = [v22 actionWithTitle:v21 style:1 handler:v31];
       [v18 addAction:v28];
       [v18 addAction:v23];
@@ -1335,17 +1335,17 @@ void __73__MFDatePickerViewController_timeZonePickerViewController_didSelectCity
         [MFDatePickerViewController _presentInvalidDateAlertIfNecessaryFromSender:v24 withContinueBlock:? cancelBlock:?];
       }
 
-      if (MFSolariumFeatureEnabled() && [v8 conformsToProtocol:&unk_1F3D1AE88])
+      if (MFSolariumFeatureEnabled() && [senderCopy conformsToProtocol:&unk_1F3D1AE88])
       {
-        v25 = [v18 popoverPresentationController];
-        [v25 setSourceItem:v8];
+        popoverPresentationController = [v18 popoverPresentationController];
+        [popoverPresentationController setSourceItem:senderCopy];
       }
 
       [(MFDatePickerViewController *)self presentViewController:v18 animated:1 completion:0];
     }
   }
 
-  return v11;
+  return isInvalid;
 }
 
 uint64_t __106__MFDatePickerViewController__presentInvalidDateAlertIfNecessaryFromSender_withContinueBlock_cancelBlock___block_invoke(uint64_t a1)

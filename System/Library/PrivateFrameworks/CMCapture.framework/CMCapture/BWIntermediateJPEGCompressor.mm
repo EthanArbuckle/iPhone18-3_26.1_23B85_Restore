@@ -1,7 +1,7 @@
 @interface BWIntermediateJPEGCompressor
 + (void)initialize;
-- (BWIntermediateJPEGCompressor)initWithCompressionQuality:(float)a3 compressionRate:(float)a4 jpegSurfacePoolLowWaterBufferCount:(int)a5 jpegSurfacePoolHighWaterBufferCount:(int)a6 compressedBufferPoolAllocationTimeoutMS:(unint64_t)a7 name:(id)a8;
-- (opaqueCMSampleBuffer)newJPEGSampleBufferFromUncompressedSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (BWIntermediateJPEGCompressor)initWithCompressionQuality:(float)quality compressionRate:(float)rate jpegSurfacePoolLowWaterBufferCount:(int)count jpegSurfacePoolHighWaterBufferCount:(int)bufferCount compressedBufferPoolAllocationTimeoutMS:(unint64_t)s name:(id)name;
+- (opaqueCMSampleBuffer)newJPEGSampleBufferFromUncompressedSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (uint64_t)_setupJPEGCompressionOptions;
 - (uint64_t)_setupJPEGCompressionSession;
 - (uint64_t)_setupJPEGContainerOptions;
@@ -11,14 +11,14 @@
 - (void)_releaseResources;
 - (void)dealloc;
 - (void)flush;
-- (void)prepareForVideoFormat:(id)a3;
+- (void)prepareForVideoFormat:(id)format;
 @end
 
 @implementation BWIntermediateJPEGCompressor
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -27,11 +27,11 @@
   }
 }
 
-- (BWIntermediateJPEGCompressor)initWithCompressionQuality:(float)a3 compressionRate:(float)a4 jpegSurfacePoolLowWaterBufferCount:(int)a5 jpegSurfacePoolHighWaterBufferCount:(int)a6 compressedBufferPoolAllocationTimeoutMS:(unint64_t)a7 name:(id)a8
+- (BWIntermediateJPEGCompressor)initWithCompressionQuality:(float)quality compressionRate:(float)rate jpegSurfacePoolLowWaterBufferCount:(int)count jpegSurfacePoolHighWaterBufferCount:(int)bufferCount compressedBufferPoolAllocationTimeoutMS:(unint64_t)s name:(id)name
 {
-  if (a4 == 0.0)
+  if (rate == 0.0)
   {
-    if (a3 >= 0.0 && a3 < 1.0)
+    if (quality >= 0.0 && quality < 1.0)
     {
       goto LABEL_10;
     }
@@ -43,7 +43,7 @@ LABEL_14:
     objc_exception_throw([v14 exceptionWithName:v15 reason:v16 userInfo:0]);
   }
 
-  if (a4 < 0.0)
+  if (rate < 0.0)
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
@@ -51,7 +51,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a3 != 0.0)
+  if (quality != 0.0)
   {
     v14 = MEMORY[0x1E695DF30];
     v15 = *MEMORY[0x1E695D940];
@@ -65,12 +65,12 @@ LABEL_10:
   v18 = [(BWIntermediateJPEGCompressor *)&v22 init];
   if (v18)
   {
-    v18->_name = a8;
-    v18->_compressionQuality = a3;
-    v18->_compressionRate = a4;
-    v18->_jpegSurfacePoolLowWaterBufferCount = a5;
-    v18->_jpegSurfacePoolHighWaterBufferCount = a6;
-    v18->_compressedBufferPoolAllocationTimeoutMS = a7;
+    v18->_name = name;
+    v18->_compressionQuality = quality;
+    v18->_compressionRate = rate;
+    v18->_jpegSurfacePoolLowWaterBufferCount = count;
+    v18->_jpegSurfacePoolHighWaterBufferCount = bufferCount;
+    v18->_compressedBufferPoolAllocationTimeoutMS = s;
     v19 = objc_alloc_init(BWStats);
     v18->_overallWaitStats = v19;
     [(BWStats *)v19 setUnitDesignator:@"ms"];
@@ -120,61 +120,61 @@ LABEL_10:
 
 - (void)_releaseResources
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 72))
+    if (*(self + 72))
     {
       CMPhotoCompressionSessionReleaseHardwareResources();
       CMPhotoCompressionSessionFlushCachedBuffers();
       CMPhotoCompressionSessionInvalidate();
-      v2 = *(a1 + 72);
+      v2 = *(self + 72);
       if (v2)
       {
         CFRelease(v2);
-        *(a1 + 72) = 0;
+        *(self + 72) = 0;
       }
     }
 
-    v3 = *(a1 + 64);
+    v3 = *(self + 64);
     if (v3)
     {
       CFRelease(v3);
-      *(a1 + 64) = 0;
+      *(self + 64) = 0;
     }
 
-    v4 = *(a1 + 80);
+    v4 = *(self + 80);
     if (v4)
     {
       CFRelease(v4);
-      *(a1 + 80) = 0;
+      *(self + 80) = 0;
     }
 
-    *(a1 + 88) = 0;
-    v5 = *(a1 + 96);
+    *(self + 88) = 0;
+    v5 = *(self + 96);
     if (v5)
     {
       CFRelease(v5);
-      *(a1 + 96) = 0;
+      *(self + 96) = 0;
     }
 
-    v6 = *(a1 + 104);
+    v6 = *(self + 104);
     if (v6)
     {
       CFRelease(v6);
-      *(a1 + 104) = 0;
+      *(self + 104) = 0;
     }
 
-    *(a1 + 16) = 0;
-    *(a1 + 48) = 0;
-    *(a1 + 60) = 0;
+    *(self + 16) = 0;
+    *(self + 48) = 0;
+    *(self + 60) = 0;
   }
 }
 
-- (opaqueCMSampleBuffer)newJPEGSampleBufferFromUncompressedSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (opaqueCMSampleBuffer)newJPEGSampleBufferFromUncompressedSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v22 = 0;
   v23 = 0;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (!ImageBuffer)
   {
     FigSignalErrorAtGM();
@@ -184,7 +184,7 @@ LABEL_10:
 
   v6 = ImageBuffer;
   memset(&timingInfoOut, 0, sizeof(timingInfoOut));
-  if (!CMSampleBufferGetSampleTimingInfo(a3, 0, &timingInfoOut))
+  if (!CMSampleBufferGetSampleTimingInfo(buffer, 0, &timingInfoOut))
   {
     if (!self->_setupIsComplete && [(BWIntermediateJPEGCompressor *)self _setupJPEGEncodeResourcesForSourcePixelBuffer:v6])
     {
@@ -234,7 +234,7 @@ LABEL_11:
       v14 = [BWIntermediateJPEGCompressedBufferAssociatedSemaphore alloc];
       name = self->_name;
       backPressureSemaphore = self->_backPressureSemaphore;
-      CMSampleBufferGetPresentationTimeStamp(&time, a3);
+      CMSampleBufferGetPresentationTimeStamp(&time, buffer);
       v9 = [(BWIntermediateJPEGCompressedBufferAssociatedSemaphore *)v14 initWithSemaphore:backPressureSemaphore name:name presentationTimeStamp:&time];
       goto LABEL_11;
     }
@@ -283,12 +283,12 @@ LABEL_16:
     *(v3 + 24) = v7;
     if (*(v3 + 64))
     {
-      v8 = 0;
+      _setupJPEGSurfacePool = 0;
     }
 
     else
     {
-      v8 = [(BWIntermediateJPEGCompressor *)v3 _setupJPEGSurfacePool];
+      _setupJPEGSurfacePool = [(BWIntermediateJPEGCompressor *)v3 _setupJPEGSurfacePool];
       if (!*(v3 + 64))
       {
         goto LABEL_21;
@@ -300,14 +300,14 @@ LABEL_16:
       }
     }
 
-    if (*(v3 + 72) || (v8 = [(BWIntermediateJPEGCompressor *)v3 _setupJPEGCompressionSession], *(v3 + 72)))
+    if (*(v3 + 72) || (_setupJPEGSurfacePool = [(BWIntermediateJPEGCompressor *)v3 _setupJPEGCompressionSession], *(v3 + 72)))
     {
-      if (*(v3 + 80) || (v8 = [(BWIntermediateJPEGCompressor *)v3 _setupJPEGContainerOptions], *(v3 + 80)))
+      if (*(v3 + 80) || (_setupJPEGSurfacePool = [(BWIntermediateJPEGCompressor *)v3 _setupJPEGContainerOptions], *(v3 + 80)))
       {
-        if (*(v3 + 96) || (v8 = [(BWIntermediateJPEGCompressor *)v3 _setupJPEGCompressionOptions], *(v3 + 96)))
+        if (*(v3 + 96) || (_setupJPEGSurfacePool = [(BWIntermediateJPEGCompressor *)v3 _setupJPEGCompressionOptions], *(v3 + 96)))
         {
           *(v3 + 60) = 1;
-          return v8;
+          return _setupJPEGSurfacePool;
         }
       }
     }
@@ -315,7 +315,7 @@ LABEL_16:
 LABEL_21:
     OUTLINED_FUNCTION_2_23();
     FigSignalErrorAtGM();
-    return v8;
+    return _setupJPEGSurfacePool;
   }
 
   return result;
@@ -378,13 +378,13 @@ LABEL_21:
   return result;
 }
 
-- (void)prepareForVideoFormat:(id)a3
+- (void)prepareForVideoFormat:(id)format
 {
-  v5 = [a3 width];
-  v6 = [a3 height];
+  width = [format width];
+  height = [format height];
   if (self && (compressionRate = self->_compressionRate, compressionRate > 0.0))
   {
-    OUTLINED_FUNCTION_0_22(v6 * v5, compressionRate);
+    OUTLINED_FUNCTION_0_22(height * width, compressionRate);
     OUTLINED_FUNCTION_1_23();
   }
 
@@ -402,7 +402,7 @@ LABEL_21:
   if (jpegFormatDescription)
   {
     Dimensions = CMVideoFormatDescriptionGetDimensions(jpegFormatDescription);
-    if ([a3 width] != Dimensions || objc_msgSend(a3, "height") != Dimensions >> 32)
+    if ([format width] != Dimensions || objc_msgSend(format, "height") != Dimensions >> 32)
     {
       v11 = self->_jpegFormatDescription;
       if (v11)

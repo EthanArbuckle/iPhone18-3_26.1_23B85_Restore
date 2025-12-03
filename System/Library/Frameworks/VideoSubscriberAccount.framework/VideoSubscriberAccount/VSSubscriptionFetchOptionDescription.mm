@@ -1,6 +1,6 @@
 @interface VSSubscriptionFetchOptionDescription
 - (VSSubscriptionFetchOptionDescription)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VSSubscriptionFetchOptionDescription
@@ -28,20 +28,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VSSubscriptionFetchOptionDescription);
   v5 = [(VSSubscriptionFetchOptionDescription *)self key];
   [(VSSubscriptionFetchOptionDescription *)v4 setKey:v5];
 
-  v6 = [(VSSubscriptionFetchOptionDescription *)self defaultValue];
-  [(VSSubscriptionFetchOptionDescription *)v4 setDefaultValue:v6];
+  defaultValue = [(VSSubscriptionFetchOptionDescription *)self defaultValue];
+  [(VSSubscriptionFetchOptionDescription *)v4 setDefaultValue:defaultValue];
 
   [(VSSubscriptionFetchOptionDescription *)v4 setContainer:[(VSSubscriptionFetchOptionDescription *)self isContainer]];
   [(VSSubscriptionFetchOptionDescription *)v4 setMinCount:[(VSSubscriptionFetchOptionDescription *)self minCount]];
   [(VSSubscriptionFetchOptionDescription *)v4 setAllowedClass:[(VSSubscriptionFetchOptionDescription *)self allowedClass]];
-  v7 = [(VSSubscriptionFetchOptionDescription *)self allowedValuePredicate];
-  [(VSSubscriptionFetchOptionDescription *)v4 setAllowedValuePredicate:v7];
+  allowedValuePredicate = [(VSSubscriptionFetchOptionDescription *)self allowedValuePredicate];
+  [(VSSubscriptionFetchOptionDescription *)v4 setAllowedValuePredicate:allowedValuePredicate];
 
   return v4;
 }

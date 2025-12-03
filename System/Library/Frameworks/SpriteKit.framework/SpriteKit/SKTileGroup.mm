@@ -1,16 +1,16 @@
 @interface SKTileGroup
 + (SKTileGroup)tileGroupWithRules:(NSArray *)rules;
 + (SKTileGroup)tileGroupWithTileDefinition:(SKTileDefinition *)tileDefinition;
-- (BOOL)isEqualToNode:(id)a3;
-- (SKTileGroup)initWithCoder:(id)a3;
+- (BOOL)isEqualToNode:(id)node;
+- (SKTileGroup)initWithCoder:(id)coder;
 - (SKTileGroup)initWithRules:(NSArray *)rules;
 - (SKTileGroup)initWithTileDefinition:(SKTileDefinition *)tileDefinition;
 - (SKTileSet)parentSet;
 - (id)copy;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)findTileDefinitionIDsForAdjacencyData:(unint64_t)a3 tileSetType:(unint64_t)a4;
-- (unint64_t)findTileDefinitionIndexForAdjacencyData:(unint64_t)a3 tileSetType:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)findTileDefinitionIDsForAdjacencyData:(unint64_t)data tileSetType:(unint64_t)type;
+- (unint64_t)findTileDefinitionIndexForAdjacencyData:(unint64_t)data tileSetType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
 - (void)setRuleParentPointers;
 - (void)setRules:(NSArray *)rules;
 @end
@@ -66,10 +66,10 @@
   }
 }
 
-- (SKTileGroup)initWithCoder:(id)a3
+- (SKTileGroup)initWithCoder:(id)coder
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SKTileGroup;
   v5 = [(SKTileGroup *)&v13 init];
@@ -81,48 +81,48 @@
     v14[2] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_rules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_rules"];
     rules = v5->_rules;
     v5->_rules = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     [(SKTileGroup *)v5 setName:v11];
 
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
     [(SKTileGroup *)v5 setRuleParentPointers];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rules = self->_rules;
-  v6 = a3;
-  [v6 encodeObject:rules forKey:@"_rules"];
-  v5 = [(SKTileGroup *)self name];
-  [v6 encodeObject:v5 forKey:@"_name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rules forKey:@"_rules"];
+  name = [(SKTileGroup *)self name];
+  [coderCopy encodeObject:name forKey:@"_name"];
 
-  [v6 encodeInteger:self->_type forKey:@"_type"];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (self != nodeCopy)
   {
-    v6 = v4;
-    v7 = [(SKTileGroup *)self name];
-    if (v7)
+    v6 = nodeCopy;
+    name = [(SKTileGroup *)self name];
+    if (name)
     {
     }
 
     else
     {
-      v9 = [v6 name];
+      name2 = [v6 name];
 
-      if (!v9)
+      if (!name2)
       {
 LABEL_7:
         if (![(NSMutableArray *)self->_rules count])
@@ -159,9 +159,9 @@ LABEL_13:
       }
     }
 
-    v10 = [(SKTileGroup *)self name];
-    v11 = [v6 name];
-    v12 = [v10 isEqualToString:v11];
+    name3 = [(SKTileGroup *)self name];
+    name4 = [v6 name];
+    v12 = [name3 isEqualToString:name4];
 
     if (!v12)
     {
@@ -184,16 +184,16 @@ LABEL_15:
   return [(SKTileGroup *)self copyWithZone:v3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
-    v5 = [(SKTileGroup *)self rules];
-    [v4 setRules:v5];
+    rules = [(SKTileGroup *)self rules];
+    [v4 setRules:rules];
 
-    v6 = [(SKTileGroup *)self name];
-    [v4 setName:v6];
+    name = [(SKTileGroup *)self name];
+    [v4 setName:name];
 
     [v4 setType:{-[SKTileGroup type](self, "type")}];
   }
@@ -259,12 +259,12 @@ LABEL_15:
   return v4;
 }
 
-- (unint64_t)findTileDefinitionIndexForAdjacencyData:(unint64_t)a3 tileSetType:(unint64_t)a4
+- (unint64_t)findTileDefinitionIndexForAdjacencyData:(unint64_t)data tileSetType:(unint64_t)type
 {
   v35 = *MEMORY[0x277D85DE8];
   if ([(NSMutableArray *)self->_rules count])
   {
-    if (a4 > 1)
+    if (type > 1)
     {
       v27 = 0uLL;
       v28 = 0uLL;
@@ -286,7 +286,7 @@ LABEL_23:
           }
 
           v12 = *(*(&v25 + 1) + 8 * v21);
-          if ([v12 adjacency] == a3)
+          if ([v12 adjacency] == data)
           {
             goto LABEL_31;
           }
@@ -294,7 +294,7 @@ LABEL_23:
           if (v19 == ++v21)
           {
             v19 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
-            v17 = -1;
+            integerValue = -1;
             if (v19)
             {
               goto LABEL_23;
@@ -328,19 +328,19 @@ LABEL_5:
           }
 
           v12 = *(*(&v29 + 1) + 8 * v11);
-          if ((([v12 adjacency] ^ a3) & 0x55) == 0)
+          if ((([v12 adjacency] ^ data) & 0x55) == 0)
           {
-            v13 = [v12 adjacency];
-            if ((a3 & 2) != 0 || (v13 & 2) == 0)
+            adjacency = [v12 adjacency];
+            if ((data & 2) != 0 || (adjacency & 2) == 0)
             {
-              v14 = [v12 adjacency];
-              if ((a3 & 8) != 0 || (v14 & 8) == 0)
+              adjacency2 = [v12 adjacency];
+              if ((data & 8) != 0 || (adjacency2 & 8) == 0)
               {
-                v15 = [v12 adjacency];
-                if ((a3 & 0x20) != 0 || (v15 & 0x20) == 0)
+                adjacency3 = [v12 adjacency];
+                if ((data & 0x20) != 0 || (adjacency3 & 0x20) == 0)
                 {
-                  v16 = [v12 adjacency];
-                  if ((a3 & 0x80) != 0 || (v16 & 0x80) == 0)
+                  adjacency4 = [v12 adjacency];
+                  if ((data & 0x80) != 0 || (adjacency4 & 0x80) == 0)
                   {
                     break;
                   }
@@ -362,34 +362,34 @@ LABEL_5:
         }
 
 LABEL_31:
-        v22 = [v12 tileDefinitionIDs];
-        v23 = [v22 firstObject];
-        v17 = [v23 integerValue];
+        tileDefinitionIDs = [v12 tileDefinitionIDs];
+        firstObject = [tileDefinitionIDs firstObject];
+        integerValue = [firstObject integerValue];
 
         goto LABEL_32;
       }
     }
 
 LABEL_30:
-    v17 = -1;
+    integerValue = -1;
 LABEL_32:
 
-    return v17;
+    return integerValue;
   }
 
   return -1;
 }
 
-- (id)findTileDefinitionIDsForAdjacencyData:(unint64_t)a3 tileSetType:(unint64_t)a4
+- (id)findTileDefinitionIDsForAdjacencyData:(unint64_t)data tileSetType:(unint64_t)type
 {
   v33 = *MEMORY[0x277D85DE8];
   if (![(NSMutableArray *)self->_rules count])
   {
-    v11 = MEMORY[0x277CBEBF8];
+    tileDefinitionIDs = MEMORY[0x277CBEBF8];
     goto LABEL_33;
   }
 
-  if (a4 > 1)
+  if (type > 1)
   {
     v25 = 0uLL;
     v26 = 0uLL;
@@ -401,7 +401,7 @@ LABEL_32:
     {
       v19 = v18;
       v20 = *v24;
-      v11 = MEMORY[0x277CBEBF8];
+      tileDefinitionIDs = MEMORY[0x277CBEBF8];
 LABEL_23:
       v21 = 0;
       while (1)
@@ -412,7 +412,7 @@ LABEL_23:
         }
 
         v13 = *(*(&v23 + 1) + 8 * v21);
-        if ([v13 adjacency] == a3)
+        if ([v13 adjacency] == data)
         {
           goto LABEL_30;
         }
@@ -431,7 +431,7 @@ LABEL_23:
     }
 
 LABEL_31:
-    v11 = MEMORY[0x277CBEBF8];
+    tileDefinitionIDs = MEMORY[0x277CBEBF8];
     goto LABEL_32;
   }
 
@@ -448,7 +448,7 @@ LABEL_31:
 
   v9 = v8;
   v10 = *v28;
-  v11 = MEMORY[0x277CBEBF8];
+  tileDefinitionIDs = MEMORY[0x277CBEBF8];
 LABEL_5:
   v12 = 0;
   while (1)
@@ -459,19 +459,19 @@ LABEL_5:
     }
 
     v13 = *(*(&v27 + 1) + 8 * v12);
-    if ((([v13 adjacency] ^ a3) & 0x55) == 0)
+    if ((([v13 adjacency] ^ data) & 0x55) == 0)
     {
-      v14 = [v13 adjacency];
-      if ((a3 & 2) != 0 || (v14 & 2) == 0)
+      adjacency = [v13 adjacency];
+      if ((data & 2) != 0 || (adjacency & 2) == 0)
       {
-        v15 = [v13 adjacency];
-        if ((a3 & 8) != 0 || (v15 & 8) == 0)
+        adjacency2 = [v13 adjacency];
+        if ((data & 8) != 0 || (adjacency2 & 8) == 0)
         {
-          v16 = [v13 adjacency];
-          if ((a3 & 0x20) != 0 || (v16 & 0x20) == 0)
+          adjacency3 = [v13 adjacency];
+          if ((data & 0x20) != 0 || (adjacency3 & 0x20) == 0)
           {
-            v17 = [v13 adjacency];
-            if ((a3 & 0x80) != 0 || (v17 & 0x80) == 0)
+            adjacency4 = [v13 adjacency];
+            if ((data & 0x80) != 0 || (adjacency4 & 0x80) == 0)
             {
               break;
             }
@@ -493,12 +493,12 @@ LABEL_5:
   }
 
 LABEL_30:
-  v11 = [v13 tileDefinitionIDs];
+  tileDefinitionIDs = [v13 tileDefinitionIDs];
 LABEL_32:
 
 LABEL_33:
 
-  return v11;
+  return tileDefinitionIDs;
 }
 
 - (SKTileSet)parentSet

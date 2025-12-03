@@ -1,40 +1,40 @@
 @interface HKWorkoutClusterStore
 + (id)taskIdentifier;
-- (HKWorkoutClusterStore)initWithHealthStore:(id)a3;
-- (id)_coordinatesHandlerWithCallback:(id)a3 completion:(id)a4;
-- (id)_workoutFilterForPredicate:(id)a3;
-- (void)createWorkoutCluster:(id)a3 completion:(id)a4;
-- (void)deleteWorkoutClusterWithUUID:(id)a3 completion:(id)a4;
-- (void)fetchRouteCoordinatesForWorkoutUUID:(id)a3 dateInterval:(id)a4 limit:(unint64_t)a5 handler:(id)a6 completion:(id)a7;
-- (void)fetchRouteCoordinatesForWorkoutUUID:(id)a3 startDate:(id)a4 limit:(unint64_t)a5 handler:(id)a6 completion:(id)a7;
-- (void)fetchWorkoutClusterContainingWorkoutUUID:(id)a3 completion:(id)a4;
-- (void)fetchWorkoutClustersContainingWorkoutUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchWorkoutClustersWithCompletion:(id)a3;
-- (void)fetchWorkoutCountWithPredicate:(id)a3 completion:(id)a4;
-- (void)fetchWorkoutRouteSnapshotForClusterUUID:(id)a3 completion:(id)a4;
-- (void)fetchWorkoutUUIDsForClusterUUID:(id)a3 completion:(id)a4;
-- (void)fetchWorkoutsWithPredicate:(id)a3 anchor:(id)a4 limit:(unint64_t)a5 completion:(id)a6;
-- (void)fetchWorkoutsWithPredicate:(id)a3 limit:(unint64_t)a4 sortDescriptors:(id)a5 completion:(id)a6;
-- (void)generateRaceRouteClustersWithLimit:(unint64_t)a3 completion:(id)a4;
-- (void)updateWorkoutClusterWithUUID:(id)a3 newRelevance:(id)a4 newLastWorkoutUUID:(id)a5 newBestWorkoutUUID:(id)a6 newWorkoutAssociations:(id)a7 workoutAssociationsToRemove:(id)a8 completion:(id)a9;
-- (void)updateWorkoutRouteLabel:(id)a3 forClusterUUID:(id)a4 completion:(id)a5;
-- (void)updateWorkoutRouteSnapshot:(id)a3 forClusterUUID:(id)a4 completion:(id)a5;
+- (HKWorkoutClusterStore)initWithHealthStore:(id)store;
+- (id)_coordinatesHandlerWithCallback:(id)callback completion:(id)completion;
+- (id)_workoutFilterForPredicate:(id)predicate;
+- (void)createWorkoutCluster:(id)cluster completion:(id)completion;
+- (void)deleteWorkoutClusterWithUUID:(id)d completion:(id)completion;
+- (void)fetchRouteCoordinatesForWorkoutUUID:(id)d dateInterval:(id)interval limit:(unint64_t)limit handler:(id)handler completion:(id)completion;
+- (void)fetchRouteCoordinatesForWorkoutUUID:(id)d startDate:(id)date limit:(unint64_t)limit handler:(id)handler completion:(id)completion;
+- (void)fetchWorkoutClusterContainingWorkoutUUID:(id)d completion:(id)completion;
+- (void)fetchWorkoutClustersContainingWorkoutUUIDs:(id)ds completion:(id)completion;
+- (void)fetchWorkoutClustersWithCompletion:(id)completion;
+- (void)fetchWorkoutCountWithPredicate:(id)predicate completion:(id)completion;
+- (void)fetchWorkoutRouteSnapshotForClusterUUID:(id)d completion:(id)completion;
+- (void)fetchWorkoutUUIDsForClusterUUID:(id)d completion:(id)completion;
+- (void)fetchWorkoutsWithPredicate:(id)predicate anchor:(id)anchor limit:(unint64_t)limit completion:(id)completion;
+- (void)fetchWorkoutsWithPredicate:(id)predicate limit:(unint64_t)limit sortDescriptors:(id)descriptors completion:(id)completion;
+- (void)generateRaceRouteClustersWithLimit:(unint64_t)limit completion:(id)completion;
+- (void)updateWorkoutClusterWithUUID:(id)d newRelevance:(id)relevance newLastWorkoutUUID:(id)iD newBestWorkoutUUID:(id)uID newWorkoutAssociations:(id)associations workoutAssociationsToRemove:(id)remove completion:(id)completion;
+- (void)updateWorkoutRouteLabel:(id)label forClusterUUID:(id)d completion:(id)completion;
+- (void)updateWorkoutRouteSnapshot:(id)snapshot forClusterUUID:(id)d completion:(id)completion;
 @end
 
 @implementation HKWorkoutClusterStore
 
-- (HKWorkoutClusterStore)initWithHealthStore:(id)a3
+- (HKWorkoutClusterStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = HKWorkoutClusterStore;
   v5 = [(HKWorkoutClusterStore *)&v12 init];
   if (v5)
   {
     v6 = [HKTaskServerProxyProvider alloc];
-    v7 = [objc_opt_class() taskIdentifier];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:v4 taskIdentifier:v7 exportedObject:v5 taskUUID:v8];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v9 = [(HKTaskServerProxyProvider *)v6 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v9;
   }
@@ -49,12 +49,12 @@
   return NSStringFromClass(v2);
 }
 
-- (void)fetchWorkoutCountWithPredicate:(id)a3 completion:(id)a4
+- (void)fetchWorkoutCountWithPredicate:(id)predicate completion:(id)completion
 {
   proxyProvider = self->_proxyProvider;
-  v7 = a3;
-  v8 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:a4];
-  v9 = [(HKWorkoutClusterStore *)self _workoutFilterForPredicate:v7];
+  predicateCopy = predicate;
+  v8 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:completion];
+  v9 = [(HKWorkoutClusterStore *)self _workoutFilterForPredicate:predicateCopy];
 
   v10 = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];
@@ -73,13 +73,13 @@
   [(HKProxyProvider *)v10 fetchProxyWithHandler:v15 errorHandler:v13];
 }
 
-- (void)fetchWorkoutsWithPredicate:(id)a3 anchor:(id)a4 limit:(unint64_t)a5 completion:(id)a6
+- (void)fetchWorkoutsWithPredicate:(id)predicate anchor:(id)anchor limit:(unint64_t)limit completion:(id)completion
 {
-  v10 = a4;
+  anchorCopy = anchor;
   proxyProvider = self->_proxyProvider;
-  v12 = a3;
-  v13 = [(HKProxyProvider *)proxyProvider clientQueueDoubleObjectHandlerWithCompletion:a6];
-  v14 = [(HKWorkoutClusterStore *)self _workoutFilterForPredicate:v12];
+  predicateCopy = predicate;
+  v13 = [(HKProxyProvider *)proxyProvider clientQueueDoubleObjectHandlerWithCompletion:completion];
+  v14 = [(HKWorkoutClusterStore *)self _workoutFilterForPredicate:predicateCopy];
 
   v15 = self->_proxyProvider;
   v21[0] = MEMORY[0x1E69E9820];
@@ -87,8 +87,8 @@
   v21[2] = __76__HKWorkoutClusterStore_fetchWorkoutsWithPredicate_anchor_limit_completion___block_invoke;
   v21[3] = &unk_1E7376D40;
   v22 = v14;
-  v23 = v10;
-  v25 = a5;
+  v23 = anchorCopy;
+  limitCopy = limit;
   v24 = v13;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -96,27 +96,27 @@
   v19[3] = &unk_1E7376960;
   v20 = v24;
   v16 = v24;
-  v17 = v10;
+  v17 = anchorCopy;
   v18 = v14;
   [(HKProxyProvider *)v15 fetchProxyWithHandler:v21 errorHandler:v19];
 }
 
-- (void)fetchWorkoutsWithPredicate:(id)a3 limit:(unint64_t)a4 sortDescriptors:(id)a5 completion:(id)a6
+- (void)fetchWorkoutsWithPredicate:(id)predicate limit:(unint64_t)limit sortDescriptors:(id)descriptors completion:(id)completion
 {
-  v10 = a5;
+  descriptorsCopy = descriptors;
   proxyProvider = self->_proxyProvider;
-  v12 = a3;
-  v13 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:a6];
-  v14 = [(HKWorkoutClusterStore *)self _workoutFilterForPredicate:v12];
+  predicateCopy = predicate;
+  v13 = [(HKProxyProvider *)proxyProvider clientQueueObjectHandlerWithCompletion:completion];
+  v14 = [(HKWorkoutClusterStore *)self _workoutFilterForPredicate:predicateCopy];
 
   v15 = self->_proxyProvider;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __85__HKWorkoutClusterStore_fetchWorkoutsWithPredicate_limit_sortDescriptors_completion___block_invoke;
   v21[3] = &unk_1E7376D40;
-  v25 = a4;
+  limitCopy = limit;
   v22 = v14;
-  v23 = v10;
+  v23 = descriptorsCopy;
   v24 = v13;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -124,40 +124,40 @@
   v19[3] = &unk_1E7376960;
   v20 = v24;
   v16 = v24;
-  v17 = v10;
+  v17 = descriptorsCopy;
   v18 = v14;
   [(HKProxyProvider *)v15 fetchProxyWithHandler:v21 errorHandler:v19];
 }
 
-- (id)_workoutFilterForPredicate:(id)a3
+- (id)_workoutFilterForPredicate:(id)predicate
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = [v3 alloc];
   v6 = +[(HKObjectType *)HKSampleType];
   v7 = [v5 initWithObjects:{v6, 0}];
 
-  v8 = [v4 hk_filterRepresentationForDataTypes:v7];
+  v8 = [predicateCopy hk_filterRepresentationForDataTypes:v7];
 
   return v8;
 }
 
-- (void)fetchRouteCoordinatesForWorkoutUUID:(id)a3 startDate:(id)a4 limit:(unint64_t)a5 handler:(id)a6 completion:(id)a7
+- (void)fetchRouteCoordinatesForWorkoutUUID:(id)d startDate:(id)date limit:(unint64_t)limit handler:(id)handler completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a7];
+  dCopy = d;
+  dateCopy = date;
+  handlerCopy = handler;
+  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __96__HKWorkoutClusterStore_fetchRouteCoordinatesForWorkoutUUID_startDate_limit_handler_completion___block_invoke;
   v23[3] = &unk_1E7376D68;
-  v24 = v12;
-  v25 = v13;
-  v29 = a5;
-  v26 = self;
-  v27 = v14;
+  v24 = dCopy;
+  v25 = dateCopy;
+  limitCopy = limit;
+  selfCopy = self;
+  v27 = handlerCopy;
   v28 = v15;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -165,9 +165,9 @@
   v21[3] = &unk_1E7376960;
   v22 = v28;
   v17 = v28;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v18 = handlerCopy;
+  v19 = dateCopy;
+  v20 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v23 errorHandler:v21];
 }
 
@@ -184,22 +184,22 @@ void __96__HKWorkoutClusterStore_fetchRouteCoordinatesForWorkoutUUID_startDate_l
   [v8 remote_fetchRouteCoordinatesForWorkoutUUID:v2 startDate:v3 limit:v6 completion:v9];
 }
 
-- (void)fetchRouteCoordinatesForWorkoutUUID:(id)a3 dateInterval:(id)a4 limit:(unint64_t)a5 handler:(id)a6 completion:(id)a7
+- (void)fetchRouteCoordinatesForWorkoutUUID:(id)d dateInterval:(id)interval limit:(unint64_t)limit handler:(id)handler completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a7];
+  dCopy = d;
+  intervalCopy = interval;
+  handlerCopy = handler;
+  v15 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __99__HKWorkoutClusterStore_fetchRouteCoordinatesForWorkoutUUID_dateInterval_limit_handler_completion___block_invoke;
   v23[3] = &unk_1E7376D68;
-  v24 = v12;
-  v25 = v13;
-  v29 = a5;
-  v26 = self;
-  v27 = v14;
+  v24 = dCopy;
+  v25 = intervalCopy;
+  limitCopy = limit;
+  selfCopy = self;
+  v27 = handlerCopy;
   v28 = v15;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -207,9 +207,9 @@ void __96__HKWorkoutClusterStore_fetchRouteCoordinatesForWorkoutUUID_startDate_l
   v21[3] = &unk_1E7376960;
   v22 = v28;
   v17 = v28;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v18 = handlerCopy;
+  v19 = intervalCopy;
+  v20 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v23 errorHandler:v21];
 }
 
@@ -226,18 +226,18 @@ void __99__HKWorkoutClusterStore_fetchRouteCoordinatesForWorkoutUUID_dateInterva
   [v8 remote_fetchRouteCoordinatesForWorkoutUUID:v2 dateInterval:v3 limit:v6 completion:v9];
 }
 
-- (id)_coordinatesHandlerWithCallback:(id)a3 completion:(id)a4
+- (id)_coordinatesHandlerWithCallback:(id)callback completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  callbackCopy = callback;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___block_invoke;
   v11[3] = &unk_1E7376D90;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = callbackCopy;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  v8 = callbackCopy;
   v9 = _Block_copy(v11);
 
   return v9;
@@ -298,16 +298,16 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)createWorkoutCluster:(id)a3 completion:(id)a4
+- (void)createWorkoutCluster:(id)cluster completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  clusterCopy = cluster;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__HKWorkoutClusterStore_createWorkoutCluster_completion___block_invoke;
   v13[3] = &unk_1E7376D18;
-  v14 = v6;
+  v14 = clusterCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -315,13 +315,13 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = clusterCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)fetchWorkoutClustersWithCompletion:(id)a3
+- (void)fetchWorkoutClustersWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -337,16 +337,16 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v9 errorHandler:v7];
 }
 
-- (void)fetchWorkoutClusterContainingWorkoutUUID:(id)a3 completion:(id)a4
+- (void)fetchWorkoutClusterContainingWorkoutUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  dCopy = d;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__HKWorkoutClusterStore_fetchWorkoutClusterContainingWorkoutUUID_completion___block_invoke;
   v13[3] = &unk_1E7376D18;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -354,20 +354,20 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)fetchWorkoutClustersContainingWorkoutUUIDs:(id)a3 completion:(id)a4
+- (void)fetchWorkoutClustersContainingWorkoutUUIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  dsCopy = ds;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__HKWorkoutClusterStore_fetchWorkoutClustersContainingWorkoutUUIDs_completion___block_invoke;
   v13[3] = &unk_1E7376D18;
-  v14 = v6;
+  v14 = dsCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -375,20 +375,20 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dsCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)fetchWorkoutUUIDsForClusterUUID:(id)a3 completion:(id)a4
+- (void)fetchWorkoutUUIDsForClusterUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  dCopy = d;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __68__HKWorkoutClusterStore_fetchWorkoutUUIDsForClusterUUID_completion___block_invoke;
   v13[3] = &unk_1E7376D18;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -396,20 +396,20 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)fetchWorkoutRouteSnapshotForClusterUUID:(id)a3 completion:(id)a4
+- (void)fetchWorkoutRouteSnapshotForClusterUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a4];
+  dCopy = d;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__HKWorkoutClusterStore_fetchWorkoutRouteSnapshotForClusterUUID_completion___block_invoke;
   v13[3] = &unk_1E7376D18;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -417,22 +417,22 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)updateWorkoutRouteSnapshot:(id)a3 forClusterUUID:(id)a4 completion:(id)a5
+- (void)updateWorkoutRouteSnapshot:(id)snapshot forClusterUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  snapshotCopy = snapshot;
+  dCopy = d;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __78__HKWorkoutClusterStore_updateWorkoutRouteSnapshot_forClusterUUID_completion___block_invoke;
   v17[3] = &unk_1E7376DE0;
-  v18 = v8;
-  v19 = v9;
+  v18 = snapshotCopy;
+  v19 = dCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -440,23 +440,23 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = dCopy;
+  v14 = snapshotCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)updateWorkoutRouteLabel:(id)a3 forClusterUUID:(id)a4 completion:(id)a5
+- (void)updateWorkoutRouteLabel:(id)label forClusterUUID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  labelCopy = label;
+  dCopy = d;
+  v10 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__HKWorkoutClusterStore_updateWorkoutRouteLabel_forClusterUUID_completion___block_invoke;
   v17[3] = &unk_1E7376DE0;
-  v18 = v8;
-  v19 = v9;
+  v18 = labelCopy;
+  v19 = dCopy;
   v20 = v10;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -464,31 +464,31 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v15[3] = &unk_1E7376960;
   v16 = v20;
   v12 = v20;
-  v13 = v9;
-  v14 = v8;
+  v13 = dCopy;
+  v14 = labelCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v17 errorHandler:v15];
 }
 
-- (void)updateWorkoutClusterWithUUID:(id)a3 newRelevance:(id)a4 newLastWorkoutUUID:(id)a5 newBestWorkoutUUID:(id)a6 newWorkoutAssociations:(id)a7 workoutAssociationsToRemove:(id)a8 completion:(id)a9
+- (void)updateWorkoutClusterWithUUID:(id)d newRelevance:(id)relevance newLastWorkoutUUID:(id)iD newBestWorkoutUUID:(id)uID newWorkoutAssociations:(id)associations workoutAssociationsToRemove:(id)remove completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a9];
+  dCopy = d;
+  relevanceCopy = relevance;
+  iDCopy = iD;
+  uIDCopy = uID;
+  associationsCopy = associations;
+  removeCopy = remove;
+  v21 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __167__HKWorkoutClusterStore_updateWorkoutClusterWithUUID_newRelevance_newLastWorkoutUUID_newBestWorkoutUUID_newWorkoutAssociations_workoutAssociationsToRemove_completion___block_invoke;
   v32[3] = &unk_1E7376E08;
-  v33 = v15;
-  v34 = v16;
-  v35 = v17;
-  v36 = v18;
-  v37 = v19;
-  v38 = v20;
+  v33 = dCopy;
+  v34 = relevanceCopy;
+  v35 = iDCopy;
+  v36 = uIDCopy;
+  v37 = associationsCopy;
+  v38 = removeCopy;
   v39 = v21;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -496,25 +496,25 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v30[3] = &unk_1E7376960;
   v31 = v39;
   v23 = v39;
-  v24 = v20;
-  v25 = v19;
-  v26 = v18;
-  v27 = v17;
-  v28 = v16;
-  v29 = v15;
+  v24 = removeCopy;
+  v25 = associationsCopy;
+  v26 = uIDCopy;
+  v27 = iDCopy;
+  v28 = relevanceCopy;
+  v29 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v32 errorHandler:v30];
 }
 
-- (void)deleteWorkoutClusterWithUUID:(id)a3 completion:(id)a4
+- (void)deleteWorkoutClusterWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  dCopy = d;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__HKWorkoutClusterStore_deleteWorkoutClusterWithUUID_completion___block_invoke;
   v13[3] = &unk_1E7376D18;
-  v14 = v6;
+  v14 = dCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -522,37 +522,37 @@ void __68__HKWorkoutClusterStore__coordinatesHandlerWithCallback_completion___bl
   v11[3] = &unk_1E7376960;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = dCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
-- (void)generateRaceRouteClustersWithLimit:(unint64_t)a3 completion:(id)a4
+- (void)generateRaceRouteClustersWithLimit:(unint64_t)limit completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (limit)
   {
-    v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:v6];
+    v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completionCopy];
 
     proxyProvider = self->_proxyProvider;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __71__HKWorkoutClusterStore_generateRaceRouteClustersWithLimit_completion___block_invoke;
     v12[3] = &unk_1E7376E30;
-    v14 = a3;
+    limitCopy = limit;
     v13 = v7;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __71__HKWorkoutClusterStore_generateRaceRouteClustersWithLimit_completion___block_invoke_2;
     v10[3] = &unk_1E7376960;
-    v6 = v13;
-    v11 = v6;
+    completionCopy = v13;
+    v11 = completionCopy;
     [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v12 errorHandler:v10];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696ABC0] hk_error:3 description:@"Cluster limit must be positive."];
-    (*(v6 + 2))(v6, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 

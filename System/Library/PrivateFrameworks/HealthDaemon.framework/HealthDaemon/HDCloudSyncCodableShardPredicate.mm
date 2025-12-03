@@ -1,16 +1,16 @@
 @interface HDCloudSyncCodableShardPredicate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartDate:(BOOL)date;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableShardPredicate
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -43,20 +43,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Initial"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Initial"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DateRange"])
+  else if ([typeCopy isEqualToString:@"DateRange"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Staging"])
+  else if ([typeCopy isEqualToString:@"Staging"])
   {
     v4 = 2;
   }
@@ -69,9 +69,9 @@
   return v4;
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -90,15 +90,15 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableShardPredicate;
   v4 = [(HDCloudSyncCodableShardPredicate *)&v8 description];
-  v5 = [(HDCloudSyncCodableShardPredicate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableShardPredicate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -113,7 +113,7 @@
       v6 = off_278624E00[type];
     }
 
-    [v3 setObject:v6 forKey:@"type"];
+    [dictionary setObject:v6 forKey:@"type"];
 
     has = self->_has;
   }
@@ -121,7 +121,7 @@
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_startDate];
-    [v3 setObject:v7 forKey:@"startDate"];
+    [dictionary setObject:v7 forKey:@"startDate"];
 
     has = self->_has;
   }
@@ -129,22 +129,22 @@
   if (has)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_endDate];
-    [v3 setObject:v8 forKey:@"endDate"];
+    [dictionary setObject:v8 forKey:@"endDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 4) != 0)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -165,26 +165,26 @@ LABEL_3:
 
   startDate = self->_startDate;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     endDate = self->_endDate;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[6] = self->_type;
-    *(v4 + 28) |= 4u;
+    toCopy[6] = self->_type;
+    *(toCopy + 28) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -203,21 +203,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 2) = *&self->_startDate;
-  *(v4 + 28) |= 2u;
+  *(toCopy + 2) = *&self->_startDate;
+  *(toCopy + 28) |= 2u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 1) = *&self->_endDate;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 1) = *&self->_endDate;
+    *(toCopy + 28) |= 1u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -254,23 +254,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -279,21 +279,21 @@ LABEL_16:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_startDate != *(v4 + 2))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_startDate != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 28) & 1) == 0;
+  v5 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_endDate != *(v4 + 1))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_endDate != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
@@ -391,15 +391,15 @@ LABEL_9:
   return v8 ^ v4 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 28);
+  fromCopy = from;
+  v5 = *(fromCopy + 28);
   if ((v5 & 4) != 0)
   {
-    self->_type = *(v4 + 6);
+    self->_type = *(fromCopy + 6);
     *&self->_has |= 4u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -412,17 +412,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_startDate = *(v4 + 2);
+  self->_startDate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
 LABEL_4:
-    self->_endDate = *(v4 + 1);
+    self->_endDate = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

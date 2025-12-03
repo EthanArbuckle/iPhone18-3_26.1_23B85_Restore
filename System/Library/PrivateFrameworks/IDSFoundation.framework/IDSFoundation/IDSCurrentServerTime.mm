@@ -1,6 +1,6 @@
 @interface IDSCurrentServerTime
 + (id)sharedInstance;
-- (IDSCurrentServerTime)initWithServerTimeProvider:(id)a3;
+- (IDSCurrentServerTime)initWithServerTimeProvider:(id)provider;
 - (double)_refreshTimeInterval;
 - (double)currentServerTimeInterval;
 - (id)currentServerTimeDate;
@@ -17,7 +17,7 @@
   if (!qword_1ED5DF748)
   {
     v4 = objc_alloc_init(_IDSCurrentServerTimeProvider);
-    v5 = [[a1 alloc] initWithServerTimeProvider:v4];
+    v5 = [[self alloc] initWithServerTimeProvider:v4];
     v6 = qword_1ED5DF748;
     qword_1ED5DF748 = v5;
 
@@ -32,18 +32,18 @@
   info = 0xAAAAAAAAAAAAAAAALL;
   if (mach_timebase_info(&info))
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    [v3 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v5 = v4;
   }
 
   else
   {
     [(IDSCurrentServerTime *)self _storeInitialServerTimeIfNeeded];
-    v3 = [(IDSCurrentServerTime *)self timePair];
+    date = [(IDSCurrentServerTime *)self timePair];
     v6 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
-    v7 = v6 - [v3 initialProcessMonotonicTimeInNanoSeconds];
-    v5 = (v7 + [v3 initialServerTimeInNanoSeconds]) / 1000000000.0;
+    v7 = v6 - [date initialProcessMonotonicTimeInNanoSeconds];
+    v5 = (v7 + [date initialServerTimeInNanoSeconds]) / 1000000000.0;
   }
 
   return v5;
@@ -52,26 +52,26 @@
 - (void)_storeInitialServerTimeIfNeeded
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(IDSCurrentServerTime *)self timePair];
-  if (!v3 || (v4 = v3, -[IDSCurrentServerTime timePair](self, "timePair"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isAccurate], v5, v4, (v6 & 1) == 0))
+  timePair = [(IDSCurrentServerTime *)self timePair];
+  if (!timePair || (v4 = timePair, -[IDSCurrentServerTime timePair](self, "timePair"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isAccurate], v5, v4, (v6 & 1) == 0))
   {
     [(IDSCurrentServerTime *)self _storeCurrentTime];
     v7 = +[IDSFoundationLog utilities];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = MEMORY[0x1E696AD98];
-      v9 = [(IDSCurrentServerTime *)self timePair];
-      v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(v9, "initialServerTimeInNanoSeconds")}];
+      timePair2 = [(IDSCurrentServerTime *)self timePair];
+      v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(timePair2, "initialServerTimeInNanoSeconds")}];
       v11 = MEMORY[0x1E696AD98];
-      v12 = [(IDSCurrentServerTime *)self timePair];
-      v13 = [v11 numberWithUnsignedLongLong:{objc_msgSend(v12, "initialProcessMonotonicTimeInNanoSeconds")}];
-      v14 = [(IDSCurrentServerTime *)self timePair];
-      v15 = [v14 isAccurate];
+      timePair3 = [(IDSCurrentServerTime *)self timePair];
+      v13 = [v11 numberWithUnsignedLongLong:{objc_msgSend(timePair3, "initialProcessMonotonicTimeInNanoSeconds")}];
+      timePair4 = [(IDSCurrentServerTime *)self timePair];
+      isAccurate = [timePair4 isAccurate];
       v16 = @"NO";
       v19 = 138412802;
       v20 = v10;
       v21 = 2112;
-      if (v15)
+      if (isAccurate)
       {
         v16 = @"YES";
       }
@@ -89,16 +89,16 @@
   }
 }
 
-- (IDSCurrentServerTime)initWithServerTimeProvider:(id)a3
+- (IDSCurrentServerTime)initWithServerTimeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = IDSCurrentServerTime;
   v6 = [(IDSCurrentServerTime *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverTimeProvider, a3);
+    objc_storeStrong(&v6->_serverTimeProvider, provider);
     v8 = objc_alloc(MEMORY[0x1E69956C8]);
     v9 = im_primary_queue();
     v10 = [v8 initWithCapacity:1 queue:v9 block:&unk_1F1AABB00];
@@ -157,18 +157,18 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = MEMORY[0x1E696AD98];
-    v6 = [(IDSCurrentServerTime *)self timePair];
-    v7 = [v5 numberWithUnsignedLongLong:{objc_msgSend(v6, "initialServerTimeInNanoSeconds")}];
+    timePair = [(IDSCurrentServerTime *)self timePair];
+    v7 = [v5 numberWithUnsignedLongLong:{objc_msgSend(timePair, "initialServerTimeInNanoSeconds")}];
     v8 = MEMORY[0x1E696AD98];
-    v9 = [(IDSCurrentServerTime *)self timePair];
-    v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(v9, "initialProcessMonotonicTimeInNanoSeconds")}];
-    v11 = [(IDSCurrentServerTime *)self timePair];
-    v12 = [v11 isAccurate];
+    timePair2 = [(IDSCurrentServerTime *)self timePair];
+    v10 = [v8 numberWithUnsignedLongLong:{objc_msgSend(timePair2, "initialProcessMonotonicTimeInNanoSeconds")}];
+    timePair3 = [(IDSCurrentServerTime *)self timePair];
+    isAccurate = [timePair3 isAccurate];
     v13 = @"NO";
     v14 = 138412802;
     v15 = v7;
     v16 = 2112;
-    if (v12)
+    if (isAccurate)
     {
       v13 = @"YES";
     }
@@ -185,13 +185,13 @@
 
 - (void)_storeCurrentTime
 {
-  v3 = [(IDSCurrentServerTime *)self serverTimeProvider];
-  v4 = [v3 serverTimeInNanoSeconds];
+  serverTimeProvider = [(IDSCurrentServerTime *)self serverTimeProvider];
+  serverTimeInNanoSeconds = [serverTimeProvider serverTimeInNanoSeconds];
 
   v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC);
   v6 = [IDSCurrentServerTimePair alloc];
-  v8 = [(IDSCurrentServerTime *)self serverTimeProvider];
-  v7 = -[IDSCurrentServerTimePair initWithInitialProcessMonotonicTimeInNanoSeconds:initialServerTimeInNanoSeconds:isAccurate:](v6, "initWithInitialProcessMonotonicTimeInNanoSeconds:initialServerTimeInNanoSeconds:isAccurate:", v5, v4, [v8 isAccurate]);
+  serverTimeProvider2 = [(IDSCurrentServerTime *)self serverTimeProvider];
+  v7 = -[IDSCurrentServerTimePair initWithInitialProcessMonotonicTimeInNanoSeconds:initialServerTimeInNanoSeconds:isAccurate:](v6, "initWithInitialProcessMonotonicTimeInNanoSeconds:initialServerTimeInNanoSeconds:isAccurate:", v5, serverTimeInNanoSeconds, [serverTimeProvider2 isAccurate]);
   [(IDSCurrentServerTime *)self setTimePair:v7];
 }
 

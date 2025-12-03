@@ -9,13 +9,13 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -26,24 +26,24 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = v4[2](v4, v11);
         if (v12)
         {
-          [v5 setObject:v11 forKeyedSubscript:{v12, v14}];
+          [dictionary setObject:v11 forKeyedSubscript:{v12, v14}];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (uint64_t)sck_containsObjectPassingTest:()SCKAdditions
@@ -54,8 +54,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -65,7 +65,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         if (v4[2](v4, *(*(&v10 + 1) + 8 * i)))
@@ -75,7 +75,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;

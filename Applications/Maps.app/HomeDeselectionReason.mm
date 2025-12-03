@@ -1,5 +1,5 @@
 @interface HomeDeselectionReason
-- (HomeDeselectionReason)initWithAction:(int64_t)a3;
+- (HomeDeselectionReason)initWithAction:(int64_t)action;
 - (id)description;
 @end
 
@@ -22,14 +22,14 @@
   return [NSString stringWithFormat:@"<%@: %p; action = %@>", v3, self, v5];
 }
 
-- (HomeDeselectionReason)initWithAction:(int64_t)a3
+- (HomeDeselectionReason)initWithAction:(int64_t)action
 {
   v5.receiver = self;
   v5.super_class = HomeDeselectionReason;
   result = [(HomeDeselectionReason *)&v5 init];
   if (result)
   {
-    result->_action = a3;
+    result->_action = action;
   }
 
   return result;

@@ -1,40 +1,40 @@
 @interface CRLSEiOSCreateBoardViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (_TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController)initWithCoder:(id)a3;
-- (_TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)cancel:(id)a3;
-- (void)createBoardButtonAction:(id)a3;
-- (void)textFieldDidChangeSelection:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (_TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController)initWithCoder:(id)coder;
+- (_TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)cancel:(id)cancel;
+- (void)createBoardButtonAction:(id)action;
+- (void)textFieldDidChangeSelection:(id)selection;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CRLSEiOSCreateBoardViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100033E14();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100034658(a3);
+  selfCopy = self;
+  sub_100034658(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000347C8(a3);
+  selfCopy = self;
+  sub_1000347C8(appear);
 }
 
-- (void)createBoardButtonAction:(id)a3
+- (void)createBoardButtonAction:(id)action
 {
-  if (a3)
+  if (action)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_10007E784();
     swift_unknownObjectRelease();
@@ -43,16 +43,16 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController_newBoardTextField);
   if (v6)
   {
-    v7 = [v6 text];
-    if (v7)
+    text = [v6 text];
+    if (text)
     {
-      v8 = v7;
+      v8 = text;
       v9 = sub_10007E444();
       v11 = v10;
     }
@@ -74,24 +74,24 @@
   }
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v5 = self;
-  v3 = [(CRLSEiOSCreateBoardViewController *)v5 navigationController];
-  if (v3)
+  selfCopy = self;
+  navigationController = [(CRLSEiOSCreateBoardViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v4 = v3;
+    v4 = navigationController;
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [v4 text];
-  if (v6)
+  returnCopy = return;
+  selfCopy = self;
+  text = [returnCopy text];
+  if (text)
   {
-    v7 = v6;
+    v7 = text;
     v8 = sub_10007E444();
     v10 = v9;
   }
@@ -107,22 +107,22 @@
   return 0;
 }
 
-- (void)textFieldDidChangeSelection:(id)a3
+- (void)textFieldDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = self;
-  sub_100034AF8(v4);
+  selectionCopy = selection;
+  selfCopy = self;
+  sub_100034AF8(selectionCopy);
 }
 
-- (_TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_10007E444();
     *&self->delegate[OBJC_IVAR____TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController_delegate] = 0;
     swift_unknownObjectWeakInit();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController_newBoardTextField) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_10007E404();
   }
 
@@ -131,26 +131,26 @@
     *&self->delegate[OBJC_IVAR____TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController_delegate] = 0;
     swift_unknownObjectWeakInit();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController_newBoardTextField) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for CRLSEiOSCreateBoardViewController();
-  v9 = [(CRLSEiOSCreateBoardViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(CRLSEiOSCreateBoardViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController)initWithCoder:(id)a3
+- (_TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController)initWithCoder:(id)coder
 {
   *&self->delegate[OBJC_IVAR____TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController_delegate] = 0;
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC24FreeformSharingExtension33CRLSEiOSCreateBoardViewController_newBoardTextField) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CRLSEiOSCreateBoardViewController();
-  v5 = a3;
-  v6 = [(CRLSEiOSCreateBoardViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(CRLSEiOSCreateBoardViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

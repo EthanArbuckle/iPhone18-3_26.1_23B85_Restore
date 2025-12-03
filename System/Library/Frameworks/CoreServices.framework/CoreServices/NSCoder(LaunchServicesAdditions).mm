@@ -15,7 +15,7 @@
   v5 = MEMORY[0x1E695DFD8];
   v6 = a4;
   v7 = [[v5 alloc] initWithObjects:&v10 count:1];
-  v8 = [a1 ls_decodeObjectOfClasses:v7 forKey:v6];
+  v8 = [self ls_decodeObjectOfClasses:v7 forKey:v6];
 
   return v8;
 }
@@ -38,13 +38,13 @@
     v6 = v10;
   }
 
-  v11 = [a1 decodeObjectOfClasses:v6 forKey:v7];
+  v11 = [self decodeObjectOfClasses:v6 forKey:v7];
   objc_autoreleasePoolPop(v8);
   if (v11 && (_LSIsKindOfClasses(v11, v6) & 1) == 0)
   {
 
     v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4864, 0, "[NSCoder(LaunchServicesAdditions) ls_decodeObjectOfClasses:forKey:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/NSCoder+LaunchServicesAdditions.m", 197);
-    [a1 failWithError:v12];
+    [self failWithError:v12];
 
     v11 = 0;
   }
@@ -57,7 +57,7 @@
   v6 = MEMORY[0x1E695DFD8];
   v7 = a4;
   v8 = [v6 setWithObjects:{objc_opt_class(), a3, 0}];
-  v9 = [a1 ls_decodeObjectOfClasses:v8 forKey:v7];
+  v9 = [self ls_decodeObjectOfClasses:v8 forKey:v7];
 
   if (v9)
   {
@@ -68,7 +68,7 @@
     {
 
       v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4864, 0, "[NSCoder(LaunchServicesAdditions) ls_decodeArrayWithValuesOfClass:forKey:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/NSCoder+LaunchServicesAdditions.m", 210);
-      [a1 failWithError:v12];
+      [self failWithError:v12];
 
       v9 = 0;
     }
@@ -82,13 +82,13 @@
   v6 = MEMORY[0x1E695DFD8];
   v7 = a4;
   v8 = [v6 setWithObjects:{objc_opt_class(), a3, 0}];
-  v9 = [a1 ls_decodeObjectOfClasses:v8 forKey:v7];
+  v9 = [self ls_decodeObjectOfClasses:v8 forKey:v7];
 
   if (v9 && (_LSIsSetWithValuesOfClass(v9, a3) & 1) == 0)
   {
 
     v10 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4864, 0, "[NSCoder(LaunchServicesAdditions) ls_decodeSetWithValuesOfClass:forKey:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/NSCoder+LaunchServicesAdditions.m", 222);
-    [a1 failWithError:v10];
+    [self failWithError:v10];
 
     v9 = 0;
   }
@@ -101,7 +101,7 @@
   v8 = MEMORY[0x1E695DFD8];
   v9 = a5;
   v10 = [v8 setWithObject:a4];
-  v11 = [a1 ls_decodeDictionaryWithKeysOfClass:a3 valuesOfClasses:v10 forKey:v9];
+  v11 = [self ls_decodeDictionaryWithKeysOfClass:a3 valuesOfClasses:v10 forKey:v9];
 
   return v11;
 }
@@ -116,7 +116,7 @@
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
   v11 = [v8 setByAddingObjectsFromArray:v10];
 
-  v12 = [a1 ls_decodeObjectOfClasses:v11 forKey:v9];
+  v12 = [self ls_decodeObjectOfClasses:v11 forKey:v9];
 
   if (v12)
   {
@@ -138,7 +138,7 @@
 LABEL_4:
 
       v15 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A250], 4864, 0, "[NSCoder(LaunchServicesAdditions) ls_decodeDictionaryWithKeysOfClass:valuesOfClasses:forKey:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/NSCoder+LaunchServicesAdditions.m", 241);
-      [a1 failWithError:v15];
+      [self failWithError:v15];
 
       v12 = 0;
     }

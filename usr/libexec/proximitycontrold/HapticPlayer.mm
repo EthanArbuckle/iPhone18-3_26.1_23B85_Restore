@@ -1,17 +1,17 @@
 @interface HapticPlayer
 - (_TtC17proximitycontrold12HapticPlayer)init;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setDispatchQueue:(id)queue;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation HapticPlayer
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -30,13 +30,13 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold12HapticPlayer_interruptionHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -55,15 +55,15 @@
   v9 = *(self + OBJC_IVAR____TtC17proximitycontrold12HapticPlayer_invalidationHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10002689C(v8);
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
   v4 = *(self + OBJC_IVAR____TtC17proximitycontrold12HapticPlayer_dispatchQueue);
-  *(self + OBJC_IVAR____TtC17proximitycontrold12HapticPlayer_dispatchQueue) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC17proximitycontrold12HapticPlayer_dispatchQueue) = queue;
+  queueCopy = queue;
 }
 
 - (_TtC17proximitycontrold12HapticPlayer)init
@@ -73,19 +73,19 @@
   return result;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_10021BE28(v5, v4);
+  selfCopy = self;
+  sub_10021BE28(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021A4C8();
 }
 

@@ -1,15 +1,15 @@
 @interface AALoggingEventProcessor
 - (AALoggingEventProcessor)init;
-- (AALoggingEventProcessor)initWithFormat:(int64_t)a3 subsystem:(id)a4;
+- (AALoggingEventProcessor)initWithFormat:(int64_t)format subsystem:(id)subsystem;
 @end
 
 @implementation AALoggingEventProcessor
 
-- (AALoggingEventProcessor)initWithFormat:(int64_t)a3 subsystem:(id)a4
+- (AALoggingEventProcessor)initWithFormat:(int64_t)format subsystem:(id)subsystem
 {
-  if (a4)
+  if (subsystem)
   {
-    a4 = sub_1B6AB92E0();
+    subsystem = sub_1B6AB92E0();
     v6 = v5;
   }
 
@@ -18,7 +18,7 @@
     v6 = 0;
   }
 
-  return BridgingLoggingEventProcessor.init(format:subsystem:)(a3, a4, v6);
+  return BridgingLoggingEventProcessor.init(format:subsystem:)(format, subsystem, v6);
 }
 
 - (AALoggingEventProcessor)init

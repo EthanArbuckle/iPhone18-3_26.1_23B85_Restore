@@ -4,9 +4,9 @@
 - (SUISpotlightControllerResultsViewDelegate)resultsViewDelegate;
 - (SUISpotlightControllerSearchAppDelegate)appDelegate;
 - (SUISpotlightControllerSearchFieldDelegate)searchFieldDelegate;
-- (void)startQueryTaskWithSearchString:(id)a3 queryOptions:(int64_t)a4 sourceResult:(id)a5 triggerEvent:(unint64_t)a6 languages:(id)a7 currentKeyboardLanguage:(id)a8 queryId:(unint64_t)a9;
-- (void)updateWithCommand:(id)a3 triggerEvent:(unint64_t)a4;
-- (void)updateWithSuggestionResult:(id)a3 triggerEvent:(unint64_t)a4 languages:(id)a5 currentKeyboardLanguage:(id)a6 queryId:(unint64_t)a7;
+- (void)startQueryTaskWithSearchString:(id)string queryOptions:(int64_t)options sourceResult:(id)result triggerEvent:(unint64_t)event languages:(id)languages currentKeyboardLanguage:(id)language queryId:(unint64_t)id;
+- (void)updateWithCommand:(id)command triggerEvent:(unint64_t)event;
+- (void)updateWithSuggestionResult:(id)result triggerEvent:(unint64_t)event languages:(id)languages currentKeyboardLanguage:(id)language queryId:(unint64_t)id;
 @end
 
 @implementation SUISpotlightController
@@ -25,9 +25,9 @@
   return v2;
 }
 
-- (void)updateWithCommand:(id)a3 triggerEvent:(unint64_t)a4
+- (void)updateWithCommand:(id)command triggerEvent:(unint64_t)event
 {
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -40,73 +40,73 @@
   }
 }
 
-- (void)updateWithSuggestionResult:(id)a3 triggerEvent:(unint64_t)a4 languages:(id)a5 currentKeyboardLanguage:(id)a6 queryId:(unint64_t)a7
+- (void)updateWithSuggestionResult:(id)result triggerEvent:(unint64_t)event languages:(id)languages currentKeyboardLanguage:(id)language queryId:(unint64_t)id
 {
-  v21 = a3;
-  v12 = a6;
-  v13 = a5;
-  v14 = [v21 completion];
-  v15 = v14;
-  if (v14)
+  resultCopy = result;
+  languageCopy = language;
+  languagesCopy = languages;
+  completion = [resultCopy completion];
+  v15 = completion;
+  if (completion)
   {
-    v16 = v14;
+    v17Suggestion = completion;
   }
 
   else
   {
-    v17 = [v21 suggestion];
-    v16 = [v17 suggestion];
+    suggestion = [resultCopy suggestion];
+    v17Suggestion = [suggestion suggestion];
   }
 
   v18 = &stru_287C62298;
-  if (v16)
+  if (v17Suggestion)
   {
-    v18 = v16;
+    v18 = v17Suggestion;
   }
 
   v19 = v18;
 
-  v20 = [(SUISpotlightController *)self searchFieldDelegate];
-  [v20 updateSearchString:v19];
+  searchFieldDelegate = [(SUISpotlightController *)self searchFieldDelegate];
+  [searchFieldDelegate updateSearchString:v19];
 
-  [(SUISpotlightController *)self startQueryTaskWithSearchString:v19 queryOptions:0 sourceResult:v21 triggerEvent:a4 languages:v13 currentKeyboardLanguage:v12 queryId:a7];
+  [(SUISpotlightController *)self startQueryTaskWithSearchString:v19 queryOptions:0 sourceResult:resultCopy triggerEvent:event languages:languagesCopy currentKeyboardLanguage:languageCopy queryId:id];
   [(SUISpotlightController *)self setCurrentSearchString:v19];
 }
 
-- (void)startQueryTaskWithSearchString:(id)a3 queryOptions:(int64_t)a4 sourceResult:(id)a5 triggerEvent:(unint64_t)a6 languages:(id)a7 currentKeyboardLanguage:(id)a8 queryId:(unint64_t)a9
+- (void)startQueryTaskWithSearchString:(id)string queryOptions:(int64_t)options sourceResult:(id)result triggerEvent:(unint64_t)event languages:(id)languages currentKeyboardLanguage:(id)language queryId:(unint64_t)id
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a8;
+  stringCopy = string;
+  resultCopy = result;
+  languageCopy = language;
   v16 = &stru_287C62298;
-  if (v13)
+  if (stringCopy)
   {
-    v16 = v13;
+    v16 = stringCopy;
   }
 
   v17 = v16;
-  v18 = [(SUISpotlightController *)self currentSearchString];
-  v19 = [v18 isEqualToString:v17];
+  currentSearchString = [(SUISpotlightController *)self currentSearchString];
+  v19 = [currentSearchString isEqualToString:v17];
 
   if ((v19 & 1) == 0)
   {
-    v20 = [objc_alloc(MEMORY[0x277D4C270]) initWithEvent:@"com.apple.spotlight.keystroke" timeInterval:0 queryId:a9];
-    v21 = [(SUISpotlightController *)self feedbackDelegate];
-    [v21 reportFeedback:v20 queryId:a9];
+    v20 = [objc_alloc(MEMORY[0x277D4C270]) initWithEvent:@"com.apple.spotlight.keystroke" timeInterval:0 queryId:id];
+    feedbackDelegate = [(SUISpotlightController *)self feedbackDelegate];
+    [feedbackDelegate reportFeedback:v20 queryId:id];
 
-    v22 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v23 = [(__CFString *)v17 stringByTrimmingCharactersInSet:v22];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v23 = [(__CFString *)v17 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-    v24 = [(SUISpotlightController *)self searchFieldDelegate];
+    searchFieldDelegate = [(SUISpotlightController *)self searchFieldDelegate];
     if ([v23 length])
     {
       v32 = v20;
       v25 = [objc_alloc(MEMORY[0x277D65898]) initWithSearchString:v17];
-      [v25 setQueryIdent:a9];
-      [v25 setKeyboardLanguage:v15];
+      [v25 setQueryIdent:id];
+      [v25 setKeyboardLanguage:languageCopy];
       [v25 setAllowInternet:1];
-      [v25 setWhyQuery:a6];
-      if (a6 == 8)
+      [v25 setWhyQuery:event];
+      if (event == 8)
       {
         v26 = 8;
       }
@@ -117,10 +117,10 @@
       }
 
       [v25 setQueryKind:{v26, v32}];
-      v27 = [(SUISpotlightController *)self clientSession];
-      v28 = [v27 queryTaskWithContext:v25];
+      clientSession = [(SUISpotlightController *)self clientSession];
+      v28 = [clientSession queryTaskWithContext:v25];
 
-      [v24 willRunQueryTask:v28];
+      [searchFieldDelegate willRunQueryTask:v28];
       if (startQueryTaskWithSearchString_queryOptions_sourceResult_triggerEvent_languages_currentKeyboardLanguage_queryId__onceToken != -1)
       {
         [SUISpotlightController startQueryTaskWithSearchString:queryOptions:sourceResult:triggerEvent:languages:currentKeyboardLanguage:queryId:];
@@ -141,9 +141,9 @@
 
     else
     {
-      [v24 updateSearchString:0];
-      [v24 updateTokenWithString:0 symbol:0];
-      [v24 updateCompletionString:0 targetString:0];
+      [searchFieldDelegate updateSearchString:0];
+      [searchFieldDelegate updateTokenWithString:0 symbol:0];
+      [searchFieldDelegate updateCompletionString:0 targetString:0];
     }
   }
 }

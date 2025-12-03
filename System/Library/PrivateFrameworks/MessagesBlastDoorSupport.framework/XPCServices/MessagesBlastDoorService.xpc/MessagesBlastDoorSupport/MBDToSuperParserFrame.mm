@@ -1,30 +1,30 @@
 @interface MBDToSuperParserFrame
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDToSuperParserFrame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v12 = a4;
-  v10 = a8;
-  if ([v12 supportsMessagePartNumbersInAttributes])
+  contextCopy = context;
+  attributesCopy = attributes;
+  if ([contextCopy supportsMessagePartNumbersInAttributes])
   {
-    v11 = [v10 _stringForKey:@"message-part"];
+    v11 = [attributesCopy _stringForKey:@"message-part"];
     if ([v11 length])
     {
-      [v12 pushMessagePartNumber:{objc_msgSend(v11, "unsignedIntValue")}];
+      [contextCopy pushMessagePartNumber:{objc_msgSend(v11, "unsignedIntValue")}];
       self->_didPushMessagePartNumber = 1;
     }
   }
 }
 
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   if (self->_didPushMessagePartNumber)
   {
-    [a4 popMessagePartNumber];
+    [context popMessagePartNumber];
   }
 }
 

@@ -1,34 +1,34 @@
 @interface CTODAPlan
-- (BOOL)isEqual:(id)a3;
-- (CTODAPlan)initWithCoder:(id)a3;
-- (CTODAPlan)initWithSetupUrl:(id)a3 mcc:(id)a4 mnc:(id)a5 gid1:(id)a6 gid2:(id)a7 handoffToken:(id)a8 inBuddy:(BOOL)a9;
+- (BOOL)isEqual:(id)equal;
+- (CTODAPlan)initWithCoder:(id)coder;
+- (CTODAPlan)initWithSetupUrl:(id)url mcc:(id)mcc mnc:(id)mnc gid1:(id)gid1 gid2:(id)gid2 handoffToken:(id)token inBuddy:(BOOL)buddy;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTODAPlan
 
-- (CTODAPlan)initWithSetupUrl:(id)a3 mcc:(id)a4 mnc:(id)a5 gid1:(id)a6 gid2:(id)a7 handoffToken:(id)a8 inBuddy:(BOOL)a9
+- (CTODAPlan)initWithSetupUrl:(id)url mcc:(id)mcc mnc:(id)mnc gid1:(id)gid1 gid2:(id)gid2 handoffToken:(id)token inBuddy:(BOOL)buddy
 {
-  v16 = a3;
-  v24 = a4;
-  v23 = a5;
-  v22 = a6;
-  v17 = a7;
-  v18 = a8;
+  urlCopy = url;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  gid1Copy = gid1;
+  gid2Copy = gid2;
+  tokenCopy = token;
   v25.receiver = self;
   v25.super_class = CTODAPlan;
   v19 = [(CTODAPlan *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_mcc, a4);
-    objc_storeStrong(&v20->_mnc, a5);
-    objc_storeStrong(&v20->_gid1, a6);
-    objc_storeStrong(&v20->_gid2, a7);
-    objc_storeStrong(&v20->_setupURL, a3);
-    objc_storeStrong(&v20->_handoffToken, a8);
-    v20->_inBuddy = a9;
+    objc_storeStrong(&v19->_mcc, mcc);
+    objc_storeStrong(&v20->_mnc, mnc);
+    objc_storeStrong(&v20->_gid1, gid1);
+    objc_storeStrong(&v20->_gid2, gid2);
+    objc_storeStrong(&v20->_setupURL, url);
+    objc_storeStrong(&v20->_handoffToken, token);
+    v20->_inBuddy = buddy;
   }
 
   return v20;
@@ -84,19 +84,19 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v50.receiver = self;
   v50.super_class = CTODAPlan;
-  if ([(CTPlan *)&v50 isEqual:v6])
+  if ([(CTPlan *)&v50 isEqual:equalCopy])
   {
     v7 = [(CTODAPlan *)self mcc];
-    v8 = [v6 mcc];
+    v8 = [equalCopy mcc];
     if (v7 != v8)
     {
       v3 = [(CTODAPlan *)self mcc];
-      v4 = [v6 mcc];
+      v4 = [equalCopy mcc];
       if (![v3 isEqual:v4])
       {
         LOBYTE(v9) = 0;
@@ -105,11 +105,11 @@
     }
 
     v10 = [(CTODAPlan *)self mnc];
-    v11 = [v6 mnc];
+    v11 = [equalCopy mnc];
     if (v10 != v11)
     {
       v12 = [(CTODAPlan *)self mnc];
-      v13 = [v6 mnc];
+      v13 = [equalCopy mnc];
       if (![v12 isEqual:v13])
       {
         LOBYTE(v9) = 0;
@@ -132,15 +132,15 @@ LABEL_40:
       v47 = v12;
     }
 
-    v14 = [(CTODAPlan *)self gid1];
-    v48 = [v6 gid1];
-    v49 = v14;
-    if (v14 != v48)
+    gid1 = [(CTODAPlan *)self gid1];
+    gid12 = [equalCopy gid1];
+    v49 = gid1;
+    if (gid1 != gid12)
     {
-      v15 = [(CTODAPlan *)self gid1];
-      v43 = [v6 gid1];
-      v44 = v15;
-      if (![v15 isEqual:?])
+      gid13 = [(CTODAPlan *)self gid1];
+      gid14 = [equalCopy gid1];
+      v44 = gid13;
+      if (![gid13 isEqual:?])
       {
         LOBYTE(v9) = 0;
 LABEL_36:
@@ -157,29 +157,29 @@ LABEL_37:
       }
     }
 
-    v16 = [(CTODAPlan *)self gid2];
-    v17 = [v6 gid2];
-    v45 = v16;
-    v18 = v16 == v17;
-    v19 = v17;
+    gid2 = [(CTODAPlan *)self gid2];
+    gid22 = [equalCopy gid2];
+    v45 = gid2;
+    v18 = gid2 == gid22;
+    v19 = gid22;
     if (v18)
     {
-      v21 = v17;
+      v21 = gid22;
     }
 
     else
     {
-      v20 = [(CTODAPlan *)self gid2];
-      v38 = [v6 gid2];
-      v39 = v20;
-      if (![v20 isEqual:?])
+      gid23 = [(CTODAPlan *)self gid2];
+      gid24 = [equalCopy gid2];
+      v39 = gid23;
+      if (![gid23 isEqual:?])
       {
         LOBYTE(v9) = 0;
         v24 = v45;
 LABEL_34:
 
 LABEL_35:
-        if (v49 == v48)
+        if (v49 == gid12)
         {
           goto LABEL_37;
         }
@@ -190,11 +190,11 @@ LABEL_35:
       v21 = v19;
     }
 
-    v22 = [(CTODAPlan *)self setupURL];
-    v40 = [v6 setupURL];
+    setupURL = [(CTODAPlan *)self setupURL];
+    setupURL2 = [equalCopy setupURL];
     v41 = v21;
-    v42 = v22;
-    if (v22 == v40)
+    v42 = setupURL;
+    if (setupURL == setupURL2)
     {
       v36 = v4;
       v37 = v3;
@@ -202,13 +202,13 @@ LABEL_35:
 
     else
     {
-      v23 = [(CTODAPlan *)self setupURL];
-      v34 = [v6 setupURL];
-      v35 = v23;
-      if (![v23 isEqual:?])
+      setupURL3 = [(CTODAPlan *)self setupURL];
+      setupURL4 = [equalCopy setupURL];
+      v35 = setupURL3;
+      if (![setupURL3 isEqual:?])
       {
         LOBYTE(v9) = 0;
-        v29 = v40;
+        v29 = setupURL2;
         v27 = v42;
 LABEL_32:
 
@@ -227,15 +227,15 @@ LABEL_33:
       v37 = v3;
     }
 
-    v25 = [(CTODAPlan *)self handoffToken];
-    v26 = [v6 handoffToken];
+    handoffToken = [(CTODAPlan *)self handoffToken];
+    handoffToken2 = [equalCopy handoffToken];
     v27 = v42;
-    if (v25 != v26)
+    if (handoffToken != handoffToken2)
     {
-      v28 = [(CTODAPlan *)self handoffToken];
-      v32 = [v6 handoffToken];
-      v33 = v28;
-      if (![v28 isEqual:?])
+      handoffToken3 = [(CTODAPlan *)self handoffToken];
+      handoffToken4 = [equalCopy handoffToken];
+      v33 = handoffToken3;
+      if (![handoffToken3 isEqual:?])
       {
         LOBYTE(v9) = 0;
         v27 = v42;
@@ -245,16 +245,16 @@ LABEL_33:
       v27 = v42;
     }
 
-    v30 = [(CTODAPlan *)self inBuddy];
-    v9 = v30 ^ [v6 inBuddy] ^ 1;
-    if (v25 == v26)
+    inBuddy = [(CTODAPlan *)self inBuddy];
+    v9 = inBuddy ^ [equalCopy inBuddy] ^ 1;
+    if (handoffToken == handoffToken2)
     {
 LABEL_31:
 
-      v29 = v40;
+      v29 = setupURL2;
       v4 = v36;
       v3 = v37;
-      if (v27 == v40)
+      if (v27 == setupURL2)
       {
         goto LABEL_33;
       }
@@ -273,57 +273,57 @@ LABEL_42:
   return v9;
 }
 
-- (CTODAPlan)initWithCoder:(id)a3
+- (CTODAPlan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CTODAPlan;
-  v5 = [(CTPlan *)&v19 initWithCoder:v4];
+  v5 = [(CTPlan *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mcc"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mcc"];
     mcc = v5->_mcc;
     v5->_mcc = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mnc"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mnc"];
     mnc = v5->_mnc;
     v5->_mnc = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gid1"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gid1"];
     gid1 = v5->_gid1;
     v5->_gid1 = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gid2"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gid2"];
     gid2 = v5->_gid2;
     v5->_gid2 = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setupURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setupURL"];
     setupURL = v5->_setupURL;
     v5->_setupURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handoffToken"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handoffToken"];
     handoffToken = v5->_handoffToken;
     v5->_handoffToken = v16;
 
-    v5->_inBuddy = [v4 decodeBoolForKey:@"inBuddy"];
+    v5->_inBuddy = [coderCopy decodeBoolForKey:@"inBuddy"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CTODAPlan;
-  v4 = a3;
-  [(CTPlan *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_mcc forKey:{@"mcc", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_mnc forKey:@"mnc"];
-  [v4 encodeObject:self->_gid1 forKey:@"gid1"];
-  [v4 encodeObject:self->_gid2 forKey:@"gid2"];
-  [v4 encodeObject:self->_setupURL forKey:@"setupURL"];
-  [v4 encodeObject:self->_handoffToken forKey:@"handoffToken"];
-  [v4 encodeBool:self->_inBuddy forKey:@"inBuddy"];
+  coderCopy = coder;
+  [(CTPlan *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_mcc forKey:{@"mcc", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_mnc forKey:@"mnc"];
+  [coderCopy encodeObject:self->_gid1 forKey:@"gid1"];
+  [coderCopy encodeObject:self->_gid2 forKey:@"gid2"];
+  [coderCopy encodeObject:self->_setupURL forKey:@"setupURL"];
+  [coderCopy encodeObject:self->_handoffToken forKey:@"handoffToken"];
+  [coderCopy encodeBool:self->_inBuddy forKey:@"inBuddy"];
 }
 
 @end

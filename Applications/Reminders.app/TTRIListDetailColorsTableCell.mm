@@ -1,16 +1,16 @@
 @interface TTRIListDetailColorsTableCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (_TtC9Reminders29TTRIListDetailColorsTableCell)initWithCoder:(id)a3;
-- (_TtC9Reminders29TTRIListDetailColorsTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (_TtC9Reminders29TTRIListDetailColorsTableCell)initWithCoder:(id)coder;
+- (_TtC9Reminders29TTRIListDetailColorsTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation TTRIListDetailColorsTableCell
 
-- (_TtC9Reminders29TTRIListDetailColorsTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC9Reminders29TTRIListDetailColorsTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -19,10 +19,10 @@
     v6 = 0;
   }
 
-  return sub_100068BB8(a3, a4, v6);
+  return sub_100068BB8(style, identifier, v6);
 }
 
-- (_TtC9Reminders29TTRIListDetailColorsTableCell)initWithCoder:(id)a3
+- (_TtC9Reminders29TTRIListDetailColorsTableCell)initWithCoder:(id)coder
 {
   *&self->gridView[OBJC_IVAR____TtC9Reminders29TTRIListDetailColorsTableCell_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  v6 = self;
+  width = size.width;
+  selfCopy = self;
   dispatch thunk of TTRListAppearanceGridView.height(forWidth:)();
   v8 = v7;
 

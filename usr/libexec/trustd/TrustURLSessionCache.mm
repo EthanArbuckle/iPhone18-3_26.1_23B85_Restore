@@ -1,74 +1,74 @@
 @interface TrustURLSessionCache
-- (TrustURLSessionCache)initWithDelegate:(id)a3;
-- (id)createSessionForAuditToken:(id)a3;
-- (id)sessionForAuditToken:(id)a3;
+- (TrustURLSessionCache)initWithDelegate:(id)delegate;
+- (id)createSessionForAuditToken:(id)token;
+- (id)sessionForAuditToken:(id)token;
 @end
 
 @implementation TrustURLSessionCache
 
-- (id)sessionForAuditToken:(id)a3
+- (id)sessionForAuditToken:(id)token
 {
-  v4 = a3;
-  v5 = [(TrustURLSessionCache *)self _clientLRUList];
-  objc_sync_enter(v5);
-  v6 = [(TrustURLSessionCache *)self _clientSessionMap];
-  v7 = [v6 objectForKey:v4];
+  tokenCopy = token;
+  _clientLRUList = [(TrustURLSessionCache *)self _clientLRUList];
+  objc_sync_enter(_clientLRUList);
+  _clientSessionMap = [(TrustURLSessionCache *)self _clientSessionMap];
+  v7 = [_clientSessionMap objectForKey:tokenCopy];
 
   if (v7)
   {
-    v8 = [(TrustURLSessionCache *)self _clientLRUList];
-    [v8 removeObject:v4];
+    _clientLRUList2 = [(TrustURLSessionCache *)self _clientLRUList];
+    [_clientLRUList2 removeObject:tokenCopy];
 
-    v9 = [(TrustURLSessionCache *)self _clientLRUList];
-    [v9 insertObject:v4 atIndex:0];
+    _clientLRUList3 = [(TrustURLSessionCache *)self _clientLRUList];
+    [_clientLRUList3 insertObject:tokenCopy atIndex:0];
   }
 
   else
   {
-    v7 = [(TrustURLSessionCache *)self createSessionForAuditToken:v4];
-    v10 = [(TrustURLSessionCache *)self _clientLRUList];
-    [v10 insertObject:v4 atIndex:0];
+    v7 = [(TrustURLSessionCache *)self createSessionForAuditToken:tokenCopy];
+    _clientLRUList4 = [(TrustURLSessionCache *)self _clientLRUList];
+    [_clientLRUList4 insertObject:tokenCopy atIndex:0];
 
-    v11 = [(TrustURLSessionCache *)self _clientSessionMap];
-    [v11 setObject:v7 forKey:v4];
+    _clientSessionMap2 = [(TrustURLSessionCache *)self _clientSessionMap];
+    [_clientSessionMap2 setObject:v7 forKey:tokenCopy];
 
-    v12 = [(TrustURLSessionCache *)self _clientLRUList];
-    v13 = [v12 count];
+    _clientLRUList5 = [(TrustURLSessionCache *)self _clientLRUList];
+    v13 = [_clientLRUList5 count];
 
     if (v13 < 0x15)
     {
       goto LABEL_6;
     }
 
-    v14 = [(TrustURLSessionCache *)self _clientLRUList];
-    v15 = [(TrustURLSessionCache *)self _clientLRUList];
-    v9 = [v14 objectAtIndex:{objc_msgSend(v15, "count") - 1}];
+    _clientLRUList6 = [(TrustURLSessionCache *)self _clientLRUList];
+    _clientLRUList7 = [(TrustURLSessionCache *)self _clientLRUList];
+    _clientLRUList3 = [_clientLRUList6 objectAtIndex:{objc_msgSend(_clientLRUList7, "count") - 1}];
 
-    v16 = [(TrustURLSessionCache *)self _clientSessionMap];
-    v17 = [v16 objectForKey:v9];
+    _clientSessionMap3 = [(TrustURLSessionCache *)self _clientSessionMap];
+    v17 = [_clientSessionMap3 objectForKey:_clientLRUList3];
 
     [v17 finishTasksAndInvalidate];
-    v18 = [(TrustURLSessionCache *)self _clientSessionMap];
-    [v18 removeObjectForKey:v9];
+    _clientSessionMap4 = [(TrustURLSessionCache *)self _clientSessionMap];
+    [_clientSessionMap4 removeObjectForKey:_clientLRUList3];
 
-    v19 = [(TrustURLSessionCache *)self _clientLRUList];
-    [v19 removeLastObject];
+    _clientLRUList8 = [(TrustURLSessionCache *)self _clientLRUList];
+    [_clientLRUList8 removeLastObject];
   }
 
 LABEL_6:
   v20 = v7;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(_clientLRUList);
 
   return v20;
 }
 
-- (id)createSessionForAuditToken:(id)a3
+- (id)createSessionForAuditToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
-  v6 = [(TrustURLSessionCache *)self _sharedHSTSCache];
-  [v5 set_hstsStorage:v6];
+  _sharedHSTSCache = [(TrustURLSessionCache *)self _sharedHSTSCache];
+  [v5 set_hstsStorage:_sharedHSTSCache];
 
   [v5 setHTTPCookieStorage:0];
   [v5 setURLCache:0];
@@ -77,37 +77,37 @@ LABEL_6:
   v7 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   [v5 setHTTPAdditionalHeaders:v7];
 
-  [v5 set_sourceApplicationAuditTokenData:v4];
+  [v5 set_sourceApplicationAuditTokenData:tokenCopy];
   [v5 set_sourceApplicationSecondaryIdentifier:@"com.apple.trustd.TrustURLSession"];
   v8 = objc_alloc_init(NSOperationQueue);
-  v9 = [(TrustURLSessionCache *)self delegate];
-  v10 = [v9 queue];
-  [v8 setUnderlyingQueue:v10];
+  delegate = [(TrustURLSessionCache *)self delegate];
+  queue = [delegate queue];
+  [v8 setUnderlyingQueue:queue];
 
-  v11 = [(TrustURLSessionCache *)self delegate];
-  v12 = [NSURLSession sessionWithConfiguration:v5 delegate:v11 delegateQueue:v8];
+  delegate2 = [(TrustURLSessionCache *)self delegate];
+  v12 = [NSURLSession sessionWithConfiguration:v5 delegate:delegate2 delegateQueue:v8];
 
   return v12;
 }
 
-- (TrustURLSessionCache)initWithDelegate:(id)a3
+- (TrustURLSessionCache)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = TrustURLSessionCache;
   v5 = [(TrustURLSessionCache *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    [(TrustURLSessionCache *)v5 setDelegate:v4];
+    [(TrustURLSessionCache *)v5 setDelegate:delegateCopy];
     v7 = [NSMutableDictionary dictionaryWithCapacity:20];
     [(TrustURLSessionCache *)v6 set_clientSessionMap:v7];
 
     v8 = [NSMutableArray arrayWithCapacity:21];
     [(TrustURLSessionCache *)v6 set_clientLRUList:v8];
 
-    v9 = [[_NSHSTSStorage alloc] initInMemoryStore];
-    [(TrustURLSessionCache *)v6 set_sharedHSTSCache:v9];
+    initInMemoryStore = [[_NSHSTSStorage alloc] initInMemoryStore];
+    [(TrustURLSessionCache *)v6 set_sharedHSTSCache:initInMemoryStore];
   }
 
   return v6;

@@ -1,19 +1,19 @@
 @interface TTSVBSiriTTSTrainerSession
 - (TTSVBSiriTTSTrainerSession)init;
-- (id)_replyQueue:(id)a3;
-- (id)getAllAvailableLocalesForTrainingVersion:(id)a3;
-- (id)installableTrainingAssetsForLocaleID:(id)a3 name:(id)a4 type:(int64_t)a5;
-- (id)installedTrainingAssetsForLocaleID:(id)a3 name:(id)a4 type:(int64_t)a5;
-- (void)cancelTask:(id)a3 replyOnQueue:(id)a4 completionHandler:(id)a5;
-- (void)cancelTaskWithID:(id)a3 replyOnQueue:(id)a4 completionHandler:(id)a5;
-- (void)discardTrainingTasksReplyOnQueue:(id)a3 completionHandler:(id)a4;
-- (void)fetchTrainingScriptsWithLocaleID:(id)a3 scriptType:(id)a4 replyOnQueue:(id)a5 completion:(id)a6;
-- (void)getAllTasksReplyOnQueue:(id)a3 statusHandler:(id)a4;
-- (void)getTaskByID:(id)a3 replyOnQueue:(id)a4 statusHandler:(id)a5;
-- (void)getTasksByIDs:(id)a3 replyOnQueue:(id)a4 statusHandler:(id)a5;
-- (void)installAsset:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)startTraining:(id)a3 replyOnQueue:(id)a4 trainingStartedHandler:(id)a5;
-- (void)uninstallAsset:(id)a3;
+- (id)_replyQueue:(id)queue;
+- (id)getAllAvailableLocalesForTrainingVersion:(id)version;
+- (id)installableTrainingAssetsForLocaleID:(id)d name:(id)name type:(int64_t)type;
+- (id)installedTrainingAssetsForLocaleID:(id)d name:(id)name type:(int64_t)type;
+- (void)cancelTask:(id)task replyOnQueue:(id)queue completionHandler:(id)handler;
+- (void)cancelTaskWithID:(id)d replyOnQueue:(id)queue completionHandler:(id)handler;
+- (void)discardTrainingTasksReplyOnQueue:(id)queue completionHandler:(id)handler;
+- (void)fetchTrainingScriptsWithLocaleID:(id)d scriptType:(id)type replyOnQueue:(id)queue completion:(id)completion;
+- (void)getAllTasksReplyOnQueue:(id)queue statusHandler:(id)handler;
+- (void)getTaskByID:(id)d replyOnQueue:(id)queue statusHandler:(id)handler;
+- (void)getTasksByIDs:(id)ds replyOnQueue:(id)queue statusHandler:(id)handler;
+- (void)installAsset:(id)asset progress:(id)progress completion:(id)completion;
+- (void)startTraining:(id)training replyOnQueue:(id)queue trainingStartedHandler:(id)handler;
+- (void)uninstallAsset:(id)asset;
 @end
 
 @implementation TTSVBSiriTTSTrainerSession
@@ -59,20 +59,20 @@
   return v2;
 }
 
-- (id)getAllAvailableLocalesForTrainingVersion:(id)a3
+- (id)getAllAvailableLocalesForTrainingVersion:(id)version
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  versionCopy = version;
   v5 = LogTTSVBSiri();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = versionCopy;
     _os_log_impl(&dword_233109000, v5, OS_LOG_TYPE_DEFAULT, "Will query SiriTTSTraining for available locales for training version=%@", &v15, 0xCu);
   }
 
-  v6 = [v4 isEqual:@"v2"];
-  v7 = [(TTSVBSiriTTSTrainerSession *)self session];
+  v6 = [versionCopy isEqual:@"v2"];
+  session = [(TTSVBSiriTTSTrainerSession *)self session];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -87,8 +87,8 @@
       v9 = 1;
     }
 
-    v10 = [(TTSVBSiriTTSTrainerSession *)self session];
-    v11 = [v10 getAllAvailableLocalesWithVer:v9];
+    session2 = [(TTSVBSiriTTSTrainerSession *)self session];
+    v11 = [session2 getAllAvailableLocalesWithVer:v9];
   }
 
   else if (v6)
@@ -105,7 +105,7 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412546;
-    v16 = v4;
+    v16 = versionCopy;
     v17 = 2112;
     v18 = v11;
     _os_log_impl(&dword_233109000, v12, OS_LOG_TYPE_DEFAULT, "Did query SiriTTSTraining for available locales for training version=%@. %@", &v15, 0x16u);
@@ -116,27 +116,27 @@
   return v11;
 }
 
-- (id)installableTrainingAssetsForLocaleID:(id)a3 name:(id)a4 type:(int64_t)a5
+- (id)installableTrainingAssetsForLocaleID:(id)d name:(id)name type:(int64_t)type
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v10 = LogTTSVBSiri();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v32 = v8;
+    v32 = dCopy;
     v33 = 2112;
-    v34 = v9;
+    v34 = nameCopy;
     v35 = 2048;
-    v36 = a5;
+    typeCopy = type;
     _os_log_impl(&dword_233109000, v10, OS_LOG_TYPE_DEFAULT, "Will query SiriTTSTraining for installable assets language=%@ name=%@ type=%lu", buf, 0x20u);
   }
 
-  v11 = [(TTSVBSiriTTSTrainerSession *)self session];
-  v12 = [v11 installableTrainingAssetsForLanguage:v8 name:v9 type:a5];
+  session = [(TTSVBSiriTTSTrainerSession *)self session];
+  v12 = [session installableTrainingAssetsForLanguage:dCopy name:nameCopy type:type];
 
-  v13 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -159,7 +159,7 @@
         v19 = *(*(&v26 + 1) + 8 * i);
         v20 = [TTSVBSiriTTSTrainingAsset alloc];
         v21 = [(TTSVBSiriTTSTrainingAsset *)v20 initWithSiriTTSTrainingAsset:v19, v26];
-        [v13 addObject:v21];
+        [array addObject:v21];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -179,30 +179,30 @@
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return array;
 }
 
-- (id)installedTrainingAssetsForLocaleID:(id)a3 name:(id)a4 type:(int64_t)a5
+- (id)installedTrainingAssetsForLocaleID:(id)d name:(id)name type:(int64_t)type
 {
   v43 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  nameCopy = name;
   v10 = LogTTSVBSiri();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v38 = v8;
+    v38 = dCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = nameCopy;
     v41 = 2048;
-    v42 = a5;
+    typeCopy = type;
     _os_log_impl(&dword_233109000, v10, OS_LOG_TYPE_DEFAULT, "Will query SiriTTSTraining for installed assets language=%@ name=%@ type=%lu", buf, 0x20u);
   }
 
-  v11 = [(TTSVBSiriTTSTrainerSession *)self session];
-  v29 = v9;
-  v30 = v8;
-  v12 = [v11 installedTrainingAssetsForLanguage:v8 name:v9 type:a5];
+  session = [(TTSVBSiriTTSTrainerSession *)self session];
+  v29 = nameCopy;
+  v30 = dCopy;
+  v12 = [session installedTrainingAssetsForLanguage:dCopy name:nameCopy type:type];
 
   v13 = LogTTSVBSiri();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -213,7 +213,7 @@
     _os_log_impl(&dword_233109000, v13, OS_LOG_TYPE_DEFAULT, "Did query SiriTTSTraining for installed assets. Got %@ results", buf, 0xCu);
   }
 
-  v15 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -237,19 +237,19 @@
 
         v21 = *(*(&v32 + 1) + 8 * v20);
         v22 = [[TTSVBSiriTTSTrainingAsset alloc] initWithSiriTTSTrainingAsset:v21];
-        [v15 addObject:v22];
+        [array addObject:v22];
         v23 = LogTTSVBSiri();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [v21 name];
-          v25 = [v21 factor];
-          v26 = [v21 path];
+          name = [v21 name];
+          factor = [v21 factor];
+          path = [v21 path];
           *buf = 138412802;
-          v38 = v24;
+          v38 = name;
           v39 = 2112;
-          v40 = v25;
+          v40 = factor;
           v41 = 2112;
-          v42 = v26;
+          typeCopy = path;
           _os_log_debug_impl(&dword_233109000, v23, OS_LOG_TYPE_DEBUG, "Installed training asset: %@ - %@ - %@", buf, 0x20u);
 
           v16 = v31;
@@ -267,38 +267,38 @@
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return array;
 }
 
-- (void)installAsset:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)installAsset:(id)asset progress:(id)progress completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 asset];
+  progressCopy = progress;
+  completionCopy = completion;
+  asset = [asset asset];
   v11 = LogTTSVBSiri();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 name];
+    name = [asset name];
     *buf = 138412290;
-    v22 = v12;
+    v22 = name;
     _os_log_impl(&dword_233109000, v11, OS_LOG_TYPE_DEFAULT, "About to request install of siri training asset=%@", buf, 0xCu);
   }
 
-  v13 = [(TTSVBSiriTTSTrainerSession *)self session];
+  session = [(TTSVBSiriTTSTrainerSession *)self session];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __63__TTSVBSiriTTSTrainerSession_installAsset_progress_completion___block_invoke;
   v19[3] = &unk_2789C3BF0;
-  v20 = v8;
+  v20 = progressCopy;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __63__TTSVBSiriTTSTrainerSession_installAsset_progress_completion___block_invoke_32;
   v17[3] = &unk_2789C3C18;
-  v18 = v9;
-  v14 = v9;
-  v15 = v8;
-  [v13 installTrainingAsset:v10 progress:v19 completion:v17];
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = progressCopy;
+  [session installTrainingAsset:asset progress:v19 completion:v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -326,56 +326,56 @@ void __63__TTSVBSiriTTSTrainerSession_installAsset_progress_completion___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)uninstallAsset:(id)a3
+- (void)uninstallAsset:(id)asset
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v5 = LogTTSVBSiri();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [assetCopy name];
     v10 = 138412290;
-    v11 = v6;
+    v11 = name;
     _os_log_impl(&dword_233109000, v5, OS_LOG_TYPE_DEFAULT, "About to request uninstall of siri training asset=%@", &v10, 0xCu);
   }
 
-  v7 = [(TTSVBSiriTTSTrainerSession *)self session];
-  v8 = [v4 asset];
-  [v7 uninstallTrainingAsset:v8];
+  session = [(TTSVBSiriTTSTrainerSession *)self session];
+  asset = [assetCopy asset];
+  [session uninstallTrainingAsset:asset];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchTrainingScriptsWithLocaleID:(id)a3 scriptType:(id)a4 replyOnQueue:(id)a5 completion:(id)a6
+- (void)fetchTrainingScriptsWithLocaleID:(id)d scriptType:(id)type replyOnQueue:(id)queue completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  typeCopy = type;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = LogTTSVBSiri();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v10;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = typeCopy;
     _os_log_impl(&dword_233109000, v14, OS_LOG_TYPE_DEFAULT, "About to fetch training script data with locale: '%@' and script type: '%@'", buf, 0x16u);
   }
 
-  v15 = [(TTSVBSiriTTSTrainerSession *)self session];
+  session = [(TTSVBSiriTTSTrainerSession *)self session];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __98__TTSVBSiriTTSTrainerSession_fetchTrainingScriptsWithLocaleID_scriptType_replyOnQueue_completion___block_invoke;
   v20[3] = &unk_2789C3C68;
-  v21 = v10;
-  v22 = self;
-  v23 = v12;
-  v24 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
-  [v15 getRecordingMetadata:v18 name:v11 reply:v20];
+  v21 = dCopy;
+  selfCopy = self;
+  v23 = queueCopy;
+  v24 = completionCopy;
+  v16 = completionCopy;
+  v17 = queueCopy;
+  v18 = dCopy;
+  [session getRecordingMetadata:v18 name:typeCopy reply:v20];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -414,24 +414,24 @@ void __98__TTSVBSiriTTSTrainerSession_fetchTrainingScriptsWithLocaleID_scriptTyp
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startTraining:(id)a3 replyOnQueue:(id)a4 trainingStartedHandler:(id)a5
+- (void)startTraining:(id)training replyOnQueue:(id)queue trainingStartedHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TTSVBSiriTTSTrainerSession *)self siriTrainingQueue];
+  trainingCopy = training;
+  queueCopy = queue;
+  handlerCopy = handler;
+  siriTrainingQueue = [(TTSVBSiriTTSTrainerSession *)self siriTrainingQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__TTSVBSiriTTSTrainerSession_startTraining_replyOnQueue_trainingStartedHandler___block_invoke;
   v15[3] = &unk_2789C3CE0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = trainingCopy;
+  selfCopy = self;
+  v18 = queueCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = trainingCopy;
+  dispatch_async(siriTrainingQueue, v15);
 }
 
 void __80__TTSVBSiriTTSTrainerSession_startTraining_replyOnQueue_trainingStartedHandler___block_invoke(uint64_t a1)
@@ -489,24 +489,24 @@ void __80__TTSVBSiriTTSTrainerSession_startTraining_replyOnQueue_trainingStarted
   (*(a1[6] + 16))();
 }
 
-- (void)getTaskByID:(id)a3 replyOnQueue:(id)a4 statusHandler:(id)a5
+- (void)getTaskByID:(id)d replyOnQueue:(id)queue statusHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TTSVBSiriTTSTrainerSession *)self siriTrainingQueue];
+  dCopy = d;
+  queueCopy = queue;
+  handlerCopy = handler;
+  siriTrainingQueue = [(TTSVBSiriTTSTrainerSession *)self siriTrainingQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__TTSVBSiriTTSTrainerSession_getTaskByID_replyOnQueue_statusHandler___block_invoke;
   v15[3] = &unk_2789C3CE0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  selfCopy = self;
+  v18 = queueCopy;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = dCopy;
+  dispatch_async(siriTrainingQueue, v15);
 }
 
 void __69__TTSVBSiriTTSTrainerSession_getTaskByID_replyOnQueue_statusHandler___block_invoke(uint64_t a1)
@@ -572,18 +572,18 @@ void __69__TTSVBSiriTTSTrainerSession_getTaskByID_replyOnQueue_statusHandler___b
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getTasksByIDs:(id)a3 replyOnQueue:(id)a4 statusHandler:(id)a5
+- (void)getTasksByIDs:(id)ds replyOnQueue:(id)queue statusHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v25 = a4;
-  v24 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [MEMORY[0x277CBEB18] array];
+  dsCopy = ds;
+  queueCopy = queue;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v11 = LogTTSVBSiri();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 componentsJoinedByString:{@", "}];
+    v12 = [dsCopy componentsJoinedByString:{@", "}];
     *buf = 138412290;
     v41 = v12;
     _os_log_impl(&dword_233109000, v11, OS_LOG_TYPE_INFO, "Will request tasks for IDs %@", buf, 0xCu);
@@ -594,7 +594,7 @@ void __69__TTSVBSiriTTSTrainerSession_getTaskByID_replyOnQueue_statusHandler___b
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v8;
+  obj = dsCopy;
   v14 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v14)
   {
@@ -616,8 +616,8 @@ void __69__TTSVBSiriTTSTrainerSession_getTaskByID_replyOnQueue_statusHandler___b
         v31[1] = 3221225472;
         v31[2] = __71__TTSVBSiriTTSTrainerSession_getTasksByIDs_replyOnQueue_statusHandler___block_invoke;
         v31[3] = &unk_2789C3D08;
-        v32 = v9;
-        v33 = v10;
+        v32 = array;
+        v33 = array2;
         v34 = v13;
         [(TTSVBSiriTTSTrainerSession *)self getTaskByID:v18 replyOnQueue:0 statusHandler:v31];
 
@@ -631,17 +631,17 @@ void __69__TTSVBSiriTTSTrainerSession_getTaskByID_replyOnQueue_statusHandler___b
     while (v15);
   }
 
-  v19 = [(TTSVBSiriTTSTrainerSession *)self _replyQueue:v25];
+  v19 = [(TTSVBSiriTTSTrainerSession *)self _replyQueue:queueCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__TTSVBSiriTTSTrainerSession_getTasksByIDs_replyOnQueue_statusHandler___block_invoke_2;
   block[3] = &unk_2789C3D30;
-  v28 = v9;
-  v29 = v10;
-  v30 = v24;
-  v20 = v24;
-  v21 = v10;
-  v22 = v9;
+  v28 = array;
+  v29 = array2;
+  v30 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = array2;
+  v22 = array;
   dispatch_group_notify(v13, v19, block);
 
   v23 = *MEMORY[0x277D85DE8];
@@ -681,21 +681,21 @@ uint64_t __71__TTSVBSiriTTSTrainerSession_getTasksByIDs_replyOnQueue_statusHandl
   return result;
 }
 
-- (void)getAllTasksReplyOnQueue:(id)a3 statusHandler:(id)a4
+- (void)getAllTasksReplyOnQueue:(id)queue statusHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TTSVBSiriTTSTrainerSession *)self siriTrainingQueue];
+  queueCopy = queue;
+  handlerCopy = handler;
+  siriTrainingQueue = [(TTSVBSiriTTSTrainerSession *)self siriTrainingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__TTSVBSiriTTSTrainerSession_getAllTasksReplyOnQueue_statusHandler___block_invoke;
   block[3] = &unk_2789C3D30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
+  dispatch_async(siriTrainingQueue, block);
 }
 
 void __68__TTSVBSiriTTSTrainerSession_getAllTasksReplyOnQueue_statusHandler___block_invoke(uint64_t a1)
@@ -785,10 +785,10 @@ void __68__TTSVBSiriTTSTrainerSession_getAllTasksReplyOnQueue_statusHandler___bl
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)discardTrainingTasksReplyOnQueue:(id)a3 completionHandler:(id)a4
+- (void)discardTrainingTasksReplyOnQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v8 = LogTTSVBSiri();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -796,17 +796,17 @@ void __68__TTSVBSiriTTSTrainerSession_getAllTasksReplyOnQueue_statusHandler___bl
     _os_log_impl(&dword_233109000, v8, OS_LOG_TYPE_INFO, "About to call cleanUpTaskQueue", buf, 2u);
   }
 
-  v9 = [(TTSVBSiriTTSTrainerSession *)self session];
+  session = [(TTSVBSiriTTSTrainerSession *)self session];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__TTSVBSiriTTSTrainerSession_discardTrainingTasksReplyOnQueue_completionHandler___block_invoke;
   v12[3] = &unk_2789C3DD0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 cleanUpTaskQueue:v12];
+  v13 = queueCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = queueCopy;
+  [session cleanUpTaskQueue:v12];
 }
 
 void __81__TTSVBSiriTTSTrainerSession_discardTrainingTasksReplyOnQueue_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -831,35 +831,35 @@ void __81__TTSVBSiriTTSTrainerSession_discardTrainingTasksReplyOnQueue_completio
   dispatch_async(v5, v8);
 }
 
-- (void)cancelTask:(id)a3 replyOnQueue:(id)a4 completionHandler:(id)a5
+- (void)cancelTask:(id)task replyOnQueue:(id)queue completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11 = LogTTSVBSiri();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 taskID];
+    taskID = [taskCopy taskID];
     *buf = 138412290;
-    v25 = v12;
+    v25 = taskID;
     _os_log_impl(&dword_233109000, v11, OS_LOG_TYPE_INFO, "Will request cancel of training task: %@", buf, 0xCu);
   }
 
-  v13 = [(TTSVBSiriTTSTrainerSession *)self session];
-  v14 = [v8 task];
+  session = [(TTSVBSiriTTSTrainerSession *)self session];
+  task = [taskCopy task];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __72__TTSVBSiriTTSTrainerSession_cancelTask_replyOnQueue_completionHandler___block_invoke;
   v19[3] = &unk_2789C3DF8;
-  v20 = v8;
-  v21 = self;
-  v22 = v9;
-  v23 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
-  [v13 cancelTask:v14 reply:v19];
+  v20 = taskCopy;
+  selfCopy = self;
+  v22 = queueCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = queueCopy;
+  v17 = taskCopy;
+  [session cancelTask:task reply:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -891,20 +891,20 @@ void __72__TTSVBSiriTTSTrainerSession_cancelTask_replyOnQueue_completionHandler_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelTaskWithID:(id)a3 replyOnQueue:(id)a4 completionHandler:(id)a5
+- (void)cancelTaskWithID:(id)d replyOnQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __78__TTSVBSiriTTSTrainerSession_cancelTaskWithID_replyOnQueue_completionHandler___block_invoke;
   v12[3] = &unk_2789C3E20;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(TTSVBSiriTTSTrainerSession *)self getTaskByID:a3 replyOnQueue:0 statusHandler:v12];
+  v13 = queueCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = queueCopy;
+  [(TTSVBSiriTTSTrainerSession *)self getTaskByID:d replyOnQueue:0 statusHandler:v12];
 }
 
 void __78__TTSVBSiriTTSTrainerSession_cancelTaskWithID_replyOnQueue_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -929,21 +929,21 @@ void __78__TTSVBSiriTTSTrainerSession_cancelTaskWithID_replyOnQueue_completionHa
   }
 }
 
-- (id)_replyQueue:(id)a3
+- (id)_replyQueue:(id)queue
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  queueCopy = queue;
+  v5 = queueCopy;
+  if (queueCopy)
   {
-    v6 = v4;
+    calloutQueue = queueCopy;
   }
 
   else
   {
-    v6 = [(TTSVBSiriTTSTrainerSession *)self calloutQueue];
+    calloutQueue = [(TTSVBSiriTTSTrainerSession *)self calloutQueue];
   }
 
-  v7 = v6;
+  v7 = calloutQueue;
 
   return v7;
 }

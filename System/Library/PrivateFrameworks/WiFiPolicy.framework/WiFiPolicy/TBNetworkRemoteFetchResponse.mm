@@ -1,40 +1,40 @@
 @interface TBNetworkRemoteFetchResponse
-+ (id)responseWithNetworkSearchResults:(id)a3;
-- (TBNetworkRemoteFetchResponse)initWithNetworkSearchResults:(id)a3;
++ (id)responseWithNetworkSearchResults:(id)results;
+- (TBNetworkRemoteFetchResponse)initWithNetworkSearchResults:(id)results;
 @end
 
 @implementation TBNetworkRemoteFetchResponse
 
-+ (id)responseWithNetworkSearchResults:(id)a3
++ (id)responseWithNetworkSearchResults:(id)results
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithNetworkSearchResults:v4];
+  resultsCopy = results;
+  v5 = [[self alloc] initWithNetworkSearchResults:resultsCopy];
 
   return v5;
 }
 
-- (TBNetworkRemoteFetchResponse)initWithNetworkSearchResults:(id)a3
+- (TBNetworkRemoteFetchResponse)initWithNetworkSearchResults:(id)results
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectAtIndexedSubscript:0];
-  if ([v4 count] >= 2)
+  resultsCopy = results;
+  v5 = [resultsCopy objectAtIndexedSubscript:0];
+  if ([resultsCopy count] >= 2)
   {
-    NSLog(&cfstr_SGeowifiqualit.isa, "-[TBNetworkRemoteFetchResponse initWithNetworkSearchResults:]", [v4 count]);
+    NSLog(&cfstr_SGeowifiqualit.isa, "-[TBNetworkRemoteFetchResponse initWithNetworkSearchResults:]", [resultsCopy count]);
   }
 
-  v6 = [v5 matches];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  matches = [v5 matches];
+  v7 = [matches objectAtIndexedSubscript:0];
 
-  v8 = [v5 matches];
-  v9 = [v8 count];
+  matches2 = [v5 matches];
+  v9 = [matches2 count];
 
   if (v9 >= 2)
   {
-    NSLog(&cfstr_SGeowifiessmat.isa, "-[TBNetworkRemoteFetchResponse initWithNetworkSearchResults:]", [v4 count]);
+    NSLog(&cfstr_SGeowifiessmat.isa, "-[TBNetworkRemoteFetchResponse initWithNetworkSearchResults:]", [resultsCopy count]);
   }
 
-  NSLog(&cfstr_SResultCountLu.isa, "-[TBNetworkRemoteFetchResponse initWithNetworkSearchResults:]", [v4 count]);
+  NSLog(&cfstr_SResultCountLu.isa, "-[TBNetworkRemoteFetchResponse initWithNetworkSearchResults:]", [resultsCopy count]);
   if ([v7 status] != 1)
   {
     NSLog(&cfstr_SMatchStatusIs.isa, "[TBNetworkRemoteFetchResponse initWithNetworkSearchResults:]");

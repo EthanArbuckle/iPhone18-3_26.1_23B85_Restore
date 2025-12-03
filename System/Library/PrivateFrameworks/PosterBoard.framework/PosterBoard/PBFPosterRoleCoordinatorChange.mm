@@ -1,204 +1,204 @@
 @interface PBFPosterRoleCoordinatorChange
-+ (id)addPosterToRole:(id)a3 incomingPoster:(id)a4;
-+ (id)assignAttributeToPosterWithinRole:(id)a3 matchingUUID:(id)a4 attribute:(id)a5;
-+ (id)distillArrayOfChangesIntoChangesOrderedByPosterRoleEntropy:(id)a3;
-+ (id)duplicatePosterWithinRole:(id)a3 matchingUUID:(id)a4 toUUID:(id)a5;
-+ (id)refreshRoleCoordinator:(id)a3;
-+ (id)removeAttributeFromPosterWithinRole:(id)a3 matchingUUID:(id)a4 attributeType:(id)a5;
-+ (id)removePosterFromRole:(id)a3 matchingUUID:(id)a4;
-+ (id)reorderPostersForRole:(id)a3 sortedPosterUUIDs:(id)a4;
-+ (id)resetRole:(id)a3;
-+ (id)selectPosterForRole:(id)a3 matchingUUID:(id)a4;
-+ (id)updateConfiguredProperties:(id)a3 forPosterWithinRole:(id)a4 matchingUUID:(id)a5;
-+ (id)updatePosterWithinRole:(id)a3 incomingPoster:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChange:(id)a3;
-- (BOOL)isValidWithError:(id *)a3;
-- (PBFPosterRoleCoordinatorChange)initWithType:(id)a3 role:(id)a4 userInfo:(id)a5;
++ (id)addPosterToRole:(id)role incomingPoster:(id)poster;
++ (id)assignAttributeToPosterWithinRole:(id)role matchingUUID:(id)d attribute:(id)attribute;
++ (id)distillArrayOfChangesIntoChangesOrderedByPosterRoleEntropy:(id)entropy;
++ (id)duplicatePosterWithinRole:(id)role matchingUUID:(id)d toUUID:(id)iD;
++ (id)refreshRoleCoordinator:(id)coordinator;
++ (id)removeAttributeFromPosterWithinRole:(id)role matchingUUID:(id)d attributeType:(id)type;
++ (id)removePosterFromRole:(id)role matchingUUID:(id)d;
++ (id)reorderPostersForRole:(id)role sortedPosterUUIDs:(id)ds;
++ (id)resetRole:(id)role;
++ (id)selectPosterForRole:(id)role matchingUUID:(id)d;
++ (id)updateConfiguredProperties:(id)properties forPosterWithinRole:(id)role matchingUUID:(id)d;
++ (id)updatePosterWithinRole:(id)role incomingPoster:(id)poster;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChange:(id)change;
+- (BOOL)isValidWithError:(id *)error;
+- (PBFPosterRoleCoordinatorChange)initWithType:(id)type role:(id)role userInfo:(id)info;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PBFPosterRoleCoordinatorChange
 
-+ (id)addPosterToRole:(id)a3 incomingPoster:(id)a4
++ (id)addPosterToRole:(id)role incomingPoster:(id)poster
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  posterCopy = poster;
+  roleCopy = role;
   v7 = [PBFPosterRoleCoordinatorChange alloc];
   v11 = @"PBFPosterRoleCoordinatorChangeUserInfoKeyIncomingPosterConfiguration";
-  v12[0] = v5;
+  v12[0] = posterCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeAddPoster" role:v6 userInfo:v8];
+  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeAddPoster" role:roleCopy userInfo:v8];
 
   return v9;
 }
 
-+ (id)updatePosterWithinRole:(id)a3 incomingPoster:(id)a4
++ (id)updatePosterWithinRole:(id)role incomingPoster:(id)poster
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  posterCopy = poster;
+  roleCopy = role;
   v7 = [PBFPosterRoleCoordinatorChange alloc];
   v11 = @"PBFPosterRoleCoordinatorChangeUserInfoKeyIncomingPosterConfiguration";
-  v12[0] = v5;
+  v12[0] = posterCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeUpdatePoster" role:v6 userInfo:v8];
+  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeUpdatePoster" role:roleCopy userInfo:v8];
 
   return v9;
 }
 
-+ (id)removePosterFromRole:(id)a3 matchingUUID:(id)a4
++ (id)removePosterFromRole:(id)role matchingUUID:(id)d
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  roleCopy = role;
   v7 = [PBFPosterRoleCoordinatorChange alloc];
   v11 = @"PBFPosterRoleCoordinatorChangeUserInfoKeyPosterUUID";
-  v12[0] = v5;
+  v12[0] = dCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeRemovePoster" role:v6 userInfo:v8];
+  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeRemovePoster" role:roleCopy userInfo:v8];
 
   return v9;
 }
 
-+ (id)reorderPostersForRole:(id)a3 sortedPosterUUIDs:(id)a4
++ (id)reorderPostersForRole:(id)role sortedPosterUUIDs:(id)ds
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  dsCopy = ds;
+  roleCopy = role;
   v7 = [PBFPosterRoleCoordinatorChange alloc];
   v11 = @"PBFPosterRoleCoordinatorChangeUserInfoKeyOrderedUUIDs";
-  v12[0] = v5;
+  v12[0] = dsCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeReorderPosters" role:v6 userInfo:v8];
+  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeReorderPosters" role:roleCopy userInfo:v8];
 
   return v9;
 }
 
-+ (id)duplicatePosterWithinRole:(id)a3 matchingUUID:(id)a4 toUUID:(id)a5
++ (id)duplicatePosterWithinRole:(id)role matchingUUID:(id)d toUUID:(id)iD
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  iDCopy = iD;
+  dCopy = d;
+  roleCopy = role;
   v10 = [PBFPosterRoleCoordinatorChange alloc];
   v14[0] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyPosterUUID";
   v14[1] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyOutPosterUUID";
-  v15[0] = v8;
-  v15[1] = v7;
+  v15[0] = dCopy;
+  v15[1] = iDCopy;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v12 = [(PBFPosterRoleCoordinatorChange *)v10 initWithType:@"PBFPosterRoleCoordinatorChangeTypeDuplicatePoster" role:v9 userInfo:v11];
+  v12 = [(PBFPosterRoleCoordinatorChange *)v10 initWithType:@"PBFPosterRoleCoordinatorChangeTypeDuplicatePoster" role:roleCopy userInfo:v11];
 
   return v12;
 }
 
-+ (id)assignAttributeToPosterWithinRole:(id)a3 matchingUUID:(id)a4 attribute:(id)a5
++ (id)assignAttributeToPosterWithinRole:(id)role matchingUUID:(id)d attribute:(id)attribute
 {
   v16[3] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  attributeCopy = attribute;
+  dCopy = d;
+  roleCopy = role;
   v10 = [PBFPosterRoleCoordinatorChange alloc];
-  v16[0] = v8;
+  v16[0] = dCopy;
   v15[0] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyPosterUUID";
   v15[1] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyAttributeType";
-  v11 = [v7 attributeType];
+  attributeType = [attributeCopy attributeType];
   v15[2] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyAttribute";
-  v16[1] = v11;
-  v16[2] = v7;
+  v16[1] = attributeType;
+  v16[2] = attributeCopy;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
-  v13 = [(PBFPosterRoleCoordinatorChange *)v10 initWithType:@"PBFPosterRoleCoordinatorChangeTypeAssignAttribute" role:v9 userInfo:v12];
+  v13 = [(PBFPosterRoleCoordinatorChange *)v10 initWithType:@"PBFPosterRoleCoordinatorChangeTypeAssignAttribute" role:roleCopy userInfo:v12];
 
   return v13;
 }
 
-+ (id)removeAttributeFromPosterWithinRole:(id)a3 matchingUUID:(id)a4 attributeType:(id)a5
++ (id)removeAttributeFromPosterWithinRole:(id)role matchingUUID:(id)d attributeType:(id)type
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  typeCopy = type;
+  dCopy = d;
+  roleCopy = role;
   v10 = [PBFPosterRoleCoordinatorChange alloc];
   v14[0] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyPosterUUID";
   v14[1] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyAttributeType";
-  v15[0] = v8;
-  v15[1] = v7;
+  v15[0] = dCopy;
+  v15[1] = typeCopy;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v12 = [(PBFPosterRoleCoordinatorChange *)v10 initWithType:@"PBFPosterRoleCoordinatorChangeTypeRemoveAttribute" role:v9 userInfo:v11];
+  v12 = [(PBFPosterRoleCoordinatorChange *)v10 initWithType:@"PBFPosterRoleCoordinatorChangeTypeRemoveAttribute" role:roleCopy userInfo:v11];
 
   return v12;
 }
 
-+ (id)selectPosterForRole:(id)a3 matchingUUID:(id)a4
++ (id)selectPosterForRole:(id)role matchingUUID:(id)d
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  roleCopy = role;
   v7 = [PBFPosterRoleCoordinatorChange alloc];
   v11 = @"PBFPosterRoleCoordinatorChangeUserInfoKeyPosterUUID";
-  v12[0] = v5;
+  v12[0] = dCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeSelectPoster" role:v6 userInfo:v8];
+  v9 = [(PBFPosterRoleCoordinatorChange *)v7 initWithType:@"PBFPosterRoleCoordinatorChangeTypeSelectPoster" role:roleCopy userInfo:v8];
 
   return v9;
 }
 
-+ (id)updateConfiguredProperties:(id)a3 forPosterWithinRole:(id)a4 matchingUUID:(id)a5
++ (id)updateConfiguredProperties:(id)properties forPosterWithinRole:(id)role matchingUUID:(id)d
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  roleCopy = role;
+  propertiesCopy = properties;
   v10 = [PBFPosterRoleCoordinatorChange alloc];
   v14[0] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyPosterUUID";
   v14[1] = @"PBFPosterRoleCoordinatorChangeUserInfoKeyConfiguredProperties";
-  v15[0] = v7;
-  v15[1] = v9;
+  v15[0] = dCopy;
+  v15[1] = propertiesCopy;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v12 = [(PBFPosterRoleCoordinatorChange *)v10 initWithType:@"PBFPosterRoleCoordinatorChangeTypeUpdateConfiguredProperties" role:v8 userInfo:v11];
+  v12 = [(PBFPosterRoleCoordinatorChange *)v10 initWithType:@"PBFPosterRoleCoordinatorChangeTypeUpdateConfiguredProperties" role:roleCopy userInfo:v11];
 
   return v12;
 }
 
-+ (id)refreshRoleCoordinator:(id)a3
++ (id)refreshRoleCoordinator:(id)coordinator
 {
-  v3 = a3;
+  coordinatorCopy = coordinator;
   v4 = [PBFPosterRoleCoordinatorChange alloc];
-  v5 = [(PBFPosterRoleCoordinatorChange *)v4 initWithType:@"PBFPosterRoleCoordinatorChangeTypeRefreshRoleCoordinator" role:v3 userInfo:MEMORY[0x277CBEC10]];
+  v5 = [(PBFPosterRoleCoordinatorChange *)v4 initWithType:@"PBFPosterRoleCoordinatorChangeTypeRefreshRoleCoordinator" role:coordinatorCopy userInfo:MEMORY[0x277CBEC10]];
 
   return v5;
 }
 
-+ (id)resetRole:(id)a3
++ (id)resetRole:(id)role
 {
-  v3 = a3;
+  roleCopy = role;
   v4 = [PBFPosterRoleCoordinatorChange alloc];
-  v5 = [(PBFPosterRoleCoordinatorChange *)v4 initWithType:@"PBFPosterRoleCoordinatorChangeTypeResetRoleCoordinator" role:v3 userInfo:MEMORY[0x277CBEC10]];
+  v5 = [(PBFPosterRoleCoordinatorChange *)v4 initWithType:@"PBFPosterRoleCoordinatorChangeTypeResetRoleCoordinator" role:roleCopy userInfo:MEMORY[0x277CBEC10]];
 
   return v5;
 }
 
-+ (id)distillArrayOfChangesIntoChangesOrderedByPosterRoleEntropy:(id)a3
++ (id)distillArrayOfChangesIntoChangesOrderedByPosterRoleEntropy:(id)entropy
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  entropyCopy = entropy;
   v4 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = entropyCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -218,12 +218,12 @@
         v12 = *(*(&v19 + 1) + 8 * i);
         if (!v9 || ([*(*(&v19 + 1) + 8 * i) role], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v9, "isEqual:", v13), v13, (v14 & 1) == 0))
         {
-          v15 = [v12 role];
+          role = [v12 role];
 
           v16 = objc_opt_new();
           [v4 addObject:v16];
           v8 = v16;
-          v9 = v15;
+          v9 = role;
         }
 
         [v8 addObject:v12];
@@ -246,12 +246,12 @@
   return v17;
 }
 
-- (PBFPosterRoleCoordinatorChange)initWithType:(id)a3 role:(id)a4 userInfo:(id)a5
+- (PBFPosterRoleCoordinatorChange)initWithType:(id)type role:(id)role userInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v10;
+  typeCopy = type;
+  roleCopy = role;
+  infoCopy = info;
+  v13 = typeCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v13)
   {
@@ -263,7 +263,7 @@
     [PBFPosterRoleCoordinatorChange initWithType:a2 role:? userInfo:?];
   }
 
-  v14 = v11;
+  v14 = roleCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v14)
   {
@@ -275,7 +275,7 @@
     [PBFPosterRoleCoordinatorChange initWithType:a2 role:? userInfo:?];
   }
 
-  v15 = v12;
+  v15 = infoCopy;
   NSClassFromString(&cfstr_Nsdictionary.isa);
   if (!v15)
   {
@@ -293,15 +293,15 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_changeType, a3);
-    objc_storeStrong(&v17->_role, a4);
+    objc_storeStrong(&v16->_changeType, type);
+    objc_storeStrong(&v17->_role, role);
     v18 = [v15 copy];
     userInfo = v17->_userInfo;
     v17->_userInfo = v18;
 
-    v20 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uniqueIdentifier = v17->_uniqueIdentifier;
-    v17->_uniqueIdentifier = v20;
+    v17->_uniqueIdentifier = uUID;
   }
 
   return v17;
@@ -316,10 +316,10 @@
   return (0x94D049BB133111EBLL * (v6 ^ (v6 >> 27))) ^ ((0x94D049BB133111EBLL * (v6 ^ (v6 >> 27))) >> 31);
 }
 
-- (BOOL)isEqualToChange:(id)a3
+- (BOOL)isEqualToChange:(id)change
 {
-  v4 = a3;
-  if (self == v4)
+  changeCopy = change;
+  if (self == changeCopy)
   {
     v5 = 1;
   }
@@ -337,10 +337,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -350,13 +350,13 @@
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v7 = (isKindOfClass & 1) != 0 && [(PBFPosterRoleCoordinatorChange *)self isEqualToChange:v4];
+    v7 = (isKindOfClass & 1) != 0 && [(PBFPosterRoleCoordinatorChange *)self isEqualToChange:equalCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
   v33[3] = *MEMORY[0x277D85DE8];
   if ([(NSString *)self->_changeType isEqualToString:@"PBFPosterRoleCoordinatorChangeTypeAddPoster"]|| [(NSString *)self->_changeType isEqualToString:@"PBFPosterRoleCoordinatorChangeTypeUpdatePoster"])
@@ -425,8 +425,8 @@ LABEL_38:
   v7 = 0;
 LABEL_10:
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(NSDictionary *)self->_userInfo allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [(NSDictionary *)self->_userInfo allKeys];
+  v10 = [v8 setWithArray:allKeys];
   v11 = v10;
   if (v10)
   {
@@ -442,12 +442,12 @@ LABEL_10:
 
   v14 = MEMORY[0x277CBEB38];
   v32[0] = @"expectedUserInfoKeys";
-  v15 = [v7 allObjects];
-  v16 = v15;
+  allObjects = [v7 allObjects];
+  v16 = allObjects;
   v17 = MEMORY[0x277CBEBF8];
-  if (v15)
+  if (allObjects)
   {
-    v18 = v15;
+    v18 = allObjects;
   }
 
   else
@@ -457,11 +457,11 @@ LABEL_10:
 
   v33[0] = v18;
   v32[1] = @"receivedUserInfoKeys";
-  v19 = [v13 allObjects];
-  v20 = v19;
-  if (v19)
+  allObjects2 = [v13 allObjects];
+  v20 = allObjects2;
+  if (allObjects2)
   {
-    v21 = v19;
+    v21 = allObjects2;
   }
 
   else
@@ -483,7 +483,7 @@ LABEL_10:
 
   if (![(NSDictionary *)self->_userInfo count])
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_32;
     }
@@ -491,13 +491,13 @@ LABEL_10:
     v26 = -3343;
 LABEL_31:
     [MEMORY[0x277CCA9B8] errorWithDomain:@"PBFPosterRoleCoordinatorChangeErrorDomain" code:v26 userInfo:v24];
-    *a3 = v25 = 0;
+    *error = v25 = 0;
     goto LABEL_33;
   }
 
   if (!v7)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_32;
     }
@@ -508,7 +508,7 @@ LABEL_31:
 
   if (([v13 isSubsetOfSet:v7] & 1) == 0)
   {
-    if (a3)
+    if (error)
     {
       v26 = -3341;
       goto LABEL_31;
@@ -531,9 +531,9 @@ LABEL_33:
   [v3 appendString:self->_changeType withName:@"changeType"];
   [v3 appendString:self->_role withName:@"role"];
   v4 = [v3 appendObject:self->_uniqueIdentifier withName:@"uniqueIdentifier"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (void)initWithType:(char *)a1 role:userInfo:.cold.1(char *a1)

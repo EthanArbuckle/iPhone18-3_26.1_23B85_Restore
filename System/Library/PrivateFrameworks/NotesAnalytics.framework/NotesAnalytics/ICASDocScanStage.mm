@@ -1,33 +1,33 @@
 @interface ICASDocScanStage
-- (ICASDocScanStage)initWithDocScanStage:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASDocScanStage)initWithDocScanStage:(int64_t)stage;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASDocScanStage
 
-- (ICASDocScanStage)initWithDocScanStage:(int64_t)a3
+- (ICASDocScanStage)initWithDocScanStage:(int64_t)stage
 {
   v5.receiver = self;
   v5.super_class = ICASDocScanStage;
   result = [(ICASDocScanStage *)&v5 init];
   if (result)
   {
-    result->_docScanStage = a3;
+    result->_docScanStage = stage;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASDocScanStage *)self docScanStage];
+  docScanStage = [(ICASDocScanStage *)self docScanStage];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (docScanStage == 1)
   {
     v4 = @"initiate";
   }
 
-  if (v3 == 2)
+  if (docScanStage == 2)
   {
     return @"complete";
   }

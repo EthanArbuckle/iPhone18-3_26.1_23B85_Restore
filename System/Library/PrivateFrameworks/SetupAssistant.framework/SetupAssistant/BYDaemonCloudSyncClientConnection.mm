@@ -1,14 +1,14 @@
 @interface BYDaemonCloudSyncClientConnection
 + (id)daemonProtocolInterface;
-- (BYDaemonCloudSyncClientConnection)initWithConnection:(id)a3;
-- (void)cancelSync:(id)a3;
-- (void)cloudSyncProgressUpdate:(int64_t)a3 completedClients:(int64_t)a4 errors:(id)a5 completion:(id)a6;
+- (BYDaemonCloudSyncClientConnection)initWithConnection:(id)connection;
+- (void)cancelSync:(id)sync;
+- (void)cloudSyncProgressUpdate:(int64_t)update completedClients:(int64_t)clients errors:(id)errors completion:(id)completion;
 - (void)dealloc;
-- (void)isSyncInProgress:(id)a3;
-- (void)needsToSync:(id)a3;
-- (void)startSync:(id)a3;
-- (void)syncCompletedWithErrors:(id)a3;
-- (void)syncProgress:(double)a3;
+- (void)isSyncInProgress:(id)progress;
+- (void)needsToSync:(id)sync;
+- (void)startSync:(id)sync;
+- (void)syncCompletedWithErrors:(id)errors;
+- (void)syncProgress:(double)progress;
 @end
 
 @implementation BYDaemonCloudSyncClientConnection
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (BYDaemonCloudSyncClientConnection)initWithConnection:(id)a3
+- (BYDaemonCloudSyncClientConnection)initWithConnection:(id)connection
 {
   v6.receiver = self;
   v6.super_class = BYDaemonCloudSyncClientConnection;
-  v3 = [(BYDaemonClientConnection *)&v6 initWithConnection:a3];
+  v3 = [(BYDaemonClientConnection *)&v6 initWithConnection:connection];
   if (v3)
   {
     v4 = +[BYDaemonCloudSyncController sharedController];
@@ -47,76 +47,76 @@
   [(BYDaemonCloudSyncClientConnection *)&v4 dealloc];
 }
 
-- (void)needsToSync:(id)a3
+- (void)needsToSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = +[BYDaemonCloudSyncController sharedController];
-  [v4 needsToSyncClasses:v3];
+  [v4 needsToSyncClasses:syncCopy];
 }
 
-- (void)startSync:(id)a3
+- (void)startSync:(id)sync
 {
-  v5 = a3;
+  syncCopy = sync;
   v3 = +[BYDaemonCloudSyncController sharedController];
   [v3 startSync];
 
-  v4 = v5;
-  if (v5)
+  v4 = syncCopy;
+  if (syncCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(syncCopy + 2))(syncCopy);
+    v4 = syncCopy;
   }
 }
 
-- (void)cancelSync:(id)a3
+- (void)cancelSync:(id)sync
 {
-  v5 = a3;
+  syncCopy = sync;
   v3 = +[BYDaemonCloudSyncController sharedController];
   [v3 cancelSync];
 
-  v4 = v5;
-  if (v5)
+  v4 = syncCopy;
+  if (syncCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(syncCopy + 2))(syncCopy);
+    v4 = syncCopy;
   }
 }
 
-- (void)isSyncInProgress:(id)a3
+- (void)isSyncInProgress:(id)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   v4 = +[BYDaemonCloudSyncController sharedController];
-  [v4 isSyncInProgress:v3];
+  [v4 isSyncInProgress:progressCopy];
 }
 
-- (void)cloudSyncProgressUpdate:(int64_t)a3 completedClients:(int64_t)a4 errors:(id)a5 completion:(id)a6
+- (void)cloudSyncProgressUpdate:(int64_t)update completedClients:(int64_t)clients errors:(id)errors completion:(id)completion
 {
-  v12 = a6;
-  v9 = a5;
+  completionCopy = completion;
+  errorsCopy = errors;
   v10 = +[BYDaemonCloudSyncController sharedController];
-  [v10 cloudSyncProgressUpdate:a3 completedClients:a4 errors:v9];
+  [v10 cloudSyncProgressUpdate:update completedClients:clients errors:errorsCopy];
 
-  v11 = v12;
-  if (v12)
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    (*(v12 + 2))(v12);
-    v11 = v12;
+    (*(completionCopy + 2))(completionCopy);
+    v11 = completionCopy;
   }
 }
 
-- (void)syncProgress:(double)a3
+- (void)syncProgress:(double)progress
 {
-  v5 = [(BYDaemonClientConnection *)self connection];
-  v4 = [v5 remoteObjectProxy];
-  [v4 syncProgress:a3];
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy syncProgress:progress];
 }
 
-- (void)syncCompletedWithErrors:(id)a3
+- (void)syncCompletedWithErrors:(id)errors
 {
-  v4 = a3;
-  v6 = [(BYDaemonClientConnection *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 syncCompletedWithErrors:v4];
+  errorsCopy = errors;
+  connection = [(BYDaemonClientConnection *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy syncCompletedWithErrors:errorsCopy];
 }
 
 @end

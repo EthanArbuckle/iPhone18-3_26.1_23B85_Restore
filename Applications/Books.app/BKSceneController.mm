@@ -4,80 +4,80 @@
 - (BKMachineAuthorizationService)machineAuthorizationService;
 - (BKMainFlowController)mainFlowController;
 - (BKRootBarCoordinating)rootBarCoordinator;
-- (BKSceneController)initWithSceneType:(unint64_t)a3 launchCoordinator:(id)a4 criticalAlertCoordinator:(id)a5;
+- (BKSceneController)initWithSceneType:(unint64_t)type launchCoordinator:(id)coordinator criticalAlertCoordinator:(id)alertCoordinator;
 - (BOOL)isHostingRootBar;
 - (BOOL)sceneSupportsMinifiedPresenting;
 - (BSUINativeFeedCardsPresenting)feedCardPresenting;
-- (CGSize)preferredContentSizeForNavigationController:(id)a3;
+- (CGSize)preferredContentSizeForNavigationController:(id)controller;
 - (id)_mainViewControllerForModalPresenting;
-- (id)_optionsForContinueOpenBookActivity:(BOOL)a3;
-- (id)analyticsManagerLibrary:(id)a3;
+- (id)_optionsForContinueOpenBookActivity:(BOOL)activity;
+- (id)analyticsManagerLibrary:(id)library;
 - (id)dataForStateRestoration;
 - (id)flowControllerModalPresentingViewController;
 - (id)flowControllers;
 - (id)rootViewController;
 - (id)screen;
 - (id)ubiquityStatusMonitor;
-- (void)_finishWindowSetup:(id)a3;
-- (void)_handleOpenBookActivityWithAssetID:(id)a3 isStateRestoration:(BOOL)a4;
-- (void)_setupWithWindow:(id)a3;
-- (void)_showWelcomeScreen:(id)a3 completion:(id)a4;
-- (void)analyticsManagerDidRestoreSession:(id)a3;
-- (void)analyticsManagerForceEndSession:(id)a3 reason:(int64_t)a4;
-- (void)handleCreateSceneUserActivityWhenReady:(id)a3;
-- (void)handleStateRestorationFromData:(id)a3;
-- (void)saveStateClosing:(BOOL)a3;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)setBk_window:(id)a3;
-- (void)setRootBarCoordinator:(id)a3;
+- (void)_finishWindowSetup:(id)setup;
+- (void)_handleOpenBookActivityWithAssetID:(id)d isStateRestoration:(BOOL)restoration;
+- (void)_setupWithWindow:(id)window;
+- (void)_showWelcomeScreen:(id)screen completion:(id)completion;
+- (void)analyticsManagerDidRestoreSession:(id)session;
+- (void)analyticsManagerForceEndSession:(id)session reason:(int64_t)reason;
+- (void)handleCreateSceneUserActivityWhenReady:(id)ready;
+- (void)handleStateRestorationFromData:(id)data;
+- (void)saveStateClosing:(BOOL)closing;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)setBk_window:(id)bk_window;
+- (void)setRootBarCoordinator:(id)coordinator;
 - (void)setupPlaceholderWindow;
 - (void)setupRootViewController;
-- (void)storeDidAttemptSignOut:(id)a3;
-- (void)updateCloseTypeState:(int64_t)a3;
-- (void)welcomePresenterFinishOngoingModalTransitionAnimations:(id)a3;
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6;
+- (void)storeDidAttemptSignOut:(id)out;
+- (void)updateCloseTypeState:(int64_t)state;
+- (void)welcomePresenterFinishOngoingModalTransitionAnimations:(id)animations;
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection;
 @end
 
 @implementation BKSceneController
 
 - (BAAnalyticsController)ba_analyticsController
 {
-  v2 = [(BKSceneController *)self analyticsManager];
-  v3 = [v2 analyticsController];
+  analyticsManager = [(BKSceneController *)self analyticsManager];
+  analyticsController = [analyticsManager analyticsController];
 
-  v4 = [v3 delegate];
+  delegate = [analyticsController delegate];
 
-  if (!v4)
+  if (!delegate)
   {
     sub_100789178();
   }
 
-  v5 = [v3 applicationTracker];
+  applicationTracker = [analyticsController applicationTracker];
 
-  if (!v5)
+  if (!applicationTracker)
   {
     sub_1007891B0();
   }
 
-  return v3;
+  return analyticsController;
 }
 
-- (void)setRootBarCoordinator:(id)a3
+- (void)setRootBarCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100022E50(a3);
+  selfCopy = self;
+  sub_100022E50(coordinator);
 
   swift_unknownObjectRelease();
 }
 
 - (BKRootBarCoordinating)rootBarCoordinator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BKSceneController.rootBarCoordinator.getter();
 
   return v3;
@@ -86,39 +86,39 @@
 - (void)setupRootViewController
 {
   objc_opt_class();
-  v3 = [(_BKBaseSceneController *)self bk_window];
-  v4 = [v3 rootViewController];
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  rootViewController = [bk_window rootViewController];
   v7 = BUDynamicCast();
 
-  v5 = [(BKSceneController *)self rootBarCoordinator];
-  v6 = [v5 rootViewController];
-  [v7 setRootViewController:v6];
+  rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
+  rootViewController2 = [rootBarCoordinator rootViewController];
+  [v7 setRootViewController:rootViewController2];
 }
 
-- (BKSceneController)initWithSceneType:(unint64_t)a3 launchCoordinator:(id)a4 criticalAlertCoordinator:(id)a5
+- (BKSceneController)initWithSceneType:(unint64_t)type launchCoordinator:(id)coordinator criticalAlertCoordinator:(id)alertCoordinator
 {
-  v8 = a4;
-  v9 = a5;
+  coordinatorCopy = coordinator;
+  alertCoordinatorCopy = alertCoordinator;
   v22.receiver = self;
   v22.super_class = BKSceneController;
-  v10 = [(_BKBaseSceneController *)&v22 initWithSceneType:a3];
+  v10 = [(_BKBaseSceneController *)&v22 initWithSceneType:type];
   v11 = v10;
   if (v10)
   {
-    [(_BKBaseSceneController *)v10 setLaunchCoordinator:v8];
-    [(_BKBaseSceneController *)v11 setCriticalAlertCoordinator:v9];
+    [(_BKBaseSceneController *)v10 setLaunchCoordinator:coordinatorCopy];
+    [(_BKBaseSceneController *)v11 setCriticalAlertCoordinator:alertCoordinatorCopy];
     v12 = objc_alloc_init(BKAppAnalyticsManager);
     [(BKSceneController *)v11 setAnalyticsManager:v12];
 
-    v13 = [(BKSceneController *)v11 analyticsManager];
-    [v13 setDelegate:v11];
+    analyticsManager = [(BKSceneController *)v11 analyticsManager];
+    [analyticsManager setDelegate:v11];
 
-    v14 = [(BKSceneController *)v11 analyticsManager];
-    [v14 analyticsSetupTracking];
+    analyticsManager2 = [(BKSceneController *)v11 analyticsManager];
+    [analyticsManager2 analyticsSetupTracking];
 
     v15 = [BKAnalyticsSessionHost alloc];
-    v16 = [(BKSceneController *)v11 analyticsManager];
-    v17 = [(BKAnalyticsSessionHost *)v15 initWithAnalyticsManager:v16];
+    analyticsManager3 = [(BKSceneController *)v11 analyticsManager];
+    v17 = [(BKAnalyticsSessionHost *)v15 initWithAnalyticsManager:analyticsManager3];
     analyticsSessionHost = v11->_analyticsSessionHost;
     v11->_analyticsSessionHost = v17;
 
@@ -142,8 +142,8 @@
     self->_mainFlowController = v6;
 
     [(BKMainFlowController *)self->_mainFlowController setDelegate:self];
-    v8 = [(BKSceneController *)self rootBarCoordinator];
-    [(BKMainFlowController *)self->_mainFlowController setRootBarCoordinator:v8];
+    rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
+    [(BKMainFlowController *)self->_mainFlowController setRootBarCoordinator:rootBarCoordinator];
 
     mainFlowController = self->_mainFlowController;
   }
@@ -153,125 +153,125 @@
 
 - (id)flowControllers
 {
-  v2 = [(BKSceneController *)self mainFlowController];
-  v5 = v2;
+  mainFlowController = [(BKSceneController *)self mainFlowController];
+  v5 = mainFlowController;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
 }
 
-- (void)saveStateClosing:(BOOL)a3
+- (void)saveStateClosing:(BOOL)closing
 {
-  v3 = a3;
-  v4 = [(BKSceneController *)self mainFlowController];
-  [v4 saveStateClosing:v3];
+  closingCopy = closing;
+  mainFlowController = [(BKSceneController *)self mainFlowController];
+  [mainFlowController saveStateClosing:closingCopy];
 }
 
 - (id)_mainViewControllerForModalPresenting
 {
-  v3 = [(BKSceneController *)self rootBarCoordinator];
-  v4 = [v3 rootViewController];
-  v5 = v4;
-  if (v4)
+  rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
+  rootViewController = [rootBarCoordinator rootViewController];
+  v5 = rootViewController;
+  if (rootViewController)
   {
-    v6 = v4;
+    rootViewController2 = rootViewController;
   }
 
   else
   {
-    v7 = [(_BKBaseSceneController *)self bk_window];
-    v6 = [v7 rootViewController];
+    bk_window = [(_BKBaseSceneController *)self bk_window];
+    rootViewController2 = [bk_window rootViewController];
   }
 
-  return v6;
+  return rootViewController2;
 }
 
 - (BSUINativeFeedCardsPresenting)feedCardPresenting
 {
-  v3 = [(BKSceneController *)self rootBarCoordinator];
-  if (v3)
+  rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
+  if (rootBarCoordinator)
   {
-    v4 = [(BKSceneController *)self rootBarCoordinator];
-    v5 = [v4 selectedNavigationController];
-    v6 = [v5 topViewController];
+    rootBarCoordinator2 = [(BKSceneController *)self rootBarCoordinator];
+    selectedNavigationController = [rootBarCoordinator2 selectedNavigationController];
+    topViewController = [selectedNavigationController topViewController];
   }
 
   else
   {
-    v6 = [(BKSceneController *)self flowControllerModalPresentingViewController];
+    topViewController = [(BKSceneController *)self flowControllerModalPresentingViewController];
   }
 
-  return v6;
+  return topViewController;
 }
 
-- (void)setBk_window:(id)a3
+- (void)setBk_window:(id)bk_window
 {
   v6.receiver = self;
   v6.super_class = BKSceneController;
-  v4 = a3;
-  [(_BKBaseSceneController *)&v6 setBk_window:v4];
+  bk_windowCopy = bk_window;
+  [(_BKBaseSceneController *)&v6 setBk_window:bk_windowCopy];
   v5 = [(BKSceneController *)self interactionCoordinator:v6.receiver];
-  [v5 setWindow:v4];
+  [v5 setWindow:bk_windowCopy];
 }
 
 - (id)screen
 {
-  v3 = [(_BKBaseSceneController *)self scene];
-  if (v3)
+  scene = [(_BKBaseSceneController *)self scene];
+  if (scene)
   {
-    v4 = [(_BKBaseSceneController *)self scene];
-    v5 = [v4 screen];
+    scene2 = [(_BKBaseSceneController *)self scene];
+    screen = [scene2 screen];
   }
 
   else
   {
-    v5 = +[UIScreen mainScreen];
+    screen = +[UIScreen mainScreen];
   }
 
-  return v5;
+  return screen;
 }
 
-- (void)_setupWithWindow:(id)a3
+- (void)_setupWithWindow:(id)window
 {
-  v7 = a3;
-  [(BKSceneController *)self setBk_window:v7];
+  windowCopy = window;
+  [(BKSceneController *)self setBk_window:windowCopy];
   v4 = objc_alloc_init(BKUpgradeViewController);
   [(BKSceneController *)self setUpgradeViewController:v4];
 
-  v5 = [(BKSceneController *)self upgradeViewController];
-  [v5 _bk_setSceneController:self];
+  upgradeViewController = [(BKSceneController *)self upgradeViewController];
+  [upgradeViewController _bk_setSceneController:self];
 
-  v6 = [(BKSceneController *)self upgradeViewController];
-  [v7 setRootViewController:v6];
+  upgradeViewController2 = [(BKSceneController *)self upgradeViewController];
+  [windowCopy setRootViewController:upgradeViewController2];
 
-  [v7 makeKeyAndVisible];
-  [(BKSceneController *)self _finishWindowSetup:v7];
+  [windowCopy makeKeyAndVisible];
+  [(BKSceneController *)self _finishWindowSetup:windowCopy];
 }
 
-- (void)_finishWindowSetup:(id)a3
+- (void)_finishWindowSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   v5 = objc_alloc_init(BKRootViewController);
   [(BKRootViewController *)v5 _bk_setSceneController:self];
-  [v4 setRootViewController:v5];
-  v6 = [v4 rootViewController];
-  v7 = [v6 view];
-  v8 = [(BKSceneController *)self upgradeViewController];
-  v9 = [v8 view];
-  [v7 addSubview:v9];
+  [setupCopy setRootViewController:v5];
+  rootViewController = [setupCopy rootViewController];
+  view = [rootViewController view];
+  upgradeViewController = [(BKSceneController *)self upgradeViewController];
+  view2 = [upgradeViewController view];
+  [view addSubview:view2];
 
-  v10 = [(BKSceneController *)self ba_analyticsController];
-  v11 = [v10 applicationTracker];
-  v12 = [v4 rootViewController];
-  [v12 ba_setAnalyticsTracker:v11];
+  ba_analyticsController = [(BKSceneController *)self ba_analyticsController];
+  applicationTracker = [ba_analyticsController applicationTracker];
+  rootViewController2 = [setupCopy rootViewController];
+  [rootViewController2 ba_setAnalyticsTracker:applicationTracker];
 
-  v13 = [v4 rootViewController];
-  [v13 setBc_engagementProviderSource:self];
+  rootViewController3 = [setupCopy rootViewController];
+  [rootViewController3 setBc_engagementProviderSource:self];
 
   if ([(_BKBaseSceneController *)self sceneType]== 1)
   {
-    v14 = [(BKSceneController *)self _sceneManager];
-    v15 = [v14 rootBarCoordinatorForSceneController:self];
+    _sceneManager = [(BKSceneController *)self _sceneManager];
+    v15 = [_sceneManager rootBarCoordinatorForSceneController:self];
     [(BKSceneController *)self setRootBarCoordinator:v15];
   }
 
@@ -288,15 +288,15 @@
   [UIView animateWithDuration:5242880 delay:v32 options:v31 animations:0.2 completion:0.0];
   if ([(_BKBaseSceneController *)self sceneType]== 1)
   {
-    v16 = [v4 rootViewController];
-    v17 = [v16 supportedInterfaceOrientations];
-    v18 = [v4 windowScene];
-    v19 = [v18 interfaceOrientation];
+    rootViewController4 = [setupCopy rootViewController];
+    supportedInterfaceOrientations = [rootViewController4 supportedInterfaceOrientations];
+    windowScene = [setupCopy windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    if ((v17 & (1 << v19)) != 0)
+    if ((supportedInterfaceOrientations & (1 << interfaceOrientation)) != 0)
     {
-      v20 = [(_BKBaseSceneController *)self launchCoordinator];
-      [v20 signalConditionSatisfied:7];
+      launchCoordinator = [(_BKBaseSceneController *)self launchCoordinator];
+      [launchCoordinator signalConditionSatisfied:7];
     }
 
     else
@@ -315,10 +315,10 @@
       v23 = BCSceneLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v4 windowScene];
-        v25 = [v24 interfaceOrientation];
+        windowScene2 = [setupCopy windowScene];
+        interfaceOrientation2 = [windowScene2 interfaceOrientation];
         *buf = 134217984;
-        v34 = v25;
+        v34 = interfaceOrientation2;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "BKSceneController: Waiting for UIKit to rotate to the supported orientation from current orientation: %li", buf, 0xCu);
       }
 
@@ -326,82 +326,82 @@
       objc_destroyWeak(&location);
     }
 
-    v26 = [(BKSceneController *)self _sceneManager];
-    v27 = [(_BKBaseSceneController *)self welcomePresenter];
-    [v26 _setupWelcomeScreenWithPresenterIfNeeded:v27];
+    _sceneManager2 = [(BKSceneController *)self _sceneManager];
+    welcomePresenter = [(_BKBaseSceneController *)self welcomePresenter];
+    [_sceneManager2 _setupWelcomeScreenWithPresenterIfNeeded:welcomePresenter];
   }
 }
 
-- (void)welcomePresenterFinishOngoingModalTransitionAnimations:(id)a3
+- (void)welcomePresenterFinishOngoingModalTransitionAnimations:(id)animations
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000595F0;
   v5[3] = &unk_100A03788;
-  v6 = self;
-  v7 = a3;
-  v4.receiver = v6;
+  selfCopy = self;
+  animationsCopy = animations;
+  v4.receiver = selfCopy;
   v4.super_class = BKSceneController;
-  v3 = v7;
+  v3 = animationsCopy;
   [(_BKBaseSceneController *)&v4 welcomePresenterFinishOngoingModalTransitionAnimations:v5];
 }
 
 - (id)ubiquityStatusMonitor
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 ubiquityStatusMonitor];
+  ubiquityStatusMonitor = [v2 ubiquityStatusMonitor];
 
-  return v3;
+  return ubiquityStatusMonitor;
 }
 
-- (void)_showWelcomeScreen:(id)a3 completion:(id)a4
+- (void)_showWelcomeScreen:(id)screen completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKSceneController *)self genericPresenting];
-  v9 = [v8 presenterModalPresentingViewController];
-  v10 = v9;
-  if (v9)
+  screenCopy = screen;
+  completionCopy = completion;
+  genericPresenting = [(BKSceneController *)self genericPresenting];
+  presenterModalPresentingViewController = [genericPresenting presenterModalPresentingViewController];
+  v10 = presenterModalPresentingViewController;
+  if (presenterModalPresentingViewController)
   {
-    v11 = v9;
+    rootViewController = presenterModalPresentingViewController;
   }
 
   else
   {
-    v12 = [(BKSceneController *)self rootBarCoordinator];
-    v11 = [v12 rootViewController];
+    rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
+    rootViewController = [rootBarCoordinator rootViewController];
   }
 
-  v13 = [v11 presentedViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v13)
+  if (presentedViewController)
   {
     do
     {
-      v14 = [v11 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v15 = [v14 presentedViewController];
+      v14PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v11 = v14;
+      rootViewController = presentedViewController2;
     }
 
-    while (v15);
+    while (v14PresentedViewController);
   }
 
   else
   {
-    v14 = v11;
+    presentedViewController2 = rootViewController;
   }
 
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100059A18;
   v28[3] = &unk_100A03948;
-  v16 = v14;
+  v16 = presentedViewController2;
   v29 = v16;
-  v17 = v7;
+  v17 = completionCopy;
   v31 = v17;
-  v18 = v6;
+  v18 = screenCopy;
   v30 = v18;
   v19 = [v18 welcomeScreenViewControllerWithCompletion:v28];
   v20 = BCSceneLog();
@@ -415,17 +415,17 @@
   }
 
   v21 = [[BKWelcomeNavigationController alloc] initWithRootViewController:v19];
-  v22 = [(BKWelcomeNavigationController *)v21 navigationBar];
-  [v22 setHidden:1];
+  navigationBar = [(BKWelcomeNavigationController *)v21 navigationBar];
+  [navigationBar setHidden:1];
 
   [(BKWelcomeNavigationController *)v21 setModalPresentationStyle:2];
   [(BKWelcomeNavigationController *)v21 setModalTransitionStyle:2];
-  v23 = [(BKWelcomeNavigationController *)v21 presentationController];
-  [v23 setDelegate:self];
+  presentationController = [(BKWelcomeNavigationController *)v21 presentationController];
+  [presentationController setDelegate:self];
 
   [(BKWelcomeNavigationController *)v21 setBkDelegate:self];
-  v24 = [v16 transitionCoordinator];
-  if (v24)
+  transitionCoordinator = [v16 transitionCoordinator];
+  if (transitionCoordinator)
   {
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
@@ -433,7 +433,7 @@
     v25[3] = &unk_100A03970;
     v26 = v16;
     v27 = v21;
-    [v24 animateAlongsideTransition:0 completion:v25];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v25];
   }
 
   else
@@ -442,12 +442,12 @@
   }
 }
 
-- (CGSize)preferredContentSizeForNavigationController:(id)a3
+- (CGSize)preferredContentSizeForNavigationController:(id)controller
 {
-  v3 = [a3 viewControllers];
-  v4 = [v3 firstObject];
+  viewControllers = [controller viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  [v4 preferredContentSize];
+  [firstObject preferredContentSize];
   v6 = v5;
   v8 = v7;
 
@@ -461,31 +461,31 @@
 - (BCEngagementProvider)bc_engagementProvider
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 engagementManager];
+  engagementManager = [v2 engagementManager];
 
-  return v3;
+  return engagementManager;
 }
 
-- (id)analyticsManagerLibrary:(id)a3
+- (id)analyticsManagerLibrary:(id)library
 {
   v3 = +[BKAppDelegate delegate];
-  v4 = [v3 mainLibrary];
+  mainLibrary = [v3 mainLibrary];
 
-  return v4;
+  return mainLibrary;
 }
 
-- (void)analyticsManagerForceEndSession:(id)a3 reason:(int64_t)a4
+- (void)analyticsManagerForceEndSession:(id)session reason:(int64_t)reason
 {
-  v6 = a3;
+  sessionCopy = session;
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100059DCC;
   v11[3] = &unk_100A03998;
   objc_copyWeak(v13, &location);
-  v7 = v6;
+  v7 = sessionCopy;
   v12 = v7;
-  v13[1] = a4;
+  v13[1] = reason;
   v8 = objc_retainBlock(v11);
   if (v8)
   {
@@ -509,7 +509,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)analyticsManagerDidRestoreSession:(id)a3
+- (void)analyticsManagerDidRestoreSession:(id)session
 {
   v3 = +[BKAppDelegate sceneManager];
   [v3 analyticsVisibilityUpdate];
@@ -517,20 +517,20 @@
 
 - (BOOL)sceneSupportsMinifiedPresenting
 {
-  v2 = [(BKSceneController *)self rootBarCoordinator];
-  v3 = v2 != 0;
+  rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
+  v3 = rootBarCoordinator != 0;
 
   return v3;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v15 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_BKBaseSceneController *)self scene];
+  sessionCopy = session;
+  optionsCopy = options;
+  sceneCopy = scene;
+  scene = [(_BKBaseSceneController *)self scene];
 
-  if (v10)
+  if (scene)
   {
     sub_10078929C();
   }
@@ -540,11 +540,11 @@
 
   [(_BKBaseSceneController *)self setScene:v11];
   [v11 setController:self];
-  v12 = [(_BKBaseSceneController *)self bk_window];
-  v13 = v12;
-  if (v12)
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  v13 = bk_window;
+  if (bk_window)
   {
-    [v12 setWindowScene:v11];
+    [bk_window setWindowScene:v11];
     [v13 makeKeyAndVisible];
   }
 
@@ -560,7 +560,7 @@
     {
       if ([(_BKBaseSceneController *)self sceneType]== 3)
       {
-        [(BKSceneController *)self _setupEndOfBookSceneForWindow:v14 withSession:v15 options:v8];
+        [(BKSceneController *)self _setupEndOfBookSceneForWindow:v14 withSession:sessionCopy options:optionsCopy];
       }
 
       else
@@ -575,35 +575,35 @@
 
 - (void)setupPlaceholderWindow
 {
-  v3 = [(_BKBaseSceneController *)self bk_window];
+  bk_window = [(_BKBaseSceneController *)self bk_window];
 
-  if (!v3)
+  if (!bk_window)
   {
     v4 = +[BKAppDelegate anySceneController];
-    v7 = [v4 scene];
+    scene = [v4 scene];
 
-    v5 = [(BKSceneController *)self screen];
-    [v5 setWantsSoftwareDimming:1];
+    screen = [(BKSceneController *)self screen];
+    [screen setWantsSoftwareDimming:1];
 
-    v6 = [(_BKBaseSceneController *)self _windowWithScene:v7 sceneType:[(_BKBaseSceneController *)self sceneType]];
+    v6 = [(_BKBaseSceneController *)self _windowWithScene:scene sceneType:[(_BKBaseSceneController *)self sceneType]];
     [(BKSceneController *)self _setupWithWindow:v6];
     [v6 setHidden:1];
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(_BKBaseSceneController *)self bk_window];
-  v6 = [v5 rootViewController];
-  v29 = [v6 im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKSceneHosting];
+  disconnectCopy = disconnect;
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  rootViewController = [bk_window rootViewController];
+  v29 = [rootViewController im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKSceneHosting];
 
-  v7 = [(_BKBaseSceneController *)self bk_window];
-  v8 = [v7 rootViewController];
-  v9 = [v8 im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
+  bk_window2 = [(_BKBaseSceneController *)self bk_window];
+  rootViewController2 = [bk_window2 rootViewController];
+  v9 = [rootViewController2 im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
 
-  v10 = [(_BKBaseSceneController *)self newShowAssetTransaction];
-  v11 = [v9 currentAssetPresentersForSingleSceneWithTransaction:v10];
+  newShowAssetTransaction = [(_BKBaseSceneController *)self newShowAssetTransaction];
+  v11 = [v9 currentAssetPresentersForSingleSceneWithTransaction:newShowAssetTransaction];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
@@ -631,28 +631,28 @@
     while (v13);
   }
 
-  [v5 setHidden:1];
-  v16 = [(BKSceneController *)self _sceneManager];
-  v17 = [(_BKBaseSceneController *)self welcomePresenter];
-  [v16 _welcomePresenterDidDisconnect:v17];
+  [bk_window setHidden:1];
+  _sceneManager = [(BKSceneController *)self _sceneManager];
+  welcomePresenter = [(_BKBaseSceneController *)self welcomePresenter];
+  [_sceneManager _welcomePresenterDidDisconnect:welcomePresenter];
 
   if ([(_BKBaseSceneController *)self sceneType]== 2)
   {
     v18 = v29;
-    [v29 didDisconnectScene:v4];
+    [v29 didDisconnectScene:disconnectCopy];
     [(BKSceneController *)self setBk_window:0];
 LABEL_14:
     [(_BKBaseSceneController *)self setScene:0];
     goto LABEL_15;
   }
 
-  v19 = [(BKSceneController *)self rootBarCoordinator];
+  rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
   v18 = v29;
-  if (v19)
+  if (rootBarCoordinator)
   {
 
 LABEL_13:
-    [v29 didDisconnectScene:v4];
+    [v29 didDisconnectScene:disconnectCopy];
     goto LABEL_14;
   }
 
@@ -661,8 +661,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v27 = v5;
-  v28 = v4;
+  v27 = bk_window;
+  v28 = disconnectCopy;
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
@@ -683,8 +683,8 @@ LABEL_13:
         }
 
         v25 = *(*(&v36 + 1) + 8 * j);
-        v26 = [v25 assetPresenterAssetID];
-        [v9 requestOpenBookMinified:v26 transaction:v10 force:1];
+        assetPresenterAssetID = [v25 assetPresenterAssetID];
+        [v9 requestOpenBookMinified:assetPresenterAssetID transaction:newShowAssetTransaction force:1];
 
         [v25 assetPresenterPrepareForDismissal];
       }
@@ -702,70 +702,70 @@ LABEL_13:
   v31 = v20;
   v18 = v29;
   v32 = v29;
-  v4 = v28;
+  disconnectCopy = v28;
   v33 = v28;
-  v5 = v27;
+  bk_window = v27;
   v34 = v27;
-  v35 = self;
-  [v9 closeAllPresentersForSingleSceneWithTransaction:v10 animated:0 completion:v30];
+  selfCopy = self;
+  [v9 closeAllPresentersForSingleSceneWithTransaction:newShowAssetTransaction animated:0 completion:v30];
 
 LABEL_15:
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v3 = [(_BKBaseSceneController *)self bk_window];
-  [v3 makeKeyAndVisible];
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  [bk_window makeKeyAndVisible];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v4 = [(BKSceneController *)self analyticsManager];
-  [v4 analyticsStartSession];
+  analyticsManager = [(BKSceneController *)self analyticsManager];
+  [analyticsManager analyticsStartSession];
 
   [(_BKBaseSceneController *)self _interruptReadAloud:0];
-  v5 = [(BKSceneController *)self _sceneManager];
-  v6 = [(_BKBaseSceneController *)self welcomePresenter];
-  [v5 _setCurrentWelcomePresenterIfNeeded:v6];
+  _sceneManager = [(BKSceneController *)self _sceneManager];
+  welcomePresenter = [(_BKBaseSceneController *)self welcomePresenter];
+  [_sceneManager _setCurrentWelcomePresenterIfNeeded:welcomePresenter];
 
-  v7 = [(_BKBaseSceneController *)self launchCoordinator];
+  launchCoordinator = [(_BKBaseSceneController *)self launchCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005A828;
   v8[3] = &unk_100A038D0;
   v8[4] = self;
-  [v7 appLaunchCoordinatorOnConditionMask:32 blockID:@"sceneWillEnterForeground" performBlock:v8];
+  [launchCoordinator appLaunchCoordinatorOnConditionMask:32 blockID:@"sceneWillEnterForeground" performBlock:v8];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   [(_BKBaseSceneController *)self _interruptReadAloud:1];
-  v4 = [(BKSceneController *)self analyticsManager];
-  [(BKSceneController *)self analyticsManagerForceEndSession:v4 reason:1];
+  analyticsManager = [(BKSceneController *)self analyticsManager];
+  [(BKSceneController *)self analyticsManagerForceEndSession:analyticsManager reason:1];
 
-  v5 = [(_BKBaseSceneController *)self launchCoordinator];
+  launchCoordinator = [(_BKBaseSceneController *)self launchCoordinator];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10005A980;
   v6[3] = &unk_100A038D0;
   v6[4] = self;
-  [v5 appLaunchCoordinatorOnConditionMask:32 blockID:@"sceneDidEnterBackground" performBlock:v6];
+  [launchCoordinator appLaunchCoordinatorOnConditionMask:32 blockID:@"sceneDidEnterBackground" performBlock:v6];
 }
 
-- (void)windowScene:(id)a3 didUpdateCoordinateSpace:(id)a4 interfaceOrientation:(int64_t)a5 traitCollection:(id)a6
+- (void)windowScene:(id)scene didUpdateCoordinateSpace:(id)space interfaceOrientation:(int64_t)orientation traitCollection:(id)collection
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = [(BKSceneController *)self rootBarCoordinator];
-  v11 = [v8 traitCollection];
-  [v10 windowSceneTraitCollectionDidChangeFrom:v9 to:v11];
+  sceneCopy = scene;
+  collectionCopy = collection;
+  rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
+  traitCollection = [sceneCopy traitCollection];
+  [rootBarCoordinator windowSceneTraitCollectionDidChangeFrom:collectionCopy to:traitCollection];
 
   if ([(_BKBaseSceneController *)self sceneType]== 1)
   {
-    v12 = [v8 keyWindow];
-    v13 = [v12 rootViewController];
-    v14 = [v13 supportedInterfaceOrientations];
-    v15 = v14 & (1 << [v8 interfaceOrientation]);
+    keyWindow = [sceneCopy keyWindow];
+    rootViewController = [keyWindow rootViewController];
+    supportedInterfaceOrientations = [rootViewController supportedInterfaceOrientations];
+    v15 = supportedInterfaceOrientations & (1 << [sceneCopy interfaceOrientation]);
 
     if (v15)
     {
@@ -776,8 +776,8 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "BKSceneController: UIKit rotated to the supported orientation", v19, 2u);
       }
 
-      v17 = [(_BKBaseSceneController *)self launchCoordinator];
-      [v17 signalConditionSatisfied:7];
+      launchCoordinator = [(_BKBaseSceneController *)self launchCoordinator];
+      [launchCoordinator signalConditionSatisfied:7];
 
       [(NSTimer *)self->_rotationToSupportedTimer invalidate];
       rotationToSupportedTimer = self->_rotationToSupportedTimer;
@@ -786,13 +786,13 @@ LABEL_15:
   }
 }
 
-- (void)handleCreateSceneUserActivityWhenReady:(id)a3
+- (void)handleCreateSceneUserActivityWhenReady:(id)ready
 {
-  v10 = [a3 userInfo];
+  userInfo = [ready userInfo];
   v4 = +[NSMutableDictionary dictionary];
   objc_opt_class();
   v5 = BCContinuationActivityAssetIDKey;
-  v6 = [v10 objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
+  v6 = [userInfo objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
   v7 = BUDynamicCast();
 
   if ([v7 length])
@@ -802,7 +802,7 @@ LABEL_15:
   }
 
   objc_opt_class();
-  v8 = [v10 objectForKeyedSubscript:BCBookDisplayTitle];
+  v8 = [userInfo objectForKeyedSubscript:BCBookDisplayTitle];
   v9 = BUDynamicCast();
 
   if ([v9 length])
@@ -813,32 +813,32 @@ LABEL_15:
   [(BKSceneController *)self _handleOpenBookActivityWithAssetID:v7 isStateRestoration:0];
 }
 
-- (void)handleStateRestorationFromData:(id)a3
+- (void)handleStateRestorationFromData:(id)data
 {
   v4 = BCContinuationActivityAssetIDKey;
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dataCopy = data;
+  v6 = [dataCopy objectForKeyedSubscript:v4];
   [(BKSceneController *)self setRequestAssetID:v6];
 
   v7.receiver = self;
   v7.super_class = BKSceneController;
-  [(_BKBaseSceneController *)&v7 handleStateRestorationFromData:v5];
+  [(_BKBaseSceneController *)&v7 handleStateRestorationFromData:dataCopy];
 }
 
-- (id)_optionsForContinueOpenBookActivity:(BOOL)a3
+- (id)_optionsForContinueOpenBookActivity:(BOOL)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v10.receiver = self;
   v10.super_class = BKSceneController;
   v5 = [(_BKBaseSceneController *)&v10 _optionsForContinueOpenBookActivity:?];
   v6 = [v5 mutableCopy];
 
-  if (v3)
+  if (activityCopy)
   {
-    v7 = [(BKSceneController *)self rootBarCoordinator];
+    rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
 
     v8 = off_100A06B68;
-    if (v7)
+    if (rootBarCoordinator)
     {
       v8 = off_100A06B50;
     }
@@ -849,51 +849,51 @@ LABEL_15:
   return v6;
 }
 
-- (void)_handleOpenBookActivityWithAssetID:(id)a3 isStateRestoration:(BOOL)a4
+- (void)_handleOpenBookActivityWithAssetID:(id)d isStateRestoration:(BOOL)restoration
 {
-  v6 = a3;
-  v7 = [(_BKBaseSceneController *)self launchCoordinator];
+  dCopy = d;
+  launchCoordinator = [(_BKBaseSceneController *)self launchCoordinator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10005AED8;
   v9[3] = &unk_100A039E8;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  [v7 appLaunchCoordinatorOnConditionMask:65 blockID:@"_handleOpenBookActivityWithAssetID" performBlock:v9];
+  restorationCopy = restoration;
+  v10 = dCopy;
+  selfCopy = self;
+  v8 = dCopy;
+  [launchCoordinator appLaunchCoordinatorOnConditionMask:65 blockID:@"_handleOpenBookActivityWithAssetID" performBlock:v9];
 }
 
 - (id)dataForStateRestoration
 {
   v14.receiver = self;
   v14.super_class = BKSceneController;
-  v3 = [(_BKBaseSceneController *)&v14 dataForStateRestoration];
-  v4 = [v3 mutableCopy];
+  dataForStateRestoration = [(_BKBaseSceneController *)&v14 dataForStateRestoration];
+  v4 = [dataForStateRestoration mutableCopy];
 
-  v5 = [(BKSceneController *)self rootBarCoordinator];
+  rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
 
-  if (!v5)
+  if (!rootBarCoordinator)
   {
-    v9 = [(BKSceneController *)self requestAssetID];
-    if (v9)
+    requestAssetID = [(BKSceneController *)self requestAssetID];
+    if (requestAssetID)
     {
-      v10 = v9;
+      v10 = requestAssetID;
       v11 = BCContinuationActivityAssetIDKey;
       v12 = [v4 objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
 
       if (!v12)
       {
-        v13 = [(BKSceneController *)self requestAssetID];
-        [v4 setObject:v13 forKeyedSubscript:v11];
+        requestAssetID2 = [(BKSceneController *)self requestAssetID];
+        [v4 setObject:requestAssetID2 forKeyedSubscript:v11];
       }
     }
   }
 
   if ([(_BKBaseSceneController *)self sceneType]== 3)
   {
-    v6 = [(BKSceneController *)self userInfoForStateRestoration];
-    v7 = [v6 copy];
+    userInfoForStateRestoration = [(BKSceneController *)self userInfoForStateRestoration];
+    v7 = [userInfoForStateRestoration copy];
 
     v4 = v7;
   }
@@ -903,24 +903,24 @@ LABEL_15:
 
 - (BOOL)isHostingRootBar
 {
-  v2 = [(BKSceneController *)self rootBarCoordinator];
-  v3 = v2 != 0;
+  rootBarCoordinator = [(BKSceneController *)self rootBarCoordinator];
+  v3 = rootBarCoordinator != 0;
 
   return v3;
 }
 
 - (id)rootViewController
 {
-  v2 = [(_BKBaseSceneController *)self bk_window];
-  v3 = [v2 rootViewController];
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  rootViewController = [bk_window rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
 - (id)flowControllerModalPresentingViewController
 {
-  v2 = [(BKSceneController *)self rootViewController];
-  v3 = [v2 presentedViewController];
+  rootViewController = [(BKSceneController *)self rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
   objc_opt_class();
   v4 = BUClassAndProtocolCast();
 
@@ -928,16 +928,16 @@ LABEL_15:
   {
     v5 = v4;
 
-    v2 = v5;
+    rootViewController = v5;
   }
 
-  return v2;
+  return rootViewController;
 }
 
-- (void)updateCloseTypeState:(int64_t)a3
+- (void)updateCloseTypeState:(int64_t)state
 {
-  v3 = [(BKSceneController *)self bookFlowAssetPresenting];
-  v4 = [v3 presenterViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
+  bookFlowAssetPresenting = [(BKSceneController *)self bookFlowAssetPresenting];
+  v4 = [bookFlowAssetPresenting presenterViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
 
   v12 = 0u;
   v13 = 0u;
@@ -971,7 +971,7 @@ LABEL_15:
   }
 }
 
-- (void)storeDidAttemptSignOut:(id)a3
+- (void)storeDidAttemptSignOut:(id)out
 {
   if ([(_BKBaseSceneController *)self sceneType]== 2)
   {
@@ -986,7 +986,7 @@ LABEL_15:
 
 - (BKMachineAuthorizationService)machineAuthorizationService
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007388CC();
 
   return v3;

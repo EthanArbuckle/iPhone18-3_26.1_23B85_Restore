@@ -1,24 +1,24 @@
 @interface BLPurchaseUIHelper
 - (BLUIHostServiceProtocol)uiHostProxy;
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4;
-- (void)handleDialogRequest:(id)a3 completion:(id)a4;
-- (void)handleEngagementRequest:(id)a3 completion:(id)a4;
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)handleDialogRequest:(id)request completion:(id)completion;
+- (void)handleEngagementRequest:(id)request completion:(id)completion;
 @end
 
 @implementation BLPurchaseUIHelper
 
-- (void)handleAuthenticateRequest:(id)a3 completion:(id)a4
+- (void)handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BLPurchaseUIHelper *)self uiHostProxy];
+  requestCopy = request;
+  completionCopy = completion;
+  uiHostProxy = [(BLPurchaseUIHelper *)self uiHostProxy];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10009C29C;
   v20[3] = &unk_10011D5D0;
-  v9 = v7;
+  v9 = completionCopy;
   v21 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v20];
+  v10 = [uiHostProxy remoteObjectProxyWithErrorHandler:v20];
 
   v11 = BLServicePurchaseManagerLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -26,9 +26,9 @@
   {
     if (v12)
     {
-      v13 = [v6 logKey];
+      logKey = [requestCopy logKey];
       *buf = 138543362;
-      v23 = v13;
+      v23 = logKey;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Purchase-UI-Helper]: Forwarding auth request %{public}@ to UI host proxy", buf, 0xCu);
     }
 
@@ -36,7 +36,7 @@
     v17[1] = 3221225472;
     v17[2] = sub_10009C30C;
     v17[3] = &unk_10011E278;
-    v18 = v6;
+    v18 = requestCopy;
     v19 = v9;
     [v10 handleAuthenticateRequest:v18 withReply:v17];
 
@@ -47,9 +47,9 @@
   {
     if (v12)
     {
-      v15 = [v6 logKey];
+      logKey2 = [requestCopy logKey];
       *buf = 138543362;
-      v23 = v15;
+      v23 = logKey2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Purchase-UI-Helper]: Missing UI host proxy for authenticate request %{public}@", buf, 0xCu);
     }
 
@@ -62,18 +62,18 @@
   }
 }
 
-- (void)handleDialogRequest:(id)a3 completion:(id)a4
+- (void)handleDialogRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BLPurchaseUIHelper *)self uiHostProxy];
+  requestCopy = request;
+  completionCopy = completion;
+  uiHostProxy = [(BLPurchaseUIHelper *)self uiHostProxy];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10009C6E0;
   v20[3] = &unk_10011D5D0;
-  v9 = v7;
+  v9 = completionCopy;
   v21 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v20];
+  v10 = [uiHostProxy remoteObjectProxyWithErrorHandler:v20];
 
   v11 = BLServicePurchaseManagerLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -81,9 +81,9 @@
   {
     if (v12)
     {
-      v13 = [v6 logKey];
+      logKey = [requestCopy logKey];
       *buf = 138543362;
-      v23 = v13;
+      v23 = logKey;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Purchase-UI-Helper]: Forwarding dialog request %{public}@ to UI host proxy", buf, 0xCu);
     }
 
@@ -91,7 +91,7 @@
     v17[1] = 3221225472;
     v17[2] = sub_10009C750;
     v17[3] = &unk_10011E2A0;
-    v18 = v6;
+    v18 = requestCopy;
     v19 = v9;
     [v10 handleDialogRequest:v18 withReply:v17];
 
@@ -102,9 +102,9 @@
   {
     if (v12)
     {
-      v15 = [v6 logKey];
+      logKey2 = [requestCopy logKey];
       *buf = 138543362;
-      v23 = v15;
+      v23 = logKey2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Purchase-UI-Helper]: Missing UI host proxy for dialog request %{public}@", buf, 0xCu);
     }
 
@@ -117,18 +117,18 @@
   }
 }
 
-- (void)handleEngagementRequest:(id)a3 completion:(id)a4
+- (void)handleEngagementRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BLPurchaseUIHelper *)self uiHostProxy];
+  requestCopy = request;
+  completionCopy = completion;
+  uiHostProxy = [(BLPurchaseUIHelper *)self uiHostProxy];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10009CB24;
   v20[3] = &unk_10011D5D0;
-  v9 = v7;
+  v9 = completionCopy;
   v21 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v20];
+  v10 = [uiHostProxy remoteObjectProxyWithErrorHandler:v20];
 
   v11 = BLServicePurchaseManagerLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -136,9 +136,9 @@
   {
     if (v12)
     {
-      v13 = [v6 logKey];
+      logKey = [requestCopy logKey];
       *buf = 138543362;
-      v23 = v13;
+      v23 = logKey;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Purchase-UI-Helper]: Forwarding engagement request %{public}@ to UI host proxy", buf, 0xCu);
     }
 
@@ -146,7 +146,7 @@
     v17[1] = 3221225472;
     v17[2] = sub_10009CB94;
     v17[3] = &unk_10011E2C8;
-    v18 = v6;
+    v18 = requestCopy;
     v19 = v9;
     [v10 handleEngagementRequest:v18 withReply:v17];
 
@@ -157,9 +157,9 @@
   {
     if (v12)
     {
-      v15 = [v6 logKey];
+      logKey2 = [requestCopy logKey];
       *buf = 138543362;
-      v23 = v15;
+      v23 = logKey2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Purchase-UI-Helper]: Missing UI host proxy for engagement request %{public}@", buf, 0xCu);
     }
 

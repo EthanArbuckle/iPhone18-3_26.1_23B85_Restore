@@ -1,12 +1,12 @@
 @interface DOCNavigationController
 - (_TtC26DocumentManagerExecutables23DOCNavigationController)init;
-- (_TtC26DocumentManagerExecutables23DOCNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC26DocumentManagerExecutables23DOCNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC26DocumentManagerExecutables23DOCNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC26DocumentManagerExecutables23DOCNavigationController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation DOCNavigationController
 
-- (_TtC26DocumentManagerExecutables23DOCNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26DocumentManagerExecutables23DOCNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -22,7 +22,7 @@
   return [(DOCNavigationController *)&v5 initWithNavigationBarClass:ObjCClassFromMetadata toolbarClass:0];
 }
 
-- (_TtC26DocumentManagerExecutables23DOCNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC26DocumentManagerExecutables23DOCNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

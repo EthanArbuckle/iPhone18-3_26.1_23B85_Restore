@@ -1,33 +1,33 @@
 @interface WFAutomationListViewController
-- (BOOL)showEditViewForItem:(id)a3;
-- (BOOL)showHomeAutomationEditorForTriggerItem:(id)a3;
-- (BOOL)showPersonalAutomationEditorForConfiguredTrigger:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (WFAutomationListViewController)initWithDatabase:(id)a3 workflowProvider:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)automationListCell:(id)a3 didUpdateNotificationsEnabled:(BOOL)a4;
-- (void)buildTableSectionsWithConfiguredTriggers:(id)a3 homeTriggers:(id)a4;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)editAutomationCoordinatorDidCancel:(id)a3;
-- (void)editAutomationCoordinatorDidFinish:(id)a3;
-- (void)flashAutomationForTriggerID:(id)a3;
+- (BOOL)showEditViewForItem:(id)item;
+- (BOOL)showHomeAutomationEditorForTriggerItem:(id)item;
+- (BOOL)showPersonalAutomationEditorForConfiguredTrigger:(id)trigger;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (WFAutomationListViewController)initWithDatabase:(id)database workflowProvider:(id)provider;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)automationListCell:(id)cell didUpdateNotificationsEnabled:(BOOL)enabled;
+- (void)buildTableSectionsWithConfiguredTriggers:(id)triggers homeTriggers:(id)homeTriggers;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)editAutomationCoordinatorDidCancel:(id)cancel;
+- (void)editAutomationCoordinatorDidFinish:(id)finish;
+- (void)flashAutomationForTriggerID:(id)d;
 - (void)loadView;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder;
 - (void)updateTableViewLayoutMargins;
-- (void)updateUIWithConfiguredTriggers:(id)a3 homeTriggers:(id)a4;
+- (void)updateUIWithConfiguredTriggers:(id)triggers homeTriggers:(id)homeTriggers;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFAutomationListViewController
 
-- (void)triggerEditor:(id)a3 didFinishWithTriggerBuilder:(id)a4
+- (void)triggerEditor:(id)editor didFinishWithTriggerBuilder:(id)builder
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -46,20 +46,20 @@ void __76__WFAutomationListViewController_triggerEditor_didFinishWithTriggerBuil
   [v4 deselectRowAtIndexPath:v3 animated:1];
 }
 
-- (BOOL)showHomeAutomationEditorForTriggerItem:(id)a3
+- (BOOL)showHomeAutomationEditorForTriggerItem:(id)item
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFAutomationListViewController.m" lineNumber:404 description:{@"Invalid parameter not satisfying: %@", @"triggerItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAutomationListViewController.m" lineNumber:404 description:{@"Invalid parameter not satisfying: %@", @"triggerItem"}];
   }
 
-  v6 = [v5 trigger];
-  v7 = [v5 home];
-  v8 = v7;
-  if (!v5 || !v6 || !v7)
+  trigger = [itemCopy trigger];
+  home = [itemCopy home];
+  v8 = home;
+  if (!itemCopy || !trigger || !home)
   {
     v13 = getWFTriggersLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -67,7 +67,7 @@ void __76__WFAutomationListViewController_triggerEditor_didFinishWithTriggerBuil
       *buf = 136315394;
       v21 = "[WFAutomationListViewController showHomeAutomationEditorForTriggerItem:]";
       v22 = 2114;
-      v23 = v5;
+      v23 = itemCopy;
       _os_log_impl(&dword_274719000, v13, OS_LOG_TYPE_ERROR, "%s Missing home or trigger from triggerItem: %{public}@", buf, 0x16u);
     }
 
@@ -77,7 +77,7 @@ void __76__WFAutomationListViewController_triggerEditor_didFinishWithTriggerBuil
   HFTriggerBuilderClass = getHFTriggerBuilderClass();
   getHUTriggerBuilderContextClass();
   v10 = objc_opt_new();
-  v11 = [(objc_class *)HFTriggerBuilderClass triggerBuilderForTrigger:v6 inHome:v8 context:v10];
+  v11 = [(objc_class *)HFTriggerBuilderClass triggerBuilderForTrigger:trigger inHome:v8 context:v10];
 
   if (!v11)
   {
@@ -87,7 +87,7 @@ void __76__WFAutomationListViewController_triggerEditor_didFinishWithTriggerBuil
       *buf = 136315394;
       v21 = "[WFAutomationListViewController showHomeAutomationEditorForTriggerItem:]";
       v22 = 2112;
-      v23 = v6;
+      v23 = trigger;
       _os_log_impl(&dword_274719000, v15, OS_LOG_TYPE_ERROR, "%s Could not create HFTriggerBuilder for trigger: %@", buf, 0x16u);
     }
 
@@ -97,7 +97,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v12 = [MEMORY[0x277D7C4F0] sharedManager];
+  mEMORY[0x277D7C4F0] = [MEMORY[0x277D7C4F0] sharedManager];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __73__WFAutomationListViewController_showHomeAutomationEditorForTriggerItem___block_invoke;
@@ -105,7 +105,7 @@ LABEL_13:
   v18[4] = self;
   v13 = v11;
   v19 = v13;
-  [v12 ensureHomesAreLoadedWithCompletionHandler:v18];
+  [mEMORY[0x277D7C4F0] ensureHomesAreLoadedWithCompletionHandler:v18];
 
   v14 = 1;
 LABEL_14:
@@ -161,41 +161,41 @@ void __73__WFAutomationListViewController_showHomeAutomationEditorForTriggerItem
   }
 }
 
-- (void)editAutomationCoordinatorDidCancel:(id)a3
+- (void)editAutomationCoordinatorDidCancel:(id)cancel
 {
-  v4 = [a3 navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [cancel navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
-  v7 = [(WFAutomationListViewController *)self tableView];
-  v5 = [(WFAutomationListViewController *)self tableView];
-  v6 = [v5 indexPathForSelectedRow];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  tableView = [(WFAutomationListViewController *)self tableView];
+  tableView2 = [(WFAutomationListViewController *)self tableView];
+  indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)editAutomationCoordinatorDidFinish:(id)a3
+- (void)editAutomationCoordinatorDidFinish:(id)finish
 {
-  v4 = [a3 navigationController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [finish navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
-  v5 = [(WFAutomationListViewController *)self tableView];
-  v6 = [(WFAutomationListViewController *)self tableView];
-  v7 = [v6 indexPathForSelectedRow];
-  [v5 deselectRowAtIndexPath:v7 animated:1];
+  tableView = [(WFAutomationListViewController *)self tableView];
+  tableView2 = [(WFAutomationListViewController *)self tableView];
+  indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
-  v8 = [(WFAutomationListViewController *)self tableView];
-  [v8 reloadData];
+  tableView3 = [(WFAutomationListViewController *)self tableView];
+  [tableView3 reloadData];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = [(WFAutomationListViewController *)self tableView];
-  [v3 selectRowAtIndexPath:0 animated:0 scrollPosition:0];
+  tableView = [(WFAutomationListViewController *)self tableView];
+  [tableView selectRowAtIndexPath:0 animated:0 scrollPosition:0];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = [(WFAutomationListViewController *)self tableSections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableSections = [(WFAutomationListViewController *)self tableSections];
+  v6 = [tableSections objectAtIndexedSubscript:section];
 
   v7 = [v6 objectForKeyedSubscript:@"title"];
   if (v7)
@@ -211,8 +211,8 @@ void __73__WFAutomationListViewController_showHomeAutomationEditorForTriggerItem
 
     [v9 setText:v7];
     [v8 addSubview:v9];
-    v14 = [v8 layoutMarginsGuide];
-    v15 = [v9 wf_addConstraintsToFillLayoutGuide:v14];
+    layoutMarginsGuide = [v8 layoutMarginsGuide];
+    v15 = [v9 wf_addConstraintsToFillLayoutGuide:layoutMarginsGuide];
   }
 
   else
@@ -223,32 +223,32 @@ void __73__WFAutomationListViewController_showHomeAutomationEditorForTriggerItem
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a4;
-  v5 = [(WFAutomationListViewController *)self tableSections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v10, "section")}];
+  pathCopy = path;
+  tableSections = [(WFAutomationListViewController *)self tableSections];
+  v6 = [tableSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   v7 = [v6 objectForKeyedSubscript:@"items"];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v10, "row")}];
+  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   if (![(WFAutomationListViewController *)self showEditViewForItem:v8])
   {
-    v9 = [(WFAutomationListViewController *)self tableView];
-    [v9 deselectRowAtIndexPath:v10 animated:1];
+    tableView = [(WFAutomationListViewController *)self tableView];
+    [tableView deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a4 == 1)
+  if (style == 1)
   {
-    v6 = a5;
-    v7 = [(WFAutomationListViewController *)self tableSections];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+    pathCopy = path;
+    tableSections = [(WFAutomationListViewController *)self tableSections];
+    v8 = [tableSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
     v9 = [v8 objectForKeyedSubscript:@"items"];
-    v10 = [v6 row];
+    v10 = [pathCopy row];
 
     v11 = [v9 objectAtIndex:v10];
 
@@ -256,8 +256,8 @@ void __73__WFAutomationListViewController_showHomeAutomationEditorForTriggerItem
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
-      v13 = [v12 identifier];
-      if (!v13)
+      identifier = [v12 identifier];
+      if (!identifier)
       {
         v17 = getWFTriggersLogObject();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -272,8 +272,8 @@ void __73__WFAutomationListViewController_showHomeAutomationEditorForTriggerItem
         goto LABEL_8;
       }
 
-      v14 = v13;
-      v15 = [(WFAutomationListViewController *)self triggerManager];
+      v14 = identifier;
+      triggerManager = [(WFAutomationListViewController *)self triggerManager];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __81__WFAutomationListViewController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke;
@@ -281,7 +281,7 @@ void __73__WFAutomationListViewController_showHomeAutomationEditorForTriggerItem
       v16 = &v22;
       v22 = v14;
       v17 = v14;
-      [v15 deleteTriggerWithIdentifier:v17 notifyDaemon:1 completion:v21];
+      [triggerManager deleteTriggerWithIdentifier:v17 notifyDaemon:1 completion:v21];
     }
 
     else
@@ -297,7 +297,7 @@ LABEL_9:
 
       v18 = v11;
       v12 = [v8 objectForKeyedSubscript:@"home"];
-      v15 = [v18 trigger];
+      triggerManager = [v18 trigger];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __81__WFAutomationListViewController_tableView_commitEditingStyle_forRowAtIndexPath___block_invoke_220;
@@ -306,7 +306,7 @@ LABEL_9:
       v20[0] = v18;
       v20[1] = self;
       v17 = v18;
-      [v12 removeTrigger:v15 completionHandler:v19];
+      [v12 removeTrigger:triggerManager completionHandler:v19];
     }
 
 LABEL_8:
@@ -372,90 +372,90 @@ void __81__WFAutomationListViewController_tableView_commitEditingStyle_forRowAtI
   v1[2]();
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WFAutomationListViewController *)self tableSections];
-  v7 = [v5 section];
+  pathCopy = path;
+  tableSections = [(WFAutomationListViewController *)self tableSections];
+  section = [pathCopy section];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [tableSections objectAtIndexedSubscript:section];
 
   v9 = [v8 objectForKeyedSubscript:@"isEditable"];
-  LOBYTE(v7) = [v9 BOOLValue];
+  LOBYTE(section) = [v9 BOOLValue];
 
-  return v7;
+  return section;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(WFAutomationListViewController *)self tableSections];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "section")}];
+  pathCopy = path;
+  tableSections = [(WFAutomationListViewController *)self tableSections];
+  v7 = [tableSections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
   v8 = [v7 objectForKeyedSubscript:@"cellIdentifier"];
   v9 = [v7 objectForKeyedSubscript:@"items"];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v11 = [(WFAutomationListViewController *)self tableView];
-  v12 = [v11 dequeueReusableCellWithIdentifier:v8 forIndexPath:v5];
+  tableView = [(WFAutomationListViewController *)self tableView];
+  v12 = [tableView dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
   [(WFAutomationListViewController *)self configureCell:v12 forItem:v10];
 
   return v12;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(WFAutomationListViewController *)self tableSections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  tableSections = [(WFAutomationListViewController *)self tableSections];
+  v6 = [tableSections objectAtIndexedSubscript:section];
   v7 = [v6 objectForKeyedSubscript:@"items"];
   v8 = [v7 count];
 
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WFAutomationListViewController *)self tableSections];
-  v4 = [v3 count];
+  tableSections = [(WFAutomationListViewController *)self tableSections];
+  v4 = [tableSections count];
 
   return v4;
 }
 
-- (void)automationListCell:(id)a3 didUpdateNotificationsEnabled:(BOOL)a4
+- (void)automationListCell:(id)cell didUpdateNotificationsEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(WFAutomationListViewController *)self database];
-  v8 = [v6 configuredTrigger];
+  cellCopy = cell;
+  database = [(WFAutomationListViewController *)self database];
+  configuredTrigger = [cellCopy configuredTrigger];
   v14 = 0;
-  v9 = [v7 recordWithDescriptor:v8 error:&v14];
+  v9 = [database recordWithDescriptor:configuredTrigger error:&v14];
   v10 = v14;
 
   if (v9)
   {
-    [v9 setShouldNotify:v4];
-    v11 = [(WFAutomationListViewController *)self triggerManager];
-    v12 = [v6 configuredTrigger];
-    v13 = [v12 identifier];
-    [v11 updateConfiguredTrigger:v9 triggerID:v13 notifyDaemon:0 completion:&__block_literal_global_759];
+    [v9 setShouldNotify:enabledCopy];
+    triggerManager = [(WFAutomationListViewController *)self triggerManager];
+    configuredTrigger2 = [cellCopy configuredTrigger];
+    identifier = [configuredTrigger2 identifier];
+    [triggerManager updateConfiguredTrigger:v9 triggerID:identifier notifyDaemon:0 completion:&__block_literal_global_759];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = getWFTriggersLogObject();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+  triggerManager = getWFTriggersLogObject();
+  if (os_log_type_enabled(triggerManager, OS_LOG_TYPE_FAULT))
   {
-    v12 = [v6 configuredTrigger];
+    configuredTrigger2 = [cellCopy configuredTrigger];
     *buf = 136315650;
     v16 = "[WFAutomationListViewController automationListCell:didUpdateNotificationsEnabled:]";
     v17 = 2112;
-    v18 = v12;
+    v18 = configuredTrigger2;
     v19 = 2114;
     v20 = v10;
-    _os_log_impl(&dword_274719000, v11, OS_LOG_TYPE_FAULT, "%s Failed to get trigger record from descriptor (%@): %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_274719000, triggerManager, OS_LOG_TYPE_FAULT, "%s Failed to get trigger record from descriptor (%@): %{public}@", buf, 0x20u);
     goto LABEL_5;
   }
 
@@ -480,53 +480,53 @@ void __83__WFAutomationListViewController_automationListCell_didUpdateNotificati
   }
 }
 
-- (BOOL)showPersonalAutomationEditorForConfiguredTrigger:(id)a3
+- (BOOL)showPersonalAutomationEditorForConfiguredTrigger:(id)trigger
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  triggerCopy = trigger;
+  if (!triggerCopy)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"WFAutomationListViewController.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAutomationListViewController.m" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"configuredTrigger"}];
   }
 
-  v6 = [v5 workflowID];
+  workflowID = [triggerCopy workflowID];
 
-  if (v6)
+  if (workflowID)
   {
-    v7 = [(WFAutomationListViewController *)self database];
-    v8 = [v5 workflowID];
-    v6 = [v7 referenceForWorkflowID:v8];
+    database = [(WFAutomationListViewController *)self database];
+    workflowID2 = [triggerCopy workflowID];
+    workflowID = [database referenceForWorkflowID:workflowID2];
   }
 
-  v9 = [(WFAutomationListViewController *)self database];
+  database2 = [(WFAutomationListViewController *)self database];
   v26 = 0;
-  v10 = [v9 recordWithDescriptor:v5 error:&v26];
+  v10 = [database2 recordWithDescriptor:triggerCopy error:&v26];
   v11 = v26;
 
   if (v10)
   {
     v12 = [WFEditAutomationCoordinator alloc];
-    v13 = [(WFAutomationListViewController *)self database];
-    v14 = [v5 identifier];
-    v15 = [(WFEditAutomationCoordinator *)v12 initWithDatabase:v13 triggerRecord:v10 triggerIdentifier:v14 workflowReference:v6];
+    database3 = [(WFAutomationListViewController *)self database];
+    identifier = [triggerCopy identifier];
+    v15 = [(WFEditAutomationCoordinator *)v12 initWithDatabase:database3 triggerRecord:v10 triggerIdentifier:identifier workflowReference:workflowID];
     [(WFAutomationListViewController *)self setEditAutomationCoordinator:v15];
 
-    v16 = [(WFAutomationListViewController *)self editAutomationCoordinator];
-    [v16 setDelegate:self];
+    editAutomationCoordinator = [(WFAutomationListViewController *)self editAutomationCoordinator];
+    [editAutomationCoordinator setDelegate:self];
 
-    v17 = [(WFAutomationListViewController *)self editAutomationCoordinator];
-    v18 = [v17 start];
+    editAutomationCoordinator2 = [(WFAutomationListViewController *)self editAutomationCoordinator];
+    start = [editAutomationCoordinator2 start];
 
-    v19 = v18 != 0;
-    if (v18)
+    v19 = start != 0;
+    if (start)
     {
-      [v18 setModalPresentationStyle:2];
-      v20 = [v18 presentationController];
-      v21 = v20;
-      if (v20)
+      [start setModalPresentationStyle:2];
+      presentationController = [start presentationController];
+      v21 = presentationController;
+      if (presentationController)
       {
-        [v20 setDelegate:self];
+        [presentationController setDelegate:self];
       }
 
       block[0] = MEMORY[0x277D85DD0];
@@ -534,7 +534,7 @@ void __83__WFAutomationListViewController_automationListCell_didUpdateNotificati
       block[2] = __83__WFAutomationListViewController_showPersonalAutomationEditorForConfiguredTrigger___block_invoke;
       block[3] = &unk_279EE8C58;
       block[4] = self;
-      v25 = v18;
+      v25 = start;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
 
@@ -552,16 +552,16 @@ void __83__WFAutomationListViewController_automationListCell_didUpdateNotificati
 
   else
   {
-    v18 = getWFTriggersLogObject();
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    start = getWFTriggersLogObject();
+    if (os_log_type_enabled(start, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
       v28 = "[WFAutomationListViewController showPersonalAutomationEditorForConfiguredTrigger:]";
       v29 = 2112;
-      v30 = v5;
+      v30 = triggerCopy;
       v31 = 2114;
       v32 = v11;
-      _os_log_impl(&dword_274719000, v18, OS_LOG_TYPE_ERROR, "%s Failed to get trigger record from descriptor (%@): %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_274719000, start, OS_LOG_TYPE_ERROR, "%s Failed to get trigger record from descriptor (%@): %{public}@", buf, 0x20u);
     }
 
     v19 = 0;
@@ -570,13 +570,13 @@ void __83__WFAutomationListViewController_automationListCell_didUpdateNotificati
   return v19;
 }
 
-- (BOOL)showEditViewForItem:(id)a3
+- (BOOL)showEditViewForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFAutomationListViewController *)self showPersonalAutomationEditorForConfiguredTrigger:v4];
+    v5 = [(WFAutomationListViewController *)self showPersonalAutomationEditorForConfiguredTrigger:itemCopy];
   }
 
   else
@@ -589,7 +589,7 @@ void __83__WFAutomationListViewController_automationListCell_didUpdateNotificati
       goto LABEL_7;
     }
 
-    v5 = [(WFAutomationListViewController *)self showHomeAutomationEditorForTriggerItem:v4];
+    v5 = [(WFAutomationListViewController *)self showHomeAutomationEditorForTriggerItem:itemCopy];
   }
 
   v6 = v5;
@@ -598,22 +598,22 @@ LABEL_7:
   return v6;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = cellCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v7;
-      v10 = [(WFAutomationListViewController *)self workflowProvider];
-      v11 = [v9 workflowID];
-      v12 = [v10 workflowForIdentifier:v11];
+      v9 = itemCopy;
+      workflowProvider = [(WFAutomationListViewController *)self workflowProvider];
+      workflowID = [v9 workflowID];
+      v12 = [workflowProvider workflowForIdentifier:workflowID];
 
       [v8 setConfiguredTrigger:v9 workflow:v12 delegate:self];
     }
@@ -624,7 +624,7 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v8 setHomeTrigger:v7];
+        [v8 setHomeTrigger:itemCopy];
       }
 
       else
@@ -635,7 +635,7 @@ LABEL_7:
           v14 = 136315394;
           v15 = "[WFAutomationListViewController configureCell:forItem:]";
           v16 = 2114;
-          v17 = v7;
+          v17 = itemCopy;
           _os_log_impl(&dword_274719000, v13, OS_LOG_TYPE_ERROR, "%s Unexpected item (%{public}@)", &v14, 0x16u);
         }
       }
@@ -650,32 +650,32 @@ LABEL_7:
       v14 = 136315650;
       v15 = "[WFAutomationListViewController configureCell:forItem:]";
       v16 = 2114;
-      v17 = v6;
+      v17 = cellCopy;
       v18 = 2114;
-      v19 = v7;
+      v19 = itemCopy;
       _os_log_impl(&dword_274719000, v8, OS_LOG_TYPE_ERROR, "%s Unexpected cell (%{public}@) and/or item (%{public}@)", &v14, 0x20u);
     }
   }
 }
 
-- (void)buildTableSectionsWithConfiguredTriggers:(id)a3 homeTriggers:(id)a4
+- (void)buildTableSectionsWithConfiguredTriggers:(id)triggers homeTriggers:(id)homeTriggers
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  triggersCopy = triggers;
+  homeTriggersCopy = homeTriggers;
   v8 = objc_opt_new();
   v9 = @"items";
-  if ([v6 count])
+  if ([triggersCopy count])
   {
     v10 = MEMORY[0x277D7C978];
-    v11 = v6;
-    v12 = [v10 sortedTriggerClasses];
+    v11 = triggersCopy;
+    sortedTriggerClasses = [v10 sortedTriggerClasses];
     *&buf = MEMORY[0x277D85DD0];
     *(&buf + 1) = 3221225472;
     v47 = __WFAutomationsSortForUI_block_invoke;
     v48 = &unk_279EE76F0;
-    v49 = v12;
-    v13 = v12;
+    v49 = sortedTriggerClasses;
+    v13 = sortedTriggerClasses;
     v14 = [v11 sortedArrayUsingComparator:&buf];
 
     [(WFAutomationListViewController *)self setSortedPersonalAutomations:v14];
@@ -687,24 +687,24 @@ LABEL_7:
     v17 = NSStringFromClass(v16);
     v45[1] = v17;
     v44[2] = @"items";
-    v18 = [(WFAutomationListViewController *)self sortedPersonalAutomations];
+    sortedPersonalAutomations = [(WFAutomationListViewController *)self sortedPersonalAutomations];
     v44[3] = @"isEditable";
-    v45[2] = v18;
+    v45[2] = sortedPersonalAutomations;
     v45[3] = MEMORY[0x277CBEC38];
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:4];
     [v8 addObject:v19];
   }
 
-  if ([v7 count])
+  if ([homeTriggersCopy count])
   {
-    v35 = self;
-    v36 = v6;
+    selfCopy = self;
+    v36 = triggersCopy;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v34 = v7;
-    v20 = v7;
+    v34 = homeTriggersCopy;
+    v20 = homeTriggersCopy;
     v21 = [v20 countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v21)
     {
@@ -721,21 +721,21 @@ LABEL_7:
           }
 
           v26 = *(*(&v37 + 1) + 8 * i);
-          v27 = [v26 firstObject];
+          firstObject = [v26 firstObject];
 
-          if (v27)
+          if (firstObject)
           {
-            v28 = [v26 firstObject];
-            v29 = [v28 home];
+            firstObject2 = [v26 firstObject];
+            home = [firstObject2 home];
 
             v41[0] = @"title";
-            v30 = [v29 name];
-            v42[0] = v30;
+            name = [home name];
+            v42[0] = name;
             v41[1] = @"cellIdentifier";
             v31 = objc_opt_class();
             v32 = NSStringFromClass(v31);
             v42[1] = v32;
-            v42[2] = v29;
+            v42[2] = home;
             v41[2] = @"home";
             v41[3] = v25;
             v41[4] = @"isEditable";
@@ -749,12 +749,12 @@ LABEL_7:
 
           else
           {
-            v29 = getWFTriggersLogObject();
-            if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
+            home = getWFTriggersLogObject();
+            if (os_log_type_enabled(home, OS_LOG_TYPE_FAULT))
             {
               LODWORD(buf) = 136315138;
               *(&buf + 4) = "[WFAutomationListViewController buildTableSectionsWithConfiguredTriggers:homeTriggers:]";
-              _os_log_impl(&dword_274719000, v29, OS_LOG_TYPE_FAULT, "%s Was given an empty array of home triggers", &buf, 0xCu);
+              _os_log_impl(&dword_274719000, home, OS_LOG_TYPE_FAULT, "%s Was given an empty array of home triggers", &buf, 0xCu);
             }
 
             v9 = v25;
@@ -767,31 +767,31 @@ LABEL_7:
       while (v22);
     }
 
-    self = v35;
-    v6 = v36;
-    v7 = v34;
+    self = selfCopy;
+    triggersCopy = v36;
+    homeTriggersCopy = v34;
   }
 
   [(WFAutomationListViewController *)self setTableSections:v8];
 }
 
-- (void)flashAutomationForTriggerID:(id)a3
+- (void)flashAutomationForTriggerID:(id)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFAutomationListViewController.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFAutomationListViewController.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"triggerID"}];
   }
 
-  v6 = [(WFAutomationListViewController *)self database];
-  v7 = [v6 configuredTriggerForTriggerID:v5];
+  database = [(WFAutomationListViewController *)self database];
+  v7 = [database configuredTriggerForTriggerID:dCopy];
 
   if (v7)
   {
-    v8 = [(WFAutomationListViewController *)self sortedPersonalAutomations];
-    v9 = [v8 count];
+    sortedPersonalAutomations = [(WFAutomationListViewController *)self sortedPersonalAutomations];
+    v9 = [sortedPersonalAutomations count];
 
     if (!v9)
     {
@@ -801,11 +801,11 @@ LABEL_7:
     v10 = 0;
     while (1)
     {
-      v11 = [(WFAutomationListViewController *)self sortedPersonalAutomations];
-      v12 = [v11 objectAtIndexedSubscript:v10];
+      sortedPersonalAutomations2 = [(WFAutomationListViewController *)self sortedPersonalAutomations];
+      v12 = [sortedPersonalAutomations2 objectAtIndexedSubscript:v10];
 
-      v13 = [v12 identifier];
-      v14 = [v13 isEqualToString:v5];
+      identifier = [v12 identifier];
+      v14 = [identifier isEqualToString:dCopy];
 
       if (v14)
       {
@@ -813,8 +813,8 @@ LABEL_7:
       }
 
       ++v10;
-      v15 = [(WFAutomationListViewController *)self sortedPersonalAutomations];
-      v16 = [v15 count];
+      sortedPersonalAutomations3 = [(WFAutomationListViewController *)self sortedPersonalAutomations];
+      v16 = [sortedPersonalAutomations3 count];
 
       if (v10 >= v16)
       {
@@ -825,8 +825,8 @@ LABEL_7:
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v19 = [MEMORY[0x277CCAA70] indexPathForRow:v10 inSection:0];
-      v20 = [(WFAutomationListViewController *)self tableView];
-      [v20 selectRowAtIndexPath:v19 animated:0 scrollPosition:2];
+      tableView = [(WFAutomationListViewController *)self tableView];
+      [tableView selectRowAtIndexPath:v19 animated:0 scrollPosition:2];
 
       v21 = dispatch_time(0, 600000000);
       block[0] = MEMORY[0x277D85DD0];
@@ -845,11 +845,11 @@ LABEL_12:
       v17 = getWFTriggersLogObject();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = [v7 identifier];
+        identifier2 = [v7 identifier];
         *buf = 136315394;
         v26 = "[WFAutomationListViewController flashAutomationForTriggerID:]";
         v27 = 2112;
-        v28 = v18;
+        v28 = identifier2;
         _os_log_impl(&dword_274719000, v17, OS_LOG_TYPE_ERROR, "%s Couldn't find indexPath for configuredTrigger: %@", buf, 0x16u);
       }
     }
@@ -863,7 +863,7 @@ LABEL_12:
       *buf = 136315394;
       v26 = "[WFAutomationListViewController flashAutomationForTriggerID:]";
       v27 = 2112;
-      v28 = v5;
+      v28 = dCopy;
       _os_log_impl(&dword_274719000, v17, OS_LOG_TYPE_ERROR, "%s Couldn't find configuredTrigger for triggerID: %@", buf, 0x16u);
     }
   }
@@ -875,11 +875,11 @@ void __62__WFAutomationListViewController_flashAutomationForTriggerID___block_in
   [v2 deselectRowAtIndexPath:*(a1 + 40) animated:1];
 }
 
-- (void)updateUIWithConfiguredTriggers:(id)a3 homeTriggers:(id)a4
+- (void)updateUIWithConfiguredTriggers:(id)triggers homeTriggers:(id)homeTriggers
 {
-  [(WFAutomationListViewController *)self buildTableSectionsWithConfiguredTriggers:a3 homeTriggers:a4];
-  v5 = [(WFAutomationListViewController *)self tableView];
-  [v5 reloadData];
+  [(WFAutomationListViewController *)self buildTableSectionsWithConfiguredTriggers:triggers homeTriggers:homeTriggers];
+  tableView = [(WFAutomationListViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateTableViewLayoutMargins
@@ -889,15 +889,15 @@ void __62__WFAutomationListViewController_flashAutomationForTriggerID___block_in
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(WFAutomationListViewController *)self tableView];
-  [v11 setLayoutMargins:{v4, v6, v8, v10}];
+  tableView = [(WFAutomationListViewController *)self tableView];
+  [tableView setLayoutMargins:{v4, v6, v8, v10}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = WFAutomationListViewController;
-  [(WFAutomationListViewController *)&v6 viewWillAppear:a3];
+  [(WFAutomationListViewController *)&v6 viewWillAppear:appear];
   v4 = dispatch_time(0, 100000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -930,22 +930,22 @@ void __49__WFAutomationListViewController_viewWillAppear___block_invoke(uint64_t
   v22.receiver = self;
   v22.super_class = WFAutomationListViewController;
   [(WFAutomationListViewController *)&v22 loadView];
-  v3 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v4 = [(WFAutomationListViewController *)self tableView];
-  [v4 setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  tableView = [(WFAutomationListViewController *)self tableView];
+  [tableView setBackgroundColor:systemGroupedBackgroundColor];
 
   v5 = *MEMORY[0x277D76F30];
-  v6 = [(WFAutomationListViewController *)self tableView];
-  [v6 setRowHeight:v5];
+  tableView2 = [(WFAutomationListViewController *)self tableView];
+  [tableView2 setRowHeight:v5];
 
-  v7 = [(WFAutomationListViewController *)self tableView];
-  [v7 setContentInset:{8.0, 0.0, 0.0, 0.0}];
+  tableView3 = [(WFAutomationListViewController *)self tableView];
+  [tableView3 setContentInset:{8.0, 0.0, 0.0, 0.0}];
 
-  v8 = [(WFAutomationListViewController *)self tableView];
-  [v8 setEstimatedRowHeight:100.0];
+  tableView4 = [(WFAutomationListViewController *)self tableView];
+  [tableView4 setEstimatedRowHeight:100.0];
 
-  v9 = [(WFAutomationListViewController *)self tableView];
-  [v9 setSeparatorInset:{0.0, 124.0, 0.0, 0.0}];
+  tableView5 = [(WFAutomationListViewController *)self tableView];
+  [tableView5 setSeparatorInset:{0.0, 124.0, 0.0, 0.0}];
 
   v20 = 0u;
   v21 = 0u;
@@ -969,9 +969,9 @@ void __49__WFAutomationListViewController_viewWillAppear___block_invoke(uint64_t
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        v16 = [(WFAutomationListViewController *)self tableView];
+        tableView6 = [(WFAutomationListViewController *)self tableView];
         v17 = NSStringFromClass(v15);
-        [v16 registerClass:v15 forCellReuseIdentifier:v17];
+        [tableView6 registerClass:v15 forCellReuseIdentifier:v17];
 
         ++v14;
       }
@@ -986,17 +986,17 @@ void __49__WFAutomationListViewController_viewWillAppear___block_invoke(uint64_t
   [(WFAutomationListViewController *)self updateTableViewLayoutMargins];
 }
 
-- (WFAutomationListViewController)initWithDatabase:(id)a3 workflowProvider:(id)a4
+- (WFAutomationListViewController)initWithDatabase:(id)database workflowProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = WFAutomationListViewController;
   v9 = [(WFAutomationListViewController *)&v17 initWithStyle:2];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
+    objc_storeStrong(&v9->_database, database);
     sortedPersonalAutomations = v10->_sortedPersonalAutomations;
     v12 = MEMORY[0x277CBEBF8];
     v10->_sortedPersonalAutomations = MEMORY[0x277CBEBF8];
@@ -1004,9 +1004,9 @@ void __49__WFAutomationListViewController_viewWillAppear___block_invoke(uint64_t
     tableSections = v10->_tableSections;
     v10->_tableSections = v12;
 
-    objc_storeStrong(&v10->_workflowProvider, a4);
-    v14 = [MEMORY[0x277D7C4F0] sharedManager];
-    [v14 reloadData];
+    objc_storeStrong(&v10->_workflowProvider, provider);
+    mEMORY[0x277D7C4F0] = [MEMORY[0x277D7C4F0] sharedManager];
+    [mEMORY[0x277D7C4F0] reloadData];
 
     v15 = v10;
   }

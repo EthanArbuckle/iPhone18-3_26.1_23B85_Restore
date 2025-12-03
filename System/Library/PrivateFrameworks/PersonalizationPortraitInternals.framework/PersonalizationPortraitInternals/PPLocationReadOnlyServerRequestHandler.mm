@@ -1,16 +1,16 @@
 @interface PPLocationReadOnlyServerRequestHandler
 - (PPLocationReadOnlyServerRequestHandler)init;
-- (void)locationRecordsWithQuery:(id)a3 queryId:(unint64_t)a4;
-- (void)rankedLocationsWithQuery:(id)a3 queryId:(unint64_t)a4;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
+- (void)locationRecordsWithQuery:(id)query queryId:(unint64_t)id;
+- (void)rankedLocationsWithQuery:(id)query queryId:(unint64_t)id;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPLocationReadOnlyServerRequestHandler
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  feedbackCopy = feedback;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -19,19 +19,19 @@
   }
 
   v8 = +[PPLocalLocationStore defaultStore];
-  [v8 registerFeedback:v6 completion:v5];
+  [v8 registerFeedback:feedbackCopy completion:completionCopy];
 }
 
-- (void)locationRecordsWithQuery:(id)a3 queryId:(unint64_t)a4
+- (void)locationRecordsWithQuery:(id)query queryId:(unint64_t)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     clientProcessName = self->_clientProcessName;
     *buf = 134218242;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = clientProcessName;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPLocationReadOnlyServer: locationRecordsWithQuery queryId:%llu process:%@", buf, 0x16u);
@@ -42,22 +42,22 @@
   v15[1] = 3221225472;
   v15[2] = __75__PPLocationReadOnlyServerRequestHandler_locationRecordsWithQuery_queryId___block_invoke;
   v15[3] = &unk_278978A80;
-  v10 = v6;
+  v10 = queryCopy;
   v16 = v10;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  idCopy2 = id;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = self->_clientProcessName;
-    v13 = [v10 customizedDescription];
+    customizedDescription = [v10 customizedDescription];
     *buf = 134218498;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = v12;
     v23 = 2112;
-    v24 = v13;
+    v24 = customizedDescription;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPLocationReadOnlyServer: locationRecordsWithQuery queryId:%llu process:%@ query:%@", buf, 0x20u);
   }
 
@@ -172,16 +172,16 @@ uint64_t __75__PPLocationReadOnlyServerRequestHandler_locationRecordsWithQuery_q
   return result;
 }
 
-- (void)rankedLocationsWithQuery:(id)a3 queryId:(unint64_t)a4
+- (void)rankedLocationsWithQuery:(id)query queryId:(unint64_t)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  queryCopy = query;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     clientProcessName = self->_clientProcessName;
     *buf = 134218242;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = clientProcessName;
     _os_log_impl(&dword_23224A000, v7, OS_LOG_TYPE_DEFAULT, "PPLocationReadOnlyServer: rankedLocationsWithQuery queryId:%llu process:%@", buf, 0x16u);
@@ -192,22 +192,22 @@ uint64_t __75__PPLocationReadOnlyServerRequestHandler_locationRecordsWithQuery_q
   v15[1] = 3221225472;
   v15[2] = __75__PPLocationReadOnlyServerRequestHandler_rankedLocationsWithQuery_queryId___block_invoke;
   v15[3] = &unk_278978A80;
-  v10 = v6;
+  v10 = queryCopy;
   v16 = v10;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  idCopy2 = id;
   [(PPXPCServerPipelinedBatchQueryManager *)queryManager runConcurrentlyWithRequestThrottle:v15];
   v11 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = self->_clientProcessName;
-    v13 = [v10 customizedDescription];
+    customizedDescription = [v10 customizedDescription];
     *buf = 134218498;
-    v20 = a4;
+    idCopy3 = id;
     v21 = 2112;
     v22 = v12;
     v23 = 2112;
-    v24 = v13;
+    v24 = customizedDescription;
     _os_log_impl(&dword_23224A000, v11, OS_LOG_TYPE_DEFAULT, "PPLocationReadOnlyServer: rankedLocationsWithQuery queryId:%llu process:%@ query:%@", buf, 0x20u);
   }
 

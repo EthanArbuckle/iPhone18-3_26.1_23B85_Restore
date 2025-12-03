@@ -1,23 +1,23 @@
 @interface PGGraphUpdateManager
-- (BOOL)_performEnrichmentWithGraphUpdateInventory:(id)a3 enrichmentContext:(unint64_t)a4 progressBlock:(id)a5 error:(id *)a6;
+- (BOOL)_performEnrichmentWithGraphUpdateInventory:(id)inventory enrichmentContext:(unint64_t)context progressBlock:(id)block error:(id *)error;
 - (BOOL)stopRequested;
-- (PGGraphUpdateManager)initWithGraphManager:(id)a3;
+- (PGGraphUpdateManager)initWithGraphManager:(id)manager;
 - (id)description;
-- (void)_onStopRequestedWasListening:(BOOL)a3;
-- (void)_performRebuildWithGraphIngestRecipe:(id)a3 progressBlock:(id)a4 completionBlock:(id)a5;
+- (void)_onStopRequestedWasListening:(BOOL)listening;
+- (void)_performRebuildWithGraphIngestRecipe:(id)recipe progressBlock:(id)block completionBlock:(id)completionBlock;
 - (void)_processRebuild;
-- (void)_triggerUpdateForGraphUpdate:(id)a3;
-- (void)performFullRebuildWithProgressBlock:(id)a3 completionBlock:(id)a4;
+- (void)_triggerUpdateForGraphUpdate:(id)update;
+- (void)performFullRebuildWithProgressBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation PGGraphUpdateManager
 
-- (BOOL)_performEnrichmentWithGraphUpdateInventory:(id)a3 enrichmentContext:(unint64_t)a4 progressBlock:(id)a5 error:(id *)a6
+- (BOOL)_performEnrichmentWithGraphUpdateInventory:(id)inventory enrichmentContext:(unint64_t)context progressBlock:(id)block error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  inventoryCopy = inventory;
+  blockCopy = block;
+  v11 = _Block_copy(blockCopy);
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -26,9 +26,9 @@
   v40[1] = v40;
   v40[2] = 0x2020000000;
   v40[3] = 0;
-  v12 = [(PGManager *)self->_manager enrichmentLoggingConnection];
-  v13 = os_signpost_id_generate(v12);
-  v14 = v12;
+  enrichmentLoggingConnection = [(PGManager *)self->_manager enrichmentLoggingConnection];
+  v13 = os_signpost_id_generate(enrichmentLoggingConnection);
+  v14 = enrichmentLoggingConnection;
   v15 = v14;
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
@@ -39,10 +39,10 @@
   info = 0;
   mach_timebase_info(&info);
   v32 = mach_absolute_time();
-  v16 = [PGGraphDataModelEnrichmentManager enrichmentProcessorsForDataModelEnrichmentContext:a4];
+  v16 = [PGGraphDataModelEnrichmentManager enrichmentProcessorsForDataModelEnrichmentContext:context];
   v17 = [PGGraphDataModelEnrichmentManager alloc];
-  v18 = [(PGGraphUpdateManager *)self manager];
-  v19 = [(PGGraphDataModelEnrichmentManager *)v17 initWithManager:v18 enrichmentProcessors:v16];
+  manager = [(PGGraphUpdateManager *)self manager];
+  v19 = [(PGGraphDataModelEnrichmentManager *)v17 initWithManager:manager enrichmentProcessors:v16];
 
   v20 = MEMORY[0x277D22C80];
   v34[0] = MEMORY[0x277D85DD0];
@@ -55,11 +55,11 @@
   v37 = &v41;
   v38 = 0x3F847AE147AE147BLL;
   v22 = [v20 progressReporterWithProgressBlock:v34];
-  v23 = [(PGGraphDataModelEnrichmentManager *)v19 enrichDataModelWithGraphUpdateInventory:v33 progressReporter:v22 error:a6];
+  v23 = [(PGGraphDataModelEnrichmentManager *)v19 enrichDataModelWithGraphUpdateInventory:inventoryCopy progressReporter:v22 error:error];
   v24 = *(v42 + 24);
-  if (a6 && *(v42 + 24))
+  if (error && *(v42 + 24))
   {
-    *a6 = [PGError errorForCode:-4];
+    *error = [PGError errorForCode:-4];
     if ((v42[3] & 1) == 0)
     {
       goto LABEL_7;
@@ -130,10 +130,10 @@ void __105__PGGraphUpdateManager__performEnrichmentWithGraphUpdateInventory_enri
   }
 }
 
-- (void)_triggerUpdateForGraphUpdate:(id)a3
+- (void)_triggerUpdateForGraphUpdate:(id)update
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(self->_processingQueue);
   v35 = 0;
   v36 = &v35;
@@ -150,7 +150,7 @@ void __105__PGGraphUpdateManager__performEnrichmentWithGraphUpdateInventory_enri
   v25 = 0x3032000000;
   v26 = __Block_byref_object_copy__19467;
   v27 = __Block_byref_object_dispose__19468;
-  v5 = v4;
+  v5 = updateCopy;
   v28 = v5;
   v6 = dispatch_block_create(0, &__block_literal_global_257);
   manager = self->_manager;
@@ -347,7 +347,7 @@ LABEL_7:
   return result;
 }
 
-- (void)_onStopRequestedWasListening:(BOOL)a3
+- (void)_onStopRequestedWasListening:(BOOL)listening
 {
   dispatch_assert_queue_V2(self->_stateQueue);
   [(PGGraphUpdateManager *)self setProcessingState:0];
@@ -355,23 +355,23 @@ LABEL_7:
   [(PGGraphUpdateManager *)self setStopRequested:0];
 }
 
-- (void)_performRebuildWithGraphIngestRecipe:(id)a3 progressBlock:(id)a4 completionBlock:(id)a5
+- (void)_performRebuildWithGraphIngestRecipe:(id)recipe progressBlock:(id)block completionBlock:(id)completionBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recipeCopy = recipe;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   stateQueue = self->_stateQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __91__PGGraphUpdateManager__performRebuildWithGraphIngestRecipe_progressBlock_completionBlock___block_invoke;
   v15[3] = &unk_278881258;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = recipeCopy;
+  v17 = completionBlockCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = recipeCopy;
+  v14 = completionBlockCopy;
   dispatch_sync(stateQueue, v15);
 }
 
@@ -464,16 +464,16 @@ void __91__PGGraphUpdateManager__performRebuildWithGraphIngestRecipe_progressBlo
   }
 }
 
-- (void)performFullRebuildWithProgressBlock:(id)a3 completionBlock:(id)a4
+- (void)performFullRebuildWithProgressBlock:(id)block completionBlock:(id)completionBlock
 {
-  v6 = a4;
-  v7 = a3;
+  completionBlockCopy = completionBlock;
+  blockCopy = block;
   v8 = [PGGraphIngestRecipe alloc];
-  v9 = [(PGGraphUpdateManager *)self manager];
-  v10 = [v9 photoLibrary];
-  v11 = [(PGGraphIngestRecipe *)v8 initWithPhotoLibrary:v10];
+  manager = [(PGGraphUpdateManager *)self manager];
+  photoLibrary = [manager photoLibrary];
+  v11 = [(PGGraphIngestRecipe *)v8 initWithPhotoLibrary:photoLibrary];
 
-  [(PGGraphUpdateManager *)self _performRebuildWithGraphIngestRecipe:v11 progressBlock:v7 completionBlock:v6];
+  [(PGGraphUpdateManager *)self _performRebuildWithGraphIngestRecipe:v11 progressBlock:blockCopy completionBlock:completionBlockCopy];
 }
 
 - (BOOL)stopRequested
@@ -501,27 +501,27 @@ void __91__PGGraphUpdateManager__performRebuildWithGraphIngestRecipe_progressBlo
   v12.receiver = self;
   v12.super_class = PGGraphUpdateManager;
   v4 = [(PGGraphUpdateManager *)&v12 description];
-  v5 = [(PGGraphUpdateManager *)self processingState];
-  if (v5 > 4)
+  processingState = [(PGGraphUpdateManager *)self processingState];
+  if (processingState > 4)
   {
     v6 = @"Unknown Processing State";
   }
 
   else
   {
-    v6 = off_278881318[v5];
+    v6 = off_278881318[processingState];
   }
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_stopRequested];
-  v8 = [(PGGraphUpdateManager *)self executionContext];
-  if (v8 > 2)
+  executionContext = [(PGGraphUpdateManager *)self executionContext];
+  if (executionContext > 2)
   {
     v9 = @"Unknown Execution Context";
   }
 
   else
   {
-    v9 = off_278881340[v8];
+    v9 = off_278881340[executionContext];
   }
 
   v10 = [v3 stringWithFormat:@"%@ - processing state: %@, stopRequested: %@, execution context: %@", v4, v6, v7, v9];
@@ -529,16 +529,16 @@ void __91__PGGraphUpdateManager__performRebuildWithGraphIngestRecipe_progressBlo
   return v10;
 }
 
-- (PGGraphUpdateManager)initWithGraphManager:(id)a3
+- (PGGraphUpdateManager)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = PGGraphUpdateManager;
   v6 = [(PGGraphUpdateManager *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_manager, a3);
+    objc_storeStrong(&v6->_manager, manager);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_initially_inactive(v8);
 
@@ -556,8 +556,8 @@ void __91__PGGraphUpdateManager__performRebuildWithGraphIngestRecipe_progressBlo
     dispatch_activate(v7->_stateQueue);
     *&v7->_processingState = 0;
     v14 = [PGGraphUpdateJetsamIndicator alloc];
-    v15 = [v5 photoLibrary];
-    v16 = [(PGGraphUpdateJetsamIndicator *)v14 initWithPhotoLibrary:v15];
+    photoLibrary = [managerCopy photoLibrary];
+    v16 = [(PGGraphUpdateJetsamIndicator *)v14 initWithPhotoLibrary:photoLibrary];
     jetsamIndicator = v7->_jetsamIndicator;
     v7->_jetsamIndicator = v16;
   }

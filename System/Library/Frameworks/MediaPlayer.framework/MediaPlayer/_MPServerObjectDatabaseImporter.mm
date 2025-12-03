@@ -1,201 +1,201 @@
 @interface _MPServerObjectDatabaseImporter
-- (BOOL)_importAssetFullSINF:(id)a3 forIdentifier:(id)a4 hashedPersonID:(id)a5 flavor:(int64_t)a6;
-- (BOOL)_importAssetMiniSINF:(id)a3 forIdentifier:(id)a4 hashedPersonID:(id)a5 flavor:(int64_t)a6;
-- (BOOL)importAssetSinf:(id)a3 type:(int64_t)a4 forIdentifier:(id)a5 hashedPersonID:(id)a6 flavor:(int64_t)a7 sinfPayload:(id)a8;
-- (BOOL)importAssetURLString:(id)a3 forIdentifiers:(id)a4 flavor:(int64_t)a5 expirationDate:(id)a6;
-- (BOOL)importHLSAssetURLString:(id)a3 keyCertificateURL:(id)a4 keyServerURL:(id)a5 redeliveryId:(int64_t)a6 protocolType:(id)a7 isiTunesStoreStream:(BOOL)a8 forIdentifiers:(id)a9 expirationDate:(id)a10;
-- (BOOL)importObject:(id)a3 type:(id)a4 identifiers:(id)a5 isExplicitContent:(BOOL)a6 source:(int64_t)a7 expiration:(id)a8;
-- (BOOL)relateIdentifiers:(id)a3 type:(id)a4 toParentIdentifiers:(id)a5 parentVersionHash:(id)a6 childKey:(id)a7 order:(int64_t)a8;
-- (BOOL)removeRelationshipsForParentIdentifiers:(id)a3 childKey:(id)a4;
-- (id)_existingAssetMatchingIdentifier:(id)a3 hashedPersonID:(id)a4 flavor:(int64_t)a5;
-- (id)_existingHLSAssetMatchingIdentifier:(id)a3 hashedPersonID:(id)a4;
+- (BOOL)_importAssetFullSINF:(id)f forIdentifier:(id)identifier hashedPersonID:(id)d flavor:(int64_t)flavor;
+- (BOOL)_importAssetMiniSINF:(id)f forIdentifier:(id)identifier hashedPersonID:(id)d flavor:(int64_t)flavor;
+- (BOOL)importAssetSinf:(id)sinf type:(int64_t)type forIdentifier:(id)identifier hashedPersonID:(id)d flavor:(int64_t)flavor sinfPayload:(id)payload;
+- (BOOL)importAssetURLString:(id)string forIdentifiers:(id)identifiers flavor:(int64_t)flavor expirationDate:(id)date;
+- (BOOL)importHLSAssetURLString:(id)string keyCertificateURL:(id)l keyServerURL:(id)rL redeliveryId:(int64_t)id protocolType:(id)type isiTunesStoreStream:(BOOL)stream forIdentifiers:(id)identifiers expirationDate:(id)self0;
+- (BOOL)importObject:(id)object type:(id)type identifiers:(id)identifiers isExplicitContent:(BOOL)content source:(int64_t)source expiration:(id)expiration;
+- (BOOL)relateIdentifiers:(id)identifiers type:(id)type toParentIdentifiers:(id)parentIdentifiers parentVersionHash:(id)hash childKey:(id)key order:(int64_t)order;
+- (BOOL)removeRelationshipsForParentIdentifiers:(id)identifiers childKey:(id)key;
+- (id)_existingAssetMatchingIdentifier:(id)identifier hashedPersonID:(id)d flavor:(int64_t)flavor;
+- (id)_existingHLSAssetMatchingIdentifier:(id)identifier hashedPersonID:(id)d;
 - (void)dealloc;
-- (void)initWithDatabase:(void *)a1;
+- (void)initWithDatabase:(void *)database;
 @end
 
 @implementation _MPServerObjectDatabaseImporter
 
-- (void)initWithDatabase:(void *)a1
+- (void)initWithDatabase:(void *)database
 {
   v3 = a2;
-  if (a1)
+  if (database)
   {
-    v75.receiver = a1;
+    v75.receiver = database;
     v75.super_class = _MPServerObjectDatabaseImporter;
-    a1 = objc_msgSendSuper2(&v75, sel_init);
-    if (a1)
+    database = objc_msgSendSuper2(&v75, sel_init);
+    if (database)
     {
       v4 = MSVNanoIDCreateTaggedPointer();
       v5 = [@"MPServerObjectDatabaseImport-" stringByAppendingString:v4];
       v6 = [v3 transactionWithName:v5 error:0];
-      v7 = a1[1];
-      a1[1] = v6;
+      v7 = database[1];
+      database[1] = v6;
 
-      v8 = a1[1];
+      v8 = database[1];
       v74 = 0;
       v9 = [v8 statementWithString:@" INSERT INTO objects(  identifier error:{person_id, source, expiration_date, type, explicit, payload, identifier_set) VALUES(  @identifier, @personID, @source, @expirationDate, @type, @explicit, @payload, @identifierSet) ON CONFLICT (identifier, person_id) DO UPDATE SET   source = excluded.source, expiration_date = excluded.expiration_date, type = excluded.type, explicit = excluded.explicit, payload = excluded.payload, identifier_set = excluded.identifier_set", &v74}];;
       v10 = v74;
-      v11 = a1[2];
-      a1[2] = v9;
+      v11 = database[2];
+      database[2] = v9;
 
       if (v10)
       {
-        v53 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v53 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1346 description:{@"SOD Importer failed _insertObjectStatement: %@", v10}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1346 description:{@"SOD Importer failed _insertObjectStatement: %@", v10}];
       }
 
-      v12 = a1[1];
+      v12 = database[1];
       v73 = v10;
       v13 = [v12 statementWithString:@" INSERT OR IGNORE INTO objects(  identifier error:{person_id, type, identifier_set) VALUES(  @identifier, @personID, @type, @identifierSet)", &v73}];;
       v14 = v73;
 
-      v15 = a1[3];
-      a1[3] = v13;
+      v15 = database[3];
+      database[3] = v13;
 
       if (v14)
       {
-        v54 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v54 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1354 description:{@"SOD Importer failed _insertPlaceholderObjectStatement: %@", v14}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1354 description:{@"SOD Importer failed _insertPlaceholderObjectStatement: %@", v14}];
       }
 
-      v16 = a1[1];
+      v16 = database[1];
       v72 = v14;
       v17 = [v16 statementWithString:@" INSERT OR REPLACE INTO assets(  identifier error:{hashed_person_id, flavor, url, url_expiration_date) VALUES(  @identifier, @hashedPersonID, @flavor, @url, @urlExpirationDate) ", &v72}];;
       v18 = v72;
 
-      v19 = a1[5];
-      a1[5] = v17;
+      v19 = database[5];
+      database[5] = v17;
 
       if (v18)
       {
-        v55 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v55 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1364 description:{@"SOD Importer failed _insertAssetURLStatement: %@", v18}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1364 description:{@"SOD Importer failed _insertAssetURLStatement: %@", v18}];
       }
 
-      v20 = a1[1];
+      v20 = database[1];
       v71 = v18;
       v21 = [v20 statementWithString:@"INSERT OR REPLACE INTO hls_assets (identifier error:{hashed_person_id, url_expiration_date, playlist_url, key_certificate_url, key_server_url, key_server_adam_id, key_server_protocol_type, is_itunes_store_stream) VALUES (@identifier, @hashedPersonID, @urlExpirationDate, @playlistURL, @keyCertificateURL, @keyServerURL, @keyServerAdamID, @keyServerProtocolType, @isiTunesStoreStream)", &v71}];
       v22 = v71;
 
-      v23 = a1[6];
-      a1[6] = v21;
+      v23 = database[6];
+      database[6] = v21;
 
       if (v22)
       {
-        v56 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v56 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1367 description:{@"SOD Importer failed _insertHLSAssetURLStatement: %@", v22}];
+        currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler4 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1367 description:{@"SOD Importer failed _insertHLSAssetURLStatement: %@", v22}];
       }
 
-      v24 = a1[1];
+      v24 = database[1];
       v70 = v22;
       v25 = [v24 statementWithString:@"INSERT OR REPLACE INTO object_relationships (parent_identifier error:{child_identifier, person_id, child_key, suborder, parent_version_hash) VALUES (@parentIdentifier, @childIdentifier, @personID, @childKey, @suborder, @parentVersionHash)", &v70}];
       v26 = v70;
 
-      v27 = a1[4];
-      a1[4] = v25;
+      v27 = database[4];
+      database[4] = v25;
 
       if (v26)
       {
-        v57 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v57 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1370 description:{@"SOD Importer failed _insertObjectRelationshipStatement: %@", v26}];
+        currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler5 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1370 description:{@"SOD Importer failed _insertObjectRelationshipStatement: %@", v26}];
       }
 
-      v28 = a1[1];
+      v28 = database[1];
       v69 = v26;
       v29 = [v28 statementWithString:@"DELETE FROM object_relationships WHERE parent_identifier = @parentIdentifier AND person_id = @personID AND child_key = @childKey" error:&v69];
       v30 = v69;
 
-      v31 = a1[7];
-      a1[7] = v29;
+      v31 = database[7];
+      database[7] = v29;
 
       if (v30)
       {
-        v58 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v58 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1373 description:{@"SOD Importer failed _removeRelationshipsStatement: %@", v30}];
+        currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler6 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1373 description:{@"SOD Importer failed _removeRelationshipsStatement: %@", v30}];
       }
 
-      v32 = a1[1];
+      v32 = database[1];
       v68 = v30;
       v33 = [v32 statementWithString:@"UPDATE assets SET mini_sinf = @miniSINF WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND flavor = @flavor" error:&v68];
       v34 = v68;
 
-      v35 = a1[8];
-      a1[8] = v33;
+      v35 = database[8];
+      database[8] = v33;
 
       if (v34)
       {
-        v59 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v59 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1376 description:{@"SOD Importer failed _updateMiniSINFStatement: %@", v34}];
+        currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler7 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1376 description:{@"SOD Importer failed _updateMiniSINFStatement: %@", v34}];
       }
 
-      v36 = a1[1];
+      v36 = database[1];
       v67 = v34;
       v37 = [v36 statementWithString:@"UPDATE assets SET sinfs = @sinfs WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND flavor = @flavor" error:&v67];
       v38 = v67;
 
-      v39 = a1[9];
-      a1[9] = v37;
+      v39 = database[9];
+      database[9] = v37;
 
       if (v38)
       {
-        v60 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v60 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1379 description:{@"SOD Importer failed _updateSINFStatement: %@", v38}];
+        currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler8 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1379 description:{@"SOD Importer failed _updateSINFStatement: %@", v38}];
       }
 
-      v40 = a1[1];
+      v40 = database[1];
       v66 = v38;
       v41 = [v40 statementWithString:@"UPDATE assets SET url = @url error:{url_expiration_date = @urlExpirationDate WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND flavor = @flavor", &v66}];
       v42 = v66;
 
-      v43 = a1[10];
-      a1[10] = v41;
+      v43 = database[10];
+      database[10] = v41;
 
       if (v42)
       {
-        v61 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v61 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1382 description:{@"SOD Importer failed _updateAssetURLStatement: %@", v42}];
+        currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler9 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1382 description:{@"SOD Importer failed _updateAssetURLStatement: %@", v42}];
       }
 
-      v44 = a1[1];
+      v44 = database[1];
       v65 = v42;
       v45 = [v44 statementWithString:@"SELECT identifier error:{hashed_person_id, flavor, url, mini_sinf, sinfs FROM assets WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID AND flavor = @flavor", &v65}];
       v46 = v65;
 
-      v47 = a1[11];
-      a1[11] = v45;
+      v47 = database[11];
+      database[11] = v45;
 
       if (v46)
       {
-        v62 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v62 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1385 description:{@"SOD Importer failed _existingAssetStatement: %@", v46}];
+        currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler10 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1385 description:{@"SOD Importer failed _existingAssetStatement: %@", v46}];
       }
 
-      v48 = a1[1];
+      v48 = database[1];
       v64 = v46;
       v49 = [v48 statementWithString:@"SELECT identifier error:{hashed_person_id, playlist_url, key_certificate_url, key_server_url, key_server_adam_id, key_server_protocol_type, is_itunes_store_stream FROM hls_assets WHERE identifier = @identifier AND hashed_person_id = @hashedPersonID", &v64}];
       v50 = v64;
 
-      v51 = a1[12];
-      a1[12] = v49;
+      v51 = database[12];
+      database[12] = v49;
 
       if (v50)
       {
-        v63 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v63 handleFailureInMethod:sel_initWithDatabase_ object:a1 file:@"MPServerObjectDatabase.mm" lineNumber:1388 description:{@"SOD Importer failed _existingHLSAssetStatement: %@", v50}];
+        currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler11 handleFailureInMethod:sel_initWithDatabase_ object:database file:@"MPServerObjectDatabase.mm" lineNumber:1388 description:{@"SOD Importer failed _existingHLSAssetStatement: %@", v50}];
       }
     }
   }
 
-  return a1;
+  return database;
 }
 
-- (id)_existingHLSAssetMatchingIdentifier:(id)a3 hashedPersonID:(id)a4
+- (id)_existingHLSAssetMatchingIdentifier:(id)identifier hashedPersonID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(MSVSQLStatement *)self->_existingHLSAssetStatement bindStringValue:v6 toParameterNamed:@"@identifier"];
-  [(MSVSQLStatement *)self->_existingHLSAssetStatement bindStringValue:v7 toParameterNamed:@"@hashedPersonID"];
+  identifierCopy = identifier;
+  dCopy = d;
+  [(MSVSQLStatement *)self->_existingHLSAssetStatement bindStringValue:identifierCopy toParameterNamed:@"@identifier"];
+  [(MSVSQLStatement *)self->_existingHLSAssetStatement bindStringValue:dCopy toParameterNamed:@"@hashedPersonID"];
   v8 = [(MSVSQLDatabaseTransaction *)self->_transaction resultsForStatement:self->_existingHLSAssetStatement];
   v14 = 0;
   v9 = [v8 nextObjectWithError:&v14];
@@ -226,21 +226,21 @@
   return v12;
 }
 
-- (id)_existingAssetMatchingIdentifier:(id)a3 hashedPersonID:(id)a4 flavor:(int64_t)a5
+- (id)_existingAssetMatchingIdentifier:(id)identifier hashedPersonID:(id)d flavor:(int64_t)flavor
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  [(MSVSQLStatement *)self->_existingAssetStatement bindStringValue:v8 toParameterNamed:@"@identifier"];
-  [(MSVSQLStatement *)self->_existingAssetStatement bindStringValue:v9 toParameterNamed:@"@hashedPersonID"];
-  if ((a5 - 1) > 3)
+  identifierCopy = identifier;
+  dCopy = d;
+  [(MSVSQLStatement *)self->_existingAssetStatement bindStringValue:identifierCopy toParameterNamed:@"@identifier"];
+  [(MSVSQLStatement *)self->_existingAssetStatement bindStringValue:dCopy toParameterNamed:@"@hashedPersonID"];
+  if ((flavor - 1) > 3)
   {
     v10 = @"unknown";
   }
 
   else
   {
-    v10 = off_1E767C390[a5 - 1];
+    v10 = off_1E767C390[flavor - 1];
   }
 
   [(MSVSQLStatement *)self->_existingAssetStatement bindStringValue:v10 toParameterNamed:@"@flavor"];
@@ -274,23 +274,23 @@
   return v15;
 }
 
-- (BOOL)_importAssetFullSINF:(id)a3 forIdentifier:(id)a4 hashedPersonID:(id)a5 flavor:(int64_t)a6
+- (BOOL)_importAssetFullSINF:(id)f forIdentifier:(id)identifier hashedPersonID:(id)d flavor:(int64_t)flavor
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [(MSVSQLStatement *)self->_updateSINFStatement bindDataValue:v10 toParameterNamed:@"@sinfs"];
-  [(MSVSQLStatement *)self->_updateSINFStatement bindStringValue:v11 toParameterNamed:@"@identifier"];
-  [(MSVSQLStatement *)self->_updateSINFStatement bindStringValue:v12 toParameterNamed:@"@hashedPersonID"];
-  if ((a6 - 1) > 3)
+  fCopy = f;
+  identifierCopy = identifier;
+  dCopy = d;
+  [(MSVSQLStatement *)self->_updateSINFStatement bindDataValue:fCopy toParameterNamed:@"@sinfs"];
+  [(MSVSQLStatement *)self->_updateSINFStatement bindStringValue:identifierCopy toParameterNamed:@"@identifier"];
+  [(MSVSQLStatement *)self->_updateSINFStatement bindStringValue:dCopy toParameterNamed:@"@hashedPersonID"];
+  if ((flavor - 1) > 3)
   {
     v13 = @"unknown";
   }
 
   else
   {
-    v13 = off_1E767C390[a6 - 1];
+    v13 = off_1E767C390[flavor - 1];
   }
 
   [(MSVSQLStatement *)self->_updateSINFStatement bindStringValue:v13 toParameterNamed:@"@flavor"];
@@ -315,23 +315,23 @@
   return v16 == 0;
 }
 
-- (BOOL)_importAssetMiniSINF:(id)a3 forIdentifier:(id)a4 hashedPersonID:(id)a5 flavor:(int64_t)a6
+- (BOOL)_importAssetMiniSINF:(id)f forIdentifier:(id)identifier hashedPersonID:(id)d flavor:(int64_t)flavor
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [(MSVSQLStatement *)self->_updateMiniSINFStatement bindDataValue:v10 toParameterNamed:@"@miniSINF"];
-  [(MSVSQLStatement *)self->_updateMiniSINFStatement bindStringValue:v11 toParameterNamed:@"@identifier"];
-  [(MSVSQLStatement *)self->_updateMiniSINFStatement bindStringValue:v12 toParameterNamed:@"@hashedPersonID"];
-  if ((a6 - 1) > 3)
+  fCopy = f;
+  identifierCopy = identifier;
+  dCopy = d;
+  [(MSVSQLStatement *)self->_updateMiniSINFStatement bindDataValue:fCopy toParameterNamed:@"@miniSINF"];
+  [(MSVSQLStatement *)self->_updateMiniSINFStatement bindStringValue:identifierCopy toParameterNamed:@"@identifier"];
+  [(MSVSQLStatement *)self->_updateMiniSINFStatement bindStringValue:dCopy toParameterNamed:@"@hashedPersonID"];
+  if ((flavor - 1) > 3)
   {
     v13 = @"unknown";
   }
 
   else
   {
-    v13 = off_1E767C390[a6 - 1];
+    v13 = off_1E767C390[flavor - 1];
   }
 
   [(MSVSQLStatement *)self->_updateMiniSINFStatement bindStringValue:v13 toParameterNamed:@"@flavor"];
@@ -356,35 +356,35 @@
   return v16 == 0;
 }
 
-- (BOOL)removeRelationshipsForParentIdentifiers:(id)a3 childKey:(id)a4
+- (BOOL)removeRelationshipsForParentIdentifiers:(id)identifiers childKey:(id)key
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  identifiersCopy = identifiers;
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1654 description:{@"Invalid parameter not satisfying: %@", @"childKey"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1654 description:{@"Invalid parameter not satisfying: %@", @"childKey"}];
   }
 
-  v9 = [v7 personalizedStore];
-  v10 = [v9 personID];
-  v11 = [v7 preferredStoreStringIdentifierForPersonID:v10];
+  personalizedStore = [identifiersCopy personalizedStore];
+  personID = [personalizedStore personID];
+  v11 = [identifiersCopy preferredStoreStringIdentifierForPersonID:personID];
 
   if (v11)
   {
-    v12 = [v7 personalizedStore];
-    v13 = [v12 personID];
+    personalizedStore2 = [identifiersCopy personalizedStore];
+    personID2 = [personalizedStore2 personID];
 
-    if (!v13)
+    if (!personID2)
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1658 description:@"Cannot remove relationships without a personID"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1658 description:@"Cannot remove relationships without a personID"];
     }
 
     [(MSVSQLStatement *)self->_removeRelationshipsStatement bindStringValue:v11 toParameterNamed:@"@parentIdentifier"];
-    [(MSVSQLStatement *)self->_removeRelationshipsStatement bindStringValue:v13 toParameterNamed:@"@personID"];
-    [(MSVSQLStatement *)self->_removeRelationshipsStatement bindStringValue:v8 toParameterNamed:@"@childKey"];
+    [(MSVSQLStatement *)self->_removeRelationshipsStatement bindStringValue:personID2 toParameterNamed:@"@personID"];
+    [(MSVSQLStatement *)self->_removeRelationshipsStatement bindStringValue:keyCopy toParameterNamed:@"@childKey"];
     transaction = self->_transaction;
     removeRelationshipsStatement = self->_removeRelationshipsStatement;
     v22 = 0;
@@ -413,48 +413,48 @@
   return v17;
 }
 
-- (BOOL)relateIdentifiers:(id)a3 type:(id)a4 toParentIdentifiers:(id)a5 parentVersionHash:(id)a6 childKey:(id)a7 order:(int64_t)a8
+- (BOOL)relateIdentifiers:(id)identifiers type:(id)type toParentIdentifiers:(id)parentIdentifiers parentVersionHash:(id)hash childKey:(id)key order:(int64_t)order
 {
   v52 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v42 = a4;
-  v16 = a5;
-  v43 = a6;
-  v44 = a7;
-  if (!v44)
+  identifiersCopy = identifiers;
+  typeCopy = type;
+  parentIdentifiersCopy = parentIdentifiers;
+  hashCopy = hash;
+  keyCopy = key;
+  if (!keyCopy)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1606 description:{@"Invalid parameter not satisfying: %@", @"childKey"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1606 description:{@"Invalid parameter not satisfying: %@", @"childKey"}];
   }
 
-  v17 = [v16 personalizedStore];
-  v18 = [v17 personID];
-  v19 = [v16 preferredStoreStringIdentifierForPersonID:v18];
+  personalizedStore = [parentIdentifiersCopy personalizedStore];
+  personID = [personalizedStore personID];
+  v19 = [parentIdentifiersCopy preferredStoreStringIdentifierForPersonID:personID];
 
   if (v19)
   {
-    v20 = [v15 personalizedStore];
-    v21 = [v20 personID];
-    v22 = [v15 preferredStoreStringIdentifierForPersonID:v21];
+    personalizedStore2 = [identifiersCopy personalizedStore];
+    personID2 = [personalizedStore2 personID];
+    v22 = [identifiersCopy preferredStoreStringIdentifierForPersonID:personID2];
 
     if (v22)
     {
-      v23 = [v15 personalizedStore];
-      v24 = [v23 personID];
+      personalizedStore3 = [identifiersCopy personalizedStore];
+      personID3 = [personalizedStore3 personID];
 
-      v41 = v24;
-      if (!v24)
+      v41 = personID3;
+      if (!personID3)
       {
-        v40 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v40 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1612 description:@"Cannot relate without a personID"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1612 description:@"Cannot relate without a personID"];
       }
 
       [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindStringValue:v19 toParameterNamed:@"@parentIdentifier"];
       [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindStringValue:v22 toParameterNamed:@"@childIdentifier"];
-      [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindStringValue:v24 toParameterNamed:@"@personID"];
-      [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindStringValue:v44 toParameterNamed:@"@childKey"];
-      [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindInt64Value:a8 toParameterNamed:@"@suborder"];
-      [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindStringValue:v43 toParameterNamed:@"@parentVersionHash"];
+      [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindStringValue:personID3 toParameterNamed:@"@personID"];
+      [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindStringValue:keyCopy toParameterNamed:@"@childKey"];
+      [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindInt64Value:order toParameterNamed:@"@suborder"];
+      [(MSVSQLStatement *)self->_insertObjectRelationshipStatement bindStringValue:hashCopy toParameterNamed:@"@parentVersionHash"];
       transaction = self->_transaction;
       insertObjectRelationshipStatement = self->_insertObjectRelationshipStatement;
       v47 = 0;
@@ -473,9 +473,9 @@
 
       [(MSVSQLStatement *)self->_insertObjectRelationshipStatement reset];
       [(MSVSQLStatement *)self->_insertPlaceholderObjectStatement bindStringValue:v22 toParameterNamed:@"@identifier"];
-      [(MSVSQLStatement *)self->_insertPlaceholderObjectStatement bindStringValue:v24 toParameterNamed:@"@personID"];
-      [(MSVSQLStatement *)self->_insertPlaceholderObjectStatement bindStringValue:v42 toParameterNamed:@"@type"];
-      v29 = [v15 copyWithSource:@"SOD-Placeholder" block:&__block_literal_global_497];
+      [(MSVSQLStatement *)self->_insertPlaceholderObjectStatement bindStringValue:personID3 toParameterNamed:@"@personID"];
+      [(MSVSQLStatement *)self->_insertPlaceholderObjectStatement bindStringValue:typeCopy toParameterNamed:@"@type"];
+      v29 = [identifiersCopy copyWithSource:@"SOD-Placeholder" block:&__block_literal_global_497];
       insertPlaceholderObjectStatement = self->_insertPlaceholderObjectStatement;
       v46 = 0;
       [(MSVSQLStatement *)insertPlaceholderObjectStatement bindJSONConvertible:v29 toParameterNamed:@"@identifierSet" error:&v46];
@@ -488,7 +488,7 @@
           *buf = 138543618;
           v49 = v31;
           v50 = 2114;
-          v51 = v15;
+          v51 = identifiersCopy;
           _os_log_impl(&dword_1A238D000, v32, OS_LOG_TYPE_FAULT, "SOD: importObject: jsonError: %{public}@ identifiers=%{public}@", buf, 0x16u);
         }
 
@@ -533,28 +533,28 @@
   return v33;
 }
 
-- (BOOL)importAssetSinf:(id)a3 type:(int64_t)a4 forIdentifier:(id)a5 hashedPersonID:(id)a6 flavor:(int64_t)a7 sinfPayload:(id)a8
+- (BOOL)importAssetSinf:(id)sinf type:(int64_t)type forIdentifier:(id)identifier hashedPersonID:(id)d flavor:(int64_t)flavor sinfPayload:(id)payload
 {
   *&v41[5] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  if (![v17 length])
+  sinfCopy = sinf;
+  identifierCopy = identifier;
+  dCopy = d;
+  payloadCopy = payload;
+  if (![dCopy length])
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1562 description:@"Cannot import an asset without personID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1562 description:@"Cannot import an asset without personID"];
   }
 
-  if (![v16 length])
+  if (![identifierCopy length])
   {
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1563 description:@"Cannot import an asset without identifier"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1563 description:@"Cannot import an asset without identifier"];
   }
 
-  if ([v15 length])
+  if ([sinfCopy length])
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_7;
     }
@@ -562,20 +562,20 @@
 
   else
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1564 description:@"Cannot import an asset without sinfData"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1564 description:@"Cannot import an asset without sinfData"];
 
-    if (a4)
+    if (type)
     {
       goto LABEL_7;
     }
   }
 
-  v37 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v37 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1565 description:@"Cannot import sinf with invalid type"];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1565 description:@"Cannot import sinf with invalid type"];
 
 LABEL_7:
-  v19 = [(_MPServerObjectDatabaseImporter *)self _existingAssetMatchingIdentifier:v16 hashedPersonID:v17 flavor:a7];
+  v19 = [(_MPServerObjectDatabaseImporter *)self _existingAssetMatchingIdentifier:identifierCopy hashedPersonID:dCopy flavor:flavor];
   v20 = v19;
   v21 = v19 != 0;
   if (!v19)
@@ -584,11 +584,11 @@ LABEL_7:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
       v38 = 138543874;
-      v39 = v16;
+      v39 = identifierCopy;
       v40 = 1024;
-      *v41 = a7;
+      *v41 = flavor;
       v41[2] = 1024;
-      *&v41[3] = a4;
+      *&v41[3] = type;
       v26 = "SOD: importAssetSinf: skipping [asset does not exist] identifiers=%{public}@ flavor=%d sinfType=%d";
       v27 = v24;
       v28 = OS_LOG_TYPE_FAULT;
@@ -601,28 +601,28 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v30 = [v19 sinfs];
-    v31 = [v18 isEqualToArray:v30];
+    sinfs = [v19 sinfs];
+    v31 = [payloadCopy isEqualToArray:sinfs];
 
     if (v31)
     {
       v24 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        if ((a7 - 1) > 3)
+        if ((flavor - 1) > 3)
         {
           v32 = @"unknown";
         }
 
         else
         {
-          v32 = off_1E767C370[a7 - 1];
+          v32 = off_1E767C370[flavor - 1];
         }
 
         v38 = 138543618;
-        v39 = v16;
+        v39 = identifierCopy;
         v40 = 2114;
         *v41 = v32;
         v26 = "SOD: importAssetSinf: skipping [existing fullSinf already in database] id=%{public}@ / flavor=%{public}@";
@@ -634,7 +634,7 @@ LABEL_35:
       goto LABEL_36;
     }
 
-    if ([(_MPServerObjectDatabaseImporter *)self _importAssetFullSINF:v15 forIdentifier:v16 hashedPersonID:v17 flavor:a7])
+    if ([(_MPServerObjectDatabaseImporter *)self _importAssetFullSINF:sinfCopy forIdentifier:identifierCopy hashedPersonID:dCopy flavor:flavor])
     {
       v24 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
       if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -643,36 +643,36 @@ LABEL_35:
       }
 
       v38 = 138543618;
-      v39 = v16;
+      v39 = identifierCopy;
       v40 = 2114;
-      *v41 = v17;
+      *v41 = dCopy;
       v26 = "SOD: importAssetSinf: [success] type=fullSinf identifier=%{public}@ person=%{public}@";
       goto LABEL_26;
     }
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
-    v22 = [v19 miniSINF];
-    v23 = [v15 isEqualToData:v22];
+    miniSINF = [v19 miniSINF];
+    v23 = [sinfCopy isEqualToData:miniSINF];
 
     if (v23)
     {
       v24 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        if ((a7 - 1) > 3)
+        if ((flavor - 1) > 3)
         {
           v25 = @"unknown";
         }
 
         else
         {
-          v25 = off_1E767C370[a7 - 1];
+          v25 = off_1E767C370[flavor - 1];
         }
 
         v38 = 138543618;
-        v39 = v16;
+        v39 = identifierCopy;
         v40 = 2114;
         *v41 = v25;
         v26 = "SOD: importAssetSinf: skipping [existing miniSinf already in database] id=%{public}@ / flavor=%{public}@";
@@ -685,7 +685,7 @@ LABEL_32:
       goto LABEL_35;
     }
 
-    if ([(_MPServerObjectDatabaseImporter *)self _importAssetMiniSINF:v15 forIdentifier:v16 hashedPersonID:v17 flavor:a7])
+    if ([(_MPServerObjectDatabaseImporter *)self _importAssetMiniSINF:sinfCopy forIdentifier:identifierCopy hashedPersonID:dCopy flavor:flavor])
     {
       v24 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
       if (!os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -694,9 +694,9 @@ LABEL_32:
       }
 
       v38 = 138543618;
-      v39 = v16;
+      v39 = identifierCopy;
       v40 = 2114;
-      *v41 = v17;
+      *v41 = dCopy;
       v26 = "SOD: importAssetSinf: [success] type=miniSinf identifier=%{public}@ person=%{public}@";
 LABEL_26:
       v27 = v24;
@@ -713,22 +713,22 @@ LABEL_36:
   return v21;
 }
 
-- (BOOL)importHLSAssetURLString:(id)a3 keyCertificateURL:(id)a4 keyServerURL:(id)a5 redeliveryId:(int64_t)a6 protocolType:(id)a7 isiTunesStoreStream:(BOOL)a8 forIdentifiers:(id)a9 expirationDate:(id)a10
+- (BOOL)importHLSAssetURLString:(id)string keyCertificateURL:(id)l keyServerURL:(id)rL redeliveryId:(int64_t)id protocolType:(id)type isiTunesStoreStream:(BOOL)stream forIdentifiers:(id)identifiers expirationDate:(id)self0
 {
-  v116 = a8;
+  streamCopy = stream;
   v141[0] = *MEMORY[0x1E69E9840];
-  v121 = a3;
-  v123 = a4;
-  v122 = a5;
-  v120 = a7;
-  v14 = a9;
-  v119 = a10;
-  v15 = [v14 personalizedStore];
-  v16 = [v15 personID];
+  stringCopy = string;
+  lCopy = l;
+  rLCopy = rL;
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  dateCopy = date;
+  personalizedStore = [identifiersCopy personalizedStore];
+  personID = [personalizedStore personID];
 
-  if (v16)
+  if (personID)
   {
-    v118 = [v14 preferredStoreStringIdentifierForPersonID:v16];
+    v118 = [identifiersCopy preferredStoreStringIdentifierForPersonID:personID];
     if (!v118)
     {
       v22 = 0;
@@ -737,17 +737,17 @@ LABEL_116:
       goto LABEL_117;
     }
 
-    if (!a6)
+    if (!id)
     {
-      v17 = [v14 universalStore];
-      a6 = [v17 subscriptionAdamID];
+      universalStore = [identifiersCopy universalStore];
+      id = [universalStore subscriptionAdamID];
 
-      if (!a6)
+      if (!id)
       {
-        v18 = [v14 universalStore];
-        a6 = [v18 adamID];
+        universalStore2 = [identifiersCopy universalStore];
+        id = [universalStore2 adamID];
 
-        if (!a6)
+        if (!id)
         {
           v23 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
           if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -763,7 +763,7 @@ LABEL_116:
       }
     }
 
-    if ((!v123 || !v122) && (!v116 || ([v120 isEqualToString:@"simplified"] & 1) == 0))
+    if ((!lCopy || !rLCopy) && (!streamCopy || ([typeCopy isEqualToString:@"simplified"] & 1) == 0))
     {
       v23 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
       if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -783,8 +783,8 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v115 = a6;
-    v19 = v16;
+    idCopy = id;
+    v19 = personID;
     v136 = 0u;
     v135 = 0u;
     v134 = 0u;
@@ -963,14 +963,14 @@ LABEL_66:
 LABEL_102:
             [(MSVSQLStatement *)v68 bindStringValue:v118 toParameterNamed:@"@identifier", v111];
             [(MSVSQLStatement *)v68 bindStringValue:v23 toParameterNamed:@"@hashedPersonID"];
-            [v119 timeIntervalSinceReferenceDate];
+            [dateCopy timeIntervalSinceReferenceDate];
             [(MSVSQLStatement *)v68 bindInt64Value:v101 toParameterNamed:@"@urlExpirationDate"];
-            [(MSVSQLStatement *)v68 bindStringValue:v121 toParameterNamed:@"@playlistURL"];
-            v102 = [v123 absoluteString];
-            v103 = v102;
-            if (v102)
+            [(MSVSQLStatement *)v68 bindStringValue:stringCopy toParameterNamed:@"@playlistURL"];
+            absoluteString = [lCopy absoluteString];
+            v103 = absoluteString;
+            if (absoluteString)
             {
-              v104 = v102;
+              v104 = absoluteString;
             }
 
             else
@@ -980,11 +980,11 @@ LABEL_102:
 
             [(MSVSQLStatement *)v68 bindStringValue:v104 toParameterNamed:@"@keyCertificateURL"];
 
-            v105 = [v122 absoluteString];
-            v106 = v105;
-            if (v105)
+            absoluteString2 = [rLCopy absoluteString];
+            v106 = absoluteString2;
+            if (absoluteString2)
             {
-              v107 = v105;
+              v107 = absoluteString2;
             }
 
             else
@@ -994,9 +994,9 @@ LABEL_102:
 
             [(MSVSQLStatement *)v68 bindStringValue:v107 toParameterNamed:@"@keyServerURL"];
 
-            [(MSVSQLStatement *)v68 bindInt64Value:v115 toParameterNamed:@"@keyServerAdamID"];
-            [(MSVSQLStatement *)v68 bindStringValue:v120 toParameterNamed:@"@keyServerProtocolType"];
-            [(MSVSQLStatement *)v68 bindBoolValue:v116 toParameterNamed:@"@isiTunesStoreStream"];
+            [(MSVSQLStatement *)v68 bindInt64Value:idCopy toParameterNamed:@"@keyServerAdamID"];
+            [(MSVSQLStatement *)v68 bindStringValue:typeCopy toParameterNamed:@"@keyServerProtocolType"];
+            [(MSVSQLStatement *)v68 bindBoolValue:streamCopy toParameterNamed:@"@isiTunesStoreStream"];
             transaction = self->_transaction;
             v124 = 0;
             [(MSVSQLDatabaseTransaction *)transaction executeStatement:v68 error:&v124];
@@ -1024,10 +1024,10 @@ LABEL_114:
             goto LABEL_115;
           }
 
-          v112 = [MEMORY[0x1E695DFF8] URLWithString:v121];
-          v70 = [v69 playlistURL];
+          v112 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
+          playlistURL = [v69 playlistURL];
           v71 = v112;
-          v72 = v70;
+          v72 = playlistURL;
           v73 = v71;
           v74 = v73;
           if (v72 == v73)
@@ -1044,11 +1044,11 @@ LABEL_114:
             }
           }
 
-          if (v123)
+          if (lCopy)
           {
-            v76 = [v69 keyCertificateURL];
-            v77 = v123;
-            v78 = v76;
+            keyCertificateURL = [v69 keyCertificateURL];
+            v77 = lCopy;
+            v78 = keyCertificateURL;
             v79 = v77;
             v80 = v79;
             v114 = v78;
@@ -1071,11 +1071,11 @@ LABEL_101:
             }
           }
 
-          if (v122)
+          if (rLCopy)
           {
-            v84 = [v69 keyServerURL];
-            v85 = v122;
-            v86 = v84;
+            keyServerURL = [v69 keyServerURL];
+            v85 = rLCopy;
+            v86 = keyServerURL;
             v87 = v85;
             v88 = v87;
             v113 = v86;
@@ -1095,12 +1095,12 @@ LABEL_101:
             }
           }
 
-          v91 = [v69 keyServerAdamID];
-          if ([v91 longLongValue] == v115)
+          keyServerAdamID = [v69 keyServerAdamID];
+          if ([keyServerAdamID longLongValue] == idCopy)
           {
             [v69 keyServerProtocolType];
-            v92 = v111 = v91;
-            v93 = v120;
+            v92 = v111 = keyServerAdamID;
+            v93 = typeCopy;
             v94 = v92;
             v95 = v93;
             v96 = v95;
@@ -1114,20 +1114,20 @@ LABEL_101:
 
               if ((v97 & 1) == 0)
               {
-                v98 = v122 == 0;
+                v98 = rLCopy == 0;
 
                 goto LABEL_91;
               }
             }
 
-            v100 = [v69 isiTunesStoreStream];
+            isiTunesStoreStream = [v69 isiTunesStoreStream];
 
-            v90 = v100 ^ v116 ^ 1;
-            if (v122)
+            v90 = isiTunesStoreStream ^ streamCopy ^ 1;
+            if (rLCopy)
             {
 LABEL_92:
 
-              if (v123)
+              if (lCopy)
               {
                 goto LABEL_93;
               }
@@ -1136,7 +1136,7 @@ LABEL_92:
             }
 
 LABEL_99:
-            if (v123)
+            if (lCopy)
             {
 LABEL_93:
 
@@ -1168,7 +1168,7 @@ LABEL_100:
             goto LABEL_94;
           }
 
-          v98 = v122 == 0;
+          v98 = rLCopy == 0;
 
 LABEL_91:
           v90 = 0;
@@ -1212,9 +1212,9 @@ LABEL_91:
         }
 
 LABEL_77:
-        v82 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v83 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-        [v82 handleFailureInFunction:v83 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+        [currentHandler handleFailureInFunction:v83 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
         v67 = &stru_1F149ECA8;
         goto LABEL_66;
@@ -1275,31 +1275,31 @@ LABEL_117:
   return v22;
 }
 
-- (BOOL)importAssetURLString:(id)a3 forIdentifiers:(id)a4 flavor:(int64_t)a5 expirationDate:(id)a6
+- (BOOL)importAssetURLString:(id)string forIdentifiers:(id)identifiers flavor:(int64_t)flavor expirationDate:(id)date
 {
   v113[0] = *MEMORY[0x1E69E9840];
-  v93 = a3;
-  v9 = a4;
-  v92 = a6;
-  v94 = v9;
-  v10 = [v9 personalizedStore];
-  v11 = [v10 personID];
-  v12 = [v94 preferredStoreStringIdentifierForPersonID:v11];
+  stringCopy = string;
+  identifiersCopy = identifiers;
+  dateCopy = date;
+  v94 = identifiersCopy;
+  personalizedStore = [identifiersCopy personalizedStore];
+  personID = [personalizedStore personID];
+  v12 = [v94 preferredStoreStringIdentifierForPersonID:personID];
 
   if (v12)
   {
     v91 = v12;
-    v13 = [v94 personalizedStore];
-    v14 = [v13 personID];
+    personalizedStore2 = [v94 personalizedStore];
+    personID2 = [personalizedStore2 personID];
 
-    v87 = v14;
-    if (!v14)
+    v87 = personID2;
+    if (!personID2)
     {
-      v86 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v86 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1459 description:@"Cannot import an asset without a personID"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1459 description:@"Cannot import an asset without a personID"];
     }
 
-    v15 = v14;
+    v15 = personID2;
     v108 = 0u;
     v107 = 0u;
     v106 = 0u;
@@ -1472,7 +1472,7 @@ LABEL_53:
           v89 = [(__CFString *)v60 substringToIndex:7];
 
           v61 = self->_insertAssetURLStatement;
-          v62 = [(_MPServerObjectDatabaseImporter *)self _existingAssetMatchingIdentifier:v12 hashedPersonID:v89 flavor:a5];
+          v62 = [(_MPServerObjectDatabaseImporter *)self _existingAssetMatchingIdentifier:v12 hashedPersonID:v89 flavor:flavor];
           v63 = [v62 url];
           v64 = v63 == 0;
 
@@ -1481,19 +1481,19 @@ LABEL_53:
 LABEL_63:
             [(MSVSQLStatement *)v61 bindStringValue:v91 toParameterNamed:@"@identifier", v87];
             [(MSVSQLStatement *)v61 bindStringValue:v89 toParameterNamed:@"@hashedPersonID"];
-            if ((a5 - 1) > 3)
+            if ((flavor - 1) > 3)
             {
               v78 = @"unknown";
             }
 
             else
             {
-              v78 = off_1E767C390[a5 - 1];
+              v78 = off_1E767C390[flavor - 1];
             }
 
             [(MSVSQLStatement *)v61 bindStringValue:v78 toParameterNamed:@"@flavor"];
-            [(MSVSQLStatement *)v61 bindStringValue:v93 toParameterNamed:@"@url"];
-            [v92 timeIntervalSinceReferenceDate];
+            [(MSVSQLStatement *)v61 bindStringValue:stringCopy toParameterNamed:@"@url"];
+            [dateCopy timeIntervalSinceReferenceDate];
             [(MSVSQLStatement *)v61 bindInt64Value:v79 toParameterNamed:@"@urlExpirationDate"];
             transaction = self->_transaction;
             v96 = 0;
@@ -1520,16 +1520,16 @@ LABEL_63:
             goto LABEL_72;
           }
 
-          v65 = [MEMORY[0x1E695DFF8] URLWithString:v93];
-          v66 = [v65 host];
+          v65 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
+          host = [v65 host];
           v67 = [v62 url];
-          v68 = [v67 host];
-          if ([v66 isEqual:v68])
+          host2 = [v67 host];
+          if ([host isEqual:host2])
           {
-            v69 = [v65 path];
+            path = [v65 path];
             v70 = [v62 url];
-            v71 = [v70 path];
-            v72 = [v69 isEqual:v71];
+            path2 = [v70 path];
+            v72 = [path isEqual:path2];
 
             if (!v72)
             {
@@ -1547,14 +1547,14 @@ LABEL_62:
             {
               if (v76)
               {
-                if ((a5 - 1) > 3)
+                if ((flavor - 1) > 3)
                 {
                   v77 = @"unknown";
                 }
 
                 else
                 {
-                  v77 = off_1E767C370[a5 - 1];
+                  v77 = off_1E767C370[flavor - 1];
                 }
 
                 *buf = 138543618;
@@ -1573,14 +1573,14 @@ LABEL_72:
 
             if (v76)
             {
-              if ((a5 - 1) > 3)
+              if ((flavor - 1) > 3)
               {
                 v85 = @"unknown";
               }
 
               else
               {
-                v85 = off_1E767C370[a5 - 1];
+                v85 = off_1E767C370[flavor - 1];
               }
 
               *buf = 138543618;
@@ -1590,7 +1590,7 @@ LABEL_72:
               _os_log_impl(&dword_1A238D000, v75, OS_LOG_TYPE_DEBUG, "SOD: importAssetURLString: updating URL [existing asset already in database] id=%{public}@ / flavor=%{public}@", buf, 0x16u);
             }
 
-            v66 = v61;
+            host = v61;
             v61 = self->_updateAssetURLStatement;
           }
 
@@ -1633,9 +1633,9 @@ LABEL_72:
         }
 
 LABEL_74:
-        v83 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v84 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-        [v83 handleFailureInFunction:v84 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+        [currentHandler2 handleFailureInFunction:v84 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
         v60 = &stru_1F149ECA8;
         goto LABEL_53;
@@ -1696,43 +1696,43 @@ LABEL_73:
   return v17;
 }
 
-- (BOOL)importObject:(id)a3 type:(id)a4 identifiers:(id)a5 isExplicitContent:(BOOL)a6 source:(int64_t)a7 expiration:(id)a8
+- (BOOL)importObject:(id)object type:(id)type identifiers:(id)identifiers isExplicitContent:(BOOL)content source:(int64_t)source expiration:(id)expiration
 {
-  v10 = a6;
+  contentCopy = content;
   v51 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  if (!v16)
+  objectCopy = object;
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  expirationCopy = expiration;
+  if (!typeCopy)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1412 description:{@"Invalid parameter not satisfying: %@", @"type"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1412 description:{@"Invalid parameter not satisfying: %@", @"type"}];
   }
 
-  v19 = [v17 personalizedStore];
-  v20 = [v19 personID];
+  personalizedStore = [identifiersCopy personalizedStore];
+  personID = [personalizedStore personID];
 
-  if (!v20)
+  if (!personID)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1414 description:@"Cannot import an object without a personID"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabase.mm" lineNumber:1414 description:@"Cannot import an object without a personID"];
   }
 
-  v21 = [v17 preferredStoreStringIdentifierForPersonID:v20];
+  v21 = [identifiersCopy preferredStoreStringIdentifierForPersonID:personID];
   if (v21)
   {
     [(MSVSQLStatement *)self->_insertObjectStatement bindStringValue:v21 toParameterNamed:@"@identifier"];
-    [(MSVSQLStatement *)self->_insertObjectStatement bindStringValue:v20 toParameterNamed:@"@personID"];
-    [(MSVSQLStatement *)self->_insertObjectStatement bindInt64Value:a7 toParameterNamed:@"@source"];
-    [(MSVSQLStatement *)self->_insertObjectStatement bindStringValue:v16 toParameterNamed:@"@type"];
-    [(MSVSQLStatement *)self->_insertObjectStatement bindBoolValue:v10 toParameterNamed:@"@explicit"];
+    [(MSVSQLStatement *)self->_insertObjectStatement bindStringValue:personID toParameterNamed:@"@personID"];
+    [(MSVSQLStatement *)self->_insertObjectStatement bindInt64Value:source toParameterNamed:@"@source"];
+    [(MSVSQLStatement *)self->_insertObjectStatement bindStringValue:typeCopy toParameterNamed:@"@type"];
+    [(MSVSQLStatement *)self->_insertObjectStatement bindBoolValue:contentCopy toParameterNamed:@"@explicit"];
     insertObjectStatement = self->_insertObjectStatement;
-    [v18 timeIntervalSinceReferenceDate];
+    [expirationCopy timeIntervalSinceReferenceDate];
     [(MSVSQLStatement *)insertObjectStatement bindInt64Value:v23 toParameterNamed:@"@expirationDate"];
     v24 = self->_insertObjectStatement;
     v44 = 0;
-    [(MSVSQLStatement *)v24 bindJSONValue:v15 toParameterNamed:@"@payload" error:&v44];
+    [(MSVSQLStatement *)v24 bindJSONValue:objectCopy toParameterNamed:@"@payload" error:&v44];
     v25 = v44;
     if (v25)
     {
@@ -1742,7 +1742,7 @@ LABEL_73:
         *buf = 138543618;
         v46 = v25;
         v47 = 2114;
-        v48 = v15;
+        v48 = objectCopy;
         _os_log_impl(&dword_1A238D000, v26, OS_LOG_TYPE_FAULT, "SOD: importObject: jsonError: %{public}@ payload=%{public}@", buf, 0x16u);
       }
 
@@ -1753,7 +1753,7 @@ LABEL_73:
     {
       v28 = self->_insertObjectStatement;
       v43 = 0;
-      [(MSVSQLStatement *)v28 bindJSONConvertible:v17 toParameterNamed:@"@identifierSet" error:&v43];
+      [(MSVSQLStatement *)v28 bindJSONConvertible:identifiersCopy toParameterNamed:@"@identifierSet" error:&v43];
       v29 = v43;
       if (!v29)
       {
@@ -1781,14 +1781,14 @@ LABEL_73:
           v37 = v35;
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
-            if (a7 > 2)
+            if (source > 2)
             {
               v38 = @"UNDEF";
             }
 
             else
             {
-              v38 = off_1E767C358[a7];
+              v38 = off_1E767C358[source];
             }
 
             *buf = 138543874;
@@ -1796,7 +1796,7 @@ LABEL_73:
             v47 = 2114;
             v48 = v21;
             v49 = 2114;
-            v50 = v16;
+            v50 = typeCopy;
             _os_log_impl(&dword_1A238D000, v37, OS_LOG_TYPE_INFO, "SOD: importObject: imported object [success] source=%{public}@ identifier=%{public}@ type=%{public}@", buf, 0x20u);
           }
 
@@ -1816,7 +1816,7 @@ LABEL_73:
         *buf = 138543618;
         v46 = v25;
         v47 = 2114;
-        v48 = v17;
+        v48 = identifiersCopy;
         _os_log_impl(&dword_1A238D000, v30, OS_LOG_TYPE_FAULT, "SOD: importObject: jsonError: %{public}@ identifiers=%{public}@", buf, 0x16u);
       }
 

@@ -1,11 +1,11 @@
 @interface IMReplyContextAggregateMessagePartChatItem
-- (id)_initWithItem:(id)a3 parentItem:(id)a4 replyMessageGUID:(id)a5 replyIsFromMe:(BOOL)a6 messagePartRange:(_NSRange)a7 subparts:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item parentItem:(id)parentItem replyMessageGUID:(id)d replyIsFromMe:(BOOL)me messagePartRange:(_NSRange)range subparts:(id)subparts;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMReplyContextAggregateMessagePartChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -20,28 +20,28 @@
   return v19;
 }
 
-- (id)_initWithItem:(id)a3 parentItem:(id)a4 replyMessageGUID:(id)a5 replyIsFromMe:(BOOL)a6 messagePartRange:(_NSRange)a7 subparts:(id)a8
+- (id)_initWithItem:(id)item parentItem:(id)parentItem replyMessageGUID:(id)d replyIsFromMe:(BOOL)me messagePartRange:(_NSRange)range subparts:(id)subparts
 {
-  length = a7.length;
-  location = a7.location;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  length = range.length;
+  location = range.location;
+  itemCopy = item;
+  parentItemCopy = parentItem;
+  dCopy = d;
   v24.receiver = self;
   v24.super_class = IMReplyContextAggregateMessagePartChatItem;
-  v19 = [(IMAggregateMessagePartChatItem *)&v24 _initWithItem:v14 messagePartRange:location subparts:length, a8];
-  if (v19)
+  subparts = [(IMAggregateMessagePartChatItem *)&v24 _initWithItem:itemCopy messagePartRange:location subparts:length, subparts];
+  if (subparts)
   {
-    v20 = objc_msgSend_guid(v14, v17, v18);
+    v20 = objc_msgSend_guid(itemCopy, v17, v18);
     v21 = sub_1A83AC604();
 
-    objc_msgSend__setGUID_(v19, v22, v21);
-    objc_storeStrong(v19 + 27, a4);
-    *(v19 + 208) = a6;
-    objc_storeStrong(v19 + 28, a5);
+    objc_msgSend__setGUID_(subparts, v22, v21);
+    objc_storeStrong(subparts + 27, parentItem);
+    *(subparts + 208) = me;
+    objc_storeStrong(subparts + 28, d);
   }
 
-  return v19;
+  return subparts;
 }
 
 @end

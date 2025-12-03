@@ -1,44 +1,44 @@
 @interface CPLEngineLibrarySupervisor
-- (BOOL)schedulerShouldStartSyncSessionMovingToForeground:(id)a3 currentSession:(id)a4;
+- (BOOL)schedulerShouldStartSyncSessionMovingToForeground:(id)foreground currentSession:(id)session;
 - (CPLEngineLibrary)engineLibrary;
-- (CPLEngineLibrarySupervisor)initWithEngineLibrary:(id)a3 queue:(id)a4;
+- (CPLEngineLibrarySupervisor)initWithEngineLibrary:(id)library queue:(id)queue;
 - (NSString)status;
-- (int64_t)_supervisorExitStateForScopeChange:(id)a3;
+- (int64_t)_supervisorExitStateForScopeChange:(id)change;
 - (void)_checkExitSupervisor;
-- (void)_checkExitSupervisorInTransaction:(id)a3;
-- (void)_launchForcedExitForSupervisor:(id)a3;
+- (void)_checkExitSupervisorInTransaction:(id)transaction;
+- (void)_launchForcedExitForSupervisor:(id)supervisor;
 - (void)_scheduleOrLaunchIfNecessary;
 - (void)_scheduleOrLaunchIfNecessaryInQueue;
-- (void)_sendExitFeedbackForSupervisor:(id)a3 cloudKitScope:(id)a4 exitState:(int64_t)a5;
-- (void)_storeSupervisorInfoInTransaction:(id)a3;
+- (void)_sendExitFeedbackForSupervisor:(id)supervisor cloudKitScope:(id)scope exitState:(int64_t)state;
+- (void)_storeSupervisorInfoInTransaction:(id)transaction;
 - (void)_unscheduleInQueue;
-- (void)engineDidOpen:(id)a3;
-- (void)engineWillClose:(id)a3;
+- (void)engineDidOpen:(id)open;
+- (void)engineWillClose:(id)close;
 - (void)pause;
 - (void)ping;
 - (void)resume;
-- (void)scopeStorage:(id)a3 didUpdateScopeChange:(id)a4 forScope:(id)a5;
-- (void)transportNotedServerHasChanges:(id)a3;
+- (void)scopeStorage:(id)storage didUpdateScopeChange:(id)change forScope:(id)scope;
+- (void)transportNotedServerHasChanges:(id)changes;
 @end
 
 @implementation CPLEngineLibrarySupervisor
 
-- (CPLEngineLibrarySupervisor)initWithEngineLibrary:(id)a3 queue:(id)a4
+- (CPLEngineLibrarySupervisor)initWithEngineLibrary:(id)library queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = CPLEngineLibrarySupervisor;
   v8 = [(CPLEngineLibrarySupervisor *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v10 = objc_storeWeak(&v8->_engineLibrary, v6);
-    v11 = [v6 store];
+    v10 = objc_storeWeak(&v8->_engineLibrary, libraryCopy);
+    store = [libraryCopy store];
     store = v9->_store;
-    v9->_store = v11;
+    v9->_store = store;
 
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeStrong(&v9->_queue, queue);
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -80,7 +80,7 @@
     v16[1] = 3221225472;
     v17 = sub_10002C4B8;
     v18 = &unk_1002729E8;
-    v19 = self;
+    selfCopy = self;
     v20 = &v21;
     v3 = v16;
     os_unfair_lock_lock(&self->_lock);
@@ -109,7 +109,7 @@ LABEL_10:
         v13[3] = &unk_1002720E0;
         v9 = v8;
         v14 = v9;
-        v15 = self;
+        selfCopy2 = self;
         dispatch_source_set_event_handler(v9, v13);
         v10 = dispatch_walltime(0, v7);
         dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x2540BE400uLL);
@@ -166,7 +166,7 @@ LABEL_15:
   dispatch_async(v4, v5);
 }
 
-- (void)engineDidOpen:(id)a3
+- (void)engineDidOpen:(id)open
 {
   store = self->_store;
   v5[4] = self;
@@ -182,7 +182,7 @@ LABEL_15:
   v4 = [(CPLEngineStore *)store performWriteTransactionWithBlock:v6 completionHandler:v5];
 }
 
-- (void)engineWillClose:(id)a3
+- (void)engineWillClose:(id)close
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -201,12 +201,12 @@ LABEL_15:
   dispatch_async(v5, v6);
 }
 
-- (BOOL)schedulerShouldStartSyncSessionMovingToForeground:(id)a3 currentSession:(id)a4
+- (BOOL)schedulerShouldStartSyncSessionMovingToForeground:(id)foreground currentSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 activityState] != 1)
+  foregroundCopy = foreground;
+  sessionCopy = session;
+  v8 = sessionCopy;
+  if (sessionCopy && [sessionCopy activityState] != 1)
   {
     v10 = 1;
   }
@@ -221,7 +221,7 @@ LABEL_15:
     v12[1] = 3221225472;
     v13 = sub_10002CB40;
     v14 = &unk_1002729E8;
-    v15 = self;
+    selfCopy = self;
     v16 = &v17;
     v9 = v12;
     os_unfair_lock_lock(&self->_lock);
@@ -235,26 +235,26 @@ LABEL_15:
   return v10 & 1;
 }
 
-- (int64_t)_supervisorExitStateForScopeChange:(id)a3
+- (int64_t)_supervisorExitStateForScopeChange:(id)change
 {
-  v3 = a3;
-  if (![v3 isActivated])
+  changeCopy = change;
+  if (![changeCopy isActivated])
   {
     goto LABEL_8;
   }
 
-  v4 = [v3 exitState];
-  if (v4 == 2)
+  exitState = [changeCopy exitState];
+  if (exitState == 2)
   {
     v5 = 4;
     goto LABEL_9;
   }
 
-  if (v4 != 1)
+  if (exitState != 1)
   {
-    if (!v4)
+    if (!exitState)
     {
-      if ([v3 areSomeUsersExiting])
+      if ([changeCopy areSomeUsersExiting])
       {
         v5 = 3;
       }
@@ -272,7 +272,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 scopeType] == 4)
+  if ([changeCopy scopeType] == 4)
   {
     v5 = 2;
   }
@@ -287,17 +287,17 @@ LABEL_9:
   return v5;
 }
 
-- (void)_checkExitSupervisorInTransaction:(id)a3
+- (void)_checkExitSupervisorInTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(CPLEngineStore *)self->_store scopes];
-  v6 = [(CPLEngineStore *)self->_store sharingScopeIdentifier];
-  if (v6)
+  transactionCopy = transaction;
+  scopes = [(CPLEngineStore *)self->_store scopes];
+  sharingScopeIdentifier = [(CPLEngineStore *)self->_store sharingScopeIdentifier];
+  if (sharingScopeIdentifier)
   {
-    v7 = [v5 scopeWithIdentifier:v6];
+    v7 = [scopes scopeWithIdentifier:sharingScopeIdentifier];
     if (v7)
     {
-      v8 = [v5 scopeChangeForScope:v7];
+      v8 = [scopes scopeChangeForScope:v7];
       if (v8)
       {
         v9 = [(CPLEngineLibrarySupervisor *)self _supervisorExitStateForScopeChange:v8];
@@ -335,8 +335,8 @@ LABEL_9:
   v17[1] = 3221225472;
   v18 = sub_10002CEE4;
   v19 = &unk_1002735B0;
-  v20 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = sharingScopeIdentifier;
   v25 = v9;
   v21 = v10;
   v23 = &v28;
@@ -354,10 +354,10 @@ LABEL_9:
     v13[1] = 3221225472;
     v13[2] = sub_10002D058;
     v13[3] = &unk_1002735D8;
-    v14 = v5;
+    v14 = scopes;
     v16 = v26;
     v15 = v11;
-    [v4 do:v13];
+    [transactionCopy do:v13];
   }
 
   _Block_object_dispose(v26, 8);
@@ -380,9 +380,9 @@ LABEL_9:
   v3 = [(CPLEngineStore *)store performWriteTransactionWithBlock:v5 completionHandler:v4];
 }
 
-- (void)_storeSupervisorInfoInTransaction:(id)a3
+- (void)_storeSupervisorInfoInTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -399,7 +399,7 @@ LABEL_9:
   v12[1] = 3221225472;
   v13 = sub_10002D38C;
   v14 = &unk_100273600;
-  v15 = self;
+  selfCopy = self;
   v16 = &v20;
   v17 = v18;
   v5 = v12;
@@ -409,18 +409,18 @@ LABEL_9:
 
   if (v21[5])
   {
-    v6 = [(CPLEngineStore *)self->_store scopes];
-    v7 = [v6 scopeWithIdentifier:v21[5]];
+    scopes = [(CPLEngineStore *)self->_store scopes];
+    v7 = [scopes scopeWithIdentifier:v21[5]];
     if (v7)
     {
       v8[0] = _NSConcreteStackBlock;
       v8[1] = 3221225472;
       v8[2] = sub_10002D400;
       v8[3] = &unk_1002735D8;
-      v9 = v6;
+      v9 = scopes;
       v11 = v18;
       v10 = v7;
-      [v4 do:v8];
+      [transactionCopy do:v8];
     }
   }
 
@@ -429,17 +429,17 @@ LABEL_9:
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)scopeStorage:(id)a3 didUpdateScopeChange:(id)a4 forScope:(id)a5
+- (void)scopeStorage:(id)storage didUpdateScopeChange:(id)change forScope:(id)scope
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 scopeIdentifier];
-  v12 = [(CPLEngineStore *)self->_store sharingScopeIdentifier];
-  v13 = v12;
-  if (v11 && v12)
+  storageCopy = storage;
+  changeCopy = change;
+  scopeCopy = scope;
+  scopeIdentifier = [scopeCopy scopeIdentifier];
+  sharingScopeIdentifier = [(CPLEngineStore *)self->_store sharingScopeIdentifier];
+  v13 = sharingScopeIdentifier;
+  if (scopeIdentifier && sharingScopeIdentifier)
   {
-    v14 = [v11 isEqual:v12];
+    v14 = [scopeIdentifier isEqual:sharingScopeIdentifier];
 
     if ((v14 & 1) == 0)
     {
@@ -450,7 +450,7 @@ LABEL_9:
   else
   {
 
-    if (v11 | v13)
+    if (scopeIdentifier | v13)
     {
       goto LABEL_9;
     }
@@ -464,10 +464,10 @@ LABEL_9:
   v20[1] = 3221225472;
   v21 = sub_10002D67C;
   v22 = &unk_100273628;
-  v23 = self;
+  selfCopy = self;
   v25 = &v27;
-  v26 = [(CPLEngineLibrarySupervisor *)self _supervisorExitStateForScopeChange:v9];
-  v24 = v9;
+  v26 = [(CPLEngineLibrarySupervisor *)self _supervisorExitStateForScopeChange:changeCopy];
+  v24 = changeCopy;
   v15 = v20;
   os_unfair_lock_lock(&self->_lock);
   v21(v15);
@@ -493,9 +493,9 @@ LABEL_9:
 LABEL_9:
 }
 
-- (void)transportNotedServerHasChanges:(id)a3
+- (void)transportNotedServerHasChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -504,7 +504,7 @@ LABEL_9:
   v10[1] = 3221225472;
   v11 = sub_10002D928;
   v12 = &unk_1002729E8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v5 = v10;
   os_unfair_lock_lock(&self->_lock);
@@ -530,19 +530,19 @@ LABEL_9:
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_sendExitFeedbackForSupervisor:(id)a3 cloudKitScope:(id)a4 exitState:(int64_t)a5
+- (void)_sendExitFeedbackForSupervisor:(id)supervisor cloudKitScope:(id)scope exitState:(int64_t)state
 {
-  v8 = a3;
-  v9 = a4;
+  supervisorCopy = supervisor;
+  scopeCopy = scope;
   queue = self->_queue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10002DB5C;
   v16[3] = &unk_100271D68;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = a5;
+  v17 = supervisorCopy;
+  v18 = scopeCopy;
+  stateCopy = state;
   v11 = v16;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -550,22 +550,22 @@ LABEL_9:
   block[3] = &unk_100271E98;
   v21 = v11;
   v12 = queue;
-  v13 = v9;
-  v14 = v8;
+  v13 = scopeCopy;
+  v14 = supervisorCopy;
   v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v12, v15);
 }
 
-- (void)_launchForcedExitForSupervisor:(id)a3
+- (void)_launchForcedExitForSupervisor:(id)supervisor
 {
-  v4 = a3;
+  supervisorCopy = supervisor;
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002E1D0;
   v10[3] = &unk_1002720E0;
   v10[4] = self;
-  v11 = v4;
+  v11 = supervisorCopy;
   v6 = v10;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -573,7 +573,7 @@ LABEL_9:
   block[3] = &unk_100271E98;
   v13 = v6;
   v7 = queue;
-  v8 = v4;
+  v8 = supervisorCopy;
   v9 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v7, v9);
 }
@@ -622,7 +622,7 @@ LABEL_9:
   v4[1] = 3221225472;
   v5 = sub_10002EB14;
   v6 = &unk_100271F40;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_lock);
   v5(v3);
@@ -643,7 +643,7 @@ LABEL_9:
   v6[1] = 3221225472;
   v7 = sub_10002EC68;
   v8 = &unk_100272028;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);

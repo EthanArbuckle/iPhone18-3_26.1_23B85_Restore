@@ -1,19 +1,19 @@
 @interface PXAssetAnalyzer
-- (BOOL)canAnalyzeAsset:(id)a3 forWorkerType:(int64_t)a4;
+- (BOOL)canAnalyzeAsset:(id)asset forWorkerType:(int64_t)type;
 - (PXAssetAnalyzer)init;
-- (void)_handleResultForRequest:(id)a3 success:(BOOL)a4;
+- (void)_handleResultForRequest:(id)request success:(BOOL)success;
 @end
 
 @implementation PXAssetAnalyzer
 
-- (void)_handleResultForRequest:(id)a3 success:(BOOL)a4
+- (void)_handleResultForRequest:(id)request success:(BOOL)success
 {
-  v5 = a3;
-  v6 = [v5 asset];
-  v9 = [v6 uuid];
+  requestCopy = request;
+  asset = [requestCopy asset];
+  uuid = [asset uuid];
 
-  v7 = [v5 workerType];
-  v8 = [(PXAssetAnalyzer *)self _keyForAssetUUID:v9 forWorkerType:v7];
+  workerType = [requestCopy workerType];
+  v8 = [(PXAssetAnalyzer *)self _keyForAssetUUID:uuid forWorkerType:workerType];
   [(NSMutableDictionary *)self->_analyzerUUIDToRequest removeObjectForKey:v8];
 }
 
@@ -57,21 +57,21 @@ void __46__PXAssetAnalyzer_analyzeAsset_forWorkerType___block_invoke_2(uint64_t 
   [WeakRetained _handleResultForRequest:*(a1 + 32) success:a2];
 }
 
-- (BOOL)canAnalyzeAsset:(id)a3 forWorkerType:(int64_t)a4
+- (BOOL)canAnalyzeAsset:(id)asset forWorkerType:(int64_t)type
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 || ![v5 canPlayPhotoIris] || (objc_msgSend(v6, "px_isSharedAlbumAsset") & 1) != 0 || objc_msgSend(v6, "playbackVariation"))
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (type || ![assetCopy canPlayPhotoIris] || (objc_msgSend(v6, "px_isSharedAlbumAsset") & 1) != 0 || objc_msgSend(v6, "playbackVariation"))
   {
-    v7 = 0;
+    isVariationSuggestionStatesUnknown = 0;
   }
 
   else
   {
-    v7 = [v6 isVariationSuggestionStatesUnknown];
+    isVariationSuggestionStatesUnknown = [v6 isVariationSuggestionStatesUnknown];
   }
 
-  return v7;
+  return isVariationSuggestionStatesUnknown;
 }
 
 - (PXAssetAnalyzer)init
@@ -81,9 +81,9 @@ void __46__PXAssetAnalyzer_analyzeAsset_forWorkerType___block_invoke_2(uint64_t 
   v2 = [(PXAssetAnalyzer *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     analyzerUUIDToRequest = v2->_analyzerUUIDToRequest;
-    v2->_analyzerUUIDToRequest = v3;
+    v2->_analyzerUUIDToRequest = dictionary;
   }
 
   return v2;

@@ -1,26 +1,26 @@
 @interface MBDHTMLToSuper_STRONG_Frame
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDHTMLToSuper_STRONG_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v14.receiver = self;
   v14.super_class = MBDHTMLToSuper_STRONG_Frame;
-  v13 = a4;
-  [(MBDToSuperParserFrame *)&v14 parser:a3 context:v13 didStartElement:a5 namespaceURI:a6 qualifiedName:a7 attributes:a8];
-  [v13 incrementBoldCount];
+  contextCopy = context;
+  [(MBDToSuperParserFrame *)&v14 parser:parser context:contextCopy didStartElement:element namespaceURI:i qualifiedName:name attributes:attributes];
+  [contextCopy incrementBoldCount];
 }
 
-- (void)parser:(id)a3 context:(id)a4 didEndElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7
+- (void)parser:(id)parser context:(id)context didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
   v12.receiver = self;
   v12.super_class = MBDHTMLToSuper_STRONG_Frame;
-  v11 = a4;
-  [(MBDToSuperParserFrame *)&v12 parser:a3 context:v11 didEndElement:a5 namespaceURI:a6 qualifiedName:a7];
-  [v11 decrementBoldCount];
+  contextCopy = context;
+  [(MBDToSuperParserFrame *)&v12 parser:parser context:contextCopy didEndElement:element namespaceURI:i qualifiedName:name];
+  [contextCopy decrementBoldCount];
 }
 
 @end

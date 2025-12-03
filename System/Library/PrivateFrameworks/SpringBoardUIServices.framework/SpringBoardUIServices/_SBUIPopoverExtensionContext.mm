@@ -7,8 +7,8 @@
 
 - (void)requestDismiss
 {
-  v2 = [(_SBUIPopoverExtensionContext *)self hostService];
-  [v2 _extensionRequestsDismiss];
+  hostService = [(_SBUIPopoverExtensionContext *)self hostService];
+  [hostService _extensionRequestsDismiss];
 }
 
 - (_SBUIPopoverExtensionHostInterface)hostService

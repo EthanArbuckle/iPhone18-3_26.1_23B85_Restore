@@ -9,20 +9,20 @@
 - (PXCPLUIStatusProvider)cplUIStatusProvider;
 - (PXContentSyndicationConfigurationProvider)contentSyndicationConfigurationProvider;
 - (PXCuratedLibraryViewModel)init;
-- (PXCuratedLibraryViewModel)initWithAssetsDataSourceManagerConfiguration:(id)a3 zoomLevel:(int64_t)a4 mediaProvider:(id)a5 specManager:(id)a6 styleGuide:(id)a7;
-- (PXCuratedLibraryViewModel)initWithConfiguration:(id)a3 assetsDataSourceManagerConfiguration:(id)a4 zoomLevel:(int64_t)a5 mediaProvider:(id)a6 specManager:(id)a7 styleGuide:(id)a8;
+- (PXCuratedLibraryViewModel)initWithAssetsDataSourceManagerConfiguration:(id)configuration zoomLevel:(int64_t)level mediaProvider:(id)provider specManager:(id)manager styleGuide:(id)guide;
+- (PXCuratedLibraryViewModel)initWithConfiguration:(id)configuration assetsDataSourceManagerConfiguration:(id)managerConfiguration zoomLevel:(int64_t)level mediaProvider:(id)provider specManager:(id)manager styleGuide:(id)guide;
 - (PXCuratedLibraryViewModelPresenter)mainPresenter;
 - (PXLibrarySummaryOutputPresenter)librarySummaryPresenter;
 - (PXSelectionSnapshot)selectionSnapshot;
-- (id)_assetActionManagerWithAllowedActionTypes:(id)a3;
-- (id)_indexPathsForAssetCollectionReference:(id)a3;
+- (id)_assetActionManagerWithAllowedActionTypes:(id)types;
+- (id)_indexPathsForAssetCollectionReference:(id)reference;
 - (id)_updatedContentFilterState;
-- (id)curatedLibraryAssetsDataSourceManager:(id)a3 dominantAssetCollectionReferenceForZoomLevel:(int64_t)a4;
-- (id)visibleAssetCollectionsFromCuratedLibraryAssetsDataSourceManager:(id)a3;
-- (int64_t)curatedLibraryAssetsDataSourceManager:(id)a3 transitionTypeFromZoomLevel:(int64_t)a4 toZoomLevel:(int64_t)a5;
-- (int64_t)zoomLevelInDirection:(int64_t)a3 fromZoomLevel:(int64_t)a4;
+- (id)curatedLibraryAssetsDataSourceManager:(id)manager dominantAssetCollectionReferenceForZoomLevel:(int64_t)level;
+- (id)visibleAssetCollectionsFromCuratedLibraryAssetsDataSourceManager:(id)manager;
+- (int64_t)curatedLibraryAssetsDataSourceManager:(id)manager transitionTypeFromZoomLevel:(int64_t)level toZoomLevel:(int64_t)zoomLevel;
+- (int64_t)zoomLevelInDirection:(int64_t)direction fromZoomLevel:(int64_t)level;
 - (void)_handleIsSelectingChange;
-- (void)_handleSelectionManagerChange:(unint64_t)a3;
+- (void)_handleSelectionManagerChange:(unint64_t)change;
 - (void)_handleSpecChange;
 - (void)_invalidateAllowedActions;
 - (void)_invalidateAspectFitContent;
@@ -30,7 +30,7 @@
 - (void)_invalidateAssetCollectionActionManager;
 - (void)_invalidateAssetsDataSourceManager;
 - (void)_invalidateBannerViewConfiguration;
-- (void)_invalidateChromeVisibilityWithChangeReason:(int64_t)a3;
+- (void)_invalidateChromeVisibilityWithChangeReason:(int64_t)reason;
 - (void)_invalidateContentFillsTopSafeArea;
 - (void)_invalidateCurrentContentFilterState;
 - (void)_invalidateCurrentDataSource;
@@ -44,7 +44,7 @@
 - (void)_invalidateShouldShowEmptyPlaceholder;
 - (void)_invalidateUserWantsAspectFitContent;
 - (void)_invalidateZoomablePhotosViewModel;
-- (void)_sendAllPhotosSortOrderAnalyticsEvent:(unint64_t)a3;
+- (void)_sendAllPhotosSortOrderAnalyticsEvent:(unint64_t)event;
 - (void)_updateAllowedActions;
 - (void)_updateAspectFitContent;
 - (void)_updateAssetsDataSourceManager;
@@ -64,65 +64,65 @@
 - (void)_updateShouldShowEmptyPlaceholder;
 - (void)_updateUserWantsAspectFitContent;
 - (void)_updateZoomablePhotosViewModel;
-- (void)addView:(id)a3;
-- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)a3;
-- (void)curatedLibraryAssetsDataSourceManager:(id)a3 didTransitionFromZoomLevel:(int64_t)a4 toZoomLevel:(int64_t)a5;
-- (void)curatedLibraryAssetsDataSourceManager:(id)a3 willTransitionFromZoomLevel:(int64_t)a4 toZoomLevel:(int64_t)a5;
+- (void)addView:(id)view;
+- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)fetching;
+- (void)curatedLibraryAssetsDataSourceManager:(id)manager didTransitionFromZoomLevel:(int64_t)level toZoomLevel:(int64_t)zoomLevel;
+- (void)curatedLibraryAssetsDataSourceManager:(id)manager willTransitionFromZoomLevel:(int64_t)level toZoomLevel:(int64_t)zoomLevel;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performChanges:(id)a3;
-- (void)performInitialChanges:(id)a3;
-- (void)removeView:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)performInitialChanges:(id)changes;
+- (void)removeView:(id)view;
 - (void)resetAllPhotosContentFilterState;
 - (void)resetToInitialState;
-- (void)setAllPhotosContentFilterState:(id)a3;
-- (void)setAllowedActions:(id)a3;
-- (void)setAspectFitContent:(BOOL)a3;
-- (void)setBannerViewConfiguration:(id)a3;
-- (void)setContentFillsTopSafeArea:(BOOL)a3;
-- (void)setCplActionManagerClass:(Class)a3;
-- (void)setCurrentContentFilterState:(id)a3;
-- (void)setCurrentDataSource:(id)a3;
-- (void)setDaysMarginScale:(double)a3;
-- (void)setDesiredVerticalAlignment:(unint64_t)a3;
-- (void)setDraggedAssetReferences:(id)a3;
-- (void)setHidesDurationLabelBadge:(BOOL)a3;
-- (void)setIsAppearing:(BOOL)a3;
-- (void)setIsExpanded:(BOOL)a3;
-- (void)setIsExpandedAnimating:(BOOL)a3;
-- (void)setIsFullyExpanded:(BOOL)a3;
-- (void)setIsModalInPresentation:(BOOL)a3;
-- (void)setIsSelecting:(BOOL)a3;
-- (void)setLastScrollDirection:(CGPoint)a3;
-- (void)setLibraryState:(unint64_t)a3;
-- (void)setScrollRegime:(int64_t)a3;
-- (void)setScrolledToBottom:(BOOL)a3;
-- (void)setScrolledToTop:(BOOL)a3;
-- (void)setScrollingSpeedometer:(id)a3;
-- (void)setSecondaryToolbarLegibilityGradientIsVisible:(BOOL)a3;
-- (void)setSecondaryToolbarVisibility:(double)a3;
-- (void)setSelectModeCaption:(id)a3;
-- (void)setSelectedAssetsTypedCount:(id)a3;
-- (void)setShouldShowEmptyPlaceholder:(BOOL)a3;
-- (void)setSidebarCanBecomeVisible:(BOOL)a3;
-- (void)setSkimmingInfo:(id)a3;
-- (void)setUserWantsAspectFitContent:(id)a3;
-- (void)setViewBasedDecorationsEnabled:(BOOL)a3;
-- (void)setWantsDarkStatusBar:(BOOL)a3;
-- (void)setWantsNavigationBarVisible:(BOOL)a3;
-- (void)setWantsOptionalChromeVisible:(BOOL)a3 changeReason:(int64_t)a4;
-- (void)setWantsSecondaryToolbarVisible:(BOOL)a3;
-- (void)setWantsTabBarVisible:(BOOL)a3;
-- (void)setWantsToolbarVisible:(BOOL)a3;
-- (void)setZoomLevel:(int64_t)a3;
-- (void)setZoomLevelTransitionPhase:(int64_t)a3;
-- (void)toggleSelectionForAssetCollectionReference:(id)a3;
-- (void)toggleSelectionForAssetReference:(id)a3 updateCursorIndexPath:(BOOL)a4;
-- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)a3;
-- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)a3 updateCursorIndexPath:(BOOL)a4;
-- (void)userDidSetAllPhotosContentFilterState:(id)a3;
+- (void)setAllPhotosContentFilterState:(id)state;
+- (void)setAllowedActions:(id)actions;
+- (void)setAspectFitContent:(BOOL)content;
+- (void)setBannerViewConfiguration:(id)configuration;
+- (void)setContentFillsTopSafeArea:(BOOL)area;
+- (void)setCplActionManagerClass:(Class)class;
+- (void)setCurrentContentFilterState:(id)state;
+- (void)setCurrentDataSource:(id)source;
+- (void)setDaysMarginScale:(double)scale;
+- (void)setDesiredVerticalAlignment:(unint64_t)alignment;
+- (void)setDraggedAssetReferences:(id)references;
+- (void)setHidesDurationLabelBadge:(BOOL)badge;
+- (void)setIsAppearing:(BOOL)appearing;
+- (void)setIsExpanded:(BOOL)expanded;
+- (void)setIsExpandedAnimating:(BOOL)animating;
+- (void)setIsFullyExpanded:(BOOL)expanded;
+- (void)setIsModalInPresentation:(BOOL)presentation;
+- (void)setIsSelecting:(BOOL)selecting;
+- (void)setLastScrollDirection:(CGPoint)direction;
+- (void)setLibraryState:(unint64_t)state;
+- (void)setScrollRegime:(int64_t)regime;
+- (void)setScrolledToBottom:(BOOL)bottom;
+- (void)setScrolledToTop:(BOOL)top;
+- (void)setScrollingSpeedometer:(id)speedometer;
+- (void)setSecondaryToolbarLegibilityGradientIsVisible:(BOOL)visible;
+- (void)setSecondaryToolbarVisibility:(double)visibility;
+- (void)setSelectModeCaption:(id)caption;
+- (void)setSelectedAssetsTypedCount:(id)count;
+- (void)setShouldShowEmptyPlaceholder:(BOOL)placeholder;
+- (void)setSidebarCanBecomeVisible:(BOOL)visible;
+- (void)setSkimmingInfo:(id)info;
+- (void)setUserWantsAspectFitContent:(id)content;
+- (void)setViewBasedDecorationsEnabled:(BOOL)enabled;
+- (void)setWantsDarkStatusBar:(BOOL)bar;
+- (void)setWantsNavigationBarVisible:(BOOL)visible;
+- (void)setWantsOptionalChromeVisible:(BOOL)visible changeReason:(int64_t)reason;
+- (void)setWantsSecondaryToolbarVisible:(BOOL)visible;
+- (void)setWantsTabBarVisible:(BOOL)visible;
+- (void)setWantsToolbarVisible:(BOOL)visible;
+- (void)setZoomLevel:(int64_t)level;
+- (void)setZoomLevelTransitionPhase:(int64_t)phase;
+- (void)toggleSelectionForAssetCollectionReference:(id)reference;
+- (void)toggleSelectionForAssetReference:(id)reference updateCursorIndexPath:(BOOL)path;
+- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)path;
+- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)path updateCursorIndexPath:(BOOL)indexPath;
+- (void)userDidSetAllPhotosContentFilterState:(id)state;
 @end
 
 @implementation PXCuratedLibraryViewModel
@@ -145,26 +145,26 @@ void __61__PXCuratedLibraryViewModel_resetAllPhotosContentFilterState__block_inv
 
 - (void)_invalidateCurrentContentFilterState
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentContentFilterState];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentContentFilterState];
 }
 
 - (void)_invalidateAssetsDataSourceManager
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAssetsDataSourceManager];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAssetsDataSourceManager];
 }
 
 - (void)_invalidateAllowedActions
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAllowedActions];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAllowedActions];
 }
 
 - (void)_invalidateCurrentDataSource
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentDataSource];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentDataSource];
 }
 
 - (void)didPerformChanges
@@ -172,21 +172,21 @@ void __61__PXCuratedLibraryViewModel_resetAllPhotosContentFilterState__block_inv
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryViewModel;
   [(PXCuratedLibraryViewModel *)&v4 didPerformChanges];
-  v3 = [(PXCuratedLibraryViewModel *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)_updateAssetsDataSourceManager
 {
-  v3 = [(PXCuratedLibraryViewModel *)self allPhotosContentFilterState];
-  v4 = [v3 predicateForUseCase:0];
+  allPhotosContentFilterState = [(PXCuratedLibraryViewModel *)self allPhotosContentFilterState];
+  v4 = [allPhotosContentFilterState predicateForUseCase:0];
 
-  v5 = [(PXCuratedLibraryViewModel *)self viewOptionsModel];
-  v6 = [v5 sortOrderState];
-  v7 = [v6 sortOrder];
+  viewOptionsModel = [(PXCuratedLibraryViewModel *)self viewOptionsModel];
+  sortOrderState = [viewOptionsModel sortOrderState];
+  sortOrder = [sortOrderState sortOrder];
 
-  v8 = PXFetchSortOrderStandardAssetSortDescriptors(v7);
-  v9 = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
+  v8 = PXFetchSortOrderStandardAssetSortDescriptors(sortOrder);
+  assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__PXCuratedLibraryViewModel__updateAssetsDataSourceManager__block_invoke;
@@ -196,7 +196,7 @@ void __61__PXCuratedLibraryViewModel_resetAllPhotosContentFilterState__block_inv
   v14 = v8;
   v10 = v8;
   v11 = v4;
-  [v9 performChanges:v12];
+  [assetsDataSourceManager performChanges:v12];
 }
 
 void __59__PXCuratedLibraryViewModel__updateAssetsDataSourceManager__block_invoke(uint64_t a1, void *a2)
@@ -215,18 +215,18 @@ void __59__PXCuratedLibraryViewModel__updateAssetsDataSourceManager__block_invok
 
 - (PXContentSyndicationConfigurationProvider)contentSyndicationConfigurationProvider
 {
-  v2 = [(PXCuratedLibraryViewModel *)self photoLibrary];
-  v3 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:v2];
+  photoLibrary = [(PXCuratedLibraryViewModel *)self photoLibrary];
+  v3 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:photoLibrary];
 
   return v3;
 }
 
 - (PXSelectionSnapshot)selectionSnapshot
 {
-  v2 = [(PXCuratedLibraryViewModel *)self selectionManager];
-  v3 = [v2 selectionSnapshot];
+  selectionManager = [(PXCuratedLibraryViewModel *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
-  return v3;
+  return selectionSnapshot;
 }
 
 - (void)_invalidateAssetCollectionActionManager
@@ -237,34 +237,34 @@ void __59__PXCuratedLibraryViewModel__updateAssetsDataSourceManager__block_invok
 
 - (void)_updateCurrentDataSource
 {
-  v4 = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
-  v9 = [v4 dataSource];
+  assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
+  dataSource = [assetsDataSourceManager dataSource];
 
-  v5 = [(PXCuratedLibraryViewModel *)self selectionManager];
-  v6 = [v5 dataSourceManager];
-  v7 = [v6 dataSource];
+  selectionManager = [(PXCuratedLibraryViewModel *)self selectionManager];
+  dataSourceManager = [selectionManager dataSourceManager];
+  dataSource2 = [dataSourceManager dataSource];
 
-  if (([v9 isEqual:v7] & 1) == 0)
+  if (([dataSource isEqual:dataSource2] & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewModel.m" lineNumber:900 description:@"Expected selection manager's data source to match assetsDataSourceManager.dataSource!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewModel.m" lineNumber:900 description:@"Expected selection manager's data source to match assetsDataSourceManager.dataSource!"];
   }
 
-  [(PXCuratedLibraryViewModel *)self setCurrentDataSource:v9];
+  [(PXCuratedLibraryViewModel *)self setCurrentDataSource:dataSource];
 }
 
 - (void)_invalidateDraggedAssetReferences
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDraggedAssetReferences];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDraggedAssetReferences];
 }
 
 - (void)_updateCurrentContentFilterState
 {
   if ([(PXCuratedLibraryViewModel *)self zoomLevel]== 4)
   {
-    v3 = [(PXCuratedLibraryViewModel *)self allPhotosContentFilterState];
-    [(PXCuratedLibraryViewModel *)self setCurrentContentFilterState:v3];
+    allPhotosContentFilterState = [(PXCuratedLibraryViewModel *)self allPhotosContentFilterState];
+    [(PXCuratedLibraryViewModel *)self setCurrentContentFilterState:allPhotosContentFilterState];
   }
 
   else
@@ -276,21 +276,21 @@ void __59__PXCuratedLibraryViewModel__updateAssetsDataSourceManager__block_invok
 
 - (void)_invalidateShouldShowEmptyPlaceholder
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldShowEmptyPlaceholder];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldShowEmptyPlaceholder];
 }
 
 - (void)_updateDraggedAssetReferences
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCuratedLibraryViewModel *)self currentDataSource];
+  currentDataSource = [(PXCuratedLibraryViewModel *)self currentDataSource];
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(PXCuratedLibraryViewModel *)self draggedAssetReferences];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  draggedAssetReferences = [(PXCuratedLibraryViewModel *)self draggedAssetReferences];
+  v6 = [draggedAssetReferences countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -302,10 +302,10 @@ void __59__PXCuratedLibraryViewModel__updateAssetsDataSourceManager__block_invok
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(draggedAssetReferences);
         }
 
-        v10 = [v3 assetReferenceForAssetReference:*(*(&v14 + 1) + 8 * v9)];
+        v10 = [currentDataSource assetReferenceForAssetReference:*(*(&v14 + 1) + 8 * v9)];
         if (v10)
         {
           [v4 addObject:v10];
@@ -315,7 +315,7 @@ void __59__PXCuratedLibraryViewModel__updateAssetsDataSourceManager__block_invok
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [draggedAssetReferences countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -349,20 +349,20 @@ void __58__PXCuratedLibraryViewModel__updateDraggedAssetReferences__block_invoke
 
 - (void)_updateShouldShowEmptyPlaceholder
 {
-  v3 = [(PXCuratedLibraryViewModel *)self libraryState];
-  v4 = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
-  -[PXCuratedLibraryViewModel setShouldShowEmptyPlaceholder:](self, "setShouldShowEmptyPlaceholder:", PXCuratedLibraryStateIsEmptyLibrary(v3) & [v4 isContentFilterActive:2] & (objc_msgSend(v4, "isFiltering") ^ 1));
+  libraryState = [(PXCuratedLibraryViewModel *)self libraryState];
+  currentContentFilterState = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
+  -[PXCuratedLibraryViewModel setShouldShowEmptyPlaceholder:](self, "setShouldShowEmptyPlaceholder:", PXCuratedLibraryStateIsEmptyLibrary(libraryState) & [currentContentFilterState isContentFilterActive:2] & (objc_msgSend(currentContentFilterState, "isFiltering") ^ 1));
 }
 
 - (void)_invalidateDesiredVerticalAlignment
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDesiredVerticalAlignment];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDesiredVerticalAlignment];
 }
 
 - (void)_updateAllowedActions
 {
-  v3 = [(PXCuratedLibraryViewModel *)self zoomLevel];
+  zoomLevel = [(PXCuratedLibraryViewModel *)self zoomLevel];
   v100 = 0;
   v98 = 0u;
   v99 = 0u;
@@ -370,11 +370,11 @@ void __58__PXCuratedLibraryViewModel__updateDraggedAssetReferences__block_invoke
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v4 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
-  v5 = v4;
-  if (v4)
+  zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
+  v5 = zoomablePhotosViewModel;
+  if (zoomablePhotosViewModel)
   {
-    [v4 zoomState];
+    [zoomablePhotosViewModel zoomState];
   }
 
   else
@@ -389,30 +389,30 @@ void __58__PXCuratedLibraryViewModel__updateDraggedAssetReferences__block_invoke
   }
 
   v88 = +[PXCuratedLibrarySettings sharedInstance];
-  v6 = [off_1E7721810 sharedInstance];
-  v7 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
-  v8 = [(PXCuratedLibraryViewModel *)self specManager];
-  v9 = [v8 spec];
+  sharedInstance = [off_1E7721810 sharedInstance];
+  zoomablePhotosViewModel2 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
+  specManager = [(PXCuratedLibraryViewModel *)self specManager];
+  spec = [specManager spec];
 
-  v91 = [(PXCuratedLibraryViewModel *)self isSelecting];
-  v87 = v7;
-  v10 = [v7 isDisplayingIndividualItems];
-  v11 = [v9 userInterfaceIdiom];
-  v89 = v11 != 4;
-  v79 = [v9 userInterfaceIdiom];
-  v81 = [v9 userInterfaceIdiom];
-  v84 = v9;
-  v64 = [v9 sizeClass];
-  v12 = [(PXCuratedLibraryViewModel *)self shouldShowEmptyPlaceholder];
-  v13 = [(PXCuratedLibraryViewModel *)self isExpanded];
-  v14 = [(PXCuratedLibraryViewModel *)self isExpandedAnimating];
-  v15 = [(PXCuratedLibraryViewModel *)self analysisStatus];
-  if (([v15 isDaysMonthsYearsStructureEnabled] & 1) != 0 || +[PXCuratedLibrarySettings enableEmptyYearsMonthsDaysForTesting](PXCuratedLibrarySettings, "enableEmptyYearsMonthsDaysForTesting"))
+  isSelecting = [(PXCuratedLibraryViewModel *)self isSelecting];
+  v87 = zoomablePhotosViewModel2;
+  isDisplayingIndividualItems = [zoomablePhotosViewModel2 isDisplayingIndividualItems];
+  userInterfaceIdiom = [spec userInterfaceIdiom];
+  v89 = userInterfaceIdiom != 4;
+  userInterfaceIdiom2 = [spec userInterfaceIdiom];
+  userInterfaceIdiom3 = [spec userInterfaceIdiom];
+  v84 = spec;
+  sizeClass = [spec sizeClass];
+  shouldShowEmptyPlaceholder = [(PXCuratedLibraryViewModel *)self shouldShowEmptyPlaceholder];
+  isExpanded = [(PXCuratedLibraryViewModel *)self isExpanded];
+  isExpandedAnimating = [(PXCuratedLibraryViewModel *)self isExpandedAnimating];
+  analysisStatus = [(PXCuratedLibraryViewModel *)self analysisStatus];
+  if (([analysisStatus isDaysMonthsYearsStructureEnabled] & 1) != 0 || +[PXCuratedLibrarySettings enableEmptyYearsMonthsDaysForTesting](PXCuratedLibrarySettings, "enableEmptyYearsMonthsDaysForTesting"))
   {
-    v16 = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
-    v17 = [v16 isFiltering];
-    v18 = !v12 && (v13 || v14);
-    if (v17)
+    currentContentFilterState = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
+    isFiltering = [currentContentFilterState isFiltering];
+    v18 = !shouldShowEmptyPlaceholder && (isExpanded || isExpandedAnimating);
+    if (isFiltering)
     {
       v18 = 0;
     }
@@ -425,36 +425,36 @@ void __58__PXCuratedLibraryViewModel__updateDraggedAssetReferences__block_invoke
     v83 = 0;
   }
 
-  v19 = [(PXCuratedLibraryViewModel *)self sharedLibraryStatusProvider];
-  v90 = [v19 hasSharedLibraryOrPreview];
+  sharedLibraryStatusProvider = [(PXCuratedLibraryViewModel *)self sharedLibraryStatusProvider];
+  hasSharedLibraryOrPreview = [sharedLibraryStatusProvider hasSharedLibraryOrPreview];
 
-  if (![v6 enableNewActionMenu])
+  if (![sharedInstance enableNewActionMenu])
   {
-    if (v3 != 1)
+    if (zoomLevel != 1)
     {
-      if (v91)
+      if (isSelecting)
       {
         LOBYTE(v66) = 0;
       }
 
       else
       {
-        v32 = [(PXCuratedLibraryViewModel *)self skimmingInfo];
-        v66 = [v32 touchInteractionStarted] ^ 1;
+        skimmingInfo = [(PXCuratedLibraryViewModel *)self skimmingInfo];
+        v66 = [skimmingInfo touchInteractionStarted] ^ 1;
       }
 
-      if (v3 == 4)
+      if (zoomLevel == 4)
       {
-        v20 = [v6 enableContentFiltering];
+        enableContentFiltering = [sharedInstance enableContentFiltering];
         v76 = 0;
         LODWORD(v77) = 0;
-        HIDWORD(v77) = v20;
+        HIDWORD(v77) = enableContentFiltering;
         LODWORD(v78) = 0;
-        HIDWORD(v78) = v20;
+        HIDWORD(v78) = enableContentFiltering;
         LODWORD(v73) = 0;
-        HIDWORD(v73) = v20;
+        HIDWORD(v73) = enableContentFiltering;
         v26 = 0;
-        v75 = v20;
+        v75 = enableContentFiltering;
         goto LABEL_32;
       }
 
@@ -468,26 +468,26 @@ LABEL_15:
     v73 = 0;
     v75 = 0;
     v26 = 0;
-    v20 = 0;
+    enableContentFiltering = 0;
     LOBYTE(v66) = 0;
     goto LABEL_32;
   }
 
-  if (v3 == 4)
+  if (zoomLevel == 4)
   {
-    v85 = v13;
-    v20 = [v6 enableContentFiltering];
-    v21 = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
-    v22 = [v21 shouldExcludeScreenshots];
+    v85 = isExpanded;
+    enableContentFiltering = [sharedInstance enableContentFiltering];
+    currentContentFilterState2 = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
+    shouldExcludeScreenshots = [currentContentFilterState2 shouldExcludeScreenshots];
 
-    v23 = [(PXCuratedLibraryViewModel *)self contentSyndicationConfigurationProvider];
-    v24 = [v23 contentSyndicationIsAvailable];
+    contentSyndicationConfigurationProvider = [(PXCuratedLibraryViewModel *)self contentSyndicationConfigurationProvider];
+    contentSyndicationIsAvailable = [contentSyndicationConfigurationProvider contentSyndicationIsAvailable];
 
-    HIDWORD(v78) = v24;
-    if (v24)
+    HIDWORD(v78) = contentSyndicationIsAvailable;
+    if (contentSyndicationIsAvailable)
     {
-      v25 = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
-      HIDWORD(v77) = [v25 includeSharedWithYou];
+      currentContentFilterState3 = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
+      HIDWORD(v77) = [currentContentFilterState3 includeSharedWithYou];
     }
 
     else
@@ -495,16 +495,16 @@ LABEL_15:
       HIDWORD(v77) = 0;
     }
 
-    v75 = v22 ^ 1;
-    v28 = [(PXCuratedLibraryViewModel *)self macSyncedAssetsStatusProvider];
-    v29 = [v28 hasAnyAssets];
+    v75 = shouldExcludeScreenshots ^ 1;
+    macSyncedAssetsStatusProvider = [(PXCuratedLibraryViewModel *)self macSyncedAssetsStatusProvider];
+    hasAnyAssets = [macSyncedAssetsStatusProvider hasAnyAssets];
 
-    LODWORD(v78) = v29;
-    LOBYTE(v13) = v85;
-    if (v29)
+    LODWORD(v78) = hasAnyAssets;
+    LOBYTE(isExpanded) = v85;
+    if (hasAnyAssets)
     {
-      v30 = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
-      LODWORD(v76) = [v30 shouldExcludeFromMyMac] ^ 1;
+      currentContentFilterState4 = [(PXCuratedLibraryViewModel *)self currentContentFilterState];
+      LODWORD(v76) = [currentContentFilterState4 shouldExcludeFromMyMac] ^ 1;
     }
 
     else
@@ -512,14 +512,14 @@ LABEL_15:
       LODWORD(v76) = 0;
     }
 
-    v33 = [off_1E7721810 sharedInstance];
-    LODWORD(v77) = [v33 showLivePhotoFilter];
+    sharedInstance2 = [off_1E7721810 sharedInstance];
+    LODWORD(v77) = [sharedInstance2 showLivePhotoFilter];
 
-    v34 = [off_1E7721810 sharedInstance];
-    HIDWORD(v76) = [v34 showPortraitFilter];
+    sharedInstance3 = [off_1E7721810 sharedInstance];
+    HIDWORD(v76) = [sharedInstance3 showPortraitFilter];
 
-    v35 = [off_1E7721810 sharedInstance];
-    LODWORD(v73) = [v35 showInUserAlbumFilter];
+    sharedInstance4 = [off_1E7721810 sharedInstance];
+    LODWORD(v73) = [sharedInstance4 showInUserAlbumFilter];
 
     v27 = 1;
     HIDWORD(v73) = 1;
@@ -527,12 +527,12 @@ LABEL_15:
     goto LABEL_31;
   }
 
-  if (v3 != 3)
+  if (zoomLevel != 3)
   {
-    if (v3 != 1)
+    if (zoomLevel != 1)
     {
-      v31 = [(PXCuratedLibraryViewModel *)self skimmingInfo];
-      v66 = [v31 touchInteractionStarted] ^ 1;
+      skimmingInfo2 = [(PXCuratedLibraryViewModel *)self skimmingInfo];
+      v66 = [skimmingInfo2 touchInteractionStarted] ^ 1;
 
 LABEL_28:
       v76 = 0;
@@ -541,7 +541,7 @@ LABEL_28:
       v73 = 0;
       v75 = 0;
       v26 = 0;
-      v20 = 0;
+      enableContentFiltering = 0;
       goto LABEL_32;
     }
 
@@ -554,34 +554,34 @@ LABEL_28:
   v73 = 0;
   v75 = 0;
   v26 = 0;
-  v20 = 0;
-  v27 = v91 ^ 1;
+  enableContentFiltering = 0;
+  v27 = isSelecting ^ 1;
 LABEL_31:
   LOBYTE(v66) = v27;
 LABEL_32:
-  v86 = v6;
-  v36 = (v3 == 4) & v10;
-  if (v3 == 3)
+  v86 = sharedInstance;
+  v36 = (zoomLevel == 4) & isDisplayingIndividualItems;
+  if (zoomLevel == 3)
   {
     v36 = 1;
   }
 
-  v37 = v36 & ~v91;
-  if (v11 == 4)
+  v37 = v36 & ~isSelecting;
+  if (userInterfaceIdiom == 4)
   {
     v37 = 0;
   }
 
   v71 = v37;
-  if (v91)
+  if (isSelecting)
   {
     v38 = 0;
   }
 
   else
   {
-    v38 = (v3 != 4) | v10;
-    if (((v3 == 4) & v10) == 1)
+    v38 = (zoomLevel != 4) | isDisplayingIndividualItems;
+    if (((zoomLevel == 4) & isDisplayingIndividualItems) == 1)
     {
       v74 = v96 > 1;
       goto LABEL_41;
@@ -590,16 +590,16 @@ LABEL_32:
 
   v74 = 0;
 LABEL_41:
-  if (v3 == 4 && v13)
+  if (zoomLevel == 4 && isExpanded)
   {
-    v39 = [(PXCuratedLibraryViewModel *)self currentDataSource];
-    v40 = [v39 containsAnyItems];
+    currentDataSource = [(PXCuratedLibraryViewModel *)self currentDataSource];
+    containsAnyItems = [currentDataSource containsAnyItems];
 
     v41 = *(&v96 + 1);
-    if (v40)
+    if (containsAnyItems)
     {
-      v42 = [v87 allowedColumns];
-      v43 = *(&v96 + 1) + 1 < [v42 count];
+      allowedColumns = [v87 allowedColumns];
+      enableShowAllButtons = *(&v96 + 1) + 1 < [allowedColumns count];
 
       v89 = 0;
       v44 = 1;
@@ -608,7 +608,7 @@ LABEL_41:
     else
     {
       v89 = 0;
-      v43 = 0;
+      enableShowAllButtons = 0;
       v44 = 0;
     }
   }
@@ -616,9 +616,9 @@ LABEL_41:
   else
   {
     v41 = *(&v96 + 1);
-    if (v3 == 3)
+    if (zoomLevel == 3)
     {
-      v45 = v91;
+      v45 = isSelecting;
     }
 
     else
@@ -628,16 +628,16 @@ LABEL_41:
 
     if ((v45 & 1) == 0)
     {
-      v43 = [v88 enableShowAllButtons];
+      enableShowAllButtons = [v88 enableShowAllButtons];
       v44 = 0;
       v69 = 0;
       v70 = 1;
       goto LABEL_63;
     }
 
-    v43 = 0;
-    v89 = (v11 != 4) & ~((v3 == 4) ^ (v3 == 1));
-    if ((v3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    enableShowAllButtons = 0;
+    v89 = (userInterfaceIdiom != 4) & ~((zoomLevel == 4) ^ (zoomLevel == 1));
+    if ((zoomLevel & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v69 = 0;
       v70 = 1;
@@ -648,41 +648,41 @@ LABEL_41:
     v44 = 0;
   }
 
-  v48 = v3 == 4 && v11 != 4 || v3 == 1;
-  v69 = v43;
+  v48 = zoomLevel == 4 && userInterfaceIdiom != 4 || zoomLevel == 1;
+  v69 = enableShowAllButtons;
   v70 = v48;
-  v43 = 0;
+  enableShowAllButtons = 0;
 LABEL_63:
-  if (v11 == 4)
+  if (userInterfaceIdiom == 4)
   {
-    v68 = 0;
+    canShowInternalUI = 0;
   }
 
   else
   {
     v49 = +[PXRootSettings sharedInstance];
-    v68 = [v49 canShowInternalUI];
+    canShowInternalUI = [v49 canShowInternalUI];
   }
 
-  v50 = 0;
-  v72 = v43;
-  if (v79 == 2 && v64 != 1)
+  sidebarCanBecomeVisible = 0;
+  v72 = enableShowAllButtons;
+  if (userInterfaceIdiom2 == 2 && sizeClass != 1)
   {
-    v50 = [(PXCuratedLibraryViewModel *)self sidebarCanBecomeVisible];
+    sidebarCanBecomeVisible = [(PXCuratedLibraryViewModel *)self sidebarCanBecomeVisible];
   }
 
-  v80 = v50;
-  if (v81 == 5)
+  v80 = sidebarCanBecomeVisible;
+  if (userInterfaceIdiom3 == 5)
   {
-    v51 = (v3 != 3) & (v66 | v90);
+    v51 = (zoomLevel != 3) & (v66 | hasSharedLibraryOrPreview);
   }
 
   else
   {
-    v51 = v66 | v90;
+    v51 = v66 | hasSharedLibraryOrPreview;
   }
 
-  if (v81 == 5)
+  if (userInterfaceIdiom3 == 5)
   {
     v52 = 0;
   }
@@ -692,22 +692,22 @@ LABEL_63:
     v52 = v38;
   }
 
-  v82 = v81 == 5;
-  if (v3 == 1)
+  v82 = userInterfaceIdiom3 == 5;
+  if (zoomLevel == 1)
   {
     v53 = 0;
   }
 
   else
   {
-    v53 = v91 ^ 1;
+    v53 = isSelecting ^ 1;
   }
 
   v62 = v52;
   v63 = v53;
-  if ((v3 - 1) < 2)
+  if ((zoomLevel - 1) < 2)
   {
-    v54 = v91 ^ 1;
+    v54 = isSelecting ^ 1;
   }
 
   else
@@ -715,9 +715,9 @@ LABEL_63:
     v54 = 0;
   }
 
-  if (v3 == 3)
+  if (zoomLevel == 3)
   {
-    v55 = v91;
+    v55 = isSelecting;
   }
 
   else
@@ -725,7 +725,7 @@ LABEL_63:
     v55 = 0;
   }
 
-  if (v11 == 4)
+  if (userInterfaceIdiom == 4)
   {
     v55 = 0;
   }
@@ -742,14 +742,14 @@ LABEL_63:
   }
 
   v67 = v56;
-  if (v3 == 4)
+  if (zoomLevel == 4)
   {
     v57 = 0;
   }
 
   else
   {
-    v57 = v91 ^ 1;
+    v57 = isSelecting ^ 1;
   }
 
   v65 = v57;
@@ -762,14 +762,14 @@ LABEL_63:
   v59 = v58;
   v60 = _Block_copy(aBlock);
   v60[2](v60, v51 & 1, @"PXCuratedLibraryActionEllipsisButton");
-  v60[2](v60, v90, @"PXCuratedLibraryActionSetAllLibrariesFilter");
-  v60[2](v60, v90, @"PXCuratedLibraryActionSetPersonalLibraryFilter");
-  v60[2](v60, v90, @"PXCuratedLibraryActionSetSharedLibraryFilter");
-  v60[2](v60, v90, @"PXCuratedLibraryActionToggleSharedLibraryBadge");
-  v60[2](v60, v20, @"PXCuratedLibraryActionShowFiltersMenu");
-  v60[2](v60, v20, @"PXCuratedLibraryActionShowFilters");
-  v60[2](v60, v20, @"PXCuratedLibraryActionUnfilter");
-  v60[2](v60, v20, @"PXCuratedLibraryActionRemoveFilters");
+  v60[2](v60, hasSharedLibraryOrPreview, @"PXCuratedLibraryActionSetAllLibrariesFilter");
+  v60[2](v60, hasSharedLibraryOrPreview, @"PXCuratedLibraryActionSetPersonalLibraryFilter");
+  v60[2](v60, hasSharedLibraryOrPreview, @"PXCuratedLibraryActionSetSharedLibraryFilter");
+  v60[2](v60, hasSharedLibraryOrPreview, @"PXCuratedLibraryActionToggleSharedLibraryBadge");
+  v60[2](v60, enableContentFiltering, @"PXCuratedLibraryActionShowFiltersMenu");
+  v60[2](v60, enableContentFiltering, @"PXCuratedLibraryActionShowFilters");
+  v60[2](v60, enableContentFiltering, @"PXCuratedLibraryActionUnfilter");
+  v60[2](v60, enableContentFiltering, @"PXCuratedLibraryActionRemoveFilters");
   v60[2](v60, v26, @"PXCuratedLibraryActionToggleFavoriteFilter");
   v60[2](v60, v26, @"PXCuratedLibraryActionToggleEditFilter");
   v60[2](v60, v26, @"PXCuratedLibraryActionToggleImageFilter");
@@ -786,7 +786,7 @@ LABEL_63:
   v60[2](v60, HIDWORD(v76), @"PXCuratedLibraryActionTogglePortraitFilter");
   v60[2](v60, v71, @"PXCuratedLibraryActionEnterSelectMode");
   v60[2](v60, v61, @"PXCuratedLibraryActionSelectAllToggle");
-  v60[2](v60, v91, @"PXCuratedLibraryActionCancelSelectMode");
+  v60[2](v60, isSelecting, @"PXCuratedLibraryActionCancelSelectMode");
   v60[2](v60, v62 & 1, @"PXCuratedLibraryActionNavigateToOneUp");
   v60[2](v60, v63 & v83, @"PXCuratedLibraryActionNavigateToPreviousZoomLevel");
   v60[2](v60, v54 & v83, @"PXCuratedLibraryActionNavigateToNextZoomLevel");
@@ -801,8 +801,8 @@ LABEL_63:
   v60[2](v60, v89, @"PXCuratedLibraryActionShare");
   v60[2](v60, v83, @"PXCuratedLibraryActionNavigateToYearsMonthsOrDays");
   v60[2](v60, v70, @"PXCuratedLibraryActionShowMap");
-  v60[2](v60, v68, @"PXCuratedLibraryActionTapToRadar");
-  v60[2](v60, v68, @"PXCuratedLibraryActionCurationDebug");
+  v60[2](v60, canShowInternalUI, @"PXCuratedLibraryActionTapToRadar");
+  v60[2](v60, canShowInternalUI, @"PXCuratedLibraryActionCurationDebug");
   (v60)[2](v60, v80, @"PXCuratedLibraryActionShowSidebar");
   (v60)[2](v60, v82, @"PXCuratedLibraryActionNavigateToAssetReference");
   v60[2](v60, 0, @"PXCuratedLibraryActionHover");
@@ -821,78 +821,78 @@ uint64_t __50__PXCuratedLibraryViewModel__updateAllowedActions__block_invoke(uin
 
 - (void)_updateDesiredVerticalAlignment
 {
-  v3 = [(PXCuratedLibraryViewModel *)self shouldShowEmptyPlaceholder];
+  shouldShowEmptyPlaceholder = [(PXCuratedLibraryViewModel *)self shouldShowEmptyPlaceholder];
 
-  [(PXCuratedLibraryViewModel *)self setDesiredVerticalAlignment:v3];
+  [(PXCuratedLibraryViewModel *)self setDesiredVerticalAlignment:shouldShowEmptyPlaceholder];
 }
 
 - (void)_invalidateZoomablePhotosViewModel
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateZoomablePhotosViewModel];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateZoomablePhotosViewModel];
 }
 
 - (void)_invalidateUserWantsAspectFitContent
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateUserWantsAspectFitContent];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateUserWantsAspectFitContent];
 }
 
 - (void)_invalidateAspectFitContent
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAspectFitContent];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAspectFitContent];
 }
 
 - (void)_invalidateLibraryState
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLibraryState];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLibraryState];
 }
 
 - (void)_invalidateBannerViewConfiguration
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateBannerViewConfiguration];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateBannerViewConfiguration];
 }
 
 - (void)_updateUserWantsAspectFitContent
 {
-  v7 = [off_1E7721948 standardUserDefaults];
-  v3 = [v7 allPhotosAspectFit];
-  v4 = [(PXCuratedLibraryViewModel *)self specManager];
-  v5 = [v4 spec];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  allPhotosAspectFit = [standardUserDefaults allPhotosAspectFit];
+  specManager = [(PXCuratedLibraryViewModel *)self specManager];
+  spec = [specManager spec];
 
-  if ([v5 userInterfaceIdiom] == 2 && objc_msgSend(v5, "sizeClass") == 1)
+  if ([spec userInterfaceIdiom] == 2 && objc_msgSend(spec, "sizeClass") == 1)
   {
-    v6 = [v7 allPhotosAspectFitInCompact];
+    allPhotosAspectFitInCompact = [standardUserDefaults allPhotosAspectFitInCompact];
 
-    v3 = v6;
+    allPhotosAspectFit = allPhotosAspectFitInCompact;
   }
 
-  [(PXCuratedLibraryViewModel *)self setUserWantsAspectFitContent:v3];
+  [(PXCuratedLibraryViewModel *)self setUserWantsAspectFitContent:allPhotosAspectFit];
 }
 
 - (void)_updateAspectFitContent
 {
-  v3 = [(PXCuratedLibraryViewModel *)self specManager];
-  v4 = [v3 spec];
-  v5 = [v4 userInterfaceIdiom] == 4;
+  specManager = [(PXCuratedLibraryViewModel *)self specManager];
+  spec = [specManager spec];
+  bOOLValue = [spec userInterfaceIdiom] == 4;
 
-  v6 = [(PXCuratedLibraryViewModel *)self userWantsAspectFitContent];
+  userWantsAspectFitContent = [(PXCuratedLibraryViewModel *)self userWantsAspectFitContent];
 
-  if (v6)
+  if (userWantsAspectFitContent)
   {
-    v7 = [(PXCuratedLibraryViewModel *)self userWantsAspectFitContent];
-    v5 = [v7 BOOLValue];
+    userWantsAspectFitContent2 = [(PXCuratedLibraryViewModel *)self userWantsAspectFitContent];
+    bOOLValue = [userWantsAspectFitContent2 BOOLValue];
   }
 
-  [(PXCuratedLibraryViewModel *)self setAspectFitContent:v5];
+  [(PXCuratedLibraryViewModel *)self setAspectFitContent:bOOLValue];
 }
 
 - (void)_updateLibraryState
 {
-  v8 = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
+  assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
   v3 = 0;
   v4 = [(PXCuratedLibraryViewModel *)self zoomLevel]- 1;
   v5 = 1;
@@ -900,7 +900,7 @@ uint64_t __50__PXCuratedLibraryViewModel__updateAllowedActions__block_invoke(uin
   {
     if (v4 == v3 || v3 == 3)
     {
-      v6 = [v8 libraryStateForZoomLevel:v3 + 1];
+      v6 = [assetsDataSourceManager libraryStateForZoomLevel:v3 + 1];
       v7 = v5 & 0xFFFFFFFFFFFFFFFELL;
       if (v6)
       {
@@ -919,10 +919,10 @@ uint64_t __50__PXCuratedLibraryViewModel__updateAllowedActions__block_invoke(uin
 
 - (void)_updateBannerViewConfiguration
 {
-  v3 = [(PXCuratedLibraryViewModel *)self sharedLibraryStatusProvider];
-  if ([v3 hasPreview])
+  sharedLibraryStatusProvider = [(PXCuratedLibraryViewModel *)self sharedLibraryStatusProvider];
+  if ([sharedLibraryStatusProvider hasPreview])
   {
-    v4 = PXSharedLibraryPreviewBannerConfiguration(v3);
+    v4 = PXSharedLibraryPreviewBannerConfiguration(sharedLibraryStatusProvider);
   }
 
   else
@@ -936,24 +936,24 @@ uint64_t __50__PXCuratedLibraryViewModel__updateAllowedActions__block_invoke(uin
 
 - (void)_updateChromeVisibility
 {
-  v3 = [(PXCuratedLibraryViewModel *)self specManager];
-  v23 = [v3 spec];
+  specManager = [(PXCuratedLibraryViewModel *)self specManager];
+  spec = [specManager spec];
 
-  v4 = [(PXCuratedLibraryViewModel *)self libraryState];
-  if ([v23 userInterfaceIdiom] != 4)
+  libraryState = [(PXCuratedLibraryViewModel *)self libraryState];
+  if ([spec userInterfaceIdiom] != 4)
   {
-    v9 = [(PXCuratedLibraryViewModel *)self isSelecting];
-    v10 = [v23 layoutOrientation];
-    v11 = [v23 sizeClass];
+    isSelecting = [(PXCuratedLibraryViewModel *)self isSelecting];
+    layoutOrientation = [spec layoutOrientation];
+    sizeClass = [spec sizeClass];
     v12 = +[PXLemonadeSettings sharedInstance];
-    v13 = [v12 enableTabs];
-    v14 = v13;
-    if ((v4 & 2) != 0)
+    enableTabs = [v12 enableTabs];
+    v14 = enableTabs;
+    if ((libraryState & 2) != 0)
     {
 
-      if (v9)
+      if (isSelecting)
       {
-        v8 = 0;
+        wantsOptionalChromeVisible = 0;
         v6 = 0;
         v7 = 1;
         if (v14)
@@ -965,11 +965,11 @@ uint64_t __50__PXCuratedLibraryViewModel__updateAllowedActions__block_invoke(uin
       }
 
       v21 = +[PXLemonadeSettings sharedInstance];
-      v22 = [v21 enableTabs];
+      enableTabs2 = [v21 enableTabs];
 
-      if ((v22 & 1) == 0 && v10 == 2 && v11 == 1)
+      if ((enableTabs2 & 1) == 0 && layoutOrientation == 2 && sizeClass == 1)
       {
-        v8 = [(PXCuratedLibraryViewModel *)self wantsOptionalChromeVisible];
+        wantsOptionalChromeVisible = [(PXCuratedLibraryViewModel *)self wantsOptionalChromeVisible];
         v7 = 0;
 LABEL_9:
         v6 = 1;
@@ -979,16 +979,16 @@ LABEL_9:
         }
 
 LABEL_13:
-        v5 = [(PXCuratedLibraryViewModel *)self bannerViewConfiguration];
+        bannerViewConfiguration = [(PXCuratedLibraryViewModel *)self bannerViewConfiguration];
 
-        if (!v5)
+        if (!bannerViewConfiguration)
         {
           goto LABEL_15;
         }
 
 LABEL_14:
-        v15 = [(PXCuratedLibraryViewModel *)self configuration];
-        LODWORD(v5) = [v15 enableNavigationHeader];
+        configuration = [(PXCuratedLibraryViewModel *)self configuration];
+        LODWORD(bannerViewConfiguration) = [configuration enableNavigationHeader];
 
         goto LABEL_15;
       }
@@ -996,9 +996,9 @@ LABEL_14:
 
     else
     {
-      if (v11 == 1)
+      if (sizeClass == 1)
       {
-        v14 = v13;
+        v14 = enableTabs;
       }
 
       else
@@ -1008,28 +1008,28 @@ LABEL_14:
     }
 
     v7 = 0;
-    v8 = 1;
+    wantsOptionalChromeVisible = 1;
     goto LABEL_9;
   }
 
-  LODWORD(v5) = 0;
+  LODWORD(bannerViewConfiguration) = 0;
   v6 = 0;
   v7 = 0;
-  v8 = 0;
+  wantsOptionalChromeVisible = 0;
 LABEL_15:
-  v16 = [(PXCuratedLibraryViewModel *)self configuration];
-  v17 = [v16 isPresentingSearchOverlay];
+  configuration2 = [(PXCuratedLibraryViewModel *)self configuration];
+  isPresentingSearchOverlay = [configuration2 isPresentingSearchOverlay];
 
-  v18 = (v17 == 0) & v5;
-  if (v17 && v5)
+  v18 = (isPresentingSearchOverlay == 0) & bannerViewConfiguration;
+  if (isPresentingSearchOverlay && bannerViewConfiguration)
   {
-    v19 = [(PXCuratedLibraryViewModel *)self configuration];
-    v20 = [v19 isPresentingSearchOverlay];
-    v18 = v20[2]() ^ 1;
+    configuration3 = [(PXCuratedLibraryViewModel *)self configuration];
+    isPresentingSearchOverlay2 = [configuration3 isPresentingSearchOverlay];
+    v18 = isPresentingSearchOverlay2[2]() ^ 1;
   }
 
   [(PXCuratedLibraryViewModel *)self setWantsNavigationBarVisible:v18];
-  [(PXCuratedLibraryViewModel *)self setWantsTabBarVisible:v8];
+  [(PXCuratedLibraryViewModel *)self setWantsTabBarVisible:wantsOptionalChromeVisible];
   [(PXCuratedLibraryViewModel *)self setWantsToolbarVisible:v7];
   [(PXCuratedLibraryViewModel *)self setWantsSecondaryToolbarVisible:v6];
   self->_lastChromeVisibilityChangeReason = self->_pendingChromeVisibilityChangeReason;
@@ -1038,13 +1038,13 @@ LABEL_15:
 
 - (void)_updateZoomablePhotosViewModel
 {
-  v3 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
+  zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __59__PXCuratedLibraryViewModel__updateZoomablePhotosViewModel__block_invoke;
   v4[3] = &unk_1E7736F60;
   v4[4] = self;
-  [v3 performChanges:v4];
+  [zoomablePhotosViewModel performChanges:v4];
 }
 
 void __59__PXCuratedLibraryViewModel__updateZoomablePhotosViewModel__block_invoke(uint64_t a1, void *a2)
@@ -1063,29 +1063,29 @@ void __59__PXCuratedLibraryViewModel__updateZoomablePhotosViewModel__block_invok
 
 - (void)_invalidateScrollingSpeedometer
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateScrollingSpeedometer];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateScrollingSpeedometer];
 }
 
 - (void)_updateScrollingSpeedometer
 {
-  v5 = [(PXCuratedLibraryViewModel *)self views];
-  v3 = [v5 firstObject];
-  v4 = [v3 scrollingSpeedometer];
-  [(PXCuratedLibraryViewModel *)self setScrollingSpeedometer:v4];
+  views = [(PXCuratedLibraryViewModel *)self views];
+  firstObject = [views firstObject];
+  scrollingSpeedometer = [firstObject scrollingSpeedometer];
+  [(PXCuratedLibraryViewModel *)self setScrollingSpeedometer:scrollingSpeedometer];
 }
 
 - (void)_invalidateScrollingProperties
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateScrollingProperties];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateScrollingProperties];
 }
 
 - (void)_updateScrollingProperties
 {
-  v3 = [(PXCuratedLibraryViewModel *)self scrollingSpeedometer];
-  -[PXCuratedLibraryViewModel setScrollRegime:](self, "setScrollRegime:", [v3 regime]);
-  [v3 lastScrollDirection];
+  scrollingSpeedometer = [(PXCuratedLibraryViewModel *)self scrollingSpeedometer];
+  -[PXCuratedLibraryViewModel setScrollRegime:](self, "setScrollRegime:", [scrollingSpeedometer regime]);
+  [scrollingSpeedometer lastScrollDirection];
   [(PXCuratedLibraryViewModel *)self setLastScrollDirection:?];
 }
 
@@ -1108,7 +1108,7 @@ void __59__PXCuratedLibraryViewModel__updateZoomablePhotosViewModel__block_invok
       v11 = 138543874;
       v12 = v8;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = v9;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Did assign %{public}@", &v11, 0x20u);
@@ -1165,13 +1165,13 @@ uint64_t __46__PXCuratedLibraryViewModel__handleSpecChange__block_invoke(uint64_
   return result;
 }
 
-- (void)_sendAllPhotosSortOrderAnalyticsEvent:(unint64_t)a3
+- (void)_sendAllPhotosSortOrderAnalyticsEvent:(unint64_t)event
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__PXCuratedLibraryViewModel__sendAllPhotosSortOrderAnalyticsEvent___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = event;
   if (_sendAllPhotosSortOrderAnalyticsEvent__onceToken != -1)
   {
     dispatch_once(&_sendAllPhotosSortOrderAnalyticsEvent__onceToken, block);
@@ -1193,31 +1193,31 @@ uint64_t __67__PXCuratedLibraryViewModel__sendAllPhotosSortOrderAnalyticsEvent__
   return [MEMORY[0x1E6991F28] sendEvent:v1 withPayload:MEMORY[0x1E695E0F8]];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  if (PXUserDefaultsObservationContext == a6)
+  pathCopy = path;
+  if (PXUserDefaultsObservationContext == context)
   {
     v10 = MEMORY[0x1E695E000];
-    v11 = a4;
-    v12 = [v10 standardUserDefaults];
-    LODWORD(v10) = [v11 isEqual:v12];
+    objectCopy = object;
+    standardUserDefaults = [v10 standardUserDefaults];
+    LODWORD(v10) = [objectCopy isEqual:standardUserDefaults];
 
     if (v10)
     {
-      if ([v9 isEqual:*off_1E7722280])
+      if ([pathCopy isEqual:*off_1E7722280])
       {
 
 LABEL_7:
-        v14 = [(PXCuratedLibraryViewModel *)self _updatedContentFilterState];
+        _updatedContentFilterState = [(PXCuratedLibraryViewModel *)self _updatedContentFilterState];
         objc_initWeak(&location, self);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __76__PXCuratedLibraryViewModel_observeValueForKeyPath_ofObject_change_context___block_invoke;
         block[3] = &unk_1E774B248;
         objc_copyWeak(&v18, &location);
-        v17 = v14;
-        v15 = v14;
+        v17 = _updatedContentFilterState;
+        v15 = _updatedContentFilterState;
         dispatch_async(MEMORY[0x1E69E96A0], block);
 
         objc_destroyWeak(&v18);
@@ -1225,7 +1225,7 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v13 = [v9 isEqual:*off_1E7722278];
+      v13 = [pathCopy isEqual:*off_1E7722278];
 
       if (v13)
       {
@@ -1264,20 +1264,20 @@ void __76__PXCuratedLibraryViewModel_observeValueForKeyPath_ofObject_change_cont
 
 - (id)_updatedContentFilterState
 {
-  v3 = [off_1E7721948 standardUserDefaults];
-  v4 = [(PXCuratedLibraryViewModel *)self allPhotosContentFilterState];
-  v5 = [v4 copy];
+  standardUserDefaults = [off_1E7721948 standardUserDefaults];
+  allPhotosContentFilterState = [(PXCuratedLibraryViewModel *)self allPhotosContentFilterState];
+  v5 = [allPhotosContentFilterState copy];
 
-  v6 = [v3 includeScreenshots];
-  [v5 setIncludeScreenshots:{objc_msgSend(v6, "BOOLValue")}];
+  includeScreenshots = [standardUserDefaults includeScreenshots];
+  [v5 setIncludeScreenshots:{objc_msgSend(includeScreenshots, "BOOLValue")}];
 
-  v7 = [v3 includeSharedWithYou];
-  [v5 setIncludeSharedWithYou:{objc_msgSend(v7, "BOOLValue")}];
+  includeSharedWithYou = [standardUserDefaults includeSharedWithYou];
+  [v5 setIncludeSharedWithYou:{objc_msgSend(includeSharedWithYou, "BOOLValue")}];
 
   return v5;
 }
 
-- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)a3
+- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)fetching
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -1287,14 +1287,14 @@ void __76__PXCuratedLibraryViewModel_observeValueForKeyPath_ofObject_change_cont
   [(PXCuratedLibraryViewModel *)self performChanges:v3];
 }
 
-- (void)_handleSelectionManagerChange:(unint64_t)a3
+- (void)_handleSelectionManagerChange:(unint64_t)change
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invoke;
   v3[3] = &unk_1E7737140;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = change;
   [(PXCuratedLibraryViewModel *)self performChanges:v3];
 }
 
@@ -1330,8 +1330,8 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
 {
   if (![(PXCuratedLibraryViewModel *)self isSelecting])
   {
-    v3 = [(PXCuratedLibraryViewModel *)self selectionManager];
-    [v3 performChanges:&__block_literal_global_302_91267];
+    selectionManager = [(PXCuratedLibraryViewModel *)self selectionManager];
+    [selectionManager performChanges:&__block_literal_global_302_91267];
   }
 
   v4[0] = MEMORY[0x1E69E9820];
@@ -1342,21 +1342,21 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
   [(PXCuratedLibraryViewModel *)self performChanges:v4];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  v10 = v9;
-  if (PXCuratedLibraryViewModelObserverContext_91269 == a5)
+  observableCopy = observable;
+  v10 = observableCopy;
+  if (PXCuratedLibraryViewModelObserverContext_91269 == context)
   {
-    if (a4)
+    if (change)
     {
       [(PXCuratedLibraryViewModel *)self _handleIsSelectingChange];
     }
 
-    if ((a4 & 0x10000) != 0)
+    if ((change & 0x10000) != 0)
     {
-      v12 = [(PXCuratedLibraryViewModel *)self allowedActions];
-      v13 = [v12 containsObject:@"PXCuratedLibraryActionNavigateToYearsMonthsOrDays"];
+      allowedActions = [(PXCuratedLibraryViewModel *)self allowedActions];
+      v13 = [allowedActions containsObject:@"PXCuratedLibraryActionNavigateToYearsMonthsOrDays"];
 
       if ((v13 & 1) == 0)
       {
@@ -1366,9 +1366,9 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
     }
   }
 
-  else if (PXCuratedLibraryViewModelZoomablePhotosObserverContext == a5)
+  else if (PXCuratedLibraryViewModelZoomablePhotosObserverContext == context)
   {
-    if (a4)
+    if (change)
     {
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
@@ -1378,7 +1378,7 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
       [(PXCuratedLibraryViewModel *)self performChanges:v56];
     }
 
-    if ((a4 & 0x2000000) != 0)
+    if ((change & 0x2000000) != 0)
     {
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
@@ -1390,14 +1390,14 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
     }
   }
 
-  else if (PXCuratedLibraryViewModelSelectionObserverContext == a5)
+  else if (PXCuratedLibraryViewModelSelectionObserverContext == context)
   {
-    [(PXCuratedLibraryViewModel *)self _handleSelectionManagerChange:a4];
+    [(PXCuratedLibraryViewModel *)self _handleSelectionManagerChange:change];
   }
 
-  else if (PXCuratedLibraryViewModelScrollingSpeedometerObserverContext == a5)
+  else if (PXCuratedLibraryViewModelScrollingSpeedometerObserverContext == context)
   {
-    if ((a4 & 0xA) != 0)
+    if ((change & 0xA) != 0)
     {
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
@@ -1409,17 +1409,17 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
     }
   }
 
-  else if (PXCuratedLibraryViewModelSpecManagerObserverContext == a5)
+  else if (PXCuratedLibraryViewModelSpecManagerObserverContext == context)
   {
-    if (a4)
+    if (change)
     {
       [(PXCuratedLibraryViewModel *)self _handleSpecChange];
     }
   }
 
-  else if (PXCuratedLibraryViewModelAnalysisStatusObserverContext == a5)
+  else if (PXCuratedLibraryViewModelAnalysisStatusObserverContext == context)
   {
-    if ((a4 & 0x20) != 0)
+    if ((change & 0x20) != 0)
     {
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
@@ -1431,9 +1431,9 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
     }
   }
 
-  else if (PXCuratedLibraryViewModelAllPhotosDataSourceManagerObserverContext == a5)
+  else if (PXCuratedLibraryViewModelAllPhotosDataSourceManagerObserverContext == context)
   {
-    if (a4)
+    if (change)
     {
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
@@ -1445,17 +1445,17 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
     }
   }
 
-  else if (PXCuratedLibraryViewModelAssetsDataSourceManagerObserverContext == a5)
+  else if (PXCuratedLibraryViewModelAssetsDataSourceManagerObserverContext == context)
   {
-    if ((a4 & 2) != 0)
+    if ((change & 2) != 0)
     {
-      v14 = [(PXCuratedLibraryViewModel *)self selectionManager];
-      [v14 performChanges:&__block_literal_global_296];
+      selectionManager = [(PXCuratedLibraryViewModel *)self selectionManager];
+      [selectionManager performChanges:&__block_literal_global_296];
 
       [(PXCuratedLibraryViewModel *)self _invalidateAssetCollectionActionManager];
     }
 
-    if ((a4 & 4) != 0)
+    if ((change & 4) != 0)
     {
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
@@ -1467,84 +1467,84 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
     }
   }
 
-  else if (PXCuratedLibraryViewModelAssetSelectionTypeObserverContext == a5)
+  else if (PXCuratedLibraryViewModelAssetSelectionTypeObserverContext == context)
   {
-    if (a4)
+    if (change)
     {
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __58__PXCuratedLibraryViewModel_observable_didChange_context___block_invoke_9;
       v49[3] = &unk_1E7737068;
       v49[4] = self;
-      v50 = v9;
+      v50 = observableCopy;
       [(PXCuratedLibraryViewModel *)self performChanges:v49];
     }
   }
 
-  else if (PXSharedLibrarySharingSuggestionsCountsManagerObservationContext == a5)
+  else if (PXSharedLibrarySharingSuggestionsCountsManagerObservationContext == context)
   {
-    if ((a4 & 0xA) != 0)
+    if ((change & 0xA) != 0)
     {
       v44 = MEMORY[0x1E69E9820];
       v45 = 3221225472;
       v46 = __58__PXCuratedLibraryViewModel_observable_didChange_context___block_invoke_10;
       v47 = &unk_1E7748B68;
-      v48 = self;
+      selfCopy = self;
       v11 = &v44;
       goto LABEL_58;
     }
   }
 
-  else if (PXPhotosSortOrderStateObservationContext == a5)
+  else if (PXPhotosSortOrderStateObservationContext == context)
   {
-    if (a4)
+    if (change)
     {
       v39 = MEMORY[0x1E69E9820];
       v40 = 3221225472;
       v41 = __58__PXCuratedLibraryViewModel_observable_didChange_context___block_invoke_11;
       v42 = &unk_1E7748B68;
-      v43 = self;
+      selfCopy2 = self;
       v11 = &v39;
       goto LABEL_58;
     }
   }
 
-  else if (PXSharedLibraryCameraSharingBannerStatusProviderObservationContext == a5)
+  else if (PXSharedLibraryCameraSharingBannerStatusProviderObservationContext == context)
   {
-    if (a4)
+    if (change)
     {
       v34 = MEMORY[0x1E69E9820];
       v35 = 3221225472;
       v36 = __58__PXCuratedLibraryViewModel_observable_didChange_context___block_invoke_12;
       v37 = &unk_1E7748B68;
-      v38 = self;
+      selfCopy3 = self;
       v11 = &v34;
       goto LABEL_58;
     }
   }
 
-  else if (PXMacSyncedAssetsStatusProviderObservationContext == a5)
+  else if (PXMacSyncedAssetsStatusProviderObservationContext == context)
   {
-    if (a4)
+    if (change)
     {
       v29 = MEMORY[0x1E69E9820];
       v30 = 3221225472;
       v31 = __58__PXCuratedLibraryViewModel_observable_didChange_context___block_invoke_13;
       v32 = &unk_1E7748B68;
-      v33 = self;
+      selfCopy4 = self;
       v11 = &v29;
       goto LABEL_58;
     }
   }
 
-  else if (PXSharedLibraryStatusProviderObservationContext_91270 == a5)
+  else if (PXSharedLibraryStatusProviderObservationContext_91270 == context)
   {
-    if ((a4 & 3) != 0)
+    if ((change & 3) != 0)
     {
-      if (a4)
+      if (change)
       {
-        v16 = [(PXCuratedLibraryViewModel *)self sharedLibraryStatusProvider];
-        if ([v16 hasSharedLibraryOrPreview])
+        sharedLibraryStatusProvider = [(PXCuratedLibraryViewModel *)self sharedLibraryStatusProvider];
+        if ([sharedLibraryStatusProvider hasSharedLibraryOrPreview])
         {
           v15 = 2;
         }
@@ -1560,14 +1560,14 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
         v15 = 0;
       }
 
-      v17 = [(PXCuratedLibraryViewModel *)self libraryFilterState];
-      [v17 setViewMode:v15];
+      libraryFilterState = [(PXCuratedLibraryViewModel *)self libraryFilterState];
+      [libraryFilterState setViewMode:v15];
 
       v24 = MEMORY[0x1E69E9820];
       v25 = 3221225472;
       v26 = __58__PXCuratedLibraryViewModel_observable_didChange_context___block_invoke_14;
       v27 = &unk_1E7748B68;
-      v28 = self;
+      selfCopy5 = self;
       v11 = &v24;
       goto LABEL_58;
     }
@@ -1575,24 +1575,24 @@ void __59__PXCuratedLibraryViewModel__handleSelectionManagerChange___block_invok
 
   else
   {
-    if (PXLibraryFilterStateObservationContext_91271 != a5)
+    if (PXLibraryFilterStateObservationContext_91271 != context)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewModel.m" lineNumber:1609 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewModel.m" lineNumber:1609 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if (a4)
+    if (change)
     {
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v21 = __58__PXCuratedLibraryViewModel_observable_didChange_context___block_invoke_15;
       v22 = &unk_1E7748B68;
-      v23 = self;
+      selfCopy6 = self;
       v11 = &v19;
 LABEL_58:
-      [(PXCuratedLibraryViewModel *)self performChanges:v11, v19, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40, v41, v42, v43, v44, v45, v46, v47, v48];
+      [(PXCuratedLibraryViewModel *)self performChanges:v11, v19, v20, v21, v22, selfCopy6, v24, v25, v26, v27, selfCopy5, v29, v30, v31, v32, selfCopy4, v34, v35, v36, v37, selfCopy3, v39, v40, v41, v42, selfCopy2, v44, v45, v46, v47, selfCopy];
     }
   }
 }
@@ -1631,12 +1631,12 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   return [v2 _invalidateAllowedActions];
 }
 
-- (int64_t)curatedLibraryAssetsDataSourceManager:(id)a3 transitionTypeFromZoomLevel:(int64_t)a4 toZoomLevel:(int64_t)a5
+- (int64_t)curatedLibraryAssetsDataSourceManager:(id)manager transitionTypeFromZoomLevel:(int64_t)level toZoomLevel:(int64_t)zoomLevel
 {
-  v8 = [(PXCuratedLibraryViewModel *)self mainPresenter];
+  mainPresenter = [(PXCuratedLibraryViewModel *)self mainPresenter];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 viewModel:self transitionTypeFromZoomLevel:a4 toZoomLevel:a5];
+    v9 = [mainPresenter viewModel:self transitionTypeFromZoomLevel:level toZoomLevel:zoomLevel];
   }
 
   else
@@ -1647,22 +1647,22 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   return v9;
 }
 
-- (id)curatedLibraryAssetsDataSourceManager:(id)a3 dominantAssetCollectionReferenceForZoomLevel:(int64_t)a4
+- (id)curatedLibraryAssetsDataSourceManager:(id)manager dominantAssetCollectionReferenceForZoomLevel:(int64_t)level
 {
-  v6 = [(PXCuratedLibraryViewModel *)self mainPresenter];
-  v7 = [v6 viewModel:self dominantAssetCollectionReferenceForZoomLevel:a4];
+  mainPresenter = [(PXCuratedLibraryViewModel *)self mainPresenter];
+  v7 = [mainPresenter viewModel:self dominantAssetCollectionReferenceForZoomLevel:level];
 
   return v7;
 }
 
-- (void)curatedLibraryAssetsDataSourceManager:(id)a3 didTransitionFromZoomLevel:(int64_t)a4 toZoomLevel:(int64_t)a5
+- (void)curatedLibraryAssetsDataSourceManager:(id)manager didTransitionFromZoomLevel:(int64_t)level toZoomLevel:(int64_t)zoomLevel
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(PXCuratedLibraryViewModel *)self presenters:a3];
+  v8 = [(PXCuratedLibraryViewModel *)self presenters:manager];
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -1681,7 +1681,7 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 viewModel:self didTransitionFromZoomLevel:a4 toZoomLevel:a5];
+          [v13 viewModel:self didTransitionFromZoomLevel:level toZoomLevel:zoomLevel];
         }
 
         ++v12;
@@ -1695,14 +1695,14 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   }
 }
 
-- (void)curatedLibraryAssetsDataSourceManager:(id)a3 willTransitionFromZoomLevel:(int64_t)a4 toZoomLevel:(int64_t)a5
+- (void)curatedLibraryAssetsDataSourceManager:(id)manager willTransitionFromZoomLevel:(int64_t)level toZoomLevel:(int64_t)zoomLevel
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(PXCuratedLibraryViewModel *)self presenters:a3];
+  v8 = [(PXCuratedLibraryViewModel *)self presenters:manager];
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -1721,7 +1721,7 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 viewModel:self willTransitionFromZoomLevel:a4 toZoomLevel:a5];
+          [v13 viewModel:self willTransitionFromZoomLevel:level toZoomLevel:zoomLevel];
         }
 
         ++v12;
@@ -1735,41 +1735,41 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   }
 }
 
-- (id)visibleAssetCollectionsFromCuratedLibraryAssetsDataSourceManager:(id)a3
+- (id)visibleAssetCollectionsFromCuratedLibraryAssetsDataSourceManager:(id)manager
 {
-  v3 = [(PXCuratedLibraryViewModel *)self visibleAssetCollections];
-  v4 = [v3 copy];
+  visibleAssetCollections = [(PXCuratedLibraryViewModel *)self visibleAssetCollections];
+  v4 = [visibleAssetCollections copy];
 
   return v4;
 }
 
 - (void)_updateIsModalInPresentation
 {
-  v3 = [(PXCuratedLibraryViewModel *)self isSelecting];
+  isSelecting = [(PXCuratedLibraryViewModel *)self isSelecting];
 
-  [(PXCuratedLibraryViewModel *)self setIsModalInPresentation:v3];
+  [(PXCuratedLibraryViewModel *)self setIsModalInPresentation:isSelecting];
 }
 
 - (void)_invalidateIsModalInPresentation
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsModalInPresentation];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsModalInPresentation];
 }
 
-- (void)setSecondaryToolbarVisibility:(double)a3
+- (void)setSecondaryToolbarVisibility:(double)visibility
 {
-  if (self->_secondaryToolbarVisibility != a3)
+  if (self->_secondaryToolbarVisibility != visibility)
   {
-    self->_secondaryToolbarVisibility = a3;
+    self->_secondaryToolbarVisibility = visibility;
     [(PXCuratedLibraryViewModel *)self signalChange:0x2000000000];
   }
 }
 
-- (void)setShouldShowEmptyPlaceholder:(BOOL)a3
+- (void)setShouldShowEmptyPlaceholder:(BOOL)placeholder
 {
-  if (self->_shouldShowEmptyPlaceholder != a3)
+  if (self->_shouldShowEmptyPlaceholder != placeholder)
   {
-    self->_shouldShowEmptyPlaceholder = a3;
+    self->_shouldShowEmptyPlaceholder = placeholder;
     [(PXCuratedLibraryViewModel *)self _invalidateDesiredVerticalAlignment];
     [(PXCuratedLibraryViewModel *)self _invalidateAllowedActions];
 
@@ -1777,11 +1777,11 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   }
 }
 
-- (void)setContentFillsTopSafeArea:(BOOL)a3
+- (void)setContentFillsTopSafeArea:(BOOL)area
 {
-  if (self->_contentFillsTopSafeArea != a3)
+  if (self->_contentFillsTopSafeArea != area)
   {
-    self->_contentFillsTopSafeArea = a3;
+    self->_contentFillsTopSafeArea = area;
     [(PXCuratedLibraryViewModel *)self signalChange:0x100000000000];
   }
 }
@@ -1790,8 +1790,8 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
 {
   if ([(PXCuratedLibraryViewModel *)self zoomLevel]== 4)
   {
-    v3 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
-    -[PXCuratedLibraryViewModel setContentFillsTopSafeArea:](self, "setContentFillsTopSafeArea:", [v3 isDisplayingIndividualItems] ^ 1);
+    zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
+    -[PXCuratedLibraryViewModel setContentFillsTopSafeArea:](self, "setContentFillsTopSafeArea:", [zoomablePhotosViewModel isDisplayingIndividualItems] ^ 1);
   }
 
   else
@@ -1803,56 +1803,56 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
 
 - (void)_invalidateContentFillsTopSafeArea
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateContentFillsTopSafeArea];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateContentFillsTopSafeArea];
 }
 
-- (void)setAllowedActions:(id)a3
+- (void)setAllowedActions:(id)actions
 {
-  v5 = a3;
+  actionsCopy = actions;
   if (![(NSSet *)self->_allowedActions isEqualToSet:?])
   {
-    objc_storeStrong(&self->_allowedActions, a3);
+    objc_storeStrong(&self->_allowedActions, actions);
     [(PXCuratedLibraryViewModel *)self signalChange:0x10000];
   }
 }
 
-- (void)_invalidateChromeVisibilityWithChangeReason:(int64_t)a3
+- (void)_invalidateChromeVisibilityWithChangeReason:(int64_t)reason
 {
-  if (a3)
+  if (reason)
   {
-    self->_pendingChromeVisibilityChangeReason = a3;
+    self->_pendingChromeVisibilityChangeReason = reason;
   }
 
-  v3 = [(PXCuratedLibraryViewModel *)self updater];
-  [v3 setNeedsUpdateOf:sel__updateChromeVisibility];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateChromeVisibility];
 }
 
 - (void)_updateSelectModeCaption
 {
-  v16 = [(PXCuratedLibraryViewModel *)self selectionSnapshot];
-  if ([v16 isAnyItemSelected])
+  selectionSnapshot = [(PXCuratedLibraryViewModel *)self selectionSnapshot];
+  if ([selectionSnapshot isAnyItemSelected])
   {
-    v4 = [(PXCuratedLibraryViewModel *)self selectedAssetsTypedCount];
+    selectedAssetsTypedCount = [(PXCuratedLibraryViewModel *)self selectedAssetsTypedCount];
     v6 = v5;
   }
 
   else
   {
-    v4 = *off_1E7721F88;
+    selectedAssetsTypedCount = *off_1E7721F88;
     v6 = *(off_1E7721F88 + 1);
   }
 
-  v7 = [(PXCuratedLibraryViewModel *)self sharedLibraryStatusProvider];
-  if ([v7 hasPreview])
+  sharedLibraryStatusProvider = [(PXCuratedLibraryViewModel *)self sharedLibraryStatusProvider];
+  if ([sharedLibraryStatusProvider hasPreview])
   {
-    v8 = [v16 isAnyItemSelected];
+    isAnyItemSelected = [selectionSnapshot isAnyItemSelected];
 
-    if (v8)
+    if (isAnyItemSelected)
     {
-      v9 = [(PXCuratedLibraryViewModel *)self assetActionManager];
-      v10 = [v9 canPerformActionType:*off_1E7721B10];
-      v11 = [v9 canPerformActionType:*off_1E7721B18];
+      assetActionManager = [(PXCuratedLibraryViewModel *)self assetActionManager];
+      v10 = [assetActionManager canPerformActionType:*off_1E7721B10];
+      v11 = [assetActionManager canPerformActionType:*off_1E7721B18];
       if (v10 & 1) != 0 || (v11)
       {
         v12 = 15;
@@ -1871,11 +1871,11 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
           v13 = 17;
         }
 
-        PXLocalizedSharedLibraryAssetCountForUsage(v4, v6, 0, v13);
+        PXLocalizedSharedLibraryAssetCountForUsage(selectedAssetsTypedCount, v6, 0, v13);
       }
 
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewModel.m" lineNumber:1008 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewModel.m" lineNumber:1008 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -1885,21 +1885,21 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   {
   }
 
-  v14 = PXLocalizedSelectModeCaption([(PXCuratedLibraryViewModel *)self isSelecting], v4, v6);
+  v14 = PXLocalizedSelectModeCaption([(PXCuratedLibraryViewModel *)self isSelecting], selectedAssetsTypedCount, v6);
   [(PXCuratedLibraryViewModel *)self setSelectModeCaption:v14];
 }
 
 - (void)_invalidateSelectModeCaption
 {
-  v2 = [(PXCuratedLibraryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSelectModeCaption];
+  updater = [(PXCuratedLibraryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSelectModeCaption];
 }
 
-- (void)setSelectedAssetsTypedCount:(id)a3
+- (void)setSelectedAssetsTypedCount:(id)count
 {
-  if (a3.var0 != self->_selectedAssetsTypedCount.count || a3.var1 != self->_selectedAssetsTypedCount.type)
+  if (count.var0 != self->_selectedAssetsTypedCount.count || count.var1 != self->_selectedAssetsTypedCount.type)
   {
-    self->_selectedAssetsTypedCount = a3;
+    self->_selectedAssetsTypedCount = count;
     [(PXCuratedLibraryViewModel *)self signalChange:0x8000000];
 
     [(PXCuratedLibraryViewModel *)self _invalidateSelectModeCaption];
@@ -1908,19 +1908,19 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
 
 - (void)_invalidateAssetActionManager
 {
-  v3 = [(PXCuratedLibraryViewModel *)self assetActionManager];
-  v6 = [v3 allowedActionTypes];
+  assetActionManager = [(PXCuratedLibraryViewModel *)self assetActionManager];
+  allowedActionTypes = [assetActionManager allowedActionTypes];
 
-  v4 = [(PXCuratedLibraryViewModel *)self _assetActionManagerWithAllowedActionTypes:v6];
+  v4 = [(PXCuratedLibraryViewModel *)self _assetActionManagerWithAllowedActionTypes:allowedActionTypes];
   assetActionManager = self->_assetActionManager;
   self->_assetActionManager = v4;
 }
 
-- (void)setDesiredVerticalAlignment:(unint64_t)a3
+- (void)setDesiredVerticalAlignment:(unint64_t)alignment
 {
-  if (self->_desiredVerticalAlignment != a3)
+  if (self->_desiredVerticalAlignment != alignment)
   {
-    self->_desiredVerticalAlignment = a3;
+    self->_desiredVerticalAlignment = alignment;
     [(PXCuratedLibraryViewModel *)self signalChange:0x800000000];
   }
 }
@@ -1930,16 +1930,16 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   [(PXCuratedLibraryViewModel *)self setIsResetting:1];
   [(PXCuratedLibraryViewModel *)self setIsSelecting:0];
   [(PXCuratedLibraryViewModel *)self setZoomLevel:4];
-  v3 = [(PXCuratedLibraryViewModel *)self allPhotosContentFilterState];
-  v4 = [v3 isFiltering];
+  allPhotosContentFilterState = [(PXCuratedLibraryViewModel *)self allPhotosContentFilterState];
+  isFiltering = [allPhotosContentFilterState isFiltering];
 
-  if (v4)
+  if (isFiltering)
   {
     [(PXCuratedLibraryViewModel *)self resetAllPhotosContentFilterState];
   }
 
-  v5 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
-  [v5 performChanges:&__block_literal_global_272_91318];
+  zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
+  [zoomablePhotosViewModel performChanges:&__block_literal_global_272_91318];
 }
 
 - (BOOL)isResetToInitialState
@@ -1955,48 +1955,48 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   }
 }
 
-- (void)setScrolledToBottom:(BOOL)a3
+- (void)setScrolledToBottom:(BOOL)bottom
 {
-  if (self->_scrolledToBottom != a3)
+  if (self->_scrolledToBottom != bottom)
   {
-    self->_scrolledToBottom = a3;
+    self->_scrolledToBottom = bottom;
     [(PXCuratedLibraryViewModel *)self signalChange:0x40000000000];
   }
 }
 
-- (void)setScrolledToTop:(BOOL)a3
+- (void)setScrolledToTop:(BOOL)top
 {
-  if (self->_scrolledToTop != a3)
+  if (self->_scrolledToTop != top)
   {
-    self->_scrolledToTop = a3;
+    self->_scrolledToTop = top;
     [(PXCuratedLibraryViewModel *)self signalChange:0x20000000000];
   }
 }
 
-- (void)setSecondaryToolbarLegibilityGradientIsVisible:(BOOL)a3
+- (void)setSecondaryToolbarLegibilityGradientIsVisible:(BOOL)visible
 {
-  if (self->_secondaryToolbarLegibilityGradientIsVisible != a3)
+  if (self->_secondaryToolbarLegibilityGradientIsVisible != visible)
   {
-    self->_secondaryToolbarLegibilityGradientIsVisible = a3;
+    self->_secondaryToolbarLegibilityGradientIsVisible = visible;
     [(PXCuratedLibraryViewModel *)self signalChange:0x400000000];
   }
 }
 
-- (void)setIsModalInPresentation:(BOOL)a3
+- (void)setIsModalInPresentation:(BOOL)presentation
 {
-  if (self->_isModalInPresentation != a3)
+  if (self->_isModalInPresentation != presentation)
   {
-    self->_isModalInPresentation = a3;
+    self->_isModalInPresentation = presentation;
     [(PXCuratedLibraryViewModel *)self signalChange:0x200000000];
   }
 }
 
-- (void)setBannerViewConfiguration:(id)a3
+- (void)setBannerViewConfiguration:(id)configuration
 {
-  v8 = a3;
+  configurationCopy = configuration;
   v5 = self->_bannerViewConfiguration;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == configurationCopy)
   {
   }
 
@@ -2006,77 +2006,77 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_bannerViewConfiguration, a3);
+      objc_storeStrong(&self->_bannerViewConfiguration, configuration);
       [(PXCuratedLibraryViewModel *)self _invalidateChromeVisibility];
       [(PXCuratedLibraryViewModel *)self signalChange:0x80000000];
     }
   }
 }
 
-- (void)setUserWantsAspectFitContent:(id)a3
+- (void)setUserWantsAspectFitContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   userWantsAspectFitContent = self->_userWantsAspectFitContent;
-  if (userWantsAspectFitContent != v4)
+  if (userWantsAspectFitContent != contentCopy)
   {
-    v12 = v4;
-    v6 = [(NSNumber *)userWantsAspectFitContent isEqual:v4];
-    v4 = v12;
+    v12 = contentCopy;
+    v6 = [(NSNumber *)userWantsAspectFitContent isEqual:contentCopy];
+    contentCopy = v12;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSNumber *)v12 copy];
       v8 = self->_userWantsAspectFitContent;
       self->_userWantsAspectFitContent = v7;
 
-      v9 = [(PXCuratedLibraryViewModel *)self specManager];
-      v10 = [v9 spec];
+      specManager = [(PXCuratedLibraryViewModel *)self specManager];
+      spec = [specManager spec];
 
-      if ([v10 userInterfaceIdiom] == 2 && objc_msgSend(v10, "sizeClass") == 1)
+      if ([spec userInterfaceIdiom] == 2 && objc_msgSend(spec, "sizeClass") == 1)
       {
-        v11 = [off_1E7721948 standardUserDefaults];
-        [v11 setAllPhotosAspectFitInCompact:v12];
+        standardUserDefaults = [off_1E7721948 standardUserDefaults];
+        [standardUserDefaults setAllPhotosAspectFitInCompact:v12];
       }
 
       else
       {
-        v11 = [off_1E7721948 standardUserDefaults];
-        [v11 setAllPhotosAspectFit:v12];
+        standardUserDefaults = [off_1E7721948 standardUserDefaults];
+        [standardUserDefaults setAllPhotosAspectFit:v12];
       }
 
       [(PXCuratedLibraryViewModel *)self _invalidateAspectFitContent];
-      v4 = v12;
+      contentCopy = v12;
     }
   }
 }
 
-- (void)setAspectFitContent:(BOOL)a3
+- (void)setAspectFitContent:(BOOL)content
 {
-  if (self->_aspectFitContent != a3)
+  if (self->_aspectFitContent != content)
   {
-    self->_aspectFitContent = a3;
+    self->_aspectFitContent = content;
     [(PXCuratedLibraryViewModel *)self _invalidateZoomablePhotosViewModel];
 
     [(PXCuratedLibraryViewModel *)self signalChange:0x80000000000];
   }
 }
 
-- (void)setSidebarCanBecomeVisible:(BOOL)a3
+- (void)setSidebarCanBecomeVisible:(BOOL)visible
 {
-  if (self->_sidebarCanBecomeVisible != a3)
+  if (self->_sidebarCanBecomeVisible != visible)
   {
-    self->_sidebarCanBecomeVisible = a3;
+    self->_sidebarCanBecomeVisible = visible;
     [(PXCuratedLibraryViewModel *)self _invalidateAllowedActions];
 
     [(PXCuratedLibraryViewModel *)self signalChange:0x40000000];
   }
 }
 
-- (void)setCplActionManagerClass:(Class)a3
+- (void)setCplActionManagerClass:(Class)class
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_cplActionManagerClass != a3)
+  if (self->_cplActionManagerClass != class)
   {
-    objc_storeStrong(&self->_cplActionManagerClass, a3);
+    objc_storeStrong(&self->_cplActionManagerClass, class);
     cplUIStatusProvider = self->_cplUIStatusProvider;
     if (cplUIStatusProvider)
     {
@@ -2088,7 +2088,7 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
         v6 = 138543618;
         v7 = objc_opt_class();
         v8 = 2048;
-        v9 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Did reset PXCPLUIStatusProvider", &v6, 0x16u);
       }
     }
@@ -2097,49 +2097,49 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   }
 }
 
-- (void)setLastScrollDirection:(CGPoint)a3
+- (void)setLastScrollDirection:(CGPoint)direction
 {
-  if (a3.x != self->_lastScrollDirection.x || a3.y != self->_lastScrollDirection.y)
+  if (direction.x != self->_lastScrollDirection.x || direction.y != self->_lastScrollDirection.y)
   {
-    self->_lastScrollDirection = a3;
+    self->_lastScrollDirection = direction;
     [(PXCuratedLibraryViewModel *)self signalChange:4096];
   }
 }
 
-- (void)setScrollRegime:(int64_t)a3
+- (void)setScrollRegime:(int64_t)regime
 {
-  if (self->_scrollRegime != a3)
+  if (self->_scrollRegime != regime)
   {
-    self->_scrollRegime = a3;
+    self->_scrollRegime = regime;
     [(PXCuratedLibraryViewModel *)self signalChange:2048];
   }
 }
 
-- (void)setScrollingSpeedometer:(id)a3
+- (void)setScrollingSpeedometer:(id)speedometer
 {
-  v5 = a3;
+  speedometerCopy = speedometer;
   scrollingSpeedometer = self->_scrollingSpeedometer;
-  if (scrollingSpeedometer != v5)
+  if (scrollingSpeedometer != speedometerCopy)
   {
-    v7 = v5;
+    v7 = speedometerCopy;
     [(PXScrollViewSpeedometer *)scrollingSpeedometer unregisterChangeObserver:self context:PXCuratedLibraryViewModelScrollingSpeedometerObserverContext];
-    objc_storeStrong(&self->_scrollingSpeedometer, a3);
+    objc_storeStrong(&self->_scrollingSpeedometer, speedometer);
     [(PXScrollViewSpeedometer *)self->_scrollingSpeedometer registerChangeObserver:self context:PXCuratedLibraryViewModelScrollingSpeedometerObserverContext];
     [(PXCuratedLibraryViewModel *)self _invalidateScrollingProperties];
-    v5 = v7;
+    speedometerCopy = v7;
   }
 }
 
-- (id)_indexPathsForAssetCollectionReference:(id)a3
+- (id)_indexPathsForAssetCollectionReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(PXCuratedLibraryViewModel *)self currentDataSource];
-  v6 = v5;
-  if (v5)
+  currentDataSource = [(PXCuratedLibraryViewModel *)self currentDataSource];
+  v6 = currentDataSource;
+  if (currentDataSource)
   {
-    [v5 indexPathForAssetCollectionReference:v4];
+    [currentDataSource indexPathForAssetCollectionReference:referenceCopy];
   }
 
   else
@@ -2148,22 +2148,22 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
     v12 = 0u;
   }
 
-  v7 = [(PXCuratedLibraryViewModel *)self currentDataSource];
+  currentDataSource2 = [(PXCuratedLibraryViewModel *)self currentDataSource];
   v10[0] = v11;
   v10[1] = v12;
-  v8 = [v7 indexPathSetForItemsInIndexPath:v10];
+  v8 = [currentDataSource2 indexPathSetForItemsInIndexPath:v10];
 
   return v8;
 }
 
-- (void)toggleSelectionForAssetCollectionReference:(id)a3
+- (void)toggleSelectionForAssetCollectionReference:(id)reference
 {
-  v4 = [(PXCuratedLibraryViewModel *)self _indexPathsForAssetCollectionReference:a3];
-  v5 = [(PXCuratedLibraryViewModel *)self selectionSnapshot];
-  v6 = [v5 selectedIndexPaths];
-  v7 = [v4 isSubsetOfSet:v6];
+  v4 = [(PXCuratedLibraryViewModel *)self _indexPathsForAssetCollectionReference:reference];
+  selectionSnapshot = [(PXCuratedLibraryViewModel *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v7 = [v4 isSubsetOfSet:selectedIndexPaths];
 
-  v8 = [(PXCuratedLibraryViewModel *)self selectionManager];
+  selectionManager = [(PXCuratedLibraryViewModel *)self selectionManager];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__PXCuratedLibraryViewModel_toggleSelectionForAssetCollectionReference___block_invoke;
@@ -2171,21 +2171,21 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   v12 = v7;
   v11 = v4;
   v9 = v4;
-  [v8 performChanges:v10];
+  [selectionManager performChanges:v10];
 }
 
-- (void)toggleSelectionForAssetReference:(id)a3 updateCursorIndexPath:(BOOL)a4
+- (void)toggleSelectionForAssetReference:(id)reference updateCursorIndexPath:(BOOL)path
 {
-  v4 = a4;
+  pathCopy = path;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  referenceCopy = reference;
   v11 = 0u;
   v12 = 0u;
-  v7 = [(PXCuratedLibraryViewModel *)self currentDataSource];
-  v8 = v7;
-  if (v7)
+  currentDataSource = [(PXCuratedLibraryViewModel *)self currentDataSource];
+  v8 = currentDataSource;
+  if (currentDataSource)
   {
-    [v7 indexPathForAssetReference:v6];
+    [currentDataSource indexPathForAssetReference:referenceCopy];
   }
 
   else
@@ -2199,11 +2199,11 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
     v9 = PLUIGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(PXCuratedLibraryViewModel *)self currentDataSource];
+      currentDataSource2 = [(PXCuratedLibraryViewModel *)self currentDataSource];
       *buf = 138412546;
-      *&buf[4] = v6;
+      *&buf[4] = referenceCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v10;
+      *&buf[14] = currentDataSource2;
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "can't toggle selection for %@ because it's not in %@", buf, 0x16u);
     }
   }
@@ -2212,29 +2212,29 @@ uint64_t __58__PXCuratedLibraryViewModel_observable_didChange_context___block_in
   {
     *buf = v11;
     *&buf[16] = v12;
-    [(PXCuratedLibraryViewModel *)self toggleSelectionForIndexPath:buf updateCursorIndexPath:v4];
+    [(PXCuratedLibraryViewModel *)self toggleSelectionForIndexPath:buf updateCursorIndexPath:pathCopy];
   }
 }
 
-- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)a3 updateCursorIndexPath:(BOOL)a4
+- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)path updateCursorIndexPath:(BOOL)indexPath
 {
-  v7 = [(PXCuratedLibraryViewModel *)self selectionSnapshot];
-  v8 = *&a3->item;
-  v17[0] = *&a3->dataSourceIdentifier;
+  selectionSnapshot = [(PXCuratedLibraryViewModel *)self selectionSnapshot];
+  v8 = *&path->item;
+  v17[0] = *&path->dataSourceIdentifier;
   v17[1] = v8;
-  v9 = [v7 isIndexPathSelected:v17];
+  v9 = [selectionSnapshot isIndexPathSelected:v17];
 
-  v10 = [(PXCuratedLibraryViewModel *)self selectionManager];
+  selectionManager = [(PXCuratedLibraryViewModel *)self selectionManager];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCursorIndexPath___block_invoke;
   v12[3] = &__block_descriptor_66_e37_v16__0___PXMutableSelectionManager__8l;
   v15 = v9;
-  v11 = *&a3->item;
-  v13 = *&a3->dataSourceIdentifier;
+  v11 = *&path->item;
+  v13 = *&path->dataSourceIdentifier;
   v14 = v11;
-  v16 = a4;
-  [v10 performChanges:v12];
+  indexPathCopy = indexPath;
+  [selectionManager performChanges:v12];
 }
 
 uint64_t __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCursorIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -2247,10 +2247,10 @@ uint64_t __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCurso
   return [a2 setSelectedState:(v2 & 1) == 0 forIndexPath:v6 andUpdateCursorIndexPath:v3];
 }
 
-- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)a3
+- (void)toggleSelectionForIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->item;
-  v4[0] = *&a3->dataSourceIdentifier;
+  v3 = *&path->item;
+  v4[0] = *&path->dataSourceIdentifier;
   v4[1] = v3;
   [(PXCuratedLibraryViewModel *)self toggleSelectionForIndexPath:v4 updateCursorIndexPath:0];
 }
@@ -2260,11 +2260,11 @@ uint64_t __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCurso
   assetCollectionActionManager = self->_assetCollectionActionManager;
   if (!assetCollectionActionManager)
   {
-    v4 = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
-    v5 = [v4 currentPhotoKitAssetsDataSourceManager];
+    assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
+    currentPhotoKitAssetsDataSourceManager = [assetsDataSourceManager currentPhotoKitAssetsDataSourceManager];
 
     v6 = [[PXPhotoKitAssetCollectionActionManager alloc] initWithAssetCollectionReference:0 displayTitleInfo:0];
-    [(PXAssetCollectionActionManager *)v6 setAssetsDataSourceManager:v5];
+    [(PXAssetCollectionActionManager *)v6 setAssetsDataSourceManager:currentPhotoKitAssetsDataSourceManager];
     v7 = self->_assetCollectionActionManager;
     self->_assetCollectionActionManager = &v6->super;
 
@@ -2274,16 +2274,16 @@ uint64_t __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCurso
   return assetCollectionActionManager;
 }
 
-- (id)_assetActionManagerWithAllowedActionTypes:(id)a3
+- (id)_assetActionManagerWithAllowedActionTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
-  v6 = [v5 currentPhotoKitAssetsDataSourceManager];
+  typesCopy = types;
+  assetsDataSourceManager = [(PXCuratedLibraryViewModel *)self assetsDataSourceManager];
+  currentPhotoKitAssetsDataSourceManager = [assetsDataSourceManager currentPhotoKitAssetsDataSourceManager];
 
-  v7 = [(PXCuratedLibraryViewModel *)self selectionManager];
-  v8 = [[PXPhotoKitAssetActionManager alloc] initWithSelectionManager:v7];
-  [(PXPhotoKitAssetActionManager *)v8 setDataSourceManager:v6];
-  [(PXActionManager *)v8 setAllowedActionTypes:v4];
+  selectionManager = [(PXCuratedLibraryViewModel *)self selectionManager];
+  v8 = [[PXPhotoKitAssetActionManager alloc] initWithSelectionManager:selectionManager];
+  [(PXPhotoKitAssetActionManager *)v8 setDataSourceManager:currentPhotoKitAssetsDataSourceManager];
+  [(PXActionManager *)v8 setAllowedActionTypes:typesCopy];
 
   return v8;
 }
@@ -2303,28 +2303,28 @@ uint64_t __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCurso
   return assetActionManager;
 }
 
-- (void)setCurrentDataSource:(id)a3
+- (void)setCurrentDataSource:(id)source
 {
-  v5 = a3;
-  if (self->_currentDataSource != v5)
+  sourceCopy = source;
+  if (self->_currentDataSource != sourceCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_currentDataSource, a3);
+    v6 = sourceCopy;
+    objc_storeStrong(&self->_currentDataSource, source);
     [(PXCuratedLibraryViewModel *)self signalChange:16];
     [(PXCuratedLibraryViewModel *)self _invalidateDraggedAssetReferences];
     [(PXCuratedLibraryViewModel *)self _invalidateAllowedActions];
-    v5 = v6;
+    sourceCopy = v6;
   }
 }
 
-- (void)setAllPhotosContentFilterState:(id)a3
+- (void)setAllPhotosContentFilterState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_allPhotosContentFilterState != v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self->_allPhotosContentFilterState != stateCopy)
   {
-    v9 = v4;
-    v6 = [(PXContentFilterState *)v4 isEqual:?];
+    v9 = stateCopy;
+    v6 = [(PXContentFilterState *)stateCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {
@@ -2341,13 +2341,13 @@ uint64_t __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCurso
   }
 }
 
-- (void)userDidSetAllPhotosContentFilterState:(id)a3
+- (void)userDidSetAllPhotosContentFilterState:(id)state
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   if ([(PXCuratedLibraryViewModel *)self zoomLevel]== 4)
   {
-    [(PXCuratedLibraryViewModel *)self setAllPhotosContentFilterState:v4];
+    [(PXCuratedLibraryViewModel *)self setAllPhotosContentFilterState:stateCopy];
   }
 
   else
@@ -2356,20 +2356,20 @@ uint64_t __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCurso
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = [(PXCuratedLibraryViewModel *)self zoomLevel];
+      zoomLevel = [(PXCuratedLibraryViewModel *)self zoomLevel];
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Attempted content filtering with unexpected zoom level %li", &v6, 0xCu);
     }
   }
 }
 
-- (void)setCurrentContentFilterState:(id)a3
+- (void)setCurrentContentFilterState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_currentContentFilterState != v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (self->_currentContentFilterState != stateCopy)
   {
-    v9 = v4;
-    v6 = [(PXContentFilterState *)v4 isEqual:?];
+    v9 = stateCopy;
+    v6 = [(PXContentFilterState *)stateCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {
@@ -2385,30 +2385,30 @@ uint64_t __79__PXCuratedLibraryViewModel_toggleSelectionForIndexPath_updateCurso
   }
 }
 
-- (int64_t)zoomLevelInDirection:(int64_t)a3 fromZoomLevel:(int64_t)a4
+- (int64_t)zoomLevelInDirection:(int64_t)direction fromZoomLevel:(int64_t)level
 {
-  if (a3 >= 1)
+  if (direction >= 1)
   {
-    v5 = 1;
+    directionCopy = 1;
   }
 
   else
   {
-    v5 = a3;
+    directionCopy = direction;
   }
 
-  if (v5 < 0)
+  if (directionCopy < 0)
   {
     v6 = -1;
   }
 
   else
   {
-    v6 = v5;
+    v6 = directionCopy;
   }
 
-  v7 = [(PXCuratedLibraryViewModel *)self configuration];
-  v8 = v6 + a4;
+  configuration = [(PXCuratedLibraryViewModel *)self configuration];
+  v8 = v6 + level;
   if (v8 > 4)
   {
 LABEL_10:
@@ -2417,7 +2417,7 @@ LABEL_10:
 
   else
   {
-    while (([v7 isZoomLevelEnabled:v8] & 1) == 0)
+    while (([configuration isZoomLevelEnabled:v8] & 1) == 0)
     {
       v8 += v6;
       if (v8 >= 5)
@@ -2430,12 +2430,12 @@ LABEL_10:
   return v8;
 }
 
-- (void)setZoomLevel:(int64_t)a3
+- (void)setZoomLevel:(int64_t)level
 {
   zoomLevel = self->_zoomLevel;
-  if (zoomLevel != a3)
+  if (zoomLevel != level)
   {
-    self->_zoomLevel = a3;
+    self->_zoomLevel = level;
     [(PXCuratedLibraryViewModel *)self signalChange:4];
     [(PXCuratedLibraryViewModel *)self _invalidateAssetsDataSourceManager];
     [(PXCuratedLibraryViewModel *)self _invalidateAllowedActions];
@@ -2443,55 +2443,55 @@ LABEL_10:
     [(PXCuratedLibraryViewModel *)self _invalidateCurrentContentFilterState];
     if (![(PXCuratedLibraryViewModel *)self isPerformingInitialChanges])
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-      v7 = [off_1E7721948 standardUserDefaults];
-      [v7 setCuratedLibraryZoomLevel:v6];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:level];
+      standardUserDefaults = [off_1E7721948 standardUserDefaults];
+      [standardUserDefaults setCuratedLibraryZoomLevel:v6];
     }
 
-    if (a3 == 4 && (zoomLevel - 1) <= 1)
+    if (level == 4 && (zoomLevel - 1) <= 1)
     {
-      v8 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
-      v9 = [v8 isDisplayingIndividualItems];
+      zoomablePhotosViewModel = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
+      isDisplayingIndividualItems = [zoomablePhotosViewModel isDisplayingIndividualItems];
 
-      if ((v9 & 1) == 0)
+      if ((isDisplayingIndividualItems & 1) == 0)
       {
-        v10 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
-        [v10 performChanges:&__block_literal_global_265];
+        zoomablePhotosViewModel2 = [(PXCuratedLibraryViewModel *)self zoomablePhotosViewModel];
+        [zoomablePhotosViewModel2 performChanges:&__block_literal_global_265];
       }
     }
   }
 }
 
-- (void)removeView:(id)a3
+- (void)removeView:(id)view
 {
-  [(NSHashTable *)self->_views removeObject:a3];
+  [(NSHashTable *)self->_views removeObject:view];
 
   [(PXCuratedLibraryViewModel *)self _invalidateScrollingSpeedometer];
 }
 
-- (void)addView:(id)a3
+- (void)addView:(id)view
 {
-  [(NSHashTable *)self->_views addObject:a3];
+  [(NSHashTable *)self->_views addObject:view];
 
   [(PXCuratedLibraryViewModel *)self _invalidateScrollingSpeedometer];
 }
 
 - (PXCuratedLibraryViewModelPresenter)mainPresenter
 {
-  v2 = [(PXCuratedLibraryViewModel *)self presenters];
-  v3 = [v2 firstObject];
+  presenters = [(PXCuratedLibraryViewModel *)self presenters];
+  firstObject = [presenters firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setSelectModeCaption:(id)a3
+- (void)setSelectModeCaption:(id)caption
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_selectModeCaption != v4)
+  captionCopy = caption;
+  v5 = captionCopy;
+  if (self->_selectModeCaption != captionCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = captionCopy;
+    v6 = [(NSString *)captionCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -2507,17 +2507,17 @@ LABEL_10:
 
 - (PXAssetReference)singleSelectedAssetReference
 {
-  v3 = [(PXCuratedLibraryViewModel *)self selectionManager];
-  v4 = [v3 selectionSnapshot];
+  selectionManager = [(PXCuratedLibraryViewModel *)self selectionManager];
+  selectionSnapshot = [selectionManager selectionSnapshot];
 
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 selectedIndexPaths];
-  if ([v5 count] == 1)
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  if ([selectedIndexPaths count] == 1)
   {
-    if (v4)
+    if (selectionSnapshot)
     {
-      [v4 firstSelectedIndexPath];
+      [selectionSnapshot firstSelectedIndexPath];
     }
 
     else
@@ -2536,10 +2536,10 @@ LABEL_10:
 
   if (v13 != *off_1E7721F68 && v14 != 0x7FFFFFFFFFFFFFFFLL && *(&v14 + 1) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(PXCuratedLibraryViewModel *)self currentDataSource];
+    currentDataSource = [(PXCuratedLibraryViewModel *)self currentDataSource];
     v12[0] = v13;
     v12[1] = v14;
-    v9 = [v10 assetReferenceAtItemIndexPath:v12];
+    v9 = [currentDataSource assetReferenceAtItemIndexPath:v12];
   }
 
   else
@@ -2550,14 +2550,14 @@ LABEL_10:
   return v9;
 }
 
-- (void)setDraggedAssetReferences:(id)a3
+- (void)setDraggedAssetReferences:(id)references
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_draggedAssetReferences != v4)
+  referencesCopy = references;
+  v5 = referencesCopy;
+  if (self->_draggedAssetReferences != referencesCopy)
   {
-    v9 = v4;
-    v6 = [(NSSet *)v4 isEqual:?];
+    v9 = referencesCopy;
+    v6 = [(NSSet *)referencesCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -2572,29 +2572,29 @@ LABEL_10:
   }
 }
 
-- (void)setSkimmingInfo:(id)a3
+- (void)setSkimmingInfo:(id)info
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_skimmingInfo != v5)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (self->_skimmingInfo != infoCopy)
   {
-    v8 = v5;
-    v7 = [(PXCuratedLibraryAssetCollectionSkimmingInfo *)v5 isEqual:?];
+    v8 = infoCopy;
+    v7 = [(PXCuratedLibraryAssetCollectionSkimmingInfo *)infoCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_skimmingInfo, a3);
+      objc_storeStrong(&self->_skimmingInfo, info);
       [(PXCuratedLibraryViewModel *)self signalChange:512];
       v6 = v8;
     }
   }
 }
 
-- (void)setLibraryState:(unint64_t)a3
+- (void)setLibraryState:(unint64_t)state
 {
-  if (self->_libraryState != a3)
+  if (self->_libraryState != state)
   {
-    self->_libraryState = a3;
+    self->_libraryState = state;
     [(PXCuratedLibraryViewModel *)self _invalidateChromeVisibility];
     [(PXCuratedLibraryViewModel *)self _invalidateShouldShowEmptyPlaceholder];
 
@@ -2602,80 +2602,80 @@ LABEL_10:
   }
 }
 
-- (void)setDaysMarginScale:(double)a3
+- (void)setDaysMarginScale:(double)scale
 {
-  if (self->_daysMarginScale != a3)
+  if (self->_daysMarginScale != scale)
   {
-    self->_daysMarginScale = a3;
+    self->_daysMarginScale = scale;
     [(PXCuratedLibraryViewModel *)self signalChange:128];
     if (![(PXCuratedLibraryViewModel *)self isPerformingInitialChanges])
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-      v5 = [off_1E7721948 standardUserDefaults];
-      [v5 setDaysMarginScale:v6];
+      v6 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
+      standardUserDefaults = [off_1E7721948 standardUserDefaults];
+      [standardUserDefaults setDaysMarginScale:v6];
     }
   }
 }
 
-- (void)setWantsDarkStatusBar:(BOOL)a3
+- (void)setWantsDarkStatusBar:(BOOL)bar
 {
-  if (self->_wantsDarkStatusBar != a3)
+  if (self->_wantsDarkStatusBar != bar)
   {
-    self->_wantsDarkStatusBar = a3;
+    self->_wantsDarkStatusBar = bar;
     [(PXCuratedLibraryViewModel *)self signalChange:0x1000000];
   }
 }
 
-- (void)setWantsOptionalChromeVisible:(BOOL)a3 changeReason:(int64_t)a4
+- (void)setWantsOptionalChromeVisible:(BOOL)visible changeReason:(int64_t)reason
 {
-  if (self->_wantsOptionalChromeVisible != a3)
+  if (self->_wantsOptionalChromeVisible != visible)
   {
-    self->_wantsOptionalChromeVisible = a3;
-    [(PXCuratedLibraryViewModel *)self _invalidateChromeVisibilityWithChangeReason:a4];
+    self->_wantsOptionalChromeVisible = visible;
+    [(PXCuratedLibraryViewModel *)self _invalidateChromeVisibilityWithChangeReason:reason];
   }
 }
 
-- (void)setWantsSecondaryToolbarVisible:(BOOL)a3
+- (void)setWantsSecondaryToolbarVisible:(BOOL)visible
 {
-  if (self->_wantsSecondaryToolbarVisible != a3)
+  if (self->_wantsSecondaryToolbarVisible != visible)
   {
-    self->_wantsSecondaryToolbarVisible = a3;
+    self->_wantsSecondaryToolbarVisible = visible;
     [(PXCuratedLibraryViewModel *)self signalChange:0x400000];
   }
 }
 
-- (void)setWantsToolbarVisible:(BOOL)a3
+- (void)setWantsToolbarVisible:(BOOL)visible
 {
-  if (self->_wantsToolbarVisible != a3)
+  if (self->_wantsToolbarVisible != visible)
   {
-    self->_wantsToolbarVisible = a3;
+    self->_wantsToolbarVisible = visible;
     [(PXCuratedLibraryViewModel *)self signalChange:0x400000];
   }
 }
 
-- (void)setWantsTabBarVisible:(BOOL)a3
+- (void)setWantsTabBarVisible:(BOOL)visible
 {
-  if (self->_wantsTabBarVisible != a3)
+  if (self->_wantsTabBarVisible != visible)
   {
-    self->_wantsTabBarVisible = a3;
+    self->_wantsTabBarVisible = visible;
     [(PXCuratedLibraryViewModel *)self signalChange:0x400000];
   }
 }
 
-- (void)setWantsNavigationBarVisible:(BOOL)a3
+- (void)setWantsNavigationBarVisible:(BOOL)visible
 {
-  if (self->_wantsNavigationBarVisible != a3)
+  if (self->_wantsNavigationBarVisible != visible)
   {
-    self->_wantsNavigationBarVisible = a3;
+    self->_wantsNavigationBarVisible = visible;
     [(PXCuratedLibraryViewModel *)self signalChange:0x400000];
   }
 }
 
-- (void)setIsSelecting:(BOOL)a3
+- (void)setIsSelecting:(BOOL)selecting
 {
-  if (self->_isSelecting != a3)
+  if (self->_isSelecting != selecting)
   {
-    self->_isSelecting = a3;
+    self->_isSelecting = selecting;
     [(PXCuratedLibraryViewModel *)self signalChange:1];
     [(PXCuratedLibraryViewModel *)self _invalidateAssetActionManager];
     [(PXCuratedLibraryViewModel *)self _invalidateAllowedActions];
@@ -2686,33 +2686,33 @@ LABEL_10:
   }
 }
 
-- (void)setHidesDurationLabelBadge:(BOOL)a3
+- (void)setHidesDurationLabelBadge:(BOOL)badge
 {
-  if (self->_hidesDurationLabelBadge != a3)
+  if (self->_hidesDurationLabelBadge != badge)
   {
-    self->_hidesDurationLabelBadge = a3;
+    self->_hidesDurationLabelBadge = badge;
     [(PXCuratedLibraryViewModel *)self signalChange:0x800000];
 
     [(PXCuratedLibraryViewModel *)self _invalidateZoomablePhotosViewModel];
   }
 }
 
-- (void)setViewBasedDecorationsEnabled:(BOOL)a3
+- (void)setViewBasedDecorationsEnabled:(BOOL)enabled
 {
-  if (self->_viewBasedDecorationsEnabled != a3)
+  if (self->_viewBasedDecorationsEnabled != enabled)
   {
-    self->_viewBasedDecorationsEnabled = a3;
+    self->_viewBasedDecorationsEnabled = enabled;
     [(PXCuratedLibraryViewModel *)self signalChange:0x800000];
 
     [(PXCuratedLibraryViewModel *)self _invalidateZoomablePhotosViewModel];
   }
 }
 
-- (void)setIsFullyExpanded:(BOOL)a3
+- (void)setIsFullyExpanded:(BOOL)expanded
 {
-  if (self->_isFullyExpanded != a3)
+  if (self->_isFullyExpanded != expanded)
   {
-    self->_isFullyExpanded = a3;
+    self->_isFullyExpanded = expanded;
     [(PXCuratedLibraryViewModel *)self signalChange:0x10000000000];
   }
 }
@@ -2732,11 +2732,11 @@ LABEL_10:
   [(PXCuratedLibraryViewModel *)self setIsFullyExpanded:v3];
 }
 
-- (void)setIsExpandedAnimating:(BOOL)a3
+- (void)setIsExpandedAnimating:(BOOL)animating
 {
-  if (self->_isExpandedAnimating != a3)
+  if (self->_isExpandedAnimating != animating)
   {
-    self->_isExpandedAnimating = a3;
+    self->_isExpandedAnimating = animating;
     [(PXCuratedLibraryViewModel *)self signalChange:0x8000000000];
     [(PXCuratedLibraryViewModel *)self _invalidateAllowedActions];
 
@@ -2744,11 +2744,11 @@ LABEL_10:
   }
 }
 
-- (void)setIsExpanded:(BOOL)a3
+- (void)setIsExpanded:(BOOL)expanded
 {
-  if (self->_isExpanded != a3)
+  if (self->_isExpanded != expanded)
   {
-    self->_isExpanded = a3;
+    self->_isExpanded = expanded;
     [(PXCuratedLibraryViewModel *)self signalChange:0x4000000000];
     [(PXCuratedLibraryViewModel *)self _invalidateAllowedActions];
     [(PXCuratedLibraryViewModel *)self _invalidateZoomablePhotosViewModel];
@@ -2757,34 +2757,34 @@ LABEL_10:
   }
 }
 
-- (void)setZoomLevelTransitionPhase:(int64_t)a3
+- (void)setZoomLevelTransitionPhase:(int64_t)phase
 {
-  if (self->_zoomLevelTransitionPhase != a3)
+  if (self->_zoomLevelTransitionPhase != phase)
   {
-    self->_zoomLevelTransitionPhase = a3;
+    self->_zoomLevelTransitionPhase = phase;
     [(PXCuratedLibraryViewModel *)self signalChange:0x2000];
   }
 }
 
-- (void)setIsAppearing:(BOOL)a3
+- (void)setIsAppearing:(BOOL)appearing
 {
-  if (self->_isAppearing != a3)
+  if (self->_isAppearing != appearing)
   {
-    self->_isAppearing = a3;
+    self->_isAppearing = appearing;
     [(PXCuratedLibraryViewModel *)self signalChange:256];
   }
 }
 
-- (void)performInitialChanges:(id)a3
+- (void)performInitialChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke;
   v6[3] = &unk_1E7736EF0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changesCopy;
+  v5 = changesCopy;
   [(PXCuratedLibraryViewModel *)self performChanges:v6];
 }
 
@@ -2798,18 +2798,18 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
   return result;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXCuratedLibraryViewModel;
-  [(PXCuratedLibraryViewModel *)&v3 performChanges:a3];
+  [(PXCuratedLibraryViewModel *)&v3 performChanges:changes];
 }
 
 - (NSString)description
 {
-  v3 = [(PXCuratedLibraryViewModel *)self allowedActions];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allowedActions = [(PXCuratedLibraryViewModel *)self allowedActions];
+  allObjects = [allowedActions allObjects];
+  v5 = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
   v6 = [v5 componentsJoinedByString:{@", "}];
 
   v7 = MEMORY[0x1E696AEC0];
@@ -2822,30 +2822,30 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v3 removeObserver:self forKeyPath:*off_1E7722280 context:PXUserDefaultsObservationContext];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObserver:self forKeyPath:*off_1E7722280 context:PXUserDefaultsObservationContext];
 
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryViewModel;
   [(PXCuratedLibraryViewModel *)&v4 dealloc];
 }
 
-- (PXCuratedLibraryViewModel)initWithConfiguration:(id)a3 assetsDataSourceManagerConfiguration:(id)a4 zoomLevel:(int64_t)a5 mediaProvider:(id)a6 specManager:(id)a7 styleGuide:(id)a8
+- (PXCuratedLibraryViewModel)initWithConfiguration:(id)configuration assetsDataSourceManagerConfiguration:(id)managerConfiguration zoomLevel:(int64_t)level mediaProvider:(id)provider specManager:(id)manager styleGuide:(id)guide
 {
-  v87 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  configurationCopy = configuration;
+  managerConfigurationCopy = managerConfiguration;
+  providerCopy = provider;
+  managerCopy = manager;
+  guideCopy = guide;
   v92.receiver = self;
   v92.super_class = PXCuratedLibraryViewModel;
   v19 = [(PXCuratedLibraryViewModel *)&v92 init];
   v20 = v19;
   if (v19)
   {
-    v84 = v18;
-    v86 = v16;
-    objc_storeStrong(&v19->_configuration, a3);
+    v84 = guideCopy;
+    v86 = providerCopy;
+    objc_storeStrong(&v19->_configuration, configuration);
     v21 = [[off_1E7721940 alloc] initWithTarget:v20];
     updater = v20->_updater;
     v20->_updater = v21;
@@ -2869,12 +2869,12 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
     [(PXUpdater *)v20->_updater addUpdateSelector:sel__updateContentFillsTopSafeArea];
     [(PXUpdater *)v20->_updater addUpdateSelector:sel__updateIsModalInPresentation];
     [(PXUpdater *)v20->_updater addUpdateSelector:sel__updateDesiredVerticalAlignment];
-    objc_storeStrong(&v20->_specManager, a7);
-    v85 = v17;
-    [v17 registerChangeObserver:v20 context:PXCuratedLibraryViewModelSpecManagerObserverContext];
-    objc_storeStrong(&v20->_styleGuide, a8);
+    objc_storeStrong(&v20->_specManager, manager);
+    v85 = managerCopy;
+    [managerCopy registerChangeObserver:v20 context:PXCuratedLibraryViewModelSpecManagerObserverContext];
+    objc_storeStrong(&v20->_styleGuide, guide);
     v20->_desiredVerticalAlignment = 0;
-    v23 = [[PXCuratedLibraryAssetsDataSourceManager alloc] initWithConfiguration:v15];
+    v23 = [[PXCuratedLibraryAssetsDataSourceManager alloc] initWithConfiguration:managerConfigurationCopy];
     assetsDataSourceManager = v20->_assetsDataSourceManager;
     v20->_assetsDataSourceManager = v23;
 
@@ -2888,19 +2888,19 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
     actionManager = v20->_actionManager;
     v20->_actionManager = v27;
 
-    v20->_zoomLevel = a5;
-    v29 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    v20->_zoomLevel = level;
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     presenters = v20->_presenters;
-    v20->_presenters = v29;
+    v20->_presenters = weakObjectsHashTable;
 
     v20->_wantsZoomControlVisible = 1;
-    v31 = [v87 isExpandedInitially];
-    v20->_isExpanded = v31;
-    v20->_isFullyExpanded = v31;
+    isExpandedInitially = [configurationCopy isExpandedInitially];
+    v20->_isExpanded = isExpandedInitially;
+    v20->_isFullyExpanded = isExpandedInitially;
     v20->_secondaryToolbarVisibility = 1.0;
-    v32 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     views = v20->_views;
-    v20->_views = v32;
+    v20->_views = weakObjectsHashTable2;
 
     v34 = [MEMORY[0x1E695DFA8] set];
     visibleAssetCollections = v20->_visibleAssetCollections;
@@ -2913,13 +2913,13 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
     [(PXSectionedSelectionManager *)v20->_selectionManager setSnapshotValidator:v20];
     [(PXSectionedSelectionManager *)v20->_selectionManager registerChangeObserver:v20 context:PXCuratedLibraryViewModelSelectionObserverContext];
     [(PXCuratedLibraryViewModel *)v20 registerChangeObserver:v20 context:PXCuratedLibraryViewModelObserverContext_91269];
-    v38 = [off_1E7721948 standardUserDefaults];
-    v39 = [v38 daysMarginScale];
+    standardUserDefaults = [off_1E7721948 standardUserDefaults];
+    daysMarginScale = [standardUserDefaults daysMarginScale];
 
-    v83 = v39;
-    if (v39)
+    v83 = daysMarginScale;
+    if (daysMarginScale)
     {
-      [v39 floatValue];
+      [daysMarginScale floatValue];
       v41 = v40;
     }
 
@@ -2929,20 +2929,20 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
     }
 
     v20->_daysMarginScale = v41;
-    v42 = [v15 photoLibrary];
-    v43 = [PXCuratedLibraryAnalysisStatus sharedStatusForLibrary:v42];
+    photoLibrary = [managerConfigurationCopy photoLibrary];
+    v43 = [PXCuratedLibraryAnalysisStatus sharedStatusForLibrary:photoLibrary];
     analysisStatus = v20->_analysisStatus;
     v20->_analysisStatus = v43;
 
     [(PXCuratedLibraryAnalysisStatus *)v20->_analysisStatus setDataSourceManager:v20->_assetsDataSourceManager];
     [(PXCuratedLibraryAnalysisStatus *)v20->_analysisStatus registerChangeObserver:v20 context:PXCuratedLibraryViewModelAnalysisStatusObserverContext];
-    v45 = [(PXCuratedLibraryViewModel *)v20 selectionManager];
-    v46 = [v45 assetTypeCounter];
-    [v46 registerChangeObserver:v20 context:PXCuratedLibraryViewModelAssetSelectionTypeObserverContext];
+    selectionManager = [(PXCuratedLibraryViewModel *)v20 selectionManager];
+    assetTypeCounter = [selectionManager assetTypeCounter];
+    [assetTypeCounter registerChangeObserver:v20 context:PXCuratedLibraryViewModelAssetSelectionTypeObserverContext];
 
-    v47 = [v15 photoLibrary];
+    photoLibrary2 = [managerConfigurationCopy photoLibrary];
     photoLibrary = v20->_photoLibrary;
-    v20->_photoLibrary = v47;
+    v20->_photoLibrary = photoLibrary2;
 
     v49 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v20->_photoLibrary];
     sharedLibraryStatusProvider = v20->_sharedLibraryStatusProvider;
@@ -2952,15 +2952,15 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
     libraryFilterState = v20->_libraryFilterState;
     v20->_libraryFilterState = v51;
 
-    v53 = [v87 viewOptionsModel];
+    viewOptionsModel = [configurationCopy viewOptionsModel];
     viewOptionsModel = v20->_viewOptionsModel;
-    v20->_viewOptionsModel = v53;
+    v20->_viewOptionsModel = viewOptionsModel;
 
-    v55 = [(PXPhotosViewOptionsModel *)v20->_viewOptionsModel sortOrderState];
-    [v55 registerChangeObserver:v20 context:PXPhotosSortOrderStateObservationContext];
+    sortOrderState = [(PXPhotosViewOptionsModel *)v20->_viewOptionsModel sortOrderState];
+    [sortOrderState registerChangeObserver:v20 context:PXPhotosSortOrderStateObservationContext];
 
-    v56 = [(PXPhotosViewOptionsModel *)v20->_viewOptionsModel sortOrderState];
-    -[PXCuratedLibraryViewModel _sendAllPhotosSortOrderAnalyticsEvent:](v20, "_sendAllPhotosSortOrderAnalyticsEvent:", [v56 sortOrder]);
+    sortOrderState2 = [(PXPhotosViewOptionsModel *)v20->_viewOptionsModel sortOrderState];
+    -[PXCuratedLibraryViewModel _sendAllPhotosSortOrderAnalyticsEvent:](v20, "_sendAllPhotosSortOrderAnalyticsEvent:", [sortOrderState2 sortOrder]);
 
     v90[0] = MEMORY[0x1E69E9820];
     v90[1] = 3221225472;
@@ -2972,35 +2972,35 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
     v82 = [(PXCuratedLibraryAssetsDataSourceManager *)v20->_assetsDataSourceManager dataSourceManagerForZoomLevel:4];
     [v82 registerChangeObserver:v57 context:PXCuratedLibraryViewModelAllPhotosDataSourceManagerObserverContext];
     v58 = [off_1E77219A0 alloc];
-    v59 = [v85 extendedTraitCollection];
-    v60 = [v58 initWithExtendedTraitCollection:v59];
+    extendedTraitCollection = [v85 extendedTraitCollection];
+    v60 = [v58 initWithExtendedTraitCollection:extendedTraitCollection];
 
-    v61 = [off_1E7721948 standardUserDefaults];
-    v62 = [v61 curatedLibraryUserDefaults];
-    [v60 setUserDefaults:v62];
+    standardUserDefaults2 = [off_1E7721948 standardUserDefaults];
+    curatedLibraryUserDefaults = [standardUserDefaults2 curatedLibraryUserDefaults];
+    [v60 setUserDefaults:curatedLibraryUserDefaults];
 
-    v63 = [v85 availableThumbnailSizes];
-    [v60 setAvailableThumbnailSizes:v63];
+    availableThumbnailSizes = [v85 availableThumbnailSizes];
+    [v60 setAvailableThumbnailSizes:availableThumbnailSizes];
 
-    v64 = [v57 configuration];
-    [v60 setOverrideDefaultNumberOfColumns:{objc_msgSend(v64, "overrideDefaultNumberOfColumns")}];
+    configuration = [v57 configuration];
+    [v60 setOverrideDefaultNumberOfColumns:{objc_msgSend(configuration, "overrideDefaultNumberOfColumns")}];
 
     [v60 setGridStyle:2];
     v65 = [off_1E77219B0 alloc];
     v66 = v20->_selectionManager;
-    v67 = [v57 videoPlaybackController];
+    videoPlaybackController = [v57 videoPlaybackController];
     LOBYTE(v81) = 1;
     v68 = v66;
-    v16 = v86;
-    v69 = [v65 initWithDataSourceManager:v82 selectionManager:v68 mediaProvider:v86 specManager:v60 loadingStatusManager:0 badgesModifier:0 preferredAssetCropDelegate:0 preferredColumnCountsDelegate:0 inlinePlaybackController:v67 sectionIndex:0 headersEnabled:v81];
+    providerCopy = v86;
+    v69 = [v65 initWithDataSourceManager:v82 selectionManager:v68 mediaProvider:v86 specManager:v60 loadingStatusManager:0 badgesModifier:0 preferredAssetCropDelegate:0 preferredColumnCountsDelegate:0 inlinePlaybackController:videoPlaybackController sectionIndex:0 headersEnabled:v81];
     v70 = v57[36];
     v57[36] = v69;
 
     [v57[36] registerChangeObserver:v57 context:PXCuratedLibraryViewModelZoomablePhotosObserverContext];
     [v57[36] performChanges:&__block_literal_global_91355];
-    v71 = [(PHPhotoLibrary *)v20->_photoLibrary px_sharedLibrarySharingSuggestionsCountsManager];
+    px_sharedLibrarySharingSuggestionsCountsManager = [(PHPhotoLibrary *)v20->_photoLibrary px_sharedLibrarySharingSuggestionsCountsManager];
     v72 = v57[58];
-    v57[58] = v71;
+    v57[58] = px_sharedLibrarySharingSuggestionsCountsManager;
 
     [v57[58] registerChangeObserver:v57 context:&PXSharedLibrarySharingSuggestionsCountsManagerObservationContext];
     v73 = objc_alloc_init(PXSharedLibraryCameraSharingBannerStatusProvider);
@@ -3008,12 +3008,12 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
     v57[59] = v73;
 
     [v57[59] registerChangeObserver:v57 context:&PXSharedLibraryCameraSharingBannerStatusProviderObservationContext];
-    v75 = [(PHPhotoLibrary *)v20->_photoLibrary px_macSyncedAssetsStatusProvider];
+    px_macSyncedAssetsStatusProvider = [(PHPhotoLibrary *)v20->_photoLibrary px_macSyncedAssetsStatusProvider];
     v76 = v57[60];
-    v57[60] = v75;
+    v57[60] = px_macSyncedAssetsStatusProvider;
 
     [v57[60] registerChangeObserver:v57 context:&PXMacSyncedAssetsStatusProviderObservationContext];
-    *(v57 + 156) = [v87 enableFooter];
+    *(v57 + 156) = [configurationCopy enableFooter];
     v77 = +[PXCuratedLibrarySettings sharedInstance];
     *(v57 + 157) = [v77 hideStatusFooterInSelectMode];
 
@@ -3026,12 +3026,12 @@ uint64_t __51__PXCuratedLibraryViewModel_performInitialChanges___block_invoke(ui
     [v78 performChanges:v88];
     [(PXSharedLibraryStatusProvider *)v20->_sharedLibraryStatusProvider registerChangeObserver:v78 context:PXSharedLibraryStatusProviderObservationContext_91270];
     [(PXLibraryFilterState *)v20->_libraryFilterState registerChangeObserver:v78 context:PXLibraryFilterStateObservationContext_91271];
-    v79 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v79 addObserver:v78 forKeyPath:*off_1E7722278 options:0 context:PXUserDefaultsObservationContext];
-    v17 = v85;
-    [v79 addObserver:v78 forKeyPath:*off_1E7722280 options:0 context:PXUserDefaultsObservationContext];
+    standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults3 addObserver:v78 forKeyPath:*off_1E7722278 options:0 context:PXUserDefaultsObservationContext];
+    managerCopy = v85;
+    [standardUserDefaults3 addObserver:v78 forKeyPath:*off_1E7722280 options:0 context:PXUserDefaultsObservationContext];
 
-    v18 = v84;
+    guideCopy = v84;
   }
 
   return v20;
@@ -3071,24 +3071,24 @@ void __135__PXCuratedLibraryViewModel_initWithConfiguration_assetsDataSourceMana
   [v3 setEnableCornerRadiusMaskingWhenAlignedWithEdge:1];
 }
 
-- (PXCuratedLibraryViewModel)initWithAssetsDataSourceManagerConfiguration:(id)a3 zoomLevel:(int64_t)a4 mediaProvider:(id)a5 specManager:(id)a6 styleGuide:(id)a7
+- (PXCuratedLibraryViewModel)initWithAssetsDataSourceManagerConfiguration:(id)configuration zoomLevel:(int64_t)level mediaProvider:(id)provider specManager:(id)manager styleGuide:(id)guide
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
+  guideCopy = guide;
+  managerCopy = manager;
+  providerCopy = provider;
+  configurationCopy = configuration;
   v16 = [PXCuratedLibraryViewConfiguration alloc];
-  v17 = [v15 photoLibrary];
-  v18 = [(PXCuratedLibraryViewConfiguration *)v16 initWithPhotoLibrary:v17];
+  photoLibrary = [configurationCopy photoLibrary];
+  v18 = [(PXCuratedLibraryViewConfiguration *)v16 initWithPhotoLibrary:photoLibrary];
 
-  v19 = [(PXCuratedLibraryViewModel *)self initWithConfiguration:v18 assetsDataSourceManagerConfiguration:v15 zoomLevel:a4 mediaProvider:v14 specManager:v13 styleGuide:v12];
+  v19 = [(PXCuratedLibraryViewModel *)self initWithConfiguration:v18 assetsDataSourceManagerConfiguration:configurationCopy zoomLevel:level mediaProvider:providerCopy specManager:managerCopy styleGuide:guideCopy];
   return v19;
 }
 
 - (PXCuratedLibraryViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewModel.m" lineNumber:132 description:{@"%s is not available as initializer", "-[PXCuratedLibraryViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryViewModel.m" lineNumber:132 description:{@"%s is not available as initializer", "-[PXCuratedLibraryViewModel init]"}];
 
   abort();
 }

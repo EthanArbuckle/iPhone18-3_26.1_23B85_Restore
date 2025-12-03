@@ -1,16 +1,16 @@
 @interface NFBackgroundTagReadingManager
 - (BOOL)isActive;
-- (NFBackgroundTagReadingManager)initWithQueue:(id)a3 driverWrapper:(id)a4;
+- (NFBackgroundTagReadingManager)initWithQueue:(id)queue driverWrapper:(id)wrapper;
 - (id)dumpState;
 - (id)getECPFrame;
 - (void)dealloc;
-- (void)didCameraStateChange:(BOOL)a3;
-- (void)didScreenStateChange:(int64_t)a3;
-- (void)handleDetectedTags:(id)a3;
-- (void)handleMessage:(id)a3;
+- (void)didCameraStateChange:(BOOL)change;
+- (void)didScreenStateChange:(int64_t)change;
+- (void)handleDetectedTags:(id)tags;
+- (void)handleMessage:(id)message;
 - (void)refreshUserDefaultsOverride;
-- (void)releaseECPOption:(unint64_t)a3;
-- (void)retainECPOption:(unint64_t)a3;
+- (void)releaseECPOption:(unint64_t)option;
+- (void)retainECPOption:(unint64_t)option;
 - (void)start;
 - (void)stop;
 @end
@@ -252,10 +252,10 @@ LABEL_29:
   return 1;
 }
 
-- (NFBackgroundTagReadingManager)initWithQueue:(id)a3 driverWrapper:(id)a4
+- (NFBackgroundTagReadingManager)initWithQueue:(id)queue driverWrapper:(id)wrapper
 {
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  wrapperCopy = wrapper;
   v69.receiver = self;
   v69.super_class = NFBackgroundTagReadingManager;
   v10 = [(NFBackgroundTagReadingManager *)&v69 init];
@@ -266,7 +266,7 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  if (!v8 || !v9)
+  if (!queueCopy || !wrapperCopy)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -277,7 +277,7 @@ LABEL_51:
       isMetaClass = class_isMetaClass(Class);
       ClassName = object_getClassName(v10);
       Name = sel_getName(a2);
-      if (v8)
+      if (queueCopy)
       {
         v27 = &stru_10031EA18;
       }
@@ -287,7 +287,7 @@ LABEL_51:
         v27 = @"nil queue, ";
       }
 
-      if (v9)
+      if (wrapperCopy)
       {
         v28 = &stru_10031EA18;
       }
@@ -329,13 +329,13 @@ LABEL_51:
     v34 = sel_getName(a2);
     *context = 67110402;
     v35 = @"nil queue, ";
-    if (v8)
+    if (queueCopy)
     {
       v35 = &stru_10031EA18;
     }
 
     *&context[4] = v32;
-    if (v9)
+    if (wrapperCopy)
     {
       v36 = &stru_10031EA18;
     }
@@ -362,7 +362,7 @@ LABEL_51:
     goto LABEL_36;
   }
 
-  if (v9[173])
+  if (wrapperCopy[173])
   {
     v11 = objc_opt_new();
     v71[0] = v11;
@@ -373,8 +373,8 @@ LABEL_51:
     v10->_localAppProcessors = v13;
 
     v10->_userDefaultsOverride = 0;
-    objc_storeStrong(&v10->_driverWrapper, a4);
-    objc_storeStrong(&v10->_workQueue, a3);
+    objc_storeStrong(&v10->_driverWrapper, wrapper);
+    objc_storeStrong(&v10->_workQueue, queue);
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_attr_make_with_qos_class(v15, QOS_CLASS_USER_INITIATED, 0);
     v17 = dispatch_queue_create("com.apple.nfcd.background.scan.eventProcessing", v16);
@@ -547,10 +547,10 @@ LABEL_52:
   [(NFBackgroundTagReadingManager *)&v7 dealloc];
 }
 
-- (void)handleDetectedTags:(id)a3
+- (void)handleDetectedTags:(id)tags
 {
   v6 = 0xEEEEB0B5B2B2EEEELL;
-  v7 = a3;
+  tagsCopy = tags;
   v8 = NFSharedSignpostLog();
   if (os_signpost_enabled(v8))
   {
@@ -575,7 +575,7 @@ LABEL_52:
     v152 = 0u;
     v149 = 0u;
     v150 = 0u;
-    v10 = v7;
+    v10 = tagsCopy;
     v11 = [v10 countByEnumeratingWithState:&v149 objects:v161 count:16];
     if (v11)
     {
@@ -614,10 +614,10 @@ LABEL_17:
     if ([v13 type] == 5)
     {
       *buf = 0;
-      v14 = [v13 tagB];
-      v15 = [v14 pupi];
+      tagB = [v13 tagB];
+      pupi = [tagB pupi];
       v16 = [[NSData alloc] initWithBytes:buf length:4];
-      v17 = [v15 isEqualToData:v16];
+      v17 = [pupi isEqualToData:v16];
 
       if (v17)
       {
@@ -756,19 +756,19 @@ LABEL_17:
     objc_storeStrong(&self->_backgroundNDEFTag, v11);
     if (v13)
     {
-      v30 = [v13 tagID];
-      v31 = [v30 NF_asHexString];
+      tagID = [v13 tagID];
+      nF_asHexString = [tagID NF_asHexString];
       sub_10027EB14(v32);
       v33 = *(v6 + 31);
       if (objc_opt_class() && (sub_10027EAF0(v34), v35 = i[30], objc_opt_class()))
       {
-        v36 = [*(v6 + 31) keyPathForNFCTagIdentifiers];
-        if (v36)
+        keyPathForNFCTagIdentifiers = [*(v6 + 31) keyPathForNFCTagIdentifiers];
+        if (keyPathForNFCTagIdentifiers)
         {
-          v37 = [i[30] userContext];
-          *buf = v31;
+          userContext = [i[30] userContext];
+          *buf = nF_asHexString;
           v38 = [NSArray arrayWithObjects:buf count:1];
-          [v37 setObject:v38 forKeyedSubscript:v36];
+          [userContext setObject:v38 forKeyedSubscript:keyPathForNFCTagIdentifiers];
         }
       }
 
@@ -793,8 +793,8 @@ LABEL_17:
         }
 
         dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-        v36 = NFSharedLogGetLogger();
-        if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+        keyPathForNFCTagIdentifiers = NFSharedLogGetLogger();
+        if (os_log_type_enabled(keyPathForNFCTagIdentifiers, OS_LOG_TYPE_ERROR))
         {
           v44 = object_getClass(self);
           if (class_isMetaClass(v44))
@@ -817,7 +817,7 @@ LABEL_17:
           v166 = v46;
           v167 = 1024;
           v168 = 361;
-          _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i No Core Duet context", buf, 0x22u);
+          _os_log_impl(&_mh_execute_header, keyPathForNFCTagIdentifiers, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i No Core Duet context", buf, 0x22u);
         }
       }
 
@@ -827,16 +827,16 @@ LABEL_17:
       sub_10027E694(v49);
       if (*(v51 + 256) && v50)
       {
-        v52 = [objc_alloc(*(v6 + 33)) initWithTagID:v31];
+        v52 = [objc_alloc(*(v6 + 33)) initWithTagID:nF_asHexString];
         if (v52)
         {
           v54 = sub_10027E458(v53);
-          v55 = [v54 Device];
-          v56 = [v55 Wireless];
-          v57 = [v56 NFCTag];
+          device = [v54 Device];
+          wireless = [device Wireless];
+          nFCTag = [wireless NFCTag];
 
-          v58 = [v57 source];
-          [v58 sendEvent:v52];
+          source = [nFCTag source];
+          [source sendEvent:v52];
         }
       }
     }
@@ -1108,8 +1108,8 @@ LABEL_88:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v119, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "LPCD_READ_NDEF", "done", buf, 2u);
     }
 
-    v120 = [v94 asData];
-    v121 = [v120 length];
+    asData = [v94 asData];
+    v121 = [asData length];
 
     v122 = sub_10024DC10();
     sub_10024E250(v122, v121);
@@ -1124,9 +1124,9 @@ LABEL_130:
         goto LABEL_131;
       }
 
-      v124 = [v67 code];
+      code = [v67 code];
       v123 = self->_driverWrapper;
-      if (v124 == 21)
+      if (code == 21)
       {
         sub_100220F6C(v123);
         goto LABEL_130;
@@ -1145,8 +1145,8 @@ LABEL_131:
 
     if (v125)
     {
-      v126 = [v125 asData];
-      v127 = [v126 length];
+      asData2 = [v125 asData];
+      v127 = [asData2 length];
 
       v142[0] = _NSConcreteStackBlock;
       v142[1] = 3221225472;
@@ -1205,18 +1205,18 @@ LABEL_133:
   _Block_object_dispose(&v153, 8);
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001F2F94;
   v5[3] = &unk_10031B8C8;
-  v6 = self;
-  v7 = a3;
+  selfCopy = self;
+  messageCopy = message;
   v8 = [[NFTagInternal alloc] initWithDictionary:&off_100339D50];
   v3 = v8;
-  v4 = v7;
-  sub_1001F12E8(v6, v4, v3, v5);
+  v4 = messageCopy;
+  sub_1001F12E8(selfCopy, v4, v3, v5);
 }
 
 - (void)stop
@@ -1243,9 +1243,9 @@ LABEL_133:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
       v6 = 1;
-      if (v5)
+      if (bOOLValue)
       {
         v6 = 2;
       }
@@ -1267,9 +1267,9 @@ LABEL_133:
   self->_userDefaultsOverride = v6;
 }
 
-- (void)retainECPOption:(unint64_t)a3
+- (void)retainECPOption:(unint64_t)option
 {
-  if (a3)
+  if (option)
   {
     ecpCHEnableCount = self->_ecpCHEnableCount;
     if (ecpCHEnableCount < 0xB)
@@ -1342,9 +1342,9 @@ LABEL_6:
   }
 }
 
-- (void)releaseECPOption:(unint64_t)a3
+- (void)releaseECPOption:(unint64_t)option
 {
-  if (a3)
+  if (option)
   {
     ecpCHEnableCount = self->_ecpCHEnableCount;
     if (ecpCHEnableCount)
@@ -1407,7 +1407,7 @@ LABEL_6:
   }
 }
 
-- (void)didScreenStateChange:(int64_t)a3
+- (void)didScreenStateChange:(int64_t)change
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -1418,7 +1418,7 @@ LABEL_6:
     isMetaClass = class_isMetaClass(Class);
     ClassName = object_getClassName(self);
     Name = sel_getName(a2);
-    if (a3 == 1)
+    if (change == 1)
     {
       v12 = "yes";
     }
@@ -1435,7 +1435,7 @@ LABEL_6:
       v13 = 43;
     }
 
-    v7(6, "%c[%{public}s %{public}s]:%i screenState=%ld -- allowBackgroundTagReading=%s", v13, ClassName, Name, 909, a3, v21);
+    v7(6, "%c[%{public}s %{public}s]:%i screenState=%ld -- allowBackgroundTagReading=%s", v13, ClassName, Name, 909, change, v21);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1456,7 +1456,7 @@ LABEL_6:
     v17 = object_getClassName(self);
     v18 = sel_getName(a2);
     *buf = 67110402;
-    if (a3 == 1)
+    if (change == 1)
     {
       v19 = "yes";
     }
@@ -1474,7 +1474,7 @@ LABEL_6:
     v30 = 1024;
     v31 = 909;
     v32 = 2048;
-    v33 = a3;
+    changeCopy = change;
     v34 = 2080;
     v35 = v19;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i screenState=%ld -- allowBackgroundTagReading=%s", buf, 0x36u);
@@ -1486,19 +1486,19 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = sub_1001F37C4;
   block[3] = &unk_100315EB8;
-  v23 = a3 == 1;
+  v23 = change == 1;
   block[4] = self;
   dispatch_async(workQueue, block);
 }
 
-- (void)didCameraStateChange:(BOOL)a3
+- (void)didCameraStateChange:(BOOL)change
 {
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F3930;
   block[3] = &unk_10031B8E8;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(workQueue, block);
 }
 

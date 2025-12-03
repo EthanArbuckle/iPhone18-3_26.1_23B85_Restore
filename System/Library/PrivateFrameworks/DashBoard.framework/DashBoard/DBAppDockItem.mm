@@ -1,49 +1,49 @@
 @interface DBAppDockItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAppDockItem:(id)a3;
-- (DBAppDockItem)initWithBundleIdentifier:(id)a3 category:(unint64_t)a4 active:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAppDockItem:(id)item;
+- (DBAppDockItem)initWithBundleIdentifier:(id)identifier category:(unint64_t)category active:(BOOL)active;
 @end
 
 @implementation DBAppDockItem
 
-- (DBAppDockItem)initWithBundleIdentifier:(id)a3 category:(unint64_t)a4 active:(BOOL)a5
+- (DBAppDockItem)initWithBundleIdentifier:(id)identifier category:(unint64_t)category active:(BOOL)active
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = DBAppDockItem;
   v9 = [(DBAppDockItem *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     bundleIdentifier = v9->_bundleIdentifier;
     v9->_bundleIdentifier = v10;
 
-    v9->_category = a4;
-    v9->_active = a5;
+    v9->_category = category;
+    v9->_active = active;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   v6 = v5 && (objc_opt_isKindOfClass() & 1) != 0 && [(DBAppDockItem *)self isEqualToAppDockItem:v5];
 
   return v6;
 }
 
-- (BOOL)isEqualToAppDockItem:(id)a3
+- (BOOL)isEqualToAppDockItem:(id)item
 {
-  v4 = a3;
-  v5 = [(DBAppDockItem *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 == v6 || [v5 isEqual:v6]) && (v7 = -[DBAppDockItem category](self, "category"), v7 == objc_msgSend(v4, "category")))
+  itemCopy = item;
+  bundleIdentifier = [(DBAppDockItem *)self bundleIdentifier];
+  bundleIdentifier2 = [itemCopy bundleIdentifier];
+  if ((bundleIdentifier == bundleIdentifier2 || [bundleIdentifier isEqual:bundleIdentifier2]) && (v7 = -[DBAppDockItem category](self, "category"), v7 == objc_msgSend(itemCopy, "category")))
   {
-    v8 = [(DBAppDockItem *)self isActive];
-    v9 = v8 ^ [v4 isActive] ^ 1;
+    isActive = [(DBAppDockItem *)self isActive];
+    v9 = isActive ^ [itemCopy isActive] ^ 1;
   }
 
   else

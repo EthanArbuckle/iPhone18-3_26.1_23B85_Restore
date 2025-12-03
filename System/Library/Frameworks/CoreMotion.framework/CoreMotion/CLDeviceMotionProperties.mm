@@ -1,5 +1,5 @@
 @interface CLDeviceMotionProperties
-- (CLDeviceMotionProperties)initWithMode:(int)a3;
+- (CLDeviceMotionProperties)initWithMode:(int)mode;
 - (id)description;
 @end
 
@@ -77,14 +77,14 @@
   }
 }
 
-- (CLDeviceMotionProperties)initWithMode:(int)a3
+- (CLDeviceMotionProperties)initWithMode:(int)mode
 {
   v5.receiver = self;
   v5.super_class = CLDeviceMotionProperties;
   result = [(CLDeviceMotionProperties *)&v5 init];
   if (result)
   {
-    result->_mode = a3;
+    result->_mode = mode;
   }
 
   return result;

@@ -1,9 +1,9 @@
 @interface FCPersonalizationCohortConfig
 - (FCPersonalizationCohortConfig)init;
-- (FCPersonalizationCohortConfig)initWithCoder:(id)a3;
-- (FCPersonalizationCohortConfig)initWithConfigDictionary:(id)a3;
-- (FCPersonalizationCohortConfig)initWithConsiderPublisherTopicAggregates:(BOOL)a3 dilutionFactor:(double)a4 enableUndampening:(BOOL)a5 favoritedBoost:(double)a6 exponentialFavoritedBoost:(double)a7 globalWeight:(double)a8 globalWeightHalfLife:(double)a9 globalWeightInitialMultiplier:(double)a10 paddingFactor:(double)a11 preBaselineCurvature:(double)a12 postBaselineCurvature:(double)a13 undampenOnlyAboveBaselineMembership:(BOOL)a14 userBaseline:(double)a15 useRelativePersonalizationValue:(BOOL)a16 useExponentialFavoritedBoost:(BOOL)a17;
-- (void)encodeWithCoder:(id)a3;
+- (FCPersonalizationCohortConfig)initWithCoder:(id)coder;
+- (FCPersonalizationCohortConfig)initWithConfigDictionary:(id)dictionary;
+- (FCPersonalizationCohortConfig)initWithConsiderPublisherTopicAggregates:(BOOL)aggregates dilutionFactor:(double)factor enableUndampening:(BOOL)undampening favoritedBoost:(double)boost exponentialFavoritedBoost:(double)favoritedBoost globalWeight:(double)weight globalWeightHalfLife:(double)life globalWeightInitialMultiplier:(double)self0 paddingFactor:(double)self1 preBaselineCurvature:(double)self2 postBaselineCurvature:(double)self3 undampenOnlyAboveBaselineMembership:(BOOL)self4 userBaseline:(double)self5 useRelativePersonalizationValue:(BOOL)self6 useExponentialFavoritedBoost:(BOOL)self7;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationCohortConfig
@@ -34,45 +34,45 @@
   objc_exception_throw(v6);
 }
 
-- (FCPersonalizationCohortConfig)initWithConfigDictionary:(id)a3
+- (FCPersonalizationCohortConfig)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v35.receiver = self;
   v35.super_class = FCPersonalizationCohortConfig;
   v5 = [(FCPersonalizationCohortConfig *)&v35 init];
   if (v5)
   {
-    v6 = FCAppConfigurationBoolValue(v4, @"considerPublisherTopicAggregates", 0);
-    v7 = FCAppConfigurationDoubleValue(v4, @"dilutionFactor", 1.0);
+    v6 = FCAppConfigurationBoolValue(dictionaryCopy, @"considerPublisherTopicAggregates", 0);
+    v7 = FCAppConfigurationDoubleValue(dictionaryCopy, @"dilutionFactor", 1.0);
     if (v7 > 1.0 || v7 < 0.0)
     {
       v7 = 1.0;
     }
 
     v34 = v7;
-    v9 = FCAppConfigurationBoolValue(v4, @"enableUndampening", 0);
-    v10 = FCAppConfigurationDoubleValue(v4, @"favoritedBoost", 0.3);
+    v9 = FCAppConfigurationBoolValue(dictionaryCopy, @"enableUndampening", 0);
+    v10 = FCAppConfigurationDoubleValue(dictionaryCopy, @"favoritedBoost", 0.3);
     if (v10 > 1.0 || v10 < 0.0)
     {
       v10 = 0.3;
     }
 
     v33 = v10;
-    v12 = FCAppConfigurationDoubleValue(v4, @"exponentialFavoritedBoost", 1.0);
+    v12 = FCAppConfigurationDoubleValue(dictionaryCopy, @"exponentialFavoritedBoost", 1.0);
     if (v12 < 0.0)
     {
       v12 = 1.0;
     }
 
     v32 = v12;
-    v13 = FCAppConfigurationDoubleValue(v4, @"globalWeight", 0.2);
+    v13 = FCAppConfigurationDoubleValue(dictionaryCopy, @"globalWeight", 0.2);
     if (v13 > 1.0 || v13 < 0.0)
     {
       v13 = 0.2;
     }
 
     v31 = v13;
-    v15 = FCAppConfigurationDoubleValue(v4, @"globalWeightHalfLife", 5.0);
+    v15 = FCAppConfigurationDoubleValue(dictionaryCopy, @"globalWeightHalfLife", 5.0);
     if (v15 < 0.0)
     {
       v16 = 5.0;
@@ -83,7 +83,7 @@
       v16 = v15;
     }
 
-    v17 = FCAppConfigurationDoubleValue(v4, @"globalWeightInitialMultiplier", 0.0);
+    v17 = FCAppConfigurationDoubleValue(dictionaryCopy, @"globalWeightInitialMultiplier", 0.0);
     if (v17 < 0.0)
     {
       v18 = 0.0;
@@ -94,7 +94,7 @@
       v18 = v17;
     }
 
-    v19 = FCAppConfigurationDoubleValue(v4, @"paddingFactor", 0.0);
+    v19 = FCAppConfigurationDoubleValue(dictionaryCopy, @"paddingFactor", 0.0);
     if (v19 < 0.0)
     {
       v20 = 0.0;
@@ -105,7 +105,7 @@
       v20 = v19;
     }
 
-    v21 = FCAppConfigurationDoubleValue(v4, @"preBaselineCurvature", 2.0);
+    v21 = FCAppConfigurationDoubleValue(dictionaryCopy, @"preBaselineCurvature", 2.0);
     if (v21 <= 0.0)
     {
       v22 = 2.0;
@@ -116,7 +116,7 @@
       v22 = v21;
     }
 
-    v23 = FCAppConfigurationDoubleValue(v4, @"postBaselineCurvature", 2.0);
+    v23 = FCAppConfigurationDoubleValue(dictionaryCopy, @"postBaselineCurvature", 2.0);
     if (v23 <= 0.0)
     {
       v24 = 2.0;
@@ -127,108 +127,108 @@
       v24 = v23;
     }
 
-    v25 = FCAppConfigurationBoolValue(v4, @"undampenOnlyAboveBaselineMembership", 1);
+    v25 = FCAppConfigurationBoolValue(dictionaryCopy, @"undampenOnlyAboveBaselineMembership", 1);
     v26 = 0.05;
-    v27 = FCAppConfigurationDoubleValue(v4, @"userBaseline", 0.05);
+    v27 = FCAppConfigurationDoubleValue(dictionaryCopy, @"userBaseline", 0.05);
     if (v27 <= 1.0 && v27 >= 0.0)
     {
       v26 = v27;
     }
 
-    v29 = FCAppConfigurationBoolValue(v4, @"useRelativePersonalizationValue", 0);
-    v5 = [(FCPersonalizationCohortConfig *)v5 initWithConsiderPublisherTopicAggregates:v6 dilutionFactor:v9 enableUndampening:v25 favoritedBoost:v29 exponentialFavoritedBoost:FCAppConfigurationBoolValue(v4 globalWeight:@"useExponentialFavoritedBoost" globalWeightHalfLife:0) globalWeightInitialMultiplier:v34 paddingFactor:v33 preBaselineCurvature:v32 postBaselineCurvature:v31 undampenOnlyAboveBaselineMembership:v16 userBaseline:v18 useRelativePersonalizationValue:v20 useExponentialFavoritedBoost:v22, *&v24, *&v26];
+    v29 = FCAppConfigurationBoolValue(dictionaryCopy, @"useRelativePersonalizationValue", 0);
+    v5 = [(FCPersonalizationCohortConfig *)v5 initWithConsiderPublisherTopicAggregates:v6 dilutionFactor:v9 enableUndampening:v25 favoritedBoost:v29 exponentialFavoritedBoost:FCAppConfigurationBoolValue(dictionaryCopy globalWeight:@"useExponentialFavoritedBoost" globalWeightHalfLife:0) globalWeightInitialMultiplier:v34 paddingFactor:v33 preBaselineCurvature:v32 postBaselineCurvature:v31 undampenOnlyAboveBaselineMembership:v16 userBaseline:v18 useRelativePersonalizationValue:v20 useExponentialFavoritedBoost:v22, *&v24, *&v26];
   }
 
   return v5;
 }
 
-- (FCPersonalizationCohortConfig)initWithConsiderPublisherTopicAggregates:(BOOL)a3 dilutionFactor:(double)a4 enableUndampening:(BOOL)a5 favoritedBoost:(double)a6 exponentialFavoritedBoost:(double)a7 globalWeight:(double)a8 globalWeightHalfLife:(double)a9 globalWeightInitialMultiplier:(double)a10 paddingFactor:(double)a11 preBaselineCurvature:(double)a12 postBaselineCurvature:(double)a13 undampenOnlyAboveBaselineMembership:(BOOL)a14 userBaseline:(double)a15 useRelativePersonalizationValue:(BOOL)a16 useExponentialFavoritedBoost:(BOOL)a17
+- (FCPersonalizationCohortConfig)initWithConsiderPublisherTopicAggregates:(BOOL)aggregates dilutionFactor:(double)factor enableUndampening:(BOOL)undampening favoritedBoost:(double)boost exponentialFavoritedBoost:(double)favoritedBoost globalWeight:(double)weight globalWeightHalfLife:(double)life globalWeightInitialMultiplier:(double)self0 paddingFactor:(double)self1 preBaselineCurvature:(double)self2 postBaselineCurvature:(double)self3 undampenOnlyAboveBaselineMembership:(BOOL)self4 userBaseline:(double)self5 useRelativePersonalizationValue:(BOOL)self6 useExponentialFavoritedBoost:(BOOL)self7
 {
   v31.receiver = self;
   v31.super_class = FCPersonalizationCohortConfig;
   result = [(FCPersonalizationCohortConfig *)&v31 init];
   if (result)
   {
-    result->_considerPublisherTopicAggregates = a3;
-    result->_enableUndampening = a5;
-    result->_dilutionFactor = a4;
-    result->_favoritedBoost = a6;
-    result->_exponentialFavoritedBoost = a7;
-    result->_globalWeight = a8;
-    result->_globalWeightHalfLife = a9;
-    result->_globalWeightInitialMultiplier = a10;
-    result->_paddingFactor = a11;
-    result->_preBaselineCurvature = a12;
-    result->_undampenOnlyAboveBaselineMembership = a14;
-    result->_postBaselineCurvature = a13;
-    result->_userBaseline = a15;
-    result->_useRelativePersonalizationValue = a16;
-    result->_useExponentialFavoritedBoost = a17;
+    result->_considerPublisherTopicAggregates = aggregates;
+    result->_enableUndampening = undampening;
+    result->_dilutionFactor = factor;
+    result->_favoritedBoost = boost;
+    result->_exponentialFavoritedBoost = favoritedBoost;
+    result->_globalWeight = weight;
+    result->_globalWeightHalfLife = life;
+    result->_globalWeightInitialMultiplier = multiplier;
+    result->_paddingFactor = paddingFactor;
+    result->_preBaselineCurvature = curvature;
+    result->_undampenOnlyAboveBaselineMembership = membership;
+    result->_postBaselineCurvature = baselineCurvature;
+    result->_userBaseline = baseline;
+    result->_useRelativePersonalizationValue = value;
+    result->_useExponentialFavoritedBoost = exponentialFavoritedBoost;
   }
 
   return result;
 }
 
-- (FCPersonalizationCohortConfig)initWithCoder:(id)a3
+- (FCPersonalizationCohortConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"considerPublisherTopicAggregates"];
-  [v4 decodeDoubleForKey:@"dilutionFactor"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"considerPublisherTopicAggregates"];
+  [coderCopy decodeDoubleForKey:@"dilutionFactor"];
   v30 = v6;
-  v7 = [v4 decodeBoolForKey:@"enableUndampening"];
-  [v4 decodeDoubleForKey:@"favoritedBoost"];
+  v7 = [coderCopy decodeBoolForKey:@"enableUndampening"];
+  [coderCopy decodeDoubleForKey:@"favoritedBoost"];
   v29 = v8;
-  [v4 decodeDoubleForKey:@"exponentialFavoritedBoost"];
+  [coderCopy decodeDoubleForKey:@"exponentialFavoritedBoost"];
   v10 = v9;
-  [v4 decodeDoubleForKey:@"globalWeight"];
+  [coderCopy decodeDoubleForKey:@"globalWeight"];
   v12 = v11;
-  [v4 decodeDoubleForKey:@"globalWeightHalfLife"];
+  [coderCopy decodeDoubleForKey:@"globalWeightHalfLife"];
   v14 = v13;
-  [v4 decodeDoubleForKey:@"globalWeightInitialMultiplier"];
+  [coderCopy decodeDoubleForKey:@"globalWeightInitialMultiplier"];
   v16 = v15;
-  [v4 decodeDoubleForKey:@"paddingFactor"];
+  [coderCopy decodeDoubleForKey:@"paddingFactor"];
   v18 = v17;
-  [v4 decodeDoubleForKey:@"preBaselineCurvature"];
+  [coderCopy decodeDoubleForKey:@"preBaselineCurvature"];
   v20 = v19;
-  [v4 decodeDoubleForKey:@"postBaselineCurvature"];
+  [coderCopy decodeDoubleForKey:@"postBaselineCurvature"];
   v22 = v21;
-  v23 = [v4 decodeBoolForKey:@"undampenOnlyAboveBaselineMembership"];
-  [v4 decodeDoubleForKey:@"userBaseline"];
+  v23 = [coderCopy decodeBoolForKey:@"undampenOnlyAboveBaselineMembership"];
+  [coderCopy decodeDoubleForKey:@"userBaseline"];
   v25 = v24;
-  v26 = [v4 decodeBoolForKey:@"useRelativePersonalizationValue"];
-  v27 = [v4 decodeBoolForKey:@"useExponentialFavoritedBoost"];
+  v26 = [coderCopy decodeBoolForKey:@"useRelativePersonalizationValue"];
+  v27 = [coderCopy decodeBoolForKey:@"useExponentialFavoritedBoost"];
 
   return [(FCPersonalizationCohortConfig *)self initWithConsiderPublisherTopicAggregates:v5 dilutionFactor:v7 enableUndampening:v23 favoritedBoost:v26 exponentialFavoritedBoost:v27 globalWeight:v30 globalWeightHalfLife:v29 globalWeightInitialMultiplier:v10 paddingFactor:v12 preBaselineCurvature:v14 postBaselineCurvature:v16 undampenOnlyAboveBaselineMembership:v18 userBaseline:v20 useRelativePersonalizationValue:v22 useExponentialFavoritedBoost:v25];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[FCPersonalizationCohortConfig considerPublisherTopicAggregates](self forKey:{"considerPublisherTopicAggregates"), @"considerPublisherTopicAggregates"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[FCPersonalizationCohortConfig considerPublisherTopicAggregates](self forKey:{"considerPublisherTopicAggregates"), @"considerPublisherTopicAggregates"}];
   [(FCPersonalizationCohortConfig *)self dilutionFactor];
-  [v4 encodeDouble:@"dilutionFactor" forKey:?];
-  [v4 encodeBool:-[FCPersonalizationCohortConfig enableUndampening](self forKey:{"enableUndampening"), @"enableUndampening"}];
+  [coderCopy encodeDouble:@"dilutionFactor" forKey:?];
+  [coderCopy encodeBool:-[FCPersonalizationCohortConfig enableUndampening](self forKey:{"enableUndampening"), @"enableUndampening"}];
   [(FCPersonalizationCohortConfig *)self favoritedBoost];
-  [v4 encodeDouble:@"favoritedBoost" forKey:?];
+  [coderCopy encodeDouble:@"favoritedBoost" forKey:?];
   [(FCPersonalizationCohortConfig *)self exponentialFavoritedBoost];
-  [v4 encodeDouble:@"exponentialFavoritedBoost" forKey:?];
+  [coderCopy encodeDouble:@"exponentialFavoritedBoost" forKey:?];
   [(FCPersonalizationCohortConfig *)self globalWeight];
-  [v4 encodeDouble:@"globalWeight" forKey:?];
+  [coderCopy encodeDouble:@"globalWeight" forKey:?];
   [(FCPersonalizationCohortConfig *)self globalWeightHalfLife];
-  [v4 encodeDouble:@"globalWeightHalfLife" forKey:?];
+  [coderCopy encodeDouble:@"globalWeightHalfLife" forKey:?];
   [(FCPersonalizationCohortConfig *)self globalWeightInitialMultiplier];
-  [v4 encodeDouble:@"globalWeightInitialMultiplier" forKey:?];
+  [coderCopy encodeDouble:@"globalWeightInitialMultiplier" forKey:?];
   [(FCPersonalizationCohortConfig *)self paddingFactor];
-  [v4 encodeDouble:@"paddingFactor" forKey:?];
+  [coderCopy encodeDouble:@"paddingFactor" forKey:?];
   [(FCPersonalizationCohortConfig *)self preBaselineCurvature];
-  [v4 encodeDouble:@"preBaselineCurvature" forKey:?];
+  [coderCopy encodeDouble:@"preBaselineCurvature" forKey:?];
   [(FCPersonalizationCohortConfig *)self postBaselineCurvature];
-  [v4 encodeDouble:@"postBaselineCurvature" forKey:?];
-  [v4 encodeBool:-[FCPersonalizationCohortConfig undampenOnlyAboveBaselineMembership](self forKey:{"undampenOnlyAboveBaselineMembership"), @"undampenOnlyAboveBaselineMembership"}];
+  [coderCopy encodeDouble:@"postBaselineCurvature" forKey:?];
+  [coderCopy encodeBool:-[FCPersonalizationCohortConfig undampenOnlyAboveBaselineMembership](self forKey:{"undampenOnlyAboveBaselineMembership"), @"undampenOnlyAboveBaselineMembership"}];
   [(FCPersonalizationCohortConfig *)self userBaseline];
-  [v4 encodeDouble:@"userBaseline" forKey:?];
-  [v4 encodeBool:-[FCPersonalizationCohortConfig useRelativePersonalizationValue](self forKey:{"useRelativePersonalizationValue"), @"useRelativePersonalizationValue"}];
-  [v4 encodeBool:-[FCPersonalizationCohortConfig useExponentialFavoritedBoost](self forKey:{"useExponentialFavoritedBoost"), @"useExponentialFavoritedBoost"}];
+  [coderCopy encodeDouble:@"userBaseline" forKey:?];
+  [coderCopy encodeBool:-[FCPersonalizationCohortConfig useRelativePersonalizationValue](self forKey:{"useRelativePersonalizationValue"), @"useRelativePersonalizationValue"}];
+  [coderCopy encodeBool:-[FCPersonalizationCohortConfig useExponentialFavoritedBoost](self forKey:{"useExponentialFavoritedBoost"), @"useExponentialFavoritedBoost"}];
 }
 
 @end

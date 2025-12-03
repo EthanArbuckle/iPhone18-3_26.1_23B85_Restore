@@ -1,12 +1,12 @@
 @interface PXEventCoalescer
-+ (id)delayedCoalescerWithDelay:(double)a3;
-+ (id)rateLimitingCoalescerWithRate:(double)a3;
++ (id)delayedCoalescerWithDelay:(double)delay;
++ (id)rateLimitingCoalescerWithRate:(double)rate;
 - (PXEventCoalescer)init;
-- (PXEventCoalescer)initWithInterval:(double)a3;
-- (void)_enumerateObserversWithBlock:(id)a3;
+- (PXEventCoalescer)initWithInterval:(double)interval;
+- (void)_enumerateObserversWithBlock:(id)block;
 - (void)inputEvent;
 - (void)reset;
-- (void)setWaitingForCallback:(BOOL)a3;
+- (void)setWaitingForCallback:(BOOL)callback;
 - (void)signalObservers;
 - (void)signalObserversBeganPendingEvent;
 @end
@@ -43,10 +43,10 @@ void __52__PXEventCoalescer_signalObserversBeganPendingEvent__block_invoke(uint6
   }
 }
 
-- (void)_enumerateObserversWithBlock:(id)a3
+- (void)_enumerateObserversWithBlock:(id)block
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSHashTable *)self->_observers copy];
   v11 = 0u;
   v12 = 0u;
@@ -68,7 +68,7 @@ void __52__PXEventCoalescer_signalObserversBeganPendingEvent__block_invoke(uint6
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+        blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
@@ -79,12 +79,12 @@ void __52__PXEventCoalescer_signalObserversBeganPendingEvent__block_invoke(uint6
   }
 }
 
-- (void)setWaitingForCallback:(BOOL)a3
+- (void)setWaitingForCallback:(BOOL)callback
 {
-  if (self->_waitingForCallback != a3)
+  if (self->_waitingForCallback != callback)
   {
-    self->_waitingForCallback = a3;
-    if (a3)
+    self->_waitingForCallback = callback;
+    if (callback)
     {
       [(PXEventCoalescer *)self signalObserversBeganPendingEvent];
     }
@@ -93,10 +93,10 @@ void __52__PXEventCoalescer_signalObserversBeganPendingEvent__block_invoke(uint6
 
 - (void)inputEvent
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXEventCoalescer.m" lineNumber:86 description:{@"Method %s is a responsibility of subclass %@", "-[PXEventCoalescer inputEvent]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXEventCoalescer.m" lineNumber:86 description:{@"Method %s is a responsibility of subclass %@", "-[PXEventCoalescer inputEvent]", v6}];
 
   abort();
 }
@@ -112,13 +112,13 @@ void __52__PXEventCoalescer_signalObserversBeganPendingEvent__block_invoke(uint6
 
 - (PXEventCoalescer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXEventCoalescer.m" lineNumber:69 description:{@"%s is not available as initializer", "-[PXEventCoalescer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXEventCoalescer.m" lineNumber:69 description:{@"%s is not available as initializer", "-[PXEventCoalescer init]"}];
 
   abort();
 }
 
-- (PXEventCoalescer)initWithInterval:(double)a3
+- (PXEventCoalescer)initWithInterval:(double)interval
 {
   v9.receiver = self;
   v9.super_class = PXEventCoalescer;
@@ -126,25 +126,25 @@ void __52__PXEventCoalescer_signalObserversBeganPendingEvent__block_invoke(uint6
   v5 = v4;
   if (v4)
   {
-    v4->_interval = a3;
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    v4->_interval = interval;
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v5->_observers;
-    v5->_observers = v6;
+    v5->_observers = weakObjectsHashTable;
   }
 
   return v5;
 }
 
-+ (id)rateLimitingCoalescerWithRate:(double)a3
++ (id)rateLimitingCoalescerWithRate:(double)rate
 {
-  v3 = [[PXRateLimitingEventCoalescer alloc] initWithRate:a3];
+  v3 = [[PXRateLimitingEventCoalescer alloc] initWithRate:rate];
 
   return v3;
 }
 
-+ (id)delayedCoalescerWithDelay:(double)a3
++ (id)delayedCoalescerWithDelay:(double)delay
 {
-  v3 = [[PXDelayEventCoalescer alloc] initWithDelay:a3];
+  v3 = [[PXDelayEventCoalescer alloc] initWithDelay:delay];
 
   return v3;
 }

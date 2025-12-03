@@ -1,6 +1,6 @@
 @interface ASAuthorizationPublicKeyCredentialPRFAssertionInputValues
 - (ASAuthorizationPublicKeyCredentialPRFAssertionInputValues)init;
-- (ASAuthorizationPublicKeyCredentialPRFAssertionInputValues)initWithSaltInput1:(id)a3 saltInput2:(id)a4;
+- (ASAuthorizationPublicKeyCredentialPRFAssertionInputValues)initWithSaltInput1:(id)input1 saltInput2:(id)input2;
 - (NSData)saltInput1;
 - (NSData)saltInput2;
 @end
@@ -39,14 +39,14 @@
   return v4;
 }
 
-- (ASAuthorizationPublicKeyCredentialPRFAssertionInputValues)initWithSaltInput1:(id)a3 saltInput2:(id)a4
+- (ASAuthorizationPublicKeyCredentialPRFAssertionInputValues)initWithSaltInput1:(id)input1 saltInput2:(id)input2
 {
-  v6 = a3;
-  v7 = a4;
+  input1Copy = input1;
+  input2Copy = input2;
   v8 = sub_1B1D7B4EC();
   v10 = v9;
 
-  if (v7)
+  if (input2Copy)
   {
     v11 = sub_1B1D7B4EC();
     v13 = v12;

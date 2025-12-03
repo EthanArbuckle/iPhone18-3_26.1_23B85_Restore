@@ -1,18 +1,18 @@
 @interface Car3DButton
-- (Car3DButton)initWithFrame:(CGRect)a3;
-- (void)setButtonState:(unint64_t)a3;
+- (Car3DButton)initWithFrame:(CGRect)frame;
+- (void)setButtonState:(unint64_t)state;
 @end
 
 @implementation Car3DButton
 
-- (void)setButtonState:(unint64_t)a3
+- (void)setButtonState:(unint64_t)state
 {
-  if (self->_buttonState != a3)
+  if (self->_buttonState != state)
   {
-    self->_buttonState = a3;
-    if (a3)
+    self->_buttonState = state;
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         v4 = self->_image2D;
         [(Car3DButton *)self setAccessibilityIdentifier:@"Car3DButton.2D"];
@@ -23,7 +23,7 @@
         goto LABEL_7;
       }
 
-      if (a3 == 2)
+      if (state == 2)
       {
         v4 = self->_image3D;
         [(Car3DButton *)self setAccessibilityIdentifier:@"Car3DButton.3D"];
@@ -53,11 +53,11 @@ LABEL_10:
   }
 }
 
-- (Car3DButton)initWithFrame:(CGRect)a3
+- (Car3DButton)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = Car3DButton;
-  v3 = [(CarFocusableImageButton *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarFocusableImageButton *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImage _mapsCar_systemImageNamed:@"view.2d" textStyle:UIFontTextStyleSubheadline];

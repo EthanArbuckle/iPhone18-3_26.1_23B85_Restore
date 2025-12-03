@@ -1,9 +1,9 @@
 @interface CPSPointsOfInterestPickerCell
 + (NSString)identifier;
-- (_TtC14CarPlaySupport29CPSPointsOfInterestPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setChosen:(BOOL)a3;
+- (_TtC14CarPlaySupport29CPSPointsOfInterestPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setChosen:(BOOL)chosen;
 @end
 
 @implementation CPSPointsOfInterestPickerCell
@@ -17,41 +17,41 @@
   return v3;
 }
 
-- (void)setChosen:(BOOL)a3
+- (void)setChosen:(BOOL)chosen
 {
-  v4 = self;
-  CPSPointsOfInterestPickerCell.chosen.setter(a3);
+  selfCopy = self;
+  CPSPointsOfInterestPickerCell.chosen.setter(chosen);
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CPSPointsOfInterestPickerCell.didUpdateFocus(in:with:)(v6, v7);
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  selfCopy = self;
+  CPSPointsOfInterestPickerCell.didUpdateFocus(in:with:)(contextCopy, coordinatorCopy);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   CPSPointsOfInterestPickerCell.updateConfiguration(using:)();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtC14CarPlaySupport29CPSPointsOfInterestPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC14CarPlaySupport29CPSPointsOfInterestPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  return CPSPointsOfInterestPickerCell.init(style:reuseIdentifier:)(a3);
+  return CPSPointsOfInterestPickerCell.init(style:reuseIdentifier:)(style);
 }
 
 @end

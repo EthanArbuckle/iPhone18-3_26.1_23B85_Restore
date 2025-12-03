@@ -1,6 +1,6 @@
 @interface OspreyChannelRequestOptions
 - (OspreyChannelRequestOptions)init;
-- (void)applyToOspreyMutableRequest:(id)a3;
+- (void)applyToOspreyMutableRequest:(id)request;
 @end
 
 @implementation OspreyChannelRequestOptions
@@ -18,11 +18,11 @@
   return result;
 }
 
-- (void)applyToOspreyMutableRequest:(id)a3
+- (void)applyToOspreyMutableRequest:(id)request
 {
-  v4 = a3;
-  [v4 setCompressionEnabled:{-[OspreyChannelRequestOptions isCompressionEnabled](self, "isCompressionEnabled")}];
-  [v4 setForceHTTPv2:{-[OspreyChannelRequestOptions forceHTTPv2](self, "forceHTTPv2")}];
+  requestCopy = request;
+  [requestCopy setCompressionEnabled:{-[OspreyChannelRequestOptions isCompressionEnabled](self, "isCompressionEnabled")}];
+  [requestCopy setForceHTTPv2:{-[OspreyChannelRequestOptions forceHTTPv2](self, "forceHTTPv2")}];
 }
 
 @end

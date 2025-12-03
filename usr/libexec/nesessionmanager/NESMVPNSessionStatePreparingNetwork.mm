@@ -1,7 +1,7 @@
 @interface NESMVPNSessionStatePreparingNetwork
 - (NESMVPNSessionStatePreparingNetwork)init;
-- (void)enterWithSession:(id)a3;
-- (void)handleNetworkPrepareResult:(id)a3;
+- (void)enterWithSession:(id)session;
+- (void)handleNetworkPrepareResult:(id)result;
 - (void)handleTimeout;
 @end
 
@@ -27,12 +27,12 @@
   [Property setState:5];
 }
 
-- (void)handleNetworkPrepareResult:(id)a3
+- (void)handleNetworkPrepareResult:(id)result
 {
   v30.receiver = self;
   v30.super_class = NESMVPNSessionStatePreparingNetwork;
   [(NESMVPNSessionState *)&v30 handleNetworkPrepareResult:?];
-  if (!a3)
+  if (!result)
   {
     if (self)
     {
@@ -67,17 +67,17 @@ LABEL_31:
     goto LABEL_20;
   }
 
-  v28 = [0 initializePlugins];
+  initializePlugins = [0 initializePlugins];
   Property = 0;
-  if ((v28 & 1) == 0)
+  if ((initializePlugins & 1) == 0)
   {
     v29 = 6;
     goto LABEL_31;
   }
 
 LABEL_4:
-  v10 = [Property authenticationPlugin];
-  if (!v10)
+  authenticationPlugin = [Property authenticationPlugin];
+  if (!authenticationPlugin)
   {
 LABEL_14:
     if (self)
@@ -94,7 +94,7 @@ LABEL_14:
     goto LABEL_22;
   }
 
-  v12 = v10;
+  v12 = authenticationPlugin;
   if (self)
   {
     v13 = objc_getProperty(self, v11, 16, 1);
@@ -105,13 +105,13 @@ LABEL_14:
     v13 = 0;
   }
 
-  v14 = [v13 connectParameters];
-  if (!v14)
+  connectParameters = [v13 connectParameters];
+  if (!connectParameters)
   {
     goto LABEL_24;
   }
 
-  v16 = v14;
+  v16 = connectParameters;
   if (self)
   {
     v17 = objc_getProperty(self, v15, 16, 1);
@@ -122,8 +122,8 @@ LABEL_14:
     v17 = 0;
   }
 
-  v18 = [v17 connectParameters];
-  v19 = [v18 objectForKeyedSubscript:@"Password"];
+  connectParameters2 = [v17 connectParameters];
+  v19 = [connectParameters2 objectForKeyedSubscript:@"Password"];
   if (!v19)
   {
 
@@ -142,9 +142,9 @@ LABEL_24:
     v22 = 0;
   }
 
-  v23 = [v22 extensibleSSOProvider];
+  extensibleSSOProvider = [v22 extensibleSSOProvider];
 
-  if (!v23)
+  if (!extensibleSSOProvider)
   {
     goto LABEL_14;
   }
@@ -165,14 +165,14 @@ LABEL_22:
   [v24 setState:v25];
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   kdebug_trace();
   v5.receiver = self;
   v5.super_class = NESMVPNSessionStatePreparingNetwork;
-  [(NESMVPNSessionState *)&v5 enterWithSession:v4];
-  [v4 prepareNetwork];
+  [(NESMVPNSessionState *)&v5 enterWithSession:sessionCopy];
+  [sessionCopy prepareNetwork];
 }
 
 - (NESMVPNSessionStatePreparingNetwork)init

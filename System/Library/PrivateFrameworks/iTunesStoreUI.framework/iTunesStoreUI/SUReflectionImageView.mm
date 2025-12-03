@@ -1,14 +1,14 @@
 @interface SUReflectionImageView
-- (SUReflectionImageView)initWithReflectionHeight:(double)a3 spacing:(double)a4;
+- (SUReflectionImageView)initWithReflectionHeight:(double)height spacing:(double)spacing;
 - (void)dealloc;
-- (void)setImage:(id)a3;
-- (void)setReflectionAlphaWhenVisible:(double)a3;
-- (void)setReflectionVisible:(BOOL)a3;
+- (void)setImage:(id)image;
+- (void)setReflectionAlphaWhenVisible:(double)visible;
+- (void)setReflectionVisible:(BOOL)visible;
 @end
 
 @implementation SUReflectionImageView
 
-- (SUReflectionImageView)initWithReflectionHeight:(double)a3 spacing:(double)a4
+- (SUReflectionImageView)initWithReflectionHeight:(double)height spacing:(double)spacing
 {
   v7.receiver = self;
   v7.super_class = SUReflectionImageView;
@@ -16,8 +16,8 @@
   if (result)
   {
     result->_reflectionAlpha = 1.0;
-    result->_reflectionHeight = a3;
-    result->_spacing = a4;
+    result->_reflectionHeight = height;
+    result->_spacing = spacing;
   }
 
   return result;
@@ -30,18 +30,18 @@
   [(SUReflectionImageView *)&v3 dealloc];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   imageView = self->_imageView;
   if (imageView)
   {
-    [(UIImageView *)imageView setImage:a3];
+    [(UIImageView *)imageView setImage:image];
     [(UIImageView *)self->_imageView setNeedsDisplay];
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:a3];
+    v6 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:image];
     self->_imageView = v6;
     [(UIImageView *)v6 setContentMode:1];
     [(UIImageView *)self->_imageView setUserInteractionEnabled:0];
@@ -54,7 +54,7 @@
     v8 = v7;
     v10 = v9;
     [(UIImageView *)self->_imageView frame];
-    v12 = self;
+    selfCopy = self;
     v13 = v8;
     v14 = v10;
   }
@@ -64,11 +64,11 @@
     [(SUReflectionImageView *)self bounds];
     v16 = v15;
     [(UIImageView *)self->_imageView frame];
-    v12 = self->_imageView;
+    selfCopy = self->_imageView;
     v11 = v16;
   }
 
-  [v12 setFrame:{v13, v14, v11}];
+  [selfCopy setFrame:{v13, v14, v11}];
   [(UIImageView *)self->_imageView frame];
   v19 = v18 + self->_spacing;
   reflection = self->_reflection;
@@ -87,7 +87,7 @@
     [(SUReflectionImageView *)self addSubview:self->_reflection];
   }
 
-  [(SUReflectionView *)self->_reflection setImage:a3];
+  [(SUReflectionView *)self->_reflection setImage:image];
   [(SUReflectionView *)self->_reflection setNeedsDisplay];
   [(SUReflectionImageView *)self frame];
   v23 = v22;
@@ -100,9 +100,9 @@
   [(SUReflectionImageView *)self setFrame:v23, v25, v27, MaxY];
 }
 
-- (void)setReflectionAlphaWhenVisible:(double)a3
+- (void)setReflectionAlphaWhenVisible:(double)visible
 {
-  self->_reflectionAlpha = a3;
+  self->_reflectionAlpha = visible;
   [(SUReflectionView *)self->_reflection alpha];
   if (v4 > 0.0)
   {
@@ -113,12 +113,12 @@
   }
 }
 
-- (void)setReflectionVisible:(BOOL)a3
+- (void)setReflectionVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(SUReflectionView *)self->_reflection alpha];
   v6 = v5;
-  if (v3)
+  if (visibleCopy)
   {
     reflectionAlpha = self->_reflectionAlpha;
     if (v6 == reflectionAlpha)

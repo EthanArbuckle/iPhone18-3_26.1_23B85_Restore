@@ -1,6 +1,6 @@
 @interface MUBlockActivity
-+ (id)createBlockActivitiesFromPlaceActionItems:(id)a3 usingActionManager:(id)a4 presentationOptions:(id)a5 analyticsModuleMetadata:(id)a6;
-- (MUBlockActivity)initWithTitle:(id)a3 systemImageName:(id)a4 activityType:(id)a5 block:(id)a6;
++ (id)createBlockActivitiesFromPlaceActionItems:(id)items usingActionManager:(id)manager presentationOptions:(id)options analyticsModuleMetadata:(id)metadata;
+- (MUBlockActivity)initWithTitle:(id)title systemImageName:(id)name activityType:(id)type block:(id)block;
 - (id)activityType;
 - (void)performActivity;
 @end
@@ -20,61 +20,61 @@
 
 - (id)activityType
 {
-  v3 = [(MUBlockActivity *)self type];
-  v4 = v3;
-  if (v3)
+  type = [(MUBlockActivity *)self type];
+  v4 = type;
+  if (type)
   {
-    v5 = v3;
+    v5 = type;
   }
 
   else
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v8 = [(MUBlockActivity *)self title];
-    v5 = [v6 stringWithFormat:@"%@.%@", v7, v8];
+    title = [(MUBlockActivity *)self title];
+    v5 = [v6 stringWithFormat:@"%@.%@", v7, title];
   }
 
   return v5;
 }
 
-- (MUBlockActivity)initWithTitle:(id)a3 systemImageName:(id)a4 activityType:(id)a5 block:(id)a6
+- (MUBlockActivity)initWithTitle:(id)title systemImageName:(id)name activityType:(id)type block:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  titleCopy = title;
+  nameCopy = name;
+  typeCopy = type;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = MUBlockActivity;
   v15 = [(UIActivity *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_title, a3);
-    v17 = _Block_copy(v14);
+    objc_storeStrong(&v15->_title, title);
+    v17 = _Block_copy(blockCopy);
     block = v16->_block;
     v16->_block = v17;
 
-    objc_storeStrong(&v16->_type, a5);
-    objc_storeStrong(&v16->_systemImageName, a4);
+    objc_storeStrong(&v16->_type, type);
+    objc_storeStrong(&v16->_systemImageName, name);
   }
 
   return v16;
 }
 
-+ (id)createBlockActivitiesFromPlaceActionItems:(id)a3 usingActionManager:(id)a4 presentationOptions:(id)a5 analyticsModuleMetadata:(id)a6
++ (id)createBlockActivitiesFromPlaceActionItems:(id)items usingActionManager:(id)manager presentationOptions:(id)options analyticsModuleMetadata:(id)metadata
 {
   v43 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v33 = a4;
-  v10 = a5;
-  v11 = a6;
+  itemsCopy = items;
+  managerCopy = manager;
+  optionsCopy = options;
+  metadataCopy = metadata;
   v32 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v9;
+  obj = itemsCopy;
   v12 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v12)
   {
@@ -91,21 +91,21 @@
           objc_enumerationMutation(obj);
         }
 
-        v15 = [*(*(&v38 + 1) + 8 * i) resolvedActionItem];
-        v16 = [v15 titleForDisplayStyle:0];
-        v17 = [v15 symbolForDisplayStyle:0];
+        resolvedActionItem = [*(*(&v38 + 1) + 8 * i) resolvedActionItem];
+        v16 = [resolvedActionItem titleForDisplayStyle:0];
+        v17 = [resolvedActionItem symbolForDisplayStyle:0];
         v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v19 = [v10 sourceView];
+        sourceView = [optionsCopy sourceView];
 
-        if (v19)
+        if (sourceView)
         {
-          v20 = [v10 sourceView];
-          [v18 setObject:v20 forKeyedSubscript:v30];
+          sourceView2 = [optionsCopy sourceView];
+          [v18 setObject:sourceView2 forKeyedSubscript:v30];
         }
 
-        if (v11)
+        if (metadataCopy)
         {
-          [v18 setObject:v11 forKeyedSubscript:v29];
+          [v18 setObject:metadataCopy forKeyedSubscript:v29];
         }
 
         v21 = [MUBlockActivity alloc];
@@ -113,11 +113,11 @@
         v34[1] = 3221225472;
         v34[2] = __152__MUBlockActivity_MKPlaceActionManagerExtras__createBlockActivitiesFromPlaceActionItems_usingActionManager_presentationOptions_analyticsModuleMetadata___block_invoke;
         v34[3] = &unk_1E8218E68;
-        v35 = v33;
-        v36 = v15;
+        v35 = managerCopy;
+        v36 = resolvedActionItem;
         v37 = v18;
         v22 = v18;
-        v23 = v15;
+        v23 = resolvedActionItem;
         v24 = [(MUBlockActivity *)v21 initWithTitle:v16 systemImageName:v17 activityType:0 block:v34];
         [v32 addObject:v24];
       }

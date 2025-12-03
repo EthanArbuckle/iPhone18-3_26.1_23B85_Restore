@@ -1,24 +1,24 @@
 @interface SKUISlideshowImageScrollView
 - (CGRect)visibleRect;
-- (SKUISlideshowImageScrollView)initWithFrame:(CGRect)a3;
+- (SKUISlideshowImageScrollView)initWithFrame:(CGRect)frame;
 - (void)_prepareToResize;
 - (void)_recoverFromResize;
 - (void)_resetMinMaxZoomScales;
 - (void)layoutSubviews;
 - (void)resetZoomScale;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)zoomIntoPoint:(CGPoint)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)zoomIntoPoint:(CGPoint)point;
 @end
 
 @implementation SKUISlideshowImageScrollView
 
-- (SKUISlideshowImageScrollView)initWithFrame:(CGRect)a3
+- (SKUISlideshowImageScrollView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISlideshowImageScrollView initWithFrame:];
@@ -26,11 +26,11 @@
 
   v12.receiver = self;
   v12.super_class = SKUISlideshowImageScrollView;
-  v8 = [(SKUISlideshowImageScrollView *)&v12 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUISlideshowImageScrollView *)&v12 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(SKUISlideshowImageScrollView *)v8 setShowsHorizontalScrollIndicator:0];
+    [(SKUISlideshowImageScrollView *)height setShowsHorizontalScrollIndicator:0];
     [(SKUISlideshowImageScrollView *)v9 setShowsVerticalScrollIndicator:0];
     [(SKUISlideshowImageScrollView *)v9 setBouncesZoom:1];
     [(SKUISlideshowImageScrollView *)v9 setDecelerationRate:*MEMORY[0x277D76EB8]];
@@ -51,10 +51,10 @@
   [(SKUISlideshowImageScrollView *)self setZoomScale:?];
 }
 
-- (void)zoomIntoPoint:(CGPoint)a3
+- (void)zoomIntoPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(SKUISlideshowImageScrollView *)self zoomScale];
   v7 = v6;
   [(SKUISlideshowImageScrollView *)self minimumZoomScale];
@@ -137,12 +137,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SKUISlideshowImageScrollView *)self frame];
   if (width == v9 && height == v8)
   {
@@ -161,22 +161,22 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v8 = a3;
-  objc_storeStrong(&self->_image, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_image, image);
   imageView = self->_imageView;
   if (imageView)
   {
     [(UIImageView *)imageView removeFromSuperview];
   }
 
-  v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v8];
+  v6 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:imageCopy];
   v7 = self->_imageView;
   self->_imageView = v6;
 
   [(SKUISlideshowImageScrollView *)self addSubview:self->_imageView];
-  [v8 size];
+  [imageCopy size];
   [(SKUISlideshowImageScrollView *)self setContentSize:?];
   [(SKUISlideshowImageScrollView *)self _resetMinMaxZoomScales];
   [(SKUISlideshowImageScrollView *)self minimumZoomScale];

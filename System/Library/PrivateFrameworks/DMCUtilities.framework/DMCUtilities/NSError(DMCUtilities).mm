@@ -21,11 +21,11 @@
   v17 = a8;
   v18 = a9;
   v19 = a10;
-  v20 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([v14 count] < 2)
   {
     v28 = DMCLocalizedString(@"UNKNOWN_ERROR");
-    [v20 setObject:v28 forKey:*MEMORY[0x1E696A578]];
+    [dictionary setObject:v28 forKey:*MEMORY[0x1E696A578]];
 
     v26 = DMCUSEnglishString(@"UNKNOWN_ERROR");
     v27 = @"USEnglishDescription";
@@ -33,16 +33,16 @@
   }
 
   v21 = [v14 objectAtIndex:0];
-  [v20 setObject:v21 forKey:*MEMORY[0x1E696A578]];
+  [dictionary setObject:v21 forKey:*MEMORY[0x1E696A578]];
 
   v22 = [v14 objectAtIndex:1];
-  v23 = [MEMORY[0x1E695DFB0] null];
-  v24 = [v22 isEqual:v23];
+  null = [MEMORY[0x1E695DFB0] null];
+  v24 = [v22 isEqual:null];
 
   if ((v24 & 1) == 0)
   {
     v25 = [v14 objectAtIndex:1];
-    [v20 setObject:v25 forKey:@"USEnglishDescription"];
+    [dictionary setObject:v25 forKey:@"USEnglishDescription"];
   }
 
   if ([v14 count] >= 3)
@@ -50,7 +50,7 @@
     v26 = [v14 subarrayWithRange:{2, objc_msgSend(v14, "count") - 2}];
     v27 = @"descriptionParameters";
 LABEL_7:
-    [v20 setObject:v26 forKey:{v27, v34}];
+    [dictionary setObject:v26 forKey:{v27, v34}];
   }
 
   if (!v15)
@@ -60,72 +60,72 @@ LABEL_7:
       goto LABEL_20;
     }
 
-    v29 = [v17 DMCFindPrimaryError];
-    if (!v29)
+    dMCFindPrimaryError = [v17 DMCFindPrimaryError];
+    if (!dMCFindPrimaryError)
     {
-      v29 = v17;
+      dMCFindPrimaryError = v17;
     }
 
-    v30 = [v29 localizedDescription];
-    [v20 setObject:v30 forKey:*MEMORY[0x1E696A598]];
+    localizedDescription = [dMCFindPrimaryError localizedDescription];
+    [dictionary setObject:localizedDescription forKey:*MEMORY[0x1E696A598]];
 
-    v31 = [v29 DMCUSEnglishDescription];
-    if (v31)
+    dMCUSEnglishDescription = [dMCFindPrimaryError DMCUSEnglishDescription];
+    if (dMCUSEnglishDescription)
     {
-      [v20 setObject:v31 forKey:@"USEnglishSuggestion"];
+      [dictionary setObject:dMCUSEnglishDescription forKey:@"USEnglishSuggestion"];
     }
 
     goto LABEL_19;
   }
 
-  [v20 setObject:v15 forKey:*MEMORY[0x1E696A598]];
+  [dictionary setObject:v15 forKey:*MEMORY[0x1E696A598]];
   if (v16)
   {
-    [v20 setObject:v16 forKey:@"USEnglishSuggestion"];
+    [dictionary setObject:v16 forKey:@"USEnglishSuggestion"];
   }
 
   if (v17)
   {
 LABEL_19:
-    [v20 setObject:v17 forKey:*MEMORY[0x1E696AA08]];
+    [dictionary setObject:v17 forKey:*MEMORY[0x1E696AA08]];
   }
 
 LABEL_20:
   if (v18)
   {
-    [v20 setObject:v18 forKey:@"DMCErrorType"];
+    [dictionary setObject:v18 forKey:@"DMCErrorType"];
   }
 
   if (v19)
   {
-    [v20 addEntriesFromDictionary:v19];
+    [dictionary addEntriesFromDictionary:v19];
   }
 
-  v32 = [MEMORY[0x1E696ABC0] errorWithDomain:v35 code:v34 userInfo:v20];
+  v32 = [MEMORY[0x1E696ABC0] errorWithDomain:v35 code:v34 userInfo:dictionary];
 
   return v32;
 }
 
 - (id)DMCUSEnglishDescription
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"USEnglishDescription"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"USEnglishDescription"];
 
   return v2;
 }
 
 - (id)DMCUSEnglishSuggestion
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"USEnglishSuggestion"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"USEnglishSuggestion"];
 
   return v2;
 }
 
 - (id)DMCErrorType
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"DMCErrorType"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"DMCErrorType"];
 
   return v2;
 }
@@ -137,40 +137,40 @@ LABEL_20:
   v4 = NSStringFromClass(v3);
   v5 = [v2 stringWithFormat:@"%@:\n", v4];
 
-  v6 = [a1 localizedDescription];
-  v7 = v6;
-  if (v6)
+  localizedDescription = [self localizedDescription];
+  v7 = localizedDescription;
+  if (localizedDescription)
   {
-    [v5 appendFormat:@"Desc   : %@\n", v6];
+    [v5 appendFormat:@"Desc   : %@\n", localizedDescription];
   }
 
-  v8 = [a1 localizedRecoverySuggestion];
-  v9 = v8;
-  if (v8)
+  localizedRecoverySuggestion = [self localizedRecoverySuggestion];
+  v9 = localizedRecoverySuggestion;
+  if (localizedRecoverySuggestion)
   {
-    [v5 appendFormat:@"Sugg   : %@\n", v8];
+    [v5 appendFormat:@"Sugg   : %@\n", localizedRecoverySuggestion];
   }
 
-  v10 = [a1 DMCUSEnglishDescription];
-  v11 = v10;
-  if (v10)
+  dMCUSEnglishDescription = [self DMCUSEnglishDescription];
+  v11 = dMCUSEnglishDescription;
+  if (dMCUSEnglishDescription)
   {
-    [v5 appendFormat:@"US Desc: %@\n", v10];
+    [v5 appendFormat:@"US Desc: %@\n", dMCUSEnglishDescription];
   }
 
   v27 = v7;
-  v12 = [a1 DMCUSEnglishSuggestion];
-  v13 = v12;
-  if (v12)
+  dMCUSEnglishSuggestion = [self DMCUSEnglishSuggestion];
+  v13 = dMCUSEnglishSuggestion;
+  if (dMCUSEnglishSuggestion)
   {
-    [v5 appendFormat:@"US Sugg: %@\n", v12];
+    [v5 appendFormat:@"US Sugg: %@\n", dMCUSEnglishSuggestion];
   }
 
-  v14 = [a1 domain];
-  [v5 appendFormat:@"Domain : %@\nCode   : %d\n", v14, objc_msgSend(a1, "code")];
+  domain = [self domain];
+  [v5 appendFormat:@"Domain : %@\nCode   : %d\n", domain, objc_msgSend(self, "code")];
 
-  v15 = [a1 userInfo];
-  v16 = [v15 objectForKey:@"DMCErrorType"];
+  userInfo = [self userInfo];
+  v16 = [userInfo objectForKey:@"DMCErrorType"];
 
   if (v16)
   {
@@ -178,26 +178,26 @@ LABEL_20:
   }
 
   v26 = v9;
-  v17 = [a1 userInfo];
-  v18 = [v17 objectForKey:@"descriptionParameters"];
+  userInfo2 = [self userInfo];
+  v18 = [userInfo2 objectForKey:@"descriptionParameters"];
 
   if (v18)
   {
     [v5 appendFormat:@"Params : %@\n", v18];
   }
 
-  v19 = [a1 userInfo];
+  userInfo3 = [self userInfo];
   v20 = *MEMORY[0x1E696AA08];
-  v21 = [v19 objectForKey:*MEMORY[0x1E696AA08]];
+  v21 = [userInfo3 objectForKey:*MEMORY[0x1E696AA08]];
 
   if (v21)
   {
-    v22 = [v21 DMCVerboseDescription];
-    [v5 appendFormat:@"...Underlying error:\n%@", v22];
+    dMCVerboseDescription = [v21 DMCVerboseDescription];
+    [v5 appendFormat:@"...Underlying error:\n%@", dMCVerboseDescription];
   }
 
-  v23 = [a1 userInfo];
-  v24 = [v23 mutableCopy];
+  userInfo4 = [self userInfo];
+  v24 = [userInfo4 mutableCopy];
 
   [v24 removeObjectForKey:*MEMORY[0x1E696A578]];
   [v24 removeObjectForKey:*MEMORY[0x1E696A598]];
@@ -216,16 +216,16 @@ LABEL_20:
 
 - (id)DMCFindPrimaryError
 {
-  v1 = [a1 userInfo];
+  userInfo = [self userInfo];
   v2 = *MEMORY[0x1E696AA08];
-  v3 = [v1 objectForKey:*MEMORY[0x1E696AA08]];
+  v3 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
   if (v3)
   {
     while (1)
     {
-      v4 = [v3 userInfo];
-      v5 = [v4 objectForKey:@"isPrimary"];
+      userInfo2 = [v3 userInfo];
+      v5 = [userInfo2 objectForKey:@"isPrimary"];
 
       if (v5)
       {
@@ -239,8 +239,8 @@ LABEL_20:
         }
       }
 
-      v6 = [v3 userInfo];
-      v7 = [v6 objectForKey:v2];
+      userInfo3 = [v3 userInfo];
+      v7 = [userInfo3 objectForKey:v2];
 
       v3 = v7;
       if (!v7)
@@ -264,19 +264,19 @@ LABEL_6:
 - (uint64_t)DMCContainsErrorDomain:()DMCUtilities code:
 {
   v6 = a3;
-  v7 = a1;
-  if (v7)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v8 = v7;
+    v8 = selfCopy;
     v9 = *MEMORY[0x1E696AA08];
     do
     {
-      v10 = [v8 domain];
-      if ([v10 isEqualToString:v6])
+      domain = [v8 domain];
+      if ([domain isEqualToString:v6])
       {
-        v11 = [v8 code];
+        code = [v8 code];
 
-        if (v11 == a4)
+        if (code == a4)
         {
           v14 = 1;
           goto LABEL_10;
@@ -287,8 +287,8 @@ LABEL_6:
       {
       }
 
-      v12 = [v8 userInfo];
-      v13 = [v12 objectForKey:v9];
+      userInfo = [v8 userInfo];
+      v13 = [userInfo objectForKey:v9];
 
       v8 = v13;
     }
@@ -308,15 +308,15 @@ LABEL_10:
 
 - (uint64_t)DMCCopyAsPrimaryError
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 mutableCopy];
+  userInfo = [self userInfo];
+  v3 = [userInfo mutableCopy];
 
   v4 = [MEMORY[0x1E696AD98] numberWithBool:1];
   [v3 setObject:v4 forKey:@"isPrimary"];
 
   v5 = MEMORY[0x1E696ABC0];
-  v6 = [a1 domain];
-  v7 = [v5 errorWithDomain:v6 code:objc_msgSend(a1 userInfo:{"code"), v3}];
+  domain = [self domain];
+  v7 = [v5 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v3}];
 
   return v7;
 }

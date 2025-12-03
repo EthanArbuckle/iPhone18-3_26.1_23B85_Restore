@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneIndexMultiTerms
 - (id)getMax;
 - (id)getMin;
-- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)automaton withOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)iterator;
 - (int)getDocCount;
 - (int64_t)getSumDocFreq;
@@ -11,7 +11,7 @@
 
 @implementation OrgApacheLuceneIndexMultiTerms
 
-- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (id)intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:(id)automaton withOrgApacheLuceneUtilBytesRef:(id)ref
 {
   v7 = new_JavaUtilArrayList_init();
   subs = self->subs_;
@@ -28,7 +28,7 @@ LABEL_8:
     v11 = (&subs->elementType_)[v10];
     if (v11)
     {
-      v12 = [(IOSClass *)v11 intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:a3 withOrgApacheLuceneUtilBytesRef:a4];
+      v12 = [(IOSClass *)v11 intersectWithOrgApacheLuceneUtilAutomatonCompiledAutomaton:automaton withOrgApacheLuceneUtilBytesRef:ref];
       if (v12)
       {
         [(JavaUtilArrayList *)v9 addWithId:new_OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex_initWithOrgApacheLuceneIndexTermsEnum_withInt_(v12, v10)];
@@ -91,19 +91,19 @@ LABEL_8:
         break;
       }
 
-      v8 = [v6 getMin];
-      v9 = v8;
+      getMin = [v6 getMin];
+      v9 = getMin;
       if (!v5)
       {
         goto LABEL_8;
       }
 
-      if (!v8)
+      if (!getMin)
       {
         break;
       }
 
-      if (([v8 compareToWithId:v5] & 0x80000000) != 0)
+      if (([getMin compareToWithId:v5] & 0x80000000) != 0)
       {
 LABEL_8:
         v5 = v9;
@@ -144,19 +144,19 @@ LABEL_13:
         break;
       }
 
-      v8 = [v6 getMax];
-      v9 = v8;
+      getMax = [v6 getMax];
+      v9 = getMax;
       if (!v5)
       {
         goto LABEL_8;
       }
 
-      if (!v8)
+      if (!getMax)
       {
         break;
       }
 
-      if ([v8 compareToWithId:v5] >= 1)
+      if ([getMax compareToWithId:v5] >= 1)
       {
 LABEL_8:
         v5 = v9;
@@ -192,10 +192,10 @@ LABEL_8:
     v7 = (&subs->elementType_)[v6];
     if (v7)
     {
-      v8 = [(IOSClass *)v7 iterator];
-      if (v8)
+      iterator = [(IOSClass *)v7 iterator];
+      if (iterator)
       {
-        [(JavaUtilArrayList *)v5 addWithId:new_OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex_initWithOrgApacheLuceneIndexTermsEnum_withInt_(v8, v6)];
+        [(JavaUtilArrayList *)v5 addWithId:new_OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex_initWithOrgApacheLuceneIndexTermsEnum_withInt_(iterator, v6)];
       }
 
       ++v6;
@@ -254,9 +254,9 @@ LABEL_8:
     }
 
     ++p_elementType;
-    v7 = [v6 getSumTotalTermFreq];
-    v3 += v7;
-    if (v7 == -1)
+    getSumTotalTermFreq = [v6 getSumTotalTermFreq];
+    v3 += getSumTotalTermFreq;
+    if (getSumTotalTermFreq == -1)
     {
       return -1;
     }
@@ -286,9 +286,9 @@ LABEL_8:
     }
 
     ++p_elementType;
-    v7 = [v6 getSumDocFreq];
-    v3 += v7;
-    if (v7 == -1)
+    getSumDocFreq = [v6 getSumDocFreq];
+    v3 += getSumDocFreq;
+    if (getSumDocFreq == -1)
     {
       return -1;
     }
@@ -318,9 +318,9 @@ LABEL_8:
     }
 
     ++p_elementType;
-    v7 = [v6 getDocCount];
-    v3 += v7;
-    if (v7 == -1)
+    getDocCount = [v6 getDocCount];
+    v3 += getDocCount;
+    if (getDocCount == -1)
     {
       return -1;
     }

@@ -12,14 +12,14 @@
 - (void)_music_specifierButtonAction:()MusicSettingsAdditions
 {
   v10 = a3;
-  v4 = [a1 objectForKeyedSubscript:@"__musicTarget"];
+  v4 = [self objectForKeyedSubscript:@"__musicTarget"];
   v5 = v4;
   if (v4)
   {
     v6 = (*(v4 + 16))(v4);
     if (v6)
     {
-      v7 = [a1 objectForKeyedSubscript:@"__musicButtonAction"];
+      v7 = [self objectForKeyedSubscript:@"__musicButtonAction"];
       v8 = NSSelectorFromString(v7);
       v9 = MusicSettingsPerformSelector2(v8, v6, v10, 0);
     }
@@ -29,31 +29,31 @@
 - (void)_music_specifierSetter:()MusicSettingsAdditions
 {
   v10 = a3;
-  [a1 setObject:? forKeyedSubscript:?];
-  v4 = [a1 objectForKeyedSubscript:@"__musicTarget"];
+  [self setObject:? forKeyedSubscript:?];
+  v4 = [self objectForKeyedSubscript:@"__musicTarget"];
   v5 = v4;
   if (v4)
   {
     v6 = (*(v4 + 16))(v4);
     if (v6)
     {
-      v7 = [a1 objectForKeyedSubscript:@"__musicSetter"];
+      v7 = [self objectForKeyedSubscript:@"__musicSetter"];
       v8 = NSSelectorFromString(v7);
-      v9 = MusicSettingsPerformSelector2(v8, v6, v10, a1);
+      v9 = MusicSettingsPerformSelector2(v8, v6, v10, self);
     }
   }
 }
 
 - (id)_music_specifierGetter
 {
-  v2 = [a1 objectForKeyedSubscript:@"__musicTarget"];
+  v2 = [self objectForKeyedSubscript:@"__musicTarget"];
   v3 = v2;
   if (v2 && ((*(v2 + 16))(v2), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [a1 objectForKeyedSubscript:@"__musicGetter"];
+    v6 = [self objectForKeyedSubscript:@"__musicGetter"];
     v7 = NSSelectorFromString(v6);
-    v8 = MusicSettingsPerformSelector2(v7, v5, a1, 0);
+    v8 = MusicSettingsPerformSelector2(v7, v5, self, 0);
   }
 
   else
@@ -66,10 +66,10 @@
 
 - (id)music_getValue
 {
-  WeakRetained = objc_loadWeakRetained(&a1[*MEMORY[0x277D3FCB8]]);
-  if (WeakRetained && (v3 = *&a1[*MEMORY[0x277D3FCA8]]) != 0)
+  WeakRetained = objc_loadWeakRetained(&self[*MEMORY[0x277D3FCB8]]);
+  if (WeakRetained && (v3 = *&self[*MEMORY[0x277D3FCA8]]) != 0)
   {
-    v4 = MusicSettingsPerformSelector2(v3, WeakRetained, a1, 0);
+    v4 = MusicSettingsPerformSelector2(v3, WeakRetained, self, 0);
   }
 
   else
@@ -88,26 +88,26 @@
     goto LABEL_6;
   }
 
-  v6 = [a1 identifier];
-  v7 = [v5 identifier];
-  v8 = [v6 isEqualToString:v7];
+  identifier = [self identifier];
+  identifier2 = [v5 identifier];
+  v8 = [identifier isEqualToString:identifier2];
 
   if ((v8 & 1) == 0)
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"MusicSettingsUtilities.m" lineNumber:52 description:@"Can only compare display values for the same specifier identifier"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MusicSettingsUtilities.m" lineNumber:52 description:@"Can only compare display values for the same specifier identifier"];
   }
 
-  v9 = [a1 name];
-  v10 = [v5 name];
-  v11 = v10;
-  if (v9 == v10)
+  name = [self name];
+  name2 = [v5 name];
+  v11 = name2;
+  if (name == name2)
   {
 
 LABEL_8:
-    if (*&a1[*MEMORY[0x277D3FC90]])
+    if (*&self[*MEMORY[0x277D3FC90]])
     {
-      v16 = [a1 objectForKeyedSubscript:@"__musicCachedValue"];
+      v16 = [self objectForKeyedSubscript:@"__musicCachedValue"];
       v17 = [v5 objectForKeyedSubscript:@"__musicCachedValue"];
       if (v16 != v17 && ![v16 isEqual:v17])
       {
@@ -116,7 +116,7 @@ LABEL_8:
       }
 
       v18 = *MEMORY[0x277D3FFC0];
-      v19 = [a1 objectForKeyedSubscript:*MEMORY[0x277D3FFC0]];
+      v19 = [self objectForKeyedSubscript:*MEMORY[0x277D3FFC0]];
       v20 = [v5 objectForKeyedSubscript:v18];
       v15 = v19 == v20;
     }
@@ -124,7 +124,7 @@ LABEL_8:
     else
     {
       v21 = *MEMORY[0x277D3FF88];
-      v16 = [a1 objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
+      v16 = [self objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
       v17 = [v5 objectForKeyedSubscript:v21];
       if (v16 == v17)
       {
@@ -132,7 +132,7 @@ LABEL_8:
         goto LABEL_17;
       }
 
-      v19 = [a1 objectForKeyedSubscript:v21];
+      v19 = [self objectForKeyedSubscript:v21];
       v20 = [v5 objectForKeyedSubscript:v21];
       v15 = [v19 isEqualToString:v20];
     }
@@ -141,9 +141,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v12 = [a1 name];
-  v13 = [v5 name];
-  v14 = [v12 isEqualToString:v13];
+  name3 = [self name];
+  name4 = [v5 name];
+  v14 = [name3 isEqualToString:name4];
 
   if (v14)
   {
@@ -159,11 +159,11 @@ LABEL_18:
 
 - (char)music_copy
 {
-  v2 = [objc_opt_class() specifierWithSpecifier:a1];
-  if (*&a1[*MEMORY[0x277D3FC90]])
+  v2 = [objc_opt_class() specifierWithSpecifier:self];
+  if (*&self[*MEMORY[0x277D3FC90]])
   {
     v3 = *MEMORY[0x277D3FCB8];
-    WeakRetained = objc_loadWeakRetained(&a1[v3]);
+    WeakRetained = objc_loadWeakRetained(&self[v3]);
     if (WeakRetained)
     {
       objc_initWeak(&location, WeakRetained);
@@ -177,7 +177,7 @@ LABEL_18:
 
       objc_storeWeak(&v2[v3], v2);
       v6 = *MEMORY[0x277D3FCA8];
-      v7 = *&a1[v6];
+      v7 = *&self[v6];
       if (v7)
       {
         v8 = NSStringFromSelector(v7);
@@ -187,7 +187,7 @@ LABEL_18:
       }
 
       v9 = *MEMORY[0x277D3FCB0];
-      v10 = *&a1[v9];
+      v10 = *&self[v9];
       if (v10)
       {
         v11 = NSStringFromSelector(v10);
@@ -196,9 +196,9 @@ LABEL_18:
         *&v2[v9] = sel__music_specifierSetter_;
       }
 
-      if ([a1 buttonAction])
+      if ([self buttonAction])
       {
-        v12 = NSStringFromSelector([a1 buttonAction]);
+        v12 = NSStringFromSelector([self buttonAction]);
         [v2 setObject:v12 forKeyedSubscript:@"__musicButtonAction"];
 
         [v2 setButtonAction:sel__music_specifierButtonAction_];
@@ -208,8 +208,8 @@ LABEL_18:
       objc_destroyWeak(&location);
     }
 
-    v13 = [v2 music_getValue];
-    [v2 setObject:v13 forKeyedSubscript:@"__musicCachedValue"];
+    music_getValue = [v2 music_getValue];
+    [v2 setObject:music_getValue forKeyedSubscript:@"__musicCachedValue"];
   }
 
   return v2;

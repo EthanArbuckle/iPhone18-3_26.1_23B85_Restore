@@ -19,17 +19,17 @@
 
 - (void)runTest
 {
-  v8 = [(ApplicationTest *)self extractInitialDateOption];
-  v3 = [(ApplicationTest *)self model];
-  [v3 setSelectedDate:v8];
+  extractInitialDateOption = [(ApplicationTest *)self extractInitialDateOption];
+  model = [(ApplicationTest *)self model];
+  [model setSelectedDate:extractInitialDateOption];
 
-  v4 = [(ApplicationTest *)self application];
-  v5 = [v4 rootNavigationController];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
 
   self->_monthsToScroll = 10;
-  v6 = [v5 resetToMonthView];
+  resetToMonthView = [rootNavigationController resetToMonthView];
   monthViewController = self->_monthViewController;
-  self->_monthViewController = v6;
+  self->_monthViewController = resetToMonthView;
 
   [(PadMonthChangeMonthTest *)self _realTest];
 }
@@ -39,15 +39,15 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 addObserver:self selector:"_mainLoop" name:@"MonthViewController_ScrollDidEndAnimationNotification" object:0];
 
-  v4 = [objc_opt_class() testName];
+  testName = [objc_opt_class() testName];
   v5 = dispatch_time(0, 200000000);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A06B4;
   v7[3] = &unk_10020EC68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = testName;
+  v6 = testName;
   dispatch_after(v5, &_dispatch_main_q, v7);
 }
 
@@ -67,9 +67,9 @@
 
   else
   {
-    v5 = [objc_opt_class() testName];
-    v4 = [(ApplicationTest *)self application];
-    [v4 finishedTest:v5 waitForCommit:1 extraResults:0 withTeardownBlock:&stru_100210338];
+    testName = [objc_opt_class() testName];
+    application = [(ApplicationTest *)self application];
+    [application finishedTest:testName waitForCommit:1 extraResults:0 withTeardownBlock:&stru_100210338];
   }
 }
 

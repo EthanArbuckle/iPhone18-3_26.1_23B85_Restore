@@ -1,7 +1,7 @@
 @interface AXSDVoiceTriggerController
 + (id)sharedInstance;
 - (AXSDVoiceTriggerController)init;
-- (void)postEventToSystemWithSoundActionEvent:(int64_t)a3;
+- (void)postEventToSystemWithSoundActionEvent:(int64_t)event;
 - (void)startListeningInPracticeSession;
 - (void)stopListening;
 @end
@@ -99,7 +99,7 @@ uint64_t __44__AXSDVoiceTriggerController_sharedInstance__block_invoke()
   }
 }
 
-- (void)postEventToSystemWithSoundActionEvent:(int64_t)a3
+- (void)postEventToSystemWithSoundActionEvent:(int64_t)event
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = AXLogSoundActions();
@@ -108,7 +108,7 @@ uint64_t __44__AXSDVoiceTriggerController_sharedInstance__block_invoke()
     *buf = 138412546;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = event;
     v5 = *&buf[4];
     _os_log_impl(&dword_23D62D000, v4, OS_LOG_TYPE_DEFAULT, "[%@]: posting voice trigger event to system: %ld", buf, 0x16u);
   }
@@ -131,7 +131,7 @@ uint64_t __44__AXSDVoiceTriggerController_sharedInstance__block_invoke()
 
   v7 = v6;
   _Block_object_dispose(&v13, 8);
-  v8 = [v6 accessibilityEventRepresentationWithSender:4 usagePage:3 usage:{a3, v13}];
+  v8 = [v6 accessibilityEventRepresentationWithSender:4 usagePage:3 usage:{event, v13}];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -150,8 +150,8 @@ uint64_t __44__AXSDVoiceTriggerController_sharedInstance__block_invoke()
 
   v10 = v9;
   _Block_object_dispose(&v13, 8);
-  v11 = [v9 sharedManager];
-  [v11 sendHIDSystemEvent:v8 senderID:0x8000000817319383];
+  sharedManager = [v9 sharedManager];
+  [sharedManager sendHIDSystemEvent:v8 senderID:0x8000000817319383];
 
   v12 = *MEMORY[0x277D85DE8];
 }

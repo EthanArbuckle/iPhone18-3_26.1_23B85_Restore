@@ -1,10 +1,10 @@
 @interface TLAlertStoppingOptions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TLAlertStoppingOptions)init;
-- (TLAlertStoppingOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TLAlertStoppingOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TLAlertStoppingOptions
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -57,10 +57,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -68,34 +68,34 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && llround(self->_fadeOutDuration / 0.0001) == llround(v4->_fadeOutDuration / 0.0001) && self->_shouldWaitUntilEndOfCurrentRepetition == v4->_shouldWaitUntilEndOfCurrentRepetition;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && llround(self->_fadeOutDuration / 0.0001) == llround(equalCopy->_fadeOutDuration / 0.0001) && self->_shouldWaitUntilEndOfCurrentRepetition == equalCopy->_shouldWaitUntilEndOfCurrentRepetition;
   }
 
   return v5;
 }
 
-- (TLAlertStoppingOptions)initWithCoder:(id)a3
+- (TLAlertStoppingOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = TLAlertStoppingOptions;
   v5 = [(TLAlertStoppingOptions *)&v8 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"fadeOutDuration"];
+    [coderCopy decodeDoubleForKey:@"fadeOutDuration"];
     v5->_fadeOutDuration = v6;
-    v5->_shouldWaitUntilEndOfCurrentRepetition = [v4 decodeBoolForKey:@"shouldWaitUntilEndOfCurrentRepetition"];
+    v5->_shouldWaitUntilEndOfCurrentRepetition = [coderCopy decodeBoolForKey:@"shouldWaitUntilEndOfCurrentRepetition"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fadeOutDuration = self->_fadeOutDuration;
-  v5 = a3;
-  [v5 encodeDouble:@"fadeOutDuration" forKey:fadeOutDuration];
-  [v5 encodeBool:self->_shouldWaitUntilEndOfCurrentRepetition forKey:@"shouldWaitUntilEndOfCurrentRepetition"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"fadeOutDuration" forKey:fadeOutDuration];
+  [coderCopy encodeBool:self->_shouldWaitUntilEndOfCurrentRepetition forKey:@"shouldWaitUntilEndOfCurrentRepetition"];
 }
 
 @end

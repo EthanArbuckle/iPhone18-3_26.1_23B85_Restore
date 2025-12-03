@@ -1,72 +1,72 @@
 @interface STMutableTelephonyMobileEquipmentInfo
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBootstrapICCID:(id)a3;
-- (void)setCSN:(id)a3;
-- (void)setICCID:(id)a3;
-- (void)setIMEI:(id)a3;
-- (void)setMEID:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBootstrapICCID:(id)d;
+- (void)setCSN:(id)n;
+- (void)setICCID:(id)d;
+- (void)setIMEI:(id)i;
+- (void)setMEID:(id)d;
 @end
 
 @implementation STMutableTelephonyMobileEquipmentInfo
 
-- (void)setMEID:(id)a3
+- (void)setMEID:(id)d
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->super._MEID] & 1) == 0)
+  dCopy = d;
+  if (([dCopy isEqualToString:self->super._MEID] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dCopy copy];
     MEID = self->super._MEID;
     self->super._MEID = v4;
   }
 }
 
-- (void)setIMEI:(id)a3
+- (void)setIMEI:(id)i
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->super._IMEI] & 1) == 0)
+  iCopy = i;
+  if (([iCopy isEqualToString:self->super._IMEI] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [iCopy copy];
     IMEI = self->super._IMEI;
     self->super._IMEI = v4;
   }
 }
 
-- (void)setICCID:(id)a3
+- (void)setICCID:(id)d
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->super._ICCID] & 1) == 0)
+  dCopy = d;
+  if (([dCopy isEqualToString:self->super._ICCID] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dCopy copy];
     ICCID = self->super._ICCID;
     self->super._ICCID = v4;
   }
 }
 
-- (void)setCSN:(id)a3
+- (void)setCSN:(id)n
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->super._CSN] & 1) == 0)
+  nCopy = n;
+  if (([nCopy isEqualToString:self->super._CSN] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [nCopy copy];
     CSN = self->super._CSN;
     self->super._CSN = v4;
   }
 }
 
-- (void)setBootstrapICCID:(id)a3
+- (void)setBootstrapICCID:(id)d
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->super._bootstrapICCID] & 1) == 0)
+  dCopy = d;
+  if (([dCopy isEqualToString:self->super._bootstrapICCID] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dCopy copy];
     bootstrapICCID = self->super._bootstrapICCID;
     self->super._bootstrapICCID = v4;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STTelephonyMobileEquipmentInfo allocWithZone:a3];
+  v4 = [STTelephonyMobileEquipmentInfo allocWithZone:zone];
 
   return [(STTelephonyMobileEquipmentInfo *)v4 initWithMobileEquipmentInfo:?];
 }

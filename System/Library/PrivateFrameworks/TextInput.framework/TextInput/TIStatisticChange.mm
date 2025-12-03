@@ -1,54 +1,54 @@
 @interface TIStatisticChange
-+ (id)statisticChangeWithName:(id)a3 andValue:(int)a4 andInputMode:(id)a5;
-- (TIStatisticChange)initWithCoder:(id)a3;
-- (TIStatisticChange)initWithName:(id)a3 andValue:(int)a4 andInputMode:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)statisticChangeWithName:(id)name andValue:(int)value andInputMode:(id)mode;
+- (TIStatisticChange)initWithCoder:(id)coder;
+- (TIStatisticChange)initWithName:(id)name andValue:(int)value andInputMode:(id)mode;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TIStatisticChange
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   name = self->_name;
-  v8 = v4;
+  v8 = coderCopy;
   if (name)
   {
-    [v4 encodeObject:name forKey:@"name"];
-    v4 = v8;
+    [coderCopy encodeObject:name forKey:@"name"];
+    coderCopy = v8;
   }
 
   value = self->_value;
   if (value)
   {
     [v8 encodeInt:value forKey:@"value"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   inputMode = self->_inputMode;
   if (inputMode)
   {
     [v8 encodeObject:inputMode forKey:@"inputMode"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (TIStatisticChange)initWithCoder:(id)a3
+- (TIStatisticChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TIStatisticChange;
   v5 = [(TIStatisticChange *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     v7 = [v6 copy];
     name = v5->_name;
     v5->_name = v7;
 
-    v5->_value = [v4 decodeIntForKey:@"value"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputMode"];
+    v5->_value = [coderCopy decodeIntForKey:@"value"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputMode"];
     v10 = [v9 copy];
     inputMode = v5->_inputMode;
     v5->_inputMode = v10;
@@ -57,17 +57,17 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(TIStatisticChange);
   if (v5)
   {
-    v6 = [(NSString *)self->_name copyWithZone:a3];
+    v6 = [(NSString *)self->_name copyWithZone:zone];
     name = v5->_name;
     v5->_name = v6;
 
     v5->_value = self->_value;
-    v8 = [(NSString *)self->_inputMode copyWithZone:a3];
+    v8 = [(NSString *)self->_inputMode copyWithZone:zone];
     inputMode = v5->_inputMode;
     v5->_inputMode = v8;
   }
@@ -75,30 +75,30 @@
   return v5;
 }
 
-- (TIStatisticChange)initWithName:(id)a3 andValue:(int)a4 andInputMode:(id)a5
+- (TIStatisticChange)initWithName:(id)name andValue:(int)value andInputMode:(id)mode
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  modeCopy = mode;
   v14.receiver = self;
   v14.super_class = TIStatisticChange;
   v11 = [(TIStatisticChange *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_name, a3);
-    v12->_value = a4;
-    objc_storeStrong(&v12->_inputMode, a5);
+    objc_storeStrong(&v11->_name, name);
+    v12->_value = value;
+    objc_storeStrong(&v12->_inputMode, mode);
   }
 
   return v12;
 }
 
-+ (id)statisticChangeWithName:(id)a3 andValue:(int)a4 andInputMode:(id)a5
++ (id)statisticChangeWithName:(id)name andValue:(int)value andInputMode:(id)mode
 {
-  v5 = *&a4;
-  v7 = a5;
-  v8 = a3;
-  v9 = [[TIStatisticChange alloc] initWithName:v8 andValue:v5 andInputMode:v7];
+  v5 = *&value;
+  modeCopy = mode;
+  nameCopy = name;
+  v9 = [[TIStatisticChange alloc] initWithName:nameCopy andValue:v5 andInputMode:modeCopy];
 
   return v9;
 }

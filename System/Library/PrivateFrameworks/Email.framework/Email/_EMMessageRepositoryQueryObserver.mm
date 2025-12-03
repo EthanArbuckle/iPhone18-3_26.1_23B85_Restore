@@ -1,23 +1,23 @@
 @interface _EMMessageRepositoryQueryObserver
-- (_EMMessageRepositoryQueryObserver)initWithRepository:(id)a3 query:(id)a4 observer:(id)a5;
+- (_EMMessageRepositoryQueryObserver)initWithRepository:(id)repository query:(id)query observer:(id)observer;
 - (id)trampoliningObserver;
-- (void)_performQueryWithRemoteConnection:(id)a3 forRecovery:(BOOL)a4;
+- (void)_performQueryWithRemoteConnection:(id)connection forRecovery:(BOOL)recovery;
 - (void)dealloc;
-- (void)observer:(id)a3 matchedAddedObjectIDs:(id)a4 after:(id)a5 extraInfo:(id)a6;
-- (void)observer:(id)a3 matchedAddedObjectIDs:(id)a4 before:(id)a5 extraInfo:(id)a6;
-- (void)observer:(id)a3 matchedChangesForObjectIDs:(id)a4;
-- (void)observer:(id)a3 matchedDeletedObjectIDs:(id)a4;
-- (void)observer:(id)a3 matchedMovedObjectIDs:(id)a4 after:(id)a5 extraInfo:(id)a6;
-- (void)observer:(id)a3 matchedMovedObjectIDs:(id)a4 before:(id)a5 extraInfo:(id)a6;
-- (void)observer:(id)a3 matchedOldestItemsUpdatedForMailboxes:(id)a4;
-- (void)observer:(id)a3 replacedExistingObjectID:(id)a4 withNewObjectID:(id)a5;
-- (void)observer:(id)a3 wasUpdated:(id)a4;
-- (void)observerDidFailInitialLoad:(id)a3 extraInfo:(id)a4;
-- (void)observerDidFinishInitialLoad:(id)a3 extraInfo:(id)a4;
-- (void)observerDidFinishRemoteSearch:(id)a3;
-- (void)observerWillRestart:(id)a3;
-- (void)recoverWithRemoteConnection:(id)a3;
-- (void)refreshQueryWithRemoteConnection:(id)a3;
+- (void)observer:(id)observer matchedAddedObjectIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)observer:(id)observer matchedAddedObjectIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)observer:(id)observer matchedChangesForObjectIDs:(id)ds;
+- (void)observer:(id)observer matchedDeletedObjectIDs:(id)ds;
+- (void)observer:(id)observer matchedMovedObjectIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)observer:(id)observer matchedMovedObjectIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)observer:(id)observer matchedOldestItemsUpdatedForMailboxes:(id)mailboxes;
+- (void)observer:(id)observer replacedExistingObjectID:(id)d withNewObjectID:(id)iD;
+- (void)observer:(id)observer wasUpdated:(id)updated;
+- (void)observerDidFailInitialLoad:(id)load extraInfo:(id)info;
+- (void)observerDidFinishInitialLoad:(id)load extraInfo:(id)info;
+- (void)observerDidFinishRemoteSearch:(id)search;
+- (void)observerWillRestart:(id)restart;
+- (void)recoverWithRemoteConnection:(id)connection;
+- (void)refreshQueryWithRemoteConnection:(id)connection;
 @end
 
 @implementation _EMMessageRepositoryQueryObserver
@@ -46,24 +46,24 @@
   [(_EMMessageRepositoryQueryObserver *)&v3 dealloc];
 }
 
-- (_EMMessageRepositoryQueryObserver)initWithRepository:(id)a3 query:(id)a4 observer:(id)a5
+- (_EMMessageRepositoryQueryObserver)initWithRepository:(id)repository query:(id)query observer:(id)observer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  repositoryCopy = repository;
+  queryCopy = query;
+  observerCopy = observer;
   v21.receiver = self;
   v21.super_class = _EMMessageRepositoryQueryObserver;
   v12 = [(_EMMessageRepositoryQueryObserver *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_repository, a3);
-    objc_storeStrong(&v13->_query, a4);
-    v14 = [v11 objectID];
+    objc_storeStrong(&v12->_repository, repository);
+    objc_storeStrong(&v13->_query, query);
+    objectID = [observerCopy objectID];
     observationIdentifier = v13->_observationIdentifier;
-    v13->_observationIdentifier = v14;
+    v13->_observationIdentifier = objectID;
 
-    objc_storeWeak(&v13->_observer, v11);
+    objc_storeWeak(&v13->_observer, observerCopy);
     v16 = objc_alloc_init(MEMORY[0x1E699B7F8]);
     token = v13->_token;
     v13->_token = v16;
@@ -79,10 +79,10 @@
   return v13;
 }
 
-- (void)refreshQueryWithRemoteConnection:(id)a3
+- (void)refreshQueryWithRemoteConnection:(id)connection
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = +[EMMessageRepository log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -90,7 +90,7 @@
     query = self->_query;
     v8 = [(EMQuery *)query debugDescription];
     v11 = 134218754;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
     v14 = observationIdentifier;
     v15 = 2048;
@@ -100,17 +100,17 @@
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "<%p> Observer:%{public}@ refreshing query<%p>: %@", &v11, 0x2Au);
   }
 
-  v9 = [(_EMMessageRepositoryQueryObserver *)self remoteCancelable];
-  [v9 cancel];
+  remoteCancelable = [(_EMMessageRepositoryQueryObserver *)self remoteCancelable];
+  [remoteCancelable cancel];
 
-  [(_EMMessageRepositoryQueryObserver *)self _performQueryWithRemoteConnection:v4 forRecovery:1];
+  [(_EMMessageRepositoryQueryObserver *)self _performQueryWithRemoteConnection:connectionCopy forRecovery:1];
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recoverWithRemoteConnection:(id)a3
+- (void)recoverWithRemoteConnection:(id)connection
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_recoveryLock);
   recoveryAttempt = self->_recoveryAttempt;
   if (self->_recoveryIsScheduled)
@@ -123,7 +123,7 @@
       query = self->_query;
       v9 = [(EMQuery *)query debugDescription];
       *buf = 134219010;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2114;
       v28 = observationIdentifier;
       v29 = 2048;
@@ -160,7 +160,7 @@
         v13 = self->_query;
         v14 = [(EMQuery *)v13 debugDescription];
         *buf = 134219266;
-        v26 = self;
+        selfCopy3 = self;
         v27 = 2114;
         v28 = v12;
         v29 = 2048;
@@ -182,7 +182,7 @@
       v22[3] = &unk_1E826EE90;
       objc_copyWeak(v24, buf);
       v24[1] = recoveryAttempt;
-      v23 = v4;
+      v23 = connectionCopy;
       v16 = [(EFScheduler *)recoveryScheduler afterDelay:v22 performBlock:v10];
 
       objc_destroyWeak(v24);
@@ -199,7 +199,7 @@
         v19 = self->_query;
         v20 = [(EMQuery *)v19 debugDescription];
         *buf = 134219010;
-        v26 = self;
+        selfCopy3 = self;
         v27 = 2114;
         v28 = v18;
         v29 = 2048;
@@ -211,28 +211,28 @@
         _os_log_impl(&dword_1C6655000, v17, OS_LOG_TYPE_DEFAULT, "<%p> Observer:%{public}@ attempting recovery %ld for query<%p>: %@", buf, 0x34u);
       }
 
-      [(_EMMessageRepositoryQueryObserver *)self _performQueryWithRemoteConnection:v4 forRecovery:1];
+      [(_EMMessageRepositoryQueryObserver *)self _performQueryWithRemoteConnection:connectionCopy forRecovery:1];
     }
   }
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performQueryWithRemoteConnection:(id)a3 forRecovery:(BOOL)a4
+- (void)_performQueryWithRemoteConnection:(id)connection forRecovery:(BOOL)recovery
 {
-  v4 = a4;
-  v6 = a3;
+  recoveryCopy = recovery;
+  connectionCopy = connection;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    if (v4)
+    if (recoveryCopy)
     {
-      v7 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-      [v7 queryDidStartRecovery];
+      trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+      [trampoliningObserver queryDidStartRecovery];
 
       [(EFManualCancelationToken *)self->_token removeAllCancelationBlocks];
     }
 
-    v8 = [v6 remoteObjectProxy];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
     query = self->_query;
     observationIdentifier = self->_observationIdentifier;
     v11[0] = MEMORY[0x1E69E9820];
@@ -240,46 +240,46 @@
     v11[2] = __83___EMMessageRepositoryQueryObserver__performQueryWithRemoteConnection_forRecovery___block_invoke;
     v11[3] = &unk_1E826CD58;
     v11[4] = self;
-    [v8 performQuery:query withObserver:self observationIdentifier:observationIdentifier completionHandler:v11];
+    [remoteObjectProxy performQuery:query withObserver:self observationIdentifier:observationIdentifier completionHandler:v11];
   }
 }
 
-- (void)observer:(id)a3 wasUpdated:(id)a4
+- (void)observer:(id)observer wasUpdated:(id)updated
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  updatedCopy = updated;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
     v8 = +[EMMessageRepository log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218498;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v6;
+      v13 = observerCopy;
       v14 = 2114;
-      v15 = v7;
+      v15 = updatedCopy;
       _os_log_impl(&dword_1C6655000, v8, OS_LOG_TYPE_DEFAULT, "<%p> Acknowledging update for %{public}@: %{public}@", &v10, 0x20u);
     }
 
-    [v7 invoke];
+    [updatedCopy invoke];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observer:(id)a3 matchedAddedObjectIDs:(id)a4 before:(id)a5 extraInfo:(id)a6
+- (void)observer:(id)observer matchedAddedObjectIDs:(id)ds before:(id)before extraInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observerCopy = observer;
+  dsCopy = ds;
+  beforeCopy = before;
+  infoCopy = info;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v14 = [(EMMessageRepository *)self->_repository _addPrecachedItemsFromExtraInfoIfNeeded:v13];
-    v15 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    [v15 queryMatchedAddedObjectIDs:v11 before:v12 extraInfo:v14];
+    v14 = [(EMMessageRepository *)self->_repository _addPrecachedItemsFromExtraInfoIfNeeded:infoCopy];
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    [trampoliningObserver queryMatchedAddedObjectIDs:dsCopy before:beforeCopy extraInfo:v14];
 
     repository = self->_repository;
     observationIdentifier = self->_observationIdentifier;
@@ -288,22 +288,22 @@
     v18[2] = __85___EMMessageRepositoryQueryObserver_observer_matchedAddedObjectIDs_before_extraInfo___block_invoke;
     v18[3] = &unk_1E826EEB8;
     v18[4] = self;
-    v19 = v10;
-    [(EMMessageRepository *)repository _detectChangesForMatchedAddedObjectIDs:v11 observerationIdentifier:observationIdentifier matchedChangesHandler:v18];
+    v19 = observerCopy;
+    [(EMMessageRepository *)repository _detectChangesForMatchedAddedObjectIDs:dsCopy observerationIdentifier:observationIdentifier matchedChangesHandler:v18];
   }
 }
 
-- (void)observer:(id)a3 matchedAddedObjectIDs:(id)a4 after:(id)a5 extraInfo:(id)a6
+- (void)observer:(id)observer matchedAddedObjectIDs:(id)ds after:(id)after extraInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observerCopy = observer;
+  dsCopy = ds;
+  afterCopy = after;
+  infoCopy = info;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v14 = [(EMMessageRepository *)self->_repository _addPrecachedItemsFromExtraInfoIfNeeded:v13];
-    v15 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    [v15 queryMatchedAddedObjectIDs:v11 after:v12 extraInfo:v14];
+    v14 = [(EMMessageRepository *)self->_repository _addPrecachedItemsFromExtraInfoIfNeeded:infoCopy];
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    [trampoliningObserver queryMatchedAddedObjectIDs:dsCopy after:afterCopy extraInfo:v14];
 
     repository = self->_repository;
     observationIdentifier = self->_observationIdentifier;
@@ -312,58 +312,58 @@
     v18[2] = __84___EMMessageRepositoryQueryObserver_observer_matchedAddedObjectIDs_after_extraInfo___block_invoke;
     v18[3] = &unk_1E826EEB8;
     v18[4] = self;
-    v19 = v10;
-    [(EMMessageRepository *)repository _detectChangesForMatchedAddedObjectIDs:v11 observerationIdentifier:observationIdentifier matchedChangesHandler:v18];
+    v19 = observerCopy;
+    [(EMMessageRepository *)repository _detectChangesForMatchedAddedObjectIDs:dsCopy observerationIdentifier:observationIdentifier matchedChangesHandler:v18];
   }
 }
 
-- (void)observer:(id)a3 matchedMovedObjectIDs:(id)a4 before:(id)a5 extraInfo:(id)a6
+- (void)observer:(id)observer matchedMovedObjectIDs:(id)ds before:(id)before extraInfo:(id)info
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
+  dsCopy = ds;
+  beforeCopy = before;
+  infoCopy = info;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v11 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    [v11 queryMatchedMovedObjectIDs:v12 before:v9 extraInfo:v10];
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    [trampoliningObserver queryMatchedMovedObjectIDs:dsCopy before:beforeCopy extraInfo:infoCopy];
   }
 }
 
-- (void)observer:(id)a3 matchedMovedObjectIDs:(id)a4 after:(id)a5 extraInfo:(id)a6
+- (void)observer:(id)observer matchedMovedObjectIDs:(id)ds after:(id)after extraInfo:(id)info
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
+  dsCopy = ds;
+  afterCopy = after;
+  infoCopy = info;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v11 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    [v11 queryMatchedMovedObjectIDs:v12 after:v9 extraInfo:v10];
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    [trampoliningObserver queryMatchedMovedObjectIDs:dsCopy after:afterCopy extraInfo:infoCopy];
   }
 }
 
-- (void)observer:(id)a3 matchedChangesForObjectIDs:(id)a4
+- (void)observer:(id)observer matchedChangesForObjectIDs:(id)ds
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  dsCopy = ds;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    [(EMMessageRepository *)self->_repository _applyChangesToCachedObjects:v5];
+    [(EMMessageRepository *)self->_repository _applyChangesToCachedObjects:dsCopy];
     v10 = @"changesByObjectID";
-    v11[0] = v5;
+    v11[0] = dsCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    v7 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    if (v7)
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    if (trampoliningObserver)
     {
-      v8 = [v5 allKeys];
-      [v7 queryMatchedChangedObjectIDs:v8 extraInfo:v6];
+      allKeys = [dsCopy allKeys];
+      [trampoliningObserver queryMatchedChangedObjectIDs:allKeys extraInfo:v6];
     }
 
     else
     {
-      v8 = +[EMMessageRepository log];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      allKeys = +[EMMessageRepository log];
+      if (os_log_type_enabled(allKeys, OS_LOG_TYPE_ERROR))
       {
-        [_EMMessageRepositoryQueryObserver observer:v8 matchedChangesForObjectIDs:?];
+        [_EMMessageRepositoryQueryObserver observer:allKeys matchedChangesForObjectIDs:?];
       }
     }
   }
@@ -371,88 +371,88 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observer:(id)a3 matchedDeletedObjectIDs:(id)a4
+- (void)observer:(id)observer matchedDeletedObjectIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v5 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    [v5 queryMatchedDeletedObjectIDs:v6];
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    [trampoliningObserver queryMatchedDeletedObjectIDs:dsCopy];
   }
 }
 
-- (void)observerDidFinishInitialLoad:(id)a3 extraInfo:(id)a4
+- (void)observerDidFinishInitialLoad:(id)load extraInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
     os_unfair_lock_lock(&self->_recoveryLock);
     self->_recoveryAttempt = 0;
     os_unfair_lock_unlock(&self->_recoveryLock);
-    v5 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    if ([v5 conformsToProtocol:&unk_1F462C2E0])
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    if ([trampoliningObserver conformsToProtocol:&unk_1F462C2E0])
     {
-      [v5 queryDidFinishInitialLoadWithExtraInfo:v6];
+      [trampoliningObserver queryDidFinishInitialLoadWithExtraInfo:infoCopy];
     }
 
     else
     {
-      [v5 queryDidFinishInitialLoad];
+      [trampoliningObserver queryDidFinishInitialLoad];
     }
   }
 }
 
-- (void)observerDidFailInitialLoad:(id)a3 extraInfo:(id)a4
+- (void)observerDidFailInitialLoad:(id)load extraInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v5 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    if ([v5 conformsToProtocol:&unk_1F462C2E0])
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    if ([trampoliningObserver conformsToProtocol:&unk_1F462C2E0])
     {
-      [v5 queryDidFailInitialLoadWithExtraInfo:v6];
+      [trampoliningObserver queryDidFailInitialLoadWithExtraInfo:infoCopy];
     }
   }
 }
 
-- (void)observerDidFinishRemoteSearch:(id)a3
+- (void)observerDidFinishRemoteSearch:(id)search
 {
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v4 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    [v4 queryDidFinishRemoteSearch];
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    [trampoliningObserver queryDidFinishRemoteSearch];
   }
 }
 
-- (void)observer:(id)a3 replacedExistingObjectID:(id)a4 withNewObjectID:(id)a5
+- (void)observer:(id)observer replacedExistingObjectID:(id)d withNewObjectID:(id)iD
 {
-  v9 = a4;
-  v7 = a5;
+  dCopy = d;
+  iDCopy = iD;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v8 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    [v8 queryReplacedObjectID:v9 withNewObjectID:v7];
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    [trampoliningObserver queryReplacedObjectID:dCopy withNewObjectID:iDCopy];
   }
 }
 
-- (void)observerWillRestart:(id)a3
+- (void)observerWillRestart:(id)restart
 {
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v4 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    [v4 queryDidStartRecovery];
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    [trampoliningObserver queryDidStartRecovery];
   }
 }
 
-- (void)observer:(id)a3 matchedOldestItemsUpdatedForMailboxes:(id)a4
+- (void)observer:(id)observer matchedOldestItemsUpdatedForMailboxes:(id)mailboxes
 {
-  v6 = a4;
+  mailboxesCopy = mailboxes;
   if (([(EFManualCancelationToken *)self->_token isCanceled]& 1) == 0)
   {
-    v5 = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
-    if ([v5 conformsToProtocol:&unk_1F462C2E0])
+    trampoliningObserver = [(_EMMessageRepositoryQueryObserver *)self trampoliningObserver];
+    if ([trampoliningObserver conformsToProtocol:&unk_1F462C2E0])
     {
-      [v5 queryMatchedOldestItemsUpdatedForMailboxesObjectIDs:v6];
+      [trampoliningObserver queryMatchedOldestItemsUpdatedForMailboxesObjectIDs:mailboxesCopy];
     }
   }
 }

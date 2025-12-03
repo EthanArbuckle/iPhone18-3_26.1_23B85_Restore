@@ -1,12 +1,12 @@
 @interface WebPluginPackage
 - (BOOL)load;
-- (WebPluginPackage)initWithPath:(id)a3;
+- (WebPluginPackage)initWithPath:(id)path;
 - (void)dealloc;
 @end
 
 @implementation WebPluginPackage
 
-- (WebPluginPackage)initWithPath:(id)a3
+- (WebPluginPackage)initWithPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = WebPluginPackage;
@@ -41,7 +41,7 @@
       nsBundle = v4->nsBundle;
     }
 
-    if (!nsBundle || ([objc_msgSend(a3 "pathExtension")] & 1) == 0 && (packageType[0] = 0, CFBundleGetPackageInfo(v4->super.cfBundle.m_ptr, packageType, 0), packageType[0] != 1463963724) || !-[WebBasePluginPackage getPluginInfoFromPLists](v4, "getPluginInfoFromPLists"))
+    if (!nsBundle || ([objc_msgSend(path "pathExtension")] & 1) == 0 && (packageType[0] = 0, CFBundleGetPackageInfo(v4->super.cfBundle.m_ptr, packageType, 0), packageType[0] != 1463963724) || !-[WebBasePluginPackage getPluginInfoFromPLists](v4, "getPluginInfoFromPLists"))
     {
 
       return 0;

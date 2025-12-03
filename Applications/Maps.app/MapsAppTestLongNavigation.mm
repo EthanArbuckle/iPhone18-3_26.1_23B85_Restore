@@ -1,26 +1,26 @@
 @interface MapsAppTestLongNavigation
 - (BOOL)runTest;
-- (_TtC4Maps25MapsAppTestLongNavigation)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
+- (_TtC4Maps25MapsAppTestLongNavigation)initWithApplication:(id)application testName:(id)name options:(id)options;
 @end
 
 @implementation MapsAppTestLongNavigation
 
 - (BOOL)runTest
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1003864CC();
 
   return v3 & 1;
 }
 
-- (_TtC4Maps25MapsAppTestLongNavigation)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (_TtC4Maps25MapsAppTestLongNavigation)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!name)
   {
     v6 = 0;
     v8 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -30,15 +30,15 @@
 
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
   v9 = swift_unknownObjectRetain();
-  return sub_1003882CC(v9, v6, v8, v5);
+  return sub_1003882CC(v9, v6, v8, optionsCopy);
 }
 
 @end

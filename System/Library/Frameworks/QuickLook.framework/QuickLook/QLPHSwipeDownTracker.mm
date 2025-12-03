@@ -8,8 +8,8 @@
 - (double)dismissalProgress;
 - (double)finalAnimationDuration;
 - (double)finalAnimationSpringDamping;
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6;
-- (void)trackGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4;
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location;
+- (void)trackGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity;
 @end
 
 @implementation QLPHSwipeDownTracker
@@ -29,38 +29,38 @@
   return v2;
 }
 
-- (void)startTrackingCenter:(CGPoint)a3 bounds:(CGRect)a4 transform:(CGAffineTransform *)a5 withInitialGestureLocation:(CGPoint)a6
+- (void)startTrackingCenter:(CGPoint)center bounds:(CGRect)bounds transform:(CGAffineTransform *)transform withInitialGestureLocation:(CGPoint)location
 {
-  y = a6.y;
-  x = a6.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v13 = a3.y;
-  v14 = a3.x;
-  v15 = [(QLPHSwipeDownTracker *)self impl];
-  v16 = *&a5->c;
-  v17[0] = *&a5->a;
+  y = location.y;
+  x = location.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  v11 = bounds.origin.y;
+  v12 = bounds.origin.x;
+  v13 = center.y;
+  v14 = center.x;
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  v16 = *&transform->c;
+  v17[0] = *&transform->a;
   v17[1] = v16;
-  v17[2] = *&a5->tx;
-  [v15 startTrackingCenter:v17 bounds:v14 transform:v13 withInitialGestureLocation:{v12, v11, width, height, x, y}];
+  v17[2] = *&transform->tx;
+  [impl startTrackingCenter:v17 bounds:v14 transform:v13 withInitialGestureLocation:{v12, v11, width, height, x, y}];
 }
 
-- (void)trackGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4
+- (void)trackGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = [(QLPHSwipeDownTracker *)self impl];
-  [v8 trackGestureTranslation:v7 velocity:{v6, x, y}];
+  y = velocity.y;
+  x = velocity.x;
+  v6 = translation.y;
+  v7 = translation.x;
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  [impl trackGestureTranslation:v7 velocity:{v6, x, y}];
 }
 
 - (double)dismissalProgress
 {
-  v2 = [(QLPHSwipeDownTracker *)self impl];
-  [v2 dismissalProgress];
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  [impl dismissalProgress];
   v4 = v3;
 
   return v4;
@@ -68,16 +68,16 @@
 
 - (BOOL)shouldFinishDismissal
 {
-  v2 = [(QLPHSwipeDownTracker *)self impl];
-  v3 = [v2 shouldFinishDismissal];
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  shouldFinishDismissal = [impl shouldFinishDismissal];
 
-  return v3;
+  return shouldFinishDismissal;
 }
 
 - (CGPoint)trackedCenter
 {
-  v2 = [(QLPHSwipeDownTracker *)self impl];
-  [v2 trackedCenter];
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  [impl trackedCenter];
   v4 = v3;
   v6 = v5;
 
@@ -90,8 +90,8 @@
 
 - (CGRect)trackedBounds
 {
-  v2 = [(QLPHSwipeDownTracker *)self impl];
-  [v2 trackedBounds];
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  [impl trackedBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -110,12 +110,12 @@
 
 - (CGAffineTransform)trackedTransform
 {
-  v4 = [(QLPHSwipeDownTracker *)self impl];
-  if (v4)
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  if (impl)
   {
-    v6 = v4;
-    [v4 trackedTransform];
-    v4 = v6;
+    v6 = impl;
+    [impl trackedTransform];
+    impl = v6;
   }
 
   else
@@ -130,8 +130,8 @@
 
 - (QLPHDisplayVelocity)trackedVelocity
 {
-  v2 = [(QLPHSwipeDownTracker *)self impl];
-  v3 = QLPHDisplayVelocityFromQLPXDisplayVelocity([v2 trackedVelocity]);
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  v3 = QLPHDisplayVelocityFromQLPXDisplayVelocity([impl trackedVelocity]);
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -149,8 +149,8 @@
 
 - (double)finalAnimationDuration
 {
-  v2 = [(QLPHSwipeDownTracker *)self impl];
-  [v2 finalAnimationDuration];
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  [impl finalAnimationDuration];
   v4 = v3;
 
   return v4;
@@ -158,8 +158,8 @@
 
 - (double)finalAnimationSpringDamping
 {
-  v2 = [(QLPHSwipeDownTracker *)self impl];
-  [v2 finalAnimationSpringDamping];
+  impl = [(QLPHSwipeDownTracker *)self impl];
+  [impl finalAnimationSpringDamping];
   v4 = v3;
 
   return v4;

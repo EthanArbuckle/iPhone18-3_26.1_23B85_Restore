@@ -1,16 +1,16 @@
 @interface SearchFieldItem
-+ (SearchFieldItem)searchFieldItemWithObject:(id)a3 expandRecentsItem:(BOOL)a4 preserveContact:(BOOL)a5;
-+ (SearchFieldItem)searchFieldItemWithWaypointRequest:(id)a3 resolvedWaypoint:(id)a4;
-+ (id)searchFieldItemsForRouteHistoryEntry:(id)a3;
-+ (id)searchFieldItemsForRouteInSuggestionsEntry:(id)a3 excludeCurrentLocationOrigin:(BOOL)a4;
++ (SearchFieldItem)searchFieldItemWithObject:(id)object expandRecentsItem:(BOOL)item preserveContact:(BOOL)contact;
++ (SearchFieldItem)searchFieldItemWithWaypointRequest:(id)request resolvedWaypoint:(id)waypoint;
++ (id)searchFieldItemsForRouteHistoryEntry:(id)entry;
++ (id)searchFieldItemsForRouteInSuggestionsEntry:(id)entry excludeCurrentLocationOrigin:(BOOL)origin;
 - (AddressBookAddress)_maps_address;
 - (BOOL)behavesAsAtom;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSearchFieldItem:(id)a3;
-- (BOOL)isEquivalentAsWaypointToSearchFieldItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSearchFieldItem:(id)item;
+- (BOOL)isEquivalentAsWaypointToSearchFieldItem:(id)item;
 - (BOOL)isFindMyPerson;
-- (BOOL)matchesWaypoint:(id)a3;
+- (BOOL)matchesWaypoint:(id)waypoint;
 - (CLLocationCoordinate2D)coordinateHint;
 - (DirectionsWaypoint)personalizedDirectionsWaypoint;
 - (DirectionsWaypoint)waypoint;
@@ -25,33 +25,33 @@
 - (NSString)waypointName;
 - (_TtC4Maps16MapsFindMyHandle)_maps_findMyHandle;
 - (_TtC4Maps22MapsAutocompletePerson)_maps_autoCompletePerson;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)waypointIconWithScale:(double)a3;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)waypointIconWithScale:(double)scale;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 - (void)clear;
 - (void)dealloc;
-- (void)setAddress:(id)a3;
-- (void)setAddressString:(id)a3;
-- (void)setAutocompletePerson:(id)a3;
-- (void)setChildPlace:(id)a3;
-- (void)setCompletion:(id)a3;
-- (void)setComposedWaypoint:(id)a3;
-- (void)setCoreRecentContact:(id)a3;
-- (void)setExternalURLQuery:(id)a3;
-- (void)setFavoriteItem:(id)a3;
-- (void)setFindMyHandle:(id)a3;
-- (void)setHistoryItem:(id)a3;
-- (void)setMapKitHandle:(id)a3;
-- (void)setPlaceCategoryItem:(id)a3;
-- (void)setPunchInDetails:(id)a3 searchString:(id)a4;
-- (void)setRoutePlanningWaypointRequest:(id)a3;
-- (void)setSearchCategory:(id)a3;
-- (void)setSearchResult:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)setSearchString:(id)a3 forCompletedQuery:(id)a4;
-- (void)setSuggestion:(id)a3;
-- (void)setUserTypedStringForRAP:(id)a3;
-- (void)setVenueCategoryItem:(id)a3;
+- (void)setAddress:(id)address;
+- (void)setAddressString:(id)string;
+- (void)setAutocompletePerson:(id)person;
+- (void)setChildPlace:(id)place;
+- (void)setCompletion:(id)completion;
+- (void)setComposedWaypoint:(id)waypoint;
+- (void)setCoreRecentContact:(id)contact;
+- (void)setExternalURLQuery:(id)query;
+- (void)setFavoriteItem:(id)item;
+- (void)setFindMyHandle:(id)handle;
+- (void)setHistoryItem:(id)item;
+- (void)setMapKitHandle:(id)handle;
+- (void)setPlaceCategoryItem:(id)item;
+- (void)setPunchInDetails:(id)details searchString:(id)string;
+- (void)setRoutePlanningWaypointRequest:(id)request;
+- (void)setSearchCategory:(id)category;
+- (void)setSearchResult:(id)result;
+- (void)setSearchString:(id)string;
+- (void)setSearchString:(id)string forCompletedQuery:(id)query;
+- (void)setSuggestion:(id)suggestion;
+- (void)setUserTypedStringForRAP:(id)p;
+- (void)setVenueCategoryItem:(id)item;
 @end
 
 @implementation SearchFieldItem
@@ -63,40 +63,40 @@
   {
     if ([(SearchResult *)searchResult behavesAsAtom])
     {
-      v4 = 0;
+      singleLineAddress = 0;
     }
 
     else
     {
-      v7 = [(SearchResult *)self->_searchResult mapItem];
-      if ([v7 _hasTransitDisplayName])
+      mapItem = [(SearchResult *)self->_searchResult mapItem];
+      if ([mapItem _hasTransitDisplayName])
       {
-        v4 = 0;
+        singleLineAddress = 0;
       }
 
       else
       {
-        v4 = [(SearchResult *)self->_searchResult singleLineAddress];
+        singleLineAddress = [(SearchResult *)self->_searchResult singleLineAddress];
       }
     }
 
-    if ([v4 length])
+    if ([singleLineAddress length])
     {
-      v8 = v4;
+      displayString2 = singleLineAddress;
 LABEL_14:
-      v9 = v8;
+      title = displayString2;
 LABEL_15:
-      v10 = v8;
+      waypointName = displayString2;
 LABEL_16:
 
       goto LABEL_20;
     }
 
-    v9 = [(SearchResult *)self->_searchResult title];
+    title = [(SearchResult *)self->_searchResult title];
 
-    if ([v9 length])
+    if ([title length])
     {
-      v8 = v9;
+      displayString2 = title;
       goto LABEL_14;
     }
 
@@ -117,36 +117,36 @@ LABEL_16:
   searchCategory = self->_searchCategory;
   if (searchCategory)
   {
-    v6 = [(GEOSearchCategory *)searchCategory displayString];
+    displayString = [(GEOSearchCategory *)searchCategory displayString];
 LABEL_19:
-    v10 = v6;
+    waypointName = displayString;
     goto LABEL_20;
   }
 
   suggestion = self->_suggestion;
   if (suggestion)
   {
-    v6 = [(GEORelatedSearchSuggestion *)suggestion searchBarDisplayToken];
+    displayString = [(GEORelatedSearchSuggestion *)suggestion searchBarDisplayToken];
     goto LABEL_19;
   }
 
-  v17 = [(MKLocalSearchCompletion *)self->_completion category];
+  category = [(MKLocalSearchCompletion *)self->_completion category];
 
   completion = self->_completion;
-  if (v17)
+  if (category)
   {
-    v9 = [(MKLocalSearchCompletion *)completion category];
-    v8 = [v9 displayString];
+    title = [(MKLocalSearchCompletion *)completion category];
+    displayString2 = [title displayString];
     goto LABEL_15;
   }
 
   if (completion)
   {
-    v19 = [(MKLocalSearchCompletion *)completion _type];
+    _type = [(MKLocalSearchCompletion *)completion _type];
     autocompletePerson = self->_completion;
-    if (!v19 || ([autocompletePerson title], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "length"), v21, autocompletePerson = self->_completion, !v22))
+    if (!_type || ([autocompletePerson title], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "length"), v21, autocompletePerson = self->_completion, !v22))
     {
-      v6 = [autocompletePerson queryLine];
+      displayString = [autocompletePerson queryLine];
       goto LABEL_19;
     }
 
@@ -156,8 +156,8 @@ LABEL_19:
   coreRecentContact = self->_coreRecentContact;
   if (coreRecentContact)
   {
-    v9 = [(CRRecentContact *)coreRecentContact displayName];
-    v24 = [v9 length];
+    title = [(CRRecentContact *)coreRecentContact displayName];
+    v24 = [title length];
     v25 = self->_coreRecentContact;
     if (v24)
     {
@@ -168,14 +168,14 @@ LABEL_19:
     {
       [(CRRecentContact *)v25 address];
     }
-    v8 = ;
+    displayString2 = ;
     goto LABEL_15;
   }
 
   address = self->_address;
   if (address)
   {
-    v6 = [(AddressBookAddress *)address compositeName];
+    displayString = [(AddressBookAddress *)address compositeName];
     goto LABEL_19;
   }
 
@@ -183,14 +183,14 @@ LABEL_19:
   if (autocompletePerson)
   {
 LABEL_33:
-    v6 = [autocompletePerson title];
+    displayString = [autocompletePerson title];
     goto LABEL_19;
   }
 
   findMyHandle = self->_findMyHandle;
   if (findMyHandle)
   {
-    v6 = [(MapsFindMyHandle *)findMyHandle displayName];
+    displayString = [(MapsFindMyHandle *)findMyHandle displayName];
     goto LABEL_19;
   }
 
@@ -200,7 +200,7 @@ LABEL_33:
     externalURLQuery = self->_externalURLQuery;
     if (externalURLQuery)
     {
-      v6 = [(ExternalURLQuery *)externalURLQuery query];
+      displayString = [(ExternalURLQuery *)externalURLQuery query];
       goto LABEL_19;
     }
 
@@ -221,20 +221,20 @@ LABEL_33:
           routePlanningWaypointRequest = self->_routePlanningWaypointRequest;
           if (routePlanningWaypointRequest)
           {
-            v9 = [(RoutePlanningWaypointRequest *)routePlanningWaypointRequest waypointPlaceholder];
-            v52 = [v9 name];
-            v15 = v52;
-            if (!v52)
+            title = [(RoutePlanningWaypointRequest *)routePlanningWaypointRequest waypointPlaceholder];
+            name = [title name];
+            v15 = name;
+            if (!name)
             {
-              v54 = [(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest waypointRequest];
-              v10 = [v54 waypointName];
+              waypointRequest = [(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest waypointRequest];
+              waypointName = [waypointRequest waypointName];
 
               goto LABEL_27;
             }
 
-            v16 = v52;
+            v16 = name;
 LABEL_26:
-            v10 = v16;
+            waypointName = v16;
 LABEL_27:
 
             goto LABEL_16;
@@ -243,7 +243,7 @@ LABEL_27:
           favoriteItem = self->_favoriteItem;
           if (favoriteItem)
           {
-            v6 = [(MapsFavoriteItem *)favoriteItem shortAddress];
+            displayString = [(MapsFavoriteItem *)favoriteItem shortAddress];
             goto LABEL_19;
           }
 
@@ -253,7 +253,7 @@ LABEL_77:
         }
 
 LABEL_68:
-        v6 = [(GEOMapItemChildPlace *)childPlace name];
+        displayString = [(GEOMapItemChildPlace *)childPlace name];
         goto LABEL_19;
       }
 
@@ -261,7 +261,7 @@ LABEL_68:
     }
 
 LABEL_78:
-    v6 = addressString;
+    displayString = addressString;
     goto LABEL_19;
   }
 
@@ -293,8 +293,8 @@ LABEL_78:
 
   if (v36)
   {
-    v37 = [(HistoryEntryRecentsItem *)v36 historyEntry];
-    v10 = [v37 query];
+    historyEntry = [(HistoryEntryRecentsItem *)v36 historyEntry];
+    waypointName = [historyEntry query];
 
     goto LABEL_20;
   }
@@ -330,13 +330,13 @@ LABEL_78:
     goto LABEL_77;
   }
 
-  v47 = [(HistoryEntryRecentsItem *)v46 historyEntry];
-  v48 = [v47 geoMapItem];
-  v10 = [v48 name];
+  historyEntry2 = [(HistoryEntryRecentsItem *)v46 historyEntry];
+  geoMapItem = [historyEntry2 geoMapItem];
+  waypointName = [geoMapItem name];
 
 LABEL_20:
 
-  return v10;
+  return waypointName;
 }
 
 - (CLLocationCoordinate2D)coordinateHint
@@ -350,44 +350,44 @@ LABEL_20:
 
 - (MKMapItem)mapItemIfGeocoded
 {
-  v5 = self;
+  selfCopy = self;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = sub_1009D73B8;
   v31 = sub_1009D73C8;
   v32 = 0;
-  v6 = [(SearchFieldItem *)self searchResult];
+  searchResult = [(SearchFieldItem *)self searchResult];
 
-  if (v6)
+  if (searchResult)
   {
-    v7 = [v5 searchResult];
-    v8 = [v7 isDynamicCurrentLocation];
-    if (v8)
+    searchResult2 = [selfCopy searchResult];
+    isDynamicCurrentLocation = [searchResult2 isDynamicCurrentLocation];
+    if (isDynamicCurrentLocation)
     {
-      v2 = +[MKLocationManager sharedLocationManager];
-      if ([v2 hasLocation])
+      historyEntry = +[MKLocationManager sharedLocationManager];
+      if ([historyEntry hasLocation])
       {
-        v9 = +[MKMapItem mapItemForCurrentLocation];
-        v10 = v8;
+        mapItem = +[MKMapItem mapItemForCurrentLocation];
+        v10 = isDynamicCurrentLocation;
       }
 
       else
       {
         v10 = 0;
-        v9 = 0;
+        mapItem = 0;
       }
     }
 
     else
     {
-      v4 = [v5 searchResult];
-      v9 = [v4 mapItem];
+      searchResult3 = [selfCopy searchResult];
+      mapItem = [searchResult3 mapItem];
       v10 = 0;
     }
 
-    objc_storeStrong(v28 + 5, v9);
-    if ((v8 & 1) == 0)
+    objc_storeStrong(v28 + 5, mapItem);
+    if ((isDynamicCurrentLocation & 1) == 0)
     {
     }
 
@@ -395,7 +395,7 @@ LABEL_20:
     {
     }
 
-    if ((v8 & 1) == 0)
+    if ((isDynamicCurrentLocation & 1) == 0)
     {
       goto LABEL_21;
     }
@@ -403,67 +403,67 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v11 = [v5 historyItem];
+  historyItem = [selfCopy historyItem];
 
-  if (v11)
+  if (historyItem)
   {
-    v7 = [v5 historyItem];
-    v2 = [v7 historyEntry];
+    searchResult2 = [selfCopy historyItem];
+    historyEntry = [searchResult2 historyEntry];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_1009D73D0;
     v26[3] = &unk_101661C68;
     v26[4] = &v27;
-    [v2 ifSearch:0 ifRoute:0 ifPlaceDisplay:v26 ifTransitLineItem:0];
+    [historyEntry ifSearch:0 ifRoute:0 ifPlaceDisplay:v26 ifTransitLineItem:0];
   }
 
   else
   {
-    v12 = [v5 address];
+    address = [selfCopy address];
 
-    if (v12)
+    if (address)
     {
-      v7 = [v5 address];
-      v13 = [v7 geocodedMapItem];
+      searchResult2 = [selfCopy address];
+      geocodedMapItem = [searchResult2 geocodedMapItem];
     }
 
     else
     {
-      v14 = [v5 coreRecentContact];
+      coreRecentContact = [selfCopy coreRecentContact];
 
-      if (v14)
+      if (coreRecentContact)
       {
-        v7 = +[Recents sharedRecents];
-        v2 = [v5 coreRecentContact];
-        v15 = [v7 cachedMapItemForContactID:{objc_msgSend(v2, "contactID")}];
+        searchResult2 = +[Recents sharedRecents];
+        historyEntry = [selfCopy coreRecentContact];
+        v15 = [searchResult2 cachedMapItemForContactID:{objc_msgSend(historyEntry, "contactID")}];
         v16 = v28[5];
         v28[5] = v15;
 
         goto LABEL_20;
       }
 
-      v21 = [v5 completion];
+      completion = [selfCopy completion];
 
-      if (v21)
+      if (completion)
       {
-        v7 = [v5 completion];
-        v13 = [v7 mapItem];
+        searchResult2 = [selfCopy completion];
+        geocodedMapItem = [searchResult2 mapItem];
       }
 
       else
       {
-        v22 = [v5 composedWaypoint];
+        composedWaypoint = [selfCopy composedWaypoint];
 
-        if (v22)
+        if (composedWaypoint)
         {
-          v7 = [v5 composedWaypoint];
-          v2 = [v7 geoMapItem];
-          if (v2)
+          searchResult2 = [selfCopy composedWaypoint];
+          historyEntry = [searchResult2 geoMapItem];
+          if (historyEntry)
           {
             v23 = [MKMapItem alloc];
-            v5 = [v5 composedWaypoint];
-            v3 = [v5 geoMapItem];
-            v24 = [v23 initWithGeoMapItem:v3 isPlaceHolderPlace:0];
+            selfCopy = [selfCopy composedWaypoint];
+            geoMapItem = [selfCopy geoMapItem];
+            v24 = [v23 initWithGeoMapItem:geoMapItem isPlaceHolderPlace:0];
           }
 
           else
@@ -472,27 +472,27 @@ LABEL_20:
           }
 
           objc_storeStrong(v28 + 5, v24);
-          if (v2)
+          if (historyEntry)
           {
           }
 
           goto LABEL_20;
         }
 
-        v25 = [v5 favoriteItem];
+        favoriteItem = [selfCopy favoriteItem];
 
-        if (!v25)
+        if (!favoriteItem)
         {
           goto LABEL_22;
         }
 
-        v7 = [v5 favoriteItem];
-        v13 = [v7 mkMapItem];
+        searchResult2 = [selfCopy favoriteItem];
+        geocodedMapItem = [searchResult2 mkMapItem];
       }
     }
 
-    v2 = v28[5];
-    v28[5] = v13;
+    historyEntry = v28[5];
+    v28[5] = geocodedMapItem;
   }
 
 LABEL_20:
@@ -516,60 +516,60 @@ LABEL_22:
   return v19;
 }
 
-- (BOOL)matchesWaypoint:(id)a3
+- (BOOL)matchesWaypoint:(id)waypoint
 {
-  v4 = a3;
-  v5 = [(SearchFieldItem *)self searchResult];
+  waypointCopy = waypoint;
+  searchResult = [(SearchFieldItem *)self searchResult];
 
-  if (!v5)
+  if (!searchResult)
   {
-    v11 = [(SearchFieldItem *)self address];
+    address = [(SearchFieldItem *)self address];
 
-    if (v11)
+    if (address)
     {
-      v6 = [(SearchFieldItem *)self address];
-      v12 = [v4 requestAddress];
+      address2 = [(SearchFieldItem *)self address];
+      requestAddress = [waypointCopy requestAddress];
     }
 
     else
     {
-      v14 = [(SearchFieldItem *)self coreRecentContact];
+      coreRecentContact = [(SearchFieldItem *)self coreRecentContact];
 
-      if (v14)
+      if (coreRecentContact)
       {
-        v6 = [(SearchFieldItem *)self coreRecentContact];
-        v7 = [v6 address];
-        v9 = [v4 requestSearchString];
-        v10 = [v7 isEqualToString:v9];
+        address2 = [(SearchFieldItem *)self coreRecentContact];
+        v6Address = [address2 address];
+        requestSearchString = [waypointCopy requestSearchString];
+        isDynamicCurrentLocation = [v6Address isEqualToString:requestSearchString];
         goto LABEL_12;
       }
 
-      v16 = [(SearchFieldItem *)self completion];
+      completion = [(SearchFieldItem *)self completion];
 
-      if (!v16)
+      if (!completion)
       {
-        v17 = [(SearchFieldItem *)self externalURLQuery];
+        externalURLQuery = [(SearchFieldItem *)self externalURLQuery];
 
-        if (!v17)
+        if (!externalURLQuery)
         {
-          v6 = [(SearchFieldItem *)self searchString];
-          if (![v6 length])
+          address2 = [(SearchFieldItem *)self searchString];
+          if (![address2 length])
           {
             v8 = 0;
             goto LABEL_15;
           }
 
-          v18 = [(SearchFieldItem *)self completedQuery];
+          completedQuery = [(SearchFieldItem *)self completedQuery];
 
-          v7 = [v4 requestSearchString];
-          v19 = [v6 isEqualToString:v7];
-          if (v18)
+          v6Address = [waypointCopy requestSearchString];
+          v19 = [address2 isEqualToString:v6Address];
+          if (completedQuery)
           {
             if (v19)
             {
-              v9 = [(SearchFieldItem *)self completedQuery];
-              v20 = [v4 suggestionsPrefix];
-              v8 = [v9 isEqualToString:v20];
+              requestSearchString = [(SearchFieldItem *)self completedQuery];
+              suggestionsPrefix = [waypointCopy suggestionsPrefix];
+              v8 = [requestSearchString isEqualToString:suggestionsPrefix];
 
               goto LABEL_13;
             }
@@ -577,8 +577,8 @@ LABEL_22:
 
           else if (v19)
           {
-            v9 = [v4 suggestionsPrefix];
-            v8 = v9 == 0;
+            requestSearchString = [waypointCopy suggestionsPrefix];
+            v8 = requestSearchString == 0;
             goto LABEL_13;
           }
 
@@ -586,30 +586,30 @@ LABEL_22:
           goto LABEL_14;
         }
 
-        v6 = [(SearchFieldItem *)self externalURLQuery];
-        v7 = [v4 externalURLQuery];
-        v13 = [v6 isEqualToExternalURLQuery:v7];
+        address2 = [(SearchFieldItem *)self externalURLQuery];
+        v6Address = [waypointCopy externalURLQuery];
+        v13 = [address2 isEqualToExternalURLQuery:v6Address];
         goto LABEL_8;
       }
 
-      v6 = [(SearchFieldItem *)self completion];
-      v12 = [v4 completion];
+      address2 = [(SearchFieldItem *)self completion];
+      requestAddress = [waypointCopy completion];
     }
 
-    v7 = v12;
-    v13 = [v6 isEqual:v12];
+    v6Address = requestAddress;
+    v13 = [address2 isEqual:requestAddress];
 LABEL_8:
     v8 = v13;
     goto LABEL_14;
   }
 
-  v6 = [(SearchFieldItem *)self searchResult];
-  v7 = [v4 requestSearch];
+  address2 = [(SearchFieldItem *)self searchResult];
+  v6Address = [waypointCopy requestSearch];
   v8 = 1;
-  if (([v6 isEqualToSearchResult:v7 forPurpose:1] & 1) == 0)
+  if (([address2 isEqualToSearchResult:v6Address forPurpose:1] & 1) == 0)
   {
-    v9 = [(SearchFieldItem *)self searchResult];
-    if (![v9 isDynamicCurrentLocation])
+    requestSearchString = [(SearchFieldItem *)self searchResult];
+    if (![requestSearchString isDynamicCurrentLocation])
     {
       v8 = 0;
 LABEL_13:
@@ -617,9 +617,9 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v10 = [v4 isDynamicCurrentLocation];
+    isDynamicCurrentLocation = [waypointCopy isDynamicCurrentLocation];
 LABEL_12:
-    v8 = v10;
+    v8 = isDynamicCurrentLocation;
     goto LABEL_13;
   }
 
@@ -631,143 +631,143 @@ LABEL_15:
 
 - (DirectionsWaypoint)personalizedDirectionsWaypoint
 {
-  v3 = [(SearchFieldItem *)self mapItemIfGeocoded];
+  mapItemIfGeocoded = [(SearchFieldItem *)self mapItemIfGeocoded];
 
-  if (v3)
+  if (mapItemIfGeocoded)
   {
-    v4 = [(SearchFieldItem *)self waypoint];
+    waypoint = [(SearchFieldItem *)self waypoint];
   }
 
   else
   {
-    v4 = 0;
+    waypoint = 0;
   }
 
-  return v4;
+  return waypoint;
 }
 
 - (DirectionsWaypoint)waypoint
 {
   v3 = objc_alloc_init(DirectionsWaypoint);
-  v4 = [(SearchFieldItem *)self searchResult];
-  if (!v4)
+  searchResult = [(SearchFieldItem *)self searchResult];
+  if (!searchResult)
   {
-    v7 = [(SearchFieldItem *)self address];
+    address = [(SearchFieldItem *)self address];
 
-    if (v7)
+    if (address)
     {
-      v5 = [(SearchFieldItem *)self address];
-      [(DirectionsWaypoint *)v3 setRequestAddress:v5];
+      address2 = [(SearchFieldItem *)self address];
+      [(DirectionsWaypoint *)v3 setRequestAddress:address2];
       goto LABEL_18;
     }
 
-    v8 = [(SearchFieldItem *)self coreRecentContact];
+    coreRecentContact = [(SearchFieldItem *)self coreRecentContact];
 
-    if (v8)
+    if (coreRecentContact)
     {
-      v5 = [(SearchFieldItem *)self coreRecentContact];
-      v9 = [v5 address];
-      [(DirectionsWaypoint *)v3 setRequestSearchString:v9];
+      address2 = [(SearchFieldItem *)self coreRecentContact];
+      v5Address = [address2 address];
+      [(DirectionsWaypoint *)v3 setRequestSearchString:v5Address];
     }
 
     else
     {
-      v10 = [(SearchFieldItem *)self completion];
+      completion = [(SearchFieldItem *)self completion];
 
-      if (v10)
+      if (completion)
       {
-        v5 = [(SearchFieldItem *)self completion];
-        [(DirectionsWaypoint *)v3 setCompletion:v5];
+        address2 = [(SearchFieldItem *)self completion];
+        [(DirectionsWaypoint *)v3 setCompletion:address2];
         goto LABEL_18;
       }
 
-      v11 = [(SearchFieldItem *)self externalURLQuery];
+      externalURLQuery = [(SearchFieldItem *)self externalURLQuery];
 
-      if (v11)
+      if (externalURLQuery)
       {
-        v5 = [(SearchFieldItem *)self externalURLQuery];
-        [(DirectionsWaypoint *)v3 setExternalURLQuery:v5];
+        address2 = [(SearchFieldItem *)self externalURLQuery];
+        [(DirectionsWaypoint *)v3 setExternalURLQuery:address2];
         goto LABEL_18;
       }
 
-      v12 = [(SearchFieldItem *)self routePlanningWaypointRequest];
-      if (!v12 || (v13 = v12, -[SearchFieldItem routePlanningWaypointRequest](self, "routePlanningWaypointRequest"), v14 = objc_claimAutoreleasedReturnValue(), [v14 waypointRequest], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "mapItemForLocationComparison"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v13, !v16))
+      routePlanningWaypointRequest = [(SearchFieldItem *)self routePlanningWaypointRequest];
+      if (!routePlanningWaypointRequest || (v13 = routePlanningWaypointRequest, -[SearchFieldItem routePlanningWaypointRequest](self, "routePlanningWaypointRequest"), v14 = objc_claimAutoreleasedReturnValue(), [v14 waypointRequest], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "mapItemForLocationComparison"), v16 = objc_claimAutoreleasedReturnValue(), v16, v15, v14, v13, !v16))
       {
-        v19 = [(SearchFieldItem *)self searchString];
-        [(DirectionsWaypoint *)v3 setRequestSearchString:v19];
+        searchString = [(SearchFieldItem *)self searchString];
+        [(DirectionsWaypoint *)v3 setRequestSearchString:searchString];
 
-        v5 = [(SearchFieldItem *)self completedQuery];
-        [(DirectionsWaypoint *)v3 setSuggestionsPrefix:v5];
+        address2 = [(SearchFieldItem *)self completedQuery];
+        [(DirectionsWaypoint *)v3 setSuggestionsPrefix:address2];
         goto LABEL_18;
       }
 
-      v17 = [(SearchFieldItem *)self routePlanningWaypointRequest];
-      v18 = [v17 waypointRequest];
-      v5 = [v18 mapItemForLocationComparison];
+      routePlanningWaypointRequest2 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+      waypointRequest = [routePlanningWaypointRequest2 waypointRequest];
+      address2 = [waypointRequest mapItemForLocationComparison];
 
-      v9 = [[SearchResult alloc] initWithMapItem:v5];
-      [(DirectionsWaypoint *)v3 setRequestSearch:v9];
+      v5Address = [[SearchResult alloc] initWithMapItem:address2];
+      [(DirectionsWaypoint *)v3 setRequestSearch:v5Address];
     }
 
     goto LABEL_18;
   }
 
-  v5 = v4;
-  if ([v4 type] == 4)
+  address2 = searchResult;
+  if ([searchResult type] == 4)
   {
     v6 = +[SearchResult currentLocationSearchResult];
 
-    v5 = v6;
+    address2 = v6;
   }
 
-  [(DirectionsWaypoint *)v3 setRequestSearch:v5];
+  [(DirectionsWaypoint *)v3 setRequestSearch:address2];
 LABEL_18:
 
-  v20 = [(SearchFieldItem *)self composedWaypoint];
+  composedWaypoint = [(SearchFieldItem *)self composedWaypoint];
 
-  if (v20)
+  if (composedWaypoint)
   {
-    v21 = [(SearchFieldItem *)self composedWaypoint];
-    [(DirectionsWaypoint *)v3 updateFromGEOComposedWaypoint:v21];
+    composedWaypoint2 = [(SearchFieldItem *)self composedWaypoint];
+    [(DirectionsWaypoint *)v3 updateFromGEOComposedWaypoint:composedWaypoint2];
   }
 
   return v3;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v3 = a3;
-  v9 = a3;
-  v5 = [(SearchFieldItem *)self title];
-  v6 = v3[2];
-  v3 += 2;
-  v6(v9, @"title", v5);
+  blockCopy = block;
+  blockCopy2 = block;
+  title = [(SearchFieldItem *)self title];
+  v6 = blockCopy[2];
+  blockCopy += 2;
+  v6(blockCopy2, @"title", title);
 
-  (*v3)(v9, @"searchString", self->_searchString);
-  (*v3)(v9, @"searchResult", self->_searchResult);
-  (*v3)(v9, @"completion", &self->_completion->super.isa);
-  (*v3)(v9, @"addressBookAddress", self->_address);
-  (*v3)(v9, @"searchCategory", self->_searchCategory);
-  (*v3)(v9, @"venueCategoryItem", &self->_venueCategoryItem->super.isa);
-  (*v3)(v9, @"placeCategoryItem", &self->_placeCategoryItem->super.isa);
-  (*v3)(v9, @"historyItem", &self->_historyItem->super.isa);
-  (*v3)(v9, @"coreRecentContact", self->_coreRecentContact);
-  (*v3)(v9, @"addressString", self->_addressString);
-  (*v3)(v9, @"childPlace", self->_childPlace);
-  (*v3)(v9, @"routePlanningWaypointRequest", &self->_routePlanningWaypointRequest->super.isa);
-  (*v3)(v9, @"suggestion", self->_suggestion);
-  v7 = [(GEOComposedWaypoint *)self->_composedWaypoint shortDescription];
-  (*v3)(v9, @"composedWaypoint", v7);
+  (*blockCopy)(blockCopy2, @"searchString", self->_searchString);
+  (*blockCopy)(blockCopy2, @"searchResult", self->_searchResult);
+  (*blockCopy)(blockCopy2, @"completion", &self->_completion->super.isa);
+  (*blockCopy)(blockCopy2, @"addressBookAddress", self->_address);
+  (*blockCopy)(blockCopy2, @"searchCategory", self->_searchCategory);
+  (*blockCopy)(blockCopy2, @"venueCategoryItem", &self->_venueCategoryItem->super.isa);
+  (*blockCopy)(blockCopy2, @"placeCategoryItem", &self->_placeCategoryItem->super.isa);
+  (*blockCopy)(blockCopy2, @"historyItem", &self->_historyItem->super.isa);
+  (*blockCopy)(blockCopy2, @"coreRecentContact", self->_coreRecentContact);
+  (*blockCopy)(blockCopy2, @"addressString", self->_addressString);
+  (*blockCopy)(blockCopy2, @"childPlace", self->_childPlace);
+  (*blockCopy)(blockCopy2, @"routePlanningWaypointRequest", &self->_routePlanningWaypointRequest->super.isa);
+  (*blockCopy)(blockCopy2, @"suggestion", self->_suggestion);
+  shortDescription = [(GEOComposedWaypoint *)self->_composedWaypoint shortDescription];
+  (*blockCopy)(blockCopy2, @"composedWaypoint", shortDescription);
 
   v8 = [(MapsAutocompletePerson *)self->_autocompletePerson description];
-  (*v3)(v9, @"autocompletePerson", v8);
+  (*blockCopy)(blockCopy2, @"autocompletePerson", v8);
 
-  (*v3)(v9, @"favoriteItem", self->_favoriteItem);
+  (*blockCopy)(blockCopy2, @"favoriteItem", self->_favoriteItem);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1009D7DE0;
@@ -775,8 +775,8 @@ LABEL_18:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(SearchFieldItem *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(SearchFieldItem *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -810,7 +810,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_1009D8030;
@@ -818,8 +818,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(SearchFieldItem *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(SearchFieldItem *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -853,11 +853,11 @@ LABEL_9:
 
 - (GEOComposedWaypointEVStop)evStopWaypoint
 {
-  v2 = [(SearchFieldItem *)self composedWaypoint];
+  composedWaypoint = [(SearchFieldItem *)self composedWaypoint];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = composedWaypoint;
   }
 
   else
@@ -918,49 +918,49 @@ LABEL_9:
 
 - (NSString)personalizedAddressName
 {
-  v3 = [(SearchFieldItem *)self searchString];
-  v4 = [(SearchFieldItem *)self searchResult];
-  v5 = [v4 name];
+  searchString = [(SearchFieldItem *)self searchString];
+  searchResult = [(SearchFieldItem *)self searchResult];
+  name = [searchResult name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [(SearchFieldItem *)self searchResult];
-    v7 = [v6 name];
+    searchResult2 = [(SearchFieldItem *)self searchResult];
+    name2 = [searchResult2 name];
 
-    v3 = v7;
+    searchString = name2;
   }
 
-  v8 = [(SearchFieldItem *)self address];
+  address = [(SearchFieldItem *)self address];
 
-  if (v8)
+  if (address)
   {
-    v9 = [(SearchFieldItem *)self address];
+    address2 = [(SearchFieldItem *)self address];
     v10 = +[AddressBookManager sharedManager];
-    v11 = [v10 meCardHomeAddress];
+    meCardHomeAddress = [v10 meCardHomeAddress];
 
-    if (v9 == v11)
+    if (address2 == meCardHomeAddress)
     {
       v18 = @"Home";
     }
 
     else
     {
-      v12 = [(SearchFieldItem *)self address];
+      address3 = [(SearchFieldItem *)self address];
       v13 = +[AddressBookManager sharedManager];
-      v14 = [v13 meCardWorkAddress];
+      meCardWorkAddress = [v13 meCardWorkAddress];
 
-      if (v12 == v14)
+      if (address3 == meCardWorkAddress)
       {
         v18 = @"Work";
       }
 
       else
       {
-        v15 = [(SearchFieldItem *)self address];
+        address4 = [(SearchFieldItem *)self address];
         v16 = +[AddressBookManager sharedManager];
-        v17 = [v16 meCardSchoolAddress];
+        meCardSchoolAddress = [v16 meCardSchoolAddress];
 
-        if (v15 != v17)
+        if (address4 != meCardSchoolAddress)
         {
           goto LABEL_11;
         }
@@ -972,12 +972,12 @@ LABEL_9:
     v19 = +[NSBundle mainBundle];
     v20 = [v19 localizedStringForKey:v18 value:@"localized string not found" table:0];
 
-    v3 = v20;
+    searchString = v20;
   }
 
 LABEL_11:
 
-  return v3;
+  return searchString;
 }
 
 - (GEOSearchCategory)currentCategory
@@ -985,22 +985,22 @@ LABEL_11:
   searchCategory = self->_searchCategory;
   if (searchCategory)
   {
-    v3 = searchCategory;
+    category = searchCategory;
   }
 
   else
   {
-    v3 = [(MKLocalSearchCompletion *)self->_completion category];
+    category = [(MKLocalSearchCompletion *)self->_completion category];
   }
 
-  return v3;
+  return category;
 }
 
-- (void)setFavoriteItem:(id)a3
+- (void)setFavoriteItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   favoriteItem = self->_favoriteItem;
-  v10 = v5;
+  v10 = itemCopy;
   v7 = favoriteItem;
   v8 = v10;
   if (v10 | v7)
@@ -1011,29 +1011,29 @@ LABEL_11:
     if ((v9 & 1) == 0)
     {
       [(SearchFieldItem *)self clear];
-      objc_storeStrong(&self->_favoriteItem, a3);
+      objc_storeStrong(&self->_favoriteItem, item);
       v8 = v10;
     }
   }
 }
 
-- (void)setPunchInDetails:(id)a3 searchString:(id)a4
+- (void)setPunchInDetails:(id)details searchString:(id)string
 {
-  v8 = a3;
-  v7 = a4;
-  if (self->_punchInDetails != v8 || self->_searchString != v7)
+  detailsCopy = details;
+  stringCopy = string;
+  if (self->_punchInDetails != detailsCopy || self->_searchString != stringCopy)
   {
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_punchInDetails, a3);
-    objc_storeStrong(&self->_searchString, a4);
+    objc_storeStrong(&self->_punchInDetails, details);
+    objc_storeStrong(&self->_searchString, string);
   }
 }
 
-- (void)setFindMyHandle:(id)a3
+- (void)setFindMyHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   findMyHandle = self->_findMyHandle;
-  v10 = v5;
+  v10 = handleCopy;
   v7 = findMyHandle;
   v8 = v10;
   if (v10 | v7)
@@ -1044,29 +1044,29 @@ LABEL_11:
     if ((v9 & 1) == 0)
     {
       [(SearchFieldItem *)self clear];
-      objc_storeStrong(&self->_findMyHandle, a3);
+      objc_storeStrong(&self->_findMyHandle, handle);
       v8 = v10;
     }
   }
 }
 
-- (void)setAutocompletePerson:(id)a3
+- (void)setAutocompletePerson:(id)person
 {
-  v5 = a3;
-  if (self->_autocompletePerson != v5)
+  personCopy = person;
+  if (self->_autocompletePerson != personCopy)
   {
-    v6 = v5;
+    v6 = personCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_autocompletePerson, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_autocompletePerson, person);
+    personCopy = v6;
   }
 }
 
-- (void)setComposedWaypoint:(id)a3
+- (void)setComposedWaypoint:(id)waypoint
 {
-  v5 = a3;
+  waypointCopy = waypoint;
   composedWaypoint = self->_composedWaypoint;
-  v17 = v5;
+  v17 = waypointCopy;
   v7 = composedWaypoint;
   if (v17 | v7)
   {
@@ -1075,14 +1075,14 @@ LABEL_11:
     if ((v8 & 1) == 0)
     {
       [(SearchFieldItem *)self clear];
-      objc_storeStrong(&self->_composedWaypoint, a3);
-      v9 = [v17 latLng];
+      objc_storeStrong(&self->_composedWaypoint, waypoint);
+      latLng = [v17 latLng];
 
-      if (v9)
+      if (latLng)
       {
-        v10 = [v17 latLng];
+        latLng2 = [v17 latLng];
         latLng = self->_latLng;
-        self->_latLng = v10;
+        self->_latLng = latLng2;
       }
 
       else
@@ -1108,120 +1108,120 @@ LABEL_11:
   }
 }
 
-- (void)setRoutePlanningWaypointRequest:(id)a3
+- (void)setRoutePlanningWaypointRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   routePlanningWaypointRequest = self->_routePlanningWaypointRequest;
-  if (routePlanningWaypointRequest != v5)
+  if (routePlanningWaypointRequest != requestCopy)
   {
-    v13 = v5;
-    v7 = [(RoutePlanningWaypointRequest *)routePlanningWaypointRequest isEqual:v5];
-    v5 = v13;
+    v13 = requestCopy;
+    v7 = [(RoutePlanningWaypointRequest *)routePlanningWaypointRequest isEqual:requestCopy];
+    requestCopy = v13;
     if ((v7 & 1) == 0)
     {
       [(SearchFieldItem *)self clear];
-      objc_storeStrong(&self->_routePlanningWaypointRequest, a3);
+      objc_storeStrong(&self->_routePlanningWaypointRequest, request);
       v8 = objc_alloc_init(GEOLatLng);
       latLng = self->_latLng;
       self->_latLng = v8;
 
-      v10 = [(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest waypointRequest];
-      [v10 coordinate];
+      waypointRequest = [(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest waypointRequest];
+      [waypointRequest coordinate];
       [(GEOLatLng *)self->_latLng setLat:?];
 
-      v11 = [(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest waypointRequest];
-      [v11 coordinate];
+      waypointRequest2 = [(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest waypointRequest];
+      [waypointRequest2 coordinate];
       [(GEOLatLng *)self->_latLng setLng:v12];
 
-      v5 = v13;
+      requestCopy = v13;
     }
   }
 }
 
-- (void)setMapKitHandle:(id)a3
+- (void)setMapKitHandle:(id)handle
 {
-  if (self->_mapKitHandle != a3)
+  if (self->_mapKitHandle != handle)
   {
-    v5 = a3;
+    handleCopy = handle;
     [(SearchFieldItem *)self clear];
-    v6 = [v5 copy];
+    v6 = [handleCopy copy];
 
     mapKitHandle = self->_mapKitHandle;
     self->_mapKitHandle = v6;
   }
 }
 
-- (void)setChildPlace:(id)a3
+- (void)setChildPlace:(id)place
 {
-  v5 = a3;
-  if (self->_childPlace != v5)
+  placeCopy = place;
+  if (self->_childPlace != placeCopy)
   {
-    v11 = v5;
+    v11 = placeCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_childPlace, a3);
+    objc_storeStrong(&self->_childPlace, place);
     v6 = objc_alloc_init(GEOLatLng);
     latLng = self->_latLng;
     self->_latLng = v6;
 
-    v8 = [(GEOMapItemChildPlace *)v11 identifier];
-    [v8 coordinate];
+    identifier = [(GEOMapItemChildPlace *)v11 identifier];
+    [identifier coordinate];
     [(GEOLatLng *)self->_latLng setLat:?];
 
-    v9 = [(GEOMapItemChildPlace *)v11 identifier];
-    [v9 coordinate];
+    identifier2 = [(GEOMapItemChildPlace *)v11 identifier];
+    [identifier2 coordinate];
     [(GEOLatLng *)self->_latLng setLng:v10];
 
-    v5 = v11;
+    placeCopy = v11;
   }
 }
 
-- (void)setExternalURLQuery:(id)a3
+- (void)setExternalURLQuery:(id)query
 {
-  v5 = a3;
-  if (self->_externalURLQuery != v5)
+  queryCopy = query;
+  if (self->_externalURLQuery != queryCopy)
   {
-    v6 = v5;
+    v6 = queryCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_externalURLQuery, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_externalURLQuery, query);
+    queryCopy = v6;
   }
 }
 
-- (void)setHistoryItem:(id)a3
+- (void)setHistoryItem:(id)item
 {
-  v5 = a3;
-  if (self->_historyItem != v5)
+  itemCopy = item;
+  if (self->_historyItem != itemCopy)
   {
-    v6 = v5;
+    v6 = itemCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_historyItem, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_historyItem, item);
+    itemCopy = v6;
   }
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v5 = a3;
-  if (self->_address != v5)
+  addressCopy = address;
+  if (self->_address != addressCopy)
   {
-    v10 = v5;
+    v10 = addressCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_address, a3);
-    v6 = [(AddressBookAddress *)v10 geocodedMapItem];
-    v7 = [v6 place];
-    v8 = [v7 center];
+    objc_storeStrong(&self->_address, address);
+    geocodedMapItem = [(AddressBookAddress *)v10 geocodedMapItem];
+    place = [geocodedMapItem place];
+    center = [place center];
     latLng = self->_latLng;
-    self->_latLng = v8;
+    self->_latLng = center;
 
-    v5 = v10;
+    addressCopy = v10;
   }
 }
 
-- (void)setCoreRecentContact:(id)a3
+- (void)setCoreRecentContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   coreRecentContact = self->_coreRecentContact;
-  v6 = v4;
+  v6 = contactCopy;
   v11 = v6;
   if (coreRecentContact == v6)
   {
@@ -1229,10 +1229,10 @@ LABEL_11:
   }
 
   v7 = coreRecentContact;
-  v8 = [v11 contactID];
-  v9 = [v7 contactID];
+  contactID = [v11 contactID];
+  contactID2 = [v7 contactID];
 
-  if (v8 != v9)
+  if (contactID != contactID2)
   {
 
     goto LABEL_6;
@@ -1249,42 +1249,42 @@ LABEL_7:
   }
 }
 
-- (void)setUserTypedStringForRAP:(id)a3
+- (void)setUserTypedStringForRAP:(id)p
 {
-  if (self->_userTypedStringForRAP != a3)
+  if (self->_userTypedStringForRAP != p)
   {
-    v5 = [a3 copy];
+    v5 = [p copy];
     userTypedStringForRAP = self->_userTypedStringForRAP;
     self->_userTypedStringForRAP = v5;
   }
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v5 = a3;
-  if (self->_completion != v5)
+  completionCopy = completion;
+  if (self->_completion != completionCopy)
   {
-    v10 = v5;
+    v10 = completionCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_completion, a3);
-    v6 = [(MKLocalSearchCompletion *)v10 mapItem];
-    v7 = [v6 place];
-    v8 = [v7 center];
+    objc_storeStrong(&self->_completion, completion);
+    mapItem = [(MKLocalSearchCompletion *)v10 mapItem];
+    place = [mapItem place];
+    center = [place center];
     latLng = self->_latLng;
-    self->_latLng = v8;
+    self->_latLng = center;
 
-    v5 = v10;
+    completionCopy = v10;
   }
 }
 
-- (void)setSearchResult:(id)a3
+- (void)setSearchResult:(id)result
 {
-  v5 = a3;
-  if (!v5 || self->_searchResult != v5)
+  resultCopy = result;
+  if (!resultCopy || self->_searchResult != resultCopy)
   {
-    v9 = v5;
+    v9 = resultCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_searchResult, a3);
+    objc_storeStrong(&self->_searchResult, result);
     v6 = objc_alloc_init(GEOLatLng);
     latLng = self->_latLng;
     self->_latLng = v6;
@@ -1293,146 +1293,146 @@ LABEL_7:
     [(GEOLatLng *)self->_latLng setLat:?];
     [(SearchResult *)v9 coordinate];
     [(GEOLatLng *)self->_latLng setLng:v8];
-    v5 = v9;
+    resultCopy = v9;
   }
 }
 
-- (void)setSearchString:(id)a3 forCompletedQuery:(id)a4
+- (void)setSearchString:(id)string forCompletedQuery:(id)query
 {
-  v11 = a3;
-  v6 = a4;
-  if (!v11 || self->_searchString != v11 || self->_completedQuery != v6)
+  stringCopy = string;
+  queryCopy = query;
+  if (!stringCopy || self->_searchString != stringCopy || self->_completedQuery != queryCopy)
   {
     [(SearchFieldItem *)self clear];
-    v7 = [(NSString *)v11 copy];
+    v7 = [(NSString *)stringCopy copy];
     searchString = self->_searchString;
     self->_searchString = v7;
 
-    v9 = [(NSString *)v6 copy];
+    v9 = [(NSString *)queryCopy copy];
     completedQuery = self->_completedQuery;
     self->_completedQuery = v9;
   }
 }
 
-- (void)setSuggestion:(id)a3
+- (void)setSuggestion:(id)suggestion
 {
-  v5 = a3;
-  if (!v5 || self->_suggestion != v5)
+  suggestionCopy = suggestion;
+  if (!suggestionCopy || self->_suggestion != suggestionCopy)
   {
-    v6 = v5;
+    v6 = suggestionCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_suggestion, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_suggestion, suggestion);
+    suggestionCopy = v6;
   }
 }
 
-- (void)setPlaceCategoryItem:(id)a3
+- (void)setPlaceCategoryItem:(id)item
 {
-  v5 = a3;
-  if (!v5 || self->_placeCategoryItem != v5)
+  itemCopy = item;
+  if (!itemCopy || self->_placeCategoryItem != itemCopy)
   {
-    v6 = v5;
+    v6 = itemCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_placeCategoryItem, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_placeCategoryItem, item);
+    itemCopy = v6;
   }
 }
 
-- (void)setVenueCategoryItem:(id)a3
+- (void)setVenueCategoryItem:(id)item
 {
-  v5 = a3;
-  if (!v5 || self->_venueCategoryItem != v5)
+  itemCopy = item;
+  if (!itemCopy || self->_venueCategoryItem != itemCopy)
   {
-    v6 = v5;
+    v6 = itemCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_venueCategoryItem, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_venueCategoryItem, item);
+    itemCopy = v6;
   }
 }
 
-- (void)setSearchCategory:(id)a3
+- (void)setSearchCategory:(id)category
 {
-  v5 = a3;
-  if (!v5 || self->_searchCategory != v5)
+  categoryCopy = category;
+  if (!categoryCopy || self->_searchCategory != categoryCopy)
   {
-    v6 = v5;
+    v6 = categoryCopy;
     [(SearchFieldItem *)self clear];
-    objc_storeStrong(&self->_searchCategory, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_searchCategory, category);
+    categoryCopy = v6;
   }
 }
 
-- (void)setAddressString:(id)a3
+- (void)setAddressString:(id)string
 {
-  v4 = a3;
-  if (!v4 || self->_addressString != v4)
+  stringCopy = string;
+  if (!stringCopy || self->_addressString != stringCopy)
   {
-    v7 = v4;
+    v7 = stringCopy;
     [(SearchFieldItem *)self clear];
     v5 = [(NSString *)v7 copy];
     addressString = self->_addressString;
     self->_addressString = v5;
 
-    v4 = v7;
+    stringCopy = v7;
   }
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  v4 = a3;
-  if (!v4 || self->_searchString != v4)
+  stringCopy = string;
+  if (!stringCopy || self->_searchString != stringCopy)
   {
-    v7 = v4;
+    v7 = stringCopy;
     [(SearchFieldItem *)self clear];
     v5 = [(NSString *)v7 copy];
     searchString = self->_searchString;
     self->_searchString = v5;
 
-    v4 = v7;
+    stringCopy = v7;
   }
 }
 
-- (BOOL)isEquivalentAsWaypointToSearchFieldItem:(id)a3
+- (BOOL)isEquivalentAsWaypointToSearchFieldItem:(id)item
 {
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     goto LABEL_7;
   }
 
-  v5 = [(SearchFieldItem *)self autocompletePerson];
-  v6 = [v4 autocompletePerson];
-  v7 = v6;
-  if (v5 && v6)
+  autocompletePerson = [(SearchFieldItem *)self autocompletePerson];
+  autocompletePerson2 = [itemCopy autocompletePerson];
+  evStopWaypoint3 = autocompletePerson2;
+  if (autocompletePerson && autocompletePerson2)
   {
     goto LABEL_4;
   }
 
-  if (v5 | v7)
+  if (autocompletePerson | evStopWaypoint3)
   {
     goto LABEL_7;
   }
 
-  v5 = [(SearchFieldItem *)self findMyHandle];
-  v10 = [v4 findMyHandle];
-  v7 = v10;
-  if (v5 && v10)
+  autocompletePerson = [(SearchFieldItem *)self findMyHandle];
+  findMyHandle = [itemCopy findMyHandle];
+  evStopWaypoint3 = findMyHandle;
+  if (autocompletePerson && findMyHandle)
   {
 LABEL_4:
-    IsEqualToMapItemForPurpose = [v5 isEqual:v7];
+    IsEqualToMapItemForPurpose = [autocompletePerson isEqual:evStopWaypoint3];
 LABEL_5:
 
     goto LABEL_8;
   }
 
-  if (v5 | v7)
+  if (autocompletePerson | evStopWaypoint3)
   {
 LABEL_7:
     IsEqualToMapItemForPurpose = 0;
     goto LABEL_8;
   }
 
-  if ([(SearchFieldItem *)self isEqualToSearchFieldItem:v4])
+  if ([(SearchFieldItem *)self isEqualToSearchFieldItem:itemCopy])
   {
     IsEqualToMapItemForPurpose = 1;
     goto LABEL_8;
@@ -1441,7 +1441,7 @@ LABEL_7:
   searchResult = self->_searchResult;
   if (searchResult)
   {
-    v12 = v4[6];
+    v12 = itemCopy[6];
     if (v12)
     {
       v13 = [(SearchResult *)searchResult isEqualToSearchResult:v12 forPurpose:1];
@@ -1452,56 +1452,56 @@ LABEL_17:
   }
 
   historyItem = self->_historyItem;
-  if (!historyItem || !v4[12] || ((v52 = 0, v53 = &v52, v54 = 0x3032000000, v55 = sub_1009D73B8, v56 = sub_1009D73C8, v57 = 0, v46 = 0, v47 = &v46, v48 = 0x3032000000, v49 = sub_1009D73B8, v50 = sub_1009D73C8, v51 = 0, -[HistoryEntryRecentsItem historyEntry](historyItem, "historyEntry"), v15 = objc_claimAutoreleasedReturnValue(), v45[0] = _NSConcreteStackBlock, v45[1] = 3221225472, v45[2] = sub_1009D9898, v45[3] = &unk_101661C68, v45[4] = &v52, [v15 ifSearch:0 ifRoute:0 ifPlaceDisplay:v45 ifTransitLineItem:0], v15, objc_msgSend(v4[12], "historyEntry"), v16 = objc_claimAutoreleasedReturnValue(), v44[0] = _NSConcreteStackBlock, v44[1] = 3221225472, v44[2] = sub_1009D98E4, v44[3] = &unk_101661C68, v44[4] = &v46, objc_msgSend(v16, "ifSearch:ifRoute:ifPlaceDisplay:ifTransitLineItem:", 0, 0, v44, 0), v16, !v53[5]) || !v47[5] ? (IsEqualToMapItemForPurpose = 0, v17 = 1) : (IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose(), v17 = 0), _Block_object_dispose(&v46, 8), v51, _Block_object_dispose(&v52, 8), v57, v17))
+  if (!historyItem || !itemCopy[12] || ((v52 = 0, v53 = &v52, v54 = 0x3032000000, v55 = sub_1009D73B8, v56 = sub_1009D73C8, v57 = 0, v46 = 0, v47 = &v46, v48 = 0x3032000000, v49 = sub_1009D73B8, v50 = sub_1009D73C8, v51 = 0, -[HistoryEntryRecentsItem historyEntry](historyItem, "historyEntry"), v15 = objc_claimAutoreleasedReturnValue(), v45[0] = _NSConcreteStackBlock, v45[1] = 3221225472, v45[2] = sub_1009D9898, v45[3] = &unk_101661C68, v45[4] = &v52, [v15 ifSearch:0 ifRoute:0 ifPlaceDisplay:v45 ifTransitLineItem:0], v15, objc_msgSend(itemCopy[12], "historyEntry"), v16 = objc_claimAutoreleasedReturnValue(), v44[0] = _NSConcreteStackBlock, v44[1] = 3221225472, v44[2] = sub_1009D98E4, v44[3] = &unk_101661C68, v44[4] = &v46, objc_msgSend(v16, "ifSearch:ifRoute:ifPlaceDisplay:ifTransitLineItem:", 0, 0, v44, 0), v16, !v53[5]) || !v47[5] ? (IsEqualToMapItemForPurpose = 0, v17 = 1) : (IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose(), v17 = 0), _Block_object_dispose(&v46, 8), v51, _Block_object_dispose(&v52, 8), v57, v17))
   {
     routePlanningWaypointRequest = self->_routePlanningWaypointRequest;
-    if (routePlanningWaypointRequest && v4[22])
+    if (routePlanningWaypointRequest && itemCopy[22])
     {
-      v19 = [(RoutePlanningWaypointRequest *)routePlanningWaypointRequest waypointRequest];
-      v20 = [v4[22] waypointRequest];
-      v21 = v19;
-      v22 = v20;
-      v23 = v22;
+      waypointRequest = [(RoutePlanningWaypointRequest *)routePlanningWaypointRequest waypointRequest];
+      waypointRequest2 = [itemCopy[22] waypointRequest];
+      waypoint = waypointRequest;
+      v22 = waypointRequest2;
+      waypoint2 = v22;
       IsEqualToMapItemForPurpose = 0;
-      if (v21 && v22)
+      if (waypoint && v22)
       {
-        if (v21 == v22 || [v21 isCurrentLocation] && (objc_msgSend(v23, "isCurrentLocation") & 1) != 0 || (objc_msgSend(v21, "coordinate"), v34 = v33, v36 = v35, objc_msgSend(v23, "coordinate"), v38 = v37, v40 = v39, v58.latitude = v34, v58.longitude = v36, CLLocationCoordinate2DIsValid(v58)) && (v59.latitude = v38, v59.longitude = v40, CLLocationCoordinate2DIsValid(v59)) && vabdd_f64(v34, v38) < 0.00000000999999994 && vabdd_f64(v36, v40) < 0.00000000999999994)
+        if (waypoint == v22 || [waypoint isCurrentLocation] && (objc_msgSend(waypoint2, "isCurrentLocation") & 1) != 0 || (objc_msgSend(waypoint, "coordinate"), v34 = v33, v36 = v35, objc_msgSend(waypoint2, "coordinate"), v38 = v37, v40 = v39, v58.latitude = v34, v58.longitude = v36, CLLocationCoordinate2DIsValid(v58)) && (v59.latitude = v38, v59.longitude = v40, CLLocationCoordinate2DIsValid(v59)) && vabdd_f64(v34, v38) < 0.00000000999999994 && vabdd_f64(v36, v40) < 0.00000000999999994)
         {
           IsEqualToMapItemForPurpose = 1;
         }
 
         else
         {
-          v41 = [v21 mapItemForLocationComparison];
-          v42 = [v23 mapItemForLocationComparison];
-          v43 = v42;
-          IsEqualToMapItemForPurpose = v41 && v42 && ([v41 _isEquivalentURLRepresentationTo:v42] & 1) != 0;
+          mapItemForLocationComparison = [waypoint mapItemForLocationComparison];
+          mapItemForLocationComparison2 = [waypoint2 mapItemForLocationComparison];
+          v43 = mapItemForLocationComparison2;
+          IsEqualToMapItemForPurpose = mapItemForLocationComparison && mapItemForLocationComparison2 && ([mapItemForLocationComparison _isEquivalentURLRepresentationTo:mapItemForLocationComparison2] & 1) != 0;
         }
       }
     }
 
     else
     {
-      v24 = [(SearchFieldItem *)self evStopWaypoint];
-      if (v24)
+      evStopWaypoint = [(SearchFieldItem *)self evStopWaypoint];
+      if (evStopWaypoint)
       {
-        v25 = v24;
-        v26 = [v4 evStopWaypoint];
+        v25 = evStopWaypoint;
+        evStopWaypoint2 = [itemCopy evStopWaypoint];
 
-        if (v26)
+        if (evStopWaypoint2)
         {
-          v5 = [(SearchFieldItem *)self evStopWaypoint];
-          v27 = [v5 muid];
-          v7 = [v4 evStopWaypoint];
-          if (v27 == [v7 muid])
+          autocompletePerson = [(SearchFieldItem *)self evStopWaypoint];
+          muid = [autocompletePerson muid];
+          evStopWaypoint3 = [itemCopy evStopWaypoint];
+          if (muid == [evStopWaypoint3 muid])
           {
-            v28 = [(SearchFieldItem *)self evStopWaypoint];
-            v29 = [v28 latLng];
-            v30 = [v4 evStopWaypoint];
-            v31 = [v30 latLng];
-            if (v29 | v31)
+            evStopWaypoint4 = [(SearchFieldItem *)self evStopWaypoint];
+            latLng = [evStopWaypoint4 latLng];
+            evStopWaypoint5 = [itemCopy evStopWaypoint];
+            latLng2 = [evStopWaypoint5 latLng];
+            if (latLng | latLng2)
             {
-              IsEqualToMapItemForPurpose = [v29 isEqual:v31];
+              IsEqualToMapItemForPurpose = [latLng isEqual:latLng2];
             }
 
             else
@@ -1520,17 +1520,17 @@ LABEL_17:
       }
 
       composedWaypoint = self->_composedWaypoint;
-      if (composedWaypoint && v4[23])
+      if (composedWaypoint && itemCopy[23])
       {
         v13 = [(GEOComposedWaypoint *)composedWaypoint isEqual:?];
         goto LABEL_17;
       }
 
-      v21 = [(SearchFieldItem *)self waypoint];
-      v23 = [v4 waypoint];
-      if ([v21 isValid] && objc_msgSend(v23, "isValid"))
+      waypoint = [(SearchFieldItem *)self waypoint];
+      waypoint2 = [itemCopy waypoint];
+      if ([waypoint isValid] && objc_msgSend(waypoint2, "isValid"))
       {
-        IsEqualToMapItemForPurpose = [v21 isEqual:v23];
+        IsEqualToMapItemForPurpose = [waypoint isEqual:waypoint2];
       }
 
       else
@@ -1545,25 +1545,25 @@ LABEL_8:
   return IsEqualToMapItemForPurpose;
 }
 
-- (BOOL)isEqualToSearchFieldItem:(id)a3
+- (BOOL)isEqualToSearchFieldItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     goto LABEL_83;
   }
 
-  if (v4 != self)
+  if (itemCopy != self)
   {
-    if (![(NSString *)self->_searchString isEqualToString:v4->_searchString]&& (self->_searchString || v5->_searchString) || ![(SearchResult *)self->_searchResult isEqual:v5->_searchResult]&& (self->_searchResult || v5->_searchResult) || ([(MKLocalSearchCompletion *)self->_completion isEqual:v5->_completion]& 1) == 0 && (self->_completion || v5->_completion) || ![(NSString *)self->_userTypedStringForRAP isEqualToString:v5->_userTypedStringForRAP]&& (self->_userTypedStringForRAP || v5->_userTypedStringForRAP) || ([(GEORetainedSearchMetadata *)self->_retainedSearchMetadata isEqual:v5->_retainedSearchMetadata]& 1) == 0 && (self->_retainedSearchMetadata || v5->_retainedSearchMetadata) || ([(NSString *)self->_completedQuery isEqual:v5->_completedQuery]& 1) == 0 && (self->_completedQuery || v5->_completedQuery) || ![(AddressBookAddress *)self->_address isEqual:v5->_address]&& (self->_address || v5->_address) || ![(MapsFindMyHandle *)self->_findMyHandle isEqual:v5->_findMyHandle]&& (self->_findMyHandle || v5->_findMyHandle) || ![(MapsAutocompletePerson *)self->_autocompletePerson isEqual:v5->_autocompletePerson]&& (self->_autocompletePerson || v5->_autocompletePerson) || ([(GEOSearchCategory *)self->_searchCategory isEqual:v5->_searchCategory]& 1) == 0 && (self->_searchCategory || v5->_searchCategory) || ![(VenueCategoryItem *)self->_venueCategoryItem isEqual:v5->_venueCategoryItem]&& (self->_venueCategoryItem || v5->_venueCategoryItem) || ([(PlaceCategoryItem *)self->_placeCategoryItem isEqual:v5->_placeCategoryItem]& 1) == 0 && (self->_placeCategoryItem || v5->_placeCategoryItem) || ([(GEORelatedSearchSuggestion *)self->_suggestion isEqual:v5->_suggestion]& 1) == 0 && (self->_suggestion || v5->_suggestion) || ![(HistoryEntryRecentsItem *)self->_historyItem isEqual:v5->_historyItem]&& (self->_historyItem || v5->_historyItem) || ![(ExternalURLQuery *)self->_externalURLQuery isEqualToExternalURLQuery:v5->_externalURLQuery]&& (self->_externalURLQuery || v5->_externalURLQuery) || ([(GEOMapItemChildPlace *)self->_childPlace isEqual:v5->_childPlace]& 1) == 0 && (self->_childPlace || v5->_childPlace) || ([(NSData *)self->_mapKitHandle isEqual:v5->_mapKitHandle]& 1) == 0 && (self->_mapKitHandle || v5->_mapKitHandle) || ![(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest isEqual:v5->_routePlanningWaypointRequest]&& (self->_routePlanningWaypointRequest || v5->_routePlanningWaypointRequest) || ([(GEOComposedWaypoint *)self->_composedWaypoint isEqual:v5->_composedWaypoint]& 1) == 0 && (self->_composedWaypoint || v5->_composedWaypoint))
+    if (![(NSString *)self->_searchString isEqualToString:itemCopy->_searchString]&& (self->_searchString || v5->_searchString) || ![(SearchResult *)self->_searchResult isEqual:v5->_searchResult]&& (self->_searchResult || v5->_searchResult) || ([(MKLocalSearchCompletion *)self->_completion isEqual:v5->_completion]& 1) == 0 && (self->_completion || v5->_completion) || ![(NSString *)self->_userTypedStringForRAP isEqualToString:v5->_userTypedStringForRAP]&& (self->_userTypedStringForRAP || v5->_userTypedStringForRAP) || ([(GEORetainedSearchMetadata *)self->_retainedSearchMetadata isEqual:v5->_retainedSearchMetadata]& 1) == 0 && (self->_retainedSearchMetadata || v5->_retainedSearchMetadata) || ([(NSString *)self->_completedQuery isEqual:v5->_completedQuery]& 1) == 0 && (self->_completedQuery || v5->_completedQuery) || ![(AddressBookAddress *)self->_address isEqual:v5->_address]&& (self->_address || v5->_address) || ![(MapsFindMyHandle *)self->_findMyHandle isEqual:v5->_findMyHandle]&& (self->_findMyHandle || v5->_findMyHandle) || ![(MapsAutocompletePerson *)self->_autocompletePerson isEqual:v5->_autocompletePerson]&& (self->_autocompletePerson || v5->_autocompletePerson) || ([(GEOSearchCategory *)self->_searchCategory isEqual:v5->_searchCategory]& 1) == 0 && (self->_searchCategory || v5->_searchCategory) || ![(VenueCategoryItem *)self->_venueCategoryItem isEqual:v5->_venueCategoryItem]&& (self->_venueCategoryItem || v5->_venueCategoryItem) || ([(PlaceCategoryItem *)self->_placeCategoryItem isEqual:v5->_placeCategoryItem]& 1) == 0 && (self->_placeCategoryItem || v5->_placeCategoryItem) || ([(GEORelatedSearchSuggestion *)self->_suggestion isEqual:v5->_suggestion]& 1) == 0 && (self->_suggestion || v5->_suggestion) || ![(HistoryEntryRecentsItem *)self->_historyItem isEqual:v5->_historyItem]&& (self->_historyItem || v5->_historyItem) || ![(ExternalURLQuery *)self->_externalURLQuery isEqualToExternalURLQuery:v5->_externalURLQuery]&& (self->_externalURLQuery || v5->_externalURLQuery) || ([(GEOMapItemChildPlace *)self->_childPlace isEqual:v5->_childPlace]& 1) == 0 && (self->_childPlace || v5->_childPlace) || ([(NSData *)self->_mapKitHandle isEqual:v5->_mapKitHandle]& 1) == 0 && (self->_mapKitHandle || v5->_mapKitHandle) || ![(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest isEqual:v5->_routePlanningWaypointRequest]&& (self->_routePlanningWaypointRequest || v5->_routePlanningWaypointRequest) || ([(GEOComposedWaypoint *)self->_composedWaypoint isEqual:v5->_composedWaypoint]& 1) == 0 && (self->_composedWaypoint || v5->_composedWaypoint))
     {
       goto LABEL_83;
     }
 
     coreRecentContact = v5->_coreRecentContact;
     v7 = self->_coreRecentContact;
-    v8 = v7;
+    punchInDetails = v7;
     if (v7 == coreRecentContact)
     {
 
@@ -1571,24 +1571,24 @@ LABEL_8:
     }
 
     v9 = coreRecentContact;
-    v10 = [v8 contactID];
-    v11 = [v9 contactID];
+    contactID = [punchInDetails contactID];
+    contactID2 = [v9 contactID];
 
-    if (v10 != v11)
+    if (contactID != contactID2)
     {
       goto LABEL_91;
     }
 
-    if (v8 | v9)
+    if (punchInDetails | v9)
     {
 LABEL_86:
       punchInDetails = self->_punchInDetails;
-      v8 = [(SearchFieldItem *)v5 punchInDetails];
-      if (([(GEOSpotlightSearchPunchIn *)punchInDetails isEqual:v8]& 1) != 0 || !self->_punchInDetails && !v5->_punchInDetails)
+      punchInDetails = [(SearchFieldItem *)v5 punchInDetails];
+      if (([(GEOSpotlightSearchPunchIn *)punchInDetails isEqual:punchInDetails]& 1) != 0 || !self->_punchInDetails && !v5->_punchInDetails)
       {
         favoriteItem = self->_favoriteItem;
-        v16 = [(SearchFieldItem *)v5 favoriteItem];
-        if (([(MapsFavoriteItem *)favoriteItem isEqual:v16]& 1) != 0)
+        favoriteItem = [(SearchFieldItem *)v5 favoriteItem];
+        if (([(MapsFavoriteItem *)favoriteItem isEqual:favoriteItem]& 1) != 0)
         {
           v12 = 1;
         }
@@ -1624,16 +1624,16 @@ LABEL_84:
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -1656,24 +1656,24 @@ LABEL_7:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_searchString copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_searchString copyWithZone:zone];
   v7 = *(v5 + 3);
   *(v5 + 3) = v6;
 
   objc_storeStrong(v5 + 6, self->_searchResult);
   objc_storeStrong(v5 + 7, self->_completion);
-  v8 = [(NSString *)self->_userTypedStringForRAP copyWithZone:a3];
+  v8 = [(NSString *)self->_userTypedStringForRAP copyWithZone:zone];
   v9 = *(v5 + 27);
   *(v5 + 27) = v8;
 
-  v10 = [(GEORetainedSearchMetadata *)self->_retainedSearchMetadata copyWithZone:a3];
+  v10 = [(GEORetainedSearchMetadata *)self->_retainedSearchMetadata copyWithZone:zone];
   v11 = *(v5 + 28);
   *(v5 + 28) = v10;
 
-  v12 = [(NSString *)self->_completedQuery copyWithZone:a3];
+  v12 = [(NSString *)self->_completedQuery copyWithZone:zone];
   v13 = *(v5 + 5);
   *(v5 + 5) = v12;
 
@@ -1808,15 +1808,15 @@ LABEL_7:
   [(SearchFieldItem *)&v3 dealloc];
 }
 
-- (id)waypointIconWithScale:(double)a3
+- (id)waypointIconWithScale:(double)scale
 {
-  v5 = [(SearchFieldItem *)self searchResult];
-  v6 = [v5 isDynamicCurrentLocation];
+  searchResult = [(SearchFieldItem *)self searchResult];
+  isDynamicCurrentLocation = [searchResult isDynamicCurrentLocation];
 
-  if (v6)
+  if (isDynamicCurrentLocation)
   {
     v7 = +[GEOFeatureStyleAttributes currentLocationStyleAttributes];
-    v8 = [MKIconManager imageForStyle:v7 size:0 forScale:0 format:a3];
+    v8 = [MKIconManager imageForStyle:v7 size:0 forScale:0 format:scale];
 
     if (v8)
     {
@@ -1824,18 +1824,18 @@ LABEL_7:
     }
   }
 
-  v9 = [(SearchFieldItem *)self composedWaypoint];
-  v10 = [v9 findMyHandleID];
-  if (v10)
+  composedWaypoint = [(SearchFieldItem *)self composedWaypoint];
+  findMyHandleID = [composedWaypoint findMyHandleID];
+  if (findMyHandleID)
   {
-    v11 = v10;
-    v12 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+    v11 = findMyHandleID;
+    routePlanningWaypointRequest = [(SearchFieldItem *)self routePlanningWaypointRequest];
 
-    if (v12)
+    if (routePlanningWaypointRequest)
     {
-      v13 = [(SearchFieldItem *)self routePlanningWaypointRequest];
-      v14 = [v13 waypointRequest];
-      v8 = [v14 waypointIconWithScale:a3];
+      routePlanningWaypointRequest2 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+      waypointRequest = [routePlanningWaypointRequest2 waypointRequest];
+      v8 = [waypointRequest waypointIconWithScale:scale];
 
       if (v8)
       {
@@ -1848,18 +1848,18 @@ LABEL_7:
   {
   }
 
-  v15 = [(SearchFieldItem *)self composedWaypoint];
-  v16 = [v15 addressBookAddress];
-  if (v16)
+  composedWaypoint2 = [(SearchFieldItem *)self composedWaypoint];
+  addressBookAddress = [composedWaypoint2 addressBookAddress];
+  if (addressBookAddress)
   {
-    v17 = v16;
-    v18 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+    v17 = addressBookAddress;
+    routePlanningWaypointRequest3 = [(SearchFieldItem *)self routePlanningWaypointRequest];
 
-    if (v18)
+    if (routePlanningWaypointRequest3)
     {
-      v19 = [(SearchFieldItem *)self routePlanningWaypointRequest];
-      v20 = [v19 waypointRequest];
-      v8 = [v20 waypointIconWithScale:a3];
+      routePlanningWaypointRequest4 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+      waypointRequest2 = [routePlanningWaypointRequest4 waypointRequest];
+      v8 = [waypointRequest2 waypointIconWithScale:scale];
 
       if (v8)
       {
@@ -1872,18 +1872,18 @@ LABEL_7:
   {
   }
 
-  v21 = [(SearchFieldItem *)self composedWaypoint];
-  if (v21)
+  composedWaypoint3 = [(SearchFieldItem *)self composedWaypoint];
+  if (composedWaypoint3)
   {
-    v22 = v21;
-    v23 = [(SearchFieldItem *)self composedWaypoint];
-    v24 = [v23 styleAttributes];
+    v22 = composedWaypoint3;
+    composedWaypoint4 = [(SearchFieldItem *)self composedWaypoint];
+    styleAttributes = [composedWaypoint4 styleAttributes];
 
-    if (v24)
+    if (styleAttributes)
     {
-      v25 = [(SearchFieldItem *)self composedWaypoint];
-      v26 = [v25 styleAttributes];
-      v8 = [(SearchFieldItem *)self _iconWithStyleAttributes:v26 scale:a3];
+      composedWaypoint5 = [(SearchFieldItem *)self composedWaypoint];
+      styleAttributes2 = [composedWaypoint5 styleAttributes];
+      v8 = [(SearchFieldItem *)self _iconWithStyleAttributes:styleAttributes2 scale:scale];
 
       if (v8)
       {
@@ -1892,12 +1892,12 @@ LABEL_7:
     }
   }
 
-  v27 = [(SearchFieldItem *)self mapItemIfGeocoded];
+  mapItemIfGeocoded = [(SearchFieldItem *)self mapItemIfGeocoded];
 
-  if (v27)
+  if (mapItemIfGeocoded)
   {
-    v28 = [(SearchFieldItem *)self mapItemIfGeocoded];
-    v8 = [MKMapItem _maps_markerImageForMapItem:v28 scale:2 size:0 useMarkerFallback:a3];
+    mapItemIfGeocoded2 = [(SearchFieldItem *)self mapItemIfGeocoded];
+    v8 = [MKMapItem _maps_markerImageForMapItem:mapItemIfGeocoded2 scale:2 size:0 useMarkerFallback:scale];
 
     if (v8)
     {
@@ -1905,13 +1905,13 @@ LABEL_7:
     }
   }
 
-  v29 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+  routePlanningWaypointRequest5 = [(SearchFieldItem *)self routePlanningWaypointRequest];
 
-  if (v29)
+  if (routePlanningWaypointRequest5)
   {
-    v30 = [(SearchFieldItem *)self routePlanningWaypointRequest];
-    v31 = [v30 waypointRequest];
-    v8 = [v31 waypointIconWithScale:a3];
+    routePlanningWaypointRequest6 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+    waypointRequest3 = [routePlanningWaypointRequest6 waypointRequest];
+    v8 = [waypointRequest3 waypointIconWithScale:scale];
 
     if (v8)
     {
@@ -1919,12 +1919,12 @@ LABEL_7:
     }
   }
 
-  v32 = [(SearchFieldItem *)self evStopWaypoint];
+  evStopWaypoint = [(SearchFieldItem *)self evStopWaypoint];
 
-  if (v32)
+  if (evStopWaypoint)
   {
     v33 = +[GEOFeatureStyleAttributes evChargerStyleAttributes];
-    v8 = [MKIconManager imageForStyle:v33 size:2 forScale:0 format:a3];
+    v8 = [MKIconManager imageForStyle:v33 size:2 forScale:0 format:scale];
 
     if (v8)
     {
@@ -1932,38 +1932,38 @@ LABEL_7:
     }
   }
 
-  v34 = [(SearchFieldItem *)self completion];
+  completion = [(SearchFieldItem *)self completion];
 
-  if (v34)
+  if (completion)
   {
-    v35 = [(SearchFieldItem *)self completion];
-    v36 = [v35 iconStyleAttributes];
+    completion2 = [(SearchFieldItem *)self completion];
+    iconStyleAttributes = [completion2 iconStyleAttributes];
 
-    if (v36)
+    if (iconStyleAttributes)
     {
       v37 = [GEOFeatureStyleAttributes alloc];
-      v38 = [(SearchFieldItem *)self completion];
-      v39 = [v38 iconStyleAttributes];
-      v40 = [v37 initWithGEOStyleAttributes:v39];
+      completion3 = [(SearchFieldItem *)self completion];
+      iconStyleAttributes2 = [completion3 iconStyleAttributes];
+      v40 = [v37 initWithGEOStyleAttributes:iconStyleAttributes2];
 
       goto LABEL_35;
     }
 
-    v41 = [(SearchFieldItem *)self completion];
-    v42 = [v41 clientResolved];
-    v43 = [v42 itemType];
+    completion4 = [(SearchFieldItem *)self completion];
+    clientResolved = [completion4 clientResolved];
+    itemType = [clientResolved itemType];
 
     v40 = 0;
-    if (v43 > 2)
+    if (itemType > 2)
     {
-      if (v43 == 3)
+      if (itemType == 3)
       {
         v44 = +[GEOFeatureStyleAttributes parkedCarStyleAttributes];
       }
 
       else
       {
-        if (v43 != 6)
+        if (itemType != 6)
         {
           goto LABEL_35;
         }
@@ -1972,14 +1972,14 @@ LABEL_7:
       }
     }
 
-    else if (v43 == 1)
+    else if (itemType == 1)
     {
       v44 = +[GEOFeatureStyleAttributes homeStyleAttributes];
     }
 
     else
     {
-      if (v43 != 2)
+      if (itemType != 2)
       {
         goto LABEL_35;
       }
@@ -1989,7 +1989,7 @@ LABEL_7:
 
     v40 = v44;
 LABEL_35:
-    v8 = [(SearchFieldItem *)self _iconWithStyleAttributes:v40 scale:a3];
+    v8 = [(SearchFieldItem *)self _iconWithStyleAttributes:v40 scale:scale];
 
     if (v8)
     {
@@ -1997,14 +1997,14 @@ LABEL_35:
     }
   }
 
-  v45 = [(SearchFieldItem *)self address];
+  address = [(SearchFieldItem *)self address];
 
-  if (v45)
+  if (address)
   {
-    v46 = [(SearchFieldItem *)self address];
-    v47 = [v46 addressType];
+    address2 = [(SearchFieldItem *)self address];
+    addressType = [address2 addressType];
 
-    switch(v47)
+    switch(addressType)
     {
       case 3u:
         v48 = +[GEOFeatureStyleAttributes schoolStyleAttributes];
@@ -2018,7 +2018,7 @@ LABEL_35:
       default:
         v49 = 0;
 LABEL_45:
-        v8 = [(SearchFieldItem *)self _iconWithStyleAttributes:v49 scale:a3];
+        v8 = [(SearchFieldItem *)self _iconWithStyleAttributes:v49 scale:scale];
 
         if (v8)
         {
@@ -2033,14 +2033,14 @@ LABEL_45:
   }
 
 LABEL_46:
-  v50 = [(SearchFieldItem *)self venueCategoryItem];
-  if (!v50 || (v51 = v50, -[SearchFieldItem venueCategoryItem](self, "venueCategoryItem"), v52 = objc_claimAutoreleasedReturnValue(), [v52 searchCategory], v53 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v53, "styleAttributes"), v54 = objc_claimAutoreleasedReturnValue(), v54, v53, v52, v51, !v54) || (-[SearchFieldItem venueCategoryItem](self, "venueCategoryItem"), v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v55, "searchCategory"), v56 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v56, "styleAttributes"), v57 = objc_claimAutoreleasedReturnValue(), -[SearchFieldItem _iconWithStyleAttributes:scale:](self, "_iconWithStyleAttributes:scale:", v57, a3), v8 = objc_claimAutoreleasedReturnValue(), v57, v56, v55, !v8))
+  venueCategoryItem = [(SearchFieldItem *)self venueCategoryItem];
+  if (!venueCategoryItem || (v51 = venueCategoryItem, -[SearchFieldItem venueCategoryItem](self, "venueCategoryItem"), v52 = objc_claimAutoreleasedReturnValue(), [v52 searchCategory], v53 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v53, "styleAttributes"), v54 = objc_claimAutoreleasedReturnValue(), v54, v53, v52, v51, !v54) || (-[SearchFieldItem venueCategoryItem](self, "venueCategoryItem"), v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v55, "searchCategory"), v56 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v56, "styleAttributes"), v57 = objc_claimAutoreleasedReturnValue(), -[SearchFieldItem _iconWithStyleAttributes:scale:](self, "_iconWithStyleAttributes:scale:", v57, scale), v8 = objc_claimAutoreleasedReturnValue(), v57, v56, v55, !v8))
   {
-    v58 = [(SearchFieldItem *)self placeCategoryItem];
-    if (!v58 || (v59 = v58, -[SearchFieldItem placeCategoryItem](self, "placeCategoryItem"), v60 = objc_claimAutoreleasedReturnValue(), [v60 searchCategory], v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "styleAttributes"), v62 = objc_claimAutoreleasedReturnValue(), v62, v61, v60, v59, !v62) || (-[SearchFieldItem placeCategoryItem](self, "placeCategoryItem"), v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v63, "searchCategory"), v64 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v64, "styleAttributes"), v65 = objc_claimAutoreleasedReturnValue(), -[SearchFieldItem _iconWithStyleAttributes:scale:](self, "_iconWithStyleAttributes:scale:", v65, a3), v8 = objc_claimAutoreleasedReturnValue(), v65, v64, v63, !v8))
+    placeCategoryItem = [(SearchFieldItem *)self placeCategoryItem];
+    if (!placeCategoryItem || (v59 = placeCategoryItem, -[SearchFieldItem placeCategoryItem](self, "placeCategoryItem"), v60 = objc_claimAutoreleasedReturnValue(), [v60 searchCategory], v61 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v61, "styleAttributes"), v62 = objc_claimAutoreleasedReturnValue(), v62, v61, v60, v59, !v62) || (-[SearchFieldItem placeCategoryItem](self, "placeCategoryItem"), v63 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v63, "searchCategory"), v64 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v64, "styleAttributes"), v65 = objc_claimAutoreleasedReturnValue(), -[SearchFieldItem _iconWithStyleAttributes:scale:](self, "_iconWithStyleAttributes:scale:", v65, scale), v8 = objc_claimAutoreleasedReturnValue(), v65, v64, v63, !v8))
     {
-      v66 = [(SearchFieldItem *)self searchCategory];
-      if (!v66 || (v67 = v66, -[SearchFieldItem searchCategory](self, "searchCategory"), v68 = objc_claimAutoreleasedReturnValue(), [v68 styleAttributes], v69 = objc_claimAutoreleasedReturnValue(), v69, v68, v67, !v69) || (-[SearchFieldItem searchCategory](self, "searchCategory"), v70 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v70, "styleAttributes"), v71 = objc_claimAutoreleasedReturnValue(), -[SearchFieldItem _iconWithStyleAttributes:scale:](self, "_iconWithStyleAttributes:scale:", v71, a3), v8 = objc_claimAutoreleasedReturnValue(), v71, v70, !v8))
+      searchCategory = [(SearchFieldItem *)self searchCategory];
+      if (!searchCategory || (v67 = searchCategory, -[SearchFieldItem searchCategory](self, "searchCategory"), v68 = objc_claimAutoreleasedReturnValue(), [v68 styleAttributes], v69 = objc_claimAutoreleasedReturnValue(), v69, v68, v67, !v69) || (-[SearchFieldItem searchCategory](self, "searchCategory"), v70 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v70, "styleAttributes"), v71 = objc_claimAutoreleasedReturnValue(), -[SearchFieldItem _iconWithStyleAttributes:scale:](self, "_iconWithStyleAttributes:scale:", v71, scale), v8 = objc_claimAutoreleasedReturnValue(), v71, v70, !v8))
       {
         if (self->_searchString && ([UIImage systemImageNamed:@"magnifyingglass.circle.fill"], (v72 = objc_claimAutoreleasedReturnValue()) != 0))
         {
@@ -2050,7 +2050,7 @@ LABEL_46:
         else
         {
           v73 = +[GEOFeatureStyleAttributes genericMarkerStyleAttributes];
-          v8 = [(SearchFieldItem *)self _iconWithStyleAttributes:v73 scale:a3];
+          v8 = [(SearchFieldItem *)self _iconWithStyleAttributes:v73 scale:scale];
         }
       }
     }
@@ -2063,33 +2063,33 @@ LABEL_59:
 
 - (NSString)waypointName
 {
-  v3 = [(SearchFieldItem *)self searchResult];
-  v4 = [v3 isDynamicCurrentLocation];
+  searchResult = [(SearchFieldItem *)self searchResult];
+  isDynamicCurrentLocation = [searchResult isDynamicCurrentLocation];
 
-  if (v4)
+  if (isDynamicCurrentLocation)
   {
-    v5 = [(SearchFieldItem *)self searchResult];
-    v6 = [v5 title];
+    searchResult2 = [(SearchFieldItem *)self searchResult];
+    title = [searchResult2 title];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v7 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+  routePlanningWaypointRequest = [(SearchFieldItem *)self routePlanningWaypointRequest];
 
-  if (v7)
+  if (routePlanningWaypointRequest)
   {
-    v5 = [(SearchFieldItem *)self routePlanningWaypointRequest];
-    v8 = [(SearchFieldItem *)self composedWaypoint];
-    v6 = [v5 nameWithResolvedWaypoint:v8 allowCurrentLocation:1];
+    searchResult2 = [(SearchFieldItem *)self routePlanningWaypointRequest];
+    composedWaypoint = [(SearchFieldItem *)self composedWaypoint];
+    title = [searchResult2 nameWithResolvedWaypoint:composedWaypoint allowCurrentLocation:1];
 
     goto LABEL_5;
   }
 
-  v6 = [(SearchFieldItem *)self title];
+  title = [(SearchFieldItem *)self title];
 LABEL_6:
 
-  return v6;
+  return title;
 }
 
 - (NSString)title
@@ -2104,15 +2104,15 @@ LABEL_6:
   if (searchString || (searchString = self->_addressString) != 0)
   {
 LABEL_5:
-    v4 = searchString;
+    displayString2 = searchString;
     goto LABEL_6;
   }
 
   coreRecentContact = self->_coreRecentContact;
   if (coreRecentContact)
   {
-    v9 = [(CRRecentContact *)coreRecentContact displayName];
-    v10 = [v9 length];
+    displayName = [(CRRecentContact *)coreRecentContact displayName];
+    v10 = [displayName length];
     v11 = self->_coreRecentContact;
     if (v10)
     {
@@ -2123,7 +2123,7 @@ LABEL_5:
     {
       [(CRRecentContact *)v11 address];
     }
-    v12 = ;
+    displayString = ;
     goto LABEL_20;
   }
 
@@ -2136,10 +2136,10 @@ LABEL_5:
   venueCategoryItem = self->_venueCategoryItem;
   if (venueCategoryItem || (venueCategoryItem = self->_placeCategoryItem) != 0)
   {
-    v9 = [venueCategoryItem searchCategory];
-    v12 = [v9 displayString];
+    displayName = [venueCategoryItem searchCategory];
+    displayString = [displayName displayString];
 LABEL_20:
-    v6 = v12;
+    waypointName = displayString;
 LABEL_21:
 
     goto LABEL_7;
@@ -2149,14 +2149,14 @@ LABEL_21:
   if (searchCategory)
   {
 LABEL_15:
-    v4 = [(GEOSearchCategory *)searchCategory displayString];
+    displayString2 = [(GEOSearchCategory *)searchCategory displayString];
     goto LABEL_6;
   }
 
   address = self->_address;
   if (address)
   {
-    v4 = [(AddressBookAddress *)address compositeName];
+    displayString2 = [(AddressBookAddress *)address compositeName];
     goto LABEL_6;
   }
 
@@ -2169,7 +2169,7 @@ LABEL_15:
   findMyHandle = self->_findMyHandle;
   if (findMyHandle)
   {
-    v4 = [(MapsFindMyHandle *)findMyHandle displayName];
+    displayString2 = [(MapsFindMyHandle *)findMyHandle displayName];
     goto LABEL_6;
   }
 
@@ -2191,18 +2191,18 @@ LABEL_15:
     routePlanningWaypointRequest = self->_routePlanningWaypointRequest;
     if (routePlanningWaypointRequest)
     {
-      v9 = [(RoutePlanningWaypointRequest *)routePlanningWaypointRequest waypointPlaceholder];
-      v39 = [v9 name];
-      v40 = v39;
-      if (v39)
+      displayName = [(RoutePlanningWaypointRequest *)routePlanningWaypointRequest waypointPlaceholder];
+      name = [displayName name];
+      v40 = name;
+      if (name)
       {
-        v6 = v39;
+        waypointName = name;
       }
 
       else
       {
-        v41 = [(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest waypointRequest];
-        v6 = [v41 waypointName];
+        waypointRequest = [(RoutePlanningWaypointRequest *)self->_routePlanningWaypointRequest waypointRequest];
+        waypointName = [waypointRequest waypointName];
       }
 
       goto LABEL_21;
@@ -2221,7 +2221,7 @@ LABEL_15:
       if (childPlace)
       {
 LABEL_39:
-        v4 = [(GEOMapItemChildPlace *)childPlace name];
+        displayString2 = [(GEOMapItemChildPlace *)childPlace name];
         goto LABEL_6;
       }
 
@@ -2233,9 +2233,9 @@ LABEL_39:
     }
 
 LABEL_2:
-    v4 = [searchResult title];
+    displayString2 = [searchResult title];
 LABEL_6:
-    v6 = v4;
+    waypointName = displayString2;
     goto LABEL_7;
   }
 
@@ -2267,8 +2267,8 @@ LABEL_6:
 
   if (v25)
   {
-    v26 = [(HistoryEntryRecentsItem *)v25 historyEntry];
-    v6 = [v26 query];
+    historyEntry = [(HistoryEntryRecentsItem *)v25 historyEntry];
+    waypointName = [historyEntry query];
 
     goto LABEL_7;
   }
@@ -2301,18 +2301,18 @@ LABEL_6:
 
   if (v35)
   {
-    v36 = [(HistoryEntryRecentsItem *)v35 historyEntry];
-    v37 = [v36 geoMapItem];
-    v6 = [v37 name];
+    historyEntry2 = [(HistoryEntryRecentsItem *)v35 historyEntry];
+    geoMapItem = [historyEntry2 geoMapItem];
+    waypointName = [geoMapItem name];
 
     goto LABEL_7;
   }
 
 LABEL_58:
-  v6 = 0;
+  waypointName = 0;
 LABEL_7:
 
-  return v6;
+  return waypointName;
 }
 
 - (BOOL)isEmpty
@@ -2327,37 +2327,37 @@ LABEL_7:
   return [(SearchFieldItem *)self isEqual:v3];
 }
 
-+ (SearchFieldItem)searchFieldItemWithWaypointRequest:(id)a3 resolvedWaypoint:(id)a4
++ (SearchFieldItem)searchFieldItemWithWaypointRequest:(id)request resolvedWaypoint:(id)waypoint
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && ![v7 isCurrentLocation])
+  requestCopy = request;
+  waypointCopy = waypoint;
+  v8 = waypointCopy;
+  if (requestCopy && ![waypointCopy isCurrentLocation])
   {
-    v9 = objc_alloc_init(a1);
-    [v9 setRoutePlanningWaypointRequest:v6];
-    objc_storeStrong(v9 + 23, a4);
+    v9 = objc_alloc_init(self);
+    [v9 setRoutePlanningWaypointRequest:requestCopy];
+    objc_storeStrong(v9 + 23, waypoint);
   }
 
   else
   {
-    v9 = [a1 searchFieldItemWithObject:v8];
+    v9 = [self searchFieldItemWithObject:v8];
   }
 
   return v9;
 }
 
-+ (SearchFieldItem)searchFieldItemWithObject:(id)a3 expandRecentsItem:(BOOL)a4 preserveContact:(BOOL)a5
++ (SearchFieldItem)searchFieldItemWithObject:(id)object expandRecentsItem:(BOOL)item preserveContact:(BOOL)contact
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  if (v8)
+  contactCopy = contact;
+  itemCopy = item;
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 copy];
+      v9 = [objectCopy copy];
     }
 
     else
@@ -2371,7 +2371,7 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v44[5] setSearchCategory:v8];
+        [v44[5] setSearchCategory:objectCopy];
       }
 
       else
@@ -2379,7 +2379,7 @@ LABEL_7:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [[SearchResult alloc] initWithMapItem:v8];
+          v10 = [[SearchResult alloc] initWithMapItem:objectCopy];
           [v44[5] setSearchResult:v10];
         }
 
@@ -2388,7 +2388,7 @@ LABEL_7:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v44[5] setSearchResult:v8];
+            [v44[5] setSearchResult:objectCopy];
           }
 
           else
@@ -2396,7 +2396,7 @@ LABEL_7:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v44[5] setCompletion:v8];
+              [v44[5] setCompletion:objectCopy];
             }
 
             else
@@ -2404,7 +2404,7 @@ LABEL_7:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v44[5] setAutocompletePerson:v8];
+                [v44[5] setAutocompletePerson:objectCopy];
               }
 
               else
@@ -2412,7 +2412,7 @@ LABEL_7:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [v44[5] setFindMyHandle:v8];
+                  [v44[5] setFindMyHandle:objectCopy];
                 }
 
                 else
@@ -2420,7 +2420,7 @@ LABEL_7:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v44[5] setAddress:v8];
+                    [v44[5] setAddress:objectCopy];
                   }
 
                   else
@@ -2428,10 +2428,10 @@ LABEL_7:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      if (v6)
+                      if (itemCopy)
                       {
-                        v12 = v8;
-                        v13 = [v12 historyEntry];
+                        v12 = objectCopy;
+                        historyEntry = [v12 historyEntry];
                         v42[0] = _NSConcreteStackBlock;
                         v42[1] = 3221225472;
                         v42[2] = sub_1009DB8AC;
@@ -2447,12 +2447,12 @@ LABEL_7:
                         v40[1] = 3221225472;
                         v40[2] = sub_1009DB920;
                         v40[3] = &unk_101661C68;
-                        [v13 ifSearch:v42 ifRoute:v41 ifPlaceDisplay:v40 ifTransitLineItem:0];
+                        [historyEntry ifSearch:v42 ifRoute:v41 ifPlaceDisplay:v40 ifTransitLineItem:0];
                       }
 
                       else
                       {
-                        [v44[5] setHistoryItem:v8];
+                        [v44[5] setHistoryItem:objectCopy];
                       }
                     }
 
@@ -2461,15 +2461,15 @@ LABEL_7:
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        if (v5)
+                        if (contactCopy)
                         {
-                          [v44[5] setCoreRecentContact:v8];
+                          [v44[5] setCoreRecentContact:objectCopy];
                         }
 
                         else
                         {
-                          v15 = [v8 address];
-                          [v44[5] setAddressString:v15];
+                          address = [objectCopy address];
+                          [v44[5] setAddressString:address];
                         }
                       }
 
@@ -2478,8 +2478,8 @@ LABEL_7:
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          v14 = [v8 searchResult];
-                          [v44[5] setSearchResult:v14];
+                          searchResult = [objectCopy searchResult];
+                          [v44[5] setSearchResult:searchResult];
                         }
 
                         else
@@ -2487,7 +2487,7 @@ LABEL_7:
                           objc_opt_class();
                           if (objc_opt_isKindOfClass())
                           {
-                            [v44[5] setVenueCategoryItem:v8];
+                            [v44[5] setVenueCategoryItem:objectCopy];
                           }
 
                           else
@@ -2495,7 +2495,7 @@ LABEL_7:
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              [v44[5] setPlaceCategoryItem:v8];
+                              [v44[5] setPlaceCategoryItem:objectCopy];
                             }
 
                             else
@@ -2503,7 +2503,7 @@ LABEL_7:
                               objc_opt_class();
                               if (objc_opt_isKindOfClass())
                               {
-                                [v44[5] setChildPlace:v8];
+                                [v44[5] setChildPlace:objectCopy];
                               }
 
                               else
@@ -2511,7 +2511,7 @@ LABEL_7:
                                 objc_opt_class();
                                 if (objc_opt_isKindOfClass())
                                 {
-                                  [v44[5] setRoutePlanningWaypointRequest:v8];
+                                  [v44[5] setRoutePlanningWaypointRequest:objectCopy];
                                 }
 
                                 else
@@ -2519,12 +2519,12 @@ LABEL_7:
                                   objc_opt_class();
                                   if (objc_opt_isKindOfClass())
                                   {
-                                    [v44[5] setSuggestion:v8];
+                                    [v44[5] setSuggestion:objectCopy];
                                   }
 
-                                  else if ([v8 conformsToProtocol:&OBJC_PROTOCOL___GEOMapItem])
+                                  else if ([objectCopy conformsToProtocol:&OBJC_PROTOCOL___GEOMapItem])
                                   {
-                                    v16 = [[SearchResult alloc] initWithGEOMapItem:v8];
+                                    v16 = [[SearchResult alloc] initWithGEOMapItem:objectCopy];
                                     [v44[5] setSearchResult:v16];
                                   }
 
@@ -2533,7 +2533,7 @@ LABEL_7:
                                     objc_opt_class();
                                     if (objc_opt_isKindOfClass())
                                     {
-                                      objc_storeStrong(v44 + 5, a3);
+                                      objc_storeStrong(v44 + 5, object);
                                     }
 
                                     else
@@ -2541,7 +2541,7 @@ LABEL_7:
                                       objc_opt_class();
                                       if (objc_opt_isKindOfClass())
                                       {
-                                        v17 = [v8 pin];
+                                        v17 = [objectCopy pin];
                                         [v44[5] setSearchResult:v17];
                                       }
 
@@ -2550,7 +2550,7 @@ LABEL_7:
                                         objc_opt_class();
                                         if (objc_opt_isKindOfClass())
                                         {
-                                          v18 = v8;
+                                          v18 = objectCopy;
                                           if ([v18 isCurrentLocation])
                                           {
                                             v19 = +[SearchResult currentLocationSearchResult];
@@ -2568,7 +2568,7 @@ LABEL_7:
                                           objc_opt_class();
                                           if (objc_opt_isKindOfClass())
                                           {
-                                            [v44[5] setSearchString:v8];
+                                            [v44[5] setSearchString:objectCopy];
                                           }
 
                                           else
@@ -2576,11 +2576,11 @@ LABEL_7:
                                             objc_opt_class();
                                             if (objc_opt_isKindOfClass())
                                             {
-                                              v20 = v8;
+                                              v20 = objectCopy;
                                               if ([v20 type] == 24)
                                               {
-                                                v21 = [v20 findMyWaypoint];
-                                                if (!v21)
+                                                findMyWaypoint = [v20 findMyWaypoint];
+                                                if (!findMyWaypoint)
                                                 {
                                                   v37 = sub_10006D178();
                                                   if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -2609,26 +2609,26 @@ LABEL_7:
                                                   }
                                                 }
 
-                                                v22 = [[SearchResult alloc] initWithComposedWaypoint:v21];
+                                                v22 = [[SearchResult alloc] initWithComposedWaypoint:findMyWaypoint];
                                                 [v44[5] setSearchResult:v22];
                                               }
 
                                               else
                                               {
-                                                v25 = [v20 MKMapItem];
+                                                mKMapItem = [v20 MKMapItem];
 
-                                                if (v25)
+                                                if (mKMapItem)
                                                 {
                                                   v26 = [SearchResult alloc];
-                                                  v27 = [v20 MKMapItem];
-                                                  v21 = [(SearchResult *)v26 initWithMapItem:v27];
+                                                  mKMapItem2 = [v20 MKMapItem];
+                                                  findMyWaypoint = [(SearchResult *)v26 initWithMapItem:mKMapItem2];
 
-                                                  [v44[5] setSearchResult:v21];
+                                                  [v44[5] setSearchResult:findMyWaypoint];
                                                 }
 
                                                 else
                                                 {
-                                                  v21 = v44[5];
+                                                  findMyWaypoint = v44[5];
                                                   v44[5] = 0;
                                                 }
                                               }
@@ -2639,9 +2639,9 @@ LABEL_7:
                                               objc_opt_class();
                                               if (objc_opt_isKindOfClass())
                                               {
-                                                [v44[5] setFavoriteItem:v8];
-                                                v23 = [v44[5] favoriteItem];
-                                                v24 = [SearchResult searchResultFromFavoriteItem:v23];
+                                                [v44[5] setFavoriteItem:objectCopy];
+                                                favoriteItem = [v44[5] favoriteItem];
+                                                v24 = [SearchResult searchResultFromFavoriteItem:favoriteItem];
                                                 [v44[5] setSearchResult:v24];
                                               }
 
@@ -2650,7 +2650,7 @@ LABEL_7:
                                                 v28 = sub_10006D178();
                                                 if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
                                                 {
-                                                  if (v6)
+                                                  if (itemCopy)
                                                   {
                                                     v29 = @"YES";
                                                   }
@@ -2661,7 +2661,7 @@ LABEL_7:
                                                   }
 
                                                   v30 = v29;
-                                                  if (v5)
+                                                  if (contactCopy)
                                                   {
                                                     v31 = @"YES";
                                                   }
@@ -2672,7 +2672,7 @@ LABEL_7:
                                                   }
 
                                                   v32 = v31;
-                                                  v33 = [NSString stringWithFormat:@"Unable to create item from object (expand recents: %@, preserve contact: %@): %@", v30, v32, v8];
+                                                  objectCopy = [NSString stringWithFormat:@"Unable to create item from object (expand recents: %@, preserve contact: %@): %@", v30, v32, objectCopy];
                                                   *buf = 136315906;
                                                   v50 = "+[SearchFieldItem searchFieldItemWithObject:expandRecentsItem:preserveContact:]";
                                                   v51 = 2080;
@@ -2680,7 +2680,7 @@ LABEL_7:
                                                   v53 = 1024;
                                                   v54 = 1005;
                                                   v55 = 2112;
-                                                  v56 = v33;
+                                                  v56 = objectCopy;
                                                   _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion reached unexpectedly! '%@'", buf, 0x26u);
                                                 }
 
@@ -2733,50 +2733,50 @@ LABEL_7:
   return v9;
 }
 
-+ (id)searchFieldItemsForRouteInSuggestionsEntry:(id)a3 excludeCurrentLocationOrigin:(BOOL)a4
++ (id)searchFieldItemsForRouteInSuggestionsEntry:(id)entry excludeCurrentLocationOrigin:(BOOL)origin
 {
-  v4 = a4;
-  v5 = a3;
-  if (!v5)
+  originCopy = origin;
+  entryCopy = entry;
+  if (!entryCopy)
   {
     v32 = 0;
     goto LABEL_34;
   }
 
   v6 = objc_alloc_init(NSMutableArray);
-  if ([v5 containsKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"])
+  if ([entryCopy containsKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"])
   {
-    v7 = [v5 routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
+    v7 = [entryCopy routeRequestStorageForKey:@"MapsSuggestionsResumeRouteRouteRequestStorage"];
     if (v7)
     {
-      v8 = v7;
-      v9 = [v7 waypointsCount];
-      v36 = v5;
-      v10 = [v5 uint64ForKey:@"MapsSuggestionsResumeRouteWaypointIndex"];
-      if (v10 < v9)
+      mKMapItem = v7;
+      waypointsCount = [v7 waypointsCount];
+      v36 = entryCopy;
+      v10 = [entryCopy uint64ForKey:@"MapsSuggestionsResumeRouteWaypointIndex"];
+      if (v10 < waypointsCount)
       {
         v11 = v10;
         v12 = 0;
         p_cache = &OBJC_METACLASS___MapsAppTestTileData.cache;
-        v37 = v9;
+        v37 = waypointsCount;
         do
         {
           v14 = objc_alloc_init((p_cache + 88));
-          v15 = [v8 waypointsAtIndex:v11];
-          if (![v15 isCurrentLocation] || !v4 || v12)
+          v15 = [mKMapItem waypointsAtIndex:v11];
+          if (![v15 isCurrentLocation] || !originCopy || v12)
           {
             v16 = v6;
             v17 = [SearchResult alloc];
-            [v8 waypointsAtIndex:v11];
+            [mKMapItem waypointsAtIndex:v11];
             v18 = p_cache;
-            v20 = v19 = v8;
+            v20 = v19 = mKMapItem;
             v21 = [(SearchResult *)v17 initWithComposedWaypoint:v20];
             [v14 setSearchResult:v21];
 
             v6 = v16;
-            v9 = v37;
+            waypointsCount = v37;
 
-            v8 = v19;
+            mKMapItem = v19;
             p_cache = v18;
             [v6 addObject:v14];
           }
@@ -2785,7 +2785,7 @@ LABEL_7:
           --v12;
         }
 
-        while (v9 != v11);
+        while (waypointsCount != v11);
       }
 
       if (![v6 count])
@@ -2794,7 +2794,7 @@ LABEL_7:
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
           *buf = 134217984;
-          v39 = [v8 waypointsCount];
+          waypointsCount2 = [mKMapItem waypointsCount];
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Unable to extract any items from MSG entry (expected %lu)", buf, 0xCu);
         }
 
@@ -2805,14 +2805,14 @@ LABEL_7:
       v22 = [v6 count];
       v23 = sub_1009D851C();
       v24 = v23;
-      if (v22 >= v9)
+      if (v22 >= waypointsCount)
       {
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218240;
-          v39 = [v6 count];
+          waypointsCount2 = [v6 count];
           v40 = 2048;
-          v41 = v9;
+          v41 = waypointsCount;
           v25 = v24;
           v26 = OS_LOG_TYPE_DEFAULT;
           goto LABEL_30;
@@ -2822,9 +2822,9 @@ LABEL_7:
       else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218240;
-        v39 = [v6 count];
+        waypointsCount2 = [v6 count];
         v40 = 2048;
-        v41 = v9;
+        v41 = waypointsCount;
         v25 = v24;
         v26 = OS_LOG_TYPE_ERROR;
 LABEL_30:
@@ -2833,17 +2833,17 @@ LABEL_30:
 
       v32 = v6;
 LABEL_32:
-      v5 = v36;
+      entryCopy = v36;
       goto LABEL_33;
     }
   }
 
-  v8 = [v5 MKMapItem];
-  v27 = [v5 findMyWaypoint];
-  if (v27)
+  mKMapItem = [entryCopy MKMapItem];
+  findMyWaypoint = [entryCopy findMyWaypoint];
+  if (findMyWaypoint)
   {
     v28 = objc_alloc_init(SearchFieldItem);
-    v29 = [[SearchResult alloc] initWithComposedWaypoint:v27];
+    v29 = [[SearchResult alloc] initWithComposedWaypoint:findMyWaypoint];
     [(SearchFieldItem *)v28 setSearchResult:v29];
 
     [v6 addObject:v28];
@@ -2859,7 +2859,7 @@ LABEL_22:
 
   else
   {
-    if (!v8)
+    if (!mKMapItem)
     {
       v28 = sub_1009D851C();
       if (os_log_type_enabled(&v28->super, OS_LOG_TYPE_ERROR))
@@ -2873,7 +2873,7 @@ LABEL_22:
     }
 
     v28 = objc_alloc_init(SearchFieldItem);
-    v33 = [[SearchResult alloc] initWithMapItem:v8];
+    v33 = [[SearchResult alloc] initWithMapItem:mKMapItem];
     [(SearchFieldItem *)v28 setSearchResult:v33];
 
     [v6 addObject:v28];
@@ -2895,20 +2895,20 @@ LABEL_34:
   return v32;
 }
 
-+ (id)searchFieldItemsForRouteHistoryEntry:(id)a3
++ (id)searchFieldItemsForRouteHistoryEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [v3 endWaypoint];
+  entryCopy = entry;
+  endWaypoint = [entryCopy endWaypoint];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = +[SearchResult currentLocationSearchResult];
-    v7 = [SearchFieldItem searchFieldItemWithObject:v6];
+    waypoints = +[SearchResult currentLocationSearchResult];
+    v7 = [SearchFieldItem searchFieldItemWithObject:waypoints];
     v37[0] = v7;
-    v8 = [v3 endWaypoint];
-    v9 = [SearchFieldItem searchFieldItemWithObject:v8];
+    endWaypoint2 = [entryCopy endWaypoint];
+    v9 = [SearchFieldItem searchFieldItemWithObject:endWaypoint2];
     v37[1] = v9;
     v10 = [NSArray arrayWithObjects:v37 count:2];
 
@@ -2918,22 +2918,22 @@ LABEL_3:
 
   if ((MapsFeature_IsEnabled_DrivingMultiWaypointRoutes() & 1) == 0 && (MapsFeature_IsEnabled_Maps420() & 1) == 0 && !MapsFeature_IsEnabled_Maps182())
   {
-    v22 = [v3 startWaypoint];
-    v23 = [SearchFieldItem searchFieldItemWithObject:v22];
+    startWaypoint = [entryCopy startWaypoint];
+    v23 = [SearchFieldItem searchFieldItemWithObject:startWaypoint];
     v24 = v23;
     if (v23)
     {
-      v6 = v23;
+      waypoints = v23;
     }
 
     else
     {
       v25 = +[SearchResult currentLocationSearchResult];
-      v6 = [SearchFieldItem searchFieldItemWithObject:v25];
+      waypoints = [SearchFieldItem searchFieldItemWithObject:v25];
     }
 
-    v26 = [v3 endWaypoint];
-    v27 = [SearchFieldItem searchFieldItemWithObject:v26];
+    endWaypoint3 = [entryCopy endWaypoint];
+    v27 = [SearchFieldItem searchFieldItemWithObject:endWaypoint3];
     v28 = v27;
     if (v27)
     {
@@ -2946,24 +2946,24 @@ LABEL_3:
       v7 = [SearchFieldItem searchFieldItemWithObject:v29];
     }
 
-    v30[0] = v6;
+    v30[0] = waypoints;
     v30[1] = v7;
     v10 = [NSArray arrayWithObjects:v30 count:2];
-    v8 = sub_1009D851C();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    endWaypoint2 = sub_1009D851C();
+    if (os_log_type_enabled(endWaypoint2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v32 = v10;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Created items from non-MPR history entry: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, endWaypoint2, OS_LOG_TYPE_DEFAULT, "Created items from non-MPR history entry: %@", buf, 0xCu);
     }
 
     goto LABEL_3;
   }
 
-  v6 = [v3 waypoints];
-  v10 = sub_100021DB0(v6, &stru_101631488);
+  waypoints = [entryCopy waypoints];
+  v10 = sub_100021DB0(waypoints, &stru_101631488);
   v11 = [v10 count];
-  v12 = [v6 count];
+  v12 = [waypoints count];
   v13 = sub_1009D851C();
   v7 = v13;
   if (v11 >= v12)
@@ -2974,7 +2974,7 @@ LABEL_3:
     }
 
     v19 = [v10 count];
-    v20 = [v6 count];
+    v20 = [waypoints count];
     v16 = sub_100021DB0(v10, &stru_1016314E8);
     *buf = 134218499;
     v32 = v19;
@@ -2994,7 +2994,7 @@ LABEL_3:
     }
 
     v14 = [v10 count];
-    v15 = [v6 count];
+    v15 = [waypoints count];
     v16 = sub_100021DB0(v10, &stru_1016314C8);
     *buf = 134218499;
     v32 = v14;
@@ -3015,66 +3015,66 @@ LABEL_13:
 
 - (BOOL)isFindMyPerson
 {
-  v3 = [(SearchFieldItem *)self _maps_autoCompletePerson];
-  v4 = [(SearchFieldItem *)self _maps_findMyHandle];
-  v5 = [v3 handle];
-  v6 = (v5 | v4) != 0;
+  _maps_autoCompletePerson = [(SearchFieldItem *)self _maps_autoCompletePerson];
+  _maps_findMyHandle = [(SearchFieldItem *)self _maps_findMyHandle];
+  handle = [_maps_autoCompletePerson handle];
+  v6 = (handle | _maps_findMyHandle) != 0;
 
   return v6;
 }
 
 - (AddressBookAddress)_maps_address
 {
-  v3 = [(SearchFieldItem *)self address];
-  v4 = v3;
-  if (v3)
+  address = [(SearchFieldItem *)self address];
+  v4 = address;
+  if (address)
   {
-    v5 = v3;
+    address2 = address;
   }
 
   else
   {
-    v6 = [(SearchFieldItem *)self searchResult];
-    v5 = [v6 address];
+    searchResult = [(SearchFieldItem *)self searchResult];
+    address2 = [searchResult address];
   }
 
-  return v5;
+  return address2;
 }
 
 - (_TtC4Maps16MapsFindMyHandle)_maps_findMyHandle
 {
-  v3 = [(SearchFieldItem *)self findMyHandle];
-  v4 = v3;
-  if (v3)
+  findMyHandle = [(SearchFieldItem *)self findMyHandle];
+  v4 = findMyHandle;
+  if (findMyHandle)
   {
-    v5 = v3;
+    findMyHandle2 = findMyHandle;
   }
 
   else
   {
-    v6 = [(SearchFieldItem *)self searchResult];
-    v5 = [v6 findMyHandle];
+    searchResult = [(SearchFieldItem *)self searchResult];
+    findMyHandle2 = [searchResult findMyHandle];
   }
 
-  return v5;
+  return findMyHandle2;
 }
 
 - (_TtC4Maps22MapsAutocompletePerson)_maps_autoCompletePerson
 {
-  v3 = [(SearchFieldItem *)self autocompletePerson];
-  v4 = v3;
-  if (v3)
+  autocompletePerson = [(SearchFieldItem *)self autocompletePerson];
+  v4 = autocompletePerson;
+  if (autocompletePerson)
   {
-    v5 = v3;
+    autocompletePerson2 = autocompletePerson;
   }
 
   else
   {
-    v6 = [(SearchFieldItem *)self searchResult];
-    v5 = [v6 autocompletePerson];
+    searchResult = [(SearchFieldItem *)self searchResult];
+    autocompletePerson2 = [searchResult autocompletePerson];
   }
 
-  return v5;
+  return autocompletePerson2;
 }
 
 @end

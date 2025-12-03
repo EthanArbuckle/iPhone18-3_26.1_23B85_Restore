@@ -1,79 +1,79 @@
 @interface CLServiceSession
-+ (id)disconnectedSessionRequiringAuthorization:(int64_t)a3;
-+ (id)disconnectedSessionRequiringAuthorization:(int64_t)a3 fullAccuracyPurposeKey:(id)a4;
-+ (id)sessionRequiringAuthorization:(int64_t)a3;
-+ (id)sessionRequiringAuthorization:(int64_t)a3 fullAccuracyPurposeKey:(id)a4;
-+ (id)sessionRequiringAuthorization:(int64_t)a3 fullAccuracyPurposeKey:(id)a4 queue:(id)a5 handler:(id)a6;
-+ (id)sessionRequiringAuthorization:(int64_t)a3 queue:(id)a4 handler:(id)a5;
-+ (id)sessionWithLocationManager:(id)a3 authorizationRequirement:(int64_t)a4 fullAccuracyPurposeKey:(id)a5 queue:(id)a6 handler:(id)a7;
-- (CLServiceSession)initWithLocationManager:(id)a3 authorizationRequirement:(int64_t)a4 fullAccuracyPurposeKey:(id)a5 queue:(id)a6 handler:(id)a7;
-- (id)initDisconnectedSessionWithAuthorizationRequirement:(int64_t)a3 fullAccuracyPurposeKey:(id)a4;
++ (id)disconnectedSessionRequiringAuthorization:(int64_t)authorization;
++ (id)disconnectedSessionRequiringAuthorization:(int64_t)authorization fullAccuracyPurposeKey:(id)key;
++ (id)sessionRequiringAuthorization:(int64_t)authorization;
++ (id)sessionRequiringAuthorization:(int64_t)authorization fullAccuracyPurposeKey:(id)key;
++ (id)sessionRequiringAuthorization:(int64_t)authorization fullAccuracyPurposeKey:(id)key queue:(id)queue handler:(id)handler;
++ (id)sessionRequiringAuthorization:(int64_t)authorization queue:(id)queue handler:(id)handler;
++ (id)sessionWithLocationManager:(id)manager authorizationRequirement:(int64_t)requirement fullAccuracyPurposeKey:(id)key queue:(id)queue handler:(id)handler;
+- (CLServiceSession)initWithLocationManager:(id)manager authorizationRequirement:(int64_t)requirement fullAccuracyPurposeKey:(id)key queue:(id)queue handler:(id)handler;
+- (id)initDisconnectedSessionWithAuthorizationRequirement:(int64_t)requirement fullAccuracyPurposeKey:(id)key;
 - (void)dealloc;
 - (void)handleDiagnosticUpdate;
 - (void)invalidate;
-- (void)setHandler:(id)a3;
-- (void)setupSessionInternalWithLocationManager:(id)a3 authorizationRequirement:(int64_t)a4 fullAccuracyPurposeKey:(id)a5 queue:(id)a6;
+- (void)setHandler:(id)handler;
+- (void)setupSessionInternalWithLocationManager:(id)manager authorizationRequirement:(int64_t)requirement fullAccuracyPurposeKey:(id)key queue:(id)queue;
 @end
 
 @implementation CLServiceSession
 
-+ (id)sessionRequiringAuthorization:(int64_t)a3
++ (id)sessionRequiringAuthorization:(int64_t)authorization
 {
-  v3 = [[CLServiceSession alloc] initWithLocationManager:+[CLLocationManager weakSharedInstance](CLLocationManager authorizationRequirement:"weakSharedInstance") fullAccuracyPurposeKey:a3 queue:0 handler:+[CLLocationManager sharedQueue], 0];
+  v3 = [[CLServiceSession alloc] initWithLocationManager:+[CLLocationManager weakSharedInstance](CLLocationManager authorizationRequirement:"weakSharedInstance") fullAccuracyPurposeKey:authorization queue:0 handler:+[CLLocationManager sharedQueue], 0];
 
   return v3;
 }
 
-+ (id)disconnectedSessionRequiringAuthorization:(int64_t)a3
++ (id)disconnectedSessionRequiringAuthorization:(int64_t)authorization
 {
-  v3 = [[CLServiceSession alloc] initDisconnectedSessionWithAuthorizationRequirement:a3 fullAccuracyPurposeKey:0];
+  v3 = [[CLServiceSession alloc] initDisconnectedSessionWithAuthorizationRequirement:authorization fullAccuracyPurposeKey:0];
 
   return v3;
 }
 
-+ (id)sessionRequiringAuthorization:(int64_t)a3 queue:(id)a4 handler:(id)a5
++ (id)sessionRequiringAuthorization:(int64_t)authorization queue:(id)queue handler:(id)handler
 {
-  v5 = [[CLServiceSession alloc] initWithLocationManager:+[CLLocationManager authorizationRequirement:"weakSharedInstance"]fullAccuracyPurposeKey:a3 queue:0 handler:a4, a5];
+  handler = [[CLServiceSession alloc] initWithLocationManager:+[CLLocationManager authorizationRequirement:"weakSharedInstance"]fullAccuracyPurposeKey:authorization queue:0 handler:queue, handler];
 
-  return v5;
+  return handler;
 }
 
-+ (id)sessionRequiringAuthorization:(int64_t)a3 fullAccuracyPurposeKey:(id)a4
++ (id)sessionRequiringAuthorization:(int64_t)authorization fullAccuracyPurposeKey:(id)key
 {
-  v4 = [[CLServiceSession alloc] initWithLocationManager:+[CLLocationManager weakSharedInstance](CLLocationManager authorizationRequirement:"weakSharedInstance") fullAccuracyPurposeKey:a3 queue:a4 handler:+[CLLocationManager sharedQueue], 0];
+  v4 = [[CLServiceSession alloc] initWithLocationManager:+[CLLocationManager weakSharedInstance](CLLocationManager authorizationRequirement:"weakSharedInstance") fullAccuracyPurposeKey:authorization queue:key handler:+[CLLocationManager sharedQueue], 0];
 
   return v4;
 }
 
-+ (id)disconnectedSessionRequiringAuthorization:(int64_t)a3 fullAccuracyPurposeKey:(id)a4
++ (id)disconnectedSessionRequiringAuthorization:(int64_t)authorization fullAccuracyPurposeKey:(id)key
 {
-  v4 = [[CLServiceSession alloc] initDisconnectedSessionWithAuthorizationRequirement:a3 fullAccuracyPurposeKey:a4];
+  v4 = [[CLServiceSession alloc] initDisconnectedSessionWithAuthorizationRequirement:authorization fullAccuracyPurposeKey:key];
 
   return v4;
 }
 
-+ (id)sessionRequiringAuthorization:(int64_t)a3 fullAccuracyPurposeKey:(id)a4 queue:(id)a5 handler:(id)a6
++ (id)sessionRequiringAuthorization:(int64_t)authorization fullAccuracyPurposeKey:(id)key queue:(id)queue handler:(id)handler
 {
-  v6 = [[CLServiceSession alloc] initWithLocationManager:+[CLLocationManager authorizationRequirement:"weakSharedInstance"]fullAccuracyPurposeKey:a3 queue:a4 handler:a5, a6];
+  handler = [[CLServiceSession alloc] initWithLocationManager:+[CLLocationManager authorizationRequirement:"weakSharedInstance"]fullAccuracyPurposeKey:authorization queue:key handler:queue, handler];
 
-  return v6;
+  return handler;
 }
 
-+ (id)sessionWithLocationManager:(id)a3 authorizationRequirement:(int64_t)a4 fullAccuracyPurposeKey:(id)a5 queue:(id)a6 handler:(id)a7
++ (id)sessionWithLocationManager:(id)manager authorizationRequirement:(int64_t)requirement fullAccuracyPurposeKey:(id)key queue:(id)queue handler:(id)handler
 {
-  v7 = [[CLServiceSession alloc] initWithLocationManager:a3 authorizationRequirement:a4 fullAccuracyPurposeKey:a5 queue:a6 handler:a7];
+  v7 = [[CLServiceSession alloc] initWithLocationManager:manager authorizationRequirement:requirement fullAccuracyPurposeKey:key queue:queue handler:handler];
 
   return v7;
 }
 
-- (void)setupSessionInternalWithLocationManager:(id)a3 authorizationRequirement:(int64_t)a4 fullAccuracyPurposeKey:(id)a5 queue:(id)a6
+- (void)setupSessionInternalWithLocationManager:(id)manager authorizationRequirement:(int64_t)requirement fullAccuracyPurposeKey:(id)key queue:(id)queue
 {
-  v6 = a6;
-  v9 = a3;
+  queueCopy = queue;
+  managerCopy = manager;
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (manager)
   {
-    if (a6)
+    if (queue)
     {
       goto LABEL_3;
     }
@@ -81,16 +81,16 @@
 
   else
   {
-    v9 = +[CLLocationManager weakSharedInstance];
-    if (v6)
+    managerCopy = +[CLLocationManager weakSharedInstance];
+    if (queueCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v6 = +[CLLocationManager sharedQueue];
+  queueCopy = +[CLLocationManager sharedQueue];
 LABEL_3:
-  switch(a4)
+  switch(requirement)
   {
     case 2:
       v18[0] = MEMORY[0x1E69E9820];
@@ -98,7 +98,7 @@ LABEL_3:
       v18[2] = sub_19B995AC0;
       v18[3] = &unk_1E753E1D0;
       v18[4] = self;
-      v11 = [CLServiceSessionInternal alwaysSessionWithLocationManager:v9 queue:v6 handler:v18];
+      v11 = [CLServiceSessionInternal alwaysSessionWithLocationManager:managerCopy queue:queueCopy handler:v18];
       goto LABEL_11;
     case 1:
       v19[0] = MEMORY[0x1E69E9820];
@@ -106,7 +106,7 @@ LABEL_3:
       v19[2] = sub_19B995AB0;
       v19[3] = &unk_1E753E1D0;
       v19[4] = self;
-      v11 = [CLServiceSessionInternal whenInUseSessionWithLocationManager:v9 queue:v6 handler:v19];
+      v11 = [CLServiceSessionInternal whenInUseSessionWithLocationManager:managerCopy queue:queueCopy handler:v19];
       goto LABEL_11;
     case 0:
       v20[0] = MEMORY[0x1E69E9820];
@@ -114,7 +114,7 @@ LABEL_3:
       v20[2] = sub_19B995AA0;
       v20[3] = &unk_1E753E1D0;
       v20[4] = self;
-      v11 = [CLServiceSessionInternal passiveSessionWithLocationManager:v9 queue:v6 handler:v20];
+      v11 = [CLServiceSessionInternal passiveSessionWithLocationManager:managerCopy queue:queueCopy handler:v20];
 LABEL_11:
       self->_serviceSessionInternal = v11;
       goto LABEL_12;
@@ -132,7 +132,7 @@ LABEL_11:
     v22 = 2082;
     v23 = "";
     v24 = 1026;
-    v25 = a4;
+    requirementCopy2 = requirement;
     _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Invalid AuthorizationRequirementType for CLServiceSession, authorizationRequirement:%{public}d}", &buf, 0x18u);
     if (qword_1ED519088 != -1)
     {
@@ -147,19 +147,19 @@ LABEL_11:
     v22 = 2082;
     v23 = "";
     v24 = 1026;
-    v25 = a4;
+    requirementCopy2 = requirement;
     _os_signpost_emit_with_name_impl(&dword_19B873000, v16, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Invalid AuthorizationRequirementType for CLServiceSession", "{msg%{public}.0s:Invalid AuthorizationRequirementType for CLServiceSession, authorizationRequirement:%{public}d}", &buf, 0x18u);
   }
 
 LABEL_12:
-  if ([a5 length])
+  if ([key length])
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = sub_19B995AD0;
     v17[3] = &unk_1E753E1D0;
     v17[4] = self;
-    self->_fullAccuracySession = [CLFullAccuracySession fullAccuracySessionWithLocationManager:v9 purposeKey:a5 queue:v6 handler:v17];
+    self->_fullAccuracySession = [CLFullAccuracySession fullAccuracySessionWithLocationManager:managerCopy purposeKey:key queue:queueCopy handler:v17];
   }
 
   v12 = self->_serviceSessionInternal;
@@ -167,7 +167,7 @@ LABEL_12:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initDisconnectedSessionWithAuthorizationRequirement:(int64_t)a3 fullAccuracyPurposeKey:(id)a4
+- (id)initDisconnectedSessionWithAuthorizationRequirement:(int64_t)requirement fullAccuracyPurposeKey:(id)key
 {
   v9.receiver = self;
   v9.super_class = CLServiceSession;
@@ -176,14 +176,14 @@ LABEL_12:
   if (v6)
   {
     v6->_aggregatedDiagnosticMask = -1;
-    v6->_authorizationRequirement = a3;
-    v6->_fullAccuracyPurposeKey = a4;
+    v6->_authorizationRequirement = requirement;
+    v6->_fullAccuracyPurposeKey = key;
   }
 
   return v7;
 }
 
-- (CLServiceSession)initWithLocationManager:(id)a3 authorizationRequirement:(int64_t)a4 fullAccuracyPurposeKey:(id)a5 queue:(id)a6 handler:(id)a7
+- (CLServiceSession)initWithLocationManager:(id)manager authorizationRequirement:(int64_t)requirement fullAccuracyPurposeKey:(id)key queue:(id)queue handler:(id)handler
 {
   v15.receiver = self;
   v15.super_class = CLServiceSession;
@@ -192,18 +192,18 @@ LABEL_12:
   if (v12)
   {
     v12->_aggregatedDiagnosticMask = -1;
-    if (a7)
+    if (handler)
     {
-      v12->_clientCallback = _Block_copy(a7);
+      v12->_clientCallback = _Block_copy(handler);
     }
 
-    [(CLServiceSession *)v13 setupSessionInternalWithLocationManager:a3 authorizationRequirement:a4 fullAccuracyPurposeKey:a5 queue:a6];
+    [(CLServiceSession *)v13 setupSessionInternalWithLocationManager:manager authorizationRequirement:requirement fullAccuracyPurposeKey:key queue:queue];
   }
 
   return v13;
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
   if (self->_clientCallback)
@@ -221,7 +221,7 @@ LABEL_12:
       v17 = 2082;
       v18 = "";
       v19 = 2050;
-      v20 = self;
+      selfCopy6 = self;
       v21 = 2082;
       v22 = "assert";
       v23 = 2081;
@@ -241,7 +241,7 @@ LABEL_12:
       v17 = 2082;
       v18 = "";
       v19 = 2050;
-      v20 = self;
+      selfCopy6 = self;
       v21 = 2082;
       v22 = "assert";
       v23 = 2081;
@@ -261,7 +261,7 @@ LABEL_12:
       v17 = 2082;
       v18 = "";
       v19 = 2050;
-      v20 = self;
+      selfCopy6 = self;
       v21 = 2082;
       v22 = "assert";
       v23 = 2081;
@@ -273,7 +273,7 @@ LABEL_27:
     abort_report_np();
   }
 
-  if (!a3)
+  if (!handler)
   {
     if (qword_1ED519088 != -1)
     {
@@ -288,7 +288,7 @@ LABEL_27:
       v17 = 2082;
       v18 = "";
       v19 = 2050;
-      v20 = self;
+      selfCopy6 = self;
       v21 = 2082;
       v22 = "assert";
       v23 = 2081;
@@ -308,7 +308,7 @@ LABEL_27:
       v17 = 2082;
       v18 = "";
       v19 = 2050;
-      v20 = self;
+      selfCopy6 = self;
       v21 = 2082;
       v22 = "assert";
       v23 = 2081;
@@ -328,7 +328,7 @@ LABEL_27:
       v17 = 2082;
       v18 = "";
       v19 = 2050;
-      v20 = self;
+      selfCopy6 = self;
       v21 = 2082;
       v22 = "assert";
       v23 = 2081;
@@ -339,7 +339,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  self->_clientCallback = _Block_copy(a3);
+  self->_clientCallback = _Block_copy(handler);
   v4 = +[CLLocationManager weakSharedInstance];
   authorizationRequirement = self->_authorizationRequirement;
   fullAccuracyPurposeKey = self->_fullAccuracyPurposeKey;
@@ -372,7 +372,7 @@ LABEL_27:
     v15 = 2082;
     v16 = "";
     v17 = 2050;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 1026;
     v20 = aggregatedDiagnosticMask;
     v6 = "{msg%{public}.0s:#serviceSession skip diagnosticUpdate delivery - new and old aggregatedMask are same, self:%{public}p, aggregatedDiagnosticMask:%{public}d}";
@@ -404,7 +404,7 @@ LABEL_15:
     v15 = 2082;
     v16 = "";
     v17 = 2050;
-    v18 = self;
+    selfCopy2 = self;
     v6 = "{msg%{public}.0s:#serviceSession skip diagnosticUpdate delivery - no callback handler, self:%{public}p}";
     v7 = v10;
     v8 = 28;

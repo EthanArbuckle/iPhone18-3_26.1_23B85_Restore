@@ -1,20 +1,20 @@
 @interface ASCICloudKeychainLoginChoice
-- (ASCICloudKeychainLoginChoice)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCICloudKeychainLoginChoice)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation ASCICloudKeychainLoginChoice
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (ASCICloudKeychainLoginChoice)initWithCoder:(id)a3
+- (ASCICloudKeychainLoginChoice)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ASCICloudKeychainLoginChoice;

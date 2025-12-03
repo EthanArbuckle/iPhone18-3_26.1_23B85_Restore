@@ -1,17 +1,17 @@
 @interface IXSUninstallAlertConfiguration
-- (IXSUninstallAlertConfiguration)initWithTitle:(id)a3 message:(id)a4;
+- (IXSUninstallAlertConfiguration)initWithTitle:(id)title message:(id)message;
 - (NSDictionary)alertParameters;
-- (id)actionForButtonAtIndex:(unint64_t)a3;
+- (id)actionForButtonAtIndex:(unint64_t)index;
 - (unint64_t)numButtons;
-- (void)addButtonDefinition:(id)a3 forAction:(id)a4;
+- (void)addButtonDefinition:(id)definition forAction:(id)action;
 @end
 
 @implementation IXSUninstallAlertConfiguration
 
-- (IXSUninstallAlertConfiguration)initWithTitle:(id)a3 message:(id)a4
+- (IXSUninstallAlertConfiguration)initWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = IXSUninstallAlertConfiguration;
   v8 = [(IXSUninstallAlertConfiguration *)&v12 init];
@@ -23,39 +23,39 @@
     v10 = objc_opt_new();
     [(IXSUninstallAlertConfiguration *)v8 setActionDefinitions:v10];
 
-    [(IXSUninstallAlertConfiguration *)v8 setTitle:v6];
-    [(IXSUninstallAlertConfiguration *)v8 setMessage:v7];
+    [(IXSUninstallAlertConfiguration *)v8 setTitle:titleCopy];
+    [(IXSUninstallAlertConfiguration *)v8 setMessage:messageCopy];
   }
 
   return v8;
 }
 
-- (void)addButtonDefinition:(id)a3 forAction:(id)a4
+- (void)addButtonDefinition:(id)definition forAction:(id)action
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 buttonType];
-  v8 = [(IXSUninstallAlertConfiguration *)self buttonDefinitions];
-  [v8 addObject:v7];
+  actionCopy = action;
+  definitionCopy = definition;
+  [definitionCopy buttonType];
+  buttonDefinitions = [(IXSUninstallAlertConfiguration *)self buttonDefinitions];
+  [buttonDefinitions addObject:definitionCopy];
 
-  v10 = [(IXSUninstallAlertConfiguration *)self actionDefinitions];
-  v9 = objc_retainBlock(v6);
+  actionDefinitions = [(IXSUninstallAlertConfiguration *)self actionDefinitions];
+  v9 = objc_retainBlock(actionCopy);
 
-  [v10 addObject:v9];
+  [actionDefinitions addObject:v9];
 }
 
-- (id)actionForButtonAtIndex:(unint64_t)a3
+- (id)actionForButtonAtIndex:(unint64_t)index
 {
-  v4 = [(IXSUninstallAlertConfiguration *)self actionDefinitions];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  actionDefinitions = [(IXSUninstallAlertConfiguration *)self actionDefinitions];
+  v5 = [actionDefinitions objectAtIndexedSubscript:index];
 
   return v5;
 }
 
 - (unint64_t)numButtons
 {
-  v2 = [(IXSUninstallAlertConfiguration *)self buttonDefinitions];
-  v3 = [v2 count];
+  buttonDefinitions = [(IXSUninstallAlertConfiguration *)self buttonDefinitions];
+  v3 = [buttonDefinitions count];
 
   return v3;
 }
@@ -67,8 +67,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(IXSUninstallAlertConfiguration *)self buttonDefinitions];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  buttonDefinitions = [(IXSUninstallAlertConfiguration *)self buttonDefinitions];
+  v5 = [buttonDefinitions countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -79,25 +79,25 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(buttonDefinitions);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) buttonDefinitionForSB];
-        [v3 addObject:v9];
+        buttonDefinitionForSB = [*(*(&v15 + 1) + 8 * i) buttonDefinitionForSB];
+        [v3 addObject:buttonDefinitionForSB];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [buttonDefinitions countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);
   }
 
   v19[0] = kCFUserNotificationAlertHeaderKey;
-  v10 = [(IXSUninstallAlertConfiguration *)self title];
-  v20[0] = v10;
+  title = [(IXSUninstallAlertConfiguration *)self title];
+  v20[0] = title;
   v19[1] = kCFUserNotificationAlertMessageKey;
-  v11 = [(IXSUninstallAlertConfiguration *)self message];
-  v20[1] = v11;
+  message = [(IXSUninstallAlertConfiguration *)self message];
+  v20[1] = message;
   v20[2] = &__kCFBooleanTrue;
   v19[2] = SBUserNotificationAllowMenuButtonDismissal;
   v19[3] = SBUserNotificationDismissOnLock;

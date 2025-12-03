@@ -1,28 +1,28 @@
 @interface BKSSecureModeViolation
-- (BKSSecureModeViolation)initWithProcessId:(id)a3 contextIds:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BKSSecureModeViolation)initWithProcessId:(id)id contextIds:(id)ids;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation BKSSecureModeViolation
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BKSSecureModeViolation *)self succinctDescriptionBuilder];
-  [v5 appendDictionarySection:self->_layerNamesByContext withName:@"layerNamesByContext" multilinePrefix:v4 skipIfEmpty:1];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BKSSecureModeViolation *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendDictionarySection:self->_layerNamesByContext withName:@"layerNamesByContext" multilinePrefix:prefixCopy skipIfEmpty:1];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKSSecureModeViolation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKSSecureModeViolation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -36,24 +36,24 @@
 
 - (id)succinctDescription
 {
-  v2 = [(BKSSecureModeViolation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKSSecureModeViolation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (BKSSecureModeViolation)initWithProcessId:(id)a3 contextIds:(id)a4
+- (BKSSecureModeViolation)initWithProcessId:(id)id contextIds:(id)ids
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  idsCopy = ids;
   v14.receiver = self;
   v14.super_class = BKSSecureModeViolation;
   v9 = [(BKSSecureModeViolation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_processId, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_processId, id);
+    v11 = [idsCopy copy];
     contextIds = v10->_contextIds;
     v10->_contextIds = v11;
   }

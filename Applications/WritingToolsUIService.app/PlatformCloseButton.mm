@@ -1,12 +1,12 @@
 @interface PlatformCloseButton
-- (_TtC21WritingToolsUIService19PlatformCloseButton)initWithCoder:(id)a3;
+- (_TtC21WritingToolsUIService19PlatformCloseButton)initWithCoder:(id)coder;
 - (void)didTapCloseButton;
 - (void)layoutSubviews;
 @end
 
 @implementation PlatformCloseButton
 
-- (_TtC21WritingToolsUIService19PlatformCloseButton)initWithCoder:(id)a3
+- (_TtC21WritingToolsUIService19PlatformCloseButton)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC21WritingToolsUIService19PlatformCloseButton_perform);
   *v4 = 0;
@@ -29,7 +29,7 @@
   if (v2)
   {
     v3 = *&self->perform[OBJC_IVAR____TtC21WritingToolsUIService19PlatformCloseButton_perform];
-    v4 = self;
+    selfCopy = self;
     v5 = sub_100058574(v2);
     v2(v5);
 

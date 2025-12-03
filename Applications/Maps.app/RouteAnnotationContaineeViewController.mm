@@ -1,10 +1,10 @@
 @interface RouteAnnotationContaineeViewController
-- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithCoder:(id)a3;
-- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithRouteAnnotation:(id)a3;
+- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithCoder:(id)coder;
+- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithRouteAnnotation:(id)annotation;
 - (id)onDismiss;
-- (void)setOnDismiss:(id)a3;
-- (void)setRouteAnnotation:(id)a3;
+- (void)setOnDismiss:(id)dismiss;
+- (void)setRouteAnnotation:(id)annotation;
 - (void)viewDidLoad;
 @end
 
@@ -32,9 +32,9 @@
   return v3;
 }
 
-- (void)setOnDismiss:(id)a3
+- (void)setOnDismiss:(id)dismiss
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(dismiss);
   if (v4)
   {
     v5 = v4;
@@ -52,29 +52,29 @@
   v8 = *(self + OBJC_IVAR____TtC4Maps38RouteAnnotationContaineeViewController_onDismiss);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_1000588AC(v8);
 }
 
-- (void)setRouteAnnotation:(id)a3
+- (void)setRouteAnnotation:(id)annotation
 {
   v5 = *(self + OBJC_IVAR____TtC4Maps38RouteAnnotationContaineeViewController_routeAnnotation);
-  *(self + OBJC_IVAR____TtC4Maps38RouteAnnotationContaineeViewController_routeAnnotation) = a3;
-  v6 = a3;
-  v7 = self;
+  *(self + OBJC_IVAR____TtC4Maps38RouteAnnotationContaineeViewController_routeAnnotation) = annotation;
+  annotationCopy = annotation;
+  selfCopy = self;
 
-  sub_1005072D8(a3);
+  sub_1005072D8(annotation);
 }
 
-- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithRouteAnnotation:(id)a3
+- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithRouteAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = sub_100281C48(a3);
+  annotationCopy = annotation;
+  v5 = sub_100281C48(annotation);
 
   return v5;
 }
 
-- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithCoder:(id)a3
+- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC4Maps38RouteAnnotationContaineeViewController_onDismiss);
   *v3 = 0;
@@ -87,11 +87,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100281570();
 }
 
-- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps38RouteAnnotationContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

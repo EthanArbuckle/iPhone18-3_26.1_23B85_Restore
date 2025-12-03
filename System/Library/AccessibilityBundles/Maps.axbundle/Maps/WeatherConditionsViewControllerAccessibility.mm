@@ -1,15 +1,15 @@
 @interface WeatherConditionsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation WeatherConditionsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WeatherConditionsViewController" hasInstanceMethod:@"isVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"WeatherConditionsViewController" hasInstanceMethod:@"weatherConditions" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WeatherConditionsViewController" hasInstanceMethod:@"isVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"WeatherConditionsViewController" hasInstanceMethod:@"weatherConditions" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

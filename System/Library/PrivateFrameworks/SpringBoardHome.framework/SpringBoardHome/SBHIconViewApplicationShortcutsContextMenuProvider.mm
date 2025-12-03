@@ -1,15 +1,15 @@
 @interface SBHIconViewApplicationShortcutsContextMenuProvider
-+ (id)applicationShortcutServiceForIconView:(id)a3;
++ (id)applicationShortcutServiceForIconView:(id)view;
 + (id)homeScreenService;
-+ (void)activateShortcut:(id)a3 withBundleIdentifier:(id)a4 forIconView:(id)a5;
-- (BOOL)shouldActivateApplicationShortcutItem:(id)a3 atIndex:(unint64_t)a4 forIconView:(id)a5;
++ (void)activateShortcut:(id)shortcut withBundleIdentifier:(id)identifier forIconView:(id)view;
+- (BOOL)shouldActivateApplicationShortcutItem:(id)item atIndex:(unint64_t)index forIconView:(id)view;
 - (SBHIconViewApplicationShortcutsContextMenuProvider)init;
-- (SBHIconViewApplicationShortcutsContextMenuProvider)initWithUniqueIdentifier:(id)a3;
+- (SBHIconViewApplicationShortcutsContextMenuProvider)initWithUniqueIdentifier:(id)identifier;
 - (SBHIconViewApplicationShortcutsContextMenuProviderDelegate)delegate;
-- (id)contextMenuSectionsForIconView:(id)a3 atLocation:(CGPoint)a4;
-- (id)effectiveApplicationShortcutItemsForIconView:(id)a3;
-- (void)_configureResizeAction:(id)a3 forGridSizeClass:(id)a4 withSelectedGridSizeClass:(id)a5 withIconSupportedGridSizeClasses:(id)a6 forIconView:(id)a7;
-- (void)fetchApplicationShortcutItemsIfAppropriateForIconView:(id)a3;
+- (id)contextMenuSectionsForIconView:(id)view atLocation:(CGPoint)location;
+- (id)effectiveApplicationShortcutItemsForIconView:(id)view;
+- (void)_configureResizeAction:(id)action forGridSizeClass:(id)class withSelectedGridSizeClass:(id)sizeClass withIconSupportedGridSizeClasses:(id)classes forIconView:(id)view;
+- (void)fetchApplicationShortcutItemsIfAppropriateForIconView:(id)view;
 @end
 
 @implementation SBHIconViewApplicationShortcutsContextMenuProvider
@@ -29,15 +29,15 @@
   return v4;
 }
 
-- (SBHIconViewApplicationShortcutsContextMenuProvider)initWithUniqueIdentifier:(id)a3
+- (SBHIconViewApplicationShortcutsContextMenuProvider)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBHIconViewApplicationShortcutsContextMenuProvider;
   v5 = [(SBHIconViewApplicationShortcutsContextMenuProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
   }
@@ -45,23 +45,23 @@
   return v5;
 }
 
-- (id)contextMenuSectionsForIconView:(id)a3 atLocation:(CGPoint)a4
+- (id)contextMenuSectionsForIconView:(id)view atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   v105 = *MEMORY[0x1E69E9840];
-  val = a3;
+  val = view;
   v6 = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self effectiveApplicationShortcutItemsForIconView:?];
-  v61 = [MEMORY[0x1E695DF70] array];
-  v60 = [MEMORY[0x1E695DF70] array];
-  v59 = [MEMORY[0x1E695DF70] array];
-  v62 = [MEMORY[0x1E695DF70] array];
-  v58 = [MEMORY[0x1E695DF70] array];
-  v7 = [val applicationBundleIdentifierForShortcuts];
-  v8 = [val applicationBundleURLForShortcuts];
-  if (v8)
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  applicationBundleIdentifierForShortcuts = [val applicationBundleIdentifierForShortcuts];
+  applicationBundleURLForShortcuts = [val applicationBundleURLForShortcuts];
+  if (applicationBundleURLForShortcuts)
   {
-    v9 = [objc_alloc(MEMORY[0x1E698E640]) initWithURL:v8];
+    v9 = [objc_alloc(MEMORY[0x1E698E640]) initWithURL:applicationBundleURLForShortcuts];
   }
 
   else
@@ -79,10 +79,10 @@
   objc_copyWeak(&v95, &from);
   v10 = v6;
   v89 = v10;
-  v90 = self;
-  v52 = v7;
+  selfCopy = self;
+  v52 = applicationBundleIdentifierForShortcuts;
   v91 = v52;
-  v53 = v8;
+  v53 = applicationBundleURLForShortcuts;
   v92 = v53;
   v54 = v9;
   v93 = v54;
@@ -109,8 +109,8 @@
         v16 = v11[2](v11, v15);
         if (v16)
         {
-          v17 = [v15 type];
-          [v16 setAccessibilityIdentifier:v17];
+          type = [v15 type];
+          [v16 setAccessibilityIdentifier:type];
 
           if ([SBHIconApplicationShortcutListComposer sbh_isDestructiveShortcutItem:v15])
           {
@@ -126,10 +126,10 @@
           v20 = [SBHIconApplicationShortcutListComposer sbh_shortcutSectionForItem:v15];
           if (v20 > 1)
           {
-            v21 = v62;
+            v21 = array4;
             if (v20 != 2)
             {
-              v21 = v61;
+              v21 = array;
               if (v20 != 3)
               {
                 if (v20 != 4)
@@ -137,7 +137,7 @@
                   goto LABEL_21;
                 }
 
-                v21 = v58;
+                v21 = array5;
               }
             }
 
@@ -146,13 +146,13 @@ LABEL_20:
             goto LABEL_21;
           }
 
-          v21 = v60;
+          v21 = array2;
           if (!v20)
           {
             goto LABEL_20;
           }
 
-          v21 = v59;
+          v21 = array3;
           if (v20 == 1)
           {
             goto LABEL_20;
@@ -169,10 +169,10 @@ LABEL_21:
   }
 
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v57 = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self delegate];
+  delegate = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v57 applicationShortcutSectionOrderingForIconView:val];
+    v23 = [delegate applicationShortcutSectionOrderingForIconView:val];
     v24 = v23;
     if (v23)
     {
@@ -208,12 +208,12 @@ LABEL_21:
           objc_enumerationMutation(v26);
         }
 
-        v30 = [*(*(&v80 + 1) + 8 * j) unsignedIntegerValue];
-        if (v30 <= 1)
+        unsignedIntegerValue = [*(*(&v80 + 1) + 8 * j) unsignedIntegerValue];
+        if (unsignedIntegerValue <= 1)
         {
-          if (v30)
+          if (unsignedIntegerValue)
           {
-            if (v30 != 1)
+            if (unsignedIntegerValue != 1)
             {
               continue;
             }
@@ -222,7 +222,7 @@ LABEL_21:
             v75 = 0u;
             v72 = 0u;
             v73 = 0u;
-            v31 = v59;
+            v31 = array3;
             v32 = [v31 countByEnumeratingWithState:&v72 objects:v101 count:16];
             if (v32)
             {
@@ -252,7 +252,7 @@ LABEL_21:
             v79 = 0u;
             v76 = 0u;
             v77 = 0u;
-            v31 = v60;
+            v31 = array2;
             v45 = [v31 countByEnumeratingWithState:&v76 objects:v102 count:16];
             if (v45)
             {
@@ -279,16 +279,16 @@ LABEL_21:
 
         else
         {
-          switch(v30)
+          switch(unsignedIntegerValue)
           {
             case 2:
-              if ((objc_opt_respondsToSelector() & 1) != 0 && [v57 shouldGroupSystemApplicationShortcutItemsForIconView:val atLocation:{x, y}])
+              if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate shouldGroupSystemApplicationShortcutItemsForIconView:val atLocation:{x, y}])
               {
                 v31 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"gearshape"];
                 v35 = MEMORY[0x1E69DCC60];
                 v36 = SBHBundle();
                 v37 = [v36 localizedStringForKey:@"OPTIONS" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-                v38 = [v35 menuWithTitle:v37 image:v31 identifier:0 options:32 children:v62];
+                v38 = [v35 menuWithTitle:v37 image:v31 identifier:0 options:32 children:array4];
 
                 v39 = MEMORY[0x1E69DCC60];
                 v100 = v38;
@@ -304,7 +304,7 @@ LABEL_21:
                 v71 = 0u;
                 v68 = 0u;
                 v69 = 0u;
-                v31 = v62;
+                v31 = array4;
                 v48 = [v31 countByEnumeratingWithState:&v68 objects:v99 count:16];
                 if (v48)
                 {
@@ -334,7 +334,7 @@ LABEL_21:
               v67 = 0u;
               v64 = 0u;
               v65 = 0u;
-              v31 = v61;
+              v31 = array;
               v42 = [v31 countByEnumeratingWithState:&v64 objects:v98 count:16];
               if (v42)
               {
@@ -359,7 +359,7 @@ LABEL_21:
 
               break;
             case 4:
-              v31 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3D472A8 image:0 identifier:0 options:1 children:v58];
+              v31 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F3D472A8 image:0 identifier:0 options:1 children:array5];
               [v22 addObject:v31];
               break;
             default:
@@ -696,7 +696,7 @@ uint64_t __96__SBHIconViewApplicationShortcutsContextMenuProvider_contextMenuSec
   return MEMORY[0x1EEE66BB8](WeakRetained, v3);
 }
 
-+ (id)applicationShortcutServiceForIconView:(id)a3
++ (id)applicationShortcutServiceForIconView:(id)view
 {
   if (applicationShortcutServiceForIconView__onceToken != -1)
   {
@@ -723,38 +723,38 @@ uint64_t __92__SBHIconViewApplicationShortcutsContextMenuProvider_applicationSho
   return result;
 }
 
-- (id)effectiveApplicationShortcutItemsForIconView:(id)a3
+- (id)effectiveApplicationShortcutItemsForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 applicationShortcutItems];
-  if (!v5)
+  viewCopy = view;
+  applicationShortcutItems = [viewCopy applicationShortcutItems];
+  if (!applicationShortcutItems)
   {
-    v5 = [v4 fetchedApplicationShortcutItems];
+    applicationShortcutItems = [viewCopy fetchedApplicationShortcutItems];
   }
 
-  v6 = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self delegate];
+  delegate = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconView:v4 applicationShortcutItemsWithProposedItems:v5];
+    v7 = [delegate iconView:viewCopy applicationShortcutItemsWithProposedItems:applicationShortcutItems];
 
-    v5 = v7;
+    applicationShortcutItems = v7;
   }
 
-  return v5;
+  return applicationShortcutItems;
 }
 
-- (void)fetchApplicationShortcutItemsIfAppropriateForIconView:(id)a3
+- (void)fetchApplicationShortcutItemsIfAppropriateForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  v6 = [v5 isApplicationIcon];
-  if (v6 && (SBHIsRunningInSpringBoard(v6) & 1) == 0 && [objc_opt_class() supportsPreviewInteraction])
+  viewCopy = view;
+  icon = [viewCopy icon];
+  isApplicationIcon = [icon isApplicationIcon];
+  if (isApplicationIcon && (SBHIsRunningInSpringBoard(isApplicationIcon) & 1) == 0 && [objc_opt_class() supportsPreviewInteraction])
   {
-    v7 = [v5 applicationBundleID];
-    v8 = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self delegate];
+    applicationBundleID = [icon applicationBundleID];
+    delegate = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      if ([v8 iconViewShouldIncludeUninstallShortcutItem:v4])
+      if ([delegate iconViewShouldIncludeUninstallShortcutItem:viewCopy])
       {
         v9 = 16777224;
       }
@@ -770,19 +770,19 @@ uint64_t __92__SBHIconViewApplicationShortcutsContextMenuProvider_applicationSho
       v9 = 0x1000000;
     }
 
-    v10 = [objc_opt_class() applicationShortcutServiceForIconView:v4];
+    v10 = [objc_opt_class() applicationShortcutServiceForIconView:viewCopy];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __108__SBHIconViewApplicationShortcutsContextMenuProvider_fetchApplicationShortcutItemsIfAppropriateForIconView___block_invoke;
     v11[3] = &unk_1E8090B10;
-    v12 = v4;
-    v13 = v5;
-    [v10 fetchApplicationShortcutItemsOfTypes:v9 forBundleIdentifier:v7 withCompletionHandler:v11];
+    v12 = viewCopy;
+    v13 = icon;
+    [v10 fetchApplicationShortcutItemsOfTypes:v9 forBundleIdentifier:applicationBundleID withCompletionHandler:v11];
   }
 
   else
   {
-    [v4 setFetchedApplicationShortcutItems:0];
+    [viewCopy setFetchedApplicationShortcutItems:0];
   }
 }
 
@@ -808,14 +808,14 @@ void __108__SBHIconViewApplicationShortcutsContextMenuProvider_fetchApplicationS
   }
 }
 
-- (BOOL)shouldActivateApplicationShortcutItem:(id)a3 atIndex:(unint64_t)a4 forIconView:(id)a5
+- (BOOL)shouldActivateApplicationShortcutItem:(id)item atIndex:(unint64_t)index forIconView:(id)view
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self delegate];
+  itemCopy = item;
+  viewCopy = view;
+  delegate = [(SBHIconViewApplicationShortcutsContextMenuProvider *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 iconView:v9 shouldActivateApplicationShortcutItem:v8 atIndex:a4];
+    v11 = [delegate iconView:viewCopy shouldActivateApplicationShortcutItem:itemCopy atIndex:index];
   }
 
   else
@@ -826,48 +826,48 @@ void __108__SBHIconViewApplicationShortcutsContextMenuProvider_fetchApplicationS
   return v11;
 }
 
-+ (void)activateShortcut:(id)a3 withBundleIdentifier:(id)a4 forIconView:(id)a5
++ (void)activateShortcut:(id)shortcut withBundleIdentifier:(id)identifier forIconView:(id)view
 {
   v77[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 type];
-  v11 = [v10 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.appStoreLink"];
+  shortcutCopy = shortcut;
+  identifierCopy = identifier;
+  viewCopy = view;
+  type = [shortcutCopy type];
+  v11 = [type isEqualToString:@"com.apple.springboardhome.application-shortcut-item.appStoreLink"];
 
   if (!v11)
   {
-    v16 = [v7 type];
-    v17 = [v16 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.share"];
+    type2 = [shortcutCopy type];
+    v17 = [type2 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.share"];
 
     if (v17)
     {
-      v18 = [v7 userInfo];
+      userInfo = [shortcutCopy userInfo];
       v19 = *MEMORY[0x1E697BB38];
-      v13 = [v18 objectForKey:*MEMORY[0x1E697BB38]];
+      icon = [userInfo objectForKey:*MEMORY[0x1E697BB38]];
 
-      if (!v13)
+      if (!icon)
       {
         goto LABEL_13;
       }
 
-      v14 = [v9 window];
-      v15 = [MEMORY[0x1E695DF90] dictionary];
-      [v15 setObject:v13 forKeyedSubscript:v19];
-      v20 = [MEMORY[0x1E69DC938] currentDevice];
-      v21 = [v20 userInterfaceIdiom];
+      window = [viewCopy window];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:icon forKeyedSubscript:v19];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v21 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
-        v22 = [v14 screen];
-        [v9 frame];
+        screen = [window screen];
+        [viewCopy frame];
         v24 = v23;
         v26 = v25;
         v28 = v27;
         v30 = v29;
-        v31 = [v9 superview];
-        v32 = [v22 coordinateSpace];
-        [v31 convertRect:v32 toCoordinateSpace:{v24, v26, v28, v30}];
+        superview = [viewCopy superview];
+        coordinateSpace = [screen coordinateSpace];
+        [superview convertRect:coordinateSpace toCoordinateSpace:{v24, v26, v28, v30}];
         v34 = v33;
         v36 = v35;
         v38 = v37;
@@ -878,18 +878,18 @@ void __108__SBHIconViewApplicationShortcutsContextMenuProvider_fetchApplicationS
         v78.size.width = v38;
         v78.size.height = v40;
         v41 = NSStringFromCGRect(v78);
-        [v15 setObject:v41 forKeyedSubscript:*MEMORY[0x1E697BB40]];
+        [dictionary setObject:v41 forKeyedSubscript:*MEMORY[0x1E697BB40]];
       }
 
-      v42 = [objc_alloc(MEMORY[0x1E697BA98]) initWithParameters:v15];
-      v43 = [v14 rootViewController];
-      [v43 presentViewController:v42 animated:1 completion:0];
+      v42 = [objc_alloc(MEMORY[0x1E697BA98]) initWithParameters:dictionary];
+      rootViewController = [window rootViewController];
+      [rootViewController presentViewController:v42 animated:1 completion:0];
     }
 
     else
     {
-      v44 = [v7 type];
-      v45 = [v44 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.show-all-windows"];
+      type3 = [shortcutCopy type];
+      v45 = [type3 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.show-all-windows"];
 
       if (v45)
       {
@@ -898,63 +898,63 @@ void __108__SBHIconViewApplicationShortcutsContextMenuProvider_fetchApplicationS
           +[SBHIconViewApplicationShortcutsContextMenuProvider activateShortcut:withBundleIdentifier:forIconView:];
         }
 
-        [activateShortcut_withBundleIdentifier_forIconView__multiWindowService triggerShowAllWindowsForApplicationBundleIdentifier:v8];
+        [activateShortcut_withBundleIdentifier_forIconView__multiWindowService triggerShowAllWindowsForApplicationBundleIdentifier:identifierCopy];
         goto LABEL_13;
       }
 
-      v46 = [v7 type];
-      v47 = [v46 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.delete-app"];
+      type4 = [shortcutCopy type];
+      v47 = [type4 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.delete-app"];
 
       if (v47)
       {
-        v13 = [v9 icon];
-        [v13 setUninstalled];
-        [v13 completeUninstall];
+        icon = [viewCopy icon];
+        [icon setUninstalled];
+        [icon completeUninstall];
         goto LABEL_12;
       }
 
-      v48 = [v7 type];
-      v49 = [v48 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.add-to-home-screen"];
+      type5 = [shortcutCopy type];
+      v49 = [type5 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.add-to-home-screen"];
 
       if (v49)
       {
-        v13 = [objc_opt_class() homeScreenService];
-        [v13 addApplicationIconToHomeScreenWithBundleIdentifier:v8];
+        icon = [objc_opt_class() homeScreenService];
+        [icon addApplicationIconToHomeScreenWithBundleIdentifier:identifierCopy];
         goto LABEL_12;
       }
 
-      v50 = [v7 type];
-      v51 = [v50 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.app-protection"];
+      type6 = [shortcutCopy type];
+      v51 = [type6 isEqualToString:@"com.apple.springboardhome.application-shortcut-item.app-protection"];
 
       if (v51)
       {
-        v13 = [v9 icon];
-        if (![v13 isApplicationIcon])
+        icon = [viewCopy icon];
+        if (![icon isApplicationIcon])
         {
           goto LABEL_12;
         }
 
-        v14 = v13;
-        v52 = [v7 userInfo];
-        v53 = [v52 objectForKey:kSBHIconAppProtectionFeatureUserInfoKey];
-        v54 = [v53 unsignedIntegerValue];
+        window = icon;
+        userInfo2 = [shortcutCopy userInfo];
+        v53 = [userInfo2 objectForKey:kSBHIconAppProtectionFeatureUserInfoKey];
+        unsignedIntegerValue = [v53 unsignedIntegerValue];
 
-        v55 = [v7 userInfo];
-        v56 = [v55 objectForKey:kSBHIconAppProtectionActionUserInfoKey];
-        v57 = [v56 unsignedIntegerValue];
+        userInfo3 = [shortcutCopy userInfo];
+        v56 = [userInfo3 objectForKey:kSBHIconAppProtectionActionUserInfoKey];
+        unsignedIntegerValue2 = [v56 unsignedIntegerValue];
 
-        [v14 changeEnablement:v57 ofFeature:v54];
+        [window changeEnablement:unsignedIntegerValue2 ofFeature:unsignedIntegerValue];
         goto LABEL_11;
       }
 
-      v58 = [v7 activationMode] == 1;
-      v13 = [objc_alloc(MEMORY[0x1E69DCA98]) initWithSBSShortcutItem:v7];
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      v58 = [shortcutCopy activationMode] == 1;
+      icon = [objc_alloc(MEMORY[0x1E69DCA98]) initWithSBSShortcutItem:shortcutCopy];
+      window = [MEMORY[0x1E695DF90] dictionary];
       v76[0] = *MEMORY[0x1E699F8E8];
       v59 = [MEMORY[0x1E696AD98] numberWithBool:v58];
       v77[0] = v59;
       v76[1] = *MEMORY[0x1E699F8D0];
-      v75 = v13;
+      v75 = icon;
       v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
       v61 = *MEMORY[0x1E699F970];
       v77[1] = v60;
@@ -964,44 +964,44 @@ void __108__SBHIconViewApplicationShortcutsContextMenuProvider_fetchApplicationS
       v76[3] = v62;
       v77[3] = *MEMORY[0x1E69D4430];
       v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:v76 count:4];
-      [v14 addEntriesFromDictionary:v63];
+      [window addEntriesFromDictionary:v63];
 
-      v15 = [v7 targetContentIdentifier];
-      v64 = [v7 targetContentIdentifier];
+      dictionary = [shortcutCopy targetContentIdentifier];
+      targetContentIdentifier = [shortcutCopy targetContentIdentifier];
 
-      if (v64)
+      if (targetContentIdentifier)
       {
-        [v14 setObject:v15 forKey:*MEMORY[0x1E69DECE8]];
+        [window setObject:dictionary forKey:*MEMORY[0x1E69DECE8]];
       }
 
       if (SBFIsChamoisExternalDisplayControllerAvailable())
       {
-        v65 = [v9 _screen];
-        v66 = [v65 displayConfiguration];
-        v67 = [v66 deviceName];
+        _screen = [viewCopy _screen];
+        displayConfiguration = [_screen displayConfiguration];
+        deviceName = [displayConfiguration deviceName];
 
-        if (v67)
+        if (deviceName)
         {
-          [v14 setObject:v67 forKey:*MEMORY[0x1E69D4448]];
+          [window setObject:deviceName forKey:*MEMORY[0x1E69D4448]];
         }
       }
 
-      v42 = [MEMORY[0x1E699FB70] optionsWithDictionary:v14];
+      v42 = [MEMORY[0x1E699FB70] optionsWithDictionary:window];
       if (activateShortcut_withBundleIdentifier_forIconView__onceToken_87 != -1)
       {
         +[SBHIconViewApplicationShortcutsContextMenuProvider activateShortcut:withBundleIdentifier:forIconView:];
       }
 
-      v68 = [v7 bundleIdentifierToLaunch];
-      v69 = v68;
-      if (v68)
+      bundleIdentifierToLaunch = [shortcutCopy bundleIdentifierToLaunch];
+      v69 = bundleIdentifierToLaunch;
+      if (bundleIdentifierToLaunch)
       {
-        v70 = v68;
+        v70 = bundleIdentifierToLaunch;
       }
 
       else
       {
-        v70 = v8;
+        v70 = identifierCopy;
       }
 
       v71 = v70;
@@ -1011,21 +1011,21 @@ void __108__SBHIconViewApplicationShortcutsContextMenuProvider_fetchApplicationS
       v73[1] = 3221225472;
       v73[2] = __104__SBHIconViewApplicationShortcutsContextMenuProvider_activateShortcut_withBundleIdentifier_forIconView___block_invoke_3;
       v73[3] = &unk_1E8090B38;
-      v74 = v8;
+      v74 = identifierCopy;
       [v72 openApplication:v71 withOptions:v42 completion:v73];
     }
 
     goto LABEL_10;
   }
 
-  v12 = [v7 userInfo];
-  v13 = [v12 objectForKey:kSBHIconAppStoreURLUserInfoKey];
+  userInfo4 = [shortcutCopy userInfo];
+  icon = [userInfo4 objectForKey:kSBHIconAppStoreURLUserInfoKey];
 
-  if (v13)
+  if (icon)
   {
-    v14 = [MEMORY[0x1E6963608] defaultWorkspace];
-    v15 = [MEMORY[0x1E695DFF8] URLWithString:v13];
-    [v14 openURL:v15 withOptions:0];
+    window = [MEMORY[0x1E6963608] defaultWorkspace];
+    dictionary = [MEMORY[0x1E695DFF8] URLWithString:icon];
+    [window openURL:dictionary withOptions:0];
 LABEL_10:
 
 LABEL_11:
@@ -1093,25 +1093,25 @@ uint64_t __71__SBHIconViewApplicationShortcutsContextMenuProvider_homeScreenServ
   return result;
 }
 
-- (void)_configureResizeAction:(id)a3 forGridSizeClass:(id)a4 withSelectedGridSizeClass:(id)a5 withIconSupportedGridSizeClasses:(id)a6 forIconView:(id)a7
+- (void)_configureResizeAction:(id)action forGridSizeClass:(id)class withSelectedGridSizeClass:(id)sizeClass withIconSupportedGridSizeClasses:(id)classes forIconView:(id)view
 {
-  v17 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (v12 == v11 || [v12 isEqualToString:v11])
+  actionCopy = action;
+  classCopy = class;
+  sizeClassCopy = sizeClass;
+  classesCopy = classes;
+  viewCopy = view;
+  if (sizeClassCopy == classCopy || [sizeClassCopy isEqualToString:classCopy])
   {
-    [v17 setAttributes:8];
-    [v17 setState:1];
+    [actionCopy setAttributes:8];
+    [actionCopy setState:1];
   }
 
-  v15 = [v14 gridSizeClassDomain];
-  v16 = [v13 containsGridSizeClass:v11 inDomain:v15];
+  gridSizeClassDomain = [viewCopy gridSizeClassDomain];
+  v16 = [classesCopy containsGridSizeClass:classCopy inDomain:gridSizeClassDomain];
 
   if ((v16 & 1) == 0)
   {
-    [v17 setAttributes:1];
+    [actionCopy setAttributes:1];
   }
 }
 

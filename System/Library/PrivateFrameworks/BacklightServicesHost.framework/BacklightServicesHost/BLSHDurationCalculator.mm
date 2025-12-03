@@ -1,11 +1,11 @@
 @interface BLSHDurationCalculator
-- (BLSHDurationCalculator)initWithDuration:(double)a3;
+- (BLSHDurationCalculator)initWithDuration:(double)duration;
 - (double)remainingDuration;
 @end
 
 @implementation BLSHDurationCalculator
 
-- (BLSHDurationCalculator)initWithDuration:(double)a3
+- (BLSHDurationCalculator)initWithDuration:(double)duration
 {
   v8.receiver = self;
   v8.super_class = BLSHDurationCalculator;
@@ -13,7 +13,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_duration = a3;
+    v4->_duration = duration;
     BSContinuousMachTimeNow();
     v5->_start = v6;
   }

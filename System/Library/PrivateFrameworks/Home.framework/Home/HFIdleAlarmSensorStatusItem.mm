@@ -1,8 +1,8 @@
 @interface HFIdleAlarmSensorStatusItem
 + (id)statusItemClasses;
-- (BOOL)shouldEncapsulateItem:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3;
+- (BOOL)shouldEncapsulateItem:(id)item;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects;
 @end
 
 @implementation HFIdleAlarmSensorStatusItem
@@ -35,15 +35,15 @@ void __48__HFIdleAlarmSensorStatusItem_statusItemClasses__block_invoke_2()
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldEncapsulateItem:(id)a3
+- (BOOL)shouldEncapsulateItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = HFIdleAlarmSensorStatusItem;
-  if ([(HFAbstractGroupedStatusItem *)&v9 shouldEncapsulateItem:v4])
+  if ([(HFAbstractGroupedStatusItem *)&v9 shouldEncapsulateItem:itemCopy])
   {
-    v5 = [v4 latestResults];
-    v6 = [v5 objectForKeyedSubscript:@"priority"];
+    latestResults = [itemCopy latestResults];
+    v6 = [latestResults objectForKeyedSubscript:@"priority"];
     v7 = [v6 integerValue] == -1;
   }
 
@@ -55,20 +55,20 @@ void __48__HFIdleAlarmSensorStatusItem_statusItemClasses__block_invoke_2()
   return v7;
 }
 
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects
 {
   v3 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"sensor.fill"];
 
   return v3;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v10.receiver = self;
   v10.super_class = HFIdleAlarmSensorStatusItem;
-  v5 = [(HFAbstractGroupedStatusItem *)&v10 _subclass_updateWithOptions:v4];
+  v5 = [(HFAbstractGroupedStatusItem *)&v10 _subclass_updateWithOptions:optionsCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__HFIdleAlarmSensorStatusItem__subclass_updateWithOptions___block_invoke;

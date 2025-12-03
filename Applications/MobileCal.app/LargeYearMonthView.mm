@@ -1,7 +1,7 @@
 @interface LargeYearMonthView
-+ (double)heightForInterfaceOrientation:(int64_t)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5;
++ (double)heightForInterfaceOrientation:(int64_t)orientation windowSize:(CGSize)size heightSizeClass:(int64_t)class;
 - (BOOL)showWeekDayInitials;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)circleFrameYAdjustment;
 - (double)circleSize;
 - (double)dayTextSize;
@@ -25,23 +25,23 @@
 - (double)viewWidthForSizing
 {
   v3 = AnchoredValueCurrentWindowWidth(self);
-  v4 = [(LargeYearMonthView *)self window];
+  window = [(LargeYearMonthView *)self window];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(LargeYearMonthView *)self window];
-    [v6 mainContentSize];
+    window2 = [(LargeYearMonthView *)self window];
+    [window2 mainContentSize];
     v3 = v7;
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(LargeYearMonthView *)self xSpacing:a3.width];
+  [(LargeYearMonthView *)self xSpacing:fits.width];
   v5 = v4 * [(LargeYearMonthView *)self daysInWeek]+ 2.0;
   v6 = EKUIInterfaceOrientationForViewHierarchy();
   v7 = objc_opt_class();
@@ -54,9 +54,9 @@
   return result;
 }
 
-+ (double)heightForInterfaceOrientation:(int64_t)a3 windowSize:(CGSize)a4 heightSizeClass:(int64_t)a5
++ (double)heightForInterfaceOrientation:(int64_t)orientation windowSize:(CGSize)size heightSizeClass:(int64_t)class
 {
-  width = a4.width;
+  width = size.width;
   v6 = EKUIWindowSizeParadigmForWindowSize();
   v7 = v6;
   if (v6 > 0x1FFFFFF)
@@ -454,8 +454,8 @@ LABEL_5:
 - (BOOL)showWeekDayInitials
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 localeIdentifier];
-  v4 = [v3 hasPrefix:@"ar"];
+  localeIdentifier = [v2 localeIdentifier];
+  v4 = [localeIdentifier hasPrefix:@"ar"];
 
   if (v4)
   {

@@ -6,14 +6,14 @@
 
 - (id)tps_localizedName
 {
-  v2 = [a1 name];
-  v3 = [TPSLocalizedString localizedStringForKey:v2];
+  name = [self name];
+  v3 = [TPSLocalizedString localizedStringForKey:name];
 
   if (![v3 length])
   {
-    v4 = [a1 name];
+    name2 = [self name];
 
-    v3 = v4;
+    v3 = name2;
   }
 
   return v3;

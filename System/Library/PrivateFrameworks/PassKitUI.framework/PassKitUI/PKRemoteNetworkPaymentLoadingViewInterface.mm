@@ -1,19 +1,19 @@
 @interface PKRemoteNetworkPaymentLoadingViewInterface
-- (PKRemoteNetworkPaymentLoadingViewInterface)initWithConfiguration:(id)a3 host:(id)a4;
+- (PKRemoteNetworkPaymentLoadingViewInterface)initWithConfiguration:(id)configuration host:(id)host;
 @end
 
 @implementation PKRemoteNetworkPaymentLoadingViewInterface
 
-- (PKRemoteNetworkPaymentLoadingViewInterface)initWithConfiguration:(id)a3 host:(id)a4
+- (PKRemoteNetworkPaymentLoadingViewInterface)initWithConfiguration:(id)configuration host:(id)host
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  hostCopy = host;
   v12.receiver = self;
   v12.super_class = PKRemoteNetworkPaymentLoadingViewInterface;
   v8 = [(PKRemoteNetworkPaymentLoadingViewInterface *)&v12 init];
   if (v8)
   {
-    v9 = [[_PKRemoteNetworkPaymentLoadingViewInterface alloc] initWithConfiguration:v6 host:v7];
+    v9 = [[_PKRemoteNetworkPaymentLoadingViewInterface alloc] initWithConfiguration:configurationCopy host:hostCopy];
     underlying = v8->_underlying;
     v8->_underlying = v9;
   }

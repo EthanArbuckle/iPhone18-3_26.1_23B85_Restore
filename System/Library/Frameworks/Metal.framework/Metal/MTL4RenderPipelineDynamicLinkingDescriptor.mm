@@ -1,7 +1,7 @@
 @interface MTL4RenderPipelineDynamicLinkingDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4RenderPipelineDynamicLinkingDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)releaseLinkingDescriptors;
@@ -42,48 +42,48 @@
   self->_meshLinkingDescriptor = objc_alloc_init(MTL4PipelineStageDynamicLinkingDescriptor);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[1] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_vertexLinkingDescriptor copyWithZone:a3];
-  v5[2] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_fragmentLinkingDescriptor copyWithZone:a3];
+  v5[1] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_vertexLinkingDescriptor copyWithZone:zone];
+  v5[2] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_fragmentLinkingDescriptor copyWithZone:zone];
 
-  v5[3] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_tileLinkingDescriptor copyWithZone:a3];
-  v5[4] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_objectLinkingDescriptor copyWithZone:a3];
+  v5[3] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_tileLinkingDescriptor copyWithZone:zone];
+  v5[4] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_objectLinkingDescriptor copyWithZone:zone];
 
-  v5[5] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_meshLinkingDescriptor copyWithZone:a3];
+  v5[5] = [(MTL4PipelineStageDynamicLinkingDescriptor *)self->_meshLinkingDescriptor copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_16;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     LOBYTE(v6) = 0;
     return v6;
   }
 
   vertexLinkingDescriptor = self->_vertexLinkingDescriptor;
-  if (vertexLinkingDescriptor == *(a3 + 1) || (v6 = [(MTL4PipelineStageDynamicLinkingDescriptor *)vertexLinkingDescriptor isEqual:?]))
+  if (vertexLinkingDescriptor == *(equal + 1) || (v6 = [(MTL4PipelineStageDynamicLinkingDescriptor *)vertexLinkingDescriptor isEqual:?]))
   {
     fragmentLinkingDescriptor = self->_fragmentLinkingDescriptor;
-    if (fragmentLinkingDescriptor == *(a3 + 2) || (v6 = [(MTL4PipelineStageDynamicLinkingDescriptor *)fragmentLinkingDescriptor isEqual:?]))
+    if (fragmentLinkingDescriptor == *(equal + 2) || (v6 = [(MTL4PipelineStageDynamicLinkingDescriptor *)fragmentLinkingDescriptor isEqual:?]))
     {
       tileLinkingDescriptor = self->_tileLinkingDescriptor;
-      if (tileLinkingDescriptor == *(a3 + 3) || (v6 = [(MTL4PipelineStageDynamicLinkingDescriptor *)tileLinkingDescriptor isEqual:?]))
+      if (tileLinkingDescriptor == *(equal + 3) || (v6 = [(MTL4PipelineStageDynamicLinkingDescriptor *)tileLinkingDescriptor isEqual:?]))
       {
         objectLinkingDescriptor = self->_objectLinkingDescriptor;
-        if (objectLinkingDescriptor == *(a3 + 4) || (v6 = [(MTL4PipelineStageDynamicLinkingDescriptor *)objectLinkingDescriptor isEqual:?]))
+        if (objectLinkingDescriptor == *(equal + 4) || (v6 = [(MTL4PipelineStageDynamicLinkingDescriptor *)objectLinkingDescriptor isEqual:?]))
         {
           meshLinkingDescriptor = self->_meshLinkingDescriptor;
-          if (meshLinkingDescriptor != *(a3 + 5))
+          if (meshLinkingDescriptor != *(equal + 5))
           {
 
             LOBYTE(v6) = [(MTL4PipelineStageDynamicLinkingDescriptor *)meshLinkingDescriptor isEqual:?];

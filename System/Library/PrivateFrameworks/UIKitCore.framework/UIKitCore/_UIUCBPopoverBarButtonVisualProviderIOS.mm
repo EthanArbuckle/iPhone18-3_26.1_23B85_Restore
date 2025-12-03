@@ -1,10 +1,10 @@
 @interface _UIUCBPopoverBarButtonVisualProviderIOS
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIUCBPopoverBarButtonVisualProviderIOS)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5;
-- (void)updateButton:(id)a3 forSelectedState:(BOOL)a4;
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item;
+- (void)updateButton:(id)button forSelectedState:(BOOL)state;
 @end
 
 @implementation _UIUCBPopoverBarButtonVisualProviderIOS
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _UIUCBPopoverBarButtonVisualProviderIOS;
-  v4 = [(_UIButtonBarButtonVisualProvider *)&v6 copyWithZone:a3];
+  v4 = [(_UIButtonBarButtonVisualProvider *)&v6 copyWithZone:zone];
   [v4 setSelectionBackgroundTintColor:self->_selectionBackgroundTintColor];
   [v4 setSelectionTintColor:self->_selectionTintColor];
   return v4;
@@ -47,14 +47,14 @@
   return v4 ^ [(UIColor *)self->_selectionTintColor hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _UIUCBPopoverBarButtonVisualProviderIOS;
-  if ([(_UIButtonBarButtonVisualProvider *)&v12 isEqual:v4])
+  if ([(_UIButtonBarButtonVisualProvider *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     selectionTintColor = self->_selectionTintColor;
     if (selectionTintColor == v5[11])
     {
@@ -88,12 +88,12 @@
   return v8;
 }
 
-- (void)configureButton:(id)a3 withAppearanceDelegate:(id)a4 fromBarItem:(id)a5
+- (void)configureButton:(id)button withAppearanceDelegate:(id)delegate fromBarItem:(id)item
 {
-  v8 = a3;
+  buttonCopy = button;
   v25.receiver = self;
   v25.super_class = _UIUCBPopoverBarButtonVisualProviderIOS;
-  [(_UIUCBBarButtonVisualProviderIOS *)&v25 configureButton:v8 withAppearanceDelegate:a4 fromBarItem:a5];
+  [(_UIUCBBarButtonVisualProviderIOS *)&v25 configureButton:buttonCopy withAppearanceDelegate:delegate fromBarItem:item];
   if (!self->_selectionBackgroundView)
   {
     v9 = objc_alloc_init(UIView);
@@ -104,40 +104,40 @@
     [(UIView *)self->_selectionBackgroundView setUserInteractionEnabled:0];
     [(UIView *)self->_selectionBackgroundView setBackgroundColor:self->_selectionBackgroundTintColor];
     [(UIView *)self->_selectionBackgroundView _setContinuousCornerRadius:2.0];
-    v11 = [v8 isSelected];
+    isSelected = [buttonCopy isSelected];
     v12 = 0.0;
-    if (v11)
+    if (isSelected)
     {
       v12 = 1.0;
     }
 
     [(UIView *)self->_selectionBackgroundView setAlpha:v12];
-    [v8 insertSubview:self->_selectionBackgroundView belowSubview:self->super._contentButton];
-    v13 = [(UIView *)self->_selectionBackgroundView leadingAnchor];
-    v14 = [v8 leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    [buttonCopy insertSubview:self->_selectionBackgroundView belowSubview:self->super._contentButton];
+    leadingAnchor = [(UIView *)self->_selectionBackgroundView leadingAnchor];
+    leadingAnchor2 = [buttonCopy leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v15 setActive:1];
 
-    v16 = [(UIView *)self->_selectionBackgroundView trailingAnchor];
-    v17 = [v8 trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UIView *)self->_selectionBackgroundView trailingAnchor];
+    trailingAnchor2 = [buttonCopy trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v18 setActive:1];
 
-    v19 = [(UIView *)self->_selectionBackgroundView topAnchor];
-    v20 = [v8 topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    topAnchor = [(UIView *)self->_selectionBackgroundView topAnchor];
+    topAnchor2 = [buttonCopy topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v21 setActive:1];
 
-    v22 = [(UIView *)self->_selectionBackgroundView bottomAnchor];
-    v23 = [v8 bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    bottomAnchor = [(UIView *)self->_selectionBackgroundView bottomAnchor];
+    bottomAnchor2 = [buttonCopy bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v24 setActive:1];
   }
 }
 
-- (void)updateButton:(id)a3 forSelectedState:(BOOL)a4
+- (void)updateButton:(id)button forSelectedState:(BOOL)state
 {
-  if (a4)
+  if (state)
   {
     selectionTintColor = self->_selectionTintColor;
   }
@@ -148,12 +148,12 @@
   }
 
   contentButton = self->super._contentButton;
-  v7 = a3;
+  buttonCopy = button;
   [(UIButton *)contentButton setTintColor:selectionTintColor];
-  v8 = [v7 isSelected];
+  isSelected = [buttonCopy isSelected];
 
   v9 = 0.0;
-  if (v8)
+  if (isSelected)
   {
     v9 = 1.0;
   }

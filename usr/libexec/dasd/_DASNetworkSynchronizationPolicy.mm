@@ -1,14 +1,14 @@
 @interface _DASNetworkSynchronizationPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASNetworkSynchronizationPolicy)init;
 - (id)initializeTriggers;
 - (id)lastWakeDate;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
-- (id)secondsFromSpikeMinutes:(id)a3 secondsBeforeSpike:(unint64_t)a4 secondsAfterSpike:(unint64_t)a5;
-- (void)handleTimerFireAtDate:(id)a3 withContext:(id)a4;
-- (void)postNotificationInWindow:(BOOL)a3;
+- (id)responseForActivity:(id)activity withState:(id)state;
+- (id)secondsFromSpikeMinutes:(id)minutes secondsBeforeSpike:(unint64_t)spike secondsAfterSpike:(unint64_t)afterSpike;
+- (void)handleTimerFireAtDate:(id)date withContext:(id)context;
+- (void)postNotificationInWindow:(BOOL)window;
 @end
 
 @implementation _DASNetworkSynchronizationPolicy
@@ -33,14 +33,14 @@
   return v5;
 }
 
-- (void)handleTimerFireAtDate:(id)a3 withContext:(id)a4
+- (void)handleTimerFireAtDate:(id)date withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  contextCopy = context;
   v8 = +[NSCalendar currentCalendar];
-  v9 = [v8 components:192 fromDate:v6];
-  v10 = [v9 minute];
-  v11 = [v9 second] + 60 * v10;
+  v9 = [v8 components:192 fromDate:dateCopy];
+  minute = [v9 minute];
+  v11 = [v9 second] + 60 * minute;
   v12 = [(NSIndexSet *)self->_affectedSeconds indexGreaterThanOrEqualToIndex:v11];
   if (v12 != 0x7FFFFFFFFFFFFFFFLL && v12 == v11)
   {
@@ -51,18 +51,18 @@
     }
 
     v19 = +[_CDContextQueries keyPathForInUseStatus];
-    v20 = [v7 objectForKeyedSubscript:v19];
+    v20 = [contextCopy objectForKeyedSubscript:v19];
 
-    v21 = [v20 BOOLValue];
+    bOOLValue = [v20 BOOLValue];
     v22 = +[_CDContextQueries keyPathForLastUseDate];
-    v23 = [v7 objectForKeyedSubscript:v22];
+    v23 = [contextCopy objectForKeyedSubscript:v22];
 
-    v24 = [(_DASNetworkSynchronizationPolicy *)self lastWakeDate];
-    [v6 timeIntervalSinceDate:v24];
+    lastWakeDate = [(_DASNetworkSynchronizationPolicy *)self lastWakeDate];
+    [dateCopy timeIntervalSinceDate:lastWakeDate];
     v26 = v25;
-    [v6 timeIntervalSinceDate:v23];
+    [dateCopy timeIntervalSinceDate:v23];
     self->_lastUserInactivity = v27;
-    if ((v21 & 1) == 0 && v26 > 0.0 && v26 < self->_recentWakeInterval && v27 > self->_recentActivityInterval)
+    if ((bOOLValue & 1) == 0 && v26 > 0.0 && v26 < self->_recentWakeInterval && v27 > self->_recentActivityInterval)
     {
       if (!self->_inPossibleSynchronizationWindow)
       {
@@ -110,15 +110,15 @@
   }
 }
 
-- (id)secondsFromSpikeMinutes:(id)a3 secondsBeforeSpike:(unint64_t)a4 secondsAfterSpike:(unint64_t)a5
+- (id)secondsFromSpikeMinutes:(id)minutes secondsBeforeSpike:(unint64_t)spike secondsAfterSpike:(unint64_t)afterSpike
 {
-  v7 = a3;
+  minutesCopy = minutes;
   v8 = +[NSMutableIndexSet indexSet];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v7;
+  obj = minutesCopy;
   v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -134,18 +134,18 @@
         }
 
         v12 = 60 * [*(*(&v21 + 1) + 8 * i) unsignedLongValue];
-        if (a4)
+        if (spike)
         {
           v13 = v12 + 3599;
-          v14 = a4;
+          spikeCopy = spike;
           do
           {
             [v8 addIndex:v13 % 0xE10];
             --v13;
-            --v14;
+            --spikeCopy;
           }
 
-          while (v14);
+          while (spikeCopy);
         }
 
         v15 = 0;
@@ -157,7 +157,7 @@
           ++v16;
         }
 
-        while (v15 <= a5);
+        while (v15 <= afterSpike);
       }
 
       v10 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -186,9 +186,9 @@
     context = v3->_context;
     v3->_context = v5;
 
-    v7 = [(_DASNetworkSynchronizationPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASNetworkSynchronizationPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v7;
+    v3->_triggers = initializeTriggers;
 
     v9 = [NSSet setWithObjects:&off_1001C9880, &off_1001C9898, &off_1001C98B0, &off_1001C98C8, 0];
     spikeMinutes = v3->_spikeMinutes;
@@ -238,12 +238,12 @@
   return v3;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"Network Synchronization Policy"])
+  stateCopy = state;
+  if ([trigger isEqualToString:@"Network Synchronization Policy"])
   {
-    if ([_DASDeviceActivityPolicy isDeviceInUse:v6]&& self->_inPossibleSynchronizationWindow)
+    if ([_DASDeviceActivityPolicy isDeviceInUse:stateCopy]&& self->_inPossibleSynchronizationWindow)
     {
       v7 = 0;
       self->_inPossibleSynchronizationWindow = 0;
@@ -263,22 +263,22 @@
   return v7;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_inPossibleSynchronizationWindow && [v4 requiresNetwork] && (v6 = objc_msgSend(v5, "schedulingPriority"), v6 <= _DASSchedulingPriorityUtility))
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_inPossibleSynchronizationWindow && [activityCopy requiresNetwork] && (v6 = objc_msgSend(v5, "schedulingPriority"), v6 <= _DASSchedulingPriorityUtility))
   {
-    v9 = [v5 startDate];
-    if (v9 || [_DASPhotosPolicy isiCPLActivity:v5]|| [_DASPhotosPolicy isAppLibraryActivity:v5])
+    startDate = [v5 startDate];
+    if (startDate || [_DASPhotosPolicy isiCPLActivity:v5]|| [_DASPhotosPolicy isAppLibraryActivity:v5])
     {
       LOBYTE(v7) = 0;
     }
 
     else
     {
-      v10 = [v5 fastPass];
-      if (v10)
+      fastPass = [v5 fastPass];
+      if (fastPass)
       {
         LOBYTE(v7) = 0;
       }
@@ -316,18 +316,18 @@
   return v2;
 }
 
-- (void)postNotificationInWindow:(BOOL)a3
+- (void)postNotificationInWindow:(BOOL)window
 {
   v4 = dispatch_get_global_queue(-2, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100047848;
   block[3] = &unk_1001B6490;
-  v6 = a3;
+  windowCopy = window;
   dispatch_async(v4, block);
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
   v5 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
   if (self->_inPossibleSynchronizationWindow && _os_feature_enabled_impl())

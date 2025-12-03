@@ -1,37 +1,37 @@
 @interface HDMHPeriodicPromptedAssessmentsManager
-- (BOOL)promptedAssessment:(id *)a3 featureStatus:(id)a4 error:(id *)a5;
-- (HDMHPeriodicPromptedAssessmentsManager)initWithProfile:(id)a3;
+- (BOOL)promptedAssessment:(id *)assessment featureStatus:(id)status error:(id *)error;
+- (HDMHPeriodicPromptedAssessmentsManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
 - (id)_currentDate;
 - (id)_currentGregorianCalendar;
-- (id)_lastPromptAcknowledgmentDateWithFeatureSettings:(id)a3;
-- (id)_mostRecentAssessmentDateWithError:(id *)a3;
-- (id)_mostRecentAssessmentInteractionDateWithFeatureSettings:(id)a3 error:(id *)a4;
-- (id)_mostRecentSampleStartDateForSampleType:(id)a3 error:(id *)a4;
-- (id)_promptedAssessmentEligibilityStartDateWithFeatureStatus:(id)a3 error:(id *)a4;
-- (int64_t)_periodicAssessmentPromptCadenceInDaysWithFeatureSettings:(id)a3;
+- (id)_lastPromptAcknowledgmentDateWithFeatureSettings:(id)settings;
+- (id)_mostRecentAssessmentDateWithError:(id *)error;
+- (id)_mostRecentAssessmentInteractionDateWithFeatureSettings:(id)settings error:(id *)error;
+- (id)_mostRecentSampleStartDateForSampleType:(id)type error:(id *)error;
+- (id)_promptedAssessmentEligibilityStartDateWithFeatureStatus:(id)status error:(id *)error;
+- (int64_t)_periodicAssessmentPromptCadenceInDaysWithFeatureSettings:(id)settings;
 - (void)_notifyObserversForPromptedAssessmentUpdate;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
-- (void)registerObserver:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDMHPeriodicPromptedAssessmentsManager
 
-- (HDMHPeriodicPromptedAssessmentsManager)initWithProfile:(id)a3
+- (HDMHPeriodicPromptedAssessmentsManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HDMHPeriodicPromptedAssessmentsManager;
   v5 = [(HDMHPeriodicPromptedAssessmentsManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc(MEMORY[0x277CCD738]);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
@@ -55,18 +55,18 @@
   [(HDMHPeriodicPromptedAssessmentsManager *)&v3 dealloc];
 }
 
-- (BOOL)promptedAssessment:(id *)a3 featureStatus:(id)a4 error:(id *)a5
+- (BOOL)promptedAssessment:(id *)assessment featureStatus:(id)status error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  statusCopy = status;
   v9 = *MEMORY[0x277CCBEA0];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-  v11 = [v10 areAllRequirementsSatisfied];
+  v10 = [statusCopy objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
+  areAllRequirementsSatisfied = [v10 areAllRequirementsSatisfied];
 
-  if (v11)
+  if (areAllRequirementsSatisfied)
   {
     v32 = 0;
-    v12 = [(HDMHPeriodicPromptedAssessmentsManager *)self _promptedAssessmentEligibilityStartDateWithFeatureStatus:v8 error:&v32];
+    v12 = [(HDMHPeriodicPromptedAssessmentsManager *)self _promptedAssessmentEligibilityStartDateWithFeatureStatus:statusCopy error:&v32];
     v13 = v32;
     v14 = v12 != 0;
     _HKInitializeLogging();
@@ -88,10 +88,10 @@
 
       v20 = [objc_alloc(MEMORY[0x277D280A0]) initWithEligibilityStartDate:v12 reason:1];
       v21 = v20;
-      if (a3)
+      if (assessment)
       {
         v22 = v20;
-        *a3 = v21;
+        *assessment = v21;
       }
     }
 
@@ -105,10 +105,10 @@
       v21 = v13;
       if (v21)
       {
-        if (a5)
+        if (error)
         {
           v29 = v21;
-          *a5 = v21;
+          *error = v21;
         }
 
         else
@@ -128,12 +128,12 @@
       v24 = v23;
       v25 = objc_opt_class();
       v26 = v25;
-      v27 = [v8 objectForKeyedSubscript:v9];
-      v28 = [v27 unsatisfiedRequirementIdentifiersDescription];
+      v27 = [statusCopy objectForKeyedSubscript:v9];
+      unsatisfiedRequirementIdentifiersDescription = [v27 unsatisfiedRequirementIdentifiersDescription];
       *buf = 138543618;
       v34 = v25;
       v35 = 2114;
-      v36 = v28;
+      v36 = unsatisfiedRequirementIdentifiersDescription;
       _os_log_impl(&dword_258977000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] Periodic assessments not supported due to: %{public}@", buf, 0x16u);
     }
 
@@ -144,21 +144,21 @@
   return v14;
 }
 
-- (id)_promptedAssessmentEligibilityStartDateWithFeatureStatus:(id)a3 error:(id *)a4
+- (id)_promptedAssessmentEligibilityStartDateWithFeatureStatus:(id)status error:(id *)error
 {
-  v6 = [a3 onboardingRecord];
-  v7 = [v6 featureSettings];
+  onboardingRecord = [status onboardingRecord];
+  featureSettings = [onboardingRecord featureSettings];
   v21 = 0;
-  v8 = [(HDMHPeriodicPromptedAssessmentsManager *)self _mostRecentAssessmentInteractionDateWithFeatureSettings:v7 error:&v21];
+  v8 = [(HDMHPeriodicPromptedAssessmentsManager *)self _mostRecentAssessmentInteractionDateWithFeatureSettings:featureSettings error:&v21];
   v9 = v21;
 
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v10 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -170,53 +170,53 @@
 
   else
   {
-    v12 = [v6 featureSettings];
-    v13 = [(HDMHPeriodicPromptedAssessmentsManager *)self _periodicAssessmentPromptCadenceInDaysWithFeatureSettings:v12];
+    featureSettings2 = [onboardingRecord featureSettings];
+    v13 = [(HDMHPeriodicPromptedAssessmentsManager *)self _periodicAssessmentPromptCadenceInDaysWithFeatureSettings:featureSettings2];
 
     if (v8)
     {
-      v14 = [(HDMHPeriodicPromptedAssessmentsManager *)self _currentGregorianCalendar];
-      v11 = [v14 hk_startOfDateByAddingDays:v13 toDate:v8];
+      _currentGregorianCalendar = [(HDMHPeriodicPromptedAssessmentsManager *)self _currentGregorianCalendar];
+      v11 = [_currentGregorianCalendar hk_startOfDateByAddingDays:v13 toDate:v8];
     }
 
     else
     {
-      v14 = [v6 earliestDateOfAnyOnboardingCompletion];
-      v15 = [(HDMHPeriodicPromptedAssessmentsManager *)self _currentDate];
-      v16 = [v14 hk_isAfterDate:v15];
-      v17 = [(HDMHPeriodicPromptedAssessmentsManager *)self _currentGregorianCalendar];
-      v18 = v17;
+      _currentGregorianCalendar = [onboardingRecord earliestDateOfAnyOnboardingCompletion];
+      _currentDate = [(HDMHPeriodicPromptedAssessmentsManager *)self _currentDate];
+      v16 = [_currentGregorianCalendar hk_isAfterDate:_currentDate];
+      _currentGregorianCalendar2 = [(HDMHPeriodicPromptedAssessmentsManager *)self _currentGregorianCalendar];
+      v18 = _currentGregorianCalendar2;
       if (v16)
       {
-        v19 = v15;
+        v19 = _currentDate;
       }
 
       else
       {
-        v19 = v14;
+        v19 = _currentGregorianCalendar;
       }
 
-      v11 = [v17 hk_startOfDateByAddingDays:v13 toDate:v19];
+      v11 = [_currentGregorianCalendar2 hk_startOfDateByAddingDays:v13 toDate:v19];
     }
   }
 
   return v11;
 }
 
-- (id)_mostRecentAssessmentInteractionDateWithFeatureSettings:(id)a3 error:(id *)a4
+- (id)_mostRecentAssessmentInteractionDateWithFeatureSettings:(id)settings error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HDMHPeriodicPromptedAssessmentsManager *)self _mostRecentAssessmentDateWithError:a4];
-  v8 = [(HDMHPeriodicPromptedAssessmentsManager *)self _lastPromptAcknowledgmentDateWithFeatureSettings:v6];
+  settingsCopy = settings;
+  v7 = [(HDMHPeriodicPromptedAssessmentsManager *)self _mostRecentAssessmentDateWithError:error];
+  v8 = [(HDMHPeriodicPromptedAssessmentsManager *)self _lastPromptAcknowledgmentDateWithFeatureSettings:settingsCopy];
 
-  v9 = [(HDMHPeriodicPromptedAssessmentsManager *)self _currentDate];
-  if ([v7 hk_isAfterDate:v9])
+  _currentDate = [(HDMHPeriodicPromptedAssessmentsManager *)self _currentDate];
+  if ([v7 hk_isAfterDate:_currentDate])
   {
 
     v7 = 0;
   }
 
-  if ([v8 hk_isAfterDate:v9])
+  if ([v8 hk_isAfterDate:_currentDate])
   {
 
     v8 = 0;
@@ -249,13 +249,13 @@ LABEL_12:
   return v13;
 }
 
-- (id)_mostRecentAssessmentDateWithError:(id *)a3
+- (id)_mostRecentAssessmentDateWithError:(id *)error
 {
   v5 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD60]];
-  v6 = [(HDMHPeriodicPromptedAssessmentsManager *)self _mostRecentSampleStartDateForSampleType:v5 error:a3];
+  v6 = [(HDMHPeriodicPromptedAssessmentsManager *)self _mostRecentSampleStartDateForSampleType:v5 error:error];
 
   v7 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD68]];
-  v8 = [(HDMHPeriodicPromptedAssessmentsManager *)self _mostRecentSampleStartDateForSampleType:v7 error:a3];
+  v8 = [(HDMHPeriodicPromptedAssessmentsManager *)self _mostRecentSampleStartDateForSampleType:v7 error:error];
 
   if (v6)
   {
@@ -292,21 +292,21 @@ LABEL_12:
   return v12;
 }
 
-- (id)_mostRecentSampleStartDateForSampleType:(id)a3 error:(id *)a4
+- (id)_mostRecentSampleStartDateForSampleType:(id)type error:(id *)error
 {
   v6 = MEMORY[0x277D10848];
-  v7 = a3;
+  typeCopy = type;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v9 = [v6 mostRecentSampleWithType:v7 profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:a4];
+  v9 = [v6 mostRecentSampleWithType:typeCopy profile:WeakRetained encodingOptions:0 predicate:0 anchor:0 error:error];
 
-  v10 = [v9 startDate];
+  startDate = [v9 startDate];
 
-  return v10;
+  return startDate;
 }
 
-- (id)_lastPromptAcknowledgmentDateWithFeatureSettings:(id)a3
+- (id)_lastPromptAcknowledgmentDateWithFeatureSettings:(id)settings
 {
-  v3 = [a3 numberForKey:*MEMORY[0x277D27FF0]];
+  v3 = [settings numberForKey:*MEMORY[0x277D27FF0]];
   v4 = v3;
   if (v3)
   {
@@ -344,35 +344,35 @@ LABEL_12:
   unitTest_gregorianCalendar = self->_unitTest_gregorianCalendar;
   if (unitTest_gregorianCalendar)
   {
-    v3 = unitTest_gregorianCalendar;
+    hk_gregorianCalendarWithLocalTimeZone = unitTest_gregorianCalendar;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
   }
 
-  return v3;
+  return hk_gregorianCalendarWithLocalTimeZone;
 }
 
-- (int64_t)_periodicAssessmentPromptCadenceInDaysWithFeatureSettings:(id)a3
+- (int64_t)_periodicAssessmentPromptCadenceInDaysWithFeatureSettings:(id)settings
 {
-  v3 = [a3 numberForKey:*MEMORY[0x277D27FF8]];
+  v3 = [settings numberForKey:*MEMORY[0x277D27FF8]];
   v4 = v3;
   if (v3 && [v3 integerValue] > 0)
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v5 = *MEMORY[0x277D27FE0];
+    integerValue = *MEMORY[0x277D27FE0];
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -380,23 +380,23 @@ LABEL_12:
   v4[2] = __59__HDMHPeriodicPromptedAssessmentsManager_registerObserver___block_invoke;
   v4[3] = &unk_2798AAB58;
   v4[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:0 runIfFirstObserver:v4];
+  [(HKObserverSet *)observers registerObserver:observer queue:0 runIfFirstObserver:v4];
 }
 
 - (void)_startObserving
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
+  dataManager = [WeakRetained dataManager];
   v5 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD60]];
-  [v4 addObserver:self forDataType:v5];
+  [dataManager addObserver:self forDataType:v5];
 
   v8 = objc_loadWeakRetained(&self->_profile);
-  v6 = [v8 dataManager];
+  dataManager2 = [v8 dataManager];
   v7 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD68]];
-  [v6 addObserver:self forDataType:v7];
+  [dataManager2 addObserver:self forDataType:v7];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -404,20 +404,20 @@ LABEL_12:
   v4[2] = __61__HDMHPeriodicPromptedAssessmentsManager_unregisterObserver___block_invoke;
   v4[3] = &unk_2798AAB58;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 - (void)_stopObserving
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained dataManager];
+  dataManager = [WeakRetained dataManager];
   v5 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD60]];
-  [v4 removeObserver:self forDataType:v5];
+  [dataManager removeObserver:self forDataType:v5];
 
   v8 = objc_loadWeakRetained(&self->_profile);
-  v6 = [v8 dataManager];
+  dataManager2 = [v8 dataManager];
   v7 = [MEMORY[0x277CCD8F0] scoredAssessmentTypeForIdentifier:*MEMORY[0x277CCCD68]];
-  [v6 removeObserver:self forDataType:v7];
+  [dataManager2 removeObserver:self forDataType:v7];
 }
 
 - (void)_notifyObserversForPromptedAssessmentUpdate
@@ -431,7 +431,7 @@ LABEL_12:
   [(HKObserverSet *)observers notifyObservers:v3];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v10 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -449,7 +449,7 @@ LABEL_12:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   v10 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();

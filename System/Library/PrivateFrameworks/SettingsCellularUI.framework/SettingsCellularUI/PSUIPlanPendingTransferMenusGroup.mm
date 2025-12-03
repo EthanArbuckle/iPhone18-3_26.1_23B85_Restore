@@ -1,35 +1,35 @@
 @interface PSUIPlanPendingTransferMenusGroup
 - (PSListController)listController;
 - (PSSpecifier)groupSpecifier;
-- (PSUIPlanPendingTransferMenusGroup)initWithHostController:(id)a3 parentSpecifier:(id)a4;
-- (PSUIPlanPendingTransferMenusGroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
+- (PSUIPlanPendingTransferMenusGroup)initWithHostController:(id)controller parentSpecifier:(id)specifier;
+- (PSUIPlanPendingTransferMenusGroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
 - (id)activatePlanSpecifier;
 - (id)cancelConsentRequestSpecifier;
 - (id)planActivationInfo;
-- (id)planPendingTransferLabel:(id)a3;
-- (id)planPendingTransferNumber:(id)a3;
+- (id)planPendingTransferLabel:(id)label;
+- (id)planPendingTransferNumber:(id)number;
 - (id)specifiers;
-- (void)addSpecifierForHeaderString:(id)a3;
-- (void)removePlanPendingTransfer:(id)a3;
+- (void)addSpecifierForHeaderString:(id)string;
+- (void)removePlanPendingTransfer:(id)transfer;
 @end
 
 @implementation PSUIPlanPendingTransferMenusGroup
 
-- (PSUIPlanPendingTransferMenusGroup)initWithHostController:(id)a3 parentSpecifier:(id)a4
+- (PSUIPlanPendingTransferMenusGroup)initWithHostController:(id)controller parentSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   v18.receiver = self;
   v18.super_class = PSUIPlanPendingTransferMenusGroup;
   v8 = [(PSUIPlanPendingTransferMenusGroup *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_parentSpecifier, a4);
-    objc_storeWeak(&v9->_listController, v6);
-    v10 = [MEMORY[0x277CF96D8] sharedManager];
+    objc_storeStrong(&v8->_parentSpecifier, specifier);
+    objc_storeWeak(&v9->_listController, controllerCopy);
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
     cellularPlanManager = v9->_cellularPlanManager;
-    v9->_cellularPlanManager = v10;
+    v9->_cellularPlanManager = mEMORY[0x277CF96D8];
 
     v12 = +[PSUICellularPlanManagerCache sharedInstance];
     planManagerCache = v9->_planManagerCache;
@@ -51,30 +51,30 @@
   if (self->_planPendingTransfer)
   {
     [(PSUIPlanPendingTransferMenusGroup *)self addSpecifierForHeaderString:v3];
-    v4 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v3 addObject:v4];
-    v5 = [(PSUIPlanPendingTransferMenusGroup *)self activatePlanSpecifier];
-    [v3 addObject:v5];
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [v3 addObject:emptyGroupSpecifier];
+    activatePlanSpecifier = [(PSUIPlanPendingTransferMenusGroup *)self activatePlanSpecifier];
+    [v3 addObject:activatePlanSpecifier];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v8 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer deviceName];
-      v9 = [v8 length];
+      deviceName = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer deviceName];
+      v9 = [deviceName length];
 
       if (!v9)
       {
 LABEL_9:
-        [v3 addObject:v4];
+        [v3 addObject:emptyGroupSpecifier];
         if ([(CTCellularPlanPendingTransfer *)self->_planPendingTransfer status]!= 2)
         {
-          v27 = [(PSUIPlanPendingTransferMenusGroup *)self getLogger];
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
+          getLogger = [(PSUIPlanPendingTransferMenusGroup *)self getLogger];
+          if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEBUG))
           {
             *buf = 136315138;
             v36 = "[PSUIPlanPendingTransferMenusGroup specifiers]";
-            _os_log_debug_impl(&dword_2658DE000, v27, OS_LOG_TYPE_DEBUG, "%s removing pending cellular plan", buf, 0xCu);
+            _os_log_debug_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEBUG, "%s removing pending cellular plan", buf, 0xCu);
           }
 
           v28 = MEMORY[0x277D3FAD8];
@@ -91,18 +91,18 @@ LABEL_9:
         goto LABEL_14;
       }
 
-      v34 = v5;
+      v34 = activatePlanSpecifier;
       v10 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"CARRIER_NAME"];
-      v11 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer carrierName];
-      [v10 setName:v11];
+      carrierName = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer carrierName];
+      [v10 setName:carrierName];
 
       [v3 addObject:v10];
       v12 = MEMORY[0x277D3FAD8];
       v13 = MEMORY[0x277CCACA8];
       v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v15 = [v14 localizedStringForKey:@"USED_ON_%@" value:&stru_287733598 table:@"Gemini-Gemini"];
-      v16 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer deviceName];
-      v17 = [v13 stringWithFormat:v15, v16];
+      deviceName2 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer deviceName];
+      v17 = [v13 stringWithFormat:v15, deviceName2];
       v18 = [v12 preferenceSpecifierNamed:v17 target:self set:0 get:0 detail:0 cell:4 edit:0];
 
       [v3 addObject:v18];
@@ -110,10 +110,10 @@ LABEL_9:
 
     else
     {
-      v34 = v5;
+      v34 = activatePlanSpecifier;
       v10 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"CARRIER_NAME"];
-      v19 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer carrierName];
-      [v10 setName:v19];
+      carrierName2 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer carrierName];
+      [v10 setName:carrierName2];
 
       [v3 addObject:v10];
       v20 = MEMORY[0x277D3FAD8];
@@ -130,16 +130,16 @@ LABEL_9:
       [v3 addObject:v26];
     }
 
-    v5 = v34;
+    activatePlanSpecifier = v34;
     goto LABEL_9;
   }
 
-  v4 = [(PSUIPlanPendingTransferMenusGroup *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  emptyGroupSpecifier = [(PSUIPlanPendingTransferMenusGroup *)self getLogger];
+  if (os_log_type_enabled(emptyGroupSpecifier, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v36 = "[PSUIPlanPendingTransferMenusGroup specifiers]";
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "%s No specifiers to show, because there is no pending plan with the given plan reference", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, emptyGroupSpecifier, OS_LOG_TYPE_DEFAULT, "%s No specifiers to show, because there is no pending plan with the given plan reference", buf, 0xCu);
   }
 
 LABEL_14:
@@ -149,22 +149,22 @@ LABEL_14:
   return v3;
 }
 
-- (PSUIPlanPendingTransferMenusGroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUIPlanPendingTransferMenusGroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer called" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
-- (void)removePlanPendingTransfer:(id)a3
+- (void)removePlanPendingTransfer:(id)transfer
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(PSUIPlanPendingTransferMenusGroup *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIPlanPendingTransferMenusGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
     v10 = "[PSUIPlanPendingTransferMenusGroup removePlanPendingTransfer:]";
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
   cellularPlanManager = self->_cellularPlanManager;
@@ -216,18 +216,18 @@ void __63__PSUIPlanPendingTransferMenusGroup_removePlanPendingTransfer___block_i
   v2 = [v1 popViewControllerAnimated:1];
 }
 
-- (id)planPendingTransferLabel:(id)a3
+- (id)planPendingTransferLabel:(id)label
 {
-  v3 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer planLabel];
-  v4 = [v3 label];
+  planLabel = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer planLabel];
+  label = [planLabel label];
 
-  return v4;
+  return label;
 }
 
-- (id)planPendingTransferNumber:(id)a3
+- (id)planPendingTransferNumber:(id)number
 {
-  v3 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer phoneNumber];
-  v4 = [SettingsCellularUtils formattedPhoneNumber:v3];
+  phoneNumber = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer phoneNumber];
+  v4 = [SettingsCellularUtils formattedPhoneNumber:phoneNumber];
 
   return v4;
 }
@@ -235,27 +235,27 @@ void __63__PSUIPlanPendingTransferMenusGroup_removePlanPendingTransfer___block_i
 - (id)planActivationInfo
 {
   p_isa = &self->super.isa;
-  v3 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer status];
-  if (v3 - 2 < 2)
+  status = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer status];
+  if (status - 2 < 2)
   {
     v9 = MEMORY[0x277CCACA8];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v7 localizedStringForKey:@"PLAN_PENDING_TRANSFER_CONSENT_%@" value:&stru_287733598 table:@"Gemini-Gemini"];
-    v11 = [p_isa[2] deviceName];
-    p_isa = [v9 stringWithFormat:v10, v11];
+    deviceName = [p_isa[2] deviceName];
+    p_isa = [v9 stringWithFormat:v10, deviceName];
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  if (v3 <= 1)
+  if (status <= 1)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = v6;
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v8 = @"PLAN_PENDING_TRANSFER_ACTIVATION_PAD";
     }
@@ -276,12 +276,12 @@ LABEL_9:
 
 - (id)activatePlanSpecifier
 {
-  v4 = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer status];
-  if (v4 >= 3)
+  status = [(CTCellularPlanPendingTransfer *)self->_planPendingTransfer status];
+  if (status >= 3)
   {
-    if (v4 == 3)
+    if (status == 3)
     {
-      v2 = [(PSUIPlanPendingTransferMenusGroup *)self cancelConsentRequestSpecifier];
+      cancelConsentRequestSpecifier = [(PSUIPlanPendingTransferMenusGroup *)self cancelConsentRequestSpecifier];
     }
   }
 
@@ -289,19 +289,19 @@ LABEL_9:
   {
     v5 = [PSUIPlanPendingTransferActivationButtonSpecifier alloc];
     WeakRetained = objc_loadWeakRetained(&self->_listController);
-    v2 = [(PSUIPlanPendingTransferActivationButtonSpecifier *)v5 initWithListController:WeakRetained planPendingTransfer:self->_planPendingTransfer];
+    cancelConsentRequestSpecifier = [(PSUIPlanPendingTransferActivationButtonSpecifier *)v5 initWithListController:WeakRetained planPendingTransfer:self->_planPendingTransfer];
   }
 
-  return v2;
+  return cancelConsentRequestSpecifier;
 }
 
 - (id)cancelConsentRequestSpecifier
 {
-  v3 = [(PSUIPlanPendingTransferMenusGroup *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIPlanPendingTransferMenusGroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Consent request has been sent for plan pending transfer", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Consent request has been sent for plan pending transfer", buf, 2u);
   }
 
   v4 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"REQUEST_SENT" target:self set:0 get:0 detail:0 cell:4 edit:0];
@@ -313,23 +313,23 @@ LABEL_9:
   return v4;
 }
 
-- (void)addSpecifierForHeaderString:(id)a3
+- (void)addSpecifierForHeaderString:(id)string
 {
-  v9 = a3;
+  stringCopy = string;
   if ([(CTCellularPlanPendingTransfer *)self->_planPendingTransfer status]!= 2)
   {
     v4 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"PLAN_PENDING_TRANSFER_MENUS"];
     objc_storeWeak(&self->_groupSpecifier, v4);
 
-    v5 = [(PSUIPlanPendingTransferMenusGroup *)self planActivationInfo];
+    planActivationInfo = [(PSUIPlanPendingTransferMenusGroup *)self planActivationInfo];
     WeakRetained = objc_loadWeakRetained(&self->_groupSpecifier);
-    [WeakRetained setProperty:v5 forKey:*MEMORY[0x277D3FF88]];
+    [WeakRetained setProperty:planActivationInfo forKey:*MEMORY[0x277D3FF88]];
 
     v7 = objc_loadWeakRetained(&self->_groupSpecifier);
     [v7 setProperty:&unk_287748F30 forKey:*MEMORY[0x277D3FF40]];
 
     v8 = objc_loadWeakRetained(&self->_groupSpecifier);
-    [v9 addObject:v8];
+    [stringCopy addObject:v8];
   }
 }
 

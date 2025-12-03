@@ -1,13 +1,13 @@
 @interface BYFlowSkipController
-+ (BOOL)_shouldObserveChangeFromNetworkSSID:(id *)a3;
-+ (id)_actionForFlowSkipIdentifiers:(id)a3;
-+ (id)_flowSkipIdentifierFromActionIdentifier:(id)a3;
-+ (id)_localizedStringListingFlowSkipIdentifiers:(id)a3;
++ (BOOL)_shouldObserveChangeFromNetworkSSID:(id *)d;
++ (id)_actionForFlowSkipIdentifiers:(id)identifiers;
++ (id)_flowSkipIdentifierFromActionIdentifier:(id)identifier;
++ (id)_localizedStringListingFlowSkipIdentifiers:(id)identifiers;
 + (id)_supportedIdentifiers;
-+ (id)flowSkipIdentifiersFromFollowUpAction:(id)a3;
++ (id)flowSkipIdentifiersFromFollowUpAction:(id)action;
 + (id)sharedInstance;
 + (void)_clearShouldObserveChangeFromNetworkSSID;
-+ (void)_setShouldObserveChangeFromNetworkSSID:(id)a3;
++ (void)_setShouldObserveChangeFromNetworkSSID:(id)d;
 - (BOOL)_isBasicFunctionalityEnabled;
 - (BOOL)_isPasscodeSet;
 - (BYFlowSkipController)init;
@@ -16,17 +16,17 @@
 - (id)getFlowSkipIdentifiers;
 - (void)_pendingFollowUpItem;
 - (void)_persistInitialNetworkSSID;
-- (void)_postFollowUpItemForFlowSkipIdentifiers:(id)a3 previousFollowUpItem:(id)a4 forceNotification:(BOOL)a5;
-- (void)_registerWiFiObserverActivityWithNeedsActivity:(BOOL)a3 handlerQueue:(id)a4;
-- (void)_repostExistingFollowUpItemForcingNotification:(id)a3;
+- (void)_postFollowUpItemForFlowSkipIdentifiers:(id)identifiers previousFollowUpItem:(id)item forceNotification:(BOOL)notification;
+- (void)_registerWiFiObserverActivityWithNeedsActivity:(BOOL)activity handlerQueue:(id)queue;
+- (void)_repostExistingFollowUpItemForcingNotification:(id)notification;
 - (void)cancelPendingFlows;
-- (void)didCompleteFlow:(id)a3;
-- (void)didSkipFlow:(id)a3;
+- (void)didCompleteFlow:(id)flow;
+- (void)didSkipFlow:(id)flow;
 - (void)observeFinishSetupTriggers;
 - (void)passcodeDidChange;
 - (void)registerActivities;
-- (void)revisePendingFollowUpsForcingRepost:(BOOL)a3;
-- (void)setBasicFunctionalityEnabled:(BOOL)a3;
+- (void)revisePendingFollowUpsForcingRepost:(BOOL)repost;
+- (void)setBasicFunctionalityEnabled:(BOOL)enabled;
 - (void)unregisterActivities;
 @end
 
@@ -53,18 +53,18 @@ uint64_t __38__BYFlowSkipController_sharedInstance__block_invoke()
 
 - (id)_followUpController
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_followUpController_doNotAccessDirectly)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_followUpController_doNotAccessDirectly)
   {
     v3 = [objc_alloc(MEMORY[0x1E6997AC8]) initWithClientIdentifier:@"com.apple.purplebuddy"];
-    followUpController_doNotAccessDirectly = v2->_followUpController_doNotAccessDirectly;
-    v2->_followUpController_doNotAccessDirectly = v3;
+    followUpController_doNotAccessDirectly = selfCopy->_followUpController_doNotAccessDirectly;
+    selfCopy->_followUpController_doNotAccessDirectly = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_followUpController_doNotAccessDirectly;
+  v5 = selfCopy->_followUpController_doNotAccessDirectly;
 
   return v5;
 }
@@ -84,12 +84,12 @@ uint64_t __38__BYFlowSkipController_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)setBasicFunctionalityEnabled:(BOOL)a3
+- (void)setBasicFunctionalityEnabled:(BOOL)enabled
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  _basicFunctionalityEnabled_doNotAccessDirectly = a3;
+  _basicFunctionalityEnabled_doNotAccessDirectly = enabled;
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -142,19 +142,19 @@ void __45__BYFlowSkipController__supportedIdentifiers__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didSkipFlow:(id)a3
+- (void)didSkipFlow:(id)flow
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  flowCopy = flow;
   v5 = +[BYFlowSkipController _supportedIdentifiers];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:flowCopy];
 
   if (!v6)
   {
-    v7 = _BYLoggingFacility();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    _pendingFollowUpItem = _BYLoggingFacility();
+    if (os_log_type_enabled(_pendingFollowUpItem, OS_LOG_TYPE_ERROR))
     {
-      [(BYFlowSkipController *)v4 didSkipFlow:v7];
+      [(BYFlowSkipController *)flowCopy didSkipFlow:_pendingFollowUpItem];
     }
 
     goto LABEL_12;
@@ -162,22 +162,22 @@ void __45__BYFlowSkipController__supportedIdentifiers__block_invoke()
 
   if ([(BYFlowSkipController *)self _isBasicFunctionalityEnabled])
   {
-    v7 = [(BYFlowSkipController *)self _pendingFollowUpItem];
-    v8 = [v7 actions];
-    v9 = [v8 count];
+    _pendingFollowUpItem = [(BYFlowSkipController *)self _pendingFollowUpItem];
+    actions = [_pendingFollowUpItem actions];
+    v9 = [actions count];
 
     if (v9)
     {
-      v10 = [v7 actions];
-      v11 = [v10 firstObject];
-      v12 = [v11 userInfo];
-      v13 = [v12 objectForKeyedSubscript:@"flowSkipIdentifiers"];
+      actions2 = [_pendingFollowUpItem actions];
+      firstObject = [actions2 firstObject];
+      userInfo = [firstObject userInfo];
+      v13 = [userInfo objectForKeyedSubscript:@"flowSkipIdentifiers"];
 
       if (v13)
       {
-        if (([v13 containsObject:v4] & 1) == 0)
+        if (([v13 containsObject:flowCopy] & 1) == 0)
         {
-          v14 = [v13 arrayByAddingObject:v4];
+          v14 = [v13 arrayByAddingObject:flowCopy];
 
           v13 = v14;
         }
@@ -188,13 +188,13 @@ void __45__BYFlowSkipController__supportedIdentifiers__block_invoke()
 
     else
     {
-      v10 = 0;
+      actions2 = 0;
     }
 
-    v16[0] = v4;
+    v16[0] = flowCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 LABEL_11:
-    [(BYFlowSkipController *)self _postFollowUpItemForFlowSkipIdentifiers:v13 previousFollowUpItem:v7 forceNotification:0];
+    [(BYFlowSkipController *)self _postFollowUpItemForFlowSkipIdentifiers:v13 previousFollowUpItem:_pendingFollowUpItem forceNotification:0];
 
 LABEL_12:
   }
@@ -202,19 +202,19 @@ LABEL_12:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didCompleteFlow:(id)a3
+- (void)didCompleteFlow:(id)flow
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  flowCopy = flow;
   v5 = +[BYFlowSkipController _supportedIdentifiers];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:flowCopy];
 
   if (!v6)
   {
-    v7 = _BYLoggingFacility();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    _pendingFollowUpItem = _BYLoggingFacility();
+    if (os_log_type_enabled(_pendingFollowUpItem, OS_LOG_TYPE_ERROR))
     {
-      [(BYFlowSkipController *)v4 didSkipFlow:v7];
+      [(BYFlowSkipController *)flowCopy didSkipFlow:_pendingFollowUpItem];
     }
 
     goto LABEL_16;
@@ -222,18 +222,18 @@ LABEL_12:
 
   if ([(BYFlowSkipController *)self _isBasicFunctionalityEnabled])
   {
-    v7 = [(BYFlowSkipController *)self _pendingFollowUpItem];
-    v8 = [v7 actions];
-    v9 = [v8 firstObject];
-    v10 = [v9 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"flowSkipIdentifiers"];
+    _pendingFollowUpItem = [(BYFlowSkipController *)self _pendingFollowUpItem];
+    actions = [_pendingFollowUpItem actions];
+    firstObject = [actions firstObject];
+    userInfo = [firstObject userInfo];
+    v11 = [userInfo objectForKeyedSubscript:@"flowSkipIdentifiers"];
 
-    if ([v11 containsObject:v4])
+    if ([v11 containsObject:flowCopy])
     {
       if (v11)
       {
         v12 = [v11 mutableCopy];
-        [v12 removeObject:v4];
+        [v12 removeObject:flowCopy];
         v13 = [v12 copy];
 
         v11 = v13;
@@ -241,16 +241,16 @@ LABEL_12:
 
       if ([v11 count])
       {
-        [(BYFlowSkipController *)self _postFollowUpItemForFlowSkipIdentifiers:v11 previousFollowUpItem:v7 forceNotification:0];
+        [(BYFlowSkipController *)self _postFollowUpItemForFlowSkipIdentifiers:v11 previousFollowUpItem:_pendingFollowUpItem forceNotification:0];
       }
 
       else
       {
-        v14 = [(BYFlowSkipController *)self _followUpController];
+        _followUpController = [(BYFlowSkipController *)self _followUpController];
         v27[0] = @"com.apple.purplebuddy.revisitSkippedSteps";
-        v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
+        domain = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
         v24 = 0;
-        v16 = [v14 clearPendingFollowUpItemsWithUniqueIdentifiers:v15 error:&v24];
+        v16 = [_followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:domain error:&v24];
         v17 = v24;
 
         v18 = _BYLoggingFacility();
@@ -275,8 +275,8 @@ LABEL_12:
           else if (v17)
           {
             v23 = MEMORY[0x1E696AEC0];
-            v15 = [v17 domain];
-            v22 = [v23 stringWithFormat:@"<Error domain: %@, code %ld>", v15, objc_msgSend(v17, "code")];
+            domain = [v17 domain];
+            v22 = [v23 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v17, "code")];
             v21 = 1;
           }
 
@@ -307,11 +307,11 @@ LABEL_16:
   v16[1] = *MEMORY[0x1E69E9840];
   if ([(BYFlowSkipController *)self _isBasicFunctionalityEnabled])
   {
-    v3 = [(BYFlowSkipController *)self _followUpController];
+    _followUpController = [(BYFlowSkipController *)self _followUpController];
     v16[0] = @"com.apple.purplebuddy.revisitSkippedSteps";
-    v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
+    domain = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v13 = 0;
-    v5 = [v3 clearPendingFollowUpItemsWithUniqueIdentifiers:v4 error:&v13];
+    v5 = [_followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:domain error:&v13];
     v6 = v13;
 
     v7 = _BYLoggingFacility();
@@ -336,8 +336,8 @@ LABEL_16:
       else if (v6)
       {
         v12 = MEMORY[0x1E696AEC0];
-        v4 = [v6 domain];
-        v11 = [v12 stringWithFormat:@"<Error domain: %@, code %ld>", v4, objc_msgSend(v6, "code")];
+        domain = [v6 domain];
+        v11 = [v12 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v6, "code")];
         v10 = 1;
       }
 
@@ -362,9 +362,9 @@ LABEL_16:
 - (id)_pendingFollowUpItem
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [(BYFlowSkipController *)self _followUpController];
+  _followUpController = [(BYFlowSkipController *)self _followUpController];
   v21 = 0;
-  v3 = [v2 pendingFollowUpItems:&v21];
+  v3 = [_followUpController pendingFollowUpItems:&v21];
   v4 = v21;
 
   if (v4)
@@ -396,8 +396,8 @@ LABEL_16:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 uniqueIdentifier];
-        v13 = [v12 isEqualToString:@"com.apple.purplebuddy.revisitSkippedSteps"];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        v13 = [uniqueIdentifier isEqualToString:@"com.apple.purplebuddy.revisitSkippedSteps"];
 
         if (v13)
         {
@@ -424,13 +424,13 @@ LABEL_15:
   return v14;
 }
 
-- (void)_postFollowUpItemForFlowSkipIdentifiers:(id)a3 previousFollowUpItem:(id)a4 forceNotification:(BOOL)a5
+- (void)_postFollowUpItemForFlowSkipIdentifiers:(id)identifiers previousFollowUpItem:(id)item forceNotification:(BOOL)notification
 {
-  v56 = a5;
+  notificationCopy = notification;
   v63[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identifiersCopy = identifiers;
   v8 = MEMORY[0x1E6997AD0];
-  v9 = a4;
+  itemCopy = item;
   v10 = objc_alloc_init(v8);
   [v10 setUniqueIdentifier:@"com.apple.purplebuddy.revisitSkippedSteps"];
   [v10 setGroupIdentifier:*MEMORY[0x1E6997A98]];
@@ -439,10 +439,10 @@ LABEL_15:
   v12 = [v11 localizedStringForKey:@"FOLLOWUP_TITLE" value:&stru_1F309EFF0 table:@"FollowUp"];
   [v10 setTitle:v12];
 
-  v13 = [(BYFlowSkipController *)self capabilities];
-  LODWORD(v12) = [v13 supportsPearl];
+  capabilities = [(BYFlowSkipController *)self capabilities];
+  LODWORD(v12) = [capabilities supportsPearl];
 
-  v57 = self;
+  selfCopy = self;
   if (v12)
   {
     v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -452,12 +452,12 @@ LABEL_15:
 
   else
   {
-    v17 = [(BYFlowSkipController *)self capabilities];
-    v18 = [v17 mgHasMesa];
+    capabilities2 = [(BYFlowSkipController *)self capabilities];
+    mgHasMesa = [capabilities2 mgHasMesa];
 
     v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v15 = v14;
-    if (v18)
+    if (mgHasMesa)
     {
       v16 = @"FOLLOWUP_DETAIL_TOUCHID";
     }
@@ -472,9 +472,9 @@ LABEL_15:
 
   [v10 setInformativeText:v19];
   [v10 setDisplayStyle:0];
-  v20 = [v9 userInfo];
+  userInfo = [itemCopy userInfo];
 
-  v21 = [v20 objectForKeyedSubscript:@"initialPostDate"];
+  v21 = [userInfo objectForKeyedSubscript:@"initialPostDate"];
 
   if (v21)
   {
@@ -497,23 +497,23 @@ LABEL_15:
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v63 forKeys:&v62 count:1];
   [v10 setUserInfo:v27];
 
-  v28 = [BYFlowSkipController _actionForFlowSkipIdentifiers:v7];
+  v28 = [BYFlowSkipController _actionForFlowSkipIdentifiers:identifiersCopy];
   v61 = v28;
-  v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
-  [v10 setActions:v29];
+  domain = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
+  [v10 setActions:domain];
 
   if (v25 < [(BYFlowSkipController *)self _timeIntervalForNotifications])
   {
     v53 = v28;
     v54 = v19;
-    v29 = objc_alloc_init(MEMORY[0x1E6997AD8]);
+    domain = objc_alloc_init(MEMORY[0x1E6997AD8]);
     v30 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v31 = [v30 localizedStringForKey:@"NOTIFICATION_TITLE" value:&stru_1F309EFF0 table:@"FollowUp"];
-    [v29 setTitle:v31];
+    [domain setTitle:v31];
 
-    v32 = [BYFlowSkipController _localizedStringListingFlowSkipIdentifiers:v7];
-    v55 = v7;
-    v33 = [v7 count];
+    v32 = [BYFlowSkipController _localizedStringListingFlowSkipIdentifiers:identifiersCopy];
+    v55 = identifiersCopy;
+    v33 = [identifiersCopy count];
     v34 = MEMORY[0x1E696AEC0];
     v35 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v36 = v35;
@@ -529,32 +529,32 @@ LABEL_15:
 
     v38 = [v35 localizedStringForKey:v37 value:&stru_1F309EFF0 table:@"FollowUp"];
     v39 = [v34 localizedStringWithFormat:v38, v32];
-    [v29 setInformativeText:v39];
+    [domain setInformativeText:v39];
 
-    [v29 setFrequency:{dbl_1B867B180[v25 < -[BYFlowSkipController _timeIntervalForFrequentNotifications](v57, "_timeIntervalForFrequentNotifications")]}];
-    [v29 setFirstNotificationDelay:3600.0];
-    v40 = [MEMORY[0x1E6997AD8] defaultOptions];
-    v41 = [v40 setByAddingObject:*MEMORY[0x1E6997AB8]];
+    [domain setFrequency:{dbl_1B867B180[v25 < -[BYFlowSkipController _timeIntervalForFrequentNotifications](selfCopy, "_timeIntervalForFrequentNotifications")]}];
+    [domain setFirstNotificationDelay:3600.0];
+    defaultOptions = [MEMORY[0x1E6997AD8] defaultOptions];
+    v41 = [defaultOptions setByAddingObject:*MEMORY[0x1E6997AB8]];
 
-    if (v56)
+    if (notificationCopy)
     {
       v42 = [v41 setByAddingObject:*MEMORY[0x1E6997AB0]];
 
       v41 = v42;
     }
 
-    [v29 setOptions:v41];
-    [v10 setNotification:v29];
+    [domain setOptions:v41];
+    [v10 setNotification:domain];
 
     v19 = v54;
-    v7 = v55;
+    identifiersCopy = v55;
     v28 = v53;
-    self = v57;
+    self = selfCopy;
   }
 
-  v43 = [(BYFlowSkipController *)self _followUpController];
+  _followUpController = [(BYFlowSkipController *)self _followUpController];
   v58 = 0;
-  v44 = [v43 postFollowUpItem:v10 error:&v58];
+  v44 = [_followUpController postFollowUpItem:v10 error:&v58];
   v45 = v58;
 
   v46 = _BYLoggingFacility();
@@ -581,8 +581,8 @@ LABEL_15:
     else if (v45)
     {
       v52 = MEMORY[0x1E696AEC0];
-      v29 = [v45 domain];
-      v51 = [v52 stringWithFormat:@"<Error domain: %@, code %ld>", v29, objc_msgSend(v45, "code")];
+      domain = [v45 domain];
+      v51 = [v52 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v45, "code")];
       v50 = 1;
     }
 
@@ -605,31 +605,31 @@ LABEL_15:
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_repostExistingFollowUpItemForcingNotification:(id)a3
+- (void)_repostExistingFollowUpItemForcingNotification:(id)notification
 {
-  v8 = a3;
-  v4 = [v8 actions];
-  v5 = [v4 firstObject];
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKeyedSubscript:@"flowSkipIdentifiers"];
+  notificationCopy = notification;
+  actions = [notificationCopy actions];
+  firstObject = [actions firstObject];
+  userInfo = [firstObject userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"flowSkipIdentifiers"];
 
   if ([v7 count])
   {
-    [(BYFlowSkipController *)self _postFollowUpItemForFlowSkipIdentifiers:v7 previousFollowUpItem:v8 forceNotification:1];
+    [(BYFlowSkipController *)self _postFollowUpItemForFlowSkipIdentifiers:v7 previousFollowUpItem:notificationCopy forceNotification:1];
   }
 }
 
-+ (id)flowSkipIdentifiersFromFollowUpAction:(id)a3
++ (id)flowSkipIdentifiersFromFollowUpAction:(id)action
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [BYFlowSkipController _flowSkipIdentifierFromActionIdentifier:v4];
+  actionCopy = action;
+  identifier = [actionCopy identifier];
+  v5 = [BYFlowSkipController _flowSkipIdentifierFromActionIdentifier:identifier];
 
   if ([v5 isEqualToString:@"everything"])
   {
-    v6 = [v3 userInfo];
-    v7 = [v6 objectForKeyedSubscript:@"flowSkipIdentifiers"];
+    userInfo = [actionCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:@"flowSkipIdentifiers"];
   }
 
   else
@@ -643,26 +643,26 @@ LABEL_15:
   return v7;
 }
 
-+ (id)_actionForFlowSkipIdentifiers:(id)a3
++ (id)_actionForFlowSkipIdentifiers:(id)identifiers
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_alloc_init(MEMORY[0x1E6997AC0]);
-  if ([v3 count] < 2)
+  if ([identifiersCopy count] < 2)
   {
-    v7 = [v3 firstObject];
-    v8 = [BYFlowSkipController _actionIdentifierForFlowSkipIdentifier:v7];
+    firstObject = [identifiersCopy firstObject];
+    v8 = [BYFlowSkipController _actionIdentifierForFlowSkipIdentifier:firstObject];
     [v4 setIdentifier:v8];
 
     v9 = MEMORY[0x1E696AEC0];
-    v5 = [v3 firstObject];
-    v6 = [v9 stringWithFormat:@"FOLLOWUP_ACTION_LABEL.%@", v5];
+    firstObject2 = [identifiersCopy firstObject];
+    v6 = [v9 stringWithFormat:@"FOLLOWUP_ACTION_LABEL.%@", firstObject2];
   }
 
   else
   {
-    v5 = [BYFlowSkipController _actionIdentifierForFlowSkipIdentifier:@"everything"];
-    [v4 setIdentifier:v5];
+    firstObject2 = [BYFlowSkipController _actionIdentifierForFlowSkipIdentifier:@"everything"];
+    [v4 setIdentifier:firstObject2];
     v6 = @"FOLLOWUP_ACTION_LABEL_ALL";
   }
 
@@ -671,11 +671,11 @@ LABEL_15:
   [v4 setLabel:v11];
 
   v19 = @"flowSkipIdentifiers";
-  v20[0] = v3;
+  v20[0] = identifiersCopy;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   [v4 setUserInfo:v12];
 
-  v13 = [v3 componentsJoinedByString:{@", "}];
+  v13 = [identifiersCopy componentsJoinedByString:{@", "}];
   v14 = MEMORY[0x1E695DFF8];
   v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"prefs:root=SETUP_FINISH&flow=%@", v13];
   v16 = [v14 URLWithString:v15];
@@ -686,12 +686,12 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_flowSkipIdentifierFromActionIdentifier:(id)a3
++ (id)_flowSkipIdentifierFromActionIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
-  v4 = [v3 lastObject];
+  v3 = [identifier componentsSeparatedByString:@"."];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 - (void)passcodeDidChange
@@ -711,21 +711,21 @@ LABEL_15:
 
 - (BOOL)_isPasscodeSet
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  isPasscodeSet = [mEMORY[0x1E69ADFB8] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
-- (void)revisePendingFollowUpsForcingRepost:(BOOL)a3
+- (void)revisePendingFollowUpsForcingRepost:(BOOL)repost
 {
-  v3 = a3;
+  repostCopy = repost;
   v48 = *MEMORY[0x1E69E9840];
-  v5 = [(BYFlowSkipController *)self _pendingFollowUpItem];
-  v6 = [v5 actions];
-  v7 = [v6 firstObject];
-  v8 = [v7 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"flowSkipIdentifiers"];
+  _pendingFollowUpItem = [(BYFlowSkipController *)self _pendingFollowUpItem];
+  actions = [_pendingFollowUpItem actions];
+  firstObject = [actions firstObject];
+  userInfo = [firstObject userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"flowSkipIdentifiers"];
 
   if (![v9 count])
   {
@@ -747,7 +747,7 @@ LABEL_15:
 
   v13 = v11;
   v35 = v11 != 0;
-  v36 = v3;
+  v36 = repostCopy;
   v37 = v9;
   v14 = 0;
   v15 = *v41;
@@ -763,32 +763,32 @@ LABEL_15:
       v17 = *(*(&v40 + 1) + 8 * i);
       if ([v17 isEqualToString:@"touchID"])
       {
-        v18 = [(BYFlowSkipController *)self capabilities];
-        v19 = [v18 canShowTouchIDScreen];
+        capabilities = [(BYFlowSkipController *)self capabilities];
+        canShowTouchIDScreen = [capabilities canShowTouchIDScreen];
       }
 
       else if ([v17 isEqualToString:@"faceID"])
       {
-        v18 = [(BYFlowSkipController *)self capabilities];
-        v19 = [v18 canShowFaceIDScreen];
+        capabilities = [(BYFlowSkipController *)self capabilities];
+        canShowTouchIDScreen = [capabilities canShowFaceIDScreen];
       }
 
       else if ([v17 isEqualToString:@"passcode"])
       {
-        v18 = [(BYFlowSkipController *)self capabilities];
-        v19 = [v18 canShowPasscodeScreen];
+        capabilities = [(BYFlowSkipController *)self capabilities];
+        canShowTouchIDScreen = [capabilities canShowPasscodeScreen];
       }
 
       else if ([v17 isEqualToString:@"appleID"])
       {
-        v18 = [(BYFlowSkipController *)self capabilities];
-        v19 = [v18 canShowAppleIDScreen];
+        capabilities = [(BYFlowSkipController *)self capabilities];
+        canShowTouchIDScreen = [capabilities canShowAppleIDScreen];
       }
 
       else if ([v17 isEqualToString:@"applePay"])
       {
-        v18 = [(BYFlowSkipController *)self capabilities];
-        v19 = [v18 canShowPaymentScreen];
+        capabilities = [(BYFlowSkipController *)self capabilities];
+        canShowTouchIDScreen = [capabilities canShowPaymentScreen];
       }
 
       else
@@ -798,11 +798,11 @@ LABEL_15:
           continue;
         }
 
-        v18 = [(BYFlowSkipController *)self capabilities];
-        v19 = [v18 canShowSiriScreen];
+        capabilities = [(BYFlowSkipController *)self capabilities];
+        canShowTouchIDScreen = [capabilities canShowSiriScreen];
       }
 
-      v20 = v19;
+      v20 = canShowTouchIDScreen;
 
       if ((v20 & 1) == 0)
       {
@@ -820,7 +820,7 @@ LABEL_15:
   {
     v12 = 0;
     v9 = v37;
-    v3 = v36;
+    repostCopy = v36;
     if (!v36)
     {
       goto LABEL_35;
@@ -849,10 +849,10 @@ LABEL_15:
   }
 
   v12 = v35;
-  v3 = v36;
+  repostCopy = v36;
 LABEL_29:
 
-  if (v3)
+  if (repostCopy)
   {
 LABEL_32:
     v24 = _BYLoggingFacility();
@@ -866,19 +866,19 @@ LABEL_32:
 LABEL_35:
   if ([v38 count])
   {
-    if (v12 || v3)
+    if (v12 || repostCopy)
     {
-      [(BYFlowSkipController *)self _postFollowUpItemForFlowSkipIdentifiers:v38 previousFollowUpItem:v5 forceNotification:0];
+      [(BYFlowSkipController *)self _postFollowUpItemForFlowSkipIdentifiers:v38 previousFollowUpItem:_pendingFollowUpItem forceNotification:0];
     }
   }
 
   else
   {
-    v25 = [(BYFlowSkipController *)self _followUpController];
+    _followUpController = [(BYFlowSkipController *)self _followUpController];
     v44 = @"com.apple.purplebuddy.revisitSkippedSteps";
-    v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
+    domain = [MEMORY[0x1E695DEC8] arrayWithObjects:&v44 count:1];
     v39 = 0;
-    v27 = [v25 clearPendingFollowUpItemsWithUniqueIdentifiers:v26 error:&v39];
+    v27 = [_followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:domain error:&v39];
     v28 = v39;
 
     v29 = _BYLoggingFacility();
@@ -903,8 +903,8 @@ LABEL_35:
       else if (v28)
       {
         v34 = MEMORY[0x1E696AEC0];
-        v26 = [v28 domain];
-        v33 = [v34 stringWithFormat:@"<Error domain: %@, code %ld>", v26, objc_msgSend(v28, "code")];
+        domain = [v28 domain];
+        v33 = [v34 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v28, "code")];
         v32 = 1;
       }
 
@@ -927,16 +927,16 @@ LABEL_44:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_localizedStringListingFlowSkipIdentifiers:(id)a3
++ (id)_localizedStringListingFlowSkipIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  identifiersCopy = identifiers;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v3;
+  obj = identifiersCopy;
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -977,35 +977,35 @@ LABEL_44:
   [(BYFlowSkipController *)self registerActivities];
 }
 
-+ (void)_setShouldObserveChangeFromNetworkSSID:(id)a3
++ (void)_setShouldObserveChangeFromNetworkSSID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = a3;
+    dCopy = d;
   }
 
   else
   {
-    v3 = &unk_1F30A7790;
+    dCopy = &unk_1F30A7790;
   }
 
-  CFPreferencesSetAppValue(@"PBInitialNetworkSSID", v3, @"com.apple.purplebuddy.notbackedup");
+  CFPreferencesSetAppValue(@"PBInitialNetworkSSID", dCopy, @"com.apple.purplebuddy.notbackedup");
 
   CFPreferencesAppSynchronize(@"com.apple.purplebuddy.notbackedup");
 }
 
-+ (BOOL)_shouldObserveChangeFromNetworkSSID:(id *)a3
++ (BOOL)_shouldObserveChangeFromNetworkSSID:(id *)d
 {
   CFPreferencesAppSynchronize(@"com.apple.purplebuddy.notbackedup");
   v4 = CFPreferencesCopyAppValue(@"PBInitialNetworkSSID", @"com.apple.purplebuddy.notbackedup");
   v5 = v4;
-  *a3 = v5;
+  *d = v5;
   if (v5)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      *a3 = 0;
+      *d = 0;
     }
   }
 
@@ -1022,41 +1022,41 @@ LABEL_44:
 - (void)_persistInitialNetworkSSID
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [(BYFlowSkipController *)self _pendingFollowUpItem];
-  if (v2)
+  _pendingFollowUpItem = [(BYFlowSkipController *)self _pendingFollowUpItem];
+  if (_pendingFollowUpItem)
   {
-    v3 = [getWFClientClass() sharedInstance];
-    v4 = [v3 interface];
-    v5 = [v4 currentNetwork];
-    v6 = [v5 ssid];
+    sharedInstance = [getWFClientClass() sharedInstance];
+    interface = [sharedInstance interface];
+    currentNetwork = [interface currentNetwork];
+    ssid = [currentNetwork ssid];
 
     v7 = _BYLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v6;
+      v10 = ssid;
       _os_log_impl(&dword_1B862F000, v7, OS_LOG_TYPE_DEFAULT, "Finish setup observing changes from network SSID: %@", &v9, 0xCu);
     }
 
-    [BYFlowSkipController _setShouldObserveChangeFromNetworkSSID:v6];
+    [BYFlowSkipController _setShouldObserveChangeFromNetworkSSID:ssid];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerWiFiObserverActivityWithNeedsActivity:(BOOL)a3 handlerQueue:(id)a4
+- (void)_registerWiFiObserverActivityWithNeedsActivity:(BOOL)activity handlerQueue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v7 = +[BYXPCActivityRegistrar sharedInstance];
   v8 = *MEMORY[0x1E69E9C50];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__BYFlowSkipController__registerWiFiObserverActivityWithNeedsActivity_handlerQueue___block_invoke;
   v10[3] = &unk_1E7D033E0;
-  v13 = a3;
-  v11 = v6;
-  v12 = self;
-  v9 = v6;
+  activityCopy = activity;
+  v11 = queueCopy;
+  selfCopy = self;
+  v9 = queueCopy;
   [v7 registerActivityWithIdentifier:"com.apple.purplebuddy.finishsetup.wifiobserver" criteria:v8 handler:v10];
 }
 
@@ -1279,9 +1279,9 @@ LABEL_16:
 
 - (void)registerActivities
 {
-  v3 = [(BYFlowSkipController *)self _pendingFollowUpItem];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"initialPostDate"];
+  _pendingFollowUpItem = [(BYFlowSkipController *)self _pendingFollowUpItem];
+  userInfo = [_pendingFollowUpItem userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"initialPostDate"];
 
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1511,11 +1511,11 @@ LABEL_11:
 
 - (id)getFlowSkipIdentifiers
 {
-  v2 = [(BYFlowSkipController *)self _pendingFollowUpItem];
-  v3 = [v2 actions];
-  v4 = [v3 firstObject];
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"flowSkipIdentifiers"];
+  _pendingFollowUpItem = [(BYFlowSkipController *)self _pendingFollowUpItem];
+  actions = [_pendingFollowUpItem actions];
+  firstObject = [actions firstObject];
+  userInfo = [firstObject userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"flowSkipIdentifiers"];
 
   return v6;
 }
@@ -1536,12 +1536,12 @@ LABEL_11:
   if ((v5 & 1) == 0)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v2 = [a1 domain];
-    a1 = [v6 stringWithFormat:@"<Error domain: %@, code %ld>", v2, objc_msgSend(a1, "code")];
+    domain = [self domain];
+    self = [v6 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(self, "code")];
   }
 
   *buf = 138543362;
-  v9 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B862F000, a2, OS_LOG_TYPE_ERROR, "Failed to get pending follow up items: %{public}@", buf, 0xCu);
   if (!v5)
   {

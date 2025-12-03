@@ -1,28 +1,28 @@
 @interface UAFSchemaUAFDeviceMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (UAFSchemaUAFDeviceMetadata)initWithDictionary:(id)a3;
-- (UAFSchemaUAFDeviceMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (UAFSchemaUAFDeviceMetadata)initWithDictionary:(id)dictionary;
+- (UAFSchemaUAFDeviceMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasInputLocale:(BOOL)a3;
-- (void)setHasNanoSecondsSinceLastBoot:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasInputLocale:(BOOL)locale;
+- (void)setHasNanoSecondsSinceLastBoot:(BOOL)boot;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UAFSchemaUAFDeviceMetadata
 
-- (UAFSchemaUAFDeviceMetadata)initWithDictionary:(id)a3
+- (UAFSchemaUAFDeviceMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = UAFSchemaUAFDeviceMetadata;
   v5 = [(UAFSchemaUAFDeviceMetadata *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"deviceId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"deviceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(UAFSchemaUAFDeviceMetadata *)v5 setDeviceId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,14 +38,14 @@
       [(UAFSchemaUAFDeviceMetadata *)v5 setDeviceType:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"programCode"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"programCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[UAFSchemaUAFDeviceMetadata setProgramCode:](v5, "setProgramCode:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"systemBuild"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,14 +53,14 @@
       [(UAFSchemaUAFDeviceMetadata *)v5 setSystemBuild:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"inputLocale"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"inputLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[UAFSchemaUAFDeviceMetadata setInputLocale:](v5, "setInputLocale:", [v13 intValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"nanoSecondsSinceLastBoot"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"nanoSecondsSinceLastBoot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,30 +73,30 @@
   return v5;
 }
 
-- (UAFSchemaUAFDeviceMetadata)initWithJSON:(id)a3
+- (UAFSchemaUAFDeviceMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(UAFSchemaUAFDeviceMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(UAFSchemaUAFDeviceMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(UAFSchemaUAFDeviceMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -109,28 +109,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_deviceId)
   {
-    v4 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    deviceId = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
+    dictionaryRepresentation = [deviceId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"deviceId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"deviceId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"deviceId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"deviceId"];
     }
   }
 
   if (self->_deviceType)
   {
-    v7 = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"deviceType"];
+    deviceType = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
+    v8 = [deviceType copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"deviceType"];
   }
 
   has = self->_has;
@@ -147,7 +147,7 @@
       v11 = off_1E78E8810[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"inputLocale"];
+    [dictionary setObject:v11 forKeyedSubscript:@"inputLocale"];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -167,7 +167,7 @@ LABEL_10:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[UAFSchemaUAFDeviceMetadata nanoSecondsSinceLastBoot](self, "nanoSecondsSinceLastBoot")}];
-  [v3 setObject:v12 forKeyedSubscript:@"nanoSecondsSinceLastBoot"];
+  [dictionary setObject:v12 forKeyedSubscript:@"nanoSecondsSinceLastBoot"];
 
   if ((*&self->_has & 1) == 0)
   {
@@ -186,18 +186,18 @@ LABEL_17:
     v14 = off_1E78E8A00[v13];
   }
 
-  [v3 setObject:v14 forKeyedSubscript:@"programCode"];
+  [dictionary setObject:v14 forKeyedSubscript:@"programCode"];
 LABEL_21:
   if (self->_systemBuild)
   {
-    v15 = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"systemBuild"];
+    systemBuild = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
+    v16 = [systemBuild copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"systemBuild"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -239,28 +239,28 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
-  v6 = [v4 deviceId];
-  if ((v5 != 0) == (v6 == 0))
+  deviceId = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
+  deviceId2 = [equalCopy deviceId];
+  if ((deviceId != 0) == (deviceId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
-  if (v7)
+  deviceId3 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
+  if (deviceId3)
   {
-    v8 = v7;
-    v9 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
-    v10 = [v4 deviceId];
-    v11 = [v9 isEqual:v10];
+    v8 = deviceId3;
+    deviceId4 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
+    deviceId5 = [equalCopy deviceId];
+    v11 = [deviceId4 isEqual:deviceId5];
 
     if (!v11)
     {
@@ -272,20 +272,20 @@ LABEL_6:
   {
   }
 
-  v5 = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
-  v6 = [v4 deviceType];
-  if ((v5 != 0) == (v6 == 0))
+  deviceId = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
+  deviceId2 = [equalCopy deviceType];
+  if ((deviceId != 0) == (deviceId2 == 0))
   {
     goto LABEL_19;
   }
 
-  v12 = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
-  if (v12)
+  deviceType = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
+  if (deviceType)
   {
-    v13 = v12;
-    v14 = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
-    v15 = [v4 deviceType];
-    v16 = [v14 isEqual:v15];
+    v13 = deviceType;
+    deviceType2 = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
+    deviceType3 = [equalCopy deviceType];
+    v16 = [deviceType2 isEqual:deviceType3];
 
     if (!v16)
     {
@@ -297,7 +297,7 @@ LABEL_6:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[56] & 1))
+  if ((*&self->_has & 1) != (equalCopy[56] & 1))
   {
     goto LABEL_20;
   }
@@ -305,28 +305,28 @@ LABEL_6:
   if (*&self->_has)
   {
     programCode = self->_programCode;
-    if (programCode != [v4 programCode])
+    if (programCode != [equalCopy programCode])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
-  v6 = [v4 systemBuild];
-  if ((v5 != 0) == (v6 == 0))
+  deviceId = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
+  deviceId2 = [equalCopy systemBuild];
+  if ((deviceId != 0) == (deviceId2 == 0))
   {
 LABEL_19:
 
     goto LABEL_20;
   }
 
-  v18 = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
-  if (v18)
+  systemBuild = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
+  if (systemBuild)
   {
-    v19 = v18;
-    v20 = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
-    v21 = [v4 systemBuild];
-    v22 = [v20 isEqual:v21];
+    v19 = systemBuild;
+    systemBuild2 = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
+    systemBuild3 = [equalCopy systemBuild];
+    v22 = [systemBuild2 isEqual:systemBuild3];
 
     if (!v22)
     {
@@ -340,25 +340,25 @@ LABEL_19:
 
   has = self->_has;
   v26 = (*&has >> 1) & 1;
-  v27 = v4[56];
+  v27 = equalCopy[56];
   if (v26 == ((v27 >> 1) & 1))
   {
     if (v26)
     {
       inputLocale = self->_inputLocale;
-      if (inputLocale != [v4 inputLocale])
+      if (inputLocale != [equalCopy inputLocale])
       {
         goto LABEL_20;
       }
 
       has = self->_has;
-      v27 = v4[56];
+      v27 = equalCopy[56];
     }
 
     v29 = (*&has >> 2) & 1;
     if (v29 == ((v27 >> 2) & 1))
     {
-      if (!v29 || (nanoSecondsSinceLastBoot = self->_nanoSecondsSinceLastBoot, nanoSecondsSinceLastBoot == [v4 nanoSecondsSinceLastBoot]))
+      if (!v29 || (nanoSecondsSinceLastBoot = self->_nanoSecondsSinceLastBoot, nanoSecondsSinceLastBoot == [equalCopy nanoSecondsSinceLastBoot]))
       {
         v23 = 1;
         goto LABEL_21;
@@ -373,20 +373,20 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
+  toCopy = to;
+  deviceId = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
 
-  if (v4)
+  if (deviceId)
   {
-    v5 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
+    deviceId2 = [(UAFSchemaUAFDeviceMetadata *)self deviceId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
+  deviceType = [(UAFSchemaUAFDeviceMetadata *)self deviceType];
 
-  if (v6)
+  if (deviceType)
   {
     PBDataWriterWriteStringField();
   }
@@ -396,32 +396,32 @@ LABEL_21:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
+  systemBuild = [(UAFSchemaUAFDeviceMetadata *)self systemBuild];
 
-  if (v7)
+  if (systemBuild)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v9 = v10;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v9 = v10;
+    v9 = toCopy;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v9 = v10;
+    v9 = toCopy;
   }
 }
 
-- (void)setHasNanoSecondsSinceLastBoot:(BOOL)a3
+- (void)setHasNanoSecondsSinceLastBoot:(BOOL)boot
 {
-  if (a3)
+  if (boot)
   {
     v3 = 4;
   }
@@ -434,9 +434,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasInputLocale:(BOOL)a3
+- (void)setHasInputLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 2;
   }
@@ -449,17 +449,17 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = UAFSchemaUAFDeviceMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(UAFSchemaUAFDeviceMetadata *)self deviceId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(UAFSchemaUAFDeviceMetadata *)self deleteDeviceId];
   }

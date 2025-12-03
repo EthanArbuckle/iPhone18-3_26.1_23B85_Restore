@@ -1,28 +1,28 @@
 @interface WFUserDefaultsPersistence
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (BOOL)synchronize;
 - (WFUserDefaultsPersistence)init;
-- (WFUserDefaultsPersistence)initWithUserDefaults:(id)a3;
-- (id)arrayForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)objectForKey:(id)a3;
-- (id)stringForKey:(id)a3;
-- (void)setBool:(BOOL)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (WFUserDefaultsPersistence)initWithUserDefaults:(id)defaults;
+- (id)arrayForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)objectForKey:(id)key;
+- (id)stringForKey:(id)key;
+- (void)setBool:(BOOL)bool forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation WFUserDefaultsPersistence
 
-- (WFUserDefaultsPersistence)initWithUserDefaults:(id)a3
+- (WFUserDefaultsPersistence)initWithUserDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   v8.receiver = self;
   v8.super_class = WFUserDefaultsPersistence;
   v5 = [(WFUserDefaultsPersistence *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(WFUserDefaultsPersistence *)v5 setUserDefaults:v4];
+    [(WFUserDefaultsPersistence *)v5 setUserDefaults:defaultsCopy];
   }
 
   return v6;
@@ -36,73 +36,73 @@
   return v4;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFUserDefaultsPersistence *)self userDefaults];
-  v6 = [v5 arrayForKey:v4];
+  keyCopy = key;
+  userDefaults = [(WFUserDefaultsPersistence *)self userDefaults];
+  v6 = [userDefaults arrayForKey:keyCopy];
 
   return v6;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFUserDefaultsPersistence *)self userDefaults];
-  v6 = [v5 dictionaryForKey:v4];
+  keyCopy = key;
+  userDefaults = [(WFUserDefaultsPersistence *)self userDefaults];
+  v6 = [userDefaults dictionaryForKey:keyCopy];
 
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFUserDefaultsPersistence *)self userDefaults];
-  v6 = [v5 stringForKey:v4];
+  keyCopy = key;
+  userDefaults = [(WFUserDefaultsPersistence *)self userDefaults];
+  v6 = [userDefaults stringForKey:keyCopy];
 
   return v6;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFUserDefaultsPersistence *)self userDefaults];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  userDefaults = [(WFUserDefaultsPersistence *)self userDefaults];
+  v6 = [userDefaults objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFUserDefaultsPersistence *)self userDefaults];
-  [v8 setObject:v7 forKey:v6];
+  keyCopy = key;
+  objectCopy = object;
+  userDefaults = [(WFUserDefaultsPersistence *)self userDefaults];
+  [userDefaults setObject:objectCopy forKey:keyCopy];
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WFUserDefaultsPersistence *)self userDefaults];
-  v6 = [v5 BOOLForKey:v4];
+  keyCopy = key;
+  userDefaults = [(WFUserDefaultsPersistence *)self userDefaults];
+  v6 = [userDefaults BOOLForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setBool:(BOOL)a3 forKey:(id)a4
+- (void)setBool:(BOOL)bool forKey:(id)key
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(WFUserDefaultsPersistence *)self userDefaults];
-  [v7 setBool:v4 forKey:v6];
+  boolCopy = bool;
+  keyCopy = key;
+  userDefaults = [(WFUserDefaultsPersistence *)self userDefaults];
+  [userDefaults setBool:boolCopy forKey:keyCopy];
 }
 
 - (BOOL)synchronize
 {
-  v2 = [(WFUserDefaultsPersistence *)self userDefaults];
-  v3 = [v2 synchronize];
+  userDefaults = [(WFUserDefaultsPersistence *)self userDefaults];
+  synchronize = [userDefaults synchronize];
 
-  return v3;
+  return synchronize;
 }
 
 @end

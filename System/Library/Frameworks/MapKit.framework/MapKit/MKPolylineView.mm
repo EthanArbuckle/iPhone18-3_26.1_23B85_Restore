@@ -1,26 +1,26 @@
 @interface MKPolylineView
 - (void)createPath;
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5;
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context;
 @end
 
 @implementation MKPolylineView
 
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context
 {
-  v8 = [(MKOverlayView *)self overlay:a3.var0.var0];
-  v9 = [v8 points];
-  v10 = [(MKOverlayView *)self overlay];
-  v11 = [v10 pointCount];
+  v8 = [(MKOverlayView *)self overlay:rect.var0.var0];
+  points = [v8 points];
+  overlay = [(MKOverlayView *)self overlay];
+  pointCount = [overlay pointCount];
   [(MKOverlayView *)self _originMapPoint];
   v13 = v12;
   v15 = v14;
   Mutable = CGPathCreateMutable();
-  _MKPolylineAddToPath(Mutable, v9, v11, v13, v15, a4, 0.0, 1.0, -1.0);
+  _MKPolylineAddToPath(Mutable, points, pointCount, v13, v15, scale, 0.0, 1.0, -1.0);
 
   if (Mutable && !CGPathIsEmpty(Mutable))
   {
-    [(MKOverlayPathView *)self applyStrokePropertiesToContext:a5 atZoomScale:a4];
-    [(MKOverlayPathView *)self strokePath:Mutable inContext:a5];
+    [(MKOverlayPathView *)self applyStrokePropertiesToContext:context atZoomScale:scale];
+    [(MKOverlayPathView *)self strokePath:Mutable inContext:context];
   }
 
   CGPathRelease(Mutable);
@@ -31,20 +31,20 @@
   [(MKOverlayView *)self _originMapPoint];
   v4 = v3;
   v6 = v5;
-  v7 = [(MKOverlayView *)self overlay];
-  v8 = [v7 points];
+  overlay = [(MKOverlayView *)self overlay];
+  points = [overlay points];
 
-  v9 = [(MKOverlayView *)self overlay];
-  v10 = [v9 pointCount];
+  overlay2 = [(MKOverlayView *)self overlay];
+  pointCount = [overlay2 pointCount];
 
-  if (v10 >= 2)
+  if (pointCount >= 2)
   {
     Mutable = CGPathCreateMutable();
-    v13 = *v8;
-    v14 = v8[1];
-    v12 = v8 + 3;
+    v13 = *points;
+    v14 = points[1];
+    v12 = points + 3;
     CGPathMoveToPoint(Mutable, 0, v13 - v4, v14 - v6);
-    v15 = v10 - 1;
+    v15 = pointCount - 1;
     do
     {
       CGPathAddLineToPoint(Mutable, 0, *(v12 - 1) - v4, *v12 - v6);

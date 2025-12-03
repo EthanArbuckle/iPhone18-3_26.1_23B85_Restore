@@ -1,27 +1,27 @@
 @interface CSSingleCheckerPhraseDetector
 - (CSSingleCheckerPhraseDetector)init;
-- (id)_getResultWithPhId:(unint64_t)a3 phraseDetectorInfo:(id)a4 quasarResult:(id)a5;
-- (id)_phraseDetectorResultFromQuasarResult:(id)a3;
-- (id)_resultCopyWithKeywordDetectorDecision:(unint64_t)a3 phraseResult:(id)a4;
-- (id)getAnalyzedResultFromAudioChunk:(id)a3;
+- (id)_getResultWithPhId:(unint64_t)id phraseDetectorInfo:(id)info quasarResult:(id)result;
+- (id)_phraseDetectorResultFromQuasarResult:(id)result;
+- (id)_resultCopyWithKeywordDetectorDecision:(unint64_t)decision phraseResult:(id)result;
+- (id)getAnalyzedResultFromAudioChunk:(id)chunk;
 - (id)getAnalyzedResultFromFlushedAudio;
-- (id)phraseDetectorInfoFromPhId:(unint64_t)a3;
+- (id)phraseDetectorInfoFromPhId:(unint64_t)id;
 - (void)dealloc;
 - (void)reset;
-- (void)setConfig:(id)a3;
+- (void)setConfig:(id)config;
 @end
 
 @implementation CSSingleCheckerPhraseDetector
 
-- (id)_resultCopyWithKeywordDetectorDecision:(unint64_t)a3 phraseResult:(id)a4
+- (id)_resultCopyWithKeywordDetectorDecision:(unint64_t)decision phraseResult:(id)result
 {
   v28 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v27 count:16];
+  resultCopy = result;
+  v6 = [resultCopy countByEnumeratingWithState:&v17 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -32,23 +32,23 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(resultCopy);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        if ([v10 decision] == a3)
+        if ([v10 decision] == decision)
         {
           v12 = CSLogContextFacilityCoreSpeech;
           if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
           {
             v13 = v12;
-            v14 = [v10 phId];
+            phId = [v10 phId];
             *buf = 136315650;
             v22 = "[CSSingleCheckerPhraseDetector _resultCopyWithKeywordDetectorDecision:phraseResult:]";
             v23 = 2048;
-            v24 = a3;
+            decisionCopy = decision;
             v25 = 2048;
-            v26 = v14;
+            v26 = phId;
             _os_log_impl(&dword_1DDA4B000, v13, OS_LOG_TYPE_DEFAULT, "%s Reporting decision (%tu) from (%tu)", buf, 0x20u);
           }
 
@@ -57,7 +57,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v27 count:16];
+      v7 = [resultCopy countByEnumeratingWithState:&v17 objects:v27 count:16];
       if (v7)
       {
         continue;
@@ -75,26 +75,26 @@ LABEL_13:
   return v11;
 }
 
-- (id)_getResultWithPhId:(unint64_t)a3 phraseDetectorInfo:(id)a4 quasarResult:(id)a5
+- (id)_getResultWithPhId:(unint64_t)id phraseDetectorInfo:(id)info quasarResult:(id)result
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if ([(NSMutableArray *)self->_phraseResult count]<= a3)
+  infoCopy = info;
+  resultCopy = result;
+  if ([(NSMutableArray *)self->_phraseResult count]<= id)
   {
     v17 = 0;
   }
 
   else
   {
-    v10 = [v8 phraseConfig];
-    [v8 effectiveKeywordThreshold];
+    phraseConfig = [infoCopy phraseConfig];
+    [infoCopy effectiveKeywordThreshold];
     v12 = v11;
-    [v10 recognizerScoreScaleFactor];
+    [phraseConfig recognizerScoreScaleFactor];
     v14 = v13;
-    if (v9)
+    if (resultCopy)
     {
-      [v9 triggerConfidence];
+      [resultCopy triggerConfidence];
       v16 = v15;
     }
 
@@ -111,14 +111,14 @@ LABEL_13:
       {
         v20 = v14;
         v21 = v19;
-        v22 = [v9 isValidResult];
+        isValidResult = [resultCopy isValidResult];
         *&v34[4] = "[CSSingleCheckerPhraseDetector _getResultWithPhId:phraseDetectorInfo:quasarResult:]";
         *&v34[12] = 2048;
         v23 = @"NO";
         *v34 = 136316162;
-        *&v34[14] = a3;
+        *&v34[14] = id;
         *&v34[22] = 2050;
-        if (v22)
+        if (isValidResult)
         {
           v23 = @"YES";
         }
@@ -135,7 +135,7 @@ LABEL_13:
     }
 
     _getResultWithPhId_phraseDetectorInfo_quasarResult__heartbeat = v18 + 1;
-    if ([v9 isValidResult])
+    if ([resultCopy isValidResult])
     {
       v24 = v12;
       v25 = CSLogContextFacilityCoreSpeech;
@@ -147,7 +147,7 @@ LABEL_13:
           *v34 = 136315906;
           *&v34[4] = "[CSSingleCheckerPhraseDetector _getResultWithPhId:phraseDetectorInfo:quasarResult:]";
           *&v34[12] = 2048;
-          *&v34[14] = a3;
+          *&v34[14] = id;
           *&v34[22] = 2050;
           v35 = v16;
           v36 = 2050;
@@ -165,7 +165,7 @@ LABEL_13:
           *v34 = 136315906;
           *&v34[4] = "[CSSingleCheckerPhraseDetector _getResultWithPhId:phraseDetectorInfo:quasarResult:]";
           *&v34[12] = 2048;
-          *&v34[14] = a3;
+          *&v34[14] = id;
           *&v34[22] = 2050;
           v35 = v16;
           v36 = 2050;
@@ -186,7 +186,7 @@ LABEL_13:
     *&v29 = v16;
     LODWORD(v30) = -8388608;
     *&v31 = v16;
-    v17 = [(CSSinglePhraseResult *)v28 initWithPhId:a3 keywordDetectorDecision:v27 combinedScore:0 ndapiScore:0 ndapiResult:0 recognizerScore:self->_syncKeywordAnalyzerQuasar != 0 isSecondChance:v29 isSecondChanceCandidate:v30 isRunningQuasar:v31];
+    v17 = [(CSSinglePhraseResult *)v28 initWithPhId:id keywordDetectorDecision:v27 combinedScore:0 ndapiScore:0 ndapiResult:0 recognizerScore:self->_syncKeywordAnalyzerQuasar != 0 isSecondChance:v29 isSecondChanceCandidate:v30 isRunningQuasar:v31];
   }
 
   v32 = *MEMORY[0x1E69E9840];
@@ -194,10 +194,10 @@ LABEL_13:
   return v17;
 }
 
-- (id)_phraseDetectorResultFromQuasarResult:(id)a3
+- (id)_phraseDetectorResultFromQuasarResult:(id)result
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -221,14 +221,14 @@ LABEL_13:
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        if ([v4 count] <= v9)
+        if ([resultCopy count] <= v9)
         {
           v13 = 0;
         }
 
         else
         {
-          v13 = [v4 objectAtIndex:v9];
+          v13 = [resultCopy objectAtIndex:v9];
         }
 
         v14 = [(CSSingleCheckerPhraseDetector *)self _getResultWithPhId:v9 phraseDetectorInfo:v12 quasarResult:v13];
@@ -335,16 +335,16 @@ LABEL_31:
   return v17;
 }
 
-- (id)phraseDetectorInfoFromPhId:(unint64_t)a3
+- (id)phraseDetectorInfoFromPhId:(unint64_t)id
 {
-  if ([(NSMutableArray *)self->_phraseDetectorInfos count]<= a3)
+  if ([(NSMutableArray *)self->_phraseDetectorInfos count]<= id)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_phraseDetectorInfos objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_phraseDetectorInfos objectAtIndex:id];
   }
 
   return v5;
@@ -352,22 +352,22 @@ LABEL_31:
 
 - (id)getAnalyzedResultFromFlushedAudio
 {
-  v3 = [(CSSyncKeywordAnalyzerQuasar *)self->_syncKeywordAnalyzerQuasar getResultsFromFlushedAudio];
-  v4 = [(CSSingleCheckerPhraseDetector *)self _phraseDetectorResultFromQuasarResult:v3];
+  getResultsFromFlushedAudio = [(CSSyncKeywordAnalyzerQuasar *)self->_syncKeywordAnalyzerQuasar getResultsFromFlushedAudio];
+  v4 = [(CSSingleCheckerPhraseDetector *)self _phraseDetectorResultFromQuasarResult:getResultsFromFlushedAudio];
 
   return v4;
 }
 
-- (id)getAnalyzedResultFromAudioChunk:(id)a3
+- (id)getAnalyzedResultFromAudioChunk:(id)chunk
 {
-  if (a3)
+  if (chunk)
   {
     syncKeywordAnalyzerQuasar = self->_syncKeywordAnalyzerQuasar;
-    v5 = a3;
-    v6 = [(CSSyncKeywordAnalyzerQuasar *)syncKeywordAnalyzerQuasar getAnalyzedResultsFromAudioChunk:v5];
-    v7 = [v5 numSamples];
+    chunkCopy = chunk;
+    v6 = [(CSSyncKeywordAnalyzerQuasar *)syncKeywordAnalyzerQuasar getAnalyzedResultsFromAudioChunk:chunkCopy];
+    numSamples = [chunkCopy numSamples];
 
-    self->_processedSampleCount += v7;
+    self->_processedSampleCount += numSamples;
     v8 = [(CSSingleCheckerPhraseDetector *)self _phraseDetectorResultFromQuasarResult:v6];
   }
 
@@ -379,12 +379,12 @@ LABEL_31:
   return v8;
 }
 
-- (void)setConfig:(id)a3
+- (void)setConfig:(id)config
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 phraseConfigs];
-  v6 = [v5 count];
+  configCopy = config;
+  phraseConfigs = [configCopy phraseConfigs];
+  v6 = [phraseConfigs count];
 
   if (v6)
   {
@@ -393,8 +393,8 @@ LABEL_31:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v7 = [v4 phraseConfigs];
-    v8 = [v7 countByEnumeratingWithState:&v53 objects:v59 count:16];
+    phraseConfigs2 = [configCopy phraseConfigs];
+    v8 = [phraseConfigs2 countByEnumeratingWithState:&v53 objects:v59 count:16];
     if (v8)
     {
       v9 = v8;
@@ -405,7 +405,7 @@ LABEL_31:
         {
           if (*v54 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(phraseConfigs2);
           }
 
           v12 = [[CSPhraseDetectorInfo alloc] initWithPhraseConfig:*(*(&v53 + 1) + 8 * i)];
@@ -415,13 +415,13 @@ LABEL_31:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v53 objects:v59 count:16];
+        v9 = [phraseConfigs2 countByEnumeratingWithState:&v53 objects:v59 count:16];
       }
 
       while (v9);
     }
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -441,9 +441,9 @@ LABEL_31:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v49 + 1) + 8 * j) phraseConfig];
-          v20 = [v19 recognizerToken];
-          [v13 addObject:v20];
+          phraseConfig = [*(*(&v49 + 1) + 8 * j) phraseConfig];
+          recognizerToken = [phraseConfig recognizerToken];
+          [array addObject:recognizerToken];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v49 objects:v58 count:16];
@@ -453,8 +453,8 @@ LABEL_31:
     }
 
     v21 = [CSSyncKeywordAnalyzerQuasar alloc];
-    v22 = [v4 configPathRecognizer];
-    v23 = [(CSSyncKeywordAnalyzerQuasar *)v21 initWithConfigPath:v22 triggerTokensArray:v13 preventDuplicatedReset:0 memoryLock:0];
+    configPathRecognizer = [configCopy configPathRecognizer];
+    v23 = [(CSSyncKeywordAnalyzerQuasar *)v21 initWithConfigPath:configPathRecognizer triggerTokensArray:array preventDuplicatedReset:0 memoryLock:0];
     syncKeywordAnalyzerQuasar = self->_syncKeywordAnalyzerQuasar;
     self->_syncKeywordAnalyzerQuasar = v23;
 
@@ -478,15 +478,15 @@ LABEL_31:
           }
 
           v30 = *(*(&v45 + 1) + 8 * k);
-          v31 = [v30 phraseConfig];
-          [v31 threshold];
+          phraseConfig2 = [v30 phraseConfig];
+          [phraseConfig2 threshold];
           v37 = *&v32;
           if (self->_syncKeywordAnalyzerQuasar)
           {
-            [v31 recognizerScoreOffset];
+            [phraseConfig2 recognizerScoreOffset];
             v39 = v38;
             v37 = v37 + v38;
-            [v31 recognizerScoreScaleFactor];
+            [phraseConfig2 recognizerScoreScaleFactor];
             LODWORD(v40) = LODWORD(v32);
           }
 
@@ -501,7 +501,7 @@ LABEL_31:
           LODWORD(v34) = 2139095040;
           *&v35 = v39;
           LODWORD(v36) = 2139095040;
-          v41 = [v31 copyWithThreshold:v32 secondChanceThreshold:v33 loggingThreshold:v34 ndapiScaleFactor:0.0 recognizerScoreOffset:v35 recognizerScoreScaleFactor:v40 keywordRejectLoggingThreshold:v36];
+          v41 = [phraseConfig2 copyWithThreshold:v32 secondChanceThreshold:v33 loggingThreshold:v34 ndapiScaleFactor:0.0 recognizerScoreOffset:v35 recognizerScoreScaleFactor:v40 keywordRejectLoggingThreshold:v36];
           [v30 setPhraseConfig:v41];
           *&v42 = v37;
           [v30 setEffectiveKeywordThreshold:v42];
@@ -589,13 +589,13 @@ LABEL_31:
   v2 = [(CSSingleCheckerPhraseDetector *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     phraseDetectorInfos = v2->_phraseDetectorInfos;
-    v2->_phraseDetectorInfos = v3;
+    v2->_phraseDetectorInfos = array;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     phraseResult = v2->_phraseResult;
-    v2->_phraseResult = v5;
+    v2->_phraseResult = array2;
 
     v2->_processedSampleCount = 0;
   }

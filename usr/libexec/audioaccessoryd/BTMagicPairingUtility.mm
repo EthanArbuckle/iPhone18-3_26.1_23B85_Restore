@@ -1,18 +1,18 @@
 @interface BTMagicPairingUtility
-- (id)cipherBluetoothAddress:(id)a3;
-- (id)magicPairingDecryptDataWithKey:(id)a3 payload:(id)a4 length:(unint64_t)a5;
-- (id)magicPairingEncryptDataWithKey:(id)a3 payload:(id)a4;
+- (id)cipherBluetoothAddress:(id)address;
+- (id)magicPairingDecryptDataWithKey:(id)key payload:(id)payload length:(unint64_t)length;
+- (id)magicPairingEncryptDataWithKey:(id)key payload:(id)payload;
 @end
 
 @implementation BTMagicPairingUtility
 
-- (id)cipherBluetoothAddress:(id)a3
+- (id)cipherBluetoothAddress:(id)address
 {
   v12 = 0;
   v11 = 0;
-  v3 = [a3 bytes];
-  *v8 = *v3;
-  *&v8[4] = v3[2];
+  bytes = [address bytes];
+  *v8 = *bytes;
+  *&v8[4] = bytes[2];
   v10 = *&v8[4];
   v9 = *v8;
   v4 = 6;
@@ -27,16 +27,16 @@
   return v6;
 }
 
-- (id)magicPairingEncryptDataWithKey:(id)a3 payload:(id)a4
+- (id)magicPairingEncryptDataWithKey:(id)key payload:(id)payload
 {
-  v5 = a4;
-  v6 = a3;
+  payloadCopy = payload;
+  keyCopy = key;
   ccaes_ecb_encrypt_mode();
   v13[0] = 0;
   v13[1] = 0;
-  [v6 bytes];
+  [keyCopy bytes];
 
-  [v5 bytes];
+  [payloadCopy bytes];
   v7 = ccecb_one_shot();
   if (v7)
   {
@@ -60,16 +60,16 @@
   return v10;
 }
 
-- (id)magicPairingDecryptDataWithKey:(id)a3 payload:(id)a4 length:(unint64_t)a5
+- (id)magicPairingDecryptDataWithKey:(id)key payload:(id)payload length:(unint64_t)length
 {
-  v7 = a4;
-  v8 = a3;
+  payloadCopy = payload;
+  keyCopy = key;
   ccaes_ecb_decrypt_mode();
   v15[0] = 0;
   v15[1] = 0;
-  [v8 bytes];
+  [keyCopy bytes];
 
-  [v7 bytes];
+  [payloadCopy bytes];
   v9 = ccecb_one_shot();
   if (v9)
   {
@@ -87,7 +87,7 @@
 
   else
   {
-    v12 = [NSData dataWithBytes:v15 length:a5];
+    v12 = [NSData dataWithBytes:v15 length:length];
   }
 
   return v12;

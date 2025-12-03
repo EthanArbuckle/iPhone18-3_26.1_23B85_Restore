@@ -8,15 +8,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    return [a1 _tightBoundingRectOfFirstLine];
+    return [self _tightBoundingRectOfFirstLine];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    return [a1 _deviceRectOfFirstLine];
+    return [self _deviceRectOfFirstLine];
   }
 
-  return [a1 frame];
+  return [self frame];
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface ProfileViewController
-- (_TtC18HealthExperienceUI21ProfileViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI21ProfileViewController)initWithCollectionViewLayout:(id)a3;
-- (void)dismissProfile:(id)a3;
-- (void)restoreUserActivityState:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC18HealthExperienceUI21ProfileViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI21ProfileViewController)initWithCollectionViewLayout:(id)layout;
+- (void)dismissProfile:(id)profile;
+- (void)restoreUserActivityState:(id)state;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation ProfileViewController
 
-- (_TtC18HealthExperienceUI21ProfileViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI21ProfileViewController)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC18HealthExperienceUI21ProfileViewController_restorationRowToLoad;
   *v3 = 0;
@@ -24,36 +24,36 @@
   return result;
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5 = sub_1BA4A4018();
   MEMORY[0x1EEE9AC00](v5);
-  v6 = self;
+  selfCopy = self;
   sub_1BA4A71E8();
   v9 = 7;
   sub_1B9F3AEE8();
   sub_1BA4A4008();
   sub_1BA4A71F8();
   v7 = type metadata accessor for ProfileViewController();
-  v8.receiver = v6;
+  v8.receiver = selfCopy;
   v8.super_class = v7;
-  [(CompoundDataSourceCollectionViewController *)&v8 viewIsAppearing:v3];
+  [(CompoundDataSourceCollectionViewController *)&v8 viewIsAppearing:appearingCopy];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA3888C0();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v14.receiver = self;
   v14.super_class = type metadata accessor for ProfileViewController();
   v4 = v14.receiver;
-  [(CompoundDataSourceCollectionViewController *)&v14 viewDidAppear:v3];
+  [(CompoundDataSourceCollectionViewController *)&v14 viewDidAppear:appearCopy];
   v5 = &v4[OBJC_IVAR____TtC18HealthExperienceUI21ProfileViewController_restorationRowToLoad];
   v6 = v4[OBJC_IVAR____TtC18HealthExperienceUI21ProfileViewController_restorationRowToLoad + 16];
   if (v6 != 255)
@@ -76,50 +76,50 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA388F08(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA388F08(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA3891A8(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1BA3891A8(scrollCopy);
 }
 
-- (void)dismissProfile:(id)a3
+- (void)dismissProfile:(id)profile
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
-  v5 = [(ProfileViewController *)v4 navigationController];
-  if (v5)
+  navigationController = [(ProfileViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    [(ProfileViewController *)v5 dismissViewControllerAnimated:1 completion:0];
+    v6 = navigationController;
+    [(ProfileViewController *)navigationController dismissViewControllerAnimated:1 completion:0];
 
-    v4 = v6;
+    selfCopy = v6;
   }
 
   __swift_destroy_boxed_opaque_existential_1(&v7);
 }
 
-- (_TtC18HealthExperienceUI21ProfileViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI21ProfileViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)restoreUserActivityState:(id)a3
+- (void)restoreUserActivityState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  ProfileViewController.restoreUserActivityState(_:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  ProfileViewController.restoreUserActivityState(_:)(stateCopy);
 }
 
 @end

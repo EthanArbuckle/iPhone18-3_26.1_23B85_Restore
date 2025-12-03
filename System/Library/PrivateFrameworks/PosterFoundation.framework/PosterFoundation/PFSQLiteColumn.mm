@@ -1,66 +1,66 @@
 @interface PFSQLiteColumn
-+ (PFSQLiteColumn)columnWithName:(id)a3 type:(unint64_t)a4 attributes:(unint64_t)a5 valueTransformer:(id)a6;
-+ (id)ISO8601DateColumnNamed:(id)a3 attributes:(unint64_t)a4;
-+ (id)NSCodingColumnNamed:(id)a3 attributes:(unint64_t)a4 expectedClass:(Class)a5;
-+ (id)UUIDColumnNamed:(id)a3 attributes:(unint64_t)a4;
-+ (id)blobColumnNamed:(id)a3 attributes:(unint64_t)a4;
-+ (id)dateColumnNamed:(id)a3 attributes:(unint64_t)a4 dateFormatter:(id)a5;
-+ (id)integerColumnNamed:(id)a3 attributes:(unint64_t)a4;
-+ (id)realColumnNamed:(id)a3 attributes:(unint64_t)a4;
-+ (id)textColumnNamed:(id)a3 attributes:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (PFSQLiteColumn)columnWithName:(id)name type:(unint64_t)type attributes:(unint64_t)attributes valueTransformer:(id)transformer;
++ (id)ISO8601DateColumnNamed:(id)named attributes:(unint64_t)attributes;
++ (id)NSCodingColumnNamed:(id)named attributes:(unint64_t)attributes expectedClass:(Class)class;
++ (id)UUIDColumnNamed:(id)named attributes:(unint64_t)attributes;
++ (id)blobColumnNamed:(id)named attributes:(unint64_t)attributes;
++ (id)dateColumnNamed:(id)named attributes:(unint64_t)attributes dateFormatter:(id)formatter;
++ (id)integerColumnNamed:(id)named attributes:(unint64_t)attributes;
++ (id)realColumnNamed:(id)named attributes:(unint64_t)attributes;
++ (id)textColumnNamed:(id)named attributes:(unint64_t)attributes;
+- (BOOL)isEqual:(id)equal;
 - (Class)expectedValueClass;
 - (NSString)description;
-- (PFSQLiteColumn)initWithColumnName:(id)a3 type:(unint64_t)a4 attributes:(unint64_t)a5 valueTransformer:(id)a6;
-- (id)pf_toSQLWithBindings:(unint64_t *)a3;
+- (PFSQLiteColumn)initWithColumnName:(id)name type:(unint64_t)type attributes:(unint64_t)attributes valueTransformer:(id)transformer;
+- (id)pf_toSQLWithBindings:(unint64_t *)bindings;
 - (void)description;
 @end
 
 @implementation PFSQLiteColumn
 
-+ (PFSQLiteColumn)columnWithName:(id)a3 type:(unint64_t)a4 attributes:(unint64_t)a5 valueTransformer:(id)a6
++ (PFSQLiteColumn)columnWithName:(id)name type:(unint64_t)type attributes:(unint64_t)attributes valueTransformer:(id)transformer
 {
-  v9 = a6;
-  v10 = a3;
-  v11 = [[PFSQLiteColumn alloc] initWithColumnName:v10 type:a4 attributes:a5 valueTransformer:v9];
+  transformerCopy = transformer;
+  nameCopy = name;
+  v11 = [[PFSQLiteColumn alloc] initWithColumnName:nameCopy type:type attributes:attributes valueTransformer:transformerCopy];
 
   return v11;
 }
 
-- (PFSQLiteColumn)initWithColumnName:(id)a3 type:(unint64_t)a4 attributes:(unint64_t)a5 valueTransformer:(id)a6
+- (PFSQLiteColumn)initWithColumnName:(id)name type:(unint64_t)type attributes:(unint64_t)attributes valueTransformer:(id)transformer
 {
-  v11 = a3;
-  v12 = a6;
+  nameCopy = name;
+  transformerCopy = transformer;
   v25.receiver = self;
   v25.super_class = PFSQLiteColumn;
   v13 = [(PFSQLiteColumn *)&v25 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [nameCopy copy];
     name = v13->_name;
     v13->_name = v14;
 
-    v13->_type = a4;
-    v13->_attributes = a5;
-    objc_storeStrong(&v13->_valueTransformer, a6);
+    v13->_type = type;
+    v13->_attributes = attributes;
+    objc_storeStrong(&v13->_valueTransformer, transformer);
     valueTransformer = v13->_valueTransformer;
-    v17 = [objc_opt_class() transformedValueClass];
+    transformedValueClass = [objc_opt_class() transformedValueClass];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __70__PFSQLiteColumn_initWithColumnName_type_attributes_valueTransformer___block_invoke;
     v24[3] = &__block_descriptor_40_e5__8__0l;
-    v24[4] = a4;
-    if (v17 != __70__PFSQLiteColumn_initWithColumnName_type_attributes_valueTransformer___block_invoke(v24))
+    v24[4] = type;
+    if (transformedValueClass != __70__PFSQLiteColumn_initWithColumnName_type_attributes_valueTransformer___block_invoke(v24))
     {
       [PFSQLiteColumn initWithColumnName:a2 type:v13 attributes:? valueTransformer:?];
     }
 
-    v18 = [MEMORY[0x1E698E6B8] builder];
-    v19 = [v18 appendInteger:v13->_attributes];
-    v20 = [v18 appendInteger:v13->_type];
-    v21 = [v18 appendString:v13->_name];
-    v22 = [v18 appendPointer:v12];
-    v13->_cachedHash = [v18 hash];
+    builder = [MEMORY[0x1E698E6B8] builder];
+    v19 = [builder appendInteger:v13->_attributes];
+    v20 = [builder appendInteger:v13->_type];
+    v21 = [builder appendString:v13->_name];
+    v22 = [builder appendPointer:transformerCopy];
+    v13->_cachedHash = [builder hash];
   }
 
   return v13;
@@ -109,10 +109,10 @@ LABEL_10:
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -122,13 +122,13 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PFSQLiteColumn *)v5 name];
-      v7 = [(PFSQLiteColumn *)self name];
-      if ([v6 isEqualToString:v7] && (v8 = -[PFSQLiteColumn type](v5, "type"), v8 == -[PFSQLiteColumn type](self, "type")))
+      v5 = equalCopy;
+      name = [(PFSQLiteColumn *)v5 name];
+      name2 = [(PFSQLiteColumn *)self name];
+      if ([name isEqualToString:name2] && (v8 = -[PFSQLiteColumn type](v5, "type"), v8 == -[PFSQLiteColumn type](self, "type")))
       {
-        v9 = [(PFSQLiteColumn *)v5 attributes];
-        v10 = v9 == [(PFSQLiteColumn *)self attributes];
+        attributes = [(PFSQLiteColumn *)v5 attributes];
+        v10 = attributes == [(PFSQLiteColumn *)self attributes];
       }
 
       else
@@ -217,18 +217,18 @@ LABEL_10:
     [v3 appendString:v12 withName:@"_attributes"];
 
     v13 = [v3 appendObject:self->_valueTransformer withName:@"_valueTransformer" skipIfNil:1];
-    v14 = [v3 build];
+    build = [v3 build];
 
-    return v14;
+    return build;
   }
 
   return result;
 }
 
-- (id)pf_toSQLWithBindings:(unint64_t *)a3
+- (id)pf_toSQLWithBindings:(unint64_t *)bindings
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PFSQLiteColumn *)self name];
+  name = [(PFSQLiteColumn *)self name];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __39__PFSQLiteColumn_pf_toSQLWithBindings___block_invoke;
@@ -236,7 +236,7 @@ LABEL_10:
   v12[4] = self;
   v12[5] = a2;
   v7 = __39__PFSQLiteColumn_pf_toSQLWithBindings___block_invoke(v12);
-  v8 = [v5 stringWithFormat:@"'%@' %@", v6, v7];
+  v8 = [v5 stringWithFormat:@"'%@' %@", name, v7];
 
   if ([(PFSQLiteColumn *)self isPrimaryKey])
   {
@@ -276,93 +276,93 @@ __CFString *__39__PFSQLiteColumn_pf_toSQLWithBindings___block_invoke(uint64_t a1
   return result;
 }
 
-+ (id)dateColumnNamed:(id)a3 attributes:(unint64_t)a4 dateFormatter:(id)a5
++ (id)dateColumnNamed:(id)named attributes:(unint64_t)attributes dateFormatter:(id)formatter
 {
   v8 = MEMORY[0x1E696B0A0];
-  v9 = a3;
-  v10 = [v8 pf_dateTransformerForDateFormatter:a5];
-  v11 = [a1 columnWithName:v9 type:3 attributes:a4 valueTransformer:v10];
+  namedCopy = named;
+  v10 = [v8 pf_dateTransformerForDateFormatter:formatter];
+  v11 = [self columnWithName:namedCopy type:3 attributes:attributes valueTransformer:v10];
 
   return v11;
 }
 
-+ (id)integerColumnNamed:(id)a3 attributes:(unint64_t)a4
++ (id)integerColumnNamed:(id)named attributes:(unint64_t)attributes
 {
   v6 = MEMORY[0x1E696B0A0];
-  v7 = a3;
+  namedCopy = named;
   v8 = objc_opt_self();
   v9 = [v6 pf_identityTransformerForClass:v8];
-  v10 = [a1 columnWithName:v7 type:1 attributes:a4 valueTransformer:v9];
+  v10 = [self columnWithName:namedCopy type:1 attributes:attributes valueTransformer:v9];
 
   return v10;
 }
 
-+ (id)blobColumnNamed:(id)a3 attributes:(unint64_t)a4
++ (id)blobColumnNamed:(id)named attributes:(unint64_t)attributes
 {
   v6 = MEMORY[0x1E696B0A0];
-  v7 = a3;
+  namedCopy = named;
   v8 = objc_opt_self();
   v9 = [v6 pf_identityTransformerForClass:v8];
-  v10 = [a1 columnWithName:v7 type:4 attributes:a4 valueTransformer:v9];
+  v10 = [self columnWithName:namedCopy type:4 attributes:attributes valueTransformer:v9];
 
   return v10;
 }
 
-+ (id)ISO8601DateColumnNamed:(id)a3 attributes:(unint64_t)a4
++ (id)ISO8601DateColumnNamed:(id)named attributes:(unint64_t)attributes
 {
   v6 = MEMORY[0x1E696B0A0];
-  v7 = a3;
-  v8 = [v6 pf_ISO8601DateTransformer];
-  v9 = [a1 columnWithName:v7 type:3 attributes:a4 valueTransformer:v8];
+  namedCopy = named;
+  pf_ISO8601DateTransformer = [v6 pf_ISO8601DateTransformer];
+  v9 = [self columnWithName:namedCopy type:3 attributes:attributes valueTransformer:pf_ISO8601DateTransformer];
 
   return v9;
 }
 
-+ (id)textColumnNamed:(id)a3 attributes:(unint64_t)a4
++ (id)textColumnNamed:(id)named attributes:(unint64_t)attributes
 {
   v6 = MEMORY[0x1E696B0A0];
-  v7 = a3;
+  namedCopy = named;
   v8 = objc_opt_self();
   v9 = [v6 pf_identityTransformerForClass:v8];
-  v10 = [a1 columnWithName:v7 type:3 attributes:a4 valueTransformer:v9];
+  v10 = [self columnWithName:namedCopy type:3 attributes:attributes valueTransformer:v9];
 
   return v10;
 }
 
-+ (id)UUIDColumnNamed:(id)a3 attributes:(unint64_t)a4
++ (id)UUIDColumnNamed:(id)named attributes:(unint64_t)attributes
 {
   v6 = MEMORY[0x1E696B0A0];
-  v7 = a3;
-  v8 = [v6 pf_UUIDToNSStringTransformer];
-  v9 = [a1 columnWithName:v7 type:3 attributes:a4 valueTransformer:v8];
+  namedCopy = named;
+  pf_UUIDToNSStringTransformer = [v6 pf_UUIDToNSStringTransformer];
+  v9 = [self columnWithName:namedCopy type:3 attributes:attributes valueTransformer:pf_UUIDToNSStringTransformer];
 
   return v9;
 }
 
-+ (id)realColumnNamed:(id)a3 attributes:(unint64_t)a4
++ (id)realColumnNamed:(id)named attributes:(unint64_t)attributes
 {
   v6 = MEMORY[0x1E696B0A0];
-  v7 = a3;
+  namedCopy = named;
   v8 = objc_opt_self();
   v9 = [v6 pf_identityTransformerForClass:v8];
-  v10 = [a1 columnWithName:v7 type:2 attributes:a4 valueTransformer:v9];
+  v10 = [self columnWithName:namedCopy type:2 attributes:attributes valueTransformer:v9];
 
   return v10;
 }
 
-+ (id)NSCodingColumnNamed:(id)a3 attributes:(unint64_t)a4 expectedClass:(Class)a5
++ (id)NSCodingColumnNamed:(id)named attributes:(unint64_t)attributes expectedClass:(Class)class
 {
-  v8 = a3;
+  namedCopy = named;
   v9 = [PFGenericValueTransformer alloc];
   v10 = objc_opt_self();
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __63__PFSQLiteColumn_NSCodingColumnNamed_attributes_expectedClass___block_invoke_2;
   v14[3] = &__block_descriptor_40_e19__24__0__NSData_8_16lu32l8;
-  v14[4] = a5;
-  v11 = [(PFGenericValueTransformer *)v9 initWithTransformedValueClass:v10 transformer:&__block_literal_global_5 reverseValueClass:a5 reverseTransformer:v14];
+  v14[4] = class;
+  v11 = [(PFGenericValueTransformer *)v9 initWithTransformedValueClass:v10 transformer:&__block_literal_global_5 reverseValueClass:class reverseTransformer:v14];
 
-  v12 = [a1 columnWithName:v8 type:4 attributes:a4 valueTransformer:v11];
+  v12 = [self columnWithName:namedCopy type:4 attributes:attributes valueTransformer:v11];
 
   return v12;
 }
@@ -406,7 +406,7 @@ __CFString *__39__PFSQLiteColumn_pf_toSQLWithBindings___block_invoke(uint64_t a1
   v8 = 1024;
   v9 = 28;
   v10 = 2114;
-  v11 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C269D000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "failure in %{public}@ (%{public}@:%i) : %{public}@", &v4, 0x26u);
 
   v3 = *MEMORY[0x1E69E9840];

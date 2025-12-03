@@ -1,13 +1,13 @@
 @interface AppPromotionScrollableContentContainerView
-- (_TtC8AppStore42AppPromotionScrollableContentContainerView)initWithCoder:(id)a3;
-- (_TtC8AppStore42AppPromotionScrollableContentContainerView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC8AppStore42AppPromotionScrollableContentContainerView)initWithCoder:(id)coder;
+- (_TtC8AppStore42AppPromotionScrollableContentContainerView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
 @implementation AppPromotionScrollableContentContainerView
 
-- (_TtC8AppStore42AppPromotionScrollableContentContainerView)initWithCoder:(id)a3
+- (_TtC8AppStore42AppPromotionScrollableContentContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore42AppPromotionScrollableContentContainerView_protectionMode) = 1;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore42AppPromotionScrollableContentContainerView_isCollapsing) = 0;
@@ -24,22 +24,22 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000D1344();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1000D1448(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1000D1448(event, x, y);
 
   return v10;
 }
 
-- (_TtC8AppStore42AppPromotionScrollableContentContainerView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore42AppPromotionScrollableContentContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

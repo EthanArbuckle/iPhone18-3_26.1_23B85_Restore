@@ -7,16 +7,16 @@
 
 - (void)takeAssertion
 {
-  v2 = [(CLStreamedLocationProviderAssertion *)self proxy];
+  proxy = [(CLStreamedLocationProviderAssertion *)self proxy];
 
-  [(CLStreamedLocationProviderProtocol *)v2 takeDisablementAssertion];
+  [(CLStreamedLocationProviderProtocol *)proxy takeDisablementAssertion];
 }
 
 - (void)releaseAssertion
 {
-  v2 = [(CLStreamedLocationProviderAssertion *)self proxy];
+  proxy = [(CLStreamedLocationProviderAssertion *)self proxy];
 
-  [(CLStreamedLocationProviderProtocol *)v2 releaseDisablementAssertion];
+  [(CLStreamedLocationProviderProtocol *)proxy releaseDisablementAssertion];
 }
 
 @end

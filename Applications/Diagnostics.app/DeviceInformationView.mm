@@ -1,8 +1,8 @@
 @interface DeviceInformationView
-- (void)addButtonPressedWithSender:(id)a3;
-- (void)ellipsisButtonPressedWithSender:(id)a3;
+- (void)addButtonPressedWithSender:(id)sender;
+- (void)ellipsisButtonPressedWithSender:(id)sender;
 - (void)infoLabelTapped;
-- (void)setInfoLabelType:(int64_t)a3;
+- (void)setInfoLabelType:(int64_t)type;
 - (void)tintColorDidChange;
 @end
 
@@ -10,33 +10,33 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003E560();
 }
 
-- (void)setInfoLabelType:(int64_t)a3
+- (void)setInfoLabelType:(int64_t)type
 {
-  v4 = self;
-  sub_10003F5F4(a3);
+  selfCopy = self;
+  sub_10003F5F4(type);
 }
 
-- (void)addButtonPressedWithSender:(id)a3
+- (void)addButtonPressedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1000442E4();
 }
 
-- (void)ellipsisButtonPressedWithSender:(id)a3
+- (void)ellipsisButtonPressedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_100043AD0(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_100043AD0(senderCopy);
 }
 
 - (void)infoLabelTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_100043C0C();
 }
 

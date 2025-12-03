@@ -1,22 +1,22 @@
 @interface ViewTextAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(int64_t)a6;
-- (_TtC23ShelfKitCollectionViewsP33_905A70485746288452852FB911153C6C18ViewTextAttachment)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViewsP33_905A70485746288452852FB911153C6C18ViewTextAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(int64_t)index;
+- (_TtC23ShelfKitCollectionViewsP33_905A70485746288452852FB911153C6C18ViewTextAttachment)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViewsP33_905A70485746288452852FB911153C6C18ViewTextAttachment)initWithData:(id)data ofType:(id)type;
 @end
 
 @implementation ViewTextAttachment
 
-- (_TtC23ShelfKitCollectionViewsP33_905A70485746288452852FB911153C6C18ViewTextAttachment)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViewsP33_905A70485746288452852FB911153C6C18ViewTextAttachment)initWithCoder:(id)coder
 {
   result = sub_30D648();
   __break(1u);
   return result;
 }
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(int64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = self;
+  containerCopy = container;
+  selfCopy = self;
   v9 = sub_1B49A0();
   v11 = v10;
   v13 = v12;
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViewsP33_905A70485746288452852FB911153C6C18ViewTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC23ShelfKitCollectionViewsP33_905A70485746288452852FB911153C6C18ViewTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = sub_301CD8();
     sub_45264(v5, v6);
   }

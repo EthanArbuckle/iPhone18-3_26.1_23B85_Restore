@@ -1,10 +1,10 @@
 @interface CNContactFilter
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsSections;
-- (CNContactFilter)initWithDictionaryRepresentation:(id)a3;
+- (CNContactFilter)initWithDictionaryRepresentation:(id)representation;
 - (NSPredicate)predicate;
 - (NSString)fullTextString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 @end
 
@@ -23,10 +23,10 @@
 
 - (NSPredicate)predicate
 {
-  v2 = [(CNContactFilter *)self fullTextString];
-  if ([v2 length])
+  fullTextString = [(CNContactFilter *)self fullTextString];
+  if ([fullTextString length])
   {
-    v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K BEGINSWITH[cd] %@) OR (%K BEGINSWITH[cd] %@) OR (%K BEGINSWITH[cd] %@)", *MEMORY[0x1E695C240], v2, *MEMORY[0x1E695C230], v2, *MEMORY[0x1E695C328], v2];
+    v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K BEGINSWITH[cd] %@) OR (%K BEGINSWITH[cd] %@) OR (%K BEGINSWITH[cd] %@)", *MEMORY[0x1E695C240], fullTextString, *MEMORY[0x1E695C230], fullTextString, *MEMORY[0x1E695C328], fullTextString];
   }
 
   else
@@ -39,8 +39,8 @@
 
 - (BOOL)supportsSections
 {
-  v2 = [(CNContactFilter *)self fullTextString];
-  v3 = v2 == 0;
+  fullTextString = [(CNContactFilter *)self fullTextString];
+  v3 = fullTextString == 0;
 
   return v3;
 }
@@ -48,12 +48,12 @@
 - (id)dictionaryRepresentation
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CNContactFilter *)self fullTextString];
-  v3 = v2;
-  if (v2)
+  fullTextString = [(CNContactFilter *)self fullTextString];
+  v3 = fullTextString;
+  if (fullTextString)
   {
     v6 = @"CNContactFilterDictionaryKeyFullTextString";
-    v7[0] = v2;
+    v7[0] = fullTextString;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
 
@@ -65,13 +65,13 @@
   return v4;
 }
 
-- (CNContactFilter)initWithDictionaryRepresentation:(id)a3
+- (CNContactFilter)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(CNContactFilter *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"CNContactFilterDictionaryKeyFullTextString"];
+    v6 = [representationCopy objectForKeyedSubscript:@"CNContactFilterDictionaryKeyFullTextString"];
     v7 = [v6 copy];
     fullTextString = v5->_fullTextString;
     v5->_fullTextString = v7;
@@ -80,21 +80,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(CNContactFilter *)self fullTextString];
-    if (v7 || ([v6 fullTextString], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    fullTextString = [(CNContactFilter *)self fullTextString];
+    if (fullTextString || ([v6 fullTextString], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(CNContactFilter *)self fullTextString];
-      v9 = [v6 fullTextString];
-      v10 = [v8 isEqual:v9];
+      fullTextString2 = [(CNContactFilter *)self fullTextString];
+      fullTextString3 = [v6 fullTextString];
+      v10 = [fullTextString2 isEqual:fullTextString3];
 
-      if (v7)
+      if (fullTextString)
       {
 LABEL_9:
 
@@ -116,11 +116,11 @@ LABEL_10:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(CNContactFilter *)self fullTextString];
-  [v4 setFullTextString:v5];
+  fullTextString = [(CNContactFilter *)self fullTextString];
+  [v4 setFullTextString:fullTextString];
 
   return v4;
 }

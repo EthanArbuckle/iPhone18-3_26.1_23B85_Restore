@@ -1,103 +1,103 @@
 @interface WGWidgetPlatterView
-+ (double)contentBaselineToBoundsBottomWithWidth:(double)a3;
++ (double)contentBaselineToBoundsBottomWithWidth:(double)width;
 - (BOOL)_isUtilityButtonVisible;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGRect)_headerFrameForBounds:(CGRect)a3;
+- (CGRect)_headerFrameForBounds:(CGRect)bounds;
 - (CGSize)_contentSize;
-- (CGSize)contentSizeForSize:(CGSize)a3;
+- (CGSize)contentSizeForSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
-- (CGSize)minimumSizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3;
+- (CGSize)minimumSizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size;
 - (NSArray)requiredVisualStyleCategories;
 - (NSString)widgetIdentifier;
 - (UIButton)addWidgetButton;
 - (UIButton)showMoreButton;
 - (WGWidgetHostingViewController)widgetHost;
 - (WGWidgetListItemViewController)listItem;
-- (WGWidgetPlatterView)initWithFrame:(CGRect)a3;
+- (WGWidgetPlatterView)initWithFrame:(CGRect)frame;
 - (id)cancelTouches;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
 - (void)_configureBackgroundMaterialViewIfNecessary;
 - (void)_configureHeaderViewsIfNecessary;
-- (void)_handleAddWidget:(id)a3;
-- (void)_handleIconButton:(id)a3;
+- (void)_handleAddWidget:(id)widget;
+- (void)_handleIconButton:(id)button;
 - (void)_layoutContentView;
 - (void)_layoutHeaderViews;
-- (void)_setContentView:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setUtilityButtonVisible:(BOOL)a3;
-- (void)_toggleShowMore:(id)a3;
+- (void)_setContentView:(id)view;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setUtilityButtonVisible:(BOOL)visible;
+- (void)_toggleShowMore:(id)more;
 - (void)_updateHeaderContentViewVisualStyling;
 - (void)_updateShowMoreButtonImage;
-- (void)_updateUtilityButtonForMode:(int64_t)a3;
-- (void)_updateUtilityButtonForMoreContentState:(BOOL)a3;
-- (void)iconDidInvalidate:(id)a3;
+- (void)_updateUtilityButtonForMode:(int64_t)mode;
+- (void)_updateUtilityButtonForMoreContentState:(BOOL)state;
+- (void)iconDidInvalidate:(id)invalidate;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setBackgroundHidden:(BOOL)a3;
-- (void)setClippingEdge:(unint64_t)a3;
-- (void)setContentViewHitTestingDisabled:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setOverrideHeightForLayingOutContentView:(double)a3;
-- (void)setShowingMoreContent:(BOOL)a3;
-- (void)setTopMarginForLayout:(double)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)setWidgetHost:(id)a3;
-- (void)willRemoveSubview:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setBackgroundHidden:(BOOL)hidden;
+- (void)setClippingEdge:(unint64_t)edge;
+- (void)setContentViewHitTestingDisabled:(BOOL)disabled;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setOverrideHeightForLayingOutContentView:(double)view;
+- (void)setShowingMoreContent:(BOOL)content;
+- (void)setTopMarginForLayout:(double)layout;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)setWidgetHost:(id)host;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation WGWidgetPlatterView
 
-- (WGWidgetPlatterView)initWithFrame:(CGRect)a3
+- (WGWidgetPlatterView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = WGWidgetPlatterView;
-  v3 = [(WGWidgetPlatterView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WGWidgetPlatterView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(WGWidgetPlatterView *)v3 setClipsToBounds:1];
     [(WGWidgetPlatterView *)v4 setAutoresizesSubviews:1];
     [(WGWidgetPlatterView *)v4 _setContinuousCornerRadius:13.0];
-    v5 = [(WGWidgetPlatterView *)v4 layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(WGWidgetPlatterView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v4 selector:sel_iconDidInvalidate_ name:@"WGWidgetInfoIconDidInvalidateNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_iconDidInvalidate_ name:@"WGWidgetInfoIconDidInvalidateNotification" object:0];
   }
 
   return v4;
 }
 
-- (void)setWidgetHost:(id)a3
+- (void)setWidgetHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
   v6 = WeakRetained;
-  if (WeakRetained != v4)
+  if (WeakRetained != hostCopy)
   {
-    v7 = [WeakRetained view];
-    [v7 removeFromSuperview];
+    view = [WeakRetained view];
+    [view removeFromSuperview];
 
-    v8 = objc_storeWeak(&self->_widgetHost, v4);
+    v8 = objc_storeWeak(&self->_widgetHost, hostCopy);
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __37__WGWidgetPlatterView_setWidgetHost___block_invoke;
     v14[3] = &unk_279ED0FE8;
     objc_copyWeak(&v16, &location);
-    v9 = v4;
+    v9 = hostCopy;
     v15 = v9;
     [v9 requestIconWithHandler:v14];
     headerContentView = self->_headerContentView;
-    v11 = [v9 displayName];
-    v12 = [v11 localizedUppercaseString];
-    [(PLPlatterHeaderContentView *)headerContentView setTitle:v12];
+    displayName = [v9 displayName];
+    localizedUppercaseString = [displayName localizedUppercaseString];
+    [(PLPlatterHeaderContentView *)headerContentView setTitle:localizedUppercaseString];
 
     [(WGWidgetPlatterView *)self _updateUtilityButtonForMode:self->_buttonMode];
-    v13 = [v9 view];
-    [(WGWidgetPlatterView *)self _setContentView:v13];
+    view2 = [v9 view];
+    [(WGWidgetPlatterView *)self _setContentView:view2];
 
     [(WGWidgetPlatterView *)self setNeedsLayout];
     objc_destroyWeak(&v16);
@@ -147,44 +147,44 @@ void __37__WGWidgetPlatterView_setWidgetHost___block_invoke_2(uint64_t a1)
   }
 }
 
-- (CGSize)minimumSizeThatFits:(CGSize)a3
+- (CGSize)minimumSizeThatFits:(CGSize)fits
 {
-  [(WGWidgetPlatterView *)self sizeThatFitsContentWithSize:a3.width, 0.0];
+  [(WGWidgetPlatterView *)self sizeThatFitsContentWithSize:fits.width, 0.0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setContentViewHitTestingDisabled:(BOOL)a3
+- (void)setContentViewHitTestingDisabled:(BOOL)disabled
 {
-  if (self->_contentViewHitTestingDisabled != a3)
+  if (self->_contentViewHitTestingDisabled != disabled)
   {
-    self->_contentViewHitTestingDisabled = a3;
+    self->_contentViewHitTestingDisabled = disabled;
     [(UIView *)self->_contentView bs_setHitTestingDisabled:?];
   }
 }
 
-- (void)setClippingEdge:(unint64_t)a3
+- (void)setClippingEdge:(unint64_t)edge
 {
-  if (a3 != 1 && a3 != 4)
+  if (edge != 1 && edge != 4)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"WGWidgetPlatterView.m" lineNumber:103 description:@"Only 'UIRectEdgeTop' or 'UIRectEdgeBottom' (but not both) are supported."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WGWidgetPlatterView.m" lineNumber:103 description:@"Only 'UIRectEdgeTop' or 'UIRectEdgeBottom' (but not both) are supported."];
   }
 
-  if (self->_clippingEdge != a3)
+  if (self->_clippingEdge != edge)
   {
-    self->_clippingEdge = a3;
+    self->_clippingEdge = edge;
 
     [(WGWidgetPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundHidden:(BOOL)a3
+- (void)setBackgroundHidden:(BOOL)hidden
 {
-  if (self->_backgroundHidden != a3)
+  if (self->_backgroundHidden != hidden)
   {
-    self->_backgroundHidden = a3;
+    self->_backgroundHidden = hidden;
     [(WGWidgetPlatterView *)self setNeedsLayout];
   }
 }
@@ -197,18 +197,18 @@ void __37__WGWidgetPlatterView_setWidgetHost___block_invoke_2(uint64_t a1)
   return [(PLPlatterHeaderContentView *)headerContentView utilityButton];
 }
 
-- (void)setShowingMoreContent:(BOOL)a3
+- (void)setShowingMoreContent:(BOOL)content
 {
-  v3 = a3;
-  v5 = a3;
+  contentCopy = content;
+  contentCopy2 = content;
   WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
-  [WeakRetained setUserSpecifiedDisplayMode:v5];
+  [WeakRetained setUserSpecifiedDisplayMode:contentCopy2];
 
-  if (self->_showingMoreContent != v3)
+  if (self->_showingMoreContent != contentCopy)
   {
-    self->_showingMoreContent = v3;
+    self->_showingMoreContent = contentCopy;
 
-    [(WGWidgetPlatterView *)self _updateUtilityButtonForMoreContentState:v3];
+    [(WGWidgetPlatterView *)self _updateUtilityButtonForMoreContentState:contentCopy];
   }
 }
 
@@ -220,48 +220,48 @@ void __37__WGWidgetPlatterView_setWidgetHost___block_invoke_2(uint64_t a1)
   return [(PLPlatterHeaderContentView *)headerContentView utilityButton];
 }
 
-- (void)setTopMarginForLayout:(double)a3
+- (void)setTopMarginForLayout:(double)layout
 {
-  if (self->_topMarginForLayout != a3)
+  if (self->_topMarginForLayout != layout)
   {
-    self->_topMarginForLayout = a3;
+    self->_topMarginForLayout = layout;
     [(WGWidgetPlatterView *)self setNeedsLayout];
   }
 }
 
-+ (double)contentBaselineToBoundsBottomWithWidth:(double)a3
++ (double)contentBaselineToBoundsBottomWithWidth:(double)width
 {
   v4 = _WGMainScreenScale();
 
-  [(PLPlatterHeaderContentView *)WGPlatterHeaderContentView contentBaselineToBoundsBottomWithWidth:a3 scale:v4];
+  [(PLPlatterHeaderContentView *)WGPlatterHeaderContentView contentBaselineToBoundsBottomWithWidth:width scale:v4];
   return result;
 }
 
 - (NSString)widgetIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
-  v3 = [WeakRetained widgetIdentifier];
+  widgetIdentifier = [WeakRetained widgetIdentifier];
 
-  return v3;
+  return widgetIdentifier;
 }
 
 - (id)cancelTouches
 {
   WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
-  v3 = [WeakRetained _cancelTouches];
+  _cancelTouches = [WeakRetained _cancelTouches];
 
-  return v3;
+  return _cancelTouches;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
-  v6 = [WeakRetained parentViewController];
-  v7 = v6;
-  if (v6)
+  parentViewController = [WeakRetained parentViewController];
+  v7 = parentViewController;
+  if (parentViewController)
   {
-    [v6 sizeForChildContentContainer:WeakRetained withParentContainerSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [parentViewController sizeForChildContentContainer:WeakRetained withParentContainerSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   }
 
   else
@@ -371,8 +371,8 @@ LABEL_11:
   }
 
 LABEL_12:
-  v32 = [(WGWidgetPlatterView *)self layer];
-  [v32 setMaskedCorners:v22];
+  layer = [(WGWidgetPlatterView *)self layer];
+  [layer setMaskedCorners:v22];
 
   if (v22)
   {
@@ -389,14 +389,14 @@ LABEL_12:
   [(WGWidgetPlatterView *)&v37 _setContinuousCornerRadius:cornerRadius];
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   v8.receiver = self;
   v8.super_class = WGWidgetPlatterView;
-  [(WGWidgetPlatterView *)&v8 willRemoveSubview:v4];
+  [(WGWidgetPlatterView *)&v8 willRemoveSubview:subviewCopy];
   contentView = self->_contentView;
-  if (contentView == v4)
+  if (contentView == subviewCopy)
   {
     self->_contentView = 0;
   }
@@ -404,20 +404,20 @@ LABEL_12:
   WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
   if ([WeakRetained isViewLoaded])
   {
-    v7 = [WeakRetained view];
+    view = [WeakRetained view];
 
-    if (v7 == v4)
+    if (view == subviewCopy)
     {
       objc_storeWeak(&self->_widgetHost, 0);
     }
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(MTMaterialView *)self->_backgroundView _setContinuousCornerRadius:?];
     [(UIView *)self->_contentView _setContinuousCornerRadius:self->_cornerRadius];
 
@@ -427,7 +427,7 @@ LABEL_12:
 
 - (void)_updateShowMoreButtonImage
 {
-  v10 = [(WGWidgetPlatterView *)self showMoreButton];
+  showMoreButton = [(WGWidgetPlatterView *)self showMoreButton];
   v2 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76938]];
   v3 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76940]];
   [v2 pointSize];
@@ -437,15 +437,15 @@ LABEL_12:
   v8 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.forward"];
   v9 = [v8 imageWithSymbolConfiguration:v7];
 
-  [v10 setImage:v9 forState:0];
-  [v10 setImageEdgeInsets:{-0.5, 0.0, 0.5, 0.0}];
-  [v10 _setTouchInsets:{-20.0, -20.0, -20.0, -20.0}];
+  [showMoreButton setImage:v9 forState:0];
+  [showMoreButton setImageEdgeInsets:{-0.5, 0.0, 0.5, 0.0}];
+  [showMoreButton _setTouchInsets:{-20.0, -20.0, -20.0, -20.0}];
 }
 
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(WGWidgetPlatterView *)self _configureHeaderViewsIfNecessary];
   headerContentView = self->_headerContentView;
   if (headerContentView)
@@ -461,11 +461,11 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)contentSizeForSize:(CGSize)a3
+- (CGSize)contentSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  [(WGWidgetPlatterView *)self sizeThatFitsContentWithSize:a3.width, 0.0];
+  height = size.height;
+  width = size.width;
+  [(WGWidgetPlatterView *)self sizeThatFitsContentWithSize:size.width, 0.0];
   v6 = ((height - v5) & ~((height - v5) >> 31));
   v7 = width;
   result.height = v6;
@@ -473,11 +473,11 @@ LABEL_12:
   return result;
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(WGWidgetPlatterView *)self _configureHeaderViewsIfNecessary];
     headerContentView = self->_headerContentView;
     adjustsFontForContentSizeCategory = self->_adjustsFontForContentSizeCategory;
@@ -495,28 +495,28 @@ LABEL_12:
   return 1;
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   if (![(NSString *)self->_materialGroupNameBase isEqualToString:?])
   {
-    objc_storeStrong(&self->_materialGroupNameBase, a3);
+    objc_storeStrong(&self->_materialGroupNameBase, base);
     [(MTMaterialView *)self->_backgroundView setGroupNameBase:self->_materialGroupNameBase];
   }
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   if (self->_backgroundView)
   {
-    v3 = [(MTMaterialView *)self->_backgroundView visualStylingProviderForCategory:a3];
+    v3 = [(MTMaterialView *)self->_backgroundView visualStylingProviderForCategory:category];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = WGWidgetPlatterView;
-    v3 = [(WGWidgetPlatterView *)&v5 visualStylingProviderForCategory:a3];
+    v3 = [(WGWidgetPlatterView *)&v5 visualStylingProviderForCategory:category];
   }
 
   return v3;
@@ -530,35 +530,35 @@ LABEL_12:
   return [(PLPlatterHeaderContentView *)headerContentView requiredVisualStyleCategories];
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
+  providerCopy = provider;
   [(WGWidgetPlatterView *)self _configureHeaderViewsIfNecessary];
-  [(PLPlatterHeaderContentView *)self->_headerContentView setVisualStylingProvider:v6 forCategory:a4];
+  [(PLPlatterHeaderContentView *)self->_headerContentView setVisualStylingProvider:providerCopy forCategory:category];
 }
 
-- (void)_setContentView:(id)a3
+- (void)_setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v11 = v5;
-    v7 = [(UIView *)contentView superview];
+    v11 = viewCopy;
+    superview = [(UIView *)contentView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(UIView *)self->_contentView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(UIView *)self->_contentView bs_setHitTestingDisabled:self->_contentViewHitTestingDisabled];
     v8 = self->_contentView;
     if (v8)
     {
       [(UIView *)v8 setAutoresizingMask:0];
-      v9 = [(UIView *)self->_contentView layer];
-      [v9 setMaskedCorners:12];
+      layer = [(UIView *)self->_contentView layer];
+      [layer setMaskedCorners:12];
 
       [(UIView *)self->_contentView _setContinuousCornerRadius:self->_cornerRadius];
       [(UIView *)self->_contentView setClipsToBounds:1];
@@ -576,10 +576,10 @@ LABEL_12:
     }
 
     contentView = [(WGWidgetPlatterView *)self setNeedsLayout];
-    v5 = v11;
+    viewCopy = v11;
   }
 
-  MEMORY[0x2821F96F8](contentView, v5);
+  MEMORY[0x2821F96F8](contentView, viewCopy);
 }
 
 - (void)_configureBackgroundMaterialViewIfNecessary
@@ -608,10 +608,10 @@ LABEL_12:
     [(MTMaterialView *)v7 setFrame:?];
     [(MTMaterialView *)self->_backgroundView setAutoresizingMask:18];
     v8 = self->_backgroundView;
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    [(MTMaterialView *)v8 setBlurEnabled:(v10 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+    [(MTMaterialView *)v8 setBlurEnabled:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
     v11 = self->_backgroundView;
 
     [(WGWidgetPlatterView *)self insertSubview:v11 atIndex:0];
@@ -630,8 +630,8 @@ LABEL_12:
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v3 = [(PLPlatterHeaderContentView *)self->_headerContentView requiredVisualStyleCategories];
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      requiredVisualStyleCategories = [(PLPlatterHeaderContentView *)self->_headerContentView requiredVisualStyleCategories];
+      v4 = [requiredVisualStyleCategories countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         v5 = v4;
@@ -643,19 +643,19 @@ LABEL_12:
           {
             if (*v12 != v6)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(requiredVisualStyleCategories);
             }
 
-            v8 = [*(*(&v11 + 1) + 8 * v7) integerValue];
+            integerValue = [*(*(&v11 + 1) + 8 * v7) integerValue];
             headerContentView = self->_headerContentView;
-            v10 = [(MTMaterialView *)self->_backgroundView visualStylingProviderForCategory:v8];
-            [(PLPlatterHeaderContentView *)headerContentView setVisualStylingProvider:v10 forCategory:v8];
+            v10 = [(MTMaterialView *)self->_backgroundView visualStylingProviderForCategory:integerValue];
+            [(PLPlatterHeaderContentView *)headerContentView setVisualStylingProvider:v10 forCategory:integerValue];
 
             ++v7;
           }
 
           while (v5 != v7);
-          v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v5 = [requiredVisualStyleCategories countByEnumeratingWithState:&v11 objects:v15 count:16];
         }
 
         while (v5);
@@ -666,8 +666,8 @@ LABEL_12:
 
 - (void)_configureHeaderViewsIfNecessary
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 integerForKey:@"WGAzulWidgetsType"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults integerForKey:@"WGAzulWidgetsType"];
 
   if (self->_headerContentView)
   {
@@ -688,8 +688,8 @@ LABEL_12:
 
     [(PLPlatterHeaderContentView *)self->_headerContentView setAdjustsFontForContentSizeCategory:self->_adjustsFontForContentSizeCategory];
     [(PLPlatterHeaderContentView *)self->_headerContentView setHeedsHorizontalLayoutMargins:1];
-    v8 = [(WGPlatterHeaderContentView *)self->_headerContentView layer];
-    [v8 setMaskedCorners:3];
+    layer = [(WGPlatterHeaderContentView *)self->_headerContentView layer];
+    [layer setMaskedCorners:3];
 
     [(WGPlatterHeaderContentView *)self->_headerContentView _setContinuousCornerRadius:self->_cornerRadius];
     [(WGPlatterHeaderContentView *)self->_headerContentView setLayoutMargins:0.0, 11.5, 0.0, 11.5];
@@ -702,11 +702,11 @@ LABEL_12:
 - (CGSize)_contentSize
 {
   WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
-  v3 = [WeakRetained parentViewController];
-  v4 = v3;
-  if (v3)
+  parentViewController = [WeakRetained parentViewController];
+  v4 = parentViewController;
+  if (parentViewController)
   {
-    [v3 sizeForChildContentContainer:WeakRetained withParentContainerSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    [parentViewController sizeForChildContentContainer:WeakRetained withParentContainerSize:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   }
 
   else
@@ -729,12 +729,12 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_headerFrameForBounds:(CGRect)a3
+- (CGRect)_headerFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(WGWidgetPlatterView *)self _configureHeaderViewsIfNecessary];
   v12.origin.x = x;
   v12.origin.y = y;
@@ -763,11 +763,11 @@ LABEL_12:
   return result;
 }
 
-- (void)setOverrideHeightForLayingOutContentView:(double)a3
+- (void)setOverrideHeightForLayingOutContentView:(double)view
 {
-  if (vabdd_f64(a3, self->_overrideHeightForLayingOutContentView) > 2.22044605e-16)
+  if (vabdd_f64(view, self->_overrideHeightForLayingOutContentView) > 2.22044605e-16)
   {
-    self->_overrideHeightForLayingOutContentView = a3;
+    self->_overrideHeightForLayingOutContentView = view;
     [(WGWidgetPlatterView *)self setNeedsLayout];
   }
 }
@@ -836,14 +836,14 @@ LABEL_12:
   [(WGPlatterHeaderContentView *)headerContentView setNeedsLayout];
 }
 
-- (void)_handleIconButton:(id)a3
+- (void)_handleIconButton:(id)button
 {
   v16[3] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
-  v4 = [WeakRetained widgetIdentifier];
-  v5 = WGApplicationIdentifierForWidgetWithBundleIdentifier(v4);
+  widgetIdentifier = [WeakRetained widgetIdentifier];
+  v5 = WGApplicationIdentifierForWidgetWithBundleIdentifier(widgetIdentifier);
 
-  v6 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v7 = MEMORY[0x277D0AD60];
   v8 = *MEMORY[0x277CD9308];
   v9 = *MEMORY[0x277D0AC70];
@@ -861,7 +861,7 @@ LABEL_12:
   v13[3] = &unk_279ED1010;
   v14 = v5;
   v12 = v5;
-  [v6 openApplication:v12 withOptions:v11 completion:v13];
+  [serviceWithDefaultShellEndpoint openApplication:v12 withOptions:v11 completion:v13];
 }
 
 void __41__WGWidgetPlatterView__handleIconButton___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -874,17 +874,17 @@ void __41__WGWidgetPlatterView__handleIconButton___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_updateUtilityButtonForMode:(int64_t)a3
+- (void)_updateUtilityButtonForMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
-    v7 = [(WGWidgetPlatterView *)self addWidgetButton];
-    [v7 removeTarget:self action:sel__toggleShowMore_ forControlEvents:64];
+    addWidgetButton = [(WGWidgetPlatterView *)self addWidgetButton];
+    [addWidgetButton removeTarget:self action:sel__toggleShowMore_ forControlEvents:64];
 
-    v8 = [(WGWidgetPlatterView *)self addWidgetButton];
-    [v8 addTarget:self action:sel__handleAddWidget_ forControlEvents:64];
+    addWidgetButton2 = [(WGWidgetPlatterView *)self addWidgetButton];
+    [addWidgetButton2 addTarget:self action:sel__handleAddWidget_ forControlEvents:64];
 
-    v9 = [(WGWidgetPlatterView *)self addWidgetButton];
+    addWidgetButton3 = [(WGWidgetPlatterView *)self addWidgetButton];
     v10 = _os_feature_enabled_impl();
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v12 = v11;
@@ -899,23 +899,23 @@ void __41__WGWidgetPlatterView__handleIconButton___block_invoke(uint64_t a1, voi
     }
 
     v14 = [v11 localizedStringForKey:v13 value:&stru_2883435D8 table:@"Widgets"];
-    [v9 setTitle:v14 forState:0];
+    [addWidgetButton3 setTitle:v14 forState:0];
 
     headerContentView = self->_headerContentView;
 
     [(WGPlatterHeaderContentView *)headerContentView setNeedsLayout];
   }
 
-  else if (!a3)
+  else if (!mode)
   {
     WeakRetained = objc_loadWeakRetained(&self->_widgetHost);
     if ([WeakRetained isLinkedOnOrAfterSystemVersion:@"10.0"])
     {
       -[WGWidgetPlatterView setShowingMoreContent:](self, "setShowingMoreContent:", [WeakRetained userSpecifiedDisplayMode] == 1);
-      v4 = [(WGWidgetPlatterView *)self showMoreButton];
-      [v4 removeTarget:self action:sel__handleAddWidget_ forControlEvents:64];
-      [v4 addTarget:self action:sel__toggleShowMore_ forControlEvents:64];
-      v5 = [v4 titleLabel];
+      showMoreButton = [(WGWidgetPlatterView *)self showMoreButton];
+      [showMoreButton removeTarget:self action:sel__handleAddWidget_ forControlEvents:64];
+      [showMoreButton addTarget:self action:sel__toggleShowMore_ forControlEvents:64];
+      titleLabel = [showMoreButton titleLabel];
       if ([(WGWidgetPlatterView *)self _shouldReverseLayoutDirection])
       {
         v6 = 0;
@@ -926,7 +926,7 @@ void __41__WGWidgetPlatterView__handleIconButton___block_invoke(uint64_t a1, voi
         v6 = 2;
       }
 
-      [v5 setTextAlignment:v6];
+      [titleLabel setTextAlignment:v6];
 
       [(WGWidgetPlatterView *)self _updateShowMoreButtonImage];
       [(WGWidgetPlatterView *)self _updateUtilityButtonForMoreContentState:self->_showingMoreContent];
@@ -942,33 +942,33 @@ void __41__WGWidgetPlatterView__handleIconButton___block_invoke(uint64_t a1, voi
 
 - (BOOL)_isUtilityButtonVisible
 {
-  v2 = [(PLPlatterHeaderContentView *)self->_headerContentView utilityButton];
-  [v2 alpha];
+  utilityButton = [(PLPlatterHeaderContentView *)self->_headerContentView utilityButton];
+  [utilityButton alpha];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)_setUtilityButtonVisible:(BOOL)a3
+- (void)_setUtilityButtonVisible:(BOOL)visible
 {
-  v3 = a3;
-  if ([(WGWidgetPlatterView *)self _isUtilityButtonVisible]!= a3)
+  visibleCopy = visible;
+  if ([(WGWidgetPlatterView *)self _isUtilityButtonVisible]!= visible)
   {
-    v5 = [(PLPlatterHeaderContentView *)self->_headerContentView utilityButton];
-    v6 = v5;
+    utilityButton = [(PLPlatterHeaderContentView *)self->_headerContentView utilityButton];
+    v6 = utilityButton;
     v7 = 0.0;
-    if (v3)
+    if (visibleCopy)
     {
       v7 = 1.0;
     }
 
-    [v5 setAlpha:v7];
+    [utilityButton setAlpha:v7];
 
     [(WGWidgetPlatterView *)self setNeedsLayout];
   }
 }
 
-- (void)_toggleShowMore:(id)a3
+- (void)_toggleShowMore:(id)more
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -986,7 +986,7 @@ uint64_t __39__WGWidgetPlatterView__toggleShowMore___block_invoke(uint64_t a1)
   return [v1 setShowingMoreContent:v2];
 }
 
-- (void)_handleAddWidget:(id)a3
+- (void)_handleAddWidget:(id)widget
 {
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -1022,7 +1022,7 @@ uint64_t __40__WGWidgetPlatterView__handleAddWidget___block_invoke_2(uint64_t a1
   return [v2 layoutIfNeeded];
 }
 
-- (void)_updateUtilityButtonForMoreContentState:(BOOL)a3
+- (void)_updateUtilityButtonForMoreContentState:(BOOL)state
 {
   if (!self->_buttonMode)
   {
@@ -1030,24 +1030,24 @@ uint64_t __40__WGWidgetPlatterView__handleAddWidget___block_invoke_2(uint64_t a1
     v21 = v5;
     v22 = v3;
     v23 = v4;
-    v7 = a3;
-    v9 = [(WGWidgetPlatterView *)self _shouldReverseLayoutDirection];
+    stateCopy = state;
+    _shouldReverseLayoutDirection = [(WGWidgetPlatterView *)self _shouldReverseLayoutDirection];
     v10 = *MEMORY[0x277CBF2C0];
     v11 = *(MEMORY[0x277CBF2C0] + 16);
     *&v19.a = *MEMORY[0x277CBF2C0];
     *&v19.c = v11;
     v12 = *(MEMORY[0x277CBF2C0] + 32);
     *&v19.tx = v12;
-    if (v7)
+    if (stateCopy)
     {
       v13 = -3.0;
-      if (v9)
+      if (_shouldReverseLayoutDirection)
       {
         v13 = 3.0;
       }
 
       v14 = -0.5;
-      if (v9)
+      if (_shouldReverseLayoutDirection)
       {
         v14 = 0.5;
       }
@@ -1055,7 +1055,7 @@ uint64_t __40__WGWidgetPlatterView__handleAddWidget___block_invoke_2(uint64_t a1
       *&v18.a = v10;
       *&v18.c = v11;
       *&v18.tx = v12;
-      if (v9)
+      if (_shouldReverseLayoutDirection)
       {
         v15 = -1.57079633;
       }
@@ -1077,7 +1077,7 @@ uint64_t __40__WGWidgetPlatterView__handleAddWidget___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)iconDidInvalidate:(id)a3
+- (void)iconDidInvalidate:(id)invalidate
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];

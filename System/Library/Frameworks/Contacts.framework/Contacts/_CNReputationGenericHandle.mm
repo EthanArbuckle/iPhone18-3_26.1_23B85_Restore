@@ -1,15 +1,15 @@
 @interface _CNReputationGenericHandle
-- (void)configureBuilder:(id)a3;
+- (void)configureBuilder:(id)builder;
 @end
 
 @implementation _CNReputationGenericHandle
 
-- (void)configureBuilder:(id)a3
+- (void)configureBuilder:(id)builder
 {
-  v3 = a3;
-  [v3 addCoreRecentsTrust];
-  [v3 addContactsTrustForEmailAddress];
-  [v3 addContactsTrustForPhoneNumber];
+  builderCopy = builder;
+  [builderCopy addCoreRecentsTrust];
+  [builderCopy addContactsTrustForEmailAddress];
+  [builderCopy addContactsTrustForPhoneNumber];
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface _INExtensionContext
 + (void)initialize;
 - (INIntentHandlerProvidingPrivate)_extensionHandler;
-- (_INExtensionContext)initWithInputItems:(id)a3 extension:(id)a4;
-- (_INExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
-- (_INExtensionContext)initWithInputItems:(id)a3 privateIntentHandlerProvider:(id)a4;
-- (id)_intentDelivererForIntent:(id)a3;
-- (void)_beginTransactionWithIntentIdentifier:(id)a3 completion:(id)a4;
-- (void)_cancelTransactionDueToTimeoutWithIntentIdentifier:(id)a3 completion:(id)a4;
+- (_INExtensionContext)initWithInputItems:(id)items extension:(id)extension;
+- (_INExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
+- (_INExtensionContext)initWithInputItems:(id)items privateIntentHandlerProvider:(id)provider;
+- (id)_intentDelivererForIntent:(id)intent;
+- (void)_beginTransactionWithIntentIdentifier:(id)identifier completion:(id)completion;
+- (void)_cancelTransactionDueToTimeoutWithIntentIdentifier:(id)identifier completion:(id)completion;
 - (void)_commonInit;
-- (void)_completeTransactionWithIntentIdentifier:(id)a3 completion:(id)a4;
+- (void)_completeTransactionWithIntentIdentifier:(id)identifier completion:(id)completion;
 - (void)_validateExtension;
-- (void)beginTransactionWithIntentIdentifier:(id)a3 completion:(id)a4;
+- (void)beginTransactionWithIntentIdentifier:(id)identifier completion:(id)completion;
 - (void)cancelTransactionDueToTimeout;
-- (void)cancelTransactionDueToTimeoutWithIntentIdentifier:(id)a3 completion:(id)a4;
+- (void)cancelTransactionDueToTimeoutWithIntentIdentifier:(id)identifier completion:(id)completion;
 - (void)completeTransaction;
-- (void)completeTransactionWithIntentIdentifier:(id)a3 completion:(id)a4;
-- (void)confirmIntent:(id)a3 withCompletion:(id)a4;
-- (void)confirmationResponseForIntent:(id)a3 completion:(id)a4;
-- (void)getIntentParameterDefaultValue:(id)a3 forIntent:(id)a4 completionBlock:(id)a5;
-- (void)getIntentParameterOptions:(id)a3 forIntent:(id)a4 completionBlock:(id)a5;
-- (void)getIntentParameterOptions:(id)a3 forIntent:(id)a4 searchTerm:(id)a5 completionBlock:(id)a6;
-- (void)handleIntent:(id)a3 completion:(id)a4;
-- (void)handleIntent:(id)a3 completionHandler:(id)a4;
-- (void)handleIntent:(id)a3 withCompletion:(id)a4;
-- (void)intentDeliverer:(id)a3 deliverIntent:(id)a4 withBlock:(id)a5;
-- (void)resolveIntentSlot:(id)a3 forIntent:(id)a4 completionBlock:(id)a5;
-- (void)resolveIntentSlots:(id)a3 forIntent:(id)a4 completionBlock:(id)a5;
-- (void)startSendingUpdatesForIntent:(id)a3 toObserver:(id)a4;
-- (void)stopSendingUpdatesForIntent:(id)a3;
+- (void)completeTransactionWithIntentIdentifier:(id)identifier completion:(id)completion;
+- (void)confirmIntent:(id)intent withCompletion:(id)completion;
+- (void)confirmationResponseForIntent:(id)intent completion:(id)completion;
+- (void)getIntentParameterDefaultValue:(id)value forIntent:(id)intent completionBlock:(id)block;
+- (void)getIntentParameterOptions:(id)options forIntent:(id)intent completionBlock:(id)block;
+- (void)getIntentParameterOptions:(id)options forIntent:(id)intent searchTerm:(id)term completionBlock:(id)block;
+- (void)handleIntent:(id)intent completion:(id)completion;
+- (void)handleIntent:(id)intent completionHandler:(id)handler;
+- (void)handleIntent:(id)intent withCompletion:(id)completion;
+- (void)intentDeliverer:(id)deliverer deliverIntent:(id)intent withBlock:(id)block;
+- (void)resolveIntentSlot:(id)slot forIntent:(id)intent completionBlock:(id)block;
+- (void)resolveIntentSlots:(id)slots forIntent:(id)intent completionBlock:(id)block;
+- (void)startSendingUpdatesForIntent:(id)intent toObserver:(id)observer;
+- (void)stopSendingUpdatesForIntent:(id)intent;
 @end
 
 @implementation _INExtensionContext
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && INLogInitIfNeeded_once != -1)
+  if (objc_opt_class() == self && INLogInitIfNeeded_once != -1)
   {
 
     dispatch_once(&INLogInitIfNeeded_once, &__block_literal_global_72043);
@@ -59,9 +59,9 @@
   extensionHandler = self->_extensionHandler;
   if (!extensionHandler)
   {
-    v4 = [(_INExtensionContext *)self _principalObject];
+    _principalObject = [(_INExtensionContext *)self _principalObject];
     v5 = self->_extensionHandler;
-    self->_extensionHandler = v4;
+    self->_extensionHandler = _principalObject;
 
     extensionHandler = self->_extensionHandler;
   }
@@ -71,21 +71,21 @@
 
 - (void)_validateExtension
 {
-  v3 = [(_INExtensionContext *)self _extensionHandler];
-  if (!v3)
+  _extensionHandler = [(_INExtensionContext *)self _extensionHandler];
+  if (!_extensionHandler)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = @"Extension's principal object should not be nil";
     goto LABEL_9;
   }
 
-  v4 = v3;
+  v4 = _extensionHandler;
   if (!self->_isPrivateExtension)
   {
-    v9 = v3;
-    v3 = _INExtensionValidateClass(v3);
+    v9 = _extensionHandler;
+    _extensionHandler = _INExtensionValidateClass(_extensionHandler);
     v4 = v9;
-    if ((v3 & 1) == 0)
+    if ((_extensionHandler & 1) == 0)
     {
       v5 = MEMORY[0x1E696AEC0];
       v8 = v9;
@@ -97,16 +97,16 @@ LABEL_9:
     }
   }
 
-  MEMORY[0x1EEE66BB8](v3, v4);
+  MEMORY[0x1EEE66BB8](_extensionHandler, v4);
 }
 
-- (void)getIntentParameterOptions:(id)a3 forIntent:(id)a4 completionBlock:(id)a5
+- (void)getIntentParameterOptions:(id)options forIntent:(id)intent completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_INExtensionContext *)self _intentDelivererForIntent:v9];
-  [v11 getIntentParameterOptions:v10 forIntent:v9 searchTerm:0 completionBlock:v8];
+  blockCopy = block;
+  intentCopy = intent;
+  optionsCopy = options;
+  v11 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v11 getIntentParameterOptions:optionsCopy forIntent:intentCopy searchTerm:0 completionBlock:blockCopy];
 }
 
 - (void)cancelTransactionDueToTimeout
@@ -139,50 +139,50 @@ LABEL_9:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIntent:(id)a3 completionHandler:(id)a4
+- (void)handleIntent:(id)intent completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54___INExtensionContext_handleIntent_completionHandler___block_invoke;
   v8[3] = &unk_1E72871D0;
-  v9 = v6;
-  v7 = v6;
-  [(_INExtensionContext *)self handleIntent:a3 withCompletion:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(_INExtensionContext *)self handleIntent:intent withCompletion:v8];
 }
 
-- (void)handleIntent:(id)a3 completion:(id)a4
+- (void)handleIntent:(id)intent completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47___INExtensionContext_handleIntent_completion___block_invoke;
   v8[3] = &unk_1E72871D0;
-  v9 = v6;
-  v7 = v6;
-  [(_INExtensionContext *)self handleIntent:a3 withCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(_INExtensionContext *)self handleIntent:intent withCompletion:v8];
 }
 
-- (void)confirmationResponseForIntent:(id)a3 completion:(id)a4
+- (void)confirmationResponseForIntent:(id)intent completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64___INExtensionContext_confirmationResponseForIntent_completion___block_invoke;
   v8[3] = &unk_1E72871D0;
-  v9 = v6;
-  v7 = v6;
-  [(_INExtensionContext *)self confirmIntent:a3 withCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(_INExtensionContext *)self confirmIntent:intent withCompletion:v8];
 }
 
-- (void)_cancelTransactionDueToTimeoutWithIntentIdentifier:(id)a3 completion:(id)a4
+- (void)_cancelTransactionDueToTimeoutWithIntentIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(_INExtensionContext *)self _extensionHandler];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  _extensionHandler = [(_INExtensionContext *)self _extensionHandler];
   if (objc_opt_respondsToSelector())
   {
-    [v7 transactionDidCompleteForIntentIdentifier:v10];
+    [_extensionHandler transactionDidCompleteForIntentIdentifier:identifierCopy];
   }
 
   handlerForIntent = self->_handlerForIntent;
@@ -191,193 +191,193 @@ LABEL_9:
   v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"IntentsErrorDomain" code:3001 userInfo:0];
   [(_INExtensionContext *)self cancelRequestWithError:v9];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_completeTransactionWithIntentIdentifier:(id)a3 completion:(id)a4
+- (void)_completeTransactionWithIntentIdentifier:(id)identifier completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(_INExtensionContext *)self _extensionHandler];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  _extensionHandler = [(_INExtensionContext *)self _extensionHandler];
   if (objc_opt_respondsToSelector())
   {
-    [v7 transactionDidCompleteForIntentIdentifier:v9];
+    [_extensionHandler transactionDidCompleteForIntentIdentifier:identifierCopy];
   }
 
   handlerForIntent = self->_handlerForIntent;
   self->_handlerForIntent = 0;
 
   [(_INExtensionContext *)self completeRequestReturningItems:0 completionHandler:0];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)_beginTransactionWithIntentIdentifier:(id)a3 completion:(id)a4
+- (void)_beginTransactionWithIntentIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(_INExtensionContext *)self _extensionHandler];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  _extensionHandler = [(_INExtensionContext *)self _extensionHandler];
   if (objc_opt_respondsToSelector())
   {
-    [v7 transactionWillBeginForIntentIdentifier:v8];
+    [_extensionHandler transactionWillBeginForIntentIdentifier:identifierCopy];
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)cancelTransactionDueToTimeoutWithIntentIdentifier:(id)a3 completion:(id)a4
+- (void)cancelTransactionDueToTimeoutWithIntentIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84___INExtensionContext_cancelTransactionDueToTimeoutWithIntentIdentifier_completion___block_invoke;
   block[3] = &unk_1E72858F0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)completeTransactionWithIntentIdentifier:(id)a3 completion:(id)a4
+- (void)completeTransactionWithIntentIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74___INExtensionContext_completeTransactionWithIntentIdentifier_completion___block_invoke;
   block[3] = &unk_1E72858F0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)beginTransactionWithIntentIdentifier:(id)a3 completion:(id)a4
+- (void)beginTransactionWithIntentIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71___INExtensionContext_beginTransactionWithIntentIdentifier_completion___block_invoke;
   block[3] = &unk_1E72858F0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)intentDeliverer:(id)a3 deliverIntent:(id)a4 withBlock:(id)a5
+- (void)intentDeliverer:(id)deliverer deliverIntent:(id)intent withBlock:(id)block
 {
-  v11 = a5;
-  v7 = a4;
+  blockCopy = block;
+  intentCopy = intent;
   [(_INExtensionContext *)self _validateExtension];
-  v8 = [(_INExtensionContext *)self _extensionHandler];
-  v9 = [v8 handlerForIntent:v7];
+  _extensionHandler = [(_INExtensionContext *)self _extensionHandler];
+  v9 = [_extensionHandler handlerForIntent:intentCopy];
 
   handlerForIntent = self->_handlerForIntent;
   self->_handlerForIntent = v9;
 
-  v11[2](v11, self->_handlerForIntent);
+  blockCopy[2](blockCopy, self->_handlerForIntent);
 }
 
-- (void)stopSendingUpdatesForIntent:(id)a3
+- (void)stopSendingUpdatesForIntent:(id)intent
 {
-  v4 = a3;
-  v5 = [(_INExtensionContext *)self _intentDelivererForIntent:v4];
-  [v5 stopSendingUpdatesForIntent:v4 completionHandler:0];
+  intentCopy = intent;
+  v5 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v5 stopSendingUpdatesForIntent:intentCopy completionHandler:0];
 }
 
-- (void)startSendingUpdatesForIntent:(id)a3 toObserver:(id)a4
+- (void)startSendingUpdatesForIntent:(id)intent toObserver:(id)observer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_INExtensionContext *)self _intentDelivererForIntent:v7];
-  [v8 startSendingUpdatesForIntent:v7 toObserver:v6 completionHandler:0];
+  observerCopy = observer;
+  intentCopy = intent;
+  v8 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v8 startSendingUpdatesForIntent:intentCopy toObserver:observerCopy completionHandler:0];
 }
 
-- (void)handleIntent:(id)a3 withCompletion:(id)a4
+- (void)handleIntent:(id)intent withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_INExtensionContext *)self _intentDelivererForIntent:v7];
-  [v8 handleIntent:v7 withCompletion:v6];
+  completionCopy = completion;
+  intentCopy = intent;
+  v8 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v8 handleIntent:intentCopy withCompletion:completionCopy];
 }
 
-- (void)confirmIntent:(id)a3 withCompletion:(id)a4
+- (void)confirmIntent:(id)intent withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_INExtensionContext *)self _intentDelivererForIntent:v7];
-  [v8 confirmIntent:v7 withCompletion:v6];
+  completionCopy = completion;
+  intentCopy = intent;
+  v8 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v8 confirmIntent:intentCopy withCompletion:completionCopy];
 }
 
-- (void)resolveIntentSlot:(id)a3 forIntent:(id)a4 completionBlock:(id)a5
+- (void)resolveIntentSlot:(id)slot forIntent:(id)intent completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_INExtensionContext *)self _intentDelivererForIntent:v9];
-  [v11 resolveIntentParameter:v10 forIntent:v9 completionBlock:v8];
+  blockCopy = block;
+  intentCopy = intent;
+  slotCopy = slot;
+  v11 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v11 resolveIntentParameter:slotCopy forIntent:intentCopy completionBlock:blockCopy];
 }
 
-- (void)resolveIntentSlots:(id)a3 forIntent:(id)a4 completionBlock:(id)a5
+- (void)resolveIntentSlots:(id)slots forIntent:(id)intent completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_INExtensionContext *)self _intentDelivererForIntent:v9];
-  [v11 resolveIntentParameters:v10 forIntent:v9 completionBlock:v8];
+  blockCopy = block;
+  intentCopy = intent;
+  slotsCopy = slots;
+  v11 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v11 resolveIntentParameters:slotsCopy forIntent:intentCopy completionBlock:blockCopy];
 }
 
-- (void)getIntentParameterDefaultValue:(id)a3 forIntent:(id)a4 completionBlock:(id)a5
+- (void)getIntentParameterDefaultValue:(id)value forIntent:(id)intent completionBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(_INExtensionContext *)self _intentDelivererForIntent:v9];
-  [v11 getIntentParameterDefaultValue:v10 forIntent:v9 completionBlock:v8];
+  blockCopy = block;
+  intentCopy = intent;
+  valueCopy = value;
+  v11 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v11 getIntentParameterDefaultValue:valueCopy forIntent:intentCopy completionBlock:blockCopy];
 }
 
-- (void)getIntentParameterOptions:(id)a3 forIntent:(id)a4 searchTerm:(id)a5 completionBlock:(id)a6
+- (void)getIntentParameterOptions:(id)options forIntent:(id)intent searchTerm:(id)term completionBlock:(id)block
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(_INExtensionContext *)self _intentDelivererForIntent:v12];
-  [v14 getIntentParameterOptions:v13 forIntent:v12 searchTerm:v11 completionBlock:v10];
+  blockCopy = block;
+  termCopy = term;
+  intentCopy = intent;
+  optionsCopy = options;
+  v14 = [(_INExtensionContext *)self _intentDelivererForIntent:intentCopy];
+  [v14 getIntentParameterOptions:optionsCopy forIntent:intentCopy searchTerm:termCopy completionBlock:blockCopy];
 }
 
-- (id)_intentDelivererForIntent:(id)a3
+- (id)_intentDelivererForIntent:(id)intent
 {
   intentDeliverer = self->_intentDeliverer;
   if (!intentDeliverer)
   {
     v5 = [INIntentDeliverer alloc];
     queue = self->_queue;
-    v7 = [(_INExtensionContext *)self _auxiliaryConnection];
-    v8 = v7;
-    if (v7)
+    _auxiliaryConnection = [(_INExtensionContext *)self _auxiliaryConnection];
+    v8 = _auxiliaryConnection;
+    if (_auxiliaryConnection)
     {
-      [v7 auditToken];
+      [_auxiliaryConnection auditToken];
     }
 
     else
@@ -396,11 +396,11 @@ LABEL_9:
   return intentDeliverer;
 }
 
-- (_INExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (_INExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v8.receiver = self;
   v8.super_class = _INExtensionContext;
-  v5 = [(_INExtensionContext *)&v8 initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5];
+  v5 = [(_INExtensionContext *)&v8 initWithInputItems:items listenerEndpoint:endpoint contextUUID:d];
   v6 = v5;
   if (v5)
   {
@@ -410,9 +410,9 @@ LABEL_9:
   return v6;
 }
 
-- (_INExtensionContext)initWithInputItems:(id)a3 extension:(id)a4
+- (_INExtensionContext)initWithInputItems:(id)items extension:(id)extension
 {
-  result = [(_INExtensionContext *)self initWithInputItems:a3 privateIntentHandlerProvider:a4];
+  result = [(_INExtensionContext *)self initWithInputItems:items privateIntentHandlerProvider:extension];
   if (result)
   {
     result->_isPrivateExtension = 0;
@@ -421,17 +421,17 @@ LABEL_9:
   return result;
 }
 
-- (_INExtensionContext)initWithInputItems:(id)a3 privateIntentHandlerProvider:(id)a4
+- (_INExtensionContext)initWithInputItems:(id)items privateIntentHandlerProvider:(id)provider
 {
-  v7 = a4;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = _INExtensionContext;
-  v8 = [(_INExtensionContext *)&v11 initWithInputItems:a3];
+  v8 = [(_INExtensionContext *)&v11 initWithInputItems:items];
   v9 = v8;
   if (v8)
   {
     [(_INExtensionContext *)v8 _commonInit];
-    objc_storeStrong(&v9->_extensionHandler, a4);
+    objc_storeStrong(&v9->_extensionHandler, provider);
     v9->_isPrivateExtension = 1;
   }
 

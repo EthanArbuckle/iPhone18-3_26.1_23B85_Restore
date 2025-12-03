@@ -1,10 +1,10 @@
 @interface AVMobileAuxiliaryControl
-+ (id)controlWithDisplayPriority:(int64_t)a3 identifier:(id)a4;
-+ (id)controlWithView:(id)a3 displayPriority:(int64_t)a4 identifier:(id)a5;
-+ (id)prominentControlWithView:(id)a3 displayPriority:(int64_t)a4 identifier:(id)a5;
++ (id)controlWithDisplayPriority:(int64_t)priority identifier:(id)identifier;
++ (id)controlWithView:(id)view displayPriority:(int64_t)priority identifier:(id)identifier;
++ (id)prominentControlWithView:(id)view displayPriority:(int64_t)priority identifier:(id)identifier;
 - (AVMobileAuxiliaryControlDelegate)delegate;
 - (id)description;
-- (void)setIncluded:(BOOL)a3;
+- (void)setIncluded:(BOOL)included;
 @end
 
 @implementation AVMobileAuxiliaryControl
@@ -27,62 +27,62 @@
   return v5;
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  if (self->_included != a3)
+  if (self->_included != included)
   {
-    self->_included = a3;
-    v5 = [(AVMobileAuxiliaryControl *)self delegate];
-    [v5 auxiliaryControlDidChangeState:self];
+    self->_included = included;
+    delegate = [(AVMobileAuxiliaryControl *)self delegate];
+    [delegate auxiliaryControlDidChangeState:self];
   }
 }
 
-+ (id)prominentControlWithView:(id)a3 displayPriority:(int64_t)a4 identifier:(id)a5
++ (id)prominentControlWithView:(id)view displayPriority:(int64_t)priority identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a5;
-  [(UIView *)v7 setTranslatesAutoresizingMaskIntoConstraints:1];
-  [(UIView *)v7 setAutoresizingMask:0];
+  viewCopy = view;
+  identifierCopy = identifier;
+  [(UIView *)viewCopy setTranslatesAutoresizingMaskIntoConstraints:1];
+  [(UIView *)viewCopy setAutoresizingMask:0];
   v9 = objc_alloc_init(AVMobileAuxiliaryControl);
   controlView = v9->_controlView;
-  v9->_controlView = v7;
-  v11 = v7;
+  v9->_controlView = viewCopy;
+  v11 = viewCopy;
 
   v9->_style = 1;
   identifier = v9->_identifier;
-  v9->_displayPriority = a4;
-  v9->_identifier = v8;
+  v9->_displayPriority = priority;
+  v9->_identifier = identifierCopy;
 
   return v9;
 }
 
-+ (id)controlWithDisplayPriority:(int64_t)a3 identifier:(id)a4
++ (id)controlWithDisplayPriority:(int64_t)priority identifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(AVMobileAuxiliaryControl);
   identifier = v6->_identifier;
-  v6->_displayPriority = a3;
-  v6->_identifier = v5;
+  v6->_displayPriority = priority;
+  v6->_identifier = identifierCopy;
 
   v6->_style = 0;
 
   return v6;
 }
 
-+ (id)controlWithView:(id)a3 displayPriority:(int64_t)a4 identifier:(id)a5
++ (id)controlWithView:(id)view displayPriority:(int64_t)priority identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a5;
-  [(UIView *)v7 setTranslatesAutoresizingMaskIntoConstraints:1];
-  [(UIView *)v7 setAutoresizingMask:0];
+  viewCopy = view;
+  identifierCopy = identifier;
+  [(UIView *)viewCopy setTranslatesAutoresizingMaskIntoConstraints:1];
+  [(UIView *)viewCopy setAutoresizingMask:0];
   v9 = objc_alloc_init(AVMobileAuxiliaryControl);
   controlView = v9->_controlView;
-  v9->_controlView = v7;
-  v11 = v7;
+  v9->_controlView = viewCopy;
+  v11 = viewCopy;
 
   identifier = v9->_identifier;
-  v9->_displayPriority = a4;
-  v9->_identifier = v8;
+  v9->_displayPriority = priority;
+  v9->_identifier = identifierCopy;
 
   v9->_style = 0;
 

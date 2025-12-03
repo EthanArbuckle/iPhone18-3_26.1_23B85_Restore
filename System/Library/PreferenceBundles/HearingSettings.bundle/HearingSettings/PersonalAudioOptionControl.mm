@@ -2,10 +2,10 @@
 - (CGSize)intrinsicContentSize;
 - (PersonalAudioOptionControl)init;
 - (PersonalAudioOptionControlDelegate)delegate;
-- (void)_handleTapGestureRecognizer:(id)a3;
-- (void)selectItem:(unint64_t)a3;
-- (void)updateLayoutWithSelectedItem:(unint64_t)a3;
-- (void)updateWithLeftNode:(id)a3 andRightNode:(id)a4;
+- (void)_handleTapGestureRecognizer:(id)recognizer;
+- (void)selectItem:(unint64_t)item;
+- (void)updateLayoutWithSelectedItem:(unint64_t)item;
+- (void)updateWithLeftNode:(id)node andRightNode:(id)rightNode;
 @end
 
 @implementation PersonalAudioOptionControl
@@ -64,12 +64,12 @@
   return v2;
 }
 
-- (void)_handleTapGestureRecognizer:(id)a3
+- (void)_handleTapGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = v4;
-  v10 = v4;
-  if (!v4 || (v6 = [v4 state], v5 = v10, v6 == &dword_0 + 3))
+  recognizerCopy = recognizer;
+  v5 = recognizerCopy;
+  v10 = recognizerCopy;
+  if (!recognizerCopy || (v6 = [recognizerCopy state], v5 = v10, v6 == &dword_0 + 3))
   {
     leftLabel = self->_leftLabel;
     [v5 locationInView:leftLabel];
@@ -98,13 +98,13 @@ LABEL_8:
   _objc_release_x1();
 }
 
-- (void)updateLayoutWithSelectedItem:(unint64_t)a3
+- (void)updateLayoutWithSelectedItem:(unint64_t)item
 {
-  v5 = [(UILabel *)self->_leftLabel layer];
-  [v5 setMasksToBounds:0];
+  layer = [(UILabel *)self->_leftLabel layer];
+  [layer setMasksToBounds:0];
 
-  v6 = [(UILabel *)self->_leftLabel layer];
-  if (a3 == 1)
+  layer2 = [(UILabel *)self->_leftLabel layer];
+  if (item == 1)
   {
     +[UIColor systemBlueColor];
   }
@@ -114,10 +114,10 @@ LABEL_8:
     +[UIColor secondarySystemFillColor];
   }
   v7 = ;
-  [v6 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
+  [layer2 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
 
   leftLabel = self->_leftLabel;
-  if (a3 == 1)
+  if (item == 1)
   {
     +[UIColor systemWhiteColor];
   }
@@ -131,7 +131,7 @@ LABEL_8:
 
   v10 = UIAccessibilityTraitButton;
   v11 = UIAccessibilityTraitSelected;
-  if (a3 == 1)
+  if (item == 1)
   {
     v12 = UIAccessibilityTraitSelected;
   }
@@ -142,11 +142,11 @@ LABEL_8:
   }
 
   [(UILabel *)self->_leftLabel setAccessibilityTraits:v12 | UIAccessibilityTraitButton];
-  v13 = [(UILabel *)self->_rightLabel layer];
-  [v13 setMasksToBounds:0];
+  layer3 = [(UILabel *)self->_rightLabel layer];
+  [layer3 setMasksToBounds:0];
 
-  v14 = [(UILabel *)self->_rightLabel layer];
-  if (a3 == 2)
+  layer4 = [(UILabel *)self->_rightLabel layer];
+  if (item == 2)
   {
     +[UIColor systemBlueColor];
   }
@@ -156,10 +156,10 @@ LABEL_8:
     +[UIColor secondarySystemFillColor];
   }
   v15 = ;
-  [v14 setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
+  [layer4 setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
 
   rightLabel = self->_rightLabel;
-  if (a3 == 2)
+  if (item == 2)
   {
     v17 = +[UIColor systemWhiteColor];
     [(UILabel *)rightLabel setTextColor:v17];
@@ -196,30 +196,30 @@ LABEL_8:
     v48 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-[_leftLabel]-[_rightLabel]-|", 0, 0, v47);
     [(NSMutableArray *)v46 addObjectsFromArray:v48];
 
-    v38 = [(UILabel *)self->_leftLabel layer];
+    layer5 = [(UILabel *)self->_leftLabel layer];
     v39 = 15;
-    [v38 setMaskedCorners:15];
+    [layer5 setMaskedCorners:15];
   }
 
   else
   {
     self->_verticalLayout = 0;
     v21 = self->_constraints;
-    v22 = [NSString stringWithFormat:@"V:|[_leftLabel(%lf)]|", 0x4049000000000000];
+    0x4049000000000000 = [NSString stringWithFormat:@"V:|[_leftLabel(%lf)]|", 0x4049000000000000];
     v23 = _NSDictionaryOfVariableBindings(@"_leftLabel", self->_leftLabel, 0);
-    v24 = [NSLayoutConstraint constraintsWithVisualFormat:v22 options:0 metrics:0 views:v23];
+    v24 = [NSLayoutConstraint constraintsWithVisualFormat:0x4049000000000000 options:0 metrics:0 views:v23];
     [(NSMutableArray *)v21 addObjectsFromArray:v24];
 
     v25 = self->_constraints;
-    v26 = [NSString stringWithFormat:@"V:|[_separator(%lf)]|", 0x4049000000000000];
+    0x40490000000000002 = [NSString stringWithFormat:@"V:|[_separator(%lf)]|", 0x4049000000000000];
     v27 = _NSDictionaryOfVariableBindings(@"_separator", self->_separator, 0);
-    v28 = [NSLayoutConstraint constraintsWithVisualFormat:v26 options:0 metrics:0 views:v27];
+    v28 = [NSLayoutConstraint constraintsWithVisualFormat:0x40490000000000002 options:0 metrics:0 views:v27];
     [(NSMutableArray *)v25 addObjectsFromArray:v28];
 
     v29 = self->_constraints;
-    v30 = [NSString stringWithFormat:@"V:|[_rightLabel(%lf)]|", 0x4049000000000000];
+    0x40490000000000003 = [NSString stringWithFormat:@"V:|[_rightLabel(%lf)]|", 0x4049000000000000];
     v31 = _NSDictionaryOfVariableBindings(@"_rightLabel", self->_rightLabel, 0);
-    v32 = [NSLayoutConstraint constraintsWithVisualFormat:v30 options:0 metrics:0 views:v31];
+    v32 = [NSLayoutConstraint constraintsWithVisualFormat:0x40490000000000003 options:0 metrics:0 views:v31];
     [(NSMutableArray *)v29 addObjectsFromArray:v32];
 
     v33 = self->_constraints;
@@ -227,24 +227,24 @@ LABEL_8:
     v35 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"H:|-(25.0)-[_leftLabel][_separator(2.0)][_rightLabel]-(25.0)-|", 0, 0, v34);
     [(NSMutableArray *)v33 addObjectsFromArray:v35];
 
-    v36 = [UIApp userInterfaceLayoutDirection];
-    v37 = [(UILabel *)self->_leftLabel layer];
-    v38 = v37;
-    if (v36)
+    userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
+    layer6 = [(UILabel *)self->_leftLabel layer];
+    layer5 = layer6;
+    if (userInterfaceLayoutDirection)
     {
-      [v37 setMaskedCorners:10];
+      [layer6 setMaskedCorners:10];
       v39 = 5;
     }
 
     else
     {
-      [v37 setMaskedCorners:5];
+      [layer6 setMaskedCorners:5];
       v39 = 10;
     }
   }
 
-  v49 = [(UILabel *)self->_rightLabel layer];
-  [v49 setMaskedCorners:v39];
+  layer7 = [(UILabel *)self->_rightLabel layer];
+  [layer7 setMaskedCorners:v39];
 
   v50 = self->_constraints;
   v51 = [NSLayoutConstraint constraintWithItem:self->_leftLabel attribute:7 relatedBy:0 toItem:self->_rightLabel attribute:7 multiplier:1.0 constant:0.0];
@@ -255,81 +255,81 @@ LABEL_8:
   [(NSMutableArray *)v52 addObject:v53];
 
   [(PersonalAudioOptionControl *)self addConstraints:self->_constraints];
-  v54 = [(UILabel *)self->_leftLabel layer];
-  [v54 setCornerRadius:25.0];
+  layer8 = [(UILabel *)self->_leftLabel layer];
+  [layer8 setCornerRadius:25.0];
 
-  v55 = [(UILabel *)self->_rightLabel layer];
-  [v55 setCornerRadius:25.0];
+  layer9 = [(UILabel *)self->_rightLabel layer];
+  [layer9 setCornerRadius:25.0];
 }
 
-- (void)selectItem:(unint64_t)a3
+- (void)selectItem:(unint64_t)item
 {
   [(PersonalAudioOptionControl *)self updateLayoutWithSelectedItem:?];
-  switch(a3)
+  switch(item)
   {
     case 0uLL:
       return;
     case 2uLL:
-      v5 = [(PersonalAudioOptionControl *)self rightNode];
+      rightNode = [(PersonalAudioOptionControl *)self rightNode];
       goto LABEL_6;
     case 1uLL:
-      v5 = [(PersonalAudioOptionControl *)self leftNode];
+      rightNode = [(PersonalAudioOptionControl *)self leftNode];
 LABEL_6:
-      v6 = v5;
-      [(PersonalAudioOptionControl *)self setSelectedNode:v5];
+      v6 = rightNode;
+      [(PersonalAudioOptionControl *)self setSelectedNode:rightNode];
 
       break;
   }
 
-  v7 = [(PersonalAudioOptionControl *)self delegate];
-  [v7 didSelectOptionControl:self];
+  delegate = [(PersonalAudioOptionControl *)self delegate];
+  [delegate didSelectOptionControl:self];
 }
 
-- (void)updateWithLeftNode:(id)a3 andRightNode:(id)a4
+- (void)updateWithLeftNode:(id)node andRightNode:(id)rightNode
 {
-  v27 = a3;
-  v6 = a4;
-  [(PersonalAudioOptionControl *)self setLeftNode:v27];
-  [(PersonalAudioOptionControl *)self setRightNode:v6];
+  nodeCopy = node;
+  rightNodeCopy = rightNode;
+  [(PersonalAudioOptionControl *)self setLeftNode:nodeCopy];
+  [(PersonalAudioOptionControl *)self setRightNode:rightNodeCopy];
   if (+[HCUtilities isInternalInstall](HCUtilities, "isInternalInstall") && (+[PASettings sharedInstance](PASettings, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 personalMediaDebugMode], v7, v8))
   {
-    v9 = [(PAEnrollmentNode *)self->_leftNode configuration];
+    configuration = [(PAEnrollmentNode *)self->_leftNode configuration];
 
     leftLabel = self->_leftLabel;
-    v11 = [v27 name];
-    if (v9)
+    name = [nodeCopy name];
+    if (configuration)
     {
-      v12 = [v27 configuration];
-      v13 = [v12 level];
-      v14 = [v27 configuration];
-      v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ [%lu, %lu]", v11, v13, [v14 shape]);
+      configuration2 = [nodeCopy configuration];
+      level = [configuration2 level];
+      configuration3 = [nodeCopy configuration];
+      v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ [%lu, %lu]", name, level, [configuration3 shape]);
       [(UILabel *)leftLabel setText:v15];
     }
 
     else
     {
-      v12 = paLocString();
-      v14 = [NSString stringWithFormat:@"%@ [%@]", v11, v12];
-      [(UILabel *)leftLabel setText:v14];
+      configuration2 = paLocString();
+      configuration3 = [NSString stringWithFormat:@"%@ [%@]", name, configuration2];
+      [(UILabel *)leftLabel setText:configuration3];
     }
 
-    v20 = [v6 configuration];
+    configuration4 = [rightNodeCopy configuration];
 
     rightLabel = self->_rightLabel;
-    v19 = [v6 name];
-    if (v20)
+    name2 = [rightNodeCopy name];
+    if (configuration4)
     {
-      v22 = [v6 configuration];
-      v23 = [v22 level];
-      v24 = [v6 configuration];
-      v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ [%lu, %lu]", v19, v23, [v24 shape]);
+      configuration5 = [rightNodeCopy configuration];
+      level2 = [configuration5 level];
+      configuration6 = [rightNodeCopy configuration];
+      v25 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ [%lu, %lu]", name2, level2, [configuration6 shape]);
       [(UILabel *)rightLabel setText:v25];
     }
 
     else
     {
-      v22 = paLocString();
-      v26 = [NSString stringWithFormat:@"%@ [%@]", v19, v22];
+      configuration5 = paLocString();
+      v26 = [NSString stringWithFormat:@"%@ [%@]", name2, configuration5];
       [(UILabel *)rightLabel setText:v26];
     }
   }
@@ -337,12 +337,12 @@ LABEL_6:
   else
   {
     v16 = self->_leftLabel;
-    v17 = [v27 name];
-    [(UILabel *)v16 setText:v17];
+    name3 = [nodeCopy name];
+    [(UILabel *)v16 setText:name3];
 
     v18 = self->_rightLabel;
-    v19 = [v6 name];
-    [(UILabel *)v18 setText:v19];
+    name2 = [rightNodeCopy name];
+    [(UILabel *)v18 setText:name2];
   }
 }
 

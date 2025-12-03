@@ -4,7 +4,7 @@
 - (BOOL)hasPlayedRecently;
 - (BOOL)isMemberOfActiveSystemEndpoint;
 - (BOOL)isPlaying;
-- (MRDConnectionLifetimeController)initWithDataSource:(id)a3 delegate:(id)a4;
+- (MRDConnectionLifetimeController)initWithDataSource:(id)source delegate:(id)delegate;
 - (MRDConnectionLifetimeControllerDataSource)dataSource;
 - (MRDConnectionLifetimeControllerDelegate)delegate;
 - (double)timeSincePlaybackStarted;
@@ -13,36 +13,36 @@
 - (id)debugDescription;
 - (void)_adjustContinuousPlaybackDetectionTimerIfNeeded;
 - (void)_adjustPlaybackTimerIfNeeded;
-- (void)_handleActiveSystemEndpointChangedNotification:(id)a3;
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3;
-- (void)_handleIsPlayingDidChangeNotification:(id)a3;
-- (void)_handleLayoutDidChangeNotification:(id)a3;
+- (void)_handleActiveSystemEndpointChangedNotification:(id)notification;
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification;
+- (void)_handleIsPlayingDidChangeNotification:(id)notification;
+- (void)_handleLayoutDidChangeNotification:(id)notification;
 - (void)_initialize;
 - (void)dealloc;
-- (void)disconnectOrigin:(id)a3;
-- (void)evaluateShouldDisconnectWithReason:(id)a3;
+- (void)disconnectOrigin:(id)origin;
+- (void)evaluateShouldDisconnectWithReason:(id)reason;
 - (void)registerForChanges;
 - (void)unregisterForChanges;
 @end
 
 @implementation MRDConnectionLifetimeController
 
-- (MRDConnectionLifetimeController)initWithDataSource:(id)a3 delegate:(id)a4
+- (MRDConnectionLifetimeController)initWithDataSource:(id)source delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = MRDConnectionLifetimeController;
   v8 = [(MRDConnectionLifetimeController *)&v27 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeWeak(&v9->_delegate, v7);
-    v10 = [(MRDConnectionLifetimeController *)v9 dataSource];
-    v11 = [v10 origin];
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    dataSource = [(MRDConnectionLifetimeController *)v9 dataSource];
+    origin = [dataSource origin];
     origin = v9->_origin;
-    v9->_origin = v11;
+    v9->_origin = origin;
 
     v13 = v9->_origin;
     if (!v13)
@@ -51,13 +51,13 @@
       goto LABEL_6;
     }
 
-    v14 = [(MROrigin *)v13 displayName];
-    v15 = [NSString stringWithFormat:@"MRDConnectionLifetimeController-%@-%ld.queue", v14, [(MROrigin *)v9->_origin identifier]];
+    displayName = [(MROrigin *)v13 displayName];
+    v15 = [NSString stringWithFormat:@"MRDConnectionLifetimeController-%@-%ld.queue", displayName, [(MROrigin *)v9->_origin identifier]];
 
-    v16 = [v15 UTF8String];
+    uTF8String = [v15 UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = sub_1000FAE0C();
-    v19 = dispatch_queue_create_with_target_V2(v16, v17, v18);
+    v19 = dispatch_queue_create_with_target_V2(uTF8String, v17, v18);
     queue = v9->_queue;
     v9->_queue = v19;
 
@@ -81,13 +81,13 @@ LABEL_6:
 
 - (void)_initialize
 {
-  v3 = [(MRDConnectionLifetimeController *)self queue];
+  queue = [(MRDConnectionLifetimeController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FB108;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)dealloc
@@ -96,7 +96,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDCLC] <%p> Deallocating.", buf, 0xCu);
   }
 
@@ -113,15 +113,15 @@ LABEL_6:
 - (id)debugDescription
 {
   v3 = objc_alloc_init(NSMutableString);
-  v4 = [(MRDConnectionLifetimeController *)self queue];
+  queue = [(MRDConnectionLifetimeController *)self queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000FB3C8;
   v8[3] = &unk_1004B68F0;
   v5 = v3;
   v9 = v5;
-  v10 = self;
-  dispatch_sync(v4, v8);
+  selfCopy = self;
+  dispatch_sync(queue, v8);
 
   v6 = v5;
   return v5;
@@ -151,11 +151,11 @@ LABEL_6:
   [v3 removeObserver:self];
 }
 
-- (void)evaluateShouldDisconnectWithReason:(id)a3
+- (void)evaluateShouldDisconnectWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(MRDConnectionLifetimeController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  reasonCopy = reason;
+  queue = [(MRDConnectionLifetimeController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(MRDConnectionLifetimeController *)self disconnected])
   {
@@ -171,11 +171,11 @@ LABEL_33:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      v31 = self;
+      selfCopy4 = self;
       v32 = 2112;
       v33 = v6;
       v34 = 2112;
-      v35 = *&v4;
+      v35 = *&reasonCopy;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[MRDCLC] <%p> Re-evaluate for origin %@ because %@.", buf, 0x20u);
     }
 
@@ -187,7 +187,7 @@ LABEL_7:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218498;
-        v31 = self;
+        selfCopy4 = self;
         v32 = 2112;
         v33 = v6;
         v34 = 2112;
@@ -196,8 +196,8 @@ LABEL_7:
       }
 
       [(MRDConnectionLifetimeController *)self setHasDeferredDisconnectionDueToDeviceState:0];
-      v10 = [(MRDConnectionLifetimeController *)self disconnectTimer];
-      v11 = v10 == 0;
+      disconnectTimer = [(MRDConnectionLifetimeController *)self disconnectTimer];
+      v11 = disconnectTimer == 0;
 
       if (!v11)
       {
@@ -205,25 +205,25 @@ LABEL_7:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218242;
-          v31 = self;
+          selfCopy4 = self;
           v32 = 2112;
           v33 = v6;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[MRDCLC] <%p> Cancel scheduled disconnect for origin %@.", buf, 0x16u);
         }
 
-        v13 = [(MRDConnectionLifetimeController *)self disconnectTimer];
-        [v13 invalidateWithReason:v8];
+        disconnectTimer2 = [(MRDConnectionLifetimeController *)self disconnectTimer];
+        [disconnectTimer2 invalidateWithReason:v8];
 
         [(MRDConnectionLifetimeController *)self setDisconnectTimer:0];
       }
 
 LABEL_30:
-      v22 = [(MRDConnectionLifetimeController *)self maintainReason];
+      maintainReason = [(MRDConnectionLifetimeController *)self maintainReason];
 
-      if (v22)
+      if (maintainReason)
       {
-        v23 = [(MRDConnectionLifetimeController *)self maintainReason];
-        [(MRDConnectionLifetimeController *)self setPreviousMaintainReason:v23];
+        maintainReason2 = [(MRDConnectionLifetimeController *)self maintainReason];
+        [(MRDConnectionLifetimeController *)self setPreviousMaintainReason:maintainReason2];
       }
 
       [(MRDConnectionLifetimeController *)self setMaintainReason:v8];
@@ -264,8 +264,8 @@ LABEL_30:
 
     else
     {
-      v14 = [(MRDConnectionLifetimeController *)self disconnectTimer];
-      v15 = v14 == 0;
+      disconnectTimer3 = [(MRDConnectionLifetimeController *)self disconnectTimer];
+      v15 = disconnectTimer3 == 0;
 
       if (v15)
       {
@@ -280,7 +280,7 @@ LABEL_30:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134218498;
-          v31 = self;
+          selfCopy4 = self;
           v32 = 2112;
           v33 = v6;
           v34 = 2048;
@@ -290,14 +290,14 @@ LABEL_30:
 
         objc_initWeak(buf, self);
         v19 = [MRTimer alloc];
-        v20 = [(MRDConnectionLifetimeController *)self queue];
+        queue2 = [(MRDConnectionLifetimeController *)self queue];
         v24 = _NSConcreteStackBlock;
         v25 = 3221225472;
         v26 = sub_1000FBC44;
         v27 = &unk_1004B9630;
         objc_copyWeak(&v29, buf);
         v28 = v6;
-        v21 = [v19 initWithInterval:@"CLC-disconnectTimer" name:v20 queue:&v24 block:v17];
+        v21 = [v19 initWithInterval:@"CLC-disconnectTimer" name:queue2 queue:&v24 block:v17];
         [(MRDConnectionLifetimeController *)self setDisconnectTimer:v21, v24, v25, v26, v27];
 
         objc_destroyWeak(&v29);
@@ -312,11 +312,11 @@ LABEL_30:
 LABEL_34:
 }
 
-- (void)disconnectOrigin:(id)a3
+- (void)disconnectOrigin:(id)origin
 {
-  v4 = a3;
-  v5 = [(MRDConnectionLifetimeController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  originCopy = origin;
+  queue = [(MRDConnectionLifetimeController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(MRDConnectionLifetimeController *)self setDisconnected:1];
   [(MRDConnectionLifetimeController *)self unregisterForChanges];
@@ -324,52 +324,52 @@ LABEL_34:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218242;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = originCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[MRDCLC] <%p> Disconnecting origin %@.", &v8, 0x16u);
   }
 
-  v7 = [(MRDConnectionLifetimeController *)self delegate];
-  [v7 disconnectOrigin:v4];
+  delegate = [(MRDConnectionLifetimeController *)self delegate];
+  [delegate disconnectOrigin:originCopy];
 }
 
-- (void)_handleDeviceInfoDidChangeNotification:(id)a3
+- (void)_handleDeviceInfoDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRDConnectionLifetimeController *)self queue];
+  notificationCopy = notification;
+  queue = [(MRDConnectionLifetimeController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FBF1C;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_handleIsPlayingDidChangeNotification:(id)a3
+- (void)_handleIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRDConnectionLifetimeController *)self queue];
+  notificationCopy = notification;
+  queue = [(MRDConnectionLifetimeController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FC06C;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 - (void)_adjustPlaybackTimerIfNeeded
 {
-  v3 = [(MRDConnectionLifetimeController *)self isPlaying];
-  v4 = [(MRDConnectionLifetimeController *)self playbackTimer];
+  isPlaying = [(MRDConnectionLifetimeController *)self isPlaying];
+  playbackTimer = [(MRDConnectionLifetimeController *)self playbackTimer];
 
-  if (v3)
+  if (isPlaying)
   {
-    if (v4)
+    if (playbackTimer)
     {
       v5 = _MRLogForCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -377,14 +377,14 @@ LABEL_34:
         sub_1003A8DEC(self, v5);
       }
 
-      v6 = [(MRDConnectionLifetimeController *)self playbackTimer];
-      [v6 invalidate];
+      playbackTimer2 = [(MRDConnectionLifetimeController *)self playbackTimer];
+      [playbackTimer2 invalidate];
 
       [(MRDConnectionLifetimeController *)self setPlaybackTimer:0];
     }
   }
 
-  else if (!v4)
+  else if (!playbackTimer)
   {
     [(MRDConnectionLifetimeController *)self recentlyPlayingInterval];
     v8 = v7;
@@ -407,13 +407,13 @@ LABEL_34:
 
       objc_initWeak(&location, self);
       v13 = [MRTimer alloc];
-      v14 = [(MRDConnectionLifetimeController *)self queue];
+      queue = [(MRDConnectionLifetimeController *)self queue];
       v16 = _NSConcreteStackBlock;
       v17 = 3221225472;
       v18 = sub_1000FC364;
       v19 = &unk_1004B8280;
       objc_copyWeak(&v20, &location);
-      v15 = [v13 initWithInterval:@"CLC-playbackTimer" name:v14 queue:&v16 block:v11];
+      v15 = [v13 initWithInterval:@"CLC-playbackTimer" name:queue queue:&v16 block:v11];
       [(MRDConnectionLifetimeController *)self setPlaybackTimer:v15, v16, v17, v18, v19];
 
       objc_destroyWeak(&v20);
@@ -424,12 +424,12 @@ LABEL_34:
 
 - (void)_adjustContinuousPlaybackDetectionTimerIfNeeded
 {
-  v3 = [(MRDConnectionLifetimeController *)self isPlaying];
-  v4 = [(MRDConnectionLifetimeController *)self continuousPlaybackDetectionTimer];
-  v5 = v4;
-  if (v3)
+  isPlaying = [(MRDConnectionLifetimeController *)self isPlaying];
+  continuousPlaybackDetectionTimer = [(MRDConnectionLifetimeController *)self continuousPlaybackDetectionTimer];
+  v5 = continuousPlaybackDetectionTimer;
+  if (isPlaying)
   {
-    [v4 invalidateWithReason:@"Playback Started"];
+    [continuousPlaybackDetectionTimer invalidateWithReason:@"Playback Started"];
 
     [(MRDConnectionLifetimeController *)self setContinuousPlaybackDetectionTimer:0];
     [(MRDConnectionLifetimeController *)self continuousPlaybackDetectionInterval];
@@ -453,13 +453,13 @@ LABEL_34:
 
       objc_initWeak(&location, self);
       v12 = [MRTimer alloc];
-      v13 = [(MRDConnectionLifetimeController *)self queue];
+      queue = [(MRDConnectionLifetimeController *)self queue];
       v15 = _NSConcreteStackBlock;
       v16 = 3221225472;
       v17 = sub_1000FC5D8;
       v18 = &unk_1004B8280;
       objc_copyWeak(&v19, &location);
-      v14 = [v12 initWithInterval:@"CLC-continuousPlaybackDetectionTimer" name:v13 queue:&v15 block:v10];
+      v14 = [v12 initWithInterval:@"CLC-continuousPlaybackDetectionTimer" name:queue queue:&v15 block:v10];
       [(MRDConnectionLifetimeController *)self setContinuousPlaybackDetectionTimer:v14, v15, v16, v17, v18];
 
       objc_destroyWeak(&v19);
@@ -469,71 +469,71 @@ LABEL_34:
 
   else
   {
-    [v4 invalidateWithReason:{@"Playback stopped, continuousPlaybackDetection is no longer relevant"}];
+    [continuousPlaybackDetectionTimer invalidateWithReason:{@"Playback stopped, continuousPlaybackDetection is no longer relevant"}];
 
     [(MRDConnectionLifetimeController *)self setContinuousPlaybackDetectionTimer:0];
   }
 }
 
-- (void)_handleLayoutDidChangeNotification:(id)a3
+- (void)_handleLayoutDidChangeNotification:(id)notification
 {
-  v4 = [(MRDConnectionLifetimeController *)self queue];
+  queue = [(MRDConnectionLifetimeController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000FC6A8;
   block[3] = &unk_1004B6D08;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_handleActiveSystemEndpointChangedNotification:(id)a3
+- (void)_handleActiveSystemEndpointChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(MRDConnectionLifetimeController *)self queue];
+  notificationCopy = notification;
+  queue = [(MRDConnectionLifetimeController *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000FC8B4;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 - (id)activeSystemEndpointUID
 {
   v2 = +[MRDMediaRemoteServer server];
-  v3 = [v2 routingServer];
-  v4 = [v3 systemEndpointController];
-  v5 = [v4 activeOutputDeviceUID:0];
+  routingServer = [v2 routingServer];
+  systemEndpointController = [routingServer systemEndpointController];
+  v5 = [systemEndpointController activeOutputDeviceUID:0];
 
   return v5;
 }
 
 - (BOOL)isMemberOfActiveSystemEndpoint
 {
-  v3 = [(MRDConnectionLifetimeController *)self activeSystemEndpointUID];
+  activeSystemEndpointUID = [(MRDConnectionLifetimeController *)self activeSystemEndpointUID];
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 nowPlayingServer];
-  v6 = [v5 originClientForOrigin:self->_origin];
-  v7 = [v6 deviceInfo];
+  nowPlayingServer = [v4 nowPlayingServer];
+  v6 = [nowPlayingServer originClientForOrigin:self->_origin];
+  deviceInfo = [v6 deviceInfo];
 
   v8 = +[MRDMediaRemoteServer server];
-  v9 = [v8 nowPlayingServer];
-  v10 = [v9 originClientForGroupLeaderOfDeviceUID:v3];
-  v11 = [v10 deviceInfo];
+  nowPlayingServer2 = [v8 nowPlayingServer];
+  v10 = [nowPlayingServer2 originClientForGroupLeaderOfDeviceUID:activeSystemEndpointUID];
+  deviceInfo2 = [v10 deviceInfo];
 
-  v12 = [v7 deviceUID];
-  v13 = [v11 deviceUID];
-  v14 = v13;
-  if (v12 == v13)
+  deviceUID = [deviceInfo deviceUID];
+  deviceUID2 = [deviceInfo2 deviceUID];
+  v14 = deviceUID2;
+  if (deviceUID == deviceUID2)
   {
 
 LABEL_24:
     goto LABEL_25;
   }
 
-  v15 = [v12 isEqual:v13];
+  v15 = [deviceUID isEqual:deviceUID2];
 
   if (v15)
   {
@@ -546,8 +546,8 @@ LABEL_25:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v12 = [v11 groupedDevices];
-  v16 = [v12 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  deviceUID = [deviceInfo2 groupedDevices];
+  v16 = [deviceUID countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v16)
   {
     v17 = v16;
@@ -558,14 +558,14 @@ LABEL_5:
     {
       if (*v41 != v18)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(deviceUID);
       }
 
       v20 = *(*(&v40 + 1) + 8 * v19);
-      v21 = [v7 deviceUID];
-      v22 = [v20 deviceUID];
-      v23 = v21;
-      v24 = v22;
+      deviceUID3 = [deviceInfo deviceUID];
+      deviceUID4 = [v20 deviceUID];
+      v23 = deviceUID3;
+      v24 = deviceUID4;
       if (v23 == v24)
       {
         goto LABEL_23;
@@ -580,7 +580,7 @@ LABEL_5:
 
       if (v17 == ++v19)
       {
-        v17 = [v12 countByEnumeratingWithState:&v40 objects:v45 count:16];
+        v17 = [deviceUID countByEnumeratingWithState:&v40 objects:v45 count:16];
         if (v17)
         {
           goto LABEL_5;
@@ -595,8 +595,8 @@ LABEL_5:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = [v11 clusteredDevices];
-  v26 = [v12 countByEnumeratingWithState:&v36 objects:v44 count:16];
+  deviceUID = [deviceInfo2 clusteredDevices];
+  v26 = [deviceUID countByEnumeratingWithState:&v36 objects:v44 count:16];
   if (v26)
   {
     v27 = v26;
@@ -607,14 +607,14 @@ LABEL_14:
     {
       if (*v37 != v28)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(deviceUID);
       }
 
       v30 = *(*(&v36 + 1) + 8 * v29);
-      v31 = [v7 deviceUID];
-      v32 = [v30 deviceUID];
-      v23 = v31;
-      v24 = v32;
+      deviceUID5 = [deviceInfo deviceUID];
+      deviceUID6 = [v30 deviceUID];
+      v23 = deviceUID5;
+      v24 = deviceUID6;
       if (v23 == v24)
       {
         break;
@@ -629,7 +629,7 @@ LABEL_14:
 
       if (v27 == ++v29)
       {
-        v27 = [v12 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v27 = [deviceUID countByEnumeratingWithState:&v36 objects:v44 count:16];
         if (v27)
         {
           goto LABEL_14;
@@ -655,18 +655,18 @@ LABEL_26:
 - (BOOL)isPlaying
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 nowPlayingServer];
-  v5 = [v4 originClientForOrigin:self->_origin];
-  v6 = [v5 isPlaying];
+  nowPlayingServer = [v3 nowPlayingServer];
+  v5 = [nowPlayingServer originClientForOrigin:self->_origin];
+  isPlaying = [v5 isPlaying];
 
-  return v6;
+  return isPlaying;
 }
 
 - (double)timeSincePlaying
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 nowPlayingServer];
-  v5 = [v4 originClientForOrigin:self->_origin];
+  nowPlayingServer = [v3 nowPlayingServer];
+  v5 = [nowPlayingServer originClientForOrigin:self->_origin];
   [v5 timeSincePlaying];
   v7 = v6;
 
@@ -684,19 +684,19 @@ LABEL_26:
 - (BOOL)containsLocalDevice
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 nowPlayingServer];
-  v5 = [v4 originClientForOrigin:self->_origin];
-  v6 = [v5 deviceInfo];
+  nowPlayingServer = [v3 nowPlayingServer];
+  v5 = [nowPlayingServer originClientForOrigin:self->_origin];
+  deviceInfo = [v5 deviceInfo];
 
-  LOBYTE(v5) = [v6 containsLocalDevice];
+  LOBYTE(v5) = [deviceInfo containsLocalDevice];
   return v5;
 }
 
 - (double)timeSincePlaybackStarted
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 nowPlayingServer];
-  v5 = [v4 originClientForOrigin:self->_origin];
+  nowPlayingServer = [v3 nowPlayingServer];
+  v5 = [nowPlayingServer originClientForOrigin:self->_origin];
   [v5 timeSincePlaybackStarted];
   v7 = v6;
 

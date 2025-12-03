@@ -1,28 +1,28 @@
 @interface CAMControlDrawerMenuItem
-- (CAMControlDrawerMenuItem)initWithTitle:(id)a3 selectedTitle:(id)a4 value:(id)a5;
+- (CAMControlDrawerMenuItem)initWithTitle:(id)title selectedTitle:(id)selectedTitle value:(id)value;
 @end
 
 @implementation CAMControlDrawerMenuItem
 
-- (CAMControlDrawerMenuItem)initWithTitle:(id)a3 selectedTitle:(id)a4 value:(id)a5
+- (CAMControlDrawerMenuItem)initWithTitle:(id)title selectedTitle:(id)selectedTitle value:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  selectedTitleCopy = selectedTitle;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = CAMControlDrawerMenuItem;
   v11 = [(CAMControlDrawerMenuItem *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [selectedTitleCopy copy];
     selectedTitle = v11->_selectedTitle;
     v11->_selectedTitle = v14;
 
-    objc_storeStrong(&v11->_value, a5);
+    objc_storeStrong(&v11->_value, value);
   }
 
   return v11;

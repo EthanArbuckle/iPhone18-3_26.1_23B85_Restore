@@ -1,20 +1,20 @@
 @interface MKAnnotationContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityZoom:(BOOL)a3 point:(CGPoint)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityZoom:(BOOL)zoom point:(CGPoint)point;
 - (id)_accessibilityAnnotationViews;
-- (id)_accessibilityFilterVisibleElements:(id)a3;
+- (id)_accessibilityFilterVisibleElements:(id)elements;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MKAnnotationContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKAnnotationContainerView" hasInstanceMethod:@"deselectAnnotationView: animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"MKAnnotationContainerView" hasInstanceVariable:@"_annotationViews" withType:"NSMutableOrderedSet"];
-  [v3 validateClass:@"MKAnnotationView" hasInstanceVariable:@"_calloutView" withType:"MKCalloutView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKAnnotationContainerView" hasInstanceMethod:@"deselectAnnotationView: animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"MKAnnotationContainerView" hasInstanceVariable:@"_annotationViews" withType:"NSMutableOrderedSet"];
+  [validationsCopy validateClass:@"MKAnnotationView" hasInstanceVariable:@"_calloutView" withType:"MKCalloutView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,8 +33,8 @@
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [(MKAnnotationContainerViewAccessibility *)self _accessibilityAnnotationViews];
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  _accessibilityAnnotationViews = [(MKAnnotationContainerViewAccessibility *)self _accessibilityAnnotationViews];
+  v5 = [_accessibilityAnnotationViews countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -45,7 +45,7 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_accessibilityAnnotationViews);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
@@ -80,7 +80,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [_accessibilityAnnotationViews countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);
@@ -93,10 +93,10 @@
   return v24;
 }
 
-- (id)_accessibilityFilterVisibleElements:(id)a3
+- (id)_accessibilityFilterVisibleElements:(id)elements
 {
   v37 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  elementsCopy = elements;
   v5 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%p-_accessibilityFilterVisibleElements", self];
   v35 = 0;
   PossiblyNilObjectForKey = _AXServerCacheGetPossiblyNilObjectForKey();
@@ -104,14 +104,14 @@
   v8 = v7;
   if (PossiblyNilObjectForKey)
   {
-    v9 = v7;
+    array = v7;
   }
 
   else
   {
-    v9 = [MEMORY[0x29EDB8DE8] array];
-    v10 = [(MKAnnotationContainerViewAccessibility *)self window];
-    [v10 accessibilityFrame];
+    array = [MEMORY[0x29EDB8DE8] array];
+    window = [(MKAnnotationContainerViewAccessibility *)self window];
+    [window accessibilityFrame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -121,7 +121,7 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v19 = v4;
+    v19 = elementsCopy;
     v20 = [v19 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v20)
     {
@@ -154,7 +154,7 @@
           if (CGRectIntersectsRect(v39, v40))
           {
 LABEL_10:
-            [v9 addObject:v24];
+            [array addObject:v24];
           }
         }
 
@@ -169,7 +169,7 @@ LABEL_10:
 
   v29 = *MEMORY[0x29EDCA608];
 
-  return v9;
+  return array;
 }
 
 - (id)_accessibilityAnnotationViews
@@ -180,11 +180,11 @@ LABEL_10:
   return v3;
 }
 
-- (BOOL)_accessibilityZoom:(BOOL)a3 point:(CGPoint)a4
+- (BOOL)_accessibilityZoom:(BOOL)zoom point:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = point.y;
+  x = point.x;
+  zoomCopy = zoom;
   if (_accessibilityZoom_point___VKMapViewClassOnceToken != -1)
   {
     [MKAnnotationContainerViewAccessibility _accessibilityZoom:point:];
@@ -195,7 +195,7 @@ LABEL_10:
 
   if (objc_opt_isKindOfClass())
   {
-    if (v6)
+    if (zoomCopy)
     {
       v10 = [v9 accessibilityZoomInAtPoint:{x, y}];
     }

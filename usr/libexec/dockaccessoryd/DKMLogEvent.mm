@@ -2,14 +2,14 @@
 + (id)alloc;
 - (DKMLogEvent)init;
 - (double)durationInMilliseconds;
-- (void)submitAtDate:(id)a3;
+- (void)submitAtDate:(id)date;
 @end
 
 @implementation DKMLogEvent
 
 + (id)alloc
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___DKMLogEvent;
   return objc_msgSendSuper2(&v3, "alloc");
 }
@@ -31,30 +31,30 @@
   return v3;
 }
 
-- (void)submitAtDate:(id)a3
+- (void)submitAtDate:(id)date
 {
-  v7 = a3;
+  dateCopy = date;
   [(DKMLogEvent *)self setSubmitted:1];
-  v4 = [(DKMLogEvent *)self startDate];
-  v5 = [v7 compare:v4];
+  startDate = [(DKMLogEvent *)self startDate];
+  v5 = [dateCopy compare:startDate];
 
   if (v5 == -1)
   {
-    v6 = [(DKMLogEvent *)self startDate];
-    [(DKMLogEvent *)self setEndDate:v6];
+    startDate2 = [(DKMLogEvent *)self startDate];
+    [(DKMLogEvent *)self setEndDate:startDate2];
   }
 
   else
   {
-    [(DKMLogEvent *)self setEndDate:v7];
+    [(DKMLogEvent *)self setEndDate:dateCopy];
   }
 }
 
 - (double)durationInMilliseconds
 {
-  v3 = [(DKMLogEvent *)self endDate];
-  v4 = [(DKMLogEvent *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(DKMLogEvent *)self endDate];
+  startDate = [(DKMLogEvent *)self startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v6 = v5 * 1000.0;
 
   return v6;

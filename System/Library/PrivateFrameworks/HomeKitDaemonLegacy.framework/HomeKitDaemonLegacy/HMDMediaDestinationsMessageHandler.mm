@@ -1,9 +1,9 @@
 @interface HMDMediaDestinationsMessageHandler
-- (HMDMediaDestinationsMessageHandler)initWithDestination:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 dataSource:(id)a6 delegate:(id)a7;
+- (HMDMediaDestinationsMessageHandler)initWithDestination:(id)destination messageDispatcher:(id)dispatcher notificationCenter:(id)center dataSource:(id)source delegate:(id)delegate;
 - (HMDMediaDestinationsMessageHandlerDataSource)dataSource;
 - (HMDMediaDestinationsMessageHandlerDelegate)delegate;
-- (void)handleMediaDestinationUpdatedNotification:(id)a3;
-- (void)handleUpdatedDestination:(id)a3;
+- (void)handleMediaDestinationUpdatedNotification:(id)notification;
+- (void)handleUpdatedDestination:(id)destination;
 @end
 
 @implementation HMDMediaDestinationsMessageHandler
@@ -22,15 +22,15 @@
   return WeakRetained;
 }
 
-- (void)handleUpdatedDestination:(id)a3
+- (void)handleUpdatedDestination:(id)destination
 {
   v6.receiver = self;
   v6.super_class = HMDMediaDestinationsMessageHandler;
-  v4 = a3;
-  [(HMDMediaDestinationMessageHandler *)&v6 handleUpdatedDestination:v4];
-  v5 = [v4 supportedOptions];
+  destinationCopy = destination;
+  [(HMDMediaDestinationMessageHandler *)&v6 handleUpdatedDestination:destinationCopy];
+  supportedOptions = [destinationCopy supportedOptions];
 
-  if (v5)
+  if (supportedOptions)
   {
     if ([(HMDMessageHandler *)self hasQueuedIncomingMessages])
     {
@@ -39,12 +39,12 @@
   }
 }
 
-- (void)handleMediaDestinationUpdatedNotification:(id)a3
+- (void)handleMediaDestinationUpdatedNotification:(id)notification
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -55,14 +55,14 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDMediaDestinationsMessageHandler *)v6 delegate];
-  if (v9)
+  delegate = [(HMDMediaDestinationsMessageHandler *)selfCopy delegate];
+  if (delegate)
   {
-    v10 = [v4 object];
-    v11 = v10;
-    if (v10)
+    object = [notificationCopy object];
+    v11 = object;
+    if (object)
     {
-      v12 = v10;
+      v12 = object;
       objc_opt_class();
       v13 = objc_opt_isKindOfClass() & 1;
       if (v13)
@@ -79,20 +79,20 @@
 
       if (v13)
       {
-        v16 = [v12 uniqueIdentifier];
-        v17 = [(HMDMessageHandler *)v6 messageTargetUUID];
-        v18 = [v16 hmf_isEqualToUUID:v17];
+        uniqueIdentifier = [v12 uniqueIdentifier];
+        messageTargetUUID = [(HMDMessageHandler *)selfCopy messageTargetUUID];
+        v18 = [uniqueIdentifier hmf_isEqualToUUID:messageTargetUUID];
 
         if ((v18 & 1) == 0)
         {
-          [v9 mediaDestinationsMessageHandler:v6 didReceiveDestinationUpdatedNotification:v4 destination:v12];
+          [delegate mediaDestinationsMessageHandler:selfCopy didReceiveDestinationUpdatedNotification:notificationCopy destination:v12];
         }
       }
 
       else
       {
         v27 = objc_autoreleasePoolPush();
-        v28 = v6;
+        v28 = selfCopy;
         v29 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
@@ -100,7 +100,7 @@
           v32 = 138543618;
           v33 = v30;
           v34 = 2112;
-          v35 = v4;
+          v35 = notificationCopy;
           _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to get destination from media destination updated notification: %@", &v32, 0x16u);
         }
 
@@ -111,7 +111,7 @@
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = v6;
+      v24 = selfCopy;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
@@ -119,19 +119,19 @@
         v32 = 138543618;
         v33 = v26;
         v34 = 2112;
-        v35 = v4;
+        v35 = notificationCopy;
         _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_ERROR, "%{public}@Failed to get notification object from media destination updated notification: %@", &v32, 0x16u);
       }
 
       objc_autoreleasePoolPop(v23);
-      [v9 mediaDestinationsMessageHandler:v24 didReceiveDestinationUpdatedNotification:v4 destination:0];
+      [delegate mediaDestinationsMessageHandler:v24 didReceiveDestinationUpdatedNotification:notificationCopy destination:0];
     }
   }
 
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v6;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -147,21 +147,21 @@
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMediaDestinationsMessageHandler)initWithDestination:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 dataSource:(id)a6 delegate:(id)a7
+- (HMDMediaDestinationsMessageHandler)initWithDestination:(id)destination messageDispatcher:(id)dispatcher notificationCenter:(id)center dataSource:(id)source delegate:(id)delegate
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v12)
+  destinationCopy = destination;
+  dispatcherCopy = dispatcher;
+  centerCopy = center;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  if (!destinationCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_6;
   }
 
-  if (!v13)
+  if (!dispatcherCopy)
   {
 LABEL_6:
     _HMFPreconditionFailure();
@@ -169,17 +169,17 @@ LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  if (!v14)
+  if (!centerCopy)
   {
     goto LABEL_7;
   }
 
-  v17 = v16;
+  v17 = delegateCopy;
   v23[0] = *MEMORY[0x277CD0880];
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v22.receiver = self;
   v22.super_class = HMDMediaDestinationsMessageHandler;
-  v19 = [(HMDMediaDestinationMessageHandler *)&v22 initWithDestination:v12 messageDispatcher:v13 notificationCenter:v14 notifications:v18 dataSource:v15 delegate:v17];
+  v19 = [(HMDMediaDestinationMessageHandler *)&v22 initWithDestination:destinationCopy messageDispatcher:dispatcherCopy notificationCenter:centerCopy notifications:v18 dataSource:sourceCopy delegate:v17];
 
   v20 = *MEMORY[0x277D85DE8];
   return v19;

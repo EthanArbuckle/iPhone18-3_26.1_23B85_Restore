@@ -1,25 +1,25 @@
 @interface HMIAssociateFaceCropsOperation
-- (HMIAssociateFaceCropsOperation)initWithDataSource:(id)a3 faceCropUUIDs:(id)a4 personUUID:(id)a5 source:(int64_t)a6;
+- (HMIAssociateFaceCropsOperation)initWithDataSource:(id)source faceCropUUIDs:(id)ds personUUID:(id)d source:(int64_t)a6;
 - (void)main;
 - (void)mainInsideAutoreleasePool;
 @end
 
 @implementation HMIAssociateFaceCropsOperation
 
-- (HMIAssociateFaceCropsOperation)initWithDataSource:(id)a3 faceCropUUIDs:(id)a4 personUUID:(id)a5 source:(int64_t)a6
+- (HMIAssociateFaceCropsOperation)initWithDataSource:(id)source faceCropUUIDs:(id)ds personUUID:(id)d source:(int64_t)a6
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  sourceCopy = source;
+  dsCopy = ds;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = HMIAssociateFaceCropsOperation;
   v14 = [(HMFOperation *)&v17 initWithTimeout:20.0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_dataSource, a3);
-    objc_storeStrong(&v15->_faceCropUUIDs, a4);
-    objc_storeStrong(&v15->_personUUID, a5);
+    objc_storeStrong(&v14->_dataSource, source);
+    objc_storeStrong(&v15->_faceCropUUIDs, ds);
+    objc_storeStrong(&v15->_personUUID, d);
     v15->_source = a6;
   }
 
@@ -37,16 +37,16 @@
 - (void)mainInsideAutoreleasePool
 {
   objc_initWeak(&location, self);
-  v3 = [(HMIAssociateFaceCropsOperation *)self dataSource];
-  v4 = [(HMIAssociateFaceCropsOperation *)self faceCropUUIDs];
-  v5 = [(HMIAssociateFaceCropsOperation *)self personUUID];
-  v6 = [(HMIAssociateFaceCropsOperation *)self source];
+  dataSource = [(HMIAssociateFaceCropsOperation *)self dataSource];
+  faceCropUUIDs = [(HMIAssociateFaceCropsOperation *)self faceCropUUIDs];
+  personUUID = [(HMIAssociateFaceCropsOperation *)self personUUID];
+  source = [(HMIAssociateFaceCropsOperation *)self source];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HMIAssociateFaceCropsOperation_mainInsideAutoreleasePool__block_invoke;
   v7[3] = &unk_2787528E0;
   objc_copyWeak(&v8, &location);
-  [v3 associateFaceCropsWithUUIDs:v4 toPersonWithUUID:v5 forSource:v6 completion:v7];
+  [dataSource associateFaceCropsWithUUIDs:faceCropUUIDs toPersonWithUUID:personUUID forSource:source completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

@@ -1,7 +1,7 @@
 @interface APConfigurationStorage
 - (APConfigurationStorage)init;
 - (BOOL)resetConfigurationSystem;
-- (BOOL)updateConfigurationSystemWithData:(id)a3;
+- (BOOL)updateConfigurationSystemWithData:(id)data;
 - (void)cancelConfigurationUpdate;
 @end
 
@@ -85,16 +85,16 @@
   return v24;
 }
 
-- (BOOL)updateConfigurationSystemWithData:(id)a3
+- (BOOL)updateConfigurationSystemWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7 = objc_msgSend_lock(self, v5, v6);
   objc_msgSend_lock(v7, v8, v9);
   v10 = objc_alloc_init(APConfigurationResponseHandler);
   objc_msgSend_setResponseHandler_(self, v11, v10);
 
   v14 = objc_msgSend_responseHandler(self, v12, v13);
-  v16 = objc_msgSend_processResponseWithData_(v14, v15, v4);
+  v16 = objc_msgSend_processResponseWithData_(v14, v15, dataCopy);
 
   objc_msgSend_setResponseHandler_(self, v17, 0);
   objc_msgSend_unlock(v7, v18, v19);

@@ -1,30 +1,30 @@
 @interface SISchemaUEIDictationAlternativeConfusionPairsSelected
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIDictationAlternativeConfusionPairsSelected)initWithDictionary:(id)a3;
-- (SISchemaUEIDictationAlternativeConfusionPairsSelected)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUEIDictationAlternativeConfusionPairsSelected)initWithDictionary:(id)dictionary;
+- (SISchemaUEIDictationAlternativeConfusionPairsSelected)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAlternativeSelections:(id)a3;
-- (void)setHasNumInsertions:(BOOL)a3;
-- (void)setHasNumSubstitutions:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAlternativeSelections:(id)selections;
+- (void)setHasNumInsertions:(BOOL)insertions;
+- (void)setHasNumSubstitutions:(BOOL)substitutions;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIDictationAlternativeConfusionPairsSelected
 
-- (SISchemaUEIDictationAlternativeConfusionPairsSelected)initWithDictionary:(id)a3
+- (SISchemaUEIDictationAlternativeConfusionPairsSelected)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = SISchemaUEIDictationAlternativeConfusionPairsSelected;
   v5 = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"alternativeSelections"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"alternativeSelections"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,21 +68,21 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"numDeletions", v20}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"numDeletions", v20}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationAlternativeConfusionPairsSelected setNumDeletions:](v5, "setNumDeletions:", [v15 intValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"numInsertions"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"numInsertions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationAlternativeConfusionPairsSelected setNumInsertions:](v5, "setNumInsertions:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"numSubstitutions"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"numSubstitutions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -95,30 +95,30 @@
   return v5;
 }
 
-- (SISchemaUEIDictationAlternativeConfusionPairsSelected)initWithJSON:(id)a3
+- (SISchemaUEIDictationAlternativeConfusionPairsSelected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -132,10 +132,10 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_alternativeSelections count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -155,16 +155,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -174,14 +174,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"alternativeSelections"];
+    [dictionary setObject:array forKeyedSubscript:@"alternativeSelections"];
   }
 
   has = self->_has;
   if (has)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaUEIDictationAlternativeConfusionPairsSelected numDeletions](self, "numDeletions")}];
-    [v3 setObject:v15 forKeyedSubscript:@"numDeletions"];
+    [dictionary setObject:v15 forKeyedSubscript:@"numDeletions"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -202,19 +202,19 @@ LABEL_15:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaUEIDictationAlternativeConfusionPairsSelected numInsertions](self, "numInsertions", v17)}];
-  [v3 setObject:v16 forKeyedSubscript:@"numInsertions"];
+  [dictionary setObject:v16 forKeyedSubscript:@"numInsertions"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_16:
     v13 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaUEIDictationAlternativeConfusionPairsSelected numSubstitutions](self, "numSubstitutions", v17)}];
-    [v3 setObject:v13 forKeyedSubscript:@"numSubstitutions"];
+    [dictionary setObject:v13 forKeyedSubscript:@"numSubstitutions"];
   }
 
 LABEL_17:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v17];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v17];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -258,30 +258,30 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self alternativeSelections];
-  v6 = [v4 alternativeSelections];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  alternativeSelections = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self alternativeSelections];
+  alternativeSelections2 = [equalCopy alternativeSelections];
+  v7 = alternativeSelections2;
+  if ((alternativeSelections != 0) == (alternativeSelections2 == 0))
   {
 
     goto LABEL_20;
   }
 
-  v8 = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self alternativeSelections];
-  if (v8)
+  alternativeSelections3 = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self alternativeSelections];
+  if (alternativeSelections3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self alternativeSelections];
-    v11 = [v4 alternativeSelections];
-    v12 = [v10 isEqual:v11];
+    v9 = alternativeSelections3;
+    alternativeSelections4 = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self alternativeSelections];
+    alternativeSelections5 = [equalCopy alternativeSelections];
+    v12 = [alternativeSelections4 isEqual:alternativeSelections5];
 
     if (!v12)
     {
@@ -294,7 +294,7 @@ LABEL_4:
   }
 
   has = self->_has;
-  v14 = v4[28];
+  v14 = equalCopy[28];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_20:
@@ -305,13 +305,13 @@ LABEL_20:
   if (*&has)
   {
     numDeletions = self->_numDeletions;
-    if (numDeletions != [v4 numDeletions])
+    if (numDeletions != [equalCopy numDeletions])
     {
       goto LABEL_20;
     }
 
     has = self->_has;
-    v14 = v4[28];
+    v14 = equalCopy[28];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -323,10 +323,10 @@ LABEL_20:
   if (v16)
   {
     numInsertions = self->_numInsertions;
-    if (numInsertions == [v4 numInsertions])
+    if (numInsertions == [equalCopy numInsertions])
     {
       has = self->_has;
-      v14 = v4[28];
+      v14 = equalCopy[28];
       goto LABEL_16;
     }
 
@@ -343,7 +343,7 @@ LABEL_16:
   if (v18)
   {
     numSubstitutions = self->_numSubstitutions;
-    if (numSubstitutions != [v4 numSubstitutions])
+    if (numSubstitutions != [equalCopy numSubstitutions])
     {
       goto LABEL_20;
     }
@@ -355,10 +355,10 @@ LABEL_21:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -422,9 +422,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setHasNumSubstitutions:(BOOL)a3
+- (void)setHasNumSubstitutions:(BOOL)substitutions
 {
-  if (a3)
+  if (substitutions)
   {
     v3 = 4;
   }
@@ -437,9 +437,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumInsertions:(BOOL)a3
+- (void)setHasNumInsertions:(BOOL)insertions
 {
-  if (a3)
+  if (insertions)
   {
     v3 = 2;
   }
@@ -452,57 +452,57 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addAlternativeSelections:(id)a3
+- (void)addAlternativeSelections:(id)selections
 {
-  v4 = a3;
+  selectionsCopy = selections;
   alternativeSelections = self->_alternativeSelections;
-  v8 = v4;
+  v8 = selectionsCopy;
   if (!alternativeSelections)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_alternativeSelections;
-    self->_alternativeSelections = v6;
+    self->_alternativeSelections = array;
 
-    v4 = v8;
+    selectionsCopy = v8;
     alternativeSelections = self->_alternativeSelections;
   }
 
-  [(NSArray *)alternativeSelections addObject:v4];
+  [(NSArray *)alternativeSelections addObject:selectionsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v9.receiver = self;
   v9.super_class = SISchemaUEIDictationAlternativeConfusionPairsSelected;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self deleteAlternativeSelections];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self deleteAlternativeSelections];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self deleteAlternativeSelections];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self deleteAlternativeSelections];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self deleteAlternativeSelections];
   }
 
-  v6 = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self alternativeSelections];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  alternativeSelections = [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self alternativeSelections];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:alternativeSelections underConditions:policyCopy];
   [(SISchemaUEIDictationAlternativeConfusionPairsSelected *)self setAlternativeSelections:v7];
 
   return v5;

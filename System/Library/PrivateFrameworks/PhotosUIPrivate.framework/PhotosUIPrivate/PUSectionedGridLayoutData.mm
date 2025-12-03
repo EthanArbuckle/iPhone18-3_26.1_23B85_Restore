@@ -24,15 +24,15 @@
   v3 = *(MEMORY[0x1E695F058] + 16);
   self->_currentContentBounds.origin = *MEMORY[0x1E695F058];
   self->_currentContentBounds.size = v3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   headerLayoutAttributes = self->_headerLayoutAttributes;
-  self->_headerLayoutAttributes = v4;
+  self->_headerLayoutAttributes = array;
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   headerLayoutAttributesByVisualSection = self->_headerLayoutAttributesByVisualSection;
-  self->_headerLayoutAttributesByVisualSection = v6;
+  self->_headerLayoutAttributesByVisualSection = dictionary;
 
-  MEMORY[0x1EEE66BB8](v6, headerLayoutAttributesByVisualSection);
+  MEMORY[0x1EEE66BB8](dictionary, headerLayoutAttributesByVisualSection);
 }
 
 - (PUSectionedGridLayoutData)init
@@ -44,13 +44,13 @@
   if (v2)
   {
     v2->_numberOfPagesToCache = 2;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     headerLayoutAttributes = v3->_headerLayoutAttributes;
-    v3->_headerLayoutAttributes = v4;
+    v3->_headerLayoutAttributes = array;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     headerLayoutAttributesByVisualSection = v3->_headerLayoutAttributesByVisualSection;
-    v3->_headerLayoutAttributesByVisualSection = v6;
+    v3->_headerLayoutAttributesByVisualSection = dictionary;
   }
 
   return v3;

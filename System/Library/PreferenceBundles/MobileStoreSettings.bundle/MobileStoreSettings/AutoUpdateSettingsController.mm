@@ -1,23 +1,23 @@
 @interface AutoUpdateSettingsController
-- (AutoUpdateSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_automaticUpdatesEnabledForAppSpecifier:(id)a3;
-- (id)_globalAutomaticUpdatesEnabled:(id)a3;
+- (AutoUpdateSettingsController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_automaticUpdatesEnabledForAppSpecifier:(id)specifier;
+- (id)_globalAutomaticUpdatesEnabled:(id)enabled;
 - (id)specifiers;
-- (void)_lowPowerModeChangedNotification:(id)a3;
-- (void)_setAutomaticUpdatesEnabled:(id)a3 forAppSpecifier:(id)a4;
-- (void)_setGlobalAutomaticUpdatesEnabled:(id)a3 specifier:(id)a4;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)_lowPowerModeChangedNotification:(id)notification;
+- (void)_setAutomaticUpdatesEnabled:(id)enabled forAppSpecifier:(id)specifier;
+- (void)_setGlobalAutomaticUpdatesEnabled:(id)enabled specifier:(id)specifier;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 @end
 
 @implementation AutoUpdateSettingsController
 
-- (AutoUpdateSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (AutoUpdateSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   v15.receiver = self;
   v15.super_class = AutoUpdateSettingsController;
-  v4 = [(AutoUpdateSettingsController *)&v15 initWithNibName:a3 bundle:a4];
+  v4 = [(AutoUpdateSettingsController *)&v15 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -62,22 +62,22 @@
   [(AutoUpdateSettingsController *)&v4 dealloc];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
-  v5 = [v4 count];
+  installCopy = install;
+  v5 = [installCopy count];
   v21 = [[NSMutableArray alloc] initWithCapacity:v5];
   v6 = [[NSMutableArray alloc] initWithCapacity:v5];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = v4;
+  v7 = installCopy;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
-    v20 = self;
+    selfCopy = self;
     v10 = 0;
     v11 = *v26;
     do
@@ -90,17 +90,17 @@
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 correspondingApplicationRecord];
-        v15 = [ASDUpdatesService isAutomaticUpdateAuthorizationRequiredWhenEnabledForAppWithRecord:v14];
+        correspondingApplicationRecord = [v13 correspondingApplicationRecord];
+        v15 = [ASDUpdatesService isAutomaticUpdateAuthorizationRequiredWhenEnabledForAppWithRecord:correspondingApplicationRecord];
 
         if (v15)
         {
-          v16 = [v13 bundleIdentifier];
-          v17 = [v13 localizedName];
-          v18 = v17;
-          if (v16)
+          bundleIdentifier = [v13 bundleIdentifier];
+          localizedName = [v13 localizedName];
+          v18 = localizedName;
+          if (bundleIdentifier)
           {
-            v19 = v17 == 0;
+            v19 = localizedName == 0;
           }
 
           else
@@ -110,7 +110,7 @@
 
           if (!v19)
           {
-            [v21 addObject:v16];
+            [v21 addObject:bundleIdentifier];
             [v6 addObject:v18];
             v10 = 1;
           }
@@ -128,7 +128,7 @@
       block[1] = 3221225472;
       block[2] = sub_38B9C;
       block[3] = &unk_4E738;
-      block[4] = v20;
+      block[4] = selfCopy;
       v23 = v21;
       v24 = v6;
       dispatch_async(&_dispatch_main_q, block);
@@ -140,15 +140,15 @@
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  uninstallCopy = uninstall;
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(uninstallCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = uninstallCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -164,8 +164,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) bundleIdentifier];
-        [v5 addObject:v11];
+        bundleIdentifier = [*(*(&v15 + 1) + 8 * v10) bundleIdentifier];
+        [v5 addObject:bundleIdentifier];
 
         v10 = v10 + 1;
       }
@@ -273,23 +273,23 @@
   return v4;
 }
 
-- (id)_globalAutomaticUpdatesEnabled:(id)a3
+- (id)_globalAutomaticUpdatesEnabled:(id)enabled
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
-    v3 = !self->_isLowPowerMode && self->_autoUpdatesEnabledDefault;
+    selfCopy = !self->_isLowPowerMode && self->_autoUpdatesEnabledDefault;
   }
 
-  return [NSNumber numberWithBool:v3 & 1];
+  return [NSNumber numberWithBool:selfCopy & 1];
 }
 
-- (void)_setGlobalAutomaticUpdatesEnabled:(id)a3 specifier:(id)a4
+- (void)_setGlobalAutomaticUpdatesEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  self->_autoUpdatesEnabledDefault = v5;
+  bOOLValue = [enabled BOOLValue];
+  self->_autoUpdatesEnabledDefault = bOOLValue;
   v6 = &kCFBooleanTrue;
-  if (!v5)
+  if (!bOOLValue)
   {
     v6 = &kCFBooleanFalse;
   }
@@ -302,7 +302,7 @@
   sub_388B4(self, 0);
 }
 
-- (id)_automaticUpdatesEnabledForAppSpecifier:(id)a3
+- (id)_automaticUpdatesEnabledForAppSpecifier:(id)specifier
 {
   if (self->_isLowPowerMode)
   {
@@ -311,20 +311,20 @@
 
   else
   {
-    v4 = a3;
+    specifierCopy = specifier;
     v5 = CFPreferencesCopyValue(@"AutomaticUpdateAuthorizations", @"com.apple.appstored", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
-    v6 = [v4 identifier];
+    identifier = [specifierCopy identifier];
 
-    v3 = [v5 objectForKeyedSubscript:v6];
+    v3 = [v5 objectForKeyedSubscript:identifier];
   }
 
   return v3;
 }
 
-- (void)_setAutomaticUpdatesEnabled:(id)a3 forAppSpecifier:(id)a4
+- (void)_setAutomaticUpdatesEnabled:(id)enabled forAppSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
+  specifierCopy = specifier;
+  enabledCopy = enabled;
   v8 = CFPreferencesCopyValue(@"AutomaticUpdateAuthorizations", @"com.apple.appstored", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
   v9 = v8;
   if (!v8)
@@ -334,15 +334,15 @@
 
   value = [v8 mutableCopy];
 
-  v10 = [v6 identifier];
+  identifier = [specifierCopy identifier];
 
-  [value setObject:v7 forKeyedSubscript:v10];
+  [value setObject:enabledCopy forKeyedSubscript:identifier];
   CFPreferencesSetValue(@"AutomaticUpdateAuthorizations", value, @"com.apple.appstored", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
   CFPreferencesSynchronize(@"com.apple.appstored", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
   sub_39724(self, 0);
 }
 
-- (void)_lowPowerModeChangedNotification:(id)a3
+- (void)_lowPowerModeChangedNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

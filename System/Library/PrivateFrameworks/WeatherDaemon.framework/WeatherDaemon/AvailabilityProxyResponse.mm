@@ -1,14 +1,14 @@
 @interface AvailabilityProxyResponse
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AvailabilityProxyResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AvailabilityProxyResponse.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AvailabilityProxyResponse.encode(with:)(coderCopy);
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface SUUIChartColumnsView
-- (SUUIChartColumnsView)initWithFrame:(CGRect)a3;
+- (SUUIChartColumnsView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
-- (id)_headerViewWithViewControllers:(id)a3;
-- (void)_headerViewAction:(id)a3;
+- (id)_headerViewWithViewControllers:(id)controllers;
+- (void)_headerViewAction:(id)action;
 - (void)_reloadColumnViews;
-- (void)beginColumnChangeAnimationToNumberOfVisibleColumns:(int64_t)a3;
+- (void)beginColumnChangeAnimationToNumberOfVisibleColumns:(int64_t)columns;
 - (void)dealloc;
 - (void)endColumnChangeAnimation;
 - (void)layoutSubviews;
-- (void)segmentedControl:(id)a3 didSelectSegmentIndex:(int64_t)a4;
-- (void)setChartViewControllers:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setNumberOfVisibleColumns:(int64_t)a3;
+- (void)segmentedControl:(id)control didSelectSegmentIndex:(int64_t)index;
+- (void)setChartViewControllers:(id)controllers;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setNumberOfVisibleColumns:(int64_t)columns;
 @end
 
 @implementation SUUIChartColumnsView
 
-- (SUUIChartColumnsView)initWithFrame:(CGRect)a3
+- (SUUIChartColumnsView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = SUUIChartColumnsView;
-  v3 = [(SUUIChartColumnsView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIChartColumnsView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 0.0, 44.0}];
@@ -40,8 +40,8 @@
     v3->_borderView0 = v10;
 
     v12 = v3->_borderView0;
-    v13 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    separatorColor = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v12 setBackgroundColor:separatorColor];
 
     [(SUUIChartColumnsView *)v3 addSubview:v3->_borderView0];
     v14 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -49,8 +49,8 @@
     v3->_borderView1 = v14;
 
     v16 = v3->_borderView1;
-    v17 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v16 setBackgroundColor:v17];
+    separatorColor2 = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v16 setBackgroundColor:separatorColor2];
 
     [(SUUIChartColumnsView *)v3 addSubview:v3->_borderView1];
     v18 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -58,8 +58,8 @@
     v3->_headerBackgroundBottomBorder = v18;
 
     v20 = v3->_headerBackgroundBottomBorder;
-    v21 = [MEMORY[0x277D75348] separatorColor];
-    [(UIView *)v20 setBackgroundColor:v21];
+    separatorColor3 = [MEMORY[0x277D75348] separatorColor];
+    [(UIView *)v20 setBackgroundColor:separatorColor3];
 
     [(UIView *)v3->_headerBackgroundView addSubview:v3->_headerBackgroundBottomBorder];
   }
@@ -75,16 +75,16 @@
   [(SUUIChartColumnsView *)&v3 dealloc];
 }
 
-- (void)beginColumnChangeAnimationToNumberOfVisibleColumns:(int64_t)a3
+- (void)beginColumnChangeAnimationToNumberOfVisibleColumns:(int64_t)columns
 {
   columnChangeAnimationCount = self->_columnChangeAnimationCount;
   self->_columnChangeAnimationCount = columnChangeAnimationCount + 1;
   if (!columnChangeAnimationCount)
   {
-    self->_animatingToNumberOfVisibleColumns = a3;
-    if (self->_numberOfVisibleColumns >= a3)
+    self->_animatingToNumberOfVisibleColumns = columns;
+    if (self->_numberOfVisibleColumns >= columns)
     {
-      self->_numberOfVisibleColumns = a3;
+      self->_numberOfVisibleColumns = columns;
 
       [(SUUIChartColumnsView *)self setNeedsLayout];
     }
@@ -116,11 +116,11 @@
   }
 }
 
-- (void)setChartViewControllers:(id)a3
+- (void)setChartViewControllers:(id)controllers
 {
-  if (self->_allViewControllers != a3)
+  if (self->_allViewControllers != controllers)
   {
-    v4 = [a3 copy];
+    v4 = [controllers copy];
     allViewControllers = self->_allViewControllers;
     self->_allViewControllers = v4;
 
@@ -128,24 +128,24 @@
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIChartColumnsView *)self setNeedsLayout];
   }
 }
 
-- (void)setNumberOfVisibleColumns:(int64_t)a3
+- (void)setNumberOfVisibleColumns:(int64_t)columns
 {
-  if (self->_numberOfVisibleColumns != a3)
+  if (self->_numberOfVisibleColumns != columns)
   {
-    self->_numberOfVisibleColumns = a3;
+    self->_numberOfVisibleColumns = columns;
     if (!self->_columnChangeAnimationCount)
     {
       [(SUUIChartColumnsView *)self _reloadColumnViews];
@@ -165,15 +165,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  [v11 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v13 = v12;
 
   v14 = [(NSArray *)self->_columnViews count];
-  v15 = [(SUUIChartColumnsView *)self numberOfVisibleColumns];
-  if (v14 >= v15)
+  numberOfVisibleColumns = [(SUUIChartColumnsView *)self numberOfVisibleColumns];
+  if (v14 >= numberOfVisibleColumns)
   {
-    v16 = v15;
+    v16 = numberOfVisibleColumns;
   }
 
   else
@@ -269,31 +269,31 @@ LABEL_13:
   [(UIView *)borderView1 setHidden:v38];
 }
 
-- (void)_headerViewAction:(id)a3
+- (void)_headerViewAction:(id)action
 {
-  v6 = a3;
+  actionCopy = action;
   v4 = [(NSArray *)self->_headerViews indexOfObjectIdenticalTo:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = [(NSArray *)self->_columnViews objectAtIndex:v4];
-    [v5 setSelectedViewControllerIndex:{objc_msgSend(v6, "selectedTitleIndex")}];
+    [v5 setSelectedViewControllerIndex:{objc_msgSend(actionCopy, "selectedTitleIndex")}];
   }
 }
 
-- (void)segmentedControl:(id)a3 didSelectSegmentIndex:(int64_t)a4
+- (void)segmentedControl:(id)control didSelectSegmentIndex:(int64_t)index
 {
-  v5 = [(NSArray *)self->_columnViews firstObject];
-  [v5 setSelectedViewControllerIndex:a4];
+  firstObject = [(NSArray *)self->_columnViews firstObject];
+  [firstObject setSelectedViewControllerIndex:index];
 }
 
-- (id)_headerViewWithViewControllers:(id)a3
+- (id)_headerViewWithViewControllers:(id)controllers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllersCopy = controllers;
   v5 = objc_alloc_init(SUUIChartColumnHeaderView);
   [(SUUIChartColumnHeaderView *)v5 addTarget:self action:sel__headerViewAction_ forControlEvents:4096];
-  v6 = [MEMORY[0x277D75348] clearColor];
-  [(SUUIChartColumnHeaderView *)v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SUUIChartColumnHeaderView *)v5 setBackgroundColor:clearColor];
 
   [(SUUIChartColumnHeaderView *)v5 sizeToFit];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -301,7 +301,7 @@ LABEL_13:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v4;
+  v8 = controllersCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -316,8 +316,8 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) title];
-        [v7 addObject:v13];
+        title = [*(*(&v15 + 1) + 8 * i) title];
+        [v7 addObject:title];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -337,7 +337,7 @@ LABEL_13:
   v51 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v48 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v54 = self;
+  selfCopy = self;
   v55 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v72 = 0u;
   v73 = 0u;
@@ -358,10 +358,10 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v72 + 1) + 8 * i) selectedViewController];
-        if (v9)
+        selectedViewController = [*(*(&v72 + 1) + 8 * i) selectedViewController];
+        if (selectedViewController)
         {
-          [v55 addObject:v9];
+          [v55 addObject:selectedViewController];
         }
       }
 
@@ -371,7 +371,7 @@ LABEL_13:
     while (v6);
   }
 
-  if (v54->_columnChangeAnimationCount <= 0)
+  if (selfCopy->_columnChangeAnimationCount <= 0)
   {
     v10 = &OBJC_IVAR___SUUIChartColumnsView__numberOfVisibleColumns;
   }
@@ -381,14 +381,14 @@ LABEL_13:
     v10 = &OBJC_IVAR___SUUIChartColumnsView__animatingToNumberOfVisibleColumns;
   }
 
-  v53 = *(&v54->super.super.super.isa + *v10);
-  v11 = [(NSArray *)v54->_allViewControllers count];
+  v53 = *(&selfCopy->super.super.super.isa + *v10);
+  v11 = [(NSArray *)selfCopy->_allViewControllers count];
   if (v11 >= 1)
   {
     v12 = v11;
     for (j = 0; j != v12; ++j)
     {
-      v14 = [(NSArray *)v54->_allViewControllers objectAtIndex:j];
+      v14 = [(NSArray *)selfCopy->_allViewControllers objectAtIndex:j];
       if ([v3 count] <= (j % v53))
       {
         v16 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v14, 0}];
@@ -407,12 +407,12 @@ LABEL_13:
     }
   }
 
-  if (v53 == 1 && !v54->_segmentedControl)
+  if (v53 == 1 && !selfCopy->_segmentedControl)
   {
     v18 = objc_alloc_init(SUUIFlexibleSegmentedControl);
-    v19 = v54;
-    segmentedControl = v54->_segmentedControl;
-    v54->_segmentedControl = v18;
+    v19 = selfCopy;
+    segmentedControl = selfCopy->_segmentedControl;
+    selfCopy->_segmentedControl = v18;
 
     [(SUUIFlexibleSegmentedControl *)v19->_segmentedControl setDelegate:v19];
     [(UIView *)v19->_headerBackgroundView addSubview:v19->_segmentedControl];
@@ -429,7 +429,7 @@ LABEL_13:
   {
     v21 = *v69;
     v22 = 0x7FFFFFFFFFFFFFFFLL;
-    v23 = v54;
+    v23 = selfCopy;
     v47 = *v69;
     do
     {
@@ -483,7 +483,7 @@ LABEL_13:
 
           v22 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_37:
-          v23 = v54;
+          v23 = selfCopy;
         }
 
         if (v53 < 2)
@@ -508,8 +508,8 @@ LABEL_37:
                   objc_enumerationMutation(v34);
                 }
 
-                v39 = [*(*(&v60 + 1) + 8 * n) title];
-                [v33 addObject:v39];
+                title = [*(*(&v60 + 1) + 8 * n) title];
+                [v33 addObject:title];
               }
 
               v36 = [v34 countByEnumeratingWithState:&v60 objects:v77 count:16];
@@ -519,7 +519,7 @@ LABEL_37:
           }
 
           [v49 addObjectsFromArray:v33];
-          v23 = v54;
+          v23 = selfCopy;
           v21 = v47;
         }
 
@@ -543,7 +543,7 @@ LABEL_37:
   else
   {
     v22 = 0x7FFFFFFFFFFFFFFFLL;
-    v23 = v54;
+    v23 = selfCopy;
   }
 
   [(SUUIFlexibleSegmentedControl *)v23->_segmentedControl setItemTitles:v49];

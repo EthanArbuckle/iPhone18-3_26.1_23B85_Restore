@@ -1,16 +1,16 @@
 @interface RTTripClusterRoadTransitionsEnumerationOptions
-- (BOOL)isEqual:(id)a3;
-- (RTTripClusterRoadTransitionsEnumerationOptions)initWithClusterID:(id)a3;
-- (RTTripClusterRoadTransitionsEnumerationOptions)initWithCoder:(id)a3;
-- (RTTripClusterRoadTransitionsEnumerationOptions)initWithbatchSize:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTTripClusterRoadTransitionsEnumerationOptions)initWithClusterID:(id)d;
+- (RTTripClusterRoadTransitionsEnumerationOptions)initWithCoder:(id)coder;
+- (RTTripClusterRoadTransitionsEnumerationOptions)initWithbatchSize:(unint64_t)size;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTTripClusterRoadTransitionsEnumerationOptions
 
-- (RTTripClusterRoadTransitionsEnumerationOptions)initWithbatchSize:(unint64_t)a3
+- (RTTripClusterRoadTransitionsEnumerationOptions)initWithbatchSize:(unint64_t)size
 {
   v8.receiver = self;
   v8.super_class = RTTripClusterRoadTransitionsEnumerationOptions;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_batchSize = a3;
+    v4->_batchSize = size;
     clusterID = v4->_clusterID;
     v4->_clusterID = 0;
   }
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (RTTripClusterRoadTransitionsEnumerationOptions)initWithClusterID:(id)a3
+- (RTTripClusterRoadTransitionsEnumerationOptions)initWithClusterID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = RTTripClusterRoadTransitionsEnumerationOptions;
   v6 = [(RTTripClusterRoadTransitionsEnumerationOptions *)&v9 init];
@@ -36,45 +36,45 @@
   if (v6)
   {
     v6->_batchSize = 0;
-    objc_storeStrong(&v6->_clusterID, a3);
+    objc_storeStrong(&v6->_clusterID, d);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 initWithbatchSize:0];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batchSize = self->_batchSize;
-  v5 = a3;
-  [v5 encodeInteger:batchSize forKey:@"batchSize"];
-  [v5 encodeObject:self->_clusterID forKey:@"clusterID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:batchSize forKey:@"batchSize"];
+  [coderCopy encodeObject:self->_clusterID forKey:@"clusterID"];
 }
 
-- (RTTripClusterRoadTransitionsEnumerationOptions)initWithCoder:(id)a3
+- (RTTripClusterRoadTransitionsEnumerationOptions)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeObjectForKey:@"clusterID"];
+  v4 = [coder decodeObjectForKey:@"clusterID"];
   v5 = [(RTTripClusterRoadTransitionsEnumerationOptions *)self initWithClusterID:v4];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isKindOfClass = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();

@@ -3,18 +3,18 @@
 - (CGRect)primaryDockFrame;
 - (CGRect)secondaryDockFrame;
 - (NSNumber)persistentElements;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setPersistentElements:(id)a3;
-- (void)setPrimaryDockFrame:(CGRect)a3;
-- (void)setSecondaryDockFrame:(CGRect)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setPersistentElements:(id)elements;
+- (void)setPrimaryDockFrame:(CGRect)frame;
+- (void)setSecondaryDockFrame:(CGRect)frame;
 @end
 
 @implementation CRSUIMutableClimateOverlaySceneSettings
 
 - (CGRect)primaryDockFrame
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:141334467];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:141334467];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -34,53 +34,53 @@
 
 - (BOOL)hasPhysicalControlBars
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:141334465];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:141334465];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSNumber)persistentElements
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:141334466];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:141334466];
 
   return v3;
 }
 
-- (void)setPersistentElements:(id)a3
+- (void)setPersistentElements:(id)elements
 {
-  v4 = a3;
-  v6 = [(FBSSettings *)self otherSettings];
-  v5 = [v4 copy];
+  elementsCopy = elements;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v5 = [elementsCopy copy];
 
-  [v6 setObject:v5 forSetting:141334466];
+  [otherSettings setObject:v5 forSetting:141334466];
 }
 
-- (void)setPrimaryDockFrame:(CGRect)a3
+- (void)setPrimaryDockFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(FBSSettings *)self otherSettings];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  otherSettings = [(FBSSettings *)self otherSettings];
   v7 = [MEMORY[0x277CCAE60] valueWithCGRect:{x, y, width, height}];
-  [v8 setObject:v7 forSetting:141334467];
+  [otherSettings setObject:v7 forSetting:141334467];
 }
 
-- (void)setSecondaryDockFrame:(CGRect)a3
+- (void)setSecondaryDockFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(FBSSettings *)self otherSettings];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  otherSettings = [(FBSSettings *)self otherSettings];
   v7 = [MEMORY[0x277CCAE60] valueWithCGRect:{x, y, width, height}];
-  [v8 setObject:v7 forSetting:141334468];
+  [otherSettings setObject:v7 forSetting:141334468];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRSUIClimateOverlaySceneSettings alloc];
 

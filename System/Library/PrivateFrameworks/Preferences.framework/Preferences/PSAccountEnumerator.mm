@@ -1,10 +1,10 @@
 @interface PSAccountEnumerator
 - (PSAccountEnumerator)init;
-- (void)_handleAccountStoreDidUpdateIsInitialLoad:(BOOL)a3 completion:(id)a4;
-- (void)_reloadAccountStoreStateIsInitialLoad:(BOOL)a3 completion:(id)a4;
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
+- (void)_handleAccountStoreDidUpdateIsInitialLoad:(BOOL)load completion:(id)completion;
+- (void)_reloadAccountStoreStateIsInitialLoad:(BOOL)load completion:(id)completion;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
 - (void)dealloc;
 @end
 
@@ -31,8 +31,8 @@
     v4->__accountUpdateQueue = v5;
 
     v7 = objc_alloc(MEMORY[0x1E6959A60]);
-    v8 = [objc_opt_class() _visibleAccountTypeIDs];
-    v9 = [v7 initWithAccountTypes:v8 delegate:v4];
+    _visibleAccountTypeIDs = [objc_opt_class() _visibleAccountTypeIDs];
+    v9 = [v7 initWithAccountTypes:_visibleAccountTypeIDs delegate:v4];
     monitoredAccountStore = v4->__monitoredAccountStore;
     v4->__monitoredAccountStore = v9;
 
@@ -78,8 +78,8 @@ void __27__PSAccountEnumerator_init__block_invoke_2()
     _os_log_impl(&dword_18B008000, v3, OS_LOG_TYPE_DEFAULT, "%s: start.", buf, 0xCu);
   }
 
-  v4 = [(PSAccountEnumerator *)self _monitoredAccountStore];
-  [v4 removeDelegate:self];
+  _monitoredAccountStore = [(PSAccountEnumerator *)self _monitoredAccountStore];
+  [_monitoredAccountStore removeDelegate:self];
 
   __30__PSAccountEnumerator_dealloc__block_invoke();
   v5.receiver = self;
@@ -137,20 +137,20 @@ void __45__PSAccountEnumerator__visibleAccountTypeIDs__block_invoke_2()
   _block_invoke_2_na_once_object_6 = v0;
 }
 
-- (void)_reloadAccountStoreStateIsInitialLoad:(BOOL)a3 completion:(id)a4
+- (void)_reloadAccountStoreStateIsInitialLoad:(BOOL)load completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v7 = [(PSAccountEnumerator *)self _accountUpdateQueue];
+  _accountUpdateQueue = [(PSAccountEnumerator *)self _accountUpdateQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__PSAccountEnumerator__reloadAccountStoreStateIsInitialLoad_completion___block_invoke;
   v9[3] = &unk_1E71DC4D8;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  loadCopy = load;
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_async(_accountUpdateQueue, v9);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -162,11 +162,11 @@ void __72__PSAccountEnumerator__reloadAccountStoreStateIsInitialLoad_completion_
   [WeakRetained _handleAccountStoreDidUpdateIsInitialLoad:*(a1 + 48) completion:*(a1 + 32)];
 }
 
-- (void)_handleAccountStoreDidUpdateIsInitialLoad:(BOOL)a3 completion:(id)a4
+- (void)_handleAccountStoreDidUpdateIsInitialLoad:(BOOL)load completion:(id)completion
 {
-  v4 = a3;
+  loadCopy = load;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   v7 = PKLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -178,17 +178,17 @@ void __72__PSAccountEnumerator__reloadAccountStoreStateIsInitialLoad_completion_
   objc_initWeak(buf, self);
   v8 = objc_alloc_init(MEMORY[0x1E69B3780]);
   v9 = [v8 flatMap:&__block_literal_global_26];
-  v10 = [(PSAccountEnumerator *)self _monitoredAccountStore];
-  if (v4)
+  _monitoredAccountStore = [(PSAccountEnumerator *)self _monitoredAccountStore];
+  if (loadCopy)
   {
-    v11 = [v8 completionHandlerAdapter];
-    [v10 registerWithCompletion:v11];
+    completionHandlerAdapter = [v8 completionHandlerAdapter];
+    [_monitoredAccountStore registerWithCompletion:completionHandlerAdapter];
   }
 
   else
   {
-    v11 = [v10 monitoredAccounts];
-    [v8 finishWithResult:v11];
+    completionHandlerAdapter = [_monitoredAccountStore monitoredAccounts];
+    [v8 finishWithResult:completionHandlerAdapter];
   }
 
   v14[0] = MEMORY[0x1E69E9820];
@@ -196,7 +196,7 @@ void __72__PSAccountEnumerator__reloadAccountStoreStateIsInitialLoad_completion_
   v14[2] = __76__PSAccountEnumerator__handleAccountStoreDidUpdateIsInitialLoad_completion___block_invoke_2;
   v14[3] = &unk_1E71DC520;
   objc_copyWeak(&v16, buf);
-  v12 = v6;
+  v12 = completionCopy;
   v15 = v12;
   v13 = [v9 addCompletionBlock:v14];
 
@@ -307,10 +307,10 @@ void __76__PSAccountEnumerator__handleAccountStoreDidUpdateIsInitialLoad_complet
   }
 }
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addedCopy = added;
   v5 = PKLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -347,10 +347,10 @@ void __39__PSAccountEnumerator_accountWasAdded___block_invoke_31()
   }
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  removedCopy = removed;
   v5 = PKLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -387,10 +387,10 @@ void __41__PSAccountEnumerator_accountWasRemoved___block_invoke_36()
   }
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modifiedCopy = modified;
   v5 = PKLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {

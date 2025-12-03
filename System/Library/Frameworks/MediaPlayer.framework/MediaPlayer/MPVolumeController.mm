@@ -1,7 +1,7 @@
 @interface MPVolumeController
-+ (id)descriptionForWarningState:(int64_t)a3;
++ (id)descriptionForWarningState:(int64_t)state;
 - (MPVolumeController)init;
-- (MPVolumeController)initWithDataSource:(id)a3;
+- (MPVolumeController)initWithDataSource:(id)source;
 - (MPVolumeControllerDelegate)delegate;
 - (void)beginDecreasingRelativeVolume;
 - (void)beginIncreasingRelativeVolume;
@@ -9,15 +9,15 @@
 - (void)endDecreasingRelativeVolume;
 - (void)endIncreasingRelativeVolume;
 - (void)increaseVolume;
-- (void)setDataSource:(id)a3;
-- (void)setVolume:(float)a3 withNotificationDelay:(float)a4;
-- (void)setVolumeAudioCategory:(id)a3;
-- (void)volumeControllerDataSource:(id)a3 didChangeMuted:(BOOL)a4;
-- (void)volumeControllerDataSource:(id)a3 didChangeVolume:(float)a4 silenceVolumeHUD:(BOOL)a5;
-- (void)volumeControllerDataSource:(id)a3 didChangeVolumeAudioCategory:(id)a4;
-- (void)volumeControllerDataSource:(id)a3 didChangeVolumeCapabilities:(unsigned int)a4;
-- (void)volumeControllerDataSource:(id)a3 didChangeVolumeControlAvailability:(BOOL)a4;
-- (void)volumeControllerDataSource:(id)a3 didChangeVolumeLabel:(id)a4;
+- (void)setDataSource:(id)source;
+- (void)setVolume:(float)volume withNotificationDelay:(float)delay;
+- (void)setVolumeAudioCategory:(id)category;
+- (void)volumeControllerDataSource:(id)source didChangeMuted:(BOOL)muted;
+- (void)volumeControllerDataSource:(id)source didChangeVolume:(float)volume silenceVolumeHUD:(BOOL)d;
+- (void)volumeControllerDataSource:(id)source didChangeVolumeAudioCategory:(id)category;
+- (void)volumeControllerDataSource:(id)source didChangeVolumeCapabilities:(unsigned int)capabilities;
+- (void)volumeControllerDataSource:(id)source didChangeVolumeControlAvailability:(BOOL)availability;
+- (void)volumeControllerDataSource:(id)source didChangeVolumeLabel:(id)label;
 @end
 
 @implementation MPVolumeController
@@ -29,35 +29,35 @@
   return WeakRetained;
 }
 
-- (void)setVolumeAudioCategory:(id)a3
+- (void)setVolumeAudioCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MPVolumeControllerDataSource *)self->_dataSource setVolumeAudioCategory:v4];
+    [(MPVolumeControllerDataSource *)self->_dataSource setVolumeAudioCategory:categoryCopy];
   }
 }
 
-- (void)volumeControllerDataSource:(id)a3 didChangeVolumeAudioCategory:(id)a4
+- (void)volumeControllerDataSource:(id)source didChangeVolumeAudioCategory:(id)category
 {
-  v4 = [MPVolumeHUDController sharedInstance:a3];
+  v4 = [MPVolumeHUDController sharedInstance:source];
   [v4 setNeedsUpdate];
 }
 
-- (void)volumeControllerDataSource:(id)a3 didChangeVolumeLabel:(id)a4
+- (void)volumeControllerDataSource:(id)source didChangeVolumeLabel:(id)label
 {
-  v6 = a4;
-  v5 = [(MPVolumeController *)self delegate];
+  labelCopy = label;
+  delegate = [(MPVolumeController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 volumeController:self volumeControlLabelDidChange:v6];
+    [delegate volumeController:self volumeControlLabelDidChange:labelCopy];
   }
 }
 
-- (void)volumeControllerDataSource:(id)a3 didChangeVolumeCapabilities:(unsigned int)a4
+- (void)volumeControllerDataSource:(id)source didChangeVolumeCapabilities:(unsigned int)capabilities
 {
-  v4 = *&a4;
+  v4 = *&capabilities;
   v14 = *MEMORY[0x1E69E9840];
   v6 = os_log_create("com.apple.amp.mediaplayer", "Volume");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -71,16 +71,16 @@
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%@ volumeControlCapabilitiesDidChange capabilities:%{public}@", &v10, 0x16u);
   }
 
-  v9 = [(MPVolumeController *)self delegate];
+  delegate = [(MPVolumeController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 volumeController:self volumeControlCapabilitiesDidChange:v4];
+    [delegate volumeController:self volumeControlCapabilitiesDidChange:v4];
   }
 }
 
-- (void)volumeControllerDataSource:(id)a3 didChangeVolumeControlAvailability:(BOOL)a4
+- (void)volumeControllerDataSource:(id)source didChangeVolumeControlAvailability:(BOOL)availability
 {
-  v4 = a4;
+  availabilityCopy = availability;
   v12 = *MEMORY[0x1E69E9840];
   v6 = os_log_create("com.apple.amp.mediaplayer", "Volume");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -88,42 +88,42 @@
     v8 = 138412546;
     v9 = objc_opt_class();
     v10 = 1024;
-    v11 = v4;
+    v11 = availabilityCopy;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "%@ volumeControlAvailableDidChange available: %{BOOL}u", &v8, 0x12u);
   }
 
-  v7 = [(MPVolumeController *)self delegate];
+  delegate = [(MPVolumeController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 volumeController:self volumeControlAvailableDidChange:v4];
+    [delegate volumeController:self volumeControlAvailableDidChange:availabilityCopy];
   }
 }
 
-- (void)volumeControllerDataSource:(id)a3 didChangeVolume:(float)a4 silenceVolumeHUD:(BOOL)a5
+- (void)volumeControllerDataSource:(id)source didChangeVolume:(float)volume silenceVolumeHUD:(BOOL)d
 {
-  v5 = a5;
-  v8 = [(MPVolumeController *)self delegate];
-  v10 = v8;
+  dCopy = d;
+  delegate = [(MPVolumeController *)self delegate];
+  v10 = delegate;
   if (!self->_volumeChangeCoalescingCount)
   {
-    v13 = v8;
+    v13 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      *&v11 = a4;
-      v8 = [v13 volumeController:self volumeValueDidChange:v5 silenceVolumeHUD:v11];
+      *&v11 = volume;
+      delegate = [v13 volumeController:self volumeValueDidChange:dCopy silenceVolumeHUD:v11];
     }
 
     else
     {
-      v8 = objc_opt_respondsToSelector();
+      delegate = objc_opt_respondsToSelector();
       v10 = v13;
-      if ((v8 & 1) == 0)
+      if ((delegate & 1) == 0)
       {
         goto LABEL_7;
       }
 
-      *&v12 = a4;
-      v8 = [v13 volumeController:self volumeValueDidChange:v12];
+      *&v12 = volume;
+      delegate = [v13 volumeController:self volumeValueDidChange:v12];
     }
 
     v10 = v13;
@@ -131,37 +131,37 @@
 
 LABEL_7:
 
-  MEMORY[0x1EEE66BE0](v8, v9, v10);
+  MEMORY[0x1EEE66BE0](delegate, v9, v10);
 }
 
-- (void)volumeControllerDataSource:(id)a3 didChangeMuted:(BOOL)a4
+- (void)volumeControllerDataSource:(id)source didChangeMuted:(BOOL)muted
 {
-  v4 = a4;
-  v6 = [(MPVolumeController *)self delegate];
+  mutedCopy = muted;
+  delegate = [(MPVolumeController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 volumeController:self mutedStateDidChange:v4];
+    [delegate volumeController:self mutedStateDidChange:mutedCopy];
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v6 = a3;
-  if (!v6)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MPVolumeController.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPVolumeController.m" lineNumber:190 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
 
-    v6 = 0;
+    sourceCopy = 0;
   }
 
-  if (self->_dataSource != v6)
+  if (self->_dataSource != sourceCopy)
   {
-    v8 = v6;
-    objc_storeStrong(&self->_dataSource, a3);
+    v8 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
     [(MPVolumeControllerDataSource *)self->_dataSource setDelegate:self];
     [(MPVolumeControllerDataSource *)self->_dataSource initializeVolume];
-    v6 = v8;
+    sourceCopy = v8;
   }
 }
 
@@ -227,7 +227,7 @@ LABEL_7:
   }
 }
 
-- (void)setVolume:(float)a3 withNotificationDelay:(float)a4
+- (void)setVolume:(float)volume withNotificationDelay:(float)delay
 {
   if ([(MPVolumeController *)self isVolumeControlAvailable])
   {
@@ -236,8 +236,8 @@ LABEL_7:
     v7[2] = __54__MPVolumeController_setVolume_withNotificationDelay___block_invoke;
     v7[3] = &unk_1E7682398;
     v7[4] = self;
-    v8 = a4;
-    v9 = a3;
+    delayCopy = delay;
+    volumeCopy = volume;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
@@ -272,16 +272,16 @@ void __54__MPVolumeController_setVolume_withNotificationDelay___block_invoke_2(u
   }
 }
 
-- (MPVolumeController)initWithDataSource:(id)a3
+- (MPVolumeController)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = MPVolumeController;
   v5 = [(MPVolumeController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MPVolumeController *)v5 setDataSource:v4];
+    [(MPVolumeController *)v5 setDataSource:sourceCopy];
   }
 
   return v6;
@@ -295,16 +295,16 @@ void __54__MPVolumeController_setVolume_withNotificationDelay___block_invoke_2(u
   return v4;
 }
 
-+ (id)descriptionForWarningState:(int64_t)a3
++ (id)descriptionForWarningState:(int64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7676E48[a3];
+    return off_1E7676E48[state];
   }
 }
 

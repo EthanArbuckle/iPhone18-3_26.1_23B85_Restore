@@ -1,8 +1,8 @@
 @interface PSCalendarPolicyAuthorizationLevelController
-- (id)footerStringForSpecifiers:(id)a3;
+- (id)footerStringForSpecifiers:(id)specifiers;
 - (id)specifiers;
-- (void)_handleUpgradePromptNotification:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)_handleUpgradePromptNotification:(id)notification;
+- (void)setSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -13,14 +13,14 @@
   v4.receiver = self;
   v4.super_class = PSCalendarPolicyAuthorizationLevelController;
   [(PSListItemsController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PSCalendarPrivacyUpgradePromptCompletedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PSCalendarPrivacyUpgradePromptCompletedNotification" object:0];
 }
 
-- (void)_handleUpgradePromptNotification:(id)a3
+- (void)_handleUpgradePromptNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"PSCalendarPrivacyUpgradePromptAppIdentifierKey"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"PSCalendarPrivacyUpgradePromptAppIdentifierKey"];
   v6 = [v5 isEqualToString:self->_clientIdentifier];
 
   if (v6)
@@ -35,17 +35,17 @@
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = PSCalendarPolicyAuthorizationLevelController;
-  v4 = a3;
-  [(PSCalendarPolicyAuthorizationLevelController *)&v9 setSpecifier:v4];
-  v5 = [v4 identifier];
+  specifierCopy = specifier;
+  [(PSCalendarPolicyAuthorizationLevelController *)&v9 setSpecifier:specifierCopy];
+  identifier = [specifierCopy identifier];
   serviceKey = self->_serviceKey;
-  self->_serviceKey = v5;
+  self->_serviceKey = identifier;
 
-  v7 = [v4 propertyForKey:@"BUNDLE_ID"];
+  v7 = [specifierCopy propertyForKey:@"BUNDLE_ID"];
 
   clientIdentifier = self->_clientIdentifier;
   self->_clientIdentifier = v7;
@@ -53,48 +53,48 @@
 
 - (id)specifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = *MEMORY[0x277D3FC48];
-  if (!*(&v2->super.super.super.super.super.super.isa + v3))
+  if (!*(&selfCopy->super.super.super.super.super.super.isa + v3))
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v11.receiver = v2;
+    v11.receiver = selfCopy;
     v11.super_class = PSCalendarPolicyAuthorizationLevelController;
-    v5 = [(PSListItemsController *)&v11 specifiers];
-    [v4 addObjectsFromArray:v5];
+    specifiers = [(PSListItemsController *)&v11 specifiers];
+    [v4 addObjectsFromArray:specifiers];
 
-    v6 = [v4 firstObject];
-    v7 = [(PSCalendarPolicyAuthorizationLevelController *)v2 footerStringForSpecifiers:v4];
+    firstObject = [v4 firstObject];
+    v7 = [(PSCalendarPolicyAuthorizationLevelController *)selfCopy footerStringForSpecifiers:v4];
     if (v7)
     {
-      [v6 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
+      [firstObject setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
     }
 
-    v8 = *(&v2->super.super.super.super.super.super.isa + v3);
-    *(&v2->super.super.super.super.super.super.isa + v3) = v4;
+    v8 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
+    *(&selfCopy->super.super.super.super.super.super.isa + v3) = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v9 = *(&v2->super.super.super.super.super.super.isa + v3);
+  v9 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
 
   return v9;
 }
 
-- (id)footerStringForSpecifiers:(id)a3
+- (id)footerStringForSpecifiers:(id)specifiers
 {
   v32 = *MEMORY[0x277D85DE8];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  specifiersCopy = specifiers;
+  v5 = [specifiersCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
-    v26 = self;
+    selfCopy = self;
     v7 = *v28;
     while (2)
     {
@@ -102,29 +102,29 @@
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
-        v10 = [v9 values];
-        v11 = [v10 firstObject];
-        v12 = [v11 isEqual:&unk_282D7F720];
+        values = [v9 values];
+        firstObject = [values firstObject];
+        v12 = [firstObject isEqual:&unk_282D7F720];
 
-        v13 = [v9 values];
-        v14 = [v13 firstObject];
-        v15 = [v14 isEqual:&unk_282D7F738];
+        values2 = [v9 values];
+        firstObject2 = [values2 firstObject];
+        v15 = [firstObject2 isEqual:&unk_282D7F738];
 
         if ((v12 & 1) != 0 || v15)
         {
 
           v18 = MEMORY[0x277CC1E70];
-          v19 = [(PSCalendarPolicyAuthorizationLevelController *)v26 serviceKey];
-          v17 = [v18 bundleRecordWithApplicationIdentifier:v19 error:0];
+          serviceKey = [(PSCalendarPolicyAuthorizationLevelController *)selfCopy serviceKey];
+          v17 = [v18 bundleRecordWithApplicationIdentifier:serviceKey error:0];
 
-          v20 = [v17 localizedName];
+          localizedName = [v17 localizedName];
           v21 = +[AUCalendarPolicyController loadPrivacySettingsBundle];
           v22 = v21;
-          if (v20)
+          if (localizedName)
           {
             v23 = @"CALENDARS_AUTH_EVENTKIT_FOOTER";
           }
@@ -140,7 +140,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [specifiersCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v6)
       {
         continue;
@@ -151,7 +151,7 @@
   }
 
   v16 = 0;
-  v17 = v4;
+  v17 = specifiersCopy;
 LABEL_15:
 
   v24 = *MEMORY[0x277D85DE8];

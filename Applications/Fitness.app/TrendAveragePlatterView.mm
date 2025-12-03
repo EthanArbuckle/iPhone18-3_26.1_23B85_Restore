@@ -7,7 +7,7 @@
 
 - (void)setupFontsAndConstants
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005963E8();
 }
 

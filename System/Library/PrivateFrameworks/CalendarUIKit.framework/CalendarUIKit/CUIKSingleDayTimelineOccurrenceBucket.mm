@@ -1,12 +1,12 @@
 @interface CUIKSingleDayTimelineOccurrenceBucket
-+ (CGRect)roundRectToScreenScaleForRect:(CGRect)a3 screenUtilsDelegate:(id)a4;
++ (CGRect)roundRectToScreenScaleForRect:(CGRect)rect screenUtilsDelegate:(id)delegate;
 - (CUIKSingleDayTimelineGeometryDelegate)geometryDelegate;
-- (CUIKSingleDayTimelineOccurrenceBucket)initWithOccurrences:(id)a3 correspondingPartition:(id)a4 screenUtilsDelegate:(id)a5 geometryDelegate:(id)a6;
+- (CUIKSingleDayTimelineOccurrenceBucket)initWithOccurrences:(id)occurrences correspondingPartition:(id)partition screenUtilsDelegate:(id)delegate geometryDelegate:(id)geometryDelegate;
 - (NSArray)occurrences;
 - (id)_occurrencesForFitnessLevel;
 - (id)earliestOccurrence;
-- (void)addOccurrenceTemporarilyToBeginning:(id)a3;
-- (void)addOccurrenceTemporarilyToEnd:(id)a3;
+- (void)addOccurrenceTemporarilyToBeginning:(id)beginning;
+- (void)addOccurrenceTemporarilyToEnd:(id)end;
 - (void)makeTemporaryChangesPermanent;
 - (void)revertTemporaryChanges;
 - (void)stampFramesOntoOccurrences;
@@ -23,11 +23,11 @@
 
 - (void)stampFramesOntoOccurrences
 {
-  v3 = [(CUIKSingleDayTimelineOccurrenceBucket *)self correspondingPartition];
-  [v3 freeSpaceWidth];
+  correspondingPartition = [(CUIKSingleDayTimelineOccurrenceBucket *)self correspondingPartition];
+  [correspondingPartition freeSpaceWidth];
   v5 = v4;
-  v6 = [(CUIKSingleDayTimelineOccurrenceBucket *)self _occurrencesForFitnessLevel];
-  v7 = [v6 count];
+  _occurrencesForFitnessLevel = [(CUIKSingleDayTimelineOccurrenceBucket *)self _occurrencesForFitnessLevel];
+  v7 = [_occurrencesForFitnessLevel count];
   WeakRetained = objc_loadWeakRetained(&self->_geometryDelegate);
   if (WeakRetained)
   {
@@ -50,18 +50,18 @@
   [v12 RoundToScreenScale:v5 / v7];
   v14 = v13;
 
-  [v3 freeSpaceStartBoundary];
+  [correspondingPartition freeSpaceStartBoundary];
   v16 = v15;
-  v17 = [(CUIKSingleDayTimelineOccurrenceBucket *)self isOnlyBucket];
-  v18 = [(CUIKSingleDayTimelineOccurrenceBucket *)self isOnlyBucket];
+  isOnlyBucket = [(CUIKSingleDayTimelineOccurrenceBucket *)self isOnlyBucket];
+  isOnlyBucket2 = [(CUIKSingleDayTimelineOccurrenceBucket *)self isOnlyBucket];
   if (WeakRetained)
   {
-    if (v18)
+    if (isOnlyBucket2)
     {
       v19 = objc_loadWeakRetained(&self->_screenUtilsDelegate);
-      [v3 initialStartBoundary];
+      [correspondingPartition initialStartBoundary];
       v21 = v20;
-      [v3 totalWidth];
+      [correspondingPartition totalWidth];
       v23 = -0.5;
 LABEL_10:
       [v19 RoundToScreenScale:v21 + v22 * v23];
@@ -72,12 +72,12 @@ LABEL_10:
   else
   {
     v5 = 0.0;
-    if (v18)
+    if (isOnlyBucket2)
     {
       v19 = objc_loadWeakRetained(&self->_screenUtilsDelegate);
-      [v3 initialStartBoundary];
+      [correspondingPartition initialStartBoundary];
       v21 = v24;
-      [v3 totalWidth];
+      [correspondingPartition totalWidth];
       v23 = 0.5;
       goto LABEL_10;
     }
@@ -96,13 +96,13 @@ LABEL_10:
   v28[3] = &unk_1E839A698;
   v31 = v39;
   v32 = v16;
-  v37 = v17;
+  v37 = isOnlyBucket;
   v33 = v7;
   v34 = v5;
   v35 = v7 - 1;
-  v27 = v3;
+  v27 = correspondingPartition;
   v29 = v27;
-  v30 = self;
+  selfCopy = self;
   v36 = v14;
   v38 = WeakRetained & 1;
   [(NSMutableArray *)currentOccurrences enumerateObjectsUsingBlock:v28];
@@ -269,13 +269,13 @@ LABEL_14:
   v9 = __Block_byref_object_copy__6;
   v10 = __Block_byref_object_dispose__6;
   v11 = 0;
-  v2 = [(CUIKSingleDayTimelineOccurrenceBucket *)self _occurrencesForFitnessLevel];
+  _occurrencesForFitnessLevel = [(CUIKSingleDayTimelineOccurrenceBucket *)self _occurrencesForFitnessLevel];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__CUIKSingleDayTimelineOccurrenceBucket_earliestOccurrence__block_invoke;
   v5[3] = &unk_1E839A670;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [_occurrencesForFitnessLevel enumerateObjectsUsingBlock:v5];
   v3 = v7[5];
 
   _Block_object_dispose(&v6, 8);
@@ -308,20 +308,20 @@ void __59__CUIKSingleDayTimelineOccurrenceBucket_earliestOccurrence__block_invok
 LABEL_5:
 }
 
-+ (CGRect)roundRectToScreenScaleForRect:(CGRect)a3 screenUtilsDelegate:(id)a4
++ (CGRect)roundRectToScreenScaleForRect:(CGRect)rect screenUtilsDelegate:(id)delegate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  [v8 RoundToScreenScale:x];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegateCopy = delegate;
+  [delegateCopy RoundToScreenScale:x];
   v10 = v9;
-  [v8 RoundToScreenScale:y];
+  [delegateCopy RoundToScreenScale:y];
   v12 = v11;
-  [v8 RoundToScreenScale:width];
+  [delegateCopy RoundToScreenScale:width];
   v14 = v13;
-  [v8 RoundToScreenScale:height];
+  [delegateCopy RoundToScreenScale:height];
   v16 = v15;
 
   v17 = v10;
@@ -335,55 +335,55 @@ LABEL_5:
   return result;
 }
 
-- (CUIKSingleDayTimelineOccurrenceBucket)initWithOccurrences:(id)a3 correspondingPartition:(id)a4 screenUtilsDelegate:(id)a5 geometryDelegate:(id)a6
+- (CUIKSingleDayTimelineOccurrenceBucket)initWithOccurrences:(id)occurrences correspondingPartition:(id)partition screenUtilsDelegate:(id)delegate geometryDelegate:(id)geometryDelegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  occurrencesCopy = occurrences;
+  partitionCopy = partition;
+  delegateCopy = delegate;
+  geometryDelegateCopy = geometryDelegate;
   v18.receiver = self;
   v18.super_class = CUIKSingleDayTimelineOccurrenceBucket;
   v14 = [(CUIKSingleDayTimelineOccurrenceBucket *)&v18 init];
   if (v14)
   {
-    v15 = [v10 mutableCopy];
+    v15 = [occurrencesCopy mutableCopy];
     currentOccurrences = v14->_currentOccurrences;
     v14->_currentOccurrences = v15;
 
-    objc_storeStrong(&v14->_correspondingPartition, a4);
+    objc_storeStrong(&v14->_correspondingPartition, partition);
     v14->_temporaryFitnessLevelRequiresCalculation = 1;
     v14->_originalFitnessLevelRequiresCalculation = 1;
-    objc_storeWeak(&v14->_screenUtilsDelegate, v12);
-    objc_storeWeak(&v14->_geometryDelegate, v13);
+    objc_storeWeak(&v14->_screenUtilsDelegate, delegateCopy);
+    objc_storeWeak(&v14->_geometryDelegate, geometryDelegateCopy);
   }
 
   return v14;
 }
 
-- (void)addOccurrenceTemporarilyToBeginning:(id)a3
+- (void)addOccurrenceTemporarilyToBeginning:(id)beginning
 {
-  v5 = a3;
+  beginningCopy = beginning;
   p_temporaryOccurrenceAtBeginning = &self->_temporaryOccurrenceAtBeginning;
   if (!self->_temporaryOccurrenceAtBeginning)
   {
     *&self->_useTemporaryFitnessLevel = 257;
-    v7 = v5;
-    objc_storeStrong(p_temporaryOccurrenceAtBeginning, a3);
-    v5 = v7;
+    v7 = beginningCopy;
+    objc_storeStrong(p_temporaryOccurrenceAtBeginning, beginning);
+    beginningCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_temporaryOccurrenceAtBeginning, v5);
+  MEMORY[0x1EEE66BB8](p_temporaryOccurrenceAtBeginning, beginningCopy);
 }
 
-- (void)addOccurrenceTemporarilyToEnd:(id)a3
+- (void)addOccurrenceTemporarilyToEnd:(id)end
 {
-  v5 = a3;
+  endCopy = end;
   if (!self->_temporaryOccurrenceAtBeginning)
   {
     *&self->_useTemporaryFitnessLevel = 257;
-    v6 = v5;
-    objc_storeStrong(&self->_temporaryOccurrenceAtEnd, a3);
-    v5 = v6;
+    v6 = endCopy;
+    objc_storeStrong(&self->_temporaryOccurrenceAtEnd, end);
+    endCopy = v6;
   }
 }
 

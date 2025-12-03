@@ -1,35 +1,35 @@
 @interface MRAssetMaster
 - (BOOL)purgeResources;
 - (CGSize)originalSize;
-- (MRAssetMaster)initWithPath:(id)a3 originalSize:(CGSize)a4 isEmbeddedAsset:(BOOL)a5 isSupportedMovie:(BOOL)a6 andImageManager:(id)a7;
+- (MRAssetMaster)initWithPath:(id)path originalSize:(CGSize)size isEmbeddedAsset:(BOOL)asset isSupportedMovie:(BOOL)movie andImageManager:(id)manager;
 - (MRImage)thumbnail;
 - (NSString)path;
-- (id)retainedByUserPlayerForSize:(CGSize)a3 andOptions:(id)a4;
-- (id)thumbnailForFlagsMonochromatic:(BOOL)a3 mipmap:(BOOL)a4 powerOfTwo:(BOOL)a5;
+- (id)retainedByUserPlayerForSize:(CGSize)size andOptions:(id)options;
+- (id)thumbnailForFlagsMonochromatic:(BOOL)monochromatic mipmap:(BOOL)mipmap powerOfTwo:(BOOL)two;
 - (void)dealloc;
 - (void)invalidate;
-- (void)relinquishPlayer:(id)a3;
+- (void)relinquishPlayer:(id)player;
 @end
 
 @implementation MRAssetMaster
 
-- (MRAssetMaster)initWithPath:(id)a3 originalSize:(CGSize)a4 isEmbeddedAsset:(BOOL)a5 isSupportedMovie:(BOOL)a6 andImageManager:(id)a7
+- (MRAssetMaster)initWithPath:(id)path originalSize:(CGSize)size isEmbeddedAsset:(BOOL)asset isSupportedMovie:(BOOL)movie andImageManager:(id)manager
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = MRAssetMaster;
   v13 = [(MRAssetMaster *)&v16 init];
   if (v13)
   {
-    v13->_path = [a3 copy];
+    v13->_path = [path copy];
     v13->_originalSize.width = width;
     v13->_originalSize.height = height;
-    v13->_imageManager = a7;
+    v13->_imageManager = manager;
     v14 = v13->_originalSize.width > 0.0 && v13->_originalSize.height > 0.0;
     v13->_isValid = v14;
-    v13->_isEmbeddedAsset = a5;
-    v13->_isSupportedMovie = a6;
+    v13->_isEmbeddedAsset = asset;
+    v13->_isSupportedMovie = movie;
     v13->_players = objc_alloc_init(NSMutableDictionary);
     v13->_unusedPlayers = objc_alloc_init(NSMutableSet);
   }
@@ -71,20 +71,20 @@
   return v3;
 }
 
-- (id)retainedByUserPlayerForSize:(CGSize)a3 andOptions:(id)a4
+- (id)retainedByUserPlayerForSize:(CGSize)size andOptions:(id)options
 {
   if (!self->_isValid)
   {
     return 0;
   }
 
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = @"liveCamera";
   v9 = [(NSString *)self->_path isEqualToString:@"liveCamera"];
   if (v9)
   {
-    v10 = 0;
+    isStill = 0;
     goto LABEL_31;
   }
 
@@ -157,17 +157,17 @@
     height = self->_originalSize.height;
   }
 
-  v10 = [a4 isStill];
-  if (v10)
+  isStill = [options isStill];
+  if (isStill)
   {
     if (self->_isSupportedMovie)
     {
-      v20 = [a4 wantsMonochromatic];
-      v21 = [a4 wantsMipmap];
-      v22 = [a4 wantsPowerOfTwo];
-      [a4 stillTime];
-      v8 = [NSString stringWithFormat:@"%d-%d%d%d%f", width, v20, v21, v22, v23];
-      v10 = 1;
+      wantsMonochromatic = [options wantsMonochromatic];
+      wantsMipmap = [options wantsMipmap];
+      wantsPowerOfTwo = [options wantsPowerOfTwo];
+      [options stillTime];
+      v8 = [NSString stringWithFormat:@"%d-%d%d%d%f", width, wantsMonochromatic, wantsMipmap, wantsPowerOfTwo, v23];
+      isStill = 1;
       goto LABEL_31;
     }
 
@@ -177,22 +177,22 @@
   if (!self->_isSupportedMovie)
   {
 LABEL_29:
-    v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d-%d%d%d", width, [a4 wantsMonochromatic], objc_msgSend(a4, "wantsMipmap"), objc_msgSend(a4, "wantsPowerOfTwo"));
+    v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d-%d%d%d", width, [options wantsMonochromatic], objc_msgSend(options, "wantsMipmap"), objc_msgSend(options, "wantsPowerOfTwo"));
     goto LABEL_30;
   }
 
-  v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d%d%d", [a4 wantsMonochromatic], objc_msgSend(a4, "wantsMipmap"), objc_msgSend(a4, "wantsPowerOfTwo"), v48);
+  v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d%d%d", [options wantsMonochromatic], objc_msgSend(options, "wantsMipmap"), objc_msgSend(options, "wantsPowerOfTwo"), v48);
 LABEL_30:
   v8 = v24;
 LABEL_31:
   players = self->_players;
   objc_sync_enter(players);
   v26 = [(NSMutableDictionary *)self->_players objectForKey:v8];
-  [a4 isForExport];
+  [options isForExport];
   v27 = objc_opt_class();
   while (v26)
   {
-    if (objc_opt_isKindOfClass() & 1) == 0 || v26 == [a4 playerHint] || (-[NSMutableSet containsObject:](self->_unusedPlayers, "containsObject:", v26))
+    if (objc_opt_isKindOfClass() & 1) == 0 || v26 == [options playerHint] || (-[NSMutableSet containsObject:](self->_unusedPlayers, "containsObject:", v26))
     {
       [(NSMutableSet *)self->_unusedPlayers removeObject:v26];
       goto LABEL_69;
@@ -209,19 +209,19 @@ LABEL_31:
 
   else
   {
-    if ((v10 & 1) != 0 || !self->_isSupportedMovie)
+    if ((isStill & 1) != 0 || !self->_isSupportedMovie)
     {
-      if ([a4 thumbnailIsOK])
+      if ([options thumbnailIsOK])
       {
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v28 = [(NSMutableDictionary *)self->_players objectEnumerator];
-        v29 = [v28 countByEnumeratingWithState:&v50 objects:v54 count:16];
+        objectEnumerator = [(NSMutableDictionary *)self->_players objectEnumerator];
+        v29 = [objectEnumerator countByEnumeratingWithState:&v50 objects:v54 count:16];
         if (v29)
         {
-          v49 = 0;
+          retainByUser = 0;
           v30 = *v51;
           do
           {
@@ -229,30 +229,30 @@ LABEL_31:
             {
               if (*v51 != v30)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(objectEnumerator);
               }
 
               v32 = *(*(&v50 + 1) + 8 * i);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v33 = [a4 wantsMonochromatic];
-                if (v33 == [v32 isMonochromatic])
+                wantsMonochromatic2 = [options wantsMonochromatic];
+                if (wantsMonochromatic2 == [v32 isMonochromatic])
                 {
-                  v34 = [a4 wantsMipmap];
-                  if (v34 == [v32 generatesMipmap])
+                  wantsMipmap2 = [options wantsMipmap];
+                  if (wantsMipmap2 == [v32 generatesMipmap])
                   {
-                    v35 = [a4 wantsPowerOfTwo];
-                    if (v35 == [v32 usesPowerOfTwo])
+                    wantsPowerOfTwo2 = [options wantsPowerOfTwo];
+                    if (wantsPowerOfTwo2 == [v32 usesPowerOfTwo])
                     {
-                      v36 = [v32 retainedByUserCurrentImage];
-                      v37 = v36;
-                      if (v36)
+                      retainedByUserCurrentImage = [v32 retainedByUserCurrentImage];
+                      v37 = retainedByUserCurrentImage;
+                      if (retainedByUserCurrentImage)
                       {
-                        if (!v49 || ([v36 size], v39 = v38, objc_msgSend(v49, "size"), v41 = v40, v42 = fabs(log2(v39 / width)), v42 < fabs(log2(v41 / width))))
+                        if (!retainByUser || ([retainedByUserCurrentImage size], v39 = v38, objc_msgSend(retainByUser, "size"), v41 = v40, v42 = fabs(log2(v39 / width)), v42 < fabs(log2(v41 / width))))
                         {
-                          [v49 releaseByUser];
-                          v49 = [v37 retainByUser];
+                          [retainByUser releaseByUser];
+                          retainByUser = [v37 retainByUser];
                         }
 
                         [v37 releaseByUser];
@@ -263,7 +263,7 @@ LABEL_31:
               }
             }
 
-            v29 = [v28 countByEnumeratingWithState:&v50 objects:v54 count:16];
+            v29 = [objectEnumerator countByEnumeratingWithState:&v50 objects:v54 count:16];
           }
 
           while (v29);
@@ -271,14 +271,14 @@ LABEL_31:
 
         else
         {
-          v49 = 0;
+          retainByUser = 0;
         }
 
-        [a4 setInitialImage:v49];
-        [v49 releaseByUser];
+        [options setInitialImage:retainByUser];
+        [retainByUser releaseByUser];
       }
 
-      v43 = [[MRAssetPlayerStillImage alloc] initWithPath:self->_path size:self master:a4 andOptions:width, height];
+      height = [[MRAssetPlayerStillImage alloc] initWithPath:self->_path size:self master:options andOptions:width, height];
     }
 
     else
@@ -288,25 +288,25 @@ LABEL_31:
         v27 = MRAssetPlayerStillImage;
       }
 
-      v43 = [[v27 alloc] initWithPath:self->_path size:self master:a4 andOptions:{width, height}];
+      height = [[v27 alloc] initWithPath:self->_path size:self master:options andOptions:{width, height}];
     }
 
-    v26 = v43;
+    v26 = height;
   }
 
   [(NSMutableDictionary *)self->_players setObject:v26 forKey:v8];
 
 LABEL_69:
-  v11 = [(MRAssetPlayer *)v26 retainByUser];
+  retainByUser2 = [(MRAssetPlayer *)v26 retainByUser];
   objc_sync_exit(players);
-  return v11;
+  return retainByUser2;
 }
 
-- (void)relinquishPlayer:(id)a3
+- (void)relinquishPlayer:(id)player
 {
   players = self->_players;
   objc_sync_enter(players);
-  [(NSMutableSet *)self->_unusedPlayers addObject:a3];
+  [(NSMutableSet *)self->_unusedPlayers addObject:player];
 
   objc_sync_exit(players);
 }
@@ -339,12 +339,12 @@ LABEL_69:
   return v11;
 }
 
-- (id)thumbnailForFlagsMonochromatic:(BOOL)a3 mipmap:(BOOL)a4 powerOfTwo:(BOOL)a5
+- (id)thumbnailForFlagsMonochromatic:(BOOL)monochromatic mipmap:(BOOL)mipmap powerOfTwo:(BOOL)two
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (a3 || a4 || a5)
+  twoCopy = two;
+  mipmapCopy = mipmap;
+  monochromaticCopy = monochromatic;
+  if (monochromatic || mipmap || two)
   {
     objc_sync_enter(self);
     width = self->_originalSize.width;
@@ -360,7 +360,7 @@ LABEL_69:
       v16 = 256.0;
     }
 
-    v17 = _GetImage(self, v7, v6, v5, 1, 1, v16, v15, 0.0);
+    v17 = _GetImage(self, monochromaticCopy, mipmapCopy, twoCopy, 1, 1, v16, v15, 0.0);
     objc_sync_exit(self);
     return v17;
   }

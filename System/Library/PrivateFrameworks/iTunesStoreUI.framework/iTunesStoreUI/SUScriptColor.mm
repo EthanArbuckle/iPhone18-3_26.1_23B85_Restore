@@ -1,10 +1,10 @@
 @interface SUScriptColor
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (CGColor)copyCGColor;
-- (SUScriptColor)initWithStyleString:(id)a3;
-- (SUScriptColor)initWithUIColor:(id)a3;
+- (SUScriptColor)initWithStyleString:(id)string;
+- (SUScriptColor)initWithUIColor:(id)color;
 - (UIColor)nativeColor;
 - (double)alpha;
 - (double)blue;
@@ -13,34 +13,34 @@
 - (id)scriptAttributeKeys;
 - (id)stringRepresentation;
 - (void)dealloc;
-- (void)setHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-- (void)setRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-- (void)setWhite:(double)a3 alpha:(double)a4;
+- (void)setHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
+- (void)setRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
+- (void)setWhite:(double)white alpha:(double)alpha;
 @end
 
 @implementation SUScriptColor
 
-- (SUScriptColor)initWithUIColor:(id)a3
+- (SUScriptColor)initWithUIColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = SUScriptColor;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_color = a3;
+    v4->_color = color;
   }
 
   return v4;
 }
 
-- (SUScriptColor)initWithStyleString:(id)a3
+- (SUScriptColor)initWithStyleString:(id)string
 {
   v8.receiver = self;
   v8.super_class = SUScriptColor;
   v4 = [(SUScriptObject *)&v8 init];
   if (v4)
   {
-    v5 = SUCreateColorFromStyleString(a3);
+    v5 = SUCreateColorFromStyleString(string);
     if (v5)
     {
       v6 = v5;
@@ -67,11 +67,11 @@
 
 - (CGColor)copyCGColor
 {
-  v2 = [(UIColor *)[(SUScriptColor *)self nativeColor] CGColor];
-  v3 = v2;
-  if (v2)
+  cGColor = [(UIColor *)[(SUScriptColor *)self nativeColor] CGColor];
+  v3 = cGColor;
+  if (cGColor)
   {
-    CGColorRetain(v2);
+    CGColorRetain(cGColor);
   }
 
   return v3;
@@ -97,29 +97,29 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"rgba(%.0f, %.0f, %.0f, %.0f)", v7 * 255.0, v6 * 255.0, v5 * 255.0, v4 * 255.0];
 }
 
-- (void)setHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
+- (void)setHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
   [(SUScriptObject *)self lock];
 
-  self->_color = [objc_alloc(MEMORY[0x1E69DC888]) initWithHue:a3 saturation:a4 brightness:a5 alpha:a6];
+  self->_color = [objc_alloc(MEMORY[0x1E69DC888]) initWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (void)setRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   [(SUScriptObject *)self lock];
 
-  self->_color = [objc_alloc(MEMORY[0x1E69DC888]) initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  self->_color = [objc_alloc(MEMORY[0x1E69DC888]) initWithRed:red green:green blue:blue alpha:alpha];
 
   [(SUScriptObject *)self unlock];
 }
 
-- (void)setWhite:(double)a3 alpha:(double)a4
+- (void)setWhite:(double)white alpha:(double)alpha
 {
   [(SUScriptObject *)self lock];
 
-  self->_color = [objc_alloc(MEMORY[0x1E69DC888]) initWithWhite:a3 alpha:a4];
+  self->_color = [objc_alloc(MEMORY[0x1E69DC888]) initWithWhite:white alpha:alpha];
 
   [(SUScriptObject *)self unlock];
 }
@@ -160,27 +160,27 @@
   return v4;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_31 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptColor;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_25, 3);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_25, 3);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptColor;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -190,14 +190,14 @@
 {
   v4.receiver = self;
   v4.super_class = SUScriptColor;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_31 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_31 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_25 = sel_setHue_saturation_brightness_alpha_;
     unk_1EBF3AED0 = @"setHSBA";

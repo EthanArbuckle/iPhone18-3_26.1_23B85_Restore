@@ -1,42 +1,42 @@
 @interface DRSSubmitRapidLogRequest
-- (BOOL)isEqualToRequest:(id)a3;
-- (DRSSubmitRapidLogRequest)initWithXPCDict:(id)a3;
-- (id)_initWithSubmitRapidLogRequestMO_ON_MOC_QUEUE:(id)a3;
+- (BOOL)isEqualToRequest:(id)request;
+- (DRSSubmitRapidLogRequest)initWithXPCDict:(id)dict;
+- (id)_initWithSubmitRapidLogRequestMO_ON_MOC_QUEUE:(id)e;
 - (id)debugDescription;
-- (void)_configureRequestMO:(id)a3;
+- (void)_configureRequestMO:(id)o;
 @end
 
 @implementation DRSSubmitRapidLogRequest
 
-- (id)_initWithSubmitRapidLogRequestMO_ON_MOC_QUEUE:(id)a3
+- (id)_initWithSubmitRapidLogRequestMO_ON_MOC_QUEUE:(id)e
 {
-  v4 = a3;
+  eCopy = e;
   v13.receiver = self;
   v13.super_class = DRSSubmitRapidLogRequest;
-  v5 = [(DRSSubmitLogRequest *)&v13 _initWithSubmitLogRequestMO_ON_MOC_QUEUE:v4];
+  v5 = [(DRSSubmitLogRequest *)&v13 _initWithSubmitLogRequestMO_ON_MOC_QUEUE:eCopy];
   if (v5)
   {
-    v6 = [v4 cfDidSucceed];
+    cfDidSucceed = [eCopy cfDidSucceed];
     v7 = v5[18];
-    v5[18] = v6;
+    v5[18] = cfDidSucceed;
 
-    v8 = [v4 cfFailureReason];
+    cfFailureReason = [eCopy cfFailureReason];
     v9 = v5[19];
-    v5[19] = v8;
+    v5[19] = cfFailureReason;
 
-    v10 = [v4 cfReplyPayload];
+    cfReplyPayload = [eCopy cfReplyPayload];
     v11 = v5[20];
-    v5[20] = v10;
+    v5[20] = cfReplyPayload;
   }
 
   return v5;
 }
 
-- (DRSSubmitRapidLogRequest)initWithXPCDict:(id)a3
+- (DRSSubmitRapidLogRequest)initWithXPCDict:(id)dict
 {
   v6.receiver = self;
   v6.super_class = DRSSubmitRapidLogRequest;
-  v3 = [(DRSRequest *)&v6 initWithXPCDict:a3];
+  v3 = [(DRSRequest *)&v6 initWithXPCDict:dict];
   v4 = v3;
   if (v3)
   {
@@ -46,30 +46,30 @@
   return v4;
 }
 
-- (BOOL)isEqualToRequest:(id)a3
+- (BOOL)isEqualToRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v31.receiver = self;
   v31.super_class = DRSSubmitRapidLogRequest;
-  if ([(DRSSubmitLogRequest *)&v31 isEqualToRequest:v4])
+  if ([(DRSSubmitLogRequest *)&v31 isEqualToRequest:requestCopy])
   {
-    v5 = v4;
-    v6 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
-    v7 = [v5 cfDidSucceed];
-    IsNil = _oneIsNil(v6, v7);
+    v5 = requestCopy;
+    cfDidSucceed = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
+    cfDidSucceed2 = [v5 cfDidSucceed];
+    IsNil = _oneIsNil(cfDidSucceed, cfDidSucceed2);
 
     if (IsNil)
     {
       goto LABEL_9;
     }
 
-    v9 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
-    if (v9)
+    cfDidSucceed3 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
+    if (cfDidSucceed3)
     {
-      v10 = v9;
-      v11 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
-      v12 = [v5 cfDidSucceed];
-      v13 = [v11 isEqualToNumber:v12];
+      v10 = cfDidSucceed3;
+      cfDidSucceed4 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
+      cfDidSucceed5 = [v5 cfDidSucceed];
+      v13 = [cfDidSucceed4 isEqualToNumber:cfDidSucceed5];
 
       if (!v13)
       {
@@ -77,22 +77,22 @@
       }
     }
 
-    v14 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
-    v15 = [v5 cfFailureReason];
-    v16 = _oneIsNil(v14, v15);
+    cfFailureReason = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
+    cfFailureReason2 = [v5 cfFailureReason];
+    v16 = _oneIsNil(cfFailureReason, cfFailureReason2);
 
     if (v16)
     {
       goto LABEL_9;
     }
 
-    v17 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
-    if (v17)
+    cfFailureReason3 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
+    if (cfFailureReason3)
     {
-      v18 = v17;
-      v19 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
-      v20 = [v5 cfFailureReason];
-      v21 = [v19 isEqualToString:v20];
+      v18 = cfFailureReason3;
+      cfFailureReason4 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
+      cfFailureReason5 = [v5 cfFailureReason];
+      v21 = [cfFailureReason4 isEqualToString:cfFailureReason5];
 
       if (!v21)
       {
@@ -100,9 +100,9 @@
       }
     }
 
-    v22 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
-    v23 = [v5 cfReplyPayload];
-    v24 = _oneIsNil(v22, v23);
+    cfReplyPayload = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
+    cfReplyPayload2 = [v5 cfReplyPayload];
+    v24 = _oneIsNil(cfReplyPayload, cfReplyPayload2);
 
     if (v24)
     {
@@ -112,13 +112,13 @@ LABEL_9:
 
     else
     {
-      v27 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
-      if (v27)
+      cfReplyPayload3 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
+      if (cfReplyPayload3)
       {
-        v28 = v27;
-        v29 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
-        v30 = [v5 cfReplyPayload];
-        v25 = [v29 isEqualToData:v30];
+        v28 = cfReplyPayload3;
+        cfReplyPayload4 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
+        cfReplyPayload5 = [v5 cfReplyPayload];
+        v25 = [cfReplyPayload4 isEqualToData:cfReplyPayload5];
       }
 
       else
@@ -142,66 +142,66 @@ LABEL_9:
   v13.receiver = self;
   v13.super_class = DRSSubmitRapidLogRequest;
   v4 = [(DRSRequest *)&v13 debugDescription];
-  v5 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
-  if (v5)
+  cfDidSucceed = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
+  if (cfDidSucceed)
   {
-    v6 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
+    cfDidSucceed2 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
   }
 
   else
   {
-    v6 = @"-";
+    cfDidSucceed2 = @"-";
   }
 
-  v7 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
-  if (v7)
+  cfFailureReason = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
+  if (cfFailureReason)
   {
-    v8 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
+    cfFailureReason2 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
   }
 
   else
   {
-    v8 = @"-";
+    cfFailureReason2 = @"-";
   }
 
-  v9 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
-  if (v9)
+  cfReplyPayload = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
+  if (cfReplyPayload)
   {
-    v10 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
-    v11 = [v3 stringWithFormat:@"%@ %@ %@ %@", v4, v6, v8, v10];
+    cfReplyPayload2 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
+    v11 = [v3 stringWithFormat:@"%@ %@ %@ %@", v4, cfDidSucceed2, cfFailureReason2, cfReplyPayload2];
   }
 
   else
   {
-    v11 = [v3 stringWithFormat:@"%@ %@ %@ %@", v4, v6, v8, @"-"];
+    v11 = [v3 stringWithFormat:@"%@ %@ %@ %@", v4, cfDidSucceed2, cfFailureReason2, @"-"];
   }
 
-  if (v7)
+  if (cfFailureReason)
   {
   }
 
-  if (v5)
+  if (cfDidSucceed)
   {
   }
 
   return v11;
 }
 
-- (void)_configureRequestMO:(id)a3
+- (void)_configureRequestMO:(id)o
 {
-  v4 = a3;
+  oCopy = o;
   v9.receiver = self;
   v9.super_class = DRSSubmitRapidLogRequest;
-  [(DRSSubmitLogRequest *)&v9 _configureRequestMO:v4];
-  v5 = v4;
-  v6 = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
-  [v5 setCfDidSucceed:v6];
+  [(DRSSubmitLogRequest *)&v9 _configureRequestMO:oCopy];
+  v5 = oCopy;
+  cfDidSucceed = [(DRSSubmitRapidLogRequest *)self cfDidSucceed];
+  [v5 setCfDidSucceed:cfDidSucceed];
 
-  v7 = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
-  [v5 setCfFailureReason:v7];
+  cfFailureReason = [(DRSSubmitRapidLogRequest *)self cfFailureReason];
+  [v5 setCfFailureReason:cfFailureReason];
 
-  v8 = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
-  [v5 setCfReplyPayload:v8];
+  cfReplyPayload = [(DRSSubmitRapidLogRequest *)self cfReplyPayload];
+  [v5 setCfReplyPayload:cfReplyPayload];
 }
 
 @end

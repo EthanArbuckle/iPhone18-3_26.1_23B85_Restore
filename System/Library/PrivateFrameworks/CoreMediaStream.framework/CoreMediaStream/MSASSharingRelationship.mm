@@ -1,44 +1,44 @@
 @interface MSASSharingRelationship
-+ (id)MSASPSharingRelationshipFromProtocolDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSharingRelationship:(id)a3;
++ (id)MSASPSharingRelationshipFromProtocolDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSharingRelationship:(id)relationship;
 - (MSASSharingRelationship)init;
-- (MSASSharingRelationship)initWithCoder:(id)a3;
+- (MSASSharingRelationship)initWithCoder:(id)coder;
 - (NSString)fullName;
 - (id)_fullName;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSASSharingRelationship
 
 - (NSString)fullName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  fullName = v2->_fullName;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fullName = selfCopy->_fullName;
   if (fullName)
   {
     goto LABEL_2;
   }
 
-  fullName = v2->_lastName;
-  if (v2->_firstName)
+  fullName = selfCopy->_lastName;
+  if (selfCopy->_firstName)
   {
     if (fullName)
     {
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v2->_firstName, fullName];
+      fullName = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", selfCopy->_firstName, fullName];
       goto LABEL_3;
     }
 
-    fullName = v2->_firstName;
+    fullName = selfCopy->_firstName;
 LABEL_2:
-    v4 = fullName;
+    fullName = fullName;
 LABEL_3:
-    v5 = v4;
+    v5 = fullName;
     goto LABEL_4;
   }
 
@@ -49,41 +49,41 @@ LABEL_3:
 
   v5 = 0;
 LABEL_4:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (id)redactedDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v8.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8.receiver = selfCopy;
   v8.super_class = MSASSharingRelationship;
   v3 = [(MSASSharingRelationship *)&v8 description];
   v4 = [v3 mutableCopy];
 
-  if (v2->_GUID)
+  if (selfCopy->_GUID)
   {
-    [v4 appendFormat:@" GUID: %@", v2->_GUID];
+    [v4 appendFormat:@" GUID: %@", selfCopy->_GUID];
   }
 
-  if (v2->_albumGUID)
+  if (selfCopy->_albumGUID)
   {
-    [v4 appendFormat:@" Album GUID: %@", v2->_albumGUID];
+    [v4 appendFormat:@" Album GUID: %@", selfCopy->_albumGUID];
   }
 
-  if (v2->_personID)
+  if (selfCopy->_personID)
   {
-    [v4 appendFormat:@" PersonID: %@", v2->_personID];
+    [v4 appendFormat:@" PersonID: %@", selfCopy->_personID];
   }
 
-  if (v2->_subscriptionDate)
+  if (selfCopy->_subscriptionDate)
   {
-    [v4 appendFormat:@" Subscription Date: %@", v2->_subscriptionDate];
+    [v4 appendFormat:@" Subscription Date: %@", selfCopy->_subscriptionDate];
   }
 
-  state = v2->_state;
+  state = selfCopy->_state;
   if (state > 5)
   {
     v6 = @"undefined";
@@ -95,68 +95,68 @@ LABEL_4:
   }
 
   [v4 appendFormat:@" State: %@", v6];
-  if (v2->_isMine)
+  if (selfCopy->_isMine)
   {
     [v4 appendString:@" IsMine"];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (id)description
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v10.receiver = v2;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10.receiver = selfCopy;
   v10.super_class = MSASSharingRelationship;
   v3 = [(MSASSharingRelationship *)&v10 description];
   v4 = [v3 mutableCopy];
 
-  if (v2->_GUID)
+  if (selfCopy->_GUID)
   {
-    [v4 appendFormat:@" GUID: %@", v2->_GUID];
+    [v4 appendFormat:@" GUID: %@", selfCopy->_GUID];
   }
 
-  if (v2->_albumGUID)
+  if (selfCopy->_albumGUID)
   {
-    [v4 appendFormat:@" Album GUID: %@", v2->_albumGUID];
+    [v4 appendFormat:@" Album GUID: %@", selfCopy->_albumGUID];
   }
 
-  if (v2->_email)
+  if (selfCopy->_email)
   {
-    [v4 appendFormat:@" email: %@", v2->_email];
+    [v4 appendFormat:@" email: %@", selfCopy->_email];
   }
 
-  if (v2->_emails)
+  if (selfCopy->_emails)
   {
-    [v4 appendFormat:@" emails: %@", v2->_emails];
+    [v4 appendFormat:@" emails: %@", selfCopy->_emails];
   }
 
-  if (v2->_phones)
+  if (selfCopy->_phones)
   {
-    [v4 appendFormat:@" phones: %@", v2->_phones];
+    [v4 appendFormat:@" phones: %@", selfCopy->_phones];
   }
 
-  v5 = [(MSASSharingRelationship *)v2 fullName];
-  v6 = v5;
-  if (v5)
+  fullName = [(MSASSharingRelationship *)selfCopy fullName];
+  v6 = fullName;
+  if (fullName)
   {
-    [v4 appendFormat:@" Full Name: %@", v5];
+    [v4 appendFormat:@" Full Name: %@", fullName];
   }
 
-  if (v2->_personID)
+  if (selfCopy->_personID)
   {
-    [v4 appendFormat:@" PersonID: %@", v2->_personID];
+    [v4 appendFormat:@" PersonID: %@", selfCopy->_personID];
   }
 
-  if (v2->_subscriptionDate)
+  if (selfCopy->_subscriptionDate)
   {
-    [v4 appendFormat:@" Subscription Date: %@", v2->_subscriptionDate];
+    [v4 appendFormat:@" Subscription Date: %@", selfCopy->_subscriptionDate];
   }
 
-  state = v2->_state;
+  state = selfCopy->_state;
   if (state > 5)
   {
     v8 = @"undefined";
@@ -168,232 +168,232 @@ LABEL_4:
   }
 
   [v4 appendFormat:@" State: %@", v8];
-  if (v2->_isMine)
+  if (selfCopy->_isMine)
   {
     [v4 appendString:@" IsMine"];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (MSASSharingRelationship)initWithCoder:(id)a3
+- (MSASSharingRelationship)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = MSASSharingRelationship;
   v5 = [(MSASSharingRelationship *)&v33 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
     GUID = v5->_GUID;
     v5->_GUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"albumGUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"albumGUID"];
     albumGUID = v5->_albumGUID;
     v5->_albumGUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"email"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"email"];
     email = v5->_email;
     v5->_email = v10;
 
     v12 = MEMORY[0x277CBEB98];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"emails"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"emails"];
     emails = v5->_emails;
     v5->_emails = v15;
 
     v17 = MEMORY[0x277CBEB98];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"phones"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"phones"];
     phones = v5->_phones;
     v5->_phones = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullName"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullName"];
     fullName = v5->_fullName;
     v5->_fullName = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personID"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personID"];
     personID = v5->_personID;
     v5->_personID = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subscriptionDate"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subscriptionDate"];
     subscriptionDate = v5->_subscriptionDate;
     v5->_subscriptionDate = v30;
 
-    v5->_state = [v4 decodeIntForKey:@"state"];
-    v5->_isMine = [v4 decodeBoolForKey:@"isMine"];
+    v5->_state = [coderCopy decodeIntForKey:@"state"];
+    v5->_isMine = [coderCopy decodeBoolForKey:@"isMine"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  GUID = v4->_GUID;
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  GUID = selfCopy->_GUID;
   if (GUID)
   {
-    [v15 encodeObject:GUID forKey:@"GUID"];
+    [coderCopy encodeObject:GUID forKey:@"GUID"];
   }
 
-  albumGUID = v4->_albumGUID;
+  albumGUID = selfCopy->_albumGUID;
   if (albumGUID)
   {
-    [v15 encodeObject:albumGUID forKey:@"albumGUID"];
+    [coderCopy encodeObject:albumGUID forKey:@"albumGUID"];
   }
 
-  email = v4->_email;
+  email = selfCopy->_email;
   if (email)
   {
-    [v15 encodeObject:email forKey:@"email"];
+    [coderCopy encodeObject:email forKey:@"email"];
   }
 
-  emails = v4->_emails;
+  emails = selfCopy->_emails;
   if (emails)
   {
-    [v15 encodeObject:emails forKey:@"emails"];
+    [coderCopy encodeObject:emails forKey:@"emails"];
   }
 
-  phones = v4->_phones;
+  phones = selfCopy->_phones;
   if (phones)
   {
-    [v15 encodeObject:phones forKey:@"phones"];
+    [coderCopy encodeObject:phones forKey:@"phones"];
   }
 
-  firstName = v4->_firstName;
+  firstName = selfCopy->_firstName;
   if (firstName)
   {
-    [v15 encodeObject:firstName forKey:@"firstName"];
+    [coderCopy encodeObject:firstName forKey:@"firstName"];
   }
 
-  lastName = v4->_lastName;
+  lastName = selfCopy->_lastName;
   if (lastName)
   {
-    [v15 encodeObject:lastName forKey:@"lastName"];
+    [coderCopy encodeObject:lastName forKey:@"lastName"];
   }
 
-  fullName = v4->_fullName;
+  fullName = selfCopy->_fullName;
   if (fullName)
   {
-    [v15 encodeObject:fullName forKey:@"fullName"];
+    [coderCopy encodeObject:fullName forKey:@"fullName"];
   }
 
-  personID = v4->_personID;
+  personID = selfCopy->_personID;
   if (personID)
   {
-    [v15 encodeObject:personID forKey:@"personID"];
+    [coderCopy encodeObject:personID forKey:@"personID"];
   }
 
-  subscriptionDate = v4->_subscriptionDate;
+  subscriptionDate = selfCopy->_subscriptionDate;
   if (subscriptionDate)
   {
-    [v15 encodeObject:subscriptionDate forKey:@"subscriptionDate"];
+    [coderCopy encodeObject:subscriptionDate forKey:@"subscriptionDate"];
   }
 
-  [v15 encodeInt:v4->_state forKey:@"state"];
-  [v15 encodeBool:v4->_isMine forKey:@"isMine"];
-  objc_sync_exit(v4);
+  [coderCopy encodeInt:selfCopy->_state forKey:@"state"];
+  [coderCopy encodeBool:selfCopy->_isMine forKey:@"isMine"];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MSASSharingRelationship);
-  v5 = [(MSASSharingRelationship *)self GUID];
-  [(MSASSharingRelationship *)v4 setGUID:v5];
+  gUID = [(MSASSharingRelationship *)self GUID];
+  [(MSASSharingRelationship *)v4 setGUID:gUID];
 
-  v6 = [(MSASSharingRelationship *)self albumGUID];
-  [(MSASSharingRelationship *)v4 setAlbumGUID:v6];
+  albumGUID = [(MSASSharingRelationship *)self albumGUID];
+  [(MSASSharingRelationship *)v4 setAlbumGUID:albumGUID];
 
-  v7 = [(MSASSharingRelationship *)self email];
-  [(MSASSharingRelationship *)v4 setEmail:v7];
+  email = [(MSASSharingRelationship *)self email];
+  [(MSASSharingRelationship *)v4 setEmail:email];
 
-  v8 = [(MSASSharingRelationship *)self emails];
-  [(MSASSharingRelationship *)v4 setEmails:v8];
+  emails = [(MSASSharingRelationship *)self emails];
+  [(MSASSharingRelationship *)v4 setEmails:emails];
 
-  v9 = [(MSASSharingRelationship *)self phones];
-  [(MSASSharingRelationship *)v4 setPhones:v9];
+  phones = [(MSASSharingRelationship *)self phones];
+  [(MSASSharingRelationship *)v4 setPhones:phones];
 
-  v10 = [(MSASSharingRelationship *)self _fullName];
-  [(MSASSharingRelationship *)v4 setFullName:v10];
+  _fullName = [(MSASSharingRelationship *)self _fullName];
+  [(MSASSharingRelationship *)v4 setFullName:_fullName];
 
-  v11 = [(MSASSharingRelationship *)self firstName];
-  [(MSASSharingRelationship *)v4 setFirstName:v11];
+  firstName = [(MSASSharingRelationship *)self firstName];
+  [(MSASSharingRelationship *)v4 setFirstName:firstName];
 
-  v12 = [(MSASSharingRelationship *)self lastName];
-  [(MSASSharingRelationship *)v4 setLastName:v12];
+  lastName = [(MSASSharingRelationship *)self lastName];
+  [(MSASSharingRelationship *)v4 setLastName:lastName];
 
-  v13 = [(MSASSharingRelationship *)self personID];
-  [(MSASSharingRelationship *)v4 setPersonID:v13];
+  personID = [(MSASSharingRelationship *)self personID];
+  [(MSASSharingRelationship *)v4 setPersonID:personID];
 
-  v14 = [(MSASSharingRelationship *)self subscriptionDate];
-  [(MSASSharingRelationship *)v4 setSubscriptionDate:v14];
+  subscriptionDate = [(MSASSharingRelationship *)self subscriptionDate];
+  [(MSASSharingRelationship *)v4 setSubscriptionDate:subscriptionDate];
 
   [(MSASSharingRelationship *)v4 setState:[(MSASSharingRelationship *)self state]];
   [(MSASSharingRelationship *)v4 setIsMine:[(MSASSharingRelationship *)self isMine]];
   return v4;
 }
 
-- (BOOL)isEqualToSharingRelationship:(id)a3
+- (BOOL)isEqualToSharingRelationship:(id)relationship
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MSASSharingRelationship *)v5 GUID];
-  v7 = [v4 GUID];
-  if (MSObjectsAreEquivalent(v6, v7))
+  relationshipCopy = relationship;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  gUID = [(MSASSharingRelationship *)selfCopy GUID];
+  gUID2 = [relationshipCopy GUID];
+  if (MSObjectsAreEquivalent(gUID, gUID2))
   {
-    v8 = [(MSASSharingRelationship *)v5 albumGUID];
-    v9 = [v4 albumGUID];
-    if (MSObjectsAreEquivalent(v8, v9))
+    albumGUID = [(MSASSharingRelationship *)selfCopy albumGUID];
+    albumGUID2 = [relationshipCopy albumGUID];
+    if (MSObjectsAreEquivalent(albumGUID, albumGUID2))
     {
-      v10 = [(MSASSharingRelationship *)v5 email];
-      v11 = [v4 email];
-      if (MSObjectsAreEquivalent(v10, v11))
+      email = [(MSASSharingRelationship *)selfCopy email];
+      email2 = [relationshipCopy email];
+      if (MSObjectsAreEquivalent(email, email2))
       {
-        v29 = [(MSASSharingRelationship *)v5 emails];
-        v12 = [v4 emails];
-        if (MSObjectsAreEquivalent(v29, v12))
+        emails = [(MSASSharingRelationship *)selfCopy emails];
+        emails2 = [relationshipCopy emails];
+        if (MSObjectsAreEquivalent(emails, emails2))
         {
-          v28 = [(MSASSharingRelationship *)v5 phones];
-          v27 = [v4 phones];
-          if (MSObjectsAreEquivalent(v28, v27))
+          phones = [(MSASSharingRelationship *)selfCopy phones];
+          phones2 = [relationshipCopy phones];
+          if (MSObjectsAreEquivalent(phones, phones2))
           {
-            v26 = [(MSASSharingRelationship *)v5 firstName];
-            v25 = [v4 firstName];
-            if (MSObjectsAreEquivalent(v26, v25))
+            firstName = [(MSASSharingRelationship *)selfCopy firstName];
+            firstName2 = [relationshipCopy firstName];
+            if (MSObjectsAreEquivalent(firstName, firstName2))
             {
-              v24 = [(MSASSharingRelationship *)v5 lastName];
-              v23 = [v4 lastName];
-              if (MSObjectsAreEquivalent(v24, v23))
+              lastName = [(MSASSharingRelationship *)selfCopy lastName];
+              lastName2 = [relationshipCopy lastName];
+              if (MSObjectsAreEquivalent(lastName, lastName2))
               {
-                v22 = [(MSASSharingRelationship *)v5 _fullName];
-                v21 = [v4 _fullName];
-                if (MSObjectsAreEquivalent(v22, v21))
+                _fullName = [(MSASSharingRelationship *)selfCopy _fullName];
+                _fullName2 = [relationshipCopy _fullName];
+                if (MSObjectsAreEquivalent(_fullName, _fullName2))
                 {
-                  v20 = [(MSASSharingRelationship *)v5 personID];
-                  v19 = [v4 personID];
-                  if (MSObjectsAreEquivalent(v20, v19))
+                  personID = [(MSASSharingRelationship *)selfCopy personID];
+                  personID2 = [relationshipCopy personID];
+                  if (MSObjectsAreEquivalent(personID, personID2))
                   {
-                    v18 = [(MSASSharingRelationship *)v5 subscriptionDate];
-                    v17 = [v4 subscriptionDate];
-                    if (MSObjectsAreEquivalent(v18, v17) && (v13 = -[MSASSharingRelationship state](v5, "state"), v13 == [v4 state]))
+                    subscriptionDate = [(MSASSharingRelationship *)selfCopy subscriptionDate];
+                    subscriptionDate2 = [relationshipCopy subscriptionDate];
+                    if (MSObjectsAreEquivalent(subscriptionDate, subscriptionDate2) && (v13 = -[MSASSharingRelationship state](selfCopy, "state"), v13 == [relationshipCopy state]))
                     {
-                      v14 = [(MSASSharingRelationship *)v5 isMine];
-                      v15 = v14 ^ [v4 isMine] ^ 1;
+                      isMine = [(MSASSharingRelationship *)selfCopy isMine];
+                      v15 = isMine ^ [relationshipCopy isMine] ^ 1;
                     }
 
                     else
@@ -455,51 +455,51 @@ LABEL_4:
     LOBYTE(v15) = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v15;
 }
 
 - (id)_fullName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fullName;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fullName;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  equalCopy = equal;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MSASSharingRelationship *)v5 GUID];
-    v7 = [v4 GUID];
-    v8 = [v6 isEqual:v7];
+    gUID = [(MSASSharingRelationship *)selfCopy GUID];
+    gUID2 = [equalCopy GUID];
+    v8 = [gUID isEqual:gUID2];
   }
 
   else
   {
-    v10.receiver = v5;
+    v10.receiver = selfCopy;
     v10.super_class = MSASSharingRelationship;
-    v8 = [(MSASSharingRelationship *)&v10 isEqual:v4];
+    v8 = [(MSASSharingRelationship *)&v10 isEqual:equalCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSString *)v2->_GUID hash];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSString *)selfCopy->_GUID hash];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -517,11 +517,11 @@ LABEL_4:
   return result;
 }
 
-+ (id)MSASPSharingRelationshipFromProtocolDictionary:(id)a3
++ (id)MSASPSharingRelationshipFromProtocolDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MSASSharingRelationship);
-  v5 = _setFieldsInSharingRelationship(v4, v3);
+  v5 = _setFieldsInSharingRelationship(v4, dictionaryCopy);
 
   if (v5)
   {

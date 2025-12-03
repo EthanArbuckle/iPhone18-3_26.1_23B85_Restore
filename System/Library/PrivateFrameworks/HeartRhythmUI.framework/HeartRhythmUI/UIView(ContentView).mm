@@ -6,8 +6,8 @@
 
 - (id)_bottomVisibleView
 {
-  v2 = [a1 subviews];
-  v3 = [v2 count];
+  subviews = [self subviews];
+  v3 = [subviews count];
 
   v4 = 0;
   if (v3)
@@ -15,10 +15,10 @@
     v5 = 0;
     do
     {
-      v6 = [a1 subviews];
-      v7 = [v6 objectAtIndexedSubscript:v5];
+      subviews2 = [self subviews];
+      v7 = [subviews2 objectAtIndexedSubscript:v5];
 
-      v8 = [v7 isHidden];
+      isHidden = [v7 isHidden];
       if (v4 <= v5)
       {
         v9 = v5;
@@ -29,21 +29,21 @@
         v9 = v4;
       }
 
-      if (!v8)
+      if (!isHidden)
       {
         v4 = v9;
       }
 
       ++v5;
-      v10 = [a1 subviews];
-      v11 = [v10 count];
+      subviews3 = [self subviews];
+      v11 = [subviews3 count];
     }
 
     while (v5 < v11);
   }
 
-  v12 = [a1 subviews];
-  v13 = [v12 objectAtIndexedSubscript:v4];
+  subviews4 = [self subviews];
+  v13 = [subviews4 objectAtIndexedSubscript:v4];
 
   return v13;
 }

@@ -1,8 +1,8 @@
 @interface KVItemInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItemInfo:(id)a3;
-- (KVItemInfo)initWithCascadeEntityInfo:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItemInfo:(id)info;
+- (KVItemInfo)initWithCascadeEntityInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)item;
 - (id)itemId;
 - (int64_t)itemType;
@@ -10,25 +10,25 @@
 
 @implementation KVItemInfo
 
-- (BOOL)isEqualToItemInfo:(id)a3
+- (BOOL)isEqualToItemInfo:(id)info
 {
   entityInfo = self->_entityInfo;
-  v7 = objc_msgSend_entityInfo(a3, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_entityInfo(info, a2, info, v3, v4, v5);
   LOBYTE(entityInfo) = objc_msgSend_isEqual_(entityInfo, v8, v7, v9, v10, v11);
 
   return entityInfo;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToItemInfo = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isEqualToItemInfo = objc_msgSend_isEqualToItemInfo_(self, v6, v5, v7, v8, v9);
   }
@@ -41,11 +41,11 @@
   return isEqualToItemInfo;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9);
-  v15 = objc_msgSend_copyWithZone_(self->_entityInfo, v11, a3, v12, v13, v14);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9);
+  v15 = objc_msgSend_copyWithZone_(self->_entityInfo, v11, zone, v12, v13, v14);
   v16 = v10[1];
   v10[1] = v15;
 
@@ -96,16 +96,16 @@
   return v7;
 }
 
-- (KVItemInfo)initWithCascadeEntityInfo:(id)a3
+- (KVItemInfo)initWithCascadeEntityInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v9.receiver = self;
   v9.super_class = KVItemInfo;
   v6 = [(KVItemInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entityInfo, a3);
+    objc_storeStrong(&v6->_entityInfo, info);
   }
 
   return v7;

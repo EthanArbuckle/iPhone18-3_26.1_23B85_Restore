@@ -1,12 +1,12 @@
 @interface CKDiscoverAllUserIdentitiesOperation
-- (BOOL)CKOperationShouldRun:(id *)a3;
+- (BOOL)CKOperationShouldRun:(id *)run;
 - (CKDiscoverAllUserIdentitiesOperation)init;
 - (id)activityCreate;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)ckSignpostBegin;
-- (void)ckSignpostEndWithError:(id)a3;
+- (void)ckSignpostEndWithError:(id)error;
 - (void)discoverAllUserIdentitiesCompletionBlock;
-- (void)handleUserIdentityDiscovery:(id)a3;
+- (void)handleUserIdentityDiscovery:(id)discovery;
 - (void)performCKOperation;
 - (void)setDiscoverAllUserIdentitiesCompletionBlock:(void *)discoverAllUserIdentitiesCompletionBlock;
 - (void)setUserIdentityDiscoveredBlock:(void *)userIdentityDiscoveredBlock;
@@ -166,9 +166,9 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)CKOperationShouldRun:(id *)a3
+- (BOOL)CKOperationShouldRun:(id *)run
 {
-  v5 = objc_msgSend_discoverAllUserIdentitiesCompletionBlock(self, a2, a3);
+  v5 = objc_msgSend_discoverAllUserIdentitiesCompletionBlock(self, a2, run);
 
   if (!v5)
   {
@@ -177,7 +177,7 @@ LABEL_9:
 
   v7.receiver = self;
   v7.super_class = CKDiscoverAllUserIdentitiesOperation;
-  return [(CKOperation *)&v7 CKOperationShouldRun:a3];
+  return [(CKOperation *)&v7 CKOperationShouldRun:run];
 }
 
 - (void)performCKOperation
@@ -197,10 +197,10 @@ LABEL_9:
   [(CKOperation *)&v14 performCKOperation];
 }
 
-- (void)handleUserIdentityDiscovery:(id)a3
+- (void)handleUserIdentityDiscovery:(id)discovery
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  discoveryCopy = discovery;
   if (self)
   {
     signpost = self->super._signpost;
@@ -249,10 +249,10 @@ LABEL_9:
   }
 
   v19 = objc_msgSend_identityToContactIdentifiers(self, v7, v8);
-  v21 = objc_msgSend_objectForKeyedSubscript_(v19, v20, v4);
+  v21 = objc_msgSend_objectForKeyedSubscript_(v19, v20, discoveryCopy);
 
   v22 = MEMORY[0x1E695DFA8];
-  v25 = objc_msgSend_contactIdentifiers(v4, v23, v24);
+  v25 = objc_msgSend_contactIdentifiers(discoveryCopy, v23, v24);
   v27 = v25;
   if (v25)
   {
@@ -278,7 +278,7 @@ LABEL_9:
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
       {
         v51 = 138412290;
-        v52 = v4;
+        v52 = discoveryCopy;
         _os_log_debug_impl(&dword_1883EA000, v33, OS_LOG_TYPE_DEBUG, "Not returning user identity we already saw: %@", &v51, 0xCu);
       }
 
@@ -288,7 +288,7 @@ LABEL_9:
     v36 = objc_msgSend_mutableCopy(v28, v31, v32);
     objc_msgSend_unionSet_(v36, v37, v21);
     v40 = objc_msgSend_allObjects(v36, v38, v39);
-    objc_msgSend_setContactIdentifiers_(v4, v41, v40);
+    objc_msgSend_setContactIdentifiers_(discoveryCopy, v41, v40);
   }
 
   else
@@ -297,23 +297,23 @@ LABEL_9:
   }
 
   v42 = objc_msgSend_identityToContactIdentifiers(self, v34, v35);
-  objc_msgSend_setObject_forKeyedSubscript_(v42, v43, v36, v4);
+  objc_msgSend_setObject_forKeyedSubscript_(v42, v43, v36, discoveryCopy);
 
   v46 = objc_msgSend_userIdentityDiscoveredBlock(self, v44, v45);
 
   if (v46)
   {
     v49 = objc_msgSend_userIdentityDiscoveredBlock(self, v47, v48);
-    (v49)[2](v49, v4);
+    (v49)[2](v49, discoveryCopy);
   }
 
 LABEL_27:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -366,7 +366,7 @@ LABEL_27:
   if (v19)
   {
     v22 = objc_msgSend_discoverAllUserIdentitiesCompletionBlock(self, v20, v21);
-    v25 = objc_msgSend_CKClientSuitableError(v4, v23, v24);
+    v25 = objc_msgSend_CKClientSuitableError(errorCopy, v23, v24);
     (v22)[2](v22, v25);
 
     objc_msgSend_setDiscoverAllUserIdentitiesCompletionBlock_(self, v26, 0);
@@ -375,7 +375,7 @@ LABEL_27:
   objc_msgSend_setUserIdentityDiscoveredBlock_(self, v20, 0);
   v27.receiver = self;
   v27.super_class = CKDiscoverAllUserIdentitiesOperation;
-  [(CKOperation *)&v27 _finishOnCallbackQueueWithError:v4];
+  [(CKOperation *)&v27 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)ckSignpostBegin
@@ -452,10 +452,10 @@ LABEL_27:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)ckSignpostEndWithError:(id)a3
+- (void)ckSignpostEndWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     signpost = self->super._signpost;
@@ -499,7 +499,7 @@ LABEL_27:
     if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
     {
       v18 = 138412290;
-      v19 = v4;
+      v19 = errorCopy;
       _os_signpost_emit_with_name_impl(&dword_1883EA000, v11, OS_SIGNPOST_INTERVAL_END, v16, "CKDiscoverAllUserIdentitiesOperation", "Error=%{signpost.description:attribute}@ ", &v18, 0xCu);
     }
   }

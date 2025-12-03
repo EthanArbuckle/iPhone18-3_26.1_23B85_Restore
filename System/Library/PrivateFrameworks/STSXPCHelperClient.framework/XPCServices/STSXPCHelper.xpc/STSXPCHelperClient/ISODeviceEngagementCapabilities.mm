@@ -1,8 +1,8 @@
 @interface ISODeviceEngagementCapabilities
-- (ISODeviceEngagementCapabilities)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ISODeviceEngagementCapabilities)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISODeviceEngagementCapabilities
@@ -51,7 +51,7 @@
   return [NSString stringWithFormat:@"<%@ isHandoverSessionEstablishmentSupported=%@ isExtendedRequestSupported=%@ isReaderAuthAllSupported=%@>", v3, v4, v7, v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[ISODeviceEngagementCapabilities allocWithZone:?]];
   if (self)
@@ -71,38 +71,38 @@
   return result;
 }
 
-- (ISODeviceEngagementCapabilities)initWithCoder:(id)a3
+- (ISODeviceEngagementCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(ISODeviceEngagementCapabilities);
-  v5->_handoverSessionEstablishmentSupported = [v4 decodeBoolForKey:@"ISODeviceEngagementCapabilitiesHandoverSessionEstablishmentSupported"];
-  v5->_extendedRequestSupported = [v4 decodeBoolForKey:@"ISODeviceEngagementCapabilitiesExtendedRequestSupported"];
-  v6 = [v4 decodeBoolForKey:@"ISODeviceEngagementCapabilitiesReaderAuthAllSupported"];
+  v5->_handoverSessionEstablishmentSupported = [coderCopy decodeBoolForKey:@"ISODeviceEngagementCapabilitiesHandoverSessionEstablishmentSupported"];
+  v5->_extendedRequestSupported = [coderCopy decodeBoolForKey:@"ISODeviceEngagementCapabilitiesExtendedRequestSupported"];
+  v6 = [coderCopy decodeBoolForKey:@"ISODeviceEngagementCapabilitiesReaderAuthAllSupported"];
 
   v5->_readerAuthAllSupported = v6;
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
     handoverSessionEstablishmentSupported = self->_handoverSessionEstablishmentSupported;
-    v5 = a3;
-    [v5 encodeBool:handoverSessionEstablishmentSupported forKey:@"ISODeviceEngagementCapabilitiesHandoverSessionEstablishmentSupported"];
-    [v5 encodeBool:self->_extendedRequestSupported forKey:@"ISODeviceEngagementCapabilitiesExtendedRequestSupported"];
+    coderCopy = coder;
+    [coderCopy encodeBool:handoverSessionEstablishmentSupported forKey:@"ISODeviceEngagementCapabilitiesHandoverSessionEstablishmentSupported"];
+    [coderCopy encodeBool:self->_extendedRequestSupported forKey:@"ISODeviceEngagementCapabilitiesExtendedRequestSupported"];
     readerAuthAllSupported = self->_readerAuthAllSupported;
   }
 
   else
   {
-    v7 = a3;
-    [v7 encodeBool:0 forKey:@"ISODeviceEngagementCapabilitiesHandoverSessionEstablishmentSupported"];
-    [v7 encodeBool:0 forKey:@"ISODeviceEngagementCapabilitiesExtendedRequestSupported"];
+    coderCopy2 = coder;
+    [coderCopy2 encodeBool:0 forKey:@"ISODeviceEngagementCapabilitiesHandoverSessionEstablishmentSupported"];
+    [coderCopy2 encodeBool:0 forKey:@"ISODeviceEngagementCapabilitiesExtendedRequestSupported"];
     readerAuthAllSupported = 0;
   }
 
-  [a3 encodeBool:readerAuthAllSupported forKey:@"ISODeviceEngagementCapabilitiesReaderAuthAllSupported"];
+  [coder encodeBool:readerAuthAllSupported forKey:@"ISODeviceEngagementCapabilitiesReaderAuthAllSupported"];
 }
 
 @end

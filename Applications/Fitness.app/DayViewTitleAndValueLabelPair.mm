@@ -7,13 +7,13 @@
 
 - (void)updateFonts
 {
-  v2 = self;
+  selfCopy = self;
   sub_10022FC4C();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_10022FD6C();
   v4 = v3;
   v6 = v5;

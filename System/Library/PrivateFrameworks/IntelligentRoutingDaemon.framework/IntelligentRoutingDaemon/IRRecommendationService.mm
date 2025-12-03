@@ -1,33 +1,33 @@
 @interface IRRecommendationService
-+ (id)serviceWithQueue:(id)a3;
-- (BOOL)shouldAcceptNewConnection:(id)a3;
-- (IRRecommendationService)initWithQueue:(id)a3;
++ (id)serviceWithQueue:(id)queue;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
+- (IRRecommendationService)initWithQueue:(id)queue;
 - (NSArray)machServicesNames;
 @end
 
 @implementation IRRecommendationService
 
-- (IRRecommendationService)initWithQueue:(id)a3
+- (IRRecommendationService)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = IRRecommendationService;
   v6 = [(IRRecommendationService *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [[IRSessionServer alloc] initWithQueue:v5];
+    objc_storeStrong(&v6->_queue, queue);
+    v8 = [[IRSessionServer alloc] initWithQueue:queueCopy];
     [(IRRecommendationService *)v7 setXpcServer:v8];
   }
 
   return v7;
 }
 
-+ (id)serviceWithQueue:(id)a3
++ (id)serviceWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [[IRRecommendationService alloc] initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [[IRRecommendationService alloc] initWithQueue:queueCopy];
 
   return v4;
 }
@@ -42,11 +42,11 @@
   return v2;
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(IRRecommendationService *)self xpcServer];
-  v6 = [v5 shouldAcceptNewConnection:v4];
+  connectionCopy = connection;
+  xpcServer = [(IRRecommendationService *)self xpcServer];
+  v6 = [xpcServer shouldAcceptNewConnection:connectionCopy];
 
   return v6;
 }

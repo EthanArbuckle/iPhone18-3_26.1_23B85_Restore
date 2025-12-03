@@ -1,13 +1,13 @@
 @interface IFTSchemaIFTSessionError
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaIFTExecutorError)executorError;
 - (IFTSchemaIFTIntelligenceFlowError)other;
 - (IFTSchemaIFTPlannerError)plannerError;
 - (IFTSchemaIFTSessionCoordinatorError)sessionCoordinatorError;
-- (IFTSchemaIFTSessionError)initWithDictionary:(id)a3;
-- (IFTSchemaIFTSessionError)initWithJSON:(id)a3;
+- (IFTSchemaIFTSessionError)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTSessionError)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -15,24 +15,24 @@
 - (void)deleteOther;
 - (void)deletePlannerError;
 - (void)deleteSessionCoordinatorError;
-- (void)setExecutorError:(id)a3;
-- (void)setOther:(id)a3;
-- (void)setPlannerError:(id)a3;
-- (void)setSessionCoordinatorError:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setExecutorError:(id)error;
+- (void)setOther:(id)other;
+- (void)setPlannerError:(id)error;
+- (void)setSessionCoordinatorError:(id)error;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTSessionError
 
-- (IFTSchemaIFTSessionError)initWithDictionary:(id)a3
+- (IFTSchemaIFTSessionError)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = IFTSchemaIFTSessionError;
   v5 = [(IFTSchemaIFTSessionError *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"other"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"other"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(IFTSchemaIFTSessionError *)v5 setOther:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"sessionCoordinatorError"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"sessionCoordinatorError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(IFTSchemaIFTSessionError *)v5 setSessionCoordinatorError:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"plannerError"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"plannerError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(IFTSchemaIFTSessionError *)v5 setPlannerError:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"executorError"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"executorError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTSessionError)initWithJSON:(id)a3
+- (IFTSchemaIFTSessionError)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTSessionError *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTSessionError *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTSessionError *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,74 +106,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_executorError)
   {
-    v4 = [(IFTSchemaIFTSessionError *)self executorError];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    executorError = [(IFTSchemaIFTSessionError *)self executorError];
+    dictionaryRepresentation = [executorError dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"executorError"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"executorError"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"executorError"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"executorError"];
     }
   }
 
   if (self->_other)
   {
-    v7 = [(IFTSchemaIFTSessionError *)self other];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    other = [(IFTSchemaIFTSessionError *)self other];
+    dictionaryRepresentation2 = [other dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"other"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"other"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"other"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"other"];
     }
   }
 
   if (self->_plannerError)
   {
-    v10 = [(IFTSchemaIFTSessionError *)self plannerError];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    plannerError = [(IFTSchemaIFTSessionError *)self plannerError];
+    dictionaryRepresentation3 = [plannerError dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"plannerError"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"plannerError"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"plannerError"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"plannerError"];
     }
   }
 
   if (self->_sessionCoordinatorError)
   {
-    v13 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    sessionCoordinatorError = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
+    dictionaryRepresentation4 = [sessionCoordinatorError dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"sessionCoordinatorError"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"sessionCoordinatorError"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"sessionCoordinatorError"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"sessionCoordinatorError"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -184,34 +184,34 @@
   return v4 ^ v5 ^ [(IFTSchemaIFTExecutorError *)self->_executorError hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichOneof_Sessionerror = self->_whichOneof_Sessionerror;
-  if (whichOneof_Sessionerror != [v4 whichOneof_Sessionerror])
+  if (whichOneof_Sessionerror != [equalCopy whichOneof_Sessionerror])
   {
     goto LABEL_23;
   }
 
-  v6 = [(IFTSchemaIFTSessionError *)self other];
-  v7 = [v4 other];
-  if ((v6 != 0) == (v7 == 0))
+  other = [(IFTSchemaIFTSessionError *)self other];
+  other2 = [equalCopy other];
+  if ((other != 0) == (other2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(IFTSchemaIFTSessionError *)self other];
-  if (v8)
+  other3 = [(IFTSchemaIFTSessionError *)self other];
+  if (other3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTSessionError *)self other];
-    v11 = [v4 other];
-    v12 = [v10 isEqual:v11];
+    v9 = other3;
+    other4 = [(IFTSchemaIFTSessionError *)self other];
+    other5 = [equalCopy other];
+    v12 = [other4 isEqual:other5];
 
     if (!v12)
     {
@@ -223,20 +223,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
-  v7 = [v4 sessionCoordinatorError];
-  if ((v6 != 0) == (v7 == 0))
+  other = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
+  other2 = [equalCopy sessionCoordinatorError];
+  if ((other != 0) == (other2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
-  if (v13)
+  sessionCoordinatorError = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
+  if (sessionCoordinatorError)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
-    v16 = [v4 sessionCoordinatorError];
-    v17 = [v15 isEqual:v16];
+    v14 = sessionCoordinatorError;
+    sessionCoordinatorError2 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
+    sessionCoordinatorError3 = [equalCopy sessionCoordinatorError];
+    v17 = [sessionCoordinatorError2 isEqual:sessionCoordinatorError3];
 
     if (!v17)
     {
@@ -248,20 +248,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTSessionError *)self plannerError];
-  v7 = [v4 plannerError];
-  if ((v6 != 0) == (v7 == 0))
+  other = [(IFTSchemaIFTSessionError *)self plannerError];
+  other2 = [equalCopy plannerError];
+  if ((other != 0) == (other2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(IFTSchemaIFTSessionError *)self plannerError];
-  if (v18)
+  plannerError = [(IFTSchemaIFTSessionError *)self plannerError];
+  if (plannerError)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTSessionError *)self plannerError];
-    v21 = [v4 plannerError];
-    v22 = [v20 isEqual:v21];
+    v19 = plannerError;
+    plannerError2 = [(IFTSchemaIFTSessionError *)self plannerError];
+    plannerError3 = [equalCopy plannerError];
+    v22 = [plannerError2 isEqual:plannerError3];
 
     if (!v22)
     {
@@ -273,12 +273,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTSessionError *)self executorError];
-  v7 = [v4 executorError];
-  if ((v6 != 0) != (v7 == 0))
+  other = [(IFTSchemaIFTSessionError *)self executorError];
+  other2 = [equalCopy executorError];
+  if ((other != 0) != (other2 == 0))
   {
-    v23 = [(IFTSchemaIFTSessionError *)self executorError];
-    if (!v23)
+    executorError = [(IFTSchemaIFTSessionError *)self executorError];
+    if (!executorError)
     {
 
 LABEL_26:
@@ -286,10 +286,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(IFTSchemaIFTSessionError *)self executorError];
-    v26 = [v4 executorError];
-    v27 = [v25 isEqual:v26];
+    v24 = executorError;
+    executorError2 = [(IFTSchemaIFTSessionError *)self executorError];
+    executorError3 = [equalCopy executorError];
+    v27 = [executorError2 isEqual:executorError3];
 
     if (v27)
     {
@@ -309,42 +309,42 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(IFTSchemaIFTSessionError *)self other];
+  toCopy = to;
+  other = [(IFTSchemaIFTSessionError *)self other];
 
-  if (v4)
+  if (other)
   {
-    v5 = [(IFTSchemaIFTSessionError *)self other];
+    other2 = [(IFTSchemaIFTSessionError *)self other];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
+  sessionCoordinatorError = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
 
-  if (v6)
+  if (sessionCoordinatorError)
   {
-    v7 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
+    sessionCoordinatorError2 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTSessionError *)self plannerError];
+  plannerError = [(IFTSchemaIFTSessionError *)self plannerError];
 
-  if (v8)
+  if (plannerError)
   {
-    v9 = [(IFTSchemaIFTSessionError *)self plannerError];
+    plannerError2 = [(IFTSchemaIFTSessionError *)self plannerError];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTSessionError *)self executorError];
+  executorError = [(IFTSchemaIFTSessionError *)self executorError];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (executorError)
   {
-    v12 = [(IFTSchemaIFTSessionError *)self executorError];
+    executorError2 = [(IFTSchemaIFTSessionError *)self executorError];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
@@ -373,9 +373,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setExecutorError:(id)a3
+- (void)setExecutorError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   other = self->_other;
   self->_other = 0;
 
@@ -385,9 +385,9 @@ LABEL_24:
   plannerError = self->_plannerError;
   self->_plannerError = 0;
 
-  self->_whichOneof_Sessionerror = 4 * (v4 != 0);
+  self->_whichOneof_Sessionerror = 4 * (errorCopy != 0);
   executorError = self->_executorError;
-  self->_executorError = v4;
+  self->_executorError = errorCopy;
 }
 
 - (void)deletePlannerError
@@ -415,9 +415,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setPlannerError:(id)a3
+- (void)setPlannerError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   other = self->_other;
   self->_other = 0;
 
@@ -428,14 +428,14 @@ LABEL_24:
   self->_executorError = 0;
 
   v8 = 3;
-  if (!v4)
+  if (!errorCopy)
   {
     v8 = 0;
   }
 
   self->_whichOneof_Sessionerror = v8;
   plannerError = self->_plannerError;
-  self->_plannerError = v4;
+  self->_plannerError = errorCopy;
 }
 
 - (void)deleteSessionCoordinatorError
@@ -463,9 +463,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setSessionCoordinatorError:(id)a3
+- (void)setSessionCoordinatorError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   other = self->_other;
   self->_other = 0;
 
@@ -475,9 +475,9 @@ LABEL_24:
   executorError = self->_executorError;
   self->_executorError = 0;
 
-  self->_whichOneof_Sessionerror = 2 * (v4 != 0);
+  self->_whichOneof_Sessionerror = 2 * (errorCopy != 0);
   sessionCoordinatorError = self->_sessionCoordinatorError;
-  self->_sessionCoordinatorError = v4;
+  self->_sessionCoordinatorError = errorCopy;
 }
 
 - (void)deleteOther
@@ -505,9 +505,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setOther:(id)a3
+- (void)setOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   sessionCoordinatorError = self->_sessionCoordinatorError;
   self->_sessionCoordinatorError = 0;
 
@@ -517,49 +517,49 @@ LABEL_24:
   executorError = self->_executorError;
   self->_executorError = 0;
 
-  self->_whichOneof_Sessionerror = v4 != 0;
+  self->_whichOneof_Sessionerror = otherCopy != 0;
   other = self->_other;
-  self->_other = v4;
+  self->_other = otherCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = IFTSchemaIFTSessionError;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTSessionError *)self other];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  other = [(IFTSchemaIFTSessionError *)self other];
+  v7 = [other applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTSessionError *)self deleteOther];
   }
 
-  v9 = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  sessionCoordinatorError = [(IFTSchemaIFTSessionError *)self sessionCoordinatorError];
+  v10 = [sessionCoordinatorError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTSessionError *)self deleteSessionCoordinatorError];
   }
 
-  v12 = [(IFTSchemaIFTSessionError *)self plannerError];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  plannerError = [(IFTSchemaIFTSessionError *)self plannerError];
+  v13 = [plannerError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTSessionError *)self deletePlannerError];
   }
 
-  v15 = [(IFTSchemaIFTSessionError *)self executorError];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  executorError = [(IFTSchemaIFTSessionError *)self executorError];
+  v16 = [executorError applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTSessionError *)self deleteExecutorError];
   }

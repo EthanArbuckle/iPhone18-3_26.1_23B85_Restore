@@ -1,55 +1,55 @@
 @interface HUItemTableSectionHeaderFooterView
-+ (id)defaultAttributesForType:(unint64_t)a3;
++ (id)defaultAttributesForType:(unint64_t)type;
 - (BOOL)_updateViewContent;
-- (HUItemTableSectionHeaderFooterView)initWithReuseIdentifier:(id)a3 type:(unint64_t)a4;
+- (HUItemTableSectionHeaderFooterView)initWithReuseIdentifier:(id)identifier type:(unint64_t)type;
 - (UIEdgeInsets)indentationInset;
 - (void)prepareForReuse;
-- (void)setMessage:(id)a3;
-- (void)setType:(unint64_t)a3;
+- (void)setMessage:(id)message;
+- (void)setType:(unint64_t)type;
 - (void)updateConstraints;
 @end
 
 @implementation HUItemTableSectionHeaderFooterView
 
-- (HUItemTableSectionHeaderFooterView)initWithReuseIdentifier:(id)a3 type:(unint64_t)a4
+- (HUItemTableSectionHeaderFooterView)initWithReuseIdentifier:(id)identifier type:(unint64_t)type
 {
   v19.receiver = self;
   v19.super_class = HUItemTableSectionHeaderFooterView;
-  v5 = [(HUItemTableSectionHeaderFooterView *)&v19 initWithReuseIdentifier:a3];
+  v5 = [(HUItemTableSectionHeaderFooterView *)&v19 initWithReuseIdentifier:identifier];
   if (v5)
   {
     v6 = objc_alloc_init(HUTappableTextView);
     [(HUItemTableSectionHeaderFooterView *)v5 setMessageTextView:v6];
 
-    v7 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    messageTextView = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
+    [messageTextView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
-    [v8 setEditable:0];
+    messageTextView2 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
+    [messageTextView2 setEditable:0];
 
-    v9 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
-    [v9 _setInteractiveTextSelectionDisabled:1];
+    messageTextView3 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
+    [messageTextView3 _setInteractiveTextSelectionDisabled:1];
 
-    v10 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
-    [v10 setScrollEnabled:0];
+    messageTextView4 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
+    [messageTextView4 setScrollEnabled:0];
 
-    v11 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
-    v12 = [v11 textContainer];
-    [v12 setLineFragmentPadding:0.0];
+    messageTextView5 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
+    textContainer = [messageTextView5 textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
-    v13 = [MEMORY[0x277D75348] clearColor];
-    v14 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
-    [v14 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    messageTextView6 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
+    [messageTextView6 setBackgroundColor:clearColor];
 
-    v15 = [(HUItemTableSectionHeaderFooterView *)v5 tableView];
-    [v15 separatorInset];
+    tableView = [(HUItemTableSectionHeaderFooterView *)v5 tableView];
+    [tableView separatorInset];
     [(HUItemTableSectionHeaderFooterView *)v5 setIndentationInset:?];
 
-    v16 = [(HUItemTableSectionHeaderFooterView *)v5 contentView];
-    v17 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
-    [v16 addSubview:v17];
+    contentView = [(HUItemTableSectionHeaderFooterView *)v5 contentView];
+    messageTextView7 = [(HUItemTableSectionHeaderFooterView *)v5 messageTextView];
+    [contentView addSubview:messageTextView7];
 
-    [(HUItemTableSectionHeaderFooterView *)v5 setType:a4];
+    [(HUItemTableSectionHeaderFooterView *)v5 setType:type];
   }
 
   return v5;
@@ -58,8 +58,8 @@
 - (void)prepareForReuse
 {
   [(HUItemTableSectionHeaderFooterView *)self setMessage:0];
-  v3 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-  [v3 setTappableTextViewDelegate:0];
+  messageTextView = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+  [messageTextView setTappableTextViewDelegate:0];
 
   [(HUItemTableSectionHeaderFooterView *)self setType:0];
   v4.receiver = self;
@@ -69,45 +69,45 @@
 
 - (void)updateConstraints
 {
-  v3 = [(HUItemTableSectionHeaderFooterView *)self constraints];
+  constraints = [(HUItemTableSectionHeaderFooterView *)self constraints];
 
   v4 = 0x277CCA000uLL;
-  if (v3)
+  if (constraints)
   {
     v5 = MEMORY[0x277CCAAD0];
-    v6 = [(HUItemTableSectionHeaderFooterView *)self constraints];
-    [v5 deactivateConstraints:v6];
+    constraints2 = [(HUItemTableSectionHeaderFooterView *)self constraints];
+    [v5 deactivateConstraints:constraints2];
 
     [(HUItemTableSectionHeaderFooterView *)self setConstraints:0];
   }
 
   v7 = objc_opt_new();
-  v8 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-  v9 = [v8 leadingAnchor];
-  v10 = [(HUItemTableSectionHeaderFooterView *)self contentView];
-  v11 = [v10 leadingAnchor];
+  messageTextView = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+  leadingAnchor = [messageTextView leadingAnchor];
+  contentView = [(HUItemTableSectionHeaderFooterView *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
   [(HUItemTableSectionHeaderFooterView *)self indentationInset];
-  v13 = [v9 constraintEqualToAnchor:v11 constant:v12];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v12];
 
   [v7 addObject:v13];
-  v14 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-  v15 = [v14 trailingAnchor];
-  v16 = [(HUItemTableSectionHeaderFooterView *)self contentView];
-  v17 = [v16 trailingAnchor];
+  messageTextView2 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+  trailingAnchor = [messageTextView2 trailingAnchor];
+  contentView2 = [(HUItemTableSectionHeaderFooterView *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
   [(HUItemTableSectionHeaderFooterView *)self indentationInset];
-  v19 = [v15 constraintEqualToAnchor:v17 constant:v18];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v18];
 
   [v7 addObject:v19];
   if ([(HUItemTableSectionHeaderFooterView *)self type])
   {
     v20 = [objc_opt_class() defaultAttributesForType:{-[HUItemTableSectionHeaderFooterView type](self, "type")}];
     v21 = [v20 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
-    v22 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-    v23 = [v22 firstBaselineAnchor];
-    v24 = [(HUItemTableSectionHeaderFooterView *)self contentView];
-    v25 = [v24 topAnchor];
+    messageTextView3 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+    firstBaselineAnchor = [messageTextView3 firstBaselineAnchor];
+    contentView3 = [(HUItemTableSectionHeaderFooterView *)self contentView];
+    topAnchor = [contentView3 topAnchor];
     [v21 _scaledValueForValue:20.0];
-    v26 = [v23 constraintEqualToAnchor:v25 constant:?];
+    v26 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
 
     v4 = 0x277CCA000;
     [v7 addObject:v26];
@@ -115,27 +115,27 @@
 
   else
   {
-    v27 = [(HUItemTableSectionHeaderFooterView *)self contentView];
-    v28 = [v27 topAnchor];
-    v29 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-    v30 = [v29 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v30 constant:0.0];
+    contentView4 = [(HUItemTableSectionHeaderFooterView *)self contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    messageTextView4 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+    topAnchor3 = [messageTextView4 topAnchor];
+    v26 = [topAnchor2 constraintEqualToAnchor:topAnchor3 constant:0.0];
 
     [v7 addObject:v26];
   }
 
-  v31 = [(HUItemTableSectionHeaderFooterView *)self contentView];
-  v32 = [v31 bottomAnchor];
-  v33 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-  v34 = [v33 bottomAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34 constant:0.0];
+  contentView5 = [(HUItemTableSectionHeaderFooterView *)self contentView];
+  bottomAnchor = [contentView5 bottomAnchor];
+  messageTextView5 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+  bottomAnchor2 = [messageTextView5 bottomAnchor];
+  v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
 
   [v7 addObject:v35];
-  v36 = [(HUItemTableSectionHeaderFooterView *)self contentView];
-  v37 = [v36 heightAnchor];
-  v38 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-  v39 = [v38 heightAnchor];
-  v40 = [v37 constraintGreaterThanOrEqualToAnchor:v39 multiplier:1.0 constant:0.0];
+  contentView6 = [(HUItemTableSectionHeaderFooterView *)self contentView];
+  heightAnchor = [contentView6 heightAnchor];
+  messageTextView6 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+  heightAnchor2 = [messageTextView6 heightAnchor];
+  v40 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2 multiplier:1.0 constant:0.0];
 
   [v7 addObject:v40];
   [*(v4 + 2768) activateConstraints:v7];
@@ -145,12 +145,12 @@
   [(HUItemTableSectionHeaderFooterView *)&v41 updateConstraints];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v6 = a3;
+  messageCopy = message;
   if (([(HFStringGenerator *)self->_message isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copyWithZone:0];
+    v4 = [messageCopy copyWithZone:0];
     message = self->_message;
     self->_message = v4;
 
@@ -158,11 +158,11 @@
   }
 }
 
-- (void)setType:(unint64_t)a3
+- (void)setType:(unint64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     [(HUItemTableSectionHeaderFooterView *)self _updateViewContent];
 
     [(HUItemTableSectionHeaderFooterView *)self setNeedsUpdateConstraints];
@@ -172,26 +172,26 @@
 - (BOOL)_updateViewContent
 {
   v3 = [objc_opt_class() defaultAttributesForType:{-[HUItemTableSectionHeaderFooterView type](self, "type")}];
-  v4 = [(HUItemTableSectionHeaderFooterView *)self message];
-  v5 = [v4 stringWithAttributes:v3];
+  message = [(HUItemTableSectionHeaderFooterView *)self message];
+  v5 = [message stringWithAttributes:v3];
 
-  v6 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-  v7 = [v6 attributedText];
-  v8 = [v5 isEqual:v7];
+  messageTextView = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+  attributedText = [messageTextView attributedText];
+  v8 = [v5 isEqual:attributedText];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
-    [v9 setAttributedText:v5];
+    messageTextView2 = [(HUItemTableSectionHeaderFooterView *)self messageTextView];
+    [messageTextView2 setAttributedText:v5];
   }
 
   return v8 ^ 1;
 }
 
-+ (id)defaultAttributesForType:(unint64_t)a3
++ (id)defaultAttributesForType:(unint64_t)type
 {
   v9[2] = *MEMORY[0x277D85DE8];
-  v3 = a3 == 0;
+  v3 = type == 0;
   v8[0] = *MEMORY[0x277D740C0];
   v4 = [MEMORY[0x277D75B70] _defaultTextColorForTableViewStyle:1 isSectionHeader:v3];
   v9[0] = v4;

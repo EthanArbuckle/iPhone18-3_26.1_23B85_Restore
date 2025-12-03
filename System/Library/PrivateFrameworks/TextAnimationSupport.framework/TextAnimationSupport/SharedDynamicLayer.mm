@@ -1,12 +1,12 @@
 @interface SharedDynamicLayer
 - (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418SharedDynamicLayer)init;
-- (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418SharedDynamicLayer)initWithCoder:(id)a3;
-- (void)drawInDisplayList:(id)a3;
+- (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418SharedDynamicLayer)initWithCoder:(id)coder;
+- (void)drawInDisplayList:(id)list;
 @end
 
 @implementation SharedDynamicLayer
 
-- (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418SharedDynamicLayer)initWithCoder:(id)a3
+- (_TtC20TextAnimationSupportP33_EB92A35C21DD52D72B91A53CA741919418SharedDynamicLayer)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -25,11 +25,11 @@
   return v2;
 }
 
-- (void)drawInDisplayList:(id)a3
+- (void)drawInDisplayList:(id)list
 {
-  v4 = a3;
-  v5 = self;
-  SharedDynamicLayer.draw(inDisplayList:)(v4);
+  listCopy = list;
+  selfCopy = self;
+  SharedDynamicLayer.draw(inDisplayList:)(listCopy);
 }
 
 @end

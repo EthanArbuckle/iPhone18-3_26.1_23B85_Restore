@@ -1,22 +1,22 @@
 @interface ICCollaborationAnalyticsTracker
-- (ICCollaborationAnalyticsTracker)initWithDelegate:(id)a3;
-- (void)saveActivityType:(id)a3 isCollaborationSelected:(BOOL)a4 error:(id)a5 completed:(BOOL)a6 forNote:(id)a7;
-- (void)saveNewShare:(id)a3 forNote:(id)a4;
-- (void)trackShare:(id)a3 forNote:(id)a4;
-- (void)unshareNote:(id)a3;
+- (ICCollaborationAnalyticsTracker)initWithDelegate:(id)delegate;
+- (void)saveActivityType:(id)type isCollaborationSelected:(BOOL)selected error:(id)error completed:(BOOL)completed forNote:(id)note;
+- (void)saveNewShare:(id)share forNote:(id)note;
+- (void)trackShare:(id)share forNote:(id)note;
+- (void)unshareNote:(id)note;
 @end
 
 @implementation ICCollaborationAnalyticsTracker
 
-- (ICCollaborationAnalyticsTracker)initWithDelegate:(id)a3
+- (ICCollaborationAnalyticsTracker)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ICCollaborationAnalyticsTracker;
   v5 = [(ICCollaborationAnalyticsTracker *)&v9 init];
   if (v5)
   {
-    v6 = [[ICCollaborationAnalyticsTrackerInternal alloc] initWithDelegate:v4];
+    v6 = [[ICCollaborationAnalyticsTrackerInternal alloc] initWithDelegate:delegateCopy];
     collaborationAnalyticsTracker = v5->_collaborationAnalyticsTracker;
     v5->_collaborationAnalyticsTracker = v6;
   }
@@ -24,38 +24,38 @@
   return v5;
 }
 
-- (void)trackShare:(id)a3 forNote:(id)a4
+- (void)trackShare:(id)share forNote:(id)note
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCollaborationAnalyticsTracker *)self collaborationAnalyticsTracker];
-  [v8 trackShare:v7 forNote:v6];
+  noteCopy = note;
+  shareCopy = share;
+  collaborationAnalyticsTracker = [(ICCollaborationAnalyticsTracker *)self collaborationAnalyticsTracker];
+  [collaborationAnalyticsTracker trackShare:shareCopy forNote:noteCopy];
 }
 
-- (void)saveNewShare:(id)a3 forNote:(id)a4
+- (void)saveNewShare:(id)share forNote:(id)note
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCollaborationAnalyticsTracker *)self collaborationAnalyticsTracker];
-  [v8 saveNewShare:v7 forNote:v6];
+  noteCopy = note;
+  shareCopy = share;
+  collaborationAnalyticsTracker = [(ICCollaborationAnalyticsTracker *)self collaborationAnalyticsTracker];
+  [collaborationAnalyticsTracker saveNewShare:shareCopy forNote:noteCopy];
 }
 
-- (void)saveActivityType:(id)a3 isCollaborationSelected:(BOOL)a4 error:(id)a5 completed:(BOOL)a6 forNote:(id)a7
+- (void)saveActivityType:(id)type isCollaborationSelected:(BOOL)selected error:(id)error completed:(BOOL)completed forNote:(id)note
 {
-  v7 = a6;
-  v9 = a4;
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
-  v15 = [(ICCollaborationAnalyticsTracker *)self collaborationAnalyticsTracker];
-  [v15 saveActivityType:v14 isCollaborationSelected:v9 error:v13 completed:v7 forNote:v12];
+  completedCopy = completed;
+  selectedCopy = selected;
+  noteCopy = note;
+  errorCopy = error;
+  typeCopy = type;
+  collaborationAnalyticsTracker = [(ICCollaborationAnalyticsTracker *)self collaborationAnalyticsTracker];
+  [collaborationAnalyticsTracker saveActivityType:typeCopy isCollaborationSelected:selectedCopy error:errorCopy completed:completedCopy forNote:noteCopy];
 }
 
-- (void)unshareNote:(id)a3
+- (void)unshareNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICCollaborationAnalyticsTracker *)self collaborationAnalyticsTracker];
-  [v5 unshareNote:v4];
+  noteCopy = note;
+  collaborationAnalyticsTracker = [(ICCollaborationAnalyticsTracker *)self collaborationAnalyticsTracker];
+  [collaborationAnalyticsTracker unshareNote:noteCopy];
 }
 
 @end

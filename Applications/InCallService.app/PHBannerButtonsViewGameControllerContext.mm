@@ -1,28 +1,28 @@
 @interface PHBannerButtonsViewGameControllerContext
-- (PHBannerButtonsViewGameControllerContext)initWithGameControllerContext:(id)a3;
-- (id)sfSymbolForButton:(unint64_t)a3;
+- (PHBannerButtonsViewGameControllerContext)initWithGameControllerContext:(id)context;
+- (id)sfSymbolForButton:(unint64_t)button;
 @end
 
 @implementation PHBannerButtonsViewGameControllerContext
 
-- (PHBannerButtonsViewGameControllerContext)initWithGameControllerContext:(id)a3
+- (PHBannerButtonsViewGameControllerContext)initWithGameControllerContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = PHBannerButtonsViewGameControllerContext;
   v6 = [(PHBannerButtonsViewGameControllerContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->gameControllerContext, a3);
+    objc_storeStrong(&v6->gameControllerContext, context);
   }
 
   return v7;
 }
 
-- (id)sfSymbolForButton:(unint64_t)a3
+- (id)sfSymbolForButton:(unint64_t)button
 {
-  if (a3 > 2)
+  if (button > 2)
   {
     v5 = 0;
   }

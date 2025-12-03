@@ -1,7 +1,7 @@
 @interface RSNodeConnection
 + (id)new;
 - (RSNodeConnection)init;
-- (RSNodeConnection)initWithOutput:(id)a3 input:(id)a4;
+- (RSNodeConnection)initWithOutput:(id)output input:(id)input;
 - (RSNodeInput)input;
 - (RSNodeOutput)output;
 @end
@@ -22,18 +22,18 @@
   return WeakRetained;
 }
 
-- (RSNodeConnection)initWithOutput:(id)a3 input:(id)a4
+- (RSNodeConnection)initWithOutput:(id)output input:(id)input
 {
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  inputCopy = input;
   v11.receiver = self;
   v11.super_class = RSNodeConnection;
   v8 = [(RSNodeConnection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_output, v6);
-    objc_storeWeak(&v9->_input, v7);
+    objc_storeWeak(&v8->_output, outputCopy);
+    objc_storeWeak(&v9->_input, inputCopy);
   }
 
   return v9;
@@ -48,7 +48,7 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }

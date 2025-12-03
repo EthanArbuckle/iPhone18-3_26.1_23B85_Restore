@@ -1,5 +1,5 @@
 @interface ICSuzeLeaseResponse
-- (ICSuzeLeaseResponse)initWithResponseDictionary:(id)a3 requestDate:(id)a4;
+- (ICSuzeLeaseResponse)initWithResponseDictionary:(id)dictionary requestDate:(id)date;
 - (NSData)clientData;
 - (NSDate)leaseExpirationDate;
 @end
@@ -49,20 +49,20 @@ LABEL_7:
   return v4;
 }
 
-- (ICSuzeLeaseResponse)initWithResponseDictionary:(id)a3 requestDate:(id)a4
+- (ICSuzeLeaseResponse)initWithResponseDictionary:(id)dictionary requestDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = ICSuzeLeaseResponse;
   v8 = [(ICSuzeLeaseResponse *)&v14 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [dateCopy copy];
     requestDate = v8->_requestDate;
     v8->_requestDate = v9;
 
-    v11 = [v6 copy];
+    v11 = [dictionaryCopy copy];
     responseDictionary = v8->_responseDictionary;
     v8->_responseDictionary = v11;
   }

@@ -1,24 +1,24 @@
 @interface STUsageMediaCollection
-- (void)removeItemAtIndex:(unint64_t)a3;
-- (void)setItemSizes:(id)a3;
-- (void)setItems:(id)a3;
-- (void)sortItemsByMediaKey:(id)a3;
+- (void)removeItemAtIndex:(unint64_t)index;
+- (void)setItemSizes:(id)sizes;
+- (void)setItems:(id)items;
+- (void)sortItemsByMediaKey:(id)key;
 @end
 
 @implementation STUsageMediaCollection
 
-- (void)removeItemAtIndex:(unint64_t)a3
+- (void)removeItemAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableArray *)self->_itemSizes objectAtIndexedSubscript:?];
   self->_totalSize -= [v5 longLongValue];
 
-  [(NSMutableArray *)self->_items removeObjectAtIndex:a3];
+  [(NSMutableArray *)self->_items removeObjectAtIndex:index];
   itemSizes = self->_itemSizes;
 
-  [(NSMutableArray *)itemSizes removeObjectAtIndex:a3];
+  [(NSMutableArray *)itemSizes removeObjectAtIndex:index];
 }
 
-- (void)sortItemsByMediaKey:(id)a3
+- (void)sortItemsByMediaKey:(id)key
 {
   if ([(STUsageMediaCollection *)self isGrouped])
   {
@@ -42,11 +42,11 @@
   }
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  if (self->_items != a3)
+  if (self->_items != items)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [items mutableCopy];
     items = self->_items;
     self->_items = v5;
 
@@ -54,11 +54,11 @@
   }
 }
 
-- (void)setItemSizes:(id)a3
+- (void)setItemSizes:(id)sizes
 {
-  if (self->_itemSizes != a3)
+  if (self->_itemSizes != sizes)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [sizes mutableCopy];
     itemSizes = self->_itemSizes;
     self->_itemSizes = v5;
 

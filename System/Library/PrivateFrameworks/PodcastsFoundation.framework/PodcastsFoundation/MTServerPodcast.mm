@@ -134,7 +134,7 @@
 
 - (BOOL)isExplicit
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ServerPodcast.isExplicit.getter();
 
   return v3 & 1;
@@ -253,7 +253,7 @@
 
 - (NSArray)offers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ServerPodcast.offers.getter();
 
   if (v3)
@@ -632,7 +632,7 @@
 
 - (MTFeedChannel)channelItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ServerPodcast.channelItem.getter();
 
   return v3;
@@ -669,7 +669,7 @@
 
 - (NSOrderedSet)categories
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ServerPodcast.categories.getter();
 
   return v3;
@@ -677,7 +677,7 @@
 
 - (id)toFeed
 {
-  v2 = self;
+  selfCopy = self;
   ServerPodcast.toFeed()(v3);
   v5 = v4;
 

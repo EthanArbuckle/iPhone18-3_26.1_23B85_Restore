@@ -1,21 +1,21 @@
 @interface AWDProactiveModelFittingModelInfoStatsPair
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingModelInfoStatsPair
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   modelInfo = self->_modelInfo;
-  v6 = v4[1];
-  v9 = v4;
+  v6 = fromCopy[1];
+  v9 = fromCopy;
   if (modelInfo)
   {
     if (!v6)
@@ -36,10 +36,10 @@
     [(AWDProactiveModelFittingModelInfoStatsPair *)self setModelInfo:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   stats = self->_stats;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (stats)
   {
     if (v8)
@@ -56,13 +56,13 @@ LABEL_7:
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((modelInfo = self->_modelInfo, !(modelInfo | v4[1])) || -[AWDProactiveModelFittingModelInfo isEqual:](modelInfo, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((modelInfo = self->_modelInfo, !(modelInfo | equalCopy[1])) || -[AWDProactiveModelFittingModelInfo isEqual:](modelInfo, "isEqual:")))
   {
     stats = self->_stats;
-    if (stats | v4[2])
+    if (stats | equalCopy[2])
     {
       v7 = [(AWDProactiveModelFittingMinibatchStats *)stats isEqual:?];
     }
@@ -81,72 +81,72 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(AWDProactiveModelFittingMinibatchStats *)self->_stats copyWithZone:a3];
+  v8 = [(AWDProactiveModelFittingMinibatchStats *)self->_stats copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_modelInfo)
   {
-    [v4 setModelInfo:?];
-    v4 = v5;
+    [toCopy setModelInfo:?];
+    toCopy = v5;
   }
 
   if (self->_stats)
   {
     [v5 setStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_modelInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_stats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   modelInfo = self->_modelInfo;
   if (modelInfo)
   {
-    v5 = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"modelInfo"];
+    dictionaryRepresentation = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"modelInfo"];
   }
 
   stats = self->_stats;
   if (stats)
   {
-    v7 = [(AWDProactiveModelFittingMinibatchStats *)stats dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"stats"];
+    dictionaryRepresentation2 = [(AWDProactiveModelFittingMinibatchStats *)stats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"stats"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -155,8 +155,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingModelInfoStatsPair;
   v4 = [(AWDProactiveModelFittingModelInfoStatsPair *)&v8 description];
-  v5 = [(AWDProactiveModelFittingModelInfoStatsPair *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingModelInfoStatsPair *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

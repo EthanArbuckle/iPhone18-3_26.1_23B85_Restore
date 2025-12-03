@@ -1,26 +1,26 @@
 @interface TSCERegexMatcher
-+ (TSCERegexMatcher)regexMatcherWithRegexString:(id)a3 caseSensitive:(BOOL)a4 entireMatch:(BOOL)a5 outError:(id *)a6;
-+ (TSCERegexMatcher)regexMatcherWithRegexString:(id)a3 caseSensitive:(BOOL)a4 outError:(id *)a5;
-+ (TSCERegexMatcher)regexMatcherWithRegexString:(id)a3 outError:(id *)a4;
-+ (TSCERegexMatcher)regexMatcherWithStringMatch:(id)a3 caseSensitive:(BOOL)a4 entireMatch:(BOOL)a5 outError:(id *)a6;
-+ (TSCERegexMatcher)regexMatcherWithStringMatch:(id)a3 outError:(id *)a4;
-- (TSCERegexMatcher)initWithRegexString:(id)a3 caseSensitive:(BOOL)a4 entireMatch:(BOOL)a5 outError:(id *)a6;
-- (TSCERegexMatcher)initWithString:(id)a3 caseSensitive:(BOOL)a4 entireMatch:(BOOL)a5 outError:(id *)a6;
-- (_NSRange)rangeOfFirstMatchInString:(id)a3;
-- (_NSRange)rangeOfFirstMatchInString:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5;
-- (_NSRange)rangeOfMatchInString:(id)a3 occurrence:(int64_t)a4;
-- (_NSRange)rangeOfMatchInString:(id)a3 occurrence:(int64_t)a4 matchesFound:(int64_t *)a5;
-- (id)matchesInString:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5;
-- (id)stringByReplacingMatchesInString:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 withTemplate:(id)a6;
++ (TSCERegexMatcher)regexMatcherWithRegexString:(id)string caseSensitive:(BOOL)sensitive entireMatch:(BOOL)match outError:(id *)error;
++ (TSCERegexMatcher)regexMatcherWithRegexString:(id)string caseSensitive:(BOOL)sensitive outError:(id *)error;
++ (TSCERegexMatcher)regexMatcherWithRegexString:(id)string outError:(id *)error;
++ (TSCERegexMatcher)regexMatcherWithStringMatch:(id)match caseSensitive:(BOOL)sensitive entireMatch:(BOOL)entireMatch outError:(id *)error;
++ (TSCERegexMatcher)regexMatcherWithStringMatch:(id)match outError:(id *)error;
+- (TSCERegexMatcher)initWithRegexString:(id)string caseSensitive:(BOOL)sensitive entireMatch:(BOOL)match outError:(id *)error;
+- (TSCERegexMatcher)initWithString:(id)string caseSensitive:(BOOL)sensitive entireMatch:(BOOL)match outError:(id *)error;
+- (_NSRange)rangeOfFirstMatchInString:(id)string;
+- (_NSRange)rangeOfFirstMatchInString:(id)string options:(unint64_t)options range:(_NSRange)range;
+- (_NSRange)rangeOfMatchInString:(id)string occurrence:(int64_t)occurrence;
+- (_NSRange)rangeOfMatchInString:(id)string occurrence:(int64_t)occurrence matchesFound:(int64_t *)found;
+- (id)matchesInString:(id)string options:(unint64_t)options range:(_NSRange)range;
+- (id)stringByReplacingMatchesInString:(id)string options:(unint64_t)options range:(_NSRange)range withTemplate:(id)template;
 @end
 
 @implementation TSCERegexMatcher
 
-- (TSCERegexMatcher)initWithString:(id)a3 caseSensitive:(BOOL)a4 entireMatch:(BOOL)a5 outError:(id *)a6
+- (TSCERegexMatcher)initWithString:(id)string caseSensitive:(BOOL)sensitive entireMatch:(BOOL)match outError:(id *)error
 {
-  v63 = a4;
-  v64 = a5;
-  v6 = objc_msgSend_stringWithString_(MEMORY[0x277CCAB68], a2, a3, a4, a5);
+  sensitiveCopy = sensitive;
+  matchCopy = match;
+  v6 = objc_msgSend_stringWithString_(MEMORY[0x277CCAB68], a2, string, sensitive, match);
   v67 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x277CCA900], v7, @"~?*", v8, v9);
   v68 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x277CCA900], v10, @"+[(){}^$|\\./", v11, v12);
   v17 = objc_msgSend_mutableCopy(v68, v13, v14, v15, v16);
@@ -106,30 +106,30 @@ LABEL_18:
     v28 = v24;
   }
 
-  matched = objc_msgSend_initWithRegexString_caseSensitive_entireMatch_outError_(self, v60, v6, v63, v64, a6);
+  matched = objc_msgSend_initWithRegexString_caseSensitive_entireMatch_outError_(self, v60, v6, sensitiveCopy, matchCopy, error);
   return matched;
 }
 
-- (TSCERegexMatcher)initWithRegexString:(id)a3 caseSensitive:(BOOL)a4 entireMatch:(BOOL)a5 outError:(id *)a6
+- (TSCERegexMatcher)initWithRegexString:(id)string caseSensitive:(BOOL)sensitive entireMatch:(BOOL)match outError:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
+  matchCopy = match;
+  sensitiveCopy = sensitive;
+  stringCopy = string;
   v29.receiver = self;
   v29.super_class = TSCERegexMatcher;
   v11 = [(TSCERegexMatcher *)&v29 init];
   if (v11)
   {
-    v12 = v10;
+    v12 = stringCopy;
     v13 = v12;
-    if (v7)
+    if (matchCopy)
     {
       v14 = objc_alloc(MEMORY[0x277CCACA8]);
       v13 = objc_msgSend_initWithFormat_(v14, v15, @"^%@$", v16, v17, v12);
     }
 
     v18 = objc_alloc(MEMORY[0x277CCAC68]);
-    if (v8)
+    if (sensitiveCopy)
     {
       v20 = 48;
     }
@@ -147,7 +147,7 @@ LABEL_18:
 
     if (v22)
     {
-      *a6 = objc_msgSend_invalidRegexError_(TSCEError, v24, v12, v25, v26);
+      *error = objc_msgSend_invalidRegexError_(TSCEError, v24, v12, v25, v26);
 
       v11 = 0;
     }
@@ -156,61 +156,61 @@ LABEL_18:
   return v11;
 }
 
-+ (TSCERegexMatcher)regexMatcherWithStringMatch:(id)a3 caseSensitive:(BOOL)a4 entireMatch:(BOOL)a5 outError:(id *)a6
++ (TSCERegexMatcher)regexMatcherWithStringMatch:(id)match caseSensitive:(BOOL)sensitive entireMatch:(BOOL)entireMatch outError:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  entireMatchCopy = entireMatch;
+  sensitiveCopy = sensitive;
+  matchCopy = match;
   v10 = objc_alloc(objc_opt_class());
-  matched = objc_msgSend_initWithString_caseSensitive_entireMatch_outError_(v10, v11, v9, v8, v7, a6);
+  matched = objc_msgSend_initWithString_caseSensitive_entireMatch_outError_(v10, v11, matchCopy, sensitiveCopy, entireMatchCopy, error);
 
   return matched;
 }
 
-+ (TSCERegexMatcher)regexMatcherWithStringMatch:(id)a3 outError:(id *)a4
++ (TSCERegexMatcher)regexMatcherWithStringMatch:(id)match outError:(id *)error
 {
-  v5 = a3;
+  matchCopy = match;
   v6 = objc_alloc(objc_opt_class());
-  matched = objc_msgSend_initWithString_caseSensitive_entireMatch_outError_(v6, v7, v5, 0, 1, a4);
+  matched = objc_msgSend_initWithString_caseSensitive_entireMatch_outError_(v6, v7, matchCopy, 0, 1, error);
 
   return matched;
 }
 
-+ (TSCERegexMatcher)regexMatcherWithRegexString:(id)a3 caseSensitive:(BOOL)a4 entireMatch:(BOOL)a5 outError:(id *)a6
++ (TSCERegexMatcher)regexMatcherWithRegexString:(id)string caseSensitive:(BOOL)sensitive entireMatch:(BOOL)match outError:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  matchCopy = match;
+  sensitiveCopy = sensitive;
+  stringCopy = string;
   v10 = objc_alloc(objc_opt_class());
-  matched = objc_msgSend_initWithRegexString_caseSensitive_entireMatch_outError_(v10, v11, v9, v8, v7, a6);
+  matched = objc_msgSend_initWithRegexString_caseSensitive_entireMatch_outError_(v10, v11, stringCopy, sensitiveCopy, matchCopy, error);
 
   return matched;
 }
 
-+ (TSCERegexMatcher)regexMatcherWithRegexString:(id)a3 caseSensitive:(BOOL)a4 outError:(id *)a5
++ (TSCERegexMatcher)regexMatcherWithRegexString:(id)string caseSensitive:(BOOL)sensitive outError:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  sensitiveCopy = sensitive;
+  stringCopy = string;
   v8 = objc_alloc(objc_opt_class());
-  matched = objc_msgSend_initWithRegexString_caseSensitive_entireMatch_outError_(v8, v9, v7, v6, 0, a5);
+  matched = objc_msgSend_initWithRegexString_caseSensitive_entireMatch_outError_(v8, v9, stringCopy, sensitiveCopy, 0, error);
 
   return matched;
 }
 
-+ (TSCERegexMatcher)regexMatcherWithRegexString:(id)a3 outError:(id *)a4
++ (TSCERegexMatcher)regexMatcherWithRegexString:(id)string outError:(id *)error
 {
-  v5 = a3;
+  stringCopy = string;
   v6 = objc_alloc(objc_opt_class());
-  matched = objc_msgSend_initWithRegexString_caseSensitive_entireMatch_outError_(v6, v7, v5, 1, 0, a4);
+  matched = objc_msgSend_initWithRegexString_caseSensitive_entireMatch_outError_(v6, v7, stringCopy, 1, 0, error);
 
   return matched;
 }
 
-- (_NSRange)rangeOfFirstMatchInString:(id)a3
+- (_NSRange)rangeOfFirstMatchInString:(id)string
 {
-  v4 = a3;
-  v9 = objc_msgSend_length(v4, v5, v6, v7, v8);
-  MatchInString_options_range = objc_msgSend_rangeOfFirstMatchInString_options_range_(self, v10, v4, 0, 0, v9);
+  stringCopy = string;
+  v9 = objc_msgSend_length(stringCopy, v5, v6, v7, v8);
+  MatchInString_options_range = objc_msgSend_rangeOfFirstMatchInString_options_range_(self, v10, stringCopy, 0, 0, v9);
   v13 = v12;
 
   v14 = MatchInString_options_range;
@@ -220,32 +220,32 @@ LABEL_18:
   return result;
 }
 
-- (_NSRange)rangeOfMatchInString:(id)a3 occurrence:(int64_t)a4
+- (_NSRange)rangeOfMatchInString:(id)string occurrence:(int64_t)occurrence
 {
-  v4 = objc_msgSend_rangeOfMatchInString_occurrence_matchesFound_(self, a2, a3, a4, 0);
+  v4 = objc_msgSend_rangeOfMatchInString_occurrence_matchesFound_(self, a2, string, occurrence, 0);
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)rangeOfMatchInString:(id)a3 occurrence:(int64_t)a4 matchesFound:(int64_t *)a5
+- (_NSRange)rangeOfMatchInString:(id)string occurrence:(int64_t)occurrence matchesFound:(int64_t *)found
 {
-  v8 = a3;
-  v13 = v8;
-  if (a4 < 0)
+  stringCopy = string;
+  v13 = stringCopy;
+  if (occurrence < 0)
   {
-    v19 = objc_msgSend_length(v8, v9, v10, v11, v12);
+    v19 = objc_msgSend_length(stringCopy, v9, v10, v11, v12);
     v21 = objc_msgSend_matchesInString_options_range_(self, v20, v13, 0, 0, v19);
     v26 = v21;
-    if (a5)
+    if (found)
     {
-      *a5 = objc_msgSend_count(v21, v22, v23, v24, v25);
+      *found = objc_msgSend_count(v21, v22, v23, v24, v25);
     }
 
-    if (objc_msgSend_count(v26, v22, v23, v24, v25) >= -a4)
+    if (objc_msgSend_count(v26, v22, v23, v24, v25) >= -occurrence)
     {
       v31 = objc_msgSend_count(v26, v27, v28, v29, v30);
-      v35 = objc_msgSend_objectAtIndex_(v26, v32, v31 + a4, v33, v34);
+      v35 = objc_msgSend_objectAtIndex_(v26, v32, v31 + occurrence, v33, v34);
       v17 = objc_msgSend_range(v35, v36, v37, v38, v39);
       v18 = v40;
     }
@@ -271,18 +271,18 @@ LABEL_18:
     v49 = &unk_22188E88F;
     v50 = *MEMORY[0x277D81490];
     regularExpression = self->_regularExpression;
-    v15 = objc_msgSend_length(v8, v9, v10, v11, v12);
+    v15 = objc_msgSend_length(stringCopy, v9, v10, v11, v12);
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = sub_22126B680;
     v43[3] = &unk_278462050;
     v43[5] = &v44;
-    v43[6] = a4;
+    v43[6] = occurrence;
     v43[4] = &v51;
     objc_msgSend_enumerateMatchesInString_options_range_usingBlock_(regularExpression, v16, v13, 0, 0, v15, v43);
-    if (a5)
+    if (found)
     {
-      *a5 = v52[3];
+      *found = v52[3];
     }
 
     v17 = v45[6];
@@ -298,24 +298,24 @@ LABEL_18:
   return result;
 }
 
-- (_NSRange)rangeOfFirstMatchInString:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5
+- (_NSRange)rangeOfFirstMatchInString:(id)string options:(unint64_t)options range:(_NSRange)range
 {
-  MatchInString_options_range = objc_msgSend_rangeOfFirstMatchInString_options_range_(self->_regularExpression, a2, a3, a4, a5.location, a5.length);
+  MatchInString_options_range = objc_msgSend_rangeOfFirstMatchInString_options_range_(self->_regularExpression, a2, string, options, range.location, range.length);
   result.length = v6;
   result.location = MatchInString_options_range;
   return result;
 }
 
-- (id)matchesInString:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5
+- (id)matchesInString:(id)string options:(unint64_t)options range:(_NSRange)range
 {
-  v5 = objc_msgSend_matchesInString_options_range_(self->_regularExpression, a2, a3, a4, a5.location, a5.length);
+  v5 = objc_msgSend_matchesInString_options_range_(self->_regularExpression, a2, string, options, range.location, range.length);
 
   return v5;
 }
 
-- (id)stringByReplacingMatchesInString:(id)a3 options:(unint64_t)a4 range:(_NSRange)a5 withTemplate:(id)a6
+- (id)stringByReplacingMatchesInString:(id)string options:(unint64_t)options range:(_NSRange)range withTemplate:(id)template
 {
-  v6 = objc_msgSend_stringByReplacingMatchesInString_options_range_withTemplate_(self->_regularExpression, a2, a3, a4, a5.location, a5.length, a6);
+  v6 = objc_msgSend_stringByReplacingMatchesInString_options_range_withTemplate_(self->_regularExpression, a2, string, options, range.location, range.length, template);
 
   return v6;
 }

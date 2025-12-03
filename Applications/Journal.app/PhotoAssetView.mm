@@ -1,18 +1,18 @@
 @interface PhotoAssetView
 - (CGRect)bounds;
 - (CGRect)frame;
-- (_TtC7Journal14PhotoAssetView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal14PhotoAssetView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation PhotoAssetView
 
-- (_TtC7Journal14PhotoAssetView)initWithFrame:(CGRect)a3
+- (_TtC7Journal14PhotoAssetView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC7Journal14PhotoAssetView_assetImageView;
   *(&self->super.super.super.super.isa + v8) = [objc_allocWithZone(UIImageView) init];
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal14PhotoAssetView_needsCropRectUpdate) = 0;
@@ -22,10 +22,10 @@
   (*(*(v10 - 8) + 56))(self + v9, 1, 1, v10);
   v13.receiver = self;
   v13.super_class = type metadata accessor for PhotoAssetView();
-  v11 = [(JournalAssetView *)&v13 initWithFrame:x, y, width, height];
+  height = [(JournalAssetView *)&v13 initWithFrame:x, y, width, height];
   sub_1000701DC();
 
-  return v11;
+  return height;
 }
 
 - (CGRect)bounds

@@ -1,29 +1,29 @@
 @interface ATXCustomIntentDescription
-- (ATXCustomIntentDescription)initWithCoder:(id)a3;
-- (ATXCustomIntentDescription)initWithTypeName:(id)a3 parameters:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (ATXCustomIntentDescription)initWithCoder:(id)coder;
+- (ATXCustomIntentDescription)initWithTypeName:(id)name parameters:(id)parameters;
+- (BOOL)isEqual:(id)equal;
 - (id)createIntent;
 - (id)description;
 - (void)createIntent;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXCustomIntentDescription
 
-- (ATXCustomIntentDescription)initWithTypeName:(id)a3 parameters:(id)a4
+- (ATXCustomIntentDescription)initWithTypeName:(id)name parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  parametersCopy = parameters;
   v15.receiver = self;
   v15.super_class = ATXCustomIntentDescription;
   v8 = [(ATXCustomIntentDescription *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     typeName = v8->_typeName;
     v8->_typeName = v9;
 
-    v11 = [v7 copy];
+    v11 = [parametersCopy copy];
     parameters = v8->_parameters;
     v8->_parameters = v11;
 
@@ -33,10 +33,10 @@
   return v8;
 }
 
-- (ATXCustomIntentDescription)initWithCoder:(id)a3
+- (ATXCustomIntentDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typeName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typeName"];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
@@ -47,26 +47,26 @@
     v11 = objc_opt_class();
     v12 = [v7 initWithObjects:{v8, v9, v10, v11, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v6);
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"parameters"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"parameters"];
 
     self = [(ATXCustomIntentDescription *)self initWithTypeName:v5 parameters:v13];
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   typeName = self->_typeName;
-  v5 = a3;
-  [v5 encodeObject:typeName forKey:@"typeName"];
-  [v5 encodeObject:self->_parameters forKey:@"parameters"];
+  coderCopy = coder;
+  [coderCopy encodeObject:typeName forKey:@"typeName"];
+  [coderCopy encodeObject:self->_parameters forKey:@"parameters"];
 }
 
 - (id)description
@@ -76,10 +76,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -89,7 +89,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_typeName;
       v7 = v6;
       if (v6 == v5->_typeName)
@@ -189,7 +189,7 @@ LABEL_14:
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_1DEFC4000, log, OS_LOG_TYPE_ERROR, "Could not form JSON for intent of type %@ with error: %@", &v4, 0x16u);

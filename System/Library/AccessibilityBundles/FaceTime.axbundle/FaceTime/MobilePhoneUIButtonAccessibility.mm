@@ -6,8 +6,8 @@
 
 - (BOOL)_accessibilityKeyboardKeyAllowsTouchTyping
 {
-  v3 = [(MobilePhoneUIButtonAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"DeleteButton"];
+  accessibilityIdentifier = [(MobilePhoneUIButtonAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"DeleteButton"];
 
   if (v4)
   {

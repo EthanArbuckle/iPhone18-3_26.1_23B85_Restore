@@ -1,33 +1,33 @@
 @interface _SUUIFontDescriptorCacheKey
-- (BOOL)isEqual:(id)a3;
-- (_SUUIFontDescriptorCacheKey)initWithTextStyle:(__CFString *)a3 sizeCategory:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_SUUIFontDescriptorCacheKey)initWithTextStyle:(__CFString *)style sizeCategory:(id)category;
 @end
 
 @implementation _SUUIFontDescriptorCacheKey
 
-- (_SUUIFontDescriptorCacheKey)initWithTextStyle:(__CFString *)a3 sizeCategory:(id)a4
+- (_SUUIFontDescriptorCacheKey)initWithTextStyle:(__CFString *)style sizeCategory:(id)category
 {
-  v7 = a4;
+  categoryCopy = category;
   v11.receiver = self;
   v11.super_class = _SUUIFontDescriptorCacheKey;
   v8 = [(_SUUIFontDescriptorCacheKey *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_textStyle = a3;
-    objc_storeStrong(&v8->_sizeCategory, a4);
+    v8->_textStyle = style;
+    objc_storeStrong(&v8->_sizeCategory, category);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self == v5)
     {
       v8 = 1;
@@ -35,9 +35,9 @@
 
     else if (CFEqual([(_SUUIFontDescriptorCacheKey *)self textStyle], [(_SUUIFontDescriptorCacheKey *)v5 textStyle]))
     {
-      v6 = [(_SUUIFontDescriptorCacheKey *)self sizeCategory];
-      v7 = [(_SUUIFontDescriptorCacheKey *)v5 sizeCategory];
-      v8 = [v6 isEqual:v7];
+      sizeCategory = [(_SUUIFontDescriptorCacheKey *)self sizeCategory];
+      sizeCategory2 = [(_SUUIFontDescriptorCacheKey *)v5 sizeCategory];
+      v8 = [sizeCategory isEqual:sizeCategory2];
     }
 
     else

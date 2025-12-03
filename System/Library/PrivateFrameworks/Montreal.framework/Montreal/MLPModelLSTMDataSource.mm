@@ -1,40 +1,40 @@
 @interface MLPModelLSTMDataSource
-- (MLPModelLSTMDataSource)initWithColumns:(unint64_t)a3 rows:(unint64_t)a4 lstmInputSize:(unint64_t)a5 lstmOutputSize:(unint64_t)a6 weightID:(unint64_t)a7 neuronType:(int)a8 neuronA:(float)a9 neuronB:(float)a10 initialWeights_0:(float *)a11 initialWeights_1:(float *)a12 bias_0:(float *)a13 bias_1:(float *)a14 weightAttributes:(unint64_t)a15 deviceHandler:(id)a16;
+- (MLPModelLSTMDataSource)initWithColumns:(unint64_t)columns rows:(unint64_t)rows lstmInputSize:(unint64_t)size lstmOutputSize:(unint64_t)outputSize weightID:(unint64_t)d neuronType:(int)type neuronA:(float)a neuronB:(float)self0 initialWeights_0:(float *)self1 initialWeights_1:(float *)self2 bias_0:(float *)self3 bias_1:(float *)self4 weightAttributes:(unint64_t)self5 deviceHandler:(id)self6;
 - (float)biasTerms;
 - (id).cxx_construct;
-- (void)initializeWeightsAndBiases:(id)a3;
-- (void)loadWithInitialWeights_0:(float *)a3 initialWeights_1:(float *)a4 bias_0:(float *)a5 bias_1:(float *)a6 weightAttributes:(unint64_t)a7;
+- (void)initializeWeightsAndBiases:(id)biases;
+- (void)loadWithInitialWeights_0:(float *)weights_0 initialWeights_1:(float *)weights_1 bias_0:(float *)bias_0 bias_1:(float *)bias_1 weightAttributes:(unint64_t)attributes;
 @end
 
 @implementation MLPModelLSTMDataSource
 
-- (MLPModelLSTMDataSource)initWithColumns:(unint64_t)a3 rows:(unint64_t)a4 lstmInputSize:(unint64_t)a5 lstmOutputSize:(unint64_t)a6 weightID:(unint64_t)a7 neuronType:(int)a8 neuronA:(float)a9 neuronB:(float)a10 initialWeights_0:(float *)a11 initialWeights_1:(float *)a12 bias_0:(float *)a13 bias_1:(float *)a14 weightAttributes:(unint64_t)a15 deviceHandler:(id)a16
+- (MLPModelLSTMDataSource)initWithColumns:(unint64_t)columns rows:(unint64_t)rows lstmInputSize:(unint64_t)size lstmOutputSize:(unint64_t)outputSize weightID:(unint64_t)d neuronType:(int)type neuronA:(float)a neuronB:(float)self0 initialWeights_0:(float *)self1 initialWeights_1:(float *)self2 bias_0:(float *)self3 bias_1:(float *)self4 weightAttributes:(unint64_t)self5 deviceHandler:(id)self6
 {
-  v18 = *&a8;
-  v25 = a16;
+  v18 = *&type;
+  handlerCopy = handler;
   v43.receiver = self;
   v43.super_class = MLPModelLSTMDataSource;
   v26 = [(MLPModelLSTMDataSource *)&v43 init];
   v28 = v26;
   if (v26)
   {
-    v26->_weightID = a7;
-    v26->_columns = a3;
-    v26->_rows = a4;
-    v26->_lstmInputSize = a5;
-    v26->_lstmOutputSize = a6;
-    v29 = objc_msgSend_cnnConvolutionDescriptorWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(MEMORY[0x1E69748E8], v27, 1, 1, a3, a4);
+    v26->_weightID = d;
+    v26->_columns = columns;
+    v26->_rows = rows;
+    v26->_lstmInputSize = size;
+    v26->_lstmOutputSize = outputSize;
+    v29 = objc_msgSend_cnnConvolutionDescriptorWithKernelWidth_kernelHeight_inputFeatureChannels_outputFeatureChannels_(MEMORY[0x1E69748E8], v27, 1, 1, columns, rows);
     desc = v28->_desc;
     v28->_desc = v29;
 
-    *&v31 = a9;
-    *&v32 = a10;
+    *&v31 = a;
+    *&v32 = b;
     objc_msgSend_setNeuronType_parameterA_parameterB_(v28->_desc, v33, v18, v34, v31, v32);
     objc_msgSend_setStrideInPixelsX_(v28->_desc, v35, 1, v36);
     objc_msgSend_setStrideInPixelsY_(v28->_desc, v37, 1, v38);
-    if (a4 * a3)
+    if (rows * columns)
     {
-      if (!((a4 * a3) >> 62))
+      if (!((rows * columns) >> 62))
       {
         operator new();
       }
@@ -55,9 +55,9 @@
     v28->_weight.__begin_ = 0;
     v28->_weight.__end_ = 0;
     v28->_weight.__cap_ = 0;
-    if (a4)
+    if (rows)
     {
-      if (!(a4 >> 62))
+      if (!(rows >> 62))
       {
         operator new();
       }
@@ -78,23 +78,23 @@
     v28->_bias.__begin_ = 0;
     v28->_bias.__end_ = 0;
     v28->_bias.__cap_ = 0;
-    if (a11 || a12 || a13 || a14)
+    if (weights_0 || weights_1 || bias_0 || bias_1)
     {
-      objc_msgSend_loadWithInitialWeights_0_initialWeights_1_bias_0_bias_1_weightAttributes_(v28, v39, a11, a12, a13, a14, a15);
+      objc_msgSend_loadWithInitialWeights_0_initialWeights_1_bias_0_bias_1_weightAttributes_(v28, v39, weights_0, weights_1, bias_0, bias_1, attributes);
     }
 
     else
     {
-      objc_msgSend_initializeWeightsAndBiases_(v28, v39, v25, 0);
+      objc_msgSend_initializeWeightsAndBiases_(v28, v39, handlerCopy, 0);
     }
   }
 
   return v28;
 }
 
-- (void)initializeWeightsAndBiases:(id)a3
+- (void)initializeWeightsAndBiases:(id)biases
 {
-  v41 = a3;
+  biasesCopy = biases;
   v8 = 0;
   v9 = 0;
   v43 = 0x3CA3D70A00000000;
@@ -115,9 +115,9 @@
 
       else
       {
-        v22 = v41 + 1;
-        v23 = v41[313];
-        v24 = *(v41 + v23 + 2);
+        v22 = biasesCopy + 1;
+        v23 = biasesCopy[313];
+        v24 = *(biasesCopy + v23 + 2);
         do
         {
           v25 = (v23 + 1) % 0x270;
@@ -177,7 +177,7 @@
         }
 
         while (v38 > 1.0 || v38 == 0.0);
-        v41[313] = v23;
+        biasesCopy[313] = v23;
         v42 = v37;
         v39 = sqrtf((logf(v38) * -2.0) / v38);
         v3 = v39 * v42.f32[0];
@@ -195,7 +195,7 @@
 
   for (j = 0; objc_msgSend_rows(self, v17, v18, v19) > j; ++j)
   {
-    self->_bias.__begin_[j] = sub_19D36472C(&v43, (v41 + 1), &v43);
+    self->_bias.__begin_[j] = sub_19D36472C(&v43, (biasesCopy + 1), &v43);
   }
 }
 
@@ -212,19 +212,19 @@
   }
 }
 
-- (void)loadWithInitialWeights_0:(float *)a3 initialWeights_1:(float *)a4 bias_0:(float *)a5 bias_1:(float *)a6 weightAttributes:(unint64_t)a7
+- (void)loadWithInitialWeights_0:(float *)weights_0 initialWeights_1:(float *)weights_1 bias_0:(float *)bias_0 bias_1:(float *)bias_1 weightAttributes:(unint64_t)attributes
 {
-  v7 = a7;
-  v11 = a3;
-  v13 = a7 & 0x10;
-  v14 = objc_msgSend_weightID(self, a2, a3, a4);
+  attributesCopy = attributes;
+  weights_0Copy = weights_0;
+  v13 = attributes & 0x10;
+  v14 = objc_msgSend_weightID(self, a2, weights_0, weights_1);
   if (v14 > 10)
   {
     if (v14 > 14)
     {
       if (v14 == 15)
       {
-        if ((v7 & 0x20) != 0)
+        if ((attributesCopy & 0x20) != 0)
         {
           v357 = objc_msgSend_lstmOutputSize(self, v15, v16, v17);
           v361 = objc_msgSend_lstmInputSize(self, v358, v359, v360);
@@ -237,7 +237,7 @@
             v378 = 0;
             v379 = v361;
             v380 = 0;
-            v381 = &v11[3 * v377 * (v365 + v379)];
+            v381 = &weights_0Copy[3 * v377 * (v365 + v379)];
             v382 = 4 * (v373 + v369);
             do
             {
@@ -280,7 +280,7 @@
                 v233 = 0;
                 do
                 {
-                  v234 = v11[v229 + v233];
+                  v234 = weights_0Copy[v229 + v233];
                   *(&self->_weight.__begin_[v233++] + v227 * objc_msgSend_columns(self, v230, v231, v232)) = v234;
                 }
 
@@ -301,10 +301,10 @@
           v394 = 0;
           do
           {
-            self->_bias.__begin_[v394] = a5[3 * objc_msgSend_lstmOutputSize(self, v391, v392, v393) + v394];
-            if ((v7 & 0x80) == 0)
+            self->_bias.__begin_[v394] = bias_0[3 * objc_msgSend_lstmOutputSize(self, v391, v392, v393) + v394];
+            if ((attributesCopy & 0x80) == 0)
             {
-              self->_bias.__begin_[v394] = self->_bias.__begin_[v394] + a6[3 * objc_msgSend_lstmOutputSize(self, v395, v396, v397) + v394];
+              self->_bias.__begin_[v394] = self->_bias.__begin_[v394] + bias_1[3 * objc_msgSend_lstmOutputSize(self, v395, v396, v397) + v394];
             }
 
             ++v394;
@@ -321,7 +321,7 @@
           goto LABEL_153;
         }
 
-        if ((v7 & 0x20) != 0)
+        if ((attributesCopy & 0x20) != 0)
         {
           v512 = objc_msgSend_lstmOutputSize(self, v15, v16, v17);
           v516 = objc_msgSend_lstmInputSize(self, v513, v514, v515);
@@ -333,7 +333,7 @@
           {
             v539 = 0;
             v540 = 0;
-            v541 = &v11[3 * v512 * (v520 + v516) + v524];
+            v541 = &weights_0Copy[3 * v512 * (v520 + v516) + v524];
             do
             {
               if (objc_msgSend_columns(self, v536, v537, v538))
@@ -375,7 +375,7 @@
                 v123 = 0;
                 do
                 {
-                  v124 = a4[v119 + v123];
+                  v124 = weights_1[v119 + v123];
                   *(&self->_weight.__begin_[v123++] + v117 * objc_msgSend_columns(self, v120, v121, v122)) = v124;
                 }
 
@@ -396,7 +396,7 @@
     else if (v14 == 11)
     {
       v560 = v13;
-      if ((v7 & 0x20) != 0)
+      if ((attributesCopy & 0x20) != 0)
       {
         v273 = objc_msgSend_lstmOutputSize(self, v15, v16, v17);
         v277 = objc_msgSend_lstmInputSize(self, v274, v275, v276);
@@ -409,7 +409,7 @@
           v294 = 0;
           v295 = v277;
           v296 = 0;
-          v297 = &v11[(v293 << ((v560 >> 4) ^ 1u)) * (v281 + v295)];
+          v297 = &weights_0Copy[(v293 << ((v560 >> 4) ^ 1u)) * (v281 + v295)];
           v298 = 4 * (v289 + v285);
           do
           {
@@ -452,7 +452,7 @@
               v177 = 0;
               do
               {
-                v178 = v11[v173 + v177];
+                v178 = weights_0Copy[v173 + v177];
                 *(&self->_weight.__begin_[v177++] + v171 * objc_msgSend_columns(self, v174, v175, v176)) = v178;
               }
 
@@ -474,10 +474,10 @@
         v311 = (v560 >> 4) ^ 1;
         do
         {
-          self->_bias.__begin_[v310] = a5[(objc_msgSend_lstmOutputSize(self, v307, v308, v309) << v311) + v310];
-          if ((v7 & 0x80) == 0)
+          self->_bias.__begin_[v310] = bias_0[(objc_msgSend_lstmOutputSize(self, v307, v308, v309) << v311) + v310];
+          if ((attributesCopy & 0x80) == 0)
           {
-            self->_bias.__begin_[v310] = self->_bias.__begin_[v310] + a6[(objc_msgSend_lstmOutputSize(self, v312, v313, v314) << v311) + v310];
+            self->_bias.__begin_[v310] = self->_bias.__begin_[v310] + bias_1[(objc_msgSend_lstmOutputSize(self, v312, v313, v314) << v311) + v310];
           }
 
           ++v310;
@@ -494,7 +494,7 @@
         goto LABEL_153;
       }
 
-      if ((v7 & 0x20) != 0)
+      if ((attributesCopy & 0x20) != 0)
       {
         v434 = objc_msgSend_lstmOutputSize(self, v15, v16, v17);
         v438 = objc_msgSend_lstmInputSize(self, v435, v436, v437);
@@ -507,7 +507,7 @@
           v461 = v13;
           v462 = 0;
           v463 = 0;
-          v464 = &v11[(v434 << ((v461 >> 4) ^ 1u)) * (v442 + v438) + v446];
+          v464 = &weights_0Copy[(v434 << ((v461 >> 4) ^ 1u)) * (v442 + v438) + v446];
           do
           {
             if (objc_msgSend_columns(self, v458, v459, v460))
@@ -549,7 +549,7 @@
               v67 = 0;
               do
               {
-                v68 = a4[v63 + v67];
+                v68 = weights_1[v63 + v67];
                 *(&self->_weight.__begin_[v67++] + v61 * objc_msgSend_columns(self, v64, v65, v66)) = v68;
               }
 
@@ -572,7 +572,7 @@
     if (v14 == 7)
     {
       v561 = v13;
-      if ((v7 & 0x20) != 0)
+      if ((attributesCopy & 0x20) != 0)
       {
         v315 = objc_msgSend_lstmOutputSize(self, v15, v16, v17);
         v319 = objc_msgSend_lstmInputSize(self, v316, v317, v318);
@@ -585,7 +585,7 @@
           v336 = 0;
           v337 = v319;
           v338 = 0;
-          v339 = &v11[(v335 << (v561 >> 4)) * (v323 + v337)];
+          v339 = &weights_0Copy[(v335 << (v561 >> 4)) * (v323 + v337)];
           v340 = 4 * (v331 + v327);
           do
           {
@@ -628,7 +628,7 @@
               v205 = 0;
               do
               {
-                v206 = v11[v201 + v205];
+                v206 = weights_0Copy[v201 + v205];
                 *(&self->_weight.__begin_[v205++] + v199 * objc_msgSend_columns(self, v202, v203, v204)) = v206;
               }
 
@@ -650,10 +650,10 @@
         v353 = v561 >> 4;
         do
         {
-          self->_bias.__begin_[v352] = a5[(objc_msgSend_lstmOutputSize(self, v349, v350, v351) << v353) + v352];
-          if ((v7 & 0x80) == 0)
+          self->_bias.__begin_[v352] = bias_0[(objc_msgSend_lstmOutputSize(self, v349, v350, v351) << v353) + v352];
+          if ((attributesCopy & 0x80) == 0)
           {
-            self->_bias.__begin_[v352] = self->_bias.__begin_[v352] + a6[(objc_msgSend_lstmOutputSize(self, v354, v355, v356) << v353) + v352];
+            self->_bias.__begin_[v352] = self->_bias.__begin_[v352] + bias_1[(objc_msgSend_lstmOutputSize(self, v354, v355, v356) << v353) + v352];
           }
 
           ++v352;
@@ -670,7 +670,7 @@
         goto LABEL_153;
       }
 
-      if ((v7 & 0x20) != 0)
+      if ((attributesCopy & 0x20) != 0)
       {
         v473 = objc_msgSend_lstmOutputSize(self, v15, v16, v17);
         v477 = objc_msgSend_lstmInputSize(self, v474, v475, v476);
@@ -683,7 +683,7 @@
           v500 = v13;
           v501 = 0;
           v502 = 0;
-          v503 = &v11[(v473 << (v500 >> 4)) * (v481 + v477) + v485];
+          v503 = &weights_0Copy[(v473 << (v500 >> 4)) * (v481 + v477) + v485];
           do
           {
             if (objc_msgSend_columns(self, v497, v498, v499))
@@ -725,7 +725,7 @@
               v95 = 0;
               do
               {
-                v96 = a4[v91 + v95];
+                v96 = weights_1[v91 + v95];
                 *(&self->_weight.__begin_[v95++] + v89 * objc_msgSend_columns(self, v92, v93, v94)) = v96;
               }
 
@@ -749,7 +749,7 @@
     {
       if (v14 == 4)
       {
-        if ((v7 & 0x20) != 0)
+        if ((attributesCopy & 0x20) != 0)
         {
           objc_msgSend_lstmOutputSize(self, v15, v16, v17);
           objc_msgSend_lstmInputSize(self, v398, v399, v400);
@@ -761,7 +761,7 @@
           {
             v422 = 0;
             v423 = 0;
-            v424 = &v11[v407];
+            v424 = &weights_0Copy[v407];
             v425 = 4 * (v415 + v411);
             do
             {
@@ -804,7 +804,7 @@
                 v39 = 0;
                 do
                 {
-                  v40 = a4[v35 + v39];
+                  v40 = weights_1[v35 + v39];
                   *(&self->_weight.__begin_[v39++] + v33 * objc_msgSend_columns(self, v36, v37, v38)) = v40;
                 }
 
@@ -835,7 +835,7 @@ LABEL_153:
       objc_exception_throw(v558);
     }
 
-    if ((v7 & 0x20) != 0)
+    if ((attributesCopy & 0x20) != 0)
     {
       objc_msgSend_lstmOutputSize(self, v15, v16, v17);
       objc_msgSend_lstmInputSize(self, v238, v239, v240);
@@ -854,7 +854,7 @@ LABEL_153:
             v261 = 0;
             do
             {
-              v262 = v11[v261];
+              v262 = weights_0Copy[v261];
               *(&self->_weight.__begin_[v261++] + v255 * objc_msgSend_columns(self, v258, v259, v260)) = v262;
             }
 
@@ -863,7 +863,7 @@ LABEL_153:
 
           ++v256;
           v255 += 4;
-          v11 = (v11 + v257);
+          weights_0Copy = (weights_0Copy + v257);
         }
 
         while (objc_msgSend_rows(self, v258, v259, v260) > v256);
@@ -888,7 +888,7 @@ LABEL_153:
             v149 = 0;
             do
             {
-              v150 = v11[v145 + v149];
+              v150 = weights_0Copy[v145 + v149];
               *(&self->_weight.__begin_[v149++] + v143 * objc_msgSend_columns(self, v146, v147, v148)) = v150;
             }
 
@@ -910,11 +910,11 @@ LABEL_153:
       do
       {
         objc_msgSend_lstmOutputSize(self, v266, v267, v268);
-        self->_bias.__begin_[v269] = a5[v269];
-        if ((v7 & 0x80) == 0)
+        self->_bias.__begin_[v269] = bias_0[v269];
+        if ((attributesCopy & 0x80) == 0)
         {
           objc_msgSend_lstmOutputSize(self, v270, v271, v272);
-          self->_bias.__begin_[v269] = self->_bias.__begin_[v269] + a6[v269];
+          self->_bias.__begin_[v269] = self->_bias.__begin_[v269] + bias_1[v269];
         }
 
         ++v269;

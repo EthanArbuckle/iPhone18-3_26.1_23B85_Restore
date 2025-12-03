@@ -1,16 +1,16 @@
 @interface HDCachedCKRecordZoneEntity
-+ (BOOL)deleteZoneWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 profile:(id)a7 error:(id *)a8;
-+ (BOOL)enumerateCKRecordZoneIDsWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 profile:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)insertIfDoesNotExistWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 userRecordName:(id)a7 serverChangeToken:(id)a8 profile:(id)a9 error:(id *)a10;
-+ (BOOL)insertOrUpdateWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 userRecordName:(id)a7 serverChangeToken:(id)a8 fetchComplete:(id)a9 profile:(id)a10 error:(id *)a11;
-+ (BOOL)setRequiresFetch:(BOOL)a3 containerIdentifier:(id)a4 databaseScope:(int64_t)a5 zoneName:(id)a6 ownerName:(id)a7 transaction:(id)a8 error:(id *)a9;
-+ (BOOL)setZoneEntityState:(int64_t)a3 containerIdentifier:(id)a4 databaseScope:(int64_t)a5 zoneName:(id)a6 ownerName:(id)a7 profile:(id)a8 error:(id *)a9;
-+ (BOOL)updateServerChangeToken:(id)a3 databaseID:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 transaction:(id)a7 error:(id *)a8;
++ (BOOL)deleteZoneWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName profile:(id)profile error:(id *)error;
++ (BOOL)enumerateCKRecordZoneIDsWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope profile:(id)profile error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)insertIfDoesNotExistWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName userRecordName:(id)recordName serverChangeToken:(id)token profile:(id)profile error:(id *)self0;
++ (BOOL)insertOrUpdateWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName userRecordName:(id)recordName serverChangeToken:(id)token fetchComplete:(id)complete profile:(id)self0 error:(id *)self1;
++ (BOOL)setRequiresFetch:(BOOL)fetch containerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName transaction:(id)transaction error:(id *)error;
++ (BOOL)setZoneEntityState:(int64_t)state containerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName profile:(id)profile error:(id *)error;
++ (BOOL)updateServerChangeToken:(id)token databaseID:(int64_t)d zoneName:(id)name ownerName:(id)ownerName transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
-+ (id)insertWithDatabaseID:(int64_t)a3 zoneName:(id)a4 ownerName:(id)a5 serverChangeToken:(id)a6 transaction:(id)a7 error:(id *)a8;
-+ (id)serverChangeTokenForContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 profile:(id)a7 error:(id *)a8;
++ (id)insertWithDatabaseID:(int64_t)d zoneName:(id)name ownerName:(id)ownerName serverChangeToken:(id)token transaction:(id)transaction error:(id *)error;
++ (id)serverChangeTokenForContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName profile:(id)profile error:(id *)error;
 + (id)uniquedColumns;
-+ (int64_t)requiresFetchForZoneWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 transaction:(id)a7 error:(id *)a8;
++ (int64_t)requiresFetchForZoneWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDCachedCKRecordZoneEntity
@@ -40,15 +40,15 @@
   return v2;
 }
 
-+ (id)insertWithDatabaseID:(int64_t)a3 zoneName:(id)a4 ownerName:(id)a5 serverChangeToken:(id)a6 transaction:(id)a7 error:(id *)a8
++ (id)insertWithDatabaseID:(int64_t)d zoneName:(id)name ownerName:(id)ownerName serverChangeToken:(id)token transaction:(id)transaction error:(id *)error
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v16)
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  tokenCopy = token;
+  transactionCopy = transaction;
+  if (tokenCopy)
   {
-    v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v16 requiringSecureCoding:1 error:a8];
+    v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:error];
     if (!v18)
     {
       v19 = 0;
@@ -61,28 +61,28 @@
     v18 = 0;
   }
 
-  v20 = [v17 databaseForEntityClass:a1];
-  v30 = a3;
+  v20 = [transactionCopy databaseForEntityClass:self];
+  dCopy = d;
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __106__HDCachedCKRecordZoneEntity_insertWithDatabaseID_zoneName_ownerName_serverChangeToken_transaction_error___block_invoke;
   v31[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v31[4] = a1;
+  v31[4] = self;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __106__HDCachedCKRecordZoneEntity_insertWithDatabaseID_zoneName_ownerName_serverChangeToken_transaction_error___block_invoke_2;
   v26[3] = &unk_2786144E0;
-  v27 = v14;
-  v28 = v15;
+  v27 = nameCopy;
+  v28 = ownerNameCopy;
   v21 = v18;
   v29 = v21;
-  v22 = [v20 executeCachedStatementForKey:&insertWithDatabaseID_zoneName_ownerName_serverChangeToken_transaction_error__lookupKey error:a8 SQLGenerator:v31 bindingHandler:v26 enumerationHandler:0];
+  v22 = [v20 executeCachedStatementForKey:&insertWithDatabaseID_zoneName_ownerName_serverChangeToken_transaction_error__lookupKey error:error SQLGenerator:v31 bindingHandler:v26 enumerationHandler:0];
   v19 = 0;
   if (v22)
   {
     v23 = [HDCachedCKRecordZoneEntity alloc];
-    v24 = [v20 lastInsertRowID];
-    v19 = -[HDSQLiteEntity initWithPersistentID:](v23, "initWithPersistentID:", [v24 longLongValue]);
+    lastInsertRowID = [v20 lastInsertRowID];
+    v19 = -[HDSQLiteEntity initWithPersistentID:](v23, "initWithPersistentID:", [lastInsertRowID longLongValue]);
   }
 
 LABEL_8:
@@ -115,25 +115,25 @@ uint64_t __106__HDCachedCKRecordZoneEntity_insertWithDatabaseID_zoneName_ownerNa
   return sqlite3_bind_int64(a2, 6, 0);
 }
 
-+ (BOOL)updateServerChangeToken:(id)a3 databaseID:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 transaction:(id)a7 error:(id *)a8
++ (BOOL)updateServerChangeToken:(id)token databaseID:(int64_t)d zoneName:(id)name ownerName:(id)ownerName transaction:(id)transaction error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v14)
+  tokenCopy = token;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  transactionCopy = transaction;
+  if (!tokenCopy)
   {
     v18 = 0;
     goto LABEL_5;
   }
 
-  v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v14 requiringSecureCoding:1 error:a8];
+  v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:error];
   if (v18)
   {
 LABEL_5:
-    v20 = [v17 databaseForEntityClass:a1];
-    v21 = HDPredicateForDatabaseIDAndRecordZone(a4, v15, v16);
+    v20 = [transactionCopy databaseForEntityClass:self];
+    v21 = HDPredicateForDatabaseIDAndRecordZone(d, nameCopy, ownerNameCopy);
     v28[0] = @"server_change_token";
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
     v26[0] = MEMORY[0x277D85DD0];
@@ -142,7 +142,7 @@ LABEL_5:
     v26[3] = &unk_278614508;
     v27 = v18;
     v23 = v18;
-    v19 = [a1 updateProperties:v22 predicate:v21 database:v20 error:a8 bindingHandler:v26];
+    v19 = [self updateProperties:v22 predicate:v21 database:v20 error:error bindingHandler:v26];
 
     goto LABEL_6;
   }
@@ -154,36 +154,36 @@ LABEL_6:
   return v19;
 }
 
-+ (BOOL)insertOrUpdateWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 userRecordName:(id)a7 serverChangeToken:(id)a8 fetchComplete:(id)a9 profile:(id)a10 error:(id *)a11
++ (BOOL)insertOrUpdateWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName userRecordName:(id)recordName serverChangeToken:(id)token fetchComplete:(id)complete profile:(id)self0 error:(id *)self1
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = [a10 database];
+  identifierCopy = identifier;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  recordNameCopy = recordName;
+  tokenCopy = token;
+  completeCopy = complete;
+  database = [profile database];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __162__HDCachedCKRecordZoneEntity_insertOrUpdateWithContainerIdentifier_databaseScope_zoneName_ownerName_userRecordName_serverChangeToken_fetchComplete_profile_error___block_invoke;
   v31[3] = &unk_278614530;
-  v32 = v16;
-  v33 = v19;
-  v34 = v17;
-  v35 = v18;
-  v38 = a4;
-  v39 = a1;
-  v36 = v20;
-  v37 = v21;
-  v23 = v21;
-  v24 = v20;
-  v25 = v18;
-  v26 = v17;
-  v27 = v19;
-  v28 = v16;
-  LOBYTE(v20) = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performWriteTransactionWithHealthDatabase:v22 error:a11 block:v31];
+  v32 = identifierCopy;
+  v33 = recordNameCopy;
+  v34 = nameCopy;
+  v35 = ownerNameCopy;
+  scopeCopy = scope;
+  selfCopy = self;
+  v36 = tokenCopy;
+  v37 = completeCopy;
+  v23 = completeCopy;
+  v24 = tokenCopy;
+  v25 = ownerNameCopy;
+  v26 = nameCopy;
+  v27 = recordNameCopy;
+  v28 = identifierCopy;
+  LOBYTE(tokenCopy) = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performWriteTransactionWithHealthDatabase:database error:error block:v31];
 
-  return v20;
+  return tokenCopy;
 }
 
 BOOL __162__HDCachedCKRecordZoneEntity_insertOrUpdateWithContainerIdentifier_databaseScope_zoneName_ownerName_userRecordName_serverChangeToken_fetchComplete_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -291,33 +291,33 @@ LABEL_26:
   return v13;
 }
 
-+ (BOOL)insertIfDoesNotExistWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 userRecordName:(id)a7 serverChangeToken:(id)a8 profile:(id)a9 error:(id *)a10
++ (BOOL)insertIfDoesNotExistWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName userRecordName:(id)recordName serverChangeToken:(id)token profile:(id)profile error:(id *)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = [a9 database];
+  identifierCopy = identifier;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  recordNameCopy = recordName;
+  tokenCopy = token;
+  database = [profile database];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __154__HDCachedCKRecordZoneEntity_insertIfDoesNotExistWithContainerIdentifier_databaseScope_zoneName_ownerName_userRecordName_serverChangeToken_profile_error___block_invoke;
   v28[3] = &unk_278614558;
-  v29 = v16;
-  v30 = v19;
-  v31 = v17;
-  v32 = v18;
-  v34 = a4;
-  v35 = a1;
-  v33 = v20;
-  v22 = v20;
-  v23 = v18;
-  v24 = v17;
-  v25 = v19;
-  v26 = v16;
-  LOBYTE(v20) = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performWriteTransactionWithHealthDatabase:v21 error:a10 block:v28];
+  v29 = identifierCopy;
+  v30 = recordNameCopy;
+  v31 = nameCopy;
+  v32 = ownerNameCopy;
+  scopeCopy = scope;
+  selfCopy = self;
+  v33 = tokenCopy;
+  v22 = tokenCopy;
+  v23 = ownerNameCopy;
+  v24 = nameCopy;
+  v25 = recordNameCopy;
+  v26 = identifierCopy;
+  LOBYTE(tokenCopy) = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performWriteTransactionWithHealthDatabase:database error:error block:v28];
 
-  return v20;
+  return tokenCopy;
 }
 
 uint64_t __154__HDCachedCKRecordZoneEntity_insertIfDoesNotExistWithContainerIdentifier_databaseScope_zoneName_ownerName_userRecordName_serverChangeToken_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -407,35 +407,35 @@ uint64_t __154__HDCachedCKRecordZoneEntity_insertIfDoesNotExistWithContainerIden
   return v13;
 }
 
-+ (id)serverChangeTokenForContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 profile:(id)a7 error:(id *)a8
++ (id)serverChangeTokenForContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName profile:(id)profile error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  profileCopy = profile;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__7;
   v36 = __Block_byref_object_dispose__7;
   v37 = 0;
-  v18 = [v17 database];
+  database = [profileCopy database];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __117__HDCachedCKRecordZoneEntity_serverChangeTokenForContainerIdentifier_databaseScope_zoneName_ownerName_profile_error___block_invoke;
   v25[3] = &unk_278614580;
-  v19 = v14;
+  v19 = identifierCopy;
   v26 = v19;
-  v30 = a4;
-  v31 = a1;
-  v20 = v15;
+  scopeCopy = scope;
+  selfCopy = self;
+  v20 = nameCopy;
   v27 = v20;
-  v21 = v16;
+  v21 = ownerNameCopy;
   v28 = v21;
   v29 = &v32;
-  LODWORD(a8) = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performReadTransactionWithHealthDatabase:v18 error:a8 block:v25];
+  LODWORD(error) = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performReadTransactionWithHealthDatabase:database error:error block:v25];
 
-  if (a8)
+  if (error)
   {
     v22 = v33[5];
   }
@@ -538,24 +538,24 @@ uint64_t __117__HDCachedCKRecordZoneEntity_serverChangeTokenForContainerIdentifi
   return v18;
 }
 
-+ (BOOL)enumerateCKRecordZoneIDsWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 profile:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateCKRecordZoneIDsWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope profile:(id)profile error:(id *)error enumerationHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [a5 database];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  database = [profile database];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __125__HDCachedCKRecordZoneEntity_enumerateCKRecordZoneIDsWithContainerIdentifier_databaseScope_profile_error_enumerationHandler___block_invoke;
   v18[3] = &unk_2786145D0;
-  v21 = a4;
-  v22 = a1;
-  v19 = v12;
-  v20 = v13;
-  v15 = v13;
-  v16 = v12;
-  LOBYTE(a6) = [(HDHealthEntity *)HDCachedCKDatabaseEntity performReadTransactionWithHealthDatabase:v14 error:a6 block:v18];
+  scopeCopy = scope;
+  selfCopy = self;
+  v19 = identifierCopy;
+  v20 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = identifierCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDCachedCKDatabaseEntity performReadTransactionWithHealthDatabase:database error:error block:v18];
 
-  return a6;
+  return error;
 }
 
 uint64_t __125__HDCachedCKRecordZoneEntity_enumerateCKRecordZoneIDsWithContainerIdentifier_databaseScope_profile_error_enumerationHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -635,27 +635,27 @@ uint64_t __125__HDCachedCKRecordZoneEntity_enumerateCKRecordZoneIDsWithContainer
   return v5;
 }
 
-+ (BOOL)deleteZoneWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 profile:(id)a7 error:(id *)a8
++ (BOOL)deleteZoneWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName profile:(id)profile error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = [a7 database];
+  identifierCopy = identifier;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  database = [profile database];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __111__HDCachedCKRecordZoneEntity_deleteZoneWithContainerIdentifier_databaseScope_zoneName_ownerName_profile_error___block_invoke;
   v22[3] = &unk_2786145F8;
-  v23 = v14;
-  v24 = v15;
-  v25 = v16;
-  v26 = a4;
-  v27 = a1;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  LOBYTE(a8) = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performWriteTransactionWithHealthDatabase:v17 error:a8 block:v22];
+  v23 = identifierCopy;
+  v24 = nameCopy;
+  v25 = ownerNameCopy;
+  scopeCopy = scope;
+  selfCopy = self;
+  v18 = ownerNameCopy;
+  v19 = nameCopy;
+  v20 = identifierCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performWriteTransactionWithHealthDatabase:database error:error block:v22];
 
-  return a8;
+  return error;
 }
 
 uint64_t __111__HDCachedCKRecordZoneEntity_deleteZoneWithContainerIdentifier_databaseScope_zoneName_ownerName_profile_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -742,14 +742,14 @@ uint64_t __111__HDCachedCKRecordZoneEntity_deleteZoneWithContainerIdentifier_dat
   return v19;
 }
 
-+ (int64_t)requiresFetchForZoneWithContainerIdentifier:(id)a3 databaseScope:(int64_t)a4 zoneName:(id)a5 ownerName:(id)a6 transaction:(id)a7 error:(id *)a8
++ (int64_t)requiresFetchForZoneWithContainerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName transaction:(id)transaction error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  transactionCopy = transaction;
   v37[0] = 0;
-  v18 = [HDCachedCKDatabaseEntity entityForContainerIdentifier:v14 databaseScope:a4 userRecordName:0 transaction:v17 shouldCreate:0 error:v37];
+  v18 = [HDCachedCKDatabaseEntity entityForContainerIdentifier:identifierCopy databaseScope:scope userRecordName:0 transaction:transactionCopy shouldCreate:0 error:v37];
   v19 = v37[0];
   v20 = v19;
   if (v18)
@@ -770,25 +770,25 @@ uint64_t __111__HDCachedCKRecordZoneEntity_deleteZoneWithContainerIdentifier_dat
       v34 = &v33;
       v35 = 0x2020000000;
       v36 = 0;
-      v22 = [v17 databaseForEntityClass:a1];
+      v22 = [transactionCopy databaseForEntityClass:self];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __125__HDCachedCKRecordZoneEntity_requiresFetchForZoneWithContainerIdentifier_databaseScope_zoneName_ownerName_transaction_error___block_invoke;
       v32[3] = &__block_descriptor_40_e15___NSString_8__0l;
-      v32[4] = a1;
+      v32[4] = self;
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __125__HDCachedCKRecordZoneEntity_requiresFetchForZoneWithContainerIdentifier_databaseScope_zoneName_ownerName_transaction_error___block_invoke_2;
       v28[3] = &unk_278613528;
       v29 = v18;
-      v30 = v15;
-      v31 = v16;
+      v30 = nameCopy;
+      v31 = ownerNameCopy;
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __125__HDCachedCKRecordZoneEntity_requiresFetchForZoneWithContainerIdentifier_databaseScope_zoneName_ownerName_transaction_error___block_invoke_3;
       v27[3] = &unk_278614620;
       v27[4] = &v33;
-      v23 = [v22 executeCachedStatementForKey:&requiresFetchForZoneWithContainerIdentifier_databaseScope_zoneName_ownerName_transaction_error__fetchKey error:a8 SQLGenerator:v32 bindingHandler:v28 enumerationHandler:v27];
+      v23 = [v22 executeCachedStatementForKey:&requiresFetchForZoneWithContainerIdentifier_databaseScope_zoneName_ownerName_transaction_error__fetchKey error:error SQLGenerator:v32 bindingHandler:v28 enumerationHandler:v27];
 
       if (v23)
       {
@@ -817,11 +817,11 @@ uint64_t __111__HDCachedCKRecordZoneEntity_deleteZoneWithContainerIdentifier_dat
     }
   }
 
-  else if (a8)
+  else if (error)
   {
     v25 = v19;
     v24 = 0;
-    *a8 = v20;
+    *error = v20;
   }
 
   else
@@ -852,13 +852,13 @@ uint64_t __125__HDCachedCKRecordZoneEntity_requiresFetchForZoneWithContainerIden
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)setRequiresFetch:(BOOL)a3 containerIdentifier:(id)a4 databaseScope:(int64_t)a5 zoneName:(id)a6 ownerName:(id)a7 transaction:(id)a8 error:(id *)a9
++ (BOOL)setRequiresFetch:(BOOL)fetch containerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName transaction:(id)transaction error:(id *)error
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  transactionCopy = transaction;
   v32 = 0;
-  v18 = [HDCachedCKDatabaseEntity entityForContainerIdentifier:a4 databaseScope:a5 userRecordName:0 transaction:v17 shouldCreate:0 error:&v32];
+  v18 = [HDCachedCKDatabaseEntity entityForContainerIdentifier:identifier databaseScope:scope userRecordName:0 transaction:transactionCopy shouldCreate:0 error:&v32];
   v19 = v32;
   v20 = v19;
   if (v18)
@@ -873,11 +873,11 @@ uint64_t __125__HDCachedCKRecordZoneEntity_requiresFetchForZoneWithContainerIden
 
   if (!v21)
   {
-    if (a9)
+    if (error)
     {
       v24 = v19;
       v23 = 0;
-      *a9 = v20;
+      *error = v20;
       goto LABEL_13;
     }
 
@@ -889,25 +889,25 @@ LABEL_12:
 
   if (!v18)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a9 code:118 format:@"No such database."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:118 format:@"No such database."];
     goto LABEL_12;
   }
 
-  v22 = [v17 databaseForEntityClass:a1];
+  v22 = [transactionCopy databaseForEntityClass:self];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __118__HDCachedCKRecordZoneEntity_setRequiresFetch_containerIdentifier_databaseScope_zoneName_ownerName_transaction_error___block_invoke;
   v31[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v31[4] = a1;
+  v31[4] = self;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __118__HDCachedCKRecordZoneEntity_setRequiresFetch_containerIdentifier_databaseScope_zoneName_ownerName_transaction_error___block_invoke_2;
   v26[3] = &unk_278614648;
-  v30 = a3;
+  fetchCopy = fetch;
   v27 = v18;
-  v28 = v15;
-  v29 = v16;
-  v23 = [v22 executeCachedStatementForKey:&setRequiresFetch_containerIdentifier_databaseScope_zoneName_ownerName_transaction_error__updateKey error:a9 SQLGenerator:v31 bindingHandler:v26 enumerationHandler:0];
+  v28 = nameCopy;
+  v29 = ownerNameCopy;
+  v23 = [v22 executeCachedStatementForKey:&setRequiresFetch_containerIdentifier_databaseScope_zoneName_ownerName_transaction_error__updateKey error:error SQLGenerator:v31 bindingHandler:v26 enumerationHandler:0];
 
 LABEL_13:
   return v23;
@@ -933,26 +933,26 @@ uint64_t __118__HDCachedCKRecordZoneEntity_setRequiresFetch_containerIdentifier_
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)setZoneEntityState:(int64_t)a3 containerIdentifier:(id)a4 databaseScope:(int64_t)a5 zoneName:(id)a6 ownerName:(id)a7 profile:(id)a8 error:(id *)a9
++ (BOOL)setZoneEntityState:(int64_t)state containerIdentifier:(id)identifier databaseScope:(int64_t)scope zoneName:(id)name ownerName:(id)ownerName profile:(id)profile error:(id *)error
 {
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = [a8 database];
+  identifierCopy = identifier;
+  nameCopy = name;
+  ownerNameCopy = ownerName;
+  database = [profile database];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __116__HDCachedCKRecordZoneEntity_setZoneEntityState_containerIdentifier_databaseScope_zoneName_ownerName_profile_error___block_invoke;
   v24[3] = &unk_278614670;
-  v29 = a1;
-  v30 = a3;
-  v25 = v15;
-  v26 = v16;
-  v27 = v17;
-  v28 = a5;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performWriteTransactionWithHealthDatabase:v18 error:a9 block:v24];
+  selfCopy = self;
+  stateCopy = state;
+  v25 = identifierCopy;
+  v26 = nameCopy;
+  v27 = ownerNameCopy;
+  scopeCopy = scope;
+  v19 = ownerNameCopy;
+  v20 = nameCopy;
+  v21 = identifierCopy;
+  v22 = [(HDHealthEntity *)HDCachedCKRecordZoneEntity performWriteTransactionWithHealthDatabase:database error:error block:v24];
 
   return v22;
 }

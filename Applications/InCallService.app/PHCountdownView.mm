@@ -1,5 +1,5 @@
 @interface PHCountdownView
-- (PHCountdownView)initWithFrame:(CGRect)a3;
+- (PHCountdownView)initWithFrame:(CGRect)frame;
 - (double)circleDistanceFromTitle;
 - (double)countdownCircleDiameter;
 - (double)countdownLabelFontSize;
@@ -7,11 +7,11 @@
 - (double)subtitleDistanceFromCircleBottom;
 - (double)titleDistanceFromTop;
 - (void)commonInit;
-- (void)didFinishSlideForSlidingButton:(id)a3;
+- (void)didFinishSlideForSlidingButton:(id)button;
 - (void)pause;
 - (void)restart;
 - (void)setUpConstraints;
-- (void)start:(id)a3 showSlider:(BOOL)a4 completion:(id)a5;
+- (void)start:(id)start showSlider:(BOOL)slider completion:(id)completion;
 - (void)startCountdown;
 - (void)stop;
 - (void)stopFlash;
@@ -20,11 +20,11 @@
 
 @implementation PHCountdownView
 
-- (PHCountdownView)initWithFrame:(CGRect)a3
+- (PHCountdownView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PHCountdownView;
-  v3 = [(PHCountdownView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHCountdownView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -56,8 +56,8 @@
   circleView = self->_circleView;
   self->_circleView = v9;
 
-  v11 = [(UIView *)self->_circleView layer];
-  [v11 setCornerRadius:v8 * 0.5];
+  layer = [(UIView *)self->_circleView layer];
+  [layer setCornerRadius:v8 * 0.5];
 
   v12 = +[UIColor redColor];
   [(UIView *)self->_circleView setBackgroundColor:v12];
@@ -76,8 +76,8 @@
   v16 = [UIFontDescriptor alloc];
   v17 = [v16 fontDescriptorWithDesign:UIFontDescriptorSystemDesignRounded];
 
-  v18 = [v17 fontAttributes];
-  v19 = [v18 mutableCopy];
+  fontAttributes = [v17 fontAttributes];
+  v19 = [fontAttributes mutableCopy];
 
   v38 = UIFontWeightTrait;
   v20 = [NSNumber numberWithDouble:UIFontWeightSemibold];
@@ -108,14 +108,14 @@
   v28 = [[PHSlidingButton alloc] initWithSlidingButtonType:7 appearanceType:0 callState:2];
   [(PHCountdownView *)self setSosCallSlidingButton:v28];
 
-  v29 = [(PHCountdownView *)self sosCallSlidingButton];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sosCallSlidingButton = [(PHCountdownView *)self sosCallSlidingButton];
+  [sosCallSlidingButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(PHCountdownView *)self sosCallSlidingButton];
-  [v30 setDelegate:self];
+  sosCallSlidingButton2 = [(PHCountdownView *)self sosCallSlidingButton];
+  [sosCallSlidingButton2 setDelegate:self];
 
-  v31 = [(PHCountdownView *)self sosCallSlidingButton];
-  [(PHCountdownView *)self addSubview:v31];
+  sosCallSlidingButton3 = [(PHCountdownView *)self sosCallSlidingButton];
+  [(PHCountdownView *)self addSubview:sosCallSlidingButton3];
 
   v32 = objc_alloc_init(PHSOSAlertController);
   alertController = self->_alertController;
@@ -132,28 +132,28 @@
   [(PHCountdownView *)self setUpConstraints];
 }
 
-- (void)start:(id)a3 showSlider:(BOOL)a4 completion:(id)a5
+- (void)start:(id)start showSlider:(BOOL)slider completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  sliderCopy = slider;
+  completionCopy = completion;
+  startCopy = start;
   [(PHCountdownView *)self stop];
-  [(PHCountdownView *)self setCountdownViewModel:v9];
+  [(PHCountdownView *)self setCountdownViewModel:startCopy];
 
-  v10 = v5;
-  v11 = [(PHCountdownView *)self sosCallSlidingButton];
-  [v11 setAlpha:v10];
+  v10 = sliderCopy;
+  sosCallSlidingButton = [(PHCountdownView *)self sosCallSlidingButton];
+  [sosCallSlidingButton setAlpha:v10];
 
-  [(PHCountdownView *)self setCompletion:v8];
-  v12 = [(PHCountdownView *)self countdownViewModel];
-  v13 = [v12 titleString];
-  v14 = [(PHCountdownView *)self titleLabel];
-  [v14 setText:v13];
+  [(PHCountdownView *)self setCompletion:completionCopy];
+  countdownViewModel = [(PHCountdownView *)self countdownViewModel];
+  titleString = [countdownViewModel titleString];
+  titleLabel = [(PHCountdownView *)self titleLabel];
+  [titleLabel setText:titleString];
 
-  v15 = [(PHCountdownView *)self countdownViewModel];
-  v16 = [v15 subtitleString];
-  v17 = [(PHCountdownView *)self subtitleLabel];
-  [v17 setText:v16];
+  countdownViewModel2 = [(PHCountdownView *)self countdownViewModel];
+  subtitleString = [countdownViewModel2 subtitleString];
+  subtitleLabel = [(PHCountdownView *)self subtitleLabel];
+  [subtitleLabel setText:subtitleString];
 
   [(PHCountdownView *)self startCountdown];
 }
@@ -161,55 +161,55 @@
 - (void)startCountdown
 {
   [(PHCountdownView *)self stop];
-  v3 = [(PHCountdownView *)self countdownViewModel];
-  v4 = [(PHCountdownView *)self countdownViewModel];
-  v5 = [v3 countdownString:{objc_msgSend(v4, "countdown")}];
-  v6 = [(PHCountdownView *)self countdownLabel];
-  [v6 setText:v5];
+  countdownViewModel = [(PHCountdownView *)self countdownViewModel];
+  countdownViewModel2 = [(PHCountdownView *)self countdownViewModel];
+  v5 = [countdownViewModel countdownString:{objc_msgSend(countdownViewModel2, "countdown")}];
+  countdownLabel = [(PHCountdownView *)self countdownLabel];
+  [countdownLabel setText:v5];
 
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
-  v7 = [(PHCountdownView *)self countdownViewModel];
-  v8 = [v7 countdown];
+  countdownViewModel3 = [(PHCountdownView *)self countdownViewModel];
+  countdown = [countdownViewModel3 countdown];
 
-  v34 = v8;
-  v9 = [(PHCountdownView *)self countdownViewModel];
-  v10 = [v9 countdownWithAudio];
+  v34 = countdown;
+  countdownViewModel4 = [(PHCountdownView *)self countdownViewModel];
+  countdownWithAudio = [countdownViewModel4 countdownWithAudio];
 
   v11 = sub_100004F84();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(PHCountdownView *)self countdownViewModel];
-    v13 = [(PHCountdownView *)self countdownViewModel];
-    v14 = [v13 playsSound];
+    countdownViewModel5 = [(PHCountdownView *)self countdownViewModel];
+    countdownViewModel6 = [(PHCountdownView *)self countdownViewModel];
+    playsSound = [countdownViewModel6 playsSound];
     *buf = 138412546;
-    v36 = v12;
+    v36 = countdownViewModel5;
     v37 = 1024;
-    v38 = v14;
+    v38 = playsSound;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Countdown with model: %@ shouldPlaySounds: %d", buf, 0x12u);
   }
 
-  v15 = [(PHCountdownView *)self countdownViewModel];
-  if ([v15 playsSound])
+  countdownViewModel7 = [(PHCountdownView *)self countdownViewModel];
+  if ([countdownViewModel7 playsSound])
   {
   }
 
   else
   {
-    v16 = [(PHCountdownView *)self countdownViewModel];
-    v17 = [v16 playsHaptics];
+    countdownViewModel8 = [(PHCountdownView *)self countdownViewModel];
+    playsHaptics = [countdownViewModel8 playsHaptics];
 
-    if (!v17)
+    if (!playsHaptics)
     {
       goto LABEL_10;
     }
   }
 
-  v18 = [(PHCountdownView *)self countdownViewModel];
-  if ([v18 playsSound])
+  countdownViewModel9 = [(PHCountdownView *)self countdownViewModel];
+  if ([countdownViewModel9 playsSound])
   {
-    v19 = v32[3] <= v10;
+    v19 = v32[3] <= countdownWithAudio;
   }
 
   else
@@ -217,18 +217,18 @@
     v19 = 0;
   }
 
-  v20 = [(PHCountdownView *)self alertController];
-  [v20 playAlertWithAudio:v19 alertTopic:TLAlertTopicSOSCountdownTick];
+  alertController = [(PHCountdownView *)self alertController];
+  [alertController playAlertWithAudio:v19 alertTopic:TLAlertTopicSOSCountdownTick];
 
 LABEL_10:
-  v21 = [(PHCountdownView *)self countdownTimer];
-  v22 = v21 == 0;
+  countdownTimer = [(PHCountdownView *)self countdownTimer];
+  v22 = countdownTimer == 0;
 
   if (v22)
   {
     objc_initWeak(buf, self);
-    v23 = [(PHCountdownView *)self countdownViewModel];
-    [v23 countdownTickDuration];
+    countdownViewModel10 = [(PHCountdownView *)self countdownViewModel];
+    [countdownViewModel10 countdownTickDuration];
     v25 = v24;
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
@@ -236,7 +236,7 @@ LABEL_10:
     v29[3] = &unk_100358EB8;
     objc_copyWeak(v30, buf);
     v29[4] = &v31;
-    v30[1] = v10;
+    v30[1] = countdownWithAudio;
     v26 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v29 block:v25];
     [(PHCountdownView *)self setCountdownTimer:v26];
 
@@ -257,8 +257,8 @@ LABEL_10:
 - (void)pause
 {
   [(PHCountdownView *)self setPauseTimer:1];
-  v3 = [(PHCountdownView *)self alertController];
-  [v3 stopAlert];
+  alertController = [(PHCountdownView *)self alertController];
+  [alertController stopAlert];
 }
 
 - (void)restart
@@ -277,10 +277,10 @@ LABEL_10:
 
 - (void)stop
 {
-  v3 = [(PHCountdownView *)self countdownTimer];
-  v4 = [v3 isValid];
+  countdownTimer = [(PHCountdownView *)self countdownTimer];
+  isValid = [countdownTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -289,107 +289,107 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Invalidating PHCountdownView timer", v8, 2u);
     }
 
-    v6 = [(PHCountdownView *)self countdownTimer];
-    [v6 invalidate];
+    countdownTimer2 = [(PHCountdownView *)self countdownTimer];
+    [countdownTimer2 invalidate];
 
     [(PHCountdownView *)self setCountdownTimer:0];
   }
 
-  v7 = [(PHCountdownView *)self alertController];
-  [v7 stopAlert];
+  alertController = [(PHCountdownView *)self alertController];
+  [alertController stopAlert];
 
   [(PHCountdownView *)self stopFlash];
 }
 
 - (void)setUpConstraints
 {
-  v3 = [(PHCountdownView *)self titleLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(PHCountdownView *)self leadingAnchor];
-  v72 = [v4 constraintEqualToAnchor:v5];
+  titleLabel = [(PHCountdownView *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  leadingAnchor2 = [(PHCountdownView *)self leadingAnchor];
+  v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v6 = [(PHCountdownView *)self titleLabel];
-  v7 = [v6 trailingAnchor];
-  v8 = [(PHCountdownView *)self trailingAnchor];
-  v71 = [v7 constraintEqualToAnchor:v8];
+  titleLabel2 = [(PHCountdownView *)self titleLabel];
+  trailingAnchor = [titleLabel2 trailingAnchor];
+  trailingAnchor2 = [(PHCountdownView *)self trailingAnchor];
+  v71 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
-  v9 = [(PHCountdownView *)self titleLabel];
-  v10 = [v9 topAnchor];
-  v11 = [(PHCountdownView *)self safeAreaLayoutGuide];
-  v12 = [v11 topAnchor];
+  titleLabel3 = [(PHCountdownView *)self titleLabel];
+  topAnchor = [titleLabel3 topAnchor];
+  safeAreaLayoutGuide = [(PHCountdownView *)self safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
   [(PHCountdownView *)self titleDistanceFromTop];
-  v70 = [v10 constraintEqualToAnchor:v12 constant:?];
+  v70 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
 
-  v13 = [(PHCountdownView *)self titleLabel];
-  v14 = [v13 centerXAnchor];
-  v15 = [(PHCountdownView *)self centerXAnchor];
-  v69 = [v14 constraintEqualToAnchor:v15];
+  titleLabel4 = [(PHCountdownView *)self titleLabel];
+  centerXAnchor = [titleLabel4 centerXAnchor];
+  centerXAnchor2 = [(PHCountdownView *)self centerXAnchor];
+  v69 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v16 = [(PHCountdownView *)self circleView];
-  v17 = [v16 centerXAnchor];
-  v18 = [(PHCountdownView *)self titleLabel];
-  v19 = [v18 centerXAnchor];
-  v68 = [v17 constraintEqualToAnchor:v19];
+  circleView = [(PHCountdownView *)self circleView];
+  centerXAnchor3 = [circleView centerXAnchor];
+  titleLabel5 = [(PHCountdownView *)self titleLabel];
+  centerXAnchor4 = [titleLabel5 centerXAnchor];
+  v68 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
 
-  v20 = [(PHCountdownView *)self circleView];
-  v21 = [v20 topAnchor];
-  v22 = [(PHCountdownView *)self titleLabel];
-  v23 = [v22 bottomAnchor];
+  circleView2 = [(PHCountdownView *)self circleView];
+  topAnchor3 = [circleView2 topAnchor];
+  titleLabel6 = [(PHCountdownView *)self titleLabel];
+  bottomAnchor = [titleLabel6 bottomAnchor];
   [(PHCountdownView *)self circleDistanceFromTitle];
-  v67 = [v21 constraintEqualToAnchor:v23 constant:?];
+  v67 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:?];
 
-  v24 = [(PHCountdownView *)self countdownLabel];
-  v25 = [v24 centerXAnchor];
-  v26 = [(PHCountdownView *)self circleView];
-  v27 = [v26 centerXAnchor];
-  v66 = [v25 constraintEqualToAnchor:v27];
+  countdownLabel = [(PHCountdownView *)self countdownLabel];
+  centerXAnchor5 = [countdownLabel centerXAnchor];
+  circleView3 = [(PHCountdownView *)self circleView];
+  centerXAnchor6 = [circleView3 centerXAnchor];
+  v66 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
 
-  v28 = [(PHCountdownView *)self countdownLabel];
-  v29 = [v28 centerYAnchor];
-  v30 = [(PHCountdownView *)self circleView];
-  v31 = [v30 centerYAnchor];
-  v65 = [v29 constraintEqualToAnchor:v31];
+  countdownLabel2 = [(PHCountdownView *)self countdownLabel];
+  centerYAnchor = [countdownLabel2 centerYAnchor];
+  circleView4 = [(PHCountdownView *)self circleView];
+  centerYAnchor2 = [circleView4 centerYAnchor];
+  v65 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
-  v32 = [(PHCountdownView *)self circleView];
+  circleView5 = [(PHCountdownView *)self circleView];
   [(PHCountdownView *)self countdownCircleDiameter];
-  v64 = [NSLayoutConstraint constraintWithItem:v32 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v33];
+  v64 = [NSLayoutConstraint constraintWithItem:circleView5 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v33];
 
-  v34 = [(PHCountdownView *)self circleView];
+  circleView6 = [(PHCountdownView *)self circleView];
   [(PHCountdownView *)self countdownCircleDiameter];
-  v63 = [NSLayoutConstraint constraintWithItem:v34 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v35];
+  v63 = [NSLayoutConstraint constraintWithItem:circleView6 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:v35];
 
-  v36 = [(PHCountdownView *)self subtitleLabel];
-  v37 = [v36 leadingAnchor];
-  v38 = [(PHCountdownView *)self leadingAnchor];
-  v62 = [v37 constraintEqualToAnchor:v38];
+  subtitleLabel = [(PHCountdownView *)self subtitleLabel];
+  leadingAnchor3 = [subtitleLabel leadingAnchor];
+  leadingAnchor4 = [(PHCountdownView *)self leadingAnchor];
+  v62 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-  v39 = [(PHCountdownView *)self subtitleLabel];
-  v40 = [v39 trailingAnchor];
-  v41 = [(PHCountdownView *)self trailingAnchor];
-  v61 = [v40 constraintEqualToAnchor:v41];
+  subtitleLabel2 = [(PHCountdownView *)self subtitleLabel];
+  trailingAnchor3 = [subtitleLabel2 trailingAnchor];
+  trailingAnchor4 = [(PHCountdownView *)self trailingAnchor];
+  v61 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-  v42 = [(PHCountdownView *)self subtitleLabel];
-  v43 = [v42 topAnchor];
-  v44 = [(PHCountdownView *)self circleView];
-  v45 = [v44 bottomAnchor];
+  subtitleLabel3 = [(PHCountdownView *)self subtitleLabel];
+  topAnchor4 = [subtitleLabel3 topAnchor];
+  circleView7 = [(PHCountdownView *)self circleView];
+  bottomAnchor2 = [circleView7 bottomAnchor];
   [(PHCountdownView *)self subtitleDistanceFromCircleBottom];
-  v60 = [v43 constraintEqualToAnchor:v45 constant:?];
+  v60 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:?];
 
-  v46 = [(PHCountdownView *)self subtitleLabel];
-  v47 = [v46 centerXAnchor];
-  v48 = [(PHCountdownView *)self centerXAnchor];
-  v59 = [v47 constraintEqualToAnchor:v48];
+  subtitleLabel4 = [(PHCountdownView *)self subtitleLabel];
+  centerXAnchor7 = [subtitleLabel4 centerXAnchor];
+  centerXAnchor8 = [(PHCountdownView *)self centerXAnchor];
+  v59 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
 
-  v49 = [(PHCountdownView *)self sosCallSlidingButton];
-  v50 = [v49 centerXAnchor];
-  v51 = [(PHCountdownView *)self centerXAnchor];
-  v52 = [v50 constraintEqualToAnchor:v51];
+  sosCallSlidingButton = [(PHCountdownView *)self sosCallSlidingButton];
+  centerXAnchor9 = [sosCallSlidingButton centerXAnchor];
+  centerXAnchor10 = [(PHCountdownView *)self centerXAnchor];
+  v52 = [centerXAnchor9 constraintEqualToAnchor:centerXAnchor10];
 
-  v53 = [(PHCountdownView *)self sosCallSlidingButton];
-  v54 = [v53 bottomAnchor];
-  v55 = [(PHCountdownView *)self bottomAnchor];
+  sosCallSlidingButton2 = [(PHCountdownView *)self sosCallSlidingButton];
+  bottomAnchor3 = [sosCallSlidingButton2 bottomAnchor];
+  bottomAnchor4 = [(PHCountdownView *)self bottomAnchor];
   [(PHCountdownView *)self sliderDistanceFromBottom];
-  v57 = [v54 constraintEqualToAnchor:v55 constant:-v56];
+  v57 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-v56];
 
   v73[0] = v72;
   v73[1] = v71;
@@ -487,12 +487,12 @@ LABEL_10:
   return v2;
 }
 
-- (void)didFinishSlideForSlidingButton:(id)a3
+- (void)didFinishSlideForSlidingButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PHCountdownView *)self sosCallSlidingButton];
+  buttonCopy = button;
+  sosCallSlidingButton = [(PHCountdownView *)self sosCallSlidingButton];
 
-  if (v5 == v4)
+  if (sosCallSlidingButton == buttonCopy)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -502,12 +502,12 @@ LABEL_10:
     }
 
     [(PHCountdownView *)self stop];
-    v7 = [(PHCountdownView *)self completion];
+    completion = [(PHCountdownView *)self completion];
 
-    if (v7)
+    if (completion)
     {
-      v8 = [(PHCountdownView *)self completion];
-      v8[2](v8, 1);
+      completion2 = [(PHCountdownView *)self completion];
+      completion2[2](completion2, 1);
     }
   }
 }
@@ -519,13 +519,13 @@ LABEL_10:
   {
     if (+[SOSUtilities shouldPlayAudioDuringCountdown])
     {
-      v4 = [(PHCountdownView *)self avCaptureDispatchQueue];
+      avCaptureDispatchQueue = [(PHCountdownView *)self avCaptureDispatchQueue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_1000C8398;
       block[3] = &unk_100356988;
       block[4] = self;
-      dispatch_async(v4, block);
+      dispatch_async(avCaptureDispatchQueue, block);
     }
   }
 }
@@ -535,13 +535,13 @@ LABEL_10:
   +[SOSUtilities clawReleaseToCallSupport];
   if (v3 != 0.0)
   {
-    v4 = [(PHCountdownView *)self avCaptureDispatchQueue];
+    avCaptureDispatchQueue = [(PHCountdownView *)self avCaptureDispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000C85AC;
     block[3] = &unk_100356988;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(avCaptureDispatchQueue, block);
   }
 }
 

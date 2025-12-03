@@ -2,9 +2,9 @@
 - (NSArray)tvProviderSupportedStorefronts;
 - (NSDictionary)identityProvidersByStorefront;
 - (VSIdentityProviderStorefrontParser)init;
-- (id)providersForStorefront:(id)a3 featuredOnly:(BOOL)a4;
-- (id)updateFeaturedStorefronts:(id)a3 withCurrentStorefrontCodeOrNil:(id)a4;
-- (void)setAllStorefronts:(id)a3 withCurrentStorefrontCode:(id)a4;
+- (id)providersForStorefront:(id)storefront featuredOnly:(BOOL)only;
+- (id)updateFeaturedStorefronts:(id)storefronts withCurrentStorefrontCodeOrNil:(id)nil;
+- (void)setAllStorefronts:(id)storefronts withCurrentStorefrontCode:(id)code;
 @end
 
 @implementation VSIdentityProviderStorefrontParser
@@ -32,10 +32,10 @@
   return v2;
 }
 
-- (void)setAllStorefronts:(id)a3 withCurrentStorefrontCode:(id)a4
+- (void)setAllStorefronts:(id)storefronts withCurrentStorefrontCode:(id)code
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [(VSIdentityProviderStorefrontParser *)self updateFeaturedStorefronts:a3 withCurrentStorefrontCodeOrNil:a4];
+  v5 = [(VSIdentityProviderStorefrontParser *)self updateFeaturedStorefronts:storefronts withCurrentStorefrontCodeOrNil:code];
   objc_storeStrong(&self->_allStorefronts, v5);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v19 = 0u;
@@ -58,8 +58,8 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 identitifer];
-        [v6 setObject:v12 forKey:v13];
+        identitifer = [v12 identitifer];
+        [v6 setObject:v12 forKey:identitifer];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -69,8 +69,8 @@
   }
 
   v14 = objc_alloc_init(VSStorefront);
-  v15 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v16 = [v15 localizedStringForKey:@"REGIONS_PICKER_SETTINGS_DEVELOPER_PROVIDERS_DISPLAY_NAME" value:0 table:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v16 = [vs_frameworkBundle localizedStringForKey:@"REGIONS_PICKER_SETTINGS_DEVELOPER_PROVIDERS_DISPLAY_NAME" value:0 table:0];
   [(VSStorefront *)v14 setDisplayName:v16];
 
   [(VSStorefront *)v14 setIdentitifer:@"__"];
@@ -85,14 +85,14 @@
 - (NSDictionary)identityProvidersByStorefront
 {
   v48 = *MEMORY[0x277D85DE8];
-  v2 = [(VSIdentityProviderStorefrontParser *)self allIdentityProviders];
+  allIdentityProviders = [(VSIdentityProviderStorefrontParser *)self allIdentityProviders];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v2;
+  obj = allIdentityProviders;
   v5 = [obj countByEnumeratingWithState:&v42 objects:v47 count:16];
   v35 = v3;
   if (v5)
@@ -126,8 +126,8 @@
           v41 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v37 = [v9 storefronts];
-          v10 = [v37 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          storefronts = [v9 storefronts];
+          v10 = [storefronts countByEnumeratingWithState:&v38 objects:v46 count:16];
           if (v10)
           {
             v11 = v10;
@@ -138,28 +138,28 @@
               {
                 if (*v39 != v12)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(storefronts);
                 }
 
                 v14 = *(*(&v38 + 1) + 8 * i);
-                v15 = [v14 storefrontTwoCharCode];
-                v16 = [v3 objectForKey:v15];
+                storefrontTwoCharCode = [v14 storefrontTwoCharCode];
+                v16 = [v3 objectForKey:storefrontTwoCharCode];
                 if (!v16)
                 {
                   v16 = objc_alloc_init(VSIdentityProviderStorefrontCollection);
-                  [(VSIdentityProviderStorefrontCollection *)v16 setStorefrontTwoCharCode:v15];
-                  v17 = [(VSIdentityProviderStorefrontParser *)self storefrontsByCountryCode];
-                  v18 = [v17 valueForKey:v15];
-                  v19 = [v18 displayName];
+                  [(VSIdentityProviderStorefrontCollection *)v16 setStorefrontTwoCharCode:storefrontTwoCharCode];
+                  storefrontsByCountryCode = [(VSIdentityProviderStorefrontParser *)self storefrontsByCountryCode];
+                  v18 = [storefrontsByCountryCode valueForKey:storefrontTwoCharCode];
+                  displayName = [v18 displayName];
 
-                  if (v19)
+                  if (displayName)
                   {
-                    v20 = v19;
+                    v20 = displayName;
                   }
 
                   else
                   {
-                    v20 = v15;
+                    v20 = storefrontTwoCharCode;
                   }
 
                   [(VSIdentityProviderStorefrontCollection *)v16 setLocalizedDisplayName:v20];
@@ -169,20 +169,20 @@
                   }
 
                   v3 = v35;
-                  [v35 setObject:v16 forKey:v15];
+                  [v35 setObject:v16 forKey:storefrontTwoCharCode];
                 }
 
-                v21 = [(VSIdentityProviderStorefrontCollection *)v16 mutableAllIdentityProviders];
-                [v21 addObject:v9];
+                mutableAllIdentityProviders = [(VSIdentityProviderStorefrontCollection *)v16 mutableAllIdentityProviders];
+                [mutableAllIdentityProviders addObject:v9];
 
                 if ([v14 isFeatured])
                 {
-                  v22 = [(VSIdentityProviderStorefrontCollection *)v16 mutableFeaturedIdentityProviders];
-                  [v22 addObject:v9];
+                  mutableFeaturedIdentityProviders = [(VSIdentityProviderStorefrontCollection *)v16 mutableFeaturedIdentityProviders];
+                  [mutableFeaturedIdentityProviders addObject:v9];
                 }
               }
 
-              v11 = [v37 countByEnumeratingWithState:&v38 objects:v46 count:16];
+              v11 = [storefronts countByEnumeratingWithState:&v38 objects:v46 count:16];
             }
 
             while (v11);
@@ -208,8 +208,8 @@
   {
     v23 = objc_alloc_init(VSIdentityProviderStorefrontCollection);
     [(VSIdentityProviderStorefrontCollection *)v23 setStorefrontTwoCharCode:@"__"];
-    v24 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v25 = [v24 localizedStringForKey:@"REGIONS_PICKER_SETTINGS_DEVELOPER_PROVIDERS_DISPLAY_NAME" value:0 table:0];
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v25 = [vs_frameworkBundle localizedStringForKey:@"REGIONS_PICKER_SETTINGS_DEVELOPER_PROVIDERS_DISPLAY_NAME" value:0 table:0];
     [(VSIdentityProviderStorefrontCollection *)v23 setLocalizedDisplayName:v25];
 
     v3 = v35;
@@ -228,19 +228,19 @@
 - (NSArray)tvProviderSupportedStorefronts
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(VSIdentityProviderStorefrontParser *)self providersByStorefront];
-  v4 = v3;
-  if (v3)
+  providersByStorefront = [(VSIdentityProviderStorefrontParser *)self providersByStorefront];
+  v4 = providersByStorefront;
+  if (providersByStorefront)
   {
-    v5 = v3;
+    identityProvidersByStorefront = providersByStorefront;
   }
 
   else
   {
-    v5 = [(VSIdentityProviderStorefrontParser *)self identityProvidersByStorefront];
+    identityProvidersByStorefront = [(VSIdentityProviderStorefrontParser *)self identityProvidersByStorefront];
   }
 
-  v6 = v5;
+  v6 = identityProvidersByStorefront;
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v18 = 0u;
@@ -263,8 +263,8 @@
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [(VSIdentityProviderStorefrontParser *)self storefrontsByCountryCode];
-        v15 = [v14 objectForKey:v13];
+        storefrontsByCountryCode = [(VSIdentityProviderStorefrontParser *)self storefrontsByCountryCode];
+        v15 = [storefrontsByCountryCode objectForKey:v13];
 
         if (v15)
         {
@@ -283,11 +283,11 @@
   return v7;
 }
 
-- (id)providersForStorefront:(id)a3 featuredOnly:(BOOL)a4
+- (id)providersForStorefront:(id)storefront featuredOnly:(BOOL)only
 {
-  v21 = a4;
+  onlyCopy = only;
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  storefrontCopy = storefront;
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v28 = 0u;
   v29 = 0u;
@@ -312,8 +312,8 @@
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v8 = [v7 storefronts];
-        v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        storefronts = [v7 storefronts];
+        v9 = [storefronts countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v9)
         {
           v10 = v9;
@@ -324,16 +324,16 @@
             {
               if (*v25 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(storefronts);
               }
 
               v13 = *(*(&v24 + 1) + 8 * j);
-              v14 = [v13 storefrontTwoCharCode];
-              v15 = [v14 isEqualToString:v5];
+              storefrontTwoCharCode = [v13 storefrontTwoCharCode];
+              v15 = [storefrontTwoCharCode isEqualToString:storefrontCopy];
 
               if (v15)
               {
-                if (!v21 || [v13 isFeatured])
+                if (!onlyCopy || [v13 isFeatured])
                 {
                   [v19 addObject:v7];
                 }
@@ -342,7 +342,7 @@
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v10 = [storefronts countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v10)
             {
               continue;
@@ -367,19 +367,19 @@ LABEL_18:
   return v16;
 }
 
-- (id)updateFeaturedStorefronts:(id)a3 withCurrentStorefrontCodeOrNil:(id)a4
+- (id)updateFeaturedStorefronts:(id)storefronts withCurrentStorefrontCodeOrNil:(id)nil
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  storefrontsCopy = storefronts;
+  nilCopy = nil;
+  if (nilCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v5;
+    v8 = storefrontsCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -395,8 +395,8 @@ LABEL_18:
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 identitifer];
-          v15 = [v14 isEqualToString:v6];
+          identitifer = [v13 identitifer];
+          v15 = [identitifer isEqualToString:nilCopy];
 
           [v13 setIsFeatured:v15];
           [v7 addObject:v13];
@@ -413,7 +413,7 @@ LABEL_18:
 
   else
   {
-    v16 = v5;
+    v16 = storefrontsCopy;
   }
 
   v17 = *MEMORY[0x277D85DE8];

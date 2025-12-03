@@ -2,7 +2,7 @@
 - (BOOL)doWeightedSumByNonZeroWeights;
 - (MPSNNReduceFeatureChannelsAndWeightsSum)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNReduceFeatureChannelsAndWeightsSum)initWithDevice:(id)device doWeightedSumByNonZeroWeights:(BOOL)doWeightedSumByNonZeroWeights;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset;
 @end
 
 @implementation MPSNNReduceFeatureChannelsAndWeightsSum
@@ -37,11 +37,11 @@
   return [(MPSNNReduceBinary *)&v3 reduceOp]== 14;
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 primaryOffset:(id *)a6 secondaryOffset:(id *)a7 kernelOffset:(id *)a8
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method primaryOffset:(id *)offset secondaryOffset:(id *)secondaryOffset kernelOffset:(id *)kernelOffset
 {
   v16.receiver = self;
   v16.super_class = MPSNNReduceFeatureChannelsAndWeightsSum;
-  v8 = [(MPSCNNBinaryKernel *)&v16 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 primaryOffset:a6 secondaryOffset:a7 kernelOffset:a8];
+  v8 = [(MPSCNNBinaryKernel *)&v16 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method primaryOffset:offset secondaryOffset:secondaryOffset kernelOffset:kernelOffset];
   objc_msgSend_setFeatureChannels_(v8, v9, 1, v10, v11, v12, v13, v14);
   return v8;
 }

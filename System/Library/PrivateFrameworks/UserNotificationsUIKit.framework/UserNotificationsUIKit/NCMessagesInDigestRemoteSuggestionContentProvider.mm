@@ -1,25 +1,25 @@
 @interface NCMessagesInDigestRemoteSuggestionContentProvider
-- (NCMessagesInDigestRemoteSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 uuid:(id)a7;
+- (NCMessagesInDigestRemoteSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate uuid:(id)uuid;
 - (id)auxiliaryOptionActions;
-- (void)handleLeaveOnButtonAction:(id)a3;
-- (void)handleTurnOffMenuButtonAction:(id)a3;
+- (void)handleLeaveOnButtonAction:(id)action;
+- (void)handleTurnOffMenuButtonAction:(id)action;
 @end
 
 @implementation NCMessagesInDigestRemoteSuggestionContentProvider
 
-- (NCMessagesInDigestRemoteSuggestionContentProvider)initWithNotificationRequest:(id)a3 bundleDisplayName:(id)a4 managementDelegate:(id)a5 suggestionDelegate:(id)a6 uuid:(id)a7
+- (NCMessagesInDigestRemoteSuggestionContentProvider)initWithNotificationRequest:(id)request bundleDisplayName:(id)name managementDelegate:(id)delegate suggestionDelegate:(id)suggestionDelegate uuid:(id)uuid
 {
-  v12 = a4;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = NCMessagesInDigestRemoteSuggestionContentProvider;
-  v13 = [(NCRemoteSuggestionContentProvider *)&v19 initWithNotificationRequest:a3 bundleDisplayName:v12 managementDelegate:a5 suggestionDelegate:a6 uuid:a7];
+  v13 = [(NCRemoteSuggestionContentProvider *)&v19 initWithNotificationRequest:request bundleDisplayName:nameCopy managementDelegate:delegate suggestionDelegate:suggestionDelegate uuid:uuid];
   if (v13)
   {
     v14 = MEMORY[0x277CCACA8];
     v15 = NCUserNotificationsUIKitFrameworkBundle();
     v16 = [v15 localizedStringForKey:@"NOTIFICATION_REMOTE_MANAGEMENT_MESSAGES_IN_DIGEST_SUGGESTION" value:&stru_282FE84F8 table:0];
-    v17 = [v14 stringWithFormat:v16, v12];
-    [(NCNotificationManagementSuggestionContentProvider *)v13 setAuxiliaryOptionsSummaryText:v17];
+    nameCopy = [v14 stringWithFormat:v16, nameCopy];
+    [(NCNotificationManagementSuggestionContentProvider *)v13 setAuxiliaryOptionsSummaryText:nameCopy];
   }
 
   return v13;
@@ -78,36 +78,36 @@ void __75__NCMessagesInDigestRemoteSuggestionContentProvider_auxiliaryOptionActi
   [WeakRetained handleLeaveOnButtonAction:v4];
 }
 
-- (void)handleTurnOffMenuButtonAction:(id)a3
+- (void)handleTurnOffMenuButtonAction:(id)action
 {
-  v10 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  v5 = [v4 sectionIdentifier];
-  [v10 notificationManagementContentProvider:self setAllowsDirectMessages:0 forSectionIdentifier:v5];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
+  [suggestionDelegate notificationManagementContentProvider:self setAllowsDirectMessages:0 forSectionIdentifier:sectionIdentifier];
 
-  v6 = [MEMORY[0x277CEB1B8] sharedInstance];
-  v7 = [(NCRemoteSuggestionContentProvider *)self uuid];
+  mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
+  uuid = [(NCRemoteSuggestionContentProvider *)self uuid];
   v8 = [MEMORY[0x277CBEAA8] now];
-  [v6 logSuggestionEvent:2 suggestionType:8 suggestionIdentifier:v7 timestamp:v8];
+  [mEMORY[0x277CEB1B8] logSuggestionEvent:2 suggestionType:8 suggestionIdentifier:uuid timestamp:v8];
 
-  v9 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v10 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v9];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
-- (void)handleLeaveOnButtonAction:(id)a3
+- (void)handleLeaveOnButtonAction:(id)action
 {
-  v10 = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
-  v4 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  v5 = [v4 sectionIdentifier];
-  [v10 notificationManagementContentProvider:self setAllowsDirectMessages:1 forSectionIdentifier:v5];
+  suggestionDelegate = [(NCNotificationManagementSuggestionContentProvider *)self suggestionDelegate];
+  notificationRequest = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  sectionIdentifier = [notificationRequest sectionIdentifier];
+  [suggestionDelegate notificationManagementContentProvider:self setAllowsDirectMessages:1 forSectionIdentifier:sectionIdentifier];
 
-  v6 = [MEMORY[0x277CEB1B8] sharedInstance];
-  v7 = [(NCRemoteSuggestionContentProvider *)self uuid];
+  mEMORY[0x277CEB1B8] = [MEMORY[0x277CEB1B8] sharedInstance];
+  uuid = [(NCRemoteSuggestionContentProvider *)self uuid];
   v8 = [MEMORY[0x277CBEAA8] now];
-  [v6 logSuggestionEvent:1 suggestionType:8 suggestionIdentifier:v7 timestamp:v8];
+  [mEMORY[0x277CEB1B8] logSuggestionEvent:1 suggestionType:8 suggestionIdentifier:uuid timestamp:v8];
 
-  v9 = [(NCNotificationManagementContentProvider *)self notificationRequest];
-  [v10 notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:v9];
+  notificationRequest2 = [(NCNotificationManagementContentProvider *)self notificationRequest];
+  [suggestionDelegate notificationManagementContentProvider:self requestsRemoveSuggestionForRequest:notificationRequest2];
 }
 
 @end

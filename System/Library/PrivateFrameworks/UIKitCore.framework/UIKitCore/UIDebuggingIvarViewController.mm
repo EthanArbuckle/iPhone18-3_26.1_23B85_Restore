@@ -1,16 +1,16 @@
 @interface UIDebuggingIvarViewController
-- (Class)_classForTableSection:(int64_t)a3;
+- (Class)_classForTableSection:(int64_t)section;
 - (NSObject)inspectedObject;
 - (UIDebuggingIvarViewController)init;
 - (id)_classHierarchyForInspectedObject;
-- (id)_ivarForIndexPath:(id)a3;
-- (id)_ivarsForInspectedObjectInClass:(Class)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)setInspectedObject:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)_ivarForIndexPath:(id)path;
+- (id)_ivarsForInspectedObjectInClass:(Class)class;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)setInspectedObject:(id)object;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation UIDebuggingIvarViewController
@@ -23,23 +23,23 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(UITableViewController *)v2 tableView];
-    [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"kCellReuseIdentifier"];
+    tableView = [(UITableViewController *)v2 tableView];
+    [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kCellReuseIdentifier"];
 
-    v5 = [(UITableViewController *)v3 tableView];
-    [v5 setRowHeight:66.0];
+    tableView2 = [(UITableViewController *)v3 tableView];
+    [tableView2 setRowHeight:66.0];
   }
 
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UITableViewController *)self tableView];
-  v7 = [v6 dequeueReusableCellWithIdentifier:@"kCellReuseIdentifier" forIndexPath:v5];
+  pathCopy = path;
+  tableView = [(UITableViewController *)self tableView];
+  v7 = [tableView dequeueReusableCellWithIdentifier:@"kCellReuseIdentifier" forIndexPath:pathCopy];
 
-  v8 = [(UIDebuggingIvarViewController *)self _ivarForIndexPath:v5];
+  v8 = [(UIDebuggingIvarViewController *)self _ivarForIndexPath:pathCopy];
 
   [v7 setIvar:v8];
   if ([v8 isObject])
@@ -50,66 +50,66 @@
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(UIDebuggingIvarViewController *)self _ivarsForInspectedObjectInClass:[(UIDebuggingIvarViewController *)self _classForTableSection:a4]];
+  v4 = [(UIDebuggingIvarViewController *)self _ivarsForInspectedObjectInClass:[(UIDebuggingIvarViewController *)self _classForTableSection:section]];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(UIDebuggingIvarViewController *)self _classHierarchyForInspectedObject];
-  v4 = [v3 count];
+  _classHierarchyForInspectedObject = [(UIDebuggingIvarViewController *)self _classHierarchyForInspectedObject];
+  v4 = [_classHierarchyForInspectedObject count];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(UIDebuggingIvarViewController *)self _classHierarchyForInspectedObject];
-  v6 = [v5 objectAtIndex:a4];
+  _classHierarchyForInspectedObject = [(UIDebuggingIvarViewController *)self _classHierarchyForInspectedObject];
+  v6 = [_classHierarchyForInspectedObject objectAtIndex:section];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(UIDebuggingIvarViewController *)self _ivarForIndexPath:v6];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(UIDebuggingIvarViewController *)self _ivarForIndexPath:pathCopy];
   if ([v7 isObject])
   {
     v8 = objc_alloc_init(UIDebuggingIvarViewController);
-    v9 = [v7 value];
-    [(UIDebuggingIvarViewController *)v8 setInspectedObject:v9];
+    value = [v7 value];
+    [(UIDebuggingIvarViewController *)v8 setInspectedObject:value];
 
-    v10 = [(UIViewController *)self navigationController];
-    [v10 pushViewController:v8 animated:1];
+    navigationController = [(UIViewController *)self navigationController];
+    [navigationController pushViewController:v8 animated:1];
   }
 
   else
   {
-    [v11 deselectRowAtIndexPath:v6 animated:0];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:0];
   }
 }
 
-- (id)_ivarForIndexPath:(id)a3
+- (id)_ivarForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[UIDebuggingIvarViewController _ivarsForInspectedObjectInClass:](self, "_ivarsForInspectedObjectInClass:", -[UIDebuggingIvarViewController _classForTableSection:](self, "_classForTableSection:", [v4 section]));
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = -[UIDebuggingIvarViewController _ivarsForInspectedObjectInClass:](self, "_ivarsForInspectedObjectInClass:", -[UIDebuggingIvarViewController _classForTableSection:](self, "_classForTableSection:", [pathCopy section]));
+  v6 = [pathCopy row];
 
   v7 = [v5 objectAtIndex:v6];
 
   return v7;
 }
 
-- (Class)_classForTableSection:(int64_t)a3
+- (Class)_classForTableSection:(int64_t)section
 {
-  v4 = [(UIDebuggingIvarViewController *)self _classHierarchyForInspectedObject];
-  v5 = [v4 objectAtIndex:a3];
+  _classHierarchyForInspectedObject = [(UIDebuggingIvarViewController *)self _classHierarchyForInspectedObject];
+  v5 = [_classHierarchyForInspectedObject objectAtIndex:section];
   v6 = NSClassFromString(v5);
 
   return v6;
@@ -117,8 +117,8 @@
 
 - (id)_classHierarchyForInspectedObject
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(UIDebuggingIvarViewController *)self inspectedObject];
+  array = [MEMORY[0x1E695DF70] array];
+  inspectedObject = [(UIDebuggingIvarViewController *)self inspectedObject];
   for (i = objc_opt_class(); ; i = [v6 superclass])
   {
     v6 = i;
@@ -128,28 +128,28 @@
       break;
     }
 
-    v4 = NSStringFromClass(v6);
-    [v3 addObject:v4];
+    inspectedObject = NSStringFromClass(v6);
+    [array addObject:inspectedObject];
   }
 
-  return v3;
+  return array;
 }
 
-- (id)_ivarsForInspectedObjectInClass:(Class)a3
+- (id)_ivarsForInspectedObjectInClass:(Class)class
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   outCount = 0;
-  v6 = class_copyIvarList(a3, &outCount);
+  v6 = class_copyIvarList(class, &outCount);
   if (outCount)
   {
     for (i = 0; i < outCount; ++i)
     {
       v8 = v6[i];
-      v9 = [(UIDebuggingIvarViewController *)self inspectedObject];
-      v10 = [UIDebuggingIvar ivarWithObjcIvar:v8 forObject:v9];
+      inspectedObject = [(UIDebuggingIvarViewController *)self inspectedObject];
+      v10 = [UIDebuggingIvar ivarWithObjcIvar:v8 forObject:inspectedObject];
 
-      [v5 addObject:v10];
+      [array addObject:v10];
     }
   }
 
@@ -158,22 +158,22 @@
   v16[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
 
-  v13 = [v5 sortedArrayUsingDescriptors:v12];
+  v13 = [array sortedArrayUsingDescriptors:v12];
 
   return v13;
 }
 
-- (void)setInspectedObject:(id)a3
+- (void)setInspectedObject:(id)object
 {
-  v4 = a3;
-  objc_storeWeak(&self->_inspectedObject, v4);
+  objectCopy = object;
+  objc_storeWeak(&self->_inspectedObject, objectCopy);
   v5 = objc_opt_class();
 
   v6 = NSStringFromClass(v5);
   [(UIViewController *)self setTitle:v6];
 
-  v7 = [(UITableViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (NSObject)inspectedObject

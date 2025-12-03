@@ -1,9 +1,9 @@
 @interface MRDRemoteControlService
-- (MRDRemoteControlService)initWithRoutingDataSource:(id)a3;
+- (MRDRemoteControlService)initWithRoutingDataSource:(id)source;
 - (MRDRemoteControlServiceDelegate)delegate;
 - (NSString)debugDescription;
-- (id)_notifyDelegateWithConnection:(id)a3;
-- (void)_initializeIDSRemoteControlServiceWithRoutingDataSource:(id)a3;
+- (id)_notifyDelegateWithConnection:(id)connection;
+- (void)_initializeIDSRemoteControlServiceWithRoutingDataSource:(id)source;
 - (void)reevaluateGroupSessionService;
 - (void)start;
 - (void)stop;
@@ -11,9 +11,9 @@
 
 @implementation MRDRemoteControlService
 
-- (MRDRemoteControlService)initWithRoutingDataSource:(id)a3
+- (MRDRemoteControlService)initWithRoutingDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v46.receiver = self;
   v46.super_class = MRDRemoteControlService;
   v5 = [(MRDRemoteControlService *)&v46 init];
@@ -21,9 +21,9 @@
   {
     v6 = +[MRUserSettings currentSettings];
     v7 = +[MRDSettings currentSettings];
-    v8 = [v7 shouldInitializeGenericBonjourService];
+    shouldInitializeGenericBonjourService = [v7 shouldInitializeGenericBonjourService];
 
-    if (v8)
+    if (shouldInitializeGenericBonjourService)
     {
       v9 = [MRDBonjourRemoteControlService alloc];
       v10 = [(MRDBonjourRemoteControlService *)v9 initWithNetServiceType:kMRExternalDeviceBonjourTypeGeneric];
@@ -34,9 +34,9 @@
     }
 
     v12 = +[MRDSettings currentSettings];
-    v13 = [v12 shouldInitializeTelevisionBonjourService];
+    shouldInitializeTelevisionBonjourService = [v12 shouldInitializeTelevisionBonjourService];
 
-    if (v13)
+    if (shouldInitializeTelevisionBonjourService)
     {
       v14 = [MRDBonjourRemoteControlService alloc];
       v15 = [(MRDBonjourRemoteControlService *)v14 initWithNetServiceType:kMRExternalDeviceBonjourTypeTelevision];
@@ -61,25 +61,25 @@
     }
 
     v21 = +[MRUserSettings currentSettings];
-    v22 = [v21 supportNanoLinkAgent];
+    supportNanoLinkAgent = [v21 supportNanoLinkAgent];
 
-    if (v22)
+    if (supportNanoLinkAgent)
     {
       v40 = _NSConcreteStackBlock;
       v41 = 3221225472;
       v42 = sub_1001462D4;
       v43 = &unk_1004B68F0;
       v44 = v5;
-      v45 = v4;
+      v45 = sourceCopy;
       dispatch_async(&_dispatch_main_q, &v40);
     }
 
     v23 = [MRUserSettings currentSettings:v40];
-    v24 = [v23 shouldInitializeIDSService];
+    shouldInitializeIDSService = [v23 shouldInitializeIDSService];
 
-    if (v24)
+    if (shouldInitializeIDSService)
     {
-      v25 = [[MRDIDSRemoteControlService alloc] initWithRoutingDataSource:v4];
+      v25 = [[MRDIDSRemoteControlService alloc] initWithRoutingDataSource:sourceCopy];
       idsService = v5->_idsService;
       v5->_idsService = v25;
 
@@ -87,9 +87,9 @@
     }
 
     v27 = +[MRUserSettings currentSettings];
-    v28 = [v27 shouldInitializeMRRelayService];
+    shouldInitializeMRRelayService = [v27 shouldInitializeMRRelayService];
 
-    if (v28)
+    if (shouldInitializeMRRelayService)
     {
       v29 = objc_alloc_init(MRDMRRelayRemoteControlService);
       mrRelayRemoteControlService = v5->_mrRelayRemoteControlService;
@@ -99,9 +99,9 @@
     }
 
     v31 = +[MRSharedSettings currentSettings];
-    v32 = [v31 supportGroupSession];
+    supportGroupSession = [v31 supportGroupSession];
 
-    if (v32)
+    if (supportGroupSession)
     {
       v33 = +[NSNotificationCenter defaultCenter];
       [v33 addObserver:v5 selector:"handleGroupSessionServerDidStartNotification:" name:@"MRDGroupSessionServerDidStartNotification" object:0];
@@ -113,9 +113,9 @@
     }
 
     v35 = +[MRSharedSettings currentSettings];
-    v36 = [v35 supportSystemGroupSession];
+    supportSystemGroupSession = [v35 supportSystemGroupSession];
 
-    if (v36)
+    if (supportSystemGroupSession)
     {
       v37 = [[MRDSystemGroupSessionRemoteControlService alloc] initWithDelegate:v5];
       systemGroupSessionService = v5->_systemGroupSessionService;
@@ -126,7 +126,7 @@
   return v5;
 }
 
-- (void)_initializeIDSRemoteControlServiceWithRoutingDataSource:(id)a3
+- (void)_initializeIDSRemoteControlServiceWithRoutingDataSource:(id)source
 {
   v24 = 0;
   v25 = &v24;
@@ -139,8 +139,8 @@
   v21[2] = sub_1001465F0;
   v21[3] = &unk_1004B78D8;
   v21[4] = self;
-  v3 = a3;
-  v22 = v3;
+  sourceCopy = source;
+  v22 = sourceCopy;
   v23 = &v24;
   v4 = objc_retainBlock(v21);
   v5 = [MRBlockGuard alloc];
@@ -162,16 +162,16 @@
   v25[5] = v12;
 
   v14 = +[NRPairedDeviceRegistry sharedInstance];
-  v15 = [v14 getActivePairedDevice];
+  getActivePairedDevice = [v14 getActivePairedDevice];
 
-  if (v15 && [v10 disarm])
+  if (getActivePairedDevice && [v10 disarm])
   {
     v16 = _MRLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v15 name];
+      name = [getActivePairedDevice name];
       *buf = 138412290;
-      v31 = v17;
+      v31 = name;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[MRDRemoteControlService] Found activePairedDevice <%@>, creating IDSRemoteControlService...", buf, 0xCu);
     }
 
@@ -228,29 +228,29 @@
   self->_started = 0;
 }
 
-- (id)_notifyDelegateWithConnection:(id)a3
+- (id)_notifyDelegateWithConnection:(id)connection
 {
   v4 = qword_100529550;
-  v5 = a3;
+  connectionCopy = connection;
   if (v4 != -1)
   {
     sub_1003AA760();
   }
 
   v6 = [MRDExternalDeviceServerClientConnection alloc];
-  v7 = [(MRDExternalDeviceServerClientConnection *)v6 initWithConnection:v5 replyQueue:qword_100529548];
-  v8 = [v5 label];
-  [(MRDExternalDeviceServerClientConnection *)v7 setLabel:v8];
+  v7 = [(MRDExternalDeviceServerClientConnection *)v6 initWithConnection:connectionCopy replyQueue:qword_100529548];
+  label = [connectionCopy label];
+  [(MRDExternalDeviceServerClientConnection *)v7 setLabel:label];
 
-  v9 = [v5 destinationOutputDeviceUID];
-  [(MRDExternalDeviceServerClientConnection *)v7 setDestinationOutputDeviceUID:v9];
+  destinationOutputDeviceUID = [connectionCopy destinationOutputDeviceUID];
+  [(MRDExternalDeviceServerClientConnection *)v7 setDestinationOutputDeviceUID:destinationOutputDeviceUID];
 
-  v10 = [v5 destinationGroupUID];
-  [(MRDExternalDeviceServerClientConnection *)v7 setDestinationGroupUID:v10];
+  destinationGroupUID = [connectionCopy destinationGroupUID];
+  [(MRDExternalDeviceServerClientConnection *)v7 setDestinationGroupUID:destinationGroupUID];
 
-  v11 = [v5 connectUserInfo];
+  connectUserInfo = [connectionCopy connectUserInfo];
 
-  [(MRDExternalDeviceServerClientConnection *)v7 setConnectUserInfo:v11];
+  [(MRDExternalDeviceServerClientConnection *)v7 setConnectUserInfo:connectUserInfo];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained remoteControlService:self didAcceptClientConnection:v7];
 
@@ -260,23 +260,23 @@
 - (void)reevaluateGroupSessionService
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 groupSessionServer];
-  v7 = [v4 sessionManager];
+  groupSessionServer = [v3 groupSessionServer];
+  sessionManager = [groupSessionServer sessionManager];
 
-  v5 = v7;
+  v5 = sessionManager;
   groupSessionService = self->_groupSessionService;
-  if (!groupSessionService && v7)
+  if (!groupSessionService && sessionManager)
   {
-    v5 = [[MRDGroupSessionRemoteControlService alloc] initWithGroupSessionManager:v7 delegate:self];
+    v5 = [[MRDGroupSessionRemoteControlService alloc] initWithGroupSessionManager:sessionManager delegate:self];
     groupSessionService = self->_groupSessionService;
 LABEL_6:
     self->_groupSessionService = v5;
 
-    v5 = v7;
+    v5 = sessionManager;
     goto LABEL_7;
   }
 
-  if (groupSessionService && !v7)
+  if (groupSessionService && !sessionManager)
   {
     goto LABEL_6;
   }

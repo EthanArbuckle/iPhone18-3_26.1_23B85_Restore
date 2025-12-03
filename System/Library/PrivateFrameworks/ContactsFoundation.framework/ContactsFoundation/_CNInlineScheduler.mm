@@ -1,42 +1,42 @@
 @interface _CNInlineScheduler
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation _CNInlineScheduler
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = objc_autoreleasePoolPush();
-  v5[2]();
+  blockCopy[2]();
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(CNInlineSchedulerCancelationToken);
   v6 = objc_autoreleasePoolPush();
-  v4[2](v4, v5);
+  blockCopy[2](blockCopy, v5);
   objc_autoreleasePoolPop(v6);
 
   return v5;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v6 = a4;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63___CNInlineScheduler_afterDelay_performBlock_qualityOfService___block_invoke;
   aBlock[3] = &unk_1E6ED8148;
-  v7 = v6;
+  v7 = blockCopy;
   v19 = v7;
   v8 = _Block_copy(aBlock);
   Current = CFAbsoluteTimeGetCurrent();
-  v10 = CFRunLoopTimerCreateWithHandler(0, Current + a3, 0.0, 0, 0, v8);
+  v10 = CFRunLoopTimerCreateWithHandler(0, Current + delay, 0.0, 0, 0, v8);
   v11 = CFRunLoopGetCurrent();
   CFRunLoopAddTimer(v11, v10, *MEMORY[0x1E695E8D0]);
   v12 = v10;

@@ -1,6 +1,6 @@
 @interface PREPredictionExemptTermsDetector
 - (BOOL)_warmTermsIfNecessary;
-- (BOOL)checkForExemptContentInText:(id)a3 languageCode:(id)a4;
+- (BOOL)checkForExemptContentInText:(id)text languageCode:(id)code;
 - (PREPredictionExemptTermsDetector)init;
 @end
 
@@ -49,43 +49,43 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)checkForExemptContentInText:(id)a3 languageCode:(id)a4
+- (BOOL)checkForExemptContentInText:(id)text languageCode:(id)code
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_languageToExemptTerms && [v6 length])
+  textCopy = text;
+  codeCopy = code;
+  if (self->_languageToExemptTerms && [textCopy length])
   {
-    if (!v7)
+    if (!codeCopy)
     {
-      v7 = @"en";
+      codeCopy = @"en";
     }
 
     v8 = pre_responses_handle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v7;
+      v24 = codeCopy;
       _os_log_impl(&dword_260CE3000, v8, OS_LOG_TYPE_DEFAULT, "PREResponsesExperiment Checking for exempt content with language code: %@", &v23, 0xCu);
     }
 
     [(PREPredictionExemptTermsDetector *)self _warmTermsIfNecessary];
-    v9 = [(NSDictionary *)self->_languageToExemptTerms objectForKeyedSubscript:v7];
+    v9 = [(NSDictionary *)self->_languageToExemptTerms objectForKeyedSubscript:codeCopy];
     if ([v9 count])
     {
-      v10 = [v6 localizedLowercaseString];
-      v11 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-      v12 = [v10 removeCharactersWithCharacterSet:v11];
+      localizedLowercaseString = [textCopy localizedLowercaseString];
+      punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+      v12 = [localizedLowercaseString removeCharactersWithCharacterSet:punctuationCharacterSet];
 
-      v13 = [v12 removeApostrophes];
+      removeApostrophes = [v12 removeApostrophes];
 
-      v14 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v7];
-      v15 = [v13 stringByFoldingWithOptions:128 locale:v14];
+      v14 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:codeCopy];
+      v15 = [removeApostrophes stringByFoldingWithOptions:128 locale:v14];
 
       v16 = [MEMORY[0x277CBEB98] setWithArray:v9];
       v17 = MEMORY[0x277CBEB98];
-      v18 = [v15 tokens];
-      v19 = [v17 setWithArray:v18];
+      tokens = [v15 tokens];
+      v19 = [v17 setWithArray:tokens];
 
       v20 = [v19 intersectsSet:v16];
     }

@@ -1,124 +1,124 @@
 @interface MHSchemaMHVoiceTriggerEventInfo
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHVoiceTriggerEventInfo)initWithDictionary:(id)a3;
-- (MHSchemaMHVoiceTriggerEventInfo)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHVoiceTriggerEventInfo)initWithDictionary:(id)dictionary;
+- (MHSchemaMHVoiceTriggerEventInfo)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasActiveChannel:(BOOL)a3;
-- (void)setHasAnalyzerPrependingSamples:(BOOL)a3;
-- (void)setHasAnalyzerTrailingSamples:(BOOL)a3;
-- (void)setHasBiometricClue:(BOOL)a3;
-- (void)setHasClientStartSampleCount:(BOOL)a3;
-- (void)setHasCumulativeDowntimeInSec:(BOOL)a3;
-- (void)setHasCumulativeUptimeInSec:(BOOL)a3;
-- (void)setHasDeltaTimeInNsFromlastPHSReject:(BOOL)a3;
-- (void)setHasDeviceHandheld:(BOOL)a3;
-- (void)setHasDidAudioStall:(BOOL)a3;
-- (void)setHasDisplayWakeTimeOffsetInNs:(BOOL)a3;
-- (void)setHasDowntimeInSec:(BOOL)a3;
-- (void)setHasEffectiveThreshold:(BOOL)a3;
-- (void)setHasEnhancedCarplayTriggerMode:(BOOL)a3;
-- (void)setHasExtraSamplesAtStart:(BOOL)a3;
-- (void)setHasHardwareSamplerate:(BOOL)a3;
-- (void)setHasHostPowerStateAtTrigger:(BOOL)a3;
-- (void)setHasIsBargeIn:(BOOL)a3;
-- (void)setHasIsContinuous:(BOOL)a3;
-- (void)setHasIsHSJSTriggerFromAlwaysOnMicBuffer:(BOOL)a3;
-- (void)setHasIsMaximized:(BOOL)a3;
-- (void)setHasIsMediaPlaying:(BOOL)a3;
-- (void)setHasIsSecondChance:(BOOL)a3;
-- (void)setHasIsTriggerEvent:(BOOL)a3;
-- (void)setHasIsWakeFromSleep:(BOOL)a3;
-- (void)setHasLastConsecutivePHSRejects:(BOOL)a3;
-- (void)setHasLastConsecutiveVTRejects:(BOOL)a3;
-- (void)setHasLastDisplayWakeTimeOffsetInNs:(BOOL)a3;
-- (void)setHasMediaVolume:(BOOL)a3;
-- (void)setHasNeptuneDetectionApiScore:(BOOL)a3;
-- (void)setHasOnBatteryPower:(BOOL)a3;
-- (void)setHasRecognizerScaleFactor:(BOOL)a3;
-- (void)setHasRecognizerScore:(BOOL)a3;
-- (void)setHasRecognizerThresholdOffset:(BOOL)a3;
-- (void)setHasRecognizerWaitTimeInNs:(BOOL)a3;
-- (void)setHasRemoteMicVADMyriadThreshold:(BOOL)a3;
-- (void)setHasRemoteMicVADScore:(BOOL)a3;
-- (void)setHasRemoteMicVADThreshold:(BOOL)a3;
-- (void)setHasSatBeingTrained:(BOOL)a3;
-- (void)setHasSatNumTrainingUtterances:(BOOL)a3;
-- (void)setHasSatScore:(BOOL)a3;
-- (void)setHasSatThreshold:(BOOL)a3;
-- (void)setHasSatTriggered:(BOOL)a3;
-- (void)setHasSecondPassAnalyerEndSampleCount:(BOOL)a3;
-- (void)setHasSecondPassAssetLoadCompleteTimeInNs:(BOOL)a3;
-- (void)setHasSecondPassAssetLoadStartTimeInNs:(BOOL)a3;
-- (void)setHasSecondPassAssetQueryCompleteTimeInNs:(BOOL)a3;
-- (void)setHasSecondPassAssetQueryStartTimeInNs:(BOOL)a3;
-- (void)setHasSecondPassAudioStreamReadyTimeInNs:(BOOL)a3;
-- (void)setHasSecondPassAudioStreamStartTimeInNs:(BOOL)a3;
-- (void)setHasSecondPassCheckerModelKeywordDetectionEndTimeInNs:(BOOL)a3;
-- (void)setHasSecondPassFirstAudioPacketReceptionTimeInNs:(BOOL)a3;
-- (void)setHasSecondPassLastAudioPacketReceptionTimeInNs:(BOOL)a3;
-- (void)setHasShadowMicScore:(BOOL)a3;
-- (void)setHasShadowMicScoreThresholdForVAD:(BOOL)a3;
-- (void)setHasSiriIsActiveOrOtherAssertion:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerCombinationWeight:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerCombinedThreshold:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerScore:(BOOL)a3;
-- (void)setHasThreshold:(BOOL)a3;
-- (void)setHasTotalSampleCount:(BOOL)a3;
-- (void)setHasTotalSamplesAtEndOfCapture:(BOOL)a3;
-- (void)setHasTotalSamplesAtTriggerEnd:(BOOL)a3;
-- (void)setHasTotalSamplesAtTriggerStart:(BOOL)a3;
-- (void)setHasTriggerDurationInNs:(BOOL)a3;
-- (void)setHasTriggerEndNs:(BOOL)a3;
-- (void)setHasTriggerEndSampleCount:(BOOL)a3;
-- (void)setHasTriggerEndTime:(BOOL)a3;
-- (void)setHasTriggerEndTimeOffsetInNs:(BOOL)a3;
-- (void)setHasTriggerExplicitSatScore:(BOOL)a3;
-- (void)setHasTriggerExplicitTDSRSatScore:(BOOL)a3;
-- (void)setHasTriggerFireNs:(BOOL)a3;
-- (void)setHasTriggerFireSampleCount:(BOOL)a3;
-- (void)setHasTriggerFireTimeOffsetInNs:(BOOL)a3;
-- (void)setHasTriggerFiredTime:(BOOL)a3;
-- (void)setHasTriggerScore:(BOOL)a3;
-- (void)setHasTriggerStartNs:(BOOL)a3;
-- (void)setHasTriggerStartSampleCount:(BOOL)a3;
-- (void)setHasTriggerStartTime:(BOOL)a3;
-- (void)setHasTriggerStartTimeOffsetInNs:(BOOL)a3;
-- (void)setHasTwoShotAudibleFeedbackDelayInNs:(BOOL)a3;
-- (void)setHasUptimeInSec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasActiveChannel:(BOOL)channel;
+- (void)setHasAnalyzerPrependingSamples:(BOOL)samples;
+- (void)setHasAnalyzerTrailingSamples:(BOOL)samples;
+- (void)setHasBiometricClue:(BOOL)clue;
+- (void)setHasClientStartSampleCount:(BOOL)count;
+- (void)setHasCumulativeDowntimeInSec:(BOOL)sec;
+- (void)setHasCumulativeUptimeInSec:(BOOL)sec;
+- (void)setHasDeltaTimeInNsFromlastPHSReject:(BOOL)reject;
+- (void)setHasDeviceHandheld:(BOOL)handheld;
+- (void)setHasDidAudioStall:(BOOL)stall;
+- (void)setHasDisplayWakeTimeOffsetInNs:(BOOL)ns;
+- (void)setHasDowntimeInSec:(BOOL)sec;
+- (void)setHasEffectiveThreshold:(BOOL)threshold;
+- (void)setHasEnhancedCarplayTriggerMode:(BOOL)mode;
+- (void)setHasExtraSamplesAtStart:(BOOL)start;
+- (void)setHasHardwareSamplerate:(BOOL)samplerate;
+- (void)setHasHostPowerStateAtTrigger:(BOOL)trigger;
+- (void)setHasIsBargeIn:(BOOL)in;
+- (void)setHasIsContinuous:(BOOL)continuous;
+- (void)setHasIsHSJSTriggerFromAlwaysOnMicBuffer:(BOOL)buffer;
+- (void)setHasIsMaximized:(BOOL)maximized;
+- (void)setHasIsMediaPlaying:(BOOL)playing;
+- (void)setHasIsSecondChance:(BOOL)chance;
+- (void)setHasIsTriggerEvent:(BOOL)event;
+- (void)setHasIsWakeFromSleep:(BOOL)sleep;
+- (void)setHasLastConsecutivePHSRejects:(BOOL)rejects;
+- (void)setHasLastConsecutiveVTRejects:(BOOL)rejects;
+- (void)setHasLastDisplayWakeTimeOffsetInNs:(BOOL)ns;
+- (void)setHasMediaVolume:(BOOL)volume;
+- (void)setHasNeptuneDetectionApiScore:(BOOL)score;
+- (void)setHasOnBatteryPower:(BOOL)power;
+- (void)setHasRecognizerScaleFactor:(BOOL)factor;
+- (void)setHasRecognizerScore:(BOOL)score;
+- (void)setHasRecognizerThresholdOffset:(BOOL)offset;
+- (void)setHasRecognizerWaitTimeInNs:(BOOL)ns;
+- (void)setHasRemoteMicVADMyriadThreshold:(BOOL)threshold;
+- (void)setHasRemoteMicVADScore:(BOOL)score;
+- (void)setHasRemoteMicVADThreshold:(BOOL)threshold;
+- (void)setHasSatBeingTrained:(BOOL)trained;
+- (void)setHasSatNumTrainingUtterances:(BOOL)utterances;
+- (void)setHasSatScore:(BOOL)score;
+- (void)setHasSatThreshold:(BOOL)threshold;
+- (void)setHasSatTriggered:(BOOL)triggered;
+- (void)setHasSecondPassAnalyerEndSampleCount:(BOOL)count;
+- (void)setHasSecondPassAssetLoadCompleteTimeInNs:(BOOL)ns;
+- (void)setHasSecondPassAssetLoadStartTimeInNs:(BOOL)ns;
+- (void)setHasSecondPassAssetQueryCompleteTimeInNs:(BOOL)ns;
+- (void)setHasSecondPassAssetQueryStartTimeInNs:(BOOL)ns;
+- (void)setHasSecondPassAudioStreamReadyTimeInNs:(BOOL)ns;
+- (void)setHasSecondPassAudioStreamStartTimeInNs:(BOOL)ns;
+- (void)setHasSecondPassCheckerModelKeywordDetectionEndTimeInNs:(BOOL)ns;
+- (void)setHasSecondPassFirstAudioPacketReceptionTimeInNs:(BOOL)ns;
+- (void)setHasSecondPassLastAudioPacketReceptionTimeInNs:(BOOL)ns;
+- (void)setHasShadowMicScore:(BOOL)score;
+- (void)setHasShadowMicScoreThresholdForVAD:(BOOL)d;
+- (void)setHasSiriIsActiveOrOtherAssertion:(BOOL)assertion;
+- (void)setHasTdSpeakerRecognizerCombinationWeight:(BOOL)weight;
+- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)score;
+- (void)setHasTdSpeakerRecognizerCombinedThreshold:(BOOL)threshold;
+- (void)setHasTdSpeakerRecognizerScore:(BOOL)score;
+- (void)setHasThreshold:(BOOL)threshold;
+- (void)setHasTotalSampleCount:(BOOL)count;
+- (void)setHasTotalSamplesAtEndOfCapture:(BOOL)capture;
+- (void)setHasTotalSamplesAtTriggerEnd:(BOOL)end;
+- (void)setHasTotalSamplesAtTriggerStart:(BOOL)start;
+- (void)setHasTriggerDurationInNs:(BOOL)ns;
+- (void)setHasTriggerEndNs:(BOOL)ns;
+- (void)setHasTriggerEndSampleCount:(BOOL)count;
+- (void)setHasTriggerEndTime:(BOOL)time;
+- (void)setHasTriggerEndTimeOffsetInNs:(BOOL)ns;
+- (void)setHasTriggerExplicitSatScore:(BOOL)score;
+- (void)setHasTriggerExplicitTDSRSatScore:(BOOL)score;
+- (void)setHasTriggerFireNs:(BOOL)ns;
+- (void)setHasTriggerFireSampleCount:(BOOL)count;
+- (void)setHasTriggerFireTimeOffsetInNs:(BOOL)ns;
+- (void)setHasTriggerFiredTime:(BOOL)time;
+- (void)setHasTriggerScore:(BOOL)score;
+- (void)setHasTriggerStartNs:(BOOL)ns;
+- (void)setHasTriggerStartSampleCount:(BOOL)count;
+- (void)setHasTriggerStartTime:(BOOL)time;
+- (void)setHasTriggerStartTimeOffsetInNs:(BOOL)ns;
+- (void)setHasTwoShotAudibleFeedbackDelayInNs:(BOOL)ns;
+- (void)setHasUptimeInSec:(BOOL)sec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHVoiceTriggerEventInfo
 
-- (MHSchemaMHVoiceTriggerEventInfo)initWithDictionary:(id)a3
+- (MHSchemaMHVoiceTriggerEventInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v199.receiver = self;
   v199.super_class = MHSchemaMHVoiceTriggerEventInfo;
   v5 = [(MHSchemaMHVoiceTriggerEventInfo *)&v199 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"secondPassAnalyerStartSampleCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"secondPassAnalyerStartSampleCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setSecondPassAnalyerStartSampleCount:](v5, "setSecondPassAnalyerStartSampleCount:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"secondPassAnalyerEndSampleCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"secondPassAnalyerEndSampleCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setSecondPassAnalyerEndSampleCount:](v5, "setSecondPassAnalyerEndSampleCount:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"satScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"satScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,14 +126,14 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setSatScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"satNumTrainingUtterances"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"satNumTrainingUtterances"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setSatNumTrainingUtterances:](v5, "setSatNumTrainingUtterances:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"satThreshold"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"satThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,7 +141,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setSatThreshold:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"satTriggered"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"satTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,7 +149,7 @@
     }
 
     v147 = v8;
-    v12 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerScore"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,7 +158,7 @@
     }
 
     v143 = v12;
-    v13 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
     objc_opt_class();
     v198 = v13;
     if (objc_opt_isKindOfClass())
@@ -168,7 +168,7 @@
     }
 
     v146 = v9;
-    v14 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThreshold"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -176,7 +176,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setTdSpeakerRecognizerCombinedThreshold:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinationWeight"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinationWeight"];
     objc_opt_class();
     v197 = v15;
     if (objc_opt_isKindOfClass())
@@ -186,7 +186,7 @@
     }
 
     v142 = v14;
-    v16 = [v4 objectForKeyedSubscript:@"biometricClue"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"biometricClue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -194,7 +194,7 @@
     }
 
     v141 = v16;
-    v17 = [v4 objectForKeyedSubscript:@"satBeingTrained"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"satBeingTrained"];
     objc_opt_class();
     v196 = v17;
     if (objc_opt_isKindOfClass())
@@ -202,14 +202,14 @@
       -[MHSchemaMHVoiceTriggerEventInfo setSatBeingTrained:](v5, "setSatBeingTrained:", [v17 BOOLValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"lastConsecutivePHSRejects"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"lastConsecutivePHSRejects"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setLastConsecutivePHSRejects:](v5, "setLastConsecutivePHSRejects:", [v18 unsignedIntValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"deltaTimeInNsFromlastPHSReject"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"deltaTimeInNsFromlastPHSReject"];
     objc_opt_class();
     v195 = v19;
     if (objc_opt_isKindOfClass())
@@ -218,7 +218,7 @@
     }
 
     v145 = v10;
-    v20 = [v4 objectForKeyedSubscript:@"triggerExplicitSatScore"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"triggerExplicitSatScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -226,7 +226,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setTriggerExplicitSatScore:?];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"triggerExplicitTDSRSatScore"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"triggerExplicitTDSRSatScore"];
     objc_opt_class();
     v194 = v21;
     if (objc_opt_isKindOfClass())
@@ -236,7 +236,7 @@
     }
 
     v144 = v11;
-    v22 = [v4 objectForKeyedSubscript:@"shadowMicScore"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"shadowMicScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -244,7 +244,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setShadowMicScore:?];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"shadowMicScoreThresholdForVAD"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"shadowMicScoreThresholdForVAD"];
     objc_opt_class();
     v193 = v23;
     if (objc_opt_isKindOfClass())
@@ -253,7 +253,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setShadowMicScoreThresholdForVAD:?];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"remoteMicVADScore"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"remoteMicVADScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -261,7 +261,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setRemoteMicVADScore:?];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"remoteMicVADThreshold"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"remoteMicVADThreshold"];
     objc_opt_class();
     v192 = v25;
     if (objc_opt_isKindOfClass())
@@ -271,7 +271,7 @@
     }
 
     v140 = v18;
-    v26 = [v4 objectForKeyedSubscript:@"remoteMicVADMyriadThreshold"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"remoteMicVADMyriadThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -280,7 +280,7 @@
     }
 
     v136 = v26;
-    v27 = [v4 objectForKeyedSubscript:@"enhancedCarplayTriggerMode"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"enhancedCarplayTriggerMode"];
     objc_opt_class();
     v191 = v27;
     if (objc_opt_isKindOfClass())
@@ -289,14 +289,14 @@
     }
 
     v139 = v20;
-    v28 = [v4 objectForKeyedSubscript:@"triggerStartSampleCount"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"triggerStartSampleCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setTriggerStartSampleCount:](v5, "setTriggerStartSampleCount:", [v28 unsignedLongLongValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"clientStartSampleCount"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"clientStartSampleCount"];
     objc_opt_class();
     v190 = v29;
     if (objc_opt_isKindOfClass())
@@ -305,14 +305,14 @@
     }
 
     v138 = v22;
-    v30 = [v4 objectForKeyedSubscript:@"triggerEndSampleCount"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"triggerEndSampleCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setTriggerEndSampleCount:](v5, "setTriggerEndSampleCount:", [v30 unsignedLongLongValue]);
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"triggerFireSampleCount"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"triggerFireSampleCount"];
     objc_opt_class();
     v189 = v31;
     if (objc_opt_isKindOfClass())
@@ -321,7 +321,7 @@
     }
 
     v135 = v28;
-    v32 = [v4 objectForKeyedSubscript:@"triggerStartNs"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"triggerStartNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -329,7 +329,7 @@
     }
 
     v133 = v32;
-    v33 = [v4 objectForKeyedSubscript:@"triggerEndNs"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"triggerEndNs"];
     objc_opt_class();
     v188 = v33;
     if (objc_opt_isKindOfClass())
@@ -338,14 +338,14 @@
     }
 
     v137 = v24;
-    v34 = [v4 objectForKeyedSubscript:@"triggerFireNs"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"triggerFireNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setTriggerFireNs:](v5, "setTriggerFireNs:", [v34 unsignedLongLongValue]);
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"extraSamplesAtStart"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"extraSamplesAtStart"];
     objc_opt_class();
     v187 = v35;
     if (objc_opt_isKindOfClass())
@@ -354,7 +354,7 @@
     }
 
     v134 = v30;
-    v36 = [v4 objectForKeyedSubscript:@"analyzerPrependingSamples"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"analyzerPrependingSamples"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -362,7 +362,7 @@
     }
 
     v131 = v36;
-    v37 = [v4 objectForKeyedSubscript:@"analyzerTrailingSamples"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"analyzerTrailingSamples"];
     objc_opt_class();
     v186 = v37;
     if (objc_opt_isKindOfClass())
@@ -370,14 +370,14 @@
       -[MHSchemaMHVoiceTriggerEventInfo setAnalyzerTrailingSamples:](v5, "setAnalyzerTrailingSamples:", [v37 unsignedLongLongValue]);
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"isTriggerEvent"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"isTriggerEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setIsTriggerEvent:](v5, "setIsTriggerEvent:", [v38 BOOLValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"totalSampleCount"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"totalSampleCount"];
     objc_opt_class();
     v185 = v39;
     if (objc_opt_isKindOfClass())
@@ -386,7 +386,7 @@
     }
 
     v132 = v34;
-    v40 = [v4 objectForKeyedSubscript:@"triggerScore"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"triggerScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -395,7 +395,7 @@
     }
 
     v129 = v40;
-    v41 = [v4 objectForKeyedSubscript:@"isMaximized"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"isMaximized"];
     objc_opt_class();
     v184 = v41;
     if (objc_opt_isKindOfClass())
@@ -404,7 +404,7 @@
     }
 
     v130 = v38;
-    v42 = [v4 objectForKeyedSubscript:@"effectiveThreshold"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"effectiveThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -412,7 +412,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setEffectiveThreshold:?];
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"recognizerScore"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"recognizerScore"];
     objc_opt_class();
     v183 = v43;
     if (objc_opt_isKindOfClass())
@@ -421,7 +421,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setRecognizerScore:?];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"recognizerThresholdOffset"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"recognizerThresholdOffset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -429,7 +429,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setRecognizerThresholdOffset:?];
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"recognizerWaitTimeInNs"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"recognizerWaitTimeInNs"];
     objc_opt_class();
     v182 = v45;
     if (objc_opt_isKindOfClass())
@@ -437,7 +437,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setRecognizerWaitTimeInNs:](v5, "setRecognizerWaitTimeInNs:", [v45 unsignedLongLongValue]);
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"recognizerScaleFactor"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"recognizerScaleFactor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -445,7 +445,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setRecognizerScaleFactor:?];
     }
 
-    v47 = [v4 objectForKeyedSubscript:@"threshold"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"threshold"];
     objc_opt_class();
     v181 = v47;
     if (objc_opt_isKindOfClass())
@@ -455,7 +455,7 @@
     }
 
     v128 = v42;
-    v48 = [v4 objectForKeyedSubscript:@"triggerStartTimeOffsetInNs"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"triggerStartTimeOffsetInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -463,7 +463,7 @@
     }
 
     v125 = v48;
-    v49 = [v4 objectForKeyedSubscript:@"triggerEndTimeOffsetInNs"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"triggerEndTimeOffsetInNs"];
     objc_opt_class();
     v180 = v49;
     if (objc_opt_isKindOfClass())
@@ -472,7 +472,7 @@
     }
 
     v50 = v6;
-    v51 = [v4 objectForKeyedSubscript:@"triggerFireTimeOffsetInNs"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"triggerFireTimeOffsetInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -480,7 +480,7 @@
     }
 
     v124 = v51;
-    v52 = [v4 objectForKeyedSubscript:@"triggerStartTime"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"triggerStartTime"];
     objc_opt_class();
     v179 = v52;
     if (objc_opt_isKindOfClass())
@@ -489,7 +489,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setTriggerStartTime:?];
     }
 
-    v53 = [v4 objectForKeyedSubscript:@"triggerEndTime"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"triggerEndTime"];
     objc_opt_class();
     v178 = v53;
     v54 = v50;
@@ -499,7 +499,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setTriggerEndTime:?];
     }
 
-    v55 = [v4 objectForKeyedSubscript:@"triggerFiredTime"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"triggerFiredTime"];
     objc_opt_class();
     v177 = v55;
     v127 = v44;
@@ -509,7 +509,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setTriggerFiredTime:?];
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"hardwareSamplerate"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"hardwareSamplerate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -517,7 +517,7 @@
     }
 
     v123 = v56;
-    v57 = [v4 objectForKeyedSubscript:@"isContinuous"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"isContinuous"];
     objc_opt_class();
     v176 = v57;
     if (objc_opt_isKindOfClass())
@@ -526,7 +526,7 @@
     }
 
     v58 = v7;
-    v59 = [v4 objectForKeyedSubscript:@"triggerDurationInNs"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"triggerDurationInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -535,7 +535,7 @@
     }
 
     v122 = v59;
-    v60 = [v4 objectForKeyedSubscript:@"totalSamplesAtTriggerStart"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"totalSamplesAtTriggerStart"];
     objc_opt_class();
     v175 = v60;
     if (objc_opt_isKindOfClass())
@@ -543,7 +543,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setTotalSamplesAtTriggerStart:](v5, "setTotalSamplesAtTriggerStart:", [v60 unsignedLongLongValue]);
     }
 
-    v61 = [v4 objectForKeyedSubscript:@"totalSamplesAtTriggerEnd"];
+    v61 = [dictionaryCopy objectForKeyedSubscript:@"totalSamplesAtTriggerEnd"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -553,7 +553,7 @@
     v121 = v61;
     v148 = v58;
     v149 = v54;
-    v62 = [v4 objectForKeyedSubscript:@"totalSamplesAtEndOfCapture"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"totalSamplesAtEndOfCapture"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -561,7 +561,7 @@
     }
 
     v120 = v62;
-    v63 = [v4 objectForKeyedSubscript:@"configVersion"];
+    v63 = [dictionaryCopy objectForKeyedSubscript:@"configVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -569,7 +569,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setConfigVersion:v64];
     }
 
-    v65 = [v4 objectForKeyedSubscript:@"configPath"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"configPath"];
     objc_opt_class();
     v174 = v65;
     if (objc_opt_isKindOfClass())
@@ -578,7 +578,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setConfigPath:v66];
     }
 
-    v67 = [v4 objectForKeyedSubscript:@"isSecondChance"];
+    v67 = [dictionaryCopy objectForKeyedSubscript:@"isSecondChance"];
     objc_opt_class();
     v173 = v67;
     if (objc_opt_isKindOfClass())
@@ -586,7 +586,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setIsSecondChance:](v5, "setIsSecondChance:", [v67 BOOLValue]);
     }
 
-    v68 = [v4 objectForKeyedSubscript:@"deviceHandheld"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"deviceHandheld"];
     objc_opt_class();
     v172 = v68;
     if (objc_opt_isKindOfClass())
@@ -594,7 +594,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setDeviceHandheld:](v5, "setDeviceHandheld:", [v68 BOOLValue]);
     }
 
-    v69 = [v4 objectForKeyedSubscript:@"activeChannel"];
+    v69 = [dictionaryCopy objectForKeyedSubscript:@"activeChannel"];
     objc_opt_class();
     v171 = v69;
     if (objc_opt_isKindOfClass())
@@ -602,7 +602,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setActiveChannel:](v5, "setActiveChannel:", [v69 unsignedIntValue]);
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"twoShotAudibleFeedbackDelayInNs"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"twoShotAudibleFeedbackDelayInNs"];
     objc_opt_class();
     v170 = v70;
     if (objc_opt_isKindOfClass())
@@ -610,7 +610,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setTwoShotAudibleFeedbackDelayInNs:](v5, "setTwoShotAudibleFeedbackDelayInNs:", [v70 unsignedLongLongValue]);
     }
 
-    v71 = [v4 objectForKeyedSubscript:@"cumulativeUptimeInSec"];
+    v71 = [dictionaryCopy objectForKeyedSubscript:@"cumulativeUptimeInSec"];
     objc_opt_class();
     v169 = v71;
     if (objc_opt_isKindOfClass())
@@ -619,7 +619,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setCumulativeUptimeInSec:?];
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"cumulativeDowntimeInSec"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"cumulativeDowntimeInSec"];
     objc_opt_class();
     v168 = v72;
     if (objc_opt_isKindOfClass())
@@ -628,7 +628,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setCumulativeDowntimeInSec:?];
     }
 
-    v73 = [v4 objectForKeyedSubscript:@"hostPowerStateAtTrigger"];
+    v73 = [dictionaryCopy objectForKeyedSubscript:@"hostPowerStateAtTrigger"];
     objc_opt_class();
     v167 = v73;
     if (objc_opt_isKindOfClass())
@@ -636,7 +636,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setHostPowerStateAtTrigger:](v5, "setHostPowerStateAtTrigger:", [v73 intValue]);
     }
 
-    v74 = [v4 objectForKeyedSubscript:@"isMediaPlaying"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"isMediaPlaying"];
     objc_opt_class();
     v166 = v74;
     if (objc_opt_isKindOfClass())
@@ -644,7 +644,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setIsMediaPlaying:](v5, "setIsMediaPlaying:", [v74 BOOLValue]);
     }
 
-    v75 = [v4 objectForKeyedSubscript:@"mediaVolume"];
+    v75 = [dictionaryCopy objectForKeyedSubscript:@"mediaVolume"];
     objc_opt_class();
     v165 = v75;
     if (objc_opt_isKindOfClass())
@@ -653,7 +653,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setMediaVolume:?];
     }
 
-    v76 = [v4 objectForKeyedSubscript:@"audioProviderUUID"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"audioProviderUUID"];
     objc_opt_class();
     v164 = v76;
     if (objc_opt_isKindOfClass())
@@ -662,7 +662,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setAudioProviderUUID:v77];
     }
 
-    v78 = [v4 objectForKeyedSubscript:@"onBatteryPower"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"onBatteryPower"];
     objc_opt_class();
     v163 = v78;
     if (objc_opt_isKindOfClass())
@@ -670,7 +670,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setOnBatteryPower:](v5, "setOnBatteryPower:", [v78 BOOLValue]);
     }
 
-    v79 = [v4 objectForKeyedSubscript:@"didWakeAP"];
+    v79 = [dictionaryCopy objectForKeyedSubscript:@"didWakeAP"];
     objc_opt_class();
     v162 = v79;
     if (objc_opt_isKindOfClass())
@@ -678,7 +678,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setDidWakeAP:](v5, "setDidWakeAP:", [v79 BOOLValue]);
     }
 
-    v80 = [v4 objectForKeyedSubscript:@"uptimeInSec"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"uptimeInSec"];
     objc_opt_class();
     v161 = v80;
     if (objc_opt_isKindOfClass())
@@ -687,7 +687,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setUptimeInSec:?];
     }
 
-    v81 = [v4 objectForKeyedSubscript:@"downtimeInSec"];
+    v81 = [dictionaryCopy objectForKeyedSubscript:@"downtimeInSec"];
     objc_opt_class();
     v160 = v81;
     if (objc_opt_isKindOfClass())
@@ -696,7 +696,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setDowntimeInSec:?];
     }
 
-    v82 = [v4 objectForKeyedSubscript:@"lastConsecutiveVTRejects"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"lastConsecutiveVTRejects"];
     objc_opt_class();
     v159 = v82;
     if (objc_opt_isKindOfClass())
@@ -704,7 +704,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setLastConsecutiveVTRejects:](v5, "setLastConsecutiveVTRejects:", [v82 unsignedIntValue]);
     }
 
-    v83 = [v4 objectForKeyedSubscript:@"captureFilePath"];
+    v83 = [dictionaryCopy objectForKeyedSubscript:@"captureFilePath"];
     objc_opt_class();
     v158 = v83;
     if (objc_opt_isKindOfClass())
@@ -713,7 +713,7 @@
       [(MHSchemaMHVoiceTriggerEventInfo *)v5 setCaptureFilePath:v84];
     }
 
-    v85 = [v4 objectForKeyedSubscript:@"configDataHash"];
+    v85 = [dictionaryCopy objectForKeyedSubscript:@"configDataHash"];
     objc_opt_class();
     v157 = v85;
     if (objc_opt_isKindOfClass())
@@ -723,14 +723,14 @@
     }
 
     v87 = v46;
-    v88 = [v4 objectForKeyedSubscript:@"siriIsActiveOrOtherAssertion"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"siriIsActiveOrOtherAssertion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setSiriIsActiveOrOtherAssertion:](v5, "setSiriIsActiveOrOtherAssertion:", [v88 BOOLValue]);
     }
 
-    v89 = [v4 objectForKeyedSubscript:@"didAudioStall"];
+    v89 = [dictionaryCopy objectForKeyedSubscript:@"didAudioStall"];
     objc_opt_class();
     v156 = v89;
     if (objc_opt_isKindOfClass())
@@ -738,7 +738,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setDidAudioStall:](v5, "setDidAudioStall:", [v89 BOOLValue]);
     }
 
-    v90 = [v4 objectForKeyedSubscript:@"isBargeIn"];
+    v90 = [dictionaryCopy objectForKeyedSubscript:@"isBargeIn"];
     objc_opt_class();
     v155 = v90;
     v91 = v87;
@@ -747,14 +747,14 @@
       -[MHSchemaMHVoiceTriggerEventInfo setIsBargeIn:](v5, "setIsBargeIn:", [v155 BOOLValue]);
     }
 
-    v92 = [v4 objectForKeyedSubscript:@"isWakeFromSleep"];
+    v92 = [dictionaryCopy objectForKeyedSubscript:@"isWakeFromSleep"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setIsWakeFromSleep:](v5, "setIsWakeFromSleep:", [v92 BOOLValue]);
     }
 
-    v93 = [v4 objectForKeyedSubscript:@"secondPassAssetQueryStartTimeInNs"];
+    v93 = [dictionaryCopy objectForKeyedSubscript:@"secondPassAssetQueryStartTimeInNs"];
     objc_opt_class();
     v154 = v93;
     if (objc_opt_isKindOfClass())
@@ -762,14 +762,14 @@
       -[MHSchemaMHVoiceTriggerEventInfo setSecondPassAssetQueryStartTimeInNs:](v5, "setSecondPassAssetQueryStartTimeInNs:", [v93 unsignedLongLongValue]);
     }
 
-    v94 = [v4 objectForKeyedSubscript:@"secondPassAssetQueryCompleteTimeInNs"];
+    v94 = [dictionaryCopy objectForKeyedSubscript:@"secondPassAssetQueryCompleteTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setSecondPassAssetQueryCompleteTimeInNs:](v5, "setSecondPassAssetQueryCompleteTimeInNs:", [v94 unsignedLongLongValue]);
     }
 
-    v95 = [v4 objectForKeyedSubscript:@"secondPassAssetLoadStartTimeInNs"];
+    v95 = [dictionaryCopy objectForKeyedSubscript:@"secondPassAssetLoadStartTimeInNs"];
     objc_opt_class();
     v153 = v95;
     if (objc_opt_isKindOfClass())
@@ -777,7 +777,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setSecondPassAssetLoadStartTimeInNs:](v5, "setSecondPassAssetLoadStartTimeInNs:", [v95 unsignedLongLongValue]);
     }
 
-    v96 = [v4 objectForKeyedSubscript:@"secondPassAssetLoadCompleteTimeInNs"];
+    v96 = [dictionaryCopy objectForKeyedSubscript:@"secondPassAssetLoadCompleteTimeInNs"];
     objc_opt_class();
     v152 = v96;
     if (objc_opt_isKindOfClass())
@@ -786,14 +786,14 @@
     }
 
     v97 = v63;
-    v98 = [v4 objectForKeyedSubscript:@"secondPassAudioStreamStartTimeInNs"];
+    v98 = [dictionaryCopy objectForKeyedSubscript:@"secondPassAudioStreamStartTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setSecondPassAudioStreamStartTimeInNs:](v5, "setSecondPassAudioStreamStartTimeInNs:", [v98 unsignedLongLongValue]);
     }
 
-    v99 = [v4 objectForKeyedSubscript:@"secondPassAudioStreamReadyTimeInNs"];
+    v99 = [dictionaryCopy objectForKeyedSubscript:@"secondPassAudioStreamReadyTimeInNs"];
     objc_opt_class();
     v151 = v99;
     if (objc_opt_isKindOfClass())
@@ -801,7 +801,7 @@
       -[MHSchemaMHVoiceTriggerEventInfo setSecondPassAudioStreamReadyTimeInNs:](v5, "setSecondPassAudioStreamReadyTimeInNs:", [v99 unsignedLongLongValue]);
     }
 
-    v100 = [v4 objectForKeyedSubscript:@"secondPassFirstAudioPacketReceptionTimeInNs"];
+    v100 = [dictionaryCopy objectForKeyedSubscript:@"secondPassFirstAudioPacketReceptionTimeInNs"];
     objc_opt_class();
     v150 = v100;
     v101 = v97;
@@ -811,7 +811,7 @@
     }
 
     v126 = v91;
-    v102 = [v4 objectForKeyedSubscript:@"secondPassLastAudioPacketReceptionTimeInNs"];
+    v102 = [dictionaryCopy objectForKeyedSubscript:@"secondPassLastAudioPacketReceptionTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -819,7 +819,7 @@
     }
 
     v117 = v92;
-    v103 = [v4 objectForKeyedSubscript:@"secondPassCheckerModelKeywordDetectionStartTimeInNs"];
+    v103 = [dictionaryCopy objectForKeyedSubscript:@"secondPassCheckerModelKeywordDetectionStartTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -828,14 +828,14 @@
 
     v116 = v98;
     v118 = v88;
-    v104 = [v4 objectForKeyedSubscript:@"secondPassCheckerModelKeywordDetectionEndTimeInNs"];
+    v104 = [dictionaryCopy objectForKeyedSubscript:@"secondPassCheckerModelKeywordDetectionEndTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setSecondPassCheckerModelKeywordDetectionEndTimeInNs:](v5, "setSecondPassCheckerModelKeywordDetectionEndTimeInNs:", [v104 unsignedLongLongValue]);
     }
 
-    v105 = [v4 objectForKeyedSubscript:@"triggerPhrase"];
+    v105 = [dictionaryCopy objectForKeyedSubscript:@"triggerPhrase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -844,7 +844,7 @@
     }
 
     v115 = v102;
-    v107 = [v4 objectForKeyedSubscript:@"lastDisplayWakeTimeOffsetInNs"];
+    v107 = [dictionaryCopy objectForKeyedSubscript:@"lastDisplayWakeTimeOffsetInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -853,7 +853,7 @@
     }
 
     v119 = v101;
-    v108 = [v4 objectForKeyedSubscript:{@"isHSJSTriggerFromAlwaysOnMicBuffer", v103}];
+    v108 = [dictionaryCopy objectForKeyedSubscript:{@"isHSJSTriggerFromAlwaysOnMicBuffer", v103}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -861,14 +861,14 @@
     }
 
     v109 = v94;
-    v110 = [v4 objectForKeyedSubscript:@"displayWakeTimeOffsetInNs"];
+    v110 = [dictionaryCopy objectForKeyedSubscript:@"displayWakeTimeOffsetInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerEventInfo setDisplayWakeTimeOffsetInNs:](v5, "setDisplayWakeTimeOffsetInNs:", [v110 unsignedLongLongValue]);
     }
 
-    v111 = [v4 objectForKeyedSubscript:@"neptuneDetectionApiScore"];
+    v111 = [dictionaryCopy objectForKeyedSubscript:@"neptuneDetectionApiScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -882,30 +882,30 @@
   return v5;
 }
 
-- (MHSchemaMHVoiceTriggerEventInfo)initWithJSON:(id)a3
+- (MHSchemaMHVoiceTriggerEventInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHVoiceTriggerEventInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHVoiceTriggerEventInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHVoiceTriggerEventInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -918,13 +918,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   p_has = &self->_has;
   has = self->_has;
   if ((has & 0x100000000000000) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerEventInfo activeChannel](self, "activeChannel")}];
-    [v3 setObject:v9 forKeyedSubscript:@"activeChannel"];
+    [dictionary setObject:v9 forKeyedSubscript:@"activeChannel"];
 
     has = *p_has;
     if ((*p_has & 0x40000000) == 0)
@@ -945,29 +945,29 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo analyzerPrependingSamples](self, "analyzerPrependingSamples")}];
-  [v3 setObject:v10 forKeyedSubscript:@"analyzerPrependingSamples"];
+  [dictionary setObject:v10 forKeyedSubscript:@"analyzerPrependingSamples"];
 
   if ((*p_has & 0x80000000) != 0)
   {
 LABEL_4:
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo analyzerTrailingSamples](self, "analyzerTrailingSamples")}];
-    [v3 setObject:v6 forKeyedSubscript:@"analyzerTrailingSamples"];
+    [dictionary setObject:v6 forKeyedSubscript:@"analyzerTrailingSamples"];
   }
 
 LABEL_5:
   if (self->_audioProviderUUID)
   {
-    v7 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    audioProviderUUID = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
+    dictionaryRepresentation = [audioProviderUUID dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"audioProviderUUID"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioProviderUUID"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"audioProviderUUID"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioProviderUUID"];
     }
   }
 
@@ -984,41 +984,41 @@ LABEL_5:
       v13 = off_1E78D99F8[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"biometricClue"];
+    [dictionary setObject:v13 forKeyedSubscript:@"biometricClue"];
   }
 
   if (self->_captureFilePath)
   {
-    v14 = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"captureFilePath"];
+    captureFilePath = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
+    v15 = [captureFilePath copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"captureFilePath"];
   }
 
   if ((*(&self->_has + 2) & 0x80) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo clientStartSampleCount](self, "clientStartSampleCount")}];
-    [v3 setObject:v16 forKeyedSubscript:@"clientStartSampleCount"];
+    [dictionary setObject:v16 forKeyedSubscript:@"clientStartSampleCount"];
   }
 
   if (self->_configDataHash)
   {
-    v17 = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"configDataHash"];
+    configDataHash = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
+    v18 = [configDataHash copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"configDataHash"];
   }
 
   if (self->_configPath)
   {
-    v19 = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"configPath"];
+    configPath = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
+    v20 = [configPath copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"configPath"];
   }
 
   if (self->_configVersion)
   {
-    v21 = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"configVersion"];
+    configVersion = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
+    v22 = [configVersion copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"configVersion"];
   }
 
   v23 = *p_has;
@@ -1027,7 +1027,7 @@ LABEL_5:
     v32 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self cumulativeDowntimeInSec];
     v33 = [v32 numberWithFloat:?];
-    [v3 setObject:v33 forKeyedSubscript:@"cumulativeDowntimeInSec"];
+    [dictionary setObject:v33 forKeyedSubscript:@"cumulativeDowntimeInSec"];
 
     v23 = *p_has;
     if ((*p_has & 0x400000000000000) == 0)
@@ -1050,7 +1050,7 @@ LABEL_30:
   v34 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self cumulativeUptimeInSec];
   v35 = [v34 numberWithFloat:?];
-  [v3 setObject:v35 forKeyedSubscript:@"cumulativeUptimeInSec"];
+  [dictionary setObject:v35 forKeyedSubscript:@"cumulativeUptimeInSec"];
 
   v23 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -1066,13 +1066,13 @@ LABEL_31:
 
 LABEL_49:
   v36 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo deltaTimeInNsFromlastPHSReject](self, "deltaTimeInNsFromlastPHSReject")}];
-  [v3 setObject:v36 forKeyedSubscript:@"deltaTimeInNsFromlastPHSReject"];
+  [dictionary setObject:v36 forKeyedSubscript:@"deltaTimeInNsFromlastPHSReject"];
 
   if ((*p_has & 0x80000000000000) != 0)
   {
 LABEL_32:
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo deviceHandheld](self, "deviceHandheld")}];
-    [v3 setObject:v24 forKeyedSubscript:@"deviceHandheld"];
+    [dictionary setObject:v24 forKeyedSubscript:@"deviceHandheld"];
   }
 
 LABEL_33:
@@ -1080,7 +1080,7 @@ LABEL_33:
   if ((v25 & 0x20) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo didAudioStall](self, "didAudioStall")}];
-    [v3 setObject:v26 forKeyedSubscript:@"didAudioStall"];
+    [dictionary setObject:v26 forKeyedSubscript:@"didAudioStall"];
 
     v25 = *(&self->_has + 4);
   }
@@ -1088,13 +1088,13 @@ LABEL_33:
   if (v25)
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo didWakeAP](self, "didWakeAP")}];
-    [v3 setObject:v27 forKeyedSubscript:@"didWakeAP"];
+    [dictionary setObject:v27 forKeyedSubscript:@"didWakeAP"];
   }
 
   if ((*(&self->_has + 10) & 0x10) != 0)
   {
     v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo displayWakeTimeOffsetInNs](self, "displayWakeTimeOffsetInNs")}];
-    [v3 setObject:v28 forKeyedSubscript:@"displayWakeTimeOffsetInNs"];
+    [dictionary setObject:v28 forKeyedSubscript:@"displayWakeTimeOffsetInNs"];
   }
 
   if ((*(&self->_has + 4) & 4) != 0)
@@ -1102,7 +1102,7 @@ LABEL_33:
     v29 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self downtimeInSec];
     v30 = [v29 numberWithFloat:?];
-    [v3 setObject:v30 forKeyedSubscript:@"downtimeInSec"];
+    [dictionary setObject:v30 forKeyedSubscript:@"downtimeInSec"];
   }
 
   v31 = *p_has;
@@ -1111,7 +1111,7 @@ LABEL_33:
     v37 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self effectiveThreshold];
     v38 = [v37 numberWithFloat:?];
-    [v3 setObject:v38 forKeyedSubscript:@"effectiveThreshold"];
+    [dictionary setObject:v38 forKeyedSubscript:@"effectiveThreshold"];
 
     v31 = *p_has;
     if ((*p_has & 0x200000) == 0)
@@ -1142,7 +1142,7 @@ LABEL_43:
     v40 = off_1E78D9A18[v39];
   }
 
-  [v3 setObject:v40 forKeyedSubscript:@"enhancedCarplayTriggerMode"];
+  [dictionary setObject:v40 forKeyedSubscript:@"enhancedCarplayTriggerMode"];
   v31 = *p_has;
   if ((*p_has & 0x20000000) == 0)
   {
@@ -1157,7 +1157,7 @@ LABEL_44:
 
 LABEL_56:
   v41 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo extraSamplesAtStart](self, "extraSamplesAtStart")}];
-  [v3 setObject:v41 forKeyedSubscript:@"extraSamplesAtStart"];
+  [dictionary setObject:v41 forKeyedSubscript:@"extraSamplesAtStart"];
 
   v31 = *p_has;
   if ((*p_has & 0x1000000000000) == 0)
@@ -1173,7 +1173,7 @@ LABEL_45:
 
 LABEL_57:
   v42 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerEventInfo hardwareSamplerate](self, "hardwareSamplerate")}];
-  [v3 setObject:v42 forKeyedSubscript:@"hardwareSamplerate"];
+  [dictionary setObject:v42 forKeyedSubscript:@"hardwareSamplerate"];
 
   if ((*p_has & 0x1000000000000000) == 0)
   {
@@ -1192,31 +1192,31 @@ LABEL_58:
     v44 = off_1E78D9A30[v43];
   }
 
-  [v3 setObject:v44 forKeyedSubscript:@"hostPowerStateAtTrigger"];
+  [dictionary setObject:v44 forKeyedSubscript:@"hostPowerStateAtTrigger"];
 LABEL_62:
   if ((*(&self->_has + 4) & 0x40) != 0)
   {
     v45 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo isBargeIn](self, "isBargeIn")}];
-    [v3 setObject:v45 forKeyedSubscript:@"isBargeIn"];
+    [dictionary setObject:v45 forKeyedSubscript:@"isBargeIn"];
   }
 
   if ((*(&self->_has + 6) & 2) != 0)
   {
     v46 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo isContinuous](self, "isContinuous")}];
-    [v3 setObject:v46 forKeyedSubscript:@"isContinuous"];
+    [dictionary setObject:v46 forKeyedSubscript:@"isContinuous"];
   }
 
   if ((*(&self->_has + 10) & 8) != 0)
   {
     v47 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo isHSJSTriggerFromAlwaysOnMicBuffer](self, "isHSJSTriggerFromAlwaysOnMicBuffer")}];
-    [v3 setObject:v47 forKeyedSubscript:@"isHSJSTriggerFromAlwaysOnMicBuffer"];
+    [dictionary setObject:v47 forKeyedSubscript:@"isHSJSTriggerFromAlwaysOnMicBuffer"];
   }
 
   v48 = *p_has;
   if ((*p_has & 0x800000000) != 0)
   {
     v86 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo isMaximized](self, "isMaximized")}];
-    [v3 setObject:v86 forKeyedSubscript:@"isMaximized"];
+    [dictionary setObject:v86 forKeyedSubscript:@"isMaximized"];
 
     v48 = *p_has;
     if ((*p_has & 0x2000000000000000) == 0)
@@ -1237,7 +1237,7 @@ LABEL_70:
   }
 
   v87 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo isMediaPlaying](self, "isMediaPlaying")}];
-  [v3 setObject:v87 forKeyedSubscript:@"isMediaPlaying"];
+  [dictionary setObject:v87 forKeyedSubscript:@"isMediaPlaying"];
 
   v48 = *p_has;
   if ((*p_has & 0x40000000000000) == 0)
@@ -1253,32 +1253,32 @@ LABEL_71:
 
 LABEL_157:
   v88 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo isSecondChance](self, "isSecondChance")}];
-  [v3 setObject:v88 forKeyedSubscript:@"isSecondChance"];
+  [dictionary setObject:v88 forKeyedSubscript:@"isSecondChance"];
 
   if ((*p_has & 0x100000000) != 0)
   {
 LABEL_72:
     v49 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo isTriggerEvent](self, "isTriggerEvent")}];
-    [v3 setObject:v49 forKeyedSubscript:@"isTriggerEvent"];
+    [dictionary setObject:v49 forKeyedSubscript:@"isTriggerEvent"];
   }
 
 LABEL_73:
   if ((*(&self->_has + 4) & 0x80) != 0)
   {
     v50 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo isWakeFromSleep](self, "isWakeFromSleep")}];
-    [v3 setObject:v50 forKeyedSubscript:@"isWakeFromSleep"];
+    [dictionary setObject:v50 forKeyedSubscript:@"isWakeFromSleep"];
   }
 
   if ((*(&self->_has + 1) & 0x10) != 0)
   {
     v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerEventInfo lastConsecutivePHSRejects](self, "lastConsecutivePHSRejects")}];
-    [v3 setObject:v51 forKeyedSubscript:@"lastConsecutivePHSRejects"];
+    [dictionary setObject:v51 forKeyedSubscript:@"lastConsecutivePHSRejects"];
   }
 
   if ((*(&self->_has + 4) & 8) != 0)
   {
     v52 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerEventInfo lastConsecutiveVTRejects](self, "lastConsecutiveVTRejects")}];
-    [v3 setObject:v52 forKeyedSubscript:@"lastConsecutiveVTRejects"];
+    [dictionary setObject:v52 forKeyedSubscript:@"lastConsecutiveVTRejects"];
   }
 
   if ((*(&self->_has + 10) & 4) != 0)
@@ -1286,7 +1286,7 @@ LABEL_73:
     v53 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self lastDisplayWakeTimeOffsetInNs];
     v54 = [v53 numberWithDouble:?];
-    [v3 setObject:v54 forKeyedSubscript:@"lastDisplayWakeTimeOffsetInNs"];
+    [dictionary setObject:v54 forKeyedSubscript:@"lastDisplayWakeTimeOffsetInNs"];
   }
 
   if ((*(&self->_has + 7) & 0x40) != 0)
@@ -1294,7 +1294,7 @@ LABEL_73:
     v55 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self mediaVolume];
     v56 = [v55 numberWithFloat:?];
-    [v3 setObject:v56 forKeyedSubscript:@"mediaVolume"];
+    [dictionary setObject:v56 forKeyedSubscript:@"mediaVolume"];
   }
 
   if ((*(&self->_has + 10) & 0x20) != 0)
@@ -1302,14 +1302,14 @@ LABEL_73:
     v57 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self neptuneDetectionApiScore];
     v58 = [v57 numberWithFloat:?];
-    [v3 setObject:v58 forKeyedSubscript:@"neptuneDetectionApiScore"];
+    [dictionary setObject:v58 forKeyedSubscript:@"neptuneDetectionApiScore"];
   }
 
   v59 = *p_has;
   if ((*p_has & 0x8000000000000000) != 0)
   {
     v129 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo onBatteryPower](self, "onBatteryPower")}];
-    [v3 setObject:v129 forKeyedSubscript:@"onBatteryPower"];
+    [dictionary setObject:v129 forKeyedSubscript:@"onBatteryPower"];
 
     v59 = *p_has;
     if ((*p_has & 0x10000000000) == 0)
@@ -1332,7 +1332,7 @@ LABEL_87:
   v130 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self recognizerScaleFactor];
   v131 = [v130 numberWithFloat:?];
-  [v3 setObject:v131 forKeyedSubscript:@"recognizerScaleFactor"];
+  [dictionary setObject:v131 forKeyedSubscript:@"recognizerScaleFactor"];
 
   v59 = *p_has;
   if ((*p_has & 0x2000000000) == 0)
@@ -1350,7 +1350,7 @@ LABEL_193:
   v132 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self recognizerScore];
   v133 = [v132 numberWithFloat:?];
-  [v3 setObject:v133 forKeyedSubscript:@"recognizerScore"];
+  [dictionary setObject:v133 forKeyedSubscript:@"recognizerScore"];
 
   v59 = *p_has;
   if ((*p_has & 0x4000000000) == 0)
@@ -1368,7 +1368,7 @@ LABEL_194:
   v134 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self recognizerThresholdOffset];
   v135 = [v134 numberWithFloat:?];
-  [v3 setObject:v135 forKeyedSubscript:@"recognizerThresholdOffset"];
+  [dictionary setObject:v135 forKeyedSubscript:@"recognizerThresholdOffset"];
 
   v59 = *p_has;
   if ((*p_has & 0x8000000000) == 0)
@@ -1384,7 +1384,7 @@ LABEL_90:
 
 LABEL_195:
   v136 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo recognizerWaitTimeInNs](self, "recognizerWaitTimeInNs")}];
-  [v3 setObject:v136 forKeyedSubscript:@"recognizerWaitTimeInNs"];
+  [dictionary setObject:v136 forKeyedSubscript:@"recognizerWaitTimeInNs"];
 
   v59 = *p_has;
   if ((*p_has & 0x100000) == 0)
@@ -1402,7 +1402,7 @@ LABEL_196:
   v137 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self remoteMicVADMyriadThreshold];
   v138 = [v137 numberWithFloat:?];
-  [v3 setObject:v138 forKeyedSubscript:@"remoteMicVADMyriadThreshold"];
+  [dictionary setObject:v138 forKeyedSubscript:@"remoteMicVADMyriadThreshold"];
 
   v59 = *p_has;
   if ((*p_has & 0x40000) == 0)
@@ -1420,7 +1420,7 @@ LABEL_197:
   v139 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self remoteMicVADScore];
   v140 = [v139 numberWithFloat:?];
-  [v3 setObject:v140 forKeyedSubscript:@"remoteMicVADScore"];
+  [dictionary setObject:v140 forKeyedSubscript:@"remoteMicVADScore"];
 
   v59 = *p_has;
   if ((*p_has & 0x80000) == 0)
@@ -1438,7 +1438,7 @@ LABEL_198:
   v141 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self remoteMicVADThreshold];
   v142 = [v141 numberWithFloat:?];
-  [v3 setObject:v142 forKeyedSubscript:@"remoteMicVADThreshold"];
+  [dictionary setObject:v142 forKeyedSubscript:@"remoteMicVADThreshold"];
 
   v59 = *p_has;
   if ((*p_has & 0x800) == 0)
@@ -1454,7 +1454,7 @@ LABEL_94:
 
 LABEL_199:
   v143 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo satBeingTrained](self, "satBeingTrained")}];
-  [v3 setObject:v143 forKeyedSubscript:@"satBeingTrained"];
+  [dictionary setObject:v143 forKeyedSubscript:@"satBeingTrained"];
 
   v59 = *p_has;
   if ((*p_has & 8) == 0)
@@ -1470,7 +1470,7 @@ LABEL_95:
 
 LABEL_200:
   v144 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerEventInfo satNumTrainingUtterances](self, "satNumTrainingUtterances")}];
-  [v3 setObject:v144 forKeyedSubscript:@"satNumTrainingUtterances"];
+  [dictionary setObject:v144 forKeyedSubscript:@"satNumTrainingUtterances"];
 
   v59 = *p_has;
   if ((*p_has & 4) == 0)
@@ -1488,7 +1488,7 @@ LABEL_201:
   v145 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self satScore];
   v146 = [v145 numberWithFloat:?];
-  [v3 setObject:v146 forKeyedSubscript:@"satScore"];
+  [dictionary setObject:v146 forKeyedSubscript:@"satScore"];
 
   v59 = *p_has;
   if ((*p_has & 0x10) == 0)
@@ -1506,7 +1506,7 @@ LABEL_202:
   v147 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self satThreshold];
   v148 = [v147 numberWithFloat:?];
-  [v3 setObject:v148 forKeyedSubscript:@"satThreshold"];
+  [dictionary setObject:v148 forKeyedSubscript:@"satThreshold"];
 
   v59 = *p_has;
   if ((*p_has & 0x20) == 0)
@@ -1522,7 +1522,7 @@ LABEL_98:
 
 LABEL_203:
   v149 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo satTriggered](self, "satTriggered")}];
-  [v3 setObject:v149 forKeyedSubscript:@"satTriggered"];
+  [dictionary setObject:v149 forKeyedSubscript:@"satTriggered"];
 
   v59 = *p_has;
   if ((*p_has & 2) == 0)
@@ -1538,13 +1538,13 @@ LABEL_99:
 
 LABEL_204:
   v150 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassAnalyerEndSampleCount](self, "secondPassAnalyerEndSampleCount")}];
-  [v3 setObject:v150 forKeyedSubscript:@"secondPassAnalyerEndSampleCount"];
+  [dictionary setObject:v150 forKeyedSubscript:@"secondPassAnalyerEndSampleCount"];
 
   if (*p_has)
   {
 LABEL_100:
     v60 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassAnalyerStartSampleCount](self, "secondPassAnalyerStartSampleCount")}];
-    [v3 setObject:v60 forKeyedSubscript:@"secondPassAnalyerStartSampleCount"];
+    [dictionary setObject:v60 forKeyedSubscript:@"secondPassAnalyerStartSampleCount"];
   }
 
 LABEL_101:
@@ -1552,7 +1552,7 @@ LABEL_101:
   if ((v61 & 0x800) != 0)
   {
     v89 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassAssetLoadCompleteTimeInNs](self, "secondPassAssetLoadCompleteTimeInNs")}];
-    [v3 setObject:v89 forKeyedSubscript:@"secondPassAssetLoadCompleteTimeInNs"];
+    [dictionary setObject:v89 forKeyedSubscript:@"secondPassAssetLoadCompleteTimeInNs"];
 
     v61 = *(&self->_has + 4);
     if ((v61 & 0x400) == 0)
@@ -1573,7 +1573,7 @@ LABEL_103:
   }
 
   v90 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassAssetLoadStartTimeInNs](self, "secondPassAssetLoadStartTimeInNs")}];
-  [v3 setObject:v90 forKeyedSubscript:@"secondPassAssetLoadStartTimeInNs"];
+  [dictionary setObject:v90 forKeyedSubscript:@"secondPassAssetLoadStartTimeInNs"];
 
   v61 = *(&self->_has + 4);
   if ((v61 & 0x200) == 0)
@@ -1589,7 +1589,7 @@ LABEL_104:
 
 LABEL_161:
   v91 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassAssetQueryCompleteTimeInNs](self, "secondPassAssetQueryCompleteTimeInNs")}];
-  [v3 setObject:v91 forKeyedSubscript:@"secondPassAssetQueryCompleteTimeInNs"];
+  [dictionary setObject:v91 forKeyedSubscript:@"secondPassAssetQueryCompleteTimeInNs"];
 
   v61 = *(&self->_has + 4);
   if ((v61 & 0x100) == 0)
@@ -1605,7 +1605,7 @@ LABEL_105:
 
 LABEL_162:
   v92 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassAssetQueryStartTimeInNs](self, "secondPassAssetQueryStartTimeInNs")}];
-  [v3 setObject:v92 forKeyedSubscript:@"secondPassAssetQueryStartTimeInNs"];
+  [dictionary setObject:v92 forKeyedSubscript:@"secondPassAssetQueryStartTimeInNs"];
 
   v61 = *(&self->_has + 4);
   if ((v61 & 0x2000) == 0)
@@ -1621,13 +1621,13 @@ LABEL_106:
 
 LABEL_163:
   v93 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassAudioStreamReadyTimeInNs](self, "secondPassAudioStreamReadyTimeInNs")}];
-  [v3 setObject:v93 forKeyedSubscript:@"secondPassAudioStreamReadyTimeInNs"];
+  [dictionary setObject:v93 forKeyedSubscript:@"secondPassAudioStreamReadyTimeInNs"];
 
   if ((*(&self->_has + 4) & 0x1000) != 0)
   {
 LABEL_107:
     v62 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassAudioStreamStartTimeInNs](self, "secondPassAudioStreamStartTimeInNs")}];
-    [v3 setObject:v62 forKeyedSubscript:@"secondPassAudioStreamStartTimeInNs"];
+    [dictionary setObject:v62 forKeyedSubscript:@"secondPassAudioStreamStartTimeInNs"];
   }
 
 LABEL_108:
@@ -1635,7 +1635,7 @@ LABEL_108:
   if ((v63 & 2) != 0)
   {
     v64 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassCheckerModelKeywordDetectionEndTimeInNs](self, "secondPassCheckerModelKeywordDetectionEndTimeInNs")}];
-    [v3 setObject:v64 forKeyedSubscript:@"secondPassCheckerModelKeywordDetectionEndTimeInNs"];
+    [dictionary setObject:v64 forKeyedSubscript:@"secondPassCheckerModelKeywordDetectionEndTimeInNs"];
 
     v63 = *(&self->_has + 10);
   }
@@ -1643,14 +1643,14 @@ LABEL_108:
   if (v63)
   {
     v65 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassCheckerModelKeywordDetectionStartTimeInNs](self, "secondPassCheckerModelKeywordDetectionStartTimeInNs")}];
-    [v3 setObject:v65 forKeyedSubscript:@"secondPassCheckerModelKeywordDetectionStartTimeInNs"];
+    [dictionary setObject:v65 forKeyedSubscript:@"secondPassCheckerModelKeywordDetectionStartTimeInNs"];
   }
 
   v66 = *(&self->_has + 4);
   if ((v66 & 0x4000) != 0)
   {
     v67 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassFirstAudioPacketReceptionTimeInNs](self, "secondPassFirstAudioPacketReceptionTimeInNs")}];
-    [v3 setObject:v67 forKeyedSubscript:@"secondPassFirstAudioPacketReceptionTimeInNs"];
+    [dictionary setObject:v67 forKeyedSubscript:@"secondPassFirstAudioPacketReceptionTimeInNs"];
 
     v66 = *(&self->_has + 4);
   }
@@ -1658,7 +1658,7 @@ LABEL_108:
   if (v66 < 0)
   {
     v68 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo secondPassLastAudioPacketReceptionTimeInNs](self, "secondPassLastAudioPacketReceptionTimeInNs")}];
-    [v3 setObject:v68 forKeyedSubscript:@"secondPassLastAudioPacketReceptionTimeInNs"];
+    [dictionary setObject:v68 forKeyedSubscript:@"secondPassLastAudioPacketReceptionTimeInNs"];
   }
 
   v69 = *p_has;
@@ -1667,7 +1667,7 @@ LABEL_108:
     v70 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self shadowMicScore];
     v71 = [v70 numberWithFloat:?];
-    [v3 setObject:v71 forKeyedSubscript:@"shadowMicScore"];
+    [dictionary setObject:v71 forKeyedSubscript:@"shadowMicScore"];
 
     v69 = *p_has;
   }
@@ -1677,13 +1677,13 @@ LABEL_108:
     v72 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self shadowMicScoreThresholdForVAD];
     v73 = [v72 numberWithFloat:?];
-    [v3 setObject:v73 forKeyedSubscript:@"shadowMicScoreThresholdForVAD"];
+    [dictionary setObject:v73 forKeyedSubscript:@"shadowMicScoreThresholdForVAD"];
   }
 
   if ((*(&self->_has + 4) & 0x10) != 0)
   {
     v74 = [MEMORY[0x1E696AD98] numberWithBool:{-[MHSchemaMHVoiceTriggerEventInfo siriIsActiveOrOtherAssertion](self, "siriIsActiveOrOtherAssertion")}];
-    [v3 setObject:v74 forKeyedSubscript:@"siriIsActiveOrOtherAssertion"];
+    [dictionary setObject:v74 forKeyedSubscript:@"siriIsActiveOrOtherAssertion"];
   }
 
   v75 = *p_has;
@@ -1692,7 +1692,7 @@ LABEL_108:
     v94 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self tdSpeakerRecognizerCombinationWeight];
     v95 = [v94 numberWithFloat:?];
-    [v3 setObject:v95 forKeyedSubscript:@"tdSpeakerRecognizerCombinationWeight"];
+    [dictionary setObject:v95 forKeyedSubscript:@"tdSpeakerRecognizerCombinationWeight"];
 
     v75 = *p_has;
     if ((*p_has & 0x80) == 0)
@@ -1715,7 +1715,7 @@ LABEL_124:
   v96 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self tdSpeakerRecognizerCombinedScore];
   v97 = [v96 numberWithFloat:?];
-  [v3 setObject:v97 forKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
+  [dictionary setObject:v97 forKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
 
   v75 = *p_has;
   if ((*p_has & 0x100) == 0)
@@ -1733,7 +1733,7 @@ LABEL_167:
   v98 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self tdSpeakerRecognizerCombinedThreshold];
   v99 = [v98 numberWithFloat:?];
-  [v3 setObject:v99 forKeyedSubscript:@"tdSpeakerRecognizerCombinedThreshold"];
+  [dictionary setObject:v99 forKeyedSubscript:@"tdSpeakerRecognizerCombinedThreshold"];
 
   v75 = *p_has;
   if ((*p_has & 0x40) == 0)
@@ -1751,7 +1751,7 @@ LABEL_168:
   v100 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self tdSpeakerRecognizerScore];
   v101 = [v100 numberWithFloat:?];
-  [v3 setObject:v101 forKeyedSubscript:@"tdSpeakerRecognizerScore"];
+  [dictionary setObject:v101 forKeyedSubscript:@"tdSpeakerRecognizerScore"];
 
   v75 = *p_has;
   if ((*p_has & 0x20000000000) == 0)
@@ -1769,7 +1769,7 @@ LABEL_169:
   v102 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self threshold];
   v103 = [v102 numberWithFloat:?];
-  [v3 setObject:v103 forKeyedSubscript:@"threshold"];
+  [dictionary setObject:v103 forKeyedSubscript:@"threshold"];
 
   v75 = *p_has;
   if ((*p_has & 0x200000000) == 0)
@@ -1785,7 +1785,7 @@ LABEL_128:
 
 LABEL_170:
   v104 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo totalSampleCount](self, "totalSampleCount")}];
-  [v3 setObject:v104 forKeyedSubscript:@"totalSampleCount"];
+  [dictionary setObject:v104 forKeyedSubscript:@"totalSampleCount"];
 
   v75 = *p_has;
   if ((*p_has & 0x20000000000000) == 0)
@@ -1801,7 +1801,7 @@ LABEL_129:
 
 LABEL_171:
   v105 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo totalSamplesAtEndOfCapture](self, "totalSamplesAtEndOfCapture")}];
-  [v3 setObject:v105 forKeyedSubscript:@"totalSamplesAtEndOfCapture"];
+  [dictionary setObject:v105 forKeyedSubscript:@"totalSamplesAtEndOfCapture"];
 
   v75 = *p_has;
   if ((*p_has & 0x10000000000000) == 0)
@@ -1817,7 +1817,7 @@ LABEL_130:
 
 LABEL_172:
   v106 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo totalSamplesAtTriggerEnd](self, "totalSamplesAtTriggerEnd")}];
-  [v3 setObject:v106 forKeyedSubscript:@"totalSamplesAtTriggerEnd"];
+  [dictionary setObject:v106 forKeyedSubscript:@"totalSamplesAtTriggerEnd"];
 
   v75 = *p_has;
   if ((*p_has & 0x8000000000000) == 0)
@@ -1833,7 +1833,7 @@ LABEL_131:
 
 LABEL_173:
   v107 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo totalSamplesAtTriggerStart](self, "totalSamplesAtTriggerStart")}];
-  [v3 setObject:v107 forKeyedSubscript:@"totalSamplesAtTriggerStart"];
+  [dictionary setObject:v107 forKeyedSubscript:@"totalSamplesAtTriggerStart"];
 
   v75 = *p_has;
   if ((*p_has & 0x4000000000000) == 0)
@@ -1851,7 +1851,7 @@ LABEL_174:
   v108 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self triggerDurationInNs];
   v109 = [v108 numberWithFloat:?];
-  [v3 setObject:v109 forKeyedSubscript:@"triggerDurationInNs"];
+  [dictionary setObject:v109 forKeyedSubscript:@"triggerDurationInNs"];
 
   v75 = *p_has;
   if ((*p_has & 0x8000000) == 0)
@@ -1867,7 +1867,7 @@ LABEL_133:
 
 LABEL_175:
   v110 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerEndNs](self, "triggerEndNs")}];
-  [v3 setObject:v110 forKeyedSubscript:@"triggerEndNs"];
+  [dictionary setObject:v110 forKeyedSubscript:@"triggerEndNs"];
 
   v75 = *p_has;
   if ((*p_has & 0x1000000) == 0)
@@ -1883,7 +1883,7 @@ LABEL_134:
 
 LABEL_176:
   v111 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerEndSampleCount](self, "triggerEndSampleCount")}];
-  [v3 setObject:v111 forKeyedSubscript:@"triggerEndSampleCount"];
+  [dictionary setObject:v111 forKeyedSubscript:@"triggerEndSampleCount"];
 
   v75 = *p_has;
   if ((*p_has & 0x400000000000) == 0)
@@ -1901,7 +1901,7 @@ LABEL_177:
   v112 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self triggerEndTime];
   v113 = [v112 numberWithDouble:?];
-  [v3 setObject:v113 forKeyedSubscript:@"triggerEndTime"];
+  [dictionary setObject:v113 forKeyedSubscript:@"triggerEndTime"];
 
   v75 = *p_has;
   if ((*p_has & 0x80000000000) == 0)
@@ -1917,7 +1917,7 @@ LABEL_136:
 
 LABEL_178:
   v114 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerEndTimeOffsetInNs](self, "triggerEndTimeOffsetInNs")}];
-  [v3 setObject:v114 forKeyedSubscript:@"triggerEndTimeOffsetInNs"];
+  [dictionary setObject:v114 forKeyedSubscript:@"triggerEndTimeOffsetInNs"];
 
   v75 = *p_has;
   if ((*p_has & 0x4000) == 0)
@@ -1935,7 +1935,7 @@ LABEL_179:
   v115 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self triggerExplicitSatScore];
   v116 = [v115 numberWithFloat:?];
-  [v3 setObject:v116 forKeyedSubscript:@"triggerExplicitSatScore"];
+  [dictionary setObject:v116 forKeyedSubscript:@"triggerExplicitSatScore"];
 
   v75 = *p_has;
   if ((*p_has & 0x8000) == 0)
@@ -1953,7 +1953,7 @@ LABEL_180:
   v117 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self triggerExplicitTDSRSatScore];
   v118 = [v117 numberWithFloat:?];
-  [v3 setObject:v118 forKeyedSubscript:@"triggerExplicitTDSRSatScore"];
+  [dictionary setObject:v118 forKeyedSubscript:@"triggerExplicitTDSRSatScore"];
 
   v75 = *p_has;
   if ((*p_has & 0x10000000) == 0)
@@ -1969,7 +1969,7 @@ LABEL_139:
 
 LABEL_181:
   v119 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerFireNs](self, "triggerFireNs")}];
-  [v3 setObject:v119 forKeyedSubscript:@"triggerFireNs"];
+  [dictionary setObject:v119 forKeyedSubscript:@"triggerFireNs"];
 
   v75 = *p_has;
   if ((*p_has & 0x2000000) == 0)
@@ -1985,7 +1985,7 @@ LABEL_140:
 
 LABEL_182:
   v120 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerFireSampleCount](self, "triggerFireSampleCount")}];
-  [v3 setObject:v120 forKeyedSubscript:@"triggerFireSampleCount"];
+  [dictionary setObject:v120 forKeyedSubscript:@"triggerFireSampleCount"];
 
   v75 = *p_has;
   if ((*p_has & 0x100000000000) == 0)
@@ -2001,7 +2001,7 @@ LABEL_141:
 
 LABEL_183:
   v121 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerFireTimeOffsetInNs](self, "triggerFireTimeOffsetInNs")}];
-  [v3 setObject:v121 forKeyedSubscript:@"triggerFireTimeOffsetInNs"];
+  [dictionary setObject:v121 forKeyedSubscript:@"triggerFireTimeOffsetInNs"];
 
   if ((*p_has & 0x800000000000) != 0)
   {
@@ -2009,15 +2009,15 @@ LABEL_142:
     v76 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self triggerFiredTime];
     v77 = [v76 numberWithDouble:?];
-    [v3 setObject:v77 forKeyedSubscript:@"triggerFiredTime"];
+    [dictionary setObject:v77 forKeyedSubscript:@"triggerFiredTime"];
   }
 
 LABEL_143:
   if (self->_triggerPhrase)
   {
-    v78 = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
-    v79 = [v78 copy];
-    [v3 setObject:v79 forKeyedSubscript:@"triggerPhrase"];
+    triggerPhrase = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
+    v79 = [triggerPhrase copy];
+    [dictionary setObject:v79 forKeyedSubscript:@"triggerPhrase"];
   }
 
   v80 = *p_has;
@@ -2026,7 +2026,7 @@ LABEL_143:
     v122 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self triggerScore];
     v123 = [v122 numberWithFloat:?];
-    [v3 setObject:v123 forKeyedSubscript:@"triggerScore"];
+    [dictionary setObject:v123 forKeyedSubscript:@"triggerScore"];
 
     v80 = *p_has;
     if ((*p_has & 0x4000000) == 0)
@@ -2047,7 +2047,7 @@ LABEL_147:
   }
 
   v124 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerStartNs](self, "triggerStartNs")}];
-  [v3 setObject:v124 forKeyedSubscript:@"triggerStartNs"];
+  [dictionary setObject:v124 forKeyedSubscript:@"triggerStartNs"];
 
   v80 = *p_has;
   if ((*p_has & 0x400000) == 0)
@@ -2063,7 +2063,7 @@ LABEL_148:
 
 LABEL_187:
   v125 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerStartSampleCount](self, "triggerStartSampleCount")}];
-  [v3 setObject:v125 forKeyedSubscript:@"triggerStartSampleCount"];
+  [dictionary setObject:v125 forKeyedSubscript:@"triggerStartSampleCount"];
 
   v80 = *p_has;
   if ((*p_has & 0x200000000000) == 0)
@@ -2081,7 +2081,7 @@ LABEL_188:
   v126 = MEMORY[0x1E696AD98];
   [(MHSchemaMHVoiceTriggerEventInfo *)self triggerStartTime];
   v127 = [v126 numberWithDouble:?];
-  [v3 setObject:v127 forKeyedSubscript:@"triggerStartTime"];
+  [dictionary setObject:v127 forKeyedSubscript:@"triggerStartTime"];
 
   v80 = *p_has;
   if ((*p_has & 0x40000000000) == 0)
@@ -2097,13 +2097,13 @@ LABEL_150:
 
 LABEL_189:
   v128 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo triggerStartTimeOffsetInNs](self, "triggerStartTimeOffsetInNs")}];
-  [v3 setObject:v128 forKeyedSubscript:@"triggerStartTimeOffsetInNs"];
+  [dictionary setObject:v128 forKeyedSubscript:@"triggerStartTimeOffsetInNs"];
 
   if ((*p_has & 0x200000000000000) != 0)
   {
 LABEL_151:
     v81 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHVoiceTriggerEventInfo twoShotAudibleFeedbackDelayInNs](self, "twoShotAudibleFeedbackDelayInNs")}];
-    [v3 setObject:v81 forKeyedSubscript:@"twoShotAudibleFeedbackDelayInNs"];
+    [dictionary setObject:v81 forKeyedSubscript:@"twoShotAudibleFeedbackDelayInNs"];
   }
 
 LABEL_152:
@@ -2112,13 +2112,13 @@ LABEL_152:
     v82 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerEventInfo *)self uptimeInSec];
     v83 = [v82 numberWithFloat:?];
-    [v3 setObject:v83 forKeyedSubscript:@"uptimeInSec"];
+    [dictionary setObject:v83 forKeyedSubscript:@"uptimeInSec"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v84 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v84 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -4051,19 +4051,19 @@ LABEL_378:
   return v256 ^ v257 ^ v255 ^ v254 ^ v253 ^ v252 ^ v251 ^ v250 ^ v249 ^ v157 ^ v247 ^ v246 ^ v245 ^ v244 ^ v158 ^ v159 ^ v241 ^ v160 ^ v161 ^ v162 ^ v163 ^ v236 ^ v235 ^ v234 ^ v233 ^ v232 ^ v231 ^ v230 ^ v229 ^ v228 ^ v227 ^ v226 ^ v225 ^ v224 ^ v164 ^ v222 ^ v165 ^ v166 ^ v212 ^ v219 ^ v215 ^ v97 ^ v218 ^ v217 ^ v216 ^ v105 ^ v106 ^ v110 ^ v214 ^ v213 ^ v118 ^ v211 ^ v210 ^ v209 ^ v208 ^ v207 ^ v206 ^ v205 ^ v204 ^ v203 ^ v202 ^ v201 ^ v200 ^ v199 ^ v198 ^ v197 ^ v196 ^ v195 ^ v194 ^ v193 ^ v192 ^ v191 ^ v190 ^ v189 ^ v188 ^ v187 ^ v186 ^ v185 ^ v184 ^ v183 ^ v182 ^ v181 ^ v180 ^ v179 ^ v178 ^ v151 ^ v152 ^ v153 ^ v156 ^ v170 ^ v171 ^ v176;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_370;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = (v4 + 556);
-  v8 = *(v4 + 556);
-  if ((has & 1) != (*(v4 + 139) & 1))
+  v7 = (equalCopy + 556);
+  v8 = *(equalCopy + 556);
+  if ((has & 1) != (*(equalCopy + 139) & 1))
   {
     goto LABEL_370;
   }
@@ -4071,7 +4071,7 @@ LABEL_378:
   if (has)
   {
     secondPassAnalyerStartSampleCount = self->_secondPassAnalyerStartSampleCount;
-    if (secondPassAnalyerStartSampleCount != [v4 secondPassAnalyerStartSampleCount])
+    if (secondPassAnalyerStartSampleCount != [equalCopy secondPassAnalyerStartSampleCount])
     {
       goto LABEL_370;
     }
@@ -4089,7 +4089,7 @@ LABEL_378:
   if (v10)
   {
     secondPassAnalyerEndSampleCount = self->_secondPassAnalyerEndSampleCount;
-    if (secondPassAnalyerEndSampleCount != [v4 secondPassAnalyerEndSampleCount])
+    if (secondPassAnalyerEndSampleCount != [equalCopy secondPassAnalyerEndSampleCount])
     {
       goto LABEL_370;
     }
@@ -4107,7 +4107,7 @@ LABEL_378:
   if (v12)
   {
     satScore = self->_satScore;
-    [v4 satScore];
+    [equalCopy satScore];
     if (satScore != v14)
     {
       goto LABEL_370;
@@ -4126,7 +4126,7 @@ LABEL_378:
   if (v15)
   {
     satNumTrainingUtterances = self->_satNumTrainingUtterances;
-    if (satNumTrainingUtterances != [v4 satNumTrainingUtterances])
+    if (satNumTrainingUtterances != [equalCopy satNumTrainingUtterances])
     {
       goto LABEL_370;
     }
@@ -4144,7 +4144,7 @@ LABEL_378:
   if (v17)
   {
     satThreshold = self->_satThreshold;
-    [v4 satThreshold];
+    [equalCopy satThreshold];
     if (satThreshold != v19)
     {
       goto LABEL_370;
@@ -4163,7 +4163,7 @@ LABEL_378:
   if (v20)
   {
     satTriggered = self->_satTriggered;
-    if (satTriggered != [v4 satTriggered])
+    if (satTriggered != [equalCopy satTriggered])
     {
       goto LABEL_370;
     }
@@ -4181,7 +4181,7 @@ LABEL_378:
   if (v22)
   {
     tdSpeakerRecognizerScore = self->_tdSpeakerRecognizerScore;
-    [v4 tdSpeakerRecognizerScore];
+    [equalCopy tdSpeakerRecognizerScore];
     if (tdSpeakerRecognizerScore != v24)
     {
       goto LABEL_370;
@@ -4200,7 +4200,7 @@ LABEL_378:
   if (v25)
   {
     tdSpeakerRecognizerCombinedScore = self->_tdSpeakerRecognizerCombinedScore;
-    [v4 tdSpeakerRecognizerCombinedScore];
+    [equalCopy tdSpeakerRecognizerCombinedScore];
     if (tdSpeakerRecognizerCombinedScore != v27)
     {
       goto LABEL_370;
@@ -4219,7 +4219,7 @@ LABEL_378:
   if (v28)
   {
     tdSpeakerRecognizerCombinedThreshold = self->_tdSpeakerRecognizerCombinedThreshold;
-    [v4 tdSpeakerRecognizerCombinedThreshold];
+    [equalCopy tdSpeakerRecognizerCombinedThreshold];
     if (tdSpeakerRecognizerCombinedThreshold != v30)
     {
       goto LABEL_370;
@@ -4238,7 +4238,7 @@ LABEL_378:
   if (v31)
   {
     tdSpeakerRecognizerCombinationWeight = self->_tdSpeakerRecognizerCombinationWeight;
-    [v4 tdSpeakerRecognizerCombinationWeight];
+    [equalCopy tdSpeakerRecognizerCombinationWeight];
     if (tdSpeakerRecognizerCombinationWeight != v33)
     {
       goto LABEL_370;
@@ -4257,7 +4257,7 @@ LABEL_378:
   if (v34)
   {
     biometricClue = self->_biometricClue;
-    if (biometricClue != [v4 biometricClue])
+    if (biometricClue != [equalCopy biometricClue])
     {
       goto LABEL_370;
     }
@@ -4275,7 +4275,7 @@ LABEL_378:
   if (v36)
   {
     satBeingTrained = self->_satBeingTrained;
-    if (satBeingTrained != [v4 satBeingTrained])
+    if (satBeingTrained != [equalCopy satBeingTrained])
     {
       goto LABEL_370;
     }
@@ -4293,7 +4293,7 @@ LABEL_378:
   if (v38)
   {
     lastConsecutivePHSRejects = self->_lastConsecutivePHSRejects;
-    if (lastConsecutivePHSRejects != [v4 lastConsecutivePHSRejects])
+    if (lastConsecutivePHSRejects != [equalCopy lastConsecutivePHSRejects])
     {
       goto LABEL_370;
     }
@@ -4311,7 +4311,7 @@ LABEL_378:
   if (v40)
   {
     deltaTimeInNsFromlastPHSReject = self->_deltaTimeInNsFromlastPHSReject;
-    if (deltaTimeInNsFromlastPHSReject != [v4 deltaTimeInNsFromlastPHSReject])
+    if (deltaTimeInNsFromlastPHSReject != [equalCopy deltaTimeInNsFromlastPHSReject])
     {
       goto LABEL_370;
     }
@@ -4329,7 +4329,7 @@ LABEL_378:
   if (v42)
   {
     triggerExplicitSatScore = self->_triggerExplicitSatScore;
-    [v4 triggerExplicitSatScore];
+    [equalCopy triggerExplicitSatScore];
     if (triggerExplicitSatScore != v44)
     {
       goto LABEL_370;
@@ -4348,7 +4348,7 @@ LABEL_378:
   if (v45)
   {
     triggerExplicitTDSRSatScore = self->_triggerExplicitTDSRSatScore;
-    [v4 triggerExplicitTDSRSatScore];
+    [equalCopy triggerExplicitTDSRSatScore];
     if (triggerExplicitTDSRSatScore != v47)
     {
       goto LABEL_370;
@@ -4367,7 +4367,7 @@ LABEL_378:
   if (v48)
   {
     shadowMicScore = self->_shadowMicScore;
-    [v4 shadowMicScore];
+    [equalCopy shadowMicScore];
     if (shadowMicScore != v50)
     {
       goto LABEL_370;
@@ -4386,7 +4386,7 @@ LABEL_378:
   if (v51)
   {
     shadowMicScoreThresholdForVAD = self->_shadowMicScoreThresholdForVAD;
-    [v4 shadowMicScoreThresholdForVAD];
+    [equalCopy shadowMicScoreThresholdForVAD];
     if (shadowMicScoreThresholdForVAD != v53)
     {
       goto LABEL_370;
@@ -4405,7 +4405,7 @@ LABEL_378:
   if (v54)
   {
     remoteMicVADScore = self->_remoteMicVADScore;
-    [v4 remoteMicVADScore];
+    [equalCopy remoteMicVADScore];
     if (remoteMicVADScore != v56)
     {
       goto LABEL_370;
@@ -4424,7 +4424,7 @@ LABEL_378:
   if (v57)
   {
     remoteMicVADThreshold = self->_remoteMicVADThreshold;
-    [v4 remoteMicVADThreshold];
+    [equalCopy remoteMicVADThreshold];
     if (remoteMicVADThreshold != v59)
     {
       goto LABEL_370;
@@ -4443,7 +4443,7 @@ LABEL_378:
   if (v60)
   {
     remoteMicVADMyriadThreshold = self->_remoteMicVADMyriadThreshold;
-    [v4 remoteMicVADMyriadThreshold];
+    [equalCopy remoteMicVADMyriadThreshold];
     if (remoteMicVADMyriadThreshold != v62)
     {
       goto LABEL_370;
@@ -4462,7 +4462,7 @@ LABEL_378:
   if (v63)
   {
     enhancedCarplayTriggerMode = self->_enhancedCarplayTriggerMode;
-    if (enhancedCarplayTriggerMode != [v4 enhancedCarplayTriggerMode])
+    if (enhancedCarplayTriggerMode != [equalCopy enhancedCarplayTriggerMode])
     {
       goto LABEL_370;
     }
@@ -4480,7 +4480,7 @@ LABEL_378:
   if (v65)
   {
     triggerStartSampleCount = self->_triggerStartSampleCount;
-    if (triggerStartSampleCount != [v4 triggerStartSampleCount])
+    if (triggerStartSampleCount != [equalCopy triggerStartSampleCount])
     {
       goto LABEL_370;
     }
@@ -4498,7 +4498,7 @@ LABEL_378:
   if (v67)
   {
     clientStartSampleCount = self->_clientStartSampleCount;
-    if (clientStartSampleCount != [v4 clientStartSampleCount])
+    if (clientStartSampleCount != [equalCopy clientStartSampleCount])
     {
       goto LABEL_370;
     }
@@ -4516,7 +4516,7 @@ LABEL_378:
   if (v69)
   {
     triggerEndSampleCount = self->_triggerEndSampleCount;
-    if (triggerEndSampleCount != [v4 triggerEndSampleCount])
+    if (triggerEndSampleCount != [equalCopy triggerEndSampleCount])
     {
       goto LABEL_370;
     }
@@ -4534,7 +4534,7 @@ LABEL_378:
   if (v71)
   {
     triggerFireSampleCount = self->_triggerFireSampleCount;
-    if (triggerFireSampleCount != [v4 triggerFireSampleCount])
+    if (triggerFireSampleCount != [equalCopy triggerFireSampleCount])
     {
       goto LABEL_370;
     }
@@ -4552,7 +4552,7 @@ LABEL_378:
   if (v73)
   {
     triggerStartNs = self->_triggerStartNs;
-    if (triggerStartNs != [v4 triggerStartNs])
+    if (triggerStartNs != [equalCopy triggerStartNs])
     {
       goto LABEL_370;
     }
@@ -4570,7 +4570,7 @@ LABEL_378:
   if (v75)
   {
     triggerEndNs = self->_triggerEndNs;
-    if (triggerEndNs != [v4 triggerEndNs])
+    if (triggerEndNs != [equalCopy triggerEndNs])
     {
       goto LABEL_370;
     }
@@ -4588,7 +4588,7 @@ LABEL_378:
   if (v77)
   {
     triggerFireNs = self->_triggerFireNs;
-    if (triggerFireNs != [v4 triggerFireNs])
+    if (triggerFireNs != [equalCopy triggerFireNs])
     {
       goto LABEL_370;
     }
@@ -4606,7 +4606,7 @@ LABEL_378:
   if (v79)
   {
     extraSamplesAtStart = self->_extraSamplesAtStart;
-    if (extraSamplesAtStart != [v4 extraSamplesAtStart])
+    if (extraSamplesAtStart != [equalCopy extraSamplesAtStart])
     {
       goto LABEL_370;
     }
@@ -4624,7 +4624,7 @@ LABEL_378:
   if (v81)
   {
     analyzerPrependingSamples = self->_analyzerPrependingSamples;
-    if (analyzerPrependingSamples != [v4 analyzerPrependingSamples])
+    if (analyzerPrependingSamples != [equalCopy analyzerPrependingSamples])
     {
       goto LABEL_370;
     }
@@ -4641,7 +4641,7 @@ LABEL_378:
   if ((has & 0x80000000) != 0)
   {
     analyzerTrailingSamples = self->_analyzerTrailingSamples;
-    if (analyzerTrailingSamples != [v4 analyzerTrailingSamples])
+    if (analyzerTrailingSamples != [equalCopy analyzerTrailingSamples])
     {
       goto LABEL_370;
     }
@@ -4659,7 +4659,7 @@ LABEL_378:
   if (v84)
   {
     isTriggerEvent = self->_isTriggerEvent;
-    if (isTriggerEvent != [v4 isTriggerEvent])
+    if (isTriggerEvent != [equalCopy isTriggerEvent])
     {
       goto LABEL_370;
     }
@@ -4677,7 +4677,7 @@ LABEL_378:
   if (v86)
   {
     totalSampleCount = self->_totalSampleCount;
-    if (totalSampleCount != [v4 totalSampleCount])
+    if (totalSampleCount != [equalCopy totalSampleCount])
     {
       goto LABEL_370;
     }
@@ -4695,7 +4695,7 @@ LABEL_378:
   if (v88)
   {
     triggerScore = self->_triggerScore;
-    [v4 triggerScore];
+    [equalCopy triggerScore];
     if (triggerScore != v90)
     {
       goto LABEL_370;
@@ -4714,7 +4714,7 @@ LABEL_378:
   if (v91)
   {
     isMaximized = self->_isMaximized;
-    if (isMaximized != [v4 isMaximized])
+    if (isMaximized != [equalCopy isMaximized])
     {
       goto LABEL_370;
     }
@@ -4732,7 +4732,7 @@ LABEL_378:
   if (v93)
   {
     effectiveThreshold = self->_effectiveThreshold;
-    [v4 effectiveThreshold];
+    [equalCopy effectiveThreshold];
     if (effectiveThreshold != v95)
     {
       goto LABEL_370;
@@ -4751,7 +4751,7 @@ LABEL_378:
   if (v96)
   {
     recognizerScore = self->_recognizerScore;
-    [v4 recognizerScore];
+    [equalCopy recognizerScore];
     if (recognizerScore != v98)
     {
       goto LABEL_370;
@@ -4770,7 +4770,7 @@ LABEL_378:
   if (v99)
   {
     recognizerThresholdOffset = self->_recognizerThresholdOffset;
-    [v4 recognizerThresholdOffset];
+    [equalCopy recognizerThresholdOffset];
     if (recognizerThresholdOffset != v101)
     {
       goto LABEL_370;
@@ -4789,7 +4789,7 @@ LABEL_378:
   if (v102)
   {
     recognizerWaitTimeInNs = self->_recognizerWaitTimeInNs;
-    if (recognizerWaitTimeInNs != [v4 recognizerWaitTimeInNs])
+    if (recognizerWaitTimeInNs != [equalCopy recognizerWaitTimeInNs])
     {
       goto LABEL_370;
     }
@@ -4807,7 +4807,7 @@ LABEL_378:
   if (v104)
   {
     recognizerScaleFactor = self->_recognizerScaleFactor;
-    [v4 recognizerScaleFactor];
+    [equalCopy recognizerScaleFactor];
     if (recognizerScaleFactor != v106)
     {
       goto LABEL_370;
@@ -4826,7 +4826,7 @@ LABEL_378:
   if (v107)
   {
     threshold = self->_threshold;
-    [v4 threshold];
+    [equalCopy threshold];
     if (threshold != v109)
     {
       goto LABEL_370;
@@ -4845,7 +4845,7 @@ LABEL_378:
   if (v110)
   {
     triggerStartTimeOffsetInNs = self->_triggerStartTimeOffsetInNs;
-    if (triggerStartTimeOffsetInNs != [v4 triggerStartTimeOffsetInNs])
+    if (triggerStartTimeOffsetInNs != [equalCopy triggerStartTimeOffsetInNs])
     {
       goto LABEL_370;
     }
@@ -4863,7 +4863,7 @@ LABEL_378:
   if (v112)
   {
     triggerEndTimeOffsetInNs = self->_triggerEndTimeOffsetInNs;
-    if (triggerEndTimeOffsetInNs != [v4 triggerEndTimeOffsetInNs])
+    if (triggerEndTimeOffsetInNs != [equalCopy triggerEndTimeOffsetInNs])
     {
       goto LABEL_370;
     }
@@ -4881,7 +4881,7 @@ LABEL_378:
   if (v114)
   {
     triggerFireTimeOffsetInNs = self->_triggerFireTimeOffsetInNs;
-    if (triggerFireTimeOffsetInNs != [v4 triggerFireTimeOffsetInNs])
+    if (triggerFireTimeOffsetInNs != [equalCopy triggerFireTimeOffsetInNs])
     {
       goto LABEL_370;
     }
@@ -4899,7 +4899,7 @@ LABEL_378:
   if (v116)
   {
     triggerStartTime = self->_triggerStartTime;
-    [v4 triggerStartTime];
+    [equalCopy triggerStartTime];
     if (triggerStartTime != v118)
     {
       goto LABEL_370;
@@ -4918,7 +4918,7 @@ LABEL_378:
   if (v119)
   {
     triggerEndTime = self->_triggerEndTime;
-    [v4 triggerEndTime];
+    [equalCopy triggerEndTime];
     if (triggerEndTime != v121)
     {
       goto LABEL_370;
@@ -4937,7 +4937,7 @@ LABEL_378:
   if (v122)
   {
     triggerFiredTime = self->_triggerFiredTime;
-    [v4 triggerFiredTime];
+    [equalCopy triggerFiredTime];
     if (triggerFiredTime != v124)
     {
       goto LABEL_370;
@@ -4956,7 +4956,7 @@ LABEL_378:
   if (v125)
   {
     hardwareSamplerate = self->_hardwareSamplerate;
-    if (hardwareSamplerate != [v4 hardwareSamplerate])
+    if (hardwareSamplerate != [equalCopy hardwareSamplerate])
     {
       goto LABEL_370;
     }
@@ -4974,7 +4974,7 @@ LABEL_378:
   if (v127)
   {
     isContinuous = self->_isContinuous;
-    if (isContinuous != [v4 isContinuous])
+    if (isContinuous != [equalCopy isContinuous])
     {
       goto LABEL_370;
     }
@@ -4992,7 +4992,7 @@ LABEL_378:
   if (v129)
   {
     triggerDurationInNs = self->_triggerDurationInNs;
-    [v4 triggerDurationInNs];
+    [equalCopy triggerDurationInNs];
     if (triggerDurationInNs != v131)
     {
       goto LABEL_370;
@@ -5011,7 +5011,7 @@ LABEL_378:
   if (v132)
   {
     totalSamplesAtTriggerStart = self->_totalSamplesAtTriggerStart;
-    if (totalSamplesAtTriggerStart != [v4 totalSamplesAtTriggerStart])
+    if (totalSamplesAtTriggerStart != [equalCopy totalSamplesAtTriggerStart])
     {
       goto LABEL_370;
     }
@@ -5029,7 +5029,7 @@ LABEL_378:
   if (v134)
   {
     totalSamplesAtTriggerEnd = self->_totalSamplesAtTriggerEnd;
-    if (totalSamplesAtTriggerEnd != [v4 totalSamplesAtTriggerEnd])
+    if (totalSamplesAtTriggerEnd != [equalCopy totalSamplesAtTriggerEnd])
     {
       goto LABEL_370;
     }
@@ -5047,26 +5047,26 @@ LABEL_378:
   if (v136)
   {
     totalSamplesAtEndOfCapture = self->_totalSamplesAtEndOfCapture;
-    if (totalSamplesAtEndOfCapture != [v4 totalSamplesAtEndOfCapture])
+    if (totalSamplesAtEndOfCapture != [equalCopy totalSamplesAtEndOfCapture])
     {
       goto LABEL_370;
     }
   }
 
-  v138 = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
-  v139 = [v4 configVersion];
-  if ((v138 != 0) == (v139 == 0))
+  configVersion = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
+  configVersion2 = [equalCopy configVersion];
+  if ((configVersion != 0) == (configVersion2 == 0))
   {
     goto LABEL_353;
   }
 
-  v140 = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
-  if (v140)
+  configVersion3 = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
+  if (configVersion3)
   {
-    v141 = v140;
-    v142 = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
-    v143 = [v4 configVersion];
-    v144 = [v142 isEqual:v143];
+    v141 = configVersion3;
+    configVersion4 = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
+    configVersion5 = [equalCopy configVersion];
+    v144 = [configVersion4 isEqual:configVersion5];
 
     if (!v144)
     {
@@ -5078,20 +5078,20 @@ LABEL_378:
   {
   }
 
-  v138 = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
-  v139 = [v4 configPath];
-  if ((v138 != 0) == (v139 == 0))
+  configVersion = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
+  configVersion2 = [equalCopy configPath];
+  if ((configVersion != 0) == (configVersion2 == 0))
   {
     goto LABEL_353;
   }
 
-  v145 = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
-  if (v145)
+  configPath = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
+  if (configPath)
   {
-    v146 = v145;
-    v147 = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
-    v148 = [v4 configPath];
-    v149 = [v147 isEqual:v148];
+    v146 = configPath;
+    configPath2 = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
+    configPath3 = [equalCopy configPath];
+    v149 = [configPath2 isEqual:configPath3];
 
     if (!v149)
     {
@@ -5114,7 +5114,7 @@ LABEL_378:
   if (v151)
   {
     isSecondChance = self->_isSecondChance;
-    if (isSecondChance != [v4 isSecondChance])
+    if (isSecondChance != [equalCopy isSecondChance])
     {
       goto LABEL_370;
     }
@@ -5132,7 +5132,7 @@ LABEL_378:
   if (v154)
   {
     deviceHandheld = self->_deviceHandheld;
-    if (deviceHandheld != [v4 deviceHandheld])
+    if (deviceHandheld != [equalCopy deviceHandheld])
     {
       goto LABEL_370;
     }
@@ -5150,7 +5150,7 @@ LABEL_378:
   if (v156)
   {
     activeChannel = self->_activeChannel;
-    if (activeChannel != [v4 activeChannel])
+    if (activeChannel != [equalCopy activeChannel])
     {
       goto LABEL_370;
     }
@@ -5168,7 +5168,7 @@ LABEL_378:
   if (v158)
   {
     twoShotAudibleFeedbackDelayInNs = self->_twoShotAudibleFeedbackDelayInNs;
-    if (twoShotAudibleFeedbackDelayInNs != [v4 twoShotAudibleFeedbackDelayInNs])
+    if (twoShotAudibleFeedbackDelayInNs != [equalCopy twoShotAudibleFeedbackDelayInNs])
     {
       goto LABEL_370;
     }
@@ -5186,7 +5186,7 @@ LABEL_378:
   if (v160)
   {
     cumulativeUptimeInSec = self->_cumulativeUptimeInSec;
-    [v4 cumulativeUptimeInSec];
+    [equalCopy cumulativeUptimeInSec];
     if (cumulativeUptimeInSec != v162)
     {
       goto LABEL_370;
@@ -5205,7 +5205,7 @@ LABEL_378:
   if (v163)
   {
     cumulativeDowntimeInSec = self->_cumulativeDowntimeInSec;
-    [v4 cumulativeDowntimeInSec];
+    [equalCopy cumulativeDowntimeInSec];
     if (cumulativeDowntimeInSec != v165)
     {
       goto LABEL_370;
@@ -5224,7 +5224,7 @@ LABEL_378:
   if (v166)
   {
     hostPowerStateAtTrigger = self->_hostPowerStateAtTrigger;
-    if (hostPowerStateAtTrigger != [v4 hostPowerStateAtTrigger])
+    if (hostPowerStateAtTrigger != [equalCopy hostPowerStateAtTrigger])
     {
       goto LABEL_370;
     }
@@ -5242,7 +5242,7 @@ LABEL_378:
   if (v168)
   {
     isMediaPlaying = self->_isMediaPlaying;
-    if (isMediaPlaying != [v4 isMediaPlaying])
+    if (isMediaPlaying != [equalCopy isMediaPlaying])
     {
       goto LABEL_370;
     }
@@ -5260,27 +5260,27 @@ LABEL_378:
   if (v170)
   {
     mediaVolume = self->_mediaVolume;
-    [v4 mediaVolume];
+    [equalCopy mediaVolume];
     if (mediaVolume != v172)
     {
       goto LABEL_370;
     }
   }
 
-  v138 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
-  v139 = [v4 audioProviderUUID];
-  if ((v138 != 0) == (v139 == 0))
+  configVersion = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
+  configVersion2 = [equalCopy audioProviderUUID];
+  if ((configVersion != 0) == (configVersion2 == 0))
   {
     goto LABEL_353;
   }
 
-  v173 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
-  if (v173)
+  audioProviderUUID = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
+  if (audioProviderUUID)
   {
-    v174 = v173;
-    v175 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
-    v176 = [v4 audioProviderUUID];
-    v177 = [v175 isEqual:v176];
+    v174 = audioProviderUUID;
+    audioProviderUUID2 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
+    audioProviderUUID3 = [equalCopy audioProviderUUID];
+    v177 = [audioProviderUUID2 isEqual:audioProviderUUID3];
 
     if (!v177)
     {
@@ -5300,14 +5300,14 @@ LABEL_378:
   if ((*p_has & 0x8000000000000000) != 0)
   {
     onBatteryPower = self->_onBatteryPower;
-    if (onBatteryPower != [v4 onBatteryPower])
+    if (onBatteryPower != [equalCopy onBatteryPower])
     {
       goto LABEL_370;
     }
   }
 
   v179 = *(&self->_has + 4);
-  v180 = *(v4 + 282);
+  v180 = *(equalCopy + 282);
   if ((v179 & 1) != (v180 & 1))
   {
     goto LABEL_370;
@@ -5316,13 +5316,13 @@ LABEL_378:
   if (v179)
   {
     didWakeAP = self->_didWakeAP;
-    if (didWakeAP != [v4 didWakeAP])
+    if (didWakeAP != [equalCopy didWakeAP])
     {
       goto LABEL_370;
     }
 
     v179 = *(&self->_has + 4);
-    v180 = *(v4 + 282);
+    v180 = *(equalCopy + 282);
   }
 
   v182 = (v179 >> 1) & 1;
@@ -5334,14 +5334,14 @@ LABEL_378:
   if (v182)
   {
     uptimeInSec = self->_uptimeInSec;
-    [v4 uptimeInSec];
+    [equalCopy uptimeInSec];
     if (uptimeInSec != v184)
     {
       goto LABEL_370;
     }
 
     v179 = *(&self->_has + 4);
-    v180 = *(v4 + 282);
+    v180 = *(equalCopy + 282);
   }
 
   v185 = (v179 >> 2) & 1;
@@ -5353,14 +5353,14 @@ LABEL_378:
   if (v185)
   {
     downtimeInSec = self->_downtimeInSec;
-    [v4 downtimeInSec];
+    [equalCopy downtimeInSec];
     if (downtimeInSec != v187)
     {
       goto LABEL_370;
     }
 
     v179 = *(&self->_has + 4);
-    v180 = *(v4 + 282);
+    v180 = *(equalCopy + 282);
   }
 
   v188 = (v179 >> 3) & 1;
@@ -5372,26 +5372,26 @@ LABEL_378:
   if (v188)
   {
     lastConsecutiveVTRejects = self->_lastConsecutiveVTRejects;
-    if (lastConsecutiveVTRejects != [v4 lastConsecutiveVTRejects])
+    if (lastConsecutiveVTRejects != [equalCopy lastConsecutiveVTRejects])
     {
       goto LABEL_370;
     }
   }
 
-  v138 = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
-  v139 = [v4 captureFilePath];
-  if ((v138 != 0) == (v139 == 0))
+  configVersion = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
+  configVersion2 = [equalCopy captureFilePath];
+  if ((configVersion != 0) == (configVersion2 == 0))
   {
     goto LABEL_353;
   }
 
-  v190 = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
-  if (v190)
+  captureFilePath = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
+  if (captureFilePath)
   {
-    v191 = v190;
-    v192 = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
-    v193 = [v4 captureFilePath];
-    v194 = [v192 isEqual:v193];
+    v191 = captureFilePath;
+    captureFilePath2 = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
+    captureFilePath3 = [equalCopy captureFilePath];
+    v194 = [captureFilePath2 isEqual:captureFilePath3];
 
     if (!v194)
     {
@@ -5403,20 +5403,20 @@ LABEL_378:
   {
   }
 
-  v138 = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
-  v139 = [v4 configDataHash];
-  if ((v138 != 0) == (v139 == 0))
+  configVersion = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
+  configVersion2 = [equalCopy configDataHash];
+  if ((configVersion != 0) == (configVersion2 == 0))
   {
     goto LABEL_353;
   }
 
-  v195 = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
-  if (v195)
+  configDataHash = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
+  if (configDataHash)
   {
-    v196 = v195;
-    v197 = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
-    v198 = [v4 configDataHash];
-    v199 = [v197 isEqual:v198];
+    v196 = configDataHash;
+    configDataHash2 = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
+    configDataHash3 = [equalCopy configDataHash];
+    v199 = [configDataHash2 isEqual:configDataHash3];
 
     if (!v199)
     {
@@ -5430,7 +5430,7 @@ LABEL_378:
 
   v200 = *(&self->_has + 4);
   v201 = (v200 >> 4) & 1;
-  v202 = *(v4 + 282);
+  v202 = *(equalCopy + 282);
   if (v201 != ((v202 >> 4) & 1))
   {
     goto LABEL_370;
@@ -5439,13 +5439,13 @@ LABEL_378:
   if (v201)
   {
     siriIsActiveOrOtherAssertion = self->_siriIsActiveOrOtherAssertion;
-    if (siriIsActiveOrOtherAssertion != [v4 siriIsActiveOrOtherAssertion])
+    if (siriIsActiveOrOtherAssertion != [equalCopy siriIsActiveOrOtherAssertion])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v204 = (v200 >> 5) & 1;
@@ -5457,13 +5457,13 @@ LABEL_378:
   if (v204)
   {
     didAudioStall = self->_didAudioStall;
-    if (didAudioStall != [v4 didAudioStall])
+    if (didAudioStall != [equalCopy didAudioStall])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v206 = (v200 >> 6) & 1;
@@ -5475,13 +5475,13 @@ LABEL_378:
   if (v206)
   {
     isBargeIn = self->_isBargeIn;
-    if (isBargeIn != [v4 isBargeIn])
+    if (isBargeIn != [equalCopy isBargeIn])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v208 = (v200 >> 7) & 1;
@@ -5493,13 +5493,13 @@ LABEL_378:
   if (v208)
   {
     isWakeFromSleep = self->_isWakeFromSleep;
-    if (isWakeFromSleep != [v4 isWakeFromSleep])
+    if (isWakeFromSleep != [equalCopy isWakeFromSleep])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v210 = (v200 >> 8) & 1;
@@ -5511,13 +5511,13 @@ LABEL_378:
   if (v210)
   {
     secondPassAssetQueryStartTimeInNs = self->_secondPassAssetQueryStartTimeInNs;
-    if (secondPassAssetQueryStartTimeInNs != [v4 secondPassAssetQueryStartTimeInNs])
+    if (secondPassAssetQueryStartTimeInNs != [equalCopy secondPassAssetQueryStartTimeInNs])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v212 = (v200 >> 9) & 1;
@@ -5529,13 +5529,13 @@ LABEL_378:
   if (v212)
   {
     secondPassAssetQueryCompleteTimeInNs = self->_secondPassAssetQueryCompleteTimeInNs;
-    if (secondPassAssetQueryCompleteTimeInNs != [v4 secondPassAssetQueryCompleteTimeInNs])
+    if (secondPassAssetQueryCompleteTimeInNs != [equalCopy secondPassAssetQueryCompleteTimeInNs])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v214 = (v200 >> 10) & 1;
@@ -5547,13 +5547,13 @@ LABEL_378:
   if (v214)
   {
     secondPassAssetLoadStartTimeInNs = self->_secondPassAssetLoadStartTimeInNs;
-    if (secondPassAssetLoadStartTimeInNs != [v4 secondPassAssetLoadStartTimeInNs])
+    if (secondPassAssetLoadStartTimeInNs != [equalCopy secondPassAssetLoadStartTimeInNs])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v216 = (v200 >> 11) & 1;
@@ -5565,13 +5565,13 @@ LABEL_378:
   if (v216)
   {
     secondPassAssetLoadCompleteTimeInNs = self->_secondPassAssetLoadCompleteTimeInNs;
-    if (secondPassAssetLoadCompleteTimeInNs != [v4 secondPassAssetLoadCompleteTimeInNs])
+    if (secondPassAssetLoadCompleteTimeInNs != [equalCopy secondPassAssetLoadCompleteTimeInNs])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v218 = (v200 >> 12) & 1;
@@ -5583,13 +5583,13 @@ LABEL_378:
   if (v218)
   {
     secondPassAudioStreamStartTimeInNs = self->_secondPassAudioStreamStartTimeInNs;
-    if (secondPassAudioStreamStartTimeInNs != [v4 secondPassAudioStreamStartTimeInNs])
+    if (secondPassAudioStreamStartTimeInNs != [equalCopy secondPassAudioStreamStartTimeInNs])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v220 = (v200 >> 13) & 1;
@@ -5601,13 +5601,13 @@ LABEL_378:
   if (v220)
   {
     secondPassAudioStreamReadyTimeInNs = self->_secondPassAudioStreamReadyTimeInNs;
-    if (secondPassAudioStreamReadyTimeInNs != [v4 secondPassAudioStreamReadyTimeInNs])
+    if (secondPassAudioStreamReadyTimeInNs != [equalCopy secondPassAudioStreamReadyTimeInNs])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   v222 = (v200 >> 14) & 1;
@@ -5619,13 +5619,13 @@ LABEL_378:
   if (v222)
   {
     secondPassFirstAudioPacketReceptionTimeInNs = self->_secondPassFirstAudioPacketReceptionTimeInNs;
-    if (secondPassFirstAudioPacketReceptionTimeInNs != [v4 secondPassFirstAudioPacketReceptionTimeInNs])
+    if (secondPassFirstAudioPacketReceptionTimeInNs != [equalCopy secondPassFirstAudioPacketReceptionTimeInNs])
     {
       goto LABEL_370;
     }
 
     v200 = *(&self->_has + 4);
-    v202 = *(v4 + 282);
+    v202 = *(equalCopy + 282);
   }
 
   if (((v202 ^ v200) & 0x8000) != 0)
@@ -5636,14 +5636,14 @@ LABEL_378:
   if ((v200 & 0x8000) != 0)
   {
     secondPassLastAudioPacketReceptionTimeInNs = self->_secondPassLastAudioPacketReceptionTimeInNs;
-    if (secondPassLastAudioPacketReceptionTimeInNs != [v4 secondPassLastAudioPacketReceptionTimeInNs])
+    if (secondPassLastAudioPacketReceptionTimeInNs != [equalCopy secondPassLastAudioPacketReceptionTimeInNs])
     {
       goto LABEL_370;
     }
   }
 
   v225 = *(&self->_has + 10);
-  v226 = v4[566];
+  v226 = equalCopy[566];
   if ((v225 & 1) != (v226 & 1))
   {
     goto LABEL_370;
@@ -5652,13 +5652,13 @@ LABEL_378:
   if (v225)
   {
     secondPassCheckerModelKeywordDetectionStartTimeInNs = self->_secondPassCheckerModelKeywordDetectionStartTimeInNs;
-    if (secondPassCheckerModelKeywordDetectionStartTimeInNs != [v4 secondPassCheckerModelKeywordDetectionStartTimeInNs])
+    if (secondPassCheckerModelKeywordDetectionStartTimeInNs != [equalCopy secondPassCheckerModelKeywordDetectionStartTimeInNs])
     {
       goto LABEL_370;
     }
 
     v225 = *(&self->_has + 10);
-    v226 = v4[566];
+    v226 = equalCopy[566];
   }
 
   v228 = (v225 >> 1) & 1;
@@ -5670,28 +5670,28 @@ LABEL_378:
   if (v228)
   {
     secondPassCheckerModelKeywordDetectionEndTimeInNs = self->_secondPassCheckerModelKeywordDetectionEndTimeInNs;
-    if (secondPassCheckerModelKeywordDetectionEndTimeInNs != [v4 secondPassCheckerModelKeywordDetectionEndTimeInNs])
+    if (secondPassCheckerModelKeywordDetectionEndTimeInNs != [equalCopy secondPassCheckerModelKeywordDetectionEndTimeInNs])
     {
       goto LABEL_370;
     }
   }
 
-  v138 = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
-  v139 = [v4 triggerPhrase];
-  if ((v138 != 0) == (v139 == 0))
+  configVersion = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
+  configVersion2 = [equalCopy triggerPhrase];
+  if ((configVersion != 0) == (configVersion2 == 0))
   {
 LABEL_353:
 
     goto LABEL_370;
   }
 
-  v230 = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
-  if (v230)
+  triggerPhrase = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
+  if (triggerPhrase)
   {
-    v231 = v230;
-    v232 = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
-    v233 = [v4 triggerPhrase];
-    v234 = [v232 isEqual:v233];
+    v231 = triggerPhrase;
+    triggerPhrase2 = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
+    triggerPhrase3 = [equalCopy triggerPhrase];
+    v234 = [triggerPhrase2 isEqual:triggerPhrase3];
 
     if (!v234)
     {
@@ -5705,20 +5705,20 @@ LABEL_353:
 
   v235 = *(&self->_has + 10);
   v236 = (v235 >> 2) & 1;
-  v237 = v4[566];
+  v237 = equalCopy[566];
   if (v236 == ((v237 >> 2) & 1))
   {
     if (v236)
     {
       lastDisplayWakeTimeOffsetInNs = self->_lastDisplayWakeTimeOffsetInNs;
-      [v4 lastDisplayWakeTimeOffsetInNs];
+      [equalCopy lastDisplayWakeTimeOffsetInNs];
       if (lastDisplayWakeTimeOffsetInNs != v239)
       {
         goto LABEL_370;
       }
 
       v235 = *(&self->_has + 10);
-      v237 = v4[566];
+      v237 = equalCopy[566];
     }
 
     v240 = (v235 >> 3) & 1;
@@ -5727,13 +5727,13 @@ LABEL_353:
       if (v240)
       {
         isHSJSTriggerFromAlwaysOnMicBuffer = self->_isHSJSTriggerFromAlwaysOnMicBuffer;
-        if (isHSJSTriggerFromAlwaysOnMicBuffer != [v4 isHSJSTriggerFromAlwaysOnMicBuffer])
+        if (isHSJSTriggerFromAlwaysOnMicBuffer != [equalCopy isHSJSTriggerFromAlwaysOnMicBuffer])
         {
           goto LABEL_370;
         }
 
         v235 = *(&self->_has + 10);
-        v237 = v4[566];
+        v237 = equalCopy[566];
       }
 
       v242 = (v235 >> 4) & 1;
@@ -5742,19 +5742,19 @@ LABEL_353:
         if (v242)
         {
           displayWakeTimeOffsetInNs = self->_displayWakeTimeOffsetInNs;
-          if (displayWakeTimeOffsetInNs != [v4 displayWakeTimeOffsetInNs])
+          if (displayWakeTimeOffsetInNs != [equalCopy displayWakeTimeOffsetInNs])
           {
             goto LABEL_370;
           }
 
           v235 = *(&self->_has + 10);
-          v237 = v4[566];
+          v237 = equalCopy[566];
         }
 
         v244 = (v235 >> 5) & 1;
         if (v244 == ((v237 >> 5) & 1))
         {
-          if (!v244 || (neptuneDetectionApiScore = self->_neptuneDetectionApiScore, [v4 neptuneDetectionApiScore], neptuneDetectionApiScore == v246))
+          if (!v244 || (neptuneDetectionApiScore = self->_neptuneDetectionApiScore, [equalCopy neptuneDetectionApiScore], neptuneDetectionApiScore == v246))
           {
             v247 = 1;
             goto LABEL_371;
@@ -5771,9 +5771,9 @@ LABEL_371:
   return v247;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if (has)
@@ -6519,16 +6519,16 @@ LABEL_55:
   }
 
 LABEL_56:
-  v6 = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
+  configVersion = [(MHSchemaMHVoiceTriggerEventInfo *)self configVersion];
 
-  if (v6)
+  if (configVersion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
+  configPath = [(MHSchemaMHVoiceTriggerEventInfo *)self configPath];
 
-  if (v7)
+  if (configPath)
   {
     PBDataWriterWriteStringField();
   }
@@ -6647,11 +6647,11 @@ LABEL_69:
   }
 
 LABEL_70:
-  v9 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
+  audioProviderUUID = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
 
-  if (v9)
+  if (audioProviderUUID)
   {
-    v10 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
+    audioProviderUUID2 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID];
     PBDataWriterWriteSubmessage();
   }
 
@@ -6704,16 +6704,16 @@ LABEL_78:
   }
 
 LABEL_79:
-  v12 = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
+  captureFilePath = [(MHSchemaMHVoiceTriggerEventInfo *)self captureFilePath];
 
-  if (v12)
+  if (captureFilePath)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
+  configDataHash = [(MHSchemaMHVoiceTriggerEventInfo *)self configDataHash];
 
-  if (v13)
+  if (configDataHash)
   {
     PBDataWriterWriteStringField();
   }
@@ -6887,9 +6887,9 @@ LABEL_95:
     PBDataWriterWriteUint64Field();
   }
 
-  v16 = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
+  triggerPhrase = [(MHSchemaMHVoiceTriggerEventInfo *)self triggerPhrase];
 
-  if (v16)
+  if (triggerPhrase)
   {
     PBDataWriterWriteStringField();
   }
@@ -6940,9 +6940,9 @@ LABEL_105:
 LABEL_106:
 }
 
-- (void)setHasNeptuneDetectionApiScore:(BOOL)a3
+- (void)setHasNeptuneDetectionApiScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 32;
   }
@@ -6955,9 +6955,9 @@ LABEL_106:
   *(&self->_has + 10) = *(&self->_has + 10) & 0xDF | v3;
 }
 
-- (void)setHasDisplayWakeTimeOffsetInNs:(BOOL)a3
+- (void)setHasDisplayWakeTimeOffsetInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 16;
   }
@@ -6970,9 +6970,9 @@ LABEL_106:
   *(&self->_has + 10) = *(&self->_has + 10) & 0xEF | v3;
 }
 
-- (void)setHasIsHSJSTriggerFromAlwaysOnMicBuffer:(BOOL)a3
+- (void)setHasIsHSJSTriggerFromAlwaysOnMicBuffer:(BOOL)buffer
 {
-  if (a3)
+  if (buffer)
   {
     v3 = 8;
   }
@@ -6985,9 +6985,9 @@ LABEL_106:
   *(&self->_has + 10) = *(&self->_has + 10) & 0xF7 | v3;
 }
 
-- (void)setHasLastDisplayWakeTimeOffsetInNs:(BOOL)a3
+- (void)setHasLastDisplayWakeTimeOffsetInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 4;
   }
@@ -7000,9 +7000,9 @@ LABEL_106:
   *(&self->_has + 10) = *(&self->_has + 10) & 0xFB | v3;
 }
 
-- (void)setHasSecondPassCheckerModelKeywordDetectionEndTimeInNs:(BOOL)a3
+- (void)setHasSecondPassCheckerModelKeywordDetectionEndTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }
@@ -7015,9 +7015,9 @@ LABEL_106:
   *(&self->_has + 10) = *(&self->_has + 10) & 0xFD | v3;
 }
 
-- (void)setHasSecondPassLastAudioPacketReceptionTimeInNs:(BOOL)a3
+- (void)setHasSecondPassLastAudioPacketReceptionTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 0x8000;
   }
@@ -7030,9 +7030,9 @@ LABEL_106:
   *(&self->_has + 4) = v3 & 0x8000 | *(&self->_has + 4) & 0x7FFF;
 }
 
-- (void)setHasSecondPassFirstAudioPacketReceptionTimeInNs:(BOOL)a3
+- (void)setHasSecondPassFirstAudioPacketReceptionTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 0x4000;
   }
@@ -7045,9 +7045,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xBFFF | v3;
 }
 
-- (void)setHasSecondPassAudioStreamReadyTimeInNs:(BOOL)a3
+- (void)setHasSecondPassAudioStreamReadyTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 0x2000;
   }
@@ -7060,9 +7060,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xDFFF | v3;
 }
 
-- (void)setHasSecondPassAudioStreamStartTimeInNs:(BOOL)a3
+- (void)setHasSecondPassAudioStreamStartTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 4096;
   }
@@ -7075,9 +7075,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xEFFF | v3;
 }
 
-- (void)setHasSecondPassAssetLoadCompleteTimeInNs:(BOOL)a3
+- (void)setHasSecondPassAssetLoadCompleteTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2048;
   }
@@ -7090,9 +7090,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xF7FF | v3;
 }
 
-- (void)setHasSecondPassAssetLoadStartTimeInNs:(BOOL)a3
+- (void)setHasSecondPassAssetLoadStartTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 1024;
   }
@@ -7105,9 +7105,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFBFF | v3;
 }
 
-- (void)setHasSecondPassAssetQueryCompleteTimeInNs:(BOOL)a3
+- (void)setHasSecondPassAssetQueryCompleteTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 512;
   }
@@ -7120,9 +7120,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFDFF | v3;
 }
 
-- (void)setHasSecondPassAssetQueryStartTimeInNs:(BOOL)a3
+- (void)setHasSecondPassAssetQueryStartTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 256;
   }
@@ -7135,9 +7135,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFEFF | v3;
 }
 
-- (void)setHasIsWakeFromSleep:(BOOL)a3
+- (void)setHasIsWakeFromSleep:(BOOL)sleep
 {
-  if (a3)
+  if (sleep)
   {
     v3 = 128;
   }
@@ -7150,9 +7150,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFF7F | v3;
 }
 
-- (void)setHasIsBargeIn:(BOOL)a3
+- (void)setHasIsBargeIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 64;
   }
@@ -7165,9 +7165,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFBF | v3;
 }
 
-- (void)setHasDidAudioStall:(BOOL)a3
+- (void)setHasDidAudioStall:(BOOL)stall
 {
-  if (a3)
+  if (stall)
   {
     v3 = 32;
   }
@@ -7180,9 +7180,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFDF | v3;
 }
 
-- (void)setHasSiriIsActiveOrOtherAssertion:(BOOL)a3
+- (void)setHasSiriIsActiveOrOtherAssertion:(BOOL)assertion
 {
-  if (a3)
+  if (assertion)
   {
     v3 = 16;
   }
@@ -7195,9 +7195,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFEF | v3;
 }
 
-- (void)setHasLastConsecutiveVTRejects:(BOOL)a3
+- (void)setHasLastConsecutiveVTRejects:(BOOL)rejects
 {
-  if (a3)
+  if (rejects)
   {
     v3 = 8;
   }
@@ -7210,9 +7210,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFF7 | v3;
 }
 
-- (void)setHasDowntimeInSec:(BOOL)a3
+- (void)setHasDowntimeInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 4;
   }
@@ -7225,9 +7225,9 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFB | v3;
 }
 
-- (void)setHasUptimeInSec:(BOOL)a3
+- (void)setHasUptimeInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 2;
   }
@@ -7240,10 +7240,10 @@ LABEL_106:
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFD | v3;
 }
 
-- (void)setHasOnBatteryPower:(BOOL)a3
+- (void)setHasOnBatteryPower:(BOOL)power
 {
   v3 = 0x8000000000000000;
-  if (!a3)
+  if (!power)
   {
     v3 = 0;
   }
@@ -7251,10 +7251,10 @@ LABEL_106:
   *&self->_has = v3 & 0x8000000000000000 | *&self->_has & 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setHasMediaVolume:(BOOL)a3
+- (void)setHasMediaVolume:(BOOL)volume
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!volume)
   {
     v3 = 0;
   }
@@ -7262,10 +7262,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xBFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsMediaPlaying:(BOOL)a3
+- (void)setHasIsMediaPlaying:(BOOL)playing
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!playing)
   {
     v3 = 0;
   }
@@ -7273,10 +7273,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xDFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasHostPowerStateAtTrigger:(BOOL)a3
+- (void)setHasHostPowerStateAtTrigger:(BOOL)trigger
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!trigger)
   {
     v3 = 0;
   }
@@ -7284,10 +7284,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCumulativeDowntimeInSec:(BOOL)a3
+- (void)setHasCumulativeDowntimeInSec:(BOOL)sec
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!sec)
   {
     v3 = 0;
   }
@@ -7295,10 +7295,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCumulativeUptimeInSec:(BOOL)a3
+- (void)setHasCumulativeUptimeInSec:(BOOL)sec
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!sec)
   {
     v3 = 0;
   }
@@ -7306,10 +7306,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTwoShotAudibleFeedbackDelayInNs:(BOOL)a3
+- (void)setHasTwoShotAudibleFeedbackDelayInNs:(BOOL)ns
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7317,10 +7317,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFDFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasActiveChannel:(BOOL)a3
+- (void)setHasActiveChannel:(BOOL)channel
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!channel)
   {
     v3 = 0;
   }
@@ -7328,10 +7328,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasDeviceHandheld:(BOOL)a3
+- (void)setHasDeviceHandheld:(BOOL)handheld
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!handheld)
   {
     v3 = 0;
   }
@@ -7339,10 +7339,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsSecondChance:(BOOL)a3
+- (void)setHasIsSecondChance:(BOOL)chance
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!chance)
   {
     v3 = 0;
   }
@@ -7350,10 +7350,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTotalSamplesAtEndOfCapture:(BOOL)a3
+- (void)setHasTotalSamplesAtEndOfCapture:(BOOL)capture
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!capture)
   {
     v3 = 0;
   }
@@ -7361,10 +7361,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTotalSamplesAtTriggerEnd:(BOOL)a3
+- (void)setHasTotalSamplesAtTriggerEnd:(BOOL)end
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!end)
   {
     v3 = 0;
   }
@@ -7372,10 +7372,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTotalSamplesAtTriggerStart:(BOOL)a3
+- (void)setHasTotalSamplesAtTriggerStart:(BOOL)start
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!start)
   {
     v3 = 0;
   }
@@ -7383,10 +7383,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerDurationInNs:(BOOL)a3
+- (void)setHasTriggerDurationInNs:(BOOL)ns
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7394,10 +7394,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsContinuous:(BOOL)a3
+- (void)setHasIsContinuous:(BOOL)continuous
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!continuous)
   {
     v3 = 0;
   }
@@ -7405,10 +7405,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasHardwareSamplerate:(BOOL)a3
+- (void)setHasHardwareSamplerate:(BOOL)samplerate
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!samplerate)
   {
     v3 = 0;
   }
@@ -7416,10 +7416,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerFiredTime:(BOOL)a3
+- (void)setHasTriggerFiredTime:(BOOL)time
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -7427,10 +7427,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerEndTime:(BOOL)a3
+- (void)setHasTriggerEndTime:(BOOL)time
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -7438,10 +7438,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerStartTime:(BOOL)a3
+- (void)setHasTriggerStartTime:(BOOL)time
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -7449,10 +7449,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerFireTimeOffsetInNs:(BOOL)a3
+- (void)setHasTriggerFireTimeOffsetInNs:(BOOL)ns
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7460,10 +7460,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerEndTimeOffsetInNs:(BOOL)a3
+- (void)setHasTriggerEndTimeOffsetInNs:(BOOL)ns
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7471,10 +7471,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerStartTimeOffsetInNs:(BOOL)a3
+- (void)setHasTriggerStartTimeOffsetInNs:(BOOL)ns
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7482,10 +7482,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasThreshold:(BOOL)a3
+- (void)setHasThreshold:(BOOL)threshold
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!threshold)
   {
     v3 = 0;
   }
@@ -7493,10 +7493,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasRecognizerScaleFactor:(BOOL)a3
+- (void)setHasRecognizerScaleFactor:(BOOL)factor
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!factor)
   {
     v3 = 0;
   }
@@ -7504,10 +7504,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasRecognizerWaitTimeInNs:(BOOL)a3
+- (void)setHasRecognizerWaitTimeInNs:(BOOL)ns
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7515,10 +7515,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3;
 }
 
-- (void)setHasRecognizerThresholdOffset:(BOOL)a3
+- (void)setHasRecognizerThresholdOffset:(BOOL)offset
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!offset)
   {
     v3 = 0;
   }
@@ -7526,10 +7526,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (void)setHasRecognizerScore:(BOOL)a3
+- (void)setHasRecognizerScore:(BOOL)score
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7537,10 +7537,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setHasEffectiveThreshold:(BOOL)a3
+- (void)setHasEffectiveThreshold:(BOOL)threshold
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!threshold)
   {
     v3 = 0;
   }
@@ -7548,10 +7548,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsMaximized:(BOOL)a3
+- (void)setHasIsMaximized:(BOOL)maximized
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!maximized)
   {
     v3 = 0;
   }
@@ -7559,10 +7559,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerScore:(BOOL)a3
+- (void)setHasTriggerScore:(BOOL)score
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7570,10 +7570,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setHasTotalSampleCount:(BOOL)a3
+- (void)setHasTotalSampleCount:(BOOL)count
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -7581,10 +7581,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsTriggerEvent:(BOOL)a3
+- (void)setHasIsTriggerEvent:(BOOL)event
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!event)
   {
     v3 = 0;
   }
@@ -7592,10 +7592,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3;
 }
 
-- (void)setHasAnalyzerTrailingSamples:(BOOL)a3
+- (void)setHasAnalyzerTrailingSamples:(BOOL)samples
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!samples)
   {
     v3 = 0;
   }
@@ -7603,10 +7603,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasAnalyzerPrependingSamples:(BOOL)a3
+- (void)setHasAnalyzerPrependingSamples:(BOOL)samples
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!samples)
   {
     v3 = 0;
   }
@@ -7614,10 +7614,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)setHasExtraSamplesAtStart:(BOOL)a3
+- (void)setHasExtraSamplesAtStart:(BOOL)start
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!start)
   {
     v3 = 0;
   }
@@ -7625,10 +7625,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerFireNs:(BOOL)a3
+- (void)setHasTriggerFireNs:(BOOL)ns
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7636,10 +7636,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerEndNs:(BOOL)a3
+- (void)setHasTriggerEndNs:(BOOL)ns
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7647,10 +7647,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasTriggerStartNs:(BOOL)a3
+- (void)setHasTriggerStartNs:(BOOL)ns
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!ns)
   {
     v3 = 0;
   }
@@ -7658,10 +7658,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerFireSampleCount:(BOOL)a3
+- (void)setHasTriggerFireSampleCount:(BOOL)count
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -7669,10 +7669,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasTriggerEndSampleCount:(BOOL)a3
+- (void)setHasTriggerEndSampleCount:(BOOL)count
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -7680,10 +7680,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasClientStartSampleCount:(BOOL)a3
+- (void)setHasClientStartSampleCount:(BOOL)count
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -7691,10 +7691,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3;
 }
 
-- (void)setHasTriggerStartSampleCount:(BOOL)a3
+- (void)setHasTriggerStartSampleCount:(BOOL)count
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -7702,10 +7702,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasEnhancedCarplayTriggerMode:(BOOL)a3
+- (void)setHasEnhancedCarplayTriggerMode:(BOOL)mode
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!mode)
   {
     v3 = 0;
   }
@@ -7713,10 +7713,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasRemoteMicVADMyriadThreshold:(BOOL)a3
+- (void)setHasRemoteMicVADMyriadThreshold:(BOOL)threshold
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!threshold)
   {
     v3 = 0;
   }
@@ -7724,10 +7724,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasRemoteMicVADThreshold:(BOOL)a3
+- (void)setHasRemoteMicVADThreshold:(BOOL)threshold
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!threshold)
   {
     v3 = 0;
   }
@@ -7735,10 +7735,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasRemoteMicVADScore:(BOOL)a3
+- (void)setHasRemoteMicVADScore:(BOOL)score
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7746,10 +7746,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasShadowMicScoreThresholdForVAD:(BOOL)a3
+- (void)setHasShadowMicScoreThresholdForVAD:(BOOL)d
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -7757,10 +7757,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasShadowMicScore:(BOOL)a3
+- (void)setHasShadowMicScore:(BOOL)score
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7768,10 +7768,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (void)setHasTriggerExplicitTDSRSatScore:(BOOL)a3
+- (void)setHasTriggerExplicitTDSRSatScore:(BOOL)score
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7779,10 +7779,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3;
 }
 
-- (void)setHasTriggerExplicitSatScore:(BOOL)a3
+- (void)setHasTriggerExplicitSatScore:(BOOL)score
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7790,10 +7790,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (void)setHasDeltaTimeInNsFromlastPHSReject:(BOOL)a3
+- (void)setHasDeltaTimeInNsFromlastPHSReject:(BOOL)reject
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!reject)
   {
     v3 = 0;
   }
@@ -7801,10 +7801,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasLastConsecutivePHSRejects:(BOOL)a3
+- (void)setHasLastConsecutivePHSRejects:(BOOL)rejects
 {
   v3 = 4096;
-  if (!a3)
+  if (!rejects)
   {
     v3 = 0;
   }
@@ -7812,10 +7812,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasSatBeingTrained:(BOOL)a3
+- (void)setHasSatBeingTrained:(BOOL)trained
 {
   v3 = 2048;
-  if (!a3)
+  if (!trained)
   {
     v3 = 0;
   }
@@ -7823,10 +7823,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasBiometricClue:(BOOL)a3
+- (void)setHasBiometricClue:(BOOL)clue
 {
   v3 = 1024;
-  if (!a3)
+  if (!clue)
   {
     v3 = 0;
   }
@@ -7834,10 +7834,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (void)setHasTdSpeakerRecognizerCombinationWeight:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerCombinationWeight:(BOOL)weight
 {
   v3 = 512;
-  if (!a3)
+  if (!weight)
   {
     v3 = 0;
   }
@@ -7845,10 +7845,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3;
 }
 
-- (void)setHasTdSpeakerRecognizerCombinedThreshold:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerCombinedThreshold:(BOOL)threshold
 {
   v3 = 256;
-  if (!a3)
+  if (!threshold)
   {
     v3 = 0;
   }
@@ -7856,10 +7856,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)score
 {
   v3 = 128;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7867,10 +7867,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasTdSpeakerRecognizerScore:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerScore:(BOOL)score
 {
   v3 = 64;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7878,10 +7878,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setHasSatTriggered:(BOOL)a3
+- (void)setHasSatTriggered:(BOOL)triggered
 {
   v3 = 32;
-  if (!a3)
+  if (!triggered)
   {
     v3 = 0;
   }
@@ -7889,10 +7889,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)setHasSatThreshold:(BOOL)a3
+- (void)setHasSatThreshold:(BOOL)threshold
 {
   v3 = 16;
-  if (!a3)
+  if (!threshold)
   {
     v3 = 0;
   }
@@ -7900,10 +7900,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (void)setHasSatNumTrainingUtterances:(BOOL)a3
+- (void)setHasSatNumTrainingUtterances:(BOOL)utterances
 {
   v3 = 8;
-  if (!a3)
+  if (!utterances)
   {
     v3 = 0;
   }
@@ -7911,10 +7911,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setHasSatScore:(BOOL)a3
+- (void)setHasSatScore:(BOOL)score
 {
   v3 = 4;
-  if (!a3)
+  if (!score)
   {
     v3 = 0;
   }
@@ -7922,10 +7922,10 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setHasSecondPassAnalyerEndSampleCount:(BOOL)a3
+- (void)setHasSecondPassAnalyerEndSampleCount:(BOOL)count
 {
   v3 = 2;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -7933,17 +7933,17 @@ LABEL_106:
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MHSchemaMHVoiceTriggerEventInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MHSchemaMHVoiceTriggerEventInfo *)self audioProviderUUID:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(MHSchemaMHVoiceTriggerEventInfo *)self deleteAudioProviderUUID];
   }

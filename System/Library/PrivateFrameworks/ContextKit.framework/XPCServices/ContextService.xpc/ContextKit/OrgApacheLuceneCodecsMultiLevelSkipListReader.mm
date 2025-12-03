@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneCodecsMultiLevelSkipListReader
-- (int)skipToWithInt:(int)a3;
+- (int)skipToWithInt:(int)int;
 - (uint64_t)loadSkipLevels;
 - (void)close;
 - (void)dealloc;
-- (void)init__WithLong:(int64_t)a3 withInt:(int)a4;
+- (void)init__WithLong:(int64_t)long withInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneCodecsMultiLevelSkipListReader
 
-- (int)skipToWithInt:(int)a3
+- (int)skipToWithInt:(int)int
 {
   v5 = 0;
   do
@@ -34,7 +34,7 @@ LABEL_28:
     }
   }
 
-  while (skipDoc->buffer_[v6] < a3);
+  while (skipDoc->buffer_[v6] < int);
   do
   {
     while (1)
@@ -52,7 +52,7 @@ LABEL_8:
         IOSArray_throwOutOfBoundsWithMsg(v10, v6);
       }
 
-      if (*(&v9->super.size_ + v6 + 1) >= a3)
+      if (*(&v9->super.size_ + v6 + 1) >= int)
       {
         break;
       }
@@ -154,7 +154,7 @@ LABEL_7:
   }
 }
 
-- (void)init__WithLong:(int64_t)a3 withInt:(int)a4
+- (void)init__WithLong:(int64_t)long withInt:(int)int
 {
   skipPointer = self->skipPointer_;
   if (!skipPointer)
@@ -168,8 +168,8 @@ LABEL_7:
     IOSArray_throwOutOfBoundsWithMsg(size, 0);
   }
 
-  skipPointer->buffer_[0] = a3;
-  self->docCount_ = a4;
+  skipPointer->buffer_[0] = long;
+  self->docCount_ = int;
   JavaUtilArrays_fillWithIntArray_withInt_(self->skipDoc_, 0);
   JavaUtilArrays_fillWithIntArray_withInt_(self->numSkipped_, 0);
   JavaUtilArrays_fillWithLongArray_withLong_(self->childPointer_, 0);
@@ -189,13 +189,13 @@ LABEL_7:
 
 - (uint64_t)loadSkipLevels
 {
-  v1 = *(a1 + 56);
+  v1 = *(self + 56);
   if (!v1)
   {
     goto LABEL_52;
   }
 
-  v3 = *(a1 + 32);
+  v3 = *(self + 32);
   v4 = *(v1 + 8);
   if (v4 <= 0)
   {
@@ -209,23 +209,23 @@ LABEL_7:
 
   else
   {
-    v5 = *(a1 + 56);
+    v5 = *(self + 56);
     v6 = *(v5 + 8);
     if (v6 <= 0)
     {
       IOSArray_throwOutOfBoundsWithMsg(v6, 0);
     }
 
-    v7 = OrgApacheLuceneUtilMathUtil_logWithLong_withInt_(*(a1 + 32) / *(v5 + 12), *(a1 + 100)) + 1;
+    v7 = OrgApacheLuceneUtilMathUtil_logWithLong_withInt_(*(self + 32) / *(v5 + 12), *(self + 100)) + 1;
   }
 
-  if (v7 >= *(a1 + 8))
+  if (v7 >= *(self + 8))
   {
-    v7 = *(a1 + 8);
+    v7 = *(self + 8);
   }
 
-  *(a1 + 24) = v7;
-  v8 = *(a1 + 40);
+  *(self + 24) = v7;
+  v8 = *(self + 40);
   if (!v8)
   {
     goto LABEL_52;
@@ -243,7 +243,7 @@ LABEL_7:
     goto LABEL_52;
   }
 
-  v11 = *(a1 + 48);
+  v11 = *(self + 48);
   if (!v11)
   {
     goto LABEL_52;
@@ -256,13 +256,13 @@ LABEL_7:
   }
 
   [v10 seekWithLong:*(v11 + 16)];
-  v13 = (*(a1 + 24) - 1);
+  v13 = (*(self + 24) - 1);
   if (v13 >= 1)
   {
-    v14 = *(a1 + 28);
+    v14 = *(self + 28);
     while (1)
     {
-      v15 = *(a1 + 40);
+      v15 = *(self + 40);
       v16 = *(v15 + 8);
       if (v16 <= 0)
       {
@@ -275,8 +275,8 @@ LABEL_7:
         break;
       }
 
-      v18 = [v17 readVLong];
-      v19 = *(a1 + 40);
+      readVLong = [v17 readVLong];
+      v19 = *(self + 40);
       v20 = *(v19 + 8);
       if (v20 <= 0)
       {
@@ -289,16 +289,16 @@ LABEL_7:
         break;
       }
 
-      v22 = [v21 getFilePointer];
-      v23 = *(a1 + 48);
+      getFilePointer = [v21 getFilePointer];
+      v23 = *(self + 48);
       v24 = *(v23 + 8);
       if (v13 >= v24)
       {
         IOSArray_throwOutOfBoundsWithMsg(v24, v13);
       }
 
-      *(v23 + 16 + 8 * v13) = v22;
-      v25 = *(a1 + 40);
+      *(v23 + 16 + 8 * v13) = getFilePointer;
+      v25 = *(self + 40);
       v26 = *(v25 + 8);
       v27 = v14 - 1;
       if (v14 < 1)
@@ -315,9 +315,9 @@ LABEL_7:
         }
 
         IOSObjectArray_Set(v25, v13, [v35 clone]);
-        if (*(a1 + 96) == 1 && v18 <= 1023)
+        if (*(self + 96) == 1 && readVLong <= 1023)
         {
-          v36 = *(a1 + 40);
+          v36 = *(self + 40);
           v37 = *(v36 + 8);
           if (v13 >= v37)
           {
@@ -336,10 +336,10 @@ LABEL_7:
             JreThrowClassCastException();
           }
 
-          [v38 setBufferSizeWithInt:{JavaLangMath_maxWithInt_withInt_(8, v18)}];
+          [v38 setBufferSizeWithInt:{JavaLangMath_maxWithInt_withInt_(8, readVLong)}];
         }
 
-        v39 = *(a1 + 40);
+        v39 = *(self + 40);
         v40 = *(v39 + 8);
         if (v40 <= 0)
         {
@@ -352,7 +352,7 @@ LABEL_7:
           break;
         }
 
-        v42 = *(a1 + 40);
+        v42 = *(self + 40);
         v43 = *(v42 + 8);
         if (v43 <= 0)
         {
@@ -365,7 +365,7 @@ LABEL_7:
           break;
         }
 
-        [v41 seekWithLong:{objc_msgSend(v44, "getFilePointer") + v18}];
+        [v41 seekWithLong:{objc_msgSend(v44, "getFilePointer") + readVLong}];
       }
 
       else
@@ -377,7 +377,7 @@ LABEL_7:
 
         v28 = *(v25 + 24);
         v29 = [OrgApacheLuceneCodecsMultiLevelSkipListReader_SkipBuffer alloc];
-        sub_10005DCFC(v29, v28, v18, v30, v31, v32, v33, v34);
+        sub_10005DCFC(v29, v28, readVLong, v30, v31, v32, v33, v34);
         IOSObjectArray_SetAndConsume(v25, v13, v29);
         v14 = v27;
       }
@@ -393,7 +393,7 @@ LABEL_52:
   }
 
 LABEL_48:
-  v46 = *(a1 + 40);
+  v46 = *(self + 40);
   v47 = *(v46 + 8);
   if (v47 <= 0)
   {
@@ -406,15 +406,15 @@ LABEL_48:
     goto LABEL_52;
   }
 
-  v49 = [v48 getFilePointer];
-  v50 = *(a1 + 48);
+  getFilePointer2 = [v48 getFilePointer];
+  v50 = *(self + 48);
   result = *(v50 + 8);
   if (result <= 0)
   {
     IOSArray_throwOutOfBoundsWithMsg(result, 0);
   }
 
-  *(v50 + 16) = v49;
+  *(v50 + 16) = getFilePointer2;
   return result;
 }
 

@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)self nodeID];
-  [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)v4 setNodeID:v5];
+  nodeID = [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)self nodeID];
+  [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)v4 setNodeID:nodeID];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)self groupKeySetID];
-  [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)v4 setGroupKeySetID:v6];
+  groupKeySetID = [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)self groupKeySetID];
+  [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)v4 setGroupKeySetID:groupKeySetID];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)self statusEntry];
-  [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)v4 setStatusEntry:v7];
+  statusEntry = [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)self statusEntry];
+  [(MTRJointFabricDatastoreClusterDatastoreNodeKeySetEntryStruct *)v4 setStatusEntry:statusEntry];
 
   return v4;
 }

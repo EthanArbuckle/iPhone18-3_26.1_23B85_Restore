@@ -7,48 +7,48 @@
 
 - (id)itemProviderWritingURL
 {
-  v1 = [a1 attachment];
+  attachment = [self attachment];
   [MEMORY[0x277D35EC0] defaultPixelSize];
-  v2 = [v1 attachmentPreviewImageWithMinSize:? scale:?];
+  v2 = [attachment attachmentPreviewImageWithMinSize:? scale:?];
 
-  v3 = [v2 orientedPreviewImageURL];
+  orientedPreviewImageURL = [v2 orientedPreviewImageURL];
 
-  return v3;
+  return orientedPreviewImageURL;
 }
 
 - (id)itemProviderWritingData
 {
-  v2 = [a1 attachment];
+  attachment = [self attachment];
   [MEMORY[0x277D35EC0] defaultPixelSize];
-  v3 = [v2 attachmentPreviewImageWithMinSize:? scale:?];
+  v3 = [attachment attachmentPreviewImageWithMinSize:? scale:?];
 
-  v4 = [a1 attachment];
-  v5 = [v4 isPasswordProtected];
+  attachment2 = [self attachment];
+  isPasswordProtected = [attachment2 isPasswordProtected];
 
-  if (v5)
+  if (isPasswordProtected)
   {
-    v6 = [a1 attachment];
-    v7 = [v6 isAuthenticated];
+    attachment3 = [self attachment];
+    isAuthenticated = [attachment3 isAuthenticated];
 
-    if (v7)
+    if (isAuthenticated)
     {
-      v8 = [v3 decryptedImageData];
+      decryptedImageData = [v3 decryptedImageData];
     }
 
     else
     {
-      v8 = 0;
+      decryptedImageData = 0;
     }
   }
 
   else
   {
     v9 = MEMORY[0x277CBEA90];
-    v10 = [v3 orientedPreviewImageURL];
-    v8 = [v9 dataWithContentsOfURL:v10 options:1 error:0];
+    orientedPreviewImageURL = [v3 orientedPreviewImageURL];
+    decryptedImageData = [v9 dataWithContentsOfURL:orientedPreviewImageURL options:1 error:0];
   }
 
-  return v8;
+  return decryptedImageData;
 }
 
 @end

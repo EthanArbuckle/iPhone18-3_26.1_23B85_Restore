@@ -1,23 +1,23 @@
 @interface _DASTimelinePredictor
-- (BOOL)shouldIncludeEventWithDate:(id)a3 eventSlot:(unint64_t)a4 predictionStartDate:(id)a5 partitionType:(unint64_t)a6 calendar:(id)a7 slotDuration:(double)a8;
+- (BOOL)shouldIncludeEventWithDate:(id)date eventSlot:(unint64_t)slot predictionStartDate:(id)startDate partitionType:(unint64_t)type calendar:(id)calendar slotDuration:(double)duration;
 - (_DASTimelinePredictor)init;
-- (id)applicationLaunchLikelihoodForTop:(unint64_t)a3 withMinimumLikelihood:(double)a4 withTemporalResolution:(unint64_t)a5;
+- (id)applicationLaunchLikelihoodForTop:(unint64_t)top withMinimumLikelihood:(double)likelihood withTemporalResolution:(unint64_t)resolution;
 - (id)deviceActivityLikelihood;
-- (id)deviceNearbyLikelihoodWithStartDate:(id)a3;
-- (id)firstEventDateOnPublisher:(id)a3;
-- (id)launchLikelihoodForApp:(id)a3;
-- (id)launchLikelihoodForTop:(unint64_t)a3 withMinimumLikelihood:(double)a4 withTemporalResolution:(unint64_t)a5 onPublisher:(id)a6;
-- (id)likelihoodsFrom:(id)a3 searchingForTop:(unint64_t)a4 minimumLikelihood:(double)a5 temporalResolution:(unint64_t)a6 aggregationKeyBlock:(id)a7;
+- (id)deviceNearbyLikelihoodWithStartDate:(id)date;
+- (id)firstEventDateOnPublisher:(id)publisher;
+- (id)launchLikelihoodForApp:(id)app;
+- (id)launchLikelihoodForTop:(unint64_t)top withMinimumLikelihood:(double)likelihood withTemporalResolution:(unint64_t)resolution onPublisher:(id)publisher;
+- (id)likelihoodsFrom:(id)from searchingForTop:(unint64_t)top minimumLikelihood:(double)likelihood temporalResolution:(unint64_t)resolution aggregationKeyBlock:(id)block;
 - (id)pluginLikelihood;
-- (id)predictionForPublisher:(id)a3 withPredictionType:(unint64_t)a4;
-- (id)predictionTimelineFromEvents:(id)a3 withSlotDuration:(unint64_t)a4 indicatorType:(unint64_t)a5 partitionType:(unint64_t)a6;
-- (id)widgetUsageLikelihoodForBudgetID:(id)a3 endDate:(id)a4;
-- (unint64_t)computeSlotForDate:(id)a3 relativeToDate:(id)a4 slotDuration:(double)a5 totalSlotsInDay:(unint64_t)a6;
-- (void)asyncDo:(id)a3;
-- (void)constructWeightedObservationBins:(id)a3 firstEventDate:(id)a4 indicatorType:(unint64_t)a5 partitionType:(unint64_t)a6 predictionStartDate:(id)a7 slotDuration:(unint64_t)a8 totalSlotsInDay:(unint64_t)a9;
-- (void)handleEventPredictionWithEventSpanTuple:(id)a3 predictionStartDate:(id)a4 durationSinceFirstEvent:(double)a5 calendar:(id)a6 observations:(id)a7 lastDate:(id *)a8 lastSlot:(int *)a9 slotDuration:(double)a10 totalSlotsInDay:(unint64_t)a11 partitionType:(unint64_t)a12 firstObservationDate:(id)a13;
-- (void)handleImpulsePredictionWithEventSpanTuple:(id)a3 predictionStartDate:(id)a4 durationSinceFirstEvent:(double)a5 calendar:(id)a6 observations:(id)a7 lastDate:(id *)a8 lastSlot:(int *)a9 slotDuration:(double)a10 totalSlotsInDay:(unint64_t)a11 partitionType:(unint64_t)a12 firstObservationDate:(id)a13;
-- (void)setValueForIndex:(unint64_t)a3 forObservations:(id)a4 withDenominator:(double)a5 forIndicatorType:(unint64_t)a6;
+- (id)predictionForPublisher:(id)publisher withPredictionType:(unint64_t)type;
+- (id)predictionTimelineFromEvents:(id)events withSlotDuration:(unint64_t)duration indicatorType:(unint64_t)type partitionType:(unint64_t)partitionType;
+- (id)widgetUsageLikelihoodForBudgetID:(id)d endDate:(id)date;
+- (unint64_t)computeSlotForDate:(id)date relativeToDate:(id)toDate slotDuration:(double)duration totalSlotsInDay:(unint64_t)day;
+- (void)asyncDo:(id)do;
+- (void)constructWeightedObservationBins:(id)bins firstEventDate:(id)date indicatorType:(unint64_t)type partitionType:(unint64_t)partitionType predictionStartDate:(id)startDate slotDuration:(unint64_t)duration totalSlotsInDay:(unint64_t)day;
+- (void)handleEventPredictionWithEventSpanTuple:(id)tuple predictionStartDate:(id)date durationSinceFirstEvent:(double)event calendar:(id)calendar observations:(id)observations lastDate:(id *)lastDate lastSlot:(int *)slot slotDuration:(double)self0 totalSlotsInDay:(unint64_t)self1 partitionType:(unint64_t)self2 firstObservationDate:(id)self3;
+- (void)handleImpulsePredictionWithEventSpanTuple:(id)tuple predictionStartDate:(id)date durationSinceFirstEvent:(double)event calendar:(id)calendar observations:(id)observations lastDate:(id *)lastDate lastSlot:(int *)slot slotDuration:(double)self0 totalSlotsInDay:(unint64_t)self1 partitionType:(unint64_t)self2 firstObservationDate:(id)self3;
+- (void)setValueForIndex:(unint64_t)index forObservations:(id)observations withDenominator:(double)denominator forIndicatorType:(unint64_t)type;
 @end
 
 @implementation _DASTimelinePredictor
@@ -49,12 +49,12 @@
     v8 = [BMPublisherOptions optionsWithStartDate:v7];
 
     v9 = +[_DASBMUtilityProvider sharedUtilityProvider];
-    v10 = [v9 getConsoleUserUid];
+    getConsoleUserUid = [v9 getConsoleUserUid];
 
-    v11 = [qword_10020B7A8 publisherWithUser:v10 useCase:@"DASBiomeUtilityUseCase" options:v8];
+    v11 = [qword_10020B7A8 publisherWithUser:getConsoleUserUid useCase:@"DASBiomeUtilityUseCase" options:v8];
     v12 = [v11 filterWithIsIncluded:&stru_1001B82B8];
     v13 = [v12 mapWithTransform:&stru_1001B82D8];
-    v14 = [v13 collect];
+    collect = [v13 collect];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000C6A70;
@@ -65,7 +65,7 @@
     v17[2] = sub_1000C6ACC;
     v17[3] = &unk_1001B8198;
     v17[4] = &v20;
-    v15 = [v14 sinkWithCompletion:v18 receiveInput:v17];
+    v15 = [collect sinkWithCompletion:v18 receiveInput:v17];
 
     v5 = [(_DASTimelinePredictor *)self predictionTimelineFromEvents:v21[5] withSlotDuration:900 indicatorType:0 partitionType:1];
   }
@@ -103,14 +103,14 @@
   return v2;
 }
 
-- (id)likelihoodsFrom:(id)a3 searchingForTop:(unint64_t)a4 minimumLikelihood:(double)a5 temporalResolution:(unint64_t)a6 aggregationKeyBlock:(id)a7
+- (id)likelihoodsFrom:(id)from searchingForTop:(unint64_t)top minimumLikelihood:(double)likelihood temporalResolution:(unint64_t)resolution aggregationKeyBlock:(id)block
 {
-  v12 = a3;
-  v72 = a7;
+  fromCopy = from;
+  blockCopy = block;
   v13 = &NSLocalizedDescriptionKey_ptr;
   v14 = +[NSDate now];
-  v15 = [v12 firstObject];
-  [v15 timestamp];
+  firstObject = [fromCopy firstObject];
+  [firstObject timestamp];
   v16 = [NSDate dateFromAbsoluteTime:?];
 
   [v16 timeIntervalSinceDate:v14];
@@ -118,11 +118,11 @@
   if (v18 < 1)
   {
     v61 = (v17 / 86400.0);
-    v65 = a4;
+    topCopy = top;
     v62 = v16;
-    v64 = a6;
+    resolutionCopy = resolution;
     v67 = v14;
-    v68 = 0x15180 / a6;
+    v68 = 0x15180 / resolution;
     v69 = +[NSMutableDictionary dictionary];
     v76 = +[NSMutableDictionary dictionary];
     v75 = +[NSMutableDictionary dictionary];
@@ -130,13 +130,13 @@
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v63 = v12;
-    obj = v12;
+    v63 = fromCopy;
+    obj = fromCopy;
     v73 = [obj countByEnumeratingWithState:&v84 objects:v91 count:16];
     if (v73)
     {
       v70 = *v85;
-      v21 = a6;
+      resolutionCopy2 = resolution;
       do
       {
         for (i = 0; i != v73; i = i + 1)
@@ -147,32 +147,32 @@
           }
 
           v23 = *(*(&v84 + 1) + 8 * i);
-          v24 = v72[2](v72, v23);
+          v24 = blockCopy[2](blockCopy, v23);
           if (v24)
           {
-            v25 = self;
+            selfCopy = self;
             v26 = [v75 objectForKeyedSubscript:v24];
             v27 = [v76 objectForKeyedSubscript:v24];
             if (v26)
             {
-              v28 = [v26 integerValue];
+              integerValue = [v26 integerValue];
             }
 
             else
             {
-              v30 = [(NSErrorUserInfoKey *)v13[116] distantPast];
+              distantPast = [(NSErrorUserInfoKey *)v13[116] distantPast];
 
-              v28 = -1;
-              v27 = v30;
+              integerValue = -1;
+              v27 = distantPast;
             }
 
             v31 = v13[116];
             [v23 timestamp];
             [(NSErrorUserInfoKey *)v31 dateFromAbsoluteTime:?];
             v33 = v32 = v13;
-            v34 = [(_DASTimelinePredictor *)v25 computeSlotForDate:v33 relativeToDate:v67 slotDuration:v68 totalSlotsInDay:v21];
+            v34 = [(_DASTimelinePredictor *)selfCopy computeSlotForDate:v33 relativeToDate:v67 slotDuration:v68 totalSlotsInDay:resolutionCopy2];
 
-            if (v34 != v28)
+            if (v34 != integerValue)
             {
               goto LABEL_16;
             }
@@ -184,7 +184,7 @@
             [v36 timeIntervalSinceDate:v27];
             v38 = v37;
 
-            if (v38 >= v21)
+            if (v38 >= resolutionCopy2)
             {
 LABEL_16:
               v39 = [v69 objectForKeyedSubscript:v24];
@@ -205,7 +205,7 @@ LABEL_16:
               [v76 setObject:v43 forKeyedSubscript:v24];
             }
 
-            self = v25;
+            self = selfCopy;
           }
 
           else
@@ -227,10 +227,10 @@ LABEL_16:
     }
 
     v74 = +[NSMutableArray array];
-    v44 = [v69 allKeys];
-    v71 = [v44 mutableCopy];
+    allKeys = [v69 allKeys];
+    v71 = [allKeys mutableCopy];
 
-    if (v64 <= 0x15180)
+    if (resolutionCopy <= 0x15180)
     {
       v45 = 0;
       do
@@ -245,9 +245,9 @@ LABEL_16:
         [v71 sortUsingComparator:v81];
         v47 = +[NSMutableDictionary dictionary];
         v48 = [v71 count];
-        if (v48 >= v65)
+        if (v48 >= topCopy)
         {
-          v49 = v65;
+          v49 = topCopy;
         }
 
         else
@@ -279,7 +279,7 @@ LABEL_16:
               v57 = [NSNumber numberWithUnsignedLong:v45];
               v58 = [v56 countForObject:v57] / (1 - v61);
 
-              if (v58 >= a5)
+              if (v58 >= likelihood)
               {
                 v59 = [NSNumber numberWithDouble:v58];
                 [v47 setObject:v59 forKeyedSubscript:v55];
@@ -301,10 +301,10 @@ LABEL_16:
     }
 
     v14 = v67;
-    v20 = [[_DASPredictionTimeline alloc] initWithValues:v74 eachWithDuration:v67 startingAt:v64];
+    v20 = [[_DASPredictionTimeline alloc] initWithValues:v74 eachWithDuration:v67 startingAt:resolutionCopy];
 
     v16 = v62;
-    v12 = v63;
+    fromCopy = v63;
   }
 
   else
@@ -318,15 +318,15 @@ LABEL_16:
   return v20;
 }
 
-- (void)constructWeightedObservationBins:(id)a3 firstEventDate:(id)a4 indicatorType:(unint64_t)a5 partitionType:(unint64_t)a6 predictionStartDate:(id)a7 slotDuration:(unint64_t)a8 totalSlotsInDay:(unint64_t)a9
+- (void)constructWeightedObservationBins:(id)bins firstEventDate:(id)date indicatorType:(unint64_t)type partitionType:(unint64_t)partitionType predictionStartDate:(id)startDate slotDuration:(unint64_t)duration totalSlotsInDay:(unint64_t)day
 {
-  v35 = a3;
-  v15 = a4;
-  v16 = a7;
-  if (a6 == 1)
+  binsCopy = bins;
+  dateCopy = date;
+  startDateCopy = startDate;
+  if (partitionType == 1)
   {
-    v22 = [v15 copy];
-    [v22 timeIntervalSinceDate:v16];
+    v22 = [dateCopy copy];
+    [v22 timeIntervalSinceDate:startDateCopy];
     if (v23 < 0.0)
     {
       v24 = 0.0;
@@ -336,34 +336,34 @@ LABEL_16:
         v22 = [v22 dateByAddingTimeInterval:604800.0];
 
         v24 = v24 + 1.0;
-        [v22 timeIntervalSinceDate:v16];
+        [v22 timeIntervalSinceDate:startDateCopy];
       }
 
       while (v26 < 0.0);
       if (v24 > 1.0)
       {
-        v27 = [v16 dateByAddingTimeInterval:86400.0];
+        v27 = [startDateCopy dateByAddingTimeInterval:86400.0];
         [v22 timeIntervalSinceDate:v27];
         v29 = v28;
 
         if (v29 >= 0.0)
         {
-          if (a9)
+          if (day)
           {
-            for (i = 0; i != a9; ++i)
+            for (i = 0; i != day; ++i)
             {
-              [(_DASTimelinePredictor *)self setValueForIndex:i forObservations:v35 withDenominator:a5 forIndicatorType:v24 + -1.0];
+              [(_DASTimelinePredictor *)self setValueForIndex:i forObservations:binsCopy withDenominator:type forIndicatorType:v24 + -1.0];
             }
           }
         }
 
         else
         {
-          v30 = [(_DASTimelinePredictor *)self computeSlotForDate:v22 relativeToDate:v16 slotDuration:a9 totalSlotsInDay:a8];
-          if (a9)
+          v30 = [(_DASTimelinePredictor *)self computeSlotForDate:v22 relativeToDate:startDateCopy slotDuration:day totalSlotsInDay:duration];
+          if (day)
           {
             v31 = v30;
-            for (j = 0; j != a9; ++j)
+            for (j = 0; j != day; ++j)
             {
               if (j >= v31)
               {
@@ -375,7 +375,7 @@ LABEL_16:
                 v33 = 1.0;
               }
 
-              [(_DASTimelinePredictor *)self setValueForIndex:j forObservations:v35 withDenominator:a5 forIndicatorType:v24 - v33];
+              [(_DASTimelinePredictor *)self setValueForIndex:j forObservations:binsCopy withDenominator:type forIndicatorType:v24 - v33];
             }
           }
         }
@@ -383,12 +383,12 @@ LABEL_16:
     }
   }
 
-  else if (!a6)
+  else if (!partitionType)
   {
-    v17 = [(_DASTimelinePredictor *)self computeSlotForDate:v15 relativeToDate:v16 slotDuration:a9 totalSlotsInDay:a8];
-    [v15 timeIntervalSinceDate:v16];
-    v19 = v35;
-    if (a9)
+    v17 = [(_DASTimelinePredictor *)self computeSlotForDate:dateCopy relativeToDate:startDateCopy slotDuration:day totalSlotsInDay:duration];
+    [dateCopy timeIntervalSinceDate:startDateCopy];
+    v19 = binsCopy;
+    if (day)
     {
       v20 = 0;
       v21 = -(v18 / 86400.0);
@@ -401,7 +401,7 @@ LABEL_16:
 
         if (v21)
         {
-          [(_DASTimelinePredictor *)self setValueForIndex:v20 forObservations:v19 withDenominator:a5 forIndicatorType:v21];
+          [(_DASTimelinePredictor *)self setValueForIndex:v20 forObservations:v19 withDenominator:type forIndicatorType:v21];
         }
 
         else
@@ -410,21 +410,21 @@ LABEL_16:
         }
 
         ++v20;
-        v19 = v35;
+        v19 = binsCopy;
       }
 
-      while (a9 != v20);
+      while (day != v20);
     }
   }
 }
 
-- (id)predictionTimelineFromEvents:(id)a3 withSlotDuration:(unint64_t)a4 indicatorType:(unint64_t)a5 partitionType:(unint64_t)a6
+- (id)predictionTimelineFromEvents:(id)events withSlotDuration:(unint64_t)duration indicatorType:(unint64_t)type partitionType:(unint64_t)partitionType
 {
-  v10 = a3;
+  eventsCopy = events;
   v11 = +[NSDate now];
-  v12 = [v10 firstObject];
-  v13 = [v12 first];
-  [v13 timestamp];
+  firstObject = [eventsCopy firstObject];
+  first = [firstObject first];
+  [first timestamp];
   v14 = [NSDate dateFromAbsoluteTime:?];
 
   [v14 timeIntervalSinceDate:v11];
@@ -438,22 +438,22 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  v44 = a6;
-  v19 = [NSMutableArray arrayWithCapacity:0x15180 / a4];
-  v40 = a4;
-  if (a4 <= 0x15180)
+  partitionTypeCopy = partitionType;
+  duration = [NSMutableArray arrayWithCapacity:0x15180 / duration];
+  durationCopy = duration;
+  if (duration <= 0x15180)
   {
     v20 = 0;
     do
     {
-      [v19 setObject:&off_1001CA450 atIndexedSubscript:v20++];
+      [duration setObject:&off_1001CA450 atIndexedSubscript:v20++];
     }
 
-    while (v20 < 0x15180 / a4);
+    while (v20 < 0x15180 / duration);
   }
 
-  v41 = 0x15180 / a4;
-  v43 = v19;
+  v41 = 0x15180 / duration;
+  v43 = duration;
   v21 = v14;
   [v11 timeIntervalSinceDate:?];
   v23 = v22;
@@ -464,52 +464,52 @@ LABEL_16:
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v25 = v10;
+  v25 = eventsCopy;
   v26 = [v25 countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v26)
   {
     v27 = v26;
     v38 = v14;
-    v39 = v10;
+    v39 = eventsCopy;
     v28 = v11;
     v29 = *v48;
-    v30 = v40;
+    v30 = durationCopy;
     while (1)
     {
       v31 = 0;
-      v32 = self;
+      selfCopy3 = self;
       do
       {
         if (*v48 != v29)
         {
           objc_enumerationMutation(v25);
-          v32 = self;
+          selfCopy3 = self;
         }
 
         v33 = *(*(&v47 + 1) + 8 * v31);
-        if (a5 == 1)
+        if (type == 1)
         {
           v45 = v24;
           v34 = &v45;
-          [(_DASTimelinePredictor *)v32 handleEventPredictionWithEventSpanTuple:v33 predictionStartDate:v28 durationSinceFirstEvent:v42 calendar:v43 observations:&v45 lastDate:&v51 lastSlot:v23 slotDuration:v30 totalSlotsInDay:v41 partitionType:v44 firstObservationDate:v21];
+          [(_DASTimelinePredictor *)selfCopy3 handleEventPredictionWithEventSpanTuple:v33 predictionStartDate:v28 durationSinceFirstEvent:v42 calendar:v43 observations:&v45 lastDate:&v51 lastSlot:v23 slotDuration:v30 totalSlotsInDay:v41 partitionType:partitionTypeCopy firstObservationDate:v21];
         }
 
         else
         {
-          if (a5)
+          if (type)
           {
             goto LABEL_16;
           }
 
           v46 = v24;
           v34 = &v46;
-          [(_DASTimelinePredictor *)v32 handleImpulsePredictionWithEventSpanTuple:v33 predictionStartDate:v28 durationSinceFirstEvent:v42 calendar:v43 observations:&v46 lastDate:&v51 lastSlot:v23 slotDuration:v30 totalSlotsInDay:v41 partitionType:v44 firstObservationDate:v21];
+          [(_DASTimelinePredictor *)selfCopy3 handleImpulsePredictionWithEventSpanTuple:v33 predictionStartDate:v28 durationSinceFirstEvent:v42 calendar:v43 observations:&v46 lastDate:&v51 lastSlot:v23 slotDuration:v30 totalSlotsInDay:v41 partitionType:partitionTypeCopy firstObservationDate:v21];
         }
 
         v35 = *v34;
 
         v24 = v35;
-        v32 = self;
+        selfCopy3 = self;
 LABEL_16:
         v31 = v31 + 1;
       }
@@ -520,18 +520,18 @@ LABEL_16:
       {
         v11 = v28;
         v14 = v38;
-        v10 = v39;
-        v36 = v40;
+        eventsCopy = v39;
+        v36 = durationCopy;
         goto LABEL_20;
       }
     }
   }
 
-  v36 = v40;
-  v30 = v40;
+  v36 = durationCopy;
+  v30 = durationCopy;
 LABEL_20:
 
-  [(_DASTimelinePredictor *)self constructWeightedObservationBins:v43 firstEventDate:v21 indicatorType:a5 partitionType:v44 predictionStartDate:v11 slotDuration:v36 totalSlotsInDay:v41];
+  [(_DASTimelinePredictor *)self constructWeightedObservationBins:v43 firstEventDate:v21 indicatorType:type partitionType:partitionTypeCopy predictionStartDate:v11 slotDuration:v36 totalSlotsInDay:v41];
   v18 = [[_DASPredictionTimeline alloc] initWithValues:v43 eachWithDuration:v11 startingAt:v30];
 
 LABEL_21:
@@ -539,14 +539,14 @@ LABEL_21:
   return v18;
 }
 
-- (void)setValueForIndex:(unint64_t)a3 forObservations:(id)a4 withDenominator:(double)a5 forIndicatorType:(unint64_t)a6
+- (void)setValueForIndex:(unint64_t)index forObservations:(id)observations withDenominator:(double)denominator forIndicatorType:(unint64_t)type
 {
-  v9 = a4;
-  v10 = [v9 objectAtIndexedSubscript:a3];
+  observationsCopy = observations;
+  v10 = [observationsCopy objectAtIndexedSubscript:index];
   [v10 doubleValue];
-  v12 = v11 / a5;
+  v12 = v11 / denominator;
 
-  if (a6 == 1)
+  if (type == 1)
   {
     v12 = 1.0 / (pow(2.71828183, (v12 + -0.5) * -12.0) + 1.0);
   }
@@ -562,90 +562,90 @@ LABEL_21:
   }
 
   v14 = [NSNumber numberWithDouble:v13];
-  [v9 setObject:v14 atIndexedSubscript:a3];
+  [observationsCopy setObject:v14 atIndexedSubscript:index];
 }
 
-- (void)handleImpulsePredictionWithEventSpanTuple:(id)a3 predictionStartDate:(id)a4 durationSinceFirstEvent:(double)a5 calendar:(id)a6 observations:(id)a7 lastDate:(id *)a8 lastSlot:(int *)a9 slotDuration:(double)a10 totalSlotsInDay:(unint64_t)a11 partitionType:(unint64_t)a12 firstObservationDate:(id)a13
+- (void)handleImpulsePredictionWithEventSpanTuple:(id)tuple predictionStartDate:(id)date durationSinceFirstEvent:(double)event calendar:(id)calendar observations:(id)observations lastDate:(id *)lastDate lastSlot:(int *)slot slotDuration:(double)self0 totalSlotsInDay:(unint64_t)self1 partitionType:(unint64_t)self2 firstObservationDate:(id)self3
 {
-  v34 = a7;
-  v19 = a13;
-  v20 = a6;
-  v21 = a4;
-  v22 = [a3 first];
-  [v22 timestamp];
+  observationsCopy = observations;
+  observationDateCopy = observationDate;
+  calendarCopy = calendar;
+  dateCopy = date;
+  first = [tuple first];
+  [first timestamp];
   v23 = [NSDate dateFromAbsoluteTime:?];
 
-  v24 = [(_DASTimelinePredictor *)self computeSlotForDate:v23 relativeToDate:v21 slotDuration:a11 totalSlotsInDay:a10];
+  v24 = [(_DASTimelinePredictor *)self computeSlotForDate:v23 relativeToDate:dateCopy slotDuration:day totalSlotsInDay:duration];
   v25 = v24;
-  if (a5 >= 1209600.0)
+  if (event >= 1209600.0)
   {
-    v26 = a12;
+    typeCopy = type;
   }
 
   else
   {
-    v26 = 0;
+    typeCopy = 0;
   }
 
-  v27 = [(_DASTimelinePredictor *)self shouldIncludeEventWithDate:v23 eventSlot:v24 predictionStartDate:v21 partitionType:v26 calendar:v20 slotDuration:v24];
+  v27 = [(_DASTimelinePredictor *)self shouldIncludeEventWithDate:v23 eventSlot:v24 predictionStartDate:dateCopy partitionType:typeCopy calendar:calendarCopy slotDuration:v24];
 
   if (v27)
   {
-    [v23 timeIntervalSinceDate:v19];
-    if (v28 >= a10)
+    [v23 timeIntervalSinceDate:observationDateCopy];
+    if (v28 >= duration)
     {
-      v29 = [v34 objectAtIndexedSubscript:v25];
+      v29 = [observationsCopy objectAtIndexedSubscript:v25];
       v30 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v29 unsignedIntegerValue] + 1);
-      [v34 setObject:v30 atIndexedSubscript:v25];
+      [observationsCopy setObject:v30 atIndexedSubscript:v25];
 
-      *a9 = v25;
+      *slot = v25;
       v31 = v23;
-      *a8 = v23;
+      *lastDate = v23;
     }
   }
 }
 
-- (void)handleEventPredictionWithEventSpanTuple:(id)a3 predictionStartDate:(id)a4 durationSinceFirstEvent:(double)a5 calendar:(id)a6 observations:(id)a7 lastDate:(id *)a8 lastSlot:(int *)a9 slotDuration:(double)a10 totalSlotsInDay:(unint64_t)a11 partitionType:(unint64_t)a12 firstObservationDate:(id)a13
+- (void)handleEventPredictionWithEventSpanTuple:(id)tuple predictionStartDate:(id)date durationSinceFirstEvent:(double)event calendar:(id)calendar observations:(id)observations lastDate:(id *)lastDate lastSlot:(int *)slot slotDuration:(double)self0 totalSlotsInDay:(unint64_t)self1 partitionType:(unint64_t)self2 firstObservationDate:(id)self3
 {
-  v52 = a3;
-  v20 = a4;
-  v21 = a6;
-  v22 = a7;
-  v23 = [v52 first];
-  [v23 timestamp];
+  tupleCopy = tuple;
+  dateCopy = date;
+  calendarCopy = calendar;
+  observationsCopy = observations;
+  first = [tupleCopy first];
+  [first timestamp];
   v24 = [NSDate dateFromAbsoluteTime:?];
 
-  v25 = v21;
-  v26 = [v52 second];
-  [v26 timestamp];
+  v25 = calendarCopy;
+  second = [tupleCopy second];
+  [second timestamp];
   v27 = v24;
   v28 = [NSDate dateFromAbsoluteTime:?];
 
   [v28 timeIntervalSinceDate:v24];
   v30 = v29;
-  [v24 timeIntervalSinceDate:v20];
-  v32 = [v20 dateByAddingTimeInterval:(v31 / a10) * a10];
-  v33 = [(_DASTimelinePredictor *)self computeSlotForDate:v24 relativeToDate:v20 slotDuration:a11 totalSlotsInDay:a10];
-  if (a5 < 1209600.0)
+  [v24 timeIntervalSinceDate:dateCopy];
+  duration = [dateCopy dateByAddingTimeInterval:(v31 / duration) * duration];
+  v33 = [(_DASTimelinePredictor *)self computeSlotForDate:v24 relativeToDate:dateCopy slotDuration:day totalSlotsInDay:duration];
+  if (event < 1209600.0)
   {
-    a12 = 0;
+    type = 0;
   }
 
-  [v28 timeIntervalSinceDate:v32];
+  [v28 timeIntervalSinceDate:duration];
   v53 = v25;
   if (v34 <= 0.0)
   {
-    if (![(_DASTimelinePredictor *)self shouldIncludeEventWithDate:v27 eventSlot:v33 predictionStartDate:v20 partitionType:a12 calendar:v25 slotDuration:v33])
+    if (![(_DASTimelinePredictor *)self shouldIncludeEventWithDate:v27 eventSlot:v33 predictionStartDate:dateCopy partitionType:type calendar:v25 slotDuration:v33])
     {
       goto LABEL_16;
     }
 
     v50 = v27;
-    v51 = v32;
-    v46 = [v22 objectAtIndexedSubscript:v33];
+    v51 = duration;
+    v46 = [observationsCopy objectAtIndexedSubscript:v33];
     [v46 doubleValue];
-    v49 = [NSNumber numberWithDouble:v30 / a10 + v48];
-    [v22 setObject:v49 atIndexedSubscript:v33];
+    v49 = [NSNumber numberWithDouble:v30 / duration + v48];
+    [observationsCopy setObject:v49 atIndexedSubscript:v33];
 
     v25 = v53;
   }
@@ -653,20 +653,20 @@ LABEL_21:
   else
   {
     v50 = v27;
-    v51 = v32;
-    if ([(_DASTimelinePredictor *)self shouldIncludeEventWithDate:v27 eventSlot:v33 predictionStartDate:v20 partitionType:a12 calendar:v25 slotDuration:a10])
+    v51 = duration;
+    if ([(_DASTimelinePredictor *)self shouldIncludeEventWithDate:v27 eventSlot:v33 predictionStartDate:dateCopy partitionType:type calendar:v25 slotDuration:duration])
     {
-      v35 = [v22 objectAtIndexedSubscript:v33];
+      v35 = [observationsCopy objectAtIndexedSubscript:v33];
       [v35 doubleValue];
       v37 = v36;
       [v51 timeIntervalSinceDate:v27];
-      v39 = [NSNumber numberWithDouble:v37 + v38 / a10];
-      [v22 setObject:v39 atIndexedSubscript:v33];
+      duration2 = [NSNumber numberWithDouble:v37 + v38 / duration];
+      [observationsCopy setObject:duration2 atIndexedSubscript:v33];
 
-      v32 = v51;
+      duration = v51;
     }
 
-    v40 = v32;
+    v40 = duration;
     [v28 timeIntervalSinceDate:v40];
     if (v41 <= 0.0)
     {
@@ -678,18 +678,18 @@ LABEL_21:
       v42 = v41;
       do
       {
-        v33 = (v33 + 1) % a11;
-        if ([(_DASTimelinePredictor *)self shouldIncludeEventWithDate:v40 eventSlot:v33 predictionStartDate:v20 partitionType:a12 calendar:v25 slotDuration:a10])
+        v33 = (v33 + 1) % day;
+        if ([(_DASTimelinePredictor *)self shouldIncludeEventWithDate:v40 eventSlot:v33 predictionStartDate:dateCopy partitionType:type calendar:v25 slotDuration:duration])
         {
-          v43 = [v22 objectAtIndexedSubscript:v33];
+          v43 = [observationsCopy objectAtIndexedSubscript:v33];
           [v43 doubleValue];
-          v45 = [NSNumber numberWithDouble:fmin(v42 / a10, 1.0) + v44];
-          [v22 setObject:v45 atIndexedSubscript:v33];
+          v45 = [NSNumber numberWithDouble:fmin(v42 / duration, 1.0) + v44];
+          [observationsCopy setObject:v45 atIndexedSubscript:v33];
 
           v25 = v53;
         }
 
-        v46 = [v40 dateByAddingTimeInterval:a10];
+        v46 = [v40 dateByAddingTimeInterval:duration];
 
         [v28 timeIntervalSinceDate:v46];
         v42 = v47;
@@ -701,40 +701,40 @@ LABEL_21:
   }
 
   v27 = v50;
-  v32 = v51;
+  duration = v51;
 LABEL_16:
 }
 
-- (BOOL)shouldIncludeEventWithDate:(id)a3 eventSlot:(unint64_t)a4 predictionStartDate:(id)a5 partitionType:(unint64_t)a6 calendar:(id)a7 slotDuration:(double)a8
+- (BOOL)shouldIncludeEventWithDate:(id)date eventSlot:(unint64_t)slot predictionStartDate:(id)startDate partitionType:(unint64_t)type calendar:(id)calendar slotDuration:(double)duration
 {
-  if (a6 != 1)
+  if (type != 1)
   {
     return 1;
   }
 
-  v10 = a4 * a8;
-  v11 = a7;
-  v12 = a3;
-  v13 = [a5 dateByAddingTimeInterval:v10];
-  v14 = [v12 isSameDayOfWeekAs:v13 withCalendar:v11];
+  v10 = slot * duration;
+  calendarCopy = calendar;
+  dateCopy = date;
+  v13 = [startDate dateByAddingTimeInterval:v10];
+  v14 = [dateCopy isSameDayOfWeekAs:v13 withCalendar:calendarCopy];
 
   return v14;
 }
 
-- (unint64_t)computeSlotForDate:(id)a3 relativeToDate:(id)a4 slotDuration:(double)a5 totalSlotsInDay:(unint64_t)a6
+- (unint64_t)computeSlotForDate:(id)date relativeToDate:(id)toDate slotDuration:(double)duration totalSlotsInDay:(unint64_t)day
 {
-  [a3 timeIntervalSinceDate:a4];
+  [date timeIntervalSinceDate:toDate];
   if (v8 < 0.0)
   {
     v8 = v8 + ceil(v8 / -86400.0) * 86400.0;
   }
 
-  return v8 / a5 % a6;
+  return v8 / duration % day;
 }
 
-- (id)firstEventDateOnPublisher:(id)a3
+- (id)firstEventDateOnPublisher:(id)publisher
 {
-  v4 = a3;
+  publisherCopy = publisher;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -749,7 +749,7 @@ LABEL_16:
   v8[2] = sub_1000C5A38;
   v8[3] = &unk_1001B7FB8;
   v8[4] = &v10;
-  v5 = [v4 sinkWithCompletion:v9 shouldContinue:v8];
+  v5 = [publisherCopy sinkWithCompletion:v9 shouldContinue:v8];
   if (v11[3] == 0.0)
   {
     v6 = 0;
@@ -765,22 +765,22 @@ LABEL_16:
   return v6;
 }
 
-- (void)asyncDo:(id)a3
+- (void)asyncDo:(id)do
 {
-  v4 = a3;
+  doCopy = do;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000C5B08;
   block[3] = &unk_1001B8170;
-  v8 = v4;
-  v6 = v4;
+  v8 = doCopy;
+  v6 = doCopy;
   dispatch_async(queue, block);
 }
 
-- (id)predictionForPublisher:(id)a3 withPredictionType:(unint64_t)a4
+- (id)predictionForPublisher:(id)publisher withPredictionType:(unint64_t)type
 {
-  v6 = a3;
+  publisherCopy = publisher;
   v7 = objc_autoreleasePoolPush();
   v14 = 0;
   v15 = &v14;
@@ -788,7 +788,7 @@ LABEL_16:
   v17 = sub_1000C5CD4;
   v18 = sub_1000C5CE4;
   v19 = 0;
-  v8 = [v6 collect];
+  collect = [publisherCopy collect];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000C5CEC;
@@ -799,10 +799,10 @@ LABEL_16:
   v12[2] = sub_1000C5D48;
   v12[3] = &unk_1001B8198;
   v12[4] = &v14;
-  v9 = [v8 sinkWithCompletion:v13 receiveInput:v12];
+  v9 = [collect sinkWithCompletion:v13 receiveInput:v12];
 
   [v15[5] sortUsingComparator:&stru_1001B81D8];
-  v10 = [(_DASTimelinePredictor *)self predictionTimelineFromEvents:v15[5] withSlotDuration:900 indicatorType:a4 partitionType:0];
+  v10 = [(_DASTimelinePredictor *)self predictionTimelineFromEvents:v15[5] withSlotDuration:900 indicatorType:type partitionType:0];
   _Block_object_dispose(&v14, 8);
 
   objc_autoreleasePoolPop(v7);
@@ -810,32 +810,32 @@ LABEL_16:
   return v10;
 }
 
-- (id)applicationLaunchLikelihoodForTop:(unint64_t)a3 withMinimumLikelihood:(double)a4 withTemporalResolution:(unint64_t)a5
+- (id)applicationLaunchLikelihoodForTop:(unint64_t)top withMinimumLikelihood:(double)likelihood withTemporalResolution:(unint64_t)resolution
 {
   v9 = objc_autoreleasePoolPush();
   v10 = BiomeLibrary();
   v11 = [v10 App];
-  v12 = [v11 InFocus];
+  inFocus = [v11 InFocus];
 
   v13 = +[NSDate now];
   v14 = [v13 dateByAddingTimeInterval:-1209600.0];
   v15 = [BMPublisherOptions optionsWithStartDate:v14];
 
   v16 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v17 = [v16 getConsoleUserUid];
+  getConsoleUserUid = [v16 getConsoleUserUid];
 
-  v18 = [v12 publisherWithUser:v17 useCase:@"DASBiomeUtilityUseCase" options:v15];
+  v18 = [inFocus publisherWithUser:getConsoleUserUid useCase:@"DASBiomeUtilityUseCase" options:v15];
   v19 = [v18 filterWithIsIncluded:&stru_1001B81F8];
-  v20 = [(_DASTimelinePredictor *)self launchLikelihoodForTop:a3 withMinimumLikelihood:a5 withTemporalResolution:v19 onPublisher:a4];
+  v20 = [(_DASTimelinePredictor *)self launchLikelihoodForTop:top withMinimumLikelihood:resolution withTemporalResolution:v19 onPublisher:likelihood];
 
   objc_autoreleasePoolPop(v9);
 
   return v20;
 }
 
-- (id)launchLikelihoodForTop:(unint64_t)a3 withMinimumLikelihood:(double)a4 withTemporalResolution:(unint64_t)a5 onPublisher:(id)a6
+- (id)launchLikelihoodForTop:(unint64_t)top withMinimumLikelihood:(double)likelihood withTemporalResolution:(unint64_t)resolution onPublisher:(id)publisher
 {
-  v10 = a6;
+  publisherCopy = publisher;
   v11 = objc_autoreleasePoolPush();
   v18 = 0;
   v19 = &v18;
@@ -843,7 +843,7 @@ LABEL_16:
   v21 = sub_1000C5CD4;
   v22 = sub_1000C5CE4;
   v23 = 0;
-  v12 = [v10 collect];
+  collect = [publisherCopy collect];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000C61F0;
@@ -854,9 +854,9 @@ LABEL_16:
   v16[2] = sub_1000C624C;
   v16[3] = &unk_1001B8198;
   v16[4] = &v18;
-  v13 = [v12 sinkWithCompletion:v17 receiveInput:v16];
+  v13 = [collect sinkWithCompletion:v17 receiveInput:v16];
 
-  v14 = [(_DASTimelinePredictor *)self likelihoodsFrom:v19[5] searchingForTop:a3 minimumLikelihood:a5 temporalResolution:&stru_1001B8218 aggregationKeyBlock:a4];
+  v14 = [(_DASTimelinePredictor *)self likelihoodsFrom:v19[5] searchingForTop:top minimumLikelihood:resolution temporalResolution:&stru_1001B8218 aggregationKeyBlock:likelihood];
   _Block_object_dispose(&v18, 8);
 
   objc_autoreleasePoolPop(v11);
@@ -864,14 +864,14 @@ LABEL_16:
   return v14;
 }
 
-- (id)launchLikelihoodForApp:(id)a3
+- (id)launchLikelihoodForApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   context = objc_autoreleasePoolPush();
   v28 = +[NSDate now];
   v5 = BiomeLibrary();
   v6 = [v5 App];
-  v30 = [v6 InFocus];
+  inFocus = [v6 InFocus];
 
   v35 = 0;
   v36 = &v35;
@@ -888,19 +888,19 @@ LABEL_16:
   v29 = [BMPublisherOptions optionsWithStartDate:v9];
 
   v10 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v11 = [v10 getConsoleUserUid];
+  getConsoleUserUid = [v10 getConsoleUserUid];
 
-  v12 = [v30 publisherWithUser:v11 useCase:@"DASBiomeUtilityUseCase" options:v29];
+  v12 = [inFocus publisherWithUser:getConsoleUserUid useCase:@"DASBiomeUtilityUseCase" options:v29];
   v13 = [v7 deriveSpansWithMinimumDurationOnStream:v12];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_1000C67CC;
   v33[3] = &unk_1001B7298;
-  v14 = v4;
+  v14 = appCopy;
   v34 = v14;
   v15 = [v13 filterWithIsIncluded:v33];
   v16 = [v15 mapWithTransform:&stru_1001B8298];
-  v17 = [v16 collect];
+  collect = [v16 collect];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1000C68B8;
@@ -911,7 +911,7 @@ LABEL_16:
   v31[2] = sub_1000C6914;
   v31[3] = &unk_1001B8198;
   v31[4] = &v35;
-  v18 = [v17 sinkWithCompletion:v32 receiveInput:v31];
+  v18 = [collect sinkWithCompletion:v32 receiveInput:v31];
 
   v19 = +[NSDate now];
   [v19 timeIntervalSinceDate:v28];
@@ -944,9 +944,9 @@ LABEL_16:
 {
   v3 = objc_autoreleasePoolPush();
   v4 = BiomeLibrary();
-  v5 = [v4 Device];
-  v6 = [v5 Power];
-  v7 = [v6 PluggedIn];
+  device = [v4 Device];
+  power = [device Power];
+  pluggedIn = [power PluggedIn];
 
   v22 = 0;
   v23 = &v22;
@@ -963,11 +963,11 @@ LABEL_16:
   v11 = [BMPublisherOptions optionsWithStartDate:v10];
 
   v12 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v13 = [v12 getConsoleUserUid];
+  getConsoleUserUid = [v12 getConsoleUserUid];
 
-  v14 = [v7 publisherWithUser:v13 useCase:@"DASBiomeUtilityUseCase" options:v11];
+  v14 = [pluggedIn publisherWithUser:getConsoleUserUid useCase:@"DASBiomeUtilityUseCase" options:v11];
   v15 = [v8 deriveSpanTuplesWithMinimumDurationOnStream:v14];
-  v16 = [v15 collect];
+  collect = [v15 collect];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000C6E04;
@@ -978,7 +978,7 @@ LABEL_16:
   v20[2] = sub_1000C6E60;
   v20[3] = &unk_1001B8198;
   v20[4] = &v22;
-  v17 = [v16 sinkWithCompletion:v21 receiveInput:v20];
+  v17 = [collect sinkWithCompletion:v21 receiveInput:v20];
 
   v18 = [(_DASTimelinePredictor *)self predictionTimelineFromEvents:v23[5] withSlotDuration:900 indicatorType:1 partitionType:0];
 
@@ -988,18 +988,18 @@ LABEL_16:
   return v18;
 }
 
-- (id)deviceNearbyLikelihoodWithStartDate:(id)a3
+- (id)deviceNearbyLikelihoodWithStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_autoreleasePoolPush();
   v6 = BiomeLibrary();
-  v7 = [v6 Device];
-  v8 = [v7 Wireless];
-  v9 = [v8 DefaultPairedNearby];
+  device = [v6 Device];
+  wireless = [device Wireless];
+  defaultPairedNearby = [wireless DefaultPairedNearby];
 
-  if (v4)
+  if (dateCopy)
   {
-    v10 = [BMPublisherOptions optionsWithStartDate:v4];
+    v10 = [BMPublisherOptions optionsWithStartDate:dateCopy];
   }
 
   else
@@ -1010,9 +1010,9 @@ LABEL_16:
   }
 
   v13 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v14 = [v13 getConsoleUserUid];
+  getConsoleUserUid = [v13 getConsoleUserUid];
 
-  v15 = [v9 publisherWithUser:v14 useCase:@"DASBiomeUtilityUseCase" options:v10];
+  v15 = [defaultPairedNearby publisherWithUser:getConsoleUserUid useCase:@"DASBiomeUtilityUseCase" options:v10];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1021,7 +1021,7 @@ LABEL_16:
   v29 = 0;
   v16 = [v15 filterWithIsIncluded:&stru_1001B8358];
   v17 = [v16 mapWithTransform:&stru_1001B8378];
-  v18 = [v17 collect];
+  collect = [v17 collect];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1000C71E4;
@@ -1032,7 +1032,7 @@ LABEL_16:
   v22[2] = sub_1000C7240;
   v22[3] = &unk_1001B8198;
   v22[4] = &v24;
-  v19 = [v18 sinkWithCompletion:v23 receiveInput:v22];
+  v19 = [collect sinkWithCompletion:v23 receiveInput:v22];
 
   v20 = [(_DASTimelinePredictor *)self predictionTimelineFromEvents:v25[5] withSlotDuration:900 indicatorType:0 partitionType:0];
 
@@ -1042,18 +1042,18 @@ LABEL_16:
   return v20;
 }
 
-- (id)widgetUsageLikelihoodForBudgetID:(id)a3 endDate:(id)a4
+- (id)widgetUsageLikelihoodForBudgetID:(id)d endDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dateCopy = date;
   context = objc_autoreleasePoolPush();
   v8 = BiomeLibrary();
-  v9 = [v8 Widgets];
-  v10 = [v9 Viewed];
+  widgets = [v8 Widgets];
+  viewed = [widgets Viewed];
 
-  if (v7)
+  if (dateCopy)
   {
-    v11 = v7;
+    v11 = dateCopy;
     [v11 dateByAddingTimeInterval:-1209600.0];
   }
 
@@ -1065,10 +1065,10 @@ LABEL_16:
   v12 = ;
   v13 = [BMPublisherOptions optionsWithStartDate:v12 endDate:v11];
   v14 = +[_DASBMUtilityProvider sharedUtilityProvider];
-  v15 = [v14 getConsoleUserUid];
+  getConsoleUserUid = [v14 getConsoleUserUid];
 
-  v24 = v10;
-  v16 = [v10 publisherWithUser:v15 useCase:@"DuetActivitySchedulerWidgetRefresh" options:v13];
+  v24 = viewed;
+  v16 = [viewed publisherWithUser:getConsoleUserUid useCase:@"DuetActivitySchedulerWidgetRefresh" options:v13];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -1079,11 +1079,11 @@ LABEL_16:
   v28[1] = 3221225472;
   v28[2] = sub_1000C7594;
   v28[3] = &unk_1001B7298;
-  v17 = v6;
+  v17 = dCopy;
   v29 = v17;
   v18 = [v16 filterWithIsIncluded:v28];
   v19 = [v18 mapWithTransform:&stru_1001B8398];
-  v20 = [v19 collect];
+  collect = [v19 collect];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1000C764C;
@@ -1094,7 +1094,7 @@ LABEL_16:
   v26[2] = sub_1000C76A8;
   v26[3] = &unk_1001B8198;
   v26[4] = &v30;
-  v21 = [v20 sinkWithCompletion:v27 receiveInput:v26];
+  v21 = [collect sinkWithCompletion:v27 receiveInput:v26];
 
   v22 = [(_DASTimelinePredictor *)self predictionTimelineFromEvents:v31[5] withSlotDuration:900 indicatorType:0 partitionType:0];
 

@@ -1,54 +1,54 @@
 @interface HKDateCoordinateTransform
-- (BOOL)isEqual:(id)a3;
-- (HKDateCoordinateTransform)initWithCurrentCalendar:(id)a3;
-- (double)coordinateForValue:(id)a3;
-- (id)valueForCoordinate:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKDateCoordinateTransform)initWithCurrentCalendar:(id)calendar;
+- (double)coordinateForValue:(id)value;
+- (id)valueForCoordinate:(double)coordinate;
 @end
 
 @implementation HKDateCoordinateTransform
 
-- (HKDateCoordinateTransform)initWithCurrentCalendar:(id)a3
+- (HKDateCoordinateTransform)initWithCurrentCalendar:(id)calendar
 {
-  v5 = a3;
+  calendarCopy = calendar;
   v9.receiver = self;
   v9.super_class = HKDateCoordinateTransform;
   v6 = [(HKDateCoordinateTransform *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_currentCalendar, a3);
+    objc_storeStrong(&v6->_currentCalendar, calendar);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4 = objc_opt_class();
 
   return [(HKDateCoordinateTransform *)self isMemberOfClass:v4];
 }
 
-- (double)coordinateForValue:(id)a3
+- (double)coordinateForValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [(HKDateCoordinateTransform *)a2 coordinateForValue:?];
   }
 
-  v6 = [(HKDateCoordinateTransform *)self currentCalendar];
-  [v6 hk_durationSinceReferenceDateForDate:v5 calendarUnit:16];
+  currentCalendar = [(HKDateCoordinateTransform *)self currentCalendar];
+  [currentCalendar hk_durationSinceReferenceDateForDate:valueCopy calendarUnit:16];
   v8 = v7;
 
   return v8;
 }
 
-- (id)valueForCoordinate:(double)a3
+- (id)valueForCoordinate:(double)coordinate
 {
-  v4 = [(HKDateCoordinateTransform *)self currentCalendar];
-  v5 = [v4 hk_dateWithDurationSinceReferenceDate:16 calendarUnit:a3];
+  currentCalendar = [(HKDateCoordinateTransform *)self currentCalendar];
+  v5 = [currentCalendar hk_dateWithDurationSinceReferenceDate:16 calendarUnit:coordinate];
 
   return v5;
 }

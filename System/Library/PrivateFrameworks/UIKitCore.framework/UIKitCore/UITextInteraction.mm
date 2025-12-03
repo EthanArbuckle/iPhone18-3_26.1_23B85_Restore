@@ -1,76 +1,76 @@
 @interface UITextInteraction
 + (UITextInteraction)textInteractionForMode:(UITextInteractionMode)mode;
 + (double)_maximumBeamSnappingLength;
-+ (id)textInteractionsForSet:(int64_t)a3;
++ (id)textInteractionsForSet:(int64_t)set;
 - (BOOL)_shouldObscureTextInput;
 - (BOOL)_textInputIsInteractive;
 - (BOOL)_textInputLivesInKeyWindow;
 - (BOOL)containerChangesSelectionOnOneFingerTap;
-- (BOOL)currentSelectionContainsPoint:(CGPoint)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)currentSelectionContainsPoint:(CGPoint)point;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)inGesture;
-- (BOOL)interaction_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)interaction_gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)selection:(id)a3 containsPoint:(CGPoint)a4;
-- (BOOL)shouldAllowWithTouchTypes:(id)a3 atPoint:(CGPoint)a4 toBegin:(BOOL)a5;
-- (BOOL)shouldHandleFormGestureAtLocation:(CGPoint)a3;
+- (BOOL)interaction_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)interaction_gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)selection:(id)selection containsPoint:(CGPoint)point;
+- (BOOL)shouldAllowWithTouchTypes:(id)types atPoint:(CGPoint)point toBegin:(BOOL)begin;
+- (BOOL)shouldHandleFormGestureAtLocation:(CGPoint)location;
 - (NSArray)gesturesForFailureRequirements;
 - (UIResponder)textInput;
 - (UITextCursorAssertionController)_assertionController;
 - (UITextInteraction)init;
-- (UITextInteraction)interactionWithClass:(Class)a3;
-- (UITextInteraction)interactionWithGestureForName:(id)a3;
+- (UITextInteraction)interactionWithClass:(Class)class;
+- (UITextInteraction)interactionWithGestureForName:(id)name;
 - (UITextInteraction)parent;
 - (UITextInteraction)root;
 - (UITextInteractionMode)textInteractionMode;
 - (UITextInteraction_AssistantDelegate)assistantDelegate;
 - (UIView)gestureRecognizerHostView;
 - (UIView)view;
-- (double)distanceBetweenPoint:(CGPoint)a3 andRects:(id)a4;
+- (double)distanceBetweenPoint:(CGPoint)point andRects:(id)rects;
 - (id)_textInput;
 - (id)_transientState;
-- (id)defaultDoubleTapRecognizerWithAction:(SEL)a3;
-- (id)defaultTapRecognizerWithAction:(SEL)a3;
-- (id)defaultTripleTapRecognizerWithAction:(SEL)a3;
+- (id)defaultDoubleTapRecognizerWithAction:(SEL)action;
+- (id)defaultTapRecognizerWithAction:(SEL)action;
+- (id)defaultTripleTapRecognizerWithAction:(SEL)action;
 - (id)delegate;
-- (id)rangeWithTextAlternatives:(id *)a3 atPosition:(id)a4;
-- (id)recognizerForName:(id)a3;
+- (id)rangeWithTextAlternatives:(id *)alternatives atPosition:(id)position;
+- (id)recognizerForName:(id)name;
 - (int64_t)textInteractionSet;
-- (void)_applyTransientState:(id)a3;
+- (void)_applyTransientState:(id)state;
 - (void)_beginSelectionChange;
-- (void)_callDelegateWillMoveTextRangeExtentAtPoint:(CGPoint)a3;
-- (void)_cancelRecognizerWithName:(id)a3;
+- (void)_callDelegateWillMoveTextRangeExtentAtPoint:(CGPoint)point;
+- (void)_cancelRecognizerWithName:(id)name;
 - (void)_cleanUpFeedbackForGesture;
 - (void)_createFeedbackIfNecessary;
 - (void)_endSelectionChange;
-- (void)_performGestureType:(int64_t)a3 state:(int64_t)a4 location:(CGPoint)a5 locationOfFirstTouch:(CGPoint)a6 forTouchType:(int64_t)a7;
+- (void)_performGestureType:(int64_t)type state:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch forTouchType:(int64_t)touchType;
 - (void)_playFeedbackForCursorMovement;
 - (void)_prepareFeedbackForGesture;
-- (void)_presentTextEditMenuWithOverrideMenu:(id)a3;
-- (void)_setLinkInteractionSession:(id)a3;
-- (void)addChild:(id)a3;
-- (void)addGestureRecognizer:(id)a3 withName:(id)a4;
-- (void)addIndirectChild:(id)a3;
+- (void)_presentTextEditMenuWithOverrideMenu:(id)menu;
+- (void)_setLinkInteractionSession:(id)session;
+- (void)addChild:(id)child;
+- (void)addGestureRecognizer:(id)recognizer withName:(id)name;
+- (void)addIndirectChild:(id)child;
 - (void)cancelLinkInteractionSession;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 - (void)disableClearsOnInsertion;
 - (void)finishSetup;
-- (void)removeChild:(id)a3;
-- (void)removeGestureRecognizerWithName:(id)a3;
-- (void)setInGesture:(BOOL)a3;
-- (void)updateTextInputSourceForScribbleGesture:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)removeChild:(id)child;
+- (void)removeGestureRecognizerWithName:(id)name;
+- (void)setInGesture:(BOOL)gesture;
+- (void)updateTextInputSourceForScribbleGesture:(id)gesture;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UITextInteraction
 
 - (UITextInteraction)root
 {
-  v2 = self;
-  p_parent = &v2->_parent;
-  WeakRetained = objc_loadWeakRetained(&v2->_parent);
+  selfCopy = self;
+  p_parent = &selfCopy->_parent;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_parent);
 
   if (WeakRetained)
   {
@@ -81,7 +81,7 @@
       p_parent = p_isa + 1;
       v6 = objc_loadWeakRetained(p_isa + 1);
 
-      v2 = p_isa;
+      selfCopy = p_isa;
     }
 
     while (v6);
@@ -89,7 +89,7 @@
 
   else
   {
-    p_isa = &v2->super.isa;
+    p_isa = &selfCopy->super.isa;
   }
 
   return p_isa;
@@ -104,17 +104,17 @@
   if (v2)
   {
     v2->_textInteractionMode = -1;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     children = v3->_children;
-    v3->_children = v4;
+    v3->_children = array;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     gestures = v3->_gestures;
-    v3->_gestures = v6;
+    v3->_gestures = array2;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     gestureMap = v3->_gestureMap;
-    v3->_gestureMap = v8;
+    v3->_gestureMap = dictionary;
   }
 
   return v3;
@@ -129,16 +129,16 @@
 
 - (void)cancelLinkInteractionSession
 {
-  v3 = [(UITextInteraction *)self root];
-  v4 = v3;
-  if (!v3 || v3 == self)
+  root = [(UITextInteraction *)self root];
+  v4 = root;
+  if (!root || root == self)
   {
     [(UITextInteraction *)self _setLinkInteractionSession:0];
   }
 
   else
   {
-    [(UITextInteraction *)v3 cancelLinkInteractionSession];
+    [(UITextInteraction *)root cancelLinkInteractionSession];
   }
 }
 
@@ -157,9 +157,9 @@
   if (v5)
   {
     v6 = objc_loadWeakRetained(&self->_parent);
-    v7 = [v6 assistantDelegate];
+    assistantDelegate = [v6 assistantDelegate];
 LABEL_7:
-    v4 = v7;
+    v4 = assistantDelegate;
 
     goto LABEL_8;
   }
@@ -169,7 +169,7 @@ LABEL_7:
   if (v8)
   {
     v6 = objc_loadWeakRetained(&self->_textInput);
-    v7 = [v6 interactionAssistant];
+    assistantDelegate = [v6 interactionAssistant];
     goto LABEL_7;
   }
 
@@ -230,10 +230,10 @@ LABEL_8:
 - (id)_textInput
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(UITextInteraction *)self root];
-  v4 = [v3 textInput];
+  root = [(UITextInteraction *)self root];
+  textInput = [root textInput];
 
-  if (!v4)
+  if (!textInput)
   {
     if (+[UIKeyboard isKeyboardProcess])
     {
@@ -273,7 +273,7 @@ LABEL_8:
       if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
 LABEL_4:
-        v4 = objc_loadWeakRetained(&self->_view);
+        textInput = objc_loadWeakRetained(&self->_view);
         goto LABEL_5;
       }
 
@@ -295,7 +295,7 @@ LABEL_12:
 
 LABEL_5:
 
-  return v4;
+  return textInput;
 }
 
 - (UIView)view
@@ -330,12 +330,12 @@ LABEL_5:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v13 + 1) + 8 * i) _transientState];
-          if (v9)
+          _transientState = [*(*(&v13 + 1) + 8 * i) _transientState];
+          if (_transientState)
           {
             v10 = objc_opt_class();
             v11 = NSStringFromClass(v10);
-            [v3 setObject:v9 forKey:v11];
+            [v3 setObject:_transientState forKey:v11];
           }
         }
 
@@ -411,86 +411,86 @@ LABEL_13:
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    delegate = WeakRetained;
   }
 
   else
   {
     v6 = objc_loadWeakRetained(&self->_parent);
-    v5 = [v6 delegate];
+    delegate = [v6 delegate];
   }
 
-  return v5;
+  return delegate;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  childCopy = child;
+  v7 = childCopy;
+  if (!childCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: cluster may not be nil", self}];
-    v4 = 0;
+    childCopy = 0;
   }
 
-  v5 = [v4 parent];
+  parent = [childCopy parent];
 
-  if (v5)
+  if (parent)
   {
-    v6 = [v7 parent];
-    [v6 removeChild:v7];
+    parent2 = [v7 parent];
+    [parent2 removeChild:v7];
   }
 
   objc_storeWeak(v7 + 1, self);
   [(NSMutableArray *)self->_children addObject:v7];
 }
 
-- (void)addIndirectChild:(id)a3
+- (void)addIndirectChild:(id)child
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  childCopy = child;
+  v5 = childCopy;
+  if (!childCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: cluster may not be nil", self}];
-    v4 = 0;
+    childCopy = 0;
   }
 
-  objc_storeWeak(v4 + 1, self);
+  objc_storeWeak(childCopy + 1, self);
 }
 
-- (void)removeChild:(id)a3
+- (void)removeChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   v5 = MEMORY[0x1E695D940];
-  v10 = v4;
-  if (!v4)
+  v10 = childCopy;
+  if (!childCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%@: cluster may not be nil", self}];
-    v4 = 0;
+    childCopy = 0;
   }
 
-  v6 = [v4 parent];
+  parent = [childCopy parent];
 
-  if (v6 != self)
+  if (parent != self)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *v5;
-    v9 = [v10 parent];
-    [v7 raise:v8 format:{@"%@: cluster has a different parent (%@)", self, v9}];
+    parent2 = [v10 parent];
+    [v7 raise:v8 format:{@"%@: cluster has a different parent (%@)", self, parent2}];
   }
 
   objc_storeWeak(v10 + 1, 0);
   [(NSMutableArray *)self->_children removeObject:v10];
 }
 
-- (UITextInteraction)interactionWithGestureForName:(id)a3
+- (UITextInteraction)interactionWithGestureForName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_gestureMap objectForKey:v4];
+  nameCopy = name;
+  v5 = [(NSMutableDictionary *)self->_gestureMap objectForKey:nameCopy];
   if (v5)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -514,10 +514,10 @@ LABEL_13:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) interactionWithGestureForName:{v4, v14}];
+          v12 = [*(*(&v14 + 1) + 8 * i) interactionWithGestureForName:{nameCopy, v14}];
           if (v12)
           {
-            v6 = v12;
+            selfCopy = v12;
 
             goto LABEL_13;
           }
@@ -533,15 +533,15 @@ LABEL_13:
       }
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
 LABEL_13:
 
-  return v6;
+  return selfCopy;
 }
 
-- (UITextInteraction)interactionWithClass:(Class)a3
+- (UITextInteraction)interactionWithClass:(Class)class
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -572,7 +572,7 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v10 = [v9 interactionWithClass:{a3, v13}];
+        v10 = [v9 interactionWithClass:{class, v13}];
         if (v10)
         {
           goto LABEL_13;
@@ -600,10 +600,10 @@ LABEL_14:
   return v11;
 }
 
-- (void)_applyTransientState:(id)a3
+- (void)_applyTransientState:(id)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -627,7 +627,7 @@ LABEL_14:
         v10 = *(*(&v14 + 1) + 8 * v9);
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [v4 objectForKey:{v12, v14}];
+        v13 = [stateCopy objectForKey:{v12, v14}];
 
         [v10 _applyTransientState:v13];
         ++v9;
@@ -643,47 +643,47 @@ LABEL_14:
 
 - (UITextCursorAssertionController)_assertionController
 {
-  v2 = [(UITextInteraction *)self assistantDelegate];
-  v3 = [v2 _assertionController];
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+  _assertionController = [assistantDelegate _assertionController];
 
-  return v3;
+  return _assertionController;
 }
 
-- (void)addGestureRecognizer:(id)a3 withName:(id)a4
+- (void)addGestureRecognizer:(id)recognizer withName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
-  [v10 setName:v6];
+  recognizerCopy = recognizer;
+  nameCopy = name;
+  [recognizerCopy setName:nameCopy];
   if ([(UITextInteraction *)self doesControlDelegate])
   {
-    [v10 setDelegate:self];
+    [recognizerCopy setDelegate:self];
   }
 
-  v7 = [v10 _pairedGestureIdentifiers];
-  [v7 addObject:v6];
+  _pairedGestureIdentifiers = [recognizerCopy _pairedGestureIdentifiers];
+  [_pairedGestureIdentifiers addObject:nameCopy];
 
-  [(NSMutableArray *)self->_gestures addObject:v10];
-  [(NSMutableDictionary *)self->_gestureMap setObject:v10 forKey:v6];
+  [(NSMutableArray *)self->_gestures addObject:recognizerCopy];
+  [(NSMutableDictionary *)self->_gestureMap setObject:recognizerCopy forKey:nameCopy];
 
-  v8 = [(UITextInteraction *)self gestureRecognizerHostView];
-  v9 = v8;
-  if (v8)
+  gestureRecognizerHostView = [(UITextInteraction *)self gestureRecognizerHostView];
+  v9 = gestureRecognizerHostView;
+  if (gestureRecognizerHostView)
   {
-    [(UIView *)v8 _addGestureRecognizer:v10 atEnd:0];
+    [(UIView *)gestureRecognizerHostView _addGestureRecognizer:recognizerCopy atEnd:0];
   }
 }
 
-- (void)removeGestureRecognizerWithName:(id)a3
+- (void)removeGestureRecognizerWithName:(id)name
 {
-  v7 = a3;
+  nameCopy = name;
   v4 = [(NSMutableDictionary *)self->_gestureMap objectForKey:?];
   if ([(NSMutableArray *)self->_gestures containsObject:v4])
   {
-    v5 = [(UITextInteraction *)self gestureRecognizerHostView];
-    v6 = v5;
-    if (v5)
+    gestureRecognizerHostView = [(UITextInteraction *)self gestureRecognizerHostView];
+    v6 = gestureRecognizerHostView;
+    if (gestureRecognizerHostView)
     {
-      [v5 removeGestureRecognizer:v4];
+      [gestureRecognizerHostView removeGestureRecognizer:v4];
     }
 
     if ([(UITextInteraction *)self doesControlDelegate])
@@ -692,18 +692,18 @@ LABEL_14:
     }
 
     [(NSMutableArray *)self->_gestures removeObject:v4];
-    [(NSMutableDictionary *)self->_gestureMap removeObjectForKey:v7];
+    [(NSMutableDictionary *)self->_gestureMap removeObjectForKey:nameCopy];
   }
 }
 
-- (id)recognizerForName:(id)a3
+- (id)recognizerForName:(id)name
 {
-  v4 = a3;
-  v5 = [(UITextInteraction *)self interactionWithGestureForName:v4];
+  nameCopy = name;
+  v5 = [(UITextInteraction *)self interactionWithGestureForName:nameCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [*(v5 + 32) objectForKey:v4];
+    v7 = [*(v5 + 32) objectForKey:nameCopy];
   }
 
   else
@@ -714,21 +714,21 @@ LABEL_14:
   return v7;
 }
 
-- (void)_cancelRecognizerWithName:(id)a3
+- (void)_cancelRecognizerWithName:(id)name
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (name)
   {
-    v4 = a3;
-    v5 = [(UITextInteraction *)self root];
-    v6 = [v5 recognizerForName:v4];
+    nameCopy = name;
+    root = [(UITextInteraction *)self root];
+    v6 = [root recognizerForName:nameCopy];
 
     if (v6)
     {
-      v7 = [UIApp _gestureEnvironment];
+      _gestureEnvironment = [UIApp _gestureEnvironment];
       v9[0] = v6;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-      [(UIGestureEnvironment *)v7 _cancelGestureRecognizers:v8];
+      [(UIGestureEnvironment *)_gestureEnvironment _cancelGestureRecognizers:v8];
     }
   }
 }
@@ -742,22 +742,22 @@ LABEL_14:
     return self->_textInteractionMode;
   }
 
-  v4 = [(UITextInteraction *)self root];
-  v5 = [v4 textInteractionMode];
+  root = [(UITextInteraction *)self root];
+  textInteractionMode = [root textInteractionMode];
 
-  return v5;
+  return textInteractionMode;
 }
 
-- (void)setInGesture:(BOOL)a3
+- (void)setInGesture:(BOOL)gesture
 {
-  v3 = a3;
-  self->_inGesture = a3;
-  v5 = [(UITextInteraction *)self delegate];
-  v6 = v5;
-  if (v5)
+  gestureCopy = gesture;
+  self->_inGesture = gesture;
+  delegate = [(UITextInteraction *)self delegate];
+  v6 = delegate;
+  if (delegate)
   {
-    v10 = v5;
-    if (v3)
+    v10 = delegate;
+    if (gestureCopy)
     {
       v7 = objc_opt_respondsToSelector();
       v6 = v10;
@@ -766,8 +766,8 @@ LABEL_14:
         goto LABEL_8;
       }
 
-      v8 = [(UITextInteraction *)self root];
-      [v10 interactionWillBegin:v8];
+      root = [(UITextInteraction *)self root];
+      [v10 interactionWillBegin:root];
     }
 
     else
@@ -779,8 +779,8 @@ LABEL_14:
         goto LABEL_8;
       }
 
-      v8 = [(UITextInteraction *)self root];
-      [v10 interactionDidEnd:v8];
+      root = [(UITextInteraction *)self root];
+      [v10 interactionDidEnd:root];
     }
 
     v6 = v10;
@@ -789,13 +789,13 @@ LABEL_14:
 LABEL_8:
 }
 
-- (BOOL)shouldAllowWithTouchTypes:(id)a3 atPoint:(CGPoint)a4 toBegin:(BOOL)a5
+- (BOOL)shouldAllowWithTouchTypes:(id)types atPoint:(CGPoint)point toBegin:(BOOL)begin
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  beginCopy = begin;
+  y = point.y;
+  x = point.x;
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  typesCopy = types;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -815,7 +815,7 @@ LABEL_8:
           objc_enumerationMutation(v10);
         }
 
-        if (![*(*(&v17 + 1) + 8 * i) shouldAllowWithTouchTypes:v9 atPoint:v5 toBegin:{x, y, v17}])
+        if (![*(*(&v17 + 1) + 8 * i) shouldAllowWithTouchTypes:typesCopy atPoint:beginCopy toBegin:{x, y, v17}])
         {
           v15 = 0;
           goto LABEL_11;
@@ -838,25 +838,25 @@ LABEL_11:
   return v15;
 }
 
-- (void)_callDelegateWillMoveTextRangeExtentAtPoint:(CGPoint)a3
+- (void)_callDelegateWillMoveTextRangeExtentAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UITextInteraction *)self delegate];
+  y = point.y;
+  x = point.x;
+  delegate = [(UITextInteraction *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(UITextInteraction *)self delegate];
-    [v8 _willMoveTextRangeExtentAtPoint:{x, y}];
+    delegate2 = [(UITextInteraction *)self delegate];
+    [delegate2 _willMoveTextRangeExtentAtPoint:{x, y}];
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   v40 = *MEMORY[0x1E69E9840];
   [(UITextInteraction *)self cancelLinkInteractionSession];
-  if (!a3)
+  if (!view)
   {
     v36 = 0u;
     v37 = 0u;
@@ -940,19 +940,19 @@ LABEL_19:
     if (v21)
     {
       v22 = objc_loadWeakRetained(&self->_textInput);
-      v23 = [v22 interactionAssistant];
-      v24 = [v23 externalInteractions];
+      interactionAssistant = [v22 interactionAssistant];
+      externalInteractions = [interactionAssistant externalInteractions];
 
-      if (v24 == self)
+      if (externalInteractions == self)
       {
         v25 = objc_loadWeakRetained(&self->_textInput);
-        v26 = [v25 inputDelegate];
-        v27 = [(UITextInteraction *)self interactionInputDelegate];
+        inputDelegate = [v25 inputDelegate];
+        interactionInputDelegate = [(UITextInteraction *)self interactionInputDelegate];
 
-        if (v26 == v27)
+        if (inputDelegate == interactionInputDelegate)
         {
-          v28 = [(UITextInteraction *)self interactionInputDelegate];
-          [v28 setRootInteraction:0];
+          interactionInputDelegate2 = [(UITextInteraction *)self interactionInputDelegate];
+          [interactionInputDelegate2 setRootInteraction:0];
 
           v29 = objc_loadWeakRetained(&self->_textInput);
           [v29 setInputDelegate:0];
@@ -968,20 +968,20 @@ LABEL_19:
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   [(UITextInteraction *)self cancelLinkInteractionSession];
-  v5 = objc_storeWeak(&self->_view, v4);
+  v5 = objc_storeWeak(&self->_view, viewCopy);
 
   v6 = v5;
-  if (!v4)
+  if (!viewCopy)
   {
     goto LABEL_25;
   }
 
-  v7 = [(UITextInteraction *)self gestureRecognizerHostView];
+  gestureRecognizerHostView = [(UITextInteraction *)self gestureRecognizerHostView];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -1002,7 +1002,7 @@ LABEL_19:
           objc_enumerationMutation(v8);
         }
 
-        [(UIView *)v7 _addGestureRecognizer:0 atEnd:?];
+        [(UIView *)gestureRecognizerHostView _addGestureRecognizer:0 atEnd:?];
       }
 
       while (v10 != v12);
@@ -1063,17 +1063,17 @@ LABEL_19:
     v30 = v29;
     v31 = objc_loadWeakRetained(&self->_view);
     v32 = +[UIKeyboardImpl activeInstance];
-    v33 = [v32 markedTextOverlay];
+    markedTextOverlay = [v32 markedTextOverlay];
 
-    if (v31 == v33)
+    if (v31 == markedTextOverlay)
     {
       goto LABEL_20;
     }
 
     v34 = objc_loadWeakRetained(&self->_textInput);
-    v35 = [v34 interactionAssistant];
+    interactionAssistant = [v34 interactionAssistant];
 
-    if (!v35)
+    if (!interactionAssistant)
     {
       v36 = objc_loadWeakRetained(&self->_textInput);
       [v36 __createInteractionAssistantIfNecessaryWithMode:self->_textInteractionMode];
@@ -1083,18 +1083,18 @@ LABEL_19:
     [v37 __prepareInteractionAssistantIfNecessary];
 
     v38 = objc_loadWeakRetained(&self->_textInput);
-    v39 = [v38 interactionAssistant];
-    [v39 setExternalInteractions:self];
+    interactionAssistant2 = [v38 interactionAssistant];
+    [interactionAssistant2 setExternalInteractions:self];
 
     v40 = objc_alloc_init(UITextInteractionInputDelegate);
     [(UITextInteraction *)self setInteractionInputDelegate:v40];
 
-    v41 = [(UITextInteraction *)self interactionInputDelegate];
-    [v41 setRootInteraction:self];
+    interactionInputDelegate = [(UITextInteraction *)self interactionInputDelegate];
+    [interactionInputDelegate setRootInteraction:self];
 
     v21 = objc_loadWeakRetained(&self->_textInput);
-    v42 = [(UITextInteraction *)self interactionInputDelegate];
-    [v21 setInputDelegate:v42];
+    interactionInputDelegate2 = [(UITextInteraction *)self interactionInputDelegate];
+    [v21 setInputDelegate:interactionInputDelegate2];
   }
 
 LABEL_20:
@@ -1106,8 +1106,8 @@ LABEL_20:
     v24 = objc_loadWeakRetained(&self->_delegate);
     v25 = [v24 interactionShouldSuppressSystemUI:self];
 
-    v26 = [(UITextInteraction *)self assistantDelegate];
-    [v26 setSuppressSystemUI:v25];
+    assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+    [assistantDelegate setSuppressSystemUI:v25];
   }
 
   v27 = objc_loadWeakRetained(&self->_view);
@@ -1125,20 +1125,20 @@ LABEL_25:
 {
   v21 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_textInput);
-  v4 = [WeakRetained interactionAssistant];
-  v5 = [v4 externalInteractions];
+  interactionAssistant = [WeakRetained interactionAssistant];
+  externalInteractions = [interactionAssistant externalInteractions];
 
-  if (v5 == self)
+  if (externalInteractions == self)
   {
     v7 = objc_loadWeakRetained(&self->_textInput);
-    v13 = [(NSMutableArray *)v7 interactionAssistant];
-    v14 = [v13 interactions];
-    v6 = [v14 gesturesForFailureRequirements];
+    interactionAssistant2 = [(NSMutableArray *)v7 interactionAssistant];
+    interactions = [interactionAssistant2 interactions];
+    gesturesForFailureRequirements = [interactions gesturesForFailureRequirements];
   }
 
   else
   {
-    v6 = [(NSMutableArray *)self->_gestures mutableCopy];
+    gesturesForFailureRequirements = [(NSMutableArray *)self->_gestures mutableCopy];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -1158,8 +1158,8 @@ LABEL_25:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) gesturesForFailureRequirements];
-          [v6 addObjectsFromArray:v12];
+          gesturesForFailureRequirements2 = [*(*(&v16 + 1) + 8 * i) gesturesForFailureRequirements];
+          [gesturesForFailureRequirements addObjectsFromArray:gesturesForFailureRequirements2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1169,7 +1169,7 @@ LABEL_25:
     }
   }
 
-  return v6;
+  return gesturesForFailureRequirements;
 }
 
 + (UITextInteraction)textInteractionForMode:(UITextInteractionMode)mode
@@ -1180,9 +1180,9 @@ LABEL_25:
   return v4;
 }
 
-+ (id)textInteractionsForSet:(int64_t)a3
++ (id)textInteractionsForSet:(int64_t)set
 {
-  if (a3 == 1)
+  if (set == 1)
   {
     v3 = 1;
   }
@@ -1192,7 +1192,7 @@ LABEL_25:
     v3 = -1;
   }
 
-  if (a3)
+  if (set)
   {
     v4 = v3;
   }
@@ -1202,13 +1202,13 @@ LABEL_25:
     v4 = 0;
   }
 
-  return [a1 textInteractionForMode:v4];
+  return [self textInteractionForMode:v4];
 }
 
 - (int64_t)textInteractionSet
 {
-  v2 = [(UITextInteraction *)self textInteractionMode];
-  if (v2 == UITextInteractionModeNonEditable)
+  textInteractionMode = [(UITextInteraction *)self textInteractionMode];
+  if (textInteractionMode == UITextInteractionModeNonEditable)
   {
     v3 = 1;
   }
@@ -1218,7 +1218,7 @@ LABEL_25:
     v3 = -1;
   }
 
-  if (v2)
+  if (textInteractionMode)
   {
     return v3;
   }
@@ -1229,31 +1229,31 @@ LABEL_25:
   }
 }
 
-- (void)_performGestureType:(int64_t)a3 state:(int64_t)a4 location:(CGPoint)a5 locationOfFirstTouch:(CGPoint)a6 forTouchType:(int64_t)a7
+- (void)_performGestureType:(int64_t)type state:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch forTouchType:(int64_t)touchType
 {
-  y = a6.y;
-  x = a6.x;
-  v11 = a5.y;
-  v12 = a5.x;
+  y = touch.y;
+  x = touch.x;
+  v11 = location.y;
+  v12 = location.x;
   v15 = @"UITextInteractionNameInteractiveRefinement";
-  if (a7 == 3)
+  if (touchType == 3)
   {
     v15 = @"UITextInteractionNameLoupe";
   }
 
   v16 = @"UITextInteractionNameDoubleTap";
   v17 = @"UITextInteractionNameSingleTap";
-  if (a3 != 1)
+  if (type != 1)
   {
     v17 = 0;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v16 = v17;
   }
 
-  if ((a3 - 3) >= 2)
+  if ((type - 3) >= 2)
   {
     v18 = v16;
   }
@@ -1263,28 +1263,28 @@ LABEL_25:
     v18 = v15;
   }
 
-  v27 = [(UITextInteraction *)self root];
+  root = [(UITextInteraction *)self root];
   WeakRetained = objc_loadWeakRetained(&self->_textInput);
-  v20 = [WeakRetained interactionAssistant];
-  v21 = [v20 externalInteractions];
+  interactionAssistant = [WeakRetained interactionAssistant];
+  externalInteractions = [interactionAssistant externalInteractions];
 
-  if (v21 == self)
+  if (externalInteractions == self)
   {
     v23 = objc_loadWeakRetained(&self->_textInput);
-    v24 = [v23 interactionAssistant];
-    v25 = [v24 interactions];
+    interactionAssistant2 = [v23 interactionAssistant];
+    interactions = [interactionAssistant2 interactions];
 
-    v22 = v25;
+    v22 = interactions;
   }
 
   else
   {
-    v22 = v27;
+    v22 = root;
   }
 
   v28 = v22;
   v26 = [v22 interactionWithGestureForName:v18];
-  [v26 _performGestureType:a3 state:a4 location:a7 locationOfFirstTouch:v12 forTouchType:{v11, x, y}];
+  [v26 _performGestureType:type state:state location:touchType locationOfFirstTouch:v12 forTouchType:{v11, x, y}];
 }
 
 - (void)_createFeedbackIfNecessary
@@ -1299,42 +1299,42 @@ LABEL_25:
 
 - (void)_prepareFeedbackForGesture
 {
-  v3 = [(UITextInteraction *)self feedbackBehaviour];
-  v4 = [v3 isActive];
+  feedbackBehaviour = [(UITextInteraction *)self feedbackBehaviour];
+  isActive = [feedbackBehaviour isActive];
 
-  if ((v4 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v5 = [(UITextInteraction *)self feedbackBehaviour];
-    [v5 activateWithCompletionBlock:0];
+    feedbackBehaviour2 = [(UITextInteraction *)self feedbackBehaviour];
+    [feedbackBehaviour2 activateWithCompletionBlock:0];
   }
 }
 
 - (void)_cleanUpFeedbackForGesture
 {
-  v3 = [(UITextInteraction *)self feedbackBehaviour];
-  v4 = [v3 isActive];
+  feedbackBehaviour = [(UITextInteraction *)self feedbackBehaviour];
+  isActive = [feedbackBehaviour isActive];
 
-  if (v4)
+  if (isActive)
   {
-    v5 = [(UITextInteraction *)self feedbackBehaviour];
-    [v5 deactivate];
+    feedbackBehaviour2 = [(UITextInteraction *)self feedbackBehaviour];
+    [feedbackBehaviour2 deactivate];
   }
 }
 
 - (void)_playFeedbackForCursorMovement
 {
-  v2 = [(UITextInteraction *)self feedbackBehaviour];
-  [v2 transitionToState:@"preview" ended:1];
+  feedbackBehaviour = [(UITextInteraction *)self feedbackBehaviour];
+  [feedbackBehaviour transitionToState:@"preview" ended:1];
 }
 
-- (void)_setLinkInteractionSession:(id)a3
+- (void)_setLinkInteractionSession:(id)session
 {
-  v4 = a3;
-  v5 = [(UITextInteraction *)self root];
-  v6 = v5;
-  if (v5)
+  sessionCopy = session;
+  root = [(UITextInteraction *)self root];
+  v6 = root;
+  if (root)
   {
-    v7 = v5 == self;
+    v7 = root == self;
   }
 
   else
@@ -1358,7 +1358,7 @@ LABEL_25:
     }
 
 LABEL_17:
-    [(UITextInteraction *)v6 _setLinkInteractionSession:v4];
+    [(UITextInteraction *)v6 _setLinkInteractionSession:sessionCopy];
     goto LABEL_10;
   }
 
@@ -1375,7 +1375,7 @@ LABEL_17:
   }
 
 LABEL_9:
-  objc_setAssociatedObject(self, &_MergedGlobals_1325, v4, 1);
+  objc_setAssociatedObject(self, &_MergedGlobals_1325, sessionCopy, 1);
 LABEL_10:
 }
 
@@ -1408,21 +1408,21 @@ LABEL_10:
 
 - (BOOL)_textInputIsInteractive
 {
-  v3 = [(UITextInteraction *)self _textInput];
-  v4 = v3;
-  if (v3)
+  _textInput = [(UITextInteraction *)self _textInput];
+  v4 = _textInput;
+  if (_textInput)
   {
     if (self->_viewOverridesInteractivityState)
     {
-      v5 = [v3 _isInteractiveDespiteResponderStatus];
+      _isInteractiveDespiteResponderStatus = [_textInput _isInteractiveDespiteResponderStatus];
     }
 
     else
     {
-      v5 = [v3 isFirstResponder];
+      _isInteractiveDespiteResponderStatus = [_textInput isFirstResponder];
     }
 
-    v6 = v5;
+    v6 = _isInteractiveDespiteResponderStatus;
   }
 
   else
@@ -1435,26 +1435,26 @@ LABEL_10:
 
 - (BOOL)_textInputLivesInKeyWindow
 {
-  v2 = [(UITextInteraction *)self _textInput];
-  v3 = [v2 _responderWindow];
+  _textInput = [(UITextInteraction *)self _textInput];
+  _responderWindow = [_textInput _responderWindow];
 
-  if ([v3 _isTextEffectsWindow])
+  if ([_responderWindow _isTextEffectsWindow])
   {
-    v4 = 1;
+    _isApplicationKeyWindow = 1;
   }
 
   else
   {
-    v4 = [v3 _isApplicationKeyWindow];
+    _isApplicationKeyWindow = [_responderWindow _isApplicationKeyWindow];
   }
 
-  return v4;
+  return _isApplicationKeyWindow;
 }
 
 - (BOOL)containerChangesSelectionOnOneFingerTap
 {
-  v2 = [(UITextInteraction *)self _textInput];
-  v3 = (objc_opt_respondsToSelector() & 1) == 0 || ([v2 isEditing] & 1) != 0 || !objc_msgSend(v2, "hasText") || (objc_msgSend(v2, "clearingBehavior") - 4) < 0xFFFFFFFFFFFFFFFELL;
+  _textInput = [(UITextInteraction *)self _textInput];
+  v3 = (objc_opt_respondsToSelector() & 1) == 0 || ([_textInput isEditing] & 1) != 0 || !objc_msgSend(_textInput, "hasText") || (objc_msgSend(_textInput, "clearingBehavior") - 4) < 0xFFFFFFFFFFFFFFFELL;
 
   return v3;
 }
@@ -1471,16 +1471,16 @@ LABEL_10:
   }
 }
 
-- (BOOL)selection:(id)a3 containsPoint:(CGPoint)a4
+- (BOOL)selection:(id)selection containsPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [v7 selectedRange];
-  v9 = [v8 _isRanged];
+  selectionCopy = selection;
+  selectedRange = [selectionCopy selectedRange];
+  _isRanged = [selectedRange _isRanged];
 
-  if (!v9)
+  if (!_isRanged)
   {
 LABEL_17:
     v22 = 0;
@@ -1496,8 +1496,8 @@ LABEL_17:
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v23 = [v7 selectionRects];
-    v24 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    selectionRects = [selectionCopy selectionRects];
+    v24 = [selectionRects countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v24)
     {
       v25 = v24;
@@ -1508,7 +1508,7 @@ LABEL_17:
         {
           if (*v37 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(selectionRects);
           }
 
           [*(*(&v36 + 1) + 8 * i) rect];
@@ -1536,7 +1536,7 @@ LABEL_17:
           }
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
+        v25 = [selectionRects countByEnumeratingWithState:&v36 objects:v40 count:16];
         if (v25)
         {
           continue;
@@ -1550,8 +1550,8 @@ LABEL_17:
   }
 
   v12 = objc_loadWeakRetained(&self->_view);
-  v13 = [v7 selectedRange];
-  [v12 _boundingRectForRange:v13];
+  selectedRange2 = [selectionCopy selectedRange];
+  [v12 _boundingRectForRange:selectedRange2];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1569,25 +1569,25 @@ LABEL_19:
   return v22;
 }
 
-- (BOOL)currentSelectionContainsPoint:(CGPoint)a3
+- (BOOL)currentSelectionContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(UITextInteraction *)self assistantDelegate];
-  v7 = [v6 activeSelection];
-  LOBYTE(v5) = [(UITextInteraction *)v5 selection:v7 containsPoint:x, y];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+  activeSelection = [assistantDelegate activeSelection];
+  LOBYTE(selfCopy) = [(UITextInteraction *)selfCopy selection:activeSelection containsPoint:x, y];
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)rangeWithTextAlternatives:(id *)a3 atPosition:(id)a4
+- (id)rangeWithTextAlternatives:(id *)alternatives atPosition:(id)position
 {
-  v6 = a4;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_view);
   if (objc_opt_respondsToSelector())
   {
-    v8 = [WeakRetained rangeWithTextAlternatives:a3 atPosition:v6];
+    v8 = [WeakRetained rangeWithTextAlternatives:alternatives atPosition:positionCopy];
   }
 
   else
@@ -1598,17 +1598,17 @@ LABEL_19:
   return v8;
 }
 
-- (double)distanceBetweenPoint:(CGPoint)a3 andRects:(id)a4
+- (double)distanceBetweenPoint:(CGPoint)point andRects:(id)rects
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  rectsCopy = rects;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [rectsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1620,7 +1620,7 @@ LABEL_19:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(rectsCopy);
         }
 
         [*(*(&v18 + 1) + 8 * i) rect];
@@ -1631,7 +1631,7 @@ LABEL_19:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [rectsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -1645,9 +1645,9 @@ LABEL_19:
   return v10;
 }
 
-- (BOOL)shouldHandleFormGestureAtLocation:(CGPoint)a3
+- (BOOL)shouldHandleFormGestureAtLocation:(CGPoint)location
 {
-  v11 = a3;
+  locationCopy = location;
   if (!WebKitFramework)
   {
     return 1;
@@ -1663,12 +1663,12 @@ LABEL_19:
   }
 
   v6 = objc_loadWeakRetained(&self->_view);
-  v7 = [v6 formElement];
-  if (v7)
+  formElement = [v6 formElement];
+  if (formElement)
   {
     WebThreadLock();
-    v8 = [v6 approximateNodeAtViewportLocation:&v11];
-    v9 = [v7 isSameNode:v8];
+    v8 = [v6 approximateNodeAtViewportLocation:&locationCopy];
+    v9 = [formElement isSameNode:v8];
   }
 
   else
@@ -1679,9 +1679,9 @@ LABEL_19:
   return v9;
 }
 
-- (id)defaultTripleTapRecognizerWithAction:(SEL)a3
+- (id)defaultTripleTapRecognizerWithAction:(SEL)action
 {
-  v3 = [[UITextTapRecognizer alloc] initWithTarget:self action:a3];
+  v3 = [[UITextTapRecognizer alloc] initWithTarget:self action:action];
   [(UITapGestureRecognizer *)v3 setAllowableMovement:60.0];
   [(UITapGestureRecognizer *)v3 setNumberOfTapsRequired:3];
   [(UITapGestureRecognizer *)v3 setNumberOfTouchesRequired:1];
@@ -1690,9 +1690,9 @@ LABEL_19:
   return v3;
 }
 
-- (id)defaultDoubleTapRecognizerWithAction:(SEL)a3
+- (id)defaultDoubleTapRecognizerWithAction:(SEL)action
 {
-  v3 = [[UITextTapRecognizer alloc] initWithTarget:self action:a3];
+  v3 = [[UITextTapRecognizer alloc] initWithTarget:self action:action];
   [(UITapGestureRecognizer *)v3 setAllowableMovement:60.0];
   [(UITapGestureRecognizer *)v3 setNumberOfTapsRequired:2];
   [(UITapGestureRecognizer *)v3 setNumberOfTouchesRequired:1];
@@ -1702,9 +1702,9 @@ LABEL_19:
   return v3;
 }
 
-- (id)defaultTapRecognizerWithAction:(SEL)a3
+- (id)defaultTapRecognizerWithAction:(SEL)action
 {
-  v3 = [[UITextTapRecognizer alloc] initWithTarget:self action:a3];
+  v3 = [[UITextTapRecognizer alloc] initWithTarget:self action:action];
   [(UITapGestureRecognizer *)v3 setAllowableMovement:10.0];
   [(UITapGestureRecognizer *)v3 setNumberOfTapsRequired:1];
   [(UITapGestureRecognizer *)v3 setNumberOfTouchesRequired:1];
@@ -1713,11 +1713,11 @@ LABEL_19:
   return v3;
 }
 
-- (BOOL)interaction_gestureRecognizerShouldBegin:(id)a3
+- (BOOL)interaction_gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 locationInView:v5];
+  beginCopy = begin;
+  view = [beginCopy view];
+  [beginCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -1725,19 +1725,19 @@ LABEL_19:
   return self;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(UITextInteraction *)self delegate];
-  v6 = [(UITextInteraction *)self assistantDelegate];
+  beginCopy = begin;
+  delegate = [(UITextInteraction *)self delegate];
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v4 view];
-    [v4 locationInView:v7];
+    view = [beginCopy view];
+    [beginCopy locationInView:view];
     v9 = v8;
     v11 = v10;
 
-    if (([v5 interactionShouldBegin:self atPoint:{v9, v11}] & 1) == 0)
+    if (([delegate interactionShouldBegin:self atPoint:{v9, v11}] & 1) == 0)
     {
 LABEL_10:
       v12 = 0;
@@ -1745,35 +1745,35 @@ LABEL_10:
     }
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) != 0 && ![v5 interactionShouldBegin:self])
+  else if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate interactionShouldBegin:self])
   {
     goto LABEL_10;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v6 overrideGestureRecognizerShouldBegin:v4] || !-[UITextInteraction interaction_gestureRecognizerShouldBegin:](self, "interaction_gestureRecognizerShouldBegin:", v4))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![assistantDelegate overrideGestureRecognizerShouldBegin:beginCopy] || !-[UITextInteraction interaction_gestureRecognizerShouldBegin:](self, "interaction_gestureRecognizerShouldBegin:", beginCopy))
   {
     goto LABEL_10;
   }
 
-  [(UITextInteraction *)self updateTextInputSourceForScribbleGesture:v4];
+  [(UITextInteraction *)self updateTextInputSourceForScribbleGesture:beginCopy];
   v12 = 1;
 LABEL_11:
 
   return v12;
 }
 
-- (void)updateTextInputSourceForScribbleGesture:(id)a3
+- (void)updateTextInputSourceForScribbleGesture:(id)gesture
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  gestureCopy = gesture;
   if (objc_opt_respondsToSelector())
   {
     v32 = 0uLL;
     v33 = 0uLL;
     v30 = 0uLL;
     v31 = 0uLL;
-    v5 = [v4 touchesForTap];
-    v6 = [v5 countByEnumeratingWithState:&v30 objects:v40 count:16];
+    touchesForTap = [gestureCopy touchesForTap];
+    v6 = [touchesForTap countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v6)
     {
       v7 = *v31;
@@ -1783,7 +1783,7 @@ LABEL_4:
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(touchesForTap);
         }
 
         v9 = *(*(&v30 + 1) + 8 * v8);
@@ -1794,7 +1794,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [v5 countByEnumeratingWithState:&v30 objects:v40 count:16];
+          v6 = [touchesForTap countByEnumeratingWithState:&v30 objects:v40 count:16];
           if (v6)
           {
             goto LABEL_4;
@@ -1818,8 +1818,8 @@ LABEL_27:
   v29 = 0uLL;
   v26 = 0uLL;
   v27 = 0uLL;
-  v5 = [v4 _allActiveTouches];
-  v10 = [v5 countByEnumeratingWithState:&v26 objects:v39 count:16];
+  touchesForTap = [gestureCopy _allActiveTouches];
+  v10 = [touchesForTap countByEnumeratingWithState:&v26 objects:v39 count:16];
   if (!v10)
   {
     goto LABEL_19;
@@ -1832,7 +1832,7 @@ LABEL_13:
   {
     if (*v27 != v11)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(touchesForTap);
     }
 
     v9 = *(*(&v26 + 1) + 8 * v12);
@@ -1843,7 +1843,7 @@ LABEL_13:
 
     if (v10 == ++v12)
     {
-      v10 = [v5 countByEnumeratingWithState:&v26 objects:v39 count:16];
+      v10 = [touchesForTap countByEnumeratingWithState:&v26 objects:v39 count:16];
       if (v10)
       {
         goto LABEL_13;
@@ -1861,12 +1861,12 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  v14 = [v4 view];
-  [v13 locationInView:v14];
+  view = [gestureCopy view];
+  [v13 locationInView:view];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(UITextInteraction *)self view];
+  view2 = [(UITextInteraction *)self view];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -1886,14 +1886,14 @@ LABEL_20:
   _Block_object_dispose(&v35, 8);
   if (!v20)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"id<PKScribbleInteractionWrapper> getPKScribbleInteractionInView(UIView *__strong)"];
-    [v24 handleFailureInFunction:v25 file:@"UITextInteraction.m" lineNumber:59 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v25 file:@"UITextInteraction.m" lineNumber:59 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
 
-  v21 = v20(v19);
+  v21 = v20(view2);
 
   if (v21)
   {
@@ -1913,9 +1913,9 @@ LABEL_28:
 + (double)_maximumBeamSnappingLength
 {
   v2 = +[_UIPointerSettingsDomain rootSettings];
-  v3 = [v2 beamSettings];
+  beamSettings = [v2 beamSettings];
 
-  [v3 maxSnapLength];
+  [beamSettings maxSnapLength];
   v5 = v4;
 
   return v5;
@@ -1923,100 +1923,100 @@ LABEL_28:
 
 - (void)_beginSelectionChange
 {
-  v5 = [(UITextInteraction *)self view];
-  if (([v5 _conformsToProtocolUIAsyncTextInputClient] & 1) == 0)
+  view = [(UITextInteraction *)self view];
+  if (([view _conformsToProtocolUIAsyncTextInputClient] & 1) == 0)
   {
-    v3 = [(UITextInteraction *)self view];
-    v4 = [v3 _conformsToProtocolBETextInput];
+    view2 = [(UITextInteraction *)self view];
+    _conformsToProtocolBETextInput = [view2 _conformsToProtocolBETextInput];
 
-    if (v4)
+    if (_conformsToProtocolBETextInput)
     {
       return;
     }
 
-    v5 = [(UITextInteraction *)self view];
-    [v5 beginSelectionChange];
+    view = [(UITextInteraction *)self view];
+    [view beginSelectionChange];
   }
 }
 
 - (void)_endSelectionChange
 {
-  v5 = [(UITextInteraction *)self view];
-  if (([v5 _conformsToProtocolUIAsyncTextInputClient] & 1) == 0)
+  view = [(UITextInteraction *)self view];
+  if (([view _conformsToProtocolUIAsyncTextInputClient] & 1) == 0)
   {
-    v3 = [(UITextInteraction *)self view];
-    v4 = [v3 _conformsToProtocolBETextInput];
+    view2 = [(UITextInteraction *)self view];
+    _conformsToProtocolBETextInput = [view2 _conformsToProtocolBETextInput];
 
-    if (v4)
+    if (_conformsToProtocolBETextInput)
     {
       return;
     }
 
-    v5 = [(UITextInteraction *)self view];
-    [v5 endSelectionChange];
+    view = [(UITextInteraction *)self view];
+    [view endSelectionChange];
   }
 }
 
-- (BOOL)interaction_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)interaction_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(UITextInteraction *)self assistantDelegate];
-  v7 = [(UITextInteraction *)self view];
-  v8 = [v5 view];
+  touchCopy = touch;
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+  view = [(UITextInteraction *)self view];
+  view2 = [touchCopy view];
 
   if (WebKitFramework && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    if (v8 == v7)
+    if (view2 == view)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v7 _hasSubviewContainingWebContent:v8];
+      v9 = [view _hasSubviewContainingWebContent:view2];
     }
   }
 
   else
   {
-    v10 = v7;
-    v11 = [(UITextInteraction *)self root];
-    v12 = [v11 textInput];
+    v10 = view;
+    root = [(UITextInteraction *)self root];
+    textInput = [root textInput];
 
-    v13 = v10;
-    if (v12)
+    textInputView = v10;
+    if (textInput)
     {
-      v14 = [(UITextInteraction *)self root];
-      v15 = [v14 textInput];
-      v13 = [v15 textInputView];
+      root2 = [(UITextInteraction *)self root];
+      textInput2 = [root2 textInput];
+      textInputView = [textInput2 textInputView];
     }
 
-    if ([v10 isEqual:v8] & 1) != 0 || (objc_msgSend(v13, "isDescendantOfView:", v8))
+    if ([v10 isEqual:view2] & 1) != 0 || (objc_msgSend(textInputView, "isDescendantOfView:", view2))
     {
       v9 = 1;
     }
 
     else
     {
-      v16 = [v6 _legacySelectionView];
-      v17 = [v16 rangeView];
-      if (v17 == v8)
+      _legacySelectionView = [assistantDelegate _legacySelectionView];
+      rangeView = [_legacySelectionView rangeView];
+      if (rangeView == view2)
       {
         v9 = 1;
       }
 
       else
       {
-        v18 = [v6 _selectionViewManager];
-        if ([v18 _isManagedSelectionSubview:v8])
+        _selectionViewManager = [assistantDelegate _selectionViewManager];
+        if ([_selectionViewManager _isManagedSelectionSubview:view2])
         {
           v9 = 1;
         }
 
         else if (_UITextViewAllowSelectionContainerInTextLayoutCanvas() && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
-          v19 = [v10 selectionContainerView];
-          v9 = v19 == v8;
+          selectionContainerView = [v10 selectionContainerView];
+          v9 = selectionContainerView == view2;
         }
 
         else
@@ -2030,33 +2030,33 @@ LABEL_28:
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 _isPointerTouch];
-  v9 = [(UITextInteraction *)self assistantDelegate];
-  [v9 setAutomaticSelectionCommandsSuppressedForPointerTouchType:v8];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  _isPointerTouch = [touchCopy _isPointerTouch];
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+  [assistantDelegate setAutomaticSelectionCommandsSuppressedForPointerTouchType:_isPointerTouch];
 
-  v10 = [(UITextInteraction *)self assistantDelegate];
-  LODWORD(v9) = [v10 supportsIndirectInteractions];
+  assistantDelegate2 = [(UITextInteraction *)self assistantDelegate];
+  LODWORD(assistantDelegate) = [assistantDelegate2 supportsIndirectInteractions];
 
-  if (v9 && ![(UITextInteraction *)self _shouldAllowEnforcedTouchTypeForTouch:v7 forGestureRecognizer:v6])
+  if (assistantDelegate && ![(UITextInteraction *)self _shouldAllowEnforcedTouchTypeForTouch:touchCopy forGestureRecognizer:recognizerCopy])
   {
     v13 = 0;
   }
 
   else
   {
-    v11 = [(UITextInteraction *)self assistantDelegate];
+    assistantDelegate3 = [(UITextInteraction *)self assistantDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 overrideGestureRecognizer:v6 shouldReceiveTouch:v7];
+      v12 = [assistantDelegate3 overrideGestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy];
     }
 
     else
     {
-      v12 = [(UITextInteraction *)self interaction_gestureRecognizer:v6 shouldReceiveTouch:v7];
+      v12 = [(UITextInteraction *)self interaction_gestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy];
     }
 
     v13 = v12;
@@ -2065,13 +2065,13 @@ LABEL_28:
   return v13;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [a4 _pairedGestureIdentifiersAndCreate:0];
+  recognizerCopy = recognizer;
+  v6 = [gestureRecognizer _pairedGestureIdentifiersAndCreate:0];
   if (v6)
   {
-    v7 = [v5 _pairedGestureIdentifiersAndCreate:0];
+    v7 = [recognizerCopy _pairedGestureIdentifiersAndCreate:0];
     v8 = [v7 intersectsSet:v6];
   }
 
@@ -2083,12 +2083,12 @@ LABEL_28:
   return v8;
 }
 
-- (void)_presentTextEditMenuWithOverrideMenu:(id)a3
+- (void)_presentTextEditMenuWithOverrideMenu:(id)menu
 {
-  v4 = a3;
-  v6 = [(UITextInteraction *)self assistantDelegate];
-  v5 = [v6 _editMenuAssistant];
-  [v5 _presentEditMenuWithPreferredDirection:0 overrideMenu:v4];
+  menuCopy = menu;
+  assistantDelegate = [(UITextInteraction *)self assistantDelegate];
+  _editMenuAssistant = [assistantDelegate _editMenuAssistant];
+  [_editMenuAssistant _presentEditMenuWithPreferredDirection:0 overrideMenu:menuCopy];
 }
 
 @end

@@ -1,44 +1,44 @@
 @interface SXPhoneNumberActionActivityProvider
-- (SXPhoneNumberActionActivityProvider)initWithHost:(id)a3 messagePresenter:(id)a4 deviceCapabilities:(id)a5;
-- (id)activityGroupForAction:(id)a3;
-- (void)call:(id)a3 showDialog:(BOOL)a4;
-- (void)copy:(id)a3;
-- (void)faceTime:(id)a3;
-- (void)message:(id)a3;
+- (SXPhoneNumberActionActivityProvider)initWithHost:(id)host messagePresenter:(id)presenter deviceCapabilities:(id)capabilities;
+- (id)activityGroupForAction:(id)action;
+- (void)call:(id)call showDialog:(BOOL)dialog;
+- (void)copy:(id)copy;
+- (void)faceTime:(id)time;
+- (void)message:(id)message;
 @end
 
 @implementation SXPhoneNumberActionActivityProvider
 
-- (SXPhoneNumberActionActivityProvider)initWithHost:(id)a3 messagePresenter:(id)a4 deviceCapabilities:(id)a5
+- (SXPhoneNumberActionActivityProvider)initWithHost:(id)host messagePresenter:(id)presenter deviceCapabilities:(id)capabilities
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  hostCopy = host;
+  presenterCopy = presenter;
+  capabilitiesCopy = capabilities;
   v15.receiver = self;
   v15.super_class = SXPhoneNumberActionActivityProvider;
   v12 = [(SXPhoneNumberActionActivityProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_host, a3);
-    objc_storeStrong(&v13->_messagePresenter, a4);
-    objc_storeStrong(&v13->_deviceCapabilities, a5);
+    objc_storeStrong(&v12->_host, host);
+    objc_storeStrong(&v13->_messagePresenter, presenter);
+    objc_storeStrong(&v13->_deviceCapabilities, capabilities);
   }
 
   return v13;
 }
 
-- (id)activityGroupForAction:(id)a3
+- (id)activityGroupForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [SXActionActivityGroup alloc];
-  v6 = [v4 phoneNumber];
-  v7 = [(SXActionActivityGroup *)v5 initWithTitle:v6];
+  phoneNumber = [actionCopy phoneNumber];
+  v7 = [(SXActionActivityGroup *)v5 initWithTitle:phoneNumber];
 
-  v8 = [(SXPhoneNumberActionActivityProvider *)self deviceCapabilities];
-  v9 = [v8 hasCellularTelephonyCapabilities];
+  deviceCapabilities = [(SXPhoneNumberActionActivityProvider *)self deviceCapabilities];
+  hasCellularTelephonyCapabilities = [deviceCapabilities hasCellularTelephonyCapabilities];
 
-  if (v9)
+  if (hasCellularTelephonyCapabilities)
   {
     v10 = [SXBlockActionActivity alloc];
     v11 = SXBundle();
@@ -48,7 +48,7 @@
     v40[2] = __62__SXPhoneNumberActionActivityProvider_activityGroupForAction___block_invoke;
     v40[3] = &unk_1E84FEDD0;
     v40[4] = self;
-    v41 = v4;
+    v41 = actionCopy;
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __62__SXPhoneNumberActionActivityProvider_activityGroupForAction___block_invoke_2;
@@ -66,13 +66,13 @@
   v36[2] = __62__SXPhoneNumberActionActivityProvider_activityGroupForAction___block_invoke_3;
   v36[3] = &unk_1E84FEDD0;
   v36[4] = self;
-  v16 = v4;
+  v16 = actionCopy;
   v37 = v16;
   v17 = [(SXBlockActionActivity *)v14 initWithLabel:v15 type:1 block:v36];
   [(SXActionActivityGroup *)v7 addActivity:v17];
 
-  v18 = [(SXPhoneNumberActionActivityProvider *)self messagePresenter];
-  LODWORD(v15) = [v18 canPresentMessage];
+  messagePresenter = [(SXPhoneNumberActionActivityProvider *)self messagePresenter];
+  LODWORD(v15) = [messagePresenter canPresentMessage];
 
   if (v15)
   {
@@ -83,84 +83,84 @@
     v31 = 3221225472;
     v32 = __62__SXPhoneNumberActionActivityProvider_activityGroupForAction___block_invoke_4;
     v33 = &unk_1E84FEDD0;
-    v34 = self;
+    selfCopy = self;
     v35 = v16;
     v22 = [(SXBlockActionActivity *)v19 initWithLabel:v21 type:1 block:&v30];
-    [(SXActionActivityGroup *)v7 addActivity:v22, v30, v31, v32, v33, v34];
+    [(SXActionActivityGroup *)v7 addActivity:v22, v30, v31, v32, v33, selfCopy];
   }
 
   v23 = [SXPasteboardActionActivity alloc];
   v24 = SXBundle();
   v25 = [v24 localizedStringForKey:@"Copy" value:&stru_1F532F6C0 table:0];
-  v26 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  v27 = [v16 phoneNumber];
-  v28 = [(SXPasteboardActionActivity *)v23 initWithLabel:v25 type:1 pasteboard:v26 string:v27];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  phoneNumber2 = [v16 phoneNumber];
+  v28 = [(SXPasteboardActionActivity *)v23 initWithLabel:v25 type:1 pasteboard:generalPasteboard string:phoneNumber2];
   [(SXActionActivityGroup *)v7 addActivity:v28];
 
   return v7;
 }
 
-- (void)call:(id)a3 showDialog:(BOOL)a4
+- (void)call:(id)call showDialog:(BOOL)dialog
 {
-  v4 = a4;
+  dialogCopy = dialog;
   v6 = MEMORY[0x1E69D8A90];
-  v7 = a3;
+  callCopy = call;
   v16 = objc_alloc_init(v6);
   v8 = [v16 providersPassingTest:&__block_literal_global_103];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
   v10 = objc_alloc(MEMORY[0x1E69D8C00]);
-  v11 = [v7 phoneNumber];
+  phoneNumber = [callCopy phoneNumber];
 
-  v12 = [v10 initWithType:2 value:v11];
-  v13 = [objc_alloc(MEMORY[0x1E69D8BD0]) initWithProvider:v9];
+  v12 = [v10 initWithType:2 value:phoneNumber];
+  v13 = [objc_alloc(MEMORY[0x1E69D8BD0]) initWithProvider:firstObject];
   [v13 setVideo:0];
   [v13 setHandle:v12];
-  [v13 setShowUIPrompt:v4];
-  v14 = [(SXPhoneNumberActionActivityProvider *)self host];
+  [v13 setShowUIPrompt:dialogCopy];
+  host = [(SXPhoneNumberActionActivityProvider *)self host];
   v15 = [v13 URL];
-  [v14 openURL:v15 completion:0];
+  [host openURL:v15 completion:0];
 }
 
-- (void)faceTime:(id)a3
+- (void)faceTime:(id)time
 {
   v4 = MEMORY[0x1E69D8A90];
-  v5 = a3;
+  timeCopy = time;
   v14 = objc_alloc_init(v4);
   v6 = [v14 providersPassingTest:&__block_literal_global_19_0];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   v8 = objc_alloc(MEMORY[0x1E69D8C00]);
-  v9 = [v5 phoneNumber];
+  phoneNumber = [timeCopy phoneNumber];
 
-  v10 = [v8 initWithType:2 value:v9];
-  v11 = [objc_alloc(MEMORY[0x1E69D8BD0]) initWithProvider:v7];
+  v10 = [v8 initWithType:2 value:phoneNumber];
+  v11 = [objc_alloc(MEMORY[0x1E69D8BD0]) initWithProvider:firstObject];
   [v11 setVideo:0];
   [v11 setHandle:v10];
-  v12 = [(SXPhoneNumberActionActivityProvider *)self host];
+  host = [(SXPhoneNumberActionActivityProvider *)self host];
   v13 = [v11 URL];
-  [v12 openURL:v13 completion:0];
+  [host openURL:v13 completion:0];
 }
 
-- (void)message:(id)a3
+- (void)message:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [SXPresentableMessage alloc];
-  v6 = [v4 phoneNumber];
+  phoneNumber = [messageCopy phoneNumber];
 
-  v8 = [(SXPresentableMessage *)v5 initWithRecipient:v6 message:0];
-  v7 = [(SXPhoneNumberActionActivityProvider *)self messagePresenter];
-  [v7 presentMessage:v8];
+  v8 = [(SXPresentableMessage *)v5 initWithRecipient:phoneNumber message:0];
+  messagePresenter = [(SXPhoneNumberActionActivityProvider *)self messagePresenter];
+  [messagePresenter presentMessage:v8];
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v3 = MEMORY[0x1E69DCD50];
-  v4 = a3;
-  v6 = [v3 generalPasteboard];
-  v5 = [v4 phoneNumber];
+  copyCopy = copy;
+  generalPasteboard = [v3 generalPasteboard];
+  phoneNumber = [copyCopy phoneNumber];
 
-  [v6 setString:v5];
+  [generalPasteboard setString:phoneNumber];
 }
 
 @end

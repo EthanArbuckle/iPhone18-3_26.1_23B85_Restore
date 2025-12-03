@@ -3,14 +3,14 @@
 + (void)setFontValues;
 - (BOOL)isLayoutSizeDependentOnPerpendicularAxis;
 - (CGRect)frame;
-- (CGSize)sizeForTargetSize:(CGSize)a3;
+- (CGSize)sizeForTargetSize:(CGSize)size;
 - (NSString)description;
 - (TLKLabelItem)init;
 - (_NSRange)columnRange;
 - (double)effectiveBaselineOffsetFromContentBottom;
 - (double)effectiveFirstBaselineOffsetFromContentTop;
-- (float)contentCompressionResistancePriorityForAxis:(int64_t)a3;
-- (float)contentHuggingPriorityForAxis:(int64_t)a3;
+- (float)contentCompressionResistancePriorityForAxis:(int64_t)axis;
+- (float)contentHuggingPriorityForAxis:(int64_t)axis;
 - (id)attributedString;
 @end
 
@@ -32,15 +32,15 @@
 
 + (void)initialize
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __26__TLKLabelItem_initialize__block_invoke;
   v5[3] = &__block_descriptor_40_e24_v16__0__NSNotification_8l;
-  v5[4] = a1;
-  v4 = [v3 addObserverForName:@"TLKContentSizeCategoryDidChangeNotification" object:0 queue:0 usingBlock:v5];
+  v5[4] = self;
+  v4 = [defaultCenter addObserverForName:@"TLKContentSizeCategoryDidChangeNotification" object:0 queue:0 usingBlock:v5];
 
-  [a1 setFontValues];
+  [self setFontValues];
 }
 
 + (void)setFontValues
@@ -56,8 +56,8 @@
 
 - (BOOL)isLayoutSizeDependentOnPerpendicularAxis
 {
-  v2 = [(TLKLabelItem *)self richText];
-  v3 = [v2 maxLines] != 1;
+  richText = [(TLKLabelItem *)self richText];
+  v3 = [richText maxLines] != 1;
 
   return v3;
 }
@@ -80,9 +80,9 @@
   return v4;
 }
 
-- (float)contentCompressionResistancePriorityForAxis:(int64_t)a3
+- (float)contentCompressionResistancePriorityForAxis:(int64_t)axis
 {
-  if (a3)
+  if (axis)
   {
     return 999.0;
   }
@@ -91,9 +91,9 @@
   return v6;
 }
 
-- (float)contentHuggingPriorityForAxis:(int64_t)a3
+- (float)contentHuggingPriorityForAxis:(int64_t)axis
 {
-  if (a3)
+  if (axis)
   {
     return 999.0;
   }
@@ -102,17 +102,17 @@
   return v6;
 }
 
-- (CGSize)sizeForTargetSize:(CGSize)a3
+- (CGSize)sizeForTargetSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = objc_alloc_init(MEMORY[0x1E69DB7E0]);
   [v6 setWrapsForTruncationMode:1];
-  v7 = [(TLKLabelItem *)self richText];
-  [v6 setMaximumNumberOfLines:{objc_msgSend(v7, "maxLines")}];
+  richText = [(TLKLabelItem *)self richText];
+  [v6 setMaximumNumberOfLines:{objc_msgSend(richText, "maxLines")}];
 
-  v8 = [(TLKLabelItem *)self attributedString];
-  [v8 boundingRectWithSize:1 options:v6 context:{width, height}];
+  attributedString = [(TLKLabelItem *)self attributedString];
+  [attributedString boundingRectWithSize:1 options:v6 context:{width, height}];
   v10 = v9;
   v12 = v11;
 
@@ -125,9 +125,9 @@
 
 - (id)attributedString
 {
-  v2 = [(TLKLabelItem *)self richText];
+  richText = [(TLKLabelItem *)self richText];
   LOBYTE(v5) = 0;
-  v3 = [TLKFontUtilities attributedStringForRichText:v2 appearance:0 prominence:0 alignment:4 font:font isButton:0 scale:0.0 isDark:v5];
+  v3 = [TLKFontUtilities attributedStringForRichText:richText appearance:0 prominence:0 alignment:4 font:font isButton:0 scale:0.0 isDark:v5];
 
   return v3;
 }
@@ -138,7 +138,7 @@
   v17.receiver = self;
   v17.super_class = TLKLabelItem;
   v4 = [(TLKLabelItem *)&v17 description];
-  v5 = [(TLKLabelItem *)self attributedString];
+  attributedString = [(TLKLabelItem *)self attributedString];
   v6 = NSStringFromRange(self->columnRange);
   [(TLKLabelItem *)self frame];
   v7 = NSStringFromCGRect(v19);
@@ -149,7 +149,7 @@
   v12 = MEMORY[0x1E696AD98];
   [(TLKLabelItem *)self horizontalCompressionResistance];
   v14 = [v12 numberWithInteger:v13];
-  v15 = [v3 stringWithFormat:@"%@ string = %@ range = %@ frame = %@ row = %@ CH = %@ CR = %@", v4, v5, v6, v7, v8, v11, v14];
+  v15 = [v3 stringWithFormat:@"%@ string = %@ range = %@ frame = %@ row = %@ CH = %@ CR = %@", v4, attributedString, v6, v7, v8, v11, v14];
 
   return v15;
 }

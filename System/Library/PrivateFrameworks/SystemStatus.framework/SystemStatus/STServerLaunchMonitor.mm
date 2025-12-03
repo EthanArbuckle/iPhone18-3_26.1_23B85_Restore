@@ -1,9 +1,9 @@
 @interface STServerLaunchMonitor
 + (id)sharedInstance;
 - (STServerLaunchMonitor)init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation STServerLaunchMonitor
@@ -36,9 +36,9 @@ uint64_t __39__STServerLaunchMonitor_sharedInstance__block_invoke()
   v2 = [(STServerLaunchMonitor *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
     internalQueue = v2->_internalQueue;
@@ -179,9 +179,9 @@ void __35__STServerLaunchMonitor_invalidate__block_invoke(uint64_t a1)
   *(v2 + 16) = 0;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -197,8 +197,8 @@ void __35__STServerLaunchMonitor_invalidate__block_invoke(uint64_t a1)
   v7[2] = __37__STServerLaunchMonitor_addObserver___block_invoke;
   v7[3] = &unk_1E85DDD00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -213,9 +213,9 @@ uint64_t __37__STServerLaunchMonitor_addObserver___block_invoke(uint64_t a1)
   return [v1 addObject:*(a1 + 40)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (self)
   {
     internalQueue = self->_internalQueue;
@@ -231,8 +231,8 @@ uint64_t __37__STServerLaunchMonitor_addObserver___block_invoke(uint64_t a1)
   v7[2] = __40__STServerLaunchMonitor_removeObserver___block_invoke;
   v7[3] = &unk_1E85DDD00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(internalQueue, v7);
 }
 

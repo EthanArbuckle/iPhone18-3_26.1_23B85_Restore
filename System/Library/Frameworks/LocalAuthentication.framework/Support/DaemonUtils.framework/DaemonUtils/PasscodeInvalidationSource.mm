@@ -1,5 +1,5 @@
 @interface PasscodeInvalidationSource
-- (PasscodeInvalidationSource)initWithPreflightCache:(id)a3;
+- (PasscodeInvalidationSource)initWithPreflightCache:(id)cache;
 - (id)invalidationReason;
 - (void)dealloc;
 - (void)updateStatus;
@@ -7,15 +7,15 @@
 
 @implementation PasscodeInvalidationSource
 
-- (PasscodeInvalidationSource)initWithPreflightCache:(id)a3
+- (PasscodeInvalidationSource)initWithPreflightCache:(id)cache
 {
   v6.receiver = self;
   v6.super_class = PasscodeInvalidationSource;
-  v3 = [(PreflightCacheInvalidationSource *)&v6 initWithPreflightCache:a3];
+  v3 = [(PreflightCacheInvalidationSource *)&v6 initWithPreflightCache:cache];
   if (v3)
   {
-    v4 = [MEMORY[0x277D24090] sharedInstance];
-    [v4 addObserver:v3];
+    mEMORY[0x277D24090] = [MEMORY[0x277D24090] sharedInstance];
+    [mEMORY[0x277D24090] addObserver:v3];
   }
 
   return v3;
@@ -23,8 +23,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D24090] sharedInstance];
-  [v3 removeObserver:self];
+  mEMORY[0x277D24090] = [MEMORY[0x277D24090] sharedInstance];
+  [mEMORY[0x277D24090] removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PasscodeInvalidationSource;
@@ -33,16 +33,16 @@
 
 - (void)updateStatus
 {
-  v3 = [MEMORY[0x277D24090] sharedInstance];
-  -[PreflightCacheInvalidationSource setStatus:](self, "setStatus:", [v3 isPasscodeSet]);
+  mEMORY[0x277D24090] = [MEMORY[0x277D24090] sharedInstance];
+  -[PreflightCacheInvalidationSource setStatus:](self, "setStatus:", [mEMORY[0x277D24090] isPasscodeSet]);
 }
 
 - (id)invalidationReason
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PreflightCacheInvalidationSource *)self status];
+  status = [(PreflightCacheInvalidationSource *)self status];
   v4 = "off";
-  if (v3)
+  if (status)
   {
     v4 = "on";
   }

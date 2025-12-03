@@ -2,7 +2,7 @@
 + (id)UserInteractions;
 + (id)configurationForUserInteractions;
 + (id)storeConfigurationForUserInteractions;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)UserInteractions
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUserInteractions];
+  configurationForUserInteractions = [self configurationForUserInteractions];
   v3 = +[BMFeedbackLearningUserInteraction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.FeedbackLearning.UserInteractions" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.FeedbackLearning.UserInteractions" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.FeedbackLearning.UserInteractions" schema:v9 configuration:configurationForUserInteractions];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -33,8 +33,8 @@
 + (id)configurationForUserInteractions
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForUserInteractions];
-  v4 = [a1 syncPolicyForUserInteractions];
+  storeConfigurationForUserInteractions = [self storeConfigurationForUserInteractions];
+  syncPolicyForUserInteractions = [self syncPolicyForUserInteractions];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"TRUEPREDICATE" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"delete-siri-dictation-history" predicate:v6];
@@ -49,7 +49,7 @@
   v13 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"117529A8-2051-42ED-81E8-2B6C8295BFEA"];
   BYTE2(v17) = 1;
   LOWORD(v17) = 1;
-  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"Siri.FeedbackLearning.UserInteractions" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
+  v14 = [v12 _libraryStreamConfigurationWithUUID:v13 streamIdentifier:@"Siri.FeedbackLearning.UserInteractions" eventClass:objc_opt_class() storeConfig:storeConfigurationForUserInteractions syncPolicy:syncPolicyForUserInteractions legacyNames:0 internalMetadata:0 enableSubscriptions:v17 enableSubscriptionSubstream:0 enableTombstoneSubstream:v11 allowedClients:0 pruningTriggers:v18[0] spaceAttributionOwner:?];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -64,19 +64,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"UserInteractions"])
+  if ([name isEqualToString:@"UserInteractions"])
   {
-    v4 = [a1 UserInteractions];
+    userInteractions = [self UserInteractions];
   }
 
   else
   {
-    v4 = 0;
+    userInteractions = 0;
   }
 
-  return v4;
+  return userInteractions;
 }
 
 + (id)validKeyPaths

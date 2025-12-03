@@ -1,39 +1,39 @@
 @interface HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry)initWithCodableRecords:(id)a3 syncProvenance:(int64_t)a4;
-- (HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry)initWithCodableRecords:(id)records syncProvenance:(int64_t)provenance;
+- (HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry
 
-- (HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry)initWithCodableRecords:(id)a3 syncProvenance:(int64_t)a4
+- (HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry)initWithCodableRecords:(id)records syncProvenance:(int64_t)provenance
 {
-  v6 = a3;
+  recordsCopy = records;
   v11.receiver = self;
   v11.super_class = HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry;
   v7 = [(HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [recordsCopy copy];
     records = v7->_records;
     v7->_records = v8;
 
-    v7->_syncProvenance = a4;
+    v7->_syncProvenance = provenance;
   }
 
   return v7;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  v7 = [entriesCopy countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v7)
   {
     v9 = v7;
@@ -46,14 +46,14 @@
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 records];
-        v14 = [v12 syncProvenance];
+        records = [v12 records];
+        syncProvenance = [v12 syncProvenance];
         v22 = 0;
-        v15 = [HDOriginalSignedClinicalDataRecordEntity insertCodableOriginalRecordsFromSync:v13 syncProvenance:v14 profile:v6 error:&v22];
+        v15 = [HDOriginalSignedClinicalDataRecordEntity insertCodableOriginalRecordsFromSync:records syncProvenance:syncProvenance profile:profileCopy error:&v22];
         v16 = v22;
 
         if ((v15 & 1) == 0)
@@ -74,55 +74,55 @@
         }
       }
 
-      v9 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v9 = [entriesCopy countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v9);
   }
 }
 
-- (HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry)initWithCoder:(id)a3
+- (HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [NSSet hk_typesForArrayOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"codableOriginalRecords"];
-  if (v6 && ([v4 containsValueForKey:@"syncProvenance"] & 1) != 0)
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"codableOriginalRecords"];
+  if (v6 && ([coderCopy containsValueForKey:@"syncProvenance"] & 1) != 0)
   {
     v12.receiver = self;
     v12.super_class = HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry;
-    v7 = [(HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry *)&v12 initWithCoder:v4];
+    v7 = [(HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry *)&v12 initWithCoder:coderCopy];
     if (v7)
     {
       v8 = [v6 copy];
       records = v7->_records;
       v7->_records = v8;
 
-      v7->_syncProvenance = [v4 decodeIntegerForKey:@"syncProvenance"];
+      v7->_syncProvenance = [coderCopy decodeIntegerForKey:@"syncProvenance"];
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry *)self records];
-  [v4 encodeObject:v5 forKey:@"codableOriginalRecords"];
+  coderCopy = coder;
+  records = [(HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry *)self records];
+  [coderCopy encodeObject:records forKey:@"codableOriginalRecords"];
 
-  [v4 encodeInteger:-[HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry syncProvenance](self forKey:{"syncProvenance"), @"syncProvenance"}];
+  [coderCopy encodeInteger:-[HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry syncProvenance](self forKey:{"syncProvenance"), @"syncProvenance"}];
   v6.receiver = self;
   v6.super_class = HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry;
-  [(HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry *)&v6 encodeWithCoder:v4];
+  [(HDOriginalSignedClinicalDataInsertCodableFromSyncJournalEntry *)&v6 encodeWithCoder:coderCopy];
 }
 
 @end

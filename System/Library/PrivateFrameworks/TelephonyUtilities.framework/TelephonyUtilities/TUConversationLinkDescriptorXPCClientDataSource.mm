@@ -3,43 +3,43 @@
 + (NSXPCInterface)serverXPCInterface;
 + (TUConversationLinkDescriptorXPCServer)asynchronousServer;
 + (TUConversationLinkDescriptorXPCServer)synchronousServer;
-+ (void)setAsynchronousServer:(id)a3;
-+ (void)setSynchronousServer:(id)a3;
-- (BOOL)addConversationLinkDescriptors:(id)a3 error:(id *)a4;
-- (BOOL)addOrUpdateConversationLinkDescriptors:(id)a3 error:(id *)a4;
-- (BOOL)setInteger:(int64_t)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setString:(id)a3 forKey:(id)a4 error:(id *)a5;
++ (void)setAsynchronousServer:(id)server;
++ (void)setSynchronousServer:(id)server;
+- (BOOL)addConversationLinkDescriptors:(id)descriptors error:(id *)error;
+- (BOOL)addOrUpdateConversationLinkDescriptors:(id)descriptors error:(id *)error;
+- (BOOL)setInteger:(int64_t)integer forKey:(id)key error:(id *)error;
+- (BOOL)setString:(id)string forKey:(id)key error:(id *)error;
 - (NSXPCConnection)xpcConnection;
 - (TUConversationLinkDescriptorDataSourceDelegate)conversationLinkDescriptorDataSourceDelegate;
 - (TUConversationLinkDescriptorXPCClientDataSource)init;
-- (id)asynchronousServerWithErrorHandler:(id)a3;
-- (id)conversationLinkDescriptorsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 error:(id *)a6;
-- (id)stringForKey:(id)a3 error:(id *)a4;
-- (id)synchronousServerWithErrorHandler:(id)a3;
-- (int64_t)integerForKey:(id)a3 error:(id *)a4;
-- (unint64_t)conversationLinkDescriptorCountWithPredicate:(id)a3 error:(id *)a4;
-- (unint64_t)removeConversationLinkDescriptorsWithPredicate:(id)a3 deleteReason:(int64_t)a4 error:(id *)a5;
-- (unint64_t)removeLinkDescriptorsFromDataSourceWithPredicate:(id)a3 error:(id *)a4;
-- (unint64_t)setExpirationDate:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 error:(id *)a6;
-- (unint64_t)setInvitedHandles:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 error:(id *)a6;
-- (unint64_t)setName:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 error:(id *)a6;
-- (void)addConversationLinkDescriptors:(id)a3 completion:(id)a4;
-- (void)addOrUpdateConversationLinkDescriptors:(id)a3 completion:(id)a4;
-- (void)conversationLinkDescriptorCountWithPredicate:(id)a3 completion:(id)a4;
+- (id)asynchronousServerWithErrorHandler:(id)handler;
+- (id)conversationLinkDescriptorsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset error:(id *)error;
+- (id)stringForKey:(id)key error:(id *)error;
+- (id)synchronousServerWithErrorHandler:(id)handler;
+- (int64_t)integerForKey:(id)key error:(id *)error;
+- (unint64_t)conversationLinkDescriptorCountWithPredicate:(id)predicate error:(id *)error;
+- (unint64_t)removeConversationLinkDescriptorsWithPredicate:(id)predicate deleteReason:(int64_t)reason error:(id *)error;
+- (unint64_t)removeLinkDescriptorsFromDataSourceWithPredicate:(id)predicate error:(id *)error;
+- (unint64_t)setExpirationDate:(id)date withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate error:(id *)error;
+- (unint64_t)setInvitedHandles:(id)handles withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate error:(id *)error;
+- (unint64_t)setName:(id)name withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate error:(id *)error;
+- (void)addConversationLinkDescriptors:(id)descriptors completion:(id)completion;
+- (void)addOrUpdateConversationLinkDescriptors:(id)descriptors completion:(id)completion;
+- (void)conversationLinkDescriptorCountWithPredicate:(id)predicate completion:(id)completion;
 - (void)conversationLinkDescriptorsDidChange;
-- (void)conversationLinkDescriptorsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 completion:(id)a6;
+- (void)conversationLinkDescriptorsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset completion:(id)completion;
 - (void)dealloc;
-- (void)integerForKey:(id)a3 completion:(id)a4;
-- (void)removeConversationLinkDescriptorsWithPredicate:(id)a3 deleteReason:(int64_t)a4 completion:(id)a5;
-- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)a3 completion:(id)a4;
-- (void)setConversationLinkDescriptorDataSourceDelegate:(id)a3;
-- (void)setExpirationDate:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 completion:(id)a6;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setInvitedHandles:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 completion:(id)a6;
-- (void)setName:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 completion:(id)a6;
-- (void)setString:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setXpcConnection:(id)a3;
-- (void)stringForKey:(id)a3 completion:(id)a4;
+- (void)integerForKey:(id)key completion:(id)completion;
+- (void)removeConversationLinkDescriptorsWithPredicate:(id)predicate deleteReason:(int64_t)reason completion:(id)completion;
+- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)predicate completion:(id)completion;
+- (void)setConversationLinkDescriptorDataSourceDelegate:(id)delegate;
+- (void)setExpirationDate:(id)date withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate completion:(id)completion;
+- (void)setInteger:(int64_t)integer forKey:(id)key completion:(id)completion;
+- (void)setInvitedHandles:(id)handles withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate completion:(id)completion;
+- (void)setName:(id)name withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate completion:(id)completion;
+- (void)setString:(id)string forKey:(id)key completion:(id)completion;
+- (void)setXpcConnection:(id)connection;
+- (void)stringForKey:(id)key completion:(id)completion;
 @end
 
 @implementation TUConversationLinkDescriptorXPCClientDataSource
@@ -54,11 +54,11 @@
     v5 = self->_xpcConnection;
     self->_xpcConnection = v4;
 
-    v6 = [objc_opt_class() serverXPCInterface];
-    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v6];
+    serverXPCInterface = [objc_opt_class() serverXPCInterface];
+    [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:serverXPCInterface];
 
-    v7 = [objc_opt_class() clientXPCInterface];
-    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v7];
+    clientXPCInterface = [objc_opt_class() clientXPCInterface];
+    [(NSXPCConnection *)self->_xpcConnection setExportedInterface:clientXPCInterface];
 
     [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
     objc_initWeak(&location, self);
@@ -109,9 +109,9 @@
   return WeakRetained;
 }
 
-+ (void)setAsynchronousServer:(id)a3
++ (void)setAsynchronousServer:(id)server
 {
-  obj = a3;
+  obj = server;
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer);
 
   v4 = obj;
@@ -129,9 +129,9 @@
   return WeakRetained;
 }
 
-+ (void)setSynchronousServer:(id)a3
++ (void)setSynchronousServer:(id)server
 {
-  obj = a3;
+  obj = server;
   WeakRetained = objc_loadWeakRetained(&sSynchronousServer);
 
   v4 = obj;
@@ -233,9 +233,9 @@ void __69__TUConversationLinkDescriptorXPCClientDataSource_serverXPCInterface__b
   [serverXPCInterface_sServerXPCInterface setClasses:v28 forSelector:sel_setName_withRevision_forConversationLinkDescriptorsWithPredicate_reply_ argumentIndex:2 ofReply:0];
 }
 
-- (id)asynchronousServerWithErrorHandler:(id)a3
+- (id)asynchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -245,16 +245,16 @@ void __69__TUConversationLinkDescriptorXPCClientDataSource_serverXPCInterface__b
 
   else
   {
-    v8 = [(TUConversationLinkDescriptorXPCClientDataSource *)self xpcConnection];
-    v7 = [v8 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUConversationLinkDescriptorXPCClientDataSource *)self xpcConnection];
+    v7 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&sSynchronousServer);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -264,8 +264,8 @@ void __69__TUConversationLinkDescriptorXPCClientDataSource_serverXPCInterface__b
 
   else
   {
-    v8 = [(TUConversationLinkDescriptorXPCClientDataSource *)self xpcConnection];
-    v7 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUConversationLinkDescriptorXPCClientDataSource *)self xpcConnection];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v7;
@@ -298,13 +298,13 @@ void __64__TUConversationLinkDescriptorXPCClientDataSource_xpcConnection__block_
   }
 }
 
-- (void)setXpcConnection:(id)a3
+- (void)setXpcConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_xpcConnection != v5)
+  if (self->_xpcConnection != connectionCopy)
   {
-    objc_storeStrong(&self->_xpcConnection, a3);
+    objc_storeStrong(&self->_xpcConnection, connection);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -319,21 +319,21 @@ void __64__TUConversationLinkDescriptorXPCClientDataSource_xpcConnection__block_
   return v3;
 }
 
-- (void)setConversationLinkDescriptorDataSourceDelegate:(id)a3
+- (void)setConversationLinkDescriptorDataSourceDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_conversationLinkDescriptorDataSourceDelegate != v5)
+  if (self->_conversationLinkDescriptorDataSourceDelegate != delegateCopy)
   {
-    objc_storeStrong(&self->_conversationLinkDescriptorDataSourceDelegate, a3);
+    objc_storeStrong(&self->_conversationLinkDescriptorDataSourceDelegate, delegate);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (BOOL)addConversationLinkDescriptors:(id)a3 error:(id *)a4
+- (BOOL)addConversationLinkDescriptors:(id)descriptors error:(id *)error
 {
-  v6 = a3;
+  descriptorsCopy = descriptors;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -356,14 +356,14 @@ void __64__TUConversationLinkDescriptorXPCClientDataSource_xpcConnection__block_
   v11[3] = &unk_1E74249E8;
   v11[4] = &v19;
   v11[5] = &v13;
-  [v7 addConversationLinkDescriptors:v6 reply:v11];
+  [v7 addConversationLinkDescriptors:descriptorsCopy reply:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -388,16 +388,16 @@ void __88__TUConversationLinkDescriptorXPCClientDataSource_addConversationLinkDe
   *(v5 + 40) = v3;
 }
 
-- (void)addConversationLinkDescriptors:(id)a3 completion:(id)a4
+- (void)addConversationLinkDescriptors:(id)descriptors completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__TUConversationLinkDescriptorXPCClientDataSource_addConversationLinkDescriptors_completion___block_invoke;
   v13[3] = &unk_1E7424A10;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  descriptorsCopy = descriptors;
   v9 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -405,7 +405,7 @@ void __88__TUConversationLinkDescriptorXPCClientDataSource_addConversationLinkDe
   v11[3] = &unk_1E7424A38;
   v12 = v7;
   v10 = v7;
-  [v9 addConversationLinkDescriptors:v8 reply:v11];
+  [v9 addConversationLinkDescriptors:descriptorsCopy reply:v11];
 }
 
 void __93__TUConversationLinkDescriptorXPCClientDataSource_addConversationLinkDescriptors_completion___block_invoke(uint64_t a1, void *a2)
@@ -435,9 +435,9 @@ uint64_t __93__TUConversationLinkDescriptorXPCClientDataSource_addConversationLi
   return result;
 }
 
-- (BOOL)addOrUpdateConversationLinkDescriptors:(id)a3 error:(id *)a4
+- (BOOL)addOrUpdateConversationLinkDescriptors:(id)descriptors error:(id *)error
 {
-  v6 = a3;
+  descriptorsCopy = descriptors;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -460,14 +460,14 @@ uint64_t __93__TUConversationLinkDescriptorXPCClientDataSource_addConversationLi
   v11[3] = &unk_1E74249E8;
   v11[4] = &v19;
   v11[5] = &v13;
-  [v7 addOrUpdateConversationLinkDescriptors:v6 reply:v11];
+  [v7 addOrUpdateConversationLinkDescriptors:descriptorsCopy reply:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -492,16 +492,16 @@ void __96__TUConversationLinkDescriptorXPCClientDataSource_addOrUpdateConversati
   *(v5 + 40) = v3;
 }
 
-- (void)addOrUpdateConversationLinkDescriptors:(id)a3 completion:(id)a4
+- (void)addOrUpdateConversationLinkDescriptors:(id)descriptors completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__TUConversationLinkDescriptorXPCClientDataSource_addOrUpdateConversationLinkDescriptors_completion___block_invoke;
   v13[3] = &unk_1E7424A10;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  descriptorsCopy = descriptors;
   v9 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -509,7 +509,7 @@ void __96__TUConversationLinkDescriptorXPCClientDataSource_addOrUpdateConversati
   v11[3] = &unk_1E7424A38;
   v12 = v7;
   v10 = v7;
-  [v9 addOrUpdateConversationLinkDescriptors:v8 reply:v11];
+  [v9 addOrUpdateConversationLinkDescriptors:descriptorsCopy reply:v11];
 }
 
 void __101__TUConversationLinkDescriptorXPCClientDataSource_addOrUpdateConversationLinkDescriptors_completion___block_invoke(uint64_t a1, void *a2)
@@ -539,9 +539,9 @@ uint64_t __101__TUConversationLinkDescriptorXPCClientDataSource_addOrUpdateConve
   return result;
 }
 
-- (unint64_t)conversationLinkDescriptorCountWithPredicate:(id)a3 error:(id *)a4
+- (unint64_t)conversationLinkDescriptorCountWithPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -564,14 +564,14 @@ uint64_t __101__TUConversationLinkDescriptorXPCClientDataSource_addOrUpdateConve
   v11[3] = &unk_1E7424A60;
   v11[4] = &v19;
   v11[5] = &v13;
-  [v7 conversationLinkDescriptorCountWithPredicate:v6 reply:v11];
+  [v7 conversationLinkDescriptorCountWithPredicate:predicateCopy reply:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -596,16 +596,16 @@ void __102__TUConversationLinkDescriptorXPCClientDataSource_conversationLinkDesc
   *(v5 + 40) = v3;
 }
 
-- (void)conversationLinkDescriptorCountWithPredicate:(id)a3 completion:(id)a4
+- (void)conversationLinkDescriptorCountWithPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __107__TUConversationLinkDescriptorXPCClientDataSource_conversationLinkDescriptorCountWithPredicate_completion___block_invoke;
   v13[3] = &unk_1E7424A10;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  predicateCopy = predicate;
   v9 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -613,7 +613,7 @@ void __102__TUConversationLinkDescriptorXPCClientDataSource_conversationLinkDesc
   v11[3] = &unk_1E7424A88;
   v12 = v7;
   v10 = v7;
-  [v9 conversationLinkDescriptorCountWithPredicate:v8 reply:v11];
+  [v9 conversationLinkDescriptorCountWithPredicate:predicateCopy reply:v11];
 }
 
 void __107__TUConversationLinkDescriptorXPCClientDataSource_conversationLinkDescriptorCountWithPredicate_completion___block_invoke(uint64_t a1, void *a2)
@@ -643,9 +643,9 @@ uint64_t __107__TUConversationLinkDescriptorXPCClientDataSource_conversationLink
   return result;
 }
 
-- (id)conversationLinkDescriptorsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 error:(id *)a6
+- (id)conversationLinkDescriptorsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset error:(id *)error
 {
-  v10 = a3;
+  predicateCopy = predicate;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -670,14 +670,14 @@ uint64_t __107__TUConversationLinkDescriptorXPCClientDataSource_conversationLink
   v15[3] = &unk_1E7424AB0;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v11 conversationLinkDescriptorsWithPredicate:v10 limit:a4 offset:a5 reply:v15];
+  [v11 conversationLinkDescriptorsWithPredicate:predicateCopy limit:limit offset:offset reply:v15];
 
-  if (a6)
+  if (error)
   {
     v12 = v18[5];
     if (v12)
     {
-      *a6 = v12;
+      *error = v12;
     }
   }
 
@@ -717,16 +717,16 @@ void __111__TUConversationLinkDescriptorXPCClientDataSource_conversationLinkDesc
   *(v9 + 40) = v6;
 }
 
-- (void)conversationLinkDescriptorsWithPredicate:(id)a3 limit:(unint64_t)a4 offset:(unint64_t)a5 completion:(id)a6
+- (void)conversationLinkDescriptorsWithPredicate:(id)predicate limit:(unint64_t)limit offset:(unint64_t)offset completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __116__TUConversationLinkDescriptorXPCClientDataSource_conversationLinkDescriptorsWithPredicate_limit_offset_completion___block_invoke;
   v17[3] = &unk_1E7424A10;
-  v11 = v10;
+  v11 = completionCopy;
   v18 = v11;
-  v12 = a3;
+  predicateCopy = predicate;
   v13 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v17];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -734,7 +734,7 @@ void __111__TUConversationLinkDescriptorXPCClientDataSource_conversationLinkDesc
   v15[3] = &unk_1E7424AD8;
   v16 = v11;
   v14 = v11;
-  [v13 conversationLinkDescriptorsWithPredicate:v12 limit:a4 offset:a5 reply:v15];
+  [v13 conversationLinkDescriptorsWithPredicate:predicateCopy limit:limit offset:offset reply:v15];
 }
 
 void __116__TUConversationLinkDescriptorXPCClientDataSource_conversationLinkDescriptorsWithPredicate_limit_offset_completion___block_invoke(uint64_t a1, void *a2)
@@ -764,9 +764,9 @@ uint64_t __116__TUConversationLinkDescriptorXPCClientDataSource_conversationLink
   return result;
 }
 
-- (unint64_t)removeConversationLinkDescriptorsWithPredicate:(id)a3 deleteReason:(int64_t)a4 error:(id *)a5
+- (unint64_t)removeConversationLinkDescriptorsWithPredicate:(id)predicate deleteReason:(int64_t)reason error:(id *)error
 {
-  v8 = a3;
+  predicateCopy = predicate;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -789,14 +789,14 @@ uint64_t __116__TUConversationLinkDescriptorXPCClientDataSource_conversationLink
   v13[3] = &unk_1E7424A60;
   v13[4] = &v21;
   v13[5] = &v15;
-  [v9 removeConversationLinkDescriptorsWithPredicate:v8 deleteReason:a4 reply:v13];
+  [v9 removeConversationLinkDescriptorsWithPredicate:predicateCopy deleteReason:reason reply:v13];
 
-  if (a5)
+  if (error)
   {
     v10 = v16[5];
     if (v10)
     {
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -821,16 +821,16 @@ void __117__TUConversationLinkDescriptorXPCClientDataSource_removeConversationLi
   *(v5 + 40) = v3;
 }
 
-- (void)removeConversationLinkDescriptorsWithPredicate:(id)a3 deleteReason:(int64_t)a4 completion:(id)a5
+- (void)removeConversationLinkDescriptorsWithPredicate:(id)predicate deleteReason:(int64_t)reason completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __122__TUConversationLinkDescriptorXPCClientDataSource_removeConversationLinkDescriptorsWithPredicate_deleteReason_completion___block_invoke;
   v15[3] = &unk_1E7424A10;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
-  v10 = a3;
+  predicateCopy = predicate;
   v11 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -838,7 +838,7 @@ void __117__TUConversationLinkDescriptorXPCClientDataSource_removeConversationLi
   v13[3] = &unk_1E7424A88;
   v14 = v9;
   v12 = v9;
-  [v11 removeConversationLinkDescriptorsWithPredicate:v10 deleteReason:a4 reply:v13];
+  [v11 removeConversationLinkDescriptorsWithPredicate:predicateCopy deleteReason:reason reply:v13];
 }
 
 void __122__TUConversationLinkDescriptorXPCClientDataSource_removeConversationLinkDescriptorsWithPredicate_deleteReason_completion___block_invoke(uint64_t a1, void *a2)
@@ -868,9 +868,9 @@ uint64_t __122__TUConversationLinkDescriptorXPCClientDataSource_removeConversati
   return result;
 }
 
-- (unint64_t)removeLinkDescriptorsFromDataSourceWithPredicate:(id)a3 error:(id *)a4
+- (unint64_t)removeLinkDescriptorsFromDataSourceWithPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  predicateCopy = predicate;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -893,14 +893,14 @@ uint64_t __122__TUConversationLinkDescriptorXPCClientDataSource_removeConversati
   v11[3] = &unk_1E7424A60;
   v11[4] = &v19;
   v11[5] = &v13;
-  [v7 removeLinkDescriptorsFromDataSourceWithPredicate:v6 reply:v11];
+  [v7 removeLinkDescriptorsFromDataSourceWithPredicate:predicateCopy reply:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -925,16 +925,16 @@ void __106__TUConversationLinkDescriptorXPCClientDataSource_removeLinkDescriptor
   *(v5 + 40) = v3;
 }
 
-- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)a3 completion:(id)a4
+- (void)removeLinkDescriptorsFromDataSourceWithPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __111__TUConversationLinkDescriptorXPCClientDataSource_removeLinkDescriptorsFromDataSourceWithPredicate_completion___block_invoke;
   v13[3] = &unk_1E7424A10;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  predicateCopy = predicate;
   v9 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -942,7 +942,7 @@ void __106__TUConversationLinkDescriptorXPCClientDataSource_removeLinkDescriptor
   v11[3] = &unk_1E7424A88;
   v12 = v7;
   v10 = v7;
-  [v9 removeLinkDescriptorsFromDataSourceWithPredicate:v8 reply:v11];
+  [v9 removeLinkDescriptorsFromDataSourceWithPredicate:predicateCopy reply:v11];
 }
 
 void __111__TUConversationLinkDescriptorXPCClientDataSource_removeLinkDescriptorsFromDataSourceWithPredicate_completion___block_invoke(uint64_t a1, void *a2)
@@ -1013,10 +1013,10 @@ uint64_t __132__TUConversationLinkDescriptorXPCClientDataSource_setActivated_wit
   return result;
 }
 
-- (unint64_t)setExpirationDate:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 error:(id *)a6
+- (unint64_t)setExpirationDate:(id)date withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  dateCopy = date;
+  predicateCopy = predicate;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1039,14 +1039,14 @@ uint64_t __132__TUConversationLinkDescriptorXPCClientDataSource_setActivated_wit
   v16[3] = &unk_1E7424A60;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v12 setExpirationDate:v10 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v11 reply:v16];
+  [v12 setExpirationDate:dateCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:v16];
 
-  if (a6)
+  if (error)
   {
     v13 = v19[5];
     if (v13)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -1071,17 +1071,17 @@ void __132__TUConversationLinkDescriptorXPCClientDataSource_setExpirationDate_wi
   *(v5 + 40) = v3;
 }
 
-- (void)setExpirationDate:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 completion:(id)a6
+- (void)setExpirationDate:(id)date withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __137__TUConversationLinkDescriptorXPCClientDataSource_setExpirationDate_withRevision_forConversationLinkDescriptorsWithPredicate_completion___block_invoke;
   v18[3] = &unk_1E7424A10;
-  v11 = v10;
+  v11 = completionCopy;
   v19 = v11;
-  v12 = a5;
-  v13 = a3;
+  predicateCopy = predicate;
+  dateCopy = date;
   v14 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v18];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -1089,7 +1089,7 @@ void __132__TUConversationLinkDescriptorXPCClientDataSource_setExpirationDate_wi
   v16[3] = &unk_1E7424A88;
   v17 = v11;
   v15 = v11;
-  [v14 setExpirationDate:v13 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v12 reply:v16];
+  [v14 setExpirationDate:dateCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:v16];
 }
 
 void __137__TUConversationLinkDescriptorXPCClientDataSource_setExpirationDate_withRevision_forConversationLinkDescriptorsWithPredicate_completion___block_invoke(uint64_t a1, void *a2)
@@ -1119,10 +1119,10 @@ uint64_t __137__TUConversationLinkDescriptorXPCClientDataSource_setExpirationDat
   return result;
 }
 
-- (unint64_t)setInvitedHandles:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 error:(id *)a6
+- (unint64_t)setInvitedHandles:(id)handles withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  handlesCopy = handles;
+  predicateCopy = predicate;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1145,14 +1145,14 @@ uint64_t __137__TUConversationLinkDescriptorXPCClientDataSource_setExpirationDat
   v16[3] = &unk_1E7424A60;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v12 setInvitedHandles:v10 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v11 reply:v16];
+  [v12 setInvitedHandles:handlesCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:v16];
 
-  if (a6)
+  if (error)
   {
     v13 = v19[5];
     if (v13)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -1177,17 +1177,17 @@ void __132__TUConversationLinkDescriptorXPCClientDataSource_setInvitedHandles_wi
   *(v5 + 40) = v3;
 }
 
-- (void)setInvitedHandles:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 completion:(id)a6
+- (void)setInvitedHandles:(id)handles withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __137__TUConversationLinkDescriptorXPCClientDataSource_setInvitedHandles_withRevision_forConversationLinkDescriptorsWithPredicate_completion___block_invoke;
   v18[3] = &unk_1E7424A10;
-  v11 = v10;
+  v11 = completionCopy;
   v19 = v11;
-  v12 = a5;
-  v13 = a3;
+  predicateCopy = predicate;
+  handlesCopy = handles;
   v14 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v18];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -1195,7 +1195,7 @@ void __132__TUConversationLinkDescriptorXPCClientDataSource_setInvitedHandles_wi
   v16[3] = &unk_1E7424A88;
   v17 = v11;
   v15 = v11;
-  [v14 setInvitedHandles:v13 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v12 reply:v16];
+  [v14 setInvitedHandles:handlesCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:v16];
 }
 
 void __137__TUConversationLinkDescriptorXPCClientDataSource_setInvitedHandles_withRevision_forConversationLinkDescriptorsWithPredicate_completion___block_invoke(uint64_t a1, void *a2)
@@ -1225,10 +1225,10 @@ uint64_t __137__TUConversationLinkDescriptorXPCClientDataSource_setInvitedHandle
   return result;
 }
 
-- (unint64_t)setName:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 error:(id *)a6
+- (unint64_t)setName:(id)name withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  nameCopy = name;
+  predicateCopy = predicate;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -1251,14 +1251,14 @@ uint64_t __137__TUConversationLinkDescriptorXPCClientDataSource_setInvitedHandle
   v16[3] = &unk_1E7424A60;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v12 setName:v10 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v11 reply:v16];
+  [v12 setName:nameCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:v16];
 
-  if (a6)
+  if (error)
   {
     v13 = v19[5];
     if (v13)
     {
-      *a6 = v13;
+      *error = v13;
     }
   }
 
@@ -1283,17 +1283,17 @@ void __122__TUConversationLinkDescriptorXPCClientDataSource_setName_withRevision
   *(v5 + 40) = v3;
 }
 
-- (void)setName:(id)a3 withRevision:(int64_t)a4 forConversationLinkDescriptorsWithPredicate:(id)a5 completion:(id)a6
+- (void)setName:(id)name withRevision:(int64_t)revision forConversationLinkDescriptorsWithPredicate:(id)predicate completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __127__TUConversationLinkDescriptorXPCClientDataSource_setName_withRevision_forConversationLinkDescriptorsWithPredicate_completion___block_invoke;
   v18[3] = &unk_1E7424A10;
-  v11 = v10;
+  v11 = completionCopy;
   v19 = v11;
-  v12 = a5;
-  v13 = a3;
+  predicateCopy = predicate;
+  nameCopy = name;
   v14 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v18];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -1301,7 +1301,7 @@ void __122__TUConversationLinkDescriptorXPCClientDataSource_setName_withRevision
   v16[3] = &unk_1E7424A88;
   v17 = v11;
   v15 = v11;
-  [v14 setName:v13 withRevision:a4 forConversationLinkDescriptorsWithPredicate:v12 reply:v16];
+  [v14 setName:nameCopy withRevision:revision forConversationLinkDescriptorsWithPredicate:predicateCopy reply:v16];
 }
 
 void __127__TUConversationLinkDescriptorXPCClientDataSource_setName_withRevision_forConversationLinkDescriptorsWithPredicate_completion___block_invoke(uint64_t a1, void *a2)
@@ -1331,9 +1331,9 @@ uint64_t __127__TUConversationLinkDescriptorXPCClientDataSource_setName_withRevi
   return result;
 }
 
-- (BOOL)setInteger:(int64_t)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setInteger:(int64_t)integer forKey:(id)key error:(id *)error
 {
-  v8 = a4;
+  keyCopy = key;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1356,14 +1356,14 @@ uint64_t __127__TUConversationLinkDescriptorXPCClientDataSource_setName_withRevi
   v13[3] = &unk_1E74249E8;
   v13[4] = &v21;
   v13[5] = &v15;
-  [v9 setInteger:a3 forKey:v8 reply:v13];
+  [v9 setInteger:integer forKey:keyCopy reply:v13];
 
-  if (a5)
+  if (error)
   {
     v10 = v16[5];
     if (v10)
     {
-      *a5 = v10;
+      *error = v10;
     }
   }
 
@@ -1388,16 +1388,16 @@ void __75__TUConversationLinkDescriptorXPCClientDataSource_setInteger_forKey_err
   *(v5 + 40) = v3;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 completion:(id)a5
+- (void)setInteger:(int64_t)integer forKey:(id)key completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__TUConversationLinkDescriptorXPCClientDataSource_setInteger_forKey_completion___block_invoke;
   v15[3] = &unk_1E7424A10;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
-  v10 = a4;
+  keyCopy = key;
   v11 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1405,7 +1405,7 @@ void __75__TUConversationLinkDescriptorXPCClientDataSource_setInteger_forKey_err
   v13[3] = &unk_1E7424A38;
   v14 = v9;
   v12 = v9;
-  [v11 setInteger:a3 forKey:v10 reply:v13];
+  [v11 setInteger:integer forKey:keyCopy reply:v13];
 }
 
 void __80__TUConversationLinkDescriptorXPCClientDataSource_setInteger_forKey_completion___block_invoke(uint64_t a1, void *a2)
@@ -1435,16 +1435,16 @@ uint64_t __80__TUConversationLinkDescriptorXPCClientDataSource_setInteger_forKey
   return result;
 }
 
-- (void)integerForKey:(id)a3 completion:(id)a4
+- (void)integerForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__TUConversationLinkDescriptorXPCClientDataSource_integerForKey_completion___block_invoke;
   v13[3] = &unk_1E7424A10;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  keyCopy = key;
   v9 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1452,7 +1452,7 @@ uint64_t __80__TUConversationLinkDescriptorXPCClientDataSource_setInteger_forKey
   v11[3] = &unk_1E7424B00;
   v12 = v7;
   v10 = v7;
-  [v9 integerForKey:v8 reply:v11];
+  [v9 integerForKey:keyCopy reply:v11];
 }
 
 void __76__TUConversationLinkDescriptorXPCClientDataSource_integerForKey_completion___block_invoke(uint64_t a1, void *a2)
@@ -1482,9 +1482,9 @@ uint64_t __76__TUConversationLinkDescriptorXPCClientDataSource_integerForKey_com
   return result;
 }
 
-- (int64_t)integerForKey:(id)a3 error:(id *)a4
+- (int64_t)integerForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -1507,14 +1507,14 @@ uint64_t __76__TUConversationLinkDescriptorXPCClientDataSource_integerForKey_com
   v11[3] = &unk_1E7424B28;
   v11[4] = &v19;
   v11[5] = &v13;
-  [v7 integerForKey:v6 reply:v11];
+  [v7 integerForKey:keyCopy reply:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -1539,10 +1539,10 @@ void __71__TUConversationLinkDescriptorXPCClientDataSource_integerForKey_error__
   *(v5 + 40) = v3;
 }
 
-- (BOOL)setString:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setString:(id)string forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  keyCopy = key;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -1565,14 +1565,14 @@ void __71__TUConversationLinkDescriptorXPCClientDataSource_integerForKey_error__
   v14[3] = &unk_1E74249E8;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v10 setString:v8 forKey:v9 reply:v14];
+  [v10 setString:stringCopy forKey:keyCopy reply:v14];
 
-  if (a5)
+  if (error)
   {
     v11 = v17[5];
     if (v11)
     {
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -1597,17 +1597,17 @@ void __74__TUConversationLinkDescriptorXPCClientDataSource_setString_forKey_erro
   *(v5 + 40) = v3;
 }
 
-- (void)setString:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setString:(id)string forKey:(id)key completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __79__TUConversationLinkDescriptorXPCClientDataSource_setString_forKey_completion___block_invoke;
   v16[3] = &unk_1E7424A10;
-  v9 = v8;
+  v9 = completionCopy;
   v17 = v9;
-  v10 = a4;
-  v11 = a3;
+  keyCopy = key;
+  stringCopy = string;
   v12 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -1615,7 +1615,7 @@ void __74__TUConversationLinkDescriptorXPCClientDataSource_setString_forKey_erro
   v14[3] = &unk_1E7424A38;
   v15 = v9;
   v13 = v9;
-  [v12 setString:v11 forKey:v10 reply:v14];
+  [v12 setString:stringCopy forKey:keyCopy reply:v14];
 }
 
 void __79__TUConversationLinkDescriptorXPCClientDataSource_setString_forKey_completion___block_invoke(uint64_t a1, void *a2)
@@ -1645,16 +1645,16 @@ uint64_t __79__TUConversationLinkDescriptorXPCClientDataSource_setString_forKey_
   return result;
 }
 
-- (void)stringForKey:(id)a3 completion:(id)a4
+- (void)stringForKey:(id)key completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__TUConversationLinkDescriptorXPCClientDataSource_stringForKey_completion___block_invoke;
   v13[3] = &unk_1E7424A10;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  keyCopy = key;
   v9 = [(TUConversationLinkDescriptorXPCClientDataSource *)self asynchronousServerWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -1662,7 +1662,7 @@ uint64_t __79__TUConversationLinkDescriptorXPCClientDataSource_setString_forKey_
   v11[3] = &unk_1E7424B50;
   v12 = v7;
   v10 = v7;
-  [v9 stringForKey:v8 reply:v11];
+  [v9 stringForKey:keyCopy reply:v11];
 }
 
 void __75__TUConversationLinkDescriptorXPCClientDataSource_stringForKey_completion___block_invoke(uint64_t a1, void *a2)
@@ -1692,9 +1692,9 @@ uint64_t __75__TUConversationLinkDescriptorXPCClientDataSource_stringForKey_comp
   return result;
 }
 
-- (id)stringForKey:(id)a3 error:(id *)a4
+- (id)stringForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1719,14 +1719,14 @@ uint64_t __75__TUConversationLinkDescriptorXPCClientDataSource_stringForKey_comp
   v11[3] = &unk_1E7424B78;
   v11[4] = &v19;
   v11[5] = &v13;
-  [v7 stringForKey:v6 reply:v11];
+  [v7 stringForKey:keyCopy reply:v11];
 
-  if (a4)
+  if (error)
   {
     v8 = v14[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -1768,8 +1768,8 @@ void __70__TUConversationLinkDescriptorXPCClientDataSource_stringForKey_error___
 
 - (void)conversationLinkDescriptorsDidChange
 {
-  v3 = [(TUConversationLinkDescriptorXPCClientDataSource *)self conversationLinkDescriptorDataSourceDelegate];
-  [v3 conversationLinkDescriptorsDidChangeForDataSource:self];
+  conversationLinkDescriptorDataSourceDelegate = [(TUConversationLinkDescriptorXPCClientDataSource *)self conversationLinkDescriptorDataSourceDelegate];
+  [conversationLinkDescriptorDataSourceDelegate conversationLinkDescriptorsDidChangeForDataSource:self];
 }
 
 void __88__TUConversationLinkDescriptorXPCClientDataSource_addConversationLinkDescriptors_error___block_invoke_cold_1()

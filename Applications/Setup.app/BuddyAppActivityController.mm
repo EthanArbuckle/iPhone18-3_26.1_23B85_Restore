@@ -1,14 +1,14 @@
 @interface BuddyAppActivityController
-+ (void)clearAppActivitySettingWithSettingsManager:(id)a3 buddyPreferences:(id)a4;
-+ (void)setAppActivityEnabled:(BOOL)a3 presented:(BOOL)a4 settingsManager:(id)a5 buddyPreferences:(id)a6;
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3;
++ (void)clearAppActivitySettingWithSettingsManager:(id)manager buddyPreferences:(id)preferences;
++ (void)setAppActivityEnabled:(BOOL)enabled presented:(BOOL)presented settingsManager:(id)manager buddyPreferences:(id)preferences;
++ (void)skippedByCloudConfigWithEnvironment:(id)environment;
 - (BOOL)controllerNeedsToRun;
 - (BOOL)settingIsRestrictedOrAlreadyEnabledOrDiagnosticSubmissionNotAllowed;
 - (BYPreferencesController)buddyPreferences;
 - (BuddyAppActivityController)init;
-- (void)_disableAppAnalytics:(id)a3;
-- (void)_enableAppAnalytics:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_disableAppAnalytics:(id)analytics;
+- (void)_enableAppAnalytics:(id)analytics;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -25,9 +25,9 @@
   v14 = [(NSBundle *)v3 localizedStringForKey:@"APP_ANALYTICS_DESCRIPTION" value:&stru_10032F900 table:@"Localizable"];
 
   v4 = +[UIDevice currentDevice];
-  v5 = [(UIDevice *)v4 sf_isChinaRegionCellularDevice];
+  sf_isChinaRegionCellularDevice = [(UIDevice *)v4 sf_isChinaRegionCellularDevice];
 
-  if (v5)
+  if (sf_isChinaRegionCellularDevice)
   {
     v6 = +[NSBundle mainBundle];
     v7 = [(NSBundle *)v6 localizedStringForKey:@"ANALYTICS_CELLULAR_DATA_NOTICE" value:&stru_10032F900 table:@"Localizable"];
@@ -51,7 +51,7 @@
 
 - (BYPreferencesController)buddyPreferences
 {
-  v9 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (!self->_buddyPreferences)
   {
@@ -68,96 +68,96 @@
     objc_storeStrong(oslog, 0);
   }
 
-  buddyPreferences = v9->_buddyPreferences;
+  buddyPreferences = selfCopy->_buddyPreferences;
 
   return buddyPreferences;
 }
 
 - (void)viewDidLoad
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
   v13.receiver = self;
   v13.super_class = BuddyAppActivityController;
   [(BuddyAppActivityController *)&v13 viewDidLoad];
-  v2 = [(BuddyAppActivityController *)v15 headerView];
-  [v2 setIconInheritsTint:1];
+  headerView = [(BuddyAppActivityController *)selfCopy headerView];
+  [headerView setIconInheritsTint:1];
 
-  v3 = [(BuddyAppActivityController *)v15 managedConfiguration];
-  v4 = [(MCProfileConnection *)v3 userBoolValueForSetting:MCFeatureAppAnalyticsAllowed];
-  [(BuddyAppActivityController *)v15 setInitialAppAnalyticsUserSetting:v4];
+  managedConfiguration = [(BuddyAppActivityController *)selfCopy managedConfiguration];
+  v4 = [(MCProfileConnection *)managedConfiguration userBoolValueForSetting:MCFeatureAppAnalyticsAllowed];
+  [(BuddyAppActivityController *)selfCopy setInitialAppAnalyticsUserSetting:v4];
 
-  v5 = v15;
+  v5 = selfCopy;
   v6 = +[NSBundle mainBundle];
   v7 = [(NSBundle *)v6 localizedStringForKey:@"ENABLE_SHARE_APP_ANALYTICS_WITH_DEVELOPERS" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v5 addBoldButton:v7 action:"_enableAppAnalytics:"];
 
-  v8 = v15;
+  v8 = selfCopy;
   v9 = +[NSBundle mainBundle];
   v10 = [(NSBundle *)v9 localizedStringForKey:@"DISABLE_SHARE_APP_ANALYTICS_WITH_DEVELOPERS" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v8 addLinkButton:v10 action:"_disableAppAnalytics:"];
 
-  v11 = [(BuddyAppActivityController *)v15 buttonTray];
+  buttonTray = [(BuddyAppActivityController *)selfCopy buttonTray];
   v16 = BYPrivacyAnalyticsAppIdentifier;
   v12 = [NSArray arrayWithObjects:&v16 count:1];
-  [v11 setPrivacyLinkForBundles:v12];
+  [buttonTray setPrivacyLinkForBundles:v12];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  appearCopy = appear;
   v11.receiver = self;
   v11.super_class = BuddyAppActivityController;
-  [(BuddyAppActivityController *)&v11 viewDidAppear:a3];
-  if (([(BuddyAppActivityController *)v14 isMovingToParentViewController]& 1) == 0)
+  [(BuddyAppActivityController *)&v11 viewDidAppear:appear];
+  if (([(BuddyAppActivityController *)selfCopy isMovingToParentViewController]& 1) == 0)
   {
-    v3 = [(BuddyAppActivityController *)v14 buddyPreferences];
-    [(BYPreferencesController *)v3 setObject:&__kCFBooleanFalse forKey:@"PBAppActivity2Presented"];
+    buddyPreferences = [(BuddyAppActivityController *)selfCopy buddyPreferences];
+    [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanFalse forKey:@"PBAppActivity2Presented"];
 
-    if ([(BuddyAppActivityController *)v14 initialAppAnalyticsUserSetting])
+    if ([(BuddyAppActivityController *)selfCopy initialAppAnalyticsUserSetting])
     {
-      if ([(BuddyAppActivityController *)v14 initialAppAnalyticsUserSetting]== 2)
+      if ([(BuddyAppActivityController *)selfCopy initialAppAnalyticsUserSetting]== 2)
       {
         v8 = objc_opt_class();
-        v9 = [(BuddyAppActivityController *)v14 settingsManager];
-        v10 = [(BuddyAppActivityController *)v14 buddyPreferences];
-        [v8 setAppActivityEnabled:0 presented:0 settingsManager:v9 buddyPreferences:v10];
+        settingsManager = [(BuddyAppActivityController *)selfCopy settingsManager];
+        buddyPreferences2 = [(BuddyAppActivityController *)selfCopy buddyPreferences];
+        [v8 setAppActivityEnabled:0 presented:0 settingsManager:settingsManager buddyPreferences:buddyPreferences2];
       }
     }
 
     else
     {
-      v4 = [(BuddyAppActivityController *)v14 paneFeatureAnalyticsManager];
-      [(BYPaneFeatureAnalyticsManager *)v4 clearActionForFeature:4];
+      paneFeatureAnalyticsManager = [(BuddyAppActivityController *)selfCopy paneFeatureAnalyticsManager];
+      [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager clearActionForFeature:4];
 
       v5 = objc_opt_class();
-      v6 = [(BuddyAppActivityController *)v14 settingsManager];
-      v7 = [(BuddyAppActivityController *)v14 buddyPreferences];
-      [v5 clearAppActivitySettingWithSettingsManager:v6 buddyPreferences:v7];
+      settingsManager2 = [(BuddyAppActivityController *)selfCopy settingsManager];
+      buddyPreferences3 = [(BuddyAppActivityController *)selfCopy buddyPreferences];
+      [v5 clearAppActivitySettingWithSettingsManager:settingsManager2 buddyPreferences:buddyPreferences3];
     }
   }
 }
 
 - (BOOL)settingIsRestrictedOrAlreadyEnabledOrDiagnosticSubmissionNotAllowed
 {
-  v2 = [(BuddyAppActivityController *)self capabilities];
-  v3 = [(BYCapabilities *)v2 isAppAnalyticsRestricted];
+  capabilities = [(BuddyAppActivityController *)self capabilities];
+  isAppAnalyticsRestricted = [(BYCapabilities *)capabilities isAppAnalyticsRestricted];
   v9 = 0;
   v7 = 0;
   v4 = 1;
-  if ((v3 & 1) == 0)
+  if ((isAppAnalyticsRestricted & 1) == 0)
   {
-    v10 = [(BuddyAppActivityController *)self managedConfiguration];
+    managedConfiguration = [(BuddyAppActivityController *)self managedConfiguration];
     v9 = 1;
-    v5 = [(MCProfileConnection *)v10 effectiveBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed];
+    v5 = [(MCProfileConnection *)managedConfiguration effectiveBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed];
     v4 = 1;
     if (v5 == 1)
     {
-      v8 = [(BuddyAppActivityController *)self managedConfiguration];
+      managedConfiguration2 = [(BuddyAppActivityController *)self managedConfiguration];
       v7 = 1;
-      v4 = [(MCProfileConnection *)v8 effectiveBoolValueForSetting:MCFeatureAppAnalyticsAllowed]== 1;
+      v4 = [(MCProfileConnection *)managedConfiguration2 effectiveBoolValueForSetting:MCFeatureAppAnalyticsAllowed]== 1;
     }
   }
 
@@ -173,80 +173,80 @@
   return v12;
 }
 
-+ (void)setAppActivityEnabled:(BOOL)a3 presented:(BOOL)a4 settingsManager:(id)a5 buddyPreferences:(id)a6
++ (void)setAppActivityEnabled:(BOOL)enabled presented:(BOOL)presented settingsManager:(id)manager buddyPreferences:(id)preferences
 {
-  v14 = a1;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
+  enabledCopy = enabled;
+  presentedCopy = presented;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, manager);
   v9 = 0;
-  objc_storeStrong(&v9, a6);
-  [location setBool:v12 forManagedConfigurationSetting:MCFeatureAppAnalyticsAllowed];
+  objc_storeStrong(&v9, preferences);
+  [location setBool:enabledCopy forManagedConfigurationSetting:MCFeatureAppAnalyticsAllowed];
   v7 = v9;
-  v8 = [NSNumber numberWithBool:v11];
+  v8 = [NSNumber numberWithBool:presentedCopy];
   [v7 setObject:v8 forKey:@"PBAppActivity2Presented"];
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&location, 0);
 }
 
-+ (void)clearAppActivitySettingWithSettingsManager:(id)a3 buddyPreferences:(id)a4
++ (void)clearAppActivitySettingWithSettingsManager:(id)manager buddyPreferences:(id)preferences
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, preferences);
   [location[0] removeBoolSettingForManagedConfigurationSetting:MCFeatureAppAnalyticsAllowed];
   [v5 removeObjectForKey:@"PBAppActivity2Presented"];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_enableAppAnalytics:(id)a3
+- (void)_enableAppAnalytics:(id)analytics
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppActivityController *)v8 settingsManager];
-  v4 = [(BuddyAppActivityController *)v8 buddyPreferences];
-  [BuddyAppActivityController setAppActivityEnabled:1 presented:1 settingsManager:v3 buddyPreferences:v4];
+  objc_storeStrong(location, analytics);
+  settingsManager = [(BuddyAppActivityController *)selfCopy settingsManager];
+  buddyPreferences = [(BuddyAppActivityController *)selfCopy buddyPreferences];
+  [BuddyAppActivityController setAppActivityEnabled:1 presented:1 settingsManager:settingsManager buddyPreferences:buddyPreferences];
 
-  v5 = [(BuddyAppActivityController *)v8 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v5 recordActionWithValue:&__kCFBooleanTrue forFeature:4];
+  paneFeatureAnalyticsManager = [(BuddyAppActivityController *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:&__kCFBooleanTrue forFeature:4];
 
-  v6 = [(BuddyWelcomeController *)v8 delegate];
-  [(BFFFlowItemDelegate *)v6 flowItemDone:v8];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_disableAppAnalytics:(id)a3
+- (void)_disableAppAnalytics:(id)analytics
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyAppActivityController *)v8 settingsManager];
-  v4 = [(BuddyAppActivityController *)v8 buddyPreferences];
-  [BuddyAppActivityController setAppActivityEnabled:0 presented:1 settingsManager:v3 buddyPreferences:v4];
+  objc_storeStrong(location, analytics);
+  settingsManager = [(BuddyAppActivityController *)selfCopy settingsManager];
+  buddyPreferences = [(BuddyAppActivityController *)selfCopy buddyPreferences];
+  [BuddyAppActivityController setAppActivityEnabled:0 presented:1 settingsManager:settingsManager buddyPreferences:buddyPreferences];
 
-  v5 = [(BuddyAppActivityController *)v8 paneFeatureAnalyticsManager];
-  [(BYPaneFeatureAnalyticsManager *)v5 recordActionWithValue:&__kCFBooleanFalse forFeature:4];
+  paneFeatureAnalyticsManager = [(BuddyAppActivityController *)selfCopy paneFeatureAnalyticsManager];
+  [(BYPaneFeatureAnalyticsManager *)paneFeatureAnalyticsManager recordActionWithValue:&__kCFBooleanFalse forFeature:4];
 
-  v6 = [(BuddyWelcomeController *)v8 delegate];
-  [(BFFFlowItemDelegate *)v6 flowItemDone:v8];
+  delegate = [(BuddyWelcomeController *)selfCopy delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:selfCopy];
 
   objc_storeStrong(location, 0);
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v15 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BuddyAppActivityController *)self settingIsRestrictedOrAlreadyEnabledOrDiagnosticSubmissionNotAllowed])
   {
@@ -266,8 +266,8 @@
 
   else
   {
-    v4 = [(BuddyAppActivityController *)v15 buddyPreferences];
-    v5 = [(BYPreferencesController *)v4 BOOLForKey:@"PBAppActivity2Presented"];
+    buddyPreferences = [(BuddyAppActivityController *)selfCopy buddyPreferences];
+    v5 = [(BYPreferencesController *)buddyPreferences BOOLForKey:@"PBAppActivity2Presented"];
 
     if (v5)
     {
@@ -292,16 +292,16 @@
   }
 }
 
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3
++ (void)skippedByCloudConfigWithEnvironment:(id)environment
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v7;
-  v4 = [location[0] settingsManager];
-  v5 = [location[0] buddyPreferences];
-  [v3 setAppActivityEnabled:0 presented:0 settingsManager:v4 buddyPreferences:v5];
+  objc_storeStrong(location, environment);
+  v3 = selfCopy;
+  settingsManager = [location[0] settingsManager];
+  buddyPreferences = [location[0] buddyPreferences];
+  [v3 setAppActivityEnabled:0 presented:0 settingsManager:settingsManager buddyPreferences:buddyPreferences];
 
   objc_storeStrong(location, 0);
 }

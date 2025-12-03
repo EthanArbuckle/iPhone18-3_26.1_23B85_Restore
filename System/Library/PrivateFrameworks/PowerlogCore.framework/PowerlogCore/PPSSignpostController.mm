@@ -2,10 +2,10 @@
 + (id)_workQueue;
 + (void)registerDataCollectionActivity;
 + (void)unregisterDataCollectionActivity;
-- (BOOL)_handleTask:(id)a3;
-- (BOOL)_performWithStartDate:(id)a3 endDate:(id)a4;
+- (BOOL)_handleTask:(id)task;
+- (BOOL)_performWithStartDate:(id)date endDate:(id)endDate;
 - (PPSSignpostController)init;
-- (id)generateForTimeRange:(id)a3;
+- (id)generateForTimeRange:(id)range;
 @end
 
 @implementation PPSSignpostController
@@ -24,26 +24,26 @@
     v6.receiver = self;
     v6.super_class = PPSSignpostController;
     self = [(PPSSignpostController *)&v6 init];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)generateForTimeRange:(id)a3
+- (id)generateForTimeRange:(id)range
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rangeCopy = range;
   v5 = PPSLogSignpostController();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = rangeCopy;
     _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_DEFAULT, "Signpost collection requested on-demand for range: %@", &buf, 0xCu);
   }
 
@@ -52,16 +52,16 @@
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__6;
   v17 = __Block_byref_object_dispose__6;
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = +[PPSSignpostController _workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__PPSSignpostController_generateForTimeRange___block_invoke;
   block[3] = &unk_1E8519128;
   block[4] = self;
-  v12 = v4;
+  v12 = rangeCopy;
   p_buf = &buf;
-  v7 = v4;
+  v7 = rangeCopy;
   dispatch_sync(v6, block);
 
   v8 = *(*(&buf + 1) + 40);
@@ -226,7 +226,7 @@ id __46__PPSSignpostController_generateForTimeRange___block_invoke_56(uint64_t a
 + (void)registerDataCollectionActivity
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v4 = "Submitted";
   }
@@ -236,11 +236,11 @@ id __46__PPSSignpostController_generateForTimeRange___block_invoke_56(uint64_t a
     v4 = "Updated";
   }
 
-  v5 = [a2 identifier];
+  identifier = [a2 identifier];
   v7 = 136315394;
   v8 = v4;
   v9 = 2112;
-  v10 = v5;
+  v10 = identifier;
   _os_log_debug_impl(&dword_1D8611000, a3, OS_LOG_TYPE_DEBUG, "%s task with identifier, %@", &v7, 0x16u);
 
   v6 = *MEMORY[0x1E69E9840];
@@ -256,8 +256,8 @@ void __55__PPSSignpostController_registerDataCollectionActivity__block_invoke(ui
 + (void)unregisterDataCollectionActivity
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698E4C0] sharedScheduler];
-  v3 = [v2 taskRequestForIdentifier:@"com.apple.perfpowerservices.signpost"];
+  mEMORY[0x1E698E4C0] = [MEMORY[0x1E698E4C0] sharedScheduler];
+  v3 = [mEMORY[0x1E698E4C0] taskRequestForIdentifier:@"com.apple.perfpowerservices.signpost"];
 
   if (v3)
   {
@@ -269,8 +269,8 @@ void __55__PPSSignpostController_registerDataCollectionActivity__block_invoke(ui
       _os_log_impl(&dword_1D8611000, v4, OS_LOG_TYPE_DEFAULT, "Unregistering safeguard collection activity ('%@')...", &v7, 0xCu);
     }
 
-    v5 = [MEMORY[0x1E698E4C0] sharedScheduler];
-    [v5 deregisterTaskWithIdentifier:@"com.apple.perfpowerservices.signpost"];
+    mEMORY[0x1E698E4C0]2 = [MEMORY[0x1E698E4C0] sharedScheduler];
+    [mEMORY[0x1E698E4C0]2 deregisterTaskWithIdentifier:@"com.apple.perfpowerservices.signpost"];
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -283,42 +283,42 @@ void __55__PPSSignpostController_registerDataCollectionActivity__block_invoke(ui
   return [PLUtilities workQueueForClass:v2];
 }
 
-- (BOOL)_performWithStartDate:(id)a3 endDate:(id)a4
+- (BOOL)_performWithStartDate:(id)date endDate:(id)endDate
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PPSSignpostController *)self _lastCollectionDate];
-  v9 = [(PPSSignpostController *)self _lastCollectionDate];
-  v10 = [v6 laterDate:v9];
+  dateCopy = date;
+  endDateCopy = endDate;
+  _lastCollectionDate = [(PPSSignpostController *)self _lastCollectionDate];
+  _lastCollectionDate2 = [(PPSSignpostController *)self _lastCollectionDate];
+  v10 = [dateCopy laterDate:_lastCollectionDate2];
 
-  if (v10 == v8)
+  if (v10 == _lastCollectionDate)
   {
     v12 = PPSLogSignpostController();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = _lastCollectionDate;
       _os_log_impl(&dword_1D8611000, v12, OS_LOG_TYPE_DEFAULT, "Recovering last signpost collection date: %@", &buf, 0xCu);
     }
 
-    v11 = v8;
+    v11 = _lastCollectionDate;
     v13 = [MEMORY[0x1E695DF00] nearestMidnightAfterDate:v11];
 
-    v7 = v13;
+    endDateCopy = v13;
   }
 
   else
   {
-    v11 = v6;
+    v11 = dateCopy;
   }
 
   v14 = objc_alloc_init(PPSSignpostServiceConnection);
   [(PPSSignpostController *)self setConnection:v14];
 
-  v15 = [(PPSSignpostController *)self connection];
-  v16 = [v15 service];
-  v17 = v16 == 0;
+  connection = [(PPSSignpostController *)self connection];
+  service = [connection service];
+  v17 = service == 0;
 
   if (v17)
   {
@@ -328,15 +328,15 @@ void __55__PPSSignpostController_registerDataCollectionActivity__block_invoke(ui
       [(PPSSignpostController *)v27 _performWithStartDate:v28 endDate:v29, v30, v31, v32, v33, v34];
     }
 
-    v24 = [(PPSSignpostController *)self connection];
-    [(PPSSignpostServiceRequest *)v24 invalidate];
+    connection2 = [(PPSSignpostController *)self connection];
+    [(PPSSignpostServiceRequest *)connection2 invalidate];
     v26 = 0;
   }
 
   else
   {
     v18 = objc_alloc_init(PPSSignpostServiceRequest);
-    [(PPSSignpostServiceRequest *)v18 setEndDate:v7];
+    [(PPSSignpostServiceRequest *)v18 setEndDate:endDateCopy];
     [(PPSSignpostServiceRequest *)v18 setSourceURL:0];
     [(PPSSignpostServiceRequest *)v18 setStartDate:v11];
     [(PPSSignpostServiceRequest *)v18 setType:1];
@@ -362,15 +362,15 @@ void __55__PPSSignpostController_registerDataCollectionActivity__block_invoke(ui
     *(&buf + 1) = &buf;
     v44 = 0x2020000000;
     v45 = 0;
-    v23 = [(PPSSignpostServiceConnection *)self->_connection service];
+    service2 = [(PPSSignpostServiceConnection *)self->_connection service];
     v37 = MEMORY[0x1E69E9820];
     v38 = 3221225472;
     v39 = __55__PPSSignpostController__performWithStartDate_endDate___block_invoke;
     v40 = &unk_1E8519DF0;
-    v24 = v18;
-    v41 = v24;
+    connection2 = v18;
+    v41 = connection2;
     p_buf = &buf;
-    [v23 process:v24 withReply:&v37];
+    [service2 process:connection2 withReply:&v37];
 
     v25 = [(PPSSignpostController *)self connection:v37];
     [v25 invalidate];
@@ -444,22 +444,22 @@ void __55__PPSSignpostController__performWithStartDate_endDate___block_invoke(ui
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_handleTask:(id)a3
+- (BOOL)_handleTask:(id)task
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  taskCopy = task;
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __37__PPSSignpostController__handleTask___block_invoke;
   v19[3] = &unk_1E8519CC8;
   objc_copyWeak(&v20, &location);
-  [v4 setExpirationHandler:v19];
+  [taskCopy setExpirationHandler:v19];
   v5 = [MEMORY[0x1E695DF00] now];
   v6 = [MEMORY[0x1E695DF00] nearestMidnightBeforeDate:v5];
   v7 = [MEMORY[0x1E695DF00] nearestMidnightAfterDate:v6];
   v8 = [(PPSSignpostController *)self _performWithStartDate:v6 endDate:v7];
-  if (v4)
+  if (taskCopy)
   {
     v9 = v8;
     v10 = PPSLogSignpostController();
@@ -474,7 +474,7 @@ void __55__PPSSignpostController__performWithStartDate_endDate___block_invoke(ui
       }
 
       [(PPSSignpostController *)self _clearState];
-      [v4 setTaskCompleted];
+      [taskCopy setTaskCompleted];
     }
 
     else
@@ -487,7 +487,7 @@ void __55__PPSSignpostController__performWithStartDate_endDate___block_invoke(ui
       }
 
       v18 = 0;
-      v12 = [v4 setTaskExpiredWithRetryAfter:&v18 error:0.0];
+      v12 = [taskCopy setTaskExpiredWithRetryAfter:&v18 error:0.0];
       v13 = v18;
       if ((v12 & 1) == 0)
       {
@@ -497,7 +497,7 @@ void __55__PPSSignpostController__performWithStartDate_endDate___block_invoke(ui
           [(PPSSignpostController *)v13 _handleTask:v14];
         }
 
-        [v4 setTaskCompleted];
+        [taskCopy setTaskCompleted];
       }
     }
 

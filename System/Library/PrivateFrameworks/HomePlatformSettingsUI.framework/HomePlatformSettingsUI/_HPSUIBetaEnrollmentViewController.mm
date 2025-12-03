@@ -1,17 +1,17 @@
 @interface _HPSUIBetaEnrollmentViewController
 + (BOOL)isMultiSeedingEnrollmentEnabled;
-+ (void)shouldShowBetaEnrollmentButtonForHomeID:(id)a3 homeKitIdentifiers:(id)a4 withCompletion:(id)a5;
-+ (void)shouldShowBetaEnrollmentButtonForHomeID:(id)a3 withCompletion:(id)a4;
++ (void)shouldShowBetaEnrollmentButtonForHomeID:(id)d homeKitIdentifiers:(id)identifiers withCompletion:(id)completion;
++ (void)shouldShowBetaEnrollmentButtonForHomeID:(id)d withCompletion:(id)completion;
 - (_HPSUIBetaEnrollmentViewController)init;
-- (_HPSUIBetaEnrollmentViewController)initWithHomeID:(id)a3;
-- (_HPSUIBetaEnrollmentViewController)initWithHomeID:(id)a3 homeKitIdentifiers:(id)a4;
+- (_HPSUIBetaEnrollmentViewController)initWithHomeID:(id)d;
+- (_HPSUIBetaEnrollmentViewController)initWithHomeID:(id)d homeKitIdentifiers:(id)identifiers;
 - (void)didFinishEnrollment;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation _HPSUIBetaEnrollmentViewController
 
-- (_HPSUIBetaEnrollmentViewController)initWithHomeID:(id)a3
+- (_HPSUIBetaEnrollmentViewController)initWithHomeID:(id)d
 {
   v3 = sub_2542AD50C();
   v4 = *(*(v3 - 8) + 64);
@@ -21,7 +21,7 @@
   return BetaEnrollmentViewController.init(withHomeID:)(v6);
 }
 
-- (_HPSUIBetaEnrollmentViewController)initWithHomeID:(id)a3 homeKitIdentifiers:(id)a4
+- (_HPSUIBetaEnrollmentViewController)initWithHomeID:(id)d homeKitIdentifiers:(id)identifiers
 {
   v4 = sub_2542AD50C();
   v5 = *(*(v4 - 8) + 64);
@@ -33,11 +33,11 @@
   return BetaEnrollmentViewController.init(withHomeID:homeKitIdentifiers:)(v7, v8);
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  BetaEnrollmentViewController.willMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  BetaEnrollmentViewController.willMove(toParent:)(controller);
 }
 
 - (_HPSUIBetaEnrollmentViewController)init
@@ -47,14 +47,14 @@
   return result;
 }
 
-+ (void)shouldShowBetaEnrollmentButtonForHomeID:(id)a3 withCompletion:(id)a4
++ (void)shouldShowBetaEnrollmentButtonForHomeID:(id)d withCompletion:(id)completion
 {
   v5 = sub_2542AD50C();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   MEMORY[0x28223BE20](v5);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   sub_2542AD4FC();
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
@@ -64,14 +64,14 @@
   (*(v6 + 8))(v9, v5);
 }
 
-+ (void)shouldShowBetaEnrollmentButtonForHomeID:(id)a3 homeKitIdentifiers:(id)a4 withCompletion:(id)a5
++ (void)shouldShowBetaEnrollmentButtonForHomeID:(id)d homeKitIdentifiers:(id)identifiers withCompletion:(id)completion
 {
   v6 = sub_2542AD50C();
   v7 = *(v6 - 8);
   v8 = *(v7 + 64);
   MEMORY[0x28223BE20](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v11 = _Block_copy(a5);
+  v11 = _Block_copy(completion);
   sub_2542AD4FC();
   sub_2542A3C68(&qword_27F5DD6D8, MEMORY[0x277CC95F0]);
   sub_2542AD84C();
@@ -94,7 +94,7 @@
 
 - (void)didFinishEnrollment
 {
-  v2 = self;
+  selfCopy = self;
   BetaEnrollmentViewController.didFinishEnrollment()();
 }
 

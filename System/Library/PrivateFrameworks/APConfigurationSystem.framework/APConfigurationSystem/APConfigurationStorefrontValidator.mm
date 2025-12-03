@@ -1,13 +1,13 @@
 @interface APConfigurationStorefrontValidator
 - (APConfigurationStorefrontValidator)init;
-- (APConfigurationStorefrontValidator)initWithStorefront:(id)a3 configurationPath:(id)a4;
+- (APConfigurationStorefrontValidator)initWithStorefront:(id)storefront configurationPath:(id)path;
 - (BOOL)configurationNeedsReset;
 - (void)saveStorefront;
 @end
 
 @implementation APConfigurationStorefrontValidator
 
-- (APConfigurationStorefrontValidator)initWithStorefront:(id)a3 configurationPath:(id)a4
+- (APConfigurationStorefrontValidator)initWithStorefront:(id)storefront configurationPath:(id)path
 {
   v5 = sub_1CA1DD730();
   v7 = v6;
@@ -29,20 +29,20 @@
 
 - (void)saveStorefront
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA1D62A4();
 }
 
 - (BOOL)configurationNeedsReset
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CA1D6828();
   if (!v4)
   {
     goto LABEL_8;
   }
 
-  if (v3 == *(&v2->super.isa + OBJC_IVAR___APConfigurationStorefrontValidator_storefront) && v4 == *&v2->storefront[OBJC_IVAR___APConfigurationStorefrontValidator_storefront])
+  if (v3 == *(&selfCopy->super.isa + OBJC_IVAR___APConfigurationStorefrontValidator_storefront) && v4 == *&selfCopy->storefront[OBJC_IVAR___APConfigurationStorefrontValidator_storefront])
   {
 
 LABEL_8:

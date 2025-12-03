@@ -1,7 +1,7 @@
 @interface PLAccountingDistributionEventBackwardEntry
 + (id)entryKey;
 + (void)load;
-- (PLAccountingDistributionEventBackwardEntry)initWithDistributionID:(id)a3 withChildNodeNameToWeight:(id)a4 withEndDate:(id)a5;
+- (PLAccountingDistributionEventBackwardEntry)initWithDistributionID:(id)d withChildNodeNameToWeight:(id)weight withEndDate:(id)date;
 @end
 
 @implementation PLAccountingDistributionEventBackwardEntry
@@ -20,7 +20,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingDistributionEventBackwardEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -32,23 +32,23 @@ uint64_t __54__PLAccountingDistributionEventBackwardEntry_entryKey__block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (PLAccountingDistributionEventBackwardEntry)initWithDistributionID:(id)a3 withChildNodeNameToWeight:(id)a4 withEndDate:(id)a5
+- (PLAccountingDistributionEventBackwardEntry)initWithDistributionID:(id)d withChildNodeNameToWeight:(id)weight withEndDate:(id)date
 {
-  v5 = a5;
-  if (a5)
+  selfCopy = date;
+  if (date)
   {
-    v8 = a4;
-    v9 = a3;
-    v10 = [PLAccountingRange rangeWithStartDate:0 withEndDate:v5];
+    weightCopy = weight;
+    dCopy = d;
+    v10 = [PLAccountingRange rangeWithStartDate:0 withEndDate:selfCopy];
     v13.receiver = self;
     v13.super_class = PLAccountingDistributionEventBackwardEntry;
-    v11 = [(PLAccountingDistributionEventEntry *)&v13 initWithDistributionID:v9 withChildNodeNameToWeight:v8 withRange:v10];
+    v11 = [(PLAccountingDistributionEventEntry *)&v13 initWithDistributionID:dCopy withChildNodeNameToWeight:weightCopy withRange:v10];
 
     self = v11;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

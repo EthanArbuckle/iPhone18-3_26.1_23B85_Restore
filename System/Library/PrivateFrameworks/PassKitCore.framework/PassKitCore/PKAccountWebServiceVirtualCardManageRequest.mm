@@ -1,15 +1,15 @@
 @interface PKAccountWebServiceVirtualCardManageRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
-- (void)setAction:(int64_t)a3 withQueue:(id)a4 completion:(id)a5;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
+- (void)setAction:(int64_t)action withQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation PKAccountWebServiceVirtualCardManageRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -30,7 +30,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v8 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -110,8 +110,8 @@ LABEL_29:
   v9 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:self->_baseURL endpointComponents:v8 queryParameters:0 appleAccountInformation:v5];
   [v9 setHTTPMethod:@"POST"];
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v10 = [MEMORY[0x1E695DF90] dictionary];
-  v11 = v10;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v11 = dictionary;
   action = self->_action;
   v13 = @"fetch";
   if (action > 3)
@@ -149,7 +149,7 @@ LABEL_29:
     }
 
 LABEL_39:
-    [v10 setObject:v16 forKey:@"action"];
+    [dictionary setObject:v16 forKey:@"action"];
     goto LABEL_40;
   }
 
@@ -177,8 +177,8 @@ LABEL_40:
   encryptionFields = self->_encryptionFields;
   if (encryptionFields)
   {
-    v26 = [(PKVirtualCardEncryptionFields *)encryptionFields dictionaryRepresentation];
-    [v11 setObject:v26 forKey:@"encryptionFields"];
+    dictionaryRepresentation = [(PKVirtualCardEncryptionFields *)encryptionFields dictionaryRepresentation];
+    [v11 setObject:dictionaryRepresentation forKey:@"encryptionFields"];
   }
 
   if (v11)
@@ -194,13 +194,13 @@ LABEL_30:
   return v23;
 }
 
-- (void)setAction:(int64_t)a3 withQueue:(id)a4 completion:(id)a5
+- (void)setAction:(int64_t)action withQueue:(id)queue completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  self->_action = a3;
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+  queueCopy = queue;
+  completionCopy = completion;
+  v10 = completionCopy;
+  self->_action = action;
+  if ((action & 0xFFFFFFFFFFFFFFFDLL) == 1)
   {
     objc_initWeak(&location, self);
     v11 = objc_alloc_init(PKVirtualCardEncryptionFields);
@@ -214,15 +214,15 @@ LABEL_30:
     v14[3] = &unk_1E79C9AE0;
     v15 = v10;
     objc_copyWeak(&v16, &location);
-    [(PKVirtualCardEncryptionFields *)v13 prepareCertificateWithQueue:v8 completion:v14];
+    [(PKVirtualCardEncryptionFields *)v13 prepareCertificateWithQueue:queueCopy completion:v14];
     objc_destroyWeak(&v16);
 
     objc_destroyWeak(&location);
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    (*(v9 + 2))(v9, self);
+    (*(completionCopy + 2))(completionCopy, self);
   }
 }
 

@@ -9,58 +9,58 @@
 - (SFSafariViewControllerConfiguration)configuration;
 - (SFServiceViewControllerProtocol)serviceProxy;
 - (id)_defaultPreviewActionItems;
-- (id)_fetchCustomActivitiesForURL:(void *)a3 title:;
-- (id)_fetchExcludedActivityTypesForURL:(id)a3 title:(id)a4;
+- (id)_fetchCustomActivitiesForURL:(void *)l title:;
+- (id)_fetchExcludedActivityTypesForURL:(id)l title:(id)title;
 - (id)delegate;
 - (id)previewActionItems;
 - (uint64_t)_addLaunchPlaceholderView;
 - (uint64_t)_addRemoteViewControllerIfNeeded;
 - (uint64_t)_removeRemoteViewController;
-- (uint64_t)_updatePreviewViewControllerWithLinkPreviewEnabled:(int)a3 animated:;
+- (uint64_t)_updatePreviewViewControllerWithLinkPreviewEnabled:(int)enabled animated:;
 - (void)_addLaunchPlaceholderView;
 - (void)_addRemoteView;
 - (void)_addRemoteViewControllerIfNeeded;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
 - (void)_connectToService;
 - (void)_determinePlatformConventions;
-- (void)_didLoadRemoteViewController:(uint64_t)a1;
+- (void)_didLoadRemoteViewController:(uint64_t)controller;
 - (void)_dismiss;
-- (void)_forwardNotificationToViewService:(id)a3;
-- (void)_handleURLExternallyIfApplicableBypassingVisibilityCheck:(uint64_t)a1;
+- (void)_forwardNotificationToViewService:(id)service;
+- (void)_handleURLExternallyIfApplicableBypassingVisibilityCheck:(uint64_t)check;
 - (void)_initializeViewService;
 - (void)_notifyServiceOfUpdatedTintColors;
 - (void)_removeLaunchPlaceholderView;
 - (void)_restartServiceViewController;
-- (void)_setEdgeSwipeDismissalEnabled:(id *)a1;
-- (void)_setShowingLinkPreview:(BOOL)a3;
-- (void)_setShowingLinkPreviewWithMinimalUI:(BOOL)a3;
-- (void)_setUpWithURL:(void *)a3 configuration:;
+- (void)_setEdgeSwipeDismissalEnabled:(id *)enabled;
+- (void)_setShowingLinkPreview:(BOOL)preview;
+- (void)_setShowingLinkPreviewWithMinimalUI:(BOOL)i;
+- (void)_setUpWithURL:(void *)l configuration:;
 - (void)_updateLinkPreviewHitTestView;
 - (void)_updateScrollViewIndicatorInsets;
 - (void)dealloc;
-- (void)interactiveDismissControllerDidEnd:(id)a3;
+- (void)interactiveDismissControllerDidEnd:(id)end;
 - (void)loadView;
-- (void)remoteViewController:(id)a3 didFinishInitialLoad:(BOOL)a4;
-- (void)remoteViewController:(id)a3 executeCustomActivityProxyID:(id)a4;
-- (void)remoteViewController:(id)a3 fetchActivityViewControllerInfoForURL:(id)a4 title:(id)a5;
-- (void)remoteViewController:(id)a3 hostApplicationOpenURL:(id)a4;
-- (void)remoteViewController:(id)a3 initialLoadDidRedirectToURL:(id)a4;
-- (void)remoteViewController:(id)a3 viewServiceDidTerminateWithError:(id)a4;
-- (void)remoteViewControllerDidLoadWebView:(id)a3;
-- (void)remoteViewControllerWillDismiss:(id)a3;
-- (void)remoteViewControllerWillOpenCurrentPageInBrowser:(id)a3;
-- (void)serviceProxyWillQueueInvocation:(id)a3;
+- (void)remoteViewController:(id)controller didFinishInitialLoad:(BOOL)load;
+- (void)remoteViewController:(id)controller executeCustomActivityProxyID:(id)d;
+- (void)remoteViewController:(id)controller fetchActivityViewControllerInfoForURL:(id)l title:(id)title;
+- (void)remoteViewController:(id)controller hostApplicationOpenURL:(id)l;
+- (void)remoteViewController:(id)controller initialLoadDidRedirectToURL:(id)l;
+- (void)remoteViewController:(id)controller viewServiceDidTerminateWithError:(id)error;
+- (void)remoteViewControllerDidLoadWebView:(id)view;
+- (void)remoteViewControllerWillDismiss:(id)dismiss;
+- (void)remoteViewControllerWillOpenCurrentPageInBrowser:(id)browser;
+- (void)serviceProxyWillQueueInvocation:(id)invocation;
 - (void)setDismissButtonStyle:(SFSafariViewControllerDismissButtonStyle)dismissButtonStyle;
-- (void)setModalPresentationStyle:(int64_t)a3;
+- (void)setModalPresentationStyle:(int64_t)style;
 - (void)setPreferredBarTintColor:(UIColor *)preferredBarTintColor;
 - (void)setPreferredControlTintColor:(UIColor *)preferredControlTintColor;
-- (void)setTransitioningDelegate:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setTransitioningDelegate:(id)delegate;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillAppearImpl;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SFSafariViewController
@@ -92,25 +92,25 @@
   return v9;
 }
 
-- (void)_setUpWithURL:(void *)a3 configuration:
+- (void)_setUpWithURL:(void *)l configuration:
 {
   v26[1] = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = v7;
-  if (a1)
+  lCopy = l;
+  v8 = lCopy;
+  if (self)
   {
-    v9 = [v7 copy];
-    v10 = *(a1 + 1000);
-    *(a1 + 1000) = v9;
+    v9 = [lCopy copy];
+    v10 = *(self + 1000);
+    *(self + 1000) = v9;
 
-    objc_storeStrong((a1 + 1264), a2);
-    v11 = [v6 absoluteString];
-    *(a1 + 1024) = [v11 safari_looksLikeWillRedirectToURLStringAfterAuthentication:0];
+    objc_storeStrong((self + 1264), a2);
+    absoluteString = [v6 absoluteString];
+    *(self + 1024) = [absoluteString safari_looksLikeWillRedirectToURLStringAfterAuthentication:0];
 
     if ([objc_opt_class() _eligibleForPlatformConventions])
     {
-      if (*(a1 + 1025))
+      if (*(self + 1025))
       {
         v12 = 2;
       }
@@ -120,43 +120,43 @@
         v12 = 5;
       }
 
-      [a1 setModalPresentationStyle:v12];
+      [self setModalPresentationStyle:v12];
     }
 
     else if (__UIApplicationLinkedOnOrAfter())
     {
-      [a1 setModalPresentationStyle:0];
+      [self setModalPresentationStyle:0];
       v13 = objc_alloc_init(SFInteractiveDismissController);
-      v14 = *(a1 + 1096);
-      *(a1 + 1096) = v13;
+      v14 = *(self + 1096);
+      *(self + 1096) = v13;
 
-      [*(a1 + 1096) setViewControllerToBeDismissed:a1];
-      v15 = *(a1 + 1096);
-      v25.receiver = a1;
+      [*(self + 1096) setViewControllerToBeDismissed:self];
+      v15 = *(self + 1096);
+      v25.receiver = self;
       v25.super_class = SFSafariViewController;
       objc_msgSendSuper2(&v25, sel_setTransitioningDelegate_, v15);
-      [*(a1 + 1096) setDelegate:a1];
+      [*(self + 1096) setDelegate:self];
     }
 
-    *(a1 + 1120) = invalidScrollViewInsets;
-    *(a1 + 1136) = unk_1D47DE7C0;
-    *(a1 + 1152) = invalidScrollViewInsets;
-    *(a1 + 1168) = unk_1D47DE7C0;
+    *(self + 1120) = invalidScrollViewInsets;
+    *(self + 1136) = unk_1D47DE7C0;
+    *(self + 1152) = invalidScrollViewInsets;
+    *(self + 1168) = unk_1D47DE7C0;
     v16 = [[SFQueueingServiceViewControllerProxy alloc] initWithProtocol:&unk_1F50801E0];
-    v17 = *(a1 + 1048);
-    *(a1 + 1048) = v16;
+    v17 = *(self + 1048);
+    *(self + 1048) = v16;
 
-    [*(a1 + 1048) setDelegate:a1];
-    if ([*(a1 + 1000) _isPerformingAccountSecurityUpgrade])
+    [*(self + 1048) setDelegate:self];
+    if ([*(self + 1000) _isPerformingAccountSecurityUpgrade])
     {
-      [a1 setModalInPresentation:1];
+      [self setModalInPresentation:1];
     }
 
-    [*(a1 + 1048) setConfiguration:*(a1 + 1000)];
-    v18 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v19 = [a1 registerForTraitChanges:v18 withTarget:a1 action:sel__notifyServiceOfUpdatedTintColors];
+    [*(self + 1048) setConfiguration:*(self + 1000)];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v19 = [self registerForTraitChanges:systemTraitsAffectingColorAppearance withTarget:self action:sel__notifyServiceOfUpdatedTintColors];
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v26[0] = objc_opt_class();
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
     v22[0] = MEMORY[0x1E69E9820];
@@ -164,7 +164,7 @@
     v22[2] = __54__SFSafariViewController__setUpWithURL_configuration___block_invoke;
     v22[3] = &unk_1E84938C8;
     objc_copyWeak(&v23, &location);
-    v21 = [a1 registerForTraitChanges:v20 withHandler:v22];
+    v21 = [self registerForTraitChanges:v20 withHandler:v22];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
@@ -246,8 +246,8 @@ void __54__SFSafariViewController__setUpWithURL_configuration___block_invoke(uin
 
 - (void)dealloc
 {
-  v3 = [(SFSafariViewController *)self view];
-  [v3 _removeBoundingPathChangeObserver:self];
+  view = [(SFSafariViewController *)self view];
+  [view _removeBoundingPathChangeObserver:self];
 
   [(SFSafariViewController *)self removeChildViewController:self->_remoteViewController];
   v4.receiver = self;
@@ -255,11 +255,11 @@ void __54__SFSafariViewController__setUpWithURL_configuration___block_invoke(uin
   [(SFSafariViewController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SFSafariViewController;
-  [(SFSafariViewController *)&v4 viewWillAppear:a3];
+  [(SFSafariViewController *)&v4 viewWillAppear:appear];
   if ((performViewWillAppearInLoadView() & 1) == 0)
   {
     [(SFSafariViewController *)self viewWillAppearImpl];
@@ -268,22 +268,22 @@ void __54__SFSafariViewController__setUpWithURL_configuration___block_invoke(uin
 
 - (void)_addLaunchPlaceholderView
 {
-  [*(a1 + 1016) setAutoresizingMask:18];
+  [*(self + 1016) setAutoresizingMask:18];
   [a2 bounds];
   [OUTLINED_FUNCTION_6_0() setFrame:?];
-  [OUTLINED_FUNCTION_6_0() updateBarTintColor:*(a1 + 1240)];
-  [OUTLINED_FUNCTION_6_0() updateControlTintColor:*(a1 + 1248)];
-  [OUTLINED_FUNCTION_6_0() updateDismissButtonStyle:*(a1 + 1256)];
-  [a2 addSubview:*(a1 + 1016)];
+  [OUTLINED_FUNCTION_6_0() updateBarTintColor:*(self + 1240)];
+  [OUTLINED_FUNCTION_6_0() updateControlTintColor:*(self + 1248)];
+  [OUTLINED_FUNCTION_6_0() updateDismissButtonStyle:*(self + 1256)];
+  [a2 addSubview:*(self + 1016)];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SFSafariViewController;
-  [(SFSafariViewController *)&v5 viewWillDisappear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  [(SFSafariViewController *)&v5 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if ((([(SFSafariViewController *)self isBeingDismissed]& 1) != 0 || [(SFSafariViewController *)self isMovingFromParentViewController]) && SFViewControllerViewEmbeddedByPreviewController(self))
   {
@@ -296,14 +296,14 @@ void __54__SFSafariViewController__setUpWithURL_configuration___block_invoke(uin
   }
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
-    v5 = [(SFSafariViewController *)self transitioningDelegate];
+    transitioningDelegate = [(SFSafariViewController *)self transitioningDelegate];
     interactiveDismissController = self->_interactiveDismissController;
 
-    if (v5 == interactiveDismissController)
+    if (transitioningDelegate == interactiveDismissController)
     {
       [(SFSafariViewController *)self setTransitioningDelegate:0];
       v7 = self->_interactiveDismissController;
@@ -311,15 +311,15 @@ void __54__SFSafariViewController__setUpWithURL_configuration___block_invoke(uin
     }
   }
 
-  [(SFServiceViewControllerProtocol *)self->_serviceProxy setHostAppModalPresentationStyle:a3];
+  [(SFServiceViewControllerProtocol *)self->_serviceProxy setHostAppModalPresentationStyle:style];
   v8.receiver = self;
   v8.super_class = SFSafariViewController;
-  [(SFSafariViewController *)&v8 setModalPresentationStyle:a3];
+  [(SFSafariViewController *)&v8 setModalPresentationStyle:style];
 }
 
-- (void)setTransitioningDelegate:(id)a3
+- (void)setTransitioningDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
     v5.receiver = self;
     v5.super_class = SFSafariViewController;
@@ -329,28 +329,28 @@ void __54__SFSafariViewController__setUpWithURL_configuration___block_invoke(uin
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = SFSafariViewController;
-  v7 = a4;
-  [(SFSafariViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(SFSafariViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   self->_viewSizeIsTransitioning = 1;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__SFSafariViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_1E848F860;
   v8[4] = self;
-  [v7 animateAlongsideTransition:&__block_literal_global_44 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_44 completion:v8];
 }
 
 - (void)_notifyServiceOfUpdatedTintColors
 {
-  v5 = [(SFSafariViewController *)self traitCollection];
-  v3 = [(UIColor *)self->_preferredBarTintColor resolvedColorWithTraitCollection:v5];
-  v4 = [(UIColor *)self->_preferredControlTintColor resolvedColorWithTraitCollection:v5];
+  traitCollection = [(SFSafariViewController *)self traitCollection];
+  v3 = [(UIColor *)self->_preferredBarTintColor resolvedColorWithTraitCollection:traitCollection];
+  v4 = [(UIColor *)self->_preferredControlTintColor resolvedColorWithTraitCollection:traitCollection];
   [(SFServiceViewControllerProtocol *)self->_serviceProxy setPreferredBarTintColor:v3 controlTintColor:v4];
 }
 
@@ -383,15 +383,15 @@ void __43__SFSafariViewController__connectToService__block_invoke(uint64_t a1, v
   adoptsPlatformConventions = self->_adoptsPlatformConventions;
   if (adoptsPlatformConventions)
   {
-    v5 = [(NSNumber *)adoptsPlatformConventions BOOLValue];
+    bOOLValue = [(NSNumber *)adoptsPlatformConventions BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  if (self->_remoteViewController && ![(SFSafariViewController *)self defersAddingRemoteViewController]&& !((self->_remoteViewControllerHasBeenAdded | v5) & 1 | (textPreviewViewController != 0)))
+  if (self->_remoteViewController && ![(SFSafariViewController *)self defersAddingRemoteViewController]&& !((self->_remoteViewControllerHasBeenAdded | bOOLValue) & 1 | (textPreviewViewController != 0)))
   {
     [(SFSafariViewController *)&self->_remoteViewController _addRemoteViewControllerIfNeeded];
   }
@@ -413,9 +413,9 @@ void __51__SFSafariViewController__addLaunchPlaceholderView__block_invoke_2(uint
 - (void)setPreferredBarTintColor:(UIColor *)preferredBarTintColor
 {
   v12 = preferredBarTintColor;
-  v5 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v6 = v12;
-  if ((v5 & 1) == 0)
+  if ((isSolariumEnabled & 1) == 0)
   {
     v7 = self->_preferredBarTintColor;
     if (v7 != v12)
@@ -428,9 +428,9 @@ void __51__SFSafariViewController__addLaunchPlaceholderView__block_invoke_2(uint
         v6 = v12;
         if (!self->_hasBeenDisplayedAtLeastOnce)
         {
-          v9 = [(SFSafariViewController *)self traitCollection];
+          traitCollection = [(SFSafariViewController *)self traitCollection];
           serviceProxy = self->_serviceProxy;
-          v11 = [(UIColor *)v12 resolvedColorWithTraitCollection:v9];
+          v11 = [(UIColor *)v12 resolvedColorWithTraitCollection:traitCollection];
           [(SFServiceViewControllerProtocol *)serviceProxy setPreferredBarTintColor:v11];
 
           [(SFSafariLaunchPlaceholderView *)self->_launchPlaceholderView updateBarTintColor:v12];
@@ -444,9 +444,9 @@ void __51__SFSafariViewController__addLaunchPlaceholderView__block_invoke_2(uint
 - (void)setPreferredControlTintColor:(UIColor *)preferredControlTintColor
 {
   v12 = preferredControlTintColor;
-  v5 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   v6 = v12;
-  if ((v5 & 1) == 0)
+  if ((isSolariumEnabled & 1) == 0)
   {
     v7 = self->_preferredControlTintColor;
     if (v7 != v12)
@@ -460,8 +460,8 @@ void __51__SFSafariViewController__addLaunchPlaceholderView__block_invoke_2(uint
         if (!self->_hasBeenDisplayedAtLeastOnce)
         {
           serviceProxy = self->_serviceProxy;
-          v10 = [(SFSafariViewController *)self traitCollection];
-          v11 = [(UIColor *)v12 resolvedColorWithTraitCollection:v10];
+          traitCollection = [(SFSafariViewController *)self traitCollection];
+          v11 = [(UIColor *)v12 resolvedColorWithTraitCollection:traitCollection];
           [(SFServiceViewControllerProtocol *)serviceProxy setPreferredControlTintColor:v11];
 
           v6 = v12;
@@ -528,16 +528,16 @@ void __51__SFSafariViewController__addLaunchPlaceholderView__block_invoke_2(uint
     return 0;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"DebugSafariViewControllerAdoptsPlatformConventions"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"DebugSafariViewControllerAdoptsPlatformConventions"];
 
   if (!v3)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"DebugSafariViewControllerAdoptsPlatformConventions"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults2 BOOLForKey:@"DebugSafariViewControllerAdoptsPlatformConventions"];
 
   return v5;
 }
@@ -555,23 +555,23 @@ void __83__SFSafariViewController__handleURLExternallyIfApplicableBypassingVisib
   }
 }
 
-- (void)_setShowingLinkPreview:(BOOL)a3
+- (void)_setShowingLinkPreview:(BOOL)preview
 {
-  if (self->_displayMode != a3)
+  if (self->_displayMode != preview)
   {
-    v4 = a3;
-    self->_displayMode = a3;
+    previewCopy = preview;
+    self->_displayMode = preview;
     [(SFServiceViewControllerProtocol *)self->_serviceProxy setDisplayMode:?];
-    [(SFSafariLaunchPlaceholderView *)self->_launchPlaceholderView setHidden:v4];
+    [(SFSafariLaunchPlaceholderView *)self->_launchPlaceholderView setHidden:previewCopy];
 
     [(SFSafariViewController *)&self->super.super.super.isa _updateLinkPreviewHitTestView];
   }
 }
 
-- (void)_setShowingLinkPreviewWithMinimalUI:(BOOL)a3
+- (void)_setShowingLinkPreviewWithMinimalUI:(BOOL)i
 {
-  v3 = a3;
-  if (a3)
+  iCopy = i;
+  if (i)
   {
     v4 = 4;
   }
@@ -587,7 +587,7 @@ void __83__SFSafariViewController__handleURLExternallyIfApplicableBypassingVisib
     [(SFServiceViewControllerProtocol *)self->_serviceProxy setDisplayMode:?];
     launchPlaceholderView = self->_launchPlaceholderView;
 
-    [(SFSafariLaunchPlaceholderView *)launchPlaceholderView setHidden:v3];
+    [(SFSafariLaunchPlaceholderView *)launchPlaceholderView setHidden:iCopy];
   }
 }
 
@@ -604,7 +604,7 @@ uint64_t __86__SFSafariViewController__updatePreviewViewControllerWithLinkPrevie
   v21 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_previewActions count])
   {
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -626,14 +626,14 @@ uint64_t __86__SFSafariViewController__updatePreviewViewControllerWithLinkPrevie
 
           v7 = *(*(&v16 + 1) + 8 * i);
           v8 = MEMORY[0x1E69DCE00];
-          v9 = [v7 title];
+          title = [v7 title];
           v15[0] = MEMORY[0x1E69E9820];
           v15[1] = 3221225472;
           v15[2] = __44__SFSafariViewController_previewActionItems__block_invoke;
           v15[3] = &unk_1E8494438;
           v15[4] = v7;
           v15[5] = self;
-          v10 = [v8 actionWithTitle:v9 style:0 handler:v15];
+          v10 = [v8 actionWithTitle:title style:0 handler:v15];
 
           if (objc_opt_respondsToSelector())
           {
@@ -641,7 +641,7 @@ uint64_t __86__SFSafariViewController__updatePreviewViewControllerWithLinkPrevie
             [v10 setImage:v11];
           }
 
-          [v14 addObject:v10];
+          [array addObject:v10];
         }
 
         v4 = [(NSArray *)obj countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -653,10 +653,10 @@ uint64_t __86__SFSafariViewController__updatePreviewViewControllerWithLinkPrevie
 
   else
   {
-    v14 = [(SFSafariViewController *)self _defaultPreviewActionItems];
+    array = [(SFSafariViewController *)self _defaultPreviewActionItems];
   }
 
-  return v14;
+  return array;
 }
 
 void __52__SFSafariViewController__defaultPreviewActionItems__block_invoke(uint64_t a1)
@@ -671,9 +671,9 @@ void __52__SFSafariViewController__defaultPreviewActionItems__block_invoke_2(uin
   [v2 setURL:*(*(a1 + 32) + 1264)];
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  if (!a4)
+  if (!only)
   {
     self->_verticalScrollIndicatorBaseInsets = *invalidScrollViewInsets;
     self->_horizontalScrollIndicatorBaseInsets = *invalidScrollViewInsets;
@@ -684,18 +684,18 @@ void __52__SFSafariViewController__defaultPreviewActionItems__block_invoke_2(uin
   }
 }
 
-- (void)remoteViewControllerDidLoadWebView:(id)a3
+- (void)remoteViewControllerDidLoadWebView:(id)view
 {
   [(SFServiceViewControllerProtocol *)self->_serviceProxy loadURL:self->_initialURL];
-  v5 = [(SFSafariViewControllerConfiguration *)self->_configuration eventAttribution];
-  v4 = [v5 toUISClickAttribution];
-  if (v4 && [(NSURL *)self->_initialURL safari_isHTTPSURL])
+  eventAttribution = [(SFSafariViewControllerConfiguration *)self->_configuration eventAttribution];
+  toUISClickAttribution = [eventAttribution toUISClickAttribution];
+  if (toUISClickAttribution && [(NSURL *)self->_initialURL safari_isHTTPSURL])
   {
-    [(SFServiceViewControllerProtocol *)self->_serviceProxy addClickAttribution:v4];
+    [(SFServiceViewControllerProtocol *)self->_serviceProxy addClickAttribution:toUISClickAttribution];
   }
 }
 
-- (void)remoteViewControllerWillDismiss:(id)a3
+- (void)remoteViewControllerWillDismiss:(id)dismiss
 {
   [(SFSafariViewController *)self dismissViewControllerAnimated:1 completion:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -710,48 +710,48 @@ void __52__SFSafariViewController__defaultPreviewActionItems__block_invoke_2(uin
   v4.receiver = self;
   v4.super_class = SFSafariViewController;
   [(SFSafariViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(SFSafariViewController *)self topLayoutGuide];
-  [v3 length];
+  topLayoutGuide = [(SFSafariViewController *)self topLayoutGuide];
+  [topLayoutGuide length];
   [(SFSafariLaunchPlaceholderView *)self->_launchPlaceholderView setTopLayoutGuideInset:?];
 }
 
 - (void)_restartServiceViewController
 {
   self->_hasRestartedViewService = 1;
-  v11 = [(SFSafariViewController *)self serviceProxy];
-  v3 = [(SFSafariViewController *)self initialURL];
-  [v11 loadURL:v3];
+  serviceProxy = [(SFSafariViewController *)self serviceProxy];
+  initialURL = [(SFSafariViewController *)self initialURL];
+  [serviceProxy loadURL:initialURL];
 
-  [v11 setConfiguration:self->_configuration];
-  [v11 setHostAppModalPresentationStyle:{-[SFSafariViewController modalPresentationStyle](self, "modalPresentationStyle")}];
+  [serviceProxy setConfiguration:self->_configuration];
+  [serviceProxy setHostAppModalPresentationStyle:{-[SFSafariViewController modalPresentationStyle](self, "modalPresentationStyle")}];
   preferredBarTintColor = self->_preferredBarTintColor;
   if (preferredBarTintColor)
   {
-    v5 = [(SFSafariViewController *)self traitCollection];
-    v6 = [(UIColor *)preferredBarTintColor resolvedColorWithTraitCollection:v5];
-    [v11 setPreferredBarTintColor:v6];
+    traitCollection = [(SFSafariViewController *)self traitCollection];
+    v6 = [(UIColor *)preferredBarTintColor resolvedColorWithTraitCollection:traitCollection];
+    [serviceProxy setPreferredBarTintColor:v6];
   }
 
   preferredControlTintColor = self->_preferredControlTintColor;
   if (preferredControlTintColor)
   {
-    v8 = [(SFSafariViewController *)self traitCollection];
-    v9 = [(UIColor *)preferredControlTintColor resolvedColorWithTraitCollection:v8];
-    [v11 setPreferredControlTintColor:v9];
+    traitCollection2 = [(SFSafariViewController *)self traitCollection];
+    v9 = [(UIColor *)preferredControlTintColor resolvedColorWithTraitCollection:traitCollection2];
+    [serviceProxy setPreferredControlTintColor:v9];
   }
 
-  v10 = v11;
+  v10 = serviceProxy;
   if (self->_dismissButtonStyle)
   {
-    [v11 setDismissButtonStyle:?];
-    v10 = v11;
+    [serviceProxy setDismissButtonStyle:?];
+    v10 = serviceProxy;
   }
 }
 
-- (void)remoteViewController:(id)a3 viewServiceDidTerminateWithError:(id)a4
+- (void)remoteViewController:(id)controller viewServiceDidTerminateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   objc_initWeak(&location, self);
   [(SFServiceViewControllerProtocol *)self->_serviceProxy setTarget:0];
   [(SFSafariViewController *)self _removeRemoteViewController];
@@ -776,12 +776,12 @@ void __80__SFSafariViewController_remoteViewController_viewServiceDidTerminateWi
   [WeakRetained _restartServiceViewController];
 }
 
-- (void)remoteViewController:(id)a3 fetchActivityViewControllerInfoForURL:(id)a4 title:(id)a5
+- (void)remoteViewController:(id)controller fetchActivityViewControllerInfoForURL:(id)l title:(id)title
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = [(SFSafariViewController *)self _fetchCustomActivitiesForURL:v8 title:v7];
-  v9 = [(SFSafariViewController *)self _fetchExcludedActivityTypesForURL:v8 title:v7];
+  titleCopy = title;
+  lCopy = l;
+  v10 = [(SFSafariViewController *)self _fetchCustomActivitiesForURL:lCopy title:titleCopy];
+  v9 = [(SFSafariViewController *)self _fetchExcludedActivityTypesForURL:lCopy title:titleCopy];
 
   [(SFServiceViewControllerProtocol *)self->_serviceProxy didFetchCustomActivities:v10 excludedActivityTypes:v9];
 }
@@ -796,14 +796,14 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
   [v4 setObject:v3 forKey:v5];
 }
 
-- (id)_fetchExcludedActivityTypesForURL:(id)a3 title:(id)a4
+- (id)_fetchExcludedActivityTypesForURL:(id)l title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v9 = [WeakRetained safariViewController:self excludedActivityTypesForURL:v6 title:v7];
+    v9 = [WeakRetained safariViewController:self excludedActivityTypesForURL:lCopy title:titleCopy];
   }
 
   else
@@ -814,28 +814,28 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
   return v9;
 }
 
-- (void)remoteViewController:(id)a3 didFinishInitialLoad:(BOOL)a4
+- (void)remoteViewController:(id)controller didFinishInitialLoad:(BOOL)load
 {
   if (!self->_hasNotifiedDelegateAboutInitialLoadCompleted)
   {
-    v5 = a4;
+    loadCopy = load;
     self->_hasNotifiedDelegateAboutInitialLoadCompleted = 1;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained safariViewController:self didCompleteInitialLoad:v5];
+      [WeakRetained safariViewController:self didCompleteInitialLoad:loadCopy];
     }
   }
 }
 
-- (void)remoteViewController:(id)a3 executeCustomActivityProxyID:(id)a4
+- (void)remoteViewController:(id)controller executeCustomActivityProxyID:(id)d
 {
-  v6 = [(NSMutableDictionary *)self->_activitiesMap objectForKey:a4];
+  v6 = [(NSMutableDictionary *)self->_activitiesMap objectForKey:d];
   [v6 prepareWithActivityItems:self->_activityItemsForCustomActivities];
-  v5 = [v6 activityViewController];
-  if (v5)
+  activityViewController = [v6 activityViewController];
+  if (activityViewController)
   {
-    [(SFSafariViewController *)self presentViewController:v5 animated:1 completion:0];
+    [(SFSafariViewController *)self presentViewController:activityViewController animated:1 completion:0];
   }
 
   else
@@ -844,20 +844,20 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
   }
 }
 
-- (void)remoteViewController:(id)a3 hostApplicationOpenURL:(id)a4
+- (void)remoteViewController:(id)controller hostApplicationOpenURL:(id)l
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = [v6 _appAdoptsUISceneLifecycle];
+  lCopy = l;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  _appAdoptsUISceneLifecycle = [mEMORY[0x1E69DC668] _appAdoptsUISceneLifecycle];
 
-  if (v7)
+  if (_appAdoptsUISceneLifecycle)
   {
-    v8 = [(SFSafariViewController *)self view];
-    v9 = [v8 window];
-    v10 = [v9 windowScene];
+    view = [(SFSafariViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
 
-    v11 = [v10 delegate];
+    delegate = [windowScene delegate];
     v18 = *MEMORY[0x1E69DDB20];
     v19[0] = @"com.apple.SafariViewService";
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
@@ -873,9 +873,9 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
         [MEMORY[0x1E69DCEA0] _optionsFromDictionary:v12];
       }
       v13 = ;
-      v14 = [objc_alloc(MEMORY[0x1E69DCD08]) initWithURL:v5 options:v13];
+      v14 = [objc_alloc(MEMORY[0x1E69DCD08]) initWithURL:lCopy options:v13];
       v15 = [MEMORY[0x1E695DFD8] setWithObject:v14];
-      [v11 scene:v10 openURLContexts:v15];
+      [delegate scene:windowScene openURLContexts:v15];
     }
   }
 
@@ -883,29 +883,29 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
   {
     v16 = *MEMORY[0x1E69DDB20];
     v17 = @"com.apple.SafariViewService";
-    v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    v11 = [objc_alloc(MEMORY[0x1E69DCD00]) initWithURL:v5];
-    [*MEMORY[0x1E69DDA98] _applicationOpenURLAction:v11 payload:v10 origin:0];
+    windowScene = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
+    delegate = [objc_alloc(MEMORY[0x1E69DCD00]) initWithURL:lCopy];
+    [*MEMORY[0x1E69DDA98] _applicationOpenURLAction:delegate payload:windowScene origin:0];
   }
 }
 
-- (void)remoteViewController:(id)a3 initialLoadDidRedirectToURL:(id)a4
+- (void)remoteViewController:(id)controller initialLoadDidRedirectToURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   if (!self->_hasRestartedViewService)
   {
-    v7 = v5;
+    v7 = lCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
       [WeakRetained safariViewController:self initialLoadDidRedirectToURL:v7];
     }
 
-    v5 = v7;
+    lCopy = v7;
   }
 }
 
-- (void)remoteViewControllerWillOpenCurrentPageInBrowser:(id)a3
+- (void)remoteViewControllerWillOpenCurrentPageInBrowser:(id)browser
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -914,14 +914,14 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
   }
 }
 
-- (void)_forwardNotificationToViewService:(id)a3
+- (void)_forwardNotificationToViewService:(id)service
 {
   serviceProxy = self->_serviceProxy;
-  v4 = [a3 name];
-  [(SFServiceViewControllerProtocol *)serviceProxy repostNotificationInViewService:v4];
+  name = [service name];
+  [(SFServiceViewControllerProtocol *)serviceProxy repostNotificationInViewService:name];
 }
 
-- (void)interactiveDismissControllerDidEnd:(id)a3
+- (void)interactiveDismissControllerDidEnd:(id)end
 {
   [(SFServiceViewControllerProtocol *)self->_serviceProxy setIsRunningTransitionAnimation:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -931,14 +931,14 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
   }
 }
 
-- (void)serviceProxyWillQueueInvocation:(id)a3
+- (void)serviceProxyWillQueueInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   if (!self->_cancelViewServiceRequest && self->_adoptsPlatformConventions)
   {
-    v5 = v4;
+    v5 = invocationCopy;
     [(SFSafariViewController *)self _connectToService];
-    v4 = v5;
+    invocationCopy = v5;
   }
 }
 
@@ -951,11 +951,11 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
 
 - (void)_initializeViewService
 {
-  if (a1 && (*(a1 + 1184) & 1) == 0)
+  if (self && (*(self + 1184) & 1) == 0)
   {
-    *(a1 + 1184) = 1;
+    *(self + 1184) = 1;
     v4 = +[_SFSafariViewControllerPrewarmingSession sharedSessionIfExists];
-    if ([objc_opt_class() _supportsPrewarming] && (objc_msgSend(*(a1 + 1000), "_isEphemeral") & 1) == 0 && (objc_msgSend(v4, "remoteViewController"), v2 = objc_claimAutoreleasedReturnValue(), v2, v2))
+    if ([objc_opt_class() _supportsPrewarming] && (objc_msgSend(*(self + 1000), "_isEphemeral") & 1) == 0 && (objc_msgSend(v4, "remoteViewController"), v2 = objc_claimAutoreleasedReturnValue(), v2, v2))
     {
       [v4 remoteViewController];
       objc_claimAutoreleasedReturnValue();
@@ -967,42 +967,42 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
 
     else
     {
-      [(SFSafariViewController *)a1 _connectToService];
+      [(SFSafariViewController *)self _connectToService];
     }
 
     MEMORY[0x1DA6DCDD0]();
   }
 }
 
-- (void)_didLoadRemoteViewController:(uint64_t)a1
+- (void)_didLoadRemoteViewController:(uint64_t)controller
 {
   v4 = a2;
-  if (a1)
+  if (controller)
   {
-    objc_storeStrong((a1 + 1032), a2);
-    v5 = [v4 serviceViewControllerProxy];
-    [*(a1 + 1048) setTarget:v5];
+    objc_storeStrong((controller + 1032), a2);
+    serviceViewControllerProxy = [v4 serviceViewControllerProxy];
+    [*(controller + 1048) setTarget:serviceViewControllerProxy];
 
-    [v4 setDelegate:a1];
+    [v4 setDelegate:controller];
     OUTLINED_FUNCTION_0_2();
     OUTLINED_FUNCTION_45();
     v8 = __55__SFSafariViewController__didLoadRemoteViewController___block_invoke;
     v9 = &unk_1E848F810;
-    v10 = a1;
+    controllerCopy = controller;
     [v6 prepareForDisplayWithCompletionHandler:v7];
   }
 }
 
 - (void)_connectToService
 {
-  if (a1)
+  if (self)
   {
-    v2 = [*(a1 + 1040) invoke];
+    invoke = [*(self + 1040) invoke];
     OUTLINED_FUNCTION_0_2();
     OUTLINED_FUNCTION_45();
     v6 = __43__SFSafariViewController__connectToService__block_invoke;
     v7 = &unk_1E8492C38;
-    v8 = a1;
+    selfCopy = self;
     v4 = [v3 requestViewControllerWithConnectionHandler:v5];
     OUTLINED_FUNCTION_35(v4, 1040);
   }
@@ -1027,76 +1027,76 @@ void __61__SFSafariViewController__fetchCustomActivitiesForURL_title___block_inv
 
 - (void)viewWillAppearImpl
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  [(SFSafariViewController *)a1 _determinePlatformConventions];
-  if ([*(a1 + 992) BOOLValue])
+  [(SFSafariViewController *)self _determinePlatformConventions];
+  if ([*(self + 992) BOOLValue])
   {
-    if (*(a1 + 1025) != 1)
+    if (*(self + 1025) != 1)
     {
       goto LABEL_8;
     }
 
-    [(SFSafariViewController *)a1 _removeRemoteViewController];
+    [(SFSafariViewController *)self _removeRemoteViewController];
   }
 
-  else if (*(a1 + 1032))
+  else if (*(self + 1032))
   {
-    [a1 _addRemoteViewControllerIfNeeded];
+    [self _addRemoteViewControllerIfNeeded];
     goto LABEL_8;
   }
 
-  [(SFSafariViewController *)a1 _addLaunchPlaceholderView];
+  [(SFSafariViewController *)self _addLaunchPlaceholderView];
 LABEL_8:
-  if ([*(a1 + 992) BOOLValue])
+  if ([*(self + 992) BOOLValue])
   {
     goto LABEL_9;
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:a1 selector:sel__forwardNotificationToViewService_ name:*MEMORY[0x1E69DDBC8] object:0];
-  [v4 addObserver:a1 selector:sel__forwardNotificationToViewService_ name:*MEMORY[0x1E69DDAB0] object:0];
-  if ((([a1 isBeingPresented] & 1) != 0 || objc_msgSend(a1, "isMovingToParentViewController")) && SFViewControllerViewEmbeddedByPreviewController(a1))
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__forwardNotificationToViewService_ name:*MEMORY[0x1E69DDBC8] object:0];
+  [defaultCenter addObserver:self selector:sel__forwardNotificationToViewService_ name:*MEMORY[0x1E69DDAB0] object:0];
+  if ((([self isBeingPresented] & 1) != 0 || objc_msgSend(self, "isMovingToParentViewController")) && SFViewControllerViewEmbeddedByPreviewController(self))
   {
-    [a1 _setShowingLinkPreview:1];
+    [self _setShowingLinkPreview:1];
     v5 = _SFShouldShowLinkPreviews();
 LABEL_20:
-    [(SFSafariViewController *)a1 _updatePreviewViewControllerWithLinkPreviewEnabled:v5 animated:0];
+    [(SFSafariViewController *)self _updatePreviewViewControllerWithLinkPreviewEnabled:v5 animated:0];
     goto LABEL_21;
   }
 
-  if (*(a1 + 1192))
+  if (*(self + 1192))
   {
     v5 = 0;
     goto LABEL_20;
   }
 
 LABEL_21:
-  [(SFSafariViewController *)a1 _updateScrollViewIndicatorInsets];
+  [(SFSafariViewController *)self _updateScrollViewIndicatorInsets];
 
 LABEL_9:
-  *(a1 + 1009) = 1;
-  v2 = [a1 activePresentationController];
-  v3 = [v2 presentationStyle];
+  *(self + 1009) = 1;
+  activePresentationController = [self activePresentationController];
+  presentationStyle = [activePresentationController presentationStyle];
 
-  if ((v3 + 2) <= 0xA)
+  if ((presentationStyle + 2) <= 0xA)
   {
 
-    [a1 setModalPresentationStyle:v3];
+    [self setModalPresentationStyle:presentationStyle];
   }
 }
 
 - (void)_determinePlatformConventions
 {
-  if (a1)
+  if (self)
   {
-    if (([a1 _showingLinkPreview] & 1) != 0 || (objc_msgSend(a1, "_showingLinkPreviewWithMinimalUI") & 1) != 0 || SFViewControllerViewEmbeddedByPreviewController(a1))
+    if (([self _showingLinkPreview] & 1) != 0 || (objc_msgSend(self, "_showingLinkPreviewWithMinimalUI") & 1) != 0 || SFViewControllerViewEmbeddedByPreviewController(self))
     {
       v2 = 0;
-      *(a1 + 1025) = 0;
+      *(self + 1025) = 0;
     }
 
     else
@@ -1105,17 +1105,17 @@ LABEL_9:
     }
 
     v3 = v2 & [objc_opt_class() _eligibleForPlatformConventions];
-    v4 = *(a1 + 992);
+    v4 = *(self + 992);
     if (!v4 || ([v4 BOOLValue] & 1) == 0 && ((v3 ^ 1) & 1) == 0)
     {
       v5 = [MEMORY[0x1E696AD98] numberWithBool:v3];
       OUTLINED_FUNCTION_35(v5, 992);
     }
 
-    if (([*(a1 + 992) BOOLValue] & 1) == 0)
+    if (([*(self + 992) BOOLValue] & 1) == 0)
     {
 
-      [(SFSafariViewController *)a1 _initializeViewService];
+      [(SFSafariViewController *)self _initializeViewService];
     }
   }
 }
@@ -1128,8 +1128,8 @@ LABEL_9:
     if (*(result + 1056) == 1)
     {
       [result removeChildViewController:*(result + 1032)];
-      v2 = [*(v1 + 1032) view];
-      [v2 removeFromSuperview];
+      view = [*(v1 + 1032) view];
+      [view removeFromSuperview];
 
       result = [*(v1 + 1032) didMoveToParentViewController:0];
       *(v1 + 1056) = 0;
@@ -1139,7 +1139,7 @@ LABEL_9:
   return result;
 }
 
-- (uint64_t)_updatePreviewViewControllerWithLinkPreviewEnabled:(int)a3 animated:
+- (uint64_t)_updatePreviewViewControllerWithLinkPreviewEnabled:(int)enabled animated:
 {
   if (result)
   {
@@ -1156,8 +1156,8 @@ LABEL_9:
         }
 
         [result removeFromParentViewController];
-        v6 = [OUTLINED_FUNCTION_2_3() view];
-        [v6 removeFromSuperview];
+        view = [OUTLINED_FUNCTION_2_3() view];
+        [view removeFromSuperview];
 
         [OUTLINED_FUNCTION_2_3() didMoveToParentViewController:0];
         v7 = *(v5 + 1192);
@@ -1169,7 +1169,7 @@ LABEL_9:
           [*(v5 + 1048) loadURL:*(v5 + 1264)];
         }
 
-        if (a3)
+        if (enabled)
         {
           goto LABEL_9;
         }
@@ -1179,28 +1179,28 @@ LABEL_9:
       {
         [(SFSafariViewController *)v5 _removeRemoteViewController];
         OUTLINED_FUNCTION_35([[_SFURLTextPreviewViewController alloc] initWithURL:*(v5 + 1264)], 1192);
-        v9 = [v5 view];
-        v10 = [OUTLINED_FUNCTION_2_3() view];
-        [v9 addSubview:v10];
+        view2 = [v5 view];
+        view3 = [OUTLINED_FUNCTION_2_3() view];
+        [view2 addSubview:view3];
 
-        v11 = [v5 view];
-        [v11 bounds];
+        view4 = [v5 view];
+        [view4 bounds];
         v13 = v12;
         v15 = v14;
         v17 = v16;
         v19 = v18;
-        v20 = [OUTLINED_FUNCTION_2_3() view];
-        [v20 setFrame:{v13, v15, v17, v19}];
+        view5 = [OUTLINED_FUNCTION_2_3() view];
+        [view5 setFrame:{v13, v15, v17, v19}];
 
         [v5 addChildViewController:*(v5 + 1192)];
         [OUTLINED_FUNCTION_2_3() didMoveToParentViewController:v5];
-        v21 = [OUTLINED_FUNCTION_2_3() view];
-        [v21 layoutIfNeeded];
+        view6 = [OUTLINED_FUNCTION_2_3() view];
+        [view6 layoutIfNeeded];
 
-        v22 = [OUTLINED_FUNCTION_2_3() _previewHeader];
-        [v22 setDelegate:v5];
+        _previewHeader = [OUTLINED_FUNCTION_2_3() _previewHeader];
+        [_previewHeader setDelegate:v5];
 
-        if (a3)
+        if (enabled)
         {
 LABEL_9:
           OUTLINED_FUNCTION_0_2();
@@ -1223,43 +1223,43 @@ LABEL_9:
 
 - (void)_updateScrollViewIndicatorInsets
 {
-  if (a1)
+  if (self)
   {
-    v22 = [a1 view];
-    [MEMORY[0x1E69DCEF8] _sf_baseInsetsForVerticalScrollIndicatorInScrollViewContainerView:v22];
+    view = [self view];
+    [MEMORY[0x1E69DCEF8] _sf_baseInsetsForVerticalScrollIndicatorInScrollViewContainerView:view];
     v20 = v3;
     v21 = v2;
     v18 = v5;
     v19 = v4;
-    [MEMORY[0x1E69DCEF8] _sf_baseInsetsForHorizontalScrollIndicatorInScrollViewContainerView:v22];
+    [MEMORY[0x1E69DCEF8] _sf_baseInsetsForHorizontalScrollIndicatorInScrollViewContainerView:view];
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = (a1 + 1120);
+    v13 = (self + 1120);
     v14.f64[0] = v21;
     v14.f64[1] = v20;
     v15.f64[0] = v19;
     v15.f64[1] = v18;
-    if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v14, *(a1 + 1120)), vceqq_f64(v15, *(a1 + 1136))))) & 1) == 0 || (v16.f64[0] = v8, v16.f64[1] = v6, v17.f64[0] = v10, v17.f64[1] = v12, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v16, *(a1 + 1152)), vceqq_f64(v17, *(a1 + 1168))))) & 1) == 0))
+    if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v14, *(self + 1120)), vceqq_f64(v15, *(self + 1136))))) & 1) == 0 || (v16.f64[0] = v8, v16.f64[1] = v6, v17.f64[0] = v10, v17.f64[1] = v12, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v16, *(self + 1152)), vceqq_f64(v17, *(self + 1168))))) & 1) == 0))
     {
       *v13 = v21;
-      *(a1 + 1128) = v20;
-      *(a1 + 1136) = v19;
-      *(a1 + 1144) = v18;
-      *(a1 + 1152) = v8;
-      *(a1 + 1160) = v6;
-      *(a1 + 1168) = v10;
-      *(a1 + 1176) = v12;
-      [*(a1 + 1048) updateScrollViewIndicatorVerticalInsets:*v13 horizontalInsets:{*(a1 + 1128), *(a1 + 1136), *(a1 + 1144)}];
+      *(self + 1128) = v20;
+      *(self + 1136) = v19;
+      *(self + 1144) = v18;
+      *(self + 1152) = v8;
+      *(self + 1160) = v6;
+      *(self + 1168) = v10;
+      *(self + 1176) = v12;
+      [*(self + 1048) updateScrollViewIndicatorVerticalInsets:*v13 horizontalInsets:{*(self + 1128), *(self + 1136), *(self + 1144)}];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SFSafariViewController;
-  [(SFSafariViewController *)&v5 viewDidAppear:a3];
+  [(SFSafariViewController *)&v5 viewDidAppear:appear];
   if (self)
   {
     [(SFSafariViewController *)self _handleURLExternallyIfApplicableBypassingVisibilityCheck:?];
@@ -1283,106 +1283,106 @@ LABEL_9:
 
 - (void)_dismiss
 {
-  if (a1)
+  if (self)
   {
-    [a1 dismissViewControllerAnimated:1 completion:0];
-    WeakRetained = objc_loadWeakRetained(a1 + 154);
+    [self dismissViewControllerAnimated:1 completion:0];
+    WeakRetained = objc_loadWeakRetained(self + 154);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained safariViewControllerDidFinish:a1];
+      [WeakRetained safariViewControllerDidFinish:self];
     }
   }
 }
 
 - (void)_addRemoteView
 {
-  if (a1 && *(a1 + 1032) && (*(a1 + 1056) & 1) == 0)
+  if (self && *(self + 1032) && (*(self + 1056) & 1) == 0)
   {
     if ((__UIApplicationLinkedOnOrAfter() & 1) == 0)
     {
-      v2 = *(a1 + 1048);
-      v3 = [a1 view];
-      v4 = [v3 tintColor];
-      [v2 setPreferredControlTintColor:v4];
+      v2 = *(self + 1048);
+      view = [self view];
+      tintColor = [view tintColor];
+      [v2 setPreferredControlTintColor:tintColor];
     }
 
-    v9 = [*(a1 + 1032) view];
-    v5 = *(a1 + 1200);
-    v6 = [a1 view];
-    v7 = v6;
+    view2 = [*(self + 1032) view];
+    v5 = *(self + 1200);
+    view3 = [self view];
+    v7 = view3;
     if (v5)
     {
-      [v6 insertSubview:v9 belowSubview:*(a1 + 1200)];
+      [view3 insertSubview:view2 belowSubview:*(self + 1200)];
     }
 
     else
     {
-      [v6 addSubview:v9];
+      [view3 addSubview:view2];
     }
 
-    v8 = [a1 view];
-    [v8 bounds];
-    [v9 setFrame:?];
+    view4 = [self view];
+    [view4 bounds];
+    [view2 setFrame:?];
 
-    [v9 setAutoresizingMask:18];
-    *(a1 + 1056) = 1;
+    [view2 setAutoresizingMask:18];
+    *(self + 1056) = 1;
   }
 }
 
-- (void)_setEdgeSwipeDismissalEnabled:(id *)a1
+- (void)_setEdgeSwipeDismissalEnabled:(id *)enabled
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (enabled)
   {
-    v3 = a1[137];
+    v3 = enabled[137];
     if (v3)
     {
-      v20 = [v3 edgeSwipeView];
+      edgeSwipeView = [v3 edgeSwipeView];
       if (a2)
       {
-        if (!v20)
+        if (!edgeSwipeView)
         {
-          v20 = objc_alloc_init(MEMORY[0x1E69DD250]);
-          v5 = [v20 layer];
-          [v5 setHitTestsAsOpaque:1];
+          edgeSwipeView = objc_alloc_init(MEMORY[0x1E69DD250]);
+          layer = [edgeSwipeView layer];
+          [layer setHitTestsAsOpaque:1];
 
-          [a1[137] setEdgeSwipeView:v20];
+          [enabled[137] setEdgeSwipeView:edgeSwipeView];
         }
 
-        v6 = [a1 view];
-        [a1[129] view];
+        view = [enabled view];
+        [enabled[129] view];
         objc_claimAutoreleasedReturnValue();
-        [OUTLINED_FUNCTION_2() insertSubview:v20 aboveSubview:a1];
+        [OUTLINED_FUNCTION_2() insertSubview:edgeSwipeView aboveSubview:enabled];
 
-        [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+        [edgeSwipeView setTranslatesAutoresizingMaskIntoConstraints:0];
         v17 = MEMORY[0x1E696ACD8];
-        if ([v6 _sf_usesLeftToRightLayout])
+        if ([view _sf_usesLeftToRightLayout])
         {
-          [v20 leftAnchor];
+          [edgeSwipeView leftAnchor];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_2() leftAnchor];
         }
 
         else
         {
-          [v20 rightAnchor];
+          [edgeSwipeView rightAnchor];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_2() rightAnchor];
         }
         v18 = ;
-        v19 = a1;
-        v16 = [a1 constraintEqualToAnchor:?];
+        enabledCopy = enabled;
+        v16 = [enabled constraintEqualToAnchor:?];
         v21[0] = v16;
-        v7 = [v20 topAnchor];
-        v8 = [v6 topAnchor];
-        v9 = [v7 constraintEqualToAnchor:v8 constant:64.0];
+        topAnchor = [edgeSwipeView topAnchor];
+        topAnchor2 = [view topAnchor];
+        v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:64.0];
         v21[1] = v9;
-        v10 = [v20 bottomAnchor];
-        v11 = [v6 bottomAnchor];
-        v12 = [v10 constraintEqualToAnchor:v11];
+        bottomAnchor = [edgeSwipeView bottomAnchor];
+        bottomAnchor2 = [view bottomAnchor];
+        v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v21[2] = v12;
-        v13 = [v20 widthAnchor];
-        v14 = [v13 constraintEqualToConstant:24.0];
+        widthAnchor = [edgeSwipeView widthAnchor];
+        v14 = [widthAnchor constraintEqualToConstant:24.0];
         v21[3] = v14;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
         [v17 activateConstraints:v15];
@@ -1390,7 +1390,7 @@ LABEL_9:
 
       else
       {
-        [v20 removeFromSuperview];
+        [edgeSwipeView removeFromSuperview];
       }
     }
   }
@@ -1406,11 +1406,11 @@ LABEL_9:
 
 - (void)_removeLaunchPlaceholderView
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 1016) removeFromSuperview];
-    v2 = *(a1 + 1016);
-    *(a1 + 1016) = 0;
+    [*(self + 1016) removeFromSuperview];
+    v2 = *(self + 1016);
+    *(self + 1016) = 0;
   }
 }
 
@@ -1420,35 +1420,35 @@ void __51__SFSafariViewController__addLaunchPlaceholderView__block_invoke(uint64
   [(SFSafariViewController *)WeakRetained _dismiss];
 }
 
-- (void)_handleURLExternallyIfApplicableBypassingVisibilityCheck:(uint64_t)a1
+- (void)_handleURLExternallyIfApplicableBypassingVisibilityCheck:(uint64_t)check
 {
-  if (a1 && (*(a1 + 1008) & 1) == 0 && [*(a1 + 992) BOOLValue])
+  if (check && (*(check + 1008) & 1) == 0 && [*(check + 992) BOOLValue])
   {
-    v4 = [a1 view];
-    v5 = [v4 window];
-    v6 = [v5 windowScene];
-    v7 = v6;
-    if (v6)
+    view = [check view];
+    window = [view window];
+    windowScene = [window windowScene];
+    v7 = windowScene;
+    if (windowScene)
     {
-      v8 = v6;
+      windowScene2 = windowScene;
     }
 
     else
     {
-      v9 = [a1 presentingViewController];
-      v10 = [v9 view];
-      v11 = [v10 window];
-      v8 = [v11 windowScene];
+      presentingViewController = [check presentingViewController];
+      view2 = [presentingViewController view];
+      window2 = [view2 window];
+      windowScene2 = [window2 windowScene];
     }
 
-    if (v8)
+    if (windowScene2)
     {
-      if ((a2 & 1) != 0 || (performViewWillAppearInLoadView() & 1) != 0 || (eligibleForSlideInPresentation() & 1) != 0 || SFViewControllerViewIsVisible(a1, 0))
+      if ((a2 & 1) != 0 || (performViewWillAppearInLoadView() & 1) != 0 || (eligibleForSlideInPresentation() & 1) != 0 || SFViewControllerViewIsVisible(check, 0))
       {
-        *(a1 + 1008) = 1;
+        *(check + 1008) = 1;
         OUTLINED_FUNCTION_0_2();
         OUTLINED_FUNCTION_45();
-        [v8 openURL:? options:? completionHandler:?];
+        [windowScene2 openURL:? options:? completionHandler:?];
 LABEL_14:
 
         return;
@@ -1483,11 +1483,11 @@ LABEL_14:
 
 - (void)_updateLinkPreviewHitTestView
 {
-  if (a1)
+  if (self)
   {
-    v3 = [a1 _showingLinkPreview];
-    v4 = a1[150];
-    if (v3)
+    _showingLinkPreview = [self _showingLinkPreview];
+    v4 = self[150];
+    if (_showingLinkPreview)
     {
       if (v4)
       {
@@ -1495,17 +1495,17 @@ LABEL_14:
       }
 
       v5 = objc_alloc(MEMORY[0x1E69DD250]);
-      v6 = [OUTLINED_FUNCTION_2() view];
-      [v6 bounds];
+      view = [OUTLINED_FUNCTION_2() view];
+      [view bounds];
       UIRectInset();
       OUTLINED_FUNCTION_35([v1 initWithFrame:?], 1200);
 
-      v7 = [a1[150] layer];
-      [v7 setHitTestsAsOpaque:1];
+      layer = [self[150] layer];
+      [layer setHitTestsAsOpaque:1];
 
-      v9 = [a1 view];
-      [v9 addSubview:a1[150]];
-      v8 = v9;
+      view2 = [self view];
+      [view2 addSubview:self[150]];
+      v8 = view2;
     }
 
     else
@@ -1516,8 +1516,8 @@ LABEL_14:
       }
 
       [v4 removeFromSuperview];
-      v8 = a1[150];
-      a1[150] = 0;
+      v8 = self[150];
+      self[150] = 0;
     }
   }
 }
@@ -1525,7 +1525,7 @@ LABEL_14:
 - (id)_defaultPreviewActionItems
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x1E69DCE00];
     v3 = _WBSLocalizedString();
@@ -1533,7 +1533,7 @@ LABEL_14:
     v26[1] = 3221225472;
     v26[2] = __52__SFSafariViewController__defaultPreviewActionItems__block_invoke;
     v26[3] = &unk_1E8494460;
-    v26[4] = a1;
+    v26[4] = self;
     v4 = [v2 actionWithTitle:v3 style:0 handler:v26];
 
     if (objc_opt_respondsToSelector())
@@ -1548,7 +1548,7 @@ LABEL_14:
     v22 = 3221225472;
     v23 = __52__SFSafariViewController__defaultPreviewActionItems__block_invoke_2;
     v24 = &unk_1E8494460;
-    v25 = a1;
+    selfCopy = self;
     v8 = [v6 actionWithTitle:v7 style:0 handler:v21];
 
     if (objc_opt_respondsToSelector())
@@ -1563,7 +1563,7 @@ LABEL_14:
     v17 = 3221225472;
     v18 = __52__SFSafariViewController__defaultPreviewActionItems__block_invoke_3;
     v19 = &unk_1E8494460;
-    v20 = a1;
+    selfCopy2 = self;
     v12 = [v10 actionWithTitle:v11 style:0 handler:v16];
 
     if (objc_opt_respondsToSelector())
@@ -1586,26 +1586,26 @@ LABEL_14:
   return v14;
 }
 
-- (id)_fetchCustomActivitiesForURL:(void *)a3 title:
+- (id)_fetchCustomActivitiesForURL:(void *)l title:
 {
   v28[2] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  lCopy = l;
+  if (self)
   {
-    v7 = *(a1 + 1072);
-    *(a1 + 1072) = 0;
+    v7 = *(self + 1072);
+    *(self + 1072) = 0;
 
-    v8 = *(a1 + 1080);
-    *(a1 + 1080) = 0;
+    v8 = *(self + 1080);
+    *(self + 1080) = 0;
 
-    WeakRetained = objc_loadWeakRetained((a1 + 1232));
+    WeakRetained = objc_loadWeakRetained((self + 1232));
     v10 = 0;
     if (objc_opt_respondsToSelector())
     {
-      v11 = [WeakRetained safariViewController:a1 activityItemsForURL:v5 title:v6];
+      v11 = [WeakRetained safariViewController:self activityItemsForURL:v5 title:lCopy];
       v28[0] = v5;
-      v28[1] = v6;
+      v28[1] = lCopy;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
       OUTLINED_FUNCTION_1_5();
       v24 = 3221225472;
@@ -1616,12 +1616,12 @@ LABEL_14:
       v14 = [v11 indexesOfObjectsPassingTest:v23];
       v15 = [v11 objectsAtIndexes:v14];
 
-      objc_storeStrong((a1 + 1080), v12);
+      objc_storeStrong((self + 1080), v12);
       if ([v15 count])
       {
-        v16 = [MEMORY[0x1E695DF90] dictionary];
-        v17 = *(a1 + 1072);
-        *(a1 + 1072) = v16;
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        v17 = *(self + 1072);
+        *(self + 1072) = dictionary;
 
         v18 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v15, "count")}];
         v20[0] = MEMORY[0x1E69E9820];
@@ -1630,7 +1630,7 @@ LABEL_14:
         v20[3] = &unk_1E84944B0;
         v10 = v18;
         v21 = v10;
-        v22 = a1;
+        selfCopy = self;
         [v15 enumerateObjectsUsingBlock:v20];
       }
 
@@ -1653,9 +1653,9 @@ LABEL_14:
 {
   v2 = +[SFSafariLaunchPlaceholderView blankPlaceholder];
   OUTLINED_FUNCTION_35(v2, 1016);
-  if ([a1 _showingLinkPreview] & 1) != 0 || (objc_msgSend(a1, "_showingLinkPreviewWithMinimalUI") & 1) != 0 || (result = objc_msgSend(*(a1 + 992), "BOOLValue"), (result) && (*(a1 + 1025) & 1) == 0)
+  if ([self _showingLinkPreview] & 1) != 0 || (objc_msgSend(self, "_showingLinkPreviewWithMinimalUI") & 1) != 0 || (result = objc_msgSend(*(self + 992), "BOOLValue"), (result) && (*(self + 1025) & 1) == 0)
   {
-    v3 = *(a1 + 1016);
+    v3 = *(self + 1016);
 
     return [v3 setHidden:1];
   }
@@ -1675,10 +1675,10 @@ void __43__SFSafariViewController__connectToService__block_invoke_cold_1(void *a
 
 - (uint64_t)_addRemoteViewControllerIfNeeded
 {
-  [a2 addChildViewController:*a1];
+  [a2 addChildViewController:*self];
   [(SFSafariViewController *)a2 _addRemoteView];
   [(SFSafariViewController *)a2 _removeLaunchPlaceholderView];
-  v4 = *a1;
+  v4 = *self;
 
   return [v4 didMoveToParentViewController:a2];
 }

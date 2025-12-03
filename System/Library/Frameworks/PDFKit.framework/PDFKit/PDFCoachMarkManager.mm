@@ -1,17 +1,17 @@
 @interface PDFCoachMarkManager
-- (PDFCoachMarkManager)initWithPDFRenderingProperties:(id)a3;
-- (id)_pageLayerForPage:(id)a3;
+- (PDFCoachMarkManager)initWithPDFRenderingProperties:(id)properties;
+- (id)_pageLayerForPage:(id)page;
 - (void)_cleanCoachMarks;
-- (void)createCoachMarkForPage:(id)a3 atFrame:(CGRect)a4;
-- (void)pageLayerDidAppear:(id)a3;
-- (void)pageLayerWillRemove:(id)a3;
+- (void)createCoachMarkForPage:(id)page atFrame:(CGRect)frame;
+- (void)pageLayerDidAppear:(id)appear;
+- (void)pageLayerWillRemove:(id)remove;
 @end
 
 @implementation PDFCoachMarkManager
 
-- (PDFCoachMarkManager)initWithPDFRenderingProperties:(id)a3
+- (PDFCoachMarkManager)initWithPDFRenderingProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v15.receiver = self;
   v15.super_class = PDFCoachMarkManager;
   v5 = [(PDFCoachMarkManager *)&v15 init];
@@ -21,7 +21,7 @@
     v7 = v5->_private;
     v5->_private = v6;
 
-    objc_storeWeak(&v5->_private->renderingProperties, v4);
+    objc_storeWeak(&v5->_private->renderingProperties, propertiesCopy);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v9 = v5->_private;
     coachMarks = v9->coachMarks;
@@ -36,13 +36,13 @@
   return v5;
 }
 
-- (void)createCoachMarkForPage:(id)a3 atFrame:(CGRect)a4
+- (void)createCoachMarkForPage:(id)page atFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v15 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pageCopy = page;
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
@@ -61,37 +61,37 @@
       v19.size.height = height;
       if (!CGRectIsEmpty(v19) && PDFRectValid(x, y, width, height))
       {
-        v9 = [[PDFCoachMark alloc] initWithFrame:x, y, width, height];
+        height = [[PDFCoachMark alloc] initWithFrame:x, y, width, height];
         [(PDFTimer *)self->_private->timer update];
-        v10 = [(PDFCoachMarkManager *)self _pageLayerForPage:v15];
+        v10 = [(PDFCoachMarkManager *)self _pageLayerForPage:pageCopy];
         if (v10)
         {
-          [(PDFCoachMark *)v9 playEffect:v10];
+          [(PDFCoachMark *)height playEffect:v10];
         }
 
         else
         {
-          v11 = [v15 document];
-          v12 = [v11 indexForPage:v15];
+          document = [pageCopy document];
+          v12 = [document indexForPage:pageCopy];
 
           coachMarks = self->_private->coachMarks;
           v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-          [(NSMutableDictionary *)coachMarks setObject:v9 forKey:v14];
+          [(NSMutableDictionary *)coachMarks setObject:height forKey:v14];
         }
       }
     }
   }
 }
 
-- (void)pageLayerDidAppear:(id)a3
+- (void)pageLayerDidAppear:(id)appear
 {
-  v14 = a3;
-  v4 = [v14 page];
-  v5 = v4;
-  if (v4)
+  appearCopy = appear;
+  page = [appearCopy page];
+  v5 = page;
+  if (page)
   {
-    v6 = [v4 document];
-    v7 = [v6 indexForPage:v5];
+    document = [page document];
+    v7 = [document indexForPage:v5];
 
     coachMarks = self->_private->coachMarks;
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
@@ -102,7 +102,7 @@
       [v10 effectTimeLeft];
       if (v11 >= 0.0)
       {
-        [v10 playEffect:v14];
+        [v10 playEffect:appearCopy];
       }
 
       v12 = self->_private->coachMarks;
@@ -112,11 +112,11 @@
   }
 }
 
-- (void)pageLayerWillRemove:(id)a3
+- (void)pageLayerWillRemove:(id)remove
 {
-  v8 = [a3 page];
-  v4 = [v8 document];
-  v5 = [v4 indexForPage:v8];
+  page = [remove page];
+  document = [page document];
+  v5 = [document indexForPage:page];
 
   coachMarks = self->_private->coachMarks;
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v5];
@@ -164,28 +164,28 @@
   [(NSMutableDictionary *)self->_private->coachMarks removeObjectsForKeys:v3];
 }
 
-- (id)_pageLayerForPage:(id)a3
+- (id)_pageLayerForPage:(id)page
 {
   v3 = self->_private;
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&v3->renderingProperties);
-  v6 = [v4 document];
-  v7 = [v6 indexForPage:v4];
+  document = [pageCopy document];
+  v7 = [document indexForPage:pageCopy];
 
-  v8 = [WeakRetained pdfView];
-  v9 = v8;
-  if (v8)
+  pdfView = [WeakRetained pdfView];
+  v9 = pdfView;
+  if (pdfView)
   {
-    v10 = [v8 pageViewForPageAtIndex:v7];
-    v11 = [v10 pageLayer];
+    v10 = [pdfView pageViewForPageAtIndex:v7];
+    pageLayer = [v10 pageLayer];
   }
 
   else
   {
-    v11 = 0;
+    pageLayer = 0;
   }
 
-  return v11;
+  return pageLayer;
 }
 
 @end

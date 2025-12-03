@@ -1,15 +1,15 @@
 @interface MRArtwork
 + (BOOL)processRequestsExternalArtworkValidation;
-+ (id)generateArtworkDataWithSize:(CGSize)a3;
-- (BOOL)isEqual:(id)a3;
-- (MRArtwork)initWithImageData:(id)a3 height:(int64_t)a4 width:(int64_t)a5;
-- (MRArtwork)initWithProtobuf:(id)a3;
++ (id)generateArtworkDataWithSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
+- (MRArtwork)initWithImageData:(id)data height:(int64_t)height width:(int64_t)width;
+- (MRArtwork)initWithProtobuf:(id)protobuf;
 - (NSDictionary)dictionaryRepresentation;
-- (id)artworkByResizingWithWidth:(int64_t)a3 height:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)artworkByResizingWithWidth:(int64_t)width height:(int64_t)height;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (void)setImageData:(id)a3;
+- (void)setImageData:(id)data;
 @end
 
 @implementation MRArtwork
@@ -24,69 +24,69 @@
   return processRequestsExternalArtworkValidation___entitled;
 }
 
-- (MRArtwork)initWithProtobuf:(id)a3
+- (MRArtwork)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  v5 = [v4 artworkData];
+  protobufCopy = protobuf;
+  selfCopy = [protobufCopy artworkData];
 
-  if (v5)
+  if (selfCopy)
   {
     v17.receiver = self;
     v17.super_class = MRArtwork;
     v6 = [(MRArtwork *)&v17 init];
     if (v6)
     {
-      v7 = [v4 artworkData];
-      v8 = [v7 copy];
+      artworkData = [protobufCopy artworkData];
+      v8 = [artworkData copy];
       imageData = v6->_imageData;
       v6->_imageData = v8;
 
-      v10 = [v4 metadata];
-      v11 = [v10 hasArtworkDataWidthDeprecated];
+      metadata = [protobufCopy metadata];
+      hasArtworkDataWidthDeprecated = [metadata hasArtworkDataWidthDeprecated];
 
-      if (v11)
+      if (hasArtworkDataWidthDeprecated)
       {
-        v12 = [v4 metadata];
-        v6->_width = [v12 artworkDataWidthDeprecated];
+        metadata2 = [protobufCopy metadata];
+        v6->_width = [metadata2 artworkDataWidthDeprecated];
       }
 
       else
       {
-        v6->_width = [v4 artworkDataWidth];
+        v6->_width = [protobufCopy artworkDataWidth];
       }
 
-      v13 = [v4 metadata];
-      v14 = [v13 hasArtworkDataHeightDeprecated];
+      metadata3 = [protobufCopy metadata];
+      hasArtworkDataHeightDeprecated = [metadata3 hasArtworkDataHeightDeprecated];
 
-      if (v14)
+      if (hasArtworkDataHeightDeprecated)
       {
-        v15 = [v4 metadata];
-        v6->_height = [v15 artworkDataHeightDeprecated];
+        metadata4 = [protobufCopy metadata];
+        v6->_height = [metadata4 artworkDataHeightDeprecated];
       }
 
       else
       {
-        v6->_height = [v4 artworkDataHeight];
+        v6->_height = [protobufCopy artworkDataHeight];
       }
     }
 
     self = v6;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (MRArtwork)initWithImageData:(id)a3 height:(int64_t)a4 width:(int64_t)a5
+- (MRArtwork)initWithImageData:(id)data height:(int64_t)height width:(int64_t)width
 {
-  v6 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = MRArtwork;
   v7 = [(MRArtwork *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(MRArtwork *)v7 setImageData:v6];
+    [(MRArtwork *)v7 setImageData:dataCopy];
   }
 
   return v8;
@@ -95,12 +95,12 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MRArtwork *)self imageData];
+  imageData = [(MRArtwork *)self imageData];
 
-  if (v4)
+  if (imageData)
   {
-    v5 = [(MRArtwork *)self imageData];
-    StringRepresentation = MRDataCreateStringRepresentation(v5);
+    imageData2 = [(MRArtwork *)self imageData];
+    StringRepresentation = MRDataCreateStringRepresentation(imageData2);
     [v3 setObject:StringRepresentation forKeyedSubscript:@"imageData"];
   }
 
@@ -119,23 +119,23 @@
   v9 = +[MRUserSettings currentSettings];
   if ([v9 shouldLogArtwork])
   {
-    v10 = [(MRArtwork *)self imageData];
-    v11 = MRCreateASCIIRepresentationFromImageData(v10);
+    imageData3 = [(MRArtwork *)self imageData];
+    v11 = MRCreateASCIIRepresentationFromImageData(imageData3);
     [v3 setObject:v11 forKeyedSubscript:@"image"];
   }
 
   return v3;
 }
 
-- (void)setImageData:(id)a3
+- (void)setImageData:(id)data
 {
-  v5 = a3;
-  if (v5)
+  dataCopy = data;
+  if (dataCopy)
   {
     if (+[MRArtwork processRequestsExternalArtworkValidation])
     {
       v6 = MRGetSharedService();
-      [v6 imageDimensionsForArtworkData:v5];
+      [v6 imageDimensionsForArtworkData:dataCopy];
       v9 = v8;
       v10 = v7;
       if (v8 != *MEMORY[0x1E695F060] || v7 != *(MEMORY[0x1E695F060] + 8))
@@ -153,14 +153,14 @@
     else
     {
       v16 = 0;
-      [MRImageUtilities imageDimensionsForImageData:v5 error:&v16];
+      [MRImageUtilities imageDimensionsForImageData:dataCopy error:&v16];
       v9 = v14;
       v10 = v15;
       v6 = v16;
       if (!v6)
       {
 LABEL_15:
-        objc_storeStrong(&self->_imageData, a3);
+        objc_storeStrong(&self->_imageData, data);
         self->_height = v10;
         self->_width = v9;
         goto LABEL_16;
@@ -185,10 +185,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -201,18 +201,18 @@ LABEL_17:
       goto LABEL_10;
     }
 
-    v5 = [(MRArtwork *)v4 imageData];
-    v6 = [(MRArtwork *)self imageData];
-    v7 = v6;
-    if (v5 == v6)
+    imageData = [(MRArtwork *)equalCopy imageData];
+    imageData2 = [(MRArtwork *)self imageData];
+    v7 = imageData2;
+    if (imageData == imageData2)
     {
     }
 
     else
     {
-      v8 = [(MRArtwork *)v4 imageData];
-      v9 = [(MRArtwork *)self imageData];
-      v10 = [v8 isEqualToData:v9];
+      imageData3 = [(MRArtwork *)equalCopy imageData];
+      imageData4 = [(MRArtwork *)self imageData];
+      v10 = [imageData3 isEqualToData:imageData4];
 
       if (!v10)
       {
@@ -220,16 +220,16 @@ LABEL_17:
       }
     }
 
-    v12 = [(MRArtwork *)v4 height];
-    if (v12 != [(MRArtwork *)self height])
+    height = [(MRArtwork *)equalCopy height];
+    if (height != [(MRArtwork *)self height])
     {
 LABEL_10:
       v11 = 0;
       goto LABEL_11;
     }
 
-    v13 = [(MRArtwork *)v4 width];
-    v11 = v13 == [(MRArtwork *)self width];
+    width = [(MRArtwork *)equalCopy width];
+    v11 = width == [(MRArtwork *)self width];
   }
 
 LABEL_11:
@@ -241,10 +241,10 @@ LABEL_11:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRArtwork *)self width];
-  v6 = [(MRArtwork *)self height];
-  v7 = [(MRArtwork *)self imageData];
-  v8 = [v3 initWithFormat:@"<%@: %p> %ld x %ld (%ld bytes)", v4, self, v5, v6, objc_msgSend(v7, "length")];
+  width = [(MRArtwork *)self width];
+  height = [(MRArtwork *)self height];
+  imageData = [(MRArtwork *)self imageData];
+  v8 = [v3 initWithFormat:@"<%@: %p> %ld x %ld (%ld bytes)", v4, self, width, height, objc_msgSend(imageData, "length")];
 
   return v8;
 }
@@ -254,8 +254,8 @@ LABEL_11:
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"<%@: %p> {\n", objc_opt_class(), self];
   [v3 appendFormat:@"  width = %ld\n", -[MRArtwork width](self, "width")];
   [v3 appendFormat:@"  height = %ld\n", -[MRArtwork height](self, "height")];
-  v4 = [(MRArtwork *)self imageData];
-  v5 = [v4 description];
+  imageData = [(MRArtwork *)self imageData];
+  v5 = [imageData description];
   v6 = MRCreateIndentedDebugDescriptionFromObject(v5);
   [v3 appendFormat:@"  imageData = %@\n", v6];
 
@@ -264,8 +264,8 @@ LABEL_11:
 
   if (v5)
   {
-    v8 = [(MRArtwork *)self imageData];
-    v9 = MRCreateASCIIRepresentationFromImageData(v8);
+    imageData2 = [(MRArtwork *)self imageData];
+    v9 = MRCreateASCIIRepresentationFromImageData(imageData2);
     v10 = MRCreateIndentedDebugDescriptionFromObject(v9);
     [v3 appendFormat:@"artwork = %@\n", v10];
   }
@@ -275,15 +275,15 @@ LABEL_11:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(MRArtwork *)self imageData];
-  if (v5)
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  imageData = [(MRArtwork *)self imageData];
+  if (imageData)
   {
     v6 = objc_alloc(MEMORY[0x1E695DEF0]);
-    v7 = [(MRArtwork *)self imageData];
-    v8 = [v6 initWithData:v7];
+    imageData2 = [(MRArtwork *)self imageData];
+    v8 = [v6 initWithData:imageData2];
     [v4 setImageData:v8];
   }
 
@@ -297,44 +297,44 @@ LABEL_11:
   return v4;
 }
 
-- (id)artworkByResizingWithWidth:(int64_t)a3 height:(int64_t)a4
+- (id)artworkByResizingWithWidth:(int64_t)width height:(int64_t)height
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(MRArtwork *)self width];
-  v10 = [(MRArtwork *)self height];
-  v11 = v10;
-  if (v7 + 0.5 >= v9 && v8 + 0.5 >= v11)
+  widthCopy = width;
+  heightCopy = height;
+  width = [(MRArtwork *)self width];
+  height = [(MRArtwork *)self height];
+  v11 = height;
+  if (widthCopy + 0.5 >= width && heightCopy + 0.5 >= v11)
   {
     goto LABEL_21;
   }
 
-  v13 = v10;
-  v14 = v9;
-  if ((a4 & a3) != 0xFFFFFFFFFFFFFFFFLL)
+  v13 = height;
+  v14 = width;
+  if ((height & width) != 0xFFFFFFFFFFFFFFFFLL)
   {
-    v15 = v9 / v11;
-    if (a3 == -1)
+    v15 = width / v11;
+    if (width == -1)
     {
-      v14 = v15 * v8;
-      v13 = v8;
+      v14 = v15 * heightCopy;
+      v13 = heightCopy;
     }
 
-    else if (a4 == -1)
+    else if (height == -1)
     {
-      v14 = v7;
-      v13 = v7 / v15;
+      v14 = widthCopy;
+      v13 = widthCopy / v15;
     }
 
     else
     {
-      v13 = v8;
-      v14 = v7;
+      v13 = heightCopy;
+      v14 = widthCopy;
     }
   }
 
   v16 = v13 + 0.5;
-  if (v14 + 0.5 < v9 || v16 < v11)
+  if (v14 + 0.5 < width || v16 < v11)
   {
     v18 = [(MRArtwork *)self imageData:v11];
     v24 = 0;
@@ -374,12 +374,12 @@ uint64_t __53__MRArtwork_processRequestsExternalArtworkValidation__block_invoke(
   return result;
 }
 
-+ (id)generateArtworkDataWithSize:(CGSize)a3
++ (id)generateArtworkDataWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = a3.width * a3.height;
-  v6 = malloc_type_malloc(vcvtd_n_u64_f64(a3.width * a3.height, 2uLL), 0xB0B63DDCuLL);
+  height = size.height;
+  width = size.width;
+  v5 = size.width * size.height;
+  v6 = malloc_type_malloc(vcvtd_n_u64_f64(size.width * size.height, 2uLL), 0xB0B63DDCuLL);
   v7 = v6;
   if (v5 > 0.0)
   {
@@ -400,8 +400,8 @@ uint64_t __53__MRArtwork_processRequestsExternalArtworkValidation__block_invoke(
   Image = CGBitmapContextCreateImage(v12);
   CFRelease(v12);
   Mutable = CFDataCreateMutable(*MEMORY[0x1E695E480], 0);
-  v15 = [*MEMORY[0x1E6982E58] identifier];
-  v16 = CGImageDestinationCreateWithData(Mutable, v15, 1uLL, 0);
+  identifier = [*MEMORY[0x1E6982E58] identifier];
+  v16 = CGImageDestinationCreateWithData(Mutable, identifier, 1uLL, 0);
 
   CGImageDestinationAddImage(v16, Image, 0);
   CGImageDestinationFinalize(v16);

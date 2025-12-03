@@ -1,14 +1,14 @@
 @interface UITextSuggestion
-+ (id)decodeTextSuggestions:(id)a3;
-+ (id)textSuggestionWithInputText:(id)a3;
-+ (id)textSuggestionWithInputText:(id)a3 searchText:(id)a4;
-+ (id)textSuggestionWithInputText:(id)a3 searchText:(id)a4 customInfoType:(unint64_t)a5;
++ (id)decodeTextSuggestions:(id)suggestions;
++ (id)textSuggestionWithInputText:(id)text;
++ (id)textSuggestionWithInputText:(id)text searchText:(id)searchText;
++ (id)textSuggestionWithInputText:(id)text searchText:(id)searchText customInfoType:(unint64_t)type;
 - (TIKeyboardCandidate)_keyboardCandidate;
 - (UITextSuggestion)init;
-- (UITextSuggestion)initWithCoder:(id)a3;
-- (UITextSuggestion)initWithInputText:(id)a3 searchText:(id)a4 displayText:(id)a5 headerText:(id)a6 customInfoType:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UITextSuggestion)initWithCoder:(id)coder;
+- (UITextSuggestion)initWithInputText:(id)text searchText:(id)searchText displayText:(id)displayText headerText:(id)headerText customInfoType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UITextSuggestion
@@ -28,12 +28,12 @@
   return v2;
 }
 
-- (UITextSuggestion)initWithInputText:(id)a3 searchText:(id)a4 displayText:(id)a5 headerText:(id)a6 customInfoType:(unint64_t)a7
+- (UITextSuggestion)initWithInputText:(id)text searchText:(id)searchText displayText:(id)displayText headerText:(id)headerText customInfoType:(unint64_t)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  textCopy = text;
+  searchTextCopy = searchText;
+  displayTextCopy = displayText;
+  headerTextCopy = headerText;
   v28.receiver = self;
   v28.super_class = UITextSuggestion;
   v16 = [(UITextSuggestion *)&v28 init];
@@ -43,55 +43,55 @@
     uuid = v16->_uuid;
     v16->_uuid = v17;
 
-    v19 = [v12 copy];
+    v19 = [textCopy copy];
     inputText = v16->_inputText;
     v16->_inputText = v19;
 
-    v21 = [v13 copy];
+    v21 = [searchTextCopy copy];
     searchText = v16->_searchText;
     v16->_searchText = v21;
 
-    v23 = [v14 copy];
+    v23 = [displayTextCopy copy];
     displayText = v16->_displayText;
     v16->_displayText = v23;
 
-    v25 = [v15 copy];
+    v25 = [headerTextCopy copy];
     headerText = v16->_headerText;
     v16->_headerText = v25;
 
-    v16->_customInfoType = a7;
+    v16->_customInfoType = type;
   }
 
   return v16;
 }
 
-+ (id)textSuggestionWithInputText:(id)a3
++ (id)textSuggestionWithInputText:(id)text
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithInputText:v4 searchText:v4 displayText:v4 headerText:0 customInfoType:0];
+  textCopy = text;
+  v5 = [[self alloc] initWithInputText:textCopy searchText:textCopy displayText:textCopy headerText:0 customInfoType:0];
 
   return v5;
 }
 
-+ (id)textSuggestionWithInputText:(id)a3 searchText:(id)a4
++ (id)textSuggestionWithInputText:(id)text searchText:(id)searchText
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithInputText:v7 searchText:v6 displayText:v7 headerText:0 customInfoType:0];
+  searchTextCopy = searchText;
+  textCopy = text;
+  v8 = [[self alloc] initWithInputText:textCopy searchText:searchTextCopy displayText:textCopy headerText:0 customInfoType:0];
 
   return v8;
 }
 
-+ (id)textSuggestionWithInputText:(id)a3 searchText:(id)a4 customInfoType:(unint64_t)a5
++ (id)textSuggestionWithInputText:(id)text searchText:(id)searchText customInfoType:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithInputText:v9 searchText:v8 displayText:v9 headerText:0 customInfoType:a5];
+  searchTextCopy = searchText;
+  textCopy = text;
+  v10 = [[self alloc] initWithInputText:textCopy searchText:searchTextCopy displayText:textCopy headerText:0 customInfoType:type];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UITextSuggestion);
   v5 = [(NSUUID *)self->_uuid copy];
@@ -134,22 +134,22 @@
 
 - (TIKeyboardCandidate)_keyboardCandidate
 {
-  v3 = [(UITextSuggestion *)self customInfoType];
+  customInfoType = [(UITextSuggestion *)self customInfoType];
 
-  return [TIKeyboardCandidateSuggestion candidateWithSuggestion:self customInfoType:v3];
+  return [TIKeyboardCandidateSuggestion candidateWithSuggestion:self customInfoType:customInfoType];
 }
 
-+ (id)decodeTextSuggestions:(id)a3
++ (id)decodeTextSuggestions:(id)suggestions
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (suggestions)
   {
     v3 = MEMORY[0x1E695DFD8];
-    v4 = a3;
+    suggestionsCopy = suggestions;
     v5 = objc_opt_class();
     v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
     v10 = 0;
-    v7 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v6 fromData:v4 error:&v10];
+    v7 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v6 fromData:suggestionsCopy error:&v10];
 
     v8 = v10;
     if (v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -168,119 +168,119 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
-  v4 = [(UITextSuggestion *)self uuid];
-  [v21 encodeObject:v4 forKey:@"uuid"];
+  coderCopy = coder;
+  uuid = [(UITextSuggestion *)self uuid];
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
 
-  v5 = [(UITextSuggestion *)self inputText];
+  inputText = [(UITextSuggestion *)self inputText];
 
-  if (v5)
+  if (inputText)
   {
-    v6 = [(UITextSuggestion *)self inputText];
-    [v21 encodeObject:v6 forKey:@"inputText"];
+    inputText2 = [(UITextSuggestion *)self inputText];
+    [coderCopy encodeObject:inputText2 forKey:@"inputText"];
   }
 
-  v7 = [(UITextSuggestion *)self searchText];
+  searchText = [(UITextSuggestion *)self searchText];
 
-  if (v7)
+  if (searchText)
   {
-    v8 = [(UITextSuggestion *)self searchText];
-    [v21 encodeObject:v8 forKey:@"searchText"];
+    searchText2 = [(UITextSuggestion *)self searchText];
+    [coderCopy encodeObject:searchText2 forKey:@"searchText"];
   }
 
-  v9 = [(UITextSuggestion *)self displayText];
+  displayText = [(UITextSuggestion *)self displayText];
 
-  if (v9)
+  if (displayText)
   {
-    v10 = [(UITextSuggestion *)self displayText];
-    [v21 encodeObject:v10 forKey:@"displayText"];
+    displayText2 = [(UITextSuggestion *)self displayText];
+    [coderCopy encodeObject:displayText2 forKey:@"displayText"];
   }
 
-  v11 = [(UITextSuggestion *)self headerText];
+  headerText = [(UITextSuggestion *)self headerText];
 
-  if (v11)
+  if (headerText)
   {
-    v12 = [(UITextSuggestion *)self headerText];
-    [v21 encodeObject:v12 forKey:@"headerText"];
+    headerText2 = [(UITextSuggestion *)self headerText];
+    [coderCopy encodeObject:headerText2 forKey:@"headerText"];
   }
 
-  [v21 encodeBool:-[UITextSuggestion displayStylePlain](self forKey:{"displayStylePlain"), @"displayStylePlain"}];
-  v13 = [(UITextSuggestion *)self image];
+  [coderCopy encodeBool:-[UITextSuggestion displayStylePlain](self forKey:{"displayStylePlain"), @"displayStylePlain"}];
+  image = [(UITextSuggestion *)self image];
 
-  if (v13)
+  if (image)
   {
-    v14 = [(UITextSuggestion *)self image];
-    [v21 encodeObject:v14 forKey:@"image"];
+    image2 = [(UITextSuggestion *)self image];
+    [coderCopy encodeObject:image2 forKey:@"image"];
   }
 
-  v15 = [(UITextSuggestion *)self foregroundColor];
+  foregroundColor = [(UITextSuggestion *)self foregroundColor];
 
-  if (v15)
+  if (foregroundColor)
   {
-    v16 = [(UITextSuggestion *)self foregroundColor];
-    [v21 encodeObject:v16 forKey:@"foregroundColor"];
+    foregroundColor2 = [(UITextSuggestion *)self foregroundColor];
+    [coderCopy encodeObject:foregroundColor2 forKey:@"foregroundColor"];
   }
 
-  v17 = [(UITextSuggestion *)self backgroundColor];
+  backgroundColor = [(UITextSuggestion *)self backgroundColor];
 
-  if (v17)
+  if (backgroundColor)
   {
-    v18 = [(UITextSuggestion *)self backgroundColor];
-    [v21 encodeObject:v18 forKey:@"backgroundColor"];
+    backgroundColor2 = [(UITextSuggestion *)self backgroundColor];
+    [coderCopy encodeObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
   if ([(UITextSuggestion *)self canDisplayInline])
   {
-    [v21 encodeBool:-[UITextSuggestion canDisplayInline](self forKey:{"canDisplayInline"), @"canDisplayInline"}];
+    [coderCopy encodeBool:-[UITextSuggestion canDisplayInline](self forKey:{"canDisplayInline"), @"canDisplayInline"}];
   }
 
-  v19 = [(UITextSuggestion *)self customInfoType];
-  v20 = v21;
-  if (v19)
+  customInfoType = [(UITextSuggestion *)self customInfoType];
+  v20 = coderCopy;
+  if (customInfoType)
   {
-    [v21 encodeInt64:-[UITextSuggestion customInfoType](self forKey:{"customInfoType"), @"customInfoType"}];
-    v20 = v21;
+    [coderCopy encodeInt64:-[UITextSuggestion customInfoType](self forKey:{"customInfoType"), @"customInfoType"}];
+    v20 = coderCopy;
   }
 }
 
-- (UITextSuggestion)initWithCoder:(id)a3
+- (UITextSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = UITextSuggestion;
   v5 = [(UITextSuggestion *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputText"];
     [(UITextSuggestion *)v5 setInputText:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchText"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchText"];
     [(UITextSuggestion *)v5 setSearchText:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayText"];
     [(UITextSuggestion *)v5 setDisplayText:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"headerText"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"headerText"];
     [(UITextSuggestion *)v5 setHeaderText:v11];
 
-    -[UITextSuggestion setDisplayStylePlain:](v5, "setDisplayStylePlain:", [v4 decodeBoolForKey:@"displayStylePlain"]);
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    -[UITextSuggestion setDisplayStylePlain:](v5, "setDisplayStylePlain:", [coderCopy decodeBoolForKey:@"displayStylePlain"]);
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     [(UITextSuggestion *)v5 setImage:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foregroundColor"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foregroundColor"];
     [(UITextSuggestion *)v5 setForegroundColor:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     [(UITextSuggestion *)v5 setBackgroundColor:v14];
 
-    -[UITextSuggestion setCanDisplayInline:](v5, "setCanDisplayInline:", [v4 decodeBoolForKey:@"canDisplayInline"]);
-    -[UITextSuggestion setCustomInfoType:](v5, "setCustomInfoType:", [v4 decodeInt64ForKey:@"customInfoType"]);
+    -[UITextSuggestion setCanDisplayInline:](v5, "setCanDisplayInline:", [coderCopy decodeBoolForKey:@"canDisplayInline"]);
+    -[UITextSuggestion setCustomInfoType:](v5, "setCustomInfoType:", [coderCopy decodeInt64ForKey:@"customInfoType"]);
   }
 
   return v5;

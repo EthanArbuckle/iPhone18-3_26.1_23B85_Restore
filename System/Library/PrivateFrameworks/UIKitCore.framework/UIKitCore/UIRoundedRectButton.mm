@@ -1,31 +1,31 @@
 @interface UIRoundedRectButton
-- (UIRoundedRectButton)initWithFrame:(CGRect)a3 fillColor:(id)a4;
+- (UIRoundedRectButton)initWithFrame:(CGRect)frame fillColor:(id)color;
 - (id)_contentBackgroundColor;
 - (void)_invalidatePaths;
 - (void)_updateState;
-- (void)drawRect:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTintColor:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation UIRoundedRectButton
 
-- (UIRoundedRectButton)initWithFrame:(CGRect)a3 fillColor:(id)a4
+- (UIRoundedRectButton)initWithFrame:(CGRect)frame fillColor:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = UIRoundedRectButton;
-  v11 = [(UIButton *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(UIButton *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_fillColor, a4);
+    objc_storeStrong(&height->_fillColor, color);
   }
 
   return v12;
@@ -57,8 +57,8 @@
 
   else
   {
-    v4 = [(UIButton *)self _visualProvider];
-    v3 = [v4 _setupBackgroundView];
+    _visualProvider = [(UIButton *)self _visualProvider];
+    _setupBackgroundView = [_visualProvider _setupBackgroundView];
   }
 }
 
@@ -71,12 +71,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIRoundedRectButton *)self _invalidatePaths];
   v8.receiver = self;
   v8.super_class = UIRoundedRectButton;
@@ -84,12 +84,12 @@
   [(UIRoundedRectButton *)self _updateState];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIRoundedRectButton *)self _invalidatePaths];
   v8.receiver = self;
   v8.super_class = UIRoundedRectButton;
@@ -97,24 +97,24 @@
   [(UIRoundedRectButton *)self _updateState];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = UIRoundedRectButton;
-  [(UIButton *)&v4 setHighlighted:a3];
+  [(UIButton *)&v4 setHighlighted:highlighted];
   [(UIRoundedRectButton *)self _updateState];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UIView *)self tintColor];
+  colorCopy = color;
+  tintColor = [(UIView *)self tintColor];
 
-  if (v5 != v4)
+  if (tintColor != colorCopy)
   {
     v6.receiver = self;
     v6.super_class = UIRoundedRectButton;
-    [(UIButton *)&v6 setTintColor:v4];
+    [(UIButton *)&v6 setTintColor:colorCopy];
     if ([(UIControl *)self isHighlighted]|| ![(UIRoundedRectButton *)self _canDrawContent])
     {
       [(UIRoundedRectButton *)self _updateState];
@@ -122,12 +122,12 @@
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (!_MergedGlobals_33_0)
   {
     v8 = +[UIColor tableBackgroundColor];
@@ -157,9 +157,9 @@
   v23 = v22;
   v25 = v24;
   v26 = +[UIDevice currentDevice];
-  v27 = [v26 userInterfaceIdiom];
+  userInterfaceIdiom = [v26 userInterfaceIdiom];
 
-  if ((v27 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     if (![(UIView *)self clearsContextBeforeDrawing])
     {
@@ -211,9 +211,9 @@
   }
 
   v33 = +[UIDevice currentDevice];
-  v34 = [v33 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v33 userInterfaceIdiom];
 
-  if ((v34 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v62.origin.y = v21 + 1.0;
     v62.origin.x = v19;
@@ -237,9 +237,9 @@
   if ([(UIControl *)self isHighlighted])
   {
     v38 = +[UIDevice currentDevice];
-    v39 = [v38 userInterfaceIdiom];
+    userInterfaceIdiom3 = [v38 userInterfaceIdiom];
 
-    if ((v39 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [(UIColor *)v56 set];
       [qword_1ED497EA8 fill];
@@ -263,11 +263,11 @@
     }
 
     [qword_1ED497EA8 clip];
-    v42 = [(UIView *)self tintColor];
-    v43 = v42;
-    if (v42)
+    tintColor = [(UIView *)self tintColor];
+    v43 = tintColor;
+    if (tintColor)
     {
-      [v42 set];
+      [tintColor set];
       v44 = GetContextStack(0);
       if (*v44 < 1)
       {
@@ -287,9 +287,9 @@
     }
 
     v46 = +[UIDevice currentDevice];
-    v47 = [v46 userInterfaceIdiom];
+    userInterfaceIdiom4 = [v46 userInterfaceIdiom];
 
-    if ((v47 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       CGContextRestoreGState(v41);
     }
@@ -302,9 +302,9 @@
   }
 
   v48 = +[UIDevice currentDevice];
-  v49 = [v48 userInterfaceIdiom];
+  userInterfaceIdiom5 = [v48 userInterfaceIdiom];
 
-  if ((v49 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v65.origin.y = v21 + 1.0;
     v65.size.height = v25 + -1.0;
@@ -321,9 +321,9 @@
   if ([(UIControl *)self isHighlighted])
   {
     v52 = +[UIDevice currentDevice];
-    v53 = [v52 userInterfaceIdiom];
+    userInterfaceIdiom6 = [v52 userInterfaceIdiom];
 
-    if ((v53 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v54 = qword_1ED497EA0;
     }

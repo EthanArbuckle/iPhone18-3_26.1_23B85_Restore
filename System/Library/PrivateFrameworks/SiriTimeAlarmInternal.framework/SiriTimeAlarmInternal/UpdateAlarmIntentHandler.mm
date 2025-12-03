@@ -1,12 +1,12 @@
 @interface UpdateAlarmIntentHandler
-- (void)confirmUpdateAlarm:(id)a3 completion:(id)a4;
+- (void)confirmUpdateAlarm:(id)alarm completion:(id)completion;
 @end
 
 @implementation UpdateAlarmIntentHandler
 
-- (void)confirmUpdateAlarm:(id)a3 completion:(id)a4
+- (void)confirmUpdateAlarm:(id)alarm completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = [objc_allocWithZone(type metadata accessor for UpdateAlarmIntentResponse()) init];
   v6 = OBJC_IVAR___UpdateAlarmIntentResponse_code;
   swift_beginAccess();

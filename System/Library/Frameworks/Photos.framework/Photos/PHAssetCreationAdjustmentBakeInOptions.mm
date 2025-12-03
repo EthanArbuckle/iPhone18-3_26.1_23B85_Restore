@@ -1,88 +1,88 @@
 @interface PHAssetCreationAdjustmentBakeInOptions
 + (id)adjustmentBakeInOptionsForPublishingOriginals;
 - (PHAssetCreationAdjustmentBakeInOptions)init;
-- (PHAssetCreationAdjustmentBakeInOptions)initWithCoder:(id)a3;
-- (PHAssetCreationAdjustmentBakeInOptions)initWithXPCDict:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PHAssetCreationAdjustmentBakeInOptions)initWithCoder:(id)coder;
+- (PHAssetCreationAdjustmentBakeInOptions)initWithXPCDict:(id)dict;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)plRepresentation;
-- (void)encodeToXPCDict:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeToXPCDict:(id)dict;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHAssetCreationAdjustmentBakeInOptions
 
-- (PHAssetCreationAdjustmentBakeInOptions)initWithCoder:(id)a3
+- (PHAssetCreationAdjustmentBakeInOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PHAssetCreationAdjustmentBakeInOptions;
   v5 = [(PHAssetCreationAdjustmentBakeInOptions *)&v15 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"livePhotoDisabled"];
-    v5->_shouldBakeInIfLivePhotoPlaybackDisabled = [v4 decodeBoolForKey:v6];
+    v5->_shouldBakeInIfLivePhotoPlaybackDisabled = [coderCopy decodeBoolForKey:v6];
 
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"livePhotoMuted"];
-    v5->_shouldBakeInIfLivePhotoMuted = [v4 decodeBoolForKey:v7];
+    v5->_shouldBakeInIfLivePhotoMuted = [coderCopy decodeBoolForKey:v7];
 
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"thirdPartyAdjustments"];
-    v5->_shouldBakeInIfAdjustedByThirdParty = [v4 decodeBoolForKey:v8];
+    v5->_shouldBakeInIfAdjustedByThirdParty = [coderCopy decodeBoolForKey:v8];
 
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"cropped"];
-    v5->_shouldBakeInIfCropped = [v4 decodeBoolForKey:v9];
+    v5->_shouldBakeInIfCropped = [coderCopy decodeBoolForKey:v9];
 
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"timelineTrimmed"];
-    v5->_shouldBakeInIfTimelineTrimmed = [v4 decodeBoolForKey:v10];
+    v5->_shouldBakeInIfTimelineTrimmed = [coderCopy decodeBoolForKey:v10];
 
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"portraitDepthEffect"];
-    v5->_shouldBakeInIfPortraitDepthEffectEnabled = [v4 decodeBoolForKey:v11];
+    v5->_shouldBakeInIfPortraitDepthEffectEnabled = [coderCopy decodeBoolForKey:v11];
 
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"containsPenultimateResources"];
-    v5->_shouldBakeInIfContainsPenultimateResources = [v4 decodeBoolForKey:v12];
+    v5->_shouldBakeInIfContainsPenultimateResources = [coderCopy decodeBoolForKey:v12];
 
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"flattenLivePhotoToStillIfNeeded"];
-    v5->_flattenLivePhotoToStillIfNeeded = [v4 decodeBoolForKey:v13];
+    v5->_flattenLivePhotoToStillIfNeeded = [coderCopy decodeBoolForKey:v13];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   shouldBakeInIfLivePhotoPlaybackDisabled = self->_shouldBakeInIfLivePhotoPlaybackDisabled;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v5 stringWithUTF8String:"livePhotoDisabled"];
-  [v6 encodeBool:shouldBakeInIfLivePhotoPlaybackDisabled forKey:v7];
+  [coderCopy encodeBool:shouldBakeInIfLivePhotoPlaybackDisabled forKey:v7];
 
   shouldBakeInIfLivePhotoMuted = self->_shouldBakeInIfLivePhotoMuted;
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"livePhotoMuted"];
-  [v6 encodeBool:shouldBakeInIfLivePhotoMuted forKey:v9];
+  [coderCopy encodeBool:shouldBakeInIfLivePhotoMuted forKey:v9];
 
   shouldBakeInIfAdjustedByThirdParty = self->_shouldBakeInIfAdjustedByThirdParty;
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"thirdPartyAdjustments"];
-  [v6 encodeBool:shouldBakeInIfAdjustedByThirdParty forKey:v11];
+  [coderCopy encodeBool:shouldBakeInIfAdjustedByThirdParty forKey:v11];
 
   shouldBakeInIfCropped = self->_shouldBakeInIfCropped;
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"cropped"];
-  [v6 encodeBool:shouldBakeInIfCropped forKey:v13];
+  [coderCopy encodeBool:shouldBakeInIfCropped forKey:v13];
 
   shouldBakeInIfTimelineTrimmed = self->_shouldBakeInIfTimelineTrimmed;
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"timelineTrimmed"];
-  [v6 encodeBool:shouldBakeInIfTimelineTrimmed forKey:v15];
+  [coderCopy encodeBool:shouldBakeInIfTimelineTrimmed forKey:v15];
 
   shouldBakeInIfPortraitDepthEffectEnabled = self->_shouldBakeInIfPortraitDepthEffectEnabled;
   v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"portraitDepthEffect"];
-  [v6 encodeBool:shouldBakeInIfPortraitDepthEffectEnabled forKey:v17];
+  [coderCopy encodeBool:shouldBakeInIfPortraitDepthEffectEnabled forKey:v17];
 
   shouldBakeInIfContainsPenultimateResources = self->_shouldBakeInIfContainsPenultimateResources;
   v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"containsPenultimateResources"];
-  [v6 encodeBool:shouldBakeInIfContainsPenultimateResources forKey:v19];
+  [coderCopy encodeBool:shouldBakeInIfContainsPenultimateResources forKey:v19];
 
   flattenLivePhotoToStillIfNeeded = self->_flattenLivePhotoToStillIfNeeded;
   v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"flattenLivePhotoToStillIfNeeded"];
-  [v6 encodeBool:flattenLivePhotoToStillIfNeeded forKey:v21];
+  [coderCopy encodeBool:flattenLivePhotoToStillIfNeeded forKey:v21];
 }
 
 - (id)plRepresentation
@@ -103,11 +103,11 @@
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   xdict = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_value(v4, "adjustmentBakeInOptions", xdict);
+  xpc_dictionary_set_value(dictCopy, "adjustmentBakeInOptions", xdict);
 
   xpc_dictionary_set_BOOL(xdict, "livePhotoDisabled", self->_shouldBakeInIfLivePhotoPlaybackDisabled);
   xpc_dictionary_set_BOOL(xdict, "livePhotoMuted", self->_shouldBakeInIfLivePhotoMuted);
@@ -119,7 +119,7 @@
   xpc_dictionary_set_BOOL(xdict, "flattenLivePhotoToStillIfNeeded", self->_flattenLivePhotoToStillIfNeeded);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PHAssetCreationAdjustmentBakeInOptions);
   [(PHAssetCreationAdjustmentBakeInOptions *)v4 setShouldBakeInIfLivePhotoPlaybackDisabled:self->_shouldBakeInIfLivePhotoPlaybackDisabled];
@@ -133,13 +133,13 @@
   return v4;
 }
 
-- (PHAssetCreationAdjustmentBakeInOptions)initWithXPCDict:(id)a3
+- (PHAssetCreationAdjustmentBakeInOptions)initWithXPCDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v5 = [(PHAssetCreationAdjustmentBakeInOptions *)self init];
   if (v5)
   {
-    v6 = xpc_dictionary_get_value(v4, "adjustmentBakeInOptions");
+    v6 = xpc_dictionary_get_value(dictCopy, "adjustmentBakeInOptions");
     v7 = v6;
     if (v6)
     {

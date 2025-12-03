@@ -1,67 +1,67 @@
 @interface STMutableFocusStatusDomainData
-- (BOOL)applyDiff:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setModeIdentifier:(id)a3;
-- (void)setModeName:(id)a3;
-- (void)setModeSymbol:(id)a3;
+- (BOOL)applyDiff:(id)diff;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setModeIdentifier:(id)identifier;
+- (void)setModeName:(id)name;
+- (void)setModeSymbol:(id)symbol;
 @end
 
 @implementation STMutableFocusStatusDomainData
 
-- (void)setModeIdentifier:(id)a3
+- (void)setModeIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   modeIdentifier = self->super._modeIdentifier;
   p_modeIdentifier = &self->super._modeIdentifier;
-  if (modeIdentifier != v5)
+  if (modeIdentifier != identifierCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_modeIdentifier, a3);
-    v5 = v8;
+    v8 = identifierCopy;
+    objc_storeStrong(p_modeIdentifier, identifier);
+    identifierCopy = v8;
   }
 }
 
-- (void)setModeName:(id)a3
+- (void)setModeName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   modeName = self->super._modeName;
   p_modeName = &self->super._modeName;
-  if (modeName != v5)
+  if (modeName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_modeName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_modeName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setModeSymbol:(id)a3
+- (void)setModeSymbol:(id)symbol
 {
-  v5 = a3;
+  symbolCopy = symbol;
   modeSymbol = self->super._modeSymbol;
   p_modeSymbol = &self->super._modeSymbol;
-  if (modeSymbol != v5)
+  if (modeSymbol != symbolCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_modeSymbol, a3);
-    v5 = v8;
+    v8 = symbolCopy;
+    objc_storeStrong(p_modeSymbol, symbol);
+    symbolCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STFocusStatusDomainData allocWithZone:a3];
+  v4 = [STFocusStatusDomainData allocWithZone:zone];
 
   return [(STFocusStatusDomainData *)&v4->super.isa initWithData:?];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

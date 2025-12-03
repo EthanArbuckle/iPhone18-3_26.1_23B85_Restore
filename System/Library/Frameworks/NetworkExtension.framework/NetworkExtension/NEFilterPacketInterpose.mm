@@ -1,12 +1,12 @@
 @interface NEFilterPacketInterpose
-- (BOOL)matchFlow:(const unsigned __int8 *)a3 flowId:;
+- (BOOL)matchFlow:(const unsigned __int8 *)flow flowId:;
 - (id)description;
 - (void)close;
-- (void)close:(os_unfair_lock_s *)a1;
-- (void)close_nolock:(uint64_t)a1;
+- (void)close:(os_unfair_lock_s *)close;
+- (void)close_nolock:(uint64_t)close_nolock;
 - (void)dealloc;
-- (void)deallocateFrame:(uint64_t)a1;
-- (void)freePacket:(os_unfair_lock_s *)a1;
+- (void)deallocateFrame:(uint64_t)frame;
+- (void)freePacket:(os_unfair_lock_s *)packet;
 @end
 
 @implementation NEFilterPacketInterpose
@@ -42,7 +42,7 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_DEBUG, "%@: dealloc", buf, 0xCu);
   }
 
@@ -56,86 +56,86 @@ LABEL_6:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)close:(os_unfair_lock_s *)a1
+- (void)close:(os_unfair_lock_s *)close
 {
-  if (a1)
+  if (close)
   {
-    os_unfair_lock_lock(a1 + 2);
-    [(NEFilterPacketInterpose *)a1 close_nolock:a2];
+    os_unfair_lock_lock(close + 2);
+    [(NEFilterPacketInterpose *)close close_nolock:a2];
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(close + 2);
   }
 }
 
-- (void)close_nolock:(uint64_t)a1
+- (void)close_nolock:(uint64_t)close_nolock
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = ne_log_obj();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v13 = 138412546;
-    v14 = a1;
+    close_nolockCopy3 = close_nolock;
     v15 = 1024;
     v16 = a2;
     _os_log_debug_impl(&dword_1BA83C000, v4, OS_LOG_TYPE_DEBUG, "%@: close: StopInputOnly %d", &v13, 0x12u);
   }
 
-  if (*(a1 + 152))
+  if (*(close_nolock + 152))
   {
-    *(a1 + 153) = 1;
+    *(close_nolock + 153) = 1;
   }
 
   else
   {
-    *(a1 + 153) = 0;
-    if (*(a1 + 192))
+    *(close_nolock + 153) = 0;
+    if (*(close_nolock + 192))
     {
       v5 = ne_log_obj();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
       {
         v13 = 138412290;
-        v14 = a1;
+        close_nolockCopy3 = close_nolock;
         _os_log_debug_impl(&dword_1BA83C000, v5, OS_LOG_TYPE_DEBUG, "%@: close channel: cancel input", &v13, 0xCu);
       }
 
-      v6 = *(a1 + 192);
+      v6 = *(close_nolock + 192);
       nw_queue_cancel_source();
-      *(a1 + 192) = 0;
-      *(a1 + 152) = 0;
+      *(close_nolock + 192) = 0;
+      *(close_nolock + 152) = 0;
     }
 
-    if ((a2 & 1) == 0 && *(a1 + 16))
+    if ((a2 & 1) == 0 && *(close_nolock + 16))
     {
       v7 = ne_log_obj();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v13 = 138412290;
-        v14 = a1;
+        close_nolockCopy3 = close_nolock;
         _os_log_debug_impl(&dword_1BA83C000, v7, OS_LOG_TYPE_DEBUG, "%@: close channel: cancel channel", &v13, 0xCu);
       }
 
-      v8 = *(a1 + 16);
+      v8 = *(close_nolock + 16);
       os_channel_destroy();
-      *(a1 + 16) = 0;
-      *(a1 + 32) = -1;
-      objc_setProperty_atomic(a1, v9, 0, 176);
-      *(a1 + 184) = 0;
-      *(a1 + 156) = 0;
-      *(a1 + 160) = 0;
-      *(a1 + 96) = 0u;
-      *(a1 + 112) = 0u;
-      if (*(a1 + 24))
+      *(close_nolock + 16) = 0;
+      *(close_nolock + 32) = -1;
+      objc_setProperty_atomic(close_nolock, v9, 0, 176);
+      *(close_nolock + 184) = 0;
+      *(close_nolock + 156) = 0;
+      *(close_nolock + 160) = 0;
+      *(close_nolock + 96) = 0u;
+      *(close_nolock + 112) = 0u;
+      if (*(close_nolock + 24))
       {
         os_channel_attr_destroy();
-        *(a1 + 24) = 0;
+        *(close_nolock + 24) = 0;
       }
 
-      *(a1 + 88) = 0;
-      v10 = *(a1 + 128);
-      *(a1 + 128) = 0;
+      *(close_nolock + 88) = 0;
+      v10 = *(close_nolock + 128);
+      *(close_nolock + 128) = 0;
 
-      v11 = *(a1 + 136);
-      *(a1 + 136) = 0;
+      v11 = *(close_nolock + 136);
+      *(close_nolock + 136) = 0;
     }
   }
 
@@ -144,24 +144,24 @@ LABEL_6:
 
 - (void)close
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 2);
-    [(NEFilterPacketInterpose *)a1 close_nolock:?];
+    os_unfair_lock_lock(self + 2);
+    [(NEFilterPacketInterpose *)self close_nolock:?];
 
-    os_unfair_lock_unlock(a1 + 2);
+    os_unfair_lock_unlock(self + 2);
   }
 }
 
-- (BOOL)matchFlow:(const unsigned __int8 *)a3 flowId:
+- (BOOL)matchFlow:(const unsigned __int8 *)flow flowId:
 {
   v13 = *MEMORY[0x1E69E9840];
   *uu1 = 0;
   v12 = 0;
   *v9 = 0;
   v10 = 0;
-  [objc_getProperty(a1 a2];
-  [objc_getProperty(a1 v6];
+  [objc_getProperty(self a2];
+  [objc_getProperty(self v6];
   if (uuid_compare(uu1, a2))
   {
     result = 0;
@@ -169,7 +169,7 @@ LABEL_6:
 
   else
   {
-    result = uuid_compare(v9, a3) == 0;
+    result = uuid_compare(v9, flow) == 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -679,33 +679,33 @@ LABEL_99:
   v58 = *MEMORY[0x1E69E9840];
 }
 
-- (void)freePacket:(os_unfair_lock_s *)a1
+- (void)freePacket:(os_unfair_lock_s *)packet
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (packet)
   {
     if (v3)
     {
       v5 = v3[5];
       if (v5)
       {
-        os_unfair_lock_lock(a1 + 2);
+        os_unfair_lock_lock(packet + 2);
         v6 = ne_log_obj();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
         {
           v8 = *(v5 + 16);
           v9 = 138412546;
-          v10 = a1;
+          packetCopy = packet;
           v11 = 1024;
           v12 = v8;
           _os_log_debug_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEBUG, "%@: freePacket: %d bytes", &v9, 0x12u);
         }
 
-        [(NEFilterPacketInterpose *)a1 deallocateFrame:v5];
+        [(NEFilterPacketInterpose *)packet deallocateFrame:v5];
         v4[5] = 0;
-        os_unfair_lock_unlock(a1 + 2);
+        os_unfair_lock_unlock(packet + 2);
       }
     }
   }
@@ -713,9 +713,9 @@ LABEL_99:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deallocateFrame:(uint64_t)a1
+- (void)deallocateFrame:(uint64_t)frame
 {
-  if (*(a1 + 16) && ptr[3])
+  if (*(frame + 16) && ptr[3])
   {
     os_channel_packet_free();
   }

@@ -15,8 +15,8 @@
 - (unsigned)outputLatency;
 - (unsigned)transportType;
 - (unsigned)zeroTimestampPeriod;
-- (void)setName:(id)a3;
-- (void)setNominalSampleRate:(double)a3;
+- (void)setName:(id)name;
+- (void)setNominalSampleRate:(double)rate;
 @end
 
 @implementation ASAClockDevice
@@ -47,10 +47,10 @@ LABEL_7:
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  [(ASAObject *)self setMainGlobalProperty:1819173229 withData:&v4 ofSize:8 withQualifier:0 ofSize:0];
+  nameCopy = name;
+  [(ASAObject *)self setMainGlobalProperty:1819173229 withData:&nameCopy ofSize:8 withQualifier:0 ofSize:0];
 }
 
 - (NSString)manufacturer
@@ -170,10 +170,10 @@ LABEL_7:
   return v4;
 }
 
-- (void)setNominalSampleRate:(double)a3
+- (void)setNominalSampleRate:(double)rate
 {
-  v4 = a3;
-  if (![(ASAObject *)self setMainGlobalProperty:1853059700 withData:&v4 ofSize:8 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
+  rateCopy = rate;
+  if (![(ASAObject *)self setMainGlobalProperty:1853059700 withData:&rateCopy ofSize:8 withQualifier:0 ofSize:0]&& os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
     _os_log_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Could not write nominal sample rate property\n", v3, 2u);
@@ -241,11 +241,11 @@ LABEL_7:
     v6 = v5;
     bzero(v5, v4);
     v7 = [(ASAObject *)self getMainGlobalProperty:1853059619 withData:v6 ofSize:&v14 withQualifier:0 ofSize:0];
-    v8 = 0;
+    array = 0;
     if (v7)
     {
       v9 = v14;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v9 >= 0x10)
       {
         v10 = v9 >> 4;
@@ -255,7 +255,7 @@ LABEL_7:
           if (*(v11 - 1) == *v11)
           {
             v12 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-            [v8 addObject:v12];
+            [array addObject:v12];
           }
 
           v11 += 2;
@@ -271,10 +271,10 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)nominalSampleRateRanges
@@ -286,11 +286,11 @@ LABEL_7:
     v6 = v5;
     bzero(v5, v4);
     v7 = [(ASAObject *)self getMainGlobalProperty:1853059619 withData:v6 ofSize:&v14 withQualifier:0 ofSize:0];
-    v8 = 0;
+    array = 0;
     if (v7)
     {
       v9 = v14;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v9 >= 0x10)
       {
         v10 = v9 >> 4;
@@ -298,7 +298,7 @@ LABEL_7:
         do
         {
           v12 = [ASASampleRateRange rangeWithMinimum:*(v11 - 1) maximum:*v11];
-          [v8 addObject:v12];
+          [array addObject:v12];
 
           v11 += 2;
           --v10;
@@ -313,15 +313,15 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)controlObjectIDs
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [(ASAObject *)self sizeOfMainGlobalProperty:1668575852 withQualifier:0 ofSize:0];
   v13 = v4;
   if (v4)
@@ -340,7 +340,7 @@ LABEL_7:
         {
           v10 = *v9++;
           v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v10];
-          [v3 addObject:v11];
+          [array addObject:v11];
 
           --v8;
         }
@@ -352,19 +352,19 @@ LABEL_7:
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (NSArray)controls
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [(ASAClockDevice *)self controlObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  controlObjectIDs = [(ASAClockDevice *)self controlObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v2;
+  v4 = controlObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -382,13 +382,13 @@ LABEL_7:
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [ASAObject alloc];
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
-        v12 = [(ASAObject *)v11 baseClass];
-        if (v12 > 1936483441)
+        baseClass = [(ASAObject *)v11 baseClass];
+        if (baseClass > 1936483441)
         {
-          if (v12 != 1936483442)
+          if (baseClass != 1936483442)
           {
             v13 = off_278CE2A50;
-            if (v12 == 1953458028)
+            if (baseClass == 1953458028)
             {
               goto LABEL_15;
             }
@@ -401,9 +401,9 @@ LABEL_7:
 
         else
         {
-          if (v12 != 1818588780)
+          if (baseClass != 1818588780)
           {
-            if (v12 == 1936483188)
+            if (baseClass == 1936483188)
             {
               v13 = off_278CE2A98;
               goto LABEL_15;
@@ -421,7 +421,7 @@ LABEL_15:
         v14 = [objc_alloc(*v13) initWithAudioObjectID:{-[ASAObject objectID](v11, "objectID")}];
         if (v14)
         {
-          [v3 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -433,7 +433,7 @@ LABEL_15:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 @end

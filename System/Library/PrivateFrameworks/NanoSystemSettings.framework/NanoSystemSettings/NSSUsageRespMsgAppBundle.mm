@@ -1,12 +1,12 @@
 @interface NSSUsageRespMsgAppBundle
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSUsageRespMsgAppBundle
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NSSUsageRespMsgAppBundle;
   v4 = [(NSSUsageRespMsgAppBundle *)&v8 description];
-  v5 = [(NSSUsageRespMsgAppBundle *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSUsageRespMsgAppBundle *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   bundleIdentifier = self->_bundleIdentifier;
@@ -60,112 +60,112 @@
   size = self->_size;
   if (size)
   {
-    v11 = [(NSSUsageSize *)size dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"size"];
+    dictionaryRepresentation = [(NSSUsageSize *)size dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"size"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bundleVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_vendor)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     supportsManualPurge = self->_supportsManualPurge;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_size)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v5;
+    [toCopy setName:?];
+    toCopy = v5;
   }
 
   if (self->_bundleIdentifier)
   {
     [v5 setBundleIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bundleVersion)
   {
     [v5 setBundleVersion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_vendor)
   {
     [v5 setVendor:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[48] = self->_supportsManualPurge;
-    v4[52] |= 1u;
+    toCopy[48] = self->_supportsManualPurge;
+    toCopy[52] |= 1u;
   }
 
   if (self->_size)
   {
     [v5 setSize:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSString *)self->_bundleVersion copyWithZone:a3];
+  v10 = [(NSString *)self->_bundleVersion copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
-  v12 = [(NSString *)self->_vendor copyWithZone:a3];
+  v12 = [(NSString *)self->_vendor copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
@@ -175,23 +175,23 @@
     *(v5 + 52) |= 1u;
   }
 
-  v14 = [(NSSUsageSize *)self->_size copyWithZone:a3];
+  v14 = [(NSSUsageSize *)self->_size copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   name = self->_name;
-  if (name | *(v4 + 3))
+  if (name | *(equalCopy + 3))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -200,7 +200,7 @@
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 1))
+  if (bundleIdentifier | *(equalCopy + 1))
   {
     if (![(NSString *)bundleIdentifier isEqual:?])
     {
@@ -209,7 +209,7 @@
   }
 
   bundleVersion = self->_bundleVersion;
-  if (bundleVersion | *(v4 + 2))
+  if (bundleVersion | *(equalCopy + 2))
   {
     if (![(NSString *)bundleVersion isEqual:?])
     {
@@ -218,7 +218,7 @@
   }
 
   vendor = self->_vendor;
-  if (vendor | *(v4 + 5))
+  if (vendor | *(equalCopy + 5))
   {
     if (![(NSString *)vendor isEqual:?])
     {
@@ -226,18 +226,18 @@
     }
   }
 
-  v9 = *(v4 + 52);
+  v9 = *(equalCopy + 52);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  if ((*(v4 + 52) & 1) == 0)
+  if ((*(equalCopy + 52) & 1) == 0)
   {
     goto LABEL_15;
   }
 
-  v9 = *(v4 + 48);
+  v9 = *(equalCopy + 48);
   if (!self->_supportsManualPurge)
   {
 LABEL_11:
@@ -251,14 +251,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ((*(v4 + 48) & 1) == 0)
+  if ((*(equalCopy + 48) & 1) == 0)
   {
     goto LABEL_15;
   }
 
 LABEL_12:
   size = self->_size;
-  if (size | *(v4 + 4))
+  if (size | *(equalCopy + 4))
   {
     v11 = [(NSSUsageSize *)size isEqual:?];
   }
@@ -292,42 +292,42 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSSUsageSize *)self->_size hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(NSSUsageRespMsgAppBundle *)self setName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NSSUsageRespMsgAppBundle *)self setBundleIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NSSUsageRespMsgAppBundle *)self setBundleVersion:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NSSUsageRespMsgAppBundle *)self setVendor:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[52])
+  if (fromCopy[52])
   {
-    self->_supportsManualPurge = v4[48];
+    self->_supportsManualPurge = fromCopy[48];
     *&self->_has |= 1u;
   }
 
   size = self->_size;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (size)
   {
     if (v6)

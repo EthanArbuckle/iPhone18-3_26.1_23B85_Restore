@@ -1,70 +1,70 @@
 @interface WFSmartPromptIntentHandler
-- (void)handleSmartPrompt:(id)a3 completion:(id)a4;
-- (void)provideSelectedButtonOptionsCollectionForSmartPrompt:(id)a3 withCompletion:(id)a4;
-- (void)resolveSelectedButtonForSmartPrompt:(id)a3 withCompletion:(id)a4;
+- (void)handleSmartPrompt:(id)prompt completion:(id)completion;
+- (void)provideSelectedButtonOptionsCollectionForSmartPrompt:(id)prompt withCompletion:(id)completion;
+- (void)resolveSelectedButtonForSmartPrompt:(id)prompt withCompletion:(id)completion;
 @end
 
 @implementation WFSmartPromptIntentHandler
 
-- (void)resolveSelectedButtonForSmartPrompt:(id)a3 withCompletion:(id)a4
+- (void)resolveSelectedButtonForSmartPrompt:(id)prompt withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 selectedButton];
+  completionCopy = completion;
+  promptCopy = prompt;
+  selectedButton = [promptCopy selectedButton];
 
-  if (v7)
+  if (selectedButton)
   {
-    v9 = [v6 selectedButton];
+    selectedButton2 = [promptCopy selectedButton];
 
-    [WFSmartPromptButtonResolutionResult successWithResolvedSmartPromptButton:v9];
+    [WFSmartPromptButtonResolutionResult successWithResolvedSmartPromptButton:selectedButton2];
   }
 
   else
   {
-    v9 = [v6 buttons];
+    selectedButton2 = [promptCopy buttons];
 
-    [WFSmartPromptButtonResolutionResult disambiguationWithSmartPromptButtonsToDisambiguate:v9];
+    [WFSmartPromptButtonResolutionResult disambiguationWithSmartPromptButtonsToDisambiguate:selectedButton2];
   }
   v8 = ;
-  v5[2](v5, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)provideSelectedButtonOptionsCollectionForSmartPrompt:(id)a3 withCompletion:(id)a4
+- (void)provideSelectedButtonOptionsCollectionForSmartPrompt:(id)prompt withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  promptCopy = prompt;
   v7 = [INObjectCollection alloc];
-  v8 = [v6 buttons];
+  buttons = [promptCopy buttons];
 
-  v9 = [v7 initWithItems:v8];
-  v5[2](v5, v9, 0);
+  v9 = [v7 initWithItems:buttons];
+  completionCopy[2](completionCopy, v9, 0);
 }
 
-- (void)handleSmartPrompt:(id)a3 completion:(id)a4
+- (void)handleSmartPrompt:(id)prompt completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  promptCopy = prompt;
   v11 = [[WFSmartPromptIntentResponse alloc] initWithCode:4 userActivity:0];
-  v7 = [v6 selectedButton];
+  selectedButton = [promptCopy selectedButton];
 
-  v8 = [v7 identifier];
+  identifier = [selectedButton identifier];
 
-  if ([v8 isEqualToString:WFSmartPromptButtonIdentifierHandoff])
+  if ([identifier isEqualToString:WFSmartPromptButtonIdentifierHandoff])
   {
     v9 = 3;
   }
 
-  else if ([v8 isEqualToString:WFSmartPromptButtonIdentifierAllowOnce])
+  else if ([identifier isEqualToString:WFSmartPromptButtonIdentifierAllowOnce])
   {
     v9 = 2;
   }
 
-  else if ([v8 isEqualToString:WFSmartPromptButtonIdentifierAllowAlways])
+  else if ([identifier isEqualToString:WFSmartPromptButtonIdentifierAllowAlways])
   {
     v9 = 1;
   }
 
-  else if ([v8 isEqualToString:WFSmartPromptButtonIdentifierDontDelete])
+  else if ([identifier isEqualToString:WFSmartPromptButtonIdentifierDontDelete])
   {
     v9 = 5;
   }
@@ -77,7 +77,7 @@
   v10 = [NSNumber numberWithUnsignedInteger:v9];
   [(WFSmartPromptIntentResponse *)v11 setAuthorizationResult:v10];
 
-  v5[2](v5, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
 @end

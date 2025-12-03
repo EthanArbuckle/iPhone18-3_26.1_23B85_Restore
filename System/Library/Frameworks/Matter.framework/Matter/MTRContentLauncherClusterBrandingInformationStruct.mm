@@ -1,6 +1,6 @@
 @interface MTRContentLauncherClusterBrandingInformationStruct
 - (MTRContentLauncherClusterBrandingInformationStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterBrandingInformationStruct);
-  v5 = [(MTRContentLauncherClusterBrandingInformationStruct *)self providerName];
-  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setProviderName:v5];
+  providerName = [(MTRContentLauncherClusterBrandingInformationStruct *)self providerName];
+  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setProviderName:providerName];
 
-  v6 = [(MTRContentLauncherClusterBrandingInformationStruct *)self background];
-  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setBackground:v6];
+  background = [(MTRContentLauncherClusterBrandingInformationStruct *)self background];
+  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setBackground:background];
 
-  v7 = [(MTRContentLauncherClusterBrandingInformationStruct *)self logo];
-  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setLogo:v7];
+  logo = [(MTRContentLauncherClusterBrandingInformationStruct *)self logo];
+  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setLogo:logo];
 
-  v8 = [(MTRContentLauncherClusterBrandingInformationStruct *)self progressBar];
-  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setProgressBar:v8];
+  progressBar = [(MTRContentLauncherClusterBrandingInformationStruct *)self progressBar];
+  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setProgressBar:progressBar];
 
-  v9 = [(MTRContentLauncherClusterBrandingInformationStruct *)self splash];
-  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setSplash:v9];
+  splash = [(MTRContentLauncherClusterBrandingInformationStruct *)self splash];
+  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setSplash:splash];
 
-  v10 = [(MTRContentLauncherClusterBrandingInformationStruct *)self waterMark];
-  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setWaterMark:v10];
+  waterMark = [(MTRContentLauncherClusterBrandingInformationStruct *)self waterMark];
+  [(MTRContentLauncherClusterBrandingInformationStruct *)v4 setWaterMark:waterMark];
 
   return v4;
 }

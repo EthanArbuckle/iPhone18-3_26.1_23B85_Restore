@@ -2,8 +2,8 @@
 + (MRClientDiagnosticsDataSource)sharedDataSource;
 - (MRClientDiagnosticsDataSource)init;
 - (NSString)diagnostic;
-- (void)add:(id)a3;
-- (void)remove:(id)a3;
+- (void)add:(id)add;
+- (void)remove:(id)remove;
 @end
 
 @implementation MRClientDiagnosticsDataSource
@@ -36,9 +36,9 @@ void __49__MRClientDiagnosticsDataSource_sharedDataSource__block_invoke()
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     map = v3->_map;
-    v3->_map = v4;
+    v3->_map = dictionary;
   }
 
   return v3;
@@ -54,12 +54,12 @@ void __49__MRClientDiagnosticsDataSource_sharedDataSource__block_invoke()
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v21 = self;
+  selfCopy = self;
   v4 = [(MRClientDiagnosticsDataSource *)self map];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  obj = v5;
-  v22 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  obj = allKeys;
+  v22 = [allKeys countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v22)
   {
     v20 = *v28;
@@ -74,7 +74,7 @@ void __49__MRClientDiagnosticsDataSource_sharedDataSource__block_invoke()
 
         v7 = *(*(&v27 + 1) + 8 * i);
         [v3 appendFormat:@"Registered %@ Instances:\n\n", v7];
-        v8 = [(MRClientDiagnosticsDataSource *)v21 map];
+        v8 = [(MRClientDiagnosticsDataSource *)selfCopy map];
         v9 = [v8 objectForKeyedSubscript:v7];
 
         v25 = 0u;
@@ -96,8 +96,8 @@ void __49__MRClientDiagnosticsDataSource_sharedDataSource__block_invoke()
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v23 + 1) + 8 * j) diagnosticDescription];
-              [v3 appendString:v15];
+              diagnosticDescription = [*(*(&v23 + 1) + 8 * j) diagnosticDescription];
+              [v3 appendString:diagnosticDescription];
 
               v16 = [&stru_1F1513E38 stringByPaddingToLength:100 withString:@"-" startingAtIndex:0];
               [v3 appendString:v16];
@@ -120,15 +120,15 @@ void __49__MRClientDiagnosticsDataSource_sharedDataSource__block_invoke()
     while (v22);
   }
 
-  os_unfair_lock_unlock(&v21->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v17 = *MEMORY[0x1E69E9840];
 
   return v3;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v12 = a3;
+  addCopy = add;
   os_unfair_lock_lock(&self->_lock);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
@@ -137,27 +137,27 @@ void __49__MRClientDiagnosticsDataSource_sharedDataSource__block_invoke()
 
   if (!v7)
   {
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v9 = [(MRClientDiagnosticsDataSource *)self map];
-    [v9 setObject:v8 forKeyedSubscript:v5];
+    [v9 setObject:weakObjectsHashTable forKeyedSubscript:v5];
   }
 
   v10 = [(MRClientDiagnosticsDataSource *)self map];
   v11 = [v10 objectForKeyedSubscript:v5];
-  [v11 addObject:v12];
+  [v11 addObject:addCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   os_unfair_lock_lock(&self->_lock);
   v5 = objc_opt_class();
   v12 = NSStringFromClass(v5);
   v6 = [(MRClientDiagnosticsDataSource *)self map];
   v7 = [v6 objectForKeyedSubscript:v12];
-  [v7 removeObject:v4];
+  [v7 removeObject:removeCopy];
 
   v8 = [(MRClientDiagnosticsDataSource *)self map];
   v9 = [v8 objectForKeyedSubscript:v12];

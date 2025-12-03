@@ -8,7 +8,7 @@
 
 - (void)_web_superviewOfClass:()WebExtras
 {
-  for (i = [a1 superview]; i; i = objc_msgSend(i, "superview"))
+  for (i = [self superview]; i; i = objc_msgSend(i, "superview"))
   {
     if (objc_opt_isKindOfClass())
     {
@@ -23,16 +23,16 @@
 {
   v2 = objc_opt_class();
 
-  return [a1 _web_superviewOfClass:v2];
+  return [self _web_superviewOfClass:v2];
 }
 
 - (uint64_t)_web_firstResponderIsSelfOrDescendantView
 {
-  result = [objc_msgSend(a1 "window")];
+  result = [objc_msgSend(self "window")];
   if (result)
   {
     v3 = result;
-    if (result == a1)
+    if (result == self)
     {
       return 1;
     }
@@ -43,7 +43,7 @@
       if (objc_opt_isKindOfClass())
       {
 
-        return [v3 isDescendantOf:a1];
+        return [v3 isDescendantOf:self];
       }
 
       else

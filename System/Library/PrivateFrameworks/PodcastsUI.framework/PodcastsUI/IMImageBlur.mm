@@ -1,23 +1,23 @@
 @interface IMImageBlur
 - (BOOL)hasModifications;
-- (IMImageBlur)initWithStyle:(int64_t)a3 radius:(double)a4;
+- (IMImageBlur)initWithStyle:(int64_t)style radius:(double)radius;
 - (id)_backdropBlurSettings;
-- (id)_blurredImageFromSourceImage:(id)a3;
+- (id)_blurredImageFromSourceImage:(id)image;
 - (id)_newBackdropSettings;
 - (id)modificationCacheKey;
 @end
 
 @implementation IMImageBlur
 
-- (IMImageBlur)initWithStyle:(int64_t)a3 radius:(double)a4
+- (IMImageBlur)initWithStyle:(int64_t)style radius:(double)radius
 {
   v7.receiver = self;
   v7.super_class = IMImageBlur;
   result = [(IMImageBlur *)&v7 init];
   if (result)
   {
-    result->_style = a3;
-    result->_radius = a4;
+    result->_style = style;
+    result->_radius = radius;
   }
 
   return result;
@@ -28,19 +28,19 @@
   v15 = *MEMORY[0x277D85DE8];
   if ([(IMImageBlur *)self hasModifications])
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v5 = v4;
 
-    v6 = [(IMImageBlur *)self style];
-    if (!v6)
+    style = [(IMImageBlur *)self style];
+    if (!style)
     {
       v8 = @"none";
       goto LABEL_6;
     }
 
-    v7 = v6;
-    if (v6 == 1)
+    v7 = style;
+    if (style == 1)
     {
       v8 = @"light";
 LABEL_6:
@@ -49,12 +49,12 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    v11 = [MEMORY[0x277D3DA88] defaultCategory];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    defaultCategory = [MEMORY[0x277D3DA88] defaultCategory];
+    if (os_log_type_enabled(defaultCategory, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
       v14 = v7;
-      _os_log_impl(&dword_21B365000, v11, OS_LOG_TYPE_ERROR, "Invalid or unimplemented blurStyle encountered (%d)", buf, 8u);
+      _os_log_impl(&dword_21B365000, defaultCategory, OS_LOG_TYPE_ERROR, "Invalid or unimplemented blurStyle encountered (%d)", buf, 8u);
     }
   }
 
@@ -66,23 +66,23 @@ LABEL_11:
 
 - (BOOL)hasModifications
 {
-  v3 = [(IMImageBlur *)self style];
-  if (v3)
+  style = [(IMImageBlur *)self style];
+  if (style)
   {
     [(IMImageBlur *)self radius];
-    LOBYTE(v3) = v4 > 0.00000011920929;
+    LOBYTE(style) = v4 > 0.00000011920929;
   }
 
-  return v3;
+  return style;
 }
 
-- (id)_blurredImageFromSourceImage:(id)a3
+- (id)_blurredImageFromSourceImage:(id)image
 {
-  v4 = a3;
-  v5 = [(IMImageBlur *)self _backdropBlurSettings];
-  if (v5)
+  imageCopy = image;
+  _backdropBlurSettings = [(IMImageBlur *)self _backdropBlurSettings];
+  if (_backdropBlurSettings)
   {
-    v6 = [v4 _applyBackdropViewSettings:v5 includeTints:1 includeBlur:1 allowImageResizing:0];
+    v6 = [imageCopy _applyBackdropViewSettings:_backdropBlurSettings includeTints:1 includeBlur:1 allowImageResizing:0];
   }
 
   else
@@ -97,17 +97,17 @@ LABEL_11:
 {
   if ([(IMImageBlur *)self hasModifications])
   {
-    v3 = [(IMImageBlur *)self _newBackdropSettings];
+    _newBackdropSettings = [(IMImageBlur *)self _newBackdropSettings];
     [(IMImageBlur *)self radius];
-    [v3 setBlurRadius:?];
+    [_newBackdropSettings setBlurRadius:?];
   }
 
   else
   {
-    v3 = 0;
+    _newBackdropSettings = 0;
   }
 
-  return v3;
+  return _newBackdropSettings;
 }
 
 - (id)_newBackdropSettings
@@ -122,13 +122,13 @@ LABEL_11:
       return objc_claimAutoreleasedReturnValue();
     }
 
-    v5 = [MEMORY[0x277D3DA88] defaultCategory];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    defaultCategory = [MEMORY[0x277D3DA88] defaultCategory];
+    if (os_log_type_enabled(defaultCategory, OS_LOG_TYPE_ERROR))
     {
       v6 = self->_style;
       v7[0] = 67109120;
       v7[1] = v6;
-      _os_log_impl(&dword_21B365000, v5, OS_LOG_TYPE_ERROR, "Invalid or unimplemented blurStyle encountered (%d)", v7, 8u);
+      _os_log_impl(&dword_21B365000, defaultCategory, OS_LOG_TYPE_ERROR, "Invalid or unimplemented blurStyle encountered (%d)", v7, 8u);
     }
   }
 

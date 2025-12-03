@@ -1,17 +1,17 @@
 @interface CLTripSegmentRoadData
-- (BOOL)isEqualStartLatitude:(double)a3 startLongitude:(double)a4 endLatitude:(double)a5 endlongitude:(double)a6;
-- (CLTripSegmentRoadData)initWithCoder:(id)a3;
-- (CLTripSegmentRoadData)initWithRoadID:(unint64_t)a3 clRoadID:(unint64_t)a4 roadClass:(int)a5 formOfWay:(int)a6 coordinates:(id)a7;
+- (BOOL)isEqualStartLatitude:(double)latitude startLongitude:(double)longitude endLatitude:(double)endLatitude endlongitude:(double)endlongitude;
+- (CLTripSegmentRoadData)initWithCoder:(id)coder;
+- (CLTripSegmentRoadData)initWithRoadID:(unint64_t)d clRoadID:(unint64_t)iD roadClass:(int)class formOfWay:(int)way coordinates:(id)coordinates;
 - (double)getLength;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLTripSegmentRoadData
 
-- (CLTripSegmentRoadData)initWithRoadID:(unint64_t)a3 clRoadID:(unint64_t)a4 roadClass:(int)a5 formOfWay:(int)a6 coordinates:(id)a7
+- (CLTripSegmentRoadData)initWithRoadID:(unint64_t)d clRoadID:(unint64_t)iD roadClass:(int)class formOfWay:(int)way coordinates:(id)coordinates
 {
   v15.receiver = self;
   v15.super_class = CLTripSegmentRoadData;
@@ -19,11 +19,11 @@
   v13 = v12;
   if (v12)
   {
-    v12->_roadID = a3;
-    v12->_clRoadID = a4;
-    v12->_roadClass = a5;
-    v12->_formOfWay = a6;
-    v12->_coordinates = a7;
+    v12->_roadID = d;
+    v12->_clRoadID = iD;
+    v12->_roadClass = class;
+    v12->_formOfWay = way;
+    v12->_coordinates = coordinates;
     *&v13->_connectingCLRoadID = 0u;
     *&v13->_connectingRoadEndCoordinate = 0u;
     v13->_sequenceNumber = 0.0;
@@ -32,9 +32,9 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithRoadID:clRoadID:roadClass:formOfWay:coordinates:", -[CLTripSegmentRoadData roadID](self, "roadID"), -[CLTripSegmentRoadData clRoadID](self, "clRoadID"), -[CLTripSegmentRoadData roadClass](self, "roadClass"), -[CLTripSegmentRoadData formOfWay](self, "formOfWay"), -[CLTripSegmentRoadData coordinates](self, "coordinates")}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithRoadID:clRoadID:roadClass:formOfWay:coordinates:", -[CLTripSegmentRoadData roadID](self, "roadID"), -[CLTripSegmentRoadData clRoadID](self, "clRoadID"), -[CLTripSegmentRoadData roadClass](self, "roadClass"), -[CLTripSegmentRoadData formOfWay](self, "formOfWay"), -[CLTripSegmentRoadData coordinates](self, "coordinates")}];
   [v4 setConnectingCLRoadID:{-[CLTripSegmentRoadData clRoadID](self, "clRoadID")}];
   [v4 setConnectingRoadStartCoordinate:-[CLTripSegmentRoadData connectingRoadStartCoordinate](self endCoordinate:{"connectingRoadStartCoordinate"), -[CLTripSegmentRoadData connectingRoadEndCoordinate](self, "connectingRoadEndCoordinate")}];
   [(CLTripSegmentRoadData *)self familiarityIndex];
@@ -113,39 +113,39 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:-[CLTripSegmentRoadData roadID](self forKey:{"roadID"), @"roadID"}];
-  [a3 encodeInt64:-[CLTripSegmentRoadData clRoadID](self forKey:{"clRoadID"), @"clRoadID"}];
-  [a3 encodeInt:-[CLTripSegmentRoadData roadClass](self forKey:{"roadClass"), @"roadClass"}];
-  [a3 encodeInt:-[CLTripSegmentRoadData formOfWay](self forKey:{"formOfWay"), @"formOfWay"}];
-  [a3 encodeObject:-[CLTripSegmentRoadData coordinates](self forKey:{"coordinates"), @"coordinates"}];
-  [a3 encodeInt64:-[CLTripSegmentRoadData connectingCLRoadID](self forKey:{"connectingCLRoadID"), @"connectingCLRoadID"}];
-  [a3 encodeObject:-[CLTripSegmentRoadData connectingRoadStartCoordinate](self forKey:{"connectingRoadStartCoordinate"), @"connectingRoadStartCoordinate"}];
-  [a3 encodeObject:-[CLTripSegmentRoadData connectingRoadEndCoordinate](self forKey:{"connectingRoadEndCoordinate"), @"connectingRoadEndCoordinate"}];
+  [coder encodeInt64:-[CLTripSegmentRoadData roadID](self forKey:{"roadID"), @"roadID"}];
+  [coder encodeInt64:-[CLTripSegmentRoadData clRoadID](self forKey:{"clRoadID"), @"clRoadID"}];
+  [coder encodeInt:-[CLTripSegmentRoadData roadClass](self forKey:{"roadClass"), @"roadClass"}];
+  [coder encodeInt:-[CLTripSegmentRoadData formOfWay](self forKey:{"formOfWay"), @"formOfWay"}];
+  [coder encodeObject:-[CLTripSegmentRoadData coordinates](self forKey:{"coordinates"), @"coordinates"}];
+  [coder encodeInt64:-[CLTripSegmentRoadData connectingCLRoadID](self forKey:{"connectingCLRoadID"), @"connectingCLRoadID"}];
+  [coder encodeObject:-[CLTripSegmentRoadData connectingRoadStartCoordinate](self forKey:{"connectingRoadStartCoordinate"), @"connectingRoadStartCoordinate"}];
+  [coder encodeObject:-[CLTripSegmentRoadData connectingRoadEndCoordinate](self forKey:{"connectingRoadEndCoordinate"), @"connectingRoadEndCoordinate"}];
   [(CLTripSegmentRoadData *)self familiarityIndex];
-  [a3 encodeDouble:@"familiarityIndex" forKey:?];
+  [coder encodeDouble:@"familiarityIndex" forKey:?];
   [(CLTripSegmentRoadData *)self sequenceNumber];
 
-  [a3 encodeDouble:@"sequenceNumber" forKey:?];
+  [coder encodeDouble:@"sequenceNumber" forKey:?];
 }
 
-- (CLTripSegmentRoadData)initWithCoder:(id)a3
+- (CLTripSegmentRoadData)initWithCoder:(id)coder
 {
   v4 = [CLTripSegmentRoadData alloc];
-  v5 = [a3 decodeInt64ForKey:@"roadID"];
-  v6 = [a3 decodeInt64ForKey:@"clRoadID"];
-  v7 = [a3 decodeIntForKey:@"roadClass"];
-  v8 = [a3 decodeIntForKey:@"formOfWay"];
+  v5 = [coder decodeInt64ForKey:@"roadID"];
+  v6 = [coder decodeInt64ForKey:@"clRoadID"];
+  v7 = [coder decodeIntForKey:@"roadClass"];
+  v8 = [coder decodeIntForKey:@"formOfWay"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
-  v11 = -[CLTripSegmentRoadData initWithRoadID:clRoadID:roadClass:formOfWay:coordinates:](v4, "initWithRoadID:clRoadID:roadClass:formOfWay:coordinates:", v5, v6, v7, v8, [a3 decodeObjectOfClasses:objc_msgSend(v9 forKey:{"setWithObjects:", v10, objc_opt_class(), 0), @"coordinates"}]);
-  -[CLTripSegmentRoadData setConnectingCLRoadID:](v11, "setConnectingCLRoadID:", [a3 decodeInt64ForKey:@"connectingCLRoadID"]);
-  v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"connectingRoadStartCoordinate"];
-  -[CLTripSegmentRoadData setConnectingRoadStartCoordinate:endCoordinate:](v11, "setConnectingRoadStartCoordinate:endCoordinate:", v12, [a3 decodeObjectOfClass:objc_opt_class() forKey:@"connectingRoadEndCoordinate"]);
-  [a3 decodeDoubleForKey:@"familiarityIndex"];
+  v11 = -[CLTripSegmentRoadData initWithRoadID:clRoadID:roadClass:formOfWay:coordinates:](v4, "initWithRoadID:clRoadID:roadClass:formOfWay:coordinates:", v5, v6, v7, v8, [coder decodeObjectOfClasses:objc_msgSend(v9 forKey:{"setWithObjects:", v10, objc_opt_class(), 0), @"coordinates"}]);
+  -[CLTripSegmentRoadData setConnectingCLRoadID:](v11, "setConnectingCLRoadID:", [coder decodeInt64ForKey:@"connectingCLRoadID"]);
+  v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"connectingRoadStartCoordinate"];
+  -[CLTripSegmentRoadData setConnectingRoadStartCoordinate:endCoordinate:](v11, "setConnectingRoadStartCoordinate:endCoordinate:", v12, [coder decodeObjectOfClass:objc_opt_class() forKey:@"connectingRoadEndCoordinate"]);
+  [coder decodeDoubleForKey:@"familiarityIndex"];
   [(CLTripSegmentRoadData *)v11 setFamiliarityIndex:?];
-  [a3 decodeDoubleForKey:@"sequenceNumber"];
+  [coder decodeDoubleForKey:@"sequenceNumber"];
   [(CLTripSegmentRoadData *)v11 setSequenceNumber:?];
   return v11;
 }
@@ -169,7 +169,7 @@
   return v3;
 }
 
-- (BOOL)isEqualStartLatitude:(double)a3 startLongitude:(double)a4 endLatitude:(double)a5 endlongitude:(double)a6
+- (BOOL)isEqualStartLatitude:(double)latitude startLongitude:(double)longitude endLatitude:(double)endLatitude endlongitude:(double)endlongitude
 {
   coordinates = self->_coordinates;
   if (coordinates)
@@ -177,18 +177,18 @@
     coordinates = [(NSArray *)coordinates count];
     if (coordinates)
     {
-      v12 = [(NSArray *)self->_coordinates firstObject];
-      v13 = [(NSArray *)self->_coordinates lastObject];
-      [v12 latitude];
-      if (vabdd_f64(a3, v14) >= 0.0000001 || ([v12 longitude], vabdd_f64(a4, v15) >= 0.0000001) || (objc_msgSend(v13, "latitude"), vabdd_f64(a5, v16) >= 0.0000001))
+      firstObject = [(NSArray *)self->_coordinates firstObject];
+      lastObject = [(NSArray *)self->_coordinates lastObject];
+      [firstObject latitude];
+      if (vabdd_f64(latitude, v14) >= 0.0000001 || ([firstObject longitude], vabdd_f64(longitude, v15) >= 0.0000001) || (objc_msgSend(lastObject, "latitude"), vabdd_f64(endLatitude, v16) >= 0.0000001))
       {
         LOBYTE(coordinates) = 0;
       }
 
       else
       {
-        [v13 longitude];
-        LOBYTE(coordinates) = vabdd_f64(a6, v17) < 0.0000001;
+        [lastObject longitude];
+        LOBYTE(coordinates) = vabdd_f64(endlongitude, v17) < 0.0000001;
       }
     }
   }

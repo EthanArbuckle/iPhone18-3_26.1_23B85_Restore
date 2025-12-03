@@ -1,10 +1,10 @@
 @interface ABGroupMembershipPredicate
 - (id)description;
-- (id)queryWhereStringForPredicateIdentifier:(int)a3;
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5;
+- (id)queryWhereStringForPredicateIdentifier:(int)identifier;
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier;
 - (void)dealloc;
-- (void)setGroup:(void *)a3;
-- (void)setStore:(void *)a3;
+- (void)setGroup:(void *)group;
+- (void)setStore:(void *)store;
 @end
 
 @implementation ABGroupMembershipPredicate
@@ -28,45 +28,45 @@
   [(ABPredicate *)&v5 dealloc];
 }
 
-- (void)setGroup:(void *)a3
+- (void)setGroup:(void *)group
 {
   group = self->_group;
-  if (group != a3)
+  if (group != group)
   {
     if (group)
     {
       CFRelease(group);
     }
 
-    if (a3)
+    if (group)
     {
-      CFRetain(a3);
+      CFRetain(group);
     }
 
-    self->_group = a3;
+    self->_group = group;
   }
 }
 
-- (void)setStore:(void *)a3
+- (void)setStore:(void *)store
 {
   store = self->_store;
-  if (store != a3)
+  if (store != store)
   {
     if (store)
     {
       CFRelease(store);
     }
 
-    if (a3)
+    if (store)
     {
-      CFRetain(a3);
+      CFRetain(store);
     }
 
-    self->_store = a3;
+    self->_store = store;
   }
 }
 
-- (id)queryWhereStringForPredicateIdentifier:(int)a3
+- (id)queryWhereStringForPredicateIdentifier:(int)identifier
 {
   if ([(ABGroupMembershipPredicate *)self group])
   {
@@ -133,9 +133,9 @@ LABEL_19:
   return v7;
 }
 
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier
 {
-  if ([(ABGroupMembershipPredicate *)self group:a3])
+  if ([(ABGroupMembershipPredicate *)self group:statement])
   {
     RecordID = ABRecordGetRecordID([(ABGroupMembershipPredicate *)self group]);
   }
@@ -157,14 +157,14 @@ LABEL_19:
 
   if (RecordID != -1)
   {
-    sqlite3_bind_int(a3->var1, *a4, RecordID);
-    ++*a4;
+    sqlite3_bind_int(statement->var1, *offset, RecordID);
+    ++*offset;
   }
 
   if (v9 != -1)
   {
-    sqlite3_bind_int(a3->var1, *a4, v9);
-    ++*a4;
+    sqlite3_bind_int(statement->var1, *offset, v9);
+    ++*offset;
   }
 
   accountIdentifier = self->_accountIdentifier;
@@ -172,7 +172,7 @@ LABEL_19:
   {
     v11.receiver = self;
     v11.super_class = ABGroupMembershipPredicate;
-    [(ABPredicate *)&v11 bindString:accountIdentifier toStatement:a3 withBindingOffset:a4];
+    [(ABPredicate *)&v11 bindString:accountIdentifier toStatement:statement withBindingOffset:offset];
   }
 }
 

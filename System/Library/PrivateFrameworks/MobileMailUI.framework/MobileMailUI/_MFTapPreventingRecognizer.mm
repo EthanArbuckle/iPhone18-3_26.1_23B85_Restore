@@ -1,17 +1,17 @@
 @interface _MFTapPreventingRecognizer
-- (BOOL)_isMatchingTapGestureRecognizer:(id)a3;
+- (BOOL)_isMatchingTapGestureRecognizer:(id)recognizer;
 @end
 
 @implementation _MFTapPreventingRecognizer
 
-- (BOOL)_isMatchingTapGestureRecognizer:(id)a3
+- (BOOL)_isMatchingTapGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 numberOfTapsRequired];
-    v6 = v5 == [(_MFTapPreventingRecognizer *)self numberOfTapsRequired];
+    numberOfTapsRequired = [recognizerCopy numberOfTapsRequired];
+    v6 = numberOfTapsRequired == [(_MFTapPreventingRecognizer *)self numberOfTapsRequired];
   }
 
   else

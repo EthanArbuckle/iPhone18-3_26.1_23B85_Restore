@@ -1,15 +1,15 @@
 @interface PLNonBindingAssetsdPhotoKitAddClient
-- (BOOL)sendChangesRequest:(id)a3 error:(id *)a4;
-- (PLNonBindingAssetsdPhotoKitAddClient)initWithQueue:(id)a3 proxyCreating:(id)a4 libraryURL:(id)a5;
-- (void)sendChangesRequest:(id)a3 reply:(id)a4;
+- (BOOL)sendChangesRequest:(id)request error:(id *)error;
+- (PLNonBindingAssetsdPhotoKitAddClient)initWithQueue:(id)queue proxyCreating:(id)creating libraryURL:(id)l;
+- (void)sendChangesRequest:(id)request reply:(id)reply;
 @end
 
 @implementation PLNonBindingAssetsdPhotoKitAddClient
 
-- (BOOL)sendChangesRequest:(id)a3 error:(id *)a4
+- (BOOL)sendChangesRequest:(id)request error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  requestCopy = request;
   v26 = 0u;
   v27 = 0u;
   v25 = 0u;
@@ -51,16 +51,16 @@
   v19[3] = &unk_1E7932E48;
   v19[4] = &v21;
   v19[5] = &buf;
-  [v11 PhotoKitAddService_applyChangesRequest:v6 libraryToken:libraryToken reply:v19];
+  [v11 PhotoKitAddService_applyChangesRequest:requestCopy libraryToken:libraryToken reply:v19];
   [PLAssetsdPhotoKitClient setInTransactionProxy:0 queue:self->_queue];
   if (v22[3])
   {
     v13 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
     v13 = *(v22 + 24);
   }
 
@@ -117,11 +117,11 @@ void __65__PLNonBindingAssetsdPhotoKitAddClient_sendChangesRequest_error___block
   *(v7 + 40) = v3;
 }
 
-- (void)sendChangesRequest:(id)a3 reply:(id)a4
+- (void)sendChangesRequest:(id)request reply:(id)reply
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v30 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -141,7 +141,7 @@ void __65__PLNonBindingAssetsdPhotoKitAddClient_sendChangesRequest_error___block
   v26[1] = 3221225472;
   v26[2] = __65__PLNonBindingAssetsdPhotoKitAddClient_sendChangesRequest_reply___block_invoke;
   v26[3] = &unk_1E7932DA8;
-  v12 = v7;
+  v12 = replyCopy;
   v27 = v12;
   v13 = [(PLXPCProxyCreating *)proxyFactory remoteObjectProxyWithErrorHandler:v26];
   queue = self->_queue;
@@ -151,7 +151,7 @@ void __65__PLNonBindingAssetsdPhotoKitAddClient_sendChangesRequest_error___block
   block[3] = &unk_1E7932DF8;
   block[4] = self;
   v23 = v13;
-  v15 = v6;
+  v15 = requestCopy;
   v24 = v15;
   v16 = v12;
   v25 = v16;
@@ -210,24 +210,24 @@ void __65__PLNonBindingAssetsdPhotoKitAddClient_sendChangesRequest_reply___block
   [PLAssetsdPhotoKitClient setInTransactionProxy:0 queue:*(*(a1 + 32) + 8)];
 }
 
-- (PLNonBindingAssetsdPhotoKitAddClient)initWithQueue:(id)a3 proxyCreating:(id)a4 libraryURL:(id)a5
+- (PLNonBindingAssetsdPhotoKitAddClient)initWithQueue:(id)queue proxyCreating:(id)creating libraryURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  creatingCopy = creating;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = PLNonBindingAssetsdPhotoKitAddClient;
   v12 = [(PLNonBindingAssetsdPhotoKitAddClient *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a3);
-    objc_storeStrong(&v13->_proxyFactory, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v13->_proxyFactory, creating);
+    v14 = [lCopy copy];
     libraryURL = v13->_libraryURL;
     v13->_libraryURL = v14;
 
-    v16 = [[PLXPCLibraryToken alloc] initWithURL:v11];
+    v16 = [[PLXPCLibraryToken alloc] initWithURL:lCopy];
     libraryToken = v13->_libraryToken;
     v13->_libraryToken = v16;
 

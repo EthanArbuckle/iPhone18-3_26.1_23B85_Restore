@@ -1,40 +1,40 @@
 @interface PRMutablePosterDescriptor
-+ (id)mutableDescriptorWithIdentifier:(id)a3;
-+ (id)mutableDescriptorWithIdentifier:(id)a3 role:(id)a4;
-- (BOOL)copyContentsOfPath:(id)a3 error:(id *)a4;
-- (BOOL)setObject:(id)a3 forUserInfoKey:(id)a4;
-- (BOOL)storeConfigurableOptions:(id)a3 error:(id *)a4;
-- (BOOL)storeGalleryOptions:(id)a3 error:(id *)a4;
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4;
-- (void)mutateConfigurableOptions:(void *)a1;
-- (void)setAmbientConfiguration:(id)a3;
-- (void)setAmbientSupportedDataLayout:(int64_t)a3;
-- (void)setDisplayNameLocalizationKey:(id)a3;
-- (void)setLuminance:(double)a3;
-- (void)setPreferredGalleryOptions:(id)a3;
-- (void)setPreferredHomeScreenConfiguration:(id)a3;
-- (void)setPreferredRenderingConfiguration:(id)a3;
-- (void)setPreferredTimeFontConfigurations:(id)a3;
-- (void)setPreferredTitleColors:(id)a3;
-- (void)setRole:(id)a3;
++ (id)mutableDescriptorWithIdentifier:(id)identifier;
++ (id)mutableDescriptorWithIdentifier:(id)identifier role:(id)role;
+- (BOOL)copyContentsOfPath:(id)path error:(id *)error;
+- (BOOL)setObject:(id)object forUserInfoKey:(id)key;
+- (BOOL)storeConfigurableOptions:(id)options error:(id *)error;
+- (BOOL)storeGalleryOptions:(id)options error:(id *)error;
+- (BOOL)storeUserInfo:(id)info error:(id *)error;
+- (void)mutateConfigurableOptions:(void *)options;
+- (void)setAmbientConfiguration:(id)configuration;
+- (void)setAmbientSupportedDataLayout:(int64_t)layout;
+- (void)setDisplayNameLocalizationKey:(id)key;
+- (void)setLuminance:(double)luminance;
+- (void)setPreferredGalleryOptions:(id)options;
+- (void)setPreferredHomeScreenConfiguration:(id)configuration;
+- (void)setPreferredRenderingConfiguration:(id)configuration;
+- (void)setPreferredTimeFontConfigurations:(id)configurations;
+- (void)setPreferredTitleColors:(id)colors;
+- (void)setRole:(id)role;
 @end
 
 @implementation PRMutablePosterDescriptor
 
-+ (id)mutableDescriptorWithIdentifier:(id)a3
++ (id)mutableDescriptorWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = PFPosterRoleDefaultRoleForCurrentExtensionProcess();
-  v6 = [a1 mutableDescriptorWithIdentifier:v4 role:v5];
+  v6 = [self mutableDescriptorWithIdentifier:identifierCopy role:v5];
 
   return v6;
 }
 
-+ (id)mutableDescriptorWithIdentifier:(id)a3 role:(id)a4
++ (id)mutableDescriptorWithIdentifier:(id)identifier role:(id)role
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  identifierCopy = identifier;
+  roleCopy = role;
+  v8 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v8)
   {
@@ -48,25 +48,25 @@
 
   if ((PFPosterRoleIsValid() & 1) == 0)
   {
-    [PRMutablePosterDescriptor mutableDescriptorWithIdentifier:v7 role:a2];
+    [PRMutablePosterDescriptor mutableDescriptorWithIdentifier:roleCopy role:a2];
   }
 
-  v9 = [MEMORY[0x1E69C5178] temporaryDescriptorPathWithIdentifier:v8 role:v7];
+  v9 = [MEMORY[0x1E69C5178] temporaryDescriptorPathWithIdentifier:v8 role:roleCopy];
   v10 = [(PRPosterDescriptor *)[PRMutablePosterDescriptor alloc] _initWithPath:v9];
   [v9 invalidate];
 
   return v10;
 }
 
-- (void)setDisplayNameLocalizationKey:(id)a3
+- (void)setDisplayNameLocalizationKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PRMutablePosterDescriptor_setDisplayNameLocalizationKey___block_invoke;
   v6[3] = &unk_1E7843128;
-  v7 = v4;
-  v5 = v4;
+  v7 = keyCopy;
+  v5 = keyCopy;
   [(PRMutablePosterDescriptor *)self mutateConfigurableOptions:v6];
 }
 
@@ -78,12 +78,12 @@ void __59__PRMutablePosterDescriptor_setDisplayNameLocalizationKey___block_invok
   [v3 setDisplayNameLocalizationKey:v4];
 }
 
-- (void)mutateConfigurableOptions:(void *)a1
+- (void)mutateConfigurableOptions:(void *)options
 {
-  if (a1 && a2)
+  if (options && a2)
   {
     v3 = a2;
-    v4 = [a1 loadConfigurableOptionsWithError:0];
+    v4 = [options loadConfigurableOptionsWithError:0];
     v5 = [v4 mutableCopy];
     v6 = v5;
     if (v5)
@@ -101,28 +101,28 @@ void __59__PRMutablePosterDescriptor_setDisplayNameLocalizationKey___block_invok
 
     v3[2](v3, v10);
     v9 = [(PRPosterMutableConfigurableOptions *)v10 copy];
-    [a1 storeConfigurableOptions:v9 error:0];
+    [options storeConfigurableOptions:v9 error:0];
   }
 }
 
-- (void)setRole:(id)a3
+- (void)setRole:(id)role
 {
-  v11 = a3;
+  roleCopy = role;
   if ((PFPosterRoleIsValid() & 1) == 0)
   {
-    [(PRMutablePosterDescriptor *)v11 setRole:a2];
+    [(PRMutablePosterDescriptor *)roleCopy setRole:a2];
   }
 
-  v5 = [(PRPosterDescriptor *)self role];
-  v6 = [v5 isEqual:v11];
+  role = [(PRPosterDescriptor *)self role];
+  v6 = [role isEqual:roleCopy];
 
   if ((v6 & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [(PRPosterDescriptor *)self descriptorIdentifier];
-    v9 = [MEMORY[0x1E69C5178] temporaryDescriptorPathWithIdentifier:v8 role:v11];
-    v10 = [(PRPosterDescriptor *)self _path];
-    [v9 copyContentsOfPath:v10 error:0];
+    descriptorIdentifier = [(PRPosterDescriptor *)self descriptorIdentifier];
+    v9 = [MEMORY[0x1E69C5178] temporaryDescriptorPathWithIdentifier:descriptorIdentifier role:roleCopy];
+    _path = [(PRPosterDescriptor *)self _path];
+    [v9 copyContentsOfPath:_path error:0];
 
     [(PRPosterDescriptor *)self _swapOutPathForPath:v9];
     [v9 invalidate];
@@ -131,17 +131,17 @@ void __59__PRMutablePosterDescriptor_setDisplayNameLocalizationKey___block_invok
   }
 }
 
-- (void)setPreferredTimeFontConfigurations:(id)a3
+- (void)setPreferredTimeFontConfigurations:(id)configurations
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 count])
+  configurationsCopy = configurations;
+  if (![configurationsCopy count])
   {
     v5 = objc_alloc_init(PRTimeFontConfiguration);
     v15[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 
-    v4 = v6;
+    configurationsCopy = v6;
   }
 
   v7 = PRBundleURLFromReturnAddress();
@@ -151,7 +151,7 @@ void __59__PRMutablePosterDescriptor_setDisplayNameLocalizationKey___block_invok
   v13[3] = &unk_1E7843150;
   v14 = v7;
   v8 = v7;
-  v9 = [v4 bs_compactMap:v13];
+  v9 = [configurationsCopy bs_compactMap:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__PRMutablePosterDescriptor_setPreferredTimeFontConfigurations___block_invoke_2;
@@ -161,15 +161,15 @@ void __59__PRMutablePosterDescriptor_setDisplayNameLocalizationKey___block_invok
   [(PRMutablePosterDescriptor *)self mutateConfigurableOptions:v11];
 }
 
-- (void)setPreferredTitleColors:(id)a3
+- (void)setPreferredTitleColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__PRMutablePosterDescriptor_setPreferredTitleColors___block_invoke;
   v6[3] = &unk_1E7843128;
-  v7 = v4;
-  v5 = v4;
+  v7 = colorsCopy;
+  v5 = colorsCopy;
   [(PRMutablePosterDescriptor *)self mutateConfigurableOptions:v6];
 }
 
@@ -181,61 +181,61 @@ void __53__PRMutablePosterDescriptor_setPreferredTitleColors___block_invoke(uint
   [v3 setPreferredTitleColors:v4];
 }
 
-- (void)setLuminance:(double)a3
+- (void)setLuminance:(double)luminance
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__PRMutablePosterDescriptor_setLuminance___block_invoke;
   v3[3] = &__block_descriptor_40_e44_v16__0__PRPosterMutableConfigurableOptions_8l;
-  *&v3[4] = a3;
+  *&v3[4] = luminance;
   [(PRMutablePosterDescriptor *)self mutateConfigurableOptions:v3];
 }
 
-- (void)setPreferredHomeScreenConfiguration:(id)a3
+- (void)setPreferredHomeScreenConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__PRMutablePosterDescriptor_setPreferredHomeScreenConfiguration___block_invoke;
   v6[3] = &unk_1E7843128;
-  v7 = v4;
-  v5 = v4;
+  v7 = configurationCopy;
+  v5 = configurationCopy;
   [(PRMutablePosterDescriptor *)self mutateConfigurableOptions:v6];
 }
 
-- (void)setPreferredGalleryOptions:(id)a3
+- (void)setPreferredGalleryOptions:(id)options
 {
-  v5 = a3;
-  v4 = [(PRPosterDescriptor *)self _path];
-  if (v5)
+  optionsCopy = options;
+  _path = [(PRPosterDescriptor *)self _path];
+  if (optionsCopy)
   {
-    [PRPosterPathUtilities storePosterDescriptorGalleryOptions:v4 posterDescriptorGalleryOptions:v5 error:0];
+    [PRPosterPathUtilities storePosterDescriptorGalleryOptions:_path posterDescriptorGalleryOptions:optionsCopy error:0];
   }
 
   else
   {
-    [PRPosterPathUtilities removePosterDescriptorGalleryOptions:v4 error:0];
+    [PRPosterPathUtilities removePosterDescriptorGalleryOptions:_path error:0];
   }
 }
 
-- (void)setPreferredRenderingConfiguration:(id)a3
+- (void)setPreferredRenderingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__PRMutablePosterDescriptor_setPreferredRenderingConfiguration___block_invoke;
   v6[3] = &unk_1E7843128;
-  v7 = v4;
-  v5 = v4;
+  v7 = configurationCopy;
+  v5 = configurationCopy;
   [(PRMutablePosterDescriptor *)self mutateConfigurableOptions:v6];
 }
 
-- (BOOL)setObject:(id)a3 forUserInfoKey:(id)a4
+- (BOOL)setObject:(id)object forUserInfoKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  keyCopy = key;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v8)
+  if (!keyCopy)
   {
     [PRMutablePosterDescriptor setObject:a2 forUserInfoKey:?];
   }
@@ -245,8 +245,8 @@ void __53__PRMutablePosterDescriptor_setPreferredTitleColors___block_invoke(uint
     [PRMutablePosterDescriptor setObject:a2 forUserInfoKey:?];
   }
 
-  v9 = [v7 conformsToProtocol:&unk_1F1C72D28];
-  if (v7 && (v9 & 1) == 0)
+  v9 = [objectCopy conformsToProtocol:&unk_1F1C72D28];
+  if (objectCopy && (v9 & 1) == 0)
   {
     [PRMutablePosterDescriptor setObject:a2 forUserInfoKey:?];
   }
@@ -266,14 +266,14 @@ void __53__PRMutablePosterDescriptor_setPreferredTitleColors___block_invoke(uint
 
   v14 = v13;
 
-  if (v7)
+  if (objectCopy)
   {
-    [v14 setObject:v7 forKey:v8];
+    [v14 setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [v14 removeObjectForKey:v8];
+    [v14 removeObjectForKey:keyCopy];
   }
 
   v15 = [v14 copy];
@@ -282,37 +282,37 @@ void __53__PRMutablePosterDescriptor_setPreferredTitleColors___block_invoke(uint
   return v16;
 }
 
-- (BOOL)storeUserInfo:(id)a3 error:(id *)a4
+- (BOOL)storeUserInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterDescriptor *)self _path];
-  LOBYTE(a4) = [v7 storeUserInfo:v6 error:a4];
+  infoCopy = info;
+  _path = [(PRPosterDescriptor *)self _path];
+  LOBYTE(error) = [_path storeUserInfo:infoCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeGalleryOptions:(id)a3 error:(id *)a4
+- (BOOL)storeGalleryOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterDescriptor *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeProactiveGalleryOptionsToPath:v7 proactiveGalleryOptions:v6 error:a4];
+  optionsCopy = options;
+  _path = [(PRPosterDescriptor *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeProactiveGalleryOptionsToPath:_path proactiveGalleryOptions:optionsCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)storeConfigurableOptions:(id)a3 error:(id *)a4
+- (BOOL)storeConfigurableOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterDescriptor *)self _path];
-  LOBYTE(a4) = [PRPosterPathUtilities storeConfigurableOptionsForPath:v7 configurableOptions:v6 error:a4];
+  optionsCopy = options;
+  _path = [(PRPosterDescriptor *)self _path];
+  LOBYTE(error) = [PRPosterPathUtilities storeConfigurableOptionsForPath:_path configurableOptions:optionsCopy error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)setAmbientSupportedDataLayout:(int64_t)a3
+- (void)setAmbientSupportedDataLayout:(int64_t)layout
 {
-  v5 = [(PRPosterDescriptor *)self ambientConfiguration];
-  v6 = [v5 mutableCopy];
+  ambientConfiguration = [(PRPosterDescriptor *)self ambientConfiguration];
+  v6 = [ambientConfiguration mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -326,19 +326,19 @@ void __53__PRMutablePosterDescriptor_setPreferredTitleColors___block_invoke(uint
 
   v10 = v8;
 
-  [v10 setSupportedDataLayout:a3];
-  v9 = [(PRPosterDescriptor *)self _path];
-  [PRPosterPathUtilities storeAmbientConfigurationForPath:v9 ambientConfiguration:v10 error:0];
+  [v10 setSupportedDataLayout:layout];
+  _path = [(PRPosterDescriptor *)self _path];
+  [PRPosterPathUtilities storeAmbientConfigurationForPath:_path ambientConfiguration:v10 error:0];
 }
 
-- (void)setAmbientConfiguration:(id)a3
+- (void)setAmbientConfiguration:(id)configuration
 {
-  v7 = a3;
-  v4 = [(PRPosterDescriptor *)self _path];
-  v5 = v4;
-  if (v7)
+  configurationCopy = configuration;
+  _path = [(PRPosterDescriptor *)self _path];
+  v5 = _path;
+  if (configurationCopy)
   {
-    [PRPosterPathUtilities storeAmbientConfigurationForPath:v4 ambientConfiguration:v7 error:0];
+    [PRPosterPathUtilities storeAmbientConfigurationForPath:_path ambientConfiguration:configurationCopy error:0];
   }
 
   else
@@ -348,13 +348,13 @@ void __53__PRMutablePosterDescriptor_setPreferredTitleColors___block_invoke(uint
   }
 }
 
-- (BOOL)copyContentsOfPath:(id)a3 error:(id *)a4
+- (BOOL)copyContentsOfPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PRPosterDescriptor *)self _path];
-  LOBYTE(a4) = [v7 copyContentsOfPath:v6 error:a4];
+  pathCopy = path;
+  _path = [(PRPosterDescriptor *)self _path];
+  LOBYTE(error) = [_path copyContentsOfPath:pathCopy error:error];
 
-  return a4;
+  return error;
 }
 
 + (void)mutableDescriptorWithIdentifier:(char *)a1 role:.cold.1(char *a1)

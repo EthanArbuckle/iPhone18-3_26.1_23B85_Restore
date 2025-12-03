@@ -1,28 +1,28 @@
 @interface _IMDRelayingServiceReachabilityResponseHandler
-- (_IMDRelayingServiceReachabilityResponseHandler)initWithRequestID:(id)a3 pushToken:(id)a4 fromIdentifier:(id)a5 toIdentifier:(id)a6;
+- (_IMDRelayingServiceReachabilityResponseHandler)initWithRequestID:(id)d pushToken:(id)token fromIdentifier:(id)identifier toIdentifier:(id)toIdentifier;
 - (void)_deferSendingCurrentResultIfNeeded;
 - (void)_sendCurrentResult;
-- (void)reachabilityRequest:(id)a3 updatedWithResult:(id)a4;
+- (void)reachabilityRequest:(id)request updatedWithResult:(id)result;
 @end
 
 @implementation _IMDRelayingServiceReachabilityResponseHandler
 
-- (_IMDRelayingServiceReachabilityResponseHandler)initWithRequestID:(id)a3 pushToken:(id)a4 fromIdentifier:(id)a5 toIdentifier:(id)a6
+- (_IMDRelayingServiceReachabilityResponseHandler)initWithRequestID:(id)d pushToken:(id)token fromIdentifier:(id)identifier toIdentifier:(id)toIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  toIdentifierCopy = toIdentifier;
   v18.receiver = self;
   v18.super_class = _IMDRelayingServiceReachabilityResponseHandler;
   v15 = [(_IMDRelayingServiceReachabilityResponseHandler *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_requestID, a3);
-    objc_storeStrong(&v16->_pushToken, a4);
-    objc_storeStrong(&v16->_fromIdentifier, a5);
-    objc_storeStrong(&v16->_toIdentifier, a6);
+    objc_storeStrong(&v15->_requestID, d);
+    objc_storeStrong(&v16->_pushToken, token);
+    objc_storeStrong(&v16->_fromIdentifier, identifier);
+    objc_storeStrong(&v16->_toIdentifier, toIdentifier);
   }
 
   return v16;
@@ -31,18 +31,18 @@
 - (void)_sendCurrentResult
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
+  lastResult = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
 
   v4 = IMOSLoggingEnabled();
-  if (v3)
+  if (lastResult)
   {
     if (v4)
     {
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
-        if ([v6 isFinal])
+        lastResult2 = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
+        if ([lastResult2 isFinal])
         {
           v7 = @"final";
         }
@@ -52,31 +52,31 @@
           v7 = @"intermediate";
         }
 
-        v8 = [(_IMDRelayingServiceReachabilityResponseHandler *)self requestID];
-        v9 = [(_IMDRelayingServiceReachabilityResponseHandler *)self pushToken];
-        v10 = [(_IMDRelayingServiceReachabilityResponseHandler *)self fromIdentifier];
+        requestID = [(_IMDRelayingServiceReachabilityResponseHandler *)self requestID];
+        pushToken = [(_IMDRelayingServiceReachabilityResponseHandler *)self pushToken];
+        fromIdentifier = [(_IMDRelayingServiceReachabilityResponseHandler *)self fromIdentifier];
         v21 = 138413058;
         v22 = v7;
         v23 = 2112;
-        v24 = v8;
+        v24 = requestID;
         v25 = 2112;
-        v26 = v9;
+        v26 = pushToken;
         v27 = 2112;
-        v28 = v10;
+        v28 = fromIdentifier;
         _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Sending %@ result for request ID %@ to %@/%@", &v21, 0x2Au);
       }
     }
 
     v11 = [IMDRelayServiceReachabilityResponse alloc];
-    v12 = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
-    v13 = [(IMDRelayServiceReachabilityResponse *)v11 initWithResult:v12];
+    lastResult3 = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
+    v13 = [(IMDRelayServiceReachabilityResponse *)v11 initWithResult:lastResult3];
 
     v14 = +[IMDRelayServiceController sharedInstance];
-    v15 = [(_IMDRelayingServiceReachabilityResponseHandler *)self requestID];
-    v16 = [(_IMDRelayingServiceReachabilityResponseHandler *)self pushToken];
-    v17 = [(_IMDRelayingServiceReachabilityResponseHandler *)self fromIdentifier];
-    v18 = [(_IMDRelayingServiceReachabilityResponseHandler *)self toIdentifier];
-    [v14 sendReachabilityResponse:v13 requestID:v15 toToken:v16 toIdentifier:v17 fromIdentifier:v18];
+    requestID2 = [(_IMDRelayingServiceReachabilityResponseHandler *)self requestID];
+    pushToken2 = [(_IMDRelayingServiceReachabilityResponseHandler *)self pushToken];
+    fromIdentifier2 = [(_IMDRelayingServiceReachabilityResponseHandler *)self fromIdentifier];
+    toIdentifier = [(_IMDRelayingServiceReachabilityResponseHandler *)self toIdentifier];
+    [v14 sendReachabilityResponse:v13 requestID:requestID2 toToken:pushToken2 toIdentifier:fromIdentifier2 fromIdentifier:toIdentifier];
   }
 
   else if (v4)
@@ -94,15 +94,15 @@
 
 - (void)_deferSendingCurrentResultIfNeeded
 {
-  v3 = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
+  lastResult = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
 
-  if (v3)
+  if (lastResult)
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__sendCurrentResult object:0];
-    v4 = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
-    v5 = [v4 isFinal];
+    lastResult2 = [(_IMDRelayingServiceReachabilityResponseHandler *)self lastResult];
+    isFinal = [lastResult2 isFinal];
 
-    if (v5)
+    if (isFinal)
     {
 
       MEMORY[0x2821F9670](self, sel__sendCurrentResult);
@@ -126,24 +126,24 @@
   }
 }
 
-- (void)reachabilityRequest:(id)a3 updatedWithResult:(id)a4
+- (void)reachabilityRequest:(id)request updatedWithResult:(id)result
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  resultCopy = result;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 requestID];
+      requestID = [requestCopy requestID];
       v11 = 138412290;
-      v12 = v9;
+      v12 = requestID;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Received update for request ID %@", &v11, 0xCu);
     }
   }
 
-  [(_IMDRelayingServiceReachabilityResponseHandler *)self setLastResult:v7];
+  [(_IMDRelayingServiceReachabilityResponseHandler *)self setLastResult:resultCopy];
   [(_IMDRelayingServiceReachabilityResponseHandler *)self _deferSendingCurrentResultIfNeeded];
 
   v10 = *MEMORY[0x277D85DE8];

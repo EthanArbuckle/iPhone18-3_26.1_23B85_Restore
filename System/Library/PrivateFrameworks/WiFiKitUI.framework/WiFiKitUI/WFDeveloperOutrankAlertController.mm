@@ -1,8 +1,8 @@
 @interface WFDeveloperOutrankAlertController
-+ (id)messageForChinaDevice:(BOOL)a3;
++ (id)messageForChinaDevice:(BOOL)device;
 + (id)okButtonTitle;
 + (id)settingsButtonTitle;
-+ (id)titleForNetworkName:(id)a3 chinaDevice:(BOOL)a4;
++ (id)titleForNetworkName:(id)name chinaDevice:(BOOL)device;
 @end
 
 @implementation WFDeveloperOutrankAlertController
@@ -19,15 +19,15 @@ void __114__WFDeveloperOutrankAlertController_developerOutrankAlertControllerWit
   v1[2](v1, 1);
 }
 
-+ (id)titleForNetworkName:(id)a3 chinaDevice:(BOOL)a4
++ (id)titleForNetworkName:(id)name chinaDevice:(BOOL)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v5 = MEMORY[0x277CCACA8];
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a3;
+  nameCopy = name;
   v8 = [v6 bundleForClass:objc_opt_class()];
   v9 = v8;
-  if (v4)
+  if (deviceCopy)
   {
     v10 = @"kWFLocDeveloperOutrankAlertTitle_CH";
   }
@@ -38,17 +38,17 @@ void __114__WFDeveloperOutrankAlertController_developerOutrankAlertControllerWit
   }
 
   v11 = [v8 localizedStringForKey:v10 value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v12 = [v5 stringWithFormat:v11, v7];
+  nameCopy = [v5 stringWithFormat:v11, nameCopy];
 
-  return v12;
+  return nameCopy;
 }
 
-+ (id)messageForChinaDevice:(BOOL)a3
++ (id)messageForChinaDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v3)
+  if (deviceCopy)
   {
     v6 = @"kWFLocDeveloperOutrankAlertMessage_CH";
   }

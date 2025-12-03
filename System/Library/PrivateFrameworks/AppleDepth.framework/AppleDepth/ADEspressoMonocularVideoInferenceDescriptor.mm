@@ -1,15 +1,15 @@
 @interface ADEspressoMonocularVideoInferenceDescriptor
-- (ADEspressoMonocularVideoInferenceDescriptor)initWithNetworkProvider:(id)a3 inputColorFormat:(unsigned int)a4 outputDisparityFormat:(unsigned int)a5;
+- (ADEspressoMonocularVideoInferenceDescriptor)initWithNetworkProvider:(id)provider inputColorFormat:(unsigned int)format outputDisparityFormat:(unsigned int)disparityFormat;
 @end
 
 @implementation ADEspressoMonocularVideoInferenceDescriptor
 
-- (ADEspressoMonocularVideoInferenceDescriptor)initWithNetworkProvider:(id)a3 inputColorFormat:(unsigned int)a4 outputDisparityFormat:(unsigned int)a5
+- (ADEspressoMonocularVideoInferenceDescriptor)initWithNetworkProvider:(id)provider inputColorFormat:(unsigned int)format outputDisparityFormat:(unsigned int)disparityFormat
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v8 = a3;
-  v9 = v8;
+  v5 = *&disparityFormat;
+  v6 = *&format;
+  providerCopy = provider;
+  v9 = providerCopy;
   if (v5 == 1751411059)
   {
     v10 = 1278226536;
@@ -20,11 +20,11 @@
     v10 = 1278226534;
   }
 
-  v11 = [v8 url];
-  v12 = [v9 layoutNamesDict];
+  v11 = [providerCopy url];
+  layoutNamesDict = [v9 layoutNamesDict];
   v29.receiver = self;
   v29.super_class = ADEspressoMonocularVideoInferenceDescriptor;
-  v13 = [(ADEspressoInferenceDescriptor *)&v29 initWithUrl:v11 layoutNames:v12];
+  v13 = [(ADEspressoInferenceDescriptor *)&v29 initWithUrl:v11 layoutNames:layoutNamesDict];
 
   if (v13)
   {

@@ -1,23 +1,23 @@
 @interface ICCalculateDocumentController
 - (BOOL)hasExpressions;
 - (BOOL)isExpressionFormattingEnabled;
-- (BOOL)updateAffectingChangeCounts:(BOOL)a3;
+- (BOOL)updateAffectingChangeCounts:(BOOL)counts;
 - (BOOL)updateHighlights;
 - (ICCalculateDocumentController)init;
 - (ICNote)note;
 - (NSIndexSet)expressionsIndexSet;
-- (_NSRange)expressionRangeForResultAttachment:(id)a3;
-- (id)contextMenuForResultAttachment:(id)a3;
-- (id)numberLiteralAtLocation:(int64_t)a3;
+- (_NSRange)expressionRangeForResultAttachment:(id)attachment;
+- (id)contextMenuForResultAttachment:(id)attachment;
+- (id)numberLiteralAtLocation:(int64_t)location;
 - (void)cancelUpdate;
-- (void)formatExpressionsInAttributedString:(id)a3 range:(_NSRange)a4 textStorageOffset:(int64_t)a5 skipStaleExpressions:(BOOL)a6;
-- (void)noteDidChangeCalculatePreviewBehavior:(id)a3;
+- (void)formatExpressionsInAttributedString:(id)string range:(_NSRange)range textStorageOffset:(int64_t)offset skipStaleExpressions:(BOOL)expressions;
+- (void)noteDidChangeCalculatePreviewBehavior:(id)behavior;
 - (void)performUpdate;
 - (void)resetHighlights;
-- (void)scheduleUpdateAffectingChangeCounts:(BOOL)a3 isHighPriority:(BOOL)a4;
-- (void)setIsExpressionFormattingEnabled:(BOOL)a3;
-- (void)textStorageDidProcessEndEditing:(id)a3;
-- (void)updateAffectingChangeCounts:(BOOL)a3 completion:(id)a4;
+- (void)scheduleUpdateAffectingChangeCounts:(BOOL)counts isHighPriority:(BOOL)priority;
+- (void)setIsExpressionFormattingEnabled:(BOOL)enabled;
+- (void)textStorageDidProcessEndEditing:(id)editing;
+- (void)updateAffectingChangeCounts:(BOOL)counts completion:(id)completion;
 @end
 
 @implementation ICCalculateDocumentController
@@ -32,7 +32,7 @@
 
 - (BOOL)updateHighlights
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D4188AD8(&OBJC_IVAR___ICCalculateDocumentController____lazy_storage___highlighter, _s11HighlighterCMa, 64, sub_1D4188BA0);
   v3 = sub_1D41890D0();
 
@@ -47,7 +47,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   _sSo29ICCalculateDocumentControllerC7NotesUIE19expressionsIndexSet10Foundation0gH0Vvg_0(v6);
 
   v8 = sub_1D4417564();
@@ -58,7 +58,7 @@
 
 - (BOOL)hasExpressions
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D4189834();
   v3 = MEMORY[0x1DA6D53A0]();
 
@@ -75,19 +75,19 @@
   return v4 != 0;
 }
 
-- (void)scheduleUpdateAffectingChangeCounts:(BOOL)a3 isHighPriority:(BOOL)a4
+- (void)scheduleUpdateAffectingChangeCounts:(BOOL)counts isHighPriority:(BOOL)priority
 {
-  v6 = self;
-  ICCalculateDocumentController.scheduleUpdate(affectChangeCounts:isHighPriority:)(a3, a4);
+  selfCopy = self;
+  ICCalculateDocumentController.scheduleUpdate(affectChangeCounts:isHighPriority:)(counts, priority);
 }
 
 - (void)cancelUpdate
 {
-  v5 = self;
+  selfCopy = self;
   v2 = sub_1D4323224();
   [v2 cancelPreviousFireRequests];
 
-  v3 = *(v5 + OBJC_IVAR___ICCalculateDocumentController_currentScanRequest);
+  v3 = *(selfCopy + OBJC_IVAR___ICCalculateDocumentController_currentScanRequest);
   if (v3)
   {
     v4 = v3;
@@ -97,21 +97,21 @@
 
 - (void)performUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D43237D4();
 }
 
-- (BOOL)updateAffectingChangeCounts:(BOOL)a3
+- (BOOL)updateAffectingChangeCounts:(BOOL)counts
 {
   if (*(self + OBJC_IVAR___ICCalculateDocumentController_needsDocumentUpdate) == 1)
   {
-    v3 = a3;
-    v4 = self;
-    [(ICCalculateDocumentController *)v4 cancelUpdate];
+    countsCopy = counts;
+    selfCopy = self;
+    [(ICCalculateDocumentController *)selfCopy cancelUpdate];
     sub_1D4188AD8(&OBJC_IVAR___ICCalculateDocumentController____lazy_storage___scanner, _s7ScannerCMa, 48, sub_1D4308BB4);
     v5 = sub_1D4307204(0, 0, 1);
 
-    v6 = sub_1D4323B3C(v3, v5);
+    v6 = sub_1D4323B3C(countsCopy, v5);
   }
 
   else
@@ -122,21 +122,21 @@
   return v6 & 1;
 }
 
-- (void)updateAffectingChangeCounts:(BOOL)a3 completion:(id)a4
+- (void)updateAffectingChangeCounts:(BOOL)counts completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = self;
-  sub_1D432FC40(a3, v7, v6);
+  selfCopy = self;
+  sub_1D432FC40(counts, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (_NSRange)expressionRangeForResultAttachment:(id)a3
+- (_NSRange)expressionRangeForResultAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1D4329930(v4);
+  attachmentCopy = attachment;
+  selfCopy = self;
+  v6 = sub_1D4329930(attachmentCopy);
   v8 = v7;
 
   v9 = v6;
@@ -146,10 +146,10 @@
   return result;
 }
 
-- (id)numberLiteralAtLocation:(int64_t)a3
+- (id)numberLiteralAtLocation:(int64_t)location
 {
-  v4 = self;
-  v5 = sub_1D432AC1C(a3);
+  selfCopy = self;
+  v5 = sub_1D432AC1C(location);
 
   return v5;
 }
@@ -161,25 +161,25 @@
   return *(self + v3);
 }
 
-- (void)setIsExpressionFormattingEnabled:(BOOL)a3
+- (void)setIsExpressionFormattingEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR___ICCalculateDocumentController_isExpressionFormattingEnabled;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = enabled;
 }
 
-- (void)formatExpressionsInAttributedString:(id)a3 range:(_NSRange)a4 textStorageOffset:(int64_t)a5 skipStaleExpressions:(BOOL)a6
+- (void)formatExpressionsInAttributedString:(id)string range:(_NSRange)range textStorageOffset:(int64_t)offset skipStaleExpressions:(BOOL)expressions
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v13 = self;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  selfCopy = self;
   v12.location = location;
   v12.length = length;
-  ICCalculateDocumentController.formatExpressions(in:range:textStorageOffset:skipStaleExpressions:)(v11, v12, a5, a6);
+  ICCalculateDocumentController.formatExpressions(in:range:textStorageOffset:skipStaleExpressions:)(stringCopy, v12, offset, expressions);
 }
 
-- (void)noteDidChangeCalculatePreviewBehavior:(id)a3
+- (void)noteDidChangeCalculatePreviewBehavior:(id)behavior
 {
   v4 = sub_1D4416E94();
   v5 = *(v4 - 8);
@@ -188,7 +188,7 @@
   sub_1D4416E54();
   v8 = OBJC_IVAR___ICCalculateDocumentController_updating;
   *(self + OBJC_IVAR___ICCalculateDocumentController_updating) = 1;
-  v9 = self;
+  selfCopy = self;
   sub_1D432C488();
   sub_1D4188AD8(&OBJC_IVAR___ICCalculateDocumentController____lazy_storage___highlighter, _s11HighlighterCMa, 64, sub_1D4188BA0);
   sub_1D418A1A4();
@@ -197,31 +197,31 @@
   *(self + v8) = 0;
 }
 
-- (void)textStorageDidProcessEndEditing:(id)a3
+- (void)textStorageDidProcessEndEditing:(id)editing
 {
   v4 = sub_1D4416E94();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D4416E54();
-  v8 = self;
+  selfCopy = self;
   sub_1D432CBB4();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (id)contextMenuForResultAttachment:(id)a3
+- (id)contextMenuForResultAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ICCalculateDocumentController.contextMenu(forResultAttachment:)(v4);
+  attachmentCopy = attachment;
+  selfCopy = self;
+  v6 = ICCalculateDocumentController.contextMenu(forResultAttachment:)(attachmentCopy);
 
   return v6;
 }
 
 - (void)resetHighlights
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D4188AD8(&OBJC_IVAR___ICCalculateDocumentController____lazy_storage___highlighter, _s11HighlighterCMa, 64, sub_1D4188BA0);
 
   v4 = *(v3 + 32);

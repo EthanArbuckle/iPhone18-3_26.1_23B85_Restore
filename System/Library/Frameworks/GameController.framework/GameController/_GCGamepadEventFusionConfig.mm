@@ -1,17 +1,17 @@
 @interface _GCGamepadEventFusionConfig
-- (_GCGamepadEventFusionConfig)initWithCoder:(id)a3;
-- (_GCGamepadEventFusionConfig)initWithSourceCount:(unint64_t)a3;
+- (_GCGamepadEventFusionConfig)initWithCoder:(id)coder;
+- (_GCGamepadEventFusionConfig)initWithSourceCount:(unint64_t)count;
 - (id)debugDescription;
-- (unsigned)passRuleForElement:(int64_t)a3 forSourceAtIndex:(unint64_t)a4;
+- (unsigned)passRuleForElement:(int64_t)element forSourceAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateElementsForSourceAtIndex:(unint64_t)a3 withBlock:(id)a4;
-- (void)setPassRule:(unsigned __int8)a3 forElement:(int64_t)a4 forSourceAtIndex:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateElementsForSourceAtIndex:(unint64_t)index withBlock:(id)block;
+- (void)setPassRule:(unsigned __int8)rule forElement:(int64_t)element forSourceAtIndex:(unint64_t)index;
 @end
 
 @implementation _GCGamepadEventFusionConfig
 
-- (_GCGamepadEventFusionConfig)initWithSourceCount:(unint64_t)a3
+- (_GCGamepadEventFusionConfig)initWithSourceCount:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = _GCGamepadEventFusionConfig;
@@ -19,30 +19,30 @@
   v5 = v4;
   if (v4)
   {
-    v4->_sourceCount = a3;
-    if (a3)
+    v4->_sourceCount = count;
+    if (count)
     {
-      v4->_matrix = malloc_type_calloc(a3, 0x2FuLL, 0x10000408E6526DAuLL);
+      v4->_matrix = malloc_type_calloc(count, 0x2FuLL, 0x10000408E6526DAuLL);
     }
   }
 
   return v5;
 }
 
-- (_GCGamepadEventFusionConfig)initWithCoder:(id)a3
+- (_GCGamepadEventFusionConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = _GCGamepadEventFusionConfig;
   v5 = [(_GCGamepadEventFusionConfig *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"sourceCount"];
+    v6 = [coderCopy decodeIntegerForKey:@"sourceCount"];
     v5->_sourceCount = v6;
     if (v6)
     {
       v11 = 0;
-      v7 = [v4 decodeBytesForKey:@"matrix" returnedLength:&v11];
+      v7 = [coderCopy decodeBytesForKey:@"matrix" returnedLength:&v11];
       v8 = malloc_type_calloc(v5->_sourceCount, 0x2FuLL, 0x10000408E6526DAuLL);
       v5->_matrix = v8;
       if (v11 >= 47 * v5->_sourceCount)
@@ -62,12 +62,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceCount = self->_sourceCount;
-  v5 = a3;
-  [v5 encodeInteger:sourceCount forKey:@"sourceCount"];
-  [v5 encodeBytes:self->_matrix length:47 * self->_sourceCount forKey:@"matrix"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:sourceCount forKey:@"sourceCount"];
+  [coderCopy encodeBytes:self->_matrix length:47 * self->_sourceCount forKey:@"matrix"];
 }
 
 - (void)dealloc
@@ -139,78 +139,78 @@
   return v21;
 }
 
-- (void)setPassRule:(unsigned __int8)a3 forElement:(int64_t)a4 forSourceAtIndex:(unint64_t)a5
+- (void)setPassRule:(unsigned __int8)rule forElement:(int64_t)element forSourceAtIndex:(unint64_t)index
 {
   sourceCount = self->_sourceCount;
-  if (sourceCount <= a5)
+  if (sourceCount <= index)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventFusion.m" lineNumber:173 description:{@"Invalid sourceIndex (%llu).  Greater than _sourceCount (%llu)", a5, self->_sourceCount}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGamepadEventFusion.m" lineNumber:173 description:{@"Invalid sourceIndex (%llu).  Greater than _sourceCount (%llu)", index, self->_sourceCount}];
 
     sourceCount = self->_sourceCount;
   }
 
-  if (sourceCount > a5)
+  if (sourceCount > index)
   {
-    if (a4 >= 47)
+    if (element >= 47)
     {
-      [_GCGamepadEventFusionConfig setPassRule:a2 forElement:self forSourceAtIndex:a4];
+      [_GCGamepadEventFusionConfig setPassRule:a2 forElement:self forSourceAtIndex:element];
     }
 
     else
     {
-      self->_matrix[a5][a4] = a3;
+      self->_matrix[index][element] = rule;
     }
   }
 }
 
-- (unsigned)passRuleForElement:(int64_t)a3 forSourceAtIndex:(unint64_t)a4
+- (unsigned)passRuleForElement:(int64_t)element forSourceAtIndex:(unint64_t)index
 {
   sourceCount = self->_sourceCount;
-  if (sourceCount <= a4)
+  if (sourceCount <= index)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventFusion.m" lineNumber:196 description:{@"Invalid sourceIndex (%llu).  Greater than _sourceCount (%llu)", a4, self->_sourceCount}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGamepadEventFusion.m" lineNumber:196 description:{@"Invalid sourceIndex (%llu).  Greater than _sourceCount (%llu)", index, self->_sourceCount}];
 
     sourceCount = self->_sourceCount;
   }
 
-  if (sourceCount > a4)
+  if (sourceCount > index)
   {
-    if (a3 < 47)
+    if (element < 47)
     {
-      return self->_matrix[a4][a3];
+      return self->_matrix[index][element];
     }
 
-    [(_GCGamepadEventFusionConfig *)a2 passRuleForElement:a3 forSourceAtIndex:?];
+    [(_GCGamepadEventFusionConfig *)a2 passRuleForElement:element forSourceAtIndex:?];
   }
 
   return 0;
 }
 
-- (void)enumerateElementsForSourceAtIndex:(unint64_t)a3 withBlock:(id)a4
+- (void)enumerateElementsForSourceAtIndex:(unint64_t)index withBlock:(id)block
 {
-  v7 = a4;
+  blockCopy = block;
   sourceCount = self->_sourceCount;
-  if (sourceCount <= a3)
+  if (sourceCount <= index)
   {
-    v13 = v7;
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventFusion.m" lineNumber:211 description:{@"Invalid sourceIndex (%llu).  Greater than _sourceCount (%llu)", a3, self->_sourceCount}];
+    v13 = blockCopy;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGamepadEventFusion.m" lineNumber:211 description:{@"Invalid sourceIndex (%llu).  Greater than _sourceCount (%llu)", index, self->_sourceCount}];
 
-    v7 = v13;
+    blockCopy = v13;
     sourceCount = self->_sourceCount;
   }
 
-  if (sourceCount > a3)
+  if (sourceCount > index)
   {
     v9 = 0;
-    v10 = a3;
-    v12 = v7;
+    indexCopy = index;
+    v12 = blockCopy;
     do
     {
-      (*(v7 + 2))(v12, v9, self->_matrix[v10][v9]);
-      v7 = v12;
+      (*(blockCopy + 2))(v12, v9, self->_matrix[indexCopy][v9]);
+      blockCopy = v12;
       ++v9;
     }
 

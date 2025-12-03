@@ -1,5 +1,5 @@
 @interface RDCommServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RDCommServer)init;
 @end
 
@@ -69,11 +69,11 @@
   return v12;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  [v5 setExportedInterface:self->interface];
-  [v5 setExportedObject:self->server];
+  connectionCopy = connection;
+  [connectionCopy setExportedInterface:self->interface];
+  [connectionCopy setExportedObject:self->server];
   if (qword_100019008 != -1)
   {
     dispatch_once(&qword_100019008, &stru_100014A98);
@@ -89,7 +89,7 @@
     _os_log_impl(&dword_100000000, v6, OS_LOG_TYPE_INFO, "{msg%{public}.0s:listener is resuming connection...}", v8, 0x12u);
   }
 
-  [v5 resume];
+  [connectionCopy resume];
 
   return 1;
 }

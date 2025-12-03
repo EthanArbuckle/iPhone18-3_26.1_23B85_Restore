@@ -1,12 +1,12 @@
 @interface SPProtoCacheMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SPProtoCacheMessage
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = SPProtoCacheMessage;
   v3 = [(SPProtoCacheMessage *)&v7 description];
-  v4 = [(SPProtoCacheMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SPProtoCacheMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -52,16 +52,16 @@
   syncData = self->_syncData;
   if (syncData)
   {
-    v10 = [(SPProtoCacheSyncData *)syncData dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"syncData"];
+    dictionaryRepresentation = [(SPProtoCacheSyncData *)syncData dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"syncData"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   messageType = self->_messageType;
   PBDataWriterWriteInt32Field();
   cacheType = self->_cacheType;
@@ -76,82 +76,82 @@
     PBDataWriterWriteStringField();
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if (self->_assetData)
   {
     PBDataWriterWriteDataField();
-    v6 = v7;
+    v6 = toCopy;
   }
 
   if (self->_syncData)
   {
     PBDataWriterWriteSubmessage();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[10] = self->_messageType;
-  v4[6] = self->_cacheType;
-  v5 = v4;
+  toCopy = to;
+  toCopy[10] = self->_messageType;
+  toCopy[6] = self->_cacheType;
+  v5 = toCopy;
   if (self->_assetKey)
   {
-    [v4 setAssetKey:?];
-    v4 = v5;
+    [toCopy setAssetKey:?];
+    toCopy = v5;
   }
 
   if (self->_gizmoCacheIdentifier)
   {
     [v5 setGizmoCacheIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_assetData)
   {
     [v5 setAssetData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_syncData)
   {
     [v5 setSyncData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[10] = self->_messageType;
   v5[6] = self->_cacheType;
-  v6 = [(NSString *)self->_assetKey copyWithZone:a3];
+  v6 = [(NSString *)self->_assetKey copyWithZone:zone];
   v7 = *(v5 + 2);
   *(v5 + 2) = v6;
 
-  v8 = [(NSString *)self->_gizmoCacheIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_gizmoCacheIdentifier copyWithZone:zone];
   v9 = *(v5 + 4);
   *(v5 + 4) = v8;
 
-  v10 = [(NSData *)self->_assetData copyWithZone:a3];
+  v10 = [(NSData *)self->_assetData copyWithZone:zone];
   v11 = *(v5 + 1);
   *(v5 + 1) = v10;
 
-  v12 = [(SPProtoCacheSyncData *)self->_syncData copyWithZone:a3];
+  v12 = [(SPProtoCacheSyncData *)self->_syncData copyWithZone:zone];
   v13 = *(v5 + 6);
   *(v5 + 6) = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_messageType == *(v4 + 10) && self->_cacheType == *(v4 + 6) && ((assetKey = self->_assetKey, !(assetKey | v4[2])) || -[NSString isEqual:](assetKey, "isEqual:")) && ((gizmoCacheIdentifier = self->_gizmoCacheIdentifier, !(gizmoCacheIdentifier | v4[4])) || -[NSString isEqual:](gizmoCacheIdentifier, "isEqual:")) && ((assetData = self->_assetData, !(assetData | v4[1])) || -[NSData isEqual:](assetData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_messageType == *(equalCopy + 10) && self->_cacheType == *(equalCopy + 6) && ((assetKey = self->_assetKey, !(assetKey | equalCopy[2])) || -[NSString isEqual:](assetKey, "isEqual:")) && ((gizmoCacheIdentifier = self->_gizmoCacheIdentifier, !(gizmoCacheIdentifier | equalCopy[4])) || -[NSString isEqual:](gizmoCacheIdentifier, "isEqual:")) && ((assetData = self->_assetData, !(assetData | equalCopy[1])) || -[NSData isEqual:](assetData, "isEqual:")))
   {
     syncData = self->_syncData;
-    if (syncData | v4[6])
+    if (syncData | equalCopy[6])
     {
       v9 = [(SPProtoCacheSyncData *)syncData isEqual:?];
     }
@@ -179,13 +179,13 @@
   return v3 ^ v6 ^ [(SPProtoCacheSyncData *)self->_syncData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_messageType = v4[10];
-  self->_cacheType = v4[6];
-  v7 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  self->_messageType = fromCopy[10];
+  self->_cacheType = fromCopy[6];
+  v7 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(SPProtoCacheMessage *)self setAssetKey:?];
   }

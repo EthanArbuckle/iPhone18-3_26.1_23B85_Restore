@@ -1,9 +1,9 @@
 @interface DOCTagShapeRenderer
 + (DOCTagShapeRenderer)shared;
-- (CGRect)_imageRectForRenderingImage:(id)a3 tagRect:(CGRect)a4 displayScale:(double)a5;
-- (double)baselineOffsetForRequest:(id)a3 tagRectSize:(CGSize)a4;
-- (id)_shapeImageForColorType:(int64_t)a3 variant:(unint64_t)a4 renderedColor:(id)a5;
-- (void)renderInContext:(CGContext *)a3 contextSize:(CGSize)a4 tagRect:(CGRect)a5 tag:(id)a6 outlineColor:(id)a7 fillColor:(id)a8 traitCollection:(id)a9;
+- (CGRect)_imageRectForRenderingImage:(id)image tagRect:(CGRect)rect displayScale:(double)scale;
+- (double)baselineOffsetForRequest:(id)request tagRectSize:(CGSize)size;
+- (id)_shapeImageForColorType:(int64_t)type variant:(unint64_t)variant renderedColor:(id)color;
+- (void)renderInContext:(CGContext *)context contextSize:(CGSize)size tagRect:(CGRect)rect tag:(id)tag outlineColor:(id)color fillColor:(id)fillColor traitCollection:(id)collection;
 @end
 
 @implementation DOCTagShapeRenderer
@@ -27,59 +27,59 @@ void __29__DOCTagShapeRenderer_shared__block_invoke()
   shared_instance = v0;
 }
 
-- (void)renderInContext:(CGContext *)a3 contextSize:(CGSize)a4 tagRect:(CGRect)a5 tag:(id)a6 outlineColor:(id)a7 fillColor:(id)a8 traitCollection:(id)a9
+- (void)renderInContext:(CGContext *)context contextSize:(CGSize)size tagRect:(CGRect)rect tag:(id)tag outlineColor:(id)color fillColor:(id)fillColor traitCollection:(id)collection
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a4.height;
-  v17 = a4.width;
-  v20 = a7;
-  v21 = a9;
-  if (a3)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v16 = size.height;
+  v17 = size.width;
+  colorCopy = color;
+  collectionCopy = collection;
+  if (context)
   {
-    v22 = a8;
-    v23 = a6;
+    fillColorCopy = fillColor;
+    tagCopy = tag;
     v24 = +[DOCTagAppearance renderingAppearance];
-    v25 = [v23 labelIndex];
+    labelIndex = [tagCopy labelIndex];
 
-    v26 = [(DOCTagShapeRenderer *)self _shapeImageForColorType:v25 variant:0 renderedColor:v22];
+    v26 = [(DOCTagShapeRenderer *)self _shapeImageForColorType:labelIndex variant:0 renderedColor:fillColorCopy];
 
     v67 = v17;
     v68 = v16;
     if (v26)
     {
-      v27 = [(DOCTagShapeRenderer *)self _shapeImageForColorType:v25 variant:1 renderedColor:v20];
-      v28 = 0;
+      v27 = [(DOCTagShapeRenderer *)self _shapeImageForColorType:labelIndex variant:1 renderedColor:colorCopy];
+      outlineTagsToIndicateMixedState = 0;
     }
 
     else
     {
-      if (v20)
+      if (colorCopy)
       {
-        v29 = v20;
+        nonClearNoneTagColor = colorCopy;
       }
 
       else
       {
-        v29 = [MEMORY[0x277D06260] nonClearNoneTagColor];
+        nonClearNoneTagColor = [MEMORY[0x277D06260] nonClearNoneTagColor];
       }
 
-      v30 = v29;
-      v26 = [(DOCTagShapeRenderer *)self _shapeImageForColorType:v25 variant:1 renderedColor:v29];
-      v28 = [v24 outlineTagsToIndicateMixedState];
+      v30 = nonClearNoneTagColor;
+      v26 = [(DOCTagShapeRenderer *)self _shapeImageForColorType:labelIndex variant:1 renderedColor:nonClearNoneTagColor];
+      outlineTagsToIndicateMixedState = [v24 outlineTagsToIndicateMixedState];
 
       v27 = 0;
     }
 
-    [v21 displayScale];
+    [collectionCopy displayScale];
     [(DOCTagShapeRenderer *)self _imageRectForRenderingImage:v26 tagRect:x displayScale:y, width, height];
     v35 = v31;
     v36 = v32;
     v37 = v33;
     v38 = v34;
-    if (v27 || (v39 = v34, v40 = v33, v41 = v32, v42 = v31, v28))
+    if (v27 || (v39 = v34, v40 = v33, v41 = v32, v42 = v31, outlineTagsToIndicateMixedState))
     {
       v78 = CGRectInset(*&v31, 1.0, 1.0);
       v42 = v78.origin.x;
@@ -108,8 +108,8 @@ void __29__DOCTagShapeRenderer_shared__block_invoke()
       v56 = v41 + v48;
       v57 = v40 - (v50 + v54);
       v58 = v39 - (v48 + v52);
-      v59 = [MEMORY[0x277D75520] defaultMetrics];
-      [v59 scaledValueForValue:v21 compatibleWithTraitCollection:1.0];
+      defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+      [defaultMetrics scaledValueForValue:collectionCopy compatibleWithTraitCollection:1.0];
       v61 = v60;
 
       v79.origin.x = v55;
@@ -129,11 +129,11 @@ void __29__DOCTagShapeRenderer_shared__block_invoke()
       v76 = v64;
       v77 = v65;
       v70 = v43;
-      v71 = a3;
+      contextCopy = context;
       v66 = v43;
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       __102__DOCTagShapeRenderer_renderInContext_contextSize_tagRect_tag_outlineColor_fillColor_traitCollection___block_invoke(v69);
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
     }
 
     else
@@ -165,16 +165,16 @@ void __102__DOCTagShapeRenderer_renderInContext_contextSize_tagRect_tag_outlineC
   CGContextFillRect(v4, *&v5);
 }
 
-- (double)baselineOffsetForRequest:(id)a3 tagRectSize:(CGSize)a4
+- (double)baselineOffsetForRequest:(id)request tagRectSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = [a3 traitCollection];
-  [v7 displayScale];
+  height = size.height;
+  width = size.width;
+  traitCollection = [request traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
-  v10 = [MEMORY[0x277D75348] whiteColor];
-  v11 = [(DOCTagShapeRenderer *)self _shapeImageForColorType:4 variant:0 renderedColor:v10];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v11 = [(DOCTagShapeRenderer *)self _shapeImageForColorType:4 variant:0 renderedColor:whiteColor];
 
   [(DOCTagShapeRenderer *)self _imageRectForRenderingImage:v11 tagRect:0.0 displayScale:0.0, width, height, v9];
   [v11 size];
@@ -186,14 +186,14 @@ void __102__DOCTagShapeRenderer_renderInContext_contextSize_tagRect_tag_outlineC
   return v13;
 }
 
-- (CGRect)_imageRectForRenderingImage:(id)a3 tagRect:(CGRect)a4 displayScale:(double)a5
+- (CGRect)_imageRectForRenderingImage:(id)image tagRect:(CGRect)rect displayScale:(double)scale
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 contentInsets];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  [imageCopy contentInsets];
   if (v11 >= v13)
   {
     v11 = v13;
@@ -226,12 +226,12 @@ void __102__DOCTagShapeRenderer_renderInContext_contextSize_tagRect_tag_outlineC
   v29 = CGRectInset(v28, v14, v14);
   v15 = v29.origin.x;
   v16 = v29.origin.y;
-  [v9 size];
-  [v9 size];
-  [v9 size];
+  [imageCopy size];
+  [imageCopy size];
+  [imageCopy size];
   UIRoundToScale();
   v18 = v17;
-  [v9 size];
+  [imageCopy size];
 
   UIRoundToScale();
   v20 = v19;
@@ -249,11 +249,11 @@ void __102__DOCTagShapeRenderer_renderInContext_contextSize_tagRect_tag_outlineC
   return result;
 }
 
-- (id)_shapeImageForColorType:(int64_t)a3 variant:(unint64_t)a4 renderedColor:(id)a5
+- (id)_shapeImageForColorType:(int64_t)type variant:(unint64_t)variant renderedColor:(id)color
 {
-  if (a5)
+  if (color)
   {
-    v6 = [MEMORY[0x277D755B8] _doc_tagImageForRenderingVariant:a4 differentiateWithShapes:1 tagColorType:a3 renderedColor:a5];
+    v6 = [MEMORY[0x277D755B8] _doc_tagImageForRenderingVariant:variant differentiateWithShapes:1 tagColorType:type renderedColor:color];
   }
 
   else

@@ -3,36 +3,36 @@
 + (id)_exportedInterface;
 + (id)_remoteViewControllerInterface;
 - (BOOL)URLIsBlocked;
-- (STWebServiceViewController)initWithCoder:(id)a3;
-- (STWebServiceViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_incrementPolicyRequestCountAndReportURLIsBlocked:(BOOL)a3;
-- (void)_reportURLIsBlocked:(BOOL)a3 withDelay:(double)a4;
-- (void)_requestPolicyForCurrentURLWithReplyHandler:(id)a3;
-- (void)_requestPolicyForURL:(id)a3 replyHandler:(id)a4;
+- (STWebServiceViewController)initWithCoder:(id)coder;
+- (STWebServiceViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_incrementPolicyRequestCountAndReportURLIsBlocked:(BOOL)blocked;
+- (void)_reportURLIsBlocked:(BOOL)blocked withDelay:(double)delay;
+- (void)_requestPolicyForCurrentURLWithReplyHandler:(id)handler;
+- (void)_requestPolicyForURL:(id)l replyHandler:(id)handler;
 - (void)_stWebServiceViewControllerCommonInit;
-- (void)_startRecordingUsageForURL:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5 usageState:(int64_t)a6 replyHandler:(id)a7;
+- (void)_startRecordingUsageForURL:(id)l bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier usageState:(int64_t)state replyHandler:(id)handler;
 - (void)_stopRecordingUsage;
-- (void)changeUsageState:(int64_t)a3 replyHandler:(id)a4;
-- (void)setURL:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5 usageState:(int64_t)a6 replyHandler:(id)a7;
+- (void)changeUsageState:(int64_t)state replyHandler:(id)handler;
+- (void)setURL:(id)l bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier usageState:(int64_t)state replyHandler:(id)handler;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation STWebServiceViewController
 
-- (STWebServiceViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (STWebServiceViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = STWebServiceViewController;
-  v4 = [(STWebServiceViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(STWebServiceViewController *)&v6 initWithNibName:name bundle:bundle];
   [(STWebServiceViewController *)v4 _stWebServiceViewControllerCommonInit];
   return v4;
 }
 
-- (STWebServiceViewController)initWithCoder:(id)a3
+- (STWebServiceViewController)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STWebServiceViewController;
-  v3 = [(STWebServiceViewController *)&v5 initWithCoder:a3];
+  v3 = [(STWebServiceViewController *)&v5 initWithCoder:coder];
   [(STWebServiceViewController *)v3 _stWebServiceViewControllerCommonInit];
   return v3;
 }
@@ -80,74 +80,74 @@
   v6.receiver = self;
   v6.super_class = STWebServiceViewController;
   [(STWebServiceViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(STWebServiceViewController *)self view];
-  [v3 bounds];
+  view = [(STWebServiceViewController *)self view];
+  [view bounds];
   v4 = CGRectGetHeight(v7) / 6.0;
 
-  v5 = [(STWebServiceViewController *)self blockingViewController];
-  [v5 setAdditionalSafeAreaInsets:{0.0, 0.0, v4, 0.0}];
+  blockingViewController = [(STWebServiceViewController *)self blockingViewController];
+  [blockingViewController setAdditionalSafeAreaInsets:{0.0, 0.0, v4, 0.0}];
 }
 
 - (void)_stopRecordingUsage
 {
-  v2 = [(STWebServiceViewController *)self webpageUsage];
-  [v2 changeState:0 completionHandler:&stru_10000C468];
+  webpageUsage = [(STWebServiceViewController *)self webpageUsage];
+  [webpageUsage changeState:0 completionHandler:&stru_10000C468];
 }
 
-- (void)setURL:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5 usageState:(int64_t)a6 replyHandler:(id)a7
+- (void)setURL:(id)l bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier usageState:(int64_t)state replyHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  [(STWebServiceViewController *)self setClientBundleIdentifier:v13];
-  v16 = [(STWebServiceViewController *)self webpageUsage];
-  if (v16)
+  lCopy = l;
+  identifierCopy = identifier;
+  profileIdentifierCopy = profileIdentifier;
+  handlerCopy = handler;
+  [(STWebServiceViewController *)self setClientBundleIdentifier:identifierCopy];
+  webpageUsage = [(STWebServiceViewController *)self webpageUsage];
+  if (webpageUsage)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000022BC;
     v17[3] = &unk_10000C490;
     v17[4] = self;
-    v18 = v12;
-    v19 = v13;
-    v20 = v14;
-    v22 = a6;
-    v21 = v15;
-    [v16 changeState:0 completionHandler:v17];
+    v18 = lCopy;
+    v19 = identifierCopy;
+    v20 = profileIdentifierCopy;
+    stateCopy = state;
+    v21 = handlerCopy;
+    [webpageUsage changeState:0 completionHandler:v17];
   }
 
   else
   {
-    [(STWebServiceViewController *)self _startRecordingUsageForURL:v12 bundleIdentifier:v13 profileIdentifier:v14 usageState:a6 replyHandler:v15];
+    [(STWebServiceViewController *)self _startRecordingUsageForURL:lCopy bundleIdentifier:identifierCopy profileIdentifier:profileIdentifierCopy usageState:state replyHandler:handlerCopy];
   }
 }
 
-- (void)changeUsageState:(int64_t)a3 replyHandler:(id)a4
+- (void)changeUsageState:(int64_t)state replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(STWebServiceViewController *)self webpageUsage];
-  [v7 changeState:a3 completionHandler:v6];
+  handlerCopy = handler;
+  webpageUsage = [(STWebServiceViewController *)self webpageUsage];
+  [webpageUsage changeState:state completionHandler:handlerCopy];
 }
 
-- (void)_startRecordingUsageForURL:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5 usageState:(int64_t)a6 replyHandler:(id)a7
+- (void)_startRecordingUsageForURL:(id)l bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier usageState:(int64_t)state replyHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  [(STWebServiceViewController *)self setClientBundleIdentifier:v13];
-  if (v12)
+  lCopy = l;
+  identifierCopy = identifier;
+  profileIdentifierCopy = profileIdentifier;
+  handlerCopy = handler;
+  [(STWebServiceViewController *)self setClientBundleIdentifier:identifierCopy];
+  if (lCopy)
   {
     v16 = [USWebpageUsage alloc];
     [(STWebServiceViewController *)self _hostAuditToken];
-    v17 = [v16 initWithURL:v12 bundleIdentifier:v13 profileIdentifier:v14 auditToken:v24];
+    v17 = [v16 initWithURL:lCopy bundleIdentifier:identifierCopy profileIdentifier:profileIdentifierCopy auditToken:v24];
     [(STWebServiceViewController *)self setWebpageUsage:v17];
-    if ((a6 - 1) >= 2)
+    if ((state - 1) >= 2)
     {
-      if (!a6)
+      if (!state)
       {
-        [(STWebServiceViewController *)self _requestPolicyForURL:v12 replyHandler:v15];
+        [(STWebServiceViewController *)self _requestPolicyForURL:lCopy replyHandler:handlerCopy];
       }
     }
 
@@ -158,9 +158,9 @@
       v21[2] = sub_100002554;
       v21[3] = &unk_10000C4B8;
       v21[4] = self;
-      v22 = v12;
-      v23 = v15;
-      [v17 changeState:a6 completionHandler:v21];
+      v22 = lCopy;
+      v23 = handlerCopy;
+      [v17 changeState:state completionHandler:v21];
     }
   }
 
@@ -173,52 +173,52 @@
     v19[2] = sub_100002578;
     v19[3] = &unk_10000C4E0;
     v19[4] = self;
-    v20 = v15;
+    v20 = handlerCopy;
     [v18 addOperationWithBlock:v19];
   }
 }
 
-- (void)_requestPolicyForURL:(id)a3 replyHandler:(id)a4
+- (void)_requestPolicyForURL:(id)l replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STWebServiceViewController *)self websitePolicyMonitor];
-  v16 = v6;
+  lCopy = l;
+  handlerCopy = handler;
+  websitePolicyMonitor = [(STWebServiceViewController *)self websitePolicyMonitor];
+  v16 = lCopy;
   v9 = [NSArray arrayWithObjects:&v16 count:1];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000026BC;
   v12[3] = &unk_10000C530;
-  v14 = self;
-  v15 = v7;
-  v13 = v6;
-  v10 = v7;
-  v11 = v6;
-  [v8 requestPoliciesForWebsites:v9 completionHandler:v12];
+  selfCopy = self;
+  v15 = handlerCopy;
+  v13 = lCopy;
+  v10 = handlerCopy;
+  v11 = lCopy;
+  [websitePolicyMonitor requestPoliciesForWebsites:v9 completionHandler:v12];
 }
 
-- (void)_incrementPolicyRequestCountAndReportURLIsBlocked:(BOOL)a3
+- (void)_incrementPolicyRequestCountAndReportURLIsBlocked:(BOOL)blocked
 {
-  v5 = [objc_opt_class() sharedLimiter];
-  v6 = [(STWebServiceViewController *)self clientBundleIdentifier];
+  sharedLimiter = [objc_opt_class() sharedLimiter];
+  clientBundleIdentifier = [(STWebServiceViewController *)self clientBundleIdentifier];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002994;
   v7[3] = &unk_10000C580;
   v7[4] = self;
-  v8 = a3;
-  [v5 incrementRequestCountForBundleIdentifier:v6 completionHandler:v7];
+  blockedCopy = blocked;
+  [sharedLimiter incrementRequestCountForBundleIdentifier:clientBundleIdentifier completionHandler:v7];
 }
 
-- (void)_reportURLIsBlocked:(BOOL)a3 withDelay:(double)a4
+- (void)_reportURLIsBlocked:(BOOL)blocked withDelay:(double)delay
 {
   if (!+[NSThread isMainThread])
   {
     sub_1000060AC(a2, self);
   }
 
-  v8 = [(STWebServiceViewController *)self reportURLIsBlockedTimer];
-  [v8 invalidate];
+  reportURLIsBlockedTimer = [(STWebServiceViewController *)self reportURLIsBlockedTimer];
+  [reportURLIsBlockedTimer invalidate];
 
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -226,8 +226,8 @@
   v10[2] = sub_100002BF8;
   v10[3] = &unk_10000C5A8;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v9 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v10 block:a4];
+  blockedCopy = blocked;
+  v9 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v10 block:delay];
   [(STWebServiceViewController *)self setReportURLIsBlockedTimer:v9];
 
   objc_destroyWeak(&v11);
@@ -248,27 +248,27 @@
 
 - (BOOL)URLIsBlocked
 {
-  v3 = [(STWebServiceViewController *)self childViewControllers];
-  v4 = [(STWebServiceViewController *)self blockingViewController];
-  v5 = [v3 containsObject:v4];
+  childViewControllers = [(STWebServiceViewController *)self childViewControllers];
+  blockingViewController = [(STWebServiceViewController *)self blockingViewController];
+  v5 = [childViewControllers containsObject:blockingViewController];
 
   return v5;
 }
 
-- (void)_requestPolicyForCurrentURLWithReplyHandler:(id)a3
+- (void)_requestPolicyForCurrentURLWithReplyHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(STWebServiceViewController *)self webpageUsage];
-  v5 = [v4 URL];
+  handlerCopy = handler;
+  webpageUsage = [(STWebServiceViewController *)self webpageUsage];
+  v5 = [webpageUsage URL];
 
   if (v5)
   {
-    [(STWebServiceViewController *)self _requestPolicyForURL:v5 replyHandler:v6];
+    [(STWebServiceViewController *)self _requestPolicyForURL:v5 replyHandler:handlerCopy];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 

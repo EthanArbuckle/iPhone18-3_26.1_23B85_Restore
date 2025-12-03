@@ -1,27 +1,27 @@
 @interface ChargingStatusViewTableCell
-- (ChargingStatusViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)setSeparatorStyle:(int64_t)a3;
+- (ChargingStatusViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)setSeparatorStyle:(int64_t)style;
 @end
 
 @implementation ChargingStatusViewTableCell
 
-- (ChargingStatusViewTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ChargingStatusViewTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = ChargingStatusViewTableCell;
-  v9 = [(ChargingStatusViewTableCell *)&v13 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(ChargingStatusViewTableCell *)&v13 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"PLBatteryUIChargingStatusTableViewCellKey"];
-    v11 = [v10 contentConfiguration];
-    [(ChargingStatusViewTableCell *)v9 setContentConfiguration:v11];
+    v10 = [specifierCopy objectForKeyedSubscript:@"PLBatteryUIChargingStatusTableViewCellKey"];
+    contentConfiguration = [v10 contentConfiguration];
+    [(ChargingStatusViewTableCell *)v9 setContentConfiguration:contentConfiguration];
   }
 
   return v9;
 }
 
-- (void)setSeparatorStyle:(int64_t)a3
+- (void)setSeparatorStyle:(int64_t)style
 {
   v3.receiver = self;
   v3.super_class = ChargingStatusViewTableCell;

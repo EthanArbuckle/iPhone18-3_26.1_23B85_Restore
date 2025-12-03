@@ -4,8 +4,8 @@
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityIsolatedWindows;
 - (int64_t)_accessibilityOrientationForCompareGeometry;
-- (void)_handlePlatformSpecificActions:(id)a3 forScene:(id)a4 withTransitionContext:(id)a5;
-- (void)sendEvent:(id)a3;
+- (void)_handlePlatformSpecificActions:(id)actions forScene:(id)scene withTransitionContext:(id)context;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation AXUIServerApplication
@@ -46,25 +46,25 @@
   return v2;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[AXUIEventManager sharedEventManager];
-  v6 = [v5 _handleUIEvent:v4];
+  v6 = [v5 _handleUIEvent:eventCopy];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = AXUIServerApplication;
-    [(AXUIServerApplication *)&v7 sendEvent:v4];
+    [(AXUIServerApplication *)&v7 sendEvent:eventCopy];
   }
 }
 
-- (void)_handlePlatformSpecificActions:(id)a3 forScene:(id)a4 withTransitionContext:(id)a5
+- (void)_handlePlatformSpecificActions:(id)actions forScene:(id)scene withTransitionContext:(id)context
 {
-  v5 = a3;
+  actionsCopy = actions;
   v6 = +[_TtC21AccessibilityUIServer32AXUIServerGuestPassActionHandler shared];
-  [v6 handleActions:v5];
+  [v6 handleActions:actionsCopy];
 }
 
 - (BOOL)_shouldAllowKeyboardArbiter

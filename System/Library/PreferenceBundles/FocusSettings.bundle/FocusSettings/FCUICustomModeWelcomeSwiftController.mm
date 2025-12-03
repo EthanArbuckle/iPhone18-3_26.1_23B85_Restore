@@ -1,16 +1,16 @@
 @interface FCUICustomModeWelcomeSwiftController
-+ (id)welcomeControllerWithAllReservedModes:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (_TtC13FocusSettings36FCUICustomModeWelcomeSwiftController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC13FocusSettings36FCUICustomModeWelcomeSwiftController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)_saveButtonPressed:(id)a3;
++ (id)welcomeControllerWithAllReservedModes:(id)modes;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (_TtC13FocusSettings36FCUICustomModeWelcomeSwiftController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC13FocusSettings36FCUICustomModeWelcomeSwiftController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)_saveButtonPressed:(id)pressed;
 - (void)_tapped;
 - (void)viewDidLoad;
 @end
 
 @implementation FCUICustomModeWelcomeSwiftController
 
-+ (id)welcomeControllerWithAllReservedModes:(id)a3
++ (id)welcomeControllerWithAllReservedModes:(id)modes
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   sub_9ED4(0, &unk_279A0, DNDMode_ptr);
@@ -24,39 +24,39 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_FCE4();
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v4 = [objc_opt_self() sharedApplication];
-  [v4 sendAction:"resignFirstResponder" to:0 from:0 forEvent:0];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication sendAction:"resignFirstResponder" to:0 from:0 forEvent:0];
 
   return 0;
 }
 
-- (void)_saveButtonPressed:(id)a3
+- (void)_saveButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_125BC();
 }
 
 - (void)_tapped
 {
-  v2 = [objc_opt_self() sharedApplication];
-  [v2 sendAction:"resignFirstResponder" to:0 from:0 forEvent:0];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  [sharedApplication sendAction:"resignFirstResponder" to:0 from:0 forEvent:0];
 }
 
-- (_TtC13FocusSettings36FCUICustomModeWelcomeSwiftController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC13FocusSettings36FCUICustomModeWelcomeSwiftController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC13FocusSettings36FCUICustomModeWelcomeSwiftController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC13FocusSettings36FCUICustomModeWelcomeSwiftController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

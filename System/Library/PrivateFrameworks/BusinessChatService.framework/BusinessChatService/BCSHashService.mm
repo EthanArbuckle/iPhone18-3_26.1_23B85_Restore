@@ -1,21 +1,21 @@
 @interface BCSHashService
-+ (BOOL)isValidFullHash:(id)a3;
-+ (id)SHA256HashForInputString:(id)a3;
-+ (id)_SHA256DataForInputString:(uint64_t)a1;
-+ (int64_t)SHA256TruncatedHashForInputString:(id)a3 includedBytes:(unint64_t)a4;
-+ (int64_t)truncatedHashForFullHash:(id)a3 includedBytes:(unint64_t)a4;
-+ (uint64_t)_truncatedHashForFullHashData:(unint64_t)a3 includedBytes:;
++ (BOOL)isValidFullHash:(id)hash;
++ (id)SHA256HashForInputString:(id)string;
++ (id)_SHA256DataForInputString:(uint64_t)string;
++ (int64_t)SHA256TruncatedHashForInputString:(id)string includedBytes:(unint64_t)bytes;
++ (int64_t)truncatedHashForFullHash:(id)hash includedBytes:(unint64_t)bytes;
++ (uint64_t)_truncatedHashForFullHashData:(unint64_t)data includedBytes:;
 @end
 
 @implementation BCSHashService
 
-+ (int64_t)SHA256TruncatedHashForInputString:(id)a3 includedBytes:(unint64_t)a4
++ (int64_t)SHA256TruncatedHashForInputString:(id)string includedBytes:(unint64_t)bytes
 {
-  v6 = a3;
-  if ([v6 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v7 = [(BCSHashService *)a1 _SHA256DataForInputString:v6];
-    v8 = [BCSHashService _truncatedHashForFullHashData:v7 includedBytes:a4];
+    v7 = [(BCSHashService *)self _SHA256DataForInputString:stringCopy];
+    v8 = [BCSHashService _truncatedHashForFullHashData:v7 includedBytes:bytes];
   }
 
   else
@@ -26,7 +26,7 @@
   return v8;
 }
 
-+ (id)_SHA256DataForInputString:(uint64_t)a1
++ (id)_SHA256DataForInputString:(uint64_t)string
 {
   v2 = a2;
   objc_opt_self();
@@ -47,24 +47,24 @@
   return v6;
 }
 
-+ (uint64_t)_truncatedHashForFullHashData:(unint64_t)a3 includedBytes:
++ (uint64_t)_truncatedHashForFullHashData:(unint64_t)data includedBytes:
 {
   v4 = a2;
   objc_opt_self();
   if ([v4 length])
   {
     v8 = 0;
-    if (a3 >= 8)
+    if (data >= 8)
     {
-      v5 = 8;
+      dataCopy = 8;
     }
 
     else
     {
-      v5 = a3;
+      dataCopy = data;
     }
 
-    [v4 getBytes:&v8 length:v5];
+    [v4 getBytes:&v8 length:dataCopy];
     if (v8 >= 0)
     {
       v6 = v8;
@@ -84,12 +84,12 @@
   return v6;
 }
 
-+ (int64_t)truncatedHashForFullHash:(id)a3 includedBytes:(unint64_t)a4
++ (int64_t)truncatedHashForFullHash:(id)hash includedBytes:(unint64_t)bytes
 {
-  v5 = [(NSData *)MEMORY[0x277CBEA90] bcs_dataWithHexString:a3];
+  v5 = [(NSData *)MEMORY[0x277CBEA90] bcs_dataWithHexString:hash];
   if (v5)
   {
-    v6 = [BCSHashService _truncatedHashForFullHashData:v5 includedBytes:a4];
+    v6 = [BCSHashService _truncatedHashForFullHashData:v5 includedBytes:bytes];
   }
 
   else
@@ -100,14 +100,14 @@
   return v6;
 }
 
-+ (id)SHA256HashForInputString:(id)a3
++ (id)SHA256HashForInputString:(id)string
 {
-  v3 = [(BCSHashService *)a1 _SHA256DataForInputString:a3];
-  v4 = [v3 bytes];
+  v3 = [(BCSHashService *)self _SHA256DataForInputString:string];
+  bytes = [v3 bytes];
   v5 = [v3 length];
   for (i = [MEMORY[0x277CCAB68] stringWithCapacity:2 * v5];
   {
-    v7 = *v4++;
+    v7 = *bytes++;
     [i appendFormat:@"%02x", v7];
   }
 
@@ -116,9 +116,9 @@
   return v8;
 }
 
-+ (BOOL)isValidFullHash:(id)a3
++ (BOOL)isValidFullHash:(id)hash
 {
-  v3 = [(NSData *)MEMORY[0x277CBEA90] bcs_dataWithHexString:a3];
+  v3 = [(NSData *)MEMORY[0x277CBEA90] bcs_dataWithHexString:hash];
   v4 = v3 != 0;
 
   return v4;

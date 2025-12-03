@@ -8,26 +8,26 @@
 - (void)previewProxyItemAtIndex:()Previewing refreshBlock:
 {
   v6 = a4;
-  v7 = objc_getAssociatedObject(a1, &proxiesKey);
-  if (!v7)
+  strongObjectsPointerArray = objc_getAssociatedObject(self, &proxiesKey);
+  if (!strongObjectsPointerArray)
   {
-    v7 = [MEMORY[0x277CCAC18] strongObjectsPointerArray];
-    v8 = [a1 items];
-    [v7 setCount:{objc_msgSend(v8, "count")}];
+    strongObjectsPointerArray = [MEMORY[0x277CCAC18] strongObjectsPointerArray];
+    items = [self items];
+    [strongObjectsPointerArray setCount:{objc_msgSend(items, "count")}];
 
-    objc_setAssociatedObject(a1, &proxiesKey, v7, 1);
+    objc_setAssociatedObject(self, &proxiesKey, strongObjectsPointerArray, 1);
   }
 
-  if ([v7 count] > a3 && !objc_msgSend(v7, "pointerAtIndex:", a3))
+  if ([strongObjectsPointerArray count] > a3 && !objc_msgSend(strongObjectsPointerArray, "pointerAtIndex:", a3))
   {
     v9 = objc_opt_new();
-    v10 = [a1 items];
-    v11 = [v10 objectAtIndex:a3];
+    items2 = [self items];
+    v11 = [items2 objectAtIndex:a3];
     [v9 setItem:v11];
 
     [v9 setRefreshBlock:v6];
-    [v7 replacePointerAtIndex:a3 withPointer:v9];
-    v12 = objc_getAssociatedObject(a1, &originalCollectionKey);
+    [strongObjectsPointerArray replacePointerAtIndex:a3 withPointer:v9];
+    v12 = objc_getAssociatedObject(self, &originalCollectionKey);
     if ([v12 numberOfItems] <= a3)
     {
       v14 = 0;
@@ -35,13 +35,13 @@
 
     else
     {
-      v13 = [v12 items];
-      v14 = [v13 objectAtIndex:a3];
+      items3 = [v12 items];
+      v14 = [items3 objectAtIndex:a3];
 
       if (v14)
       {
-        v15 = [v9 item];
-        v16 = [v14 isEqual:v15];
+        item = [v9 item];
+        v16 = [v14 isEqual:item];
 
         if ((v16 & 1) == 0)
         {
@@ -58,14 +58,14 @@
     }
   }
 
-  if ([v7 count] <= a3)
+  if ([strongObjectsPointerArray count] <= a3)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = [v7 pointerAtIndex:a3];
+    v17 = [strongObjectsPointerArray pointerAtIndex:a3];
   }
 
   v18 = v17;
@@ -83,10 +83,10 @@
     v7[1] = 3221225472;
     v7[2] = __71__WFContentCollection_Previewing__generatePreviewControllerDataSource___block_invoke_7;
     v7[3] = &unk_279EF5070;
-    v7[4] = a1;
+    v7[4] = self;
     v9 = a2;
     v8 = v5;
-    [a1 transformItemsUsingBlock:&__block_literal_global_277 completionHandler:v7];
+    [self transformItemsUsingBlock:&__block_literal_global_277 completionHandler:v7];
   }
 }
 

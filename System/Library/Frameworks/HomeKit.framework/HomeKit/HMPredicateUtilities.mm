@@ -1,51 +1,51 @@
 @interface HMPredicateUtilities
-+ (BOOL)areOnlyHourAndMinuteSet:(id)a3;
-+ (BOOL)containsPresenceEvents:(id)a3;
-+ (BOOL)validatePredicate:(id)a3;
-+ (id)audioAnalysisNotificationOptionsInPredicate:(id)a3;
-+ (id)bitwiseAndValueWithKeyPath:(id)a3 inComparisonPredicate:(id)a4 validValues:(int64_t)a5;
-+ (id)bitwiseAndValueWithKeyPath:(id)a3 inPredicate:(id)a4 validValues:(int64_t)a5;
-+ (id)rewritePredicateForClient:(id)a3 home:(id)a4;
-+ (id)rewritePredicateForDaemon:(id)a3;
-+ (id)rewritePredicateForDaemon:(id)a3 characteristicIsInvalid:(BOOL *)a4;
++ (BOOL)areOnlyHourAndMinuteSet:(id)set;
++ (BOOL)containsPresenceEvents:(id)events;
++ (BOOL)validatePredicate:(id)predicate;
++ (id)audioAnalysisNotificationOptionsInPredicate:(id)predicate;
++ (id)bitwiseAndValueWithKeyPath:(id)path inComparisonPredicate:(id)predicate validValues:(int64_t)values;
++ (id)bitwiseAndValueWithKeyPath:(id)path inPredicate:(id)predicate validValues:(int64_t)values;
++ (id)rewritePredicateForClient:(id)client home:(id)home;
++ (id)rewritePredicateForDaemon:(id)daemon;
++ (id)rewritePredicateForDaemon:(id)daemon characteristicIsInvalid:(BOOL *)invalid;
 @end
 
 @implementation HMPredicateUtilities
 
-+ (id)bitwiseAndValueWithKeyPath:(id)a3 inComparisonPredicate:(id)a4 validValues:(int64_t)a5
++ (id)bitwiseAndValueWithKeyPath:(id)path inComparisonPredicate:(id)predicate validValues:(int64_t)values
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 leftExpression];
-  v10 = [v8 rightExpression];
-  v11 = [v8 predicateOperatorType];
+  pathCopy = path;
+  predicateCopy = predicate;
+  leftExpression = [predicateCopy leftExpression];
+  rightExpression = [predicateCopy rightExpression];
+  predicateOperatorType = [predicateCopy predicateOperatorType];
 
-  if (v11 != 5)
+  if (predicateOperatorType != 5)
   {
     goto LABEL_11;
   }
 
-  if ([v10 expressionType])
+  if ([rightExpression expressionType])
   {
     goto LABEL_11;
   }
 
-  v12 = [v10 constantValue];
-  v13 = [v12 isEqual:&unk_1F0EFCBA8];
+  constantValue = [rightExpression constantValue];
+  v13 = [constantValue isEqual:&unk_1F0EFCBA8];
 
-  if (!v13 || [v9 expressionType] != 4)
+  if (!v13 || [leftExpression expressionType] != 4)
   {
     goto LABEL_11;
   }
 
-  v14 = [v9 function];
-  if (![v14 isEqualToString:@"bitwiseAnd:with:"])
+  function = [leftExpression function];
+  if (![function isEqualToString:@"bitwiseAnd:with:"])
   {
     goto LABEL_15;
   }
 
-  v15 = [v9 arguments];
-  v16 = [v15 count];
+  arguments = [leftExpression arguments];
+  v16 = [arguments count];
 
   if (v16 != 2)
   {
@@ -54,18 +54,18 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v17 = [v9 arguments];
-  v14 = [v17 objectAtIndexedSubscript:0];
+  arguments2 = [leftExpression arguments];
+  function = [arguments2 objectAtIndexedSubscript:0];
 
-  if ([v14 expressionType] == 3)
+  if ([function expressionType] == 3)
   {
-    v18 = [v14 keyPath];
-    v19 = [v18 isEqualToString:v7];
+    keyPath = [function keyPath];
+    v19 = [keyPath isEqualToString:pathCopy];
 
     if (v19)
     {
-      v20 = [v9 arguments];
-      v21 = [v20 objectAtIndexedSubscript:1];
+      arguments3 = [leftExpression arguments];
+      v21 = [arguments3 objectAtIndexedSubscript:1];
 
       if ([v21 expressionType])
       {
@@ -74,11 +74,11 @@ LABEL_11:
 
       else
       {
-        v24 = [v21 constantValue];
+        constantValue2 = [v21 constantValue];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = v24;
+          v25 = constantValue2;
         }
 
         else
@@ -89,7 +89,7 @@ LABEL_11:
         v26 = v25;
 
         v22 = 0;
-        if (([v26 unsignedIntegerValue] & ~a5) == 0)
+        if (([v26 unsignedIntegerValue] & ~values) == 0)
         {
           v22 = v26;
         }
@@ -108,15 +108,15 @@ LABEL_12:
   return v22;
 }
 
-+ (id)bitwiseAndValueWithKeyPath:(id)a3 inPredicate:(id)a4 validValues:(int64_t)a5
++ (id)bitwiseAndValueWithKeyPath:(id)path inPredicate:(id)predicate validValues:(int64_t)values
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = predicateCopy;
   }
 
   else
@@ -132,8 +132,8 @@ LABEL_12:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = [v11 subpredicates];
-    v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    subpredicates = [v11 subpredicates];
+    v14 = [subpredicates countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -144,10 +144,10 @@ LABEL_7:
       {
         if (*v25 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(subpredicates);
         }
 
-        v18 = [a1 bitwiseAndValueWithKeyPath:v8 inPredicate:*(*(&v24 + 1) + 8 * v17) validValues:a5];
+        v18 = [self bitwiseAndValueWithKeyPath:pathCopy inPredicate:*(*(&v24 + 1) + 8 * v17) validValues:values];
         if (v18)
         {
           goto LABEL_19;
@@ -155,7 +155,7 @@ LABEL_7:
 
         if (v15 == ++v17)
         {
-          v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v15 = [subpredicates countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v15)
           {
             goto LABEL_7;
@@ -169,7 +169,7 @@ LABEL_7:
 
   else
   {
-    v19 = v9;
+    v19 = predicateCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,11 +181,11 @@ LABEL_7:
       v20 = 0;
     }
 
-    v13 = v20;
+    subpredicates = v20;
 
-    if (v13)
+    if (subpredicates)
     {
-      v18 = [a1 bitwiseAndValueWithKeyPath:v8 inComparisonPredicate:v13 validValues:a5];
+      v18 = [self bitwiseAndValueWithKeyPath:pathCopy inComparisonPredicate:subpredicates validValues:values];
 LABEL_19:
       v21 = v18;
       goto LABEL_21;
@@ -200,18 +200,18 @@ LABEL_21:
   return v21;
 }
 
-+ (id)audioAnalysisNotificationOptionsInPredicate:(id)a3
++ (id)audioAnalysisNotificationOptionsInPredicate:(id)predicate
 {
-  v3 = a3;
-  v4 = [objc_opt_class() bitwiseAndValueWithKeyPath:@"audioAnalysisEventNotificationOptions" inPredicate:v3 validValues:-1];
+  predicateCopy = predicate;
+  v4 = [objc_opt_class() bitwiseAndValueWithKeyPath:@"audioAnalysisEventNotificationOptions" inPredicate:predicateCopy validValues:-1];
 
   return v4;
 }
 
-+ (BOOL)containsPresenceEvents:(id)a3
++ (BOOL)containsPresenceEvents:(id)events
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventsCopy = events;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -219,8 +219,8 @@ LABEL_21:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v4 subpredicates];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    subpredicates = [eventsCopy subpredicates];
+    v6 = [subpredicates countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -232,7 +232,7 @@ LABEL_21:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subpredicates);
           }
 
           if (v8)
@@ -242,11 +242,11 @@ LABEL_21:
 
           else
           {
-            v8 = [a1 containsPresenceEvents:*(*(&v15 + 1) + 8 * i)];
+            v8 = [self containsPresenceEvents:*(*(&v15 + 1) + 8 * i)];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [subpredicates countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -263,11 +263,11 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v4 leftExpression];
-      if ([v11 expressionType] == 3)
+      leftExpression = [eventsCopy leftExpression];
+      if ([leftExpression expressionType] == 3)
       {
-        v12 = [v11 keyPath];
-        v8 = [v12 isEqualToString:@"presence"];
+        keyPath = [leftExpression keyPath];
+        v8 = [keyPath isEqualToString:@"presence"];
       }
 
       else
@@ -286,21 +286,21 @@ LABEL_21:
   return v8;
 }
 
-+ (id)rewritePredicateForDaemon:(id)a3 characteristicIsInvalid:(BOOL *)a4
++ (id)rewritePredicateForDaemon:(id)daemon characteristicIsInvalid:(BOOL *)invalid
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  daemonCopy = daemon;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [MEMORY[0x1E695DF70] array];
+    v6 = daemonCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v8 = [v6 subpredicates];
-    v9 = [v8 countByEnumeratingWithState:&v48 objects:v54 count:16];
+    subpredicates = [v6 subpredicates];
+    v9 = [subpredicates countByEnumeratingWithState:&v48 objects:v54 count:16];
     if (v9)
     {
       v10 = v9;
@@ -311,25 +311,25 @@ LABEL_21:
         {
           if (*v49 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(subpredicates);
           }
 
-          v13 = [HMPredicateUtilities rewritePredicateForDaemon:*(*(&v48 + 1) + 8 * i) characteristicIsInvalid:a4];
+          v13 = [HMPredicateUtilities rewritePredicateForDaemon:*(*(&v48 + 1) + 8 * i) characteristicIsInvalid:invalid];
           if (v13)
           {
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v48 objects:v54 count:16];
+        v10 = [subpredicates countByEnumeratingWithState:&v48 objects:v54 count:16];
       }
 
       while (v10);
     }
 
-    if ([v7 count])
+    if ([array count])
     {
-      v14 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(v6 subpredicates:{"compoundPredicateType"), v7}];
+      v14 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(v6 subpredicates:{"compoundPredicateType"), array}];
     }
 
     else
@@ -342,38 +342,38 @@ LABEL_21:
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v16 = v5;
+  v16 = daemonCopy;
   v14 = v16;
   if ((isKindOfClass & 1) == 0)
   {
     goto LABEL_38;
   }
 
-  v7 = [v16 leftExpression];
-  v17 = [v14 rightExpression];
-  if ([v7 expressionType] == 3)
+  array = [v16 leftExpression];
+  rightExpression = [v14 rightExpression];
+  if ([array expressionType] == 3)
   {
-    v18 = [v7 keyPath];
-    v19 = [v18 isEqualToString:@"characteristic"];
+    keyPath = [array keyPath];
+    v19 = [keyPath isEqualToString:@"characteristic"];
 
     if (v19)
     {
-      if (![v17 expressionType])
+      if (![rightExpression expressionType])
       {
-        v20 = [v17 constantValue];
+        constantValue = [rightExpression constantValue];
         objc_opt_class();
         v21 = objc_opt_isKindOfClass();
 
         if (v21)
         {
-          v22 = [v17 constantValue];
-          v23 = [v22 service];
-          v24 = [v23 accessory];
-          if (!v24 || ([v23 targetAccessoryUUID], v25 = objc_claimAutoreleasedReturnValue(), v25, !v22) || !v23 || !v25)
+          constantValue2 = [rightExpression constantValue];
+          service = [constantValue2 service];
+          accessory = [service accessory];
+          if (!accessory || ([service targetAccessoryUUID], v25 = objc_claimAutoreleasedReturnValue(), v25, !constantValue2) || !service || !v25)
           {
-            if (a4)
+            if (invalid)
             {
-              *a4 = 1;
+              *invalid = 1;
             }
 
             v14 = 0;
@@ -382,19 +382,19 @@ LABEL_21:
 
           v44 = MEMORY[0x1E696ABC8];
           v52[0] = @"kAccessoryUUID";
-          v47 = [v23 targetAccessoryUUID];
-          v46 = [v47 UUIDString];
-          v53[0] = v46;
+          targetAccessoryUUID = [service targetAccessoryUUID];
+          uUIDString = [targetAccessoryUUID UUIDString];
+          v53[0] = uUIDString;
           v52[1] = @"kServiceInstanceID";
-          v43 = [v23 instanceID];
-          v53[1] = v43;
+          instanceID = [service instanceID];
+          v53[1] = instanceID;
           v52[2] = @"kCharacteristicInstanceID";
-          v26 = [v22 instanceID];
-          v53[2] = v26;
+          instanceID2 = [constantValue2 instanceID];
+          v53[2] = instanceID2;
           v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:v52 count:3];
           v45 = [v44 expressionForConstantValue:v27];
 
-          v17 = v45;
+          rightExpression = v45;
         }
       }
 
@@ -402,29 +402,29 @@ LABEL_21:
     }
   }
 
-  if ([v7 expressionType] != 3 || (objc_msgSend(v7, "keyPath"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqualToString:", @"characteristicValue"), v28, !v29))
+  if ([array expressionType] != 3 || (objc_msgSend(array, "keyPath"), v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqualToString:", @"characteristicValue"), v28, !v29))
   {
-    if ([v7 expressionType] == 3)
+    if ([array expressionType] == 3)
     {
-      v31 = [v7 keyPath];
-      v32 = [v31 isEqualToString:@"presence"];
+      keyPath2 = [array keyPath];
+      v32 = [keyPath2 isEqualToString:@"presence"];
 
       if (v32)
       {
-        if (![v17 expressionType])
+        if (![rightExpression expressionType])
         {
-          v33 = [v17 constantValue];
+          constantValue3 = [rightExpression constantValue];
           objc_opt_class();
           v34 = objc_opt_isKindOfClass();
 
           if (v34)
           {
-            v35 = [v17 constantValue];
+            constantValue4 = [rightExpression constantValue];
             v36 = MEMORY[0x1E696ABC8];
-            v37 = [v35 _serializeForAdd];
-            v38 = [v36 expressionForConstantValue:v37];
+            _serializeForAdd = [constantValue4 _serializeForAdd];
+            v38 = [v36 expressionForConstantValue:_serializeForAdd];
 
-            v17 = v38;
+            rightExpression = v38;
           }
         }
       }
@@ -433,19 +433,19 @@ LABEL_21:
     goto LABEL_35;
   }
 
-  v30 = [v17 expressionType];
-  if (!a4 || v30 || !*a4)
+  expressionType = [rightExpression expressionType];
+  if (!invalid || expressionType || !*invalid)
   {
 LABEL_35:
     v39 = objc_alloc(MEMORY[0x1E696AB18]);
-    v40 = [v14 leftExpression];
-    v14 = [v39 initWithLeftExpression:v40 rightExpression:v17 modifier:objc_msgSend(v14 type:"comparisonPredicateModifier") options:{objc_msgSend(v14, "predicateOperatorType"), objc_msgSend(v14, "options")}];
+    leftExpression = [v14 leftExpression];
+    v14 = [v39 initWithLeftExpression:leftExpression rightExpression:rightExpression modifier:objc_msgSend(v14 type:"comparisonPredicateModifier") options:{objc_msgSend(v14, "predicateOperatorType"), objc_msgSend(v14, "options")}];
 
     goto LABEL_36;
   }
 
   v14 = 0;
-  *a4 = 0;
+  *invalid = 0;
 LABEL_36:
 
 LABEL_37:
@@ -456,31 +456,31 @@ LABEL_38:
   return v14;
 }
 
-+ (id)rewritePredicateForDaemon:(id)a3
++ (id)rewritePredicateForDaemon:(id)daemon
 {
   v5 = 0;
-  v3 = [a1 rewritePredicateForDaemon:a3 characteristicIsInvalid:&v5];
+  v3 = [self rewritePredicateForDaemon:daemon characteristicIsInvalid:&v5];
 
   return v3;
 }
 
-+ (id)rewritePredicateForClient:(id)a3 home:(id)a4
++ (id)rewritePredicateForClient:(id)client home:(id)home
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  homeCopy = home;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v45 = v5;
-    v7 = v5;
-    v8 = [MEMORY[0x1E695DF70] array];
+    v45 = clientCopy;
+    v7 = clientCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v9 = [v7 subpredicates];
-    v10 = [v9 countByEnumeratingWithState:&v47 objects:v51 count:16];
+    subpredicates = [v7 subpredicates];
+    v10 = [subpredicates countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v10)
     {
       v11 = v10;
@@ -491,106 +491,106 @@ LABEL_38:
         {
           if (*v48 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subpredicates);
           }
 
-          v14 = [HMPredicateUtilities rewritePredicateForClient:*(*(&v47 + 1) + 8 * i) home:v6];
-          [v8 addObject:v14];
+          v14 = [HMPredicateUtilities rewritePredicateForClient:*(*(&v47 + 1) + 8 * i) home:homeCopy];
+          [array addObject:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v47 objects:v51 count:16];
+        v11 = [subpredicates countByEnumeratingWithState:&v47 objects:v51 count:16];
       }
 
       while (v11);
     }
 
-    v15 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(v7 subpredicates:{"compoundPredicateType"), v8}];
-    v5 = v45;
+    v15 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(v7 subpredicates:{"compoundPredicateType"), array}];
+    clientCopy = v45;
   }
 
   else
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v17 = v5;
+    v17 = clientCopy;
     v15 = v17;
     if (isKindOfClass)
     {
-      v18 = [v17 leftExpression];
-      v19 = [v15 rightExpression];
-      if ([v18 expressionType] == 3)
+      leftExpression = [v17 leftExpression];
+      rightExpression = [v15 rightExpression];
+      if ([leftExpression expressionType] == 3)
       {
-        v20 = [v18 keyPath];
-        v21 = [v20 isEqualToString:@"characteristic"];
+        keyPath = [leftExpression keyPath];
+        v21 = [keyPath isEqualToString:@"characteristic"];
 
         if (v21)
         {
-          v22 = [v15 rightExpression];
+          rightExpression2 = [v15 rightExpression];
 
-          if (![v22 expressionType])
+          if (![rightExpression2 expressionType])
           {
-            v23 = [v22 constantValue];
+            constantValue = [rightExpression2 constantValue];
             objc_opt_class();
             v24 = objc_opt_isKindOfClass();
 
             if (v24)
             {
-              v25 = [v22 constantValue];
-              v26 = [v25 hmf_UUIDForKey:@"kAccessoryUUID"];
-              v27 = [v25 hmf_numberForKey:@"kServiceInstanceID"];
-              v28 = [v25 hmf_numberForKey:@"kCharacteristicInstanceID"];
+              constantValue2 = [rightExpression2 constantValue];
+              v26 = [constantValue2 hmf_UUIDForKey:@"kAccessoryUUID"];
+              v27 = [constantValue2 hmf_numberForKey:@"kServiceInstanceID"];
+              v28 = [constantValue2 hmf_numberForKey:@"kCharacteristicInstanceID"];
               v46 = v27;
-              v29 = [v6 _findCharacteristic:v28 forService:v27 accessoryUUID:v26];
+              v29 = [homeCopy _findCharacteristic:v28 forService:v27 accessoryUUID:v26];
               if (v29)
               {
                 [MEMORY[0x1E696ABC8] expressionForConstantValue:v29];
                 v30 = v44 = v26;
 
-                v22 = v30;
+                rightExpression2 = v30;
                 v26 = v44;
               }
             }
           }
 
-          v19 = v22;
+          rightExpression = rightExpression2;
         }
       }
 
-      if ([v18 expressionType] == 3)
+      if ([leftExpression expressionType] == 3)
       {
-        v31 = [v18 keyPath];
-        v32 = [v31 isEqualToString:@"presence"];
+        keyPath2 = [leftExpression keyPath];
+        v32 = [keyPath2 isEqualToString:@"presence"];
 
         if (v32)
         {
-          v33 = [v15 rightExpression];
+          rightExpression3 = [v15 rightExpression];
 
-          if (![v33 expressionType])
+          if (![rightExpression3 expressionType])
           {
-            v34 = [v33 constantValue];
+            constantValue3 = [rightExpression3 constantValue];
             objc_opt_class();
             v35 = objc_opt_isKindOfClass();
 
             if (v35)
             {
-              v36 = [v33 constantValue];
-              v37 = [HMPresenceEvent createWithDictionary:v36 home:v6];
+              constantValue4 = [rightExpression3 constantValue];
+              v37 = [HMPresenceEvent createWithDictionary:constantValue4 home:homeCopy];
               if (v37)
               {
                 v38 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v37];
 
-                v33 = v38;
+                rightExpression3 = v38;
               }
             }
           }
 
-          v19 = v33;
+          rightExpression = rightExpression3;
         }
       }
 
       v39 = objc_alloc(MEMORY[0x1E696AB18]);
-      v40 = [v15 leftExpression];
-      v41 = [v39 initWithLeftExpression:v40 rightExpression:v19 modifier:objc_msgSend(v15 type:"comparisonPredicateModifier") options:{objc_msgSend(v15, "predicateOperatorType"), objc_msgSend(v15, "options")}];
+      leftExpression2 = [v15 leftExpression];
+      v41 = [v39 initWithLeftExpression:leftExpression2 rightExpression:rightExpression modifier:objc_msgSend(v15 type:"comparisonPredicateModifier") options:{objc_msgSend(v15, "predicateOperatorType"), objc_msgSend(v15, "options")}];
 
       v15 = v41;
     }
@@ -601,24 +601,24 @@ LABEL_38:
   return v15;
 }
 
-+ (BOOL)areOnlyHourAndMinuteSet:(id)a3
++ (BOOL)areOnlyHourAndMinuteSet:(id)set
 {
   v3 = MEMORY[0x1E695DF10];
-  v4 = a3;
+  setCopy = set;
   v5 = objc_alloc_init(v3);
-  [v5 setMinute:{objc_msgSend(v4, "minute")}];
-  [v5 setHour:{objc_msgSend(v4, "hour")}];
+  [v5 setMinute:{objc_msgSend(setCopy, "minute")}];
+  [v5 setHour:{objc_msgSend(setCopy, "hour")}];
   v6 = [MEMORY[0x1E695DF00] now];
-  v7 = [v6 hmf_dateComponents];
+  hmf_dateComponents = [v6 hmf_dateComponents];
 
-  [v7 setMinute:{objc_msgSend(v4, "minute")}];
-  [v7 setHour:{objc_msgSend(v4, "hour")}];
-  LODWORD(v6) = [v4 isEqual:v5];
+  [hmf_dateComponents setMinute:{objc_msgSend(setCopy, "minute")}];
+  [hmf_dateComponents setHour:{objc_msgSend(setCopy, "hour")}];
+  LODWORD(v6) = [setCopy isEqual:v5];
 
   if (v6)
   {
-    v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v9 = [v7 isValidDateInCalendar:v8];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v9 = [hmf_dateComponents isValidDateInCalendar:currentCalendar];
   }
 
   else
@@ -629,11 +629,11 @@ LABEL_38:
   return v9;
 }
 
-+ (BOOL)validatePredicate:(id)a3
++ (BOOL)validatePredicate:(id)predicate
 {
   v74 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  predicateCopy = predicate;
+  if (!predicateCopy)
   {
     goto LABEL_80;
   }
@@ -647,31 +647,31 @@ LABEL_38:
       goto LABEL_82;
     }
 
-    v10 = v3;
+    v10 = predicateCopy;
     v11 = +[HMHAPMetadata getSharedInstance];
-    v12 = [v10 leftExpression];
-    v13 = [v10 rightExpression];
-    if ([v12 expressionType] != 3 || objc_msgSend(v10, "comparisonPredicateModifier"))
+    leftExpression = [v10 leftExpression];
+    rightExpression = [v10 rightExpression];
+    if ([leftExpression expressionType] != 3 || objc_msgSend(v10, "comparisonPredicateModifier"))
     {
       goto LABEL_25;
     }
 
-    v14 = [v12 keyPath];
-    if ([v14 isEqualToString:@"characteristic"])
+    keyPath = [leftExpression keyPath];
+    if ([keyPath isEqualToString:@"characteristic"])
     {
-      v15 = [v10 predicateOperatorType];
+      predicateOperatorType = [v10 predicateOperatorType];
 
-      if (v15 != 4)
+      if (predicateOperatorType != 4)
       {
         goto LABEL_25;
       }
 
-      if ([v13 expressionType])
+      if ([rightExpression expressionType])
       {
         goto LABEL_25;
       }
 
-      v16 = [v13 constantValue];
+      constantValue = [rightExpression constantValue];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -680,11 +680,11 @@ LABEL_38:
         goto LABEL_25;
       }
 
-      v18 = [v13 constantValue];
+      constantValue2 = [rightExpression constantValue];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v18;
+        v19 = constantValue2;
       }
 
       else
@@ -692,13 +692,13 @@ LABEL_38:
         v19 = 0;
       }
 
-      v14 = v19;
+      keyPath = v19;
 
-      v20 = [v14 characteristicType];
-      if (([v11 shouldNotCacheCharacteristicOfType:v20] & 1) == 0)
+      characteristicType = [keyPath characteristicType];
+      if (([v11 shouldNotCacheCharacteristicOfType:characteristicType] & 1) == 0)
       {
-        v59 = [v14 properties];
-        v60 = [v59 containsObject:@"HMCharacteristicPropertyReadable"];
+        properties = [keyPath properties];
+        v60 = [properties containsObject:@"HMCharacteristicPropertyReadable"];
 
         if (v60)
         {
@@ -707,12 +707,12 @@ LABEL_38:
 
 LABEL_26:
         v21 = v10;
-        v22 = [v21 leftExpression];
-        v23 = [v21 rightExpression];
-        if ([v22 expressionType] == 3 && !objc_msgSend(v21, "comparisonPredicateModifier"))
+        leftExpression2 = [v21 leftExpression];
+        rightExpression2 = [v21 rightExpression];
+        if ([leftExpression2 expressionType] == 3 && !objc_msgSend(v21, "comparisonPredicateModifier"))
         {
-          v24 = [v22 keyPath];
-          if ([v24 isEqualToString:@"characteristicValue"])
+          keyPath2 = [leftExpression2 keyPath];
+          if ([keyPath2 isEqualToString:@"characteristicValue"])
           {
             if (![v21 predicateOperatorType] || objc_msgSend(v21, "predicateOperatorType") == 1 || objc_msgSend(v21, "predicateOperatorType") == 2 || objc_msgSend(v21, "predicateOperatorType") == 3 || objc_msgSend(v21, "predicateOperatorType") == 4)
             {
@@ -720,15 +720,15 @@ LABEL_26:
 
             else
             {
-              v61 = [v21 predicateOperatorType];
+              predicateOperatorType2 = [v21 predicateOperatorType];
 
-              if (v61 != 5)
+              if (predicateOperatorType2 != 5)
               {
                 goto LABEL_40;
               }
             }
 
-            if (![v23 expressionType])
+            if (![rightExpression2 expressionType])
             {
               goto LABEL_71;
             }
@@ -742,19 +742,19 @@ LABEL_26:
 LABEL_40:
 
         v25 = v21;
-        v22 = [v25 leftExpression];
-        v23 = [v25 rightExpression];
-        if ([v22 expressionType] == 3 && !objc_msgSend(v25, "comparisonPredicateModifier"))
+        leftExpression2 = [v25 leftExpression];
+        rightExpression2 = [v25 rightExpression];
+        if ([leftExpression2 expressionType] == 3 && !objc_msgSend(v25, "comparisonPredicateModifier"))
         {
-          v37 = [v22 keyPath];
-          if ([v37 isEqualToString:@"sunrise"])
+          keyPath3 = [leftExpression2 keyPath];
+          if ([keyPath3 isEqualToString:@"sunrise"])
           {
           }
 
           else
           {
-            v38 = [v22 keyPath];
-            v39 = [v38 isEqualToString:@"sunset"];
+            keyPath4 = [leftExpression2 keyPath];
+            v39 = [keyPath4 isEqualToString:@"sunset"];
 
             if (!v39)
             {
@@ -764,25 +764,25 @@ LABEL_40:
 
           if ([v25 predicateOperatorType] == 2 || objc_msgSend(v25, "predicateOperatorType") == 1)
           {
-            if ([v23 expressionType] == 4 && (objc_msgSend(v23, "function"), v40 = objc_claimAutoreleasedReturnValue(), v41 = objc_msgSend(v40, "isEqualToString:", @"add:to:"), v40, v41))
+            if ([rightExpression2 expressionType] == 4 && (objc_msgSend(rightExpression2, "function"), v40 = objc_claimAutoreleasedReturnValue(), v41 = objc_msgSend(v40, "isEqualToString:", @"add:to:"), v40, v41))
             {
-              v42 = [v23 arguments];
-              v43 = [v42 objectAtIndexedSubscript:0];
+              arguments = [rightExpression2 arguments];
+              v43 = [arguments objectAtIndexedSubscript:0];
               if ([v43 expressionType] == 4)
               {
-                v44 = [v43 function];
-                v45 = [v44 isEqualToString:@"now"];
+                function = [v43 function];
+                v45 = [function isEqualToString:@"now"];
 
                 if (v45)
                 {
-                  v46 = [v42 objectAtIndexedSubscript:1];
+                  v46 = [arguments objectAtIndexedSubscript:1];
                   if ([v46 expressionType])
                   {
                   }
 
                   else
                   {
-                    v62 = [v46 constantValue];
+                    constantValue3 = [v46 constantValue];
                     objc_opt_class();
                     v64 = objc_opt_isKindOfClass();
 
@@ -796,10 +796,10 @@ LABEL_40:
               }
             }
 
-            else if ([v23 expressionType] == 4)
+            else if ([rightExpression2 expressionType] == 4)
             {
-              v51 = [v23 function];
-              v52 = [v51 isEqualToString:@"now"];
+              function2 = [rightExpression2 function];
+              v52 = [function2 isEqualToString:@"now"];
 
               if (v52)
               {
@@ -812,33 +812,33 @@ LABEL_40:
 LABEL_42:
 
         v21 = v25;
-        v22 = [v21 leftExpression];
-        v23 = [v21 rightExpression];
-        if ([v22 expressionType] != 3 || objc_msgSend(v21, "comparisonPredicateModifier"))
+        leftExpression2 = [v21 leftExpression];
+        rightExpression2 = [v21 rightExpression];
+        if ([leftExpression2 expressionType] != 3 || objc_msgSend(v21, "comparisonPredicateModifier"))
         {
           goto LABEL_76;
         }
 
-        v26 = [v22 keyPath];
-        if ([v26 isEqualToString:@"presence"])
+        keyPath5 = [leftExpression2 keyPath];
+        if ([keyPath5 isEqualToString:@"presence"])
         {
-          v27 = [v21 predicateOperatorType];
+          predicateOperatorType3 = [v21 predicateOperatorType];
 
-          if (v27 == 4)
+          if (predicateOperatorType3 == 4)
           {
-            if (![v23 expressionType])
+            if (![rightExpression2 expressionType])
             {
-              v28 = [v23 constantValue];
+              constantValue4 = [rightExpression2 constantValue];
               objc_opt_class();
               v29 = objc_opt_isKindOfClass();
 
               if (v29)
               {
-                v30 = [v23 constantValue];
+                constantValue5 = [rightExpression2 constantValue];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v31 = v30;
+                  v31 = constantValue5;
                 }
 
                 else
@@ -848,10 +848,10 @@ LABEL_42:
 
                 v32 = v31;
 
-                v33 = [v32 presenceEventType];
-                if ((v33 - 3) >= 2)
+                presenceEventType = [v32 presenceEventType];
+                if ((presenceEventType - 3) >= 2)
                 {
-                  if ((v33 - 1) > 1)
+                  if ((presenceEventType - 1) > 1)
                   {
                     v34 = objc_autoreleasePoolPush();
                     v35 = HMFGetOSLogHandle();
@@ -978,8 +978,8 @@ LABEL_25:
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v4 = [v3 subpredicates];
-  v5 = [v4 countByEnumeratingWithState:&v65 objects:v69 count:16];
+  subpredicates = [predicateCopy subpredicates];
+  v5 = [subpredicates countByEnumeratingWithState:&v65 objects:v69 count:16];
   if (v5)
   {
     v6 = v5;
@@ -990,7 +990,7 @@ LABEL_25:
       {
         if (*v66 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subpredicates);
         }
 
         if (![HMPredicateUtilities validatePredicate:*(*(&v65 + 1) + 8 * i)])
@@ -1000,7 +1000,7 @@ LABEL_25:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v65 objects:v69 count:16];
+      v6 = [subpredicates countByEnumeratingWithState:&v65 objects:v69 count:16];
       if (v6)
       {
         continue;

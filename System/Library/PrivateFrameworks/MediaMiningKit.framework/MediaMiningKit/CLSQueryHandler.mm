@@ -1,9 +1,9 @@
 @interface CLSQueryHandler
-- (CLSQueryHandler)initWithQueryPerformer:(id)a3 geoServiceThread:(id)a4 loggingConnection:(id)a5;
+- (CLSQueryHandler)initWithQueryPerformer:(id)performer geoServiceThread:(id)thread loggingConnection:(id)connection;
 - (void)_cancel;
 - (void)_forwardToGeoThread;
-- (void)_handleError:(id)a3 numberOfItems:(unint64_t)a4;
-- (void)_handleQueryResultsForQuery:(id)a3 items:(id)a4 error:(id)a5;
+- (void)_handleError:(id)error numberOfItems:(unint64_t)items;
+- (void)_handleQueryResultsForQuery:(id)query items:(id)items error:(id)error;
 - (void)_heartBeat;
 - (void)_startQuery;
 - (void)cacheItems;
@@ -33,15 +33,15 @@
   }
 }
 
-- (void)_handleError:(id)a3 numberOfItems:(unint64_t)a4
+- (void)_handleError:(id)error numberOfItems:(unint64_t)items
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  errorCopy = error;
   Current = CFAbsoluteTimeGetCurrent();
   retryLevel = self->_retryLevel;
   self->_nextRetryTime = Current + (1 << retryLevel++) * 15.0;
   self->_retryLevel = retryLevel;
-  if (retryLevel < self->_numberOfRetries && ([v6 code] == -3 || objc_msgSend(v6, "code") == -9))
+  if (retryLevel < self->_numberOfRetries && ([errorCopy code] == -3 || objc_msgSend(errorCopy, "code") == -9))
   {
     *&self->_alreadyLaunched = 0;
     loggingConnection = self->_loggingConnection;
@@ -57,21 +57,21 @@
 
   else
   {
-    v12 = [v6 code];
+    code = [errorCopy code];
     completionBlock = self->_completionBlock;
     if (completionBlock)
     {
-      if (v12 == -8)
+      if (code == -8)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = v6;
+        v14 = errorCopy;
       }
 
-      (completionBlock)[2](completionBlock, v12 == -8, a4, v14);
+      (completionBlock)[2](completionBlock, code == -8, items, v14);
       v15 = self->_completionBlock;
       self->_completionBlock = 0;
     }
@@ -156,8 +156,8 @@
       [(CLSQueryPerformerProtocol *)self->_query cancel];
       v11 = objc_opt_class();
       query = self->_query;
-      v13 = [(CLSQueryPerformerProtocol *)query regions];
-      v14 = [v11 queryWithTemplate:query forRegions:v13];
+      regions = [(CLSQueryPerformerProtocol *)query regions];
+      v14 = [v11 queryWithTemplate:query forRegions:regions];
       v15 = self->_query;
       self->_query = v14;
 
@@ -215,7 +215,7 @@ LABEL_16:
   {
     query = self->_query;
     *buf = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = query;
     _os_log_debug_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_DEBUG, "%p - Start query for %@", buf, 0x16u);
@@ -273,22 +273,22 @@ void __30__CLSQueryHandler__startQuery__block_invoke(uint64_t a1, void *a2, void
   }
 }
 
-- (void)_handleQueryResultsForQuery:(id)a3 items:(id)a4 error:(id)a5
+- (void)_handleQueryResultsForQuery:(id)query items:(id)items error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  itemsCopy = items;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_timerQueue);
-  if ([v8 isCancelled])
+  if ([queryCopy isCancelled])
   {
     loggingConnection = self->_loggingConnection;
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEBUG))
     {
       v20 = 134218242;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2112;
-      v23 = v8;
+      v23 = queryCopy;
       _os_log_debug_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_DEBUG, "%p - Query cancelled: %@", &v20, 0x16u);
     }
   }
@@ -296,31 +296,31 @@ void __30__CLSQueryHandler__startQuery__block_invoke(uint64_t a1, void *a2, void
   else
   {
     self->_didQueryFinish = 1;
-    if (v10)
+    if (errorCopy)
     {
       v12 = self->_loggingConnection;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v20 = 138412290;
-        v21 = v10;
+        selfCopy3 = errorCopy;
         _os_log_error_impl(&dword_22F907000, v12, OS_LOG_TYPE_ERROR, "GeoService returned error %@", &v20, 0xCu);
       }
 
-      -[CLSQueryHandler _handleError:numberOfItems:](self, "_handleError:numberOfItems:", v10, [v9 count]);
+      -[CLSQueryHandler _handleError:numberOfItems:](self, "_handleError:numberOfItems:", errorCopy, [itemsCopy count]);
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = [(CLSQueryHandler *)self _cacheMapItems:v9];
+      v14 = [(CLSQueryHandler *)self _cacheMapItems:itemsCopy];
       objc_autoreleasePoolPop(v13);
       v15 = self->_loggingConnection;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
         v20 = 134218242;
-        v21 = self;
+        selfCopy3 = self;
         v22 = 2112;
-        v23 = v8;
+        v23 = queryCopy;
         _os_log_debug_impl(&dword_22F907000, v15, OS_LOG_TYPE_DEBUG, "%p - Caching result from %@", &v20, 0x16u);
       }
 
@@ -331,7 +331,7 @@ void __30__CLSQueryHandler__startQuery__block_invoke(uint64_t a1, void *a2, void
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
           v20 = 134218240;
-          v21 = self;
+          selfCopy3 = self;
           v22 = 2048;
           v23 = v14;
           _os_log_debug_impl(&dword_22F907000, v17, OS_LOG_TYPE_DEBUG, "%p - Completion Block: %ld items cached", &v20, 0x16u);
@@ -385,12 +385,12 @@ void __29__CLSQueryHandler_cacheItems__block_invoke(uint64_t a1)
   }
 }
 
-- (CLSQueryHandler)initWithQueryPerformer:(id)a3 geoServiceThread:(id)a4 loggingConnection:(id)a5
+- (CLSQueryHandler)initWithQueryPerformer:(id)performer geoServiceThread:(id)thread loggingConnection:(id)connection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  performerCopy = performer;
+  threadCopy = thread;
+  connectionCopy = connection;
   v29.receiver = self;
   v29.super_class = CLSQueryHandler;
   v12 = [(CLSQueryHandler *)&v29 init];
@@ -403,9 +403,9 @@ void __29__CLSQueryHandler_cacheItems__block_invoke(uint64_t a1)
     v16 = *(v12 + 7);
     *(v12 + 7) = v15;
 
-    objc_storeStrong(v12 + 8, a5);
-    objc_storeStrong(v12 + 12, a4);
-    objc_storeStrong(v12 + 1, a3);
+    objc_storeStrong(v12 + 8, connection);
+    objc_storeStrong(v12 + 12, thread);
+    objc_storeStrong(v12 + 1, performer);
     *(v12 + 24) = 0;
     *(v12 + 2) = 0;
     v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, *(v12 + 7));
@@ -426,7 +426,7 @@ void __29__CLSQueryHandler_cacheItems__block_invoke(uint64_t a1)
     v23[2] = __77__CLSQueryHandler_initWithQueryPerformer_geoServiceThread_loggingConnection___block_invoke_2;
     v23[3] = &unk_2788A8198;
     objc_copyWeak(&v25, &location);
-    v24 = v9;
+    v24 = performerCopy;
     dispatch_source_set_cancel_handler(v20, v23);
     v21 = *(v12 + 8);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))

@@ -1,65 +1,65 @@
 @interface CNUIStaticIdentity
-+ (BOOL)addStaticKeyWithPublicIDString:(id)a3 contact:(id)a4;
-+ (BOOL)isHandleInStore:(id)a3;
-+ (BOOL)isValidStaticKeyString:(id)a3;
-+ (BOOL)removeAccountKeyFromContact:(id)a3;
-+ (id)findStoreEntryByContact:(id)a3;
++ (BOOL)addStaticKeyWithPublicIDString:(id)string contact:(id)contact;
++ (BOOL)isHandleInStore:(id)store;
++ (BOOL)isValidStaticKeyString:(id)string;
++ (BOOL)removeAccountKeyFromContact:(id)contact;
++ (id)findStoreEntryByContact:(id)contact;
 + (id)ktStore;
-+ (id)makeKTPublicIDWithString:(id)a3;
-- (BOOL)isHandleInStore:(id)a3;
-- (CNUIStaticIdentity)initWithContact:(id)a3;
++ (id)makeKTPublicIDWithString:(id)string;
+- (BOOL)isHandleInStore:(id)store;
+- (CNUIStaticIdentity)initWithContact:(id)contact;
 - (id)verificationCode;
 @end
 
 @implementation CNUIStaticIdentity
 
-- (CNUIStaticIdentity)initWithContact:(id)a3
+- (CNUIStaticIdentity)initWithContact:(id)contact
 {
-  v5 = a3;
-  if (v5)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v6 = [objc_opt_class() findStoreEntryByContact:v5];
+    v6 = [objc_opt_class() findStoreEntryByContact:contactCopy];
     if (v6 && (v10.receiver = self, v10.super_class = CNUIStaticIdentity, v7 = [(CNUIStaticIdentity *)&v10 init], (self = v7) != 0))
     {
-      objc_storeStrong(&v7->_contact, a3);
+      objc_storeStrong(&v7->_contact, contact);
       objc_storeStrong(&self->_storeEntry, v6);
       self = self;
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)verificationCode
 {
-  v2 = [(CNUIStaticIdentity *)self storeEntry];
-  v3 = [v2 publicKeyID];
-  v4 = [v3 publicAccountIdentity];
+  storeEntry = [(CNUIStaticIdentity *)self storeEntry];
+  publicKeyID = [storeEntry publicKeyID];
+  publicAccountIdentity = [publicKeyID publicAccountIdentity];
 
-  return v4;
+  return publicAccountIdentity;
 }
 
-- (BOOL)isHandleInStore:(id)a3
+- (BOOL)isHandleInStore:(id)store
 {
-  v4 = a3;
-  v5 = [(CNUIStaticIdentity *)self storeEntry];
-  v6 = [v5 handles];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  storeCopy = store;
+  storeEntry = [(CNUIStaticIdentity *)self storeEntry];
+  handles = [storeEntry handles];
+  v7 = [handles objectForKeyedSubscript:storeCopy];
 
   if (v7)
   {
-    v8 = [v7 valid];
+    valid = [v7 valid];
   }
 
   else
@@ -67,13 +67,13 @@
     v9 = +[CNUICoreLogProvider static_identity_os_log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(CNUIStaticIdentity *)v4 isHandleInStore:v9];
+      [(CNUIStaticIdentity *)storeCopy isHandleInStore:v9];
     }
 
-    v8 = 0;
+    valid = 0;
   }
 
-  return v8;
+  return valid;
 }
 
 + (id)ktStore
@@ -95,28 +95,28 @@ uint64_t __29__CNUIStaticIdentity_ktStore__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)isHandleInStore:(id)a3
++ (BOOL)isHandleInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v5 = [a1 ktStore];
+    ktStore = [self ktStore];
 
-    if (v5)
+    if (ktStore)
     {
-      v6 = [a1 ktStore];
+      ktStore2 = [self ktStore];
       v14 = 0;
-      v7 = [v6 findKeyByHandle:v4 error:&v14];
+      v7 = [ktStore2 findKeyByHandle:storeCopy error:&v14];
       v8 = v14;
 
       if (v7)
       {
-        v9 = [v7 handles];
-        v10 = [v9 objectForKeyedSubscript:v4];
+        handles = [v7 handles];
+        v10 = [handles objectForKeyedSubscript:storeCopy];
 
         if (v10)
         {
-          v11 = [v10 valid];
+          valid = [v10 valid];
 LABEL_13:
 
           goto LABEL_14;
@@ -125,7 +125,7 @@ LABEL_13:
         v12 = +[CNUICoreLogProvider static_identity_os_log];
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          [(CNUIStaticIdentity *)v4 isHandleInStore:v12];
+          [(CNUIStaticIdentity *)storeCopy isHandleInStore:v12];
         }
       }
 
@@ -138,27 +138,27 @@ LABEL_13:
         }
       }
 
-      v11 = 0;
+      valid = 0;
       goto LABEL_13;
     }
   }
 
-  v11 = 0;
+  valid = 0;
 LABEL_14:
 
-  return v11;
+  return valid;
 }
 
-+ (id)findStoreEntryByContact:(id)a3
++ (id)findStoreEntryByContact:(id)contact
 {
-  v4 = a3;
-  v5 = [a1 ktStore];
+  contactCopy = contact;
+  ktStore = [self ktStore];
 
-  if (v5)
+  if (ktStore)
   {
-    v6 = [a1 ktStore];
+    ktStore2 = [self ktStore];
     v11 = 0;
-    v7 = [v6 findByContact:v4 error:&v11];
+    v7 = [ktStore2 findByContact:contactCopy error:&v11];
     v8 = v11;
 
     if (!v7)
@@ -179,17 +179,17 @@ LABEL_14:
   return v7;
 }
 
-+ (id)makeKTPublicIDWithString:(id)a3
++ (id)makeKTPublicIDWithString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 ktStore];
+  stringCopy = string;
+  ktStore = [self ktStore];
 
-  if (v5)
+  if (ktStore)
   {
     v9 = 0;
-    v5 = [MEMORY[0x1E69DB4E0] ktAccountPublicIDWithString:v4 error:&v9];
+    ktStore = [MEMORY[0x1E69DB4E0] ktAccountPublicIDWithString:stringCopy error:&v9];
     v6 = v9;
-    if (!v5)
+    if (!ktStore)
     {
       v7 = +[CNUICoreLogProvider static_identity_os_log];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -199,37 +199,37 @@ LABEL_14:
     }
   }
 
-  return v5;
+  return ktStore;
 }
 
-+ (BOOL)isValidStaticKeyString:(id)a3
++ (BOOL)isValidStaticKeyString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 ktStore];
+  stringCopy = string;
+  ktStore = [self ktStore];
 
-  if (v5)
+  if (ktStore)
   {
-    v6 = [CNUIStaticIdentity makeKTPublicIDWithString:v4];
-    LOBYTE(v5) = v6 != 0;
+    v6 = [CNUIStaticIdentity makeKTPublicIDWithString:stringCopy];
+    LOBYTE(ktStore) = v6 != 0;
   }
 
-  return v5;
+  return ktStore;
 }
 
-+ (BOOL)addStaticKeyWithPublicIDString:(id)a3 contact:(id)a4
++ (BOOL)addStaticKeyWithPublicIDString:(id)string contact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 ktStore];
+  stringCopy = string;
+  contactCopy = contact;
+  ktStore = [self ktStore];
 
-  if (v8)
+  if (ktStore)
   {
-    v9 = [CNUIStaticIdentity makeKTPublicIDWithString:v6];
+    v9 = [CNUIStaticIdentity makeKTPublicIDWithString:stringCopy];
     if (v9)
     {
-      v10 = [a1 ktStore];
+      ktStore2 = [self ktStore];
       v16 = 0;
-      v11 = [v10 updateStaticKeyEntry:v9 contact:v7 error:&v16];
+      v11 = [ktStore2 updateStaticKeyEntry:v9 contact:contactCopy error:&v16];
       v12 = v16;
 
       if (v11)
@@ -262,16 +262,16 @@ LABEL_12:
   return v13;
 }
 
-+ (BOOL)removeAccountKeyFromContact:(id)a3
++ (BOOL)removeAccountKeyFromContact:(id)contact
 {
-  v4 = a3;
-  v5 = [a1 findStoreEntryByContact:v4];
+  contactCopy = contact;
+  v5 = [self findStoreEntryByContact:contactCopy];
   if (v5)
   {
-    v6 = [a1 ktStore];
-    v7 = [v5 publicKeyID];
+    ktStore = [self ktStore];
+    publicKeyID = [v5 publicKeyID];
     v12 = 0;
-    v8 = [v6 removeEntryByKDID:v7 error:&v12];
+    v8 = [ktStore removeEntryByKDID:publicKeyID error:&v12];
     v9 = v12;
 
     if ((v8 & 1) == 0)
@@ -279,7 +279,7 @@ LABEL_12:
       v10 = +[CNUICoreLogProvider static_identity_os_log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(CNUIStaticIdentity *)v4 removeAccountKeyFromContact:v9, v10];
+        [(CNUIStaticIdentity *)contactCopy removeAccountKeyFromContact:v9, v10];
       }
     }
   }

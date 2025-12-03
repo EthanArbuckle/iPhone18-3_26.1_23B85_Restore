@@ -1,59 +1,59 @@
 @interface SBSystemApertureSceneHoster
 - (SBSystemApertureController)systemApertureController;
-- (id)sceneCreationRequestServer:(id)a3 didReceiveRequestForSystemApertureSceneWithClientIdentity:(id)a4;
-- (void)_addPendingElement:(id)a3;
-- (void)_enumerateElementsUsingBlock:(id)a3;
-- (void)_invalidateElement:(id)a3;
-- (void)_registerElement:(id)a3;
-- (void)_removeElement:(id)a3;
-- (void)_removePendingElement:(id)a3;
-- (void)activateWithSystemApertureController:(id)a3;
+- (id)sceneCreationRequestServer:(id)server didReceiveRequestForSystemApertureSceneWithClientIdentity:(id)identity;
+- (void)_addPendingElement:(id)element;
+- (void)_enumerateElementsUsingBlock:(id)block;
+- (void)_invalidateElement:(id)element;
+- (void)_registerElement:(id)element;
+- (void)_removeElement:(id)element;
+- (void)_removePendingElement:(id)element;
+- (void)activateWithSystemApertureController:(id)controller;
 - (void)invalidate;
-- (void)sceneCreationRequestServer:(id)a3 invalidateSceneElement:(id)a4;
+- (void)sceneCreationRequestServer:(id)server invalidateSceneElement:(id)element;
 @end
 
 @implementation SBSystemApertureSceneHoster
 
-- (void)activateWithSystemApertureController:(id)a3
+- (void)activateWithSystemApertureController:(id)controller
 {
-  objc_storeWeak(&self->_systemApertureController, a3);
-  v4 = [(SBSystemApertureSceneHoster *)self server];
+  objc_storeWeak(&self->_systemApertureController, controller);
+  server = [(SBSystemApertureSceneHoster *)self server];
 
-  if (!v4)
+  if (!server)
   {
     v5 = [objc_alloc(MEMORY[0x277D66C80]) initWithDelegate:self];
     [(SBSystemApertureSceneHoster *)self setServer:v5];
 
-    v6 = [(SBSystemApertureSceneHoster *)self server];
-    [v6 startServer];
+    server2 = [(SBSystemApertureSceneHoster *)self server];
+    [server2 startServer];
   }
 }
 
-- (id)sceneCreationRequestServer:(id)a3 didReceiveRequestForSystemApertureSceneWithClientIdentity:(id)a4
+- (id)sceneCreationRequestServer:(id)server didReceiveRequestForSystemApertureSceneWithClientIdentity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  identityCopy = identity;
   BSDispatchQueueAssertMain();
   objc_initWeak(&location, self);
   v8 = [SBSystemApertureSceneElement alloc];
-  v9 = [MEMORY[0x277D67E40] specification];
-  v10 = [(SBSystemApertureSceneHoster *)self systemApertureController];
+  specification = [MEMORY[0x277D67E40] specification];
+  systemApertureController = [(SBSystemApertureSceneHoster *)self systemApertureController];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __116__SBSystemApertureSceneHoster_sceneCreationRequestServer_didReceiveRequestForSystemApertureSceneWithClientIdentity___block_invoke;
   v18 = &unk_2783C1258;
   objc_copyWeak(&v19, &location);
-  v11 = [(SBSystemApertureSceneElement *)v8 initWithSceneSpecification:v9 sceneClientIdentity:v7 statusBarBackgroundActivitiesSuppresser:v10 readyForPresentationHandler:&v15];
+  v11 = [(SBSystemApertureSceneElement *)v8 initWithSceneSpecification:specification sceneClientIdentity:identityCopy statusBarBackgroundActivitiesSuppresser:systemApertureController readyForPresentationHandler:&v15];
 
   [(SBSystemApertureSceneHoster *)self _addPendingElement:v11, v15, v16, v17, v18];
   [(SBSystemApertureSceneElement *)v11 activate];
-  v12 = [(SBSystemApertureSceneElement *)v11 scene];
-  v13 = [v12 identityToken];
+  scene = [(SBSystemApertureSceneElement *)v11 scene];
+  identityToken = [scene identityToken];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 
-  return v13;
+  return identityToken;
 }
 
 void __116__SBSystemApertureSceneHoster_sceneCreationRequestServer_didReceiveRequestForSystemApertureSceneWithClientIdentity___block_invoke(uint64_t a1, void *a2, int a3)
@@ -78,18 +78,18 @@ void __116__SBSystemApertureSceneHoster_sceneCreationRequestServer_didReceiveReq
   }
 }
 
-- (void)sceneCreationRequestServer:(id)a3 invalidateSceneElement:(id)a4
+- (void)sceneCreationRequestServer:(id)server invalidateSceneElement:(id)element
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  elementCopy = element;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v6 = [(NSMapTable *)self->_activeElements copy];
-  v7 = [v6 keyEnumerator];
+  keyEnumerator = [v6 keyEnumerator];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -100,14 +100,14 @@ void __116__SBSystemApertureSceneHoster_sceneCreationRequestServer_didReceiveReq
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 scene];
-        v14 = [v13 identityToken];
+        scene = [v12 scene];
+        identityToken = [scene identityToken];
 
-        if ([v14 isEqual:v5])
+        if ([identityToken isEqual:elementCopy])
         {
           [(SBSystemApertureSceneHoster *)self _invalidateElement:v12];
 
@@ -115,7 +115,7 @@ void __116__SBSystemApertureSceneHoster_sceneCreationRequestServer_didReceiveReq
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         continue;
@@ -128,9 +128,9 @@ void __116__SBSystemApertureSceneHoster_sceneCreationRequestServer_didReceiveReq
 LABEL_11:
 }
 
-- (void)_addPendingElement:(id)a3
+- (void)_addPendingElement:(id)element
 {
-  v7 = a3;
+  elementCopy = element;
   BSDispatchQueueAssertMain();
   pendingElements = self->_pendingElements;
   if (!pendingElements)
@@ -142,14 +142,14 @@ LABEL_11:
     pendingElements = self->_pendingElements;
   }
 
-  [(NSMutableSet *)pendingElements addObject:v7];
+  [(NSMutableSet *)pendingElements addObject:elementCopy];
 }
 
-- (void)_removePendingElement:(id)a3
+- (void)_removePendingElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   BSDispatchQueueAssertMain();
-  [(NSMutableSet *)self->_pendingElements removeObject:v4];
+  [(NSMutableSet *)self->_pendingElements removeObject:elementCopy];
 
   if (![(NSMutableSet *)self->_pendingElements count])
   {
@@ -158,32 +158,32 @@ LABEL_11:
   }
 }
 
-- (void)_registerElement:(id)a3
+- (void)_registerElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   BSDispatchQueueAssertMain();
   if (!self->_activeElements)
   {
-    v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     activeElements = self->_activeElements;
-    self->_activeElements = v5;
+    self->_activeElements = strongToStrongObjectsMapTable;
   }
 
-  v7 = [(SBSystemApertureSceneHoster *)self systemApertureController];
-  v8 = [v7 registerElement:v4];
+  systemApertureController = [(SBSystemApertureSceneHoster *)self systemApertureController];
+  v8 = [systemApertureController registerElement:elementCopy];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
-  v9 = [v4 scene];
-  v10 = [v9 clientHandle];
-  v11 = [v10 processHandle];
+  objc_initWeak(&from, elementCopy);
+  scene = [elementCopy scene];
+  clientHandle = [scene clientHandle];
+  processHandle = [clientHandle processHandle];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __48__SBSystemApertureSceneHoster__registerElement___block_invoke;
   v19[3] = &unk_2783C4308;
   objc_copyWeak(&v20, &location);
   objc_copyWeak(&v21, &from);
-  [v11 monitorForDeath:v19];
+  [processHandle monitorForDeath:v19];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
@@ -192,16 +192,16 @@ LABEL_11:
   objc_copyWeak(&v17, &location);
   objc_copyWeak(&v18, &from);
   v12 = MEMORY[0x223D6F7F0](&v13);
-  [v4 setClientInvalidationRequestHandler:{v12, v13, v14, v15, v16}];
-  [v4 setSceneInvalidationHandler:v12];
+  [elementCopy setClientInvalidationRequestHandler:{v12, v13, v14, v15, v16}];
+  [elementCopy setSceneInvalidationHandler:v12];
   if (v8)
   {
-    [(NSMapTable *)self->_activeElements setObject:v8 forKey:v4];
+    [(NSMapTable *)self->_activeElements setObject:v8 forKey:elementCopy];
   }
 
   else
   {
-    [(SBSystemApertureSceneHoster *)self _invalidateElement:v4];
+    [(SBSystemApertureSceneHoster *)self _invalidateElement:elementCopy];
   }
 
   objc_destroyWeak(&v18);
@@ -250,29 +250,29 @@ void __48__SBSystemApertureSceneHoster__registerElement___block_invoke_4(uint64_
   [WeakRetained _invalidateElement:v2];
 }
 
-- (void)_invalidateElement:(id)a3
+- (void)_invalidateElement:(id)element
 {
-  v5 = a3;
-  if (!v5)
+  elementCopy = element;
+  if (!elementCopy)
   {
     [(SBSystemApertureSceneHoster *)a2 _invalidateElement:?];
   }
 
   BSDispatchQueueAssertMain();
-  v6 = [(NSMapTable *)self->_activeElements objectForKey:v5];
-  if ([v5 isActivated] && (objc_msgSend(v5, "isDeactivating") & 1) == 0)
+  v6 = [(NSMapTable *)self->_activeElements objectForKey:elementCopy];
+  if ([elementCopy isActivated] && (objc_msgSend(elementCopy, "isDeactivating") & 1) == 0)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __50__SBSystemApertureSceneHoster__invalidateElement___block_invoke;
     v7[3] = &unk_2783AFCD0;
     v7[4] = self;
-    [v5 deactivateWhenRemovedWithHandler:v7];
+    [elementCopy deactivateWhenRemovedWithHandler:v7];
   }
 
-  else if (([v5 isDeactivating] & 1) == 0)
+  else if (([elementCopy isDeactivating] & 1) == 0)
   {
-    [(SBSystemApertureSceneHoster *)self _removeElement:v5];
+    [(SBSystemApertureSceneHoster *)self _removeElement:elementCopy];
   }
 
   if ([v6 isValid])
@@ -281,12 +281,12 @@ void __48__SBSystemApertureSceneHoster__registerElement___block_invoke_4(uint64_
   }
 }
 
-- (void)_removeElement:(id)a3
+- (void)_removeElement:(id)element
 {
   activeElements = self->_activeElements;
-  v5 = a3;
-  [(NSMapTable *)activeElements removeObjectForKey:v5];
-  [(NSMutableSet *)self->_pendingElements removeObject:v5];
+  elementCopy = element;
+  [(NSMapTable *)activeElements removeObjectForKey:elementCopy];
+  [(NSMutableSet *)self->_pendingElements removeObject:elementCopy];
 
   if (![(NSMapTable *)self->_activeElements count])
   {
@@ -303,22 +303,22 @@ void __48__SBSystemApertureSceneHoster__registerElement___block_invoke_4(uint64_
   v4[3] = &unk_2783AFCD0;
   v4[4] = self;
   [(SBSystemApertureSceneHoster *)self _enumerateElementsUsingBlock:v4];
-  v3 = [(SBSystemApertureSceneHoster *)self server];
-  [v3 invalidate];
+  server = [(SBSystemApertureSceneHoster *)self server];
+  [server invalidate];
 
   [(SBSystemApertureSceneHoster *)self setServer:0];
 }
 
-- (void)_enumerateElementsUsingBlock:(id)a3
+- (void)_enumerateElementsUsingBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(NSMutableSet *)self->_pendingElements allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  allObjects = [(NSMutableSet *)self->_pendingElements allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -330,14 +330,14 @@ void __48__SBSystemApertureSceneHoster__registerElement___block_invoke_4(uint64_
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        v4[2](v4, *(*(&v20 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v20 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v7);
@@ -348,9 +348,9 @@ void __48__SBSystemApertureSceneHoster__registerElement___block_invoke_4(uint64_
   v16 = 0u;
   v17 = 0u;
   v10 = [(NSMapTable *)self->_activeElements copy];
-  v11 = [v10 keyEnumerator];
+  keyEnumerator = [v10 keyEnumerator];
 
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  v12 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -362,14 +362,14 @@ void __48__SBSystemApertureSceneHoster__registerElement___block_invoke_4(uint64_
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        v4[2](v4, *(*(&v16 + 1) + 8 * v15++));
+        blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v15++));
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v13 = [keyEnumerator countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v13);

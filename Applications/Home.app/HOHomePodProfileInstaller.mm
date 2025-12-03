@@ -1,31 +1,31 @@
 @interface HOHomePodProfileInstaller
 - (id)_cancelAction;
-- (void)_handleProfileInstallationForHome:(id)a3;
-- (void)_installProfileForHomePod:(id)a3;
-- (void)_installProfileForHomePods:(id)a3;
+- (void)_handleProfileInstallationForHome:(id)home;
+- (void)_installProfileForHomePod:(id)pod;
+- (void)_installProfileForHomePods:(id)pods;
 - (void)_presentCompletionAlert;
 - (void)_presentErrorAlert;
-- (void)_presentHomePodSelectionAlertWithHomePods:(id)a3;
-- (void)_presentHomeSelectionAlertWithHomes:(id)a3;
+- (void)_presentHomePodSelectionAlertWithHomePods:(id)pods;
+- (void)_presentHomeSelectionAlertWithHomes:(id)homes;
 - (void)_presentManagedConfigurationProfileInstallation;
-- (void)_presentPartialErrorAlertForHomePods:(id)a3;
+- (void)_presentPartialErrorAlertForHomePods:(id)pods;
 - (void)_showProfileInstallationFlow;
 - (void)_startProfileInstallation;
-- (void)deviceProfileCompletedNotification:(id)a3;
-- (void)installProfileWithCompletionHandler:(id)a3;
-- (void)showProfileInstallationFlowFromViewController:(id)a3 withSenderURLString:(id)a4;
+- (void)deviceProfileCompletedNotification:(id)notification;
+- (void)installProfileWithCompletionHandler:(id)handler;
+- (void)showProfileInstallationFlowFromViewController:(id)controller withSenderURLString:(id)string;
 @end
 
 @implementation HOHomePodProfileInstaller
 
-- (void)showProfileInstallationFlowFromViewController:(id)a3 withSenderURLString:(id)a4
+- (void)showProfileInstallationFlowFromViewController:(id)controller withSenderURLString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  controllerCopy = controller;
   [(HOProfileInstaller *)self dismissInstallProfileViewControllerWithAnimation:0];
-  [(HOProfileInstaller *)self setBaseViewController:v7];
+  [(HOProfileInstaller *)self setBaseViewController:controllerCopy];
 
-  [(HOProfileInstaller *)self setSenderURLString:v6];
+  [(HOProfileInstaller *)self setSenderURLString:stringCopy];
 
   [(HOHomePodProfileInstaller *)self _showProfileInstallationFlow];
 }
@@ -35,21 +35,21 @@
   v3 = +[HOManagedConfigurationUtilities popProfileDataFromHeadOfInstallationQueue];
   [(HOProfileInstaller *)self setProfileData:v3];
 
-  v4 = [(HOProfileInstaller *)self profileData];
+  profileData = [(HOProfileInstaller *)self profileData];
 
-  if (v4)
+  if (profileData)
   {
     if (+[HOManagedConfigurationUtilities isProfileInstallationUIAllowed])
     {
       v5 = [MCInstallProfileViewController alloc];
-      v6 = [(HOProfileInstaller *)self profileData];
-      v12 = [v5 initWithProfileDataFromSettingsJump:v6];
+      profileData2 = [(HOProfileInstaller *)self profileData];
+      v12 = [v5 initWithProfileDataFromSettingsJump:profileData2];
 
       [(HOProfileInstaller *)self setInstallProfileViewController:v12];
       [v12 setDelegate:self];
       v7 = [[UINavigationController alloc] initWithRootViewController:v12];
-      v8 = [(HOProfileInstaller *)self baseViewController];
-      [v8 presentViewController:v7 animated:1 completion:0];
+      baseViewController = [(HOProfileInstaller *)self baseViewController];
+      [baseViewController presentViewController:v7 animated:1 completion:0];
     }
 
     else
@@ -76,33 +76,33 @@
   }
 }
 
-- (void)installProfileWithCompletionHandler:(id)a3
+- (void)installProfileWithCompletionHandler:(id)handler
 {
-  [(HOProfileInstaller *)self setInstallProfileVCCompletionBlock:a3];
+  [(HOProfileInstaller *)self setInstallProfileVCCompletionBlock:handler];
 
   [(HOHomePodProfileInstaller *)self _startProfileInstallation];
 }
 
-- (void)deviceProfileCompletedNotification:(id)a3
+- (void)deviceProfileCompletedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"errorCode"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"errorCode"];
 
-  v6 = [v5 integerValue];
-  v7 = [v5 integerValue];
-  v8 = [(HOProfileInstaller *)self installProfileVCCompletionBlock];
+  integerValue = [v5 integerValue];
+  integerValue2 = [v5 integerValue];
+  installProfileVCCompletionBlock = [(HOProfileInstaller *)self installProfileVCCompletionBlock];
 
-  if (v8)
+  if (installProfileVCCompletionBlock)
   {
-    v9 = [(HOProfileInstaller *)self installProfileVCCompletionBlock];
-    v9[2](v9, 0);
+    installProfileVCCompletionBlock2 = [(HOProfileInstaller *)self installProfileVCCompletionBlock];
+    installProfileVCCompletionBlock2[2](installProfileVCCompletionBlock2, 0);
   }
 
-  if (v6)
+  if (integerValue)
   {
     v10 = HFLogForCategory();
     v11 = v10;
-    if (v7 == -6723)
+    if (integerValue2 == -6723)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -123,9 +123,9 @@
   else
   {
     [(HOProfileInstaller *)self setInstallProfileVCCompletionBlock:0];
-    v12 = [(HOProfileInstaller *)self profileData];
+    profileData = [(HOProfileInstaller *)self profileData];
     v18 = 0;
-    v13 = [MCProfile profileWithData:v12 outError:&v18];
+    v13 = [MCProfile profileWithData:profileData outError:&v18];
     v14 = v18;
 
     if ([v13 needsReboot])
@@ -154,22 +154,22 @@
 - (void)_startProfileInstallation
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 allHomesFuture];
+  allHomesFuture = [v3 allHomesFuture];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100043C40;
   v6[3] = &unk_1000C2070;
   v6[4] = self;
-  v5 = [v4 addCompletionBlock:v6];
+  v5 = [allHomesFuture addCompletionBlock:v6];
 }
 
-- (void)_handleProfileInstallationForHome:(id)a3
+- (void)_handleProfileInstallationForHome:(id)home
 {
-  v5 = a3;
-  if ([v5 hf_allHomePodsSupportRemoteProfileInstallation])
+  homeCopy = home;
+  if ([homeCopy hf_allHomePodsSupportRemoteProfileInstallation])
   {
-    v4 = [v5 hf_homePods];
-    [(HOHomePodProfileInstaller *)self _presentHomePodSelectionAlertWithHomePods:v4];
+    hf_homePods = [homeCopy hf_homePods];
+    [(HOHomePodProfileInstaller *)self _presentHomePodSelectionAlertWithHomePods:hf_homePods];
   }
 
   else
@@ -178,31 +178,31 @@
   }
 }
 
-- (void)_installProfileForHomePod:(id)a3
+- (void)_installProfileForHomePod:(id)pod
 {
-  v4 = a3;
-  v5 = [(HOProfileInstaller *)self profileData];
+  podCopy = pod;
+  profileData = [(HOProfileInstaller *)self profileData];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100043E6C;
   v7[3] = &unk_1000C3B18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v6 installManagedConfigurationProfileWithData:v5 completionHandler:v7];
+  v8 = podCopy;
+  selfCopy = self;
+  v6 = podCopy;
+  [v6 installManagedConfigurationProfileWithData:profileData completionHandler:v7];
 }
 
-- (void)_installProfileForHomePods:(id)a3
+- (void)_installProfileForHomePods:(id)pods
 {
-  v4 = a3;
+  podsCopy = pods;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004412C;
   v7[3] = &unk_1000C4290;
   v7[4] = self;
   v8 = objc_opt_new();
-  v9 = v4;
-  v5 = v4;
+  v9 = podsCopy;
+  v5 = podsCopy;
   v6 = v8;
   [v5 na_each:v7];
 }
@@ -212,8 +212,8 @@
   objc_initWeak(&location, self);
   v3 = objc_opt_new();
   v9 = @"profileData";
-  v4 = [(HOProfileInstaller *)self profileData];
-  v10 = v4;
+  profileData = [(HOProfileInstaller *)self profileData];
+  v10 = profileData;
   v5 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -226,32 +226,32 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_presentHomeSelectionAlertWithHomes:(id)a3
+- (void)_presentHomeSelectionAlertWithHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   v5 = sub_100043700(@"HOProfileInstallChooseHomeTitle");
   v6 = [UIAlertController alertControllerWithTitle:v5 message:0 preferredStyle:1];
 
-  v7 = [v4 sortedArrayUsingComparator:&stru_1000C42F8];
+  v7 = [homesCopy sortedArrayUsingComparator:&stru_1000C42F8];
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_10004489C;
   v14 = &unk_1000C2A00;
-  v15 = self;
+  selfCopy = self;
   v16 = v6;
   v8 = v6;
   [v7 na_each:&v11];
   v9 = [(HOHomePodProfileInstaller *)self _cancelAction:v11];
   [v8 addAction:v9];
 
-  v10 = [(HOProfileInstaller *)self installProfileViewController];
-  [v10 presentViewController:v8 animated:1 completion:0];
+  installProfileViewController = [(HOProfileInstaller *)self installProfileViewController];
+  [installProfileViewController presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)_presentHomePodSelectionAlertWithHomePods:(id)a3
+- (void)_presentHomePodSelectionAlertWithHomePods:(id)pods
 {
-  v4 = a3;
+  podsCopy = pods;
   v5 = sub_100043700(@"HOProfileInstallChooseHomePodTitle");
   v6 = sub_100043700(@"HOProfileInstallChooseHomePodMessage");
   v7 = [UIAlertController alertControllerWithTitle:v5 message:v6 preferredStyle:1];
@@ -261,8 +261,8 @@
   v21[2] = sub_100044B8C;
   v21[3] = &unk_1000C3AF0;
   v21[4] = self;
-  v22 = v4;
-  v9 = v4;
+  v22 = podsCopy;
+  v9 = podsCopy;
   v10 = [UIAlertAction actionWithTitle:v8 style:0 handler:v21];
 
   [v7 addAction:v10];
@@ -271,15 +271,15 @@
   v16 = 3221225472;
   v17 = sub_100044C08;
   v18 = &unk_1000C4340;
-  v19 = self;
+  selfCopy = self;
   v20 = v7;
   v12 = v7;
   [v11 na_each:&v15];
   v13 = [(HOHomePodProfileInstaller *)self _cancelAction:v15];
   [v12 addAction:v13];
 
-  v14 = [(HOProfileInstaller *)self installProfileViewController];
-  [v14 presentViewController:v12 animated:1 completion:0];
+  installProfileViewController = [(HOProfileInstaller *)self installProfileViewController];
+  [installProfileViewController presentViewController:v12 animated:1 completion:0];
 }
 
 - (void)_presentCompletionAlert
@@ -296,8 +296,8 @@
   v6 = [UIAlertAction actionWithTitle:v5 style:0 handler:v8];
   [v4 addAction:v6];
 
-  v7 = [(HOProfileInstaller *)self installProfileViewController];
-  [v7 presentViewController:v4 animated:1 completion:0];
+  installProfileViewController = [(HOProfileInstaller *)self installProfileViewController];
+  [installProfileViewController presentViewController:v4 animated:1 completion:0];
 }
 
 - (void)_presentErrorAlert
@@ -315,24 +315,24 @@
   v7 = [UIAlertAction actionWithTitle:v6 style:0 handler:v9];
   [v5 addAction:v7];
 
-  v8 = [(HOProfileInstaller *)self installProfileViewController];
-  [v8 presentViewController:v5 animated:1 completion:0];
+  installProfileViewController = [(HOProfileInstaller *)self installProfileViewController];
+  [installProfileViewController presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_presentPartialErrorAlertForHomePods:(id)a3
+- (void)_presentPartialErrorAlertForHomePods:(id)pods
 {
-  v4 = a3;
+  podsCopy = pods;
   v5 = sub_100043700(@"HOProfileHomePodsInstallFailedMessage");
   v20 = 0;
-  v6 = +[NSString stringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "stringWithValidatedFormat:validFormatSpecifiers:error:", v5, @"%lu", &v20, [v4 count]);
+  v6 = +[NSString stringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "stringWithValidatedFormat:validFormatSpecifiers:error:", v5, @"%lu", &v20, [podsCopy count]);
   v7 = v20;
-  if ([v4 count] == 1)
+  if ([podsCopy count] == 1)
   {
     v8 = sub_100043700(@"HOProfileHomePodInstallFailedMessage");
     v19 = v7;
-    v9 = [v4 firstObject];
-    v10 = [v9 hf_displayName];
-    v11 = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:&v19, v10];
+    firstObject = [podsCopy firstObject];
+    hf_displayName = [firstObject hf_displayName];
+    v11 = [NSString stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@" error:&v19, hf_displayName];
     v12 = v19;
 
     v6 = v11;
@@ -351,8 +351,8 @@
   v16 = [UIAlertAction actionWithTitle:v15 style:0 handler:v18];
   [v14 addAction:v16];
 
-  v17 = [(HOProfileInstaller *)self installProfileViewController];
-  [v17 presentViewController:v14 animated:1 completion:0];
+  installProfileViewController = [(HOProfileInstaller *)self installProfileViewController];
+  [installProfileViewController presentViewController:v14 animated:1 completion:0];
 }
 
 - (id)_cancelAction

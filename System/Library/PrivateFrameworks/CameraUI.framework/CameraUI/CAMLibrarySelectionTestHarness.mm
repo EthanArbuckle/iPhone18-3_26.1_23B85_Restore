@@ -1,20 +1,20 @@
 @interface CAMLibrarySelectionTestHarness
-- (CAMLibrarySelectionTestHarness)initWithTestName:(id)a3 librarySelectionController:(id)a4;
+- (CAMLibrarySelectionTestHarness)initWithTestName:(id)name librarySelectionController:(id)controller;
 - (void)startTesting;
 @end
 
 @implementation CAMLibrarySelectionTestHarness
 
-- (CAMLibrarySelectionTestHarness)initWithTestName:(id)a3 librarySelectionController:(id)a4
+- (CAMLibrarySelectionTestHarness)initWithTestName:(id)name librarySelectionController:(id)controller
 {
-  v7 = a4;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = CAMLibrarySelectionTestHarness;
-  v8 = [(CAMPerformanceTestHarness *)&v11 initWithTestName:a3];
+  v8 = [(CAMPerformanceTestHarness *)&v11 initWithTestName:name];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_librarySelectionController, a4);
+    objc_storeStrong(&v8->_librarySelectionController, controller);
   }
 
   return v9;
@@ -22,8 +22,8 @@
 
 - (void)startTesting
 {
-  v3 = [(CAMLibrarySelectionTestHarness *)self librarySelectionController];
-  if (!v3)
+  librarySelectionController = [(CAMLibrarySelectionTestHarness *)self librarySelectionController];
+  if (!librarySelectionController)
   {
     v8 = @"Missing LibrarySelectionController";
 LABEL_6:
@@ -32,16 +32,16 @@ LABEL_6:
   }
 
   v4 = +[CAMCaptureCapabilities capabilities];
-  v5 = [v4 peopleProximityDetectionSupported];
+  peopleProximityDetectionSupported = [v4 peopleProximityDetectionSupported];
 
-  if ((v5 & 1) == 0)
+  if ((peopleProximityDetectionSupported & 1) == 0)
   {
     v8 = @"Device Proximity not allowed";
     goto LABEL_6;
   }
 
-  v6 = [(CAMLibrarySelectionTestHarness *)self librarySelectionController];
-  [v6 stopAndClearAcquiredSignals];
+  librarySelectionController2 = [(CAMLibrarySelectionTestHarness *)self librarySelectionController];
+  [librarySelectionController2 stopAndClearAcquiredSignals];
 
   v7 = dispatch_time(0, 10000000000);
   block[0] = MEMORY[0x1E69E9820];

@@ -1,36 +1,36 @@
 @interface PMLSeparatedDPNoiseStrategy
-+ (id)getPFLIdentifier:(id)a3;
-- (BOOL)scaleAndAddNoiseToDenseVector:(id)a3 usingNorm:(BOOL)a4 scaleFactor:(float *)a5;
-- (PMLSeparatedDPNoiseStrategy)initWithPFLIdentifier:(const char *)a3;
-- (PMLSeparatedDPNoiseStrategy)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
++ (id)getPFLIdentifier:(id)identifier;
+- (BOOL)scaleAndAddNoiseToDenseVector:(id)vector usingNorm:(BOOL)norm scaleFactor:(float *)factor;
+- (PMLSeparatedDPNoiseStrategy)initWithPFLIdentifier:(const char *)identifier;
+- (PMLSeparatedDPNoiseStrategy)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
 @end
 
 @implementation PMLSeparatedDPNoiseStrategy
 
-- (PMLSeparatedDPNoiseStrategy)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (PMLSeparatedDPNoiseStrategy)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v7 = a5;
-  v8 = [v7 objectForKeyedSubscript:@"PFL_ID"];
+  contextCopy = context;
+  v8 = [contextCopy objectForKeyedSubscript:@"PFL_ID"];
 
   if (!v8)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"PMLSeparatedDPNoiseStrategy.m" lineNumber:85 description:{@"Can't instantiate %@. Missing %@ dependency.", v14, @"PFL_ID"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLSeparatedDPNoiseStrategy.m" lineNumber:85 description:{@"Can't instantiate %@. Missing %@ dependency.", v14, @"PFL_ID"}];
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"PFL_ID"];
+  v9 = [contextCopy objectForKeyedSubscript:@"PFL_ID"];
   v10 = -[PMLSeparatedDPNoiseStrategy initWithPFLIdentifier:](self, "initWithPFLIdentifier:", [v9 UTF8String]);
 
   return v10;
 }
 
-- (BOOL)scaleAndAddNoiseToDenseVector:(id)a3 usingNorm:(BOOL)a4 scaleFactor:(float *)a5
+- (BOOL)scaleAndAddNoiseToDenseVector:(id)vector usingNorm:(BOOL)norm scaleFactor:(float *)factor
 {
-  v7 = a3;
-  v8 = [v7 mutablePtr];
-  v9 = [v7 count];
+  vectorCopy = vector;
+  mutablePtr = [vectorCopy mutablePtr];
+  v9 = [vectorCopy count];
   pflIdentifier = self->_pflIdentifier;
   v22 = 0;
   v23 = &v22;
@@ -51,10 +51,10 @@
   _Block_object_dispose(&v22, 8);
   if (v11)
   {
-    v12 = v11(v8, v9, pflIdentifier);
+    v12 = v11(mutablePtr, v9, pflIdentifier);
     if (v12)
     {
-      *a5 = 1.0;
+      *factor = 1.0;
     }
 
     else
@@ -72,9 +72,9 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"_Bool soft_PFLPrivatize(float *, size_t, const char *)"}];
-    [v15 handleFailureInFunction:v16 file:@"PMLSeparatedDPNoiseStrategy.m" lineNumber:19 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v16 file:@"PMLSeparatedDPNoiseStrategy.m" lineNumber:19 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -82,22 +82,22 @@
   return result;
 }
 
-- (PMLSeparatedDPNoiseStrategy)initWithPFLIdentifier:(const char *)a3
+- (PMLSeparatedDPNoiseStrategy)initWithPFLIdentifier:(const char *)identifier
 {
   v5.receiver = self;
   v5.super_class = PMLSeparatedDPNoiseStrategy;
   result = [(PMLSeparatedDPNoiseStrategy *)&v5 init];
   if (result)
   {
-    result->_pflIdentifier = a3;
+    result->_pflIdentifier = identifier;
   }
 
   return result;
 }
 
-+ (id)getPFLIdentifier:(id)a3
++ (id)getPFLIdentifier:(id)identifier
 {
-  if ([@"QuickResponsesClassification" isEqualToString:a3])
+  if ([@"QuickResponsesClassification" isEqualToString:identifier])
   {
     return @"com.apple.proactive.responses";
   }

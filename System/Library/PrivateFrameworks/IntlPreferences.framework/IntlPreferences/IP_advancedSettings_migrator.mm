@@ -1,17 +1,17 @@
 @interface IP_advancedSettings_migrator
-- (id)performMigrationForPreferences:(id)a3;
+- (id)performMigrationForPreferences:(id)preferences;
 - (void)migrateOtherSystemSettings;
 @end
 
 @implementation IP_advancedSettings_migrator
 
-- (id)performMigrationForPreferences:(id)a3
+- (id)performMigrationForPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if ([(ISMigrator *)self platform]== 1 && [(ISMigrator *)self previousSchemaVersion]< 0xBB8)
   {
-    v5 = [v4 mutableCopy];
-    v6 = [v4 objectForKeyedSubscript:@"AppleLocale"];
+    v5 = [preferencesCopy mutableCopy];
+    v6 = [preferencesCopy objectForKeyedSubscript:@"AppleLocale"];
     v7 = [MEMORY[0x277CBEAF8] componentsFromLocaleIdentifier:v6];
     v8 = [v7 mutableCopy];
 
@@ -22,7 +22,7 @@
 
   else
   {
-    v5 = v4;
+    v5 = preferencesCopy;
   }
 
   return v5;
@@ -35,10 +35,10 @@
     return;
   }
 
-  v22 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v3 = *MEMORY[0x277CCA208];
-  [v22 removeObjectForKey:@"AppleICUTimeFormatStrings" inDomain:*MEMORY[0x277CCA208]];
-  [v22 removeObjectForKey:@"AppleICUDateTimeSymbols" inDomain:v3];
+  [standardUserDefaults removeObjectForKey:@"AppleICUTimeFormatStrings" inDomain:*MEMORY[0x277CCA208]];
+  [standardUserDefaults removeObjectForKey:@"AppleICUDateTimeSymbols" inDomain:v3];
   v4 = +[IPNumberFormat currentFormat];
   v5 = +[IPNumberFormat availableFormats];
   if ([v5 containsObject:v4])
@@ -48,19 +48,19 @@
 
   else
   {
-    v6 = [v5 firstObject];
-    [IPNumberFormat setFormat:v6];
+    firstObject = [v5 firstObject];
+    [IPNumberFormat setFormat:firstObject];
   }
 
   v7 = objc_opt_new();
-  v8 = [MEMORY[0x277CBEAF8] preferredLocale];
-  [v7 setLocale:v8];
+  preferredLocale = [MEMORY[0x277CBEAF8] preferredLocale];
+  [v7 setLocale:preferredLocale];
 
   [v7 setDateStyle:1];
-  v9 = [v7 dateFormat];
+  dateFormat = [v7 dateFormat];
   v10 = +[IPDateFormat dateFormatterFromLocale];
-  v11 = [v10 dateFormat];
-  v12 = [v9 isEqualToString:v11];
+  dateFormat2 = [v10 dateFormat];
+  v12 = [dateFormat isEqualToString:dateFormat2];
 
   if (v12)
   {
@@ -70,10 +70,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v14 = [v7 dateFormat];
+  dateFormat3 = [v7 dateFormat];
   v15 = +[IPDateFormat dateFormatterFromLanguage];
-  v16 = [v15 dateFormat];
-  v17 = [v14 isEqualToString:v16];
+  dateFormat4 = [v15 dateFormat];
+  v17 = [dateFormat3 isEqualToString:dateFormat4];
 
   if (v17)
   {
@@ -81,13 +81,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v19 = [v7 dateFormat];
-  v20 = [&unk_2841A24B8 containsObject:v19];
+  dateFormat5 = [v7 dateFormat];
+  v20 = [&unk_2841A24B8 containsObject:dateFormat5];
 
   if (v20)
   {
-    v21 = [v7 dateFormat];
-    [IPDateFormat setDateFormat:v21];
+    dateFormat6 = [v7 dateFormat];
+    [IPDateFormat setDateFormat:dateFormat6];
 
     goto LABEL_13;
   }

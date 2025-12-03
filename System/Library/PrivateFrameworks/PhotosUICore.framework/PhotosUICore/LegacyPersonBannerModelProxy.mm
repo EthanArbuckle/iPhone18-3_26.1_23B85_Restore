@@ -1,17 +1,17 @@
 @interface LegacyPersonBannerModelProxy
-- (BOOL)popToViewController:(id)a3 animated:(BOOL)a4;
-- (BOOL)pushViewController:(id)a3 animated:(BOOL)a4;
+- (BOOL)popToViewController:(id)controller animated:(BOOL)animated;
+- (BOOL)pushViewController:(id)controller animated:(BOOL)animated;
 - (_TtC12PhotosUICore28LegacyPersonBannerModelProxy)init;
-- (id)presentAlertWithConfigurationHandler:(id)a3;
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
+- (id)presentAlertWithConfigurationHandler:(id)handler;
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler;
 @end
 
 @implementation LegacyPersonBannerModelProxy
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -30,28 +30,28 @@
   v11 = *(v10 + 1);
   ObjectType = swift_getObjectType();
   v13 = *(v11 + 16);
-  v17 = a3;
-  v14 = self;
-  v13(a3, ObjectType, v11);
+  controllerCopy = controller;
+  selfCopy = self;
+  v13(controller, ObjectType, v11);
   v15 = swift_unknownObjectRelease();
   if (v7)
   {
     (v9)(v15);
 
     sub_1A3C784D4(v9, v8);
-    v16 = v17;
+    v16 = controllerCopy;
   }
 
   else
   {
 
-    v16 = v14;
+    v16 = selfCopy;
   }
 }
 
-- (void)dismissViewController:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)dismissViewController:(id)controller animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -64,29 +64,29 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  sub_1A46BBFC4(v9, v7);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1A46BBFC4(controllerCopy, v7);
   sub_1A3C784D4(v7, v8);
 }
 
-- (BOOL)pushViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)pushViewController:(id)controller animated:(BOOL)animated
 {
   result = sub_1A524E6E4();
   __break(1u);
   return result;
 }
 
-- (BOOL)popToViewController:(id)a3 animated:(BOOL)a4
+- (BOOL)popToViewController:(id)controller animated:(BOOL)animated
 {
   result = sub_1A524E6E4();
   __break(1u);
   return result;
 }
 
-- (id)presentAlertWithConfigurationHandler:(id)a3
+- (id)presentAlertWithConfigurationHandler:(id)handler
 {
-  _Block_copy(a3);
+  _Block_copy(handler);
   result = sub_1A524E6E4();
   __break(1u);
   return result;

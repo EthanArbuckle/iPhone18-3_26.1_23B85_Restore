@@ -1,6 +1,6 @@
 @interface NSAttributedString
 - (id)_ui_attributedStringScaledByScaleFactor:(id)result;
-- (id)_ui_scaledStringWithAttributes:(void *)a3 font:(double)a4 scale:;
+- (id)_ui_scaledStringWithAttributes:(void *)attributes font:(double)font scale:;
 @end
 
 @implementation NSAttributedString
@@ -242,15 +242,15 @@ uint64_t __95__NSAttributedString_NSAttributedStringAttachmentConveniences__attr
   return result;
 }
 
-- (id)_ui_scaledStringWithAttributes:(void *)a3 font:(double)a4 scale:
+- (id)_ui_scaledStringWithAttributes:(void *)attributes font:(double)font scale:
 {
   if (result)
   {
     v6 = result;
     if (a2)
     {
-      [a3 pointSize];
-      [a2 setObject:objc_msgSend(a3 forKeyedSubscript:{"fontWithSize:", round(v8 * a4 * 4.0) * 0.25), @"NSFont"}];
+      [attributes pointSize];
+      [a2 setObject:objc_msgSend(attributes forKeyedSubscript:{"fontWithSize:", round(v8 * font * 4.0) * 0.25), @"NSFont"}];
 
       return [v6 string];
     }
@@ -258,7 +258,7 @@ uint64_t __95__NSAttributedString_NSAttributedStringAttachmentConveniences__attr
     else
     {
 
-      return [(NSAttributedString *)result _ui_attributedStringScaledByScaleFactor:a4];
+      return [(NSAttributedString *)result _ui_attributedStringScaledByScaleFactor:font];
     }
   }
 

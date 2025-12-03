@@ -13,14 +13,14 @@
   [(SBHWidgetSettings *)self setStackAlwaysShowsPageControl:0];
   [(SBHWidgetSettings *)self setStackFlashesPageControlOnAppearance:1];
   [(SBHWidgetSettings *)self setStackPageControlScale:0.65];
-  v3 = [(SBHWidgetSettings *)self toggleEditingOrPinnedAnimationSettings];
-  [v3 setDefaultValues];
+  toggleEditingOrPinnedAnimationSettings = [(SBHWidgetSettings *)self toggleEditingOrPinnedAnimationSettings];
+  [toggleEditingOrPinnedAnimationSettings setDefaultValues];
 
-  v4 = [(SBHWidgetSettings *)self toggleEditingOrPinnedAnimationSettings];
-  [v4 setDampingRatio:0.845];
+  toggleEditingOrPinnedAnimationSettings2 = [(SBHWidgetSettings *)self toggleEditingOrPinnedAnimationSettings];
+  [toggleEditingOrPinnedAnimationSettings2 setDampingRatio:0.845];
 
-  v5 = [(SBHWidgetSettings *)self toggleEditingOrPinnedAnimationSettings];
-  [v5 setResponse:0.45];
+  toggleEditingOrPinnedAnimationSettings3 = [(SBHWidgetSettings *)self toggleEditingOrPinnedAnimationSettings];
+  [toggleEditingOrPinnedAnimationSettings3 setResponse:0.45];
 
   [(SBHWidgetSettings *)self setAnimatedInsertionJumpScale:1.4];
   [(SBHWidgetSettings *)self setAnimatedInsertionImpactScale:0.8];
@@ -35,20 +35,20 @@
   [(SBHWidgetSettings *)self setAnimatedInsertionScaleResetDampingRatio:0.8];
   [(SBHWidgetSettings *)self setAnimatedInsertionPositionDuration:1.0];
   [(SBHWidgetSettings *)self setAnimatedInsertionPositionDampingRatio:1.0];
-  v6 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
-  [v6 setDefaultValues];
+  dropInsertionAnimationSettings = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
+  [dropInsertionAnimationSettings setDefaultValues];
 
-  v7 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
-  [v7 setDampingRatio:0.7];
+  dropInsertionAnimationSettings2 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
+  [dropInsertionAnimationSettings2 setDampingRatio:0.7];
 
-  v8 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
-  [v8 setResponse:0.36];
+  dropInsertionAnimationSettings3 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
+  [dropInsertionAnimationSettings3 setResponse:0.36];
 
-  v9 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
-  [v9 setTrackingDampingRatio:0.7];
+  dropInsertionAnimationSettings4 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
+  [dropInsertionAnimationSettings4 setTrackingDampingRatio:0.7];
 
-  v10 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
-  [v10 setTrackingResponse:0.36];
+  dropInsertionAnimationSettings5 = [(SBHWidgetSettings *)self dropInsertionAnimationSettings];
+  [dropInsertionAnimationSettings5 setTrackingResponse:0.36];
 
   [(SBHWidgetSettings *)self setDropInsertionImpactScale:0.8];
   [(SBHWidgetSettings *)self setDropInsertionImpactDelay:0.0333333333];
@@ -58,10 +58,10 @@
   [(SBHWidgetSettings *)self setDropInsertionScaleResetDuration:0.6];
   [(SBHWidgetSettings *)self setDropInsertionScaleResetDelay:0.1];
   [(SBHWidgetSettings *)self setDropInsertionScaleResetDampingRatio:0.8];
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  [(SBHWidgetSettings *)self setConfigurationBlursBackground:(v12 & 0xFFFFFFFFFFFFFFFBLL) != 1];
+  [(SBHWidgetSettings *)self setConfigurationBlursBackground:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1];
   [(SBHWidgetSettings *)self setConfigurationUsesPercentVerticalMargin:1];
   [(SBHWidgetSettings *)self setConfigurationPercentVerticalMargin:0.2];
   [(SBHWidgetSettings *)self setConfigurationAbsoluteVerticalMargin:24.0];
@@ -82,16 +82,16 @@
   [(SBHWidgetSettings *)self setStackConfigurationContentHeightRatio:1.7];
   [(SBHWidgetSettings *)self setStackConfigurationZoomTransitionDuration:0.475];
   [(SBHWidgetSettings *)self setStackConfigurationBlursBackground:1];
-  v13 = [MEMORY[0x1E69DC938] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  [(SBHWidgetSettings *)self setStackConfigurationUsesFolderBlur:(v14 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+  [(SBHWidgetSettings *)self setStackConfigurationUsesFolderBlur:(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1];
   [(SBHWidgetSettings *)self setStackConfigurationDimmingAlpha:0.1728];
   [(SBHWidgetSettings *)self setStackConfigurationNoBlurDimmingAlpha:0.6];
-  v15 = [MEMORY[0x1E69DC938] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  [(SBHWidgetSettings *)self setStackConfigurationShouldScaleWidgets:(v16 & 0xFFFFFFFFFFFFFFFBLL) != 1];
+  [(SBHWidgetSettings *)self setStackConfigurationShouldScaleWidgets:(userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) != 1];
   [(SBHWidgetSettings *)self setStackConfigurationMediumIconScale:0.86];
   [(SBHWidgetSettings *)self setStackConfigurationLargeIconScale:0.82];
 
@@ -102,8 +102,8 @@
 {
   v175[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C65E8];
-  v3 = [MEMORY[0x1E69C6640] action];
-  v167 = [v2 rowWithTitle:@"Restore Defaults" action:v3];
+  action = [MEMORY[0x1E69C6640] action];
+  v167 = [v2 rowWithTitle:@"Restore Defaults" action:action];
 
   v4 = MEMORY[0x1E69C6638];
   v175[0] = v167;

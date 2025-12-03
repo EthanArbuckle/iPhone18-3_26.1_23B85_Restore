@@ -1,67 +1,67 @@
 @interface SABinary
-+ (SABinary)binaryWithUUID:(id)a3;
-+ (SABinary)binaryWithUUID:(id)a3 absolutePath:(id)a4;
-+ (id)binaryWithPath:(uint64_t)a1 architecture:(void *)a2 additionalCSSymbolicatorFlags:(uint64_t)a3;
-+ (id)binaryWithSymbolOwner:(uint64_t)a3 fromDisk:(uint64_t)a4;
++ (SABinary)binaryWithUUID:(id)d;
++ (SABinary)binaryWithUUID:(id)d absolutePath:(id)path;
++ (id)binaryWithPath:(uint64_t)path architecture:(void *)architecture additionalCSSymbolicatorFlags:(uint64_t)flags;
++ (id)binaryWithSymbolOwner:(uint64_t)owner fromDisk:(uint64_t)disk;
 + (id)dataFillingQueue;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
-+ (uint64_t)haveMultipleBinariesWithUUID:(uint64_t)a1;
-+ (void)_addDsymPath:(uint64_t)a1;
-+ (void)_doCachedBinariesWork:(uint64_t)a1;
-+ (void)_doDsymPathsWork:(uint64_t)a1;
-+ (void)addDsymPaths:(id)a3;
-+ (void)addPath:(id)a3 forBinaryWithUUID:(id)a4;
-+ (void)addSymbolsFromTailspin:(id)a3;
-+ (void)binaryForDyldImage:(int)a3 options:;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
++ (uint64_t)haveMultipleBinariesWithUUID:(uint64_t)d;
++ (void)_addDsymPath:(uint64_t)path;
++ (void)_doCachedBinariesWork:(uint64_t)work;
++ (void)_doDsymPathsWork:(uint64_t)work;
++ (void)addDsymPaths:(id)paths;
++ (void)addPath:(id)path forBinaryWithUUID:(id)d;
++ (void)addSymbolsFromTailspin:(id)tailspin;
++ (void)binaryForDyldImage:(int)image options:;
 + (void)clearCaches;
 + (void)clearCoreSymbolicationCaches;
 + (void)clearSymbolCaches;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
-- (BOOL)applyLength:(void *)a1;
-- (BOOL)cacheSymbolOwnerWithOptions:(unint64_t)a3 pid:(int)a4 additionalCSSymbolicatorFlags:(unsigned int)a5;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
+- (BOOL)applyLength:(void *)length;
+- (BOOL)cacheSymbolOwnerWithOptions:(unint64_t)options pid:(int)pid additionalCSSymbolicatorFlags:(unsigned int)flags;
 - (BOOL)hasTextExecSegment;
 - (NSArray)segments;
 - (NSString)debugDescription;
 - (NSString)name;
-- (SABinary)initWithUUID:(id)a3 path:(id)a4;
-- (id)addSymbolWithOffsetIntoBinary:(unint64_t)a3 length:(void *)a4 name:;
-- (id)checkForSegmentWithCleanName:(void *)a1;
+- (SABinary)initWithUUID:(id)d path:(id)path;
+- (id)addSymbolWithOffsetIntoBinary:(unint64_t)binary length:(void *)length name:;
+- (id)checkForSegmentWithCleanName:(void *)name;
 - (id)createFakeEntireBinarySegment;
-- (id)instructionAtOffsetIntoBinary:(int64_t)a3;
-- (id)instructionAtOffsetIntoTextSegment:(unint64_t)a3;
-- (id)segmentAtOffsetIntoBinary:(int)a3 createFakeSegmentIfNeeded:;
-- (id)segmentWithCSSegment:(uint64_t)a3 symbolOwnerLayoutMatchesDisk:(int)a4 symbolOwnerBaseAddress:(uint64_t)a5;
-- (id)segmentWithCleanName:(NSObject *)a3 length:(uint64_t)a4 offsetIntoBinary:;
-- (id)segmentWithName:(NSObject *)a3 length:(uint64_t)a4 offsetIntoBinary:;
-- (id)segmentWithName:(id)a3;
-- (id)symbolOwnerWrapperWithOptions:(int)a3 pid:(int)a4 checkExclave:(int)a5 additionalCSSymbolicatorFlags:;
+- (id)instructionAtOffsetIntoBinary:(int64_t)binary;
+- (id)instructionAtOffsetIntoTextSegment:(unint64_t)segment;
+- (id)segmentAtOffsetIntoBinary:(int)binary createFakeSegmentIfNeeded:;
+- (id)segmentWithCSSegment:(uint64_t)segment symbolOwnerLayoutMatchesDisk:(int)disk symbolOwnerBaseAddress:(uint64_t)address;
+- (id)segmentWithCleanName:(NSObject *)name length:(uint64_t)length offsetIntoBinary:;
+- (id)segmentWithName:(NSObject *)name length:(uint64_t)length offsetIntoBinary:;
+- (id)segmentWithName:(id)name;
+- (id)symbolOwnerWrapperWithOptions:(int)options pid:(int)pid checkExclave:(int)exclave additionalCSSymbolicatorFlags:;
 - (unint64_t)textSegmentLength;
-- (void)addInfoFromSymbolOwner:(uint64_t)a3 fromDisk:(uint64_t)a4 includeExpensiveInfo:(int)a5;
-- (void)addPath:(id)a3;
-- (void)addSelfToSerializationDictionary:(id)a3;
+- (void)addInfoFromSymbolOwner:(uint64_t)owner fromDisk:(uint64_t)disk includeExpensiveInfo:(int)info;
+- (void)addPath:(id)path;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
 - (void)clearCoreSymbolicationCache;
 - (void)clearSymbolCache;
 - (void)findPathViaBinaryLocator;
 - (void)gatherBundleInfo;
-- (void)gatherInfoWithDataGatheringOptions:(unint64_t)a3 pid:(int)a4;
-- (void)getCodeSignInfoWithBundleUrl:(void *)a1;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
-- (void)saveInfoFromBundle:(void *)a1;
-- (void)segmentAtOffsetIntoBinary:(void *)a1;
-- (void)setName:(void *)a1;
-- (void)symbolicateAllInstructionsWithOptions:(int)a3 pid:(int)a4 checkExclave:(int)a5 onlyDsym:(int)a6 additionalCSSymbolicatorFlags:;
-- (void)writeJSONDictionaryEntriesToStream:(id)a3;
+- (void)gatherInfoWithDataGatheringOptions:(unint64_t)options pid:(int)pid;
+- (void)getCodeSignInfoWithBundleUrl:(void *)url;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
+- (void)saveInfoFromBundle:(void *)bundle;
+- (void)segmentAtOffsetIntoBinary:(void *)binary;
+- (void)setName:(void *)name;
+- (void)symbolicateAllInstructionsWithOptions:(int)options pid:(int)pid checkExclave:(int)exclave onlyDsym:(int)dsym additionalCSSymbolicatorFlags:;
+- (void)writeJSONDictionaryEntriesToStream:(id)stream;
 @end
 
 @implementation SABinary
 
 - (NSArray)segments
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_segments copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_segments copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -93,9 +93,9 @@
 
 - (NSString)name
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  name = v2->_name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  name = selfCopy->_name;
   if (name)
   {
     Path = name;
@@ -103,33 +103,33 @@
 
   else
   {
-    Path = [(NSString *)v2->_path copyLastPathComponent];
+    Path = [(NSString *)selfCopy->_path copyLastPathComponent];
   }
 
   v5 = Path;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
 - (id)createFakeEntireBinarySegment
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v2 = v1[6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v2 = selfCopy[6];
     if (!v2)
     {
-      v3 = [SASegment segmentWithBinary:v1 name:@"ENTIRE_BINARY" length:v1[5] offsetIntoBinary:0];
-      v4 = v1[6];
-      v1[6] = v3;
+      v3 = [SASegment segmentWithBinary:selfCopy name:@"ENTIRE_BINARY" length:selfCopy[5] offsetIntoBinary:0];
+      v4 = selfCopy[6];
+      selfCopy[6] = v3;
 
-      v2 = v1[6];
+      v2 = selfCopy[6];
     }
 
     v5 = v2;
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -140,7 +140,7 @@
   return v5;
 }
 
-+ (void)_doCachedBinariesWork:(uint64_t)a1
++ (void)_doCachedBinariesWork:(uint64_t)work
 {
   objc_opt_self();
   os_unfair_lock_lock(&unk_1EDD031D8);
@@ -169,7 +169,7 @@
   v2[2] = __23__SABinary_clearCaches__block_invoke;
   v2[3] = &unk_1E86F6840;
   v2[4] = &v3;
-  [(SABinary *)a1 _doCachedBinariesWork:v2];
+  [(SABinary *)self _doCachedBinariesWork:v2];
   [v4[5] enumerateKeysAndObjectsUsingBlock:&__block_literal_global_3];
   _Block_object_dispose(&v3, 8);
 }
@@ -253,7 +253,7 @@ void __23__SABinary_clearCaches__block_invoke_102(uint64_t a1, uint64_t a2, void
   v2[2] = __29__SABinary_clearSymbolCaches__block_invoke;
   v2[3] = &unk_1E86F6840;
   v2[4] = &v3;
-  [(SABinary *)a1 _doCachedBinariesWork:v2];
+  [(SABinary *)self _doCachedBinariesWork:v2];
   [v4[5] enumerateKeysAndObjectsUsingBlock:&__block_literal_global_105];
   _Block_object_dispose(&v3, 8);
 }
@@ -315,7 +315,7 @@ void __29__SABinary_clearSymbolCaches__block_invoke_2(uint64_t a1, uint64_t a2, 
   v2[2] = __40__SABinary_clearCoreSymbolicationCaches__block_invoke;
   v2[3] = &unk_1E86F6840;
   v2[4] = &v3;
-  [(SABinary *)a1 _doCachedBinariesWork:v2];
+  [(SABinary *)self _doCachedBinariesWork:v2];
   [v4[5] enumerateKeysAndObjectsUsingBlock:&__block_literal_global_107];
   _Block_object_dispose(&v3, 8);
 }
@@ -364,7 +364,7 @@ void __40__SABinary_clearCoreSymbolicationCaches__block_invoke_2(uint64_t a1, ui
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (uint64_t)haveMultipleBinariesWithUUID:(uint64_t)a1
++ (uint64_t)haveMultipleBinariesWithUUID:(uint64_t)d
 {
   v3 = objc_opt_self();
   v7 = 0;
@@ -389,26 +389,26 @@ void __41__SABinary_haveMultipleBinariesWithUUID___block_invoke(uint64_t a1, voi
   *(*(*(a1 + 40) + 8) + 24) = [v3 count] > 1;
 }
 
-+ (SABinary)binaryWithUUID:(id)a3 absolutePath:(id)a4
++ (SABinary)binaryWithUUID:(id)d absolutePath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (path)
   {
-    if (([a4 isAbsolutePath] & 1) == 0)
+    if (([path isAbsolutePath] & 1) == 0)
     {
       v10 = *__error();
       v11 = _sa_logt();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 136315138;
-        *(&buf + 4) = [a4 UTF8String];
+        *(&buf + 4) = [path UTF8String];
         _os_log_error_impl(&dword_1E0E2F000, v11, OS_LOG_TYPE_ERROR, "path %s is not absolute", &buf, 0xCu);
       }
 
       *__error() = v10;
-      v12 = a4;
-      v13 = [a4 UTF8String];
-      _SASetCrashLogMessage(1200, "path %s is not absolute", v14, v15, v16, v17, v18, v19, v13);
+      pathCopy = path;
+      uTF8String = [path UTF8String];
+      _SASetCrashLogMessage(1200, "path %s is not absolute", v14, v15, v16, v17, v18, v19, uTF8String);
       _os_crash();
       __break(1u);
     }
@@ -423,18 +423,18 @@ void __41__SABinary_haveMultipleBinariesWithUUID___block_invoke(uint64_t a1, voi
     v20[1] = 3221225472;
     v20[2] = __40__SABinary_binaryWithUUID_absolutePath___block_invoke;
     v20[3] = &unk_1E86F68B0;
-    v20[4] = a3;
-    v20[5] = a4;
+    v20[4] = d;
+    v20[5] = path;
     v20[6] = &buf;
-    v20[7] = a1;
-    [(SABinary *)a1 _doCachedBinariesWork:v20];
+    v20[7] = self;
+    [(SABinary *)self _doCachedBinariesWork:v20];
     v7 = *(*(&buf + 1) + 40);
     _Block_object_dispose(&buf, 8);
   }
 
   else
   {
-    v7 = [a1 binaryWithUUID:a3];
+    v7 = [self binaryWithUUID:d];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -549,7 +549,7 @@ LABEL_18:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (SABinary)binaryWithUUID:(id)a3
++ (SABinary)binaryWithUUID:(id)d
 {
   v6 = 0;
   v7 = &v6;
@@ -561,10 +561,10 @@ LABEL_18:
   v5[1] = 3221225472;
   v5[2] = __27__SABinary_binaryWithUUID___block_invoke;
   v5[3] = &unk_1E86F68D8;
-  v5[4] = a3;
+  v5[4] = d;
   v5[5] = &v6;
-  v5[6] = a1;
-  [(SABinary *)a1 _doCachedBinariesWork:v5];
+  v5[6] = self;
+  [(SABinary *)self _doCachedBinariesWork:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
 
@@ -616,10 +616,10 @@ void __27__SABinary_binaryWithUUID___block_invoke(uint64_t a1, void *a2)
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)binaryWithPath:(uint64_t)a1 architecture:(void *)a2 additionalCSSymbolicatorFlags:(uint64_t)a3
++ (id)binaryWithPath:(uint64_t)path architecture:(void *)architecture additionalCSSymbolicatorFlags:(uint64_t)flags
 {
   v5 = objc_opt_self();
-  SymbolOwnerForArchitectureAtPath = CreateSymbolOwnerForArchitectureAtPath(a3, a2);
+  SymbolOwnerForArchitectureAtPath = CreateSymbolOwnerForArchitectureAtPath(flags, architecture);
   v8 = v7;
   if (CSIsNull())
   {
@@ -635,7 +635,7 @@ void __27__SABinary_binaryWithUUID___block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-+ (id)binaryWithSymbolOwner:(uint64_t)a3 fromDisk:(uint64_t)a4
++ (id)binaryWithSymbolOwner:(uint64_t)owner fromDisk:(uint64_t)disk
 {
   v7 = objc_opt_self();
   CFUUIDBytes = CSSymbolOwnerGetCFUUIDBytes();
@@ -678,9 +678,9 @@ void __27__SABinary_binaryWithUUID___block_invoke(uint64_t a1, void *a2)
   }
 
   v14 = [v7 binaryWithUUID:v12 absolutePath:v13];
-  v15 = [v14 path];
+  path = [v14 path];
 
-  if (v15 || !v9)
+  if (path || !v9)
   {
     if (v14)
     {
@@ -692,7 +692,7 @@ void __27__SABinary_binaryWithUUID___block_invoke(uint64_t a1, void *a2)
   {
     objc_setProperty_atomic_copy(v14, v16, v9, 80);
 LABEL_17:
-    [(SABinary *)v14 addInfoFromSymbolOwner:a2 fromDisk:a3 includeExpensiveInfo:a4, 0];
+    [(SABinary *)v14 addInfoFromSymbolOwner:a2 fromDisk:owner includeExpensiveInfo:disk, 0];
   }
 
 LABEL_19:
@@ -700,7 +700,7 @@ LABEL_19:
   return v14;
 }
 
-+ (void)_doDsymPathsWork:(uint64_t)a1
++ (void)_doDsymPathsWork:(uint64_t)work
 {
   objc_opt_self();
   if (qword_1EDD031F8 != -1)
@@ -721,7 +721,7 @@ void __29__SABinary__doDsymPathsWork___block_invoke()
   qword_1EDD031F0 = v0;
 }
 
-+ (void)_addDsymPath:(uint64_t)a1
++ (void)_addDsymPath:(uint64_t)path
 {
   v3 = objc_opt_self();
   v4[0] = MEMORY[0x1E69E9820];
@@ -753,14 +753,14 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
   *(v4 + 40) = v3;
 }
 
-+ (void)addDsymPaths:(id)a3
++ (void)addDsymPaths:(id)paths
 {
   v28 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = a3;
+  obj = paths;
   v4 = [obj countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v4)
   {
@@ -781,18 +781,18 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
         v10 = [v9 rangeOfString:{@".dSYM", v17}];
         if (v10 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [(SABinary *)a1 _addDsymPath:v9];
+          [(SABinary *)self _addDsymPath:v9];
         }
 
         else
         {
           v12 = [v9 substringWithRange:{0, v10 + v11}];
-          v13 = [v12 stringByDeletingLastPathComponent];
+          stringByDeletingLastPathComponent = [v12 stringByDeletingLastPathComponent];
 
-          if (![(__CFString *)v13 length])
+          if (![(__CFString *)stringByDeletingLastPathComponent length])
           {
 
-            v13 = @"./";
+            stringByDeletingLastPathComponent = @"./";
           }
 
           v14 = *__error();
@@ -802,12 +802,12 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
             *buf = v17;
             v24 = v9;
             v25 = 2112;
-            v26 = v13;
+            v26 = stringByDeletingLastPathComponent;
             _os_log_debug_impl(&dword_1E0E2F000, v15, OS_LOG_TYPE_DEBUG, "Replaced %@ with %@", buf, 0x16u);
           }
 
           *__error() = v14;
-          [(SABinary *)a1 _addDsymPath:v13];
+          [(SABinary *)self _addDsymPath:stringByDeletingLastPathComponent];
         }
       }
 
@@ -820,35 +820,35 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addPath:(id)a3 forBinaryWithUUID:(id)a4
++ (void)addPath:(id)path forBinaryWithUUID:(id)d
 {
-  if ([a3 isAbsolutePath])
+  if ([path isAbsolutePath])
   {
-    v6 = [SABinary binaryWithUUID:a4 absolutePath:a3];
+    v6 = [SABinary binaryWithUUID:d absolutePath:path];
   }
 
   else
   {
-    v7 = [SABinary binaryWithUUID:a4];
-    [v7 addPath:a3];
+    v7 = [SABinary binaryWithUUID:d];
+    [v7 addPath:path];
   }
 }
 
-+ (void)addSymbolsFromTailspin:(id)a3
++ (void)addSymbolsFromTailspin:(id)tailspin
 {
   v60 = *MEMORY[0x1E69E9840];
-  v52 = DictGetString(a3, 0x1F5BBFC60);
-  v4 = DictGetString(a3, 0x1F5BBFC80);
-  v5 = DictGetNumber(a3, 0x1F5BBFCA0);
-  v6 = [v5 unsignedLongLongValue];
+  v52 = DictGetString(tailspin, 0x1F5BBFC60);
+  v4 = DictGetString(tailspin, 0x1F5BBFC80);
+  v5 = DictGetNumber(tailspin, 0x1F5BBFCA0);
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = DictGetString(a3, 0x1F5BBFCE0);
-  newValue = DictGetString(a3, 0x1F5BBFD20);
-  v50 = DictGetString(a3, 0x1F5BBFD40);
-  v49 = DictGetString(a3, 0x1F5BBFD60);
-  v8 = DictGetString(a3, 0x1F5BBFD80);
-  v9 = DictGetNumber(a3, 0x1F5BBFCC0);
-  v10 = [v9 BOOLValue];
+  v7 = DictGetString(tailspin, 0x1F5BBFCE0);
+  newValue = DictGetString(tailspin, 0x1F5BBFD20);
+  v50 = DictGetString(tailspin, 0x1F5BBFD40);
+  v49 = DictGetString(tailspin, 0x1F5BBFD60);
+  v8 = DictGetString(tailspin, 0x1F5BBFD80);
+  v9 = DictGetNumber(tailspin, 0x1F5BBFCC0);
+  bOOLValue = [v9 BOOLValue];
 
   if (v7)
   {
@@ -867,7 +867,7 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
 
       v13 = [SABinary binaryWithUUID:v11 absolutePath:v12];
       v14 = v13;
-      if (v10)
+      if (bOOLValue)
       {
         v15 = @"__TEXT_EXEC";
       }
@@ -877,9 +877,9 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
         v15 = @"__TEXT";
       }
 
-      v48 = [(SABinary *)v13 segmentWithCleanName:v15 length:v6 offsetIntoBinary:0x7FFFFFFFFFFFFFFFLL];
-      v16 = [v14 path];
-      if (v16)
+      v48 = [(SABinary *)v13 segmentWithCleanName:v15 length:unsignedLongLongValue offsetIntoBinary:0x7FFFFFFFFFFFFFFFLL];
+      path = [v14 path];
+      if (path)
       {
       }
 
@@ -892,22 +892,22 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v23 = [v14 name];
-      if (v23)
+      name = [v14 name];
+      if (name)
       {
       }
 
       else if ([v52 length])
       {
-        v24 = [v14 path];
-        if (!v24 || ([v14 path], v25 = objc_claimAutoreleasedReturnValue(), Path = -[NSString copyLastPathComponent](v25), v27 = objc_msgSend(Path, "hasPrefix:", v52), Path, v25, v24, (v27 & 1) == 0))
+        path2 = [v14 path];
+        if (!path2 || ([v14 path], v25 = objc_claimAutoreleasedReturnValue(), Path = -[NSString copyLastPathComponent](v25), v27 = objc_msgSend(Path, "hasPrefix:", v52), Path, v25, path2, (v27 & 1) == 0))
         {
           [(SABinary *)v14 setName:v52];
         }
       }
 
-      v28 = [v14 bundleIdentifier];
-      if (v28)
+      bundleIdentifier = [v14 bundleIdentifier];
+      if (bundleIdentifier)
       {
       }
 
@@ -920,8 +920,8 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v31 = [v14 bundleVersion];
-      if (v31)
+      bundleVersion = [v14 bundleVersion];
+      if (bundleVersion)
       {
       }
 
@@ -934,8 +934,8 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v34 = [v14 bundleShortVersion];
-      if (v34)
+      bundleShortVersion = [v14 bundleShortVersion];
+      if (bundleShortVersion)
       {
       }
 
@@ -948,8 +948,8 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v37 = [v14 binaryVersion];
-      if (v37)
+      binaryVersion = [v14 binaryVersion];
+      if (binaryVersion)
       {
       }
 
@@ -962,7 +962,7 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
         }
       }
 
-      v40 = DictGetDict(a3, 0x1F5BBFD00);
+      v40 = DictGetDict(tailspin, 0x1F5BBFD00);
       if (v40 && v48)
       {
         v41 = v48;
@@ -973,14 +973,14 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
         v57[3] = &unk_1E86F66C0;
         v57[4] = v41;
         [v40 enumerateKeysAndObjectsUsingBlock:v57];
-        v42 = [v41[7] allValues];
+        allValues = [v41[7] allValues];
         objc_sync_exit(v41);
 
         v55 = 0u;
         v56 = 0u;
         v53 = 0u;
         v54 = 0u;
-        v43 = v42;
+        v43 = allValues;
         v44 = [v43 countByEnumeratingWithState:&v53 objects:buf count:16];
         if (v44)
         {
@@ -1037,22 +1037,22 @@ void __22__SABinary__dsymPaths__block_invoke(uint64_t a1, void *a2)
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (id)segmentWithCleanName:(NSObject *)a3 length:(uint64_t)a4 offsetIntoBinary:
+- (id)segmentWithCleanName:(NSObject *)name length:(uint64_t)length offsetIntoBinary:
 {
   v229 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_156;
   }
 
-  v7 = a1;
-  objc_sync_enter(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v174 = 0u;
   v175 = 0u;
   v176 = 0u;
   v177 = 0u;
-  v158 = v7;
-  v8 = v7[7];
+  v158 = selfCopy;
+  v8 = selfCopy[7];
   v9 = [v8 countByEnumeratingWithState:&v174 objects:v204 count:16];
   if (!v9)
   {
@@ -1070,8 +1070,8 @@ LABEL_4:
     }
 
     v12 = *(*(&v174 + 1) + 8 * v11);
-    v13 = [v12 name];
-    v14 = [v13 isEqualToString:a2];
+    name = [v12 name];
+    v14 = [name isEqualToString:a2];
 
     if (v14)
     {
@@ -1097,7 +1097,7 @@ LABEL_10:
   if (!v159)
   {
 LABEL_14:
-    v159 = [SASegment segmentWithBinary:v158 name:a2 length:a3 offsetIntoBinary:a4];
+    v159 = [SASegment segmentWithBinary:v158 name:a2 length:name offsetIntoBinary:length];
     v16 = v158[7];
     if (!v16)
     {
@@ -1113,14 +1113,14 @@ LABEL_14:
     goto LABEL_24;
   }
 
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (length == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_13;
   }
 
   if ([v159 hasOffsetIntoBinary])
   {
-    if ([v159 offsetIntoBinary] == a4)
+    if ([v159 offsetIntoBinary] == length)
     {
 LABEL_13:
       v15 = 0;
@@ -1135,9 +1135,9 @@ LABEL_13:
       *v223 = 138412802;
       v224 = v131;
       v225 = 2048;
-      v226 = a4;
+      lengthCopy = length;
       v227 = 2048;
-      v228 = a3;
+      nameCopy = name;
       _os_log_error_impl(&dword_1E0E2F000, v20, OS_LOG_TYPE_ERROR, "Segment %@ mismatched offsetIntoBinary 0x%llx (with length 0x%llx) - possibly due to two segments with the same name which is unsupported. Symbols may be incorrect", v223, 0x20u);
     }
 
@@ -1147,12 +1147,12 @@ LABEL_13:
 
   else
   {
-    v159[5] = a4;
+    v159[5] = length;
     v15 = 1;
   }
 
 LABEL_23:
-  if ((v15 | [(SASegment *)v159 applyLength:a3]) != 1)
+  if ((v15 | [(SASegment *)v159 applyLength:name]) != 1)
   {
 LABEL_149:
     objc_sync_exit(v158);
@@ -1187,11 +1187,11 @@ LABEL_147:
   {
     if ([v159 hasOffsetIntoBinary] && objc_msgSend(v162, "hasOffsetIntoBinary") && (objc_msgSend(v162[7], "count") || objc_msgSend(v162[1], "count")))
     {
-      v24 = [v162 offsetIntoBinary];
+      offsetIntoBinary = [v162 offsetIntoBinary];
       v25 = v159;
       objc_sync_enter(v25);
-      v26 = [v162[7] allKeys];
-      v27 = [v26 sortedArrayUsingSelector:?];
+      allKeys = [v162[7] allKeys];
+      v27 = [allKeys sortedArrayUsingSelector:?];
 
       v202 = 0u;
       v203 = 0u;
@@ -1213,7 +1213,7 @@ LABEL_147:
             }
 
             v30 = *(*(&v200 + 1) + 8 * i);
-            v31 = [v30 unsignedLongLongValue] + v24;
+            v31 = [v30 unsignedLongLongValue] + offsetIntoBinary;
             v32 = v25[5];
             v33 = v31 - v32;
             if (v31 >= v32)
@@ -1297,7 +1297,7 @@ LABEL_51:
         v199[1] = 3221225472;
         v199[2] = __46__SASegment_grabInstructionsFromOtherSegment___block_invoke;
         v199[3] = &unk_1E86F6670;
-        v199[5] = v24;
+        v199[5] = offsetIntoBinary;
         v199[4] = v25;
         v47 = SABinarySearchArray(v46, 1280, v199);
         v48 = v162[1];
@@ -1305,7 +1305,7 @@ LABEL_51:
         v198[1] = 3221225472;
         v198[2] = __46__SASegment_grabInstructionsFromOtherSegment___block_invoke_2;
         v198[3] = &unk_1E86F6670;
-        v198[5] = v24;
+        v198[5] = offsetIntoBinary;
         v198[4] = v25;
         v49 = SABinarySearchArray(v48, 1280, v198);
         if (v47 < [v162[1] count])
@@ -1344,13 +1344,13 @@ LABEL_51:
                   }
 
                   v56 = *(*(&v194 + 1) + 8 * v55);
-                  v57 = [v56 offsetIntoSegment];
+                  offsetIntoSegment = [v56 offsetIntoSegment];
                   v58 = [v56 length];
-                  v60 = v57 + v24;
+                  v60 = offsetIntoSegment + offsetIntoBinary;
                   v61 = v25[5];
                   v62 = v61 + v25[3];
                   v171 = v55;
-                  if (v58 + v57 + v24 <= v62)
+                  if (v58 + offsetIntoSegment + offsetIntoBinary <= v62)
                   {
                     v63 = v60 - v61;
                     if (v56)
@@ -1401,10 +1401,10 @@ LABEL_65:
                         }
 
                         v69 = *(*(&v190 + 1) + 8 * j);
-                        v70 = [v69 offsetIntoSegment];
+                        offsetIntoSegment2 = [v69 offsetIntoSegment];
                         if (v69)
                         {
-                          v69[2] = v70 + v24 - v25[5];
+                          v69[2] = offsetIntoSegment2 + offsetIntoBinary - v25[5];
                         }
                       }
 
@@ -1428,8 +1428,8 @@ LABEL_65:
                   }
 
                   v73 = [v25[1] objectAtIndexedSubscript:v54];
-                  v74 = [v73 offsetIntoSegment];
-                  if (v74 == v63)
+                  offsetIntoSegment3 = [v73 offsetIntoSegment];
+                  if (offsetIntoSegment3 == v63)
                   {
                     if ([v56 length])
                     {
@@ -1443,22 +1443,22 @@ LABEL_65:
                       }
                     }
 
-                    v77 = [v73 name];
-                    if (v77)
+                    name2 = [v73 name];
+                    if (name2)
                     {
                     }
 
                     else
                     {
-                      v82 = [v56 name];
-                      v83 = v82 == 0;
+                      name3 = [v56 name];
+                      v83 = name3 == 0;
 
                       if (!v83)
                       {
-                        v85 = [v56 name];
+                        name4 = [v56 name];
                         if (v73)
                         {
-                          objc_setProperty_atomic_copy(v73, v84, v85, 24);
+                          objc_setProperty_atomic_copy(v73, v84, name4, 24);
                         }
                       }
                     }
@@ -1469,18 +1469,18 @@ LABEL_65:
                     if (v54)
                     {
                       v78 = [v25[1] objectAtIndexedSubscript:v54 - 1];
-                      v79 = [v78 offsetIntoSegment];
-                      if (v63 < [v78 length] + v79)
+                      offsetIntoSegment4 = [v78 offsetIntoSegment];
+                      if (v63 < [v78 length] + offsetIntoSegment4)
                       {
-                        v80 = [v78 offsetIntoSegment];
+                        offsetIntoSegment5 = [v78 offsetIntoSegment];
                         if (v78)
                         {
-                          v78[2] = v63 - v80;
+                          v78[2] = v63 - offsetIntoSegment5;
                         }
                       }
                     }
 
-                    if ([v56 length] + v63 <= v74)
+                    if ([v56 length] + v63 <= offsetIntoSegment3)
                     {
                       v81 = 1;
                     }
@@ -1492,7 +1492,7 @@ LABEL_65:
 
                     if ((v81 & 1) == 0)
                     {
-                      v56[2] = v74 - v63;
+                      v56[2] = offsetIntoSegment3 - v63;
                     }
 
                     [v25[1] insertObject:v56 atIndex:v54++];
@@ -1521,8 +1521,8 @@ LABEL_108:
             v189 = 0u;
             v186 = 0u;
             v187 = 0u;
-            v88 = [v162[2] allKeys];
-            v161 = [v88 sortedArrayUsingSelector:sel_compare_];
+            allKeys2 = [v162[2] allKeys];
+            v161 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
             v89 = [v161 countByEnumeratingWithState:&v186 objects:v215 count:16];
             if (v89)
@@ -1541,7 +1541,7 @@ LABEL_108:
                   }
 
                   v166 = *(*(&v186 + 1) + 8 * v169);
-                  v91 = [v166 unsignedLongLongValue] + v24;
+                  v91 = [v166 unsignedLongLongValue] + offsetIntoBinary;
                   v92 = v25[5];
                   if (v91 >= v92)
                   {
@@ -1593,10 +1593,10 @@ LABEL_108:
                             }
 
                             v108 = *(*(&v182 + 1) + 8 * v107);
-                            v109 = [v108 offsetIntoSegment];
+                            offsetIntoSegment6 = [v108 offsetIntoSegment];
                             if (v108)
                             {
-                              v108[1] = v109 + v24 - v25[5];
+                              v108[1] = offsetIntoSegment6 + offsetIntoBinary - v25[5];
                               v180 = 0u;
                               v181 = 0u;
                               v178 = 0u;
@@ -1628,10 +1628,10 @@ LABEL_108:
                                   }
 
                                   v116 = *(*(&v178 + 1) + 8 * k);
-                                  v117 = [v116 offsetIntoSegment];
+                                  offsetIntoSegment7 = [v116 offsetIntoSegment];
                                   if (v116)
                                   {
-                                    v116[2] = v117 + v24 - v25[5];
+                                    v116[2] = offsetIntoSegment7 + offsetIntoBinary - v25[5];
                                   }
                                 }
 
@@ -1661,22 +1661,22 @@ LABEL_108:
                       {
                         v119 = [v25 debugDescription];
                         v120 = v119;
-                        v173 = [v119 UTF8String];
+                        uTF8String = [v119 UTF8String];
                         v152 = [v164 count];
                         v121 = [(SASegment *)v25 nonInlineSymbolAtOffsetIntoSegment:v97];
                         v122 = [v121 debugDescription];
                         v123 = v122;
-                        v151 = [v122 UTF8String];
+                        uTF8String2 = [v122 UTF8String];
                         v124 = v25[2];
                         v125 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v97];
                         v126 = [v124 objectForKeyedSubscript:v125];
                         v127 = [v126 count];
                         *v205 = 136315906;
-                        v206 = v173;
+                        v206 = uTF8String;
                         v207 = 2048;
                         v208 = v152;
                         v209 = 2080;
-                        v210 = v151;
+                        v210 = uTF8String2;
                         v211 = 2048;
                         v212 = v127;
                         _os_log_debug_impl(&dword_1E0E2F000, v102, OS_LOG_TYPE_DEBUG, "%s: throwing out %lu duplicate inline symbols for %s (already have %lu)", v205, 0x2Au);
@@ -1718,25 +1718,25 @@ LABEL_145:
   {
     v134 = [v159 debugDescription];
     v135 = v134;
-    v136 = [v134 UTF8String];
+    uTF8String3 = [v134 UTF8String];
     v137 = [v162 debugDescription];
     v138 = v137;
-    v139 = [v137 UTF8String];
+    uTF8String4 = [v137 UTF8String];
     *v223 = 136315394;
-    v224 = v136;
+    v224 = uTF8String3;
     v225 = 2080;
-    v226 = v139;
+    lengthCopy = uTF8String4;
     _os_log_error_impl(&dword_1E0E2F000, v133, OS_LOG_TYPE_ERROR, "%s grabbing from %s", v223, 0x16u);
   }
 
   *__error() = v132;
   v140 = [v159 debugDescription];
   v141 = v140;
-  v142 = [v140 UTF8String];
+  uTF8String5 = [v140 UTF8String];
   v143 = [v162 debugDescription];
   v144 = v143;
   [v143 UTF8String];
-  _SASetCrashLogMessage(195, "%s grabbing from %s", v145, v146, v147, v148, v149, v150, v142);
+  _SASetCrashLogMessage(195, "%s grabbing from %s", v145, v146, v147, v148, v149, v150, uTF8String5);
 
   _os_crash();
   __break(1u);
@@ -1748,11 +1748,11 @@ LABEL_150:
   return v159;
 }
 
-- (void)setName:(void *)a1
+- (void)setName:(void *)name
 {
-  if (a1)
+  if (name)
   {
-    obj = a1;
+    obj = name;
     objc_sync_enter(obj);
     v3 = [a2 copy];
     v4 = obj[3];
@@ -1762,7 +1762,7 @@ LABEL_150:
   }
 }
 
-- (SABinary)initWithUUID:(id)a3 path:(id)a4
+- (SABinary)initWithUUID:(id)d path:(id)path
 {
   v9.receiver = self;
   v9.super_class = SABinary;
@@ -1770,36 +1770,36 @@ LABEL_150:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uuid, a3);
-    objc_storeStrong(&v7->_path, a4);
+    objc_storeStrong(&v6->_uuid, d);
+    objc_storeStrong(&v7->_path, path);
   }
 
   return v7;
 }
 
-- (void)addPath:(id)a3
+- (void)addPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0;
-  if (SAFilepathMatches(v4->_path, a3, &v14))
+  if (SAFilepathMatches(selfCopy->_path, path, &v14))
   {
     if (v14 == 1)
     {
-      v5 = SACachedNSString(a3);
-      path = v4->_path;
-      v4->_path = v5;
+      v5 = SACachedNSString(path);
+      path = selfCopy->_path;
+      selfCopy->_path = v5;
 
-      if (([a3 isAbsolutePath] & 1) == 0)
+      if (([path isAbsolutePath] & 1) == 0)
       {
         v7 = *__error();
         v8 = _sa_logt();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
-          v13 = [(SABinary *)v4 debugDescription];
+          v13 = [(SABinary *)selfCopy debugDescription];
           *buf = 138412290;
-          v16 = v13;
+          pathCopy = v13;
           _os_log_debug_impl(&dword_1E0E2F000, v8, OS_LOG_TYPE_DEBUG, "%@ set relative path", buf, 0xCu);
         }
 
@@ -1814,9 +1814,9 @@ LABEL_150:
     v10 = _sa_logt();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SABinary *)v4 debugDescription];
+      v11 = [(SABinary *)selfCopy debugDescription];
       *buf = 138412546;
-      v16 = a3;
+      pathCopy = path;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_1E0E2F000, v10, OS_LOG_TYPE_DEFAULT, "WARNING: Tried to set mismatched path %@ on binary %@", buf, 0x16u);
@@ -1825,30 +1825,30 @@ LABEL_150:
     *__error() = v9;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)segmentAtOffsetIntoBinary:(void *)a1
+- (void)segmentAtOffsetIntoBinary:(void *)binary
 {
-  if (a1)
+  if (binary)
   {
-    a1 = [(SABinary *)a1 segmentAtOffsetIntoBinary:a2 createFakeSegmentIfNeeded:0];
+    binary = [(SABinary *)binary segmentAtOffsetIntoBinary:a2 createFakeSegmentIfNeeded:0];
     v2 = vars8;
   }
 
-  return a1;
+  return binary;
 }
 
-- (id)segmentAtOffsetIntoBinary:(int)a3 createFakeSegmentIfNeeded:
+- (id)segmentAtOffsetIntoBinary:(int)binary createFakeSegmentIfNeeded:
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1 && (a2 < 0 || a1[5] - 1 >= a2))
+  if (self && (a2 < 0 || self[5] - 1 >= a2))
   {
-    v6 = a1;
-    objc_sync_enter(v6);
-    v7 = v6[7];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = selfCopy[7];
     if (v7)
     {
       v20 = 0u;
@@ -1875,10 +1875,10 @@ LABEL_150:
             {
               if ([v13 length])
               {
-                v14 = [v13 offsetIntoBinary];
-                if ([v13 length] + v14 > a2)
+                offsetIntoBinary = [v13 offsetIntoBinary];
+                if ([v13 length] + offsetIntoBinary > a2)
                 {
-                  v5 = v13;
+                  createFakeEntireBinarySegment = v13;
 
                   goto LABEL_23;
                 }
@@ -1907,7 +1907,7 @@ LABEL_150:
         if (v10)
         {
           v10 = v10;
-          v5 = v10;
+          createFakeEntireBinarySegment = v10;
 LABEL_23:
 
           goto LABEL_28;
@@ -1919,42 +1919,42 @@ LABEL_23:
       }
     }
 
-    v5 = 0;
-    if ((a2 & 0x8000000000000000) == 0 && a3)
+    createFakeEntireBinarySegment = 0;
+    if ((a2 & 0x8000000000000000) == 0 && binary)
     {
-      v5 = [(SABinary *)v6 createFakeEntireBinarySegment];
+      createFakeEntireBinarySegment = [(SABinary *)selfCopy createFakeEntireBinarySegment];
     }
 
 LABEL_28:
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v5 = 0;
+    createFakeEntireBinarySegment = 0;
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return createFakeEntireBinarySegment;
 }
 
-- (id)segmentWithName:(id)a3
+- (id)segmentWithName:(id)name
 {
-  v4 = CopyCleanSegmentName(a3);
+  v4 = CopyCleanSegmentName(name);
   v5 = [(SABinary *)self checkForSegmentWithCleanName:v4];
 
   return v5;
 }
 
-- (id)checkForSegmentWithCleanName:(void *)a1
+- (id)checkForSegmentWithCleanName:(void *)name
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (name)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    v4 = v3[7];
+    nameCopy = name;
+    objc_sync_enter(nameCopy);
+    v4 = nameCopy[7];
     if (v4)
     {
       v17 = 0u;
@@ -1976,8 +1976,8 @@ LABEL_28:
             }
 
             v9 = *(*(&v15 + 1) + 8 * i);
-            v10 = [v9 name];
-            v11 = [v10 isEqualToString:a2];
+            name = [v9 name];
+            v11 = [name isEqualToString:a2];
 
             if (v11)
             {
@@ -2005,7 +2005,7 @@ LABEL_13:
       v12 = 0;
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(nameCopy);
   }
 
   else
@@ -2033,12 +2033,12 @@ uint64_t __57__SABinary_segmentWithCleanName_length_offsetIntoBinary___block_inv
   }
 }
 
-- (id)segmentWithName:(NSObject *)a3 length:(uint64_t)a4 offsetIntoBinary:
+- (id)segmentWithName:(NSObject *)name length:(uint64_t)length offsetIntoBinary:
 {
-  if (a1)
+  if (self)
   {
     v7 = CopyCleanSegmentName(a2);
-    v8 = [(SABinary *)a1 segmentWithCleanName:v7 length:a3 offsetIntoBinary:a4];
+    v8 = [(SABinary *)self segmentWithCleanName:v7 length:name offsetIntoBinary:length];
   }
 
   else
@@ -2049,40 +2049,40 @@ uint64_t __57__SABinary_segmentWithCleanName_length_offsetIntoBinary___block_inv
   return v8;
 }
 
-- (BOOL)cacheSymbolOwnerWithOptions:(unint64_t)a3 pid:(int)a4 additionalCSSymbolicatorFlags:(unsigned int)a5
+- (BOOL)cacheSymbolOwnerWithOptions:(unint64_t)options pid:(int)pid additionalCSSymbolicatorFlags:(unsigned int)flags
 {
-  v5 = [(SABinary *)self symbolOwnerWrapperWithOptions:a3 pid:a4 checkExclave:1 additionalCSSymbolicatorFlags:a5];
+  v5 = [(SABinary *)self symbolOwnerWrapperWithOptions:options pid:pid checkExclave:1 additionalCSSymbolicatorFlags:flags];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (id)symbolOwnerWrapperWithOptions:(int)a3 pid:(int)a4 checkExclave:(int)a5 additionalCSSymbolicatorFlags:
+- (id)symbolOwnerWrapperWithOptions:(int)options pid:(int)pid checkExclave:(int)exclave additionalCSSymbolicatorFlags:
 {
   v140 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v8 = a1;
-    objc_sync_enter(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v9 = (a2 & 0x400) == 0;
-    if (!a3)
+    if (!options)
     {
       v9 = 0;
     }
 
-    if (a3 < 0)
+    if (options < 0)
     {
       v9 = 1;
     }
 
     v10 = (~a2 & 0x22) != 0 || v9;
-    v118 = a3;
+    optionsCopy = options;
     v119 = v10;
-    v11 = v8 + 10;
-    v12 = [v8[10] isAbsolutePath];
+    v11 = selfCopy + 10;
+    isAbsolutePath = [selfCopy[10] isAbsolutePath];
     if ((a2 & 4) != 0)
     {
-      v13 = v12;
+      v13 = isAbsolutePath;
     }
 
     else
@@ -2090,22 +2090,22 @@ uint64_t __57__SABinary_segmentWithCleanName_length_offsetIntoBinary___block_inv
       v13 = 1;
     }
 
-    if ((v13 & 1) == 0 && (v8[2] & 4) == 0)
+    if ((v13 & 1) == 0 && (selfCopy[2] & 4) == 0)
     {
-      [(SABinary *)v8 findPathViaBinaryLocator];
+      [(SABinary *)selfCopy findPathViaBinaryLocator];
     }
 
     if (CSIsNull())
     {
-      v14 = v8[1];
+      v14 = selfCopy[1];
       if (!v14 || (objc_copyStruct(dest, v14 + 16, 16, 1, 0), (CSSymbolOwnerIsDsym() & 1) == 0))
       {
         if ((a2 & 0x40) != 0)
         {
-          v15 = v8[2];
+          v15 = selfCopy[2];
           if ((v15 & 0x40) == 0)
           {
-            v16 = ((v8[2] & 8) == 0) & (a2 >> 3);
+            v16 = ((selfCopy[2] & 8) == 0) & (a2 >> 3);
 LABEL_24:
             v17 = 64;
             if ((((v15 & 0x200) == 0) & (a2 >> 9)) != 0)
@@ -2119,7 +2119,7 @@ LABEL_24:
               v18 |= 8uLL;
             }
 
-            v8[2] = v18;
+            selfCopy[2] = v18;
             v19 = objc_opt_self();
             *dest = 0;
             *&dest[8] = dest;
@@ -2143,7 +2143,7 @@ LABEL_24:
 
         if ((a2 & 8) != 0)
         {
-          v15 = v8[2];
+          v15 = selfCopy[2];
           if ((v15 & 8) == 0)
           {
             v16 = 1;
@@ -2155,27 +2155,27 @@ LABEL_24:
 
     v116 = 0;
 LABEL_30:
-    if (CSIsNull() && v8[1])
+    if (CSIsNull() && selfCopy[1])
     {
-      v21 = [*v11 isAbsolutePath];
-      if ((a2 & 1) != 0 && ((v21 ^ 1) & 1) == 0)
+      isAbsolutePath2 = [*v11 isAbsolutePath];
+      if ((a2 & 1) != 0 && ((isAbsolutePath2 ^ 1) & 1) == 0)
       {
-        v22 = v8[2];
+        v22 = selfCopy[2];
         if ((v22 & 1) == 0)
         {
-          v8[2] = (v22 | 1);
-          [(SABinary *)v8 gatherBundleInfo];
+          selfCopy[2] = (v22 | 1);
+          [(SABinary *)selfCopy gatherBundleInfo];
         }
       }
 
 LABEL_119:
-      v80 = v8[1];
-      objc_sync_exit(v8);
+      v80 = selfCopy[1];
+      objc_sync_exit(selfCopy);
 
       goto LABEL_120;
     }
 
-    v23 = a2 & a4;
+    v23 = a2 & pid;
     if (!CSIsNull())
     {
       goto LABEL_49;
@@ -2197,7 +2197,7 @@ LABEL_49:
 
     else
     {
-      SymbolOwnerForExclaveUUID = CreateSymbolOwnerForExclaveUUID(v8[9]);
+      SymbolOwnerForExclaveUUID = CreateSymbolOwnerForExclaveUUID(selfCopy[9]);
       v27 = v26;
       v28 = CSIsNull();
       if ((~a2 & 5) != 0)
@@ -2219,7 +2219,7 @@ LABEL_49:
         {
           v33 = +[SABinaryLocator sharedBinaryLocator];
           v34 = [MEMORY[0x1E695DFF8] fileURLWithPath:v32 isDirectory:0];
-          [(SABinaryLocator *)v33 addURL:v34 ForUUID:v8[9]];
+          [(SABinaryLocator *)v33 addURL:v34 ForUUID:selfCopy[9]];
 
           [v33 done];
         }
@@ -2239,7 +2239,7 @@ LABEL_49:
       v36 = 1;
     }
 
-    if ((v36 & 1) != 0 || kill(v118, 0) || (v58 = CopyDyldSnapshotForPid(v118)) == 0)
+    if ((v36 & 1) != 0 || kill(optionsCopy, 0) || (v58 = CopyDyldSnapshotForPid(optionsCopy)) == 0)
     {
 LABEL_55:
       v37 = 0;
@@ -2255,9 +2255,9 @@ LABEL_55:
       v126 = 3221225472;
       v127 = __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additionalCSSymbolicatorFlags___block_invoke;
       v128 = &unk_1E86F69E8;
-      v129 = v8;
+      v129 = selfCopy;
       v130 = dest;
-      v131 = v118;
+      v131 = optionsCopy;
       dyld_process_snapshot_for_each_image();
       if (*v11)
       {
@@ -2265,9 +2265,9 @@ LABEL_55:
         v60 = _sa_logt();
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEBUG))
         {
-          v89 = [v8 debugDescription];
+          v89 = [selfCopy debugDescription];
           *buf = 67109378;
-          *&buf[4] = v118;
+          *&buf[4] = optionsCopy;
           LOWORD(v133) = 2112;
           *(&v133 + 2) = v89;
           v114 = v89;
@@ -2291,9 +2291,9 @@ LABEL_55:
         if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
         {
           v115 = v83;
-          v85 = [v8 debugDescription];
+          v85 = [selfCopy debugDescription];
           *buf = 67109378;
-          *&buf[4] = v118;
+          *&buf[4] = optionsCopy;
           LOWORD(v133) = 2112;
           *(&v133 + 2) = v85;
           v86 = v85;
@@ -2311,7 +2311,7 @@ LABEL_55:
       v123[1] = 3221225472;
       v123[2] = __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additionalCSSymbolicatorFlags___block_invoke_143;
       v123[3] = &__block_descriptor_52_e5_v8__0l;
-      v124 = v118;
+      v124 = optionsCopy;
       v123[4] = v58;
       v123[5] = a2 & 0x26D;
       dispatch_async(v87, v123);
@@ -2336,7 +2336,7 @@ LABEL_55:
       goto LABEL_62;
     }
 
-    v39 = v8[2];
+    v39 = selfCopy[2];
     if ((v39 & 0x20) != 0)
     {
 LABEL_61:
@@ -2345,8 +2345,8 @@ LABEL_61:
 
     else
     {
-      v8[2] = (v39 | 0x20);
-      SymbolOwnerForExclaveUUID = CreateSymbolOwnerForUUIDAtPath(v8[9], v38, a5);
+      selfCopy[2] = (v39 | 0x20);
+      SymbolOwnerForExclaveUUID = CreateSymbolOwnerForUUIDAtPath(selfCopy[9], v38, exclave);
       v27 = v40;
       LODWORD(v114) = 0;
       v116 |= CSIsNull() ^ 1;
@@ -2355,7 +2355,7 @@ LABEL_61:
 LABEL_62:
     if ((v23 & v35 & CSIsNull()) == 1)
     {
-      SymbolOwnerForExclaveUUID = CreateSymbolOwnerForExclaveUUID(v8[9]);
+      SymbolOwnerForExclaveUUID = CreateSymbolOwnerForExclaveUUID(selfCopy[9]);
       v27 = v41;
       v42 = CSIsNull();
       v43 = (~a2 & 5) != 0 ? 1 : v42;
@@ -2368,24 +2368,24 @@ LABEL_62:
         {
           v47 = +[SABinaryLocator sharedBinaryLocator];
           v48 = [MEMORY[0x1E695DFF8] fileURLWithPath:v46 isDirectory:0];
-          [(SABinaryLocator *)v47 addURL:v48 ForUUID:v8[9]];
+          [(SABinaryLocator *)v47 addURL:v48 ForUUID:selfCopy[9]];
 
           [v47 done];
         }
       }
     }
 
-    if (((v119 | v37 | CSIsNull() ^ 1) & 1) == 0 && !kill(v118, 0))
+    if (((v119 | v37 | CSIsNull() ^ 1) & 1) == 0 && !kill(optionsCopy, 0))
     {
-      if (v118)
+      if (optionsCopy)
       {
         v49 = *__error();
         v50 = _sa_logt();
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
         {
-          v51 = [v8 debugDescription];
+          v51 = [selfCopy debugDescription];
           *dest = 67109378;
-          *&dest[4] = v118;
+          *&dest[4] = optionsCopy;
           *&dest[8] = 2112;
           *&dest[10] = v51;
           _os_log_impl(&dword_1E0E2F000, v50, OS_LOG_TYPE_DEFAULT, "WARNING: Inspecting live process [%d] to get symbol owner for %@", dest, 0x12u);
@@ -2394,13 +2394,13 @@ LABEL_62:
         *__error() = v49;
       }
 
-      SymbolicatorForLiveProcess = CreateSymbolicatorForLiveProcess(v118, a5);
+      SymbolicatorForLiveProcess = CreateSymbolicatorForLiveProcess(optionsCopy, exclave);
       v54 = v53;
       if ((CSIsNull() & 1) == 0)
       {
         *buf = 0;
         *&v133 = 0;
-        [v8[9] getUUIDBytes:buf];
+        [selfCopy[9] getUUIDBytes:buf];
         SymbolOwnerForExclaveUUID = CSSymbolicatorGetSymbolOwnerWithCFUUIDBytesAtTime();
         v27 = v55;
         if (CSIsNull())
@@ -2409,9 +2409,9 @@ LABEL_62:
           v57 = _sa_logt();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
           {
-            v88 = [v8 debugDescription];
+            v88 = [selfCopy debugDescription];
             *dest = 67109378;
-            *&dest[4] = v118;
+            *&dest[4] = optionsCopy;
             *&dest[8] = 2112;
             *&dest[10] = v88;
             _os_log_debug_impl(&dword_1E0E2F000, v57, OS_LOG_TYPE_DEBUG, "Process [%d] didn't have symbol owner for %@", dest, 0x12u);
@@ -2427,10 +2427,10 @@ LABEL_62:
           if (v63)
           {
             v122 = 0;
-            if (!(v114 & 1 | ((*(v8 + 66) & 1) == 0)) || SAFilepathMatches(*v11, v63, &v122) && v122 == 1)
+            if (!(v114 & 1 | ((*(selfCopy + 66) & 1) == 0)) || SAFilepathMatches(*v11, v63, &v122) && v122 == 1)
             {
-              objc_storeStrong(v8 + 10, v63);
-              *(v8 + 66) = 0;
+              objc_storeStrong(selfCopy + 10, v63);
+              *(selfCopy + 66) = 0;
             }
 
             v64 = [v63 isAbsolutePath] ^ 1;
@@ -2442,14 +2442,14 @@ LABEL_62:
             if ((v64 & 1) == 0)
             {
               v65 = +[SABinaryLocator sharedBinaryLocator];
-              if (!(v114 & 1 | ((*(v8 + 66) & 1) == 0)))
+              if (!(v114 & 1 | ((*(selfCopy + 66) & 1) == 0)))
               {
                 v120 = *__error();
                 v66 = _sa_logt();
                 if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
                 {
-                  v67 = v8[9];
-                  v68 = v8[10];
+                  v67 = selfCopy[9];
+                  v68 = selfCopy[10];
                   *dest = 138543874;
                   *&dest[4] = v67;
                   *&dest[12] = 2112;
@@ -2464,7 +2464,7 @@ LABEL_62:
               }
 
               v69 = [MEMORY[0x1E695DFF8] fileURLWithPath:v63 isDirectory:0];
-              [(SABinaryLocator *)v65 addURL:v69 ForUUID:v8[9]];
+              [(SABinaryLocator *)v65 addURL:v69 ForUUID:selfCopy[9]];
 
               [v65 done];
             }
@@ -2519,7 +2519,7 @@ LABEL_132:
       goto LABEL_135;
     }
 
-    v71 = v8;
+    v71 = selfCopy;
     objc_sync_enter(v71);
     if (!v71[1])
     {
@@ -2585,14 +2585,14 @@ LABEL_135:
     if (v71[1])
     {
 LABEL_115:
-      v78 = [*v11 isAbsolutePath];
-      if ((a2 & 1) != 0 && ((v78 ^ 1) & 1) == 0)
+      isAbsolutePath3 = [*v11 isAbsolutePath];
+      if ((a2 & 1) != 0 && ((isAbsolutePath3 ^ 1) & 1) == 0)
       {
-        v79 = v8[2];
+        v79 = selfCopy[2];
         if ((v79 & 1) == 0)
         {
-          v8[2] = (v79 | 1);
-          [(SABinary *)v8 gatherBundleInfo];
+          selfCopy[2] = (v79 | 1);
+          [(SABinary *)selfCopy gatherBundleInfo];
         }
       }
 
@@ -2610,12 +2610,12 @@ LABEL_120:
   return v80;
 }
 
-- (id)instructionAtOffsetIntoBinary:(int64_t)a3
+- (id)instructionAtOffsetIntoBinary:(int64_t)binary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(SABinary *)v4 segmentAtOffsetIntoBinary:a3 createFakeSegmentIfNeeded:1];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(SABinary *)selfCopy segmentAtOffsetIntoBinary:binary createFakeSegmentIfNeeded:1];
   v6 = v5;
   if (!v5)
   {
@@ -2630,26 +2630,26 @@ LABEL_120:
     {
       v14 = [(SASegment *)v6 debugDescription];
       *buf = 136315138;
-      v25 = [v14 UTF8String];
+      uTF8String = [v14 UTF8String];
       _os_log_error_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_ERROR, "%s: no offset into binary", buf, 0xCu);
     }
 
     *__error() = v12;
     v15 = [(SASegment *)v6 debugDescription];
     v16 = v15;
-    v17 = [v15 UTF8String];
-    _SASetCrashLogMessage(1787, "%s: no offset into binary", v18, v19, v20, v21, v22, v23, v17);
+    uTF8String2 = [v15 UTF8String];
+    _SASetCrashLogMessage(1787, "%s: no offset into binary", v18, v19, v20, v21, v22, v23, uTF8String2);
 
     _os_crash();
     __break(1u);
   }
 
-  v7 = [(SASegment *)v6 offsetIntoBinary];
-  if ([(SASegment *)v6 length]- 1 >= a3 - v7)
+  offsetIntoBinary = [(SASegment *)v6 offsetIntoBinary];
+  if ([(SASegment *)v6 length]- 1 >= binary - offsetIntoBinary)
   {
     v11 = [(SASegment *)v6 instructionAtOffsetIntoSegment:?];
     v8 = v11;
-    if (v6 == v4->_fakeEntireBinarySegment && v11)
+    if (v6 == selfCopy->_fakeEntireBinarySegment && v11)
     {
       objc_storeWeak((v11 + 32), 0);
     }
@@ -2661,16 +2661,16 @@ LABEL_4:
     v8 = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (id)segmentWithCSSegment:(uint64_t)a3 symbolOwnerLayoutMatchesDisk:(int)a4 symbolOwnerBaseAddress:(uint64_t)a5
+- (id)segmentWithCSSegment:(uint64_t)segment symbolOwnerLayoutMatchesDisk:(int)disk symbolOwnerBaseAddress:(uint64_t)address
 {
-  v5 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     Range = CSRegionGetRange();
     v10 = v9;
@@ -2678,9 +2678,9 @@ LABEL_4:
     if (Name)
     {
       v12 = SANSStringForCString(Name);
-      if (a4)
+      if (disk)
       {
-        v13 = Range - a5;
+        v13 = Range - address;
       }
 
       else
@@ -2688,16 +2688,16 @@ LABEL_4:
         v13 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
-      v5 = [(SABinary *)v5 segmentWithName:v12 length:v10 offsetIntoBinary:v13];
+      selfCopy = [(SABinary *)selfCopy segmentWithName:v12 length:v10 offsetIntoBinary:v13];
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
 uint64_t __33__SABinary_addInfoFromDyldImage___block_invoke(void *a1, const char *a2, unint64_t a3, NSObject *a4)
@@ -2728,14 +2728,14 @@ uint64_t __33__SABinary_addInfoFromDyldImage___block_invoke(void *a1, const char
   return result;
 }
 
-- (BOOL)applyLength:(void *)a1
+- (BOOL)applyLength:(void *)length
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (length)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    v4 = *(v3 + 5);
+    lengthCopy = length;
+    objc_sync_enter(lengthCopy);
+    v4 = *(lengthCopy + 5);
     v5 = v4 < a2;
     if (v4 < a2)
     {
@@ -2745,7 +2745,7 @@ uint64_t __33__SABinary_addInfoFromDyldImage___block_invoke(void *a1, const char
         v7 = _sa_logt();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          v12 = [v3 debugDescription];
+          v12 = [lengthCopy debugDescription];
           v16 = 138412546;
           v17 = v12;
           v18 = 2048;
@@ -2756,14 +2756,14 @@ uint64_t __33__SABinary_addInfoFromDyldImage___block_invoke(void *a1, const char
         *__error() = v6;
       }
 
-      *(v3 + 5) = a2;
+      *(lengthCopy + 5) = a2;
       if (a2 >> 28)
       {
         v13 = *__error();
         v14 = _sa_logt();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
         {
-          v15 = [v3 debugDescription];
+          v15 = [lengthCopy debugDescription];
           v16 = 138412546;
           v17 = v15;
           v18 = 2048;
@@ -2774,19 +2774,19 @@ uint64_t __33__SABinary_addInfoFromDyldImage___block_invoke(void *a1, const char
         *__error() = v13;
       }
 
-      v8 = *(v3 + 6);
+      v8 = *(lengthCopy + 6);
       if (v8)
       {
         [(SASegment *)v8 applyLength:?];
-        if ([(SASegment *)*(v3 + 6) isEmpty])
+        if ([(SASegment *)*(lengthCopy + 6) isEmpty])
         {
-          v9 = *(v3 + 6);
-          *(v3 + 6) = 0;
+          v9 = *(lengthCopy + 6);
+          *(lengthCopy + 6) = 0;
         }
       }
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(lengthCopy);
   }
 
   else
@@ -2805,7 +2805,7 @@ void __33__SABinary_addInfoFromDyldImage___block_invoke_2(uint64_t a1, uint64_t 
   v8 = [(SABinary *)v7 segmentWithName:v9 length:a4 offsetIntoBinary:a3 - *(*(*(a1 + 40) + 8) + 24)];
 }
 
-+ (void)binaryForDyldImage:(int)a3 options:
++ (void)binaryForDyldImage:(int)image options:
 {
   v63 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -2842,7 +2842,7 @@ void __33__SABinary_addInfoFromDyldImage___block_invoke_2(uint64_t a1, uint64_t 
   }
 
   v13 = [v12 isAbsolutePath] ^ 1;
-  if ((~a3 & 5) != 0)
+  if ((~image & 5) != 0)
   {
     LOBYTE(v13) = 1;
   }
@@ -2862,11 +2862,11 @@ LABEL_29:
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 path];
-      if (v18)
+      path = [v16 path];
+      if (path)
       {
-        v19 = [v17 path];
-        if ([v19 isEqualToString:v12])
+        path2 = [v17 path];
+        if ([path2 isEqualToString:v12])
         {
 
 LABEL_28:
@@ -2875,16 +2875,16 @@ LABEL_28:
           goto LABEL_29;
         }
 
-        v36 = [MEMORY[0x1E696AC08] defaultManager];
-        v37 = [v17 path];
-        if ([v36 fileExistsAtPath:v37])
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        path3 = [v17 path];
+        if ([defaultManager fileExistsAtPath:path3])
         {
 
           goto LABEL_28;
         }
 
-        v21 = [MEMORY[0x1E696AC08] defaultManager];
-        v35 = [v21 fileExistsAtPath:v12];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+        v35 = [defaultManager2 fileExistsAtPath:v12];
 
         if (!v35)
         {
@@ -2896,11 +2896,11 @@ LABEL_28:
       v23 = _sa_logt();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
-        v24 = [v17 path];
+        path4 = [v17 path];
         *buf = 138543874;
         *&buf[4] = v10;
         *&buf[12] = 2112;
-        *&buf[14] = v24;
+        *&buf[14] = path4;
         *&buf[22] = 2112;
         v57 = v12;
         _os_log_impl(&dword_1E0E2F000, v23, OS_LOG_TYPE_INFO, "%{public}@ moved: replacing %@ with %@", buf, 0x20u);
@@ -3005,65 +3005,65 @@ LABEL_6:
   return v7;
 }
 
-- (void)addInfoFromSymbolOwner:(uint64_t)a3 fromDisk:(uint64_t)a4 includeExpensiveInfo:(int)a5
+- (void)addInfoFromSymbolOwner:(uint64_t)owner fromDisk:(uint64_t)disk includeExpensiveInfo:(int)info
 {
-  if (a1 && ((a5 & 1) != 0 || ![*(a1 + 80) isAbsolutePath] || !*(a1 + 40)))
+  if (self && ((info & 1) != 0 || ![*(self + 80) isAbsolutePath] || !*(self + 40)))
   {
-    v9 = a1;
-    objc_sync_enter(v9);
-    v10 = v9 + 10;
-    if (([v9[10] isAbsolutePath] & 1) == 0 && (CSSymbolOwnerIsDsym() & 1) == 0)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v10 = selfCopy + 10;
+    if (([selfCopy[10] isAbsolutePath] & 1) == 0 && (CSSymbolOwnerIsDsym() & 1) == 0)
     {
       Path = CSSymbolOwnerGetPath();
       v12 = SAFilepathForCString(Path);
       LOBYTE(v23) = 0;
       if (v12 && SAFilepathMatches(*v10, v12, &v23) && v23 == 1)
       {
-        objc_storeStrong(v9 + 10, v12);
+        objc_storeStrong(selfCopy + 10, v12);
       }
     }
 
-    if (!v9[3] && !*v10)
+    if (!selfCopy[3] && !*v10)
     {
       Name = CSSymbolOwnerGetName();
       v14 = SAFilepathForCString(Name);
-      v15 = v9[3];
-      v9[3] = v14;
+      v15 = selfCopy[3];
+      selfCopy[3] = v14;
     }
 
     v23 = 0;
     v24 = 0;
     v22 = 0;
-    IsContiguous = SASymbolOwnerIsContiguous(a2, a3, &v23, &v22);
+    IsContiguous = SASymbolOwnerIsContiguous(a2, owner, &v23, &v22);
     v17 = v22;
-    if (v17 > [v9[7] count])
+    if (v17 > [selfCopy[7] count])
     {
       SASymbolOwnerForeachSegment();
     }
 
-    if ([(SASegment *)v9[6] isEmpty])
+    if ([(SASegment *)selfCopy[6] isEmpty])
     {
-      v18 = v9[6];
-      v9[6] = 0;
+      v18 = selfCopy[6];
+      selfCopy[6] = 0;
     }
 
     if (IsContiguous)
     {
-      [(SABinary *)v9 applyLength:v24];
+      [(SABinary *)selfCopy applyLength:v24];
     }
 
-    if (a5 && !v9[14])
+    if (info && !selfCopy[14])
     {
       Version = CSSymbolOwnerGetVersion();
       if (Version)
       {
         v20 = SANSStringForCString(Version);
-        v21 = v9[14];
-        v9[14] = v20;
+        v21 = selfCopy[14];
+        selfCopy[14] = v20;
       }
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -3132,34 +3132,34 @@ void __65__SABinary_addInfoFromSymbolOwner_fromDisk_includeExpensiveInfo___block
 - (void)findPathViaBinaryLocator
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    if (([v1[10] isAbsolutePath] & 1) == 0)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (([selfCopy[10] isAbsolutePath] & 1) == 0)
     {
-      v2 = v1[2];
+      v2 = selfCopy[2];
       if ((v2 & 4) == 0)
       {
-        v1[2] = (v2 | 4);
+        selfCopy[2] = (v2 | 4);
         v3 = +[SABinaryLocator sharedBinaryLocator];
         v4 = [(SABinaryLocator *)v3 urlForUUID:?];
         v5 = v4;
         if (v4)
         {
-          v6 = [v4 path];
-          if (v6)
+          path = [v4 path];
+          if (path)
           {
             v14 = 0;
-            if (SAFilepathMatches(v1[10], v6, &v14))
+            if (SAFilepathMatches(selfCopy[10], path, &v14))
             {
               if (v14 == 1)
               {
-                v7 = SACachedNSString(v6);
-                v8 = v1[10];
-                v1[10] = v7;
+                v7 = SACachedNSString(path);
+                v8 = selfCopy[10];
+                selfCopy[10] = v7;
 
-                *(v1 + 66) = 1;
+                *(selfCopy + 66) = 1;
               }
             }
 
@@ -3169,12 +3169,12 @@ void __65__SABinary_addInfoFromSymbolOwner_fromDisk_includeExpensiveInfo___block
               v10 = _sa_logt();
               if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
               {
-                v12 = [v1[9] UUIDString];
-                v13 = v1[10];
+                uUIDString = [selfCopy[9] UUIDString];
+                v13 = selfCopy[10];
                 *buf = 138543874;
-                v16 = v12;
+                v16 = uUIDString;
                 v17 = 2112;
-                v18 = v6;
+                v18 = path;
                 v19 = 2112;
                 v20 = v13;
                 _os_log_debug_impl(&dword_1E0E2F000, v10, OS_LOG_TYPE_DEBUG, "%{public}@: found path %@ via binary locator, but doesn't match existing partial path %@", buf, 0x20u);
@@ -3189,7 +3189,7 @@ void __65__SABinary_addInfoFromSymbolOwner_fromDisk_includeExpensiveInfo___block
       }
     }
 
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -3197,9 +3197,9 @@ void __65__SABinary_addInfoFromSymbolOwner_fromDisk_includeExpensiveInfo___block
 
 - (void)gatherBundleInfo
 {
-  if (a1)
+  if (self)
   {
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
     if (!obj[11] && !obj[12] && !obj[13] && (obj[8] & 1) == 0 && ([obj[10] isAbsolutePath] & 1) != 0)
     {
@@ -3291,11 +3291,11 @@ uint64_t __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additiona
   return CSRelease();
 }
 
-- (void)getCodeSignInfoWithBundleUrl:(void *)a1
+- (void)getCodeSignInfoWithBundleUrl:(void *)url
 {
-  if (a1 && !a1[15] && !a1[16] && (a2 || a1[10]))
+  if (url && !url[15] && !url[16] && (a2 || url[10]))
   {
-    obj = a1;
+    obj = url;
     objc_sync_enter(obj);
     if ((obj[64] & 2) == 0)
     {
@@ -3306,45 +3306,45 @@ uint64_t __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additiona
   }
 }
 
-- (void)saveInfoFromBundle:(void *)a1
+- (void)saveInfoFromBundle:(void *)bundle
 {
-  if (a1)
+  if (bundle)
   {
-    v3 = a1;
-    objc_sync_enter(v3);
-    if (!v3[11] && !v3[12] && !v3[13])
+    bundleCopy = bundle;
+    objc_sync_enter(bundleCopy);
+    if (!bundleCopy[11] && !bundleCopy[12] && !bundleCopy[13])
     {
-      *(v3 + 64) |= 1u;
+      *(bundleCopy + 64) |= 1u;
       v4 = CFBundleGetIdentifier(a2);
-      v5 = v3[11];
-      v3[11] = v4;
+      v5 = bundleCopy[11];
+      bundleCopy[11] = v4;
 
       v6 = SACFBundleCopyStringForKey(a2, *MEMORY[0x1E695E148]);
-      v7 = v3[13];
-      v3[13] = v6;
+      v7 = bundleCopy[13];
+      bundleCopy[13] = v6;
 
       v8 = SACFBundleCopyStringForKey(a2, *MEMORY[0x1E695E500]);
-      v9 = v3[12];
-      v3[12] = v8;
+      v9 = bundleCopy[12];
+      bundleCopy[12] = v8;
 
-      if (!v3[10])
+      if (!bundleCopy[10])
       {
         v10 = CFBundleCopyExecutableURL(a2);
         v11 = v10;
         if (v10)
         {
-          v12 = [(__CFURL *)v10 path];
+          path = [(__CFURL *)v10 path];
 
-          if (v12)
+          if (path)
           {
             v16 = 0;
-            if (SAFilepathMatches(v3[10], v12, &v16))
+            if (SAFilepathMatches(bundleCopy[10], path, &v16))
             {
               if (v16 == 1)
               {
-                v13 = SACachedNSString(v12);
-                v14 = v3[10];
-                v3[10] = v13;
+                v13 = SACachedNSString(path);
+                v14 = bundleCopy[10];
+                bundleCopy[10] = v13;
               }
             }
           }
@@ -3352,22 +3352,22 @@ uint64_t __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additiona
       }
 
       v15 = CFBundleCopyBundleURL(a2);
-      [(SABinary *)v3 getCodeSignInfoWithBundleUrl:v15];
+      [(SABinary *)bundleCopy getCodeSignInfoWithBundleUrl:v15];
     }
 
-    objc_sync_exit(v3);
+    objc_sync_exit(bundleCopy);
   }
 }
 
-- (void)gatherInfoWithDataGatheringOptions:(unint64_t)a3 pid:(int)a4
+- (void)gatherInfoWithDataGatheringOptions:(unint64_t)options pid:(int)pid
 {
-  v4 = a3;
+  optionsCopy = options;
   obj = self;
   objc_sync_enter(obj);
-  v5 = [(NSString *)obj->_path isAbsolutePath];
-  if ((v4 & 4) != 0)
+  isAbsolutePath = [(NSString *)obj->_path isAbsolutePath];
+  if ((optionsCopy & 4) != 0)
   {
-    v6 = v5;
+    v6 = isAbsolutePath;
   }
 
   else
@@ -3381,7 +3381,7 @@ uint64_t __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additiona
   }
 
   v7 = ![(NSString *)obj->_path isAbsolutePath];
-  if ((v4 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     LOBYTE(v7) = 1;
   }
@@ -3399,13 +3399,13 @@ uint64_t __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additiona
   objc_sync_exit(obj);
 }
 
-- (id)addSymbolWithOffsetIntoBinary:(unint64_t)a3 length:(void *)a4 name:
+- (id)addSymbolWithOffsetIntoBinary:(unint64_t)binary length:(void *)length name:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a1;
-    objc_sync_enter(v7);
-    v8 = [(SABinary *)v7 segmentAtOffsetIntoBinary:a2 createFakeSegmentIfNeeded:1];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = [(SABinary *)selfCopy segmentAtOffsetIntoBinary:a2 createFakeSegmentIfNeeded:1];
     v9 = a2 - [v8 offsetIntoBinary];
     v10 = [(SASegment *)v8 nonInlineSymbolAtOffsetIntoSegment:v9];
     v11 = v10;
@@ -3413,20 +3413,20 @@ uint64_t __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additiona
     {
       if ([v10 offsetIntoSegment] == v9)
       {
-        if (a4)
+        if (length)
         {
-          v12 = [v11 name];
+          name = [v11 name];
 
-          if (!v12)
+          if (!name)
           {
-            objc_setProperty_atomic_copy(v11, v13, a4, 24);
+            objc_setProperty_atomic_copy(v11, v13, length, 24);
           }
         }
       }
 
       else
       {
-        v14 = [(SASegment *)v8 addNonInlineSymbolWithOffsetIntoSegment:v9 length:a3 name:a4];
+        v14 = [(SASegment *)v8 addNonInlineSymbolWithOffsetIntoSegment:v9 length:binary name:length];
 
         v11 = v14;
       }
@@ -3434,10 +3434,10 @@ uint64_t __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additiona
 
     else
     {
-      v11 = [(SASegment *)v8 addNonInlineSymbolWithOffsetIntoSegment:v9 length:a3 name:a4];
+      v11 = [(SASegment *)v8 addNonInlineSymbolWithOffsetIntoSegment:v9 length:binary name:length];
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -3448,36 +3448,36 @@ uint64_t __89__SABinary_symbolOwnerWrapperWithOptions_pid_checkExclave_additiona
   return v11;
 }
 
-- (void)symbolicateAllInstructionsWithOptions:(int)a3 pid:(int)a4 checkExclave:(int)a5 onlyDsym:(int)a6 additionalCSSymbolicatorFlags:
+- (void)symbolicateAllInstructionsWithOptions:(int)options pid:(int)pid checkExclave:(int)exclave onlyDsym:(int)dsym additionalCSSymbolicatorFlags:
 {
   v113 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v8 = a1;
-    objc_sync_enter(v8);
-    if (a2 & 0x48) == 0 && (a5)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (a2 & 0x48) == 0 && (exclave)
     {
       goto LABEL_76;
     }
 
     v74 = a2 & 0x66F;
-    v9 = v74 & ~*(v8 + 4);
-    if (*(v8 + 65))
+    v9 = v74 & ~*(selfCopy + 4);
+    if (*(selfCopy + 65))
     {
       goto LABEL_5;
     }
 
-    if ((*(v8 + 64) & 8) != 0 || !v9)
+    if ((*(selfCopy + 64) & 8) != 0 || !v9)
     {
       goto LABEL_76;
     }
 
-    if ((*(v8 + 64) & 4) == 0)
+    if ((*(selfCopy + 64) & 4) == 0)
     {
 LABEL_5:
-      v70 = a2 & 0x66F & ~*(v8 + 4);
+      v70 = a2 & 0x66F & ~*(selfCopy + 4);
       v72 = a2;
-      v71 = a5;
+      exclaveCopy2 = exclave;
       v73 = 0;
     }
 
@@ -3486,14 +3486,14 @@ LABEL_5:
       if ((v9 & 0x48) == 0)
       {
 LABEL_76:
-        objc_sync_exit(v8);
+        objc_sync_exit(selfCopy);
 
         goto LABEL_77;
       }
 
-      v70 = a2 & 0x66F & ~*(v8 + 4);
+      v70 = a2 & 0x66F & ~*(selfCopy + 4);
       v72 = a2;
-      v71 = a5;
+      exclaveCopy2 = exclave;
       v73 = 1;
     }
 
@@ -3512,7 +3512,7 @@ LABEL_76:
     v87 = &v93;
     v88 = &v89;
     v10 = objc_alloc(MEMORY[0x1E695DF70]);
-    v11 = v8;
+    v11 = selfCopy;
     objc_sync_enter(v11);
     obj = v11;
     Property = v11[6];
@@ -3577,12 +3577,12 @@ LABEL_76:
       }
 
       v30 = v29;
-      v31 = [v30 allValues];
+      allValues = [v30 allValues];
 
       objc_sync_exit(v27);
-      if (v31)
+      if (allValues)
       {
-        [v24 addObjectsFromArray:v31];
+        [v24 addObjectsFromArray:allValues];
       }
 
       v25 = obj;
@@ -3620,12 +3620,12 @@ LABEL_76:
           }
 
           v39 = v38;
-          v40 = [v39 allValues];
+          allValues2 = [v39 allValues];
 
           objc_sync_exit(v36);
-          if (v40)
+          if (allValues2)
           {
-            [v24 addObjectsFromArray:v40];
+            [v24 addObjectsFromArray:allValues2];
           }
 
           ++v35;
@@ -3682,7 +3682,7 @@ LABEL_38:
     {
       if (*(v94 + 24) == 1 || (v73 = 1, (v75[8] & 8) == 0) && (v70 & 0x48) == 0)
       {
-        *(v8 + 65) = 0;
+        *(selfCopy + 65) = 0;
 LABEL_75:
         _Block_object_dispose(&v89, 8);
         _Block_object_dispose(&v93, 8);
@@ -3690,8 +3690,8 @@ LABEL_75:
       }
     }
 
-    *(v8 + 4) = v74;
-    v46 = [(SABinary *)v75 symbolOwnerWrapperWithOptions:v72 pid:a3 checkExclave:a4 additionalCSSymbolicatorFlags:a6];
+    *(selfCopy + 4) = v74;
+    v46 = [(SABinary *)v75 symbolOwnerWrapperWithOptions:v72 pid:options checkExclave:pid additionalCSSymbolicatorFlags:dsym];
     if (v46)
     {
       objc_copyStruct(&dest, (v46 + 16), 16, 1, 0);
@@ -3703,17 +3703,17 @@ LABEL_75:
         {
           v58 = [v75 debugDescription];
           v59 = v58;
-          v60 = [v58 UTF8String];
+          uTF8String = [v58 UTF8String];
           dest = 136315138;
-          dest_4 = v60;
+          dest_4 = uTF8String;
           _os_log_error_impl(&dword_1E0E2F000, v57, OS_LOG_TYPE_ERROR, "%s: null symbol owner in symbol owner wrapper", &dest, 0xCu);
         }
 
         *__error() = v56;
         v61 = [v75 debugDescription];
         v62 = v61;
-        v63 = [v61 UTF8String];
-        _SASetCrashLogMessage(2606, "%s: null symbol owner in symbol owner wrapper", v64, v65, v66, v67, v68, v69, v63);
+        uTF8String2 = [v61 UTF8String];
+        _SASetCrashLogMessage(2606, "%s: null symbol owner in symbol owner wrapper", v64, v65, v66, v67, v68, v69, uTF8String2);
 
         _os_crash();
         __break(1u);
@@ -3731,9 +3731,9 @@ LABEL_75:
       }
 
       *(v75 + 64) = v75[8] & 0xF7 | v47;
-      if (v73 | v71) != 1 || (CSSymbolOwnerIsDsym())
+      if (v73 | exclaveCopy2) != 1 || (CSSymbolOwnerIsDsym())
       {
-        *(v8 + 65) = 0;
+        *(selfCopy + 65) = 0;
         if (!v75[14])
         {
           Version = CSSymbolOwnerGetVersion();
@@ -3776,7 +3776,7 @@ LABEL_75:
         goto LABEL_74;
       }
 
-      if ((v73 | v71 ^ 1) != 1)
+      if ((v73 | exclaveCopy2 ^ 1) != 1)
       {
 LABEL_74:
 
@@ -3789,7 +3789,7 @@ LABEL_74:
       *(v75 + 64) &= 0xF3u;
     }
 
-    *(v8 + 65) = 0;
+    *(selfCopy + 65) = 0;
     goto LABEL_74;
   }
 
@@ -3824,16 +3824,16 @@ LABEL_7:
 - (void)clearSymbolCache
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  fakeEntireBinarySegment = v2->_fakeEntireBinarySegment;
-  v2->_fakeEntireBinarySegment = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fakeEntireBinarySegment = selfCopy->_fakeEntireBinarySegment;
+  selfCopy->_fakeEntireBinarySegment = 0;
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2->_segments;
+  v4 = selfCopy->_segments;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -3875,11 +3875,11 @@ LABEL_7:
     while (v5);
   }
 
-  v2->_haveMoreInstructionsToSymbolicate = 0;
-  v2->_optionsWhenLastSymbolicated = 0;
-  *(v2 + 64) &= 0xF3u;
-  [(SABinary *)v2 clearCoreSymbolicationCache];
-  objc_sync_exit(v2);
+  selfCopy->_haveMoreInstructionsToSymbolicate = 0;
+  selfCopy->_optionsWhenLastSymbolicated = 0;
+  *(selfCopy + 64) &= 0xF3u;
+  [(SABinary *)selfCopy clearCoreSymbolicationCache];
+  objc_sync_exit(selfCopy);
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -3958,164 +3958,164 @@ void __28__SABinary_dataFillingQueue__block_invoke()
   return v3;
 }
 
-- (id)instructionAtOffsetIntoTextSegment:(unint64_t)a3
+- (id)instructionAtOffsetIntoTextSegment:(unint64_t)segment
 {
   v5 = [(SABinary *)self checkForSegmentWithCleanName:?];
   if (v5 || ([(SABinary *)self checkForSegmentWithCleanName:?], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
-    v7 = [v5 instructionAtOffsetIntoSegment:a3];
+    v7 = [v5 instructionAtOffsetIntoSegment:segment];
   }
 
   else
   {
-    v7 = [(SABinary *)self instructionAtOffsetIntoBinary:a3];
+    v7 = [(SABinary *)self instructionAtOffsetIntoBinary:segment];
   }
 
   return v7;
 }
 
-- (void)writeJSONDictionaryEntriesToStream:(id)a3
+- (void)writeJSONDictionaryEntriesToStream:(id)stream
 {
   name = self->_name;
   if (name)
   {
-    SAJSONWriteDictionaryFirstEntry(a3, @"name", name);
+    SAJSONWriteDictionaryFirstEntry(stream, @"name", name);
   }
 
   if ([(SABinary *)self length])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[SABinary length](self, "length")}];
-    SAJSONWriteDictionaryEntry(a3, @"length", v6);
+    SAJSONWriteDictionaryEntry(stream, @"length", v6);
   }
 
   path = self->_path;
   if (path)
   {
-    SAJSONWriteDictionaryEntry(a3, @"path", path);
+    SAJSONWriteDictionaryEntry(stream, @"path", path);
   }
 
   bundleIdentifier = self->_bundleIdentifier;
   if (bundleIdentifier)
   {
-    SAJSONWriteDictionaryEntry(a3, @"bundleID", bundleIdentifier);
+    SAJSONWriteDictionaryEntry(stream, @"bundleID", bundleIdentifier);
   }
 
   bundleVersion = self->_bundleVersion;
   if (bundleVersion)
   {
-    SAJSONWriteDictionaryEntry(a3, @"bundleVersion", bundleVersion);
+    SAJSONWriteDictionaryEntry(stream, @"bundleVersion", bundleVersion);
   }
 
   bundleShortVersion = self->_bundleShortVersion;
   if (bundleShortVersion)
   {
-    SAJSONWriteDictionaryEntry(a3, @"bundleShortVersion", bundleShortVersion);
+    SAJSONWriteDictionaryEntry(stream, @"bundleShortVersion", bundleShortVersion);
   }
 
   binaryVersion = self->_binaryVersion;
   if (binaryVersion)
   {
-    SAJSONWriteDictionaryEntry(a3, @"binaryVersion", binaryVersion);
+    SAJSONWriteDictionaryEntry(stream, @"binaryVersion", binaryVersion);
   }
 
   codesigningID = self->_codesigningID;
   if (codesigningID)
   {
-    SAJSONWriteDictionaryEntry(a3, @"codesigningID", codesigningID);
+    SAJSONWriteDictionaryEntry(stream, @"codesigningID", codesigningID);
   }
 
   teamID = self->_teamID;
   if (teamID)
   {
-    SAJSONWriteDictionaryEntry(a3, @"teamID", teamID);
+    SAJSONWriteDictionaryEntry(stream, @"teamID", teamID);
   }
 
   if ([(NSMutableArray *)self->_segments count])
   {
-    [a3 appendString:{@", segments:"}];
+    [stream appendString:{@", segments:"}];
     segments = self->_segments;
 
-    SAJSONWriteArray(a3, segments);
+    SAJSONWriteArray(stream, segments);
   }
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
-  v9 = self;
+  selfCopy = self;
   v58 = *MEMORY[0x1E69E9840];
-  if ([(SABinary *)self sizeInBytesForSerializedVersion]> a4)
+  if ([(SABinary *)self sizeInBytesForSerializedVersion]> length)
   {
     v16 = *__error();
     v17 = _sa_logt();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v9 debugDescription];
-      v19 = [v18 UTF8String];
-      v5 = [v9 sizeInBytesForSerializedVersion];
-      v20 = [*(v9 + 56) count];
+      v18 = [selfCopy debugDescription];
+      uTF8String = [v18 UTF8String];
+      sizeInBytesForSerializedVersion = [selfCopy sizeInBytesForSerializedVersion];
+      v20 = [*(selfCopy + 56) count];
       *buf = 136315906;
-      v55 = v19;
+      v55 = uTF8String;
       v56 = 2048;
-      *v57 = v5;
+      *v57 = sizeInBytesForSerializedVersion;
       *&v57[8] = 2048;
       *&v57[10] = v20;
       *&v57[18] = 2048;
-      *&v57[20] = a4;
+      *&v57[20] = length;
       _os_log_error_impl(&dword_1E0E2F000, v17, OS_LOG_TYPE_ERROR, "%s: size %lu (%lu segments) > buffer length %lu", buf, 0x2Au);
     }
 
     *__error() = v16;
-    v21 = [v9 debugDescription];
-    v22 = [v21 UTF8String];
-    [v9 sizeInBytesForSerializedVersion];
-    [*(v9 + 56) count];
-    _SASetCrashLogMessage(4780, "%s: size %lu (%lu segments) > buffer length %lu", v23, v24, v25, v26, v27, v28, v22);
+    v21 = [selfCopy debugDescription];
+    uTF8String2 = [v21 UTF8String];
+    [selfCopy sizeInBytesForSerializedVersion];
+    [*(selfCopy + 56) count];
+    _SASetCrashLogMessage(4780, "%s: size %lu (%lu segments) > buffer length %lu", v23, v24, v25, v26, v27, v28, uTF8String2);
 
     _os_crash();
     __break(1u);
     goto LABEL_11;
   }
 
-  *&a3->var0 = 769;
-  *&a3->var2[16] = [v9 length];
-  if ([*(v9 + 56) count] == 1)
+  *&buffer->var0 = 769;
+  *&buffer->var2[16] = [selfCopy length];
+  if ([*(selfCopy + 56) count] == 1)
   {
-    v10 = [(SABinary *)v9 checkForSegmentWithCleanName:?];
+    v10 = [(SABinary *)selfCopy checkForSegmentWithCleanName:?];
 
     if (v10)
     {
-      BYTE2(a3->var9) |= 1u;
+      BYTE2(buffer->var9) |= 1u;
     }
   }
 
-  [*(v9 + 72) getUUIDBytes:a3->var2];
-  *(&a3->var3 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(v9 + 24), a5);
-  *(&a3->var4 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(v9 + 80), a5);
-  *(&a3->var5 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(v9 + 88), a5);
-  *(&a3->var6 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(v9 + 96), a5);
-  *(&a3->var7 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(v9 + 104), a5);
-  *(&a3->var8 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(v9 + 112), a5);
-  if ([*(v9 + 56) count] >= 0xFFFF)
+  [*(selfCopy + 72) getUUIDBytes:buffer->var2];
+  *(&buffer->var3 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(selfCopy + 24), dictionary);
+  *(&buffer->var4 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(selfCopy + 80), dictionary);
+  *(&buffer->var5 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(selfCopy + 88), dictionary);
+  *(&buffer->var6 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(selfCopy + 96), dictionary);
+  *(&buffer->var7 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(selfCopy + 104), dictionary);
+  *(&buffer->var8 + 2) = SASerializableIndexForPointerFromSerializationDictionary(*(selfCopy + 112), dictionary);
+  if ([*(selfCopy + 56) count] >= 0xFFFF)
   {
 LABEL_11:
     v29 = *__error();
-    a3 = _sa_logt();
-    if (os_log_type_enabled(a3, OS_LOG_TYPE_ERROR))
+    buffer = _sa_logt();
+    if (os_log_type_enabled(buffer, OS_LOG_TYPE_ERROR))
     {
-      v30 = [v9 debugDescription];
-      v31 = [v30 UTF8String];
+      v30 = [selfCopy debugDescription];
+      uTF8String3 = [v30 UTF8String];
       *buf = 136315394;
-      v55 = v31;
+      v55 = uTF8String3;
       v56 = 1024;
       *v57 = 0xFFFF;
-      _os_log_error_impl(&dword_1E0E2F000, a3, OS_LOG_TYPE_ERROR, "%s: more than %d segments", buf, 0x12u);
+      _os_log_error_impl(&dword_1E0E2F000, buffer, OS_LOG_TYPE_ERROR, "%s: more than %d segments", buf, 0x12u);
     }
 
     *__error() = v29;
-    v9 = [v9 debugDescription];
-    v32 = [v9 UTF8String];
-    _SASetCrashLogMessage(4800, "%s: more than %d segments", v33, v34, v35, v36, v37, v38, v32);
+    selfCopy = [selfCopy debugDescription];
+    uTF8String4 = [selfCopy UTF8String];
+    _SASetCrashLogMessage(4800, "%s: more than %d segments", v33, v34, v35, v36, v37, v38, uTF8String4);
 
     _os_crash();
     __break(1u);
@@ -4124,66 +4124,66 @@ LABEL_14:
     v40 = _sa_logt();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
-      v41 = [v9 debugDescription];
-      v42 = [v41 UTF8String];
-      v43 = *(&a3->var9 + 3);
-      v44 = [v9 sizeInBytesForSerializedVersion];
+      v41 = [selfCopy debugDescription];
+      uTF8String5 = [v41 UTF8String];
+      v43 = *(&buffer->var9 + 3);
+      sizeInBytesForSerializedVersion2 = [selfCopy sizeInBytesForSerializedVersion];
       *buf = 136315906;
-      v55 = v42;
+      v55 = uTF8String5;
       v56 = 1024;
       *v57 = v43;
       *&v57[4] = 2048;
-      *&v57[6] = v5;
+      *&v57[6] = sizeInBytesForSerializedVersion;
       *&v57[14] = 2048;
-      *&v57[16] = v44;
+      *&v57[16] = sizeInBytesForSerializedVersion2;
       _os_log_error_impl(&dword_1E0E2F000, v40, OS_LOG_TYPE_ERROR, "%s: after serializing with %u segments, ended with length %ld, should be %lu", buf, 0x26u);
     }
 
     *__error() = v39;
-    v45 = [v9 debugDescription];
-    v46 = [v45 UTF8String];
-    v47 = *(&a3->var9 + 3);
-    [v9 sizeInBytesForSerializedVersion];
-    _SASetCrashLogMessage(4807, "%s: after serializing with %u segments, ended with length %ld, should be %lu", v48, v49, v50, v51, v52, v53, v46);
+    v45 = [selfCopy debugDescription];
+    uTF8String6 = [v45 UTF8String];
+    v47 = *(&buffer->var9 + 3);
+    [selfCopy sizeInBytesForSerializedVersion];
+    _SASetCrashLogMessage(4807, "%s: after serializing with %u segments, ended with length %ld, should be %lu", v48, v49, v50, v51, v52, v53, uTF8String6);
 
     _os_crash();
     __break(1u);
   }
 
-  v11 = [*(v9 + 56) count];
-  *(&a3->var9 + 3) = v11;
-  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(&a3->var9 + 5, v11, *(v9 + 56), a5);
-  v12 = *(&a3->var9 + 3);
-  v5 = 8 * v12 + 93;
-  if (v5 != [v9 sizeInBytesForSerializedVersion])
+  v11 = [*(selfCopy + 56) count];
+  *(&buffer->var9 + 3) = v11;
+  SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(&buffer->var9 + 5, v11, *(selfCopy + 56), dictionary);
+  v12 = *(&buffer->var9 + 3);
+  sizeInBytesForSerializedVersion = 8 * v12 + 93;
+  if (sizeInBytesForSerializedVersion != [selfCopy sizeInBytesForSerializedVersion])
   {
     goto LABEL_14;
   }
 
-  v13 = (&a3->var9 + 8 * v12 + 5);
-  *v13 = SASerializableIndexForPointerFromSerializationDictionary(*(v9 + 120), a5);
-  v13[1] = SASerializableIndexForPointerFromSerializationDictionary(*(v9 + 128), a5);
+  v13 = (&buffer->var9 + 8 * v12 + 5);
+  *v13 = SASerializableIndexForPointerFromSerializationDictionary(*(selfCopy + 120), dictionary);
+  v13[1] = SASerializableIndexForPointerFromSerializationDictionary(*(selfCopy + 128), dictionary);
   v14 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
-    [(NSString *)self->_name addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_path addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_bundleIdentifier addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_bundleVersion addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_bundleShortVersion addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_binaryVersion addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_codesigningID addSelfToSerializationDictionary:a3];
-    [(NSString *)self->_teamID addSelfToSerializationDictionary:a3];
-    [(SASegment *)self->_fakeEntireBinarySegment addSelfToSerializationDictionary:a3];
+    [(NSString *)self->_name addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_path addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_bundleIdentifier addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_bundleVersion addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_bundleShortVersion addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_binaryVersion addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_codesigningID addSelfToSerializationDictionary:dictionary];
+    [(NSString *)self->_teamID addSelfToSerializationDictionary:dictionary];
+    [(SASegment *)self->_fakeEntireBinarySegment addSelfToSerializationDictionary:dictionary];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -4204,7 +4204,7 @@ LABEL_14:
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v13 + 1) + 8 * v11++) addSelfToSerializationDictionary:{a3, v13}];
+          [*(*(&v13 + 1) + 8 * v11++) addSelfToSerializationDictionary:{dictionary, v13}];
         }
 
         while (v9 != v11);
@@ -4218,7 +4218,7 @@ LABEL_14:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   v4 = *__error();
   v5 = _sa_logt();
@@ -4235,29 +4235,29 @@ LABEL_14:
   return result;
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (*a3 >= 4u)
+  if (*buffer >= 4u)
   {
     goto LABEL_21;
   }
 
-  if (a4 <= 0x4A)
+  if (length <= 0x4A)
   {
     v22 = *__error();
     v23 = _sa_logt();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v32 = a4;
+      lengthCopy = length;
       v33 = 2048;
       v34 = 75;
       _os_log_error_impl(&dword_1E0E2F000, v23, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SABinary struct %lu", buf, 0x16u);
     }
 
     *__error() = v22;
-    _SASetCrashLogMessage(4843, "bufferLength %lu < serialized SABinary struct %lu", v24, v25, v26, v27, v28, v29, a4);
+    _SASetCrashLogMessage(4843, "bufferLength %lu < serialized SABinary struct %lu", v24, v25, v26, v27, v28, v29, length);
     _os_crash();
     __break(1u);
 LABEL_21:
@@ -4265,19 +4265,19 @@ LABEL_21:
     objc_exception_throw(v30);
   }
 
-  v10 = uuidForBytes(a3 + 2);
-  v11 = *(a3 + 34);
+  v10 = uuidForBytes(buffer + 2);
+  v11 = *(buffer + 34);
   v12 = objc_opt_class();
-  v13 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, a5, a6, v12, 1);
+  v13 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, dictionary, bufferDictionary, v12, 1);
   if (*gSASerializationEncodedVersionBeingDecoded() < 31)
   {
     v16 = [SABinary binaryWithUUID:v10 absolutePath:0];
     v15 = v16;
     if (v13)
     {
-      v17 = [v16 path];
+      path = [v16 path];
 
-      if (!v17)
+      if (!path)
       {
         [v15 addPath:v13];
       }
@@ -4299,9 +4299,9 @@ LABEL_21:
     v15 = [SABinary binaryWithUUID:v10 absolutePath:v14];
   }
 
-  if (*(a3 + 1) < 2u)
+  if (*(buffer + 1) < 2u)
   {
-    if (*(a3 + 74))
+    if (*(buffer + 74))
     {
       v18 = @"__TEXT_EXEC";
     }
@@ -4311,7 +4311,7 @@ LABEL_21:
       v18 = @"__TEXT";
     }
 
-    v19 = [(SABinary *)v15 segmentWithCleanName:v18 length:*(a3 + 18) offsetIntoBinary:0x7FFFFFFFFFFFFFFFLL];
+    v19 = [(SABinary *)v15 segmentWithCleanName:v18 length:*(buffer + 18) offsetIntoBinary:0x7FFFFFFFFFFFFFFFLL];
   }
 
   else
@@ -4323,29 +4323,29 @@ LABEL_21:
   return v15;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   *&v93[13] = *MEMORY[0x1E69E9840];
-  if (*a3 >= 4u)
+  if (*buffer >= 4u)
   {
     goto LABEL_53;
   }
 
-  if (a4 <= 0x4A)
+  if (length <= 0x4A)
   {
     v53 = *__error();
     v54 = _sa_logt();
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v91 = a4;
+      lengthCopy3 = length;
       v92 = 2048;
       *v93 = 75;
       _os_log_error_impl(&dword_1E0E2F000, v54, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SABinary struct %lu", buf, 0x16u);
     }
 
     *__error() = v53;
-    _SASetCrashLogMessage(4880, "bufferLength %lu < serialized SABinary struct %lu", v55, v56, v57, v58, v59, v60, a4);
+    _SASetCrashLogMessage(4880, "bufferLength %lu < serialized SABinary struct %lu", v55, v56, v57, v58, v59, v60, length);
     _os_crash();
     __break(1u);
 LABEL_44:
@@ -4354,23 +4354,23 @@ LABEL_44:
     if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v91 = a4;
+      lengthCopy3 = length;
       v92 = 2048;
       *v93 = 77;
       _os_log_error_impl(&dword_1E0E2F000, v62, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SABinary struct %lu", buf, 0x16u);
     }
 
     *__error() = v61;
-    _SASetCrashLogMessage(4920, "bufferLength %lu < serialized SABinary struct %lu", v63, v64, v65, v66, v67, v68, a4);
+    _SASetCrashLogMessage(4920, "bufferLength %lu < serialized SABinary struct %lu", v63, v64, v65, v66, v67, v68, length);
     _os_crash();
     __break(1u);
     goto LABEL_47;
   }
 
-  v6 = a3;
-  v13 = *(a3 + 34);
+  bufferCopy = buffer;
+  v13 = *(buffer + 34);
   v14 = objc_opt_class();
-  v15 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v13, a5, a6, v14, 0);
+  v15 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v13, dictionary, bufferDictionary, v14, 0);
   p_path = &self->_path;
   path = self->_path;
   if (path)
@@ -4390,7 +4390,7 @@ LABEL_44:
 
         v21 = [(SABinary *)self debugDescription];
         *buf = 138412546;
-        v91 = v15;
+        lengthCopy3 = v15;
         v92 = 2112;
         *v93 = v21;
         _os_log_error_impl(&dword_1E0E2F000, v20, OS_LOG_TYPE_ERROR, "Decoded SABinary path %@ doesn't match %@, not filling in bundle/codesign info", buf, 0x16u);
@@ -4408,7 +4408,7 @@ LABEL_38:
 
         v21 = [(SABinary *)self debugDescription];
         *buf = 138412546;
-        v91 = v15;
+        lengthCopy3 = v15;
         v92 = 2112;
         *v93 = v21;
         _os_log_impl(&dword_1E0E2F000, v20, OS_LOG_TYPE_INFO, "Decoded SABinary path %@ doesn't match %@", buf, 0x16u);
@@ -4425,9 +4425,9 @@ LABEL_38:
 
   if (!self->_name && !*p_path)
   {
-    v22 = *(v6 + 26);
+    v22 = *(bufferCopy + 26);
     v23 = objc_opt_class();
-    v24 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v22, a5, a6, v23, 0);
+    v24 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v22, dictionary, bufferDictionary, v23, 0);
     p_path = v24;
     if (v24)
     {
@@ -4439,63 +4439,63 @@ LABEL_38:
 
   if (!self->_bundleIdentifier)
   {
-    p_path = *(v6 + 42);
+    p_path = *(bufferCopy + 42);
     v27 = objc_opt_class();
-    v28 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(p_path, a5, a6, v27, 0);
+    v28 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(p_path, dictionary, bufferDictionary, v27, 0);
     bundleIdentifier = self->_bundleIdentifier;
     self->_bundleIdentifier = v28;
   }
 
   if (!self->_bundleVersion)
   {
-    p_path = *(v6 + 50);
+    p_path = *(bufferCopy + 50);
     v30 = objc_opt_class();
-    v31 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(p_path, a5, a6, v30, 0);
+    v31 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(p_path, dictionary, bufferDictionary, v30, 0);
     bundleVersion = self->_bundleVersion;
     self->_bundleVersion = v31;
   }
 
   if (!self->_bundleShortVersion)
   {
-    p_path = *(v6 + 58);
+    p_path = *(bufferCopy + 58);
     v33 = objc_opt_class();
-    v34 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(p_path, a5, a6, v33, 0);
+    v34 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(p_path, dictionary, bufferDictionary, v33, 0);
     bundleShortVersion = self->_bundleShortVersion;
     self->_bundleShortVersion = v34;
   }
 
   if (!self->_binaryVersion)
   {
-    p_path = *(v6 + 66);
+    p_path = *(bufferCopy + 66);
     v36 = objc_opt_class();
-    v37 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(p_path, a5, a6, v36, 0);
+    v37 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(p_path, dictionary, bufferDictionary, v36, 0);
     binaryVersion = self->_binaryVersion;
     self->_binaryVersion = v37;
   }
 
-  if (v6[1] < 2u)
+  if (bufferCopy[1] < 2u)
   {
     goto LABEL_39;
   }
 
-  if (a4 <= 0x4C)
+  if (length <= 0x4C)
   {
     goto LABEL_44;
   }
 
-  v8 = *(v6 + 75);
-  v39 = 8 * v8;
-  p_path = (8 * v8 + 77);
-  if (p_path > a4)
+  lengthCopy4 = *(bufferCopy + 75);
+  v39 = 8 * lengthCopy4;
+  p_path = (8 * lengthCopy4 + 77);
+  if (p_path > length)
   {
 LABEL_47:
     v69 = *__error();
     v70 = _sa_logt();
     if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
     {
-      v71 = *(v6 + 75);
+      v71 = *(bufferCopy + 75);
       *buf = 134218496;
-      v91 = a4;
+      lengthCopy3 = length;
       v92 = 1024;
       *v93 = v71;
       v93[2] = 2048;
@@ -4504,8 +4504,8 @@ LABEL_47:
     }
 
     *__error() = v69;
-    v88 = *(v6 + 75);
-    _SASetCrashLogMessage(4923, "bufferLength %lu < serialized SABinary struct plus %u segments %llu", v72, v73, v74, v75, v76, v77, a4);
+    v88 = *(bufferCopy + 75);
+    _SASetCrashLogMessage(4923, "bufferLength %lu < serialized SABinary struct plus %u segments %llu", v72, v73, v74, v75, v76, v77, length);
     _os_crash();
     __break(1u);
 LABEL_50:
@@ -4513,17 +4513,17 @@ LABEL_50:
     v79 = _sa_logt();
     if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
     {
-      v80 = *(v6 + 75);
+      v80 = *(bufferCopy + 75);
       *buf = 134218240;
-      v91 = v8;
+      lengthCopy3 = lengthCopy4;
       v92 = 1024;
       *v93 = v80;
       _os_log_error_impl(&dword_1E0E2F000, v79, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SABinary struct v3 with %u segments", buf, 0x12u);
     }
 
     *__error() = v78;
-    v89 = *(v6 + 75);
-    _SASetCrashLogMessage(4935, "bufferLength %lu < serialized SABinary struct v3 with %u segments", v81, v82, v83, v84, v85, v86, v8);
+    v89 = *(bufferCopy + 75);
+    _SASetCrashLogMessage(4935, "bufferLength %lu < serialized SABinary struct v3 with %u segments", v81, v82, v83, v84, v85, v86, lengthCopy4);
     _os_crash();
     __break(1u);
 LABEL_53:
@@ -4538,23 +4538,23 @@ LABEL_53:
   }
 
   v41 = objc_opt_class();
-  v42 = SASerializableNewMutableArrayFromIndexList((v6 + 77), v8, a5, a6, v41);
+  v42 = SASerializableNewMutableArrayFromIndexList((bufferCopy + 77), lengthCopy4, dictionary, bufferDictionary, v41);
   if (*v40 <= 30)
   {
     *gBinaryBeingDecoded() = 0;
   }
 
-  v8 = a4;
-  if (v6[1] >= 3u)
+  lengthCopy4 = length;
+  if (bufferCopy[1] >= 3u)
   {
-    if (v39 + 93 <= a4)
+    if (v39 + 93 <= length)
     {
-      v43 = &v6[8 * *(v6 + 75) + 77];
+      v43 = &bufferCopy[8 * *(bufferCopy + 75) + 77];
       if (!self->_codesigningID)
       {
         v44 = *v43;
         v45 = objc_opt_class();
-        v46 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v44, a5, a6, v45, 0);
+        v46 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v44, dictionary, bufferDictionary, v45, 0);
         codesigningID = self->_codesigningID;
         self->_codesigningID = v46;
       }
@@ -4563,7 +4563,7 @@ LABEL_53:
       {
         v48 = v43[1];
         v49 = objc_opt_class();
-        v50 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v48, a5, a6, v49, 0);
+        v50 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v48, dictionary, bufferDictionary, v49, 0);
         teamID = self->_teamID;
         self->_teamID = v50;
       }

@@ -1,6 +1,6 @@
 @interface SecureImageTranscoder
 - (_TtC31com_apple_CallKit_CallDirectory21SecureImageTranscoder)init;
-- (void)generatePreviewImageFrom:(NSData *)a3 completionHandler:(id)a4;
+- (void)generatePreviewImageFrom:(NSData *)from completionHandler:(id)handler;
 @end
 
 @implementation SecureImageTranscoder
@@ -26,14 +26,14 @@
   return v10;
 }
 
-- (void)generatePreviewImageFrom:(NSData *)a3 completionHandler:(id)a4
+- (void)generatePreviewImageFrom:(NSData *)from completionHandler:(id)handler
 {
   v7 = (*(*(sub_100014320(&qword_10003C700, &qword_100028730) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = from;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_100023A74();
@@ -48,8 +48,8 @@
   v14[3] = 0;
   v14[4] = &unk_100028590;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  fromCopy = from;
+  selfCopy = self;
   sub_100020148(0, 0, v9, &unk_100028760, v14);
 }
 

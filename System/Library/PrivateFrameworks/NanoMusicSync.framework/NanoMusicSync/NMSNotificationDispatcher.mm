@@ -1,7 +1,7 @@
 @interface NMSNotificationDispatcher
-- (NMSNotificationDispatcher)initWithNotificationName:(id)a3;
+- (NMSNotificationDispatcher)initWithNotificationName:(id)name;
 - (NMSNotificationDispatcherDelegate)delegate;
-- (void)_handleLocalNotificationIgnoringSenderPID:(BOOL)a3;
+- (void)_handleLocalNotificationIgnoringSenderPID:(BOOL)d;
 - (void)_handleRemoteNotification;
 - (void)_postLocalDarwinNotification;
 - (void)beginWaitingForUpdates;
@@ -12,21 +12,21 @@
 
 @implementation NMSNotificationDispatcher
 
-- (NMSNotificationDispatcher)initWithNotificationName:(id)a3
+- (NMSNotificationDispatcher)initWithNotificationName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = NMSNotificationDispatcher;
   v6 = [(NMSNotificationDispatcher *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseNotificationName, a3);
-    v8 = [v5 stringByAppendingString:@".local"];
+    objc_storeStrong(&v6->_baseNotificationName, name);
+    v8 = [nameCopy stringByAppendingString:@".local"];
     localDarwinNotificationName = v7->_localDarwinNotificationName;
     v7->_localDarwinNotificationName = v8;
 
-    v10 = [v5 stringByAppendingString:@".remote"];
+    v10 = [nameCopy stringByAppendingString:@".remote"];
     remoteDarwinNotificationName = v7->_remoteDarwinNotificationName;
     v7->_remoteDarwinNotificationName = v10;
 
@@ -37,23 +37,23 @@
 
     objc_initWeak(&location, v7);
     v7->_localNotifyToken = -1;
-    v15 = [(NSString *)v7->_localDarwinNotificationName UTF8String];
+    uTF8String = [(NSString *)v7->_localDarwinNotificationName UTF8String];
     v16 = v7->_queue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __54__NMSNotificationDispatcher_initWithNotificationName___block_invoke;
     handler[3] = &unk_27993E300;
     objc_copyWeak(&v23, &location);
-    notify_register_dispatch(v15, &v7->_localNotifyToken, v16, handler);
+    notify_register_dispatch(uTF8String, &v7->_localNotifyToken, v16, handler);
     v7->_remoteNotifyToken = -1;
-    v17 = [(NSString *)v7->_remoteDarwinNotificationName UTF8String];
+    uTF8String2 = [(NSString *)v7->_remoteDarwinNotificationName UTF8String];
     v18 = v7->_queue;
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __54__NMSNotificationDispatcher_initWithNotificationName___block_invoke_2;
     v20[3] = &unk_27993E300;
     objc_copyWeak(&v21, &location);
-    notify_register_dispatch(v17, &v7->_remoteNotifyToken, v18, v20);
+    notify_register_dispatch(uTF8String2, &v7->_remoteNotifyToken, v18, v20);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v23);
     objc_destroyWeak(&location);
@@ -149,7 +149,7 @@ uint64_t __49__NMSNotificationDispatcher_endWaitingForUpdates__block_invoke(uint
   return result;
 }
 
-- (void)_handleLocalNotificationIgnoringSenderPID:(BOOL)a3
+- (void)_handleLocalNotificationIgnoringSenderPID:(BOOL)d
 {
   v16 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);

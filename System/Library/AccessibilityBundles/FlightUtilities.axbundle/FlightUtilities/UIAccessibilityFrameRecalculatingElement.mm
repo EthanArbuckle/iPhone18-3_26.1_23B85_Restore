@@ -7,8 +7,8 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(UIAccessibilityFrameRecalculatingElement *)self calculateFrame];
-  v3 = v2[2]();
+  calculateFrame = [(UIAccessibilityFrameRecalculatingElement *)self calculateFrame];
+  v3 = calculateFrame[2]();
   v5 = v4;
   v7 = v6;
   v9 = v8;

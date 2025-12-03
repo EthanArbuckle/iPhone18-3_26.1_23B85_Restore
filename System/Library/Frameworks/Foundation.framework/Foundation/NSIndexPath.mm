@@ -3,11 +3,11 @@
 + (NSIndexPath)indexPathWithIndexes:(const NSUInteger *)indexes length:(NSUInteger)length;
 + (id)indexPath;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSComparisonResult)compare:(NSIndexPath *)otherObject;
 - (NSIndexPath)indexPathByAddingIndex:(NSUInteger)index;
 - (NSIndexPath)indexPathByRemovingLastIndex;
-- (NSIndexPath)initWithCoder:(id)a3;
+- (NSIndexPath)initWithCoder:(id)coder;
 - (NSIndexPath)initWithIndex:(NSUInteger)index;
 - (NSIndexPath)initWithIndexes:(const NSUInteger *)indexes length:(NSUInteger)length;
 - (NSUInteger)indexAtPosition:(NSUInteger)position;
@@ -15,7 +15,7 @@
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)getIndexes:(NSUInteger *)indexes;
 - (void)getIndexes:(NSUInteger *)indexes range:(NSRange)positionRange;
 @end
@@ -67,7 +67,7 @@
 
 + (void)initialize
 {
-  if (NSIndexPath == a1)
+  if (NSIndexPath == self)
   {
     if (*MEMORY[0x1E69E5908] && _CFExecutableLinkedOnOrAfter())
     {
@@ -211,7 +211,7 @@ LABEL_9:
 
 + (id)indexPath
 {
-  if (NSIndexPath == a1 && (_NSIndexSetTaggedPointersDisabled & 1) == 0)
+  if (NSIndexPath == self && (_NSIndexSetTaggedPointersDisabled & 1) == 0)
   {
     result = 0x8000000000000034;
     v6 = *MEMORY[0x1E69E5910] ^ 0x8000000000000034;
@@ -223,7 +223,7 @@ LABEL_9:
 
   else
   {
-    v4 = [[a1 alloc] initWithIndexes:0 length:{0, v2}];
+    v4 = [[self alloc] initWithIndexes:0 length:{0, v2}];
 
     return v4;
   }
@@ -235,9 +235,9 @@ LABEL_9:
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = index;
-  if (NSIndexPath != a1 || index >> 13 || (_NSIndexSetTaggedPointersDisabled & 1) != 0)
+  if (NSIndexPath != self || index >> 13 || (_NSIndexSetTaggedPointersDisabled & 1) != 0)
   {
-    return [[a1 alloc] initWithIndexes:v5 length:1];
+    return [[self alloc] initWithIndexes:v5 length:1];
   }
 
   result = ((index << 11) | 0x8000000000000074);
@@ -252,7 +252,7 @@ LABEL_9:
 
 + (NSIndexPath)indexPathWithIndexes:(const NSUInteger *)indexes length:(NSUInteger)length
 {
-  if (NSIndexPath == a1 && (_NSIndexSetTaggedPointersDisabled & 1) == 0 && (InlinePayload = _makeInlinePayload(indexes, length)) != 0)
+  if (NSIndexPath == self && (_NSIndexSetTaggedPointersDisabled & 1) == 0 && (InlinePayload = _makeInlinePayload(indexes, length)) != 0)
   {
     result = ((8 * InlinePayload) | 0x8000000000000004);
     v9 = *MEMORY[0x1E69E5910] ^ result;
@@ -264,7 +264,7 @@ LABEL_9:
 
   else
   {
-    v10 = [[a1 alloc] initWithIndexes:indexes length:length];
+    v10 = [[self alloc] initWithIndexes:indexes length:length];
 
     return v10;
   }
@@ -597,9 +597,9 @@ LABEL_12:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -612,7 +612,7 @@ LABEL_12:
   v24 = v3;
   v25 = v9;
   v26 = v10;
-  if (!a3 || (self & 0x8000000000000000) != 0 && (a3 & 0x8000000000000000) != 0)
+  if (!equal || (self & 0x8000000000000000) != 0 && (equal & 0x8000000000000000) != 0)
   {
     return 0;
   }
@@ -623,7 +623,7 @@ LABEL_12:
   }
 
   v13 = [(NSIndexPath *)self length];
-  if (v13 != [a3 length])
+  if (v13 != [equal length])
   {
     return 0;
   }
@@ -636,7 +636,7 @@ LABEL_12:
       while (1)
       {
         v18 = [(NSIndexPath *)self indexAtPosition:v17, v19, v20, v21, v22, v23, v24, v25, v26];
-        if (v18 != [a3 indexAtPosition:v17])
+        if (v18 != [equal indexAtPosition:v17])
         {
           break;
         }
@@ -651,13 +651,13 @@ LABEL_12:
     }
 
     v14 = [(NSIndexPath *)self indexAtPosition:1];
-    if (v14 != [a3 indexAtPosition:1])
+    if (v14 != [equal indexAtPosition:1])
     {
       return 0;
     }
 
     v15 = [(NSIndexPath *)self indexAtPosition:0];
-    if (v15 != [a3 indexAtPosition:0])
+    if (v15 != [equal indexAtPosition:0])
     {
       return 0;
     }
@@ -666,10 +666,10 @@ LABEL_12:
   return 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v14.receiver = self;
     v14.super_class = NSIndexPath;
@@ -678,14 +678,14 @@ LABEL_12:
   }
 
   v5 = [(NSIndexPath *)self length];
-  [a3 encodeInteger:v5 forKey:@"NSIndexPathLength"];
+  [coder encodeInteger:v5 forKey:@"NSIndexPathLength"];
   if (v5)
   {
     if (v5 == 1)
     {
       v6 = [(NSIndexPath *)self indexAtPosition:0];
 
-      [a3 encodeInteger:v6 forKey:@"NSIndexPathValue"];
+      [coder encodeInteger:v6 forKey:@"NSIndexPathValue"];
     }
 
     else
@@ -713,15 +713,15 @@ LABEL_12:
         [v7 appendBytes:v15 length:v10 - v15 + 1];
       }
 
-      [a3 encodeObject:v7 forKey:@"NSIndexPathData"];
+      [coder encodeObject:v7 forKey:@"NSIndexPathData"];
     }
   }
 }
 
-- (NSIndexPath)initWithCoder:(id)a3
+- (NSIndexPath)initWithCoder:(id)coder
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v31.receiver = self;
     v31.super_class = NSIndexPath;
@@ -733,7 +733,7 @@ LABEL_12:
     goto LABEL_44;
   }
 
-  if (([a3 containsValueForKey:@"NSIndexPathLength"] & 1) == 0)
+  if (([coder containsValueForKey:@"NSIndexPathLength"] & 1) == 0)
   {
 
     v40 = @"NSLocalizedDescription";
@@ -744,34 +744,34 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v5 = [a3 decodeIntegerForKey:@"NSIndexPathLength"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSIndexPathData"];
-  v7 = [v6 bytes];
-  v8 = v7;
-  v30 = v7;
+  v5 = [coder decodeIntegerForKey:@"NSIndexPathLength"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSIndexPathData"];
+  bytes = [v6 bytes];
+  v8 = bytes;
+  v30 = bytes;
   if (v5 < 2)
   {
     goto LABEL_11;
   }
 
-  v7 = [a3 requiresSecureCoding];
-  if (v7)
+  bytes = [coder requiresSecureCoding];
+  if (bytes)
   {
     if (v8)
     {
-      v7 = [v6 length];
+      bytes = [v6 length];
       v9 = 0;
-      if (v7)
+      if (bytes)
       {
         v10 = v8;
         do
         {
           v11 = *v10++;
           v9 += (v11 >> 7) ^ 1;
-          --v7;
+          --bytes;
         }
 
-        while (v7);
+        while (bytes);
       }
 
       if (v9 == v5)
@@ -797,7 +797,7 @@ LABEL_12:
     }
 
 LABEL_17:
-    [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v15, "dictionaryWithObjects:forKeys:count:", v16, v17, 1))}];
+    [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v15, "dictionaryWithObjects:forKeys:count:", v16, v17, 1))}];
     return 0;
   }
 
@@ -821,7 +821,7 @@ LABEL_11:
     v12 = v5;
   }
 
-  MEMORY[0x1EEE9AC00](v7);
+  MEMORY[0x1EEE9AC00](bytes);
   v14 = (&v30 - v13);
   if (v5 <= 0x100)
   {
@@ -846,9 +846,9 @@ LABEL_19:
   {
     if (v5 == 1)
     {
-      if ([a3 containsValueForKey:@"NSIndexPathValue"])
+      if ([coder containsValueForKey:@"NSIndexPathValue"])
       {
-        *v14 = [a3 decodeIntegerForKey:@"NSIndexPathValue"];
+        *v14 = [coder decodeIntegerForKey:@"NSIndexPathValue"];
         goto LABEL_27;
       }
 
@@ -861,7 +861,7 @@ LABEL_19:
 
     else
     {
-      if ([a3 containsValueForKey:@"NSIndexPathData"])
+      if ([coder containsValueForKey:@"NSIndexPathData"])
       {
         if (v8)
         {
@@ -891,12 +891,12 @@ LABEL_19:
       v23 = &v32;
     }
 
-    [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v21, "dictionaryWithObjects:forKeys:count:", v22, v23, 1, v30))}];
+    [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(v21, "dictionaryWithObjects:forKeys:count:", v22, v23, 1, v30))}];
     return 0;
   }
 
 LABEL_27:
-  if ([a3 error])
+  if ([coder error])
   {
 
     v18 = 0;

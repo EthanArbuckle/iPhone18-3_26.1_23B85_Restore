@@ -1,21 +1,21 @@
 @interface VoiceOverBluetoothAlert
-- (VoiceOverBluetoothAlert)initWithDevice:(id)a3;
+- (VoiceOverBluetoothAlert)initWithDevice:(id)device;
 - (void)dismiss;
-- (void)showAlertWithResult:(id)a3;
+- (void)showAlertWithResult:(id)result;
 @end
 
 @implementation VoiceOverBluetoothAlert
 
-- (VoiceOverBluetoothAlert)initWithDevice:(id)a3
+- (VoiceOverBluetoothAlert)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = VoiceOverBluetoothAlert;
   v6 = [(VoiceOverBluetoothAlert *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
@@ -28,37 +28,37 @@
   self->_alertController = 0;
 }
 
-- (void)showAlertWithResult:(id)a3
+- (void)showAlertWithResult:(id)result
 {
-  v4 = [a3 unsignedIntValue];
-  if (VOBTNoServiceError == v4)
+  unsignedIntValue = [result unsignedIntValue];
+  if (VOBTNoServiceError == unsignedIntValue)
   {
     v5 = VOSLocString();
-    v6 = [(AXUIBluetoothDevice *)self->_device name];
-    v7 = [NSString stringWithFormat:v5, v6];
+    name = [(AXUIBluetoothDevice *)self->_device name];
+    v7 = [NSString stringWithFormat:v5, name];
 
     [(AXUIBluetoothDevice *)self->_device paired];
   }
 
   else
   {
-    if (VOBTInvalidPINCodeError == v4 || VOBTDriverLoadingError == v4)
+    if (VOBTInvalidPINCodeError == unsignedIntValue || VOBTDriverLoadingError == unsignedIntValue)
     {
       v8 = VOSLocString();
-      v9 = [(AXUIBluetoothDevice *)self->_device name];
-      v7 = [NSString stringWithFormat:v8, v9];
+      name2 = [(AXUIBluetoothDevice *)self->_device name];
+      v7 = [NSString stringWithFormat:v8, name2];
     }
 
     else
     {
-      if (VOBTGeneralError != v4 || ([(AXUIBluetoothDevice *)self->_device paired]& 1) != 0)
+      if (VOBTGeneralError != unsignedIntValue || ([(AXUIBluetoothDevice *)self->_device paired]& 1) != 0)
       {
         v10 = 0;
 LABEL_12:
         [(AXUIBluetoothDevice *)self->_device paired];
         v11 = VOSLocString();
-        v12 = [(AXUIBluetoothDevice *)self->_device name];
-        v7 = [NSString stringWithFormat:v11, v12];
+        name3 = [(AXUIBluetoothDevice *)self->_device name];
+        v7 = [NSString stringWithFormat:v11, name3];
 
         v13 = VOSLocString();
 
@@ -68,8 +68,8 @@ LABEL_12:
 
       v8 = VOSLocString();
       v20 = VOSLocString();
-      v21 = [(AXUIBluetoothDevice *)self->_device name];
-      v22 = [NSString stringWithFormat:v20, v21];
+      name4 = [(AXUIBluetoothDevice *)self->_device name];
+      v22 = [NSString stringWithFormat:v20, name4];
       v7 = [NSString stringWithFormat:@"%@ %@", v8, v22];
     }
   }
@@ -94,9 +94,9 @@ LABEL_13:
   v23[4] = self;
   v17 = [UIAlertAction actionWithTitle:v10 style:0 handler:v23];
   [(UIAlertController *)self->_alertController addAction:v17];
-  v18 = [(VoiceOverBluetoothAlertDelegate *)self->_delegate window];
-  v19 = [v18 rootViewController];
-  [v19 presentViewController:self->_alertController animated:1 completion:0];
+  window = [(VoiceOverBluetoothAlertDelegate *)self->_delegate window];
+  rootViewController = [window rootViewController];
+  [rootViewController presentViewController:self->_alertController animated:1 completion:0];
 }
 
 uint64_t __47__VoiceOverBluetoothAlert_showAlertWithResult___block_invoke(uint64_t a1, void *a2)

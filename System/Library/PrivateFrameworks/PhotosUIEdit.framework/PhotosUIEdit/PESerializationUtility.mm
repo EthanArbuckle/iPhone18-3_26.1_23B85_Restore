@@ -1,22 +1,22 @@
 @interface PESerializationUtility
-+ (BOOL)adjustmentDataIsSupported:(id)a3;
-+ (id)compositionControllerForContentEditingInput:(id)a3 asShot:(BOOL)a4 error:(id *)a5;
-+ (id)compositionControllerForContentEditingInput:(id)a3 asShot:(BOOL)a4 source:(id)a5 error:(id *)a6;
-+ (id)contentEditingOutputForContentEditingInput:(id)a3 compositionController:(id)a4 asset:(id)a5 async:(BOOL)a6 onlyChangingOriginalChoice:(BOOL)a7;
-+ (id)editSourceForContentEditingInput:(id)a3 useRawDisplaySizeImage:(BOOL)a4 useEmbeddedPreview:(BOOL)a5 error:(id *)a6;
-+ (id)exportCompositionController:(id)a3 forContentEditingOutput:(id)a4 settings:(id)a5 completionQueue:(id)a6 completion:(id)a7;
-+ (int64_t)_playbackStyleForAutoLoopController:(id)a3;
-+ (unsigned)_playbackVariationForAutoLoopController:(id)a3;
++ (BOOL)adjustmentDataIsSupported:(id)supported;
++ (id)compositionControllerForContentEditingInput:(id)input asShot:(BOOL)shot error:(id *)error;
++ (id)compositionControllerForContentEditingInput:(id)input asShot:(BOOL)shot source:(id)source error:(id *)error;
++ (id)contentEditingOutputForContentEditingInput:(id)input compositionController:(id)controller asset:(id)asset async:(BOOL)async onlyChangingOriginalChoice:(BOOL)choice;
++ (id)editSourceForContentEditingInput:(id)input useRawDisplaySizeImage:(BOOL)image useEmbeddedPreview:(BOOL)preview error:(id *)error;
++ (id)exportCompositionController:(id)controller forContentEditingOutput:(id)output settings:(id)settings completionQueue:(id)queue completion:(id)completion;
++ (int64_t)_playbackStyleForAutoLoopController:(id)controller;
++ (unsigned)_playbackVariationForAutoLoopController:(id)controller;
 @end
 
 @implementation PESerializationUtility
 
-+ (unsigned)_playbackVariationForAutoLoopController:(id)a3
++ (unsigned)_playbackVariationForAutoLoopController:(id)controller
 {
-  v3 = a3;
-  if ([v3 enabled])
+  controllerCopy = controller;
+  if ([controllerCopy enabled])
   {
-    v4 = [v3 flavor];
+    flavor = [controllerCopy flavor];
     v5 = PIAutoLoopFlavorFromString();
   }
 
@@ -28,12 +28,12 @@
   return v5;
 }
 
-+ (int64_t)_playbackStyleForAutoLoopController:(id)a3
++ (int64_t)_playbackStyleForAutoLoopController:(id)controller
 {
-  v3 = a3;
-  if ([v3 enabled])
+  controllerCopy = controller;
+  if ([controllerCopy enabled])
   {
-    v4 = [v3 flavor];
+    flavor = [controllerCopy flavor];
     PIAutoLoopFlavorFromString();
 
     if (PIAutoLoopFlavorProducesOnlyVideo())
@@ -55,16 +55,16 @@
   return v5;
 }
 
-+ (id)exportCompositionController:(id)a3 forContentEditingOutput:(id)a4 settings:(id)a5 completionQueue:(id)a6 completion:(id)a7
++ (id)exportCompositionController:(id)controller forContentEditingOutput:(id)output settings:(id)settings completionQueue:(id)queue completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  controllerCopy = controller;
+  outputCopy = output;
+  settingsCopy = settings;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (outputCopy)
   {
-    if (v13)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -72,13 +72,13 @@
 
   else
   {
-    v54 = [MEMORY[0x277CCA890] currentHandler];
-    [v54 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"contentEditingOutput != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:479 description:{@"Invalid parameter not satisfying: %@", @"contentEditingOutput != nil"}];
 
-    if (v13)
+    if (controllerCopy)
     {
 LABEL_3:
-      if (v15)
+      if (settingsCopy)
       {
         goto LABEL_4;
       }
@@ -87,22 +87,22 @@ LABEL_3:
     }
   }
 
-  v55 = [MEMORY[0x277CCA890] currentHandler];
-  [v55 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:480 description:{@"Invalid parameter not satisfying: %@", @"compositionController != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:480 description:{@"Invalid parameter not satisfying: %@", @"compositionController != nil"}];
 
-  if (v15)
+  if (settingsCopy)
   {
 LABEL_4:
-    if (v16)
+    if (queueCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_41:
-    v57 = [MEMORY[0x277CCA890] currentHandler];
-    [v57 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:482 description:{@"Invalid parameter not satisfying: %@", @"completionQueue != nil"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:482 description:{@"Invalid parameter not satisfying: %@", @"completionQueue != nil"}];
 
-    if (v17)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
@@ -111,55 +111,55 @@ LABEL_41:
   }
 
 LABEL_40:
-  v56 = [MEMORY[0x277CCA890] currentHandler];
-  [v56 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:481 description:{@"Invalid parameter not satisfying: %@", @"settings != nil"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:481 description:{@"Invalid parameter not satisfying: %@", @"settings != nil"}];
 
-  if (!v16)
+  if (!queueCopy)
   {
     goto LABEL_41;
   }
 
 LABEL_5:
-  if (v17)
+  if (completionCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_42:
-  v58 = [MEMORY[0x277CCA890] currentHandler];
-  [v58 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:483 description:{@"Invalid parameter not satisfying: %@", @"completion != nil"}];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:483 description:{@"Invalid parameter not satisfying: %@", @"completion != nil"}];
 
 LABEL_6:
   v62 = PLPhotoEditGetLog();
   v18 = os_signpost_id_generate(v62);
-  v19 = [v14 renderedContentURL];
-  if (v19)
+  renderedContentURL = [outputCopy renderedContentURL];
+  if (renderedContentURL)
   {
   }
 
-  else if (([v14 isAsyncAdjustment] & 1) == 0)
+  else if (([outputCopy isAsyncAdjustment] & 1) == 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __114__PESerializationUtility_exportCompositionController_forContentEditingOutput_settings_completionQueue_completion___block_invoke;
     block[3] = &unk_279A31028;
-    v76 = v17;
-    dispatch_async(v16, block);
+    v76 = completionCopy;
+    dispatch_async(queueCopy, block);
     v50 = 0;
 
     goto LABEL_35;
   }
 
   v20 = MEMORY[0x277D3A938];
-  v21 = [v13 composition];
-  v61 = [v20 validatedCompositionCopyForComposition:v21 mediaType:{objc_msgSend(v13, "mediaType")}];
+  composition = [controllerCopy composition];
+  v61 = [v20 validatedCompositionCopyForComposition:composition mediaType:{objc_msgSend(controllerCopy, "mediaType")}];
 
-  LODWORD(v21) = [v14 isAsyncAdjustment];
+  LODWORD(composition) = [outputCopy isAsyncAdjustment];
   v22 = PLPhotoEditGetLog();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-  v59 = v15;
-  v60 = v16;
-  if (!v21)
+  v59 = settingsCopy;
+  v60 = queueCopy;
+  if (!composition)
   {
     if (v23)
     {
@@ -171,27 +171,27 @@ LABEL_6:
     v26 = [objc_alloc(MEMORY[0x277D2D000]) initWithLevel:0];
     [v25 setPriority:v26];
 
-    v27 = [v14 renderedContentURL];
-    [v25 setPrimaryURL:v27];
+    renderedContentURL2 = [outputCopy renderedContentURL];
+    [v25 setPrimaryURL:renderedContentURL2];
 
-    v28 = [v14 renderedVideoComplementContentURL];
-    [v25 setVideoComplementURL:v28];
+    renderedVideoComplementContentURL = [outputCopy renderedVideoComplementContentURL];
+    [v25 setVideoComplementURL:renderedVideoComplementContentURL];
 
-    v29 = [v14 renderedVideoPosterURL];
-    [v25 setVideoPosterFrameURL:v29];
+    renderedVideoPosterURL = [outputCopy renderedVideoPosterURL];
+    [v25 setVideoPosterFrameURL:renderedVideoPosterURL];
 
-    [v25 setApplyVideoOrientationAsMetadata:{objc_msgSend(v15, "applyVideoOrientationAsMetadata")}];
+    [v25 setApplyVideoOrientationAsMetadata:{objc_msgSend(settingsCopy, "applyVideoOrientationAsMetadata")}];
     [v25 setExportSidecarData:1];
-    v30 = [v13 brushStrokeHistory];
-    [v25 setBrushStrokeHistory:v30];
+    brushStrokeHistory = [controllerCopy brushStrokeHistory];
+    [v25 setBrushStrokeHistory:brushStrokeHistory];
 
-    v31 = [v13 autoLoopAdjustmentController];
-    if (![v31 enabled])
+    autoLoopAdjustmentController = [controllerCopy autoLoopAdjustmentController];
+    if (![autoLoopAdjustmentController enabled])
     {
       goto LABEL_30;
     }
 
-    v32 = [v31 flavor];
+    flavor = [autoLoopAdjustmentController flavor];
     PIAutoLoopFlavorFromString();
     v33 = PIAutoLoopFlavorProducesOnlyVideo();
 
@@ -201,9 +201,9 @@ LABEL_6:
     }
 
     v34 = MEMORY[0x277D3B508];
-    v35 = [v14 renderedVideoPosterURL];
-    v36 = [v35 pathExtension];
-    v37 = [v34 typeWithFilenameExtension:v36];
+    renderedVideoPosterURL2 = [outputCopy renderedVideoPosterURL];
+    pathExtension = [renderedVideoPosterURL2 pathExtension];
+    v37 = [v34 typeWithFilenameExtension:pathExtension];
 
     if ([v37 conformsToType:*MEMORY[0x277CE1DC0]])
     {
@@ -217,7 +217,7 @@ LABEL_6:
 LABEL_29:
 
 LABEL_30:
-        v40 = v17;
+        v40 = completionCopy;
         v51 = v62;
         v52 = v51;
         if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v51))
@@ -235,7 +235,7 @@ LABEL_30:
         v64 = v52;
         v66[1] = v18;
         v47 = &v65;
-        v65 = v14;
+        v65 = outputCopy;
         v48 = v66;
         v66[0] = v40;
         v50 = [v49 exportComposition:v61 options:v25 completionQueue:v60 completion:v63];
@@ -255,29 +255,29 @@ LABEL_30:
     _os_log_impl(&dword_25E6E9000, v22, OS_LOG_TYPE_DEFAULT, "Exporting image for async adjustment", buf, 2u);
   }
 
-  v24 = [v14 mediaType];
-  if (v24 == 2)
+  mediaType = [outputCopy mediaType];
+  if (mediaType == 2)
   {
-    [v14 renderedVideoPosterURL];
+    [outputCopy renderedVideoPosterURL];
   }
 
   else
   {
-    [v14 renderedPreviewContentURL];
+    [outputCopy renderedPreviewContentURL];
   }
   v39 = ;
-  v40 = v17;
+  v40 = completionCopy;
   v25 = objc_opt_new();
   v41 = [objc_alloc(MEMORY[0x277D2D000]) initWithLevel:1];
   [v25 setPriority:v41];
 
-  v42 = [v59 scalePolicy];
-  [v25 setScalePolicy:v42];
+  scalePolicy = [v59 scalePolicy];
+  [v25 setScalePolicy:scalePolicy];
 
-  [v25 setEnableHDR:v24 != 2];
+  [v25 setEnableHDR:mediaType != 2];
   [v25 setExportSidecarData:1];
-  v43 = [v13 brushStrokeHistory];
-  [v25 setBrushStrokeHistory:v43];
+  brushStrokeHistory2 = [controllerCopy brushStrokeHistory];
+  [v25 setBrushStrokeHistory:brushStrokeHistory2];
 
   v44 = v62;
   v45 = v44;
@@ -287,7 +287,7 @@ LABEL_30:
     _os_signpost_emit_with_name_impl(&dword_25E6E9000, v45, OS_SIGNPOST_INTERVAL_BEGIN, v18, "LeavingEditRender-Async", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v31 = objc_alloc_init(MEMORY[0x277D3A878]);
+  autoLoopAdjustmentController = objc_alloc_init(MEMORY[0x277D3A878]);
   v67[0] = MEMORY[0x277D85DD0];
   v67[1] = 3221225472;
   v67[2] = __114__PESerializationUtility_exportCompositionController_forContentEditingOutput_settings_completionQueue_completion___block_invoke_134;
@@ -297,19 +297,19 @@ LABEL_30:
   v73 = v18;
   v47 = &v69;
   v48 = &v70;
-  v69 = v14;
+  v69 = outputCopy;
   v70 = v39;
   v71 = v60;
   v72 = v40;
   v49 = v39;
-  [v31 exportImageToURL:v49 composition:v61 options:v25 completion:v67];
+  [autoLoopAdjustmentController exportImageToURL:v49 composition:v61 options:v25 completion:v67];
 
   v50 = 0;
 LABEL_34:
 
-  v15 = v59;
-  v16 = v60;
-  v17 = v40;
+  settingsCopy = v59;
+  queueCopy = v60;
+  completionCopy = v40;
 
 LABEL_35:
 
@@ -399,26 +399,26 @@ void __114__PESerializationUtility_exportCompositionController_forContentEditing
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)contentEditingOutputForContentEditingInput:(id)a3 compositionController:(id)a4 asset:(id)a5 async:(BOOL)a6 onlyChangingOriginalChoice:(BOOL)a7
++ (id)contentEditingOutputForContentEditingInput:(id)input compositionController:(id)controller asset:(id)asset async:(BOOL)async onlyChangingOriginalChoice:(BOOL)choice
 {
-  v7 = a7;
-  v8 = a6;
+  choiceCopy = choice;
+  asyncCopy = async;
   v81 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (v13)
+  inputCopy = input;
+  controllerCopy = controller;
+  assetCopy = asset;
+  if (inputCopy)
   {
-    if (v14)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_45:
-    v67 = [MEMORY[0x277CCA890] currentHandler];
-    [v67 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:387 description:{@"Invalid parameter not satisfying: %@", @"compositionController != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:387 description:{@"Invalid parameter not satisfying: %@", @"compositionController != nil"}];
 
-    if (v15)
+    if (assetCopy)
     {
       goto LABEL_4;
     }
@@ -426,29 +426,29 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v66 = [MEMORY[0x277CCA890] currentHandler];
-  [v66 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:386 description:{@"Invalid parameter not satisfying: %@", @"contentEditingInput != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:386 description:{@"Invalid parameter not satisfying: %@", @"contentEditingInput != nil"}];
 
-  if (!v14)
+  if (!controllerCopy)
   {
     goto LABEL_45;
   }
 
 LABEL_3:
-  if (v15)
+  if (assetCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_46:
-  v68 = [MEMORY[0x277CCA890] currentHandler];
-  [v68 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:388 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:388 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
 
 LABEL_4:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v15;
+    v16 = assetCopy;
   }
 
   else
@@ -457,22 +457,22 @@ LABEL_4:
   }
 
   v17 = v16;
-  v18 = [v15 isLivePhoto];
+  isLivePhoto = [assetCopy isLivePhoto];
   v19 = objc_alloc_init(MEMORY[0x277CD9860]);
   v20 = v19;
   v74 = v19;
-  if (v7)
+  if (choiceCopy)
   {
     [v19 setOnlyChangingOriginalChoice:1];
   }
 
   else
   {
-    [v19 setAsyncAdjustment:v8];
-    v21 = [v15 uniformTypeIdentifier];
-    if (v21)
+    [v19 setAsyncAdjustment:asyncCopy];
+    uniformTypeIdentifier = [assetCopy uniformTypeIdentifier];
+    if (uniformTypeIdentifier)
     {
-      v22 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v21];
+      v22 = [MEMORY[0x277CE1CB8] typeWithIdentifier:uniformTypeIdentifier];
       v23 = [v22 conformsToType:*MEMORY[0x277CE1F10]];
     }
 
@@ -483,35 +483,35 @@ LABEL_4:
 
     v20 = v74;
     [v74 setPreferHEICForRenderedImages:{v23 | (objc_msgSend(v17, "mediaSubtypes") >> 23) & 1}];
-    if (v18)
+    if (isLivePhoto)
     {
-      v24 = [v14 autoLoopAdjustmentController];
+      autoLoopAdjustmentController = [controllerCopy autoLoopAdjustmentController];
       v20 = v74;
-      [v74 setPlaybackStyle:{+[PESerializationUtility _playbackStyleForAutoLoopController:](PESerializationUtility, "_playbackStyleForAutoLoopController:", v24)}];
+      [v74 setPlaybackStyle:{+[PESerializationUtility _playbackStyleForAutoLoopController:](PESerializationUtility, "_playbackStyleForAutoLoopController:", autoLoopAdjustmentController)}];
     }
   }
 
-  v25 = [objc_alloc(MEMORY[0x277CD9858]) initWithContentEditingInput:v13 withOptions:v20];
-  v75 = v14;
-  if (!v7)
+  v25 = [objc_alloc(MEMORY[0x277CD9858]) initWithContentEditingInput:inputCopy withOptions:v20];
+  v75 = controllerCopy;
+  if (!choiceCopy)
   {
     v72 = v17;
-    v26 = v13;
+    v26 = inputCopy;
     if (v17)
     {
-      v27 = [v17 exifOrientation];
+      exifOrientation = [v17 exifOrientation];
     }
 
     else
     {
-      v27 = 1;
+      exifOrientation = 1;
     }
 
     v28 = MEMORY[0x277D3AD10];
-    v29 = [v15 pixelWidth];
-    v30 = [v15 pixelHeight];
-    [v15 duration];
-    v31 = [v28 exportPropertiesWithImageWidth:v29 imageHeight:v30 exifOrientation:v27 duration:?];
+    pixelWidth = [assetCopy pixelWidth];
+    pixelHeight = [assetCopy pixelHeight];
+    [assetCopy duration];
+    v31 = [v28 exportPropertiesWithImageWidth:pixelWidth imageHeight:pixelHeight exifOrientation:exifOrientation duration:?];
     v32 = objc_opt_new();
     v78 = 0;
     v79 = 0;
@@ -522,33 +522,33 @@ LABEL_4:
     v36 = [objc_alloc(MEMORY[0x277CD97A0]) initWithFormatIdentifier:v34 formatVersion:v35 data:v33];
     [v25 setAdjustmentData:v36];
 
-    v13 = v26;
-    v37 = [v26 originalAdjustmentData];
-    if (v37)
+    inputCopy = v26;
+    originalAdjustmentData = [v26 originalAdjustmentData];
+    if (originalAdjustmentData)
     {
-      v38 = v37;
-      v39 = [v26 adjustmentData];
+      v38 = originalAdjustmentData;
+      adjustmentData = [v26 adjustmentData];
 
-      if (!v39)
+      if (!adjustmentData)
       {
-        v40 = [v26 originalAdjustmentData];
-        v41 = [v40 adjustmentRenderTypes];
-        v42 = [v25 adjustmentData];
-        [v42 setAdjustmentRenderTypes:v41];
+        originalAdjustmentData2 = [v26 originalAdjustmentData];
+        adjustmentRenderTypes = [originalAdjustmentData2 adjustmentRenderTypes];
+        adjustmentData2 = [v25 adjustmentData];
+        [adjustmentData2 setAdjustmentRenderTypes:adjustmentRenderTypes];
       }
     }
 
-    v14 = v75;
+    controllerCopy = v75;
     v17 = v72;
   }
 
-  if (v18)
+  if (isLivePhoto)
   {
-    v43 = [v14 autoLoopAdjustmentController];
-    v44 = [PESerializationUtility _playbackVariationForAutoLoopController:v43];
+    autoLoopAdjustmentController2 = [controllerCopy autoLoopAdjustmentController];
+    v44 = [PESerializationUtility _playbackVariationForAutoLoopController:autoLoopAdjustmentController2];
 
-    v14 = v75;
-    if (v44 != [v15 playbackVariation])
+    controllerCopy = v75;
+    if (v44 != [assetCopy playbackVariation])
     {
       v45 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v44];
       [v25 setPlaybackVariation:v45];
@@ -558,21 +558,21 @@ LABEL_4:
   if ([v25 isAsyncAdjustment])
   {
     v46 = objc_alloc(MEMORY[0x277D2CFB0]);
-    v47 = [v14 composition];
-    v48 = [v46 initWithComposition:v47];
+    composition = [controllerCopy composition];
+    v48 = [v46 initWithComposition:composition];
 
     [v48 setName:@"+[PESerializationUtility contentEditingOutputForContentEditingInput:]-Geometry"];
     v77 = 0;
     v49 = [v48 submitSynchronous:&v77];
     v50 = v77;
-    v51 = [v49 geometry];
+    geometry = [v49 geometry];
 
     v71 = v50;
-    if (v51)
+    if (geometry)
     {
-      v52 = [v51 size];
-      v54 = v53;
-      v14 = v75;
+      pixelWidth2 = [geometry size];
+      pixelHeight2 = v53;
+      controllerCopy = v75;
     }
 
     else
@@ -585,40 +585,40 @@ LABEL_4:
         _os_log_impl(&dword_25E6E9000, v55, OS_LOG_TYPE_DEFAULT, "Failed to request geometry with error: %@", &buf, 0xCu);
       }
 
-      v52 = [v15 pixelWidth];
-      v54 = [v15 pixelHeight];
-      v14 = v75;
-      if ((v54 | v52) < 0)
+      pixelWidth2 = [assetCopy pixelWidth];
+      pixelHeight2 = [assetCopy pixelHeight];
+      controllerCopy = v75;
+      if ((pixelHeight2 | pixelWidth2) < 0)
       {
-        v69 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
         v70 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NUPixelSize NUPixelSizeMake(NSInteger, NSInteger)"}];
-        [v69 handleFailureInFunction:v70 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
+        [currentHandler4 handleFailureInFunction:v70 file:@"NUGeometryPrimitives.h" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"(width >= 0) && (height >= 0)"}];
 
-        v14 = v75;
+        controllerCopy = v75;
       }
     }
 
-    [v25 setFullSizeRenderWidth:v52];
-    [v25 setFullSizeRenderHeight:v54];
-    if ([v14 mediaType] == 2)
+    [v25 setFullSizeRenderWidth:pixelWidth2];
+    [v25 setFullSizeRenderHeight:pixelHeight2];
+    if ([controllerCopy mediaType] == 2)
     {
       v73 = v17;
-      v56 = v13;
+      v56 = inputCopy;
       v57 = objc_alloc(MEMORY[0x277D2D030]);
-      v58 = [v14 composition];
-      v59 = [v57 initWithComposition:v58];
+      composition2 = [controllerCopy composition];
+      v59 = [v57 initWithComposition:composition2];
 
       [v59 setName:@"+[PESerializationUtility contentEditingOutputForContentEditingInput:]-VideoAttributes"];
       v76 = 0;
       v60 = [v59 submitSynchronous:&v76];
       v61 = v76;
-      v62 = [v60 videoAttributes];
+      videoAttributes = [v60 videoAttributes];
 
-      if (v62)
+      if (videoAttributes)
       {
-        [v62 duration];
+        [videoAttributes duration];
         [v25 setFullSizeRenderDuration:CMTimeGetSeconds(&buf)];
-        v14 = v75;
+        controllerCopy = v75;
       }
 
       else
@@ -632,11 +632,11 @@ LABEL_4:
           _os_log_impl(&dword_25E6E9000, v64, OS_LOG_TYPE_DEFAULT, "Failed to request video attributes with error: %@", &buf, 0xCu);
         }
 
-        v14 = v75;
+        controllerCopy = v75;
         v61 = v63;
       }
 
-      v13 = v56;
+      inputCopy = v56;
       v17 = v73;
     }
   }
@@ -644,17 +644,17 @@ LABEL_4:
   return v25;
 }
 
-+ (BOOL)adjustmentDataIsSupported:(id)a3
++ (BOOL)adjustmentDataIsSupported:(id)supported
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  supportedCopy = supported;
   v4 = objc_opt_new();
-  v5 = [v3 data];
-  v6 = [v3 formatIdentifier];
-  v7 = [v3 formatVersion];
+  data = [supportedCopy data];
+  formatIdentifier = [supportedCopy formatIdentifier];
+  formatVersion = [supportedCopy formatVersion];
 
   v13 = 0;
-  v8 = [v4 loadCompositionFrom:v5 formatIdentifier:v6 formatVersion:v7 sidecarData:0 error:&v13];
+  v8 = [v4 loadCompositionFrom:data formatIdentifier:formatIdentifier formatVersion:formatVersion sidecarData:0 error:&v13];
   v9 = v13;
 
   if (v9)
@@ -678,16 +678,16 @@ LABEL_4:
   return v11;
 }
 
-+ (id)compositionControllerForContentEditingInput:(id)a3 asShot:(BOOL)a4 source:(id)a5 error:(id *)a6
++ (id)compositionControllerForContentEditingInput:(id)input asShot:(BOOL)shot source:(id)source error:(id *)error
 {
-  v8 = a4;
+  shotCopy = shot;
   v115 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = v12;
-  if (v11)
+  inputCopy = input;
+  sourceCopy = source;
+  v13 = sourceCopy;
+  if (inputCopy)
   {
-    if (v12)
+    if (sourceCopy)
     {
       goto LABEL_3;
     }
@@ -695,8 +695,8 @@ LABEL_4:
 
   else
   {
-    v90 = [MEMORY[0x277CCA890] currentHandler];
-    [v90 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"contentEditingInput != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"contentEditingInput != nil"}];
 
     if (v13)
     {
@@ -704,31 +704,31 @@ LABEL_4:
     }
   }
 
-  v91 = [MEMORY[0x277CCA890] currentHandler];
-  [v91 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"source != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"source != nil"}];
 
 LABEL_3:
-  if (!a6)
+  if (!error)
   {
-    v92 = [MEMORY[0x277CCA890] currentHandler];
-    [v92 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
   }
 
-  v14 = [v11 originalAdjustmentData];
-  v15 = [v11 adjustmentData];
-  v96 = v14;
+  originalAdjustmentData = [inputCopy originalAdjustmentData];
+  adjustmentData = [inputCopy adjustmentData];
+  v96 = originalAdjustmentData;
   v97 = v13;
-  v95 = v15;
-  if (v8)
+  v95 = adjustmentData;
+  if (shotCopy)
   {
-    if (v14)
+    if (originalAdjustmentData)
     {
       v16 = objc_opt_new();
-      v17 = [v14 data];
-      v18 = [v14 formatIdentifier];
-      v19 = [v14 formatVersion];
+      data = [originalAdjustmentData data];
+      formatIdentifier = [originalAdjustmentData formatIdentifier];
+      formatVersion = [originalAdjustmentData formatVersion];
       v112 = 0;
-      v20 = [v16 loadCompositionFrom:v17 formatIdentifier:v18 formatVersion:v19 sidecarData:0 error:&v112];
+      composition3 = [v16 loadCompositionFrom:data formatIdentifier:formatIdentifier formatVersion:formatVersion sidecarData:0 error:&v112];
       v21 = v112;
 
       if (!v21)
@@ -752,61 +752,61 @@ LABEL_19:
 LABEL_37:
 
 LABEL_38:
-      v52 = v20;
-      if (v20)
+      newComposition = composition3;
+      if (composition3)
       {
 LABEL_40:
-        v53 = [MEMORY[0x277D3A938] newCompositionControllerWithComposition:v52];
-        v54 = [v53 adjustmentConstants];
-        v55 = [v13 source];
-        [v53 setSource:v55 mediaType:{objc_msgSend(v13, "mediaType")}];
+        v53 = [MEMORY[0x277D3A938] newCompositionControllerWithComposition:newComposition];
+        adjustmentConstants = [v53 adjustmentConstants];
+        source = [v13 source];
+        [v53 setSource:source mediaType:{objc_msgSend(v13, "mediaType")}];
 
-        if ([v11 mediaType] == 2 && (objc_msgSend(v11, "mediaSubtypes") & 0x20000) != 0)
+        if ([inputCopy mediaType] == 2 && (objc_msgSend(inputCopy, "mediaSubtypes") & 0x20000) != 0)
         {
-          v56 = [v53 slomoAdjustmentController];
+          slomoAdjustmentController = [v53 slomoAdjustmentController];
 
-          if (!v56)
+          if (!slomoAdjustmentController)
           {
-            v57 = [v54 PISlomoAdjustmentKey];
+            pISlomoAdjustmentKey = [adjustmentConstants PISlomoAdjustmentKey];
             v107[0] = MEMORY[0x277D85DD0];
             v107[1] = 3221225472;
             v107[2] = __90__PESerializationUtility_compositionControllerForContentEditingInput_asShot_source_error___block_invoke;
             v107[3] = &unk_279A30940;
-            v108 = v11;
-            [v53 modifyAdjustmentWithKey:v57 modificationBlock:v107];
+            v108 = inputCopy;
+            [v53 modifyAdjustmentWithKey:pISlomoAdjustmentKey modificationBlock:v107];
           }
         }
 
-        v94 = v11;
-        v58 = [v53 depthAdjustmentController];
-        v59 = v58;
-        if (v58)
+        v94 = inputCopy;
+        depthAdjustmentController = [v53 depthAdjustmentController];
+        v59 = depthAdjustmentController;
+        if (depthAdjustmentController)
         {
-          v60 = [v58 capturedFocusRect];
-          v61 = [v59 focusRect];
+          capturedFocusRect = [depthAdjustmentController capturedFocusRect];
+          focusRect = [v59 focusRect];
 
-          if (v60 && !v61)
+          if (capturedFocusRect && !focusRect)
           {
             v62 = *MEMORY[0x277D3AA20];
             v105[0] = MEMORY[0x277D85DD0];
             v105[1] = 3221225472;
             v105[2] = __90__PESerializationUtility_compositionControllerForContentEditingInput_asShot_source_error___block_invoke_2;
             v105[3] = &unk_279A30968;
-            v106 = v60;
+            v106 = capturedFocusRect;
             [v53 modifyAdjustmentWithKey:v62 modificationBlock:v105];
           }
         }
 
-        v93 = v52;
-        v63 = [v53 semanticStyleAdjustmentController];
+        v93 = newComposition;
+        semanticStyleAdjustmentController = [v53 semanticStyleAdjustmentController];
 
-        if (!v63)
+        if (!semanticStyleAdjustmentController)
         {
           v64 = dispatch_group_create();
           dispatch_group_enter(v64);
           v65 = objc_alloc(MEMORY[0x277D3A970]);
-          v66 = [v53 composition];
-          v67 = [v65 initWithComposition:v66];
+          composition = [v53 composition];
+          v67 = [v65 initWithComposition:composition];
 
           v102[0] = MEMORY[0x277D85DD0];
           v102[1] = 3221225472;
@@ -820,89 +820,89 @@ LABEL_40:
         }
 
         v69 = MEMORY[0x277D3A938];
-        v70 = [v53 composition];
-        v71 = [v69 imagePropertiesRequestWithComposition:v70];
+        composition2 = [v53 composition];
+        v71 = [v69 imagePropertiesRequestWithComposition:composition2];
 
         [v71 setName:@"PAEditSupport-compositionControllerDeserialization"];
         v101 = 0;
         v72 = [v71 submitSynchronous:&v101];
         v73 = v101;
-        v74 = [v72 properties];
+        properties = [v72 properties];
 
-        v75 = v54;
-        if (!v74)
+        v75 = adjustmentConstants;
+        if (!properties)
         {
           v84 = v73;
           v51 = 0;
-          *a6 = v73;
+          *error = v73;
 LABEL_66:
 
           v21 = v93;
-          v11 = v94;
+          inputCopy = v94;
           v28 = v98;
           goto LABEL_67;
         }
 
-        v76 = [v74 rawProperties];
-        if (v76)
+        rawProperties = [properties rawProperties];
+        if (rawProperties)
         {
-          v77 = [v53 rawAdjustmentController];
+          rawAdjustmentController = [v53 rawAdjustmentController];
 
-          if (v77)
+          if (rawAdjustmentController)
           {
-            v78 = [v53 rawAdjustmentController];
-            v79 = [v78 inputDecoderVersion];
+            rawAdjustmentController2 = [v53 rawAdjustmentController];
+            inputDecoderVersion = [rawAdjustmentController2 inputDecoderVersion];
 
-            v80 = [v76 availableDecoderVersions];
-            v81 = [v80 containsObject:v79];
+            availableDecoderVersions = [rawProperties availableDecoderVersions];
+            v81 = [availableDecoderVersions containsObject:inputDecoderVersion];
 
-            v54 = v75;
+            adjustmentConstants = v75;
             if (v81)
             {
               goto LABEL_59;
             }
           }
 
-          v82 = [v54 PIRawAdjustmentKey];
+          pIRawAdjustmentKey = [adjustmentConstants PIRawAdjustmentKey];
           v99[0] = MEMORY[0x277D85DD0];
           v99[1] = 3221225472;
           v99[2] = __90__PESerializationUtility_compositionControllerForContentEditingInput_asShot_source_error___block_invoke_95;
           v99[3] = &unk_279A309E0;
-          v100 = v76;
-          [v53 modifyAdjustmentWithKey:v82 modificationBlock:v99];
+          v100 = rawProperties;
+          [v53 modifyAdjustmentWithKey:pIRawAdjustmentKey modificationBlock:v99];
 
-          v83 = v100;
+          pIRawAdjustmentKey2 = v100;
         }
 
         else
         {
-          v83 = [v54 PIRawAdjustmentKey];
-          [v53 removeAdjustmentWithKey:v83];
+          pIRawAdjustmentKey2 = [adjustmentConstants PIRawAdjustmentKey];
+          [v53 removeAdjustmentWithKey:pIRawAdjustmentKey2];
         }
 
 LABEL_59:
-        v85 = [v74 orientation];
+        orientation = [properties orientation];
         if ((NUOrientationIsValid() & 1) == 0)
         {
           v86 = PLPhotoEditGetLog();
           if (os_log_type_enabled(v86, OS_LOG_TYPE_ERROR))
           {
             *buf = 67109120;
-            LODWORD(v114) = v85;
+            LODWORD(v114) = orientation;
             _os_log_impl(&dword_25E6E9000, v86, OS_LOG_TYPE_ERROR, "PESerializationUtility image orientation from the image properties is invalid: %d", buf, 8u);
           }
 
-          v85 = 1;
+          orientation = 1;
         }
 
-        [MEMORY[0x277D3AC20] compositionController:v53 setInputOrientation:v85];
-        v87 = [v98 brushStrokeHistory];
+        [MEMORY[0x277D3AC20] compositionController:v53 setInputOrientation:orientation];
+        brushStrokeHistory = [v98 brushStrokeHistory];
 
         v13 = v97;
-        if (v87)
+        if (brushStrokeHistory)
         {
-          v88 = [v98 brushStrokeHistory];
-          [v53 setBrushStrokeHistory:v88];
+          brushStrokeHistory2 = [v98 brushStrokeHistory];
+          [v53 setBrushStrokeHistory:brushStrokeHistory2];
         }
 
         v51 = v53;
@@ -911,23 +911,23 @@ LABEL_59:
       }
 
 LABEL_39:
-      v52 = [MEMORY[0x277D3A938] newComposition];
+      newComposition = [MEMORY[0x277D3A938] newComposition];
       goto LABEL_40;
     }
 
-    if (v15)
+    if (adjustmentData)
     {
-      v33 = v15;
+      v33 = adjustmentData;
       v34 = objc_alloc(MEMORY[0x277D3A870]);
-      v35 = [MEMORY[0x277D3A938] newComposition];
-      v21 = [v34 initWithComposition:v35];
+      newComposition2 = [MEMORY[0x277D3A938] newComposition];
+      v21 = [v34 initWithComposition:newComposition2];
 
       v36 = objc_opt_new();
-      v37 = [v33 data];
-      v38 = [v33 formatIdentifier];
-      v39 = [v33 formatVersion];
+      data2 = [v33 data];
+      formatIdentifier2 = [v33 formatIdentifier];
+      formatVersion2 = [v33 formatVersion];
       v111 = 0;
-      v40 = [v36 loadCompositionFrom:v37 formatIdentifier:v38 formatVersion:v39 sidecarData:0 error:&v111];
+      v40 = [v36 loadCompositionFrom:data2 formatIdentifier:formatIdentifier2 formatVersion:formatVersion2 sidecarData:0 error:&v111];
       v22 = v111;
 
       if (v22)
@@ -945,20 +945,20 @@ LABEL_39:
       {
         v42 = [objc_alloc(MEMORY[0x277D3A870]) initWithComposition:v40];
         v43 = objc_alloc(MEMORY[0x277D3B458]);
-        v44 = [v11 fullSizeImageURL];
-        v45 = [v43 initWithMediaURL:v44 timeZoneLookup:0];
+        fullSizeImageURL = [inputCopy fullSizeImageURL];
+        v45 = [v43 initWithMediaURL:fullSizeImageURL timeZoneLookup:0];
 
-        v46 = [v11 livePhoto];
-        v47 = [PESupport repairedAsShotCompositionController:v21 forCurrentCompositionController:v42 isLivePhoto:v46 != 0 metadata:v45];
+        livePhoto = [inputCopy livePhoto];
+        v47 = [PESupport repairedAsShotCompositionController:v21 forCurrentCompositionController:v42 isLivePhoto:livePhoto != 0 metadata:v45];
 
-        v20 = [v47 composition];
+        composition3 = [v47 composition];
 
         v21 = v47;
       }
 
       else
       {
-        v20 = 0;
+        composition3 = 0;
       }
 
       v13 = v97;
@@ -972,14 +972,14 @@ LABEL_27:
     goto LABEL_39;
   }
 
-  if (v15)
+  if (adjustmentData)
   {
-    v23 = v15;
+    v23 = adjustmentData;
   }
 
   else
   {
-    v23 = v14;
+    v23 = originalAdjustmentData;
   }
 
   v24 = v23;
@@ -989,21 +989,21 @@ LABEL_27:
   }
 
   v21 = v24;
-  v25 = [v11 adjustmentSecondaryDataURL];
+  adjustmentSecondaryDataURL = [inputCopy adjustmentSecondaryDataURL];
 
-  if (!v25)
+  if (!adjustmentSecondaryDataURL)
   {
 LABEL_18:
     v29 = objc_opt_new();
-    v30 = [v21 data];
-    v31 = [v21 formatIdentifier];
-    v32 = [v21 formatVersion];
+    data3 = [v21 data];
+    formatIdentifier3 = [v21 formatIdentifier];
+    formatVersion3 = [v21 formatVersion];
     v109 = 0;
-    v98 = v25;
-    v20 = [v29 loadCompositionFrom:v30 formatIdentifier:v31 formatVersion:v32 sidecarData:v25 error:&v109];
+    v98 = adjustmentSecondaryDataURL;
+    composition3 = [v29 loadCompositionFrom:data3 formatIdentifier:formatIdentifier3 formatVersion:formatVersion3 sidecarData:adjustmentSecondaryDataURL error:&v109];
     v22 = v109;
 
-    if (!v20)
+    if (!composition3)
     {
       v48 = PLPhotoEditGetLog();
       v13 = v97;
@@ -1014,7 +1014,7 @@ LABEL_18:
         _os_log_impl(&dword_25E6E9000, v48, OS_LOG_TYPE_ERROR, "PESerializationUtility persistence manager deserialized with error: %@", buf, 0xCu);
       }
 
-      v20 = 0;
+      composition3 = 0;
       goto LABEL_37;
     }
 
@@ -1022,12 +1022,12 @@ LABEL_18:
   }
 
   v26 = MEMORY[0x277D3A8A8];
-  v27 = [v11 adjustmentSecondaryDataURL];
+  adjustmentSecondaryDataURL2 = [inputCopy adjustmentSecondaryDataURL];
   v110 = 0;
-  v25 = [v26 loadFromURL:v27 error:&v110];
+  adjustmentSecondaryDataURL = [v26 loadFromURL:adjustmentSecondaryDataURL2 error:&v110];
   v28 = v110;
 
-  if (v25)
+  if (adjustmentSecondaryDataURL)
   {
 
     goto LABEL_18;
@@ -1043,7 +1043,7 @@ LABEL_18:
 
   v50 = v28;
   v51 = 0;
-  *a6 = v28;
+  *error = v28;
 LABEL_67:
 
   return v51;
@@ -1130,14 +1130,14 @@ void __90__PESerializationUtility_compositionControllerForContentEditingInput_as
   [v4 setFromAdjustment:v5];
 }
 
-+ (id)compositionControllerForContentEditingInput:(id)a3 asShot:(BOOL)a4 error:(id *)a5
++ (id)compositionControllerForContentEditingInput:(id)input asShot:(BOOL)shot error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [PESerializationUtility editSourceForContentEditingInput:v7 useRawDisplaySizeImage:0 useEmbeddedPreview:0 error:a5];
+  shotCopy = shot;
+  inputCopy = input;
+  v8 = [PESerializationUtility editSourceForContentEditingInput:inputCopy useRawDisplaySizeImage:0 useEmbeddedPreview:0 error:error];
   if (v8)
   {
-    v9 = [PESerializationUtility compositionControllerForContentEditingInput:v7 asShot:v6 source:v8 error:a5];
+    v9 = [PESerializationUtility compositionControllerForContentEditingInput:inputCopy asShot:shotCopy source:v8 error:error];
   }
 
   else
@@ -1148,15 +1148,15 @@ void __90__PESerializationUtility_compositionControllerForContentEditingInput_as
   return v9;
 }
 
-+ (id)editSourceForContentEditingInput:(id)a3 useRawDisplaySizeImage:(BOOL)a4 useEmbeddedPreview:(BOOL)a5 error:(id *)a6
++ (id)editSourceForContentEditingInput:(id)input useRawDisplaySizeImage:(BOOL)image useEmbeddedPreview:(BOOL)preview error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  previewCopy = preview;
+  imageCopy = image;
   v44[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  if (v11)
+  inputCopy = input;
+  if (inputCopy)
   {
-    if (a6)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -1164,24 +1164,24 @@ void __90__PESerializationUtility_compositionControllerForContentEditingInput_as
 
   else
   {
-    v37 = [MEMORY[0x277CCA890] currentHandler];
-    [v37 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"contentEditingInput != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"contentEditingInput != nil"}];
 
-    if (a6)
+    if (error)
     {
       goto LABEL_3;
     }
   }
 
-  v38 = [MEMORY[0x277CCA890] currentHandler];
-  [v38 handleFailureInMethod:a2 object:a1 file:@"PESerializationUtility.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PESerializationUtility.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
 
 LABEL_3:
-  v12 = [v11 mediaType];
-  if ((v12 - 2) < 2)
+  mediaType = [inputCopy mediaType];
+  if ((mediaType - 2) < 2)
   {
-    v20 = [v11 videoURL];
-    if (!v20)
+    videoURL = [inputCopy videoURL];
+    if (!videoURL)
     {
       v23 = MEMORY[0x277CCA9B8];
       v41 = *MEMORY[0x277CCA068];
@@ -1190,52 +1190,52 @@ LABEL_3:
       v25 = v23;
       v26 = 2;
 LABEL_20:
-      *a6 = [v25 errorWithDomain:@"PESerializationUtilityErrorDomain" code:v26 userInfo:v24];
+      *error = [v25 errorWithDomain:@"PESerializationUtilityErrorDomain" code:v26 userInfo:v24];
 
       v14 = 0;
       v21 = 0;
       goto LABEL_23;
     }
 
-    v14 = v20;
-    v21 = [objc_alloc(MEMORY[0x277D3AD98]) initWithVideoURL:v20];
+    v14 = videoURL;
+    v21 = [objc_alloc(MEMORY[0x277D3AD98]) initWithVideoURL:videoURL];
   }
 
   else
   {
-    if (v12)
+    if (mediaType)
     {
-      if (v12 != 1)
+      if (mediaType != 1)
       {
         v21 = 0;
         goto LABEL_24;
       }
 
-      v13 = [v11 fullSizeImageURL];
-      if (v13)
+      fullSizeImageURL = [inputCopy fullSizeImageURL];
+      if (fullSizeImageURL)
       {
-        v14 = v13;
-        v15 = [v11 uniformTypeIdentifier];
-        if (v15 && ([MEMORY[0x277CE1CB8] typeWithIdentifier:v15], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "conformsToType:", *MEMORY[0x277CE1E48]), v16, v17) && !v8)
+        v14 = fullSizeImageURL;
+        uniformTypeIdentifier = [inputCopy uniformTypeIdentifier];
+        if (uniformTypeIdentifier && ([MEMORY[0x277CE1CB8] typeWithIdentifier:uniformTypeIdentifier], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "conformsToType:", *MEMORY[0x277CE1E48]), v16, v17) && !imageCopy)
         {
-          v18 = [v11 displaySizeImage];
-          v19 = 0;
+          displaySizeImage = [inputCopy displaySizeImage];
+          displaySizeImage2 = 0;
         }
 
         else
         {
-          v19 = [v11 displaySizeImage];
+          displaySizeImage2 = [inputCopy displaySizeImage];
         }
 
-        v27 = [objc_alloc(MEMORY[0x277D3AD28]) initWithURL:v14 type:v15 image:v19 useEmbeddedPreview:v7];
-        v28 = [v11 livePhoto];
-        v29 = v28;
-        if (v28)
+        v27 = [objc_alloc(MEMORY[0x277D3AD28]) initWithURL:v14 type:uniformTypeIdentifier image:displaySizeImage2 useEmbeddedPreview:previewCopy];
+        livePhoto = [inputCopy livePhoto];
+        v29 = livePhoto;
+        if (livePhoto)
         {
           v30 = MEMORY[0x277CBEBC0];
-          v31 = [v28 videoComplement];
-          v32 = [v31 videoPath];
-          v33 = [v30 fileURLWithPath:v32];
+          videoComplement = [livePhoto videoComplement];
+          videoPath = [videoComplement videoPath];
+          v33 = [v30 fileURLWithPath:videoPath];
 
           v34 = [objc_alloc(MEMORY[0x277D3AD98]) initWithVideoURL:v33];
           v21 = [objc_alloc(MEMORY[0x277D3ACB8]) initWithPhotoSource:v27 videoComplement:v34];
@@ -1263,7 +1263,7 @@ LABEL_20:
     v40 = @"Unknown media type";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
     [v22 errorWithDomain:@"PESerializationUtilityErrorDomain" code:0 userInfo:v14];
-    *a6 = v21 = 0;
+    *error = v21 = 0;
   }
 
 LABEL_23:

@@ -1,28 +1,28 @@
 @interface PXMemoriesBlacklistAccessoryViewHelper
-+ (id)avatarViewWithFrame:(CGRect)a3 person:(id)a4;
++ (id)avatarViewWithFrame:(CGRect)frame person:(id)person;
 @end
 
 @implementation PXMemoriesBlacklistAccessoryViewHelper
 
-+ (id)avatarViewWithFrame:(CGRect)a3 person:(id)a4
++ (id)avatarViewWithFrame:(CGRect)frame person:(id)person
 {
-  if (a4)
+  if (person)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v8 = a4;
-    v9 = [[PXPeopleScalableAvatarView alloc] initWithFrame:x, y, width, height];
-    [(PXPeopleScalableAvatarView *)v9 setPerson:v8];
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
+    personCopy = person;
+    height = [[PXPeopleScalableAvatarView alloc] initWithFrame:x, y, width, height];
+    [(PXPeopleScalableAvatarView *)height setPerson:personCopy];
   }
 
   else
   {
-    v9 = 0;
+    height = 0;
   }
 
-  return v9;
+  return height;
 }
 
 @end

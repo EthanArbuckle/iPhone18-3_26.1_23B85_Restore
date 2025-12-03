@@ -1,13 +1,13 @@
 @interface CAPresentationModifierGroup
-+ (id)groupWithCapacity:(unint64_t)a3;
-- (CAPresentationModifierGroup)initWithCapacity:(unint64_t)a3;
-- (unint64_t)nextSlotWithPayloadSize:(unint64_t)a3;
++ (id)groupWithCapacity:(unint64_t)capacity;
+- (CAPresentationModifierGroup)initWithCapacity:(unint64_t)capacity;
+- (unint64_t)nextSlotWithPayloadSize:(unint64_t)size;
 - (void)dealloc;
-- (void)flushLocallyWithTargetTime:(double)a3;
-- (void)flushWithTargetTime:(double)a3;
-- (void)flushWithTransactionAndTargetTime:(double)a3;
+- (void)flushLocallyWithTargetTime:(double)time;
+- (void)flushWithTargetTime:(double)time;
+- (void)flushWithTransactionAndTargetTime:(double)time;
 - (void)resetBitMask;
-- (void)setUpdatesAsynchronously:(BOOL)a3;
+- (void)setUpdatesAsynchronously:(BOOL)asynchronously;
 @end
 
 @implementation CAPresentationModifierGroup
@@ -37,7 +37,7 @@
   [(CAPresentationModifierGroup *)&v4 dealloc];
 }
 
-- (void)flushWithTransactionAndTargetTime:(double)a3
+- (void)flushWithTransactionAndTargetTime:(double)time
 {
   localId = self->_localId;
   if (localId)
@@ -48,12 +48,12 @@
       v8 = v6;
       v9 = *(self->_shmem + 3);
       *(v9 + 12) = self->_count;
-      *(v9 + 8 * *(v9 + 4) + 16) = a3;
+      *(v9 + 8 * *(v9 + 4) + 16) = time;
       CA::Transaction::add_command(0x19, self->_localId, 0, self, v7);
       (**(v8 + 29))((v8 + 58));
     }
 
-    [(CAPresentationModifierGroup *)self flushLocallyWithTargetTime:a3];
+    [(CAPresentationModifierGroup *)self flushLocallyWithTargetTime:time];
   }
 
   else
@@ -63,9 +63,9 @@
   }
 }
 
-- (void)flushWithTargetTime:(double)a3
+- (void)flushWithTargetTime:(double)time
 {
-  [(CAPresentationModifierGroup *)self flushLocallyWithTargetTime:a3];
+  [(CAPresentationModifierGroup *)self flushLocallyWithTargetTime:time];
   v4 = *(self->_shmem + 3);
   v4[3] = self->_count;
   v4[1] = v4[1] == 0;
@@ -79,13 +79,13 @@
   while (v6 != v5);
 }
 
-- (void)flushLocallyWithTargetTime:(double)a3
+- (void)flushLocallyWithTargetTime:(double)time
 {
   IndexedIvars = object_getIndexedIvars(self);
   shmem = self->_shmem;
   v7 = shmem[3];
   v8 = *(v7 + 4);
-  *(v7 + 8 * v8 + 16) = a3;
+  *(v7 + 8 * v8 + 16) = time;
   v9 = self->_count + 31;
   if (v9 >= 0x20)
   {
@@ -161,15 +161,15 @@
   [(CAPresentationModifierGroup *)self resetBitMask];
 }
 
-- (unint64_t)nextSlotWithPayloadSize:(unint64_t)a3
+- (unint64_t)nextSlotWithPayloadSize:(unint64_t)size
 {
   if (self->_count == self->_capacity)
   {
     [MEMORY[0x1E695DF30] raise:@"CAPresentationModifierGroup" format:{@"%@: attempted to add modifier past group's capacity", self}];
   }
 
-  v5 = a3 + 8;
-  v6 = self->_totalSize + a3 + 8;
+  v5 = size + 8;
+  v6 = self->_totalSize + size + 8;
   shmem = self->_shmem;
   v8 = *(shmem + 2);
   if (v6 > v8)
@@ -181,7 +181,7 @@
 
     else
     {
-      v9 = self->_totalSize + a3 + 8;
+      v9 = self->_totalSize + size + 8;
     }
 
     v10 = CA::Render::Shmem::new_shmem(((v9 + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8]));
@@ -210,14 +210,14 @@
   return result;
 }
 
-- (void)setUpdatesAsynchronously:(BOOL)a3
+- (void)setUpdatesAsynchronously:(BOOL)asynchronously
 {
   v3 = *(self->_shmem + 3);
   do
   {
     v4 = *v3 & 0x7FFFFFFF;
     v5 = *v3 & 0x3FFFFFFF;
-    if (!a3)
+    if (!asynchronously)
     {
       v5 = *v3 & 0x3FFFFFFF | 0x40000000;
     }
@@ -229,7 +229,7 @@
   while (v6 != v4);
 }
 
-- (CAPresentationModifierGroup)initWithCapacity:(unint64_t)a3
+- (CAPresentationModifierGroup)initWithCapacity:(unint64_t)capacity
 {
   v15 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -237,18 +237,18 @@
   v4 = [(CAPresentationModifierGroup *)&v14 init];
   if (v4)
   {
-    if (a3)
+    if (capacity)
     {
-      if (!is_mul_ok(a3, 0x3D8uLL) || !(984 * a3) || ((v5 = 992 * a3, !__CFADD__(984 * a3, 8 * a3)) ? (v6 = 0) : (v6 = 1), (v7 = __CFADD__(v5, 40), v8 = v5 + 40, !v7) ? (v9 = 0) : (v9 = 1), a3 >> 61 || (v6 & 1) != 0 || (v9 & 1) != 0 || !v8))
+      if (!is_mul_ok(capacity, 0x3D8uLL) || !(984 * capacity) || ((v5 = 992 * capacity, !__CFADD__(984 * capacity, 8 * capacity)) ? (v6 = 0) : (v6 = 1), (v7 = __CFADD__(v5, 40), v8 = v5 + 40, !v7) ? (v9 = 0) : (v9 = 1), capacity >> 61 || (v6 & 1) != 0 || (v9 & 1) != 0 || !v8))
       {
-        [MEMORY[0x1E695DF30] raise:@"CAPresentationModifierGroup" format:{@"%@: group capacity (%zu) too large", v4, a3}];
+        [MEMORY[0x1E695DF30] raise:@"CAPresentationModifierGroup" format:{@"%@: group capacity (%zu) too large", v4, capacity}];
       }
 
       else
       {
         v10 = CA::Render::Shmem::new_shmem(((v8 + *MEMORY[0x1E69E9AC8] - 1) & -*MEMORY[0x1E69E9AC8]));
         v4->_shmem = v10;
-        v4->_capacity = a3;
+        v4->_capacity = capacity;
         if (v10)
         {
           IndexedIvars = object_getIndexedIvars(v4);
@@ -269,9 +269,9 @@
   return v4;
 }
 
-+ (id)groupWithCapacity:(unint64_t)a3
++ (id)groupWithCapacity:(unint64_t)capacity
 {
-  v4 = (a3 + 31) >> 3;
+  v4 = (capacity + 31) >> 3;
   v5 = objc_opt_class();
   v6 = [class_createInstance(v5 v4 & 0x1FFFFFFFFFFFFFFCLL)];
 

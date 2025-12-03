@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (NSUnitAcceleration == a1)
+  if (NSUnitAcceleration == self)
   {
     objc_opt_class();
   }

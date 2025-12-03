@@ -1,18 +1,18 @@
 @interface BAAnalyticsController
-- (BOOL)waitForSessionEnd:(double)a3;
+- (BOOL)waitForSessionEnd:(double)end;
 - (NSDate)sessionStartTime;
 - (_TtC13BookAnalytics9BATracker)applicationTracker;
-- (void)appendUserExperience:(id)a3;
-- (void)countingAssertProviderTransitionToNonZero:(id)a3;
-- (void)countingAssertProviderTransitionToZero:(id)a3;
+- (void)appendUserExperience:(id)experience;
+- (void)countingAssertProviderTransitionToNonZero:(id)zero;
+- (void)countingAssertProviderTransitionToZero:(id)zero;
 - (void)dealloc;
-- (void)performAfterPrivateDataFetchedWithCompletionHandler:(id)a3;
-- (void)privateDataChanged:(id)a3;
+- (void)performAfterPrivateDataFetchedWithCompletionHandler:(id)handler;
+- (void)privateDataChanged:(id)changed;
 - (void)refreshSessionDataIfActive;
-- (void)resetPrivateData:(id)a3;
-- (void)setApplicationTracker:(id)a3;
-- (void)setReferralURL:(id)a3 app:(id)a4;
-- (void)setTreatmentData:(id)a3;
+- (void)resetPrivateData:(id)data;
+- (void)setApplicationTracker:(id)tracker;
+- (void)setReferralURL:(id)l app:(id)app;
+- (void)setTreatmentData:(id)data;
 - (void)start;
 @end
 
@@ -25,13 +25,13 @@
   return *(self + v3);
 }
 
-- (void)setApplicationTracker:(id)a3
+- (void)setApplicationTracker:(id)tracker
 {
   v5 = OBJC_IVAR___BAAnalyticsController_applicationTracker;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = tracker;
+  trackerCopy = tracker;
 }
 
 - (NSDate)sessionStartTime
@@ -43,7 +43,7 @@
   v7 = *(self + OBJC_IVAR___BAAnalyticsController_lockProtectedData);
   v8 = *(*v7 + class metadata base offset for ManagedBuffer + 16);
   v9 = (*(*v7 + 48) + 3) & 0x1FFFFFFFCLL;
-  v10 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v7 + v9));
   sub_17AA4(v7 + v8, v6, &qword_287B10, &qword_1FCF80);
   os_unfair_lock_unlock((v7 + v9));
@@ -66,13 +66,13 @@
 {
   if (*(self + OBJC_IVAR___BAAnalyticsController_privateDataQueueActive) == 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
     v4 = *(self + OBJC_IVAR___BAAnalyticsController_privateDataQueue);
-    v5 = self;
+    selfCopy2 = self;
     dispatch_resume(v4);
   }
 
@@ -83,11 +83,11 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_11C028();
 }
 
-- (void)setReferralURL:(id)a3 app:(id)a4
+- (void)setReferralURL:(id)l app:(id)app
 {
   v5 = sub_1E0930();
   v6 = *(v5 - 8);
@@ -97,26 +97,26 @@
   sub_1E0910();
   v10 = sub_1E1780();
   v12 = v11;
-  v13 = self;
+  selfCopy = self;
   sub_11D1A4(v9, v10, v12);
 
   (*(v6 + 8))(v9, v5);
 }
 
-- (void)setTreatmentData:(id)a3
+- (void)setTreatmentData:(id)data
 {
-  v5 = a3;
-  v6 = self;
-  sub_11DF00(a3);
+  dataCopy = data;
+  selfCopy = self;
+  sub_11DF00(data);
 }
 
-- (void)appendUserExperience:(id)a3
+- (void)appendUserExperience:(id)experience
 {
   sub_1E1780();
   v4 = *(self + OBJC_IVAR___BAAnalyticsController_lockProtectedData);
   v5 = *(*v4 + class metadata base offset for ManagedBuffer + 16);
   v6 = (*(*v4 + 48) + 3) & 0x1FFFFFFFCLL;
-  v7 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v4 + v6));
   sub_127BB4((v4 + v5));
   os_unfair_lock_unlock((v4 + v6));
@@ -124,9 +124,9 @@
   sub_11F754();
 }
 
-- (void)resetPrivateData:(id)a3
+- (void)resetPrivateData:(id)data
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(data);
   if (v4)
   {
     v5 = v4;
@@ -141,52 +141,52 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_11E6E4(v7, v6);
   sub_12733C(v7);
 }
 
-- (BOOL)waitForSessionEnd:(double)a3
+- (BOOL)waitForSessionEnd:(double)end
 {
-  v4 = self;
-  v5 = sub_11F200(a3);
+  selfCopy = self;
+  v5 = sub_11F200(end);
 
   return v5;
 }
 
 - (void)refreshSessionDataIfActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_11F754();
 }
 
-- (void)performAfterPrivateDataFetchedWithCompletionHandler:(id)a3
+- (void)performAfterPrivateDataFetchedWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   AnalyticsController.performAfterPrivateDataFetched(completionHandler:)(sub_127334, v5);
 }
 
-- (void)privateDataChanged:(id)a3
+- (void)privateDataChanged:(id)changed
 {
   v4 = sub_1E1730();
-  v5 = self;
+  selfCopy = self;
   AnalyticsController.privateDataChanged(_:)(v4);
 }
 
-- (void)countingAssertProviderTransitionToZero:(id)a3
+- (void)countingAssertProviderTransitionToZero:(id)zero
 {
-  v4 = a3;
-  v5 = self;
+  zeroCopy = zero;
+  selfCopy = self;
   _s13BookAnalytics0B10ControllerC32countingAssertProviderTransition6toZeroySo019BUCountingAssertionF0C_tF_0();
 }
 
-- (void)countingAssertProviderTransitionToNonZero:(id)a3
+- (void)countingAssertProviderTransitionToNonZero:(id)zero
 {
-  v4 = a3;
-  v5 = self;
+  zeroCopy = zero;
+  selfCopy = self;
   _s13BookAnalytics0B10ControllerC32countingAssertProviderTransition9toNonZeroySo019BUCountingAssertionF0C_tF_0();
 }
 

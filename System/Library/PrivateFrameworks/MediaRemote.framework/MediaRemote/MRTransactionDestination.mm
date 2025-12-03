@@ -1,43 +1,43 @@
 @interface MRTransactionDestination
-- (MRTransactionDestination)initWithName:(unint64_t)a3 playerPath:(id)a4;
-- (void)packetsFromMessage:(id)a3 completion:(id)a4;
-- (void)unpacketize:(id)a3 completion:(id)a4;
+- (MRTransactionDestination)initWithName:(unint64_t)name playerPath:(id)path;
+- (void)packetsFromMessage:(id)message completion:(id)completion;
+- (void)unpacketize:(id)unpacketize completion:(id)completion;
 @end
 
 @implementation MRTransactionDestination
 
-- (MRTransactionDestination)initWithName:(unint64_t)a3 playerPath:(id)a4
+- (MRTransactionDestination)initWithName:(unint64_t)name playerPath:(id)path
 {
-  v7 = a4;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = MRTransactionDestination;
   v8 = [(MRTransactionDestination *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_name = a3;
+    v8->_name = name;
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.MediaRemote.transactionDestinationQueue", v10);
     serialQueue = v9->_serialQueue;
     v9->_serialQueue = v11;
 
-    objc_storeStrong(&v9->_playerPath, a4);
+    objc_storeStrong(&v9->_playerPath, path);
   }
 
   return v9;
 }
 
-- (void)packetsFromMessage:(id)a3 completion:(id)a4
+- (void)packetsFromMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
+  messageCopy = message;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __58__MRTransactionDestination_packetsFromMessage_completion___block_invoke;
   v17[3] = &unk_1E76A16E8;
-  v7 = v6;
+  v7 = messageCopy;
   v18 = v7;
-  v19 = self;
-  v8 = a4;
+  selfCopy = self;
+  completionCopy = completion;
   v9 = MEMORY[0x1A58E3570](v17);
   if (v7 == MEMORY[0x1E69E9E18] || v7 == MEMORY[0x1E69E9E20])
   {
@@ -47,7 +47,7 @@
       [MRTransactionDestination packetsFromMessage:? completion:?];
     }
 
-    (*(v8 + 2))(v8, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 
   else
@@ -72,9 +72,9 @@
     }
 
     v16 = MRTransactionPacketsGetShallowCopy(v14);
-    (*(v8 + 2))(v8, v16, v9);
+    (*(completionCopy + 2))(completionCopy, v16, v9);
 
-    v8 = v13;
+    completionCopy = v13;
   }
 }
 
@@ -109,20 +109,20 @@ void __58__MRTransactionDestination_packetsFromMessage_completion___block_invoke
   }
 }
 
-- (void)unpacketize:(id)a3 completion:(id)a4
+- (void)unpacketize:(id)unpacketize completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  unpacketizeCopy = unpacketize;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__MRTransactionDestination_unpacketize_completion___block_invoke;
   block[3] = &unk_1E769E410;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = unpacketizeCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = unpacketizeCopy;
   dispatch_sync(serialQueue, block);
 }
 

@@ -1,26 +1,26 @@
 @interface SCWatchlistReplaceSymbolCommand
-- (SCWatchlistReplaceSymbolCommand)initWithCoder:(id)a3;
-- (SCWatchlistReplaceSymbolCommand)initWithOldSymbol:(id)a3 replacementSymbol:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWatchlistReplaceSymbolCommand)initWithCoder:(id)coder;
+- (SCWatchlistReplaceSymbolCommand)initWithOldSymbol:(id)symbol replacementSymbol:(id)replacementSymbol;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWatchlistReplaceSymbolCommand
 
-- (SCWatchlistReplaceSymbolCommand)initWithOldSymbol:(id)a3 replacementSymbol:(id)a4
+- (SCWatchlistReplaceSymbolCommand)initWithOldSymbol:(id)symbol replacementSymbol:(id)replacementSymbol
 {
-  v6 = a3;
-  v7 = a4;
+  symbolCopy = symbol;
+  replacementSymbolCopy = replacementSymbol;
   v14.receiver = self;
   v14.super_class = SCWatchlistReplaceSymbolCommand;
   v8 = [(SCWatchlistReplaceSymbolCommand *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [symbolCopy copy];
     oldSymbol = v8->_oldSymbol;
     v8->_oldSymbol = v9;
 
-    v11 = [v7 copy];
+    v11 = [replacementSymbolCopy copy];
     replacementSymbol = v8->_replacementSymbol;
     v8->_replacementSymbol = v11;
   }
@@ -28,16 +28,16 @@
   return v8;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__SCWatchlistReplaceSymbolCommand_executeWithZone___block_invoke;
   aBlock[3] = &unk_1E85E3320;
   aBlock[4] = self;
-  v3 = a3;
+  zoneCopy = zone;
   v4 = _Block_copy(aBlock);
-  [v3 createOrUpdateRecordWithName:@"watchlist" recordType:@"Watchlist" modifyBlock:v4];
+  [zoneCopy createOrUpdateRecordWithName:@"watchlist" recordType:@"Watchlist" modifyBlock:v4];
 }
 
 void __51__SCWatchlistReplaceSymbolCommand_executeWithZone___block_invoke(uint64_t a1, void *a2)
@@ -63,11 +63,11 @@ void __51__SCWatchlistReplaceSymbolCommand_executeWithZone___block_invoke(uint64
   [v11 setObject:v10 forKeyedSubscript:@"symbols"];
 }
 
-- (SCWatchlistReplaceSymbolCommand)initWithCoder:(id)a3
+- (SCWatchlistReplaceSymbolCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oldSymbol"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"replacementSymbol"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oldSymbol"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"replacementSymbol"];
 
   if (v5)
   {
@@ -81,28 +81,28 @@ void __51__SCWatchlistReplaceSymbolCommand_executeWithZone___block_invoke(uint64
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SCWatchlistReplaceSymbolCommand *)self initWithOldSymbol:v5 replacementSymbol:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  v9 = v8;
+  v9 = selfCopy;
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCWatchlistReplaceSymbolCommand *)self oldSymbol];
-  [v4 encodeObject:v5 forKey:@"oldSymbol"];
+  coderCopy = coder;
+  oldSymbol = [(SCWatchlistReplaceSymbolCommand *)self oldSymbol];
+  [coderCopy encodeObject:oldSymbol forKey:@"oldSymbol"];
 
-  v6 = [(SCWatchlistReplaceSymbolCommand *)self replacementSymbol];
-  [v4 encodeObject:v6 forKey:@"replacementSymbol"];
+  replacementSymbol = [(SCWatchlistReplaceSymbolCommand *)self replacementSymbol];
+  [coderCopy encodeObject:replacementSymbol forKey:@"replacementSymbol"];
 }
 
 @end

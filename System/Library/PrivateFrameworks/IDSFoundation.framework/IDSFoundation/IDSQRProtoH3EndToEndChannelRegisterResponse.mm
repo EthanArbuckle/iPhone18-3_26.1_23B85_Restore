@@ -1,11 +1,11 @@
 @interface IDSQRProtoH3EndToEndChannelRegisterResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoH3EndToEndChannelRegisterResponse
@@ -16,41 +16,41 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoH3EndToEndChannelRegisterResponse;
   v4 = [(IDSQRProtoH3EndToEndChannelRegisterResponse *)&v8 description];
-  v5 = [(IDSQRProtoH3EndToEndChannelRegisterResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoH3EndToEndChannelRegisterResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   virtualQuicServerConnectionId = self->_virtualQuicServerConnectionId;
   if (virtualQuicServerConnectionId)
   {
-    [v3 setObject:virtualQuicServerConnectionId forKey:@"virtual_quic_server_connection_id"];
+    [dictionary setObject:virtualQuicServerConnectionId forKey:@"virtual_quic_server_connection_id"];
   }
 
   channelInfo = self->_channelInfo;
   if (channelInfo)
   {
-    v7 = [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)channelInfo dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"channel_info"];
+    dictionaryRepresentation = [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)channelInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"channel_info"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_virtualQuicServerConnectionId)
   {
     sub_1A7E1B5E0();
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteDataField();
   if (!self->_channelInfo)
   {
@@ -60,35 +60,35 @@
   PBDataWriterWriteSubmessage();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   virtualQuicServerConnectionId = self->_virtualQuicServerConnectionId;
-  v5 = a3;
-  [v5 setVirtualQuicServerConnectionId:virtualQuicServerConnectionId];
-  [v5 setChannelInfo:self->_channelInfo];
+  toCopy = to;
+  [toCopy setVirtualQuicServerConnectionId:virtualQuicServerConnectionId];
+  [toCopy setChannelInfo:self->_channelInfo];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_virtualQuicServerConnectionId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_virtualQuicServerConnectionId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)self->_channelInfo copyWithZone:a3];
+  v8 = [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)self->_channelInfo copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((virtualQuicServerConnectionId = self->_virtualQuicServerConnectionId, !(virtualQuicServerConnectionId | v4[2])) || -[NSData isEqual:](virtualQuicServerConnectionId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((virtualQuicServerConnectionId = self->_virtualQuicServerConnectionId, !(virtualQuicServerConnectionId | equalCopy[2])) || -[NSData isEqual:](virtualQuicServerConnectionId, "isEqual:")))
   {
     channelInfo = self->_channelInfo;
-    if (channelInfo | v4[1])
+    if (channelInfo | equalCopy[1])
     {
       v7 = [(IDSQRProtoH3EndToEndChannelRegisterE2EChannelInfo *)channelInfo isEqual:?];
     }
@@ -107,18 +107,18 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[2])
   {
     [(IDSQRProtoH3EndToEndChannelRegisterResponse *)self setVirtualQuicServerConnectionId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   channelInfo = self->_channelInfo;
-  v6 = v4[1];
+  v6 = fromCopy[1];
   if (channelInfo)
   {
     if (!v6)
@@ -139,7 +139,7 @@
     [(IDSQRProtoH3EndToEndChannelRegisterResponse *)self setChannelInfo:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_9:
 }
 

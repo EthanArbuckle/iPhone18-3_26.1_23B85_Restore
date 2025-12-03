@@ -1,22 +1,22 @@
 @interface NEAppProxyProvider
-- (BOOL)handleNewUDPFlow:(id)a3 initialRemoteFlowEndpoint:(id)a4;
+- (BOOL)handleNewUDPFlow:(id)flow initialRemoteFlowEndpoint:(id)endpoint;
 - (unint64_t)maxWriteSize;
 - (void)cancelProxyWithError:(NSError *)error;
-- (void)fetchFlowStatesWithCompletionHandler:(id)a3;
-- (void)setMaxWriteSize:(unint64_t)a3;
+- (void)fetchFlowStatesWithCompletionHandler:(id)handler;
+- (void)setMaxWriteSize:(unint64_t)size;
 - (void)startProxyWithOptions:(NSDictionary *)options completionHandler:(void *)completionHandler;
 @end
 
 @implementation NEAppProxyProvider
 
-- (void)fetchFlowStatesWithCompletionHandler:(id)a3
+- (void)fetchFlowStatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v7 = [(NEProvider *)self context];
-  v5 = v4;
-  if (v7)
+  handlerCopy = handler;
+  context = [(NEProvider *)self context];
+  v5 = handlerCopy;
+  if (context)
   {
-    if (v7[15])
+    if (context[15])
     {
       v8 = v5;
       NEFlowDirectorFetchFlowStates();
@@ -32,11 +32,11 @@
 
 - (unint64_t)maxWriteSize
 {
-  v2 = [(NEProvider *)self context];
-  v3 = v2;
-  if (v2)
+  context = [(NEProvider *)self context];
+  v3 = context;
+  if (context)
   {
-    v4 = *(v2 + 120);
+    v4 = *(context + 120);
     MaxSendSize = NEFlowDirectorGetMaxSendSize();
   }
 
@@ -48,27 +48,27 @@
   return MaxSendSize;
 }
 
-- (void)setMaxWriteSize:(unint64_t)a3
+- (void)setMaxWriteSize:(unint64_t)size
 {
-  v3 = [(NEProvider *)self context];
-  if (v3)
+  context = [(NEProvider *)self context];
+  if (context)
   {
-    v5 = v3;
-    v4 = v3[15];
+    v5 = context;
+    v4 = context[15];
     NEFlowDirectorSetMaxSendSize();
-    v3 = v5;
+    context = v5;
   }
 }
 
-- (BOOL)handleNewUDPFlow:(id)a3 initialRemoteFlowEndpoint:(id)a4
+- (BOOL)handleNewUDPFlow:(id)flow initialRemoteFlowEndpoint:(id)endpoint
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEProvider *)self _callSwiftHandleNewUDPFlow:v6 initialRemoteFlowEndpoint:v7];
+  flowCopy = flow;
+  endpointCopy = endpoint;
+  v8 = [(NEProvider *)self _callSwiftHandleNewUDPFlow:flowCopy initialRemoteFlowEndpoint:endpointCopy];
   if (v8 == -1)
   {
-    v10 = [MEMORY[0x1E6977E20] endpointWithCEndpoint:v7];
-    v9 = [(NEAppProxyProvider *)self handleNewUDPFlow:v6 initialRemoteEndpoint:v10];
+    v10 = [MEMORY[0x1E6977E20] endpointWithCEndpoint:endpointCopy];
+    v9 = [(NEAppProxyProvider *)self handleNewUDPFlow:flowCopy initialRemoteEndpoint:v10];
   }
 
   else
@@ -82,8 +82,8 @@
 - (void)cancelProxyWithError:(NSError *)error
 {
   v4 = error;
-  v5 = [(NEProvider *)self context];
-  [v5 cancelWithError:v4];
+  context = [(NEProvider *)self context];
+  [context cancelWithError:v4];
 }
 
 - (void)startProxyWithOptions:(NSDictionary *)options completionHandler:(void *)completionHandler

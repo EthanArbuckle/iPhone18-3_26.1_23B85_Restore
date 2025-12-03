@@ -1,47 +1,47 @@
 @interface CLLocationUpdater
-+ (id)_historicalUpdaterWithCenter:(CLLocationCoordinate2D)a3 radius:(double)a4 dateInterval:(id)a5 sampleCount:(int)a6 queue:(id)a7 handler:(id)a8;
-+ (id)_historicalUpdaterWithDateInterval:(id)a3 sampleCount:(int)a4 queue:(id)a5 handler:(id)a6;
-+ (id)_liveUpdaterWithConfiguration:(int64_t)a3 queue:(id)a4 handler:(id)a5;
-+ (id)liveUpdaterWithConfiguration:(int64_t)a3 locationManager:(id)a4 queue:(id)a5 handler:(id)a6;
-- (CLLocationUpdater)initWithRegistrationMessageName:(const char *)a3 messagePayload:(id)a4 locationManager:(id)a5 queue:(id)a6 handler:(id)a7;
++ (id)_historicalUpdaterWithCenter:(CLLocationCoordinate2D)center radius:(double)radius dateInterval:(id)interval sampleCount:(int)count queue:(id)queue handler:(id)handler;
++ (id)_historicalUpdaterWithDateInterval:(id)interval sampleCount:(int)count queue:(id)queue handler:(id)handler;
++ (id)_liveUpdaterWithConfiguration:(int64_t)configuration queue:(id)queue handler:(id)handler;
++ (id)liveUpdaterWithConfiguration:(int64_t)configuration locationManager:(id)manager queue:(id)queue handler:(id)handler;
+- (CLLocationUpdater)initWithRegistrationMessageName:(const char *)name messagePayload:(id)payload locationManager:(id)manager queue:(id)queue handler:(id)handler;
 - (void)dealloc;
-- (void)handleMessageDiagnostics:(id)a3;
-- (void)handleMessageHistoricalLocations:(id)a3;
-- (void)handleMessageHistoricalLocationsFinished:(id)a3;
-- (void)handleMessageLocation:(id)a3;
-- (void)handleMessageLocationUnavailable:(id)a3;
-- (void)handleMessageWithName:(id)a3 payload:(id)a4;
+- (void)handleMessageDiagnostics:(id)diagnostics;
+- (void)handleMessageHistoricalLocations:(id)locations;
+- (void)handleMessageHistoricalLocationsFinished:(id)finished;
+- (void)handleMessageLocation:(id)location;
+- (void)handleMessageLocationUnavailable:(id)unavailable;
+- (void)handleMessageWithName:(id)name payload:(id)payload;
 - (void)invalidate;
 - (void)pause;
 - (void)resume;
-- (void)setHandler:(id)a3;
+- (void)setHandler:(id)handler;
 - (void)tearDown;
 @end
 
 @implementation CLLocationUpdater
 
-+ (id)_liveUpdaterWithConfiguration:(int64_t)a3 queue:(id)a4 handler:(id)a5
++ (id)_liveUpdaterWithConfiguration:(int64_t)configuration queue:(id)queue handler:(id)handler
 {
   +[CLLocationManager weakSharedInstance];
 
   return MEMORY[0x1EEE66B58](CLLocationUpdater, sel_liveUpdaterWithConfiguration_locationManager_queue_handler_);
 }
 
-+ (id)_historicalUpdaterWithDateInterval:(id)a3 sampleCount:(int)a4 queue:(id)a5 handler:(id)a6
++ (id)_historicalUpdaterWithDateInterval:(id)interval sampleCount:(int)count queue:(id)queue handler:(id)handler
 {
   +[CLLocationManager weakSharedInstance];
 
   return MEMORY[0x1EEE66B58](CLLocationUpdater, sel_historicalUpdaterWithDateInterval_sampleCount_locationManager_queue_handler_);
 }
 
-+ (id)_historicalUpdaterWithCenter:(CLLocationCoordinate2D)a3 radius:(double)a4 dateInterval:(id)a5 sampleCount:(int)a6 queue:(id)a7 handler:(id)a8
++ (id)_historicalUpdaterWithCenter:(CLLocationCoordinate2D)center radius:(double)radius dateInterval:(id)interval sampleCount:(int)count queue:(id)queue handler:(id)handler
 {
   +[CLLocationManager weakSharedInstance];
 
   return MEMORY[0x1EEE66B58](CLLocationUpdater, sel_historicalUpdaterWithCenter_radius_dateInterval_sampleCount_locationManager_queue_handler_);
 }
 
-- (CLLocationUpdater)initWithRegistrationMessageName:(const char *)a3 messagePayload:(id)a4 locationManager:(id)a5 queue:(id)a6 handler:(id)a7
+- (CLLocationUpdater)initWithRegistrationMessageName:(const char *)name messagePayload:(id)payload locationManager:(id)manager queue:(id)queue handler:(id)handler
 {
   v43 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -71,15 +71,15 @@
       v35 = 2050;
       v36 = v13;
       v37 = 2082;
-      v38 = a3;
+      nameCopy = name;
       v39 = 2113;
-      v40 = a4;
+      payloadCopy = payload;
       v41 = 2050;
-      v42 = a5;
+      managerCopy = manager;
       _os_log_impl(&dword_19B873000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, name:%{public, location:escape_only}s, messagePayload:%{private, location:escape_only}@, manager:%{public}p}", &buf, 0x4Eu);
     }
 
-    if (!a6)
+    if (!queue)
     {
       if (qword_1ED519088 != -1)
       {
@@ -97,15 +97,15 @@
         _os_log_impl(&dword_19B873000, v17, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#locationUpdater has nil callback queue; Creating locally, self:%{public}p}", &buf, 0x1Cu);
       }
 
-      a6 = +[CLLocationManager sharedQueue];
+      queue = +[CLLocationManager sharedQueue];
     }
 
-    v13->_silo = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:a6 bePermissive:0];
-    v13->_messageName = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
-    v13->_mutableMsgDictionary = [a4 mutableCopy];
-    if (a7)
+    v13->_silo = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:queue bePermissive:0];
+    v13->_messageName = [MEMORY[0x1E696AEC0] stringWithUTF8String:name];
+    v13->_mutableMsgDictionary = [payload mutableCopy];
+    if (handler)
     {
-      v13->_clientCallback = _Block_copy(a7);
+      v13->_clientCallback = _Block_copy(handler);
     }
 
     objc_initWeak(&buf, v13);
@@ -118,7 +118,7 @@
     v24[2] = sub_19B8DD4AC;
     v24[3] = &unk_1E753D5B8;
     objc_copyWeak(&v25, &buf);
-    v13->_connectionManager = [(CLIdentifiableClientConnectionManager *)v18 initWithSilo:silo locationManager:a5 startMessageName:messageName startMessagePayload:mutableMsgDictionary responseHandler:v24];
+    v13->_connectionManager = [(CLIdentifiableClientConnectionManager *)v18 initWithSilo:silo locationManager:manager startMessageName:messageName startMessagePayload:mutableMsgDictionary responseHandler:v24];
     objc_destroyWeak(&v25);
     objc_destroyWeak(&buf);
     os_activity_scope_leave(&state);
@@ -128,17 +128,17 @@
   return v13;
 }
 
-+ (id)liveUpdaterWithConfiguration:(int64_t)a3 locationManager:(id)a4 queue:(id)a5 handler:(id)a6
++ (id)liveUpdaterWithConfiguration:(int64_t)configuration locationManager:(id)manager queue:(id)queue handler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  if (([a4 isMasquerading] & 1) == 0 && (sub_19B8B8818() & 1) == 0)
+  if (([manager isMasquerading] & 1) == 0 && (sub_19B8B8818() & 1) == 0)
   {
     NSLog(&cfstr_ErrorCllocatio.isa);
   }
 
   v21 = @"config";
-  v22[0] = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v10 = -[CLLocationUpdater initWithRegistrationMessageName:messagePayload:locationManager:queue:handler:]([CLLocationUpdater alloc], "initWithRegistrationMessageName:messagePayload:locationManager:queue:handler:", "LocationUpdaterLive/kCLConnectionMessage", [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1], a4, a5, a6);
+  v22[0] = [MEMORY[0x1E696AD98] numberWithInteger:configuration];
+  v10 = -[CLLocationUpdater initWithRegistrationMessageName:messagePayload:locationManager:queue:handler:]([CLLocationUpdater alloc], "initWithRegistrationMessageName:messagePayload:locationManager:queue:handler:", "LocationUpdaterLive/kCLConnectionMessage", [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1], manager, queue, handler);
   if (qword_1ED519088 != -1)
   {
     dispatch_once(&qword_1ED519088, &unk_1F0E6B900);
@@ -200,7 +200,7 @@
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -239,7 +239,7 @@
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -294,7 +294,7 @@
     v17 = 2114;
     v18 = v6;
     v19 = 2050;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -333,7 +333,7 @@
     v16 = 2114;
     v17 = v6;
     v18 = 2050;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p}", buf, 0x30u);
   }
 
@@ -345,7 +345,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessageLocation:(id)a3
+- (void)handleMessageLocation:(id)location
 {
   [(CLDispatchSilo *)self->_silo assertInside];
   if (self->_clientCallback)
@@ -361,12 +361,12 @@
       v5 = 0;
     }
 
-    v6 = -[CLUpdate initWithLocation:diagnostics:]([CLUpdate alloc], "initWithLocation:diagnostics:", v5, [objc_msgSend(a3 objectForKeyedSubscript:{@"kCLConnectionMessageDiagnosticsKey", "unsignedLongValue"}]);
+    v6 = -[CLUpdate initWithLocation:diagnostics:]([CLUpdate alloc], "initWithLocation:diagnostics:", v5, [objc_msgSend(location objectForKeyedSubscript:{@"kCLConnectionMessageDiagnosticsKey", "unsignedLongValue"}]);
     (*(self->_clientCallback + 2))();
   }
 }
 
-- (void)handleMessageLocationUnavailable:(id)a3
+- (void)handleMessageLocationUnavailable:(id)unavailable
 {
   v25 = *MEMORY[0x1E69E9840];
   [(CLDispatchSilo *)self->_silo assertInside];
@@ -382,7 +382,7 @@
     v15 = 2082;
     v16 = "";
     v17 = 2050;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_19B873000, v6, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#locationUpdater location unavailable, self:%{public}p}", buf, 0x1Cu);
     if (qword_1ED519088 != -1)
     {
@@ -397,7 +397,7 @@
     v15 = 2082;
     v16 = "";
     v17 = 2050;
-    v18 = self;
+    selfCopy2 = self;
     _os_signpost_emit_with_name_impl(&dword_19B873000, v7, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#locationUpdater location unavailable", "{msg%{public}.0s:#locationUpdater location unavailable, self:%{public}p}", buf, 0x1Cu);
   }
 
@@ -420,17 +420,17 @@
       v15 = 2082;
       v16 = "";
       v17 = 2082;
-      v18 = "activity";
+      selfCopy2 = "activity";
       v19 = 2114;
       v20 = v10;
       v21 = 2050;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2113;
-      v24 = a3;
+      unavailableCopy = unavailable;
       _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, payload:%{private, location:escape_only}@}", buf, 0x3Au);
     }
 
-    v11 = -[CLUpdate initWithLocation:diagnostics:]([CLUpdate alloc], "initWithLocation:diagnostics:", 0, [objc_msgSend(a3 objectForKeyedSubscript:{@"kCLConnectionMessageDiagnosticsKey", "unsignedLongValue"}]);
+    v11 = -[CLUpdate initWithLocation:diagnostics:]([CLUpdate alloc], "initWithLocation:diagnostics:", 0, [objc_msgSend(unavailable objectForKeyedSubscript:{@"kCLConnectionMessageDiagnosticsKey", "unsignedLongValue"}]);
     (*(self->_clientCallback + 2))();
 
     os_activity_scope_leave(&v13);
@@ -439,7 +439,7 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessageHistoricalLocations:(id)a3
+- (void)handleMessageHistoricalLocations:(id)locations
 {
   v38 = *MEMORY[0x1E69E9840];
   [(CLDispatchSilo *)self->_silo assertInside];
@@ -465,13 +465,13 @@
       *&v33[8] = 2114;
       *&v33[10] = v8;
       v34 = 2050;
-      v35 = self;
+      selfCopy = self;
       v36 = 2113;
-      v37 = a3;
+      locationsCopy = locations;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, payload:%{private, location:escape_only}@}", buf, 0x3Au);
     }
 
-    v9 = [a3 objectForKeyedSubscript:@"Locations"];
+    v9 = [locations objectForKeyedSubscript:@"Locations"];
     if (qword_1ED519088 != -1)
     {
       dispatch_once(&qword_1ED519088, &unk_1F0E6B900);
@@ -509,7 +509,7 @@
       _os_signpost_emit_with_name_impl(&dword_19B873000, v12, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#locationUpdater historical received historicalLocations", "{msg%{public}.0s:#locationUpdater historical received historicalLocations, Count:%{public}d, self:%{public}p}", buf, 0x22u);
     }
 
-    v14 = [objc_msgSend(a3 objectForKeyedSubscript:{@"kCLConnectionMessageDiagnosticsKey", "unsignedLongValue"}];
+    v14 = [objc_msgSend(locations objectForKeyedSubscript:{@"kCLConnectionMessageDiagnosticsKey", "unsignedLongValue"}];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -552,7 +552,7 @@
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessageHistoricalLocationsFinished:(id)a3
+- (void)handleMessageHistoricalLocationsFinished:(id)finished
 {
   v13 = *MEMORY[0x1E69E9840];
   [(CLDispatchSilo *)self->_silo assertInside];
@@ -568,7 +568,7 @@
     v9 = 2082;
     v10 = "";
     v11 = 2050;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_19B873000, v4, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#locationUpdater historical delivery completed, self:%{public}p}", &v8, 0x1Cu);
     if (qword_1ED519088 != -1)
     {
@@ -583,7 +583,7 @@
     v9 = 2082;
     v10 = "";
     v11 = 2050;
-    v12 = self;
+    selfCopy2 = self;
     _os_signpost_emit_with_name_impl(&dword_19B873000, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#locationUpdater historical delivery completed", "{msg%{public}.0s:#locationUpdater historical delivery completed, self:%{public}p}", &v8, 0x1Cu);
   }
 
@@ -597,7 +597,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessageDiagnostics:(id)a3
+- (void)handleMessageDiagnostics:(id)diagnostics
 {
   v23 = *MEMORY[0x1E69E9840];
   [(CLDispatchSilo *)self->_silo assertInside];
@@ -623,13 +623,13 @@
       v17 = 2114;
       v18 = v8;
       v19 = 2050;
-      v20 = self;
+      selfCopy = self;
       v21 = 2113;
-      v22 = a3;
+      diagnosticsCopy = diagnostics;
       _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, payload:%{private, location:escape_only}@}", buf, 0x3Au);
     }
 
-    v9 = -[CLUpdate initWithLocation:diagnostics:]([CLUpdate alloc], "initWithLocation:diagnostics:", 0, [objc_msgSend(a3 objectForKeyedSubscript:{@"kCLConnectionMessageDiagnosticsKey", "unsignedLongValue"}]);
+    v9 = -[CLUpdate initWithLocation:diagnostics:]([CLUpdate alloc], "initWithLocation:diagnostics:", 0, [objc_msgSend(diagnostics objectForKeyedSubscript:{@"kCLConnectionMessageDiagnosticsKey", "unsignedLongValue"}]);
     (*(self->_clientCallback + 2))();
 
     os_activity_scope_leave(&v11);
@@ -638,7 +638,7 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setHandler:(id)a3
+- (void)setHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
   if (self->_clientCallback)
@@ -685,7 +685,7 @@
       }
     }
 
-    v3 = qword_1ED519090;
+    selfCopy = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_INFO))
     {
       *buf = 68289539;
@@ -696,7 +696,7 @@
       v14 = "assert";
       v15 = 2081;
       v16 = "_clientCallback == nullptr";
-      _os_log_impl(&dword_19B873000, &v3->super, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#locationUpdater should initially be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
+      _os_log_impl(&dword_19B873000, &selfCopy->super, OS_LOG_TYPE_INFO, "{msg%{public}.0s:#locationUpdater should initially be nil, event:%{public, location:escape_only}s, condition:%{private, location:escape_only}s}", buf, 0x26u);
     }
 
     abort_report_np();
@@ -705,10 +705,10 @@ LABEL_22:
     goto LABEL_5;
   }
 
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (handler)
   {
-    self->_clientCallback = _Block_copy(a3);
+    self->_clientCallback = _Block_copy(handler);
     goto LABEL_10;
   }
 
@@ -726,7 +726,7 @@ LABEL_5:
     v11 = 2082;
     v12 = "";
     v13 = 2050;
-    v14 = v3;
+    v14 = selfCopy;
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#locationUpdater can't set a nil handler, self:%{public}p}", buf, 0x1Cu);
     if (p_info[17] != -1)
     {
@@ -741,7 +741,7 @@ LABEL_5:
     v11 = 2082;
     v12 = "";
     v13 = 2050;
-    v14 = v3;
+    v14 = selfCopy;
     _os_signpost_emit_with_name_impl(&dword_19B873000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#locationUpdater can't set a nil handler", "{msg%{public}.0s:#locationUpdater can't set a nil handler, self:%{public}p}", buf, 0x1Cu);
   }
 
@@ -749,7 +749,7 @@ LABEL_10:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleMessageWithName:(id)a3 payload:(id)a4
+- (void)handleMessageWithName:(id)name payload:(id)payload
 {
   v30 = *MEMORY[0x1E69E9840];
   v8 = _os_activity_create(&dword_19B873000, "CL: CLLocationUpdater #locationUpdater", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -764,7 +764,7 @@ LABEL_10:
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
     v10 = NSStringFromSelector(a2);
-    v11 = [a3 UTF8String];
+    uTF8String = [name UTF8String];
     *buf = 68290050;
     v19 = 0;
     v20 = 2082;
@@ -772,37 +772,37 @@ LABEL_10:
     v22 = 2082;
     v23 = "activity";
     v24 = 2114;
-    v25 = v10;
+    selfCopy3 = v10;
     v26 = 2050;
-    v27 = self;
+    selfCopy = self;
     v28 = 2082;
-    v29 = v11;
+    v29 = uTF8String;
     _os_log_impl(&dword_19B873000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:CLLocationUpdater #locationUpdater, event:%{public, location:escape_only}s, _cmd:%{public, location:escape_only}@, self:%{public}p, message:%{public, location:escape_only}s}", buf, 0x3Au);
   }
 
-  if (([a3 isEqualToString:@"kCLConnectionMessageLocation"] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"kCLConnectionMessageCompensatedLocation"))
+  if (([name isEqualToString:@"kCLConnectionMessageLocation"] & 1) != 0 || objc_msgSend(name, "isEqualToString:", @"kCLConnectionMessageCompensatedLocation"))
   {
-    [(CLLocationUpdater *)self handleMessageLocation:a4];
+    [(CLLocationUpdater *)self handleMessageLocation:payload];
   }
 
-  else if ([a3 isEqualToString:@"kCLConnectionMessageHistoricalLocations"])
+  else if ([name isEqualToString:@"kCLConnectionMessageHistoricalLocations"])
   {
-    [(CLLocationUpdater *)self handleMessageHistoricalLocations:a4];
+    [(CLLocationUpdater *)self handleMessageHistoricalLocations:payload];
   }
 
-  else if ([a3 isEqualToString:@"kCLConnectionMessageHistoricalLocationsFinished"])
+  else if ([name isEqualToString:@"kCLConnectionMessageHistoricalLocationsFinished"])
   {
-    [(CLLocationUpdater *)self handleMessageHistoricalLocationsFinished:a4];
+    [(CLLocationUpdater *)self handleMessageHistoricalLocationsFinished:payload];
   }
 
-  else if ([a3 isEqualToString:@"kCLConnectionMessageLocationUnavailable"])
+  else if ([name isEqualToString:@"kCLConnectionMessageLocationUnavailable"])
   {
-    [(CLLocationUpdater *)self handleMessageLocationUnavailable:a4];
+    [(CLLocationUpdater *)self handleMessageLocationUnavailable:payload];
   }
 
-  else if ([a3 isEqualToString:@"kCLConnectionMessageDiagnostics"])
+  else if ([name isEqualToString:@"kCLConnectionMessageDiagnostics"])
   {
-    [(CLLocationUpdater *)self handleMessageDiagnostics:a4];
+    [(CLLocationUpdater *)self handleMessageDiagnostics:payload];
   }
 
   else
@@ -815,15 +815,15 @@ LABEL_10:
     v13 = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_FAULT))
     {
-      v14 = [a3 UTF8String];
+      uTF8String2 = [name UTF8String];
       *buf = 68289538;
       v19 = 0;
       v20 = 2082;
       v21 = "";
       v22 = 2082;
-      v23 = v14;
+      v23 = uTF8String2;
       v24 = 2050;
-      v25 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_19B873000, v13, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#locationUpdater received unhandled message, Message:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
       if (qword_1ED519088 != -1)
       {
@@ -834,15 +834,15 @@ LABEL_10:
     v15 = qword_1ED519090;
     if (os_signpost_enabled(qword_1ED519090))
     {
-      v16 = [a3 UTF8String];
+      uTF8String3 = [name UTF8String];
       *buf = 68289538;
       v19 = 0;
       v20 = 2082;
       v21 = "";
       v22 = 2082;
-      v23 = v16;
+      v23 = uTF8String3;
       v24 = 2050;
-      v25 = self;
+      selfCopy3 = self;
       _os_signpost_emit_with_name_impl(&dword_19B873000, v15, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#locationUpdater received unhandled message", "{msg%{public}.0s:#locationUpdater received unhandled message, Message:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
     }
   }

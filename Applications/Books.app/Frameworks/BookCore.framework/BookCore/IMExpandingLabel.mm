@@ -1,26 +1,26 @@
 @interface IMExpandingLabel
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (IMExpandingLabel)init;
-- (IMExpandingLabel)initWithCoder:(id)a3;
-- (IMExpandingLabel)initWithFrame:(CGRect)a3;
+- (IMExpandingLabel)initWithCoder:(id)coder;
+- (IMExpandingLabel)initWithFrame:(CGRect)frame;
 - (NSAttributedString)attributedText;
 - (void)_IMExpandingLabelComonInit;
 - (void)_expand;
 - (void)_setTextExclusionPath;
 - (void)_updateTextAttributes;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setNumberOfLinesWhenCollapsed:(unint64_t)a3;
-- (void)setShowMoreAttributedText:(id)a3;
-- (void)setShowMoreFont:(id)a3;
-- (void)setShowMoreTextColor:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setFont:(id)font;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setNumberOfLinesWhenCollapsed:(unint64_t)collapsed;
+- (void)setShowMoreAttributedText:(id)text;
+- (void)setShowMoreFont:(id)font;
+- (void)setShowMoreTextColor:(id)color;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation IMExpandingLabel
@@ -81,8 +81,8 @@
   showMoreLabel = self->_showMoreLabel;
   self->_showMoreLabel = v22;
 
-  v24 = [(IMExpandingLabel *)self showMoreTextColor];
-  [(UILabel *)self->_showMoreLabel setTextColor:v24];
+  showMoreTextColor = [(IMExpandingLabel *)self showMoreTextColor];
+  [(UILabel *)self->_showMoreLabel setTextColor:showMoreTextColor];
 
   v25 = +[UIColor clearColor];
   [(UILabel *)self->_showMoreLabel setBackgroundColor:v25];
@@ -115,11 +115,11 @@
   return v3;
 }
 
-- (IMExpandingLabel)initWithCoder:(id)a3
+- (IMExpandingLabel)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IMExpandingLabel;
-  v3 = [(IMExpandingLabel *)&v6 initWithCoder:a3];
+  v3 = [(IMExpandingLabel *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -129,11 +129,11 @@
   return v4;
 }
 
-- (IMExpandingLabel)initWithFrame:(CGRect)a3
+- (IMExpandingLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = IMExpandingLabel;
-  v3 = [(IMExpandingLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(IMExpandingLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -143,9 +143,9 @@
   return v4;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  [a3 locationInView:self->_showMoreLabel];
+  [begin locationInView:self->_showMoreLabel];
   v5 = v4;
   v7 = v6;
   [(UILabel *)self->_showMoreLabel bounds];
@@ -156,34 +156,34 @@
   return CGRectContainsPoint(v13, *&v8);
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(NSTextStorage *)self->_textStorage string];
-  if ([v5 isEqualToString:v4])
+  textCopy = text;
+  string = [(NSTextStorage *)self->_textStorage string];
+  if ([string isEqualToString:textCopy])
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 length];
+  v6 = [textCopy length];
 
   if (v6)
   {
     v7 = +[NSParagraphStyle defaultParagraphStyle];
-    v5 = [v7 mutableCopy];
+    string = [v7 mutableCopy];
 
-    [v5 setAlignment:self->_textAlignment];
+    [string setAlignment:self->_textAlignment];
     v12[0] = NSFontAttributeName;
-    v8 = [(IMExpandingLabel *)self font];
-    v13[0] = v8;
+    font = [(IMExpandingLabel *)self font];
+    v13[0] = font;
     v12[1] = NSForegroundColorAttributeName;
-    v9 = [(IMExpandingLabel *)self textColor];
+    textColor = [(IMExpandingLabel *)self textColor];
     v12[2] = NSParagraphStyleAttributeName;
-    v13[1] = v9;
-    v13[2] = v5;
+    v13[1] = textColor;
+    v13[2] = string;
     v10 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:3];
 
-    v11 = [[NSAttributedString alloc] initWithString:v4 attributes:v10];
+    v11 = [[NSAttributedString alloc] initWithString:textCopy attributes:v10];
     [(NSTextStorage *)self->_textStorage setAttributedString:v11];
     [(IMExpandingLabel *)self setNeedsLayout];
 
@@ -191,13 +191,13 @@ LABEL_4:
   }
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = a3;
-  self->_useAttributedText = [v4 length] != 0;
-  if ([v4 length])
+  textCopy = text;
+  self->_useAttributedText = [textCopy length] != 0;
+  if ([textCopy length])
   {
-    [(NSTextStorage *)self->_textStorage setAttributedString:v4];
+    [(NSTextStorage *)self->_textStorage setAttributedString:textCopy];
   }
 
   else
@@ -223,37 +223,37 @@ LABEL_4:
   return v3;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
-  v5 = [(IMExpandingLabel *)self font];
+  fontCopy = font;
+  font = [(IMExpandingLabel *)self font];
 
-  if (v5 != v6)
+  if (font != fontCopy)
   {
-    objc_storeStrong(&self->_font, a3);
+    objc_storeStrong(&self->_font, font);
     [(IMExpandingLabel *)self _updateTextAttributes];
     [(UITextView *)self->_textView setNeedsDisplay];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(IMExpandingLabel *)self _updateTextAttributes];
     [(UITextView *)self->_textView setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(IMExpandingLabel *)self _updateTextAttributes];
     textView = self->_textView;
 
@@ -261,28 +261,28 @@ LABEL_4:
   }
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
-  if ([(NSTextContainer *)self->_textContainer lineBreakMode]!= a3)
+  if ([(NSTextContainer *)self->_textContainer lineBreakMode]!= mode)
   {
-    [(NSTextContainer *)self->_textContainer setLineBreakMode:a3];
+    [(NSTextContainer *)self->_textContainer setLineBreakMode:mode];
     textView = self->_textView;
 
     [(UITextView *)textView setNeedsDisplay];
   }
 }
 
-- (void)setNumberOfLinesWhenCollapsed:(unint64_t)a3
+- (void)setNumberOfLinesWhenCollapsed:(unint64_t)collapsed
 {
-  if (self->_numberOfLinesWhenCollapsed != a3)
+  if (self->_numberOfLinesWhenCollapsed != collapsed)
   {
-    v4 = 3;
-    if (a3)
+    collapsedCopy = 3;
+    if (collapsed)
     {
-      v4 = a3;
+      collapsedCopy = collapsed;
     }
 
-    self->_numberOfLinesWhenCollapsed = v4;
+    self->_numberOfLinesWhenCollapsed = collapsedCopy;
     if ([(IMExpandingLabel *)self isExpanded])
     {
       numberOfLinesWhenCollapsed = 0;
@@ -310,26 +310,26 @@ LABEL_4:
     [v4 setAlignment:self->_textAlignment];
     textStorage = self->_textStorage;
     v9[0] = NSFontAttributeName;
-    v6 = [(IMExpandingLabel *)self font];
-    v10[0] = v6;
+    font = [(IMExpandingLabel *)self font];
+    v10[0] = font;
     v9[1] = NSForegroundColorAttributeName;
-    v7 = [(IMExpandingLabel *)self textColor];
+    textColor = [(IMExpandingLabel *)self textColor];
     v9[2] = NSParagraphStyleAttributeName;
-    v10[1] = v7;
+    v10[1] = textColor;
     v10[2] = v4;
     v8 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:3];
     [(NSTextStorage *)textStorage setAttributes:v8 range:0, [(NSTextStorage *)self->_textStorage length]];
   }
 }
 
-- (void)setShowMoreAttributedText:(id)a3
+- (void)setShowMoreAttributedText:(id)text
 {
-  v7 = a3;
-  v4 = [(UILabel *)self->_showMoreLabel attributedText];
-  if (v4 == v7)
+  textCopy = text;
+  attributedText = [(UILabel *)self->_showMoreLabel attributedText];
+  if (attributedText == textCopy)
   {
-    v5 = [(UILabel *)self->_showMoreLabel attributedText];
-    v6 = [v7 isEqualToAttributedString:v5];
+    attributedText2 = [(UILabel *)self->_showMoreLabel attributedText];
+    v6 = [textCopy isEqualToAttributedString:attributedText2];
 
     if (v6)
     {
@@ -341,36 +341,36 @@ LABEL_4:
   {
   }
 
-  [(UILabel *)self->_showMoreLabel setAttributedText:v7];
+  [(UILabel *)self->_showMoreLabel setAttributedText:textCopy];
   [(IMExpandingLabel *)self setNeedsLayout];
 LABEL_5:
 }
 
-- (void)setShowMoreFont:(id)a3
+- (void)setShowMoreFont:(id)font
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_showMoreLabel font];
+  fontCopy = font;
+  font = [(UILabel *)self->_showMoreLabel font];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = fontCopy;
+  if (font != fontCopy)
   {
-    [(UILabel *)self->_showMoreLabel setFont:v6];
+    [(UILabel *)self->_showMoreLabel setFont:fontCopy];
     [(IMExpandingLabel *)self setNeedsLayout];
-    v5 = v6;
+    v5 = fontCopy;
   }
 }
 
-- (void)setShowMoreTextColor:(id)a3
+- (void)setShowMoreTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_showMoreTextColor != v5)
+  colorCopy = color;
+  if (self->_showMoreTextColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_showMoreTextColor, a3);
-    v6 = [(IMExpandingLabel *)self showMoreTextColor];
-    [(UILabel *)self->_showMoreLabel setTextColor:v6];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_showMoreTextColor, color);
+    showMoreTextColor = [(IMExpandingLabel *)self showMoreTextColor];
+    [(UILabel *)self->_showMoreLabel setTextColor:showMoreTextColor];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
@@ -384,16 +384,16 @@ LABEL_5:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(IMExpandingLabel *)self textView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  textView = [(IMExpandingLabel *)self textView];
+  [textView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(NSTextContainer *)self->_textContainer maximumNumberOfLines];
-  if (v12)
+  maximumNumberOfLines = [(NSTextContainer *)self->_textContainer maximumNumberOfLines];
+  if (maximumNumberOfLines)
   {
-    v13 = v12;
+    v13 = maximumNumberOfLines;
     [(NSTextContainer *)self->_textContainer setMaximumNumberOfLines:0];
-    v14 = [(IMExpandingLabel *)self textView];
-    [v14 sizeThatFits:{v8, 3.40282347e38}];
+    textView2 = [(IMExpandingLabel *)self textView];
+    [textView2 sizeThatFits:{v8, 3.40282347e38}];
     v16 = v15;
 
     v17 = v16 <= v10;
@@ -457,10 +457,10 @@ LABEL_5:
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  self->_expanded = a3;
-  if (a3)
+  self->_expanded = expanded;
+  if (expanded)
   {
     numberOfLinesWhenCollapsed = 0;
   }
@@ -476,12 +476,12 @@ LABEL_5:
   [(IMExpandingLabel *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(IMExpandingLabel *)self textView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  textView = [(IMExpandingLabel *)self textView];
+  [textView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 

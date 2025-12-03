@@ -1,26 +1,26 @@
 @interface IDSDSessionRemoteParticipantContext
-- (IDSDSessionRemoteParticipantContext)initWithtimeStamp:(double)a3 updateType:(unint64_t)a4;
-- (id)IDSGroupSessionMessageParticipantUpdateTypeString:(unint64_t)a3;
+- (IDSDSessionRemoteParticipantContext)initWithtimeStamp:(double)stamp updateType:(unint64_t)type;
+- (id)IDSGroupSessionMessageParticipantUpdateTypeString:(unint64_t)string;
 - (id)description;
 @end
 
 @implementation IDSDSessionRemoteParticipantContext
 
-- (IDSDSessionRemoteParticipantContext)initWithtimeStamp:(double)a3 updateType:(unint64_t)a4
+- (IDSDSessionRemoteParticipantContext)initWithtimeStamp:(double)stamp updateType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = IDSDSessionRemoteParticipantContext;
   result = [(IDSDSessionRemoteParticipantContext *)&v7 init];
   if (result)
   {
-    if (a3 != 0.0)
+    if (stamp != 0.0)
     {
-      result->_timeStamp = a3;
+      result->_timeStamp = stamp;
     }
 
-    if (a4)
+    if (type)
     {
-      result->_updateType = a4;
+      result->_updateType = type;
     }
   }
 
@@ -36,16 +36,16 @@
   return v5;
 }
 
-- (id)IDSGroupSessionMessageParticipantUpdateTypeString:(unint64_t)a3
+- (id)IDSGroupSessionMessageParticipantUpdateTypeString:(unint64_t)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_100BDCBF8[a3];
+    return off_100BDCBF8[string];
   }
 }
 

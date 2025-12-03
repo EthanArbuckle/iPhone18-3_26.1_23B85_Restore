@@ -1,8 +1,8 @@
 @interface FBSWorkspaceSceneRemnant
 - (FBSWorkspaceSceneRemnant)init;
-- (FBSWorkspaceSceneRemnant)initWithBSXPCCoder:(id)a3;
-- (id)_initWithIdentity:(id)a3 parameters:(id)a4;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (FBSWorkspaceSceneRemnant)initWithBSXPCCoder:(id)coder;
+- (id)_initWithIdentity:(id)identity parameters:(id)parameters;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation FBSWorkspaceSceneRemnant
@@ -20,7 +20,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSWorkspaceSceneRemnant.m";
     v16 = 1024;
@@ -34,11 +34,11 @@
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithIdentity:(id)a3 parameters:(id)a4
+- (id)_initWithIdentity:(id)identity parameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  identityCopy = identity;
+  parametersCopy = parameters;
+  v9 = identityCopy;
   NSClassFromString(&cfstr_Fbssceneidenti_0.isa);
   if (!v9)
   {
@@ -55,9 +55,9 @@
     [FBSWorkspaceSceneRemnant _initWithIdentity:a2 parameters:?];
   }
 
-  v10 = [v9 internalWorkspaceIdentifier];
+  internalWorkspaceIdentifier = [v9 internalWorkspaceIdentifier];
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v10)
+  if (!internalWorkspaceIdentifier)
   {
     [FBSWorkspaceSceneRemnant _initWithIdentity:a2 parameters:?];
   }
@@ -67,7 +67,7 @@
     [FBSWorkspaceSceneRemnant _initWithIdentity:a2 parameters:?];
   }
 
-  v11 = v8;
+  v11 = parametersCopy;
   NSClassFromString(&cfstr_Fbssceneparame.isa);
   if (!v11)
   {
@@ -96,27 +96,27 @@
   return v12;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   identity = self->_identity;
-  v5 = a3;
-  [v5 encodeObject:identity forKey:@"i"];
-  [v5 encodeObject:self->_parameters forKey:@"p"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identity forKey:@"i"];
+  [coderCopy encodeObject:self->_parameters forKey:@"p"];
 }
 
-- (FBSWorkspaceSceneRemnant)initWithBSXPCCoder:(id)a3
+- (FBSWorkspaceSceneRemnant)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FBSWorkspaceSceneRemnant;
   v5 = [(FBSWorkspaceSceneRemnant *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
     identity = v5->_identity;
     v5->_identity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"p"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"p"];
     parameters = v5->_parameters;
     v5->_parameters = v8;
   }

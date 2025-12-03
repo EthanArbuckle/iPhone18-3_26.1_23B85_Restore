@@ -1,10 +1,10 @@
 @interface _EARAlignmentState
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _EARAlignmentState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_EARAlignmentState allocWithZone:?]];
   [(_EARAlignmentState *)v4 setNumberOfInsertions:[(_EARAlignmentState *)self numberOfInsertions]];

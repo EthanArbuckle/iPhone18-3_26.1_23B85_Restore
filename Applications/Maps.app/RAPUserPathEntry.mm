@@ -1,31 +1,31 @@
 @interface RAPUserPathEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)traversalAsString:(int)a3;
-- (int)StringAsTraversal:(id)a3;
+- (id)traversalAsString:(int)string;
+- (int)StringAsTraversal:(id)traversal;
 - (int)traversal;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStepIndex:(BOOL)a3;
-- (void)setHasTraversal:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStepIndex:(BOOL)index;
+- (void)setHasTraversal:(BOOL)traversal;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RAPUserPathEntry
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 28);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 28);
   if (v6)
   {
-    self->_routeIndex = *(v4 + 4);
+    self->_routeIndex = *(fromCopy + 4);
     *&self->_has |= 1u;
-    v6 = *(v4 + 28);
+    v6 = *(fromCopy + 28);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -38,17 +38,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 28) & 2) == 0)
+  else if ((*(fromCopy + 28) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_stepIndex = *(v4 + 5);
+  self->_stepIndex = *(fromCopy + 5);
   *&self->_has |= 2u;
-  if ((*(v4 + 28) & 4) != 0)
+  if ((*(fromCopy + 28) & 4) != 0)
   {
 LABEL_4:
-    self->_traversal = *(v4 + 6);
+    self->_traversal = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
@@ -121,23 +121,23 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(GEOLatLng *)self->_rerouteLocation hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_routeIndex != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_routeIndex != *(equalCopy + 4))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_19:
     v6 = 0;
@@ -146,32 +146,32 @@ LABEL_19:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_stepIndex != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_stepIndex != *(equalCopy + 5))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0 || self->_traversal != *(v4 + 6))
+    if ((*(equalCopy + 28) & 4) == 0 || self->_traversal != *(equalCopy + 6))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   rerouteLocation = self->_rerouteLocation;
-  if (rerouteLocation | *(v4 + 1))
+  if (rerouteLocation | *(equalCopy + 1))
   {
     v6 = [(GEOLatLng *)rerouteLocation isEqual:?];
   }
@@ -186,9 +186,9 @@ LABEL_20:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 1) == 0)
@@ -226,21 +226,21 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(GEOLatLng *)self->_rerouteLocation copyWithZone:a3];
+  v8 = [(GEOLatLng *)self->_rerouteLocation copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[4] = self->_routeIndex;
-    *(v4 + 28) |= 1u;
+    toCopy[4] = self->_routeIndex;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -259,33 +259,33 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = self->_stepIndex;
-  *(v4 + 28) |= 2u;
+  toCopy[5] = self->_stepIndex;
+  *(toCopy + 28) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[6] = self->_traversal;
-    *(v4 + 28) |= 4u;
+    toCopy[6] = self->_traversal;
+    *(toCopy + 28) |= 4u;
   }
 
 LABEL_5:
   if (self->_rerouteLocation)
   {
-    v6 = v4;
-    [v4 setRerouteLocation:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setRerouteLocation:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -305,19 +305,19 @@ LABEL_3:
   }
 
   PBDataWriterWriteUint32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_5:
   if (self->_rerouteLocation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
@@ -374,8 +374,8 @@ LABEL_11:
   rerouteLocation = self->_rerouteLocation;
   if (rerouteLocation)
   {
-    v10 = [(GEOLatLng *)rerouteLocation dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"rerouteLocation"];
+    dictionaryRepresentation = [(GEOLatLng *)rerouteLocation dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"rerouteLocation"];
   }
 
   return v3;
@@ -386,26 +386,26 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = RAPUserPathEntry;
   v3 = [(RAPUserPathEntry *)&v7 description];
-  v4 = [(RAPUserPathEntry *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(RAPUserPathEntry *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (int)StringAsTraversal:(id)a3
+- (int)StringAsTraversal:(id)traversal
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"STORED"])
+  traversalCopy = traversal;
+  if ([traversalCopy isEqualToString:@"STORED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([traversalCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MISSED"])
+  else if ([traversalCopy isEqualToString:@"MISSED"])
   {
     v4 = 2;
   }
@@ -418,24 +418,24 @@ LABEL_11:
   return v4;
 }
 
-- (id)traversalAsString:(int)a3
+- (id)traversalAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_101655168 + a3);
+    v4 = *(&off_101655168 + string);
   }
 
   return v4;
 }
 
-- (void)setHasTraversal:(BOOL)a3
+- (void)setHasTraversal:(BOOL)traversal
 {
-  if (a3)
+  if (traversal)
   {
     v3 = 4;
   }
@@ -461,9 +461,9 @@ LABEL_11:
   }
 }
 
-- (void)setHasStepIndex:(BOOL)a3
+- (void)setHasStepIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }

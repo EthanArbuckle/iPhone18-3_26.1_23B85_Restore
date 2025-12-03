@@ -1,75 +1,75 @@
 @interface SKUIApplicationController
 + (SKUIConfigurationPreloader)configurationPreloader;
-+ (id)_referrerAppForSourceApplication:(id)a3 launchURL:(id *)a4;
-+ (id)applicationOptionsWithLaunchOptions:(id)a3;
++ (id)_referrerAppForSourceApplication:(id)application launchURL:(id *)l;
++ (id)applicationOptionsWithLaunchOptions:(id)options;
 + (void)finishedWithConfigurationPreloader;
 + (void)prepareForLaunch;
-- (BOOL)URLResolver:(id)a3 shouldPerformDefaultActionForURL:(id)a4;
+- (BOOL)URLResolver:(id)resolver shouldPerformDefaultActionForURL:(id)l;
 - (BOOL)_isDisplayingAccountViewController;
-- (BOOL)_isStoreFront:(id)a3 equalToStoreFront:(id)a4;
-- (BOOL)_playPreviewForPreviewTemplate:(id)a3;
-- (BOOL)_shouldUseLegacyURLHandlingForExternalURL:(id)a3;
-- (BOOL)_usesFloatingStatusOverlayForWidth:(double)a3;
-- (BOOL)tabBarController:(id)a3 shouldFallbackToRootForController:(id)a4;
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4;
-- (CGSize)sizeForNavigationDocument:(id)a3;
+- (BOOL)_isStoreFront:(id)front equalToStoreFront:(id)storeFront;
+- (BOOL)_playPreviewForPreviewTemplate:(id)template;
+- (BOOL)_shouldUseLegacyURLHandlingForExternalURL:(id)l;
+- (BOOL)_usesFloatingStatusOverlayForWidth:(double)width;
+- (BOOL)tabBarController:(id)controller shouldFallbackToRootForController:(id)forController;
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController;
+- (CGSize)sizeForNavigationDocument:(id)document;
 - (SKUIApplicationController)init;
-- (SKUIApplicationController)initWithClientContextClass:(Class)a3;
-- (SKUIApplicationController)initWithClientContextClass:(Class)a3 options:(id)a4;
-- (SKUIApplicationController)initWithClientContextClass:(Class)a3 tabBarControllerStyle:(int64_t)a4;
+- (SKUIApplicationController)initWithClientContextClass:(Class)class;
+- (SKUIApplicationController)initWithClientContextClass:(Class)class options:(id)options;
+- (SKUIApplicationController)initWithClientContextClass:(Class)class tabBarControllerStyle:(int64_t)style;
 - (SKUIApplicationDelegate)delegate;
 - (SKUIClientContext)clientContext;
 - (SKUINavigationDocumentController)_transientNavigationController;
 - (UIViewController)rootViewController;
 - (id)_activeNavigationController;
-- (id)_documentControllerForNavigationController:(id)a3;
+- (id)_documentControllerForNavigationController:(id)controller;
 - (id)_existingTabBarController;
-- (id)_launchOptionsWithURL:(id)a3;
+- (id)_launchOptionsWithURL:(id)l;
 - (id)_navigationContainerViewController;
-- (id)_newNavigationControllerWithTabBarItem:(id)a3;
+- (id)_newNavigationControllerWithTabBarItem:(id)item;
 - (id)_operationQueue;
-- (id)_overlayNavigationControllerForViewController:(id)a3;
+- (id)_overlayNavigationControllerForViewController:(id)controller;
 - (id)_rootDocuments;
-- (id)_statusOverlayProviderForViewController:(id)a3;
+- (id)_statusOverlayProviderForViewController:(id)controller;
 - (id)_tabBarController;
 - (id)_transientNavigationDocument;
 - (id)activeDocument;
-- (id)deviceConfigForContext:(id)a3;
-- (id)jsNavigationDocumentForNavigationController:(id)a3 inContext:(id)a4;
-- (id)jsNavigationDocumentForNavigationDocumentController:(id)a3 inContext:(id)a4;
+- (id)deviceConfigForContext:(id)context;
+- (id)jsNavigationDocumentForNavigationController:(id)controller inContext:(id)context;
+- (id)jsNavigationDocumentForNavigationDocumentController:(id)controller inContext:(id)context;
 - (id)localStorage;
-- (id)navigationControllerForContext:(id)a3;
-- (id)presentationViewControllerForAppContext:(id)a3;
-- (id)selectTabWithIdentifier:(id)a3;
+- (id)navigationControllerForContext:(id)context;
+- (id)presentationViewControllerForAppContext:(id)context;
+- (id)selectTabWithIdentifier:(id)identifier;
 - (id)vendorIdentifier;
 - (id)vendorStorage;
 - (int64_t)_applicationMode;
 - (int64_t)_selectedTabBarIndex;
-- (int64_t)modalDocumentController:(id)a3 barStyleForStackItem:(id)a4;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)a3;
-- (void)URLResolver:(id)a3 didFinishWithResult:(BOOL)a4;
-- (void)URLResolver:(id)a3 showURL:(id)a4 withTabIdentifier:(id)a5;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_attemptAMSURLHandlingIfPossibleForExternalURL:(id)a3 fallback:(id)a4;
-- (void)_dispatchTabBarOnNeedsContentForTabAtIndex:(unint64_t)a3;
-- (void)_ensureStackConsistencyForNavigationController:(id)a3;
-- (void)_failReloadWithError:(id)a3;
-- (void)_failWithError:(id)a3;
-- (void)_finishWillResignActiveWithDialogState:(BOOL)a3;
+- (int64_t)modalDocumentController:(id)controller barStyleForStackItem:(id)item;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)URLResolver:(id)resolver didFinishWithResult:(BOOL)result;
+- (void)URLResolver:(id)resolver showURL:(id)l withTabIdentifier:(id)identifier;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_attemptAMSURLHandlingIfPossibleForExternalURL:(id)l fallback:(id)fallback;
+- (void)_dispatchTabBarOnNeedsContentForTabAtIndex:(unint64_t)index;
+- (void)_ensureStackConsistencyForNavigationController:(id)controller;
+- (void)_failReloadWithError:(id)error;
+- (void)_failWithError:(id)error;
+- (void)_finishWillResignActiveWithDialogState:(BOOL)state;
 - (void)_fireBlocksAfterLoad;
 - (void)_handleScriptUnavailable;
 - (void)_invalidateApplication;
-- (void)_jsLaunchFinishedWithLaunchMetrics:(id)a3;
-- (void)_legacyResolveExternalURL:(id)a3;
+- (void)_jsLaunchFinishedWithLaunchMetrics:(id)metrics;
+- (void)_legacyResolveExternalURL:(id)l;
 - (void)_loadApplicationScript;
-- (void)_previewDocumentIsActiveChangeNotification:(id)a3;
-- (void)_recordTabBarMetricsEventToSelectViewController:(id)a3;
-- (void)_reloadAfterNetworkChange:(id)a3;
+- (void)_previewDocumentIsActiveChangeNotification:(id)notification;
+- (void)_recordTabBarMetricsEventToSelectViewController:(id)controller;
+- (void)_reloadAfterNetworkChange:(id)change;
 - (void)_reloadApplication;
 - (void)_reloadRootViewControllers;
-- (void)_reloadTabBarWithClientContext:(id)a3;
+- (void)_reloadTabBarWithClientContext:(id)context;
 - (void)_removeObserversForReloadNotifications;
 - (void)_removeStatusOverlayFromAllNavigationControllers;
 - (void)_resetDocumentControllers;
@@ -77,56 +77,56 @@
 - (void)_retryAfterFailure;
 - (void)_sendClientContextDidChange;
 - (void)_sendDidDisplayFirstPageIfNecessary;
-- (void)_setClientContextWithDictionary:(id)a3;
-- (void)_setSelectedTabBarIndex:(int64_t)a3;
-- (void)_showFloatingStatusOverlayAnimated:(BOOL)a3;
-- (void)_showStatusOverlayForNavigationController:(id)a3 viewController:(id)a4 animated:(BOOL)a5;
-- (void)_startScriptContextWithURL:(id)a3;
+- (void)_setClientContextWithDictionary:(id)dictionary;
+- (void)_setSelectedTabBarIndex:(int64_t)index;
+- (void)_showFloatingStatusOverlayAnimated:(BOOL)animated;
+- (void)_showStatusOverlayForNavigationController:(id)controller viewController:(id)viewController animated:(BOOL)animated;
+- (void)_startScriptContextWithURL:(id)l;
 - (void)_stopApplication;
 - (void)_stopScriptContextForReload;
-- (void)_storeFrontChangeNotification:(id)a3;
-- (void)_tintTabBarWithViewController:(id)a3;
-- (void)_updateOverlayNavigationController:(id)a3;
-- (void)appContext:(id)a3 didCompletePurchase:(id)a4;
-- (void)appContext:(id)a3 didCompleteSoftwarePurchase:(id)a4;
-- (void)appContext:(id)a3 didExitWithOptions:(id)a4;
-- (void)appContext:(id)a3 didFailWithError:(id)a4;
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4;
-- (void)appContext:(id)a3 didStopWithOptions:(id)a4;
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4;
-- (void)appContext:(id)a3 needsReloadWithUrgency:(unint64_t)a4 options:(id)a5;
-- (void)appContext:(id)a3 setPreviewOverlayDocument:(id)a4 withOptions:(id)a5;
-- (void)appContextNeedsRestart:(id)a3;
-- (void)application:(id)a3 didReceiveURL:(id)a4;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
+- (void)_storeFrontChangeNotification:(id)notification;
+- (void)_tintTabBarWithViewController:(id)controller;
+- (void)_updateOverlayNavigationController:(id)controller;
+- (void)appContext:(id)context didCompletePurchase:(id)purchase;
+- (void)appContext:(id)context didCompleteSoftwarePurchase:(id)purchase;
+- (void)appContext:(id)context didExitWithOptions:(id)options;
+- (void)appContext:(id)context didFailWithError:(id)error;
+- (void)appContext:(id)context didStartWithOptions:(id)options;
+- (void)appContext:(id)context didStopWithOptions:(id)options;
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext;
+- (void)appContext:(id)context needsReloadWithUrgency:(unint64_t)urgency options:(id)options;
+- (void)appContext:(id)context setPreviewOverlayDocument:(id)document withOptions:(id)options;
+- (void)appContextNeedsRestart:(id)restart;
+- (void)application:(id)application didReceiveURL:(id)l;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationWillResignActive:(id)active;
 - (void)dealloc;
-- (void)evaluateBlockWhenLoaded:(id)a3;
-- (void)getModalSourceViewForElementIdentifier:(id)a3 completionBlock:(id)a4;
-- (void)hideStatusOverlayForProvider:(id)a3 animated:(BOOL)a4;
-- (void)loadApplicationWithOptions:(id)a3;
-- (void)modalDocumentControllerDidFinish:(id)a3;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationDocumentController:(id)a3 requestsAccessToAppContextUsingBlock:(id)a4;
-- (void)navigationDocumentStackDidChange:(id)a3;
-- (void)recordMetricsEvent:(id)a3 flushImmediately:(BOOL)a4;
-- (void)resumeApplicationWithOptions:(id)a3;
-- (void)setClientContext:(id)a3;
-- (void)setMescalPrimeEnabledForXHRRequests:(BOOL)a3;
-- (void)setTabBarItems:(id)a3;
-- (void)setUserInterfaceOverrideOnTabBarController:(id)a3 forViewController:(id)a4;
+- (void)evaluateBlockWhenLoaded:(id)loaded;
+- (void)getModalSourceViewForElementIdentifier:(id)identifier completionBlock:(id)block;
+- (void)hideStatusOverlayForProvider:(id)provider animated:(BOOL)animated;
+- (void)loadApplicationWithOptions:(id)options;
+- (void)modalDocumentControllerDidFinish:(id)finish;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationDocumentController:(id)controller requestsAccessToAppContextUsingBlock:(id)block;
+- (void)navigationDocumentStackDidChange:(id)change;
+- (void)recordMetricsEvent:(id)event flushImmediately:(BOOL)immediately;
+- (void)resumeApplicationWithOptions:(id)options;
+- (void)setClientContext:(id)context;
+- (void)setMescalPrimeEnabledForXHRRequests:(BOOL)requests;
+- (void)setTabBarItems:(id)items;
+- (void)setUserInterfaceOverrideOnTabBarController:(id)controller forViewController:(id)viewController;
 - (void)showErrorViewForLaunchFailure;
-- (void)showErrorViewWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 buttonAction:(id)a6;
-- (void)showExternalURL:(id)a3;
-- (void)showStatusOverlayUsingProvider:(id)a3 animated:(BOOL)a4;
-- (void)showTransientViewController:(id)a3;
-- (void)tabBarController:(id)a3 didEndCustomizingViewControllers:(id)a4 changed:(BOOL)a5;
-- (void)tabBarController:(id)a3 didReselectViewController:(id)a4;
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4;
-- (void)tabBarController:(id)a3 willDisplayViewController:(id)a4;
-- (void)tabBarController:(id)a3 willTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5;
-- (void)updateTabBarWithItems:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)showErrorViewWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle buttonAction:(id)action;
+- (void)showExternalURL:(id)l;
+- (void)showStatusOverlayUsingProvider:(id)provider animated:(BOOL)animated;
+- (void)showTransientViewController:(id)controller;
+- (void)tabBarController:(id)controller didEndCustomizingViewControllers:(id)controllers changed:(BOOL)changed;
+- (void)tabBarController:(id)controller didReselectViewController:(id)viewController;
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController;
+- (void)tabBarController:(id)controller willDisplayViewController:(id)viewController;
+- (void)tabBarController:(id)controller willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)updateTabBarWithItems:(id)items animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SKUIApplicationController
@@ -193,8 +193,8 @@
   v11 = objc_autoreleasePoolPush();
   +[SKUIMetricsAppLaunchEvent createPendingLaunchEvent];
   [SKUIMetricsAppLaunchEvent withPendingLaunchEvent:&__block_literal_global_42];
-  v12 = [a1 configurationPreloader];
-  [v12 preloadConfigurationForPurpose:0 withCompletionBlock:&__block_literal_global_33];
+  configurationPreloader = [self configurationPreloader];
+  [configurationPreloader preloadConfigurationForPurpose:0 withCompletionBlock:&__block_literal_global_33];
 
   objc_autoreleasePoolPop(v11);
 }
@@ -294,7 +294,7 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   return [(SKUIApplicationController *)self initWithClientContextClass:objc_opt_class()];
 }
 
-- (SKUIApplicationController)initWithClientContextClass:(Class)a3
+- (SKUIApplicationController)initWithClientContextClass:(Class)class
 {
   if (os_variant_has_internal_content())
   {
@@ -308,10 +308,10 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
     }
   }
 
-  return [(SKUIApplicationController *)self initWithClientContextClass:a3 options:0];
+  return [(SKUIApplicationController *)self initWithClientContextClass:class options:0];
 }
 
-- (SKUIApplicationController)initWithClientContextClass:(Class)a3 tabBarControllerStyle:(int64_t)a4
+- (SKUIApplicationController)initWithClientContextClass:(Class)class tabBarControllerStyle:(int64_t)style
 {
   if (os_variant_has_internal_content())
   {
@@ -326,15 +326,15 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   }
 
   v15 = objc_alloc_init(SKUIMutableApplicationControllerOptions);
-  [(SKUIMutableApplicationControllerOptions *)v15 setTabBarControllerStyle:a4];
-  v16 = [(SKUIApplicationController *)self initWithClientContextClass:a3 options:v15];
+  [(SKUIMutableApplicationControllerOptions *)v15 setTabBarControllerStyle:style];
+  v16 = [(SKUIApplicationController *)self initWithClientContextClass:class options:v15];
 
   return v16;
 }
 
-- (SKUIApplicationController)initWithClientContextClass:(Class)a3 options:(id)a4
+- (SKUIApplicationController)initWithClientContextClass:(Class)class options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -353,8 +353,8 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   v16 = v15;
   if (v15)
   {
-    v15->_clientContextClass = a3;
-    v17 = [v6 copy];
+    v15->_clientContextClass = class;
+    v17 = [optionsCopy copy];
     options = v16->_options;
     v16->_options = v17;
 
@@ -366,11 +366,11 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
     }
 
     v16->_indexOfLastTabNeedingContent = 0x7FFFFFFFFFFFFFFFLL;
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v16 selector:sel__pageDidDisplayNotification_ name:@"SKUIApplicationPageDidDisplayNotification" object:0];
-    [v21 addObserver:v16 selector:sel__storeFrontChangeNotification_ name:*MEMORY[0x277D69E18] object:0];
-    [v21 addObserver:v16 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
-    [v21 addObserver:v16 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v16 selector:sel__pageDidDisplayNotification_ name:@"SKUIApplicationPageDidDisplayNotification" object:0];
+    [defaultCenter addObserver:v16 selector:sel__storeFrontChangeNotification_ name:*MEMORY[0x277D69E18] object:0];
+    [defaultCenter addObserver:v16 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    [defaultCenter addObserver:v16 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
   }
 
   return v16;
@@ -379,14 +379,14 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
 - (void)dealloc
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
-  [v3 removeObserver:self name:@"SKUIApplicationPageDidDisplayNotification" object:0];
-  [v3 removeObserver:self name:0x282808428 object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D69E18] object:0];
-  [v3 removeObserver:self name:@"SUAccountViewControllerDidDisappearNotification" object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76660] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
+  [defaultCenter removeObserver:self name:@"SKUIApplicationPageDidDisplayNotification" object:0];
+  [defaultCenter removeObserver:self name:0x282808428 object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D69E18] object:0];
+  [defaultCenter removeObserver:self name:@"SUAccountViewControllerDidDisappearNotification" object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
@@ -408,9 +408,9 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
-        v10 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v9 != v10)
+        if (v9 != null)
         {
           [v9 setDelegate:0];
         }
@@ -430,10 +430,10 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   [(SKUIModalDocumentController *)self->_modalDocumentController setDelegate:0];
   [(SKUIModalDocumentController *)self->_modalDocumentController setModalSourceViewProvider:0];
   [(SKUIModalDocumentController *)self->_modalDocumentController setNavigationControllerDelegate:0];
-  v11 = [(SKUIApplicationController *)self _existingTabBarController];
-  v12 = SKUITabBarControllerGetMoreNavigationController(v11);
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  v12 = SKUITabBarControllerGetMoreNavigationController(_existingTabBarController);
   [v12 setDelegate:0];
-  [v11 setDelegate:0];
+  [_existingTabBarController setDelegate:0];
   [(SKUINavigationDocumentController *)self->_transientNavigationDocument setDelegate:0];
   [(SKUIURLResolver *)self->_urlResolver setDelegate:0];
   [(SKUIURLResolver *)self->_urlResolver setNavigationControllerDelegate:0];
@@ -443,19 +443,19 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   [(SKUIApplicationController *)&v13 dealloc];
 }
 
-+ (id)applicationOptionsWithLaunchOptions:(id)a3
++ (id)applicationOptionsWithLaunchOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  optionsCopy = options;
+  v5 = [optionsCopy mutableCopy];
   v6 = *MEMORY[0x277D76698];
-  v7 = [v4 objectForKey:*MEMORY[0x277D76698]];
+  v7 = [optionsCopy objectForKey:*MEMORY[0x277D76698]];
   v8 = *MEMORY[0x277D76690];
-  v9 = [v4 objectForKey:*MEMORY[0x277D76690]];
+  v9 = [optionsCopy objectForKey:*MEMORY[0x277D76690]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v22 = v7;
-    v10 = [a1 _referrerAppForSourceApplication:v9 launchURL:&v22];
+    v10 = [self _referrerAppForSourceApplication:v9 launchURL:&v22];
     v11 = v22;
 
     [v5 setObject:v10 forKey:@"refApp"];
@@ -466,15 +466,15 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   if (v7)
   {
     v12 = [[SKUIURL alloc] initWithURL:v7];
-    v13 = [(SKUIURL *)v12 underlyingURL];
-    v14 = [v13 absoluteString];
-    [v5 setObject:v14 forKey:@"url"];
+    underlyingURL = [(SKUIURL *)v12 underlyingURL];
+    absoluteString = [underlyingURL absoluteString];
+    [v5 setObject:absoluteString forKey:@"url"];
 
     [v5 removeObjectForKey:v6];
   }
 
   v15 = *MEMORY[0x277D76678];
-  v16 = [v4 objectForKey:*MEMORY[0x277D76678]];
+  v16 = [optionsCopy objectForKey:*MEMORY[0x277D76678]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -501,8 +501,8 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = [v19 absoluteString];
-        [v5 setObject:v20 forKey:@"refUrl"];
+        absoluteString2 = [v19 absoluteString];
+        [v5 setObject:absoluteString2 forKey:@"refUrl"];
       }
     }
   }
@@ -517,22 +517,22 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   return v5;
 }
 
-+ (id)_referrerAppForSourceApplication:(id)a3 launchURL:(id *)a4
++ (id)_referrerAppForSourceApplication:(id)application launchURL:(id *)l
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 isEqualToString:@"com.apple.ios.StoreKitUIService"])
+  applicationCopy = application;
+  if ([applicationCopy isEqualToString:@"com.apple.ios.StoreKitUIService"])
   {
-    v19 = a4;
-    v6 = [MEMORY[0x277CCACE0] componentsWithURL:*a4 resolvingAgainstBaseURL:0];
-    v7 = [MEMORY[0x277CBEB18] array];
+    lCopy = l;
+    v6 = [MEMORY[0x277CCACE0] componentsWithURL:*l resolvingAgainstBaseURL:0];
+    array = [MEMORY[0x277CBEB18] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v18 = v6;
-    v8 = [v6 queryItems];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    queryItems = [v6 queryItems];
+    v9 = [queryItems countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -543,51 +543,51 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(queryItems);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v13 name];
-          v15 = [v14 isEqualToString:@"SKUIServiceRefApp"];
+          name = [v13 name];
+          v15 = [name isEqualToString:@"SKUIServiceRefApp"];
 
           if (v15)
           {
-            v16 = [v13 value];
+            value = [v13 value];
 
-            v5 = v16;
+            applicationCopy = value;
           }
 
           else
           {
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [queryItems countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
     }
 
-    [v18 setQueryItems:v7];
-    *v19 = [v18 URL];
+    [v18 setQueryItems:array];
+    *lCopy = [v18 URL];
   }
 
-  return v5;
+  return applicationCopy;
 }
 
-- (void)application:(id)a3 didReceiveURL:(id)a4
+- (void)application:(id)application didReceiveURL:(id)l
 {
-  v7 = a4;
-  v5 = [v7 copy];
+  lCopy = l;
+  v5 = [lCopy copy];
   activationURL = self->_activationURL;
   self->_activationURL = v5;
 
   self->_ignoreDidBecomeActive = 1;
-  [(SKUIClientContext *)self->_clientContext setPurchaseReferrerURL:v7];
+  [(SKUIClientContext *)self->_clientContext setPurchaseReferrerURL:lCopy];
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   if (!self->_ignoreDidBecomeActive)
   {
@@ -595,14 +595,14 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   }
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
-  v4 = a3;
-  v5 = v4;
+  activeCopy = active;
+  v5 = activeCopy;
   v6 = *MEMORY[0x277D767B0];
   if (self->_resignActiveTaskID != *MEMORY[0x277D767B0])
   {
-    [v4 endBackgroundTask:?];
+    [activeCopy endBackgroundTask:?];
     self->_resignActiveTaskID = v6;
   }
 
@@ -611,7 +611,7 @@ void __45__SKUIApplicationController_prepareForLaunch__block_invoke_39(uint64_t 
   v11[2] = __57__SKUIApplicationController_applicationWillResignActive___block_invoke;
   v11[3] = &unk_2781F80C8;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v7 = v5;
   self->_resignActiveTaskID = [v7 beginBackgroundTaskWithName:@"SKUIApplicationController.resignActive" expirationHandler:v11];
   block[6] = MEMORY[0x277D85DD0];
@@ -665,8 +665,8 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
   clientContext = self->_clientContext;
   if (!clientContext)
   {
-    v4 = [(objc_class *)self->_clientContextClass defaultContext];
-    [(SKUIApplicationController *)self setClientContext:v4];
+    defaultContext = [(objc_class *)self->_clientContextClass defaultContext];
+    [(SKUIApplicationController *)self setClientContext:defaultContext];
 
     clientContext = self->_clientContext;
   }
@@ -674,26 +674,26 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
   return clientContext;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  NSLog(&cfstr_SetClientConte.isa, v6, v4);
+  NSLog(&cfstr_SetClientConte.isa, v6, contextCopy);
 
   clientContext = self->_clientContext;
-  self->_clientContext = v4;
-  v8 = v4;
+  self->_clientContext = contextCopy;
+  v8 = contextCopy;
 
   SKUISetShouldReverseLayoutDirectionWithContext(self->_clientContext);
   [(SKUIClientContext *)self->_clientContext _setApplicationController:self];
   [(SKUIClientContext *)self->_clientContext setPurchaseReferrerURL:self->_activationURL];
 }
 
-- (void)evaluateBlockWhenLoaded:(id)a3
+- (void)evaluateBlockWhenLoaded:(id)loaded
 {
-  v4 = a3;
-  v10 = v4;
+  loadedCopy = loaded;
+  v10 = loadedCopy;
   if ((self->_scriptLoadState - 3) > 1)
   {
     if (!self->_whenLoadedBlocks)
@@ -702,10 +702,10 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
       whenLoadedBlocks = self->_whenLoadedBlocks;
       self->_whenLoadedBlocks = v5;
 
-      v4 = v10;
+      loadedCopy = v10;
     }
 
-    v7 = [v4 copy];
+    v7 = [loadedCopy copy];
     v8 = self->_whenLoadedBlocks;
     v9 = _Block_copy(v7);
     [(NSMutableArray *)v8 addObject:v9];
@@ -713,26 +713,26 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
 
   else
   {
-    v4[2]();
+    loadedCopy[2]();
   }
 }
 
-- (void)hideStatusOverlayForProvider:(id)a3 animated:(BOOL)a4
+- (void)hideStatusOverlayForProvider:(id)provider animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  animatedCopy = animated;
+  providerCopy = provider;
+  if (providerCopy)
   {
     statusOverlayProvider = self->_statusOverlayProvider;
-    if (statusOverlayProvider == v6)
+    if (statusOverlayProvider == providerCopy)
     {
-      v10 = v6;
+      v10 = providerCopy;
       self->_statusOverlayProvider = 0;
 
       if (self->_floatingStatusOverlayViewController)
       {
-        v8 = [(SKUIApplicationController *)self _existingTabBarController];
-        SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(v8, 0, v4);
+        _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+        SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(_existingTabBarController, 0, animatedCopy);
 
         floatingStatusOverlayViewController = self->_floatingStatusOverlayViewController;
         self->_floatingStatusOverlayViewController = 0;
@@ -743,21 +743,21 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
         [(SKUIApplicationController *)self _removeStatusOverlayFromAllNavigationControllers];
       }
 
-      v6 = v10;
+      providerCopy = v10;
     }
   }
 }
 
-- (void)loadApplicationWithOptions:(id)a3
+- (void)loadApplicationWithOptions:(id)options
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  NSLog(&cfstr_LoadApplicatio.isa, v6, v4);
+  NSLog(&cfstr_LoadApplicatio.isa, v6, optionsCopy);
 
-  v7 = [(SKUIApplicationController *)self clientContext];
-  v8 = [v4 mutableCopy];
+  clientContext = [(SKUIApplicationController *)self clientContext];
+  v8 = [optionsCopy mutableCopy];
   if (!v8)
   {
     v8 = objc_opt_new();
@@ -767,8 +767,8 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
   v10 = v9;
   if (v9 < 2.22044605e-16)
   {
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v11 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v10 = v12;
   }
 
@@ -776,9 +776,9 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
   [v8 setObject:v13 forKey:@"launchTime"];
 
   v14 = MEMORY[0x277CBEAC0];
-  v15 = [(SKUIApplicationController *)self rootViewController];
-  v16 = [v15 view];
-  [v16 bounds];
+  rootViewController = [(SKUIApplicationController *)self rootViewController];
+  view = [rootViewController view];
+  [view bounds];
   v19 = [v14 sk_dictionaryWithSize:{v17, v18}];
   [v8 setObject:v19 forKey:@"windowSize"];
 
@@ -790,44 +790,44 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
   modalDocumentController = self->_modalDocumentController;
   self->_modalDocumentController = v22;
 
-  [(SKUIModalDocumentController *)self->_modalDocumentController setClientContext:v7];
+  [(SKUIModalDocumentController *)self->_modalDocumentController setClientContext:clientContext];
   [(SKUIModalDocumentController *)self->_modalDocumentController setDelegate:self];
   [(SKUIModalDocumentController *)self->_modalDocumentController setModalSourceViewProvider:self];
   [(SKUIModalDocumentController *)self->_modalDocumentController setNavigationControllerDelegate:self];
   v24 = self->_modalDocumentController;
-  v25 = [(SKUIApplicationController *)self rootViewController];
-  [(SKUIModalDocumentController *)v24 setRootViewController:v25];
+  rootViewController2 = [(SKUIApplicationController *)self rootViewController];
+  [(SKUIModalDocumentController *)v24 setRootViewController:rootViewController2];
 
   v26 = +[SKUINearMeController sharedController];
-  [v26 setClientContext:v7];
+  [v26 setClientContext:clientContext];
 
   v27 = +[SKUIFamilyCircleController sharedController];
-  [v27 setClientContext:v7];
+  [v27 setClientContext:clientContext];
 
-  v28 = [MEMORY[0x277D69CA8] sharedManager];
+  mEMORY[0x277D69CA8] = [MEMORY[0x277D69CA8] sharedManager];
   v41[0] = objc_opt_class();
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
-  [v28 setCustomURLProtocols:v29];
+  [mEMORY[0x277D69CA8] setCustomURLProtocols:v29];
 
   [MEMORY[0x277CBAB98] registerClass:objc_opt_class()];
-  v30 = [MEMORY[0x277D75128] sharedApplication];
-  LODWORD(v29) = [v30 launchedToTest];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  LODWORD(v29) = [mEMORY[0x277D75128] launchedToTest];
 
   if (v29)
   {
     [MEMORY[0x277CBAB98] registerClass:objc_opt_class()];
   }
 
-  if (!v7)
+  if (!clientContext)
   {
     objc_initWeak(&location, self);
-    v35 = [objc_opt_class() configurationPreloader];
+    configurationPreloader = [objc_opt_class() configurationPreloader];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __56__SKUIApplicationController_loadApplicationWithOptions___block_invoke_4;
     v36[3] = &unk_2781FA0F0;
     objc_copyWeak(&v37, &location);
-    [v35 preloadConfigurationForPurpose:1 withCompletionBlock:v36];
+    [configurationPreloader preloadConfigurationForPurpose:1 withCompletionBlock:v36];
 
     objc_destroyWeak(&v37);
     objc_destroyWeak(&location);
@@ -842,11 +842,11 @@ void *__57__SKUIApplicationController_applicationWillResignActive___block_invoke
   }
 
   v32 = objc_loadWeakRetained(&self->_delegate);
-  v33 = [v32 shouldShowExplicitRestrictionAlertOnLaunch];
+  shouldShowExplicitRestrictionAlertOnLaunch = [v32 shouldShowExplicitRestrictionAlertOnLaunch];
 
-  if (v33)
+  if (shouldShowExplicitRestrictionAlertOnLaunch)
   {
-    WeakRetained = [[SKUIExplicitRestrictionAlertController alloc] initWithClientContext:v7];
+    WeakRetained = [[SKUIExplicitRestrictionAlertController alloc] initWithClientContext:clientContext];
     [(SKUIExplicitRestrictionAlertController *)WeakRetained presentExplicitRestrictionAlertIfNeededOfType:0 completionBlock:0];
 LABEL_11:
   }
@@ -949,30 +949,30 @@ void __56__SKUIApplicationController_loadApplicationWithOptions___block_invoke_6
   [objc_opt_class() finishedWithConfigurationPreloader];
 }
 
-- (void)recordMetricsEvent:(id)a3 flushImmediately:(BOOL)a4
+- (void)recordMetricsEvent:(id)event flushImmediately:(BOOL)immediately
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x277D75128] sharedApplication];
-  v8 = v7;
+  immediatelyCopy = immediately;
+  eventCopy = event;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v8 = mEMORY[0x277D75128];
   metricsController = self->_metricsController;
   if (metricsController)
   {
-    v10 = SKUIMetricsWindowOrientationForInterfaceOrientation([v7 statusBarOrientation]);
+    v10 = SKUIMetricsWindowOrientationForInterfaceOrientation([mEMORY[0x277D75128] statusBarOrientation]);
     [(SKUIMetricsController *)metricsController setWindowOrientation:v10];
 
-    if (v4)
+    if (immediatelyCopy)
     {
       [objc_opt_class() flushImmediately];
-      [v6 originalTime];
-      [v6 setOriginalTime:v11 + 1.0];
-      [(SKUIMetricsController *)self->_metricsController recordEvent:v6];
+      [eventCopy originalTime];
+      [eventCopy setOriginalTime:v11 + 1.0];
+      [(SKUIMetricsController *)self->_metricsController recordEvent:eventCopy];
       [objc_opt_class() flushImmediately];
     }
 
     else
     {
-      [(SKUIMetricsController *)self->_metricsController recordEvent:v6];
+      [(SKUIMetricsController *)self->_metricsController recordEvent:eventCopy];
     }
   }
 
@@ -983,7 +983,7 @@ void __56__SKUIApplicationController_loadApplicationWithOptions___block_invoke_6
     v21[1] = 3221225472;
     v21[2] = __65__SKUIApplicationController_recordMetricsEvent_flushImmediately___block_invoke;
     v21[3] = &unk_2781FC960;
-    v13 = v7;
+    v13 = mEMORY[0x277D75128];
     v22 = v13;
     v23 = v12;
     v14 = [v13 beginBackgroundTaskWithName:@"SKUIApplicationController.recordMetricsEvent" expirationHandler:v21];
@@ -994,8 +994,8 @@ void __56__SKUIApplicationController_loadApplicationWithOptions___block_invoke_6
     v16[3] = &unk_2781FEB48;
     v16[4] = self;
     v17 = v13;
-    v20 = v4;
-    v18 = v6;
+    v20 = immediatelyCopy;
+    v18 = eventCopy;
     v19 = v14;
     [(SKUIClientContext *)clientContext getDefaultMetricsControllerWithCompletionBlock:v16];
   }
@@ -1031,27 +1031,27 @@ void __65__SKUIApplicationController_recordMetricsEvent_flushImmediately___block
   [*(a1 + 40) endBackgroundTask:*(a1 + 56)];
 }
 
-- (void)resumeApplicationWithOptions:(id)a3
+- (void)resumeApplicationWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(SKUIApplicationController *)self rootViewController];
-  v6 = [v5 presentedViewController];
-  v7 = [v6 transitionCoordinator];
+  optionsCopy = options;
+  rootViewController = [(SKUIApplicationController *)self rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
 
-  if (v7)
+  if (transitionCoordinator)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __58__SKUIApplicationController_resumeApplicationWithOptions___block_invoke;
     v8[3] = &unk_2781FB740;
     v8[4] = self;
-    v9 = v4;
-    [v7 animateAlongsideTransition:0 completion:v8];
+    v9 = optionsCopy;
+    [transitionCoordinator animateAlongsideTransition:0 completion:v8];
   }
 
   else
   {
-    [(IKAppContext *)self->_scriptContext resumeWithOptions:v4];
+    [(IKAppContext *)self->_scriptContext resumeWithOptions:optionsCopy];
   }
 }
 
@@ -1071,9 +1071,9 @@ void __65__SKUIApplicationController_recordMetricsEvent_flushImmediately___block
   return v2;
 }
 
-- (id)selectTabWithIdentifier:(id)a3
+- (id)selectTabWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1082,41 +1082,41 @@ void __65__SKUIApplicationController_recordMetricsEvent_flushImmediately___block
   v27 = 0;
   if (self->_hidesTabBar)
   {
-    v5 = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
-    v6 = [MEMORY[0x277CBEB68] null];
+    firstObject = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v5 == v6)
+    if (firstObject == null)
     {
       goto LABEL_8;
     }
 
-    v7 = [v5 navigationController];
+    navigationController = [firstObject navigationController];
     v8 = v23[5];
-    v23[5] = v7;
+    v23[5] = navigationController;
   }
 
   else
   {
-    v9 = [(SKUIApplicationController *)self _existingTabBarController];
-    v10 = [v9 viewControllers];
+    _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+    viewControllers = [_existingTabBarController viewControllers];
     tabBarItems = self->_tabBarItems;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __53__SKUIApplicationController_selectTabWithIdentifier___block_invoke;
     v16[3] = &unk_2781FEB70;
-    v17 = v4;
-    v8 = v10;
+    v17 = identifierCopy;
+    v8 = viewControllers;
     v18 = v8;
-    v5 = v9;
-    v20 = self;
+    firstObject = _existingTabBarController;
+    selfCopy = self;
     v21 = &v22;
-    v19 = v5;
+    v19 = firstObject;
     [(NSArray *)tabBarItems enumerateObjectsUsingBlock:v16];
     if (!v23[5])
     {
-      v12 = [v5 selectedViewController];
+      selectedViewController = [firstObject selectedViewController];
       v13 = v23[5];
-      v23[5] = v12;
+      v23[5] = selectedViewController;
     }
 
     [(SKUIApplicationController *)self _dispatchTabBarOnSelect];
@@ -1160,11 +1160,11 @@ void __53__SKUIApplicationController_selectTabWithIdentifier___block_invoke(uint
   }
 }
 
-- (void)setTabBarItems:(id)a3
+- (void)setTabBarItems:(id)items
 {
-  if (self->_tabBarItems != a3)
+  if (self->_tabBarItems != items)
   {
-    v5 = [a3 copy];
+    v5 = [items copy];
     tabBarItems = self->_tabBarItems;
     self->_tabBarItems = v5;
 
@@ -1172,19 +1172,19 @@ void __53__SKUIApplicationController_selectTabWithIdentifier___block_invoke(uint
   }
 }
 
-- (void)showErrorViewWithTitle:(id)a3 message:(id)a4 buttonTitle:(id)a5 buttonAction:(id)a6
+- (void)showErrorViewWithTitle:(id)title message:(id)message buttonTitle:(id)buttonTitle buttonAction:(id)action
 {
-  v10 = a4;
+  messageCopy = message;
   v11 = MEMORY[0x277D75E78];
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
+  actionCopy = action;
+  buttonTitleCopy = buttonTitle;
+  titleCopy = title;
   v15 = [v11 alloc];
-  v16 = [v15 initWithFrame:v14 title:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  v16 = [v15 initWithFrame:titleCopy title:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
-  if (v13)
+  if (buttonTitleCopy)
   {
-    v17 = v10 == 0;
+    v17 = messageCopy == 0;
   }
 
   else
@@ -1199,16 +1199,16 @@ void __53__SKUIApplicationController_selectTabWithIdentifier___block_invoke(uint
 
   else
   {
-    v18 = v10;
+    v18 = messageCopy;
   }
 
   v21 = v18;
   [v16 setMessage:?];
-  [v16 setButtonTitle:v13];
+  [v16 setButtonTitle:buttonTitleCopy];
 
-  [v16 setButtonAction:v12];
-  v19 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v16 setBackgroundColor:v19];
+  [v16 setButtonAction:actionCopy];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [v16 setBackgroundColor:systemBackgroundColor];
 
   v20 = objc_alloc_init(SKUILaunchErrorViewController);
   [(SKUILaunchErrorViewController *)v20 setView:v16];
@@ -1279,18 +1279,18 @@ void __58__SKUIApplicationController_showErrorViewForLaunchFailure__block_invoke
   [*(a1 + 32) recordMetricsEvent:v2 flushImmediately:0];
 }
 
-- (void)showExternalURL:(id)a3
+- (void)showExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 valueForQueryParameter:@"referrer"];
-  v6 = [v4 referrerApplicationName];
-  if (v6 || !v5)
+  lCopy = l;
+  v5 = [lCopy valueForQueryParameter:@"referrer"];
+  referrerApplicationName = [lCopy referrerApplicationName];
+  if (referrerApplicationName || !v5)
   {
   }
 
   else if (![v5 caseInsensitiveCompare:@"siri"])
   {
-    [v4 setReferrerApplicationName:@"com.apple.Siri"];
+    [lCopy setReferrerApplicationName:@"com.apple.Siri"];
   }
 
   objc_initWeak(&location, self);
@@ -1299,9 +1299,9 @@ void __58__SKUIApplicationController_showErrorViewForLaunchFailure__block_invoke
   v8[2] = __45__SKUIApplicationController_showExternalURL___block_invoke;
   v8[3] = &unk_2781FA0C8;
   objc_copyWeak(&v11, &location);
-  v7 = v4;
+  v7 = lCopy;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   [(SKUIApplicationController *)self _attemptAMSURLHandlingIfPossibleForExternalURL:v7 fallback:v8];
 
   objc_destroyWeak(&v11);
@@ -1354,68 +1354,68 @@ void __45__SKUIApplicationController_showExternalURL___block_invoke(uint64_t a1)
   }
 }
 
-- (void)showStatusOverlayUsingProvider:(id)a3 animated:(BOOL)a4
+- (void)showStatusOverlayUsingProvider:(id)provider animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  providerCopy = provider;
   p_statusOverlayProvider = &self->_statusOverlayProvider;
   statusOverlayProvider = self->_statusOverlayProvider;
-  if (v7)
+  if (providerCopy)
   {
-    if (statusOverlayProvider == v7)
+    if (statusOverlayProvider == providerCopy)
     {
       goto LABEL_6;
     }
 
-    v12 = v7;
-    objc_storeStrong(p_statusOverlayProvider, a3);
-    v10 = [(SKUIApplicationController *)self _activeNavigationController];
-    v11 = [v10 topViewController];
-    [(SKUIApplicationController *)self _showStatusOverlayForNavigationController:v10 viewController:v11 animated:v4];
+    v12 = providerCopy;
+    objc_storeStrong(p_statusOverlayProvider, provider);
+    _activeNavigationController = [(SKUIApplicationController *)self _activeNavigationController];
+    topViewController = [_activeNavigationController topViewController];
+    [(SKUIApplicationController *)self _showStatusOverlayForNavigationController:_activeNavigationController viewController:topViewController animated:animatedCopy];
   }
 
   else
   {
     v12 = 0;
-    p_statusOverlayProvider = [(SKUIApplicationController *)self hideStatusOverlayForProvider:statusOverlayProvider animated:v4];
+    p_statusOverlayProvider = [(SKUIApplicationController *)self hideStatusOverlayForProvider:statusOverlayProvider animated:animatedCopy];
   }
 
-  v7 = v12;
+  providerCopy = v12;
 LABEL_6:
 
-  MEMORY[0x2821F96F8](p_statusOverlayProvider, v7);
+  MEMORY[0x2821F96F8](p_statusOverlayProvider, providerCopy);
 }
 
-- (void)showTransientViewController:(id)a3
+- (void)showTransientViewController:(id)controller
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIApplicationController *)self _transientNavigationDocument];
-  v6 = [v5 navigationController];
-  if (v4)
+  controllerCopy = controller;
+  _transientNavigationDocument = [(SKUIApplicationController *)self _transientNavigationDocument];
+  navigationController = [_transientNavigationDocument navigationController];
+  if (controllerCopy)
   {
-    [v5 ensureStackConsistencyForNavigationControllerOperation:3 operationDidComplete:0];
-    v9[0] = v4;
+    [_transientNavigationDocument ensureStackConsistencyForNavigationControllerOperation:3 operationDidComplete:0];
+    v9[0] = controllerCopy;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-    [v6 setViewControllers:v7 animated:0];
+    [navigationController setViewControllers:v7 animated:0];
 
-    [v5 ensureStackConsistencyForNavigationControllerOperation:3 operationDidComplete:1];
+    [_transientNavigationDocument ensureStackConsistencyForNavigationControllerOperation:3 operationDidComplete:1];
   }
 
   else
   {
-    [v5 setStackItems:MEMORY[0x277CBEBF8] animated:0];
+    [_transientNavigationDocument setStackItems:MEMORY[0x277CBEBF8] animated:0];
   }
 
-  v8 = [(SKUIApplicationController *)self _existingTabBarController];
-  [v8 setTransientViewController:v6 animated:0];
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  [_existingTabBarController setTransientViewController:navigationController animated:0];
 
-  [(SKUIApplicationController *)self _tintTabBarWithViewController:v6];
+  [(SKUIApplicationController *)self _tintTabBarWithViewController:navigationController];
 }
 
-- (void)setMescalPrimeEnabledForXHRRequests:(BOOL)a3
+- (void)setMescalPrimeEnabledForXHRRequests:(BOOL)requests
 {
-  self->_mescalPrimeEnabledForXHRRequests = a3;
+  self->_mescalPrimeEnabledForXHRRequests = requests;
   scriptContext = self->_scriptContext;
   if (scriptContext)
   {
@@ -1423,15 +1423,15 @@ LABEL_6:
   }
 }
 
-- (void)updateTabBarWithItems:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)updateTabBarWithItems:(id)items animated:(BOOL)animated completion:(id)completion
 {
-  v38 = a4;
+  animatedCopy = animated;
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v39 = a5;
+  itemsCopy = items;
+  completionCopy = completion;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  NSLog(&cfstr_UpdateTabBarIt.isa, v9, self->_clientContext, v7);
+  NSLog(&cfstr_UpdateTabBarIt.isa, v9, self->_clientContext, itemsCopy);
 
   v10 = [(NSMutableArray *)self->_navigationDocumentControllers copy];
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1439,12 +1439,12 @@ LABEL_6:
   navigationDocumentControllers = self->_navigationDocumentControllers;
   self->_navigationDocumentControllers = v12;
 
-  v41 = [(SKUIApplicationController *)self clientContext];
+  clientContext = [(SKUIApplicationController *)self clientContext];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v7;
+  obj = itemsCopy;
   v14 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
   if (v14)
   {
@@ -1461,30 +1461,30 @@ LABEL_6:
         }
 
         v18 = *(*(&v47 + 1) + 8 * i);
-        v19 = [v18 customRootViewController];
+        customRootViewController = [v18 customRootViewController];
 
-        if (v19)
+        if (customRootViewController)
         {
-          v20 = [v18 customRootViewController];
-          if ([v20 conformsToProtocol:&unk_2829AEDF8])
+          customRootViewController2 = [v18 customRootViewController];
+          if ([customRootViewController2 conformsToProtocol:&unk_2829AEDF8])
           {
-            v21 = [v20 appNavigationController];
-            [v21 setClientContext:v41];
-            [v21 setDelegate:self];
+            appNavigationController = [customRootViewController2 appNavigationController];
+            [appNavigationController setClientContext:clientContext];
+            [appNavigationController setDelegate:self];
             v22 = self->_navigationDocumentControllers;
           }
 
           else
           {
             v24 = self->_navigationDocumentControllers;
-            v21 = [MEMORY[0x277CBEB68] null];
+            appNavigationController = [MEMORY[0x277CBEB68] null];
             v22 = v24;
           }
 
-          [(NSMutableArray *)v22 addObject:v21];
+          [(NSMutableArray *)v22 addObject:appNavigationController];
 
-          v25 = [v18 customRootViewController];
-          [v11 addObject:v25];
+          customRootViewController3 = [v18 customRootViewController];
+          [v11 addObject:customRootViewController3];
         }
 
         else
@@ -1492,30 +1492,30 @@ LABEL_6:
           v23 = [(NSArray *)self->_tabBarItems indexOfObject:v18];
           if (v23 >= [v10 count])
           {
-            v20 = 0;
+            customRootViewController2 = 0;
           }
 
           else
           {
-            v20 = [v10 objectAtIndex:v23];
+            customRootViewController2 = [v10 objectAtIndex:v23];
           }
 
-          v25 = [v20 navigationController];
-          if (v25)
+          customRootViewController3 = [customRootViewController2 navigationController];
+          if (customRootViewController3)
           {
-            v26 = [v20 clientContext];
+            clientContext2 = [customRootViewController2 clientContext];
 
-            if (!v26)
+            if (!clientContext2)
             {
-              [v20 setClientContext:v41];
+              [customRootViewController2 setClientContext:clientContext];
             }
 
             v27 = [(NSArray *)self->_tabBarItems objectAtIndex:v23];
-            v28 = [v27 underlyingTabBarItem];
-            [v18 setUnderlyingTabBarItem:v28];
+            underlyingTabBarItem = [v27 underlyingTabBarItem];
+            [v18 setUnderlyingTabBarItem:underlyingTabBarItem];
 
-            [(NSMutableArray *)self->_navigationDocumentControllers addObject:v20];
-            [v11 addObject:v25];
+            [(NSMutableArray *)self->_navigationDocumentControllers addObject:customRootViewController2];
+            [v11 addObject:customRootViewController3];
             v10 = v40;
           }
 
@@ -1525,7 +1525,7 @@ LABEL_6:
             if (v29)
             {
               v30 = [[SKUINavigationDocumentController alloc] initWithNavigationController:v29];
-              [(SKUINavigationDocumentController *)v30 setClientContext:v41];
+              [(SKUINavigationDocumentController *)v30 setClientContext:clientContext];
               [(SKUINavigationDocumentController *)v30 setDelegate:self];
               [(NSMutableArray *)self->_navigationDocumentControllers addObject:v30];
               [v11 addObject:v29];
@@ -1546,25 +1546,25 @@ LABEL_6:
   tabBarItems = self->_tabBarItems;
   self->_tabBarItems = v31;
 
-  v33 = [(SKUIApplicationController *)self _existingTabBarController];
-  [v33 setViewControllers:v11 animated:v38];
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  [_existingTabBarController setViewControllers:v11 animated:animatedCopy];
 
-  v34 = [(SKUITabBarController *)self->_tabBarController selectedViewController];
-  [(SKUIApplicationController *)self _tintTabBarWithViewController:v34];
+  selectedViewController = [(SKUITabBarController *)self->_tabBarController selectedViewController];
+  [(SKUIApplicationController *)self _tintTabBarWithViewController:selectedViewController];
 
   scriptContext = self->_scriptContext;
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __71__SKUIApplicationController_updateTabBarWithItems_animated_completion___block_invoke;
   v45[3] = &unk_2781FEB98;
-  v46 = v39;
+  v46 = completionCopy;
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __71__SKUIApplicationController_updateTabBarWithItems_animated_completion___block_invoke_2;
   v43[3] = &unk_2781F84A0;
   v44 = v10;
   v36 = v10;
-  v37 = v39;
+  v37 = completionCopy;
   [(IKAppContext *)scriptContext evaluate:v45 completionBlock:v43];
 }
 
@@ -1576,54 +1576,54 @@ void __71__SKUIApplicationController_updateTabBarWithItems_animated_completion__
   [v4 sendOnUpdateWithCompletion:*(a1 + 32)];
 }
 
-- (void)appContext:(id)a3 didCompletePurchase:(id)a4
+- (void)appContext:(id)context didCompletePurchase:(id)purchase
 {
-  v6 = a4;
-  v5 = [(SKUIApplicationController *)self delegate];
+  purchaseCopy = purchase;
+  delegate = [(SKUIApplicationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 application:self didCompletePurchase:v6];
+    [delegate application:self didCompletePurchase:purchaseCopy];
   }
 }
 
-- (void)appContext:(id)a3 didCompleteSoftwarePurchase:(id)a4
+- (void)appContext:(id)context didCompleteSoftwarePurchase:(id)purchase
 {
-  v6 = a4;
-  v5 = [(SKUIApplicationController *)self delegate];
+  purchaseCopy = purchase;
+  delegate = [(SKUIApplicationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 application:self didCompleteSoftwarePurchase:v6];
+    [delegate application:self didCompleteSoftwarePurchase:purchaseCopy];
   }
 }
 
-- (void)appContext:(id)a3 didExitWithOptions:(id)a4
+- (void)appContext:(id)context didExitWithOptions:(id)options
 {
-  v5 = a4;
-  v6 = [v5 objectForKey:@"url"];
+  optionsCopy = options;
+  v6 = [optionsCopy objectForKey:@"url"];
   v7 = *MEMORY[0x277D767B0];
   if ([v6 length])
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __59__SKUIApplicationController_appContext_didExitWithOptions___block_invoke;
     v12[3] = &__block_descriptor_40_e5_v8__0l;
     v12[4] = v7;
-    v7 = [v8 beginBackgroundTaskWithName:@"com.apple.ios.StoreKitUIService.openURL" expirationHandler:v12];
+    v7 = [mEMORY[0x277D75128] beginBackgroundTaskWithName:@"com.apple.ios.StoreKitUIService.openURL" expirationHandler:v12];
   }
 
-  v9 = [(SKUIApplicationController *)self delegate];
+  delegate = [(SKUIApplicationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 application:self didStopWithOptions:v5];
+    [delegate application:self didStopWithOptions:optionsCopy];
   }
 
   if ([v6 length])
   {
     v10 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v6];
     SKUIMetricsOpenSensitiveURL(v10, 0);
-    v11 = [MEMORY[0x277D75128] sharedApplication];
-    [v11 endBackgroundTask:v7];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128]2 endBackgroundTask:v7];
   }
 }
 
@@ -1633,23 +1633,23 @@ void __59__SKUIApplicationController_appContext_didExitWithOptions___block_invok
   [v2 endBackgroundTask:*(a1 + 32)];
 }
 
-- (void)appContext:(id)a3 didFailWithError:(id)a4
+- (void)appContext:(id)context didFailWithError:(id)error
 {
   scriptContext = self->_scriptContext;
-  v7 = a4;
-  v6 = [(IKAppContext *)scriptContext appScriptFallbackHandler];
-  [v6 invalidate];
+  errorCopy = error;
+  appScriptFallbackHandler = [(IKAppContext *)scriptContext appScriptFallbackHandler];
+  [appScriptFallbackHandler invalidate];
 
-  [(SKUIApplicationController *)self _failWithError:v7];
+  [(SKUIApplicationController *)self _failWithError:errorCopy];
 }
 
-- (void)appContext:(id)a3 didStartWithOptions:(id)a4
+- (void)appContext:(id)context didStartWithOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  contextCopy = context;
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  NSLog(&cfstr_ContextDidStar.isa, v9, v7, v6);
+  NSLog(&cfstr_ContextDidStar.isa, v9, contextCopy, optionsCopy);
 
   self->_scriptLoadState = 3;
   [(SKUIApplicationController *)self _fireBlocksAfterLoad];
@@ -1676,21 +1676,21 @@ void __60__SKUIApplicationController_appContext_didStartWithOptions___block_invo
   [v3 setBootstrapEndTime:?];
 }
 
-- (void)appContext:(id)a3 didStopWithOptions:(id)a4
+- (void)appContext:(id)context didStopWithOptions:(id)options
 {
-  v10 = a4;
+  optionsCopy = options;
   [(SKUIApplicationController *)self _removeObserversForReloadNotifications];
   scriptLoadState = self->_scriptLoadState;
   if (scriptLoadState == 5)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v6 applicationState] == 2)
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    if ([mEMORY[0x277D75128] applicationState] == 2)
     {
       self->_reloadApplicationOnForegroundNotification = 1;
       [(SKUIApplicationController *)self _invalidateApplication];
       v7 = *MEMORY[0x277D76628];
-      v8 = [MEMORY[0x277D759A0] mainScreen];
-      [v6 removeDefaultImage:v7 forScreen:v8];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mEMORY[0x277D75128] removeDefaultImage:v7 forScreen:mainScreen];
     }
 
     else
@@ -1707,16 +1707,16 @@ void __60__SKUIApplicationController_appContext_didStartWithOptions___block_invo
   {
     [(SKUIApplicationController *)self _invalidateApplication];
     [(_SKUIApplicationShutdownHelper *)self->_shutdownHelper stop];
-    v6 = self->_shutdownHelper;
+    mEMORY[0x277D75128] = self->_shutdownHelper;
     self->_shutdownHelper = 0;
   }
 
   else
   {
-    v6 = [(SKUIApplicationController *)self delegate];
+    mEMORY[0x277D75128] = [(SKUIApplicationController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 application:self didStopWithOptions:v10];
+      [mEMORY[0x277D75128] application:self didStopWithOptions:optionsCopy];
     }
 
     else
@@ -1726,15 +1726,15 @@ void __60__SKUIApplicationController_appContext_didStartWithOptions___block_invo
   }
 }
 
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[SKUIJSApplication alloc] initWithAppContext:v6 applicationController:self];
-  [v7 setObject:v8 forKeyedSubscript:@"App"];
+  contextCopy = context;
+  inContextCopy = inContext;
+  v8 = [[SKUIJSApplication alloc] initWithAppContext:contextCopy applicationController:self];
+  [inContextCopy setObject:v8 forKeyedSubscript:@"App"];
 
-  v9 = [[SKUIJSTabBar alloc] initWithAppContext:v6 controller:self];
-  [v7 setObject:v9 forKeyedSubscript:@"TabBar"];
+  v9 = [[SKUIJSTabBar alloc] initWithAppContext:contextCopy controller:self];
+  [inContextCopy setObject:v9 forKeyedSubscript:@"TabBar"];
 
   v30 = 0;
   v31 = &v30;
@@ -1762,25 +1762,25 @@ void __60__SKUIApplicationController_appContext_didStartWithOptions___block_invo
   v17[5] = &v30;
   v17[6] = &v24;
   v17[7] = &v18;
-  [v6 evaluateDelegateBlockSync:v17];
+  [contextCopy evaluateDelegateBlockSync:v17];
   v10 = objc_alloc([(SKUIApplicationController *)self _JSITunesStoreClass]);
-  v11 = [v10 initWithAppContext:v6 clientContext:v31[5]];
-  [v7 setObject:v11 forKeyedSubscript:@"itms"];
+  v11 = [v10 initWithAppContext:contextCopy clientContext:v31[5]];
+  [inContextCopy setObject:v11 forKeyedSubscript:@"itms"];
 
   v12 = [SKUIJSModalDocumentController alloc];
-  v13 = [(SKUIJSModalDocumentController *)v12 initWithAppContext:v6 modalDocumentController:v19[5]];
-  [v7 setObject:v13 forKeyedSubscript:@"modal"];
+  v13 = [(SKUIJSModalDocumentController *)v12 initWithAppContext:contextCopy modalDocumentController:v19[5]];
+  [inContextCopy setObject:v13 forKeyedSubscript:@"modal"];
 
-  v14 = [[SKUIJSTelephony alloc] initWithAppContext:v6];
-  [v7 setObject:v14 forKeyedSubscript:@"Telephony"];
+  v14 = [[SKUIJSTelephony alloc] initWithAppContext:contextCopy];
+  [inContextCopy setObject:v14 forKeyedSubscript:@"Telephony"];
 
   v15 = [SKUIJSImageColorAnalyzer alloc];
-  v16 = [(SKUIJSImageColorAnalyzer *)v15 initWithAppContext:v6 clientContext:v31[5]];
-  [v7 setObject:v16 forKeyedSubscript:@"ImageColorAnalyzer"];
+  v16 = [(SKUIJSImageColorAnalyzer *)v15 initWithAppContext:contextCopy clientContext:v31[5]];
+  [inContextCopy setObject:v16 forKeyedSubscript:@"ImageColorAnalyzer"];
 
   if (objc_opt_respondsToSelector())
   {
-    [v25[5] application:self evaluateAppJavaScriptInContext:v6 JSContext:v7];
+    [v25[5] application:self evaluateAppJavaScriptInContext:contextCopy JSContext:inContextCopy];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -1803,18 +1803,18 @@ void __71__SKUIApplicationController_appContext_evaluateAppJavaScriptInContext__
   objc_storeStrong(v6, v5);
 }
 
-- (void)appContext:(id)a3 needsReloadWithUrgency:(unint64_t)a4 options:(id)a5
+- (void)appContext:(id)context needsReloadWithUrgency:(unint64_t)urgency options:(id)options
 {
-  if (self->_scriptContext == a3)
+  if (self->_scriptContext == context)
   {
     if ([(SKUIApplicationControllerOptions *)self->_options supportsFullApplicationReload])
     {
-      if (a4 == 1)
+      if (urgency == 1)
       {
         self->_stopApplicationOnBackgroundNotification = 1;
       }
 
-      else if (!a4)
+      else if (!urgency)
       {
         v7 = objc_opt_class();
         NSLog(&cfstr_ReloadingAppIm.isa, v7);
@@ -1830,15 +1830,15 @@ void __71__SKUIApplicationController_appContext_evaluateAppJavaScriptInContext__
   }
 }
 
-- (void)appContextNeedsRestart:(id)a3
+- (void)appContextNeedsRestart:(id)restart
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v4 = *MEMORY[0x277D767B0];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__SKUIApplicationController_appContextNeedsRestart___block_invoke;
   v12[3] = &unk_2781FC960;
-  v5 = v3;
+  v5 = mEMORY[0x277D75128];
   v13 = v5;
   v14 = v4;
   v6 = [v5 beginBackgroundTaskWithName:@"SKUIApplicationController.restartApp" expirationHandler:v12];
@@ -1854,44 +1854,44 @@ void __71__SKUIApplicationController_appContext_evaluateAppJavaScriptInContext__
   [v7 restartApplication:v9];
 }
 
-- (void)appContext:(id)a3 setPreviewOverlayDocument:(id)a4 withOptions:(id)a5
+- (void)appContext:(id)context setPreviewOverlayDocument:(id)document withOptions:(id)options
 {
-  v30 = a4;
-  v7 = a5;
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  v9 = v30;
-  if (v30)
+  documentCopy = document;
+  optionsCopy = options;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v9 = documentCopy;
+  if (documentCopy)
   {
-    v10 = [v30 templateElement];
-    if ([v10 elementType] == 91)
+    templateElement = [documentCopy templateElement];
+    if ([templateElement elementType] == 91)
     {
-      v9 = v30;
+      v9 = documentCopy;
     }
 
     else
     {
-      NSLog(&cfstr_InvalidPreview.isa, v10);
+      NSLog(&cfstr_InvalidPreview.isa, templateElement);
 
-      v10 = 0;
+      templateElement = 0;
       v9 = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    templateElement = 0;
   }
 
   v31 = v9;
   previewDocumentController = self->_previewDocumentController;
   if (previewDocumentController)
   {
-    [v8 removeObserver:self name:0x282808428 object:self->_previewDocumentController];
+    [defaultCenter removeObserver:self name:0x282808428 object:self->_previewDocumentController];
     v12 = self->_previewDocumentController;
     self->_previewDocumentController = 0;
   }
 
-  v13 = [(SKUIApplicationController *)self _existingTabBarController];
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
   if (v31)
   {
     v14 = previewDocumentController != 0;
@@ -1900,18 +1900,18 @@ void __71__SKUIApplicationController_appContext_evaluateAppJavaScriptInContext__
     self->_previewDocumentController = v15;
 
     v17 = self->_previewDocumentController;
-    v18 = [(SKUIApplicationController *)self clientContext];
-    [(SKUIPreviewDocumentController *)v17 setClientContext:v18];
+    clientContext = [(SKUIApplicationController *)self clientContext];
+    [(SKUIPreviewDocumentController *)v17 setClientContext:clientContext];
 
-    [v8 addObserver:self selector:sel__previewDocumentIsActiveChangeNotification_ name:0x282808428 object:self->_previewDocumentController];
-    v19 = [(SKUIPreviewDocumentController *)self->_previewDocumentController isPreviewActive];
-    v20 = v19;
+    [defaultCenter addObserver:self selector:sel__previewDocumentIsActiveChangeNotification_ name:0x282808428 object:self->_previewDocumentController];
+    isPreviewActive = [(SKUIPreviewDocumentController *)self->_previewDocumentController isPreviewActive];
+    v20 = isPreviewActive;
     if (self->_floatingStatusOverlayViewController)
     {
-      if (v19)
+      if (isPreviewActive)
       {
-        v21 = [v13 traitCollection];
-        v22 = -[SKUIPreviewDocumentController overlayViewControllerWithBackgroundStyle:](self->_previewDocumentController, "overlayViewControllerWithBackgroundStyle:", [v21 userInterfaceStyle] != 1);
+        traitCollection = [_existingTabBarController traitCollection];
+        v22 = -[SKUIPreviewDocumentController overlayViewControllerWithBackgroundStyle:](self->_previewDocumentController, "overlayViewControllerWithBackgroundStyle:", [traitCollection userInterfaceStyle] != 1);
       }
 
       else
@@ -1923,22 +1923,22 @@ void __71__SKUIApplicationController_appContext_evaluateAppJavaScriptInContext__
       self->_floatingStatusOverlayViewController = v22;
       v25 = v22;
 
-      SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(v13, self->_floatingStatusOverlayViewController, 1);
+      SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(_existingTabBarController, self->_floatingStatusOverlayViewController, 1);
     }
 
     v26 = v14 || v20;
-    v27 = [v7 objectForKey:@"playsImmediately"];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v27 BOOLValue] && -[SKUIApplicationController _playPreviewForPreviewTemplate:](self, "_playPreviewForPreviewTemplate:", v10))
+    v27 = [optionsCopy objectForKey:@"playsImmediately"];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [v27 BOOLValue] && -[SKUIApplicationController _playPreviewForPreviewTemplate:](self, "_playPreviewForPreviewTemplate:", templateElement))
     {
-      v28 = [(SKUIApplicationController *)self _activeNavigationController];
-      v29 = [v28 topViewController];
-      [(SKUIApplicationController *)self _showStatusOverlayForNavigationController:v28 viewController:v29 animated:1];
+      _activeNavigationController = [(SKUIApplicationController *)self _activeNavigationController];
+      topViewController = [_activeNavigationController topViewController];
+      [(SKUIApplicationController *)self _showStatusOverlayForNavigationController:_activeNavigationController viewController:topViewController animated:1];
     }
 
     if (v26)
     {
 LABEL_23:
-      [v8 postNotificationName:@"SKUIApplicationControllerPreviewOverlayDidChangeNotification" object:self userInfo:0];
+      [defaultCenter postNotificationName:@"SKUIApplicationControllerPreviewOverlayDidChangeNotification" object:self userInfo:0];
     }
   }
 
@@ -1946,7 +1946,7 @@ LABEL_23:
   {
     if (self->_floatingStatusOverlayViewController)
     {
-      SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(v13, 0, 1);
+      SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(_existingTabBarController, 0, 1);
       v23 = self->_floatingStatusOverlayViewController;
       self->_floatingStatusOverlayViewController = 0;
     }
@@ -1958,7 +1958,7 @@ LABEL_23:
   }
 }
 
-- (id)deviceConfigForContext:(id)a3
+- (id)deviceConfigForContext:(id)context
 {
   deviceConfig = self->_deviceConfig;
   if (!deviceConfig)
@@ -1973,111 +1973,111 @@ LABEL_23:
   return deviceConfig;
 }
 
-- (id)navigationControllerForContext:(id)a3
+- (id)navigationControllerForContext:(id)context
 {
   if (self->_hidesTabBar)
   {
-    v3 = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
-    v4 = [MEMORY[0x277CBEB68] null];
+    firstObject = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v3 != v4)
+    if (firstObject != null)
     {
       goto LABEL_5;
     }
   }
 
-  v3 = 0;
+  firstObject = 0;
 LABEL_5:
 
-  return v3;
+  return firstObject;
 }
 
-- (id)presentationViewControllerForAppContext:(id)a3
+- (id)presentationViewControllerForAppContext:(id)context
 {
-  v3 = [(SKUIApplicationController *)self rootViewController];
-  v4 = [v3 presentedViewController];
+  rootViewController = [(SKUIApplicationController *)self rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     do
     {
-      v5 = [v3 presentedViewController];
+      presentedViewController2 = [rootViewController presentedViewController];
 
-      v6 = [v5 presentedViewController];
+      v5PresentedViewController = [presentedViewController2 presentedViewController];
 
-      v3 = v5;
+      rootViewController = presentedViewController2;
     }
 
-    while (v6);
+    while (v5PresentedViewController);
   }
 
   else
   {
-    v5 = v3;
+    presentedViewController2 = rootViewController;
   }
 
-  return v5;
+  return presentedViewController2;
 }
 
 - (id)activeDocument
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIModalDocumentController *)self->_modalDocumentController documents];
-  if ([v3 count])
+  documents = [(SKUIModalDocumentController *)self->_modalDocumentController documents];
+  if ([documents count])
   {
-    v4 = [v3 lastObject];
+    lastObject = [documents lastObject];
     goto LABEL_27;
   }
 
   if (self->_hidesTabBar)
   {
-    v5 = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
-    v6 = [MEMORY[0x277CBEB68] null];
+    firstObject = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v5 != v6)
+    if (firstObject != null)
     {
-      v7 = [v5 documents];
-      v4 = [(NSMutableArray *)v7 lastObject];
+      documents2 = [firstObject documents];
+      lastObject = [(NSMutableArray *)documents2 lastObject];
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v4 = 0;
+    lastObject = 0;
   }
 
   else
   {
-    v8 = [(SKUIApplicationController *)self _existingTabBarController];
-    v9 = [v8 transientViewController];
+    _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+    transientViewController = [_existingTabBarController transientViewController];
 
-    if (!v9)
+    if (!transientViewController)
     {
-      v10 = [(SKUIApplicationController *)self _existingTabBarController];
-      v5 = [v10 selectedViewController];
+      _existingTabBarController2 = [(SKUIApplicationController *)self _existingTabBarController];
+      firstObject = [_existingTabBarController2 selectedViewController];
 
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v7 = self->_navigationDocumentControllers;
-      v4 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
-      if (v4)
+      documents2 = self->_navigationDocumentControllers;
+      lastObject = [(NSMutableArray *)documents2 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      if (lastObject)
       {
         v11 = *v22;
         while (2)
         {
-          for (i = 0; i != v4; i = i + 1)
+          for (i = 0; i != lastObject; i = i + 1)
           {
             if (*v22 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(documents2);
             }
 
             v13 = *(*(&v21 + 1) + 8 * i);
-            v14 = [MEMORY[0x277CBEB68] null];
-            v15 = v14;
-            if (v13 == v14)
+            null2 = [MEMORY[0x277CBEB68] null];
+            v15 = null2;
+            if (v13 == null2)
             {
             }
 
@@ -2088,12 +2088,12 @@ LABEL_25:
 
               if (isKindOfClass)
               {
-                v17 = [v13 navigationController];
+                navigationController = [v13 navigationController];
 
-                if (v17 == v5 || [v5 conformsToProtocol:&unk_2829AEDF8] && (objc_msgSend(v5, "appNavigationController"), v18 = objc_claimAutoreleasedReturnValue(), v18, v18 == v13))
+                if (navigationController == firstObject || [firstObject conformsToProtocol:&unk_2829AEDF8] && (objc_msgSend(firstObject, "appNavigationController"), v18 = objc_claimAutoreleasedReturnValue(), v18, v18 == v13))
                 {
-                  v19 = [v13 documents];
-                  v4 = [v19 lastObject];
+                  documents3 = [v13 documents];
+                  lastObject = [documents3 lastObject];
 
                   goto LABEL_25;
                 }
@@ -2101,8 +2101,8 @@ LABEL_25:
             }
           }
 
-          v4 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
-          if (v4)
+          lastObject = [(NSMutableArray *)documents2 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          if (lastObject)
           {
             continue;
           }
@@ -2114,15 +2114,15 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    v5 = [(SKUINavigationDocumentController *)self->_transientNavigationDocument documents];
-    v4 = [v5 lastObject];
+    firstObject = [(SKUINavigationDocumentController *)self->_transientNavigationDocument documents];
+    lastObject = [firstObject lastObject];
   }
 
 LABEL_26:
 
 LABEL_27:
 
-  return v4;
+  return lastObject;
 }
 
 - (id)localStorage
@@ -2140,13 +2140,13 @@ LABEL_27:
     else
     {
       v5 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-      v6 = [v5 firstObject];
+      firstObject = [v5 firstObject];
 
-      if (v6)
+      if (firstObject)
       {
-        v7 = [MEMORY[0x277CCA8D8] mainBundle];
-        v8 = [v7 bundleIdentifier];
-        v16[1] = v8;
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
+        v16[1] = bundleIdentifier;
         v16[2] = @"com.apple.StoreKitUI.localStorage";
         v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
 
@@ -2167,11 +2167,11 @@ LABEL_27:
 
 - (id)vendorIdentifier
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 identifierForVendor];
-  v4 = [v3 UUIDString];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  identifierForVendor = [currentDevice identifierForVendor];
+  uUIDString = [identifierForVendor UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (id)vendorStorage
@@ -2189,13 +2189,13 @@ LABEL_27:
     else
     {
       v5 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-      v6 = [v5 firstObject];
+      firstObject = [v5 firstObject];
 
-      if (v6)
+      if (firstObject)
       {
-        v7 = [MEMORY[0x277CCA8D8] mainBundle];
-        v8 = [v7 bundleIdentifier];
-        v16[1] = v8;
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
+        v16[1] = bundleIdentifier;
         v16[2] = @"com.apple.StoreKitUI.vendorStorage";
         v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
 
@@ -2214,10 +2214,10 @@ LABEL_27:
   return v14;
 }
 
-- (int64_t)modalDocumentController:(id)a3 barStyleForStackItem:(id)a4
+- (int64_t)modalDocumentController:(id)controller barStyleForStackItem:(id)item
 {
-  v5 = [a4 presentationType];
-  v6 = [v5 isEqualToString:0x28280B088];
+  presentationType = [item presentationType];
+  v6 = [presentationType isEqualToString:0x28280B088];
 
   if (!v6)
   {
@@ -2226,113 +2226,113 @@ LABEL_27:
 
   if (self->_hidesTabBar)
   {
-    v7 = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
-    v8 = [MEMORY[0x277CBEB68] null];
+    firstObject = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v7 == v8)
+    if (firstObject == null)
     {
-      v9 = 0;
+      navigationController = 0;
     }
 
     else
     {
-      v9 = [v7 navigationController];
+      navigationController = [firstObject navigationController];
     }
   }
 
   else
   {
-    v7 = [(SKUIApplicationController *)self _existingTabBarController];
-    v11 = [v7 transientViewController];
-    if (!v11)
+    firstObject = [(SKUIApplicationController *)self _existingTabBarController];
+    transientViewController = [firstObject transientViewController];
+    if (!transientViewController)
     {
-      v11 = [v7 selectedViewController];
+      transientViewController = [firstObject selectedViewController];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      navigationController2 = transientViewController;
     }
 
     else
     {
-      v12 = [v11 navigationController];
+      navigationController2 = [transientViewController navigationController];
     }
 
-    v9 = v12;
+    navigationController = navigationController2;
   }
 
-  if (v9)
+  if (navigationController)
   {
-    v13 = [v9 navigationBar];
-    v10 = [v13 barStyle];
+    navigationBar = [navigationController navigationBar];
+    barStyle = [navigationBar barStyle];
   }
 
   else
   {
-    v10 = 0;
+    barStyle = 0;
   }
 
-  return v10;
+  return barStyle;
 }
 
-- (void)modalDocumentControllerDidFinish:(id)a3
+- (void)modalDocumentControllerDidFinish:(id)finish
 {
   if ([(SKUIApplicationController *)self _needsStatusOverlay])
   {
-    v4 = [(SKUIApplicationController *)self rootViewController];
-    v5 = [v4 view];
+    rootViewController = [(SKUIApplicationController *)self rootViewController];
+    view = [rootViewController view];
 
-    [v5 bounds];
+    [view bounds];
     if ([(SKUIApplicationController *)self _usesFloatingStatusOverlayForWidth:v6])
     {
       [(SKUIApplicationController *)self _showFloatingStatusOverlayAnimated:1];
     }
   }
 
-  v10 = [(SKUIApplicationController *)self _activeNavigationController];
-  v7 = [v10 topViewController];
+  _activeNavigationController = [(SKUIApplicationController *)self _activeNavigationController];
+  topViewController = [_activeNavigationController topViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 skui_viewWillAppear:1];
+    [topViewController skui_viewWillAppear:1];
   }
 
-  v8 = [(SKUIApplicationController *)self activeDocument];
-  v9 = v8;
-  if (v8)
+  activeDocument = [(SKUIApplicationController *)self activeDocument];
+  v9 = activeDocument;
+  if (activeDocument)
   {
-    [v8 onAppear];
+    [activeDocument onAppear];
   }
 }
 
-- (void)getModalSourceViewForElementIdentifier:(id)a3 completionBlock:(id)a4
+- (void)getModalSourceViewForElementIdentifier:(id)identifier completionBlock:(id)block
 {
-  v12 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   if (!self->_hidesTabBar)
   {
-    v7 = [(SKUIApplicationController *)self _existingTabBarController];
-    v9 = [v7 transientViewController];
-    if (!v9)
+    _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+    transientViewController = [_existingTabBarController transientViewController];
+    if (!transientViewController)
     {
-      v9 = [v7 selectedViewController];
+      transientViewController = [_existingTabBarController selectedViewController];
     }
 
-    v10 = SKUIViewControllerGetTopMostViewController(v9);
+    topViewController = SKUIViewControllerGetTopMostViewController(transientViewController);
     goto LABEL_7;
   }
 
-  v7 = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
-  v8 = [MEMORY[0x277CBEB68] null];
+  _existingTabBarController = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v7 != v8)
+  if (_existingTabBarController != null)
   {
-    v9 = [v7 navigationController];
-    v10 = [v9 topViewController];
+    transientViewController = [_existingTabBarController navigationController];
+    topViewController = [transientViewController topViewController];
 LABEL_7:
-    v11 = v10;
+    v11 = topViewController;
 
     goto LABEL_8;
   }
@@ -2342,40 +2342,40 @@ LABEL_8:
 
   if ([v11 conformsToProtocol:&unk_28291F928])
   {
-    [v11 getModalSourceViewForElementIdentifier:v12 completionBlock:v6];
+    [v11 getModalSourceViewForElementIdentifier:identifierCopy completionBlock:blockCopy];
   }
 
   else
   {
-    v6[2](v6, 0);
+    blockCopy[2](blockCopy, 0);
   }
 }
 
-- (id)jsNavigationDocumentForNavigationController:(id)a3 inContext:(id)a4
+- (id)jsNavigationDocumentForNavigationController:(id)controller inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__71;
   v20 = __Block_byref_object_dispose__71;
   v21 = 0;
-  v8 = [(SKUIClientContext *)self->_clientContext _scriptAppContext];
+  _scriptAppContext = [(SKUIClientContext *)self->_clientContext _scriptAppContext];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __83__SKUIApplicationController_jsNavigationDocumentForNavigationController_inContext___block_invoke;
   v13[3] = &unk_2781FEC10;
   v15 = &v16;
   v13[4] = self;
-  v9 = v6;
+  v9 = controllerCopy;
   v14 = v9;
-  [v8 evaluateDelegateBlockSync:v13];
+  [_scriptAppContext evaluateDelegateBlockSync:v13];
 
   v10 = v17[5];
   if (v10)
   {
-    v11 = [(SKUIApplicationController *)self jsNavigationDocumentForNavigationDocumentController:v10 inContext:v7];
+    v11 = [(SKUIApplicationController *)self jsNavigationDocumentForNavigationDocumentController:v10 inContext:contextCopy];
   }
 
   else
@@ -2398,12 +2398,12 @@ uint64_t __83__SKUIApplicationController_jsNavigationDocumentForNavigationContro
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)jsNavigationDocumentForNavigationDocumentController:(id)a3 inContext:(id)a4
+- (id)jsNavigationDocumentForNavigationDocumentController:(id)controller inContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"TabBar"];
+  controllerCopy = controller;
+  contextCopy = context;
+  v8 = [contextCopy objectForKeyedSubscript:@"TabBar"];
   v9 = [v8 toObjectOfClass:objc_opt_class()];
 
   v25 = 0;
@@ -2414,9 +2414,9 @@ uint64_t __83__SKUIApplicationController_jsNavigationDocumentForNavigationContro
   v30 = 0;
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v10 = [(SKUIApplicationController *)self _transientNavigationController];
+    _transientNavigationController = [(SKUIApplicationController *)self _transientNavigationController];
     v11 = v26[5];
-    v26[5] = v10;
+    v26[5] = _transientNavigationController;
   }
 
   else
@@ -2430,10 +2430,10 @@ uint64_t __83__SKUIApplicationController_jsNavigationDocumentForNavigationContro
     dispatch_sync(MEMORY[0x277D85CD0], block);
   }
 
-  if (v26[5] == v6)
+  if (v26[5] == controllerCopy)
   {
-    v12 = [v9 transientTab];
-    v16 = [v12 navigationDocument];
+    transientTab = [v9 transientTab];
+    navigationDocument = [transientTab navigationDocument];
   }
 
   else
@@ -2442,8 +2442,8 @@ uint64_t __83__SKUIApplicationController_jsNavigationDocumentForNavigationContro
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
-    v12 = v21 = 0u;
-    v13 = [v12 countByEnumeratingWithState:&v20 objects:v31 count:16];
+    transientTab = v21 = 0u;
+    v13 = [transientTab countByEnumeratingWithState:&v20 objects:v31 count:16];
     if (v13)
     {
       v14 = *v21;
@@ -2453,12 +2453,12 @@ LABEL_7:
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(transientTab);
         }
 
-        v16 = [*(*(&v20 + 1) + 8 * v15) navigationDocument];
-        v17 = [v16 navigationControllerDelegate];
-        v18 = v17 == v6;
+        navigationDocument = [*(*(&v20 + 1) + 8 * v15) navigationDocument];
+        navigationControllerDelegate = [navigationDocument navigationControllerDelegate];
+        v18 = navigationControllerDelegate == controllerCopy;
 
         if (v18)
         {
@@ -2467,7 +2467,7 @@ LABEL_7:
 
         if (v13 == ++v15)
         {
-          v13 = [v12 countByEnumeratingWithState:&v20 objects:v31 count:16];
+          v13 = [transientTab countByEnumeratingWithState:&v20 objects:v31 count:16];
           if (v13)
           {
             goto LABEL_7;
@@ -2481,13 +2481,13 @@ LABEL_7:
     else
     {
 LABEL_13:
-      v16 = 0;
+      navigationDocument = 0;
     }
   }
 
   _Block_object_dispose(&v25, 8);
 
-  return v16;
+  return navigationDocument;
 }
 
 uint64_t __91__SKUIApplicationController_jsNavigationDocumentForNavigationDocumentController_inContext___block_invoke(uint64_t a1)
@@ -2500,16 +2500,16 @@ uint64_t __91__SKUIApplicationController_jsNavigationDocumentForNavigationDocume
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)navigationDocumentController:(id)a3 requestsAccessToAppContextUsingBlock:(id)a4
+- (void)navigationDocumentController:(id)controller requestsAccessToAppContextUsingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __95__SKUIApplicationController_navigationDocumentController_requestsAccessToAppContextUsingBlock___block_invoke;
   v7[3] = &unk_2781F9B48;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(SKUIApplicationController *)self evaluateBlockWhenLoaded:v7];
 }
 
@@ -2520,10 +2520,10 @@ void __95__SKUIApplicationController_navigationDocumentController_requestsAccess
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)navigationDocumentStackDidChange:(id)a3
+- (void)navigationDocumentStackDidChange:(id)change
 {
-  v4 = [a3 documents];
-  v5 = [v4 count];
+  documents = [change documents];
+  v5 = [documents count];
 
   if (v5)
   {
@@ -2532,27 +2532,27 @@ void __95__SKUIApplicationController_navigationDocumentController_requestsAccess
   }
 }
 
-- (void)tabBarController:(id)a3 willDisplayViewController:(id)a4
+- (void)tabBarController:(id)controller willDisplayViewController:(id)viewController
 {
-  v6 = a4;
-  v7 = [a3 viewControllers];
-  v8 = [v7 indexOfObject:v6];
+  viewControllerCopy = viewController;
+  viewControllers = [controller viewControllers];
+  v8 = [viewControllers indexOfObject:viewControllerCopy];
 
   [(SKUIApplicationController *)self _dispatchTabBarOnNeedsContentForTabAtIndex:v8];
 }
 
-- (void)URLResolver:(id)a3 didFinishWithResult:(BOOL)a4
+- (void)URLResolver:(id)resolver didFinishWithResult:(BOOL)result
 {
-  [(SKUIURLResolver *)self->_urlResolver setDelegate:0, a4];
+  [(SKUIURLResolver *)self->_urlResolver setDelegate:0, result];
   [(SKUIURLResolver *)self->_urlResolver setNavigationControllerDelegate:0];
   urlResolver = self->_urlResolver;
   self->_urlResolver = 0;
 }
 
-- (BOOL)URLResolver:(id)a3 shouldPerformDefaultActionForURL:(id)a4
+- (BOOL)URLResolver:(id)resolver shouldPerformDefaultActionForURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  resolverCopy = resolver;
+  lCopy = l;
   scriptContext = self->_scriptContext;
   if (scriptContext)
   {
@@ -2560,56 +2560,56 @@ void __95__SKUIApplicationController_navigationDocumentController_requestsAccess
     if (launchOptions)
     {
       v10 = [(NSDictionary *)launchOptions mutableCopy];
-      v11 = [v7 underlyingURL];
-      v12 = [v11 absoluteString];
+      underlyingURL = [lCopy underlyingURL];
+      absoluteString = [underlyingURL absoluteString];
 
-      [(NSDictionary *)v10 setValue:v12 forKey:@"url"];
+      [(NSDictionary *)v10 setValue:absoluteString forKey:@"url"];
       v13 = self->_launchOptions;
       self->_launchOptions = v10;
     }
 
     else
     {
-      v12 = [(SKUIApplicationController *)self _launchOptionsWithURL:v7];
-      v13 = [SKUIURLResolver tabIdentifierForURL:v7];
+      absoluteString = [(SKUIApplicationController *)self _launchOptionsWithURL:lCopy];
+      v13 = [SKUIURLResolver tabIdentifierForURL:lCopy];
       if (v13)
       {
-        [v12 removeObjectForKey:@"url"];
-        [v12 setObject:v13 forKeyedSubscript:@"selectedTabId"];
+        [absoluteString removeObjectForKey:@"url"];
+        [absoluteString setObject:v13 forKeyedSubscript:@"selectedTabId"];
       }
 
-      [(SKUIApplicationController *)self resumeApplicationWithOptions:v12];
+      [(SKUIApplicationController *)self resumeApplicationWithOptions:absoluteString];
     }
   }
 
   return scriptContext == 0;
 }
 
-- (void)URLResolver:(id)a3 showURL:(id)a4 withTabIdentifier:(id)a5
+- (void)URLResolver:(id)resolver showURL:(id)l withTabIdentifier:(id)identifier
 {
-  v13 = a4;
-  v7 = a5;
-  v8 = [(SKUIApplicationController *)self _existingTabBarController];
-  [v8 setTransientViewController:0 animated:0];
+  lCopy = l;
+  identifierCopy = identifier;
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  [_existingTabBarController setTransientViewController:0 animated:0];
 
-  v9 = [(SKUIApplicationController *)self selectTabWithIdentifier:v7];
+  v9 = [(SKUIApplicationController *)self selectTabWithIdentifier:identifierCopy];
 
   if (v9)
   {
     v10 = [v9 popToRootViewControllerAnimated:0];
-    v11 = [v9 viewControllers];
-    v12 = [v11 firstObject];
+    viewControllers = [v9 viewControllers];
+    firstObject = [viewControllers firstObject];
 
-    if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (lCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v12 showExternalURL:v13];
+      [firstObject showExternalURL:lCopy];
     }
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a3;
+  controllerCopy = controller;
   if ([(SKUIApplicationController *)self _sendNativeBackButtonMetricEvents]&& self->_lastNavigationControllerOperation == 2)
   {
     v7 = objc_alloc_init(MEMORY[0x277D69B68]);
@@ -2627,36 +2627,36 @@ void __95__SKUIApplicationController_navigationDocumentController_requestsAccess
     }
   }
 
-  v11 = [(SKUIApplicationController *)self _documentControllerForNavigationController:v6];
+  v11 = [(SKUIApplicationController *)self _documentControllerForNavigationController:controllerCopy];
   [v11 ensureStackConsistencyForNavigationControllerOperation:self->_lastNavigationControllerOperation operationDidComplete:1];
-  [(SKUIModalDocumentController *)self->_modalDocumentController ensureOverlayNavigationControllerStackConsistencyForNavigationController:v6];
+  [(SKUIModalDocumentController *)self->_modalDocumentController ensureOverlayNavigationControllerStackConsistencyForNavigationController:controllerCopy];
 
   lastPoppedViewController = self->_lastPoppedViewController;
   self->_lastPoppedViewController = 0;
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [(SKUIApplicationController *)self _ensureStackConsistencyForNavigationController:v8];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  [(SKUIApplicationController *)self _ensureStackConsistencyForNavigationController:controllerCopy];
   if ([(SKUIApplicationController *)self _needsStatusOverlay])
   {
-    [(SKUIApplicationController *)self _showStatusOverlayForNavigationController:v8 viewController:v9 animated:v5];
+    [(SKUIApplicationController *)self _showStatusOverlayForNavigationController:controllerCopy viewController:viewControllerCopy animated:animatedCopy];
   }
 
-  v10 = [SKUINavigationControllerAssistant assistantForNavigationController:v8 clientContext:self->_clientContext];
-  [v10 willShowViewController:v9 animated:v5];
+  v10 = [SKUINavigationControllerAssistant assistantForNavigationController:controllerCopy clientContext:self->_clientContext];
+  [v10 willShowViewController:viewControllerCopy animated:animatedCopy];
   if (self->_lastNavigationControllerOperation == 2)
   {
-    v11 = [v8 isInteractiveTransition];
+    isInteractiveTransition = [controllerCopy isInteractiveTransition];
     scriptContext = self->_scriptContext;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __82__SKUIApplicationController_navigationController_willShowViewController_animated___block_invoke;
     v13[3] = &__block_descriptor_33_e19_v16__0__JSContext_8l;
-    v14 = v11;
+    v14 = isInteractiveTransition;
     [(IKAppContext *)scriptContext evaluate:v13 completionBlock:0];
   }
 }
@@ -2669,45 +2669,45 @@ void __82__SKUIApplicationController_navigationController_willShowViewController
   [v4 sendOnNavigationStackWillPop:*(a1 + 32)];
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = [a3 topViewController];
-  v4 = v3;
-  if (v3)
+  topViewController = [orientations topViewController];
+  v4 = topViewController;
+  if (topViewController)
   {
-    v5 = [v3 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [topViewController supportedInterfaceOrientations];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v7 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v5 = 30;
+      supportedInterfaceOrientations = 30;
     }
 
     else if (SKUIAllowsLandscapePhone())
     {
-      v5 = 26;
+      supportedInterfaceOrientations = 26;
     }
 
     else
     {
-      v5 = 2;
+      supportedInterfaceOrientations = 2;
     }
   }
 
-  return v5;
+  return supportedInterfaceOrientations;
 }
 
-- (void)tabBarController:(id)a3 didEndCustomizingViewControllers:(id)a4 changed:(BOOL)a5
+- (void)tabBarController:(id)controller didEndCustomizingViewControllers:(id)controllers changed:(BOOL)changed
 {
-  v5 = a5;
+  changedCopy = changed;
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (v5)
+  controllersCopy = controllers;
+  if (changedCopy)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2715,8 +2715,8 @@ void __82__SKUIApplicationController_navigationController_willShowViewController
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v26 = v7;
-    obj = v7;
+    v26 = controllersCopy;
+    obj = controllersCopy;
     v9 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v9)
     {
@@ -2770,15 +2770,15 @@ void __82__SKUIApplicationController_navigationController_willShowViewController
     self->_tabBarItems = v22;
 
     [(IKAppContext *)self->_scriptContext evaluate:&__block_literal_global_282 completionBlock:0];
-    v24 = [(SKUIApplicationController *)self delegate];
+    delegate = [(SKUIApplicationController *)self delegate];
     v25 = objc_opt_respondsToSelector();
 
     if (v25)
     {
-      [v24 applicationDidCustomizeTabBarItems:self];
+      [delegate applicationDidCustomizeTabBarItems:self];
     }
 
-    v7 = v26;
+    controllersCopy = v26;
   }
 }
 
@@ -2816,35 +2816,35 @@ void __87__SKUIApplicationController_tabBarController_didEndCustomizingViewContr
   [v3 sendOnUpdate];
 }
 
-- (void)tabBarController:(id)a3 didReselectViewController:(id)a4
+- (void)tabBarController:(id)controller didReselectViewController:(id)viewController
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [(SKUIApplicationController *)self delegate];
-  v8 = [v7 allViewControllers];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  delegate = [(SKUIApplicationController *)self delegate];
+  allViewControllers = [controllerCopy allViewControllers];
 
-  v9 = [v8 indexOfObjectIdenticalTo:v6];
+  v9 = [allViewControllers indexOfObjectIdenticalTo:viewControllerCopy];
   if (v9 < [(NSArray *)self->_tabBarItems count]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
     v10 = [(NSArray *)self->_tabBarItems objectAtIndex:v9];
-    [v11 application:self didReselectTabBarItem:v10];
+    [delegate application:self didReselectTabBarItem:v10];
   }
 }
 
-- (void)tabBarController:(id)a3 didSelectViewController:(id)a4
+- (void)tabBarController:(id)controller didSelectViewController:(id)viewController
 {
-  v24 = a3;
-  v6 = a4;
-  v7 = [v24 allViewControllers];
-  v8 = [v7 indexOfObjectIdenticalTo:v6];
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  allViewControllers = [controllerCopy allViewControllers];
+  v8 = [allViewControllers indexOfObjectIdenticalTo:viewControllerCopy];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_21;
   }
 
   v9 = v8;
-  v10 = SKUITabBarControllerGetMoreNavigationController(v24);
-  if (v10 && (v11 = [v7 indexOfObjectIdenticalTo:v10], v9 >= v11))
+  v10 = SKUITabBarControllerGetMoreNavigationController(controllerCopy);
+  if (v10 && (v11 = [allViewControllers indexOfObjectIdenticalTo:v10], v9 >= v11))
   {
     if (v9 <= v11)
     {
@@ -2852,9 +2852,9 @@ void __87__SKUIApplicationController_tabBarController_didEndCustomizingViewContr
     }
 
     v12 = [(NSMutableArray *)self->_navigationDocumentControllers objectAtIndex:v9 - 1];
-    v23 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
 
-    if (v12 != v23)
+    if (v12 != null)
     {
       v14 = v12;
       v15 = v10;
@@ -2865,9 +2865,9 @@ void __87__SKUIApplicationController_tabBarController_didEndCustomizingViewContr
   else
   {
     v12 = [(NSMutableArray *)self->_navigationDocumentControllers objectAtIndex:v9];
-    v13 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
 
-    if (v12 != v13)
+    if (v12 != null2)
     {
       v14 = v12;
       v15 = 0;
@@ -2878,67 +2878,67 @@ LABEL_6:
 
 LABEL_8:
   [(SKUIApplicationController *)self _dispatchTabBarOnSelect];
-  [(SKUIApplicationController *)self _tintTabBarWithViewController:v6];
-  v16 = [(SKUIApplicationController *)self _overlayNavigationControllerForViewController:v6];
-  if (!v16)
+  [(SKUIApplicationController *)self _tintTabBarWithViewController:viewControllerCopy];
+  navigationController = [(SKUIApplicationController *)self _overlayNavigationControllerForViewController:viewControllerCopy];
+  if (!navigationController)
   {
-    v16 = [v6 navigationController];
+    navigationController = [viewControllerCopy navigationController];
   }
 
   if ([(SKUIApplicationController *)self _needsStatusOverlay])
   {
-    v17 = [v16 topViewController];
-    [(SKUIApplicationController *)self _showStatusOverlayForNavigationController:v16 viewController:v17 animated:0];
+    topViewController = [navigationController topViewController];
+    [(SKUIApplicationController *)self _showStatusOverlayForNavigationController:navigationController viewController:topViewController animated:0];
   }
 
-  if (SKUIUserInterfaceIdiom(self->_clientContext) == 1 && v16)
+  if (SKUIUserInterfaceIdiom(self->_clientContext) == 1 && navigationController)
   {
-    v18 = [(SKUIApplicationController *)self rootViewController];
-    v19 = [v18 view];
+    rootViewController = [(SKUIApplicationController *)self rootViewController];
+    view = [rootViewController view];
 
-    [v19 bounds];
+    [view bounds];
     if (v20 > SKUICompactThreshold())
     {
-      [(SKUIModalDocumentController *)self->_modalDocumentController presentOverlayViewControllersFromNavigationController:v16];
+      [(SKUIModalDocumentController *)self->_modalDocumentController presentOverlayViewControllersFromNavigationController:navigationController];
 
-      v16 = 0;
+      navigationController = 0;
     }
 
-    [(SKUIModalDocumentController *)self->_modalDocumentController setOverlayNavigationController:v16 withTransitionCoordinator:0];
+    [(SKUIModalDocumentController *)self->_modalDocumentController setOverlayNavigationController:navigationController withTransitionCoordinator:0];
   }
 
-  v21 = [(SKUIApplicationController *)self delegate];
+  delegate = [(SKUIApplicationController *)self delegate];
   if (v9 < [(NSArray *)self->_tabBarItems count]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
     v22 = [(NSArray *)self->_tabBarItems objectAtIndex:v9];
-    [v21 application:self didSelectTabBarItem:v22];
+    [delegate application:self didSelectTabBarItem:v22];
   }
 
 LABEL_21:
 }
 
-- (BOOL)tabBarController:(id)a3 shouldFallbackToRootForController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldFallbackToRootForController:(id)forController
 {
-  v4 = a4;
+  forControllerCopy = forController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 topViewController];
+    topViewController = [forControllerCopy topViewController];
 
-    v4 = v5;
+    forControllerCopy = topViewController;
   }
 
-  v6 = [v4 isEditing];
+  isEditing = [forControllerCopy isEditing];
 
-  return v6 ^ 1;
+  return isEditing ^ 1;
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectViewController:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 containsTransientViewControllerOnly])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([controllerCopy containsTransientViewControllerOnly])
   {
     v8 = 0;
   }
@@ -2953,22 +2953,22 @@ LABEL_21:
 
     else if (scriptLoadState == 4)
     {
-      [(SKUIApplicationController *)self _recordTabBarMetricsEventToSelectViewController:v7];
+      [(SKUIApplicationController *)self _recordTabBarMetricsEventToSelectViewController:viewControllerCopy];
     }
 
-    [(SKUIApplicationController *)self setUserInterfaceOverrideOnTabBarController:v6 forViewController:v7];
+    [(SKUIApplicationController *)self setUserInterfaceOverrideOnTabBarController:controllerCopy forViewController:viewControllerCopy];
     v8 = 1;
   }
 
   return v8;
 }
 
-- (void)setUserInterfaceOverrideOnTabBarController:(id)a3 forViewController:(id)a4
+- (void)setUserInterfaceOverrideOnTabBarController:(id)controller forViewController:(id)viewController
 {
-  v6 = a4;
-  v11 = a3;
-  v7 = [v11 viewControllers];
-  v8 = [v7 indexOfObjectIdenticalTo:v6];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  viewControllers = [controllerCopy viewControllers];
+  v8 = [viewControllers indexOfObjectIdenticalTo:viewControllerCopy];
 
   if (v8 >= [(NSArray *)self->_tabBarItems count])
   {
@@ -2989,21 +2989,21 @@ LABEL_21:
     }
   }
 
-  [v11 setForcedUserInterfaceStyle:v10];
-  [v11 setNeedsUserInterfaceAppearanceUpdate];
+  [controllerCopy setForcedUserInterfaceStyle:v10];
+  [controllerCopy setNeedsUserInterfaceAppearanceUpdate];
 }
 
-- (void)tabBarController:(id)a3 willTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5
+- (void)tabBarController:(id)controller willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
   v11 = self->_floatingStatusOverlayViewController != 0;
   v12 = [(SKUIApplicationController *)self _usesFloatingStatusOverlayForWidth:width];
   if ([(SKUIApplicationController *)self _needsStatusOverlay]&& !v12)
   {
-    SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(v9, 0, [v10 isAnimated]);
+    SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(controllerCopy, 0, [coordinatorCopy isAnimated]);
     floatingStatusOverlayViewController = self->_floatingStatusOverlayViewController;
     self->_floatingStatusOverlayViewController = 0;
   }
@@ -3017,57 +3017,57 @@ LABEL_21:
   v43 = height;
   v44 = v11;
   v45 = v12;
-  v14 = v9;
+  v14 = controllerCopy;
   v40 = v14;
-  v15 = v10;
+  v15 = coordinatorCopy;
   v41 = v15;
   [v15 animateAlongsideTransition:0 completion:v39];
-  v16 = [(SKUIApplicationController *)self delegate];
+  delegate = [(SKUIApplicationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v16 application:self willTransitionToSize:v15 withTransitionCoordinator:{width, height}];
+    [delegate application:self willTransitionToSize:v15 withTransitionCoordinator:{width, height}];
   }
 
-  v17 = [v14 selectedViewController];
-  v18 = [(SKUIApplicationController *)self clientContext];
-  v19 = [(SKUIApplicationController *)self rootViewController];
-  v20 = [v19 view];
-  [v20 bounds];
-  v22 = [v18 tabBarStyleForWidth:v21];
+  selectedViewController = [v14 selectedViewController];
+  clientContext = [(SKUIApplicationController *)self clientContext];
+  rootViewController = [(SKUIApplicationController *)self rootViewController];
+  view = [rootViewController view];
+  [view bounds];
+  v22 = [clientContext tabBarStyleForWidth:v21];
 
-  v23 = [(SKUIApplicationController *)self clientContext];
-  v24 = [v23 tabBarStyleForWidth:width];
+  clientContext2 = [(SKUIApplicationController *)self clientContext];
+  v24 = [clientContext2 tabBarStyleForWidth:width];
 
   v25 = v24 == 0;
   v26 = v22 == 0;
-  v38 = v16;
-  if ([v17 conformsToProtocol:&unk_2829AECD8])
+  v38 = delegate;
+  if ([selectedViewController conformsToProtocol:&unk_2829AECD8])
   {
-    v25 = [v17 documentViewControllerIsCompactForWidth:width];
-    v27 = [(SKUIApplicationController *)self rootViewController];
-    v28 = [v27 view];
-    [v28 bounds];
-    v26 = [v17 documentViewControllerIsCompactForWidth:v29];
+    v25 = [selectedViewController documentViewControllerIsCompactForWidth:width];
+    rootViewController2 = [(SKUIApplicationController *)self rootViewController];
+    view2 = [rootViewController2 view];
+    [view2 bounds];
+    v26 = [selectedViewController documentViewControllerIsCompactForWidth:v29];
   }
 
-  v30 = [v17 presentedViewController];
+  presentedViewController = [selectedViewController presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (((v22 == v24) & ((v26 ^ v25) ^ 1)) == 0 && (isKindOfClass & 1) == 0)
   {
-    v32 = [(SKUIApplicationController *)self delegate];
+    delegate2 = [(SKUIApplicationController *)self delegate];
     v33 = objc_opt_respondsToSelector();
 
-    if ((v33 & 1) == 0 || (-[SKUIApplicationController delegate](self, "delegate"), v34 = objc_claimAutoreleasedReturnValue(), v35 = [v34 application:self shouldDismissPopoverOnTraitCollectionChange:v30], v34, v35))
+    if ((v33 & 1) == 0 || (-[SKUIApplicationController delegate](self, "delegate"), v34 = objc_claimAutoreleasedReturnValue(), v35 = [v34 application:self shouldDismissPopoverOnTraitCollectionChange:presentedViewController], v34, v35))
     {
-      if (v30 && [v30 modalPresentationStyle] == 7)
+      if (presentedViewController && [presentedViewController modalPresentationStyle] == 7)
       {
-        [v30 dismissViewControllerAnimated:0 completion:0];
+        [presentedViewController dismissViewControllerAnimated:0 completion:0];
       }
     }
   }
 
-  v36 = [(SKUIApplicationController *)self _overlayNavigationControllerForViewController:v17];
+  v36 = [(SKUIApplicationController *)self _overlayNavigationControllerForViewController:selectedViewController];
   if (SKUIUserInterfaceIdiom(self->_clientContext) == 1 && v36)
   {
     if (width <= SKUICompactThreshold())
@@ -3141,84 +3141,84 @@ LABEL_10:
   return MEMORY[0x2821F96F8](v12, v13);
 }
 
-- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)tabBarControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = a3;
-  v4 = [v3 transientViewController];
-  if (v4 || ([v3 selectedViewController], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  orientationsCopy = orientations;
+  transientViewController = [orientationsCopy transientViewController];
+  if (transientViewController || ([orientationsCopy selectedViewController], (transientViewController = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v5 = v4;
-    v6 = [v4 supportedInterfaceOrientations];
+    v5 = transientViewController;
+    supportedInterfaceOrientations = [transientViewController supportedInterfaceOrientations];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v9 == 1)
+    if (userInterfaceIdiom == 1)
     {
-      v6 = 30;
+      supportedInterfaceOrientations = 30;
     }
 
     else if (SKUIAllowsLandscapePhone())
     {
-      v6 = 26;
+      supportedInterfaceOrientations = 26;
     }
 
     else
     {
-      v6 = 2;
+      supportedInterfaceOrientations = 2;
     }
   }
 
-  return v6;
+  return supportedInterfaceOrientations;
 }
 
-- (void)_previewDocumentIsActiveChangeNotification:(id)a3
+- (void)_previewDocumentIsActiveChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (self->_previewDocumentController)
   {
-    v12 = v4;
-    v5 = [v4 object];
+    v12 = notificationCopy;
+    object = [notificationCopy object];
     previewDocumentController = self->_previewDocumentController;
-    if (v5 == previewDocumentController)
+    if (object == previewDocumentController)
     {
-      v7 = [(SKUIPreviewDocumentController *)previewDocumentController isPreviewActive];
+      isPreviewActive = [(SKUIPreviewDocumentController *)previewDocumentController isPreviewActive];
 
-      v4 = v12;
-      if (v7)
+      notificationCopy = v12;
+      if (isPreviewActive)
       {
         goto LABEL_8;
       }
 
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      v8 = [v12 name];
-      [(SKUIPreviewDocumentController *)v5 removeObserver:self name:v8 object:self->_previewDocumentController];
+      object = [MEMORY[0x277CCAB98] defaultCenter];
+      name = [v12 name];
+      [(SKUIPreviewDocumentController *)object removeObserver:self name:name object:self->_previewDocumentController];
 
       v9 = self->_previewDocumentController;
       self->_previewDocumentController = 0;
 
       if (self->_floatingStatusOverlayViewController)
       {
-        v10 = [(SKUIApplicationController *)self _existingTabBarController];
-        SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(v10, 0, 1);
+        _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+        SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(_existingTabBarController, 0, 1);
 
         floatingStatusOverlayViewController = self->_floatingStatusOverlayViewController;
         self->_floatingStatusOverlayViewController = 0;
       }
 
-      [(SKUIPreviewDocumentController *)v5 postNotificationName:@"SKUIApplicationControllerPreviewOverlayDidChangeNotification" object:self userInfo:0];
+      [(SKUIPreviewDocumentController *)object postNotificationName:@"SKUIApplicationControllerPreviewOverlayDidChangeNotification" object:self userInfo:0];
     }
 
-    v4 = v12;
+    notificationCopy = v12;
   }
 
 LABEL_8:
 }
 
-- (void)_reloadAfterNetworkChange:(id)a3
+- (void)_reloadAfterNetworkChange:(id)change
 {
   v4 = dispatch_time(0, 5000000000);
   block[0] = MEMORY[0x277D85DD0];
@@ -3269,12 +3269,12 @@ void __55__SKUIApplicationController__reloadAfterNetworkChange___block_invoke(ui
         }
 
         v7 = *(*(&v11 + 1) + 8 * v6);
-        v8 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v7 != v8)
+        if (v7 != null)
         {
-          v9 = [v7 navigationController];
-          v10 = [SKUINavigationControllerAssistant existingAssistantForNavigationController:v9];
+          navigationController = [v7 navigationController];
+          v10 = [SKUINavigationControllerAssistant existingAssistantForNavigationController:navigationController];
 
           [v10 setStatusOverlayProvider:0];
         }
@@ -3290,7 +3290,7 @@ void __55__SKUIApplicationController__reloadAfterNetworkChange___block_invoke(ui
   }
 }
 
-- (void)_storeFrontChangeNotification:(id)a3
+- (void)_storeFrontChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3370,9 +3370,9 @@ void __59__SKUIApplicationController__storeFrontChangeNotification___block_invok
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v8 != v9)
+        if (v8 != null)
         {
           [v8 popAllDocuments];
         }
@@ -3401,41 +3401,41 @@ void __59__SKUIApplicationController__storeFrontChangeNotification___block_invok
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v3 = [(SKUIApplicationController *)self _existingTabBarController];
-  v4 = v3;
-  if (v3)
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  v4 = _existingTabBarController;
+  if (_existingTabBarController)
   {
-    v2 = [v3 selectedIndex];
+    selectedIndex = [_existingTabBarController selectedIndex];
   }
 
   else
   {
-    v2 = 0x7FFFFFFFFFFFFFFFLL;
+    selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v2;
+  return selectedIndex;
 }
 
-- (void)_setSelectedTabBarIndex:(int64_t)a3
+- (void)_setSelectedTabBarIndex:(int64_t)index
 {
-  v8 = [(SKUIApplicationController *)self _existingTabBarController];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [(SKUIApplicationController *)self _transientNavigationDocument];
-    v6 = [v5 navigationController];
+    _transientNavigationDocument = [(SKUIApplicationController *)self _transientNavigationDocument];
+    navigationController = [_transientNavigationDocument navigationController];
 
-    [v8 setTransientViewController:v6 animated:0];
-    [(SKUIApplicationController *)self _tintTabBarWithViewController:v6];
+    [_existingTabBarController setTransientViewController:navigationController animated:0];
+    [(SKUIApplicationController *)self _tintTabBarWithViewController:navigationController];
   }
 
   else
   {
-    [v8 setSelectedIndex:a3];
-    v7 = [v8 selectedViewController];
-    [(SKUIApplicationController *)self _tintTabBarWithViewController:v7];
+    [_existingTabBarController setSelectedIndex:index];
+    selectedViewController = [_existingTabBarController selectedViewController];
+    [(SKUIApplicationController *)self _tintTabBarWithViewController:selectedViewController];
 
-    v6 = [v8 selectedViewController];
-    [(SKUIApplicationController *)self _updateOverlayNavigationController:v6];
+    navigationController = [_existingTabBarController selectedViewController];
+    [(SKUIApplicationController *)self _updateOverlayNavigationController:navigationController];
   }
 }
 
@@ -3471,17 +3471,17 @@ void __59__SKUIApplicationController__storeFrontChangeNotification___block_invok
   return v2;
 }
 
-- (void)_updateOverlayNavigationController:(id)a3
+- (void)_updateOverlayNavigationController:(id)controller
 {
-  v12 = [(SKUIApplicationController *)self _overlayNavigationControllerForViewController:a3];
+  v12 = [(SKUIApplicationController *)self _overlayNavigationControllerForViewController:controller];
   v5 = SKUIUserInterfaceIdiom(self->_clientContext) == 1;
   v4 = v12;
   v5 = !v5 || v12 == 0;
   if (!v5)
   {
-    v6 = [MEMORY[0x277D75128] sharedApplication];
-    v7 = [v6 keyWindow];
-    [v7 bounds];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    [keyWindow bounds];
     v9 = v8;
     v10 = SKUICompactThreshold();
 
@@ -3504,19 +3504,19 @@ void __59__SKUIApplicationController__storeFrontChangeNotification___block_invok
 {
   if (!self->_hidesTabBar)
   {
-    v2 = [(SKUIApplicationController *)self _existingTabBarController];
-    v4 = SKUITabBarControllerGetActiveNavigationController(v2);
+    _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+    navigationController = SKUITabBarControllerGetActiveNavigationController(_existingTabBarController);
     goto LABEL_5;
   }
 
-  v2 = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
-  v3 = [MEMORY[0x277CBEB68] null];
+  _existingTabBarController = [(NSMutableArray *)self->_navigationDocumentControllers firstObject];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v2 != v3)
+  if (_existingTabBarController != null)
   {
-    v4 = [v2 navigationController];
+    navigationController = [_existingTabBarController navigationController];
 LABEL_5:
-    v5 = v4;
+    v5 = navigationController;
     goto LABEL_6;
   }
 
@@ -3526,7 +3526,7 @@ LABEL_6:
   return v5;
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   [(SKUIClientContext *)self->_clientContext sendApplicationDidEnterBackground];
   if (self->_stopApplicationOnBackgroundNotification)
@@ -3546,7 +3546,7 @@ LABEL_6:
   }
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   [(SKUIClientContext *)self->_clientContext sendApplicationWillEnterForeground];
   if (self->_reloadApplicationOnForegroundNotification)
@@ -3566,19 +3566,19 @@ LABEL_6:
   }
 }
 
-- (void)_dispatchTabBarOnNeedsContentForTabAtIndex:(unint64_t)a3
+- (void)_dispatchTabBarOnNeedsContentForTabAtIndex:(unint64_t)index
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     v15 = v3;
     v16 = v4;
-    if ([(NSArray *)self->_tabBarItems count]> a3)
+    if ([(NSArray *)self->_tabBarItems count]> index)
     {
-      v7 = [(NSArray *)self->_tabBarItems objectAtIndex:a3];
-      v8 = [(NSMutableArray *)self->_navigationDocumentControllers objectAtIndex:a3];
-      v9 = [MEMORY[0x277CBEB68] null];
+      v7 = [(NSArray *)self->_tabBarItems objectAtIndex:index];
+      v8 = [(NSMutableArray *)self->_navigationDocumentControllers objectAtIndex:index];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v8 == v9 || ([v8 documentStackItems], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, !v11))
+      if (v8 == null || ([v8 documentStackItems], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, !v11))
       {
         if (self->_scriptLoadState == 3)
         {
@@ -3594,7 +3594,7 @@ LABEL_6:
 
         else
         {
-          self->_indexOfLastTabNeedingContent = a3;
+          self->_indexOfLastTabNeedingContent = index;
         }
       }
     }
@@ -3617,10 +3617,10 @@ void __52__SKUIApplicationController__dispatchTabBarOnSelect__block_invoke(uint6
   v3 = [v4 invokeMethod:@"onSelect" withArguments:0];
 }
 
-- (id)_documentControllerForNavigationController:(id)a3
+- (id)_documentControllerForNavigationController:(id)controller
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -3641,13 +3641,13 @@ LABEL_3:
       }
 
       v10 = *(*(&v17 + 1) + 8 * v9);
-      v11 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v10 != v11)
+      if (v10 != null)
       {
-        v12 = [v10 navigationController];
+        navigationController = [v10 navigationController];
 
-        if (v12 == v4)
+        if (navigationController == controllerCopy)
         {
           break;
         }
@@ -3678,15 +3678,15 @@ LABEL_3:
 LABEL_10:
   }
 
-  v14 = [(SKUIModalDocumentController *)self->_modalDocumentController navigationDocumentForNavigationController:v4, v17];
+  v14 = [(SKUIModalDocumentController *)self->_modalDocumentController navigationDocumentForNavigationController:controllerCopy, v17];
   if (v14)
   {
     goto LABEL_13;
   }
 
-  v15 = [(SKUINavigationDocumentController *)self->_transientNavigationDocument navigationController];
+  navigationController2 = [(SKUINavigationDocumentController *)self->_transientNavigationDocument navigationController];
 
-  if (v15 == v4)
+  if (navigationController2 == controllerCopy)
   {
     v14 = self->_transientNavigationDocument;
 LABEL_13:
@@ -3700,36 +3700,36 @@ LABEL_16:
   return v13;
 }
 
-- (void)_ensureStackConsistencyForNavigationController:(id)a3
+- (void)_ensureStackConsistencyForNavigationController:(id)controller
 {
-  v7 = a3;
-  self->_lastNavigationControllerOperation = [v7 lastOperation];
-  v4 = [(SKUIApplicationController *)self _documentControllerForNavigationController:v7];
+  controllerCopy = controller;
+  self->_lastNavigationControllerOperation = [controllerCopy lastOperation];
+  v4 = [(SKUIApplicationController *)self _documentControllerForNavigationController:controllerCopy];
   [v4 ensureStackConsistencyForNavigationControllerOperation:self->_lastNavigationControllerOperation operationDidComplete:0];
   if (self->_lastNavigationControllerOperation == 2)
   {
-    v5 = [v7 disappearingViewController];
+    disappearingViewController = [controllerCopy disappearingViewController];
   }
 
   else
   {
-    v5 = 0;
+    disappearingViewController = 0;
   }
 
   lastPoppedViewController = self->_lastPoppedViewController;
-  self->_lastPoppedViewController = v5;
+  self->_lastPoppedViewController = disappearingViewController;
 }
 
 - (id)_existingTabBarController
 {
-  v3 = [(SKUIApplicationControllerOptions *)self->_options tabBarControllerStyle];
-  if (!v3)
+  tabBarControllerStyle = [(SKUIApplicationControllerOptions *)self->_options tabBarControllerStyle];
+  if (!tabBarControllerStyle)
   {
     v4 = 248;
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (tabBarControllerStyle == 1)
   {
     v4 = 304;
 LABEL_5:
@@ -3743,28 +3743,28 @@ LABEL_7:
   return v5;
 }
 
-- (void)_failReloadWithError:(id)a3
+- (void)_failReloadWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(objc_class *)self->_clientContextClass _fallbackConfigurationDictionary];
-  if (v4)
+  errorCopy = error;
+  _fallbackConfigurationDictionary = [(objc_class *)self->_clientContextClass _fallbackConfigurationDictionary];
+  if (_fallbackConfigurationDictionary)
   {
     v5 = objc_opt_class();
-    NSLog(&cfstr_DidFailLoading.isa, v5, v6);
-    [(SKUIApplicationController *)self _setClientContextWithDictionary:v4];
+    NSLog(&cfstr_DidFailLoading.isa, v5, errorCopy);
+    [(SKUIApplicationController *)self _setClientContextWithDictionary:_fallbackConfigurationDictionary];
   }
 
   else
   {
-    [(SKUIApplicationController *)self _failWithError:v6];
+    [(SKUIApplicationController *)self _failWithError:errorCopy];
   }
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_opt_class();
-  NSLog(&cfstr_DidFailWithErr.isa, v5, v4);
+  NSLog(&cfstr_DidFailWithErr.isa, v5, errorCopy);
   self->_scriptLoadState = 1;
   if (([(IKAppContext *)self->_scriptContext isValid]& 1) == 0)
   {
@@ -3775,8 +3775,8 @@ LABEL_7:
   [SKUIMetricsAppLaunchEvent withPendingLaunchEvent:&__block_literal_global_321];
   if (ISErrorIsEqual())
   {
-    v7 = [MEMORY[0x277CBAB70] sharedURLCache];
-    [v7 removeAllCachedResponses];
+    mEMORY[0x277CBAB70] = [MEMORY[0x277CBAB70] sharedURLCache];
+    [mEMORY[0x277CBAB70] removeAllCachedResponses];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -3785,7 +3785,7 @@ LABEL_7:
   if (v9)
   {
     v10 = objc_loadWeakRetained(&self->_delegate);
-    [v10 application:self didFailToLoadWithError:v4];
+    [v10 application:self didFailToLoadWithError:errorCopy];
   }
 
   if (!self->_clientContext)
@@ -3801,10 +3801,10 @@ LABEL_7:
     [(NSArray *)tabBarItems enumerateObjectsUsingBlock:v16];
   }
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v14 = *MEMORY[0x277D7FCC0];
-  v15 = [MEMORY[0x277D7FD00] sharedInstance];
-  [v13 addObserver:self selector:sel__reloadAfterNetworkChange_ name:v14 object:v15];
+  mEMORY[0x277D7FD00] = [MEMORY[0x277D7FD00] sharedInstance];
+  [defaultCenter addObserver:self selector:sel__reloadAfterNetworkChange_ name:v14 object:mEMORY[0x277D7FD00]];
 
   self->_reloadApplicationOnForegroundNotification = 1;
 }
@@ -3853,16 +3853,16 @@ void __44__SKUIApplicationController__failWithError___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)_finishWillResignActiveWithDialogState:(BOOL)a3
+- (void)_finishWillResignActiveWithDialogState:(BOOL)state
 {
   v3 = *MEMORY[0x277D767B0];
   if (self->_resignActiveTaskID != *MEMORY[0x277D767B0])
   {
-    v4 = a3;
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v7 applicationState])
+    stateCopy = state;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    if ([mEMORY[0x277D75128] applicationState])
     {
-      if (v4)
+      if (stateCopy)
       {
         self->_ignoreDidBecomeActive = 1;
       }
@@ -3878,7 +3878,7 @@ void __44__SKUIApplicationController__failWithError___block_invoke_2(uint64_t a1
       }
     }
 
-    [v7 endBackgroundTask:self->_resignActiveTaskID];
+    [mEMORY[0x277D75128] endBackgroundTask:self->_resignActiveTaskID];
     self->_resignActiveTaskID = v3;
   }
 }
@@ -3925,59 +3925,59 @@ void __44__SKUIApplicationController__failWithError___block_invoke_2(uint64_t a1
   }
 }
 
-- (CGSize)sizeForNavigationDocument:(id)a3
+- (CGSize)sizeForNavigationDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 navigationControllerDelegate];
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+    navigationControllerDelegate = [documentCopy navigationControllerDelegate];
+    if (navigationControllerDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v6 = [v5 navigationController];
+      navigationController = [navigationControllerDelegate navigationController];
 LABEL_8:
-      v8 = v6;
+      tabBarController = navigationController;
       goto LABEL_14;
     }
 
-    v8 = 0;
+    tabBarController = 0;
     goto LABEL_14;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 modalDocumentController];
-    v5 = [v7 _overlayNavigationController];
+    modalDocumentController = [documentCopy modalDocumentController];
+    navigationControllerDelegate = [modalDocumentController _overlayNavigationController];
 
-    if (v5)
+    if (navigationControllerDelegate)
     {
-      v6 = v5;
-      v5 = v6;
+      navigationController = navigationControllerDelegate;
+      navigationControllerDelegate = navigationController;
       goto LABEL_8;
     }
 
-    v9 = [v4 modalDocumentController];
-    v10 = [v9 _overlayViewController];
+    modalDocumentController2 = [documentCopy modalDocumentController];
+    _overlayViewController = [modalDocumentController2 _overlayViewController];
 
-    if (v10)
+    if (_overlayViewController)
     {
-      v8 = [(SKUIApplicationController *)self tabBarController];
+      tabBarController = [(SKUIApplicationController *)self tabBarController];
     }
 
     else
     {
-      v8 = 0;
+      tabBarController = 0;
     }
 
 LABEL_14:
-    if (v8)
+    if (tabBarController)
     {
       goto LABEL_16;
     }
   }
 
-  v8 = [(SKUIApplicationController *)self tabBarController];
+  tabBarController = [(SKUIApplicationController *)self tabBarController];
 LABEL_16:
   v22 = 0;
   v23 = &v22;
@@ -3986,8 +3986,8 @@ LABEL_16:
   v26 = *MEMORY[0x277CBF3A8];
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v11 = [v8 view];
-    [v11 bounds];
+    view = [tabBarController view];
+    [view bounds];
     v12 = v23;
     v23[4] = v13;
     v12[5] = v14;
@@ -4000,9 +4000,9 @@ LABEL_16:
     v19[2] = __55__SKUIApplicationController_sizeForNavigationDocument___block_invoke;
     v19[3] = &unk_2781F8608;
     v21 = &v22;
-    v20 = v8;
+    v20 = tabBarController;
     dispatch_sync(MEMORY[0x277D85CD0], v19);
-    v11 = v20;
+    view = v20;
   }
 
   v15 = *(v23 + 4);
@@ -4036,9 +4036,9 @@ void __55__SKUIApplicationController_sizeForNavigationDocument___block_invoke(ui
 - (void)_invalidateApplication
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:0x282808428 object:0];
-  [v3 removeObserver:self name:@"SUAccountViewControllerDidDisappearNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:0x282808428 object:0];
+  [defaultCenter removeObserver:self name:@"SUAccountViewControllerDidDisappearNotification" object:0];
   [(SKUIClientContext *)self->_clientContext _setApplicationController:0];
   [(SKUIClientContext *)self->_clientContext _setScriptAppContext:0];
   clientContext = self->_clientContext;
@@ -4049,8 +4049,8 @@ void __55__SKUIApplicationController_sizeForNavigationDocument___block_invoke(ui
   self->_scriptContext = 0;
 
   self->_scriptLoadState = 0;
-  v6 = [(SKUIApplicationController *)self _existingTabBarController];
-  SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(v6, 0, 0);
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(_existingTabBarController, 0, 0);
   previewDocumentController = self->_previewDocumentController;
   self->_previewDocumentController = 0;
 
@@ -4078,9 +4078,9 @@ void __55__SKUIApplicationController_sizeForNavigationDocument___block_invoke(ui
         }
 
         v14 = *(*(&v19 + 1) + 8 * v13);
-        v15 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v14 != v15)
+        if (v14 != null)
         {
           [v14 setDelegate:0];
           [v14 popAllDocuments];
@@ -4111,16 +4111,16 @@ void __55__SKUIApplicationController_sizeForNavigationDocument___block_invoke(ui
   self->_transientNavigationDocument = 0;
 
   [(SKUISimpleContainerViewController *)self->_navigationContainerViewController setContentViewController:0];
-  [v6 setTransientViewController:0 animated:0];
-  [v6 setViewControllers:0];
+  [_existingTabBarController setTransientViewController:0 animated:0];
+  [_existingTabBarController setViewControllers:0];
 }
 
 - (BOOL)_isDisplayingAccountViewController
 {
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(SKUIApplicationController *)self rootViewController];
-  v5 = [v4 presentedViewController];
-  v6 = [v3 initWithObjects:{v5, 0}];
+  rootViewController = [(SKUIApplicationController *)self rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
+  v6 = [v3 initWithObjects:{presentedViewController, 0}];
 
   v7 = [v6 count];
   v8 = v7 != 0;
@@ -4135,16 +4135,16 @@ void __55__SKUIApplicationController_sizeForNavigationDocument___block_invoke(ui
         break;
       }
 
-      v10 = [v9 childViewControllers];
-      if ([v10 count])
+      childViewControllers = [v9 childViewControllers];
+      if ([childViewControllers count])
       {
-        [v6 addObjectsFromArray:v10];
+        [v6 addObjectsFromArray:childViewControllers];
       }
 
-      v11 = [v9 presentedViewController];
-      if (v11 && ([v10 containsObject:v11] & 1) == 0)
+      presentedViewController2 = [v9 presentedViewController];
+      if (presentedViewController2 && ([childViewControllers containsObject:presentedViewController2] & 1) == 0)
       {
-        [v6 addObject:v11];
+        [v6 addObject:presentedViewController2];
       }
 
       [v6 removeObjectAtIndex:0];
@@ -4164,73 +4164,73 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_isStoreFront:(id)a3 equalToStoreFront:(id)a4
+- (BOOL)_isStoreFront:(id)front equalToStoreFront:(id)storeFront
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 rangeOfString:@" "];
+  frontCopy = front;
+  storeFrontCopy = storeFront;
+  v7 = [frontCopy rangeOfString:@" "];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v5 substringToIndex:v7];
+    v8 = [frontCopy substringToIndex:v7];
 
-    v5 = v8;
+    frontCopy = v8;
   }
 
-  v9 = [v6 rangeOfString:@" "];
+  v9 = [storeFrontCopy rangeOfString:@" "];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [v6 substringToIndex:v9];
+    v10 = [storeFrontCopy substringToIndex:v9];
 
-    v6 = v10;
+    storeFrontCopy = v10;
   }
 
-  v11 = [v5 isEqualToString:v6];
+  v11 = [frontCopy isEqualToString:storeFrontCopy];
 
   return v11;
 }
 
-- (id)_launchOptionsWithURL:(id)a3
+- (id)_launchOptionsWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 underlyingURL];
-  v6 = [v5 absoluteString];
+  lCopy = l;
+  underlyingURL = [lCopy underlyingURL];
+  absoluteString = [underlyingURL absoluteString];
 
-  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{v6, @"url", 0}];
-  v8 = [v4 referrerApplicationName];
-  if (v8)
+  v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{absoluteString, @"url", 0}];
+  referrerApplicationName = [lCopy referrerApplicationName];
+  if (referrerApplicationName)
   {
-    v9 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+    v9 = [MEMORY[0x277CBEBC0] URLWithString:absoluteString];
     v21 = v9;
-    v10 = [objc_opt_class() _referrerAppForSourceApplication:v8 launchURL:&v21];
+    v10 = [objc_opt_class() _referrerAppForSourceApplication:referrerApplicationName launchURL:&v21];
     v11 = v21;
 
-    v12 = [v11 absoluteString];
+    absoluteString2 = [v11 absoluteString];
 
-    [v7 setObject:v12 forKey:@"url"];
+    [v7 setObject:absoluteString2 forKey:@"url"];
     [v7 setObject:v10 forKey:@"refApp"];
   }
 
-  v13 = [v4 referrerURLString];
+  referrerURLString = [lCopy referrerURLString];
 
-  if (v13)
+  if (referrerURLString)
   {
-    [v7 setObject:v13 forKey:@"refUrl"];
+    [v7 setObject:referrerURLString forKey:@"refUrl"];
   }
 
   v14 = MEMORY[0x277CBEAC0];
-  v15 = [(SKUIApplicationController *)self rootViewController];
-  v16 = [v15 view];
-  [v16 bounds];
+  rootViewController = [(SKUIApplicationController *)self rootViewController];
+  view = [rootViewController view];
+  [view bounds];
   v19 = [v14 sk_dictionaryWithSize:{v17, v18}];
   [v7 setObject:v19 forKey:@"windowSize"];
 
   return v7;
 }
 
-- (void)_legacyResolveExternalURL:(id)a3
+- (void)_legacyResolveExternalURL:(id)l
 {
   urlResolver = self->_urlResolver;
-  v10 = a3;
+  lCopy = l;
   [(SKUIURLResolver *)urlResolver setDelegate:0];
   [(SKUIURLResolver *)self->_urlResolver setNavigationControllerDelegate:0];
   v5 = self->_urlResolver;
@@ -4243,10 +4243,10 @@ LABEL_11:
   [(SKUIURLResolver *)self->_urlResolver setDelegate:self];
   [(SKUIURLResolver *)self->_urlResolver setNavigationControllerDelegate:self];
   v8 = self->_urlResolver;
-  v9 = [(SKUIApplicationController *)self _operationQueue];
-  [(SKUIURLResolver *)v8 setOperationQueue:v9];
+  _operationQueue = [(SKUIApplicationController *)self _operationQueue];
+  [(SKUIURLResolver *)v8 setOperationQueue:_operationQueue];
 
-  [(SKUIURLResolver *)self->_urlResolver resolveURL:v10];
+  [(SKUIURLResolver *)self->_urlResolver resolveURL:lCopy];
 }
 
 - (void)_loadApplicationScript
@@ -4256,10 +4256,10 @@ LABEL_11:
   NSLog(&cfstr_LoadApplicatio_0.isa, v4);
 
   self->_scriptLoadState = 2;
-  v5 = [(SKUIApplicationController *)self delegate];
+  delegate = [(SKUIApplicationController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 bootstrapScriptURLForApplication:self];
+    v6 = [delegate bootstrapScriptURLForApplication:self];
     if (v6)
     {
       v7 = v6;
@@ -4270,8 +4270,8 @@ LABEL_10:
     }
   }
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v7 = [v8 stringForKey:@"SKUIITMLURL"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v7 = [standardUserDefaults stringForKey:@"SKUIITMLURL"];
 
   if (v7)
   {
@@ -4298,13 +4298,13 @@ LABEL_7:
   }
 
   objc_initWeak(&location, self);
-  v18 = [(SKUIClientContext *)self->_clientContext URLBag];
+  uRLBag = [(SKUIClientContext *)self->_clientContext URLBag];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __51__SKUIApplicationController__loadApplicationScript__block_invoke;
   v19[3] = &unk_2781FBDE0;
   objc_copyWeak(&v20, &location);
-  [v18 loadValueForKey:@"itml-store" completionBlock:v19];
+  [uRLBag loadValueForKey:@"itml-store" completionBlock:v19];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
@@ -4395,13 +4395,13 @@ void __51__SKUIApplicationController__loadApplicationScript__block_invoke_2(uint
   return navigationContainerViewController;
 }
 
-- (id)_newNavigationControllerWithTabBarItem:(id)a3
+- (id)_newNavigationControllerWithTabBarItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
-  if ((v6 & 1) == 0 || (v7 = objc_loadWeakRetained(&self->_delegate), [v7 application:self navigationControllerWithTabBarItem:v4], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  if ((v6 & 1) == 0 || (v7 = objc_loadWeakRetained(&self->_delegate), [v7 application:self navigationControllerWithTabBarItem:itemCopy], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v9 = 0x277D7FE28;
     if (self->_scriptLoadState != 4)
@@ -4410,10 +4410,10 @@ void __51__SKUIApplicationController__loadApplicationScript__block_invoke_2(uint
     }
 
     v8 = objc_alloc_init(*v9);
-    if ([v4 barTintStyle] == 1)
+    if ([itemCopy barTintStyle] == 1)
     {
-      v10 = [v8 navigationBar];
-      [v10 setBarStyle:1];
+      navigationBar = [v8 navigationBar];
+      [navigationBar setBarStyle:1];
     }
   }
 
@@ -4421,16 +4421,16 @@ void __51__SKUIApplicationController__loadApplicationScript__block_invoke_2(uint
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 section];
+    section = [v8 section];
 
-    if (!v11)
+    if (!section)
     {
-      v12 = [(SKUIClientContext *)self->_clientContext clientInterface];
-      [v8 setClientInterface:v12];
-      v13 = [objc_alloc(MEMORY[0x277D7FE78]) initWithClientInterface:v12 sectionType:0 defaultPNGStyle:0];
+      clientInterface = [(SKUIClientContext *)self->_clientContext clientInterface];
+      [v8 setClientInterface:clientInterface];
+      v13 = [objc_alloc(MEMORY[0x277D7FE78]) initWithClientInterface:clientInterface sectionType:0 defaultPNGStyle:0];
       if (SKUIUserInterfaceIdiom(self->_clientContext) == 1)
       {
-        v14 = [MEMORY[0x277D7FE70] defaultConfigurationWithClientInterface:v12];
+        v14 = [MEMORY[0x277D7FE70] defaultConfigurationWithClientInterface:clientInterface];
         [v13 setSearchFieldConfiguration:v14];
       }
 
@@ -4438,26 +4438,26 @@ void __51__SKUIApplicationController__loadApplicationScript__block_invoke_2(uint
     }
   }
 
-  if (self->_clientContext && (self->_scriptLoadState == 4 || [v4 alwaysCreatesRootViewController]) && (v15 = objc_msgSend(objc_alloc(objc_msgSend(v4, "rootViewControllerClass")), "initWithTabBarItem:", v4)) != 0)
+  if (self->_clientContext && (self->_scriptLoadState == 4 || [itemCopy alwaysCreatesRootViewController]) && (v15 = objc_msgSend(objc_alloc(objc_msgSend(itemCopy, "rootViewControllerClass")), "initWithTabBarItem:", itemCopy)) != 0)
   {
-    v16 = v15;
+    view = v15;
     if (objc_opt_respondsToSelector())
     {
-      [v16 setClientContext:self->_clientContext];
+      [view setClientContext:self->_clientContext];
     }
 
-    [v8 pushViewController:v16 animated:0];
+    [v8 pushViewController:view animated:0];
   }
 
   else
   {
-    v16 = [v8 view];
-    v17 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v16 setBackgroundColor:v17];
+    view = [v8 view];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [view setBackgroundColor:systemBackgroundColor];
   }
 
-  v18 = [v4 underlyingTabBarItem];
-  [v8 setTabBarItem:v18];
+  underlyingTabBarItem = [itemCopy underlyingTabBarItem];
+  [v8 setTabBarItem:underlyingTabBarItem];
 
   return v8;
 }
@@ -4478,21 +4478,21 @@ void __51__SKUIApplicationController__loadApplicationScript__block_invoke_2(uint
   return operationQueue;
 }
 
-- (id)_overlayNavigationControllerForViewController:(id)a3
+- (id)_overlayNavigationControllerForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    overlayNavigationController = controllerCopy;
 LABEL_5:
-    v5 = v4;
+    v5 = overlayNavigationController;
     goto LABEL_7;
   }
 
-  if ([v3 conformsToProtocol:&unk_2829AECD8])
+  if ([controllerCopy conformsToProtocol:&unk_2829AECD8])
   {
-    v4 = [v3 overlayNavigationController];
+    overlayNavigationController = [controllerCopy overlayNavigationController];
     goto LABEL_5;
   }
 
@@ -4502,15 +4502,15 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)_playPreviewForPreviewTemplate:(id)a3
+- (BOOL)_playPreviewForPreviewTemplate:(id)template
 {
-  v3 = a3;
-  v4 = [v3 previewURLString];
-  if (v4)
+  templateCopy = template;
+  previewURLString = [templateCopy previewURLString];
+  if (previewURLString)
   {
-    v5 = [MEMORY[0x277D7FDA8] sessionManager];
-    v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v4];
-    v7 = [v5 audioPlayerForURL:v6];
+    sessionManager = [MEMORY[0x277D7FDA8] sessionManager];
+    v6 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:previewURLString];
+    v7 = [sessionManager audioPlayerForURL:v6];
     v8 = v7;
     if (v7)
     {
@@ -4519,40 +4519,40 @@ LABEL_7:
 
     else
     {
-      v9 = [v5 stopAllAudioPlayerSessions];
-      v10 = [v5 startSessionWithURL:v6];
-      [v10 setStoreItemIdentifier:{objc_msgSend(v3, "itemIdentifier")}];
+      stopAllAudioPlayerSessions = [sessionManager stopAllAudioPlayerSessions];
+      v10 = [sessionManager startSessionWithURL:v6];
+      [v10 setStoreItemIdentifier:{objc_msgSend(templateCopy, "itemIdentifier")}];
       [v10 play];
     }
   }
 
-  return v4 != 0;
+  return previewURLString != 0;
 }
 
-- (void)_recordTabBarMetricsEventToSelectViewController:(id)a3
+- (void)_recordTabBarMetricsEventToSelectViewController:(id)controller
 {
-  v15 = a3;
-  v4 = [(SKUIApplicationController *)self _existingTabBarController];
-  v5 = [v4 selectedIndex];
-  v6 = [v4 viewControllers];
-  if (v5 >= [v6 count])
+  controllerCopy = controller;
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  selectedIndex = [_existingTabBarController selectedIndex];
+  viewControllers = [_existingTabBarController viewControllers];
+  if (selectedIndex >= [viewControllers count])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v6 objectAtIndex:v5];
+    v7 = [viewControllers objectAtIndex:selectedIndex];
   }
 
-  v8 = [v6 indexOfObjectIdenticalTo:v15];
+  v8 = [viewControllers indexOfObjectIdenticalTo:controllerCopy];
   if (v8 < [(NSArray *)self->_tabBarItems count])
   {
     v9 = objc_alloc_init(MEMORY[0x277D69B68]);
     [v9 setTargetType:*MEMORY[0x277D6A4E8]];
     v10 = [(NSArray *)self->_tabBarItems objectAtIndex:v8];
-    v11 = [v10 metricsIdentifier];
-    [v9 setTargetIdentifier:v11];
+    metricsIdentifier = [v10 metricsIdentifier];
+    [v9 setTargetIdentifier:metricsIdentifier];
 
     if (!v7)
     {
@@ -4561,7 +4561,7 @@ LABEL_7:
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v7 activeMetricsController];
+      activeMetricsController = [v7 activeMetricsController];
     }
 
     else
@@ -4569,30 +4569,30 @@ LABEL_7:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [v7 topViewController];
+        topViewController = [v7 topViewController];
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v13 activeMetricsController];
+          activeMetricsController = [topViewController activeMetricsController];
         }
 
         else
         {
-          v12 = 0;
+          activeMetricsController = 0;
         }
       }
 
       else
       {
-        v12 = 0;
+        activeMetricsController = 0;
       }
     }
 
     v14 = [(SKUIClientContext *)self->_clientContext metricsPageContextForViewController:v7];
     [v9 setPageContext:v14];
 
-    if (v12)
+    if (activeMetricsController)
     {
-      [v12 recordEvent:v9];
+      [activeMetricsController recordEvent:v9];
     }
 
     else
@@ -4624,7 +4624,7 @@ LABEL_16:
   navigationDocumentControllers = self->_navigationDocumentControllers;
   self->_navigationDocumentControllers = v5;
 
-  v7 = [(SKUIApplicationController *)self clientContext];
+  clientContext = [(SKUIApplicationController *)self clientContext];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v56 = 0u;
   v57 = 0u;
@@ -4649,16 +4649,16 @@ LABEL_16:
         }
 
         v14 = *(*(&v56 + 1) + 8 * v13);
-        v15 = [v14 customRootViewController];
+        customRootViewController = [v14 customRootViewController];
 
-        if (v15)
+        if (customRootViewController)
         {
-          v16 = [v14 customRootViewController];
-          if ([v16 conformsToProtocol:v12[252]])
+          customRootViewController2 = [v14 customRootViewController];
+          if ([customRootViewController2 conformsToProtocol:v12[252]])
           {
-            v17 = [v16 appNavigationController];
-            [v17 setClientContext:v7];
-            [v17 setDelegate:self];
+            appNavigationController = [customRootViewController2 appNavigationController];
+            [appNavigationController setClientContext:clientContext];
+            [appNavigationController setDelegate:self];
             v18 = self->_navigationDocumentControllers;
           }
 
@@ -4667,35 +4667,35 @@ LABEL_16:
             v21 = v11;
             v22 = v12;
             v23 = v8;
-            v24 = v7;
+            v24 = clientContext;
             v25 = self->_navigationDocumentControllers;
-            v17 = [MEMORY[0x277CBEB68] null];
+            appNavigationController = [MEMORY[0x277CBEB68] null];
             v18 = v25;
-            v7 = v24;
+            clientContext = v24;
             v8 = v23;
             v12 = v22;
             v11 = v21;
             v10 = v49;
           }
 
-          [(NSMutableArray *)v18 addObject:v17];
+          [(NSMutableArray *)v18 addObject:appNavigationController];
 
-          v19 = [v14 customRootViewController];
-          v20 = v19;
+          customRootViewController3 = [v14 customRootViewController];
+          v20 = customRootViewController3;
         }
 
         else
         {
-          v19 = [(SKUIApplicationController *)self _newNavigationControllerWithTabBarItem:v14];
-          v20 = [[SKUINavigationDocumentController alloc] initWithNavigationController:v19];
-          [(SKUINavigationDocumentController *)v20 setClientContext:v7];
+          customRootViewController3 = [(SKUIApplicationController *)self _newNavigationControllerWithTabBarItem:v14];
+          v20 = [[SKUINavigationDocumentController alloc] initWithNavigationController:customRootViewController3];
+          [(SKUINavigationDocumentController *)v20 setClientContext:clientContext];
           [(SKUINavigationDocumentController *)v20 setDelegate:self];
           [(NSMutableArray *)self->_navigationDocumentControllers addObject:v20];
-          [(SKUIApplicationController *)self _ensureStackConsistencyForNavigationController:v19];
-          v16 = v19;
+          [(SKUIApplicationController *)self _ensureStackConsistencyForNavigationController:customRootViewController3];
+          customRootViewController2 = customRootViewController3;
         }
 
-        [v8 addObject:v19];
+        [v8 addObject:customRootViewController3];
 
         ++v13;
       }
@@ -4709,21 +4709,21 @@ LABEL_16:
 
   if (self->_hidesTabBar)
   {
-    v26 = [(SKUIApplicationController *)self _navigationContainerViewController];
-    v27 = [v8 firstObject];
-    [v26 setContentViewController:v27];
+    _navigationContainerViewController = [(SKUIApplicationController *)self _navigationContainerViewController];
+    firstObject = [v8 firstObject];
+    [_navigationContainerViewController setContentViewController:firstObject];
 
-    v28 = [(SKUIApplicationController *)self _existingTabBarController];
-    [v28 setViewControllers:0 animated:0];
+    _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+    [_existingTabBarController setViewControllers:0 animated:0];
     v29 = v48;
   }
 
   else
   {
-    v28 = [(SKUIApplicationController *)self _tabBarController];
+    _existingTabBarController = [(SKUIApplicationController *)self _tabBarController];
     [(SKUISimpleContainerViewController *)self->_navigationContainerViewController setContentViewController:0];
-    [v28 setViewControllers:v8 animated:0];
-    v30 = SKUITabBarControllerGetMoreNavigationController(v28);
+    [_existingTabBarController setViewControllers:v8 animated:0];
+    v30 = SKUITabBarControllerGetMoreNavigationController(_existingTabBarController);
     [v30 setDelegate:self];
     v31 = [(NSDictionary *)self->_launchOptions objectForKey:@"url"];
     v29 = v48;
@@ -4737,7 +4737,7 @@ LABEL_16:
       v36 = v35;
       if (v35)
       {
-        v37 = v7;
+        v37 = clientContext;
         tabBarItems = self->_tabBarItems;
         v54[0] = MEMORY[0x277D85DD0];
         v54[1] = 3221225472;
@@ -4748,24 +4748,24 @@ LABEL_16:
         if (v39 < [v8 count])
         {
           v40 = [v8 objectAtIndex:v39];
-          [v28 setSelectedViewController:v40];
+          [_existingTabBarController setSelectedViewController:v40];
         }
 
-        v7 = v37;
+        clientContext = v37;
       }
     }
 
-    v41 = [v28 selectedViewController];
-    [(SKUIApplicationController *)self _tintTabBarWithViewController:v41];
+    selectedViewController = [_existingTabBarController selectedViewController];
+    [(SKUIApplicationController *)self _tintTabBarWithViewController:selectedViewController];
   }
 
   modalDocumentController = self->_modalDocumentController;
-  v43 = [(SKUIApplicationController *)self rootViewController];
-  [(SKUIModalDocumentController *)modalDocumentController setRootViewController:v43];
+  rootViewController = [(SKUIApplicationController *)self rootViewController];
+  [(SKUIModalDocumentController *)modalDocumentController setRootViewController:rootViewController];
 
-  v44 = [(SKUIApplicationController *)self tabBarController];
-  v45 = [v44 selectedViewController];
-  [(SKUIApplicationController *)self _updateOverlayNavigationController:v45];
+  tabBarController = [(SKUIApplicationController *)self tabBarController];
+  selectedViewController2 = [tabBarController selectedViewController];
+  [(SKUIApplicationController *)self _updateOverlayNavigationController:selectedViewController2];
 
   scriptContext = self->_scriptContext;
   v51[0] = MEMORY[0x277D85DD0];
@@ -4773,7 +4773,7 @@ LABEL_16:
   v51[2] = __55__SKUIApplicationController__reloadRootViewControllers__block_invoke_3;
   v51[3] = &unk_2781FECF0;
   v52 = v29;
-  v53 = self;
+  selfCopy = self;
   v47 = v29;
   [(IKAppContext *)scriptContext evaluate:&__block_literal_global_366 completionBlock:v51];
 }
@@ -4802,16 +4802,16 @@ uint64_t __55__SKUIApplicationController__reloadRootViewControllers__block_invok
   return [v2 _dispatchTabBarOnSelect];
 }
 
-- (void)_reloadTabBarWithClientContext:(id)a3
+- (void)_reloadTabBarWithClientContext:(id)context
 {
-  if (a3)
+  if (context)
   {
     clientContext = self->_clientContext;
     if (clientContext)
     {
-      v5 = a3;
+      contextCopy = context;
       v7 = [(SKUIClientContext *)clientContext valueForConfigurationKey:@"tabs"];
-      v6 = [v5 valueForConfigurationKey:@"tabs"];
+      v6 = [contextCopy valueForConfigurationKey:@"tabs"];
 
       if (v6 && ([v7 isEqual:v6] & 1) == 0)
       {
@@ -4824,16 +4824,16 @@ uint64_t __55__SKUIApplicationController__reloadRootViewControllers__block_invok
 
 - (void)_removeObserversForReloadNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D7FCC0] object:0];
 }
 
 - (void)_resetUserInterfaceAfterStoreFrontChange
 {
   if ([(SKUIApplicationControllerOptions *)self->_options supportsFullApplicationReload])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:@"SUAccountViewControllerDidDisappearNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SUAccountViewControllerDidDisappearNotification" object:0];
     scriptContext = self->_scriptContext;
     if (scriptContext)
     {
@@ -4852,12 +4852,12 @@ uint64_t __55__SKUIApplicationController__reloadRootViewControllers__block_invok
   [(SKUIApplicationController *)self _removeObserversForReloadNotifications];
   if (self->_tabBarController)
   {
-    v3 = [(SKUIApplicationController *)self _transientNavigationDocument];
-    v4 = [v3 navigationController];
+    _transientNavigationDocument = [(SKUIApplicationController *)self _transientNavigationDocument];
+    navigationController = [_transientNavigationDocument navigationController];
 
-    [v4 setViewControllers:MEMORY[0x277CBEBF8] animated:0];
-    v5 = [v4 view];
-    [v5 layoutSubviews];
+    [navigationController setViewControllers:MEMORY[0x277CBEBF8] animated:0];
+    view = [navigationController view];
+    [view layoutSubviews];
 
     [(SKUITabBarController *)self->_tabBarController setTransientViewController:0 animated:0];
   }
@@ -4881,32 +4881,32 @@ uint64_t __55__SKUIApplicationController__reloadRootViewControllers__block_invok
   if (!self->_didDisplayFirstPage)
   {
     clientContext = self->_clientContext;
-    v4 = [(SKUIApplicationController *)self rootViewController];
-    v5 = [v4 view];
-    [v5 bounds];
+    rootViewController = [(SKUIApplicationController *)self rootViewController];
+    view = [rootViewController view];
+    [view bounds];
     [(SKUIClientContext *)clientContext sendApplicationWindowSizeDidUpdate:v6, v7];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    LOBYTE(v4) = objc_opt_respondsToSelector();
+    LOBYTE(rootViewController) = objc_opt_respondsToSelector();
 
-    if (v4)
+    if (rootViewController)
     {
       v9 = objc_loadWeakRetained(&self->_delegate);
       [v9 applicationDidDisplayFirstPage:self];
     }
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 removeObserver:self name:@"SKUIApplicationPageDidDisplayNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SKUIApplicationPageDidDisplayNotification" object:0];
 
     self->_didDisplayFirstPage = 1;
   }
 }
 
-- (void)_setClientContextWithDictionary:(id)a3
+- (void)_setClientContextWithDictionary:(id)dictionary
 {
   clientContextClass = self->_clientContextClass;
-  v5 = a3;
-  v6 = [[clientContextClass alloc] initWithConfigurationDictionary:v5];
+  dictionaryCopy = dictionary;
+  v6 = [[clientContextClass alloc] initWithConfigurationDictionary:dictionaryCopy];
 
   [(SKUIApplicationController *)self setClientContext:v6];
   [(SKUIModalDocumentController *)self->_modalDocumentController setClientContext:self->_clientContext];
@@ -4923,21 +4923,21 @@ uint64_t __55__SKUIApplicationController__reloadRootViewControllers__block_invok
   [(SKUIApplicationController *)self _loadApplicationScript];
 }
 
-- (BOOL)_shouldUseLegacyURLHandlingForExternalURL:(id)a3
+- (BOOL)_shouldUseLegacyURLHandlingForExternalURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 actionString];
-  v10 = ([v5 isEqualToString:@"account"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"donate") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"gift") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"redeem") & 1) != 0 || (objc_msgSend(v4, "underlyingURL"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "host"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, !v8) || (+[SKUIURLResolver tabIdentifierForURL:](SKUIURLResolver, "tabIdentifierForURL:", v4), v9 = objc_claimAutoreleasedReturnValue(), v9, v9) || self->_scriptLoadState == 4;
+  lCopy = l;
+  actionString = [lCopy actionString];
+  v10 = ([actionString isEqualToString:@"account"] & 1) != 0 || (objc_msgSend(actionString, "isEqualToString:", @"donate") & 1) != 0 || (objc_msgSend(actionString, "isEqualToString:", @"gift") & 1) != 0 || (objc_msgSend(actionString, "isEqualToString:", @"redeem") & 1) != 0 || (objc_msgSend(lCopy, "underlyingURL"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "host"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, !v8) || (+[SKUIURLResolver tabIdentifierForURL:](SKUIURLResolver, "tabIdentifierForURL:", lCopy), v9 = objc_claimAutoreleasedReturnValue(), v9, v9) || self->_scriptLoadState == 4;
 
   return v10;
 }
 
-- (void)_attemptAMSURLHandlingIfPossibleForExternalURL:(id)a3 fallback:(id)a4
+- (void)_attemptAMSURLHandlingIfPossibleForExternalURL:(id)l fallback:(id)fallback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [getAMSURLParserClass() bagSubProfile];
-  v9 = [getAMSURLParserClass() bagSubProfileVersion];
+  lCopy = l;
+  fallbackCopy = fallback;
+  bagSubProfile = [getAMSURLParserClass() bagSubProfile];
+  bagSubProfileVersion = [getAMSURLParserClass() bagSubProfileVersion];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -4956,20 +4956,20 @@ uint64_t __55__SKUIApplicationController__reloadRootViewControllers__block_invok
 
   v11 = v10;
   _Block_object_dispose(&v23, 8);
-  v12 = [v10 bagForProfile:v8 profileVersion:v9];
+  v12 = [v10 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
   v13 = [objc_alloc(getAMSURLParserClass()) initWithBag:v12];
-  v14 = [v6 underlyingURL];
-  v15 = [v13 typeForURL:v14];
+  underlyingURL = [lCopy underlyingURL];
+  v15 = [v13 typeForURL:underlyingURL];
 
   objc_initWeak(location, self);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __85__SKUIApplicationController__attemptAMSURLHandlingIfPossibleForExternalURL_fallback___block_invoke;
   v18[3] = &unk_2781FED40;
-  v16 = v7;
+  v16 = fallbackCopy;
   v20 = v16;
   objc_copyWeak(&v21, location);
-  v17 = v6;
+  v17 = lCopy;
   v19 = v17;
   [v15 addFinishBlock:v18];
 
@@ -5028,9 +5028,9 @@ void __85__SKUIApplicationController__attemptAMSURLHandlingIfPossibleForExternal
   }
 }
 
-- (void)_showFloatingStatusOverlayAnimated:(BOOL)a3
+- (void)_showFloatingStatusOverlayAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (!self->_floatingStatusOverlayViewController)
   {
     previewDocumentController = self->_previewDocumentController;
@@ -5040,50 +5040,50 @@ void __85__SKUIApplicationController__attemptAMSURLHandlingIfPossibleForExternal
     }
 
     v6 = previewDocumentController;
-    v7 = [(SKUIApplicationController *)self _existingTabBarController];
-    v8 = [v7 traitCollection];
+    _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+    traitCollection = [_existingTabBarController traitCollection];
 
-    v9 = [v6 overlayViewControllerWithBackgroundStyle:{objc_msgSend(v8, "userInterfaceStyle") != 1}];
+    v9 = [v6 overlayViewControllerWithBackgroundStyle:{objc_msgSend(traitCollection, "userInterfaceStyle") != 1}];
     floatingStatusOverlayViewController = self->_floatingStatusOverlayViewController;
     self->_floatingStatusOverlayViewController = v9;
   }
 
-  v11 = [(SKUIApplicationController *)self _existingTabBarController];
-  SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(v11, self->_floatingStatusOverlayViewController, v3);
+  _existingTabBarController2 = [(SKUIApplicationController *)self _existingTabBarController];
+  SKUITabBarControllerSetFloatingOverlayViewControllerAnimated(_existingTabBarController2, self->_floatingStatusOverlayViewController, animatedCopy);
 }
 
-- (void)_showStatusOverlayForNavigationController:(id)a3 viewController:(id)a4 animated:(BOOL)a5
+- (void)_showStatusOverlayForNavigationController:(id)controller viewController:(id)viewController animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SKUIApplicationController *)self rootViewController];
-  v11 = [v10 view];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  rootViewController = [(SKUIApplicationController *)self rootViewController];
+  view = [rootViewController view];
 
-  [v11 bounds];
+  [view bounds];
   if ([(SKUIApplicationController *)self _usesFloatingStatusOverlayForWidth:v12])
   {
-    [(SKUIApplicationController *)self _showFloatingStatusOverlayAnimated:v5];
+    [(SKUIApplicationController *)self _showFloatingStatusOverlayAnimated:animatedCopy];
   }
 
-  else if (v8)
+  else if (controllerCopy)
   {
-    v13 = [SKUINavigationControllerAssistant assistantForNavigationController:v8 clientContext:self->_clientContext];
-    v14 = [v13 statusOverlayProvider];
-    v15 = [v9 transitionCoordinator];
-    v16 = [(SKUIApplicationController *)self _statusOverlayProviderForViewController:v9];
-    [v13 setStatusOverlayProvider:v16 animated:v5];
+    v13 = [SKUINavigationControllerAssistant assistantForNavigationController:controllerCopy clientContext:self->_clientContext];
+    statusOverlayProvider = [v13 statusOverlayProvider];
+    transitionCoordinator = [viewControllerCopy transitionCoordinator];
+    v16 = [(SKUIApplicationController *)self _statusOverlayProviderForViewController:viewControllerCopy];
+    [v13 setStatusOverlayProvider:v16 animated:animatedCopy];
 
-    [v13 willShowViewController:v9 animated:v5];
+    [v13 willShowViewController:viewControllerCopy animated:animatedCopy];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __95__SKUIApplicationController__showStatusOverlayForNavigationController_viewController_animated___block_invoke;
     v19[3] = &unk_2781FB740;
     v20 = v13;
-    v21 = v14;
-    v17 = v14;
+    v21 = statusOverlayProvider;
+    v17 = statusOverlayProvider;
     v18 = v13;
-    [v15 notifyWhenInteractionEndsUsingBlock:v19];
+    [transitionCoordinator notifyWhenInteractionEndsUsingBlock:v19];
   }
 }
 
@@ -5096,30 +5096,30 @@ void __95__SKUIApplicationController__showStatusOverlayForNavigationController_v
   }
 }
 
-- (void)_startScriptContextWithURL:(id)a3
+- (void)_startScriptContextWithURL:(id)l
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  NSLog(&cfstr_StartScriptWit.isa, v6, v4);
+  NSLog(&cfstr_StartScriptWit.isa, v6, lCopy);
 
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v7 = [MEMORY[0x277D69B38] sharedConfig];
-    v12 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
     }
@@ -5135,27 +5135,27 @@ void __95__SKUIApplicationController__showStatusOverlayForNavigationController_v
     }
 
     LODWORD(v32) = 138412290;
-    *(&v32 + 4) = v4;
+    *(&v32 + 4) = lCopy;
     LODWORD(v31) = 12;
     goto LABEL_19;
   }
 
   if (self->_scriptContext)
   {
-    v7 = [MEMORY[0x277D69B38] sharedConfig];
-    v8 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    shouldLog2 = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog2 | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog2;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v9;
     }
@@ -5171,7 +5171,7 @@ void __95__SKUIApplicationController__showStatusOverlayForNavigationController_v
     }
 
     LODWORD(v32) = 138412290;
-    *(&v32 + 4) = v4;
+    *(&v32 + 4) = lCopy;
     LODWORD(v31) = 12;
 LABEL_19:
     v15 = _os_log_send_and_compose_impl();
@@ -5183,7 +5183,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v10 = [MEMORY[0x277CCACA8] stringWithCString:v15 encoding:{4, &v32, v31, v32}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v15 encoding:{4, &v32, v31, v32}];
     free(v15);
     SSFileLog();
 LABEL_21:
@@ -5194,17 +5194,17 @@ LABEL_21:
   SKUIInitializeDOMFeatureFactory();
   SKUIInitializeViewElementFactory();
   SKUIInitializeViewElementStyleFactory();
-  v16 = [v4 copy];
+  v16 = [lCopy copy];
   applicationScriptURL = self->_applicationScriptURL;
   self->_applicationScriptURL = v16;
 
-  v18 = [(SKUIClientContext *)self->_clientContext URLBag];
+  uRLBag = [(SKUIClientContext *)self->_clientContext URLBag];
   v19 = MEMORY[0x277D69C88];
-  v20 = [v18 URLBagContext];
-  [v19 setURLBag:v18 forContext:v20];
+  uRLBagContext = [uRLBag URLBagContext];
+  [v19 setURLBag:uRLBag forContext:uRLBagContext];
 
-  v21 = [(SKUIApplicationControllerOptions *)self->_options requiresLocalBootstrapScript];
-  v22 = [objc_alloc(MEMORY[0x277D1B028]) initWithApplication:self mode:v21 delegate:self];
+  requiresLocalBootstrapScript = [(SKUIApplicationControllerOptions *)self->_options requiresLocalBootstrapScript];
+  v22 = [objc_alloc(MEMORY[0x277D1B028]) initWithApplication:self mode:requiresLocalBootstrapScript delegate:self];
   scriptContext = self->_scriptContext;
   self->_scriptContext = v22;
 
@@ -5216,16 +5216,16 @@ LABEL_21:
   [(SKUIClientContext *)self->_clientContext _setScriptAppContext:self->_scriptContext];
   if ([(SKUIApplicationControllerOptions *)self->_options isBootstrapScriptFallbackEnabled])
   {
-    v25 = [(SKUIClientContext *)self->_clientContext storeFrontIdentifier];
-    if (v25)
+    storeFrontIdentifier = [(SKUIClientContext *)self->_clientContext storeFrontIdentifier];
+    if (storeFrontIdentifier)
     {
-      v26 = v25;
-      v27 = [(SKUIClientContext *)self->_clientContext isBootstrapScriptFallbackDisabled];
+      v26 = storeFrontIdentifier;
+      isBootstrapScriptFallbackDisabled = [(SKUIClientContext *)self->_clientContext isBootstrapScriptFallbackDisabled];
 
-      if (!v27)
+      if (!isBootstrapScriptFallbackDisabled)
       {
-        v28 = [(SKUIClientContext *)self->_clientContext storeFrontIdentifier];
-        v29 = [SKUIBootstrapScriptFallback cacheFilenameForStoreFrontIdentifier:v28];
+        storeFrontIdentifier2 = [(SKUIClientContext *)self->_clientContext storeFrontIdentifier];
+        v29 = [SKUIBootstrapScriptFallback cacheFilenameForStoreFrontIdentifier:storeFrontIdentifier2];
 
         v30 = [[SKUIBootstrapScriptFallback alloc] initWithFilename:v29];
         [(SKUIApplicationControllerOptions *)self->_options bootstrapScriptFallbackMaximumAge];
@@ -5250,31 +5250,31 @@ void __56__SKUIApplicationController__startScriptContextWithURL___block_invoke(u
   [v3 setBootstrapStartTime:?];
 }
 
-- (void)_jsLaunchFinishedWithLaunchMetrics:(id)a3
+- (void)_jsLaunchFinishedWithLaunchMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = +[SKUIMetricsAppLaunchEvent consumePendingLaunchEvent];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     [v5 setLaunchEndTime:?];
 
-    v7 = [v4 objectForKeyedSubscript:@"jsResourcesStartTime"];
+    v7 = [metricsCopy objectForKeyedSubscript:@"jsResourcesStartTime"];
     if (v7)
     {
       [SKUIMetricsUtilities timeIntervalFromJSTime:v7];
       [v5 setJsResourcesStartTime:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"jsResourcesEndTime"];
+    v8 = [metricsCopy objectForKeyedSubscript:@"jsResourcesEndTime"];
     if (v8)
     {
       [SKUIMetricsUtilities timeIntervalFromJSTime:v8];
       [v5 setJsResourcesEndTime:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"initialTabMetrics"];
+    v9 = [metricsCopy objectForKeyedSubscript:@"initialTabMetrics"];
     v10 = v9;
     if (v9)
     {
@@ -5332,9 +5332,9 @@ void __56__SKUIApplicationController__startScriptContextWithURL___block_invoke(u
   }
 }
 
-- (id)_statusOverlayProviderForViewController:(id)a3
+- (id)_statusOverlayProviderForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   previewDocumentController = self->_previewDocumentController;
   if (previewDocumentController)
   {
@@ -5352,7 +5352,7 @@ LABEL_2:
       goto LABEL_3;
     }
 
-    if ([previewDocumentController shouldShowStatusOverlayForViewController:v4])
+    if ([previewDocumentController shouldShowStatusOverlayForViewController:controllerCopy])
     {
       previewDocumentController = self->_statusOverlayProvider;
       goto LABEL_2;
@@ -5368,8 +5368,8 @@ LABEL_3:
 - (void)_stopScriptContextForReload
 {
   [(SKUIMetricsController *)self->_metricsController flushImmediately];
-  v3 = [MEMORY[0x277D69A20] defaultStore];
-  v4 = [v3 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
   v10 = SSVStoreFrontIdentifierForAccount();
 
   if (v10)
@@ -5384,14 +5384,14 @@ LABEL_3:
     CFURLCacheRemoveAllCachedResponses();
   }
 
-  v7 = [MEMORY[0x277CBAB70] sharedURLCache];
-  [v7 removeAllCachedResponses];
+  mEMORY[0x277CBAB70] = [MEMORY[0x277CBAB70] sharedURLCache];
+  [mEMORY[0x277CBAB70] removeAllCachedResponses];
 
-  v8 = [MEMORY[0x277D7FD50] sharedCache];
-  [v8 invalidateAllURLBags];
+  mEMORY[0x277D7FD50] = [MEMORY[0x277D7FD50] sharedCache];
+  [mEMORY[0x277D7FD50] invalidateAllURLBags];
 
-  v9 = [(IKAppContext *)self->_scriptContext appScriptFallbackHandler];
-  [v9 invalidate];
+  appScriptFallbackHandler = [(IKAppContext *)self->_scriptContext appScriptFallbackHandler];
+  [appScriptFallbackHandler invalidate];
 
   self->_scriptLoadState = 5;
   [(IKAppContext *)self->_scriptContext stop];
@@ -5399,14 +5399,14 @@ LABEL_3:
 
 - (id)_tabBarController
 {
-  v3 = [(SKUIApplicationControllerOptions *)self->_options tabBarControllerStyle];
-  if (v3 == 1)
+  tabBarControllerStyle = [(SKUIApplicationControllerOptions *)self->_options tabBarControllerStyle];
+  if (tabBarControllerStyle == 1)
   {
     scrollingTabBarController = self->_scrollingTabBarController;
     if (!scrollingTabBarController)
     {
       p_scrollingTabBarController = &self->_scrollingTabBarController;
-      v6 = [(SKUIApplicationController *)self _scrollingTabBarControllerClass];
+      _scrollingTabBarControllerClass = [(SKUIApplicationController *)self _scrollingTabBarControllerClass];
       goto LABEL_7;
     }
 
@@ -5415,15 +5415,15 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (!v3)
+  if (!tabBarControllerStyle)
   {
     p_scrollingTabBarController = &self->_tabBarController;
     scrollingTabBarController = self->_tabBarController;
     if (!scrollingTabBarController)
     {
-      v6 = [(SKUIApplicationController *)self _tabBarControllerClass];
+      _scrollingTabBarControllerClass = [(SKUIApplicationController *)self _tabBarControllerClass];
 LABEL_7:
-      v7 = objc_alloc_init(v6);
+      v7 = objc_alloc_init(_scrollingTabBarControllerClass);
       v8 = *p_scrollingTabBarController;
       *p_scrollingTabBarController = v7;
 
@@ -5441,17 +5441,17 @@ LABEL_10:
   return v9;
 }
 
-- (void)_tintTabBarWithViewController:(id)a3
+- (void)_tintTabBarWithViewController:(id)controller
 {
-  v4 = a3;
-  v14 = [(SKUIApplicationController *)self _existingTabBarController];
-  v5 = [v14 viewControllers];
-  v6 = [v5 indexOfObjectIdenticalTo:v4];
+  controllerCopy = controller;
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  viewControllers = [_existingTabBarController viewControllers];
+  v6 = [viewControllers indexOfObjectIdenticalTo:controllerCopy];
 
   if (v6 >= [(NSArray *)self->_tabBarItems count])
   {
     v9 = 0;
-    v10 = 0;
+    userInterfaceTintColor = 0;
     v8 = 0;
   }
 
@@ -5466,9 +5466,9 @@ LABEL_10:
 
     else
     {
-      v11 = [v7 barTintStyle];
-      v9 = v11 == 0;
-      if (v11)
+      barTintStyle = [v7 barTintStyle];
+      v9 = barTintStyle == 0;
+      if (barTintStyle)
       {
         v8 = 0;
       }
@@ -5479,16 +5479,16 @@ LABEL_10:
       }
     }
 
-    v10 = [v7 userInterfaceTintColor];
+    userInterfaceTintColor = [v7 userInterfaceTintColor];
   }
 
-  [v14 setForcedUserInterfaceStyle:v9];
-  [v14 setNeedsUserInterfaceAppearanceUpdate];
-  v12 = [MEMORY[0x277D75128] sharedApplication];
-  [v12 setStatusBarStyle:v8];
+  [_existingTabBarController setForcedUserInterfaceStyle:v9];
+  [_existingTabBarController setNeedsUserInterfaceAppearanceUpdate];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] setStatusBarStyle:v8];
 
-  v13 = [v14 tabBar];
-  [v13 setTintColor:v10];
+  tabBar = [_existingTabBarController tabBar];
+  [tabBar setTintColor:userInterfaceTintColor];
 }
 
 - (id)_transientNavigationDocument
@@ -5510,8 +5510,8 @@ LABEL_10:
     self->_transientNavigationDocument = v8;
 
     v10 = self->_transientNavigationDocument;
-    v11 = [(SKUIApplicationController *)self clientContext];
-    [(SKUINavigationDocumentController *)v10 setClientContext:v11];
+    clientContext = [(SKUIApplicationController *)self clientContext];
+    [(SKUINavigationDocumentController *)v10 setClientContext:clientContext];
 
     [(SKUINavigationDocumentController *)self->_transientNavigationDocument setDelegate:self];
     transientNavigationDocument = self->_transientNavigationDocument;
@@ -5520,10 +5520,10 @@ LABEL_10:
   return transientNavigationDocument;
 }
 
-- (BOOL)_usesFloatingStatusOverlayForWidth:(double)a3
+- (BOOL)_usesFloatingStatusOverlayForWidth:(double)width
 {
-  v4 = [(SKUIApplicationController *)self _existingTabBarController];
-  v5 = (!v4 || (objc_opt_respondsToSelector() & 1) != 0) && 320.0 / a3 < 0.5;
+  _existingTabBarController = [(SKUIApplicationController *)self _existingTabBarController];
+  v5 = (!_existingTabBarController || (objc_opt_respondsToSelector() & 1) != 0) && 320.0 / width < 0.5;
 
   return v5;
 }
@@ -5552,21 +5552,21 @@ LABEL_10:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v9 != v10)
+        if (v9 != null)
         {
-          v11 = [v9 documents];
-          v12 = [v11 count];
+          documents = [v9 documents];
+          v12 = [documents count];
 
           if (v12)
           {
-            v13 = [v9 documents];
-            v14 = [v13 firstObject];
+            documents2 = [v9 documents];
+            firstObject = [documents2 firstObject];
 
-            if (v14)
+            if (firstObject)
             {
-              [v3 addObject:v14];
+              [v3 addObject:firstObject];
             }
           }
         }

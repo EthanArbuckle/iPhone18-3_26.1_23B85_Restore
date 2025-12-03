@@ -1,16 +1,16 @@
 @interface ENCoreTelephonyUtility
 + (ENCoreTelephonyUtility)sharedInstance;
-+ (id)countryCodeISOForMobileCountryCode:(id)a3;
-+ (id)mobileCountryCodeForISO:(id)a3;
++ (id)countryCodeISOForMobileCountryCode:(id)code;
++ (id)mobileCountryCodeForISO:(id)o;
 - (ENCoreTelephonyUtility)init;
-- (id)countryCodeISOForMobileCountryCode:(id)a3;
+- (id)countryCodeISOForMobileCountryCode:(id)code;
 - (id)currentMobileCountryCode;
 - (id)currentPhoneNumbers;
-- (void)addObserver:(id)a3;
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
 - (void)currentPhoneNumbers;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation ENCoreTelephonyUtility
@@ -49,20 +49,20 @@ void __40__ENCoreTelephonyUtility_sharedInstance__block_invoke()
     [(ENCoreTelephonyUtility *)v2 setSerialQueue:v4];
 
     v5 = *MEMORY[0x277CBECE0];
-    v6 = [(ENCoreTelephonyUtility *)v2 serialQueue];
+    serialQueue = [(ENCoreTelephonyUtility *)v2 serialQueue];
     v2->_ctServerConnection = _CTServerConnectionCreateOnTargetQueue();
 
     v7 = objc_alloc(MEMORY[0x277CC37B8]);
-    v8 = [(ENCoreTelephonyUtility *)v2 serialQueue];
-    v9 = [v7 initWithQueue:v8];
+    serialQueue2 = [(ENCoreTelephonyUtility *)v2 serialQueue];
+    v9 = [v7 initWithQueue:serialQueue2];
     ctClient = v2->_ctClient;
     v2->_ctClient = v9;
 
     [(CoreTelephonyClient *)v2->_ctClient setDelegate:v2];
   }
 
-  v11 = [MEMORY[0x277CCAA48] weakObjectsHashTable];
-  [(ENCoreTelephonyUtility *)v2 setObserversTable:v11];
+  weakObjectsHashTable = [MEMORY[0x277CCAA48] weakObjectsHashTable];
+  [(ENCoreTelephonyUtility *)v2 setObserversTable:weakObjectsHashTable];
 
   return v2;
 }
@@ -84,18 +84,18 @@ void __40__ENCoreTelephonyUtility_sharedInstance__block_invoke()
   [(ENCoreTelephonyUtility *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ENCoreTelephonyUtility *)self serialQueue];
+  observerCopy = observer;
+  serialQueue = [(ENCoreTelephonyUtility *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ENCoreTelephonyUtility_addObserver___block_invoke;
   v7[3] = &unk_278FD1120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __38__ENCoreTelephonyUtility_addObserver___block_invoke(uint64_t a1)
@@ -121,23 +121,23 @@ void __38__ENCoreTelephonyUtility_addObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (gLogCategory_ENCoreTelephonyUtility <= 30 && (gLogCategory_ENCoreTelephonyUtility != -1 || _LogCategory_Initialize()))
   {
     [ENCoreTelephonyUtility removeObserver:];
   }
 
-  v5 = [(ENCoreTelephonyUtility *)self serialQueue];
+  serialQueue = [(ENCoreTelephonyUtility *)self serialQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__ENCoreTelephonyUtility_removeObserver___block_invoke;
   v7[3] = &unk_278FD1120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __41__ENCoreTelephonyUtility_removeObserver___block_invoke(uint64_t a1)
@@ -146,13 +146,13 @@ void __41__ENCoreTelephonyUtility_removeObserver___block_invoke(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (id)countryCodeISOForMobileCountryCode:(id)a3
+- (id)countryCodeISOForMobileCountryCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   if ([(ENCoreTelephonyUtility *)self ctServerConnection]|| ([(ENCoreTelephonyUtility *)self ctClient], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     v6 = objc_autoreleasePoolPush();
-    if (v4)
+    if (codeCopy)
     {
       [(ENCoreTelephonyUtility *)self ctServerConnection];
       _CTServerConnectionCopyISOForMCC();
@@ -170,16 +170,16 @@ void __41__ENCoreTelephonyUtility_removeObserver___block_invoke(uint64_t a1)
 
 - (id)currentMobileCountryCode
 {
-  v3 = [(ENCoreTelephonyUtility *)self ctClient];
+  ctClient = [(ENCoreTelephonyUtility *)self ctClient];
 
-  if (v3)
+  if (ctClient)
   {
-    v4 = [(ENCoreTelephonyUtility *)self ctClient];
-    v5 = [v4 getCurrentDataSubscriptionContextSync:0];
+    ctClient2 = [(ENCoreTelephonyUtility *)self ctClient];
+    v5 = [ctClient2 getCurrentDataSubscriptionContextSync:0];
 
-    v6 = [(ENCoreTelephonyUtility *)self ctClient];
+    ctClient3 = [(ENCoreTelephonyUtility *)self ctClient];
     v11 = 0;
-    v7 = [v6 copyMobileCountryCode:v5 error:&v11];
+    v7 = [ctClient3 copyMobileCountryCode:v5 error:&v11];
     v8 = v11;
 
     if (!v8 && v7 && [v7 length] && objc_msgSend(v7, "integerValue") != 0xFFFF)
@@ -210,9 +210,9 @@ void __41__ENCoreTelephonyUtility_removeObserver___block_invoke(uint64_t a1)
 {
   v41 = *MEMORY[0x277D85DE8];
   v23 = [MEMORY[0x277CBEB50] setWithCapacity:2];
-  v3 = [(ENCoreTelephonyUtility *)self ctClient];
+  ctClient = [(ENCoreTelephonyUtility *)self ctClient];
   v30 = 0;
-  v20 = [v3 getSubscriptionInfoWithError:&v30];
+  v20 = [ctClient getSubscriptionInfoWithError:&v30];
   v22 = v30;
 
   if (v22)
@@ -244,9 +244,9 @@ void __41__ENCoreTelephonyUtility_removeObserver___block_invoke(uint64_t a1)
           }
 
           v7 = *(*(&v26 + 1) + 8 * i);
-          v8 = [(ENCoreTelephonyUtility *)self ctClient];
+          ctClient2 = [(ENCoreTelephonyUtility *)self ctClient];
           v25 = 0;
-          v9 = [v8 getPhoneNumber:v7 error:&v25];
+          v9 = [ctClient2 getPhoneNumber:v7 error:&v25];
           v10 = v25;
 
           if (v9)
@@ -276,7 +276,7 @@ void __41__ENCoreTelephonyUtility_removeObserver___block_invoke(uint64_t a1)
             v12 = v11();
             if (v12)
             {
-              v13 = [v9 number];
+              number = [v9 number];
               v14 = v12;
               v36 = 0;
               v37 = &v36;
@@ -300,7 +300,7 @@ void __41__ENCoreTelephonyUtility_removeObserver___block_invoke(uint64_t a1)
                 [ENCoreTelephonyUtility currentPhoneNumbers];
               }
 
-              v16 = v15(v13, v14);
+              v16 = v15(number, v14);
 
               if (v16)
               {
@@ -332,35 +332,35 @@ void __41__ENCoreTelephonyUtility_removeObserver___block_invoke(uint64_t a1)
     }
   }
 
-  v17 = [v23 allObjects];
+  allObjects = [v23 allObjects];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return allObjects;
 }
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  updateCopy = update;
+  infoCopy = info;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v7 = [v6 legacyInfo];
-  v8 = [(__CFString *)v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  legacyInfo = [infoCopy legacyInfo];
+  v8 = [(__CFString *)legacyInfo countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (!v8)
   {
-    v10 = v7;
+    v10 = legacyInfo;
 LABEL_35:
 
     goto LABEL_36;
   }
 
   v9 = v8;
-  v31 = v6;
-  v29 = v5;
+  v31 = infoCopy;
+  v29 = updateCopy;
   v10 = 0;
   v11 = *v37;
   v12 = *MEMORY[0x277CC38A8];
@@ -370,14 +370,14 @@ LABEL_35:
     {
       if (*v37 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(legacyInfo);
       }
 
       v14 = *(*(&v36 + 1) + 8 * i);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v7;
+        v15 = legacyInfo;
         v16 = [v14 objectForKeyedSubscript:v12];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
@@ -395,17 +395,17 @@ LABEL_35:
         {
           v10 = 0;
 LABEL_13:
-          v7 = v15;
+          legacyInfo = v15;
           continue;
         }
 
-        v7 = v15;
+        legacyInfo = v15;
         if ([(__CFString *)v20 integerValue]>= 1 && [(__CFString *)v20 integerValue]!= 0xFFFF)
         {
 
           v10 = v20;
-          v5 = v29;
-          v6 = v31;
+          updateCopy = v29;
+          infoCopy = v31;
 LABEL_19:
           if ([(__CFString *)v10 isEqualToString:@"209"])
           {
@@ -420,10 +420,10 @@ LABEL_19:
             v35 = 0u;
             v32 = 0u;
             v33 = 0u;
-            v22 = [(ENCoreTelephonyUtility *)self observersTable];
-            v23 = [v22 allObjects];
+            observersTable = [(ENCoreTelephonyUtility *)self observersTable];
+            allObjects = [observersTable allObjects];
 
-            v24 = [v23 countByEnumeratingWithState:&v32 objects:v40 count:16];
+            v24 = [allObjects countByEnumeratingWithState:&v32 objects:v40 count:16];
             if (v24)
             {
               v25 = v24;
@@ -434,19 +434,19 @@ LABEL_19:
                 {
                   if (*v33 != v26)
                   {
-                    objc_enumerationMutation(v23);
+                    objc_enumerationMutation(allObjects);
                   }
 
                   [*(*(&v32 + 1) + 8 * j) telephonyUtility:self mobileCountryCodeChanged:v10 andCountryCodeISO:v21];
                 }
 
-                v25 = [v23 countByEnumeratingWithState:&v32 objects:v40 count:16];
+                v25 = [allObjects countByEnumeratingWithState:&v32 objects:v40 count:16];
               }
 
               while (v25);
             }
 
-            v6 = v31;
+            infoCopy = v31;
           }
 
           else if (gLogCategory__ENConfigurationManager <= 90 && (gLogCategory__ENConfigurationManager != -1 || _LogCategory_Initialize()))
@@ -461,7 +461,7 @@ LABEL_19:
       }
     }
 
-    v9 = [(__CFString *)v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+    v9 = [(__CFString *)legacyInfo countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v9)
     {
       continue;
@@ -470,8 +470,8 @@ LABEL_19:
     break;
   }
 
-  v5 = v29;
-  v6 = v31;
+  updateCopy = v29;
+  infoCopy = v31;
   if (v10)
   {
     goto LABEL_19;
@@ -482,37 +482,37 @@ LABEL_36:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)mobileCountryCodeForISO:(id)a3
++ (id)mobileCountryCodeForISO:(id)o
 {
-  v3 = a3;
-  if (v3)
+  oCopy = o;
+  if (oCopy)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = [MEMORY[0x277CBEAC8] dictionaryWithContentsOfFile:@"/System/Library/Carrier Bundles/iPhone/Default.bundle/ISO2MCC.plist"];
-    v6 = [v3 lowercaseString];
-    v7 = [v5 objectForKey:v6];
+    lowercaseString = [oCopy lowercaseString];
+    v7 = [v5 objectForKey:lowercaseString];
 
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
 
     objc_autoreleasePoolPop(v4);
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
-+ (id)countryCodeISOForMobileCountryCode:(id)a3
++ (id)countryCodeISOForMobileCountryCode:(id)code
 {
-  v3 = a3;
-  if (v3)
+  codeCopy = code;
+  if (codeCopy)
   {
     v4 = objc_autoreleasePoolPush();
     v5 = [MEMORY[0x277CBEAC8] dictionaryWithContentsOfFile:@"/System/Library/Carrier Bundles/iPhone/Default.bundle/MCC2ISO.plist"];
-    v6 = [v5 objectForKey:v3];
+    v6 = [v5 objectForKey:codeCopy];
 
     objc_autoreleasePoolPop(v4);
   }
@@ -527,9 +527,9 @@ LABEL_36:
 
 - (void)currentPhoneNumbers
 {
-  v0 = [MEMORY[0x277CCA888] currentHandler];
+  currentHandler = [MEMORY[0x277CCA888] currentHandler];
   v1 = [MEMORY[0x277CCACA0] stringWithUTF8String:"CFStringRef soft_CPPhoneNumberCopyActiveCountryCode(void)"];
-  [v0 handleFailureInFunction:v1 file:@"ENCoreTelephonyUtility.m" lineNumber:31 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"ENCoreTelephonyUtility.m" lineNumber:31 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

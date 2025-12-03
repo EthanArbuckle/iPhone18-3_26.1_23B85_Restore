@@ -1,6 +1,6 @@
 @interface _UIFocusCollectionViewSectionContainerGuide
 - (UICollectionView)collectionView;
-- (_UIFocusCollectionViewSectionContainerGuide)initWithCollectionView:(id)a3;
+- (_UIFocusCollectionViewSectionContainerGuide)initWithCollectionView:(id)view;
 @end
 
 @implementation _UIFocusCollectionViewSectionContainerGuide
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (_UIFocusCollectionViewSectionContainerGuide)initWithCollectionView:(id)a3
+- (_UIFocusCollectionViewSectionContainerGuide)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = _UIFocusCollectionViewSectionContainerGuide;
   v5 = [(UIFocusGuide *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_collectionView, v4);
+    objc_storeWeak(&v5->_collectionView, viewCopy);
     objc_initWeak(&location, v6);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;

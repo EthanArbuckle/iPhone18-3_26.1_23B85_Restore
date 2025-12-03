@@ -1,13 +1,13 @@
 @interface SHCustomCatalogMemoryStorage
-- (BOOL)signatureExistsForIdentifier:(id)a3;
+- (BOOL)signatureExistsForIdentifier:(id)identifier;
 - (NSArray)referenceSignatures;
 - (SHCustomCatalogMemoryStorage)init;
-- (id)mediaItemsForReferenceSignature:(id)a3;
-- (id)referenceSignatureForTrackID:(unint64_t)a3;
-- (void)addSignature:(id)a3 representingMediaItems:(id)a4;
-- (void)producedMediaItem:(id)a3 forID:(id)a4;
-- (void)producedSignature:(id)a3 forID:(id)a4;
-- (void)removeSignatureWithID:(id)a3;
+- (id)mediaItemsForReferenceSignature:(id)signature;
+- (id)referenceSignatureForTrackID:(unint64_t)d;
+- (void)addSignature:(id)signature representingMediaItems:(id)items;
+- (void)producedMediaItem:(id)item forID:(id)d;
+- (void)producedSignature:(id)signature forID:(id)d;
+- (void)removeSignatureWithID:(id)d;
 @end
 
 @implementation SHCustomCatalogMemoryStorage
@@ -23,13 +23,13 @@
     signatureIDs = v2->_signatureIDs;
     v2->_signatureIDs = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     signatures = v2->_signatures;
-    v2->_signatures = v5;
+    v2->_signatures = dictionary;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     mediaItems = v2->_mediaItems;
-    v2->_mediaItems = v7;
+    v2->_mediaItems = dictionary2;
   }
 
   return v2;
@@ -46,20 +46,20 @@
 
   else
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(SHCustomCatalogMemoryStorage *)self signatureIDs];
-    v7 = [v6 count];
+    array = [MEMORY[0x277CBEB18] array];
+    signatureIDs = [(SHCustomCatalogMemoryStorage *)self signatureIDs];
+    v7 = [signatureIDs count];
 
     if (v7)
     {
       v8 = 0;
       do
       {
-        v9 = [(SHCustomCatalogMemoryStorage *)self signatureIDs];
-        v10 = [v9 objectAtIndexedSubscript:v8];
+        signatureIDs2 = [(SHCustomCatalogMemoryStorage *)self signatureIDs];
+        v10 = [signatureIDs2 objectAtIndexedSubscript:v8];
 
-        v11 = [(SHCustomCatalogMemoryStorage *)self signatures];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        signatures = [(SHCustomCatalogMemoryStorage *)self signatures];
+        v12 = [signatures objectForKeyedSubscript:v10];
 
         v27 = 0u;
         v28 = 0u;
@@ -81,7 +81,7 @@
               }
 
               v18 = [[SHReferenceSignature alloc] initWithID:v10 trackID:v8 signature:*(*(&v25 + 1) + 8 * i)];
-              [v5 addObject:v18];
+              [array addObject:v18];
             }
 
             v15 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -91,14 +91,14 @@
         }
 
         ++v8;
-        v19 = [(SHCustomCatalogMemoryStorage *)self signatureIDs];
-        v20 = [v19 count];
+        signatureIDs3 = [(SHCustomCatalogMemoryStorage *)self signatureIDs];
+        v20 = [signatureIDs3 count];
       }
 
       while (v20 > v8);
     }
 
-    v21 = [v5 copy];
+    v21 = [array copy];
     v22 = self->_referenceSignatures;
     self->_referenceSignatures = v21;
 
@@ -110,13 +110,13 @@
   return v3;
 }
 
-- (id)mediaItemsForReferenceSignature:(id)a3
+- (id)mediaItemsForReferenceSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [(SHCustomCatalogMemoryStorage *)self mediaItems];
-  v6 = [v4 ID];
+  signatureCopy = signature;
+  mediaItems = [(SHCustomCatalogMemoryStorage *)self mediaItems];
+  v6 = [signatureCopy ID];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [mediaItems objectForKeyedSubscript:v6];
   v8 = v7;
   if (v7)
   {
@@ -133,20 +133,20 @@
   return v9;
 }
 
-- (void)addSignature:(id)a3 representingMediaItems:(id)a4
+- (void)addSignature:(id)signature representingMediaItems:(id)items
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 _ID];
-  v9 = [v8 UUIDString];
-  [(SHCustomCatalogMemoryStorage *)self producedSignature:v6 forID:v9];
+  signatureCopy = signature;
+  itemsCopy = items;
+  v8 = [signatureCopy _ID];
+  uUIDString = [v8 UUIDString];
+  [(SHCustomCatalogMemoryStorage *)self producedSignature:signatureCopy forID:uUIDString];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v7;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -163,9 +163,9 @@
         }
 
         v15 = *(*(&v19 + 1) + 8 * v14);
-        v16 = [v6 _ID];
-        v17 = [v16 UUIDString];
-        [(SHCustomCatalogMemoryStorage *)self producedMediaItem:v15 forID:v17];
+        v16 = [signatureCopy _ID];
+        uUIDString2 = [v16 UUIDString];
+        [(SHCustomCatalogMemoryStorage *)self producedMediaItem:v15 forID:uUIDString2];
 
         ++v14;
       }
@@ -180,31 +180,31 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSignatureWithID:(id)a3
+- (void)removeSignatureWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHCustomCatalogMemoryStorage *)self signatureIDs];
-  [v5 removeObject:v4];
+  dCopy = d;
+  signatureIDs = [(SHCustomCatalogMemoryStorage *)self signatureIDs];
+  [signatureIDs removeObject:dCopy];
 
-  v6 = [(SHCustomCatalogMemoryStorage *)self signatures];
-  [v6 removeObjectForKey:v4];
+  signatures = [(SHCustomCatalogMemoryStorage *)self signatures];
+  [signatures removeObjectForKey:dCopy];
 
-  v7 = [(SHCustomCatalogMemoryStorage *)self mediaItems];
-  [v7 removeObjectForKey:v4];
+  mediaItems = [(SHCustomCatalogMemoryStorage *)self mediaItems];
+  [mediaItems removeObjectForKey:dCopy];
 
   referenceSignatures = self->_referenceSignatures;
   self->_referenceSignatures = 0;
 }
 
-- (id)referenceSignatureForTrackID:(unint64_t)a3
+- (id)referenceSignatureForTrackID:(unint64_t)d
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(SHCustomCatalogMemoryStorage *)self referenceSignatures];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  referenceSignatures = [(SHCustomCatalogMemoryStorage *)self referenceSignatures];
+  v5 = [referenceSignatures countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -215,18 +215,18 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(referenceSignatures);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        if ([v9 trackID] == a3)
+        if ([v9 trackID] == d)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [referenceSignatures countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -244,62 +244,62 @@ LABEL_11:
   return v10;
 }
 
-- (void)producedMediaItem:(id)a3 forID:(id)a4
+- (void)producedMediaItem:(id)item forID:(id)d
 {
-  v14 = a4;
+  dCopy = d;
   referenceSignatures = self->_referenceSignatures;
   self->_referenceSignatures = 0;
-  v7 = a3;
+  itemCopy = item;
 
-  v8 = [(SHCustomCatalogMemoryStorage *)self mediaItems];
-  v9 = [v8 objectForKeyedSubscript:v14];
+  mediaItems = [(SHCustomCatalogMemoryStorage *)self mediaItems];
+  v9 = [mediaItems objectForKeyedSubscript:dCopy];
 
   if (!v9)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [(SHCustomCatalogMemoryStorage *)self mediaItems];
-    [v11 setObject:v10 forKeyedSubscript:v14];
+    array = [MEMORY[0x277CBEB18] array];
+    mediaItems2 = [(SHCustomCatalogMemoryStorage *)self mediaItems];
+    [mediaItems2 setObject:array forKeyedSubscript:dCopy];
   }
 
-  v12 = [(SHCustomCatalogMemoryStorage *)self mediaItems];
-  v13 = [v12 objectForKeyedSubscript:v14];
-  [v13 addObject:v7];
+  mediaItems3 = [(SHCustomCatalogMemoryStorage *)self mediaItems];
+  v13 = [mediaItems3 objectForKeyedSubscript:dCopy];
+  [v13 addObject:itemCopy];
 }
 
-- (void)producedSignature:(id)a3 forID:(id)a4
+- (void)producedSignature:(id)signature forID:(id)d
 {
-  v14 = a4;
+  dCopy = d;
   referenceSignatures = self->_referenceSignatures;
   self->_referenceSignatures = 0;
-  v7 = a3;
+  signatureCopy = signature;
 
-  v8 = [(SHCustomCatalogMemoryStorage *)self signatures];
-  v9 = [v8 objectForKeyedSubscript:v14];
+  signatures = [(SHCustomCatalogMemoryStorage *)self signatures];
+  v9 = [signatures objectForKeyedSubscript:dCopy];
 
   if (!v9)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [(SHCustomCatalogMemoryStorage *)self signatures];
-    [v11 setObject:v10 forKeyedSubscript:v14];
+    array = [MEMORY[0x277CBEB18] array];
+    signatures2 = [(SHCustomCatalogMemoryStorage *)self signatures];
+    [signatures2 setObject:array forKeyedSubscript:dCopy];
 
-    [(NSMutableArray *)self->_signatureIDs addObject:v14];
+    [(NSMutableArray *)self->_signatureIDs addObject:dCopy];
   }
 
-  v12 = [(SHCustomCatalogMemoryStorage *)self signatures];
-  v13 = [v12 objectForKeyedSubscript:v14];
-  [v13 addObject:v7];
+  signatures3 = [(SHCustomCatalogMemoryStorage *)self signatures];
+  v13 = [signatures3 objectForKeyedSubscript:dCopy];
+  [v13 addObject:signatureCopy];
 }
 
-- (BOOL)signatureExistsForIdentifier:(id)a3
+- (BOOL)signatureExistsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SHCustomCatalogMemoryStorage *)self signatures];
-  v6 = [v4 UUIDString];
+  identifierCopy = identifier;
+  signatures = [(SHCustomCatalogMemoryStorage *)self signatures];
+  uUIDString = [identifierCopy UUIDString];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
-  LOBYTE(v4) = v7 != 0;
+  v7 = [signatures objectForKeyedSubscript:uUIDString];
+  LOBYTE(identifierCopy) = v7 != 0;
 
-  return v4;
+  return identifierCopy;
 }
 
 @end

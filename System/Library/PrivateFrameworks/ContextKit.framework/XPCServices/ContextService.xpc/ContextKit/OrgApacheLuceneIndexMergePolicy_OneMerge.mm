@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneIndexMergePolicy_OneMerge
-- (id)getDocMapWithOrgApacheLuceneIndexMergeState:(id)a3;
+- (id)getDocMapWithOrgApacheLuceneIndexMergeState:(id)state;
 - (id)getException;
 - (id)getMergeReaders;
 - (id)getStoreMergeInfo;
 - (id)segString;
 - (int)totalNumDocs;
 - (void)dealloc;
-- (void)setExceptionWithJavaLangThrowable:(id)a3;
+- (void)setExceptionWithJavaLangThrowable:(id)throwable;
 @end
 
 @implementation OrgApacheLuceneIndexMergePolicy_OneMerge
@@ -61,17 +61,17 @@
   return JavaUtilCollections_unmodifiableListWithJavaUtilList_(v4);
 }
 
-- (id)getDocMapWithOrgApacheLuceneIndexMergeState:(id)a3
+- (id)getDocMapWithOrgApacheLuceneIndexMergeState:(id)state
 {
   v3 = [OrgApacheLuceneIndexMergePolicy_OneMerge__1 alloc];
 
   return v3;
 }
 
-- (void)setExceptionWithJavaLangThrowable:(id)a3
+- (void)setExceptionWithJavaLangThrowable:(id)throwable
 {
   objc_sync_enter(self);
-  JreStrongAssign(&self->error_, a3);
+  JreStrongAssign(&self->error_, throwable);
 
   objc_sync_exit(self);
 }

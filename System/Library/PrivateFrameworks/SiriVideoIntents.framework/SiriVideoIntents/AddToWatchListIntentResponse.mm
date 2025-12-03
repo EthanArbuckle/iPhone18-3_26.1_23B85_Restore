@@ -1,12 +1,12 @@
 @interface AddToWatchListIntentResponse
-- (AddToWatchListIntentResponse)initWithPropertiesByName:(id)a3;
+- (AddToWatchListIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation AddToWatchListIntentResponse
 
-- (AddToWatchListIntentResponse)initWithPropertiesByName:(id)a3
+- (AddToWatchListIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2698549E4();
   }

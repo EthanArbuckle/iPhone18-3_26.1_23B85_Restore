@@ -1,20 +1,20 @@
 @interface CNGivenNameDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNGivenNameDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 givenName];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  givenName = [contactCopy givenName];
+  if (!givenName)
   {
-    v4 = [v7 givenName];
-    if (!v4)
+    givenName2 = [otherCopy givenName];
+    if (!givenName2)
     {
       v11 = 1;
 LABEL_6:
@@ -23,11 +23,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 givenName];
-  v10 = [v7 givenName];
-  v11 = [v9 isEqual:v10];
+  givenName3 = [contactCopy givenName];
+  givenName4 = [otherCopy givenName];
+  v11 = [givenName3 isEqual:givenName4];
 
-  if (!v8)
+  if (!givenName)
   {
     goto LABEL_6;
   }
@@ -37,25 +37,25 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_givenName"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_givenName"];
 
   v7 = [v9 copy];
-  v8 = v5[5];
-  v5[5] = v7;
+  v8 = contactCopy[5];
+  contactCopy[5] = v7;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A380];
+    *d = *MEMORY[0x1E698A380];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface AppSessionObserver
 - (_TtC13NewsAnalytics18AppSessionObserver)init;
-- (void)endAppSessionWithEndReason:(id)a3;
-- (void)startAppSessionWithUserIDReset:(id)a3;
+- (void)endAppSessionWithEndReason:(id)reason;
+- (void)startAppSessionWithUserIDReset:(id)reset;
 @end
 
 @implementation AppSessionObserver
@@ -13,18 +13,18 @@
   return result;
 }
 
-- (void)endAppSessionWithEndReason:(id)a3
+- (void)endAppSessionWithEndReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  AppSessionObserver.endAppSession(withEndReason:)(v4);
+  reasonCopy = reason;
+  selfCopy = self;
+  AppSessionObserver.endAppSession(withEndReason:)(reasonCopy);
 }
 
-- (void)startAppSessionWithUserIDReset:(id)a3
+- (void)startAppSessionWithUserIDReset:(id)reset
 {
-  v4 = a3;
-  v5 = self;
-  AppSessionObserver.startAppSession(withUserIDReset:)(v4);
+  resetCopy = reset;
+  selfCopy = self;
+  AppSessionObserver.startAppSession(withUserIDReset:)(resetCopy);
 }
 
 @end

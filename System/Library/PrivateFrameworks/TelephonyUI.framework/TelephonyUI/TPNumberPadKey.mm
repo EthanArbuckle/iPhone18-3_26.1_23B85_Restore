@@ -1,16 +1,16 @@
 @interface TPNumberPadKey
-+ (float)absoluteTrackingValueForString:(id)a3 pointSize:(float)a4 unitsPerEm:(float)a5;
++ (float)absoluteTrackingValueForString:(id)string pointSize:(float)size unitsPerEm:(float)em;
 + (void)initialize;
 - (BOOL)isAsterisk;
 - (BOOL)isPound;
-- (TPNumberPadKey)initWithFrame:(CGRect)a3;
-- (double)digitBaselineForDiameter:(double)a3;
-- (double)digitFontSizeForScreenSizeCategory:(unint64_t)a3 language:(unint64_t)a4 showLocalizedLetters:(BOOL)a5;
-- (double)letterFontSizeForScreenSizeCategory:(unint64_t)a3 language:(unint64_t)a4 showLocalizedLetters:(BOOL)a5;
-- (double)secondaryLetterFontSizeForScreenSizeCategory:(unint64_t)a3;
+- (TPNumberPadKey)initWithFrame:(CGRect)frame;
+- (double)digitBaselineForDiameter:(double)diameter;
+- (double)digitFontSizeForScreenSizeCategory:(unint64_t)category language:(unint64_t)language showLocalizedLetters:(BOOL)letters;
+- (double)letterFontSizeForScreenSizeCategory:(unint64_t)category language:(unint64_t)language showLocalizedLetters:(BOOL)letters;
+- (double)secondaryLetterFontSizeForScreenSizeCategory:(unint64_t)category;
 - (void)doLayoutNow;
-- (void)setDigit:(id)a3 primaryLetters:(id)a4 secondaryLetters:(id)a5;
-- (void)updateBaselineConstraintConstantsFor:(unint64_t)a3 language:(unint64_t)a4 showLocalizedLetters:(BOOL)a5;
+- (void)setDigit:(id)digit primaryLetters:(id)letters secondaryLetters:(id)secondaryLetters;
+- (void)updateBaselineConstraintConstantsFor:(unint64_t)for language:(unint64_t)language showLocalizedLetters:(BOOL)letters;
 @end
 
 @implementation TPNumberPadKey
@@ -23,11 +23,11 @@
   }
 }
 
-- (TPNumberPadKey)initWithFrame:(CGRect)a3
+- (TPNumberPadKey)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = TPNumberPadKey;
-  v3 = [(TPNumberPadKey *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPNumberPadKey *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -49,51 +49,51 @@
     [(TPNumberPadKey *)v3 addSubview:v3->_digit];
     [(TPNumberPadKey *)v3 addSubview:v3->_letters];
     [(TPNumberPadKey *)v3 addSubview:v3->_secondaryLetters];
-    v10 = [(TPNumberPadKey *)v3 widthAnchor];
-    v11 = [v10 constraintEqualToConstant:75.0];
+    widthAnchor = [(TPNumberPadKey *)v3 widthAnchor];
+    v11 = [widthAnchor constraintEqualToConstant:75.0];
     [v11 setActive:1];
 
-    v12 = [(TPNumberPadKey *)v3 heightAnchor];
-    v13 = [v12 constraintEqualToConstant:75.0];
+    heightAnchor = [(TPNumberPadKey *)v3 heightAnchor];
+    v13 = [heightAnchor constraintEqualToConstant:75.0];
     [v13 setActive:1];
 
-    v14 = [(UILabel *)v3->_digit centerXAnchor];
-    v15 = [(TPNumberPadKey *)v3 centerXAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    centerXAnchor = [(UILabel *)v3->_digit centerXAnchor];
+    centerXAnchor2 = [(TPNumberPadKey *)v3 centerXAnchor];
+    v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v16 setActive:1];
 
-    v17 = [(UILabel *)v3->_secondaryLetters centerXAnchor];
-    v18 = [(TPNumberPadKey *)v3 centerXAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    centerXAnchor3 = [(UILabel *)v3->_secondaryLetters centerXAnchor];
+    centerXAnchor4 = [(TPNumberPadKey *)v3 centerXAnchor];
+    v19 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     [v19 setActive:1];
 
-    v20 = [(UILabel *)v3->_digit centerYAnchor];
-    v21 = [(TPNumberPadKey *)v3 centerYAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21];
+    centerYAnchor = [(UILabel *)v3->_digit centerYAnchor];
+    centerYAnchor2 = [(TPNumberPadKey *)v3 centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     LODWORD(v23) = 1132068864;
     [v22 setPriority:v23];
     [v22 setActive:1];
-    v24 = [(UILabel *)v3->_letters centerXAnchor];
-    v25 = [(TPNumberPadKey *)v3 centerXAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    centerXAnchor5 = [(UILabel *)v3->_letters centerXAnchor];
+    centerXAnchor6 = [(TPNumberPadKey *)v3 centerXAnchor];
+    v26 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     [v26 setActive:1];
 
-    v27 = [(UILabel *)v3->_letters firstBaselineAnchor];
-    v28 = [(UILabel *)v3->_digit firstBaselineAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:14.0];
+    firstBaselineAnchor = [(UILabel *)v3->_letters firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)v3->_digit firstBaselineAnchor];
+    v29 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2 constant:14.0];
     letterBaseline = v3->_letterBaseline;
     v3->_letterBaseline = v29;
 
-    v31 = [(UILabel *)v3->_digit firstBaselineAnchor];
-    v32 = [(TPNumberPadKey *)v3 topAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:44.0];
+    firstBaselineAnchor3 = [(UILabel *)v3->_digit firstBaselineAnchor];
+    topAnchor = [(TPNumberPadKey *)v3 topAnchor];
+    v33 = [firstBaselineAnchor3 constraintEqualToAnchor:topAnchor constant:44.0];
     digitBaseline = v3->_digitBaseline;
     v3->_digitBaseline = v33;
 
-    v35 = [(UILabel *)v3->_secondaryLetters firstBaselineAnchor];
-    v36 = [(UILabel *)v3->_letters firstBaselineAnchor];
-    v37 = [v35 constraintEqualToAnchor:v36];
+    firstBaselineAnchor4 = [(UILabel *)v3->_secondaryLetters firstBaselineAnchor];
+    firstBaselineAnchor5 = [(UILabel *)v3->_letters firstBaselineAnchor];
+    v37 = [firstBaselineAnchor4 constraintEqualToAnchor:firstBaselineAnchor5];
     secondaryLetterBaseline = v3->_secondaryLetterBaseline;
     v3->_secondaryLetterBaseline = v37;
 
@@ -105,9 +105,9 @@
   return v3;
 }
 
-+ (float)absoluteTrackingValueForString:(id)a3 pointSize:(float)a4 unitsPerEm:(float)a5
++ (float)absoluteTrackingValueForString:(id)string pointSize:(float)size unitsPerEm:(float)em
 {
-  v7 = [a3 length];
+  v7 = [string length];
   v8 = -175.0;
   v9 = 0.0;
   if (isBold)
@@ -125,17 +125,17 @@
     v8 = v9;
   }
 
-  return (v8 / a5) * a4;
+  return (v8 / em) * size;
 }
 
-- (double)digitBaselineForDiameter:(double)a3
+- (double)digitBaselineForDiameter:(double)diameter
 {
-  if (a3 == 65.0)
+  if (diameter == 65.0)
   {
     return 38.0;
   }
 
-  if (a3 != 83.0)
+  if (diameter != 83.0)
   {
     return 44.0;
   }
@@ -145,32 +145,32 @@
 
 - (BOOL)isAsterisk
 {
-  v2 = [(TPNumberPadKey *)self digit];
-  v3 = [v2 text];
-  v4 = [v3 isEqualToString:@"*"];
+  digit = [(TPNumberPadKey *)self digit];
+  text = [digit text];
+  v4 = [text isEqualToString:@"*"];
 
   return v4;
 }
 
 - (BOOL)isPound
 {
-  v2 = [(TPNumberPadKey *)self digit];
-  v3 = [v2 text];
-  v4 = [v3 isEqualToString:@"#"];
+  digit = [(TPNumberPadKey *)self digit];
+  text = [digit text];
+  v4 = [text isEqualToString:@"#"];
 
   return v4;
 }
 
-- (double)digitFontSizeForScreenSizeCategory:(unint64_t)a3 language:(unint64_t)a4 showLocalizedLetters:(BOOL)a5
+- (double)digitFontSizeForScreenSizeCategory:(unint64_t)category language:(unint64_t)language showLocalizedLetters:(BOOL)letters
 {
-  v5 = a5;
+  lettersCopy = letters;
   v7 = 36.0;
-  if (a3 <= 5)
+  if (category <= 5)
   {
-    if (a3 == 3)
+    if (category == 3)
     {
-      v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-      if ([v8 isUserInterfaceIdiomPad])
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      if ([mainScreen isUserInterfaceIdiomPad])
       {
         v7 = 36.0;
       }
@@ -181,10 +181,10 @@
       }
     }
 
-    else if (a3 == 5)
+    else if (category == 5)
     {
       v7 = 37.0;
-      if (a4)
+      if (language)
       {
         return v7;
       }
@@ -193,7 +193,7 @@
     }
 
 LABEL_14:
-    if (a4)
+    if (language)
     {
       return v7;
     }
@@ -201,12 +201,12 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (a3 != 6)
+  if (category != 6)
   {
-    if (a3 == 10)
+    if (category == 10)
     {
       v7 = 41.0;
-      if (a4)
+      if (language)
       {
         return v7;
       }
@@ -218,13 +218,13 @@ LABEL_14:
   }
 
   v7 = 40.0;
-  if (a4)
+  if (language)
   {
     return v7;
   }
 
 LABEL_15:
-  if (useIndicDigits == 1 && v5)
+  if (useIndicDigits == 1 && lettersCopy)
   {
     return v7 + 2.0;
   }
@@ -232,19 +232,19 @@ LABEL_15:
   return v7;
 }
 
-- (double)letterFontSizeForScreenSizeCategory:(unint64_t)a3 language:(unint64_t)a4 showLocalizedLetters:(BOOL)a5
+- (double)letterFontSizeForScreenSizeCategory:(unint64_t)category language:(unint64_t)language showLocalizedLetters:(BOOL)letters
 {
-  v5 = a5;
+  lettersCopy = letters;
   v7 = 10.0;
-  if (a3 == 3)
+  if (category == 3)
   {
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    if (![v9 isUserInterfaceIdiomPad])
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    if (![mainScreen isUserInterfaceIdiomPad])
     {
       v7 = 12.0;
     }
 
-    if (a4)
+    if (language)
     {
       goto LABEL_9;
     }
@@ -252,7 +252,7 @@ LABEL_15:
     return v7 + 1.0;
   }
 
-  if (a3 == 10)
+  if (category == 10)
   {
     v8 = 12.0;
   }
@@ -262,7 +262,7 @@ LABEL_15:
     v8 = 10.0;
   }
 
-  if (a3 == 6)
+  if (category == 6)
   {
     v7 = 12.0;
   }
@@ -272,15 +272,15 @@ LABEL_15:
     v7 = v8;
   }
 
-  if (!a4)
+  if (!language)
   {
     return v7 + 1.0;
   }
 
 LABEL_9:
-  if (v5)
+  if (lettersCopy)
   {
-    if (a4 == 2)
+    if (language == 2)
     {
       return v7 + 1.0;
     }
@@ -294,13 +294,13 @@ LABEL_9:
   return v7;
 }
 
-- (double)secondaryLetterFontSizeForScreenSizeCategory:(unint64_t)a3
+- (double)secondaryLetterFontSizeForScreenSizeCategory:(unint64_t)category
 {
   v3 = 9.0;
-  if (a3 == 3)
+  if (category == 3)
   {
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    if (![v5 isUserInterfaceIdiomPad])
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    if (![mainScreen isUserInterfaceIdiomPad])
     {
       v3 = 11.0;
     }
@@ -309,12 +309,12 @@ LABEL_9:
   else
   {
     v4 = 10.0;
-    if (a3 != 10)
+    if (category != 10)
     {
       v4 = 9.0;
     }
 
-    if (a3 == 6)
+    if (category == 6)
     {
       return 11.0;
     }
@@ -328,13 +328,13 @@ LABEL_9:
   return v3;
 }
 
-- (void)updateBaselineConstraintConstantsFor:(unint64_t)a3 language:(unint64_t)a4 showLocalizedLetters:(BOOL)a5
+- (void)updateBaselineConstraintConstantsFor:(unint64_t)for language:(unint64_t)language showLocalizedLetters:(BOOL)letters
 {
-  v5 = a5;
-  if (a3 == 6)
+  lettersCopy = letters;
+  if (for == 6)
   {
     v9 = 1;
-    if (a4)
+    if (language)
     {
       goto LABEL_6;
     }
@@ -342,8 +342,8 @@ LABEL_9:
 LABEL_9:
     if (useIndicDigits == 1)
     {
-      v13 = [(TPNumberPadKey *)self letterBaseline];
-      [v13 setConstant:14.0];
+      letterBaseline = [(TPNumberPadKey *)self letterBaseline];
+      [letterBaseline setConstant:14.0];
     }
 
     v10 = v9 == 0;
@@ -352,10 +352,10 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (a3 != 3)
+  if (for != 3)
   {
     v9 = 0;
-    if (a4)
+    if (language)
     {
       goto LABEL_6;
     }
@@ -363,16 +363,16 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v9 = [v8 isUserInterfaceIdiomPad] ^ 1;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  v9 = [mainScreen isUserInterfaceIdiomPad] ^ 1;
 
-  if (!a4)
+  if (!language)
   {
     goto LABEL_9;
   }
 
 LABEL_6:
-  if (!v5)
+  if (!lettersCopy)
   {
     goto LABEL_16;
   }
@@ -391,8 +391,8 @@ LABEL_12:
     v14 = v12;
   }
 
-  v15 = [(TPNumberPadKey *)self secondaryLetterBaseline];
-  [v15 setConstant:v14];
+  secondaryLetterBaseline = [(TPNumberPadKey *)self secondaryLetterBaseline];
+  [secondaryLetterBaseline setConstant:v14];
 
 LABEL_16:
   if (v9)
@@ -405,25 +405,25 @@ LABEL_16:
     v16 = 14.0;
   }
 
-  v17 = [(TPNumberPadKey *)self letterBaseline];
-  [v17 setConstant:v16];
+  letterBaseline2 = [(TPNumberPadKey *)self letterBaseline];
+  [letterBaseline2 setConstant:v16];
 }
 
-- (void)setDigit:(id)a3 primaryLetters:(id)a4 secondaryLetters:(id)a5
+- (void)setDigit:(id)digit primaryLetters:(id)letters secondaryLetters:(id)secondaryLetters
 {
-  v13 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TPNumberPadKey *)self digit];
-  [v10 setText:v9];
+  secondaryLettersCopy = secondaryLetters;
+  lettersCopy = letters;
+  digitCopy = digit;
+  digit = [(TPNumberPadKey *)self digit];
+  [digit setText:digitCopy];
 
-  v11 = [(TPNumberPadKey *)self letters];
-  [v11 setText:v8];
+  letters = [(TPNumberPadKey *)self letters];
+  [letters setText:lettersCopy];
 
-  if (v13)
+  if (secondaryLettersCopy)
   {
-    v12 = [(TPNumberPadKey *)self secondaryLetters];
-    [v12 setText:v13];
+    secondaryLetters = [(TPNumberPadKey *)self secondaryLetters];
+    [secondaryLetters setText:secondaryLettersCopy];
   }
 }
 

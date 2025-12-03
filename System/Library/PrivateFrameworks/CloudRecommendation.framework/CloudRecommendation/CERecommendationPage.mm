@@ -1,21 +1,21 @@
 @interface CERecommendationPage
-- (CERecommendationPage)initWithCoder:(id)a3;
-- (CERecommendationPage)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CERecommendationPage)initWithCoder:(id)coder;
+- (CERecommendationPage)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CERecommendationPage
 
-- (CERecommendationPage)initWithDictionary:(id)a3
+- (CERecommendationPage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CERecommendationPage;
   v5 = [(CERecommendationPage *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pageTitle"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pageTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       }
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"pageSubtitle"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"pageSubtitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"icon"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"icon"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,32 +73,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subTitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_icon forKey:@"icon"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subTitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_icon forKey:@"icon"];
 }
 
-- (CERecommendationPage)initWithCoder:(id)a3
+- (CERecommendationPage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CERecommendationPage;
   v5 = [(CERecommendationPage *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subTitle = v5->_subTitle;
     v5->_subTitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v10;
   }
@@ -106,7 +106,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CERecommendationPage allocWithZone:?]];
   [(CERecommendationPage *)v4 setTitle:self->_title];

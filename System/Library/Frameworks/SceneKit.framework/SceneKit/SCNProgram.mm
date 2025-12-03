@@ -1,24 +1,24 @@
 @interface SCNProgram
 + (SCNProgram)program;
-+ (SCNProgram)programWithLibrary:(id)a3;
++ (SCNProgram)programWithLibrary:(id)library;
 - (NSString)semanticForSymbol:(NSString *)symbol;
 - (SCNProgram)init;
-- (SCNProgram)initWithCoder:(id)a3;
+- (SCNProgram)initWithCoder:(id)coder;
 - (id)_allSymbolsWithSceneKitSemantic;
-- (id)_optionsForSymbol:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_optionsForSymbol:(id)symbol;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handleBindingOfBufferNamed:(NSString *)name frequency:(SCNBufferFrequency)frequency usingBlock:(SCNBufferBindingBlock)block;
 - (void)setFragmentFunctionName:(NSString *)fragmentFunctionName;
 - (void)setFragmentShader:(NSString *)fragmentShader;
 - (void)setLibrary:(id)library;
-- (void)setLibraryProvider:(id)a3;
-- (void)setName:(id)a3;
+- (void)setLibraryProvider:(id)provider;
+- (void)setName:(id)name;
 - (void)setOpaque:(BOOL)opaque;
 - (void)setSemantic:(NSString *)semantic forSymbol:(NSString *)symbol options:(NSDictionary *)options;
-- (void)setSemanticInfos:(id)a3;
-- (void)setSourceFile:(id)a3;
+- (void)setSemanticInfos:(id)infos;
+- (void)setSourceFile:(id)file;
 - (void)setVertexFunctionName:(NSString *)vertexFunctionName;
 - (void)setVertexShader:(NSString *)vertexShader;
 @end
@@ -53,55 +53,55 @@
 
     self->_library = library;
     self->_libraryProvider = [[SCNMetalLibraryProvider alloc] iniWithLibrary:library];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v7 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
   }
 }
 
-- (void)setLibraryProvider:(id)a3
+- (void)setLibraryProvider:(id)provider
 {
-  if (self->_libraryProvider != a3)
+  if (self->_libraryProvider != provider)
   {
 
     self->_library = 0;
-    self->_libraryProvider = a3;
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    self->_libraryProvider = provider;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v6 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   if (![(NSString *)self->_name isEqualToString:?])
   {
 
-    self->_name = [a3 copy];
+    self->_name = [name copy];
   }
 }
 
 + (SCNProgram)program
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (SCNProgram)programWithLibrary:(id)a3
++ (SCNProgram)programWithLibrary:(id)library
 {
-  v4 = objc_alloc_init(a1);
-  [(SCNProgram *)v4 setLibrary:a3];
+  v4 = objc_alloc_init(self);
+  [(SCNProgram *)v4 setLibrary:library];
   return v4;
 }
 
-- (void)setSourceFile:(id)a3
+- (void)setSourceFile:(id)file
 {
   sourceFile = self->_sourceFile;
-  if (sourceFile != a3)
+  if (sourceFile != file)
   {
 
-    self->_sourceFile = a3;
+    self->_sourceFile = file;
   }
 }
 
@@ -110,9 +110,9 @@
   if (self->_opaque != opaque)
   {
     self->_opaque = opaque;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v5 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
   }
 }
 
@@ -122,9 +122,9 @@
   {
 
     self->_vertexFunctionName = [(NSString *)vertexFunctionName copy];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v5 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
   }
 }
 
@@ -134,9 +134,9 @@
   {
 
     self->_fragmentFunctionName = [(NSString *)fragmentFunctionName copy];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v5 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
   }
 }
 
@@ -146,9 +146,9 @@
   {
 
     self->_vertexShader = [(NSString *)vertexShader copy];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v5 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
   }
 }
 
@@ -158,9 +158,9 @@
   {
 
     self->_fragmentShader = [(NSString *)fragmentShader copy];
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v5 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
   }
 }
 
@@ -173,10 +173,10 @@
   }
 
   [(NSMutableDictionary *)self->_semanticInfos setValue:[SCNProgramSemanticInfo forKey:"infoWithSemantic:options:" infoWithSemantic:options options:?], symbol];
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v10 = @"parameter";
   v11[0] = symbol;
-  [v9 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}];
+  [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1)}];
 }
 
 - (NSString)semanticForSymbol:(NSString *)symbol
@@ -186,9 +186,9 @@
   return [v3 semantic];
 }
 
-- (id)_optionsForSymbol:(id)a3
+- (id)_optionsForSymbol:(id)symbol
 {
-  v3 = [(NSMutableDictionary *)self->_semanticInfos valueForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_semanticInfos valueForKey:symbol];
 
   return [v3 options];
 }
@@ -204,13 +204,13 @@
   return result;
 }
 
-- (void)setSemanticInfos:(id)a3
+- (void)setSemanticInfos:(id)infos
 {
   semanticInfos = self->_semanticInfos;
   if (semanticInfos)
   {
     [(NSMutableDictionary *)semanticInfos removeAllObjects];
-    if (!a3)
+    if (!infos)
     {
       return;
     }
@@ -219,7 +219,7 @@
   else
   {
     self->_semanticInfos = objc_alloc_init(MEMORY[0x277CBEB38]);
-    if (!a3)
+    if (!infos)
     {
       return;
     }
@@ -227,10 +227,10 @@
 
   v6 = self->_semanticInfos;
 
-  [(NSMutableDictionary *)v6 addEntriesFromDictionary:a3];
+  [(NSMutableDictionary *)v6 addEntriesFromDictionary:infos];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setVertexShader:{-[SCNProgram vertexShader](self, "vertexShader")}];
@@ -260,9 +260,9 @@
     [(SCNBufferBinding *)v10 setBlock:_Block_copy(block)];
     [(NSMutableDictionary *)self->_bufferBindings setValue:v10 forKey:name];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v11 postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"SCNProgramDidChangeNotification" object:self userInfo:0];
   }
 
   else
@@ -274,57 +274,57 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(SCNProgram *)self _customEncodingOfSCNProgram:?];
   vertexShader = self->_vertexShader;
   if (vertexShader)
   {
-    [a3 encodeObject:vertexShader forKey:@"vertexShader"];
+    [coder encodeObject:vertexShader forKey:@"vertexShader"];
   }
 
   fragmentShader = self->_fragmentShader;
   if (fragmentShader)
   {
-    [a3 encodeObject:fragmentShader forKey:@"fragmentShader"];
+    [coder encodeObject:fragmentShader forKey:@"fragmentShader"];
   }
 
   vertexFunctionName = self->_vertexFunctionName;
   if (vertexFunctionName)
   {
-    [a3 encodeObject:vertexFunctionName forKey:@"vertexFunctionName"];
+    [coder encodeObject:vertexFunctionName forKey:@"vertexFunctionName"];
   }
 
   sourceFile = self->_sourceFile;
   if (sourceFile)
   {
-    [a3 encodeObject:sourceFile forKey:@"sourceFile"];
+    [coder encodeObject:sourceFile forKey:@"sourceFile"];
   }
 
   fragmentFunctionName = self->_fragmentFunctionName;
   if (fragmentFunctionName)
   {
-    [a3 encodeObject:fragmentFunctionName forKey:@"fragmentFunctionName"];
+    [coder encodeObject:fragmentFunctionName forKey:@"fragmentFunctionName"];
   }
 
   name = self->_name;
   if (name)
   {
-    [a3 encodeObject:name forKey:@"name"];
+    [coder encodeObject:name forKey:@"name"];
   }
 
   semanticInfos = self->_semanticInfos;
   if (semanticInfos)
   {
-    [a3 encodeObject:semanticInfos forKey:@"semanticInfos"];
+    [coder encodeObject:semanticInfos forKey:@"semanticInfos"];
   }
 
   opaque = self->_opaque;
 
-  [a3 encodeBool:opaque forKey:@"opaque"];
+  [coder encodeBool:opaque forKey:@"opaque"];
 }
 
-- (SCNProgram)initWithCoder:(id)a3
+- (SCNProgram)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = SCNProgram;
@@ -333,16 +333,16 @@
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNProgram *)v4 _customDecodingOfSCNProgram:a3];
-    -[SCNProgram setVertexShader:](v4, "setVertexShader:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"vertexShader"]);
-    -[SCNProgram setFragmentShader:](v4, "setFragmentShader:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"fragmentShader"]);
-    -[SCNProgram setVertexFunctionName:](v4, "setVertexFunctionName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"vertexFunctionName"]);
-    -[SCNProgram setFragmentFunctionName:](v4, "setFragmentFunctionName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"fragmentFunctionName"]);
-    -[SCNProgram setSourceFile:](v4, "setSourceFile:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sourceFile"]);
-    -[SCNProgram setName:](v4, "setName:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
+    [(SCNProgram *)v4 _customDecodingOfSCNProgram:coder];
+    -[SCNProgram setVertexShader:](v4, "setVertexShader:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"vertexShader"]);
+    -[SCNProgram setFragmentShader:](v4, "setFragmentShader:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"fragmentShader"]);
+    -[SCNProgram setVertexFunctionName:](v4, "setVertexFunctionName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"vertexFunctionName"]);
+    -[SCNProgram setFragmentFunctionName:](v4, "setFragmentFunctionName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"fragmentFunctionName"]);
+    -[SCNProgram setSourceFile:](v4, "setSourceFile:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"sourceFile"]);
+    -[SCNProgram setName:](v4, "setName:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"name"]);
     v6 = SCNPlistClasses();
-    -[SCNProgram setSemanticInfos:](v4, "setSemanticInfos:", [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setByAddingObject:", objc_opt_class()), @"semanticInfos"}]);
-    -[SCNProgram setOpaque:](v4, "setOpaque:", [a3 decodeBoolForKey:@"opaque"]);
+    -[SCNProgram setSemanticInfos:](v4, "setSemanticInfos:", [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setByAddingObject:", objc_opt_class()), @"semanticInfos"}]);
+    -[SCNProgram setOpaque:](v4, "setOpaque:", [coder decodeBoolForKey:@"opaque"]);
     [SCNTransaction setImmediateMode:v5];
   }
 

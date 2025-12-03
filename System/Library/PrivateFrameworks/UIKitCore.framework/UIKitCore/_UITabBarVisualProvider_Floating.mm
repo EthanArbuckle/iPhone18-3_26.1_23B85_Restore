@@ -1,38 +1,38 @@
 @interface _UITabBarVisualProvider_Floating
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGRect)frameForHostedElement:(int64_t)a3 options:(int64_t)a4;
-- (CGSize)intrinsicContentSizeGivenSize:(CGSize)a3;
-- (_TtC5UIKit32_UITabBarVisualProvider_Floating)initWithTabBar:(id)a3;
-- (id)exchangeItem:(id)a3 withItem:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGRect)frameForHostedElement:(int64_t)element options:(int64_t)options;
+- (CGSize)intrinsicContentSizeGivenSize:(CGSize)size;
+- (_TtC5UIKit32_UITabBarVisualProvider_Floating)initWithTabBar:(id)bar;
+- (id)exchangeItem:(id)item withItem:(id)withItem;
 - (id)focusedTabBarItem;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)preferredFocusEnvironments;
-- (id)resolvedPresentationSourceItemForItem:(id)a3;
-- (id)tabBarItemAtPoint:(CGPoint)a3;
-- (id)viewsForMorphingToTarget:(int64_t)a3;
+- (id)resolvedPresentationSourceItemForItem:(id)item;
+- (id)tabBarItemAtPoint:(CGPoint)point;
+- (id)viewsForMorphingToTarget:(int64_t)target;
 - (void)_shim_layoutItemsOnly;
-- (void)_shim_setAccessoryView:(id)a3;
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4;
-- (void)changeItemsTo:(id)a3 removingItems:(id)a4 selectedItem:(id)a5 oldSelectedItem:(id)a6 animate:(BOOL)a7;
-- (void)changeSelectedItem:(id)a3 fromItem:(id)a4;
+- (void)_shim_setAccessoryView:(id)view;
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed;
+- (void)changeItemsTo:(id)to removingItems:(id)items selectedItem:(id)item oldSelectedItem:(id)selectedItem animate:(BOOL)animate;
+- (void)changeSelectedItem:(id)item fromItem:(id)fromItem;
 - (void)didEndCustomizingItems;
-- (void)glassGroupContainerDidChange:(id)a3;
-- (void)handleSelectionGesture:(id)a3;
+- (void)glassGroupContainerDidChange:(id)change;
+- (void)handleSelectionGesture:(id)gesture;
 - (void)layoutSubviews;
 - (void)minimizeBehaviorDidChange;
 - (void)morphAnimationsForHostedElementsDidEnd;
-- (void)observeContentScrollView:(id)a3;
+- (void)observeContentScrollView:(id)view;
 - (void)prepare;
-- (void)scrollAwayInteraction:(id)a3 progressDidChange:(double)a4 tracking:(BOOL)a5;
+- (void)scrollAwayInteraction:(id)interaction progressDidChange:(double)change tracking:(BOOL)tracking;
 - (void)selectCollapseTabIfPossible;
-- (void)setBackgroundTransitionProgress:(double)a3 forceUpdate:(BOOL)a4 animated:(BOOL)a5;
-- (void)setCurrentMorphTarget:(int64_t)a3;
-- (void)setHostedElements:(int64_t)a3;
-- (void)setMinimized:(BOOL)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setBackgroundTransitionProgress:(double)progress forceUpdate:(BOOL)update animated:(BOOL)animated;
+- (void)setCurrentMorphTarget:(int64_t)target;
+- (void)setHostedElements:(int64_t)elements;
+- (void)setMinimized:(BOOL)minimized;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)teardown;
-- (void)updateItem:(id)a3;
+- (void)updateItem:(id)item;
 - (void)updateProperties;
 - (void)updateUnselectedItemTintColor;
 - (void)willBeginCustomizingItems;
@@ -42,71 +42,71 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B77FB4();
 }
 
 - (void)minimizeBehaviorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B79E64();
 }
 
-- (void)_shim_setAccessoryView:(id)a3
+- (void)_shim_setAccessoryView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188B7C2D8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188B7C2D8(view);
 }
 
-- (void)glassGroupContainerDidChange:(id)a3
+- (void)glassGroupContainerDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_188F56408(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_188F56408(change);
 }
 
-- (void)changeItemsTo:(id)a3 removingItems:(id)a4 selectedItem:(id)a5 oldSelectedItem:(id)a6 animate:(BOOL)a7
+- (void)changeItemsTo:(id)to removingItems:(id)items selectedItem:(id)item oldSelectedItem:(id)selectedItem animate:(BOOL)animate
 {
-  v11 = a3;
-  if (a3)
+  toCopy = to;
+  if (to)
   {
     sub_188A34624(0, &qword_1EA9306B0);
-    v11 = sub_18A4A7548();
+    toCopy = sub_18A4A7548();
   }
 
-  if (a4)
+  if (items)
   {
     sub_188A34624(0, &qword_1EA9306B0);
     sub_18A4A7548();
   }
 
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  sub_188B7E660(v11, a5, a6, a7);
+  itemCopy = item;
+  selectedItemCopy = selectedItem;
+  selfCopy = self;
+  sub_188B7E660(toCopy, item, selectedItem, animate);
 }
 
-- (_TtC5UIKit32_UITabBarVisualProvider_Floating)initWithTabBar:(id)a3
+- (_TtC5UIKit32_UITabBarVisualProvider_Floating)initWithTabBar:(id)bar
 {
-  v3 = a3;
-  v4 = sub_188B7DC0C(v3);
+  barCopy = bar;
+  v4 = sub_188B7DC0C(barCopy);
 
   return v4;
 }
 
 - (void)prepare
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B7B9CC();
 }
 
-- (CGSize)intrinsicContentSizeGivenSize:(CGSize)a3
+- (CGSize)intrinsicContentSizeGivenSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   v4 = MEMORY[0x1E69E7D40];
   v5 = *((*MEMORY[0x1E69E7D40] & self->super.super.isa) + 0x150);
-  v6 = self;
+  selfCopy = self;
   if (v5())
   {
     sub_188B82DFC(v13);
@@ -122,7 +122,7 @@
   }
 
   v9 = *v8;
-  v10 = (*((*v4 & v6->super.super.isa) + 0x138))(v7);
+  v10 = (*((*v4 & selfCopy->super.super.isa) + 0x138))(v7);
 
   v11 = v9 + v10;
   v12 = width;
@@ -131,42 +131,42 @@
   return result;
 }
 
-- (void)changeSelectedItem:(id)a3 fromItem:(id)a4
+- (void)changeSelectedItem:(id)item fromItem:(id)fromItem
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_188B86638(a3, a4);
+  itemCopy = item;
+  fromItemCopy = fromItem;
+  selfCopy = self;
+  sub_188B86638(item, fromItem);
 }
 
-- (void)observeContentScrollView:(id)a3
+- (void)observeContentScrollView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188B8A3D8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188B8A3D8(view);
 }
 
-- (void)setHostedElements:(int64_t)a3
+- (void)setHostedElements:(int64_t)elements
 {
   v5 = type metadata accessor for _UITabBarVisualProvider_Floating();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(_UITabBarVisualProvider *)&v9 hostedElements];
-  v8.receiver = v6;
+  selfCopy = self;
+  hostedElements = [(_UITabBarVisualProvider *)&v9 hostedElements];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(_UITabBarVisualProvider *)&v8 setHostedElements:a3];
-  if ([(_UITabBarVisualProvider_Floating *)v6 hostedElements]!= v7)
+  [(_UITabBarVisualProvider *)&v8 setHostedElements:elements];
+  if ([(_UITabBarVisualProvider_Floating *)selfCopy hostedElements]!= hostedElements)
   {
     sub_188B7FFB8();
   }
 }
 
-- (CGRect)frameForHostedElement:(int64_t)a3 options:(int64_t)a4
+- (CGRect)frameForHostedElement:(int64_t)element options:(int64_t)options
 {
-  v4 = a4;
-  v6 = self;
-  sub_188BF942C(a3, v4);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_188BF942C(element, optionsCopy);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -183,49 +183,49 @@
   return result;
 }
 
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed
 {
-  v5 = self;
-  v4 = [(_UITabBarVisualProvider *)v5 tabBar];
-  [(UIView *)v4 setNeedsLayout];
+  selfCopy = self;
+  tabBar = [(_UITabBarVisualProvider *)selfCopy tabBar];
+  [(UIView *)tabBar setNeedsLayout];
 }
 
-- (void)setBackgroundTransitionProgress:(double)a3 forceUpdate:(BOOL)a4 animated:(BOOL)a5
+- (void)setBackgroundTransitionProgress:(double)progress forceUpdate:(BOOL)update animated:(BOOL)animated
 {
-  v6 = self;
-  sub_188C37D98(a3);
+  selfCopy = self;
+  sub_188C37D98(progress);
 }
 
 - (void)teardown
 {
-  v2 = self;
+  selfCopy = self;
   sub_188CABB10();
 }
 
 - (void)updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F53F88();
 }
 
 - (void)willBeginCustomizingItems
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F546FC();
 }
 
 - (void)didEndCustomizingItems
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F5493C();
 }
 
-- (id)exchangeItem:(id)a3 withItem:(id)a4
+- (id)exchangeItem:(id)item withItem:(id)withItem
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_188F5563C(v6, v7);
+  itemCopy = item;
+  withItemCopy = withItem;
+  selfCopy = self;
+  sub_188F5563C(itemCopy, withItemCopy);
 
   sub_188A34624(0, &qword_1EA9306B0);
   v9 = sub_18A4A7518();
@@ -233,15 +233,15 @@
   return v9;
 }
 
-- (void)updateItem:(id)a3
+- (void)updateItem:(id)item
 {
   v5 = OBJC_IVAR____TtC5UIKit32_UITabBarVisualProvider_Floating_tabBarButtonsForItem;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  v7 = a3;
-  v8 = self;
+  itemCopy = item;
+  selfCopy = self;
 
-  v9 = sub_18903AA14(v7, v6);
+  v9 = sub_18903AA14(itemCopy, v6);
 
   if (v9)
   {
@@ -249,34 +249,34 @@
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
-  v4 = self;
-  sub_188F56050(a3);
+  selfCopy = self;
+  sub_188F56050(attribute);
 }
 
 - (void)updateUnselectedItemTintColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F561A0();
 }
 
-- (id)resolvedPresentationSourceItemForItem:(id)a3
+- (id)resolvedPresentationSourceItemForItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_188F566EC(v4);
+  itemCopy = item;
+  selfCopy = self;
+  v6 = sub_188F566EC(itemCopy);
 
   return v6;
 }
 
-- (id)tabBarItemAtPoint:(CGPoint)a3
+- (id)tabBarItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(_UITabBarVisualProvider *)v5 tabBar];
-  v7 = [(UITabBar *)v6 hitTest:0 withEvent:x, y];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  tabBar = [(_UITabBarVisualProvider *)selfCopy tabBar];
+  v7 = [(UITabBar *)tabBar hitTest:0 withEvent:x, y];
 
   if (v7)
   {
@@ -290,8 +290,8 @@
     else
     {
       Strong = 0;
-      v9 = v5;
-      v5 = v7;
+      v9 = selfCopy;
+      selfCopy = v7;
     }
   }
 
@@ -303,10 +303,10 @@
   return Strong;
 }
 
-- (void)setCurrentMorphTarget:(int64_t)a3
+- (void)setCurrentMorphTarget:(int64_t)target
 {
-  v4 = self;
-  sub_188F56930(a3);
+  selfCopy = self;
+  sub_188F56930(target);
 }
 
 - (void)selectCollapseTabIfPossible
@@ -318,17 +318,17 @@
   }
 }
 
-- (void)setMinimized:(BOOL)a3
+- (void)setMinimized:(BOOL)minimized
 {
-  v3 = a3;
-  v7 = self;
+  minimizedCopy = minimized;
+  selfCopy = self;
   sub_188F542AC();
-  v4 = [(_UITabBarVisualProvider *)v7 tabBar];
-  v5 = [(UITabBar *)v4 _updateMorphTargetBlock];
+  tabBar = [(_UITabBarVisualProvider *)selfCopy tabBar];
+  _updateMorphTargetBlock = [(UITabBar *)tabBar _updateMorphTargetBlock];
 
-  if (v5)
+  if (_updateMorphTargetBlock)
   {
-    if (v3)
+    if (minimizedCopy)
     {
       v6 = 2;
     }
@@ -338,15 +338,15 @@
       v6 = 0;
     }
 
-    v5[2](v5, v6);
-    _Block_release(v5);
+    _updateMorphTargetBlock[2](_updateMorphTargetBlock, v6);
+    _Block_release(_updateMorphTargetBlock);
   }
 }
 
-- (id)viewsForMorphingToTarget:(int64_t)a3
+- (id)viewsForMorphingToTarget:(int64_t)target
 {
-  v4 = self;
-  sub_188F56AC0(a3);
+  selfCopy = self;
+  sub_188F56AC0(target);
 
   sub_188A34624(0, &qword_1ED48F680);
   v5 = sub_18A4A7518();
@@ -356,13 +356,13 @@
 
 - (void)morphAnimationsForHostedElementsDidEnd
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F56DEC();
 }
 
 - (id)focusedTabBarItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F56FE8();
 
   return v3;
@@ -370,7 +370,7 @@
 
 - (id)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188F57168();
 
   if (v3)
@@ -389,50 +389,50 @@
 
 - (void)_shim_layoutItemsOnly
 {
-  v2 = self;
+  selfCopy = self;
   sub_188B79120();
 }
 
-- (void)handleSelectionGesture:(id)a3
+- (void)handleSelectionGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_188F53378(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_188F53378(gestureCopy);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_188F581E8(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_188F581E8(beginCopy);
 
   return self & 1;
 }
 
-- (void)scrollAwayInteraction:(id)a3 progressDidChange:(double)a4 tracking:(BOOL)a5
+- (void)scrollAwayInteraction:(id)interaction progressDidChange:(double)change tracking:(BOOL)tracking
 {
-  v8 = a3;
-  v9 = self;
-  sub_188F58924(a5, a4);
+  interactionCopy = interaction;
+  selfCopy = self;
+  sub_188F58924(tracking, change);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_188F58D5C(v9);
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  selfCopy = self;
+  v12 = sub_188F58D5C(requestCopy);
 
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_188F5977C(v7);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = sub_188F5977C(regionCopy);
 
   return v9;
 }

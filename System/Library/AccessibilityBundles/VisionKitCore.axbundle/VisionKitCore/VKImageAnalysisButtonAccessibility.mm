@@ -10,17 +10,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    accessibilityLabel = v3;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = VKImageAnalysisButtonAccessibility;
-    v5 = [(VKImageAnalysisButtonAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(VKImageAnalysisButtonAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

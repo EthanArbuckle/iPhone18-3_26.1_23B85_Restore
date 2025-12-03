@@ -1,7 +1,7 @@
 @interface GLKEffectPropertyTexture
-+ (void)clearAllTexturingMasks:(GLKBigInt_s *)a3 fshMask:(GLKBigInt_s *)a4;
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4;
-- (BOOL)includeVshShaderTextForRootNode:(id)a3;
++ (void)clearAllTexturingMasks:(GLKBigInt_s *)masks fshMask:(GLKBigInt_s *)mask;
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot;
+- (BOOL)includeVshShaderTextForRootNode:(id)node;
 - (GLKBigInt_s)allFshMasks;
 - (GLKEffectPropertyTexGen)texGenR;
 - (GLKEffectPropertyTexGen)texGenS;
@@ -17,11 +17,11 @@
 - (void)initializeMasks;
 - (void)setEnabled:(GLBOOLean)enabled;
 - (void)setEnvMode:(GLKTextureEnvMode)envMode;
-- (void)setMatrixEnabled:(unsigned __int8)a3;
+- (void)setMatrixEnabled:(unsigned __int8)enabled;
 - (void)setShaderBindings;
 - (void)setTarget:(GLKTextureTarget)target;
-- (void)setUnit2dNameString:(char *)a3;
-- (void)setUnitCubeNameString:(char *)a3;
+- (void)setUnit2dNameString:(char *)string;
+- (void)setUnitCubeNameString:(char *)string;
 @end
 
 @implementation GLKEffectPropertyTexture
@@ -213,13 +213,13 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot
 {
   v6 = 0;
   v7 = &unk_27DF408C8;
   do
   {
-    *(v7 - 1) = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", [MEMORY[0x277CCACA8] stringWithFormat:@"texturing%d", v6], a4, v6);
+    *(v7 - 1) = +[GLKShaderBlockNode maskForLabel:root:index:](GLKShaderBlockNode, "maskForLabel:root:index:", [MEMORY[0x277CCACA8] stringWithFormat:@"texturing%d", v6], fshRoot, v6);
     *v7 = v8;
     ++v6;
     v7 += 2;
@@ -234,7 +234,7 @@
     v13 = v9;
     do
     {
-      *(v13 - 1) = [GLKShaderBlockNode maskForLabel:v12 root:a4 index:v11];
+      *(v13 - 1) = [GLKShaderBlockNode maskForLabel:v12 root:fshRoot index:v11];
       *v13 = v14;
       ++v11;
       v13 += 2;
@@ -244,27 +244,27 @@
     v9 += 6;
   }
 
-  _staticFshVPositionMask_0 = [GLKShaderBlockNode maskForLabel:@"v_position" root:a4 index:0];
+  _staticFshVPositionMask_0 = [GLKShaderBlockNode maskForLabel:@"v_position" root:fshRoot index:0];
   _staticFshVPositionMask_1 = v15;
-  _staticVshVPositionMask_0 = [GLKShaderBlockNode maskForLabel:@"v_position" root:a3 index:0];
+  _staticVshVPositionMask_0 = [GLKShaderBlockNode maskForLabel:@"v_position" root:root index:0];
   _staticVshVPositionMask_1 = v16;
 }
 
-+ (void)clearAllTexturingMasks:(GLKBigInt_s *)a3 fshMask:(GLKBigInt_s *)a4
++ (void)clearAllTexturingMasks:(GLKBigInt_s *)masks fshMask:(GLKBigInt_s *)mask
 {
   v4 = 0;
-  v5 = a3->n1 & ~_staticVshVPositionMask_1;
-  a3->n0 &= ~_staticVshVPositionMask_0;
-  a3->n1 = v5;
-  v6 = vbicq_s8(*a4, __PAIR128__(_staticFshVPositionMask_1, _staticFshVPositionMask_0));
-  *a4 = v6;
+  v5 = masks->n1 & ~_staticVshVPositionMask_1;
+  masks->n0 &= ~_staticVshVPositionMask_0;
+  masks->n1 = v5;
+  v6 = vbicq_s8(*mask, __PAIR128__(_staticFshVPositionMask_1, _staticFshVPositionMask_0));
+  *mask = v6;
   v7 = &_staticFshMasks_1;
   do
   {
     for (i = 0; i != 144; i += 6)
     {
       v6 = vbicq_s8(v6, *&v7[i]);
-      *a4 = v6;
+      *mask = v6;
     }
 
     ++v4;
@@ -274,14 +274,14 @@
   while (v4 != 3);
 }
 
-- (BOOL)includeVshShaderTextForRootNode:(id)a3
+- (BOOL)includeVshShaderTextForRootNode:(id)node
 {
-  v3 = *(a3 + 1);
-  result = v3 != _staticVshVPositionMask_0 || (v4 = *(a3 + 2), v4 != _staticVshVPositionMask_1) || (v5 = *self->super._prv, (*v5 & v3) != 0) || (v4 & v5[1]) != 0;
+  v3 = *(node + 1);
+  result = v3 != _staticVshVPositionMask_0 || (v4 = *(node + 2), v4 != _staticVshVPositionMask_1) || (v5 = *self->super._prv, (*v5 & v3) != 0) || (v4 & v5[1]) != 0;
   return result;
 }
 
-- (void)setUnit2dNameString:(char *)a3
+- (void)setUnit2dNameString:(char *)string
 {
   unit2dNameString = self->_unit2dNameString;
   if (unit2dNameString)
@@ -290,13 +290,13 @@
     self->_unit2dNameString = 0;
   }
 
-  if (a3)
+  if (string)
   {
-    self->_unit2dNameString = strdup(a3);
+    self->_unit2dNameString = strdup(string);
   }
 }
 
-- (void)setUnitCubeNameString:(char *)a3
+- (void)setUnitCubeNameString:(char *)string
 {
   unitCubeNameString = self->_unitCubeNameString;
   if (unitCubeNameString)
@@ -305,9 +305,9 @@
     self->_unitCubeNameString = 0;
   }
 
-  if (a3)
+  if (string)
   {
-    self->_unitCubeNameString = strdup(a3);
+    self->_unitCubeNameString = strdup(string);
   }
 }
 
@@ -465,14 +465,14 @@ LABEL_7:
   [(GLKEffectProperty *)self setDirtyUniforms:v11];
 }
 
-- (void)setMatrixEnabled:(unsigned __int8)a3
+- (void)setMatrixEnabled:(unsigned __int8)enabled
 {
-  if (self->_matrixEnabled != a3)
+  if (self->_matrixEnabled != enabled)
   {
-    self->_matrixEnabled = a3;
+    self->_matrixEnabled = enabled;
     v3 = *(self->super._prv + 2);
     v4 = _staticFshMasks_1[2 * self->_textureIndex + 84];
-    if (a3)
+    if (enabled)
     {
       v5 = *v3 | v4;
       v6 = v3[1] | _staticFshMasks_1[2 * self->_textureIndex + 85];
@@ -543,8 +543,8 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v4 = [(GLKEffectPropertyTexGen *)self->_texGenS mode];
-  if (v4 != 1)
+  mode = [(GLKEffectPropertyTexGen *)self->_texGenS mode];
+  if (mode != 1)
   {
 LABEL_19:
     texGenT = self->_texGenT;
@@ -558,8 +558,8 @@ LABEL_19:
       goto LABEL_13;
     }
 
-    v4 = [(GLKEffectPropertyTexGen *)self->_texGenT mode];
-    if (v4 != 1)
+    mode = [(GLKEffectPropertyTexGen *)self->_texGenT mode];
+    if (mode != 1)
     {
 LABEL_10:
       texGenR = self->_texGenR;
@@ -568,23 +568,23 @@ LABEL_10:
         if ([(GLKEffectPropertyTexGen *)texGenR mode]== 2 || [(GLKEffectPropertyTexGen *)self->_texGenR mode]== 3)
         {
 LABEL_13:
-          LOBYTE(v4) = 1;
-          return v4;
+          LOBYTE(mode) = 1;
+          return mode;
         }
 
-        v4 = [(GLKEffectPropertyTexGen *)self->_texGenR mode];
-        if (v4 == 1)
+        mode = [(GLKEffectPropertyTexGen *)self->_texGenR mode];
+        if (mode == 1)
         {
-          return v4;
+          return mode;
         }
       }
 
 LABEL_15:
-      LOBYTE(v4) = 0;
+      LOBYTE(mode) = 0;
     }
   }
 
-  return v4;
+  return mode;
 }
 
 - (unsigned)vNormalEyeMask

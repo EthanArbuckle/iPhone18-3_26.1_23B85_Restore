@@ -1,79 +1,79 @@
 @interface CAMNightModeConfigurationCommand
-- (CAMNightModeConfigurationCommand)initWithCoder:(id)a3;
-- (CAMNightModeConfigurationCommand)initWithNightModeEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMNightModeConfigurationCommand)initWithCoder:(id)coder;
+- (CAMNightModeConfigurationCommand)initWithNightModeEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMNightModeConfigurationCommand
 
-- (CAMNightModeConfigurationCommand)initWithNightModeEnabled:(BOOL)a3
+- (CAMNightModeConfigurationCommand)initWithNightModeEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = CAMNightModeConfigurationCommand;
   result = [(CAMCaptureCommand *)&v5 init];
   if (result)
   {
-    result->__enabled = a3;
+    result->__enabled = enabled;
   }
 
   return result;
 }
 
-- (CAMNightModeConfigurationCommand)initWithCoder:(id)a3
+- (CAMNightModeConfigurationCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CAMNightModeConfigurationCommand;
   v5 = [(CAMCaptureCommand *)&v7 init];
   if (v5)
   {
-    v5->__enabled = [v4 decodeBoolForKey:@"CAMNightModeConfigurationEnabled"];
+    v5->__enabled = [coderCopy decodeBoolForKey:@"CAMNightModeConfigurationEnabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMNightModeConfigurationCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMNightModeConfigurationCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMNightModeConfigurationEnabled"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMNightModeConfigurationCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMNightModeConfigurationEnabled"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMNightModeConfigurationCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMNightModeConfigurationCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 currentStillImageOutput];
-  v6 = [v4 currentVideoDeviceFormat];
+  contextCopy = context;
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
+  currentVideoDeviceFormat = [contextCopy currentVideoDeviceFormat];
 
-  v7 = [(CAMNightModeConfigurationCommand *)self _isEnabled];
-  v8 = [v5 supportedDigitalFlashModes];
-  if ([v8 containsObject:&unk_1F16C73E8])
+  _isEnabled = [(CAMNightModeConfigurationCommand *)self _isEnabled];
+  supportedDigitalFlashModes = [currentStillImageOutput supportedDigitalFlashModes];
+  if ([supportedDigitalFlashModes containsObject:&unk_1F16C73E8])
   {
-    v9 = [v6 isDigitalFlashSupported];
+    isDigitalFlashSupported = [currentVideoDeviceFormat isDigitalFlashSupported];
 
-    if (v9)
+    if (isDigitalFlashSupported)
     {
-      [v5 setDigitalFlashCaptureEnabled:v7];
-      v10 = [v5 photoSettingsForSceneMonitoring];
-      if ([v10 digitalFlashMode] != v7)
+      [currentStillImageOutput setDigitalFlashCaptureEnabled:_isEnabled];
+      photoSettingsForSceneMonitoring = [currentStillImageOutput photoSettingsForSceneMonitoring];
+      if ([photoSettingsForSceneMonitoring digitalFlashMode] != _isEnabled)
       {
-        v11 = [MEMORY[0x1E6987100] photoSettingsFromPhotoSettings:v10];
-        [v11 setDigitalFlashMode:v7];
-        [v5 setPhotoSettingsForSceneMonitoring:v11];
+        v11 = [MEMORY[0x1E6987100] photoSettingsFromPhotoSettings:photoSettingsForSceneMonitoring];
+        [v11 setDigitalFlashMode:_isEnabled];
+        [currentStillImageOutput setPhotoSettingsForSceneMonitoring:v11];
       }
 
       goto LABEL_11;
@@ -84,7 +84,7 @@
   {
   }
 
-  if (v7)
+  if (_isEnabled)
   {
     v12 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))

@@ -1,21 +1,21 @@
 @interface CFXOverlayPickerAnimatedPreviewWriter
-- (CFXOverlayPickerAnimatedPreviewWriter)initWithOverlayEffectId:(id)a3 previewSizeInPixels:(CGSize)a4 previewDuration:(double)a5 previewFrameRate:(unint64_t)a6 previewStartFrameIndex:(unint64_t)a7;
+- (CFXOverlayPickerAnimatedPreviewWriter)initWithOverlayEffectId:(id)id previewSizeInPixels:(CGSize)pixels previewDuration:(double)duration previewFrameRate:(unint64_t)rate previewStartFrameIndex:(unint64_t)index;
 - (CGSize)previewSizeInPixels;
 - (void)CFX_beginWriting;
 - (void)CFX_finishWriting;
 - (void)CFX_initializeEffectForPreviewing;
 - (void)CFX_writeNextEffectFrame;
-- (void)setCurrentRenderTime:(id *)a3;
-- (void)writeAnimatedPreviewToPath:(id)a3 completion:(id)a4;
+- (void)setCurrentRenderTime:(id *)time;
+- (void)writeAnimatedPreviewToPath:(id)path completion:(id)completion;
 @end
 
 @implementation CFXOverlayPickerAnimatedPreviewWriter
 
-- (CFXOverlayPickerAnimatedPreviewWriter)initWithOverlayEffectId:(id)a3 previewSizeInPixels:(CGSize)a4 previewDuration:(double)a5 previewFrameRate:(unint64_t)a6 previewStartFrameIndex:(unint64_t)a7
+- (CFXOverlayPickerAnimatedPreviewWriter)initWithOverlayEffectId:(id)id previewSizeInPixels:(CGSize)pixels previewDuration:(double)duration previewFrameRate:(unint64_t)rate previewStartFrameIndex:(unint64_t)index
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a3;
+  height = pixels.height;
+  width = pixels.width;
+  idCopy = id;
   v25.receiver = self;
   v25.super_class = CFXOverlayPickerAnimatedPreviewWriter;
   v14 = [(CFXOverlayPickerAnimatedPreviewWriter *)&v25 init];
@@ -25,23 +25,23 @@
   }
 
   v15 = +[JFXEffectFactory sharedInstance];
-  v16 = [v15 createEffectForType:2 fromID:v13 withProperties:0];
+  v16 = [v15 createEffectForType:2 fromID:idCopy withProperties:0];
   overlay = v14->_overlay;
   v14->_overlay = v16;
 
-  v18 = [(JFXEffect *)v14->_overlay renderEffect];
+  renderEffect = [(JFXEffect *)v14->_overlay renderEffect];
 
-  if (v18)
+  if (renderEffect)
   {
     v14->_previewSizeInPixels.width = width;
     v14->_previewSizeInPixels.height = height;
     v19 = MEMORY[0x277CC08F0];
     *&v14->_currentRenderTime.value = *MEMORY[0x277CC08F0];
     v14->_currentRenderTime.epoch = *(v19 + 16);
-    v14->_previewDuration = a5;
-    v14->_previewFrameRate = a6;
-    v14->_previewStartFrameIndex = a7;
-    v14->_targetFrameCount = -(a7 - a6 * a5);
+    v14->_previewDuration = duration;
+    v14->_previewFrameRate = rate;
+    v14->_previewStartFrameIndex = index;
+    v14->_targetFrameCount = -(index - rate * duration);
     [(CFXOverlayPickerAnimatedPreviewWriter *)v14 CFX_initializeEffectForPreviewing];
     v20 = dispatch_queue_create("OverlayPickerAnimatedPreviewWriter.writerQ", 0);
     writerQueue = v14->_writerQueue;
@@ -58,7 +58,7 @@ LABEL_4:
   v23 = JFXLog_core();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    [CFXOverlayPickerAnimatedPreviewWriter initWithOverlayEffectId:v13 previewSizeInPixels:v23 previewDuration:? previewFrameRate:? previewStartFrameIndex:?];
+    [CFXOverlayPickerAnimatedPreviewWriter initWithOverlayEffectId:idCopy previewSizeInPixels:v23 previewDuration:? previewFrameRate:? previewStartFrameIndex:?];
   }
 
   v22 = 0;
@@ -69,8 +69,8 @@ LABEL_8:
 
 - (void)CFX_initializeEffectForPreviewing
 {
-  v3 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
-  [v3 setImageSequencePathToBundledAssets];
+  overlay = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
+  [overlay setImageSequencePathToBundledAssets];
 
   [(CFXOverlayPickerAnimatedPreviewWriter *)self previewDuration];
   CMTimeMakeWithSeconds(&duration, v4, [(CFXOverlayPickerAnimatedPreviewWriter *)self previewFrameRate]);
@@ -78,56 +78,56 @@ LABEL_8:
   v19 = *&start.value;
   v5 = *&start.epoch;
   CMTimeRangeMake(&v24, &start, &duration);
-  v6 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
-  v7 = [v6 renderEffect];
+  overlay2 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
+  renderEffect = [overlay2 renderEffect];
   duration = v24;
-  [v7 setEffectRange:&duration];
+  [renderEffect setEffectRange:&duration];
 
-  v8 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
+  overlay3 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
   [(CFXOverlayPickerAnimatedPreviewWriter *)self previewSizeInPixels];
-  [v8 setRenderSize:?];
+  [overlay3 setRenderSize:?];
 
-  v9 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
-  [v9 enablePresentationState:1];
+  overlay4 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
+  [overlay4 enablePresentationState:1];
 
   [(CFXOverlayPickerAnimatedPreviewWriter *)self previewSizeInPixels];
   v11 = v10;
   [(CFXOverlayPickerAnimatedPreviewWriter *)self previewSizeInPixels];
   v13 = v12;
-  v14 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
+  overlay5 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
   *&duration.a = v19;
   duration.c = v5;
-  [v14 applyScaleToFitFrame:&duration withComponentTime:0.0 relativeRect:{0.0, v11, v13, 0.0, 0.0, v11, v13}];
+  [overlay5 applyScaleToFitFrame:&duration withComponentTime:0.0 relativeRect:{0.0, v11, v13, 0.0, 0.0, v11, v13}];
 
-  v15 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
-  [v15 pickerScale];
+  overlay6 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
+  [overlay6 pickerScale];
   v17 = v16;
 
   if (v17 != 1.0)
   {
-    v18 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
+    overlay7 = [(CFXOverlayPickerAnimatedPreviewWriter *)self overlay];
     CGAffineTransformMakeScale(&duration, v17, v17);
     v20 = v19;
     v21 = v5;
-    [v18 addTransform:&duration withComponentTime:&v20 relativeTo:1 basisOrigin:{0.0, 0.0, v11, v13}];
+    [overlay7 addTransform:&duration withComponentTime:&v20 relativeTo:1 basisOrigin:{0.0, 0.0, v11, v13}];
   }
 }
 
-- (void)writeAnimatedPreviewToPath:(id)a3 completion:(id)a4
+- (void)writeAnimatedPreviewToPath:(id)path completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CFXOverlayPickerAnimatedPreviewWriter *)self writerQueue];
+  pathCopy = path;
+  completionCopy = completion;
+  writerQueue = [(CFXOverlayPickerAnimatedPreviewWriter *)self writerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __79__CFXOverlayPickerAnimatedPreviewWriter_writeAnimatedPreviewToPath_completion___block_invoke;
   block[3] = &unk_278D7A190;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = pathCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = pathCopy;
+  dispatch_async(writerQueue, block);
 }
 
 uint64_t __79__CFXOverlayPickerAnimatedPreviewWriter_writeAnimatedPreviewToPath_completion___block_invoke(uint64_t a1)
@@ -141,13 +141,13 @@ uint64_t __79__CFXOverlayPickerAnimatedPreviewWriter_writeAnimatedPreviewToPath_
 
 - (void)CFX_beginWriting
 {
-  v3 = [(CFXOverlayPickerAnimatedPreviewWriter *)self writerQueue];
+  writerQueue = [(CFXOverlayPickerAnimatedPreviewWriter *)self writerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__CFXOverlayPickerAnimatedPreviewWriter_CFX_beginWriting__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(writerQueue, block);
 }
 
 void __57__CFXOverlayPickerAnimatedPreviewWriter_CFX_beginWriting__block_invoke(uint64_t a1)
@@ -207,13 +207,13 @@ void __57__CFXOverlayPickerAnimatedPreviewWriter_CFX_beginWriting__block_invoke(
 
 - (void)CFX_writeNextEffectFrame
 {
-  v3 = [(CFXOverlayPickerAnimatedPreviewWriter *)self writerQueue];
+  writerQueue = [(CFXOverlayPickerAnimatedPreviewWriter *)self writerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__CFXOverlayPickerAnimatedPreviewWriter_CFX_writeNextEffectFrame__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(writerQueue, block);
 }
 
 void __65__CFXOverlayPickerAnimatedPreviewWriter_CFX_writeNextEffectFrame__block_invoke(uint64_t a1)
@@ -337,13 +337,13 @@ void __65__CFXOverlayPickerAnimatedPreviewWriter_CFX_writeNextEffectFrame__block
 
 - (void)CFX_finishWriting
 {
-  v3 = [(CFXOverlayPickerAnimatedPreviewWriter *)self writerQueue];
+  writerQueue = [(CFXOverlayPickerAnimatedPreviewWriter *)self writerQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__CFXOverlayPickerAnimatedPreviewWriter_CFX_finishWriting__block_invoke;
   block[3] = &unk_278D79D20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(writerQueue, block);
 }
 
 void __58__CFXOverlayPickerAnimatedPreviewWriter_CFX_finishWriting__block_invoke(uint64_t a1)
@@ -374,10 +374,10 @@ void __58__CFXOverlayPickerAnimatedPreviewWriter_CFX_finishWriting__block_invoke
   return result;
 }
 
-- (void)setCurrentRenderTime:(id *)a3
+- (void)setCurrentRenderTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_currentRenderTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_currentRenderTime.epoch = time->var3;
   *&self->_currentRenderTime.value = v3;
 }
 

@@ -1,5 +1,5 @@
 @interface _SVXTaskContextMutation
-- (_SVXTaskContextMutation)initWithBaseModel:(id)a3;
+- (_SVXTaskContextMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -29,69 +29,69 @@ LABEL_8:
         if ((mutationFlags & 8) != 0)
         {
 LABEL_9:
-          v8 = self->_sessionUUID;
+          sessionUUID = self->_sessionUUID;
           goto LABEL_13;
         }
 
 LABEL_12:
-        v8 = [(SVXTaskContext *)self->_baseModel sessionUUID];
+        sessionUUID = [(SVXTaskContext *)self->_baseModel sessionUUID];
 LABEL_13:
-        v33 = v8;
+        v33 = sessionUUID;
         if ((*&self->_mutationFlags & 0x10) != 0)
         {
-          v9 = self->_requestUUID;
+          requestUUID = self->_requestUUID;
         }
 
         else
         {
-          v9 = [(SVXTaskContext *)self->_baseModel requestUUID];
+          requestUUID = [(SVXTaskContext *)self->_baseModel requestUUID];
         }
 
-        v31 = v9;
+        v31 = requestUUID;
         if ((*&self->_mutationFlags & 0x20) != 0)
         {
-          v10 = self->_aceId;
+          aceId = self->_aceId;
         }
 
         else
         {
-          v10 = [(SVXTaskContext *)self->_baseModel aceId];
+          aceId = [(SVXTaskContext *)self->_baseModel aceId];
         }
 
-        v30 = v10;
+        v30 = aceId;
         if ((*&self->_mutationFlags & 0x40) != 0)
         {
-          v11 = self->_refId;
+          refId = self->_refId;
         }
 
         else
         {
-          v11 = [(SVXTaskContext *)self->_baseModel refId];
+          refId = [(SVXTaskContext *)self->_baseModel refId];
         }
 
-        v29 = v11;
+        v29 = refId;
         if ((*&self->_mutationFlags & 0x80) != 0)
         {
-          v12 = self->_dialogIdentifier;
+          dialogIdentifier = self->_dialogIdentifier;
         }
 
         else
         {
-          v12 = [(SVXTaskContext *)self->_baseModel dialogIdentifier];
+          dialogIdentifier = [(SVXTaskContext *)self->_baseModel dialogIdentifier];
         }
 
-        v13 = v12;
+        v13 = dialogIdentifier;
         if ((*&self->_mutationFlags & 0x100) != 0)
         {
-          v14 = self->_dialogPhase;
+          dialogPhase = self->_dialogPhase;
         }
 
         else
         {
-          v14 = [(SVXTaskContext *)self->_baseModel dialogPhase];
+          dialogPhase = [(SVXTaskContext *)self->_baseModel dialogPhase];
         }
 
-        v15 = v14;
+        v15 = dialogPhase;
         v16 = self->_mutationFlags;
         if ((v16 & 0x200) != 0)
         {
@@ -103,51 +103,51 @@ LABEL_30:
             if ((v16 & 0x800) != 0)
             {
 LABEL_31:
-              v19 = self->_listenAfterSpeakingBehavior;
+              listenAfterSpeakingBehavior = self->_listenAfterSpeakingBehavior;
 LABEL_35:
-              v20 = v19;
+              v20 = listenAfterSpeakingBehavior;
               if ((*&self->_mutationFlags & 0x1000) != 0)
               {
-                v21 = self->_activationContext;
+                activationContext = self->_activationContext;
               }
 
               else
               {
-                v21 = [(SVXTaskContext *)self->_baseModel activationContext];
+                activationContext = [(SVXTaskContext *)self->_baseModel activationContext];
               }
 
-              v22 = v21;
+              v22 = activationContext;
               if ((*&self->_mutationFlags & 0x2000) != 0)
               {
-                v23 = self->_deactivationContext;
+                deactivationContext = self->_deactivationContext;
               }
 
               else
               {
-                v23 = [(SVXTaskContext *)self->_baseModel deactivationContext];
+                deactivationContext = [(SVXTaskContext *)self->_baseModel deactivationContext];
               }
 
-              v24 = v23;
+              v24 = deactivationContext;
               if ((*&self->_mutationFlags & 0x4000) != 0)
               {
-                v25 = self->_error;
+                error = self->_error;
               }
 
               else
               {
-                v25 = [(SVXTaskContext *)self->_baseModel error];
+                error = [(SVXTaskContext *)self->_baseModel error];
               }
 
-              v26 = v25;
+              v26 = error;
               BYTE1(v28) = listensAfterSpeaking;
               LOBYTE(v28) = isUUFR;
-              v7 = [[SVXTaskContext alloc] initWithOrigin:origin timestamp:timestamp sessionUUID:v33 requestUUID:v31 aceId:v30 refId:v29 dialogIdentifier:v13 dialogPhase:v15 isUUFR:v28 listensAfterSpeaking:v20 listenAfterSpeakingBehavior:v22 activationContext:v24 deactivationContext:v25 error:?];
+              v7 = [[SVXTaskContext alloc] initWithOrigin:origin timestamp:timestamp sessionUUID:v33 requestUUID:v31 aceId:v30 refId:v29 dialogIdentifier:v13 dialogPhase:v15 isUUFR:v28 listensAfterSpeaking:v20 listenAfterSpeakingBehavior:v22 activationContext:v24 deactivationContext:error error:?];
 
               goto LABEL_45;
             }
 
 LABEL_34:
-            v19 = [(SVXTaskContext *)self->_baseModel listenAfterSpeakingBehavior];
+            listenAfterSpeakingBehavior = [(SVXTaskContext *)self->_baseModel listenAfterSpeakingBehavior];
             goto LABEL_35;
           }
         }
@@ -199,16 +199,16 @@ LABEL_45:
   return v7;
 }
 
-- (_SVXTaskContextMutation)initWithBaseModel:(id)a3
+- (_SVXTaskContextMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXTaskContextMutation;
   v6 = [(_SVXTaskContextMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

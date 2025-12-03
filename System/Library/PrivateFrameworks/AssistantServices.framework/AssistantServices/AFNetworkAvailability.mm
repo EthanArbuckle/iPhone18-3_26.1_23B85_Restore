@@ -7,8 +7,8 @@
 - (void)_startObservingAvailability;
 - (void)_stopObservingAvailability;
 - (void)_updateState;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AFNetworkAvailability
@@ -213,11 +213,11 @@ _BYTE *__36__AFNetworkAvailability_isAvailable__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -225,7 +225,7 @@ _BYTE *__36__AFNetworkAvailability_isAvailable__block_invoke(uint64_t a1)
     v7[2] = __40__AFNetworkAvailability_removeObserver___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -248,11 +248,11 @@ uint64_t __40__AFNetworkAvailability_removeObserver___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -260,7 +260,7 @@ uint64_t __40__AFNetworkAvailability_removeObserver___block_invoke(uint64_t a1)
     v7[2] = __37__AFNetworkAvailability_addObserver___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }

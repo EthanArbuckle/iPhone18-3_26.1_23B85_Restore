@@ -1,7 +1,7 @@
 @interface _UIStatusBarVisualProvider_LegacyPhone
-+ (CGSize)intrinsicLockScreenContentSizeForOrientation:(int64_t)a3;
-+ (double)_heightExpanded:(BOOL)a3;
-- (CGRect)clockBoundsForLayoutItem:(id)a3;
++ (CGSize)intrinsicLockScreenContentSizeForOrientation:(int64_t)orientation;
++ (double)_heightExpanded:(BOOL)expanded;
+- (CGRect)clockBoundsForLayoutItem:(id)item;
 - (CGSize)pillSize;
 - (CGSize)smallPillSize;
 - (NSDirectionalEdgeInsets)edgeInsets;
@@ -9,39 +9,39 @@
 - (double)effectiveHeight;
 - (id)_animationForSingleLineDualCarrier;
 - (id)_backgroundActivityDetailRemovalAnimation;
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4;
-- (id)condensedFontForCellularType:(int64_t)a3 defaultFont:(id)a4 baselineOffset:(double *)a5;
-- (id)displayItemIdentifiersForPartWithIdentifier:(id)a3;
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation;
+- (id)condensedFontForCellularType:(int64_t)type defaultFont:(id)font baselineOffset:(double *)offset;
+- (id)displayItemIdentifiersForPartWithIdentifier:(id)identifier;
 - (id)expandedFont;
 - (id)normalFont;
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3;
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3;
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier;
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier;
 - (id)pillFont;
-- (id)regionIdentifiersForPartWithIdentifier:(id)a3;
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4;
-- (id)setupInContainerView:(id)a3;
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4;
-- (id)styleAttributesForStyle:(int64_t)a3;
+- (id)regionIdentifiersForPartWithIdentifier:(id)identifier;
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation;
+- (id)setupInContainerView:(id)view;
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed;
+- (id)styleAttributesForStyle:(int64_t)style;
 - (id)timeFont;
-- (id)willUpdateWithData:(id)a3;
+- (id)willUpdateWithData:(id)data;
 - (void)_updateBackgroundHeight;
 - (void)_updateExpandedTrailingRegion;
 - (void)_updateLockScreenSizing;
-- (void)_updateLowerRegionsWithData:(id)a3;
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5;
-- (void)itemCreated:(id)a3;
-- (void)orientationUpdatedFromOrientation:(int64_t)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setOnLockScreen:(BOOL)a3;
-- (void)updateDataForService:(id)a3;
+- (void)_updateLowerRegionsWithData:(id)data;
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press;
+- (void)itemCreated:(id)created;
+- (void)orientationUpdatedFromOrientation:(int64_t)orientation;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setOnLockScreen:(BOOL)screen;
+- (void)updateDataForService:(id)service;
 @end
 
 @implementation _UIStatusBarVisualProvider_LegacyPhone
 
-+ (double)_heightExpanded:(BOOL)a3
++ (double)_heightExpanded:(BOOL)expanded
 {
   result = 20.0;
-  if (a3)
+  if (expanded)
   {
     return 24.0;
   }
@@ -49,9 +49,9 @@
   return result;
 }
 
-+ (CGSize)intrinsicLockScreenContentSizeForOrientation:(int64_t)a3
++ (CGSize)intrinsicLockScreenContentSizeForOrientation:(int64_t)orientation
 {
-  [a1 _heightExpanded:1];
+  [self _heightExpanded:1];
   v4 = v3;
   v5 = -1.0;
   result.height = v4;
@@ -62,9 +62,9 @@
 - (double)effectiveHeight
 {
   v3 = objc_opt_class();
-  v4 = [(_UIStatusBarVisualProvider_iOS *)self expanded]|| [(_UIStatusBarVisualProvider_iOS *)self onLockScreen];
+  onLockScreen = [(_UIStatusBarVisualProvider_iOS *)self expanded]|| [(_UIStatusBarVisualProvider_iOS *)self onLockScreen];
 
-  [v3 _heightExpanded:v4];
+  [v3 _heightExpanded:onLockScreen];
   return result;
 }
 
@@ -83,8 +83,8 @@
 
 - (double)baselineOffset
 {
-  v2 = [objc_opt_self() mainScreen];
-  [v2 scale];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   UIRoundToScale(14.5, v3);
   v5 = v4;
 
@@ -217,12 +217,12 @@
   return result;
 }
 
-- (id)setupInContainerView:(id)a3
+- (id)setupInContainerView:(id)view
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
-  v185 = [MEMORY[0x1E695DF70] array];
+  viewCopy = view;
+  array = [v4 array];
+  array2 = [MEMORY[0x1E695DF70] array];
   [(_UIStatusBarVisualProvider_LegacyPhone *)self baselineOffset];
   v8 = v7;
   [(_UIStatusBarVisualProvider_LegacyPhone *)self expandedBaselineOffset];
@@ -236,12 +236,12 @@
   v17 = v16;
   [(_UIStatusBarVisualProvider_LegacyPhone *)self regionSpacing];
   v19 = v18;
-  v20 = [(_UIStatusBarVisualProvider_LegacyPhone *)self normalFont];
-  [v20 capHeight];
+  normalFont = [(_UIStatusBarVisualProvider_LegacyPhone *)self normalFont];
+  [normalFont capHeight];
   v22 = v21 + 1.0;
 
-  v23 = [(_UIStatusBarVisualProvider_LegacyPhone *)self expandedFont];
-  [v23 capHeight];
+  expandedFont = [(_UIStatusBarVisualProvider_LegacyPhone *)self expandedFont];
+  [expandedFont capHeight];
   v25 = v24 + 1.0;
 
   v26 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"leading"];
@@ -258,29 +258,29 @@
 
   [(_UIStatusBarRegion *)v26 setLayout:v27];
   [(_UIStatusBarRegion *)v26 setActionInsets:-20.0, -20.0, -20.0, -20.0];
-  v31 = [(_UIStatusBarRegion *)v26 layoutItem];
-  v32 = [v31 bottomAnchor];
-  v33 = [v5 topAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33 constant:v8];
+  layoutItem = [(_UIStatusBarRegion *)v26 layoutItem];
+  bottomAnchor = [layoutItem bottomAnchor];
+  topAnchor = [viewCopy topAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:v8];
   leadingTopConstraint = self->_leadingTopConstraint;
   self->_leadingTopConstraint = v34;
 
-  [v6 addObject:self->_leadingTopConstraint];
-  v36 = [v31 leadingAnchor];
-  v37 = [v5 leadingAnchor];
-  v38 = [v36 constraintEqualToAnchor:v37 constant:v11];
-  [v6 addObject:v38];
+  [array addObject:self->_leadingTopConstraint];
+  leadingAnchor = [layoutItem leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v11];
+  [array addObject:v38];
 
-  v184 = v31;
-  v39 = [v31 heightAnchor];
-  v40 = [v39 constraintEqualToConstant:v22];
+  v184 = layoutItem;
+  heightAnchor = [layoutItem heightAnchor];
+  v40 = [heightAnchor constraintEqualToConstant:v22];
   leadingHeightConstraint = self->_leadingHeightConstraint;
   self->_leadingHeightConstraint = v40;
 
-  [v6 addObject:self->_leadingHeightConstraint];
-  [v5 _ui_addSubLayoutItem:v31];
+  [array addObject:self->_leadingHeightConstraint];
+  [viewCopy _ui_addSubLayoutItem:layoutItem];
 
-  [v185 addObject:v26];
+  [array2 addObject:v26];
   v42 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"trailing"];
   v43 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
   v44 = objc_alloc_init(_UIStatusBarRegionAxisStackingLayout);
@@ -295,30 +295,30 @@
 
   [(_UIStatusBarRegion *)v42 setLayout:v43];
   [(_UIStatusBarRegion *)v42 setActionInsets:-20.0, -20.0, -20.0, -20.0];
-  v47 = [(_UIStatusBarRegion *)v42 layoutItem];
-  v48 = [v47 bottomAnchor];
-  v49 = [v5 topAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49 constant:v8];
+  layoutItem2 = [(_UIStatusBarRegion *)v42 layoutItem];
+  bottomAnchor2 = [layoutItem2 bottomAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v50 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2 constant:v8];
   trailingTopConstraint = self->_trailingTopConstraint;
   self->_trailingTopConstraint = v50;
 
-  [v6 addObject:self->_trailingTopConstraint];
-  v52 = [v47 trailingAnchor];
-  v53 = [v5 trailingAnchor];
+  [array addObject:self->_trailingTopConstraint];
+  trailingAnchor = [layoutItem2 trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
   v54 = -v13;
-  v55 = [v52 constraintEqualToAnchor:v53 constant:v54];
-  [v6 addObject:v55];
+  v55 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:v54];
+  [array addObject:v55];
 
-  v183 = v47;
-  v56 = [v47 heightAnchor];
-  v57 = [v56 constraintEqualToConstant:v22];
+  v183 = layoutItem2;
+  heightAnchor2 = [layoutItem2 heightAnchor];
+  v57 = [heightAnchor2 constraintEqualToConstant:v22];
   trailingHeightConstraint = self->_trailingHeightConstraint;
   self->_trailingHeightConstraint = v57;
 
-  [v6 addObject:self->_trailingHeightConstraint];
-  [v5 _ui_addSubLayoutItem:v47];
+  [array addObject:self->_trailingHeightConstraint];
+  [viewCopy _ui_addSubLayoutItem:layoutItem2];
 
-  [v185 addObject:v42];
+  [array2 addObject:v42];
   v59 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"center"];
   v60 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
   v61 = objc_alloc_init(_UIStatusBarRegionAxisCenteringLayout);
@@ -331,43 +331,43 @@
   [(_UIStatusBarRegionAxesLayout *)v60 setVerticalLayout:v63];
 
   [(_UIStatusBarRegion *)v59 setLayout:v60];
-  v64 = [(_UIStatusBarRegion *)v59 layoutItem];
-  v65 = [v64 centerXAnchor];
-  v66 = [v5 centerXAnchor];
-  v67 = [v65 constraintEqualToAnchor:v66];
-  [v6 addObject:v67];
+  layoutItem3 = [(_UIStatusBarRegion *)v59 layoutItem];
+  centerXAnchor = [layoutItem3 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v67 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v67];
 
-  v68 = [v64 widthAnchor];
-  v69 = [v68 constraintEqualToConstant:0.0];
+  widthAnchor = [layoutItem3 widthAnchor];
+  v69 = [widthAnchor constraintEqualToConstant:0.0];
   LODWORD(v70) = 1132068864;
   v71 = [v69 _ui_constraintWithPriority:v70];
-  [v6 addObject:v71];
+  [array addObject:v71];
 
-  v72 = [v64 bottomAnchor];
-  v73 = [v5 topAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73 constant:v8];
+  bottomAnchor3 = [layoutItem3 bottomAnchor];
+  topAnchor3 = [viewCopy topAnchor];
+  v74 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3 constant:v8];
   centerTopConstraint = self->_centerTopConstraint;
   self->_centerTopConstraint = v74;
 
-  [v6 addObject:self->_centerTopConstraint];
-  v76 = [v64 heightAnchor];
-  v77 = [v76 constraintEqualToConstant:v22];
+  [array addObject:self->_centerTopConstraint];
+  heightAnchor3 = [layoutItem3 heightAnchor];
+  v77 = [heightAnchor3 constraintEqualToConstant:v22];
   centerHeightConstraint = self->_centerHeightConstraint;
   self->_centerHeightConstraint = v77;
 
-  [v6 addObject:self->_centerHeightConstraint];
-  v79 = [v64 leadingAnchor];
-  v80 = [v31 trailingAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80 constant:v19];
-  [v6 addObject:v81];
+  [array addObject:self->_centerHeightConstraint];
+  leadingAnchor3 = [layoutItem3 leadingAnchor];
+  trailingAnchor3 = [layoutItem trailingAnchor];
+  v81 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor3 constant:v19];
+  [array addObject:v81];
 
-  v82 = [v183 leadingAnchor];
-  v83 = [v64 trailingAnchor];
-  v84 = [v82 constraintEqualToAnchor:v83 constant:v19];
-  [v6 addObject:v84];
+  leadingAnchor4 = [v183 leadingAnchor];
+  trailingAnchor4 = [layoutItem3 trailingAnchor];
+  v84 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:v19];
+  [array addObject:v84];
 
-  [v5 _ui_addSubLayoutItem:v64];
-  [v185 addObject:v59];
+  [viewCopy _ui_addSubLayoutItem:layoutItem3];
+  [array2 addObject:v59];
 
   v85 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"background"];
   v86 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
@@ -378,32 +378,32 @@
   [(_UIStatusBarRegionAxesLayout *)v86 setVerticalLayout:v88];
 
   [(_UIStatusBarRegion *)v85 setLayout:v86];
-  v89 = [(_UIStatusBarRegion *)v85 layoutItem];
-  v90 = [v89 leadingAnchor];
-  v91 = [v5 leadingAnchor];
-  v92 = [v90 constraintEqualToAnchor:v91];
-  [v6 addObject:v92];
+  layoutItem4 = [(_UIStatusBarRegion *)v85 layoutItem];
+  leadingAnchor5 = [layoutItem4 leadingAnchor];
+  leadingAnchor6 = [viewCopy leadingAnchor];
+  v92 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
+  [array addObject:v92];
 
-  v93 = [v89 trailingAnchor];
-  v94 = [v5 trailingAnchor];
-  v95 = [v93 constraintEqualToAnchor:v94];
-  [v6 addObject:v95];
+  trailingAnchor5 = [layoutItem4 trailingAnchor];
+  trailingAnchor6 = [viewCopy trailingAnchor];
+  v95 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+  [array addObject:v95];
 
-  v96 = [v89 topAnchor];
-  v97 = [v5 topAnchor];
-  v98 = [v96 constraintEqualToAnchor:v97];
-  [v6 addObject:v98];
+  topAnchor4 = [layoutItem4 topAnchor];
+  topAnchor5 = [viewCopy topAnchor];
+  v98 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
+  [array addObject:v98];
 
-  v99 = [v89 heightAnchor];
+  heightAnchor4 = [layoutItem4 heightAnchor];
   [objc_opt_class() height];
-  v100 = [v99 constraintEqualToConstant:?];
+  v100 = [heightAnchor4 constraintEqualToConstant:?];
   backgroundHeightConstraint = self->_backgroundHeightConstraint;
   self->_backgroundHeightConstraint = v100;
 
-  [v6 addObject:self->_backgroundHeightConstraint];
-  [v5 _ui_addSubLayoutItem:v89];
+  [array addObject:self->_backgroundHeightConstraint];
+  [viewCopy _ui_addSubLayoutItem:layoutItem4];
 
-  [v185 addObject:v85];
+  [array2 addObject:v85];
   [(_UIStatusBarVisualProvider_LegacyPhone *)self lowerExpandedBaselineOffset];
   v103 = v102;
   v104 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"expandedLeading"];
@@ -419,26 +419,26 @@
   [(_UIStatusBarRegion *)v104 setLayout:v105];
   [(_UIStatusBarRegion *)v104 setActionInsets:-20.0, -20.0, -20.0, -20.0];
   [(_UIStatusBarRegion *)v104 disableWithToken:10];
-  v108 = [(_UIStatusBarRegion *)v104 layoutItem];
-  v109 = [v108 bottomAnchor];
-  v110 = [v5 topAnchor];
-  v111 = [v109 constraintEqualToAnchor:v110 constant:v181];
+  layoutItem5 = [(_UIStatusBarRegion *)v104 layoutItem];
+  bottomAnchor4 = [layoutItem5 bottomAnchor];
+  topAnchor6 = [viewCopy topAnchor];
+  v111 = [bottomAnchor4 constraintEqualToAnchor:topAnchor6 constant:v181];
   expandedLeadingBottomConstraint = self->_expandedLeadingBottomConstraint;
   self->_expandedLeadingBottomConstraint = v111;
 
   [(NSLayoutConstraint *)self->_expandedLeadingBottomConstraint setIdentifier:@"UISB-expanded-leading-bottom"];
-  [v6 addObject:self->_expandedLeadingBottomConstraint];
-  v113 = [v108 leadingAnchor];
-  v114 = [v5 leadingAnchor];
-  v115 = [v113 constraintEqualToAnchor:v114 constant:v11];
-  [v6 addObject:v115];
+  [array addObject:self->_expandedLeadingBottomConstraint];
+  leadingAnchor7 = [layoutItem5 leadingAnchor];
+  leadingAnchor8 = [viewCopy leadingAnchor];
+  v115 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:v11];
+  [array addObject:v115];
 
-  v116 = [v108 heightAnchor];
-  v117 = [v116 constraintEqualToConstant:v25];
-  [v6 addObject:v117];
+  heightAnchor5 = [layoutItem5 heightAnchor];
+  v117 = [heightAnchor5 constraintEqualToConstant:v25];
+  [array addObject:v117];
 
-  [v5 _ui_addSubLayoutItem:v108];
-  [v185 addObject:v104];
+  [viewCopy _ui_addSubLayoutItem:layoutItem5];
+  [array2 addObject:v104];
 
   v118 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"expandedTrailing"];
   v119 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
@@ -453,41 +453,41 @@
   [(_UIStatusBarRegion *)v118 setLayout:v119];
   [(_UIStatusBarRegion *)v118 setActionInsets:-20.0, -20.0, -20.0, -20.0];
   [(_UIStatusBarRegion *)v118 disableWithToken:10];
-  v122 = [(_UIStatusBarRegion *)v118 layoutItem];
-  v123 = [v122 bottomAnchor];
-  v124 = [v5 topAnchor];
-  v125 = [v123 constraintEqualToAnchor:v124 constant:v181];
+  layoutItem6 = [(_UIStatusBarRegion *)v118 layoutItem];
+  bottomAnchor5 = [layoutItem6 bottomAnchor];
+  topAnchor7 = [viewCopy topAnchor];
+  v125 = [bottomAnchor5 constraintEqualToAnchor:topAnchor7 constant:v181];
   expandedTrailingBottomConstraint = self->_expandedTrailingBottomConstraint;
   self->_expandedTrailingBottomConstraint = v125;
 
   [(NSLayoutConstraint *)self->_expandedTrailingBottomConstraint setIdentifier:@"UISB-expanded-trailing-bottom"];
-  [v6 addObject:self->_expandedTrailingBottomConstraint];
-  v127 = [v122 trailingAnchor];
-  v128 = [v5 trailingAnchor];
-  v129 = [v127 constraintEqualToAnchor:v128 constant:v54];
-  [v6 addObject:v129];
+  [array addObject:self->_expandedTrailingBottomConstraint];
+  trailingAnchor7 = [layoutItem6 trailingAnchor];
+  trailingAnchor8 = [viewCopy trailingAnchor];
+  v129 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:v54];
+  [array addObject:v129];
 
-  v130 = [v122 heightAnchor];
-  v131 = [v130 constraintEqualToConstant:v25];
-  [v6 addObject:v131];
+  heightAnchor6 = [layoutItem6 heightAnchor];
+  v131 = [heightAnchor6 constraintEqualToConstant:v25];
+  [array addObject:v131];
 
-  v132 = [v122 leadingAnchor];
-  v182 = v108;
-  v133 = [v108 trailingAnchor];
-  v134 = [v132 constraintEqualToAnchor:v133 constant:v17];
-  [v6 addObject:v134];
+  leadingAnchor9 = [layoutItem6 leadingAnchor];
+  v182 = layoutItem5;
+  trailingAnchor9 = [layoutItem5 trailingAnchor];
+  v134 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor9 constant:v17];
+  [array addObject:v134];
 
-  v135 = [v122 widthAnchor];
-  v136 = [v108 widthAnchor];
-  v137 = [v135 constraintEqualToAnchor:v136];
+  widthAnchor2 = [layoutItem6 widthAnchor];
+  widthAnchor3 = [layoutItem5 widthAnchor];
+  v137 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
   LODWORD(v138) = 1131741184;
   v139 = [v137 _ui_constraintWithPriority:v138];
-  [v6 addObject:v139];
+  [array addObject:v139];
 
-  v180 = v122;
-  [v5 _ui_addSubLayoutItem:v122];
+  v180 = layoutItem6;
+  [viewCopy _ui_addSubLayoutItem:layoutItem6];
 
-  [v185 addObject:v118];
+  [array2 addObject:v118];
   v140 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"expandedLowerLeading"];
   v141 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
   v142 = objc_alloc_init(_UIStatusBarRegionAxisStackingLayout);
@@ -500,23 +500,23 @@
 
   [(_UIStatusBarRegion *)v140 setLayout:v141];
   [(_UIStatusBarRegion *)v140 disableWithToken:10];
-  v144 = [(_UIStatusBarRegion *)v140 layoutItem];
-  v145 = [v144 bottomAnchor];
-  v146 = [v182 bottomAnchor];
-  v147 = [v145 constraintEqualToAnchor:v146 constant:v103];
-  [v6 addObject:v147];
+  layoutItem7 = [(_UIStatusBarRegion *)v140 layoutItem];
+  bottomAnchor6 = [layoutItem7 bottomAnchor];
+  bottomAnchor7 = [v182 bottomAnchor];
+  v147 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:v103];
+  [array addObject:v147];
 
-  v148 = [v144 leadingAnchor];
-  v149 = [v5 leadingAnchor];
-  v150 = [v148 constraintEqualToAnchor:v149 constant:v11];
-  [v6 addObject:v150];
+  leadingAnchor10 = [layoutItem7 leadingAnchor];
+  leadingAnchor11 = [viewCopy leadingAnchor];
+  v150 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:v11];
+  [array addObject:v150];
 
-  v151 = [v144 heightAnchor];
-  v152 = [v151 constraintEqualToConstant:v25];
-  [v6 addObject:v152];
+  heightAnchor7 = [layoutItem7 heightAnchor];
+  v152 = [heightAnchor7 constraintEqualToConstant:v25];
+  [array addObject:v152];
 
-  [v5 _ui_addSubLayoutItem:v144];
-  [v185 addObject:v140];
+  [viewCopy _ui_addSubLayoutItem:layoutItem7];
+  [array2 addObject:v140];
 
   v153 = [[_UIStatusBarRegion alloc] initWithIdentifier:@"expandedLowerTrailing"];
   v154 = objc_alloc_init(_UIStatusBarRegionAxesLayout);
@@ -530,83 +530,83 @@
 
   [(_UIStatusBarRegion *)v153 setLayout:v154];
   [(_UIStatusBarRegion *)v153 disableWithToken:10];
-  v157 = [(_UIStatusBarRegion *)v153 layoutItem];
-  v158 = [v157 bottomAnchor];
-  v159 = [v122 bottomAnchor];
-  v160 = [v158 constraintEqualToAnchor:v159 constant:v103];
-  [v6 addObject:v160];
+  layoutItem8 = [(_UIStatusBarRegion *)v153 layoutItem];
+  bottomAnchor8 = [layoutItem8 bottomAnchor];
+  bottomAnchor9 = [layoutItem6 bottomAnchor];
+  v160 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:v103];
+  [array addObject:v160];
 
-  v161 = [(_UIStatusBarRegion *)v153 layoutItem];
-  v162 = [v161 trailingAnchor];
-  v163 = [v5 trailingAnchor];
-  v164 = [v162 constraintEqualToAnchor:v163 constant:v54];
-  [v6 addObject:v164];
+  layoutItem9 = [(_UIStatusBarRegion *)v153 layoutItem];
+  trailingAnchor10 = [layoutItem9 trailingAnchor];
+  trailingAnchor11 = [viewCopy trailingAnchor];
+  v164 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:v54];
+  [array addObject:v164];
 
-  v165 = [(_UIStatusBarRegion *)v153 layoutItem];
-  v166 = [v165 heightAnchor];
-  v167 = [v166 constraintEqualToConstant:v25];
-  [v6 addObject:v167];
+  layoutItem10 = [(_UIStatusBarRegion *)v153 layoutItem];
+  heightAnchor8 = [layoutItem10 heightAnchor];
+  v167 = [heightAnchor8 constraintEqualToConstant:v25];
+  [array addObject:v167];
 
-  v168 = [(_UIStatusBarRegion *)v153 layoutItem];
-  v169 = [v168 leadingAnchor];
-  v170 = [v144 trailingAnchor];
-  v171 = [v169 constraintEqualToAnchor:v170 constant:v17];
-  [v6 addObject:v171];
+  layoutItem11 = [(_UIStatusBarRegion *)v153 layoutItem];
+  leadingAnchor12 = [layoutItem11 leadingAnchor];
+  trailingAnchor12 = [layoutItem7 trailingAnchor];
+  v171 = [leadingAnchor12 constraintEqualToAnchor:trailingAnchor12 constant:v17];
+  [array addObject:v171];
 
-  v172 = [(_UIStatusBarRegion *)v153 layoutItem];
-  v173 = [v172 widthAnchor];
-  v174 = [v144 widthAnchor];
-  v175 = [v173 constraintEqualToAnchor:v174];
+  layoutItem12 = [(_UIStatusBarRegion *)v153 layoutItem];
+  widthAnchor4 = [layoutItem12 widthAnchor];
+  widthAnchor5 = [layoutItem7 widthAnchor];
+  v175 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   LODWORD(v176) = 1131741184;
   v177 = [v175 _ui_constraintWithPriority:v176];
-  [v6 addObject:v177];
+  [array addObject:v177];
 
-  v178 = [(_UIStatusBarRegion *)v153 layoutItem];
-  [v5 _ui_addSubLayoutItem:v178];
+  layoutItem13 = [(_UIStatusBarRegion *)v153 layoutItem];
+  [viewCopy _ui_addSubLayoutItem:layoutItem13];
 
-  [v185 addObject:v153];
-  [MEMORY[0x1E69977A0] activateConstraints:v6];
+  [array2 addObject:v153];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
 
-  return v185;
+  return array2;
 }
 
-- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)a3
+- (id)orderedDisplayItemPlacementsInRegionWithIdentifier:(id)identifier
 {
   v186[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   orderedDisplayItemPlacements = self->_orderedDisplayItemPlacements;
   if (!orderedDisplayItemPlacements)
   {
-    v161 = v4;
-    v6 = [MEMORY[0x1E695DF70] array];
+    v161 = identifierCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     LOBYTE(v136) = 1;
     v9 = [_UIStatusBarDisplayItemPlacementNetworkGroup groupWithHighPriority:1300 lowPriority:1000 cellularItemClass:v7 wifiItemClass:v8 cellularTypeClass:objc_opt_class() includeCellularName:1 allowDualNetwork:v136];
-    v10 = [v9 cellularGroup];
-    v11 = [v10 namePlacement];
+    cellularGroup = [v9 cellularGroup];
+    namePlacement = [cellularGroup namePlacement];
 
-    v12 = [v9 cellularGroup];
-    v13 = [v12 dualNamePlacement];
+    cellularGroup2 = [v9 cellularGroup];
+    dualNamePlacement = [cellularGroup2 dualNamePlacement];
 
-    v14 = [v9 cellularGroup];
-    v15 = [v14 dualNameAndTypePlacement];
+    cellularGroup3 = [v9 cellularGroup];
+    dualNameAndTypePlacement = [cellularGroup3 dualNameAndTypePlacement];
 
     v16 = +[(_UIStatusBarItem *)_UIStatusBarNavigationItem];
     v17 = +[_UIStatusBarDisplayItemPlacement placementWithIdentifier:priority:](_UIStatusBarDisplayItemPlacement, "placementWithIdentifier:priority:", v16, [v9 maximumPriority] + 1);
-    v159 = v13;
-    v160 = v11;
-    v186[0] = v11;
-    v186[1] = v13;
-    v158 = v15;
-    v186[2] = v15;
+    v159 = dualNamePlacement;
+    v160 = namePlacement;
+    v186[0] = namePlacement;
+    v186[1] = dualNamePlacement;
+    v158 = dualNameAndTypePlacement;
+    v186[2] = dualNameAndTypePlacement;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v186 count:3];
     v19 = [v17 excludingPlacements:v18];
 
     if ([(_UIStatusBarVisualProvider_iOS *)self hasCellularCapability])
     {
-      v20 = v6;
-      [v6 addObject:v19];
+      v20 = array;
+      [array addObject:v19];
       v21 = 0;
       v22 = 1;
     }
@@ -621,11 +621,11 @@
       v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v185 count:1];
       v25 = [v19 excludingPlacements:v24];
 
-      [v6 addObject:v25];
-      v20 = v6;
+      [array addObject:v25];
+      v20 = array;
       if (v21)
       {
-        [v6 addObject:v21];
+        [array addObject:v21];
         v22 = 0;
       }
 
@@ -633,40 +633,40 @@
     }
 
     v157 = v19;
-    v170 = self;
-    v26 = [MEMORY[0x1E695DF70] array];
-    v27 = [v9 cellularGroup];
-    v28 = [v27 placementsAffectedByAirplaneMode];
-    [v26 addObjectsFromArray:v28];
+    selfCopy = self;
+    array2 = [MEMORY[0x1E695DF70] array];
+    cellularGroup4 = [v9 cellularGroup];
+    placementsAffectedByAirplaneMode = [cellularGroup4 placementsAffectedByAirplaneMode];
+    [array2 addObjectsFromArray:placementsAffectedByAirplaneMode];
 
     if ((v22 & 1) == 0)
     {
-      [v26 addObject:v21];
+      [array2 addObject:v21];
     }
 
     v156 = v21;
     v29 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
     v30 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v29 priority:1400];
-    v155 = v26;
-    v31 = [v30 excludingPlacements:v26];
+    v155 = array2;
+    v31 = [v30 excludingPlacements:array2];
     v169 = v20;
     [v20 addObject:v31];
 
-    v32 = [v9 minimumPriority];
-    v33 = [_UIStatusBarDisplayItemPlacement spacerPlacementWithSize:v32 - 5 priority:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-    v34 = [v9 cellularGroup];
-    v35 = [v34 typePlacement];
-    v184[0] = v35;
-    v36 = [v9 cellularGroup];
-    [v36 namePlacement];
+    minimumPriority = [v9 minimumPriority];
+    v33 = [_UIStatusBarDisplayItemPlacement spacerPlacementWithSize:minimumPriority - 5 priority:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+    cellularGroup5 = [v9 cellularGroup];
+    typePlacement = [cellularGroup5 typePlacement];
+    v184[0] = typePlacement;
+    cellularGroup6 = [v9 cellularGroup];
+    [cellularGroup6 namePlacement];
     v37 = v9;
     v38 = v168 = v9;
     v184[1] = v38;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:v184 count:2];
     v40 = [v33 requiringAllPlacements:v39];
 
-    v171 = [v37 placements];
-    v143 = [v171 arrayByAddingObject:v40];
+    placements = [v37 placements];
+    v143 = [placements arrayByAddingObject:v40];
     v166 = +[(_UIStatusBarCellularItem *)_UIStatusBarCellularCondensedItem];
     v183[0] = v166;
     v164 = +[_UIStatusBarCellularCondensedItem dualSignalStrengthDisplayIdentifier];
@@ -682,8 +682,8 @@
     v145 = +[_UIStatusBarCellularCondensedItem dualSingleLineNameAndTypeDisplayIdentifier];
     v183[6] = v145;
     v154 = v40;
-    v41 = [v40 identifier];
-    v183[7] = v41;
+    identifier = [v40 identifier];
+    v183[7] = identifier;
     v42 = +[(_UIStatusBarCellularItem *)_UIStatusBarCellularCondensedItem];
     v183[8] = v42;
     v43 = +[_UIStatusBarWifiItem signalStrengthDisplayIdentifier];
@@ -704,37 +704,37 @@
     v51 = +[_UIStatusBarDisplayItemPlacement placementWithIdentifier:priority:](_UIStatusBarDisplayItemPlacement, "placementWithIdentifier:priority:", v50, [v168 minimumPriority] - 10);
     [v169 addObject:v51];
 
-    v172 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v52 = +[(_UIStatusBarItem *)_UIStatusBarLockItem];
     v167 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v52 priority:3000];
 
     v53 = +[_UIStatusBarLockItem textDisplayIdentifier];
     v54 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v53 priority:2999];
-    v55 = [v168 cellularGroup];
-    v56 = [v55 dualNamePlacement];
-    v182[0] = v56;
-    v57 = [v168 cellularGroup];
-    v58 = [v57 dualNameAndTypePlacement];
-    v182[1] = v58;
+    cellularGroup7 = [v168 cellularGroup];
+    dualNamePlacement2 = [cellularGroup7 dualNamePlacement];
+    v182[0] = dualNamePlacement2;
+    cellularGroup8 = [v168 cellularGroup];
+    dualNameAndTypePlacement2 = [cellularGroup8 dualNameAndTypePlacement];
+    v182[1] = dualNameAndTypePlacement2;
     v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:v182 count:2];
     v60 = [v54 excludingPlacements:v59];
 
     v61 = +[_UIStatusBarTimeItem timeDisplayIdentifier];
     v62 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v61 priority:3002];
     v181[0] = v60;
-    v63 = [v168 cellularGroup];
-    v64 = [v63 dualNamePlacement];
-    v181[1] = v64;
-    v65 = [v168 cellularGroup];
-    v66 = [v65 dualNameAndTypePlacement];
-    v181[2] = v66;
+    cellularGroup9 = [v168 cellularGroup];
+    dualNamePlacement3 = [cellularGroup9 dualNamePlacement];
+    v181[1] = dualNamePlacement3;
+    cellularGroup10 = [v168 cellularGroup];
+    dualNameAndTypePlacement3 = [cellularGroup10 dualNameAndTypePlacement];
+    v181[2] = dualNameAndTypePlacement3;
     v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v181 count:3];
     v165 = [v62 excludingPlacements:v67];
 
-    v68 = v172;
-    [v172 addObject:v167];
+    v68 = array3;
+    [array3 addObject:v167];
     v153 = v60;
-    [v172 addObject:v60];
+    [array3 addObject:v60];
     if (_UIGetFullWidthBackgroundActivity())
     {
       v69 = +[(_UIStatusBarItem *)_UIStatusBarFullBackgroundActivityItem];
@@ -759,47 +759,47 @@
       v78 = [MEMORY[0x1E695DEC8] arrayWithObjects:v178 count:2];
       v79 = [v76 excludingAllPlacementsInRegions:v77 exceptPlacements:v78];
 
-      v68 = v172;
-      v80 = [(_UIStatusBarVisualProvider_Phone *)v170 pillRegionCoordinator];
-      [v80 setBackgroundActivityDetailPlacement:v79];
+      v68 = array3;
+      pillRegionCoordinator = [(_UIStatusBarVisualProvider_Phone *)selfCopy pillRegionCoordinator];
+      [pillRegionCoordinator setBackgroundActivityDetailPlacement:v79];
 
-      [v172 addObject:v70];
-      [v172 addObject:v74];
-      [v172 addObject:v79];
+      [array3 addObject:v70];
+      [array3 addObject:v74];
+      [array3 addObject:v79];
     }
 
     [v68 addObject:v165];
-    v81 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v82 = +[(_UIStatusBarItem *)_UIStatusBarSensorActivityItem];
     v83 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v82 priority:1960];
-    [v81 addObject:v83];
+    [array4 addObject:v83];
 
     v84 = [_UIStatusBarIndicatorLocationItem groupWithPriority:1955];
-    v85 = [v84 placements];
-    [v81 addObjectsFromArray:v85];
+    placements2 = [v84 placements];
+    [array4 addObjectsFromArray:placements2];
 
     if ((_UIGetFullWidthBackgroundActivity() & 1) == 0)
     {
       v86 = +[_UIStatusBarPillBackgroundActivityItem pillCombinedDisplayIdentifier];
       v87 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v86 priority:1950];
 
-      [v81 addObject:v87];
+      [array4 addObject:v87];
     }
 
     v88 = +[(_UIStatusBarItem *)_UIStatusBarVoiceControlPillItem];
     v89 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v88 priority:1940];
-    [v81 addObject:v89];
+    [array4 addObject:v89];
 
-    [(_UIStatusBarVisualProvider_iOS *)v170 bluetoothPaddingInset];
+    [(_UIStatusBarVisualProvider_iOS *)selfCopy bluetoothPaddingInset];
     v90 = [_UIStatusBarDisplayItemPlacementIndicatorsGroup groupWithHighPriority:800 lowPriority:500 bluetoothPaddingInset:?];
     v163 = +[_UIStatusBarDisplayItemPlacementBatteryGroup groupWithHighPriority:lowPriority:](_UIStatusBarDisplayItemPlacementBatteryGroup, "groupWithHighPriority:lowPriority:", [v90 maximumPriority] + 1, objc_msgSend(v90, "minimumPriority") - 5);
-    v138 = [v90 placements];
+    placements3 = [v90 placements];
     +[_UIStatusBarBluetoothItem batteryDisplayIdentifier];
     v150 = v148 = v90;
     v177[0] = v150;
-    v146 = [v90 bluetoothInsetPaddingItem];
-    v144 = [v146 identifier];
-    v177[1] = v144;
+    bluetoothInsetPaddingItem = [v90 bluetoothInsetPaddingItem];
+    identifier2 = [bluetoothInsetPaddingItem identifier];
+    v177[1] = identifier2;
     v142 = +[(_UIStatusBarItem *)_UIStatusBarBluetoothItem];
     v177[2] = v142;
     v141 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirPlayItem];
@@ -821,15 +821,15 @@
     v96 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorSatelliteItem];
     v177[11] = v96;
     v97 = [MEMORY[0x1E695DEC8] arrayWithObjects:v177 count:12];
-    v98 = _reorderedPlacementsFromGroupForLegacyLayout(v138, 1, v97);
-    [v81 addObjectsFromArray:v98];
+    v98 = _reorderedPlacementsFromGroupForLegacyLayout(placements3, 1, v97);
+    [array4 addObjectsFromArray:v98];
 
     v99 = +[(_UIStatusBarItem *)_UIStatusBarBuildVersionItem];
     v100 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v99 priority:2];
-    v101 = v81;
-    [v81 addObject:v100];
+    v101 = array4;
+    [array4 addObject:v100];
 
-    v102 = [v163 placements];
+    placements4 = [v163 placements];
     v103 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorLiquidDetectionItem];
     v176[0] = v103;
     v104 = +[_UIStatusBarBatteryItem staticIconDisplayIdentifier];
@@ -837,40 +837,40 @@
     v105 = +[_UIStatusBarBatteryItem percentDisplayIdentifier];
     v176[2] = v105;
     v106 = [MEMORY[0x1E695DEC8] arrayWithObjects:v176 count:3];
-    v107 = _reorderedPlacementsFromGroupForLegacyLayout(v102, 1, v106);
+    v107 = _reorderedPlacementsFromGroupForLegacyLayout(placements4, 1, v106);
     v151 = v101;
     [v101 addObjectsFromArray:v107];
 
-    v108 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v109 = objc_opt_class();
     v110 = objc_opt_class();
     LOBYTE(v137) = 0;
     v111 = [_UIStatusBarDisplayItemPlacementNetworkGroup groupWithHighPriority:2500 lowPriority:2200 cellularItemClass:v109 wifiItemClass:v110 cellularTypeClass:objc_opt_class() includeCellularName:1 allowDualNetwork:v137];
-    v112 = [v111 wifiGroup];
-    lowerWifiGroup = v170->_lowerWifiGroup;
-    v170->_lowerWifiGroup = v112;
+    wifiGroup = [v111 wifiGroup];
+    lowerWifiGroup = selfCopy->_lowerWifiGroup;
+    selfCopy->_lowerWifiGroup = wifiGroup;
 
     v114 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorAirplaneModeItem];
     v115 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v114 priority:5000];
-    v116 = [(_UIStatusBarVisualProvider_iOS *)v170 expandedCellularPlacementsAffectedByAirplaneMode];
-    v117 = [v111 cellularGroup];
-    v118 = [v117 placementsAffectedByAirplaneMode];
-    v119 = [v116 arrayByAddingObjectsFromArray:v118];
+    expandedCellularPlacementsAffectedByAirplaneMode = [(_UIStatusBarVisualProvider_iOS *)selfCopy expandedCellularPlacementsAffectedByAirplaneMode];
+    cellularGroup11 = [v111 cellularGroup];
+    placementsAffectedByAirplaneMode2 = [cellularGroup11 placementsAffectedByAirplaneMode];
+    v119 = [expandedCellularPlacementsAffectedByAirplaneMode arrayByAddingObjectsFromArray:placementsAffectedByAirplaneMode2];
     v120 = [v115 excludingPlacements:v119];
-    [v108 addObject:v120];
+    [array5 addObject:v120];
 
-    v121 = [v111 placements];
-    [v108 addObjectsFromArray:v121];
+    placements5 = [v111 placements];
+    [array5 addObjectsFromArray:placements5];
 
-    v122 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v123 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorLocationItem];
     v124 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v123 priority:1450];
-    [v122 addObject:v124];
+    [array6 addObject:v124];
 
-    [(_UIStatusBarVisualProvider_iOS *)v170 bluetoothPaddingInset];
+    [(_UIStatusBarVisualProvider_iOS *)selfCopy bluetoothPaddingInset];
     v125 = [_UIStatusBarDisplayItemPlacementIndicatorsGroup groupWithHighPriority:1400 lowPriority:1000 bluetoothPaddingInset:?];
-    v126 = [v125 placements];
-    [v122 addObjectsFromArray:v126];
+    placements6 = [v125 placements];
+    [array6 addObjectsFromArray:placements6];
 
     if (_UIGetFullWidthBackgroundActivity())
     {
@@ -891,38 +891,38 @@
     v174[1] = v151;
     v173[2] = @"center";
     v173[3] = @"background";
-    v174[2] = v172;
+    v174[2] = array3;
     v174[3] = v129;
     v173[4] = @"expandedLeading";
-    v130 = [(_UIStatusBarVisualProvider_iOS *)v170 expandedLeadingPlacements];
-    v174[4] = v130;
-    v174[5] = v108;
+    expandedLeadingPlacements = [(_UIStatusBarVisualProvider_iOS *)selfCopy expandedLeadingPlacements];
+    v174[4] = expandedLeadingPlacements;
+    v174[5] = array5;
     v173[5] = @"expandedLowerLeading";
     v173[6] = @"expandedTrailing";
-    v131 = [(_UIStatusBarVisualProvider_iOS *)v170 expandedTrailingPlacements];
+    expandedTrailingPlacements = [(_UIStatusBarVisualProvider_iOS *)selfCopy expandedTrailingPlacements];
     v173[7] = @"expandedLowerTrailing";
-    v174[6] = v131;
-    v174[7] = v122;
+    v174[6] = expandedTrailingPlacements;
+    v174[7] = array6;
     v132 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v174 forKeys:v173 count:8];
-    v133 = v170->_orderedDisplayItemPlacements;
-    v170->_orderedDisplayItemPlacements = v132;
+    v133 = selfCopy->_orderedDisplayItemPlacements;
+    selfCopy->_orderedDisplayItemPlacements = v132;
 
-    orderedDisplayItemPlacements = v170->_orderedDisplayItemPlacements;
-    v4 = v161;
+    orderedDisplayItemPlacements = selfCopy->_orderedDisplayItemPlacements;
+    identifierCopy = v161;
   }
 
-  v134 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:v4];
+  v134 = [(NSDictionary *)orderedDisplayItemPlacements objectForKeyedSubscript:identifierCopy];
 
   return v134;
 }
 
-- (void)itemCreated:(id)a3
+- (void)itemCreated:(id)created
 {
-  v11 = a3;
+  createdCopy = created;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v11;
+    v5 = createdCopy;
     objc_opt_class();
     [v5 setMarqueeServiceName:objc_opt_isKindOfClass() & 1];
     objc_opt_class();
@@ -935,7 +935,7 @@
     {
       [v5 setShowsDisabledSignalBars:0];
       [v5 setMarqueeServiceName:{-[_UIStatusBarVisualProvider_iOS onLockScreen](self, "onLockScreen")}];
-      objc_storeStrong(&self->_condensedCellularItem, a3);
+      objc_storeStrong(&self->_condensedCellularItem, created);
     }
 
     [v5 setTypeStringProvider:self];
@@ -943,32 +943,32 @@
 
   else
   {
-    v6 = [v11 identifier];
+    identifier = [createdCopy identifier];
     v7 = +[(_UIStatusBarItem *)_UIStatusBarVoiceControlPillItem];
 
-    if (v6 == v7)
+    if (identifier == v7)
     {
-      v10 = v11;
+      v10 = createdCopy;
       [(_UIStatusBarVisualProvider_LegacyPhone *)self smallPillSize];
       [v10 setPillSize:?];
     }
 
     else
     {
-      v8 = [v11 identifier];
+      identifier2 = [createdCopy identifier];
       v9 = +[(_UIStatusBarItem *)_UIStatusBarIndicatorLiquidDetectionItem];
 
-      if (v8 == v9)
+      if (identifier2 == v9)
       {
-        [v11 setUseFullColorIndicator:1];
+        [createdCopy setUseFullColorIndicator:1];
       }
     }
   }
 }
 
-- (id)stringForCellularType:(int64_t)a3 condensed:(BOOL)a4
+- (id)stringForCellularType:(int64_t)type condensed:(BOOL)condensed
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v5 = _UINSLocalizedStringWithDefaultValue(@"GPRS", @"GPRS");
   }
@@ -981,35 +981,35 @@
   return v5;
 }
 
-- (id)condensedFontForCellularType:(int64_t)a3 defaultFont:(id)a4 baselineOffset:(double *)a5
+- (id)condensedFontForCellularType:(int64_t)type defaultFont:(id)font baselineOffset:(double *)offset
 {
-  v6 = a4;
-  v7 = v6;
-  v8 = v6;
-  if (a3 <= 0xD)
+  fontCopy = font;
+  v7 = fontCopy;
+  v8 = fontCopy;
+  if (type <= 0xD)
   {
-    if (((1 << a3) & 0x38C0) != 0)
+    if (((1 << type) & 0x38C0) != 0)
     {
-      v9 = [v6 fontDescriptor];
-      v10 = [v9 fontDescriptorWithSymbolicTraits:64];
+      fontDescriptor = [fontCopy fontDescriptor];
+      fontDescriptor2 = [fontDescriptor fontDescriptorWithSymbolicTraits:64];
 
       v11 = off_1E70ECC18;
       v12 = 0.0;
-      v13 = v10;
+      v13 = fontDescriptor2;
 LABEL_4:
       v8 = [v11 fontWithDescriptor:v13 size:v12];
 
       goto LABEL_5;
     }
 
-    v8 = v6;
-    if (a3 == 2)
+    v8 = fontCopy;
+    if (type == 2)
     {
-      [v6 pointSize];
+      [fontCopy pointSize];
       v16 = v15 * 0.7;
-      v10 = [v7 fontDescriptor];
+      fontDescriptor2 = [v7 fontDescriptor];
       v11 = off_1E70ECC18;
-      v13 = v10;
+      v13 = fontDescriptor2;
       v12 = v16;
       goto LABEL_4;
     }
@@ -1020,12 +1020,12 @@ LABEL_5:
   return v8;
 }
 
-- (void)actionable:(id)a3 highlighted:(BOOL)a4 initialPress:(BOOL)a5
+- (void)actionable:(id)actionable highlighted:(BOOL)highlighted initialPress:(BOOL)press
 {
-  v5 = a5;
-  v6 = a4;
+  pressCopy = press;
+  highlightedCopy = highlighted;
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  actionableCopy = actionable;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1033,26 +1033,26 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v9 = v8;
+  v9 = actionableCopy;
   v10 = v9;
   if (!v9)
   {
 LABEL_7:
     v20.receiver = self;
     v20.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-    [(_UIStatusBarVisualProvider_Phone *)&v20 actionable:v8 highlighted:v6 initialPress:v5];
+    [(_UIStatusBarVisualProvider_Phone *)&v20 actionable:actionableCopy highlighted:highlightedCopy initialPress:pressCopy];
     goto LABEL_8;
   }
 
-  v11 = [v9 identifier];
+  identifier = [v9 identifier];
   v12 = +[_UIStatusBarPillBackgroundActivityItem pillCombinedDisplayIdentifier];
   v13 = v12;
-  if (v11 != v12)
+  if (identifier != v12)
   {
-    v14 = [v10 identifier];
+    identifier2 = [v10 identifier];
     v15 = +[(_UIStatusBarBackgroundActivityItem *)_UIStatusBarFullBackgroundActivityItem];
 
-    if (v14 == v15)
+    if (identifier2 == v15)
     {
       goto LABEL_10;
     }
@@ -1061,52 +1061,52 @@ LABEL_7:
   }
 
 LABEL_10:
-  v16 = [v10 highlightView];
-  if (!v16)
+  highlightView = [v10 highlightView];
+  if (!highlightView)
   {
-    v16 = objc_alloc_init(_UIStatusBarRoundedCornerView);
-    [(UIView *)v16 setAutoresizingMask:18];
-    v17 = [v10 identifier];
+    highlightView = objc_alloc_init(_UIStatusBarRoundedCornerView);
+    [(UIView *)highlightView setAutoresizingMask:18];
+    identifier3 = [v10 identifier];
     v18 = +[(_UIStatusBarBackgroundActivityItem *)_UIStatusBarFullBackgroundActivityItem];
 
-    if (v17 == v18)
+    if (identifier3 == v18)
     {
-      [(_UIStatusBarRoundedCornerView *)v16 setCornerRadius:0.0];
+      [(_UIStatusBarRoundedCornerView *)highlightView setCornerRadius:0.0];
     }
 
-    [v10 setHighlightView:v16];
+    [v10 setHighlightView:highlightView];
   }
 
-  v23[0] = v16;
+  v23[0] = highlightView;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __78___UIStatusBarVisualProvider_LegacyPhone_actionable_highlighted_initialPress___block_invoke;
   v21[3] = &__block_descriptor_33_e16_v16__0__UIView_8l;
-  v22 = v6;
-  [UIButton _setVisuallyHighlighted:v6 forViews:v19 initialPress:v5 highlightBlock:v21];
+  v22 = highlightedCopy;
+  [UIButton _setVisuallyHighlighted:highlightedCopy forViews:v19 initialPress:pressCopy highlightBlock:v21];
 
 LABEL_8:
 }
 
-- (id)willUpdateWithData:(id)a3
+- (id)willUpdateWithData:(id)data
 {
   v15.receiver = self;
   v15.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-  v4 = a3;
-  v5 = [(_UIStatusBarVisualProvider_Phone *)&v15 willUpdateWithData:v4];
-  v6 = [v4 backgroundActivityEntry];
+  dataCopy = data;
+  v5 = [(_UIStatusBarVisualProvider_Phone *)&v15 willUpdateWithData:dataCopy];
+  backgroundActivityEntry = [dataCopy backgroundActivityEntry];
 
-  if (v6)
+  if (backgroundActivityEntry)
   {
-    v7 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-    v8 = [v7 currentAggregatedData];
-    v9 = [v8 backgroundActivityEntry];
+    statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+    currentAggregatedData = [statusBar currentAggregatedData];
+    backgroundActivityEntry2 = [currentAggregatedData backgroundActivityEntry];
 
-    LODWORD(v7) = [v6 isEnabled];
-    if (v7 != [v9 isEnabled])
+    LODWORD(statusBar) = [backgroundActivityEntry isEnabled];
+    if (statusBar != [backgroundActivityEntry2 isEnabled])
     {
-      if ([v6 isEnabled])
+      if ([backgroundActivityEntry isEnabled])
       {
         if ([(_UIStatusBarVisualProvider_iOS *)self expanded])
         {
@@ -1124,14 +1124,14 @@ LABEL_8:
         v10 = 4;
       }
 
-      v11 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-      v12 = [v11 regions];
+      statusBar2 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+      regions = [statusBar2 regions];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __61___UIStatusBarVisualProvider_LegacyPhone_willUpdateWithData___block_invoke;
       v14[3] = &__block_descriptor_40_e45_v32__0__NSString_8___UIStatusBarRegion_16_B24l;
       v14[4] = v10;
-      [v12 enumerateKeysAndObjectsUsingBlock:v14];
+      [regions enumerateKeysAndObjectsUsingBlock:v14];
     }
   }
 
@@ -1161,34 +1161,34 @@ LABEL_8:
   return v2;
 }
 
-- (id)additionAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4
+- (id)additionAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  animationCopy = animation;
   v8 = +[_UIStatusBarFullBackgroundActivityItem detailDisplayIdentifier];
 
-  if (v8 == v6)
+  if (v8 == identifierCopy)
   {
     v13 = +[_UIStatusBarAnimationFactory noAnimation];
     v14 = +[_UIStatusBarTimeItem timeDisplayIdentifier];
-    [v7 addSubAnimation:v13 forDisplayItemWithIdentifier:v14];
+    [animationCopy addSubAnimation:v13 forDisplayItemWithIdentifier:v14];
 
     v15 = +[_UIStatusBarAnimationFactory noAnimation];
     v16 = +[(_UIStatusBarItem *)_UIStatusBarFullBackgroundActivityItem];
-    [v7 addSubAnimation:v15 forDisplayItemWithIdentifier:v16];
+    [animationCopy addSubAnimation:v15 forDisplayItemWithIdentifier:v16];
 
     v17 = +[_UIStatusBarAnimationFactory noAnimation];
     v18 = +[(_UIStatusBarBackgroundActivityItem *)_UIStatusBarFullBackgroundActivityItem];
-    [v7 addSubAnimation:v17 forDisplayItemWithIdentifier:v18];
+    [animationCopy addSubAnimation:v17 forDisplayItemWithIdentifier:v18];
 
-    v12 = v7;
+    _animationForSingleLineDualCarrier = animationCopy;
   }
 
   else
   {
     v9 = +[_UIStatusBarCellularCondensedItem dualSingleLineNameDisplayIdentifier];
     v10 = v9;
-    if (v9 == v6)
+    if (v9 == identifierCopy)
     {
     }
 
@@ -1196,40 +1196,40 @@ LABEL_8:
     {
       v11 = +[_UIStatusBarCellularCondensedItem dualSingleLineNameAndTypeDisplayIdentifier];
 
-      if (v11 != v6)
+      if (v11 != identifierCopy)
       {
         v21.receiver = self;
         v21.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-        v12 = [(_UIStatusBarVisualProvider_Phone *)&v21 additionAnimationForDisplayItemWithIdentifier:v6 itemAnimation:v7];
+        _animationForSingleLineDualCarrier = [(_UIStatusBarVisualProvider_Phone *)&v21 additionAnimationForDisplayItemWithIdentifier:identifierCopy itemAnimation:animationCopy];
         goto LABEL_8;
       }
     }
 
-    v12 = [(_UIStatusBarVisualProvider_LegacyPhone *)self _animationForSingleLineDualCarrier];
+    _animationForSingleLineDualCarrier = [(_UIStatusBarVisualProvider_LegacyPhone *)self _animationForSingleLineDualCarrier];
   }
 
 LABEL_8:
-  v19 = v12;
+  v19 = _animationForSingleLineDualCarrier;
 
   return v19;
 }
 
-- (id)removalAnimationForDisplayItemWithIdentifier:(id)a3 itemAnimation:(id)a4
+- (id)removalAnimationForDisplayItemWithIdentifier:(id)identifier itemAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  animationCopy = animation;
   v8 = +[_UIStatusBarFullBackgroundActivityItem detailDisplayIdentifier];
 
-  if (v8 == v6)
+  if (v8 == identifierCopy)
   {
-    v12 = [(_UIStatusBarVisualProvider_LegacyPhone *)self _backgroundActivityDetailRemovalAnimation];
+    _backgroundActivityDetailRemovalAnimation = [(_UIStatusBarVisualProvider_LegacyPhone *)self _backgroundActivityDetailRemovalAnimation];
   }
 
   else
   {
     v9 = +[_UIStatusBarCellularCondensedItem dualSingleLineNameDisplayIdentifier];
     v10 = v9;
-    if (v9 == v6)
+    if (v9 == identifierCopy)
     {
     }
 
@@ -1237,30 +1237,30 @@ LABEL_8:
     {
       v11 = +[_UIStatusBarCellularCondensedItem dualSingleLineNameAndTypeDisplayIdentifier];
 
-      if (v11 != v6)
+      if (v11 != identifierCopy)
       {
         v15.receiver = self;
         v15.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-        v12 = [(_UIStatusBarVisualProvider_Phone *)&v15 removalAnimationForDisplayItemWithIdentifier:v6 itemAnimation:v7];
+        _backgroundActivityDetailRemovalAnimation = [(_UIStatusBarVisualProvider_Phone *)&v15 removalAnimationForDisplayItemWithIdentifier:identifierCopy itemAnimation:animationCopy];
         goto LABEL_8;
       }
     }
 
-    v12 = [(_UIStatusBarVisualProvider_LegacyPhone *)self _animationForSingleLineDualCarrier];
+    _backgroundActivityDetailRemovalAnimation = [(_UIStatusBarVisualProvider_LegacyPhone *)self _animationForSingleLineDualCarrier];
   }
 
 LABEL_8:
-  v13 = v12;
+  v13 = _backgroundActivityDetailRemovalAnimation;
 
   return v13;
 }
 
-- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)a3
+- (id)overriddenStyleAttributesForDisplayItemWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[(_UIStatusBarItem *)_UIStatusBarFullBackgroundActivityItem];
   v5 = v4;
-  if (v4 == v3)
+  if (v4 == identifierCopy)
   {
   }
 
@@ -1268,7 +1268,7 @@ LABEL_8:
   {
     v6 = +[(_UIStatusBarBackgroundActivityItem *)_UIStatusBarFullBackgroundActivityItem];
 
-    if (v6 != v3)
+    if (v6 != identifierCopy)
     {
       v7 = 0;
       goto LABEL_6;
@@ -1282,10 +1282,10 @@ LABEL_6:
   return v7;
 }
 
-- (id)regionIdentifiersForPartWithIdentifier:(id)a3
+- (id)regionIdentifiersForPartWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqual:@"leadingPartIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:@"leadingPartIdentifier"])
   {
     v5 = MEMORY[0x1E695DFD8];
     v20 = 0;
@@ -1297,19 +1297,19 @@ LABEL_3:
     goto LABEL_16;
   }
 
-  if ([v4 isEqual:@"trailingPartIdentifier"])
+  if ([identifierCopy isEqual:@"trailingPartIdentifier"])
   {
     [MEMORY[0x1E695DFD8] setWithObjects:{@"trailing", @"expandedTrailing", @"expandedLowerTrailing", 0, v21}];
     goto LABEL_15;
   }
 
-  if ([v4 isEqual:@"centerPartIdentifier"])
+  if ([identifierCopy isEqual:@"centerPartIdentifier"])
   {
     [MEMORY[0x1E695DFD8] setWithObjects:{@"center", @"background", 0, v19, v21}];
     goto LABEL_15;
   }
 
-  if ([v4 isEqual:0x1EFB9C3D0])
+  if ([identifierCopy isEqual:0x1EFB9C3D0])
   {
     v5 = MEMORY[0x1E695DFD8];
     v20 = @"trailing";
@@ -1319,12 +1319,12 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  if ([v4 isEqual:0x1EFB9C3F0])
+  if ([identifierCopy isEqual:0x1EFB9C3F0])
   {
     goto LABEL_11;
   }
 
-  if ([v4 isEqual:0x1EFB9C410])
+  if ([identifierCopy isEqual:0x1EFB9C410])
   {
 LABEL_13:
     v8 = MEMORY[0x1E695DFD8];
@@ -1333,21 +1333,21 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 isEqual:0x1EFB9C430])
+  if ([identifierCopy isEqual:0x1EFB9C430])
   {
     [MEMORY[0x1E695DFD8] setWithObjects:{@"expandedLowerLeading", @"expandedLowerTrailing", 0, v19, v21}];
     goto LABEL_15;
   }
 
-  if ([v4 isEqual:@"visibleExpandedPartIdentifier"])
+  if ([identifierCopy isEqual:@"visibleExpandedPartIdentifier"])
   {
-    v12 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-    v13 = [v12 currentData];
-    v14 = [v13 secondaryCellularEntry];
-    if ([v14 isEnabled])
+    statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+    currentData = [statusBar currentData];
+    secondaryCellularEntry = [currentData secondaryCellularEntry];
+    if ([secondaryCellularEntry isEnabled])
     {
-      v15 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-      v16 = [v15 orientation] - 1;
+      statusBar2 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+      v16 = [statusBar2 orientation] - 1;
 
       if (v16 <= 1)
       {
@@ -1377,22 +1377,22 @@ LABEL_16:
   return v10;
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
   v19.receiver = self;
   v19.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-  v4 = [(_UIStatusBarVisualProvider_iOS *)&v19 styleAttributesForStyle:a3];
-  v5 = [v4 mode];
-  if ((v5 - 1) >= 2)
+  v4 = [(_UIStatusBarVisualProvider_iOS *)&v19 styleAttributesForStyle:style];
+  mode = [v4 mode];
+  if ((mode - 1) >= 2)
   {
-    if (v5)
+    if (mode)
     {
       goto LABEL_12;
     }
 
     [v4 setIconScale:1.0];
-    v12 = [v4 traitCollection];
-    [v12 displayScale];
+    traitCollection = [v4 traitCollection];
+    [traitCollection displayScale];
     if (v13 <= 2.5)
     {
       v14 = 1;
@@ -1405,20 +1405,20 @@ LABEL_16:
 
     [v4 setIconSize:v14];
 
-    v15 = [(_UIStatusBarVisualProvider_LegacyPhone *)self normalFont];
-    [v4 setFont:v15];
+    normalFont = [(_UIStatusBarVisualProvider_LegacyPhone *)self normalFont];
+    [v4 setFont:normalFont];
 
-    v16 = [v4 font];
-    [v4 setSmallFont:v16];
+    font = [v4 font];
+    [v4 setSmallFont:font];
 
-    v11 = [(_UIStatusBarVisualProvider_LegacyPhone *)self timeFont];
+    timeFont = [(_UIStatusBarVisualProvider_LegacyPhone *)self timeFont];
   }
 
   else
   {
     [v4 setIconScale:1.07];
-    v6 = [v4 traitCollection];
-    [v6 displayScale];
+    traitCollection2 = [v4 traitCollection];
+    [traitCollection2 displayScale];
     if (v7 <= 2.5)
     {
       v8 = 5;
@@ -1431,17 +1431,17 @@ LABEL_16:
 
     [v4 setIconSize:v8];
 
-    v9 = [(_UIStatusBarVisualProvider_LegacyPhone *)self expandedFont];
-    [v4 setFont:v9];
+    expandedFont = [(_UIStatusBarVisualProvider_LegacyPhone *)self expandedFont];
+    [v4 setFont:expandedFont];
 
-    v10 = [v4 font];
-    [v4 setSmallFont:v10];
+    font2 = [v4 font];
+    [v4 setSmallFont:font2];
 
-    v11 = [(_UIStatusBarVisualProvider_LegacyPhone *)self expandedFont];
+    timeFont = [(_UIStatusBarVisualProvider_LegacyPhone *)self expandedFont];
   }
 
-  v17 = v11;
-  [v4 setEmphasizedFont:v11];
+  v17 = timeFont;
+  [v4 setEmphasizedFont:timeFont];
 
 LABEL_12:
   [v4 setImageNamePrefixes:&unk_1EFE2D6F0];
@@ -1449,10 +1449,10 @@ LABEL_12:
   return v4;
 }
 
-- (id)displayItemIdentifiersForPartWithIdentifier:(id)a3
+- (id)displayItemIdentifiersForPartWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqual:@"clockPartIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqual:@"clockPartIdentifier"])
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = +[_UIStatusBarTimeItem timeDisplayIdentifier];
@@ -1463,29 +1463,29 @@ LABEL_12:
   {
     v9.receiver = self;
     v9.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-    v7 = [(_UIStatusBarVisualProvider_iOS *)&v9 displayItemIdentifiersForPartWithIdentifier:v4];
+    v7 = [(_UIStatusBarVisualProvider_iOS *)&v9 displayItemIdentifiersForPartWithIdentifier:identifierCopy];
   }
 
   return v7;
 }
 
-- (CGRect)clockBoundsForLayoutItem:(id)a3
+- (CGRect)clockBoundsForLayoutItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
   v6 = +[_UIStatusBarTimeItem timeDisplayIdentifier];
 
-  v7 = [v4 view];
+  view = [itemCopy view];
 
-  if (v5 == v6)
+  if (identifier == v6)
   {
-    v16 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-    v17 = [v16 currentAggregatedData];
-    v18 = [v17 shortTimeEntry];
-    v19 = [v18 stringValue];
+    statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+    currentAggregatedData = [statusBar currentAggregatedData];
+    shortTimeEntry = [currentAggregatedData shortTimeEntry];
+    stringValue = [shortTimeEntry stringValue];
 
-    [v7 bounds];
-    v13 = _UIComputedSizeForLabel(v7, v19, 0, 1uLL, 0, 0, 0, v20, v21);
+    [view bounds];
+    v13 = _UIComputedSizeForLabel(view, stringValue, 0, 1uLL, 0, 0, 0, v20, v21);
     v15 = v22;
     v9 = 0.0;
 
@@ -1494,7 +1494,7 @@ LABEL_12:
 
   else
   {
-    [v7 bounds];
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -1512,24 +1512,24 @@ LABEL_12:
   return result;
 }
 
-- (void)orientationUpdatedFromOrientation:(int64_t)a3
+- (void)orientationUpdatedFromOrientation:(int64_t)orientation
 {
-  v5 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-  v4 = [v5 currentAggregatedData];
-  [(_UIStatusBarVisualProvider_LegacyPhone *)self _updateLowerRegionsWithData:v4];
+  statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+  currentAggregatedData = [statusBar currentAggregatedData];
+  [(_UIStatusBarVisualProvider_LegacyPhone *)self _updateLowerRegionsWithData:currentAggregatedData];
 }
 
-- (void)_updateLowerRegionsWithData:(id)a3
+- (void)_updateLowerRegionsWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 secondaryCellularEntry];
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  secondaryCellularEntry = [dataCopy secondaryCellularEntry];
+  v6 = secondaryCellularEntry;
+  if (secondaryCellularEntry)
   {
-    if ([v5 isEnabled])
+    if ([secondaryCellularEntry isEnabled])
     {
-      v7 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-      v8 = ([v7 orientation] - 1) < 2;
+      statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+      v8 = ([statusBar orientation] - 1) < 2;
     }
 
     else
@@ -1565,8 +1565,8 @@ LABEL_12:
     [(NSLayoutConstraint *)self->_expandedLeadingBottomConstraint setConstant:?];
     if (*(v14 + 24) == 1)
     {
-      v10 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-      [v10 updateWithAnimations:MEMORY[0x1E695E0F0]];
+      statusBar2 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+      [statusBar2 updateWithAnimations:MEMORY[0x1E695E0F0]];
     }
 
     _Block_object_dispose(&v13, 8);
@@ -1586,17 +1586,17 @@ LABEL_12:
   }
 }
 
-- (void)updateDataForService:(id)a3
+- (void)updateDataForService:(id)service
 {
   v6.receiver = self;
   v6.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-  v4 = a3;
-  [(_UIStatusBarVisualProvider_iOS *)&v6 updateDataForService:v4];
-  v5 = [v4 secondaryCellularEntry];
+  serviceCopy = service;
+  [(_UIStatusBarVisualProvider_iOS *)&v6 updateDataForService:serviceCopy];
+  secondaryCellularEntry = [serviceCopy secondaryCellularEntry];
 
-  if (v5)
+  if (secondaryCellularEntry)
   {
-    -[_UIStatusBarDisplayItemPlacementGroup setEnabled:](self->_lowerWifiGroup, "setEnabled:", [v5 type] != 0);
+    -[_UIStatusBarDisplayItemPlacementGroup setEnabled:](self->_lowerWifiGroup, "setEnabled:", [secondaryCellularEntry type] != 0);
   }
 }
 
@@ -1608,19 +1608,19 @@ LABEL_12:
   [(NSLayoutConstraint *)backgroundHeightConstraint setConstant:?];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  if ([(_UIStatusBarVisualProvider_iOS *)self expanded]!= a3)
+  expandedCopy = expanded;
+  if ([(_UIStatusBarVisualProvider_iOS *)self expanded]!= expanded)
   {
-    v5 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-    v6 = [v5 currentAggregatedData];
-    v7 = [v6 backgroundActivityEntry];
-    v8 = [v7 isEnabled];
+    statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+    currentAggregatedData = [statusBar currentAggregatedData];
+    backgroundActivityEntry = [currentAggregatedData backgroundActivityEntry];
+    isEnabled = [backgroundActivityEntry isEnabled];
 
-    if (v8)
+    if (isEnabled)
     {
-      if (v3)
+      if (expandedCopy)
       {
         v9 = 4;
       }
@@ -1630,27 +1630,27 @@ LABEL_12:
         v9 = 1;
       }
 
-      v10 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-      v11 = [v10 regions];
+      statusBar2 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+      regions = [statusBar2 regions];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __54___UIStatusBarVisualProvider_LegacyPhone_setExpanded___block_invoke;
       v13[3] = &__block_descriptor_40_e45_v32__0__NSString_8___UIStatusBarRegion_16_B24l;
       v13[4] = v9;
-      [v11 enumerateKeysAndObjectsUsingBlock:v13];
+      [regions enumerateKeysAndObjectsUsingBlock:v13];
     }
 
     v12.receiver = self;
     v12.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-    [(_UIStatusBarVisualProvider_iOS *)&v12 setExpanded:v3];
+    [(_UIStatusBarVisualProvider_iOS *)&v12 setExpanded:expandedCopy];
     [(_UIStatusBarVisualProvider_LegacyPhone *)self _updateBackgroundHeight];
   }
 }
 
 - (void)_updateLockScreenSizing
 {
-  v3 = [(_UIStatusBarVisualProvider_iOS *)self onLockScreen];
-  if (v3)
+  onLockScreen = [(_UIStatusBarVisualProvider_iOS *)self onLockScreen];
+  if (onLockScreen)
   {
     [(_UIStatusBarVisualProvider_LegacyPhone *)self expandedBaselineOffset];
     v5 = v4;
@@ -1672,7 +1672,7 @@ LABEL_12:
   v12 = v11;
 
   v13 = v12 + 1.0;
-  [(_UIStatusBarCellularItem *)self->_condensedCellularItem setMarqueeServiceName:v3];
+  [(_UIStatusBarCellularItem *)self->_condensedCellularItem setMarqueeServiceName:onLockScreen];
   [(_UIStatusBarRegionAxisStackingLayout *)self->_leadingHorizontalLayout setInterspace:v7];
   [(_UIStatusBarRegionAxisCenteringLayout *)self->_centerHorizontalLayout setInterspace:v7];
   [(_UIStatusBarRegionAxisStackingLayout *)self->_trailingHorizontalLayout setInterspace:v7];
@@ -1686,14 +1686,14 @@ LABEL_12:
   [(NSLayoutConstraint *)trailingHeightConstraint setConstant:v13];
 }
 
-- (void)setOnLockScreen:(BOOL)a3
+- (void)setOnLockScreen:(BOOL)screen
 {
-  v3 = a3;
-  if ([(_UIStatusBarVisualProvider_iOS *)self onLockScreen]!= a3)
+  screenCopy = screen;
+  if ([(_UIStatusBarVisualProvider_iOS *)self onLockScreen]!= screen)
   {
     v5.receiver = self;
     v5.super_class = _UIStatusBarVisualProvider_LegacyPhone;
-    [(_UIStatusBarVisualProvider_iOS *)&v5 setOnLockScreen:v3];
+    [(_UIStatusBarVisualProvider_iOS *)&v5 setOnLockScreen:screenCopy];
     [(_UIStatusBarVisualProvider_LegacyPhone *)self _updateLockScreenSizing];
     [(_UIStatusBarVisualProvider_LegacyPhone *)self _updateBackgroundHeight];
   }
@@ -1726,8 +1726,8 @@ LABEL_12:
   v24[3] = "";
   v25 = v34;
   v26 = v2;
-  v3 = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
-  [v3 bounds];
+  statusBar = [(_UIStatusBarVisualProvider_iOS *)self statusBar];
+  [statusBar bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;

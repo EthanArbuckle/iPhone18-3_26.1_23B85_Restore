@@ -1,8 +1,8 @@
 @interface SBUIInteractionForwardingView
 - (NSSet)ignoreAlphaSubviews;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)addIgnoreAlphaSubview:(id)a3;
-- (void)setIgnoreAlphaSubviews:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)addIgnoreAlphaSubview:(id)subview;
+- (void)setIgnoreAlphaSubviews:(id)subviews;
 @end
 
 @implementation SBUIInteractionForwardingView
@@ -13,8 +13,8 @@
   v3 = MEMORY[0x1E695DFD8];
   if (ignoreAlphaSubviewsTable)
   {
-    v4 = [(NSHashTable *)ignoreAlphaSubviewsTable allObjects];
-    v5 = [v3 setWithArray:v4];
+    allObjects = [(NSHashTable *)ignoreAlphaSubviewsTable allObjects];
+    v5 = [v3 setWithArray:allObjects];
   }
 
   else
@@ -25,16 +25,16 @@
   return v5;
 }
 
-- (void)setIgnoreAlphaSubviews:(id)a3
+- (void)setIgnoreAlphaSubviews:(id)subviews
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  subviewsCopy = subviews;
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = subviewsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -50,7 +50,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [(NSHashTable *)v5 addObject:*(*(&v12 + 1) + 8 * v10++), v12];
+        [(NSHashTable *)weakObjectsHashTable addObject:*(*(&v12 + 1) + 8 * v10++), v12];
       }
 
       while (v8 != v10);
@@ -61,32 +61,32 @@
   }
 
   ignoreAlphaSubviewsTable = self->_ignoreAlphaSubviewsTable;
-  self->_ignoreAlphaSubviewsTable = v5;
+  self->_ignoreAlphaSubviewsTable = weakObjectsHashTable;
 }
 
-- (void)addIgnoreAlphaSubview:(id)a3
+- (void)addIgnoreAlphaSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   ignoreAlphaSubviewsTable = self->_ignoreAlphaSubviewsTable;
-  v8 = v4;
+  v8 = subviewCopy;
   if (!ignoreAlphaSubviewsTable)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_ignoreAlphaSubviewsTable;
-    self->_ignoreAlphaSubviewsTable = v6;
+    self->_ignoreAlphaSubviewsTable = weakObjectsHashTable;
 
-    v4 = v8;
+    subviewCopy = v8;
     ignoreAlphaSubviewsTable = self->_ignoreAlphaSubviewsTable;
   }
 
-  [(NSHashTable *)ignoreAlphaSubviewsTable addObject:v4];
+  [(NSHashTable *)ignoreAlphaSubviewsTable addObject:subviewCopy];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -94,7 +94,7 @@
   v23 = __Block_byref_object_dispose__6;
   v18.receiver = self;
   v18.super_class = SBUIInteractionForwardingView;
-  v24 = [(SBUIInteractionForwardingView *)&v18 hitTest:v7 withEvent:x, y];
+  v24 = [(SBUIInteractionForwardingView *)&v18 hitTest:eventCopy withEvent:x, y];
   v8 = v20[5];
   if (v8)
   {
@@ -108,7 +108,7 @@
 
   if (v9)
   {
-    v10 = [(SBUIInteractionForwardingView *)self subviews];
+    subviews = [(SBUIInteractionForwardingView *)self subviews];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __51__SBUIInteractionForwardingView_hitTest_withEvent___block_invoke;
@@ -116,9 +116,9 @@
     v13[4] = self;
     v16 = x;
     v17 = y;
-    v14 = v7;
+    v14 = eventCopy;
     v15 = &v19;
-    [v10 enumerateObjectsWithOptions:2 usingBlock:v13];
+    [subviews enumerateObjectsWithOptions:2 usingBlock:v13];
 
     v8 = v20[5];
   }

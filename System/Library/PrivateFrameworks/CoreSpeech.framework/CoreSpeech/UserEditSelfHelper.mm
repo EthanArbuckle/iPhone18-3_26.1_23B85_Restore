@@ -1,16 +1,16 @@
 @interface UserEditSelfHelper
-- (UserEditSelfHelper)initWithAsrId:(id)a3;
-- (void)_wrapAndEmitTopLevelEvent:(id)a3;
-- (void)logEditMetricEndedAndTier1WithMetric:(id)a3;
+- (UserEditSelfHelper)initWithAsrId:(id)id;
+- (void)_wrapAndEmitTopLevelEvent:(id)event;
+- (void)logEditMetricEndedAndTier1WithMetric:(id)metric;
 - (void)logEditMetricsStartedOrChanged;
-- (void)logEditTextEndedAndTier1WithText:(id)a3;
+- (void)logEditTextEndedAndTier1WithText:(id)text;
 @end
 
 @implementation UserEditSelfHelper
 
-- (void)_wrapAndEmitTopLevelEvent:(id)a3
+- (void)_wrapAndEmitTopLevelEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_alloc_init(ASRSchemaASRClientEventMetadata);
   v6 = [[SISchemaUUID alloc] initWithNSUUID:self->_randomAsrId];
   [v5 setAsrId:v6];
@@ -20,7 +20,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 setManualEditTextClassified:v4];
+    [v7 setManualEditTextClassified:eventCopy];
   }
 
   else
@@ -28,7 +28,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v7 setManualEditMetricClassified:v4];
+      [v7 setManualEditMetricClassified:eventCopy];
     }
 
     else
@@ -36,7 +36,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v7 setManualEditClassificationContext:v4];
+        [v7 setManualEditClassificationContext:eventCopy];
       }
     }
   }
@@ -55,19 +55,19 @@
   }
 
   v12 = +[AssistantSiriAnalytics sharedAnalytics];
-  v13 = [v12 defaultMessageStream];
+  defaultMessageStream = [v12 defaultMessageStream];
   v14 = +[NSUUID UUID];
-  [v13 emitMessage:v7 isolatedStreamUUID:v14];
+  [defaultMessageStream emitMessage:v7 isolatedStreamUUID:v14];
 }
 
-- (void)logEditTextEndedAndTier1WithText:(id)a3
+- (void)logEditTextEndedAndTier1WithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if (DiagnosticLogSubmissionEnabled())
   {
-    v21 = self;
-    v22 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"confusionPairs"];
+    selfCopy = self;
+    v22 = textCopy;
+    v5 = [textCopy objectForKeyedSubscript:@"confusionPairs"];
     v6 = objc_alloc_init(NSMutableArray);
     v24 = 0u;
     v25 = 0u;
@@ -109,7 +109,7 @@
       while (v8);
     }
 
-    v4 = v22;
+    textCopy = v22;
     if ([v6 count])
     {
       v16 = objc_alloc_init(ASRSchemaASRManualEditTextClassified);
@@ -118,20 +118,20 @@
       [v16 setFullCorrectedText:v17];
 
       v18 = [SISchemaUUID alloc];
-      v19 = [[NSUUID alloc] initWithUUIDString:v21->_asrId];
+      v19 = [[NSUUID alloc] initWithUUIDString:selfCopy->_asrId];
       v20 = [v18 initWithNSUUID:v19];
       [v16 setOriginalAsrId:v20];
 
-      [(UserEditSelfHelper *)v21 _wrapAndEmitTopLevelEvent:v16];
+      [(UserEditSelfHelper *)selfCopy _wrapAndEmitTopLevelEvent:v16];
     }
   }
 }
 
-- (void)logEditMetricEndedAndTier1WithMetric:(id)a3
+- (void)logEditMetricEndedAndTier1WithMetric:(id)metric
 {
-  v18 = a3;
-  v4 = [v18 objectForKeyedSubscript:@"confusionPairs"];
-  v5 = [v18 objectForKeyedSubscript:@"errorCode"];
+  metricCopy = metric;
+  v4 = [metricCopy objectForKeyedSubscript:@"confusionPairs"];
+  v5 = [metricCopy objectForKeyedSubscript:@"errorCode"];
   v6 = objc_alloc_init(ASRSchemaASRManualEditClassificationContext);
   v7 = [SISchemaUUID alloc];
   v8 = [[NSUUID alloc] initWithUUIDString:self->_asrId];
@@ -149,13 +149,13 @@
     v14 = [v12 initWithNSUUID:v13];
     [v11 setOriginalAsrId:v14];
 
-    v15 = [v18 objectForKeyedSubscript:@"numDeletion"];
+    v15 = [metricCopy objectForKeyedSubscript:@"numDeletion"];
     [v11 setNumDeletions:{objc_msgSend(v15, "intValue")}];
 
-    v16 = [v18 objectForKeyedSubscript:@"numInsertion"];
+    v16 = [metricCopy objectForKeyedSubscript:@"numInsertion"];
     [v11 setNumInsertions:{objc_msgSend(v16, "intValue")}];
 
-    v17 = [v18 objectForKeyedSubscript:@"numSubstitution"];
+    v17 = [metricCopy objectForKeyedSubscript:@"numSubstitution"];
     [v11 setNumSubstitutions:{objc_msgSend(v17, "intValue")}];
 
     [(UserEditSelfHelper *)self _wrapAndEmitTopLevelEvent:v11];
@@ -186,21 +186,21 @@
   [(UserEditSelfHelper *)self _wrapAndEmitTopLevelEvent:v3];
 }
 
-- (UserEditSelfHelper)initWithAsrId:(id)a3
+- (UserEditSelfHelper)initWithAsrId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v11.receiver = self;
   v11.super_class = UserEditSelfHelper;
   v6 = [(UserEditSelfHelper *)&v11 init];
   if (v6)
   {
-    if (![v5 length])
+    if (![idCopy length])
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_asrId, a3);
+    objc_storeStrong(&v6->_asrId, id);
     v7 = +[NSUUID UUID];
     randomAsrId = v6->_randomAsrId;
     v6->_randomAsrId = v7;

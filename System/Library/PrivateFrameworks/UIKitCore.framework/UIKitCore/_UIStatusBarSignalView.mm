@@ -1,23 +1,23 @@
 @interface _UIStatusBarSignalView
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4;
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size;
 - (void)_iconSizeDidChange;
 - (void)_updateBars;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setActiveColor:(id)a3;
-- (void)setInactiveColor:(id)a3;
-- (void)setNumberOfActiveBars:(int64_t)a3;
-- (void)setNumberOfBars:(int64_t)a3;
-- (void)setSignalMode:(int64_t)a3;
-- (void)setSmallSize:(BOOL)a3;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setActiveColor:(id)color;
+- (void)setInactiveColor:(id)color;
+- (void)setNumberOfActiveBars:(int64_t)bars;
+- (void)setNumberOfBars:(int64_t)bars;
+- (void)setSignalMode:(int64_t)mode;
+- (void)setSmallSize:(BOOL)size;
 @end
 
 @implementation _UIStatusBarSignalView
 
-- (void)setNumberOfBars:(int64_t)a3
+- (void)setNumberOfBars:(int64_t)bars
 {
-  if (self->_numberOfBars != a3)
+  if (self->_numberOfBars != bars)
   {
-    self->_numberOfBars = a3;
+    self->_numberOfBars = bars;
     [(_UIStatusBarSignalView *)self _updateBars];
     [(UIView *)self setNeedsLayout];
 
@@ -25,14 +25,14 @@
   }
 }
 
-- (void)setNumberOfActiveBars:(int64_t)a3
+- (void)setNumberOfActiveBars:(int64_t)bars
 {
-  if (self->_numberOfActiveBars != a3)
+  if (self->_numberOfActiveBars != bars)
   {
     numberOfBars = self->_numberOfBars;
-    if (numberOfBars >= (a3 & ~(a3 >> 63)))
+    if (numberOfBars >= (bars & ~(bars >> 63)))
     {
-      numberOfBars = a3 & ~(a3 >> 63);
+      numberOfBars = bars & ~(bars >> 63);
     }
 
     self->_numberOfActiveBars = numberOfBars;
@@ -44,46 +44,46 @@
   }
 }
 
-- (void)setSignalMode:(int64_t)a3
+- (void)setSignalMode:(int64_t)mode
 {
   signalMode = self->_signalMode;
-  if (signalMode != a3)
+  if (signalMode != mode)
   {
-    self->_signalMode = a3;
+    self->_signalMode = mode;
     [(_UIStatusBarSignalView *)self _updateFromMode:signalMode];
   }
 }
 
-- (void)setSmallSize:(BOOL)a3
+- (void)setSmallSize:(BOOL)size
 {
-  if (self->_smallSize != a3)
+  if (self->_smallSize != size)
   {
-    self->_smallSize = a3;
+    self->_smallSize = size;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setInactiveColor:(id)a3
+- (void)setInactiveColor:(id)color
 {
-  v5 = a3;
-  if (self->_inactiveColor != v5)
+  colorCopy = color;
+  if (self->_inactiveColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_inactiveColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_inactiveColor, color);
     [(_UIStatusBarSignalView *)self _colorsDidChange];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setActiveColor:(id)a3
+- (void)setActiveColor:(id)color
 {
-  v5 = a3;
-  if (self->_activeColor != v5)
+  colorCopy = color;
+  if (self->_activeColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_activeColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_activeColor, color);
     [(_UIStatusBarSignalView *)self _colorsDidChange];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -97,23 +97,23 @@
 
 - (void)_updateBars
 {
-  v3 = [(UIView *)self layer];
-  v2 = [v3 sublayers];
-  [v2 makeObjectsPerformSelector:sel_removeFromSuperlayer];
+  layer = [(UIView *)self layer];
+  sublayers = [layer sublayers];
+  [sublayers makeObjectsPerformSelector:sel_removeFromSuperlayer];
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 isRounded];
-  v6 = [v4 iconSize];
+  attributesCopy = attributes;
+  isRounded = [attributesCopy isRounded];
+  iconSize = [attributesCopy iconSize];
 
-  if (self->_iconSize == v6)
+  if (self->_iconSize == iconSize)
   {
     rounded = self->_rounded;
-    [(_UIStatusBarSignalView *)self setRounded:v5];
-    [(_UIStatusBarSignalView *)self setIconSize:v6];
-    if (rounded == v5)
+    [(_UIStatusBarSignalView *)self setRounded:isRounded];
+    [(_UIStatusBarSignalView *)self setIconSize:iconSize];
+    if (rounded == isRounded)
     {
       return;
     }
@@ -121,14 +121,14 @@
 
   else
   {
-    [(_UIStatusBarSignalView *)self setRounded:v5];
-    [(_UIStatusBarSignalView *)self setIconSize:v6];
+    [(_UIStatusBarSignalView *)self setRounded:isRounded];
+    [(_UIStatusBarSignalView *)self setIconSize:iconSize];
   }
 
   [(_UIStatusBarSignalView *)self _iconSizeDidChange];
 }
 
-+ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)a3 iconSize:(int64_t)a4
++ (CGSize)_intrinsicContentSizeForNumberOfBars:(int64_t)bars iconSize:(int64_t)size
 {
   v4 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);

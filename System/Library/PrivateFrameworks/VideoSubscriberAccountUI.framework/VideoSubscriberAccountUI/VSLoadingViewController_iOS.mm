@@ -3,21 +3,21 @@
 + (id)signingOutTitle;
 - (NSString)loadingTitle;
 - (VSLoadingViewControllerDelegate)delegate;
-- (VSLoadingViewController_iOS)initWithCoder:(id)a3;
-- (VSLoadingViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_cancelButtonPressed:(id)a3;
-- (void)setLoadingTitle:(id)a3;
+- (VSLoadingViewController_iOS)initWithCoder:(id)coder;
+- (VSLoadingViewController_iOS)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_cancelButtonPressed:(id)pressed;
+- (void)setLoadingTitle:(id)title;
 - (void)updateAnimating;
 - (void)viewDidLoad;
 @end
 
 @implementation VSLoadingViewController_iOS
 
-- (VSLoadingViewController_iOS)initWithCoder:(id)a3
+- (VSLoadingViewController_iOS)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = VSLoadingViewController_iOS;
-  v3 = [(VSLoadingViewController_iOS *)&v6 initWithCoder:a3];
+  v3 = [(VSLoadingViewController_iOS *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (VSLoadingViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4
+- (VSLoadingViewController_iOS)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = VSLoadingViewController_iOS;
-  v4 = [(VSLoadingViewController_iOS *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(VSLoadingViewController_iOS *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -46,132 +46,132 @@
   v30.receiver = self;
   v30.super_class = VSLoadingViewController_iOS;
   [(VSLoadingViewController_iOS *)&v30 viewDidLoad];
-  v3 = [(VSLoadingViewController_iOS *)self view];
-  v4 = [MEMORY[0x277D75348] groupTableViewBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(VSLoadingViewController_iOS *)self view];
+  groupTableViewBackgroundColor = [MEMORY[0x277D75348] groupTableViewBackgroundColor];
+  [view setBackgroundColor:groupTableViewBackgroundColor];
 
-  v5 = [(VSLoadingViewController_iOS *)self loadingIndicator];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 setHidesWhenStopped:1];
+  loadingIndicator = [(VSLoadingViewController_iOS *)self loadingIndicator];
+  [loadingIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
+  [loadingIndicator setHidesWhenStopped:1];
   [(VSLoadingViewController_iOS *)self updateAnimating];
-  [v3 addSubview:v5];
+  [view addSubview:loadingIndicator];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  v8 = [v7 traitCollection];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
 
   v9 = 0.0;
-  if ([v8 userInterfaceIdiom] == 1)
+  if ([traitCollection userInterfaceIdiom] == 1)
   {
-    v10 = [(VSLoadingViewController_iOS *)self view];
-    v11 = [v10 safeAreaLayoutGuide];
-    [v11 layoutFrame];
+    view2 = [(VSLoadingViewController_iOS *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v9 = v12 / 6.5;
   }
 
-  v13 = [v5 centerXAnchor];
-  v14 = [v3 centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:v9];
+  centerXAnchor = [loadingIndicator centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:v9];
   [v6 addObject:v15];
 
-  v16 = [v5 centerYAnchor];
-  v17 = [v3 centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerYAnchor = [loadingIndicator centerYAnchor];
+  centerYAnchor2 = [view centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v6 addObject:v18];
 
-  v19 = [(VSLoadingViewController_iOS *)self label];
-  [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v19];
+  label = [(VSLoadingViewController_iOS *)self label];
+  [label setTranslatesAutoresizingMaskIntoConstraints:0];
+  [view addSubview:label];
   [objc_opt_class() layoutSpacing];
   v21 = v20;
-  v22 = [v5 centerXAnchor];
-  v23 = [v19 centerXAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  centerXAnchor3 = [loadingIndicator centerXAnchor];
+  centerXAnchor4 = [label centerXAnchor];
+  v24 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v6 addObject:v24];
 
-  v25 = [MEMORY[0x277CCAAD0] constraintWithItem:v19 attribute:3 relatedBy:0 toItem:v5 attribute:4 multiplier:1.0 constant:v21];
+  v25 = [MEMORY[0x277CCAAD0] constraintWithItem:label attribute:3 relatedBy:0 toItem:loadingIndicator attribute:4 multiplier:1.0 constant:v21];
   [v6 addObject:v25];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v6];
   if ([(VSLoadingViewController_iOS *)self isCancellationAllowed])
   {
-    v26 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-    v27 = [v26 localizedStringForKey:@"CANCEL_TITLE" value:0 table:0];
+    vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+    v27 = [vs_frameworkBundle localizedStringForKey:@"CANCEL_TITLE" value:0 table:0];
 
     v28 = [objc_alloc(MEMORY[0x277D751E0]) initWithTitle:v27 style:0 target:self action:sel__cancelButtonPressed_];
-    v29 = [(VSLoadingViewController_iOS *)self navigationItem];
-    [v29 setLeftBarButtonItem:v28];
+    navigationItem = [(VSLoadingViewController_iOS *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v28];
   }
 }
 
 - (void)updateAnimating
 {
-  v3 = [(VSLoadingViewController_iOS *)self isAnimating];
-  v4 = [(VSLoadingViewController_iOS *)self loadingIndicator];
-  v5 = v4;
-  if (v3)
+  isAnimating = [(VSLoadingViewController_iOS *)self isAnimating];
+  loadingIndicator = [(VSLoadingViewController_iOS *)self loadingIndicator];
+  v5 = loadingIndicator;
+  if (isAnimating)
   {
-    [v4 startAnimating];
+    [loadingIndicator startAnimating];
   }
 
   else
   {
-    [v4 stopAnimating];
+    [loadingIndicator stopAnimating];
   }
 
-  v6 = [(VSLoadingViewController_iOS *)self label];
-  [v6 setHidden:{-[VSLoadingViewController_iOS isAnimating](self, "isAnimating") ^ 1}];
+  label = [(VSLoadingViewController_iOS *)self label];
+  [label setHidden:{-[VSLoadingViewController_iOS isAnimating](self, "isAnimating") ^ 1}];
 }
 
-- (void)setLoadingTitle:(id)a3
+- (void)setLoadingTitle:(id)title
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  titleCopy = title;
+  v9 = titleCopy;
+  if (titleCopy)
   {
-    v5 = v4;
+    defaultLoadingTitle = titleCopy;
   }
 
   else
   {
-    v5 = [objc_opt_class() defaultLoadingTitle];
+    defaultLoadingTitle = [objc_opt_class() defaultLoadingTitle];
   }
 
-  v6 = v5;
-  v7 = [(VSLoadingViewController_iOS *)self label];
-  v8 = [v6 uppercaseString];
-  [v7 setText:v8];
+  v6 = defaultLoadingTitle;
+  label = [(VSLoadingViewController_iOS *)self label];
+  uppercaseString = [v6 uppercaseString];
+  [label setText:uppercaseString];
 }
 
 - (NSString)loadingTitle
 {
-  v2 = [(VSLoadingViewController_iOS *)self label];
-  v3 = [v2 text];
+  label = [(VSLoadingViewController_iOS *)self label];
+  text = [label text];
 
-  if (!v3)
+  if (!text)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The textOrNil parameter must not be nil."];
   }
 
-  return v3;
+  return text;
 }
 
 + (NSString)defaultLoadingTitle
 {
-  v2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v3 = [v2 localizedStringForKey:@"LOADING_TITLE_NO_ELLIPSIS" value:0 table:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v3 = [vs_frameworkBundle localizedStringForKey:@"LOADING_TITLE_NO_ELLIPSIS" value:0 table:0];
 
   return v3;
 }
 
 + (id)signingOutTitle
 {
-  v2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v3 = [v2 localizedStringForKey:@"SIGNING_OUT_TITLE" value:0 table:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v3 = [vs_frameworkBundle localizedStringForKey:@"SIGNING_OUT_TITLE" value:0 table:0];
 
   return v3;
 }
 
-- (void)_cancelButtonPressed:(id)a3
+- (void)_cancelButtonPressed:(id)pressed
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = VSDefaultLogObject();
@@ -182,10 +182,10 @@
     _os_log_impl(&dword_270DD4000, v4, OS_LOG_TYPE_DEFAULT, "Entering %s", &v7, 0xCu);
   }
 
-  v5 = [(VSLoadingViewController_iOS *)self delegate];
+  delegate = [(VSLoadingViewController_iOS *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 loadingViewControllerDidCancel:self];
+    [delegate loadingViewControllerDidCancel:self];
   }
 
   v6 = *MEMORY[0x277D85DE8];

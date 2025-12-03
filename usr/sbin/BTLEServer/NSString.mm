@@ -1,6 +1,6 @@
 @interface NSString
-- (id)UTF8DataWithMaxLength:(unint64_t)a3 ellipsis:(BOOL)a4 isTruncated:(BOOL *)a5;
-- (id)UTF8StringWithMaxLength:(unint64_t)a3;
+- (id)UTF8DataWithMaxLength:(unint64_t)length ellipsis:(BOOL)ellipsis isTruncated:(BOOL *)truncated;
+- (id)UTF8StringWithMaxLength:(unint64_t)length;
 - (id)substringWithValidUnicode;
 @end
 
@@ -12,45 +12,45 @@
   {
     if (([(NSString *)self characterAtIndex:[(NSString *)self length]- 1]& 0xFC00) == 0xD800)
     {
-      v3 = [(NSString *)self substringToIndex:[(NSString *)self length]- 1];
+      selfCopy = [(NSString *)self substringToIndex:[(NSString *)self length]- 1];
     }
 
     else
     {
-      v3 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v3 = &stru_1000BEA00;
+    selfCopy = &stru_1000BEA00;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)UTF8DataWithMaxLength:(unint64_t)a3 ellipsis:(BOOL)a4 isTruncated:(BOOL *)a5
+- (id)UTF8DataWithMaxLength:(unint64_t)length ellipsis:(BOOL)ellipsis isTruncated:(BOOL *)truncated
 {
-  v6 = a4;
+  ellipsisCopy = ellipsis;
   v9 = [(NSString *)self lengthOfBytesUsingEncoding:4];
-  if (v9 >= a3)
+  if (v9 >= length)
   {
-    v10 = a3;
+    lengthCopy = length;
   }
 
   else
   {
-    v10 = v9;
+    lengthCopy = v9;
   }
 
-  if (v9 <= a3 || !v6)
+  if (v9 <= length || !ellipsisCopy)
   {
-    a3 = v10;
-    if (v10)
+    length = lengthCopy;
+    if (lengthCopy)
     {
 LABEL_15:
       v13 = 0;
-      v12 = a3;
+      lengthCopy2 = length;
       goto LABEL_16;
     }
 
@@ -59,20 +59,20 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v12 = a3 - 3;
-  if (a3 < 3)
+  lengthCopy2 = length - 3;
+  if (length < 3)
   {
     v14 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
     {
-      sub_10007A898(a3, v14);
-      if (a3)
+      sub_10007A898(length, v14);
+      if (length)
       {
         goto LABEL_15;
       }
     }
 
-    else if (a3)
+    else if (length)
     {
       goto LABEL_15;
     }
@@ -83,34 +83,34 @@ LABEL_22:
   v13 = 1;
 LABEL_16:
   __chkstk_darwin();
-  bzero(&v19 - ((a3 + 15) & 0xFFFFFFFFFFFFFFF0), a3);
+  bzero(&v19 - ((length + 15) & 0xFFFFFFFFFFFFFFF0), length);
   v20 = 0;
   v21 = 0;
   v19 = 0;
-  [(NSString *)self getBytes:&v19 - ((a3 + 15) & 0xFFFFFFFFFFFFFFF0) maxLength:v12 usedLength:&v19 encoding:4 options:1 range:0 remainingRange:[(NSString *)self length], &v20];
+  [(NSString *)self getBytes:&v19 - ((length + 15) & 0xFFFFFFFFFFFFFFF0) maxLength:lengthCopy2 usedLength:&v19 encoding:4 options:1 range:0 remainingRange:[(NSString *)self length], &v20];
   if (v13)
   {
     v15 = v19;
-    v16 = &v19 + v19 - ((a3 + 15) & 0xFFFFFFFFFFFFFFF0);
+    v16 = &v19 + v19 - ((length + 15) & 0xFFFFFFFFFFFFFFF0);
     *v16 = -32542;
     v16[2] = -90;
     v19 = v15 + 3;
   }
 
-  if (a5)
+  if (truncated)
   {
-    *a5 = v21 != 0;
+    *truncated = v21 != 0;
   }
 
-  v17 = [NSData dataWithBytes:&v19 - ((a3 + 15) & 0xFFFFFFFFFFFFFFF0) length:v19, v19];
+  v17 = [NSData dataWithBytes:&v19 - ((length + 15) & 0xFFFFFFFFFFFFFFF0) length:v19, v19];
 LABEL_23:
 
   return v17;
 }
 
-- (id)UTF8StringWithMaxLength:(unint64_t)a3
+- (id)UTF8StringWithMaxLength:(unint64_t)length
 {
-  v3 = [(NSString *)self UTF8DataWithMaxLength:a3 ellipsis:0 isTruncated:0];
+  v3 = [(NSString *)self UTF8DataWithMaxLength:length ellipsis:0 isTruncated:0];
   if ([v3 length])
   {
     v4 = [[NSString alloc] initWithBytes:objc_msgSend(v3 length:"bytes") encoding:{objc_msgSend(v3, "length"), 4}];

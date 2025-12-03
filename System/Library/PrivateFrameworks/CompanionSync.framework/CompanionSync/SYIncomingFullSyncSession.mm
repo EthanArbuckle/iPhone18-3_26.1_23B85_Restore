@@ -1,35 +1,35 @@
 @interface SYIncomingFullSyncSession
-- (SYIncomingFullSyncSession)initWithService:(id)a3;
+- (SYIncomingFullSyncSession)initWithService:(id)service;
 - (void)_cancelSession;
 - (void)_continueProcessing;
-- (void)_handleBatchChunk:(id)a3 completion:(id)a4;
-- (void)_handleEndSync:(id)a3 completion:(id)a4;
+- (void)_handleBatchChunk:(id)chunk completion:(id)completion;
+- (void)_handleEndSync:(id)sync completion:(id)completion;
 - (void)_installStateListener;
 - (void)_notifyErrorAndShutdown;
 - (void)_processNextState;
-- (void)_sendEndSessionResponse:(id)a3;
+- (void)_sendEndSessionResponse:(id)response;
 - (void)_sessionComplete;
 - (void)_sessionEnded;
-- (void)_setStateQuietly:(unsigned int)a3;
-- (void)cancelWithError:(id)a3;
-- (void)setState:(unsigned int)a3;
-- (void)start:(id)a3;
+- (void)_setStateQuietly:(unsigned int)quietly;
+- (void)cancelWithError:(id)error;
+- (void)setState:(unsigned int)state;
+- (void)start:(id)start;
 @end
 
 @implementation SYIncomingFullSyncSession
 
-- (SYIncomingFullSyncSession)initWithService:(id)a3
+- (SYIncomingFullSyncSession)initWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v12.receiver = self;
   v12.super_class = SYIncomingFullSyncSession;
-  v5 = [(SYSession *)&v12 initWithService:v4];
+  v5 = [(SYSession *)&v12 initWithService:serviceCopy];
   v6 = v5;
   if (v5)
   {
     v5->_state = 0;
-    v7 = [v4 serviceActivity];
-    v8 = _os_activity_create(&dword_1DF835000, "SYSession (v1 Full Sync, Incoming)", v7, OS_ACTIVITY_FLAG_DEFAULT);
+    serviceActivity = [serviceCopy serviceActivity];
+    v8 = _os_activity_create(&dword_1DF835000, "SYSession (v1 Full Sync, Incoming)", serviceActivity, OS_ACTIVITY_FLAG_DEFAULT);
 
     sessionActivity = v6->_sessionActivity;
     v6->_sessionActivity = v8;
@@ -41,11 +41,11 @@
   return v6;
 }
 
-- (void)setState:(unsigned int)a3
+- (void)setState:(unsigned int)state
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -59,22 +59,22 @@
     v9 = 138543618;
     v10 = v7;
     v11 = 1024;
-    v12 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_1DF835000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting state to %{companionsync:SYSessionState}d", &v9, 0x12u);
   }
 
-  v4->_state = a3;
-  dispatch_source_merge_data(v4->_stateUpdateSource, 1uLL);
-  objc_sync_exit(v4);
+  selfCopy->_state = state;
+  dispatch_source_merge_data(selfCopy->_stateUpdateSource, 1uLL);
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setStateQuietly:(unsigned int)a3
+- (void)_setStateQuietly:(unsigned int)quietly
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (_sync_log_facilities_pred != -1)
   {
     [SYIncomingSyncAllObjectsSession _continueProcessing];
@@ -88,32 +88,32 @@
     v9 = 138543618;
     v10 = v7;
     v11 = 1024;
-    v12 = a3;
+    quietlyCopy = quietly;
     _os_log_impl(&dword_1DF835000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting state (quietly) to %{companionsync:SYSessionState}d", &v9, 0x12u);
   }
 
-  v4->_state = a3;
-  objc_sync_exit(v4);
+  selfCopy->_state = quietly;
+  objc_sync_exit(selfCopy);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (void)_sessionEnded
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SYSession *)self targetQueue];
+  targetQueue = [(SYSession *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__SYIncomingFullSyncSession__sessionEnded__block_invoke;
   block[3] = &unk_1E86C9FB0;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(targetQueue, block);
 
-  v5 = [(SYSession *)self service];
-  v6 = [(SYSession *)self error];
-  [v5 sessionDidEnd:self withError:v6];
+  service = [(SYSession *)self service];
+  error = [(SYSession *)self error];
+  [service sessionDidEnd:self withError:error];
 
   [(SYSession *)self didCompleteSession];
 }
@@ -141,12 +141,12 @@ void __42__SYIncomingFullSyncSession__sessionEnded__block_invoke(uint64_t a1)
 - (void)_cancelSession
 {
   v9 = objc_opt_new();
-  v3 = [(SYSession *)self service];
-  v4 = [v3 _newMessageHeader];
-  [v9 setHeader:v4];
+  service = [(SYSession *)self service];
+  _newMessageHeader = [service _newMessageHeader];
+  [v9 setHeader:_newMessageHeader];
 
-  v5 = [(SYSession *)self identifier];
-  [v9 setSyncID:v5];
+  identifier = [(SYSession *)self identifier];
+  [v9 setSyncID:identifier];
 
   v6 = [SYErrorInfo alloc];
   v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:-128 userInfo:0];
@@ -161,16 +161,16 @@ void __42__SYIncomingFullSyncSession__sessionEnded__block_invoke(uint64_t a1)
 - (void)_notifyErrorAndShutdown
 {
   v9 = objc_opt_new();
-  v3 = [(SYSession *)self service];
-  v4 = [v3 _newMessageHeader];
-  [v9 setHeader:v4];
+  service = [(SYSession *)self service];
+  _newMessageHeader = [service _newMessageHeader];
+  [v9 setHeader:_newMessageHeader];
 
-  v5 = [(SYSession *)self identifier];
-  [v9 setSyncID:v5];
+  identifier = [(SYSession *)self identifier];
+  [v9 setSyncID:identifier];
 
   v6 = [SYErrorInfo alloc];
-  v7 = [(SYSession *)self error];
-  v8 = [(SYErrorInfo *)v6 initWithError:v7];
+  error = [(SYSession *)self error];
+  v8 = [(SYErrorInfo *)v6 initWithError:error];
   [v9 setError:v8];
 
   [v9 setErrorResolution:1];
@@ -181,12 +181,12 @@ void __42__SYIncomingFullSyncSession__sessionEnded__block_invoke(uint64_t a1)
 - (void)_sessionComplete
 {
   v6 = objc_opt_new();
-  v3 = [(SYSession *)self service];
-  v4 = [v3 _newMessageHeader];
-  [v6 setHeader:v4];
+  service = [(SYSession *)self service];
+  _newMessageHeader = [service _newMessageHeader];
+  [v6 setHeader:_newMessageHeader];
 
-  v5 = [(SYSession *)self identifier];
-  [v6 setSyncID:v5];
+  identifier = [(SYSession *)self identifier];
+  [v6 setSyncID:identifier];
 
   [(SYIncomingFullSyncSession *)self _sendEndSessionResponse:v6];
   [(SYIncomingFullSyncSession *)self _sessionEnded];
@@ -194,32 +194,32 @@ void __42__SYIncomingFullSyncSession__sessionEnded__block_invoke(uint64_t a1)
 
 - (void)_processNextState
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5.opaque[0] = 0;
   v5.opaque[1] = 0;
   os_activity_scope_enter(self->_sessionActivity, &v5);
-  v4 = [(SYIncomingFullSyncSession *)self state];
-  if (v4 > 4)
+  state = [(SYIncomingFullSyncSession *)self state];
+  if (state > 4)
   {
-    if (v4 == 5)
+    if (state == 5)
     {
       [(SYIncomingFullSyncSession *)self _notifyErrorAndShutdown];
     }
 
-    else if (v4 == 9)
+    else if (state == 9)
     {
       [(SYIncomingFullSyncSession *)self _sessionComplete];
     }
   }
 
-  else if (v4 == 1)
+  else if (state == 1)
   {
     [(SYIncomingFullSyncSession *)self _continueProcessing];
   }
 
-  else if (v4 == 3)
+  else if (state == 3)
   {
     [(SYIncomingFullSyncSession *)self _cancelSession];
   }
@@ -229,8 +229,8 @@ void __42__SYIncomingFullSyncSession__sessionEnded__block_invoke(uint64_t a1)
 
 - (void)_installStateListener
 {
-  v3 = [(SYSession *)self queue];
-  v4 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, v3);
+  queue = [(SYSession *)self queue];
+  v4 = dispatch_source_create(MEMORY[0x1E69E96B8], 0, 0, queue);
   stateUpdateSource = self->_stateUpdateSource;
   self->_stateUpdateSource = v4;
 
@@ -258,22 +258,22 @@ void __50__SYIncomingFullSyncSession__installStateListener__block_invoke(uint64_
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SYSession *)self delegate];
+  startCopy = start;
+  delegate = [(SYSession *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(SYSession *)self serializer];
+    serializer = [(SYSession *)self serializer];
     if (objc_opt_respondsToSelector())
     {
     }
 
     else
     {
-      v12 = [(SYSession *)self serializer];
+      serializer2 = [(SYSession *)self serializer];
       v13 = objc_opt_respondsToSelector();
 
       if ((v13 & 1) == 0)
@@ -292,7 +292,7 @@ void __50__SYIncomingFullSyncSession__installStateListener__block_invoke(uint64_
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:2];
         v25 = [v19 initWithSYError:2020 userInfo:v24];
 
-        v26 = [(SYSession *)self queue];
+        queue = [(SYSession *)self queue];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __35__SYIncomingFullSyncSession_start___block_invoke_2;
@@ -300,9 +300,9 @@ void __50__SYIncomingFullSyncSession__installStateListener__block_invoke(uint64_
         v32[4] = self;
         v33 = v25;
         v27 = v25;
-        dispatch_async(v26, v32);
+        dispatch_async(queue, v32);
 
-        v4[2](v4, 0, v27);
+        startCopy[2](startCopy, 0, v27);
         goto LABEL_12;
       }
     }
@@ -320,23 +320,23 @@ void __50__SYIncomingFullSyncSession__installStateListener__block_invoke(uint64_
     {
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [(SYSession *)self identifier];
+      identifier = [(SYSession *)self identifier];
       *buf = 138543618;
       v37 = v16;
       v38 = 2114;
-      v39 = v17;
+      v39 = identifier;
       _os_log_impl(&dword_1DF835000, v14, OS_LOG_TYPE_DEFAULT, "Starting %{public}@ with identifier %{public}@", buf, 0x16u);
     }
 
     [(SYSession *)self didStartSession];
-    v18 = [(SYSession *)self queue];
+    queue2 = [(SYSession *)self queue];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __35__SYIncomingFullSyncSession_start___block_invoke_71;
     v29[3] = &unk_1E86CA388;
     v29[4] = self;
-    v30 = v4;
-    dispatch_async(v18, v29);
+    v30 = startCopy;
+    dispatch_async(queue2, v29);
 
     os_activity_scope_leave(&state);
   }
@@ -349,7 +349,7 @@ void __50__SYIncomingFullSyncSession__installStateListener__block_invoke(uint64_
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
     v9 = [v7 initWithSYError:2001 userInfo:v8];
 
-    v10 = [(SYSession *)self queue];
+    queue3 = [(SYSession *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __35__SYIncomingFullSyncSession_start___block_invoke;
@@ -357,9 +357,9 @@ void __50__SYIncomingFullSyncSession__installStateListener__block_invoke(uint64_
     block[4] = self;
     v35 = v9;
     v11 = v9;
-    dispatch_async(v10, block);
+    dispatch_async(queue3, block);
 
-    v4[2](v4, 0, v11);
+    startCopy[2](startCopy, 0, v11);
   }
 
 LABEL_12:
@@ -472,20 +472,20 @@ void __35__SYIncomingFullSyncSession_start___block_invoke_72(uint64_t a1)
   }
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(self->_sessionActivity, &v8);
   if ([(SYIncomingFullSyncSession *)self state]!= 11)
   {
-    v6 = [v4 domain];
-    if ([v6 isEqualToString:@"SYErrorDomain"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"SYErrorDomain"])
     {
-      v7 = [v4 code];
+      code = [errorCopy code];
 
-      if (v7 == -128)
+      if (code == -128)
       {
         v5 = 3;
         goto LABEL_8;
@@ -496,12 +496,12 @@ void __35__SYIncomingFullSyncSession_start___block_invoke_72(uint64_t a1)
     {
     }
 
-    [(SYSession *)self setError:v4];
+    [(SYSession *)self setError:errorCopy];
     v5 = 5;
     goto LABEL_8;
   }
 
-  [(SYSession *)self setError:v4];
+  [(SYSession *)self setError:errorCopy];
   v5 = 12;
 LABEL_8:
   [(SYIncomingFullSyncSession *)self setState:v5];
@@ -517,7 +517,7 @@ LABEL_8:
   NSRequestConcreteImplementation();
 }
 
-- (void)_sendEndSessionResponse:(id)a3
+- (void)_sendEndSessionResponse:(id)response
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -526,7 +526,7 @@ LABEL_8:
   NSRequestConcreteImplementation();
 }
 
-- (void)_handleBatchChunk:(id)a3 completion:(id)a4
+- (void)_handleBatchChunk:(id)chunk completion:(id)completion
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();
@@ -535,7 +535,7 @@ LABEL_8:
   NSRequestConcreteImplementation();
 }
 
-- (void)_handleEndSync:(id)a3 completion:(id)a4
+- (void)_handleEndSync:(id)sync completion:(id)completion
 {
   OUTLINED_FUNCTION_2_4();
   objc_opt_class();

@@ -1,5 +1,5 @@
 @interface AAFMIPAuthenticateRequest
-- (AAFMIPAuthenticateRequest)initWithAccount:(id)a3;
+- (AAFMIPAuthenticateRequest)initWithAccount:(id)account;
 - (id)urlRequest;
 - (id)urlString;
 @end
@@ -9,21 +9,21 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 fmipAuthenticate];
+  fmipAuthenticate = [v2 fmipAuthenticate];
 
-  return v3;
+  return fmipAuthenticate;
 }
 
-- (AAFMIPAuthenticateRequest)initWithAccount:(id)a3
+- (AAFMIPAuthenticateRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AAFMIPAuthenticateRequest;
   v6 = [(AAFMIPAuthenticateRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -34,8 +34,8 @@
   v19 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = AAFMIPAuthenticateRequest;
-  v3 = [(AARequest *)&v16 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v16 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"GET"];
   account = self->_account;
@@ -55,8 +55,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v6 = [(ACAccount *)account aa_password];
-  if (!v6 || (v7 = v6, [(ACAccount *)self->_account username], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  aa_password = [(ACAccount *)account aa_password];
+  if (!aa_password || (v7 = aa_password, [(ACAccount *)self->_account username], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
     v12 = _AALogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -74,9 +74,9 @@ LABEL_11:
   v9 = _AALogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(ACAccount *)self->_account username];
+    username = [(ACAccount *)self->_account username];
     *buf = 138412290;
-    v18 = v10;
+    v18 = username;
     _os_log_impl(&dword_1B6F6A000, v9, OS_LOG_TYPE_DEFAULT, "fmipAuthenticate with password auth using username: %@", buf, 0xCu);
   }
 

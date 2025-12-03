@@ -7,8 +7,8 @@
 - (void)atx_getArgsInto:()ATXIntentEvent
 {
   v4 = a3;
-  v6 = [a1 contacts];
-  v5 = joinedDisplayNames(v6);
+  contacts = [self contacts];
+  v5 = joinedDisplayNames(contacts);
   [v4 setArg1:v5];
 }
 

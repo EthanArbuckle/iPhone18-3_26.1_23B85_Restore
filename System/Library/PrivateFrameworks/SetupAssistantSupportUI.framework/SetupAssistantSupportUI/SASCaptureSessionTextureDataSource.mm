@@ -2,12 +2,12 @@
 - (CGAffineTransform)bookendTextureTransform;
 - (SASCaptureSessionTextureDataSource)init;
 - (id)bookendTexture;
-- (void)captureLayer:(id)a3;
-- (void)captureSession:(id)a3 receivedSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)captureView:(id)a3;
+- (void)captureLayer:(id)layer;
+- (void)captureSession:(id)session receivedSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)captureView:(id)view;
 - (void)dealloc;
 - (void)invalidate;
-- (void)onTextureQueue_displaySampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)onTextureQueue_displaySampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation SASCaptureSessionTextureDataSource
@@ -28,7 +28,7 @@
     v2->_captureSession = v5;
 
     v7 = MTLCreateSystemDefaultDevice();
-    v8 = [(SASCaptureSessionTextureDataSource *)v2 textureQueue];
+    textureQueue = [(SASCaptureSessionTextureDataSource *)v2 textureQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __42__SASCaptureSessionTextureDataSource_init__block_invoke;
@@ -36,7 +36,7 @@
     v12 = v7;
     v13 = v2;
     v9 = v7;
-    dispatch_sync(v8, v11);
+    dispatch_sync(textureQueue, v11);
   }
 
   return v2;
@@ -60,15 +60,15 @@ void __42__SASCaptureSessionTextureDataSource_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)captureView:(id)a3
+- (void)captureView:(id)view
 {
   v5 = self->_captureSession;
   if (v5)
   {
-    v6 = a3;
+    viewCopy = view;
     [(SASFigCaptureSession *)v5 setCaptureObserver:self];
     v9 = 0;
-    [(SASFigCaptureSession *)v5 captureView:v6 error:&v9];
+    [(SASFigCaptureSession *)v5 captureView:viewCopy error:&v9];
 
     v7 = v9;
     if (v7)
@@ -82,15 +82,15 @@ void __42__SASCaptureSessionTextureDataSource_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)captureLayer:(id)a3
+- (void)captureLayer:(id)layer
 {
   v5 = self->_captureSession;
   if (v5)
   {
-    v6 = a3;
+    layerCopy = layer;
     [(SASFigCaptureSession *)v5 setCaptureObserver:self];
     v12 = 0;
-    v7 = [(SASFigCaptureSession *)v5 captureLayer:v6 error:&v12];
+    v7 = [(SASFigCaptureSession *)v5 captureLayer:layerCopy error:&v12];
 
     v8 = v12;
     v9 = v8;
@@ -122,19 +122,19 @@ void __42__SASCaptureSessionTextureDataSource_init__block_invoke(uint64_t a1)
 
 - (void)invalidate
 {
-  v3 = [(SASCaptureSessionTextureDataSource *)self captureSession];
-  [v3 invalidate];
+  captureSession = [(SASCaptureSessionTextureDataSource *)self captureSession];
+  [captureSession invalidate];
 
   captureSession = self->_captureSession;
   self->_captureSession = 0;
 
-  v5 = [(SASCaptureSessionTextureDataSource *)self textureQueue];
+  textureQueue = [(SASCaptureSessionTextureDataSource *)self textureQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SASCaptureSessionTextureDataSource_invalidate__block_invoke;
   block[3] = &unk_279BB2BE0;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(textureQueue, block);
 }
 
 uint64_t __48__SASCaptureSessionTextureDataSource_invalidate__block_invoke(uint64_t a1)
@@ -154,14 +154,14 @@ uint64_t __48__SASCaptureSessionTextureDataSource_invalidate__block_invoke(uint6
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(SASCaptureSessionTextureDataSource *)self textureQueue];
+  textureQueue = [(SASCaptureSessionTextureDataSource *)self textureQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__SASCaptureSessionTextureDataSource_bookendTexture__block_invoke;
   v6[3] = &unk_279BB2C08;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(textureQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -223,41 +223,41 @@ uint64_t __52__SASCaptureSessionTextureDataSource_bookendTexture__block_invoke(u
   return result;
 }
 
-- (void)captureSession:(id)a3 receivedSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)captureSession:(id)session receivedSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v6 = a3;
+  sessionCopy = session;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
   v17 = 0;
-  v7 = [(SASCaptureSessionTextureDataSource *)self textureQueue];
+  textureQueue = [(SASCaptureSessionTextureDataSource *)self textureQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SASCaptureSessionTextureDataSource_captureSession_receivedSampleBuffer___block_invoke;
   block[3] = &unk_279BB2C30;
   block[5] = &v12;
-  block[6] = a4;
+  block[6] = buffer;
   block[4] = self;
-  dispatch_sync(v7, block);
+  dispatch_sync(textureQueue, block);
 
-  v8 = self;
-  objc_sync_enter(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (v13[5])
   {
-    v9 = [(SASCaptureSessionTextureDataSource *)v8 onReadyBlock];
+    onReadyBlock = [(SASCaptureSessionTextureDataSource *)selfCopy onReadyBlock];
 
-    if (v9)
+    if (onReadyBlock)
     {
-      v10 = [(SASCaptureSessionTextureDataSource *)v8 onReadyBlock];
-      (v10)[2](v10, v8);
+      onReadyBlock2 = [(SASCaptureSessionTextureDataSource *)selfCopy onReadyBlock];
+      (onReadyBlock2)[2](onReadyBlock2, selfCopy);
 
-      [(SASCaptureSessionTextureDataSource *)v8 setOnReadyBlock:0];
+      [(SASCaptureSessionTextureDataSource *)selfCopy setOnReadyBlock:0];
     }
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   _Block_object_dispose(&v12, 8);
 }
@@ -270,14 +270,14 @@ uint64_t __74__SASCaptureSessionTextureDataSource_captureSession_receivedSampleB
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)onTextureQueue_displaySampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)onTextureQueue_displaySampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [(SASCaptureSessionTextureDataSource *)self textureQueue];
-  dispatch_assert_queue_V2(v5);
+  textureQueue = [(SASCaptureSessionTextureDataSource *)self textureQueue];
+  dispatch_assert_queue_V2(textureQueue);
 
-  if (a3)
+  if (buffer)
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     if (ImageBuffer)
     {
       v7 = ImageBuffer;

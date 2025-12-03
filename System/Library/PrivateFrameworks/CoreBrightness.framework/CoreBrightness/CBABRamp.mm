@@ -1,27 +1,27 @@
 @interface CBABRamp
-- (CBABRamp)initWithDisplayModule:(id)a3 andQueue:(id)a4;
+- (CBABRamp)initWithDisplayModule:(id)module andQueue:(id)queue;
 - (void)dealloc;
-- (void)setPerceptualBrightnessWithFade:(float)a3 length:(float)a4 current:(float)a5;
+- (void)setPerceptualBrightnessWithFade:(float)fade length:(float)length current:(float)current;
 - (void)stopTransition;
-- (void)transitionToBrightness:(float)a3 force:(BOOL)a4 periodOverride:(BOOL)a5 period:(float)a6;
+- (void)transitionToBrightness:(float)brightness force:(BOOL)force periodOverride:(BOOL)override period:(float)period;
 @end
 
 @implementation CBABRamp
 
-- (CBABRamp)initWithDisplayModule:(id)a3 andQueue:(id)a4
+- (CBABRamp)initWithDisplayModule:(id)module andQueue:(id)queue
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  v17 = a4;
+  moduleCopy = module;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = CBABRamp;
-  v20 = [(CBABRamp *)&v16 init];
-  if (v20)
+  selfCopy = [(CBABRamp *)&v16 init];
+  if (selfCopy)
   {
     v4 = os_log_create("com.apple.CoreBrightness.CBABRamp", "default");
-    *(v20 + 4) = v4;
-    if (!*(v20 + 4))
+    *(selfCopy + 4) = v4;
+    if (!*(selfCopy + 4))
     {
       v11 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v15 = v11;
@@ -35,55 +35,55 @@
       }
     }
 
-    *(v20 + 2) = v17;
-    dispatch_retain(*(v20 + 2));
+    *(selfCopy + 2) = queueCopy;
+    dispatch_retain(*(selfCopy + 2));
     v5 = os_log_create("com.apple.CoreBrightness.ABRamp", "default");
-    *(v20 + 4) = v5;
-    v6 = MEMORY[0x1E69E5928](v18);
-    *(v20 + 1) = v6;
-    *(v20 + 10) = 1.0;
-    *(v20 + 11) = 981668463;
-    v12 = [*(v20 + 1) copyPropertyForKey:@"DisplayBrightnessLinearMin"];
+    *(selfCopy + 4) = v5;
+    v6 = MEMORY[0x1E69E5928](moduleCopy);
+    *(selfCopy + 1) = v6;
+    *(selfCopy + 10) = 1.0;
+    *(selfCopy + 11) = 981668463;
+    v12 = [*(selfCopy + 1) copyPropertyForKey:@"DisplayBrightnessLinearMin"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v12 floatValue];
-      *(v20 + 11) = v7;
+      *(selfCopy + 11) = v7;
     }
 
     MEMORY[0x1E69E5920](v12);
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  dispatch_release(v5->_queue);
-  v5->_queue = 0;
-  *&v2 = MEMORY[0x1E69E5920](v5->_displayModule).n128_u64[0];
-  v3.receiver = v5;
+  dispatch_release(selfCopy->_queue);
+  selfCopy->_queue = 0;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_displayModule).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBABRamp;
   [(CBABRamp *)&v3 dealloc];
 }
 
 - (void)stopTransition
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_fadeTimer)
   {
-    if (v10->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v10->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -111,20 +111,20 @@
       _os_log_debug_impl(&dword_1DE8E5000, log, type, "Ramping module: stopping", v6, 2u);
     }
 
-    dispatch_source_cancel(v10->_fadeTimer);
-    v10->_fadeTimer = 0;
+    dispatch_source_cancel(selfCopy->_fadeTimer);
+    selfCopy->_fadeTimer = 0;
   }
 }
 
-- (void)transitionToBrightness:(float)a3 force:(BOOL)a4 periodOverride:(BOOL)a5 period:(float)a6
+- (void)transitionToBrightness:(float)brightness force:(BOOL)force periodOverride:(BOOL)override period:(float)period
 {
   v37 = *MEMORY[0x1E69E9840];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
-  v31 = a4;
-  v30 = a5;
-  v29 = a6;
+  brightnessCopy = brightness;
+  forceCopy = force;
+  overrideCopy = override;
+  periodCopy = period;
   v28 = 0.0;
   v27 = 0;
   v26 = 0.0;
@@ -139,13 +139,13 @@
   {
     [v27 floatValue];
     v28 = v6;
-    if (v31 || v28 == 0.0 || (vabds_f32(v32, v28) / v28) >= 0.1)
+    if (forceCopy || v28 == 0.0 || (vabds_f32(brightnessCopy, v28) / v28) >= 0.1)
     {
       v23 = linearBrightnessToPerceptualBrightness(v28);
-      v22 = linearBrightnessToPerceptualBrightness(v32);
-      if (v30)
+      v22 = linearBrightnessToPerceptualBrightness(brightnessCopy);
+      if (overrideCopy)
       {
-        v24 = v29;
+        v24 = periodCopy;
       }
 
       else
@@ -176,9 +176,9 @@
         }
       }
 
-      if (v34->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        logHandle = v34->_logHandle;
+        logHandle = selfCopy->_logHandle;
       }
 
       else
@@ -198,21 +198,21 @@
 
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_0_6_8_0_8_0_8_0_8_0_4_0_8_0(v35, COERCE__INT64(v22), COERCE__INT64(v32), COERCE__INT64(v23), COERCE__INT64(v28), v31, COERCE__INT64(v24));
+        __os_log_helper_16_0_6_8_0_8_0_8_0_8_0_4_0_8_0(v35, COERCE__INT64(v22), COERCE__INT64(brightnessCopy), COERCE__INT64(v23), COERCE__INT64(v28), forceCopy, COERCE__INT64(v24));
         _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "targetPerceptual=%f (targetLinear=%f) currentPerceptual=%f (currentLinear=%f) forced=%d period=%f", v35, 0x3Au);
       }
 
       *&v7 = v22;
       *&v8 = v24;
       *&v9 = v23;
-      [(CBABRamp *)v34 setPerceptualBrightnessWithFade:v7 length:v8 current:v9];
+      [(CBABRamp *)selfCopy setPerceptualBrightnessWithFade:v7 length:v8 current:v9];
     }
 
     else
     {
-      if (v34->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v13 = v34->_logHandle;
+        v13 = selfCopy->_logHandle;
       }
 
       else
@@ -232,19 +232,19 @@
 
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        __os_log_helper_16_0_1_8_0(v36, COERCE__INT64((vabds_f32(v32, v28) / v28)));
+        __os_log_helper_16_0_1_8_0(v36, COERCE__INT64((vabds_f32(brightnessCopy, v28) / v28)));
         _os_log_debug_impl(&dword_1DE8E5000, v13, OS_LOG_TYPE_DEBUG, "ALS.changeBrightness NOT CHANGING percent change is %f", v36, 0xCu);
       }
 
-      [(CBABRamp *)v34 stopTransition];
+      [(CBABRamp *)selfCopy stopTransition];
     }
   }
 
   else
   {
-    if (v34->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v17 = v34->_logHandle;
+      v17 = selfCopy->_logHandle;
     }
 
     else
@@ -277,14 +277,14 @@
   *MEMORY[0x1E69E9840];
 }
 
-- (void)setPerceptualBrightnessWithFade:(float)a3 length:(float)a4 current:(float)a5
+- (void)setPerceptualBrightnessWithFade:(float)fade length:(float)length current:(float)current
 {
   v57 = *MEMORY[0x1E69E9840];
-  v55 = self;
+  selfCopy = self;
   v54 = a2;
-  v53 = a3;
-  v52 = a4;
-  v51 = a5;
+  fadeCopy = fade;
+  lengthCopy = length;
+  currentCopy = current;
   v50 = 0.0;
   v49 = 0.0;
   v48 = 0.0;
@@ -307,23 +307,23 @@
   v35 = __Block_byref_object_dispose__19;
   v36 = 0;
   [(CBABRamp *)self stopTransition];
-  v50 = v53 - v51;
-  v5 = fabsf(v53 - v51) / 0.000978473581;
+  v50 = fadeCopy - currentCopy;
+  v5 = fabsf(fadeCopy - currentCopy) / 0.000978473581;
   *(v38 + 6) = vcvtms_s32_f32(v5);
   v47 = 0.00097847;
-  v49 = v52 / *(v38 + 6);
+  v49 = lengthCopy / *(v38 + 6);
   v48 = 0.01;
   if (v49 < 0.01)
   {
     v49 = v48;
-    *(v38 + 6) = vcvtms_s32_f32(v52 / v48);
+    *(v38 + 6) = vcvtms_s32_f32(lengthCopy / v48);
     v6 = fabs(v50) / *(v38 + 6);
     v47 = v6;
   }
 
-  if (v55->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v55->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -345,30 +345,30 @@
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_0_4_8_0_8_0_8_0_4_0(v56, COERCE__INT64(v51), COERCE__INT64(v53), COERCE__INT64(v52), *(v38 + 6));
+    __os_log_helper_16_0_4_8_0_8_0_8_0_4_0(v56, COERCE__INT64(currentCopy), COERCE__INT64(fadeCopy), COERCE__INT64(lengthCopy), *(v38 + 6));
     _os_log_impl(&dword_1DE8E5000, oslog, type, "Ramping from %f to %f (perceptual) over %f seconds with %d steps", v56, 0x26u);
   }
 
-  v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v55->_queue);
-  v55->_fadeTimer = v7;
-  if (v55->_fadeTimer)
+  v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_queue);
+  selfCopy->_fadeTimer = v7;
+  if (selfCopy->_fadeTimer)
   {
-    v31[5] = v55->_fadeTimer;
-    v43[6] = v51;
-    dispatch_source_set_timer(v55->_fadeTimer, 0, (v49 * 1000000000.0), 0);
-    fadeTimer = v55->_fadeTimer;
+    v31[5] = selfCopy->_fadeTimer;
+    v43[6] = currentCopy;
+    dispatch_source_set_timer(selfCopy->_fadeTimer, 0, (v49 * 1000000000.0), 0);
+    fadeTimer = selfCopy->_fadeTimer;
     handler = MEMORY[0x1E69E9820];
     v19 = -1073741824;
     v20 = 0;
     v21 = __59__CBABRamp_setPerceptualBrightnessWithFade_length_current___block_invoke;
     v22 = &unk_1E867D160;
     v24 = &v37;
-    v26 = v53;
-    v23 = v55;
+    v26 = fadeCopy;
+    v23 = selfCopy;
     v25 = &v42;
     v27 = v47;
     dispatch_source_set_event_handler(fadeTimer, &handler);
-    v9 = v55->_fadeTimer;
+    v9 = selfCopy->_fadeTimer;
     v12 = MEMORY[0x1E69E9820];
     v13 = -1073741824;
     v14 = 0;
@@ -376,7 +376,7 @@
     v16 = &unk_1E867B4F8;
     v17 = &v30;
     dispatch_source_set_cancel_handler(v9, &v12);
-    dispatch_resume(v55->_fadeTimer);
+    dispatch_resume(selfCopy->_fadeTimer);
   }
 
   _Block_object_dispose(&v30, 8);

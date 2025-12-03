@@ -1,39 +1,39 @@
 @interface CDMClientNotification
 - (void)assetsAvailable;
-- (void)assetsAvailableForLocale:(id)a3;
-- (void)assetsAvailableForLocale:(id)a3 withType:(int64_t)a4;
+- (void)assetsAvailableForLocale:(id)locale;
+- (void)assetsAvailableForLocale:(id)locale withType:(int64_t)type;
 - (void)assetsUnavailable;
-- (void)assetsUnavailableWithType:(int64_t)a3;
-- (void)processCDMNluRequestCallback:(id)a3;
-- (void)processCDMNluRequestErrorCallback:(id)a3 error:(id)a4;
+- (void)assetsUnavailableWithType:(int64_t)type;
+- (void)processCDMNluRequestCallback:(id)callback;
+- (void)processCDMNluRequestErrorCallback:(id)callback error:(id)error;
 @end
 
 @implementation CDMClientNotification
 
-- (void)processCDMNluRequestErrorCallback:(id)a3 error:(id)a4
+- (void)processCDMNluRequestErrorCallback:(id)callback error:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  callbackCopy = callback;
+  errorCopy = error;
+  selfCopy = self;
   OUTLINED_FUNCTION_162();
   sub_1DC356380();
 }
 
-- (void)processCDMNluRequestCallback:(id)a3
+- (void)processCDMNluRequestCallback:(id)callback
 {
-  v4 = a3;
-  v5 = self;
+  callbackCopy = callback;
+  selfCopy = self;
   sub_1DC3568E0();
 }
 
 - (void)assetsAvailable
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_185();
   sub_1DC356C98();
 }
 
-- (void)assetsAvailableForLocale:(id)a3
+- (void)assetsAvailableForLocale:(id)locale
 {
   OUTLINED_FUNCTION_38_2();
   v5 = sub_1DC510C8C();
@@ -52,12 +52,12 @@
 
 - (void)assetsUnavailable
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_185();
   sub_1DC357040();
 }
 
-- (void)assetsAvailableForLocale:(id)a3 withType:(int64_t)a4
+- (void)assetsAvailableForLocale:(id)locale withType:(int64_t)type
 {
   OUTLINED_FUNCTION_38_2();
   v6 = sub_1DC510C8C();
@@ -74,9 +74,9 @@
   (*(v9 + 8))(v5, v6);
 }
 
-- (void)assetsUnavailableWithType:(int64_t)a3
+- (void)assetsUnavailableWithType:(int64_t)type
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_185();
   sub_1DC357550();
 }

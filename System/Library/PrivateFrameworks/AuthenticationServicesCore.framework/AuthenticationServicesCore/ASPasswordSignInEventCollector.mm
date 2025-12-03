@@ -1,17 +1,17 @@
 @interface ASPasswordSignInEventCollector
 - (_TtC26AuthenticationServicesCore30ASPasswordSignInEventCollector)init;
-- (void)didUseCredentialForUsername:(id)a3 forHost:(id)a4 fromProviderWithBundleIdentifier:(id)a5 inAppWithBundleIdentifier:(id)a6 listenerEndpoint:(id)a7;
-- (void)didUseCredentialForUsername:(id)a3 forURL:(id)a4 fromProviderWithBundleIdentifier:(id)a5 inBrowserWithBundleIdentifier:(id)a6 listenerEndpoint:(id)a7;
-- (void)signInEventForRecentlyFilledCredentialWithUsername:(NSString *)a3 forAppWithBundleIdentifier:(NSString *)a4 completionHandler:(id)a5;
-- (void)signInEventForRecentlyFilledCredentialWithUsername:(NSString *)a3 forRelyingPartyIdentifier:(NSString *)a4 inAppWithBundleIdentifier:(NSString *)a5 completionHandler:(id)a6;
+- (void)didUseCredentialForUsername:(id)username forHost:(id)host fromProviderWithBundleIdentifier:(id)identifier inAppWithBundleIdentifier:(id)bundleIdentifier listenerEndpoint:(id)endpoint;
+- (void)didUseCredentialForUsername:(id)username forURL:(id)l fromProviderWithBundleIdentifier:(id)identifier inBrowserWithBundleIdentifier:(id)bundleIdentifier listenerEndpoint:(id)endpoint;
+- (void)signInEventForRecentlyFilledCredentialWithUsername:(NSString *)username forAppWithBundleIdentifier:(NSString *)identifier completionHandler:(id)handler;
+- (void)signInEventForRecentlyFilledCredentialWithUsername:(NSString *)username forRelyingPartyIdentifier:(NSString *)identifier inAppWithBundleIdentifier:(NSString *)bundleIdentifier completionHandler:(id)handler;
 @end
 
 @implementation ASPasswordSignInEventCollector
 
-- (void)didUseCredentialForUsername:(id)a3 forURL:(id)a4 fromProviderWithBundleIdentifier:(id)a5 inBrowserWithBundleIdentifier:(id)a6 listenerEndpoint:(id)a7
+- (void)didUseCredentialForUsername:(id)username forURL:(id)l fromProviderWithBundleIdentifier:(id)identifier inBrowserWithBundleIdentifier:(id)bundleIdentifier listenerEndpoint:(id)endpoint
 {
-  v43 = a6;
-  v44 = a7;
+  bundleIdentifierCopy = bundleIdentifier;
+  endpointCopy = endpoint;
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23490, &qword_1C2176890);
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x1EEE9AC00](v8 - 8);
@@ -30,7 +30,7 @@
   sub_1C216FFD4();
   v38 = sub_1C2170914();
   v22 = v21;
-  v43 = sub_1C2170914();
+  bundleIdentifierCopy = sub_1C2170914();
   v39 = v23;
   v24 = sub_1C2170BE4();
   (*(*(v24 - 8) + 56))(v11, 1, 1, v24);
@@ -49,9 +49,9 @@
   *(v27 + 7) = v30;
   *(v27 + 8) = v22;
   (*(v13 + 32))(&v27[v25], v16, v12);
-  v32 = v43;
-  v31 = v44;
-  *&v27[v26] = v44;
+  v32 = bundleIdentifierCopy;
+  v31 = endpointCopy;
+  *&v27[v26] = endpointCopy;
   v33 = &v27[(v26 + 15) & 0xFFFFFFFFFFFFFFF8];
   v34 = v39;
   *v33 = v32;
@@ -64,7 +64,7 @@
   (*(v13 + 8))(v18, v12);
 }
 
-- (void)didUseCredentialForUsername:(id)a3 forHost:(id)a4 fromProviderWithBundleIdentifier:(id)a5 inAppWithBundleIdentifier:(id)a6 listenerEndpoint:(id)a7
+- (void)didUseCredentialForUsername:(id)username forHost:(id)host fromProviderWithBundleIdentifier:(id)identifier inAppWithBundleIdentifier:(id)bundleIdentifier listenerEndpoint:(id)endpoint
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23490, &qword_1C2176890);
   v11 = *(*(v10 - 8) + 64);
@@ -73,9 +73,9 @@
   v14 = sub_1C2170914();
   v29 = v15;
   v30 = v14;
-  if (a4)
+  if (host)
   {
-    a4 = sub_1C2170914();
+    host = sub_1C2170914();
     v17 = v16;
   }
 
@@ -93,7 +93,7 @@
   v25 = swift_allocObject();
   v25[2] = 0;
   v25[3] = 0;
-  v25[4] = a4;
+  v25[4] = host;
   v25[5] = v17;
   v26 = v29;
   v27 = v30;
@@ -102,25 +102,25 @@
   v25[8] = v26;
   v25[9] = v18;
   v25[10] = v20;
-  v25[11] = a7;
+  v25[11] = endpoint;
   v25[12] = v21;
   v25[13] = v23;
-  v28 = a7;
+  endpointCopy = endpoint;
 
   sub_1C211E0FC(0, 0, v13, &unk_1C21799F0, v25);
 }
 
-- (void)signInEventForRecentlyFilledCredentialWithUsername:(NSString *)a3 forRelyingPartyIdentifier:(NSString *)a4 inAppWithBundleIdentifier:(NSString *)a5 completionHandler:(id)a6
+- (void)signInEventForRecentlyFilledCredentialWithUsername:(NSString *)username forRelyingPartyIdentifier:(NSString *)identifier inAppWithBundleIdentifier:(NSString *)bundleIdentifier completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23490, &qword_1C2176890);
   v12 = *(*(v11 - 8) + 64);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v14 = &v23 - v13;
-  v15 = _Block_copy(a6);
+  v15 = _Block_copy(handler);
   v16 = swift_allocObject();
-  v16[2] = a3;
-  v16[3] = a4;
-  v16[4] = a5;
+  v16[2] = username;
+  v16[3] = identifier;
+  v16[4] = bundleIdentifier;
   v16[5] = v15;
   v16[6] = self;
   v17 = sub_1C2170BE4();
@@ -135,23 +135,23 @@
   v19[3] = 0;
   v19[4] = &unk_1C21799E0;
   v19[5] = v18;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
+  usernameCopy = username;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
 
   sub_1C2166D88(0, 0, v14, &unk_1C21799E8, v19);
 }
 
-- (void)signInEventForRecentlyFilledCredentialWithUsername:(NSString *)a3 forAppWithBundleIdentifier:(NSString *)a4 completionHandler:(id)a5
+- (void)signInEventForRecentlyFilledCredentialWithUsername:(NSString *)username forAppWithBundleIdentifier:(NSString *)identifier completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBF23490, &qword_1C2176890);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = username;
+  v14[3] = identifier;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1C2170BE4();
@@ -166,8 +166,8 @@
   v17[3] = 0;
   v17[4] = &unk_1C21799C0;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
+  usernameCopy = username;
+  identifierCopy = identifier;
 
   sub_1C2166D88(0, 0, v12, &unk_1C21768B0, v17);
 }

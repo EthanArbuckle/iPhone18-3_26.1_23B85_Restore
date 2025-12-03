@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInCardExpiration
-- (PKPaymentSetupFieldBuiltInCardExpiration)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInCardExpiration)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInCardExpiration
 
-- (PKPaymentSetupFieldBuiltInCardExpiration)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInCardExpiration)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = PKPaymentSetupFieldBuiltInCardExpiration;
-  v4 = [(PKPaymentSetupFieldDate *)&v10 initWithIdentifier:@"cardExpiration" type:a4];
+  v4 = [(PKPaymentSetupFieldDate *)&v10 initWithIdentifier:@"cardExpiration" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_ExpirationDate.isa, 0);

@@ -1,21 +1,21 @@
 @interface SXScrollView
 - (BOOL)_accessibilityScrollingEnabled;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isBouncing;
-- (BOOL)shouldOccludeAccessibilityElement:(id)a3;
-- (SXScrollView)initWithFrame:(CGRect)a3;
+- (BOOL)shouldOccludeAccessibilityElement:(id)element;
+- (SXScrollView)initWithFrame:(CGRect)frame;
 - (SXScrollViewDelegate)scrollViewDelegate;
 - (id)accessibilityCustomRotors;
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4 completionBlock:(id)a5;
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated completionBlock:(id)block;
 @end
 
 @implementation SXScrollView
 
-- (SXScrollView)initWithFrame:(CGRect)a3
+- (SXScrollView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SXScrollView;
-  v3 = [(SXScrollView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SXScrollView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[SXAXCustomRotorProvider alloc] initWithRootElement:v3];
@@ -28,13 +28,13 @@
   return v3;
 }
 
-- (void)setContentOffset:(CGPoint)a3 animated:(BOOL)a4 completionBlock:(id)a5
+- (void)setContentOffset:(CGPoint)offset animated:(BOOL)animated completionBlock:(id)block
 {
-  v5 = a4;
+  animatedCopy = animated;
   v8.receiver = self;
   v8.super_class = SXScrollView;
-  [(TSKScrollView *)&v8 setContentOffset:a4 animated:a5 completionBlock:a3.x, a3.y];
-  if (v5)
+  [(TSKScrollView *)&v8 setContentOffset:animated animated:block completionBlock:offset.x, offset.y];
+  if (animatedCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -45,23 +45,23 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SXScrollView *)self panGestureRecognizer];
-  v6 = v5;
-  if (v5 != v4)
+  beginCopy = begin;
+  panGestureRecognizer = [(SXScrollView *)self panGestureRecognizer];
+  v6 = panGestureRecognizer;
+  if (panGestureRecognizer != beginCopy)
   {
 
 LABEL_5:
     v11.receiver = self;
     v11.super_class = SXScrollView;
-    v9 = [(SXScrollView *)&v11 gestureRecognizerShouldBegin:v4];
+    v9 = [(SXScrollView *)&v11 gestureRecognizerShouldBegin:beginCopy];
     goto LABEL_6;
   }
 
-  v7 = [(SXScrollView *)self scrollViewDelegate];
-  v8 = [v7 shouldPreventDraggingForScrollView:self];
+  scrollViewDelegate = [(SXScrollView *)self scrollViewDelegate];
+  v8 = [scrollViewDelegate shouldPreventDraggingForScrollView:self];
 
   if ((v8 & 1) == 0)
   {
@@ -92,44 +92,44 @@ LABEL_6:
 
 - (id)accessibilityCustomRotors
 {
-  v2 = [(SXAXCustomRotorProvider *)self->_customRotorProvider graphSearchForAvailableCustomRotorsAndUpdateCache];
-  v3 = [v2 allObjects];
+  graphSearchForAvailableCustomRotorsAndUpdateCache = [(SXAXCustomRotorProvider *)self->_customRotorProvider graphSearchForAvailableCustomRotorsAndUpdateCache];
+  allObjects = [graphSearchForAvailableCustomRotorsAndUpdateCache allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (BOOL)shouldOccludeAccessibilityElement:(id)a3
+- (BOOL)shouldOccludeAccessibilityElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SXScrollView *)self scrollViewDelegate];
+  elementCopy = element;
+  scrollViewDelegate = [(SXScrollView *)self scrollViewDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SXScrollView *)self scrollViewDelegate];
-    v8 = [v7 scrollView:self shouldOccludeAccessibilityElement:v4];
+    scrollViewDelegate2 = [(SXScrollView *)self scrollViewDelegate];
+    v8 = [scrollViewDelegate2 scrollView:self shouldOccludeAccessibilityElement:elementCopy];
 LABEL_9:
     v11 = v8;
 
     goto LABEL_10;
   }
 
-  v9 = [(SXScrollView *)self accessibilityContainer];
-  if (v9)
+  accessibilityContainer = [(SXScrollView *)self accessibilityContainer];
+  if (accessibilityContainer)
   {
-    v7 = v9;
+    scrollViewDelegate2 = accessibilityContainer;
     while ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v10 = [v7 accessibilityContainer];
+      accessibilityContainer2 = [scrollViewDelegate2 accessibilityContainer];
 
-      v7 = v10;
-      if (!v10)
+      scrollViewDelegate2 = accessibilityContainer2;
+      if (!accessibilityContainer2)
       {
         goto LABEL_7;
       }
     }
 
-    v8 = [v7 shouldOccludeAccessibilityElement:v4];
+    v8 = [scrollViewDelegate2 shouldOccludeAccessibilityElement:elementCopy];
     goto LABEL_9;
   }
 
@@ -144,31 +144,31 @@ LABEL_10:
 {
   v11.receiver = self;
   v11.super_class = SXScrollView;
-  v3 = [(SXScrollView *)&v11 _accessibilityScrollingEnabled];
-  v4 = [(SXScrollView *)self scrollViewDelegate];
+  _accessibilityScrollingEnabled = [(SXScrollView *)&v11 _accessibilityScrollingEnabled];
+  scrollViewDelegate = [(SXScrollView *)self scrollViewDelegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [(SXScrollView *)self scrollViewDelegate];
-  v7 = v6;
+  scrollViewDelegate2 = [(SXScrollView *)self scrollViewDelegate];
+  scrollViewDelegate3 = scrollViewDelegate2;
   if (v5)
   {
-    v8 = [v6 accessibilityShouldScrollForScrollView:self defaultValue:v3];
+    v8 = [scrollViewDelegate2 accessibilityShouldScrollForScrollView:self defaultValue:_accessibilityScrollingEnabled];
 LABEL_5:
-    LOBYTE(v3) = v8;
+    LOBYTE(_accessibilityScrollingEnabled) = v8;
 
-    return v3;
+    return _accessibilityScrollingEnabled;
   }
 
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v7 = [(SXScrollView *)self scrollViewDelegate];
-    v8 = [v7 accessibilityShouldScrollForScrollView:self];
+    scrollViewDelegate3 = [(SXScrollView *)self scrollViewDelegate];
+    v8 = [scrollViewDelegate3 accessibilityShouldScrollForScrollView:self];
     goto LABEL_5;
   }
 
-  return v3;
+  return _accessibilityScrollingEnabled;
 }
 
 - (SXScrollViewDelegate)scrollViewDelegate

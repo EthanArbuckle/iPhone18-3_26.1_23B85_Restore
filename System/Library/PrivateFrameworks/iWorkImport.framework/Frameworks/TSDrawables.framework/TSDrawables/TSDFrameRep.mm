@@ -1,25 +1,25 @@
 @interface TSDFrameRep
-- (BOOL)p_shouldRenderForRectWithCoverage:(CGRect)a3;
-- (BOOL)p_shouldRenderForRectWithoutCoverage:(CGRect)a3;
-- (BOOL)p_willRenderForRect:(CGRect)a3;
-- (CGImage)newFrameForMask:(BOOL)a3 size:(CGSize)a4 forCALayer:(BOOL)a5 viewScale:(double)a6;
-- (CGImage)p_newRenderedFrameForMask:(BOOL)a3 size:(CGSize)a4 forCALayer:(BOOL)a5 viewScale:(double)a6;
+- (BOOL)p_shouldRenderForRectWithCoverage:(CGRect)coverage;
+- (BOOL)p_shouldRenderForRectWithoutCoverage:(CGRect)coverage;
+- (BOOL)p_willRenderForRect:(CGRect)rect;
+- (CGImage)newFrameForMask:(BOOL)mask size:(CGSize)size forCALayer:(BOOL)layer viewScale:(double)scale;
+- (CGImage)p_newRenderedFrameForMask:(BOOL)mask size:(CGSize)size forCALayer:(BOOL)layer viewScale:(double)scale;
 - (TSDFrameRep)init;
-- (TSDFrameRep)initWithTSDFrame:(id)a3;
-- (void)applyMaskForRectWithCoverage:(CGRect)a3 toContext:(CGContext *)a4;
-- (void)blendMaskBeforeRenderingImageInContext:(CGContext *)a3;
+- (TSDFrameRep)initWithTSDFrame:(id)frame;
+- (void)applyMaskForRectWithCoverage:(CGRect)coverage toContext:(CGContext *)context;
+- (void)blendMaskBeforeRenderingImageInContext:(CGContext *)context;
 - (void)dealloc;
-- (void)frameRect:(CGRect)a3 inContext:(CGContext *)a4 withTotalScale:(double)a5;
-- (void)p_drawFrameIntoRect:(CGRect)a3 inContext:(CGContext *)a4 withImages:(id)a5 atViewScale:(double)a6 isMask:(BOOL)a7;
-- (void)p_drawTiles:(id)a3 inContext:(CGContext *)a4 rect:(CGRect)a5 start:(double)a6 end:(double)a7 vertical:(BOOL)a8;
+- (void)frameRect:(CGRect)rect inContext:(CGContext *)context withTotalScale:(double)scale;
+- (void)p_drawFrameIntoRect:(CGRect)rect inContext:(CGContext *)context withImages:(id)images atViewScale:(double)scale isMask:(BOOL)mask;
+- (void)p_drawTiles:(id)tiles inContext:(CGContext *)context rect:(CGRect)rect start:(double)start end:(double)end vertical:(BOOL)vertical;
 @end
 
 @implementation TSDFrameRep
 
-- (TSDFrameRep)initWithTSDFrame:(id)a3
+- (TSDFrameRep)initWithTSDFrame:(id)frame
 {
-  v6 = a3;
-  if (!v6)
+  frameCopy = frame;
+  if (!frameCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSDFrameRep initWithTSDFrame:]");
@@ -35,7 +35,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_frame, a3);
+    objc_storeStrong(&v14->_frame, frame);
     v20 = objc_msgSend_frameSpec(v15->_frame, v16, v17);
     if (!v20)
     {
@@ -174,30 +174,30 @@ LABEL_21:
   [(TSDFrameRep *)&v11 dealloc];
 }
 
-- (void)frameRect:(CGRect)a3 inContext:(CGContext *)a4 withTotalScale:(double)a5
+- (void)frameRect:(CGRect)rect inContext:(CGContext *)context withTotalScale:(double)scale
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (objc_msgSend_p_willRenderForRect_(self, a2, a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (objc_msgSend_p_willRenderForRect_(self, a2, context))
   {
     objc_msgSend_coverageRectWithoutAdornment_(self->_frame, v12, v13, x, y, width, height);
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    CGContextSaveGState(a4);
-    if ((TSDCGContextIsPDFContext(a4) & 1) != 0 || TSDCGContextIsPrintContext(a4))
+    CGContextSaveGState(context);
+    if ((TSDCGContextIsPDFContext(context) & 1) != 0 || TSDCGContextIsPrintContext(context))
     {
-      a5 = 1.0 * a5;
+      scale = 1.0 * scale;
     }
 
     if (self->_images)
     {
-      if (a5 >= 1.0)
+      if (scale >= 1.0)
       {
-        v24 = objc_msgSend_newFrameForMask_size_forCALayer_viewScale_(self, v22, 0, 0, v19, v21, a5);
+        v24 = objc_msgSend_newFrameForMask_size_forCALayer_viewScale_(self, v22, 0, 0, v19, v21, scale);
       }
 
       else
@@ -212,13 +212,13 @@ LABEL_21:
         v39.origin.y = v17;
         v39.size.width = v19;
         v39.size.height = v21;
-        CGContextDrawImage(a4, v39, v24);
+        CGContextDrawImage(context, v39, v24);
         CGImageRelease(v26);
       }
 
       else
       {
-        objc_msgSend_p_drawFrameIntoRect_inContext_withImages_atViewScale_isMask_(self, v25, a4, self->_images, 0, v15, v17, v19, v21, 1.0);
+        objc_msgSend_p_drawFrameIntoRect_inContext_withImages_atViewScale_isMask_(self, v25, context, self->_images, 0, v15, v17, v19, v21, 1.0);
       }
     }
 
@@ -230,39 +230,39 @@ LABEL_21:
       v29 = v40.size.width;
       v30 = v40.size.height;
       MaxY = CGRectGetMaxY(v40);
-      CGContextTranslateCTM(a4, 0.0, MaxY);
-      CGContextScaleCTM(a4, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
       v41.origin.x = v27;
       v41.origin.y = v28;
       v41.size.width = v29;
       v41.size.height = v30;
       MinY = CGRectGetMinY(v41);
-      CGContextTranslateCTM(a4, 0.0, -MinY);
+      CGContextTranslateCTM(context, 0.0, -MinY);
       v33 = [TSDImageRenderingConfiguration alloc];
-      v35 = objc_msgSend_initWithCGContext_(v33, v34, a4);
+      v35 = objc_msgSend_initWithCGContext_(v33, v34, context);
       v37 = objc_msgSend_CGImageForSize_withRenderingConfiguration_(self->_adornment, v36, v35, v29, v30);
       v42.origin.x = v27;
       v42.origin.y = v28;
       v42.size.width = v29;
       v42.size.height = v30;
-      CGContextDrawImage(a4, v42, v37);
+      CGContextDrawImage(context, v42, v37);
     }
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)applyMaskForRectWithCoverage:(CGRect)a3 toContext:(CGContext *)a4
+- (void)applyMaskForRectWithCoverage:(CGRect)coverage toContext:(CGContext *)context
 {
   if (self->_masks)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    if (objc_msgSend_p_shouldRenderForRectWithCoverage_(self, a2, a4))
+    height = coverage.size.height;
+    width = coverage.size.width;
+    y = coverage.origin.y;
+    x = coverage.origin.x;
+    if (objc_msgSend_p_shouldRenderForRectWithCoverage_(self, a2, context))
     {
-      v10 = TSDCGContextAssociatedScreenScale(a4);
+      v10 = TSDCGContextAssociatedScreenScale(context);
       v12 = objc_msgSend_newFrameForMask_size_forCALayer_viewScale_(self, v11, 1, 0, width, height, v10);
       if (v12)
       {
@@ -271,35 +271,35 @@ LABEL_21:
         v16.origin.y = y;
         v16.size.width = width;
         v16.size.height = height;
-        CGContextClipToMask(a4, v16, v12);
+        CGContextClipToMask(context, v16, v12);
 
         CGImageRelease(v14);
       }
 
       else
       {
-        objc_msgSend_p_drawFrameIntoRect_inContext_withImages_atViewScale_isMask_(self, v13, a4, self->_masks, 1, x, y, width, height, 1.0);
+        objc_msgSend_p_drawFrameIntoRect_inContext_withImages_atViewScale_isMask_(self, v13, context, self->_masks, 1, x, y, width, height, 1.0);
         self->_shouldEnableBlendMode = 1;
       }
     }
   }
 }
 
-- (void)blendMaskBeforeRenderingImageInContext:(CGContext *)a3
+- (void)blendMaskBeforeRenderingImageInContext:(CGContext *)context
 {
   if (self->_shouldEnableBlendMode)
   {
     self->_shouldEnableBlendMode = 0;
-    CGContextSetBlendMode(a3, kCGBlendModeSourceIn);
+    CGContextSetBlendMode(context, kCGBlendModeSourceIn);
   }
 }
 
-- (BOOL)p_willRenderForRect:(CGRect)a3
+- (BOOL)p_willRenderForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   shouldRender = objc_msgSend_p_shouldRender(self, a2, v3);
   if (shouldRender)
   {
@@ -311,12 +311,12 @@ LABEL_21:
   return shouldRender;
 }
 
-- (BOOL)p_shouldRenderForRectWithoutCoverage:(CGRect)a3
+- (BOOL)p_shouldRenderForRectWithoutCoverage:(CGRect)coverage
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = coverage.size.height;
+  width = coverage.size.width;
+  y = coverage.origin.y;
+  x = coverage.origin.x;
   result = 0;
   if (objc_msgSend_p_shouldRender(self, a2, v3))
   {
@@ -331,28 +331,28 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)p_shouldRenderForRectWithCoverage:(CGRect)a3
+- (BOOL)p_shouldRenderForRectWithCoverage:(CGRect)coverage
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  return objc_msgSend_p_shouldRender(self, a2, v3, a3.origin.x, a3.origin.y) && (objc_msgSend_shouldRenderForSizeIncludingCoverage_(self->_frame, v7, v8, width, height) & 1) != 0;
+  height = coverage.size.height;
+  width = coverage.size.width;
+  return objc_msgSend_p_shouldRender(self, a2, v3, coverage.origin.x, coverage.origin.y) && (objc_msgSend_shouldRenderForSizeIncludingCoverage_(self->_frame, v7, v8, width, height) & 1) != 0;
 }
 
-- (CGImage)newFrameForMask:(BOOL)a3 size:(CGSize)a4 forCALayer:(BOOL)a5 viewScale:(double)a6
+- (CGImage)newFrameForMask:(BOOL)mask size:(CGSize)size forCALayer:(BOOL)layer viewScale:(double)scale
 {
-  v7 = a5;
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v12 = objc_msgSend_sharedFrameImageCache(TSDFrameImageCache, a2, a3);
-  v15 = objc_msgSend_newCachedImageForFrame_size_viewScale_forCALayer_mask_(v12, v13, self->_frame, v7, v10, width, height, a6);
+  layerCopy = layer;
+  height = size.height;
+  width = size.width;
+  maskCopy = mask;
+  v12 = objc_msgSend_sharedFrameImageCache(TSDFrameImageCache, a2, mask);
+  v15 = objc_msgSend_newCachedImageForFrame_size_viewScale_forCALayer_mask_(v12, v13, self->_frame, layerCopy, maskCopy, width, height, scale);
   if (!v15)
   {
-    v16 = objc_msgSend_p_newRenderedFrameForMask_size_forCALayer_viewScale_(self, v14, v10, v7, width, height, a6);
+    v16 = objc_msgSend_p_newRenderedFrameForMask_size_forCALayer_viewScale_(self, v14, maskCopy, layerCopy, width, height, scale);
     if (v16)
     {
       v18 = v16;
-      v15 = objc_msgSend_setCachedImage_forFrame_size_viewScale_forCALayer_mask_(v12, v17, v16, self->_frame, v7, v10, width, height, a6);
+      v15 = objc_msgSend_setCachedImage_forFrame_size_viewScale_forCALayer_mask_(v12, v17, v16, self->_frame, layerCopy, maskCopy, width, height, scale);
       CGImageRelease(v18);
     }
 
@@ -365,10 +365,10 @@ LABEL_21:
   return v15;
 }
 
-- (CGImage)p_newRenderedFrameForMask:(BOOL)a3 size:(CGSize)a4 forCALayer:(BOOL)a5 viewScale:(double)a6
+- (CGImage)p_newRenderedFrameForMask:(BOOL)mask size:(CGSize)size forCALayer:(BOOL)layer viewScale:(double)scale
 {
-  v7 = a5;
-  v8 = a3;
+  layerCopy = layer;
+  maskCopy = mask;
   TSUMultiplySizeScalar();
   v12 = v11 < 4096.0 && v10 < 4096.0;
   if (!v12 || self->_missingImageProviders)
@@ -381,14 +381,14 @@ LABEL_21:
   TSURound();
   v17 = v16;
   v18 = 16;
-  if (v8)
+  if (maskCopy)
   {
     v18 = 24;
   }
 
   v19 = *(&self->super.isa + v18);
   AlignedBytesPerRow = TSUBitmapGetAlignedBytesPerRow();
-  if (v8)
+  if (maskCopy)
   {
     v21 = TSUDeviceGrayColorSpace();
     Mutable = CFDataCreateMutable(*MEMORY[0x277CBECE8], AlignedBytesPerRow * v17);
@@ -409,13 +409,13 @@ LABEL_21:
   TSDSetCGContextInfo(v25, 0, 0, 0, 0, 1.0);
   if (v25)
   {
-    if (v7)
+    if (layerCopy)
     {
       CGContextTranslateCTM(v25, 0.0, v17);
       CGContextScaleCTM(v25, 1.0, -1.0);
     }
 
-    if (v8)
+    if (maskCopy)
     {
       CGContextSetGrayFillColor(v25, 1.0, 1.0);
       v27 = v15;
@@ -433,14 +433,14 @@ LABEL_21:
       v27 = v15;
     }
 
-    objc_msgSend_p_drawFrameIntoRect_inContext_withImages_atViewScale_isMask_(self, v26, v25, v19, v8, 0.0, 0.0, v27 / a6, v28 / a6, a6);
-    if (v8)
+    objc_msgSend_p_drawFrameIntoRect_inContext_withImages_atViewScale_isMask_(self, v26, v25, v19, maskCopy, 0.0, 0.0, v27 / scale, v28 / scale, scale);
+    if (maskCopy)
     {
       CGContextRelease(v25);
       v29 = CGDataProviderCreateWithCFData(Mutable);
       v13 = CGImageMaskCreate(v15, v17, 8uLL, 8uLL, AlignedBytesPerRow, v29, 0, 1);
       CGDataProviderRelease(v29);
-      if (v7)
+      if (layerCopy)
       {
         v30 = TSDBitmapContextCreate(3, v27, v28);
         v31 = *MEMORY[0x277CBF348];
@@ -483,15 +483,15 @@ LABEL_21:
   return v13;
 }
 
-- (void)p_drawFrameIntoRect:(CGRect)a3 inContext:(CGContext *)a4 withImages:(id)a5 atViewScale:(double)a6 isMask:(BOOL)a7
+- (void)p_drawFrameIntoRect:(CGRect)rect inContext:(CGContext *)context withImages:(id)images atViewScale:(double)scale isMask:(BOOL)mask
 {
-  v7 = a7;
+  maskCopy = mask;
   TSURoundedRect();
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = a5;
+  imagesCopy = images;
   v129.origin.x = v12;
   v129.origin.y = v14;
   v129.size.width = v16;
@@ -553,83 +553,83 @@ LABEL_21:
   }
 
   objc_msgSend_assetScale(self->_frame, v46, v47);
-  v52 = objc_msgSend_objectAtIndex_(v19, v51, 0);
-  objc_msgSend_drawImageInContext_rect_(v52, v53, a4, MinX, v37, v126, v127);
+  v52 = objc_msgSend_objectAtIndex_(imagesCopy, v51, 0);
+  objc_msgSend_drawImageInContext_rect_(v52, v53, context, MinX, v37, v126, v127);
 
   TSURoundedSize();
   v55 = v54;
   v57 = v56;
-  v59 = objc_msgSend_objectAtIndex_(v19, v58, 6);
-  objc_msgSend_drawImageInContext_rect_(v59, v60, a4, MinX, v50, v55, v57);
+  v59 = objc_msgSend_objectAtIndex_(imagesCopy, v58, 6);
+  objc_msgSend_drawImageInContext_rect_(v59, v60, context, MinX, v50, v55, v57);
 
   TSURoundedSize();
   v62 = v61;
   v64 = v63;
-  v66 = objc_msgSend_objectAtIndex_(v19, v65, 2);
-  objc_msgSend_drawImageInContext_rect_(v66, v67, a4, v123, v37, v62, v64);
+  v66 = objc_msgSend_objectAtIndex_(imagesCopy, v65, 2);
+  objc_msgSend_drawImageInContext_rect_(v66, v67, context, v123, v37, v62, v64);
 
   TSURoundedSize();
   v69 = v68;
   v71 = v70;
-  v73 = objc_msgSend_objectAtIndex_(v19, v72, 4);
-  objc_msgSend_drawImageInContext_rect_(v73, v74, a4, v123, v50, v69, v71);
+  v73 = objc_msgSend_objectAtIndex_(imagesCopy, v72, 4);
+  objc_msgSend_drawImageInContext_rect_(v73, v74, context, v123, v50, v69, v71);
 
-  v76 = objc_msgSend_objectAtIndex_(v19, v75, 7);
+  v76 = objc_msgSend_objectAtIndex_(imagesCopy, v75, 7);
   objc_msgSend_dpiAdjustedFillSize(v76, v77, v78);
 
   TSURoundedSize();
   v80 = v79;
   v82 = v81;
-  v84 = objc_msgSend_objectAtIndex_(v19, v83, 7);
-  objc_msgSend_p_drawTiles_inContext_rect_start_end_vertical_(self, v85, v84, a4, 1, MinX, v45, v80, v82, v45, v50);
+  v84 = objc_msgSend_objectAtIndex_(imagesCopy, v83, 7);
+  objc_msgSend_p_drawTiles_inContext_rect_start_end_vertical_(self, v85, v84, context, 1, MinX, v45, v80, v82, v45, v50);
 
-  v87 = objc_msgSend_objectAtIndex_(v19, v86, 3);
+  v87 = objc_msgSend_objectAtIndex_(imagesCopy, v86, 3);
   objc_msgSend_dpiAdjustedFillSize(v87, v88, v89);
 
   TSURoundedSize();
   v91 = v90;
   v93 = v92;
-  v95 = objc_msgSend_objectAtIndex_(v19, v94, 3);
-  objc_msgSend_p_drawTiles_inContext_rect_start_end_vertical_(self, v96, v95, a4, 1, v123, v45, v91, v93, v45, v50);
+  v95 = objc_msgSend_objectAtIndex_(imagesCopy, v94, 3);
+  objc_msgSend_p_drawTiles_inContext_rect_start_end_vertical_(self, v96, v95, context, 1, v123, v45, v91, v93, v45, v50);
 
-  v98 = objc_msgSend_objectAtIndex_(v19, v97, 1);
+  v98 = objc_msgSend_objectAtIndex_(imagesCopy, v97, 1);
   objc_msgSend_dpiAdjustedFillSize(v98, v99, v100);
 
   TSURoundedSize();
   v102 = v101;
   v104 = v103;
-  v106 = objc_msgSend_objectAtIndex_(v19, v105, 1);
-  objc_msgSend_p_drawTiles_inContext_rect_start_end_vertical_(self, v107, v106, a4, 0, v124, v37, v102, v104, v124, v123);
+  v106 = objc_msgSend_objectAtIndex_(imagesCopy, v105, 1);
+  objc_msgSend_p_drawTiles_inContext_rect_start_end_vertical_(self, v107, v106, context, 0, v124, v37, v102, v104, v124, v123);
 
-  v109 = objc_msgSend_objectAtIndex_(v19, v108, 5);
+  v109 = objc_msgSend_objectAtIndex_(imagesCopy, v108, 5);
   objc_msgSend_dpiAdjustedFillSize(v109, v110, v111);
 
   TSURoundedSize();
   v113 = v112;
   v115 = v114;
-  v117 = objc_msgSend_objectAtIndex_(v19, v116, 5);
+  v117 = objc_msgSend_objectAtIndex_(imagesCopy, v116, 5);
 
-  objc_msgSend_p_drawTiles_inContext_rect_start_end_vertical_(self, v118, v117, a4, 0, v124, v50, v113, v115, v124, v123);
-  if (v7)
+  objc_msgSend_p_drawTiles_inContext_rect_start_end_vertical_(self, v118, v117, context, 0, v124, v50, v113, v115, v124, v123);
+  if (maskCopy)
   {
-    CGContextSetGrayFillColor(a4, 0.0, 1.0);
+    CGContextSetGrayFillColor(context, 0.0, 1.0);
     v121 = v124;
     v122 = v45;
 
     v119 = v123 - v124;
     v120 = v50 - v45;
-    CGContextFillRect(a4, *&v121);
+    CGContextFillRect(context, *&v121);
   }
 }
 
-- (void)p_drawTiles:(id)a3 inContext:(CGContext *)a4 rect:(CGRect)a5 start:(double)a6 end:(double)a7 vertical:(BOOL)a8
+- (void)p_drawTiles:(id)tiles inContext:(CGContext *)context rect:(CGRect)rect start:(double)start end:(double)end vertical:(BOOL)vertical
 {
-  v8 = a8;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v49 = a3;
+  verticalCopy = vertical;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  tilesCopy = tiles;
   v51.origin.x = x;
   v51.origin.y = y;
   v51.size.width = width;
@@ -641,20 +641,20 @@ LABEL_21:
   v20 = v52.size.height;
   if (!CGRectIsEmpty(v52))
   {
-    v23 = a7 - a6;
-    if (v8)
+    v23 = end - start;
+    if (verticalCopy)
     {
       v24 = v19;
     }
 
     else
     {
-      v24 = a7 - a6;
+      v24 = end - start;
     }
 
-    if (v8)
+    if (verticalCopy)
     {
-      v25 = a7 - a6;
+      v25 = end - start;
     }
 
     else
@@ -667,12 +667,12 @@ LABEL_21:
 
     if (v29 == 2)
     {
-      objc_msgSend_drawImageInContext_rect_(v49, v30, a4, MaxX, MaxY, v24, v25);
+      objc_msgSend_drawImageInContext_rect_(tilesCopy, v30, context, MaxX, MaxY, v24, v25);
     }
 
     else
     {
-      if (v8)
+      if (verticalCopy)
       {
         v32 = v20;
       }
@@ -694,17 +694,17 @@ LABEL_21:
           v39 = v23 / v34;
           do
           {
-            a6 = v39 + a6;
+            start = v39 + start;
             TSURound();
             v41 = v40;
             v42 = MaxX;
             v43 = MaxY;
             v44 = v19;
             v45 = v20;
-            if (v8)
+            if (verticalCopy)
             {
               v20 = v41 - CGRectGetMinY(*&v42);
-              objc_msgSend_drawImageInContext_rect_(v49, v46, a4, MaxX, MaxY, v19, v20);
+              objc_msgSend_drawImageInContext_rect_(tilesCopy, v46, context, MaxX, MaxY, v19, v20);
               v53.origin.x = MaxX;
               v53.origin.y = MaxY;
               v53.size.width = v19;
@@ -715,7 +715,7 @@ LABEL_21:
             else
             {
               v19 = v41 - CGRectGetMinX(*&v42);
-              objc_msgSend_drawImageInContext_rect_(v49, v47, a4, MaxX, MaxY, v19, v20);
+              objc_msgSend_drawImageInContext_rect_(tilesCopy, v47, context, MaxX, MaxY, v19, v20);
               v54.origin.x = MaxX;
               v54.origin.y = MaxY;
               v54.size.width = v19;
@@ -732,14 +732,14 @@ LABEL_21:
 
       else
       {
-        CGContextSaveGState(a4);
+        CGContextSaveGState(context);
         CGContextClipToRectSafe();
         if (v34 >= 1)
         {
           do
           {
-            objc_msgSend_drawImageInContext_rect_(v49, v48, a4, MaxX, MaxY, v19, v20);
-            if (v8)
+            objc_msgSend_drawImageInContext_rect_(tilesCopy, v48, context, MaxX, MaxY, v19, v20);
+            if (verticalCopy)
             {
               MaxY = v20 + MaxY;
             }
@@ -755,7 +755,7 @@ LABEL_21:
           while (v34);
         }
 
-        CGContextRestoreGState(a4);
+        CGContextRestoreGState(context);
       }
     }
   }

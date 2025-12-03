@@ -1,9 +1,9 @@
 @interface BBSectionInfo
-+ (id)defaultSectionInfoForSection:(id)a3;
-+ (id)defaultSectionInfoForType:(int64_t)a3;
++ (id)defaultSectionInfoForSection:(id)section;
++ (id)defaultSectionInfoForType:(int64_t)type;
 - (BBMuteAssertion)muteAssertion;
-- (BBSectionInfo)initWithCoder:(id)a3;
-- (BBSectionInfo)initWithDefaultsForSectionType:(int64_t)a3;
+- (BBSectionInfo)initWithCoder:(id)coder;
+- (BBSectionInfo)initWithDefaultsForSectionType:(int64_t)type;
 - (BBSectionInfo)parentSection;
 - (BBSectionInfoSettings)readableSettings;
 - (BBSectionInfoSettings)writableSettings;
@@ -12,9 +12,9 @@
 - (BOOL)hasEnabledSettings;
 - (BOOL)hasUserConfiguredDirectMessagesSetting;
 - (BOOL)hasUserConfiguredTimeSensitiveSetting;
-- (BOOL)isBulletinMutedForThreadIdentifier:(id)a3;
+- (BOOL)isBulletinMutedForThreadIdentifier:(id)identifier;
 - (BOOL)isDeliveredQuietly;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)showsCustomSettingsLink;
 - (BOOL)showsInLockScreen;
 - (BOOL)showsInNotificationCenter;
@@ -24,13 +24,13 @@
 - (NSDate)authorizationExpirationDate;
 - (NSDate)lastUserGrantedAuthorizationDate;
 - (NSDictionary)stateCapture;
-- (id)_subsectionForID:(id)a3;
-- (id)_suppressedSettingsList:(unint64_t)a3;
+- (id)_subsectionForID:(id)d;
+- (id)_suppressedSettingsList:(unint64_t)list;
 - (id)copyFromManagedSettings;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)effectiveSectionInfoWithDefaultContentPreviewSetting:(int64_t)a3 globalAnnounceSetting:(int64_t)a4 globalScheduledDeliverySetting:(int64_t)a5 globalSummarizationSetting:(int64_t)a6 globalPrioritizationSetting:(int64_t)a7 hasPairedVehiclesForCarPlay:(BOOL)a8 hasDestinationForRemoteNotifications:(BOOL)a9;
-- (id)effectiveSectionInfoWithFactoryInfo:(id)a3 defaultContentPreviewSetting:(int64_t)a4 globalAnnounceSetting:(int64_t)a5 globalScheduledDeliverySetting:(int64_t)a6 globalSummarizationSetting:(int64_t)a7 globalPrioritizationSetting:(int64_t)a8 hasPairedVehiclesForCarPlay:(BOOL)a9 hasDestinationForRemoteNotifications:(BOOL)a10;
+- (id)effectiveSectionInfoWithDefaultContentPreviewSetting:(int64_t)setting globalAnnounceSetting:(int64_t)announceSetting globalScheduledDeliverySetting:(int64_t)deliverySetting globalSummarizationSetting:(int64_t)summarizationSetting globalPrioritizationSetting:(int64_t)prioritizationSetting hasPairedVehiclesForCarPlay:(BOOL)play hasDestinationForRemoteNotifications:(BOOL)notifications;
+- (id)effectiveSectionInfoWithFactoryInfo:(id)info defaultContentPreviewSetting:(int64_t)setting globalAnnounceSetting:(int64_t)announceSetting globalScheduledDeliverySetting:(int64_t)deliverySetting globalSummarizationSetting:(int64_t)summarizationSetting globalPrioritizationSetting:(int64_t)prioritizationSetting hasPairedVehiclesForCarPlay:(BOOL)play hasDestinationForRemoteNotifications:(BOOL)self0;
 - (int64_t)announceSetting;
 - (int64_t)authorizationStatus;
 - (int64_t)bulletinGroupingSetting;
@@ -49,43 +49,43 @@
 - (unint64_t)alertType;
 - (unint64_t)hash;
 - (unint64_t)pushSettings;
-- (void)_addSubsection:(id)a3;
-- (void)_associateDataProviderSectionInfo:(id)a3;
-- (void)_configureWithDefaultsForSectionType:(int64_t)a3;
-- (void)_deliverQuietly:(BOOL)a3;
-- (void)_dissociateDataProviderSectionInfo:(id)a3;
-- (void)_replaceSubsection:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addSubsection:(id)subsection;
+- (void)_associateDataProviderSectionInfo:(id)info;
+- (void)_configureWithDefaultsForSectionType:(int64_t)type;
+- (void)_deliverQuietly:(BOOL)quietly;
+- (void)_dissociateDataProviderSectionInfo:(id)info;
+- (void)_replaceSubsection:(id)subsection;
+- (void)encodeWithCoder:(id)coder;
 - (void)makeAuthorizationPermanent;
-- (void)muteSectionUntilDate:(id)a3;
-- (void)muteThreadIdentifier:(id)a3 untilDate:(id)a4;
+- (void)muteSectionUntilDate:(id)date;
+- (void)muteThreadIdentifier:(id)identifier untilDate:(id)date;
 - (void)queryAndUseManagedSettings;
-- (void)queryAndUseManagedSettingsForSectionID:(id)a3;
-- (void)setAlertType:(unint64_t)a3;
-- (void)setAnnounceSetting:(int64_t)a3;
-- (void)setAuthorizationExpirationDate:(id)a3;
-- (void)setAuthorizationStatus:(int64_t)a3;
-- (void)setBulletinGroupingSetting:(int64_t)a3;
-- (void)setCarPlaySetting:(int64_t)a3;
-- (void)setContentPreviewSetting:(int64_t)a3;
-- (void)setCriticalAlertSetting:(int64_t)a3;
-- (void)setDirectMessagesSetting:(int64_t)a3;
-- (void)setLastUserGrantedAuthorizationDate:(id)a3;
-- (void)setLockScreenSetting:(int64_t)a3;
-- (void)setManagedSectionInfoSettings:(id)a3;
-- (void)setMuteAssertion:(id)a3;
-- (void)setNotificationCenterSetting:(int64_t)a3;
-- (void)setParentSection:(id)a3;
-- (void)setPrioritizationSetting:(int64_t)a3;
-- (void)setPushSettings:(unint64_t)a3;
-- (void)setRemoteNotificationsSetting:(int64_t)a3;
-- (void)setScheduledDeliverySetting:(int64_t)a3;
-- (void)setSpokenNotificationSetting:(int64_t)a3;
-- (void)setSummarizationSetting:(int64_t)a3;
-- (void)setTimeSensitiveSetting:(int64_t)a3;
+- (void)queryAndUseManagedSettingsForSectionID:(id)d;
+- (void)setAlertType:(unint64_t)type;
+- (void)setAnnounceSetting:(int64_t)setting;
+- (void)setAuthorizationExpirationDate:(id)date;
+- (void)setAuthorizationStatus:(int64_t)status;
+- (void)setBulletinGroupingSetting:(int64_t)setting;
+- (void)setCarPlaySetting:(int64_t)setting;
+- (void)setContentPreviewSetting:(int64_t)setting;
+- (void)setCriticalAlertSetting:(int64_t)setting;
+- (void)setDirectMessagesSetting:(int64_t)setting;
+- (void)setLastUserGrantedAuthorizationDate:(id)date;
+- (void)setLockScreenSetting:(int64_t)setting;
+- (void)setManagedSectionInfoSettings:(id)settings;
+- (void)setMuteAssertion:(id)assertion;
+- (void)setNotificationCenterSetting:(int64_t)setting;
+- (void)setParentSection:(id)section;
+- (void)setPrioritizationSetting:(int64_t)setting;
+- (void)setPushSettings:(unint64_t)settings;
+- (void)setRemoteNotificationsSetting:(int64_t)setting;
+- (void)setScheduledDeliverySetting:(int64_t)setting;
+- (void)setSpokenNotificationSetting:(int64_t)setting;
+- (void)setSummarizationSetting:(int64_t)setting;
+- (void)setTimeSensitiveSetting:(int64_t)setting;
 - (void)unmuteSection;
-- (void)unmuteThreadIdentifier:(id)a3;
-- (void)updateWithDefaultSectionInfo:(id)a3;
+- (void)unmuteThreadIdentifier:(id)identifier;
+- (void)updateWithDefaultSectionInfo:(id)info;
 @end
 
 @implementation BBSectionInfo
@@ -95,8 +95,8 @@
   v2 = [(BBSectionInfo *)self copy];
   if ([v2 usesManagedSettings])
   {
-    v3 = [v2 managedSectionInfoSettings];
-    [v2 setSectionInfoSettings:v3];
+    managedSectionInfoSettings = [v2 managedSectionInfoSettings];
+    [v2 setSectionInfoSettings:managedSectionInfoSettings];
 
     [v2 setManagedSectionInfoSettings:0];
   }
@@ -117,10 +117,10 @@
 
 - (BOOL)allowsNotifications
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 allowsNotifications];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  allowsNotifications = [readableSettings allowsNotifications];
 
-  return v3;
+  return allowsNotifications;
 }
 
 - (BBSectionInfo)parentSection
@@ -145,217 +145,217 @@
 
 - (BOOL)showsOnExternalDevices
 {
-  v2 = [(BBSectionInfo *)self sectionInfoSettings];
-  v3 = [v2 showsOnExternalDevices];
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  showsOnExternalDevices = [sectionInfoSettings showsOnExternalDevices];
 
-  return v3;
+  return showsOnExternalDevices;
 }
 
 - (unint64_t)alertType
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 alertType];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  alertType = [readableSettings alertType];
 
-  return v3;
+  return alertType;
 }
 
 - (unint64_t)pushSettings
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 pushSettings];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  pushSettings = [readableSettings pushSettings];
 
-  return v3;
+  return pushSettings;
 }
 
 - (int64_t)authorizationStatus
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 authorizationStatus];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  authorizationStatus = [readableSettings authorizationStatus];
 
-  return v3;
+  return authorizationStatus;
 }
 
 - (int64_t)contentPreviewSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 contentPreviewSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  contentPreviewSetting = [readableSettings contentPreviewSetting];
 
-  return v3;
+  return contentPreviewSetting;
 }
 
 - (int64_t)bulletinGroupingSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 bulletinGroupingSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  bulletinGroupingSetting = [readableSettings bulletinGroupingSetting];
 
-  return v3;
+  return bulletinGroupingSetting;
 }
 
 - (int64_t)notificationCenterSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 notificationCenterSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  notificationCenterSetting = [readableSettings notificationCenterSetting];
 
-  return v3;
+  return notificationCenterSetting;
 }
 
 - (int64_t)lockScreenSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 lockScreenSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  lockScreenSetting = [readableSettings lockScreenSetting];
 
-  return v3;
+  return lockScreenSetting;
 }
 
 - (int64_t)carPlaySetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 carPlaySetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  carPlaySetting = [readableSettings carPlaySetting];
 
-  return v3;
+  return carPlaySetting;
 }
 
 - (int64_t)remoteNotificationsSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 remoteNotificationsSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  remoteNotificationsSetting = [readableSettings remoteNotificationsSetting];
 
-  return v3;
+  return remoteNotificationsSetting;
 }
 
 - (int64_t)announceSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 announceSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  announceSetting = [readableSettings announceSetting];
 
-  return v3;
+  return announceSetting;
 }
 
 - (int64_t)criticalAlertSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 criticalAlertSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  criticalAlertSetting = [readableSettings criticalAlertSetting];
 
-  return v3;
+  return criticalAlertSetting;
 }
 
 - (int64_t)timeSensitiveSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 timeSensitiveSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  timeSensitiveSetting = [readableSettings timeSensitiveSetting];
 
-  return v3;
+  return timeSensitiveSetting;
 }
 
 - (int64_t)scheduledDeliverySetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 scheduledDeliverySetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  scheduledDeliverySetting = [readableSettings scheduledDeliverySetting];
 
-  return v3;
+  return scheduledDeliverySetting;
 }
 
 - (int64_t)directMessagesSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 directMessagesSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  directMessagesSetting = [readableSettings directMessagesSetting];
 
-  return v3;
+  return directMessagesSetting;
 }
 
 - (int64_t)summarizationSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 summarizationSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  summarizationSetting = [readableSettings summarizationSetting];
 
-  return v3;
+  return summarizationSetting;
 }
 
 - (int64_t)prioritizationSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 prioritizationSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  prioritizationSetting = [readableSettings prioritizationSetting];
 
-  return v3;
+  return prioritizationSetting;
 }
 
 - (BOOL)showsCustomSettingsLink
 {
-  v2 = [(BBSectionInfo *)self sectionInfoSettings];
-  v3 = [v2 showsCustomSettingsLink];
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  showsCustomSettingsLink = [sectionInfoSettings showsCustomSettingsLink];
 
-  return v3;
+  return showsCustomSettingsLink;
 }
 
 - (BOOL)hasEnabledSettings
 {
   if ([(BBSectionInfo *)self allowsNotifications])
   {
-    v3 = [(BBSectionInfo *)self pushSettings];
-    if ((v3 & 0x18) != 0 || (v3 & 0x20) != 0 && [(BBSectionInfo *)self alertType]|| [(BBSectionInfo *)self lockScreenSetting]== 2 || [(BBSectionInfo *)self notificationCenterSetting]== 2 || [(BBSectionInfo *)self carPlaySetting]== 2 || [(BBSectionInfo *)self remoteNotificationsSetting]== 2 || [(BBSectionInfo *)self criticalAlertSetting]== 2)
+    pushSettings = [(BBSectionInfo *)self pushSettings];
+    if ((pushSettings & 0x18) != 0 || (pushSettings & 0x20) != 0 && [(BBSectionInfo *)self alertType]|| [(BBSectionInfo *)self lockScreenSetting]== 2 || [(BBSectionInfo *)self notificationCenterSetting]== 2 || [(BBSectionInfo *)self carPlaySetting]== 2 || [(BBSectionInfo *)self remoteNotificationsSetting]== 2 || [(BBSectionInfo *)self criticalAlertSetting]== 2)
     {
       return 1;
     }
 
-    v4 = [(BBSectionInfo *)self scheduledDeliverySetting];
+    scheduledDeliverySetting = [(BBSectionInfo *)self scheduledDeliverySetting];
   }
 
   else
   {
-    v4 = [(BBSectionInfo *)self criticalAlertSetting];
+    scheduledDeliverySetting = [(BBSectionInfo *)self criticalAlertSetting];
   }
 
-  return v4 == 2;
+  return scheduledDeliverySetting == 2;
 }
 
 - (int64_t)spokenNotificationSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 spokenNotificationSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  spokenNotificationSetting = [readableSettings spokenNotificationSetting];
 
-  return v3;
+  return spokenNotificationSetting;
 }
 
 - (BBMuteAssertion)muteAssertion
 {
-  v2 = [(BBSectionInfo *)self sectionInfoSettings];
-  v3 = [v2 muteAssertion];
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  muteAssertion = [sectionInfoSettings muteAssertion];
 
-  return v3;
+  return muteAssertion;
 }
 
-+ (id)defaultSectionInfoForType:(int64_t)a3
++ (id)defaultSectionInfoForType:(int64_t)type
 {
-  v3 = [[BBSectionInfo alloc] initWithDefaultsForSectionType:a3];
+  v3 = [[BBSectionInfo alloc] initWithDefaultsForSectionType:type];
 
   return v3;
 }
 
-- (BBSectionInfo)initWithDefaultsForSectionType:(int64_t)a3
+- (BBSectionInfo)initWithDefaultsForSectionType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = BBSectionInfo;
   v4 = [(BBSectionInfo *)&v8 init];
   if (v4)
   {
-    v5 = [[BBSectionInfoSettings alloc] initWithDefaultsForSectionType:a3];
+    v5 = [[BBSectionInfoSettings alloc] initWithDefaultsForSectionType:type];
     sectionInfoSettings = v4->_sectionInfoSettings;
     v4->_sectionInfoSettings = v5;
 
-    [(BBSectionInfo *)v4 _configureWithDefaultsForSectionType:a3];
+    [(BBSectionInfo *)v4 _configureWithDefaultsForSectionType:type];
   }
 
   return v4;
 }
 
-- (void)_configureWithDefaultsForSectionType:(int64_t)a3
+- (void)_configureWithDefaultsForSectionType:(int64_t)type
 {
   [(BBSectionInfo *)self setSectionType:?];
   [(BBSectionInfo *)self setSuppressedSettings:0];
-  if ((a3 | 2) == 2)
+  if ((type | 2) == 2)
   {
     [(BBSectionInfo *)self setBulletinCount:5];
-    if (a3 == 2)
+    if (type == 2)
     {
 
       [(BBSectionInfo *)self setSuppressedSettings:8];
@@ -363,11 +363,11 @@
   }
 }
 
-- (void)_addSubsection:(id)a3
+- (void)_addSubsection:(id)subsection
 {
-  v10 = a3;
-  v5 = [(BBSectionInfo *)self parentSection];
-  if (v5)
+  subsectionCopy = subsection;
+  parentSection = [(BBSectionInfo *)self parentSection];
+  if (parentSection)
   {
   }
 
@@ -378,37 +378,37 @@
 
   [(BBSectionInfo *)a2 _addSubsection:?];
 LABEL_3:
-  v6 = v10;
-  if (v10)
+  v6 = subsectionCopy;
+  if (subsectionCopy)
   {
-    [v10 setParentSection:self];
+    [subsectionCopy setParentSection:self];
     v7 = MEMORY[0x277CBEB18];
-    v8 = [(BBSectionInfo *)self subsections];
-    v9 = [v7 arrayWithArray:v8];
+    subsections = [(BBSectionInfo *)self subsections];
+    v9 = [v7 arrayWithArray:subsections];
 
-    [v9 addObject:v10];
+    [v9 addObject:subsectionCopy];
     [(BBSectionInfo *)self setSubsections:v9];
 
-    v6 = v10;
+    v6 = subsectionCopy;
   }
 }
 
-- (void)_replaceSubsection:(id)a3
+- (void)_replaceSubsection:(id)subsection
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v18 = self;
-  v5 = [(BBSectionInfo *)self subsections];
-  v6 = [v4 subsectionID];
-  if ([v5 count] && v6)
+  subsectionCopy = subsection;
+  selfCopy = self;
+  subsections = [(BBSectionInfo *)self subsections];
+  subsectionID = [subsectionCopy subsectionID];
+  if ([subsections count] && subsectionID)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v17 = v5;
-    v8 = v5;
+    v17 = subsections;
+    v8 = subsections;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -424,17 +424,17 @@ LABEL_3:
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 subsectionID];
-          v15 = [v14 isEqualToString:v6];
+          subsectionID2 = [v13 subsectionID];
+          v15 = [subsectionID2 isEqualToString:subsectionID];
 
           if (v15)
           {
             [v13 setParentSection:0];
-            [v4 setParentSection:v18];
-            v13 = v4;
+            [subsectionCopy setParentSection:selfCopy];
+            v13 = subsectionCopy;
           }
 
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -443,23 +443,23 @@ LABEL_3:
       while (v10);
     }
 
-    [(BBSectionInfo *)v18 setSubsections:v7];
-    v5 = v17;
+    [(BBSectionInfo *)selfCopy setSubsections:array];
+    subsections = v17;
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_subsectionForID:(id)a3
+- (id)_subsectionForID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(BBSectionInfo *)self subsections];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subsections = [(BBSectionInfo *)self subsections];
+  v6 = [subsections countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -469,12 +469,12 @@ LABEL_3:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subsections);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 subsectionID];
-        v11 = [v10 isEqualToString:v4];
+        subsectionID = [v9 subsectionID];
+        v11 = [subsectionID isEqualToString:dCopy];
 
         if (v11)
         {
@@ -483,7 +483,7 @@ LABEL_3:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [subsections countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -500,57 +500,57 @@ LABEL_11:
   return v6;
 }
 
-- (void)_associateDataProviderSectionInfo:(id)a3
+- (void)_associateDataProviderSectionInfo:(id)info
 {
-  v4 = a3;
-  v8 = [v4 sectionID];
-  v5 = [(BBSectionInfo *)self dataProviderIDs];
-  if (v8 && ([v5 containsObject:v8] & 1) == 0)
+  infoCopy = info;
+  sectionID = [infoCopy sectionID];
+  dataProviderIDs = [(BBSectionInfo *)self dataProviderIDs];
+  if (sectionID && ([dataProviderIDs containsObject:sectionID] & 1) == 0)
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithArray:v5];
-    [v6 addObject:v8];
+    v6 = [MEMORY[0x277CBEB18] arrayWithArray:dataProviderIDs];
+    [v6 addObject:sectionID];
     [(BBSectionInfo *)self setDataProviderIDs:v6];
   }
 
-  v7 = [(BBSectionInfo *)self sectionID];
-  [v4 setFactorySectionID:v7];
+  sectionID2 = [(BBSectionInfo *)self sectionID];
+  [infoCopy setFactorySectionID:sectionID2];
 }
 
-- (void)_dissociateDataProviderSectionInfo:(id)a3
+- (void)_dissociateDataProviderSectionInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v12 = v4;
-    v5 = [v4 factorySectionID];
-    v6 = [(BBSectionInfo *)self sectionID];
-    v7 = [v5 isEqualToString:v6];
+    v12 = infoCopy;
+    factorySectionID = [infoCopy factorySectionID];
+    sectionID = [(BBSectionInfo *)self sectionID];
+    v7 = [factorySectionID isEqualToString:sectionID];
 
-    v4 = v12;
+    infoCopy = v12;
     if (v7)
     {
       v8 = MEMORY[0x277CBEB18];
-      v9 = [(BBSectionInfo *)self dataProviderIDs];
-      v10 = [v8 arrayWithArray:v9];
+      dataProviderIDs = [(BBSectionInfo *)self dataProviderIDs];
+      v10 = [v8 arrayWithArray:dataProviderIDs];
 
-      v11 = [v12 sectionID];
-      [v10 removeObject:v11];
+      sectionID2 = [v12 sectionID];
+      [v10 removeObject:sectionID2];
 
       [(BBSectionInfo *)self setDataProviderIDs:v10];
       [v12 setFactorySectionID:0];
 
-      v4 = v12;
+      infoCopy = v12;
     }
   }
 }
 
-- (void)setParentSection:(id)a3
+- (void)setParentSection:(id)section
 {
-  v6 = a3;
-  v4 = objc_storeWeak(&self->_parentSection, v6);
-  v5 = [v6 managedSectionInfoSettings];
+  sectionCopy = section;
+  v4 = objc_storeWeak(&self->_parentSection, sectionCopy);
+  managedSectionInfoSettings = [sectionCopy managedSectionInfoSettings];
 
-  [(BBSectionInfo *)self setManagedSectionInfoSettings:v5];
+  [(BBSectionInfo *)self setManagedSectionInfoSettings:managedSectionInfoSettings];
 }
 
 - (BOOL)_isDeliveredQuietly
@@ -565,8 +565,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(BBSectionInfo *)self pushSettings];
-  if ((v3 & 0x18) != 0 || (v3 & 0x20) != 0 && [(BBSectionInfo *)self alertType])
+  pushSettings = [(BBSectionInfo *)self pushSettings];
+  if ((pushSettings & 0x18) != 0 || (pushSettings & 0x20) != 0 && [(BBSectionInfo *)self alertType])
   {
     return 0;
   }
@@ -576,16 +576,16 @@ LABEL_11:
     return 0;
   }
 
-  v6 = [MEMORY[0x277D71F78] sharedToneManager];
-  v7 = [v6 bb_isToneEnabledForSectionInfo:self];
+  mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+  v7 = [mEMORY[0x277D71F78] bb_isToneEnabledForSectionInfo:self];
 
   if (v7)
   {
     return 0;
   }
 
-  v8 = [MEMORY[0x277D71F88] sharedVibrationManager];
-  v9 = [v8 bb_isVibrationEnabledForSectionInfo:self];
+  mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+  v9 = [mEMORY[0x277D71F88] bb_isVibrationEnabledForSectionInfo:self];
 
   if (v9)
   {
@@ -634,26 +634,26 @@ LABEL_13:
 - (BOOL)isDeliveredQuietly
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(BBSectionInfo *)self subsections];
-  v4 = [v3 count];
+  subsections = [(BBSectionInfo *)self subsections];
+  v4 = [subsections count];
 
   if (v4)
   {
-    v5 = [(BBSectionInfo *)self allowsNotifications];
-    if (v5)
+    allowsNotifications = [(BBSectionInfo *)self allowsNotifications];
+    if (allowsNotifications)
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v6 = [(BBSectionInfo *)self subsections];
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      subsections2 = [(BBSectionInfo *)self subsections];
+      v7 = [subsections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (!v7)
       {
 LABEL_18:
 
 LABEL_19:
-        LOBYTE(v5) = 0;
+        LOBYTE(allowsNotifications) = 0;
         goto LABEL_20;
       }
 
@@ -666,7 +666,7 @@ LABEL_19:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subsections2);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
@@ -681,7 +681,7 @@ LABEL_19:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [subsections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -697,26 +697,26 @@ LABEL_19:
 
   else
   {
-    v5 = [(BBSectionInfo *)self _isDeliveredQuietly];
-    if (v5)
+    allowsNotifications = [(BBSectionInfo *)self _isDeliveredQuietly];
+    if (allowsNotifications)
     {
 LABEL_17:
-      LOBYTE(v5) = 1;
+      LOBYTE(allowsNotifications) = 1;
     }
   }
 
 LABEL_20:
   v13 = *MEMORY[0x277D85DE8];
-  return v5;
+  return allowsNotifications;
 }
 
-- (void)_deliverQuietly:(BOOL)a3
+- (void)_deliverQuietly:(BOOL)quietly
 {
-  v3 = a3;
-  v5 = [(BBSectionInfo *)self pushSettings];
-  if (v3)
+  quietlyCopy = quietly;
+  pushSettings = [(BBSectionInfo *)self pushSettings];
+  if (quietlyCopy)
   {
-    [(BBSectionInfo *)self setPushSettings:v5 & 0xFFFFFFFFFFFFFFC7];
+    [(BBSectionInfo *)self setPushSettings:pushSettings & 0xFFFFFFFFFFFFFFC7];
     [(BBSectionInfo *)self setAlertType:0];
     if ([(BBSectionInfo *)self lockScreenSetting])
     {
@@ -742,7 +742,7 @@ LABEL_20:
 
   else
   {
-    [(BBSectionInfo *)self setPushSettings:(8 * (v5 & 7)) | v5];
+    [(BBSectionInfo *)self setPushSettings:(8 * (pushSettings & 7)) | pushSettings];
     [(BBSectionInfo *)self setAlertType:1];
     if ([(BBSectionInfo *)self lockScreenSetting])
     {
@@ -787,54 +787,54 @@ LABEL_20:
   }
 }
 
-- (void)muteSectionUntilDate:(id)a3
+- (void)muteSectionUntilDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(BBSectionInfo *)self _isDeliveredQuietly])
   {
-    v4 = [(BBSectionInfo *)self sectionInfoSettings];
-    [v4 muteSectionUntilDate:v5];
+    sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+    [sectionInfoSettings muteSectionUntilDate:dateCopy];
   }
 }
 
 - (void)unmuteSection
 {
-  v2 = [(BBSectionInfo *)self sectionInfoSettings];
-  [v2 unmuteSection];
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  [sectionInfoSettings unmuteSection];
 }
 
-- (void)muteThreadIdentifier:(id)a3 untilDate:(id)a4
+- (void)muteThreadIdentifier:(id)identifier untilDate:(id)date
 {
-  v8 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   if (![(BBSectionInfo *)self _isDeliveredQuietly])
   {
-    v7 = [(BBSectionInfo *)self sectionInfoSettings];
-    [v7 muteThreadIdentifier:v8 untilDate:v6];
+    sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+    [sectionInfoSettings muteThreadIdentifier:identifierCopy untilDate:dateCopy];
   }
 }
 
-- (void)unmuteThreadIdentifier:(id)a3
+- (void)unmuteThreadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BBSectionInfo *)self sectionInfoSettings];
-  [v5 unmuteThreadIdentifier:v4];
+  identifierCopy = identifier;
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  [sectionInfoSettings unmuteThreadIdentifier:identifierCopy];
 }
 
-- (BOOL)isBulletinMutedForThreadIdentifier:(id)a3
+- (BOOL)isBulletinMutedForThreadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BBSectionInfo *)self sectionInfoSettings];
-  v6 = [v5 isBulletinMutedForThreadIdentifier:v4];
+  identifierCopy = identifier;
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  v6 = [sectionInfoSettings isBulletinMutedForThreadIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)_suppressedSettingsList:(unint64_t)a3
+- (id)_suppressedSettingsList:(unint64_t)list
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = v4;
-  if (a3 == -1)
+  if (list == -1)
   {
     v6 = @"All";
 LABEL_38:
@@ -842,13 +842,13 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (a3)
+  if (list)
   {
     [v4 addObject:@"ShowsInNotificationCenter"];
-    if ((a3 & 2) == 0)
+    if ((list & 2) == 0)
     {
 LABEL_4:
-      if ((a3 & 4) == 0)
+      if ((list & 4) == 0)
       {
         goto LABEL_5;
       }
@@ -857,16 +857,16 @@ LABEL_4:
     }
   }
 
-  else if ((a3 & 2) == 0)
+  else if ((list & 2) == 0)
   {
     goto LABEL_4;
   }
 
   [v5 addObject:@"ShowsInLockScreen"];
-  if ((a3 & 4) == 0)
+  if ((list & 4) == 0)
   {
 LABEL_5:
-    if ((a3 & 8) == 0)
+    if ((list & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -876,10 +876,10 @@ LABEL_5:
 
 LABEL_23:
   [v5 addObject:@"ShowsOnExternalDevices"];
-  if ((a3 & 8) == 0)
+  if ((list & 8) == 0)
   {
 LABEL_6:
-    if ((a3 & 0x10) == 0)
+    if ((list & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -889,10 +889,10 @@ LABEL_6:
 
 LABEL_24:
   [v5 addObject:@"NotificationCenterLimit"];
-  if ((a3 & 0x10) == 0)
+  if ((list & 0x10) == 0)
   {
 LABEL_7:
-    if ((a3 & 0x20) == 0)
+    if ((list & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -902,10 +902,10 @@ LABEL_7:
 
 LABEL_25:
   [v5 addObject:@"PushSettings"];
-  if ((a3 & 0x20) == 0)
+  if ((list & 0x20) == 0)
   {
 LABEL_8:
-    if ((a3 & 0x40) == 0)
+    if ((list & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -915,10 +915,10 @@ LABEL_8:
 
 LABEL_26:
   [v5 addObject:@"AlertType"];
-  if ((a3 & 0x40) == 0)
+  if ((list & 0x40) == 0)
   {
 LABEL_9:
-    if ((a3 & 0x80) == 0)
+    if ((list & 0x80) == 0)
     {
       goto LABEL_10;
     }
@@ -928,10 +928,10 @@ LABEL_9:
 
 LABEL_27:
   [v5 addObject:@"ShowsMessagePreview"];
-  if ((a3 & 0x80) == 0)
+  if ((list & 0x80) == 0)
   {
 LABEL_10:
-    if ((a3 & 0x10000) == 0)
+    if ((list & 0x10000) == 0)
     {
       goto LABEL_11;
     }
@@ -941,10 +941,10 @@ LABEL_10:
 
 LABEL_28:
   [v5 addObject:@"ShowsInCarPlay"];
-  if ((a3 & 0x10000) == 0)
+  if ((list & 0x10000) == 0)
   {
 LABEL_11:
-    if ((a3 & 0x100) == 0)
+    if ((list & 0x100) == 0)
     {
       goto LABEL_12;
     }
@@ -954,10 +954,10 @@ LABEL_11:
 
 LABEL_29:
   [v5 addObject:@"RemoteNotifications"];
-  if ((a3 & 0x100) == 0)
+  if ((list & 0x100) == 0)
   {
 LABEL_12:
-    if ((a3 & 0x200) == 0)
+    if ((list & 0x200) == 0)
     {
       goto LABEL_13;
     }
@@ -967,10 +967,10 @@ LABEL_12:
 
 LABEL_30:
   [v5 addObject:@"CriticalAlert"];
-  if ((a3 & 0x200) == 0)
+  if ((list & 0x200) == 0)
   {
 LABEL_13:
-    if ((a3 & 0x400) == 0)
+    if ((list & 0x400) == 0)
     {
       goto LABEL_14;
     }
@@ -980,10 +980,10 @@ LABEL_13:
 
 LABEL_31:
   [v5 addObject:@"BulletinGrouping"];
-  if ((a3 & 0x400) == 0)
+  if ((list & 0x400) == 0)
   {
 LABEL_14:
-    if ((a3 & 0x800) == 0)
+    if ((list & 0x800) == 0)
     {
       goto LABEL_15;
     }
@@ -994,10 +994,10 @@ LABEL_14:
 LABEL_32:
   [v5 addObject:@"SpokenNotifications"];
   [v5 addObject:@"SpokenNotifications"];
-  if ((a3 & 0x800) == 0)
+  if ((list & 0x800) == 0)
   {
 LABEL_15:
-    if ((a3 & 0x1000) == 0)
+    if ((list & 0x1000) == 0)
     {
       goto LABEL_16;
     }
@@ -1007,10 +1007,10 @@ LABEL_15:
 
 LABEL_33:
   [v5 addObject:@"TimeSensitive"];
-  if ((a3 & 0x1000) == 0)
+  if ((list & 0x1000) == 0)
   {
 LABEL_16:
-    if ((a3 & 0x2000) == 0)
+    if ((list & 0x2000) == 0)
     {
       goto LABEL_17;
     }
@@ -1020,17 +1020,17 @@ LABEL_16:
 
 LABEL_34:
   [v5 addObject:@"ScheduledDelivery"];
-  if ((a3 & 0x2000) == 0)
+  if ((list & 0x2000) == 0)
   {
 LABEL_17:
-    if ((a3 & 0x4000) == 0)
+    if ((list & 0x4000) == 0)
     {
       goto LABEL_18;
     }
 
 LABEL_36:
     [v5 addObject:@"Sound"];
-    if ((a3 & 0x8000) == 0)
+    if ((list & 0x8000) == 0)
     {
       goto LABEL_39;
     }
@@ -1040,13 +1040,13 @@ LABEL_36:
 
 LABEL_35:
   [v5 addObject:@"Badge"];
-  if ((a3 & 0x4000) != 0)
+  if ((list & 0x4000) != 0)
   {
     goto LABEL_36;
   }
 
 LABEL_18:
-  if ((a3 & 0x8000) != 0)
+  if ((list & 0x8000) != 0)
   {
 LABEL_37:
     v6 = @"DirectMessages";
@@ -1062,14 +1062,14 @@ LABEL_39:
 {
   v44 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(BBSectionInfoSettings *)self->_sectionInfoSettings stateCapture];
-  [v3 setValue:v4 forKey:@"SectionInfoSettings"];
+  stateCapture = [(BBSectionInfoSettings *)self->_sectionInfoSettings stateCapture];
+  [v3 setValue:stateCapture forKey:@"SectionInfoSettings"];
 
   managedSectionInfoSettings = self->_managedSectionInfoSettings;
   if (managedSectionInfoSettings)
   {
-    v6 = [(BBSectionInfoSettings *)managedSectionInfoSettings stateCapture];
-    [v3 setValue:v6 forKey:@"ManagedSettings"];
+    stateCapture2 = [(BBSectionInfoSettings *)managedSectionInfoSettings stateCapture];
+    [v3 setValue:stateCapture2 forKey:@"ManagedSettings"];
   }
 
   else
@@ -1077,36 +1077,36 @@ LABEL_39:
     [v3 setValue:@"Unmanaged" forKey:@"ManagedSettings"];
   }
 
-  v7 = [(BBSectionInfo *)self appName];
+  appName = [(BBSectionInfo *)self appName];
 
-  if (v7)
+  if (appName)
   {
-    v8 = [(BBSectionInfo *)self appName];
-    [v3 setValue:v8 forKey:@"AppName"];
+    appName2 = [(BBSectionInfo *)self appName];
+    [v3 setValue:appName2 forKey:@"AppName"];
   }
 
-  v9 = [(BBSectionInfo *)self displayName];
+  displayName = [(BBSectionInfo *)self displayName];
 
-  if (v9)
+  if (displayName)
   {
-    v10 = [(BBSectionInfo *)self displayName];
-    [v3 setValue:v10 forKey:@"DisplayName"];
+    displayName2 = [(BBSectionInfo *)self displayName];
+    [v3 setValue:displayName2 forKey:@"DisplayName"];
   }
 
-  v11 = [(BBSectionInfo *)self subsectionID];
+  subsectionID = [(BBSectionInfo *)self subsectionID];
 
-  if (v11)
+  if (subsectionID)
   {
-    v12 = [(BBSectionInfo *)self subsectionID];
-    [v3 setValue:v12 forKey:@"SubSectionID"];
+    subsectionID2 = [(BBSectionInfo *)self subsectionID];
+    [v3 setValue:subsectionID2 forKey:@"SubSectionID"];
   }
 
-  v13 = [(BBSectionInfo *)self factorySectionID];
+  factorySectionID = [(BBSectionInfo *)self factorySectionID];
 
-  if (v13)
+  if (factorySectionID)
   {
-    v14 = [(BBSectionInfo *)self factorySectionID];
-    [v3 setValue:v14 forKey:@"FactorySectionID"];
+    factorySectionID2 = [(BBSectionInfo *)self factorySectionID];
+    [v3 setValue:factorySectionID2 forKey:@"FactorySectionID"];
   }
 
   if ([(BBSectionInfo *)self version])
@@ -1121,22 +1121,22 @@ LABEL_39:
   v17 = BBStringFromBool([(BBSectionInfo *)self hideWeeApp]);
   [v3 setValue:v17 forKey:@"HiddenWeeApp"];
 
-  v18 = [(BBSectionInfo *)self suppressedSettings];
-  if (v18)
+  suppressedSettings = [(BBSectionInfo *)self suppressedSettings];
+  if (suppressedSettings)
   {
-    v19 = [(BBSectionInfo *)self _suppressedSettingsList:v18];
+    v19 = [(BBSectionInfo *)self _suppressedSettingsList:suppressedSettings];
     [v3 setValue:v19 forKey:@"SuppressedSettings"];
   }
 
-  v20 = [(BBSectionInfo *)self subsections];
-  if ([v20 count])
+  subsections = [(BBSectionInfo *)self subsections];
+  if ([subsections count])
   {
-    v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
+    parentSection3 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v22 = v20;
+    v22 = subsections;
     v23 = [v22 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v23)
     {
@@ -1152,9 +1152,9 @@ LABEL_39:
           }
 
           v27 = *(*(&v39 + 1) + 8 * i);
-          v28 = [v27 stateCapture];
-          v29 = [v27 subsectionID];
-          [v21 setValue:v28 forKey:v29];
+          stateCapture3 = [v27 stateCapture];
+          subsectionID3 = [v27 subsectionID];
+          [parentSection3 setValue:stateCapture3 forKey:subsectionID3];
         }
 
         v24 = [v22 countByEnumeratingWithState:&v39 objects:v43 count:16];
@@ -1163,24 +1163,24 @@ LABEL_39:
       while (v24);
     }
 
-    [v3 setValue:v21 forKey:@"SubSections"];
+    [v3 setValue:parentSection3 forKey:@"SubSections"];
     goto LABEL_25;
   }
 
-  v32 = [(BBSectionInfo *)self parentSection];
-  if (v32)
+  parentSection = [(BBSectionInfo *)self parentSection];
+  if (parentSection)
   {
-    v33 = v32;
-    v34 = [(BBSectionInfo *)self parentSection];
-    v35 = [v34 sectionID];
-    v36 = [(BBSectionInfo *)self sectionID];
-    v37 = [v35 isEqualToString:v36];
+    v33 = parentSection;
+    parentSection2 = [(BBSectionInfo *)self parentSection];
+    sectionID = [parentSection2 sectionID];
+    sectionID2 = [(BBSectionInfo *)self sectionID];
+    v37 = [sectionID isEqualToString:sectionID2];
 
     if ((v37 & 1) == 0)
     {
-      v21 = [(BBSectionInfo *)self parentSection];
-      v38 = [v21 sectionID];
-      [v3 setValue:v38 forKey:@"ParentSectionID"];
+      parentSection3 = [(BBSectionInfo *)self parentSection];
+      sectionID3 = [parentSection3 sectionID];
+      [v3 setValue:sectionID3 forKey:@"ParentSectionID"];
 
 LABEL_25:
     }
@@ -1193,11 +1193,11 @@ LABEL_25:
 
 - (NSData)iconData
 {
-  v2 = [(BBSectionInfo *)self icon];
-  v3 = [v2 _bestVariantForFormat:1];
-  v4 = [v3 imageData];
+  icon = [(BBSectionInfo *)self icon];
+  v3 = [icon _bestVariantForFormat:1];
+  imageData = [v3 imageData];
 
-  return v4;
+  return imageData;
 }
 
 - (id)description
@@ -1223,42 +1223,42 @@ LABEL_25:
   }
   v6 = ;
 
-  v7 = [(BBSectionInfo *)self appName];
+  appName = [(BBSectionInfo *)self appName];
 
-  if (v7)
+  if (appName)
   {
-    v8 = [(BBSectionInfo *)self appName];
-    v9 = [v6 stringByAppendingFormat:@" '%@'", v8];
+    appName2 = [(BBSectionInfo *)self appName];
+    v9 = [v6 stringByAppendingFormat:@" '%@'", appName2];
 
     v6 = v9;
   }
 
-  v10 = [(BBSectionInfo *)self displayName];
+  displayName = [(BBSectionInfo *)self displayName];
 
-  if (v10)
+  if (displayName)
   {
-    v11 = [(BBSectionInfo *)self displayName];
-    v12 = [v6 stringByAppendingFormat:@" '%@'", v11];
+    displayName2 = [(BBSectionInfo *)self displayName];
+    v12 = [v6 stringByAppendingFormat:@" '%@'", displayName2];
 
     v6 = v12;
   }
 
-  v13 = [(BBSectionInfo *)self subsectionID];
+  subsectionID = [(BBSectionInfo *)self subsectionID];
 
-  if (v13)
+  if (subsectionID)
   {
-    v14 = [(BBSectionInfo *)self subsectionID];
-    v15 = [v6 stringByAppendingFormat:@" (%@)", v14];
+    subsectionID2 = [(BBSectionInfo *)self subsectionID];
+    v15 = [v6 stringByAppendingFormat:@" (%@)", subsectionID2];
 
     v6 = v15;
   }
 
-  v16 = [(BBSectionInfo *)self factorySectionID];
+  factorySectionID = [(BBSectionInfo *)self factorySectionID];
 
-  if (v16)
+  if (factorySectionID)
   {
-    v17 = [(BBSectionInfo *)self factorySectionID];
-    v18 = [v6 stringByAppendingFormat:@" (factory: %@)", v17];
+    factorySectionID2 = [(BBSectionInfo *)self factorySectionID];
+    v18 = [v6 stringByAppendingFormat:@" (factory: %@)", factorySectionID2];
 
     v6 = v18;
   }
@@ -1284,40 +1284,40 @@ LABEL_25:
     v6 = v21;
   }
 
-  v22 = [(BBSectionInfo *)self suppressedSettings];
-  if (v22)
+  suppressedSettings = [(BBSectionInfo *)self suppressedSettings];
+  if (suppressedSettings)
   {
-    v23 = [v6 stringByAppendingFormat:@", suppressed settings = %lX", v22];
+    v23 = [v6 stringByAppendingFormat:@", suppressed settings = %lX", suppressedSettings];
 
     v6 = v23;
   }
 
-  v24 = [(BBSectionInfo *)self subsections];
-  if ([v24 count])
+  subsections = [(BBSectionInfo *)self subsections];
+  if ([subsections count])
   {
-    v25 = [v6 stringByAppendingFormat:@", subsections = %@", v24];
+    v25 = [v6 stringByAppendingFormat:@", subsections = %@", subsections];
 LABEL_24:
 
     v6 = v25;
     goto LABEL_25;
   }
 
-  v29 = [(BBSectionInfo *)self parentSection];
-  if (v29)
+  parentSection = [(BBSectionInfo *)self parentSection];
+  if (parentSection)
   {
-    v30 = v29;
-    v31 = [(BBSectionInfo *)self parentSection];
-    v32 = [v31 sectionID];
-    v33 = [(BBSectionInfo *)self sectionID];
-    v34 = [v32 isEqualToString:v33];
+    v30 = parentSection;
+    parentSection2 = [(BBSectionInfo *)self parentSection];
+    sectionID = [parentSection2 sectionID];
+    sectionID2 = [(BBSectionInfo *)self sectionID];
+    v34 = [sectionID isEqualToString:sectionID2];
 
     if ((v34 & 1) == 0)
     {
-      v35 = [(BBSectionInfo *)self parentSection];
-      v36 = [v35 sectionID];
-      v25 = [v6 stringByAppendingFormat:@", parent section = %@", v36];
+      parentSection3 = [(BBSectionInfo *)self parentSection];
+      sectionID3 = [parentSection3 sectionID];
+      v25 = [v6 stringByAppendingFormat:@", parent section = %@", sectionID3];
 
-      v6 = v35;
+      v6 = parentSection3;
       goto LABEL_24;
     }
   }
@@ -1333,53 +1333,53 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v42 = [(BBSectionInfo *)self sectionID];
-  v3 = [v42 hash];
-  v41 = [(BBSectionInfo *)self subsectionID];
-  v4 = [v41 hash] ^ v3;
+  sectionID = [(BBSectionInfo *)self sectionID];
+  v3 = [sectionID hash];
+  subsectionID = [(BBSectionInfo *)self subsectionID];
+  v4 = [subsectionID hash] ^ v3;
   v5 = v4 ^ [(BBSectionInfo *)self sectionType];
-  v6 = [(BBSectionInfo *)self isAppClip];
-  v7 = v5 ^ v6 ^ [(BBSectionInfo *)self isModificationAllowed];
-  v8 = [(BBSectionInfo *)self isRestricted];
-  v9 = v8 ^ [(BBSectionInfo *)self sectionCategory];
+  isAppClip = [(BBSectionInfo *)self isAppClip];
+  v7 = v5 ^ isAppClip ^ [(BBSectionInfo *)self isModificationAllowed];
+  isRestricted = [(BBSectionInfo *)self isRestricted];
+  v9 = isRestricted ^ [(BBSectionInfo *)self sectionCategory];
   v10 = v7 ^ v9 ^ [(BBSectionInfo *)self suppressFromSettings];
-  v40 = [(BBSectionInfo *)self sectionInfoSettings];
-  v11 = [v40 hash];
-  v39 = [(BBSectionInfo *)self managedSectionInfoSettings];
-  v12 = v11 ^ [v39 hash];
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  v11 = [sectionInfoSettings hash];
+  managedSectionInfoSettings = [(BBSectionInfo *)self managedSectionInfoSettings];
+  v12 = v11 ^ [managedSectionInfoSettings hash];
   v13 = v12 ^ [(BBSectionInfo *)self suppressedSettings];
-  v38 = [(BBSectionInfo *)self subsections];
-  v14 = v13 ^ [v38 hash];
-  v37 = [(BBSectionInfo *)self parentSection];
-  v36 = [v37 sectionID];
-  v15 = v10 ^ v14 ^ [v36 hash];
-  v16 = [(BBSectionInfo *)self subsectionPriority];
-  v17 = v16 ^ [(BBSectionInfo *)self version];
-  v18 = [(BBSectionInfo *)self appName];
-  v19 = v17 ^ [v18 hash];
-  v20 = [(BBSectionInfo *)self displayName];
-  v21 = v19 ^ [v20 hash];
-  v22 = [(BBSectionInfo *)self icon];
-  v23 = v21 ^ [v22 hash];
-  v24 = [(BBSectionInfo *)self factorySectionID];
-  v25 = v23 ^ [v24 hash];
-  v26 = [(BBSectionInfo *)self dataProviderIDs];
-  v35 = v15 ^ v25 ^ [v26 hash];
-  v27 = [(BBSectionInfo *)self customSettingsBundle];
-  v28 = [v27 hash];
-  v29 = [(BBSectionInfo *)self customSettingsDetailControllerClass];
-  v30 = v28 ^ [v29 hash];
-  v31 = [(BBSectionInfo *)self pathToWeeAppPluginBundle];
-  v32 = v30 ^ [v31 hash];
+  subsections = [(BBSectionInfo *)self subsections];
+  v14 = v13 ^ [subsections hash];
+  parentSection = [(BBSectionInfo *)self parentSection];
+  sectionID2 = [parentSection sectionID];
+  v15 = v10 ^ v14 ^ [sectionID2 hash];
+  subsectionPriority = [(BBSectionInfo *)self subsectionPriority];
+  v17 = subsectionPriority ^ [(BBSectionInfo *)self version];
+  appName = [(BBSectionInfo *)self appName];
+  v19 = v17 ^ [appName hash];
+  displayName = [(BBSectionInfo *)self displayName];
+  v21 = v19 ^ [displayName hash];
+  icon = [(BBSectionInfo *)self icon];
+  v23 = v21 ^ [icon hash];
+  factorySectionID = [(BBSectionInfo *)self factorySectionID];
+  v25 = v23 ^ [factorySectionID hash];
+  dataProviderIDs = [(BBSectionInfo *)self dataProviderIDs];
+  v35 = v15 ^ v25 ^ [dataProviderIDs hash];
+  customSettingsBundle = [(BBSectionInfo *)self customSettingsBundle];
+  v28 = [customSettingsBundle hash];
+  customSettingsDetailControllerClass = [(BBSectionInfo *)self customSettingsDetailControllerClass];
+  v30 = v28 ^ [customSettingsDetailControllerClass hash];
+  pathToWeeAppPluginBundle = [(BBSectionInfo *)self pathToWeeAppPluginBundle];
+  v32 = v30 ^ [pathToWeeAppPluginBundle hash];
   v33 = v32 ^ [(BBSectionInfo *)self hideWeeApp];
 
   return v35 ^ v33;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v16) = 1;
   }
@@ -1389,77 +1389,77 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(BBSectionInfo *)self sectionID];
-      v7 = [(BBSectionInfo *)v5 sectionID];
+      v5 = equalCopy;
+      sectionID = [(BBSectionInfo *)self sectionID];
+      sectionID2 = [(BBSectionInfo *)v5 sectionID];
       if (BSEqualStrings())
       {
-        v8 = [(BBSectionInfo *)self subsectionID];
-        v9 = [(BBSectionInfo *)v5 subsectionID];
+        subsectionID = [(BBSectionInfo *)self subsectionID];
+        subsectionID2 = [(BBSectionInfo *)v5 subsectionID];
         if (BSEqualStrings() && (v10 = [(BBSectionInfo *)self sectionType], v10 == [(BBSectionInfo *)v5 sectionType]) && (v11 = [(BBSectionInfo *)self isAppClip], v11 == [(BBSectionInfo *)v5 isAppClip]) && (v12 = [(BBSectionInfo *)self isModificationAllowed], v12 == [(BBSectionInfo *)v5 isModificationAllowed]) && (v13 = [(BBSectionInfo *)self isRestricted], v13 == [(BBSectionInfo *)v5 isRestricted]) && (v14 = [(BBSectionInfo *)self sectionCategory], v14 == [(BBSectionInfo *)v5 sectionCategory]) && (v15 = [(BBSectionInfo *)self suppressFromSettings], v15 == [(BBSectionInfo *)v5 suppressFromSettings]))
         {
-          v18 = [(BBSectionInfo *)self sectionInfoSettings];
-          v19 = [(BBSectionInfo *)v5 sectionInfoSettings];
+          sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+          sectionInfoSettings2 = [(BBSectionInfo *)v5 sectionInfoSettings];
           if (BSEqualObjects())
           {
-            v20 = [(BBSectionInfo *)self managedSectionInfoSettings];
-            v58 = [(BBSectionInfo *)v5 managedSectionInfoSettings];
+            managedSectionInfoSettings = [(BBSectionInfo *)self managedSectionInfoSettings];
+            managedSectionInfoSettings2 = [(BBSectionInfo *)v5 managedSectionInfoSettings];
             if (BSEqualObjects())
             {
-              v57 = v20;
-              v21 = [(BBSectionInfo *)self suppressedSettings];
-              if (v21 == [(BBSectionInfo *)v5 suppressedSettings])
+              v57 = managedSectionInfoSettings;
+              suppressedSettings = [(BBSectionInfo *)self suppressedSettings];
+              if (suppressedSettings == [(BBSectionInfo *)v5 suppressedSettings])
               {
-                v22 = [(BBSectionInfo *)self subsections];
-                v55 = [(BBSectionInfo *)v5 subsections];
-                v56 = v22;
+                subsections = [(BBSectionInfo *)self subsections];
+                subsections2 = [(BBSectionInfo *)v5 subsections];
+                v56 = subsections;
                 if (BSEqualObjects())
                 {
-                  v54 = [(BBSectionInfo *)self parentSection];
-                  v23 = [v54 sectionID];
-                  v52 = [(BBSectionInfo *)v5 parentSection];
-                  [v52 sectionID];
-                  v51 = v53 = v23;
+                  parentSection = [(BBSectionInfo *)self parentSection];
+                  sectionID3 = [parentSection sectionID];
+                  parentSection2 = [(BBSectionInfo *)v5 parentSection];
+                  [parentSection2 sectionID];
+                  v51 = v53 = sectionID3;
                   if (BSEqualStrings() && (v24 = [(BBSectionInfo *)self subsectionPriority], v24 == [(BBSectionInfo *)v5 subsectionPriority]) && (v25 = [(BBSectionInfo *)self version], v25 == [(BBSectionInfo *)v5 version]))
                   {
-                    v26 = [(BBSectionInfo *)self appName];
+                    appName = [(BBSectionInfo *)self appName];
                     [(BBSectionInfo *)v5 appName];
-                    v50 = v49 = v26;
+                    v50 = v49 = appName;
                     if (BSEqualStrings())
                     {
-                      v27 = [(BBSectionInfo *)self displayName];
-                      v47 = [(BBSectionInfo *)v5 displayName];
-                      v48 = v27;
+                      displayName = [(BBSectionInfo *)self displayName];
+                      displayName2 = [(BBSectionInfo *)v5 displayName];
+                      v48 = displayName;
                       if (BSEqualStrings())
                       {
-                        v28 = [(BBSectionInfo *)self icon];
-                        v45 = [(BBSectionInfo *)v5 icon];
-                        v46 = v28;
+                        icon = [(BBSectionInfo *)self icon];
+                        icon2 = [(BBSectionInfo *)v5 icon];
+                        v46 = icon;
                         if (BSEqualObjects())
                         {
-                          v29 = [(BBSectionInfo *)self factorySectionID];
-                          v43 = [(BBSectionInfo *)v5 factorySectionID];
-                          v44 = v29;
+                          factorySectionID = [(BBSectionInfo *)self factorySectionID];
+                          factorySectionID2 = [(BBSectionInfo *)v5 factorySectionID];
+                          v44 = factorySectionID;
                           if (BSEqualStrings())
                           {
-                            v30 = [(BBSectionInfo *)self dataProviderIDs];
-                            v41 = [(BBSectionInfo *)v5 dataProviderIDs];
-                            v42 = v30;
+                            dataProviderIDs = [(BBSectionInfo *)self dataProviderIDs];
+                            dataProviderIDs2 = [(BBSectionInfo *)v5 dataProviderIDs];
+                            v42 = dataProviderIDs;
                             if (BSEqualObjects())
                             {
-                              v31 = [(BBSectionInfo *)self customSettingsBundle];
-                              v39 = [(BBSectionInfo *)v5 customSettingsBundle];
-                              v40 = v31;
+                              customSettingsBundle = [(BBSectionInfo *)self customSettingsBundle];
+                              customSettingsBundle2 = [(BBSectionInfo *)v5 customSettingsBundle];
+                              v40 = customSettingsBundle;
                               if (BSEqualStrings())
                               {
-                                v32 = [(BBSectionInfo *)self customSettingsDetailControllerClass];
-                                v37 = [(BBSectionInfo *)v5 customSettingsDetailControllerClass];
-                                v38 = v32;
+                                customSettingsDetailControllerClass = [(BBSectionInfo *)self customSettingsDetailControllerClass];
+                                customSettingsDetailControllerClass2 = [(BBSectionInfo *)v5 customSettingsDetailControllerClass];
+                                v38 = customSettingsDetailControllerClass;
                                 if (BSEqualStrings())
                                 {
-                                  v33 = [(BBSectionInfo *)self pathToWeeAppPluginBundle];
+                                  pathToWeeAppPluginBundle = [(BBSectionInfo *)self pathToWeeAppPluginBundle];
                                   [(BBSectionInfo *)v5 pathToWeeAppPluginBundle];
-                                  v34 = v36 = v33;
+                                  v34 = v36 = pathToWeeAppPluginBundle;
                                   if (BSEqualStrings())
                                   {
                                     v35 = [(BBSectionInfo *)self hideWeeApp:v36];
@@ -1531,7 +1531,7 @@ LABEL_25:
                 LOBYTE(v16) = 0;
               }
 
-              v20 = v57;
+              managedSectionInfoSettings = v57;
             }
 
             else
@@ -1567,18 +1567,18 @@ LABEL_25:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(BBSectionInfo *)self parentSection];
-  [v5 setParentSection:v6];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  parentSection = [(BBSectionInfo *)self parentSection];
+  [v5 setParentSection:parentSection];
 
-  v7 = [(BBSectionInfo *)self sectionID];
-  [v5 setSectionID:v7];
+  sectionID = [(BBSectionInfo *)self sectionID];
+  [v5 setSectionID:sectionID];
 
-  v8 = [(BBSectionInfo *)self subsectionID];
-  [v5 setSubsectionID:v8];
+  subsectionID = [(BBSectionInfo *)self subsectionID];
+  [v5 setSubsectionID:subsectionID];
 
   [v5 setSectionType:{-[BBSectionInfo sectionType](self, "sectionType")}];
   [v5 setIsAppClip:{-[BBSectionInfo isAppClip](self, "isAppClip")}];
@@ -1586,36 +1586,36 @@ LABEL_25:
   [v5 setIsRestricted:{-[BBSectionInfo isRestricted](self, "isRestricted")}];
   [v5 setSectionCategory:{-[BBSectionInfo sectionCategory](self, "sectionCategory")}];
   [v5 setSuppressFromSettings:{-[BBSectionInfo suppressFromSettings](self, "suppressFromSettings")}];
-  v9 = [(BBSectionInfoSettings *)self->_sectionInfoSettings copyWithZone:a3];
+  v9 = [(BBSectionInfoSettings *)self->_sectionInfoSettings copyWithZone:zone];
   [v5 setSectionInfoSettings:v9];
 
-  v10 = [(BBSectionInfoSettings *)self->_managedSectionInfoSettings copyWithZone:a3];
+  v10 = [(BBSectionInfoSettings *)self->_managedSectionInfoSettings copyWithZone:zone];
   [v5 setManagedSectionInfoSettings:v10];
 
-  v11 = [(BBSectionInfo *)self pathToWeeAppPluginBundle];
-  [v5 setPathToWeeAppPluginBundle:v11];
+  pathToWeeAppPluginBundle = [(BBSectionInfo *)self pathToWeeAppPluginBundle];
+  [v5 setPathToWeeAppPluginBundle:pathToWeeAppPluginBundle];
 
-  v12 = [(BBSectionInfo *)self appName];
-  [v5 setAppName:v12];
+  appName = [(BBSectionInfo *)self appName];
+  [v5 setAppName:appName];
 
-  v13 = [(BBSectionInfo *)self displayName];
-  [v5 setDisplayName:v13];
+  displayName = [(BBSectionInfo *)self displayName];
+  [v5 setDisplayName:displayName];
 
-  v14 = [(BBSectionInfo *)self icon];
-  [v5 setIcon:v14];
+  icon = [(BBSectionInfo *)self icon];
+  [v5 setIcon:icon];
 
-  v15 = [(BBSectionInfo *)self customSettingsBundle];
-  [v5 setCustomSettingsBundle:v15];
+  customSettingsBundle = [(BBSectionInfo *)self customSettingsBundle];
+  [v5 setCustomSettingsBundle:customSettingsBundle];
 
-  v16 = [(BBSectionInfo *)self customSettingsDetailControllerClass];
-  [v5 setCustomSettingsDetailControllerClass:v16];
+  customSettingsDetailControllerClass = [(BBSectionInfo *)self customSettingsDetailControllerClass];
+  [v5 setCustomSettingsDetailControllerClass:customSettingsDetailControllerClass];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v17 = [(BBSectionInfo *)self subsections];
-  v18 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  subsections = [(BBSectionInfo *)self subsections];
+  v18 = [subsections countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1627,17 +1627,17 @@ LABEL_25:
       {
         if (*v28 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(subsections);
         }
 
-        v22 = [*(*(&v27 + 1) + 8 * v21) copyWithZone:a3];
+        v22 = [*(*(&v27 + 1) + 8 * v21) copyWithZone:zone];
         [v5 _addSubsection:v22];
 
         ++v21;
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v19 = [subsections countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v19);
@@ -1646,11 +1646,11 @@ LABEL_25:
   [v5 setSubsectionPriority:{-[BBSectionInfo subsectionPriority](self, "subsectionPriority")}];
   [v5 setSuppressedSettings:{-[BBSectionInfo suppressedSettings](self, "suppressedSettings")}];
   [v5 setHideWeeApp:{-[BBSectionInfo hideWeeApp](self, "hideWeeApp")}];
-  v23 = [(BBSectionInfo *)self factorySectionID];
-  [v5 setFactorySectionID:v23];
+  factorySectionID = [(BBSectionInfo *)self factorySectionID];
+  [v5 setFactorySectionID:factorySectionID];
 
-  v24 = [(BBSectionInfo *)self dataProviderIDs];
-  [v5 setDataProviderIDs:v24];
+  dataProviderIDs = [(BBSectionInfo *)self dataProviderIDs];
+  [v5 setDataProviderIDs:dataProviderIDs];
 
   [v5 setVersion:{-[BBSectionInfo version](self, "version")}];
   [v5 setIsRestricted:{-[BBSectionInfo isRestricted](self, "isRestricted")}];
@@ -1658,37 +1658,37 @@ LABEL_25:
   return v5;
 }
 
-- (BBSectionInfo)initWithCoder:(id)a3
+- (BBSectionInfo)initWithCoder:(id)coder
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = BBSectionInfo;
   v5 = [(BBSectionInfo *)&v41 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
     [(BBSectionInfo *)v5 setSectionID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subsectionID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subsectionID"];
     [(BBSectionInfo *)v5 setSubsectionID:v7];
 
-    -[BBSectionInfo setSectionType:](v5, "setSectionType:", [v4 decodeIntegerForKey:@"sectionType"]);
-    -[BBSectionInfo setIsAppClip:](v5, "setIsAppClip:", [v4 decodeBoolForKey:@"isAppClip"]);
-    -[BBSectionInfo setIsModificationAllowed:](v5, "setIsModificationAllowed:", [v4 decodeBoolForKey:@"isModificationAllowed"]);
-    -[BBSectionInfo setIsRestricted:](v5, "setIsRestricted:", [v4 decodeBoolForKey:@"isRestricted"]);
-    -[BBSectionInfo setSectionCategory:](v5, "setSectionCategory:", [v4 decodeIntegerForKey:@"sectionCategory"]);
-    -[BBSectionInfo setSuppressFromSettings:](v5, "setSuppressFromSettings:", [v4 decodeBoolForKey:@"suppressFromSettings"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pathToWeeAppPluginBundle"];
+    -[BBSectionInfo setSectionType:](v5, "setSectionType:", [coderCopy decodeIntegerForKey:@"sectionType"]);
+    -[BBSectionInfo setIsAppClip:](v5, "setIsAppClip:", [coderCopy decodeBoolForKey:@"isAppClip"]);
+    -[BBSectionInfo setIsModificationAllowed:](v5, "setIsModificationAllowed:", [coderCopy decodeBoolForKey:@"isModificationAllowed"]);
+    -[BBSectionInfo setIsRestricted:](v5, "setIsRestricted:", [coderCopy decodeBoolForKey:@"isRestricted"]);
+    -[BBSectionInfo setSectionCategory:](v5, "setSectionCategory:", [coderCopy decodeIntegerForKey:@"sectionCategory"]);
+    -[BBSectionInfo setSuppressFromSettings:](v5, "setSuppressFromSettings:", [coderCopy decodeBoolForKey:@"suppressFromSettings"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pathToWeeAppPluginBundle"];
     [(BBSectionInfo *)v5 setPathToWeeAppPluginBundle:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
     [(BBSectionInfo *)v5 setAppName:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     [(BBSectionInfo *)v5 setDisplayName:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     [(BBSectionInfo *)v5 setIcon:v11];
 
     v12 = MEMORY[0x277CBEB98];
@@ -1696,7 +1696,7 @@ LABEL_25:
     v44[1] = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:2];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"subsections"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"subsections"];
 
     [(BBSectionInfo *)v5 setSubsections:v15];
     v39 = 0u;
@@ -1729,10 +1729,10 @@ LABEL_25:
       while (v18);
     }
 
-    -[BBSectionInfo setSubsectionPriority:](v5, "setSubsectionPriority:", [v4 decodeIntegerForKey:@"subsectionPriority"]);
-    -[BBSectionInfo setSuppressedSettings:](v5, "setSuppressedSettings:", [v4 decodeInt64ForKey:@"suppressedSettings"]);
-    -[BBSectionInfo setHideWeeApp:](v5, "setHideWeeApp:", [v4 decodeBoolForKey:@"hideWeeApp"]);
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"factorySectionID"];
+    -[BBSectionInfo setSubsectionPriority:](v5, "setSubsectionPriority:", [coderCopy decodeIntegerForKey:@"subsectionPriority"]);
+    -[BBSectionInfo setSuppressedSettings:](v5, "setSuppressedSettings:", [coderCopy decodeInt64ForKey:@"suppressedSettings"]);
+    -[BBSectionInfo setHideWeeApp:](v5, "setHideWeeApp:", [coderCopy decodeBoolForKey:@"hideWeeApp"]);
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"factorySectionID"];
     [(BBSectionInfo *)v5 setFactorySectionID:v21];
 
     v22 = MEMORY[0x277CBEB98];
@@ -1740,20 +1740,20 @@ LABEL_25:
     v42[1] = objc_opt_class();
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
     v24 = [v22 setWithArray:v23];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"dataProviderIDs"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"dataProviderIDs"];
     [(BBSectionInfo *)v5 setDataProviderIDs:v25];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customSettingsBundle"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customSettingsBundle"];
     [(BBSectionInfo *)v5 setCustomSettingsBundle:v26];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customSettingsDetailControllerClass"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customSettingsDetailControllerClass"];
     [(BBSectionInfo *)v5 setCustomSettingsDetailControllerClass:v27];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     -[BBSectionInfo setVersion:](v5, "setVersion:", [v28 unsignedIntegerValue]);
-    if ([v4 containsValueForKey:@"sectionInfoSettings"])
+    if ([coderCopy containsValueForKey:@"sectionInfoSettings"])
     {
-      v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionInfoSettings"];
+      v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionInfoSettings"];
       sectionInfoSettings = v5->_sectionInfoSettings;
       v5->_sectionInfoSettings = v29;
     }
@@ -1764,9 +1764,9 @@ LABEL_25:
       v32 = v5->_sectionInfoSettings;
       v5->_sectionInfoSettings = v31;
 
-      if ([v4 containsValueForKey:@"allowsNotifications"])
+      if ([coderCopy containsValueForKey:@"allowsNotifications"])
       {
-        v33 = [v4 decodeBoolForKey:@"allowsNotifications"];
+        v33 = [coderCopy decodeBoolForKey:@"allowsNotifications"];
       }
 
       else
@@ -1775,30 +1775,30 @@ LABEL_25:
       }
 
       [(BBSectionInfoSettings *)v5->_sectionInfoSettings setAllowsNotifications:v33, v37];
-      -[BBSectionInfoSettings setShowsInNotificationCenter:](v5->_sectionInfoSettings, "setShowsInNotificationCenter:", [v4 decodeBoolForKey:@"showsInNotificationCenter"]);
-      -[BBSectionInfoSettings setShowsInLockScreen:](v5->_sectionInfoSettings, "setShowsInLockScreen:", [v4 decodeBoolForKey:@"showsInLockScreen"]);
-      -[BBSectionInfoSettings setShowsCustomSettingsLink:](v5->_sectionInfoSettings, "setShowsCustomSettingsLink:", [v4 decodeBoolForKey:@"showsCustomSettingsLink"]);
-      -[BBSectionInfoSettings setAlertType:](v5->_sectionInfoSettings, "setAlertType:", [v4 decodeIntegerForKey:@"alertType"]);
-      -[BBSectionInfoSettings setPushSettings:](v5->_sectionInfoSettings, "setPushSettings:", [v4 decodeInt64ForKey:@"pushSettings"]);
-      if ([v4 containsValueForKey:@"showsOnExternalDevices"])
+      -[BBSectionInfoSettings setShowsInNotificationCenter:](v5->_sectionInfoSettings, "setShowsInNotificationCenter:", [coderCopy decodeBoolForKey:@"showsInNotificationCenter"]);
+      -[BBSectionInfoSettings setShowsInLockScreen:](v5->_sectionInfoSettings, "setShowsInLockScreen:", [coderCopy decodeBoolForKey:@"showsInLockScreen"]);
+      -[BBSectionInfoSettings setShowsCustomSettingsLink:](v5->_sectionInfoSettings, "setShowsCustomSettingsLink:", [coderCopy decodeBoolForKey:@"showsCustomSettingsLink"]);
+      -[BBSectionInfoSettings setAlertType:](v5->_sectionInfoSettings, "setAlertType:", [coderCopy decodeIntegerForKey:@"alertType"]);
+      -[BBSectionInfoSettings setPushSettings:](v5->_sectionInfoSettings, "setPushSettings:", [coderCopy decodeInt64ForKey:@"pushSettings"]);
+      if ([coderCopy containsValueForKey:@"showsOnExternalDevices"])
       {
-        -[BBSectionInfoSettings setShowsOnExternalDevices:](v5->_sectionInfoSettings, "setShowsOnExternalDevices:", [v4 decodeBoolForKey:@"showsOnExternalDevices"]);
+        -[BBSectionInfoSettings setShowsOnExternalDevices:](v5->_sectionInfoSettings, "setShowsOnExternalDevices:", [coderCopy decodeBoolForKey:@"showsOnExternalDevices"]);
       }
 
-      if ([v4 containsValueForKey:@"showsMessagePreview"])
+      if ([coderCopy containsValueForKey:@"showsMessagePreview"])
       {
-        -[BBSectionInfoSettings setShowsMessagePreview:](v5->_sectionInfoSettings, "setShowsMessagePreview:", [v4 decodeBoolForKey:@"showsMessagePreview"]);
+        -[BBSectionInfoSettings setShowsMessagePreview:](v5->_sectionInfoSettings, "setShowsMessagePreview:", [coderCopy decodeBoolForKey:@"showsMessagePreview"]);
       }
     }
 
-    if ([v4 containsValueForKey:{@"bulletinGroupingSetting", v37}])
+    if ([coderCopy containsValueForKey:{@"bulletinGroupingSetting", v37}])
     {
-      -[BBSectionInfo setBulletinGroupingSetting:](v5, "setBulletinGroupingSetting:", [v4 decodeIntegerForKey:@"bulletinGroupingSetting"]);
+      -[BBSectionInfo setBulletinGroupingSetting:](v5, "setBulletinGroupingSetting:", [coderCopy decodeIntegerForKey:@"bulletinGroupingSetting"]);
     }
 
-    if ([v4 containsValueForKey:@"managedSectionInfoSettings"])
+    if ([coderCopy containsValueForKey:@"managedSectionInfoSettings"])
     {
-      v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managedSectionInfoSettings"];
+      v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managedSectionInfoSettings"];
       [(BBSectionInfo *)v5 setManagedSectionInfoSettings:v34];
     }
   }
@@ -1807,83 +1807,83 @@ LABEL_25:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BBSectionInfo *)self sectionID];
-  [v4 encodeObject:v5 forKey:@"sectionID"];
+  coderCopy = coder;
+  sectionID = [(BBSectionInfo *)self sectionID];
+  [coderCopy encodeObject:sectionID forKey:@"sectionID"];
 
-  v6 = [(BBSectionInfo *)self subsectionID];
-  [v4 encodeObject:v6 forKey:@"subsectionID"];
+  subsectionID = [(BBSectionInfo *)self subsectionID];
+  [coderCopy encodeObject:subsectionID forKey:@"subsectionID"];
 
-  [v4 encodeInteger:-[BBSectionInfo sectionType](self forKey:{"sectionType"), @"sectionType"}];
-  [v4 encodeBool:-[BBSectionInfo isAppClip](self forKey:{"isAppClip"), @"isAppClip"}];
-  [v4 encodeBool:-[BBSectionInfo isModificationAllowed](self forKey:{"isModificationAllowed"), @"isModificationAllowed"}];
-  [v4 encodeBool:-[BBSectionInfo isRestricted](self forKey:{"isRestricted"), @"isRestricted"}];
-  [v4 encodeInteger:-[BBSectionInfo sectionCategory](self forKey:{"sectionCategory"), @"sectionCategory"}];
-  [v4 encodeBool:-[BBSectionInfo suppressFromSettings](self forKey:{"suppressFromSettings"), @"suppressFromSettings"}];
-  [v4 encodeObject:self->_sectionInfoSettings forKey:@"sectionInfoSettings"];
-  [v4 encodeObject:self->_managedSectionInfoSettings forKey:@"managedSectionInfoSettings"];
-  v7 = [(BBSectionInfo *)self pathToWeeAppPluginBundle];
-  [v4 encodeObject:v7 forKey:@"pathToWeeAppPluginBundle"];
+  [coderCopy encodeInteger:-[BBSectionInfo sectionType](self forKey:{"sectionType"), @"sectionType"}];
+  [coderCopy encodeBool:-[BBSectionInfo isAppClip](self forKey:{"isAppClip"), @"isAppClip"}];
+  [coderCopy encodeBool:-[BBSectionInfo isModificationAllowed](self forKey:{"isModificationAllowed"), @"isModificationAllowed"}];
+  [coderCopy encodeBool:-[BBSectionInfo isRestricted](self forKey:{"isRestricted"), @"isRestricted"}];
+  [coderCopy encodeInteger:-[BBSectionInfo sectionCategory](self forKey:{"sectionCategory"), @"sectionCategory"}];
+  [coderCopy encodeBool:-[BBSectionInfo suppressFromSettings](self forKey:{"suppressFromSettings"), @"suppressFromSettings"}];
+  [coderCopy encodeObject:self->_sectionInfoSettings forKey:@"sectionInfoSettings"];
+  [coderCopy encodeObject:self->_managedSectionInfoSettings forKey:@"managedSectionInfoSettings"];
+  pathToWeeAppPluginBundle = [(BBSectionInfo *)self pathToWeeAppPluginBundle];
+  [coderCopy encodeObject:pathToWeeAppPluginBundle forKey:@"pathToWeeAppPluginBundle"];
 
-  v8 = [(BBSectionInfo *)self appName];
-  [v4 encodeObject:v8 forKey:@"appName"];
+  appName = [(BBSectionInfo *)self appName];
+  [coderCopy encodeObject:appName forKey:@"appName"];
 
-  v9 = [(BBSectionInfo *)self displayName];
-  [v4 encodeObject:v9 forKey:@"displayName"];
+  displayName = [(BBSectionInfo *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v10 = [(BBSectionInfo *)self icon];
-  [v4 encodeObject:v10 forKey:@"icon"];
+  icon = [(BBSectionInfo *)self icon];
+  [coderCopy encodeObject:icon forKey:@"icon"];
 
-  v11 = [(BBSectionInfo *)self subsections];
-  [v4 encodeObject:v11 forKey:@"subsections"];
+  subsections = [(BBSectionInfo *)self subsections];
+  [coderCopy encodeObject:subsections forKey:@"subsections"];
 
-  [v4 encodeInteger:-[BBSectionInfo subsectionPriority](self forKey:{"subsectionPriority"), @"subsectionPriority"}];
-  [v4 encodeInteger:-[BBSectionInfo suppressedSettings](self forKey:{"suppressedSettings"), @"suppressedSettings"}];
-  [v4 encodeBool:-[BBSectionInfo hideWeeApp](self forKey:{"hideWeeApp"), @"hideWeeApp"}];
-  v12 = [(BBSectionInfo *)self factorySectionID];
-  [v4 encodeObject:v12 forKey:@"factorySectionID"];
+  [coderCopy encodeInteger:-[BBSectionInfo subsectionPriority](self forKey:{"subsectionPriority"), @"subsectionPriority"}];
+  [coderCopy encodeInteger:-[BBSectionInfo suppressedSettings](self forKey:{"suppressedSettings"), @"suppressedSettings"}];
+  [coderCopy encodeBool:-[BBSectionInfo hideWeeApp](self forKey:{"hideWeeApp"), @"hideWeeApp"}];
+  factorySectionID = [(BBSectionInfo *)self factorySectionID];
+  [coderCopy encodeObject:factorySectionID forKey:@"factorySectionID"];
 
-  v13 = [(BBSectionInfo *)self dataProviderIDs];
-  [v4 encodeObject:v13 forKey:@"dataProviderIDs"];
+  dataProviderIDs = [(BBSectionInfo *)self dataProviderIDs];
+  [coderCopy encodeObject:dataProviderIDs forKey:@"dataProviderIDs"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[BBSectionInfo version](self, "version")}];
-  [v4 encodeObject:v14 forKey:@"version"];
+  [coderCopy encodeObject:v14 forKey:@"version"];
 
-  v15 = [(BBSectionInfo *)self customSettingsBundle];
-  [v4 encodeObject:v15 forKey:@"customSettingsBundle"];
+  customSettingsBundle = [(BBSectionInfo *)self customSettingsBundle];
+  [coderCopy encodeObject:customSettingsBundle forKey:@"customSettingsBundle"];
 
-  v16 = [(BBSectionInfo *)self customSettingsDetailControllerClass];
-  [v4 encodeObject:v16 forKey:@"customSettingsDetailControllerClass"];
+  customSettingsDetailControllerClass = [(BBSectionInfo *)self customSettingsDetailControllerClass];
+  [coderCopy encodeObject:customSettingsDetailControllerClass forKey:@"customSettingsDetailControllerClass"];
 }
 
-- (id)effectiveSectionInfoWithDefaultContentPreviewSetting:(int64_t)a3 globalAnnounceSetting:(int64_t)a4 globalScheduledDeliverySetting:(int64_t)a5 globalSummarizationSetting:(int64_t)a6 globalPrioritizationSetting:(int64_t)a7 hasPairedVehiclesForCarPlay:(BOOL)a8 hasDestinationForRemoteNotifications:(BOOL)a9
+- (id)effectiveSectionInfoWithDefaultContentPreviewSetting:(int64_t)setting globalAnnounceSetting:(int64_t)announceSetting globalScheduledDeliverySetting:(int64_t)deliverySetting globalSummarizationSetting:(int64_t)summarizationSetting globalPrioritizationSetting:(int64_t)prioritizationSetting hasPairedVehiclesForCarPlay:(BOOL)play hasDestinationForRemoteNotifications:(BOOL)notifications
 {
-  v70 = a8;
-  v13 = self;
+  playCopy = play;
+  selfCopy = self;
   v81 = *MEMORY[0x277D85DE8];
-  v14 = [(BBSectionInfo *)self parentSection];
-  if (!v14)
+  parentSection = [(BBSectionInfo *)self parentSection];
+  if (!parentSection)
   {
-    v18 = [(BBSectionInfo *)v13 subsections];
-    v19 = [v18 count];
+    subsections = [(BBSectionInfo *)selfCopy subsections];
+    v19 = [subsections count];
 
     if (!v19)
     {
       goto LABEL_42;
     }
 
-    v52 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+    copyFromManagedSettings = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v55 = v13;
-    v21 = [(BBSectionInfo *)v13 subsections];
-    v22 = [v21 countByEnumeratingWithState:&v75 objects:v80 count:16];
-    v23 = a4;
+    v55 = selfCopy;
+    subsections2 = [(BBSectionInfo *)selfCopy subsections];
+    v22 = [subsections2 countByEnumeratingWithState:&v75 objects:v80 count:16];
+    announceSettingCopy = announceSetting;
     if (v22)
     {
       v24 = v22;
@@ -1894,28 +1894,28 @@ LABEL_25:
         {
           if (*v76 != v25)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(subsections2);
           }
 
-          LOBYTE(v51) = a9;
-          v27 = [*(*(&v75 + 1) + 8 * i) effectiveSectionInfoWithDefaultContentPreviewSetting:a3 globalAnnounceSetting:a4 globalScheduledDeliverySetting:a5 globalSummarizationSetting:a6 globalPrioritizationSetting:a7 hasPairedVehiclesForCarPlay:v70 hasDestinationForRemoteNotifications:v51];
+          LOBYTE(v51) = notifications;
+          v27 = [*(*(&v75 + 1) + 8 * i) effectiveSectionInfoWithDefaultContentPreviewSetting:setting globalAnnounceSetting:announceSetting globalScheduledDeliverySetting:deliverySetting globalSummarizationSetting:summarizationSetting globalPrioritizationSetting:prioritizationSetting hasPairedVehiclesForCarPlay:playCopy hasDestinationForRemoteNotifications:v51];
           [v20 addObject:v27];
 
-          a4 = v23;
+          announceSetting = announceSettingCopy;
         }
 
-        v24 = [v21 countByEnumeratingWithState:&v75 objects:v80 count:16];
+        v24 = [subsections2 countByEnumeratingWithState:&v75 objects:v80 count:16];
       }
 
       while (v24);
     }
 
-    v28 = [(BBSectionInfo *)v52 suppressedSettings];
-    v29 = v28;
-    if ((v28 & 2) != 0)
+    suppressedSettings = [(BBSectionInfo *)copyFromManagedSettings suppressedSettings];
+    v29 = suppressedSettings;
+    if ((suppressedSettings & 2) != 0)
     {
-      v68 = 0;
-      if ((v28 & 4) != 0)
+      lockScreenSetting = 0;
+      if ((suppressedSettings & 4) != 0)
       {
         goto LABEL_37;
       }
@@ -1923,11 +1923,11 @@ LABEL_25:
 
     else
     {
-      v68 = [(BBSectionInfo *)v52 lockScreenSetting];
+      lockScreenSetting = [(BBSectionInfo *)copyFromManagedSettings lockScreenSetting];
       if ((v29 & 4) != 0)
       {
 LABEL_37:
-        v57 = 0;
+        showsOnExternalDevices = 0;
         if ((v29 & 1) == 0)
         {
           goto LABEL_38;
@@ -1937,11 +1937,11 @@ LABEL_37:
       }
     }
 
-    v57 = [(BBSectionInfo *)v52 showsOnExternalDevices];
+    showsOnExternalDevices = [(BBSectionInfo *)copyFromManagedSettings showsOnExternalDevices];
     if ((v29 & 1) == 0)
     {
 LABEL_38:
-      v67 = [(BBSectionInfo *)v52 notificationCenterSetting];
+      notificationCenterSetting = [(BBSectionInfo *)copyFromManagedSettings notificationCenterSetting];
       if ((v29 & 0x40) == 0)
       {
         goto LABEL_39;
@@ -1951,11 +1951,11 @@ LABEL_38:
     }
 
 LABEL_61:
-    v67 = 0;
+    notificationCenterSetting = 0;
     if ((v29 & 0x40) == 0)
     {
 LABEL_39:
-      v66 = [(BBSectionInfo *)v52 contentPreviewSetting];
+      contentPreviewSetting = [(BBSectionInfo *)copyFromManagedSettings contentPreviewSetting];
       if ((v29 & 0x2000) != 0)
       {
         goto LABEL_40;
@@ -1965,7 +1965,7 @@ LABEL_39:
     }
 
 LABEL_62:
-    v66 = 0;
+    contentPreviewSetting = 0;
     if ((v29 & 0x2000) != 0)
     {
 LABEL_40:
@@ -1978,17 +1978,17 @@ LABEL_41:
       }
 
 LABEL_64:
-      v31 = [(BBSectionInfo *)v52 pushSettings]& 0x12;
+      v31 = [(BBSectionInfo *)copyFromManagedSettings pushSettings]& 0x12;
 LABEL_65:
-      v54 = a3;
+      settingCopy = setting;
       if ((v29 & 0x20) != 0)
       {
-        v56 = 0;
+        alertType = 0;
         v32 = v31 | v30;
         if ((v29 & 0x80) == 0)
         {
 LABEL_67:
-          v65 = [(BBSectionInfo *)v52 carPlaySetting];
+          carPlaySetting = [(BBSectionInfo *)copyFromManagedSettings carPlaySetting];
           if ((v29 & 0x10000) == 0)
           {
             goto LABEL_68;
@@ -2000,19 +2000,19 @@ LABEL_67:
 
       else
       {
-        v32 = v30 | v31 | [(BBSectionInfo *)v52 pushSettings]& 0x24;
-        v56 = [(BBSectionInfo *)v52 alertType];
+        v32 = v30 | v31 | [(BBSectionInfo *)copyFromManagedSettings pushSettings]& 0x24;
+        alertType = [(BBSectionInfo *)copyFromManagedSettings alertType];
         if ((v29 & 0x80) == 0)
         {
           goto LABEL_67;
         }
       }
 
-      v65 = 0;
+      carPlaySetting = 0;
       if ((v29 & 0x10000) == 0)
       {
 LABEL_68:
-        v64 = [(BBSectionInfo *)v52 remoteNotificationsSetting];
+        remoteNotificationsSetting = [(BBSectionInfo *)copyFromManagedSettings remoteNotificationsSetting];
         if ((v29 & 0x100) == 0)
         {
           goto LABEL_69;
@@ -2022,11 +2022,11 @@ LABEL_68:
       }
 
 LABEL_77:
-      v64 = 0;
+      remoteNotificationsSetting = 0;
       if ((v29 & 0x100) == 0)
       {
 LABEL_69:
-        v63 = [(BBSectionInfo *)v52 criticalAlertSetting];
+        criticalAlertSetting = [(BBSectionInfo *)copyFromManagedSettings criticalAlertSetting];
         if ((v29 & 0x400) == 0)
         {
           goto LABEL_70;
@@ -2036,11 +2036,11 @@ LABEL_69:
       }
 
 LABEL_78:
-      v63 = 0;
+      criticalAlertSetting = 0;
       if ((v29 & 0x400) == 0)
       {
 LABEL_70:
-        v61 = [(BBSectionInfo *)v52 announceSetting];
+        announceSetting = [(BBSectionInfo *)copyFromManagedSettings announceSetting];
         if ((v29 & 0x800) == 0)
         {
           goto LABEL_71;
@@ -2050,11 +2050,11 @@ LABEL_70:
       }
 
 LABEL_79:
-      v61 = 0;
+      announceSetting = 0;
       if ((v29 & 0x800) == 0)
       {
 LABEL_71:
-        v62 = [(BBSectionInfo *)v52 timeSensitiveSetting];
+        timeSensitiveSetting = [(BBSectionInfo *)copyFromManagedSettings timeSensitiveSetting];
         if ((v29 & 0x1000) == 0)
         {
           goto LABEL_72;
@@ -2064,11 +2064,11 @@ LABEL_71:
       }
 
 LABEL_80:
-      v62 = 0;
+      timeSensitiveSetting = 0;
       if ((v29 & 0x1000) == 0)
       {
 LABEL_72:
-        v60 = [(BBSectionInfo *)v52 scheduledDeliverySetting];
+        scheduledDeliverySetting = [(BBSectionInfo *)copyFromManagedSettings scheduledDeliverySetting];
         if ((v29 & 0x8000) == 0)
         {
           goto LABEL_73;
@@ -2078,33 +2078,33 @@ LABEL_72:
       }
 
 LABEL_81:
-      v60 = 0;
+      scheduledDeliverySetting = 0;
       if ((v29 & 0x8000) == 0)
       {
 LABEL_73:
-        v59 = [(BBSectionInfo *)v52 directMessagesSetting];
+        directMessagesSetting = [(BBSectionInfo *)copyFromManagedSettings directMessagesSetting];
         if ((v29 & 0x20000) == 0)
         {
 LABEL_74:
-          v58 = [(BBSectionInfo *)v52 summarizationSetting];
+          summarizationSetting = [(BBSectionInfo *)copyFromManagedSettings summarizationSetting];
           goto LABEL_84;
         }
 
 LABEL_83:
-        v58 = 0;
+        summarizationSetting = 0;
 LABEL_84:
-        v53 = a7;
+        prioritizationSettingCopy = prioritizationSetting;
         if ((v29 & 0x40000) != 0)
         {
-          v33 = 0;
+          prioritizationSetting = 0;
         }
 
         else
         {
-          v33 = [(BBSectionInfo *)v52 prioritizationSetting];
+          prioritizationSetting = [(BBSectionInfo *)copyFromManagedSettings prioritizationSetting];
         }
 
-        [(BBSectionInfo *)v52 setSubsections:0];
+        [(BBSectionInfo *)copyFromManagedSettings setSubsections:0];
         v73 = 0u;
         v74 = 0u;
         v71 = 0u;
@@ -2115,28 +2115,28 @@ LABEL_84:
         {
 LABEL_141:
 
-          v15 = v52;
-          [(BBSectionInfo *)v52 setLockScreenSetting:v68];
-          [(BBSectionInfo *)v52 setShowsOnExternalDevices:v57 & 1];
-          [(BBSectionInfo *)v52 setNotificationCenterSetting:v67];
-          [(BBSectionInfo *)v52 setPushSettings:v32];
-          [(BBSectionInfo *)v52 setAlertType:v56];
-          [(BBSectionInfo *)v52 setContentPreviewSetting:v66];
-          [(BBSectionInfo *)v52 setAnnounceSetting:v61];
-          [(BBSectionInfo *)v52 setCarPlaySetting:v65];
-          [(BBSectionInfo *)v52 setRemoteNotificationsSetting:v64];
-          [(BBSectionInfo *)v52 setCriticalAlertSetting:v63];
-          [(BBSectionInfo *)v52 setTimeSensitiveSetting:v62];
-          [(BBSectionInfo *)v52 setScheduledDeliverySetting:v60];
-          [(BBSectionInfo *)v52 setDirectMessagesSetting:v59];
-          [(BBSectionInfo *)v52 setSummarizationSetting:v58];
-          [(BBSectionInfo *)v52 setPrioritizationSetting:v33];
+          copyFromManagedSettings2 = copyFromManagedSettings;
+          [(BBSectionInfo *)copyFromManagedSettings setLockScreenSetting:lockScreenSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setShowsOnExternalDevices:showsOnExternalDevices & 1];
+          [(BBSectionInfo *)copyFromManagedSettings setNotificationCenterSetting:notificationCenterSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setPushSettings:v32];
+          [(BBSectionInfo *)copyFromManagedSettings setAlertType:alertType];
+          [(BBSectionInfo *)copyFromManagedSettings setContentPreviewSetting:contentPreviewSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setAnnounceSetting:announceSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setCarPlaySetting:carPlaySetting];
+          [(BBSectionInfo *)copyFromManagedSettings setRemoteNotificationsSetting:remoteNotificationsSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setCriticalAlertSetting:criticalAlertSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setTimeSensitiveSetting:timeSensitiveSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setScheduledDeliverySetting:scheduledDeliverySetting];
+          [(BBSectionInfo *)copyFromManagedSettings setDirectMessagesSetting:directMessagesSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setSummarizationSetting:summarizationSetting];
+          [(BBSectionInfo *)copyFromManagedSettings setPrioritizationSetting:prioritizationSetting];
 
-          v13 = v55;
-          v14 = 0;
-          a7 = v53;
-          a3 = v54;
-          a4 = v23;
+          selfCopy = v55;
+          parentSection = 0;
+          prioritizationSetting = prioritizationSettingCopy;
+          setting = settingCopy;
+          announceSetting = announceSettingCopy;
           goto LABEL_142;
         }
 
@@ -2152,7 +2152,7 @@ LABEL_89:
           }
 
           v39 = *(*(&v71 + 1) + 8 * v38);
-          [(BBSectionInfo *)v52 _addSubsection:v39];
+          [(BBSectionInfo *)copyFromManagedSettings _addSubsection:v39];
           if ([v39 sectionType] != 2)
           {
             goto LABEL_139;
@@ -2183,76 +2183,76 @@ LABEL_95:
           {
 LABEL_99:
             v32 |= [v39 pushSettings] & 0x24;
-            if ([v39 alertType] > v56)
+            if ([v39 alertType] > alertType)
             {
-              v56 = [v39 alertType];
+              alertType = [v39 alertType];
             }
           }
 
 LABEL_101:
-          if ((v29 & 2) != 0 && v68 != 2)
+          if ((v29 & 2) != 0 && lockScreenSetting != 2)
           {
-            v68 = [v39 lockScreenSetting];
+            lockScreenSetting = [v39 lockScreenSetting];
           }
 
           if ((v29 & 4) != 0)
           {
-            v57 |= [v39 showsOnExternalDevices];
+            showsOnExternalDevices |= [v39 showsOnExternalDevices];
           }
 
-          if ((v29 & 1) != 0 && v67 != 2)
+          if ((v29 & 1) != 0 && notificationCenterSetting != 2)
           {
-            v67 = [v39 notificationCenterSetting];
+            notificationCenterSetting = [v39 notificationCenterSetting];
           }
 
-          if ((v29 & 0x40) != 0 && v66 != 1)
+          if ((v29 & 0x40) != 0 && contentPreviewSetting != 1)
           {
-            v66 = [v39 contentPreviewSetting];
+            contentPreviewSetting = [v39 contentPreviewSetting];
           }
 
-          if ((v29 & 0x80) != 0 && v65 != 2)
+          if ((v29 & 0x80) != 0 && carPlaySetting != 2)
           {
-            v65 = [v39 carPlaySetting];
+            carPlaySetting = [v39 carPlaySetting];
           }
 
-          if ((v29 & 0x10000) != 0 && v64 != 2)
+          if ((v29 & 0x10000) != 0 && remoteNotificationsSetting != 2)
           {
-            v64 = [v39 remoteNotificationsSetting];
+            remoteNotificationsSetting = [v39 remoteNotificationsSetting];
           }
 
-          if ((v29 & 0x400) != 0 && (v61 - 4) <= 0xFFFFFFFFFFFFFFFDLL)
+          if ((v29 & 0x400) != 0 && (announceSetting - 4) <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v61 = [v39 announceSetting];
+            announceSetting = [v39 announceSetting];
           }
 
-          if ((v29 & 0x100) != 0 && v63 != 2)
+          if ((v29 & 0x100) != 0 && criticalAlertSetting != 2)
           {
-            v63 = [v39 criticalAlertSetting];
+            criticalAlertSetting = [v39 criticalAlertSetting];
           }
 
-          if ((v29 & 0x800) != 0 && v62 != 2)
+          if ((v29 & 0x800) != 0 && timeSensitiveSetting != 2)
           {
-            v62 = [v39 timeSensitiveSetting];
+            timeSensitiveSetting = [v39 timeSensitiveSetting];
           }
 
-          if ((v29 & 0x1000) != 0 && v60 != 2)
+          if ((v29 & 0x1000) != 0 && scheduledDeliverySetting != 2)
           {
-            v60 = [v39 scheduledDeliverySetting];
+            scheduledDeliverySetting = [v39 scheduledDeliverySetting];
           }
 
-          if ((v29 & 0x8000) != 0 && v59 != 2)
+          if ((v29 & 0x8000) != 0 && directMessagesSetting != 2)
           {
-            v59 = [v39 directMessagesSetting];
+            directMessagesSetting = [v39 directMessagesSetting];
           }
 
-          if ((v29 & 0x20000) != 0 && v58 != 2)
+          if ((v29 & 0x20000) != 0 && summarizationSetting != 2)
           {
-            v58 = [v39 summarizationSetting];
+            summarizationSetting = [v39 summarizationSetting];
           }
 
-          if ((v29 & 0x40000) != 0 && v33 != 2)
+          if ((v29 & 0x40000) != 0 && prioritizationSetting != 2)
           {
-            v33 = [v39 prioritizationSetting];
+            prioritizationSetting = [v39 prioritizationSetting];
           }
 
 LABEL_139:
@@ -2270,7 +2270,7 @@ LABEL_139:
       }
 
 LABEL_82:
-      v59 = 0;
+      directMessagesSetting = 0;
       if ((v29 & 0x20000) == 0)
       {
         goto LABEL_74;
@@ -2280,7 +2280,7 @@ LABEL_82:
     }
 
 LABEL_63:
-    v30 = [(BBSectionInfo *)v52 pushSettings]& 9;
+    v30 = [(BBSectionInfo *)copyFromManagedSettings pushSettings]& 9;
     if ((v29 & 0x4000) != 0)
     {
       goto LABEL_41;
@@ -2289,29 +2289,29 @@ LABEL_63:
     goto LABEL_64;
   }
 
-  if ([(BBSectionInfo *)v13 sectionType]!= 2)
+  if ([(BBSectionInfo *)selfCopy sectionType]!= 2)
   {
 LABEL_42:
-    v15 = 0;
+    copyFromManagedSettings2 = 0;
     goto LABEL_142;
   }
 
-  v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
-  if (([v14 allowsNotifications] & 1) == 0)
+  copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
+  if (([parentSection allowsNotifications] & 1) == 0)
   {
-    -[BBSectionInfo setAuthorizationStatus:](v15, "setAuthorizationStatus:", [v14 authorizationStatus]);
+    -[BBSectionInfo setAuthorizationStatus:](copyFromManagedSettings2, "setAuthorizationStatus:", [parentSection authorizationStatus]);
   }
 
-  if ([v14 suppressedSettings] & 0x2000) == 0 && (objc_msgSend(v14, "pushSettings") & 1) != 0 && (objc_msgSend(v14, "pushSettings") & 8) == 0 && (-[BBSectionInfo pushSettings](v15, "pushSettings"))
+  if ([parentSection suppressedSettings] & 0x2000) == 0 && (objc_msgSend(parentSection, "pushSettings") & 1) != 0 && (objc_msgSend(parentSection, "pushSettings") & 8) == 0 && (-[BBSectionInfo pushSettings](copyFromManagedSettings2, "pushSettings"))
   {
-    [(BBSectionInfo *)v15 setPushSettings:[(BBSectionInfo *)v15 pushSettings]& 0xFFFFFFFFFFFFFFF7];
+    [(BBSectionInfo *)copyFromManagedSettings2 setPushSettings:[(BBSectionInfo *)copyFromManagedSettings2 pushSettings]& 0xFFFFFFFFFFFFFFF7];
   }
 
-  v16 = [(BBSectionInfo *)v15 suppressedSettings];
-  v17 = v16;
-  if (v16)
+  suppressedSettings2 = [(BBSectionInfo *)copyFromManagedSettings2 suppressedSettings];
+  v17 = suppressedSettings2;
+  if (suppressedSettings2)
   {
-    -[BBSectionInfo setNotificationCenterSetting:](v15, "setNotificationCenterSetting:", [v14 notificationCenterSetting]);
+    -[BBSectionInfo setNotificationCenterSetting:](copyFromManagedSettings2, "setNotificationCenterSetting:", [parentSection notificationCenterSetting]);
     if ((v17 & 2) == 0)
     {
 LABEL_12:
@@ -2324,12 +2324,12 @@ LABEL_12:
     }
   }
 
-  else if ((v16 & 2) == 0)
+  else if ((suppressedSettings2 & 2) == 0)
   {
     goto LABEL_12;
   }
 
-  -[BBSectionInfo setLockScreenSetting:](v15, "setLockScreenSetting:", [v14 lockScreenSetting]);
+  -[BBSectionInfo setLockScreenSetting:](copyFromManagedSettings2, "setLockScreenSetting:", [parentSection lockScreenSetting]);
   if ((v17 & 4) == 0)
   {
 LABEL_13:
@@ -2342,7 +2342,7 @@ LABEL_13:
   }
 
 LABEL_45:
-  -[BBSectionInfo setShowsOnExternalDevices:](v15, "setShowsOnExternalDevices:", [v14 showsOnExternalDevices]);
+  -[BBSectionInfo setShowsOnExternalDevices:](copyFromManagedSettings2, "setShowsOnExternalDevices:", [parentSection showsOnExternalDevices]);
   if ((v17 & 0x2000) == 0)
   {
 LABEL_14:
@@ -2355,7 +2355,7 @@ LABEL_14:
   }
 
 LABEL_46:
-  -[BBSectionInfo setPushSettings:](v15, "setPushSettings:", [v14 pushSettings] & 9 | -[BBSectionInfo pushSettings](v15, "pushSettings") & 0xFFFFFFFFFFFFFFF6);
+  -[BBSectionInfo setPushSettings:](copyFromManagedSettings2, "setPushSettings:", [parentSection pushSettings] & 9 | -[BBSectionInfo pushSettings](copyFromManagedSettings2, "pushSettings") & 0xFFFFFFFFFFFFFFF6);
   if ((v17 & 0x4000) == 0)
   {
 LABEL_15:
@@ -2368,7 +2368,7 @@ LABEL_15:
   }
 
 LABEL_47:
-  -[BBSectionInfo setPushSettings:](v15, "setPushSettings:", [v14 pushSettings] & 0x12 | -[BBSectionInfo pushSettings](v15, "pushSettings") & 0xFFFFFFFFFFFFFFEDLL);
+  -[BBSectionInfo setPushSettings:](copyFromManagedSettings2, "setPushSettings:", [parentSection pushSettings] & 0x12 | -[BBSectionInfo pushSettings](copyFromManagedSettings2, "pushSettings") & 0xFFFFFFFFFFFFFFEDLL);
   if ((v17 & 0x20) == 0)
   {
 LABEL_16:
@@ -2381,8 +2381,8 @@ LABEL_16:
   }
 
 LABEL_48:
-  -[BBSectionInfo setPushSettings:](v15, "setPushSettings:", [v14 pushSettings] & 0x24 | -[BBSectionInfo pushSettings](v15, "pushSettings") & 0xFFFFFFFFFFFFFFDBLL);
-  -[BBSectionInfo setAlertType:](v15, "setAlertType:", [v14 alertType]);
+  -[BBSectionInfo setPushSettings:](copyFromManagedSettings2, "setPushSettings:", [parentSection pushSettings] & 0x24 | -[BBSectionInfo pushSettings](copyFromManagedSettings2, "pushSettings") & 0xFFFFFFFFFFFFFFDBLL);
+  -[BBSectionInfo setAlertType:](copyFromManagedSettings2, "setAlertType:", [parentSection alertType]);
   if ((v17 & 0x40) == 0)
   {
 LABEL_17:
@@ -2395,7 +2395,7 @@ LABEL_17:
   }
 
 LABEL_49:
-  -[BBSectionInfo setContentPreviewSetting:](v15, "setContentPreviewSetting:", [v14 contentPreviewSetting]);
+  -[BBSectionInfo setContentPreviewSetting:](copyFromManagedSettings2, "setContentPreviewSetting:", [parentSection contentPreviewSetting]);
   if ((v17 & 0x400) == 0)
   {
 LABEL_18:
@@ -2408,7 +2408,7 @@ LABEL_18:
   }
 
 LABEL_50:
-  -[BBSectionInfo setAnnounceSetting:](v15, "setAnnounceSetting:", [v14 announceSetting]);
+  -[BBSectionInfo setAnnounceSetting:](copyFromManagedSettings2, "setAnnounceSetting:", [parentSection announceSetting]);
   if ((v17 & 0x80) == 0)
   {
 LABEL_19:
@@ -2421,7 +2421,7 @@ LABEL_19:
   }
 
 LABEL_51:
-  -[BBSectionInfo setCarPlaySetting:](v15, "setCarPlaySetting:", [v14 carPlaySetting]);
+  -[BBSectionInfo setCarPlaySetting:](copyFromManagedSettings2, "setCarPlaySetting:", [parentSection carPlaySetting]);
   if ((v17 & 0x10000) == 0)
   {
 LABEL_20:
@@ -2434,7 +2434,7 @@ LABEL_20:
   }
 
 LABEL_52:
-  -[BBSectionInfo setRemoteNotificationsSetting:](v15, "setRemoteNotificationsSetting:", [v14 remoteNotificationsSetting]);
+  -[BBSectionInfo setRemoteNotificationsSetting:](copyFromManagedSettings2, "setRemoteNotificationsSetting:", [parentSection remoteNotificationsSetting]);
   if ((v17 & 0x100) == 0)
   {
 LABEL_21:
@@ -2447,7 +2447,7 @@ LABEL_21:
   }
 
 LABEL_53:
-  -[BBSectionInfo setCriticalAlertSetting:](v15, "setCriticalAlertSetting:", [v14 criticalAlertSetting]);
+  -[BBSectionInfo setCriticalAlertSetting:](copyFromManagedSettings2, "setCriticalAlertSetting:", [parentSection criticalAlertSetting]);
   if ((v17 & 0x800) == 0)
   {
 LABEL_22:
@@ -2460,7 +2460,7 @@ LABEL_22:
   }
 
 LABEL_54:
-  -[BBSectionInfo setTimeSensitiveSetting:](v15, "setTimeSensitiveSetting:", [v14 timeSensitiveSetting]);
+  -[BBSectionInfo setTimeSensitiveSetting:](copyFromManagedSettings2, "setTimeSensitiveSetting:", [parentSection timeSensitiveSetting]);
   if ((v17 & 0x1000) == 0)
   {
 LABEL_23:
@@ -2473,7 +2473,7 @@ LABEL_23:
   }
 
 LABEL_55:
-  -[BBSectionInfo setScheduledDeliverySetting:](v15, "setScheduledDeliverySetting:", [v14 scheduledDeliverySetting]);
+  -[BBSectionInfo setScheduledDeliverySetting:](copyFromManagedSettings2, "setScheduledDeliverySetting:", [parentSection scheduledDeliverySetting]);
   if ((v17 & 0x8000) == 0)
   {
 LABEL_24:
@@ -2483,7 +2483,7 @@ LABEL_24:
     }
 
 LABEL_57:
-    -[BBSectionInfo setSummarizationSetting:](v15, "setSummarizationSetting:", [v14 summarizationSetting]);
+    -[BBSectionInfo setSummarizationSetting:](copyFromManagedSettings2, "setSummarizationSetting:", [parentSection summarizationSetting]);
     if ((v17 & 0x40000) == 0)
     {
       goto LABEL_142;
@@ -2493,7 +2493,7 @@ LABEL_57:
   }
 
 LABEL_56:
-  -[BBSectionInfo setDirectMessagesSetting:](v15, "setDirectMessagesSetting:", [v14 directMessagesSetting]);
+  -[BBSectionInfo setDirectMessagesSetting:](copyFromManagedSettings2, "setDirectMessagesSetting:", [parentSection directMessagesSetting]);
   if ((v17 & 0x20000) != 0)
   {
     goto LABEL_57;
@@ -2503,29 +2503,29 @@ LABEL_25:
   if ((v17 & 0x40000) != 0)
   {
 LABEL_58:
-    -[BBSectionInfo setPrioritizationSetting:](v15, "setPrioritizationSetting:", [v14 prioritizationSetting]);
+    -[BBSectionInfo setPrioritizationSetting:](copyFromManagedSettings2, "setPrioritizationSetting:", [parentSection prioritizationSetting]);
   }
 
 LABEL_142:
-  if ([(BBSectionInfo *)v13 isRestricted])
+  if ([(BBSectionInfo *)selfCopy isRestricted])
   {
-    if (!v15)
+    if (!copyFromManagedSettings2)
     {
-      v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+      copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     }
 
-    [(BBSectionInfo *)v15 setAuthorizationStatus:1];
+    [(BBSectionInfo *)copyFromManagedSettings2 setAuthorizationStatus:1];
   }
 
-  if (![(BBSectionInfo *)v13 allowsNotifications])
+  if (![(BBSectionInfo *)selfCopy allowsNotifications])
   {
-    if (!v15)
+    if (!copyFromManagedSettings2)
     {
-      v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+      copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     }
 
 LABEL_152:
-    if (![v14 allowsNotifications] || (objc_msgSend(v14, "pushSettings") & 1) == 0 || (objc_msgSend(v14, "suppressedSettings") & 0x2000) != 0 || (-[BBSectionInfo suppressedSettings](v13, "suppressedSettings") & 0x2000) != 0)
+    if (![parentSection allowsNotifications] || (objc_msgSend(parentSection, "pushSettings") & 1) == 0 || (objc_msgSend(parentSection, "suppressedSettings") & 0x2000) != 0 || (-[BBSectionInfo suppressedSettings](selfCopy, "suppressedSettings") & 0x2000) != 0)
     {
       v40 = -57;
     }
@@ -2535,30 +2535,30 @@ LABEL_152:
       v40 = -49;
     }
 
-    [(BBSectionInfo *)v15 setPushSettings:[(BBSectionInfo *)v13 pushSettings]& v40];
-    [(BBSectionInfo *)v15 setAlertType:0];
-    [(BBSectionInfo *)v15 setNotificationCenterSetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 notificationCenterSetting]]];
-    [(BBSectionInfo *)v15 setLockScreenSetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 lockScreenSetting]]];
-    [(BBSectionInfo *)v15 setShowsOnExternalDevices:0];
-    [(BBSectionInfo *)v15 setShowsCustomSettingsLink:0];
-    [(BBSectionInfo *)v15 setContentPreviewSetting:0];
-    [(BBSectionInfo *)v15 setAnnounceSetting:1];
-    [(BBSectionInfo *)v15 setCarPlaySetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 carPlaySetting]]];
-    [(BBSectionInfo *)v15 setRemoteNotificationsSetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 remoteNotificationsSetting]]];
-    [(BBSectionInfo *)v15 setDirectMessagesSetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 directMessagesSetting]]];
-    [(BBSectionInfo *)v15 setScheduledDeliverySetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 scheduledDeliverySetting]]];
-    [(BBSectionInfo *)v15 setTimeSensitiveSetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 timeSensitiveSetting]]];
-    [(BBSectionInfo *)v15 setSummarizationSetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 summarizationSetting]]];
-    [(BBSectionInfo *)v15 setPrioritizationSetting:[(BBSectionInfo *)v13 disabledSettingForSetting:[(BBSectionInfo *)v13 prioritizationSetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setPushSettings:[(BBSectionInfo *)selfCopy pushSettings]& v40];
+    [(BBSectionInfo *)copyFromManagedSettings2 setAlertType:0];
+    [(BBSectionInfo *)copyFromManagedSettings2 setNotificationCenterSetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy notificationCenterSetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setLockScreenSetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy lockScreenSetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setShowsOnExternalDevices:0];
+    [(BBSectionInfo *)copyFromManagedSettings2 setShowsCustomSettingsLink:0];
+    [(BBSectionInfo *)copyFromManagedSettings2 setContentPreviewSetting:0];
+    [(BBSectionInfo *)copyFromManagedSettings2 setAnnounceSetting:1];
+    [(BBSectionInfo *)copyFromManagedSettings2 setCarPlaySetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy carPlaySetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setRemoteNotificationsSetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy remoteNotificationsSetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setDirectMessagesSetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy directMessagesSetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setScheduledDeliverySetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy scheduledDeliverySetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setTimeSensitiveSetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy timeSensitiveSetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setSummarizationSetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy summarizationSetting]]];
+    [(BBSectionInfo *)copyFromManagedSettings2 setPrioritizationSetting:[(BBSectionInfo *)selfCopy disabledSettingForSetting:[(BBSectionInfo *)selfCopy prioritizationSetting]]];
 LABEL_159:
-    if (a4 != -1)
+    if (announceSetting != -1)
     {
-      if (a4 >= 2)
+      if (announceSetting >= 2)
       {
         goto LABEL_172;
       }
 
-      if (v15)
+      if (copyFromManagedSettings2)
       {
         goto LABEL_168;
       }
@@ -2566,22 +2566,22 @@ LABEL_159:
       goto LABEL_167;
     }
 
-    if (v15)
+    if (copyFromManagedSettings2)
     {
 LABEL_170:
-      v41 = v15;
+      v41 = copyFromManagedSettings2;
       v42 = 0;
       goto LABEL_171;
     }
 
 LABEL_169:
-    v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+    copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     goto LABEL_170;
   }
 
-  if (v15)
+  if (copyFromManagedSettings2)
   {
-    if ([(BBSectionInfo *)v15 allowsNotifications])
+    if ([(BBSectionInfo *)copyFromManagedSettings2 allowsNotifications])
     {
       goto LABEL_159;
     }
@@ -2589,121 +2589,121 @@ LABEL_169:
     goto LABEL_152;
   }
 
-  if (a4 == -1)
+  if (announceSetting == -1)
   {
     goto LABEL_169;
   }
 
-  if (a4 >= 2)
+  if (announceSetting >= 2)
   {
-    if ((a5 + 1) < 3)
+    if ((deliverySetting + 1) < 3)
     {
       goto LABEL_174;
     }
 
 LABEL_177:
-    v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+    copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     goto LABEL_178;
   }
 
 LABEL_167:
-  v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+  copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
 LABEL_168:
-  v41 = v15;
+  v41 = copyFromManagedSettings2;
   v42 = 1;
 LABEL_171:
   [(BBSectionInfo *)v41 setAnnounceSetting:v42];
 LABEL_172:
-  if ((a5 + 1) < 3)
+  if ((deliverySetting + 1) < 3)
   {
-    if (v15)
+    if (copyFromManagedSettings2)
     {
 LABEL_175:
-      [(BBSectionInfo *)v15 setScheduledDeliverySetting:1];
+      [(BBSectionInfo *)copyFromManagedSettings2 setScheduledDeliverySetting:1];
       goto LABEL_178;
     }
 
 LABEL_174:
-    v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+    copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     goto LABEL_175;
   }
 
-  if (!v15)
+  if (!copyFromManagedSettings2)
   {
     goto LABEL_177;
   }
 
 LABEL_178:
-  if (!v70)
+  if (!playCopy)
   {
-    if (!v15)
+    if (!copyFromManagedSettings2)
     {
-      v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+      copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     }
 
-    [(BBSectionInfo *)v15 setCarPlaySetting:0];
+    [(BBSectionInfo *)copyFromManagedSettings2 setCarPlaySetting:0];
   }
 
-  if (!a9)
+  if (!notifications)
   {
-    if (!v15)
+    if (!copyFromManagedSettings2)
     {
-      v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+      copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     }
 
-    [(BBSectionInfo *)v15 setRemoteNotificationsSetting:0];
+    [(BBSectionInfo *)copyFromManagedSettings2 setRemoteNotificationsSetting:0];
   }
 
-  if (a6 != 2)
+  if (summarizationSetting != 2)
   {
-    if (!v15)
+    if (!copyFromManagedSettings2)
     {
-      v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+      copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     }
 
-    [(BBSectionInfo *)v15 setSummarizationSetting:a6 != -1];
+    [(BBSectionInfo *)copyFromManagedSettings2 setSummarizationSetting:summarizationSetting != -1];
   }
 
-  if (a7 != 2)
+  if (prioritizationSetting != 2)
   {
-    if (!v15)
+    if (!copyFromManagedSettings2)
     {
-      v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+      copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     }
 
-    [(BBSectionInfo *)v15 setPrioritizationSetting:a7 != -1];
+    [(BBSectionInfo *)copyFromManagedSettings2 setPrioritizationSetting:prioritizationSetting != -1];
   }
 
-  if (v15)
+  if (copyFromManagedSettings2)
   {
-    v43 = v15;
+    v43 = copyFromManagedSettings2;
   }
 
   else
   {
-    v43 = v13;
+    v43 = selfCopy;
   }
 
   v44 = v43;
   if (![(BBSectionInfo *)v44 contentPreviewSetting])
   {
-    if (!v15)
+    if (!copyFromManagedSettings2)
     {
-      v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+      copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     }
 
-    [(BBSectionInfo *)v15 setContentPreviewSetting:a3];
+    [(BBSectionInfo *)copyFromManagedSettings2 setContentPreviewSetting:setting];
   }
 
   if ([(BBSectionInfo *)v44 authorizationStatus]== 4)
   {
-    if (!v15)
+    if (!copyFromManagedSettings2)
     {
-      v15 = [(BBSectionInfo *)v13 copyFromManagedSettings];
+      copyFromManagedSettings2 = [(BBSectionInfo *)selfCopy copyFromManagedSettings];
     }
 
-    v45 = [(BBSectionInfo *)v13 sectionInfoSettings];
-    if ([v45 isAuthorizedTemporarily])
+    sectionInfoSettings = [(BBSectionInfo *)selfCopy sectionInfoSettings];
+    if ([sectionInfoSettings isAuthorizedTemporarily])
     {
       v46 = 2;
     }
@@ -2713,17 +2713,17 @@ LABEL_178:
       v46 = 0;
     }
 
-    [(BBSectionInfo *)v15 setAuthorizationStatus:v46];
+    [(BBSectionInfo *)copyFromManagedSettings2 setAuthorizationStatus:v46];
   }
 
-  if (v15)
+  if (copyFromManagedSettings2)
   {
-    v47 = v15;
+    v47 = copyFromManagedSettings2;
   }
 
   else
   {
-    v47 = v13;
+    v47 = selfCopy;
   }
 
   v48 = v47;
@@ -2732,96 +2732,96 @@ LABEL_178:
   return v47;
 }
 
-- (id)effectiveSectionInfoWithFactoryInfo:(id)a3 defaultContentPreviewSetting:(int64_t)a4 globalAnnounceSetting:(int64_t)a5 globalScheduledDeliverySetting:(int64_t)a6 globalSummarizationSetting:(int64_t)a7 globalPrioritizationSetting:(int64_t)a8 hasPairedVehiclesForCarPlay:(BOOL)a9 hasDestinationForRemoteNotifications:(BOOL)a10
+- (id)effectiveSectionInfoWithFactoryInfo:(id)info defaultContentPreviewSetting:(int64_t)setting globalAnnounceSetting:(int64_t)announceSetting globalScheduledDeliverySetting:(int64_t)deliverySetting globalSummarizationSetting:(int64_t)summarizationSetting globalPrioritizationSetting:(int64_t)prioritizationSetting hasPairedVehiclesForCarPlay:(BOOL)play hasDestinationForRemoteNotifications:(BOOL)self0
 {
-  v16 = a3;
-  if (!v16)
+  infoCopy = info;
+  if (!infoCopy)
   {
     goto LABEL_9;
   }
 
-  v30 = a4;
-  v17 = [(BBSectionInfo *)self factorySectionID];
-  v18 = [v16 sectionID];
-  if (([v17 isEqualToString:v18] & 1) == 0)
+  settingCopy = setting;
+  factorySectionID = [(BBSectionInfo *)self factorySectionID];
+  sectionID = [infoCopy sectionID];
+  if (([factorySectionID isEqualToString:sectionID] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  [v16 dataProviderIDs];
-  v29 = a6;
-  v20 = v19 = a8;
+  [infoCopy dataProviderIDs];
+  deliverySettingCopy = deliverySetting;
+  v20 = v19 = prioritizationSetting;
   [(BBSectionInfo *)self sectionID];
-  v22 = v21 = a7;
+  v22 = v21 = summarizationSetting;
   v23 = [v20 containsObject:v22];
 
   if ((v23 & 1) == 0)
   {
 LABEL_9:
-    v26 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
   v24 = [(BBSectionInfo *)self copy];
-  if ([v24 suppressFromSettings] && (objc_msgSend(v16, "suppressFromSettings") & 1) == 0)
+  if ([v24 suppressFromSettings] && (objc_msgSend(infoCopy, "suppressFromSettings") & 1) == 0)
   {
-    [v24 setNotificationCenterSetting:{objc_msgSend(v16, "notificationCenterSetting")}];
-    [v24 setLockScreenSetting:{objc_msgSend(v16, "lockScreenSetting")}];
+    [v24 setNotificationCenterSetting:{objc_msgSend(infoCopy, "notificationCenterSetting")}];
+    [v24 setLockScreenSetting:{objc_msgSend(infoCopy, "lockScreenSetting")}];
     if ([v24 showsOnExternalDevices])
     {
-      v25 = [v16 showsOnExternalDevices];
+      showsOnExternalDevices = [infoCopy showsOnExternalDevices];
     }
 
     else
     {
-      v25 = 0;
+      showsOnExternalDevices = 0;
     }
 
-    [v24 setShowsOnExternalDevices:v25];
-    [v24 setContentPreviewSetting:{objc_msgSend(v16, "contentPreviewSetting")}];
-    [v24 setPushSettings:{objc_msgSend(v16, "pushSettings")}];
-    [v24 setAlertType:{objc_msgSend(v16, "alertType")}];
-    [v24 setAuthorizationStatus:{objc_msgSend(v16, "authorizationStatus")}];
-    [v24 setCarPlaySetting:{objc_msgSend(v16, "carPlaySetting")}];
-    [v24 setRemoteNotificationsSetting:{objc_msgSend(v16, "remoteNotificationsSetting")}];
-    [v24 setAnnounceSetting:{objc_msgSend(v16, "announceSetting")}];
-    [v24 setCriticalAlertSetting:{objc_msgSend(v16, "criticalAlertSetting")}];
-    [v24 setTimeSensitiveSetting:{objc_msgSend(v16, "timeSensitiveSetting")}];
-    [v24 setScheduledDeliverySetting:{objc_msgSend(v16, "scheduledDeliverySetting")}];
-    [v24 setDirectMessagesSetting:{objc_msgSend(v16, "directMessagesSetting")}];
-    [v24 setSummarizationSetting:{objc_msgSend(v16, "summarizationSetting")}];
-    [v24 setPrioritizationSetting:{objc_msgSend(v16, "prioritizationSetting")}];
+    [v24 setShowsOnExternalDevices:showsOnExternalDevices];
+    [v24 setContentPreviewSetting:{objc_msgSend(infoCopy, "contentPreviewSetting")}];
+    [v24 setPushSettings:{objc_msgSend(infoCopy, "pushSettings")}];
+    [v24 setAlertType:{objc_msgSend(infoCopy, "alertType")}];
+    [v24 setAuthorizationStatus:{objc_msgSend(infoCopy, "authorizationStatus")}];
+    [v24 setCarPlaySetting:{objc_msgSend(infoCopy, "carPlaySetting")}];
+    [v24 setRemoteNotificationsSetting:{objc_msgSend(infoCopy, "remoteNotificationsSetting")}];
+    [v24 setAnnounceSetting:{objc_msgSend(infoCopy, "announceSetting")}];
+    [v24 setCriticalAlertSetting:{objc_msgSend(infoCopy, "criticalAlertSetting")}];
+    [v24 setTimeSensitiveSetting:{objc_msgSend(infoCopy, "timeSensitiveSetting")}];
+    [v24 setScheduledDeliverySetting:{objc_msgSend(infoCopy, "scheduledDeliverySetting")}];
+    [v24 setDirectMessagesSetting:{objc_msgSend(infoCopy, "directMessagesSetting")}];
+    [v24 setSummarizationSetting:{objc_msgSend(infoCopy, "summarizationSetting")}];
+    [v24 setPrioritizationSetting:{objc_msgSend(infoCopy, "prioritizationSetting")}];
   }
 
-  LOBYTE(v28) = a10;
-  v26 = [v24 effectiveSectionInfoWithDefaultContentPreviewSetting:v30 globalAnnounceSetting:a5 globalScheduledDeliverySetting:v29 globalSummarizationSetting:v21 globalPrioritizationSetting:v19 hasPairedVehiclesForCarPlay:a9 hasDestinationForRemoteNotifications:v28];
+  LOBYTE(v28) = notifications;
+  selfCopy = [v24 effectiveSectionInfoWithDefaultContentPreviewSetting:settingCopy globalAnnounceSetting:announceSetting globalScheduledDeliverySetting:deliverySettingCopy globalSummarizationSetting:v21 globalPrioritizationSetting:v19 hasPairedVehiclesForCarPlay:play hasDestinationForRemoteNotifications:v28];
 
 LABEL_10:
 
-  return v26;
+  return selfCopy;
 }
 
-+ (id)defaultSectionInfoForSection:(id)a3
++ (id)defaultSectionInfoForSection:(id)section
 {
-  v5 = a3;
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v5 defaultSectionInfo], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  sectionCopy = section;
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([sectionCopy defaultSectionInfo], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = [BBSectionInfo defaultSectionInfoForType:0];
   }
 
-  v7 = [v5 sectionIdentifier];
-  [v6 setSectionID:v7];
+  sectionIdentifier = [sectionCopy sectionIdentifier];
+  [v6 setSectionID:sectionIdentifier];
   v14 = 0;
-  v8 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v7 allowPlaceholder:1 error:&v14];
+  v8 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:sectionIdentifier allowPlaceholder:1 error:&v14];
   v9 = v14;
   if (v8)
   {
-    v10 = [v8 localizedName];
-    [v6 setAppName:v10];
+    localizedName = [v8 localizedName];
+    [v6 setAppName:localizedName];
 
-    v11 = [v8 applicationState];
-    [v6 setIsRestricted:{objc_msgSend(v11, "isRestricted")}];
+    applicationState = [v8 applicationState];
+    [v6 setIsRestricted:{objc_msgSend(applicationState, "isRestricted")}];
 
     if (v6)
     {
@@ -2834,7 +2834,7 @@ LABEL_10:
     v12 = BBLogSettings;
     if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_ERROR))
     {
-      [(BBSectionInfo(DataProviders) *)v7 defaultSectionInfoForSection:v12, v9];
+      [(BBSectionInfo(DataProviders) *)sectionIdentifier defaultSectionInfoForSection:v12, v9];
       if (v6)
       {
         goto LABEL_9;
@@ -2847,34 +2847,34 @@ LABEL_10:
     }
   }
 
-  [(BBSectionInfo(DataProviders) *)a2 defaultSectionInfoForSection:a1];
+  [(BBSectionInfo(DataProviders) *)a2 defaultSectionInfoForSection:self];
 LABEL_9:
 
   return v6;
 }
 
-- (void)updateWithDefaultSectionInfo:(id)a3
+- (void)updateWithDefaultSectionInfo:(id)info
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BBSectionInfo *)self alertType];
-  v6 = [(BBSectionInfo *)self pushSettings];
-  v7 = [v4 pushSettings];
-  v8 = v7;
-  if ((v6 & 4) == 0 && (v7 & 4) != 0)
+  infoCopy = info;
+  alertType = [(BBSectionInfo *)self alertType];
+  pushSettings = [(BBSectionInfo *)self pushSettings];
+  pushSettings2 = [infoCopy pushSettings];
+  v8 = pushSettings2;
+  if ((pushSettings & 4) == 0 && (pushSettings2 & 4) != 0)
   {
-    v5 = [v4 alertType];
-    v6 |= 0x24uLL;
+    alertType = [infoCopy alertType];
+    pushSettings |= 0x24uLL;
   }
 
-  if (v6 & 1 | ((v8 & 1) == 0))
+  if (pushSettings & 1 | ((v8 & 1) == 0))
   {
-    v9 = v6;
+    v9 = pushSettings;
   }
 
   else
   {
-    v9 = v6 | 9;
+    v9 = pushSettings | 9;
   }
 
   v10 = (v9 >> 1) & 1;
@@ -2893,13 +2893,13 @@ LABEL_9:
     v11 = v9 | 0x12;
   }
 
-  v12 = [(BBSectionInfo *)self suppressedSettings];
-  v13 = [v4 suppressedSettings];
-  v14 = v13;
-  if ((v12 & 0x2000) == 0 || (v13 & 0x2000) != 0)
+  suppressedSettings = [(BBSectionInfo *)self suppressedSettings];
+  suppressedSettings2 = [infoCopy suppressedSettings];
+  v14 = suppressedSettings2;
+  if ((suppressedSettings & 0x2000) == 0 || (suppressedSettings2 & 0x2000) != 0)
   {
 LABEL_26:
-    if ((v12 & 0x20) == 0)
+    if ((suppressedSettings & 0x20) == 0)
     {
       goto LABEL_29;
     }
@@ -2913,8 +2913,8 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  v15 = [(BBSectionInfo *)self subsections];
-  v16 = [v15 count];
+  subsections = [(BBSectionInfo *)self subsections];
+  v16 = [subsections count];
 
   if (!v16)
   {
@@ -2925,8 +2925,8 @@ LABEL_26:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v17 = [(BBSectionInfo *)self subsections];
-  v18 = [v17 countByEnumeratingWithState:&v63 objects:v67 count:16];
+  subsections2 = [(BBSectionInfo *)self subsections];
+  v18 = [subsections2 countByEnumeratingWithState:&v63 objects:v67 count:16];
   if (v18)
   {
     v19 = v18;
@@ -2937,7 +2937,7 @@ LABEL_26:
       {
         if (*v64 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(subsections2);
         }
 
         if (([*(*(&v63 + 1) + 8 * i) pushSettings] & 8) != 0)
@@ -2947,7 +2947,7 @@ LABEL_26:
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v63 objects:v67 count:16];
+      v19 = [subsections2 countByEnumeratingWithState:&v63 objects:v67 count:16];
       if (v19)
       {
         continue;
@@ -2959,24 +2959,24 @@ LABEL_26:
 
 LABEL_87:
 
-  if ((v12 & 0x20) != 0)
+  if ((suppressedSettings & 0x20) != 0)
   {
 LABEL_27:
     if ((v14 & 0x20) == 0)
     {
-      v5 = [v4 alertType];
+      alertType = [infoCopy alertType];
       v11 |= 0x24uLL;
     }
   }
 
 LABEL_29:
-  [(BBSectionInfo *)self setAlertType:v5];
+  [(BBSectionInfo *)self setAlertType:alertType];
   [(BBSectionInfo *)self setPushSettings:v11];
-  v22 = [(BBSectionInfo *)self lockScreenSetting];
-  v23 = [v4 lockScreenSetting];
-  if (v22)
+  lockScreenSetting = [(BBSectionInfo *)self lockScreenSetting];
+  lockScreenSetting2 = [infoCopy lockScreenSetting];
+  if (lockScreenSetting)
   {
-    v25 = ((v14 & 2) == 0) & (v12 >> 1);
+    v25 = ((v14 & 2) == 0) & (suppressedSettings >> 1);
   }
 
   else
@@ -2986,18 +2986,18 @@ LABEL_29:
 
   if (v25 == 1)
   {
-    v24 = v23;
-    if (v23)
+    v24 = lockScreenSetting2;
+    if (lockScreenSetting2)
     {
-      [(BBSectionInfo *)self setLockScreenSetting:v23];
+      [(BBSectionInfo *)self setLockScreenSetting:lockScreenSetting2];
     }
   }
 
-  v26 = [(BBSectionInfo *)self notificationCenterSetting];
-  v27 = [v4 notificationCenterSetting];
-  if (v26)
+  notificationCenterSetting = [(BBSectionInfo *)self notificationCenterSetting];
+  notificationCenterSetting2 = [infoCopy notificationCenterSetting];
+  if (notificationCenterSetting)
   {
-    v29 = v12 & ((v14 & 1) == 0);
+    v29 = suppressedSettings & ((v14 & 1) == 0);
   }
 
   else
@@ -3007,18 +3007,18 @@ LABEL_29:
 
   if (v29 == 1)
   {
-    v28 = v27;
-    if (v27)
+    v28 = notificationCenterSetting2;
+    if (notificationCenterSetting2)
     {
-      [(BBSectionInfo *)self setNotificationCenterSetting:v27];
+      [(BBSectionInfo *)self setNotificationCenterSetting:notificationCenterSetting2];
     }
   }
 
-  v30 = [(BBSectionInfo *)self carPlaySetting];
-  v31 = [v4 carPlaySetting];
-  if (v30)
+  carPlaySetting = [(BBSectionInfo *)self carPlaySetting];
+  carPlaySetting2 = [infoCopy carPlaySetting];
+  if (carPlaySetting)
   {
-    v33 = ((v14 & 0x80) == 0) & (v12 >> 7);
+    v33 = ((v14 & 0x80) == 0) & (suppressedSettings >> 7);
   }
 
   else
@@ -3028,18 +3028,18 @@ LABEL_29:
 
   if (v33 == 1)
   {
-    v32 = v31;
-    if (v31)
+    v32 = carPlaySetting2;
+    if (carPlaySetting2)
     {
-      [(BBSectionInfo *)self setCarPlaySetting:v31];
+      [(BBSectionInfo *)self setCarPlaySetting:carPlaySetting2];
     }
   }
 
-  v34 = [(BBSectionInfo *)self remoteNotificationsSetting];
-  v35 = [v4 remoteNotificationsSetting];
-  if (v34)
+  remoteNotificationsSetting = [(BBSectionInfo *)self remoteNotificationsSetting];
+  remoteNotificationsSetting2 = [infoCopy remoteNotificationsSetting];
+  if (remoteNotificationsSetting)
   {
-    v37 = ((*&v14 & 0x10000) == 0) & HIWORD(v12);
+    v37 = ((*&v14 & 0x10000) == 0) & HIWORD(suppressedSettings);
   }
 
   else
@@ -3049,86 +3049,86 @@ LABEL_29:
 
   if (v37 == 1)
   {
-    v36 = v35;
-    if (v35)
+    v36 = remoteNotificationsSetting2;
+    if (remoteNotificationsSetting2)
     {
-      [(BBSectionInfo *)self setRemoteNotificationsSetting:v35];
+      [(BBSectionInfo *)self setRemoteNotificationsSetting:remoteNotificationsSetting2];
     }
   }
 
-  v38 = [(BBSectionInfo *)self announceSetting];
-  v39 = [v4 announceSetting];
-  if (!v38)
+  announceSetting = [(BBSectionInfo *)self announceSetting];
+  announceSetting2 = [infoCopy announceSetting];
+  if (!announceSetting)
   {
-    v40 = v39;
-    if (v39)
+    v40 = announceSetting2;
+    if (announceSetting2)
     {
-      [(BBSectionInfo *)self setAnnounceSetting:v39];
+      [(BBSectionInfo *)self setAnnounceSetting:announceSetting2];
     }
   }
 
-  v41 = [(BBSectionInfo *)self criticalAlertSetting];
-  v42 = [v4 criticalAlertSetting];
-  if (!v41)
+  criticalAlertSetting = [(BBSectionInfo *)self criticalAlertSetting];
+  criticalAlertSetting2 = [infoCopy criticalAlertSetting];
+  if (!criticalAlertSetting)
   {
-    v43 = v42;
-    if (v42)
+    v43 = criticalAlertSetting2;
+    if (criticalAlertSetting2)
     {
-      [(BBSectionInfo *)self setCriticalAlertSetting:v42];
+      [(BBSectionInfo *)self setCriticalAlertSetting:criticalAlertSetting2];
     }
   }
 
-  v44 = [(BBSectionInfo *)self timeSensitiveSetting];
-  v45 = [v4 timeSensitiveSetting];
-  if (!v44)
+  timeSensitiveSetting = [(BBSectionInfo *)self timeSensitiveSetting];
+  timeSensitiveSetting2 = [infoCopy timeSensitiveSetting];
+  if (!timeSensitiveSetting)
   {
-    v46 = v45;
-    if (v45)
+    v46 = timeSensitiveSetting2;
+    if (timeSensitiveSetting2)
     {
-      [(BBSectionInfo *)self setTimeSensitiveSetting:v45];
+      [(BBSectionInfo *)self setTimeSensitiveSetting:timeSensitiveSetting2];
     }
   }
 
-  v47 = [(BBSectionInfo *)self directMessagesSetting];
-  v48 = [v4 directMessagesSetting];
-  if (!v47)
+  directMessagesSetting = [(BBSectionInfo *)self directMessagesSetting];
+  directMessagesSetting2 = [infoCopy directMessagesSetting];
+  if (!directMessagesSetting)
   {
-    v49 = v48;
-    if (v48)
+    v49 = directMessagesSetting2;
+    if (directMessagesSetting2)
     {
-      [(BBSectionInfo *)self setDirectMessagesSetting:v48];
+      [(BBSectionInfo *)self setDirectMessagesSetting:directMessagesSetting2];
     }
   }
 
-  v50 = [(BBSectionInfo *)self summarizationSetting];
-  v51 = [v4 summarizationSetting];
-  if (!v50)
+  summarizationSetting = [(BBSectionInfo *)self summarizationSetting];
+  summarizationSetting2 = [infoCopy summarizationSetting];
+  if (!summarizationSetting)
   {
-    v52 = v51;
-    if (v51)
+    v52 = summarizationSetting2;
+    if (summarizationSetting2)
     {
-      [(BBSectionInfo *)self setSummarizationSetting:v51];
+      [(BBSectionInfo *)self setSummarizationSetting:summarizationSetting2];
     }
   }
 
-  v53 = [(BBSectionInfo *)self prioritizationSetting];
-  v54 = [v4 prioritizationSetting];
-  if (!v53)
+  prioritizationSetting = [(BBSectionInfo *)self prioritizationSetting];
+  prioritizationSetting2 = [infoCopy prioritizationSetting];
+  if (!prioritizationSetting)
   {
-    v55 = v54;
-    if (v54)
+    v55 = prioritizationSetting2;
+    if (prioritizationSetting2)
     {
-      [(BBSectionInfo *)self setPrioritizationSetting:v54];
+      [(BBSectionInfo *)self setPrioritizationSetting:prioritizationSetting2];
     }
   }
 
   if (![(BBSectionInfo *)self showsCustomSettingsLink])
   {
-    -[BBSectionInfo setShowsCustomSettingsLink:](self, "setShowsCustomSettingsLink:", [v4 showsCustomSettingsLink]);
+    -[BBSectionInfo setShowsCustomSettingsLink:](self, "setShowsCustomSettingsLink:", [infoCopy showsCustomSettingsLink]);
   }
 
-  v56 = [(BBSectionInfo *)self parentSection];
-  if (!v56 || (v12 & 0x23) != 0)
+  parentSection = [(BBSectionInfo *)self parentSection];
+  if (!parentSection || (suppressedSettings & 0x23) != 0)
   {
   }
 
@@ -3152,57 +3152,57 @@ LABEL_29:
     }
   }
 
-  -[BBSectionInfo setSuppressFromSettings:](self, "setSuppressFromSettings:", [v4 suppressFromSettings]);
-  -[BBSectionInfo setSuppressedSettings:](self, "setSuppressedSettings:", [v4 suppressedSettings]);
-  -[BBSectionInfo setSectionType:](self, "setSectionType:", [v4 sectionType]);
-  -[BBSectionInfo setIsAppClip:](self, "setIsAppClip:", [v4 isAppClip]);
-  -[BBSectionInfo setSectionCategory:](self, "setSectionCategory:", [v4 sectionCategory]);
-  -[BBSectionInfo setSubsectionPriority:](self, "setSubsectionPriority:", [v4 subsectionPriority]);
-  -[BBSectionInfo setVersion:](self, "setVersion:", [v4 version]);
-  v57 = [v4 appName];
-  [(BBSectionInfo *)self setAppName:v57];
+  -[BBSectionInfo setSuppressFromSettings:](self, "setSuppressFromSettings:", [infoCopy suppressFromSettings]);
+  -[BBSectionInfo setSuppressedSettings:](self, "setSuppressedSettings:", [infoCopy suppressedSettings]);
+  -[BBSectionInfo setSectionType:](self, "setSectionType:", [infoCopy sectionType]);
+  -[BBSectionInfo setIsAppClip:](self, "setIsAppClip:", [infoCopy isAppClip]);
+  -[BBSectionInfo setSectionCategory:](self, "setSectionCategory:", [infoCopy sectionCategory]);
+  -[BBSectionInfo setSubsectionPriority:](self, "setSubsectionPriority:", [infoCopy subsectionPriority]);
+  -[BBSectionInfo setVersion:](self, "setVersion:", [infoCopy version]);
+  appName = [infoCopy appName];
+  [(BBSectionInfo *)self setAppName:appName];
 
-  v58 = [v4 displayName];
-  [(BBSectionInfo *)self setDisplayName:v58];
+  displayName = [infoCopy displayName];
+  [(BBSectionInfo *)self setDisplayName:displayName];
 
-  v59 = [v4 icon];
-  [(BBSectionInfo *)self setIcon:v59];
+  icon = [infoCopy icon];
+  [(BBSectionInfo *)self setIcon:icon];
 
-  -[BBSectionInfo setIsRestricted:](self, "setIsRestricted:", [v4 isRestricted]);
-  v60 = [v4 customSettingsBundle];
-  [(BBSectionInfo *)self setCustomSettingsBundle:v60];
+  -[BBSectionInfo setIsRestricted:](self, "setIsRestricted:", [infoCopy isRestricted]);
+  customSettingsBundle = [infoCopy customSettingsBundle];
+  [(BBSectionInfo *)self setCustomSettingsBundle:customSettingsBundle];
 
-  v61 = [v4 customSettingsDetailControllerClass];
-  [(BBSectionInfo *)self setCustomSettingsDetailControllerClass:v61];
+  customSettingsDetailControllerClass = [infoCopy customSettingsDetailControllerClass];
+  [(BBSectionInfo *)self setCustomSettingsDetailControllerClass:customSettingsDetailControllerClass];
 
   v62 = *MEMORY[0x277D85DE8];
 }
 
 - (void)queryAndUseManagedSettings
 {
-  v3 = [(BBSectionInfo *)self sectionID];
-  [(BBSectionInfo *)self queryAndUseManagedSettingsForSectionID:v3];
+  sectionID = [(BBSectionInfo *)self sectionID];
+  [(BBSectionInfo *)self queryAndUseManagedSettingsForSectionID:sectionID];
 }
 
-- (void)queryAndUseManagedSettingsForSectionID:(id)a3
+- (void)queryAndUseManagedSettingsForSectionID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [BBSectionInfoSettings sectionInfoSettingsForManagedBundleID:v4];
+  dCopy = d;
+  v5 = [BBSectionInfoSettings sectionInfoSettingsForManagedBundleID:dCopy];
   if (v5)
   {
     v6 = BBLogSettings;
     if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&dword_241EFF000, v6, OS_LOG_TYPE_DEFAULT, "Managed settings found for section %{public}@", &v11, 0xCu);
     }
   }
 
   [(BBSectionInfo *)self setManagedSectionInfoSettings:v5];
-  v7 = [MEMORY[0x277D262A0] sharedConnection];
-  v8 = [v7 isNotificationsModificationAllowedForBundleID:v4];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v8 = [mEMORY[0x277D262A0] isNotificationsModificationAllowedForBundleID:dCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -3210,7 +3210,7 @@ LABEL_29:
     if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&dword_241EFF000, v9, OS_LOG_TYPE_DEFAULT, "Modification not allowed for section %{public}@", &v11, 0xCu);
     }
   }
@@ -3220,11 +3220,11 @@ LABEL_29:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setManagedSectionInfoSettings:(id)a3
+- (void)setManagedSectionInfoSettings:(id)settings
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  settingsCopy = settings;
+  v5 = [settingsCopy copy];
   managedSectionInfoSettings = self->_managedSectionInfoSettings;
   self->_managedSectionInfoSettings = v5;
 
@@ -3248,7 +3248,7 @@ LABEL_29:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) setManagedSectionInfoSettings:{v4, v13}];
+        [*(*(&v13 + 1) + 8 * v11++) setManagedSectionInfoSettings:{settingsCopy, v13}];
       }
 
       while (v9 != v11);
@@ -3263,181 +3263,181 @@ LABEL_29:
 
 - (NSDate)authorizationExpirationDate
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 authorizationExpirationDate];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  authorizationExpirationDate = [readableSettings authorizationExpirationDate];
 
-  return v3;
+  return authorizationExpirationDate;
 }
 
-- (void)setAuthorizationExpirationDate:(id)a3
+- (void)setAuthorizationExpirationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(BBSectionInfo *)self writableSettings];
-  [v5 setAuthorizationExpirationDate:v4];
+  dateCopy = date;
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setAuthorizationExpirationDate:dateCopy];
 }
 
-- (void)setAuthorizationStatus:(int64_t)a3
+- (void)setAuthorizationStatus:(int64_t)status
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setAuthorizationStatus:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setAuthorizationStatus:status];
 }
 
 - (NSDate)lastUserGrantedAuthorizationDate
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 lastUserGrantedAuthorizationDate];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  lastUserGrantedAuthorizationDate = [readableSettings lastUserGrantedAuthorizationDate];
 
-  return v3;
+  return lastUserGrantedAuthorizationDate;
 }
 
-- (void)setLastUserGrantedAuthorizationDate:(id)a3
+- (void)setLastUserGrantedAuthorizationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(BBSectionInfo *)self writableSettings];
-  [v5 setLastUserGrantedAuthorizationDate:v4];
+  dateCopy = date;
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setLastUserGrantedAuthorizationDate:dateCopy];
 }
 
-- (void)setMuteAssertion:(id)a3
+- (void)setMuteAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [(BBSectionInfo *)self sectionInfoSettings];
-  [v5 setMuteAssertion:v4];
+  assertionCopy = assertion;
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  [sectionInfoSettings setMuteAssertion:assertionCopy];
 }
 
-- (void)setNotificationCenterSetting:(int64_t)a3
+- (void)setNotificationCenterSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setNotificationCenterSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setNotificationCenterSetting:setting];
 }
 
 - (BOOL)showsInNotificationCenter
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 showsInNotificationCenter];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  showsInNotificationCenter = [readableSettings showsInNotificationCenter];
 
-  return v3;
+  return showsInNotificationCenter;
 }
 
-- (void)setLockScreenSetting:(int64_t)a3
+- (void)setLockScreenSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setLockScreenSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setLockScreenSetting:setting];
 }
 
 - (BOOL)showsInLockScreen
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 showsInLockScreen];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  showsInLockScreen = [readableSettings showsInLockScreen];
 
-  return v3;
+  return showsInLockScreen;
 }
 
-- (void)setAlertType:(unint64_t)a3
+- (void)setAlertType:(unint64_t)type
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setAlertType:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setAlertType:type];
 }
 
-- (void)setPushSettings:(unint64_t)a3
+- (void)setPushSettings:(unint64_t)settings
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setPushSettings:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setPushSettings:settings];
 }
 
-- (void)setCarPlaySetting:(int64_t)a3
+- (void)setCarPlaySetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setCarPlaySetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setCarPlaySetting:setting];
 }
 
-- (void)setRemoteNotificationsSetting:(int64_t)a3
+- (void)setRemoteNotificationsSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setRemoteNotificationsSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setRemoteNotificationsSetting:setting];
 }
 
-- (void)setSpokenNotificationSetting:(int64_t)a3
+- (void)setSpokenNotificationSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setSpokenNotificationSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setSpokenNotificationSetting:setting];
 }
 
-- (void)setCriticalAlertSetting:(int64_t)a3
+- (void)setCriticalAlertSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setCriticalAlertSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setCriticalAlertSetting:setting];
 }
 
-- (void)setTimeSensitiveSetting:(int64_t)a3
+- (void)setTimeSensitiveSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setTimeSensitiveSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setTimeSensitiveSetting:setting];
 }
 
 - (BOOL)hasUserConfiguredTimeSensitiveSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 hasUserConfiguredTimeSensitiveSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  hasUserConfiguredTimeSensitiveSetting = [readableSettings hasUserConfiguredTimeSensitiveSetting];
 
-  return v3;
+  return hasUserConfiguredTimeSensitiveSetting;
 }
 
-- (void)setBulletinGroupingSetting:(int64_t)a3
+- (void)setBulletinGroupingSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setBulletinGroupingSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setBulletinGroupingSetting:setting];
 }
 
-- (void)setAnnounceSetting:(int64_t)a3
+- (void)setAnnounceSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setAnnounceSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setAnnounceSetting:setting];
 }
 
-- (void)setScheduledDeliverySetting:(int64_t)a3
+- (void)setScheduledDeliverySetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setScheduledDeliverySetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setScheduledDeliverySetting:setting];
 }
 
-- (void)setDirectMessagesSetting:(int64_t)a3
+- (void)setDirectMessagesSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setDirectMessagesSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setDirectMessagesSetting:setting];
 }
 
 - (BOOL)hasUserConfiguredDirectMessagesSetting
 {
-  v2 = [(BBSectionInfo *)self readableSettings];
-  v3 = [v2 hasUserConfiguredDirectMessagesSetting];
+  readableSettings = [(BBSectionInfo *)self readableSettings];
+  hasUserConfiguredDirectMessagesSetting = [readableSettings hasUserConfiguredDirectMessagesSetting];
 
-  return v3;
+  return hasUserConfiguredDirectMessagesSetting;
 }
 
-- (void)setContentPreviewSetting:(int64_t)a3
+- (void)setContentPreviewSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setContentPreviewSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setContentPreviewSetting:setting];
 }
 
-- (void)setSummarizationSetting:(int64_t)a3
+- (void)setSummarizationSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setSummarizationSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setSummarizationSetting:setting];
 }
 
-- (void)setPrioritizationSetting:(int64_t)a3
+- (void)setPrioritizationSetting:(int64_t)setting
 {
-  v4 = [(BBSectionInfo *)self writableSettings];
-  [v4 setPrioritizationSetting:a3];
+  writableSettings = [(BBSectionInfo *)self writableSettings];
+  [writableSettings setPrioritizationSetting:setting];
 }
 
 - (BOOL)showsMessagePreview
 {
-  v2 = [(BBSectionInfo *)self sectionInfoSettings];
-  v3 = [v2 showsMessagePreview];
+  sectionInfoSettings = [(BBSectionInfo *)self sectionInfoSettings];
+  showsMessagePreview = [sectionInfoSettings showsMessagePreview];
 
-  return v3;
+  return showsMessagePreview;
 }
 
 - (void)_addSubsection:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

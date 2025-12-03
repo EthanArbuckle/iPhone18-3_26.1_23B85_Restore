@@ -1,6 +1,6 @@
 @interface CSQuickAction
 - (CSQuickActionDelegate)delegate;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CSQuickAction
@@ -12,10 +12,10 @@
   return WeakRetained;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = [(CSQuickAction *)self delegate];
-  [v4 isSelectedDidChangeForAction:self];
+  delegate = [(CSQuickAction *)self delegate];
+  [delegate isSelectedDidChangeForAction:self];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface SGMessagePairIterator
-- (SGMessagePairIterator)initWithStartDate:(id)a3 maxBatchSize:(unint64_t)a4 maxReplyLength:(unint64_t)a5 maxReplyGap:(double)a6;
-- (id)handleFromConversationId:(id)a3;
+- (SGMessagePairIterator)initWithStartDate:(id)date maxBatchSize:(unint64_t)size maxReplyLength:(unint64_t)length maxReplyGap:(double)gap;
+- (id)handleFromConversationId:(id)id;
 - (id)nextMessagePair;
-- (id)removeBreadcrumbsFromMessage:(id)a3;
+- (id)removeBreadcrumbsFromMessage:(id)message;
 @end
 
 @implementation SGMessagePairIterator
@@ -11,28 +11,28 @@
 {
   if ([(SGMessagePairIterator *)self isDoneIterating])
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"SGMessagePairIterator.m" lineNumber:159 description:@"Iterator exhausted!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGMessagePairIterator.m" lineNumber:159 description:@"Iterator exhausted!"];
   }
 
   messageEvents = self->_messageEvents;
   if (!messageEvents)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"SGMessagePairIterator.m" lineNumber:160 description:@"messageEvents is nil"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGMessagePairIterator.m" lineNumber:160 description:@"messageEvents is nil"];
 
     messageEvents = self->_messageEvents;
   }
 
   v5 = [(NSArray *)messageEvents objectAtIndexedSubscript:self->_messageEventIndex];
   ++self->_messageEventIndex;
-  v6 = [v5 startDate];
+  startDate = [v5 startDate];
   latestProcessedDate = self->_latestProcessedDate;
-  self->_latestProcessedDate = v6;
+  self->_latestProcessedDate = startDate;
 
-  v8 = [v5 interaction];
+  interaction = [v5 interaction];
   v9 = INTypedInteractionWithInteraction();
-  v10 = [v9 intent];
+  intent = [v9 intent];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -41,48 +41,48 @@
     goto LABEL_24;
   }
 
-  v11 = v10;
-  v12 = [v11 conversationIdentifier];
-  if (v12)
+  v11 = intent;
+  conversationIdentifier = [v11 conversationIdentifier];
+  if (conversationIdentifier)
   {
-    v13 = v12;
-    v14 = [v11 content];
+    v13 = conversationIdentifier;
+    content = [v11 content];
 
-    if (v14)
+    if (content)
     {
-      v15 = [v11 content];
-      v16 = [v15 mutableCopy];
+      content2 = [v11 content];
+      v16 = [content2 mutableCopy];
 
       CFStringTrimWhitespace(v16);
-      v17 = [v11 conversationIdentifier];
-      v18 = [(SGMessagePairIterator *)self handleFromConversationId:v17];
+      conversationIdentifier2 = [v11 conversationIdentifier];
+      v18 = [(SGMessagePairIterator *)self handleFromConversationId:conversationIdentifier2];
 
-      v19 = [v8 direction];
-      if (v19 == 1)
+      direction = [interaction direction];
+      if (direction == 1)
       {
-        v21 = [(NSMutableDictionary *)self->_latestPromptForHandle objectForKeyedSubscript:v18];
+        startDate3 = [(NSMutableDictionary *)self->_latestPromptForHandle objectForKeyedSubscript:v18];
         [(NSMutableDictionary *)self->_latestPromptForHandle setObject:0 forKeyedSubscript:v18];
-        if (!v21)
+        if (!startDate3)
         {
           v23 = 0;
           goto LABEL_20;
         }
 
-        v24 = [v21 first];
-        v22 = [(SGMessagePairIterator *)self removeBreadcrumbsFromMessage:v24];
+        first = [startDate3 first];
+        v22 = [(SGMessagePairIterator *)self removeBreadcrumbsFromMessage:first];
 
         v25 = [(SGMessagePairIterator *)self removeBreadcrumbsFromMessage:v16];
         if ([v25 length] && objc_msgSend(v22, "length") && objc_msgSend(v25, "length") <= self->_maxReplyLength)
         {
-          v32 = [v5 startDate];
-          v27 = [v21 second];
-          if (v27)
+          startDate2 = [v5 startDate];
+          second = [startDate3 second];
+          if (second)
           {
-            v31 = v27;
-            [v32 timeIntervalSinceDate:v27];
+            v31 = second;
+            [startDate2 timeIntervalSinceDate:second];
             if (v28 <= self->_maxReplyGap)
             {
-              v23 = [[SGMessagePair alloc] initWithReply:v25 prompt:v22 handle:v18 sentAt:v32];
+              v23 = [[SGMessagePair alloc] initWithReply:v25 prompt:v22 handle:v18 sentAt:startDate2];
             }
 
             else
@@ -90,7 +90,7 @@
               v23 = 0;
             }
 
-            v27 = v31;
+            second = v31;
           }
 
           else
@@ -107,15 +107,15 @@
 
       else
       {
-        if (v19 != 2)
+        if (direction != 2)
         {
           v23 = 0;
           goto LABEL_22;
         }
 
         v20 = MEMORY[0x277D42648];
-        v21 = [v5 startDate];
-        v22 = [v20 tupleWithFirst:v16 second:v21];
+        startDate3 = [v5 startDate];
+        v22 = [v20 tupleWithFirst:v16 second:startDate3];
         [(NSMutableDictionary *)self->_latestPromptForHandle setObject:v22 forKeyedSubscript:v18];
         v23 = 0;
       }
@@ -135,20 +135,20 @@ LABEL_24:
   return v23;
 }
 
-- (id)removeBreadcrumbsFromMessage:(id)a3
+- (id)removeBreadcrumbsFromMessage:(id)message
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [a3 stringByReplacingOccurrencesOfString:self->_attachmentCharacterString withString:&stru_285992FC0];
+  v6 = [message stringByReplacingOccurrencesOfString:self->_attachmentCharacterString withString:&stru_285992FC0];
   v7 = [v6 stringByReplacingOccurrencesOfString:self->_breadcrumbCharacterString withString:&stru_285992FC0];
   objc_autoreleasePoolPop(v5);
 
   return v7;
 }
 
-- (SGMessagePairIterator)initWithStartDate:(id)a3 maxBatchSize:(unint64_t)a4 maxReplyLength:(unint64_t)a5 maxReplyGap:(double)a6
+- (SGMessagePairIterator)initWithStartDate:(id)date maxBatchSize:(unint64_t)size maxReplyLength:(unint64_t)length maxReplyGap:(double)gap
 {
   v69 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  dateCopy = date;
   v56.receiver = self;
   v56.super_class = SGMessagePairIterator;
   v11 = [(SGMessagePairIterator *)&v56 init];
@@ -159,11 +159,11 @@ LABEL_24:
   }
 
   v11->_done = 0;
-  v11->_maxReplyLength = a5;
-  v11->_maxReplyGap = a6;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  v11->_maxReplyLength = length;
+  v11->_maxReplyGap = gap;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   latestPromptForHandle = v12->_latestPromptForHandle;
-  v12->_latestPromptForHandle = v13;
+  v12->_latestPromptForHandle = dictionary;
 
   latestProcessedDate = v12->_latestProcessedDate;
   v12->_latestProcessedDate = 0;
@@ -190,9 +190,9 @@ LABEL_24:
   _Block_object_dispose(&v57, 8);
   if (!v16)
   {
-    v50 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getIMAttachmentCharacterString(void)"];
-    [v50 handleFailureInFunction:v51 file:@"SGMessagePairIterator.m" lineNumber:26 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v51 file:@"SGMessagePairIterator.m" lineNumber:26 description:{@"%s", dlerror()}];
 
     goto LABEL_21;
   }
@@ -220,26 +220,26 @@ LABEL_24:
   _Block_object_dispose(&v57, 8);
   if (!v19)
   {
-    v52 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v53 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getIMBreadcrumbCharacterString(void)"];
-    [v52 handleFailureInFunction:v53 file:@"SGMessagePairIterator.m" lineNumber:27 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v53 file:@"SGMessagePairIterator.m" lineNumber:27 description:{@"%s", dlerror()}];
 
 LABEL_21:
     __break(1u);
   }
 
   objc_storeStrong(&v12->_breadcrumbCharacterString, *v19);
-  v54 = [MEMORY[0x277CFE208] knowledgeStore];
+  knowledgeStore = [MEMORY[0x277CFE208] knowledgeStore];
   v22 = MEMORY[0x277CFE260];
-  v23 = [MEMORY[0x277CFE1F8] intentClass];
-  v24 = [v22 predicateForObjectsWithMetadataKey:v23 inValues:&unk_28599AFF0];
+  intentClass = [MEMORY[0x277CFE1F8] intentClass];
+  v24 = [v22 predicateForObjectsWithMetadataKey:intentClass inValues:&unk_28599AFF0];
 
-  if (v10)
+  if (dateCopy)
   {
     v25 = MEMORY[0x277CCA920];
     v64[0] = v24;
-    v26 = [MEMORY[0x277CCAC30] predicateWithFormat:@"startDate > %@", v10];
-    v64[1] = v26;
+    dateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"startDate > %@", dateCopy];
+    v64[1] = dateCopy;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:2];
     v28 = [v25 andPredicateWithSubpredicates:v27];
 
@@ -249,26 +249,26 @@ LABEL_21:
   v29 = MEMORY[0x277CCA920];
   v63[0] = v24;
   v30 = MEMORY[0x277CFE260];
-  v31 = [MEMORY[0x277CFE268] intentsSourceID];
-  v32 = [v30 predicateForEventsWithSourceID:v31 bundleID:@"com.apple.MobileSMS"];
+  intentsSourceID = [MEMORY[0x277CFE268] intentsSourceID];
+  v32 = [v30 predicateForEventsWithSourceID:intentsSourceID bundleID:@"com.apple.MobileSMS"];
   v63[1] = v32;
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:2];
   v34 = [v29 andPredicateWithSubpredicates:v33];
 
   v35 = MEMORY[0x277CFE1E0];
-  v36 = [MEMORY[0x277CFE298] appIntentsStream];
-  v62 = v36;
+  appIntentsStream = [MEMORY[0x277CFE298] appIntentsStream];
+  v62 = appIntentsStream;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
   v38 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:1];
   v61 = v38;
   v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
-  v40 = [v35 eventQueryWithPredicate:v34 eventStreams:v37 offset:0 limit:a4 sortDescriptors:v39];
+  v40 = [v35 eventQueryWithPredicate:v34 eventStreams:v37 offset:0 limit:size sortDescriptors:v39];
 
-  v41 = [MEMORY[0x277CFE1E0] allDevices];
-  [v40 setDeviceIDs:v41];
+  allDevices = [MEMORY[0x277CFE1E0] allDevices];
+  [v40 setDeviceIDs:allDevices];
 
   v55 = 0;
-  v42 = [v54 executeQuery:v40 error:&v55];
+  v42 = [knowledgeStore executeQuery:v40 error:&v55];
   v43 = v55;
   messageEvents = v12->_messageEvents;
   v12->_messageEvents = v42;
@@ -299,11 +299,11 @@ LABEL_18:
   return v46;
 }
 
-- (id)handleFromConversationId:(id)a3
+- (id)handleFromConversationId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 componentsSeparatedByString:@""];;
+  v5 = [idCopy componentsSeparatedByString:@""];;
   if ([v5 count] == 3)
   {
     v6 = [v5 objectAtIndexedSubscript:2];
@@ -311,7 +311,7 @@ LABEL_18:
 
   else
   {
-    v6 = [v3 copy];
+    v6 = [idCopy copy];
   }
 
   v7 = v6;

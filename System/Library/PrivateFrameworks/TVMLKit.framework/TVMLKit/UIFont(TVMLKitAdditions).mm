@@ -31,43 +31,43 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v15 = [v13 fontDescriptor];
+  fontDescriptor = [v13 fontDescriptor];
   if ([v10 length] && (objc_msgSend(tv_fontFromTextStyle_fontWeight_fontSize_symbolicTraits__sTextStyleFontWeightMap, "objectForKeyedSubscript:", v10), (v16 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v17 = v16;
     v18 = MEMORY[0x277CBEB38];
     v19 = *MEMORY[0x277D74380];
-    v20 = [v15 objectForKey:*MEMORY[0x277D74380]];
+    v20 = [fontDescriptor objectForKey:*MEMORY[0x277D74380]];
     v21 = [v18 dictionaryWithDictionary:v20];
 
     [v21 setObject:v17 forKey:*MEMORY[0x277D74430]];
     v29 = v19;
     v30[0] = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-    v23 = [v15 fontDescriptorByAddingAttributes:v22];
+    v23 = [fontDescriptor fontDescriptorByAddingAttributes:v22];
 
     v12 = 0x277D74000;
-    v15 = v23;
+    fontDescriptor = v23;
   }
 
   else if ([v10 isEqualToString:@"emphasized"])
   {
     v25 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v11 variant:1024];
-    v26 = [v25 fontDescriptor];
+    fontDescriptor2 = [v25 fontDescriptor];
 
-    v15 = v26;
+    fontDescriptor = fontDescriptor2;
   }
 
-  if (a6 && v15)
+  if (a6 && fontDescriptor)
   {
-    v27 = [v15 fontDescriptorWithSymbolicTraits:{objc_msgSend(v15, "symbolicTraits") | a6}];
+    v27 = [fontDescriptor fontDescriptorWithSymbolicTraits:{objc_msgSend(fontDescriptor, "symbolicTraits") | a6}];
 
-    v15 = v27;
+    fontDescriptor = v27;
   }
 
-  if (v15)
+  if (fontDescriptor)
   {
-    v24 = [*(v12 + 768) fontWithDescriptor:v15 size:a1];
+    v24 = [*(v12 + 768) fontWithDescriptor:fontDescriptor size:self];
   }
 
   else

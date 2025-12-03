@@ -1,22 +1,22 @@
 @interface MFPlainAuthScheme
-- (BOOL)canAuthenticateAccountClass:(Class)a3 connection:(id)a4;
-- (id)authenticatorForAccount:(id)a3 connection:(id)a4;
+- (BOOL)canAuthenticateAccountClass:(Class)class connection:(id)connection;
+- (id)authenticatorForAccount:(id)account connection:(id)connection;
 @end
 
 @implementation MFPlainAuthScheme
 
-- (id)authenticatorForAccount:(id)a3 connection:(id)a4
+- (id)authenticatorForAccount:(id)account connection:(id)connection
 {
-  v7 = [objc_opt_class() saslProfileName];
-  if ([v7 isEqualToString:@"imap"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"pop"))
+  saslProfileName = [objc_opt_class() saslProfileName];
+  if ([saslProfileName isEqualToString:@"imap"] & 1) != 0 || (objc_msgSend(saslProfileName, "isEqualToString:", @"pop"))
   {
     return 0;
   }
 
-  v8 = [a4 authenticationMechanisms];
-  if ([v8 indexOfObject:@"PLAIN"] == 0x7FFFFFFFFFFFFFFFLL)
+  authenticationMechanisms = [connection authenticationMechanisms];
+  if ([authenticationMechanisms indexOfObject:@"PLAIN"] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v8 indexOfObject:@"LOGIN"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([authenticationMechanisms indexOfObject:@"LOGIN"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       return 0;
     }
@@ -36,19 +36,19 @@
     return 0;
   }
 
-  v12 = [[v11 alloc] initWithAuthScheme:self account:a3 connection:a4];
+  v12 = [[v11 alloc] initWithAuthScheme:self account:account connection:connection];
 
   return v12;
 }
 
-- (BOOL)canAuthenticateAccountClass:(Class)a3 connection:(id)a4
+- (BOOL)canAuthenticateAccountClass:(Class)class connection:(id)connection
 {
   v7.receiver = self;
   v7.super_class = MFPlainAuthScheme;
-  v5 = [(MFAuthScheme *)&v7 canAuthenticateAccountClass:a3 connection:?];
+  v5 = [(MFAuthScheme *)&v7 canAuthenticateAccountClass:class connection:?];
   if (v5)
   {
-    LOBYTE(v5) = [a4 loginDisabled] ^ 1;
+    LOBYTE(v5) = [connection loginDisabled] ^ 1;
   }
 
   return v5;

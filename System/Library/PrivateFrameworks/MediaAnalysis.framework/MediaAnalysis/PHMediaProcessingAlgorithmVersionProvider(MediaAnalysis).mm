@@ -14,7 +14,7 @@
   v10[2] = __102__PHMediaProcessingAlgorithmVersionProvider_MediaAnalysis__mad_sharedVersionProviderWithPhotoLibrary___block_invoke;
   v10[3] = &unk_1E834C440;
   v11 = v4;
-  v12 = a1;
+  selfCopy = self;
   v5 = +[PHMediaProcessingAlgorithmVersionProvider(MediaAnalysis) mad_sharedVersionProviderWithPhotoLibrary:]::once;
   v6 = v4;
   if (v5 != -1)
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __116__PHMediaProcessingAlgorithmVersionProvider_MediaAnalysis__mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[PHMediaProcessingAlgorithmVersionProvider(MediaAnalysis) mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:]::once != -1)
   {
     dispatch_once(&+[PHMediaProcessingAlgorithmVersionProvider(MediaAnalysis) mad_sharedImageEmbeddingVersionProviderWithPhotoLibrary:]::once, block);
@@ -51,7 +51,7 @@
   block[1] = 3221225472;
   block[2] = __116__PHMediaProcessingAlgorithmVersionProvider_MediaAnalysis__mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[PHMediaProcessingAlgorithmVersionProvider(MediaAnalysis) mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary:]::once != -1)
   {
     dispatch_once(&+[PHMediaProcessingAlgorithmVersionProvider(MediaAnalysis) mad_sharedVideoEmbeddingVersionProviderWithPhotoLibrary:]::once, block);

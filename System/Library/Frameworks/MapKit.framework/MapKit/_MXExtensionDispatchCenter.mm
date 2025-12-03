@@ -1,9 +1,9 @@
 @interface _MXExtensionDispatchCenter
-- (_MXExtensionDispatchCenter)initWithExtensionProvider:(id)a3;
+- (_MXExtensionDispatchCenter)initWithExtensionProvider:(id)provider;
 - (_MXExtensionProvider)extensionProvider;
-- (id)addExtensionsUpdateHandler:(id)a3;
-- (void)dispatchExtensions:(id)a3 error:(id)a4;
-- (void)removeExtensionUpdateHandler:(id)a3;
+- (id)addExtensionsUpdateHandler:(id)handler;
+- (void)dispatchExtensions:(id)extensions error:(id)error;
+- (void)removeExtensionUpdateHandler:(id)handler;
 @end
 
 @implementation _MXExtensionDispatchCenter
@@ -15,38 +15,38 @@
   return WeakRetained;
 }
 
-- (void)removeExtensionUpdateHandler:(id)a3
+- (void)removeExtensionUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   lock = self->_lock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59___MXExtensionDispatchCenter_removeExtensionUpdateHandler___block_invoke;
   v7[3] = &unk_1E76CD810;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(lock, v7);
 }
 
-- (id)addExtensionsUpdateHandler:(id)a3
+- (id)addExtensionsUpdateHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   lock = self->_lock;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __57___MXExtensionDispatchCenter_addExtensionsUpdateHandler___block_invoke;
   v14 = &unk_1E76CDA20;
-  v15 = self;
+  selfCopy = self;
   v6 = v4;
   v16 = v6;
   dispatch_sync(lock, &v11);
   WeakRetained = objc_loadWeakRetained(&self->_extensionProvider);
-  v8 = [WeakRetained _currentExtensions];
+  _currentExtensions = [WeakRetained _currentExtensions];
 
-  if (v8)
+  if (_currentExtensions)
   {
-    (*(v6 + 2))(v6, v8, 0);
+    (*(v6 + 2))(v6, _currentExtensions, 0);
   }
 
   v9 = MEMORY[0x1A58E9F30](v6);
@@ -54,10 +54,10 @@
   return v9;
 }
 
-- (void)dispatchExtensions:(id)a3 error:(id)a4
+- (void)dispatchExtensions:(id)extensions error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  extensionsCopy = extensions;
+  errorCopy = error;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -77,33 +77,33 @@
   v12[1] = 3221225472;
   v12[2] = __55___MXExtensionDispatchCenter_dispatchExtensions_error___block_invoke_2;
   v12[3] = &unk_1E76C8D10;
-  v10 = v6;
+  v10 = extensionsCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = errorCopy;
   v14 = v11;
   [v9 enumerateObjectsUsingBlock:v12];
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (_MXExtensionDispatchCenter)initWithExtensionProvider:(id)a3
+- (_MXExtensionDispatchCenter)initWithExtensionProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = _MXExtensionDispatchCenter;
   v5 = [(_MXExtensionDispatchCenter *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_extensionProvider, v4);
+    objc_storeWeak(&v5->_extensionProvider, providerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.maps._MXExtensionDispatchCenter", v7);
     lock = v6->_lock;
     v6->_lock = v8;
 
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     handlers = v6->_handlers;
-    v6->_handlers = v10;
+    v6->_handlers = weakObjectsHashTable;
   }
 
   return v6;

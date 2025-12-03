@@ -1,56 +1,56 @@
 @interface AKLayerPresentationManager
-- (AKLayerPresentationManager)initWithPageController:(id)a3;
+- (AKLayerPresentationManager)initWithPageController:(id)controller;
 - (AKPageController)pageController;
 - (double)_hiDPIScaleFactor;
-- (id)adornmentLayerForAnnotation:(id)a3;
-- (void)_addAdornmentLayerForAnnotation:(id)a3;
-- (void)_addLayerForAnnotation:(id)a3;
-- (void)_applyUpdatesWithScale:(double)a3 toLayers:(id)a4 isLiveUpdate:(BOOL)a5 forceUpdate:(BOOL)a6;
-- (void)_removeAdornmentLayerForAnnotation:(id)a3;
-- (void)_removeLayerForAnnotation:(id)a3;
-- (void)_setNeedsDisplayOnNewLayer:(id)a3;
+- (id)adornmentLayerForAnnotation:(id)annotation;
+- (void)_addAdornmentLayerForAnnotation:(id)annotation;
+- (void)_addLayerForAnnotation:(id)annotation;
+- (void)_applyUpdatesWithScale:(double)scale toLayers:(id)layers isLiveUpdate:(BOOL)update forceUpdate:(BOOL)forceUpdate;
+- (void)_removeAdornmentLayerForAnnotation:(id)annotation;
+- (void)_removeLayerForAnnotation:(id)annotation;
+- (void)_setNeedsDisplayOnNewLayer:(id)layer;
 - (void)_startObservingModel;
 - (void)_stopObservingModel;
-- (void)_updateLoupeAnnotationsContributedToByAnnotation:(id)a3;
-- (void)_updateLoupeAnnotationsIntersectingRemovedAnnotation:(id)a3;
+- (void)_updateLoupeAnnotationsContributedToByAnnotation:(id)annotation;
+- (void)_updateLoupeAnnotationsIntersectingRemovedAnnotation:(id)annotation;
 - (void)dealloc;
-- (void)forceUpdateAnnotationLayer:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setAdornmentsHidden:(BOOL)a3;
-- (void)setAlignmentGuidePositionX:(double)a3;
-- (void)setAlignmentGuidePositionY:(double)a3;
-- (void)updateScaleFactor:(double)a3 isLiveUpdate:(BOOL)a4 forceUpdate:(BOOL)a5;
+- (void)forceUpdateAnnotationLayer:(id)layer;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setAdornmentsHidden:(BOOL)hidden;
+- (void)setAlignmentGuidePositionX:(double)x;
+- (void)setAlignmentGuidePositionY:(double)y;
+- (void)updateScaleFactor:(double)factor isLiveUpdate:(BOOL)update forceUpdate:(BOOL)forceUpdate;
 @end
 
 @implementation AKLayerPresentationManager
 
-- (AKLayerPresentationManager)initWithPageController:(id)a3
+- (AKLayerPresentationManager)initWithPageController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = AKLayerPresentationManager;
   v5 = [(AKLayerPresentationManager *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    [(AKLayerPresentationManager *)v5 setPageController:v4];
+    [(AKLayerPresentationManager *)v5 setPageController:controllerCopy];
     v7 = objc_alloc_init(MEMORY[0x277CD9ED0]);
     [(AKLayerPresentationManager *)v6 setRootLayer:v7];
 
-    v8 = [(AKLayerPresentationManager *)v6 rootLayer];
-    [v8 setMasksToBounds:1];
+    rootLayer = [(AKLayerPresentationManager *)v6 rootLayer];
+    [rootLayer setMasksToBounds:1];
 
-    v9 = [(AKLayerPresentationManager *)v6 rootLayer];
-    [v9 setAllowsGroupBlending:0];
+    rootLayer2 = [(AKLayerPresentationManager *)v6 rootLayer];
+    [rootLayer2 setAllowsGroupBlending:0];
 
-    v10 = [(AKLayerPresentationManager *)v6 rootLayer];
-    [v10 setEdgeAntialiasingMask:0];
+    rootLayer3 = [(AKLayerPresentationManager *)v6 rootLayer];
+    [rootLayer3 setEdgeAntialiasingMask:0];
 
-    v11 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
-    [(AKLayerPresentationManager *)v6 setAnnotationsToAnnotationLayers:v11];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    [(AKLayerPresentationManager *)v6 setAnnotationsToAnnotationLayers:weakToStrongObjectsMapTable];
 
-    v12 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
-    [(AKLayerPresentationManager *)v6 setAnnotationsToAdornmentLayers:v12];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    [(AKLayerPresentationManager *)v6 setAnnotationsToAdornmentLayers:weakToStrongObjectsMapTable2];
 
     [(AKLayerPresentationManager *)v6 setCurrentScaleFactor:1.0];
     [(AKLayerPresentationManager *)v6 setAlignmentGuidePositionX:1.79769313e308];
@@ -68,23 +68,23 @@
   [(AKLayerPresentationManager *)&v3 dealloc];
 }
 
-- (void)setAdornmentsHidden:(BOOL)a3
+- (void)setAdornmentsHidden:(BOOL)hidden
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (self->_adornmentsHidden != a3)
+  if (self->_adornmentsHidden != hidden)
   {
-    v3 = a3;
-    self->_adornmentsHidden = a3;
+    hiddenCopy = hidden;
+    self->_adornmentsHidden = hidden;
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
-    v6 = [v5 objectEnumerator];
+    annotationsToAdornmentLayers = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
+    objectEnumerator = [annotationsToAdornmentLayers objectEnumerator];
 
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -96,14 +96,14 @@
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(objectEnumerator);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setHidden:v3];
+          [*(*(&v11 + 1) + 8 * v10++) setHidden:hiddenCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -113,27 +113,27 @@
   }
 }
 
-- (void)updateScaleFactor:(double)a3 isLiveUpdate:(BOOL)a4 forceUpdate:(BOOL)a5
+- (void)updateScaleFactor:(double)factor isLiveUpdate:(BOOL)update forceUpdate:(BOOL)forceUpdate
 {
-  v5 = a5;
-  v6 = a4;
-  v10 = [(AKLayerPresentationManager *)self rootLayer];
-  v9 = [v10 sublayers];
-  [(AKLayerPresentationManager *)self _applyUpdatesWithScale:v9 toLayers:v6 isLiveUpdate:v5 forceUpdate:a3];
+  forceUpdateCopy = forceUpdate;
+  updateCopy = update;
+  rootLayer = [(AKLayerPresentationManager *)self rootLayer];
+  sublayers = [rootLayer sublayers];
+  [(AKLayerPresentationManager *)self _applyUpdatesWithScale:sublayers toLayers:updateCopy isLiveUpdate:forceUpdateCopy forceUpdate:factor];
 }
 
-- (void)setAlignmentGuidePositionX:(double)a3
+- (void)setAlignmentGuidePositionX:(double)x
 {
-  if (self->_alignmentGuidePositionX != a3)
+  if (self->_alignmentGuidePositionX != x)
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    self->_alignmentGuidePositionX = a3;
-    v5 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
-    v6 = v5;
-    if (a3 == 1.79769313e308)
+    self->_alignmentGuidePositionX = x;
+    alignmentGuideXLayer = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
+    v6 = alignmentGuideXLayer;
+    if (x == 1.79769313e308)
     {
-      [v5 removeFromSuperlayer];
+      [alignmentGuideXLayer removeFromSuperlayer];
 
       [(AKLayerPresentationManager *)self setAlignmentGuideXLayer:0];
     }
@@ -146,41 +146,41 @@
         v7 = [AKAlignmentGuideLineLayer alloc];
         [(AKLayerPresentationManager *)self currentScaleFactor];
         v9 = v8;
-        v10 = [(AKLayerPresentationManager *)self rootLayer];
-        [v10 bounds];
+        rootLayer = [(AKLayerPresentationManager *)self rootLayer];
+        [rootLayer bounds];
         v11 = [(AKAlignmentGuideLineLayer *)v7 initWithScaleFactor:1 forVerticalOrientation:v9 withMaxSize:CGRectGetHeight(v35)];
         [(AKLayerPresentationManager *)self setAlignmentGuideXLayer:v11];
 
         v12 = (AKAdornmentZPositionOffset - 1);
-        v13 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
-        [v13 setZPosition:v12];
+        alignmentGuideXLayer2 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
+        [alignmentGuideXLayer2 setZPosition:v12];
 
         v14 = *MEMORY[0x277CBF3A0];
         v15 = *(MEMORY[0x277CBF3A0] + 8);
         v16 = *(MEMORY[0x277CBF3A0] + 16);
         v17 = *(MEMORY[0x277CBF3A0] + 24);
-        v18 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
-        [v18 setFrame:{v14, v15, v16, v17}];
+        alignmentGuideXLayer3 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
+        [alignmentGuideXLayer3 setFrame:{v14, v15, v16, v17}];
 
-        v19 = [(AKLayerPresentationManager *)self rootLayer];
-        v20 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
-        [v19 addSublayer:v20];
+        rootLayer2 = [(AKLayerPresentationManager *)self rootLayer];
+        alignmentGuideXLayer4 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
+        [rootLayer2 addSublayer:alignmentGuideXLayer4];
       }
 
-      v21 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
-      [v21 position];
+      alignmentGuideXLayer5 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
+      [alignmentGuideXLayer5 position];
       v23 = v22;
 
-      v24 = [(AKLayerPresentationManager *)self pageController];
-      v25 = [v24 geometryHelper];
-      v26 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
-      [v26 lineWidth];
-      [v25 screenStrokeAlignedRectForRect:a3 withStrokeWidth:{v23, 0.0, 0.0, v27}];
+      pageController = [(AKLayerPresentationManager *)self pageController];
+      geometryHelper = [pageController geometryHelper];
+      alignmentGuideXLayer6 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
+      [alignmentGuideXLayer6 lineWidth];
+      [geometryHelper screenStrokeAlignedRectForRect:x withStrokeWidth:{v23, 0.0, 0.0, v27}];
       v29 = v28;
       v31 = v30;
 
-      v32 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
-      [v32 setPosition:{v29, v31}];
+      alignmentGuideXLayer7 = [(AKLayerPresentationManager *)self alignmentGuideXLayer];
+      [alignmentGuideXLayer7 setPosition:{v29, v31}];
     }
 
     v33 = MEMORY[0x277CD9FF0];
@@ -189,18 +189,18 @@
   }
 }
 
-- (void)setAlignmentGuidePositionY:(double)a3
+- (void)setAlignmentGuidePositionY:(double)y
 {
-  if (self->_alignmentGuidePositionY != a3)
+  if (self->_alignmentGuidePositionY != y)
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    self->_alignmentGuidePositionY = a3;
-    v5 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
-    v6 = v5;
-    if (a3 == 1.79769313e308)
+    self->_alignmentGuidePositionY = y;
+    alignmentGuideYLayer = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
+    v6 = alignmentGuideYLayer;
+    if (y == 1.79769313e308)
     {
-      [v5 removeFromSuperlayer];
+      [alignmentGuideYLayer removeFromSuperlayer];
 
       [(AKLayerPresentationManager *)self setAlignmentGuideYLayer:0];
     }
@@ -213,41 +213,41 @@
         v7 = [AKAlignmentGuideLineLayer alloc];
         [(AKLayerPresentationManager *)self currentScaleFactor];
         v9 = v8;
-        v10 = [(AKLayerPresentationManager *)self rootLayer];
-        [v10 bounds];
+        rootLayer = [(AKLayerPresentationManager *)self rootLayer];
+        [rootLayer bounds];
         v11 = [(AKAlignmentGuideLineLayer *)v7 initWithScaleFactor:0 forVerticalOrientation:v9 withMaxSize:CGRectGetWidth(v35)];
         [(AKLayerPresentationManager *)self setAlignmentGuideYLayer:v11];
 
         v12 = (AKAdornmentZPositionOffset - 1);
-        v13 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
-        [v13 setZPosition:v12];
+        alignmentGuideYLayer2 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
+        [alignmentGuideYLayer2 setZPosition:v12];
 
         v14 = *MEMORY[0x277CBF3A0];
         v15 = *(MEMORY[0x277CBF3A0] + 8);
         v16 = *(MEMORY[0x277CBF3A0] + 16);
         v17 = *(MEMORY[0x277CBF3A0] + 24);
-        v18 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
-        [v18 setFrame:{v14, v15, v16, v17}];
+        alignmentGuideYLayer3 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
+        [alignmentGuideYLayer3 setFrame:{v14, v15, v16, v17}];
 
-        v19 = [(AKLayerPresentationManager *)self rootLayer];
-        v20 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
-        [v19 addSublayer:v20];
+        rootLayer2 = [(AKLayerPresentationManager *)self rootLayer];
+        alignmentGuideYLayer4 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
+        [rootLayer2 addSublayer:alignmentGuideYLayer4];
       }
 
-      v21 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
-      [v21 position];
+      alignmentGuideYLayer5 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
+      [alignmentGuideYLayer5 position];
       v23 = v22;
 
-      v24 = [(AKLayerPresentationManager *)self pageController];
-      v25 = [v24 geometryHelper];
-      v26 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
-      [v26 lineWidth];
-      [v25 screenStrokeAlignedRectForRect:v23 withStrokeWidth:{a3, 0.0, 0.0, v27}];
+      pageController = [(AKLayerPresentationManager *)self pageController];
+      geometryHelper = [pageController geometryHelper];
+      alignmentGuideYLayer6 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
+      [alignmentGuideYLayer6 lineWidth];
+      [geometryHelper screenStrokeAlignedRectForRect:v23 withStrokeWidth:{y, 0.0, 0.0, v27}];
       v29 = v28;
       v31 = v30;
 
-      v32 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
-      [v32 setPosition:{v29, v31}];
+      alignmentGuideYLayer7 = [(AKLayerPresentationManager *)self alignmentGuideYLayer];
+      [alignmentGuideYLayer7 setPosition:{v29, v31}];
     }
 
     v33 = MEMORY[0x277CD9FF0];
@@ -256,30 +256,30 @@
   }
 }
 
-- (id)adornmentLayerForAnnotation:(id)a3
+- (id)adornmentLayerForAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
-  v6 = [v5 objectForKey:v4];
+  annotationCopy = annotation;
+  annotationsToAdornmentLayers = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
+  v6 = [annotationsToAdornmentLayers objectForKey:annotationCopy];
 
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v90 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == @"AKLayerPresentationManager.modelAnnotationsObservationContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == @"AKLayerPresentationManager.modelAnnotationsObservationContext")
   {
-    v14 = [v12 objectForKey:*MEMORY[0x277CCA300]];
+    v14 = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
     v15 = [v13 objectForKey:*MEMORY[0x277CCA2F0]];
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    v53 = v11;
-    v55 = v10;
+    v53 = objectCopy;
+    v55 = pathCopy;
     v51 = v14;
     v52 = v13;
     v50 = v15;
@@ -310,8 +310,8 @@
             v79 = 0u;
             v76 = 0u;
             v77 = 0u;
-            v21 = [v20 keysForValuesToObserveForRedrawing];
-            v22 = [v21 countByEnumeratingWithState:&v76 objects:v88 count:16];
+            keysForValuesToObserveForRedrawing = [v20 keysForValuesToObserveForRedrawing];
+            v22 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v76 objects:v88 count:16];
             if (v22)
             {
               v23 = v22;
@@ -322,13 +322,13 @@
                 {
                   if (*v77 != v24)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(keysForValuesToObserveForRedrawing);
                   }
 
                   [v20 removeObserver:self forKeyPath:*(*(&v76 + 1) + 8 * j) context:@"AKLayerPresentationManager.modelAnnotationsAppearanceObservationContext"];
                 }
 
-                v23 = [v21 countByEnumeratingWithState:&v76 objects:v88 count:16];
+                v23 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v76 objects:v88 count:16];
               }
 
               while (v23);
@@ -349,8 +349,8 @@
         while (v17);
       }
 
-      v11 = v53;
-      v10 = v55;
+      objectCopy = v53;
+      pathCopy = v55;
       v14 = v51;
       v13 = v52;
       v15 = v50;
@@ -390,8 +390,8 @@
             v71 = 0u;
             v68 = 0u;
             v69 = 0u;
-            v31 = [v30 keysForValuesToObserveForRedrawing];
-            v32 = [v31 countByEnumeratingWithState:&v68 objects:v86 count:16];
+            keysForValuesToObserveForRedrawing2 = [v30 keysForValuesToObserveForRedrawing];
+            v32 = [keysForValuesToObserveForRedrawing2 countByEnumeratingWithState:&v68 objects:v86 count:16];
             if (v32)
             {
               v33 = v32;
@@ -402,13 +402,13 @@
                 {
                   if (*v69 != v34)
                   {
-                    objc_enumerationMutation(v31);
+                    objc_enumerationMutation(keysForValuesToObserveForRedrawing2);
                   }
 
                   [v30 addObserver:self forKeyPath:*(*(&v68 + 1) + 8 * m) options:0 context:@"AKLayerPresentationManager.modelAnnotationsAppearanceObservationContext"];
                 }
 
-                v33 = [v31 countByEnumeratingWithState:&v68 objects:v86 count:16];
+                v33 = [keysForValuesToObserveForRedrawing2 countByEnumeratingWithState:&v68 objects:v86 count:16];
               }
 
               while (v33);
@@ -421,8 +421,8 @@
         while (v27);
       }
 
-      v11 = v53;
-      v10 = v55;
+      objectCopy = v53;
+      pathCopy = v55;
       v14 = v51;
       v13 = v52;
       v15 = v50;
@@ -431,11 +431,11 @@
     [MEMORY[0x277CD9FF0] commit];
   }
 
-  else if (a6 == @"AKLayerPresentationManager.modelSelectionsObservationContext")
+  else if (context == @"AKLayerPresentationManager.modelSelectionsObservationContext")
   {
-    v54 = v11;
-    v56 = v10;
-    v36 = [v12 objectForKey:*MEMORY[0x277CCA300]];
+    v54 = objectCopy;
+    v56 = pathCopy;
+    v36 = [changeCopy objectForKey:*MEMORY[0x277CCA300]];
     v37 = [v13 objectForKey:*MEMORY[0x277CCA2F0]];
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -513,35 +513,35 @@
 
     [MEMORY[0x277CD9FF0] commit];
 
-    v11 = v54;
-    v10 = v56;
+    objectCopy = v54;
+    pathCopy = v56;
   }
 
-  else if (a6 == @"AKLayerPresentationManager.modelAnnotationsAppearanceObservationContext")
+  else if (context == @"AKLayerPresentationManager.modelAnnotationsAppearanceObservationContext")
   {
-    [(AKLayerPresentationManager *)self _updateLoupeAnnotationsContributedToByAnnotation:v11];
+    [(AKLayerPresentationManager *)self _updateLoupeAnnotationsContributedToByAnnotation:objectCopy];
   }
 
   else
   {
     v59.receiver = self;
     v59.super_class = AKLayerPresentationManager;
-    [(AKLayerPresentationManager *)&v59 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(AKLayerPresentationManager *)&v59 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)_updateLoupeAnnotationsContributedToByAnnotation:(id)a3
+- (void)_updateLoupeAnnotationsContributedToByAnnotation:(id)annotation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationCopy = annotation;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(AKLayerPresentationManager *)self pageModelController];
-  v6 = [v5 annotations];
+  pageModelController = [(AKLayerPresentationManager *)self pageModelController];
+  annotations = [pageModelController annotations];
 
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v7 = [annotations countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -555,29 +555,29 @@
       {
         if (*v24 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(annotations);
         }
 
         v12 = *(*(&v23 + 1) + 8 * v11);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [(AKLayerPresentationManager *)self pageController];
-          v14 = [v13 annotationsBeneathLoupe:v12];
-          if ([v14 containsObject:v4])
+          pageController = [(AKLayerPresentationManager *)self pageController];
+          v14 = [pageController annotationsBeneathLoupe:v12];
+          if ([v14 containsObject:annotationCopy])
           {
             [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
             v15 = v9;
-            v16 = self;
+            selfCopy = self;
             v17 = v10;
-            v18 = v6;
-            v20 = v19 = v4;
+            v18 = annotations;
+            v20 = v19 = annotationCopy;
             v21 = [v20 objectForKey:v12];
 
-            v4 = v19;
-            v6 = v18;
+            annotationCopy = v19;
+            annotations = v18;
             v10 = v17;
-            self = v16;
+            self = selfCopy;
             v9 = v15;
             v8 = v22;
             [v21 updateContents];
@@ -588,25 +588,25 @@
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v8 = [annotations countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_updateLoupeAnnotationsIntersectingRemovedAnnotation:(id)a3
+- (void)_updateLoupeAnnotationsIntersectingRemovedAnnotation:(id)annotation
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationCopy = annotation;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(AKLayerPresentationManager *)self pageModelController];
-  v6 = [v5 annotations];
+  pageModelController = [(AKLayerPresentationManager *)self pageModelController];
+  annotations = [pageModelController annotations];
 
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v7 = [annotations countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -618,7 +618,7 @@
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(annotations);
         }
 
         v11 = *(*(&v26 + 1) + 8 * v10);
@@ -630,7 +630,7 @@
           v15 = v14;
           v17 = v16;
           v19 = v18;
-          [v4 drawingBounds];
+          [annotationCopy drawingBounds];
           v33.origin.x = v20;
           v33.origin.y = v21;
           v33.size.width = v22;
@@ -641,8 +641,8 @@
           v32.size.height = v19;
           if (CGRectIntersectsRect(v32, v33))
           {
-            v24 = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
-            v25 = [v24 objectForKey:v11];
+            annotationsToAnnotationLayers = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
+            v25 = [annotationsToAnnotationLayers objectForKey:v11];
 
             [v25 updateContents];
           }
@@ -652,68 +652,68 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v8 = [annotations countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)forceUpdateAnnotationLayer:(id)a3
+- (void)forceUpdateAnnotationLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
-  v6 = [v5 objectForKey:v4];
+  layerCopy = layer;
+  annotationsToAnnotationLayers = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
+  v6 = [annotationsToAnnotationLayers objectForKey:layerCopy];
 
   [v6 updateContents];
 }
 
-- (void)_setNeedsDisplayOnNewLayer:(id)a3
+- (void)_setNeedsDisplayOnNewLayer:(id)layer
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  layerCopy = layer;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  layerCopy2 = layer;
+  v6 = [v4 arrayWithObjects:&layerCopy count:1];
 
-  [(AKLayerPresentationManager *)self _applyUpdatesWithScale:v6 toLayers:0 isLiveUpdate:1 forceUpdate:9.22337204e18, v7, v8];
+  [(AKLayerPresentationManager *)self _applyUpdatesWithScale:v6 toLayers:0 isLiveUpdate:1 forceUpdate:9.22337204e18, layerCopy, v8];
 }
 
-- (void)_applyUpdatesWithScale:(double)a3 toLayers:(id)a4 isLiveUpdate:(BOOL)a5 forceUpdate:(BOOL)a6
+- (void)_applyUpdatesWithScale:(double)scale toLayers:(id)layers isLiveUpdate:(BOOL)update forceUpdate:(BOOL)forceUpdate
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  if (a3 == 9.22337204e18)
+  layersCopy = layers;
+  if (scale == 9.22337204e18)
   {
     [(AKLayerPresentationManager *)self currentScaleFactor];
     if (v10 == 9.22337204e18)
     {
-      a3 = 1.0;
+      scale = 1.0;
     }
 
     else
     {
-      a3 = v10;
+      scale = v10;
     }
   }
 
   [(AKLayerPresentationManager *)self _hiDPIScaleFactor];
-  v12 = a3 * v11;
-  v13 = [(AKLayerPresentationManager *)self shouldPixelate];
+  v12 = scale * v11;
+  shouldPixelate = [(AKLayerPresentationManager *)self shouldPixelate];
   v14 = 1.0;
-  if (a3 < 2.0)
+  if (scale < 2.0)
   {
     v14 = v12;
   }
 
   v15 = *MEMORY[0x277CDA560];
   v16 = *MEMORY[0x277CDA5B8];
-  if (a3 < 2.0)
+  if (scale < 2.0)
   {
     v16 = *MEMORY[0x277CDA560];
   }
 
-  if (v13)
+  if (shouldPixelate)
   {
     v17 = v14;
   }
@@ -723,14 +723,14 @@
     v17 = v12;
   }
 
-  if (v13)
+  if (shouldPixelate)
   {
     v15 = v16;
   }
 
   v18 = v15;
-  [(AKLayerPresentationManager *)self setCurrentScaleFactor:a3];
-  if ([v9 count])
+  [(AKLayerPresentationManager *)self setCurrentScaleFactor:scale];
+  if ([layersCopy count])
   {
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -738,8 +738,8 @@
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v31 = v9;
-    v19 = v9;
+    v31 = layersCopy;
+    v19 = layersCopy;
     v20 = [v19 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (!v20)
     {
@@ -759,7 +759,7 @@
 
         v24 = *(*(&v33 + 1) + 8 * i);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || a5)
+        if ((objc_opt_isKindOfClass() & 1) == 0 || update)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -767,11 +767,11 @@
             continue;
           }
 
-          [v24 updateSublayersWithScale:a3];
+          [v24 updateSublayersWithScale:scale];
           goto LABEL_31;
         }
 
-        v25 = [v24 annotation];
+        annotation = [v24 annotation];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -782,14 +782,14 @@
           goto LABEL_30;
         }
 
-        if (!a6)
+        if (!forceUpdate)
         {
           [v24 contentsScale];
           if (vabdd_f64(v29, v17) <= 0.00001)
           {
-            v30 = [v24 minificationFilter];
+            minificationFilter = [v24 minificationFilter];
 
-            if (v30 == v18)
+            if (minificationFilter == v18)
             {
               continue;
             }
@@ -813,7 +813,7 @@ LABEL_31:
 LABEL_34:
 
         [MEMORY[0x277CD9FF0] commit];
-        v9 = v31;
+        layersCopy = v31;
         break;
       }
     }
@@ -822,23 +822,23 @@ LABEL_34:
 
 - (double)_hiDPIScaleFactor
 {
-  v2 = [(AKLayerPresentationManager *)self pageController];
-  v3 = [v2 overlayView];
-  v4 = [v3 window];
-  v5 = [v4 screen];
+  pageController = [(AKLayerPresentationManager *)self pageController];
+  overlayView = [pageController overlayView];
+  window = [overlayView window];
+  screen = [window screen];
 
-  if (v5)
+  if (screen)
   {
-    v6 = [v3 window];
-    v7 = [v6 screen];
-    [v7 scale];
+    window2 = [overlayView window];
+    screen2 = [window2 screen];
+    [screen2 scale];
     v9 = v8;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 scale];
+    window2 = [MEMORY[0x277D759A0] mainScreen];
+    [window2 scale];
     v9 = v10;
   }
 
@@ -850,8 +850,8 @@ LABEL_34:
   v47 = *MEMORY[0x277D85DE8];
   if (![(AKLayerPresentationManager *)self isObservingModel])
   {
-    v3 = [(AKLayerPresentationManager *)self pageController];
-    v28 = [v3 pageModelController];
+    pageController = [(AKLayerPresentationManager *)self pageController];
+    pageModelController = [pageController pageModelController];
     [(AKLayerPresentationManager *)self setPageModelController:?];
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
@@ -860,18 +860,18 @@ LABEL_34:
     v42[1] = 3221225472;
     v42[2] = sub_23F4B8DEC;
     v42[3] = &unk_278C7B540;
-    v27 = v3;
+    v27 = pageController;
     v43 = v27;
     [v4 setCompletionBlock:v42];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v5 = [(AKLayerPresentationManager *)self pageModelController];
-    v6 = [v5 annotations];
+    pageModelController2 = [(AKLayerPresentationManager *)self pageModelController];
+    annotations = [pageModelController2 annotations];
 
-    obj = v6;
-    v7 = [v6 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    obj = annotations;
+    v7 = [annotations countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v7)
     {
       v8 = v7;
@@ -891,8 +891,8 @@ LABEL_34:
           v37 = 0u;
           v34 = 0u;
           v35 = 0u;
-          v12 = [v11 keysForValuesToObserveForRedrawing];
-          v13 = [v12 countByEnumeratingWithState:&v34 objects:v45 count:16];
+          keysForValuesToObserveForRedrawing = [v11 keysForValuesToObserveForRedrawing];
+          v13 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v34 objects:v45 count:16];
           if (v13)
           {
             v14 = v13;
@@ -903,13 +903,13 @@ LABEL_34:
               {
                 if (*v35 != v15)
                 {
-                  objc_enumerationMutation(v12);
+                  objc_enumerationMutation(keysForValuesToObserveForRedrawing);
                 }
 
                 [v11 addObserver:self forKeyPath:*(*(&v34 + 1) + 8 * j) options:0 context:@"AKLayerPresentationManager.modelAnnotationsAppearanceObservationContext"];
               }
 
-              v14 = [v12 countByEnumeratingWithState:&v34 objects:v45 count:16];
+              v14 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v34 objects:v45 count:16];
             }
 
             while (v14);
@@ -932,10 +932,10 @@ LABEL_34:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v17 = [(AKLayerPresentationManager *)self pageModelController];
-    v18 = [v17 selectedAnnotations];
+    pageModelController3 = [(AKLayerPresentationManager *)self pageModelController];
+    selectedAnnotations = [pageModelController3 selectedAnnotations];
 
-    v19 = [v18 countByEnumeratingWithState:&v30 objects:v44 count:16];
+    v19 = [selectedAnnotations countByEnumeratingWithState:&v30 objects:v44 count:16];
     if (v19)
     {
       v20 = v19;
@@ -946,31 +946,31 @@ LABEL_34:
         {
           if (*v31 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(selectedAnnotations);
           }
 
           [(AKLayerPresentationManager *)self _addAdornmentLayerForAnnotation:*(*(&v30 + 1) + 8 * k)];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v30 objects:v44 count:16];
+        v20 = [selectedAnnotations countByEnumeratingWithState:&v30 objects:v44 count:16];
       }
 
       while (v20);
     }
 
-    v23 = [(AKLayerPresentationManager *)self pageModelController];
-    v24 = [v23 cropAnnotation];
+    pageModelController4 = [(AKLayerPresentationManager *)self pageModelController];
+    cropAnnotation = [pageModelController4 cropAnnotation];
 
-    if (v24)
+    if (cropAnnotation)
     {
-      v25 = [(AKLayerPresentationManager *)self pageModelController];
-      v26 = [v25 cropAnnotation];
-      [(AKLayerPresentationManager *)self _addAdornmentLayerForAnnotation:v26];
+      pageModelController5 = [(AKLayerPresentationManager *)self pageModelController];
+      cropAnnotation2 = [pageModelController5 cropAnnotation];
+      [(AKLayerPresentationManager *)self _addAdornmentLayerForAnnotation:cropAnnotation2];
     }
 
     [MEMORY[0x277CD9FF0] commit];
-    [v28 addObserver:self forKeyPath:@"annotations" options:3 context:@"AKLayerPresentationManager.modelAnnotationsObservationContext"];
-    [v28 addObserver:self forKeyPath:@"selectedAnnotations" options:3 context:@"AKLayerPresentationManager.modelSelectionsObservationContext"];
+    [pageModelController addObserver:self forKeyPath:@"annotations" options:3 context:@"AKLayerPresentationManager.modelAnnotationsObservationContext"];
+    [pageModelController addObserver:self forKeyPath:@"selectedAnnotations" options:3 context:@"AKLayerPresentationManager.modelSelectionsObservationContext"];
     [(AKLayerPresentationManager *)self setIsObservingModel:1];
   }
 }
@@ -980,32 +980,32 @@ LABEL_34:
   v43 = *MEMORY[0x277D85DE8];
   if ([(AKLayerPresentationManager *)self isObservingModel])
   {
-    v3 = [(AKLayerPresentationManager *)self pageModelController];
-    [v3 removeObserver:self forKeyPath:@"selectedAnnotations" context:@"AKLayerPresentationManager.modelSelectionsObservationContext"];
+    pageModelController = [(AKLayerPresentationManager *)self pageModelController];
+    [pageModelController removeObserver:self forKeyPath:@"selectedAnnotations" context:@"AKLayerPresentationManager.modelSelectionsObservationContext"];
 
-    v4 = [(AKLayerPresentationManager *)self pageModelController];
-    [v4 removeObserver:self forKeyPath:@"annotations" context:@"AKLayerPresentationManager.modelAnnotationsObservationContext"];
+    pageModelController2 = [(AKLayerPresentationManager *)self pageModelController];
+    [pageModelController2 removeObserver:self forKeyPath:@"annotations" context:@"AKLayerPresentationManager.modelAnnotationsObservationContext"];
 
     [MEMORY[0x277CD9FF0] begin];
     [MEMORY[0x277CD9FF0] setDisableActions:1];
-    v5 = [(AKLayerPresentationManager *)self pageModelController];
-    v6 = [v5 cropAnnotation];
+    pageModelController3 = [(AKLayerPresentationManager *)self pageModelController];
+    cropAnnotation = [pageModelController3 cropAnnotation];
 
-    if (v6)
+    if (cropAnnotation)
     {
-      v7 = [(AKLayerPresentationManager *)self pageModelController];
-      v8 = [v7 cropAnnotation];
-      [(AKLayerPresentationManager *)self _removeAdornmentLayerForAnnotation:v8];
+      pageModelController4 = [(AKLayerPresentationManager *)self pageModelController];
+      cropAnnotation2 = [pageModelController4 cropAnnotation];
+      [(AKLayerPresentationManager *)self _removeAdornmentLayerForAnnotation:cropAnnotation2];
     }
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v9 = [(AKLayerPresentationManager *)self pageModelController];
-    v10 = [v9 selectedAnnotations];
+    pageModelController5 = [(AKLayerPresentationManager *)self pageModelController];
+    selectedAnnotations = [pageModelController5 selectedAnnotations];
 
-    v11 = [v10 countByEnumeratingWithState:&v36 objects:v42 count:16];
+    v11 = [selectedAnnotations countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1017,14 +1017,14 @@ LABEL_34:
         {
           if (*v37 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(selectedAnnotations);
           }
 
           [(AKLayerPresentationManager *)self _removeAdornmentLayerForAnnotation:*(*(&v36 + 1) + 8 * v14++)];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v36 objects:v42 count:16];
+        v12 = [selectedAnnotations countByEnumeratingWithState:&v36 objects:v42 count:16];
       }
 
       while (v12);
@@ -1034,11 +1034,11 @@ LABEL_34:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v15 = [(AKLayerPresentationManager *)self pageModelController];
-    v16 = [v15 annotations];
+    pageModelController6 = [(AKLayerPresentationManager *)self pageModelController];
+    annotations = [pageModelController6 annotations];
 
-    obj = v16;
-    v17 = [v16 countByEnumeratingWithState:&v32 objects:v41 count:16];
+    obj = annotations;
+    v17 = [annotations countByEnumeratingWithState:&v32 objects:v41 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1058,8 +1058,8 @@ LABEL_34:
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v22 = [v21 keysForValuesToObserveForRedrawing];
-          v23 = [v22 countByEnumeratingWithState:&v28 objects:v40 count:16];
+          keysForValuesToObserveForRedrawing = [v21 keysForValuesToObserveForRedrawing];
+          v23 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v28 objects:v40 count:16];
           if (v23)
           {
             v24 = v23;
@@ -1071,14 +1071,14 @@ LABEL_34:
               {
                 if (*v29 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(keysForValuesToObserveForRedrawing);
                 }
 
                 [v21 removeObserver:self forKeyPath:*(*(&v28 + 1) + 8 * v26++) context:@"AKLayerPresentationManager.modelAnnotationsAppearanceObservationContext"];
               }
 
               while (v24 != v26);
-              v24 = [v22 countByEnumeratingWithState:&v28 objects:v40 count:16];
+              v24 = [keysForValuesToObserveForRedrawing countByEnumeratingWithState:&v28 objects:v40 count:16];
             }
 
             while (v24);
@@ -1101,41 +1101,41 @@ LABEL_34:
   }
 }
 
-- (void)_addLayerForAnnotation:(id)a3
+- (void)_addLayerForAnnotation:(id)annotation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationCopy = annotation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = [(AKLayerPresentationManager *)self pageController];
-    v6 = [AKAnnotationLayer newAnnotationLayerForAnnotation:v4 withPageController:v5];
+    pageController = [(AKLayerPresentationManager *)self pageController];
+    v6 = [AKAnnotationLayer newAnnotationLayerForAnnotation:annotationCopy withPageController:pageController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(AKLayerPresentationManager *)self setCropAnnotationLayer:v6];
     }
 
-    v7 = [(AKLayerPresentationManager *)self rootLayer];
-    [v7 addSublayer:v6];
+    rootLayer = [(AKLayerPresentationManager *)self rootLayer];
+    [rootLayer addSublayer:v6];
 
     [v6 updatePixelAlignment];
-    v8 = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
-    [v8 setObject:v6 forKey:v4];
+    annotationsToAnnotationLayers = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
+    [annotationsToAnnotationLayers setObject:v6 forKey:annotationCopy];
 
     [(AKLayerPresentationManager *)self _setNeedsDisplayOnNewLayer:v6];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [v5 pageModelController];
-    v10 = [v9 annotations];
+    pageModelController = [pageController pageModelController];
+    annotations = [pageModelController annotations];
 
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    v11 = [annotations countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v11)
     {
       v12 = v11;
-      v22 = v5;
+      v22 = pageController;
       v13 = 0;
       v14 = *v24;
       do
@@ -1144,22 +1144,22 @@ LABEL_34:
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(annotations);
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          v17 = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
-          v18 = [v17 objectForKey:v16];
+          annotationsToAnnotationLayers2 = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
+          v18 = [annotationsToAnnotationLayers2 objectForKey:v16];
 
           [v18 setZPosition:v13++];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v12 = [annotations countByEnumeratingWithState:&v23 objects:v27 count:16];
       }
 
       while (v12);
       v19 = v13;
-      v5 = v22;
+      pageController = v22;
     }
 
     else
@@ -1167,67 +1167,67 @@ LABEL_34:
       v19 = 0.0;
     }
 
-    v20 = [(AKLayerPresentationManager *)self cropAnnotationLayer];
+    cropAnnotationLayer = [(AKLayerPresentationManager *)self cropAnnotationLayer];
 
-    if (v20)
+    if (cropAnnotationLayer)
     {
-      v21 = [(AKLayerPresentationManager *)self cropAnnotationLayer];
-      [v21 setZPosition:v19];
+      cropAnnotationLayer2 = [(AKLayerPresentationManager *)self cropAnnotationLayer];
+      [cropAnnotationLayer2 setZPosition:v19];
     }
   }
 }
 
-- (void)_removeLayerForAnnotation:(id)a3
+- (void)_removeLayerForAnnotation:(id)annotation
 {
-  v8 = a3;
-  v4 = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
-  v5 = [v4 objectForKey:v8];
+  annotationCopy = annotation;
+  annotationsToAnnotationLayers = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
+  v5 = [annotationsToAnnotationLayers objectForKey:annotationCopy];
 
   if (v5)
   {
     [v5 removeFromSuperlayer];
-    v6 = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
-    [v6 removeObjectForKey:v8];
+    annotationsToAnnotationLayers2 = [(AKLayerPresentationManager *)self annotationsToAnnotationLayers];
+    [annotationsToAnnotationLayers2 removeObjectForKey:annotationCopy];
 
-    v7 = [(AKLayerPresentationManager *)self cropAnnotationLayer];
+    cropAnnotationLayer = [(AKLayerPresentationManager *)self cropAnnotationLayer];
 
-    if (v5 == v7)
+    if (v5 == cropAnnotationLayer)
     {
       [(AKLayerPresentationManager *)self setCropAnnotationLayer:0];
     }
   }
 }
 
-- (void)_addAdornmentLayerForAnnotation:(id)a3
+- (void)_addAdornmentLayerForAnnotation:(id)annotation
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKLayerPresentationManager *)self pageController];
-  v6 = [AKAdornmentLayer newAdornmentLayerForAnnotation:v4 withPageController:v5];
+  annotationCopy = annotation;
+  pageController = [(AKLayerPresentationManager *)self pageController];
+  v6 = [AKAdornmentLayer newAdornmentLayerForAnnotation:annotationCopy withPageController:pageController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(AKLayerPresentationManager *)self setCropAdornmentLayer:v6];
   }
 
-  v7 = [(AKLayerPresentationManager *)self rootLayer];
-  [v7 addSublayer:v6];
+  rootLayer = [(AKLayerPresentationManager *)self rootLayer];
+  [rootLayer addSublayer:v6];
 
   [v6 updatePixelAlignment];
-  v8 = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
-  v23 = v4;
-  [v8 setObject:v6 forKey:v4];
+  annotationsToAdornmentLayers = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
+  v23 = annotationCopy;
+  [annotationsToAdornmentLayers setObject:v6 forKey:annotationCopy];
 
   [(AKLayerPresentationManager *)self _setNeedsDisplayOnNewLayer:v6];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v22 = v5;
-  v9 = [v5 pageModelController];
-  v10 = [v9 annotations];
+  v22 = pageController;
+  pageModelController = [pageController pageModelController];
+  annotations = [pageModelController annotations];
 
-  v11 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v11 = [annotations countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1239,18 +1239,18 @@ LABEL_34:
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(annotations);
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
-        v18 = [v17 objectForKey:v16];
+        annotationsToAdornmentLayers2 = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
+        v18 = [annotationsToAdornmentLayers2 objectForKey:v16];
 
         [v18 setZPosition:(v13 + AKAdornmentZPositionOffset)];
         ++v13;
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v12 = [annotations countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v12);
@@ -1261,31 +1261,31 @@ LABEL_34:
     v13 = 0;
   }
 
-  v19 = [(AKLayerPresentationManager *)self cropAdornmentLayer];
+  cropAdornmentLayer = [(AKLayerPresentationManager *)self cropAdornmentLayer];
 
-  if (v19)
+  if (cropAdornmentLayer)
   {
     v20 = (AKAdornmentZPositionOffset + v13);
-    v21 = [(AKLayerPresentationManager *)self cropAdornmentLayer];
-    [v21 setZPosition:v20];
+    cropAdornmentLayer2 = [(AKLayerPresentationManager *)self cropAdornmentLayer];
+    [cropAdornmentLayer2 setZPosition:v20];
   }
 }
 
-- (void)_removeAdornmentLayerForAnnotation:(id)a3
+- (void)_removeAdornmentLayerForAnnotation:(id)annotation
 {
-  v4 = a3;
-  v5 = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
-  v9 = [v5 objectForKey:v4];
+  annotationCopy = annotation;
+  annotationsToAdornmentLayers = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
+  v9 = [annotationsToAdornmentLayers objectForKey:annotationCopy];
 
   [v9 removeFromSuperlayer];
-  v6 = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
-  [v6 removeObjectForKey:v4];
+  annotationsToAdornmentLayers2 = [(AKLayerPresentationManager *)self annotationsToAdornmentLayers];
+  [annotationsToAdornmentLayers2 removeObjectForKey:annotationCopy];
 
   [v9 teardown];
-  v7 = [(AKLayerPresentationManager *)self cropAdornmentLayer];
+  cropAdornmentLayer = [(AKLayerPresentationManager *)self cropAdornmentLayer];
 
   v8 = v9;
-  if (v9 == v7)
+  if (v9 == cropAdornmentLayer)
   {
     [(AKLayerPresentationManager *)self setCropAdornmentLayer:0];
     v8 = v9;

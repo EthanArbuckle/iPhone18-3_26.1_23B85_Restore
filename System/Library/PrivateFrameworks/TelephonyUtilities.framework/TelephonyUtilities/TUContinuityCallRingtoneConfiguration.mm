@@ -1,22 +1,22 @@
 @interface TUContinuityCallRingtoneConfiguration
-- (TUContinuityCallRingtoneConfiguration)initWithCoder:(id)a3;
-- (TUContinuityCallRingtoneConfiguration)initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUContinuityCallRingtoneConfiguration)initWithCoder:(id)coder;
+- (TUContinuityCallRingtoneConfiguration)initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUContinuityCallRingtoneConfiguration
 
-- (TUContinuityCallRingtoneConfiguration)initWithIdentifier:(id)a3
+- (TUContinuityCallRingtoneConfiguration)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = TUContinuityCallRingtoneConfiguration;
   v5 = [(TUContinuityCallRingtoneConfiguration *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     ringtoneIdentifier = v5->_ringtoneIdentifier;
     v5->_ringtoneIdentifier = v6;
   }
@@ -38,28 +38,28 @@
   return v7;
 }
 
-- (TUContinuityCallRingtoneConfiguration)initWithCoder:(id)a3
+- (TUContinuityCallRingtoneConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_ringtoneIdentifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(TUContinuityCallRingtoneConfiguration *)self initWithIdentifier:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ringtoneIdentifier = self->_ringtoneIdentifier;
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_ringtoneIdentifier);
-  [v4 encodeObject:ringtoneIdentifier forKey:v5];
+  [coderCopy encodeObject:ringtoneIdentifier forKey:v5];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TUContinuityCallRingtoneConfiguration allocWithZone:a3];
+  v4 = [TUContinuityCallRingtoneConfiguration allocWithZone:zone];
   ringtoneIdentifier = self->_ringtoneIdentifier;
 
   return [(TUContinuityCallRingtoneConfiguration *)v4 initWithIdentifier:ringtoneIdentifier];

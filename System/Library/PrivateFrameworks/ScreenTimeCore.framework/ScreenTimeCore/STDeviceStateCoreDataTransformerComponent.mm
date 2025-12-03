@@ -1,27 +1,27 @@
 @interface STDeviceStateCoreDataTransformerComponent
 + (NSDictionary)observationFiltersByTriggerPredicate;
-+ (id)_allInstalledAppsForUserDeviceState:(id)a3 inContext:(id)a4;
-+ (id)_appFromCoreDataChange:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)_appTombstoneFromCoreDataChange:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)_deviceWithID:(id)a3 associatedUser:(id)a4 inContext:(id)a5;
-+ (id)_localDeviceFromPrimitives:(id)a3 inContext:(id)a4 error:(id *)a5;
-+ (id)_validatedDeviceStateChangeTypeFromSecondaryType:(int64_t)a3;
-+ (id)_writeDevice:(id)a3 associatedUser:(id)a4 inContext:(id)a5;
-+ (id)deviceStateChangeForCoreDataChanges:(id)a3 deviceInformationPrimitives:(id)a4 container:(id)a5 error:(id *)a6;
-+ (id)deviceStateChangeForLocalDeviceUsingDeviceInformationPrimitives:(id)a3 persistentContainer:(id)a4;
-+ (id)handleDeviceStateChange:(id)a3 deviceInformationPrimitives:(id)a4 container:(id)a5;
-+ (int64_t)_devicePlatformFromOSPlatform:(signed __int16)a3;
-+ (signed)_osPlatformFromDevicePlatform:(int64_t)a3;
++ (id)_allInstalledAppsForUserDeviceState:(id)state inContext:(id)context;
++ (id)_appFromCoreDataChange:(id)change inContext:(id)context error:(id *)error;
++ (id)_appTombstoneFromCoreDataChange:(id)change inContext:(id)context error:(id *)error;
++ (id)_deviceWithID:(id)d associatedUser:(id)user inContext:(id)context;
++ (id)_localDeviceFromPrimitives:(id)primitives inContext:(id)context error:(id *)error;
++ (id)_validatedDeviceStateChangeTypeFromSecondaryType:(int64_t)type;
++ (id)_writeDevice:(id)device associatedUser:(id)user inContext:(id)context;
++ (id)deviceStateChangeForCoreDataChanges:(id)changes deviceInformationPrimitives:(id)primitives container:(id)container error:(id *)error;
++ (id)deviceStateChangeForLocalDeviceUsingDeviceInformationPrimitives:(id)primitives persistentContainer:(id)container;
++ (id)handleDeviceStateChange:(id)change deviceInformationPrimitives:(id)primitives container:(id)container;
++ (int64_t)_devicePlatformFromOSPlatform:(signed __int16)platform;
++ (signed)_osPlatformFromDevicePlatform:(int64_t)platform;
 @end
 
 @implementation STDeviceStateCoreDataTransformerComponent
 
-+ (id)deviceStateChangeForCoreDataChanges:(id)a3 deviceInformationPrimitives:(id)a4 container:(id)a5 error:(id *)a6
++ (id)deviceStateChangeForCoreDataChanges:(id)changes deviceInformationPrimitives:(id)primitives container:(id)container error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v12 newBackgroundContext];
+  changesCopy = changes;
+  primitivesCopy = primitives;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v58 = 0;
   v59[0] = &v58;
   v59[1] = 0x3032000000;
@@ -29,7 +29,7 @@
   v59[3] = sub_10002AA08;
   v60 = 0;
   v57 = 0;
-  v14 = [a1 _localDeviceFromPrimitives:v11 inContext:v13 error:&v57];
+  v14 = [self _localDeviceFromPrimitives:primitivesCopy inContext:newBackgroundContext error:&v57];
   objc_storeStrong(&v60, v57);
   if (v14)
   {
@@ -55,17 +55,17 @@
     v29 = 3221225472;
     v30 = sub_10002AA10;
     v31 = &unk_1001A3AE8;
-    v32 = v13;
+    v32 = newBackgroundContext;
     v34 = &v58;
     v35 = &v51;
-    v33 = v10;
+    v33 = changesCopy;
     v36 = &v45;
     v37 = &v39;
-    v38 = a1;
+    selfCopy = self;
     [v32 performBlockAndWait:&v28];
-    if (a6)
+    if (error)
     {
-      *a6 = *(v59[0] + 40);
+      *error = *(v59[0] + 40);
     }
 
     if (*(v59[0] + 40))
@@ -76,10 +76,10 @@
     else
     {
       v23 = [STDeviceStateChange alloc];
-      v24 = [v14 deviceID];
-      v25 = [v14 name];
-      v26 = [v14 platform];
-      v15 = [(STDeviceStateChange *)v23 initWithDeviceID:v24 deviceName:v25 devicePlatform:v26 installedApps:v46[5] removedApps:v40[5] associatedUser:v52[5]];
+      deviceID = [v14 deviceID];
+      name = [v14 name];
+      platform = [v14 platform];
+      v15 = [(STDeviceStateChange *)v23 initWithDeviceID:deviceID deviceName:name devicePlatform:platform installedApps:v46[5] removedApps:v40[5] associatedUser:v52[5]];
     }
 
     _Block_object_dispose(&v39, 8);
@@ -97,9 +97,9 @@
     }
 
     v15 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = *(v59[0] + 40);
+      *error = *(v59[0] + 40);
     }
   }
 
@@ -108,10 +108,10 @@
   return v15;
 }
 
-+ (id)deviceStateChangeForLocalDeviceUsingDeviceInformationPrimitives:(id)a3 persistentContainer:(id)a4
++ (id)deviceStateChangeForLocalDeviceUsingDeviceInformationPrimitives:(id)primitives persistentContainer:(id)container
 {
-  v5 = a3;
-  v6 = a4;
+  primitivesCopy = primitives;
+  containerCopy = container;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -138,24 +138,24 @@
   v19 = 3221225472;
   v20 = sub_10002B120;
   v21 = &unk_1001A3B10;
-  v7 = [v6 newBackgroundContext];
-  v22 = v7;
+  newBackgroundContext = [containerCopy newBackgroundContext];
+  v22 = newBackgroundContext;
   v24 = &v32;
   v25 = &v44;
   v26 = &v38;
-  v8 = v5;
+  v8 = primitivesCopy;
   v23 = v8;
   v27 = &v28;
-  [v7 performBlockAndWait:&v18];
+  [newBackgroundContext performBlockAndWait:&v18];
   if (v29[3])
   {
     v9 = [STDeviceStateChange alloc];
-    v10 = [v39[5] deviceID];
-    v11 = [v39[5] name];
-    v12 = [v39[5] platform];
-    v13 = [v39[5] apps];
+    deviceID = [v39[5] deviceID];
+    name = [v39[5] name];
+    platform = [v39[5] platform];
+    apps = [v39[5] apps];
     v14 = objc_opt_new();
-    v15 = [(STDeviceStateChange *)v9 initWithDeviceID:v10 deviceName:v11 devicePlatform:v12 installedApps:v13 removedApps:v14 associatedUser:v45[5]];
+    v15 = [(STDeviceStateChange *)v9 initWithDeviceID:deviceID deviceName:name devicePlatform:platform installedApps:apps removedApps:v14 associatedUser:v45[5]];
 
     v16 = [STResult success:v15];
   }
@@ -174,12 +174,12 @@
   return v16;
 }
 
-+ (id)handleDeviceStateChange:(id)a3 deviceInformationPrimitives:(id)a4 container:(id)a5
++ (id)handleDeviceStateChange:(id)change deviceInformationPrimitives:(id)primitives container:(id)container
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 newBackgroundContext];
+  changeCopy = change;
+  primitivesCopy = primitives;
+  containerCopy = container;
+  newBackgroundContext = [containerCopy newBackgroundContext];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -190,10 +190,10 @@
   v16[1] = 3221225472;
   v16[2] = sub_10002B3CC;
   v16[3] = &unk_1001A36D8;
-  v12 = v8;
+  v12 = changeCopy;
   v17 = v12;
-  v20 = a1;
-  v13 = v11;
+  selfCopy = self;
+  v13 = newBackgroundContext;
   v18 = v13;
   v19 = &v21;
   [v13 performBlockAndWait:v16];
@@ -204,20 +204,20 @@
   return v14;
 }
 
-+ (id)_deviceWithID:(id)a3 associatedUser:(id)a4 inContext:(id)a5
++ (id)_deviceWithID:(id)d associatedUser:(id)user inContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 dsid];
+  dCopy = d;
+  contextCopy = context;
+  dsid = [user dsid];
   v36 = 0;
-  v11 = [STCoreUser fetchUserWithDSID:v10 inContext:v9 error:&v36];
+  v11 = [STCoreUser fetchUserWithDSID:dsid inContext:contextCopy error:&v36];
   v12 = v36;
 
   if (v11)
   {
-    v13 = [v8 identifier];
+    identifier = [dCopy identifier];
     v35 = v12;
-    v14 = [STCoreDevice fetchDeviceWithIdentifier:v13 inContext:v9 error:&v35];
+    v14 = [STCoreDevice fetchDeviceWithIdentifier:identifier inContext:contextCopy error:&v35];
     v15 = v35;
 
     if (v14)
@@ -232,19 +232,19 @@
 
       if (v18)
       {
-        v33 = v8;
-        v20 = [v18 firstObject];
-        if (v20)
+        v33 = dCopy;
+        firstObject = [v18 firstObject];
+        if (firstObject)
         {
-          v21 = [a1 _allInstalledAppsForUserDeviceState:v20 inContext:v9];
-          v32 = v13;
+          v21 = [self _allInstalledAppsForUserDeviceState:firstObject inContext:contextCopy];
+          v32 = identifier;
           v22 = [STDevice alloc];
           [v14 name];
           v23 = v31 = v19;
-          v24 = -[STDevice initWithID:name:platform:apps:](v22, "initWithID:name:platform:apps:", v33, v23, [a1 _devicePlatformFromOSPlatform:{objc_msgSend(v14, "platform")}], v21);
+          v24 = -[STDevice initWithID:name:platform:apps:](v22, "initWithID:name:platform:apps:", v33, v23, [self _devicePlatformFromOSPlatform:{objc_msgSend(v14, "platform")}], v21);
           v25 = [STResult success:v24];
 
-          v13 = v32;
+          identifier = v32;
           v19 = v31;
         }
 
@@ -259,7 +259,7 @@
           v25 = [STResult failure:v19];
         }
 
-        v8 = v33;
+        dCopy = v33;
       }
 
       else
@@ -304,31 +304,31 @@
   return v25;
 }
 
-+ (id)_localDeviceFromPrimitives:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)_localDeviceFromPrimitives:(id)primitives inContext:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  primitivesCopy = primitives;
+  contextCopy = context;
   v22 = 0;
-  v10 = [STUserDeviceState fetchLocalUserDeviceStateInContext:v9 error:&v22];
+  v10 = [STUserDeviceState fetchLocalUserDeviceStateInContext:contextCopy error:&v22];
   v11 = v22;
   v12 = v11;
   if (v10)
   {
-    v13 = [a1 _allInstalledAppsForUserDeviceState:v10 inContext:v9];
+    v13 = [self _allInstalledAppsForUserDeviceState:v10 inContext:contextCopy];
     v14 = [STDeviceID alloc];
-    v15 = [v8 deviceUUID];
-    v16 = [(STDeviceID *)v14 initWithIdentifier:v15];
+    deviceUUID = [primitivesCopy deviceUUID];
+    v16 = [(STDeviceID *)v14 initWithIdentifier:deviceUUID];
 
     v17 = [STDevice alloc];
-    v18 = [v8 deviceName];
-    v19 = [(STDevice *)v17 initWithID:v16 name:v18 platform:+[STDevice apps:"currentPlatform"], v13];
+    deviceName = [primitivesCopy deviceName];
+    v19 = [(STDevice *)v17 initWithID:v16 name:deviceName platform:+[STDevice apps:"currentPlatform"], v13];
   }
 
-  else if (a5)
+  else if (error)
   {
     v20 = v11;
     v19 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -339,16 +339,16 @@
   return v19;
 }
 
-+ (id)_allInstalledAppsForUserDeviceState:(id)a3 inContext:(id)a4
++ (id)_allInstalledAppsForUserDeviceState:(id)state inContext:(id)context
 {
-  v4 = a3;
+  stateCopy = state;
   v25 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = v4;
-  obj = [v4 installedApps];
+  v23 = stateCopy;
+  obj = [stateCopy installedApps];
   v27 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v27)
   {
@@ -363,61 +363,61 @@
         }
 
         v6 = *(*(&v28 + 1) + 8 * i);
-        v7 = [v6 bundleIdentifier];
-        v8 = [v6 distributorID];
-        v9 = [v6 adamID];
-        if (v9)
+        bundleIdentifier = [v6 bundleIdentifier];
+        distributorID = [v6 distributorID];
+        adamID = [v6 adamID];
+        if (adamID)
         {
-          v10 = [v6 adamID];
-          v11 = [v10 unsignedLongLongValue];
+          adamID2 = [v6 adamID];
+          unsignedLongLongValue = [adamID2 unsignedLongLongValue];
         }
 
         else
         {
-          v11 = 0;
+          unsignedLongLongValue = 0;
         }
 
-        v12 = [v6 versionIdentifier];
-        if (v12)
+        versionIdentifier = [v6 versionIdentifier];
+        if (versionIdentifier)
         {
-          v13 = [v6 versionIdentifier];
-          v14 = [v13 unsignedLongLongValue];
+          versionIdentifier2 = [v6 versionIdentifier];
+          unsignedLongLongValue2 = [versionIdentifier2 unsignedLongLongValue];
         }
 
         else
         {
-          v14 = 0;
+          unsignedLongLongValue2 = 0;
         }
 
-        v15 = [v6 betaVersionIdentifier];
-        if (v15)
+        betaVersionIdentifier = [v6 betaVersionIdentifier];
+        if (betaVersionIdentifier)
         {
-          v16 = [v6 betaVersionIdentifier];
-          v17 = [v16 unsignedLongLongValue];
+          betaVersionIdentifier2 = [v6 betaVersionIdentifier];
+          unsignedLongLongValue3 = [betaVersionIdentifier2 unsignedLongLongValue];
         }
 
         else
         {
-          v17 = 0;
+          unsignedLongLongValue3 = 0;
         }
 
-        if (v7)
+        if (bundleIdentifier)
         {
           v18 = [STAppInformation alloc];
-          v19 = [v6 displayName];
-          v20 = [v6 iconData];
-          v21 = -[STAppInformation initWithBundleIdentifier:displayName:iconData:distributorID:distributorIsThirdParty:adamID:versionIdentifier:betaVersionIdentifier:](v18, "initWithBundleIdentifier:displayName:iconData:distributorID:distributorIsThirdParty:adamID:versionIdentifier:betaVersionIdentifier:", v7, v19, v20, v8, [v6 distributorIsThirdParty], v11, v14, v17);
+          displayName = [v6 displayName];
+          iconData = [v6 iconData];
+          v21 = -[STAppInformation initWithBundleIdentifier:displayName:iconData:distributorID:distributorIsThirdParty:adamID:versionIdentifier:betaVersionIdentifier:](v18, "initWithBundleIdentifier:displayName:iconData:distributorID:distributorIsThirdParty:adamID:versionIdentifier:betaVersionIdentifier:", bundleIdentifier, displayName, iconData, distributorID, [v6 distributorIsThirdParty], unsignedLongLongValue, unsignedLongLongValue2, unsignedLongLongValue3);
           [v25 addObject:v21];
         }
 
         else
         {
-          v19 = +[STLog coreDataTransformer];
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+          displayName = +[STLog coreDataTransformer];
+          if (os_log_type_enabled(displayName, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543362;
             v33 = v6;
-            _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Installed app missing bundle identifier: %{public}@", buf, 0xCu);
+            _os_log_error_impl(&_mh_execute_header, displayName, OS_LOG_TYPE_ERROR, "Installed app missing bundle identifier: %{public}@", buf, 0xCu);
           }
         }
       }
@@ -431,10 +431,10 @@
   return v25;
 }
 
-+ (id)_appFromCoreDataChange:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)_appFromCoreDataChange:(id)change inContext:(id)context error:(id *)error
 {
   v40 = 0;
-  v6 = [STSharedCoreDataTransformerComponent changedObjectFromCoreDataChange:a3 inContext:a4 error:&v40];
+  v6 = [STSharedCoreDataTransformerComponent changedObjectFromCoreDataChange:change inContext:context error:&v40];
   v7 = v40;
   if (!v6)
   {
@@ -444,11 +444,11 @@
       sub_10011466C();
     }
 
-    if (a5)
+    if (error)
     {
       v14 = v7;
       v15 = 0;
-      *a5 = v7;
+      *error = v7;
       goto LABEL_29;
     }
 
@@ -464,7 +464,7 @@
       sub_100114578();
     }
 
-    if (a5)
+    if (error)
     {
       v17 = [NSError alloc];
       v18 = STErrorDomain;
@@ -474,7 +474,7 @@
       v21 = [NSString stringWithFormat:@"Changed Object Class: %@", v20];
       v44 = v21;
       v22 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-      *a5 = [v17 initWithDomain:v18 code:34 userInfo:v22];
+      *error = [v17 initWithDomain:v18 code:34 userInfo:v22];
     }
 
 LABEL_14:
@@ -483,54 +483,54 @@ LABEL_14:
   }
 
   v8 = v6;
-  v9 = [v8 bundleIdentifier];
-  if (v9)
+  bundleIdentifier = [v8 bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v10 = [v8 distributorID];
-    v11 = [v8 adamID];
-    if (v11)
+    distributorID = [v8 distributorID];
+    adamID = [v8 adamID];
+    if (adamID)
     {
-      v12 = [v8 adamID];
-      v38 = [v12 unsignedLongLongValue];
+      adamID2 = [v8 adamID];
+      unsignedLongLongValue = [adamID2 unsignedLongLongValue];
     }
 
     else
     {
-      v38 = 0;
+      unsignedLongLongValue = 0;
     }
 
-    v27 = [v8 versionIdentifier];
-    if (v27)
+    versionIdentifier = [v8 versionIdentifier];
+    if (versionIdentifier)
     {
-      v28 = [v8 versionIdentifier];
-      v29 = [v28 unsignedLongLongValue];
-    }
-
-    else
-    {
-      v29 = 0;
-    }
-
-    v30 = [v8 betaVersionIdentifier];
-    v39 = v9;
-    if (v30)
-    {
-      v31 = [v8 betaVersionIdentifier];
-      v32 = [v31 unsignedLongLongValue];
+      versionIdentifier2 = [v8 versionIdentifier];
+      unsignedLongLongValue2 = [versionIdentifier2 unsignedLongLongValue];
     }
 
     else
     {
-      v32 = 0;
+      unsignedLongLongValue2 = 0;
+    }
+
+    betaVersionIdentifier = [v8 betaVersionIdentifier];
+    v39 = bundleIdentifier;
+    if (betaVersionIdentifier)
+    {
+      betaVersionIdentifier2 = [v8 betaVersionIdentifier];
+      unsignedLongLongValue3 = [betaVersionIdentifier2 unsignedLongLongValue];
+    }
+
+    else
+    {
+      unsignedLongLongValue3 = 0;
     }
 
     v33 = [STAppInformation alloc];
-    v34 = [v8 bundleIdentifier];
-    v35 = [v8 displayName];
-    v36 = [v8 iconData];
-    v15 = -[STAppInformation initWithBundleIdentifier:displayName:iconData:distributorID:distributorIsThirdParty:adamID:versionIdentifier:betaVersionIdentifier:](v33, "initWithBundleIdentifier:displayName:iconData:distributorID:distributorIsThirdParty:adamID:versionIdentifier:betaVersionIdentifier:", v34, v35, v36, v10, [v8 distributorIsThirdParty], v38, v29, v32);
+    bundleIdentifier2 = [v8 bundleIdentifier];
+    displayName = [v8 displayName];
+    iconData = [v8 iconData];
+    v15 = -[STAppInformation initWithBundleIdentifier:displayName:iconData:distributorID:distributorIsThirdParty:adamID:versionIdentifier:betaVersionIdentifier:](v33, "initWithBundleIdentifier:displayName:iconData:distributorID:distributorIsThirdParty:adamID:versionIdentifier:betaVersionIdentifier:", bundleIdentifier2, displayName, iconData, distributorID, [v8 distributorIsThirdParty], unsignedLongLongValue, unsignedLongLongValue2, unsignedLongLongValue3);
 
-    v9 = v39;
+    bundleIdentifier = v39;
   }
 
   else
@@ -541,7 +541,7 @@ LABEL_14:
       sub_100114604();
     }
 
-    if (!a5)
+    if (!error)
     {
       v15 = 0;
       goto LABEL_28;
@@ -551,10 +551,10 @@ LABEL_14:
     v25 = STErrorDomain;
     v41 = NSLocalizedDescriptionKey;
     v42 = @"Installed app missing bundle identifier";
-    v10 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-    v26 = [v24 initWithDomain:v25 code:34 userInfo:v10];
+    distributorID = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
+    v26 = [v24 initWithDomain:v25 code:34 userInfo:distributorID];
     v15 = 0;
-    *a5 = v26;
+    *error = v26;
   }
 
 LABEL_28:
@@ -563,18 +563,18 @@ LABEL_29:
   return v15;
 }
 
-+ (id)_appTombstoneFromCoreDataChange:(id)a3 inContext:(id)a4 error:(id *)a5
++ (id)_appTombstoneFromCoreDataChange:(id)change inContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 changeIdentifier];
+  changeCopy = change;
+  changeIdentifier = [changeCopy changeIdentifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v6 changeIdentifier];
-    v10 = [v9 objectForKeyedSubscript:@"bundleIdentifier"];
-    v11 = [v9 objectForKeyedSubscript:@"uniqueIdentifier"];
+    changeIdentifier2 = [changeCopy changeIdentifier];
+    v10 = [changeIdentifier2 objectForKeyedSubscript:@"bundleIdentifier"];
+    v11 = [changeIdentifier2 objectForKeyedSubscript:@"uniqueIdentifier"];
     v12 = v11;
     if (v10 && v11)
     {
@@ -589,11 +589,11 @@ LABEL_29:
         sub_100114778(v12 == 0, v10 == 0);
       }
 
-      if (a5)
+      if (error)
       {
         v17 = [NSError alloc];
         v13 = 0;
-        *a5 = [v17 initWithDomain:STErrorDomain code:40 userInfo:0];
+        *error = [v17 initWithDomain:STErrorDomain code:40 userInfo:0];
       }
 
       else
@@ -608,14 +608,14 @@ LABEL_29:
     v14 = +[STLog coreDataTransformer];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_1001146D4(v6);
+      sub_1001146D4(changeCopy);
     }
 
-    if (a5)
+    if (error)
     {
       v15 = [NSError alloc];
       v13 = 0;
-      *a5 = [v15 initWithDomain:STErrorDomain code:40 userInfo:0];
+      *error = [v15 initWithDomain:STErrorDomain code:40 userInfo:0];
     }
 
     else
@@ -627,22 +627,22 @@ LABEL_29:
   return v13;
 }
 
-+ (id)_writeDevice:(id)a3 associatedUser:(id)a4 inContext:(id)a5
++ (id)_writeDevice:(id)device associatedUser:(id)user inContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 dsid];
+  deviceCopy = device;
+  contextCopy = context;
+  dsid = [user dsid];
   v92 = 0;
-  v11 = [STCoreUser fetchUserWithDSID:v10 inContext:v9 error:&v92];
+  v11 = [STCoreUser fetchUserWithDSID:dsid inContext:contextCopy error:&v92];
   v12 = v92;
 
   if (v11)
   {
-    v13 = [v8 deviceID];
-    v14 = [v13 identifier];
+    deviceID = [deviceCopy deviceID];
+    identifier = [deviceID identifier];
 
     v91 = v12;
-    v15 = [STCoreDevice fetchDeviceWithIdentifier:v14 inContext:v9 error:&v91];
+    v15 = [STCoreDevice fetchDeviceWithIdentifier:identifier inContext:contextCopy error:&v91];
     v16 = v91;
     v17 = v12;
     v18 = v16;
@@ -655,14 +655,14 @@ LABEL_29:
         *buf = 136446466;
         v97 = "+[STDeviceStateCoreDataTransformerComponent _writeDevice:associatedUser:inContext:]";
         v98 = 2112;
-        v99 = v14;
+        v99 = identifier;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}s: Creating CoreDevice with deviceIdentifier: (%@)", buf, 0x16u);
       }
 
-      v20 = [[STCoreDevice alloc] initWithContext:v9];
-      [v20 setIdentifier:v14];
-      [v20 setPlatform:{objc_msgSend(a1, "_osPlatformFromDevicePlatform:", objc_msgSend(v8, "platform"))}];
-      v21 = [[STUsage alloc] initWithContext:v9];
+      v20 = [[STCoreDevice alloc] initWithContext:contextCopy];
+      [v20 setIdentifier:identifier];
+      [v20 setPlatform:{objc_msgSend(self, "_osPlatformFromDevicePlatform:", objc_msgSend(deviceCopy, "platform"))}];
+      v21 = [[STUsage alloc] initWithContext:contextCopy];
       v22 = +[NSDate now];
       [v21 setLastUpdatedDate:v22];
 
@@ -671,8 +671,8 @@ LABEL_29:
       [v21 setUser:v11];
     }
 
-    v23 = [v8 name];
-    [v15 setName:v23];
+    name = [deviceCopy name];
+    [v15 setName:name];
 
     v24 = +[STUserDeviceState fetchRequest];
     v25 = [NSPredicate predicateWithFormat:@"%K == %@ AND %K == %@", @"user", v11, @"device", v15];
@@ -687,43 +687,43 @@ LABEL_29:
     v72 = v26;
     if (v26)
     {
-      v77 = [v26 firstObject];
-      if (!v77)
+      firstObject = [v26 firstObject];
+      if (!firstObject)
       {
         v27 = +[STLog screentime];
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [v11 dsid];
-          v29 = [v75 identifier];
+          dsid2 = [v11 dsid];
+          identifier2 = [v75 identifier];
           *buf = 136446722;
           v97 = "+[STDeviceStateCoreDataTransformerComponent _writeDevice:associatedUser:inContext:]";
           v98 = 2112;
-          v99 = v28;
+          v99 = dsid2;
           v100 = 2112;
-          v101 = v29;
+          v101 = identifier2;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%{public}s: Creating UserDeviceState for user: (%@), deviceIdentifier: (%@)", buf, 0x20u);
         }
 
-        v30 = [[STUserDeviceState alloc] initWithContext:v9];
+        v30 = [[STUserDeviceState alloc] initWithContext:contextCopy];
         [v30 setUser:v11];
-        v77 = v30;
+        firstObject = v30;
         [v30 setDevice:v75];
       }
 
-      v69 = v14;
+      v69 = identifier;
       v70 = v11;
-      v76 = v9;
-      v31 = [v8 apps];
-      v32 = [v31 count];
+      v76 = contextCopy;
+      apps = [deviceCopy apps];
+      v32 = [apps count];
 
       v33 = [NSMutableDictionary dictionaryWithCapacity:v32];
       v86 = 0u;
       v87 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v71 = v8;
-      v34 = [v8 apps];
-      v35 = [v34 countByEnumeratingWithState:&v86 objects:v95 count:16];
+      v71 = deviceCopy;
+      apps2 = [deviceCopy apps];
+      v35 = [apps2 countByEnumeratingWithState:&v86 objects:v95 count:16];
       if (v35)
       {
         v36 = v35;
@@ -734,14 +734,14 @@ LABEL_29:
           {
             if (*v87 != v37)
             {
-              objc_enumerationMutation(v34);
+              objc_enumerationMutation(apps2);
             }
 
             v39 = *(*(&v86 + 1) + 8 * i);
-            v40 = [v39 bundleIdentifier];
-            if (v40)
+            bundleIdentifier = [v39 bundleIdentifier];
+            if (bundleIdentifier)
             {
-              [v33 setObject:v39 forKeyedSubscript:v40];
+              [v33 setObject:v39 forKeyedSubscript:bundleIdentifier];
             }
 
             else
@@ -756,7 +756,7 @@ LABEL_29:
             }
           }
 
-          v36 = [v34 countByEnumeratingWithState:&v86 objects:v95 count:16];
+          v36 = [apps2 countByEnumeratingWithState:&v86 objects:v95 count:16];
         }
 
         while (v36);
@@ -766,8 +766,8 @@ LABEL_29:
       v85 = 0u;
       v82 = 0u;
       v83 = 0u;
-      v42 = [v77 installedApps];
-      v43 = [v42 countByEnumeratingWithState:&v82 objects:v94 count:16];
+      installedApps = [firstObject installedApps];
+      v43 = [installedApps countByEnumeratingWithState:&v82 objects:v94 count:16];
       if (v43)
       {
         v44 = v43;
@@ -778,19 +778,19 @@ LABEL_29:
           {
             if (*v83 != v45)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(installedApps);
             }
 
             v47 = *(*(&v82 + 1) + 8 * j);
-            v48 = [v47 bundleIdentifier];
-            if (v48)
+            bundleIdentifier2 = [v47 bundleIdentifier];
+            if (bundleIdentifier2)
             {
-              v49 = [v33 allKeys];
-              v50 = [v49 containsObject:v48];
+              allKeys = [v33 allKeys];
+              v50 = [allKeys containsObject:bundleIdentifier2];
 
               if (v50)
               {
-                [v33 removeObjectForKey:v48];
+                [v33 removeObjectForKey:bundleIdentifier2];
               }
 
               else
@@ -800,7 +800,7 @@ LABEL_29:
             }
           }
 
-          v44 = [v42 countByEnumeratingWithState:&v82 objects:v94 count:16];
+          v44 = [installedApps countByEnumeratingWithState:&v82 objects:v94 count:16];
         }
 
         while (v44);
@@ -810,8 +810,8 @@ LABEL_29:
       v81 = 0u;
       v78 = 0u;
       v79 = 0u;
-      v51 = [v33 allValues];
-      v52 = [v51 countByEnumeratingWithState:&v78 objects:v93 count:16];
+      allValues = [v33 allValues];
+      v52 = [allValues countByEnumeratingWithState:&v78 objects:v93 count:16];
       if (v52)
       {
         v53 = v52;
@@ -822,23 +822,23 @@ LABEL_29:
           {
             if (*v79 != v54)
             {
-              objc_enumerationMutation(v51);
+              objc_enumerationMutation(allValues);
             }
 
             v56 = *(*(&v78 + 1) + 8 * k);
             v57 = [[STInstalledApp alloc] initWithContext:v76];
-            v58 = [v56 bundleIdentifier];
-            [v57 setBundleIdentifier:v58];
+            bundleIdentifier3 = [v56 bundleIdentifier];
+            [v57 setBundleIdentifier:bundleIdentifier3];
 
-            [v57 setUserDeviceState:v77];
-            v59 = [v56 displayName];
-            [v57 setDisplayName:v59];
+            [v57 setUserDeviceState:firstObject];
+            displayName = [v56 displayName];
+            [v57 setDisplayName:displayName];
 
-            v60 = [v56 iconData];
-            [v57 setIconData:v60];
+            iconData = [v56 iconData];
+            [v57 setIconData:iconData];
 
-            v61 = [v56 distributorID];
-            [v57 setDistributorID:v61];
+            distributorID = [v56 distributorID];
+            [v57 setDistributorID:distributorID];
 
             [v57 setDistributorIsThirdParty:{objc_msgSend(v56, "distributorIsThirdParty")}];
             v62 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v56 adamID]);
@@ -851,7 +851,7 @@ LABEL_29:
             [v57 setBetaVersionIdentifier:v64];
           }
 
-          v53 = [v51 countByEnumeratingWithState:&v78 objects:v93 count:16];
+          v53 = [allValues countByEnumeratingWithState:&v78 objects:v93 count:16];
         }
 
         while (v53);
@@ -860,9 +860,9 @@ LABEL_29:
       v65 = +[STResult success];
 
       v11 = v70;
-      v8 = v71;
-      v9 = v76;
-      v14 = v69;
+      deviceCopy = v71;
+      contextCopy = v76;
+      identifier = v69;
       v12 = v74;
     }
 
@@ -893,11 +893,11 @@ LABEL_29:
   return v65;
 }
 
-+ (int64_t)_devicePlatformFromOSPlatform:(signed __int16)a3
++ (int64_t)_devicePlatformFromOSPlatform:(signed __int16)platform
 {
-  if ((a3 - 1) < 5)
+  if ((platform - 1) < 5)
   {
-    return (a3 - 1) + 1;
+    return (platform - 1) + 1;
   }
 
   else
@@ -906,11 +906,11 @@ LABEL_29:
   }
 }
 
-+ (signed)_osPlatformFromDevicePlatform:(int64_t)a3
++ (signed)_osPlatformFromDevicePlatform:(int64_t)platform
 {
-  if ((a3 - 1) < 5)
+  if ((platform - 1) < 5)
   {
-    return a3;
+    return platform;
   }
 
   else
@@ -919,9 +919,9 @@ LABEL_29:
   }
 }
 
-+ (id)_validatedDeviceStateChangeTypeFromSecondaryType:(int64_t)a3
++ (id)_validatedDeviceStateChangeTypeFromSecondaryType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v5 = 0;
   }

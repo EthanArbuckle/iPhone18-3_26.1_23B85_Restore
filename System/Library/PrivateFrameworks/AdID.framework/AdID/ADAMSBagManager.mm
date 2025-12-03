@@ -3,10 +3,10 @@
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
 + (id)sharedInstance;
-- (BOOL)authenticateAccountThroughAMSOperation:(id)a3;
+- (BOOL)authenticateAccountThroughAMSOperation:(id)operation;
 - (BOOL)retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromAMSBag;
 - (BOOL)retrieveIsSponsoredAdsEnabledValueFromAMSBag;
-- (id)retrieveJingleRequestURLFromAMSBagWithPartialityKey:(id)a3;
+- (id)retrieveJingleRequestURLFromAMSBagWithPartialityKey:(id)key;
 - (int64_t)retrieveLatestPersonalizedAdsConsentVersionFromAMSBag;
 @end
 
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __33__ADAMSBagManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance__onceToken_0, block);
@@ -75,15 +75,15 @@ void __39__ADAMSBagManager_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [MEMORY[0x277CE9638] sharedInstance];
-  v3 = [v2 adprivacydBag];
+  mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+  adprivacydBag = [mEMORY[0x277CE9638] adprivacydBag];
 
-  return v3;
+  return adprivacydBag;
 }
 
-- (BOOL)authenticateAccountThroughAMSOperation:(id)a3
+- (BOOL)authenticateAccountThroughAMSOperation:(id)operation
 {
-  v3 = a3;
+  operationCopy = operation;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -94,10 +94,10 @@ void __39__ADAMSBagManager_bagSubProfileVersion__block_invoke()
   v5 = objc_alloc_init(MEMORY[0x277CEE3D8]);
   [v5 setAuthenticationType:1];
   [v5 setAllowServerDialogs:0];
-  v6 = [objc_alloc(MEMORY[0x277CEE3E8]) initWithAccount:v3 options:v5];
+  v6 = [objc_alloc(MEMORY[0x277CEE3E8]) initWithAccount:operationCopy options:v5];
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
-  v8 = [v6 performAuthentication];
+  performAuthentication = [v6 performAuthentication];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __58__ADAMSBagManager_authenticateAccountThroughAMSOperation___block_invoke;
@@ -105,7 +105,7 @@ void __39__ADAMSBagManager_bagSubProfileVersion__block_invoke()
   v19 = &v20;
   v9 = v7;
   v18 = v9;
-  [v8 addFinishBlock:&v14];
+  [performAuthentication addFinishBlock:&v14];
 
   v10 = dispatch_time(0, 10000000000);
   if (dispatch_group_wait(v9, v10))
@@ -149,7 +149,7 @@ void __58__ADAMSBagManager_authenticateAccountThroughAMSOperation___block_invoke
   v19 = 0x2020000000;
   v20 = 0;
   v4 = [v2 BOOLForKey:@"isSponsoredAdsEnabled"];
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
 
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
@@ -158,7 +158,7 @@ void __58__ADAMSBagManager_authenticateAccountThroughAMSOperation___block_invoke
   v16 = &v17;
   v6 = v3;
   v15 = v6;
-  [v5 addFinishBlock:&v11];
+  [valuePromise addFinishBlock:&v11];
   v7 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v6, v7))
   {
@@ -196,7 +196,7 @@ void __63__ADAMSBagManager_retrieveIsSponsoredAdsEnabledValueFromAMSBag__block_i
   v19 = 0x2020000000;
   v20 = 0;
   v4 = [v2 BOOLForKey:@"isSponsoredAdsEnabledForAdTrackingd"];
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
 
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
@@ -205,7 +205,7 @@ void __63__ADAMSBagManager_retrieveIsSponsoredAdsEnabledValueFromAMSBag__block_i
   v16 = &v17;
   v6 = v3;
   v15 = v6;
-  [v5 addFinishBlock:&v11];
+  [valuePromise addFinishBlock:&v11];
   v7 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v6, v7))
   {
@@ -243,7 +243,7 @@ void __77__ADAMSBagManager_retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromA
   v19 = 0x2020000000;
   v20 = 1;
   v4 = [v2 integerForKey:@"latestPersonalizedAdsConsentVersion"];
-  v5 = [v4 valuePromise];
+  valuePromise = [v4 valuePromise];
 
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
@@ -252,7 +252,7 @@ void __77__ADAMSBagManager_retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromA
   v16 = &v17;
   v6 = v3;
   v15 = v6;
-  [v5 addFinishBlock:&v11];
+  [valuePromise addFinishBlock:&v11];
   v7 = dispatch_time(0, 10000000000);
   if (dispatch_semaphore_wait(v6, v7))
   {
@@ -289,23 +289,23 @@ intptr_t __72__ADAMSBagManager_retrieveLatestPersonalizedAdsConsentVersionFromAM
   return dispatch_semaphore_signal(v8);
 }
 
-- (id)retrieveJingleRequestURLFromAMSBagWithPartialityKey:(id)a3
+- (id)retrieveJingleRequestURLFromAMSBagWithPartialityKey:(id)key
 {
-  v3 = a3;
-  v4 = v3;
+  keyCopy = key;
+  v4 = keyCopy;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
   v25 = 0;
-  if (v3 && [v3 length])
+  if (keyCopy && [keyCopy length])
   {
     v5 = +[ADAMSBagManager createBagForSubProfile];
     v6 = dispatch_semaphore_create(0);
     v7 = v4;
     v8 = [v5 URLForKey:v7];
-    v9 = [v8 valuePromise];
+    valuePromise = [v8 valuePromise];
 
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -316,7 +316,7 @@ intptr_t __72__ADAMSBagManager_retrieveLatestPersonalizedAdsConsentVersionFromAM
     v17 = v10;
     v11 = v6;
     v18 = v11;
-    [v9 addFinishBlock:v16];
+    [valuePromise addFinishBlock:v16];
     v12 = dispatch_time(0, 10000000000);
     if (dispatch_semaphore_wait(v11, v12))
     {

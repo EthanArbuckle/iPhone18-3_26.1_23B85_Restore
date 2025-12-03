@@ -1,26 +1,26 @@
 @interface BKAudiobookSleepTimer
-+ (double)sleepTimerDurationFrom:(int64_t)a3;
++ (double)sleepTimerDurationFrom:(int64_t)from;
 + (id)defaultTimer;
 - (BKAudiobookSleepTimer)init;
 - (id)allObservers;
 - (int64_t)sleepTimerOption;
 - (void)_expired;
-- (void)_invalidateAllowingCancelNotification:(BOOL)a3;
-- (void)_notifyObserversRemainingTimeUpdated:(double)a3;
+- (void)_invalidateAllowingCancelNotification:(BOOL)notification;
+- (void)_notifyObserversRemainingTimeUpdated:(double)updated;
 - (void)_notifyObserversTimerCanceled;
 - (void)_notifyObserversTimerEnabled;
 - (void)_notifyObserversTimerExpired;
 - (void)_setTimer;
-- (void)_sleepTimer:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_sleepTimer:(id)timer;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)player:(id)a3 chapterDidChange:(id)a4;
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)removeObserver:(id)a3;
+- (void)player:(id)player chapterDidChange:(id)change;
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)removeObserver:(id)observer;
 - (void)setChapterFinishedTimer;
-- (void)setFixedTimerWithDuration:(double)a3;
-- (void)setSleepTimerOption:(int64_t)a3;
-- (void)setUpdateInterval:(double)a3;
+- (void)setFixedTimerWithDuration:(double)duration;
+- (void)setSleepTimerOption:(int64_t)option;
+- (void)setUpdateInterval:(double)interval;
 @end
 
 @implementation BKAudiobookSleepTimer
@@ -37,16 +37,16 @@
   return v3;
 }
 
-- (void)setUpdateInterval:(double)a3
+- (void)setUpdateInterval:(double)interval
 {
-  if (self->_updateInterval != a3)
+  if (self->_updateInterval != interval)
   {
-    self->_updateInterval = a3;
+    self->_updateInterval = interval;
     sleepTimer = self->_sleepTimer;
     if (sleepTimer)
     {
       [(NSTimer *)sleepTimer invalidate];
-      v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"_sleepTimer:" selector:0 userInfo:1 repeats:a3];
+      v6 = [NSTimer scheduledTimerWithTimeInterval:self target:"_sleepTimer:" selector:0 userInfo:1 repeats:interval];
       v7 = self->_sleepTimer;
       self->_sleepTimer = v6;
 
@@ -55,14 +55,14 @@
   }
 }
 
-- (void)setFixedTimerWithDuration:(double)a3
+- (void)setFixedTimerWithDuration:(double)duration
 {
   [(BKAudiobookSleepTimer *)self invalidate];
-  self->_initialDuration = a3;
-  v5 = [(BKAudiobookSleepTimer *)self audiobookControls];
-  v6 = [v5 state];
+  self->_initialDuration = duration;
+  audiobookControls = [(BKAudiobookSleepTimer *)self audiobookControls];
+  state = [audiobookControls state];
 
-  if (v6 == &dword_0 + 2)
+  if (state == &dword_0 + 2)
   {
     [(BKAudiobookSleepTimer *)self _setTimer];
   }
@@ -129,28 +129,28 @@
   [(BKAudiobookSleepTimer *)&v4 dealloc];
 }
 
-- (void)player:(id)a3 chapterDidChange:(id)a4
+- (void)player:(id)player chapterDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
+  playerCopy = player;
+  changeCopy = change;
   if ([(BKAudiobookSleepTimer *)self _expiresAtChapterEnd])
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_15598;
     block[3] = &unk_3D050;
-    v9 = v7;
-    v10 = self;
-    v11 = v6;
+    v9 = changeCopy;
+    selfCopy = self;
+    v11 = playerCopy;
     dispatch_async(&_dispatch_main_q, block);
     [(BKAudiobookSleepTimer *)self _expired];
   }
 }
 
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
-  v7 = a3;
-  if (a5 == 4)
+  playerCopy = player;
+  if (to == 4)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -160,7 +160,7 @@
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  else if (a5 == 2)
+  else if (to == 2)
   {
     if ([(BKAudiobookSleepTimer *)self waitingForPlayerStatePlaying])
     {
@@ -178,7 +178,7 @@
       }
 
       [(BKAudiobookSleepTimer *)self setWaitingForPlayerStatePlayingThenPause:0];
-      [v7 pause];
+      [playerCopy pause];
     }
   }
 }
@@ -222,17 +222,17 @@
   return v3;
 }
 
-- (void)setSleepTimerOption:(int64_t)a3
+- (void)setSleepTimerOption:(int64_t)option
 {
-  if (a3 != 8)
+  if (option != 8)
   {
-    if (a3 == 1)
+    if (option == 1)
     {
 
       [(BKAudiobookSleepTimer *)self setChapterFinishedTimer];
     }
 
-    else if (a3)
+    else if (option)
     {
       [BKAudiobookSleepTimer sleepTimerDurationFrom:?];
 
@@ -247,33 +247,33 @@
   }
 }
 
-+ (double)sleepTimerDurationFrom:(int64_t)a3
++ (double)sleepTimerDurationFrom:(int64_t)from
 {
   result = 0.0;
-  if ((a3 - 2) <= 5)
+  if ((from - 2) <= 5)
   {
-    return dbl_2BA20[a3 - 2];
+    return dbl_2BA20[from - 2];
   }
 
   return result;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(BKAudiobookSleepTimer *)self observers];
-  [v5 addObject:v4];
+  observers = [(BKAudiobookSleepTimer *)self observers];
+  [observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(BKAudiobookSleepTimer *)self observers];
-  [v5 removeObject:v4];
+  observers = [(BKAudiobookSleepTimer *)self observers];
+  [observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -281,15 +281,15 @@
 - (id)allObservers
 {
   os_unfair_lock_lock(&self->_accessLock);
-  v3 = [(BKAudiobookSleepTimer *)self observers];
-  v4 = [v3 allObjects];
+  observers = [(BKAudiobookSleepTimer *)self observers];
+  allObjects = [observers allObjects];
 
   os_unfair_lock_unlock(&self->_accessLock);
 
-  return v4;
+  return allObjects;
 }
 
-- (void)_sleepTimer:(id)a3
+- (void)_sleepTimer:(id)timer
 {
   if ([(BKAudiobookSleepTimer *)self _expiresAtChapterEnd])
   {
@@ -320,8 +320,8 @@ LABEL_5:
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Sleep timer expired after %lfs.  Pausing playback", &v12, 0xCu);
   }
 
-  v11 = [(BKAudiobookSleepTimer *)self audiobookControls];
-  [v11 pause];
+  audiobookControls = [(BKAudiobookSleepTimer *)self audiobookControls];
+  [audiobookControls pause];
 
   [(BKAudiobookSleepTimer *)self _expired];
 }
@@ -339,8 +339,8 @@ LABEL_5:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BKAudiobookSleepTimer *)self allObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObservers = [(BKAudiobookSleepTimer *)self allObservers];
+  v4 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -352,7 +352,7 @@ LABEL_5:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -365,7 +365,7 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -378,8 +378,8 @@ LABEL_5:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BKAudiobookSleepTimer *)self allObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObservers = [(BKAudiobookSleepTimer *)self allObservers];
+  v4 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -391,7 +391,7 @@ LABEL_5:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -404,7 +404,7 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -417,8 +417,8 @@ LABEL_5:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BKAudiobookSleepTimer *)self allObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObservers = [(BKAudiobookSleepTimer *)self allObservers];
+  v4 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -430,7 +430,7 @@ LABEL_5:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObservers);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -443,24 +443,24 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_notifyObserversRemainingTimeUpdated:(double)a3
+- (void)_notifyObserversRemainingTimeUpdated:(double)updated
 {
   [(BKAudiobookSleepTimer *)self lastSentRemainingTime];
-  if (vabdd_f64(a3, v5) >= 0.01)
+  if (vabdd_f64(updated, v5) >= 0.01)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(BKAudiobookSleepTimer *)self allObservers];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allObservers = [(BKAudiobookSleepTimer *)self allObservers];
+    v7 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -471,32 +471,32 @@ LABEL_5:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObservers);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v11 sleepTimer:self remainingTimeDidUpdate:a3];
+            [v11 sleepTimer:self remainingTimeDidUpdate:updated];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
     }
 
-    [(BKAudiobookSleepTimer *)self setLastSentRemainingTime:a3];
+    [(BKAudiobookSleepTimer *)self setLastSentRemainingTime:updated];
   }
 }
 
-- (void)_invalidateAllowingCancelNotification:(BOOL)a3
+- (void)_invalidateAllowingCancelNotification:(BOOL)notification
 {
-  v3 = a3;
-  v5 = [(BKAudiobookSleepTimer *)self sleepTimer];
+  notificationCopy = notification;
+  sleepTimer = [(BKAudiobookSleepTimer *)self sleepTimer];
 
-  if (v5)
+  if (sleepTimer)
   {
     [(NSTimer *)self->_sleepTimer invalidate];
     sleepTimer = self->_sleepTimer;
@@ -505,7 +505,7 @@ LABEL_5:
 
   if (self->_initialDuration == -2000.0)
   {
-    if (!v5 || !v3)
+    if (!sleepTimer || !notificationCopy)
     {
       return;
     }
@@ -514,7 +514,7 @@ LABEL_5:
   else
   {
     self->_initialDuration = -2000.0;
-    if (!v3)
+    if (!notificationCopy)
     {
       return;
     }

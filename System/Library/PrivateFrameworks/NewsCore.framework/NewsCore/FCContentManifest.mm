@@ -1,22 +1,22 @@
 @interface FCContentManifest
 + (FCContentManifest)empty;
-+ (id)manifestByMergingManifest:(id)a3 withManifest:(id)a4;
++ (id)manifestByMergingManifest:(id)manifest withManifest:(id)withManifest;
 - (FCContentManifest)copyWithAssetsOnly;
-- (FCContentManifest)initWithAssetURLs:(id)a3 assetWrappingKeyIDs:(id)a4 recordIDs:(id)a5 avAssetIDs:(id)a6 avAssetKeyIDs:(id)a7;
-- (FCContentManifest)initWithCoder:(id)a3;
-- (FCContentManifest)initWithManifests:(id)a3;
+- (FCContentManifest)initWithAssetURLs:(id)ls assetWrappingKeyIDs:(id)ds recordIDs:(id)iDs avAssetIDs:(id)assetIDs avAssetKeyIDs:(id)keyIDs;
+- (FCContentManifest)initWithCoder:(id)coder;
+- (FCContentManifest)initWithManifests:(id)manifests;
 - (NSArray)avAssetKeyURIs;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCContentManifest
 
 - (NSArray)avAssetKeyURIs
 {
-  v2 = [(FCContentManifest *)self avAssetKeyIDs];
-  v3 = [v2 fc_arrayByTransformingWithBlock:&__block_literal_global_84];
+  avAssetKeyIDs = [(FCContentManifest *)self avAssetKeyIDs];
+  v3 = [avAssetKeyIDs fc_arrayByTransformingWithBlock:&__block_literal_global_84];
 
   return v3;
 }
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __26__FCContentManifest_empty__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EDB274C0 != -1)
   {
     dispatch_once(&qword_1EDB274C0, block);
@@ -48,35 +48,35 @@ uint64_t __26__FCContentManifest_empty__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v3);
 }
 
-- (FCContentManifest)initWithAssetURLs:(id)a3 assetWrappingKeyIDs:(id)a4 recordIDs:(id)a5 avAssetIDs:(id)a6 avAssetKeyIDs:(id)a7
+- (FCContentManifest)initWithAssetURLs:(id)ls assetWrappingKeyIDs:(id)ds recordIDs:(id)iDs avAssetIDs:(id)assetIDs avAssetKeyIDs:(id)keyIDs
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lsCopy = ls;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  assetIDsCopy = assetIDs;
+  keyIDsCopy = keyIDs;
   v29.receiver = self;
   v29.super_class = FCContentManifest;
   v17 = [(FCContentManifest *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [lsCopy copy];
     assetURLs = v17->_assetURLs;
     v17->_assetURLs = v18;
 
-    v20 = [v13 copy];
+    v20 = [dsCopy copy];
     assetWrappingKeyIDs = v17->_assetWrappingKeyIDs;
     v17->_assetWrappingKeyIDs = v20;
 
-    v22 = [v14 copy];
+    v22 = [iDsCopy copy];
     recordIDs = v17->_recordIDs;
     v17->_recordIDs = v22;
 
-    v24 = [v15 copy];
+    v24 = [assetIDsCopy copy];
     avAssetIDs = v17->_avAssetIDs;
     v17->_avAssetIDs = v24;
 
-    v26 = [v16 copy];
+    v26 = [keyIDsCopy copy];
     avAssetKeyIDs = v17->_avAssetKeyIDs;
     v17->_avAssetKeyIDs = v26;
   }
@@ -84,11 +84,11 @@ uint64_t __26__FCContentManifest_empty__block_invoke(uint64_t a1)
   return v17;
 }
 
-- (FCContentManifest)initWithManifests:(id)a3
+- (FCContentManifest)initWithManifests:(id)manifests
 {
-  v26 = self;
+  selfCopy = self;
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  manifestsCopy = manifests;
   v4 = [MEMORY[0x1E695DFA8] set];
   v5 = [MEMORY[0x1E695DFA8] set];
   v6 = [MEMORY[0x1E695DFA8] set];
@@ -98,7 +98,7 @@ uint64_t __26__FCContentManifest_empty__block_invoke(uint64_t a1)
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = manifestsCopy;
   v9 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v9)
   {
@@ -114,20 +114,20 @@ uint64_t __26__FCContentManifest_empty__block_invoke(uint64_t a1)
         }
 
         v13 = *(*(&v29 + 1) + 8 * i);
-        v14 = [v13 assetURLs];
-        [v4 addObjectsFromArray:v14];
+        assetURLs = [v13 assetURLs];
+        [v4 addObjectsFromArray:assetURLs];
 
-        v15 = [v13 assetWrappingKeyIDs];
-        [v5 addObjectsFromArray:v15];
+        assetWrappingKeyIDs = [v13 assetWrappingKeyIDs];
+        [v5 addObjectsFromArray:assetWrappingKeyIDs];
 
-        v16 = [v13 recordIDs];
-        [v6 addObjectsFromArray:v16];
+        recordIDs = [v13 recordIDs];
+        [v6 addObjectsFromArray:recordIDs];
 
-        v17 = [v13 avAssetIDs];
-        [v7 addObjectsFromArray:v17];
+        avAssetIDs = [v13 avAssetIDs];
+        [v7 addObjectsFromArray:avAssetIDs];
 
-        v18 = [v13 avAssetKeyIDs];
-        [v8 addObjectsFromArray:v18];
+        avAssetKeyIDs = [v13 avAssetKeyIDs];
+        [v8 addObjectsFromArray:avAssetKeyIDs];
       }
 
       v10 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -136,31 +136,31 @@ uint64_t __26__FCContentManifest_empty__block_invoke(uint64_t a1)
     while (v10);
   }
 
-  v19 = [v4 allObjects];
-  v20 = [v5 allObjects];
-  v21 = [v6 allObjects];
-  v22 = [v7 allObjects];
-  v23 = [v8 allObjects];
-  v27 = [(FCContentManifest *)v26 initWithAssetURLs:v19 assetWrappingKeyIDs:v20 recordIDs:v21 avAssetIDs:v22 avAssetKeyIDs:v23];
+  allObjects = [v4 allObjects];
+  allObjects2 = [v5 allObjects];
+  allObjects3 = [v6 allObjects];
+  allObjects4 = [v7 allObjects];
+  allObjects5 = [v8 allObjects];
+  v27 = [(FCContentManifest *)selfCopy initWithAssetURLs:allObjects assetWrappingKeyIDs:allObjects2 recordIDs:allObjects3 avAssetIDs:allObjects4 avAssetKeyIDs:allObjects5];
 
   v24 = *MEMORY[0x1E69E9840];
   return v27;
 }
 
-+ (id)manifestByMergingManifest:(id)a3 withManifest:(id)a4
++ (id)manifestByMergingManifest:(id)manifest withManifest:(id)withManifest
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
+  manifestCopy = manifest;
+  withManifestCopy = withManifest;
+  v8 = [self alloc];
   v9 = MEMORY[0x1E695DEC8];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __60__FCContentManifest_manifestByMergingManifest_withManifest___block_invoke;
   v18 = &unk_1E7C3B110;
-  v19 = v6;
-  v20 = v7;
-  v10 = v7;
-  v11 = v6;
+  v19 = manifestCopy;
+  v20 = withManifestCopy;
+  v10 = withManifestCopy;
+  v11 = manifestCopy;
   v12 = [v9 fc_array:&v15];
   v13 = [v8 initWithManifests:{v12, v15, v16, v17, v18}];
 
@@ -179,77 +179,77 @@ void __60__FCContentManifest_manifestByMergingManifest_withManifest___block_invo
 {
   v3 = [[FCDescription alloc] initWithObject:self];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(FCContentManifest *)self assetURLs];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  assetURLs = [(FCContentManifest *)self assetURLs];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(assetURLs, "count")}];
   [(FCDescription *)v3 addField:@"assetURLs" object:v6];
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(FCContentManifest *)self assetWrappingKeyIDs];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+  assetWrappingKeyIDs = [(FCContentManifest *)self assetWrappingKeyIDs];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(assetWrappingKeyIDs, "count")}];
   [(FCDescription *)v3 addField:@"assetWrappingKeyIDs" object:v9];
 
   v10 = MEMORY[0x1E696AD98];
-  v11 = [(FCContentManifest *)self recordIDs];
-  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
+  recordIDs = [(FCContentManifest *)self recordIDs];
+  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(recordIDs, "count")}];
   [(FCDescription *)v3 addField:@"recordIDs" object:v12];
 
   v13 = MEMORY[0x1E696AD98];
-  v14 = [(FCContentManifest *)self avAssetIDs];
-  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
+  avAssetIDs = [(FCContentManifest *)self avAssetIDs];
+  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(avAssetIDs, "count")}];
   [(FCDescription *)v3 addField:@"avAssetIDs" object:v15];
 
   v16 = MEMORY[0x1E696AD98];
-  v17 = [(FCContentManifest *)self avAssetKeyIDs];
-  v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
+  avAssetKeyIDs = [(FCContentManifest *)self avAssetKeyIDs];
+  v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(avAssetKeyIDs, "count")}];
   [(FCDescription *)v3 addField:@"avAssetKeyIDs" object:v18];
 
-  v19 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v19;
+  return descriptionString;
 }
 
 - (id)debugDescription
 {
   v3 = [[FCDescription alloc] initWithObject:self];
-  v4 = [(FCContentManifest *)self assetURLs];
-  v5 = FCCFArrayDescription(v4);
+  assetURLs = [(FCContentManifest *)self assetURLs];
+  v5 = FCCFArrayDescription(assetURLs);
   [(FCDescription *)v3 addField:@"assetURLs" object:v5];
 
-  v6 = [(FCContentManifest *)self assetWrappingKeyIDs];
-  v7 = FCCFArrayDescription(v6);
+  assetWrappingKeyIDs = [(FCContentManifest *)self assetWrappingKeyIDs];
+  v7 = FCCFArrayDescription(assetWrappingKeyIDs);
   [(FCDescription *)v3 addField:@"assetWrappingKeyIDs" object:v7];
 
-  v8 = [(FCContentManifest *)self recordIDs];
-  v9 = FCCFArrayDescription(v8);
+  recordIDs = [(FCContentManifest *)self recordIDs];
+  v9 = FCCFArrayDescription(recordIDs);
   [(FCDescription *)v3 addField:@"recordIDs" object:v9];
 
-  v10 = [(FCContentManifest *)self avAssetIDs];
-  v11 = FCCFArrayDescription(v10);
+  avAssetIDs = [(FCContentManifest *)self avAssetIDs];
+  v11 = FCCFArrayDescription(avAssetIDs);
   [(FCDescription *)v3 addField:@"avAssetIDs" object:v11];
 
-  v12 = [(FCContentManifest *)self avAssetKeyIDs];
-  v13 = FCCFArrayDescription(v12);
+  avAssetKeyIDs = [(FCContentManifest *)self avAssetKeyIDs];
+  v13 = FCCFArrayDescription(avAssetKeyIDs);
   [(FCDescription *)v3 addField:@"avAssetKeyIDs" object:v13];
 
-  v14 = [(FCDescription *)v3 descriptionString];
+  descriptionString = [(FCDescription *)v3 descriptionString];
 
-  return v14;
+  return descriptionString;
 }
 
-- (FCContentManifest)initWithCoder:(id)a3
+- (FCContentManifest)initWithCoder:(id)coder
 {
   v4 = qword_1EDB274D0;
-  v5 = a3;
+  coderCopy = coder;
   if (v4 != -1)
   {
     dispatch_once(&qword_1EDB274D0, &__block_literal_global_21_1);
   }
 
-  v6 = [v5 decodeObjectOfClasses:qword_1EDB274C8 forKey:@"assetURLs"];
-  v7 = [v5 decodeObjectOfClasses:qword_1EDB274C8 forKey:@"assetWrappingKeyIDs"];
-  v8 = [v5 decodeObjectOfClasses:qword_1EDB274C8 forKey:@"recordIDs"];
-  v9 = [v5 decodeObjectOfClasses:qword_1EDB274C8 forKey:@"avAssetIDs"];
-  v10 = [v5 decodeObjectOfClasses:qword_1EDB274C8 forKey:@"avAssetKeyIDs"];
+  v6 = [coderCopy decodeObjectOfClasses:qword_1EDB274C8 forKey:@"assetURLs"];
+  v7 = [coderCopy decodeObjectOfClasses:qword_1EDB274C8 forKey:@"assetWrappingKeyIDs"];
+  v8 = [coderCopy decodeObjectOfClasses:qword_1EDB274C8 forKey:@"recordIDs"];
+  v9 = [coderCopy decodeObjectOfClasses:qword_1EDB274C8 forKey:@"avAssetIDs"];
+  v10 = [coderCopy decodeObjectOfClasses:qword_1EDB274C8 forKey:@"avAssetKeyIDs"];
 
   v11 = [(FCContentManifest *)self initWithAssetURLs:v6 assetWrappingKeyIDs:v7 recordIDs:v8 avAssetIDs:v9 avAssetKeyIDs:v10];
   return v11;
@@ -268,25 +268,25 @@ uint64_t __35__FCContentManifest_initWithCoder___block_invoke()
   return MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assetURLs = self->_assetURLs;
-  v5 = a3;
-  [v5 encodeObject:assetURLs forKey:@"assetURLs"];
-  [v5 encodeObject:self->_assetWrappingKeyIDs forKey:@"assetWrappingKeyIDs"];
-  [v5 encodeObject:self->_recordIDs forKey:@"recordIDs"];
-  [v5 encodeObject:self->_avAssetIDs forKey:@"avAssetIDs"];
-  [v5 encodeObject:self->_avAssetKeyIDs forKey:@"avAssetKeyIDs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:assetURLs forKey:@"assetURLs"];
+  [coderCopy encodeObject:self->_assetWrappingKeyIDs forKey:@"assetWrappingKeyIDs"];
+  [coderCopy encodeObject:self->_recordIDs forKey:@"recordIDs"];
+  [coderCopy encodeObject:self->_avAssetIDs forKey:@"avAssetIDs"];
+  [coderCopy encodeObject:self->_avAssetKeyIDs forKey:@"avAssetKeyIDs"];
 }
 
 - (FCContentManifest)copyWithAssetsOnly
 {
   v3 = [FCContentManifest alloc];
-  v4 = [(FCContentManifest *)self assetURLs];
-  v5 = [(FCContentManifest *)self assetWrappingKeyIDs];
-  v6 = [(FCContentManifest *)self avAssetIDs];
-  v7 = [(FCContentManifest *)self avAssetKeyIDs];
-  v8 = [(FCContentManifest *)v3 initWithAssetURLs:v4 assetWrappingKeyIDs:v5 recordIDs:MEMORY[0x1E695E0F0] avAssetIDs:v6 avAssetKeyIDs:v7];
+  assetURLs = [(FCContentManifest *)self assetURLs];
+  assetWrappingKeyIDs = [(FCContentManifest *)self assetWrappingKeyIDs];
+  avAssetIDs = [(FCContentManifest *)self avAssetIDs];
+  avAssetKeyIDs = [(FCContentManifest *)self avAssetKeyIDs];
+  v8 = [(FCContentManifest *)v3 initWithAssetURLs:assetURLs assetWrappingKeyIDs:assetWrappingKeyIDs recordIDs:MEMORY[0x1E695E0F0] avAssetIDs:avAssetIDs avAssetKeyIDs:avAssetKeyIDs];
 
   return v8;
 }

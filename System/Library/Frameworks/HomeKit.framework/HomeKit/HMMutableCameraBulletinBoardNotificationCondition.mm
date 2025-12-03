@@ -1,23 +1,23 @@
 @interface HMMutableCameraBulletinBoardNotificationCondition
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableCameraBulletinBoardNotificationCondition
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(HMCameraBulletinBoardNotificationCondition);
-  v5 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
-  [(HMCameraBulletinBoardNotificationCondition *)v4 setSignificantEventReasonCondition:v5];
+  significantEventReasonCondition = [(HMCameraBulletinBoardNotificationCondition *)self significantEventReasonCondition];
+  [(HMCameraBulletinBoardNotificationCondition *)v4 setSignificantEventReasonCondition:significantEventReasonCondition];
 
-  v6 = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
-  [(HMCameraBulletinBoardNotificationCondition *)v4 setSignificantEventPersonFamiliarityCondition:v6];
+  significantEventPersonFamiliarityCondition = [(HMCameraBulletinBoardNotificationCondition *)self significantEventPersonFamiliarityCondition];
+  [(HMCameraBulletinBoardNotificationCondition *)v4 setSignificantEventPersonFamiliarityCondition:significantEventPersonFamiliarityCondition];
 
-  v7 = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
-  [(HMCameraBulletinBoardNotificationCondition *)v4 setDateComponentsPredicate:v7];
+  dateComponentsPredicate = [(HMCameraBulletinBoardNotificationCondition *)self dateComponentsPredicate];
+  [(HMCameraBulletinBoardNotificationCondition *)v4 setDateComponentsPredicate:dateComponentsPredicate];
 
-  v8 = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
-  [(HMCameraBulletinBoardNotificationCondition *)v4 setPresencePredicate:v8];
+  presencePredicate = [(HMCameraBulletinBoardNotificationCondition *)self presencePredicate];
+  [(HMCameraBulletinBoardNotificationCondition *)v4 setPresencePredicate:presencePredicate];
 
   return v4;
 }

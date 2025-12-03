@@ -1,32 +1,32 @@
 @interface WPDAdvertisingData
-- (BOOL)isEqualToData:(id)a3;
-- (BOOL)isValidWithAdditionalRequest:(id)a3;
+- (BOOL)isEqualToData:(id)data;
+- (BOOL)isValidWithAdditionalRequest:(id)request;
 - (NSData)getData;
 - (WPDAdvertisingData)init;
 - (id)description;
-- (void)addAdvertisingRequest:(id)a3;
+- (void)addAdvertisingRequest:(id)request;
 @end
 
 @implementation WPDAdvertisingData
 
 - (NSData)getData
 {
-  v3 = [(WPDAdvertisingData *)self internalData];
-  v4 = [v3 length];
+  internalData = [(WPDAdvertisingData *)self internalData];
+  v4 = [internalData length];
 
   if (v4 >= 0x1D)
   {
     [MEMORY[0x277CBEAD8] raise:@"Invalid Data Length" format:{@"Data length %ld is invalid", v4}];
   }
 
-  v5 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v6 = [MEMORY[0x277CBEA90] dataWithBytes:&advertisingHeader length:4];
-  [v5 setData:v6];
+  [data setData:v6];
 
-  v7 = [(WPDAdvertisingData *)self internalData];
-  [v5 appendData:v7];
+  internalData2 = [(WPDAdvertisingData *)self internalData];
+  [data appendData:internalData2];
 
-  v8 = [v5 length];
+  v8 = [data length];
   v11 = v8;
   if (v8 < 5)
   {
@@ -36,8 +36,8 @@
   else
   {
     v11 = v8 - 1;
-    [v5 replaceBytesInRange:0 withBytes:{1, &v11}];
-    v9 = v5;
+    [data replaceBytesInRange:0 withBytes:{1, &v11}];
+    v9 = data;
   }
 
   return v9;
@@ -54,9 +54,9 @@
     internalData = v2->_internalData;
     v2->_internalData = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     advDataPerType = v2->_advDataPerType;
-    v2->_advDataPerType = v5;
+    v2->_advDataPerType = dictionary;
 
     v7 = [MEMORY[0x277CBEB58] set];
     types = v2->_types;
@@ -73,8 +73,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(WPDAdvertisingData *)self internalData];
-  v5 = [(WPDAdvertisingData *)self advertRate];
+  internalData = [(WPDAdvertisingData *)self internalData];
+  advertRate = [(WPDAdvertisingData *)self advertRate];
   v6 = [(WPDAdvertisingData *)self advertRate]* 0.625;
   v7 = "no";
   if ([(WPDAdvertisingData *)self isRanging])
@@ -92,20 +92,20 @@
     v7 = "yes";
   }
 
-  v9 = [v3 stringWithFormat:@"data %@ rate %ld (%.2f ms) ranging %s assert power %s EPA:%d", v4, v5, *&v6, v8, v7, -[WPDAdvertisingData isEnableEPAForAdvertisement](self, "isEnableEPAForAdvertisement")];
+  v9 = [v3 stringWithFormat:@"data %@ rate %ld (%.2f ms) ranging %s assert power %s EPA:%d", internalData, advertRate, *&v6, v8, v7, -[WPDAdvertisingData isEnableEPAForAdvertisement](self, "isEnableEPAForAdvertisement")];
 
   return v9;
 }
 
-- (void)addAdvertisingRequest:(id)a3
+- (void)addAdvertisingRequest:(id)request
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 clientType];
-  v27 = v5;
-  v6 = [v4 advertisingData];
-  v7 = [v4 advertisingRate];
-  v8 = [v4 enableEPAForAdvertising];
+  requestCopy = request;
+  clientType = [requestCopy clientType];
+  v27 = clientType;
+  advertisingData = [requestCopy advertisingData];
+  advertisingRate = [requestCopy advertisingRate];
+  enableEPAForAdvertising = [requestCopy enableEPAForAdvertising];
 
   if (WPLogInitOnce != -1)
   {
@@ -116,54 +116,54 @@
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218754;
-    v29 = v5;
+    v29 = clientType;
     v30 = 2114;
-    v31 = v6;
+    v31 = advertisingData;
     v32 = 2048;
-    v33 = v7;
+    v33 = advertisingRate;
     v34 = 1024;
-    v35 = v8;
+    v35 = enableEPAForAdvertising;
     _os_log_impl(&dword_272965000, v9, OS_LOG_TYPE_DEFAULT, "Adding data of type: %ld, advData: %{public}@ advInterval: %ld EPA:%d", buf, 0x26u);
   }
 
-  v26 = [v6 length];
+  v26 = [advertisingData length];
   v10 = [MEMORY[0x277CBEB28] dataWithCapacity:v26 + 2];
   [v10 appendBytes:&v27 length:1];
   [v10 appendBytes:&v26 length:1];
-  [v10 appendData:v6];
+  [v10 appendData:advertisingData];
   if (v27 < 0xFu)
   {
     v12 = MEMORY[0x277CBEA90];
-    v13 = [(WPDAdvertisingData *)self internalData];
-    v11 = [v12 dataWithData:v13];
+    internalData = [(WPDAdvertisingData *)self internalData];
+    internalData4 = [v12 dataWithData:internalData];
 
-    v14 = [(WPDAdvertisingData *)self internalData];
-    [v14 setData:v10];
+    internalData2 = [(WPDAdvertisingData *)self internalData];
+    [internalData2 setData:v10];
 
-    v15 = [(WPDAdvertisingData *)self internalData];
-    [v15 appendData:v11];
+    internalData3 = [(WPDAdvertisingData *)self internalData];
+    [internalData3 appendData:internalData4];
   }
 
   else
   {
-    v11 = [(WPDAdvertisingData *)self internalData];
-    [v11 appendData:v10];
+    internalData4 = [(WPDAdvertisingData *)self internalData];
+    [internalData4 appendData:v10];
   }
 
-  v16 = [(WPDAdvertisingData *)self advDataPerType];
+  advDataPerType = [(WPDAdvertisingData *)self advDataPerType];
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v27];
-  [v16 setObject:v6 forKeyedSubscript:v17];
+  [advDataPerType setObject:advertisingData forKeyedSubscript:v17];
 
-  v18 = [(WPDAdvertisingData *)self types];
+  types = [(WPDAdvertisingData *)self types];
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v27];
-  [v18 addObject:v19];
+  [types addObject:v19];
 
-  if (v7 < [(WPDAdvertisingData *)self advertRate])
+  if (advertisingRate < [(WPDAdvertisingData *)self advertRate])
   {
-    [(WPDAdvertisingData *)self setAdvertRate:v7];
+    [(WPDAdvertisingData *)self setAdvertRate:advertisingRate];
   }
 
-  [(WPDAdvertisingData *)self setEnableEPAForAdvertisement:v8 | [(WPDAdvertisingData *)self enableEPAForAdvertisement]];
+  [(WPDAdvertisingData *)self setEnableEPAForAdvertisement:enableEPAForAdvertising | [(WPDAdvertisingData *)self enableEPAForAdvertisement]];
   if (WPLogInitOnce != -1)
   {
     [WPDAdvertisingData addAdvertisingRequest:];
@@ -173,36 +173,36 @@
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v21 = v20;
-    v22 = [(WPDAdvertisingData *)self internalData];
-    v23 = [(WPDAdvertisingData *)self advertRate];
-    v24 = [(WPDAdvertisingData *)self isEnableEPAForAdvertisement];
+    internalData5 = [(WPDAdvertisingData *)self internalData];
+    advertRate = [(WPDAdvertisingData *)self advertRate];
+    isEnableEPAForAdvertisement = [(WPDAdvertisingData *)self isEnableEPAForAdvertisement];
     *buf = 138543874;
-    v29 = v22;
+    v29 = internalData5;
     v30 = 2048;
-    v31 = v23;
+    v31 = advertRate;
     v32 = 1024;
-    LODWORD(v33) = v24;
+    LODWORD(v33) = isEnableEPAForAdvertisement;
     _os_log_impl(&dword_272965000, v21, OS_LOG_TYPE_DEFAULT, "Current advertisement packet: %{public}@ advertRate: %ld EPA:%d", buf, 0x1Cu);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqualToData:(id)a3
+- (BOOL)isEqualToData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 internalData];
-  v6 = [(WPDAdvertisingData *)self internalData];
-  if (![v5 isEqualToData:v6] || (v7 = objc_msgSend(v4, "advertRate"), v7 != -[WPDAdvertisingData advertRate](self, "advertRate")))
+  dataCopy = data;
+  internalData = [dataCopy internalData];
+  internalData2 = [(WPDAdvertisingData *)self internalData];
+  if (![internalData isEqualToData:internalData2] || (v7 = objc_msgSend(dataCopy, "advertRate"), v7 != -[WPDAdvertisingData advertRate](self, "advertRate")))
   {
 
     goto LABEL_6;
   }
 
-  v8 = [v4 isRanging];
-  v9 = [(WPDAdvertisingData *)self isRanging];
+  isRanging = [dataCopy isRanging];
+  isRanging2 = [(WPDAdvertisingData *)self isRanging];
 
-  if (v8 != v9)
+  if (isRanging != isRanging2)
   {
 LABEL_6:
     v10 = 0;
@@ -215,14 +215,14 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)isValidWithAdditionalRequest:(id)a3
+- (BOOL)isValidWithAdditionalRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(WPDAdvertisingData *)self internalData];
-  v6 = [v5 length];
-  v7 = [v4 advertisingData];
+  requestCopy = request;
+  internalData = [(WPDAdvertisingData *)self internalData];
+  v6 = [internalData length];
+  advertisingData = [requestCopy advertisingData];
 
-  v8 = v6 + [v7 length] + 6;
+  v8 = v6 + [advertisingData length] + 6;
   return v8 < 0x1D;
 }
 

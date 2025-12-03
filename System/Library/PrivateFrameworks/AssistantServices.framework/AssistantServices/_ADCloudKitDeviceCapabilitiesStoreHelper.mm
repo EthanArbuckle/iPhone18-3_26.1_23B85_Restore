@@ -1,7 +1,7 @@
 @interface _ADCloudKitDeviceCapabilitiesStoreHelper
 - (id)recordBuilder;
 - (id)tableDescription;
-- (void)createIndicesForTableInDatabase:(id)a3;
+- (void)createIndicesForTableInDatabase:(id)database;
 @end
 
 @implementation _ADCloudKitDeviceCapabilitiesStoreHelper
@@ -21,11 +21,11 @@
   return recordBuilder;
 }
 
-- (void)createIndicesForTableInDatabase:(id)a3
+- (void)createIndicesForTableInDatabase:(id)database
 {
-  v3 = a3;
-  sub_1001BFED0(@"device_capabilities", @"name", v3);
-  sub_1001BFED0(@"device_capabilities", @"device_id", v3);
+  databaseCopy = database;
+  sub_1001BFED0(@"device_capabilities", @"name", databaseCopy);
+  sub_1001BFED0(@"device_capabilities", @"device_id", databaseCopy);
 }
 
 - (id)tableDescription

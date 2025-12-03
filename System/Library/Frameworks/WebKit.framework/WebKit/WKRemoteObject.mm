@@ -1,8 +1,8 @@
 @interface WKRemoteObject
-- (BOOL)conformsToProtocol:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (id).cxx_construct;
-- (id)_initWithObjectRegistry:(id)a3 interface:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)_initWithObjectRegistry:(id)registry interface:(id)interface;
+- (id)methodSignatureForSelector:(SEL)selector;
 @end
 
 @implementation WKRemoteObject
@@ -14,7 +14,7 @@
   return self;
 }
 
-- (id)_initWithObjectRegistry:(id)a3 interface:(id)a4
+- (id)_initWithObjectRegistry:(id)registry interface:(id)interface
 {
   v9.receiver = self;
   v9.super_class = WKRemoteObject;
@@ -22,35 +22,35 @@
   p_isa = &v6->super.isa;
   if (v6)
   {
-    WTF::RetainPtr<NSNumber>::operator=(&v6->_objectRegistry.m_ptr, a3);
-    WTF::RetainPtr<NSNumber>::operator=(p_isa + 2, a4);
+    WTF::RetainPtr<NSNumber>::operator=(&v6->_objectRegistry.m_ptr, registry);
+    WTF::RetainPtr<NSNumber>::operator=(p_isa + 2, interface);
   }
 
   return p_isa;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v6.receiver = self;
   v6.super_class = WKRemoteObject;
-  return [(WKRemoteObject *)&v6 conformsToProtocol:?]|| protocol_conformsToProtocol([(_WKRemoteObjectInterface *)self->_interface.m_ptr protocol], a3);
+  return [(WKRemoteObject *)&v6 conformsToProtocol:?]|| protocol_conformsToProtocol([(_WKRemoteObjectInterface *)self->_interface.m_ptr protocol], protocol);
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v3 = a3;
-  if (a3)
+  selectorCopy = selector;
+  if (selector)
   {
-    v5 = [(_WKRemoteObjectInterface *)self->_interface.m_ptr protocol];
-    v6 = v5;
-    if (v5)
+    protocol = [(_WKRemoteObjectInterface *)self->_interface.m_ptr protocol];
+    v6 = protocol;
+    if (protocol)
     {
-      v7 = v5;
+      v7 = protocol;
     }
 
-    MethodDescription = protocol_getMethodDescription(v6, v3, 1, 1);
+    MethodDescription = protocol_getMethodDescription(v6, selectorCopy, 1, 1);
     types = MethodDescription.types;
-    if ((MethodDescription.name || (v12 = protocol_getMethodDescription(v6, v3, 0, 1), types = v12.types, v12.name)) && types)
+    if ((MethodDescription.name || (v12 = protocol_getMethodDescription(v6, selectorCopy, 0, 1), types = v12.types, v12.name)) && types)
     {
       v10 = [MEMORY[0x1E695DF68] signatureWithObjCTypes:types];
     }
@@ -59,16 +59,16 @@
     {
       v13.receiver = self;
       v13.super_class = WKRemoteObject;
-      v10 = [(WKRemoteObject *)&v13 methodSignatureForSelector:v3];
+      v10 = [(WKRemoteObject *)&v13 methodSignatureForSelector:selectorCopy];
     }
 
-    v3 = v10;
+    selectorCopy = v10;
     if (v6)
     {
     }
   }
 
-  return v3;
+  return selectorCopy;
 }
 
 @end

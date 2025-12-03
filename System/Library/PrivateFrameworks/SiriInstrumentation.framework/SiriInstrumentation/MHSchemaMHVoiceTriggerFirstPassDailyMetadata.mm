@@ -1,25 +1,25 @@
 @interface MHSchemaMHVoiceTriggerFirstPassDailyMetadata
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHVoiceTriggerFirstPassDailyMetadata)initWithDictionary:(id)a3;
-- (MHSchemaMHVoiceTriggerFirstPassDailyMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHVoiceTriggerFirstPassDailyMetadata)initWithDictionary:(id)dictionary;
+- (MHSchemaMHVoiceTriggerFirstPassDailyMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHVoiceTriggerFirstPassDailyMetadata
 
-- (MHSchemaMHVoiceTriggerFirstPassDailyMetadata)initWithDictionary:(id)a3
+- (MHSchemaMHVoiceTriggerFirstPassDailyMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MHSchemaMHVoiceTriggerFirstPassDailyMetadata;
   v5 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"configVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"configVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,14 +27,14 @@
       [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)v5 setConfigVersion:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"hardwareSampleRate"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"hardwareSampleRate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerFirstPassDailyMetadata setHardwareSampleRate:](v5, "setHardwareSampleRate:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"mitigationAssetVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"mitigationAssetVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (MHSchemaMHVoiceTriggerFirstPassDailyMetadata)initWithJSON:(id)a3
+- (MHSchemaMHVoiceTriggerFirstPassDailyMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,30 +84,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_configVersion)
   {
-    v4 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"configVersion"];
+    configVersion = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
+    v5 = [configVersion copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"configVersion"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[MHSchemaMHVoiceTriggerFirstPassDailyMetadata hardwareSampleRate](self, "hardwareSampleRate")}];
-    [v3 setObject:v6 forKeyedSubscript:@"hardwareSampleRate"];
+    [dictionary setObject:v6 forKeyedSubscript:@"hardwareSampleRate"];
   }
 
   if (self->_mitigationAssetVersion)
   {
-    v7 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"mitigationAssetVersion"];
+    mitigationAssetVersion = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
+    v8 = [mitigationAssetVersion copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"mitigationAssetVersion"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -126,28 +126,28 @@
   return v4 ^ v3 ^ [(NSString *)self->_mitigationAssetVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
-  v6 = [v4 configVersion];
-  if ((v5 != 0) == (v6 == 0))
+  configVersion = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
+  configVersion2 = [equalCopy configVersion];
+  if ((configVersion != 0) == (configVersion2 == 0))
   {
     goto LABEL_14;
   }
 
-  v7 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
-  if (v7)
+  configVersion3 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
+  if (configVersion3)
   {
-    v8 = v7;
-    v9 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
-    v10 = [v4 configVersion];
-    v11 = [v9 isEqual:v10];
+    v8 = configVersion3;
+    configVersion4 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
+    configVersion5 = [equalCopy configVersion];
+    v11 = [configVersion4 isEqual:configVersion5];
 
     if (!v11)
     {
@@ -159,7 +159,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -167,18 +167,18 @@
   if (*&self->_has)
   {
     hardwareSampleRate = self->_hardwareSampleRate;
-    if (hardwareSampleRate != [v4 hardwareSampleRate])
+    if (hardwareSampleRate != [equalCopy hardwareSampleRate])
     {
       goto LABEL_15;
     }
   }
 
-  v5 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
-  v6 = [v4 mitigationAssetVersion];
-  if ((v5 != 0) != (v6 == 0))
+  configVersion = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
+  configVersion2 = [equalCopy mitigationAssetVersion];
+  if ((configVersion != 0) != (configVersion2 == 0))
   {
-    v13 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
-    if (!v13)
+    mitigationAssetVersion = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
+    if (!mitigationAssetVersion)
     {
 
 LABEL_18:
@@ -186,10 +186,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
-    v16 = [v4 mitigationAssetVersion];
-    v17 = [v15 isEqual:v16];
+    v14 = mitigationAssetVersion;
+    mitigationAssetVersion2 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
+    mitigationAssetVersion3 = [equalCopy mitigationAssetVersion];
+    v17 = [mitigationAssetVersion2 isEqual:mitigationAssetVersion3];
 
     if (v17)
     {
@@ -209,12 +209,12 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
+  toCopy = to;
+  configVersion = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self configVersion];
 
-  if (v4)
+  if (configVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -224,13 +224,13 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
+  mitigationAssetVersion = [(MHSchemaMHVoiceTriggerFirstPassDailyMetadata *)self mitigationAssetVersion];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (mitigationAssetVersion)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

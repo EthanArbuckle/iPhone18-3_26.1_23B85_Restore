@@ -1,13 +1,13 @@
 @interface WKUIBreadcrumbMapView
-- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithCoder:(id)a3;
-- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithFrame:(CGRect)a3;
-- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithFrame:(CGRect)a3 locationManager:(id)a4;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
+- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithCoder:(id)coder;
+- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithFrame:(CGRect)frame;
+- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithFrame:(CGRect)frame locationManager:(id)manager;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
 @end
 
 @implementation WKUIBreadcrumbMapView
 
-- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithCoder:(id)a3
+- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9WorkoutUI21WKUIBreadcrumbMapView_breadcrumbPath) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC9WorkoutUI21WKUIBreadcrumbMapView_breadcrumbPathRenderer) = 0;
@@ -19,25 +19,25 @@
   return result;
 }
 
-- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithFrame:(CGRect)a3
+- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithFrame:(CGRect)a3 locationManager:(id)a4
+- (_TtC9WorkoutUI21WKUIBreadcrumbMapView)initWithFrame:(CGRect)frame locationManager:(id)manager
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = specialized WKUIBreadcrumbMapView.mapView(_:rendererFor:)();
 
   swift_unknownObjectRelease();

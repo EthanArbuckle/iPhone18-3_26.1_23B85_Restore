@@ -1,30 +1,30 @@
 @interface ACSERetryController
-- (ACSERetryController)initWithMaxNumberOfRetries:(unint64_t)a3 block:(id)a4;
-- (BOOL)retryAfterSeconds:(unint64_t)a3;
+- (ACSERetryController)initWithMaxNumberOfRetries:(unint64_t)retries block:(id)block;
+- (BOOL)retryAfterSeconds:(unint64_t)seconds;
 @end
 
 @implementation ACSERetryController
 
-- (ACSERetryController)initWithMaxNumberOfRetries:(unint64_t)a3 block:(id)a4
+- (ACSERetryController)initWithMaxNumberOfRetries:(unint64_t)retries block:(id)block
 {
   v12.receiver = self;
   v12.super_class = ACSERetryController;
-  v5 = a4;
+  blockCopy = block;
   v6 = [(ACSERetryController *)&v12 init];
   v6->_numberOfAttempts = 0;
-  v6->_maxNumberOfRetries = a3;
+  v6->_maxNumberOfRetries = retries;
   v7 = dispatch_queue_create("com.apple.icq.retrycontroller", 0);
   queue = v6->_queue;
   v6->_queue = v7;
 
-  v9 = _Block_copy(v5);
+  v9 = _Block_copy(blockCopy);
   executionBlock = v6->_executionBlock;
   v6->_executionBlock = v9;
 
   return v6;
 }
 
-- (BOOL)retryAfterSeconds:(unint64_t)a3
+- (BOOL)retryAfterSeconds:(unint64_t)seconds
 {
   numberOfAttempts = self->_numberOfAttempts;
   maxNumberOfRetries = self->_maxNumberOfRetries;
@@ -37,7 +37,7 @@
     v11[3] = __Block_byref_object_copy_;
     v11[4] = __Block_byref_object_dispose_;
     v12 = _Block_copy(self->_executionBlock);
-    v7 = dispatch_time(0, 1000000000 * a3);
+    v7 = dispatch_time(0, 1000000000 * seconds);
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

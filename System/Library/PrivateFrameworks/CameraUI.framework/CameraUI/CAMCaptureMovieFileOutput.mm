@@ -1,31 +1,31 @@
 @interface CAMCaptureMovieFileOutput
 - (AVCaptureFileOutputRecordingDelegatePrivate)wrappedDelegate;
 - (CAMCaptureEngine)_captureEngine;
-- (CAMCaptureMovieFileOutput)initWithEngine:(id)a3;
+- (CAMCaptureMovieFileOutput)initWithEngine:(id)engine;
 - (NSDictionary)userInfo;
-- (void)captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 error:(id)a6;
-- (void)captureOutput:(id)a3 didPauseRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5;
-- (void)captureOutput:(id)a3 didResumeRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5;
-- (void)captureOutput:(id)a3 didStartRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5;
-- (void)captureOutput:(id)a3 readyForClientCompositingForOutputFileAtURL:(id)a4 compositingData:(id)a5;
-- (void)handleNotification:(id)a3 payload:(id)a4;
-- (void)setUserInfo:(id)a3;
-- (void)startRecordingToOutputFileURL:(id)a3 recordingDelegate:(id)a4;
+- (void)captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections error:(id)error;
+- (void)captureOutput:(id)output didPauseRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections;
+- (void)captureOutput:(id)output didResumeRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections;
+- (void)captureOutput:(id)output didStartRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections;
+- (void)captureOutput:(id)output readyForClientCompositingForOutputFileAtURL:(id)l compositingData:(id)data;
+- (void)handleNotification:(id)notification payload:(id)payload;
+- (void)setUserInfo:(id)info;
+- (void)startRecordingToOutputFileURL:(id)l recordingDelegate:(id)delegate;
 - (void)stopRecording;
 @end
 
 @implementation CAMCaptureMovieFileOutput
 
-- (CAMCaptureMovieFileOutput)initWithEngine:(id)a3
+- (CAMCaptureMovieFileOutput)initWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v16.receiver = self;
   v16.super_class = CAMCaptureMovieFileOutput;
   v5 = [(AVCaptureMovieFileOutput *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->__captureEngine, v4);
+    objc_storeWeak(&v5->__captureEngine, engineCopy);
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v8 = dispatch_queue_create("com.apple.camera.movie-file-output.user-info", v7);
     userInfoQueue = v6->__userInfoQueue;
@@ -60,13 +60,13 @@ uint64_t __44__CAMCaptureMovieFileOutput_initWithEngine___block_invoke(uint64_t 
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (void)startRecordingToOutputFileURL:(id)a3 recordingDelegate:(id)a4
+- (void)startRecordingToOutputFileURL:(id)l recordingDelegate:(id)delegate
 {
-  v6 = a3;
-  [(CAMCaptureMovieFileOutput *)self setWrappedDelegate:a4];
+  lCopy = l;
+  [(CAMCaptureMovieFileOutput *)self setWrappedDelegate:delegate];
   v7.receiver = self;
   v7.super_class = CAMCaptureMovieFileOutput;
-  [(AVCaptureMovieFileOutput *)&v7 startRecordingToOutputFileURL:v6 recordingDelegate:self];
+  [(AVCaptureMovieFileOutput *)&v7 startRecordingToOutputFileURL:lCopy recordingDelegate:self];
 }
 
 - (void)stopRecording
@@ -74,8 +74,8 @@ uint64_t __44__CAMCaptureMovieFileOutput_initWithEngine___block_invoke(uint64_t 
   v4.receiver = self;
   v4.super_class = CAMCaptureMovieFileOutput;
   [(AVCaptureMovieFileOutput *)&v4 stopRecording];
-  v3 = [(CAMCaptureMovieFileOutput *)self _captureEngine];
-  [v3 stopRecording];
+  _captureEngine = [(CAMCaptureMovieFileOutput *)self _captureEngine];
+  [_captureEngine stopRecording];
 }
 
 - (NSDictionary)userInfo
@@ -86,14 +86,14 @@ uint64_t __44__CAMCaptureMovieFileOutput_initWithEngine___block_invoke(uint64_t 
   v10 = __Block_byref_object_copy__10;
   v11 = __Block_byref_object_dispose__10;
   v12 = 0;
-  v3 = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
+  _userInfoQueue = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__CAMCaptureMovieFileOutput_userInfo__block_invoke;
   v6[3] = &unk_1E76FAFF0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(_userInfoQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -111,14 +111,14 @@ uint64_t __37__CAMCaptureMovieFileOutput_userInfo__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 copy];
-    v7 = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
+    v6 = [infoCopy copy];
+    _userInfoQueue = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__CAMCaptureMovieFileOutput_setUserInfo___block_invoke;
@@ -127,7 +127,7 @@ uint64_t __37__CAMCaptureMovieFileOutput_userInfo__block_invoke(uint64_t a1)
     v10 = v5;
     v11 = v6;
     v8 = v6;
-    dispatch_sync(v7, block);
+    dispatch_sync(_userInfoQueue, block);
   }
 }
 
@@ -140,45 +140,45 @@ uint64_t __41__CAMCaptureMovieFileOutput_setUserInfo___block_invoke(uint64_t a1)
   return [v2 setUserInfoForNextCapture:v3];
 }
 
-- (void)handleNotification:(id)a3 payload:(id)a4
+- (void)handleNotification:(id)notification payload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  payloadCopy = payload;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__10;
   v23 = __Block_byref_object_dispose__10;
-  v24 = [v7 objectForKey:@"SettingsID"];
+  v24 = [payloadCopy objectForKey:@"SettingsID"];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
   v18[3] = [v20[5] longLongValue];
-  v8 = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
+  _userInfoQueue = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__CAMCaptureMovieFileOutput_handleNotification_payload___block_invoke;
   block[3] = &unk_1E76FB018;
-  v9 = v6;
+  v9 = notificationCopy;
   v14 = v9;
-  v15 = self;
+  selfCopy = self;
   v16 = v18;
   v17 = &v19;
-  dispatch_sync(v8, block);
+  dispatch_sync(_userInfoQueue, block);
 
   v12.receiver = self;
   v12.super_class = CAMCaptureMovieFileOutput;
-  [(AVCaptureMovieFileOutput *)&v12 handleNotification:v9 payload:v7];
+  [(AVCaptureMovieFileOutput *)&v12 handleNotification:v9 payload:payloadCopy];
   if ([v9 isEqualToString:@"DidStopRecording"])
   {
-    v10 = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
+    _userInfoQueue2 = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __56__CAMCaptureMovieFileOutput_handleNotification_payload___block_invoke_17;
     v11[3] = &unk_1E76FB040;
     v11[4] = self;
     v11[5] = &v19;
-    dispatch_sync(v10, v11);
+    dispatch_sync(_userInfoQueue2, v11);
   }
 
   _Block_object_dispose(v18, 8);
@@ -250,51 +250,51 @@ void __56__CAMCaptureMovieFileOutput_handleNotification_payload___block_invoke_1
   }
 }
 
-- (void)captureOutput:(id)a3 didStartRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5
+- (void)captureOutput:(id)output didStartRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
+  lCopy = l;
+  connectionsCopy = connections;
+  outputCopy = output;
+  wrappedDelegate = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
   v12 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v8;
+    v14 = lCopy;
     _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "AVCaptureFileOutputRecordingDelegate didStartRecordingToOutputFileAtURL: url=%{public}@", &v13, 0xCu);
   }
 
-  [v11 captureOutput:v10 didStartRecordingToOutputFileAtURL:v8 fromConnections:v9];
+  [wrappedDelegate captureOutput:outputCopy didStartRecordingToOutputFileAtURL:lCopy fromConnections:connectionsCopy];
 }
 
-- (void)captureOutput:(id)a3 didFinishRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5 error:(id)a6
+- (void)captureOutput:(id)output didFinishRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections error:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
+  lCopy = l;
+  errorCopy = error;
+  connectionsCopy = connections;
+  outputCopy = output;
+  wrappedDelegate = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
   v15 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = v10;
+    v19 = lCopy;
     v20 = 2114;
-    v21 = v11;
+    v21 = errorCopy;
     _os_log_impl(&dword_1A3640000, v15, OS_LOG_TYPE_DEFAULT, "AVCaptureFileOutputRecordingDelegate didFinishRecordingToOutputFileAtURL: url=%{public}@, error=%{public}@", buf, 0x16u);
   }
 
-  [v14 captureOutput:v13 didFinishRecordingToOutputFileAtURL:v10 fromConnections:v12 error:v11];
+  [wrappedDelegate captureOutput:outputCopy didFinishRecordingToOutputFileAtURL:lCopy fromConnections:connectionsCopy error:errorCopy];
   [(CAMCaptureMovieFileOutput *)self setWrappedDelegate:0];
-  v16 = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
+  _userInfoQueue = [(CAMCaptureMovieFileOutput *)self _userInfoQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __101__CAMCaptureMovieFileOutput_captureOutput_didFinishRecordingToOutputFileAtURL_fromConnections_error___block_invoke;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_sync(v16, block);
+  dispatch_sync(_userInfoQueue, block);
 }
 
 void __101__CAMCaptureMovieFileOutput_captureOutput_didFinishRecordingToOutputFileAtURL_fromConnections_error___block_invoke(uint64_t a1)
@@ -310,49 +310,49 @@ void __101__CAMCaptureMovieFileOutput_captureOutput_didFinishRecordingToOutputFi
   [v4 removeObject:v2];
 }
 
-- (void)captureOutput:(id)a3 didPauseRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5
+- (void)captureOutput:(id)output didPauseRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  lCopy = l;
+  connectionsCopy = connections;
+  outputCopy = output;
   v11 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v8;
+    v14 = lCopy;
     _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "AVCaptureFileOutputRecordingDelegate didPauseRecordingToOutputFileAtURL: url=%{public}@", &v13, 0xCu);
   }
 
-  v12 = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
-  [v12 captureOutput:v10 didPauseRecordingToOutputFileAtURL:v8 fromConnections:v9];
+  wrappedDelegate = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
+  [wrappedDelegate captureOutput:outputCopy didPauseRecordingToOutputFileAtURL:lCopy fromConnections:connectionsCopy];
 }
 
-- (void)captureOutput:(id)a3 didResumeRecordingToOutputFileAtURL:(id)a4 fromConnections:(id)a5
+- (void)captureOutput:(id)output didResumeRecordingToOutputFileAtURL:(id)l fromConnections:(id)connections
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  lCopy = l;
+  connectionsCopy = connections;
+  outputCopy = output;
   v11 = os_log_create("com.apple.camera", "Capture");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138543362;
-    v14 = v8;
+    v14 = lCopy;
     _os_log_impl(&dword_1A3640000, v11, OS_LOG_TYPE_DEFAULT, "AVCaptureFileOutputRecordingDelegate didResumeRecordingToOutputFileAtURL: url=%{public}@", &v13, 0xCu);
   }
 
-  v12 = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
-  [v12 captureOutput:v10 didResumeRecordingToOutputFileAtURL:v8 fromConnections:v9];
+  wrappedDelegate = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
+  [wrappedDelegate captureOutput:outputCopy didResumeRecordingToOutputFileAtURL:lCopy fromConnections:connectionsCopy];
 }
 
-- (void)captureOutput:(id)a3 readyForClientCompositingForOutputFileAtURL:(id)a4 compositingData:(id)a5
+- (void)captureOutput:(id)output readyForClientCompositingForOutputFileAtURL:(id)l compositingData:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
-  [v11 captureOutput:v10 readyForClientCompositingForOutputFileAtURL:v9 compositingData:v8];
+  dataCopy = data;
+  lCopy = l;
+  outputCopy = output;
+  wrappedDelegate = [(CAMCaptureMovieFileOutput *)self wrappedDelegate];
+  [wrappedDelegate captureOutput:outputCopy readyForClientCompositingForOutputFileAtURL:lCopy compositingData:dataCopy];
 }
 
 - (CAMCaptureEngine)_captureEngine

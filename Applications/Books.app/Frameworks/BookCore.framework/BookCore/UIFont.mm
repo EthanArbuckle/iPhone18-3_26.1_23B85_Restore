@@ -1,6 +1,6 @@
 @interface UIFont
 + (BOOL)bc_accessibilityFontSizesEnabled;
-+ (BOOL)bc_contentSizeCategoryIsGreaterThan:(id)a3;
++ (BOOL)bc_contentSizeCategoryIsGreaterThan:(id)than;
 - (id)bc_cssFontFamily;
 - (id)bc_cssFontSize;
 - (id)bc_cssFontWeight;
@@ -8,39 +8,39 @@
 
 @implementation UIFont
 
-+ (BOOL)bc_contentSizeCategoryIsGreaterThan:(id)a3
++ (BOOL)bc_contentSizeCategoryIsGreaterThan:(id)than
 {
-  v3 = a3;
+  thanCopy = than;
   v4 = +[UIContentSizeCategoryPreference system];
-  v5 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
 
-  v6 = UIContentSizeCategoryCompareToCategory(v5, v3);
+  v6 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, thanCopy);
   return v6 == NSOrderedDescending;
 }
 
 + (BOOL)bc_accessibilityFontSizesEnabled
 {
   v2 = +[UIContentSizeCategoryPreference system];
-  v3 = [v2 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  LOBYTE(v2) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
   return v2;
 }
 
 - (id)bc_cssFontFamily
 {
-  v3 = [(UIFont *)self familyName];
-  if ([v3 hasPrefix:@".AppleSystemUIFont"])
+  familyName = [(UIFont *)self familyName];
+  if ([familyName hasPrefix:@".AppleSystemUIFont"])
   {
     v4 = @"system-ui";
   }
 
   else
   {
-    v5 = [(UIFont *)self fontName];
-    v4 = [NSString stringWithFormat:@"%@, %@", v5, v3];
+    fontName = [(UIFont *)self fontName];
+    v4 = [NSString stringWithFormat:@"%@, %@", fontName, familyName];
 
-    v3 = v5;
+    familyName = fontName;
   }
 
   return v4;
@@ -48,10 +48,10 @@
 
 - (id)bc_cssFontWeight
 {
-  v2 = [(UIFont *)self fontDescriptor];
-  v3 = [v2 symbolicTraits];
+  fontDescriptor = [(UIFont *)self fontDescriptor];
+  symbolicTraits = [fontDescriptor symbolicTraits];
 
-  if ((v3 & 2) != 0)
+  if ((symbolicTraits & 2) != 0)
   {
     return @"bold";
   }

@@ -1,9 +1,9 @@
 @interface PLSharedAssetsContainerIncrementalChangeHighlightContainerChange
-- (BOOL)isEqual:(id)a3;
-- (PLSharedAssetsContainerIncrementalChangeHighlightContainerChange)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PLSharedAssetsContainerIncrementalChangeHighlightContainerChange)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PLSharedAssetsContainerIncrementalChangeHighlightContainerChange
@@ -15,10 +15,10 @@
   return v4 ^ [(NSURL *)self->_destinationHighlightURI hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -28,7 +28,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (PLObjectIsEqual() && PLObjectIsEqual())
       {
         IsEqual = PLObjectIsEqual();
@@ -49,7 +49,7 @@
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSString *)self->_relationshipKey copy];
@@ -64,36 +64,36 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)self relationshipKey];
-  [v4 encodeObject:v5 forKey:@"relationshipKey"];
+  coderCopy = coder;
+  relationshipKey = [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)self relationshipKey];
+  [coderCopy encodeObject:relationshipKey forKey:@"relationshipKey"];
 
-  v6 = [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)self sourceHighlightURI];
-  [v4 encodeObject:v6 forKey:@"sourceHighlightURI"];
+  sourceHighlightURI = [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)self sourceHighlightURI];
+  [coderCopy encodeObject:sourceHighlightURI forKey:@"sourceHighlightURI"];
 
-  v7 = [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)self destinationHighlightURI];
-  [v4 encodeObject:v7 forKey:@"destinationHighlightURI"];
+  destinationHighlightURI = [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)self destinationHighlightURI];
+  [coderCopy encodeObject:destinationHighlightURI forKey:@"destinationHighlightURI"];
 }
 
-- (PLSharedAssetsContainerIncrementalChangeHighlightContainerChange)initWithCoder:(id)a3
+- (PLSharedAssetsContainerIncrementalChangeHighlightContainerChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PLSharedAssetsContainerIncrementalChangeHighlightContainerChange;
   v5 = [(PLSharedAssetsContainerIncrementalChangeHighlightContainerChange *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relationshipKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relationshipKey"];
     relationshipKey = v5->_relationshipKey;
     v5->_relationshipKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceHighlightURI"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceHighlightURI"];
     sourceHighlightURI = v5->_sourceHighlightURI;
     v5->_sourceHighlightURI = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationHighlightURI"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationHighlightURI"];
     destinationHighlightURI = v5->_destinationHighlightURI;
     v5->_destinationHighlightURI = v10;
   }

@@ -1,13 +1,13 @@
 @interface ScreenStateObserver
-- (ScreenStateObserver)initWithCallbackQueue:(id)a3 observer:(id)a4;
-- (void)backlight:(id)a3 performingEvent:(id)a4;
+- (ScreenStateObserver)initWithCallbackQueue:(id)queue observer:(id)observer;
+- (void)backlight:(id)backlight performingEvent:(id)event;
 @end
 
 @implementation ScreenStateObserver
 
-- (void)backlight:(id)a3 performingEvent:(id)a4
+- (void)backlight:(id)backlight performingEvent:(id)event
 {
-  [a4 state];
+  [event state];
   IsActive = BLSBacklightStateIsActive();
   if (self->_displayState != IsActive)
   {
@@ -22,35 +22,35 @@
   }
 }
 
-- (ScreenStateObserver)initWithCallbackQueue:(id)a3 observer:(id)a4
+- (ScreenStateObserver)initWithCallbackQueue:(id)queue observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  observerCopy = observer;
   v18.receiver = self;
   v18.super_class = ScreenStateObserver;
   v9 = [(ScreenStateObserver *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7)
+    if (!queueCopy)
     {
       __assert_rtn("[ScreenStateObserver initWithCallbackQueue:observer:]", "ScreenStateObserver.m", 28, "callbackQueue != nil");
     }
 
-    if (!v8)
+    if (!observerCopy)
     {
       __assert_rtn("[ScreenStateObserver initWithCallbackQueue:observer:]", "ScreenStateObserver.m", 29, "observer != nil");
     }
 
-    objc_storeStrong(&v9->_observer, a4);
-    objc_storeStrong(&v10->_callbackQueue, a3);
+    objc_storeStrong(&v9->_observer, observer);
+    objc_storeStrong(&v10->_callbackQueue, queue);
     v11 = dispatch_queue_create("com.apple.AttentionAwareness.BacklightServices.Observer", 0);
     queue = v10->_queue;
     v10->_queue = v11;
 
     v10->_displayState = 1;
-    v13 = [MEMORY[0x1E698E520] sharedBacklight];
-    [v13 addObserver:v10];
+    mEMORY[0x1E698E520] = [MEMORY[0x1E698E520] sharedBacklight];
+    [mEMORY[0x1E698E520] addObserver:v10];
 
     callbackQueue = v10->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];

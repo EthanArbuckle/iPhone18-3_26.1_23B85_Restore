@@ -1,24 +1,24 @@
 @interface AVTViewCarouselLayout
-+ (CGSize)severalItemsSizeForBounds:(CGSize)a3 aspectRatio:(CGSize)a4;
-+ (id)adaptativeLayoutWithAVTViewAspectRatio:(CGSize)a3;
-- (AVTViewCarouselLayout)initWithAVTViewAspectRatio:(CGSize)a3;
-- (CGSize)avatarViewSizeForAvailableContentSize:(CGSize)a3;
++ (CGSize)severalItemsSizeForBounds:(CGSize)bounds aspectRatio:(CGSize)ratio;
++ (id)adaptativeLayoutWithAVTViewAspectRatio:(CGSize)ratio;
+- (AVTViewCarouselLayout)initWithAVTViewAspectRatio:(CGSize)ratio;
+- (CGSize)avatarViewSizeForAvailableContentSize:(CGSize)size;
 - (CGSize)avtViewAspectRatio;
 @end
 
 @implementation AVTViewCarouselLayout
 
-+ (id)adaptativeLayoutWithAVTViewAspectRatio:(CGSize)a3
++ (id)adaptativeLayoutWithAVTViewAspectRatio:(CGSize)ratio
 {
-  v3 = [[a1 alloc] initWithAVTViewAspectRatio:{a3.width, a3.height}];
+  v3 = [[self alloc] initWithAVTViewAspectRatio:{ratio.width, ratio.height}];
 
   return v3;
 }
 
-- (AVTViewCarouselLayout)initWithAVTViewAspectRatio:(CGSize)a3
+- (AVTViewCarouselLayout)initWithAVTViewAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
+  height = ratio.height;
+  width = ratio.width;
   v6.receiver = self;
   v6.super_class = AVTViewCarouselLayout;
   result = [(AVTViewCarouselLayout *)&v6 init];
@@ -32,18 +32,18 @@
   return result;
 }
 
-- (CGSize)avatarViewSizeForAvailableContentSize:(CGSize)a3
+- (CGSize)avatarViewSizeForAvailableContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = *MEMORY[0x1E695F060];
   v6 = *(MEMORY[0x1E695F060] + 8);
   if (width != *MEMORY[0x1E695F060] || height != v6)
   {
-    v9 = [(AVTViewCarouselLayout *)self fillContainer];
+    fillContainer = [(AVTViewCarouselLayout *)self fillContainer];
     v10 = objc_opt_class();
     v11 = v10;
-    if (v9)
+    if (fillContainer)
     {
       [v10 fullSizeForBounds:{width, height}];
     }
@@ -60,10 +60,10 @@
   return result;
 }
 
-+ (CGSize)severalItemsSizeForBounds:(CGSize)a3 aspectRatio:(CGSize)a4
++ (CGSize)severalItemsSizeForBounds:(CGSize)bounds aspectRatio:(CGSize)ratio
 {
-  height = a4.height;
-  width = a4.width;
+  height = ratio.height;
+  width = ratio.width;
   _UIScaleTransformForAspectFitOfSizeInTargetSize();
   v4 = vmlaq_n_f64(vmulq_n_f64(v9, height), v8, width);
   v5 = v4.f64[1];

@@ -1,37 +1,37 @@
 @interface BKMouseEventAccumulator
 - (BKMouseEventAccumulator)init;
-- (BKMouseEventAccumulator)initWithInterpolatedEventTypeMask:(unint64_t)a3 postEventsBlock:(id)a4;
+- (BKMouseEventAccumulator)initWithInterpolatedEventTypeMask:(unint64_t)mask postEventsBlock:(id)block;
 - (BOOL)_shouldHitTestForGestureBegan;
 - (BOOL)isSenderLocked;
-- (BOOL)senderPostsAtHighFrequency:(unint64_t)a3;
+- (BOOL)senderPostsAtHighFrequency:(unint64_t)frequency;
 - (CGPoint)acceleratedRelativePointerPosition;
 - (CGPoint)pointerAbsolutePosition;
 - (CGPoint)unacceleratedRelativePointerPosition;
 - (id).cxx_construct;
-- (id)_eventStateForSender:(id)a3;
+- (id)_eventStateForSender:(id)sender;
 - (int64_t)hitTestReason;
-- (void)_terminateAllGesturesForSender:(id)a3;
-- (void)_terminateScrollingForSender:(id)a3;
+- (void)_terminateAllGesturesForSender:(id)sender;
+- (void)_terminateScrollingForSender:(id)sender;
 - (void)_updateTouchingPathIndexesFromDeviceEventState;
-- (void)addButtonEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)addDigitizerEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)addForceEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)addRotationEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)addScaleEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)addScrollEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
+- (void)addButtonEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)addDigitizerEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)addForceEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)addRotationEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)addScaleEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)addScrollEvent:(__IOHIDEvent *)event fromSender:(id)sender;
 - (void)addSyntheticTopLevelEventIfNeeded;
-- (void)addTopLevelEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)addTopLevelScaleEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)addTopLevelScrollEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)addTranslationEvent:(__IOHIDEvent *)a3 fromSender:(id)a4;
-- (void)appendSubeventsForEventTypeMask:(unint64_t)a3 toTopLevelEvent:(__IOHIDEvent *)a4 interfaceOrientation:(int64_t)a5 getEventSummary:(unint64_t *)a6;
+- (void)addTopLevelEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)addTopLevelScaleEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)addTopLevelScrollEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)addTranslationEvent:(__IOHIDEvent *)event fromSender:(id)sender;
+- (void)appendSubeventsForEventTypeMask:(unint64_t)mask toTopLevelEvent:(__IOHIDEvent *)event interfaceOrientation:(int64_t)orientation getEventSummary:(unint64_t *)summary;
 - (void)dealloc;
-- (void)deviceServiceDidTerminate:(id)a3;
+- (void)deviceServiceDidTerminate:(id)terminate;
 - (void)frameDidEnd;
 - (void)frameWillBegin;
 - (void)invalidate;
 - (void)nextEvent;
-- (void)setShouldSwapPrimaryAndSecondaryButtons:(BOOL)a3;
+- (void)setShouldSwapPrimaryAndSecondaryButtons:(BOOL)buttons;
 @end
 
 @implementation BKMouseEventAccumulator
@@ -54,15 +54,15 @@
   return result;
 }
 
-- (id)_eventStateForSender:(id)a3
+- (id)_eventStateForSender:(id)sender
 {
-  v5 = a3;
-  v6 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v5 senderID]);
+  senderCopy = sender;
+  v6 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [senderCopy senderID]);
   v7 = [(NSMutableDictionary *)self->_eventStateBySenderID objectForKeyedSubscript:v6];
   if (!v7)
   {
     v8 = [_BKMouseDeviceEventState alloc];
-    v9 = v5;
+    v9 = senderCopy;
     if (v8)
     {
       v17.receiver = v8;
@@ -71,7 +71,7 @@
       v7 = v10;
       if (v10)
       {
-        objc_storeStrong(v10 + 3, a3);
+        objc_storeStrong(v10 + 3, sender);
         *(v7 + 20) = [v9 eventSource];
         if ([v9 eventSource] == 11)
         {
@@ -119,9 +119,9 @@
   return v7;
 }
 
-- (void)_terminateScrollingForSender:(id)a3
+- (void)_terminateScrollingForSender:(id)sender
 {
-  if (sub_10007A9D0(&self->_scrollPhaseTracker, 4, a3, 0))
+  if (sub_10007A9D0(&self->_scrollPhaseTracker, 4, sender, 0))
   {
     v4 = BKLogMousePointer();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -141,11 +141,11 @@
   }
 }
 
-- (void)_terminateAllGesturesForSender:(id)a3
+- (void)_terminateAllGesturesForSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   [(BKMouseEventAccumulator *)self _terminateScrollingForSender:?];
-  if (sub_10007AD00(&self->_translationPhaseTracker, 4, v4, 0))
+  if (sub_10007AD00(&self->_translationPhaseTracker, 4, senderCopy, 0))
   {
     self->_translationPhaseTracker._sentTerminalEvent = 1;
     self->_translationDelta.x = 0.0;
@@ -153,14 +153,14 @@
     self->_eventTypeMask |= 0x10uLL;
   }
 
-  if (sub_10007AF3C(&self->_rotationPhaseTracker, 4, v4, 0))
+  if (sub_10007AF3C(&self->_rotationPhaseTracker, 4, senderCopy, 0))
   {
     self->_rotationPhaseTracker._sentTerminalEvent = 1;
     self->_rotationZ = 0.0;
     self->_eventTypeMask |= 0x20uLL;
   }
 
-  if (sub_10007B178(&self->_scalePhaseTracker, 4, v4, 0))
+  if (sub_10007B178(&self->_scalePhaseTracker, 4, senderCopy, 0))
   {
     self->_scalePhaseTracker._sentTerminalEvent = 1;
     self->_scaleZ = 0.0;
@@ -168,9 +168,9 @@
   }
 }
 
-- (void)addForceEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addForceEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   Type = IOHIDEventGetType();
   v8 = Type;
   if (Type == 1)
@@ -268,9 +268,9 @@
   self->_force = v17;
 }
 
-- (void)addTranslationEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addTranslationEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v5 = a4;
+  senderCopy = sender;
   IOHIDEventGetPhase();
   IOHIDEventGetFloatValue();
   v24 = v6;
@@ -294,12 +294,12 @@
   kdebug_trace();
   Phase = IOHIDEventGetPhase();
   TimeStamp = IOHIDEventGetTimeStamp();
-  if (sub_10007AD00(&self->_translationPhaseTracker, Phase, v5, TimeStamp))
+  if (sub_10007AD00(&self->_translationPhaseTracker, Phase, senderCopy, TimeStamp))
   {
     self->_eventTypeMask |= 0x10uLL;
     if ((self->_interpolateEventTypeMask & 0x10) != 0)
     {
-      v13 = [(BKMouseEventAccumulator *)self _eventStateForSender:v5];
+      v13 = [(BKMouseEventAccumulator *)self _eventStateForSender:senderCopy];
       v14 = v13;
       if (v13)
       {
@@ -337,17 +337,17 @@
     v12 = BKLogMousePointer();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [v5 senderID];
+      senderID = [senderCopy senderID];
       *buf = 134217984;
-      v26 = v22;
+      v26 = senderID;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "    ignored translation from conflicting sender %llX", buf, 0xCu);
     }
   }
 }
 
-- (void)addRotationEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addRotationEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v5 = a4;
+  senderCopy = sender;
   IOHIDEventGetPhase();
   IOHIDEventGetFloatValue();
   v7 = v6;
@@ -366,12 +366,12 @@
 
   Phase = IOHIDEventGetPhase();
   TimeStamp = IOHIDEventGetTimeStamp();
-  if (sub_10007AF3C(&self->_rotationPhaseTracker, Phase, v5, TimeStamp))
+  if (sub_10007AF3C(&self->_rotationPhaseTracker, Phase, senderCopy, TimeStamp))
   {
     self->_eventTypeMask |= 0x20uLL;
     if ((self->_interpolateEventTypeMask & 0x20) != 0)
     {
-      v12 = [(BKMouseEventAccumulator *)self _eventStateForSender:v5];
+      v12 = [(BKMouseEventAccumulator *)self _eventStateForSender:senderCopy];
       v13 = v12;
       if (v12)
       {
@@ -404,17 +404,17 @@
     v11 = BKLogMousePointer();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v5 senderID];
+      senderID = [senderCopy senderID];
       v21 = 134217984;
-      v22 = v20;
+      v22 = senderID;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "    ignored rotation from conflicting sender %llX", &v21, 0xCu);
     }
   }
 }
 
-- (void)addScaleEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addScaleEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v5 = a4;
+  senderCopy = sender;
   IOHIDEventGetPhase();
   IOHIDEventGetFloatValue();
   v7 = v6;
@@ -433,12 +433,12 @@
 
   Phase = IOHIDEventGetPhase();
   TimeStamp = IOHIDEventGetTimeStamp();
-  if (sub_10007B178(&self->_scalePhaseTracker, Phase, v5, TimeStamp))
+  if (sub_10007B178(&self->_scalePhaseTracker, Phase, senderCopy, TimeStamp))
   {
     self->_eventTypeMask |= 0x80uLL;
     if ((self->_interpolateEventTypeMask & 0x80) != 0)
     {
-      v12 = [(BKMouseEventAccumulator *)self _eventStateForSender:v5];
+      v12 = [(BKMouseEventAccumulator *)self _eventStateForSender:senderCopy];
       v13 = v12;
       if (v12)
       {
@@ -471,17 +471,17 @@
     v11 = BKLogMousePointer();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v20 = [v5 senderID];
+      senderID = [senderCopy senderID];
       v21 = 134217984;
-      v22 = v20;
+      v22 = senderID;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "    ignored scale from conflicting sender %llX", &v21, 0xCu);
     }
   }
 }
 
-- (void)addDigitizerEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addDigitizerEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v67 = a4;
+  senderCopy = sender;
   v4 = BKLogMousePointer();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -506,7 +506,7 @@
   Copy = IOHIDEventCreateCopy();
   [(NSMutableArray *)self->_digitizerEvents addObject:Copy];
   CFRelease(Copy);
-  v8 = [(BKMouseEventAccumulator *)self _eventStateForSender:v67];
+  v8 = [(BKMouseEventAccumulator *)self _eventStateForSender:senderCopy];
   v78 = v8;
   if (v8)
   {
@@ -615,9 +615,9 @@
                   v25 = BKLogMousePointer();
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
                   {
-                    v47 = [v78[3] senderID];
+                    senderID = [v78[3] senderID];
                     *buf = 134218496;
-                    v86 = v47;
+                    v86 = senderID;
                     v87 = 2048;
                     v88 = IntegerValue;
                     v89 = 1024;
@@ -648,9 +648,9 @@ LABEL_26:
                 v30 = BKLogMousePointer();
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
                 {
-                  v46 = [v78[3] senderID];
+                  senderID2 = [v78[3] senderID];
                   *buf = 134219008;
-                  v86 = v46;
+                  v86 = senderID2;
                   v87 = 2048;
                   v88 = IntegerValue;
                   v89 = 1024;
@@ -678,13 +678,13 @@ LABEL_26:
                   if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                   {
                     v35 = v34;
-                    v36 = [v78[3] senderID];
+                    senderID3 = [v78[3] senderID];
                     v37 = sub_10007CF4C();
                     v38 = sub_10007D0C4(v78[5]);
                     v39 = sub_10007D0C4(v78[6]);
                     v40 = sub_10007D0C4(v78[8]);
                     *buf = v65;
-                    v86 = v36;
+                    v86 = senderID3;
                     v87 = 2048;
                     v88 = IntegerValue;
                     v89 = 1024;
@@ -712,13 +712,13 @@ LABEL_26:
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
               {
                 loga = v34;
-                v41 = [v78[3] senderID];
+                senderID4 = [v78[3] senderID];
                 v42 = sub_10007CF4C();
                 v43 = sub_10007D0C4(v78[5]);
                 v44 = sub_10007D0C4(v78[6]);
                 v45 = sub_10007D0C4(v78[8]);
                 *buf = 134220290;
-                v86 = v41;
+                v86 = senderID4;
                 v87 = 2048;
                 v88 = IntegerValue;
                 v89 = 1024;
@@ -772,11 +772,11 @@ LABEL_42:
       v53 = BKLogMousePointer();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
       {
-        v58 = [v78[3] senderID];
+        senderID5 = [v78[3] senderID];
         v59 = sub_10007D0C4(v52);
         v60 = BKSHIDEventGetConciseDescription();
         *buf = 134218754;
-        v86 = v58;
+        v86 = senderID5;
         v87 = 2048;
         v88 = IntegerValue;
         v89 = 2114;
@@ -800,9 +800,9 @@ LABEL_42:
 
 - (void)_updateTouchingPathIndexesFromDeviceEventState
 {
-  v3 = [(NSMutableDictionary *)self->_eventStateBySenderID allValues];
+  allValues = [(NSMutableDictionary *)self->_eventStateBySenderID allValues];
   v4 = +[NSMutableIndexSet indexSet];
-  obj = [v3 bs_reduce:v4 block:&stru_1000FC710];
+  obj = [allValues bs_reduce:v4 block:&stru_1000FC710];
 
   p_touchingPathIndexes = &self->_touchingPathIndexes;
   if (!self->_touchingPathIndexes)
@@ -821,9 +821,9 @@ LABEL_42:
   }
 }
 
-- (void)addButtonEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addButtonEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v14 = a4;
+  senderCopy = sender;
   v5 = [(BKMouseEventAccumulator *)self _eventStateForSender:?];
   v6 = v5;
   if (v5)
@@ -851,7 +851,7 @@ LABEL_42:
     v13 = (1 << v10) & v9;
     if (((v12 & v7) == 0) == (v13 != 0))
     {
-      [(BKMouseEventAccumulator *)self addButtonNumber:v11 down:v13 != 0 fromSender:v14];
+      [(BKMouseEventAccumulator *)self addButtonNumber:v11 down:v13 != 0 fromSender:senderCopy];
     }
 
     v10 = v11;
@@ -860,17 +860,17 @@ LABEL_42:
   while (v11 != 32);
 }
 
-- (void)setShouldSwapPrimaryAndSecondaryButtons:(BOOL)a3
+- (void)setShouldSwapPrimaryAndSecondaryButtons:(BOOL)buttons
 {
-  if (self->_shouldSwapPrimaryAndSecondaryButtons != a3)
+  if (self->_shouldSwapPrimaryAndSecondaryButtons != buttons)
   {
-    self->_shouldSwapPrimaryAndSecondaryButtons = a3;
+    self->_shouldSwapPrimaryAndSecondaryButtons = buttons;
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(NSMutableDictionary *)self->_eventStateBySenderID allValues];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    allValues = [(NSMutableDictionary *)self->_eventStateBySenderID allValues];
+    v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = *v9;
@@ -881,7 +881,7 @@ LABEL_42:
         {
           if (*v9 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           v7 = *(*(&v8 + 1) + 8 * v6);
@@ -897,7 +897,7 @@ LABEL_42:
         }
 
         while (v4 != v6);
-        v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v4);
@@ -905,7 +905,7 @@ LABEL_42:
   }
 }
 
-- (BOOL)senderPostsAtHighFrequency:(unint64_t)a3
+- (BOOL)senderPostsAtHighFrequency:(unint64_t)frequency
 {
   if (self->_shouldUseButtonDownRecenteringBehavior)
   {
@@ -913,7 +913,7 @@ LABEL_42:
   }
 
   eventStateBySenderID = self->_eventStateBySenderID;
-  v5 = [NSNumber numberWithUnsignedLongLong:a3];
+  v5 = [NSNumber numberWithUnsignedLongLong:frequency];
   v6 = [(NSMutableDictionary *)eventStateBySenderID objectForKeyedSubscript:v5];
 
   if (v6)
@@ -929,10 +929,10 @@ LABEL_42:
   return v3;
 }
 
-- (void)deviceServiceDidTerminate:(id)a3
+- (void)deviceServiceDidTerminate:(id)terminate
 {
-  v12 = a3;
-  v4 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v12 senderID]);
+  terminateCopy = terminate;
+  v4 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [terminateCopy senderID]);
   doomedSenderIDs = self->_doomedSenderIDs;
   if (!doomedSenderIDs)
   {
@@ -944,7 +944,7 @@ LABEL_42:
   }
 
   [(NSMutableSet *)doomedSenderIDs addObject:v4];
-  [(BKMouseEventAccumulator *)self _terminateAllGesturesForSender:v12];
+  [(BKMouseEventAccumulator *)self _terminateAllGesturesForSender:terminateCopy];
   v8 = [(NSMutableDictionary *)self->_eventStateBySenderID objectForKeyedSubscript:v4];
   v9 = v8;
   if (v8)
@@ -956,7 +956,7 @@ LABEL_42:
       {
         if ((v10 & (1 << (i - 1))) != 0)
         {
-          [(BKMouseEventAccumulator *)self addButtonNumber:i down:0 fromSender:v12];
+          [(BKMouseEventAccumulator *)self addButtonNumber:i down:0 fromSender:terminateCopy];
         }
       }
     }
@@ -1080,8 +1080,8 @@ LABEL_42:
   if ([(NSMutableSet *)self->_doomedSenderIDs count])
   {
     eventStateBySenderID = self->_eventStateBySenderID;
-    v14 = [(NSMutableSet *)self->_doomedSenderIDs allObjects];
-    [(NSMutableDictionary *)eventStateBySenderID removeObjectsForKeys:v14];
+    allObjects = [(NSMutableSet *)self->_doomedSenderIDs allObjects];
+    [(NSMutableDictionary *)eventStateBySenderID removeObjectsForKeys:allObjects];
 
     mostRecentSender = self->_mostRecentSender;
     if (mostRecentSender)
@@ -1094,12 +1094,12 @@ LABEL_42:
       {
         if ([(NSMutableDictionary *)self->_eventStateBySenderID count])
         {
-          v18 = [(NSMutableDictionary *)self->_eventStateBySenderID allValues];
-          v19 = [v18 lastObject];
-          v20 = v19;
-          if (v19)
+          allValues = [(NSMutableDictionary *)self->_eventStateBySenderID allValues];
+          lastObject = [allValues lastObject];
+          v20 = lastObject;
+          if (lastObject)
           {
-            v21 = *(v19 + 24);
+            v21 = *(lastObject + 24);
           }
 
           else
@@ -1248,17 +1248,17 @@ LABEL_42:
   }
 }
 
-- (void)appendSubeventsForEventTypeMask:(unint64_t)a3 toTopLevelEvent:(__IOHIDEvent *)a4 interfaceOrientation:(int64_t)a5 getEventSummary:(unint64_t *)a6
+- (void)appendSubeventsForEventTypeMask:(unint64_t)mask toTopLevelEvent:(__IOHIDEvent *)event interfaceOrientation:(int64_t)orientation getEventSummary:(unint64_t *)summary
 {
   buttonMask = self->_buttonMask;
   self->_shouldUseButtonDownRecenteringBehavior;
   IOHIDEventSetIntegerValue();
-  if (a6)
+  if (summary)
   {
-    *a6 = 0;
+    *summary = 0;
   }
 
-  v9 = self->_eventTypeMask & a3;
+  v9 = self->_eventTypeMask & mask;
   if (v9)
   {
     IOHIDEventGetTimeStamp();
@@ -1281,11 +1281,11 @@ LABEL_42:
       CFRelease(v16);
       IOHIDEventAppendEvent();
       CFRelease(ScrollEvent);
-      if (a6)
+      if (summary)
       {
         if ((outputPhase & 0xC) != 0)
         {
-          *a6 |= 2uLL;
+          *summary |= 2uLL;
         }
       }
     }
@@ -1299,11 +1299,11 @@ LABEL_42:
       IOHIDEventSetPhase();
       IOHIDEventAppendEvent();
       CFRelease(RotationEvent);
-      if (a6)
+      if (summary)
       {
         if ((v19 & 0xC) != 0)
         {
-          *a6 |= 0x10uLL;
+          *summary |= 0x10uLL;
         }
       }
     }
@@ -1317,11 +1317,11 @@ LABEL_42:
       IOHIDEventSetPhase();
       IOHIDEventAppendEvent();
       CFRelease(ScaleEvent);
-      if (a6)
+      if (summary)
       {
         if ((v22 & 0xC) != 0)
         {
-          *a6 |= 4uLL;
+          *summary |= 4uLL;
         }
       }
     }
@@ -1336,11 +1336,11 @@ LABEL_42:
       IOHIDEventSetPhase();
       IOHIDEventAppendEvent();
       CFRelease(TranslationEvent);
-      if (a6)
+      if (summary)
       {
         if ((v26 & 0xC) != 0)
         {
-          *a6 |= 8uLL;
+          *summary |= 8uLL;
         }
       }
     }
@@ -1370,7 +1370,7 @@ LABEL_42:
             [v31 integerValue];
 
             v32 = [v30 objectAtIndexedSubscript:1];
-            v33 = [v32 BOOLValue];
+            bOOLValue = [v32 BOOLValue];
 
             v34 = [v30 objectAtIndexedSubscript:2];
             [v34 unsignedIntValue];
@@ -1382,9 +1382,9 @@ LABEL_42:
             IOHIDEventSetIntegerValue();
             IOHIDEventAppendEvent();
             CFRelease(ButtonEvent);
-            if (!((a6 == 0) | v33 & 1))
+            if (!((summary == 0) | bOOLValue & 1))
             {
-              *a6 |= 0x20uLL;
+              *summary |= 0x20uLL;
             }
           }
 
@@ -1418,9 +1418,9 @@ LABEL_42:
 
             v40 = *(*(&v45 + 1) + 8 * j);
             IOHIDEventAppendEvent();
-            if (a6 && (IOHIDEventGetIntegerValue() & 2) != 0 && !IOHIDEventGetIntegerValue())
+            if (summary && (IOHIDEventGetIntegerValue() & 2) != 0 && !IOHIDEventGetIntegerValue())
             {
-              *a6 |= 0x40uLL;
+              *summary |= 0x40uLL;
             }
           }
 
@@ -1443,10 +1443,10 @@ LABEL_42:
   }
 }
 
-- (void)addTopLevelEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addTopLevelEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v7 = a4;
-  objc_storeStrong(&self->_mostRecentSender, a4);
+  senderCopy = sender;
+  objc_storeStrong(&self->_mostRecentSender, sender);
   self->_lastRemoteEventTimestamp = BKSHIDEventGetRemoteTimestamp();
   if (IOHIDEventGetType() != 17)
   {
@@ -1461,7 +1461,7 @@ LABEL_42:
       *&v67[12] = 2114;
       *&v67[14] = v54;
       v68 = 2048;
-      v69 = self;
+      selfCopy = self;
       v70 = 2114;
       v71 = @"BKMousePointerEventAccumulator.mm";
       v72 = 1024;
@@ -1486,7 +1486,7 @@ LABEL_42:
   v58 = v10;
   kdebug_trace();
   self->_eventTypeMask |= 0x20000uLL;
-  v11 = [(BKMouseEventAccumulator *)self _eventStateForSender:v7];
+  v11 = [(BKMouseEventAccumulator *)self _eventStateForSender:senderCopy];
   v12 = v11;
   v57 = v11;
   if (v11)
@@ -1593,12 +1593,12 @@ LABEL_77:
           {
             if (Type == 4)
             {
-              [(BKMouseEventAccumulator *)self addTranslationEvent:v33 fromSender:v7];
+              [(BKMouseEventAccumulator *)self addTranslationEvent:v33 fromSender:senderCopy];
             }
 
             else
             {
-              [(BKMouseEventAccumulator *)self addRotationEvent:v33 fromSender:v7];
+              [(BKMouseEventAccumulator *)self addRotationEvent:v33 fromSender:senderCopy];
             }
           }
 
@@ -1614,7 +1614,7 @@ LABEL_77:
 
           else if (Type == 2)
           {
-            [(BKMouseEventAccumulator *)self addButtonEvent:v33 fromSender:v7];
+            [(BKMouseEventAccumulator *)self addButtonEvent:v33 fromSender:senderCopy];
           }
         }
 
@@ -1622,12 +1622,12 @@ LABEL_77:
         {
           if (Type == 6)
           {
-            [(BKMouseEventAccumulator *)self addScrollEvent:v33 fromSender:v7];
+            [(BKMouseEventAccumulator *)self addScrollEvent:v33 fromSender:senderCopy];
           }
 
           else if (Type == 7)
           {
-            [(BKMouseEventAccumulator *)self addScaleEvent:v33 fromSender:v7];
+            [(BKMouseEventAccumulator *)self addScaleEvent:v33 fromSender:senderCopy];
           }
         }
 
@@ -1636,7 +1636,7 @@ LABEL_77:
           switch(Type)
           {
             case 11:
-              [(BKMouseEventAccumulator *)self addDigitizerEvent:v33 fromSender:v7];
+              [(BKMouseEventAccumulator *)self addDigitizerEvent:v33 fromSender:senderCopy];
               break;
             case 17:
               IOHIDEventGetFloatValue();
@@ -1646,7 +1646,7 @@ LABEL_77:
               break;
             case 41:
 LABEL_29:
-              [(BKMouseEventAccumulator *)self addForceEvent:v33 fromSender:v7];
+              [(BKMouseEventAccumulator *)self addForceEvent:v33 fromSender:senderCopy];
               continue;
             default:
               continue;
@@ -1771,17 +1771,17 @@ LABEL_57:
   }
 }
 
-- (void)addTopLevelScaleEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addTopLevelScaleEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v7 = a4;
-  objc_storeStrong(&self->_mostRecentSender, a4);
+  senderCopy = sender;
+  objc_storeStrong(&self->_mostRecentSender, sender);
   self->_lastRemoteEventTimestamp = BKSHIDEventGetRemoteTimestamp();
-  [(BKMouseEventAccumulator *)self addScaleEvent:a3 fromSender:v7];
+  [(BKMouseEventAccumulator *)self addScaleEvent:event fromSender:senderCopy];
 }
 
-- (void)addScrollEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addScrollEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v35 = a4;
+  senderCopy = sender;
   v5 = [(BKMouseEventAccumulator *)self _eventStateForSender:?];
   Phase = IOHIDEventGetPhase();
   kdebug_trace();
@@ -1816,7 +1816,7 @@ LABEL_57:
       v45 = v9;
       v42[4] = self;
       v43 = v5;
-      v44 = v35;
+      v44 = senderCopy;
       postEventAsyncBlock[2](postEventAsyncBlock, v42, 0.2);
     }
   }
@@ -1828,7 +1828,7 @@ LABEL_57:
   }
 
   TimeStamp = IOHIDEventGetTimeStamp();
-  if (sub_10007A9D0(&self->_scrollPhaseTracker, v8, v35, TimeStamp))
+  if (sub_10007A9D0(&self->_scrollPhaseTracker, v8, senderCopy, TimeStamp))
   {
     self->_eventTypeMask |= 0x40uLL;
     IOHIDEventGetFloatValue();
@@ -1958,21 +1958,21 @@ LABEL_33:
   v14 = BKLogMousePointer();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v26 = [v35 senderID];
+    senderID = [senderCopy senderID];
     *buf = 134217984;
-    v47 = v26;
+    v47 = senderID;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, " -> scroll rejected from sender:%llX", buf, 0xCu);
   }
 
 LABEL_34:
 }
 
-- (void)addTopLevelScrollEvent:(__IOHIDEvent *)a3 fromSender:(id)a4
+- (void)addTopLevelScrollEvent:(__IOHIDEvent *)event fromSender:(id)sender
 {
-  v7 = a4;
-  objc_storeStrong(&self->_mostRecentSender, a4);
+  senderCopy = sender;
+  objc_storeStrong(&self->_mostRecentSender, sender);
   self->_lastRemoteEventTimestamp = BKSHIDEventGetRemoteTimestamp();
-  [(BKMouseEventAccumulator *)self addScrollEvent:a3 fromSender:v7];
+  [(BKMouseEventAccumulator *)self addScrollEvent:event fromSender:senderCopy];
 }
 
 - (CGPoint)unacceleratedRelativePointerPosition
@@ -1995,9 +1995,9 @@ LABEL_34:
 
 - (int64_t)hitTestReason
 {
-  v3 = [(BKMouseEventAccumulator *)self isSenderLocked];
+  isSenderLocked = [(BKMouseEventAccumulator *)self isSenderLocked];
   buttonMask = self->_buttonMask;
-  if (v3)
+  if (isSenderLocked)
   {
     if (buttonMask || ![(BKMouseEventAccumulator *)self _shouldHitTestForGestureBegan])
     {
@@ -2136,7 +2136,7 @@ LABEL_33:
       v12 = 2114;
       v13 = v7;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BKMousePointerEventAccumulator.mm";
       v18 = 1024;
@@ -2158,15 +2158,15 @@ LABEL_33:
   [(BKMouseEventAccumulator *)&v9 dealloc];
 }
 
-- (BKMouseEventAccumulator)initWithInterpolatedEventTypeMask:(unint64_t)a3 postEventsBlock:(id)a4
+- (BKMouseEventAccumulator)initWithInterpolatedEventTypeMask:(unint64_t)mask postEventsBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [(BKMouseEventAccumulator *)self init];
   v8 = v7;
   if (v7)
   {
-    v7->_interpolateEventTypeMask = a3;
-    v9 = [v6 copy];
+    v7->_interpolateEventTypeMask = mask;
+    v9 = [blockCopy copy];
     postEventAsyncBlock = v8->_postEventAsyncBlock;
     v8->_postEventAsyncBlock = v9;
   }

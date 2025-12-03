@@ -1,7 +1,7 @@
 @interface NSXPCConnection
 - (BOOL)rcs_isValid;
-- (id)rc_userInfoForKey:(id)a3;
-- (void)rc_setUserInfo:(id)a3 forKey:(id)a4;
+- (id)rc_userInfoForKey:(id)key;
+- (void)rc_setUserInfo:(id)info forKey:(id)key;
 @end
 
 @implementation NSXPCConnection
@@ -9,42 +9,42 @@
 - (BOOL)rcs_isValid
 {
   v2 = objc_getAssociatedObject(self, "RCSNSXPCConnectionIsValidKey");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)rc_setUserInfo:(id)a3 forKey:(id)a4
+- (void)rc_setUserInfo:(id)info forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  infoCopy = info;
+  keyCopy = key;
   v7 = objc_getAssociatedObject(self, "RCSNSXPCConnectionUserInfoDictionaryKey");
-  v8 = v10;
+  v8 = infoCopy;
   v9 = v7;
-  if (v10 && !v7)
+  if (infoCopy && !v7)
   {
     v9 = +[NSMutableDictionary dictionary];
     objc_setAssociatedObject(self, "RCSNSXPCConnectionUserInfoDictionaryKey", v9, 0x301);
-    v8 = v10;
+    v8 = infoCopy;
 LABEL_5:
-    [v9 setObject:v8 forKey:v6];
+    [v9 setObject:v8 forKey:keyCopy];
     goto LABEL_6;
   }
 
-  if (v10)
+  if (infoCopy)
   {
     goto LABEL_5;
   }
 
-  [v7 removeObjectForKey:v6];
+  [v7 removeObjectForKey:keyCopy];
 LABEL_6:
 }
 
-- (id)rc_userInfoForKey:(id)a3
+- (id)rc_userInfoForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = objc_getAssociatedObject(self, "RCSNSXPCConnectionUserInfoDictionaryKey");
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
 
   return v6;
 }

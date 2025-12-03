@@ -1,21 +1,21 @@
 @interface WBSCyclerTestSuiteBookmarkAuxiliary
-- (BOOL)hasPerformedOperation:(int64_t)a3;
+- (BOOL)hasPerformedOperation:(int64_t)operation;
 - (WBSCyclerTestSuiteBookmarkAuxiliary)init;
-- (id)_attributeStringForBookmark:(id)a3 multiline:(BOOL)a4;
-- (id)_descriptionForBookmark:(id)a3;
-- (id)_descriptionForErrorCode:(int64_t)a3;
-- (id)_errorWithCode:(int64_t)a3 userInfo:(id)a4;
-- (id)_expandedDescriptionForBookmark:(id)a3;
-- (id)_formattedStringForBookmark:(id)a3 indentationLevel:(unint64_t)a4;
-- (id)validateBookmarks:(id)a3 expectingBookmarks:(id)a4 context:(id)a5;
-- (void)_attemptCloudKitMigrationWithCompletionHandler:(id)a3;
-- (void)_attemptInitialClearWithTarget:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)_attemptResetToDAVModeWithCompletionHandler:(id)a3;
-- (void)_attemptToClearDataWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)_attemptToGenerateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)a3;
-- (void)fetchAndValidateBookmarksWithExpectedBookmarks:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)performOperation:(int64_t)a3 withTarget:(id)a4 options:(id)a5 completionHandler:(id)a6;
-- (void)resetOperation:(int64_t)a3;
+- (id)_attributeStringForBookmark:(id)bookmark multiline:(BOOL)multiline;
+- (id)_descriptionForBookmark:(id)bookmark;
+- (id)_descriptionForErrorCode:(int64_t)code;
+- (id)_errorWithCode:(int64_t)code userInfo:(id)info;
+- (id)_expandedDescriptionForBookmark:(id)bookmark;
+- (id)_formattedStringForBookmark:(id)bookmark indentationLevel:(unint64_t)level;
+- (id)validateBookmarks:(id)bookmarks expectingBookmarks:(id)expectingBookmarks context:(id)context;
+- (void)_attemptCloudKitMigrationWithCompletionHandler:(id)handler;
+- (void)_attemptInitialClearWithTarget:(id)target options:(id)options completionHandler:(id)handler;
+- (void)_attemptResetToDAVModeWithCompletionHandler:(id)handler;
+- (void)_attemptToClearDataWithOptions:(id)options completionHandler:(id)handler;
+- (void)_attemptToGenerateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)handler;
+- (void)fetchAndValidateBookmarksWithExpectedBookmarks:(id)bookmarks context:(id)context completionHandler:(id)handler;
+- (void)performOperation:(int64_t)operation withTarget:(id)target options:(id)options completionHandler:(id)handler;
+- (void)resetOperation:(int64_t)operation;
 @end
 
 @implementation WBSCyclerTestSuiteBookmarkAuxiliary
@@ -35,24 +35,24 @@
   return v3;
 }
 
-- (void)fetchAndValidateBookmarksWithExpectedBookmarks:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)fetchAndValidateBookmarksWithExpectedBookmarks:(id)bookmarks context:(id)context completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 testTarget];
+  bookmarksCopy = bookmarks;
+  contextCopy = context;
+  handlerCopy = handler;
+  testTarget = [contextCopy testTarget];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __112__WBSCyclerTestSuiteBookmarkAuxiliary_fetchAndValidateBookmarksWithExpectedBookmarks_context_completionHandler___block_invoke;
   v15[3] = &unk_1E7FC53C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
-  [v11 fetchTopLevelBookmarkList:v15];
+  v16 = bookmarksCopy;
+  v17 = contextCopy;
+  v18 = handlerCopy;
+  v12 = contextCopy;
+  v13 = bookmarksCopy;
+  v14 = handlerCopy;
+  [testTarget fetchTopLevelBookmarkList:v15];
 }
 
 void __112__WBSCyclerTestSuiteBookmarkAuxiliary_fetchAndValidateBookmarksWithExpectedBookmarks_context_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -62,17 +62,17 @@ void __112__WBSCyclerTestSuiteBookmarkAuxiliary_fetchAndValidateBookmarksWithExp
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)validateBookmarks:(id)a3 expectingBookmarks:(id)a4 context:(id)a5
+- (id)validateBookmarks:(id)bookmarks expectingBookmarks:(id)expectingBookmarks context:(id)context
 {
   v71[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a3;
-  v9 = [v7 filterOutItemsWithoutTitlePrefixInList:a4];
-  v10 = [v7 filterOutItemsWithoutTitlePrefixInList:v8];
+  contextCopy = context;
+  bookmarksCopy = bookmarks;
+  v9 = [contextCopy filterOutItemsWithoutTitlePrefixInList:expectingBookmarks];
+  v10 = [contextCopy filterOutItemsWithoutTitlePrefixInList:bookmarksCopy];
 
-  v11 = [v9 title];
-  v12 = [v10 title];
-  if (![v11 length] && !objc_msgSend(v12, "length"))
+  title = [v9 title];
+  title2 = [v10 title];
+  if (![title length] && !objc_msgSend(title2, "length"))
   {
     [v9 setTitle:0];
     [v10 setTitle:0];
@@ -104,13 +104,13 @@ void __112__WBSCyclerTestSuiteBookmarkAuxiliary_fetchAndValidateBookmarksWithExp
     if ([v18 count])
     {
       v46 = v14;
-      v47 = v11;
+      v47 = title;
       v51 = v13;
-      v53 = v12;
+      v53 = title2;
       v48 = v10;
       v49 = v9;
-      v50 = v7;
-      v57 = [MEMORY[0x1E695DF70] array];
+      v50 = contextCopy;
+      array = [MEMORY[0x1E695DF70] array];
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
@@ -156,11 +156,11 @@ void __112__WBSCyclerTestSuiteBookmarkAuxiliary_fetchAndValidateBookmarksWithExp
               _os_log_debug_impl(&dword_1BB6F3000, v28, OS_LOG_TYPE_DEBUG, "Actual bookmark attributes: %{public}@", buf, 0xCu);
             }
 
-            v29 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-            v30 = [v25 componentsSeparatedByCharactersInSet:v29];
+            newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+            v30 = [v25 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
-            v31 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-            v32 = [v26 componentsSeparatedByCharactersInSet:v31];
+            newlineCharacterSet2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+            v32 = [v26 componentsSeparatedByCharactersInSet:newlineCharacterSet2];
 
             v33 = [v30 safari_diffWithArray:v32];
             v34 = WBS_LOG_CHANNEL_PREFIXCycler();
@@ -171,7 +171,7 @@ void __112__WBSCyclerTestSuiteBookmarkAuxiliary_fetchAndValidateBookmarksWithExp
               _os_log_error_impl(&dword_1BB6F3000, v34, OS_LOG_TYPE_ERROR, "Expected and actual attributes don't match: %{public}@", buf, 0xCu);
             }
 
-            [v57 addObject:v33];
+            [array addObject:v33];
 
             ++v21;
           }
@@ -185,16 +185,16 @@ void __112__WBSCyclerTestSuiteBookmarkAuxiliary_fetchAndValidateBookmarksWithExp
       }
 
       v65 = @"ExpectedAttributesVersusActualAttributes";
-      v66 = v57;
+      v66 = array;
       v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
       v36 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _errorWithCode:0 userInfo:v35];
 
       v9 = v49;
-      v7 = v50;
-      v11 = v47;
+      contextCopy = v50;
+      title = v47;
       v10 = v48;
       v13 = v51;
-      v12 = v53;
+      title2 = v53;
       v14 = v46;
     }
 
@@ -212,133 +212,133 @@ void __112__WBSCyclerTestSuiteBookmarkAuxiliary_fetchAndValidateBookmarksWithExp
 
   else
   {
-    v54 = v12;
-    v37 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v18 = [v13 componentsSeparatedByCharactersInSet:v37];
+    v54 = title2;
+    newlineCharacterSet3 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v18 = [v13 componentsSeparatedByCharactersInSet:newlineCharacterSet3];
 
-    v38 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v39 = [v14 componentsSeparatedByCharactersInSet:v38];
+    newlineCharacterSet4 = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v39 = [v14 componentsSeparatedByCharactersInSet:newlineCharacterSet4];
 
     v70 = @"ExpectedStateVersusActualState";
     [v18 safari_diffWithArray:v39];
     v40 = v52 = v13;
     v71[0] = v40;
     [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:&v70 count:1];
-    v41 = v11;
+    v41 = title;
     v43 = v42 = v14;
     v36 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _errorWithCode:0 userInfo:v43];
 
     v14 = v42;
-    v11 = v41;
+    title = v41;
 
     v13 = v52;
-    v12 = v54;
+    title2 = v54;
   }
 
   return v36;
 }
 
-- (BOOL)hasPerformedOperation:(int64_t)a3
+- (BOOL)hasPerformedOperation:(int64_t)operation
 {
-  if (a3 > 4)
+  if (operation > 4)
   {
     return 0;
   }
 
   else
   {
-    return [*(&self->_initialClearOperation + a3) isFinished];
+    return [*(&self->_initialClearOperation + operation) isFinished];
   }
 }
 
-- (void)performOperation:(int64_t)a3 withTarget:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)performOperation:(int64_t)operation withTarget:(id)target options:(id)options completionHandler:(id)handler
 {
-  v12 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (a3 <= 1)
+  targetCopy = target;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (operation <= 1)
   {
-    if (a3)
+    if (operation)
     {
-      if (a3 == 1)
+      if (operation == 1)
       {
-        [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptResetToDAVModeWithCompletionHandler:v11];
+        [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptResetToDAVModeWithCompletionHandler:handlerCopy];
       }
     }
 
     else
     {
-      [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptInitialClearWithTarget:v12 options:v10 completionHandler:v11];
+      [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptInitialClearWithTarget:targetCopy options:optionsCopy completionHandler:handlerCopy];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(operation)
     {
       case 2:
-        [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptToGenerateDAVServerIDsForExistingBookmarksWithCompletionHandler:v11];
+        [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptToGenerateDAVServerIDsForExistingBookmarksWithCompletionHandler:handlerCopy];
         break;
       case 3:
-        [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptCloudKitMigrationWithCompletionHandler:v11];
+        [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptCloudKitMigrationWithCompletionHandler:handlerCopy];
         break;
       case 4:
-        [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptToClearDataWithOptions:v10 completionHandler:v11];
+        [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attemptToClearDataWithOptions:optionsCopy completionHandler:handlerCopy];
         break;
     }
   }
 }
 
-- (void)resetOperation:(int64_t)a3
+- (void)resetOperation:(int64_t)operation
 {
-  if ([(WBSCyclerTestSuiteBookmarkAuxiliary *)self hasPerformedOperation:?]&& a3 <= 4)
+  if ([(WBSCyclerTestSuiteBookmarkAuxiliary *)self hasPerformedOperation:?]&& operation <= 4)
   {
-    v5 = &self->super.isa + a3;
+    v5 = &self->super.isa + operation;
     v6 = v5[1];
     v5[1] = 0;
   }
 }
 
-- (id)_descriptionForBookmark:(id)a3
+- (id)_descriptionForBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = MEMORY[0x1E696AD60];
-  v7 = [v4 title];
+  title = [bookmarkCopy title];
   if (isKindOfClass)
   {
-    v8 = [v4 url];
-    v9 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attributeStringForBookmark:v4 multiline:0];
-    v10 = [v6 stringWithFormat:@"<Leaf title=%@ url=%@ attributes=%@>", v7, v8, v9];
+    v8 = [bookmarkCopy url];
+    v9 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attributeStringForBookmark:bookmarkCopy multiline:0];
+    v10 = [v6 stringWithFormat:@"<Leaf title=%@ url=%@ attributes=%@>", title, v8, v9];
   }
 
   else
   {
-    v8 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attributeStringForBookmark:v4 multiline:0];
-    v10 = [v6 stringWithFormat:@"<List title=%@ attributes=%@>", v7, v8];
+    v8 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attributeStringForBookmark:bookmarkCopy multiline:0];
+    v10 = [v6 stringWithFormat:@"<List title=%@ attributes=%@>", title, v8];
   }
 
   return v10;
 }
 
-- (id)_attributeStringForBookmark:(id)a3 multiline:(BOOL)a4
+- (id)_attributeStringForBookmark:(id)bookmark multiline:(BOOL)multiline
 {
-  v4 = a4;
+  multilineCopy = multiline;
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v7 = [v5 array];
-  v8 = [v6 extraAttributes];
+  bookmarkCopy = bookmark;
+  array = [v5 array];
+  extraAttributes = [bookmarkCopy extraAttributes];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__WBSCyclerTestSuiteBookmarkAuxiliary__attributeStringForBookmark_multiline___block_invoke;
   v13[3] = &unk_1E7FC53F0;
-  v14 = v7;
-  v9 = v7;
-  [v8 enumerateKeysAndObjectsUsingBlock:v13];
+  v14 = array;
+  v9 = array;
+  [extraAttributes enumerateKeysAndObjectsUsingBlock:v13];
 
-  if (v4)
+  if (multilineCopy)
   {
     v10 = @"\n";
   }
@@ -360,49 +360,49 @@ void __77__WBSCyclerTestSuiteBookmarkAuxiliary__attributeStringForBookmark_multi
   [v3 addObject:v4];
 }
 
-- (id)_expandedDescriptionForBookmark:(id)a3
+- (id)_expandedDescriptionForBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = MEMORY[0x1E696AD60];
-  v7 = [v4 title];
-  v8 = v7;
+  title = [bookmarkCopy title];
+  v8 = title;
   if (isKindOfClass)
   {
-    v9 = [v4 url];
+    v9 = [bookmarkCopy url];
     v10 = [v6 stringWithFormat:@"<Leaf title=%@ url=%@>", v8, v9];
   }
 
   else
   {
-    v10 = [v6 stringWithFormat:@"<List title=%@>", v7];
+    v10 = [v6 stringWithFormat:@"<List title=%@>", title];
   }
 
   [v10 appendString:@"\n"];
-  v11 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attributeStringForBookmark:v4 multiline:1];
+  v11 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _attributeStringForBookmark:bookmarkCopy multiline:1];
   [v10 appendString:v11];
 
   return v10;
 }
 
-- (id)_formattedStringForBookmark:(id)a3 indentationLevel:(unint64_t)a4
+- (id)_formattedStringForBookmark:(id)bookmark indentationLevel:(unint64_t)level
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _descriptionForBookmark:v6];
+  bookmarkCopy = bookmark;
+  v7 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _descriptionForBookmark:bookmarkCopy];
   v8 = [v7 mutableCopy];
 
-  if (a4)
+  if (level)
   {
-    v9 = a4;
+    levelCopy = level;
     do
     {
       [v8 insertString:@"    " atIndex:0];
-      --v9;
+      --levelCopy;
     }
 
-    while (v9);
+    while (levelCopy);
   }
 
   [v8 appendString:@"\n"];
@@ -413,7 +413,7 @@ void __77__WBSCyclerTestSuiteBookmarkAuxiliary__attributeStringForBookmark_multi
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = v6;
+    v10 = bookmarkCopy;
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -428,7 +428,7 @@ void __77__WBSCyclerTestSuiteBookmarkAuxiliary__attributeStringForBookmark_multi
             objc_enumerationMutation(v10);
           }
 
-          v15 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _formattedStringForBookmark:*(*(&v17 + 1) + 8 * i) indentationLevel:a4 + 1, v17];
+          v15 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _formattedStringForBookmark:*(*(&v17 + 1) + 8 * i) indentationLevel:level + 1, v17];
           [v8 appendString:v15];
         }
 
@@ -442,11 +442,11 @@ void __77__WBSCyclerTestSuiteBookmarkAuxiliary__attributeStringForBookmark_multi
   return v8;
 }
 
-- (void)_attemptInitialClearWithTarget:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)_attemptInitialClearWithTarget:(id)target options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  targetCopy = target;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (!self->_initialClearOperation)
   {
     v11 = [WBSCyclerOperation alloc];
@@ -460,11 +460,11 @@ void __77__WBSCyclerTestSuiteBookmarkAuxiliary__attributeStringForBookmark_multi
   v22[1] = 3221225472;
   v22[2] = __96__WBSCyclerTestSuiteBookmarkAuxiliary__attemptInitialClearWithTarget_options_completionHandler___block_invoke;
   v22[3] = &unk_1E7FC5418;
-  v23 = v9;
-  v24 = v8;
+  v23 = optionsCopy;
+  v24 = targetCopy;
   v15 = self->_initialClearOperation;
-  v16 = v8;
-  v17 = v9;
+  v16 = targetCopy;
+  v17 = optionsCopy;
   [(WBSCyclerOperation *)v15 setBlock:v22];
   v18 = self->_initialClearOperation;
   v20[0] = MEMORY[0x1E69E9820];
@@ -472,8 +472,8 @@ void __77__WBSCyclerTestSuiteBookmarkAuxiliary__attributeStringForBookmark_multi
   v20[2] = __96__WBSCyclerTestSuiteBookmarkAuxiliary__attemptInitialClearWithTarget_options_completionHandler___block_invoke_47;
   v20[3] = &unk_1E7FC5440;
   v20[4] = self;
-  v21 = v10;
-  v19 = v10;
+  v21 = handlerCopy;
+  v19 = handlerCopy;
   [(WBSCyclerOperation *)v18 executeWithResultHandler:v20];
 }
 
@@ -536,9 +536,9 @@ void __96__WBSCyclerTestSuiteBookmarkAuxiliary__attemptInitialClearWithTarget_op
   }
 }
 
-- (void)_attemptResetToDAVModeWithCompletionHandler:(id)a3
+- (void)_attemptResetToDAVModeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   resetToDAVModeOperation = self->_resetToDAVModeOperation;
   if (!resetToDAVModeOperation)
   {
@@ -557,8 +557,8 @@ void __96__WBSCyclerTestSuiteBookmarkAuxiliary__attemptInitialClearWithTarget_op
   v11[2] = __83__WBSCyclerTestSuiteBookmarkAuxiliary__attemptResetToDAVModeWithCompletionHandler___block_invoke_52;
   v11[3] = &unk_1E7FC5440;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(WBSCyclerOperation *)resetToDAVModeOperation executeWithResultHandler:v11];
 }
 
@@ -637,9 +637,9 @@ void __83__WBSCyclerTestSuiteBookmarkAuxiliary__attemptResetToDAVModeWithComplet
   }
 }
 
-- (void)_attemptToGenerateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)a3
+- (void)_attemptToGenerateDAVServerIDsForExistingBookmarksWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   generateDAVServerIDsForExistingBookmarksOperation = self->_generateDAVServerIDsForExistingBookmarksOperation;
   if (!generateDAVServerIDsForExistingBookmarksOperation)
   {
@@ -658,8 +658,8 @@ void __83__WBSCyclerTestSuiteBookmarkAuxiliary__attemptResetToDAVModeWithComplet
   v11[2] = __111__WBSCyclerTestSuiteBookmarkAuxiliary__attemptToGenerateDAVServerIDsForExistingBookmarksWithCompletionHandler___block_invoke_56;
   v11[3] = &unk_1E7FC5440;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(WBSCyclerOperation *)generateDAVServerIDsForExistingBookmarksOperation executeWithResultHandler:v11];
 }
 
@@ -738,9 +738,9 @@ void __111__WBSCyclerTestSuiteBookmarkAuxiliary__attemptToGenerateDAVServerIDsFo
   }
 }
 
-- (void)_attemptCloudKitMigrationWithCompletionHandler:(id)a3
+- (void)_attemptCloudKitMigrationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   cloudKitMigrationOperation = self->_cloudKitMigrationOperation;
   if (!cloudKitMigrationOperation)
   {
@@ -759,8 +759,8 @@ void __111__WBSCyclerTestSuiteBookmarkAuxiliary__attemptToGenerateDAVServerIDsFo
   v11[2] = __86__WBSCyclerTestSuiteBookmarkAuxiliary__attemptCloudKitMigrationWithCompletionHandler___block_invoke_60;
   v11[3] = &unk_1E7FC5440;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(WBSCyclerOperation *)cloudKitMigrationOperation executeWithResultHandler:v11];
 }
 
@@ -839,10 +839,10 @@ void __86__WBSCyclerTestSuiteBookmarkAuxiliary__attemptCloudKitMigrationWithComp
   }
 }
 
-- (void)_attemptToClearDataWithOptions:(id)a3 completionHandler:(id)a4
+- (void)_attemptToClearDataWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (!self->_clearLocalDataOperation)
   {
     v8 = [WBSCyclerOperation alloc];
@@ -856,9 +856,9 @@ void __86__WBSCyclerTestSuiteBookmarkAuxiliary__attemptCloudKitMigrationWithComp
   v18[1] = 3221225472;
   v18[2] = __88__WBSCyclerTestSuiteBookmarkAuxiliary__attemptToClearDataWithOptions_completionHandler___block_invoke;
   v18[3] = &unk_1E7FC5488;
-  v19 = v6;
+  v19 = optionsCopy;
   v12 = self->_clearLocalDataOperation;
-  v13 = v6;
+  v13 = optionsCopy;
   [(WBSCyclerOperation *)v12 setBlock:v18];
   v14 = self->_clearLocalDataOperation;
   v16[0] = MEMORY[0x1E69E9820];
@@ -866,8 +866,8 @@ void __86__WBSCyclerTestSuiteBookmarkAuxiliary__attemptCloudKitMigrationWithComp
   v16[2] = __88__WBSCyclerTestSuiteBookmarkAuxiliary__attemptToClearDataWithOptions_completionHandler___block_invoke_62;
   v16[3] = &unk_1E7FC5440;
   v16[4] = self;
-  v17 = v7;
-  v15 = v7;
+  v17 = handlerCopy;
+  v15 = handlerCopy;
   [(WBSCyclerOperation *)v14 executeWithResultHandler:v16];
 }
 
@@ -961,40 +961,40 @@ void __88__WBSCyclerTestSuiteBookmarkAuxiliary__attemptToClearDataWithOptions_co
   }
 }
 
-- (id)_errorWithCode:(int64_t)a3 userInfo:(id)a4
+- (id)_errorWithCode:(int64_t)code userInfo:(id)info
 {
-  v6 = [a4 mutableCopy];
+  v6 = [info mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    dictionary = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v9 = v8;
+  v9 = dictionary;
 
-  v10 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _descriptionForErrorCode:a3];
+  v10 = [(WBSCyclerTestSuiteBookmarkAuxiliary *)self _descriptionForErrorCode:code];
   [v9 setObject:v10 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-  v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSCyclerTestSuiteBookmarkAuxiliaryErrorDomain" code:a3 userInfo:v9];
+  v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSCyclerTestSuiteBookmarkAuxiliaryErrorDomain" code:code userInfo:v9];
 
   return v11;
 }
 
-- (id)_descriptionForErrorCode:(int64_t)a3
+- (id)_descriptionForErrorCode:(int64_t)code
 {
-  if ((a3 - 1) > 5)
+  if ((code - 1) > 5)
   {
     return @"Test target's bookmark state does not match the expected state";
   }
 
   else
   {
-    return off_1E7FC54A8[a3 - 1];
+    return off_1E7FC54A8[code - 1];
   }
 }
 

@@ -2,38 +2,38 @@
 - (id)_filteringPredicate;
 - (id)filterHandler;
 - (id)filterParametersForBiomeQuery;
-- (id)publisherFromStartTime:(double)a3;
+- (id)publisherFromStartTime:(double)time;
 @end
 
 @implementation TPSContextualBiomeDiscoverabilitySignalsEvent
 
-- (id)publisherFromStartTime:(double)a3
+- (id)publisherFromStartTime:(double)time
 {
   v4 = BiomeLibrary();
-  v5 = [v4 Discoverability];
-  v6 = [v5 Signals];
+  discoverability = [v4 Discoverability];
+  signals = [discoverability Signals];
 
-  v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a3];
+  v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:time];
   v8 = objc_alloc(MEMORY[0x1E698F2D0]);
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [v8 initWithStartDate:v7 endDate:v9 maxEvents:0 lastN:0 reversed:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v10 = [v8 initWithStartDate:v7 endDate:date maxEvents:0 lastN:0 reversed:0];
 
-  v11 = [v6 publisherWithUseCase:@"FeatureDiscoverability" options:v10];
+  v11 = [signals publisherWithUseCase:@"FeatureDiscoverability" options:v10];
 
   return v11;
 }
 
 - (id)filterHandler
 {
-  v2 = [(TPSContextualBiomeDiscoverabilitySignalsEvent *)self _filteringPredicate];
-  v3 = v2;
-  if (v2)
+  _filteringPredicate = [(TPSContextualBiomeDiscoverabilitySignalsEvent *)self _filteringPredicate];
+  v3 = _filteringPredicate;
+  if (_filteringPredicate)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __62__TPSContextualBiomeDiscoverabilitySignalsEvent_filterHandler__block_invoke;
     aBlock[3] = &unk_1E8101708;
-    v7 = v2;
+    v7 = _filteringPredicate;
     v4 = _Block_copy(aBlock);
   }
 
@@ -64,14 +64,14 @@ uint64_t __62__TPSContextualBiomeDiscoverabilitySignalsEvent_filterHandler__bloc
 
 - (id)filterParametersForBiomeQuery
 {
-  v3 = [(TPSContextualBiomeEvent *)self filterInfo];
+  filterInfo = [(TPSContextualBiomeEvent *)self filterInfo];
 
-  if (v3)
+  if (filterInfo)
   {
     v27.receiver = self;
     v27.super_class = TPSContextualBiomeDiscoverabilitySignalsEvent;
-    v4 = [(TPSContextualBiomeEvent *)&v27 filterParametersForBiomeQuery];
-    v5 = [v4 mutableCopy];
+    filterParametersForBiomeQuery = [(TPSContextualBiomeEvent *)&v27 filterParametersForBiomeQuery];
+    v5 = [filterParametersForBiomeQuery mutableCopy];
     v6 = v5;
     if (v5)
     {
@@ -85,43 +85,43 @@ uint64_t __62__TPSContextualBiomeDiscoverabilitySignalsEvent_filterHandler__bloc
 
     v9 = v7;
 
-    v10 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v11 = [v10 TPSSafeObjectForKey:@"contentIdentifier"];
+    filterInfo2 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v11 = [filterInfo2 TPSSafeObjectForKey:@"contentIdentifier"];
 
     if (v11)
     {
-      v12 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v13 = [v12 TPSSafeStringForKey:@"contentIdentifier"];
+      filterInfo3 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v13 = [filterInfo3 TPSSafeStringForKey:@"contentIdentifier"];
       [v9 setObject:v13 forKeyedSubscript:@"contentIdentifier"];
     }
 
-    v14 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v15 = [v14 TPSSafeObjectForKey:@"context"];
+    filterInfo4 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v15 = [filterInfo4 TPSSafeObjectForKey:@"context"];
 
     if (v15)
     {
-      v16 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v17 = [v16 TPSSafeStringForKey:@"context"];
+      filterInfo5 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v17 = [filterInfo5 TPSSafeStringForKey:@"context"];
       [v9 setObject:v17 forKeyedSubscript:@"context"];
     }
 
-    v18 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v19 = [v18 TPSSafeObjectForKey:@"osBuild"];
+    filterInfo6 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v19 = [filterInfo6 TPSSafeObjectForKey:@"osBuild"];
 
     if (v19)
     {
-      v20 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v21 = [v20 TPSSafeStringForKey:@"osBuild"];
+      filterInfo7 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v21 = [filterInfo7 TPSSafeStringForKey:@"osBuild"];
       [v9 setObject:v21 forKeyedSubscript:@"osBuild"];
     }
 
-    v22 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v23 = [v22 TPSSafeDictionaryForKey:@"userInfo"];
+    filterInfo8 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v23 = [filterInfo8 TPSSafeDictionaryForKey:@"userInfo"];
 
     if (v23)
     {
-      v24 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v25 = [v24 TPSSafeDictionaryForKey:@"userInfo"];
+      filterInfo9 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v25 = [filterInfo9 TPSSafeDictionaryForKey:@"userInfo"];
 
       if (v25)
       {
@@ -142,18 +142,18 @@ uint64_t __62__TPSContextualBiomeDiscoverabilitySignalsEvent_filterHandler__bloc
 
 - (id)_filteringPredicate
 {
-  v3 = [(TPSContextualBiomeEvent *)self filterInfo];
+  filterInfo = [(TPSContextualBiomeEvent *)self filterInfo];
 
-  if (v3)
+  if (filterInfo)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v6 = [v5 TPSSafeObjectForKey:@"contentIdentifier"];
+    filterInfo2 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v6 = [filterInfo2 TPSSafeObjectForKey:@"contentIdentifier"];
 
     if (v6)
     {
-      v7 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v8 = [v7 TPSSafeStringForKey:@"contentIdentifier"];
+      filterInfo3 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v8 = [filterInfo3 TPSSafeStringForKey:@"contentIdentifier"];
 
       v9 = MEMORY[0x1E696AE18];
       v44[0] = MEMORY[0x1E69E9820];
@@ -166,13 +166,13 @@ uint64_t __62__TPSContextualBiomeDiscoverabilitySignalsEvent_filterHandler__bloc
       [v4 addObject:v11];
     }
 
-    v12 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v13 = [v12 TPSSafeObjectForKey:@"context"];
+    filterInfo4 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v13 = [filterInfo4 TPSSafeObjectForKey:@"context"];
 
     if (v13)
     {
-      v14 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v15 = [v14 TPSSafeStringForKey:@"context"];
+      filterInfo5 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v15 = [filterInfo5 TPSSafeStringForKey:@"context"];
 
       v16 = MEMORY[0x1E696AE18];
       v42[0] = MEMORY[0x1E69E9820];
@@ -185,13 +185,13 @@ uint64_t __62__TPSContextualBiomeDiscoverabilitySignalsEvent_filterHandler__bloc
       [v4 addObject:v18];
     }
 
-    v19 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v20 = [v19 TPSSafeObjectForKey:@"context"];
+    filterInfo6 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v20 = [filterInfo6 TPSSafeObjectForKey:@"context"];
 
     if (v20)
     {
-      v21 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v22 = [v21 TPSSafeStringForKey:@"osBuild"];
+      filterInfo7 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v22 = [filterInfo7 TPSSafeStringForKey:@"osBuild"];
 
       v23 = MEMORY[0x1E696AE18];
       v40[0] = MEMORY[0x1E69E9820];
@@ -204,13 +204,13 @@ uint64_t __62__TPSContextualBiomeDiscoverabilitySignalsEvent_filterHandler__bloc
       [v4 addObject:v25];
     }
 
-    v26 = [(TPSContextualBiomeEvent *)self filterInfo];
-    v27 = [v26 TPSSafeDictionaryForKey:@"userInfo"];
+    filterInfo8 = [(TPSContextualBiomeEvent *)self filterInfo];
+    v27 = [filterInfo8 TPSSafeDictionaryForKey:@"userInfo"];
 
     if (v27)
     {
-      v28 = [(TPSContextualBiomeEvent *)self filterInfo];
-      v29 = [v28 TPSSafeDictionaryForKey:@"userInfo"];
+      filterInfo9 = [(TPSContextualBiomeEvent *)self filterInfo];
+      v29 = [filterInfo9 TPSSafeDictionaryForKey:@"userInfo"];
 
       v30 = MEMORY[0x1E696AE18];
       v35 = MEMORY[0x1E69E9820];

@@ -1,7 +1,7 @@
 @interface ImageLayer
 - (_TtC7SwiftUI10ImageLayer)init;
-- (_TtC7SwiftUI10ImageLayer)initWithCoder:(id)a3;
-- (_TtC7SwiftUI10ImageLayer)initWithLayer:(id)a3;
+- (_TtC7SwiftUI10ImageLayer)initWithCoder:(id)coder;
+- (_TtC7SwiftUI10ImageLayer)initWithLayer:(id)layer;
 @end
 
 @implementation ImageLayer
@@ -13,7 +13,7 @@
   return [(ImageLayer *)&v3 init];
 }
 
-- (_TtC7SwiftUI10ImageLayer)initWithLayer:(id)a3
+- (_TtC7SwiftUI10ImageLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -29,12 +29,12 @@
   return v6;
 }
 
-- (_TtC7SwiftUI10ImageLayer)initWithCoder:(id)a3
+- (_TtC7SwiftUI10ImageLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(ImageLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ImageLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

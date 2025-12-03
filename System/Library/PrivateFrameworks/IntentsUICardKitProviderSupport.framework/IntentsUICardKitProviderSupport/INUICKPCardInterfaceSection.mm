@@ -1,31 +1,31 @@
 @interface INUICKPCardInterfaceSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isWildCardSection;
-- (INUICKPCardInterfaceSection)initWithInteractiveBehavior:(unint64_t)a3 parameters:(id)a4;
+- (INUICKPCardInterfaceSection)initWithInteractiveBehavior:(unint64_t)behavior parameters:(id)parameters;
 - (unint64_t)hash;
 @end
 
 @implementation INUICKPCardInterfaceSection
 
-- (INUICKPCardInterfaceSection)initWithInteractiveBehavior:(unint64_t)a3 parameters:(id)a4
+- (INUICKPCardInterfaceSection)initWithInteractiveBehavior:(unint64_t)behavior parameters:(id)parameters
 {
-  v7 = a4;
+  parametersCopy = parameters;
   v11.receiver = self;
   v11.super_class = INUICKPCardInterfaceSection;
-  v8 = [(INUIInterfaceSection *)&v11 initWithInteractiveBehavior:a3 parameters:v7];
+  v8 = [(INUIInterfaceSection *)&v11 initWithInteractiveBehavior:behavior parameters:parametersCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cardSectionParameters, a4);
+    objc_storeStrong(&v8->_cardSectionParameters, parameters);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -34,15 +34,15 @@
   {
     v12.receiver = self;
     v12.super_class = INUICKPCardInterfaceSection;
-    if ([(INUIInterfaceSection *)&v12 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(INUIInterfaceSection *)&v12 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
-      v6 = [(INUICKPCardInterfaceSection *)self cardSection];
-      v7 = [v6 cardSectionIdentifier];
-      v8 = [(INUICKPCardInterfaceSection *)v5 cardSection];
+      v5 = equalCopy;
+      cardSection = [(INUICKPCardInterfaceSection *)self cardSection];
+      cardSectionIdentifier = [cardSection cardSectionIdentifier];
+      cardSection2 = [(INUICKPCardInterfaceSection *)v5 cardSection];
 
-      v9 = [v8 cardSectionIdentifier];
-      v10 = [v7 isEqualToString:v9];
+      cardSectionIdentifier2 = [cardSection2 cardSectionIdentifier];
+      v10 = [cardSectionIdentifier isEqualToString:cardSectionIdentifier2];
     }
 
     else
@@ -64,11 +64,11 @@
 
 - (BOOL)isWildCardSection
 {
-  v3 = [(INUICKPCardInterfaceSection *)self parameters];
-  if (v3)
+  parameters = [(INUICKPCardInterfaceSection *)self parameters];
+  if (parameters)
   {
-    v4 = [(INUICKPCardInterfaceSection *)self parameters];
-    v5 = [v4 count] == 0;
+    parameters2 = [(INUICKPCardInterfaceSection *)self parameters];
+    v5 = [parameters2 count] == 0;
   }
 
   else

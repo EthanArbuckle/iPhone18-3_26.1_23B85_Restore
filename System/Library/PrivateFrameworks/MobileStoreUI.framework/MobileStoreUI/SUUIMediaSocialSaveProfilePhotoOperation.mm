@@ -1,25 +1,25 @@
 @interface SUUIMediaSocialSaveProfilePhotoOperation
-- (SUUIMediaSocialSaveProfilePhotoOperation)initWithClientContext:(id)a3;
-- (id)_photoUploadWithResponseDictionary:(id)a3;
-- (id)_requestWithError:(id *)a3;
+- (SUUIMediaSocialSaveProfilePhotoOperation)initWithClientContext:(id)context;
+- (id)_photoUploadWithResponseDictionary:(id)dictionary;
+- (id)_requestWithError:(id *)error;
 - (id)outputBlock;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
-- (void)setPhoto:(id)a3;
+- (void)setOutputBlock:(id)block;
+- (void)setPhoto:(id)photo;
 @end
 
 @implementation SUUIMediaSocialSaveProfilePhotoOperation
 
-- (SUUIMediaSocialSaveProfilePhotoOperation)initWithClientContext:(id)a3
+- (SUUIMediaSocialSaveProfilePhotoOperation)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = SUUIMediaSocialSaveProfilePhotoOperation;
   v6 = [(SSVOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v7->_lock;
     v7->_lock = v8;
@@ -40,13 +40,13 @@
   return v4;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -54,12 +54,12 @@
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setPhoto:(id)a3
+- (void)setPhoto:(id)photo
 {
   lock = self->_lock;
-  v5 = a3;
+  photoCopy = photo;
   [(NSLock *)lock lock];
-  v6 = [v5 copy];
+  v6 = [photoCopy copy];
 
   photo = self->_photo;
   self->_photo = v6;
@@ -83,8 +83,8 @@
   if (v3)
   {
     v4 = [(SSVComplexOperation *)self newLoadURLOperationWithRequest:v3];
-    v5 = [MEMORY[0x277D69D48] consumer];
-    [v4 setDataConsumer:v5];
+    consumer = [MEMORY[0x277D69D48] consumer];
+    [v4 setDataConsumer:consumer];
 
     v14 = 0;
     v15 = &v14;
@@ -107,10 +107,10 @@
 
     else
     {
-      v7 = [v4 URLResponse];
-      if ([v7 statusCode] < 200 || objc_msgSend(v7, "statusCode") > 299)
+      uRLResponse = [v4 URLResponse];
+      if ([uRLResponse statusCode] < 200 || objc_msgSend(uRLResponse, "statusCode") > 299)
       {
-        if ([v7 statusCode] == 403)
+        if ([uRLResponse statusCode] == 403)
         {
           v8 = 3;
         }
@@ -141,11 +141,11 @@
     v6 = 0;
   }
 
-  v11 = [(SUUIMediaSocialSaveProfilePhotoOperation *)self outputBlock];
-  v12 = v11;
-  if (v11)
+  outputBlock = [(SUUIMediaSocialSaveProfilePhotoOperation *)self outputBlock];
+  v12 = outputBlock;
+  if (outputBlock)
   {
-    (*(v11 + 16))(v11, v6, v22[5]);
+    (*(outputBlock + 16))(outputBlock, v6, v22[5]);
   }
 
   _Block_object_dispose(&v21, 8);
@@ -181,13 +181,13 @@ void __48__SUUIMediaSocialSaveProfilePhotoOperation_main__block_invoke(uint64_t 
 LABEL_6:
 }
 
-- (id)_photoUploadWithResponseDictionary:(id)a3
+- (id)_photoUploadWithResponseDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[SUUIMediaSocialPhotoUpload alloc] initWithUploadDictionary:v3];
+    v4 = [[SUUIMediaSocialPhotoUpload alloc] initWithUploadDictionary:dictionaryCopy];
   }
 
   else
@@ -198,10 +198,10 @@ LABEL_6:
   return v4;
 }
 
-- (id)_requestWithError:(id *)a3
+- (id)_requestWithError:(id *)error
 {
-  v5 = [(SUUIClientContext *)self->_clientContext URLBag];
-  v6 = [v5 valueForKey:@"directUploaderRichPostImage" error:a3];
+  uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
+  v6 = [uRLBag valueForKey:@"directUploaderRichPostImage" error:error];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -212,10 +212,10 @@ LABEL_6:
       v8 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v7];
       [v8 setHTTPMethod:@"POST"];
       [v8 setValue:@"image/jpeg" forHTTPHeaderField:@"Content-Type"];
-      v9 = [MEMORY[0x277CCAD78] UUID];
-      v10 = [v9 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v11 = [v10 stringByAppendingPathExtension:@"jpg"];
+      v11 = [uUIDString stringByAppendingPathExtension:@"jpg"];
 
       [v8 setValue:v11 forHTTPHeaderField:@"X-Original-Filename"];
       v12 = UIImageJPEGRepresentation(self->_photo, 0.8);
@@ -225,19 +225,19 @@ LABEL_6:
       goto LABEL_10;
     }
 
-    if (a3)
+    if (error)
     {
       v13 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"SUUIErrorDomain" code:4 userInfo:0];
       goto LABEL_8;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v13 = SSError();
 LABEL_8:
     v8 = 0;
-    *a3 = v13;
+    *error = v13;
     goto LABEL_10;
   }
 

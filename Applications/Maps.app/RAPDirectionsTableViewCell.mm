@@ -1,23 +1,23 @@
 @interface RAPDirectionsTableViewCell
-- (RAPDirectionsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setRoute:(id)a3 step:(id)a4 stepIndex:(unint64_t)a5 alignToLeftEdgeIfNoManeuverSign:(BOOL)a6 size:(int64_t)a7;
-- (void)updateHeightForWidth:(double)a3;
+- (RAPDirectionsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setRoute:(id)route step:(id)step stepIndex:(unint64_t)index alignToLeftEdgeIfNoManeuverSign:(BOOL)sign size:(int64_t)size;
+- (void)updateHeightForWidth:(double)width;
 @end
 
 @implementation RAPDirectionsTableViewCell
 
-- (void)updateHeightForWidth:(double)a3
+- (void)updateHeightForWidth:(double)width
 {
   v5 = objc_opt_class();
   v6 = *(&self->super._alignSeparatorWithLeadingText + 1);
   v7 = *(&self->_route + 1);
-  v8 = [(RAPDirectionsTableViewCell *)self traitCollection];
-  [v5 heightForWidth:v6 route:v7 step:objc_msgSend(v8 idiom:{"userInterfaceIdiom"), a3}];
+  traitCollection = [(RAPDirectionsTableViewCell *)self traitCollection];
+  [v5 heightForWidth:v6 route:v7 step:objc_msgSend(traitCollection idiom:{"userInterfaceIdiom"), width}];
   v10 = v9;
 
-  v11 = [(RAPDirectionsTableViewCell *)self contentView];
-  v12 = [v11 heightAnchor];
-  v13 = [v12 constraintEqualToConstant:v10];
+  contentView = [(RAPDirectionsTableViewCell *)self contentView];
+  heightAnchor = [contentView heightAnchor];
+  v13 = [heightAnchor constraintEqualToConstant:v10];
 
   if (*(&self->_step + 1))
   {
@@ -41,35 +41,35 @@
   [NSLayoutConstraint activateConstraints:v17];
 }
 
-- (void)setRoute:(id)a3 step:(id)a4 stepIndex:(unint64_t)a5 alignToLeftEdgeIfNoManeuverSign:(BOOL)a6 size:(int64_t)a7
+- (void)setRoute:(id)route step:(id)step stepIndex:(unint64_t)index alignToLeftEdgeIfNoManeuverSign:(BOOL)sign size:(int64_t)size
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
+  signCopy = sign;
+  routeCopy = route;
+  stepCopy = step;
   v14 = *(&self->super._alignSeparatorWithLeadingText + 1);
-  *(&self->super._alignSeparatorWithLeadingText + 1) = v12;
-  v15 = v12;
+  *(&self->super._alignSeparatorWithLeadingText + 1) = routeCopy;
+  v15 = routeCopy;
 
   v16 = *(&self->_route + 1);
-  *(&self->_route + 1) = v13;
-  v17 = v13;
+  *(&self->_route + 1) = stepCopy;
+  v17 = stepCopy;
 
   v18.receiver = self;
   v18.super_class = RAPDirectionsTableViewCell;
-  [(DirectionsStepTableViewCell *)&v18 setRoute:v15 step:v17 stepIndex:a5 alignToLeftEdgeIfNoManeuverSign:v8 size:a7];
+  [(DirectionsStepTableViewCell *)&v18 setRoute:v15 step:v17 stepIndex:index alignToLeftEdgeIfNoManeuverSign:signCopy size:size];
 }
 
-- (RAPDirectionsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPDirectionsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = RAPDirectionsTableViewCell;
-  v4 = [(DirectionsStepTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(DirectionsStepTableViewCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(RAPDirectionsTableViewCell *)v4 backgroundView];
+    backgroundView = [(RAPDirectionsTableViewCell *)v4 backgroundView];
 
-    if (!v6)
+    if (!backgroundView)
     {
       v7 = [DirectionsTableViewCellBackgroundView alloc];
       [(RAPDirectionsTableViewCell *)v5 bounds];

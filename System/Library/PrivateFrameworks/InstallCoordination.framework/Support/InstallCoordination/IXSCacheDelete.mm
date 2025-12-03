@@ -1,19 +1,19 @@
 @interface IXSCacheDelete
 + (id)configureService;
-- (BOOL)_onQueue_validateVolumeKey:(id)a3;
+- (BOOL)_onQueue_validateVolumeKey:(id)key;
 - (BOOL)_registerCacheDeleteInfoCallbacks;
 - (IXSCacheDelete)init;
-- (id)_purge:(id)a3 urgency:(int)a4;
-- (id)_purgeable:(id)a3 urgency:(int)a4;
-- (unint64_t)_onQueue_sizeForPurgeableCoordinators:(id *)a3;
+- (id)_purge:(id)_purge urgency:(int)urgency;
+- (id)_purgeable:(id)_purgeable urgency:(int)urgency;
+- (unint64_t)_onQueue_sizeForPurgeableCoordinators:(id *)coordinators;
 @end
 
 @implementation IXSCacheDelete
 
-- (unint64_t)_onQueue_sizeForPurgeableCoordinators:(id *)a3
+- (unint64_t)_onQueue_sizeForPurgeableCoordinators:(id *)coordinators
 {
-  v4 = [(IXSCacheDelete *)self internalQueue];
-  dispatch_assert_queue_V2(v4);
+  internalQueue = [(IXSCacheDelete *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v16 = 0;
   v17 = &v16;
@@ -30,9 +30,9 @@
   v14 = v7;
   [v6 enumerateCoordinators:&v10];
 
-  if (a3)
+  if (coordinators)
   {
-    *a3 = [v7 copy];
+    *coordinators = [v7 copy];
   }
 
   v8 = v17[3];
@@ -41,9 +41,9 @@
   return v8;
 }
 
-- (BOOL)_onQueue_validateVolumeKey:(id)a3
+- (BOOL)_onQueue_validateVolumeKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -53,7 +53,7 @@
       v12 = 136315394;
       v13 = "[IXSCacheDelete _onQueue_validateVolumeKey:]";
       v14 = 2112;
-      v15 = v3;
+      v15 = keyCopy;
       v10 = "%s: Unexpectedly received non string volume key: %@";
 LABEL_8:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, v10, &v12, 0x16u);
@@ -66,9 +66,9 @@ LABEL_9:
   }
 
   v4 = +[IXGlobalConfiguration sharedInstance];
-  v5 = [v4 userVolumeURL];
-  v6 = [v5 path];
-  v7 = [v3 hasPrefix:v6];
+  userVolumeURL = [v4 userVolumeURL];
+  path = [userVolumeURL path];
+  v7 = [keyCopy hasPrefix:path];
 
   if ((v7 & 1) == 0)
   {
@@ -78,7 +78,7 @@ LABEL_9:
       v12 = 136315394;
       v13 = "[IXSCacheDelete _onQueue_validateVolumeKey:]";
       v14 = 2112;
-      v15 = v3;
+      v15 = keyCopy;
       v10 = "%s: Nothing to purge on volume: %@";
       goto LABEL_8;
     }
@@ -92,26 +92,26 @@ LABEL_10:
   return v8;
 }
 
-- (id)_purge:(id)a3 urgency:(int)a4
+- (id)_purge:(id)_purge urgency:(int)urgency
 {
-  v6 = a3;
+  _purgeCopy = _purge;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_10000A0B8;
   v20 = sub_10000A0C8;
   v21 = 0;
-  v7 = [(IXSCacheDelete *)self internalQueue];
+  internalQueue = [(IXSCacheDelete *)self internalQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000A0D0;
   v11[3] = &unk_1001011A0;
-  v12 = v6;
-  v13 = self;
-  v15 = a4;
+  v12 = _purgeCopy;
+  selfCopy = self;
+  urgencyCopy = urgency;
   v14 = &v16;
-  v8 = v6;
-  dispatch_sync(v7, v11);
+  v8 = _purgeCopy;
+  dispatch_sync(internalQueue, v11);
 
   v9 = v17[5];
   _Block_object_dispose(&v16, 8);
@@ -119,25 +119,25 @@ LABEL_10:
   return v9;
 }
 
-- (id)_purgeable:(id)a3 urgency:(int)a4
+- (id)_purgeable:(id)_purgeable urgency:(int)urgency
 {
-  v5 = a3;
+  _purgeableCopy = _purgeable;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_10000A0B8;
   v18 = sub_10000A0C8;
   v19 = 0;
-  v6 = [(IXSCacheDelete *)self internalQueue];
+  internalQueue = [(IXSCacheDelete *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A440;
   block[3] = &unk_1001011C8;
-  v11 = v5;
-  v12 = self;
+  v11 = _purgeableCopy;
+  selfCopy = self;
   v13 = &v14;
-  v7 = v5;
-  dispatch_sync(v6, block);
+  v7 = _purgeableCopy;
+  dispatch_sync(internalQueue, block);
 
   v8 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -198,7 +198,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = sub_10000A90C;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121C58 != -1)
   {
     dispatch_once(&qword_100121C58, block);

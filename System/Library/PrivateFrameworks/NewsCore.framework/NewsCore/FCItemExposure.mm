@@ -1,8 +1,8 @@
 @interface FCItemExposure
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCItemExposure)init;
-- (FCItemExposure)initWithItemID:(id)a3 exposedAt:(id)a4 version:(int64_t)a5;
-- (FCItemExposure)initWithItemID:(id)a3 firstExposedAt:(id)a4 lastExposedAt:(id)a5 maxExposedVersion:(int64_t)a6 maxExposedVersionFirstExposedAt:(id)a7;
+- (FCItemExposure)initWithItemID:(id)d exposedAt:(id)at version:(int64_t)version;
+- (FCItemExposure)initWithItemID:(id)d firstExposedAt:(id)at lastExposedAt:(id)exposedAt maxExposedVersion:(int64_t)version maxExposedVersionFirstExposedAt:(id)firstExposedAt;
 - (NSString)description;
 - (NSString)itemID;
 - (int64_t)hash;
@@ -20,10 +20,10 @@
   return v4;
 }
 
-- (FCItemExposure)initWithItemID:(id)a3 firstExposedAt:(id)a4 lastExposedAt:(id)a5 maxExposedVersion:(int64_t)a6 maxExposedVersionFirstExposedAt:(id)a7
+- (FCItemExposure)initWithItemID:(id)d firstExposedAt:(id)at lastExposedAt:(id)exposedAt maxExposedVersion:(int64_t)version maxExposedVersionFirstExposedAt:(id)firstExposedAt
 {
-  v27[1] = a7;
-  v29 = a6;
+  v27[1] = firstExposedAt;
+  versionCopy = version;
   ObjectType = swift_getObjectType();
   v8 = sub_1B67D877C();
   v9 = *(v8 - 8);
@@ -46,7 +46,7 @@
   v23(self + OBJC_IVAR___FCItemExposure_firstExposedAt, v18, v8);
   v23(self + OBJC_IVAR___FCItemExposure_lastExposedAt, v16, v8);
   v23(self + OBJC_IVAR___FCItemExposure_maxExposedVersionFirstExposedAt, v13, v8);
-  *(self + OBJC_IVAR___FCItemExposure_maxExposedVersion) = v29;
+  *(self + OBJC_IVAR___FCItemExposure_maxExposedVersion) = versionCopy;
   v30.receiver = self;
   v30.super_class = ObjectType;
   v24 = [(FCItemExposure *)&v30 init];
@@ -57,7 +57,7 @@
   return v24;
 }
 
-- (FCItemExposure)initWithItemID:(id)a3 exposedAt:(id)a4 version:(int64_t)a5
+- (FCItemExposure)initWithItemID:(id)d exposedAt:(id)at version:(int64_t)version
 {
   ObjectType = swift_getObjectType();
   v8 = sub_1B67D877C();
@@ -74,7 +74,7 @@
   v17 = *(v9 + 16);
   v17(self + OBJC_IVAR___FCItemExposure_firstExposedAt, v12, v8);
   v17(self + OBJC_IVAR___FCItemExposure_lastExposedAt, v12, v8);
-  *(self + OBJC_IVAR___FCItemExposure_maxExposedVersion) = a5;
+  *(self + OBJC_IVAR___FCItemExposure_maxExposedVersion) = version;
   v17(self + OBJC_IVAR___FCItemExposure_maxExposedVersionFirstExposedAt, v12, v8);
   v20.receiver = self;
   v20.super_class = ObjectType;
@@ -85,7 +85,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ItemExposure.shortDescription.getter(v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);
   sub_1B67D897C();
@@ -96,12 +96,12 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   swift_getObjectType();
-  if (a3)
+  if (equal)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1B67D9E3C();
     swift_unknownObjectRelease();
@@ -110,7 +110,7 @@
   else
   {
     memset(v12, 0, sizeof(v12));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_1B6415FF0(v12, v10, &qword_1EB94B738, &unk_1B6819580);
@@ -137,7 +137,7 @@ LABEL_9:
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ItemExposure.hash.getter();
 
   return v3;

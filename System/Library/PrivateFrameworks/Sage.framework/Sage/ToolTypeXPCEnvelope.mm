@@ -1,14 +1,14 @@
 @interface ToolTypeXPCEnvelope
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ToolTypeXPCEnvelope
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ToolTypeXPCEnvelope.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ToolTypeXPCEnvelope.encode(with:)(coderCopy);
 }
 
 @end

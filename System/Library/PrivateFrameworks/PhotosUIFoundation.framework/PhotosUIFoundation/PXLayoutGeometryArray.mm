@@ -1,22 +1,22 @@
 @interface PXLayoutGeometryArray
-- (PXLayoutGeometryArray)initWithGeometries:(_PXLayoutGeometry *)a3 count:(unint64_t)a4;
-- (_PXLayoutGeometry)geometryAtIndex:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PXLayoutGeometryArray)initWithGeometries:(_PXLayoutGeometry *)geometries count:(unint64_t)count;
+- (_PXLayoutGeometry)geometryAtIndex:(SEL)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation PXLayoutGeometryArray
 
-- (_PXLayoutGeometry)geometryAtIndex:(SEL)a3
+- (_PXLayoutGeometry)geometryAtIndex:(SEL)index
 {
-  v5 = self;
+  selfCopy = self;
   if (*&self->var1.y <= a4)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a3 object:v5 file:@"PXLayoutGeometryArray.m" lineNumber:48 description:{@"index %ld out of bounds", a4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:index object:selfCopy file:@"PXLayoutGeometryArray.m" lineNumber:48 description:{@"index %ld out of bounds", a4}];
   }
 
-  v7 = *&v5->var1.x + 152 * a4;
+  v7 = *&selfCopy->var1.x + 152 * a4;
   v8 = *(v7 + 112);
   *&retstr->var5 = *(v7 + 96);
   *&retstr->var6.origin.y = v8;
@@ -34,7 +34,7 @@
   return self;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   geometries = self->_geometries;
@@ -57,12 +57,12 @@
   [(PXLayoutGeometryArray *)&v4 dealloc];
 }
 
-- (PXLayoutGeometryArray)initWithGeometries:(_PXLayoutGeometry *)a3 count:(unint64_t)a4
+- (PXLayoutGeometryArray)initWithGeometries:(_PXLayoutGeometry *)geometries count:(unint64_t)count
 {
-  if (!a3)
+  if (!geometries)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXLayoutGeometryArray.m" lineNumber:23 description:@"geometries is NULL"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutGeometryArray.m" lineNumber:23 description:@"geometries is NULL"];
   }
 
   v21.receiver = self;
@@ -70,39 +70,39 @@
   v7 = [(PXLayoutGeometryArray *)&v21 init];
   if (v7)
   {
-    v7->_geometries = malloc_type_malloc(152 * a4, 0x100004050011849uLL);
-    if (a4)
+    v7->_geometries = malloc_type_malloc(152 * count, 0x100004050011849uLL);
+    if (count)
     {
       v8 = 0;
-      v9 = a4;
+      countCopy = count;
       do
       {
         v10 = &v7->_geometries[v8];
-        v11 = *&a3[v8].var1.y;
-        *&v10->var0 = *&a3[v8].var0;
+        v11 = *&geometries[v8].var1.y;
+        *&v10->var0 = *&geometries[v8].var0;
         *&v10->var1.y = v11;
-        v12 = *&a3[v8].var2.height;
-        v13 = *&a3[v8].var3.b;
-        v14 = *&a3[v8].var3.ty;
-        *&v10->var3.d = *&a3[v8].var3.d;
+        v12 = *&geometries[v8].var2.height;
+        v13 = *&geometries[v8].var3.b;
+        v14 = *&geometries[v8].var3.ty;
+        *&v10->var3.d = *&geometries[v8].var3.d;
         *&v10->var3.ty = v14;
         *&v10->var2.height = v12;
         *&v10->var3.b = v13;
-        v15 = *&a3[v8].var5;
-        v16 = *&a3[v8].var6.origin.y;
-        v17 = *&a3[v8].var6.size.height;
-        v10->var7.height = a3[v8].var7.height;
+        v15 = *&geometries[v8].var5;
+        v16 = *&geometries[v8].var6.origin.y;
+        v17 = *&geometries[v8].var6.size.height;
+        v10->var7.height = geometries[v8].var7.height;
         *&v10->var6.origin.y = v16;
         *&v10->var6.size.height = v17;
         *&v10->var5 = v15;
         ++v8;
-        --v9;
+        --countCopy;
       }
 
-      while (v9);
+      while (countCopy);
     }
 
-    v7->_count = a4;
+    v7->_count = count;
   }
 
   return v7;

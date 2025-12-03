@@ -1,18 +1,18 @@
 @interface CRUbiquitousCoordinator
-- (CRUbiquitousCoordinator)initWithDelegate:(id)a3;
-- (unint64_t)_cloudStoreStateForDomain:(id)a3;
+- (CRUbiquitousCoordinator)initWithDelegate:(id)delegate;
+- (unint64_t)_cloudStoreStateForDomain:(id)domain;
 - (void)_removeLocalRecordsForAllDomains;
 - (void)_removeLocalRecordsForCloudStoresWithDataFromPreviousAccount;
-- (void)_setCloudStoreState:(unint64_t)a3 forDomain:(id)a4;
-- (void)_setCloudStoreStateForAllDomains:(unint64_t)a3;
-- (void)accountAdaptor:(id)a3 observediCloudAccountTransition:(int64_t)a4;
+- (void)_setCloudStoreState:(unint64_t)state forDomain:(id)domain;
+- (void)_setCloudStoreStateForAllDomains:(unint64_t)domains;
+- (void)accountAdaptor:(id)adaptor observediCloudAccountTransition:(int64_t)transition;
 - (void)dealloc;
-- (void)ubiquitousStoreForDomainChangedAccount:(id)a3;
+- (void)ubiquitousStoreForDomainChangedAccount:(id)account;
 @end
 
 @implementation CRUbiquitousCoordinator
 
-- (CRUbiquitousCoordinator)initWithDelegate:(id)a3
+- (CRUbiquitousCoordinator)initWithDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = CRUbiquitousCoordinator;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_delegate = a3;
+    v4->_delegate = delegate;
     v4->_cloudStoreStates = objc_alloc_init(NSMutableDictionary);
   }
 
@@ -34,65 +34,65 @@
   [(CRUbiquitousCoordinator *)&v3 dealloc];
 }
 
-- (void)ubiquitousStoreForDomainChangedAccount:(id)a3
+- (void)ubiquitousStoreForDomainChangedAccount:(id)account
 {
   if ([(CRUbiquitousCoordinator *)self _cloudStoreStateForDomain:?]- 3 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    [(CRUbiquitousCoordinatorDelegate *)self->_delegate removeLocalRecordsForDomain:a3 removeInUbiquitousStore:0];
+    [(CRUbiquitousCoordinatorDelegate *)self->_delegate removeLocalRecordsForDomain:account removeInUbiquitousStore:0];
 
-    [(CRUbiquitousCoordinator *)self _setCloudStoreState:2 forDomain:a3];
+    [(CRUbiquitousCoordinator *)self _setCloudStoreState:2 forDomain:account];
   }
 }
 
-- (void)accountAdaptor:(id)a3 observediCloudAccountTransition:(int64_t)a4
+- (void)accountAdaptor:(id)adaptor observediCloudAccountTransition:(int64_t)transition
 {
   v6 = +[CRLogging log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = sub_100016094(a4);
+    v10 = sub_100016094(transition);
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Observed iCloud account transition %@", &v9, 0xCu);
   }
 
-  if (a4 <= 1)
+  if (transition <= 1)
   {
-    if (!a4)
+    if (!transition)
     {
       [(CRUbiquitousCoordinator *)self _removeLocalRecordsForAllDomains];
-      v7 = self;
+      selfCopy2 = self;
       v8 = 3;
       goto LABEL_12;
     }
 
-    if (a4 != 1)
+    if (transition != 1)
     {
       return;
     }
 
     [(CRUbiquitousCoordinatorDelegate *)self->_delegate mergeCloudDataOneWayIntoLocalStoreWithReason:0x7FFFFFFFLL];
 LABEL_10:
-    v7 = self;
+    selfCopy2 = self;
     v8 = 1;
 LABEL_12:
-    [(CRUbiquitousCoordinator *)v7 _setCloudStoreStateForAllDomains:v8];
+    [(CRUbiquitousCoordinator *)selfCopy2 _setCloudStoreStateForAllDomains:v8];
     return;
   }
 
-  if (a4 == 2)
+  if (transition == 2)
   {
     goto LABEL_10;
   }
 
-  if (a4 == 3)
+  if (transition == 3)
   {
     [(CRUbiquitousCoordinator *)self _removeLocalRecordsForCloudStoresWithDataFromPreviousAccount];
     [(CRUbiquitousCoordinatorDelegate *)self->_delegate mergeCloudDataOneWayIntoLocalStoreWithReason:2147483646];
   }
 }
 
-- (unint64_t)_cloudStoreStateForDomain:(id)a3
+- (unint64_t)_cloudStoreStateForDomain:(id)domain
 {
-  result = [(NSMutableDictionary *)self->_cloudStoreStates objectForKeyedSubscript:a3];
+  result = [(NSMutableDictionary *)self->_cloudStoreStates objectForKeyedSubscript:domain];
   if (result)
   {
 
@@ -102,30 +102,30 @@ LABEL_12:
   return result;
 }
 
-- (void)_setCloudStoreState:(unint64_t)a3 forDomain:(id)a4
+- (void)_setCloudStoreState:(unint64_t)state forDomain:(id)domain
 {
   v7 = +[CRLogging log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = *(&off_10002D428 + a3);
+    v8 = *(&off_10002D428 + state);
     v9 = 138543618;
-    v10 = a4;
+    domainCopy = domain;
     v11 = 2114;
     v12 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setting state for domain:%{public}@ -> %{public}@", &v9, 0x16u);
   }
 
-  [(NSMutableDictionary *)self->_cloudStoreStates setObject:[NSNumber forKey:"numberWithUnsignedInteger:" numberWithUnsignedInteger:a3], a4];
+  [(NSMutableDictionary *)self->_cloudStoreStates setObject:[NSNumber forKey:"numberWithUnsignedInteger:" numberWithUnsignedInteger:state], domain];
 }
 
-- (void)_setCloudStoreStateForAllDomains:(unint64_t)a3
+- (void)_setCloudStoreStateForAllDomains:(unint64_t)domains
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(CRUbiquitousCoordinator *)self _allDomains];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _allDomains = [(CRUbiquitousCoordinator *)self _allDomains];
+  v6 = [_allDomains countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -137,15 +137,15 @@ LABEL_12:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allDomains);
         }
 
-        [(CRUbiquitousCoordinator *)self _setCloudStoreState:a3 forDomain:*(*(&v10 + 1) + 8 * v9)];
+        [(CRUbiquitousCoordinator *)self _setCloudStoreState:domains forDomain:*(*(&v10 + 1) + 8 * v9)];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [_allDomains countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -158,8 +158,8 @@ LABEL_12:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CRUbiquitousCoordinator *)self _allDomains];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _allDomains = [(CRUbiquitousCoordinator *)self _allDomains];
+  v4 = [_allDomains countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -170,7 +170,7 @@ LABEL_12:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allDomains);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -181,7 +181,7 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [_allDomains countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -201,8 +201,8 @@ LABEL_12:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(CRUbiquitousCoordinator *)self _allDomains];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  _allDomains = [(CRUbiquitousCoordinator *)self _allDomains];
+  v5 = [_allDomains countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -214,7 +214,7 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allDomains);
         }
 
         [(CRUbiquitousCoordinatorDelegate *)self->_delegate removeLocalRecordsForDomain:*(*(&v9 + 1) + 8 * v8) removeInUbiquitousStore:0];
@@ -222,7 +222,7 @@ LABEL_12:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [_allDomains countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);

@@ -1,33 +1,33 @@
 @interface AppPromotionDetailPagePresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC22SubscribePageExtension44AppPromotionDetailPagePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (_TtC22SubscribePageExtension44AppPromotionDetailPagePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)containerViewWillLayoutSubviews;
-- (void)didTapOverlayView:(id)a3;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)didTapOverlayView:(id)view;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)edgePanDidChange:(id)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)edgePanDidChange:(id)change;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)scrollPanDidChange:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)scrollPanDidChange:(id)change;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AppPromotionDetailPagePresentationController
 
-- (_TtC22SubscribePageExtension44AppPromotionDetailPagePresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC22SubscribePageExtension44AppPromotionDetailPagePresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  sub_1006BF1DC(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sub_1006BF1DC(controllerCopy, viewController);
   return result;
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006BF8F0();
   v4 = v3;
   v6 = v5;
@@ -47,92 +47,92 @@
 
 - (void)containerViewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006BFCA8();
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1006BFDE4(v6, a4);
+  selfCopy = self;
+  sub_1006BFDE4(collectionCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1006BFFA4(a4, width, height);
+  selfCopy = self;
+  sub_1006BFFA4(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006C0158();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_1006C05B8(a3);
+  selfCopy = self;
+  sub_1006C05B8(end);
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006C0708();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     [*(&self->super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension44AppPromotionDetailPagePresentationController_overlayView) removeFromSuperview];
   }
 }
 
-- (void)didTapOverlayView:(id)a3
+- (void)didTapOverlayView:(id)view
 {
-  v4 = a3;
-  v6 = self;
-  if ([v4 state] == 3)
+  viewCopy = view;
+  selfCopy = self;
+  if ([viewCopy state] == 3)
   {
-    v5 = [(AppPromotionDetailPagePresentationController *)v6 presentedViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentedViewController = [(AppPromotionDetailPagePresentationController *)selfCopy presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)edgePanDidChange:(id)a3
+- (void)edgePanDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006C0AE8(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1006C0AE8(changeCopy);
 }
 
-- (void)scrollPanDidChange:(id)a3
+- (void)scrollPanDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1006C0F40(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1006C0F40(changeCopy);
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension44AppPromotionDetailPagePresentationController_isScrollDismissActive) == 1)
   {
-    if (a3)
+    if (scroll)
     {
-      v5 = a3;
-      v6 = self;
-      [v5 adjustedContentInset];
-      [v5 contentOffset];
-      [v5 setContentOffset:?];
+      scrollCopy = scroll;
+      selfCopy = self;
+      [scrollCopy adjustedContentInset];
+      [scrollCopy contentOffset];
+      [scrollCopy setContentOffset:?];
     }
 
     else
@@ -142,11 +142,11 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1006C1594(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1006C1594(change);
 }
 
 @end

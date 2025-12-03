@@ -1,25 +1,25 @@
 @interface NNMKMailbox
-+ (id)generateMailboxIdWithAccountId:(id)a3 mailboxName:(id)a4;
-+ (id)idsFromMailboxes:(id)a3;
-+ (unint64_t)messageStateForMailboxFilterType:(unint64_t)a3;
-+ (unint64_t)syncedTypeFromFilterType:(unint64_t)a3;
-+ (unint64_t)syncedTypeFromMailbox:(id)a3;
++ (id)generateMailboxIdWithAccountId:(id)id mailboxName:(id)name;
++ (id)idsFromMailboxes:(id)mailboxes;
++ (unint64_t)messageStateForMailboxFilterType:(unint64_t)type;
++ (unint64_t)syncedTypeFromFilterType:(unint64_t)type;
++ (unint64_t)syncedTypeFromMailbox:(id)mailbox;
 - (BOOL)hasCompoundFilters;
-- (BOOL)isEqual:(id)a3;
-- (NNMKMailbox)initWithCoder:(id)a3;
-- (NNMKMailbox)initWithFilterType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NNMKMailbox)initWithCoder:(id)coder;
+- (NNMKMailbox)initWithFilterType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)addFilterType:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeFilterType:(unint64_t)a3;
+- (void)addFilterType:(unint64_t)type;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeFilterType:(unint64_t)type;
 - (void)resetURL;
-- (void)setMailboxId:(id)a3;
+- (void)setMailboxId:(id)id;
 @end
 
 @implementation NNMKMailbox
 
-- (NNMKMailbox)initWithFilterType:(unint64_t)a3
+- (NNMKMailbox)initWithFilterType:(unint64_t)type
 {
   v11.receiver = self;
   v11.super_class = NNMKMailbox;
@@ -27,7 +27,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_filterType = a3;
+    v4->_filterType = type;
     accountId = v4->_accountId;
     v4->_accountId = 0;
 
@@ -44,59 +44,59 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NNMKMailbox);
   [(NNMKMailbox *)v4 setType:[(NNMKMailbox *)self type]];
   [(NNMKMailbox *)v4 setFilterType:[(NNMKMailbox *)self filterType]];
-  v5 = [(NNMKMailbox *)self mailboxId];
-  [(NNMKMailbox *)v4 setMailboxId:v5];
+  mailboxId = [(NNMKMailbox *)self mailboxId];
+  [(NNMKMailbox *)v4 setMailboxId:mailboxId];
 
-  v6 = [(NNMKMailbox *)self accountId];
-  [(NNMKMailbox *)v4 setAccountId:v6];
+  accountId = [(NNMKMailbox *)self accountId];
+  [(NNMKMailbox *)v4 setAccountId:accountId];
 
-  v7 = [(NNMKMailbox *)self accountLocalId];
-  [(NNMKMailbox *)v4 setAccountLocalId:v7];
+  accountLocalId = [(NNMKMailbox *)self accountLocalId];
+  [(NNMKMailbox *)v4 setAccountLocalId:accountLocalId];
 
   v8 = [(NNMKMailbox *)self url];
   [(NNMKMailbox *)v4 setUrl:v8];
 
-  v9 = [(NNMKMailbox *)self customName];
-  [(NNMKMailbox *)v4 setCustomName:v9];
+  customName = [(NNMKMailbox *)self customName];
+  [(NNMKMailbox *)v4 setCustomName:customName];
 
   [(NNMKMailbox *)v4 setSyncEnabled:[(NNMKMailbox *)self syncEnabled]];
   [(NNMKMailbox *)v4 setSyncRequested:[(NNMKMailbox *)self syncRequested]];
   [(NNMKMailbox *)v4 setSyncActive:[(NNMKMailbox *)self syncActive]];
-  v10 = [(NNMKMailbox *)self lastUpdate];
-  [(NNMKMailbox *)v4 setLastUpdate:v10];
+  lastUpdate = [(NNMKMailbox *)self lastUpdate];
+  [(NNMKMailbox *)v4 setLastUpdate:lastUpdate];
 
   [(NNMKMailbox *)v4 setDatabaseContentVerified:[(NNMKMailbox *)self databaseContentVerified]];
   return v4;
 }
 
-- (void)setMailboxId:(id)a3
+- (void)setMailboxId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = @"-1";
-  if (v4)
+  if (idCopy)
   {
-    v5 = v4;
+    v5 = idCopy;
   }
 
   mailboxId = self->_mailboxId;
   self->_mailboxId = &v5->isa;
 }
 
-+ (id)idsFromMailboxes:(id)a3
++ (id)idsFromMailboxes:(id)mailboxes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  mailboxesCopy = mailboxes;
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(mailboxesCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = mailboxesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -111,8 +111,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) mailboxId];
-        [v4 addObject:v10];
+        mailboxId = [*(*(&v13 + 1) + 8 * i) mailboxId];
+        [v4 addObject:mailboxId];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -126,53 +126,53 @@
   return v4;
 }
 
-- (NNMKMailbox)initWithCoder:(id)a3
+- (NNMKMailbox)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NNMKMailbox *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyType"];
     v5->_type = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyFilterType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyFilterType"];
     v5->_filterType = [v7 unsignedIntegerValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMailboxId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyMailboxId"];
     mailboxId = v5->_mailboxId;
     v5->_mailboxId = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyAccountId"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyAccountId"];
     accountId = v5->_accountId;
     v5->_accountId = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyAccountLocalId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyAccountLocalId"];
     accountLocalId = v5->_accountLocalId;
     v5->_accountLocalId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyURL"];
     url = v5->_url;
     v5->_url = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyCustomName"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyCustomName"];
     customName = v5->_customName;
     v5->_customName = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySyncEnabled"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySyncEnabled"];
     v5->_syncEnabled = [v18 BOOLValue];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySyncRequested"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySyncRequested"];
     v5->_syncRequested = [v19 BOOLValue];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySyncActive"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeySyncActive"];
     v5->_syncActive = [v20 BOOLValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyLastUpdate"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyLastUpdate"];
     lastUpdate = v5->_lastUpdate;
     v5->_lastUpdate = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyNeedsDatabaseVerification"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNSCodingKeyNeedsDatabaseVerification"];
     v5->_databaseContentVerified = [v23 BOOLValue];
   }
 
@@ -180,46 +180,46 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   type = self->_type;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:type];
-  [v6 encodeObject:v7 forKey:@"kNSCodingKeyType"];
+  [coderCopy encodeObject:v7 forKey:@"kNSCodingKeyType"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_filterType];
-  [v6 encodeObject:v8 forKey:@"kNSCodingKeyFilterType"];
+  [coderCopy encodeObject:v8 forKey:@"kNSCodingKeyFilterType"];
 
-  [v6 encodeObject:self->_accountId forKey:@"kNSCodingKeyAccountId"];
-  [v6 encodeObject:self->_accountLocalId forKey:@"kNSCodingKeyAccountLocalId"];
-  [v6 encodeObject:self->_mailboxId forKey:@"kNSCodingKeyMailboxId"];
-  [v6 encodeObject:self->_url forKey:@"kNSCodingKeyURL"];
-  [v6 encodeObject:self->_customName forKey:@"kNSCodingKeyCustomName"];
+  [coderCopy encodeObject:self->_accountId forKey:@"kNSCodingKeyAccountId"];
+  [coderCopy encodeObject:self->_accountLocalId forKey:@"kNSCodingKeyAccountLocalId"];
+  [coderCopy encodeObject:self->_mailboxId forKey:@"kNSCodingKeyMailboxId"];
+  [coderCopy encodeObject:self->_url forKey:@"kNSCodingKeyURL"];
+  [coderCopy encodeObject:self->_customName forKey:@"kNSCodingKeyCustomName"];
   v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_syncEnabled];
-  [v6 encodeObject:v9 forKey:@"kNSCodingKeySyncEnabled"];
+  [coderCopy encodeObject:v9 forKey:@"kNSCodingKeySyncEnabled"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:self->_syncRequested];
-  [v6 encodeObject:v10 forKey:@"kNSCodingKeySyncRequested"];
+  [coderCopy encodeObject:v10 forKey:@"kNSCodingKeySyncRequested"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_syncActive];
-  [v6 encodeObject:v11 forKey:@"kNSCodingKeySyncActive"];
+  [coderCopy encodeObject:v11 forKey:@"kNSCodingKeySyncActive"];
 
-  [v6 encodeObject:self->_lastUpdate forKey:@"kNSCodingKeyLastUpdate"];
+  [coderCopy encodeObject:self->_lastUpdate forKey:@"kNSCodingKeyLastUpdate"];
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_databaseContentVerified];
-  [v6 encodeObject:v12 forKey:@"kNSCodingKeyNeedsDatabaseVerification"];
+  [coderCopy encodeObject:v12 forKey:@"kNSCodingKeyNeedsDatabaseVerification"];
 }
 
-+ (unint64_t)messageStateForMailboxFilterType:(unint64_t)a3
++ (unint64_t)messageStateForMailboxFilterType:(unint64_t)type
 {
-  if (a3 <= 7)
+  if (type <= 7)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       return 64;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       return 8;
     }
@@ -227,7 +227,7 @@
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 8uLL:
         return 1;
@@ -241,32 +241,32 @@
   return 0;
 }
 
-+ (id)generateMailboxIdWithAccountId:(id)a3 mailboxName:(id)a4
++ (id)generateMailboxIdWithAccountId:(id)id mailboxName:(id)name
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = MEMORY[0x277CCA900];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 URLQueryAllowedCharacterSet];
-  v10 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v9];
+  nameCopy = name;
+  idCopy = id;
+  uRLQueryAllowedCharacterSet = [v6 URLQueryAllowedCharacterSet];
+  v10 = [nameCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
-  v11 = [v5 stringWithFormat:@"imap://%@/%@", v8, v10];
+  v11 = [v5 stringWithFormat:@"imap://%@/%@", idCopy, v10];
 
   return v11;
 }
 
-- (void)addFilterType:(unint64_t)a3
+- (void)addFilterType:(unint64_t)type
 {
-  v4 = [(NNMKMailbox *)self filterType]| a3;
+  v4 = [(NNMKMailbox *)self filterType]| type;
 
   [(NNMKMailbox *)self setFilterType:v4];
 }
 
-- (void)removeFilterType:(unint64_t)a3
+- (void)removeFilterType:(unint64_t)type
 {
   if ([(NNMKMailbox *)self hasFilterType:?])
   {
-    v5 = [(NNMKMailbox *)self filterType]^ a3;
+    v5 = [(NNMKMailbox *)self filterType]^ type;
 
     [(NNMKMailbox *)self setFilterType:v5];
   }
@@ -322,19 +322,19 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && (v5 = [v4 type], v5 == -[NNMKMailbox type](self, "type")) && (v6 = objc_msgSend(v4, "filterType"), v6 == -[NNMKMailbox filterType](self, "filterType")))
+  if ((objc_opt_isKindOfClass() & 1) == 0 && (v5 = [equalCopy type], v5 == -[NNMKMailbox type](self, "type")) && (v6 = objc_msgSend(equalCopy, "filterType"), v6 == -[NNMKMailbox filterType](self, "filterType")))
   {
-    v7 = [v4 mailboxId];
-    v8 = [(NNMKMailbox *)self mailboxId];
-    if ([v7 isEqualToString:v8])
+    mailboxId = [equalCopy mailboxId];
+    mailboxId2 = [(NNMKMailbox *)self mailboxId];
+    if ([mailboxId isEqualToString:mailboxId2])
     {
-      v9 = [v4 customName];
-      v10 = [(NNMKMailbox *)self customName];
-      v11 = [v9 isEqualToString:v10];
+      customName = [equalCopy customName];
+      customName2 = [(NNMKMailbox *)self customName];
+      v11 = [customName isEqualToString:customName2];
     }
 
     else
@@ -353,22 +353,22 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(NNMKMailbox *)self mailboxId];
-  v3 = [v2 hash];
+  mailboxId = [(NNMKMailbox *)self mailboxId];
+  v3 = [mailboxId hash];
 
   return v3;
 }
 
-+ (unint64_t)syncedTypeFromMailbox:(id)a3
++ (unint64_t)syncedTypeFromMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [v4 url];
+  mailboxCopy = mailbox;
+  v5 = [mailboxCopy url];
 
   if (v5)
   {
-    v6 = [v4 type];
+    type = [mailboxCopy type];
 
-    if (v6 == 1)
+    if (type == 1)
     {
       return 100;
     }
@@ -381,18 +381,18 @@ LABEL_11:
 
   else
   {
-    v8 = [v4 filterType];
+    filterType = [mailboxCopy filterType];
 
-    return [a1 syncedTypeFromFilterType:v8];
+    return [self syncedTypeFromFilterType:filterType];
   }
 }
 
-+ (unint64_t)syncedTypeFromFilterType:(unint64_t)a3
++ (unint64_t)syncedTypeFromFilterType:(unint64_t)type
 {
-  result = a3;
-  if (a3 > 15)
+  result = type;
+  if (type > 15)
   {
-    switch(a3)
+    switch(type)
     {
       case 0x10uLL:
         return 5;
@@ -405,17 +405,17 @@ LABEL_11:
 
   else
   {
-    if (a3 - 1 < 2)
+    if (type - 1 < 2)
     {
       return result;
     }
 
-    if (a3 == 4)
+    if (type == 4)
     {
       return 3;
     }
 
-    if (a3 == 8)
+    if (type == 8)
     {
       return 4;
     }

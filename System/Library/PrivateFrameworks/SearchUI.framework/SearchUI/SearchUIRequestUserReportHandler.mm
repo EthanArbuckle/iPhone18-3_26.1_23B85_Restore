@@ -1,22 +1,22 @@
 @interface SearchUIRequestUserReportHandler
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
-+ (void)didSelectFeedbackPunchout:(id)a3 rowModel:(id)a4 feedbackDelegate:(id)a5;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
++ (void)didSelectFeedbackPunchout:(id)punchout rowModel:(id)model feedbackDelegate:(id)delegate;
 - (id)contextMenu;
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4;
+- (id)createViewControllerForCommand:(id)command environment:(id)environment;
 @end
 
 @implementation SearchUIRequestUserReportHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v4 = a3;
-  v5 = [v4 cardSection];
-  v6 = [v5 userReportRequest];
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
+  userReportRequest = [cardSection userReportRequest];
 
-  if (v6 && ([v4 supportsCustomUserReportRequestAfforance] & 1) == 0)
+  if (userReportRequest && ([modelCopy supportsCustomUserReportRequestAfforance] & 1) == 0)
   {
     v7 = objc_opt_new();
-    [v7 setUserReportRequest:v6];
+    [v7 setUserReportRequest:userReportRequest];
   }
 
   else
@@ -30,24 +30,24 @@
 - (id)contextMenu
 {
   v31 = *MEMORY[0x1E69E9840];
-  v20 = [(SearchUICommandHandler *)self rowModel];
-  v3 = [v20 cardSection];
-  v19 = [v3 userReportRequest];
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  cardSection = [rowModel cardSection];
+  userReportRequest = [cardSection userReportRequest];
 
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [v19 userReportOptions];
-  v21 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  userReportOptions = [userReportRequest userReportOptions];
+  v21 = [v4 initWithCapacity:{objc_msgSend(userReportOptions, "count")}];
 
-  v6 = [(SearchUICommandHandler *)self environment];
-  val = [v6 feedbackDelegate];
+  environment = [(SearchUICommandHandler *)self environment];
+  val = [environment feedbackDelegate];
 
   objc_initWeak(&location, val);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v19 userReportOptions];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  userReportOptions2 = [userReportRequest userReportOptions];
+  v8 = [userReportOptions2 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v8)
   {
     v9 = *v26;
@@ -57,12 +57,12 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(userReportOptions2);
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
         v12 = MEMORY[0x1E69DC628];
-        v13 = [v11 name];
+        name = [v11 name];
         v22[0] = MEMORY[0x1E69E9820];
         v22[1] = 3221225472;
         v22[2] = __47__SearchUIRequestUserReportHandler_contextMenu__block_invoke;
@@ -70,14 +70,14 @@
         objc_copyWeak(&v24, &location);
         v22[4] = self;
         v22[5] = v11;
-        v23 = v20;
-        v14 = [v12 actionWithTitle:v13 image:0 identifier:0 handler:v22];
+        v23 = rowModel;
+        v14 = [v12 actionWithTitle:name image:0 identifier:0 handler:v22];
 
         [v21 addObject:v14];
         objc_destroyWeak(&v24);
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v8 = [userReportOptions2 countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v8);
@@ -85,8 +85,8 @@
 
   if ([v21 count])
   {
-    v15 = [v19 title];
-    v16 = [MEMORY[0x1E69DCC60] menuWithTitle:v15 children:v21];
+    title = [userReportRequest title];
+    v16 = [MEMORY[0x1E69DCC60] menuWithTitle:title children:v21];
   }
 
   else
@@ -105,36 +105,36 @@ void __47__SearchUIRequestUserReportHandler_contextMenu__block_invoke(uint64_t a
   [objc_opt_class() didSelectFeedbackPunchout:*(a1 + 40) rowModel:*(a1 + 48) feedbackDelegate:WeakRetained];
 }
 
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4
+- (id)createViewControllerForCommand:(id)command environment:(id)environment
 {
-  v6 = a4;
-  v7 = [a3 userReportRequest];
-  v8 = [(SearchUICommandHandler *)self rowModel];
-  v9 = [SearchUIRequestUserReportUtility createUserReportViewControllerWith:v7 rowModel:v8 environment:v6];
+  environmentCopy = environment;
+  userReportRequest = [command userReportRequest];
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  v9 = [SearchUIRequestUserReportUtility createUserReportViewControllerWith:userReportRequest rowModel:rowModel environment:environmentCopy];
 
   return v9;
 }
 
-+ (void)didSelectFeedbackPunchout:(id)a3 rowModel:(id)a4 feedbackDelegate:(id)a5
++ (void)didSelectFeedbackPunchout:(id)punchout rowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v14 preferredOpenableURL];
+  punchoutCopy = punchout;
+  modelCopy = model;
+  delegateCopy = delegate;
+  preferredOpenableURL = [punchoutCopy preferredOpenableURL];
 
-  if (v9)
+  if (preferredOpenableURL)
   {
-    [SearchUIUtilities openPunchout:v14];
+    [SearchUIUtilities openPunchout:punchoutCopy];
   }
 
   if (objc_opt_respondsToSelector())
   {
     v10 = objc_alloc(MEMORY[0x1E69CA568]);
-    v11 = [v7 identifyingResult];
-    v12 = [v7 cardSection];
-    v13 = [v10 initWithSelection:v14 result:v11 cardSection:v12];
+    identifyingResult = [modelCopy identifyingResult];
+    cardSection = [modelCopy cardSection];
+    v13 = [v10 initWithSelection:punchoutCopy result:identifyingResult cardSection:cardSection];
 
-    [v8 didReportUserResponseFeedback:v13];
+    [delegateCopy didReportUserResponseFeedback:v13];
   }
 }
 

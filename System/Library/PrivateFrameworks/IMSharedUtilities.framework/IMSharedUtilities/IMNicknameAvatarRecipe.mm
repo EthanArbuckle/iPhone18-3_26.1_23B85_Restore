@@ -1,34 +1,34 @@
 @interface IMNicknameAvatarRecipe
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAvatarRecipe:(id)a3;
-- (IMNicknameAvatarRecipe)initWithCoder:(id)a3;
-- (IMNicknameAvatarRecipe)initWithData:(id)a3;
-- (IMNicknameAvatarRecipe)initWithDictionaryRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAvatarRecipe:(id)recipe;
+- (IMNicknameAvatarRecipe)initWithCoder:(id)coder;
+- (IMNicknameAvatarRecipe)initWithData:(id)data;
+- (IMNicknameAvatarRecipe)initWithDictionaryRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMNicknameAvatarRecipe
 
-- (IMNicknameAvatarRecipe)initWithData:(id)a3
+- (IMNicknameAvatarRecipe)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = IMNicknameAvatarRecipe;
   v6 = [(IMNicknameAvatarRecipe *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recipeData, a3);
+    objc_storeStrong(&v6->_recipeData, data);
   }
 
   return v7;
 }
 
-- (IMNicknameAvatarRecipe)initWithDictionaryRepresentation:(id)a3
+- (IMNicknameAvatarRecipe)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = [a3 objectForKey:@"avatarRecipeData"];
+  v4 = [representation objectForKey:@"avatarRecipeData"];
   v5 = [(IMNicknameAvatarRecipe *)self initWithData:v4];
 
   return v5;
@@ -47,48 +47,48 @@
   return v4;
 }
 
-- (BOOL)isEqualToAvatarRecipe:(id)a3
+- (BOOL)isEqualToAvatarRecipe:(id)recipe
 {
-  v4 = a3;
-  v5 = [(IMNicknameAvatarRecipe *)self recipeData];
-  v6 = [v4 recipeData];
+  recipeCopy = recipe;
+  recipeData = [(IMNicknameAvatarRecipe *)self recipeData];
+  recipeData2 = [recipeCopy recipeData];
 
-  LOBYTE(v4) = IMAreObjectsLogicallySame();
-  return v4;
+  LOBYTE(recipeCopy) = IMAreObjectsLogicallySame();
+  return recipeCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IMNicknameAvatarRecipe *)self isEqualToAvatarRecipe:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IMNicknameAvatarRecipe *)self isEqualToAvatarRecipe:equalCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IMNicknameAvatarRecipe alloc];
-  v5 = [(IMNicknameAvatarRecipe *)self recipeData];
-  v6 = [(IMNicknameAvatarRecipe *)v4 initWithData:v5];
+  recipeData = [(IMNicknameAvatarRecipe *)self recipeData];
+  v6 = [(IMNicknameAvatarRecipe *)v4 initWithData:recipeData];
 
   return v6;
 }
 
-- (IMNicknameAvatarRecipe)initWithCoder:(id)a3
+- (IMNicknameAvatarRecipe)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avatarRecipeData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avatarRecipeData"];
 
   v6 = [(IMNicknameAvatarRecipe *)self initWithData:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IMNicknameAvatarRecipe *)self recipeData];
-  [v4 encodeObject:v5 forKey:@"avatarRecipeData"];
+  coderCopy = coder;
+  recipeData = [(IMNicknameAvatarRecipe *)self recipeData];
+  [coderCopy encodeObject:recipeData forKey:@"avatarRecipeData"];
 }
 
 @end

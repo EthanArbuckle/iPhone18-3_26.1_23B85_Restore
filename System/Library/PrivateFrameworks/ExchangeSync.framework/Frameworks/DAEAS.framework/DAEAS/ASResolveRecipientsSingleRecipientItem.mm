@@ -19,7 +19,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_106 = v2;
     acceptsTopLevelLeaves___haveChecked_105 = 1;
   }
@@ -36,7 +36,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_108 = v2;
     parsingLeafNode___haveChecked_107 = 1;
   }
@@ -53,7 +53,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_110 = v2;
     parsingWithSubItems___haveChecked_109 = 1;
   }
@@ -70,7 +70,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_112 = v2;
     frontingBasicTypes___haveChecked_111 = 1;
   }
@@ -87,7 +87,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_114 = v2;
     notifyOfUnknownTokens___haveChecked_113 = 1;
   }
@@ -98,8 +98,8 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v22 = a1;
-  v4 = NSStringFromClass(a1);
+  selfCopy = self;
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -120,7 +120,7 @@
     v5 = [v20 dictionaryWithObjectsAndKeys:{v21, v19, v18, v17, v16, v6, v7, v15, v14, v8, v9, v10, 0}];
 
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(v22);
+    v12 = NSStringFromClass(selfCopy);
     [v11 setObject:v5 forKey:v12];
   }
 
@@ -133,26 +133,26 @@
   v16.receiver = self;
   v16.super_class = ASResolveRecipientsSingleRecipientItem;
   v4 = [(ASResolveRecipientsSingleRecipientItem *)&v16 description];
-  v5 = [(ASResolveRecipientsSingleRecipientItem *)self emailAddress];
-  v6 = [v3 stringWithFormat:@"%@: emailAddress %@", v4, v5];
+  emailAddress = [(ASResolveRecipientsSingleRecipientItem *)self emailAddress];
+  v6 = [v3 stringWithFormat:@"%@: emailAddress %@", v4, emailAddress];
 
-  v7 = [(ASResolveRecipientsSingleRecipientItem *)self certificates];
+  certificates = [(ASResolveRecipientsSingleRecipientItem *)self certificates];
 
-  if (v7)
+  if (certificates)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(ASResolveRecipientsSingleRecipientItem *)self certificates];
-    v10 = [v8 stringWithFormat:@" certificates %@", v9];
+    certificates2 = [(ASResolveRecipientsSingleRecipientItem *)self certificates];
+    v10 = [v8 stringWithFormat:@" certificates %@", certificates2];
     [v6 appendString:v10];
   }
 
-  v11 = [(ASResolveRecipientsSingleRecipientItem *)self availability];
+  availability = [(ASResolveRecipientsSingleRecipientItem *)self availability];
 
-  if (v11)
+  if (availability)
   {
     v12 = MEMORY[0x277CCACA8];
-    v13 = [(ASResolveRecipientsSingleRecipientItem *)self availability];
-    v14 = [v12 stringWithFormat:@" availability %@", v13];
+    availability2 = [(ASResolveRecipientsSingleRecipientItem *)self availability];
+    v14 = [v12 stringWithFormat:@" availability %@", availability2];
     [v6 appendString:v14];
   }
 

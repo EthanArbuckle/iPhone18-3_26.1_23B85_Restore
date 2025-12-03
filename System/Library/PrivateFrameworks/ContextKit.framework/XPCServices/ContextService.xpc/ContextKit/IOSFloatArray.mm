@@ -1,85 +1,85 @@
 @interface IOSFloatArray
-+ (IOSFloatArray)arrayWithFloats:(const float *)a3 count:(unint64_t)a4;
-+ (IOSFloatArray)arrayWithLength:(unint64_t)a3;
++ (IOSFloatArray)arrayWithFloats:(const float *)floats count:(unint64_t)count;
++ (IOSFloatArray)arrayWithLength:(unint64_t)length;
 + (id)iosClass;
-+ (id)newArrayWithFloats:(const float *)a3 count:(unint64_t)a4;
-- (float)floatAtIndex:(unint64_t)a3;
-- (float)floatRefAtIndex:(unint64_t)a3;
-- (float)replaceFloatAtIndex:(unint64_t)a3 withFloat:(float)result;
-- (void)arraycopy:(int)a3 destination:(id)a4 dstOffset:(int)a5 length:(int)a6;
-- (void)getFloats:(float *)a3 length:(unint64_t)a4;
++ (id)newArrayWithFloats:(const float *)floats count:(unint64_t)count;
+- (float)floatAtIndex:(unint64_t)index;
+- (float)floatRefAtIndex:(unint64_t)index;
+- (float)replaceFloatAtIndex:(unint64_t)index withFloat:(float)result;
+- (void)arraycopy:(int)arraycopy destination:(id)destination dstOffset:(int)offset length:(int)length;
+- (void)getFloats:(float *)floats length:(unint64_t)length;
 @end
 
 @implementation IOSFloatArray
 
-+ (IOSFloatArray)arrayWithLength:(unint64_t)a3
++ (IOSFloatArray)arrayWithLength:(unint64_t)length
 {
-  v3 = sub_10023E620(a3);
+  v3 = sub_10023E620(length);
 
   return v3;
 }
 
-+ (id)newArrayWithFloats:(const float *)a3 count:(unint64_t)a4
++ (id)newArrayWithFloats:(const float *)floats count:(unint64_t)count
 {
-  v4 = a4;
-  v6 = sub_10023E620(a4);
-  memcpy(v6 + 3, a3, 4 * v4);
+  countCopy = count;
+  v6 = sub_10023E620(count);
+  memcpy(v6 + 3, floats, 4 * countCopy);
   return v6;
 }
 
-+ (IOSFloatArray)arrayWithFloats:(const float *)a3 count:(unint64_t)a4
++ (IOSFloatArray)arrayWithFloats:(const float *)floats count:(unint64_t)count
 {
-  v4 = a4;
-  v6 = sub_10023E620(a4);
-  memcpy(v6 + 3, a3, 4 * v4);
+  countCopy = count;
+  v6 = sub_10023E620(count);
+  memcpy(v6 + 3, floats, 4 * countCopy);
 
   return v6;
 }
 
-- (float)floatAtIndex:(unint64_t)a3
+- (float)floatAtIndex:(unint64_t)index
 {
   size = self->super.size_;
-  if ((a3 & 0x80000000) != 0 || size <= a3)
+  if ((index & 0x80000000) != 0 || size <= index)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3);
+    IOSArray_throwOutOfBoundsWithMsg(size, index);
   }
 
-  return *(&self->super.size_ + a3 + 1);
+  return *(&self->super.size_ + index + 1);
 }
 
-- (float)floatRefAtIndex:(unint64_t)a3
+- (float)floatRefAtIndex:(unint64_t)index
 {
   size = self->super.size_;
-  if ((a3 & 0x80000000) != 0 || size <= a3)
+  if ((index & 0x80000000) != 0 || size <= index)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3);
+    IOSArray_throwOutOfBoundsWithMsg(size, index);
   }
 
-  return (&self->super.size_ + a3 + 1);
+  return (&self->super.size_ + index + 1);
 }
 
-- (float)replaceFloatAtIndex:(unint64_t)a3 withFloat:(float)result
+- (float)replaceFloatAtIndex:(unint64_t)index withFloat:(float)result
 {
   size = self->super.size_;
-  if ((a3 & 0x80000000) != 0 || size <= a3)
+  if ((index & 0x80000000) != 0 || size <= index)
   {
-    IOSArray_throwOutOfBoundsWithMsg(size, a3);
+    IOSArray_throwOutOfBoundsWithMsg(size, index);
   }
 
-  *(&self->super.size_ + a3 + 1) = result;
+  *(&self->super.size_ + index + 1) = result;
   return result;
 }
 
-- (void)getFloats:(float *)a3 length:(unint64_t)a4
+- (void)getFloats:(float *)floats length:(unint64_t)length
 {
   size = self->super.size_;
-  v6 = (a4 - 1);
-  if (a4 - 1 < 0 || v6 >= size)
+  v6 = (length - 1);
+  if (length - 1 < 0 || v6 >= size)
   {
     IOSArray_throwOutOfBoundsWithMsg(size, v6);
   }
 
-  memcpy(a3, &self->super.size_ + 1, 4 * a4);
+  memcpy(floats, &self->super.size_ + 1, 4 * length);
 }
 
 + (id)iosClass
@@ -89,19 +89,19 @@
   return IOSClass_arrayOf(v2);
 }
 
-- (void)arraycopy:(int)a3 destination:(id)a4 dstOffset:(int)a5 length:(int)a6
+- (void)arraycopy:(int)arraycopy destination:(id)destination dstOffset:(int)offset length:(int)length
 {
-  if ((a6 | a3) < 0 || a6 + a3 > self->super.size_)
+  if ((length | arraycopy) < 0 || length + arraycopy > self->super.size_)
   {
     IOSArray_throwOutOfBounds();
   }
 
-  if ((a6 | a5) < 0 || a6 + a5 > *(a4 + 2))
+  if ((length | offset) < 0 || length + offset > *(destination + 2))
   {
     IOSArray_throwOutOfBounds();
   }
 
-  memmove(a4 + 4 * a5 + 12, &self->super.size_ + a3 + 1, 4 * a6);
+  memmove(destination + 4 * offset + 12, &self->super.size_ + arraycopy + 1, 4 * length);
 }
 
 @end

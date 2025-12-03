@@ -1,35 +1,35 @@
 @interface LegacyPendingTransactionsDatabaseTransaction
-- (BOOL)cacheLegacyTransactionsForBundleID:(id)a3 transactions:(id)a4 logKey:(id)a5;
-- (BOOL)clearLegacyTransactionsLastUpdatedForBundleID:(id)a3;
-- (BOOL)removeCachedLegacyTransactionWithID:(id)a3 forBundleID:(id)a4;
-- (BOOL)removeCachedLegacyTransactionsForBundleID:(id)a3;
-- (BOOL)resetLegacyTransactionsLastUpdatedForBundleID:(id)a3;
-- (BOOL)setLegacyTransactionsLastUpdatedForBundleID:(id)a3 token:(id)a4;
+- (BOOL)cacheLegacyTransactionsForBundleID:(id)d transactions:(id)transactions logKey:(id)key;
+- (BOOL)clearLegacyTransactionsLastUpdatedForBundleID:(id)d;
+- (BOOL)removeCachedLegacyTransactionWithID:(id)d forBundleID:(id)iD;
+- (BOOL)removeCachedLegacyTransactionsForBundleID:(id)d;
+- (BOOL)resetLegacyTransactionsLastUpdatedForBundleID:(id)d;
+- (BOOL)setLegacyTransactionsLastUpdatedForBundleID:(id)d token:(id)token;
 @end
 
 @implementation LegacyPendingTransactionsDatabaseTransaction
 
-- (BOOL)cacheLegacyTransactionsForBundleID:(id)a3 transactions:(id)a4 logKey:(id)a5
+- (BOOL)cacheLegacyTransactionsForBundleID:(id)d transactions:(id)transactions logKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v38 = a5;
-  v40 = v7;
-  if (v7)
+  dCopy = d;
+  transactionsCopy = transactions;
+  keyCopy = key;
+  v40 = dCopy;
+  if (dCopy)
   {
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v43 objects:v53 count:16];
+    v9 = [transactionsCopy countByEnumeratingWithState:&v43 objects:v53 count:16];
     if (v9)
     {
       v11 = v9;
       v12 = *v44;
-      v13 = 1;
+      existsInDatabase = 1;
       *&v10 = 138543874;
       v37 = v10;
-      obj = v8;
+      obj = transactionsCopy;
       do
       {
         v14 = 0;
@@ -95,15 +95,15 @@
                   if (os_log_type_enabled(qword_1003D3988, OS_LOG_TYPE_ERROR))
                   {
                     *buf = v37;
-                    v48 = self;
+                    selfCopy = self;
                     v49 = 2114;
-                    v50 = v38;
+                    v50 = keyCopy;
                     v51 = 2114;
                     v52 = v30;
                     _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "[%{public}@][%{public}@] Error caching assets: %{public}@", buf, 0x20u);
                   }
 
-                  v13 = 0;
+                  existsInDatabase = 0;
                 }
 
                 [v17 setObject:v28 forKeyedSubscript:@"assets"];
@@ -111,17 +111,17 @@
             }
 
             v32 = [InAppPendingTransactionsDatabaseEntity alloc];
-            v33 = [(LegacyPendingTransactionsDatabaseSession *)self connection];
-            v34 = [(SQLiteEntity *)v32 initWithPropertyValues:v17 onConnection:v33];
+            connection = [(LegacyPendingTransactionsDatabaseSession *)self connection];
+            v34 = [(SQLiteEntity *)v32 initWithPropertyValues:v17 onConnection:connection];
 
-            if (v13)
+            if (existsInDatabase)
             {
-              v13 = [(SQLiteEntity *)v34 existsInDatabase];
+              existsInDatabase = [(SQLiteEntity *)v34 existsInDatabase];
             }
 
             else
             {
-              v13 = 0;
+              existsInDatabase = 0;
             }
           }
 
@@ -129,7 +129,7 @@
         }
 
         while (v11 != v14);
-        v8 = obj;
+        transactionsCopy = obj;
         v11 = [obj countByEnumeratingWithState:&v43 objects:v53 count:16];
       }
 
@@ -138,7 +138,7 @@
 
     else
     {
-      v13 = 1;
+      existsInDatabase = 1;
     }
   }
 
@@ -152,77 +152,77 @@
     v35 = qword_1003D3988;
     if (os_log_type_enabled(qword_1003D3988, OS_LOG_TYPE_ERROR))
     {
-      sub_1002C71D4(self, v38, v35);
+      sub_1002C71D4(self, keyCopy, v35);
     }
 
-    v13 = 0;
+    existsInDatabase = 0;
   }
 
-  return v13 & 1;
+  return existsInDatabase & 1;
 }
 
-- (BOOL)clearLegacyTransactionsLastUpdatedForBundleID:(id)a3
+- (BOOL)clearLegacyTransactionsLastUpdatedForBundleID:(id)d
 {
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
-  v5 = [(LegacyPendingTransactionsDatabaseSession *)self connection];
-  v6 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity queryOnConnection:v5 predicate:v4];
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
+  connection = [(LegacyPendingTransactionsDatabaseSession *)self connection];
+  v6 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity queryOnConnection:connection predicate:v4];
 
-  LOBYTE(v5) = [v6 deleteAllEntities];
-  return v5;
+  LOBYTE(connection) = [v6 deleteAllEntities];
+  return connection;
 }
 
-- (BOOL)removeCachedLegacyTransactionsForBundleID:(id)a3
+- (BOOL)removeCachedLegacyTransactionsForBundleID:(id)d
 {
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
-  v5 = [(LegacyPendingTransactionsDatabaseSession *)self connection];
-  v6 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:v5 predicate:v4];
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
+  connection = [(LegacyPendingTransactionsDatabaseSession *)self connection];
+  v6 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:connection predicate:v4];
 
-  LOBYTE(v5) = [v6 deleteAllEntities];
-  return v5;
+  LOBYTE(connection) = [v6 deleteAllEntities];
+  return connection;
 }
 
-- (BOOL)removeCachedLegacyTransactionWithID:(id)a3 forBundleID:(id)a4
+- (BOOL)removeCachedLegacyTransactionWithID:(id)d forBundleID:(id)iD
 {
-  v6 = a3;
-  v7 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a4];
-  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"transaction_id" equalToValue:v6];
+  dCopy = d;
+  v7 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:iD];
+  v8 = [SQLiteComparisonPredicate predicateWithProperty:@"transaction_id" equalToValue:dCopy];
 
   v14[0] = v7;
   v14[1] = v8;
   v9 = [NSArray arrayWithObjects:v14 count:2];
   v10 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v9];
 
-  v11 = [(LegacyPendingTransactionsDatabaseSession *)self connection];
-  v12 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:v11 predicate:v10];
+  connection = [(LegacyPendingTransactionsDatabaseSession *)self connection];
+  v12 = [(SQLiteEntity *)InAppPendingTransactionsDatabaseEntity queryOnConnection:connection predicate:v10];
 
-  LOBYTE(v11) = [v12 deleteAllEntities];
-  return v11;
+  LOBYTE(connection) = [v12 deleteAllEntities];
+  return connection;
 }
 
-- (BOOL)setLegacyTransactionsLastUpdatedForBundleID:(id)a3 token:(id)a4
+- (BOOL)setLegacyTransactionsLastUpdatedForBundleID:(id)d token:(id)token
 {
-  v6 = a4;
-  v7 = a3;
+  tokenCopy = token;
+  dCopy = d;
   v8 = [NSMutableDictionary dictionaryWithCapacity:3];
-  [v8 setObject:v7 forKeyedSubscript:@"bundle_id"];
+  [v8 setObject:dCopy forKeyedSubscript:@"bundle_id"];
 
-  [v8 setObject:v6 forKeyedSubscript:@"token"];
+  [v8 setObject:tokenCopy forKeyedSubscript:@"token"];
   v9 = +[NSDate now];
   [v8 setObject:v9 forKeyedSubscript:@"last_updated"];
 
   v10 = [InAppPendingTransactionsPropertiesDatabaseEntity alloc];
-  v11 = [(LegacyPendingTransactionsDatabaseSession *)self connection];
-  v12 = [(SQLiteEntity *)v10 initWithPropertyValues:v8 onConnection:v11];
+  connection = [(LegacyPendingTransactionsDatabaseSession *)self connection];
+  v12 = [(SQLiteEntity *)v10 initWithPropertyValues:v8 onConnection:connection];
 
-  LOBYTE(v11) = [(SQLiteEntity *)v12 existsInDatabase];
-  return v11;
+  LOBYTE(connection) = [(SQLiteEntity *)v12 existsInDatabase];
+  return connection;
 }
 
-- (BOOL)resetLegacyTransactionsLastUpdatedForBundleID:(id)a3
+- (BOOL)resetLegacyTransactionsLastUpdatedForBundleID:(id)d
 {
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
-  v5 = [(LegacyPendingTransactionsDatabaseSession *)self connection];
-  v6 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity anyOnConnection:v5 predicate:v4];
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
+  connection = [(LegacyPendingTransactionsDatabaseSession *)self connection];
+  v6 = [(SQLiteEntity *)InAppPendingTransactionsPropertiesDatabaseEntity anyOnConnection:connection predicate:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

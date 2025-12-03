@@ -1,5 +1,5 @@
 @interface OTWaitOnPriorityViews
-- (OTWaitOnPriorityViews)initWithDependencies:(id)a3;
+- (OTWaitOnPriorityViews)initWithDependencies:(id)dependencies;
 - (void)groupStart;
 @end
 
@@ -20,16 +20,16 @@
   objc_destroyWeak(&location);
 }
 
-- (OTWaitOnPriorityViews)initWithDependencies:(id)a3
+- (OTWaitOnPriorityViews)initWithDependencies:(id)dependencies
 {
-  v5 = a3;
+  dependenciesCopy = dependencies;
   v9.receiver = self;
   v9.super_class = OTWaitOnPriorityViews;
   v6 = [(CKKSGroupOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operationDependencies, a3);
+    objc_storeStrong(&v6->_operationDependencies, dependencies);
   }
 
   return v7;

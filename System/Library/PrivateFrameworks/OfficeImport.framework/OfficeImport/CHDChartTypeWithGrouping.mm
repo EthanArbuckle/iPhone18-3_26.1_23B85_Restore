@@ -1,15 +1,15 @@
 @interface CHDChartTypeWithGrouping
-- (CHDChartTypeWithGrouping)initWithChart:(id)a3;
+- (CHDChartTypeWithGrouping)initWithChart:(id)chart;
 - (id)chdGroupingString;
 @end
 
 @implementation CHDChartTypeWithGrouping
 
-- (CHDChartTypeWithGrouping)initWithChart:(id)a3
+- (CHDChartTypeWithGrouping)initWithChart:(id)chart
 {
   v4.receiver = self;
   v4.super_class = CHDChartTypeWithGrouping;
-  result = [(CHDChartType *)&v4 initWithChart:a3];
+  result = [(CHDChartType *)&v4 initWithChart:chart];
   if (result)
   {
     *(&result->super.mVaryColors + 1) = 3;

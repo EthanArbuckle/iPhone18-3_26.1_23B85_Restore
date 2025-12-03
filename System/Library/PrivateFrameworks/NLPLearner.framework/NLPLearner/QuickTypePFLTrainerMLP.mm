@@ -1,17 +1,17 @@
 @interface QuickTypePFLTrainerMLP
-+ (__CFData)copyToFlatBuffer:(void *)a3;
-+ (id)reportingStringForModelUpdates:(float *)a3 count:(unint64_t)a4;
++ (__CFData)copyToFlatBuffer:(void *)buffer;
++ (id)reportingStringForModelUpdates:(float *)updates count:(unint64_t)count;
 + (void)initialize;
-- (BOOL)trainOn:(id)a3 forNEpochs:(unint64_t)a4;
-- (QuickTypePFLTrainerMLP)initWithSeedModelPath:(id)a3 andPrivacyIdentifier:(id)a4;
-- (void)writeModelToURL:(id)a3;
+- (BOOL)trainOn:(id)on forNEpochs:(unint64_t)epochs;
+- (QuickTypePFLTrainerMLP)initWithSeedModelPath:(id)path andPrivacyIdentifier:(id)identifier;
+- (void)writeModelToURL:(id)l;
 @end
 
 @implementation QuickTypePFLTrainerMLP
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog = os_log_create("com.apple.NLP", "QuickTypePFLTrainerMLP");
 
@@ -19,7 +19,7 @@
   }
 }
 
-+ (__CFData)copyToFlatBuffer:(void *)a3
++ (__CFData)copyToFlatBuffer:(void *)buffer
 {
   cf = 0;
   v3 = NLModelContainerCopySplitContainerData();
@@ -39,39 +39,39 @@
   return MutableCopy;
 }
 
-+ (id)reportingStringForModelUpdates:(float *)a3 count:(unint64_t)a4
++ (id)reportingStringForModelUpdates:(float *)updates count:(unint64_t)count
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:3];
-  if (a4 >= 3)
+  if (count >= 3)
   {
-    v7 = 3;
+    countCopy = 3;
   }
 
   else
   {
-    v7 = a4;
+    countCopy = count;
   }
 
-  if (a4)
+  if (count)
   {
-    v8 = a3;
+    updatesCopy = updates;
     do
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", *v8];
+      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f", *updatesCopy];
       [v6 addObject:v9];
 
-      ++v8;
-      --v7;
+      ++updatesCopy;
+      --countCopy;
     }
 
-    while (v7);
+    while (countCopy);
   }
 
   v10 = [v6 componentsJoinedByString:{@", "}];
-  if (a4 >= 4)
+  if (count >= 4)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ .. %f", v10, a3[a4 - 1]];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ .. %f", v10, updates[count - 1]];
 
     v10 = v11;
   }
@@ -79,7 +79,7 @@
   v20[0] = @"ModelUpdate";
   v20[1] = @"ModelShape";
   v21[0] = v10;
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%zu, )", a4];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%zu, )", count];
   v21[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
@@ -106,18 +106,18 @@
   return v16;
 }
 
-- (QuickTypePFLTrainerMLP)initWithSeedModelPath:(id)a3 andPrivacyIdentifier:(id)a4
+- (QuickTypePFLTrainerMLP)initWithSeedModelPath:(id)path andPrivacyIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = QuickTypePFLTrainerMLP;
   v8 = [(QuickTypePFLTrainerMLP *)&v18 init];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CBEBC0]);
-    v10 = [v6 absoluteString];
-    v11 = [v9 initWithString:v10];
+    absoluteString = [pathCopy absoluteString];
+    v11 = [v9 initWithString:absoluteString];
     seedModelPath = v8->_seedModelPath;
     v8->_seedModelPath = v11;
 
@@ -128,7 +128,7 @@
     v8->_clippingNorm = v13;
 
     v8->_normBinCount = 30;
-    v15 = [v7 copy];
+    v15 = [identifierCopy copy];
     privacyIdentifier = v8->_privacyIdentifier;
     v8->_privacyIdentifier = v15;
   }
@@ -136,12 +136,12 @@
   return v8;
 }
 
-- (BOOL)trainOn:(id)a3 forNEpochs:(unint64_t)a4
+- (BOOL)trainOn:(id)on forNEpochs:(unint64_t)epochs
 {
   v54[3] = *MEMORY[0x277D85DE8];
-  v41 = a3;
+  onCopy = on;
   v53[0] = *MEMORY[0x277D2A268];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:epochs];
   v54[0] = v6;
   v53[1] = *MEMORY[0x277D2A238];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_batchSize];
@@ -151,28 +151,28 @@
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:3];
   v9 = [v8 mutableCopy];
 
-  v10 = [(QuickTypePFLTrainerMLP *)self learningRate];
-  v11 = v10 == 0;
+  learningRate = [(QuickTypePFLTrainerMLP *)self learningRate];
+  v11 = learningRate == 0;
 
   if (!v11)
   {
-    v12 = [(QuickTypePFLTrainerMLP *)self learningRate];
-    [v9 setObject:v12 forKeyedSubscript:*MEMORY[0x277D2A258]];
+    learningRate2 = [(QuickTypePFLTrainerMLP *)self learningRate];
+    [v9 setObject:learningRate2 forKeyedSubscript:*MEMORY[0x277D2A258]];
   }
 
-  v13 = [(QuickTypePFLTrainerMLP *)self gradientClipMax];
-  if (v13)
+  gradientClipMax = [(QuickTypePFLTrainerMLP *)self gradientClipMax];
+  if (gradientClipMax)
   {
-    v14 = [(QuickTypePFLTrainerMLP *)self gradientClipMin];
-    v15 = v14 == 0;
+    gradientClipMin = [(QuickTypePFLTrainerMLP *)self gradientClipMin];
+    v15 = gradientClipMin == 0;
 
     if (!v15)
     {
-      v16 = [(QuickTypePFLTrainerMLP *)self gradientClipMin];
-      [v9 setObject:v16 forKeyedSubscript:*MEMORY[0x277D2A250]];
+      gradientClipMin2 = [(QuickTypePFLTrainerMLP *)self gradientClipMin];
+      [v9 setObject:gradientClipMin2 forKeyedSubscript:*MEMORY[0x277D2A250]];
 
-      v17 = [(QuickTypePFLTrainerMLP *)self gradientClipMax];
-      [v9 setObject:v17 forKeyedSubscript:*MEMORY[0x277D2A248]];
+      gradientClipMax2 = [(QuickTypePFLTrainerMLP *)self gradientClipMax];
+      [v9 setObject:gradientClipMax2 forKeyedSubscript:*MEMORY[0x277D2A248]];
     }
   }
 
@@ -186,7 +186,7 @@
     v46[1] = 3221225472;
     v46[2] = __45__QuickTypePFLTrainerMLP_trainOn_forNEpochs___block_invoke;
     v46[3] = &unk_279928BF8;
-    v21 = v41;
+    v21 = onCopy;
     v47 = v21;
     v22 = MEMORY[0x25F8584E0](v46);
     v23 = MLPModelTrainerEvaluateModel();
@@ -297,10 +297,10 @@ void __45__QuickTypePFLTrainerMLP_trainOn_forNEpochs___block_invoke_2(uint64_t a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeModelToURL:(id)a3
+- (void)writeModelToURL:(id)l
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if (self->_model.m_ref)
   {
     if (NLModelContainerWriteToURL())
@@ -309,7 +309,7 @@ void __45__QuickTypePFLTrainerMLP_trainOn_forNEpochs___block_invoke_2(uint64_t a
       if (os_log_type_enabled(sLog, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v8 = v4;
+        v8 = lCopy;
         _os_log_impl(&dword_25AE22000, v5, OS_LOG_TYPE_INFO, "Saved PFL model at %@", buf, 0xCu);
       }
     }

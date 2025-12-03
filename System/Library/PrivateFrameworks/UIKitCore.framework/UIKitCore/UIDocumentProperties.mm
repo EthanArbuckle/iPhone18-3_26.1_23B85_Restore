@@ -6,20 +6,20 @@
 - (UINavigationItem)_associatedNavigationItem;
 - (_UIDocumentPropertiesHeaderView)headerView;
 - (_UIDocumentPropertiesIconView)iconView;
-- (id)_headerViewForMenuInteraction:(id)a3 sourceViewProvider:(id)a4;
+- (id)_headerViewForMenuInteraction:(id)interaction sourceViewProvider:(id)provider;
 - (id)_iconView;
 - (id)_metadataWrapper;
 - (id)_placeholderMetadata;
-- (void)_didLoadMetadata:(id)a3;
-- (void)_fetchMetadataIfNecessary:(BOOL)a3;
-- (void)_performBlockAndCallIconRepresentationChangedHandlerIfNecessary:(id)a3;
-- (void)_setAssociatedNavigationItem:(id)a3;
-- (void)_setMetadata:(id)a3;
-- (void)_setMetadataProvider:(id)a3;
+- (void)_didLoadMetadata:(id)metadata;
+- (void)_fetchMetadataIfNecessary:(BOOL)necessary;
+- (void)_performBlockAndCallIconRepresentationChangedHandlerIfNecessary:(id)necessary;
+- (void)_setAssociatedNavigationItem:(id)item;
+- (void)_setMetadata:(id)metadata;
+- (void)_setMetadataProvider:(id)provider;
 - (void)_updateMetadataInUse;
 - (void)dealloc;
 - (void)setActivityViewControllerProvider:(void *)activityViewControllerProvider;
-- (void)setIconRepresentationAction:(id)a3;
+- (void)setIconRepresentationAction:(id)action;
 - (void)setMetadata:(LPLinkMetadata *)metadata;
 - (void)setWantsIconRepresentation:(BOOL)wantsIconRepresentation;
 @end
@@ -31,8 +31,8 @@
   v6 = url;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"url != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"url != nil"}];
   }
 
   v13.receiver = self;
@@ -55,8 +55,8 @@
   v5 = metadata;
   if (!v5)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
   }
 
   v11.receiver = self;
@@ -74,13 +74,13 @@
 
 - (void)dealloc
 {
-  v3 = [(UIDocumentProperties *)self urlChangeObserver];
-  v4 = [v3 isObserving];
+  urlChangeObserver = [(UIDocumentProperties *)self urlChangeObserver];
+  isObserving = [urlChangeObserver isObserving];
 
-  if (v4)
+  if (isObserving)
   {
-    v5 = [(UIDocumentProperties *)self urlChangeObserver];
-    [v5 stopObserving];
+    urlChangeObserver2 = [(UIDocumentProperties *)self urlChangeObserver];
+    [urlChangeObserver2 stopObserving];
   }
 
   v6.receiver = self;
@@ -88,44 +88,44 @@
   [(UIDocumentProperties *)&v6 dealloc];
 }
 
-- (void)_didLoadMetadata:(id)a3
+- (void)_didLoadMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v4 = [(UIDocumentProperties *)self url];
 
   if (v4)
   {
-    [(UIDocumentProperties *)self _setMetadata:v5];
+    [(UIDocumentProperties *)self _setMetadata:metadataCopy];
   }
 }
 
-- (void)_fetchMetadataIfNecessary:(BOOL)a3
+- (void)_fetchMetadataIfNecessary:(BOOL)necessary
 {
-  if (a3)
+  if (necessary)
   {
 LABEL_2:
     [(UIDocumentProperties *)self _setMetadataProvider:0];
     v5 = [(UIDocumentProperties *)self url];
     if (!v5)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:128 description:@"No metadata is provided but also no URL is present. This should never happen."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:128 description:@"No metadata is provided but also no URL is present. This should never happen."];
     }
 
-    v6 = [(UIDocumentProperties *)self urlChangeObserver];
-    v7 = [v6 isObserving];
+    urlChangeObserver = [(UIDocumentProperties *)self urlChangeObserver];
+    isObserving = [urlChangeObserver isObserving];
 
-    if ((v7 & 1) == 0)
+    if ((isObserving & 1) == 0)
     {
       objc_initWeak(location, self);
-      v8 = [(UIDocumentProperties *)self urlChangeObserver];
+      urlChangeObserver2 = [(UIDocumentProperties *)self urlChangeObserver];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __50__UIDocumentProperties__fetchMetadataIfNecessary___block_invoke;
       v17[3] = &unk_1E7128FA8;
       objc_copyWeak(&v19, location);
       v18 = v5;
-      [v8 startObservingWithChangeHandler:v17];
+      [urlChangeObserver2 startObservingWithChangeHandler:v17];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(location);
@@ -162,12 +162,12 @@ LABEL_2:
     return;
   }
 
-  v13 = [(UIDocumentProperties *)self _metadata];
-  if (!v13)
+  _metadata = [(UIDocumentProperties *)self _metadata];
+  if (!_metadata)
   {
-    v14 = [(UIDocumentProperties *)self _metadataProvider];
+    _metadataProvider = [(UIDocumentProperties *)self _metadataProvider];
 
-    if (v14)
+    if (_metadataProvider)
     {
       return;
     }
@@ -249,10 +249,10 @@ LABEL_5:
   }
 }
 
-- (id)_headerViewForMenuInteraction:(id)a3 sourceViewProvider:(id)a4
+- (id)_headerViewForMenuInteraction:(id)interaction sourceViewProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_headerView);
 
   if (WeakRetained)
@@ -263,16 +263,16 @@ LABEL_5:
   else
   {
     v10 = [_UIDocumentPropertiesHeaderView alloc];
-    v11 = [(UIDocumentProperties *)self _metadata];
-    if (v11)
+    _metadata = [(UIDocumentProperties *)self _metadata];
+    if (_metadata)
     {
-      v9 = [(_UIDocumentPropertiesHeaderView *)v10 initWithProperties:self metadata:v11 menuInteraction:v6 sourceViewProvider:v7];
+      v9 = [(_UIDocumentPropertiesHeaderView *)v10 initWithProperties:self metadata:_metadata menuInteraction:interactionCopy sourceViewProvider:providerCopy];
     }
 
     else
     {
-      v12 = [(UIDocumentProperties *)self _placeholderMetadata];
-      v9 = [(_UIDocumentPropertiesHeaderView *)v10 initWithProperties:self metadata:v12 menuInteraction:v6 sourceViewProvider:v7];
+      _placeholderMetadata = [(UIDocumentProperties *)self _placeholderMetadata];
+      v9 = [(_UIDocumentPropertiesHeaderView *)v10 initWithProperties:self metadata:_placeholderMetadata menuInteraction:interactionCopy sourceViewProvider:providerCopy];
     }
 
     objc_storeWeak(&self->_headerView, v9);
@@ -294,16 +294,16 @@ LABEL_5:
   else
   {
     v5 = [_UIDocumentPropertiesIconView alloc];
-    v6 = [(UIDocumentProperties *)self _metadata];
-    if (v6)
+    _metadata = [(UIDocumentProperties *)self _metadata];
+    if (_metadata)
     {
-      v4 = [(_UIDocumentPropertiesIconView *)v5 initWithProperties:self metadata:v6];
+      v4 = [(_UIDocumentPropertiesIconView *)v5 initWithProperties:self metadata:_metadata];
     }
 
     else
     {
-      v7 = [(UIDocumentProperties *)self _placeholderMetadata];
-      v4 = [(_UIDocumentPropertiesIconView *)v5 initWithProperties:self metadata:v7];
+      _placeholderMetadata = [(UIDocumentProperties *)self _placeholderMetadata];
+      v4 = [(_UIDocumentPropertiesIconView *)v5 initWithProperties:self metadata:_placeholderMetadata];
     }
 
     objc_storeWeak(&self->_iconView, v4);
@@ -319,16 +319,16 @@ LABEL_5:
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    originalURL = v3;
   }
 
   else
   {
-    v6 = [(UIDocumentProperties *)self metadata];
-    v5 = [v6 originalURL];
+    metadata = [(UIDocumentProperties *)self metadata];
+    originalURL = [metadata originalURL];
   }
 
-  return v5;
+  return originalURL;
 }
 
 - (void)setActivityViewControllerProvider:(void *)activityViewControllerProvider
@@ -341,15 +341,15 @@ LABEL_5:
   [WeakRetained update];
 }
 
-- (void)_performBlockAndCallIconRepresentationChangedHandlerIfNecessary:(id)a3
+- (void)_performBlockAndCallIconRepresentationChangedHandlerIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(UIDocumentProperties *)self wantsIconRepresentation];
-  v4[2](v4);
+  necessaryCopy = necessary;
+  wantsIconRepresentation = [(UIDocumentProperties *)self wantsIconRepresentation];
+  necessaryCopy[2](necessaryCopy);
 
-  v6 = [(UIDocumentProperties *)self wantsIconRepresentation];
+  wantsIconRepresentation2 = [(UIDocumentProperties *)self wantsIconRepresentation];
   wantsIconRepresentationChangedHandler = self->__wantsIconRepresentationChangedHandler;
-  v8 = v5 ^ v6;
+  v8 = wantsIconRepresentation ^ wantsIconRepresentation2;
   if (wantsIconRepresentationChangedHandler)
   {
     v9 = v8 == 0;
@@ -379,26 +379,26 @@ LABEL_5:
   [(UIDocumentProperties *)self _performBlockAndCallIconRepresentationChangedHandlerIfNecessary:v3];
 }
 
-- (void)setIconRepresentationAction:(id)a3
+- (void)setIconRepresentationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__UIDocumentProperties_setIconRepresentationAction___block_invoke;
   v6[3] = &unk_1E70F35B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = actionCopy;
+  v5 = actionCopy;
   [(UIDocumentProperties *)self _performBlockAndCallIconRepresentationChangedHandlerIfNecessary:v6];
 }
 
-- (void)_setAssociatedNavigationItem:(id)a3
+- (void)_setAssociatedNavigationItem:(id)item
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_associatedNavigationItem);
   v6 = WeakRetained;
-  if (WeakRetained != v4 && v4 != 0 && WeakRetained != 0)
+  if (WeakRetained != itemCopy && itemCopy != 0 && WeakRetained != 0)
   {
     v9 = *(__UILogGetCategoryCachedImpl("UINavigationItem", &_setAssociatedNavigationItem____s_category) + 8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -406,20 +406,20 @@ LABEL_5:
       if (self)
       {
         v10 = MEMORY[0x1E696AEC0];
-        v11 = self;
+        selfCopy = self;
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        v14 = [v10 stringWithFormat:@"<%@: %p>", v13, v11];
+        selfCopy = [v10 stringWithFormat:@"<%@: %p>", v13, selfCopy];
       }
 
       else
       {
-        v14 = @"(nil)";
+        selfCopy = @"(nil)";
       }
 
       v15 = MEMORY[0x1E696AEC0];
-      v16 = v4;
-      v26 = v14;
+      v16 = itemCopy;
+      v26 = selfCopy;
       v17 = objc_opt_class();
       v18 = NSStringFromClass(v17);
       v19 = [v15 stringWithFormat:@"<%@: %p>", v18, v16];
@@ -432,7 +432,7 @@ LABEL_5:
       v25 = [v20 stringWithFormat:@"<%@: %p>", v24, v21];
 
       *buf = 138412802;
-      v28 = v14;
+      v28 = selfCopy;
       v29 = 2112;
       v30 = v19;
       v31 = 2112;
@@ -443,7 +443,7 @@ LABEL_5:
     [v6 setDocumentProperties:0];
   }
 
-  objc_storeWeak(&self->_associatedNavigationItem, v4);
+  objc_storeWeak(&self->_associatedNavigationItem, itemCopy);
 }
 
 - (id)_placeholderMetadata
@@ -451,8 +451,8 @@ LABEL_5:
   v4 = [(UIDocumentProperties *)self url];
   if (!v4)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:250 description:{@"No URL available, unable to create placeholder metadata. This is a UIKit bug."}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:250 description:{@"No URL available, unable to create placeholder metadata. This is a UIKit bug."}];
   }
 
   v11 = 0;
@@ -480,30 +480,30 @@ LABEL_5:
   return v7;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v5 = a3;
-  if (!v5)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"metadata != nil"}];
   }
 
   if (pthread_main_np() != 1)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:265 description:@"Call must be made on main thread"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:265 description:@"Call must be made on main thread"];
   }
 
   [(UIDocumentProperties *)self _setMetadataProvider:0];
-  v6 = [v5 copy];
+  v6 = [metadataCopy copy];
   objc_storeStrong(&self->_metadata, v6);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __37__UIDocumentProperties__setMetadata___block_invoke;
   v10[3] = &unk_1E70F3C60;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = v6;
   [v7 _loadAsynchronousFieldsWithUpdateHandler:v10];
 }
@@ -528,26 +528,26 @@ void __37__UIDocumentProperties__setMetadata___block_invoke(uint64_t a1, int a2)
 {
   if (pthread_main_np() != 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:289 description:@"Call must be made on main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDocumentProperties.m" lineNumber:289 description:@"Call must be made on main thread"];
   }
 
   metadata = self->_metadata;
-  v5 = [(UIDocumentProperties *)self headerView];
-  v6 = [v5 linkView];
-  [v6 setMetadata:metadata];
+  headerView = [(UIDocumentProperties *)self headerView];
+  linkView = [headerView linkView];
+  [linkView setMetadata:metadata];
 
   v7 = self->_metadata;
-  v9 = [(UIDocumentProperties *)self iconView];
-  [v9 setMetadata:v7];
+  iconView = [(UIDocumentProperties *)self iconView];
+  [iconView setMetadata:v7];
 }
 
-- (void)_setMetadataProvider:(id)a3
+- (void)_setMetadataProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   [(LPMetadataProvider *)self->__metadataProvider cancel];
   metadataProvider = self->__metadataProvider;
-  self->__metadataProvider = v4;
+  self->__metadataProvider = providerCopy;
 }
 
 - (void)setMetadata:(LPLinkMetadata *)metadata
@@ -555,13 +555,13 @@ void __37__UIDocumentProperties__setMetadata___block_invoke(uint64_t a1, int a2)
   [(UIDocumentProperties *)self _setMetadata:metadata];
   [(UIDocumentProperties *)self _setMetadataProvider:0];
   [(UIDocumentProperties *)self setUrl:0];
-  v4 = [(UIDocumentProperties *)self urlChangeObserver];
-  v5 = [v4 isObserving];
+  urlChangeObserver = [(UIDocumentProperties *)self urlChangeObserver];
+  isObserving = [urlChangeObserver isObserving];
 
-  if (v5)
+  if (isObserving)
   {
-    v6 = [(UIDocumentProperties *)self urlChangeObserver];
-    [v6 stopObserving];
+    urlChangeObserver2 = [(UIDocumentProperties *)self urlChangeObserver];
+    [urlChangeObserver2 stopObserving];
   }
 
   [(UIDocumentProperties *)self setUrlChangeObserver:0];
@@ -569,20 +569,20 @@ void __37__UIDocumentProperties__setMetadata___block_invoke(uint64_t a1, int a2)
 
 - (LPLinkMetadata)metadata
 {
-  v3 = [(UIDocumentProperties *)self _metadata];
-  v4 = [v3 copy];
+  _metadata = [(UIDocumentProperties *)self _metadata];
+  v4 = [_metadata copy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    _placeholderMetadata = v4;
   }
 
   else
   {
-    v6 = [(UIDocumentProperties *)self _placeholderMetadata];
+    _placeholderMetadata = [(UIDocumentProperties *)self _placeholderMetadata];
   }
 
-  v7 = v6;
+  v7 = _placeholderMetadata;
 
   return v7;
 }
@@ -610,11 +610,11 @@ void __37__UIDocumentProperties__setMetadata___block_invoke(uint64_t a1, int a2)
 
 - (id)_metadataWrapper
 {
-  v2 = [(UIDocumentProperties *)self metadata];
-  if (v2)
+  metadata = [(UIDocumentProperties *)self metadata];
+  if (metadata)
   {
     v3 = objc_alloc_init(_UIDocumentPropertiesMetadata);
-    [(_UIDocumentPropertiesMetadata *)v3 setMetadata:v2];
+    [(_UIDocumentPropertiesMetadata *)v3 setMetadata:metadata];
   }
 
   else

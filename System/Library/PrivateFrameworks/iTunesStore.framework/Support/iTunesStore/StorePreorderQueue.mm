@@ -1,24 +1,24 @@
 @interface StorePreorderQueue
 + (id)sharedPreorderQueue;
-+ (void)cancelPreordersWithMessage:(id)a3 connection:(id)a4;
-+ (void)checkQueueWithMessage:(id)a3 connection:(id)a4;
-+ (void)getPreordersWithMessage:(id)a3 connection:(id)a4;
-+ (void)observeXPCServer:(id)a3;
-+ (void)registerManagerWithMessage:(id)a3 connection:(id)a4;
++ (void)cancelPreordersWithMessage:(id)message connection:(id)connection;
++ (void)checkQueueWithMessage:(id)message connection:(id)connection;
++ (void)getPreordersWithMessage:(id)message connection:(id)connection;
++ (void)observeXPCServer:(id)server;
++ (void)registerManagerWithMessage:(id)message connection:(id)connection;
 - (StorePreorderQueue)init;
-- (id)_clientForConnection:(id)a3;
+- (id)_clientForConnection:(id)connection;
 - (id)_copyPreorderAccountIdentifiers;
-- (id)_preorderQueryWithAccountID:(id)a3 database:(id)a4;
-- (void)_clientDisconnectNotification:(id)a3;
-- (void)_handleCheckQueueFinish:(id)a3;
-- (void)_handleLoadQueueFinish:(id)a3;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5;
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingReplyBlock:(id)a5;
-- (void)_sendChangeNotificationForKinds:(id)a3;
-- (void)addPreordersWithItems:(id)a3 accountID:(id)a4;
+- (id)_preorderQueryWithAccountID:(id)d database:(id)database;
+- (void)_clientDisconnectNotification:(id)notification;
+- (void)_handleCheckQueueFinish:(id)finish;
+- (void)_handleLoadQueueFinish:(id)finish;
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block;
+- (void)_handleMessage:(id)message connection:(id)connection usingReplyBlock:(id)block;
+- (void)_sendChangeNotificationForKinds:(id)kinds;
+- (void)addPreordersWithItems:(id)items accountID:(id)d;
 - (void)checkPreorderQueue;
 - (void)dealloc;
-- (void)removePreordersWithPreorderIdentifiers:(id)a3;
+- (void)removePreordersWithPreorderIdentifiers:(id)identifiers;
 @end
 
 @implementation StorePreorderQueue
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = sub_10017AEA8;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383F68 != -1)
   {
     dispatch_once(&qword_100383F68, block);
@@ -71,14 +71,14 @@
   return qword_100383F60;
 }
 
-- (void)addPreordersWithItems:(id)a3 accountID:(id)a4
+- (void)addPreordersWithItems:(id)items accountID:(id)d
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10017AF68;
   v4[3] = &unk_10032A460;
-  v4[4] = a3;
-  v4[5] = a4;
+  v4[4] = items;
+  v4[5] = d;
   v4[6] = self;
   [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
 }
@@ -87,22 +87,22 @@
 {
   if (![-[ISOperationQueue operations](self->_operationQueue "operations")])
   {
-    v3 = [(StorePreorderQueue *)self _copyPreorderAccountIdentifiers];
+    _copyPreorderAccountIdentifiers = [(StorePreorderQueue *)self _copyPreorderAccountIdentifiers];
     v4 = +[SSLogConfig sharedDaemonConfig];
     if (!v4)
     {
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog;
     }
 
     if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -115,7 +115,7 @@
       v24 = 138412546;
       v25 = objc_opt_class();
       v26 = 2048;
-      v27 = [v3 count];
+      v27 = [_copyPreorderAccountIdentifiers count];
       LODWORD(v17) = 22;
       v16 = &v24;
       v7 = _os_log_send_and_compose_impl();
@@ -129,7 +129,7 @@
       }
     }
 
-    if ([v3 count])
+    if ([_copyPreorderAccountIdentifiers count])
     {
       v10 = objc_alloc_init(CancelPreordersOperation);
       [(ISOperationQueue *)self->_operationQueue addOperation:v10];
@@ -138,7 +138,7 @@
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [_copyPreorderAccountIdentifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         v12 = v11;
@@ -149,7 +149,7 @@
           {
             if (*v20 != v13)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(_copyPreorderAccountIdentifiers);
             }
 
             v15 = [[CheckPreorderQueueOperation alloc] initWithAccountIdentifier:*(*(&v19 + 1) + 8 * i)];
@@ -163,7 +163,7 @@
             [(ISOperationQueue *)self->_operationQueue addOperation:v15];
           }
 
-          v12 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v12 = [_copyPreorderAccountIdentifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v12);
@@ -172,7 +172,7 @@
   }
 }
 
-- (void)removePreordersWithPreorderIdentifiers:(id)a3
+- (void)removePreordersWithPreorderIdentifiers:(id)identifiers
 {
   v9 = 0;
   v10 = &v9;
@@ -183,7 +183,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_10017B700;
   v8[3] = &unk_10032A4B0;
-  v8[4] = a3;
+  v8[4] = identifiers;
   v8[5] = v5;
   v8[6] = &v9;
   [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
@@ -202,17 +202,17 @@
   _Block_object_dispose(&v9, 8);
 }
 
-+ (void)cancelPreordersWithMessage:(id)a3 connection:(id)a4
++ (void)cancelPreordersWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10017BA04;
   v4[3] = &unk_10032A500;
-  v4[5] = a3;
+  v4[5] = message;
   [+[StorePreorderQueue sharedPreorderQueue](StorePreorderQueue "sharedPreorderQueue")];
 }
 
-+ (void)checkQueueWithMessage:(id)a3 connection:(id)a4
++ (void)checkQueueWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -221,7 +221,7 @@
   [+[StorePreorderQueue sharedPreorderQueue](StorePreorderQueue "sharedPreorderQueue")];
 }
 
-+ (void)getPreordersWithMessage:(id)a3 connection:(id)a4
++ (void)getPreordersWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -230,38 +230,38 @@
   [+[StorePreorderQueue sharedPreorderQueue](StorePreorderQueue "sharedPreorderQueue")];
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  [a3 addObserver:a1 selector:"cancelPreordersWithMessage:connection:" forMessage:35];
-  [a3 addObserver:a1 selector:"checkQueueWithMessage:connection:" forMessage:36];
-  [a3 addObserver:a1 selector:"getPreordersWithMessage:connection:" forMessage:34];
+  [server addObserver:self selector:"cancelPreordersWithMessage:connection:" forMessage:35];
+  [server addObserver:self selector:"checkQueueWithMessage:connection:" forMessage:36];
+  [server addObserver:self selector:"getPreordersWithMessage:connection:" forMessage:34];
 
-  [a3 addObserver:a1 selector:"registerManagerWithMessage:connection:" forMessage:33];
+  [server addObserver:self selector:"registerManagerWithMessage:connection:" forMessage:33];
 }
 
-+ (void)registerManagerWithMessage:(id)a3 connection:(id)a4
++ (void)registerManagerWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10017C7CC;
   v4[3] = &unk_10032A578;
-  v4[5] = a3;
+  v4[5] = message;
   [+[StorePreorderQueue sharedPreorderQueue](StorePreorderQueue "sharedPreorderQueue")];
 }
 
-- (void)_clientDisconnectNotification:(id)a3
+- (void)_clientDisconnectNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10017CBB0;
   v4[3] = &unk_100327350;
-  v4[4] = a3;
+  v4[4] = notification;
   v4[5] = self;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (id)_clientForConnection:(id)a3
+- (id)_clientForConnection:(id)connection
 {
   v16 = 0u;
   v17 = 0u;
@@ -283,14 +283,14 @@ LABEL_3:
       }
 
       v10 = *(*(&v16 + 1) + 8 * v9);
-      v11 = [(XPCClient *)v10 copyInputConnection];
-      v12 = v11;
-      if (v11)
+      copyInputConnection = [(XPCClient *)v10 copyInputConnection];
+      v12 = copyInputConnection;
+      if (copyInputConnection)
       {
-        xpc_release(v11);
+        xpc_release(copyInputConnection);
       }
 
-      if (v12 == a3 && v10 != 0)
+      if (v12 == connection && v10 != 0)
       {
         break;
       }
@@ -311,7 +311,7 @@ LABEL_3:
   else
   {
 LABEL_15:
-    v10 = [(XPCClient *)[PreorderQueueClient alloc] initWithInputConnection:a3];
+    v10 = [(XPCClient *)[PreorderQueueClient alloc] initWithInputConnection:connection];
     [(NSMutableArray *)self->_clients addObject:v10];
     v14 = v10;
   }
@@ -337,15 +337,15 @@ LABEL_15:
   return v2;
 }
 
-- (void)_handleCheckQueueFinish:(id)a3
+- (void)_handleCheckQueueFinish:(id)finish
 {
-  if ([a3 success])
+  if ([finish success])
   {
-    v5 = [a3 accountIdentifier];
-    v6 = [a3 numberOfPreordersInQueue];
-    if (v6)
+    accountIdentifier = [finish accountIdentifier];
+    numberOfPreordersInQueue = [finish numberOfPreordersInQueue];
+    if (numberOfPreordersInQueue)
     {
-      v7 = v6;
+      v7 = numberOfPreordersInQueue;
       *v20 = 0;
       *&v20[8] = v20;
       *&v20[16] = 0x2020000000;
@@ -362,7 +362,7 @@ LABEL_15:
         v18[2] = sub_10017D448;
         v18[3] = &unk_10032A5C8;
         v18[4] = self;
-        v18[5] = v5;
+        v18[5] = accountIdentifier;
         v18[6] = v20;
         v18[7] = v7;
         [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
@@ -374,7 +374,7 @@ LABEL_18:
         }
       }
 
-      v14 = [[LoadPreorderQueueOperation alloc] initWithAccountIdentifier:v5];
+      v14 = [[LoadPreorderQueueOperation alloc] initWithAccountIdentifier:accountIdentifier];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_10017D4A4;
@@ -393,15 +393,15 @@ LABEL_18:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
     if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_INFO))
@@ -414,7 +414,7 @@ LABEL_18:
       *v20 = 138412546;
       *&v20[4] = objc_opt_class();
       *&v20[12] = 2112;
-      *&v20[14] = v5;
+      *&v20[14] = accountIdentifier;
       LODWORD(v16) = 22;
       v15 = v20;
       v11 = _os_log_send_and_compose_impl();
@@ -433,65 +433,65 @@ LABEL_18:
     v19[2] = sub_10017D408;
     v19[3] = &unk_100327F38;
     v19[4] = self;
-    v19[5] = v5;
+    v19[5] = accountIdentifier;
     [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase downloadsDatabase];
   }
 }
 
-- (void)_handleLoadQueueFinish:(id)a3
+- (void)_handleLoadQueueFinish:(id)finish
 {
-  if ([a3 success])
+  if ([finish success])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10017D57C;
     v5[3] = &unk_100327F38;
-    v5[4] = a3;
+    v5[4] = finish;
     v5[5] = self;
     [+[DownloadsDatabase downloadsDatabase](DownloadsDatabase "downloadsDatabase")];
   }
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingBlock:(id)block
 {
-  xpc_retain(a4);
-  xpc_retain(a3);
+  xpc_retain(connection);
+  xpc_retain(message);
   dispatchQueue = self->_dispatchQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10017DDF0;
   v10[3] = &unk_10032A5F0;
   v10[4] = self;
-  v10[5] = a4;
-  v10[6] = a3;
-  v10[7] = a5;
+  v10[5] = connection;
+  v10[6] = message;
+  v10[7] = block;
   dispatch_async(dispatchQueue, v10);
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 usingReplyBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection usingReplyBlock:(id)block
 {
-  xpc_retain(a4);
-  xpc_retain(a3);
+  xpc_retain(connection);
+  xpc_retain(message);
   dispatchQueue = self->_dispatchQueue;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10017DEF4;
   v10[3] = &unk_10032A618;
-  v10[4] = a3;
+  v10[4] = message;
   v10[5] = self;
-  v10[6] = a4;
-  v10[7] = a5;
+  v10[6] = connection;
+  v10[7] = block;
   dispatch_async(dispatchQueue, v10);
 }
 
-- (id)_preorderQueryWithAccountID:(id)a3 database:(id)a4
+- (id)_preorderQueryWithAccountID:(id)d database:(id)database
 {
-  v5 = [SSSQLiteComparisonPredicate predicateWithProperty:@"store_account_id" equalToValue:a3];
+  v5 = [SSSQLiteComparisonPredicate predicateWithProperty:@"store_account_id" equalToValue:d];
 
-  return [PreorderEntity queryWithDatabase:a4 predicate:v5];
+  return [PreorderEntity queryWithDatabase:database predicate:v5];
 }
 
-- (void)_sendChangeNotificationForKinds:(id)a3
+- (void)_sendChangeNotificationForKinds:(id)kinds
 {
   v10 = 0u;
   v11 = 0u;

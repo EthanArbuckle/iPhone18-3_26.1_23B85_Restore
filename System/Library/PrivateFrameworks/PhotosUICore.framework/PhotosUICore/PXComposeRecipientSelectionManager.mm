@@ -1,13 +1,13 @@
 @interface PXComposeRecipientSelectionManager
 - (PXComposeRecipientSelectionManager)init;
-- (PXComposeRecipientSelectionManager)initWithDataSource:(id)a3;
+- (PXComposeRecipientSelectionManager)initWithDataSource:(id)source;
 - (PXComposeRecipientSelectionManagerDelegate)delegate;
 - (id)_createComposeRecipientSelectionSnapshotFromCurrentState;
-- (id)_setSelectedState:(BOOL)a3 forComposeRecipients:(id)a4;
-- (void)_invalidateCurrentSelectionSnapshotWithChangedComposeRecipients:(id)a3;
+- (id)_setSelectedState:(BOOL)state forComposeRecipients:(id)recipients;
+- (void)_invalidateCurrentSelectionSnapshotWithChangedComposeRecipients:(id)recipients;
 - (void)selectAll;
-- (void)setDataSource:(id)a3 changeDetails:(id)a4;
-- (void)setSelectedState:(BOOL)a3 atIndex:(int64_t)a4;
+- (void)setDataSource:(id)source changeDetails:(id)details;
+- (void)setSelectedState:(BOOL)state atIndex:(int64_t)index;
 @end
 
 @implementation PXComposeRecipientSelectionManager
@@ -19,20 +19,20 @@
   return WeakRetained;
 }
 
-- (void)_invalidateCurrentSelectionSnapshotWithChangedComposeRecipients:(id)a3
+- (void)_invalidateCurrentSelectionSnapshotWithChangedComposeRecipients:(id)recipients
 {
-  v4 = a3;
-  v5 = [(PXComposeRecipientSelectionManager *)self selectionSnapshot];
-  v12 = [v5 selectedComposeRecipients];
+  recipientsCopy = recipients;
+  selectionSnapshot = [(PXComposeRecipientSelectionManager *)self selectionSnapshot];
+  selectedComposeRecipients = [selectionSnapshot selectedComposeRecipients];
 
-  v6 = [(PXComposeRecipientSelectionManager *)self _createComposeRecipientSelectionSnapshotFromCurrentState];
-  [(PXComposeRecipientSelectionManager *)self setSelectionSnapshot:v6];
-  v7 = [(PXComposeRecipientSelectionManager *)self selectionSnapshot];
-  v8 = [v7 selectedComposeRecipients];
+  _createComposeRecipientSelectionSnapshotFromCurrentState = [(PXComposeRecipientSelectionManager *)self _createComposeRecipientSelectionSnapshotFromCurrentState];
+  [(PXComposeRecipientSelectionManager *)self setSelectionSnapshot:_createComposeRecipientSelectionSnapshotFromCurrentState];
+  selectionSnapshot2 = [(PXComposeRecipientSelectionManager *)self selectionSnapshot];
+  selectedComposeRecipients2 = [selectionSnapshot2 selectedComposeRecipients];
 
-  if (v4)
+  if (recipientsCopy)
   {
-    v9 = v4;
+    v9 = recipientsCopy;
   }
 
   else
@@ -40,36 +40,36 @@
     v9 = MEMORY[0x1E695E0F0];
   }
 
-  v10 = [off_1E7721450 changeDetailsFromArray:v12 toArray:v8 changedObjects:v9];
+  v10 = [off_1E7721450 changeDetailsFromArray:selectedComposeRecipients toArray:selectedComposeRecipients2 changedObjects:v9];
 
-  v11 = [(PXComposeRecipientSelectionManager *)self delegate];
-  [v11 composeRecipientSelectionManager:self didUpdateSelectionSnapshotWithChangeDetails:v10];
+  delegate = [(PXComposeRecipientSelectionManager *)self delegate];
+  [delegate composeRecipientSelectionManager:self didUpdateSelectionSnapshotWithChangeDetails:v10];
 }
 
 - (id)_createComposeRecipientSelectionSnapshotFromCurrentState
 {
   v3 = [PXComposeRecipientSelectionSnapshot alloc];
-  v4 = [(NSMutableOrderedSet *)self->_selectedComposeRecipients array];
-  v5 = [(NSMutableOrderedSet *)self->_selectedRecipients array];
-  v6 = [(PXComposeRecipientSelectionSnapshot *)v3 initWithSelectedComposeRecipients:v4 selectedRecipients:v5];
+  array = [(NSMutableOrderedSet *)self->_selectedComposeRecipients array];
+  array2 = [(NSMutableOrderedSet *)self->_selectedRecipients array];
+  v6 = [(PXComposeRecipientSelectionSnapshot *)v3 initWithSelectedComposeRecipients:array selectedRecipients:array2];
 
   return v6;
 }
 
-- (id)_setSelectedState:(BOOL)a3 forComposeRecipients:(id)a4
+- (id)_setSelectedState:(BOOL)state forComposeRecipients:(id)recipients
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  recipientsCopy = recipients;
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(recipientsCopy, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__PXComposeRecipientSelectionManager__setSelectedState_forComposeRecipients___block_invoke;
   v13[3] = &unk_1E7742500;
-  v15 = a3;
+  stateCopy = state;
   v13[4] = self;
   v9 = v8;
   v14 = v9;
-  [v7 enumerateObjectsUsingBlock:v13];
+  [recipientsCopy enumerateObjectsUsingBlock:v13];
 
   v10 = v14;
   v11 = v9;
@@ -112,23 +112,23 @@ void __77__PXComposeRecipientSelectionManager__setSelectedState_forComposeRecipi
 LABEL_12:
 }
 
-- (void)setSelectedState:(BOOL)a3 atIndex:(int64_t)a4
+- (void)setSelectedState:(BOOL)state atIndex:(int64_t)index
 {
-  v5 = a3;
+  stateCopy = state;
   v14[1] = *MEMORY[0x1E69E9840];
-  v8 = [(PXComposeRecipientSelectionManager *)self dataSource];
-  v9 = [v8 composeRecipients];
+  dataSource = [(PXComposeRecipientSelectionManager *)self dataSource];
+  composeRecipients = [dataSource composeRecipients];
 
-  v10 = [v9 objectAtIndexedSubscript:a4];
+  v10 = [composeRecipients objectAtIndexedSubscript:index];
   if (!v10)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientSelectionManager.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"composeRecipient"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientSelectionManager.m" lineNumber:125 description:{@"Invalid parameter not satisfying: %@", @"composeRecipient"}];
   }
 
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v12 = [(PXComposeRecipientSelectionManager *)self _setSelectedState:v5 forComposeRecipients:v11];
+  v12 = [(PXComposeRecipientSelectionManager *)self _setSelectedState:stateCopy forComposeRecipients:v11];
 
   if ([v12 count])
   {
@@ -138,47 +138,47 @@ LABEL_12:
 
 - (void)selectAll
 {
-  v3 = [(PXComposeRecipientSelectionManager *)self dataSource];
-  v7 = [v3 composeRecipients];
+  dataSource = [(PXComposeRecipientSelectionManager *)self dataSource];
+  composeRecipients = [dataSource composeRecipients];
 
-  v4 = [v7 count];
-  v5 = v7;
+  v4 = [composeRecipients count];
+  v5 = composeRecipients;
   if (v4)
   {
-    v6 = [(PXComposeRecipientSelectionManager *)self _setSelectedState:1 forComposeRecipients:v7];
+    v6 = [(PXComposeRecipientSelectionManager *)self _setSelectedState:1 forComposeRecipients:composeRecipients];
     if ([v6 count])
     {
       [(PXComposeRecipientSelectionManager *)self _invalidateCurrentSelectionSnapshotWithChangedComposeRecipients:v6];
     }
 
-    v5 = v7;
+    v5 = composeRecipients;
   }
 }
 
-- (void)setDataSource:(id)a3 changeDetails:(id)a4
+- (void)setDataSource:(id)source changeDetails:(id)details
 {
-  v7 = a3;
+  sourceCopy = source;
   dataSource = self->_dataSource;
-  if (dataSource != v7)
+  if (dataSource != sourceCopy)
   {
     v9 = dataSource;
-    objc_storeStrong(&self->_dataSource, a3);
-    v10 = a4;
-    v11 = [v10 removedIndexes];
-    v12 = [MEMORY[0x1E696AD50] indexSet];
+    objc_storeStrong(&self->_dataSource, source);
+    detailsCopy = details;
+    removedIndexes = [detailsCopy removedIndexes];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __66__PXComposeRecipientSelectionManager_setDataSource_changeDetails___block_invoke;
     v21[3] = &unk_1E774C1B0;
     v13 = v9;
     v22 = v13;
-    v23 = self;
-    v14 = v12;
+    selfCopy = self;
+    v14 = indexSet;
     v24 = v14;
-    [v11 enumerateIndexesUsingBlock:v21];
-    v15 = [v10 changedIndexes];
+    [removedIndexes enumerateIndexesUsingBlock:v21];
+    changedIndexes = [detailsCopy changedIndexes];
 
-    v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v15, "count")}];
+    v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(changedIndexes, "count")}];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __66__PXComposeRecipientSelectionManager_setDataSource_changeDetails___block_invoke_2;
@@ -186,7 +186,7 @@ LABEL_12:
     v19[4] = self;
     v17 = v16;
     v20 = v17;
-    [v15 enumerateIndexesUsingBlock:v19];
+    [changedIndexes enumerateIndexesUsingBlock:v19];
     if ([v17 count])
     {
       v18 = [(PXComposeRecipientSelectionManager *)self _setSelectedState:0 forComposeRecipients:v17];
@@ -244,13 +244,13 @@ void __66__PXComposeRecipientSelectionManager_setDataSource_changeDetails___bloc
   }
 }
 
-- (PXComposeRecipientSelectionManager)initWithDataSource:(id)a3
+- (PXComposeRecipientSelectionManager)initWithDataSource:(id)source
 {
-  v6 = a3;
-  if (!v6)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientSelectionManager.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientSelectionManager.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
   }
 
   v15.receiver = self;
@@ -259,14 +259,14 @@ void __66__PXComposeRecipientSelectionManager_setDataSource_changeDetails___bloc
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dataSource, a3);
-    v9 = [MEMORY[0x1E695DFA0] orderedSet];
+    objc_storeStrong(&v7->_dataSource, source);
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     selectedComposeRecipients = v8->_selectedComposeRecipients;
-    v8->_selectedComposeRecipients = v9;
+    v8->_selectedComposeRecipients = orderedSet;
 
-    v11 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
     selectedRecipients = v8->_selectedRecipients;
-    v8->_selectedRecipients = v11;
+    v8->_selectedRecipients = orderedSet2;
   }
 
   return v8;
@@ -274,8 +274,8 @@ void __66__PXComposeRecipientSelectionManager_setDataSource_changeDetails___bloc
 
 - (PXComposeRecipientSelectionManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXComposeRecipientSelectionManager.m" lineNumber:53 description:{@"%s is not available as initializer", "-[PXComposeRecipientSelectionManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXComposeRecipientSelectionManager.m" lineNumber:53 description:{@"%s is not available as initializer", "-[PXComposeRecipientSelectionManager init]"}];
 
   abort();
 }

@@ -1,10 +1,10 @@
 @interface WFGetItemNameAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetItemNameAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -16,7 +16,7 @@
   v3[2] = __50__WFGetItemNameAction_runAsynchronouslyWithInput___block_invoke_3;
   v3[3] = &unk_278C21E70;
   v3[4] = self;
-  [a3 transformItemsUsingBlock:v4 completionHandler:v3];
+  [input transformItemsUsingBlock:v4 completionHandler:v3];
 }
 
 void __50__WFGetItemNameAction_runAsynchronouslyWithInput___block_invoke(uint64_t a1, void *a2, void *a3)

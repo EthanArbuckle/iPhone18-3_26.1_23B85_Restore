@@ -1,15 +1,15 @@
 @interface RestoreInstallCreator
-+ (id)createRestoreFromCoordinator:(id)a3 policy:(id)a4 error:(id *)a5;
++ (id)createRestoreFromCoordinator:(id)coordinator policy:(id)policy error:(id *)error;
 - (_TtC9appstored21RestoreInstallCreator)init;
 @end
 
 @implementation RestoreInstallCreator
 
-+ (id)createRestoreFromCoordinator:(id)a3 policy:(id)a4 error:(id *)a5
++ (id)createRestoreFromCoordinator:(id)coordinator policy:(id)policy error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = sub_100083E50(v6, v7);
+  coordinatorCopy = coordinator;
+  policyCopy = policy;
+  v8 = sub_100083E50(coordinatorCopy, policyCopy);
 
   return v8;
 }

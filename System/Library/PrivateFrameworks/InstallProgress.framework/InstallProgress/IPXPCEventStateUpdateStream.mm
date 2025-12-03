@@ -1,25 +1,25 @@
 @interface IPXPCEventStateUpdateStream
-- (IPXPCEventStateUpdateStream)initWithStreamName:(id)a3 queue:(id)a4;
+- (IPXPCEventStateUpdateStream)initWithStreamName:(id)name queue:(id)queue;
 - (id)sink;
 - (id)source;
 @end
 
 @implementation IPXPCEventStateUpdateStream
 
-- (IPXPCEventStateUpdateStream)initWithStreamName:(id)a3 queue:(id)a4
+- (IPXPCEventStateUpdateStream)initWithStreamName:(id)name queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = IPXPCEventStateUpdateStream;
   v8 = [(IPXPCEventStateUpdateStream *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     streamName = v8->_streamName;
     v8->_streamName = v9;
 
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeStrong(&v8->_queue, queue);
     v8->_lock._os_unfair_lock_opaque = 0;
   }
 

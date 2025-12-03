@@ -1,12 +1,12 @@
 @interface PUPhotoSmilesCommentCell
-+ (double)heightOfSmileCellWithComments:(id)a3 forWidth:(double)a4 isVideo:(BOOL)a5 forInterfaceOrientation:(int64_t)a6;
-+ (id)_attributedStringForComments:(id)a3 color:(id)a4 isVideo:(BOOL)a5;
-- (PUPhotoSmilesCommentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 isVideo:(BOOL)a5;
++ (double)heightOfSmileCellWithComments:(id)comments forWidth:(double)width isVideo:(BOOL)video forInterfaceOrientation:(int64_t)orientation;
++ (id)_attributedStringForComments:(id)comments color:(id)color isVideo:(BOOL)video;
+- (PUPhotoSmilesCommentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier isVideo:(BOOL)video;
 - (void)_updateContent;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setUserLikes:(id)a3;
-- (void)setUsesCompactSeparators:(BOOL)a3;
+- (void)setUserLikes:(id)likes;
+- (void)setUsesCompactSeparators:(BOOL)separators;
 @end
 
 @implementation PUPhotoSmilesCommentCell
@@ -16,9 +16,9 @@
   *&rect.origin.y = self;
   *&rect.size.width = PUPhotoSmilesCommentCell;
   [(CGFloat *)&rect.origin.y layoutSubviews];
-  v3 = [(PUPhotoSmilesCommentCell *)self effectiveUserInterfaceLayoutDirection];
-  v4 = [(PUPhotoSmilesCommentCell *)self contentView];
-  [v4 bounds];
+  effectiveUserInterfaceLayoutDirection = [(PUPhotoSmilesCommentCell *)self effectiveUserInterfaceLayoutDirection];
+  contentView = [(PUPhotoSmilesCommentCell *)self contentView];
+  [contentView bounds];
   rect.origin.x = v5;
   v7 = v6;
   v9 = v8;
@@ -28,7 +28,7 @@
   v13 = v12;
   v14 = 15.0;
   v15 = 15.0;
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v20.origin.x = rect.origin.x;
     v20.origin.y = v7;
@@ -50,7 +50,7 @@
     v18 = v9 + -15.0;
   }
 
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v21.origin.x = rect.origin.x;
     v21.origin.y = v7;
@@ -62,15 +62,15 @@
   [(UIView *)self->_styledSeparatorView setFrame:v14, v11 - 1.0 / v17, v18];
 }
 
-- (void)setUserLikes:(id)a3
+- (void)setUserLikes:(id)likes
 {
-  v5 = a3;
-  if (self->_userLikes != v5)
+  likesCopy = likes;
+  if (self->_userLikes != likesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userLikes, a3);
+    v6 = likesCopy;
+    objc_storeStrong(&self->_userLikes, likes);
     [(PUPhotoSmilesCommentCell *)self _updateContent];
-    v5 = v6;
+    likesCopy = v6;
   }
 }
 
@@ -78,8 +78,8 @@
 {
   v3 = objc_opt_class();
   userLikes = self->_userLikes;
-  v5 = [MEMORY[0x1E69DC888] labelColor];
-  v9 = [v3 _attributedStringForComments:userLikes color:v5 isVideo:self->_isVideo];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v9 = [v3 _attributedStringForComments:userLikes color:labelColor isVideo:self->_isVideo];
 
   v6 = [(PXFastEnumeration *)self->_userLikes count]== 0;
   v7 = v6;
@@ -105,20 +105,20 @@
   [(PUPhotoSmilesCommentCell *)self setUserLikes:0];
 }
 
-- (void)setUsesCompactSeparators:(BOOL)a3
+- (void)setUsesCompactSeparators:(BOOL)separators
 {
-  if (self->_usesCompactSeparators != a3)
+  if (self->_usesCompactSeparators != separators)
   {
-    self->_usesCompactSeparators = a3;
+    self->_usesCompactSeparators = separators;
     [(PUPhotoSmilesCommentCell *)self setNeedsLayout];
   }
 }
 
-- (PUPhotoSmilesCommentCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 isVideo:(BOOL)a5
+- (PUPhotoSmilesCommentCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier isVideo:(BOOL)video
 {
   v19.receiver = self;
   v19.super_class = PUPhotoSmilesCommentCell;
-  v6 = [(PUPhotoSmilesCommentCell *)&v19 initWithStyle:a3 reuseIdentifier:a4];
+  v6 = [(PUPhotoSmilesCommentCell *)&v19 initWithStyle:style reuseIdentifier:identifier];
   v7 = v6;
   if (v6)
   {
@@ -133,37 +133,37 @@
     [(UILabel *)v7->_smileContentLabel setNumberOfLines:0];
     [(UILabel *)v7->_smileContentLabel setLineBreakMode:0];
     v11 = v7->_smileContentLabel;
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v11 setBackgroundColor:clearColor];
 
-    v13 = [(PUPhotoSmilesCommentCell *)v7 contentView];
-    [v13 addSubview:v7->_smileContentLabel];
+    contentView = [(PUPhotoSmilesCommentCell *)v7 contentView];
+    [contentView addSubview:v7->_smileContentLabel];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DD250]);
     styledSeparatorView = v7->_styledSeparatorView;
     v7->_styledSeparatorView = v14;
 
     v16 = v7->_styledSeparatorView;
-    v17 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v16 setBackgroundColor:v17];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v16 setBackgroundColor:separatorColor];
 
     [(PUPhotoSmilesCommentCell *)v7 addSubview:v7->_styledSeparatorView];
-    v7->_isVideo = a5;
+    v7->_isVideo = video;
   }
 
   return v7;
 }
 
-+ (double)heightOfSmileCellWithComments:(id)a3 forWidth:(double)a4 isVideo:(BOOL)a5 forInterfaceOrientation:(int64_t)a6
++ (double)heightOfSmileCellWithComments:(id)comments forWidth:(double)width isVideo:(BOOL)video forInterfaceOrientation:(int64_t)orientation
 {
-  v6 = a5;
-  v9 = a3;
-  if ([v9 count])
+  videoCopy = video;
+  commentsCopy = comments;
+  if ([commentsCopy count])
   {
-    v10 = [a1 _attributedStringForComments:v9 color:0 isVideo:v6];
+    v10 = [self _attributedStringForComments:commentsCopy color:0 isVideo:videoCopy];
     v11 = [PUPhotoCommentCell _synthesizedAttributedString:v10 withWordWrapping:1];
 
-    [v11 boundingRectWithSize:1 options:0 context:{a4 + -25.0, 1.79769313e308}];
+    [v11 boundingRectWithSize:1 options:0 context:{width + -25.0, 1.79769313e308}];
     v15 = CGRectIntegral(v14);
     if (v15.size.height + 12.0 + 12.0 >= 25.0)
     {
@@ -184,37 +184,37 @@
   return v12;
 }
 
-+ (id)_attributedStringForComments:(id)a3 color:(id)a4 isVideo:(BOOL)a5
++ (id)_attributedStringForComments:(id)comments color:(id)color isVideo:(BOOL)video
 {
-  v38 = a5;
+  videoCopy = video;
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  commentsCopy = comments;
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v7 = [MEMORY[0x1E69DC888] redColor];
+    colorCopy = [MEMORY[0x1E69DC888] redColor];
   }
 
   v9 = *MEMORY[0x1E69DB648];
   v47[0] = *MEMORY[0x1E69DB650];
   v8 = v47[0];
   v47[1] = v9;
-  v48[0] = v7;
-  v10 = [MEMORY[0x1E69BE1B8] sharedCache];
-  v11 = [v10 likeFont];
-  v48[1] = v11;
+  v48[0] = colorCopy;
+  mEMORY[0x1E69BE1B8] = [MEMORY[0x1E69BE1B8] sharedCache];
+  likeFont = [mEMORY[0x1E69BE1B8] likeFont];
+  v48[1] = likeFont;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:2];
 
-  v39 = v7;
+  v39 = colorCopy;
   v45[1] = v9;
-  v46[0] = v7;
+  v46[0] = colorCopy;
   v45[0] = v8;
-  v13 = [MEMORY[0x1E69BE1B8] sharedCache];
-  v14 = [v13 youLikeFont];
-  v46[1] = v14;
+  mEMORY[0x1E69BE1B8]2 = [MEMORY[0x1E69BE1B8] sharedCache];
+  youLikeFont = [mEMORY[0x1E69BE1B8]2 youLikeFont];
+  v46[1] = youLikeFont;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
 
-  if ([v6 count])
+  if ([commentsCopy count])
   {
     v37 = v12;
     if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -225,8 +225,8 @@
     }
 
     v35 = v15;
-    v36 = v6;
-    v16 = v6;
+    v36 = commentsCopy;
+    v16 = commentsCopy;
     v40 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v41 = 0u;
     v42 = 0u;
@@ -256,16 +256,16 @@
 
           else
           {
-            v24 = [v23 photoLibrary];
+            photoLibrary = [v23 photoLibrary];
             v25 = MEMORY[0x1E6978AC0];
-            v26 = [v24 librarySpecificFetchOptions];
-            v27 = [v25 fetchContributorForComment:v23 options:v26];
-            v28 = [v27 firstObject];
+            librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+            v27 = [v25 fetchContributorForComment:v23 options:librarySpecificFetchOptions];
+            firstObject = [v27 firstObject];
 
-            v29 = [v28 fullName];
-            if ([v29 length])
+            fullName = [firstObject fullName];
+            if ([fullName length])
             {
-              [v40 addObject:v29];
+              [v40 addObject:fullName];
             }
           }
         }
@@ -285,8 +285,8 @@
     v30 = v40;
     v12 = v37;
     v15 = v35;
-    v31 = [MEMORY[0x1E696AAB0] px_localizedAttributedStringForLikesFromUser:v20 & 1 otherPeopleFullNames:v30 isVideo:v38 defaultTextAttributes:v37 emphasizedTextAttributes:v35];
-    v6 = v36;
+    v31 = [MEMORY[0x1E696AAB0] px_localizedAttributedStringForLikesFromUser:v20 & 1 otherPeopleFullNames:v30 isVideo:videoCopy defaultTextAttributes:v37 emphasizedTextAttributes:v35];
+    commentsCopy = v36;
   }
 
   else

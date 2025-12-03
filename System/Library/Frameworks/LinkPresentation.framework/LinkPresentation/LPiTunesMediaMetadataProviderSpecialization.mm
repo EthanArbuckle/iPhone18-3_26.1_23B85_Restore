@@ -1,18 +1,18 @@
 @interface LPiTunesMediaMetadataProviderSpecialization
-+ (id)assetArrayFromScreenshotArray:(id)a3 onlyAllowingOrientation:(id)a4;
-+ (id)assetArrayFromScreenshotDictionary:(id)a3 usingPreferredPlatformArray:(id)a4;
-+ (id)assetArrayScreenshotArray:(id)a3;
-+ (id)assetFromVideoPreviewDictionary:(id)a3 usingPreferredPlatformArray:(id)a4;
-+ (id)extractOffers:(id)a3;
-+ (id)specializedMetadataProviderForMetadata:(id)a3 withContext:(id)a4;
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3;
-+ (int64_t)determineOrientationOfScreenshotsInArray:(id)a3;
-+ (void)requestSourceApplicationMetadataForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-- (LPiTunesMediaMetadataProviderSpecialization)initWithIdentifier:(id)a3 storefrontCountryCode:(id)a4 withContext:(id)a5;
-- (LPiTunesMediaMetadataProviderSpecialization)initWithLyricComponents:(id)a3 withContext:(id)a4;
-- (id)processResponseDictionary:(id)a3 withStorefrontIdentifier:(id)a4;
++ (id)assetArrayFromScreenshotArray:(id)array onlyAllowingOrientation:(id)orientation;
++ (id)assetArrayFromScreenshotDictionary:(id)dictionary usingPreferredPlatformArray:(id)array;
++ (id)assetArrayScreenshotArray:(id)array;
++ (id)assetFromVideoPreviewDictionary:(id)dictionary usingPreferredPlatformArray:(id)array;
++ (id)extractOffers:(id)offers;
++ (id)specializedMetadataProviderForMetadata:(id)metadata withContext:(id)context;
++ (id)specializedMetadataProviderForURLWithContext:(id)context;
++ (int64_t)determineOrientationOfScreenshotsInArray:(id)array;
++ (void)requestSourceApplicationMetadataForBundleIdentifier:(id)identifier completionHandler:(id)handler;
+- (LPiTunesMediaMetadataProviderSpecialization)initWithIdentifier:(id)identifier storefrontCountryCode:(id)code withContext:(id)context;
+- (LPiTunesMediaMetadataProviderSpecialization)initWithLyricComponents:(id)components withContext:(id)context;
+- (id)processResponseDictionary:(id)dictionary withStorefrontIdentifier:(id)identifier;
 - (id)schema;
-- (void)_internalPostProcessResolvedMetadataWithCompletionHandler:(id)a3;
+- (void)_internalPostProcessResolvedMetadataWithCompletionHandler:(id)handler;
 - (void)done;
 - (void)fail;
 - (void)resolve;
@@ -21,10 +21,10 @@
 
 @implementation LPiTunesMediaMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3
++ (id)specializedMetadataProviderForURLWithContext:(id)context
 {
-  v3 = a3;
-  if (+[LPSettings disableLegacyStoreLookups](LPSettings, "disableLegacyStoreLookups") || ([v3 postRedirectURL], v4 = objc_claimAutoreleasedReturnValue(), v5 = +[LPPresentationSpecializations isiTunesStoreURLThatUsesWebMetadata:](LPPresentationSpecializations, "isiTunesStoreURLThatUsesWebMetadata:", v4), v4, v5) || (objc_msgSend(v3, "postRedirectURL"), v6 = objc_claimAutoreleasedReturnValue(), v7 = +[LPPresentationSpecializations isiTunesStoreOrAdjacentURL:](LPPresentationSpecializations, "isiTunesStoreOrAdjacentURL:", v6), v6, !v7))
+  contextCopy = context;
+  if (+[LPSettings disableLegacyStoreLookups](LPSettings, "disableLegacyStoreLookups") || ([contextCopy postRedirectURL], v4 = objc_claimAutoreleasedReturnValue(), v5 = +[LPPresentationSpecializations isiTunesStoreURLThatUsesWebMetadata:](LPPresentationSpecializations, "isiTunesStoreURLThatUsesWebMetadata:", v4), v4, v5) || (objc_msgSend(contextCopy, "postRedirectURL"), v6 = objc_claimAutoreleasedReturnValue(), v7 = +[LPPresentationSpecializations isiTunesStoreOrAdjacentURL:](LPPresentationSpecializations, "isiTunesStoreOrAdjacentURL:", v6), v6, !v7))
   {
     v13 = 0;
   }
@@ -50,26 +50,26 @@
     v9 = v8;
     _Block_object_dispose(&v22, 8);
     v10 = [v8 alloc];
-    v11 = [v3 postRedirectURL];
-    v12 = [v10 initWithURL:v11];
+    postRedirectURL = [contextCopy postRedirectURL];
+    v12 = [v10 initWithURL:postRedirectURL];
 
     if (v12)
     {
-      v13 = [[LPiTunesMediaMetadataProviderSpecialization alloc] initWithLyricComponents:v12 withContext:v3];
+      v13 = [[LPiTunesMediaMetadataProviderSpecialization alloc] initWithLyricComponents:v12 withContext:contextCopy];
     }
 
     else
     {
       v15 = [LPiTunesMediaURLComponents alloc];
-      v16 = [v3 postRedirectURL];
-      v17 = [(LPiTunesMediaURLComponents *)v15 initWithURL:v16];
+      postRedirectURL2 = [contextCopy postRedirectURL];
+      v17 = [(LPiTunesMediaURLComponents *)v15 initWithURL:postRedirectURL2];
 
       if (v17)
       {
         v18 = [LPiTunesMediaMetadataProviderSpecialization alloc];
-        v19 = [(LPiTunesMediaURLComponents *)v17 identifier];
-        v20 = [(LPiTunesMediaURLComponents *)v17 storefrontCountryCode];
-        v13 = [(LPiTunesMediaMetadataProviderSpecialization *)v18 initWithIdentifier:v19 storefrontCountryCode:v20 withContext:v3];
+        identifier = [(LPiTunesMediaURLComponents *)v17 identifier];
+        storefrontCountryCode = [(LPiTunesMediaURLComponents *)v17 storefrontCountryCode];
+        v13 = [(LPiTunesMediaMetadataProviderSpecialization *)v18 initWithIdentifier:identifier storefrontCountryCode:storefrontCountryCode withContext:contextCopy];
       }
 
       else
@@ -82,79 +82,79 @@
   return v13;
 }
 
-+ (id)specializedMetadataProviderForMetadata:(id)a3 withContext:(id)a4
++ (id)specializedMetadataProviderForMetadata:(id)metadata withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 postRedirectURL];
-  v8 = [LPPresentationSpecializations isiTunesStoreURLThatUsesWebMetadata:v7];
+  metadataCopy = metadata;
+  contextCopy = context;
+  postRedirectURL = [contextCopy postRedirectURL];
+  v8 = [LPPresentationSpecializations isiTunesStoreURLThatUsesWebMetadata:postRedirectURL];
 
   if (v8)
   {
-    v9 = 0;
+    appleContentID = 0;
   }
 
   else
   {
-    v9 = [v5 appleContentID];
+    appleContentID = [metadataCopy appleContentID];
 
-    if (v9)
+    if (appleContentID)
     {
-      v10 = [v5 appleContentID];
-      v9 = [v10 length];
+      appleContentID2 = [metadataCopy appleContentID];
+      appleContentID = [appleContentID2 length];
 
-      if (v9)
+      if (appleContentID)
       {
         v11 = [LPiTunesMediaMetadataProviderSpecialization alloc];
-        v12 = [v5 appleContentID];
-        v9 = [(LPiTunesMediaMetadataProviderSpecialization *)v11 initWithIdentifier:v12 storefrontCountryCode:0 withContext:v6];
+        appleContentID3 = [metadataCopy appleContentID];
+        appleContentID = [(LPiTunesMediaMetadataProviderSpecialization *)v11 initWithIdentifier:appleContentID3 storefrontCountryCode:0 withContext:contextCopy];
       }
     }
   }
 
-  return v9;
+  return appleContentID;
 }
 
-- (LPiTunesMediaMetadataProviderSpecialization)initWithIdentifier:(id)a3 storefrontCountryCode:(id)a4 withContext:(id)a5
+- (LPiTunesMediaMetadataProviderSpecialization)initWithIdentifier:(id)identifier storefrontCountryCode:(id)code withContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  codeCopy = code;
   v15.receiver = self;
   v15.super_class = LPiTunesMediaMetadataProviderSpecialization;
-  v11 = [(LPMetadataProviderSpecialization *)&v15 initWithContext:a5];
+  v11 = [(LPMetadataProviderSpecialization *)&v15 initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    objc_storeStrong(&v12->_storefrontCountryCode, a4);
+    objc_storeStrong(&v11->_identifier, identifier);
+    objc_storeStrong(&v12->_storefrontCountryCode, code);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (LPiTunesMediaMetadataProviderSpecialization)initWithLyricComponents:(id)a3 withContext:(id)a4
+- (LPiTunesMediaMetadataProviderSpecialization)initWithLyricComponents:(id)components withContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(LPMetadataProviderSpecialization *)self initWithContext:v8];
+  componentsCopy = components;
+  contextCopy = context;
+  v9 = [(LPMetadataProviderSpecialization *)self initWithContext:contextCopy];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v7, "songAdamID")}];
-    v11 = [v10 stringValue];
+    v10 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(componentsCopy, "songAdamID")}];
+    stringValue = [v10 stringValue];
     identifier = v9->_identifier;
-    v9->_identifier = v11;
+    v9->_identifier = stringValue;
 
-    objc_storeStrong(&v9->_lyricComponents, a3);
+    objc_storeStrong(&v9->_lyricComponents, components);
     v13 = v9;
   }
 
   return v9;
 }
 
-+ (int64_t)determineOrientationOfScreenshotsInArray:(id)a3
++ (int64_t)determineOrientationOfScreenshotsInArray:(id)array
 {
-  v3 = [a3 objectAtIndexedSubscript:0];
+  v3 = [array objectAtIndexedSubscript:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -167,8 +167,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v5 integerValue];
-        if (v7 <= [v6 integerValue])
+        integerValue = [v5 integerValue];
+        if (integerValue <= [v6 integerValue])
         {
           v8 = 1;
         }
@@ -199,16 +199,16 @@
   return v8;
 }
 
-+ (id)assetArrayScreenshotArray:(id)a3
++ (id)assetArrayScreenshotArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -249,13 +249,13 @@ LABEL_11:
   return v10;
 }
 
-+ (id)assetArrayFromScreenshotArray:(id)a3 onlyAllowingOrientation:(id)a4
++ (id)assetArrayFromScreenshotArray:(id)array onlyAllowingOrientation:(id)orientation
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [LPiTunesMediaMetadataProviderSpecialization determineOrientationOfScreenshotsInArray:v5];
-  if (v6 && [v6 integerValue] != v7)
+  arrayCopy = array;
+  orientationCopy = orientation;
+  v7 = [LPiTunesMediaMetadataProviderSpecialization determineOrientationOfScreenshotsInArray:arrayCopy];
+  if (orientationCopy && [orientationCopy integerValue] != v7)
   {
 LABEL_7:
     v10 = 0;
@@ -266,7 +266,7 @@ LABEL_7:
   {
     if (v7 == 1)
     {
-      v8 = [v5 objectAtIndexedSubscript:0];
+      v8 = [arrayCopy objectAtIndexedSubscript:0];
       v9 = mediaAsset(v8, @"screenshots", 1000, 1000, @"bb", @"png");
 
       if (v9)
@@ -286,22 +286,22 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v10 = [LPiTunesMediaMetadataProviderSpecialization assetArrayScreenshotArray:v5];
+  v10 = [LPiTunesMediaMetadataProviderSpecialization assetArrayScreenshotArray:arrayCopy];
 LABEL_11:
 
   return v10;
 }
 
-+ (id)assetArrayFromScreenshotDictionary:(id)a3 usingPreferredPlatformArray:(id)a4
++ (id)assetArrayFromScreenshotDictionary:(id)dictionary usingPreferredPlatformArray:(id)array
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v7)
   {
     v8 = *v31;
@@ -311,20 +311,20 @@ LABEL_11:
       {
         if (*v31 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
-        v10 = [v5 objectForKeyedSubscript:*(*(&v30 + 1) + 8 * i)];
+        v10 = [dictionaryCopy objectForKeyedSubscript:*(*(&v30 + 1) + 8 * i)];
         v11 = __110__LPiTunesMediaMetadataProviderSpecialization_assetArrayFromScreenshotDictionary_usingPreferredPlatformArray___block_invoke(v10, v10, 0);
 
         if (v11)
         {
-          v12 = v6;
+          allValues = arrayCopy;
           goto LABEL_27;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v30 objects:v36 count:16];
+      v7 = [arrayCopy countByEnumeratingWithState:&v30 objects:v36 count:16];
       if (v7)
       {
         continue;
@@ -338,8 +338,8 @@ LABEL_11:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [v5 allValues];
-  v13 = [v12 countByEnumeratingWithState:&v26 objects:v35 count:16];
+  allValues = [dictionaryCopy allValues];
+  v13 = [allValues countByEnumeratingWithState:&v26 objects:v35 count:16];
   v14 = v13;
   if (v13)
   {
@@ -350,7 +350,7 @@ LABEL_11:
     {
       if (*v27 != v15)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(allValues);
       }
 
       v13 = __110__LPiTunesMediaMetadataProviderSpecialization_assetArrayFromScreenshotDictionary_usingPreferredPlatformArray___block_invoke(v13, *(*(&v26 + 1) + 8 * v16), &unk_1F24834B8);
@@ -362,7 +362,7 @@ LABEL_11:
 
       if (v14 == ++v16)
       {
-        v13 = [v12 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v26 objects:v35 count:16];
         v14 = v13;
         if (v13)
         {
@@ -382,8 +382,8 @@ LABEL_17:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [v5 allValues];
-    v17 = [v12 countByEnumeratingWithState:&v22 objects:v34 count:16];
+    allValues = [dictionaryCopy allValues];
+    v17 = [allValues countByEnumeratingWithState:&v22 objects:v34 count:16];
     v18 = v17;
     if (v17)
     {
@@ -394,7 +394,7 @@ LABEL_19:
       {
         if (*v23 != v19)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allValues);
         }
 
         v17 = __110__LPiTunesMediaMetadataProviderSpecialization_assetArrayFromScreenshotDictionary_usingPreferredPlatformArray___block_invoke(v17, *(*(&v22 + 1) + 8 * v20), &unk_1F24834D0);
@@ -406,7 +406,7 @@ LABEL_19:
 
         if (v18 == ++v20)
         {
-          v17 = [v12 countByEnumeratingWithState:&v22 objects:v34 count:16];
+          v17 = [allValues countByEnumeratingWithState:&v22 objects:v34 count:16];
           v18 = v17;
           if (v17)
           {
@@ -447,16 +447,16 @@ id __110__LPiTunesMediaMetadataProviderSpecialization_assetArrayFromScreenshotDi
   return v6;
 }
 
-+ (id)assetFromVideoPreviewDictionary:(id)a3 usingPreferredPlatformArray:(id)a4
++ (id)assetFromVideoPreviewDictionary:(id)dictionary usingPreferredPlatformArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -466,10 +466,10 @@ id __110__LPiTunesMediaMetadataProviderSpecialization_assetArrayFromScreenshotDi
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
-        v10 = [v5 objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * i), v17}];
+        v10 = [dictionaryCopy objectForKeyedSubscript:{*(*(&v17 + 1) + 8 * i), v17}];
         if (v10)
         {
           objc_opt_class();
@@ -479,8 +479,8 @@ id __110__LPiTunesMediaMetadataProviderSpecialization_assetArrayFromScreenshotDi
             {
               v11 = [LPiTunesMediaAsset alloc];
               v12 = MEMORY[0x1E695DFF8];
-              v13 = [v10 firstObject];
-              v14 = [v13 objectForKey:@"video"];
+              firstObject = [v10 firstObject];
+              v14 = [firstObject objectForKey:@"video"];
               v15 = [v12 URLWithString:v14];
               v7 = [(LPiTunesMediaAsset *)v11 initWithVideoURL:v15 name:@"previewVideo"];
 
@@ -490,7 +490,7 @@ id __110__LPiTunesMediaMetadataProviderSpecialization_assetArrayFromScreenshotDi
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [arrayCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
         continue;
@@ -505,16 +505,16 @@ LABEL_13:
   return v7;
 }
 
-+ (id)extractOffers:(id)a3
++ (id)extractOffers:(id)offers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  offersCopy = offers;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = offersCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -536,7 +536,7 @@ LABEL_13:
           v11 = [(LPiTunesMediaOffer *)v10 initWithDictionary:v9, v14];
           if (v11)
           {
-            [v4 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
@@ -547,9 +547,9 @@ LABEL_13:
     while (v6);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v12 = v4;
+    v12 = array;
   }
 
   else
@@ -1820,30 +1820,30 @@ id __53__LPiTunesMediaMetadataProviderSpecialization_schema__block_invoke_39(uin
   return v2;
 }
 
-- (id)processResponseDictionary:(id)a3 withStorefrontIdentifier:(id)a4
+- (id)processResponseDictionary:(id)dictionary withStorefrontIdentifier:(id)identifier
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v27 = a4;
-  v31 = v6;
-  v28 = [v6 objectForKeyedSubscript:@"kind"];
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  v31 = dictionaryCopy;
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"kind"];
   if (v28 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [(LPiTunesMediaMetadataProviderSpecialization *)self schema];
-    v8 = [v7 objectForKeyedSubscript:v28];
+    schema = [(LPiTunesMediaMetadataProviderSpecialization *)self schema];
+    v8 = [schema objectForKeyedSubscript:v28];
 
     v26 = v8;
     if (v8)
     {
       v30 = objc_alloc_init([v8 objectForKeyedSubscript:@"metadataClass"]);
       [v30 setValue:self->_identifier forKey:@"storeIdentifier"];
-      [v30 setValue:v27 forKey:@"storeFrontIdentifier"];
+      [v30 setValue:identifierCopy forKey:@"storeFrontIdentifier"];
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
       v9 = [v8 objectForKeyedSubscript:@"entries"];
-      v25 = self;
+      selfCopy = self;
       obj = v9;
       v10 = [v9 countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v10)
@@ -1869,14 +1869,14 @@ id __53__LPiTunesMediaMetadataProviderSpecialization_schema__block_invoke_39(uin
             if (v14)
             {
               v15 = [v13 objectForKeyedSubscript:@"entryMetadataName"];
-              v16 = v15;
+              selfCopy2 = v15;
               if (!v15)
               {
                 self = [v13 objectForKeyedSubscript:@"entryName"];
-                v16 = self;
+                selfCopy2 = self;
               }
 
-              [v30 setValue:v14 forKey:v16];
+              [v30 setValue:v14 forKey:selfCopy2];
               if (!v15)
               {
               }
@@ -1885,14 +1885,14 @@ id __53__LPiTunesMediaMetadataProviderSpecialization_schema__block_invoke_39(uin
             else
             {
               v17 = [v13 objectForKeyedSubscript:@"entryIsOptional"];
-              v18 = [v17 BOOLValue];
+              bOOLValue = [v17 BOOLValue];
 
-              if ((v18 & 1) == 0)
+              if ((bOOLValue & 1) == 0)
               {
                 v21 = LPLogChannelFetching();
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
                 {
-                  identifier = v25->_identifier;
+                  identifier = selfCopy->_identifier;
                   v23 = [v13 objectForKeyedSubscript:@"entryName"];
                   [(LPiTunesMediaMetadataProviderSpecialization *)identifier processResponseDictionary:v23 withStorefrontIdentifier:buf, v21];
                 }
@@ -1973,15 +1973,15 @@ id __98__LPiTunesMediaMetadataProviderSpecialization_processResponseDictionary_w
 - (void)resolve
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(LPiTunesMediaUnresolvedMetadata *)self->_unresolvedMetadata resolve];
+  resolve = [(LPiTunesMediaUnresolvedMetadata *)self->_unresolvedMetadata resolve];
   resolvedMetadata = self->_resolvedMetadata;
-  self->_resolvedMetadata = v3;
+  self->_resolvedMetadata = resolve;
 
-  v5 = [(LPiTunesMediaUnresolvedMetadata *)self->_unresolvedMetadata assetsToFetch];
+  assetsToFetch = [(LPiTunesMediaUnresolvedMetadata *)self->_unresolvedMetadata assetsToFetch];
   v6 = objc_alloc_init(LPFetcherConfiguration);
-  v7 = [(LPMetadataProviderSpecialization *)self context];
-  v8 = [v7 event];
-  [(LPFetcherConfiguration *)v6 setRootEvent:v8];
+  context = [(LPMetadataProviderSpecialization *)self context];
+  event = [context event];
+  [(LPFetcherConfiguration *)v6 setRootEvent:event];
 
   v9 = [LPFetcherGroup alloc];
   v25[0] = MEMORY[0x1E69E9820];
@@ -1997,7 +1997,7 @@ id __98__LPiTunesMediaMetadataProviderSpecialization_processResponseDictionary_w
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v5;
+  v12 = assetsToFetch;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v13)
   {
@@ -2013,8 +2013,8 @@ id __98__LPiTunesMediaMetadataProviderSpecialization_processResponseDictionary_w
         }
 
         v16 = self->_fetcherGroup;
-        v17 = [*(*(&v21 + 1) + 8 * v15) fetcher];
-        [(LPFetcherGroup *)v16 appendFetcher:v17];
+        fetcher = [*(*(&v21 + 1) + 8 * v15) fetcher];
+        [(LPFetcherGroup *)v16 appendFetcher:fetcher];
 
         ++v15;
       }
@@ -2030,8 +2030,8 @@ id __98__LPiTunesMediaMetadataProviderSpecialization_processResponseDictionary_w
   {
     v18 = [[LPiTunesMediaAsset alloc] initWithName:@"lyricExcerpt" lyricComponents:self->_lyricComponents];
     v19 = self->_fetcherGroup;
-    v20 = [(LPiTunesMediaAsset *)v18 fetcher];
-    [(LPFetcherGroup *)v19 appendFetcher:v20];
+    fetcher2 = [(LPiTunesMediaAsset *)v18 fetcher];
+    [(LPFetcherGroup *)v19 appendFetcher:fetcher2];
   }
 
   [(LPFetcherGroup *)self->_fetcherGroup doneAddingFetchers];
@@ -2231,12 +2231,12 @@ uint64_t __52__LPiTunesMediaMetadataProviderSpecialization_start__block_invoke_2
   return result;
 }
 
-+ (void)requestSourceApplicationMetadataForBundleIdentifier:(id)a3 completionHandler:(id)a4
++ (void)requestSourceApplicationMetadataForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = objc_alloc_init(LPSourceApplicationMetadata);
-  [(LPSourceApplicationMetadata *)v7 setBundleIdentifier:v5];
+  [(LPSourceApplicationMetadata *)v7 setBundleIdentifier:identifierCopy];
   v8 = LPLogChannelFetching();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2248,11 +2248,11 @@ uint64_t __52__LPiTunesMediaMetadataProviderSpecialization_start__block_invoke_2
   v25[1] = 3221225472;
   v25[2] = __117__LPiTunesMediaMetadataProviderSpecialization_requestSourceApplicationMetadataForBundleIdentifier_completionHandler___block_invoke;
   v25[3] = &unk_1E7A35F58;
-  v9 = v5;
+  v9 = identifierCopy;
   v26 = v9;
   v10 = v7;
   v27 = v10;
-  v11 = v6;
+  v11 = handlerCopy;
   v28 = v11;
   if (__117__LPiTunesMediaMetadataProviderSpecialization_requestSourceApplicationMetadataForBundleIdentifier_completionHandler___block_invoke(v25))
   {
@@ -2492,28 +2492,28 @@ uint64_t __117__LPiTunesMediaMetadataProviderSpecialization_requestSourceApplica
 - (void)fail
 {
   [(LPiTunesMediaMetadataProviderSpecialization *)self cancel];
-  v3 = [(LPMetadataProviderSpecialization *)self delegate];
-  [v3 metadataProviderSpecializationDidFail:self];
+  delegate = [(LPMetadataProviderSpecialization *)self delegate];
+  [delegate metadataProviderSpecializationDidFail:self];
 }
 
 - (void)done
 {
   [(LPiTunesMediaMetadataProviderSpecialization *)self completed];
   v4 = [(LPMetadataProviderSpecialization *)self createMetadataWithSpecialization:self->_resolvedMetadata];
-  v3 = [(LPMetadataProviderSpecialization *)self delegate];
-  [v3 metadataProviderSpecialization:self didCompleteWithMetadata:v4];
+  delegate = [(LPMetadataProviderSpecialization *)self delegate];
+  [delegate metadataProviderSpecialization:self didCompleteWithMetadata:v4];
 }
 
-- (void)_internalPostProcessResolvedMetadataWithCompletionHandler:(id)a3
+- (void)_internalPostProcessResolvedMetadataWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(LPSpecializationMetadata *)self->_resolvedMetadata artwork];
-    [v4 _computeDominantColorForProperties];
+    artwork = [(LPSpecializationMetadata *)self->_resolvedMetadata artwork];
+    [artwork _computeDominantColorForProperties];
   }
 
-  v5[2]();
+  handlerCopy[2]();
 }
 
 - (void)processResponseDictionary:(uint8_t *)buf withStorefrontIdentifier:(os_log_t)log .cold.1(uint64_t a1, void *a2, uint8_t *buf, os_log_t log)

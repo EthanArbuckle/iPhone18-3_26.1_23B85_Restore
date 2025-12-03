@@ -55,9 +55,9 @@
   v3 = PLChangeHandlingGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PHChangeHandlingDebugEvent *)self eventDescription];
+    eventDescription = [(PHChangeHandlingDebugEvent *)self eventDescription];
     *buf = 138412290;
-    v7 = v4;
+    v7 = eventDescription;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "Event ended: %@", buf, 0xCu);
   }
 }

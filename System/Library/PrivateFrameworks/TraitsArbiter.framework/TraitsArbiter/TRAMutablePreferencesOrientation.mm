@@ -1,20 +1,20 @@
 @interface TRAMutablePreferencesOrientation
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TRAMutablePreferencesOrientation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TRAPreferencesOrientation allocWithZone:a3];
+  v4 = [TRAPreferencesOrientation allocWithZone:zone];
 
   return [(TRAPreferencesOrientation *)v4 initWithOrientationPreferences:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithOrientationPreferences:self];
 }

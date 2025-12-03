@@ -1,17 +1,17 @@
 @interface AMDOnDeviceTester
-+ (BOOL)initEnv:(id)a3 withDomain:(id)a4 userId:(id)a5 andStoreFrontId:(id)a6;
++ (BOOL)initEnv:(id)env withDomain:(id)domain userId:(id)id andStoreFrontId:(id)frontId;
 + (void)initPersistentContainer;
-+ (void)refreshOnDeviceTasteProfile:(id)a3 withUserId:(id)a4 andStoreFrontId:(unsigned int)a5 error:(id *)a6;
-+ (void)saveDescriptors:(id)a3 forDomain:(int64_t)a4 error:(id *)a5;
-+ (void)saveEvent:(id)a3 error:(id *)a4;
++ (void)refreshOnDeviceTasteProfile:(id)profile withUserId:(id)id andStoreFrontId:(unsigned int)frontId error:(id *)error;
++ (void)saveDescriptors:(id)descriptors forDomain:(int64_t)domain error:(id *)error;
++ (void)saveEvent:(id)event error:(id *)error;
 - (AMDOnDeviceTester)init;
-- (void)testAddEvent:(id *)a3;
-- (void)testAggregation:(id *)a3;
-- (void)testClient:(id *)a3;
-- (void)testFeatureDescriptor:(id *)a3;
-- (void)testOnDeviceTasteProfile:(id)a3 error:(id *)a4;
-- (void)testRunInference:(id *)a3;
-- (void)testSaveConfigAndDownloadModel:(id *)a3;
+- (void)testAddEvent:(id *)event;
+- (void)testAggregation:(id *)aggregation;
+- (void)testClient:(id *)client;
+- (void)testFeatureDescriptor:(id *)descriptor;
+- (void)testOnDeviceTasteProfile:(id)profile error:(id *)error;
+- (void)testRunInference:(id *)inference;
+- (void)testSaveConfigAndDownloadModel:(id *)model;
 @end
 
 @implementation AMDOnDeviceTester
@@ -32,18 +32,18 @@
   return v4;
 }
 
-+ (BOOL)initEnv:(id)a3 withDomain:(id)a4 userId:(id)a5 andStoreFrontId:(id)a6
++ (BOOL)initEnv:(id)env withDomain:(id)domain userId:(id)id andStoreFrontId:(id)frontId
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, env);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, domain);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, id);
   v11 = 0;
-  objc_storeStrong(&v11, a6);
+  objc_storeStrong(&v11, frontId);
   NSLog(&cfstr_Amddemosupport.isa);
   v6 = +[AMDCoreDataPersistentContainer sharedContainer];
   objc_storeStrong(&v11, 0);
@@ -60,30 +60,30 @@
   v3 = v2;
 }
 
-- (void)testAddEvent:(id *)a3
+- (void)testAddEvent:(id *)event
 {
   NSLog(&cfstr_RunningAddEven.isa);
   v3 = +[AMDTestDataCommon getSampleEvent];
   [AMDAppEvent saveEvent:"saveEvent:error:" error:?];
   MEMORY[0x277D82BD8](v3);
-  if (*a3)
+  if (*event)
   {
     __assert_rtn("[AMDOnDeviceTester testAddEvent:]", "AMDOnDeviceTester.m", 81, "!*error");
   }
 }
 
-- (void)testFeatureDescriptor:(id *)a3
+- (void)testFeatureDescriptor:(id *)descriptor
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  descriptorCopy = descriptor;
   NSLog(&cfstr_RunningNonAggF.isa);
   v3 = objc_alloc_init(AMDFeatureDescriptor);
   v4 = +[AMDTestDataCommon getNonAggregationDescriptor];
   v6 = [AMDFeatureDescriptor initWithDictionary:v3 withUserId:"initWithDictionary:withUserId:featureName:" featureName:?];
   MEMORY[0x277D82BD8](v4);
-  location = [v6 getFeature:v7];
-  if (*v7)
+  location = [v6 getFeature:descriptorCopy];
+  if (*descriptorCopy)
   {
     __assert_rtn("[AMDOnDeviceTester testFeatureDescriptor:]", "AMDOnDeviceTester.m", 91, "!*error");
   }
@@ -97,11 +97,11 @@
   objc_storeStrong(&v6, 0);
 }
 
-- (void)testAggregation:(id *)a3
+- (void)testAggregation:(id *)aggregation
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  aggregationCopy = aggregation;
   NSLog(&cfstr_RunningAggrega.isa);
   v7 = objc_alloc_init(AMDFeatureDescriptor);
   v3 = MEMORY[0x277D82BE0](v7);
@@ -114,8 +114,8 @@
 
   MEMORY[0x277D82BD8](v5);
   MEMORY[0x277D82BD8](v4);
-  location = [v7 getFeature:v8];
-  if (*v8)
+  location = [v7 getFeature:aggregationCopy];
+  if (*aggregationCopy)
   {
     __assert_rtn("[AMDOnDeviceTester testAggregation:]", "AMDOnDeviceTester.m", 103, "!*error");
   }
@@ -129,46 +129,46 @@
   objc_storeStrong(&v7, 0);
 }
 
-+ (void)saveDescriptors:(id)a3 forDomain:(int64_t)a4 error:(id *)a5
++ (void)saveDescriptors:(id)descriptors forDomain:(int64_t)domain error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [AMDDescriptor refreshDescriptors:location[0] forDomain:a4 error:a5];
+  objc_storeStrong(location, descriptors);
+  v5 = [AMDDescriptor refreshDescriptors:location[0] forDomain:domain error:error];
   objc_storeStrong(location, 0);
 }
 
-+ (void)refreshOnDeviceTasteProfile:(id)a3 withUserId:(id)a4 andStoreFrontId:(unsigned int)a5 error:(id *)a6
++ (void)refreshOnDeviceTasteProfile:(id)profile withUserId:(id)id andStoreFrontId:(unsigned int)frontId error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, profile);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v6 = [AMDTasteProfile refreshAggregationTasteProfileForDomain:location[0] forUser:v10 andStoreFrontId:a5 error:a6];
+  objc_storeStrong(&v10, id);
+  v6 = [AMDTasteProfile refreshAggregationTasteProfileForDomain:location[0] forUser:v10 andStoreFrontId:frontId error:error];
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-+ (void)saveEvent:(id)a3 error:(id *)a4
++ (void)saveEvent:(id)event error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [AMDAppEvent saveEvent:location[0] error:a4];
+  objc_storeStrong(location, event);
+  [AMDAppEvent saveEvent:location[0] error:error];
   objc_storeStrong(location, 0);
 }
 
-- (void)testOnDeviceTasteProfile:(id)a3 error:(id *)a4
+- (void)testOnDeviceTasteProfile:(id)profile error:(id *)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, profile);
   NSLog(&cfstr_RunningOnDevic.isa);
   v8 = 0x2852B2AC8;
   v6 = +[AMDTestDataCommon getAggregationDescriptorDict];
@@ -177,13 +177,13 @@
   [AMDOnDeviceTester saveDescriptors:"saveDescriptors:forDomain:error:" forDomain:? error:?];
   MEMORY[0x277D82BD8](v5);
   MEMORY[0x277D82BD8](v6);
-  if (*a4)
+  if (*error)
   {
     __assert_rtn("[AMDOnDeviceTester testOnDeviceTasteProfile:error:]", "AMDOnDeviceTester.m", 159, "!*error");
   }
 
-  [AMDOnDeviceTester refreshOnDeviceTasteProfile:@"apps" withUserId:location[0] andStoreFrontId:143441 error:a4];
-  if (*a4)
+  [AMDOnDeviceTester refreshOnDeviceTasteProfile:@"apps" withUserId:location[0] andStoreFrontId:143441 error:error];
+  if (*error)
   {
     __assert_rtn("[AMDOnDeviceTester testOnDeviceTasteProfile:error:]", "AMDOnDeviceTester.m", 166, "!*error");
   }
@@ -192,11 +192,11 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)testClient:(id *)a3
+- (void)testClient:(id *)client
 {
   v16[3] = self;
   v16[2] = a2;
-  v16[1] = a3;
+  v16[1] = client;
   NSLog(&cfstr_RunningClientA.isa);
   v16[0] = [[AMDClientRequestEvent alloc] initWithFeatureName:@"testFeatureList" withAccountDSID:0 andAccountStoreFrontId:0 inDomain:@"apps" withCustomDescriptor:0 andSchemaVersion:?];
   if (!v16[0])
@@ -290,11 +290,11 @@
   objc_storeStrong(v16, 0);
 }
 
-- (void)testSaveConfigAndDownloadModel:(id *)a3
+- (void)testSaveConfigAndDownloadModel:(id *)model
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  modelCopy = model;
   NSLog(&cfstr_RunningSaveCon.isa);
   location = +[AMDTestDataCommon getSaveConfigDownloadModelPayload];
   if (!location)
@@ -302,8 +302,8 @@
     __assert_rtn("[AMDOnDeviceTester testSaveConfigAndDownloadModel:]", "AMDOnDeviceTester.m", 211, "payload");
   }
 
-  v3 = [AMDJSRequestHandler handlePayload:location error:v5];
-  if (*v5)
+  v3 = [AMDJSRequestHandler handlePayload:location error:modelCopy];
+  if (*modelCopy)
   {
     __assert_rtn("[AMDOnDeviceTester testSaveConfigAndDownloadModel:]", "AMDOnDeviceTester.m", 213, "!*error");
   }
@@ -311,17 +311,17 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)testRunInference:(id *)a3
+- (void)testRunInference:(id *)inference
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  inferenceCopy = inference;
   NSLog(&cfstr_RunningInferen.isa);
   NSLog(&cfstr_InferenceGetCo.isa);
   v11 = +[AMDTestDataCommon getSaveConfigDownloadModelPayload];
   v3 = [AMDJSRequestHandler handlePayload:"handlePayload:error:" error:?];
   MEMORY[0x277D82BD8](v11);
-  if (*v14)
+  if (*inferenceCopy)
   {
     __assert_rtn("[AMDOnDeviceTester testRunInference:]", "AMDOnDeviceTester.m", 220, "!*error");
   }
@@ -330,7 +330,7 @@
   v10 = +[AMDTestDataCommon getRefreshServerTasteProfilePayload];
   v4 = [AMDJSRequestHandler handlePayload:"handlePayload:error:" error:?];
   MEMORY[0x277D82BD8](v10);
-  if (*v14)
+  if (*inferenceCopy)
   {
     __assert_rtn("[AMDOnDeviceTester testRunInference:]", "AMDOnDeviceTester.m", 224, "!*error");
   }
@@ -339,7 +339,7 @@
   v9 = +[AMDTestDataCommon getInferencePayload];
   v13 = [AMDJSRequestHandler handlePayload:"handlePayload:error:" error:?];
   MEMORY[0x277D82BD8](v9);
-  if (*v14)
+  if (*inferenceCopy)
   {
     __assert_rtn("[AMDOnDeviceTester testRunInference:]", "AMDOnDeviceTester.m", 228, "!*error");
   }

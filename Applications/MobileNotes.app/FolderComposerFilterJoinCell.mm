@@ -1,15 +1,15 @@
 @interface FolderComposerFilterJoinCell
-- (_TtC11MobileNotes28FolderComposerFilterJoinCell)initWithFrame:(CGRect)a3;
+- (_TtC11MobileNotes28FolderComposerFilterJoinCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FolderComposerFilterJoinCell
 
-- (_TtC11MobileNotes28FolderComposerFilterJoinCell)initWithFrame:(CGRect)a3
+- (_TtC11MobileNotes28FolderComposerFilterJoinCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes28FolderComposerFilterJoinCell_filterSelection) = 0;
   v9 = (&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes28FolderComposerFilterJoinCell_joinOperatorChanged);

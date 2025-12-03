@@ -1,19 +1,19 @@
 @interface GESSAlgGeometryQuality
 - (GESSMathAABB)AABB;
 - (id).cxx_construct;
-- (void)setAABB:(id)a3;
-- (void)setQualityImpl:(const void *)a3;
+- (void)setAABB:(id)b;
+- (void)setQualityImpl:(const void *)impl;
 @end
 
 @implementation GESSAlgGeometryQuality
 
-- (void)setQualityImpl:(const void *)a3
+- (void)setQualityImpl:(const void *)impl
 {
-  v3 = *a3;
-  self->_qualityImpl.faceAngleSD = *(a3 + 4);
+  v3 = *impl;
+  self->_qualityImpl.faceAngleSD = *(impl + 4);
   *&self->_qualityImpl.avgEdgeLength = v3;
-  *self[1]._anon_8 = *(a3 + 2);
-  *&self[1]._qualityImpl.vertexValenceDeviation = *(a3 + 3);
+  *self[1]._anon_8 = *(impl + 2);
+  *&self[1]._qualityImpl.vertexValenceDeviation = *(impl + 3);
 }
 
 - (GESSMathAABB)AABB
@@ -24,9 +24,9 @@
   return v3;
 }
 
-- (void)setAABB:(id)a3
+- (void)setAABB:(id)b
 {
-  v5 = objc_msgSend_boxImpl(a3, a2, a3, v3);
+  v5 = objc_msgSend_boxImpl(b, a2, b, v3);
   *self[1]._anon_8 = *v5;
   *&self[1]._qualityImpl.vertexValenceDeviation = v5[1];
 }

@@ -1,71 +1,71 @@
 @interface CNiOSABContainersForAccountPredicate
-- (CNiOSABContainersForAccountPredicate)initWithAccountIdentifier:(id)a3 includingDisabledContainers:(BOOL)a4;
-- (CNiOSABContainersForAccountPredicate)initWithCoder:(id)a3;
+- (CNiOSABContainersForAccountPredicate)initWithAccountIdentifier:(id)identifier includingDisabledContainers:(BOOL)containers;
+- (CNiOSABContainersForAccountPredicate)initWithCoder:(id)coder;
 - (NSString)description;
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4;
-- (id)containersFromRecentsLibrary:(id)a3;
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error;
+- (id)containersFromRecentsLibrary:(id)library;
 - (id)targetDomainID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABContainersForAccountPredicate
 
-- (CNiOSABContainersForAccountPredicate)initWithAccountIdentifier:(id)a3 includingDisabledContainers:(BOOL)a4
+- (CNiOSABContainersForAccountPredicate)initWithAccountIdentifier:(id)identifier includingDisabledContainers:(BOOL)containers
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"account.identifier == %@", v6];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"account.identifier == %@", identifierCopy];
   v12.receiver = self;
   v12.super_class = CNiOSABContainersForAccountPredicate;
-  v8 = [(CNPredicate *)&v12 initWithPredicate:v7];
+  v8 = [(CNPredicate *)&v12 initWithPredicate:identifierCopy];
 
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     accountIdentifier = v8->_accountIdentifier;
     v8->_accountIdentifier = v9;
 
-    v8->_includesDisabledContainers = a4;
+    v8->_includesDisabledContainers = containers;
   }
 
   return v8;
 }
 
-- (CNiOSABContainersForAccountPredicate)initWithCoder:(id)a3
+- (CNiOSABContainersForAccountPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABContainersForAccountPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_accountIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_accountIdentifier"];
     v7 = [v6 copy];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v7;
 
-    v5->_includesDisabledContainers = [v4 decodeBoolForKey:@"_includesDisabledContainers"];
+    v5->_includesDisabledContainers = [coderCopy decodeBoolForKey:@"_includesDisabledContainers"];
     v9 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABContainersForAccountPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_accountIdentifier forKey:{@"_accountIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeBool:self->_includesDisabledContainers forKey:@"_includesDisabledContainers"];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:{@"_accountIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeBool:self->_includesDisabledContainers forKey:@"_includesDisabledContainers"];
 }
 
-- (__CFArray)cn_copyContainersInAddressBook:(void *)a3 error:(__CFError *)a4
+- (__CFArray)cn_copyContainersInAddressBook:(void *)book error:(__CFError *)error
 {
-  v5 = [(CNiOSABContainersForAccountPredicate *)self accountIdentifier];
+  accountIdentifier = [(CNiOSABContainersForAccountPredicate *)self accountIdentifier];
   v6 = +[CNAccount localAccount];
-  v7 = [v6 identifier];
-  v8 = [v5 isEqualToString:v7];
+  identifier = [v6 identifier];
+  v8 = [accountIdentifier isEqualToString:identifier];
 
   if (v8)
   {
@@ -81,9 +81,9 @@
 
   else
   {
-    v11 = [(CNiOSABContainersForAccountPredicate *)self accountIdentifier];
+    accountIdentifier2 = [(CNiOSABContainersForAccountPredicate *)self accountIdentifier];
 
-    if (!v11)
+    if (!accountIdentifier2)
     {
       return CFArrayCreate(*MEMORY[0x1E695E480], 0, 0, 0);
     }
@@ -110,7 +110,7 @@
         v16 = CFAutorelease(v16);
       }
 
-      if (CFEqual(v16, v11))
+      if (CFEqual(v16, accountIdentifier2))
       {
         break;
       }
@@ -150,25 +150,25 @@ LABEL_17:
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContainer predicateForContainersInAccountWithIdentifier:]"];
-  v5 = [(CNiOSABContainersForAccountPredicate *)self accountIdentifier];
-  v6 = [v3 appendName:@"identifier" object:v5];
+  accountIdentifier = [(CNiOSABContainersForAccountPredicate *)self accountIdentifier];
+  v6 = [v3 appendName:@"identifier" object:accountIdentifier];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (id)containersFromRecentsLibrary:(id)a3
+- (id)containersFromRecentsLibrary:(id)library
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNiOSABContainersForAccountPredicate *)self targetDomainID];
-  v6 = v5;
-  if (v5)
+  libraryCopy = library;
+  targetDomainID = [(CNiOSABContainersForAccountPredicate *)self targetDomainID];
+  v6 = targetDomainID;
+  if (targetDomainID)
   {
-    v10[0] = v5;
+    v10[0] = targetDomainID;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v8 = [v4 containersForIdentifiers:v7];
+    v8 = [libraryCopy containersForIdentifiers:v7];
   }
 
   else
@@ -181,9 +181,9 @@ LABEL_17:
 
 - (id)targetDomainID
 {
-  v2 = [(CNiOSABContainersForAccountPredicate *)self accountIdentifier];
+  accountIdentifier = [(CNiOSABContainersForAccountPredicate *)self accountIdentifier];
   v3 = +[CNCoreRecentsContactStore acceptedContactsAccountIdentifier];
-  v4 = [v2 isEqualToString:v3];
+  v4 = [accountIdentifier isEqualToString:v3];
 
   if (v4)
   {

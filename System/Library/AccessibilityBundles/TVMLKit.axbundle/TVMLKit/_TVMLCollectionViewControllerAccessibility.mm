@@ -1,18 +1,18 @@
 @interface _TVMLCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateHeaderView;
 @end
 
 @implementation _TVMLCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVCollectionWrappingView"];
-  [v3 validateClass:@"_TVCollectionWrappingView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVMLCollectionViewController" hasInstanceMethod:@"collectionWrappingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVMLCollectionViewController" hasInstanceMethod:@"_updateHeaderView" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVCollectionWrappingView"];
+  [validationsCopy validateClass:@"_TVCollectionWrappingView" hasInstanceMethod:@"headerView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVMLCollectionViewController" hasInstanceMethod:@"collectionWrappingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVMLCollectionViewController" hasInstanceMethod:@"_updateHeaderView" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

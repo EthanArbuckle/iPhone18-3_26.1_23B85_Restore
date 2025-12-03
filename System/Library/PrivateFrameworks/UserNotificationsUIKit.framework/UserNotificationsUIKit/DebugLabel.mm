@@ -1,7 +1,7 @@
 @interface DebugLabel
 - (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)init;
-- (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)initWithCoder:(id)a3;
-- (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)initWithFrame:(CGRect)a3;
+- (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)initWithCoder:(id)coder;
+- (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation DebugLabel
@@ -17,14 +17,14 @@
   return v2;
 }
 
-- (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)initWithCoder:(id)a3
+- (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)initWithCoder:(id)coder
 {
   result = sub_21E92A988();
   __break(1u);
   return result;
 }
 
-- (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)initWithFrame:(CGRect)a3
+- (_TtC22UserNotificationsUIKitP33_E56270D007896E6F9A012E31D0F23E8810DebugLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

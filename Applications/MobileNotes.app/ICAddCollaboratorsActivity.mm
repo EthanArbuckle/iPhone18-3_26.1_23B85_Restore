@@ -1,6 +1,6 @@
 @interface ICAddCollaboratorsActivity
 + (NSString)defaultActivityTitle;
-- (ICAddCollaboratorsActivity)initWithDelegate:(id)a3;
+- (ICAddCollaboratorsActivity)initWithDelegate:(id)delegate;
 - (ICAddCollaboratorsActivityDelegate)delegate;
 - (id)_systemImageName;
 - (id)activityTitle;
@@ -9,16 +9,16 @@
 
 @implementation ICAddCollaboratorsActivity
 
-- (ICAddCollaboratorsActivity)initWithDelegate:(id)a3
+- (ICAddCollaboratorsActivity)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ICAddCollaboratorsActivity;
   v5 = [(ICAddCollaboratorsActivity *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
@@ -27,14 +27,14 @@
 
 - (id)activityTitle
 {
-  v3 = [(ICAddCollaboratorsActivity *)self delegate];
+  delegate = [(ICAddCollaboratorsActivity *)self delegate];
 
-  if (!v3 || (-[ICAddCollaboratorsActivity delegate](self, "delegate"), v4 = objc_claimAutoreleasedReturnValue(), [v4 titleForAddCollaboratorsActivity:self], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!delegate || (-[ICAddCollaboratorsActivity delegate](self, "delegate"), v4 = objc_claimAutoreleasedReturnValue(), [v4 titleForAddCollaboratorsActivity:self], defaultActivityTitle = objc_claimAutoreleasedReturnValue(), v4, !defaultActivityTitle))
   {
-    v5 = [objc_opt_class() defaultActivityTitle];
+    defaultActivityTitle = [objc_opt_class() defaultActivityTitle];
   }
 
-  return v5;
+  return defaultActivityTitle;
 }
 
 + (NSString)defaultActivityTitle
@@ -47,20 +47,20 @@
 
 - (id)_systemImageName
 {
-  v3 = [(ICAddCollaboratorsActivity *)self delegate];
+  delegate = [(ICAddCollaboratorsActivity *)self delegate];
 
-  if (!v3 || (-[ICAddCollaboratorsActivity delegate](self, "delegate"), v4 = objc_claimAutoreleasedReturnValue(), [v4 systemImageNameForAddCollaboratorsActivity:self], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (!delegate || (-[ICAddCollaboratorsActivity delegate](self, "delegate"), v4 = objc_claimAutoreleasedReturnValue(), [v4 systemImageNameForAddCollaboratorsActivity:self], defaultSystemImageName = objc_claimAutoreleasedReturnValue(), v4, !defaultSystemImageName))
   {
-    v5 = [objc_opt_class() defaultSystemImageName];
+    defaultSystemImageName = [objc_opt_class() defaultSystemImageName];
   }
 
-  return v5;
+  return defaultSystemImageName;
 }
 
 - (void)performActivity
 {
-  v3 = [(ICAddCollaboratorsActivity *)self delegate];
-  [v3 performAddCollaboratorsActivity:self];
+  delegate = [(ICAddCollaboratorsActivity *)self delegate];
+  [delegate performAddCollaboratorsActivity:self];
 }
 
 - (ICAddCollaboratorsActivityDelegate)delegate

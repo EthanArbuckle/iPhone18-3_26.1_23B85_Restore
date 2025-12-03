@@ -1,6 +1,6 @@
 @interface NTKCFaceDetailMonogramEditCell
 + (id)reuseIdentifier;
-- (NTKCFaceDetailMonogramEditCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (NTKCFaceDetailMonogramEditCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_monogramChanged;
 - (void)dealloc;
 @end
@@ -14,19 +14,19 @@
   return NSStringFromClass(v2);
 }
 
-- (NTKCFaceDetailMonogramEditCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (NTKCFaceDetailMonogramEditCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = NTKCFaceDetailMonogramEditCell;
-  v5 = [(NTKCFaceDetailRowActionCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v5 = [(NTKCFaceDetailRowActionCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v5)
   {
     v6 = NTKCCustomizationLocalizedString(@"MONOGRAM_EDIT", @"Edit Monogram", v4);
-    v7 = [(NTKCFaceDetailMonogramEditCell *)v5 textLabel];
-    [v7 setText:v6];
+    textLabel = [(NTKCFaceDetailMonogramEditCell *)v5 textLabel];
+    [textLabel setText:v6];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel__monogramChanged name:@"NTKCustomMonogramChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__monogramChanged name:@"NTKCustomMonogramChangedNotification" object:0];
 
     [(NTKCFaceDetailMonogramEditCell *)v5 _monogramChanged];
   }
@@ -36,8 +36,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"NTKCustomMonogramChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"NTKCustomMonogramChangedNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = NTKCFaceDetailMonogramEditCell;
@@ -47,8 +47,8 @@
 - (void)_monogramChanged
 {
   v3 = +[NTKMonogram monogram];
-  v4 = [(NTKCFaceDetailMonogramEditCell *)self detailTextLabel];
-  [v4 setText:v3];
+  detailTextLabel = [(NTKCFaceDetailMonogramEditCell *)self detailTextLabel];
+  [detailTextLabel setText:v3];
 
   [(NTKCFaceDetailMonogramEditCell *)self setNeedsLayout];
 }

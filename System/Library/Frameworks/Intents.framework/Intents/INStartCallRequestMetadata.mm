@@ -1,11 +1,11 @@
 @interface INStartCallRequestMetadata
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INStartCallRequestMetadata)initWithAppInferred:(BOOL)a3;
-- (INStartCallRequestMetadata)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INStartCallRequestMetadata)initWithAppInferred:(BOOL)inferred;
+- (INStartCallRequestMetadata)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
 @end
 
@@ -24,39 +24,39 @@
   return v3;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INStartCallRequestMetadata;
   v6 = [(INStartCallRequestMetadata *)&v11 description];
-  v7 = [(INStartCallRequestMetadata *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INStartCallRequestMetadata *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_appInferred];
-  [v5 if_setObjectIfNonNil:v6 forKey:@"appInferred"];
+  [dictionary if_setObjectIfNonNil:v6 forKey:@"appInferred"];
 
-  return v5;
+  return dictionary;
 }
 
-- (INStartCallRequestMetadata)initWithCoder:(id)a3
+- (INStartCallRequestMetadata)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"appInferred"];
+  v4 = [coder decodeBoolForKey:@"appInferred"];
 
   return [(INStartCallRequestMetadata *)self initWithAppInferred:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -64,7 +64,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_appInferred == v4->_appInferred;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_appInferred == equalCopy->_appInferred;
   }
 
   return v5;
@@ -78,29 +78,29 @@
   return v3;
 }
 
-- (INStartCallRequestMetadata)initWithAppInferred:(BOOL)a3
+- (INStartCallRequestMetadata)initWithAppInferred:(BOOL)inferred
 {
   v5.receiver = self;
   v5.super_class = INStartCallRequestMetadata;
   result = [(INStartCallRequestMetadata *)&v5 init];
   if (result)
   {
-    result->_appInferred = a3;
+    result->_appInferred = inferred;
   }
 
   return result;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v6 = a5;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"appInferred"];
-    v8 = [v7 BOOLValue];
+    v7 = [fromCopy objectForKeyedSubscript:@"appInferred"];
+    bOOLValue = [v7 BOOLValue];
 
-    v9 = [[a1 alloc] initWithAppInferred:v8];
+    v9 = [[self alloc] initWithAppInferred:bOOLValue];
   }
 
   else

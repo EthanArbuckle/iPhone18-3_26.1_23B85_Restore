@@ -1,9 +1,9 @@
 @interface MTL4AccelerationStructureBoundingBoxGeometryDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4AccelerationStructureBoundingBoxGeometryDescriptor)init;
 - (MTL4BufferRange)boundingBoxBuffer;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -30,20 +30,20 @@
   [(MTL4AccelerationStructureGeometryDescriptor *)&v2 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTL4AccelerationStructureBoundingBoxGeometryDescriptor;
-  v4 = [(MTL4AccelerationStructureGeometryDescriptor *)&v6 copyWithZone:a3];
+  v4 = [(MTL4AccelerationStructureGeometryDescriptor *)&v6 copyWithZone:zone];
   [v4 setBoundingBoxBuffer:{self->_boundingBoxBuffer.bufferAddress, self->_boundingBoxBuffer.length}];
   [v4 setBoundingBoxStride:self->_boundingBoxStride];
   [v4 setBoundingBoxCount:self->_boundingBoxCount];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -52,27 +52,27 @@
   v18 = v3;
   v19 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v17.receiver = self;
   v17.super_class = MTL4AccelerationStructureBoundingBoxGeometryDescriptor;
-  v8 = [(MTL4AccelerationStructureGeometryDescriptor *)&v17 isEqual:a3];
+  v8 = [(MTL4AccelerationStructureGeometryDescriptor *)&v17 isEqual:equal];
   if (v8)
   {
-    v9 = [(MTL4AccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxBuffer];
+    boundingBoxBuffer = [(MTL4AccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxBuffer];
     v11 = v10;
-    v13 = [a3 boundingBoxBuffer];
+    boundingBoxBuffer2 = [equal boundingBoxBuffer];
     LOBYTE(v8) = 0;
-    if (v9 == v13 && v11 == v12)
+    if (boundingBoxBuffer == boundingBoxBuffer2 && v11 == v12)
     {
-      v14 = [(MTL4AccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxStride];
-      if (v14 == [a3 boundingBoxStride])
+      boundingBoxStride = [(MTL4AccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxStride];
+      if (boundingBoxStride == [equal boundingBoxStride])
       {
-        v15 = [(MTL4AccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxCount];
-        LOBYTE(v8) = v15 == [a3 boundingBoxCount];
+        boundingBoxCount = [(MTL4AccelerationStructureBoundingBoxGeometryDescriptor *)self boundingBoxCount];
+        LOBYTE(v8) = boundingBoxCount == [equal boundingBoxCount];
         return v8;
       }
 

@@ -1,7 +1,7 @@
 @interface NWActivityXPC
 - (void)cancel;
 - (void)dealloc;
-- (void)retrieveMetricsForActivity:(unsigned __int8)a3[16] completion:(id)a4;
+- (void)retrieveMetricsForActivity:(unsigned __int8)activity[16] completion:(id)completion;
 - (void)start;
 @end
 
@@ -16,13 +16,13 @@
   v4 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.symptom_analytics" options:4096];
   [(NWActivityXPC *)self setConnection:v4];
 
-  v5 = [(NWActivityXPC *)self connection];
+  connection = [(NWActivityXPC *)self connection];
 
-  if (v5)
+  if (connection)
   {
     v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28478F8C8];
-    v7 = [(NWActivityXPC *)self connection];
-    [v7 setRemoteObjectInterface:v6];
+    connection2 = [(NWActivityXPC *)self connection];
+    [connection2 setRemoteObjectInterface:v6];
 
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x277D85DD0];
@@ -30,28 +30,28 @@
     v16[2] = __22__NWActivityXPC_start__block_invoke;
     v16[3] = &unk_278987530;
     objc_copyWeak(&v17, &location);
-    v8 = [(NWActivityXPC *)self connection];
-    [v8 setInvalidationHandler:v16];
+    connection3 = [(NWActivityXPC *)self connection];
+    [connection3 setInvalidationHandler:v16];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __22__NWActivityXPC_start__block_invoke_75;
     v14[3] = &unk_278987530;
     objc_copyWeak(&v15, &location);
-    v9 = [(NWActivityXPC *)self connection];
-    [v9 setInterruptionHandler:v14];
+    connection4 = [(NWActivityXPC *)self connection];
+    [connection4 setInterruptionHandler:v14];
 
-    v10 = [(NWActivityXPC *)self connection];
-    [v10 resume];
+    connection5 = [(NWActivityXPC *)self connection];
+    [connection5 resume];
 
     v11 = objectanalyticsHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(NWActivityXPC *)self connection];
+      connection6 = [(NWActivityXPC *)self connection];
       *buf = 136315394;
       v20 = "[NWActivityXPC start]";
       v21 = 2112;
-      v22 = v12;
+      v22 = connection6;
       _os_log_impl(&dword_2324AD000, v11, OS_LOG_TYPE_INFO, "%s started %@", buf, 0x16u);
     }
 
@@ -148,9 +148,9 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
     *buf = 136315650;
     v7 = "[NWActivityXPC dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_2324AD000, v3, OS_LOG_TYPE_DEFAULT, "%s %@ dealloc %p", buf, 0x20u);
   }
 
@@ -164,12 +164,12 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
 - (void)cancel
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(NWActivityXPC *)self pendingCompletionHandlers];
+  pendingCompletionHandlers = [(NWActivityXPC *)self pendingCompletionHandlers];
 
-  if (v3)
+  if (pendingCompletionHandlers)
   {
-    v4 = [(NWActivityXPC *)self pendingCompletionHandlers];
-    v5 = [v4 count];
+    pendingCompletionHandlers2 = [(NWActivityXPC *)self pendingCompletionHandlers];
+    v5 = [pendingCompletionHandlers2 count];
 
     if (v5)
     {
@@ -177,50 +177,50 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
       v22 = v6;
       do
       {
-        v7 = [(NWActivityXPC *)self pendingCompletionHandlers];
-        v8 = [v7 firstObject];
+        pendingCompletionHandlers3 = [(NWActivityXPC *)self pendingCompletionHandlers];
+        firstObject = [pendingCompletionHandlers3 firstObject];
 
         v9 = objectanalyticsHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          v10 = MEMORY[0x2383849E0](v8);
+          v10 = MEMORY[0x2383849E0](firstObject);
           *buf = v22;
           v24 = "[NWActivityXPC cancel]";
           v25 = 2048;
-          v26 = v10;
+          selfCopy = v10;
           _os_log_impl(&dword_2324AD000, v9, OS_LOG_TYPE_DEBUG, "%s Removing and calling pending completion handler %p", buf, 0x16u);
         }
 
-        v11 = [(NWActivityXPC *)self pendingCompletionHandlers];
-        v12 = MEMORY[0x2383849E0](v8);
-        [v11 removeObject:v12];
+        pendingCompletionHandlers4 = [(NWActivityXPC *)self pendingCompletionHandlers];
+        v12 = MEMORY[0x2383849E0](firstObject);
+        [pendingCompletionHandlers4 removeObject:v12];
 
-        v8[2](v8, 0, 54);
-        v13 = [(NWActivityXPC *)self pendingCompletionHandlers];
-        v14 = [v13 count];
+        firstObject[2](firstObject, 0, 54);
+        pendingCompletionHandlers5 = [(NWActivityXPC *)self pendingCompletionHandlers];
+        v14 = [pendingCompletionHandlers5 count];
       }
 
       while (v14);
     }
 
-    v15 = [(NWActivityXPC *)self pendingCompletionHandlers];
-    [v15 removeAllObjects];
+    pendingCompletionHandlers6 = [(NWActivityXPC *)self pendingCompletionHandlers];
+    [pendingCompletionHandlers6 removeAllObjects];
 
     [(NWActivityXPC *)self setPendingCompletionHandlers:0];
   }
 
-  v16 = [(NWActivityXPC *)self connection];
+  connection = [(NWActivityXPC *)self connection];
 
-  if (v16)
+  if (connection)
   {
-    v17 = [(NWActivityXPC *)self connection];
-    [v17 setInvalidationHandler:0];
+    connection2 = [(NWActivityXPC *)self connection];
+    [connection2 setInvalidationHandler:0];
 
-    v18 = [(NWActivityXPC *)self connection];
-    [v18 setInterruptionHandler:0];
+    connection3 = [(NWActivityXPC *)self connection];
+    [connection3 setInterruptionHandler:0];
 
-    v19 = [(NWActivityXPC *)self connection];
-    [v19 invalidate];
+    connection4 = [(NWActivityXPC *)self connection];
+    [connection4 invalidate];
 
     [(NWActivityXPC *)self setConnection:0];
   }
@@ -231,17 +231,17 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
     *buf = 136315394;
     v24 = "[NWActivityXPC cancel]";
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2324AD000, v20, OS_LOG_TYPE_INFO, "%s %@ cancelled", buf, 0x16u);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveMetricsForActivity:(unsigned __int8)a3[16] completion:(id)a4
+- (void)retrieveMetricsForActivity:(unsigned __int8)activity[16] completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = objectanalyticsHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -250,13 +250,13 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
     *&buf[12] = 1040;
     *&buf[14] = 16;
     *&buf[18] = 2096;
-    *&buf[20] = a3;
+    *&buf[20] = activity;
     _os_log_impl(&dword_2324AD000, v7, OS_LOG_TYPE_INFO, "%s Retrieving metrics for %{uuid_t}.16P", buf, 0x1Cu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    if (uuid_is_null(a3))
+    if (uuid_is_null(activity))
     {
       v8 = objectanalyticsHandle();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -266,13 +266,13 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
         _os_log_impl(&dword_2324AD000, v8, OS_LOG_TYPE_ERROR, "%s UUID is required", buf, 0xCu);
       }
 
-      v6[2](v6, 0, 22);
+      completionCopy[2](completionCopy, 0, 22);
     }
 
     else
     {
-      v10 = [(NWActivityXPC *)self connection];
-      v11 = v10 == 0;
+      connection = [(NWActivityXPC *)self connection];
+      v11 = connection == 0;
 
       if (v11)
       {
@@ -284,23 +284,23 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
           *&buf[12] = 1040;
           *&buf[14] = 16;
           *&buf[18] = 2096;
-          *&buf[20] = a3;
+          *&buf[20] = activity;
           _os_log_impl(&dword_2324AD000, v22, OS_LOG_TYPE_ERROR, "%s %{uuid_t}.16P: connection lost, retrying", buf, 0x1Cu);
         }
 
         [(NWActivityXPC *)self cancel];
         [(NWActivityXPC *)self start];
-        v6[2](v6, 0, 22);
+        completionCopy[2](completionCopy, 0, 22);
       }
 
       else
       {
-        v12 = [(NWActivityXPC *)self connection];
-        v13 = [v12 remoteObjectProxy];
+        connection2 = [(NWActivityXPC *)self connection];
+        remoteObjectProxy = [connection2 remoteObjectProxy];
 
         v14 = objectanalyticsHandle();
         v15 = v14;
-        if (v13)
+        if (remoteObjectProxy)
         {
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
@@ -309,7 +309,7 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
             *&buf[12] = 1040;
             *&buf[14] = 16;
             *&buf[18] = 2096;
-            *&buf[20] = a3;
+            *&buf[20] = activity;
             _os_log_impl(&dword_2324AD000, v15, OS_LOG_TYPE_DEBUG, "%s Querying symptoms for activity %{uuid_t}.16P", buf, 0x1Cu);
           }
 
@@ -318,7 +318,7 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
           *&buf[16] = 0x3032000000;
           *&buf[24] = __Block_byref_object_copy_;
           v33 = __Block_byref_object_dispose_;
-          v34 = MEMORY[0x2383849E0](v6);
+          v34 = MEMORY[0x2383849E0](completionCopy);
           v16 = objectanalyticsHandle();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
@@ -330,12 +330,12 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
             _os_log_impl(&dword_2324AD000, v16, OS_LOG_TYPE_DEBUG, "%s Adding pending completion handler %p", v28, 0x16u);
           }
 
-          v18 = [(NWActivityXPC *)self pendingCompletionHandlers];
+          pendingCompletionHandlers = [(NWActivityXPC *)self pendingCompletionHandlers];
           v19 = MEMORY[0x2383849E0](*(*&buf[8] + 40));
-          [v18 addObject:v19];
+          [pendingCompletionHandlers addObject:v19];
 
           objc_initWeak(v28, self);
-          v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
+          v20 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:activity];
           v24[0] = MEMORY[0x277D85DD0];
           v24[1] = 3221225472;
           v24[2] = __55__NWActivityXPC_retrieveMetricsForActivity_completion___block_invoke;
@@ -345,7 +345,7 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
           v25 = v21;
           objc_copyWeak(&v27, v28);
           v26 = buf;
-          [v13 retrieveActivityMetrics:v21 reply:v24];
+          [remoteObjectProxy retrieveActivityMetrics:v21 reply:v24];
           objc_destroyWeak(&v27);
 
           objc_destroyWeak(v28);
@@ -361,7 +361,7 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
             _os_log_impl(&dword_2324AD000, v15, OS_LOG_TYPE_ERROR, "%s NWActivityXPC remoteObjectProxy returned nil", buf, 0xCu);
           }
 
-          v6[2](v6, 0, 45);
+          completionCopy[2](completionCopy, 0, 45);
         }
       }
     }
@@ -377,7 +377,7 @@ void __22__NWActivityXPC_start__block_invoke_75(uint64_t a1)
       *&buf[12] = 1040;
       *&buf[14] = 16;
       *&buf[18] = 2096;
-      *&buf[20] = a3;
+      *&buf[20] = activity;
       _os_log_impl(&dword_2324AD000, v9, OS_LOG_TYPE_ERROR, "%s %{uuid_t}.16P: completion is required", buf, 0x1Cu);
     }
   }

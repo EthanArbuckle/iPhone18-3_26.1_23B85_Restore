@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (BOOL)isProcessTVAppStore;
 - (BOOL)isTVMLKitLoaded;
-- (id)accessibilityIdentifierForResourceURL:(id)a3;
-- (id)accessibilityLabelForID:(id)a3;
-- (id)accessibilityLabelForResourceURL:(id)a3;
-- (id)atvaccessibilityLocalizedNameForBundleID:(id)a3;
-- (id)atvaccessibilityLocalizedString:(id)a3;
+- (id)accessibilityIdentifierForResourceURL:(id)l;
+- (id)accessibilityLabelForID:(id)d;
+- (id)accessibilityLabelForResourceURL:(id)l;
+- (id)atvaccessibilityLocalizedNameForBundleID:(id)d;
+- (id)atvaccessibilityLocalizedString:(id)string;
 - (id)currentFocusedView;
 @end
 
@@ -60,14 +60,14 @@ void __33__AXATVUtils_isProcessTVAppStore__block_invoke()
   isProcessTVAppStore_IsAppStore = [v0 isEqualToString:@"com.apple.TVAppStore"];
 }
 
-- (id)atvaccessibilityLocalizedString:(id)a3
+- (id)atvaccessibilityLocalizedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 localizedStringForKey:v3 value:&stru_1F4041FC0 table:@"Accessibility"];
+    v6 = [v4 localizedStringForKey:stringCopy value:&stru_1F4041FC0 table:@"Accessibility"];
   }
 
   else
@@ -78,9 +78,9 @@ void __33__AXATVUtils_isProcessTVAppStore__block_invoke()
   return v6;
 }
 
-- (id)atvaccessibilityLocalizedNameForBundleID:(id)a3
+- (id)atvaccessibilityLocalizedNameForBundleID:(id)d
 {
-  if ([a3 isEqualToString:@"com.apple.HeadBoard"])
+  if ([d isEqualToString:@"com.apple.HeadBoard"])
   {
     v4 = [(AXATVUtils *)self atvaccessibilityLocalizedString:@"name.for.bundle.headboard"];
   }
@@ -93,15 +93,15 @@ void __33__AXATVUtils_isProcessTVAppStore__block_invoke()
   return v4;
 }
 
-- (id)accessibilityIdentifierForResourceURL:(id)a3
+- (id)accessibilityIdentifierForResourceURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 scheme], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"resource"), v5, v6))
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy && ([lCopy scheme], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isEqualToString:", @"resource"), v5, v6))
   {
-    v7 = [v4 host];
-    v8 = [v4 path];
-    v9 = [v7 stringByAppendingString:v8];
+    host = [v4 host];
+    path = [v4 path];
+    v9 = [host stringByAppendingString:path];
   }
 
   else
@@ -112,10 +112,10 @@ void __33__AXATVUtils_isProcessTVAppStore__block_invoke()
   return v9;
 }
 
-- (id)accessibilityLabelForID:(id)a3
+- (id)accessibilityLabelForID:(id)d
 {
-  v4 = a3;
-  if (([v4 hasPrefix:@"tomato-splat"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"RTRotten"))
+  dCopy = d;
+  if (([dCopy hasPrefix:@"tomato-splat"] & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", @"RTRotten"))
   {
     v5 = @"tv.freshness.rotten";
 LABEL_4:
@@ -127,19 +127,19 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (([v4 hasPrefix:@"tomato-fresh"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"RTFresh"))
+  if (([dCopy hasPrefix:@"tomato-fresh"] & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", @"RTFresh"))
   {
     v5 = @"tv.freshness.fresh";
     goto LABEL_4;
   }
 
-  if (([v4 hasPrefix:@"tomato-certified"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"RTCertified"))
+  if (([dCopy hasPrefix:@"tomato-certified"] & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", @"RTCertified"))
   {
     v5 = @"tv.freshness.certified.fresh";
     goto LABEL_4;
   }
 
-  if (([v4 hasPrefix:@"common-sense"] & 1) != 0 || objc_msgSend(v4, "hasPrefix:", @"cs_"))
+  if (([dCopy hasPrefix:@"common-sense"] & 1) != 0 || objc_msgSend(dCopy, "hasPrefix:", @"cs_"))
   {
     v11 = @"tv.common.sense";
 LABEL_17:
@@ -147,157 +147,157 @@ LABEL_17:
     goto LABEL_5;
   }
 
-  if ([v4 hasPrefix:@"overlay-checkmark"])
+  if ([dCopy hasPrefix:@"overlay-checkmark"])
   {
     v11 = @"tv.played";
     goto LABEL_17;
   }
 
-  if (([v4 isEqual:@"mpaa-g"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"tv-g") & 1) != 0 || objc_msgSend(v4, "isEqual:", @"g_mask"))
+  if (([dCopy isEqual:@"mpaa-g"] & 1) != 0 || (objc_msgSend(dCopy, "hasPrefix:", @"tv-g") & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"g_mask"))
   {
     v11 = @"axid.icon.rating.g";
     goto LABEL_17;
   }
 
-  if ([v4 axContainsString:@"pg13"])
+  if ([dCopy axContainsString:@"pg13"])
   {
     v11 = @"axid.icon.rating.pg13";
     goto LABEL_17;
   }
 
-  if (([v4 isEqual:@"mpaa-pg"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"tv-pg") & 1) != 0 || objc_msgSend(v4, "isEqual:", @"pg_mask"))
+  if (([dCopy isEqual:@"mpaa-pg"] & 1) != 0 || (objc_msgSend(dCopy, "hasPrefix:", @"tv-pg") & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"pg_mask"))
   {
     v11 = @"axid.icon.rating.pg";
     goto LABEL_17;
   }
 
-  if (([v4 hasPrefix:@"tv-ma"] & 1) != 0 || objc_msgSend(v4, "isEqual:", @"tvma_mask"))
+  if (([dCopy hasPrefix:@"tv-ma"] & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"tvma_mask"))
   {
     v11 = @"axid.icon.rating.tvma";
     goto LABEL_17;
   }
 
-  if (([v4 isEqual:@"nr"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"tv-nr") & 1) != 0 || objc_msgSend(v4, "isEqual:", @"nr_mask"))
+  if (([dCopy isEqual:@"nr"] & 1) != 0 || (objc_msgSend(dCopy, "hasPrefix:", @"tv-nr") & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"nr_mask"))
   {
     v11 = @"axid.icon.rating.nr";
     goto LABEL_17;
   }
 
-  if (([v4 isEqual:@"mpaa-r"] & 1) != 0 || (objc_msgSend(v4, "hasPrefix:", @"tv-r") & 1) != 0 || objc_msgSend(v4, "isEqual:", @"r_mask"))
+  if (([dCopy isEqual:@"mpaa-r"] & 1) != 0 || (objc_msgSend(dCopy, "hasPrefix:", @"tv-r") & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"r_mask"))
   {
     v11 = @"axid.icon.rating.r";
     goto LABEL_17;
   }
 
-  if ([v4 axContainsString:@"unrated"])
+  if ([dCopy axContainsString:@"unrated"])
   {
     v11 = @"axid.icon.rating.unrated";
     goto LABEL_17;
   }
 
-  if ([v4 axContainsString:@"nc17"])
+  if ([dCopy axContainsString:@"nc17"])
   {
     v11 = @"axid.icon.rating.nc17";
     goto LABEL_17;
   }
 
-  if ([v4 axContainsString:@"y7fv"])
+  if ([dCopy axContainsString:@"y7fv"])
   {
     v11 = @"axid.icon.rating.tvy7fv";
     goto LABEL_17;
   }
 
-  if (([v4 hasPrefix:@"tv-y7"] & 1) != 0 || objc_msgSend(v4, "isEqual:", @"tvy7_mask"))
+  if (([dCopy hasPrefix:@"tv-y7"] & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"tvy7_mask"))
   {
     v11 = @"axid.icon.rating.tvy7";
     goto LABEL_17;
   }
 
-  if (([v4 hasPrefix:@"tv-y"] & 1) != 0 || objc_msgSend(v4, "isEqual:", @"tvy_mask"))
+  if (([dCopy hasPrefix:@"tv-y"] & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"tvy_mask"))
   {
     v11 = @"axid.icon.rating.tvy";
     goto LABEL_17;
   }
 
-  if (([v4 hasPrefix:@"tv-pg"] & 1) != 0 || objc_msgSend(v4, "isEqual:", @"tvpg_mask"))
+  if (([dCopy hasPrefix:@"tv-pg"] & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"tvpg_mask"))
   {
     v11 = @"axid.icon.rating.tvpg";
     goto LABEL_17;
   }
 
-  if (([v4 hasPrefix:@"tv-g"] & 1) != 0 || objc_msgSend(v4, "isEqual:", @"tvg_mask"))
+  if (([dCopy hasPrefix:@"tv-g"] & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"tvg_mask"))
   {
     v11 = @"axid.icon.rating.tvg";
     goto LABEL_17;
   }
 
-  if (([v4 hasPrefix:@"tv-14"] & 1) != 0 || objc_msgSend(v4, "isEqual:", @"tv14_mask"))
+  if (([dCopy hasPrefix:@"tv-14"] & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"tv14_mask"))
   {
     v11 = @"axid.icon.rating.tv14";
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"4k-hdr"])
+  if ([dCopy hasPrefix:@"4k-hdr"])
   {
     v11 = @"axid.icon.4k-hdr";
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"hdr"])
+  if ([dCopy hasPrefix:@"hdr"])
   {
     v11 = @"axid.icon.hdr";
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"hd"])
+  if ([dCopy hasPrefix:@"hd"])
   {
     v11 = @"axid.icon.hd";
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"cc"])
+  if ([dCopy hasPrefix:@"cc"])
   {
     v11 = @"axid.icon.closed.captions";
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"RT"])
+  if ([dCopy hasPrefix:@"RT"])
   {
     v11 = @"tv.tomato.rating";
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"metadata-ad"])
+  if ([dCopy hasPrefix:@"metadata-ad"])
   {
     v11 = @"axid.icon.ad";
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"4k"])
+  if ([dCopy hasPrefix:@"4k"])
   {
     v11 = @"axid.icon.4k";
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"metadata-sdh"])
+  if ([dCopy hasPrefix:@"metadata-sdh"])
   {
     v11 = @"axid.icon.sdh";
     goto LABEL_17;
   }
 
-  if (([v4 hasPrefix:@"dolby-vision"] & 1) != 0 || objc_msgSend(v4, "isEqual:", @"dolbyvision_mask"))
+  if (([dCopy hasPrefix:@"dolby-vision"] & 1) != 0 || objc_msgSend(dCopy, "isEqual:", @"dolbyvision_mask"))
   {
     v11 = @"axid.icon.dolby-vision";
     goto LABEL_17;
   }
 
-  if ([v4 axContainsString:@"atmos"])
+  if ([dCopy axContainsString:@"atmos"])
   {
     v11 = @"axid.icon.dolby-atmos";
     goto LABEL_17;
   }
 
-  if ([v4 axContainsString:@"itunes-extras-badge"])
+  if ([dCopy axContainsString:@"itunes-extras-badge"])
   {
     v11 = @"axid.icon.itunes-extras";
     goto LABEL_17;
@@ -309,9 +309,9 @@ LABEL_5:
   return v9;
 }
 
-- (id)accessibilityLabelForResourceURL:(id)a3
+- (id)accessibilityLabelForResourceURL:(id)l
 {
-  v4 = [(AXATVUtils *)self accessibilityIdentifierForResourceURL:a3];
+  v4 = [(AXATVUtils *)self accessibilityIdentifierForResourceURL:l];
   v5 = [(AXATVUtils *)self accessibilityLabelForID:v4];
 
   return v5;
@@ -319,8 +319,8 @@ LABEL_5:
 
 - (id)currentFocusedView
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v3 = [v2 safeValueForKey:@"focusedView"];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  v3 = [mainScreen safeValueForKey:@"focusedView"];
 
   return v3;
 }

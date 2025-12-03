@@ -1,10 +1,10 @@
 @interface _AnimationManagerRunner
-- (_AnimationManagerRunner)initWithAnimationManager:(void *)a3;
+- (_AnimationManagerRunner)initWithAnimationManager:(void *)manager;
 @end
 
 @implementation _AnimationManagerRunner
 
-- (_AnimationManagerRunner)initWithAnimationManager:(void *)a3
+- (_AnimationManagerRunner)initWithAnimationManager:(void *)manager
 {
   v8.receiver = self;
   v8.super_class = _AnimationManagerRunner;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_animationManager = a3;
+    v4->_animationManager = manager;
     v6 = v4;
   }
 

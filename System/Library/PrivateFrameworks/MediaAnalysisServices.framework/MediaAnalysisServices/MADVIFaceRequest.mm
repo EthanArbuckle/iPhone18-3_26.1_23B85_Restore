@@ -1,16 +1,16 @@
 @interface MADVIFaceRequest
-- (MADVIFaceRequest)initWithCoder:(id)a3;
+- (MADVIFaceRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADVIFaceRequest
 
-- (MADVIFaceRequest)initWithCoder:(id)a3
+- (MADVIFaceRequest)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = MADVIFaceRequest;
-  v3 = [(MADRequest *)&v7 initWithCoder:a3];
+  v3 = [(MADRequest *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -20,27 +20,27 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = MADVIFaceRequest;
-  [(MADRequest *)&v3 encodeWithCoder:a3];
+  [(MADRequest *)&v3 encodeWithCoder:coder];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  v6 = [(MADRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  results = [(MADRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

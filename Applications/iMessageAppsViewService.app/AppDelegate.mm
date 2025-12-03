@@ -1,7 +1,7 @@
 @interface AppDelegate
 - (AppDelegate)init;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)warmUp;
 @end
 
@@ -47,7 +47,7 @@
   return v2;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = sub_100007044();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -65,37 +65,37 @@
   return 1;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = sub_100007044();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = [v7 processIdentifier];
+    HIDWORD(buf) = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Accepting new source connection from PID %d", &buf, 8u);
   }
 
-  [v7 _setQueue:self->_xpcQueue];
+  [connectionCopy _setQueue:self->_xpcQueue];
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL____UIKeyboardMediaService];
-  [v7 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v7 setExportedObject:self];
-  objc_initWeak(&buf, v7);
+  [connectionCopy setExportedObject:self];
+  objc_initWeak(&buf, connectionCopy);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000058A4;
   v16[3] = &unk_100010778;
   objc_copyWeak(&v17, &buf);
-  [v7 setInterruptionHandler:v16];
+  [connectionCopy setInterruptionHandler:v16];
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100005964;
   v14 = &unk_100010778;
   objc_copyWeak(&v15, &buf);
-  [v7 setInvalidationHandler:&v11];
-  [v7 resume];
+  [connectionCopy setInvalidationHandler:&v11];
+  [connectionCopy resume];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v17);
   objc_destroyWeak(&buf);

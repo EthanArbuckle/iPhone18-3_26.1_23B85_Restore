@@ -1,22 +1,22 @@
 @interface _NUTiledBackfillLayer
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _NUTiledBackfillLayer
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v3.receiver = self;
   v3.super_class = _NUTiledBackfillLayer;
-  [(_NUTiledBackfillLayer *)&v3 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_NUTiledBackfillLayer *)&v3 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = _NUTiledBackfillLayer;
-  [(_NUTiledBackfillLayer *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_NUTiledBackfillLayer *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 @end

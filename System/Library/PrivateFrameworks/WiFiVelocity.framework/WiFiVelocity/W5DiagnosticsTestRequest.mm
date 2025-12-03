@@ -1,15 +1,15 @@
 @interface W5DiagnosticsTestRequest
-+ (id)requestWithTestID:(int64_t)a3 configuration:(id)a4;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDiagnosticsTestRequest:(id)a3;
++ (id)requestWithTestID:(int64_t)d configuration:(id)configuration;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDiagnosticsTestRequest:(id)request;
 - (W5DiagnosticsTestRequest)init;
-- (W5DiagnosticsTestRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (W5DiagnosticsTestRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setConfiguration:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation W5DiagnosticsTestRequest
@@ -27,11 +27,11 @@
   return v2;
 }
 
-+ (id)requestWithTestID:(int64_t)a3 configuration:(id)a4
++ (id)requestWithTestID:(int64_t)d configuration:(id)configuration
 {
   v6 = objc_alloc_init(W5DiagnosticsTestRequest);
-  [(W5DiagnosticsTestRequest *)v6 setTestID:a3];
-  [(W5DiagnosticsTestRequest *)v6 setConfiguration:a4];
+  [(W5DiagnosticsTestRequest *)v6 setTestID:d];
+  [(W5DiagnosticsTestRequest *)v6 setConfiguration:configuration];
   return v6;
 }
 
@@ -42,16 +42,16 @@
   [(W5DiagnosticsTestRequest *)&v3 dealloc];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   configuration = self->_configuration;
-  if (configuration != a3)
+  if (configuration != configuration)
   {
 
     self->_configuration = 0;
-    if (a3)
+    if (configuration)
     {
-      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+      v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:configuration requiringSecureCoding:1 error:0];
       if (v6)
       {
         v7 = v6;
@@ -79,37 +79,37 @@
   return v4;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   v5.receiver = self;
   v5.super_class = W5DiagnosticsTestRequest;
-  if (-[W5DiagnosticsTestRequest conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([a3 isEqual:&unk_288343878] & 1) != 0)
+  if (-[W5DiagnosticsTestRequest conformsToProtocol:](&v5, sel_conformsToProtocol_) || ([protocol isEqual:&unk_288343878] & 1) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a3 isEqual:&unk_2883436F0];
+    return [protocol isEqual:&unk_2883436F0];
   }
 }
 
-- (BOOL)isEqualToDiagnosticsTestRequest:(id)a3
+- (BOOL)isEqualToDiagnosticsTestRequest:(id)request
 {
   uuid = self->_uuid;
-  v4 = [a3 uuid];
+  uuid = [request uuid];
 
-  return [(NSUUID *)uuid isEqual:v4];
+  return [(NSUUID *)uuid isEqual:uuid];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -120,10 +120,10 @@
     return 0;
   }
 
-  return [(W5DiagnosticsTestRequest *)self isEqualToDiagnosticsTestRequest:a3];
+  return [(W5DiagnosticsTestRequest *)self isEqualToDiagnosticsTestRequest:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5DiagnosticsTestRequest allocWithZone:?]];
   [(W5DiagnosticsTestRequest *)v4 setTestID:self->_testID];
@@ -132,31 +132,31 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInteger:self->_testID forKey:@"_testID"];
-  [a3 encodeObject:self->_configuration forKey:@"_configuration"];
+  [coder encodeInteger:self->_testID forKey:@"_testID"];
+  [coder encodeObject:self->_configuration forKey:@"_configuration"];
   uuid = self->_uuid;
 
-  [a3 encodeObject:uuid forKey:@"_uuid"];
+  [coder encodeObject:uuid forKey:@"_uuid"];
 }
 
-- (W5DiagnosticsTestRequest)initWithCoder:(id)a3
+- (W5DiagnosticsTestRequest)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = W5DiagnosticsTestRequest;
   v4 = [(W5DiagnosticsTestRequest *)&v12 init];
   if (v4)
   {
-    v4->_testID = [a3 decodeIntegerForKey:@"_testID"];
+    v4->_testID = [coder decodeIntegerForKey:@"_testID"];
     v5 = MEMORY[0x277CBEB98];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
-    v4->_configuration = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, v9, v10, objc_opt_class(), 0), @"_configuration", "copy"}];
-    v4->_uuid = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"_uuid", "copy"}];
+    v4->_configuration = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, v7, v8, v9, v10, objc_opt_class(), 0), @"_configuration", "copy"}];
+    v4->_uuid = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"_uuid", "copy"}];
   }
 
   return v4;

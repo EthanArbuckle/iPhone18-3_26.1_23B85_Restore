@@ -1,26 +1,26 @@
 @interface OSDStockholm
 - (BOOL)isNfcDisabledByProfile;
 - (BOOL)overrideNfcEnabledState;
-- (BOOL)startCardEmulationWithTimeout:(double)a3;
+- (BOOL)startCardEmulationWithTimeout:(double)timeout;
 - (BOOL)updateUserNfcEnabledState;
-- (OSDStockholm)initWithDelegate:(id)a3;
+- (OSDStockholm)initWithDelegate:(id)delegate;
 - (OSDStockholmDelegate)delegate;
 - (id)_appletAID;
 - (id)serialNumber;
 - (id)serverRegistrationInfo;
-- (void)contactlessSession:(id)a3 didDetectField:(BOOL)a4;
-- (void)contactlessSession:(id)a3 didSelectApplet:(id)a4;
-- (void)contactlessSessionDidEndUnexpectedly:(id)a3;
+- (void)contactlessSession:(id)session didDetectField:(BOOL)field;
+- (void)contactlessSession:(id)session didSelectApplet:(id)applet;
+- (void)contactlessSessionDidEndUnexpectedly:(id)unexpectedly;
 - (void)dealloc;
 - (void)restoreNfcEnabledState;
-- (void)stopCardEmulation:(double)a3;
+- (void)stopCardEmulation:(double)emulation;
 @end
 
 @implementation OSDStockholm
 
-- (OSDStockholm)initWithDelegate:(id)a3
+- (OSDStockholm)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = OSDStockholm;
   v5 = [(OSDStockholm *)&v12 init];
@@ -40,7 +40,7 @@
     end_timeout_sema = v5->_end_timeout_sema;
     v5->_end_timeout_sema = v8;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   v10 = v5;
@@ -51,12 +51,12 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [(OSDStockholm *)self contactlessSession];
+  contactlessSession = [(OSDStockholm *)self contactlessSession];
 
-  if (v3)
+  if (contactlessSession)
   {
-    v4 = [(OSDStockholm *)self contactlessSession];
-    [v4 endSession];
+    contactlessSession2 = [(OSDStockholm *)self contactlessSession];
+    [contactlessSession2 endSession];
   }
 
   v5.receiver = self;
@@ -64,15 +64,15 @@ LABEL_8:
   [(OSDStockholm *)&v5 dealloc];
 }
 
-- (BOOL)startCardEmulationWithTimeout:(double)a3
+- (BOOL)startCardEmulationWithTimeout:(double)timeout
 {
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
   v5 = +[NFHardwareManager sharedHardwareManager];
-  v6 = [v5 getHwSupport];
-  if (v6 == 4)
+  getHwSupport = [v5 getHwSupport];
+  if (getHwSupport == 4)
   {
     v7 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -90,25 +90,25 @@ LABEL_4:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v6;
+    HIDWORD(buf) = getHwSupport;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Hardware state : %u", &buf, 8u);
   }
 
-  if (v6 != 2)
+  if (getHwSupport != 2)
   {
     v10 = 0;
     do
     {
       [NSThread sleepForTimeInterval:0.100000001];
-      v11 = [v5 getHwSupport];
-      if (v11 == 2)
+      getHwSupport2 = [v5 getHwSupport];
+      if (getHwSupport2 == 2)
       {
         break;
       }
     }
 
     while (v10++ < 9);
-    if (v11 != 2)
+    if (getHwSupport2 != 2)
     {
       v7 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -131,7 +131,7 @@ LABEL_4:
   [(OSDStockholm *)self setSessionController:v13, v18, v19, v20, v21];
 
   start_timeout_sema = self->_start_timeout_sema;
-  v15 = dispatch_time(0, (a3 * 1000000000.0));
+  v15 = dispatch_time(0, (timeout * 1000000000.0));
   if (dispatch_semaphore_wait(start_timeout_sema, v15))
   {
     v16 = DiagnosticLogHandleForCategory();
@@ -157,7 +157,7 @@ LABEL_22:
   return v8 & 1;
 }
 
-- (void)stopCardEmulation:(double)a3
+- (void)stopCardEmulation:(double)emulation
 {
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(25, 0);
@@ -167,7 +167,7 @@ LABEL_22:
   v6[3] = &unk_100008258;
   objc_copyWeak(v7, &location);
   v6[4] = self;
-  v7[1] = *&a3;
+  v7[1] = *&emulation;
   dispatch_sync(v5, v6);
 
   objc_destroyWeak(v7);
@@ -177,9 +177,9 @@ LABEL_22:
 - (id)serverRegistrationInfo
 {
   v2 = +[NFRemoteAdminManager sharedRemoteAdminManager];
-  v3 = [v2 registrationInfo];
+  registrationInfo = [v2 registrationInfo];
 
-  return v3;
+  return registrationInfo;
 }
 
 - (id)serialNumber
@@ -197,15 +197,15 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Failed to get NearField embedded SN with error: %@", buf, 0xCu);
     }
 
-    v5 = 0;
+    serialNumber = 0;
   }
 
   else
   {
-    v5 = [v2 serialNumber];
+    serialNumber = [v2 serialNumber];
   }
 
-  return v5;
+  return serialNumber;
 }
 
 - (BOOL)isNfcDisabledByProfile
@@ -282,7 +282,7 @@ LABEL_10:
       else if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 134217984;
-        v8 = [(OSDStockholm *)self userNfcEnabledState];
+        userNfcEnabledState = [(OSDStockholm *)self userNfcEnabledState];
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "NFC radio enabled state restored to %ld", &v7, 0xCu);
       }
     }
@@ -324,9 +324,9 @@ LABEL_10:
       v7 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(OSDStockholm *)self userNfcEnabledState];
+        userNfcEnabledState = [(OSDStockholm *)self userNfcEnabledState];
         *buf = 134217984;
-        v12 = v8;
+        v12 = userNfcEnabledState;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Successfully backed up original NFC radio state %ld", buf, 0xCu);
       }
     }
@@ -375,7 +375,7 @@ LABEL_12:
   return v5;
 }
 
-- (void)contactlessSession:(id)a3 didDetectField:(BOOL)a4
+- (void)contactlessSession:(id)session didDetectField:(BOOL)field
 {
   v6 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -386,14 +386,14 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@", &v9, 0xCu);
   }
 
-  v8 = [(OSDStockholm *)self delegate];
+  delegate = [(OSDStockholm *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 osdStockholmDidDetectField];
+    [delegate osdStockholmDidDetectField];
   }
 }
 
-- (void)contactlessSessionDidEndUnexpectedly:(id)a3
+- (void)contactlessSessionDidEndUnexpectedly:(id)unexpectedly
 {
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -404,37 +404,37 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@", &v8, 0xCu);
   }
 
-  v7 = [(OSDStockholm *)self delegate];
+  delegate = [(OSDStockholm *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 osdStockholmDidEndUnexpectedly];
+    [delegate osdStockholmDidEndUnexpectedly];
   }
 }
 
-- (void)contactlessSession:(id)a3 didSelectApplet:(id)a4
+- (void)contactlessSession:(id)session didSelectApplet:(id)applet
 {
-  v6 = a4;
+  appletCopy = applet;
   v7 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
-    v9 = [v6 identifier];
+    identifier = [appletCopy identifier];
     v13 = 138412546;
     v14 = v8;
     v15 = 2112;
-    v16 = v9;
+    v16 = identifier;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ %@", &v13, 0x16u);
   }
 
-  v10 = [(OSDStockholm *)self delegate];
+  delegate = [(OSDStockholm *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v6 identifier];
-    v12 = [v11 isEqualToString:@"D27600008554657374010101"];
+    identifier2 = [appletCopy identifier];
+    v12 = [identifier2 isEqualToString:@"D27600008554657374010101"];
 
     if (v12)
     {
-      [v10 osdStockholmDidSelectEchoApplet];
+      [delegate osdStockholmDidSelectEchoApplet];
     }
   }
 }

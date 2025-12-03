@@ -1,7 +1,7 @@
 @interface ArticleThumbnailComponentViewFactory
 - (NSString)type;
-- (_TtC12NewsArticles36ArticleThumbnailComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6;
-- (id)componentViewForComponent:(id)a3;
+- (_TtC12NewsArticles36ArticleThumbnailComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory;
+- (id)componentViewForComponent:(id)component;
 @end
 
 @implementation ArticleThumbnailComponentViewFactory
@@ -13,17 +13,17 @@
   return v2;
 }
 
-- (_TtC12NewsArticles36ArticleThumbnailComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6
+- (_TtC12NewsArticles36ArticleThumbnailComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1D7C52534();
   swift_unknownObjectRelease();
 

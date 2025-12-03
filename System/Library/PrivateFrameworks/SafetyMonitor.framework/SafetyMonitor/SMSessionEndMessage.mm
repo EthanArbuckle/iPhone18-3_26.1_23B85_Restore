@@ -1,38 +1,38 @@
 @interface SMSessionEndMessage
-+ (unint64_t)sessionEndReasonFromDict:(id)a3;
-+ (unint64_t)sessionEndReasonFromURL:(id)a3;
-- (SMSessionEndMessage)initWithCoder:(id)a3;
-- (SMSessionEndMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 sessionEndReason:(unint64_t)a6 sessionType:(unint64_t)a7 destinationType:(unint64_t)a8 destinationMapItem:(id)a9;
-- (SMSessionEndMessage)initWithDictionary:(id)a3;
-- (SMSessionEndMessage)initWithSessionID:(id)a3 sessionEndReason:(unint64_t)a4 sessionType:(unint64_t)a5 destinationType:(unint64_t)a6 destinationMapItem:(id)a7;
-- (SMSessionEndMessage)initWithURL:(id)a3;
++ (unint64_t)sessionEndReasonFromDict:(id)dict;
++ (unint64_t)sessionEndReasonFromURL:(id)l;
+- (SMSessionEndMessage)initWithCoder:(id)coder;
+- (SMSessionEndMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD sessionEndReason:(unint64_t)reason sessionType:(unint64_t)type destinationType:(unint64_t)destinationType destinationMapItem:(id)item;
+- (SMSessionEndMessage)initWithDictionary:(id)dictionary;
+- (SMSessionEndMessage)initWithSessionID:(id)d sessionEndReason:(unint64_t)reason sessionType:(unint64_t)type destinationType:(unint64_t)destinationType destinationMapItem:(id)item;
+- (SMSessionEndMessage)initWithURL:(id)l;
 - (id)outputToDictionary;
 - (id)outputToURLComponents;
 - (id)summaryText;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionEndMessage
 
-- (SMSessionEndMessage)initWithSessionID:(id)a3 sessionEndReason:(unint64_t)a4 sessionType:(unint64_t)a5 destinationType:(unint64_t)a6 destinationMapItem:(id)a7
+- (SMSessionEndMessage)initWithSessionID:(id)d sessionEndReason:(unint64_t)reason sessionType:(unint64_t)type destinationType:(unint64_t)destinationType destinationMapItem:(id)item
 {
   v12 = MEMORY[0x277CBEAA8];
-  v13 = a7;
-  v14 = a3;
+  itemCopy = item;
+  dCopy = d;
   v15 = [v12 now];
-  v16 = [MEMORY[0x277CCAD78] UUID];
-  v17 = [(SMSessionEndMessage *)self initWithDate:v15 messageID:v16 sessionID:v14 sessionEndReason:a4 sessionType:a5 destinationType:a6 destinationMapItem:v13];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v17 = [(SMSessionEndMessage *)self initWithDate:v15 messageID:uUID sessionID:dCopy sessionEndReason:reason sessionType:type destinationType:destinationType destinationMapItem:itemCopy];
 
   return v17;
 }
 
-- (SMSessionEndMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 sessionEndReason:(unint64_t)a6 sessionType:(unint64_t)a7 destinationType:(unint64_t)a8 destinationMapItem:(id)a9
+- (SMSessionEndMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD sessionEndReason:(unint64_t)reason sessionType:(unint64_t)type destinationType:(unint64_t)destinationType destinationMapItem:(id)item
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a9;
-  if (!v15)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  itemCopy = item;
+  if (!dateCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -47,7 +47,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v16)
+  if (!dCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -60,7 +60,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!iDCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -72,35 +72,35 @@ LABEL_13:
 
 LABEL_14:
 
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
   v25.receiver = self;
   v25.super_class = SMSessionEndMessage;
-  v19 = [(SMMessage *)&v25 initWithDate:v15 messageID:v16 sessionID:v17];
+  v19 = [(SMMessage *)&v25 initWithDate:dateCopy messageID:dCopy sessionID:iDCopy];
   v20 = v19;
   if (v19)
   {
-    v19->_sessionEndReason = a6;
-    v19->_sessionType = a7;
-    v19->_destinationType = a8;
-    objc_storeStrong(&v19->_destinationMapItem, a9);
+    v19->_sessionEndReason = reason;
+    v19->_sessionType = type;
+    v19->_destinationType = destinationType;
+    objc_storeStrong(&v19->_destinationMapItem, item);
   }
 
   self = v20;
-  v21 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v21;
+  return selfCopy;
 }
 
-- (SMSessionEndMessage)initWithDictionary:(id)a3
+- (SMSessionEndMessage)initWithDictionary:(id)dictionary
 {
   v75 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -112,16 +112,16 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v7 = [v5 valueForKey:@"messageType"];
-  v8 = [v7 intValue];
+  v7 = [dictionaryCopy valueForKey:@"messageType"];
+  intValue = [v7 intValue];
 
-  if ([objc_opt_class() messageType] != v8)
+  if ([objc_opt_class() messageType] != intValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
 LABEL_17:
-      v36 = 0;
+      selfCopy = 0;
       goto LABEL_18;
     }
 
@@ -133,9 +133,9 @@ LABEL_17:
     v69 = 2112;
     v70 = v32;
     v71 = 1024;
-    v72 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v73 = 1024;
-    v74 = v8;
+    v74 = intValue;
     v33 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
     v34 = v12;
     v35 = 34;
@@ -146,9 +146,9 @@ LABEL_32:
   }
 
   v9 = [v6 valueForKey:@"interfaceVersion"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
-  if (v10 != 1)
+  if (intValue2 != 1)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -164,7 +164,7 @@ LABEL_32:
     v69 = 2112;
     v70 = v32;
     v71 = 1024;
-    v72 = v10;
+    messageType = intValue2;
     v33 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v34 = v12;
     v35 = 28;
@@ -194,20 +194,20 @@ LABEL_32:
         v22 = v21;
         if (v21)
         {
-          v23 = [v21 intValue];
+          intValue3 = [v21 intValue];
           v24 = [v6 valueForKey:@"sessionType"];
           v66 = v24;
           if (v24)
           {
             v65 = v22;
-            v25 = [v24 intValue];
+            intValue4 = [v24 intValue];
             v26 = [v6 valueForKey:@"sessionDestinationType"];
             if (v26)
             {
               v27 = v26;
-              v63 = v25;
-              v64 = v23;
-              v62 = [v26 intValue];
+              v63 = intValue4;
+              v64 = intValue3;
+              intValue5 = [v26 intValue];
               v28 = [v6 valueForKey:@"sessionDestinationMapItem"];
               if (v28)
               {
@@ -220,9 +220,9 @@ LABEL_32:
               }
 
               v22 = v65;
-              self = [(SMSessionEndMessage *)self initWithDate:v14 messageID:v17 sessionID:v20 sessionEndReason:v64 sessionType:v63 destinationType:v62 destinationMapItem:v29];
+              self = [(SMSessionEndMessage *)self initWithDate:v14 messageID:v17 sessionID:v20 sessionEndReason:v64 sessionType:v63 destinationType:intValue5 destinationMapItem:v29];
 
-              v36 = self;
+              selfCopy = self;
             }
 
             else
@@ -241,7 +241,7 @@ LABEL_32:
               }
 
               v27 = 0;
-              v36 = 0;
+              selfCopy = 0;
               v22 = v65;
             }
           }
@@ -264,7 +264,7 @@ LABEL_32:
               v22 = v56;
             }
 
-            v36 = 0;
+            selfCopy = 0;
           }
 
           v39 = v66;
@@ -287,7 +287,7 @@ LABEL_32:
             v22 = 0;
           }
 
-          v36 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -309,7 +309,7 @@ LABEL_32:
           v22 = v49;
         }
 
-        v36 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -328,7 +328,7 @@ LABEL_32:
         _os_log_error_impl(&dword_26455D000, v20, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", buf, 0x16u);
       }
 
-      v36 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -347,45 +347,45 @@ LABEL_32:
       _os_log_error_impl(&dword_26455D000, v14, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", buf, 0x16u);
     }
 
-    v36 = 0;
+    selfCopy = 0;
   }
 
 LABEL_18:
   v37 = *MEMORY[0x277D85DE8];
-  return v36;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
 {
   v11.receiver = self;
   v11.super_class = SMSessionEndMessage;
-  v3 = [(SMMessage *)&v11 outputToDictionary];
+  outputToDictionary = [(SMMessage *)&v11 outputToDictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage sessionEndReason](self, "sessionEndReason")}];
-  [v3 setObject:v4 forKey:@"sessionEndReason"];
+  [outputToDictionary setObject:v4 forKey:@"sessionEndReason"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage sessionType](self, "sessionType")}];
-  [v3 setObject:v5 forKey:@"sessionType"];
+  [outputToDictionary setObject:v5 forKey:@"sessionType"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage destinationType](self, "destinationType")}];
-  [v3 setObject:v6 forKey:@"sessionDestinationType"];
+  [outputToDictionary setObject:v6 forKey:@"sessionDestinationType"];
 
-  v7 = [(SMSessionEndMessage *)self destinationMapItem];
+  destinationMapItem = [(SMSessionEndMessage *)self destinationMapItem];
 
-  if (v7)
+  if (destinationMapItem)
   {
-    v8 = [(SMSessionEndMessage *)self destinationMapItem];
-    v9 = [v8 base64EncodedStringWithOptions:0];
-    [v3 setObject:v9 forKey:@"sessionDestinationMapItem"];
+    destinationMapItem2 = [(SMSessionEndMessage *)self destinationMapItem];
+    v9 = [destinationMapItem2 base64EncodedStringWithOptions:0];
+    [outputToDictionary setObject:v9 forKey:@"sessionDestinationMapItem"];
   }
 
-  return v3;
+  return outputToDictionary;
 }
 
-- (SMSessionEndMessage)initWithURL:(id)a3
+- (SMSessionEndMessage)initWithURL:(id)l
 {
   v108 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  lCopy = l;
+  if (!lCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -398,7 +398,7 @@ LABEL_18:
     goto LABEL_63;
   }
 
-  v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v3 resolvingAgainstBaseURL:0];
+  v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
   v5 = v4;
   if (!v4)
   {
@@ -419,9 +419,9 @@ LABEL_18:
     goto LABEL_62;
   }
 
-  v6 = [v4 queryItems];
-  v7 = v6;
-  if (!v6)
+  queryItems = [v4 queryItems];
+  v7 = queryItems;
+  if (!queryItems)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -444,10 +444,10 @@ LABEL_18:
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v95 objects:v107 count:16];
+  v8 = [queryItems countByEnumeratingWithState:&v95 objects:v107 count:16];
   if (!v8)
   {
-    v38 = [0 intValue];
+    intValue = [0 intValue];
     v37 = 0;
     v39 = 0;
     v94 = 0;
@@ -462,7 +462,7 @@ LABEL_18:
 
   v9 = v8;
   v80 = v5;
-  v81 = v3;
+  v81 = lCopy;
   v82 = 0;
   v83 = 0;
   v84 = 0;
@@ -484,99 +484,99 @@ LABEL_18:
       }
 
       v13 = *(*(&v95 + 1) + 8 * i);
-      v14 = [v13 value];
-      if (v14)
+      value = [v13 value];
+      if (value)
       {
-        v15 = [v13 name];
-        v16 = [v15 isEqualToString:@"sendDate"];
+        name = [v13 name];
+        v16 = [name isEqualToString:@"sendDate"];
 
         if (v16)
         {
           v17 = v94;
-          v94 = v14;
+          v94 = value;
         }
 
         else
         {
-          v21 = [v13 name];
-          v22 = [v21 isEqualToString:@"messageID"];
+          name2 = [v13 name];
+          v22 = [name2 isEqualToString:@"messageID"];
 
           if (v22)
           {
             v17 = v93;
-            v93 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v14];
+            v93 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
           }
 
           else
           {
-            v23 = [v13 name];
-            v24 = [v23 isEqualToString:@"sessionID"];
+            name3 = [v13 name];
+            v24 = [name3 isEqualToString:@"sessionID"];
 
             if (v24)
             {
               v17 = v92;
-              v92 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v14];
+              v92 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
             }
 
             else
             {
-              v25 = [v13 name];
-              v26 = [v25 isEqualToString:@"messageType"];
+              name4 = [v13 name];
+              v26 = [name4 isEqualToString:@"messageType"];
 
               if (v26)
               {
                 v17 = v90;
-                v90 = v14;
+                v90 = value;
               }
 
               else
               {
-                v27 = [v13 name];
-                v28 = [v27 isEqualToString:@"interfaceVersion"];
+                name5 = [v13 name];
+                v28 = [name5 isEqualToString:@"interfaceVersion"];
 
                 if (v28)
                 {
                   v17 = v88;
-                  v88 = v14;
+                  v88 = value;
                 }
 
                 else
                 {
-                  v29 = [v13 name];
-                  v30 = [v29 isEqualToString:@"sessionEndReason"];
+                  name6 = [v13 name];
+                  v30 = [name6 isEqualToString:@"sessionEndReason"];
 
                   if (v30)
                   {
                     v17 = v85;
-                    v85 = v14;
+                    v85 = value;
                   }
 
                   else
                   {
-                    v31 = [v13 name];
-                    v32 = [v31 isEqualToString:@"sessionType"];
+                    name7 = [v13 name];
+                    v32 = [name7 isEqualToString:@"sessionType"];
 
                     if (v32)
                     {
                       v17 = v84;
-                      v84 = v14;
+                      v84 = value;
                     }
 
                     else
                     {
-                      v33 = [v13 name];
-                      v34 = [v33 isEqualToString:@"sessionDestinationType"];
+                      name8 = [v13 name];
+                      v34 = [name8 isEqualToString:@"sessionDestinationType"];
 
                       if (v34)
                       {
                         v17 = v83;
-                        v83 = v14;
+                        v83 = value;
                       }
 
                       else
                       {
-                        v35 = [v13 name];
-                        v36 = [v35 isEqualToString:@"sessionDestinationMapItem"];
+                        name9 = [v13 name];
+                        v36 = [name9 isEqualToString:@"sessionDestinationMapItem"];
 
                         if (!v36)
                         {
@@ -584,7 +584,7 @@ LABEL_18:
                         }
 
                         v17 = v82;
-                        v82 = v14;
+                        v82 = value;
                       }
                     }
                   }
@@ -620,19 +620,19 @@ LABEL_31:
 
   while (v9);
   v37 = v90;
-  v38 = [v90 intValue];
+  intValue = [v90 intValue];
   if (!v90)
   {
     v5 = v80;
-    v3 = v81;
+    lCopy = v81;
     v39 = v88;
     goto LABEL_57;
   }
 
   v5 = v80;
-  v3 = v81;
+  lCopy = v81;
   v39 = v88;
-  if ([objc_opt_class() messageType] != v38)
+  if ([objc_opt_class() messageType] != intValue)
   {
 LABEL_57:
     v51 = v92;
@@ -645,15 +645,15 @@ LABEL_58:
       v55 = NSStringFromClass(v63);
       NSStringFromSelector(a2);
       v56 = log = v43;
-      v64 = [objc_opt_class() messageType];
+      messageType = [objc_opt_class() messageType];
       *buf = 138413058;
       v100 = v55;
       v101 = 2112;
       v102 = v56;
       v103 = 1024;
-      v104 = v64;
+      v104 = messageType;
       v105 = 1024;
-      v106 = v38;
+      v106 = intValue;
       v57 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
       v58 = log;
       v59 = 34;
@@ -665,9 +665,9 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  v40 = [v88 intValue];
-  v41 = v40;
-  if (!v88 || v40 != 1)
+  intValue2 = [v88 intValue];
+  v41 = intValue2;
+  if (!v88 || intValue2 != 1)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     v51 = v92;
@@ -786,7 +786,7 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  v44 = [v85 intValue];
+  intValue3 = [v85 intValue];
   if (!v84)
   {
     v48 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -807,7 +807,7 @@ LABEL_81:
     goto LABEL_81;
   }
 
-  v45 = [v84 intValue];
+  intValue4 = [v84 intValue];
   if (!v83)
   {
     v48 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -832,9 +832,9 @@ LABEL_82:
     goto LABEL_83;
   }
 
-  v89 = v44;
-  v46 = v45;
-  v47 = [v83 intValue];
+  v89 = intValue3;
+  v46 = intValue4;
+  intValue5 = [v83 intValue];
   v48 = v82;
   if (v82)
   {
@@ -842,7 +842,7 @@ LABEL_82:
   }
 
   v49 = v93;
-  v50 = [(SMSessionEndMessage *)self initWithDate:v43 messageID:v93 sessionID:v92 sessionEndReason:v89 sessionType:v46 destinationType:v47 destinationMapItem:v48];
+  v50 = [(SMSessionEndMessage *)self initWithDate:v43 messageID:v93 sessionID:v92 sessionEndReason:v89 sessionType:v46 destinationType:intValue5 destinationMapItem:v48];
   self = v50;
   v7 = v11;
   v51 = v92;
@@ -864,35 +864,35 @@ LABEL_63:
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25.receiver = self;
   v25.super_class = SMSessionEndMessage;
-  v5 = [(SMMessage *)&v25 outputToURLComponents];
-  v6 = [v5 queryItems];
-  [v4 addObjectsFromArray:v6];
+  outputToURLComponents = [(SMMessage *)&v25 outputToURLComponents];
+  queryItems = [outputToURLComponents queryItems];
+  [v4 addObjectsFromArray:queryItems];
 
   v7 = objc_alloc(MEMORY[0x277CCAD18]);
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage sessionEndReason](self, "sessionEndReason")}];
-  v9 = [v8 stringValue];
-  v10 = [v7 initWithName:@"sessionEndReason" value:v9];
+  stringValue = [v8 stringValue];
+  v10 = [v7 initWithName:@"sessionEndReason" value:stringValue];
   [v4 addObject:v10];
 
   v11 = objc_alloc(MEMORY[0x277CCAD18]);
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage sessionType](self, "sessionType")}];
-  v13 = [v12 stringValue];
-  v14 = [v11 initWithName:@"sessionType" value:v13];
+  stringValue2 = [v12 stringValue];
+  v14 = [v11 initWithName:@"sessionType" value:stringValue2];
   [v4 addObject:v14];
 
   v15 = objc_alloc(MEMORY[0x277CCAD18]);
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage destinationType](self, "destinationType")}];
-  v17 = [v16 stringValue];
-  v18 = [v15 initWithName:@"sessionDestinationType" value:v17];
+  stringValue3 = [v16 stringValue];
+  v18 = [v15 initWithName:@"sessionDestinationType" value:stringValue3];
   [v4 addObject:v18];
 
-  v19 = [(SMSessionEndMessage *)self destinationMapItem];
+  destinationMapItem = [(SMSessionEndMessage *)self destinationMapItem];
 
-  if (v19)
+  if (destinationMapItem)
   {
     v20 = objc_alloc(MEMORY[0x277CCAD18]);
-    v21 = [(SMSessionEndMessage *)self destinationMapItem];
-    v22 = [v21 base64EncodedStringWithOptions:0];
+    destinationMapItem2 = [(SMSessionEndMessage *)self destinationMapItem];
+    v22 = [destinationMapItem2 base64EncodedStringWithOptions:0];
     v23 = [v20 initWithName:@"sessionDestinationMapItem" value:v22];
     [v4 addObject:v23];
   }
@@ -902,21 +902,21 @@ LABEL_63:
   return v3;
 }
 
-+ (unint64_t)sessionEndReasonFromDict:(id)a3
++ (unint64_t)sessionEndReasonFromDict:(id)dict
 {
-  v3 = [a3 valueForKey:@"sessionEndReason"];
-  v4 = [v3 intValue];
+  v3 = [dict valueForKey:@"sessionEndReason"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-+ (unint64_t)sessionEndReasonFromURL:(id)a3
++ (unint64_t)sessionEndReasonFromURL:(id)l
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v3 resolvingAgainstBaseURL:0];
+    v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
     [v4 queryItems];
     v17 = 0u;
     v18 = 0u;
@@ -937,13 +937,13 @@ LABEL_63:
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
-          v11 = [v10 name];
-          v12 = [v11 isEqualToString:@"sessionEndReason"];
+          name = [v10 name];
+          v12 = [name isEqualToString:@"sessionEndReason"];
 
           if (v12)
           {
-            v14 = [v10 value];
-            v13 = [v14 intValue];
+            value = [v10 value];
+            intValue = [value intValue];
 
             goto LABEL_12;
           }
@@ -959,23 +959,23 @@ LABEL_63:
       }
     }
 
-    v13 = 0;
+    intValue = 0;
 LABEL_12:
   }
 
   else
   {
-    v13 = 0;
+    intValue = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v13;
+  return intValue;
 }
 
 - (id)summaryText
 {
-  v3 = [(SMSessionEndMessage *)self sessionEndReason];
-  if (v3 == 8)
+  sessionEndReason = [(SMSessionEndMessage *)self sessionEndReason];
+  if (sessionEndReason == 8)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -983,12 +983,12 @@ LABEL_12:
     v8 = @"Check In: Workout Ended";
   }
 
-  else if (v3 == 1)
+  else if (sessionEndReason == 1)
   {
-    v4 = [(SMSessionEndMessage *)self destinationType];
+    destinationType = [(SMSessionEndMessage *)self destinationType];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = v5;
-    switch(v4)
+    switch(destinationType)
     {
       case 3uLL:
         v7 = @"END_MESSAGE_SAFE_ARRIVAL_SCHOOL_SUMMARY";
@@ -1022,11 +1022,11 @@ LABEL_12:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1041,33 +1041,33 @@ LABEL_12:
 
   v12.receiver = self;
   v12.super_class = SMSessionEndMessage;
-  [(SMMessage *)&v12 encodeWithCoder:v4];
+  [(SMMessage *)&v12 encodeWithCoder:coderCopy];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage sessionEndReason](self, "sessionEndReason")}];
-  [v4 encodeObject:v6 forKey:@"sessionEndReason"];
+  [coderCopy encodeObject:v6 forKey:@"sessionEndReason"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage sessionType](self, "sessionType")}];
-  [v4 encodeObject:v7 forKey:@"sessionType"];
+  [coderCopy encodeObject:v7 forKey:@"sessionType"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMSessionEndMessage destinationType](self, "destinationType")}];
-  [v4 encodeObject:v8 forKey:@"sessionDestinationType"];
+  [coderCopy encodeObject:v8 forKey:@"sessionDestinationType"];
 
-  v9 = [(SMSessionEndMessage *)self destinationMapItem];
+  destinationMapItem = [(SMSessionEndMessage *)self destinationMapItem];
 
-  if (v9)
+  if (destinationMapItem)
   {
-    v10 = [(SMSessionEndMessage *)self destinationMapItem];
-    [v4 encodeObject:v10 forKey:@"sessionDestinationMapItem"];
+    destinationMapItem2 = [(SMSessionEndMessage *)self destinationMapItem];
+    [coderCopy encodeObject:destinationMapItem2 forKey:@"sessionDestinationMapItem"];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (SMSessionEndMessage)initWithCoder:(id)a3
+- (SMSessionEndMessage)initWithCoder:(id)coder
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  coderCopy = coder;
+  v6 = coderCopy;
+  if (!coderCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1079,14 +1079,14 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"messageType"];
+  v7 = [coderCopy decodeIntegerForKey:@"messageType"];
   if ([objc_opt_class() messageType] != v7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
 LABEL_16:
-      v22 = 0;
+      selfCopy = 0;
       goto LABEL_17;
     }
 
@@ -1098,7 +1098,7 @@ LABEL_16:
     v57 = 2112;
     v58 = v25;
     v59 = 1024;
-    v60 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v61 = 1024;
     v62 = v7;
     v26 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
@@ -1128,7 +1128,7 @@ LABEL_31:
     v57 = 2112;
     v58 = v25;
     v59 = 1024;
-    v60 = v29;
+    messageType = v29;
     v26 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v27 = v9;
     v28 = 28;
@@ -1148,23 +1148,23 @@ LABEL_31:
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 intValue];
+          intValue = [v12 intValue];
           v15 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"sessionType"];
           v16 = v15;
           if (v15)
           {
             v54 = v15;
-            v17 = [v15 intValue];
+            intValue2 = [v15 intValue];
             v18 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"sessionDestinationType"];
             if (v18)
             {
               v19 = v18;
-              v53 = v14;
-              v20 = [v18 intValue];
+              v53 = intValue;
+              intValue3 = [v18 intValue];
               v21 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"sessionDestinationMapItem"];
-              self = [(SMSessionEndMessage *)self initWithDate:v9 messageID:v10 sessionID:v11 sessionEndReason:v53 sessionType:v17 destinationType:v20 destinationMapItem:v21];
+              self = [(SMSessionEndMessage *)self initWithDate:v9 messageID:v10 sessionID:v11 sessionEndReason:v53 sessionType:intValue2 destinationType:intValue3 destinationMapItem:v21];
 
-              v22 = self;
+              selfCopy = self;
             }
 
             else
@@ -1183,7 +1183,7 @@ LABEL_31:
               }
 
               v19 = 0;
-              v22 = 0;
+              selfCopy = 0;
             }
 
             v16 = v54;
@@ -1206,7 +1206,7 @@ LABEL_31:
               v16 = 0;
             }
 
-            v22 = 0;
+            selfCopy = 0;
           }
         }
 
@@ -1228,7 +1228,7 @@ LABEL_31:
             v16 = v44;
           }
 
-          v22 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -1247,7 +1247,7 @@ LABEL_31:
           _os_log_error_impl(&dword_26455D000, v13, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing sessionID", buf, 0x16u);
         }
 
-        v22 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -1266,7 +1266,7 @@ LABEL_31:
         _os_log_error_impl(&dword_26455D000, v11, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", buf, 0x16u);
       }
 
-      v22 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -1285,12 +1285,12 @@ LABEL_31:
       _os_log_error_impl(&dword_26455D000, v10, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", buf, 0x16u);
     }
 
-    v22 = 0;
+    selfCopy = 0;
   }
 
 LABEL_17:
   v30 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
 @end

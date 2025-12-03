@@ -1,16 +1,16 @@
 @interface PLOutboundSharingFilesCleanupMaintenanceTask
-- (BOOL)runTaskWithTransaction:(id)a3;
+- (BOOL)runTaskWithTransaction:(id)transaction;
 @end
 
 @implementation PLOutboundSharingFilesCleanupMaintenanceTask
 
-- (BOOL)runTaskWithTransaction:(id)a3
+- (BOOL)runTaskWithTransaction:(id)transaction
 {
-  v3 = [(PLMaintenanceTask *)self libraryServicesManager];
-  v4 = [v3 pathManager];
-  v5 = [v4 isDCIM];
+  libraryServicesManager = [(PLMaintenanceTask *)self libraryServicesManager];
+  pathManager = [libraryServicesManager pathManager];
+  isDCIM = [pathManager isDCIM];
 
-  if (v5)
+  if (isDCIM)
   {
     v6 = +[PLPhotoLibraryPathManager systemLibraryPathManager];
     [v6 cleanupOutboundSharingFilesWithExpiryInterval:60.0];

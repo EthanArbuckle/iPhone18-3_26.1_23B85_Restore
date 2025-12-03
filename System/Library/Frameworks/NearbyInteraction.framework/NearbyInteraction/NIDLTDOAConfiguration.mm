@@ -1,99 +1,99 @@
 @interface NIDLTDOAConfiguration
 - (BOOL)isCameraAssistanceEnabled;
-- (BOOL)isEqual:(id)a3;
-- (NIDLTDOAConfiguration)initWithCoder:(id)a3;
-- (NIDLTDOAConfiguration)initWithConfigParametersOverride:(id)a3;
-- (NIDLTDOAConfiguration)initWithNetworkIdentifier:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIDLTDOAConfiguration)initWithCoder:(id)coder;
+- (NIDLTDOAConfiguration)initWithConfigParametersOverride:(id)override;
+- (NIDLTDOAConfiguration)initWithNetworkIdentifier:(int64_t)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (int64_t)networkIdentifier;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCameraAssistanceEnabled:(BOOL)a3;
-- (void)setNetworkIdentifier:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCameraAssistanceEnabled:(BOOL)enabled;
+- (void)setNetworkIdentifier:(int64_t)identifier;
 @end
 
 @implementation NIDLTDOAConfiguration
 
-- (NIDLTDOAConfiguration)initWithNetworkIdentifier:(int64_t)a3
+- (NIDLTDOAConfiguration)initWithNetworkIdentifier:(int64_t)identifier
 {
   v8.receiver = self;
   v8.super_class = NIDLTDOAConfiguration;
-  v4 = [(NIConfiguration *)&v8 initInternal];
-  v5 = v4;
-  if (v4)
+  initInternal = [(NIConfiguration *)&v8 initInternal];
+  v5 = initInternal;
+  if (initInternal)
   {
-    v4->_networkIdentifier = a3;
-    v6 = v4;
+    initInternal->_networkIdentifier = identifier;
+    v6 = initInternal;
   }
 
   return v5;
 }
 
-- (NIDLTDOAConfiguration)initWithConfigParametersOverride:(id)a3
+- (NIDLTDOAConfiguration)initWithConfigParametersOverride:(id)override
 {
-  v5 = a3;
-  if (!v5)
+  overrideCopy = override;
+  if (!overrideCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"NIDLTDOAConfiguration.mm" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"configParameters"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIDLTDOAConfiguration.mm" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"configParameters"}];
   }
 
   v11.receiver = self;
   v11.super_class = NIDLTDOAConfiguration;
-  v6 = [(NIConfiguration *)&v11 initInternal];
-  if (v6)
+  initInternal = [(NIConfiguration *)&v11 initInternal];
+  if (initInternal)
   {
     v7 = objc_opt_new();
     [(NSDictionary *)v7 setObject:MEMORY[0x1E695E118] forKey:@"UseConfigParametersOverrides"];
-    [(NSDictionary *)v7 addEntriesFromDictionary:v5];
-    debugParameters = v6->_debugParameters;
-    v6->_debugParameters = v7;
+    [(NSDictionary *)v7 addEntriesFromDictionary:overrideCopy];
+    debugParameters = initInternal->_debugParameters;
+    initInternal->_debugParameters = v7;
 
-    v6->_networkIdentifier = 0;
+    initInternal->_networkIdentifier = 0;
   }
 
-  return v6;
+  return initInternal;
 }
 
-- (void)setNetworkIdentifier:(int64_t)a3
+- (void)setNetworkIdentifier:(int64_t)identifier
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_networkIdentifier = a3;
+  obj->_networkIdentifier = identifier;
   objc_sync_exit(obj);
 }
 
 - (int64_t)networkIdentifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  networkIdentifier = v2->_networkIdentifier;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  networkIdentifier = selfCopy->_networkIdentifier;
+  objc_sync_exit(selfCopy);
 
   return networkIdentifier;
 }
 
-- (void)setCameraAssistanceEnabled:(BOOL)a3
+- (void)setCameraAssistanceEnabled:(BOOL)enabled
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_cameraAssistanceEnabled = a3;
+  obj->_cameraAssistanceEnabled = enabled;
   objc_sync_exit(obj);
 }
 
 - (BOOL)isCameraAssistanceEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  cameraAssistanceEnabled = v2->_cameraAssistanceEnabled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cameraAssistanceEnabled = selfCopy->_cameraAssistanceEnabled;
+  objc_sync_exit(selfCopy);
 
   return cameraAssistanceEnabled;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = NIDLTDOAConfiguration;
@@ -101,7 +101,7 @@
   [v5 setNetworkIdentifier:self->_networkIdentifier];
   if (self->_debugParameters)
   {
-    v6 = [objc_msgSend(MEMORY[0x1E695DF20] allocWithZone:{a3), "initWithDictionary:copyItems:", self->_debugParameters, 1}];
+    v6 = [objc_msgSend(MEMORY[0x1E695DF20] allocWithZone:{zone), "initWithDictionary:copyItems:", self->_debugParameters, 1}];
     [v5 setDebugParameters:v6];
   }
 
@@ -109,26 +109,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = NIDLTDOAConfiguration;
-  [(NIConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_debugParameters forKey:@"debugParamsIdentifier"];
-  [v4 encodeInt64:self->_networkIdentifier forKey:@"networkIdentifier"];
-  [v4 encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
+  [(NIConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_debugParameters forKey:@"debugParamsIdentifier"];
+  [coderCopy encodeInt64:self->_networkIdentifier forKey:@"networkIdentifier"];
+  [coderCopy encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
 }
 
-- (NIDLTDOAConfiguration)initWithCoder:(id)a3
+- (NIDLTDOAConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"debugParamsIdentifier"];
-  v6 = [v4 decodeIntForKey:@"networkIdentifier"];
-  v7 = [v4 decodeBoolForKey:@"cameraAssistanceEnabled"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"debugParamsIdentifier"];
+  v6 = [coderCopy decodeIntForKey:@"networkIdentifier"];
+  v7 = [coderCopy decodeBoolForKey:@"cameraAssistanceEnabled"];
   v11.receiver = self;
   v11.super_class = NIDLTDOAConfiguration;
-  v8 = [(NIConfiguration *)&v11 initWithCoder:v4];
+  v8 = [(NIConfiguration *)&v11 initWithCoder:coderCopy];
   v9 = v8;
   if (v8)
   {
@@ -140,13 +140,13 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -157,20 +157,20 @@ LABEL_14:
     }
 
     networkIdentifier = self->_networkIdentifier;
-    v8 = [(NIDLTDOAConfiguration *)v5 networkIdentifier];
+    networkIdentifier = [(NIDLTDOAConfiguration *)v5 networkIdentifier];
     debugParameters = self->_debugParameters;
     if (!debugParameters)
     {
-      v10 = [(NIDLTDOAConfiguration *)v6 debugParameters];
+      debugParameters = [(NIDLTDOAConfiguration *)v6 debugParameters];
 
-      if (!v10)
+      if (!debugParameters)
       {
         v12 = 1;
 LABEL_7:
-        v13 = [(NIDLTDOAConfiguration *)v6 isCameraAssistanceEnabled];
-        if (networkIdentifier == v8)
+        isCameraAssistanceEnabled = [(NIDLTDOAConfiguration *)v6 isCameraAssistanceEnabled];
+        if (networkIdentifier == networkIdentifier)
         {
-          if (v13 == self->_cameraAssistanceEnabled)
+          if (isCameraAssistanceEnabled == self->_cameraAssistanceEnabled)
           {
             v14 = v12;
           }
@@ -192,8 +192,8 @@ LABEL_7:
       debugParameters = self->_debugParameters;
     }
 
-    v11 = [(NIDLTDOAConfiguration *)v6 debugParameters];
-    v12 = [(NSDictionary *)debugParameters isEqual:v11];
+    debugParameters2 = [(NIDLTDOAConfiguration *)v6 debugParameters];
+    v12 = [(NSDictionary *)debugParameters isEqual:debugParameters2];
 
     goto LABEL_7;
   }
@@ -218,8 +218,8 @@ LABEL_15:
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NIDLTDOAConfiguration *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NIDLTDOAConfiguration *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }

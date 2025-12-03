@@ -1,44 +1,44 @@
 @interface AFMultiUserConnection
 + (id)sharedInstance;
 - (AFMultiUserConnection)init;
-- (AFMultiUserConnection)initWithConnectionFactory:(id)a3;
+- (AFMultiUserConnection)initWithConnectionFactory:(id)factory;
 - (id)_connection;
-- (id)_multiUserServiceWithErrorHandler:(id)a3;
+- (id)_multiUserServiceWithErrorHandler:(id)handler;
 - (void)_clearConnection;
 - (void)dealloc;
-- (void)downloadVoiceProfileForiCloudAltDSID:(id)a3 completion:(id)a4;
-- (void)getConformingSharedUserIdForHomeUserId:(id)a3 completion:(id)a4;
-- (void)getConformingSharedUserIds:(id)a3;
-- (void)getFirstNameForSharedUserId:(id)a3 completion:(id)a4;
-- (void)getHomeUserIdForSharedUserId:(id)a3 completion:(id)a4;
-- (void)getHomeUserIdOfRecognizedUserWithCompletion:(id)a3;
-- (void)getLoggableIdentiferForUserWithSharedUserID:(id)a3 iCloudAltDSID:(id)a4 sessionID:(id)a5 completion:(id)a6;
-- (void)getLoggableMultiUserSharedUserIdForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getMultiUserAudioAppSignalsForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getMultiUserSettingsForRecognizedUserWithCompletion:(id)a3;
-- (void)getMultiUserSettingsForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getPreferredMediaUserHomeUserIDWithCompletion:(id)a3;
-- (void)getPrimaryUserSharedUserInfoWithCompletion:(id)a3;
-- (void)getRecognizableUsersConfromingSharedUserIds:(id)a3;
-- (void)getSharedUserIdForHomeUserId:(id)a3 completion:(id)a4;
-- (void)getSharedUserIdForiCloudAltDSID:(id)a3 completion:(id)a4;
-- (void)getSharedUserInfoForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getSharedUserInfoForiCloudAltDSID:(id)a3 completion:(id)a4;
-- (void)getSharedUserProfileLimitWithCompletion:(id)a3;
-- (void)getUserAgentStringForSharedUserID:(id)a3 completion:(id)a4;
-- (void)getiCloudAltDSIDOfRecognizedUserWithCompletion:(id)a3;
-- (void)homeUserIdToNames:(id)a3;
-- (void)postMessageToMUXWithMultiUserInfo:(id)a3 completion:(id)a4;
-- (void)triggerVoiceProfileUploadWithCompletion:(id)a3 completion:(id)a4;
+- (void)downloadVoiceProfileForiCloudAltDSID:(id)d completion:(id)completion;
+- (void)getConformingSharedUserIdForHomeUserId:(id)id completion:(id)completion;
+- (void)getConformingSharedUserIds:(id)ids;
+- (void)getFirstNameForSharedUserId:(id)id completion:(id)completion;
+- (void)getHomeUserIdForSharedUserId:(id)id completion:(id)completion;
+- (void)getHomeUserIdOfRecognizedUserWithCompletion:(id)completion;
+- (void)getLoggableIdentiferForUserWithSharedUserID:(id)d iCloudAltDSID:(id)iD sessionID:(id)sessionID completion:(id)completion;
+- (void)getLoggableMultiUserSharedUserIdForSharedUserID:(id)d completion:(id)completion;
+- (void)getMultiUserAudioAppSignalsForSharedUserID:(id)d completion:(id)completion;
+- (void)getMultiUserSettingsForRecognizedUserWithCompletion:(id)completion;
+- (void)getMultiUserSettingsForSharedUserID:(id)d completion:(id)completion;
+- (void)getPreferredMediaUserHomeUserIDWithCompletion:(id)completion;
+- (void)getPrimaryUserSharedUserInfoWithCompletion:(id)completion;
+- (void)getRecognizableUsersConfromingSharedUserIds:(id)ids;
+- (void)getSharedUserIdForHomeUserId:(id)id completion:(id)completion;
+- (void)getSharedUserIdForiCloudAltDSID:(id)d completion:(id)completion;
+- (void)getSharedUserInfoForSharedUserID:(id)d completion:(id)completion;
+- (void)getSharedUserInfoForiCloudAltDSID:(id)d completion:(id)completion;
+- (void)getSharedUserProfileLimitWithCompletion:(id)completion;
+- (void)getUserAgentStringForSharedUserID:(id)d completion:(id)completion;
+- (void)getiCloudAltDSIDOfRecognizedUserWithCompletion:(id)completion;
+- (void)homeUserIdToNames:(id)names;
+- (void)postMessageToMUXWithMultiUserInfo:(id)info completion:(id)completion;
+- (void)triggerVoiceProfileUploadWithCompletion:(id)completion completion:(id)a4;
 @end
 
 @implementation AFMultiUserConnection
 
-- (void)getLoggableMultiUserSharedUserIdForSharedUserID:(id)a3 completion:(id)a4
+- (void)getLoggableMultiUserSharedUserIdForSharedUserID:(id)d completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -52,11 +52,11 @@
   block[1] = 3221225472;
   block[2] = __84__AFMultiUserConnection_getLoggableMultiUserSharedUserIdForSharedUserID_completion___block_invoke;
   block[3] = &unk_1E73496E8;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = dCopy;
+  v11 = completionCopy;
   dispatch_async(targetQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -93,11 +93,11 @@ void __84__AFMultiUserConnection_getLoggableMultiUserSharedUserIdForSharedUserID
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)postMessageToMUXWithMultiUserInfo:(id)a3 completion:(id)a4
+- (void)postMessageToMUXWithMultiUserInfo:(id)info completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -111,11 +111,11 @@ void __84__AFMultiUserConnection_getLoggableMultiUserSharedUserIdForSharedUserID
   block[1] = 3221225472;
   block[2] = __70__AFMultiUserConnection_postMessageToMUXWithMultiUserInfo_completion___block_invoke;
   block[3] = &unk_1E73496E8;
-  v14 = v6;
-  v15 = v7;
+  v14 = infoCopy;
+  v15 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = infoCopy;
+  v11 = completionCopy;
   dispatch_async(targetQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -152,14 +152,14 @@ void __70__AFMultiUserConnection_postMessageToMUXWithMultiUserInfo_completion___
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getLoggableIdentiferForUserWithSharedUserID:(id)a3 iCloudAltDSID:(id)a4 sessionID:(id)a5 completion:(id)a6
+- (void)getLoggableIdentiferForUserWithSharedUserID:(id)d iCloudAltDSID:(id)iD sessionID:(id)sessionID completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v14 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -175,10 +175,10 @@ void __70__AFMultiUserConnection_postMessageToMUXWithMultiUserInfo_completion___
     block[2] = __104__AFMultiUserConnection_getLoggableIdentiferForUserWithSharedUserID_iCloudAltDSID_sessionID_completion___block_invoke;
     block[3] = &unk_1E7348AF8;
     block[4] = self;
-    v21 = v13;
-    v18 = v10;
-    v19 = v11;
-    v20 = v12;
+    v21 = completionCopy;
+    v18 = dCopy;
+    v19 = iDCopy;
+    v20 = sessionIDCopy;
     dispatch_async(targetQueue, block);
   }
 
@@ -216,12 +216,12 @@ void __104__AFMultiUserConnection_getLoggableIdentiferForUserWithSharedUserID_iC
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getUserAgentStringForSharedUserID:(id)a3 completion:(id)a4
+- (void)getUserAgentStringForSharedUserID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -237,8 +237,8 @@ void __104__AFMultiUserConnection_getLoggableIdentiferForUserWithSharedUserID_iC
     block[2] = __70__AFMultiUserConnection_getUserAgentStringForSharedUserID_completion___block_invoke;
     block[3] = &unk_1E73496E8;
     block[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = dCopy;
     dispatch_async(targetQueue, block);
   }
 
@@ -276,12 +276,12 @@ void __70__AFMultiUserConnection_getUserAgentStringForSharedUserID_completion___
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSharedUserIdForiCloudAltDSID:(id)a3 completion:(id)a4
+- (void)getSharedUserIdForiCloudAltDSID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -297,8 +297,8 @@ void __70__AFMultiUserConnection_getUserAgentStringForSharedUserID_completion___
     block[2] = __68__AFMultiUserConnection_getSharedUserIdForiCloudAltDSID_completion___block_invoke;
     block[3] = &unk_1E73496E8;
     block[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = dCopy;
     dispatch_async(targetQueue, block);
   }
 
@@ -336,12 +336,12 @@ void __68__AFMultiUserConnection_getSharedUserIdForiCloudAltDSID_completion___bl
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSharedUserInfoForiCloudAltDSID:(id)a3 completion:(id)a4
+- (void)getSharedUserInfoForiCloudAltDSID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -357,8 +357,8 @@ void __68__AFMultiUserConnection_getSharedUserIdForiCloudAltDSID_completion___bl
     block[2] = __70__AFMultiUserConnection_getSharedUserInfoForiCloudAltDSID_completion___block_invoke;
     block[3] = &unk_1E73496E8;
     block[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = dCopy;
     dispatch_async(targetQueue, block);
   }
 
@@ -396,11 +396,11 @@ void __70__AFMultiUserConnection_getSharedUserInfoForiCloudAltDSID_completion___
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getPrimaryUserSharedUserInfoWithCompletion:(id)a3
+- (void)getPrimaryUserSharedUserInfoWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -416,7 +416,7 @@ void __70__AFMultiUserConnection_getSharedUserInfoForiCloudAltDSID_completion___
     v8[2] = __68__AFMultiUserConnection_getPrimaryUserSharedUserInfoWithCompletion___block_invoke;
     v8[3] = &unk_1E7349838;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(targetQueue, v8);
   }
 
@@ -454,12 +454,12 @@ void __68__AFMultiUserConnection_getPrimaryUserSharedUserInfoWithCompletion___bl
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSharedUserInfoForSharedUserID:(id)a3 completion:(id)a4
+- (void)getSharedUserInfoForSharedUserID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -475,8 +475,8 @@ void __68__AFMultiUserConnection_getPrimaryUserSharedUserInfoWithCompletion___bl
     block[2] = __69__AFMultiUserConnection_getSharedUserInfoForSharedUserID_completion___block_invoke;
     block[3] = &unk_1E73496E8;
     block[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = dCopy;
     dispatch_async(targetQueue, block);
   }
 
@@ -514,11 +514,11 @@ void __69__AFMultiUserConnection_getSharedUserInfoForSharedUserID_completion___b
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)homeUserIdToNames:(id)a3
+- (void)homeUserIdToNames:(id)names
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  namesCopy = names;
+  if (namesCopy)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -534,7 +534,7 @@ void __69__AFMultiUserConnection_getSharedUserInfoForSharedUserID_completion___b
     v8[2] = __43__AFMultiUserConnection_homeUserIdToNames___block_invoke;
     v8[3] = &unk_1E7349838;
     v8[4] = self;
-    v9 = v4;
+    v9 = namesCopy;
     dispatch_async(targetQueue, v8);
   }
 
@@ -572,17 +572,17 @@ void __43__AFMultiUserConnection_homeUserIdToNames___block_invoke_2(uint64_t a1,
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getPreferredMediaUserHomeUserIDWithCompletion:(id)a3
+- (void)getPreferredMediaUserHomeUserIDWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
     v11 = "[AFMultiUserConnection getPreferredMediaUserHomeUserIDWithCompletion:]";
     _os_log_debug_impl(&dword_1912FE000, v5, OS_LOG_TYPE_DEBUG, "%s ", buf, 0xCu);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -590,7 +590,7 @@ void __43__AFMultiUserConnection_homeUserIdToNames___block_invoke_2(uint64_t a1,
     goto LABEL_3;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_3:
     targetQueue = self->_targetQueue;
@@ -599,7 +599,7 @@ LABEL_3:
     v8[2] = __71__AFMultiUserConnection_getPreferredMediaUserHomeUserIDWithCompletion___block_invoke;
     v8[3] = &unk_1E7349838;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(targetQueue, v8);
   }
 
@@ -639,11 +639,11 @@ void __71__AFMultiUserConnection_getPreferredMediaUserHomeUserIDWithCompletion__
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getiCloudAltDSIDOfRecognizedUserWithCompletion:(id)a3
+- (void)getiCloudAltDSIDOfRecognizedUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     targetQueue = self->_targetQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -651,7 +651,7 @@ void __71__AFMultiUserConnection_getPreferredMediaUserHomeUserIDWithCompletion__
     v7[2] = __72__AFMultiUserConnection_getiCloudAltDSIDOfRecognizedUserWithCompletion___block_invoke;
     v7[3] = &unk_1E7349838;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(targetQueue, v7);
   }
 }
@@ -687,11 +687,11 @@ void __72__AFMultiUserConnection_getiCloudAltDSIDOfRecognizedUserWithCompletion_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getHomeUserIdOfRecognizedUserWithCompletion:(id)a3
+- (void)getHomeUserIdOfRecognizedUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     targetQueue = self->_targetQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -699,7 +699,7 @@ void __72__AFMultiUserConnection_getiCloudAltDSIDOfRecognizedUserWithCompletion_
     v7[2] = __69__AFMultiUserConnection_getHomeUserIdOfRecognizedUserWithCompletion___block_invoke;
     v7[3] = &unk_1E7349838;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(targetQueue, v7);
   }
 }
@@ -735,11 +735,11 @@ void __69__AFMultiUserConnection_getHomeUserIdOfRecognizedUserWithCompletion___b
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getMultiUserSettingsForRecognizedUserWithCompletion:(id)a3
+- (void)getMultiUserSettingsForRecognizedUserWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -755,7 +755,7 @@ void __69__AFMultiUserConnection_getHomeUserIdOfRecognizedUserWithCompletion___b
     v8[2] = __77__AFMultiUserConnection_getMultiUserSettingsForRecognizedUserWithCompletion___block_invoke;
     v8[3] = &unk_1E7349838;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(targetQueue, v8);
   }
 
@@ -793,12 +793,12 @@ void __77__AFMultiUserConnection_getMultiUserSettingsForRecognizedUserWithComple
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getMultiUserSettingsForSharedUserID:(id)a3 completion:(id)a4
+- (void)getMultiUserSettingsForSharedUserID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -814,8 +814,8 @@ void __77__AFMultiUserConnection_getMultiUserSettingsForRecognizedUserWithComple
     block[2] = __72__AFMultiUserConnection_getMultiUserSettingsForSharedUserID_completion___block_invoke;
     block[3] = &unk_1E73496E8;
     block[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = dCopy;
     dispatch_async(targetQueue, block);
   }
 
@@ -853,11 +853,11 @@ void __72__AFMultiUserConnection_getMultiUserSettingsForSharedUserID_completion_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getRecognizableUsersConfromingSharedUserIds:(id)a3
+- (void)getRecognizableUsersConfromingSharedUserIds:(id)ids
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  idsCopy = ids;
+  if (idsCopy)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -873,7 +873,7 @@ void __72__AFMultiUserConnection_getMultiUserSettingsForSharedUserID_completion_
     v8[2] = __69__AFMultiUserConnection_getRecognizableUsersConfromingSharedUserIds___block_invoke;
     v8[3] = &unk_1E7349838;
     v8[4] = self;
-    v9 = v4;
+    v9 = idsCopy;
     dispatch_async(targetQueue, v8);
   }
 
@@ -892,11 +892,11 @@ void __69__AFMultiUserConnection_getRecognizableUsersConfromingSharedUserIds___b
   [v3 getRecognizableUsersConfromingSharedUserIds:*(a1 + 40)];
 }
 
-- (void)getConformingSharedUserIds:(id)a3
+- (void)getConformingSharedUserIds:(id)ids
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  idsCopy = ids;
+  if (idsCopy)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -912,7 +912,7 @@ void __69__AFMultiUserConnection_getRecognizableUsersConfromingSharedUserIds___b
     v8[2] = __52__AFMultiUserConnection_getConformingSharedUserIds___block_invoke;
     v8[3] = &unk_1E7349838;
     v8[4] = self;
-    v9 = v4;
+    v9 = idsCopy;
     dispatch_async(targetQueue, v8);
   }
 
@@ -931,12 +931,12 @@ void __52__AFMultiUserConnection_getConformingSharedUserIds___block_invoke(uint6
   [v3 getConformingSharedUserIds:*(a1 + 40)];
 }
 
-- (void)getConformingSharedUserIdForHomeUserId:(id)a3 completion:(id)a4
+- (void)getConformingSharedUserIdForHomeUserId:(id)id completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
@@ -952,8 +952,8 @@ void __52__AFMultiUserConnection_getConformingSharedUserIds___block_invoke(uint6
     block[2] = __75__AFMultiUserConnection_getConformingSharedUserIdForHomeUserId_completion___block_invoke;
     block[3] = &unk_1E73496E8;
     block[4] = self;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = idCopy;
     dispatch_async(targetQueue, block);
   }
 
@@ -972,17 +972,17 @@ void __75__AFMultiUserConnection_getConformingSharedUserIdForHomeUserId_completi
   [v3 getConformingSharedUserIdForHomeUserId:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)getSharedUserProfileLimitWithCompletion:(id)a3
+- (void)getSharedUserProfileLimitWithCompletion:(id)completion
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315138;
     v7 = "[AFMultiUserConnection getSharedUserProfileLimitWithCompletion:]";
     _os_log_debug_impl(&dword_1912FE000, v4, OS_LOG_TYPE_DEBUG, "%s ", &v6, 0xCu);
-    if (!v3)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
@@ -990,10 +990,10 @@ void __75__AFMultiUserConnection_getConformingSharedUserIdForHomeUserId_completi
     goto LABEL_3;
   }
 
-  if (v3)
+  if (completionCopy)
   {
 LABEL_3:
-    v3[2](v3, 6, 0);
+    completionCopy[2](completionCopy, 6, 0);
   }
 
 LABEL_4:
@@ -1001,10 +1001,10 @@ LABEL_4:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)triggerVoiceProfileUploadWithCompletion:(id)a3 completion:(id)a4
+- (void)triggerVoiceProfileUploadWithCompletion:(id)completion completion:(id)a4
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  completionCopy = completion;
   v7 = a4;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -1012,7 +1012,7 @@ LABEL_4:
     *buf = 136315394;
     v22 = "[AFMultiUserConnection triggerVoiceProfileUploadWithCompletion:completion:]";
     v23 = 2112;
-    v24 = v6;
+    v24 = completionCopy;
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s sharedUserID: %@", buf, 0x16u);
   }
 
@@ -1020,10 +1020,10 @@ LABEL_4:
   v16 = 3221225472;
   v17 = __76__AFMultiUserConnection_triggerVoiceProfileUploadWithCompletion_completion___block_invoke;
   v18 = &unk_1E7348AD0;
-  v19 = v6;
+  v19 = completionCopy;
   v20 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = completionCopy;
   v11 = [(AFMultiUserConnection *)self _multiUserServiceWithErrorHandler:&v15];
   v12 = v11;
   if (v9)
@@ -1067,11 +1067,11 @@ void __76__AFMultiUserConnection_triggerVoiceProfileUploadWithCompletion_complet
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)downloadVoiceProfileForiCloudAltDSID:(id)a3 completion:(id)a4
+- (void)downloadVoiceProfileForiCloudAltDSID:(id)d completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -1084,8 +1084,8 @@ void __76__AFMultiUserConnection_triggerVoiceProfileUploadWithCompletion_complet
   v14[1] = 3221225472;
   v14[2] = __73__AFMultiUserConnection_downloadVoiceProfileForiCloudAltDSID_completion___block_invoke;
   v14[3] = &unk_1E7348AA8;
-  v15 = v7;
-  v9 = v7;
+  v15 = completionCopy;
+  v9 = completionCopy;
   v10 = [(AFMultiUserConnection *)self _multiUserServiceWithErrorHandler:v14];
   v11 = v10;
   if (v9)
@@ -1098,7 +1098,7 @@ void __76__AFMultiUserConnection_triggerVoiceProfileUploadWithCompletion_complet
     v12 = &__block_literal_global_44609;
   }
 
-  [v10 downloadVoiceProfileForiCloudAltDSID:v6 completion:v12];
+  [v10 downloadVoiceProfileForiCloudAltDSID:dCopy completion:v12];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -1126,11 +1126,11 @@ void __73__AFMultiUserConnection_downloadVoiceProfileForiCloudAltDSID_completion
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSharedUserIdForHomeUserId:(id)a3 completion:(id)a4
+- (void)getSharedUserIdForHomeUserId:(id)id completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -1144,11 +1144,11 @@ void __73__AFMultiUserConnection_downloadVoiceProfileForiCloudAltDSID_completion
   block[1] = 3221225472;
   block[2] = __65__AFMultiUserConnection_getSharedUserIdForHomeUserId_completion___block_invoke;
   block[3] = &unk_1E73496E8;
-  v14 = v6;
-  v15 = v7;
+  v14 = idCopy;
+  v15 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = idCopy;
+  v11 = completionCopy;
   dispatch_async(targetQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1177,11 +1177,11 @@ uint64_t __65__AFMultiUserConnection_getSharedUserIdForHomeUserId_completion___b
   return result;
 }
 
-- (void)getFirstNameForSharedUserId:(id)a3 completion:(id)a4
+- (void)getFirstNameForSharedUserId:(id)id completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -1195,11 +1195,11 @@ uint64_t __65__AFMultiUserConnection_getSharedUserIdForHomeUserId_completion___b
   block[1] = 3221225472;
   block[2] = __64__AFMultiUserConnection_getFirstNameForSharedUserId_completion___block_invoke;
   block[3] = &unk_1E73496E8;
-  v14 = v6;
-  v15 = v7;
+  v14 = idCopy;
+  v15 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = idCopy;
+  v11 = completionCopy;
   dispatch_async(targetQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1228,18 +1228,18 @@ uint64_t __64__AFMultiUserConnection_getFirstNameForSharedUserId_completion___bl
   return result;
 }
 
-- (void)getMultiUserAudioAppSignalsForSharedUserID:(id)a3 completion:(id)a4
+- (void)getMultiUserAudioAppSignalsForSharedUserID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v17 = "[AFMultiUserConnection getMultiUserAudioAppSignalsForSharedUserID:completion:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_debug_impl(&dword_1912FE000, v8, OS_LOG_TYPE_DEBUG, "%s Getting music preference data for shared user id %@", buf, 0x16u);
   }
 
@@ -1248,11 +1248,11 @@ uint64_t __64__AFMultiUserConnection_getFirstNameForSharedUserId_completion___bl
   block[1] = 3221225472;
   block[2] = __79__AFMultiUserConnection_getMultiUserAudioAppSignalsForSharedUserID_completion___block_invoke;
   block[3] = &unk_1E73496E8;
-  v14 = v6;
-  v15 = v7;
+  v14 = dCopy;
+  v15 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = dCopy;
+  v11 = completionCopy;
   dispatch_async(targetQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1281,11 +1281,11 @@ uint64_t __79__AFMultiUserConnection_getMultiUserAudioAppSignalsForSharedUserID_
   return result;
 }
 
-- (void)getHomeUserIdForSharedUserId:(id)a3 completion:(id)a4
+- (void)getHomeUserIdForSharedUserId:(id)id completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -1299,11 +1299,11 @@ uint64_t __79__AFMultiUserConnection_getMultiUserAudioAppSignalsForSharedUserID_
   block[1] = 3221225472;
   block[2] = __65__AFMultiUserConnection_getHomeUserIdForSharedUserId_completion___block_invoke;
   block[3] = &unk_1E73496E8;
-  v14 = v6;
-  v15 = v7;
+  v14 = idCopy;
+  v15 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = idCopy;
+  v11 = completionCopy;
   dispatch_async(targetQueue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -1332,10 +1332,10 @@ uint64_t __65__AFMultiUserConnection_getHomeUserIdForSharedUserId_completion___b
   return result;
 }
 
-- (id)_multiUserServiceWithErrorHandler:(id)a3
+- (id)_multiUserServiceWithErrorHandler:(id)handler
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_connection)
   {
     v5 = AFSiriLogContextConnection;
@@ -1347,8 +1347,8 @@ uint64_t __65__AFMultiUserConnection_getHomeUserIdForSharedUserId_completion___b
     }
   }
 
-  v6 = [(AFMultiUserConnection *)self _connection];
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v4];
+  _connection = [(AFMultiUserConnection *)self _connection];
+  v7 = [_connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -1364,7 +1364,7 @@ uint64_t __65__AFMultiUserConnection_getHomeUserIdForSharedUserId_completion___b
     *buf = 136315394;
     v7 = "[AFMultiUserConnection dealloc]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1912FE000, v3, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 
@@ -1421,7 +1421,7 @@ void __36__AFMultiUserConnection__connection__block_invoke(uint64_t a1)
     v6 = 136315394;
     v7 = "[AFMultiUserConnection _clearConnection]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_1912FE000, v3, OS_LOG_TYPE_DEBUG, "%s %p", &v6, 0x16u);
   }
 
@@ -1440,9 +1440,9 @@ void __36__AFMultiUserConnection__connection__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (AFMultiUserConnection)initWithConnectionFactory:(id)a3
+- (AFMultiUserConnection)initWithConnectionFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v12.receiver = self;
   v12.super_class = AFMultiUserConnection;
   v5 = [(AFMultiUserConnection *)&v12 init];
@@ -1454,9 +1454,9 @@ void __36__AFMultiUserConnection__connection__block_invoke(uint64_t a1)
     targetQueue = v5->_targetQueue;
     v5->_targetQueue = v7;
 
-    if (v4)
+    if (factoryCopy)
     {
-      v9 = v4;
+      v9 = factoryCopy;
     }
 
     else
@@ -1477,7 +1477,7 @@ void __36__AFMultiUserConnection__connection__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __39__AFMultiUserConnection_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_44627 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_44627, block);

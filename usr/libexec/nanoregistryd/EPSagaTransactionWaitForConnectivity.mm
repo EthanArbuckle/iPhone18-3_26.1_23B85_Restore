@@ -1,16 +1,16 @@
 @interface EPSagaTransactionWaitForConnectivity
-+ (id)countdown:(int64_t)a3 toCompletion:(id)a4;
++ (id)countdown:(int64_t)countdown toCompletion:(id)completion;
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 - (void)checkForConnectivity;
-- (void)setTimeout:(double)a3;
+- (void)setTimeout:(double)timeout;
 - (void)timeout;
 - (void)transactionDidComplete;
 @end
 
 @implementation EPSagaTransactionWaitForConnectivity
 
-+ (id)countdown:(int64_t)a3 toCompletion:(id)a4
++ (id)countdown:(int64_t)countdown toCompletion:(id)completion
 {
   v31[0] = 0;
   v31[1] = v31;
@@ -20,7 +20,7 @@
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
-  v30[3] = a3;
+  v30[3] = countdown;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -34,9 +34,9 @@
   v20 = v31;
   v21 = v30;
   v22 = &v24;
-  v23 = a3;
-  v5 = a4;
-  v19 = v5;
+  countdownCopy = countdown;
+  completionCopy = completion;
+  v19 = completionCopy;
   v6 = objc_retainBlock(&v15);
   v7 = v25[5];
   v25[5] = v6;
@@ -50,7 +50,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_retainBlock(v25[5]);
-      v12 = [NSNumber numberWithInteger:a3, v15, v16, v17, v18];
+      v12 = [NSNumber numberWithInteger:countdown, v15, v16, v17, v18];
       *buf = 134218242;
       v34 = v11;
       v35 = 2112;
@@ -68,20 +68,20 @@
   return v13;
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_routingSlipEntry, a3);
-  objc_storeStrong(&self->_serviceRegistry, a4);
-  v9 = [v7 objectForKeyedSubscript:@"idsDeviceIdentifier"];
+  entryCopy = entry;
+  registryCopy = registry;
+  objc_storeStrong(&self->_routingSlipEntry, entry);
+  objc_storeStrong(&self->_serviceRegistry, registry);
+  v9 = [entryCopy objectForKeyedSubscript:@"idsDeviceIdentifier"];
   bluetoothID = self->_bluetoothID;
   self->_bluetoothID = v9;
 
-  v11 = [v7 objectForKeyedSubscript:@"timeoutDuration"];
-  v12 = [v7 objectForKeyedSubscript:@"showUnpairAlert"];
+  v11 = [entryCopy objectForKeyedSubscript:@"timeoutDuration"];
+  v12 = [entryCopy objectForKeyedSubscript:@"showUnpairAlert"];
   self->_showUnpairAlert = [v12 BOOLValue];
-  v13 = [v7 objectForKeyedSubscript:@"idsDeviceIdentifier"];
+  v13 = [entryCopy objectForKeyedSubscript:@"idsDeviceIdentifier"];
   if (v13)
   {
     v14 = objc_opt_class();
@@ -91,7 +91,7 @@
     v28[3] = &unk_1001756F8;
     v28[4] = self;
     v29 = v13;
-    v15 = v8;
+    v15 = registryCopy;
     v30 = v15;
     v31 = v11;
     v16 = [v14 countdown:2 toCompletion:v28];
@@ -131,16 +131,16 @@
   }
 }
 
-- (void)setTimeout:(double)a3
+- (void)setTimeout:(double)timeout
 {
   [(AbstractTimer *)self->_timer invalidate];
-  v5 = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
+  queue = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100073528;
   v8[3] = &unk_100175660;
   v8[4] = self;
-  v6 = [TimerFactory timerWithIdentifier:@"com.apple.NanoRegistry.EPSagaTransactionWaitForConnectivity" delay:1 gracePeriod:v5 waking:v8 handlerQueue:a3 handlerBlock:0.0];
+  v6 = [TimerFactory timerWithIdentifier:@"com.apple.NanoRegistry.EPSagaTransactionWaitForConnectivity" delay:1 gracePeriod:queue waking:v8 handlerQueue:timeout handlerBlock:0.0];
   timer = self->_timer;
   self->_timer = v6;
 }
@@ -164,8 +164,8 @@
   }
 
   v7 = [NSError errorWithDomain:@"com.apple.NanoRegistry.EPSagaTransactionWaitForConnectivity" code:0 userInfo:0];
-  v8 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
-  [v8 addObject:v7];
+  errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+  [errors addObject:v7];
 
   [(EPSagaTransactionWaitForConnectivity *)self transactionDidComplete];
 }
@@ -185,17 +185,17 @@
       [v3 presentAlertsIfNeeded];
     }
 
-    v4 = [(EPSagaTransactionWaitForConnectivity *)self delegate];
-    [v4 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionWaitForConnectivity *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 
 - (void)checkForConnectivity
 {
-  v3 = [(NRRemoteObject *)self->_remoteObject defaultPairedDevice];
-  v4 = [v3 nsuuid];
+  defaultPairedDevice = [(NRRemoteObject *)self->_remoteObject defaultPairedDevice];
+  nsuuid = [defaultPairedDevice nsuuid];
 
-  if ([(NSUUID *)self->_bluetoothID isEqual:v4]&& [(NRRemoteObject *)self->_remoteObject isIDSConnected])
+  if ([(NSUUID *)self->_bluetoothID isEqual:nsuuid]&& [(NRRemoteObject *)self->_remoteObject isIDSConnected])
   {
     v5 = nr_daemon_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);

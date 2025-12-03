@@ -1,8 +1,8 @@
 @interface ICDEnhancedAudioKeyManager
 - (ICDEnhancedAudioKeyManager)init;
 - (id)_storeRequestContext;
-- (void)_fetchSharedKeysForcingRefresh:(BOOL)a3;
-- (void)contentKeySession:(id)a3 didFinishProcessingKey:(id)a4 withResponse:(id)a5 error:(id)a6;
+- (void)_fetchSharedKeysForcingRefresh:(BOOL)refresh;
+- (void)contentKeySession:(id)session didFinishProcessingKey:(id)key withResponse:(id)response error:(id)error;
 - (void)fetchMissingOfflineKeys;
 - (void)processPendingKeyInvalidations;
 - (void)refreshSharedKeys;
@@ -28,23 +28,23 @@
   return v2;
 }
 
-- (void)contentKeySession:(id)a3 didFinishProcessingKey:(id)a4 withResponse:(id)a5 error:(id)a6
+- (void)contentKeySession:(id)session didFinishProcessingKey:(id)key withResponse:(id)response error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12 && [v12 bulkRefreshWaitInterval])
+  sessionCopy = session;
+  keyCopy = key;
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy && [responseCopy bulkRefreshWaitInterval])
   {
     v14 = os_log_create("com.apple.amp.itunescloudd", "Default");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = 138543874;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
-      v18 = [v12 bulkRefreshWaitInterval];
+      bulkRefreshWaitInterval = [responseCopy bulkRefreshWaitInterval];
       v19 = 2114;
-      v20 = v11;
+      v20 = keyCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@ Received wait interval %lu in response to key %{public}@ - cancelling remaining key requests", &v15, 0x20u);
     }
 
@@ -52,29 +52,29 @@
   }
 }
 
-- (void)_fetchSharedKeysForcingRefresh:(BOOL)a3
+- (void)_fetchSharedKeysForcingRefresh:(BOOL)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
-    v15 = v3;
+    v15 = refreshCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Fetching shared key. forceRefresh = %{BOOL}u", buf, 0x12u);
   }
 
-  v6 = [(ICDEnhancedAudioKeyManager *)self _storeRequestContext];
+  _storeRequestContext = [(ICDEnhancedAudioKeyManager *)self _storeRequestContext];
   v7 = +[ICURLBagProvider sharedBagProvider];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000DAFA8;
   v9[3] = &unk_1001DD808;
   v9[4] = self;
-  v10 = v6;
-  v11 = v3;
-  v8 = v6;
+  v10 = _storeRequestContext;
+  v11 = refreshCopy;
+  v8 = _storeRequestContext;
   [v7 getBagForRequestContext:v8 forceRefetch:0 withCompletionHandler:v9];
 }
 
@@ -99,7 +99,7 @@
   v19[2] = sub_1000DB8F4;
   v5 = v19[3] = &unk_1001DD6B8;
   v20 = v5;
-  v21 = self;
+  selfCopy = self;
   p_buf = &buf;
   v6 = v4;
   v22 = v6;
@@ -109,7 +109,7 @@
   {
     v8 = [v6 count];
     *v24 = 138543618;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2048;
     v27 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Found %lu offline HLS assets to check", v24, 0x16u);
@@ -137,7 +137,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *v24 = 138543362;
-        v25 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@ Fetching shared keys needed for offline HLS assets", v24, 0xCu);
       }
 
@@ -157,7 +157,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Refreshing shared keys", &v8, 0xCu);
   }
 
@@ -176,7 +176,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}@ Skipping refreshing shared keys because we haven't tried to use them yet", &v8, 0xCu);
     }
   }

@@ -1,21 +1,21 @@
 @interface NameAndPhotoSettingsBundleController
-- (id)sharedNameAndPhotoAudience:(id)a3;
+- (id)sharedNameAndPhotoAudience:(id)audience;
 - (id)sharedNameAndPhotoSharingFooterText;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)onboardingControllerDidDismissSettings:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)onboardingControllerDidDismissSettings:(id)settings;
 - (void)reloadSpecifiers;
 - (void)showSharedNameAndPhotoSettings;
 @end
 
 @implementation NameAndPhotoSettingsBundleController
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v4 = +[NSMutableArray array];
   v5 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:0 get:0 detail:0 cell:0 edit:0];
   [v5 setIdentifier:@"SHARED_NAME_AND_PHOTO_SETTINGS_GROUP"];
-  v6 = [(NameAndPhotoSettingsBundleController *)self sharedNameAndPhotoSharingFooterText];
-  [v5 setProperty:v6 forKey:PSFooterTextGroupKey];
+  sharedNameAndPhotoSharingFooterText = [(NameAndPhotoSettingsBundleController *)self sharedNameAndPhotoSharingFooterText];
+  [v5 setProperty:sharedNameAndPhotoSharingFooterText forKey:PSFooterTextGroupKey];
 
   groupSpecifier = self->_groupSpecifier;
   self->_groupSpecifier = v5;
@@ -42,18 +42,18 @@
 
 - (void)reloadSpecifiers
 {
-  v3 = [(NameAndPhotoSettingsBundleController *)self groupSpecifier];
-  v4 = [(NameAndPhotoSettingsBundleController *)self sharedNameAndPhotoSharingFooterText];
-  [v3 setProperty:v4 forKey:PSFooterTextGroupKey];
+  groupSpecifier = [(NameAndPhotoSettingsBundleController *)self groupSpecifier];
+  sharedNameAndPhotoSharingFooterText = [(NameAndPhotoSettingsBundleController *)self sharedNameAndPhotoSharingFooterText];
+  [groupSpecifier setProperty:sharedNameAndPhotoSharingFooterText forKey:PSFooterTextGroupKey];
 
   v5 = OBJC_IVAR___PSBundleController__parent;
   WeakRetained = objc_loadWeakRetained(&self->PSBundleController_opaque[OBJC_IVAR___PSBundleController__parent]);
-  v7 = [(NameAndPhotoSettingsBundleController *)self groupSpecifier];
-  [WeakRetained reloadSpecifier:v7 animated:0];
+  groupSpecifier2 = [(NameAndPhotoSettingsBundleController *)self groupSpecifier];
+  [WeakRetained reloadSpecifier:groupSpecifier2 animated:0];
 
   v9 = objc_loadWeakRetained(&self->PSBundleController_opaque[v5]);
-  v8 = [(NameAndPhotoSettingsBundleController *)self mainSpecifier];
-  [v9 reloadSpecifier:v8 animated:0];
+  mainSpecifier = [(NameAndPhotoSettingsBundleController *)self mainSpecifier];
+  [v9 reloadSpecifier:mainSpecifier animated:0];
 }
 
 - (void)showSharedNameAndPhotoSettings
@@ -70,26 +70,26 @@
 - (id)sharedNameAndPhotoSharingFooterText
 {
   v2 = +[CNEnvironment currentEnvironment];
-  v3 = [v2 nicknameProvider];
-  v4 = [v3 isNicknameSharingEnabled];
+  nicknameProvider = [v2 nicknameProvider];
+  isNicknameSharingEnabled = [nicknameProvider isNicknameSharingEnabled];
 
-  if (!v4)
+  if (!isNicknameSharingEnabled)
   {
     v8 = @"NAME_AND_PHOTO_SHARING_NOT_SHARING_FOOTER";
     goto LABEL_7;
   }
 
   v5 = +[CNEnvironment currentEnvironment];
-  v6 = [v5 nicknameProvider];
-  v7 = [v6 sharingAudience];
+  nicknameProvider2 = [v5 nicknameProvider];
+  sharingAudience = [nicknameProvider2 sharingAudience];
 
-  if (v7 == &dword_0 + 2)
+  if (sharingAudience == &dword_0 + 2)
   {
     v8 = @"NAME_AND_PHOTO_SHARING_ALWAYS_ASK_FOOTER";
     goto LABEL_7;
   }
 
-  if (v7 == &dword_0 + 1)
+  if (sharingAudience == &dword_0 + 1)
   {
     v8 = @"NAME_AND_PHOTO_SHARING_CONTACTS_ONLY_FOOTER";
 LABEL_7:
@@ -105,25 +105,25 @@ LABEL_8:
   return v10;
 }
 
-- (id)sharedNameAndPhotoAudience:(id)a3
+- (id)sharedNameAndPhotoAudience:(id)audience
 {
   v3 = +[CNEnvironment currentEnvironment];
-  v4 = [v3 nicknameProvider];
-  v5 = [v4 isNicknameSharingEnabled];
+  nicknameProvider = [v3 nicknameProvider];
+  isNicknameSharingEnabled = [nicknameProvider isNicknameSharingEnabled];
 
-  if (!v5)
+  if (!isNicknameSharingEnabled)
   {
     v9 = @"NAME_AND_PHOTO_SHARING_OFF";
     goto LABEL_5;
   }
 
   v6 = +[CNEnvironment currentEnvironment];
-  v7 = [v6 nicknameProvider];
-  v8 = [v7 sharingAudience];
+  nicknameProvider2 = [v6 nicknameProvider];
+  sharingAudience = [nicknameProvider2 sharingAudience];
 
-  if (v8 <= 2)
+  if (sharingAudience <= 2)
   {
-    v9 = *(&off_40E8 + v8);
+    v9 = *(&off_40E8 + sharingAudience);
 LABEL_5:
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:v9 value:&stru_4160 table:@"NameAndPhotoSettings"];
@@ -137,7 +137,7 @@ LABEL_7:
   return v11;
 }
 
-- (void)onboardingControllerDidDismissSettings:(id)a3
+- (void)onboardingControllerDidDismissSettings:(id)settings
 {
   [(NameAndPhotoSettingsBundleController *)self setOnboardingController:0];
 

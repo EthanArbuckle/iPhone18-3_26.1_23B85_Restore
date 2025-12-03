@@ -1,15 +1,15 @@
 @interface VMUReverseGraphEnumerator
-- (VMUReverseGraphEnumerator)initWithGraph:(id)a3;
+- (VMUReverseGraphEnumerator)initWithGraph:(id)graph;
 @end
 
 @implementation VMUReverseGraphEnumerator
 
-- (VMUReverseGraphEnumerator)initWithGraph:(id)a3
+- (VMUReverseGraphEnumerator)initWithGraph:(id)graph
 {
-  v4 = [a3 invertedGraph];
+  invertedGraph = [graph invertedGraph];
   v7.receiver = self;
   v7.super_class = VMUReverseGraphEnumerator;
-  v5 = [(VMUGraphEnumerator *)&v7 initWithGraph:v4];
+  v5 = [(VMUGraphEnumerator *)&v7 initWithGraph:invertedGraph];
 
   return v5;
 }

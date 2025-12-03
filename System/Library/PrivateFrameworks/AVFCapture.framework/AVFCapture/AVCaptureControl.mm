@@ -3,16 +3,16 @@
 - (AVCaptureSession)session;
 - (CAMAbstractOverlayServiceControl)overlayControl;
 - (OS_dispatch_queue)actionQueue;
-- (id)_enabledUpdateWithEnabled:(BOOL)a3;
+- (id)_enabledUpdateWithEnabled:(BOOL)enabled;
 - (id)enabledUpdate;
 - (id)initSubclass;
 - (id)overlayUpdate;
 - (void)dealloc;
-- (void)enqueueActionWithUpdate:(id)a3;
-- (void)overlayDidMakeControlActive:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setOverlay:(id)a3;
-- (void)setSession:(id)a3;
+- (void)enqueueActionWithUpdate:(id)update;
+- (void)overlayDidMakeControlActive:(BOOL)active;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setOverlay:(id)overlay;
+- (void)setSession:(id)session;
 @end
 
 @implementation AVCaptureControl
@@ -43,22 +43,22 @@
   [(AVCaptureControl *)&v3 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   os_unfair_lock_lock(&self->_lock);
   enabled = self->_enabled;
-  self->_enabled = v3;
+  self->_enabled = enabledCopy;
   os_unfair_lock_unlock(&self->_lock);
-  if (enabled != v3)
+  if (enabled != enabledCopy)
   {
-    v6 = [(AVCaptureControl *)self _enabledUpdateWithEnabled:v3];
+    v6 = [(AVCaptureControl *)self _enabledUpdateWithEnabled:enabledCopy];
     if (v6)
     {
       v7 = v6;
-      v8 = [(AVCaptureControl *)self overlay];
+      overlay = [(AVCaptureControl *)self overlay];
 
-      [(AVCaptureControlsOverlay *)v8 updateControl:v7];
+      [(AVCaptureControlsOverlay *)overlay updateControl:v7];
     }
   }
 }
@@ -78,19 +78,19 @@
 - (AVCaptureControlsOverlay)overlay
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(AVWeakReference *)self->_overlayReference referencedObject];
+  referencedObject = [(AVWeakReference *)self->_overlayReference referencedObject];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return referencedObject;
 }
 
-- (void)setOverlay:(id)a3
+- (void)setOverlay:(id)overlay
 {
   os_unfair_lock_lock(&self->_lock);
 
   self->_overlayReference = 0;
-  if (a3)
+  if (overlay)
   {
-    self->_overlayReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
+    self->_overlayReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:overlay];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -99,19 +99,19 @@
 - (AVCaptureSession)session
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(AVWeakReference *)self->_sessionReference referencedObject];
+  referencedObject = [(AVWeakReference *)self->_sessionReference referencedObject];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return referencedObject;
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   os_unfair_lock_lock(&self->_lock);
 
   self->_sessionReference = 0;
-  if (a3)
+  if (session)
   {
-    self->_sessionReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:a3];
+    self->_sessionReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:session];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -150,21 +150,21 @@
   return [(AVCaptureControl *)self _enabledUpdateWithEnabled:enabled];
 }
 
-- (id)_enabledUpdateWithEnabled:(BOOL)a3
+- (id)_enabledUpdateWithEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(AVCaptureControl *)self overlayControl];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(AVCaptureControl *)self overlayControl];
+  overlayControl = [(AVCaptureControl *)self overlayControl];
 
-  return [(CAMAbstractOverlayServiceControl *)v5 updateWithEnabled:v3];
+  return [(CAMAbstractOverlayServiceControl *)overlayControl updateWithEnabled:enabledCopy];
 }
 
-- (void)enqueueActionWithUpdate:(id)a3
+- (void)enqueueActionWithUpdate:(id)update
 {
   v3 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
   if (AVCaptureShouldThrowForAPIViolations())
@@ -175,9 +175,9 @@
   NSLog(&cfstr_SuppressingExc.isa, v3);
 }
 
-- (void)overlayDidMakeControlActive:(BOOL)a3
+- (void)overlayDidMakeControlActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     [(AVCaptureControl *)self removeObservers];
   }

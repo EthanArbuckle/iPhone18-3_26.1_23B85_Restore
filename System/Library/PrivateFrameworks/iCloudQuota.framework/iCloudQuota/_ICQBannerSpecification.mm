@@ -1,25 +1,25 @@
 @interface _ICQBannerSpecification
-+ (id)bannerSpecificationSampleForLevel:(int64_t)a3;
++ (id)bannerSpecificationSampleForLevel:(int64_t)level;
 - (NSString)purchaseAttribution;
 - (NSString)reason;
 - (NSURL)dynamicUIRouteURL;
 - (NSURL)serverUIURL;
-- (_ICQBannerSpecification)initWithDetailBannerInfo:(id)a3 source:(id)a4;
-- (_ICQBannerSpecification)initWithServerDictionary:(id)a3;
+- (_ICQBannerSpecification)initWithDetailBannerInfo:(id)info source:(id)source;
+- (_ICQBannerSpecification)initWithServerDictionary:(id)dictionary;
 - (id)_bannerSpecificationParams;
-- (id)conciseTitleWithKey:(id)a3;
+- (id)conciseTitleWithKey:(id)key;
 - (id)iconPath;
-- (id)messageWithKey:(id)a3;
-- (id)titleWithKey:(id)a3;
-- (void)_setDisplayConfigurations:(id)a3;
-- (void)setMessageWithServerMessage:(id)a3;
+- (id)messageWithKey:(id)key;
+- (id)titleWithKey:(id)key;
+- (void)_setDisplayConfigurations:(id)configurations;
+- (void)setMessageWithServerMessage:(id)message;
 @end
 
 @implementation _ICQBannerSpecification
 
-+ (id)bannerSpecificationSampleForLevel:(int64_t)a3
++ (id)bannerSpecificationSampleForLevel:(int64_t)level
 {
-  if (a3 == 3)
+  if (level == 3)
   {
     if (_BannerSpecificationSampleForFullLevel_onceToken != -1)
     {
@@ -30,7 +30,7 @@
     goto LABEL_9;
   }
 
-  if (a3 == 2)
+  if (level == 2)
   {
     if (_BannerSpecificationSampleForAlmostFullLevel_onceToken != -1)
     {
@@ -49,52 +49,52 @@ LABEL_11:
   return v4;
 }
 
-- (_ICQBannerSpecification)initWithServerDictionary:(id)a3
+- (_ICQBannerSpecification)initWithServerDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(_ICQBannerSpecification *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serverDict, a3);
+    objc_storeStrong(&v6->_serverDict, dictionary);
     *&v7->_isDetailBannerInfoAvailable = 0;
     bannerSource = v7->_bannerSource;
     v7->_bannerSource = @"ICQBannerSourceAppBannerInfo";
 
-    v9 = [v5 objectForKeyedSubscript:@"mesg"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"mesg"];
     [(_ICQBannerSpecification *)v7 setMessageWithServerMessage:v9];
   }
 
   return v7;
 }
 
-- (_ICQBannerSpecification)initWithDetailBannerInfo:(id)a3 source:(id)a4
+- (_ICQBannerSpecification)initWithDetailBannerInfo:(id)info source:(id)source
 {
   v74 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  sourceCopy = source;
   v9 = [(_ICQBannerSpecification *)self init];
   v10 = v9;
   if (v9)
   {
-    v53 = a4;
-    v55 = v8;
-    objc_storeStrong(&v9->_serverDict, a3);
+    sourceCopy2 = source;
+    v55 = sourceCopy;
+    objc_storeStrong(&v9->_serverDict, info);
     v10->_isDetailBannerInfoAvailable = 1;
-    v11 = [v7 objectForKeyedSubscript:@"placeHolderExists"];
+    v11 = [infoCopy objectForKeyedSubscript:@"placeHolderExists"];
     v10->_placeholderExists = [v11 BOOLValue];
 
-    v12 = [v7 objectForKeyedSubscript:@"bannerFooter"];
+    v12 = [infoCopy objectForKeyedSubscript:@"bannerFooter"];
     [(_ICQBannerSpecification *)v10 setMessageWithServerMessage:v12];
 
-    v54 = [v7 objectForKeyedSubscript:@"displayConfiguration"];
+    v54 = [infoCopy objectForKeyedSubscript:@"displayConfiguration"];
     [(_ICQBannerSpecification *)v10 _setDisplayConfigurations:?];
     obj = objc_alloc_init(MEMORY[0x277CBEB38]);
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v13 = [v7 objectForKeyedSubscript:@"mesg"];
+    v13 = [infoCopy objectForKeyedSubscript:@"mesg"];
     v14 = [v13 countByEnumeratingWithState:&v67 objects:v73 count:16];
     if (v14)
     {
@@ -110,7 +110,7 @@ LABEL_11:
           }
 
           v18 = *(*(&v67 + 1) + 8 * i);
-          v19 = [v18 objectForKeyedSubscript:{@"format", v53}];
+          v19 = [v18 objectForKeyedSubscript:{@"format", sourceCopy2}];
           v20 = [v18 objectForKeyedSubscript:@"key"];
           [obj setObject:v19 forKey:v20];
         }
@@ -128,7 +128,7 @@ LABEL_11:
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v22 = [v7 objectForKeyedSubscript:@"title"];
+    v22 = [infoCopy objectForKeyedSubscript:@"title"];
     v23 = [v22 countByEnumeratingWithState:&v63 objects:v72 count:16];
     if (v23)
     {
@@ -144,7 +144,7 @@ LABEL_11:
           }
 
           v27 = *(*(&v63 + 1) + 8 * j);
-          v28 = [v27 objectForKeyedSubscript:{@"format", v53}];
+          v28 = [v27 objectForKeyedSubscript:{@"format", sourceCopy2}];
           v29 = [v27 objectForKeyedSubscript:@"key"];
           [v21 setObject:v28 forKey:v29];
         }
@@ -161,8 +161,8 @@ LABEL_11:
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v56 = v7;
-    v31 = [v7 objectForKeyedSubscript:@"conciseTitle"];
+    v56 = infoCopy;
+    v31 = [infoCopy objectForKeyedSubscript:@"conciseTitle"];
     v32 = [v31 countByEnumeratingWithState:&v59 objects:v71 count:16];
     if (v32)
     {
@@ -178,7 +178,7 @@ LABEL_11:
           }
 
           v36 = *(*(&v59 + 1) + 8 * k);
-          v37 = [v36 objectForKeyedSubscript:{@"format", v53}];
+          v37 = [v36 objectForKeyedSubscript:{@"format", sourceCopy2}];
           v38 = [v36 objectForKeyedSubscript:@"key"];
           [(NSDictionary *)v30 setObject:v37 forKey:v38];
         }
@@ -193,12 +193,12 @@ LABEL_11:
     v57->_conciseTitleTemplates = v30;
     v40 = v30;
 
-    v7 = v56;
+    infoCopy = v56;
     v41 = [v56 objectForKeyedSubscript:@"iconDetails"];
     iconDetails = v57->_iconDetails;
     v57->_iconDetails = v41;
 
-    objc_storeStrong(&v57->_bannerSource, v53);
+    objc_storeStrong(&v57->_bannerSource, sourceCopy2);
     v43 = [ICQIconSpecification alloc];
     v44 = [v56 objectForKeyedSubscript:@"iconDetails"];
     v45 = [(ICQIconSpecification *)v43 initWithDictionary:v44];
@@ -212,21 +212,21 @@ LABEL_11:
     iconSpecification = v57->_iconSpecification;
     v57->_iconSpecification = v49;
 
-    v8 = v55;
+    sourceCopy = v55;
   }
 
   v51 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)setMessageWithServerMessage:(id)a3
+- (void)setMessageWithServerMessage:(id)message
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_ICQBannerSpecification *)self setLinksFormat:v4];
+    [(_ICQBannerSpecification *)self setLinksFormat:messageCopy];
     [(_ICQBannerSpecification *)self setLinks:MEMORY[0x277CBEBF8]];
   }
 
@@ -235,10 +235,10 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 objectForKeyedSubscript:@"format"];
+      v5 = [messageCopy objectForKeyedSubscript:@"format"];
       [(_ICQBannerSpecification *)self setLinksFormat:v5];
 
-      v6 = [v4 objectForKeyedSubscript:@"params"];
+      v6 = [messageCopy objectForKeyedSubscript:@"params"];
       v7 = _ICQLinksForServerMessageParameters(v6);
       [(_ICQBannerSpecification *)self setLinks:v7];
 
@@ -252,7 +252,7 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = messageCopy;
         _os_log_impl(&dword_275572000, v9, OS_LOG_TYPE_DEFAULT, "invalid banner spec server message:%@", &v11, 0xCu);
       }
     }
@@ -261,35 +261,35 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setDisplayConfigurations:(id)a3
+- (void)_setDisplayConfigurations:(id)configurations
 {
-  v14 = a3;
-  v4 = [v14 objectForKeyedSubscript:@"decayUntilInMS"];
+  configurationsCopy = configurations;
+  v4 = [configurationsCopy objectForKeyedSubscript:@"decayUntilInMS"];
   if (v4)
   {
     v5 = v4;
-    v6 = [v14 objectForKeyedSubscript:@"decayUntilInMS"];
+    v6 = [configurationsCopy objectForKeyedSubscript:@"decayUntilInMS"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [v14 objectForKeyedSubscript:@"decayUntilInMS"];
+      v8 = [configurationsCopy objectForKeyedSubscript:@"decayUntilInMS"];
       [(_ICQBannerSpecification *)self setDecayUntil:v8];
     }
   }
 
-  v9 = [v14 objectForKeyedSubscript:@"suppressUntilInMS"];
+  v9 = [configurationsCopy objectForKeyedSubscript:@"suppressUntilInMS"];
   if (v9)
   {
     v10 = v9;
-    v11 = [v14 objectForKeyedSubscript:@"suppressUntilInMS"];
+    v11 = [configurationsCopy objectForKeyedSubscript:@"suppressUntilInMS"];
     objc_opt_class();
     v12 = objc_opt_isKindOfClass();
 
     if (v12)
     {
-      v13 = [v14 objectForKeyedSubscript:@"suppressUntilInMS"];
+      v13 = [configurationsCopy objectForKeyedSubscript:@"suppressUntilInMS"];
       [(_ICQBannerSpecification *)self setSupressUntil:v13];
     }
   }
@@ -297,9 +297,9 @@ LABEL_11:
 
 - (id)_bannerSpecificationParams
 {
-  v3 = [(_ICQBannerSpecification *)self isDetailBannerInfoAvailable];
+  isDetailBannerInfoAvailable = [(_ICQBannerSpecification *)self isDetailBannerInfoAvailable];
   serverDict = self->_serverDict;
-  if (v3)
+  if (isDetailBannerInfoAvailable)
   {
     v5 = @"bannerFooter.params";
   }
@@ -462,19 +462,19 @@ LABEL_11:
   return v8;
 }
 
-- (id)titleWithKey:(id)a3
+- (id)titleWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(_ICQBannerSpecification *)self isDetailBannerInfoAvailable])
   {
-    v5 = [(_ICQBannerSpecification *)self titleTemplates];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    titleTemplates = [(_ICQBannerSpecification *)self titleTemplates];
+    v6 = [titleTemplates objectForKeyedSubscript:keyCopy];
 
-    v7 = [(_ICQBannerSpecification *)self titleTemplates];
-    v8 = v7;
+    titleTemplates2 = [(_ICQBannerSpecification *)self titleTemplates];
+    v8 = titleTemplates2;
     if (v6)
     {
-      v9 = v4;
+      v9 = keyCopy;
     }
 
     else
@@ -482,7 +482,7 @@ LABEL_11:
       v9 = @"default";
     }
 
-    v10 = [v7 objectForKeyedSubscript:v9];
+    v10 = [titleTemplates2 objectForKeyedSubscript:v9];
   }
 
   else
@@ -493,19 +493,19 @@ LABEL_11:
   return v10;
 }
 
-- (id)conciseTitleWithKey:(id)a3
+- (id)conciseTitleWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(_ICQBannerSpecification *)self isDetailBannerInfoAvailable])
   {
-    v5 = [(_ICQBannerSpecification *)self conciseTitleTemplates];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    conciseTitleTemplates = [(_ICQBannerSpecification *)self conciseTitleTemplates];
+    v6 = [conciseTitleTemplates objectForKeyedSubscript:keyCopy];
 
-    v7 = [(_ICQBannerSpecification *)self conciseTitleTemplates];
-    v8 = v7;
+    conciseTitleTemplates2 = [(_ICQBannerSpecification *)self conciseTitleTemplates];
+    v8 = conciseTitleTemplates2;
     if (v6)
     {
-      v9 = v4;
+      v9 = keyCopy;
     }
 
     else
@@ -513,7 +513,7 @@ LABEL_11:
       v9 = @"default";
     }
 
-    v10 = [v7 objectForKeyedSubscript:v9];
+    v10 = [conciseTitleTemplates2 objectForKeyedSubscript:v9];
   }
 
   else
@@ -524,19 +524,19 @@ LABEL_11:
   return v10;
 }
 
-- (id)messageWithKey:(id)a3
+- (id)messageWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if ([(_ICQBannerSpecification *)self isDetailBannerInfoAvailable])
   {
-    v5 = [(_ICQBannerSpecification *)self messageTemplates];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    messageTemplates = [(_ICQBannerSpecification *)self messageTemplates];
+    v6 = [messageTemplates objectForKeyedSubscript:keyCopy];
 
-    v7 = [(_ICQBannerSpecification *)self messageTemplates];
-    v8 = v7;
+    messageTemplates2 = [(_ICQBannerSpecification *)self messageTemplates];
+    v8 = messageTemplates2;
     if (v6)
     {
-      v9 = v4;
+      v9 = keyCopy;
     }
 
     else
@@ -544,7 +544,7 @@ LABEL_11:
       v9 = @"default";
     }
 
-    v10 = [v7 objectForKeyedSubscript:v9];
+    v10 = [messageTemplates2 objectForKeyedSubscript:v9];
   }
 
   else
@@ -557,8 +557,8 @@ LABEL_11:
 
 - (id)iconPath
 {
-  v2 = [(_ICQBannerSpecification *)self iconDetails];
-  v3 = [v2 objectForKeyedSubscript:@"sfSymbolBundlePath"];
+  iconDetails = [(_ICQBannerSpecification *)self iconDetails];
+  v3 = [iconDetails objectForKeyedSubscript:@"sfSymbolBundlePath"];
 
   return v3;
 }

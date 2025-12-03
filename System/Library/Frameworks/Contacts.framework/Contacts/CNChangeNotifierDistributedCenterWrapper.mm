@@ -1,30 +1,30 @@
 @interface CNChangeNotifierDistributedCenterWrapper
-- (void)addObserver:(id)a3 notification:(id)a4;
-- (void)postNotification:(id)a3;
-- (void)removeObserver:(id)a3 notification:(id)a4;
+- (void)addObserver:(id)observer notification:(id)notification;
+- (void)postNotification:(id)notification;
+- (void)removeObserver:(id)observer notification:(id)notification;
 @end
 
 @implementation CNChangeNotifierDistributedCenterWrapper
 
-- (void)addObserver:(id)a3 notification:(id)a4
+- (void)addObserver:(id)observer notification:(id)notification
 {
-  v5 = a4;
-  observer = a3;
+  notificationCopy = notification;
+  observer = observer;
   DistributedCenter = CFNotificationCenterGetDistributedCenter();
-  CFNotificationCenterAddObserver(DistributedCenter, observer, CNChangesNotifierCFNotificationCenterCallback, v5, 0, CFNotificationSuspensionBehaviorCoalesce);
+  CFNotificationCenterAddObserver(DistributedCenter, observer, CNChangesNotifierCFNotificationCenterCallback, notificationCopy, 0, CFNotificationSuspensionBehaviorCoalesce);
 }
 
-- (void)removeObserver:(id)a3 notification:(id)a4
+- (void)removeObserver:(id)observer notification:(id)notification
 {
-  v5 = a4;
-  observer = a3;
+  notificationCopy = notification;
+  observer = observer;
   DistributedCenter = CFNotificationCenterGetDistributedCenter();
-  CFNotificationCenterRemoveObserver(DistributedCenter, observer, v5, 0);
+  CFNotificationCenterRemoveObserver(DistributedCenter, observer, notificationCopy, 0);
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  name = a3;
+  name = notification;
   DistributedCenter = CFNotificationCenterGetDistributedCenter();
   CFNotificationCenterPostNotification(DistributedCenter, name, 0, 0, 0);
 }

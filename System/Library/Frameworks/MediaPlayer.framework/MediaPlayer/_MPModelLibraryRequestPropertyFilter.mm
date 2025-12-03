@@ -1,31 +1,31 @@
 @interface _MPModelLibraryRequestPropertyFilter
-- (BOOL)isEqual:(id)a3;
-- (_MPModelLibraryRequestPropertyFilter)initWithCoder:(id)a3;
-- (_MPModelLibraryRequestPropertyFilter)initWithKeys:(id)a3 value:(id)a4 comparisonType:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (_MPModelLibraryRequestPropertyFilter)initWithCoder:(id)coder;
+- (_MPModelLibraryRequestPropertyFilter)initWithKeys:(id)keys value:(id)value comparisonType:(int64_t)type;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MPModelLibraryRequestPropertyFilter
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
-  v5 = [(_MPModelLibraryRequestPropertyFilter *)self keys];
-  v6 = [v4 keys];
-  v7 = v6;
-  if (v5 == v6)
+  keys = [(_MPModelLibraryRequestPropertyFilter *)self keys];
+  keys2 = [equalCopy keys];
+  v7 = keys2;
+  if (keys == keys2)
   {
   }
 
   else
   {
-    v8 = [v5 isEqual:v6];
+    v8 = [keys isEqual:keys2];
 
     if ((v8 & 1) == 0)
     {
@@ -33,22 +33,22 @@
     }
   }
 
-  v9 = [(_MPModelLibraryRequestPropertyFilter *)self value];
-  v10 = [v4 value];
-  v11 = v10;
-  if (v9 == v10)
+  value = [(_MPModelLibraryRequestPropertyFilter *)self value];
+  value2 = [equalCopy value];
+  v11 = value2;
+  if (value == value2)
   {
 
     goto LABEL_10;
   }
 
-  v12 = [v9 isEqual:v10];
+  v12 = [value isEqual:value2];
 
   if (v12)
   {
 LABEL_10:
-    v14 = [(_MPModelLibraryRequestPropertyFilter *)self comparisonType];
-    v13 = v14 == [v4 comparisonType];
+    comparisonType = [(_MPModelLibraryRequestPropertyFilter *)self comparisonType];
+    v13 = comparisonType == [equalCopy comparisonType];
     goto LABEL_11;
   }
 
@@ -59,18 +59,18 @@ LABEL_11:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   keys = self->_keys;
-  v5 = a3;
-  [v5 encodeObject:keys forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyKeys"];
-  [v5 encodeObject:self->_value forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyValue"];
-  [v5 encodeInteger:self->_comparisonType forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyComparisonType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:keys forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyKeys"];
+  [coderCopy encodeObject:self->_value forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyValue"];
+  [coderCopy encodeInteger:self->_comparisonType forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyComparisonType"];
 }
 
-- (_MPModelLibraryRequestPropertyFilter)initWithCoder:(id)a3
+- (_MPModelLibraryRequestPropertyFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = _MPModelLibraryRequestPropertyFilter;
   v5 = [(_MPModelLibraryRequestPropertyFilter *)&v14 init];
@@ -79,15 +79,15 @@ LABEL_11:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyKeys"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyKeys"];
     keys = v5->_keys;
     v5->_keys = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyValue"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MPModelLibraryRequestPropertyFilterCodingKeyValue"];
     value = v5->_value;
     v5->_value = v11;
 
-    v5->_comparisonType = [v4 decodeIntegerForKey:@"MPModelLibraryRequestPropertyFilterCodingKeyComparisonType"];
+    v5->_comparisonType = [coderCopy decodeIntegerForKey:@"MPModelLibraryRequestPropertyFilterCodingKeyComparisonType"];
   }
 
   return v5;
@@ -103,8 +103,8 @@ LABEL_11:
   [v4 deleteCharactersInRange:{objc_msgSend(v4, "length") - 1, 1}];
   if ([(NSArray *)self->_keys count])
   {
-    v5 = [(NSArray *)self->_keys msv_compactDescription];
-    [v4 appendFormat:@" keyPath=[%@]", v5];
+    msv_compactDescription = [(NSArray *)self->_keys msv_compactDescription];
+    [v4 appendFormat:@" keyPath=[%@]", msv_compactDescription];
   }
 
   if ([(NSString *)self->_value length])
@@ -135,24 +135,24 @@ LABEL_10:
   return v8;
 }
 
-- (_MPModelLibraryRequestPropertyFilter)initWithKeys:(id)a3 value:(id)a4 comparisonType:(int64_t)a5
+- (_MPModelLibraryRequestPropertyFilter)initWithKeys:(id)keys value:(id)value comparisonType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  keysCopy = keys;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = _MPModelLibraryRequestPropertyFilter;
   v10 = [(_MPModelLibraryRequestPropertyFilter *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [keysCopy copy];
     keys = v10->_keys;
     v10->_keys = v11;
 
-    v13 = [v9 copy];
+    v13 = [valueCopy copy];
     value = v10->_value;
     v10->_value = v13;
 
-    v10->_comparisonType = a5;
+    v10->_comparisonType = type;
   }
 
   return v10;

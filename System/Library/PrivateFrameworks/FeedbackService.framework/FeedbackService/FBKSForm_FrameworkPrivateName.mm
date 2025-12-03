@@ -1,29 +1,29 @@
 @interface FBKSForm_FrameworkPrivateName
-+ (id)fromJSONWithData:(id)a3;
++ (id)fromJSONWithData:(id)data;
 - (FBKSForm_FrameworkPrivateName)init;
-- (FBKSForm_FrameworkPrivateName)initWithIdentifier:(id)a3;
+- (FBKSForm_FrameworkPrivateName)initWithIdentifier:(id)identifier;
 - (NSData)asJSON;
 - (NSString)identifier;
-- (id)asFBAURLSchemeWithIsSurvey:(BOOL)a3;
+- (id)asFBAURLSchemeWithIsSurvey:(BOOL)survey;
 - (int64_t)authenticationMethod;
-- (void)prefillWithQuestion:(id)a3 answer:(id)a4;
-- (void)setAuthenticationMethod:(int64_t)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setQuestionsWithNsMutableDict:(id)a3;
+- (void)prefillWithQuestion:(id)question answer:(id)answer;
+- (void)setAuthenticationMethod:(int64_t)method;
+- (void)setIdentifier:(id)identifier;
+- (void)setQuestionsWithNsMutableDict:(id)dict;
 @end
 
 @implementation FBKSForm_FrameworkPrivateName
 
-- (void)setQuestionsWithNsMutableDict:(id)a3
+- (void)setQuestionsWithNsMutableDict:(id)dict
 {
-  v4 = a3;
-  v5 = self;
+  dictCopy = dict;
+  selfCopy = self;
   _s15FeedbackService8FBKSFormC12setQuestions13nsMutableDictySo19NSMutableDictionaryC_tF_0();
 }
 
 - (NSData)asJSON
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FBKSForm.asJSON.getter();
   v5 = v4;
 
@@ -33,9 +33,9 @@
   return v6;
 }
 
-+ (id)fromJSONWithData:(id)a3
++ (id)fromJSONWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_1B014CA8C();
   v6 = v5;
 
@@ -45,14 +45,14 @@
   return v7;
 }
 
-- (id)asFBAURLSchemeWithIsSurvey:(BOOL)a3
+- (id)asFBAURLSchemeWithIsSurvey:(BOOL)survey
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB6C3B50, &qword_1B014F330);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v16 - v7;
-  v9 = self;
-  FBKSForm.asFBAURLScheme(isSurvey:)(a3, v8);
+  selfCopy = self;
+  FBKSForm.asFBAURLScheme(isSurvey:)(survey, v8);
 
   v10 = sub_1B014CA4C();
   v11 = *(v10 - 8);
@@ -80,7 +80,7 @@
   return v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = sub_1B014CC1C();
   v6 = v5;
@@ -98,14 +98,14 @@
   return *(self + v3);
 }
 
-- (void)setAuthenticationMethod:(int64_t)a3
+- (void)setAuthenticationMethod:(int64_t)method
 {
   v5 = OBJC_IVAR___FBKSForm_FrameworkPrivateName_authenticationMethod;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = method;
 }
 
-- (FBKSForm_FrameworkPrivateName)initWithIdentifier:(id)a3
+- (FBKSForm_FrameworkPrivateName)initWithIdentifier:(id)identifier
 {
   v4 = sub_1B014CC1C();
   v6 = v5;
@@ -126,7 +126,7 @@
   return [(FBKSForm_FrameworkPrivateName *)&v13 init];
 }
 
-- (void)prefillWithQuestion:(id)a3 answer:(id)a4
+- (void)prefillWithQuestion:(id)question answer:(id)answer
 {
   v5 = sub_1B014CC1C();
   v7 = v6;
@@ -134,7 +134,7 @@
   v10 = v9;
   v14 = v5;
   v15 = v7;
-  v11 = self;
+  selfCopy = self;
 
   sub_1B0135F14(&v14, v8, v10);
 

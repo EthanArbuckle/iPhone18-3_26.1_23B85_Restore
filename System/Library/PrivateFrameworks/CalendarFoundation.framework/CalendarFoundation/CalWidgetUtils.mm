@@ -1,6 +1,6 @@
 @interface CalWidgetUtils
-+ (void)_invalidateRelevanceForWidgetKinds:(id)a3;
-+ (void)_reloadTimelinesForWidgetKinds:(id)a3 reason:(id)a4;
++ (void)_invalidateRelevanceForWidgetKinds:(id)kinds;
++ (void)_reloadTimelinesForWidgetKinds:(id)kinds reason:(id)reason;
 + (void)refreshDateWidgets;
 + (void)refreshEventWidgets;
 @end
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __36__CalWidgetUtils_refreshDateWidgets__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (refreshDateWidgets_onceToken != -1)
   {
     dispatch_once(&refreshDateWidgets_onceToken, block);
@@ -44,7 +44,7 @@ void __36__CalWidgetUtils_refreshDateWidgets__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __37__CalWidgetUtils_refreshEventWidgets__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (refreshEventWidgets_onceToken != -1)
   {
     dispatch_once(&refreshEventWidgets_onceToken, block);
@@ -81,12 +81,12 @@ uint64_t __37__CalWidgetUtils_refreshEventWidgets__block_invoke_2(uint64_t a1)
   return [v2 _invalidateRelevanceForWidgetKinds:v3];
 }
 
-+ (void)_reloadTimelinesForWidgetKinds:(id)a3 reason:(id)a4
++ (void)_reloadTimelinesForWidgetKinds:(id)kinds reason:(id)reason
 {
   v33 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v20 = a4;
-  v6 = [a1 _widgetBundleIdentifier];
+  kindsCopy = kinds;
+  reasonCopy = reason;
+  _widgetBundleIdentifier = [self _widgetBundleIdentifier];
   if (ChronoServicesLibraryCore())
   {
     v25 = 0;
@@ -111,7 +111,7 @@ uint64_t __37__CalWidgetUtils_refreshEventWidgets__block_invoke_2(uint64_t a1)
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    obj = v18;
+    obj = kindsCopy;
     v9 = [obj countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v9)
     {
@@ -127,8 +127,8 @@ uint64_t __37__CalWidgetUtils_refreshEventWidgets__block_invoke_2(uint64_t a1)
           }
 
           v12 = *(*(&v21 + 1) + 8 * v11);
-          v13 = [[v7 alloc] initWithExtensionBundleIdentifier:v6 kind:v12];
-          v14 = [v13 reloadTimelineWithReason:v20];
+          v13 = [[v7 alloc] initWithExtensionBundleIdentifier:_widgetBundleIdentifier kind:v12];
+          v14 = [v13 reloadTimelineWithReason:reasonCopy];
           v15 = +[CalFoundationLogSubsystem defaultCategory];
           v16 = v15;
           if (v14)
@@ -164,10 +164,10 @@ uint64_t __37__CalWidgetUtils_refreshEventWidgets__block_invoke_2(uint64_t a1)
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_invalidateRelevanceForWidgetKinds:(id)a3
++ (void)_invalidateRelevanceForWidgetKinds:(id)kinds
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  kindsCopy = kinds;
   v4 = @"com.apple.mobilecal";
   if (ChronoServicesLibraryCore())
   {
@@ -189,12 +189,12 @@ uint64_t __37__CalWidgetUtils_refreshEventWidgets__block_invoke_2(uint64_t a1)
 
     v6 = v5;
     _Block_object_dispose(&v19, 8);
-    v7 = [v5 sharedWidgetService];
+    sharedWidgetService = [v5 sharedWidgetService];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v3;
+    v8 = kindsCopy;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v23 count:16];
     if (v9)
     {
@@ -209,7 +209,7 @@ uint64_t __37__CalWidgetUtils_refreshEventWidgets__block_invoke_2(uint64_t a1)
           }
 
           v13 = *(*(&v14 + 1) + 8 * i);
-          [v7 invalidateRelevancesOfKind:? inBundle:? completion:?];
+          [sharedWidgetService invalidateRelevancesOfKind:? inBundle:? completion:?];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v14 objects:v23 count:16];

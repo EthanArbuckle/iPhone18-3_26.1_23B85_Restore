@@ -1,13 +1,13 @@
 @interface EKEventDeleteButtonEditItem
 - (BOOL)shouldAppear;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4;
-- (void)setDeleteButtonTarget:(id)a3 action:(SEL)a4;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem;
+- (void)setDeleteButtonTarget:(id)target action:(SEL)action;
 @end
 
 @implementation EKEventDeleteButtonEditItem
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -16,17 +16,17 @@
     v6 = self->_cell;
     self->_cell = &v5->super.super;
 
-    v7 = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
-    [(UITableViewCell *)self->_cell setBackgroundColor:v7];
+    tableCellGroupedBackgroundColor = [MEMORY[0x1E69DC888] tableCellGroupedBackgroundColor];
+    [(UITableViewCell *)self->_cell setBackgroundColor:tableCellGroupedBackgroundColor];
 
-    v8 = [MEMORY[0x1E69DC888] _systemDestructiveTintColor];
-    v9 = [(UITableViewCell *)self->_cell textLabel];
-    [v9 setTextColor:v8];
+    _systemDestructiveTintColor = [MEMORY[0x1E69DC888] _systemDestructiveTintColor];
+    textLabel = [(UITableViewCell *)self->_cell textLabel];
+    [textLabel setTextColor:_systemDestructiveTintColor];
 
     v10 = EventKitUIBundle();
     v11 = [v10 localizedStringForKey:@"Delete Event" value:&stru_1F4EF6790 table:0];
-    v12 = [(UITableViewCell *)self->_cell textLabel];
-    [v12 setText:v11];
+    textLabel2 = [(UITableViewCell *)self->_cell textLabel];
+    [textLabel2 setText:v11];
 
     [(UITableViewCell *)self->_cell setAccessibilityIdentifier:@"delete-event-cell"];
     cell = self->_cell;
@@ -35,33 +35,33 @@
   return cell;
 }
 
-- (void)setDeleteButtonTarget:(id)a3 action:(SEL)a4
+- (void)setDeleteButtonTarget:(id)target action:(SEL)action
 {
-  objc_storeWeak(&self->_deleteButtonTarget, a3);
-  if (a4)
+  objc_storeWeak(&self->_deleteButtonTarget, target);
+  if (action)
   {
-    v6 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v6 = 0;
+    actionCopy = 0;
   }
 
-  self->_deleteButtonAction = v6;
+  self->_deleteButtonAction = actionCopy;
 }
 
 - (BOOL)shouldAppear
 {
-  v2 = [(EKCalendarItemEditItem *)self calendarItem];
-  v3 = [v2 isNew];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  isNew = [calendarItem isNew];
 
-  return v3 ^ 1;
+  return isNew ^ 1;
 }
 
-- (void)editor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)editor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
-  v5 = a3;
+  editorCopy = editor;
   WeakRetained = objc_loadWeakRetained(&self->_deleteButtonTarget);
   if (self->_deleteButtonAction)
   {

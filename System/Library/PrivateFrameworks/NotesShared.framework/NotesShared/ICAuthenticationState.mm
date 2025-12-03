@@ -1,31 +1,31 @@
 @interface ICAuthenticationState
 + (ICAuthenticationState)sharedState;
 + (double)defaultDeauthenticationTimeInterval;
-- (BOOL)addMainKeyToKeychainForObject:(id)a3;
-- (BOOL)authenticateAllNotesInAccount:(id)a3 withPassphrase:(id)a4;
-- (BOOL)authenticateObject:(id)a3 withPassphrase:(id)a4;
-- (BOOL)authenticateObjectWithKeychain:(id)a3;
-- (BOOL)biometricsEnabledForAccount:(id)a3;
+- (BOOL)addMainKeyToKeychainForObject:(id)object;
+- (BOOL)authenticateAllNotesInAccount:(id)account withPassphrase:(id)passphrase;
+- (BOOL)authenticateObject:(id)object withPassphrase:(id)passphrase;
+- (BOOL)authenticateObjectWithKeychain:(id)keychain;
+- (BOOL)biometricsEnabledForAccount:(id)account;
 - (BOOL)checkSupportsBiometrics;
 - (BOOL)hasAuthenticatedObject;
 - (BOOL)isAuthenticated;
 - (BOOL)isAuthenticatedWithDevicePassword;
 - (BOOL)isBlockingDeauthentication;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)removeAllMainKeysFromKeychain;
-- (BOOL)removeMainKeyFromKeychainForObject:(id)a3;
-- (BOOL)removeMainKeysFromKeychainForAccount:(id)a3;
-- (BOOL)setCachedMainKey:(id)a3 forObject:(id)a4;
-- (BOOL)setMainKeyInKeychain:(id)a3 forObject:(id)a4;
+- (BOOL)removeMainKeyFromKeychainForObject:(id)object;
+- (BOOL)removeMainKeysFromKeychainForAccount:(id)account;
+- (BOOL)setCachedMainKey:(id)key forObject:(id)object;
+- (BOOL)setMainKeyInKeychain:(id)keychain forObject:(id)object;
 - (ICAuthenticationState)init;
-- (id)cachedMainKeyForIdentifier:(id)a3;
-- (id)cachedMainKeyForKeyObject:(id)a3 decryptingObject:(id)a4;
-- (id)cachedMainKeyForObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)cachedMainKeyForIdentifier:(id)identifier;
+- (id)cachedMainKeyForKeyObject:(id)object decryptingObject:(id)decryptingObject;
+- (id)cachedMainKeyForObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mainKeyFromKeychainForKeyObject:(id)a3 decryptingObject:(id)a4 cipherVersion:(int64_t)a5;
-- (id)mainKeyFromKeychainForObject:(id)a3;
-- (id)mainKeyIdentifierForKeyObject:(id)a3 cipherVersion:(int64_t)a4;
+- (id)mainKeyFromKeychainForKeyObject:(id)object decryptingObject:(id)decryptingObject cipherVersion:(int64_t)version;
+- (id)mainKeyFromKeychainForObject:(id)object;
+- (id)mainKeyIdentifierForKeyObject:(id)object cipherVersion:(int64_t)version;
 - (unint64_t)hash;
 - (void)authenticateWithDevicePassword;
 - (void)beginBlockingDeauthentication;
@@ -35,10 +35,10 @@
 - (void)deauthenticateWithDevicePassword;
 - (void)endBlockingDeauthentication;
 - (void)extendDeauthenticationTimer;
-- (void)localAuthenticationDidChangeBiometricsPolicyState:(id)a3;
-- (void)setBiometricsEnabled:(BOOL)a3 forAccount:(id)a4;
-- (void)setCachedMainKey:(id)a3 forIdentifier:(id)a4;
-- (void)setDeauthenticationTimerRunLoopModes:(id)a3;
+- (void)localAuthenticationDidChangeBiometricsPolicyState:(id)state;
+- (void)setBiometricsEnabled:(BOOL)enabled forAccount:(id)account;
+- (void)setCachedMainKey:(id)key forIdentifier:(id)identifier;
+- (void)setDeauthenticationTimerRunLoopModes:(id)modes;
 @end
 
 @implementation ICAuthenticationState
@@ -51,9 +51,9 @@
   v2 = [(ICAuthenticationState *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     objectIDsToMainKey = v2->_objectIDsToMainKey;
-    v2->_objectIDsToMainKey = v3;
+    v2->_objectIDsToMainKey = dictionary;
 
     [objc_opt_class() defaultDeauthenticationTimeInterval];
     v2->_deauthenticationTimeInterval = v5;
@@ -64,18 +64,18 @@
 
     objc_initWeak(&location, v2);
     v8 = +[ICNoteContext sharedContext];
-    v9 = [v8 crossProcessChangeCoordinator];
+    crossProcessChangeCoordinator = [v8 crossProcessChangeCoordinator];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __29__ICAuthenticationState_init__block_invoke;
     v17 = &unk_278194FB8;
     objc_copyWeak(&v18, &location);
-    v10 = [v9 registerForCrossProcessNotificationName:@"ICAccountWillChangePassphraseNotification" block:&v14];
+    v10 = [crossProcessChangeCoordinator registerForCrossProcessNotificationName:@"ICAccountWillChangePassphraseNotification" block:&v14];
     passphraseChangeObserver = v2->_passphraseChangeObserver;
     v2->_passphraseChangeObserver = v10;
 
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v12 addObserver:v2 selector:sel_localAuthenticationDidChangeBiometricsPolicyState_ name:@"ICLocalAuthenticationDidChangeBiometricsPolicyStateNotification" object:objc_opt_class()];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_localAuthenticationDidChangeBiometricsPolicyState_ name:@"ICLocalAuthenticationDidChangeBiometricsPolicyStateNotification" object:objc_opt_class()];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -91,8 +91,8 @@
     +[ICAuthenticationState defaultDeauthenticationTimeInterval];
   }
 
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 doubleForKey:@"TimeIntervalBeforeClearingCachedKeys"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"TimeIntervalBeforeClearingCachedKeys"];
   v4 = v3;
 
   return v4;
@@ -138,40 +138,40 @@ void __60__ICAuthenticationState_defaultDeauthenticationTimeInterval__block_invo
 
 - (BOOL)isAuthenticated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(ICAuthenticationState *)v2 hasAuthenticatedObject])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ICAuthenticationState *)selfCopy hasAuthenticatedObject])
   {
-    v3 = 1;
+    isAuthenticatedWithDevicePassword = 1;
   }
 
   else
   {
-    v3 = [(ICAuthenticationState *)v2 isAuthenticatedWithDevicePassword];
+    isAuthenticatedWithDevicePassword = [(ICAuthenticationState *)selfCopy isAuthenticatedWithDevicePassword];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return isAuthenticatedWithDevicePassword;
 }
 
 - (BOOL)hasAuthenticatedObject
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICAuthenticationState *)v2 objectIDsToMainKey];
-  v4 = [v3 count] != 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objectIDsToMainKey = [(ICAuthenticationState *)selfCopy objectIDsToMainKey];
+  v4 = [objectIDsToMainKey count] != 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (BOOL)isAuthenticatedWithDevicePassword
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  authenticatedWithDevicePassword = v2->_authenticatedWithDevicePassword;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  authenticatedWithDevicePassword = selfCopy->_authenticatedWithDevicePassword;
+  objc_sync_exit(selfCopy);
 
   return authenticatedWithDevicePassword;
 }
@@ -179,19 +179,19 @@ void __60__ICAuthenticationState_defaultDeauthenticationTimeInterval__block_invo
 - (void)extendDeauthenticationTimer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICAuthenticationState *)v2 deauthenticationTimer];
-  [v3 invalidate];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deauthenticationTimer = [(ICAuthenticationState *)selfCopy deauthenticationTimer];
+  [deauthenticationTimer invalidate];
 
-  if ([(ICAuthenticationState *)v2 isAuthenticated])
+  if ([(ICAuthenticationState *)selfCopy isAuthenticated])
   {
-    [(ICAuthenticationState *)v2 deauthenticationTimeInterval];
+    [(ICAuthenticationState *)selfCopy deauthenticationTimeInterval];
     if (v4 != 0.0)
     {
-      objc_initWeak(&location, v2);
+      objc_initWeak(&location, selfCopy);
       v5 = MEMORY[0x277CBEBB8];
-      [(ICAuthenticationState *)v2 deauthenticationTimeInterval];
+      [(ICAuthenticationState *)selfCopy deauthenticationTimeInterval];
       v7 = v6;
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -199,14 +199,14 @@ void __60__ICAuthenticationState_defaultDeauthenticationTimeInterval__block_invo
       v20[3] = &unk_278196780;
       objc_copyWeak(&v21, &location);
       v8 = [v5 timerWithTimeInterval:0 repeats:v20 block:v7];
-      [(ICAuthenticationState *)v2 setDeauthenticationTimer:v8];
+      [(ICAuthenticationState *)selfCopy setDeauthenticationTimer:v8];
 
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v9 = [(ICAuthenticationState *)v2 deauthenticationTimerRunLoopModes];
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v23 count:16];
+      deauthenticationTimerRunLoopModes = [(ICAuthenticationState *)selfCopy deauthenticationTimerRunLoopModes];
+      v10 = [deauthenticationTimerRunLoopModes countByEnumeratingWithState:&v16 objects:v23 count:16];
       if (v10)
       {
         v11 = *v17;
@@ -217,19 +217,19 @@ void __60__ICAuthenticationState_defaultDeauthenticationTimeInterval__block_invo
           {
             if (*v17 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(deauthenticationTimerRunLoopModes);
             }
 
             v13 = *(*(&v16 + 1) + 8 * v12);
-            v14 = [MEMORY[0x277CBEB88] currentRunLoop];
-            v15 = [(ICAuthenticationState *)v2 deauthenticationTimer];
-            [v14 addTimer:v15 forMode:v13];
+            currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+            deauthenticationTimer2 = [(ICAuthenticationState *)selfCopy deauthenticationTimer];
+            [currentRunLoop addTimer:deauthenticationTimer2 forMode:v13];
 
             ++v12;
           }
 
           while (v10 != v12);
-          v10 = [v9 countByEnumeratingWithState:&v16 objects:v23 count:16];
+          v10 = [deauthenticationTimerRunLoopModes countByEnumeratingWithState:&v16 objects:v23 count:16];
         }
 
         while (v10);
@@ -240,26 +240,26 @@ void __60__ICAuthenticationState_defaultDeauthenticationTimeInterval__block_invo
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)authenticateObjectWithKeychain:(id)a3
+- (BOOL)authenticateObjectWithKeychain:(id)keychain
 {
   v29 = *MEMORY[0x277D85DE8];
-  v23 = a3;
+  keychainCopy = keychain;
   obj = self;
   objc_sync_enter(obj);
   v4 = +[ICAuthenticationState sharedState];
-  v5 = [v4 mainKeyFromKeychainForObject:v23];
+  v5 = [v4 mainKeyFromKeychainForObject:keychainCopy];
 
-  if (v5 && (+[ICAuthenticationState sharedState](ICAuthenticationState, "sharedState"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 setCachedMainKey:v5 forObject:v23], v6, (v7 & 1) != 0))
+  if (v5 && (+[ICAuthenticationState sharedState](ICAuthenticationState, "sharedState"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 setCachedMainKey:v5 forObject:keychainCopy], v6, (v7 & 1) != 0))
   {
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = [v23 managedObjectContext];
-    v9 = [ICAccount allActiveAccountsInContext:v8];
+    managedObjectContext = [keychainCopy managedObjectContext];
+    v9 = [ICAccount allActiveAccountsInContext:managedObjectContext];
 
     v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
@@ -348,13 +348,13 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)biometricsEnabledForAccount:(id)a3
+- (BOOL)biometricsEnabledForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 length])
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  if ([identifier length])
   {
-    v6 = [(ICAuthenticationState *)self touchIDEnabledKeyForAccountIdentifier:v5];
+    v6 = [(ICAuthenticationState *)self touchIDEnabledKeyForAccountIdentifier:identifier];
     v7 = [ICKeychain BOOLeanForIdentifier:v6 account:0];
 
     if (v7)
@@ -364,7 +364,7 @@ LABEL_8:
 
     else
     {
-      v10 = [(ICAuthenticationState *)self faceIDEnabledKeyForAccountIdentifier:v5];
+      v10 = [(ICAuthenticationState *)self faceIDEnabledKeyForAccountIdentifier:identifier];
       v8 = [ICKeychain BOOLeanForIdentifier:v10 account:0];
     }
   }
@@ -374,7 +374,7 @@ LABEL_8:
     v9 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [ICAuthenticationState(Keychain) biometricsEnabledForAccount:v4];
+      [ICAuthenticationState(Keychain) biometricsEnabledForAccount:accountCopy];
     }
 
     v8 = 0;
@@ -383,18 +383,18 @@ LABEL_8:
   return v8;
 }
 
-- (void)setBiometricsEnabled:(BOOL)a3 forAccount:(id)a4
+- (void)setBiometricsEnabled:(BOOL)enabled forAccount:(id)account
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [v6 identifier];
-  if ([v7 length])
+  enabledCopy = enabled;
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  if ([identifier length])
   {
-    v8 = [(ICAuthenticationState *)self touchIDEnabledKeyForAccountIdentifier:v7];
-    [ICKeychain setBoolean:v4 forIdentifier:v8 account:0 shouldSync:0 error:0];
+    v8 = [(ICAuthenticationState *)self touchIDEnabledKeyForAccountIdentifier:identifier];
+    [ICKeychain setBoolean:enabledCopy forIdentifier:v8 account:0 shouldSync:0 error:0];
 
-    v9 = [(ICAuthenticationState *)self faceIDEnabledKeyForAccountIdentifier:v7];
-    [ICKeychain setBoolean:v4 forIdentifier:v9 account:0 shouldSync:0 error:0];
+    v9 = [(ICAuthenticationState *)self faceIDEnabledKeyForAccountIdentifier:identifier];
+    [ICKeychain setBoolean:enabledCopy forIdentifier:v9 account:0 shouldSync:0 error:0];
   }
 
   else
@@ -402,18 +402,18 @@ LABEL_8:
     v10 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [ICAuthenticationState(Keychain) setBiometricsEnabled:v6 forAccount:?];
+      [ICAuthenticationState(Keychain) setBiometricsEnabled:accountCopy forAccount:?];
     }
   }
 }
 
-- (BOOL)addMainKeyToKeychainForObject:(id)a3
+- (BOOL)addMainKeyToKeychainForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(ICAuthenticationState *)self cachedMainKeyForObject:v4];
+  objectCopy = object;
+  v5 = [(ICAuthenticationState *)self cachedMainKeyForObject:objectCopy];
   if (v5)
   {
-    v6 = [(ICAuthenticationState *)self setMainKeyInKeychain:v5 forObject:v4];
+    v6 = [(ICAuthenticationState *)self setMainKeyInKeychain:v5 forObject:objectCopy];
   }
 
   else
@@ -421,7 +421,7 @@ LABEL_8:
     v7 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [ICAuthenticationState(Keychain) addMainKeyToKeychainForObject:v4];
+      [ICAuthenticationState(Keychain) addMainKeyToKeychainForObject:objectCopy];
     }
 
     v6 = 0;
@@ -430,16 +430,16 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)removeMainKeyFromKeychainForObject:(id)a3
+- (BOOL)removeMainKeyFromKeychainForObject:(id)object
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 shortLoggingDescription];
+    shortLoggingDescription = [objectCopy shortLoggingDescription];
     v9 = 138412802;
-    v10 = v6;
+    v10 = shortLoggingDescription;
     v11 = 2080;
     v12 = "[ICAuthenticationState(Keychain) removeMainKeyFromKeychainForObject:]";
     v13 = 1024;
@@ -447,23 +447,23 @@ LABEL_8:
     _os_log_impl(&dword_214D51000, v5, OS_LOG_TYPE_DEFAULT, "Removing main key from Keychain… {object: %@}%s:%d", &v9, 0x1Cu);
   }
 
-  v7 = [(ICAuthenticationState *)self setMainKeyInKeychain:0 forObject:v4];
+  v7 = [(ICAuthenticationState *)self setMainKeyInKeychain:0 forObject:objectCopy];
   return v7;
 }
 
-- (BOOL)removeMainKeysFromKeychainForAccount:(id)a3
+- (BOOL)removeMainKeysFromKeychainForAccount:(id)account
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 length])
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  if ([identifier length])
   {
-    [(ICAuthenticationState *)self setMainKeyInKeychain:0 forObject:v4];
-    v6 = [v4 accountData];
-    [(ICAuthenticationState *)self setMainKeyInKeychain:0 forObject:v6];
+    [(ICAuthenticationState *)self setMainKeyInKeychain:0 forObject:accountCopy];
+    accountData = [accountCopy accountData];
+    [(ICAuthenticationState *)self setMainKeyInKeychain:0 forObject:accountData];
 
     v13 = 0;
-    [ICKeychain deleteItemsOfType:1 account:v5 error:&v13];
+    [ICKeychain deleteItemsOfType:1 account:identifier error:&v13];
     v7 = v13;
     v8 = v7;
     if (v7 && [v7 code]!= -25300)
@@ -471,7 +471,7 @@ LABEL_8:
       v9 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [ICAuthenticationState(Keychain) removeMainKeysFromKeychainForAccount:v4];
+        [ICAuthenticationState(Keychain) removeMainKeysFromKeychainForAccount:accountCopy];
       }
 
       v11 = 0;
@@ -482,9 +482,9 @@ LABEL_8:
       v9 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v4 shortLoggingDescription];
+        shortLoggingDescription = [accountCopy shortLoggingDescription];
         *buf = 138412802;
-        v15 = v10;
+        v15 = shortLoggingDescription;
         v16 = 2080;
         v17 = "[ICAuthenticationState(Keychain) removeMainKeysFromKeychainForAccount:]";
         v18 = 1024;
@@ -501,7 +501,7 @@ LABEL_8:
     v9 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [ICAuthenticationState(Keychain) removeMainKeysFromKeychainForAccount:v4];
+      [ICAuthenticationState(Keychain) removeMainKeysFromKeychainForAccount:accountCopy];
     }
 
     v11 = 0;
@@ -547,47 +547,47 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)setMainKeyInKeychain:(id)a3 forObject:(id)a4
+- (BOOL)setMainKeyInKeychain:(id)keychain forObject:(id)object
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 metadata];
-  v9 = -[ICAuthenticationState mainKeyIdentifierForKeyObject:cipherVersion:](self, "mainKeyIdentifierForKeyObject:cipherVersion:", v7, [v8 cipherVersion]);
+  keychainCopy = keychain;
+  objectCopy = object;
+  metadata = [keychainCopy metadata];
+  v9 = -[ICAuthenticationState mainKeyIdentifierForKeyObject:cipherVersion:](self, "mainKeyIdentifierForKeyObject:cipherVersion:", objectCopy, [metadata cipherVersion]);
 
-  v10 = [v7 cloudAccount];
-  v11 = [v10 identifier];
+  cloudAccount = [objectCopy cloudAccount];
+  identifier = [cloudAccount identifier];
 
-  if ([v9 length] && objc_msgSend(v11, "length"))
+  if ([v9 length] && objc_msgSend(identifier, "length"))
   {
-    if (!-[ICAuthenticationState checkSupportsBiometrics](self, "checkSupportsBiometrics") || ([v7 cloudAccount], (v12 = objc_claimAutoreleasedReturnValue()) == 0) || (v13 = v12, objc_msgSend(v7, "cloudAccount"), v14 = objc_claimAutoreleasedReturnValue(), v15 = -[ICAuthenticationState biometricsEnabledForAccount:](self, "biometricsEnabledForAccount:", v14), v14, v13, !v15))
+    if (!-[ICAuthenticationState checkSupportsBiometrics](self, "checkSupportsBiometrics") || ([objectCopy cloudAccount], (v12 = objc_claimAutoreleasedReturnValue()) == 0) || (v13 = v12, objc_msgSend(objectCopy, "cloudAccount"), v14 = objc_claimAutoreleasedReturnValue(), v15 = -[ICAuthenticationState biometricsEnabledForAccount:](self, "biometricsEnabledForAccount:", v14), v14, v13, !v15))
     {
       v23 = 0;
       goto LABEL_19;
     }
 
-    [ICKeychain deleteItemsForIdentifier:v9 account:v11 error:0];
-    if (!v6)
+    [ICKeychain deleteItemsForIdentifier:v9 account:identifier error:0];
+    if (!keychainCopy)
     {
       v21 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
-        [ICAuthenticationState(Keychain) setMainKeyInKeychain:v7 forObject:?];
+        [ICAuthenticationState(Keychain) setMainKeyInKeychain:objectCopy forObject:?];
       }
 
       v23 = 1;
       goto LABEL_16;
     }
 
-    v16 = [v7 cryptoStrategy];
-    v17 = [v16 mainKeyDecryptsPrimaryData:v6];
+    cryptoStrategy = [objectCopy cryptoStrategy];
+    v17 = [cryptoStrategy mainKeyDecryptsPrimaryData:keychainCopy];
 
     if (v17)
     {
-      v18 = [v6 serializedData];
+      serializedData = [keychainCopy serializedData];
       v19 = ICGroupContainerIdentifier();
       v25 = 0;
-      [ICKeychain setData:v18 forIdentifier:v9 account:v11 type:1 shouldSync:0 accessFlags:0 accessGroup:v19 error:&v25];
+      [ICKeychain setData:serializedData forIdentifier:v9 account:identifier type:1 shouldSync:0 accessFlags:0 accessGroup:v19 error:&v25];
       v20 = v25;
 
       if (v20 && [v20 code]!= -25299)
@@ -595,7 +595,7 @@ LABEL_8:
         v21 = os_log_create("com.apple.notes", "Crypto");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          [ICAuthenticationState(Keychain) setMainKeyInKeychain:v7 forObject:?];
+          [ICAuthenticationState(Keychain) setMainKeyInKeychain:objectCopy forObject:?];
         }
 
         v23 = 0;
@@ -606,9 +606,9 @@ LABEL_8:
         v21 = os_log_create("com.apple.notes", "Crypto");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v7 shortLoggingDescription];
+          shortLoggingDescription = [objectCopy shortLoggingDescription];
           *buf = 138412802;
-          v27 = v22;
+          v27 = shortLoggingDescription;
           v28 = 2080;
           v29 = "[ICAuthenticationState(Keychain) setMainKeyInKeychain:forObject:]";
           v30 = 1024;
@@ -625,7 +625,7 @@ LABEL_8:
     v21 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [ICAuthenticationState(Keychain) setMainKeyInKeychain:v7 forObject:?];
+      [ICAuthenticationState(Keychain) setMainKeyInKeychain:objectCopy forObject:?];
     }
   }
 
@@ -634,7 +634,7 @@ LABEL_8:
     v21 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      [ICAuthenticationState(Keychain) setMainKeyInKeychain:v7 forObject:?];
+      [ICAuthenticationState(Keychain) setMainKeyInKeychain:objectCopy forObject:?];
     }
   }
 
@@ -647,13 +647,13 @@ LABEL_19:
   return v23;
 }
 
-- (id)mainKeyFromKeychainForObject:(id)a3
+- (id)mainKeyFromKeychainForObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
-    v6 = v4;
+    v6 = objectCopy;
     while (1)
     {
       v7 = [(ICAuthenticationState *)self mainKeyFromKeychainForKeyObject:v6 decryptingObject:v5 cipherVersion:[ICCryptoStrategyFactory cipherVersionForObject:v5]];
@@ -662,32 +662,32 @@ LABEL_19:
         break;
       }
 
-      v8 = [v6 parentEncryptableObject];
+      parentEncryptableObject = [v6 parentEncryptableObject];
 
-      v6 = v8;
-      if (!v8)
+      v6 = parentEncryptableObject;
+      if (!parentEncryptableObject)
       {
         goto LABEL_8;
       }
     }
 
-    v8 = v7;
+    parentEncryptableObject = v7;
   }
 
   else
   {
-    v8 = 0;
+    parentEncryptableObject = 0;
   }
 
 LABEL_8:
 
-  return v8;
+  return parentEncryptableObject;
 }
 
-- (id)mainKeyFromKeychainForKeyObject:(id)a3 decryptingObject:(id)a4 cipherVersion:(int64_t)a5
+- (id)mainKeyFromKeychainForKeyObject:(id)object decryptingObject:(id)decryptingObject cipherVersion:(int64_t)version
 {
-  v8 = a4;
-  v9 = [(ICAuthenticationState *)self mainKeyIdentifierForKeyObject:a3 cipherVersion:a5];
+  decryptingObjectCopy = decryptingObject;
+  v9 = [(ICAuthenticationState *)self mainKeyIdentifierForKeyObject:object cipherVersion:version];
   if (!v9)
   {
     v17 = 0;
@@ -701,7 +701,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  if (+[ICCryptoStrategyFactory cipherVersionForObject:](ICCryptoStrategyFactory, "cipherVersionForObject:", v8) || [v10 length] != 16)
+  if (+[ICCryptoStrategyFactory cipherVersionForObject:](ICCryptoStrategyFactory, "cipherVersionForObject:", decryptingObjectCopy) || [v10 length] != 16)
   {
     v16 = [[ICEncryptionKey alloc] initWithSerializedData:v10];
     if (!v16)
@@ -714,11 +714,11 @@ LABEL_12:
 
   else
   {
-    v11 = [v8 identifier];
-    v12 = [v8 cryptoSalt];
-    v13 = [v8 cryptoIterationCount];
-    v14 = [v8 passwordHint];
-    v15 = [ICEncryptionMetadata makeForV1CipherWithObjectIdentifier:v11 salt:v12 iterationCount:v13 hint:v14];
+    identifier = [decryptingObjectCopy identifier];
+    cryptoSalt = [decryptingObjectCopy cryptoSalt];
+    cryptoIterationCount = [decryptingObjectCopy cryptoIterationCount];
+    passwordHint = [decryptingObjectCopy passwordHint];
+    v15 = [ICEncryptionMetadata makeForV1CipherWithObjectIdentifier:identifier salt:cryptoSalt iterationCount:cryptoIterationCount hint:passwordHint];
 
     if (v15)
     {
@@ -736,8 +736,8 @@ LABEL_12:
     }
   }
 
-  v18 = [v8 cryptoStrategy];
-  v19 = [v18 mainKeyDecryptsPrimaryData:v16];
+  cryptoStrategy = [decryptingObjectCopy cryptoStrategy];
+  v19 = [cryptoStrategy mainKeyDecryptsPrimaryData:v16];
 
   if (!v19)
   {
@@ -775,13 +775,13 @@ void __29__ICAuthenticationState_init__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(ICAuthenticationState *)self deauthenticationTimer];
-  [v3 invalidate];
+  deauthenticationTimer = [(ICAuthenticationState *)self deauthenticationTimer];
+  [deauthenticationTimer invalidate];
 
   v4 = +[ICNoteContext sharedContext];
-  v5 = [v4 crossProcessChangeCoordinator];
-  v6 = [(ICAuthenticationState *)self passphraseChangeObserver];
-  [v5 removeCrossProcessNotificationObserver:v6];
+  crossProcessChangeCoordinator = [v4 crossProcessChangeCoordinator];
+  passphraseChangeObserver = [(ICAuthenticationState *)self passphraseChangeObserver];
+  [crossProcessChangeCoordinator removeCrossProcessNotificationObserver:passphraseChangeObserver];
 
   v7.receiver = self;
   v7.super_class = ICAuthenticationState;
@@ -802,25 +802,25 @@ void __29__ICAuthenticationState_init__block_invoke_2(uint64_t a1)
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = ICDynamicCast();
 
-    v6 = [(ICAuthenticationState *)self objectIDsToMainKey];
-    v7 = [v5 objectIDsToMainKey];
-    if ([v6 isEqual:v7])
+    objectIDsToMainKey = [(ICAuthenticationState *)self objectIDsToMainKey];
+    objectIDsToMainKey2 = [v5 objectIDsToMainKey];
+    if ([objectIDsToMainKey isEqual:objectIDsToMainKey2])
     {
-      v8 = [(ICAuthenticationState *)self isAuthenticatedWithDevicePassword];
-      v9 = v8 ^ [v5 isAuthenticatedWithDevicePassword] ^ 1;
+      isAuthenticatedWithDevicePassword = [(ICAuthenticationState *)self isAuthenticatedWithDevicePassword];
+      v9 = isAuthenticatedWithDevicePassword ^ [v5 isAuthenticatedWithDevicePassword] ^ 1;
     }
 
     else
@@ -835,7 +835,7 @@ void __29__ICAuthenticationState_init__block_invoke_2(uint64_t a1)
 - (unint64_t)hash
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(ICAuthenticationState *)self objectIDsToMainKey];
+  objectIDsToMainKey = [(ICAuthenticationState *)self objectIDsToMainKey];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = [v5 hash];
@@ -844,7 +844,7 @@ void __29__ICAuthenticationState_init__block_invoke_2(uint64_t a1)
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v3;
+  v7 = objectIDsToMainKey;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -871,17 +871,17 @@ void __29__ICAuthenticationState_init__block_invoke_2(uint64_t a1)
     while (v9);
   }
 
-  v15 = [(ICAuthenticationState *)self isAuthenticatedWithDevicePassword];
-  v23 = ICHashWithHashKeys(v6, v16, v17, v18, v19, v20, v21, v22, v15);
+  isAuthenticatedWithDevicePassword = [(ICAuthenticationState *)self isAuthenticatedWithDevicePassword];
+  v23 = ICHashWithHashKeys(v6, v16, v17, v18, v19, v20, v21, v22, isAuthenticatedWithDevicePassword);
 
   return v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[ICAuthenticationState allocWithZone:](ICAuthenticationState init];
-  v6 = [(ICAuthenticationState *)self objectIDsToMainKey];
-  v7 = [v6 mutableCopyWithZone:a3];
+  objectIDsToMainKey = [(ICAuthenticationState *)self objectIDsToMainKey];
+  v7 = [objectIDsToMainKey mutableCopyWithZone:zone];
   [(ICAuthenticationState *)v5 setObjectIDsToMainKey:v7];
 
   [(ICAuthenticationState *)v5 setAuthenticatedWithDevicePassword:[(ICAuthenticationState *)self isAuthenticatedWithDevicePassword]];
@@ -889,52 +889,52 @@ void __29__ICAuthenticationState_init__block_invoke_2(uint64_t a1)
   [(ICAuthenticationState *)v5 setDidAttemptToDeauthenticateWhileBlocked:[(ICAuthenticationState *)self didAttemptToDeauthenticateWhileBlocked]];
   [(ICAuthenticationState *)self deauthenticationTimeInterval];
   [(ICAuthenticationState *)v5 setDeauthenticationTimeInterval:?];
-  v8 = [(ICAuthenticationState *)self deauthenticationTimerRunLoopModes];
-  [(ICAuthenticationState *)v5 setDeauthenticationTimerRunLoopModes:v8];
+  deauthenticationTimerRunLoopModes = [(ICAuthenticationState *)self deauthenticationTimerRunLoopModes];
+  [(ICAuthenticationState *)v5 setDeauthenticationTimerRunLoopModes:deauthenticationTimerRunLoopModes];
 
   return v5;
 }
 
 - (void)deauthenticate
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICAuthenticationState deauthenticate]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
   }
 
-  if ([(ICAuthenticationState *)v2 isBlockingDeauthentication])
+  if ([(ICAuthenticationState *)selfCopy isBlockingDeauthentication])
   {
-    [(ICAuthenticationState *)v2 setDidAttemptToDeauthenticateWhileBlocked:1];
-    v3 = os_log_create("com.apple.notes", "Crypto");
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    [(ICAuthenticationState *)selfCopy setDidAttemptToDeauthenticateWhileBlocked:1];
+    defaultCenter2 = os_log_create("com.apple.notes", "Crypto");
+    if (os_log_type_enabled(defaultCenter2, OS_LOG_TYPE_INFO))
     {
       *v5 = 0;
-      _os_log_impl(&dword_214D51000, v3, OS_LOG_TYPE_INFO, "Not deauthenticating because deauthentication is blocked", v5, 2u);
+      _os_log_impl(&dword_214D51000, defaultCenter2, OS_LOG_TYPE_INFO, "Not deauthenticating because deauthentication is blocked", v5, 2u);
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"ICAuthenticationStateWillDeauthenticateNotification" object:v2];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICAuthenticationStateWillDeauthenticateNotification" object:selfCopy];
 
-    [(ICAuthenticationState *)v2 deauthenticateAllObjects];
-    [(ICAuthenticationState *)v2 deauthenticateWithDevicePassword];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"ICAuthenticationStateDidDeauthenticateNotification" object:v2];
+    [(ICAuthenticationState *)selfCopy deauthenticateAllObjects];
+    [(ICAuthenticationState *)selfCopy deauthenticateWithDevicePassword];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ICAuthenticationStateDidDeauthenticateNotification" object:selfCopy];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isBlockingDeauthentication
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICAuthenticationState *)v2 blockingDeauthenticationCount]> 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(ICAuthenticationState *)selfCopy blockingDeauthenticationCount]> 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -949,26 +949,26 @@ void __29__ICAuthenticationState_init__block_invoke_2(uint64_t a1)
 
 - (void)endBlockingDeauthentication
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (![(ICAuthenticationState *)v2 isBlockingDeauthentication])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(ICAuthenticationState *)selfCopy isBlockingDeauthentication])
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"self.isBlockingDeauthentication" functionName:"-[ICAuthenticationState endBlockingDeauthentication]" simulateCrash:1 showAlert:0 format:@"Unbalanced calls to begin/end blocking deauthentication"];
   }
 
-  v3 = [(ICAuthenticationState *)v2 blockingDeauthenticationCount];
-  if (v3 <= 1)
+  blockingDeauthenticationCount = [(ICAuthenticationState *)selfCopy blockingDeauthenticationCount];
+  if (blockingDeauthenticationCount <= 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = blockingDeauthenticationCount;
   }
 
-  [(ICAuthenticationState *)v2 setBlockingDeauthenticationCount:v4 - 1];
-  objc_sync_exit(v2);
+  [(ICAuthenticationState *)selfCopy setBlockingDeauthenticationCount:v4 - 1];
+  objc_sync_exit(selfCopy);
 
   performBlockOnMainThread();
 }
@@ -991,31 +991,31 @@ uint64_t __52__ICAuthenticationState_endBlockingDeauthentication__block_invoke(u
   return result;
 }
 
-- (BOOL)authenticateObject:(id)a3 withPassphrase:(id)a4
+- (BOOL)authenticateObject:(id)object withPassphrase:(id)passphrase
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v6 isPassphraseCorrect:v7];
-  v10 = [v6 cloudAccount];
-  v11 = [v10 isPassphraseCorrect:v7];
+  objectCopy = object;
+  passphraseCopy = passphrase;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [objectCopy isPassphraseCorrect:passphraseCopy];
+  cloudAccount = [objectCopy cloudAccount];
+  v11 = [cloudAccount isPassphraseCorrect:passphraseCopy];
 
   if ((v9 | v11))
   {
     if (v9)
     {
-      v12 = [v6 cryptoStrategy];
-      LOBYTE(v9) = [v12 authenticateWithPassphrase:v7];
+      cryptoStrategy = [objectCopy cryptoStrategy];
+      LOBYTE(v9) = [cryptoStrategy authenticateWithPassphrase:passphraseCopy];
     }
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = [v6 managedObjectContext];
-    v14 = [ICAccount allActiveAccountsInContext:v13];
+    managedObjectContext = [objectCopy managedObjectContext];
+    v14 = [ICAccount allActiveAccountsInContext:managedObjectContext];
 
     v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v15)
@@ -1031,10 +1031,10 @@ uint64_t __52__ICAuthenticationState_endBlockingDeauthentication__block_invoke(u
           }
 
           v18 = *(*(&v31 + 1) + 8 * i);
-          if (([v18 isAuthenticated] & 1) == 0 && objc_msgSend(v18, "isPassphraseCorrect:", v7))
+          if (([v18 isAuthenticated] & 1) == 0 && objc_msgSend(v18, "isPassphraseCorrect:", passphraseCopy))
           {
-            v19 = [v18 cryptoStrategy];
-            [v19 authenticateWithPassphrase:v7];
+            cryptoStrategy2 = [v18 cryptoStrategy];
+            [cryptoStrategy2 authenticateWithPassphrase:passphraseCopy];
           }
         }
 
@@ -1044,39 +1044,39 @@ uint64_t __52__ICAuthenticationState_endBlockingDeauthentication__block_invoke(u
       while (v15);
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
     objc_opt_class();
     v20 = ICDynamicCast();
-    v21 = [v20 objectID];
+    objectID = [v20 objectID];
 
-    if (v21)
+    if (objectID)
     {
       v22 = objc_alloc_init(ICCryptoConvergenceControllerConfiguration);
-      [(ICCryptoConvergenceControllerConfiguration *)v22 setPassphrase:v7];
+      [(ICCryptoConvergenceControllerConfiguration *)v22 setPassphrase:passphraseCopy];
       v23 = +[ICCryptoConvergenceController sharedController];
-      [v23 convergeAttachmentsInNoteWithID:v21 configuration:v22];
+      [v23 convergeAttachmentsInNoteWithID:objectID configuration:v22];
     }
 
     objc_opt_class();
     v24 = ICDynamicCast();
-    v25 = [v24 objectID];
+    objectID2 = [v24 objectID];
 
-    if (v25 && ([MEMORY[0x277D361D0] isRunningUnitTests] & 1) == 0)
+    if (objectID2 && ([MEMORY[0x277D361D0] isRunningUnitTests] & 1) == 0)
     {
       v26 = dispatch_get_global_queue(-32768, 0);
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __59__ICAuthenticationState_authenticateObject_withPassphrase___block_invoke;
       v28[3] = &unk_278194AD8;
-      v29 = v7;
-      v30 = v25;
+      v29 = passphraseCopy;
+      v30 = objectID2;
       dispatch_async(v26, v28);
     }
   }
 
   else
   {
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
     LOBYTE(v9) = 0;
   }
@@ -1092,31 +1092,31 @@ void __59__ICAuthenticationState_authenticateObject_withPassphrase___block_invok
   [v2 convergeNotesInAccountWithID:*(a1 + 40) configuration:v3 progress:0];
 }
 
-- (BOOL)authenticateAllNotesInAccount:(id)a3 withPassphrase:(id)a4
+- (BOOL)authenticateAllNotesInAccount:(id)account withPassphrase:(id)passphrase
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  accountCopy = account;
+  passphraseCopy = passphrase;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v6 shortLoggingDescription];
-    [(ICAuthenticationState *)v10 authenticateAllNotesInAccount:buf withPassphrase:v9];
+    shortLoggingDescription = [accountCopy shortLoggingDescription];
+    [(ICAuthenticationState *)shortLoggingDescription authenticateAllNotesInAccount:buf withPassphrase:v9];
   }
 
-  if ([v6 isPassphraseCorrect:v7])
+  if ([accountCopy isPassphraseCorrect:passphraseCopy])
   {
-    [(ICAuthenticationState *)v8 authenticateObject:v6 withPassphrase:v7];
+    [(ICAuthenticationState *)selfCopy authenticateObject:accountCopy withPassphrase:passphraseCopy];
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = [v6 passwordProtectedNotes];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  passwordProtectedNotes = [accountCopy passwordProtectedNotes];
+  v12 = [passwordProtectedNotes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = *v20;
@@ -1126,37 +1126,37 @@ void __59__ICAuthenticationState_authenticateObject_withPassphrase___block_invok
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(passwordProtectedNotes);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        if (([v15 isAuthenticated] & 1) == 0 && objc_msgSend(v15, "isPassphraseCorrect:", v7))
+        if (([v15 isAuthenticated] & 1) == 0 && objc_msgSend(v15, "isPassphraseCorrect:", passphraseCopy))
         {
-          v16 = [v15 cryptoStrategy];
-          [v16 authenticateWithPassphrase:v7];
+          cryptoStrategy = [v15 cryptoStrategy];
+          [cryptoStrategy authenticateWithPassphrase:passphraseCopy];
         }
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [passwordProtectedNotes countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
   }
 
-  v17 = [v6 isAuthenticated];
-  objc_sync_exit(v8);
+  isAuthenticated = [accountCopy isAuthenticated];
+  objc_sync_exit(selfCopy);
 
-  return v17;
+  return isAuthenticated;
 }
 
 - (void)deauthenticateAllObjects
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(ICAuthenticationState *)v2 hasAuthenticatedObject])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ICAuthenticationState *)selfCopy hasAuthenticatedObject])
   {
-    v3 = [(ICAuthenticationState *)v2 objectIDsToMainKey];
-    [v3 removeAllObjects];
+    objectIDsToMainKey = [(ICAuthenticationState *)selfCopy objectIDsToMainKey];
+    [objectIDsToMainKey removeAllObjects];
 
     v4 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -1165,23 +1165,23 @@ void __59__ICAuthenticationState_authenticateObject_withPassphrase___block_invok
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)authenticateWithDevicePassword
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_authenticatedWithDevicePassword)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_authenticatedWithDevicePassword)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"ICAuthenticationStateWillAuthenticateNotification" object:v2 userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICAuthenticationStateWillAuthenticateNotification" object:selfCopy userInfo:0];
 
-    v2->_authenticatedWithDevicePassword = 1;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"ICAuthenticationStateDidAuthenticateNotification" object:v2 userInfo:0];
+    selfCopy->_authenticatedWithDevicePassword = 1;
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ICAuthenticationStateDidAuthenticateNotification" object:selfCopy userInfo:0];
 
-    [(ICAuthenticationState *)v2 extendDeauthenticationTimer];
+    [(ICAuthenticationState *)selfCopy extendDeauthenticationTimer];
     v5 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -1189,16 +1189,16 @@ void __59__ICAuthenticationState_authenticateObject_withPassphrase___block_invok
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)deauthenticateWithDevicePassword
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_authenticatedWithDevicePassword)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_authenticatedWithDevicePassword)
   {
-    v2->_authenticatedWithDevicePassword = 0;
+    selfCopy->_authenticatedWithDevicePassword = 0;
     v3 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
@@ -1206,70 +1206,70 @@ void __59__ICAuthenticationState_authenticateObject_withPassphrase___block_invok
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)mainKeyIdentifierForKeyObject:(id)a3 cipherVersion:(int64_t)a4
+- (id)mainKeyIdentifierForKeyObject:(id)object cipherVersion:(int64_t)version
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 2)
+  objectCopy = object;
+  v6 = objectCopy;
+  if (version == 2)
   {
     objc_opt_class();
     v8 = ICDynamicCast();
-    v9 = [v8 accountData];
-    v10 = [v9 identifier];
-    v11 = v10;
-    if (v10)
+    accountData = [v8 accountData];
+    identifier = [accountData identifier];
+    v11 = identifier;
+    if (identifier)
     {
-      v12 = v10;
+      identifier2 = identifier;
     }
 
     else
     {
-      v12 = [v6 identifier];
+      identifier2 = [v6 identifier];
     }
 
-    v7 = v12;
+    identifier3 = identifier2;
   }
 
-  else if (a4)
+  else if (version)
   {
-    v7 = 0;
+    identifier3 = 0;
   }
 
   else
   {
-    v7 = [v5 identifier];
+    identifier3 = [objectCopy identifier];
   }
 
-  return v7;
+  return identifier3;
 }
 
-- (BOOL)setCachedMainKey:(id)a3 forObject:(id)a4
+- (BOOL)setCachedMainKey:(id)key forObject:(id)object
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [v6 metadata];
-  v10 = -[ICAuthenticationState mainKeyIdentifierForKeyObject:cipherVersion:](v8, "mainKeyIdentifierForKeyObject:cipherVersion:", v7, [v9 cipherVersion]);
+  keyCopy = key;
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metadata = [keyCopy metadata];
+  v10 = -[ICAuthenticationState mainKeyIdentifierForKeyObject:cipherVersion:](selfCopy, "mainKeyIdentifierForKeyObject:cipherVersion:", objectCopy, [metadata cipherVersion]);
 
   if ([v10 length])
   {
-    if (v6)
+    if (keyCopy)
     {
-      v11 = [v7 cryptoStrategy];
-      v12 = [v11 mainKeyDecryptsPrimaryData:v6];
+      cryptoStrategy = [objectCopy cryptoStrategy];
+      v12 = [cryptoStrategy mainKeyDecryptsPrimaryData:keyCopy];
 
       if ((v12 & 1) == 0)
       {
         v22 = os_log_create("com.apple.notes", "Crypto");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v7 shortLoggingDescription];
-          [(ICAuthenticationState *)v23 setCachedMainKey:v22 forObject:?];
+          shortLoggingDescription = [objectCopy shortLoggingDescription];
+          [(ICAuthenticationState *)shortLoggingDescription setCachedMainKey:v22 forObject:?];
         }
 
         v21 = 0;
@@ -1278,16 +1278,16 @@ void __59__ICAuthenticationState_authenticateObject_withPassphrase___block_invok
       }
     }
 
-    v13 = [(ICAuthenticationState *)v8 cachedMainKeyForIdentifier:v10];
+    v13 = [(ICAuthenticationState *)selfCopy cachedMainKeyForIdentifier:v10];
     v14 = *MEMORY[0x277CBEEE8];
-    if (*MEMORY[0x277CBEEE8] == v6)
+    if (*MEMORY[0x277CBEEE8] == keyCopy)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v6;
+      v15 = keyCopy;
     }
 
     v16 = v15;
@@ -1319,75 +1319,75 @@ void __59__ICAuthenticationState_authenticateObject_withPassphrase___block_invok
       {
       }
 
-      v24 = [MEMORY[0x277CCAB98] defaultCenter];
-      if (v6)
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      if (keyCopy)
       {
         v48 = @"ICAuthenticationStateKeyObjectID";
-        v25 = [v7 objectID];
-        v49[0] = v25;
+        objectID = [objectCopy objectID];
+        v49[0] = objectID;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-        [v24 postNotificationName:@"ICAuthenticationStateWillAuthenticateNotification" object:v8 userInfo:v26];
+        [defaultCenter postNotificationName:@"ICAuthenticationStateWillAuthenticateNotification" object:selfCopy userInfo:v26];
       }
 
       else
       {
         v46 = @"ICAuthenticationStateKeyObjectID";
-        v25 = [v7 objectID];
-        v47 = v25;
+        objectID = [objectCopy objectID];
+        v47 = objectID;
         v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-        [v24 postNotificationName:@"ICAuthenticationStateWillDeauthenticateNotification" object:v8 userInfo:v26];
+        [defaultCenter postNotificationName:@"ICAuthenticationStateWillDeauthenticateNotification" object:selfCopy userInfo:v26];
       }
 
-      [(ICAuthenticationState *)v8 setCachedMainKey:v6 forIdentifier:v10];
-      [(ICAuthenticationState *)v8 setMainKeyInKeychain:v6 forObject:v7];
-      v27 = [MEMORY[0x277CCAB98] defaultCenter];
-      if (v6)
+      [(ICAuthenticationState *)selfCopy setCachedMainKey:keyCopy forIdentifier:v10];
+      [(ICAuthenticationState *)selfCopy setMainKeyInKeychain:keyCopy forObject:objectCopy];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      if (keyCopy)
       {
         v44 = @"ICAuthenticationStateKeyObjectID";
-        v28 = [v7 objectID];
-        v45 = v28;
+        objectID2 = [objectCopy objectID];
+        v45 = objectID2;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-        [v27 postNotificationName:@"ICAuthenticationStateDidAuthenticateNotification" object:v8 userInfo:v29];
+        [defaultCenter2 postNotificationName:@"ICAuthenticationStateDidAuthenticateNotification" object:selfCopy userInfo:v29];
       }
 
       else
       {
         v42 = @"ICAuthenticationStateKeyObjectID";
-        v28 = [v7 objectID];
-        v43 = v28;
+        objectID2 = [objectCopy objectID];
+        v43 = objectID2;
         v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-        [v27 postNotificationName:@"ICAuthenticationStateDidDeauthenticateNotification" object:v8 userInfo:v29];
+        [defaultCenter2 postNotificationName:@"ICAuthenticationStateDidDeauthenticateNotification" object:selfCopy userInfo:v29];
       }
     }
 
 LABEL_27:
-    v30 = [v7 parentEncryptableObject];
-    v22 = v30;
-    if (v6)
+    parentEncryptableObject = [objectCopy parentEncryptableObject];
+    v22 = parentEncryptableObject;
+    if (keyCopy)
     {
-      if (v30)
+      if (parentEncryptableObject)
       {
-        v31 = [v30 cryptoStrategy];
-        v32 = [v31 mainKeyDecryptsPrimaryData:v6];
+        cryptoStrategy2 = [parentEncryptableObject cryptoStrategy];
+        v32 = [cryptoStrategy2 mainKeyDecryptsPrimaryData:keyCopy];
 
         if (v32)
         {
-          [(ICAuthenticationState *)v8 setCachedMainKey:v6 forObject:v22];
+          [(ICAuthenticationState *)selfCopy setCachedMainKey:keyCopy forObject:v22];
         }
       }
     }
 
-    [(ICAuthenticationState *)v8 extendDeauthenticationTimer];
+    [(ICAuthenticationState *)selfCopy extendDeauthenticationTimer];
     v33 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
-      v35 = [v7 shortLoggingDescription];
+      shortLoggingDescription2 = [objectCopy shortLoggingDescription];
       v36 = 138412802;
-      v37 = v35;
+      v37 = shortLoggingDescription2;
       v38 = 2112;
       v39 = v13;
       v40 = 2112;
-      v41 = v6;
+      v41 = keyCopy;
       _os_log_debug_impl(&dword_214D51000, v33, OS_LOG_TYPE_DEBUG, "Set cached main key for object {object: %@, oldMainKey: %@, newMainKey: %@}", &v36, 0x20u);
     }
 
@@ -1400,64 +1400,64 @@ LABEL_34:
   v21 = 0;
 LABEL_35:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   return v21;
 }
 
-- (id)cachedMainKeyForObject:(id)a3
+- (id)cachedMainKeyForObject:(id)object
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v4;
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = objectCopy;
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    objectIDsToMainKey = v6;
     do
     {
-      v9 = [(ICAuthenticationState *)v5 cachedMainKeyForKeyObject:v8 decryptingObject:v7];
+      v9 = [(ICAuthenticationState *)selfCopy cachedMainKeyForKeyObject:objectIDsToMainKey decryptingObject:v7];
       if (v9)
       {
         goto LABEL_9;
       }
 
-      v10 = [v8 parentEncryptableObject];
+      parentEncryptableObject = [objectIDsToMainKey parentEncryptableObject];
 
-      v8 = v10;
+      objectIDsToMainKey = parentEncryptableObject;
     }
 
-    while (v10);
+    while (parentEncryptableObject);
   }
 
-  v11 = [v7 primaryEncryptedData];
-  if (v11)
+  primaryEncryptedData = [v7 primaryEncryptedData];
+  if (primaryEncryptedData)
   {
 
 LABEL_8:
-    v8 = [(ICAuthenticationState *)v5 objectIDsToMainKey];
-    v13 = [v8 allValues];
+    objectIDsToMainKey = [(ICAuthenticationState *)selfCopy objectIDsToMainKey];
+    allValues = [objectIDsToMainKey allValues];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __48__ICAuthenticationState_cachedMainKeyForObject___block_invoke;
     v15[3] = &unk_278196758;
     v16 = v7;
-    v9 = [v13 ic_objectPassingTest:v15];
+    v9 = [allValues ic_objectPassingTest:v15];
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [v7 unappliedEncryptedRecord];
+  unappliedEncryptedRecord = [v7 unappliedEncryptedRecord];
 
-  if (v12)
+  if (unappliedEncryptedRecord)
   {
     goto LABEL_8;
   }
 
   v9 = 0;
 LABEL_10:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -1472,17 +1472,17 @@ uint64_t __48__ICAuthenticationState_cachedMainKeyForObject___block_invoke(uint6
   return v5;
 }
 
-- (id)cachedMainKeyForKeyObject:(id)a3 decryptingObject:(id)a4
+- (id)cachedMainKeyForKeyObject:(id)object decryptingObject:(id)decryptingObject
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(ICAuthenticationState *)v8 mainKeyIdentifierForKeyObject:v6 cipherVersion:[ICCryptoStrategyFactory cipherVersionForObject:v7]];
+  objectCopy = object;
+  decryptingObjectCopy = decryptingObject;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(ICAuthenticationState *)selfCopy mainKeyIdentifierForKeyObject:objectCopy cipherVersion:[ICCryptoStrategyFactory cipherVersionForObject:decryptingObjectCopy]];
   if ([v9 length])
   {
-    v10 = [(ICAuthenticationState *)v8 cachedMainKeyForIdentifier:v9];
-    if (v10 && ([v7 cryptoStrategy], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "mainKeyDecryptsPrimaryData:", v10), v11, (v12 & 1) != 0))
+    v10 = [(ICAuthenticationState *)selfCopy cachedMainKeyForIdentifier:v9];
+    if (v10 && ([decryptingObjectCopy cryptoStrategy], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "mainKeyDecryptsPrimaryData:", v10), v11, (v12 & 1) != 0))
     {
       v13 = v10;
     }
@@ -1498,39 +1498,39 @@ uint64_t __48__ICAuthenticationState_cachedMainKeyForObject___block_invoke(uint6
     v13 = 0;
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
 
-- (void)setCachedMainKey:(id)a3 forIdentifier:(id)a4
+- (void)setCachedMainKey:(id)key forIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(ICAuthenticationState *)v7 objectIDsToMainKey];
-  [v8 setObject:v9 forKeyedSubscript:v6];
+  keyCopy = key;
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objectIDsToMainKey = [(ICAuthenticationState *)selfCopy objectIDsToMainKey];
+  [objectIDsToMainKey setObject:keyCopy forKeyedSubscript:identifierCopy];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)cachedMainKeyForIdentifier:(id)a3
+- (id)cachedMainKeyForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ICAuthenticationState *)v5 objectIDsToMainKey];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objectIDsToMainKey = [(ICAuthenticationState *)selfCopy objectIDsToMainKey];
+  v7 = [objectIDsToMainKey objectForKeyedSubscript:identifierCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setDeauthenticationTimerRunLoopModes:(id)a3
+- (void)setDeauthenticationTimerRunLoopModes:(id)modes
 {
-  objc_storeStrong(&self->_deauthenticationTimerRunLoopModes, a3);
+  objc_storeStrong(&self->_deauthenticationTimerRunLoopModes, modes);
 
   [(ICAuthenticationState *)self extendDeauthenticationTimer];
 }
@@ -1550,7 +1550,7 @@ void __52__ICAuthenticationState_extendDeauthenticationTimer__block_invoke(uint6
   [v3 invalidate];
 }
 
-- (void)localAuthenticationDidChangeBiometricsPolicyState:(id)a3
+- (void)localAuthenticationDidChangeBiometricsPolicyState:(id)state
 {
   v4 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))

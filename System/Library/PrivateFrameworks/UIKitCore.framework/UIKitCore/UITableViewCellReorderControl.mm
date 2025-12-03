@@ -1,19 +1,19 @@
 @interface UITableViewCellReorderControl
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)shouldTrack;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (UITableViewCellReorderControl)initWithTableViewCell:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (UITableViewCellReorderControl)initWithTableViewCell:(id)cell;
 - (id)grabberImage;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_updateImageView;
-- (void)adjustLayoutForFocalRect:(CGRect)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)adjustLayoutForFocalRect:(CGRect)rect;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAccessoryTintColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setTracking:(BOOL)a3;
+- (void)setAccessoryTintColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setTracking:(BOOL)tracking;
 @end
 
 @implementation UITableViewCellReorderControl
@@ -21,11 +21,11 @@
 - (id)grabberImage
 {
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v4 = [WeakRetained _reorderControlImage];
-  v5 = v4;
-  if (v4)
+  _reorderControlImage = [WeakRetained _reorderControlImage];
+  v5 = _reorderControlImage;
+  if (_reorderControlImage)
   {
-    v6 = v4;
+    v6 = _reorderControlImage;
   }
 
   else
@@ -33,30 +33,30 @@
     accessoryTintColor = self->_accessoryTintColor;
     if (accessoryTintColor)
     {
-      v8 = accessoryTintColor;
+      _accessoryBaseColor = accessoryTintColor;
     }
 
     else
     {
-      v9 = [WeakRetained _tableView];
-      v8 = [v9 _accessoryBaseColor];
+      _tableView = [WeakRetained _tableView];
+      _accessoryBaseColor = [_tableView _accessoryBaseColor];
     }
 
-    v10 = [WeakRetained _constants];
-    v11 = [WeakRetained traitCollection];
-    v6 = [v10 defaultReorderControlImageForTraitCollection:v11 withAccessoryBaseColor:v8 isTracking:{-[UIControl isTracking](self, "isTracking")}];
+    _constants = [WeakRetained _constants];
+    traitCollection = [WeakRetained traitCollection];
+    v6 = [_constants defaultReorderControlImageForTraitCollection:traitCollection withAccessoryBaseColor:_accessoryBaseColor isTracking:{-[UIControl isTracking](self, "isTracking")}];
   }
 
   return v6;
 }
 
-- (UITableViewCellReorderControl)initWithTableViewCell:(id)a3
+- (UITableViewCellReorderControl)initWithTableViewCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 _constants];
-  v6 = [v4 _tableView];
-  v7 = [v6 _accessoryBaseColor];
-  [v5 defaultReorderControlSizeForCell:v4 withAccessoryBaseColor:v7];
+  cellCopy = cell;
+  _constants = [cellCopy _constants];
+  _tableView = [cellCopy _tableView];
+  _accessoryBaseColor = [_tableView _accessoryBaseColor];
+  [_constants defaultReorderControlSizeForCell:cellCopy withAccessoryBaseColor:_accessoryBaseColor];
   v9 = v8;
   v11 = v10;
 
@@ -66,7 +66,7 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_cell, v4);
+    objc_storeWeak(&v12->_cell, cellCopy);
     [(UIView *)v13 setOpaque:0];
     [(UIView *)v13 setExclusiveTouch:1];
     [(UIView *)v13 setAutoresizingMask:1];
@@ -75,10 +75,10 @@
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(UITableViewCellReorderControl *)v13 grabberImage];
-    [v22 size];
+    grabberImage = [(UITableViewCellReorderControl *)v13 grabberImage];
+    [grabberImage size];
     v25 = [[UIImageView alloc] initWithFrame:round(v15 + (v19 - v23) * 0.5), round(v17 + (v21 - v24) * 0.5), v23, v24];
-    [(UIImageView *)v25 setImage:v22];
+    [(UIImageView *)v25 setImage:grabberImage];
     [(UIView *)v13 addSubview:v25];
     imageView = v13->_imageView;
     v13->_imageView = v25;
@@ -90,9 +90,9 @@
   return v13;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   [(UIView *)self frame];
   v5 = v4;
   v6 = height;
@@ -101,11 +101,11 @@
   return result;
 }
 
-- (void)adjustLayoutForFocalRect:(CGRect)a3
+- (void)adjustLayoutForFocalRect:(CGRect)rect
 {
-  height = a3.size.height;
-  y = a3.origin.y;
-  IsEmpty = CGRectIsEmpty(a3);
+  height = rect.size.height;
+  y = rect.origin.y;
+  IsEmpty = CGRectIsEmpty(rect);
   v7 = NAN;
   if (IsEmpty)
   {
@@ -140,15 +140,15 @@
 
 - (void)_updateImageView
 {
-  v3 = [(UITableViewCellReorderControl *)self grabberImage];
-  [(UIImageView *)self->_imageView setImage:v3];
+  grabberImage = [(UITableViewCellReorderControl *)self grabberImage];
+  [(UIImageView *)self->_imageView setImage:grabberImage];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = UITableViewCellReorderControl;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)self layoutBelowIfNeeded];
 }
 
@@ -160,21 +160,21 @@
   [(UITableViewCellReorderControl *)self _updateImageView];
 }
 
-- (void)setAccessoryTintColor:(id)a3
+- (void)setAccessoryTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (![(UIColor *)self->_accessoryTintColor isEqual:?])
   {
-    objc_storeStrong(&self->_accessoryTintColor, a3);
+    objc_storeStrong(&self->_accessoryTintColor, color);
     [(UITableViewCellReorderControl *)self _updateImageView];
   }
 }
 
-- (void)setTracking:(BOOL)a3
+- (void)setTracking:(BOOL)tracking
 {
   v4.receiver = self;
   v4.super_class = UITableViewCellReorderControl;
-  [(UIControl *)&v4 setTracking:a3];
+  [(UIControl *)&v4 setTracking:tracking];
   [(UITableViewCellReorderControl *)self _updateImageView];
 }
 
@@ -186,49 +186,49 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  v5 = [WeakRetained _isReorderControlActive];
+  _isReorderControlActive = [WeakRetained _isReorderControlActive];
 
-  return v5;
+  return _isReorderControlActive;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   [(UITableViewCellReorderControl *)self setTracking:1];
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   self->_downPoint.x = v6;
   self->_downPoint.y = v7;
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  LOBYTE(self) = [WeakRetained _grabberBeganReorder:self touch:v5];
+  LOBYTE(self) = [WeakRetained _grabberBeganReorder:self touch:touchCopy];
 
   return self;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_cell);
-  [v5 locationInView:self];
+  [touchCopy locationInView:self];
   v8 = round(v7 - self->_downPoint.y);
   *&v8 = v8;
-  [WeakRetained _grabberDragged:self yDelta:v5 touch:v8];
+  [WeakRetained _grabberDragged:self yDelta:touchCopy touch:v8];
 
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  [(UITableViewCellReorderControl *)self setTracking:0, a4];
+  [(UITableViewCellReorderControl *)self setTracking:0, event];
   WeakRetained = objc_loadWeakRetained(&self->_cell);
   [WeakRetained _grabberReleased:self];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(UIControl *)self isTracking])
   {
-    [(UITableViewCellReorderControl *)self endTrackingWithTouch:0 withEvent:v4];
+    [(UITableViewCellReorderControl *)self endTrackingWithTouch:0 withEvent:eventCopy];
   }
 }
 

@@ -1,71 +1,71 @@
 @interface PCPPredictedContextResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPredictedContextLocations:(id)a3;
-- (void)addPredictedContextTransitions:(id)a3;
-- (void)addPredictedContextWorkouts:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPredictedContextLocations:(id)locations;
+- (void)addPredictedContextTransitions:(id)transitions;
+- (void)addPredictedContextWorkouts:(id)workouts;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPPredictedContextResult
 
-- (void)addPredictedContextLocations:(id)a3
+- (void)addPredictedContextLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   predictedContextLocations = self->_predictedContextLocations;
-  v8 = v4;
+  v8 = locationsCopy;
   if (!predictedContextLocations)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_predictedContextLocations;
     self->_predictedContextLocations = v6;
 
-    v4 = v8;
+    locationsCopy = v8;
     predictedContextLocations = self->_predictedContextLocations;
   }
 
-  [(NSMutableArray *)predictedContextLocations addObject:v4];
+  [(NSMutableArray *)predictedContextLocations addObject:locationsCopy];
 }
 
-- (void)addPredictedContextTransitions:(id)a3
+- (void)addPredictedContextTransitions:(id)transitions
 {
-  v4 = a3;
+  transitionsCopy = transitions;
   predictedContextTransitions = self->_predictedContextTransitions;
-  v8 = v4;
+  v8 = transitionsCopy;
   if (!predictedContextTransitions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_predictedContextTransitions;
     self->_predictedContextTransitions = v6;
 
-    v4 = v8;
+    transitionsCopy = v8;
     predictedContextTransitions = self->_predictedContextTransitions;
   }
 
-  [(NSMutableArray *)predictedContextTransitions addObject:v4];
+  [(NSMutableArray *)predictedContextTransitions addObject:transitionsCopy];
 }
 
-- (void)addPredictedContextWorkouts:(id)a3
+- (void)addPredictedContextWorkouts:(id)workouts
 {
-  v4 = a3;
+  workoutsCopy = workouts;
   predictedContextWorkouts = self->_predictedContextWorkouts;
-  v8 = v4;
+  v8 = workoutsCopy;
   if (!predictedContextWorkouts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_predictedContextWorkouts;
     self->_predictedContextWorkouts = v6;
 
-    v4 = v8;
+    workoutsCopy = v8;
     predictedContextWorkouts = self->_predictedContextWorkouts;
   }
 
-  [(NSMutableArray *)predictedContextWorkouts addObject:v4];
+  [(NSMutableArray *)predictedContextWorkouts addObject:workoutsCopy];
 }
 
 - (id)description
@@ -74,8 +74,8 @@
   v8.receiver = self;
   v8.super_class = PCPPredictedContextResult;
   v4 = [(PCPPredictedContextResult *)&v8 description];
-  v5 = [(PCPPredictedContextResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPPredictedContextResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -83,7 +83,7 @@
 - (id)dictionaryRepresentation
 {
   v45 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_predictedContextLocations count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_predictedContextLocations, "count")}];
@@ -106,8 +106,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v38 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v38 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v38 objects:v44 count:16];
@@ -116,7 +116,7 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"predictedContextLocations"];
+    [dictionary setObject:v4 forKey:@"predictedContextLocations"];
   }
 
   if ([(NSMutableArray *)self->_predictedContextTransitions count])
@@ -141,8 +141,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v34 + 1) + 8 * j) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v34 + 1) + 8 * j) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v34 objects:v43 count:16];
@@ -151,7 +151,7 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"predictedContextTransitions"];
+    [dictionary setObject:v11 forKey:@"predictedContextTransitions"];
   }
 
   if ([(NSMutableArray *)self->_predictedContextWorkouts count])
@@ -176,8 +176,8 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v30 + 1) + 8 * k) dictionaryRepresentation];
-          [v18 addObject:v24];
+          dictionaryRepresentation3 = [*(*(&v30 + 1) + 8 * k) dictionaryRepresentation];
+          [v18 addObject:dictionaryRepresentation3];
         }
 
         v21 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v30 objects:v42 count:16];
@@ -186,31 +186,31 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKey:@"predictedContextWorkouts"];
+    [dictionary setObject:v18 forKey:@"predictedContextWorkouts"];
   }
 
   if (*&self->_has)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithBool:self->_computeRequested];
-    [v3 setObject:v25 forKey:@"computeRequested"];
+    [dictionary setObject:v25 forKey:@"computeRequested"];
   }
 
   predictedContextAnalytics = self->_predictedContextAnalytics;
   if (predictedContextAnalytics)
   {
-    v27 = [(PCPPredictedContextAnalytics *)predictedContextAnalytics dictionaryRepresentation];
-    [v3 setObject:v27 forKey:@"predictedContextAnalytics"];
+    dictionaryRepresentation4 = [(PCPPredictedContextAnalytics *)predictedContextAnalytics dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"predictedContextAnalytics"];
   }
 
   v28 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -321,72 +321,72 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   if ([(PCPPredictedContextResult *)self predictedContextLocationsCount])
   {
-    [v17 clearPredictedContextLocations];
-    v4 = [(PCPPredictedContextResult *)self predictedContextLocationsCount];
-    if (v4)
+    [toCopy clearPredictedContextLocations];
+    predictedContextLocationsCount = [(PCPPredictedContextResult *)self predictedContextLocationsCount];
+    if (predictedContextLocationsCount)
     {
-      v5 = v4;
+      v5 = predictedContextLocationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PCPPredictedContextResult *)self predictedContextLocationsAtIndex:i];
-        [v17 addPredictedContextLocations:v7];
+        [toCopy addPredictedContextLocations:v7];
       }
     }
   }
 
   if ([(PCPPredictedContextResult *)self predictedContextTransitionsCount])
   {
-    [v17 clearPredictedContextTransitions];
-    v8 = [(PCPPredictedContextResult *)self predictedContextTransitionsCount];
-    if (v8)
+    [toCopy clearPredictedContextTransitions];
+    predictedContextTransitionsCount = [(PCPPredictedContextResult *)self predictedContextTransitionsCount];
+    if (predictedContextTransitionsCount)
     {
-      v9 = v8;
+      v9 = predictedContextTransitionsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PCPPredictedContextResult *)self predictedContextTransitionsAtIndex:j];
-        [v17 addPredictedContextTransitions:v11];
+        [toCopy addPredictedContextTransitions:v11];
       }
     }
   }
 
   if ([(PCPPredictedContextResult *)self predictedContextWorkoutsCount])
   {
-    [v17 clearPredictedContextWorkouts];
-    v12 = [(PCPPredictedContextResult *)self predictedContextWorkoutsCount];
-    if (v12)
+    [toCopy clearPredictedContextWorkouts];
+    predictedContextWorkoutsCount = [(PCPPredictedContextResult *)self predictedContextWorkoutsCount];
+    if (predictedContextWorkoutsCount)
     {
-      v13 = v12;
+      v13 = predictedContextWorkoutsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(PCPPredictedContextResult *)self predictedContextWorkoutsAtIndex:k];
-        [v17 addPredictedContextWorkouts:v15];
+        [toCopy addPredictedContextWorkouts:v15];
       }
     }
   }
 
-  v16 = v17;
+  v16 = toCopy;
   if (*&self->_has)
   {
-    v17[40] = self->_computeRequested;
-    v17[44] |= 1u;
+    toCopy[40] = self->_computeRequested;
+    toCopy[44] |= 1u;
   }
 
   if (self->_predictedContextAnalytics)
   {
-    [v17 setPredictedContextAnalytics:?];
-    v16 = v17;
+    [toCopy setPredictedContextAnalytics:?];
+    v16 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -407,7 +407,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v36 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v36 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addPredictedContextLocations:v11];
 
         ++v10;
@@ -440,7 +440,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v32 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v32 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addPredictedContextTransitions:v17];
 
         ++v16;
@@ -473,7 +473,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v28 + 1) + 8 * v22) copyWithZone:{a3, v28}];
+        v23 = [*(*(&v28 + 1) + 8 * v22) copyWithZone:{zone, v28}];
         [v5 addPredictedContextWorkouts:v23];
 
         ++v22;
@@ -492,7 +492,7 @@
     *(v5 + 44) |= 1u;
   }
 
-  v24 = [(PCPPredictedContextAnalytics *)self->_predictedContextAnalytics copyWithZone:a3, v28];
+  v24 = [(PCPPredictedContextAnalytics *)self->_predictedContextAnalytics copyWithZone:zone, v28];
   v25 = *(v5 + 8);
   *(v5 + 8) = v24;
 
@@ -500,16 +500,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   predictedContextLocations = self->_predictedContextLocations;
-  if (predictedContextLocations | *(v4 + 2))
+  if (predictedContextLocations | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)predictedContextLocations isEqual:?])
     {
@@ -518,7 +518,7 @@
   }
 
   predictedContextTransitions = self->_predictedContextTransitions;
-  if (predictedContextTransitions | *(v4 + 3))
+  if (predictedContextTransitions | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)predictedContextTransitions isEqual:?])
     {
@@ -527,7 +527,7 @@
   }
 
   predictedContextWorkouts = self->_predictedContextWorkouts;
-  if (predictedContextWorkouts | *(v4 + 4))
+  if (predictedContextWorkouts | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)predictedContextWorkouts isEqual:?])
     {
@@ -535,18 +535,18 @@
     }
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(equalCopy + 44);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if ((*(v4 + 44) & 1) == 0)
+  if ((*(equalCopy + 44) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if (!self->_computeRequested)
   {
 LABEL_9:
@@ -560,14 +560,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ((*(v4 + 40) & 1) == 0)
+  if ((*(equalCopy + 40) & 1) == 0)
   {
     goto LABEL_13;
   }
 
 LABEL_10:
   predictedContextAnalytics = self->_predictedContextAnalytics;
-  if (predictedContextAnalytics | *(v4 + 1))
+  if (predictedContextAnalytics | *(equalCopy + 1))
   {
     v10 = [(PCPPredictedContextAnalytics *)predictedContextAnalytics isEqual:?];
   }
@@ -600,15 +600,15 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(PCPPredictedContextAnalytics *)self->_predictedContextAnalytics hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v6)
   {
@@ -636,7 +636,7 @@ LABEL_14:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v11)
   {
@@ -664,7 +664,7 @@ LABEL_14:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v15 = *(v4 + 4);
+  v15 = *(fromCopy + 4);
   v16 = [v15 countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v16)
   {
@@ -688,14 +688,14 @@ LABEL_14:
     while (v17);
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_computeRequested = *(v4 + 40);
+    self->_computeRequested = *(fromCopy + 40);
     *&self->_has |= 1u;
   }
 
   predictedContextAnalytics = self->_predictedContextAnalytics;
-  v21 = *(v4 + 1);
+  v21 = *(fromCopy + 1);
   if (predictedContextAnalytics)
   {
     if (v21)

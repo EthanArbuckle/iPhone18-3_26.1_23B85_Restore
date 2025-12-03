@@ -1,24 +1,24 @@
 @interface CNUICancelBarButtonItem
-- (CNUICancelBarButtonItem)initWithDidTapHandler:(id)a3;
-- (void)didTap:(id)a3;
+- (CNUICancelBarButtonItem)initWithDidTapHandler:(id)handler;
+- (void)didTap:(id)tap;
 @end
 
 @implementation CNUICancelBarButtonItem
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  v4 = [(CNUICancelBarButtonItem *)self didTapHandler];
+  didTapHandler = [(CNUICancelBarButtonItem *)self didTapHandler];
 
-  if (v4)
+  if (didTapHandler)
   {
-    v5 = [(CNUICancelBarButtonItem *)self didTapHandler];
-    v5[2]();
+    didTapHandler2 = [(CNUICancelBarButtonItem *)self didTapHandler];
+    didTapHandler2[2]();
   }
 }
 
-- (CNUICancelBarButtonItem)initWithDidTapHandler:(id)a3
+- (CNUICancelBarButtonItem)initWithDidTapHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = CNUICancelBarButtonItem;
   v5 = [(CNUICancelBarButtonItem *)&v12 init];
@@ -31,7 +31,7 @@
     [(CNUICancelBarButtonItem *)v5 setStyle:2];
     [(CNUICancelBarButtonItem *)v5 setTarget:v5];
     [(CNUICancelBarButtonItem *)v5 setAction:sel_didTap_];
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(handlerCopy);
     didTapHandler = v5->_didTapHandler;
     v5->_didTapHandler = v8;
 

@@ -12,8 +12,8 @@
 
 - (BOOL)sb_containsEmoji
 {
-  v2 = [MEMORY[0x1E696AEC0] sb_emojiWithoutVS16Set];
-  v3 = [a1 rangeOfCharacterFromSet:v2];
+  sb_emojiWithoutVS16Set = [MEMORY[0x1E696AEC0] sb_emojiWithoutVS16Set];
+  v3 = [self rangeOfCharacterFromSet:sb_emojiWithoutVS16Set];
 
   return v3 != 0x7FFFFFFFFFFFFFFFLL || CEMStringContainsEmoji() != 0;
 }
@@ -32,12 +32,12 @@
 
 - (uint64_t)sb_isEntirelyCharactersInSet:()SBAdditions
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
     v6 = result;
     v7 = malloc_type_malloc(2 * result, 0x1000040BDFB0063uLL);
-    [a1 getCharacters:v7 range:{0, v6}];
+    [self getCharacters:v7 range:{0, v6}];
     v8 = MEMORY[0x1BFB4DC90](a3, v7, v6, 1);
     free(v7);
     return v6 == v8;
@@ -54,16 +54,16 @@
   block[3] = &unk_1E807FDF0;
   block[5] = a3;
   block[6] = a2;
-  block[4] = a1;
+  block[4] = self;
   if (_isEntirelyCharactersInScript__onceToken != -1)
   {
     dispatch_once(&_isEntirelyCharactersInScript__onceToken, block);
   }
 
-  result = [a1 sb_isEntirelyCharactersInSet:_isEntirelyCharactersInScript____set];
+  result = [self sb_isEntirelyCharactersInSet:_isEntirelyCharactersInScript____set];
   if (result)
   {
-    return [a1 _isEntirelyCommon] ^ 1;
+    return [self _isEntirelyCommon] ^ 1;
   }
 
   return result;
@@ -75,23 +75,23 @@
   v5 = 3221225472;
   v6 = __42__NSString_SBAdditions___isEntirelyCommon__block_invoke;
   v7 = &unk_1E807FAC8;
-  v8 = a1;
+  selfCopy = self;
   v9 = a2;
   if (_isEntirelyCommon_onceToken != -1)
   {
     dispatch_once(&_isEntirelyCommon_onceToken, &v4);
   }
 
-  return [a1 sb_isEntirelyCharactersInSet:{_isEntirelyCommon___charSet, v4, v5, v6, v7, v8, v9}];
+  return [self sb_isEntirelyCharactersInSet:{_isEntirelyCommon___charSet, v4, v5, v6, v7, selfCopy, v9}];
 }
 
 - (uint64_t)_isInScript:()SBAdditions useLocaleOnly:
 {
   if (a4)
   {
-    v5 = [MEMORY[0x1E695DF58] currentLocale];
-    v6 = [v5 localeIdentifier];
-    v7 = v6;
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
+    v7 = localeIdentifier;
     if ((a3 - 1) >= 8)
     {
       v8 = 0;
@@ -102,7 +102,7 @@
       v8 = off_1E807FE50[a3 - 1];
     }
 
-    v10 = [v6 hasPrefix:v8];
+    v10 = [localeIdentifier hasPrefix:v8];
 
     return v10;
   }
@@ -110,17 +110,17 @@
   else
   {
 
-    return [a1 _isEntirelyCharactersInScript:?];
+    return [self _isEntirelyCharactersInScript:?];
   }
 }
 
 - (id)_adjustedFontForScripts:()SBAdditions forFont:withPointAdjustment:ignoringContent:
 {
   v10 = a5;
-  v11 = [a1 _isInScript:1 useLocaleOnly:a6];
-  v12 = [a1 _isInScript:2 useLocaleOnly:a6];
-  v13 = [a1 _isInScript:4 useLocaleOnly:a6];
-  v14 = [a1 _isInScript:8 useLocaleOnly:a6];
+  v11 = [self _isInScript:1 useLocaleOnly:a6];
+  v12 = [self _isInScript:2 useLocaleOnly:a6];
+  v13 = [self _isInScript:4 useLocaleOnly:a6];
+  v14 = [self _isInScript:8 useLocaleOnly:a6];
   if ((a4 & 3) != 0 && ((((a4 & 2) != 0) & v12) != 0 || (a4 & v11 & 1) != 0 || (((a4 & 4) != 0) & v13) != 0 || (((a4 & 8) != 0) & v14) != 0))
   {
     v16 = 2.0;

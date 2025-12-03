@@ -1,19 +1,19 @@
 @interface EKTravelLookupManager
 + (id)defaultManager;
-+ (void)estimateGeolocationFromHistoricDevicePositionAtLocation:(id)a3 withCompletionBlock:(id)a4;
-- (void)_findCoordinatesForLocation:(id)a3 completionBlock:(id)a4;
-- (void)_travelTimeFrom:(id)a3 to:(id)a4 arrivalDate:(id)a5 withRouteType:(id)a6 withCompletionBlock:(id)a7;
-- (void)_travelTimeWithStartCoordinate:(id)a3 endCoordinate:(id)a4 arrivalDate:(id)a5 withRouteType:(id)a6 completionBlock:(id)a7;
-- (void)_updateLocation:(id)a3 withMapItem:(id)a4 forRoute:(id)a5 withCompletionBlock:(id)a6;
-- (void)travelTimeFrom:(id)a3 to:(id)a4 arrivalDate:(id)a5 withRouteTypes:(id)a6 withCompletionBlock:(id)a7;
++ (void)estimateGeolocationFromHistoricDevicePositionAtLocation:(id)location withCompletionBlock:(id)block;
+- (void)_findCoordinatesForLocation:(id)location completionBlock:(id)block;
+- (void)_travelTimeFrom:(id)from to:(id)to arrivalDate:(id)date withRouteType:(id)type withCompletionBlock:(id)block;
+- (void)_travelTimeWithStartCoordinate:(id)coordinate endCoordinate:(id)endCoordinate arrivalDate:(id)date withRouteType:(id)type completionBlock:(id)block;
+- (void)_updateLocation:(id)location withMapItem:(id)item forRoute:(id)route withCompletionBlock:(id)block;
+- (void)travelTimeFrom:(id)from to:(id)to arrivalDate:(id)date withRouteTypes:(id)types withCompletionBlock:(id)block;
 @end
 
 @implementation EKTravelLookupManager
 
 + (id)defaultManager
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!defaultManager__defaultManager)
   {
     v3 = objc_alloc_init(EKTravelLookupManager);
@@ -21,32 +21,32 @@
     defaultManager__defaultManager = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = defaultManager__defaultManager;
 
   return v5;
 }
 
-- (void)_travelTimeFrom:(id)a3 to:(id)a4 arrivalDate:(id)a5 withRouteType:(id)a6 withCompletionBlock:(id)a7
+- (void)_travelTimeFrom:(id)from to:(id)to arrivalDate:(id)date withRouteType:(id)type withCompletionBlock:(id)block
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  fromCopy = from;
+  toCopy = to;
+  dateCopy = date;
+  typeCopy = type;
+  blockCopy = block;
   v17 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    v32 = v12;
+    v32 = fromCopy;
     v33 = 2112;
-    v34 = v13;
+    v34 = toCopy;
     v35 = 2112;
-    v36 = v15;
+    v36 = typeCopy;
     v37 = 2112;
-    v38 = v14;
+    v38 = dateCopy;
     _os_log_debug_impl(&dword_1A805E000, v17, OS_LOG_TYPE_DEBUG, "Received request to find travel time from %@ to %@ by %@ arriving on date %@", buf, 0x2Au);
   }
 
@@ -56,16 +56,16 @@
   v25[2] = __90__EKTravelLookupManager__travelTimeFrom_to_arrivalDate_withRouteType_withCompletionBlock___block_invoke;
   v25[3] = &unk_1E78002F0;
   v25[4] = self;
-  v26 = v12;
-  v27 = v13;
-  v28 = v15;
-  v29 = v14;
-  v30 = v16;
-  v19 = v14;
-  v20 = v15;
-  v21 = v13;
-  v22 = v16;
-  v23 = v12;
+  v26 = fromCopy;
+  v27 = toCopy;
+  v28 = typeCopy;
+  v29 = dateCopy;
+  v30 = blockCopy;
+  v19 = dateCopy;
+  v20 = typeCopy;
+  v21 = toCopy;
+  v22 = blockCopy;
+  v23 = fromCopy;
   dispatch_async(v18, v25);
 
   v24 = *MEMORY[0x1E69E9840];
@@ -147,42 +147,42 @@ void __90__EKTravelLookupManager__travelTimeFrom_to_arrivalDate_withRouteType_wi
   }
 }
 
-- (void)travelTimeFrom:(id)a3 to:(id)a4 arrivalDate:(id)a5 withRouteTypes:(id)a6 withCompletionBlock:(id)a7
+- (void)travelTimeFrom:(id)from to:(id)to arrivalDate:(id)date withRouteTypes:(id)types withCompletionBlock:(id)block
 {
   v50 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v12 = a6;
-  v25 = a7;
+  fromCopy = from;
+  toCopy = to;
+  dateCopy = date;
+  typesCopy = types;
+  blockCopy = block;
   v13 = EKLogHandle;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138413058;
-    *&buf[4] = v28;
+    *&buf[4] = fromCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v27;
+    *&buf[14] = toCopy;
     *&buf[22] = 2112;
-    v47 = v12;
+    v47 = typesCopy;
     v48 = 2112;
-    v49 = v26;
+    v49 = dateCopy;
     _os_log_debug_impl(&dword_1A805E000, v13, OS_LOG_TYPE_DEBUG, "Received request to find travel time from %@ to %@ by %@ arriving on date %@", buf, 0x2Au);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
-  v47 = [v12 count];
+  v47 = [typesCopy count];
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x2020000000;
   v44[3] = 0;
-  v24 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v14 = v12;
+  v14 = typesCopy;
   v15 = [v14 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v15)
   {
@@ -202,20 +202,20 @@ void __90__EKTravelLookupManager__travelTimeFrom_to_arrivalDate_withRouteType_wi
         v29[1] = 3221225472;
         v29[2] = __90__EKTravelLookupManager_travelTimeFrom_to_arrivalDate_withRouteTypes_withCompletionBlock___block_invoke;
         v29[3] = &unk_1E7800318;
-        v30 = v24;
+        v30 = dictionary;
         v31 = v17;
         v38 = buf;
         v39 = v44;
         v18 = v14;
         v32 = v18;
-        v19 = v28;
+        v19 = fromCopy;
         v33 = v19;
-        v34 = self;
-        v20 = v27;
+        selfCopy = self;
+        v20 = toCopy;
         v35 = v20;
-        v21 = v26;
+        v21 = dateCopy;
         v36 = v21;
-        v37 = v25;
+        v37 = blockCopy;
         [(EKTravelLookupManager *)self _travelTimeFrom:v19 to:v20 arrivalDate:v21 withRouteType:v17 withCompletionBlock:v29];
 
         ++v16;
@@ -300,14 +300,14 @@ LABEL_21:
   objc_sync_exit(v7);
 }
 
-- (void)_travelTimeWithStartCoordinate:(id)a3 endCoordinate:(id)a4 arrivalDate:(id)a5 withRouteType:(id)a6 completionBlock:(id)a7
+- (void)_travelTimeWithStartCoordinate:(id)coordinate endCoordinate:(id)endCoordinate arrivalDate:(id)date withRouteType:(id)type completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ((([v12 isCurrentLocation] & 1) != 0 || objc_msgSend(v13, "isCurrentLocation")) && ((v17 = *MEMORY[0x1E69930E8], v18 = objc_msgSend(MEMORY[0x1E6992FE0], "authorizationStatusForBundleIdentifier:", *MEMORY[0x1E69930E8]), v19 = objc_msgSend(MEMORY[0x1E6992FE0], "preciseLocationAuthorizedForBundleIdentifier:", v17), v18 < 3) || (v19 & 1) == 0))
+  coordinateCopy = coordinate;
+  endCoordinateCopy = endCoordinate;
+  dateCopy = date;
+  typeCopy = type;
+  blockCopy = block;
+  if ((([coordinateCopy isCurrentLocation] & 1) != 0 || objc_msgSend(endCoordinateCopy, "isCurrentLocation")) && ((v17 = *MEMORY[0x1E69930E8], v18 = objc_msgSend(MEMORY[0x1E6992FE0], "authorizationStatusForBundleIdentifier:", *MEMORY[0x1E69930E8]), v19 = objc_msgSend(MEMORY[0x1E6992FE0], "preciseLocationAuthorizedForBundleIdentifier:", v17), v18 < 3) || (v19 & 1) == 0))
   {
     v21 = EKLogHandle;
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -318,7 +318,7 @@ LABEL_21:
 
     v22 = objc_alloc(MEMORY[0x1E696ABC0]);
     v20 = [v22 initWithDomain:EKTravelLookupErrorDomain code:0 userInfo:0];
-    v16[2](v16, 0, v20);
+    blockCopy[2](blockCopy, 0, v20);
   }
 
   else
@@ -327,12 +327,12 @@ LABEL_21:
     v23[1] = 3221225472;
     v23[2] = __112__EKTravelLookupManager__travelTimeWithStartCoordinate_endCoordinate_arrivalDate_withRouteType_completionBlock___block_invoke;
     v23[3] = &unk_1E7800368;
-    v24 = v12;
-    v25 = v13;
-    v26 = v15;
-    v27 = v14;
-    v28 = self;
-    v29 = v16;
+    v24 = coordinateCopy;
+    v25 = endCoordinateCopy;
+    v26 = typeCopy;
+    v27 = dateCopy;
+    selfCopy = self;
+    v29 = blockCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v23);
 
     v20 = v24;
@@ -493,28 +493,28 @@ void __112__EKTravelLookupManager__travelTimeWithStartCoordinate_endCoordinate_a
   }
 }
 
-- (void)_updateLocation:(id)a3 withMapItem:(id)a4 forRoute:(id)a5 withCompletionBlock:(id)a6
+- (void)_updateLocation:(id)location withMapItem:(id)item forRoute:(id)route withCompletionBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a4 placemark];
-  v13 = [v12 location];
+  locationCopy = location;
+  routeCopy = route;
+  blockCopy = block;
+  placemark = [item placemark];
+  location = [placemark location];
 
-  [v9 setLocation:v13];
+  [locationCopy setLocation:location];
   v14 = MEMORY[0x1E6992FE8];
-  v15 = [v9 location];
+  location2 = [locationCopy location];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __82__EKTravelLookupManager__updateLocation_withMapItem_forRoute_withCompletionBlock___block_invoke;
   v20[3] = &unk_1E7800390;
-  v22 = v10;
-  v23 = v11;
-  v21 = v9;
-  v16 = v10;
-  v17 = v11;
-  v18 = v9;
-  v19 = [v14 placemarkForLocation:v15 withCompletionBlock:v20];
+  v22 = routeCopy;
+  v23 = blockCopy;
+  v21 = locationCopy;
+  v16 = routeCopy;
+  v17 = blockCopy;
+  v18 = locationCopy;
+  v19 = [v14 placemarkForLocation:location2 withCompletionBlock:v20];
 }
 
 void __82__EKTravelLookupManager__updateLocation_withMapItem_forRoute_withCompletionBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -557,21 +557,21 @@ void __82__EKTravelLookupManager__updateLocation_withMapItem_forRoute_withComple
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_findCoordinatesForLocation:(id)a3 completionBlock:(id)a4
+- (void)_findCoordinatesForLocation:(id)location completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  blockCopy = block;
   if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
   {
     [EKTravelLookupManager _findCoordinatesForLocation:completionBlock:];
   }
 
-  v8 = [v6 location];
-  if (v8)
+  location = [locationCopy location];
+  if (location)
   {
-    v9 = v8;
-    v10 = [v6 location];
-    [v10 coordinate];
+    v9 = location;
+    location2 = [locationCopy location];
+    [location2 coordinate];
     v11 = CLLocationCoordinate2DIsValid(v24);
 
     if (v11)
@@ -582,14 +582,14 @@ void __82__EKTravelLookupManager__updateLocation_withMapItem_forRoute_withComple
       }
 
 LABEL_10:
-      v7[2](v7, 0);
+      blockCopy[2](blockCopy, 0);
       goto LABEL_20;
     }
   }
 
-  v12 = [v6 isCurrentLocation];
+  isCurrentLocation = [locationCopy isCurrentLocation];
   v13 = os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG);
-  if (v12)
+  if (isCurrentLocation)
   {
     if (v13)
     {
@@ -604,9 +604,9 @@ LABEL_10:
     [EKTravelLookupManager _findCoordinatesForLocation:completionBlock:];
   }
 
-  v14 = [v6 address];
+  address = [locationCopy address];
 
-  if (v14)
+  if (address)
   {
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEBUG))
     {
@@ -614,15 +614,15 @@ LABEL_10:
     }
 
     v15 = MEMORY[0x1E6992FE8];
-    v16 = [v6 address];
+    address2 = [locationCopy address];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __69__EKTravelLookupManager__findCoordinatesForLocation_completionBlock___block_invoke;
     v20[3] = &unk_1E78003B8;
-    v21 = v6;
-    v22 = self;
-    v23 = v7;
-    v17 = [v15 placemarkForAddress:v16 withCompletionBlock:v20];
+    v21 = locationCopy;
+    selfCopy = self;
+    v23 = blockCopy;
+    v17 = [v15 placemarkForAddress:address2 withCompletionBlock:v20];
   }
 
   else
@@ -634,7 +634,7 @@ LABEL_10:
       [EKTravelLookupManager _findCoordinatesForLocation:completionBlock:];
     }
 
-    (v7)[2](v7, v19);
+    (blockCopy)[2](blockCopy, v19);
   }
 
 LABEL_20:
@@ -685,10 +685,10 @@ void __69__EKTravelLookupManager__findCoordinatesForLocation_completionBlock___b
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)estimateGeolocationFromHistoricDevicePositionAtLocation:(id)a3 withCompletionBlock:(id)a4
++ (void)estimateGeolocationFromHistoricDevicePositionAtLocation:(id)location withCompletionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  locationCopy = location;
   v7 = EKWeakLinkClass();
   v8 = EKWeakLinkClass();
   v9 = objc_alloc_init(v7);
@@ -697,12 +697,12 @@ void __69__EKTravelLookupManager__findCoordinatesForLocation_completionBlock___b
   v12[1] = 3221225472;
   v12[2] = __101__EKTravelLookupManager_estimateGeolocationFromHistoricDevicePositionAtLocation_withCompletionBlock___block_invoke;
   v12[3] = &unk_1E78003E0;
-  v14 = v5;
+  v14 = blockCopy;
   v15 = v8;
   v13 = v9;
   v10 = v9;
-  v11 = v5;
-  [v10 fetchLocationsOfInterestAssociatedToIdentifier:v6 withHandler:v12];
+  v11 = blockCopy;
+  [v10 fetchLocationsOfInterestAssociatedToIdentifier:locationCopy withHandler:v12];
 }
 
 void __101__EKTravelLookupManager_estimateGeolocationFromHistoricDevicePositionAtLocation_withCompletionBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)

@@ -1,5 +1,5 @@
 @interface _UIStatusBarPillViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityRespondsToUserInteraction;
 - (BOOL)canBecomeFocused;
 - (BOOL)isAccessibilityElement;
@@ -10,37 +10,37 @@
 
 @implementation _UIStatusBarPillViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIStatusBarPillView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(_UIStatusBarPillViewAccessibility *)self accessibilityLabel];
-  v4 = [v3 length] != 0;
-  MEMORY[0x29EDC9740](v3);
+  accessibilityLabel = [(_UIStatusBarPillViewAccessibility *)self accessibilityLabel];
+  v4 = [accessibilityLabel length] != 0;
+  MEMORY[0x29EDC9740](accessibilityLabel);
   return v4;
 }
 
 - (BOOL)accessibilityRespondsToUserInteraction
 {
-  v3 = [(_UIStatusBarPillViewAccessibility *)self accessibilityLabel];
-  v4 = [v3 length] != 0;
-  MEMORY[0x29EDC9740](v3);
+  accessibilityLabel = [(_UIStatusBarPillViewAccessibility *)self accessibilityLabel];
+  v4 = [accessibilityLabel length] != 0;
+  MEMORY[0x29EDC9740](accessibilityLabel);
   return v4;
 }
 
 - (BOOL)canBecomeFocused
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = _UIStatusBarPillViewAccessibility;
@@ -48,15 +48,15 @@
   v3 = 1;
   if (![(_UIStatusBarPillViewAccessibility *)&v6 canBecomeFocused])
   {
-    v5 = [(_UIStatusBarPillViewAccessibility *)v8 accessibilityLabel];
+    accessibilityLabel = [(_UIStatusBarPillViewAccessibility *)selfCopy accessibilityLabel];
     v4 = 1;
-    v3 = [v5 length] != 0;
+    v3 = [accessibilityLabel length] != 0;
   }
 
   v9 = v3;
   if (v4)
   {
-    MEMORY[0x29EDC9740](v5);
+    MEMORY[0x29EDC9740](accessibilityLabel);
   }
 
   return v9;
@@ -90,12 +90,12 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v4.receiver = self;
   v4.super_class = _UIStatusBarPillViewAccessibility;
   v5 = [(_UIStatusBarPillViewAccessibility *)&v4 accessibilityTraits]| *MEMORY[0x29EDC7580] | *MEMORY[0x29EDC7F70];
-  v3 = AXStatusBarPillTimeView(v7);
+  v3 = AXStatusBarPillTimeView(selfCopy);
   MEMORY[0x29EDC9740](v3);
   if (v3)
   {

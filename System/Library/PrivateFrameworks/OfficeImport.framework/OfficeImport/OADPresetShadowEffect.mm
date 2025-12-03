@@ -1,7 +1,7 @@
 @interface OADPresetShadowEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADPresetShadowEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)equivalentOuterShadowEffect;
 - (unint64_t)hash;
@@ -30,9 +30,9 @@
   return [(OADShadowEffect *)&v4 hash]^ v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithShadowEffect:type:", self, 2}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithShadowEffect:type:", self, 2}];
   [v4 setPresetShadowType:*(&self->super.mAngle + 1)];
   return v4;
 }
@@ -145,8 +145,8 @@ LABEL_20:
   }
 
 LABEL_29:
-  v12 = [(OADShadowEffect *)self color];
-  [(OADShadowEffect *)v4 setColor:v12];
+  color = [(OADShadowEffect *)self color];
+  [(OADShadowEffect *)v4 setColor:color];
 
   [(OADShadowEffect *)self blurRadius];
   [(OADShadowEffect *)v4 setBlurRadius:?];
@@ -158,14 +158,14 @@ LABEL_29:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = OADPresetShadowEffect;
-  if ([(OADShadowEffect *)&v7 isEqual:v4])
+  if ([(OADShadowEffect *)&v7 isEqual:equalCopy])
   {
-    v5 = *(&self->super.mAngle + 1) == v4[9];
+    v5 = *(&self->super.mAngle + 1) == equalCopy[9];
   }
 
   else

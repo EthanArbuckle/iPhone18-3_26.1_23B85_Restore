@@ -1,49 +1,49 @@
 @interface VSRecognitionSession
-- (BOOL)_actionStarted:(id)a3;
+- (BOOL)_actionStarted:(id)started;
 - (BOOL)isActivelyRecognizing;
 - (BOOL)isRecognizing;
-- (BOOL)setNextRecognitionAudioInputPath:(id)a3;
+- (BOOL)setNextRecognitionAudioInputPath:(id)path;
 - (VSRecognitionSession)init;
-- (VSRecognitionSession)initWithModelIdentifier:(id)a3;
+- (VSRecognitionSession)initWithModelIdentifier:(id)identifier;
 - (__CFDictionary)_createKeywordIndex;
 - (float)inputLevel;
 - (float)inputLevelDB;
-- (id)_beginSpeakingAttributedString:(id)a3;
-- (id)_beginSpeakingString:(id)a3 attributedString:(id)a4;
-- (id)_createPhaseSortedKeywordsFromArray:(id)a3;
+- (id)_beginSpeakingAttributedString:(id)string;
+- (id)_beginSpeakingString:(id)string attributedString:(id)attributedString;
+- (id)_createPhaseSortedKeywordsFromArray:(id)array;
 - (id)_currentRecognizeAction;
-- (id)_keywordsForModelIdentifier:(id)a3;
+- (id)_keywordsForModelIdentifier:(id)identifier;
 - (id)_recognitionResultHandlingThread;
 - (id)_topLevelKeywords;
 - (id)beginNextAction;
 - (id)beginSpeakingFeedbackString;
-- (id)beginSpeakingString:(id)a3;
-- (id)cancelMaintainingKeepAlive:(BOOL)a3;
-- (id)keywordAtIndex:(int64_t)a3;
+- (id)beginSpeakingString:(id)string;
+- (id)cancelMaintainingKeepAlive:(BOOL)alive;
+- (id)keywordAtIndex:(int64_t)index;
 - (id)reset;
 - (int64_t)keywordCount;
-- (void)_actionCompleted:(id)a3 nextAction:(id)a4 error:(id)a5;
+- (void)_actionCompleted:(id)completed nextAction:(id)action error:(id)error;
 - (void)_init;
 - (void)_keywordIndexChanged;
 - (void)_notifyDelegateActionStarted;
-- (void)_notifyDelegateFinishedSpeakingWithError:(id)a3;
-- (void)_notifyDelegateOpenURL:(id)a3 completion:(id)a4;
-- (void)_setAction:(id)a3;
+- (void)_notifyDelegateFinishedSpeakingWithError:(id)error;
+- (void)_notifyDelegateOpenURL:(id)l completion:(id)completion;
+- (void)_setAction:(id)action;
 - (void)dealloc;
-- (void)recognitionResultHandlingThread:(id)a3 didHandleResults:(id)a4 nextAction:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)setInputLevelUpdateInterval:(double)a3;
-- (void)setKeywordPhase:(unint64_t)a3;
-- (void)setPerformRecognitionHandlerActions:(BOOL)a3;
-- (void)setSensitiveActionsEnabled:(BOOL)a3;
-- (void)speechSynthesizer:(id)a3 didFinishSpeakingRequest:(id)a4 successfully:(BOOL)a5 phonemesSpoken:(id)a6 withError:(id)a7;
+- (void)recognitionResultHandlingThread:(id)thread didHandleResults:(id)results nextAction:(id)action;
+- (void)setDelegate:(id)delegate;
+- (void)setInputLevelUpdateInterval:(double)interval;
+- (void)setKeywordPhase:(unint64_t)phase;
+- (void)setPerformRecognitionHandlerActions:(BOOL)actions;
+- (void)setSensitiveActionsEnabled:(BOOL)enabled;
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeakingRequest:(id)request successfully:(BOOL)successfully phonemesSpoken:(id)spoken withError:(id)error;
 @end
 
 @implementation VSRecognitionSession
 
-- (void)setPerformRecognitionHandlerActions:(BOOL)a3
+- (void)setPerformRecognitionHandlerActions:(BOOL)actions
 {
-  if (a3)
+  if (actions)
   {
     v3 = 512;
   }
@@ -56,33 +56,33 @@
   self->_sessionFlags = (*&self->_sessionFlags & 0xFFFFFDFF | v3);
 }
 
-- (BOOL)setNextRecognitionAudioInputPath:(id)a3
+- (BOOL)setNextRecognitionAudioInputPath:(id)path
 {
-  if (self->_audioInputPath == a3)
+  if (self->_audioInputPath == path)
   {
     return 1;
   }
 
-  v5 = [(VSRecognitionSession *)self _currentRecognizeAction];
-  if (!v5)
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
+  if (!_currentRecognizeAction)
   {
 
-    self->_audioInputPath = a3;
+    self->_audioInputPath = path;
     return 1;
   }
 
-  return [v5 _setAudioInputPath:a3];
+  return [_currentRecognizeAction _setAudioInputPath:path];
 }
 
-- (void)speechSynthesizer:(id)a3 didFinishSpeakingRequest:(id)a4 successfully:(BOOL)a5 phonemesSpoken:(id)a6 withError:(id)a7
+- (void)speechSynthesizer:(id)synthesizer didFinishSpeakingRequest:(id)request successfully:(BOOL)successfully phonemesSpoken:(id)spoken withError:(id)error
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __105__VSRecognitionSession_speechSynthesizer_didFinishSpeakingRequest_successfully_phonemesSpoken_withError___block_invoke;
   block[3] = &unk_279E4F528;
-  block[4] = a3;
+  block[4] = synthesizer;
   block[5] = self;
-  block[6] = a7;
+  block[6] = error;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -102,21 +102,21 @@ uint64_t __105__VSRecognitionSession_speechSynthesizer_didFinishSpeakingRequest_
   return result;
 }
 
-- (void)_notifyDelegateFinishedSpeakingWithError:(id)a3
+- (void)_notifyDelegateFinishedSpeakingWithError:(id)error
 {
   if ((*&self->_sessionFlags & 0x10) != 0)
   {
-    [(VSRecognitionSessionDelegate *)self->_delegate recognitionSession:self didFinishSpeakingFeedbackStringWithError:a3];
+    [(VSRecognitionSessionDelegate *)self->_delegate recognitionSession:self didFinishSpeakingFeedbackStringWithError:error];
   }
 }
 
-- (id)_beginSpeakingString:(id)a3 attributedString:(id)a4
+- (id)_beginSpeakingString:(id)string attributedString:(id)attributedString
 {
   if (!self->_synthesizer)
   {
-    v7 = [[VSSpeechSynthesizer alloc] initForInputFeedback];
-    self->_synthesizer = v7;
-    [(VSSpeechSynthesizer *)v7 setDelegate:self];
+    initForInputFeedback = [[VSSpeechSynthesizer alloc] initForInputFeedback];
+    self->_synthesizer = initForInputFeedback;
+    [(VSSpeechSynthesizer *)initForInputFeedback setDelegate:self];
   }
 
   if (!self->_languageID)
@@ -126,14 +126,14 @@ uint64_t __105__VSRecognitionSession_speechSynthesizer_didFinishSpeakingRequest_
 
   v8 = objc_alloc_init(VSSpeechRequest);
   v9 = v8;
-  if (a4)
+  if (attributedString)
   {
-    [(VSSpeechRequest *)v8 setAttributedText:a4];
+    [(VSSpeechRequest *)v8 setAttributedText:attributedString];
   }
 
   else
   {
-    [(VSSpeechRequest *)v8 setText:a3];
+    [(VSSpeechRequest *)v8 setText:string];
   }
 
   [(VSSpeechRequest *)v9 setLanguageCode:self->_languageID];
@@ -146,12 +146,12 @@ uint64_t __105__VSRecognitionSession_speechSynthesizer_didFinishSpeakingRequest_
   return 0;
 }
 
-- (id)_beginSpeakingAttributedString:(id)a3
+- (id)_beginSpeakingAttributedString:(id)string
 {
-  if ([a3 length])
+  if ([string length])
   {
 
-    return [(VSRecognitionSession *)self _beginSpeakingString:0 attributedString:a3];
+    return [(VSRecognitionSession *)self _beginSpeakingString:0 attributedString:string];
   }
 
   else
@@ -161,12 +161,12 @@ uint64_t __105__VSRecognitionSession_speechSynthesizer_didFinishSpeakingRequest_
   }
 }
 
-- (id)beginSpeakingString:(id)a3
+- (id)beginSpeakingString:(id)string
 {
-  if ([a3 length])
+  if ([string length])
   {
 
-    return [(VSRecognitionSession *)self _beginSpeakingString:a3 attributedString:0];
+    return [(VSRecognitionSession *)self _beginSpeakingString:string attributedString:0];
   }
 
   else
@@ -193,20 +193,20 @@ uint64_t __105__VSRecognitionSession_speechSynthesizer_didFinishSpeakingRequest_
 
   else
   {
-    v3 = [(VSRecognitionSession *)self spokenFeedbackAttributedString];
-    if (v3)
+    spokenFeedbackAttributedString = [(VSRecognitionSession *)self spokenFeedbackAttributedString];
+    if (spokenFeedbackAttributedString)
     {
       v4 = *MEMORY[0x277D85DE8];
 
-      return [(VSRecognitionSession *)self _beginSpeakingAttributedString:v3];
+      return [(VSRecognitionSession *)self _beginSpeakingAttributedString:spokenFeedbackAttributedString];
     }
 
     else
     {
-      v11 = [(VSRecognitionSession *)self spokenFeedbackString];
+      spokenFeedbackString = [(VSRecognitionSession *)self spokenFeedbackString];
       v12 = *MEMORY[0x277D85DE8];
 
-      return [(VSRecognitionSession *)self beginSpeakingString:v11];
+      return [(VSRecognitionSession *)self beginSpeakingString:spokenFeedbackString];
     }
   }
 }
@@ -222,24 +222,24 @@ uint64_t __105__VSRecognitionSession_speechSynthesizer_didFinishSpeakingRequest_
 
   if ([-[VSRecognitionSession _currentRecognizeAction](self "_currentRecognizeAction")])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v4 postNotificationName:@"VSRecognitionSessionKeywordsDidChangeNotification" object:self userInfo:0];
+    [defaultCenter postNotificationName:@"VSRecognitionSessionKeywordsDidChangeNotification" object:self userInfo:0];
   }
 }
 
-- (id)_keywordsForModelIdentifier:(id)a3
+- (id)_keywordsForModelIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v5 = [(VSRecognitionSession *)self _createKeywordIndex];
-    if (!v5)
+    _createKeywordIndex = [(VSRecognitionSession *)self _createKeywordIndex];
+    if (!_createKeywordIndex)
     {
       return 0;
     }
 
-    v6 = v5;
-    v7 = VSKeywordIndexCopyKeywordsForModelIdentifier(v5, a3);
+    v6 = _createKeywordIndex;
+    v7 = VSKeywordIndexCopyKeywordsForModelIdentifier(_createKeywordIndex, identifier);
     if (v7)
     {
       v8 = v7;
@@ -268,11 +268,11 @@ uint64_t __105__VSRecognitionSession_speechSynthesizer_didFinishSpeakingRequest_
   topLevelKeywords = self->_topLevelKeywords;
   if (!topLevelKeywords)
   {
-    v4 = [(VSRecognitionSession *)self _createKeywordIndex];
-    if (v4)
+    _createKeywordIndex = [(VSRecognitionSession *)self _createKeywordIndex];
+    if (_createKeywordIndex)
     {
-      v5 = v4;
-      v6 = VSKeywordIndexCopyKeywordsForTopLevelModels(v4);
+      v5 = _createKeywordIndex;
+      v6 = VSKeywordIndexCopyKeywordsForTopLevelModels(_createKeywordIndex);
       if (v6)
       {
         v7 = v6;
@@ -300,21 +300,21 @@ LABEL_8:
   return topLevelKeywords;
 }
 
-- (id)_createPhaseSortedKeywordsFromArray:(id)a3
+- (id)_createPhaseSortedKeywordsFromArray:(id)array
 {
-  if (![a3 count])
+  if (![array count])
   {
     return 0;
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v6 = [a3 _scrambledKeywordsAndAddToSet:v5];
+  v6 = [array _scrambledKeywordsAndAddToSet:v5];
   if (self->_keywordPhase)
   {
     v7 = v6;
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, 0, 0);
-    v10 = 0;
+    allObjects = 0;
     while ([v5 count])
     {
       [v8 removeAllObjects];
@@ -334,12 +334,12 @@ LABEL_8:
             v13 = v12;
             if (([v8 containsObject:v12] & 1) == 0)
             {
-              if (!v10)
+              if (!allObjects)
               {
-                v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
+                allObjects = objc_alloc_init(MEMORY[0x277CBEB18]);
               }
 
-              [v10 addObject:v13];
+              [allObjects addObject:v13];
               [v8 addObject:v13];
               [v5 removeObject:v13];
               ++v11;
@@ -356,10 +356,10 @@ LABEL_8:
 
   else
   {
-    v10 = [v5 allObjects];
+    allObjects = [v5 allObjects];
   }
 
-  return v10;
+  return allObjects;
 }
 
 - (__CFDictionary)_createKeywordIndex
@@ -394,23 +394,23 @@ LABEL_8:
 
 - (int64_t)keywordCount
 {
-  v2 = [(VSRecognitionSession *)self _currentRecognizeAction];
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
 
-  return [v2 _keywordCount];
+  return [_currentRecognizeAction _keywordCount];
 }
 
-- (id)keywordAtIndex:(int64_t)a3
+- (id)keywordAtIndex:(int64_t)index
 {
-  v4 = [(VSRecognitionSession *)self _currentRecognizeAction];
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
 
-  return [v4 _keywordAtIndex:a3];
+  return [_currentRecognizeAction _keywordAtIndex:index];
 }
 
-- (void)setKeywordPhase:(unint64_t)a3
+- (void)setKeywordPhase:(unint64_t)phase
 {
-  if (self->_keywordPhase != a3)
+  if (self->_keywordPhase != phase)
   {
-    self->_keywordPhase = a3;
+    self->_keywordPhase = phase;
 
     self->_topLevelKeywords = 0;
   }
@@ -418,47 +418,47 @@ LABEL_8:
 
 - (float)inputLevelDB
 {
-  v2 = [(VSRecognitionSession *)self _currentRecognizeAction];
-  if (!v2)
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
+  if (!_currentRecognizeAction)
   {
     return 0.0;
   }
 
-  [v2 _inputLevelDB];
+  [_currentRecognizeAction _inputLevelDB];
   return result;
 }
 
 - (float)inputLevel
 {
-  v2 = [(VSRecognitionSession *)self _currentRecognizeAction];
-  if (!v2)
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
+  if (!_currentRecognizeAction)
   {
     return 0.0;
   }
 
-  [v2 _inputLevel];
+  [_currentRecognizeAction _inputLevel];
   return result;
 }
 
-- (void)setInputLevelUpdateInterval:(double)a3
+- (void)setInputLevelUpdateInterval:(double)interval
 {
-  if (self->_levelInterval != a3)
+  if (self->_levelInterval != interval)
   {
-    self->_levelInterval = a3;
-    v4 = [(VSRecognitionSession *)self _currentRecognizeAction];
-    if (v4)
+    self->_levelInterval = interval;
+    _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
+    if (_currentRecognizeAction)
     {
 
-      [v4 _setInputLevelUpdateInterval:a3];
+      [_currentRecognizeAction _setInputLevelUpdateInterval:interval];
     }
   }
 }
 
-- (void)recognitionResultHandlingThread:(id)a3 didHandleResults:(id)a4 nextAction:(id)a5
+- (void)recognitionResultHandlingThread:(id)thread didHandleResults:(id)results nextAction:(id)action
 {
-  v7 = [(VSRecognitionSession *)self _currentRecognizeAction];
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
 
-  [v7 _handledThreadedResults:a4 nextAction:a5];
+  [_currentRecognizeAction _handledThreadedResults:results nextAction:action];
 }
 
 - (id)_recognitionResultHandlingThread
@@ -490,33 +490,33 @@ LABEL_8:
   }
 }
 
-- (void)_setAction:(id)a3
+- (void)_setAction:(id)action
 {
   currentAction = self->_currentAction;
-  if (currentAction != a3)
+  if (currentAction != action)
   {
     [(VSRecognitionAction *)self->_currentAction _setSession:0];
 
-    v6 = a3;
-    self->_currentAction = v6;
-    [(VSRecognitionAction *)v6 _setSession:self];
+    actionCopy = action;
+    self->_currentAction = actionCopy;
+    [(VSRecognitionAction *)actionCopy _setSession:self];
   }
 
-  v7 = [(VSRecognitionSession *)self _currentRecognizeAction];
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
   sessionFlags = self->_sessionFlags;
-  if (v7)
+  if (_currentRecognizeAction)
   {
-    v9 = v7;
+    v9 = _currentRecognizeAction;
     if ((sessionFlags & 0x40) != 0)
     {
       if (self->_debugDumpPath)
       {
-        [v7 _setDebugDumpPath:?];
+        [_currentRecognizeAction _setDebugDumpPath:?];
       }
 
       else
       {
-        [v7 _setDebugDumpEnabled:1];
+        [_currentRecognizeAction _setDebugDumpEnabled:1];
       }
     }
 
@@ -531,30 +531,30 @@ LABEL_8:
   }
 
   self->_sessionFlags = (sessionFlags & 0xFFFEBFFF);
-  if (currentAction != a3)
+  if (currentAction != action)
   {
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-    [v10 postNotificationName:@"VSRecognitionSessionKeywordsDidChangeNotification" object:self];
+    [defaultCenter postNotificationName:@"VSRecognitionSessionKeywordsDidChangeNotification" object:self];
   }
 }
 
-- (void)_notifyDelegateOpenURL:(id)a3 completion:(id)a4
+- (void)_notifyDelegateOpenURL:(id)l completion:(id)completion
 {
   sessionFlags = self->_sessionFlags;
   if ((*&sessionFlags & 8) != 0)
   {
     delegate = self->_delegate;
 
-    [(VSRecognitionSessionDelegate *)delegate recognitionSession:self openURL:a3 completion:a4];
+    [(VSRecognitionSessionDelegate *)delegate recognitionSession:self openURL:l completion:completion];
   }
 
   else if ((*&sessionFlags & 4) != 0)
   {
     v9 = [VSRecognitionSessionDelegate recognitionSession:"recognitionSession:openURL:" openURL:?];
-    v10 = *(a4 + 2);
+    v10 = *(completion + 2);
 
-    v10(a4, v9);
+    v10(completion, v9);
   }
 }
 
@@ -566,11 +566,11 @@ LABEL_8:
   }
 }
 
-- (BOOL)_actionStarted:(id)a3
+- (BOOL)_actionStarted:(id)started
 {
-  if (self->_currentAction == a3)
+  if (self->_currentAction == started)
   {
-    if ([a3 _hasDeferredStartCallback])
+    if ([started _hasDeferredStartCallback])
     {
       if (*&self->_sessionFlags)
       {
@@ -596,13 +596,13 @@ LABEL_8:
   return v3;
 }
 
-- (void)_actionCompleted:(id)a3 nextAction:(id)a4 error:(id)a5
+- (void)_actionCompleted:(id)completed nextAction:(id)action error:(id)error
 {
-  v16 = a4;
-  v17 = a3;
-  v15 = a5;
+  actionCopy = action;
+  completedCopy = completed;
+  errorCopy = error;
   currentAction = self->_currentAction;
-  if (currentAction == a3)
+  if (currentAction == completed)
   {
     sessionFlags = self->_sessionFlags;
     if ((*&sessionFlags & 0x20000) == 0)
@@ -612,16 +612,16 @@ LABEL_8:
         v12 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:{-[VSRecognitionSession methodSignatureForSelector:](self, "methodSignatureForSelector:", a2)}];
         [v12 setSelector:a2];
         [v12 setTarget:self];
-        [v12 setArgument:&v17 atIndex:2];
-        [v12 setArgument:&v16 atIndex:3];
-        [v12 setArgument:&v15 atIndex:4];
+        [v12 setArgument:&completedCopy atIndex:2];
+        [v12 setArgument:&actionCopy atIndex:3];
+        [v12 setArgument:&errorCopy atIndex:4];
         [v12 retainArguments];
         [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:v12 invocation:0 repeats:0.0];
       }
 
       else
       {
-        v9 = a4;
+        actionCopy2 = action;
         v13 = currentAction;
         if ((*(&self->_sessionFlags + 1) & 2) == 0)
         {
@@ -630,42 +630,42 @@ LABEL_8:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v9 = 0;
+              actionCopy2 = 0;
             }
           }
         }
 
-        if (a5)
+        if (error)
         {
           v10 = 0;
         }
 
         else
         {
-          v10 = v9;
+          v10 = actionCopy2;
         }
 
-        [(VSRecognitionSession *)self _setAction:v10, v13, v15, v16, v17];
-        if (a5 || !v9 && ![v14 completionType])
+        [(VSRecognitionSession *)self _setAction:v10, v13, errorCopy, actionCopy, completedCopy];
+        if (error || !actionCopy2 && ![v14 completionType])
         {
           *&self->_sessionFlags |= 0x20000u;
         }
 
         if ((*&self->_sessionFlags & 0x20) != 0)
         {
-          [(VSRecognitionSessionDelegate *)self->_delegate recognitionSession:self didCompleteActionWithError:a5];
+          [(VSRecognitionSessionDelegate *)self->_delegate recognitionSession:self didCompleteActionWithError:error];
         }
       }
     }
   }
 }
 
-- (id)cancelMaintainingKeepAlive:(BOOL)a3
+- (id)cancelMaintainingKeepAlive:(BOOL)alive
 {
-  v5 = [(VSRecognitionAction *)self->_currentAction cancel];
+  cancel = [(VSRecognitionAction *)self->_currentAction cancel];
   [(VSRecognitionSession *)self _setAction:0];
   *&self->_sessionFlags |= 0x20000u;
-  if (!a3)
+  if (!alive)
   {
     [(VSKeepAlive *)self->_keepAlive setActive:0];
 
@@ -688,12 +688,12 @@ LABEL_8:
     [(VSSpeechSynthesizer *)self->_synthesizer stopSpeakingAtNextBoundary:0 synchronously:0 error:0];
   }
 
-  return v5;
+  return cancel;
 }
 
-- (void)setSensitiveActionsEnabled:(BOOL)a3
+- (void)setSensitiveActionsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -708,26 +708,26 @@ LABEL_8:
 
 - (BOOL)isActivelyRecognizing
 {
-  v2 = [(VSRecognitionSession *)self _currentRecognizeAction];
-  if (v2)
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
+  if (_currentRecognizeAction)
   {
 
-    LOBYTE(v2) = [v2 _isActivelyRecognizing];
+    LOBYTE(_currentRecognizeAction) = [_currentRecognizeAction _isActivelyRecognizing];
   }
 
-  return v2;
+  return _currentRecognizeAction;
 }
 
 - (BOOL)isRecognizing
 {
-  v2 = [(VSRecognitionSession *)self _currentRecognizeAction];
-  if (v2)
+  _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
+  if (_currentRecognizeAction)
   {
 
-    LOBYTE(v2) = [v2 _isRecognizing];
+    LOBYTE(_currentRecognizeAction) = [_currentRecognizeAction _isRecognizing];
   }
 
-  return v2;
+  return _currentRecognizeAction;
 }
 
 - (id)reset
@@ -767,7 +767,7 @@ LABEL_8:
       self->_sessionFlags = (*&sessionFlags & 0xFFFEFFFF);
       [(VSRecognitionSession *)self _notifyDelegateActionStarted];
       [(VSRecognitionAction *)self->_currentAction _continueAfterDeferredStart];
-      v6 = 0;
+      perform = 0;
       goto LABEL_20;
     }
 
@@ -776,8 +776,8 @@ LABEL_8:
     v9 = @"action already in progress";
 LABEL_10:
     userInfoValues = v9;
-    v6 = CFErrorCreateWithUserInfoKeysAndValues(v8, @"VSErrorDomain", -4003, userInfoKeys, &userInfoValues, 1);
-    v10 = v6;
+    perform = CFErrorCreateWithUserInfoKeysAndValues(v8, @"VSErrorDomain", -4003, userInfoKeys, &userInfoValues, 1);
+    v10 = perform;
     goto LABEL_20;
   }
 
@@ -791,10 +791,10 @@ LABEL_10:
 
   v5 = currentAction;
   *&self->_sessionFlags |= 0xC000u;
-  v6 = [(VSRecognitionAction *)self->_currentAction perform];
+  perform = [(VSRecognitionAction *)self->_currentAction perform];
   v7 = self->_sessionFlags;
   self->_sessionFlags = (*&v7 & 0xFFFF7FFF);
-  if (v6)
+  if (perform)
   {
     self->_sessionFlags = (*&v7 & 0xFFFF3FFF);
   }
@@ -808,10 +808,10 @@ LABEL_10:
 
     if ((*&self->_sessionFlags & 0x40) != 0 && !self->_debugDumpPath)
     {
-      v11 = [(VSRecognitionSession *)self _currentRecognizeAction];
-      if (v11)
+      _currentRecognizeAction = [(VSRecognitionSession *)self _currentRecognizeAction];
+      if (_currentRecognizeAction)
       {
-        self->_debugDumpPath = [v11 _debugDumpPath];
+        self->_debugDumpPath = [_currentRecognizeAction _debugDumpPath];
       }
     }
 
@@ -827,14 +827,14 @@ LABEL_10:
 
 LABEL_20:
   v13 = *MEMORY[0x277D85DE8];
-  return v6;
+  return perform;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != delegate)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
     if (objc_opt_respondsToSelector())
     {
       v4 = 2;
@@ -917,14 +917,14 @@ LABEL_20:
   [(VSRecognitionSession *)&v4 dealloc];
 }
 
-- (VSRecognitionSession)initWithModelIdentifier:(id)a3
+- (VSRecognitionSession)initWithModelIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = VSRecognitionSession;
   v4 = [(VSRecognitionSession *)&v6 init];
   if (v4)
   {
-    v4->_modelIdentifier = a3;
+    v4->_modelIdentifier = identifier;
     [(VSRecognitionSession *)v4 _init];
   }
 

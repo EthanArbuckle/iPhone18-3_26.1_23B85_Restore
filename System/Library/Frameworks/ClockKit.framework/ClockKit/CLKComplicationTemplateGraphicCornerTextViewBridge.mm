@@ -1,13 +1,13 @@
 @interface CLKComplicationTemplateGraphicCornerTextViewBridge
-- (id)serializableCopyWithImageProviders:(id)a3;
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3;
+- (id)serializableCopyWithImageProviders:(id)providers;
+- (id)viewDataKeyForSwiftUIViewKey:(id)key;
 @end
 
 @implementation CLKComplicationTemplateGraphicCornerTextViewBridge
 
-- (id)viewDataKeyForSwiftUIViewKey:(id)a3
+- (id)viewDataKeyForSwiftUIViewKey:(id)key
 {
-  if ([a3 isEqualToString:@"label"])
+  if ([key isEqualToString:@"label"])
   {
     return @"labelData";
   }
@@ -18,14 +18,14 @@
   }
 }
 
-- (id)serializableCopyWithImageProviders:(id)a3
+- (id)serializableCopyWithImageProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v5 = [CLKComplicationTemplateGraphicCornerTextImage alloc];
-  v6 = [(CLKComplicationTemplateGraphicCornerTextViewBridge *)self textProvider];
-  v7 = [v4 objectForKeyedSubscript:@"labelData"];
+  textProvider = [(CLKComplicationTemplateGraphicCornerTextViewBridge *)self textProvider];
+  v7 = [providersCopy objectForKeyedSubscript:@"labelData"];
 
-  v8 = [(CLKComplicationTemplateGraphicCornerTextImage *)v5 initWithTextProvider:v6 imageProvider:v7];
+  v8 = [(CLKComplicationTemplateGraphicCornerTextImage *)v5 initWithTextProvider:textProvider imageProvider:v7];
   [(CLKComplicationTemplate *)v8 setSdkVersion:[(CLKComplicationTemplate *)self sdkVersion]];
 
   return v8;

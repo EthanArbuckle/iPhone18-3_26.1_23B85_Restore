@@ -4,17 +4,17 @@
 - (CGSize)contentSize;
 - (CGSize)visibleSize;
 - (SBFluidSwitcherContentViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)preferredFocusEnvironments;
 @end
 
 @implementation SBFluidSwitcherContentView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBFluidSwitcherContentView;
-  v5 = [(SBFluidSwitcherContentView *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBFluidSwitcherContentView *)&v8 hitTest:event withEvent:test.x, test.y];
   if ([(SBFluidSwitcherContentView *)self passesTouchesThrough]&& v5 == self)
   {
     v6 = 0;
@@ -30,9 +30,9 @@
 
 - (CGPoint)contentOffset
 {
-  v2 = [(SBFluidSwitcherContentView *)self delegate];
-  v3 = [v2 switcherScrollView];
-  [v3 contentOffset];
+  delegate = [(SBFluidSwitcherContentView *)self delegate];
+  switcherScrollView = [delegate switcherScrollView];
+  [switcherScrollView contentOffset];
   v5 = v4;
   v7 = v6;
 
@@ -45,9 +45,9 @@
 
 - (CGSize)contentSize
 {
-  v2 = [(SBFluidSwitcherContentView *)self delegate];
-  v3 = [v2 switcherScrollView];
-  [v3 contentSize];
+  delegate = [(SBFluidSwitcherContentView *)self delegate];
+  switcherScrollView = [delegate switcherScrollView];
+  [switcherScrollView contentSize];
   v5 = v4;
   v7 = v6;
 
@@ -71,33 +71,33 @@
 - (id)preferredFocusEnvironments
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SBFluidSwitcherContentView *)self delegate];
-  v4 = [v3 defaultFocusItem];
+  delegate = [(SBFluidSwitcherContentView *)self delegate];
+  defaultFocusItem = [delegate defaultFocusItem];
 
-  if (v4)
+  if (defaultFocusItem)
   {
-    v9[0] = v4;
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
+    v9[0] = defaultFocusItem;
+    preferredFocusEnvironments = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBFluidSwitcherContentView;
-    v5 = [(SBFluidSwitcherContentView *)&v8 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(SBFluidSwitcherContentView *)&v8 preferredFocusEnvironments];
   }
 
-  v6 = v5;
+  v6 = preferredFocusEnvironments;
 
   return v6;
 }
 
 - (BOOL)canBecomeFocused
 {
-  v2 = [(SBFluidSwitcherContentView *)self delegate];
-  v3 = [v2 defaultFocusItem];
+  delegate = [(SBFluidSwitcherContentView *)self delegate];
+  defaultFocusItem = [delegate defaultFocusItem];
 
-  return v3 == 0;
+  return defaultFocusItem == 0;
 }
 
 - (SBFluidSwitcherContentViewDelegate)delegate

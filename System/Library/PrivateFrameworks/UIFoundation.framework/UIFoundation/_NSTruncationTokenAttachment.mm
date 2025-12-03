@@ -2,7 +2,7 @@
 - (CGRect)bounds;
 - (CTRunDelegateRef)runDelegate;
 - (void)dealloc;
-- (void)initWithAttributedString:(const void *)a3 lineRef:;
+- (void)initWithAttributedString:(const void *)string lineRef:;
 @end
 
 @implementation _NSTruncationTokenAttachment
@@ -28,12 +28,12 @@
 
 - (CGRect)bounds
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  width = v2->_width;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  width = selfCopy->_width;
   if (width == 0.0)
   {
-    lineRef = v2->_lineRef;
+    lineRef = selfCopy->_lineRef;
     if (lineRef)
     {
       TypographicBounds = CTLineGetTypographicBounds(lineRef, 0, 0, 0);
@@ -41,26 +41,26 @@
 
     else
     {
-      stringDrawingContext = v2->stringDrawingContext;
+      stringDrawingContext = selfCopy->stringDrawingContext;
       if (!stringDrawingContext)
       {
         v7 = objc_alloc_init(NSStringDrawingContext);
-        v8 = v2->stringDrawingContext;
-        v2->stringDrawingContext = v7;
+        v8 = selfCopy->stringDrawingContext;
+        selfCopy->stringDrawingContext = v7;
 
-        [(NSStringDrawingContext *)v2->stringDrawingContext setCachesLayout:1];
-        stringDrawingContext = v2->stringDrawingContext;
+        [(NSStringDrawingContext *)selfCopy->stringDrawingContext setCachesLayout:1];
+        stringDrawingContext = selfCopy->stringDrawingContext;
       }
 
-      [(NSAttributedString *)v2->_attributedString boundingRectWithSize:0 options:stringDrawingContext context:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+      [(NSAttributedString *)selfCopy->_attributedString boundingRectWithSize:0 options:stringDrawingContext context:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
       TypographicBounds = CGRectGetWidth(v13);
     }
 
     width = TypographicBounds;
-    v2->_width = TypographicBounds;
+    selfCopy->_width = TypographicBounds;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v9 = 0.0;
   v10 = 0.0;
@@ -75,47 +75,47 @@
 
 - (CTRunDelegateRef)runDelegate
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = v1[16];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = selfCopy[16];
   if (!v2)
   {
-    v2 = CTRunDelegateCreate(&callbacks, v1);
-    v1[16] = v2;
+    v2 = CTRunDelegateCreate(&callbacks, selfCopy);
+    selfCopy[16] = v2;
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v2;
 }
 
-- (void)initWithAttributedString:(const void *)a3 lineRef:
+- (void)initWithAttributedString:(const void *)string lineRef:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = _NSTruncationTokenAttachment;
-    a1 = objc_msgSendSuper2(&v9, sel_initWithData_ofType_, 0, 0);
-    if (a1)
+    self = objc_msgSendSuper2(&v9, sel_initWithData_ofType_, 0, 0);
+    if (self)
     {
       v6 = [v5 copy];
-      v7 = a1[18];
-      a1[18] = v6;
+      v7 = self[18];
+      self[18] = v6;
 
-      if (a3)
+      if (string)
       {
-        a1[19] = CFRetain(a3);
+        self[19] = CFRetain(string);
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

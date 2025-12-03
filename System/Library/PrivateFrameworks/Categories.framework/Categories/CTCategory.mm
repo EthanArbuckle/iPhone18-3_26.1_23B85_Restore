@@ -2,47 +2,47 @@
 + (CKContextClient)client;
 + (id)_DHIDtoCategoryDisplayNameMap;
 + (id)_DHToAppStoreCategoriesMap;
-+ (id)_bundleIdentifierForContextResponse:(id)a3;
++ (id)_bundleIdentifierForContextResponse:(id)response;
 + (id)_equivalentBundleIDsMapping;
-+ (id)_equivalentBundleIDsMappingForWatchOSBundleID:(id)a3;
++ (id)_equivalentBundleIDsMappingForWatchOSBundleID:(id)d;
 + (id)_equivalentBundleIDsWithSchemesRemovedMapping;
-+ (id)_getAssociatedDomainsForHostNames:(id)a3;
-+ (id)_getEquivalentBundleIdentifiers:(id)a3;
-+ (id)_identifierForContextResponse:(id)a3;
++ (id)_getAssociatedDomainsForHostNames:(id)names;
++ (id)_getEquivalentBundleIdentifiers:(id)identifiers;
++ (id)_identifierForContextResponse:(id)response;
 + (id)_newXpcConnection;
-+ (id)_overrideEquivalentIdentifiers:(id)a3 forBundleID:(id)a4;
-+ (id)_relatedItemsForContextResponse:(id)a3;
-+ (id)_urlComponentsForHostName:(id)a3;
-+ (id)_urlStringsForHostNames:(id)a3;
++ (id)_overrideEquivalentIdentifiers:(id)identifiers forBundleID:(id)d;
++ (id)_relatedItemsForContextResponse:(id)response;
++ (id)_urlComponentsForHostName:(id)name;
++ (id)_urlStringsForHostNames:(id)names;
 + (id)_xpcConnection;
-+ (id)bundleIDForPlatform:(id)a3 fromBundleID:(id)a4 platform:(id)a5;
-+ (id)equivalentIdentifiersForBundleID:(id)a3;
-+ (id)itemWith:(id)a3 platform:(id)a4 array:(id)a5;
-+ (id)localizedNameForIdentifier:(id)a3;
-+ (id)parentAppBundleIdentifierForAppRecord:(id)a3;
-+ (id)schemeStringForPlatform:(id)a3;
-+ (id)shortLocalizedNameForIdentifier:(id)a3;
-+ (id)systemAppCategoryIdentifierForBundleIdentifier:(id)a3;
-+ (id)systemCategoryIDWithPatternMatching:(id)a3;
-+ (void)_getCategoryTypeForDomainName:(id)a3 withCompletionHandler:(id)a4;
-+ (void)_lookupAppStoreUsing:(id)a3 platform:(id)a4 withCompletionHandler:(id)a5;
-+ (void)categoryForBundleID:(id)a3 platform:(id)a4 withCompletionHandler:(id)a5;
-+ (void)categoryForBundleID:(id)a3 withCompletionHandler:(id)a4;
-+ (void)categoryForBundleIdentifiers:(id)a3 platform:(id)a4 withCompletionHandler:(id)a5;
-+ (void)categoryForDomainName:(id)a3 withCompletionHandler:(id)a4;
-+ (void)categoryForDomainNames:(id)a3 withCompletionHandler:(id)a4;
-+ (void)categoryForDomainURL:(id)a3 withCompletionHandler:(id)a4;
-+ (void)categoryForDomainURLs:(id)a3 withCompletionHandler:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCategory:(id)a3;
++ (id)bundleIDForPlatform:(id)platform fromBundleID:(id)d platform:(id)a5;
++ (id)equivalentIdentifiersForBundleID:(id)d;
++ (id)itemWith:(id)with platform:(id)platform array:(id)array;
++ (id)localizedNameForIdentifier:(id)identifier;
++ (id)parentAppBundleIdentifierForAppRecord:(id)record;
++ (id)schemeStringForPlatform:(id)platform;
++ (id)shortLocalizedNameForIdentifier:(id)identifier;
++ (id)systemAppCategoryIdentifierForBundleIdentifier:(id)identifier;
++ (id)systemCategoryIDWithPatternMatching:(id)matching;
++ (void)_getCategoryTypeForDomainName:(id)name withCompletionHandler:(id)handler;
++ (void)_lookupAppStoreUsing:(id)using platform:(id)platform withCompletionHandler:(id)handler;
++ (void)categoryForBundleID:(id)d platform:(id)platform withCompletionHandler:(id)handler;
++ (void)categoryForBundleID:(id)d withCompletionHandler:(id)handler;
++ (void)categoryForBundleIdentifiers:(id)identifiers platform:(id)platform withCompletionHandler:(id)handler;
++ (void)categoryForDomainName:(id)name withCompletionHandler:(id)handler;
++ (void)categoryForDomainNames:(id)names withCompletionHandler:(id)handler;
++ (void)categoryForDomainURL:(id)l withCompletionHandler:(id)handler;
++ (void)categoryForDomainURLs:(id)ls withCompletionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCategory:(id)category;
 - (BOOL)isSystemBundleIdentifier;
-- (CTCategory)initWithCoder:(id)a3;
-- (CTCategory)initWithIdentifier:(id)a3 equivalentBundleIdentifiers:(id)a4 webDomains:(id)a5 bundleIdentifier:(id)a6 primaryWebDomain:(id)a7 canonicalBundleIdentifier:(id)a8;
+- (CTCategory)initWithCoder:(id)coder;
+- (CTCategory)initWithIdentifier:(id)identifier equivalentBundleIdentifiers:(id)identifiers webDomains:(id)domains bundleIdentifier:(id)bundleIdentifier primaryWebDomain:(id)domain canonicalBundleIdentifier:(id)canonicalBundleIdentifier;
 - (NSString)localizedName;
 - (id)description;
 - (unint64_t)hash;
-- (void)_ctCategoryCommonInitWithIdentifier:(id)a3 equivalentBundleIdentifiers:(id)a4 webDomains:(id)a5 bundleIdentifier:(id)a6 primaryWebDomain:(id)a7 canonicalBundleIdentifier:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (void)_ctCategoryCommonInitWithIdentifier:(id)identifier equivalentBundleIdentifiers:(id)identifiers webDomains:(id)domains bundleIdentifier:(id)bundleIdentifier primaryWebDomain:(id)domain canonicalBundleIdentifier:(id)canonicalBundleIdentifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCategory
@@ -80,18 +80,18 @@ uint64_t __20__CTCategory_client__block_invoke()
 
 + (id)_xpcConnection
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = _connection;
-  if (!v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  _newXpcConnection = _connection;
+  if (!_newXpcConnection)
   {
-    v3 = [v2 _newXpcConnection];
-    objc_storeStrong(&_connection, v3);
+    _newXpcConnection = [selfCopy _newXpcConnection];
+    objc_storeStrong(&_connection, _newXpcConnection);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return _newXpcConnection;
 }
 
 + (id)_newXpcConnection
@@ -110,88 +110,88 @@ uint64_t __20__CTCategory_client__block_invoke()
   return v2;
 }
 
-- (CTCategory)initWithIdentifier:(id)a3 equivalentBundleIdentifiers:(id)a4 webDomains:(id)a5 bundleIdentifier:(id)a6 primaryWebDomain:(id)a7 canonicalBundleIdentifier:(id)a8
+- (CTCategory)initWithIdentifier:(id)identifier equivalentBundleIdentifiers:(id)identifiers webDomains:(id)domains bundleIdentifier:(id)bundleIdentifier primaryWebDomain:(id)domain canonicalBundleIdentifier:(id)canonicalBundleIdentifier
 {
   v21.receiver = self;
   v21.super_class = CTCategory;
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  canonicalBundleIdentifierCopy = canonicalBundleIdentifier;
+  domainCopy = domain;
+  bundleIdentifierCopy = bundleIdentifier;
+  domainsCopy = domains;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
   v19 = [(CTCategory *)&v21 init];
-  [(CTCategory *)v19 _ctCategoryCommonInitWithIdentifier:v18 equivalentBundleIdentifiers:v17 webDomains:v16 bundleIdentifier:v15 primaryWebDomain:v14 canonicalBundleIdentifier:v13, v21.receiver, v21.super_class];
+  [(CTCategory *)v19 _ctCategoryCommonInitWithIdentifier:identifierCopy equivalentBundleIdentifiers:identifiersCopy webDomains:domainsCopy bundleIdentifier:bundleIdentifierCopy primaryWebDomain:domainCopy canonicalBundleIdentifier:canonicalBundleIdentifierCopy, v21.receiver, v21.super_class];
 
   return v19;
 }
 
-- (void)_ctCategoryCommonInitWithIdentifier:(id)a3 equivalentBundleIdentifiers:(id)a4 webDomains:(id)a5 bundleIdentifier:(id)a6 primaryWebDomain:(id)a7 canonicalBundleIdentifier:(id)a8
+- (void)_ctCategoryCommonInitWithIdentifier:(id)identifier equivalentBundleIdentifiers:(id)identifiers webDomains:(id)domains bundleIdentifier:(id)bundleIdentifier primaryWebDomain:(id)domain canonicalBundleIdentifier:(id)canonicalBundleIdentifier
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = [a3 copy];
+  canonicalBundleIdentifierCopy = canonicalBundleIdentifier;
+  domainCopy = domain;
+  bundleIdentifierCopy = bundleIdentifier;
+  domainsCopy = domains;
+  identifiersCopy = identifiers;
+  v19 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v19;
 
-  v21 = [v16 copy];
+  v21 = [bundleIdentifierCopy copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v21;
 
-  v23 = [v18 copy];
+  v23 = [identifiersCopy copy];
   equivalentBundleIdentifiers = self->_equivalentBundleIdentifiers;
   self->_equivalentBundleIdentifiers = v23;
 
-  v25 = [v17 copy];
+  v25 = [domainsCopy copy];
   webDomains = self->_webDomains;
   self->_webDomains = v25;
 
-  v27 = [v15 copy];
+  v27 = [domainCopy copy];
   primaryWebDomain = self->_primaryWebDomain;
   self->_primaryWebDomain = v27;
 
-  v29 = [v14 copy];
+  v29 = [canonicalBundleIdentifierCopy copy];
   canonicalBundleIdentifier = self->_canonicalBundleIdentifier;
   self->_canonicalBundleIdentifier = v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_identifier forKey:@"CTPrimaryIdenfier"];
-  [v6 encodeObject:self->_equivalentBundleIdentifiers forKey:@"CTEquivalentBundleIdentifiers"];
-  [v6 encodeObject:self->_webDomains forKey:@"CTWebdomains"];
-  [v6 encodeObject:self->_bundleIdentifier forKey:@"CTBundleIdentifier"];
-  [v6 encodeObject:self->_primaryWebDomain forKey:@"CTPrimayWebDomain"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"CTPrimaryIdenfier"];
+  [coderCopy encodeObject:self->_equivalentBundleIdentifiers forKey:@"CTEquivalentBundleIdentifiers"];
+  [coderCopy encodeObject:self->_webDomains forKey:@"CTWebdomains"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"CTBundleIdentifier"];
+  [coderCopy encodeObject:self->_primaryWebDomain forKey:@"CTPrimayWebDomain"];
   equivalentBundleIdentifiers = self->_equivalentBundleIdentifiers;
   if (equivalentBundleIdentifiers)
   {
-    v5 = [(NSArray *)equivalentBundleIdentifiers firstObject];
-    [v6 encodeObject:v5 forKey:@"CTCanonicalBundleIdentifier"];
+    firstObject = [(NSArray *)equivalentBundleIdentifiers firstObject];
+    [coderCopy encodeObject:firstObject forKey:@"CTCanonicalBundleIdentifier"];
   }
 
   else
   {
-    [v6 encodeObject:self->_bundleIdentifier forKey:@"CTCanonicalBundleIdentifier"];
+    [coderCopy encodeObject:self->_bundleIdentifier forKey:@"CTCanonicalBundleIdentifier"];
   }
 }
 
-- (CTCategory)initWithCoder:(id)a3
+- (CTCategory)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
   v7 = objc_opt_class();
   v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"CTPrimaryIdenfier"];
-  v10 = [v5 decodeObjectOfClasses:v8 forKey:@"CTWebdomains"];
-  v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"CTBundleIdentifier"];
-  v12 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"CTPrimayWebDomain"];
-  v13 = [v5 decodeObjectOfClasses:v8 forKey:@"CTEquivalentBundleIdentifiers"];
-  v14 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"CTCanonicalBundleIdentifier"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CTPrimaryIdenfier"];
+  v10 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CTWebdomains"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CTBundleIdentifier"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CTPrimayWebDomain"];
+  v13 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CTEquivalentBundleIdentifiers"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CTCanonicalBundleIdentifier"];
 
   if (v9)
   {
@@ -200,37 +200,37 @@ uint64_t __20__CTCategory_client__block_invoke()
     v15 = [(CTCategory *)&v18 init];
     [(CTCategory *)v15 _ctCategoryCommonInitWithIdentifier:v9 equivalentBundleIdentifiers:v13 webDomains:v10 bundleIdentifier:v11 primaryWebDomain:v12 canonicalBundleIdentifier:v14];
     self = v15;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-+ (id)localizedNameForIdentifier:(id)a3
++ (id)localizedNameForIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 bundleForClass:a1];
-  v7 = [a1 _DHIDtoCategoryDisplayNameMap];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  identifierCopy = identifier;
+  v6 = [v4 bundleForClass:self];
+  _DHIDtoCategoryDisplayNameMap = [self _DHIDtoCategoryDisplayNameMap];
+  v8 = [_DHIDtoCategoryDisplayNameMap objectForKeyedSubscript:identifierCopy];
 
   v9 = [v6 localizedStringForKey:v8 value:&stru_28560DC18 table:0];
 
   return v9;
 }
 
-+ (id)shortLocalizedNameForIdentifier:(id)a3
++ (id)shortLocalizedNameForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 _DHIDtoCategoryDisplayNameMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _DHIDtoCategoryDisplayNameMap = [self _DHIDtoCategoryDisplayNameMap];
+  v6 = [_DHIDtoCategoryDisplayNameMap objectForKeyedSubscript:identifierCopy];
 
-  v7 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v7 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v8 = [v6 stringByAppendingString:@"_Short"];
   v9 = [v7 localizedStringForKey:v8 value:&stru_28560DC18 table:0];
 
@@ -240,8 +240,8 @@ uint64_t __20__CTCategory_client__block_invoke()
 - (NSString)localizedName
 {
   v3 = objc_opt_class();
-  v4 = [(CTCategory *)self identifier];
-  v5 = [v3 localizedNameForIdentifier:v4];
+  identifier = [(CTCategory *)self identifier];
+  v5 = [v3 localizedNameForIdentifier:identifier];
 
   return v5;
 }
@@ -249,48 +249,48 @@ uint64_t __20__CTCategory_client__block_invoke()
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CTCategory *)self identifier];
-  v5 = [(CTCategory *)self bundleIdentifier];
-  v6 = [(CTCategory *)self canonicalBundleIdentifier];
-  v7 = [(CTCategory *)self equivalentBundleIdentifiers];
-  v8 = [(CTCategory *)self primaryWebDomain];
-  v9 = [(CTCategory *)self webDomains];
-  v10 = [v3 stringWithFormat:@"%@ - { bundle identifier: %@, canonicalBundleIdentifier: %@, equivalent bundle IDs: %@ } domain info:{ primaryWebDomain: %@ <-> webDomains: %@ }", v4, v5, v6, v7, v8, v9];
+  identifier = [(CTCategory *)self identifier];
+  bundleIdentifier = [(CTCategory *)self bundleIdentifier];
+  canonicalBundleIdentifier = [(CTCategory *)self canonicalBundleIdentifier];
+  equivalentBundleIdentifiers = [(CTCategory *)self equivalentBundleIdentifiers];
+  primaryWebDomain = [(CTCategory *)self primaryWebDomain];
+  webDomains = [(CTCategory *)self webDomains];
+  v10 = [v3 stringWithFormat:@"%@ - { bundle identifier: %@, canonicalBundleIdentifier: %@, equivalent bundle IDs: %@ } domain info:{ primaryWebDomain: %@ <-> webDomains: %@ }", identifier, bundleIdentifier, canonicalBundleIdentifier, equivalentBundleIdentifiers, primaryWebDomain, webDomains];
 
   return v10;
 }
 
-- (BOOL)isEqualToCategory:(id)a3
+- (BOOL)isEqualToCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(CTCategory *)self identifier];
-  v6 = [v4 identifier];
-  v7 = [v5 isEqualToString:v6];
+  categoryCopy = category;
+  identifier = [(CTCategory *)self identifier];
+  identifier2 = [categoryCopy identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if (v7)
   {
-    v8 = [(CTCategory *)self equivalentBundleIdentifiers];
-    v9 = [v4 equivalentBundleIdentifiers];
-    if (v8 == v9 || [v8 isEqual:v9])
+    equivalentBundleIdentifiers = [(CTCategory *)self equivalentBundleIdentifiers];
+    equivalentBundleIdentifiers2 = [categoryCopy equivalentBundleIdentifiers];
+    if (equivalentBundleIdentifiers == equivalentBundleIdentifiers2 || [equivalentBundleIdentifiers isEqual:equivalentBundleIdentifiers2])
     {
-      v10 = [(CTCategory *)self webDomains];
-      v11 = [v4 webDomains];
-      if (v10 == v11 || [v10 isEqual:v11])
+      webDomains = [(CTCategory *)self webDomains];
+      webDomains2 = [categoryCopy webDomains];
+      if (webDomains == webDomains2 || [webDomains isEqual:webDomains2])
       {
-        v12 = [(CTCategory *)self primaryWebDomain];
-        v13 = [v4 primaryWebDomain];
-        if (v12 == v13 || [v12 isEqual:v13])
+        primaryWebDomain = [(CTCategory *)self primaryWebDomain];
+        primaryWebDomain2 = [categoryCopy primaryWebDomain];
+        if (primaryWebDomain == primaryWebDomain2 || [primaryWebDomain isEqual:primaryWebDomain2])
         {
-          v14 = [(CTCategory *)self bundleIdentifier];
-          v15 = [v4 bundleIdentifier];
-          if (v14 == v15 || [v14 isEqual:v15])
+          bundleIdentifier = [(CTCategory *)self bundleIdentifier];
+          bundleIdentifier2 = [categoryCopy bundleIdentifier];
+          if (bundleIdentifier == bundleIdentifier2 || [bundleIdentifier isEqual:bundleIdentifier2])
           {
-            v16 = [(CTCategory *)self canonicalBundleIdentifier:v14];
-            v17 = [v4 canonicalBundleIdentifier];
-            v18 = v16 == v17 || [v16 isEqual:v17];
+            v16 = [(CTCategory *)self canonicalBundleIdentifier:bundleIdentifier];
+            canonicalBundleIdentifier = [categoryCopy canonicalBundleIdentifier];
+            v18 = v16 == canonicalBundleIdentifier || [v16 isEqual:canonicalBundleIdentifier];
 
-            v14 = v20;
-            v12 = v21;
+            bundleIdentifier = v20;
+            primaryWebDomain = v21;
           }
 
           else
@@ -325,11 +325,11 @@ uint64_t __20__CTCategory_client__block_invoke()
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTCategory *)self isEqualToCategory:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTCategory *)self isEqualToCategory:equalCopy];
 
   return v5;
 }
@@ -339,48 +339,48 @@ uint64_t __20__CTCategory_client__block_invoke()
   v17.receiver = self;
   v17.super_class = CTCategory;
   v3 = [(CTCategory *)&v17 hash];
-  v4 = [(CTCategory *)self identifier];
-  v5 = [v4 hash];
-  v6 = [(CTCategory *)self bundleIdentifier];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(CTCategory *)self equivalentBundleIdentifiers];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(CTCategory *)self canonicalBundleIdentifier];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(CTCategory *)self webDomains];
-  v13 = v11 ^ [v12 hash] ^ v3;
-  v14 = [(CTCategory *)self primaryWebDomain];
-  v15 = [v14 hash];
+  identifier = [(CTCategory *)self identifier];
+  v5 = [identifier hash];
+  bundleIdentifier = [(CTCategory *)self bundleIdentifier];
+  v7 = v5 ^ [bundleIdentifier hash];
+  equivalentBundleIdentifiers = [(CTCategory *)self equivalentBundleIdentifiers];
+  v9 = v7 ^ [equivalentBundleIdentifiers hash];
+  canonicalBundleIdentifier = [(CTCategory *)self canonicalBundleIdentifier];
+  v11 = v9 ^ [canonicalBundleIdentifier hash];
+  webDomains = [(CTCategory *)self webDomains];
+  v13 = v11 ^ [webDomains hash] ^ v3;
+  primaryWebDomain = [(CTCategory *)self primaryWebDomain];
+  v15 = [primaryWebDomain hash];
 
   return v13 ^ v15;
 }
 
 - (BOOL)isSystemBundleIdentifier
 {
-  v2 = [(CTCategory *)self identifier];
-  v3 = [v2 hasPrefix:@"DH00"];
+  identifier = [(CTCategory *)self identifier];
+  v3 = [identifier hasPrefix:@"DH00"];
 
   return v3;
 }
 
-+ (void)categoryForBundleID:(id)a3 platform:(id)a4 withCompletionHandler:(id)a5
++ (void)categoryForBundleID:(id)d platform:(id)platform withCompletionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v19[0] = v8;
+  dCopy = d;
+  handlerCopy = handler;
+  v19[0] = dCopy;
   v10 = MEMORY[0x277CBEA60];
-  v11 = a4;
+  platformCopy = platform;
   v12 = [v10 arrayWithObjects:v19 count:1];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __65__CTCategory_categoryForBundleID_platform_withCompletionHandler___block_invoke;
   v16[3] = &unk_278DAAED8;
-  v17 = v8;
-  v18 = v9;
-  v13 = v9;
-  v14 = v8;
-  [a1 categoryForBundleIdentifiers:v12 platform:v11 withCompletionHandler:v16];
+  v17 = dCopy;
+  v18 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dCopy;
+  [self categoryForBundleIdentifiers:v12 platform:platformCopy withCompletionHandler:v16];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -393,31 +393,31 @@ void __65__CTCategory_categoryForBundleID_platform_withCompletionHandler___block
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)categoryForBundleIdentifiers:(id)a3 platform:(id)a4 withCompletionHandler:(id)a5
++ (void)categoryForBundleIdentifiers:(id)identifiers platform:(id)platform withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  platformCopy = platform;
+  handlerCopy = handler;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __74__CTCategory_categoryForBundleIdentifiers_platform_withCompletionHandler___block_invoke;
   v35[3] = &unk_278DAAF78;
-  v11 = v10;
+  v11 = handlerCopy;
   v36 = v11;
-  v37 = a1;
+  selfCopy = self;
   v12 = MEMORY[0x245D2FDE0](v35);
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x3032000000;
   v33[3] = __Block_byref_object_copy__0;
   v33[4] = __Block_byref_object_dispose__0;
-  v34 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x3032000000;
   v31[3] = __Block_byref_object_copy__0;
   v31[4] = __Block_byref_object_dispose__0;
-  v32 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
@@ -436,16 +436,16 @@ void __65__CTCategory_categoryForBundleID_platform_withCompletionHandler___block
   v19[1] = 3221225472;
   v19[2] = __74__CTCategory_categoryForBundleIdentifiers_platform_withCompletionHandler___block_invoke_208;
   v19[3] = &unk_278DAB018;
-  v16 = v9;
+  v16 = platformCopy;
   v20 = v16;
   v23 = v31;
   v24 = v29;
   v25 = v33;
-  v17 = v8;
+  v17 = identifiersCopy;
   v21 = v17;
   v18 = v12;
   v22 = v18;
-  v26 = a1;
+  selfCopy2 = self;
   [v15 genreIDsAndCounterpartIdentifiersForInstalledBundleIDs:v17 replyHandler:v19];
 
   _Block_object_dispose(v29, 8);
@@ -933,28 +933,28 @@ void __74__CTCategory_categoryForBundleIdentifiers_platform_withCompletionHandle
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)categoryForBundleID:(id)a3 withCompletionHandler:(id)a4
++ (void)categoryForBundleID:(id)d withCompletionHandler:(id)handler
 {
   v9 = @"CTOSPlatformiOS";
-  v7 = a4;
-  v8 = a3;
-  [a1 categoryForBundleID:v8 platform:v9 withCompletionHandler:v7];
+  handlerCopy = handler;
+  dCopy = d;
+  [self categoryForBundleID:dCopy platform:v9 withCompletionHandler:handlerCopy];
 }
 
-+ (void)categoryForDomainURL:(id)a3 withCompletionHandler:(id)a4
++ (void)categoryForDomainURL:(id)l withCompletionHandler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 absoluteString];
-  v13[0] = v7;
+  handlerCopy = handler;
+  absoluteString = [l absoluteString];
+  v13[0] = absoluteString;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__CTCategory_categoryForDomainURL_withCompletionHandler___block_invoke;
   v11[3] = &unk_278DAACD8;
-  v12 = v6;
-  v9 = v6;
-  [a1 categoryForDomainNames:v8 withCompletionHandler:v11];
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  [self categoryForDomainNames:v8 withCompletionHandler:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -968,26 +968,26 @@ void __57__CTCategory_categoryForDomainURL_withCompletionHandler___block_invoke(
   (*(v4 + 16))(v4, v6, v5);
 }
 
-+ (void)categoryForDomainURLs:(id)a3 withCompletionHandler:(id)a4
++ (void)categoryForDomainURLs:(id)ls withCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lsCopy = ls;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "+[CTCategory categoryForDomainURLs:withCompletionHandler:]";
     *&buf[12] = 2048;
-    *&buf[14] = [v6 count];
+    *&buf[14] = [lsCopy count];
     _os_log_impl(&dword_24331E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "START %s :%lu", buf, 0x16u);
   }
 
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(lsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v6;
+  v9 = lsCopy;
   v10 = [v9 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v10)
   {
@@ -1002,8 +1002,8 @@ void __57__CTCategory_categoryForDomainURL_withCompletionHandler___block_invoke(
           objc_enumerationMutation(v9);
         }
 
-        v13 = [*(*(&v21 + 1) + 8 * v12) host];
-        [v8 addObject:v13];
+        host = [*(*(&v21 + 1) + 8 * v12) host];
+        [v8 addObject:host];
 
         ++v12;
       }
@@ -1020,7 +1020,7 @@ void __57__CTCategory_categoryForDomainURL_withCompletionHandler___block_invoke(
   *&buf[16] = 0x3032000000;
   v26 = __Block_byref_object_copy__0;
   v27 = __Block_byref_object_dispose__0;
-  v28 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__CTCategory_categoryForDomainURLs_withCompletionHandler___block_invoke;
@@ -1028,9 +1028,9 @@ void __57__CTCategory_categoryForDomainURL_withCompletionHandler___block_invoke(
   v14 = v9;
   v18 = v14;
   v20 = buf;
-  v15 = v7;
+  v15 = handlerCopy;
   v19 = v15;
-  [a1 categoryForDomainNames:v8 withCompletionHandler:v17];
+  [self categoryForDomainNames:v8 withCompletionHandler:v17];
 
   _Block_object_dispose(buf, 8);
   v16 = *MEMORY[0x277D85DE8];
@@ -1077,21 +1077,21 @@ void __58__CTCategory_categoryForDomainURLs_withCompletionHandler___block_invoke
   }
 }
 
-+ (void)categoryForDomainName:(id)a3 withCompletionHandler:(id)a4
++ (void)categoryForDomainName:(id)name withCompletionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v14[0] = a3;
+  handlerCopy = handler;
+  v14[0] = name;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
+  nameCopy = name;
   v9 = [v7 arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __58__CTCategory_categoryForDomainName_withCompletionHandler___block_invoke;
   v12[3] = &unk_278DAACD8;
-  v13 = v6;
-  v10 = v6;
-  [a1 categoryForDomainNames:v9 withCompletionHandler:v12];
+  v13 = handlerCopy;
+  v10 = handlerCopy;
+  [self categoryForDomainNames:v9 withCompletionHandler:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1105,39 +1105,39 @@ void __58__CTCategory_categoryForDomainName_withCompletionHandler___block_invoke
   (*(v4 + 16))(v4, v6, v5);
 }
 
-+ (void)categoryForDomainNames:(id)a3 withCompletionHandler:(id)a4
++ (void)categoryForDomainNames:(id)names withCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  namesCopy = names;
+  handlerCopy = handler;
+  if ([namesCopy count])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v18 = "+[CTCategory categoryForDomainNames:withCompletionHandler:]";
       v19 = 2048;
-      v20 = [v6 count];
+      v20 = [namesCopy count];
       _os_log_impl(&dword_24331E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "START %s :%lu", buf, 0x16u);
     }
 
-    v8 = [a1 _urlStringsForHostNames:v6];
-    v9 = [a1 client];
-    v10 = [v9 newRequest];
+    v8 = [self _urlStringsForHostNames:namesCopy];
+    client = [self client];
+    newRequest = [client newRequest];
 
     v11 = [v8 copy];
-    [v10 setUrls:v11];
+    [newRequest setUrls:v11];
 
-    [v10 setIncludeHigherLevelTopics:1];
-    objc_initWeak(buf, a1);
+    [newRequest setIncludeHigherLevelTopics:1];
+    objc_initWeak(buf, self);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__CTCategory_categoryForDomainNames_withCompletionHandler___block_invoke;
     v13[3] = &unk_278DAB0E0;
     objc_copyWeak(&v16, buf);
-    v15 = v7;
-    v14 = v6;
-    [v10 executeCategorizationRequestWithReply:v13];
+    v15 = handlerCopy;
+    v14 = namesCopy;
+    [newRequest executeCategorizationRequestWithReply:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
@@ -1145,7 +1145,7 @@ void __58__CTCategory_categoryForDomainName_withCompletionHandler___block_invoke
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1347,14 +1347,14 @@ void __59__CTCategory_categoryForDomainNames_withCompletionHandler___block_invok
   objc_storeStrong((*(*(a1 + 56) + 8) + 40), *(a1 + 40));
 }
 
-+ (id)systemAppCategoryIdentifierForBundleIdentifier:(id)a3
++ (id)systemAppCategoryIdentifierForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 systemCategoryIDWithPatternMatching:v4];
+  identifierCopy = identifier;
+  v5 = [self systemCategoryIDWithPatternMatching:identifierCopy];
   if (!v5)
   {
     v6 = [CTCategories systemHiddenBundleIdentifiersForDeviceFamily:102];
-    v7 = [v6 containsObject:v4];
+    v7 = [v6 containsObject:identifierCopy];
 
     if (v7)
     {
@@ -1364,7 +1364,7 @@ void __59__CTCategory_categoryForDomainNames_withCompletionHandler___block_invok
     else
     {
       v8 = [CTCategories systemBlockableBundleIdentifiersForDeviceFamily:102];
-      v9 = [v8 containsObject:v4];
+      v9 = [v8 containsObject:identifierCopy];
 
       if (v9)
       {
@@ -1374,7 +1374,7 @@ void __59__CTCategory_categoryForDomainNames_withCompletionHandler___block_invok
       else
       {
         v10 = [CTCategories systemUnblockableBundleIdentifiersForDeviceFamily:102];
-        v11 = [v10 containsObject:v4];
+        v11 = [v10 containsObject:identifierCopy];
 
         if (v11)
         {
@@ -1392,18 +1392,18 @@ void __59__CTCategory_categoryForDomainNames_withCompletionHandler___block_invok
   return v5;
 }
 
-+ (id)_overrideEquivalentIdentifiers:(id)a3 forBundleID:(id)a4
++ (id)_overrideEquivalentIdentifiers:(id)identifiers forBundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  v7 = identifiersCopy;
   if (_overrideEquivalentIdentifiers_forBundleID__onceToken != -1)
   {
     +[CTCategory _overrideEquivalentIdentifiers:forBundleID:];
   }
 
-  v8 = [_overrideEquivalentIdentifiers_forBundleID___equivalentBundleIDsOverrides objectForKey:v6];
+  v8 = [_overrideEquivalentIdentifiers_forBundleID___equivalentBundleIDsOverrides objectForKey:dCopy];
   v9 = v7;
   if (v8)
   {
@@ -1432,12 +1432,12 @@ void __57__CTCategory__overrideEquivalentIdentifiers_forBundleID___block_invoke(
   _overrideEquivalentIdentifiers_forBundleID___equivalentBundleIDsOverrides = &unk_2856108D8;
 }
 
-+ (id)systemCategoryIDWithPatternMatching:(id)a3
++ (id)systemCategoryIDWithPatternMatching:(id)matching
 {
   v3 = MEMORY[0x277CCAC68];
-  v4 = a3;
+  matchingCopy = matching;
   v5 = [v3 regularExpressionWithPattern:@"com.apple.InstallAssistant.*" options:1 error:0];
-  v6 = [v5 numberOfMatchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v6 = [v5 numberOfMatchesInString:matchingCopy options:0 range:{0, objc_msgSend(matchingCopy, "length")}];
 
   if (v6)
   {
@@ -1452,11 +1452,11 @@ void __57__CTCategory__overrideEquivalentIdentifiers_forBundleID___block_invoke(
   return v7;
 }
 
-+ (void)_getCategoryTypeForDomainName:(id)a3 withCompletionHandler:(id)a4
++ (void)_getCategoryTypeForDomainName:(id)name withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 136315138;
@@ -1464,27 +1464,27 @@ void __57__CTCategory__overrideEquivalentIdentifiers_forBundleID___block_invoke(
     _os_log_impl(&dword_24331E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%s", buf, 0xCu);
   }
 
-  v8 = [objc_opt_class() _urlComponentsForHostName:v6];
-  v9 = [v8 string];
-  if ([v9 length])
+  v8 = [objc_opt_class() _urlComponentsForHostName:nameCopy];
+  string = [v8 string];
+  if ([string length])
   {
-    v10 = [a1 client];
-    v11 = [v10 newRequest];
+    client = [self client];
+    newRequest = [client newRequest];
 
-    [v11 setIncludeHigherLevelTopics:1];
-    [v11 setUrl:v9];
+    [newRequest setIncludeHigherLevelTopics:1];
+    [newRequest setUrl:string];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __66__CTCategory__getCategoryTypeForDomainName_withCompletionHandler___block_invoke;
     v13[3] = &unk_278DAAED8;
-    v14 = v9;
-    v15 = v7;
-    [v11 executeCategorizationRequestWithReply:v13];
+    v14 = string;
+    v15 = handlerCopy;
+    [newRequest executeCategorizationRequestWithReply:v13];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 5001, 0);
+    (*(handlerCopy + 2))(handlerCopy, 5001, 0);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1569,43 +1569,43 @@ void __43__CTCategory__DHIDtoCategoryDisplayNameMap__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)schemeStringForPlatform:(id)a3
++ (id)schemeStringForPlatform:(id)platform
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"CTOSPlatformiOS"])
+  platformCopy = platform;
+  if ([platformCopy isEqualToString:@"CTOSPlatformiOS"])
   {
     v5 = @"ios";
   }
 
-  else if ([v4 isEqualToString:@"CTOSPlatformmacOS"])
+  else if ([platformCopy isEqualToString:@"CTOSPlatformmacOS"])
   {
     v5 = @"macos";
   }
 
-  else if ([v4 isEqualToString:@"CTOSPlatformwatchOS"])
+  else if ([platformCopy isEqualToString:@"CTOSPlatformwatchOS"])
   {
     v5 = @"watchos";
   }
 
-  else if ([v4 isEqualToString:@"CTOSPlatformtvOS"])
+  else if ([platformCopy isEqualToString:@"CTOSPlatformtvOS"])
   {
     v5 = @"tvos";
   }
 
-  else if ([v4 isEqualToString:@"CTOSPlatformvisionOS"])
+  else if ([platformCopy isEqualToString:@"CTOSPlatformvisionOS"])
   {
     v5 = @"visionos";
   }
 
-  else if ([v4 isEqualToString:@"CTOSPlatformAll"])
+  else if ([platformCopy isEqualToString:@"CTOSPlatformAll"])
   {
     v5 = @"all";
   }
 
-  else if ([v4 isEqualToString:@"CTOSPlatformCurrent"])
+  else if ([platformCopy isEqualToString:@"CTOSPlatformCurrent"])
   {
     v6 = @"CTOSPlatformiOS";
-    v5 = [a1 schemeStringForPlatform:v6];
+    v5 = [self schemeStringForPlatform:v6];
   }
 
   else
@@ -1616,18 +1616,18 @@ void __43__CTCategory__DHIDtoCategoryDisplayNameMap__block_invoke()
   return v5;
 }
 
-+ (id)bundleIDForPlatform:(id)a3 fromBundleID:(id)a4 platform:(id)a5
++ (id)bundleIDForPlatform:(id)platform fromBundleID:(id)d platform:(id)a5
 {
-  v8 = a3;
-  v9 = a4;
+  platformCopy = platform;
+  dCopy = d;
   v10 = a5;
   v11 = objc_alloc_init(MEMORY[0x277CCACE0]);
-  v12 = [a1 schemeStringForPlatform:v10];
+  v12 = [self schemeStringForPlatform:v10];
   [v11 setScheme:v12];
 
-  [v11 setHost:v9];
+  [v11 setHost:dCopy];
   v13 = [v11 URL];
-  v14 = [v13 absoluteString];
+  absoluteString = [v13 absoluteString];
 
   v24 = 0;
   v25 = &v24;
@@ -1636,11 +1636,11 @@ void __43__CTCategory__DHIDtoCategoryDisplayNameMap__block_invoke()
   v28 = __Block_byref_object_dispose__0;
   v29 = 0;
   v15 = +[CTCategory _equivalentBundleIDsMapping];
-  v16 = [v15 objectForKey:v14];
+  v16 = [v15 objectForKey:absoluteString];
 
   if (v16)
   {
-    v17 = [a1 schemeStringForPlatform:v8];
+    v17 = [self schemeStringForPlatform:platformCopy];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __56__CTCategory_bundleIDForPlatform_fromBundleID_platform___block_invoke;
@@ -1760,16 +1760,16 @@ void __40__CTCategory__DHToAppStoreCategoriesMap__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_lookupAppStoreUsing:(id)a3 platform:(id)a4 withCompletionHandler:(id)a5
++ (void)_lookupAppStoreUsing:(id)using platform:(id)platform withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  usingCopy = using;
+  platformCopy = platform;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v8;
+    v19 = platformCopy;
     _os_log_impl(&dword_24331E000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "_lookupAppStoreUsing %@", buf, 0xCu);
   }
 
@@ -1777,12 +1777,12 @@ void __40__CTCategory__DHToAppStoreCategoriesMap__block_invoke()
   activity_block[1] = 3221225472;
   activity_block[2] = __66__CTCategory__lookupAppStoreUsing_platform_withCompletionHandler___block_invoke;
   activity_block[3] = &unk_278DAB130;
-  v16 = v8;
-  v17 = v9;
-  v15 = v7;
-  v10 = v8;
-  v11 = v7;
-  v12 = v9;
+  v16 = platformCopy;
+  v17 = handlerCopy;
+  v15 = usingCopy;
+  v10 = platformCopy;
+  v11 = usingCopy;
+  v12 = handlerCopy;
   _os_activity_initiate(&dword_24331E000, "CTCategory _lookupAppStoreUsing:withCompletionHandler:", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1854,18 +1854,18 @@ void __66__CTCategory__lookupAppStoreUsing_platform_withCompletionHandler___bloc
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_getEquivalentBundleIdentifiers:(id)a3
++ (id)_getEquivalentBundleIdentifiers:(id)identifiers
 {
   v3 = MEMORY[0x277CBEB40];
-  v4 = a3;
-  v5 = [v3 orderedSet];
+  identifiersCopy = identifiers;
+  orderedSet = [v3 orderedSet];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__CTCategory__getEquivalentBundleIdentifiers___block_invoke;
   v8[3] = &unk_278DAB158;
-  v6 = v5;
+  v6 = orderedSet;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [identifiersCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -1887,12 +1887,12 @@ uint64_t __46__CTCategory__getEquivalentBundleIdentifiers___block_invoke(uint64_
   return MEMORY[0x2821F9730]();
 }
 
-+ (id)equivalentIdentifiersForBundleID:(id)a3
++ (id)equivalentIdentifiersForBundleID:(id)d
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = +[CTCategory _equivalentBundleIDsWithSchemesRemovedMapping];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:dCopy];
   if (v5)
   {
     v19 = v4;
@@ -1921,19 +1921,19 @@ uint64_t __46__CTCategory__getEquivalentBundleIdentifiers___block_invoke(uint64_
         }
 
         v11 = [MEMORY[0x277CBEBC0] URLWithString:*(*(&v21 + 1) + 8 * i)];
-        v12 = [v11 host];
-        if (([v12 isEqualToString:v3] & 1) == 0)
+        host = [v11 host];
+        if (([host isEqualToString:dCopy] & 1) == 0)
         {
 
 LABEL_11:
-          v15 = [v11 host];
-          [v6 addObject:v15];
+          host2 = [v11 host];
+          [v6 addObject:host2];
 
           goto LABEL_12;
         }
 
-        v13 = [v11 scheme];
-        v14 = [v13 isEqualToString:@"ios"];
+        scheme = [v11 scheme];
+        v14 = [scheme isEqualToString:@"ios"];
 
         if (v14)
         {
@@ -1963,40 +1963,40 @@ LABEL_16:
   return v6;
 }
 
-+ (id)itemWith:(id)a3 platform:(id)a4 array:(id)a5
++ (id)itemWith:(id)with platform:(id)platform array:(id)array
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  withCopy = with;
+  platformCopy = platform;
+  arrayCopy = array;
+  v11 = arrayCopy;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__0;
   v32 = __Block_byref_object_dispose__0;
   v33 = 0;
-  if (@"CTOSPlatformAll" == v9)
+  if (@"CTOSPlatformAll" == platformCopy)
   {
     v14 = MEMORY[0x277CBEBC0];
-    v15 = [v10 firstObject];
-    v16 = [v14 URLWithString:v15];
+    firstObject = [arrayCopy firstObject];
+    v16 = [v14 URLWithString:firstObject];
 
-    v17 = [v16 host];
+    host = [v16 host];
     v18 = v29[5];
-    v29[5] = v17;
+    v29[5] = host;
 
     goto LABEL_16;
   }
 
-  if (@"CTOSPlatformCurrent" == v9)
+  if (@"CTOSPlatformCurrent" == platformCopy)
   {
     v19 = @"CTOSPlatformiOS";
 
-    v9 = v19;
+    platformCopy = v19;
     goto LABEL_11;
   }
 
-  if (@"CTOSPlatformiOS" == v9)
+  if (@"CTOSPlatformiOS" == platformCopy)
   {
 LABEL_11:
     v27[0] = MEMORY[0x277D85DD0];
@@ -2008,7 +2008,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  if (@"CTOSPlatformmacOS" == v9)
+  if (@"CTOSPlatformmacOS" == platformCopy)
   {
     v12 = v26;
     v26[0] = MEMORY[0x277D85DD0];
@@ -2016,7 +2016,7 @@ LABEL_11:
     v13 = __38__CTCategory_itemWith_platform_array___block_invoke_2;
   }
 
-  else if (@"CTOSPlatformtvOS" == v9)
+  else if (@"CTOSPlatformtvOS" == platformCopy)
   {
     v12 = v25;
     v25[0] = MEMORY[0x277D85DD0];
@@ -2024,7 +2024,7 @@ LABEL_11:
     v13 = __38__CTCategory_itemWith_platform_array___block_invoke_3;
   }
 
-  else if (@"CTOSPlatformwatchOS" == v9)
+  else if (@"CTOSPlatformwatchOS" == platformCopy)
   {
     v12 = v24;
     v24[0] = MEMORY[0x277D85DD0];
@@ -2034,7 +2034,7 @@ LABEL_11:
 
   else
   {
-    if (@"CTOSPlatformvisionOS" != v9)
+    if (@"CTOSPlatformvisionOS" != platformCopy)
     {
       goto LABEL_16;
     }
@@ -2048,12 +2048,12 @@ LABEL_11:
   v12[2] = v13;
   v12[3] = &unk_278DAB180;
   v12[4] = &v28;
-  [v10 enumerateObjectsUsingBlock:?];
+  [arrayCopy enumerateObjectsUsingBlock:?];
 LABEL_16:
   v20 = v29[5];
   if (!v20)
   {
-    objc_storeStrong(v29 + 5, a3);
+    objc_storeStrong(v29 + 5, with);
     v20 = v29[5];
   }
 
@@ -2159,19 +2159,19 @@ void __38__CTCategory_itemWith_platform_array___block_invoke_5(uint64_t a1, uint
   }
 }
 
-+ (id)_equivalentBundleIDsMappingForWatchOSBundleID:(id)a3
++ (id)_equivalentBundleIDsMappingForWatchOSBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (_equivalentBundleIDsMappingForWatchOSBundleID__onceToken != -1)
   {
     +[CTCategory _equivalentBundleIDsMappingForWatchOSBundleID:];
   }
 
-  v4 = [_equivalentBundleIDsMappingForWatchOSBundleID___equivalentBundleIDsMappingForWatchOS objectForKey:v3];
+  v4 = [_equivalentBundleIDsMappingForWatchOSBundleID___equivalentBundleIDsMappingForWatchOS objectForKey:dCopy];
   if ([v4 count])
   {
     v5 = MEMORY[0x277CBEB70];
-    v6 = [_equivalentBundleIDsMappingForWatchOSBundleID___equivalentBundleIDsMappingForWatchOS objectForKey:v3];
+    v6 = [_equivalentBundleIDsMappingForWatchOSBundleID___equivalentBundleIDsMappingForWatchOS objectForKey:dCopy];
     v7 = [v5 orderedSetWithArray:v6];
   }
 
@@ -2265,7 +2265,7 @@ void __41__CTCategory__equivalentBundleIDsMapping__block_invoke()
   block[1] = 3221225472;
   block[2] = __59__CTCategory__equivalentBundleIDsWithSchemesRemovedMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_equivalentBundleIDsWithSchemesRemovedMapping_onceToken != -1)
   {
     dispatch_once(&_equivalentBundleIDsWithSchemesRemovedMapping_onceToken, block);
@@ -2303,18 +2303,18 @@ void __59__CTCategory__equivalentBundleIDsWithSchemesRemovedMapping__block_invok
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v8];
 }
 
-+ (id)_getAssociatedDomainsForHostNames:(id)a3
++ (id)_getAssociatedDomainsForHostNames:(id)names
 {
   v3 = MEMORY[0x277CBEB40];
-  v4 = a3;
-  v5 = [v3 orderedSet];
+  namesCopy = names;
+  orderedSet = [v3 orderedSet];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__CTCategory__getAssociatedDomainsForHostNames___block_invoke;
   v8[3] = &unk_278DAB1D0;
-  v6 = v5;
+  v6 = orderedSet;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [namesCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -2426,43 +2426,43 @@ LABEL_21:
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)parentAppBundleIdentifierForAppRecord:(id)a3
++ (id)parentAppBundleIdentifierForAppRecord:(id)record
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  recordCopy = record;
+  v4 = recordCopy;
+  if (!recordCopy)
   {
     v15 = 0;
     v11 = 0;
     goto LABEL_11;
   }
 
-  v5 = [v3 entitlements];
+  entitlements = [recordCopy entitlements];
   v6 = objc_opt_class();
-  v7 = [v5 objectForKey:@"com.apple.developer.on-demand-install-capable" ofClass:v6 valuesOfClass:objc_opt_class()];
-  v8 = [v7 BOOLValue];
+  v7 = [entitlements objectForKey:@"com.apple.developer.on-demand-install-capable" ofClass:v6 valuesOfClass:objc_opt_class()];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = objc_opt_class();
-  v10 = [v5 objectForKey:@"com.apple.developer.parent-application-identifiers" ofClass:v9 valuesOfClass:objc_opt_class()];
+  v10 = [entitlements objectForKey:@"com.apple.developer.parent-application-identifiers" ofClass:v9 valuesOfClass:objc_opt_class()];
   v11 = v10;
-  if (!v8 || ![v10 count])
+  if (!bOOLValue || ![v10 count])
   {
     goto LABEL_9;
   }
 
-  v12 = [v11 firstObject];
-  v13 = [v12 hasPrefix:@"com."];
+  firstObject = [v11 firstObject];
+  v13 = [firstObject hasPrefix:@"com."];
 
-  v14 = [v11 firstObject];
-  v15 = v14;
+  firstObject2 = [v11 firstObject];
+  v15 = firstObject2;
   if (v13)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v4 bundleIdentifier];
+      bundleIdentifier = [v4 bundleIdentifier];
       v23 = 138478083;
-      v24 = v16;
+      v24 = bundleIdentifier;
       v25 = 2113;
       v26 = v11;
       v17 = MEMORY[0x277D86220];
@@ -2476,7 +2476,7 @@ LABEL_16:
     goto LABEL_10;
   }
 
-  v19 = [v14 rangeOfString:@"."];
+  v19 = [firstObject2 rangeOfString:@"."];
 
   if (v19 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -2485,14 +2485,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v22 = [v11 firstObject];
-  v15 = [v22 substringFromIndex:v19 + 1];
+  firstObject3 = [v11 firstObject];
+  v15 = [firstObject3 substringFromIndex:v19 + 1];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v4 bundleIdentifier];
+    bundleIdentifier = [v4 bundleIdentifier];
     v23 = 138478083;
-    v24 = v16;
+    v24 = bundleIdentifier;
     v25 = 2113;
     v26 = v11;
     v17 = MEMORY[0x277D86220];
@@ -2508,19 +2508,19 @@ LABEL_11:
   return v15;
 }
 
-+ (id)_identifierForContextResponse:(id)a3
++ (id)_identifierForContextResponse:(id)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 error], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  responseCopy = response;
+  v4 = responseCopy;
+  if (responseCopy && ([responseCopy error], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v4 level1Topics];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    level1Topics = [v4 level1Topics];
+    v8 = [level1Topics countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2531,21 +2531,21 @@ LABEL_11:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(level1Topics);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 topicId];
-          v14 = [v13 hasPrefix:@"DH"];
+          topicId = [v12 topicId];
+          v14 = [topicId hasPrefix:@"DH"];
 
           if (v14)
           {
-            v6 = [v12 topicId];
+            topicId2 = [v12 topicId];
             goto LABEL_14;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [level1Topics countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v9)
         {
           continue;
@@ -2555,27 +2555,27 @@ LABEL_11:
       }
     }
 
-    v6 = 0;
+    topicId2 = 0;
 LABEL_14:
   }
 
   else
   {
-    v6 = 0;
+    topicId2 = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return topicId2;
 }
 
-+ (id)_bundleIdentifierForContextResponse:(id)a3
++ (id)_bundleIdentifierForContextResponse:(id)response
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 error], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  responseCopy = response;
+  v5 = responseCopy;
+  if (responseCopy && ([responseCopy error], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
-    v8 = [a1 _relatedItemsForContextResponse:v5];
+    v8 = [self _relatedItemsForContextResponse:v5];
     if ([v8 count])
     {
       v11 = 0;
@@ -2626,44 +2626,44 @@ uint64_t __50__CTCategory__bundleIdentifierForContextResponse___block_invoke(uin
   return MEMORY[0x2821F9730]();
 }
 
-+ (id)_relatedItemsForContextResponse:(id)a3
++ (id)_relatedItemsForContextResponse:(id)response
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 error], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  responseCopy = response;
+  v4 = responseCopy;
+  if (responseCopy && ([responseCopy error], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v4 level2Topics];
-    v6 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
-    if (v6)
+    level2Topics = [v4 level2Topics];
+    relatedItems2 = [level2Topics countByEnumeratingWithState:&v15 objects:v19 count:16];
+    if (relatedItems2)
     {
       v8 = *v16;
       while (2)
       {
-        for (i = 0; i != v6; i = i + 1)
+        for (i = 0; i != relatedItems2; i = i + 1)
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(level2Topics);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 relatedItems];
-          v12 = [v11 count];
+          relatedItems = [v10 relatedItems];
+          v12 = [relatedItems count];
 
           if (v12)
           {
-            v6 = [v10 relatedItems];
+            relatedItems2 = [v10 relatedItems];
             goto LABEL_14;
           }
         }
 
-        v6 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
-        if (v6)
+        relatedItems2 = [level2Topics countByEnumeratingWithState:&v15 objects:v19 count:16];
+        if (relatedItems2)
         {
           continue;
         }
@@ -2677,24 +2677,24 @@ LABEL_14:
 
   else
   {
-    v6 = 0;
+    relatedItems2 = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return relatedItems2;
 }
 
-+ (id)_urlStringsForHostNames:(id)a3
++ (id)_urlStringsForHostNames:(id)names
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = namesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -2709,11 +2709,11 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _urlComponentsForHostName:{*(*(&v15 + 1) + 8 * i), v15}];
-        v12 = [v11 string];
-        if ([v12 length])
+        v11 = [self _urlComponentsForHostName:{*(*(&v15 + 1) + 8 * i), v15}];
+        string = [v11 string];
+        if ([string length])
         {
-          [v5 addObject:v12];
+          [v5 addObject:string];
         }
       }
 
@@ -2728,13 +2728,13 @@ LABEL_14:
   return v5;
 }
 
-+ (id)_urlComponentsForHostName:(id)a3
++ (id)_urlComponentsForHostName:(id)name
 {
-  v3 = a3;
-  if ([v3 length])
+  nameCopy = name;
+  if ([nameCopy length])
   {
     v4 = objc_alloc_init(MEMORY[0x277CCACE0]);
-    [v4 setHost:v3];
+    [v4 setHost:nameCopy];
     [v4 setScheme:@"http"];
   }
 

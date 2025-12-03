@@ -1,55 +1,55 @@
 @interface BrowserRootViewController
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - (BOOL)_interfaceFillsScreen;
 - (BOOL)_isShowingFindOnPage;
 - (BOOL)_isTrackingDropSession;
 - (BOOL)_navigationBarIsExpandedOnTop;
 - (BOOL)_shouldHideUnifiedBar;
 - (BOOL)_shouldInterceptBottomGesture;
-- (BOOL)_shouldOverridePocketColorOnStartPageDueToWallpaperStyle:(int64_t)a3;
+- (BOOL)_shouldOverridePocketColorOnStartPageDueToWallpaperStyle:(int64_t)style;
 - (BOOL)_shouldPositionBottomToolbarAboveKeyboard;
 - (BOOL)_shouldShowThemeColorInTopBar;
 - (BOOL)_showsTopBackdrop;
 - (BOOL)_usesWebpageStatusBar;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
-- (BOOL)capsuleNavigationBarViewController:(id)a3 shouldUnminimizeOnScrollForScrollView:(id)a4;
-- (BOOL)capsuleNavigationBarViewControllerAllowsMinimizationGesture:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)inElementFullscreenForTabDocumentView:(id)a3;
+- (BOOL)capsuleNavigationBarViewController:(id)controller shouldUnminimizeOnScrollForScrollView:(id)view;
+- (BOOL)capsuleNavigationBarViewControllerAllowsMinimizationGesture:(id)gesture;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)inElementFullscreenForTabDocumentView:(id)view;
 - (BOOL)isShowingDefaultBrowserSheet;
 - (BOOL)isShowingLockedPrivateBrowsingView;
 - (BOOL)isShowingPrivateBrowsingExplanationSheet;
 - (BOOL)isUsingBottomCapsule;
 - (BOOL)prefersHomeIndicatorAutoHidden;
 - (BOOL)safari_wantsTransparentApplicationBackground;
-- (BOOL)shouldFreezeWebViewUpdatesForTabDocumentView:(id)a3;
-- (BOOL)viewControllerIsKindOfSKStoreProductViewControllerClass:(id)a3;
+- (BOOL)shouldFreezeWebViewUpdatesForTabDocumentView:(id)view;
+- (BOOL)viewControllerIsKindOfSKStoreProductViewControllerClass:(id)class;
 - (BrowserController)browserController;
-- (BrowserRootViewController)initWithBrowserController:(id)a3;
+- (BrowserRootViewController)initWithBrowserController:(id)controller;
 - (BrowserRootViewControllerDelegate)delegate;
-- (CGPoint)_convertDocumentCoordinateSpacePoint:(CGPoint)a3 toCoordinateSpace:(id)a4;
-- (CGRect)_convertDocumentCoordinateSpaceRect:(CGRect)a3 toCoordinateSpace:(id)a4;
-- (CGRect)_convertRect:(CGRect)a3 fromViewInDocumentContainer:(id)a4 toCoordinateSpace:(id)a5;
-- (CGRect)_frameForBottomToolbarForceHidden:(BOOL)a3;
+- (CGPoint)_convertDocumentCoordinateSpacePoint:(CGPoint)point toCoordinateSpace:(id)space;
+- (CGRect)_convertDocumentCoordinateSpaceRect:(CGRect)rect toCoordinateSpace:(id)space;
+- (CGRect)_convertRect:(CGRect)rect fromViewInDocumentContainer:(id)container toCoordinateSpace:(id)space;
+- (CGRect)_frameForBottomToolbarForceHidden:(BOOL)hidden;
 - (CGRect)_frameForCatalogView;
 - (CGRect)_frameForContentContainerView;
 - (CGRect)_frameForNavigationBar;
-- (CGRect)_frameForSidebarWhenShowing:(BOOL)a3;
-- (CGRect)_sidebarDimmedContentFrameIncludingSidebarOnlyIfEmbedded:(BOOL)a3;
-- (CGRect)bottomToolbarFrameInCoordinateSpace:(id)a3 includeKeyboard:(BOOL)a4;
+- (CGRect)_frameForSidebarWhenShowing:(BOOL)showing;
+- (CGRect)_sidebarDimmedContentFrameIncludingSidebarOnlyIfEmbedded:(BOOL)embedded;
+- (CGRect)bottomToolbarFrameInCoordinateSpace:(id)space includeKeyboard:(BOOL)keyboard;
 - (CGRect)contentFrameInPageView;
-- (CGRect)navigationBarFrameInCoordinateSpace:(id)a3;
-- (CGSize)_webViewMinimumLayoutSizeWithBarVisibilitiesIgnored:(BOOL)a3;
-- (CGSize)contentSizeForSnapshotGenerator:(id)a3;
+- (CGRect)navigationBarFrameInCoordinateSpace:(id)space;
+- (CGSize)_webViewMinimumLayoutSizeWithBarVisibilitiesIgnored:(BOOL)ignored;
+- (CGSize)contentSizeForSnapshotGenerator:(id)generator;
 - (CGSize)webViewMaximumUnobscuredLayoutSize;
 - (CGSize)webViewMinimumLayoutSize;
 - (CGSize)webViewMinimumUnobscuredLayoutSize;
 - (NSNumber)capsuleCollectionViewLayout;
 - (SFBarAnimating)currentBarAnimator;
-- (SFScrollIndicatorInsets)scrollIndicatorInsetsForTabDocumentView:(SEL)a3;
+- (SFScrollIndicatorInsets)scrollIndicatorInsetsForTabDocumentView:(SEL)view;
 - (SidebarUIProxyDelegate)sidebarUIProxyDelegate;
 - (TabThumbnailCollectionView)tabThumbnailCollectionView;
 - (UIBarButtonItem)leadingSidebarButtonItem;
@@ -61,14 +61,14 @@
 - (UIEdgeInsets)_loweredBarObscuredInsets;
 - (UIEdgeInsets)_loweredBarObscuredInsetsIgnoringKeyboard;
 - (UIEdgeInsets)_webViewSafeAreaInsets;
-- (UIEdgeInsets)maximumObscuredInsetsForRect:(CGRect)a3 inCoordinateSpace:(id)a4 ignoreBarsMinimized:(BOOL)a5;
-- (UIEdgeInsets)minimumObscuredInsetsForRect:(CGRect)a3 inCoordinateSpace:(id)a4;
-- (UIEdgeInsets)obscuredInsetsForRect:(CGRect)a3 inCoordinateSpace:(id)a4;
-- (UIEdgeInsets)obscuredInsetsWithComponents:(unint64_t)a3 forRect:(CGRect)a4 inCoordinateSpace:(id)a5;
-- (UIEdgeInsets)obscuredScrollViewInsetsConsideringTargetState:(BOOL)a3 insetsDueToSafeArea:(UIEdgeInsets *)a4;
-- (UIEdgeInsets)obscuredScrollViewInsetsForTabDocumentView:(id)a3 unobscuredSafeAreaInsets:(UIEdgeInsets *)a4;
-- (UIEdgeInsets)scrollViewContentInsetAdjustmentsForTabDocumentView:(id)a3;
-- (UIEdgeInsets)sidebarObscuredInsetsForRect:(CGRect)a3 inCoordinateSpace:(id)a4;
+- (UIEdgeInsets)maximumObscuredInsetsForRect:(CGRect)rect inCoordinateSpace:(id)space ignoreBarsMinimized:(BOOL)minimized;
+- (UIEdgeInsets)minimumObscuredInsetsForRect:(CGRect)rect inCoordinateSpace:(id)space;
+- (UIEdgeInsets)obscuredInsetsForRect:(CGRect)rect inCoordinateSpace:(id)space;
+- (UIEdgeInsets)obscuredInsetsWithComponents:(unint64_t)components forRect:(CGRect)rect inCoordinateSpace:(id)space;
+- (UIEdgeInsets)obscuredScrollViewInsetsConsideringTargetState:(BOOL)state insetsDueToSafeArea:(UIEdgeInsets *)area;
+- (UIEdgeInsets)obscuredScrollViewInsetsForTabDocumentView:(id)view unobscuredSafeAreaInsets:(UIEdgeInsets *)insets;
+- (UIEdgeInsets)scrollViewContentInsetAdjustmentsForTabDocumentView:(id)view;
+- (UIEdgeInsets)sidebarObscuredInsetsForRect:(CGRect)rect inCoordinateSpace:(id)space;
 - (UIEdgeInsets)webViewEffectiveSafeAreaInsets;
 - (UIView)clipperView;
 - (ViewWithCustomNextResponder)contentContainerView;
@@ -79,52 +79,52 @@
 - (double)_totalAdditionalContentHeightForBanners;
 - (double)bannerHeightIncludedInSnapshot;
 - (double)horizontalMarginForCatalogViewInPopover;
-- (double)keyboardInsetInCoordinateSpace:(id)a3;
+- (double)keyboardInsetInCoordinateSpace:(id)space;
 - (double)maximumHeightObscuredByBottomToolbar;
 - (double)navigationBarDesiredHeight;
 - (double)navigationBarSquishedHeight;
 - (double)offsetForDynamicBarAnimator;
-- (double)topBarsHeightForSnapshotGenerator:(id)a3;
+- (double)topBarsHeightForSnapshotGenerator:(id)generator;
 - (id)_activeTabDocumentView;
 - (id)_continuousReadingViewController;
 - (id)_makeTurnOnLockedPrivateBrowsingViewController;
 - (id)_makeWhatsNewInPrivateBrowsingViewController;
 - (id)_multitaskingDragExclusionRects;
 - (id)_unifiedField;
-- (id)_viewForConvertingToCoordinateSpace:(id)a3;
-- (id)barManagerForCapsuleNavigationBarViewController:(id)a3;
-- (id)borrowCapsuleViewForTab:(id)a3;
+- (id)_viewForConvertingToCoordinateSpace:(id)space;
+- (id)barManagerForCapsuleNavigationBarViewController:(id)controller;
+- (id)borrowCapsuleViewForTab:(id)tab;
 - (id)childViewControllerForStatusBarStyle;
-- (id)createToolbarForCapsuleNavigationBarViewController:(id)a3;
+- (id)createToolbarForCapsuleNavigationBarViewController:(id)controller;
 - (id)managedTopBanners;
 - (id)preferredFocusEnvironments;
 - (id)setUpTabSwitcherViewController;
-- (id)showTabGroupPicker:(id)a3;
-- (id)snapshotContentProviderForTab:(id)a3;
+- (id)showTabGroupPicker:(id)picker;
+- (id)snapshotContentProviderForTab:(id)tab;
 - (int64_t)bookmarksPresentationStyle;
 - (int64_t)preferredLeadingStatusBarStyle;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)_edgesSafeAreaShouldAffectObscuredInsets;
-- (unint64_t)_findInsertionIndexForBannersInScrollView:(id)a3;
+- (unint64_t)_findInsertionIndexForBannersInScrollView:(id)view;
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures;
-- (unint64_t)tabDocumentView:(id)a3 contentOffsetAdjustmentEdgeWithPreviousContentInset:(UIEdgeInsets)a4;
+- (unint64_t)tabDocumentView:(id)view contentOffsetAdjustmentEdgeWithPreviousContentInset:(UIEdgeInsets)inset;
 - (void)_applyStatusBarBackdropTheme;
 - (void)_applyTopBackdropTheme;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
-- (void)_contentScrollViewReceivedTouchDown:(id)a3;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
+- (void)_contentScrollViewReceivedTouchDown:(id)down;
 - (void)_createBottomToolbarIfNeeded;
 - (void)_createSidebarContentDimmingViewIfNeeded;
 - (void)_destroySidebarContentDimmingViewIfNeeded;
 - (void)_dismissPrivateBrowsingExplanationSheet;
 - (void)_dismissWebSearchTipPopoverIfNeeded;
-- (void)_enterYttriumStateGestureRecognized:(id)a3;
-- (void)_exitYttriumStateGestureRecognized:(id)a3;
-- (void)_hideNavigationBarGestureRecognized:(id)a3;
+- (void)_enterYttriumStateGestureRecognized:(id)recognized;
+- (void)_exitYttriumStateGestureRecognized:(id)recognized;
+- (void)_hideNavigationBarGestureRecognized:(id)recognized;
 - (void)_installAddedBookmarkToastViewController;
 - (void)_installTabSwitcherViewController;
-- (void)_keyboardWillChangeFrame:(id)a3;
+- (void)_keyboardWillChangeFrame:(id)frame;
 - (void)_layOutBottomToolbar;
-- (void)_layOutFloatingSidebarButtonForSidebarShowing:(BOOL)a3;
+- (void)_layOutFloatingSidebarButtonForSidebarShowing:(BOOL)showing;
 - (void)_layOutScrollToTopView;
 - (void)_layOutSidebar;
 - (void)_layOutSidebarContentDimmingView;
@@ -133,33 +133,33 @@
 - (void)_layOutTopBanners;
 - (void)_layOutWebpageStatusBarView;
 - (void)_logCurrentLayoutState;
-- (void)_prepareBarsForTransitionFromPreviousToolbarPlacement:(int64_t)a3;
+- (void)_prepareBarsForTransitionFromPreviousToolbarPlacement:(int64_t)placement;
 - (void)_prepareToShowSidebarViewControllerIfNeeded;
 - (void)_pushTurnOnLockedPrivateBrowsingPromptIfNeeded;
-- (void)_receivedTouchDown:(id)a3;
-- (void)_receivedTouchUp:(id)a3;
-- (void)_refreshControlFired:(id)a3;
+- (void)_receivedTouchDown:(id)down;
+- (void)_receivedTouchUp:(id)up;
+- (void)_refreshControlFired:(id)fired;
 - (void)_registerLayoutStateUpdateHandler;
-- (void)_setShowingFloatingSidebarButton:(BOOL)a3;
-- (void)_setToolbarPlacement:(int64_t)a3;
-- (void)_setTopBackdropTheme:(id)a3 animated:(BOOL)a4;
-- (void)_setTopBackdropUsesPlainTheme:(BOOL)a3;
+- (void)_setShowingFloatingSidebarButton:(BOOL)button;
+- (void)_setToolbarPlacement:(int64_t)placement;
+- (void)_setTopBackdropTheme:(id)theme animated:(BOOL)animated;
+- (void)_setTopBackdropUsesPlainTheme:(BOOL)theme;
 - (void)_setUpFloatingSidebarButton;
 - (void)_setUpRefreshControlIfNeeded;
 - (void)_setUpTabGroupButton;
 - (void)_setUpWebpageStatusBarIfNeeded;
-- (void)_showBarsFromBottomBarTap:(id)a3;
-- (void)_showPrivateBrowsingExplanationSheetWithViewController:(id)a3;
+- (void)_showBarsFromBottomBarTap:(id)tap;
+- (void)_showPrivateBrowsingExplanationSheetWithViewController:(id)controller;
 - (void)_showWelcomeBrowsingExplanationSheet;
 - (void)_sidebarTrailingButtonWasTapped;
-- (void)_statusBarHover:(id)a3;
-- (void)_tabSwitcherVisibilityDidChange:(BOOL)a3;
-- (void)_transitionFromBanner:(id)a3 toBanner:(id)a4 animated:(BOOL)a5;
+- (void)_statusBarHover:(id)hover;
+- (void)_tabSwitcherVisibilityDidChange:(BOOL)change;
+- (void)_transitionFromBanner:(id)banner toBanner:(id)toBanner animated:(BOOL)animated;
 - (void)_turnOnLockedPrivateBrowsingFromSheet;
 - (void)_uninstallAddedBookmarkToastViewController;
 - (void)_uninstallTabSwitcherViewController;
 - (void)_updateAddedBookmarkToastLayout;
-- (void)_updateAllowsHidingHomeIndicatorMinimized:(BOOL)a3;
+- (void)_updateAllowsHidingHomeIndicatorMinimized:(BOOL)minimized;
 - (void)_updateBannerTheme;
 - (void)_updateBottomBarHeightAboveKeyboard;
 - (void)_updateCapsuleTopSeparatorColor;
@@ -169,107 +169,107 @@
 - (void)_updateScrollPocketForTopBackdrop;
 - (void)_updateScrollPocketForUnifiedBar;
 - (void)_updateScrollPocketsAreHidden;
-- (void)_updateScrollPocketsAreHiddenForCapsuleViewState:(int64_t)a3;
+- (void)_updateScrollPocketsAreHiddenForCapsuleViewState:(int64_t)state;
 - (void)_updateScrollToTopOverride;
 - (void)_updateSidebarStyle;
 - (void)_updateTabSwitcherSidebarToggle;
-- (void)_updateThemeForBanner:(id)a3 animated:(BOOL)a4;
-- (void)_updateToolbarForToolbarPlacementAllowingRemoval:(BOOL)a3;
+- (void)_updateThemeForBanner:(id)banner animated:(BOOL)animated;
+- (void)_updateToolbarForToolbarPlacementAllowingRemoval:(BOOL)removal;
 - (void)_updateToolbarPlacementIfNeeded;
-- (void)_updateTopBarAllowingRemoval:(BOOL)a3;
-- (void)_updateTopBarStylesAnimated:(BOOL)a3;
+- (void)_updateTopBarAllowingRemoval:(BOOL)removal;
+- (void)_updateTopBarStylesAnimated:(BOOL)animated;
 - (void)_updateTopScrollEdgeEffectStyle;
-- (void)addChildViewController:(id)a3;
-- (void)addToastViewController:(id)a3;
-- (void)bannerController:(id)a3 didSetAppBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6;
-- (void)bannerController:(id)a3 didSetCrashBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6;
-- (void)bannerController:(id)a3 didSetPrivateBrowsingPrivacyProtectionsBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6;
-- (void)bannerController:(id)a3 didSetRemotelyEnabledExtensionBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6;
-- (void)bannerController:(id)a3 didSetTabGroupBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6;
-- (void)bannerController:(id)a3 didSetWebExtensionBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6;
-- (void)bannerController:(id)a3 didSetWebExtensionPermissionGrantedBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6;
+- (void)addChildViewController:(id)controller;
+- (void)addToastViewController:(id)controller;
+- (void)bannerController:(id)controller didSetAppBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated;
+- (void)bannerController:(id)controller didSetCrashBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated;
+- (void)bannerController:(id)controller didSetPrivateBrowsingPrivacyProtectionsBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated;
+- (void)bannerController:(id)controller didSetRemotelyEnabledExtensionBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated;
+- (void)bannerController:(id)controller didSetTabGroupBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated;
+- (void)bannerController:(id)controller didSetWebExtensionBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated;
+- (void)bannerController:(id)controller didSetWebExtensionPermissionGrantedBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated;
 - (void)browserControllerDidChangeFavoritesState;
-- (void)capsuleCollectionView:(id)a3 selectionGestureDidChangeFromAxis:(unint64_t)a4;
-- (void)capsuleCollectionView:(id)a3 willEndSelectionGestureWithCoordinator:(id)a4;
-- (void)capsuleCollectionViewDidUpdateMinimizationGesture:(id)a3;
+- (void)capsuleCollectionView:(id)view selectionGestureDidChangeFromAxis:(unint64_t)axis;
+- (void)capsuleCollectionView:(id)view willEndSelectionGestureWithCoordinator:(id)coordinator;
+- (void)capsuleCollectionViewDidUpdateMinimizationGesture:(id)gesture;
 - (void)capsuleLayoutStyleChanged;
-- (void)capsuleNavigationBarViewController:(id)a3 didCreateNavigationBar:(id)a4;
-- (void)capsuleNavigationBarViewController:(id)a3 selectedItemWillChangeToState:(int64_t)a4 options:(int64_t)a5 coordinator:(id)a6;
-- (void)capsuleNavigationBarViewControllerDidChangeCapsuleFocus:(id)a3 options:(int64_t)a4;
-- (void)capsuleNavigationBarViewControllerDidTapVoiceSearch:(id)a3;
-- (void)capsuleNavigationBarViewControllerWillHideKeyboard:(id)a3;
-- (void)capsuleNavigationController:(id)a3 obscuredInsetsDidChangeWithCoordinator:(id)a4;
+- (void)capsuleNavigationBarViewController:(id)controller didCreateNavigationBar:(id)bar;
+- (void)capsuleNavigationBarViewController:(id)controller selectedItemWillChangeToState:(int64_t)state options:(int64_t)options coordinator:(id)coordinator;
+- (void)capsuleNavigationBarViewControllerDidChangeCapsuleFocus:(id)focus options:(int64_t)options;
+- (void)capsuleNavigationBarViewControllerDidTapVoiceSearch:(id)search;
+- (void)capsuleNavigationBarViewControllerWillHideKeyboard:(id)keyboard;
+- (void)capsuleNavigationController:(id)controller obscuredInsetsDidChangeWithCoordinator:(id)coordinator;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)dismissDefaultBrowserSheet;
 - (void)dismissDefaultBrowserSheetForOtherWindows;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)displayHostedScreenTimeView;
-- (void)dynamicBarAnimatorOutputsDidChange:(id)a3;
+- (void)dynamicBarAnimatorOutputsDidChange:(id)change;
 - (void)hideLockedPrivateBrowsingView;
 - (void)layOutCatalogView;
 - (void)layOutTopBars;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentToastForAddedBookmark:(id)a3 suggestedFolders:(id)a4;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)relinquishBorrowedCapsuleView:(id)a3;
-- (void)removeChildViewController:(id)a3 notifyDidMove:(BOOL)a4;
-- (void)removeToastViewController:(id)a3;
-- (void)setBarStateAllowsHidingHomeIndicator:(BOOL)a3;
-- (void)setBookmarksBar:(id)a3;
-- (void)setCatalogViewController:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDocumentSafeAreaInsetsFrozen:(BOOL)a3;
-- (void)setInYttriumMode:(BOOL)a3;
-- (void)setInYttriumState:(BOOL)a3;
-- (void)setNeedsPreferredStatusBarUpdateAfterCommitAnimated:(BOOL)a3;
-- (void)setNeedsScrollToTopView:(BOOL)a3;
-- (void)setShowingSidebar:(BOOL)a3 completion:(id)a4;
-- (void)setShowingTabBar:(BOOL)a3;
-- (void)setTabBar:(id)a3;
-- (void)setTabThumbnailCollectionView:(id)a3;
-- (void)setUsesFaintTopSeparator:(BOOL)a3;
-- (void)setWebView:(id)a3;
-- (void)showDefaultBrowserSheetWithDisplayHandler:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentToastForAddedBookmark:(id)bookmark suggestedFolders:(id)folders;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)relinquishBorrowedCapsuleView:(id)view;
+- (void)removeChildViewController:(id)controller notifyDidMove:(BOOL)move;
+- (void)removeToastViewController:(id)controller;
+- (void)setBarStateAllowsHidingHomeIndicator:(BOOL)indicator;
+- (void)setBookmarksBar:(id)bar;
+- (void)setCatalogViewController:(id)controller;
+- (void)setConfiguration:(id)configuration;
+- (void)setDelegate:(id)delegate;
+- (void)setDocumentSafeAreaInsetsFrozen:(BOOL)frozen;
+- (void)setInYttriumMode:(BOOL)mode;
+- (void)setInYttriumState:(BOOL)state;
+- (void)setNeedsPreferredStatusBarUpdateAfterCommitAnimated:(BOOL)animated;
+- (void)setNeedsScrollToTopView:(BOOL)view;
+- (void)setShowingSidebar:(BOOL)sidebar completion:(id)completion;
+- (void)setShowingTabBar:(BOOL)bar;
+- (void)setTabBar:(id)bar;
+- (void)setTabThumbnailCollectionView:(id)view;
+- (void)setUsesFaintTopSeparator:(BOOL)separator;
+- (void)setWebView:(id)view;
+- (void)showDefaultBrowserSheetWithDisplayHandler:(id)handler;
 - (void)showLockedPrivateBrowsingView;
 - (void)showTurnOnLockedPrivateBrowsingSheet;
 - (void)showWhatsNewInPrivateBrowsingSheet;
 - (void)stopRefreshing;
-- (void)tabBarDropExpansionView:(id)a3 didBeginTrackingDropSession:(id)a4;
-- (void)tabBarDropExpansionView:(id)a3 didEndTrackingDropSession:(id)a4;
-- (void)tabCollectionViewDidCancelDismissal:(id)a3;
-- (void)tabCollectionViewDidDismiss:(id)a3;
-- (void)tabCollectionViewWillDismiss:(id)a3;
-- (void)tabCollectionViewWillPresent:(id)a3;
-- (void)tabOverviewVisibilityDidChange:(BOOL)a3;
-- (void)takeOwnershipOfStepperContainer:(id)a3;
+- (void)tabBarDropExpansionView:(id)view didBeginTrackingDropSession:(id)session;
+- (void)tabBarDropExpansionView:(id)view didEndTrackingDropSession:(id)session;
+- (void)tabCollectionViewDidCancelDismissal:(id)dismissal;
+- (void)tabCollectionViewDidDismiss:(id)dismiss;
+- (void)tabCollectionViewWillDismiss:(id)dismiss;
+- (void)tabCollectionViewWillPresent:(id)present;
+- (void)tabOverviewVisibilityDidChange:(BOOL)change;
+- (void)takeOwnershipOfStepperContainer:(id)container;
 - (void)tearDownTabSwitcherViewController;
 - (void)toggleSidebar;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAccessibilityIdentifier;
 - (void)updateCapsuleLayoutStyle;
 - (void)updateCapsuleMinimizationStyle;
-- (void)updateOrderedSubviewsForOrderedContainerView:(id)a3;
+- (void)updateOrderedSubviewsForOrderedContainerView:(id)view;
 - (void)updateSuppressesStandaloneTabBar;
 - (void)updateTabHoverPreview;
 - (void)updateTabViewPinchRecognizer;
-- (void)updateThemeColorIfNeededAnimated:(BOOL)a3;
+- (void)updateThemeColorIfNeededAnimated:(BOOL)animated;
 - (void)updateUnifiedBarChromelessScrollDistance;
 - (void)updateUnifiedBarVisibility;
 - (void)updateUsesLockdownStatusBar;
 - (void)updateUsesWebpageStatusBar;
-- (void)updateViewForTabDocument:(id)a3;
+- (void)updateViewForTabDocument:(id)document;
 - (void)updateViewsAfterContentContainerViewBoundsChange;
 - (void)updateWebViewSizeAttributes;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)webSearchTipDidBecomeUnavailable;
 @end
 
@@ -282,16 +282,16 @@
     return;
   }
 
-  v3 = [MEMORY[0x277D28C70] sharedFeatureManager];
-  v4 = [v3 showRectangularTabsInSeparateBar];
+  mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+  showRectangularTabsInSeparateBar = [mEMORY[0x277D28C70] showRectangularTabsInSeparateBar];
 
-  if ((v4 & 1) == 0)
+  if ((showRectangularTabsInSeparateBar & 1) == 0)
   {
-    v6 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v7 = [v6 BOOLForKey:*MEMORY[0x277D29098]];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v7 = [safari_browserDefaults BOOLForKey:*MEMORY[0x277D29098]];
 
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v10 = v9;
     v12 = v11;
     if ([MEMORY[0x277CDB7B8] isTabBarAvailableForScreenSize:{v9, v11}])
@@ -323,28 +323,28 @@ LABEL_14:
 
 - (BOOL)_navigationBarIsExpandedOnTop
 {
-  v2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  v3 = v2;
-  v4 = v2 && [v2 layoutStyle] == 2 && objc_msgSend(v3, "selectedItemState") != 1;
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  v3 = capsuleCollectionView;
+  v4 = capsuleCollectionView && [capsuleCollectionView layoutStyle] == 2 && objc_msgSend(v3, "selectedItemState") != 1;
 
   return v4;
 }
 
 - (BOOL)_showsTopBackdrop
 {
-  v2 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
-  v3 = v2 != 0;
+  capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+  v3 = capsuleCollectionViewLayout != 0;
 
   return v3;
 }
 
 - (NSNumber)capsuleCollectionViewLayout
 {
-  v2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  v3 = v2;
-  if (v2)
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  v3 = capsuleCollectionView;
+  if (capsuleCollectionView)
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v2, "layoutStyle")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(capsuleCollectionView, "layoutStyle")}];
   }
 
   else
@@ -389,12 +389,12 @@ LABEL_14:
       goto LABEL_21;
     }
 
-    v5 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    v6 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController selectedItemNavigationBar];
-    v7 = v6;
-    if (v5)
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    selectedItemNavigationBar = [(CapsuleNavigationBarViewController *)self->_capsuleViewController selectedItemNavigationBar];
+    v7 = selectedItemNavigationBar;
+    if (capsuleCollectionView)
     {
-      v8 = v6 == 0;
+      v8 = selectedItemNavigationBar == 0;
     }
 
     else
@@ -409,11 +409,11 @@ LABEL_14:
 
     if (![MEMORY[0x277D49A08] isSolariumEnabled])
     {
-      LOBYTE(v3) = ([v7 isMinimized] & 1) != 0 || objc_msgSend(v5, "layoutStyle") != 2;
+      LOBYTE(v3) = ([v7 isMinimized] & 1) != 0 || objc_msgSend(capsuleCollectionView, "layoutStyle") != 2;
       goto LABEL_15;
     }
 
-    if (![v5 selectedItemIsMinimized])
+    if (![capsuleCollectionView selectedItemIsMinimized])
     {
 LABEL_14:
       LOBYTE(v3) = 0;
@@ -421,7 +421,7 @@ LABEL_14:
 
     else
     {
-      LOBYTE(v3) = [v5 layoutStyle] == 2;
+      LOBYTE(v3) = [capsuleCollectionView layoutStyle] == 2;
     }
 
 LABEL_15:
@@ -446,8 +446,8 @@ LABEL_21:
 
   else
   {
-    v5 = [(SFUnifiedBar *)self->_unifiedBar barTheme];
-    [(SFThemeColorEffectView *)self->_statusBarBackdrop setTheme:v5];
+    barTheme = [(SFUnifiedBar *)self->_unifiedBar barTheme];
+    [(SFThemeColorEffectView *)self->_statusBarBackdrop setTheme:barTheme];
   }
 }
 
@@ -455,39 +455,39 @@ LABEL_21:
 {
   v30 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [(_SFBrowserConfiguration *)self->_configuration barTintStyle];
+  barTintStyle = [(_SFBrowserConfiguration *)self->_configuration barTintStyle];
   if ([MEMORY[0x277D49A08] isSolariumEnabled])
   {
-    v5 = [(_SFWebView *)self->_webView _sampledTopFixedPositionContentColor];
-    bannerTheme = v5;
-    if (v5)
+    _sampledTopFixedPositionContentColor = [(_SFWebView *)self->_webView _sampledTopFixedPositionContentColor];
+    bannerTheme = _sampledTopFixedPositionContentColor;
+    if (_sampledTopFixedPositionContentColor)
     {
-      v7 = v5;
-      bannerTheme = v7;
+      underPageBackgroundColor = _sampledTopFixedPositionContentColor;
+      bannerTheme = underPageBackgroundColor;
     }
 
     else
     {
-      v7 = [(_SFWebView *)self->_webView underPageBackgroundColor];
+      underPageBackgroundColor = [(_SFWebView *)self->_webView underPageBackgroundColor];
     }
 
-    v10 = v7;
+    v10 = underPageBackgroundColor;
     goto LABEL_11;
   }
 
   if (![(BrowserRootViewController *)self usingUnifiedBar]&& ![(BrowserRootViewController *)self usingLoweredBar])
   {
-    v24 = [MEMORY[0x277D28BD0] themeWithBarTintStyle:v4];
+    v24 = [MEMORY[0x277D28BD0] themeWithBarTintStyle:barTintStyle];
     bannerTheme = self->_bannerTheme;
     self->_bannerTheme = v24;
     v14 = 1;
-    v13 = WeakRetained;
+    activeTabDocument2 = WeakRetained;
     goto LABEL_14;
   }
 
-  v8 = [WeakRetained tabController];
-  v9 = [v8 activeTabDocument];
-  bannerTheme = [v9 themeColor];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  bannerTheme = [activeTabDocument themeColor];
 
   if (-[BrowserRootViewController usingUnifiedBar](self, "usingUnifiedBar") && ([MEMORY[0x277D4A868] shouldIgnoreThemeColorForContrastWithActiveTab:bannerTheme privateBrowsingEnabled:_SFIsPrivateTintStyle()] & 1) != 0)
   {
@@ -497,14 +497,14 @@ LABEL_11:
     bannerTheme = v10;
   }
 
-  v11 = [MEMORY[0x277D28BD0] themeWithBarTintStyle:v4 preferredBarTintColor:bannerTheme controlsTintColor:0];
+  v11 = [MEMORY[0x277D28BD0] themeWithBarTintStyle:barTintStyle preferredBarTintColor:bannerTheme controlsTintColor:0];
   v12 = self->_bannerTheme;
   self->_bannerTheme = v11;
 
   if (bannerTheme)
   {
-    v4 = [WeakRetained tabController];
-    v13 = [v4 activeTabDocument];
+    barTintStyle = [WeakRetained tabController];
+    activeTabDocument2 = [barTintStyle activeTabDocument];
     v14 = 0;
 LABEL_14:
 
@@ -512,7 +512,7 @@ LABEL_14:
   }
 
   v14 = 1;
-  v13 = WeakRetained;
+  activeTabDocument2 = WeakRetained;
 LABEL_16:
   v15 = _SFBackdropGroupNameForOwner();
   [(SFBannerTheme *)self->_bannerTheme setBackdropGroupName:v15];
@@ -523,18 +523,18 @@ LABEL_16:
 
   if ([(BrowserRootViewController *)self usingUnifiedBar])
   {
-    v16 = [(SFUnifiedBar *)self->_unifiedBar barTheme];
-    -[SFBannerTheme setAppliesDarkeningOverlay:](self->_bannerTheme, "setAppliesDarkeningOverlay:", [v16 appliesDarkeningOverlay]);
-    v17 = [v16 overrideBackdropEffect];
-    [(SFBannerTheme *)self->_bannerTheme setOverrideBackdropEffect:v17];
+    barTheme = [(SFUnifiedBar *)self->_unifiedBar barTheme];
+    -[SFBannerTheme setAppliesDarkeningOverlay:](self->_bannerTheme, "setAppliesDarkeningOverlay:", [barTheme appliesDarkeningOverlay]);
+    overrideBackdropEffect = [barTheme overrideBackdropEffect];
+    [(SFBannerTheme *)self->_bannerTheme setOverrideBackdropEffect:overrideBackdropEffect];
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v18 = [(BrowserRootViewController *)self managedTopBanners];
-  v19 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  managedTopBanners = [(BrowserRootViewController *)self managedTopBanners];
+  v19 = [managedTopBanners countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v19)
   {
     v20 = v19;
@@ -545,13 +545,13 @@ LABEL_16:
       {
         if (*v26 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(managedTopBanners);
         }
 
         [(BrowserRootViewController *)self _updateThemeForBanner:*(*(&v25 + 1) + 8 * i) animated:1];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v20 = [managedTopBanners countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v20);
@@ -567,21 +567,21 @@ LABEL_16:
 - (id)managedTopBanners
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained bannerController];
-  v5 = [v4 delegate];
+  bannerController = [WeakRetained bannerController];
+  delegate = [bannerController delegate];
 
-  if (v5 == self)
+  if (delegate == self)
   {
-    v7 = [WeakRetained bannerController];
-    v6 = [v7 topBanners];
+    bannerController2 = [WeakRetained bannerController];
+    topBanners = [bannerController2 topBanners];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    topBanners = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return topBanners;
 }
 
 - (void)_registerLayoutStateUpdateHandler
@@ -640,12 +640,12 @@ LABEL_16:
 
 - (void)_updateRefreshControlStyle
 {
-  v3 = [(BrowserRootViewController *)self refreshControl];
-  if (v3)
+  refreshControl = [(BrowserRootViewController *)self refreshControl];
+  if (refreshControl)
   {
-    v7 = v3;
-    v4 = [(_SFWebView *)self->_webView underPageBackgroundColor];
-    if ([v4 sf_isDarkColor])
+    v7 = refreshControl;
+    underPageBackgroundColor = [(_SFWebView *)self->_webView underPageBackgroundColor];
+    if ([underPageBackgroundColor sf_isDarkColor])
     {
       v5 = 2;
     }
@@ -658,15 +658,15 @@ LABEL_16:
     v6 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:v5];
     [v7 _setLocalOverrideTraitCollection:v6];
 
-    v3 = v7;
+    refreshControl = v7;
   }
 }
 
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D28D08]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v28 = [v3 initWithFrame:?];
 
   [(BrowserRootViewController *)self setView:v28];
@@ -716,9 +716,9 @@ LABEL_16:
   topAuxiliaryBarsContainerView = self->_topAuxiliaryBarsContainerView;
   self->_topAuxiliaryBarsContainerView = v16;
 
-  v18 = [(BarContainerView *)self->_topAuxiliaryBarsContainerView layer];
-  [v18 setAllowsGroupOpacity:0];
-  [v18 setAllowsGroupBlending:0];
+  layer = [(BarContainerView *)self->_topAuxiliaryBarsContainerView layer];
+  [layer setAllowsGroupOpacity:0];
+  [layer setAllowsGroupBlending:0];
   [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView addSubview:self->_topAuxiliaryBarsContainerView];
   v19 = objc_alloc_init(TabBarDropExpansionView);
   tabBarDropExpansionView = self->_tabBarDropExpansionView;
@@ -754,8 +754,8 @@ LABEL_16:
 
 - (void)_updateToolbarPlacementIfNeeded
 {
-  v3 = [(BrowserRootViewController *)self view];
-  [v3 frame];
+  view = [(BrowserRootViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
@@ -796,12 +796,12 @@ LABEL_16:
 
     [(CapsuleNavigationBarViewController *)self->_capsuleViewController setNextResponder:WeakRetained parentFocusEnvironment:WeakRetained];
     [(CapsuleNavigationBarViewController *)self->_capsuleViewController setDelegate:self];
-    v6 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
-    [v6 setAccessibilityIdentifier:@"CapsuleViewController"];
+    view = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
+    [view setAccessibilityIdentifier:@"CapsuleViewController"];
 
-    v7 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
     v8 = [MEMORY[0x277D28EF8] themeWithBarTintStyle:{-[_SFBrowserConfiguration barTintStyle](self->_configuration, "barTintStyle")}];
-    [v7 setTheme:v8];
+    [capsuleCollectionView setTheme:v8];
 
     [(BrowserRootViewController *)self updateCapsuleLayoutStyle];
     [(BrowserRootViewController *)self updateCapsuleMinimizationStyle];
@@ -817,12 +817,12 @@ LABEL_16:
     v11 = [(CapsuleNavigationBarViewController *)v9 registerForTraitChanges:v10 withHandler:&v34];
 
     [(CapsuleNavigationBarViewController *)self->_capsuleViewController setLinkedPageView:self->_tabSwitcherViewController, v34, v35, v36, v37];
-    v12 = [(TabSwitcherViewController *)self->_tabSwitcherViewController tabOverviewIsVisible];
+    tabOverviewIsVisible = [(TabSwitcherViewController *)self->_tabSwitcherViewController tabOverviewIsVisible];
     v13 = WBS_LOG_CHANNEL_PREFIXTabView();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = @"not visible";
-      if (v12)
+      if (tabOverviewIsVisible)
       {
         v14 = @"visible";
       }
@@ -832,16 +832,16 @@ LABEL_16:
       _os_log_impl(&dword_215819000, v13, OS_LOG_TYPE_DEFAULT, "Setting up capsule view while tab overview is %@", buf, 0xCu);
     }
 
-    [v7 setShouldDismissContent:v12];
-    [v7 setUserInteractionEnabled:v12 ^ 1];
-    [v7 addGestureObserver:self];
-    v15 = [WeakRetained tabController];
-    [(CapsuleNavigationBarViewController *)self->_capsuleViewController setTabController:v15];
+    [capsuleCollectionView setShouldDismissContent:tabOverviewIsVisible];
+    [capsuleCollectionView setUserInteractionEnabled:tabOverviewIsVisible ^ 1];
+    [capsuleCollectionView addGestureObserver:self];
+    tabController = [WeakRetained tabController];
+    [(CapsuleNavigationBarViewController *)self->_capsuleViewController setTabController:tabController];
 
     [(BrowserRootViewController *)self addChildViewController:self->_capsuleViewController];
-    v16 = [(BrowserRootViewController *)self view];
-    v17 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
-    [v16 addSubview:v17];
+    view2 = [(BrowserRootViewController *)self view];
+    view3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
+    [view2 addSubview:view3];
 
     [(CapsuleNavigationBarViewController *)self->_capsuleViewController didMoveToParentViewController:self];
     if (self->_keepBarsMinimized)
@@ -852,8 +852,8 @@ LABEL_16:
     if (self->_inYttriumMode)
     {
       inYttriumState = self->_inYttriumState;
-      v19 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-      [v19 setForceHidden:inYttriumState];
+      capsuleCollectionView2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+      [capsuleCollectionView2 setForceHidden:inYttriumState];
 
       [(CapsuleNavigationBarViewController *)self->_capsuleViewController transitionToState:self->_inYttriumState animated:0 completionHandler:0];
     }
@@ -869,13 +869,13 @@ LABEL_16:
     if (([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0)
     {
       v22 = objc_alloc(MEMORY[0x277D75D18]);
-      v23 = [(SFThemeColorEffectView *)self->_topBackdrop contentView];
-      [v23 bounds];
+      contentView = [(SFThemeColorEffectView *)self->_topBackdrop contentView];
+      [contentView bounds];
       Height = CGRectGetHeight(v43);
       _SFOnePixel();
       v26 = v25;
-      v27 = [(SFThemeColorEffectView *)self->_topBackdrop contentView];
-      [v27 bounds];
+      contentView2 = [(SFThemeColorEffectView *)self->_topBackdrop contentView];
+      [contentView2 bounds];
       Width = CGRectGetWidth(v44);
       _SFOnePixel();
       v30 = [v22 initWithFrame:{0.0, Height - v26, Width, v29}];
@@ -884,14 +884,14 @@ LABEL_16:
 
       [(UIView *)self->_topSeparator setAutoresizingMask:10];
       [(BrowserRootViewController *)self _updateCapsuleTopSeparatorColor];
-      v32 = [(SFThemeColorEffectView *)self->_topBackdrop contentView];
-      [v32 addSubview:self->_topSeparator];
+      contentView3 = [(SFThemeColorEffectView *)self->_topBackdrop contentView];
+      [contentView3 addSubview:self->_topSeparator];
     }
 
     [(BrowserRootViewController *)self _applyTopBackdropTheme];
     [(BrowserRootViewController *)self _applyStatusBarBackdropTheme];
-    v33 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    [(CatalogViewController *)self->_catalogViewController setStartPageScrollObserver:v33];
+    capsuleCollectionView3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    [(CatalogViewController *)self->_catalogViewController setStartPageScrollObserver:capsuleCollectionView3];
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
@@ -900,65 +900,65 @@ LABEL_16:
 
 - (void)updateCapsuleMinimizationStyle
 {
-  v3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  v8 = v3;
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  v8 = capsuleCollectionView;
   if (self->_inYttriumMode)
   {
-    [v3 setMinimizationStyle:1];
+    [capsuleCollectionView setMinimizationStyle:1];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v5 = [WeakRetained tabController];
-    v6 = [v5 activeTabDocument];
-    if ([v6 isShowingReader])
+    tabController = [WeakRetained tabController];
+    activeTabDocument = [tabController activeTabDocument];
+    if ([activeTabDocument isShowingReader])
     {
       [v8 setMinimizationStyle:1];
     }
 
     else
     {
-      v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v8 setMinimizationStyle:{objc_msgSend(v7, "integerForKey:", @"DebugBarCollapsingBehavior"}];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [v8 setMinimizationStyle:{objc_msgSend(standardUserDefaults, "integerForKey:", @"DebugBarCollapsingBehavior"}];
     }
   }
 }
 
 - (void)_updateScrollPocketForCapsuleView
 {
-  v3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  v4 = [v3 selectionGestureAxis];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  selectionGestureAxis = [capsuleCollectionView selectionGestureAxis];
 
-  if (v4 == 1)
+  if (selectionGestureAxis == 1)
   {
-    v5 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    [v5 setBottomScrollPocketInteraction:0];
+    capsuleCollectionView2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    [capsuleCollectionView2 setBottomScrollPocketInteraction:0];
 
-    v16 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    [v16 setTopScrollPocketInteraction:0];
+    capsuleCollectionView3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    [capsuleCollectionView3 setTopScrollPocketInteraction:0];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v7 = [WeakRetained isShowingFavorites];
+    isShowingFavorites = [WeakRetained isShowingFavorites];
 
-    if (v7)
+    if (isShowingFavorites)
     {
-      v16 = [objc_alloc(MEMORY[0x277D76218]) initWithEdge:4];
-      v8 = [(CatalogViewController *)self->_catalogViewController scrollPocketCollector];
-      [v16 _setCollectorInteraction:v8];
+      capsuleCollectionView3 = [objc_alloc(MEMORY[0x277D76218]) initWithEdge:4];
+      scrollPocketCollector = [(CatalogViewController *)self->_catalogViewController scrollPocketCollector];
+      [capsuleCollectionView3 _setCollectorInteraction:scrollPocketCollector];
 
-      v9 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-      [v9 setBottomScrollPocketInteraction:v16];
+      capsuleCollectionView4 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+      [capsuleCollectionView4 setBottomScrollPocketInteraction:capsuleCollectionView3];
 
       v10 = [objc_alloc(MEMORY[0x277D76218]) initWithEdge:1];
-      v11 = [(TabSwitcherViewController *)self->_tabSwitcherViewController scrollPocketCollector];
-      [v10 _setCollectorInteraction:v11];
+      scrollPocketCollector2 = [(TabSwitcherViewController *)self->_tabSwitcherViewController scrollPocketCollector];
+      [v10 _setCollectorInteraction:scrollPocketCollector2];
 
-      v12 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-      [v12 setTopScrollPocketInteraction:v10];
+      capsuleCollectionView5 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+      [capsuleCollectionView5 setTopScrollPocketInteraction:v10];
     }
 
     else
@@ -969,12 +969,12 @@ LABEL_16:
       }
 
       v13 = [objc_alloc(MEMORY[0x277D76218]) initWithScrollView:self->_scrollView edge:4];
-      v14 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-      [v14 setBottomScrollPocketInteraction:v13];
+      capsuleCollectionView6 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+      [capsuleCollectionView6 setBottomScrollPocketInteraction:v13];
 
-      v16 = [objc_alloc(MEMORY[0x277D76218]) initWithScrollView:self->_scrollView edge:1];
-      v15 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-      [v15 setTopScrollPocketInteraction:v16];
+      capsuleCollectionView3 = [objc_alloc(MEMORY[0x277D76218]) initWithScrollView:self->_scrollView edge:1];
+      capsuleCollectionView7 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+      [capsuleCollectionView7 setTopScrollPocketInteraction:capsuleCollectionView3];
     }
   }
 }
@@ -982,13 +982,13 @@ LABEL_16:
 - (void)_updateScrollPocketForTopBackdrop
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained favoritesAreEmbedded];
+  favoritesAreEmbedded = [WeakRetained favoritesAreEmbedded];
 
-  if (v4)
+  if (favoritesAreEmbedded)
   {
     v12 = [objc_alloc(MEMORY[0x277D76220]) initWithStyle:4];
-    v5 = [(CatalogViewController *)self->_catalogViewController scrollPocketCollector];
-    [v12 _setCollectorInteraction:v5];
+    scrollPocketCollector = [(CatalogViewController *)self->_catalogViewController scrollPocketCollector];
+    [v12 _setCollectorInteraction:scrollPocketCollector];
 
     topBackdrop = self->_topBackdrop;
     v7 = v12;
@@ -1001,10 +1001,10 @@ LABEL_9:
   scrollView = self->_scrollView;
   if (scrollView)
   {
-    v9 = [(UIScrollView *)scrollView topEdgeEffect];
-    v10 = [v9 isHidden];
+    topEdgeEffect = [(UIScrollView *)scrollView topEdgeEffect];
+    isHidden = [topEdgeEffect isHidden];
 
-    if ((v10 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
       v7 = [objc_alloc(MEMORY[0x277D76220]) initWithScrollView:self->_scrollView edge:1 style:4];
       v12 = v7;
@@ -1029,24 +1029,24 @@ LABEL_9:
 
 - (void)updateUsesLockdownStatusBar
 {
-  v3 = [MEMORY[0x277D4A888] isLockdownModeEnabledForSafari];
+  isLockdownModeEnabledForSafari = [MEMORY[0x277D4A888] isLockdownModeEnabledForSafari];
   if ([(BrowserRootViewController *)self usingUnifiedBar])
   {
-    [(TabBarManager *)self->_tabBarManager setShowingLockdownStatusBar:v3];
+    [(TabBarManager *)self->_tabBarManager setShowingLockdownStatusBar:isLockdownModeEnabledForSafari];
   }
 
   if ([(BrowserRootViewController *)self usingLoweredBar])
   {
-    v4 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    [v4 setShowingLockdownStatusBar:v3];
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    [capsuleCollectionView setShowingLockdownStatusBar:isLockdownModeEnabledForSafari];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained tabController];
-  v6 = [v5 activeTabDocument];
-  v7 = [v6 navigationBarItem];
-  v8 = [(TabBarManager *)self->_tabBarManager lockdownStatusBar];
-  [v8 setNavigationBarItem:v7];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  navigationBarItem = [activeTabDocument navigationBarItem];
+  lockdownStatusBar = [(TabBarManager *)self->_tabBarManager lockdownStatusBar];
+  [lockdownStatusBar setNavigationBarItem:navigationBarItem];
 }
 
 - (void)_setUpFloatingSidebarButton
@@ -1055,13 +1055,13 @@ LABEL_9:
   if ([v16 isFloatingSidebarButtonEnabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v4 = [WeakRetained makeSidebarButton];
+    makeSidebarButton = [WeakRetained makeSidebarButton];
     sidebarButtonEmbeddedInSidebar = self->_sidebarButtonEmbeddedInSidebar;
-    self->_sidebarButtonEmbeddedInSidebar = v4;
+    self->_sidebarButtonEmbeddedInSidebar = makeSidebarButton;
 
     [(UIButton *)self->_sidebarButtonEmbeddedInSidebar setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [MEMORY[0x277D75710] sf_bookmarkMenu];
-    [(UIButton *)self->_sidebarButtonEmbeddedInSidebar setMenu:v6];
+    sf_bookmarkMenu = [MEMORY[0x277D75710] sf_bookmarkMenu];
+    [(UIButton *)self->_sidebarButtonEmbeddedInSidebar setMenu:sf_bookmarkMenu];
 
     [(UIButton *)self->_sidebarButtonEmbeddedInSidebar intrinsicContentSize];
     v8 = fmax(44.0 - v7, 0.0) * -0.5;
@@ -1074,9 +1074,9 @@ LABEL_9:
     v13 = _SFAccessibilityIdentifierForBarItem();
     [(UIBarButtonItem *)self->_sidebarButtonItem setAccessibilityIdentifier:v13];
 
-    v14 = [WeakRetained makeSidebarButton];
+    makeSidebarButton2 = [WeakRetained makeSidebarButton];
     floatingSidebarButton = self->_floatingSidebarButton;
-    self->_floatingSidebarButton = v14;
+    self->_floatingSidebarButton = makeSidebarButton2;
 
     [(UIButton *)self->_floatingSidebarButton setHidden:1];
     [(UIButton *)self->_floatingSidebarButton sf_applyContentSizeCategoryLimitsForToolbarButton];
@@ -1089,13 +1089,13 @@ LABEL_9:
   v3 = +[FeatureManager sharedFeatureManager];
   if ([v3 isTabGroupButtonEnabled] && objc_msgSend(v3, "isCustomTabGroupsEnabled"))
   {
-    v4 = [MEMORY[0x277D75230] plainButtonConfiguration];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    v6 = [v4 background];
-    [v6 setBackgroundColor:v5];
+    plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    background = [plainButtonConfiguration background];
+    [background setBackgroundColor:clearColor];
 
-    [v4 setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
-    v7 = [MEMORY[0x277D75220] buttonWithConfiguration:v4 primaryAction:0];
+    [plainButtonConfiguration setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
+    v7 = [MEMORY[0x277D75220] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     sidebarTrailingButton = self->_sidebarTrailingButton;
     self->_sidebarTrailingButton = v7;
 
@@ -1110,7 +1110,7 @@ LABEL_9:
     [(UIButton *)self->_sidebarTrailingButton sf_configureLargeContentViewerForBarItem:2];
     [(UIButton *)self->_sidebarTrailingButton setLargeContentImage:v9];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v11 = [WeakRetained tabController];
+    tabController = [WeakRetained tabController];
 
     objc_initWeak(&location, self);
     v15[0] = MEMORY[0x277D85DD0];
@@ -1118,7 +1118,7 @@ LABEL_9:
     v15[2] = __49__BrowserRootViewController__setUpTabGroupButton__block_invoke;
     v15[3] = &unk_2781D7878;
     objc_copyWeak(&v17, &location);
-    v12 = v11;
+    v12 = tabController;
     v16 = v12;
     [(UIButton *)self->_sidebarTrailingButton _setMenuProvider:v15];
     v13 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:self->_sidebarTrailingButton];
@@ -1134,21 +1134,21 @@ LABEL_9:
 {
   if ([(BrowserRootViewController *)self _usesWebpageStatusBar]&& !self->_statusBarView)
   {
-    v9 = [(BrowserRootViewController *)self view];
+    view = [(BrowserRootViewController *)self view];
     v3 = objc_alloc(MEMORY[0x277D28EF0]);
-    v4 = [(BrowserRootViewController *)self view];
-    [v4 bounds];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 bounds];
     v5 = [v3 initWithFrame:?];
     statusBarView = self->_statusBarView;
     self->_statusBarView = v5;
 
-    [v9 addSubview:self->_statusBarView];
+    [view addSubview:self->_statusBarView];
     v7 = [objc_alloc(MEMORY[0x277D755A0]) initWithTarget:self action:sel__statusBarHover_];
     statusBarHoverGestureRecognizer = self->_statusBarHoverGestureRecognizer;
     self->_statusBarHoverGestureRecognizer = v7;
 
     [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView addGestureRecognizer:self->_statusBarHoverGestureRecognizer];
-    [v9 setNeedsLayout];
+    [view setNeedsLayout];
   }
 }
 
@@ -1158,9 +1158,9 @@ LABEL_9:
   if ([WeakRetained isPrivateBrowsingEnabled])
   {
     v4 = +[Application sharedApplication];
-    v5 = [v4 isPrivateBrowsingLocked];
+    isPrivateBrowsingLocked = [v4 isPrivateBrowsingLocked];
 
-    if (v5)
+    if (isPrivateBrowsingLocked)
     {
       goto LABEL_8;
     }
@@ -1177,8 +1177,8 @@ LABEL_8:
     return v7;
   }
 
-  v6 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  if ([v6 BOOLForKey:*MEMORY[0x277D290A0]])
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  if ([safari_browserDefaults BOOLForKey:*MEMORY[0x277D290A0]])
   {
     v7 = ![(BrowserRootViewController *)self usingLoweredBar];
   }
@@ -1205,10 +1205,10 @@ LABEL_8:
   v5[4] = self;
   [v3 doAfterUIBecomesActive:v5];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x277D76C08] object:0];
-  [v4 addObserver:self selector:sel__updateTopBarStyles name:*MEMORY[0x277D4A960] object:0];
-  [v4 postNotificationName:*MEMORY[0x277D28FB8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardWillChangeFrame_ name:*MEMORY[0x277D76C08] object:0];
+  [defaultCenter addObserver:self selector:sel__updateTopBarStyles name:*MEMORY[0x277D4A960] object:0];
+  [defaultCenter postNotificationName:*MEMORY[0x277D28FB8] object:0];
 }
 
 - (ViewWithCustomNextResponder)contentContainerView
@@ -1233,25 +1233,25 @@ LABEL_8:
     LOBYTE(v4) = 1;
   }
 
-  v5 = [(_SFWebView *)self->_webView scrollView];
-  [v5 zoomScale];
+  scrollView = [(_SFWebView *)self->_webView scrollView];
+  [scrollView zoomScale];
   v7 = v6;
-  v8 = [(_SFWebView *)self->_webView scrollView];
-  [v8 minimumZoomScale];
+  scrollView2 = [(_SFWebView *)self->_webView scrollView];
+  [scrollView2 minimumZoomScale];
   v10 = v7 / v9;
 
   if (v10 >= 1.0001)
   {
-    v5 = objc_loadWeakRetained(&self->_tabThumbnailCollectionView);
-    if ([v5 presentationState] == 1)
+    scrollView = objc_loadWeakRetained(&self->_tabThumbnailCollectionView);
+    if ([scrollView presentationState] == 1)
     {
     }
 
     else
     {
-      v11 = [v5 presentationState];
+      presentationState = [scrollView presentationState];
 
-      if (v11 != 2 && ![WeakRetained favoritesAreEmbedded])
+      if (presentationState != 2 && ![WeakRetained favoritesAreEmbedded])
       {
         v13 = 0;
 LABEL_16:
@@ -1261,16 +1261,16 @@ LABEL_16:
     }
   }
 
-  v12 = [WeakRetained activeLibraryType];
-  if (v12)
+  activeLibraryType = [WeakRetained activeLibraryType];
+  if (activeLibraryType)
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [(BrowserRootViewController *)self capsuleViewController];
-    if ([v14 capsuleIsFocused])
+    capsuleViewController = [(BrowserRootViewController *)self capsuleViewController];
+    if ([capsuleViewController capsuleIsFocused])
     {
       v13 = 0;
     }
@@ -1287,32 +1287,32 @@ LABEL_16:
   }
 
 LABEL_17:
-  v15 = [(TabSwitcherViewController *)self->_tabSwitcherViewController pinchGestureRecognizer];
-  [v15 setEnabled:v13 & 1];
+  pinchGestureRecognizer = [(TabSwitcherViewController *)self->_tabSwitcherViewController pinchGestureRecognizer];
+  [pinchGestureRecognizer setEnabled:v13 & 1];
 }
 
 - (id)setUpTabSwitcherViewController
 {
   v3 = [TabSwitcherViewController alloc];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v5 = [WeakRetained tabController];
-  v6 = [(TabSwitcherViewController *)v3 initWithTabController:v5];
+  tabController = [WeakRetained tabController];
+  v6 = [(TabSwitcherViewController *)v3 initWithTabController:tabController];
   tabSwitcherViewController = self->_tabSwitcherViewController;
   self->_tabSwitcherViewController = v6;
 
   [(TabSwitcherViewController *)self->_tabSwitcherViewController setContainer:self];
   [(CapsuleNavigationBarViewController *)self->_capsuleViewController setLinkedPageView:self->_tabSwitcherViewController];
   contentContainerView = self->_contentContainerView;
-  v9 = [(TabSwitcherViewController *)self->_tabSwitcherViewController pinchGestureRecognizer];
-  [(ViewWithCustomNextResponder *)contentContainerView addGestureRecognizer:v9];
+  pinchGestureRecognizer = [(TabSwitcherViewController *)self->_tabSwitcherViewController pinchGestureRecognizer];
+  [(ViewWithCustomNextResponder *)contentContainerView addGestureRecognizer:pinchGestureRecognizer];
 
   v10 = self->_contentContainerView;
-  v11 = [(TabSwitcherViewController *)self->_tabSwitcherViewController panGestureRecognizerForTrackingPinchTranslationVelocity];
-  [(ViewWithCustomNextResponder *)v10 addGestureRecognizer:v11];
+  panGestureRecognizerForTrackingPinchTranslationVelocity = [(TabSwitcherViewController *)self->_tabSwitcherViewController panGestureRecognizerForTrackingPinchTranslationVelocity];
+  [(ViewWithCustomNextResponder *)v10 addGestureRecognizer:panGestureRecognizerForTrackingPinchTranslationVelocity];
 
   [(BrowserRootViewController *)self _layOutTabView];
-  v12 = [(TabSwitcherViewController *)self->_tabSwitcherViewController view];
-  [v12 layoutIfNeeded];
+  view = [(TabSwitcherViewController *)self->_tabSwitcherViewController view];
+  [view layoutIfNeeded];
 
   [(BrowserRootViewController *)self _updateTabSwitcherSidebarToggle];
   v13 = self->_tabSwitcherViewController;
@@ -1337,8 +1337,8 @@ LABEL_17:
       v14 = v6 + v13;
       v16 = v8 - (v11 + v15);
       v18 = v10 - (v13 + v17);
-      v19 = [(TabSwitcherViewController *)self->_tabSwitcherViewController view];
-      [v19 setFrame:{v12, v14, v16, v18}];
+      view = [(TabSwitcherViewController *)self->_tabSwitcherViewController view];
+      [view setFrame:{v12, v14, v16, v18}];
 
       [(ViewWithCustomNextResponder *)self->_contentContainerView bounds];
       [(BrowserRootViewController *)self maximumObscuredInsetsForRect:self->_contentContainerView inCoordinateSpace:1 ignoreBarsMinimized:?];
@@ -1380,16 +1380,16 @@ LABEL_17:
       }
 
       [(TabSwitcherViewController *)tabSwitcherViewController setBorrowedContentSize:v34 obscuredInsets:v36, v46, v40, v42, v44];
-      v51 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+      capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
 
-      if (v51)
+      if (capsuleCollectionViewLayout)
       {
-        v52 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-        [v52 capsuleFrame];
+        capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+        [capsuleCollectionView capsuleFrame];
         [(TabSwitcherViewController *)self->_tabSwitcherViewController setCapsuleReferenceFrame:?];
 
-        v54 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-        [v54 pageWidth];
+        capsuleCollectionView2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+        [capsuleCollectionView2 pageWidth];
         [(TabSwitcherViewController *)self->_tabSwitcherViewController setLinkedPanGesturePageWidth:?];
       }
 
@@ -1411,12 +1411,12 @@ LABEL_17:
     floatingSidebarButton = self->_floatingSidebarButton;
     if (floatingSidebarButton)
     {
-      v4 = [(UIButton *)floatingSidebarButton isHidden];
+      isHidden = [(UIButton *)floatingSidebarButton isHidden];
     }
 
     else
     {
-      v4 = 1.0;
+      isHidden = 1.0;
     }
 
     if ([(BrowserRootViewController *)self _isShowingEmbeddedSidebar])
@@ -1430,9 +1430,9 @@ LABEL_17:
     }
 
     [(TabSwitcherViewController *)self->_tabSwitcherViewController setShowsSidebarToggle:IsPad];
-    v7 = [(TabSwitcherViewController *)self->_tabSwitcherViewController sidebarToggleBarButtonItem];
-    v6 = [v7 view];
-    [v6 setAlpha:v4];
+    sidebarToggleBarButtonItem = [(TabSwitcherViewController *)self->_tabSwitcherViewController sidebarToggleBarButtonItem];
+    view = [sidebarToggleBarButtonItem view];
+    [view setAlpha:isHidden];
   }
 }
 
@@ -1448,23 +1448,23 @@ LABEL_17:
   v14 = v6 + v13;
   v16 = v8 - (v11 + v15);
   v18 = v10 - (v13 + v17);
-  v19 = [(BrowserRootViewController *)self _activeTabDocumentView];
-  [v19 setFrame:{v12, v14, v16, v18}];
+  _activeTabDocumentView = [(BrowserRootViewController *)self _activeTabDocumentView];
+  [_activeTabDocumentView setFrame:{v12, v14, v16, v18}];
 
   [(BrowserRootViewController *)self updateWebViewSizeAttributes];
   [(BrowserRootViewController *)self layOutCatalogView];
-  v20 = [(BrowserRootViewController *)self _continuousReadingViewController];
-  [v20 updateContinuousPreviewViewSizeAttributes];
+  _continuousReadingViewController = [(BrowserRootViewController *)self _continuousReadingViewController];
+  [_continuousReadingViewController updateContinuousPreviewViewSizeAttributes];
 }
 
 - (id)_activeTabDocumentView
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained tabController];
-  v4 = [v3 activeTabDocument];
-  v5 = [v4 view];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  view = [activeTabDocument view];
 
-  return v5;
+  return view;
 }
 
 - (void)updateAccessibilityIdentifier
@@ -1472,20 +1472,20 @@ LABEL_17:
   v27[6] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   v26[0] = @"UUID";
-  v4 = [WeakRetained UUID];
-  v5 = [v4 UUIDString];
-  v6 = v5;
+  uUID = [WeakRetained UUID];
+  uUIDString = [uUID UUIDString];
+  v6 = uUIDString;
   v7 = &stru_2827BF158;
-  if (v5)
+  if (uUIDString)
   {
-    v7 = v5;
+    v7 = uUIDString;
   }
 
   v27[0] = v7;
   v26[1] = @"View";
-  v8 = [WeakRetained usesNarrowLayout];
+  usesNarrowLayout = [WeakRetained usesNarrowLayout];
   v9 = @"Regular";
-  if (v8)
+  if (usesNarrowLayout)
   {
     v9 = @"Narrow";
   }
@@ -1516,8 +1516,8 @@ LABEL_17:
 
   v27[3] = v11;
   v26[4] = @"IsTabBarAvailable";
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v14 = v13;
   v16 = v15;
   v17 = [MEMORY[0x277CDB7B8] isTabBarAvailableForScreenSize:{v13, v15}];
@@ -1537,9 +1537,9 @@ LABEL_17:
 
   v27[4] = v18;
   v26[5] = @"IsSecure";
-  v20 = [WeakRetained tabController];
-  v21 = [v20 activeTabDocument];
-  if ([v21 isSecure])
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  if ([activeTabDocument isSecure])
   {
     v22 = @"true";
   }
@@ -1552,8 +1552,8 @@ LABEL_17:
   v27[5] = v22;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:6];
   v24 = WBSMakeAccessibilityIdentifier();
-  v25 = [(BrowserRootViewController *)self view];
-  [v25 setAccessibilityIdentifier:v24];
+  view = [(BrowserRootViewController *)self view];
+  [view setAccessibilityIdentifier:v24];
 }
 
 - (void)updateWebViewSizeAttributes
@@ -1576,8 +1576,8 @@ LABEL_17:
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(BrowserRootViewController *)self contentContainerView];
-    [v16 bounds];
+    contentContainerView = [(BrowserRootViewController *)self contentContainerView];
+    [contentContainerView bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -1636,19 +1636,19 @@ LABEL_17:
     self->_contentInsetForContentFrame.left = v37;
     self->_contentInsetForContentFrame.bottom = v38;
     self->_contentInsetForContentFrame.right = v39;
-    v40 = [(BrowserRootViewController *)self view];
-    v41 = [v40 _sf_isFullScreenWidth];
+    view = [(BrowserRootViewController *)self view];
+    _sf_isFullScreenWidth = [view _sf_isFullScreenWidth];
 
     rect = objc_loadWeakRetained(&self->_browserController);
-    v42 = [rect tabController];
-    v43 = [v42 activeTabDocument];
+    tabController = [rect tabController];
+    activeTabDocument = [tabController activeTabDocument];
 
-    v44 = [rect isShowingInOneThirdMode];
-    v45 = [v43 reloadOptionsController];
-    [v45 setTryUsingMobileIfPossible:v44];
+    isShowingInOneThirdMode = [rect isShowingInOneThirdMode];
+    reloadOptionsController = [activeTabDocument reloadOptionsController];
+    [reloadOptionsController setTryUsingMobileIfPossible:isShowingInOneThirdMode];
 
     [(BrowserRootViewController *)self _updateBottomBarHeightAboveKeyboard];
-    [(_SFWebView *)self->_webView _setAllowsViewportShrinkToFit:v41 ^ 1u];
+    [(_SFWebView *)self->_webView _setAllowsViewportShrinkToFit:_sf_isFullScreenWidth ^ 1u];
     [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
     [(BrowserRootViewController *)self minimumObscuredInsetsForRect:self->_documentAndTopBarsContainerView inCoordinateSpace:?];
     v47 = v46;
@@ -1659,11 +1659,11 @@ LABEL_17:
     }
 
     [(_SFWebView *)self->_webView setHitTestInsets:0.0, 0.0, bottom, 0.0];
-    v49 = [rect scene];
-    -[_SFWebView _setInterfaceOrientationOverride:](self->_webView, "_setInterfaceOrientationOverride:", [v49 interfaceOrientation]);
+    scene = [rect scene];
+    -[_SFWebView _setInterfaceOrientationOverride:](self->_webView, "_setInterfaceOrientationOverride:", [scene interfaceOrientation]);
 
-    v50 = [v43 view];
-    [v50 setWebViewGeometryNeedsUpdate];
+    view2 = [activeTabDocument view];
+    [view2 setWebViewGeometryNeedsUpdate];
   }
 }
 
@@ -1691,13 +1691,13 @@ LABEL_17:
 
 - (UIEdgeInsets)_loweredBarMaximumObscuredInsets
 {
-  v2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v2 obscuredInsetsForState:0 ignoringKeyboard:1];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView obscuredInsetsForState:0 ignoringKeyboard:1];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [v2 obscuredInsetsForState:1 ignoringKeyboard:1];
+  [capsuleCollectionView obscuredInsetsForState:1 ignoringKeyboard:1];
   if (v4 + v8 <= v11 + v13)
   {
     v4 = v11;
@@ -1719,11 +1719,11 @@ LABEL_17:
 
 - (BOOL)_interfaceFillsScreen
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v2) = [WeakRetained browserViewControllerInterfaceFillsScreen:v2];
+  LOBYTE(selfCopy) = [WeakRetained browserViewControllerInterfaceFillsScreen:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (UIEdgeInsets)webViewEffectiveSafeAreaInsets
@@ -1741,8 +1741,8 @@ LABEL_17:
 
 - (UIEdgeInsets)_webViewSafeAreaInsets
 {
-  v2 = [(BrowserRootViewController *)self view];
-  [v2 safeAreaInsets];
+  view = [(BrowserRootViewController *)self view];
+  [view safeAreaInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1781,8 +1781,8 @@ LABEL_17:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(BrowserRootViewController *)self managedTopBanners];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  managedTopBanners = [(BrowserRootViewController *)self managedTopBanners];
+  v4 = [managedTopBanners countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1794,14 +1794,14 @@ LABEL_17:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(managedTopBanners);
         }
 
         [*(*(&v13 + 1) + 8 * i) bounds];
         v7 = v7 + CGRectGetHeight(v19);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [managedTopBanners countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -1821,20 +1821,20 @@ LABEL_17:
 
 - (void)_updateBottomBarHeightAboveKeyboard
 {
-  v3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v3 minimizedCapsuleHeightAboveKeyboard];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView minimizedCapsuleHeightAboveKeyboard];
   [(_SFWebView *)self->_webView setBottomBarHeightAboveKeyboard:?];
 }
 
 - (UIEdgeInsets)_loweredBarMinimumObscuredInsets
 {
-  v2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v2 obscuredInsetsForState:0 ignoringKeyboard:1];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView obscuredInsetsForState:0 ignoringKeyboard:1];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  [v2 obscuredInsetsForState:1 ignoringKeyboard:1];
+  [capsuleCollectionView obscuredInsetsForState:1 ignoringKeyboard:1];
   if (v4 + v8 >= v11 + v13)
   {
     v4 = v11;
@@ -1856,11 +1856,11 @@ LABEL_17:
 
 - (void)layOutCatalogView
 {
-  v3 = [(CatalogViewController *)self->_catalogViewController view];
+  view = [(CatalogViewController *)self->_catalogViewController view];
   [(BrowserRootViewController *)self _frameForCatalogView];
-  [v3 setFrame:?];
-  [v3 bounds];
-  [(BrowserRootViewController *)self obscuredInsetsWithComponents:27 forRect:v3 inCoordinateSpace:?];
+  [view setFrame:?];
+  [view bounds];
+  [(BrowserRootViewController *)self obscuredInsetsWithComponents:27 forRect:view inCoordinateSpace:?];
   [(CatalogViewController *)self->_catalogViewController setObscuredInsets:?];
 }
 
@@ -1871,14 +1871,14 @@ LABEL_17:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(BrowserRootViewController *)self view];
-  [v11 bounds];
+  view = [(BrowserRootViewController *)self view];
+  [view bounds];
   Height = v12;
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v15 = [WeakRetained _shouldUseNarrowLayout];
+  _shouldUseNarrowLayout = [WeakRetained _shouldUseNarrowLayout];
 
-  if (v15)
+  if (_shouldUseNarrowLayout)
   {
     v24.origin.x = v4;
     v24.origin.y = v6;
@@ -1923,8 +1923,8 @@ LABEL_17:
 
 - (UIEdgeInsets)_loweredBarObscuredInsetsIgnoringKeyboard
 {
-  v2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v2 obscuredInsetsIgnoringKeyboard];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView obscuredInsetsIgnoringKeyboard];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1960,9 +1960,9 @@ LABEL_17:
 - (BOOL)isShowingPrivateBrowsingExplanationSheet
 {
   WeakRetained = objc_loadWeakRetained(&self->_privateBrowsingExplanationSheet);
-  v3 = [WeakRetained view];
-  v4 = [v3 window];
-  v5 = v4 != 0;
+  view = [WeakRetained view];
+  window = [view window];
+  v5 = window != 0;
 
   return v5;
 }
@@ -1970,20 +1970,20 @@ LABEL_17:
 - (BOOL)isShowingDefaultBrowserSheet
 {
   WeakRetained = objc_loadWeakRetained(&self->_defaultBrowserSheet);
-  v3 = [WeakRetained view];
-  v4 = [v3 window];
-  v5 = v4 != 0;
+  view = [WeakRetained view];
+  window = [view window];
+  v5 = window != 0;
 
   return v5;
 }
 
 - (BOOL)isUsingBottomCapsule
 {
-  v2 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
-  v3 = v2;
-  if (v2)
+  capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+  v3 = capsuleCollectionViewLayout;
+  if (capsuleCollectionViewLayout)
   {
-    v4 = [v2 integerValue] == 3 || objc_msgSend(v3, "integerValue") == 1;
+    v4 = [capsuleCollectionViewLayout integerValue] == 3 || objc_msgSend(v3, "integerValue") == 1;
   }
 
   else
@@ -2007,10 +2007,10 @@ LABEL_17:
 
     else
     {
-      v3 = [WeakRetained tabController];
-      v4 = [v3 activeTabDocument];
-      v5 = [v4 view];
-      [v5 scrollDistance];
+      tabController = [WeakRetained tabController];
+      activeTabDocument = [tabController activeTabDocument];
+      view = [activeTabDocument view];
+      [view scrollDistance];
       v7 = v6;
     }
 
@@ -2020,8 +2020,8 @@ LABEL_17:
 
 - (double)horizontalMarginForCatalogViewInPopover
 {
-  v3 = [(BrowserRootViewController *)self view];
-  [v3 frame];
+  view = [(BrowserRootViewController *)self view];
+  [view frame];
 
   [(ViewWithCustomNextResponder *)self->_contentContainerView bounds];
   CGRectGetWidth(v6);
@@ -2041,13 +2041,13 @@ LABEL_17:
 - (void)_updateScrollPocketForUnifiedBar
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained favoritesAreEmbedded];
+  favoritesAreEmbedded = [WeakRetained favoritesAreEmbedded];
 
-  if (v4)
+  if (favoritesAreEmbedded)
   {
     v6 = [objc_alloc(MEMORY[0x277D76218]) initWithEdge:1];
-    v5 = [(CatalogViewController *)self->_catalogViewController scrollPocketCollector];
-    [v6 _setCollectorInteraction:v5];
+    scrollPocketCollector = [(CatalogViewController *)self->_catalogViewController scrollPocketCollector];
+    [v6 _setCollectorInteraction:scrollPocketCollector];
   }
 
   else
@@ -2070,7 +2070,7 @@ LABEL_17:
     goto LABEL_7;
   }
 
-  v3 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+  capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
   v4 = WBSIsEqual();
 
   if (v4)
@@ -2079,14 +2079,14 @@ LABEL_17:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_tabThumbnailCollectionView);
-  v6 = [WeakRetained presentationState];
+  presentationState = [WeakRetained presentationState];
 
-  if (v6 == 3)
+  if (presentationState == 3)
   {
     v10 = objc_loadWeakRetained(&self->_browserController);
-    v11 = [v10 tabController];
-    v12 = [v11 activeTabDocument];
-    if ([v12 isShowingSystemStartPage])
+    tabController = [v10 tabController];
+    activeTabDocument = [tabController activeTabDocument];
+    if ([activeTabDocument isShowingSystemStartPage])
     {
       catalogViewController = self->_catalogViewController;
     }
@@ -2101,7 +2101,7 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  if (v6)
+  if (presentationState)
   {
 LABEL_7:
     v8 = 0;
@@ -2136,9 +2136,9 @@ LABEL_8:
 
   else
   {
-    v4 = [v3 presentationState];
+    presentationState = [v3 presentationState];
 
-    if (v4 != 2 && ![(BrowserRootViewController *)self _shouldInterceptBottomGesture])
+    if (presentationState != 2 && ![(BrowserRootViewController *)self _shouldInterceptBottomGesture])
     {
       return self->_barStateAllowsHidingHomeIndicator;
     }
@@ -2154,8 +2154,8 @@ LABEL_8:
     return 0;
   }
 
-  v5 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
-  v3 = v5 != 0;
+  capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+  v3 = capsuleCollectionViewLayout != 0;
 
   return v3;
 }
@@ -2163,27 +2163,27 @@ LABEL_8:
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 activeTabDocument];
-  v6 = [v5 webView];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  webView = [activeTabDocument webView];
 
-  v7 = [v6 _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [webView _sf_usesLeftToRightLayout];
   showingSidebar = self->_showingSidebar;
-  v9 = [v6 canGoBack];
-  v10 = [v6 canGoForward];
+  canGoBack = [webView canGoBack];
+  canGoForward = [webView canGoForward];
   if (self->_showingSidebar)
   {
-    v11 = [(SidebarViewController *)self->_sidebarViewController contentViewController];
-    v12 = [v11 preferredScreenEdgesDeferringSystemGestures];
+    contentViewController = [(SidebarViewController *)self->_sidebarViewController contentViewController];
+    preferredScreenEdgesDeferringSystemGestures = [contentViewController preferredScreenEdgesDeferringSystemGestures];
   }
 
   else
   {
-    v12 = 0;
+    preferredScreenEdgesDeferringSystemGestures = 0;
   }
 
   v13 = 8;
-  if (v7)
+  if (_sf_usesLeftToRightLayout)
   {
     v14 = 2;
   }
@@ -2193,12 +2193,12 @@ LABEL_8:
     v14 = 8;
   }
 
-  if (!v7)
+  if (!_sf_usesLeftToRightLayout)
   {
     v13 = 2;
   }
 
-  if (v9)
+  if (canGoBack)
   {
     v15 = v14;
   }
@@ -2208,7 +2208,7 @@ LABEL_8:
     v15 = 0;
   }
 
-  if (v10)
+  if (canGoForward)
   {
     v16 = v13;
   }
@@ -2229,31 +2229,31 @@ LABEL_8:
     v18 = 10;
   }
 
-  v19 = [(BrowserRootViewController *)self _shouldInterceptBottomGesture];
+  _shouldInterceptBottomGesture = [(BrowserRootViewController *)self _shouldInterceptBottomGesture];
   v20 = 4;
-  if (!v19)
+  if (!_shouldInterceptBottomGesture)
   {
     v20 = 0;
   }
 
   v21 = v17 & v18;
-  v22 = v12 | v20;
+  v22 = preferredScreenEdgesDeferringSystemGestures | v20;
 
   return v22 | v21;
 }
 
 - (void)_dismissWebSearchTipPopoverIfNeeded
 {
-  v2 = [(UIViewController *)self->_webSearchTipViewController presentingViewController];
-  v3 = v2;
-  if (v2)
+  presentingViewController = [(UIViewController *)self->_webSearchTipViewController presentingViewController];
+  v3 = presentingViewController;
+  if (presentingViewController)
   {
     v4 = MEMORY[0x277D75D28];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __64__BrowserRootViewController__dismissWebSearchTipPopoverIfNeeded__block_invoke;
     v5[3] = &unk_2781D4D40;
-    v6 = v2;
+    v6 = presentingViewController;
     [v4 _performWithoutDeferringTransitions:v5];
   }
 }
@@ -2264,8 +2264,8 @@ LABEL_8:
   if (self->_showingSidebar && (objc_opt_respondsToSelector() & 1) != 0)
   {
     sidebarStyle = self->_sidebarStyle;
-    v5 = [(BrowserRootViewController *)self view];
-    [v5 frame];
+    view = [(BrowserRootViewController *)self view];
+    [view frame];
     self->_sidebarStyle = [WeakRetained browserViewController:self sidebarStyleForViewSize:{v6, v7}];
 
     v8[0] = MEMORY[0x277D85DD0];
@@ -2287,14 +2287,14 @@ LABEL_8:
 
 - (void)_updateAddedBookmarkToastLayout
 {
-  v3 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
-  [v3 bounds];
+  view = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
-  [(BrowserRootViewController *)self obscuredInsetsForRect:v12 inCoordinateSpace:v5, v7, v9, v11];
+  view2 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
+  [(BrowserRootViewController *)self obscuredInsetsForRect:view2 inCoordinateSpace:v5, v7, v9, v11];
   [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController setToastObscuredEdgeInsets:?];
 
   v13 = +[Application sharedApplication];
@@ -2320,8 +2320,8 @@ LABEL_8:
   v10 = v9;
   [(BrowserRootViewController *)self navigationBarDesiredHeight];
   v12 = v11;
-  v13 = [(BrowserRootViewController *)self view];
-  [v13 safeAreaInsets];
+  view = [(BrowserRootViewController *)self view];
+  [view safeAreaInsets];
   v15 = v14;
 
   navigationBar = self->_navigationBar;
@@ -2333,8 +2333,8 @@ LABEL_8:
     [(_SFNavigationBar *)self->_navigationBar setContentUnderStatusBarHeight:v15];
     if (self->_scrollToTopView)
     {
-      v17 = [(BrowserRootViewController *)self view];
-      [(BrowserRootViewController *)self navigationBarFrameInCoordinateSpace:v17];
+      view2 = [(BrowserRootViewController *)self view];
+      [(BrowserRootViewController *)self navigationBarFrameInCoordinateSpace:view2];
       [(NavigationBar *)self->_navigationBar setHidden:CGRectGetMaxY(v88) <= 0.0];
     }
 
@@ -2396,11 +2396,11 @@ LABEL_8:
     [(SFUnifiedBar *)self->_unifiedBar setContentUnderStatusBarHeight:v15];
     if ([MEMORY[0x277D49A08] isSolariumEnabled] && (WeakRetained = objc_loadWeakRetained(&self->_browserController), objc_msgSend(WeakRetained, "sidebarUIProxy"), v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v34, "isShowingSidebar"), v34, WeakRetained, v35))
     {
-      v36 = [(BrowserRootViewController *)self view];
-      v37 = [v36 _sf_usesLeftToRightLayout];
-      v38 = [(BrowserRootViewController *)self view];
-      [v38 safeAreaInsets];
-      if (v37)
+      view3 = [(BrowserRootViewController *)self view];
+      _sf_usesLeftToRightLayout = [view3 _sf_usesLeftToRightLayout];
+      view4 = [(BrowserRootViewController *)self view];
+      [view4 safeAreaInsets];
+      if (_sf_usesLeftToRightLayout)
       {
         v41 = v39;
       }
@@ -2418,16 +2418,16 @@ LABEL_8:
       [(SFUnifiedBar *)self->_unifiedBar setContentUnderSidebarWidth:0.0];
     }
 
-    v42 = [(BrowserRootViewController *)self _shouldHideUnifiedBar];
-    if (v42 || !self->_scrollToTopView)
+    _shouldHideUnifiedBar = [(BrowserRootViewController *)self _shouldHideUnifiedBar];
+    if (_shouldHideUnifiedBar || !self->_scrollToTopView)
     {
-      [(UnifiedBar *)self->_unifiedBar setHidden:v42];
+      [(UnifiedBar *)self->_unifiedBar setHidden:_shouldHideUnifiedBar];
     }
 
     else
     {
-      v43 = [(BrowserRootViewController *)self view];
-      [(BrowserRootViewController *)self navigationBarFrameInCoordinateSpace:v43];
+      view5 = [(BrowserRootViewController *)self view];
+      [(BrowserRootViewController *)self navigationBarFrameInCoordinateSpace:view5];
       [(UnifiedBar *)self->_unifiedBar setHidden:CGRectGetMaxY(v92) <= 0.0];
     }
 
@@ -2489,8 +2489,8 @@ LABEL_8:
     v98.size.width = Width;
     v98.size.height = v45;
     [(UIView *)self->_tabBarClipperView setFrame:*MEMORY[0x277CBF3A0], CGRectGetHeight(v98) - (v52 + 3.0), Width, v52 + 3.0];
-    v54 = [(TabBar *)self->_tabBar superview];
-    [v54 bounds];
+    superview = [(TabBar *)self->_tabBar superview];
+    [superview bounds];
     v55 = CGRectGetMaxY(v99) - v52;
     v100.origin.x = MinX;
     v100.origin.y = v48;
@@ -2533,16 +2533,16 @@ LABEL_8:
   bookmarksBar = self->_bookmarksBar;
   if (bookmarksBar)
   {
-    v64 = [(BookmarksBarView *)bookmarksBar superview];
+    superview2 = [(BookmarksBarView *)bookmarksBar superview];
     topAuxiliaryBarsContainerView = self->_topAuxiliaryBarsContainerView;
 
-    if (v64 == topAuxiliaryBarsContainerView)
+    if (superview2 == topAuxiliaryBarsContainerView)
     {
       if (self->_tabBar && self->_showingTabBar)
       {
-        v66 = [(BookmarksBarView *)self->_bookmarksBar superview];
+        superview3 = [(BookmarksBarView *)self->_bookmarksBar superview];
         [(TabBar *)self->_tabBar bounds];
-        [v66 convertRect:self->_tabBar fromView:?];
+        [superview3 convertRect:self->_tabBar fromView:?];
         v68 = v67;
         v70 = v69;
         v71 = v10;
@@ -2561,8 +2561,8 @@ LABEL_8:
 
       else
       {
-        v78 = [(BookmarksBarView *)self->_bookmarksBar superview];
-        [v78 bounds];
+        superview4 = [(BookmarksBarView *)self->_bookmarksBar superview];
+        [superview4 bounds];
         MinY = CGRectGetMaxY(v104);
       }
 
@@ -2602,10 +2602,10 @@ LABEL_8:
   bookmarksBar = self->_bookmarksBar;
   if (bookmarksBar)
   {
-    v4 = [(BookmarksBarView *)bookmarksBar superview];
+    superview = [(BookmarksBarView *)bookmarksBar superview];
     topAuxiliaryBarsContainerView = self->_topAuxiliaryBarsContainerView;
 
-    if (v4 == topAuxiliaryBarsContainerView)
+    if (superview == topAuxiliaryBarsContainerView)
     {
       v6 = 23.0;
     }
@@ -2642,17 +2642,17 @@ LABEL_8:
   v11 = v10;
   v13 = v12;
   v14 = objc_loadWeakRetained(&self->_browserController);
-  v15 = [v14 bannerController];
-  v16 = [v15 indexOfFirstBannerSeparableFromStatusBar];
+  bannerController = [v14 bannerController];
+  indexOfFirstBannerSeparableFromStatusBar = [bannerController indexOfFirstBannerSeparableFromStatusBar];
 
-  v17 = [(BrowserRootViewController *)self managedTopBanners];
-  v18 = [v14 bannerController];
-  v19 = [v18 bannerBackdrop];
+  managedTopBanners = [(BrowserRootViewController *)self managedTopBanners];
+  bannerController2 = [v14 bannerController];
+  bannerBackdrop = [bannerController2 bannerBackdrop];
 
-  v20 = [(SFBannerTheme *)self->_bannerTheme themeColor];
-  [v19 setBackgroundColor:v20];
+  themeColor = [(SFBannerTheme *)self->_bannerTheme themeColor];
+  [bannerBackdrop setBackgroundColor:themeColor];
 
-  if ([v17 count])
+  if ([managedTopBanners count])
   {
     v34 = 0;
     v35 = &v34;
@@ -2665,27 +2665,27 @@ LABEL_8:
     aBlock[4] = self;
     aBlock[5] = &v34;
     v21 = _Block_copy(aBlock);
-    v21[2](v21, v19);
+    v21[2](v21, bannerBackdrop);
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __46__BrowserRootViewController__layOutTopBanners__block_invoke_2;
     v42[3] = &unk_2781D77D8;
     v42[4] = self;
-    v44 = v16;
+    v44 = indexOfFirstBannerSeparableFromStatusBar;
     v22 = v21;
     v43 = v22;
     v45 = v7;
     v46 = v9;
     v47 = v11;
     v48 = v13;
-    [v17 enumerateObjectsWithOptions:2 usingBlock:v42];
+    [managedTopBanners enumerateObjectsWithOptions:2 usingBlock:v42];
 
     _Block_object_dispose(&v34, 8);
   }
 
   else
   {
-    [v19 removeFromSuperview];
+    [bannerBackdrop removeFromSuperview];
   }
 
   v41[0] = 0;
@@ -2716,14 +2716,14 @@ LABEL_8:
   *&v29[10] = v9;
   *&v29[11] = v11;
   *&v29[12] = v13;
-  v29[13] = v16;
+  v29[13] = indexOfFirstBannerSeparableFromStatusBar;
   v29[4] = self;
   v29[5] = v41;
   v29[14] = v5;
   v29[6] = v40;
   v29[7] = &v30;
   v29[8] = &v34;
-  [v17 enumerateObjectsUsingBlock:v29];
+  [managedTopBanners enumerateObjectsUsingBlock:v29];
   if (*(v31 + 24))
   {
     v24 = v40;
@@ -2744,19 +2744,19 @@ LABEL_8:
   v52.origin.y = v9;
   v52.size.width = v11;
   v52.size.height = v13;
-  [v19 setFrame:{MinX, 0.0, CGRectGetWidth(v52), fmax(v25, 0.0)}];
+  [bannerBackdrop setFrame:{MinX, 0.0, CGRectGetWidth(v52), fmax(v25, 0.0)}];
   v27 = v35[5];
   if (v27)
   {
-    v28 = [v27 shouldUsePlainTheme];
+    shouldUsePlainTheme = [v27 shouldUsePlainTheme];
   }
 
   else
   {
-    v28 = 0;
+    shouldUsePlainTheme = 0;
   }
 
-  [(BrowserRootViewController *)self _setTopBackdropUsesPlainTheme:v28];
+  [(BrowserRootViewController *)self _setTopBackdropUsesPlainTheme:shouldUsePlainTheme];
   _Block_object_dispose(&v30, 8);
   _Block_object_dispose(&v34, 8);
 
@@ -2784,8 +2784,8 @@ LABEL_8:
     v3 = 0;
   }
 
-  v4 = [(BrowserRootViewController *)self _continuousReadingViewController];
-  [v4 setInterceptsScrollToTopTap:v3];
+  _continuousReadingViewController = [(BrowserRootViewController *)self _continuousReadingViewController];
+  [_continuousReadingViewController setInterceptsScrollToTopTap:v3];
 }
 
 - (void)updateUsesWebpageStatusBar
@@ -2821,17 +2821,17 @@ LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   if ([WeakRetained becomeFirstResponder])
   {
-    v4 = 1;
+    becomeFirstResponder = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = BrowserRootViewController;
-    v4 = [(BrowserRootViewController *)&v6 becomeFirstResponder];
+    becomeFirstResponder = [(BrowserRootViewController *)&v6 becomeFirstResponder];
   }
 
-  return v4;
+  return becomeFirstResponder;
 }
 
 - (BOOL)canBecomeFirstResponder
@@ -2844,8 +2844,8 @@ LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   if ([WeakRetained canBecomeFirstResponder])
   {
-    v4 = [(BrowserRootViewController *)self presentedViewController];
-    v5 = v4 == 0;
+    presentedViewController = [(BrowserRootViewController *)self presentedViewController];
+    v5 = presentedViewController == 0;
   }
 
   else
@@ -2863,18 +2863,18 @@ LABEL_8:
   [(BrowserRootViewController *)&v29 viewWillLayoutSubviews];
   if (([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0)
   {
-    v3 = [(BrowserRootViewController *)self view];
-    [v3 bounds];
+    view = [(BrowserRootViewController *)self view];
+    [view bounds];
     CGRectGetWidth(v30);
     v4 = _SFSizeClassForWidth();
-    v5 = [(BrowserRootViewController *)self traitOverrides];
-    [v5 setHorizontalSizeClass:v4];
+    traitOverrides = [(BrowserRootViewController *)self traitOverrides];
+    [traitOverrides setHorizontalSizeClass:v4];
   }
 
   if (_SFDeviceIsPad() && [MEMORY[0x277D49A08] isSolariumEnabled])
   {
-    v6 = [(BrowserRootViewController *)self view];
-    [v6 bounds];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 bounds];
     CGRectGetWidth(v31);
     if (SFWidthIsNarrow())
     {
@@ -2886,8 +2886,8 @@ LABEL_8:
       v7 = 2;
     }
 
-    v8 = [(TabSwitcherViewController *)self->_tabSwitcherViewController traitOverrides];
-    [v8 setHorizontalSizeClass:v7];
+    traitOverrides2 = [(TabSwitcherViewController *)self->_tabSwitcherViewController traitOverrides];
+    [traitOverrides2 setHorizontalSizeClass:v7];
   }
 
   [(BrowserRootViewController *)self _frameForContentContainerView];
@@ -2897,8 +2897,8 @@ LABEL_8:
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  view3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
+  [view3 setFrame:{v10, v12, v14, v16}];
 
   [(ViewWithCustomNextResponder *)self->_contentContainerView bounds];
   [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView setFrame:?];
@@ -2934,26 +2934,26 @@ LABEL_8:
 
   [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
   [(SFStepperContainer *)self->_stepperContainer setFrame:?];
-  v23 = [(_SFWebView *)self->_webView underPageBackgroundColor];
-  v24 = v23;
-  if (!v23)
+  underPageBackgroundColor = [(_SFWebView *)self->_webView underPageBackgroundColor];
+  systemBackgroundColor = underPageBackgroundColor;
+  if (!underPageBackgroundColor)
   {
-    v24 = [MEMORY[0x277D75348] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
   }
 
-  v25 = [(BrowserRootViewController *)self _continuousReadingViewController];
-  v26 = [v25 view];
-  [v26 setBackgroundColor:v24];
+  _continuousReadingViewController = [(BrowserRootViewController *)self _continuousReadingViewController];
+  view4 = [_continuousReadingViewController view];
+  [view4 setBackgroundColor:systemBackgroundColor];
 
-  if (!v23)
+  if (!underPageBackgroundColor)
   {
   }
 }
 
 - (CGRect)_frameForContentContainerView
 {
-  v2 = [(BrowserRootViewController *)self view];
-  [v2 bounds];
+  view = [(BrowserRootViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2994,10 +2994,10 @@ LABEL_8:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [WeakRetained bannerController];
-    v10 = [v9 topBannersAnchoredToStatusBar];
+    bannerController = [WeakRetained bannerController];
+    topBannersAnchoredToStatusBar = [bannerController topBannersAnchoredToStatusBar];
 
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v11 = [topBannersAnchoredToStatusBar countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -3009,7 +3009,7 @@ LABEL_8:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(topBannersAnchoredToStatusBar);
           }
 
           v16 = *(*(&v19 + 1) + 8 * i);
@@ -3019,7 +3019,7 @@ LABEL_8:
           v14 = fmax(v14, CGRectGetMaxY(v26));
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [topBannersAnchoredToStatusBar countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v12);
@@ -3047,8 +3047,8 @@ LABEL_8:
       v3 = v4;
     }
 
-    v5 = [(BrowserRootViewController *)self view];
-    [v5 bounds];
+    view = [(BrowserRootViewController *)self view];
+    [view bounds];
     [(ScrollToTopView *)self->_scrollToTopView setFrame:0.0, 0.0, CGRectGetWidth(v8), v3];
 
     WeakRetained = objc_loadWeakRetained(&self->_tabThumbnailCollectionView);
@@ -3063,8 +3063,8 @@ LABEL_8:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SidebarViewController *)self->_sidebarViewController view];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  view = [(SidebarViewController *)self->_sidebarViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)_layOutBottomToolbar
@@ -3138,16 +3138,16 @@ LABEL_8:
   [(BrowserRootViewController *)&v7 viewDidLayoutSubviews];
   [(BrowserRootViewController *)self _layOutTopBackdrop];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained tabController];
-  v5 = [v4 activeTabDocument];
-  v6 = [v5 view];
-  [v6 ensureContentOffsetWithinContentInsets];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  view = [activeTabDocument view];
+  [view ensureContentOffsetWithinContentInsets];
 }
 
 - (void)_layOutTopBackdrop
 {
-  v36 = [(BrowserRootViewController *)self view];
-  [v36 bounds];
+  view = [(BrowserRootViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -3161,8 +3161,8 @@ LABEL_8:
   v12 = 0.0;
   if ([(BrowserRootViewController *)self _showsTopBackdrop])
   {
-    v13 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    [v13 obscuredInsets];
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    [capsuleCollectionView obscuredInsets];
     v12 = fmax(v14 + -13.0, 0.0);
   }
 
@@ -3201,9 +3201,9 @@ LABEL_8:
 
   else
   {
-    v22 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
-    documentAndTopBarsContainerView = v36;
-    if (!v22)
+    capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+    documentAndTopBarsContainerView = view;
+    if (!capsuleCollectionViewLayout)
     {
       documentAndTopBarsContainerView = self->_documentAndTopBarsContainerView;
     }
@@ -3214,9 +3214,9 @@ LABEL_8:
   v24 = self->_statusBarBackdrop;
   if (v24)
   {
-    v25 = [(SFThemeColorEffectView *)v24 superview];
+    superview = [(SFThemeColorEffectView *)v24 superview];
 
-    if (v25 != v21)
+    if (superview != v21)
     {
       [(SFOrderedContainerView *)v21 addSubview:self->_statusBarBackdrop];
     }
@@ -3233,7 +3233,7 @@ LABEL_8:
   v39.size.width = v8;
   v39.size.height = v10;
   v34 = CGRectGetWidth(v39);
-  [v36 safeAreaInsets];
+  [view safeAreaInsets];
   [(SFThemeColorEffectView *)self->_statusBarBackdrop setFrame:v29 + 0.0, v27 + 0.0, v34 - (v29 + v33), v35 - (v27 + v31)];
 }
 
@@ -3344,8 +3344,8 @@ void __40__BrowserRootViewController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (void)_setUpRefreshControlIfNeeded
 {
-  v3 = [(BrowserRootViewController *)self refreshControl];
-  if (!v3)
+  refreshControl = [(BrowserRootViewController *)self refreshControl];
+  if (!refreshControl)
   {
     if (!self->_pullToRefreshIsEnabled)
     {
@@ -3356,7 +3356,7 @@ void __40__BrowserRootViewController_viewDidLoad__block_invoke(uint64_t a1)
     [v4 addTarget:self action:sel__refreshControlFired_ forControlEvents:4096];
     [(UIScrollView *)self->_scrollView setRefreshControl:v4];
     [(BrowserRootViewController *)self _updateRefreshControlStyle];
-    v3 = v4;
+    refreshControl = v4;
   }
 }
 
@@ -3375,8 +3375,8 @@ void __40__BrowserRootViewController_viewDidLoad__block_invoke(uint64_t a1)
   else
   {
     v8 = MEMORY[0x277D759D8];
-    v9 = [(BrowserRootViewController *)self view];
-    [v8 _sf_baseInsetsForVerticalScrollIndicatorInScrollViewContainerView:v9];
+    view = [(BrowserRootViewController *)self view];
+    [v8 _sf_baseInsetsForVerticalScrollIndicatorInScrollViewContainerView:view];
     p_verticalScrollIndicatorBaseInsets->top = v10;
     p_verticalScrollIndicatorBaseInsets->left = v11;
     p_verticalScrollIndicatorBaseInsets->bottom = v12;
@@ -3410,8 +3410,8 @@ void __40__BrowserRootViewController_viewDidLoad__block_invoke(uint64_t a1)
   else
   {
     v8 = MEMORY[0x277D759D8];
-    v9 = [(BrowserRootViewController *)self view];
-    [v8 _sf_baseInsetsForHorizontalScrollIndicatorInScrollViewContainerView:v9];
+    view = [(BrowserRootViewController *)self view];
+    [v8 _sf_baseInsetsForHorizontalScrollIndicatorInScrollViewContainerView:view];
     p_horizontalScrollIndicatorBaseInsets->top = v10;
     p_horizontalScrollIndicatorBaseInsets->left = v11;
     p_horizontalScrollIndicatorBaseInsets->bottom = v12;
@@ -3470,14 +3470,14 @@ void __40__BrowserRootViewController_viewDidLoad__block_invoke(uint64_t a1)
 {
   [(BrowserRootViewController *)self maximumHeightObscuredByBottomToolbar];
   v4 = v3;
-  v5 = [(BrowserRootViewController *)self view];
-  [v5 bounds];
+  view = [(BrowserRootViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(BrowserRootViewController *)self view];
-  [(BrowserRootViewController *)self obscuredInsetsWithComponents:2 forRect:v14 inCoordinateSpace:v7, v9, v11, v13];
+  view2 = [(BrowserRootViewController *)self view];
+  [(BrowserRootViewController *)self obscuredInsetsWithComponents:2 forRect:view2 inCoordinateSpace:v7, v9, v11, v13];
   v16 = v4 - v15;
 
   return v16;
@@ -3485,19 +3485,19 @@ void __40__BrowserRootViewController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (SFBarAnimating)currentBarAnimator
 {
-  v3 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+  capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
 
-  if (v3)
+  if (capsuleCollectionViewLayout)
   {
-    v4 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
   }
 
   else
   {
-    v4 = self->_dynamicBarAnimator;
+    capsuleCollectionView = self->_dynamicBarAnimator;
   }
 
-  return v4;
+  return capsuleCollectionView;
 }
 
 - (BOOL)safari_wantsTransparentApplicationBackground
@@ -3507,115 +3507,115 @@ void __40__BrowserRootViewController_viewDidLoad__block_invoke(uint64_t a1)
   {
     if ([WeakRetained presentationState])
     {
-      v4 = 1;
+      isPerformingReducedMotionTransition = 1;
     }
 
     else
     {
-      v4 = [(TabSwitcherViewController *)self->_tabSwitcherViewController isPerformingReducedMotionTransition];
+      isPerformingReducedMotionTransition = [(TabSwitcherViewController *)self->_tabSwitcherViewController isPerformingReducedMotionTransition];
     }
   }
 
   else
   {
-    v5 = [WeakRetained view];
-    v6 = [v5 superview];
-    v4 = v6 != 0;
+    view = [WeakRetained view];
+    superview = [view superview];
+    isPerformingReducedMotionTransition = superview != 0;
   }
 
-  return v4;
+  return isPerformingReducedMotionTransition;
 }
 
 - (void)updateUnifiedBarVisibility
 {
   [(UnifiedBar *)self->_unifiedBar setHidden:[(BrowserRootViewController *)self _shouldHideUnifiedBar]];
   [(BrowserRootViewController *)self _setShowingFloatingSidebarButton:0];
-  v3 = objc_loadWeakRetained(&self->_tabThumbnailCollectionView);
-  if ([v3 presentationState] == 1)
+  view = objc_loadWeakRetained(&self->_tabThumbnailCollectionView);
+  if ([view presentationState] == 1)
   {
   }
 
   else
   {
-    v4 = [v3 presentationState];
+    presentationState = [view presentationState];
 
-    if (v4 == 2)
+    if (presentationState == 2)
     {
       goto LABEL_6;
     }
 
-    v3 = [(BrowserRootViewController *)self view];
-    [v3 setNeedsLayout];
-    [v3 layoutIfNeeded];
+    view = [(BrowserRootViewController *)self view];
+    [view setNeedsLayout];
+    [view layoutIfNeeded];
   }
 
 LABEL_6:
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   [WeakRetained reloadSidebarAnimated:0];
   [WeakRetained updateTabViewPinchRecognizer];
-  v5 = [WeakRetained tabController];
-  [v5 updateLocalTabGroupTitle];
+  tabController = [WeakRetained tabController];
+  [tabController updateLocalTabGroupTitle];
 }
 
 - (BOOL)_shouldHideUnifiedBar
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained tabController];
-  v4 = [v3 isShowingLibraryDocument];
+  tabController = [WeakRetained tabController];
+  isShowingLibraryDocument = [tabController isShowingLibraryDocument];
 
-  return v4;
+  return isShowingLibraryDocument;
 }
 
 - (BOOL)_isTrackingDropSession
 {
-  v2 = [(CatalogViewController *)self->_catalogViewController startPageController];
-  v3 = [v2 viewController];
-  v4 = [v3 isTrackingDropSession];
+  startPageController = [(CatalogViewController *)self->_catalogViewController startPageController];
+  viewController = [startPageController viewController];
+  isTrackingDropSession = [viewController isTrackingDropSession];
 
-  return v4;
+  return isTrackingDropSession;
 }
 
 - (BOOL)_isShowingFindOnPage
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained tabController];
-  v4 = [v3 activeTabDocument];
-  v5 = [v4 isShowingFindOnPage];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  isShowingFindOnPage = [activeTabDocument isShowingFindOnPage];
 
-  return v5;
+  return isShowingFindOnPage;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"showingSidebar"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"showingSidebar"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___BrowserRootViewController;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;
 }
 
-- (BrowserRootViewController)initWithBrowserController:(id)a3
+- (BrowserRootViewController)initWithBrowserController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = BrowserRootViewController;
   v5 = [(BrowserRootViewController *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_browserController, v4);
-    v7 = [MEMORY[0x277D75128] sharedApplication];
+    objc_storeWeak(&v5->_browserController, controllerCopy);
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     app = v6->_app;
-    v6->_app = v7;
+    v6->_app = mEMORY[0x277D75128];
 
     *&v6->_horizontalScrollIndicatorBaseInsets.top = *invalidScrollViewInsets;
     *&v6->_horizontalScrollIndicatorBaseInsets.bottom = *&invalidScrollViewInsets[16];
@@ -3628,8 +3628,8 @@ LABEL_6:
     [(BrowserRootViewController *)v6 updateSuppressesStandaloneTabBar];
     [(BrowserRootViewController *)v6 _registerLayoutStateUpdateHandler];
     [(BrowserRootViewController *)v6 _logCurrentLayoutState];
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v11 addObserver:v6 forKeyPath:@"DebugBarCollapsingBehavior" options:0 context:kvoContext_0];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults addObserver:v6 forKeyPath:@"DebugBarCollapsingBehavior" options:0 context:kvoContext_0];
 
     v12 = v6;
   }
@@ -3639,10 +3639,10 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(BrowserRootViewController *)self view];
+  view = [(BrowserRootViewController *)self view];
   if (objc_opt_respondsToSelector())
   {
-    [v3 _removeBoundingPathChangeObserver:self];
+    [view _removeBoundingPathChangeObserver:self];
   }
 
   v4.receiver = self;
@@ -3650,13 +3650,13 @@ LABEL_6:
   [(BrowserRootViewController *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (kvoContext_0 == a6)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (kvoContext_0 == context)
   {
-    if ([v10 isEqualToString:@"DebugBarCollapsingBehavior"])
+    if ([pathCopy isEqualToString:@"DebugBarCollapsingBehavior"])
     {
       [(BrowserRootViewController *)self updateCapsuleMinimizationStyle];
     }
@@ -3671,7 +3671,7 @@ LABEL_6:
   {
     v12.receiver = self;
     v12.super_class = BrowserRootViewController;
-    [(BrowserRootViewController *)&v12 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(BrowserRootViewController *)&v12 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 
@@ -3679,22 +3679,22 @@ LABEL_6:
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_215819000, a2, OS_LOG_TYPE_ERROR, "Sidebar is unparented, but is still in the view hierarchy with parent view %{public}@, removing the sidebar from the view hierarchy before discarding.", &v2, 0xCu);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_delegate, obj);
-    v6 = [(BrowserRootViewController *)self isViewLoaded];
+    isViewLoaded = [(BrowserRootViewController *)self isViewLoaded];
     v5 = obj;
-    if (v6)
+    if (isViewLoaded)
     {
       self->_sizeForToolbarPlacement = *MEMORY[0x277CBF3A8];
       [(BrowserRootViewController *)self _updateToolbarPlacementIfNeeded];
@@ -3703,20 +3703,20 @@ LABEL_6:
   }
 }
 
-- (void)setWebView:(id)a3
+- (void)setWebView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   webView = self->_webView;
-  if (webView != v5)
+  if (webView != viewCopy)
   {
-    v13 = v5;
+    v13 = viewCopy;
     v7 = webView;
-    v8 = [(_SFWebView *)v7 scrollView];
-    [v8 setRefreshControl:0];
-    objc_storeStrong(&self->_webView, a3);
-    v9 = [(_SFWebView *)v13 scrollView];
+    scrollView = [(_SFWebView *)v7 scrollView];
+    [scrollView setRefreshControl:0];
+    objc_storeStrong(&self->_webView, view);
+    scrollView2 = [(_SFWebView *)v13 scrollView];
     scrollView = self->_scrollView;
-    self->_scrollView = v9;
+    self->_scrollView = scrollView2;
 
     [(BrowserRootViewController *)self _setUpRefreshControlIfNeeded];
     [(BrowserRootViewController *)self _updateTopScrollEdgeEffectStyle];
@@ -3724,29 +3724,29 @@ LABEL_6:
     [(BrowserRootViewController *)self _updateScrollPocketForCapsuleView];
     [(BrowserRootViewController *)self _updateScrollPocketForTopBackdrop];
     [(BrowserRootViewController *)self _updateScrollPocketForUnifiedBar];
-    v11 = [v8 topEdgeEffect];
-    [v11 removeObserver:self forKeyPath:@"isHidden" context:kvoContext_0];
+    topEdgeEffect = [scrollView topEdgeEffect];
+    [topEdgeEffect removeObserver:self forKeyPath:@"isHidden" context:kvoContext_0];
 
-    v12 = [(UIScrollView *)self->_scrollView topEdgeEffect];
-    [v12 addObserver:self forKeyPath:@"isHidden" options:0 context:kvoContext_0];
+    topEdgeEffect2 = [(UIScrollView *)self->_scrollView topEdgeEffect];
+    [topEdgeEffect2 addObserver:self forKeyPath:@"isHidden" options:0 context:kvoContext_0];
 
-    v5 = v13;
+    viewCopy = v13;
   }
 }
 
-- (void)setBookmarksBar:(id)a3
+- (void)setBookmarksBar:(id)bar
 {
-  v5 = a3;
-  if (self->_bookmarksBar != v5)
+  barCopy = bar;
+  if (self->_bookmarksBar != barCopy)
   {
-    v11 = v5;
-    v6 = [(BrowserRootViewController *)self view];
-    [v6 setNeedsLayout];
+    v11 = barCopy;
+    view = [(BrowserRootViewController *)self view];
+    [view setNeedsLayout];
 
-    v7 = [MEMORY[0x277D28C70] sharedFeatureManager];
-    v8 = [v7 showRectangularTabsInSeparateBar];
+    mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+    showRectangularTabsInSeparateBar = [mEMORY[0x277D28C70] showRectangularTabsInSeparateBar];
 
-    if (v8)
+    if (showRectangularTabsInSeparateBar)
     {
       if (self->_bookmarksBar)
       {
@@ -3760,8 +3760,8 @@ LABEL_6:
       }
 
       [(BookmarksBarView *)bookmarksBar removeFromSuperview];
-      objc_storeStrong(&self->_bookmarksBar, a3);
-      v5 = v11;
+      objc_storeStrong(&self->_bookmarksBar, bar);
+      barCopy = v11;
       if (!self->_bookmarksBar)
       {
         goto LABEL_10;
@@ -3776,25 +3776,25 @@ LABEL_6:
 
     else
     {
-      objc_storeStrong(&self->_bookmarksBar, a3);
+      objc_storeStrong(&self->_bookmarksBar, bar);
       [(TabBarManager *)self->_tabBarManager setBookmarksBar:v11];
       [(BrowserRootViewController *)self _updateTopBarStyles];
     }
 
-    v5 = v11;
+    barCopy = v11;
   }
 
 LABEL_10:
 }
 
-- (void)setTabBar:(id)a3
+- (void)setTabBar:(id)bar
 {
-  v5 = a3;
-  if (self->_tabBar != v5)
+  barCopy = bar;
+  if (self->_tabBar != barCopy)
   {
-    v13 = v5;
-    v6 = [(BrowserRootViewController *)self view];
-    [v6 setNeedsLayout];
+    v13 = barCopy;
+    view = [(BrowserRootViewController *)self view];
+    [view setNeedsLayout];
 
     if (self->_tabBar)
     {
@@ -3808,7 +3808,7 @@ LABEL_10:
     }
 
     [(TabBar *)tabBar removeFromSuperview];
-    objc_storeStrong(&self->_tabBar, a3);
+    objc_storeStrong(&self->_tabBar, bar);
     v8 = self->_tabBar;
     tabBarClipperView = self->_tabBarClipperView;
     if (v8)
@@ -3837,13 +3837,13 @@ LABEL_10:
       self->_tabBarClipperView = 0;
     }
 
-    v5 = v13;
+    barCopy = v13;
   }
 }
 
-- (void)setTabThumbnailCollectionView:(id)a3
+- (void)setTabThumbnailCollectionView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_tabThumbnailCollectionView);
   if (WeakRetained != obj)
   {
@@ -3870,36 +3870,36 @@ LABEL_10:
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   configuration = self->_configuration;
-  if (configuration != v5)
+  if (configuration != configurationCopy)
   {
-    v8 = v5;
-    v7 = [(_SFBrowserConfiguration *)configuration isEqual:v5];
-    v5 = v8;
+    v8 = configurationCopy;
+    v7 = [(_SFBrowserConfiguration *)configuration isEqual:configurationCopy];
+    configurationCopy = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_configuration, a3);
+      objc_storeStrong(&self->_configuration, configuration);
       [(BrowserRootViewController *)self _updateTopBarStyles];
-      v5 = v8;
+      configurationCopy = v8;
     }
   }
 }
 
-- (void)setShowingTabBar:(BOOL)a3
+- (void)setShowingTabBar:(BOOL)bar
 {
-  if (self->_showingTabBar != a3)
+  if (self->_showingTabBar != bar)
   {
-    v4 = a3;
-    self->_showingTabBar = a3;
-    v6 = [(TabBarManager *)self->_tabBarManager standaloneTabBar];
-    [v6 setContentHidden:!v4];
+    barCopy = bar;
+    self->_showingTabBar = bar;
+    standaloneTabBar = [(TabBarManager *)self->_tabBarManager standaloneTabBar];
+    [standaloneTabBar setContentHidden:!barCopy];
 
     [(UnifiedBar *)self->_unifiedBar setNeedsLayout];
-    v7 = [(BrowserRootViewController *)self view];
-    [v7 setNeedsLayout];
+    view = [(BrowserRootViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
@@ -3907,7 +3907,7 @@ LABEL_10:
 {
   if ([(BrowserRootViewController *)self usingLoweredBar])
   {
-    v3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController selectedItemNavigationBar];
+    selectedItemNavigationBar = [(CapsuleNavigationBarViewController *)self->_capsuleViewController selectedItemNavigationBar];
   }
 
   else
@@ -3918,20 +3918,20 @@ LABEL_10:
       unifiedBar = self->_navigationBar;
     }
 
-    v3 = unifiedBar;
+    selectedItemNavigationBar = unifiedBar;
   }
 
-  return v3;
+  return selectedItemNavigationBar;
 }
 
-- (void)_setTopBackdropTheme:(id)a3 animated:(BOOL)a4
+- (void)_setTopBackdropTheme:(id)theme animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  themeCopy = theme;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_topBackdropTheme, a3);
-    if (v4)
+    objc_storeStrong(&self->_topBackdropTheme, theme);
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
@@ -3957,15 +3957,15 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
   return [v2 _applyStatusBarBackdropTheme];
 }
 
-- (void)_setTopBackdropUsesPlainTheme:(BOOL)a3
+- (void)_setTopBackdropUsesPlainTheme:(BOOL)theme
 {
-  if (self->_topBackdropUsesPlainTheme != a3)
+  if (self->_topBackdropUsesPlainTheme != theme)
   {
     v18 = v6;
     v19 = v5;
     v20 = v3;
     v21 = v4;
-    self->_topBackdropUsesPlainTheme = a3;
+    self->_topBackdropUsesPlainTheme = theme;
     v8 = [(SFThemeColorEffectView *)self->_topBackdrop snapshotViewAfterScreenUpdates:0];
     [(SFThemeColorEffectView *)self->_topBackdrop addSubview:v8];
     v9 = MEMORY[0x277D75D18];
@@ -3988,33 +3988,33 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
 - (int64_t)bookmarksPresentationStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [(BrowserRootViewController *)self view];
-  [v4 bounds];
+  view = [(BrowserRootViewController *)self view];
+  [view bounds];
   v7 = [WeakRetained bookmarksPresentationStyleForViewOfSize:{v5, v6}];
 
   return v7;
 }
 
-- (void)setShowingSidebar:(BOOL)a3 completion:(id)a4
+- (void)setShowingSidebar:(BOOL)sidebar completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (self->_showingSidebar == v4)
+  sidebarCopy = sidebar;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (self->_showingSidebar == sidebarCopy)
   {
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 1);
+      (*(completionCopy + 2))(completionCopy, 1);
     }
   }
 
   else
   {
-    v8 = [(BrowserRootViewController *)self view];
-    [v8 layoutIfNeeded];
+    view = [(BrowserRootViewController *)self view];
+    [view layoutIfNeeded];
 
     [(BrowserRootViewController *)self willChangeValueForKey:@"showingSidebar"];
-    self->_showingSidebar = v4;
+    self->_showingSidebar = sidebarCopy;
     [(BrowserRootViewController *)self didChangeValueForKey:@"showingSidebar"];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -4029,16 +4029,16 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
       sidebarViewController = self->_sidebarViewController;
       self->_sidebarViewController = v10;
 
-      v12 = [(SidebarViewController *)self->_sidebarViewController view];
-      v13 = [v12 _sf_usesLeftToRightLayout];
+      view2 = [(SidebarViewController *)self->_sidebarViewController view];
+      _sf_usesLeftToRightLayout = [view2 _sf_usesLeftToRightLayout];
 
-      v14 = [(BrowserRootViewController *)self view];
-      [v14 safeAreaInsets];
+      view3 = [(BrowserRootViewController *)self view];
+      [view3 safeAreaInsets];
       v16 = v15;
       v18 = v17;
       v20 = v19;
 
-      if (v13)
+      if (_sf_usesLeftToRightLayout)
       {
         v21 = v18;
       }
@@ -4048,7 +4048,7 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
         v21 = 0.0;
       }
 
-      if (v13)
+      if (_sf_usesLeftToRightLayout)
       {
         v22 = 0.0;
       }
@@ -4074,10 +4074,10 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
     v50[4] = self;
     [MEMORY[0x277D75D18] performWithoutAnimation:v50];
     [(BrowserRootViewController *)self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
-    v25 = [(CatalogViewController *)self->_catalogViewController view];
-    [v25 layoutIfNeeded];
+    view4 = [(CatalogViewController *)self->_catalogViewController view];
+    [view4 layoutIfNeeded];
 
-    [(BrowserRootViewController *)self _layOutFloatingSidebarButtonForSidebarShowing:!v4];
+    [(BrowserRootViewController *)self _layOutFloatingSidebarButtonForSidebarShowing:!sidebarCopy];
     if (self->_sidebarStyle == 1)
     {
       [(UnifiedBar *)self->_unifiedBar layoutIfNeeded];
@@ -4085,12 +4085,12 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
 
     v26 = dispatch_group_create();
     ++self->_sidebarControllerActiveAnimationCount;
-    v27 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-    [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:v27];
-    v28 = [(BrowserRootViewController *)self view];
-    [v28 setNeedsLayout];
+    areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+    [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:areAnimationsEnabled];
+    view5 = [(BrowserRootViewController *)self view];
+    [view5 setNeedsLayout];
 
-    v29 = [(SidebarViewController *)self->_sidebarViewController view];
+    view6 = [(SidebarViewController *)self->_sidebarViewController view];
     v37 = WeakRetained;
     if ([(BrowserRootViewController *)self isPerformingSizeTransition])
     {
@@ -4099,8 +4099,8 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
 
     else
     {
-      v31 = [(_SFWebView *)self->_webView window];
-      v30 = v31 != 0;
+      window = [(_SFWebView *)self->_webView window];
+      v30 = window != 0;
     }
 
     dispatch_group_enter(v26);
@@ -4118,7 +4118,7 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
     v46[4] = self;
     v33 = v26;
     v47 = v33;
-    [v32 sf_animate:v27 usingDefaultMotionWithOptions:4 animations:v48 completion:v46];
+    [v32 sf_animate:areAnimationsEnabled usingDefaultMotionWithOptions:4 animations:v48 completion:v46];
     dispatch_group_enter(v33);
     v34 = MEMORY[0x277D75D18];
     v43 = v33;
@@ -4127,22 +4127,22 @@ uint64_t __59__BrowserRootViewController__setTopBackdropTheme_animated___block_i
     v44[2] = __58__BrowserRootViewController_setShowingSidebar_completion___block_invoke_5;
     v44[3] = &unk_2781D51B8;
     v44[4] = self;
-    v45 = v4;
+    v45 = sidebarCopy;
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = __58__BrowserRootViewController_setShowingSidebar_completion___block_invoke_6;
     v42[3] = &unk_2781D4B18;
     v35 = v33;
-    [v34 sf_animate:v27 usingDefaultMotionWithOptions:6 animations:v44 completion:v42];
+    [v34 sf_animate:areAnimationsEnabled usingDefaultMotionWithOptions:6 animations:v44 completion:v42];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__BrowserRootViewController_setShowingSidebar_completion___block_invoke_7;
     block[3] = &unk_2781D76E8;
     v41 = v30;
     block[4] = self;
-    v39 = v29;
+    v39 = view6;
     v40 = v7;
-    v36 = v29;
+    v36 = view6;
     dispatch_group_notify(v35, MEMORY[0x277D85CD0], block);
   }
 }
@@ -4224,23 +4224,23 @@ uint64_t __58__BrowserRootViewController_setShowingSidebar_completion___block_in
 {
   if ([(BrowserRootViewController *)self sidebarStyle])
   {
-    v3 = 0;
+    sidebarButtonItem = 0;
   }
 
   else
   {
-    v3 = [(BrowserRootViewController *)self sidebarButtonItem];
+    sidebarButtonItem = [(BrowserRootViewController *)self sidebarButtonItem];
   }
 
-  return v3;
+  return sidebarButtonItem;
 }
 
-- (void)setNeedsScrollToTopView:(BOOL)a3
+- (void)setNeedsScrollToTopView:(BOOL)view
 {
-  if (self->_needsScrollToTopView != a3)
+  if (self->_needsScrollToTopView != view)
   {
-    self->_needsScrollToTopView = a3;
-    if (a3)
+    self->_needsScrollToTopView = view;
+    if (view)
     {
       objc_initWeak(&location, self);
       v4 = [ScrollToTopView alloc];
@@ -4259,8 +4259,8 @@ uint64_t __58__BrowserRootViewController_setShowingSidebar_completion___block_in
       v10[3] = &unk_2781D5598;
       objc_copyWeak(&v11, &location);
       [(ScrollToTopView *)self->_scrollToTopView setShowBarsBlock:v10];
-      v7 = [(BrowserRootViewController *)self view];
-      [v7 addSubview:self->_scrollToTopView];
+      view = [(BrowserRootViewController *)self view];
+      [view addSubview:self->_scrollToTopView];
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&v13);
@@ -4274,8 +4274,8 @@ uint64_t __58__BrowserRootViewController_setShowingSidebar_completion___block_in
       self->_scrollToTopView = 0;
     }
 
-    v9 = [(BrowserRootViewController *)self view];
-    [v9 setNeedsLayout];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 setNeedsLayout];
   }
 }
 
@@ -4332,64 +4332,64 @@ void __53__BrowserRootViewController_setNeedsScrollToTopView___block_invoke_2(ui
 {
   if (self->_showingSidebar)
   {
-    v3 = [(SidebarViewController *)self->_sidebarViewController parentViewController];
+    parentViewController = [(SidebarViewController *)self->_sidebarViewController parentViewController];
 
-    if (!v3)
+    if (!parentViewController)
     {
-      v7 = [(SidebarViewController *)self->_sidebarViewController view];
+      view = [(SidebarViewController *)self->_sidebarViewController view];
       [(UIViewController *)self->_contentContainerViewController addChildViewController:self->_sidebarViewController];
       v4 = +[FeatureManager sharedFeatureManager];
-      v5 = [v4 isFloatingSidebarButtonEnabled];
+      isFloatingSidebarButtonEnabled = [v4 isFloatingSidebarButtonEnabled];
 
       contentContainerView = self->_contentContainerView;
-      if (v5)
+      if (isFloatingSidebarButtonEnabled)
       {
-        [(ViewWithCustomNextResponder *)contentContainerView insertSubview:v7 belowSubview:self->_floatingSidebarButton];
+        [(ViewWithCustomNextResponder *)contentContainerView insertSubview:view belowSubview:self->_floatingSidebarButton];
       }
 
       else
       {
-        [(ViewWithCustomNextResponder *)contentContainerView addSubview:v7];
+        [(ViewWithCustomNextResponder *)contentContainerView addSubview:view];
       }
 
       [(SidebarViewController *)self->_sidebarViewController didMoveToParentViewController:self->_contentContainerViewController];
       [(BrowserRootViewController *)self _frameForSidebarWhenShowing:0];
-      [v7 setFrame:?];
-      [v7 layoutIfNeeded];
-      [(SidebarContentDimmingView *)self->_sidebarContentDimmingView setPassthroughView:v7];
+      [view setFrame:?];
+      [view layoutIfNeeded];
+      [(SidebarContentDimmingView *)self->_sidebarContentDimmingView setPassthroughView:view];
     }
   }
 }
 
-- (void)setDocumentSafeAreaInsetsFrozen:(BOOL)a3
+- (void)setDocumentSafeAreaInsetsFrozen:(BOOL)frozen
 {
-  if (self->_documentSafeAreaInsetsFrozen != a3)
+  if (self->_documentSafeAreaInsetsFrozen != frozen)
   {
-    v4 = a3;
-    self->_documentSafeAreaInsetsFrozen = a3;
+    frozenCopy = frozen;
+    self->_documentSafeAreaInsetsFrozen = frozen;
     [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView _setSafeAreaInsetsFrozen:?];
 
-    setSafeAreaInsetsFrozenRecursively(self, v4);
+    setSafeAreaInsetsFrozenRecursively(self, frozenCopy);
   }
 }
 
-- (void)addChildViewController:(id)a3
+- (void)addChildViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = BrowserRootViewController;
-  v4 = a3;
-  [(BrowserRootViewController *)&v5 addChildViewController:v4];
-  [v4 _setIgnoresWrapperViewForContentOverlayInsets:{self->_documentSafeAreaInsetsFrozen, v5.receiver, v5.super_class}];
+  controllerCopy = controller;
+  [(BrowserRootViewController *)&v5 addChildViewController:controllerCopy];
+  [controllerCopy _setIgnoresWrapperViewForContentOverlayInsets:{self->_documentSafeAreaInsetsFrozen, v5.receiver, v5.super_class}];
 }
 
-- (void)removeChildViewController:(id)a3 notifyDidMove:(BOOL)a4
+- (void)removeChildViewController:(id)controller notifyDidMove:(BOOL)move
 {
-  v4 = a4;
+  moveCopy = move;
   v6.receiver = self;
   v6.super_class = BrowserRootViewController;
-  v5 = a3;
-  [(BrowserRootViewController *)&v6 removeChildViewController:v5 notifyDidMove:v4];
-  [v5 _setIgnoresWrapperViewForContentOverlayInsets:{0, v6.receiver, v6.super_class}];
+  controllerCopy = controller;
+  [(BrowserRootViewController *)&v6 removeChildViewController:controllerCopy notifyDidMove:moveCopy];
+  [controllerCopy _setIgnoresWrapperViewForContentOverlayInsets:{0, v6.receiver, v6.super_class}];
 }
 
 - (id)_multitaskingDragExclusionRects
@@ -4409,9 +4409,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v4 = [v3 presentationState];
+  presentationState = [v3 presentationState];
 
-  if (v4 == 2)
+  if (presentationState == 2)
   {
     goto LABEL_5;
   }
@@ -4424,8 +4424,8 @@ LABEL_5:
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(BrowserRootViewController *)self view];
-    [(UnifiedBar *)unifiedBar convertRect:v16 toView:v9, v11, v13, v15];
+    view = [(BrowserRootViewController *)self view];
+    [(UnifiedBar *)unifiedBar convertRect:view toView:v9, v11, v13, v15];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -4442,7 +4442,7 @@ LABEL_5:
 
   else
   {
-    v26 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v43 = 0;
     v44 = &v43;
     v45 = 0x2020000000;
@@ -4452,7 +4452,7 @@ LABEL_5:
     v39 = __60__BrowserRootViewController__multitaskingDragExclusionRects__block_invoke;
     v40 = &unk_2781D7738;
     v42 = &v43;
-    v27 = v26;
+    v27 = array;
     v41 = v27;
     v28 = _Block_copy(&v37);
     v29 = [(BrowserRootViewController *)self view:v37];
@@ -4474,11 +4474,11 @@ LABEL_5:
     if (!self->_toolbarPlacement && (![(_SFNavigationBar *)self->_navigationBar isExpanded]|| ![(_SFNavigationBar *)self->_navigationBar usesNarrowLayout]))
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
-      v36 = [WeakRetained barManager];
+      barManager = [WeakRetained barManager];
 
-      [v36 frameForBarItem:3 inCoordinateSpace:v29];
+      [barManager frameForBarItem:3 inCoordinateSpace:v29];
       (v28[2])(v28);
-      [v36 frameForBarItem:7 inCoordinateSpace:v29];
+      [barManager frameForBarItem:7 inCoordinateSpace:v29];
       (v28[2])(v28);
     }
 
@@ -4510,11 +4510,11 @@ void __60__BrowserRootViewController__multitaskingDragExclusionRects__block_invo
   [v12 addObject:v13];
 }
 
-- (CGSize)_webViewMinimumLayoutSizeWithBarVisibilitiesIgnored:(BOOL)a3
+- (CGSize)_webViewMinimumLayoutSizeWithBarVisibilitiesIgnored:(BOOL)ignored
 {
-  v3 = a3;
+  ignoredCopy = ignored;
   [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
-  [(BrowserRootViewController *)self maximumObscuredInsetsForRect:self->_documentAndTopBarsContainerView inCoordinateSpace:v3 ignoreBarsMinimized:?];
+  [(BrowserRootViewController *)self maximumObscuredInsetsForRect:self->_documentAndTopBarsContainerView inCoordinateSpace:ignoredCopy ignoreBarsMinimized:?];
   [(BrowserRootViewController *)self _totalAdditionalContentHeightForBanners];
   [(BrowserRootViewController *)self webViewEffectiveSafeAreaInsets];
   UIEdgeInsetsMax();
@@ -4533,17 +4533,17 @@ void __60__BrowserRootViewController__multitaskingDragExclusionRects__block_invo
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = BrowserRootViewController;
-  v4 = a3;
-  [(BrowserRootViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(BrowserRootViewController *)&v8 traitCollectionDidChange:changeCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained browserViewController:self traitCollectionDidChange:{v4, v8.receiver, v8.super_class}];
+  [WeakRetained browserViewController:self traitCollectionDidChange:{changeCopy, v8.receiver, v8.super_class}];
 
-  v6 = [(BrowserRootViewController *)self traitCollection];
-  v7 = [v6 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  traitCollection = [(BrowserRootViewController *)self traitCollection];
+  v7 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v7)
   {
@@ -4551,7 +4551,7 @@ void __60__BrowserRootViewController__multitaskingDragExclusionRects__block_invo
   }
 }
 
-- (void)setNeedsPreferredStatusBarUpdateAfterCommitAnimated:(BOOL)a3
+- (void)setNeedsPreferredStatusBarUpdateAfterCommitAnimated:(BOOL)animated
 {
   if (!self->_statusBarStyleUpdateQueued)
   {
@@ -4562,7 +4562,7 @@ void __60__BrowserRootViewController__multitaskingDragExclusionRects__block_invo
     v4[2] = __81__BrowserRootViewController_setNeedsPreferredStatusBarUpdateAfterCommitAnimated___block_invoke;
     v4[3] = &unk_2781D51B8;
     v4[4] = self;
-    v5 = a3;
+    animatedCopy = animated;
     [v3 _performBlockAfterCATransactionCommits:v4];
   }
 }
@@ -4581,11 +4581,11 @@ void __81__BrowserRootViewController_setNeedsPreferredStatusBarUpdateAfterCommit
 
 - (int64_t)preferredStatusBarStyle
 {
-  v3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  v4 = v3;
-  if (v3)
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  v4 = capsuleCollectionView;
+  if (capsuleCollectionView)
   {
-    v5 = [v3 selectionGestureAxis] != 1;
+    v5 = [capsuleCollectionView selectionGestureAxis] != 1;
   }
 
   else
@@ -4605,17 +4605,17 @@ void __81__BrowserRootViewController_setNeedsPreferredStatusBarUpdateAfterCommit
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v9 = [WeakRetained tabController];
-  v10 = [v9 activeTabDocument];
-  if ([v10 isShowingSystemStartPage])
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  if ([activeTabDocument isShowingSystemStartPage])
   {
   }
 
   else
   {
-    v11 = [(BrowserRootViewController *)self _shouldShowThemeColorInTopBar];
+    _shouldShowThemeColorInTopBar = [(BrowserRootViewController *)self _shouldShowThemeColorInTopBar];
 
-    if (!v11)
+    if (!_shouldShowThemeColorInTopBar)
     {
       goto LABEL_7;
     }
@@ -4623,8 +4623,8 @@ void __81__BrowserRootViewController_setNeedsPreferredStatusBarUpdateAfterCommit
 
   if ([(BrowserRootViewController *)self usingUnifiedBar])
   {
-    v12 = [(SFUnifiedBar *)self->_unifiedBar barTheme];
-    [v12 userInterfaceStyle];
+    barTheme = [(SFUnifiedBar *)self->_unifiedBar barTheme];
+    [barTheme userInterfaceStyle];
     v7 = SFContrastingStatusBarStyleForInterfaceStyle();
 
     goto LABEL_15;
@@ -4646,19 +4646,19 @@ LABEL_15:
 
 - (UIEdgeInsets)_avoidanceInsets
 {
-  v3 = [(BrowserRootViewController *)self view];
+  view = [(BrowserRootViewController *)self view];
   v4 = MEMORY[0x277D768C8];
-  v5 = [(BrowserRootViewController *)self topBar];
-  v6 = v5;
-  if (v5)
+  topBar = [(BrowserRootViewController *)self topBar];
+  v6 = topBar;
+  if (topBar)
   {
-    [v5 frame];
+    [topBar frame];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(BrowserRootViewController *)self view];
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:v15 toCoordinateSpace:v8, v10, v12, v14];
+    view2 = [(BrowserRootViewController *)self view];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:view2 toCoordinateSpace:v8, v10, v12, v14];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -4678,27 +4678,27 @@ LABEL_15:
 
   v25 = v4[1];
   v26 = v4[3];
-  v27 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v27 obscuredInsetsForState:0];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView obscuredInsetsForState:0];
   v29 = v28;
 
-  v30 = [(BrowserToolbar *)self->_bottomToolbar superview];
+  superview = [(BrowserToolbar *)self->_bottomToolbar superview];
 
-  if (v30)
+  if (superview)
   {
     [(BrowserToolbar *)self->_bottomToolbar frame];
     v32 = v31;
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    v39 = [(BrowserToolbar *)self->_bottomToolbar superview];
-    [v3 convertRect:v39 fromView:{v32, v34, v36, v38}];
+    superview2 = [(BrowserToolbar *)self->_bottomToolbar superview];
+    [view convertRect:superview2 fromView:{v32, v34, v36, v38}];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
 
-    [v3 bounds];
+    [view bounds];
     v48 = CGRectGetMaxY(v54);
     v55.origin.x = v41;
     v55.origin.y = v43;
@@ -4718,76 +4718,76 @@ LABEL_15:
   return result;
 }
 
-- (void)_updateAllowsHidingHomeIndicatorMinimized:(BOOL)a3
+- (void)_updateAllowsHidingHomeIndicatorMinimized:(BOOL)minimized
 {
-  v3 = a3;
+  minimizedCopy = minimized;
   if ([(BrowserRootViewController *)self usingLoweredBar])
   {
-    v5 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    v6 = [v5 layoutStyle];
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    layoutStyle = [capsuleCollectionView layoutStyle];
 
-    v8 = v6 == 2 && v3 && [(BrowserRootViewController *)self _interfaceFillsScreen];
+    v8 = layoutStyle == 2 && minimizedCopy && [(BrowserRootViewController *)self _interfaceFillsScreen];
 
     [(BrowserRootViewController *)self setBarStateAllowsHidingHomeIndicator:v8];
   }
 }
 
-- (void)setBarStateAllowsHidingHomeIndicator:(BOOL)a3
+- (void)setBarStateAllowsHidingHomeIndicator:(BOOL)indicator
 {
-  if (self->_barStateAllowsHidingHomeIndicator != a3)
+  if (self->_barStateAllowsHidingHomeIndicator != indicator)
   {
-    self->_barStateAllowsHidingHomeIndicator = a3;
+    self->_barStateAllowsHidingHomeIndicator = indicator;
     [(BrowserRootViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
   }
 }
 
-- (void)updateThemeColorIfNeededAnimated:(BOOL)a3
+- (void)updateThemeColorIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(BrowserRootViewController *)self usingUnifiedBar]|| [(BrowserRootViewController *)self usingLoweredBar])
   {
 
-    [(BrowserRootViewController *)self _updateTopBarStylesAnimated:v3];
+    [(BrowserRootViewController *)self _updateTopBarStylesAnimated:animatedCopy];
   }
 }
 
-- (void)setInYttriumState:(BOOL)a3
+- (void)setInYttriumState:(BOOL)state
 {
-  v3 = a3;
-  if ([MEMORY[0x277D49A08] isWAPEnabled] && self->_inYttriumState != v3)
+  stateCopy = state;
+  if ([MEMORY[0x277D49A08] isWAPEnabled] && self->_inYttriumState != stateCopy)
   {
-    self->_inYttriumState = v3;
-    v5 = [(BrowserRootViewController *)self _activeTabDocumentView];
-    [v5 setInteractionHintPresented:v3 ^ 1 animated:1];
+    self->_inYttriumState = stateCopy;
+    _activeTabDocumentView = [(BrowserRootViewController *)self _activeTabDocumentView];
+    [_activeTabDocumentView setInteractionHintPresented:stateCopy ^ 1 animated:1];
 
     if ([(BrowserRootViewController *)self _shouldInterceptBottomGesture])
     {
-      v6 = [(BrowserRootViewController *)self _continuousReadingViewController];
-      v7 = [v6 view];
+      _continuousReadingViewController = [(BrowserRootViewController *)self _continuousReadingViewController];
+      view = [_continuousReadingViewController view];
 
-      [v7 bounds];
+      [view bounds];
       Height = CGRectGetHeight(v13);
-      [v7 bounds];
+      [view bounds];
       v9 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, Height + -44.0, CGRectGetWidth(v14), 44.0}];
       bottomContentGestureBlocker = self->_bottomContentGestureBlocker;
       self->_bottomContentGestureBlocker = v9;
 
       [(UIView *)self->_bottomContentGestureBlocker setAutoresizingMask:8];
-      [v7 addSubview:self->_bottomContentGestureBlocker];
+      [view addSubview:self->_bottomContentGestureBlocker];
     }
 
     else
     {
       [(UIView *)self->_bottomContentGestureBlocker removeFromSuperview];
-      v7 = self->_bottomContentGestureBlocker;
+      view = self->_bottomContentGestureBlocker;
       self->_bottomContentGestureBlocker = 0;
     }
 
-    v11 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    [v11 setForceHidden:v3];
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    [capsuleCollectionView setForceHidden:stateCopy];
 
-    [(CapsuleNavigationBarViewController *)self->_capsuleViewController transitionToState:v3 animated:1 completionHandler:0];
-    [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator attemptTransitionToState:v3 ^ 1 animated:1];
+    [(CapsuleNavigationBarViewController *)self->_capsuleViewController transitionToState:stateCopy animated:1 completionHandler:0];
+    [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator attemptTransitionToState:stateCopy ^ 1 animated:1];
     [(BrowserRootViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
     [(BrowserRootViewController *)self setNeedsUpdateOfScreenEdgesDeferringSystemGestures];
     [(BrowserRootViewController *)self _updateTopBarStyles];
@@ -4796,22 +4796,22 @@ LABEL_15:
   }
 }
 
-- (void)setInYttriumMode:(BOOL)a3
+- (void)setInYttriumMode:(BOOL)mode
 {
-  v3 = a3;
-  if ([MEMORY[0x277D49A08] isWAPEnabled] && self->_inYttriumMode != v3)
+  modeCopy = mode;
+  if ([MEMORY[0x277D49A08] isWAPEnabled] && self->_inYttriumMode != modeCopy)
   {
-    self->_inYttriumMode = v3;
-    [(UITapGestureRecognizer *)self->_showBarsFromBottomBarRecognizer setEnabled:v3 ^ 1];
-    [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator setIgnoresDragging:v3];
-    v5 = [(BrowserRootViewController *)self _activeTabDocumentView];
-    [v5 setShowsInteractionHint:v3];
+    self->_inYttriumMode = modeCopy;
+    [(UITapGestureRecognizer *)self->_showBarsFromBottomBarRecognizer setEnabled:modeCopy ^ 1];
+    [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator setIgnoresDragging:modeCopy];
+    _activeTabDocumentView = [(BrowserRootViewController *)self _activeTabDocumentView];
+    [_activeTabDocumentView setShowsInteractionHint:modeCopy];
 
-    if (!v3)
+    if (!modeCopy)
     {
-      v12 = [(BrowserRootViewController *)self _continuousReadingViewController];
-      v13 = [v12 view];
-      [v13 removeGestureRecognizer:self->_enterYttriumStateRecognizer];
+      _continuousReadingViewController = [(BrowserRootViewController *)self _continuousReadingViewController];
+      view = [_continuousReadingViewController view];
+      [view removeGestureRecognizer:self->_enterYttriumStateRecognizer];
 
       enterYttriumStateRecognizer = self->_enterYttriumStateRecognizer;
       self->_enterYttriumStateRecognizer = 0;
@@ -4830,9 +4830,9 @@ LABEL_15:
       self->_enterYttriumStateRecognizer = v6;
 
       [(SFTouchDownGestureRecognizer *)self->_enterYttriumStateRecognizer setDelegate:self];
-      v8 = [(BrowserRootViewController *)self _continuousReadingViewController];
-      v9 = [v8 view];
-      [v9 addGestureRecognizer:self->_enterYttriumStateRecognizer];
+      _continuousReadingViewController2 = [(BrowserRootViewController *)self _continuousReadingViewController];
+      view2 = [_continuousReadingViewController2 view];
+      [view2 addGestureRecognizer:self->_enterYttriumStateRecognizer];
 
       v10 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__exitYttriumStateGestureRecognized_];
       v11 = self->_exitYttriumStateRecognizer;
@@ -4848,19 +4848,19 @@ LABEL_15:
     [(BrowserRootViewController *)self updateTabViewPinchRecognizer];
     [WeakRetained updatePullToRefreshIsEnabled];
     [WeakRetained updateDynamicBarGeometry];
-    v16 = [MEMORY[0x277D28BF0] sharedProvider];
-    [v16 clearCachedMenuForPersona:0];
+    mEMORY[0x277D28BF0] = [MEMORY[0x277D28BF0] sharedProvider];
+    [mEMORY[0x277D28BF0] clearCachedMenuForPersona:0];
   }
 }
 
-- (void)_updateTopBarStylesAnimated:(BOOL)a3
+- (void)_updateTopBarStylesAnimated:(BOOL)animated
 {
   if (self->_updatingTopBarStyles)
   {
     return;
   }
 
-  v72 = a3;
+  animatedCopy = animated;
   self->_updatingTopBarStyles = 1;
   v4 = objc_alloc_init(MEMORY[0x277D49B60]);
   v80[0] = MEMORY[0x277D85DD0];
@@ -4870,34 +4870,34 @@ LABEL_15:
   v80[4] = self;
   [v4 setHandler:v80];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained tabController];
-  v7 = [v6 activeTabDocument];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
 
-  [v7 updateThemeColorAndUnderPageBackground:{-[BrowserRootViewController _navigationBarIsExpandedOnTop](self, "_navigationBarIsExpandedOnTop") ^ 1}];
-  v76 = v7;
-  v8 = [v7 themeColor];
-  v9 = [(BrowserRootViewController *)self traitOverrides];
-  [v9 setObject:v8 forTrait:objc_opt_class()];
+  [activeTabDocument updateThemeColorAndUnderPageBackground:{-[BrowserRootViewController _navigationBarIsExpandedOnTop](self, "_navigationBarIsExpandedOnTop") ^ 1}];
+  v76 = activeTabDocument;
+  themeColor = [activeTabDocument themeColor];
+  traitOverrides = [(BrowserRootViewController *)self traitOverrides];
+  [traitOverrides setObject:themeColor forTrait:objc_opt_class()];
 
-  v10 = [(_SFWebView *)self->_webView _sampledTopFixedPositionContentColor];
-  v11 = v10;
-  if (v10)
+  _sampledTopFixedPositionContentColor = [(_SFWebView *)self->_webView _sampledTopFixedPositionContentColor];
+  v11 = _sampledTopFixedPositionContentColor;
+  if (_sampledTopFixedPositionContentColor)
   {
-    v12 = v10;
+    underPageBackgroundColor = _sampledTopFixedPositionContentColor;
   }
 
   else
   {
-    v12 = [(_SFWebView *)self->_webView underPageBackgroundColor];
+    underPageBackgroundColor = [(_SFWebView *)self->_webView underPageBackgroundColor];
   }
 
-  v13 = v12;
+  v13 = underPageBackgroundColor;
 
   if (self->_unifiedBar)
   {
     v14 = MEMORY[0x277D28EF8];
-    v15 = [(BrowserRootViewController *)self traitCollection];
-    v16 = [v14 shouldDisableBackgroundColorInBar:v13 traitCollection:v15];
+    traitCollection = [(BrowserRootViewController *)self traitCollection];
+    v16 = [v14 shouldDisableBackgroundColorInBar:v13 traitCollection:traitCollection];
   }
 
   else
@@ -4914,9 +4914,9 @@ LABEL_15:
   v74 = v13;
   if (v16)
   {
-    v17 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v18 = [(BrowserRootViewController *)self traitCollection];
-    v19 = [v17 resolvedColorWithTraitCollection:v18];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    traitCollection2 = [(BrowserRootViewController *)self traitCollection];
+    v19 = [systemBackgroundColor resolvedColorWithTraitCollection:traitCollection2];
   }
 
   else
@@ -4927,63 +4927,63 @@ LABEL_15:
   [(UIScrollView *)self->_scrollView _setPocketColor:v19 forEdge:1];
   v20 = [MEMORY[0x277D28EF8] themeWithBarTintStyle:{-[_SFBrowserConfiguration barTintStyle](self->_configuration, "barTintStyle")}];
   [(_SFNavigationBar *)self->_navigationBar setTheme:v20];
-  v21 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
   v77 = v20;
-  [v21 setTheme:v20];
-  if (self->_topBackdropUsesPlainTheme && [v21 layoutStyle] == 2)
+  [capsuleCollectionView setTheme:v20];
+  if (self->_topBackdropUsesPlainTheme && [capsuleCollectionView layoutStyle] == 2)
   {
-    v22 = 1;
+    isLockdownModeEnabledForSafari = 1;
   }
 
   else
   {
-    v22 = [MEMORY[0x277D4A888] isLockdownModeEnabledForSafari];
+    isLockdownModeEnabledForSafari = [MEMORY[0x277D4A888] isLockdownModeEnabledForSafari];
   }
 
-  v23 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v24 = [v23 BOOLForKey:*MEMORY[0x277D29000]];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v24 = [safari_browserDefaults BOOLForKey:*MEMORY[0x277D29000]];
 
-  v79 = 0;
-  if ((v24 & 1) == 0 && (v22 & 1) == 0)
+  underPageBackgroundColor3 = 0;
+  if ((v24 & 1) == 0 && (isLockdownModeEnabledForSafari & 1) == 0)
   {
-    if ([v21 layoutStyle] == 2)
+    if ([capsuleCollectionView layoutStyle] == 2)
     {
-      v79 = v8;
+      underPageBackgroundColor3 = themeColor;
     }
 
     else
     {
-      v25 = [(_SFWebView *)self->_webView underPageBackgroundColor];
+      underPageBackgroundColor2 = [(_SFWebView *)self->_webView underPageBackgroundColor];
       [(_SFWebView *)self->_webView setUnderPageBackgroundColor:0];
-      v79 = [(_SFWebView *)self->_webView underPageBackgroundColor];
+      underPageBackgroundColor3 = [(_SFWebView *)self->_webView underPageBackgroundColor];
       if ((WBSIsEqual() & 1) == 0)
       {
-        [(_SFWebView *)self->_webView setUnderPageBackgroundColor:v25];
+        [(_SFWebView *)self->_webView setUnderPageBackgroundColor:underPageBackgroundColor2];
       }
     }
   }
 
   v73 = v19;
-  v75 = v8;
+  v75 = themeColor;
   if ([MEMORY[0x277D49A08] isSolariumEnabled])
   {
-    [v21 setMinimizedTheme:v77];
+    [capsuleCollectionView setMinimizedTheme:v77];
   }
 
   else
   {
-    v26 = [MEMORY[0x277D28E98] themeWithBarTintStyle:-[_SFBrowserConfiguration barTintStyle](self->_configuration preferredBarTintColor:"barTintStyle") controlsTintColor:{v79, 0}];
+    v26 = [MEMORY[0x277D28E98] themeWithBarTintStyle:-[_SFBrowserConfiguration barTintStyle](self->_configuration preferredBarTintColor:"barTintStyle") controlsTintColor:{underPageBackgroundColor3, 0}];
     v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Safari.BackgroundColorBackdrop.%p", self];
     [v26 setBackdropGroupName:v27];
 
-    [v21 setMinimizedTheme:v26];
+    [capsuleCollectionView setMinimizedTheme:v26];
   }
 
   if (-[BrowserRootViewController _showsTopBackdrop](self, "_showsTopBackdrop") && ([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0)
   {
     if ([(BrowserRootViewController *)self _shouldShowThemeColorInTopBar])
     {
-      v28 = v8;
+      v28 = themeColor;
       if (self->_topBackdropUsesPlainTheme)
       {
         v28 = 0;
@@ -5008,7 +5008,7 @@ LABEL_15:
 
     if (self->_topBackdropUsesPlainTheme)
     {
-      v31 = [(BrowserRootViewController *)self _plainTopBackdropGroupName];
+      _plainTopBackdropGroupName = [(BrowserRootViewController *)self _plainTopBackdropGroupName];
     }
 
     else
@@ -5021,11 +5021,11 @@ LABEL_15:
         v34 = @"Background";
       }
 
-      v31 = [v32 stringWithFormat:@"Safari.Top%@ColorBackdrop.%p", v34, self];
+      _plainTopBackdropGroupName = [v32 stringWithFormat:@"Safari.Top%@ColorBackdrop.%p", v34, self];
     }
 
-    v35 = v31;
-    [v30 setBackdropGroupName:v31];
+    v35 = _plainTopBackdropGroupName;
+    [v30 setBackdropGroupName:_plainTopBackdropGroupName];
 
     if ([(BrowserRootViewController *)self _navigationBarIsExpandedOnTop])
     {
@@ -5033,14 +5033,14 @@ LABEL_15:
       [v30 setOverrideBackdropEffect:v36];
     }
 
-    v37 = [v30 userInterfaceStyle];
-    if (v37 != [(SFUnifiedBarTheme *)self->_topBackdropTheme userInterfaceStyle])
+    userInterfaceStyle = [v30 userInterfaceStyle];
+    if (userInterfaceStyle != [(SFUnifiedBarTheme *)self->_topBackdropTheme userInterfaceStyle])
     {
-      [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:v72];
+      [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:animatedCopy];
     }
 
-    [(BrowserRootViewController *)self _setTopBackdropTheme:v30 animated:v72];
-    [v21 obscuredInsets];
+    [(BrowserRootViewController *)self _setTopBackdropTheme:v30 animated:animatedCopy];
+    [capsuleCollectionView obscuredInsets];
     v39 = v38;
     [(SFThemeColorEffectView *)self->_topBackdrop frame];
     if (v39 != v40)
@@ -5051,36 +5051,36 @@ LABEL_15:
 
   if ([(BrowserRootViewController *)self usingUnifiedBar])
   {
-    v41 = [(_SFBrowserConfiguration *)self->_configuration barTintStyle];
+    barTintStyle = [(_SFBrowserConfiguration *)self->_configuration barTintStyle];
     if ([(BrowserRootViewController *)self _shouldShowThemeColorInTopBar])
     {
-      v42 = [v78 tabController];
-      v43 = [v42 activeTabDocument];
-      v44 = [v43 themeColor];
+      tabController2 = [v78 tabController];
+      activeTabDocument2 = [tabController2 activeTabDocument];
+      themeColor2 = [activeTabDocument2 themeColor];
     }
 
     else
     {
-      v44 = 0;
+      themeColor2 = 0;
     }
 
-    v47 = [v78 overrideBarTintStyleForUnifiedBar];
-    v71 = v21;
+    overrideBarTintStyleForUnifiedBar = [v78 overrideBarTintStyleForUnifiedBar];
+    v71 = capsuleCollectionView;
     if ([MEMORY[0x277D49A08] isSolariumEnabled])
     {
       if ([v76 isShowingSystemStartPage])
       {
-        if ([(BrowserRootViewController *)self _shouldOverridePocketColorOnStartPageDueToWallpaperStyle:v47])
+        if ([(BrowserRootViewController *)self _shouldOverridePocketColorOnStartPageDueToWallpaperStyle:overrideBarTintStyleForUnifiedBar])
         {
-          v45 = [MEMORY[0x277D75348] systemBackgroundColor];
+          systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
         }
 
         else
         {
-          v45 = 0;
-          if (v47)
+          systemBackgroundColor2 = 0;
+          if (overrideBarTintStyleForUnifiedBar)
           {
-            v41 = v47;
+            barTintStyle = overrideBarTintStyleForUnifiedBar;
           }
         }
 
@@ -5091,7 +5091,7 @@ LABEL_15:
 
         if (enableUnifiedBarUserInterfaceStyleOverride_enableUnifiedBarUserInterfaceStyleOverride == 1)
         {
-          v54 = [MEMORY[0x277D75348] systemBackgroundColor];
+          systemBackgroundColor3 = [MEMORY[0x277D75348] systemBackgroundColor];
           v55 = MEMORY[0x277D75C80];
           if (_SFIsDarkTintStyle())
           {
@@ -5104,7 +5104,7 @@ LABEL_15:
           }
 
           v57 = [v55 traitCollectionWithUserInterfaceStyle:v56];
-          v48 = [v54 resolvedColorWithTraitCollection:v57];
+          v48 = [systemBackgroundColor3 resolvedColorWithTraitCollection:v57];
 
           goto LABEL_89;
         }
@@ -5128,19 +5128,19 @@ LABEL_15:
         v48 = v49;
 
 LABEL_70:
-        v45 = 0;
+        systemBackgroundColor2 = 0;
 LABEL_89:
         v50 = 0;
         v51 = 0;
-        v47 = v41;
+        overrideBarTintStyleForUnifiedBar = barTintStyle;
         goto LABEL_90;
       }
     }
 
     else
     {
-      v48 = v44;
-      if (v47)
+      v48 = themeColor2;
+      if (overrideBarTintStyleForUnifiedBar)
       {
         if (_SFIsDarkTintStyle())
         {
@@ -5164,10 +5164,10 @@ LABEL_89:
         }
 
         v51 = [v52 effectWithStyle:v53];
-        v45 = 0;
+        systemBackgroundColor2 = 0;
 LABEL_90:
         v58 = v48;
-        v59 = [MEMORY[0x277D28E98] themeWithBarTintStyle:v47 preferredBarTintColor:v48 controlsTintColor:v50];
+        v59 = [MEMORY[0x277D28E98] themeWithBarTintStyle:overrideBarTintStyleForUnifiedBar preferredBarTintColor:v48 controlsTintColor:v50];
         if ((_SFIsDarkTintStyle() & 1) != 0 || [(TabBarManager *)self->_tabBarManager displayMode]!= 2)
         {
           v60 = v4;
@@ -5177,41 +5177,41 @@ LABEL_90:
         else
         {
           v60 = v4;
-          v61 = [MEMORY[0x277D28C70] sharedFeatureManager];
-          [v59 setAppliesDarkeningOverlay:{objc_msgSend(v61, "showRectangularTabsInSeparateBar") ^ 1}];
+          mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+          [v59 setAppliesDarkeningOverlay:{objc_msgSend(mEMORY[0x277D28C70], "showRectangularTabsInSeparateBar") ^ 1}];
         }
 
         v62 = _SFBackdropGroupNameForOwner();
         [v59 setBackdropGroupName:v62];
 
         [v59 setOverrideBackdropEffect:v51];
-        v63 = [v59 userInterfaceStyle];
-        v64 = [(SFUnifiedBar *)self->_unifiedBar barTheme];
-        v65 = [v64 userInterfaceStyle];
+        userInterfaceStyle2 = [v59 userInterfaceStyle];
+        barTheme = [(SFUnifiedBar *)self->_unifiedBar barTheme];
+        userInterfaceStyle3 = [barTheme userInterfaceStyle];
 
-        if (v63 != v65)
+        if (userInterfaceStyle2 != userInterfaceStyle3)
         {
-          [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:v72];
+          [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:animatedCopy];
         }
 
-        [(SFUnifiedBar *)self->_unifiedBar setBarTheme:v59 animated:v72];
+        [(SFUnifiedBar *)self->_unifiedBar setBarTheme:v59 animated:animatedCopy];
         [(BrowserRootViewController *)self _applyStatusBarBackdropTheme];
 
         v4 = v60;
         v46 = v78;
-        v21 = v71;
+        capsuleCollectionView = v71;
         goto LABEL_97;
       }
 
-      if (![MEMORY[0x277D4A868] shouldIgnoreThemeColorForContrastWithActiveTab:v44 privateBrowsingEnabled:_SFIsPrivateTintStyle()])
+      if (![MEMORY[0x277D4A868] shouldIgnoreThemeColorForContrastWithActiveTab:themeColor2 privateBrowsingEnabled:_SFIsPrivateTintStyle()])
       {
         goto LABEL_70;
       }
 
       if (_SFIsPrivateTintStyle())
       {
-        v47 = _SFDarkTintStyleForStyle();
-        v45 = 0;
+        overrideBarTintStyleForUnifiedBar = _SFDarkTintStyleForStyle();
+        systemBackgroundColor2 = 0;
         v48 = 0;
         v50 = 0;
         v51 = 0;
@@ -5219,16 +5219,16 @@ LABEL_90:
       }
     }
 
-    v45 = 0;
+    systemBackgroundColor2 = 0;
 LABEL_88:
     v48 = 0;
     goto LABEL_89;
   }
 
-  v45 = 0;
+  systemBackgroundColor2 = 0;
   v46 = v78;
 LABEL_97:
-  [(CatalogViewController *)self->_catalogViewController setTopScrollEdgeEffectColor:v45];
+  [(CatalogViewController *)self->_catalogViewController setTopScrollEdgeEffectColor:systemBackgroundColor2];
   [(BrowserRootViewController *)self _updateBannerTheme];
   if (self->_tabBar)
   {
@@ -5237,26 +5237,26 @@ LABEL_97:
 
   if (self->_bookmarksBar)
   {
-    v66 = [(SFUnifiedBar *)self->_unifiedBar barTheme];
-    v67 = [v66 preferredBarTintColor];
-    [(BookmarksBarView *)self->_bookmarksBar setThemeColor:v67];
+    barTheme2 = [(SFUnifiedBar *)self->_unifiedBar barTheme];
+    preferredBarTintColor = [barTheme2 preferredBarTintColor];
+    [(BookmarksBarView *)self->_bookmarksBar setThemeColor:preferredBarTintColor];
 
-    v68 = [(SFUnifiedBar *)self->_unifiedBar barTheme];
-    v69 = [v68 titleTheme];
-    v70 = [v69 primaryTextColor];
-    [(BookmarksBarView *)self->_bookmarksBar setTintColor:v70];
+    barTheme3 = [(SFUnifiedBar *)self->_unifiedBar barTheme];
+    titleTheme = [barTheme3 titleTheme];
+    primaryTextColor = [titleTheme primaryTextColor];
+    [(BookmarksBarView *)self->_bookmarksBar setTintColor:primaryTextColor];
   }
 
   [(BrowserRootViewController *)self _updateRefreshControlStyle];
 }
 
-- (BOOL)_shouldOverridePocketColorOnStartPageDueToWallpaperStyle:(int64_t)a3
+- (BOOL)_shouldOverridePocketColorOnStartPageDueToWallpaperStyle:(int64_t)style
 {
   v3 = 0;
-  if (a3 && self->_unifiedBar)
+  if (style && self->_unifiedBar)
   {
-    v5 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    if ([v5 BOOLForKey:*MEMORY[0x277D29000]])
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    if ([safari_browserDefaults BOOLForKey:*MEMORY[0x277D29000]])
     {
 LABEL_10:
       v3 = 1;
@@ -5265,13 +5265,13 @@ LABEL_12:
       return v3;
     }
 
-    v6 = [(BrowserRootViewController *)self traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    traitCollection = [(BrowserRootViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
     v8 = _SFIsDarkTintStyle();
-    if (v7 != 2 || (v8 & 1) != 0)
+    if (userInterfaceStyle != 2 || (v8 & 1) != 0)
     {
-      if (((v7 != 2) & v8) != 1)
+      if (((userInterfaceStyle != 2) & v8) != 1)
       {
         goto LABEL_11;
       }
@@ -5284,7 +5284,7 @@ LABEL_12:
       v9 = MEMORY[0x277D29010];
     }
 
-    if ([v5 BOOLForKey:*v9])
+    if ([safari_browserDefaults BOOLForKey:*v9])
     {
       goto LABEL_10;
     }
@@ -5297,15 +5297,15 @@ LABEL_11:
   return v3;
 }
 
-- (void)_updateThemeForBanner:(id)a3 animated:(BOOL)a4
+- (void)_updateThemeForBanner:(id)banner animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
-  if ([v8 shouldUsePlainTheme])
+  animatedCopy = animated;
+  bannerCopy = banner;
+  if ([bannerCopy shouldUsePlainTheme])
   {
     v6 = [MEMORY[0x277D28BD0] themeWithBarTintStyle:{-[_SFBrowserConfiguration barTintStyle](self->_configuration, "barTintStyle")}];
-    v7 = [(BrowserRootViewController *)self _plainTopBackdropGroupName];
-    [(SFBannerTheme *)v6 setBackdropGroupName:v7];
+    _plainTopBackdropGroupName = [(BrowserRootViewController *)self _plainTopBackdropGroupName];
+    [(SFBannerTheme *)v6 setBackdropGroupName:_plainTopBackdropGroupName];
   }
 
   else
@@ -5313,20 +5313,20 @@ LABEL_11:
     v6 = self->_bannerTheme;
   }
 
-  [v8 setTheme:v6 animated:v4];
+  [bannerCopy setTheme:v6 animated:animatedCopy];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = BrowserRootViewController;
-  [(BrowserRootViewController *)&v5 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(BrowserRootViewController *)&v5 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(BrowserRootViewController *)self updateCapsuleLayoutStyle];
 }
 
-- (UIEdgeInsets)obscuredInsetsForRect:(CGRect)a3 inCoordinateSpace:(id)a4
+- (UIEdgeInsets)obscuredInsetsForRect:(CGRect)rect inCoordinateSpace:(id)space
 {
-  [(BrowserRootViewController *)self obscuredInsetsWithComponents:27 forRect:a4 inCoordinateSpace:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BrowserRootViewController *)self obscuredInsetsWithComponents:27 forRect:space inCoordinateSpace:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -5334,17 +5334,17 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)obscuredInsetsWithComponents:(unint64_t)a3 forRect:(CGRect)a4 inCoordinateSpace:(id)a5
+- (UIEdgeInsets)obscuredInsetsWithComponents:(unint64_t)components forRect:(CGRect)rect inCoordinateSpace:(id)space
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v11 = a5;
-  if (v9)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  componentsCopy = components;
+  spaceCopy = space;
+  if (componentsCopy)
   {
-    [(BrowserRootViewController *)self navigationBarFrameInCoordinateSpace:v11];
+    [(BrowserRootViewController *)self navigationBarFrameInCoordinateSpace:spaceCopy];
     MaxY = CGRectGetMaxY(v53);
     v54.origin.x = x;
     v54.origin.y = y;
@@ -5353,15 +5353,15 @@ LABEL_11:
     fmax(MaxY - CGRectGetMinY(v54), 0.0);
     if ([(BrowserRootViewController *)self _interfaceFillsScreen])
     {
-      v13 = [(BrowserRootViewController *)self view];
-      [v13 safeAreaInsets];
-      [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:v11 toCoordinateSpace:0.0, v14];
+      view = [(BrowserRootViewController *)self view];
+      [view safeAreaInsets];
+      [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:spaceCopy toCoordinateSpace:0.0, v14];
     }
   }
 
-  if ((v9 & 2) != 0 && self->_toolbarPlacement == 1)
+  if ((componentsCopy & 2) != 0 && self->_toolbarPlacement == 1)
   {
-    [(BrowserRootViewController *)self bottomToolbarFrameInCoordinateSpace:v11 includeKeyboard:0];
+    [(BrowserRootViewController *)self bottomToolbarFrameInCoordinateSpace:spaceCopy includeKeyboard:0];
     v15 = height;
     v17 = v16;
     recta = v19;
@@ -5380,19 +5380,19 @@ LABEL_11:
     CGRectGetMinY(v56);
   }
 
-  if (self->_showingSidebar && ((v9 & 4) != 0 || (v9 & 0xC) == 8 && !self->_sidebarStyle))
+  if (self->_showingSidebar && ((componentsCopy & 4) != 0 || (componentsCopy & 0xC) == 8 && !self->_sidebarStyle))
   {
     rect = height;
-    v22 = [(BrowserRootViewController *)self _viewForConvertingToCoordinateSpace:v11, *&y, *&width];
+    v22 = [(BrowserRootViewController *)self _viewForConvertingToCoordinateSpace:spaceCopy, *&y, *&width];
     [(BrowserRootViewController *)self _frameForSidebarWhenShowing:self->_showingSidebar];
-    [v22 convertRect:v11 toCoordinateSpace:?];
+    [v22 convertRect:spaceCopy toCoordinateSpace:?];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    v31 = [(BrowserRootViewController *)self view];
-    LODWORD(v22) = [v31 _sf_usesLeftToRightLayout];
+    view2 = [(BrowserRootViewController *)self view];
+    LODWORD(v22) = [view2 _sf_usesLeftToRightLayout];
 
     if (v22)
     {
@@ -5404,7 +5404,7 @@ LABEL_11:
       v32 = x;
       v33 = v48;
       v34 = v49;
-      v35 = rect;
+      rectCopy = rect;
     }
 
     else
@@ -5417,7 +5417,7 @@ LABEL_11:
       v32 = v24;
       v33 = v26;
       v34 = v28;
-      v35 = v30;
+      rectCopy = v30;
     }
 
     CGRectGetMinX(*&v32);
@@ -5442,8 +5442,8 @@ LABEL_11:
 
 - (UIEdgeInsets)_loweredBarObscuredInsets
 {
-  v2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v2 obscuredInsets];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView obscuredInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -5460,16 +5460,16 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)maximumObscuredInsetsForRect:(CGRect)a3 inCoordinateSpace:(id)a4 ignoreBarsMinimized:(BOOL)a5
+- (UIEdgeInsets)maximumObscuredInsetsForRect:(CGRect)rect inCoordinateSpace:(id)space ignoreBarsMinimized:(BOOL)minimized
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   if ([(BrowserRootViewController *)self isInteractivelyMinimizingBars])
   {
-    [(BrowserRootViewController *)self obscuredInsetsForRect:v11 inCoordinateSpace:x, y, width, height];
+    [(BrowserRootViewController *)self obscuredInsetsForRect:spaceCopy inCoordinateSpace:x, y, width, height];
 LABEL_3:
     v16 = v12;
     v17 = v13;
@@ -5478,9 +5478,9 @@ LABEL_3:
     goto LABEL_22;
   }
 
-  if (!a5 && self->_keepBarsMinimized)
+  if (!minimized && self->_keepBarsMinimized)
   {
-    [(BrowserRootViewController *)self minimumObscuredInsetsForRect:v11 inCoordinateSpace:x, y, width, height];
+    [(BrowserRootViewController *)self minimumObscuredInsetsForRect:spaceCopy inCoordinateSpace:x, y, width, height];
     goto LABEL_3;
   }
 
@@ -5492,7 +5492,7 @@ LABEL_3:
       [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
       MaxY = CGRectGetMaxY(v44);
       [(BrowserRootViewController *)self maximumHeightObscuredByBottomToolbar];
-      [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:v11 toCoordinateSpace:0.0, MaxY - v21];
+      [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:spaceCopy toCoordinateSpace:0.0, MaxY - v21];
       v23 = v22;
       v45.origin.x = x;
       v45.origin.y = y;
@@ -5503,17 +5503,17 @@ LABEL_3:
   }
 
   inYttriumState = self->_inYttriumState;
-  v25 = [(BrowserRootViewController *)self usingLoweredBar];
+  usingLoweredBar = [(BrowserRootViewController *)self usingLoweredBar];
   if (!inYttriumState)
   {
-    if (v25)
+    if (usingLoweredBar)
     {
       [(BrowserRootViewController *)self _loweredBarMaximumObscuredInsets];
       goto LABEL_15;
     }
 
-    v28 = [(BrowserRootViewController *)self view];
-    [v28 safeAreaInsets];
+    view = [(BrowserRootViewController *)self view];
+    [view safeAreaInsets];
     v31 = v30;
     [(BrowserRootViewController *)self navigationBarDesiredHeight];
     v27 = v31 + v32;
@@ -5522,10 +5522,10 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v25)
+  if (!usingLoweredBar)
   {
-    v28 = [(BrowserRootViewController *)self view];
-    [v28 safeAreaInsets];
+    view = [(BrowserRootViewController *)self view];
+    [view safeAreaInsets];
     v27 = v29;
     goto LABEL_18;
   }
@@ -5534,12 +5534,12 @@ LABEL_18:
 LABEL_15:
   v27 = v26;
 LABEL_19:
-  [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:v11 toCoordinateSpace:0.0, v27];
+  [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:spaceCopy toCoordinateSpace:0.0, v27];
   if ([(BrowserRootViewController *)self _interfaceFillsScreen])
   {
-    v33 = [(BrowserRootViewController *)self view];
-    [v33 safeAreaInsets];
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:v11 toCoordinateSpace:0.0, v34];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 safeAreaInsets];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:spaceCopy toCoordinateSpace:0.0, v34];
   }
 
   v46.origin.x = x;
@@ -5547,7 +5547,7 @@ LABEL_19:
   v46.size.width = width;
   v46.size.height = height;
   CGRectGetMinY(v46);
-  [(BrowserRootViewController *)self sidebarObscuredInsetsForRect:v11 inCoordinateSpace:x, y, width, height];
+  [(BrowserRootViewController *)self sidebarObscuredInsetsForRect:spaceCopy inCoordinateSpace:x, y, width, height];
   UIEdgeInsetsAdd();
   v16 = v35;
   v17 = v36;
@@ -5566,13 +5566,13 @@ LABEL_22:
   return result;
 }
 
-- (UIEdgeInsets)minimumObscuredInsetsForRect:(CGRect)a3 inCoordinateSpace:(id)a4
+- (UIEdgeInsets)minimumObscuredInsetsForRect:(CGRect)rect inCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  rect = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  rect = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   v9 = MEMORY[0x277D768C8];
   [(BrowserRootViewController *)self _loweredBarMinimumObscuredInsets];
   v11 = v10;
@@ -5590,14 +5590,14 @@ LABEL_22:
     }
 
     [(BrowserRootViewController *)self navigationBarSquishedHeight];
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:v8 toCoordinateSpace:0.0, v32 + v34];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:spaceCopy toCoordinateSpace:0.0, v32 + v34];
   }
 
   else
   {
-    v18 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
-    [v18 bounds];
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:v8 toCoordinateSpace:v13 + v19, v11 + v20, v21 - (v13 + v17), v22 - (v11 + v15)];
+    view = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
+    [view bounds];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:spaceCopy toCoordinateSpace:v13 + v19, v11 + v20, v21 - (v13 + v17), v22 - (v11 + v15)];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -5612,14 +5612,14 @@ LABEL_22:
     v52.size.width = v28;
     v52.size.height = v30;
     fmax(MaxY - CGRectGetMaxY(v52), 0.0);
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:v8 toCoordinateSpace:0.0, v11];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:spaceCopy toCoordinateSpace:0.0, v11];
   }
 
   if ([(BrowserRootViewController *)self _interfaceFillsScreen])
   {
-    v35 = [(BrowserRootViewController *)self view];
-    [v35 safeAreaInsets];
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:v8 toCoordinateSpace:0.0, v36];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 safeAreaInsets];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpacePoint:spaceCopy toCoordinateSpace:0.0, v36];
   }
 
   v53.origin.x = x;
@@ -5627,7 +5627,7 @@ LABEL_22:
   v53.size.width = width;
   v53.size.height = v49;
   CGRectGetMinY(v53);
-  [(BrowserRootViewController *)self sidebarObscuredInsetsForRect:v8 inCoordinateSpace:x, rect, width, v49];
+  [(BrowserRootViewController *)self sidebarObscuredInsetsForRect:spaceCopy inCoordinateSpace:x, rect, width, v49];
   UIEdgeInsetsAdd();
   v38 = v37;
   v40 = v39;
@@ -5645,9 +5645,9 @@ LABEL_22:
   return result;
 }
 
-- (UIEdgeInsets)sidebarObscuredInsetsForRect:(CGRect)a3 inCoordinateSpace:(id)a4
+- (UIEdgeInsets)sidebarObscuredInsetsForRect:(CGRect)rect inCoordinateSpace:(id)space
 {
-  [(BrowserRootViewController *)self obscuredInsetsWithComponents:8 forRect:a4 inCoordinateSpace:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BrowserRootViewController *)self obscuredInsetsWithComponents:8 forRect:space inCoordinateSpace:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -5655,11 +5655,11 @@ LABEL_22:
   return result;
 }
 
-- (double)keyboardInsetInCoordinateSpace:(id)a3
+- (double)keyboardInsetInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(BrowserRootViewController *)self view];
-  [v5 bounds];
+  spaceCopy = space;
+  view = [(BrowserRootViewController *)self view];
+  [view bounds];
   x = v30.origin.x;
   y = v30.origin.y;
   width = v30.size.width;
@@ -5669,12 +5669,12 @@ LABEL_22:
   v31.origin.y = y;
   v31.size.width = width;
   v31.size.height = height;
-  [v4 convertRect:v5 fromCoordinateSpace:{0.0, v10, CGRectGetWidth(v31), self->_bottomBarKeyboardOffset}];
+  [spaceCopy convertRect:view fromCoordinateSpace:{0.0, v10, CGRectGetWidth(v31), self->_bottomBarKeyboardOffset}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v4 bounds];
+  [spaceCopy bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -5725,12 +5725,12 @@ id __62__BrowserRootViewController__registerLayoutStateUpdateHandler__block_invo
   return v5;
 }
 
-- (void)showDefaultBrowserSheetWithDisplayHandler:(id)a3
+- (void)showDefaultBrowserSheetWithDisplayHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (-[BrowserRootViewController isShowingDefaultBrowserSheet](self, "isShowingDefaultBrowserSheet") || (-[BrowserRootViewController view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -5741,7 +5741,7 @@ id __62__BrowserRootViewController__registerLayoutStateUpdateHandler__block_invo
     v11[2] = __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandler___block_invoke;
     v11[3] = &unk_2781D54A8;
     v11[4] = self;
-    v12 = v4;
+    v12 = handlerCopy;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandler___block_invoke_2;
@@ -5788,14 +5788,14 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
 {
   v18 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained browserWindowController];
+  browserWindowController = [WeakRetained browserWindowController];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 browserControllers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  browserControllers = [browserWindowController browserControllers];
+  v6 = [browserControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5806,20 +5806,20 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(browserControllers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 rootViewController];
+        rootViewController = [v10 rootViewController];
 
-        if (v11 != self)
+        if (rootViewController != self)
         {
-          v12 = [v10 rootViewController];
-          [v12 dismissDefaultBrowserSheet];
+          rootViewController2 = [v10 rootViewController];
+          [rootViewController2 dismissDefaultBrowserSheet];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [browserControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -5847,9 +5847,9 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
 
     else
     {
-      v4 = [(TabSwitcherViewController *)v3 presentationState];
+      presentationState = [(TabSwitcherViewController *)v3 presentationState];
 
-      if (v4 != 2)
+      if (presentationState != 2)
       {
         [(TabSwitcherViewController *)self->_tabSwitcherViewController setDismissesOnUnlock:1];
       }
@@ -5869,8 +5869,8 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
     if (-[TabSwitcherViewController dismissesOnUnlock](self->_tabSwitcherViewController, "dismissesOnUnlock") && [WeakRetained isPrivateBrowsingEnabled])
     {
       tabSwitcherViewController = self->_tabSwitcherViewController;
-      v4 = [WeakRetained scene];
-      -[TabSwitcherViewController dismissForUnlockingAnimated:](tabSwitcherViewController, "dismissForUnlockingAnimated:", [v4 activationState] < 2);
+      scene = [WeakRetained scene];
+      -[TabSwitcherViewController dismissForUnlockingAnimated:](tabSwitcherViewController, "dismissForUnlockingAnimated:", [scene activationState] < 2);
     }
   }
 }
@@ -5878,9 +5878,9 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
 - (BOOL)isShowingLockedPrivateBrowsingView
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v3 = [WeakRetained tabCollectionViewProvider];
-  v4 = [v3 tabThumbnailCollectionView];
-  v5 = [v4 presentationState] == 1 || objc_msgSend(v4, "presentationState") == 2;
+  tabCollectionViewProvider = [WeakRetained tabCollectionViewProvider];
+  tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
+  v5 = [tabThumbnailCollectionView presentationState] == 1 || objc_msgSend(tabThumbnailCollectionView, "presentationState") == 2;
 
   return v5;
 }
@@ -5889,16 +5889,16 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
 {
   if (![(BrowserRootViewController *)self isShowingPrivateBrowsingExplanationSheet])
   {
-    v3 = [(BrowserRootViewController *)self view];
-    v4 = [v3 window];
+    view = [(BrowserRootViewController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-      [v5 setInteger:1 forKey:*MEMORY[0x277D4A340]];
+      safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+      [safari_browserDefaults setInteger:1 forKey:*MEMORY[0x277D4A340]];
 
-      v6 = [(BrowserRootViewController *)self _makeWhatsNewInPrivateBrowsingViewController];
-      [(BrowserRootViewController *)self _showPrivateBrowsingExplanationSheetWithViewController:v6];
+      _makeWhatsNewInPrivateBrowsingViewController = [(BrowserRootViewController *)self _makeWhatsNewInPrivateBrowsingViewController];
+      [(BrowserRootViewController *)self _showPrivateBrowsingExplanationSheetWithViewController:_makeWhatsNewInPrivateBrowsingViewController];
     }
   }
 }
@@ -5911,8 +5911,8 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
   v4 = [v2 initWithTitle:v3 detailText:0 icon:0];
 
   v5 = MEMORY[0x277D4A7D8];
-  v6 = [MEMORY[0x277D4A7D0] defaultConfiguration];
-  v7 = [v5 itemsForConfiguration:v6];
+  defaultConfiguration = [MEMORY[0x277D4A7D0] defaultConfiguration];
+  v7 = [v5 itemsForConfiguration:defaultConfiguration];
 
   v25 = 0u;
   v26 = 0u;
@@ -5934,11 +5934,11 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 title];
-        v15 = [v13 message];
-        v16 = [v13 image];
-        v17 = [MEMORY[0x277D75348] labelColor];
-        [v4 addBulletedListItemWithTitle:v14 description:v15 image:v16 tintColor:v17];
+        title = [v13 title];
+        message = [v13 message];
+        image = [v13 image];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [v4 addBulletedListItemWithTitle:title description:message image:image tintColor:labelColor];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -5947,13 +5947,13 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
     while (v10);
   }
 
-  v18 = [getOBBoldTrayButtonClass() boldButton];
-  [v18 addTarget:self action:sel__pushTurnOnLockedPrivateBrowsingPromptIfNeeded];
+  boldButton = [getOBBoldTrayButtonClass() boldButton];
+  [boldButton addTarget:self action:sel__pushTurnOnLockedPrivateBrowsingPromptIfNeeded];
   v19 = _WBSLocalizedString();
-  [v18 setTitle:v19 forState:0];
+  [boldButton setTitle:v19 forState:0];
 
-  v20 = [v4 buttonTray];
-  [v20 addButton:v18];
+  buttonTray = [v4 buttonTray];
+  [buttonTray addButton:boldButton];
 
   return v4;
 }
@@ -5962,16 +5962,16 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
 {
   if (![(BrowserRootViewController *)self isShowingPrivateBrowsingExplanationSheet])
   {
-    v3 = [(BrowserRootViewController *)self view];
-    v4 = [v3 window];
+    view = [(BrowserRootViewController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v5 setBool:1 forKey:*MEMORY[0x277D4A1B8]];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults setBool:1 forKey:*MEMORY[0x277D4A1B8]];
 
-      v6 = [(BrowserRootViewController *)self _makeTurnOnLockedPrivateBrowsingViewController];
-      [(BrowserRootViewController *)self _showPrivateBrowsingExplanationSheetWithViewController:v6];
+      _makeTurnOnLockedPrivateBrowsingViewController = [(BrowserRootViewController *)self _makeTurnOnLockedPrivateBrowsingViewController];
+      [(BrowserRootViewController *)self _showPrivateBrowsingExplanationSheetWithViewController:_makeTurnOnLockedPrivateBrowsingViewController];
     }
   }
 }
@@ -5979,16 +5979,16 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
 - (void)_pushTurnOnLockedPrivateBrowsingPromptIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained shouldShowTurnOnLockedPrivateBrowsingSheet];
+  shouldShowTurnOnLockedPrivateBrowsingSheet = [WeakRetained shouldShowTurnOnLockedPrivateBrowsingSheet];
 
-  if (v4)
+  if (shouldShowTurnOnLockedPrivateBrowsingSheet)
   {
-    v5 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    [v5 setBool:1 forKey:*MEMORY[0x277D4A1B8]];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    [safari_browserDefaults setBool:1 forKey:*MEMORY[0x277D4A1B8]];
 
     v7 = objc_loadWeakRetained(&self->_privateBrowsingExplanationSheet);
-    v6 = [(BrowserRootViewController *)self _makeTurnOnLockedPrivateBrowsingViewController];
-    [v7 pushViewController:v6 animated:1];
+    _makeTurnOnLockedPrivateBrowsingViewController = [(BrowserRootViewController *)self _makeTurnOnLockedPrivateBrowsingViewController];
+    [v7 pushViewController:_makeTurnOnLockedPrivateBrowsingViewController animated:1];
   }
 
   else
@@ -6001,28 +6001,28 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
 - (id)_makeTurnOnLockedPrivateBrowsingViewController
 {
   v3 = MEMORY[0x277D4A7D8];
-  v4 = [MEMORY[0x277D4A7D0] defaultConfiguration];
-  v5 = [v3 lockedPrivateBrowsingPromptForConfiguration:v4];
+  defaultConfiguration = [MEMORY[0x277D4A7D0] defaultConfiguration];
+  v5 = [v3 lockedPrivateBrowsingPromptForConfiguration:defaultConfiguration];
 
   v6 = objc_alloc(getOBWelcomeControllerClass());
-  v7 = [v5 title];
-  v8 = [v5 message];
-  v9 = [v5 image];
-  v10 = [v6 initWithTitle:v7 detailText:v8 icon:v9];
+  title = [v5 title];
+  message = [v5 message];
+  image = [v5 image];
+  v10 = [v6 initWithTitle:title detailText:message icon:image];
 
-  v11 = [MEMORY[0x277D75348] labelColor];
-  v12 = [v10 headerView];
-  [v12 setTintColor:v11];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  headerView = [v10 headerView];
+  [headerView setTintColor:labelColor];
 
-  v13 = [getOBBoldTrayButtonClass() boldButton];
-  [v13 addTarget:self action:sel__turnOnLockedPrivateBrowsingFromSheet forControlEvents:0x2000];
+  boldButton = [getOBBoldTrayButtonClass() boldButton];
+  [boldButton addTarget:self action:sel__turnOnLockedPrivateBrowsingFromSheet forControlEvents:0x2000];
   v14 = _WBSLocalizedString();
-  [v13 setTitle:v14 forState:0];
+  [boldButton setTitle:v14 forState:0];
 
-  v15 = [v10 buttonTray];
-  [v15 addButton:v13];
+  buttonTray = [v10 buttonTray];
+  [buttonTray addButton:boldButton];
 
-  [v13 setAccessibilityIdentifier:@"TurnOnButton"];
+  [boldButton setAccessibilityIdentifier:@"TurnOnButton"];
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -6041,28 +6041,28 @@ uint64_t __71__BrowserRootViewController_showDefaultBrowserSheetWithDisplayHandl
 
   v17 = v16;
   _Block_object_dispose(&v25, 8);
-  v18 = [v16 linkButton];
-  [v18 addTarget:self action:sel__dismissPrivateBrowsingExplanationSheet forControlEvents:0x2000];
+  linkButton = [v16 linkButton];
+  [linkButton addTarget:self action:sel__dismissPrivateBrowsingExplanationSheet forControlEvents:0x2000];
   v19 = _WBSLocalizedString();
-  [v18 setTitle:v19 forState:0];
+  [linkButton setTitle:v19 forState:0];
 
-  v20 = [MEMORY[0x277D75348] labelColor];
-  [v18 setTintColor:v20];
+  labelColor2 = [MEMORY[0x277D75348] labelColor];
+  [linkButton setTintColor:labelColor2];
 
-  v21 = [v10 buttonTray];
-  [v21 addButton:v18];
+  buttonTray2 = [v10 buttonTray];
+  [buttonTray2 addButton:linkButton];
 
-  [v18 setAccessibilityIdentifier:@"NotNowButton"];
-  v22 = [v10 view];
-  [v22 setAccessibilityIdentifier:@"TurnOnLockedPrivateBrowsingView"];
+  [linkButton setAccessibilityIdentifier:@"NotNowButton"];
+  view = [v10 view];
+  [view setAccessibilityIdentifier:@"TurnOnLockedPrivateBrowsingView"];
 
   return v10;
 }
 
 - (void)_turnOnLockedPrivateBrowsingFromSheet
 {
-  v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  [v3 setBool:1 forKey:*MEMORY[0x277D4A348]];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  [safari_browserDefaults setBool:1 forKey:*MEMORY[0x277D4A348]];
 
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_privateBrowsingExplanationSheet);
@@ -6118,17 +6118,17 @@ void __66__BrowserRootViewController__turnOnLockedPrivateBrowsingFromSheet__bloc
   }
 }
 
-- (void)_showPrivateBrowsingExplanationSheetWithViewController:(id)a3
+- (void)_showPrivateBrowsingExplanationSheetWithViewController:(id)controller
 {
   v4 = MEMORY[0x277D757A0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithRootViewController:v5];
+  controllerCopy = controller;
+  v6 = [[v4 alloc] initWithRootViewController:controllerCopy];
 
   [v6 setModalPresentationStyle:2];
   [v6 setNavigationBarHidden:1];
   [v6 setOverrideUserInterfaceStyle:2];
-  v7 = [v6 sheetPresentationController];
-  [v7 setDelegate:self];
+  sheetPresentationController = [v6 sheetPresentationController];
+  [sheetPresentationController setDelegate:self];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -6145,16 +6145,16 @@ void __84__BrowserRootViewController__showPrivateBrowsingExplanationSheetWithVie
   [WeakRetained resetWhatsNewInPrivateBrowsingStartPageModule];
 }
 
-- (unint64_t)_findInsertionIndexForBannersInScrollView:(id)a3
+- (unint64_t)_findInsertionIndexForBannersInScrollView:(id)view
 {
-  v3 = [a3 subviews];
+  subviews = [view subviews];
   v4 = 0;
-  if ([v3 count])
+  if ([subviews count])
   {
     v5 = 0;
     do
     {
-      v6 = [v3 objectAtIndexedSubscript:v5];
+      v6 = [subviews objectAtIndexedSubscript:v5];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
       if ([v8 isEqualToString:@"WKContentView"] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"WKColorExtensionView"))
@@ -6168,7 +6168,7 @@ void __84__BrowserRootViewController__showPrivateBrowsingExplanationSheetWithVie
       }
     }
 
-    while (v5 < [v3 count]);
+    while (v5 < [subviews count]);
   }
 
   return v4;
@@ -6305,34 +6305,34 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
   }
 }
 
-- (CGRect)navigationBarFrameInCoordinateSpace:(id)a3
+- (CGRect)navigationBarFrameInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   if ([(BrowserRootViewController *)self usingLoweredBar])
   {
-    v5 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    if ([v5 minimizationStyle] == 1)
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    if ([capsuleCollectionView minimizationStyle] == 1)
     {
-      [v5 obscuredInsetsForState:0];
+      [capsuleCollectionView obscuredInsetsForState:0];
       v7 = v6;
-      [v5 obscuredInsets];
+      [capsuleCollectionView obscuredInsets];
       v9 = v8 - v7;
-      v10 = [(BrowserRootViewController *)self view];
-      [v10 bounds];
+      view = [(BrowserRootViewController *)self view];
+      [view bounds];
       Width = CGRectGetWidth(v29);
     }
 
     else
     {
-      v10 = [(BrowserRootViewController *)self view];
-      [v10 bounds];
+      view = [(BrowserRootViewController *)self view];
+      [view bounds];
       Width = CGRectGetWidth(v30);
-      [v5 obscuredInsets];
+      [capsuleCollectionView obscuredInsets];
       v7 = v20;
       v9 = 0.0;
     }
 
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:v4 toCoordinateSpace:0.0, v9, Width, v7];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:spaceCopy toCoordinateSpace:0.0, v9, Width, v7];
     v13 = v21;
     v15 = v22;
     v17 = v23;
@@ -6342,7 +6342,7 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
   else
   {
     [(BrowserRootViewController *)self _frameForNavigationBar];
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:v4 toCoordinateSpace:?];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:spaceCopy toCoordinateSpace:?];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -6360,21 +6360,21 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
   return result;
 }
 
-- (CGRect)_convertRect:(CGRect)a3 fromViewInDocumentContainer:(id)a4 toCoordinateSpace:(id)a5
+- (CGRect)_convertRect:(CGRect)rect fromViewInDocumentContainer:(id)container toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   documentAndTopBarsContainerView = self->_documentAndTopBarsContainerView;
-  v13 = a4;
-  v14 = [(SFOrderedContainerView *)documentAndTopBarsContainerView superview];
+  containerCopy = container;
+  superview = [(SFOrderedContainerView *)documentAndTopBarsContainerView superview];
   contentContainerView = self->_contentContainerView;
 
-  if (v14 == contentContainerView)
+  if (superview == contentContainerView)
   {
-    [v13 convertRect:v11 toCoordinateSpace:{x, y, width, height}];
+    [containerCopy convertRect:spaceCopy toCoordinateSpace:{x, y, width, height}];
     v25 = v32;
     v27 = v33;
     v29 = v34;
@@ -6383,13 +6383,13 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
 
   else
   {
-    [v13 convertRect:self->_documentAndTopBarsContainerView toView:{x, y, width, height}];
+    [containerCopy convertRect:self->_documentAndTopBarsContainerView toView:{x, y, width, height}];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:v11 toCoordinateSpace:v17, v19, v21, v23];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:spaceCopy toCoordinateSpace:v17, v19, v21, v23];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -6407,15 +6407,15 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
   return result;
 }
 
-- (CGRect)_convertDocumentCoordinateSpaceRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)_convertDocumentCoordinateSpaceRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(BrowserRootViewController *)self _viewForConvertingToCoordinateSpace:v9];
-  [v10 convertRect:v9 toCoordinateSpace:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
+  v10 = [(BrowserRootViewController *)self _viewForConvertingToCoordinateSpace:spaceCopy];
+  [v10 convertRect:spaceCopy toCoordinateSpace:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -6432,13 +6432,13 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
   return result;
 }
 
-- (CGPoint)_convertDocumentCoordinateSpacePoint:(CGPoint)a3 toCoordinateSpace:(id)a4
+- (CGPoint)_convertDocumentCoordinateSpacePoint:(CGPoint)point toCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(BrowserRootViewController *)self _viewForConvertingToCoordinateSpace:v7];
-  [v8 convertPoint:v7 toCoordinateSpace:{x, y}];
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
+  v8 = [(BrowserRootViewController *)self _viewForConvertingToCoordinateSpace:spaceCopy];
+  [v8 convertPoint:spaceCopy toCoordinateSpace:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -6449,20 +6449,20 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
   return result;
 }
 
-- (id)_viewForConvertingToCoordinateSpace:(id)a3
+- (id)_viewForConvertingToCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   p_documentAndTopBarsContainerView = &self->_documentAndTopBarsContainerView;
-  v6 = [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView superview];
+  superview = [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView superview];
   p_contentContainerView = &self->_contentContainerView;
   v8 = *p_contentContainerView;
 
-  if (v6 != v8)
+  if (superview != v8)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v4 isDescendantOfView:*p_documentAndTopBarsContainerView])
+      if ([spaceCopy isDescendantOfView:*p_documentAndTopBarsContainerView])
       {
         p_contentContainerView = p_documentAndTopBarsContainerView;
       }
@@ -6475,21 +6475,21 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
   return v9;
 }
 
-- (CGRect)bottomToolbarFrameInCoordinateSpace:(id)a3 includeKeyboard:(BOOL)a4
+- (CGRect)bottomToolbarFrameInCoordinateSpace:(id)space includeKeyboard:(BOOL)keyboard
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BrowserRootViewController *)self usingLoweredBar];
+  keyboardCopy = keyboard;
+  spaceCopy = space;
+  usingLoweredBar = [(BrowserRootViewController *)self usingLoweredBar];
   capsuleViewController = self->_capsuleViewController;
-  if (v7)
+  if (usingLoweredBar)
   {
-    v9 = [(CapsuleNavigationBarViewController *)capsuleViewController view];
-    [v9 bounds];
+    view = [(CapsuleNavigationBarViewController *)capsuleViewController view];
+    [view bounds];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    if (v4)
+    if (keyboardCopy)
     {
       [(BrowserRootViewController *)self _loweredBarObscuredInsets];
     }
@@ -6511,7 +6511,7 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
     v58.size.height = v17;
     Width = CGRectGetWidth(v58);
     v33 = 0.0;
-    v34 = self;
+    selfCopy2 = self;
     v35 = v31;
     v36 = v30;
     goto LABEL_16;
@@ -6521,7 +6521,7 @@ void __46__BrowserRootViewController__layOutTopBanners__block_invoke_187(uint64_
   {
 LABEL_17:
     [(BrowserRootViewController *)self _frameForBottomToolbarForceHidden:0];
-    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:v6 toCoordinateSpace:?];
+    [(BrowserRootViewController *)self _convertDocumentCoordinateSpaceRect:spaceCopy toCoordinateSpace:?];
     v42 = v49;
     v44 = v50;
     v46 = v51;
@@ -6529,25 +6529,25 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v9 = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleCollectionView];
-  v19 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  v20 = [v19 selectedItemState];
+  view = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleCollectionView];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  selectedItemState = [capsuleCollectionView selectedItemState];
 
-  if (v20 < 2)
+  if (selectedItemState < 2)
   {
-    [v9 bounds];
+    [view bounds];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    if (v4)
+    if (keyboardCopy)
     {
-      [v9 obscuredInsets];
+      [view obscuredInsets];
     }
 
     else
     {
-      [v9 obscuredInsetsIgnoringKeyboard];
+      [view obscuredInsetsIgnoringKeyboard];
     }
 
     v40 = v29;
@@ -6556,27 +6556,27 @@ LABEL_17:
     v59.size.width = v26;
     v59.size.height = v28;
     v38 = CGRectGetHeight(v59) - v40;
-    [v9 bounds];
+    [view bounds];
     Width = CGRectGetWidth(v60);
     v33 = 0.0;
     goto LABEL_15;
   }
 
-  if (v20 != 2)
+  if (selectedItemState != 2)
   {
 
     goto LABEL_17;
   }
 
-  [v9 capsuleFrame];
+  [view capsuleFrame];
   v38 = v37;
   v40 = v39;
 LABEL_15:
-  v34 = self;
+  selfCopy2 = self;
   v35 = v38;
   v36 = v40;
 LABEL_16:
-  [(BrowserRootViewController *)v34 _convertDocumentCoordinateSpaceRect:v6 toCoordinateSpace:v33, v35, Width, v36];
+  [(BrowserRootViewController *)selfCopy2 _convertDocumentCoordinateSpaceRect:spaceCopy toCoordinateSpace:v33, v35, Width, v36];
   v42 = v41;
   v44 = v43;
   v46 = v45;
@@ -6596,9 +6596,9 @@ LABEL_18:
 
 - (double)navigationBarSquishedHeight
 {
-  v3 = [(BrowserRootViewController *)self _interfaceFillsScreen];
+  _interfaceFillsScreen = [(BrowserRootViewController *)self _interfaceFillsScreen];
   result = 0.0;
-  if (!v3)
+  if (!_interfaceFillsScreen)
   {
     if ([(BrowserRootViewController *)self usingUnifiedBar])
     {
@@ -6672,8 +6672,8 @@ LABEL_18:
 
     [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator topBarHeight];
     v6 = v17;
-    v18 = [(BrowserRootViewController *)self view];
-    [v18 safeAreaInsets];
+    view = [(BrowserRootViewController *)self view];
+    [view safeAreaInsets];
     v4 = v19;
 
     if ([(BrowserRootViewController *)self usingLoweredBar])
@@ -6701,9 +6701,9 @@ LABEL_18:
   return result;
 }
 
-- (void)_updateTopBarAllowingRemoval:(BOOL)a3
+- (void)_updateTopBarAllowingRemoval:(BOOL)removal
 {
-  v3 = a3;
+  removalCopy = removal;
   if ([(BrowserRootViewController *)self isViewLoaded])
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
@@ -6724,8 +6724,8 @@ LABEL_18:
         v28[3] = &unk_2781D5B30;
         objc_copyWeak(&v29, &location);
         [(UnifiedBar *)self->_unifiedBar setBookmarkLinkAnimationDestination:v28];
-        v9 = [WeakRetained oneStepBookmarkingController];
-        [(UnifiedBar *)self->_unifiedBar setOneStepBookmarkingController:v9];
+        oneStepBookmarkingController = [WeakRetained oneStepBookmarkingController];
+        [(UnifiedBar *)self->_unifiedBar setOneStepBookmarkingController:oneStepBookmarkingController];
 
         [(UnifiedBar *)self->_unifiedBar setAccessibilityIdentifier:@"Toolbar"];
         [(TabBarManager *)self->_tabBarManager setUnifiedBar:self->_unifiedBar];
@@ -6740,7 +6740,7 @@ LABEL_18:
         objc_destroyWeak(&v29);
         objc_destroyWeak(&location);
 LABEL_8:
-        if (!v3)
+        if (!removalCopy)
         {
 LABEL_13:
           v18 = [(BrowserRootViewController *)self topBar:v22];
@@ -6748,8 +6748,8 @@ LABEL_13:
           {
             v19 = MEMORY[0x277CDB750];
             dynamicBarAnimator = self->_dynamicBarAnimator;
-            v21 = [(BrowserRootViewController *)self view];
-            [v19 attachToBar:v18 withAnimator:dynamicBarAnimator inContainerView:v21];
+            view = [(BrowserRootViewController *)self view];
+            [v19 attachToBar:v18 withAnimator:dynamicBarAnimator inContainerView:view];
 
             if (self->_inYttriumMode)
             {
@@ -6773,7 +6773,7 @@ LABEL_12:
 
     else
     {
-      if (v3)
+      if (removalCopy)
       {
         [(TabBarManager *)self->_tabBarManager setDisplayMode:0];
         [(TabBarManager *)self->_tabBarManager setUnifiedBar:0];
@@ -6805,7 +6805,7 @@ LABEL_12:
         v23 = 3221225472;
         v24 = __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_invoke_2;
         v25 = &unk_2781D4C88;
-        v26 = self;
+        selfCopy = self;
         v27 = WeakRetained;
         [v17 performWithoutAnimation:&v22];
         navigationBar = v27;
@@ -6844,14 +6844,14 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
   return [v3 setExpanded:v4 completionHandler:0];
 }
 
-- (void)updateViewForTabDocument:(id)a3
+- (void)updateViewForTabDocument:(id)document
 {
-  v4 = a3;
-  v7 = [(BrowserRootViewController *)self _continuousReadingViewController];
-  v5 = [v7 view];
-  v6 = [v4 view];
+  documentCopy = document;
+  _continuousReadingViewController = [(BrowserRootViewController *)self _continuousReadingViewController];
+  view = [_continuousReadingViewController view];
+  view2 = [documentCopy view];
 
-  [v5 addSubview:v6];
+  [view addSubview:view2];
 }
 
 - (void)updateTabHoverPreview
@@ -6859,19 +6859,19 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
   tabBar = self->_tabBar;
   if (tabBar)
   {
-    v4 = tabBar;
+    effectiveTabBar = tabBar;
   }
 
   else
   {
-    v4 = [(TabBarManager *)self->_tabBarManager effectiveTabBar];
+    effectiveTabBar = [(TabBarManager *)self->_tabBarManager effectiveTabBar];
   }
 
-  v12 = v4;
-  v5 = [(TabHoverPreview *)self->_tabHoverPreview tabBar];
+  v12 = effectiveTabBar;
+  tabBar = [(TabHoverPreview *)self->_tabHoverPreview tabBar];
 
   v6 = v12;
-  if (v5 != v12)
+  if (tabBar != v12)
   {
     [(TabHoverPreview *)self->_tabHoverPreview removeFromSuperview];
     tabHoverPreview = self->_tabHoverPreview;
@@ -6899,18 +6899,18 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
   }
 }
 
-- (void)setUsesFaintTopSeparator:(BOOL)a3
+- (void)setUsesFaintTopSeparator:(BOOL)separator
 {
-  if (self->_usesFaintTopSeparator != a3)
+  if (self->_usesFaintTopSeparator != separator)
   {
-    v4 = a3;
-    self->_usesFaintTopSeparator = a3;
-    v6 = [(BrowserRootViewController *)self navigationBar];
-    [v6 setUsesFaintSeparator:v4];
+    separatorCopy = separator;
+    self->_usesFaintTopSeparator = separator;
+    navigationBar = [(BrowserRootViewController *)self navigationBar];
+    [navigationBar setUsesFaintSeparator:separatorCopy];
 
-    v7 = [(BrowserRootViewController *)self tabBarManager];
-    v8 = [v7 unifiedBar];
-    [v8 setUsesFaintSeparator:v4];
+    tabBarManager = [(BrowserRootViewController *)self tabBarManager];
+    unifiedBar = [tabBarManager unifiedBar];
+    [unifiedBar setUsesFaintSeparator:separatorCopy];
 
     [(BrowserRootViewController *)self _updateCapsuleTopSeparatorColor];
   }
@@ -6931,7 +6931,7 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
   [(UIView *)self->_topSeparator setBackgroundColor:v3];
 }
 
-- (CGRect)_frameForBottomToolbarForceHidden:(BOOL)a3
+- (CGRect)_frameForBottomToolbarForceHidden:(BOOL)hidden
 {
   [(ViewWithCustomNextResponder *)self->_contentContainerView bounds];
   v6 = v5;
@@ -6950,7 +6950,7 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
   v26.size.width = v10;
   v26.size.height = v12;
   Width = CGRectGetWidth(v26);
-  if (self->_toolbarPlacement == 1 && !a3)
+  if (self->_toolbarPlacement == 1 && !hidden)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v18 = [WeakRetained browserViewControllerShouldTemporarilyHideBottomToolbar:self];
@@ -6981,40 +6981,40 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
 
 - (BOOL)_shouldPositionBottomToolbarAboveKeyboard
 {
-  v2 = [(BrowserRootViewController *)self view];
-  v3 = [v2 _sf_isFullScreenWidth];
+  view = [(BrowserRootViewController *)self view];
+  _sf_isFullScreenWidth = [view _sf_isFullScreenWidth];
 
-  return v3 ^ 1;
+  return _sf_isFullScreenWidth ^ 1;
 }
 
-- (void)_setToolbarPlacement:(int64_t)a3
+- (void)_setToolbarPlacement:(int64_t)placement
 {
   toolbarPlacement = self->_toolbarPlacement;
   if (self->_bottomToolbar)
   {
-    if (toolbarPlacement == a3)
+    if (toolbarPlacement == placement)
     {
       return;
     }
   }
 
-  else if (toolbarPlacement == a3 && (self->_capsuleViewController || [(_SFNavigationBar *)self->_navigationBar hasToolbar]))
+  else if (toolbarPlacement == placement && (self->_capsuleViewController || [(_SFNavigationBar *)self->_navigationBar hasToolbar]))
   {
     return;
   }
 
-  self->_toolbarPlacement = a3;
-  v6 = [(BrowserRootViewController *)self view];
-  [v6 setNeedsLayout];
+  self->_toolbarPlacement = placement;
+  view = [(BrowserRootViewController *)self view];
+  [view setNeedsLayout];
 
   [(BrowserRootViewController *)self _updateToolbarForToolbarPlacementAllowingRemoval:[(BrowserRootViewController *)self isPerformingSizeTransition]^ 1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained browserViewControllerDidChangeToolbarPlacement:self];
 }
 
-- (void)_updateToolbarForToolbarPlacementAllowingRemoval:(BOOL)a3
+- (void)_updateToolbarForToolbarPlacementAllowingRemoval:(BOOL)removal
 {
-  v3 = a3;
+  removalCopy = removal;
   [(BrowserRootViewController *)self _updateTopBarAllowingRemoval:?];
   if (self->_toolbarPlacement == 1)
   {
@@ -7036,7 +7036,7 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
     capsuleViewController = self->_capsuleViewController;
     if (capsuleViewController)
     {
-      v8 = !v3;
+      v8 = !removalCopy;
     }
 
     else
@@ -7047,12 +7047,12 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
     if (!v8)
     {
       [(CapsuleNavigationBarViewController *)capsuleViewController willMoveToParentViewController:0];
-      v9 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
-      [v9 removeFromSuperview];
+      view = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
+      [view removeFromSuperview];
 
-      v10 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-      v11 = [v10 minimizedProgressView];
-      [v11 removeFromSuperview];
+      capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+      minimizedProgressView = [capsuleCollectionView minimizedProgressView];
+      [minimizedProgressView removeFromSuperview];
 
       [(CapsuleNavigationBarViewController *)self->_capsuleViewController removeFromParentViewController];
       v12 = self->_capsuleViewController;
@@ -7066,7 +7066,7 @@ uint64_t __58__BrowserRootViewController__updateTopBarAllowingRemoval___block_in
     bottomToolbar = self->_bottomToolbar;
     if (bottomToolbar)
     {
-      v15 = !v3;
+      v15 = !removalCopy;
     }
 
     else
@@ -7104,61 +7104,61 @@ void __57__BrowserRootViewController__createBottomToolbarIfNeeded__block_invoke(
 
 - (void)capsuleLayoutStyleChanged
 {
-  v3 = [MEMORY[0x277D499B8] sharedLogger];
-  v4 = [MEMORY[0x277D28C70] sharedFeatureManager];
-  v5 = [v4 preferredCapsuleLayoutStyle];
-  v6 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v3 _sf_reportCapsuleLayoutStyle:v5 previousSetting:{objc_msgSend(v6, "layoutStyle")}];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+  preferredCapsuleLayoutStyle = [mEMORY[0x277D28C70] preferredCapsuleLayoutStyle];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [mEMORY[0x277D499B8] _sf_reportCapsuleLayoutStyle:preferredCapsuleLayoutStyle previousSetting:{objc_msgSend(capsuleCollectionView, "layoutStyle")}];
 
   [(BrowserRootViewController *)self updateCapsuleLayoutStyle];
 }
 
 - (void)updateCapsuleLayoutStyle
 {
-  v3 = [MEMORY[0x277D28C70] sharedFeatureManager];
-  v4 = [v3 preferredCapsuleLayoutStyle];
+  mEMORY[0x277D28C70] = [MEMORY[0x277D28C70] sharedFeatureManager];
+  preferredCapsuleLayoutStyle = [mEMORY[0x277D28C70] preferredCapsuleLayoutStyle];
 
-  if (v4 == 3)
+  if (preferredCapsuleLayoutStyle == 3)
   {
-    v5 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [(BrowserRootViewController *)self view];
+    traitCollection = [(CapsuleNavigationBarViewController *)self->_capsuleViewController traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    view = [(BrowserRootViewController *)self view];
     v8 = SFCapsuleCollectionViewMaximumContentSizeCategoryForMinibar();
-    v9 = UIContentSizeCategoryCompareToCategory(v6, v8);
+    v9 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, v8);
 
     if (v9 == NSOrderedDescending)
     {
-      v4 = 1;
+      preferredCapsuleLayoutStyle = 1;
     }
 
     else
     {
-      v4 = 3;
+      preferredCapsuleLayoutStyle = 3;
     }
   }
 
-  v10 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v10 setLayoutStyle:v4];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView setLayoutStyle:preferredCapsuleLayoutStyle];
 
   [(CatalogViewController *)self->_catalogViewController reloadNavigationItemAnimated:0];
   [(BrowserRootViewController *)self _updateTopBarStyles];
   [(BrowserRootViewController *)self _updateScrollPocketsAreHidden];
-  v11 = [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView window];
+  window = [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView window];
 
-  if (v11)
+  if (window)
   {
     [(BrowserRootViewController *)self updateOrderedSubviewsForOrderedContainerView:self->_documentAndTopBarsContainerView];
   }
 
-  v12 = [(BrowserRootViewController *)self view];
-  [v12 setNeedsLayout];
+  view2 = [(BrowserRootViewController *)self view];
+  [view2 setNeedsLayout];
 }
 
-- (CGRect)_frameForSidebarWhenShowing:(BOOL)a3
+- (CGRect)_frameForSidebarWhenShowing:(BOOL)showing
 {
-  v3 = a3;
-  v5 = [(BrowserRootViewController *)self view];
-  [v5 safeAreaInsets];
+  showingCopy = showing;
+  view = [(BrowserRootViewController *)self view];
+  [view safeAreaInsets];
   v7 = v6;
 
   [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
@@ -7204,7 +7204,7 @@ void __57__BrowserRootViewController__createBottomToolbarIfNeeded__block_invoke(
   if ([(SFOrderedContainerView *)self->_documentAndTopBarsContainerView _sf_usesLeftToRightLayout])
   {
     v26 = 0.0;
-    if (!v3)
+    if (!showingCopy)
     {
       v27 = 0x4074000000000000;
       v28 = v23;
@@ -7218,7 +7218,7 @@ void __57__BrowserRootViewController__createBottomToolbarIfNeeded__block_invoke(
     [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
     Width = CGRectGetWidth(v39);
     v31 = Width;
-    if (v3)
+    if (showingCopy)
     {
       v40.size.width = 320.0;
       v40.origin.x = 0.0;
@@ -7243,13 +7243,13 @@ void __57__BrowserRootViewController__createBottomToolbarIfNeeded__block_invoke(
   return result;
 }
 
-- (void)_layOutFloatingSidebarButtonForSidebarShowing:(BOOL)a3
+- (void)_layOutFloatingSidebarButtonForSidebarShowing:(BOOL)showing
 {
-  v3 = a3;
+  showingCopy = showing;
   v5 = +[FeatureManager sharedFeatureManager];
-  v6 = [v5 isFloatingSidebarButtonEnabled];
+  isFloatingSidebarButtonEnabled = [v5 isFloatingSidebarButtonEnabled];
 
-  if (v6)
+  if (isFloatingSidebarButtonEnabled)
   {
     if ([(_SFDynamicBarAnimator *)self->_dynamicBarAnimator state]== 1)
     {
@@ -7269,10 +7269,10 @@ void __57__BrowserRootViewController__createBottomToolbarIfNeeded__block_invoke(
       *&rect.size.width = 3221225472;
       *&rect.size.height = __75__BrowserRootViewController__layOutFloatingSidebarButtonForSidebarShowing___block_invoke;
       v42 = &unk_2781D7850;
-      v43 = self;
+      selfCopy = self;
       v9 = _Block_copy(&rect.origin.y);
       WeakRetained = objc_loadWeakRetained(&self->_tabThumbnailCollectionView);
-      if (v3)
+      if (showingCopy)
       {
         sidebarButtonEmbeddedInSidebar = self->_sidebarButtonEmbeddedInSidebar;
         [(UIButton *)sidebarButtonEmbeddedInSidebar bounds];
@@ -7280,8 +7280,8 @@ void __57__BrowserRootViewController__createBottomToolbarIfNeeded__block_invoke(
         v15 = v14;
         v17 = v16;
         v19 = v18;
-        v20 = [(SidebarViewController *)self->_sidebarViewController view];
-        [(UIButton *)sidebarButtonEmbeddedInSidebar convertRect:v20 toView:v13, v15, v17, v19];
+        view = [(SidebarViewController *)self->_sidebarViewController view];
+        [(UIButton *)sidebarButtonEmbeddedInSidebar convertRect:view toView:v13, v15, v17, v19];
         rect.origin.x = v21;
         v23 = v22;
         v25 = v24;
@@ -7318,30 +7318,30 @@ LABEL_20:
         {
 
 LABEL_12:
-          v36 = [(TabSwitcherViewController *)self->_tabSwitcherViewController sidebarToggleBarButtonItem];
-          v37 = [v36 view];
+          sidebarToggleBarButtonItem = [(TabSwitcherViewController *)self->_tabSwitcherViewController sidebarToggleBarButtonItem];
+          view2 = [sidebarToggleBarButtonItem view];
 
-          v38 = [v37 subviews];
-          v39 = [v38 firstObject];
+          subviews = [view2 subviews];
+          firstObject = [subviews firstObject];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v40 = [v39 _imageView];
-            (*(v9 + 2))(v9, v40);
+            _imageView = [firstObject _imageView];
+            (*(v9 + 2))(v9, _imageView);
           }
 
           else
           {
-            (*(v9 + 2))(v9, v37);
+            (*(v9 + 2))(v9, view2);
           }
 
           goto LABEL_19;
         }
 
-        v35 = [v34 presentationState];
+        presentationState = [v34 presentationState];
 
-        if (v35 == 2)
+        if (presentationState == 2)
         {
           goto LABEL_12;
         }
@@ -7353,8 +7353,8 @@ LABEL_12:
         goto LABEL_20;
       }
 
-      v37 = [(CatalogViewController *)self->_catalogViewController sidebarButton];
-      (*(v9 + 2))(v9, v37);
+      view2 = [(CatalogViewController *)self->_catalogViewController sidebarButton];
+      (*(v9 + 2))(v9, view2);
 LABEL_19:
 
       goto LABEL_20;
@@ -7375,9 +7375,9 @@ void __75__BrowserRootViewController__layOutFloatingSidebarButtonForSidebarShowi
   [*(*(a1 + 32) + 1648) setTintColor:v5];
 }
 
-- (void)_statusBarHover:(id)a3
+- (void)_statusBarHover:(id)hover
 {
-  [a3 locationInView:self->_statusBarView];
+  [hover locationInView:self->_statusBarView];
   v5 = v4;
   v7 = v6;
   [(SFWebpageStatusBarView *)self->_statusBarView setHoverPoint:?];
@@ -7413,17 +7413,17 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
   [WeakRetained sidebarTrailingButtonWasTapped];
 }
 
-- (void)_setShowingFloatingSidebarButton:(BOOL)a3
+- (void)_setShowingFloatingSidebarButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = !a3;
+  buttonCopy = button;
+  v5 = !button;
   [(UIButton *)self->_floatingSidebarButton setHidden:v5];
-  [(UIView *)self->_sidebarButtonEmbeddedInUnifiedBar setHidden:v3];
+  [(UIView *)self->_sidebarButtonEmbeddedInUnifiedBar setHidden:buttonCopy];
   [(UIButton *)self->_sidebarButtonEmbeddedInSidebar setAlpha:v5];
   [(UIButton *)self->_sidebarButtonEmbeddedInSidebar setEnabled:v5];
-  LOBYTE(v5) = v3 | [(BrowserRootViewController *)self _isShowingEmbeddedSidebar];
-  v6 = [(CatalogViewController *)self->_catalogViewController sidebarButton];
-  [v6 setHidden:v5];
+  LOBYTE(v5) = buttonCopy | [(BrowserRootViewController *)self _isShowingEmbeddedSidebar];
+  sidebarButton = [(CatalogViewController *)self->_catalogViewController sidebarButton];
+  [sidebarButton setHidden:v5];
 
   [(BrowserRootViewController *)self _updateTabSwitcherSidebarToggle];
 }
@@ -7444,8 +7444,8 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
     self->_sidebarContentDimmingView = v16;
 
     [(SidebarContentDimmingView *)self->_sidebarContentDimmingView setTransparent:1];
-    v18 = [(SidebarViewController *)self->_sidebarViewController view];
-    [(SidebarContentDimmingView *)self->_sidebarContentDimmingView setPassthroughView:v18];
+    view = [(SidebarViewController *)self->_sidebarViewController view];
+    [(SidebarContentDimmingView *)self->_sidebarContentDimmingView setPassthroughView:view];
 
     [(SidebarContentDimmingView *)self->_sidebarContentDimmingView setDelegate:self];
     contentContainerView = self->_contentContainerView;
@@ -7456,9 +7456,9 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
   }
 }
 
-- (CGRect)_sidebarDimmedContentFrameIncludingSidebarOnlyIfEmbedded:(BOOL)a3
+- (CGRect)_sidebarDimmedContentFrameIncludingSidebarOnlyIfEmbedded:(BOOL)embedded
 {
-  if (a3)
+  if (embedded)
   {
     v4 = 8;
   }
@@ -7474,8 +7474,8 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(BrowserRootViewController *)self view];
-  [v13 safeAreaInsets];
+  view = [(BrowserRootViewController *)self view];
+  [view safeAreaInsets];
   v15 = v6 - v14;
 
   [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
@@ -7490,34 +7490,34 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
   return result;
 }
 
-- (void)_transitionFromBanner:(id)a3 toBanner:(id)a4 animated:(BOOL)a5
+- (void)_transitionFromBanner:(id)banner toBanner:(id)toBanner animated:(BOOL)animated
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BrowserRootViewController *)self view];
-  [v10 setNeedsLayout];
+  bannerCopy = banner;
+  toBannerCopy = toBanner;
+  view = [(BrowserRootViewController *)self view];
+  [view setNeedsLayout];
 
-  v11 = [v9 separableFromStatusBar];
+  separableFromStatusBar = [toBannerCopy separableFromStatusBar];
   v12 = &OBJC_IVAR___BrowserRootViewController__documentAndTopBarsContainerView;
-  if (v11)
+  if (separableFromStatusBar)
   {
     v12 = &OBJC_IVAR___BrowserRootViewController__scrollView;
   }
 
   v13 = *(&self->super.super.super.isa + *v12);
-  if (v9)
+  if (toBannerCopy)
   {
-    [(BrowserRootViewController *)self _updateThemeForBanner:v9 animated:0];
-    [v9 setShowsTopSeparator:0];
-    v14 = [(BrowserRootViewController *)self view];
-    [v14 layoutMargins];
-    [v9 setLayoutMargins:?];
+    [(BrowserRootViewController *)self _updateThemeForBanner:toBannerCopy animated:0];
+    [toBannerCopy setShowsTopSeparator:0];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 layoutMargins];
+    [toBannerCopy setLayoutMargins:?];
 
-    if ([v9 separableFromStatusBar])
+    if ([toBannerCopy separableFromStatusBar])
     {
-      v15 = [(UIScrollView *)self->_scrollView subviews];
-      v16 = [v15 indexOfObject:v8];
+      subviews = [(UIScrollView *)self->_scrollView subviews];
+      v16 = [subviews indexOfObject:bannerCopy];
       if (v16 <= [(BrowserRootViewController *)self _findInsertionIndexForBannersInScrollView:self->_scrollView])
       {
         v18 = [(BrowserRootViewController *)self _findInsertionIndexForBannersInScrollView:self->_scrollView];
@@ -7525,28 +7525,28 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
 
       else
       {
-        v17 = [(UIScrollView *)self->_scrollView subviews];
-        v18 = [v17 indexOfObject:v8];
+        subviews2 = [(UIScrollView *)self->_scrollView subviews];
+        v18 = [subviews2 indexOfObject:bannerCopy];
       }
 
-      [(UIScrollView *)self->_scrollView insertSubview:v9 atIndex:v18];
+      [(UIScrollView *)self->_scrollView insertSubview:toBannerCopy atIndex:v18];
     }
 
     else
     {
-      [v13 addSubview:v9];
+      [v13 addSubview:toBannerCopy];
     }
   }
 
   [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
-  [v9 sizeThatFits:{CGRectGetWidth(v52), 0.0}];
+  [toBannerCopy sizeThatFits:{CGRectGetWidth(v52), 0.0}];
   v20 = v19;
   [v13 bounds];
-  [v9 setFrame:{0.0, 0.0, CGRectGetWidth(v53), v20}];
+  [toBannerCopy setFrame:{0.0, 0.0, CGRectGetWidth(v53), v20}];
   [(UIScrollView *)self->_scrollView contentOffset];
   v22 = v21;
   v24 = v23;
-  if (v9 && ([v9 isInitiallyBehindNavigationBar] & 1) == 0)
+  if (toBannerCopy && ([toBannerCopy isInitiallyBehindNavigationBar] & 1) == 0)
   {
     [(BrowserRootViewController *)self navigationBarFrameInCoordinateSpace:self->_documentAndTopBarsContainerView];
     v25 = -CGRectGetMaxY(v54);
@@ -7554,8 +7554,8 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v26 = [(BrowserRootViewController *)self managedTopBanners];
-    v27 = [v26 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    managedTopBanners = [(BrowserRootViewController *)self managedTopBanners];
+    v27 = [managedTopBanners countByEnumeratingWithState:&v46 objects:v50 count:16];
     if (v27)
     {
       v28 = v27;
@@ -7566,14 +7566,14 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
         {
           if (*v47 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(managedTopBanners);
           }
 
           [*(*(&v46 + 1) + 8 * i) bounds];
           v25 = v25 - CGRectGetHeight(v55);
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v46 objects:v50 count:16];
+        v28 = [managedTopBanners countByEnumeratingWithState:&v46 objects:v50 count:16];
       }
 
       while (v28);
@@ -7586,15 +7586,15 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
     }
   }
 
-  if (a5)
+  if (animated)
   {
     v33 = MEMORY[0x277D75D18];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __69__BrowserRootViewController__transitionFromBanner_toBanner_animated___block_invoke;
     v41[3] = &unk_2781D5AA0;
-    v42 = v9;
-    v43 = self;
+    v42 = toBannerCopy;
+    selfCopy = self;
     v45 = v20;
     v44 = v13;
     [v33 performWithoutAnimation:v41];
@@ -7606,7 +7606,7 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
     v37[4] = self;
     v39 = v22;
     v40 = v24;
-    v38 = v8;
+    v38 = bannerCopy;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __69__BrowserRootViewController__transitionFromBanner_toBanner_animated___block_invoke_3;
@@ -7618,7 +7618,7 @@ id __49__BrowserRootViewController__setUpTabGroupButton__block_invoke(uint64_t a
   else
   {
     [(UIScrollView *)self->_scrollView setContentOffset:v22, v24];
-    [v8 removeFromSuperview];
+    [bannerCopy removeFromSuperview];
   }
 }
 
@@ -7652,61 +7652,61 @@ uint64_t __69__BrowserRootViewController__transitionFromBanner_toBanner_animated
   return [v5 setAlpha:0.0];
 }
 
-- (void)bannerController:(id)a3 didSetAppBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6
+- (void)bannerController:(id)controller didSetAppBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated
 {
-  if (a4 != a5)
+  if (banner != previousBanner)
   {
-    [(BrowserRootViewController *)self _transitionFromBanner:a5 toBanner:a4 animated:a6];
+    [(BrowserRootViewController *)self _transitionFromBanner:previousBanner toBanner:banner animated:animated];
   }
 }
 
-- (void)bannerController:(id)a3 didSetCrashBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6
+- (void)bannerController:(id)controller didSetCrashBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated
 {
-  if (a4 != a5)
+  if (banner != previousBanner)
   {
-    v7 = a6;
-    v10 = a5;
-    v14 = a4;
-    [v14 setPinnedToTop:1];
+    animatedCopy = animated;
+    previousBannerCopy = previousBanner;
+    bannerCopy = banner;
+    [bannerCopy setPinnedToTop:1];
     v11 = MEMORY[0x277CCABB0];
     [(UIScrollView *)self->_scrollView contentOffset];
     v13 = [v11 numberWithDouble:v12];
-    [v14 setPinnedOffset:v13];
+    [bannerCopy setPinnedOffset:v13];
 
-    [(BrowserRootViewController *)self _transitionFromBanner:v10 toBanner:v14 animated:v7];
+    [(BrowserRootViewController *)self _transitionFromBanner:previousBannerCopy toBanner:bannerCopy animated:animatedCopy];
   }
 }
 
-- (void)bannerController:(id)a3 didSetWebExtensionBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6
+- (void)bannerController:(id)controller didSetWebExtensionBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated
 {
-  v6 = a6;
-  v9 = a4;
-  if (v9 != a5)
+  animatedCopy = animated;
+  bannerCopy = banner;
+  if (bannerCopy != previousBanner)
   {
-    [a5 removeFromSuperview];
+    [previousBanner removeFromSuperview];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __95__BrowserRootViewController_bannerController_didSetWebExtensionBanner_previousBanner_animated___block_invoke;
     aBlock[3] = &unk_2781D4D40;
     aBlock[4] = self;
     v10 = _Block_copy(aBlock);
-    if (v9)
+    if (bannerCopy)
     {
-      [(BrowserRootViewController *)self _updateThemeForBanner:v9 animated:v6];
+      [(BrowserRootViewController *)self _updateThemeForBanner:bannerCopy animated:animatedCopy];
       capsuleViewController = self->_capsuleViewController;
       if (capsuleViewController)
       {
-        v12 = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleIsFocused];
+        capsuleIsFocused = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleIsFocused];
       }
 
       else
       {
-        v12 = 0;
+        capsuleIsFocused = 0;
       }
 
-      [v9 setHidden:v12];
-      [v9 setPinnedToTop:1];
-      [(UIScrollView *)self->_scrollView addSubview:v9];
+      [bannerCopy setHidden:capsuleIsFocused];
+      [bannerCopy setPinnedToTop:1];
+      [(UIScrollView *)self->_scrollView addSubview:bannerCopy];
     }
 
     v10[2](v10);
@@ -7719,38 +7719,38 @@ void __95__BrowserRootViewController_bannerController_didSetWebExtensionBanner_p
   [v1 setNeedsLayout];
 }
 
-- (void)bannerController:(id)a3 didSetRemotelyEnabledExtensionBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6
+- (void)bannerController:(id)controller didSetRemotelyEnabledExtensionBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated
 {
-  v6 = a6;
-  v9 = a4;
-  if (v9 != a5)
+  animatedCopy = animated;
+  bannerCopy = banner;
+  if (bannerCopy != previousBanner)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __107__BrowserRootViewController_bannerController_didSetRemotelyEnabledExtensionBanner_previousBanner_animated___block_invoke;
     aBlock[3] = &unk_2781D4D40;
     aBlock[4] = self;
-    v10 = a5;
+    previousBannerCopy = previousBanner;
     v11 = _Block_copy(aBlock);
-    [v10 removeFromSuperview];
+    [previousBannerCopy removeFromSuperview];
 
-    if (v9)
+    if (bannerCopy)
     {
-      [(BrowserRootViewController *)self _updateThemeForBanner:v9 animated:v6];
+      [(BrowserRootViewController *)self _updateThemeForBanner:bannerCopy animated:animatedCopy];
       capsuleViewController = self->_capsuleViewController;
       if (capsuleViewController)
       {
-        v13 = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleIsFocused];
+        capsuleIsFocused = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleIsFocused];
       }
 
       else
       {
-        v13 = 0;
+        capsuleIsFocused = 0;
       }
 
-      [v9 setHidden:v13];
-      [v9 setPinnedToTop:1];
-      [(UIScrollView *)self->_scrollView addSubview:v9];
+      [bannerCopy setHidden:capsuleIsFocused];
+      [bannerCopy setPinnedToTop:1];
+      [(UIScrollView *)self->_scrollView addSubview:bannerCopy];
     }
 
     v11[2](v11);
@@ -7763,38 +7763,38 @@ void __107__BrowserRootViewController_bannerController_didSetRemotelyEnabledExte
   [v1 setNeedsLayout];
 }
 
-- (void)bannerController:(id)a3 didSetWebExtensionPermissionGrantedBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6
+- (void)bannerController:(id)controller didSetWebExtensionPermissionGrantedBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated
 {
-  v6 = a6;
-  v9 = a4;
-  if (v9 != a5)
+  animatedCopy = animated;
+  bannerCopy = banner;
+  if (bannerCopy != previousBanner)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __112__BrowserRootViewController_bannerController_didSetWebExtensionPermissionGrantedBanner_previousBanner_animated___block_invoke;
     aBlock[3] = &unk_2781D4D40;
     aBlock[4] = self;
-    v10 = a5;
+    previousBannerCopy = previousBanner;
     v11 = _Block_copy(aBlock);
-    [v10 removeFromSuperview];
+    [previousBannerCopy removeFromSuperview];
 
-    if (v9)
+    if (bannerCopy)
     {
-      [(BrowserRootViewController *)self _updateThemeForBanner:v9 animated:v6];
+      [(BrowserRootViewController *)self _updateThemeForBanner:bannerCopy animated:animatedCopy];
       capsuleViewController = self->_capsuleViewController;
       if (capsuleViewController)
       {
-        v13 = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleIsFocused];
+        capsuleIsFocused = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleIsFocused];
       }
 
       else
       {
-        v13 = 0;
+        capsuleIsFocused = 0;
       }
 
-      [v9 setHidden:v13];
-      [v9 setPinnedToTop:1];
-      [(UIScrollView *)self->_scrollView addSubview:v9];
+      [bannerCopy setHidden:capsuleIsFocused];
+      [bannerCopy setPinnedToTop:1];
+      [(UIScrollView *)self->_scrollView addSubview:bannerCopy];
     }
 
     v11[2](v11);
@@ -7807,35 +7807,35 @@ void __112__BrowserRootViewController_bannerController_didSetWebExtensionPermiss
   [v1 setNeedsLayout];
 }
 
-- (void)bannerController:(id)a3 didSetPrivateBrowsingPrivacyProtectionsBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6
+- (void)bannerController:(id)controller didSetPrivateBrowsingPrivacyProtectionsBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated
 {
-  if (a4 != a5)
+  if (banner != previousBanner)
   {
-    v7 = a6;
-    v10 = a5;
-    v14 = a4;
-    [v14 setPinnedToTop:1];
+    animatedCopy = animated;
+    previousBannerCopy = previousBanner;
+    bannerCopy = banner;
+    [bannerCopy setPinnedToTop:1];
     v11 = MEMORY[0x277CCABB0];
     [(UIScrollView *)self->_scrollView contentOffset];
     v13 = [v11 numberWithDouble:v12];
-    [v14 setPinnedOffset:v13];
+    [bannerCopy setPinnedOffset:v13];
 
-    [(BrowserRootViewController *)self _transitionFromBanner:v10 toBanner:v14 animated:v7];
+    [(BrowserRootViewController *)self _transitionFromBanner:previousBannerCopy toBanner:bannerCopy animated:animatedCopy];
   }
 }
 
-- (void)bannerController:(id)a3 didSetTabGroupBanner:(id)a4 previousBanner:(id)a5 animated:(BOOL)a6
+- (void)bannerController:(id)controller didSetTabGroupBanner:(id)banner previousBanner:(id)previousBanner animated:(BOOL)animated
 {
-  if (a4 != a5)
+  if (banner != previousBanner)
   {
-    [(BrowserRootViewController *)self _transitionFromBanner:a5 toBanner:a4 animated:a6];
+    [(BrowserRootViewController *)self _transitionFromBanner:previousBanner toBanner:banner animated:animated];
   }
 }
 
-- (void)_keyboardWillChangeFrame:(id)a3
+- (void)_keyboardWillChangeFrame:(id)frame
 {
-  v4 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-  v5 = v4;
+  areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+  v5 = areAnimationsEnabled;
   if (self->_capsuleViewController)
   {
     v6 = 1;
@@ -7843,7 +7843,7 @@ void __112__BrowserRootViewController_bannerController_didSetWebExtensionPermiss
 
   else
   {
-    v6 = v4 == 0;
+    v6 = areAnimationsEnabled == 0;
   }
 
   if (!v6)
@@ -7856,19 +7856,19 @@ void __112__BrowserRootViewController_bannerController_didSetWebExtensionPermiss
     [MEMORY[0x277D75D18] performWithoutAnimation:v30];
   }
 
-  v7 = [(BrowserRootViewController *)self view];
-  v8 = [v7 keyboardSceneDelegate];
+  view = [(BrowserRootViewController *)self view];
+  keyboardSceneDelegate = [view keyboardSceneDelegate];
 
-  v9 = [MEMORY[0x277D756A8] activeKeyboardSceneDelegate];
+  activeKeyboardSceneDelegate = [MEMORY[0x277D756A8] activeKeyboardSceneDelegate];
 
-  if (v8 == v9)
+  if (keyboardSceneDelegate == activeKeyboardSceneDelegate)
   {
-    [v8 visibleFrameInView:0];
+    [keyboardSceneDelegate visibleFrameInView:0];
   }
 
   else
   {
-    [v8 visibleInputViewFrameInView:0];
+    [keyboardSceneDelegate visibleInputViewFrameInView:0];
   }
 
   v14 = v10;
@@ -7876,10 +7876,10 @@ void __112__BrowserRootViewController_bannerController_didSetWebExtensionPermiss
   v16 = v12;
   v17 = v13;
   contentContainerView = self->_contentContainerView;
-  v19 = [(ViewWithCustomNextResponder *)contentContainerView window];
-  v20 = [v19 screen];
-  v21 = [v20 coordinateSpace];
-  [(ViewWithCustomNextResponder *)contentContainerView convertRect:v21 fromCoordinateSpace:v14, v15, v16, v17];
+  window = [(ViewWithCustomNextResponder *)contentContainerView window];
+  screen = [window screen];
+  coordinateSpace = [screen coordinateSpace];
+  [(ViewWithCustomNextResponder *)contentContainerView convertRect:coordinateSpace fromCoordinateSpace:v14, v15, v16, v17];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -7893,13 +7893,13 @@ void __112__BrowserRootViewController_bannerController_didSetWebExtensionPermiss
   self->_bottomBarKeyboardOffset = CGRectGetHeight(v32);
   if (!self->_capsuleViewController)
   {
-    v28 = [(BrowserRootViewController *)self view];
-    [v28 setNeedsLayout];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 setNeedsLayout];
 
     if (v5)
     {
-      v29 = [(BrowserRootViewController *)self view];
-      [v29 layoutIfNeeded];
+      view3 = [(BrowserRootViewController *)self view];
+      [view3 layoutIfNeeded];
     }
   }
 }
@@ -7910,54 +7910,54 @@ void __54__BrowserRootViewController__keyboardWillChangeFrame___block_invoke(uin
   [v1 layoutIfNeeded];
 }
 
-- (void)addToastViewController:(id)a3
+- (void)addToastViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(BrowserRootViewController *)self loadViewIfNeeded];
-  [(UIViewController *)self->_documentAndTopBarsContainerViewController addChildViewController:v4];
+  [(UIViewController *)self->_documentAndTopBarsContainerViewController addChildViewController:controllerCopy];
   currentlyPresentedToastViewController = self->_currentlyPresentedToastViewController;
-  self->_currentlyPresentedToastViewController = v4;
-  v8 = v4;
+  self->_currentlyPresentedToastViewController = controllerCopy;
+  v8 = controllerCopy;
 
   documentAndTopBarsContainerView = self->_documentAndTopBarsContainerView;
-  v7 = [(SFToastViewController *)v8 view];
-  [(SFOrderedContainerView *)documentAndTopBarsContainerView addSubview:v7];
+  view = [(SFToastViewController *)v8 view];
+  [(SFOrderedContainerView *)documentAndTopBarsContainerView addSubview:view];
 
   [(SFToastViewController *)v8 didMoveToParentViewController:self->_documentAndTopBarsContainerViewController];
 }
 
-- (void)removeToastViewController:(id)a3
+- (void)removeToastViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v5 removeFromSuperview];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view removeFromSuperview];
 
-  [(UIViewController *)self->_documentAndTopBarsContainerViewController removeChildViewController:v4];
+  [(UIViewController *)self->_documentAndTopBarsContainerViewController removeChildViewController:controllerCopy];
   currentlyPresentedToastViewController = self->_currentlyPresentedToastViewController;
   self->_currentlyPresentedToastViewController = 0;
 }
 
-- (void)dynamicBarAnimatorOutputsDidChange:(id)a3
+- (void)dynamicBarAnimatorOutputsDidChange:(id)change
 {
   if (![(BrowserRootViewController *)self usingLoweredBar])
   {
-    v4 = [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator targetState];
-    [(_SFNavigationBar *)self->_navigationBar setUnifiedFieldShowsProgressView:v4 != 0];
-    v5 = [(BrowserRootViewController *)self view];
-    [v5 setNeedsLayout];
+    targetState = [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator targetState];
+    [(_SFNavigationBar *)self->_navigationBar setUnifiedFieldShowsProgressView:targetState != 0];
+    view = [(BrowserRootViewController *)self view];
+    [view setNeedsLayout];
 
     [(BrowserRootViewController *)self _setAvoidanceInsetsNeedsUpdate];
-    if (v4)
+    if (targetState)
     {
-      v6 = 0;
+      _interfaceFillsScreen = 0;
     }
 
     else
     {
-      v6 = [(BrowserRootViewController *)self _interfaceFillsScreen];
+      _interfaceFillsScreen = [(BrowserRootViewController *)self _interfaceFillsScreen];
     }
 
-    [(BrowserRootViewController *)self setBarStateAllowsHidingHomeIndicator:v6];
+    [(BrowserRootViewController *)self setBarStateAllowsHidingHomeIndicator:_interfaceFillsScreen];
   }
 }
 
@@ -7966,8 +7966,8 @@ void __54__BrowserRootViewController__keyboardWillChangeFrame___block_invoke(uin
   if ([(UIPanGestureRecognizer *)self->_hideNavigationBarGestureRecognizer state]== 2)
   {
     hideNavigationBarGestureRecognizer = self->_hideNavigationBarGestureRecognizer;
-    v4 = [(BrowserRootViewController *)self view];
-    [(UIPanGestureRecognizer *)hideNavigationBarGestureRecognizer translationInView:v4];
+    view = [(BrowserRootViewController *)self view];
+    [(UIPanGestureRecognizer *)hideNavigationBarGestureRecognizer translationInView:view];
     v6 = -v5;
   }
 
@@ -7980,18 +7980,18 @@ void __54__BrowserRootViewController__keyboardWillChangeFrame___block_invoke(uin
   return v6;
 }
 
-- (void)_hideNavigationBarGestureRecognized:(id)a3
+- (void)_hideNavigationBarGestureRecognized:(id)recognized
 {
-  v13 = a3;
-  v4 = [(BrowserRootViewController *)self view];
-  [v13 translationInView:v4];
+  recognizedCopy = recognized;
+  view = [(BrowserRootViewController *)self view];
+  [recognizedCopy translationInView:view];
   v6 = v5;
 
-  v7 = [v13 state];
-  if ((v7 - 3) >= 3)
+  state = [recognizedCopy state];
+  if ((state - 3) >= 3)
   {
     v11 = -v6;
-    if (v7 == 2)
+    if (state == 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
       [WeakRetained updateDynamicBarGeometry];
@@ -7999,7 +7999,7 @@ void __54__BrowserRootViewController__keyboardWillChangeFrame___block_invoke(uin
       [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator updateDraggingWithOffset:v11];
     }
 
-    else if (v7 == 1)
+    else if (state == 1)
     {
       [(_SFWebView *)self->_webView _beginInteractiveObscuredInsetsChange];
       [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator beginDraggingWithOffset:v11];
@@ -8009,8 +8009,8 @@ void __54__BrowserRootViewController__keyboardWillChangeFrame___block_invoke(uin
   else
   {
     [(_SFWebView *)self->_webView _endInteractiveObscuredInsetsChange];
-    v8 = [(BrowserRootViewController *)self view];
-    [v13 velocityInView:v8];
+    view2 = [(BrowserRootViewController *)self view];
+    [recognizedCopy velocityInView:view2];
     v10 = v9;
 
     [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator endDraggingWithTargetOffset:(v10 / log(*MEMORY[0x277D76EC0]) - v6) velocity:v10 * -1000.0];
@@ -8021,16 +8021,16 @@ void __54__BrowserRootViewController__keyboardWillChangeFrame___block_invoke(uin
   }
 }
 
-- (void)_showBarsFromBottomBarTap:(id)a3
+- (void)_showBarsFromBottomBarTap:(id)tap
 {
-  v3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v3 setSelectedItemState:0 animated:1];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView setSelectedItemState:0 animated:1];
 }
 
-- (void)_receivedTouchDown:(id)a3
+- (void)_receivedTouchDown:(id)down
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  downCopy = down;
+  if ([downCopy state] == 3)
   {
     stepperContainer = self->_stepperContainer;
     v14[0] = MEMORY[0x277D85DD0];
@@ -8040,13 +8040,13 @@ void __54__BrowserRootViewController__keyboardWillChangeFrame___block_invoke(uin
     v14[4] = self;
     [(SFStepperContainer *)stepperContainer hideStepperWithCompletion:v14];
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v7 = [WeakRetained tabController];
-    v8 = [v7 activeTabDocument];
-    v9 = [v8 isBlank];
+    tabController = [WeakRetained tabController];
+    activeTabDocument = [tabController activeTabDocument];
+    isBlank = [activeTabDocument isBlank];
 
-    if ((v9 & 1) == 0)
+    if ((isBlank & 1) == 0)
     {
-      [v4 locationInView:self->_documentAndTopBarsContainerView];
+      [downCopy locationInView:self->_documentAndTopBarsContainerView];
       v11 = v10;
       v13 = v12;
       [(BrowserRootViewController *)self navigationBarFrameInCoordinateSpace:self->_documentAndTopBarsContainerView];
@@ -8070,9 +8070,9 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
   *(v2 + 1008) = 0;
 }
 
-- (void)_contentScrollViewReceivedTouchDown:(id)a3
+- (void)_contentScrollViewReceivedTouchDown:(id)down
 {
-  if ([a3 state] == 3)
+  if ([down state] == 3)
   {
     addedBookmarkToastViewController = self->_addedBookmarkToastViewController;
 
@@ -8080,25 +8080,25 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
   }
 }
 
-- (void)_enterYttriumStateGestureRecognized:(id)a3
+- (void)_enterYttriumStateGestureRecognized:(id)recognized
 {
-  if ([a3 state] == 3)
+  if ([recognized state] == 3)
   {
 
     [(BrowserRootViewController *)self setInYttriumState:1];
   }
 }
 
-- (void)_exitYttriumStateGestureRecognized:(id)a3
+- (void)_exitYttriumStateGestureRecognized:(id)recognized
 {
-  v8 = a3;
-  if ([v8 state] >= 3)
+  recognizedCopy = recognized;
+  if ([recognizedCopy state] >= 3)
   {
-    [v8 velocityInView:self->_documentAndTopBarsContainerView];
+    [recognizedCopy velocityInView:self->_documentAndTopBarsContainerView];
     v5 = v4;
     [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView bounds];
     MaxY = CGRectGetMaxY(v10);
-    [v8 locationInView:self->_documentAndTopBarsContainerView];
+    [recognizedCopy locationInView:self->_documentAndTopBarsContainerView];
     if (MaxY - v7 > 200.0 || v5 < -150.0)
     {
       [(BrowserRootViewController *)self setInYttriumState:0];
@@ -8106,20 +8106,20 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
   }
 }
 
-- (void)_receivedTouchUp:(id)a3
+- (void)_receivedTouchUp:(id)up
 {
-  if ([a3 state] == 3)
+  if ([up state] == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
     [WeakRetained unhideCapsuleFromPageMenuIfNeeded];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_showBarsFromBottomBarRecognizer == v6)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  if (self->_showBarsFromBottomBarRecognizer == recognizerCopy)
   {
     if (self->_keepBarsMinimized || (-[CatalogViewController view](self->_catalogViewController, "view"), v18 = objc_claimAutoreleasedReturnValue(), [v18 window], v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v19))
     {
@@ -8130,7 +8130,7 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
     {
       [(ViewWithCustomNextResponder *)self->_contentContainerView bounds];
       v26 = v25;
-      [v7 locationInView:self->_contentContainerView];
+      [touchCopy locationInView:self->_contentContainerView];
       v28 = v26 - v27;
       [(BrowserRootViewController *)self maximumHeightObscuredByBottomToolbar];
       LOBYTE(self) = v28 < v29;
@@ -8139,13 +8139,13 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
 
   else
   {
-    v8 = [(BrowserRootViewController *)self topBar];
-    v9 = v8;
-    if (self->_hideNavigationBarGestureRecognizer == v6)
+    topBar = [(BrowserRootViewController *)self topBar];
+    v9 = topBar;
+    if (self->_hideNavigationBarGestureRecognizer == recognizerCopy)
     {
-      if (v8)
+      if (topBar)
       {
-        [v7 locationInView:v8];
+        [touchCopy locationInView:topBar];
         v21 = v20;
         [v9 bounds];
         LOBYTE(self) = v21 < CGRectGetMaxY(v31);
@@ -8159,27 +8159,27 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
 
     else
     {
-      v10 = [(BrowserRootViewController *)self view];
-      [v10 safeAreaInsets];
+      view = [(BrowserRootViewController *)self view];
+      [view safeAreaInsets];
       v12 = v11;
 
-      v13 = [(BrowserRootViewController *)self view];
-      [v13 bounds];
+      view2 = [(BrowserRootViewController *)self view];
+      [view2 bounds];
       MaxY = CGRectGetMaxY(v30);
-      v15 = [(BrowserRootViewController *)self view];
-      [v7 locationInView:v15];
+      view3 = [(BrowserRootViewController *)self view];
+      [touchCopy locationInView:view3];
       v17 = MaxY - v16;
 
-      if (self->_enterYttriumStateRecognizer == v6)
+      if (self->_enterYttriumStateRecognizer == recognizerCopy)
       {
         LODWORD(self) = (v17 >= v12) & ~[(BrowserRootViewController *)self isInYttriumState];
       }
 
-      else if (self->_exitYttriumStateRecognizer == v6)
+      else if (self->_exitYttriumStateRecognizer == recognizerCopy)
       {
-        v22 = [(BrowserRootViewController *)self _shouldInterceptBottomGesture];
+        _shouldInterceptBottomGesture = [(BrowserRootViewController *)self _shouldInterceptBottomGesture];
         v23 = v17 <= fmax(v12, 34.0);
-        LOBYTE(self) = v22 && v23;
+        LOBYTE(self) = _shouldInterceptBottomGesture && v23;
       }
 
       else
@@ -8192,21 +8192,21 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
   return self;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   hideNavigationBarGestureRecognizer = self->_hideNavigationBarGestureRecognizer;
-  if (hideNavigationBarGestureRecognizer == a3)
+  if (hideNavigationBarGestureRecognizer == begin)
   {
-    v6 = [(BrowserRootViewController *)self view];
-    [(UIPanGestureRecognizer *)hideNavigationBarGestureRecognizer translationInView:v6];
+    view = [(BrowserRootViewController *)self view];
+    [(UIPanGestureRecognizer *)hideNavigationBarGestureRecognizer translationInView:view];
     v8 = v7;
 
     if (v8 <= 0.0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
-      v10 = [WeakRetained tabController];
-      v11 = [v10 activeTabDocument];
-      if ([v11 canHideToolbar])
+      tabController = [WeakRetained tabController];
+      activeTabDocument = [tabController activeTabDocument];
+      if ([activeTabDocument canHideToolbar])
       {
         v4 = ![(BrowserRootViewController *)self _interfaceFillsScreen];
       }
@@ -8231,11 +8231,11 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
   return v4;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_enterYttriumStateRecognizer == v6 || self->_exitYttriumStateRecognizer == v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_enterYttriumStateRecognizer == recognizerCopy || self->_exitYttriumStateRecognizer == recognizerCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     isKindOfClass = 1;
   }
@@ -8264,28 +8264,28 @@ void __48__BrowserRootViewController__receivedTouchDown___block_invoke(uint64_t 
 
 - (void)stopRefreshing
 {
-  v2 = [(BrowserRootViewController *)self refreshControl];
-  if ([v2 isRefreshing])
+  refreshControl = [(BrowserRootViewController *)self refreshControl];
+  if ([refreshControl isRefreshing])
   {
-    [v2 endRefreshing];
+    [refreshControl endRefreshing];
   }
 }
 
-- (void)_refreshControlFired:(id)a3
+- (void)_refreshControlFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained tabController];
-  v7 = [v6 activeTabDocument];
-  [v7 reloadUserInitiated];
+  tabController = [WeakRetained tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  [activeTabDocument reloadUserInitiated];
 
   v8 = dispatch_time(0, 2500000000);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__BrowserRootViewController__refreshControlFired___block_invoke;
   block[3] = &unk_2781D4D40;
-  v11 = v4;
-  v9 = v4;
+  v11 = firedCopy;
+  v9 = firedCopy;
   dispatch_after(v8, MEMORY[0x277D85CD0], block);
 }
 
@@ -8302,80 +8302,80 @@ uint64_t __50__BrowserRootViewController__refreshControlFired___block_invoke(uin
   return result;
 }
 
-- (void)updateOrderedSubviewsForOrderedContainerView:(id)a3
+- (void)updateOrderedSubviewsForOrderedContainerView:(id)view
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BrowserRootViewController *)self view];
+  viewCopy = view;
+  view = [(BrowserRootViewController *)self view];
 
-  if (v5 == v4)
+  if (view == viewCopy)
   {
     contentContainerView = self->_contentContainerView;
-    v11 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
+    view2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController view];
     stepperContainer = self->_stepperContainer;
-    v37 = v11;
-    v38 = stepperContainer;
+    view3 = view2;
+    view4 = stepperContainer;
     statusBarBackdrop = self->_statusBarBackdrop;
     statusBarView = self->_statusBarView;
     v40 = statusBarBackdrop;
     scrollToTopView = self->_scrollToTopView;
     WeakRetained = objc_loadWeakRetained(&self->_clipperView);
 
-    [v4 updateOrderedSubviews:&contentContainerView count:7];
+    [viewCopy updateOrderedSubviews:&contentContainerView count:7];
   }
 
   else
   {
     v6 = objc_loadWeakRetained(&self->_browserController);
-    v7 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+    capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
     v8 = WBSIsEqual();
 
-    v9 = [(BrowserRootViewController *)self isUsingBottomCapsule];
-    v34 = [(BrowserRootViewController *)self _continuousReadingViewController];
-    contentContainerView = [v34 view];
-    v37 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
-    v38 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
-    v33 = [v6 bannerController];
-    statusBarView = [v33 tabGroupBanner];
-    v35 = v4;
-    if (v9)
+    isUsingBottomCapsule = [(BrowserRootViewController *)self isUsingBottomCapsule];
+    _continuousReadingViewController = [(BrowserRootViewController *)self _continuousReadingViewController];
+    contentContainerView = [_continuousReadingViewController view];
+    view3 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
+    view4 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
+    bannerController = [v6 bannerController];
+    statusBarView = [bannerController tabGroupBanner];
+    v35 = viewCopy;
+    if (isUsingBottomCapsule)
     {
-      v10 = 0;
+      view5 = 0;
     }
 
     else
     {
-      v10 = [(SFToastViewController *)self->_currentlyPresentedToastViewController view];
+      view5 = [(SFToastViewController *)self->_currentlyPresentedToastViewController view];
     }
 
-    v40 = v10;
-    v32 = v10;
+    v40 = view5;
+    v32 = view5;
     if (v8)
     {
-      v14 = [(CatalogViewController *)self->_catalogViewController view];
+      view6 = [(CatalogViewController *)self->_catalogViewController view];
     }
 
     else
     {
-      v14 = 0;
+      view6 = 0;
     }
 
     topBackdrop = self->_topBackdrop;
-    scrollToTopView = v14;
+    scrollToTopView = view6;
     WeakRetained = topBackdrop;
-    v31 = v14;
-    if (v9)
+    v31 = view6;
+    if (isUsingBottomCapsule)
     {
-      v16 = [(SFToastViewController *)self->_currentlyPresentedToastViewController view];
+      view7 = [(SFToastViewController *)self->_currentlyPresentedToastViewController view];
     }
 
     else
     {
-      v16 = 0;
+      view7 = 0;
     }
 
-    v43 = v16;
-    v29 = v16;
+    v43 = view7;
+    v29 = view7;
     if (v8)
     {
       v17 = 0;
@@ -8383,19 +8383,19 @@ uint64_t __50__BrowserRootViewController__refreshControlFired___block_invoke(uin
 
     else
     {
-      v17 = [(CatalogViewController *)self->_catalogViewController view:v16];
+      v17 = [(CatalogViewController *)self->_catalogViewController view:view7];
     }
 
     v18 = self->_statusBarBackdrop;
     v44 = v17;
     v45 = v18;
     v19 = v6;
-    v20 = [v6 tabController];
-    v21 = [v20 activeTabDocument];
-    v22 = [v21 sfScribbleControllerIfLoaded];
-    v23 = [v22 overlay];
+    tabController = [v6 tabController];
+    activeTabDocument = [tabController activeTabDocument];
+    sfScribbleControllerIfLoaded = [activeTabDocument sfScribbleControllerIfLoaded];
+    overlay = [sfScribbleControllerIfLoaded overlay];
     unifiedBar = self->_unifiedBar;
-    v46 = v23;
+    v46 = overlay;
     v47 = unifiedBar;
     topAuxiliaryBarsContainerView = self->_topAuxiliaryBarsContainerView;
     navigationBar = self->_navigationBar;
@@ -8403,25 +8403,25 @@ uint64_t __50__BrowserRootViewController__refreshControlFired___block_invoke(uin
     tabHoverPreview = self->_tabHoverPreview;
     tabBarDropExpansionView = self->_tabBarDropExpansionView;
     v51 = tabHoverPreview;
-    v27 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    v52 = [v27 lockdownStatusBar];
-    v28 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    v53 = [v28 minimizedProgressView];
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    lockdownStatusBar = [capsuleCollectionView lockdownStatusBar];
+    capsuleCollectionView2 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    minimizedProgressView = [capsuleCollectionView2 minimizedProgressView];
 
     if ((v8 & 1) == 0)
     {
     }
 
-    if (v9)
+    if (isUsingBottomCapsule)
     {
     }
 
-    v4 = v35;
+    viewCopy = v35;
     if (v8)
     {
     }
 
-    if (!v9)
+    if (!isUsingBottomCapsule)
     {
     }
 
@@ -8429,9 +8429,9 @@ uint64_t __50__BrowserRootViewController__refreshControlFired___block_invoke(uin
   }
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
-  if (!a4)
+  if (!only)
   {
     self->_verticalScrollIndicatorBaseInsets = *invalidScrollViewInsets;
     self->_horizontalScrollIndicatorBaseInsets = *invalidScrollViewInsets;
@@ -8440,17 +8440,17 @@ uint64_t __50__BrowserRootViewController__refreshControlFired___block_invoke(uin
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(BrowserRootViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 focusSystem];
-  v8 = [v7 focusedItem];
+  array = [MEMORY[0x277CBEB18] array];
+  view = [(BrowserRootViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  focusSystem = [windowScene focusSystem];
+  focusedItem = [focusSystem focusedItem];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = focusedItem;
   }
 
   else
@@ -8460,41 +8460,41 @@ uint64_t __50__BrowserRootViewController__refreshControlFired___block_invoke(uin
 
   sidebarViewController = self->_sidebarViewController;
   v11 = v9;
-  v12 = [(SidebarViewController *)sidebarViewController view];
-  v13 = [v11 isDescendantOfView:v12];
+  view2 = [(SidebarViewController *)sidebarViewController view];
+  v13 = [v11 isDescendantOfView:view2];
 
-  v14 = [(BrowserRootViewController *)self _unifiedField];
-  [v3 safari_addObjectUnlessNil:v14];
+  _unifiedField = [(BrowserRootViewController *)self _unifiedField];
+  [array safari_addObjectUnlessNil:_unifiedField];
 
   if (v13)
   {
-    [v3 safari_addObjectUnlessNil:self->_sidebarViewController];
+    [array safari_addObjectUnlessNil:self->_sidebarViewController];
   }
 
-  [v3 safari_addObjectUnlessNil:self->_webView];
-  [v3 safari_addObjectUnlessNil:self->_catalogViewController];
-  v15 = [(TabBarManager *)self->_tabBarManager inlineTabBar];
-  [v3 safari_addObjectUnlessNil:v15];
+  [array safari_addObjectUnlessNil:self->_webView];
+  [array safari_addObjectUnlessNil:self->_catalogViewController];
+  inlineTabBar = [(TabBarManager *)self->_tabBarManager inlineTabBar];
+  [array safari_addObjectUnlessNil:inlineTabBar];
 
-  v16 = [(TabBarManager *)self->_tabBarManager standaloneTabBar];
-  [v3 safari_addObjectUnlessNil:v16];
+  standaloneTabBar = [(TabBarManager *)self->_tabBarManager standaloneTabBar];
+  [array safari_addObjectUnlessNil:standaloneTabBar];
 
   if ((v13 & 1) == 0)
   {
-    [v3 safari_addObjectUnlessNil:self->_sidebarViewController];
+    [array safari_addObjectUnlessNil:self->_sidebarViewController];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)_prepareBarsForTransitionFromPreviousToolbarPlacement:(int64_t)a3
+- (void)_prepareBarsForTransitionFromPreviousToolbarPlacement:(int64_t)placement
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __83__BrowserRootViewController__prepareBarsForTransitionFromPreviousToolbarPlacement___block_invoke;
   v3[3] = &unk_2781D78C8;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = placement;
   [MEMORY[0x277D75D18] performWithoutAnimation:v3];
 }
 
@@ -8536,14 +8536,14 @@ LABEL_5:
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v19.receiver = self;
   v19.super_class = BrowserRootViewController;
-  [(BrowserRootViewController *)&v19 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(BrowserRootViewController *)&v19 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   if (![(BrowserRootViewController *)self isPerformingSizeTransition]|| (width == self->_sizeForCurrentViewSizeTransition.width ? (v8 = height == self->_sizeForCurrentViewSizeTransition.height) : (v8 = 0), !v8))
   {
     v8 = self->_toolbarPlacement == 0;
@@ -8555,8 +8555,8 @@ LABEL_5:
     -[BrowserRootViewController _setToolbarPlacement:](self, "_setToolbarPlacement:", [WeakRetained browserViewController:self toolbarPlacementForViewSize:{width, height}]);
 
     [(BrowserRootViewController *)self _updateToolbarForToolbarPlacementAllowingRemoval:0];
-    v11 = [(BrowserRootViewController *)self view];
-    [v11 bounds];
+    view = [(BrowserRootViewController *)self view];
+    [view bounds];
     v13 = v12;
     v15 = v14;
 
@@ -8581,7 +8581,7 @@ LABEL_5:
     v17[4] = self;
     v17[5] = v13;
     v17[6] = v15;
-    [v7 animateAlongsideTransition:v18 completion:v17];
+    [coordinatorCopy animateAlongsideTransition:v18 completion:v17];
   }
 }
 
@@ -8664,11 +8664,11 @@ void __80__BrowserRootViewController_viewWillTransitionToSize_withTransitionCoor
   [*(a1 + 32) updateUsesWebpageStatusBar];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = BrowserRootViewController;
-  [(BrowserRootViewController *)&v8 viewDidAppear:a3];
+  [(BrowserRootViewController *)&v8 viewDidAppear:appear];
   self->_canBecomeFirstResponder = 1;
   [(BrowserRootViewController *)self updateAccessibilityIdentifier];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
@@ -8679,9 +8679,9 @@ void __80__BrowserRootViewController_viewWillTransitionToSize_withTransitionCoor
 
   else
   {
-    v6 = [v5 presentationState];
+    presentationState = [v5 presentationState];
 
-    if (v6 != 2)
+    if (presentationState != 2)
     {
       [WeakRetained updateFirstResponderOrFocus];
     }
@@ -8691,27 +8691,27 @@ void __80__BrowserRootViewController_viewWillTransitionToSize_withTransitionCoor
   [v7 applicationUIDidBecomeActive];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 presentingViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  presentingViewController = [controllerCopy presentingViewController];
 
-  if (v10)
+  if (presentingViewController)
   {
     v11 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [BrowserRootViewController presentViewController:v8 animated:v11 completion:?];
+      [BrowserRootViewController presentViewController:controllerCopy animated:v11 completion:?];
     }
   }
 
-  v12 = _Block_copy(v9);
+  v12 = _Block_copy(completionCopy);
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![v8 modalPresentationStyle])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![controllerCopy modalPresentationStyle])
   {
-    [v8 setModalPresentationStyle:5];
+    [controllerCopy setModalPresentationStyle:5];
   }
 
   if ([(CatalogViewController *)self->_catalogViewController popoverIsShowing]&& (getSKStoreProductViewControllerClass(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -8720,16 +8720,16 @@ void __80__BrowserRootViewController_viewWillTransitionToSize_withTransitionCoor
     v13[1] = 3221225472;
     v13[2] = __71__BrowserRootViewController_presentViewController_animated_completion___block_invoke;
     v13[3] = &unk_2781D76E8;
-    v14 = v8;
-    v15 = self;
-    v17 = v6;
+    v14 = controllerCopy;
+    selfCopy = self;
+    v17 = animatedCopy;
     v16 = v12;
     [(BrowserRootViewController *)self dismissViewControllerAnimated:1 completion:v13];
   }
 
   else
   {
-    [(BrowserRootViewController *)self _sf_presentViewControllerOnTopOfPresentedViewController:v8 animated:v6 completion:v12];
+    [(BrowserRootViewController *)self _sf_presentViewControllerOnTopOfPresentedViewController:controllerCopy animated:animatedCopy completion:v12];
   }
 }
 
@@ -8762,34 +8762,34 @@ id __71__BrowserRootViewController_presentViewController_animated_completion___b
   return objc_msgSendSuper2(&v10, sel_presentViewController_animated_completion_, v6, v7, v8);
 }
 
-- (BOOL)viewControllerIsKindOfSKStoreProductViewControllerClass:(id)a3
+- (BOOL)viewControllerIsKindOfSKStoreProductViewControllerClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   getSKStoreProductViewControllerClass();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = _Block_copy(v6);
-  v8 = [(BrowserRootViewController *)self presentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  v7 = _Block_copy(completionCopy);
+  presentedViewController = [(BrowserRootViewController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(CatalogViewController *)self->_catalogViewController usesPopoverStyleForFavorites];
+    usesPopoverStyleForFavorites = [(CatalogViewController *)self->_catalogViewController usesPopoverStyleForFavorites];
 
-    if (v9)
+    if (usesPopoverStyleForFavorites)
     {
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __70__BrowserRootViewController_dismissViewControllerAnimated_completion___block_invoke;
       aBlock[3] = &unk_2781D56B0;
       aBlock[4] = self;
-      v16 = v6;
+      v16 = completionCopy;
       v10 = _Block_copy(aBlock);
 
       v7 = v10;
@@ -8809,7 +8809,7 @@ id __71__BrowserRootViewController_presentViewController_animated_completion___b
   v12.receiver = self;
   v12.super_class = BrowserRootViewController;
   v11 = v7;
-  [(BrowserRootViewController *)&v12 dismissViewControllerAnimated:v4 completion:v13];
+  [(BrowserRootViewController *)&v12 dismissViewControllerAnimated:animatedCopy completion:v13];
 }
 
 uint64_t __70__BrowserRootViewController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -8838,30 +8838,30 @@ void __70__BrowserRootViewController_dismissViewControllerAnimated_completion___
   [WeakRetained updateFirstResponderOrFocus];
 }
 
-- (void)capsuleNavigationController:(id)a3 obscuredInsetsDidChangeWithCoordinator:(id)a4
+- (void)capsuleNavigationController:(id)controller obscuredInsetsDidChangeWithCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BrowserRootViewController *)self view];
-  [v8 setNeedsLayout];
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  view = [(BrowserRootViewController *)self view];
+  [view setNeedsLayout];
 
-  v9 = [(BrowserRootViewController *)self _activeTabDocumentView];
-  [v9 beginInteractiveGeometryChanges];
+  _activeTabDocumentView = [(BrowserRootViewController *)self _activeTabDocumentView];
+  [_activeTabDocumentView beginInteractiveGeometryChanges];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __96__BrowserRootViewController_capsuleNavigationController_obscuredInsetsDidChangeWithCoordinator___block_invoke;
   v14[3] = &unk_2781D7940;
   v14[4] = self;
-  v15 = v6;
-  v10 = v6;
-  [v7 addAnimations:v14];
+  v15 = controllerCopy;
+  v10 = controllerCopy;
+  [coordinatorCopy addAnimations:v14];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __96__BrowserRootViewController_capsuleNavigationController_obscuredInsetsDidChangeWithCoordinator___block_invoke_2;
   v12[3] = &unk_2781D4D40;
-  v13 = v9;
-  v11 = v9;
-  [v7 addCompletion:v12];
+  v13 = _activeTabDocumentView;
+  v11 = _activeTabDocumentView;
+  [coordinatorCopy addCompletion:v12];
 }
 
 void __96__BrowserRootViewController_capsuleNavigationController_obscuredInsetsDidChangeWithCoordinator___block_invoke(uint64_t a1)
@@ -8888,41 +8888,41 @@ void __96__BrowserRootViewController_capsuleNavigationController_obscuredInsetsD
   [v6 layoutIfNeeded];
 }
 
-- (void)capsuleNavigationBarViewController:(id)a3 didCreateNavigationBar:(id)a4
+- (void)capsuleNavigationBarViewController:(id)controller didCreateNavigationBar:(id)bar
 {
-  v5 = a4;
+  barCopy = bar;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained barManager];
-  v7 = [[CapsuleNavigationBarRegistration alloc] initWithBar:v5 barManager:v6];
-  [v6 registerBar:v5 withToken:v7];
-  [v5 setDelegate:WeakRetained];
+  barManager = [WeakRetained barManager];
+  v7 = [[CapsuleNavigationBarRegistration alloc] initWithBar:barCopy barManager:barManager];
+  [barManager registerBar:barCopy withToken:v7];
+  [barCopy setDelegate:WeakRetained];
 }
 
-- (void)capsuleNavigationBarViewControllerDidChangeCapsuleFocus:(id)a3 options:(int64_t)a4
+- (void)capsuleNavigationBarViewControllerDidChangeCapsuleFocus:(id)focus options:(int64_t)options
 {
-  v6 = a3;
+  focusCopy = focus;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__BrowserRootViewController_capsuleNavigationBarViewControllerDidChangeCapsuleFocus_options___block_invoke;
   aBlock[3] = &unk_2781D7968;
-  v8 = v6;
+  v8 = focusCopy;
   v16 = v8;
   v9 = WeakRetained;
-  v18 = self;
-  v19 = a4;
-  v20 = (a4 & 2) == 0;
+  selfCopy = self;
+  optionsCopy = options;
+  v20 = (options & 2) == 0;
   v17 = v9;
   v10 = _Block_copy(aBlock);
   [v9 updateTabViewPinchRecognizer];
-  v11 = [v9 tabController];
-  v12 = [v11 activeTabDocument];
-  v13 = [v12 isShowingSystemStartPage];
+  tabController = [v9 tabController];
+  activeTabDocument = [tabController activeTabDocument];
+  isShowingSystemStartPage = [activeTabDocument isShowingSystemStartPage];
 
-  if (v13)
+  if (isShowingSystemStartPage)
   {
     v10[2](v10);
-    if (a4)
+    if (options)
     {
       goto LABEL_7;
     }
@@ -8931,7 +8931,7 @@ void __96__BrowserRootViewController_capsuleNavigationController_obscuredInsetsD
   else
   {
     [MEMORY[0x277D75D18] performWithoutAnimation:v10];
-    if (a4)
+    if (options)
     {
       goto LABEL_7;
     }
@@ -8939,9 +8939,9 @@ void __96__BrowserRootViewController_capsuleNavigationController_obscuredInsetsD
 
   if ([v9 isFavoritesFieldFocused])
   {
-    v14 = [v8 unifiedField];
-    [(CatalogViewController *)self->_catalogViewController setTextField:v14];
-    [v14 becomeFirstResponder];
+    unifiedField = [v8 unifiedField];
+    [(CatalogViewController *)self->_catalogViewController setTextField:unifiedField];
+    [unifiedField becomeFirstResponder];
   }
 
 LABEL_7:
@@ -8968,63 +8968,63 @@ uint64_t __93__BrowserRootViewController_capsuleNavigationBarViewControllerDidCh
   }
 }
 
-- (void)capsuleNavigationBarViewController:(id)a3 selectedItemWillChangeToState:(int64_t)a4 options:(int64_t)a5 coordinator:(id)a6
+- (void)capsuleNavigationBarViewController:(id)controller selectedItemWillChangeToState:(int64_t)state options:(int64_t)options coordinator:(id)coordinator
 {
-  v9 = a3;
-  v10 = a6;
-  [(BrowserRootViewController *)self _updateAllowsHidingHomeIndicatorMinimized:a4 == 1];
-  v11 = [v9 capsuleIsFocused];
-  if (a4 != 2)
+  controllerCopy = controller;
+  coordinatorCopy = coordinator;
+  [(BrowserRootViewController *)self _updateAllowsHidingHomeIndicatorMinimized:state == 1];
+  capsuleIsFocused = [controllerCopy capsuleIsFocused];
+  if (state != 2)
   {
-    if (v11)
+    if (capsuleIsFocused)
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserController);
-      v13 = [WeakRetained tabController];
-      v14 = [v13 activeTabDocument];
-      v15 = [v14 isShowingSystemStartPage];
+      tabController = [WeakRetained tabController];
+      activeTabDocument = [tabController activeTabDocument];
+      isShowingSystemStartPage = [activeTabDocument isShowingSystemStartPage];
 
-      if ((v15 & 1) == 0)
+      if ((isShowingSystemStartPage & 1) == 0)
       {
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __114__BrowserRootViewController_capsuleNavigationBarViewController_selectedItemWillChangeToState_options_coordinator___block_invoke;
         v28[3] = &unk_2781D5C60;
         v28[4] = self;
-        [v10 addAnimations:v28];
+        [coordinatorCopy addAnimations:v28];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __114__BrowserRootViewController_capsuleNavigationBarViewController_selectedItemWillChangeToState_options_coordinator___block_invoke_2;
         v27[3] = &unk_2781D4D40;
         v27[4] = self;
-        [v10 addCompletion:v27];
+        [coordinatorCopy addCompletion:v27];
       }
     }
   }
 
   if ([(SFTipsCoordinator *)self->_tipsCoordinator webSearchTipAvailable])
   {
-    v16 = [v9 capsuleIsFocused];
-    if (a4 == 2 && (v16 & 1) == 0)
+    capsuleIsFocused2 = [controllerCopy capsuleIsFocused];
+    if (state == 2 && (capsuleIsFocused2 & 1) == 0)
     {
       if ([(BrowserRootViewController *)self isUsingBottomCapsule])
       {
-        v17 = [(SFTipsCoordinator *)self->_tipsCoordinator webSearchTipViewController];
+        webSearchTipViewController = [(SFTipsCoordinator *)self->_tipsCoordinator webSearchTipViewController];
         webSearchTipViewController = self->_webSearchTipViewController;
-        self->_webSearchTipViewController = v17;
+        self->_webSearchTipViewController = webSearchTipViewController;
 
-        v19 = [(UIViewController *)self->_webSearchTipViewController popoverPresentationController];
-        [v19 _setIgnoresKeyboardNotifications:1];
-        [v19 setPermittedArrowDirections:2];
+        popoverPresentationController = [(UIViewController *)self->_webSearchTipViewController popoverPresentationController];
+        [popoverPresentationController _setIgnoresKeyboardNotifications:1];
+        [popoverPresentationController setPermittedArrowDirections:2];
         objc_initWeak(&location, self);
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __114__BrowserRootViewController_capsuleNavigationBarViewController_selectedItemWillChangeToState_options_coordinator___block_invoke_3;
         v22[3] = &unk_2781D6060;
         objc_copyWeak(&v25, &location);
-        v23 = v9;
-        v20 = v19;
+        v23 = controllerCopy;
+        v20 = popoverPresentationController;
         v24 = v20;
-        [v10 addCompletion:v22];
+        [coordinatorCopy addCompletion:v22];
 
         objc_destroyWeak(&v25);
         objc_destroyWeak(&location);
@@ -9034,7 +9034,7 @@ uint64_t __93__BrowserRootViewController_capsuleNavigationBarViewControllerDidCh
     }
   }
 
-  if (a4 == 2)
+  if (state == 2)
   {
 LABEL_11:
     [(TabSwitcherViewController *)self->_tabSwitcherViewController detachCapsuleForActiveTab];
@@ -9045,8 +9045,8 @@ LABEL_11:
   v21[2] = __114__BrowserRootViewController_capsuleNavigationBarViewController_selectedItemWillChangeToState_options_coordinator___block_invoke_289;
   v21[3] = &unk_2781D7990;
   v21[4] = self;
-  v21[5] = a4;
-  [v10 addAnimations:v21];
+  v21[5] = state;
+  [coordinatorCopy addAnimations:v21];
   [(BrowserRootViewController *)self _updateBottomBarHeightAboveKeyboard];
 }
 
@@ -9074,9 +9074,9 @@ void __114__BrowserRootViewController_capsuleNavigationBarViewController_selecte
   }
 }
 
-- (BOOL)capsuleNavigationBarViewControllerAllowsMinimizationGesture:(id)a3
+- (BOOL)capsuleNavigationBarViewControllerAllowsMinimizationGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   if ([WeakRetained isShowingAppInfoOverlay] & 1) != 0 || objc_msgSend(MEMORY[0x277D49A08], "isSolariumEnabled") && (objc_msgSend(WeakRetained, "tabController"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "activeTabDocument"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "hasEnteredScribbleMode"), v7, v6, (v8) || -[BrowserRootViewController _isShowingFindOnPage](self, "_isShowingFindOnPage"))
   {
@@ -9092,11 +9092,11 @@ void __114__BrowserRootViewController_capsuleNavigationBarViewController_selecte
     v14 = v12 / v13;
     if (v12 / v13 != 0.0)
     {
-      v15 = [v4 capsuleCollectionView];
-      [v15 obscuredInsetsForState:{objc_msgSend(v15, "selectedItemState")}];
+      capsuleCollectionView = [gestureCopy capsuleCollectionView];
+      [capsuleCollectionView obscuredInsetsForState:{objc_msgSend(capsuleCollectionView, "selectedItemState")}];
       v17 = v16;
       v19 = v18;
-      [v15 obscuredInsetsForState:1];
+      [capsuleCollectionView obscuredInsetsForState:1];
       v22 = v17 + v19 - v20 - v21;
       [(UIScrollView *)self->_scrollView contentInset];
       v24 = v23;
@@ -9117,9 +9117,9 @@ void __114__BrowserRootViewController_capsuleNavigationBarViewController_selecte
 
       else
       {
-        v37 = [WeakRetained tabController];
-        v38 = [v37 activeTabDocument];
-        v9 = [v38 isBlank] ^ 1;
+        tabController = [WeakRetained tabController];
+        activeTabDocument = [tabController activeTabDocument];
+        v9 = [activeTabDocument isBlank] ^ 1;
       }
     }
   }
@@ -9127,35 +9127,35 @@ void __114__BrowserRootViewController_capsuleNavigationBarViewController_selecte
   return v9;
 }
 
-- (void)capsuleNavigationBarViewControllerWillHideKeyboard:(id)a3
+- (void)capsuleNavigationBarViewControllerWillHideKeyboard:(id)keyboard
 {
-  v15 = a3;
+  keyboardCopy = keyboard;
   if (!-[BrowserRootViewController _isTrackingDropSession](self, "_isTrackingDropSession") && !-[CatalogViewController completionDetailIsPresented](self->_catalogViewController, "completionDetailIsPresented") && !-[BrowserRootViewController _isShowingFindOnPage](self, "_isShowingFindOnPage") && ([MEMORY[0x277D75658] isInHardwareKeyboardMode] & 1) == 0 && !-[BrowserRootViewController isPerformingSizeTransition](self, "isPerformingSizeTransition"))
   {
-    v4 = [(BrowserRootViewController *)self view];
-    v5 = [v4 window];
-    v6 = [v5 windowScene];
-    v7 = [v6 _isKeyWindowScene];
+    view = [(BrowserRootViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
+    _isKeyWindowScene = [windowScene _isKeyWindowScene];
 
-    if (v7)
+    if (_isKeyWindowScene)
     {
-      if (([v15 focusingForScribble] & 1) == 0)
+      if (([keyboardCopy focusingForScribble] & 1) == 0)
       {
-        v8 = [(BrowserRootViewController *)self _unifiedField];
-        v9 = [v8 voiceSearchState];
+        _unifiedField = [(BrowserRootViewController *)self _unifiedField];
+        voiceSearchState = [_unifiedField voiceSearchState];
 
-        if (v9 != 1 && ![(CatalogViewController *)self->_catalogViewController isShowingUniversalSearchPrivacyDetails])
+        if (voiceSearchState != 1 && ![(CatalogViewController *)self->_catalogViewController isShowingUniversalSearchPrivacyDetails])
         {
-          v10 = [(CatalogViewController *)self->_catalogViewController completionList];
-          v11 = [v10 isPresentingItemDeletionAlert];
+          completionList = [(CatalogViewController *)self->_catalogViewController completionList];
+          isPresentingItemDeletionAlert = [completionList isPresentingItemDeletionAlert];
 
-          if ((v11 & 1) == 0)
+          if ((isPresentingItemDeletionAlert & 1) == 0)
           {
             WeakRetained = objc_loadWeakRetained(&self->_browserController);
             if (([WeakRetained isSuspendedOrSuspending] & 1) == 0)
             {
-              v13 = [WeakRetained rootViewController];
-              v14 = [v13 presentedViewController];
+              rootViewController = [WeakRetained rootViewController];
+              presentedViewController = [rootViewController presentedViewController];
 
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -9176,7 +9176,7 @@ void __114__BrowserRootViewController_capsuleNavigationBarViewController_selecte
   }
 }
 
-- (id)createToolbarForCapsuleNavigationBarViewController:(id)a3
+- (id)createToolbarForCapsuleNavigationBarViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ([MEMORY[0x277D49A08] isSolariumEnabled])
@@ -9203,13 +9203,13 @@ void __114__BrowserRootViewController_capsuleNavigationBarViewController_selecte
   return v8;
 }
 
-- (void)capsuleNavigationBarViewControllerDidTapVoiceSearch:(id)a3
+- (void)capsuleNavigationBarViewControllerDidTapVoiceSearch:(id)search
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
   [WeakRetained toggleVoiceSearch];
 }
 
-- (BOOL)capsuleNavigationBarViewController:(id)a3 shouldUnminimizeOnScrollForScrollView:(id)a4
+- (BOOL)capsuleNavigationBarViewController:(id)controller shouldUnminimizeOnScrollForScrollView:(id)view
 {
   if (self->_keepBarsMinimized)
   {
@@ -9218,33 +9218,33 @@ void __114__BrowserRootViewController_capsuleNavigationBarViewController_selecte
 
   else
   {
-    return ![(BrowserRootViewController *)self _isShowingFindOnPage:a3];
+    return ![(BrowserRootViewController *)self _isShowingFindOnPage:controller];
   }
 }
 
-- (id)barManagerForCapsuleNavigationBarViewController:(id)a3
+- (id)barManagerForCapsuleNavigationBarViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained barManager];
+  barManager = [WeakRetained barManager];
 
-  return v4;
+  return barManager;
 }
 
-- (void)capsuleCollectionView:(id)a3 willEndSelectionGestureWithCoordinator:(id)a4
+- (void)capsuleCollectionView:(id)view willEndSelectionGestureWithCoordinator:(id)coordinator
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestureWithCoordinator___block_invoke;
   v7[3] = &unk_2781D5C60;
   v7[4] = self;
-  v5 = a4;
-  [v5 addAnimations:v7];
+  coordinatorCopy = coordinator;
+  [coordinatorCopy addAnimations:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestureWithCoordinator___block_invoke_2;
   v6[3] = &unk_2781D4D40;
   v6[4] = self;
-  [v5 addCompletion:v6];
+  [coordinatorCopy addCompletion:v6];
 }
 
 void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestureWithCoordinator___block_invoke(uint64_t a1)
@@ -9254,7 +9254,7 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   [v1 performCoalescedUpdatesNowAnimated:1];
 }
 
-- (void)capsuleCollectionViewDidUpdateMinimizationGesture:(id)a3
+- (void)capsuleCollectionViewDidUpdateMinimizationGesture:(id)gesture
 {
   [(BrowserRootViewController *)self _layOutTopBackdrop];
   [(BrowserRootViewController *)self layOutTopBars];
@@ -9263,20 +9263,20 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   [WeakRetained browserViewControllerDidChangeBarInsets:self];
 }
 
-- (void)capsuleCollectionView:(id)a3 selectionGestureDidChangeFromAxis:(unint64_t)a4
+- (void)capsuleCollectionView:(id)view selectionGestureDidChangeFromAxis:(unint64_t)axis
 {
-  [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:1, a4];
+  [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:1, axis];
 
   [(BrowserRootViewController *)self _updateScrollPocketForCapsuleView];
 }
 
-- (void)setCatalogViewController:(id)a3
+- (void)setCatalogViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   catalogViewController = self->_catalogViewController;
-  if (catalogViewController != v5)
+  if (catalogViewController != controllerCopy)
   {
-    v8 = v5;
+    v8 = controllerCopy;
     if (catalogViewController)
     {
       [(CatalogViewController *)catalogViewController setStartPageScrollObserver:0];
@@ -9284,35 +9284,35 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
       [(CatalogViewController *)self->_catalogViewController removeFromParentViewController];
     }
 
-    objc_storeStrong(&self->_catalogViewController, a3);
+    objc_storeStrong(&self->_catalogViewController, controller);
     self->_willDismissCatalogViewController = 0;
     if (self->_catalogViewController)
     {
       [(UIViewController *)self->_documentAndTopBarsContainerViewController addChildViewController:?];
       [(CatalogViewController *)self->_catalogViewController didMoveToParentViewController:self->_documentAndTopBarsContainerViewController];
-      v7 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-      [(CatalogViewController *)self->_catalogViewController setStartPageScrollObserver:v7];
+      capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+      [(CatalogViewController *)self->_catalogViewController setStartPageScrollObserver:capsuleCollectionView];
 
       [(CatalogViewController *)self->_catalogViewController reloadNavigationItemAnimated:0];
       [(BrowserRootViewController *)self _updateTopScrollEdgeEffectStyle];
     }
 
     -[BrowserRootViewController setNeedsPreferredStatusBarUpdateAfterCommitAnimated:](self, "setNeedsPreferredStatusBarUpdateAfterCommitAnimated:", [MEMORY[0x277D75D18] areAnimationsEnabled]);
-    v5 = v8;
+    controllerCopy = v8;
   }
 }
 
 - (id)_unifiedField
 {
-  v2 = [(BrowserRootViewController *)self browserController];
-  v3 = [v2 unifiedField];
+  browserController = [(BrowserRootViewController *)self browserController];
+  unifiedField = [browserController unifiedField];
 
-  return v3;
+  return unifiedField;
 }
 
-- (void)tabCollectionViewWillPresent:(id)a3
+- (void)tabCollectionViewWillPresent:(id)present
 {
-  if (self->_tabSwitcherViewController == a3)
+  if (self->_tabSwitcherViewController == present)
   {
     [(BrowserRootViewController *)self _tabSwitcherVisibilityDidChange:1];
   }
@@ -9321,50 +9321,50 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   [(BrowserRootViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
   [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:1];
   [(BrowserRootViewController *)self _setNeedsUpdateOfMultitaskingDragExclusionRects];
-  v6 = [(BrowserRootViewController *)self view];
-  v4 = [v6 window];
-  v5 = [v4 _rootSheetPresentationController];
-  [v5 _setShouldScaleDownBehindDescendantSheets:0];
+  view = [(BrowserRootViewController *)self view];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:0];
 }
 
-- (void)tabCollectionViewWillDismiss:(id)a3
+- (void)tabCollectionViewWillDismiss:(id)dismiss
 {
-  v4 = [(BrowserRootViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(BrowserRootViewController *)self view];
+  [view setNeedsLayout];
 
   [(BrowserRootViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
 
   [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:1];
 }
 
-- (void)tabCollectionViewDidCancelDismissal:(id)a3
+- (void)tabCollectionViewDidCancelDismissal:(id)dismissal
 {
-  v4 = [(BrowserRootViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(BrowserRootViewController *)self view];
+  [view setNeedsLayout];
 
   [(BrowserRootViewController *)self setNeedsUpdateOfHomeIndicatorAutoHidden];
 
   [(BrowserRootViewController *)self setNeedsPreferredStatusBarUpdateAfterCommitAnimated:1];
 }
 
-- (void)tabCollectionViewDidDismiss:(id)a3
+- (void)tabCollectionViewDidDismiss:(id)dismiss
 {
   documentAndTopBarsContainerView = self->_documentAndTopBarsContainerView;
-  v5 = a3;
+  dismissCopy = dismiss;
   [(SFOrderedContainerView *)documentAndTopBarsContainerView setHidden:0];
-  v6 = [(BrowserRootViewController *)self view];
-  [v6 setClipsToBounds:1];
+  view = [(BrowserRootViewController *)self view];
+  [view setClipsToBounds:1];
   tabSwitcherViewController = self->_tabSwitcherViewController;
 
-  if (tabSwitcherViewController == v5)
+  if (tabSwitcherViewController == dismissCopy)
   {
     [(BrowserRootViewController *)self _tabSwitcherVisibilityDidChange:0];
   }
 
   [(BrowserRootViewController *)self _setNeedsUpdateOfMultitaskingDragExclusionRects];
-  v8 = [v6 window];
-  v9 = [v8 _rootSheetPresentationController];
-  [v9 _setShouldScaleDownBehindDescendantSheets:1];
+  window = [view window];
+  _rootSheetPresentationController = [window _rootSheetPresentationController];
+  [_rootSheetPresentationController _setShouldScaleDownBehindDescendantSheets:1];
 
   if ([MEMORY[0x277D75D18] _isInAnimationBlock])
   {
@@ -9384,38 +9384,38 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   }
 }
 
-- (void)tabBarDropExpansionView:(id)a3 didBeginTrackingDropSession:(id)a4
+- (void)tabBarDropExpansionView:(id)view didBeginTrackingDropSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [WeakRetained beginTrackingDropSessionForTabBarVisibility:v5];
+  [WeakRetained beginTrackingDropSessionForTabBarVisibility:sessionCopy];
 }
 
-- (void)tabBarDropExpansionView:(id)a3 didEndTrackingDropSession:(id)a4
+- (void)tabBarDropExpansionView:(id)view didEndTrackingDropSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  [WeakRetained endTrackingDropSessionForTabBarVisibility:v5];
+  [WeakRetained endTrackingDropSessionForTabBarVisibility:sessionCopy];
 }
 
 - (void)displayHostedScreenTimeView
 {
-  v3 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController parentViewController];
+  parentViewController = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController parentViewController];
   documentAndTopBarsContainerViewController = self->_documentAndTopBarsContainerViewController;
 
-  if (v3 == documentAndTopBarsContainerViewController)
+  if (parentViewController == documentAndTopBarsContainerViewController)
   {
     documentAndTopBarsContainerView = self->_documentAndTopBarsContainerView;
-    v10 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
-    [(SFOrderedContainerView *)documentAndTopBarsContainerView _sf_addEdgeMatchedSubview:v10];
+    view = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
+    [(SFOrderedContainerView *)documentAndTopBarsContainerView _sf_addEdgeMatchedSubview:view];
   }
 
   else
   {
     [(UIViewController *)self->_documentAndTopBarsContainerViewController addChildViewController:self->_screenTimeOverlayViewController];
     v5 = self->_documentAndTopBarsContainerView;
-    v6 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
-    [(SFOrderedContainerView *)v5 _sf_addEdgeMatchedSubview:v6];
+    view2 = [(SFScreenTimeOverlayViewController *)self->_screenTimeOverlayViewController view];
+    [(SFOrderedContainerView *)v5 _sf_addEdgeMatchedSubview:view2];
 
     screenTimeOverlayViewController = self->_screenTimeOverlayViewController;
     v8 = self->_documentAndTopBarsContainerViewController;
@@ -9424,7 +9424,7 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   }
 }
 
-- (SFScrollIndicatorInsets)scrollIndicatorInsetsForTabDocumentView:(SEL)a3
+- (SFScrollIndicatorInsets)scrollIndicatorInsetsForTabDocumentView:(SEL)view
 {
   [(_SFWebView *)self->_webView bounds];
   [(BrowserRootViewController *)self obscuredInsetsForRect:self->_webView inCoordinateSpace:?];
@@ -9433,8 +9433,8 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   [WeakRetained browserViewController:self adjustedTopObscuredInsetForBanners:v7];
 
   [MEMORY[0x277D49A08] isSolariumEnabled];
-  v9 = [(BrowserRootViewController *)self view];
-  [(BrowserRootViewController *)self keyboardInsetInCoordinateSpace:v9];
+  view = [(BrowserRootViewController *)self view];
+  [(BrowserRootViewController *)self keyboardInsetInCoordinateSpace:view];
 
   [(BrowserRootViewController *)self _baseInsetsForVerticalScrollIndicator];
   v11 = v10;
@@ -9463,26 +9463,26 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
     v60 = v35;
     v57 = v38;
     v58 = v37;
-    v39 = [(BrowserRootViewController *)self view];
-    [v39 bounds];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 bounds];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    v48 = [(BrowserRootViewController *)self view];
-    [(BrowserRootViewController *)self obscuredInsetsWithComponents:2 forRect:v48 inCoordinateSpace:v41, v43, v45, v47];
+    view3 = [(BrowserRootViewController *)self view];
+    [(BrowserRootViewController *)self obscuredInsetsWithComponents:2 forRect:view3 inCoordinateSpace:v41, v43, v45, v47];
     v50 = v49;
 
-    v51 = [MEMORY[0x277D49A08] isSolariumEnabled];
+    isSolariumEnabled = [MEMORY[0x277D49A08] isSolariumEnabled];
     v52 = 0.0;
-    if (!v51)
+    if (!isSolariumEnabled)
     {
       v52 = v50;
     }
 
     v53 = fmax(v52, v23);
-    v54 = [(BrowserRootViewController *)self view];
-    [v54 safeAreaInsets];
+    view4 = [(BrowserRootViewController *)self view];
+    [view4 safeAreaInsets];
     v56 = v55;
 
     if (v53 >= v56)
@@ -9508,11 +9508,11 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   return result;
 }
 
-- (UIEdgeInsets)obscuredScrollViewInsetsConsideringTargetState:(BOOL)a3 insetsDueToSafeArea:(UIEdgeInsets *)a4
+- (UIEdgeInsets)obscuredScrollViewInsetsConsideringTargetState:(BOOL)state insetsDueToSafeArea:(UIEdgeInsets *)area
 {
   toolbarPlacement = self->_toolbarPlacement;
-  v8 = [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator targetState];
-  if (toolbarPlacement == 1 || !a3)
+  targetState = [(_SFDynamicBarAnimator *)self->_dynamicBarAnimator targetState];
+  if (toolbarPlacement == 1 || !state)
   {
     [(_SFWebView *)self->_webView bounds];
     [(BrowserRootViewController *)self obscuredInsetsForRect:self->_webView inCoordinateSpace:?];
@@ -9520,7 +9520,7 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
 
   else
   {
-    v9 = v8;
+    v9 = targetState;
     [(_SFWebView *)self->_webView bounds];
     webView = self->_webView;
     if (v9)
@@ -9539,16 +9539,16 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained browserViewController:self adjustedTopObscuredInsetForBanners:v13];
   [WeakRetained browserViewController:self adjustedBottomObscuredInset:v14];
-  if (a4)
+  if (area)
   {
     [(BrowserRootViewController *)self _webViewSafeAreaInsets];
     [(BrowserRootViewController *)self _edgesSafeAreaShouldAffectObscuredInsets];
     UIEdgeInsetsMax();
     UIEdgeInsetsSubtract();
-    a4->top = v16;
-    a4->left = v17;
-    a4->bottom = v18;
-    a4->right = v19;
+    area->top = v16;
+    area->left = v17;
+    area->bottom = v18;
+    area->right = v19;
   }
 
   [(BrowserRootViewController *)self webViewEffectiveSafeAreaInsets];
@@ -9569,27 +9569,27 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   return result;
 }
 
-- (BOOL)shouldFreezeWebViewUpdatesForTabDocumentView:(id)a3
+- (BOOL)shouldFreezeWebViewUpdatesForTabDocumentView:(id)view
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(v3) = [WeakRetained browserViewControllerShouldFreezeWebViewUpdatesForSizeTransition:v3];
+  LOBYTE(selfCopy) = [WeakRetained browserViewControllerShouldFreezeWebViewUpdatesForSizeTransition:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)inElementFullscreenForTabDocumentView:(id)a3
+- (BOOL)inElementFullscreenForTabDocumentView:(id)view
 {
-  v3 = [a3 webView];
-  v4 = [TabDocument tabDocumentForWKWebView:v3];
+  webView = [view webView];
+  v4 = [TabDocument tabDocumentForWKWebView:webView];
 
-  LOBYTE(v3) = [v4 inElementFullscreen];
-  return v3;
+  LOBYTE(webView) = [v4 inElementFullscreen];
+  return webView;
 }
 
-- (UIEdgeInsets)obscuredScrollViewInsetsForTabDocumentView:(id)a3 unobscuredSafeAreaInsets:(UIEdgeInsets *)a4
+- (UIEdgeInsets)obscuredScrollViewInsetsForTabDocumentView:(id)view unobscuredSafeAreaInsets:(UIEdgeInsets *)insets
 {
-  [(BrowserRootViewController *)self obscuredScrollViewInsetsConsideringTargetState:0 insetsDueToSafeArea:a4];
+  [(BrowserRootViewController *)self obscuredScrollViewInsetsConsideringTargetState:0 insetsDueToSafeArea:insets];
   result.right = v7;
   result.bottom = v6;
   result.left = v5;
@@ -9597,7 +9597,7 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   return result;
 }
 
-- (UIEdgeInsets)scrollViewContentInsetAdjustmentsForTabDocumentView:(id)a3
+- (UIEdgeInsets)scrollViewContentInsetAdjustmentsForTabDocumentView:(id)view
 {
   top = self->_contentInsetForContentFrame.top;
   left = self->_contentInsetForContentFrame.left;
@@ -9626,10 +9626,10 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   return result;
 }
 
-- (unint64_t)tabDocumentView:(id)a3 contentOffsetAdjustmentEdgeWithPreviousContentInset:(UIEdgeInsets)a4
+- (unint64_t)tabDocumentView:(id)view contentOffsetAdjustmentEdgeWithPreviousContentInset:(UIEdgeInsets)inset
 {
-  top = a4.top;
-  v6 = a3;
+  top = inset.top;
+  viewCopy = view;
   if ([(UIScrollView *)self->_scrollView isDragging])
   {
     v7 = 0;
@@ -9637,7 +9637,7 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
 
   else if ([(CapsuleNavigationBarViewController *)self->_capsuleViewController performingWebViewTapTransition])
   {
-    [v6 scrollDistance];
+    [viewCopy scrollDistance];
     v7 = v8 < 0.0;
   }
 
@@ -9648,24 +9648,24 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
 
   else
   {
-    v9 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-    if (v9)
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+    if (capsuleCollectionView)
     {
-      if ([v6 isShowingReader])
+      if ([viewCopy isShowingReader])
       {
-        [v6 readerWebView];
+        [viewCopy readerWebView];
       }
 
       else
       {
-        [v6 webView];
+        [viewCopy webView];
       }
       v10 = ;
-      v11 = [v10 scrollView];
+      scrollView = [v10 scrollView];
 
-      if (([v11 isTracking] & 1) != 0 || (objc_msgSend(v11, "contentOffset"), v12 != -top))
+      if (([scrollView isTracking] & 1) != 0 || (objc_msgSend(scrollView, "contentOffset"), v12 != -top))
       {
-        if ([v9 isTransitioningToNormalStateForTapInBottomRegion])
+        if ([capsuleCollectionView isTransitioningToNormalStateForTapInBottomRegion])
         {
           v7 = 4;
         }
@@ -9691,9 +9691,9 @@ void __90__BrowserRootViewController_capsuleCollectionView_willEndSelectionGestu
   return v7;
 }
 
-- (id)snapshotContentProviderForTab:(id)a3
+- (id)snapshotContentProviderForTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   if ([(BrowserRootViewController *)self isPerformingSizeTransition])
   {
     v5 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
@@ -9707,9 +9707,9 @@ LABEL_4:
     goto LABEL_27;
   }
 
-  if (([v4 isBlank] & 1) == 0)
+  if (([tabCopy isBlank] & 1) == 0)
   {
-    if ([v4 isHibernated])
+    if ([tabCopy isHibernated])
     {
       v8 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -9720,7 +9720,7 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    if (([v4 contentIsReadyForSnapshot] & 1) == 0)
+    if (([tabCopy contentIsReadyForSnapshot] & 1) == 0)
     {
       v27 = WBS_LOG_CHANNEL_PREFIXTabSnapshots();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -9732,33 +9732,33 @@ LABEL_4:
     }
   }
 
-  v7 = [(BrowserRootViewController *)self screenTimeOverlayViewController];
-  if (![v4 shouldObscureForDigitalHealth] || !v7)
+  screenTimeOverlayViewController = [(BrowserRootViewController *)self screenTimeOverlayViewController];
+  if (![tabCopy shouldObscureForDigitalHealth] || !screenTimeOverlayViewController)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserController);
-    v10 = [(BrowserRootViewController *)self catalogViewController];
-    if (![v4 isShowingSystemStartPage] || (objc_msgSend(v4, "isPreparingForNewUserActivity") & 1) != 0)
+    catalogViewController = [(BrowserRootViewController *)self catalogViewController];
+    if (![tabCopy isShowingSystemStartPage] || (objc_msgSend(tabCopy, "isPreparingForNewUserActivity") & 1) != 0)
     {
-      v11 = [v4 frontWebView];
-      if (v11)
+      frontWebView = [tabCopy frontWebView];
+      if (frontWebView)
       {
-        if (([v4 isActive] & 1) == 0)
+        if (([tabCopy isActive] & 1) == 0)
         {
-          v12 = [WeakRetained tabController];
-          v13 = [v12 activeTabDocument];
-          v14 = [v13 webView];
-          [v14 bounds];
-          [v11 setBounds:?];
+          tabController = [WeakRetained tabController];
+          activeTabDocument = [tabController activeTabDocument];
+          webView = [activeTabDocument webView];
+          [webView bounds];
+          [frontWebView setBounds:?];
         }
 
-        [v11 bounds];
-        [(BrowserRootViewController *)self maximumObscuredInsetsForRect:v11 inCoordinateSpace:0 ignoreBarsMinimized:?];
+        [frontWebView bounds];
+        [(BrowserRootViewController *)self maximumObscuredInsetsForRect:frontWebView inCoordinateSpace:0 ignoreBarsMinimized:?];
         v16 = v15;
         v18 = v17;
         v20 = v19;
         v22 = v21;
-        [v11 bounds];
-        v6 = [[WebViewSnapshotContentProvider alloc] initWithWebView:v11 contentFrame:v18 + v23, v16 + v24, v25 - (v18 + v22), v26 - (v16 + v20)];
+        [frontWebView bounds];
+        v6 = [[WebViewSnapshotContentProvider alloc] initWithWebView:frontWebView contentFrame:v18 + v23, v16 + v24, v25 - (v18 + v22), v26 - (v16 + v20)];
       }
 
       else
@@ -9777,15 +9777,15 @@ LABEL_4:
 
     if ([WeakRetained favoritesAreEmbedded])
     {
-      v30 = [v4 tabGroupTab];
-      v31 = [v30 tabGroupUUID];
-      v32 = [WeakRetained tabController];
-      v33 = [v32 activeTabGroupUUID];
+      tabGroupTab = [tabCopy tabGroupTab];
+      tabGroupUUID = [tabGroupTab tabGroupUUID];
+      tabController2 = [WeakRetained tabController];
+      activeTabGroupUUID = [tabController2 activeTabGroupUUID];
       v34 = WBSIsEqual();
 
       if (v34)
       {
-        v6 = v10;
+        v6 = catalogViewController;
 LABEL_25:
 
         goto LABEL_26;
@@ -9811,7 +9811,7 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v6 = v7;
+  v6 = screenTimeOverlayViewController;
 LABEL_26:
 
 LABEL_27:
@@ -9821,15 +9821,15 @@ LABEL_27:
 
 - (void)_updateScrollPocketsAreHidden
 {
-  v3 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  -[BrowserRootViewController _updateScrollPocketsAreHiddenForCapsuleViewState:](self, "_updateScrollPocketsAreHiddenForCapsuleViewState:", [v3 selectedItemState]);
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  -[BrowserRootViewController _updateScrollPocketsAreHiddenForCapsuleViewState:](self, "_updateScrollPocketsAreHiddenForCapsuleViewState:", [capsuleCollectionView selectedItemState]);
 }
 
-- (void)_updateScrollPocketsAreHiddenForCapsuleViewState:(int64_t)a3
+- (void)_updateScrollPocketsAreHiddenForCapsuleViewState:(int64_t)state
 {
-  v4 = a3 == 1 && [(CapsuleNavigationBarViewController *)self->_capsuleViewController shouldHideBottomScrollPocketWhenMinimized];
-  v5 = [(UIScrollView *)self->_scrollView bottomEdgeEffect];
-  [v5 setHidden:v4];
+  v4 = state == 1 && [(CapsuleNavigationBarViewController *)self->_capsuleViewController shouldHideBottomScrollPocketWhenMinimized];
+  bottomEdgeEffect = [(UIScrollView *)self->_scrollView bottomEdgeEffect];
+  [bottomEdgeEffect setHidden:v4];
 }
 
 - (void)_updateTopScrollEdgeEffectStyle
@@ -9845,20 +9845,20 @@ LABEL_27:
   }
   v4 = ;
   [(CatalogViewController *)self->_catalogViewController setTopScrollEdgeEffectStyle:v4];
-  v3 = [(UIScrollView *)self->_scrollView topEdgeEffect];
-  [v3 setStyle:v4];
+  topEdgeEffect = [(UIScrollView *)self->_scrollView topEdgeEffect];
+  [topEdgeEffect setStyle:v4];
 }
 
-- (CGSize)contentSizeForSnapshotGenerator:(id)a3
+- (CGSize)contentSizeForSnapshotGenerator:(id)generator
 {
-  v4 = [(BrowserRootViewController *)self documentAndTopBarsContainerView];
-  [v4 bounds];
-  [(BrowserRootViewController *)self maximumObscuredInsetsForRect:v4 inCoordinateSpace:0 ignoreBarsMinimized:?];
+  documentAndTopBarsContainerView = [(BrowserRootViewController *)self documentAndTopBarsContainerView];
+  [documentAndTopBarsContainerView bounds];
+  [(BrowserRootViewController *)self maximumObscuredInsetsForRect:documentAndTopBarsContainerView inCoordinateSpace:0 ignoreBarsMinimized:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 bounds];
+  [documentAndTopBarsContainerView bounds];
   v14 = v13 - (v8 + v12);
   v16 = v15 - (v6 + v10);
 
@@ -9869,7 +9869,7 @@ LABEL_27:
   return result;
 }
 
-- (double)topBarsHeightForSnapshotGenerator:(id)a3
+- (double)topBarsHeightForSnapshotGenerator:(id)generator
 {
   [(BrowserRootViewController *)self contentFrameInPageView];
 
@@ -9903,22 +9903,22 @@ LABEL_27:
   [(CatalogViewController *)catalogViewController dismissWebSearchTipIfNeeded];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v7 = [a3 presentedViewController];
+  presentedViewController = [dismiss presentedViewController];
   WeakRetained = objc_loadWeakRetained(&self->_privateBrowsingExplanationSheet);
-  if (v7 == WeakRetained)
+  if (presentedViewController == WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_browserController);
-    v6 = [v5 shouldShowTurnOnLockedPrivateBrowsingSheet];
+    shouldShowTurnOnLockedPrivateBrowsingSheet = [v5 shouldShowTurnOnLockedPrivateBrowsingSheet];
 
-    if (!v6)
+    if (!shouldShowTurnOnLockedPrivateBrowsingSheet)
     {
       return;
     }
 
-    v7 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    [v7 setBool:1 forKey:*MEMORY[0x277D4A1B8]];
+    presentedViewController = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    [presentedViewController setBool:1 forKey:*MEMORY[0x277D4A1B8]];
   }
 
   else
@@ -9930,12 +9930,12 @@ LABEL_27:
 {
   [(BrowserRootViewController *)self _uninstallTabSwitcherViewController];
   contentContainerView = self->_contentContainerView;
-  v4 = [(TabSwitcherViewController *)self->_tabSwitcherViewController pinchGestureRecognizer];
-  [(ViewWithCustomNextResponder *)contentContainerView removeGestureRecognizer:v4];
+  pinchGestureRecognizer = [(TabSwitcherViewController *)self->_tabSwitcherViewController pinchGestureRecognizer];
+  [(ViewWithCustomNextResponder *)contentContainerView removeGestureRecognizer:pinchGestureRecognizer];
 
   v5 = self->_contentContainerView;
-  v6 = [(TabSwitcherViewController *)self->_tabSwitcherViewController panGestureRecognizerForTrackingPinchTranslationVelocity];
-  [(ViewWithCustomNextResponder *)v5 removeGestureRecognizer:v6];
+  panGestureRecognizerForTrackingPinchTranslationVelocity = [(TabSwitcherViewController *)self->_tabSwitcherViewController panGestureRecognizerForTrackingPinchTranslationVelocity];
+  [(ViewWithCustomNextResponder *)v5 removeGestureRecognizer:panGestureRecognizerForTrackingPinchTranslationVelocity];
 
   tabSwitcherViewController = self->_tabSwitcherViewController;
   self->_tabSwitcherViewController = 0;
@@ -9964,19 +9964,19 @@ void __62__BrowserRootViewController__installTabSwitcherViewController__block_in
 - (void)_uninstallTabSwitcherViewController
 {
   [(TabSwitcherViewController *)self->_tabSwitcherViewController willMoveToParentViewController:0];
-  v3 = [(TabSwitcherViewController *)self->_tabSwitcherViewController view];
-  [v3 removeFromSuperview];
+  view = [(TabSwitcherViewController *)self->_tabSwitcherViewController view];
+  [view removeFromSuperview];
 
   tabSwitcherViewController = self->_tabSwitcherViewController;
 
   [(TabSwitcherViewController *)tabSwitcherViewController removeFromParentViewController];
 }
 
-- (void)_tabSwitcherVisibilityDidChange:(BOOL)a3
+- (void)_tabSwitcherVisibilityDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   [(SFOrderedContainerView *)self->_documentAndTopBarsContainerView setHidden:?];
-  if (v3)
+  if (changeCopy)
   {
 
     [(BrowserRootViewController *)self _installTabSwitcherViewController];
@@ -9996,12 +9996,12 @@ void __62__BrowserRootViewController__installTabSwitcherViewController__block_in
   }
 }
 
-- (id)borrowCapsuleViewForTab:(id)a3
+- (id)borrowCapsuleViewForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  v6 = v5;
-  if (!v5 || [v5 selectedItemState] || objc_msgSend(v6, "layoutStyle") == 1 && !objc_msgSend(v6, "selectionGestureState") || (v9 = -[CapsuleNavigationBarViewController collectionViewIndexOfTab:](self->_capsuleViewController, "collectionViewIndexOfTab:", v4), v9 == 0x7FFFFFFFFFFFFFFFLL))
+  tabCopy = tab;
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  v6 = capsuleCollectionView;
+  if (!capsuleCollectionView || [capsuleCollectionView selectedItemState] || objc_msgSend(v6, "layoutStyle") == 1 && !objc_msgSend(v6, "selectionGestureState") || (v9 = -[CapsuleNavigationBarViewController collectionViewIndexOfTab:](self->_capsuleViewController, "collectionViewIndexOfTab:", tabCopy), v9 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v7 = 0;
   }
@@ -10017,13 +10017,13 @@ void __62__BrowserRootViewController__installTabSwitcherViewController__block_in
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v20 = [(BrowserRootViewController *)self view];
-      [v20 bounds];
+      view = [(BrowserRootViewController *)self view];
+      [view bounds];
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
-      v29 = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
+      capsuleCollectionViewLayout = [(BrowserRootViewController *)self capsuleCollectionViewLayout];
       v7 = [v11 initWithView:v10 capsuleReferenceFrame:WBSIsEqual() referenceBounds:v13 shouldClipView:{v15, v17, v19, v22, v24, v26, v28}];
     }
 
@@ -10036,23 +10036,23 @@ void __62__BrowserRootViewController__installTabSwitcherViewController__block_in
   return v7;
 }
 
-- (void)relinquishBorrowedCapsuleView:(id)a3
+- (void)relinquishBorrowedCapsuleView:(id)view
 {
   capsuleViewController = self->_capsuleViewController;
-  v4 = a3;
-  v5 = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleCollectionView];
-  [v5 reattachView:v4];
+  viewCopy = view;
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView reattachView:viewCopy];
 }
 
-- (void)tabOverviewVisibilityDidChange:(BOOL)a3
+- (void)tabOverviewVisibilityDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v12 = *MEMORY[0x277D85DE8];
   v5 = WBS_LOG_CHANNEL_PREFIXTabView();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"not visible";
-    if (v3)
+    if (changeCopy)
     {
       v6 = @"visible";
     }
@@ -10062,7 +10062,7 @@ void __62__BrowserRootViewController__installTabSwitcherViewController__block_in
     _os_log_impl(&dword_215819000, v5, OS_LOG_TYPE_DEFAULT, "Tab overview changed to %@", &v10, 0xCu);
   }
 
-  if (v3)
+  if (changeCopy)
   {
     v7 = 0.0;
     if (![(TabSwitcherViewController *)self->_tabSwitcherViewController presentationState])
@@ -10080,9 +10080,9 @@ void __62__BrowserRootViewController__installTabSwitcherViewController__block_in
     v7 = 0.1;
   }
 
-  v9 = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
-  [v9 setUserInteractionEnabled:v3 ^ 1];
-  [v9 setShouldDismissContent:v3 withDelay:v7];
+  capsuleCollectionView = [(CapsuleNavigationBarViewController *)self->_capsuleViewController capsuleCollectionView];
+  [capsuleCollectionView setUserInteractionEnabled:changeCopy ^ 1];
+  [capsuleCollectionView setShouldDismissContent:changeCopy withDelay:v7];
 }
 
 - (void)toggleSidebar
@@ -10091,56 +10091,56 @@ void __62__BrowserRootViewController__installTabSwitcherViewController__block_in
   [WeakRetained toggleBookmarksPresentation];
 }
 
-- (id)showTabGroupPicker:(id)a3
+- (id)showTabGroupPicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v6 = [WeakRetained showTabGroupPicker:v4];
+  v6 = [WeakRetained showTabGroupPicker:pickerCopy];
 
   return v6;
 }
 
-- (void)takeOwnershipOfStepperContainer:(id)a3
+- (void)takeOwnershipOfStepperContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   if (!self->_stepperContainer)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_stepperContainer, a3);
-    v6 = [(BrowserRootViewController *)self view];
+    v8 = containerCopy;
+    objc_storeStrong(&self->_stepperContainer, container);
+    view = [(BrowserRootViewController *)self view];
     [v8 bounds];
-    [v6 convertRect:v8 fromView:?];
+    [view convertRect:v8 fromView:?];
     [v8 setFrame:?];
 
-    v7 = [(BrowserRootViewController *)self view];
-    [v7 addSubview:v8];
+    view2 = [(BrowserRootViewController *)self view];
+    [view2 addSubview:v8];
 
-    v5 = v8;
+    containerCopy = v8;
   }
 }
 
-- (void)presentToastForAddedBookmark:(id)a3 suggestedFolders:(id)a4
+- (void)presentToastForAddedBookmark:(id)bookmark suggestedFolders:(id)folders
 {
-  v6 = a3;
-  v7 = a4;
+  bookmarkCopy = bookmark;
+  foldersCopy = folders;
   [(BrowserRootViewController *)self _uninstallAddedBookmarkToastViewController];
   objc_initWeak(&location, self);
   v8 = [AddedBookmarkToastViewController alloc];
-  v9 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+  mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __75__BrowserRootViewController_presentToastForAddedBookmark_suggestedFolders___block_invoke;
   v17 = &unk_2781D5598;
   objc_copyWeak(&v18, &location);
-  v10 = [(AddedBookmarkToastViewController *)v8 initWithBookmark:v6 bookmarkCollection:v9 dismissCompletionHandler:&v14];
+  v10 = [(AddedBookmarkToastViewController *)v8 initWithBookmark:bookmarkCopy bookmarkCollection:mainBookmarkCollection dismissCompletionHandler:&v14];
   addedBookmarkToastViewController = self->_addedBookmarkToastViewController;
   self->_addedBookmarkToastViewController = v10;
 
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v13 = [WeakRetained tabGroupProvider];
-  [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController setTabGroupProvider:v13];
+  tabGroupProvider = [WeakRetained tabGroupProvider];
+  [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController setTabGroupProvider:tabGroupProvider];
 
-  [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController setSuggestedFolders:v7];
+  [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController setSuggestedFolders:foldersCopy];
   [(BrowserRootViewController *)self _installAddedBookmarkToastViewController];
   [(BrowserRootViewController *)self _updateAddedBookmarkToastLayout];
   [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController presentToast];
@@ -10162,15 +10162,15 @@ void __75__BrowserRootViewController_presentToastForAddedBookmark_suggestedFolde
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  view = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
+  [view setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
-  [v12 setAutoresizingMask:18];
+  view2 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
+  [view2 setAutoresizingMask:18];
 
   documentAndTopBarsContainerView = self->_documentAndTopBarsContainerView;
-  v14 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
-  [(SFOrderedContainerView *)documentAndTopBarsContainerView addSubview:v14];
+  view3 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
+  [(SFOrderedContainerView *)documentAndTopBarsContainerView addSubview:view3];
 
   addedBookmarkToastViewController = self->_addedBookmarkToastViewController;
 
@@ -10180,13 +10180,13 @@ void __75__BrowserRootViewController_presentToastForAddedBookmark_suggestedFolde
 - (void)_uninstallAddedBookmarkToastViewController
 {
   [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController willMoveToParentViewController:0];
-  v3 = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
-  [v3 removeFromSuperview];
+  view = [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController view];
+  [view removeFromSuperview];
 
   [(AddedBookmarkToastViewController *)self->_addedBookmarkToastViewController removeFromParentViewController];
   WeakRetained = objc_loadWeakRetained(&self->_browserController);
-  v4 = [WeakRetained barManager];
-  [v4 visibleBarItemsNeedUpdate];
+  barManager = [WeakRetained barManager];
+  [barManager visibleBarItemsNeedUpdate];
 }
 
 - (SidebarUIProxyDelegate)sidebarUIProxyDelegate

@@ -1,6 +1,6 @@
 @interface ARFrameTimingData
 - (ARFrameTimingData)init;
-- (void)addTimestamp:(double)a3 forDataOfClass:(Class)a4;
+- (void)addTimestamp:(double)timestamp forDataOfClass:(Class)class;
 @end
 
 @implementation ARFrameTimingData
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (void)addTimestamp:(double)a3 forDataOfClass:(Class)a4
+- (void)addTimestamp:(double)timestamp forDataOfClass:(Class)class
 {
-  v13 = NSStringFromClass(a4);
+  v13 = NSStringFromClass(class);
   v6 = [v13 hasPrefix:@"AR"];
   v7 = [v13 hasSuffix:@"Data"];
   v8 = [v13 length];
@@ -43,7 +43,7 @@
   }
 
   v11 = [v13 substringWithRange:{v10, v9 - v10}];
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:timestamp];
   [(NSMutableDictionary *)self->_timestampsByDataClassKey setObject:v12 forKeyedSubscript:v11];
 }
 

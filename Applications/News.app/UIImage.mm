@@ -1,38 +1,38 @@
 @interface UIImage
-+ (id)fr_gradientImageForTextSize:(CGSize)a3 withStartColor:(id)a4 endColor:(id)a5;
-+ (id)fr_imageWithColor:(id)a3 size:(CGSize)a4 cornerRadius:(double)a5;
-+ (id)fr_immediatelyLoadedImageWithData:(id)a3 scale:(double)a4;
-+ (id)imageFromFileURL:(id)a3;
-+ (int64_t)fr_estimatedImageTypeWithData:(id)a3;
-- (CGRect)filledRectForRect:(CGRect)a3;
-- (CGSize)fr_sizeThatFills:(CGSize)a3;
-- (UIImage)imageWithCornerRadius:(double)a3;
-- (UIImage)imageWithCornerRadius:(double)a3 scale:(double)a4 targetSize:(CGSize)a5;
-- (id)applyBlurWithRadius:(double)a3 tintColor:(id)a4 saturationDeltaFactor:(double)a5 maskImage:(id)a6 targetSize:(CGSize)a7 screenScale:(double)a8 opaque:(BOOL)a9 logoRect:(CGRect)a10 logoImage:(id)a11 logoText:(id)a12 cornerRadius:(double)a13 punchThroughBanner:(BOOL)a14 allowAldenTint:(BOOL)a15;
++ (id)fr_gradientImageForTextSize:(CGSize)size withStartColor:(id)color endColor:(id)endColor;
++ (id)fr_imageWithColor:(id)color size:(CGSize)size cornerRadius:(double)radius;
++ (id)fr_immediatelyLoadedImageWithData:(id)data scale:(double)scale;
++ (id)imageFromFileURL:(id)l;
++ (int64_t)fr_estimatedImageTypeWithData:(id)data;
+- (CGRect)filledRectForRect:(CGRect)rect;
+- (CGSize)fr_sizeThatFills:(CGSize)fills;
+- (UIImage)imageWithCornerRadius:(double)radius;
+- (UIImage)imageWithCornerRadius:(double)radius scale:(double)scale targetSize:(CGSize)size;
+- (id)applyBlurWithRadius:(double)radius tintColor:(id)color saturationDeltaFactor:(double)factor maskImage:(id)image targetSize:(CGSize)size screenScale:(double)scale opaque:(BOOL)opaque logoRect:(CGRect)self0 logoImage:(id)self1 logoText:(id)self2 cornerRadius:(double)self3 punchThroughBanner:(BOOL)self4 allowAldenTint:(BOOL)self5;
 - (id)fr_applyDarkEffect;
-- (id)fr_bannerImageWithLogo:(id)a3;
-- (id)fr_colorMonochromeImageWithColor:(id)a3;
-- (id)fr_croppedImageWithAspectRatio:(double)a3;
-- (id)fr_darkAndBlurredImageWithContext:(id)a3 withBlurRadius:(double)a4 vibrancyAmount:(double)a5 alpha:(double)a6;
-- (id)fr_imageAspectFitToSize:(CGSize)a3 targetScale:(double)a4 croppedToCornerRadius:(double)a5 withMargin:(double)a6 withBackgroundColor:(id)a7 borderColor:(id)a8;
-- (id)fr_imageByApplyingAlpha:(double)a3;
-- (id)fr_imageByCroppingSubRect:(CGRect)a3;
-- (id)fr_imageByScalingAndCroppingForSize:(CGSize)a3 scale:(double)a4;
-- (id)fr_imageCroppedToCircleWithBackgroundColor:(id)a3;
-- (id)fr_imageCroppedToCornerRadius:(double)a3 withBackgroundColor:(id)a4;
-- (id)fr_opaqueImageWithFillColor:(id)a3;
-- (id)fr_scaledImageWithMaximumSize:(CGSize)a3;
-- (id)fr_scaledImageWithMaximumSize:(CGSize)a3 targetScale:(double)a4;
-- (id)fr_tintedImageWithColor:(id)a3;
-- (id)imageMaskWithColor:(id)a3;
-- (id)imageMaskWithColor:(id)a3 size:(CGSize)a4;
+- (id)fr_bannerImageWithLogo:(id)logo;
+- (id)fr_colorMonochromeImageWithColor:(id)color;
+- (id)fr_croppedImageWithAspectRatio:(double)ratio;
+- (id)fr_darkAndBlurredImageWithContext:(id)context withBlurRadius:(double)radius vibrancyAmount:(double)amount alpha:(double)alpha;
+- (id)fr_imageAspectFitToSize:(CGSize)size targetScale:(double)scale croppedToCornerRadius:(double)radius withMargin:(double)margin withBackgroundColor:(id)color borderColor:(id)borderColor;
+- (id)fr_imageByApplyingAlpha:(double)alpha;
+- (id)fr_imageByCroppingSubRect:(CGRect)rect;
+- (id)fr_imageByScalingAndCroppingForSize:(CGSize)size scale:(double)scale;
+- (id)fr_imageCroppedToCircleWithBackgroundColor:(id)color;
+- (id)fr_imageCroppedToCornerRadius:(double)radius withBackgroundColor:(id)color;
+- (id)fr_opaqueImageWithFillColor:(id)color;
+- (id)fr_scaledImageWithMaximumSize:(CGSize)size;
+- (id)fr_scaledImageWithMaximumSize:(CGSize)size targetScale:(double)scale;
+- (id)fr_tintedImageWithColor:(id)color;
+- (id)imageMaskWithColor:(id)color;
+- (id)imageMaskWithColor:(id)color size:(CGSize)size;
 @end
 
 @implementation UIImage
 
-- (id)imageMaskWithColor:(id)a3
+- (id)imageMaskWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(UIImage *)self size];
   v6 = v5;
   [(UIImage *)self size];
@@ -51,18 +51,18 @@
   v22 = v6;
   v23 = v8;
   v18[4] = self;
-  v19 = v4;
-  v15 = v4;
+  v19 = colorCopy;
+  v15 = colorCopy;
   v16 = [FRMacros imageFromNewGraphicsContextWithSize:0 opaque:1 forceSRGB:v18 scale:v10 contextBlock:v12, v14];
 
   return v16;
 }
 
-- (id)imageMaskWithColor:(id)a3 size:(CGSize)a4
+- (id)imageMaskWithColor:(id)color size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   [(UIImage *)self scale];
   v9 = v8;
   v13[0] = _NSConcreteStackBlock;
@@ -76,18 +76,18 @@
   v19 = width;
   v20 = height;
   v13[4] = self;
-  v14 = v7;
-  v10 = v7;
+  v14 = colorCopy;
+  v10 = colorCopy;
   v11 = [FRMacros imageFromNewGraphicsContextWithSize:0 opaque:1 forceSRGB:v13 scale:width contextBlock:height, v9];
 
   return v11;
 }
 
-+ (id)imageFromFileURL:(id)a3
++ (id)imageFromFileURL:(id)l
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && (v5 = CGImageSourceCreateWithURL(v3, 0)) != 0)
+  lCopy = l;
+  v4 = lCopy;
+  if (lCopy && (v5 = CGImageSourceCreateWithURL(lCopy, 0)) != 0)
   {
     v6 = v5;
     v10 = kCGImageSourceShouldCacheImmediately;
@@ -106,9 +106,9 @@
   return v8;
 }
 
-- (id)fr_opaqueImageWithFillColor:(id)a3
+- (id)fr_opaqueImageWithFillColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(UIImage *)self size];
   v6 = v5;
   v8 = v7;
@@ -119,14 +119,14 @@
   v14[2] = sub_10001A888;
   v14[3] = &unk_1000C1920;
   v14[4] = self;
-  v15 = v4;
-  v11 = v4;
+  v15 = colorCopy;
+  v11 = colorCopy;
   v12 = [FRMacros imageFromNewGraphicsContextWithSize:1 opaque:v14 scale:v6 contextBlock:v8, v10];
 
   return v12;
 }
 
-- (id)fr_imageByApplyingAlpha:(double)a3
+- (id)fr_imageByApplyingAlpha:(double)alpha
 {
   [(UIImage *)self size];
   UIGraphicsBeginImageContextWithOptions(v14, 0, 0.0);
@@ -138,22 +138,22 @@
   CGContextScaleCTM(CurrentContext, 1.0, -1.0);
   CGContextTranslateCTM(CurrentContext, 0.0, -v9);
   CGContextSetBlendMode(CurrentContext, kCGBlendModeMultiply);
-  CGContextSetAlpha(CurrentContext, a3);
-  v10 = [(UIImage *)self CGImage];
+  CGContextSetAlpha(CurrentContext, alpha);
+  cGImage = [(UIImage *)self CGImage];
   v15.origin.x = 0.0;
   v15.origin.y = 0.0;
   v15.size.width = v7;
   v15.size.height = v9;
-  CGContextDrawImage(CurrentContext, v15, v10);
+  CGContextDrawImage(CurrentContext, v15, cGImage);
   v11 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 
   return v11;
 }
 
-- (id)fr_tintedImageWithColor:(id)a3
+- (id)fr_tintedImageWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(UIImage *)self size];
   v6 = v5;
   v8 = v7;
@@ -163,17 +163,17 @@
   v14[1] = 3221225472;
   v14[2] = sub_10001AAF0;
   v14[3] = &unk_1000C1920;
-  v15 = v4;
-  v16 = self;
-  v11 = v4;
+  v15 = colorCopy;
+  selfCopy = self;
+  v11 = colorCopy;
   v12 = [FRMacros imageFromNewGraphicsContextWithSize:0 opaque:v14 scale:v6 contextBlock:v8, v10];
 
   return v12;
 }
 
-- (id)fr_imageCroppedToCircleWithBackgroundColor:(id)a3
+- (id)fr_imageCroppedToCircleWithBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(UIImage *)self size];
   v6 = v5;
   [(UIImage *)self size];
@@ -187,21 +187,21 @@
     v8 = v6;
   }
 
-  v9 = [(UIImage *)self fr_imageCroppedToCornerRadius:v4 withBackgroundColor:v8 * 0.5];
+  v9 = [(UIImage *)self fr_imageCroppedToCornerRadius:colorCopy withBackgroundColor:v8 * 0.5];
 
   return v9;
 }
 
-- (id)fr_imageCroppedToCornerRadius:(double)a3 withBackgroundColor:(id)a4
+- (id)fr_imageCroppedToCornerRadius:(double)radius withBackgroundColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v7 = +[UIColor clearColor];
-  v8 = [v6 isEqual:v7];
+  v8 = [colorCopy isEqual:v7];
 
   if (v8)
   {
 
-    v6 = 0;
+    colorCopy = 0;
   }
 
   [(UIImage *)self size];
@@ -220,38 +220,38 @@
   v19 = 0;
   v20 = v10;
   v21 = v10;
-  v16 = v6;
-  v17 = self;
-  v22 = a3;
+  v16 = colorCopy;
+  selfCopy = self;
+  radiusCopy = radius;
   v23 = v10;
-  v12 = v6;
-  v13 = [FRMacros imageFromNewGraphicsContextWithSize:v6 != 0 opaque:v15 scale:v10 contextBlock:v10, 0.0];
+  v12 = colorCopy;
+  v13 = [FRMacros imageFromNewGraphicsContextWithSize:colorCopy != 0 opaque:v15 scale:v10 contextBlock:v10, 0.0];
 
   return v13;
 }
 
-- (id)fr_imageAspectFitToSize:(CGSize)a3 targetScale:(double)a4 croppedToCornerRadius:(double)a5 withMargin:(double)a6 withBackgroundColor:(id)a7 borderColor:(id)a8
+- (id)fr_imageAspectFitToSize:(CGSize)size targetScale:(double)scale croppedToCornerRadius:(double)radius withMargin:(double)margin withBackgroundColor:(id)color borderColor:(id)borderColor
 {
-  height = a3.height;
-  width = a3.width;
-  v15 = a7;
-  v16 = a8;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  borderColorCopy = borderColor;
   v17 = +[UIColor clearColor];
-  v18 = [v15 isEqual:v17];
+  v18 = [colorCopy isEqual:v17];
 
   if (v18)
   {
 
-    v15 = 0;
+    colorCopy = 0;
   }
 
   v19 = +[UIColor clearColor];
-  v20 = [v16 isEqual:v19];
+  v20 = [borderColorCopy isEqual:v19];
 
   if (v20)
   {
 
-    v16 = 0;
+    borderColorCopy = 0;
   }
 
   [(UIImage *)self size];
@@ -259,17 +259,17 @@
   v24 = v23;
   [(UIImage *)self scale];
   v26 = v25;
-  v27 = [(UIImage *)self imageOrientation];
+  imageOrientation = [(UIImage *)self imageOrientation];
   v28 = width / v22;
   if (width / v22 >= height / v24)
   {
     v28 = height / v24;
   }
 
-  v29 = a4 / v26 * v28;
+  v29 = scale / v26 * v28;
   v30 = v22 * v26 * v29;
   v31 = v24 * v26 * v29;
-  v32 = -(a6 * a4);
+  v32 = -(margin * scale);
   v33 = v30 <= v31;
   v34 = v31 + v32 * 2.0;
   v35 = v30 * (v34 / v31);
@@ -285,7 +285,7 @@
     v38 = v37;
   }
 
-  v39 = width * a4;
+  v39 = width * scale;
   v64 = 0;
   v65 = &v64;
   v66 = 0x3032000000;
@@ -296,7 +296,7 @@
   v50 = 3221225472;
   v51 = sub_10001B0FC;
   v52 = &unk_1000C2300;
-  v40 = height * a4;
+  v40 = height * scale;
   v57 = v39;
   v58 = v40;
   if (v33)
@@ -309,17 +309,17 @@
     v41 = v36;
   }
 
-  v59 = a5;
-  v60 = a4;
-  v42 = v15;
+  radiusCopy = radius;
+  scaleCopy = scale;
+  v42 = colorCopy;
   v61 = v41;
   v62 = v38;
   v53 = v42;
-  v54 = self;
-  v43 = v16;
+  selfCopy = self;
+  v43 = borderColorCopy;
   v55 = v43;
   v56 = &v64;
-  v63 = v27;
+  v63 = imageOrientation;
   [FRMacros useManagedContextWithSize:0 opaque:&v49 scale:v39 contextBlock:v40, 1.0];
   v44 = v65[5];
   if (!v44)
@@ -328,7 +328,7 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       v46 = [NSString alloc];
-      [v46 initWithFormat:@"invalid nil value for '%s'", "scaledImage", v49, v50, v51, v52, v53, v54];
+      [v46 initWithFormat:@"invalid nil value for '%s'", "scaledImage", v49, v50, v51, v52, v53, selfCopy];
       sub_10006B838();
     }
 
@@ -342,58 +342,58 @@
   return v47;
 }
 
-- (id)fr_colorMonochromeImageWithColor:(id)a3
+- (id)fr_colorMonochromeImageWithColor:(id)color
 {
-  v5 = self;
-  v6 = a3;
+  selfCopy = self;
+  colorCopy = color;
   v7 = [CIImage imageWithCGImage:[(UIImage *)self CGImage]];
-  v8 = [[CIColor alloc] initWithColor:v6];
+  v8 = [[CIColor alloc] initWithColor:colorCopy];
 
   v9 = [CIFilter filterWithName:@"CIColorMonochrome" keysAndValues:@"inputImage", v7, @"inputColor", v8, @"inputIntensity", &off_1000CB4D0, 0];
-  v10 = [v9 outputImage];
+  outputImage = [v9 outputImage];
   v11 = [CIContext contextWithOptions:0];
-  [v10 extent];
-  v12 = [v11 createCGImage:v10 fromRect:?];
+  [outputImage extent];
+  v12 = [v11 createCGImage:outputImage fromRect:?];
   v13 = [UIImage imageWithCGImage:v12];
   CGImageRelease(v12);
 
   return v13;
 }
 
-- (id)fr_scaledImageWithMaximumSize:(CGSize)a3
+- (id)fr_scaledImageWithMaximumSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIImage *)self scale];
 
   return [(UIImage *)self fr_scaledImageWithMaximumSize:width targetScale:height, v6];
 }
 
-- (id)fr_scaledImageWithMaximumSize:(CGSize)a3 targetScale:(double)a4
+- (id)fr_scaledImageWithMaximumSize:(CGSize)size targetScale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIImage *)self size];
   v9 = v8;
   v11 = v10;
   [(UIImage *)self scale];
   v13 = v12;
-  v14 = [(UIImage *)self imageOrientation];
+  imageOrientation = [(UIImage *)self imageOrientation];
   if (v9 < width && v11 < height)
   {
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = v14;
+    v16 = imageOrientation;
     v17 = width / v9;
     if (width / v9 >= height / v11)
     {
       v17 = height / v11;
     }
 
-    v18 = a4 / v13 * v17;
+    v18 = scale / v13 * v17;
     v19 = v18 * CGImageGetWidth([(UIImage *)self CGImage]);
     v23 = 0;
     v24 = &v23;
@@ -410,17 +410,17 @@
     v22[4] = self;
     v22[5] = &v23;
     *&v22[8] = v11 * v13 * v18;
-    *&v22[9] = a4;
+    *&v22[9] = scale;
     v22[10] = v16;
     [FRMacros useManagedContextWithSize:0 opaque:0 forceSRGB:v22 scale:v19 contextBlock:?];
-    v20 = v24[5];
+    selfCopy = v24[5];
     _Block_object_dispose(&v23, 8);
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (id)fr_croppedImageWithAspectRatio:(double)a3
+- (id)fr_croppedImageWithAspectRatio:(double)ratio
 {
   [(UIImage *)self scale];
   v6 = v5;
@@ -428,37 +428,37 @@
   v8 = v6 * v7;
   [(UIImage *)self size];
   v10 = v6 * v9;
-  if (a3 <= 1.0)
+  if (ratio <= 1.0)
   {
-    v11 = v10 * a3;
+    v11 = v10 * ratio;
     v12 = v10;
   }
 
   else
   {
     v11 = v8;
-    v12 = v8 / a3;
+    v12 = v8 / ratio;
   }
 
   v13 = (v10 - v12) * 0.5;
-  v14 = [(UIImage *)self CGImage];
+  cGImage = [(UIImage *)self CGImage];
   v19.origin.x = (v8 - v11) * 0.5;
   v19.origin.y = v13;
   v19.size.width = v11;
   v19.size.height = v12;
-  v15 = CGImageCreateWithImageInRect(v14, v19);
+  v15 = CGImageCreateWithImageInRect(cGImage, v19);
   v16 = [UIImage imageWithCGImage:v15];
   CGImageRelease(v15);
 
   return v16;
 }
 
-- (id)fr_imageByScalingAndCroppingForSize:(CGSize)a3 scale:(double)a4
+- (id)fr_imageByScalingAndCroppingForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  [(UIImage *)v7 size];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  [(UIImage *)selfCopy size];
   v10 = 0.0;
   if (v8 == width && v9 == height)
   {
@@ -498,21 +498,21 @@
   v23 = v10;
   v24 = v14;
   v25 = v15;
-  v21 = v7;
-  v17 = v7;
-  v18 = [FRMacros imageFromNewGraphicsContextWithSize:0 opaque:v20 scale:width contextBlock:height, a4];
+  v21 = selfCopy;
+  v17 = selfCopy;
+  scale = [FRMacros imageFromNewGraphicsContextWithSize:0 opaque:v20 scale:width contextBlock:height, scale];
 
-  return v18;
+  return scale;
 }
 
-- (id)fr_imageByCroppingSubRect:(CGRect)a3
+- (id)fr_imageByCroppingSubRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
-  [(UIImage *)v7 size];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  [(UIImage *)selfCopy size];
   v9 = v8;
   v11 = v10;
   v23.origin.x = x;
@@ -526,13 +526,13 @@
 
   else
   {
-    [(UIImage *)v7 scale];
+    [(UIImage *)selfCopy scale];
     v13 = v12;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_10001BAF0;
     v16[3] = &unk_1000C2350;
-    v17 = v7;
+    v17 = selfCopy;
     v18 = x;
     v19 = y;
     v20 = width;
@@ -543,9 +543,9 @@
   return v14;
 }
 
-- (id)fr_bannerImageWithLogo:(id)a3
+- (id)fr_bannerImageWithLogo:(id)logo
 {
-  v4 = a3;
+  logoCopy = logo;
   [(UIImage *)self scale];
   v6 = v5;
   [(UIImage *)self size];
@@ -565,10 +565,10 @@
   v24 = v6 * 17.0 * 0.5;
   v25 = v8;
   v26 = v6 * v9;
-  v21 = self;
+  selfCopy = self;
   v27 = v8;
   v28 = v6 * 17.0;
-  v11 = v4;
+  v11 = logoCopy;
   v22 = v11;
   v23 = &v30;
   v29 = v6;
@@ -580,7 +580,7 @@
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       v14 = [NSString alloc];
-      [v14 initWithFormat:@"invalid nil value for '%s'", "bannerImage", v17, v18, v19, v20, v21];
+      [v14 initWithFormat:@"invalid nil value for '%s'", "bannerImage", v17, v18, v19, v20, selfCopy];
       sub_10006B8A4();
     }
 
@@ -594,24 +594,24 @@
   return v15;
 }
 
-+ (id)fr_immediatelyLoadedImageWithData:(id)a3 scale:(double)a4
++ (id)fr_immediatelyLoadedImageWithData:(id)data scale:(double)scale
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && (v7 = CGImageSourceCreateWithData(v5, 0)) != 0)
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy && (v7 = CGImageSourceCreateWithData(dataCopy, 0)) != 0)
   {
     v8 = v7;
     v12 = kCGImageSourceShouldCacheImmediately;
     v13 = kCFBooleanTrue;
     ImageAtIndex = CGImageSourceCreateImageAtIndex(v7, 0, [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1]);
-    if (a4 <= 1.0)
+    if (scale <= 1.0)
     {
       [UIImage imageWithCGImage:ImageAtIndex];
     }
 
     else
     {
-      [UIImage imageWithCGImage:ImageAtIndex scale:0 orientation:a4];
+      [UIImage imageWithCGImage:ImageAtIndex scale:0 orientation:scale];
     }
     v10 = ;
     CGImageRelease(ImageAtIndex);
@@ -626,54 +626,54 @@
   return v10;
 }
 
-+ (id)fr_imageWithColor:(id)a3 size:(CGSize)a4 cornerRadius:(double)a5
++ (id)fr_imageWithColor:(id)color size:(CGSize)size cornerRadius:(double)radius
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001C0E8;
   v11[3] = &unk_1000C23A0;
   v13 = 0;
   v14 = 0;
-  v12 = a3;
+  colorCopy = color;
   v15 = width;
   v16 = height;
-  v17 = a5;
-  v8 = v12;
+  radiusCopy = radius;
+  v8 = colorCopy;
   v9 = [FRMacros imageFromNewGraphicsContextWithSize:0 opaque:v11 scale:width contextBlock:height, 0.0];
 
   return v9;
 }
 
-- (id)fr_darkAndBlurredImageWithContext:(id)a3 withBlurRadius:(double)a4 vibrancyAmount:(double)a5 alpha:(double)a6
+- (id)fr_darkAndBlurredImageWithContext:(id)context withBlurRadius:(double)radius vibrancyAmount:(double)amount alpha:(double)alpha
 {
-  v28 = a3;
+  contextCopy = context;
   v27 = [[CIImage alloc] initWithImage:self];
   v10 = [CIFilter filterWithName:@"CIGaussianBlur"];
   [v10 setValue:v27 forKey:kCIInputImageKey];
-  v11 = [NSNumber numberWithDouble:a4];
+  v11 = [NSNumber numberWithDouble:radius];
   [v10 setValue:v11 forKey:@"inputRadius"];
 
   v12 = [CIFilter filterWithName:@"CIVibrance"];
-  v13 = [v10 outputImage];
-  [v12 setValue:v13 forKey:kCIInputImageKey];
+  outputImage = [v10 outputImage];
+  [v12 setValue:outputImage forKey:kCIInputImageKey];
 
-  v14 = [NSNumber numberWithDouble:a5];
+  v14 = [NSNumber numberWithDouble:amount];
   [v12 setValue:v14 forKey:@"inputAmount"];
 
   v15 = [CIFilter filterWithName:@"CIConstantColorGenerator"];
-  v26 = [CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:a6];
+  v26 = [CIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:alpha];
   [v15 setValue:v26 forKey:@"inputColor"];
   v16 = [v15 valueForKey:@"outputImage"];
   v17 = [CIFilter filterWithName:@"CIMultiplyBlendMode"];
   [v17 setValue:v16 forKey:@"inputImage"];
-  v18 = [v12 outputImage];
-  [v17 setValue:v18 forKey:@"inputBackgroundImage"];
+  outputImage2 = [v12 outputImage];
+  [v17 setValue:outputImage2 forKey:@"inputBackgroundImage"];
 
-  v19 = [v17 outputImage];
+  outputImage3 = [v17 outputImage];
   [v27 extent];
-  v20 = [v28 createCGImage:v19 fromRect:?];
+  v20 = [contextCopy createCGImage:outputImage3 fromRect:?];
 
   [(UIImage *)self scale];
   v22 = [UIImage imageWithCGImage:v20 scale:[(UIImage *)self imageOrientation] orientation:v21];
@@ -693,13 +693,13 @@
   return v4;
 }
 
-- (CGRect)filledRectForRect:(CGRect)a3
+- (CGRect)filledRectForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = CGRectGetWidth(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = CGRectGetWidth(rect);
   v29.origin.x = x;
   v29.origin.y = y;
   v29.size.width = width;
@@ -771,37 +771,37 @@
   return result;
 }
 
-- (UIImage)imageWithCornerRadius:(double)a3
+- (UIImage)imageWithCornerRadius:(double)radius
 {
   +[FRMacros deviceScreenScaleFromPotentialBackgroundThread];
   v6 = v5;
   [(UIImage *)self size];
 
-  return [(UIImage *)self imageWithCornerRadius:a3 scale:v6 targetSize:v7, v8];
+  return [(UIImage *)self imageWithCornerRadius:radius scale:v6 targetSize:v7, v8];
 }
 
-- (UIImage)imageWithCornerRadius:(double)a3 scale:(double)a4 targetSize:(CGSize)a5
+- (UIImage)imageWithCornerRadius:(double)radius scale:(double)scale targetSize:(CGSize)size
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001C7D4;
   v7[3] = &unk_1000C23C8;
-  v8 = a5;
-  v9 = a3;
+  sizeCopy = size;
+  radiusCopy = radius;
   v7[4] = self;
-  v5 = [FRMacros imageFromNewGraphicsContextWithSize:0 opaque:v7 scale:a5.width contextBlock:a5.height, a4];
+  scale = [FRMacros imageFromNewGraphicsContextWithSize:0 opaque:v7 scale:size.width contextBlock:size.height, scale];
 
-  return v5;
+  return scale;
 }
 
-- (id)applyBlurWithRadius:(double)a3 tintColor:(id)a4 saturationDeltaFactor:(double)a5 maskImage:(id)a6 targetSize:(CGSize)a7 screenScale:(double)a8 opaque:(BOOL)a9 logoRect:(CGRect)a10 logoImage:(id)a11 logoText:(id)a12 cornerRadius:(double)a13 punchThroughBanner:(BOOL)a14 allowAldenTint:(BOOL)a15
+- (id)applyBlurWithRadius:(double)radius tintColor:(id)color saturationDeltaFactor:(double)factor maskImage:(id)image targetSize:(CGSize)size screenScale:(double)scale opaque:(BOOL)opaque logoRect:(CGRect)self0 logoImage:(id)self1 logoText:(id)self2 cornerRadius:(double)self3 punchThroughBanner:(BOOL)self4 allowAldenTint:(BOOL)self5
 {
-  height = a7.height;
-  width = a7.width;
-  v24 = a4;
-  v25 = a6;
-  v62 = a11;
-  v63 = a12;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
+  imageCopy = image;
+  logoImageCopy = logoImage;
+  textCopy = text;
   if (width <= 0.0 || height <= 0.0)
   {
     [(UIImage *)self size];
@@ -809,26 +809,26 @@
     height = v27;
   }
 
-  if (fabs(a8) < 0.00999999978)
+  if (fabs(scale) < 0.00999999978)
   {
     +[FRMacros deviceScreenScaleFromPotentialBackgroundThread];
-    a8 = v28;
+    scale = v28;
   }
 
-  v29 = [v24 colorWithAlphaComponent:1.0];
+  v29 = [colorCopy colorWithAlphaComponent:1.0];
   v30 = +[UIColor whiteColor];
   v31 = [v29 _isSimilarToColor:v30 withinPercentage:0.1];
 
-  v32 = [v24 colorWithAlphaComponent:1.0];
+  v32 = [colorCopy colorWithAlphaComponent:1.0];
   v33 = [UIColor colorWithWhite:0.392156863 alpha:1.0];
   v34 = [v32 _isSimilarToColor:v33 withinPercentage:0.1];
 
   v35 = v31 | v34;
-  if (((v31 | v34) & 1) == 0 && a15)
+  if (((v31 | v34) & 1) == 0 && tint)
   {
-    v36 = [v24 colorWithAlphaComponent:0.5];
+    v36 = [colorCopy colorWithAlphaComponent:0.5];
 
-    v24 = v36;
+    colorCopy = v36;
   }
 
   if (width < 1.0 || height < 1.0)
@@ -853,12 +853,12 @@
     goto LABEL_36;
   }
 
-  if (v25 && ![v25 CGImage])
+  if (imageCopy && ![imageCopy CGImage])
   {
     v56 = FCDefaultLog;
     if (os_log_type_enabled(FCDefaultLog, OS_LOG_TYPE_ERROR))
     {
-      sub_10006B910(v25, v56);
+      sub_10006B910(imageCopy, v56);
     }
 
 LABEL_36:
@@ -871,10 +871,10 @@ LABEL_36:
   v59 = v40;
   v60 = v39;
   v58 = v41;
-  v42 = self;
-  v43 = v42;
-  v44 = fabs(a5 + -1.0);
-  if (a3 > 0.00000011920929 || v44 > 0.00000011920929)
+  selfCopy = self;
+  v43 = selfCopy;
+  v44 = fabs(factor + -1.0);
+  if (radius > 0.00000011920929 || v44 > 0.00000011920929)
   {
     v102 = 0;
     v103 = &v102;
@@ -892,14 +892,14 @@ LABEL_36:
     v99[9] = v60;
     v99[10] = v59;
     v99[11] = v58;
-    v100 = a3 > 0.00000011920929;
-    *&v99[12] = a8;
-    *&v99[13] = a3;
+    v100 = radius > 0.00000011920929;
+    *&v99[12] = scale;
+    *&v99[13] = radius;
     v101 = v44 > 0.00000011920929;
-    *&v99[14] = a5;
-    v99[4] = v42;
+    *&v99[14] = factor;
+    v99[4] = selfCopy;
     v99[5] = &v102;
-    [FRMacros useManagedContextWithSize:0 opaque:1 forceSRGB:v99 scale:width contextBlock:height, a8];
+    [FRMacros useManagedContextWithSize:0 opaque:1 forceSRGB:v99 scale:width contextBlock:height, scale];
     v48 = v103[5];
     if (!v48)
     {
@@ -920,10 +920,10 @@ LABEL_36:
 
   else
   {
-    v45 = v42;
+    v45 = selfCopy;
   }
 
-  v50 = [(UIImage *)v43 imageOrientation];
+  imageOrientation = [(UIImage *)v43 imageOrientation];
   v102 = 0;
   v103 = &v102;
   v104 = 0x3032000000;
@@ -934,28 +934,28 @@ LABEL_36:
   v78[1] = 3221225472;
   v78[2] = sub_10001D48C;
   v78[3] = &unk_1000C2440;
-  v79 = v24;
-  v86 = a10;
+  v79 = colorCopy;
+  rectCopy = rect;
   v87 = width;
   v88 = height;
   v89 = v38;
   v90 = v60;
   v91 = v59;
   v92 = v58;
-  v80 = v63;
+  v80 = textCopy;
   v81 = v43;
-  v95 = a3 > 0.00000011920929;
-  v82 = v25;
+  v95 = radius > 0.00000011920929;
+  v82 = imageCopy;
   v51 = v45;
   v83 = v51;
-  v96 = a14;
+  bannerCopy = banner;
   v97 = (v35 & 1) == 0;
-  v98 = a15;
-  v84 = v62;
+  tintCopy = tint;
+  v84 = logoImageCopy;
   v85 = &v102;
-  v93 = a8;
-  v94 = v50;
-  [FRMacros useManagedContextWithSize:0 opaque:1 forceSRGB:v78 scale:width contextBlock:height, a8];
+  scaleCopy = scale;
+  v94 = imageOrientation;
+  [FRMacros useManagedContextWithSize:0 opaque:1 forceSRGB:v78 scale:width contextBlock:height, scale];
   if (!v103[5])
   {
     v52 = &_os_log_default;
@@ -966,7 +966,7 @@ LABEL_36:
     }
   }
 
-  if (a13 <= 0.00000011920929)
+  if (cornerRadius <= 0.00000011920929)
   {
     v55 = v103[5];
   }
@@ -974,7 +974,7 @@ LABEL_36:
   else
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    [UIBezierPath bezierPathWithRoundedRect:1.0 / (a8 + a8) cornerRadius:1.0 / (a8 + a8), width - 1.0 / a8, height - 1.0 / a8, a13];
+    [UIBezierPath bezierPathWithRoundedRect:1.0 / (scale + scale) cornerRadius:1.0 / (scale + scale), width - 1.0 / scale, height - 1.0 / scale, cornerRadius];
     v72 = 0;
     v73 = &v72;
     v74 = 0x3032000000;
@@ -986,13 +986,13 @@ LABEL_36:
     v64[2] = sub_10001DA34;
     v64[3] = &unk_1000C2490;
     v68 = DeviceRGB;
-    v54 = v69 = a8;
+    v54 = v69 = scale;
     v65 = v54;
     v66 = &v102;
     v70 = width;
     v71 = height;
     v67 = &v72;
-    [FRMacros useManagedContextWithSize:0 opaque:v64 scale:width contextBlock:height, a8];
+    [FRMacros useManagedContextWithSize:0 opaque:v64 scale:width contextBlock:height, scale];
     CGColorSpaceRelease(DeviceRGB);
     v55 = v73[5];
 
@@ -1005,10 +1005,10 @@ LABEL_37:
   return v55;
 }
 
-- (CGSize)fr_sizeThatFills:(CGSize)a3
+- (CGSize)fr_sizeThatFills:(CGSize)fills
 {
-  height = a3.height;
-  width = a3.width;
+  height = fills.height;
+  width = fills.width;
   [(UIImage *)self size];
   v7 = v5 * (height / v6);
   if (v7 < width)
@@ -1024,23 +1024,23 @@ LABEL_37:
   return result;
 }
 
-+ (id)fr_gradientImageForTextSize:(CGSize)a3 withStartColor:(id)a4 endColor:(id)a5
++ (id)fr_gradientImageForTextSize:(CGSize)size withStartColor:(id)color endColor:(id)endColor
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a5;
-  v9 = a4;
+  height = size.height;
+  width = size.width;
+  endColorCopy = endColor;
+  colorCopy = color;
   v22.width = width;
   v22.height = height;
   UIGraphicsBeginImageContext(v22);
   CurrentContext = UIGraphicsGetCurrentContext();
   UIGraphicsPushContext(CurrentContext);
-  v11 = [v9 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  v12 = [v8 CGColor];
-  v13 = [NSArray arrayWithObjects:v11, v12, 0, 0, 0x3FF0000000000000];
+  cGColor2 = [endColorCopy CGColor];
+  0x3FF0000000000000 = [NSArray arrayWithObjects:cGColor, cGColor2, 0, 0, 0x3FF0000000000000];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  v15 = CGGradientCreateWithColors(DeviceRGB, v13, locations);
+  v15 = CGGradientCreateWithColors(DeviceRGB, 0x3FF0000000000000, locations);
   v23.x = 0.0;
   v23.y = 0.0;
   v25.x = width;
@@ -1062,17 +1062,17 @@ LABEL_37:
   return v18;
 }
 
-+ (int64_t)fr_estimatedImageTypeWithData:(id)a3
++ (int64_t)fr_estimatedImageTypeWithData:(id)data
 {
-  v3 = a3;
-  if (![v3 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     goto LABEL_6;
   }
 
   v6 = 0;
   v4 = 1;
-  [v3 getBytes:&v6 length:1];
+  [dataCopy getBytes:&v6 length:1];
   if (v6 < 0x4Eu)
   {
     goto LABEL_6;

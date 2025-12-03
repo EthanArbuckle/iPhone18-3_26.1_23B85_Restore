@@ -1,6 +1,6 @@
 @interface CellWithAccessoryViewController
 - (NSString)description;
-- (_TtC18HealthExperienceUI31CellWithAccessoryViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18HealthExperienceUI31CellWithAccessoryViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA38FC68();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA38FE88();
 
   v3 = sub_1BA4A6758();
@@ -22,9 +22,9 @@
   return v3;
 }
 
-- (_TtC18HealthExperienceUI31CellWithAccessoryViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18HealthExperienceUI31CellWithAccessoryViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = _sSo19HKFeatureIdentifiera18HealthExperienceUIE2idSSvg_0();
     v7 = v6;
@@ -36,8 +36,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return CellWithAccessoryViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return CellWithAccessoryViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface USPSchemaUSPClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (USPSchemaUSPClientEvent)initWithDictionary:(id)a3;
-- (USPSchemaUSPClientEvent)initWithJSON:(id)a3;
+- (USPSchemaUSPClientEvent)initWithDictionary:(id)dictionary;
+- (USPSchemaUSPClientEvent)initWithJSON:(id)n;
 - (USPSchemaUSPIterationEnded)iterationEnded;
 - (USPSchemaUSPIterationStarted)iterationStarted;
 - (USPSchemaUSPLoggingInitalized)loggingInitialized;
 - (USPSchemaUSPLoggingReported)loggingReported;
 - (USPSchemaUSPMeasureEnded)measureEnded;
 - (USPSchemaUSPMeasureStarted)measureStarted;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -23,26 +23,26 @@
 - (void)deleteLoggingReported;
 - (void)deleteMeasureEnded;
 - (void)deleteMeasureStarted;
-- (void)setIterationEnded:(id)a3;
-- (void)setIterationStarted:(id)a3;
-- (void)setLoggingInitialized:(id)a3;
-- (void)setLoggingReported:(id)a3;
-- (void)setMeasureEnded:(id)a3;
-- (void)setMeasureStarted:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setIterationEnded:(id)ended;
+- (void)setIterationStarted:(id)started;
+- (void)setLoggingInitialized:(id)initialized;
+- (void)setLoggingReported:(id)reported;
+- (void)setMeasureEnded:(id)ended;
+- (void)setMeasureStarted:(id)started;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USPSchemaUSPClientEvent
 
-- (USPSchemaUSPClientEvent)initWithDictionary:(id)a3
+- (USPSchemaUSPClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = USPSchemaUSPClientEvent;
   v5 = [(USPSchemaUSPClientEvent *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       [(USPSchemaUSPClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"loggingInitialized"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"loggingInitialized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(USPSchemaUSPClientEvent *)v5 setLoggingInitialized:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"loggingReported"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"loggingReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,7 +66,7 @@
       [(USPSchemaUSPClientEvent *)v5 setLoggingReported:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"measureStarted"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"measureStarted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(USPSchemaUSPClientEvent *)v5 setMeasureStarted:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"measureEnded"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"measureEnded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,7 +82,7 @@
       [(USPSchemaUSPClientEvent *)v5 setMeasureEnded:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"iterationStarted"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"iterationStarted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
       [(USPSchemaUSPClientEvent *)v5 setIterationStarted:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"iterationEnded"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"iterationEnded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,30 +104,30 @@
   return v5;
 }
 
-- (USPSchemaUSPClientEvent)initWithJSON:(id)a3
+- (USPSchemaUSPClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USPSchemaUSPClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USPSchemaUSPClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USPSchemaUSPClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -140,122 +140,122 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(USPSchemaUSPClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(USPSchemaUSPClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_iterationEnded)
   {
-    v7 = [(USPSchemaUSPClientEvent *)self iterationEnded];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    iterationEnded = [(USPSchemaUSPClientEvent *)self iterationEnded];
+    dictionaryRepresentation2 = [iterationEnded dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"iterationEnded"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"iterationEnded"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"iterationEnded"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"iterationEnded"];
     }
   }
 
   if (self->_iterationStarted)
   {
-    v10 = [(USPSchemaUSPClientEvent *)self iterationStarted];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    iterationStarted = [(USPSchemaUSPClientEvent *)self iterationStarted];
+    dictionaryRepresentation3 = [iterationStarted dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"iterationStarted"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"iterationStarted"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"iterationStarted"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"iterationStarted"];
     }
   }
 
   if (self->_loggingInitialized)
   {
-    v13 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    loggingInitialized = [(USPSchemaUSPClientEvent *)self loggingInitialized];
+    dictionaryRepresentation4 = [loggingInitialized dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"loggingInitialized"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"loggingInitialized"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"loggingInitialized"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"loggingInitialized"];
     }
   }
 
   if (self->_loggingReported)
   {
-    v16 = [(USPSchemaUSPClientEvent *)self loggingReported];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    loggingReported = [(USPSchemaUSPClientEvent *)self loggingReported];
+    dictionaryRepresentation5 = [loggingReported dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"loggingReported"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"loggingReported"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"loggingReported"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"loggingReported"];
     }
   }
 
   if (self->_measureEnded)
   {
-    v19 = [(USPSchemaUSPClientEvent *)self measureEnded];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    measureEnded = [(USPSchemaUSPClientEvent *)self measureEnded];
+    dictionaryRepresentation6 = [measureEnded dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"measureEnded"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"measureEnded"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"measureEnded"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"measureEnded"];
     }
   }
 
   if (self->_measureStarted)
   {
-    v22 = [(USPSchemaUSPClientEvent *)self measureStarted];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    measureStarted = [(USPSchemaUSPClientEvent *)self measureStarted];
+    dictionaryRepresentation7 = [measureStarted dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"measureStarted"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"measureStarted"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"measureStarted"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"measureStarted"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -269,34 +269,34 @@
   return v6 ^ v8 ^ [(USPSchemaUSPIterationEnded *)self->_iterationEnded hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_38;
   }
 
-  v6 = [(USPSchemaUSPClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(USPSchemaUSPClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v8 = [(USPSchemaUSPClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(USPSchemaUSPClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(USPSchemaUSPClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(USPSchemaUSPClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -308,20 +308,20 @@
   {
   }
 
-  v6 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
-  v7 = [v4 loggingInitialized];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(USPSchemaUSPClientEvent *)self loggingInitialized];
+  eventMetadata2 = [equalCopy loggingInitialized];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v13 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
-  if (v13)
+  loggingInitialized = [(USPSchemaUSPClientEvent *)self loggingInitialized];
+  if (loggingInitialized)
   {
-    v14 = v13;
-    v15 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
-    v16 = [v4 loggingInitialized];
-    v17 = [v15 isEqual:v16];
+    v14 = loggingInitialized;
+    loggingInitialized2 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
+    loggingInitialized3 = [equalCopy loggingInitialized];
+    v17 = [loggingInitialized2 isEqual:loggingInitialized3];
 
     if (!v17)
     {
@@ -333,20 +333,20 @@
   {
   }
 
-  v6 = [(USPSchemaUSPClientEvent *)self loggingReported];
-  v7 = [v4 loggingReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(USPSchemaUSPClientEvent *)self loggingReported];
+  eventMetadata2 = [equalCopy loggingReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v18 = [(USPSchemaUSPClientEvent *)self loggingReported];
-  if (v18)
+  loggingReported = [(USPSchemaUSPClientEvent *)self loggingReported];
+  if (loggingReported)
   {
-    v19 = v18;
-    v20 = [(USPSchemaUSPClientEvent *)self loggingReported];
-    v21 = [v4 loggingReported];
-    v22 = [v20 isEqual:v21];
+    v19 = loggingReported;
+    loggingReported2 = [(USPSchemaUSPClientEvent *)self loggingReported];
+    loggingReported3 = [equalCopy loggingReported];
+    v22 = [loggingReported2 isEqual:loggingReported3];
 
     if (!v22)
     {
@@ -358,20 +358,20 @@
   {
   }
 
-  v6 = [(USPSchemaUSPClientEvent *)self measureStarted];
-  v7 = [v4 measureStarted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(USPSchemaUSPClientEvent *)self measureStarted];
+  eventMetadata2 = [equalCopy measureStarted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v23 = [(USPSchemaUSPClientEvent *)self measureStarted];
-  if (v23)
+  measureStarted = [(USPSchemaUSPClientEvent *)self measureStarted];
+  if (measureStarted)
   {
-    v24 = v23;
-    v25 = [(USPSchemaUSPClientEvent *)self measureStarted];
-    v26 = [v4 measureStarted];
-    v27 = [v25 isEqual:v26];
+    v24 = measureStarted;
+    measureStarted2 = [(USPSchemaUSPClientEvent *)self measureStarted];
+    measureStarted3 = [equalCopy measureStarted];
+    v27 = [measureStarted2 isEqual:measureStarted3];
 
     if (!v27)
     {
@@ -383,20 +383,20 @@
   {
   }
 
-  v6 = [(USPSchemaUSPClientEvent *)self measureEnded];
-  v7 = [v4 measureEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(USPSchemaUSPClientEvent *)self measureEnded];
+  eventMetadata2 = [equalCopy measureEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v28 = [(USPSchemaUSPClientEvent *)self measureEnded];
-  if (v28)
+  measureEnded = [(USPSchemaUSPClientEvent *)self measureEnded];
+  if (measureEnded)
   {
-    v29 = v28;
-    v30 = [(USPSchemaUSPClientEvent *)self measureEnded];
-    v31 = [v4 measureEnded];
-    v32 = [v30 isEqual:v31];
+    v29 = measureEnded;
+    measureEnded2 = [(USPSchemaUSPClientEvent *)self measureEnded];
+    measureEnded3 = [equalCopy measureEnded];
+    v32 = [measureEnded2 isEqual:measureEnded3];
 
     if (!v32)
     {
@@ -408,20 +408,20 @@
   {
   }
 
-  v6 = [(USPSchemaUSPClientEvent *)self iterationStarted];
-  v7 = [v4 iterationStarted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(USPSchemaUSPClientEvent *)self iterationStarted];
+  eventMetadata2 = [equalCopy iterationStarted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_37;
   }
 
-  v33 = [(USPSchemaUSPClientEvent *)self iterationStarted];
-  if (v33)
+  iterationStarted = [(USPSchemaUSPClientEvent *)self iterationStarted];
+  if (iterationStarted)
   {
-    v34 = v33;
-    v35 = [(USPSchemaUSPClientEvent *)self iterationStarted];
-    v36 = [v4 iterationStarted];
-    v37 = [v35 isEqual:v36];
+    v34 = iterationStarted;
+    iterationStarted2 = [(USPSchemaUSPClientEvent *)self iterationStarted];
+    iterationStarted3 = [equalCopy iterationStarted];
+    v37 = [iterationStarted2 isEqual:iterationStarted3];
 
     if (!v37)
     {
@@ -433,12 +433,12 @@
   {
   }
 
-  v6 = [(USPSchemaUSPClientEvent *)self iterationEnded];
-  v7 = [v4 iterationEnded];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(USPSchemaUSPClientEvent *)self iterationEnded];
+  eventMetadata2 = [equalCopy iterationEnded];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v38 = [(USPSchemaUSPClientEvent *)self iterationEnded];
-    if (!v38)
+    iterationEnded = [(USPSchemaUSPClientEvent *)self iterationEnded];
+    if (!iterationEnded)
     {
 
 LABEL_41:
@@ -446,10 +446,10 @@ LABEL_41:
       goto LABEL_39;
     }
 
-    v39 = v38;
-    v40 = [(USPSchemaUSPClientEvent *)self iterationEnded];
-    v41 = [v4 iterationEnded];
-    v42 = [v40 isEqual:v41];
+    v39 = iterationEnded;
+    iterationEnded2 = [(USPSchemaUSPClientEvent *)self iterationEnded];
+    iterationEnded3 = [equalCopy iterationEnded];
+    v42 = [iterationEnded2 isEqual:iterationEnded3];
 
     if (v42)
     {
@@ -469,66 +469,66 @@ LABEL_39:
   return v43;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
-  v4 = [(USPSchemaUSPClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(USPSchemaUSPClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(USPSchemaUSPClientEvent *)self eventMetadata];
+    eventMetadata2 = [(USPSchemaUSPClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
+  loggingInitialized = [(USPSchemaUSPClientEvent *)self loggingInitialized];
 
-  if (v6)
+  if (loggingInitialized)
   {
-    v7 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
+    loggingInitialized2 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(USPSchemaUSPClientEvent *)self loggingReported];
+  loggingReported = [(USPSchemaUSPClientEvent *)self loggingReported];
 
-  if (v8)
+  if (loggingReported)
   {
-    v9 = [(USPSchemaUSPClientEvent *)self loggingReported];
+    loggingReported2 = [(USPSchemaUSPClientEvent *)self loggingReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(USPSchemaUSPClientEvent *)self measureStarted];
+  measureStarted = [(USPSchemaUSPClientEvent *)self measureStarted];
 
-  if (v10)
+  if (measureStarted)
   {
-    v11 = [(USPSchemaUSPClientEvent *)self measureStarted];
+    measureStarted2 = [(USPSchemaUSPClientEvent *)self measureStarted];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(USPSchemaUSPClientEvent *)self measureEnded];
+  measureEnded = [(USPSchemaUSPClientEvent *)self measureEnded];
 
-  if (v12)
+  if (measureEnded)
   {
-    v13 = [(USPSchemaUSPClientEvent *)self measureEnded];
+    measureEnded2 = [(USPSchemaUSPClientEvent *)self measureEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(USPSchemaUSPClientEvent *)self iterationStarted];
+  iterationStarted = [(USPSchemaUSPClientEvent *)self iterationStarted];
 
-  if (v14)
+  if (iterationStarted)
   {
-    v15 = [(USPSchemaUSPClientEvent *)self iterationStarted];
+    iterationStarted2 = [(USPSchemaUSPClientEvent *)self iterationStarted];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(USPSchemaUSPClientEvent *)self iterationEnded];
+  iterationEnded = [(USPSchemaUSPClientEvent *)self iterationEnded];
 
-  v17 = v19;
-  if (v16)
+  v17 = toCopy;
+  if (iterationEnded)
   {
-    v18 = [(USPSchemaUSPClientEvent *)self iterationEnded];
+    iterationEnded2 = [(USPSchemaUSPClientEvent *)self iterationEnded];
     PBDataWriterWriteSubmessage();
 
-    v17 = v19;
+    v17 = toCopy;
   }
 }
 
@@ -557,9 +557,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setIterationEnded:(id)a3
+- (void)setIterationEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   loggingInitialized = self->_loggingInitialized;
   self->_loggingInitialized = 0;
 
@@ -576,14 +576,14 @@ LABEL_39:
   self->_iterationStarted = 0;
 
   v10 = 7;
-  if (!v4)
+  if (!endedCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   iterationEnded = self->_iterationEnded;
-  self->_iterationEnded = v4;
+  self->_iterationEnded = endedCopy;
 }
 
 - (void)deleteIterationStarted
@@ -611,9 +611,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setIterationStarted:(id)a3
+- (void)setIterationStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   loggingInitialized = self->_loggingInitialized;
   self->_loggingInitialized = 0;
 
@@ -630,14 +630,14 @@ LABEL_39:
   self->_iterationEnded = 0;
 
   v10 = 6;
-  if (!v4)
+  if (!startedCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   iterationStarted = self->_iterationStarted;
-  self->_iterationStarted = v4;
+  self->_iterationStarted = startedCopy;
 }
 
 - (void)deleteMeasureEnded
@@ -665,9 +665,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setMeasureEnded:(id)a3
+- (void)setMeasureEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   loggingInitialized = self->_loggingInitialized;
   self->_loggingInitialized = 0;
 
@@ -684,14 +684,14 @@ LABEL_39:
   self->_iterationEnded = 0;
 
   v10 = 5;
-  if (!v4)
+  if (!endedCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   measureEnded = self->_measureEnded;
-  self->_measureEnded = v4;
+  self->_measureEnded = endedCopy;
 }
 
 - (void)deleteMeasureStarted
@@ -719,9 +719,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setMeasureStarted:(id)a3
+- (void)setMeasureStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   loggingInitialized = self->_loggingInitialized;
   self->_loggingInitialized = 0;
 
@@ -737,9 +737,9 @@ LABEL_39:
   iterationEnded = self->_iterationEnded;
   self->_iterationEnded = 0;
 
-  self->_whichEvent_Type = 4 * (v4 != 0);
+  self->_whichEvent_Type = 4 * (startedCopy != 0);
   measureStarted = self->_measureStarted;
-  self->_measureStarted = v4;
+  self->_measureStarted = startedCopy;
 }
 
 - (void)deleteLoggingReported
@@ -767,9 +767,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setLoggingReported:(id)a3
+- (void)setLoggingReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   loggingInitialized = self->_loggingInitialized;
   self->_loggingInitialized = 0;
 
@@ -786,14 +786,14 @@ LABEL_39:
   self->_iterationEnded = 0;
 
   v10 = 3;
-  if (!v4)
+  if (!reportedCopy)
   {
     v10 = 0;
   }
 
   self->_whichEvent_Type = v10;
   loggingReported = self->_loggingReported;
-  self->_loggingReported = v4;
+  self->_loggingReported = reportedCopy;
 }
 
 - (void)deleteLoggingInitialized
@@ -821,9 +821,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setLoggingInitialized:(id)a3
+- (void)setLoggingInitialized:(id)initialized
 {
-  v4 = a3;
+  initializedCopy = initialized;
   loggingReported = self->_loggingReported;
   self->_loggingReported = 0;
 
@@ -839,90 +839,90 @@ LABEL_39:
   iterationEnded = self->_iterationEnded;
   self->_iterationEnded = 0;
 
-  self->_whichEvent_Type = 2 * (v4 != 0);
+  self->_whichEvent_Type = 2 * (initializedCopy != 0);
   loggingInitialized = self->_loggingInitialized;
-  self->_loggingInitialized = v4;
+  self->_loggingInitialized = initializedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(USPSchemaUSPClientEvent *)self whichEvent_Type];
-  if (v2 - 2 > 5)
+  whichEvent_Type = [(USPSchemaUSPClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 5)
   {
     return @"com.apple.aiml.siri.usp.USPClientEvent";
   }
 
   else
   {
-    return off_1E78E8C60[v2 - 2];
+    return off_1E78E8C60[whichEvent_Type - 2];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v28.receiver = self;
   v28.super_class = USPSchemaUSPClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:v4];
-  v6 = [(USPSchemaUSPClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(USPSchemaUSPClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(USPSchemaUSPClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(USPSchemaUSPClientEvent *)self loggingInitialized];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  loggingInitialized = [(USPSchemaUSPClientEvent *)self loggingInitialized];
+  v10 = [loggingInitialized applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(USPSchemaUSPClientEvent *)self deleteLoggingInitialized];
   }
 
-  v12 = [(USPSchemaUSPClientEvent *)self loggingReported];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  loggingReported = [(USPSchemaUSPClientEvent *)self loggingReported];
+  v13 = [loggingReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(USPSchemaUSPClientEvent *)self deleteLoggingReported];
   }
 
-  v15 = [(USPSchemaUSPClientEvent *)self measureStarted];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  measureStarted = [(USPSchemaUSPClientEvent *)self measureStarted];
+  v16 = [measureStarted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(USPSchemaUSPClientEvent *)self deleteMeasureStarted];
   }
 
-  v18 = [(USPSchemaUSPClientEvent *)self measureEnded];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  measureEnded = [(USPSchemaUSPClientEvent *)self measureEnded];
+  v19 = [measureEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(USPSchemaUSPClientEvent *)self deleteMeasureEnded];
   }
 
-  v21 = [(USPSchemaUSPClientEvent *)self iterationStarted];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  iterationStarted = [(USPSchemaUSPClientEvent *)self iterationStarted];
+  v22 = [iterationStarted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(USPSchemaUSPClientEvent *)self deleteIterationStarted];
   }
 
-  v24 = [(USPSchemaUSPClientEvent *)self iterationEnded];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  iterationEnded = [(USPSchemaUSPClientEvent *)self iterationEnded];
+  v25 = [iterationEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(USPSchemaUSPClientEvent *)self deleteIterationEnded];
   }
@@ -940,65 +940,65 @@ LABEL_39:
 
 - (id)getComponentId
 {
-  v2 = [(USPSchemaUSPClientEvent *)self eventMetadata];
-  v3 = [v2 uspId];
+  eventMetadata = [(USPSchemaUSPClientEvent *)self eventMetadata];
+  uspId = [eventMetadata uspId];
 
-  if (!v3)
+  if (!uspId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [uspId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [uspId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = uspId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(USPSchemaUSPClientEvent *)self whichEvent_Type];
-  if (v3 - 2 > 5)
+  whichEvent_Type = [(USPSchemaUSPClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EB3E8[v3 - 2]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EB3E8[whichEvent_Type - 2]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 2 > 5)
+  if (tag - 2 > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EB418[a3 - 2];
+    return off_1E78EB418[tag - 2];
   }
 }
 

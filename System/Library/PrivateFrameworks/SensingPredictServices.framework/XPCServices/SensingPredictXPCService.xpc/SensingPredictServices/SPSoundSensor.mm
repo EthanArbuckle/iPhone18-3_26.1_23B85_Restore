@@ -1,14 +1,14 @@
 @interface SPSoundSensor
 + (id)sharedSoundSensorModule;
-- (BOOL)subscribeToNoiseLevelForClient:(id)a3 callback:(id)a4;
-- (BOOL)unsubscribeFromNoiseLevel:(id)a3;
-- (BOOL)unsubscribeFromSound:(id)a3;
+- (BOOL)subscribeToNoiseLevelForClient:(id)client callback:(id)callback;
+- (BOOL)unsubscribeFromNoiseLevel:(id)level;
+- (BOOL)unsubscribeFromSound:(id)sound;
 - (SPSoundSensor)init;
 - (void)_activate;
 - (void)_invalidate;
 - (void)activate;
 - (void)invalidate;
-- (void)setNoiseLevel:(float)a3;
+- (void)setNoiseLevel:(float)level;
 @end
 
 @implementation SPSoundSensor
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_100001660;
   block[3] = &unk_100010630;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000161E8 != -1)
   {
     dispatch_once(&qword_1000161E8, block);
@@ -123,9 +123,9 @@
   }
 }
 
-- (void)setNoiseLevel:(float)a3
+- (void)setNoiseLevel:(float)level
 {
-  if (a3 <= 90.0)
+  if (level <= 90.0)
   {
     v3 = 5;
   }
@@ -135,7 +135,7 @@
     v3 = 6;
   }
 
-  if (a3 > 75.0)
+  if (level > 75.0)
   {
     v4 = v3;
   }
@@ -145,7 +145,7 @@
     v4 = 4;
   }
 
-  if (a3 > 60.0)
+  if (level > 60.0)
   {
     v5 = v4;
   }
@@ -155,7 +155,7 @@
     v5 = 3;
   }
 
-  if (a3 > 45.0)
+  if (level > 45.0)
   {
     v6 = v5;
   }
@@ -165,7 +165,7 @@
     v6 = 2;
   }
 
-  if (a3 >= 30.0)
+  if (level >= 30.0)
   {
     v7 = v6;
   }
@@ -202,8 +202,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v15 + 1) + 8 * i) callback];
-          v14[2](v14, v7);
+          callback = [*(*(&v15 + 1) + 8 * i) callback];
+          callback[2](callback, v7);
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -214,16 +214,16 @@
   }
 }
 
-- (BOOL)subscribeToNoiseLevelForClient:(id)a3 callback:(id)a4
+- (BOOL)subscribeToNoiseLevelForClient:(id)client callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  clientCopy = client;
   v8 = objc_alloc_init(NoiseLevelSubscriber);
-  [(NoiseLevelSubscriber *)v8 setClient:v7];
+  [(NoiseLevelSubscriber *)v8 setClient:clientCopy];
 
-  [(NoiseLevelSubscriber *)v8 setCallback:v6];
+  [(NoiseLevelSubscriber *)v8 setCallback:callbackCopy];
   [(NSMutableArray *)self->_noiseLevelSubscribers addObject:v8];
-  v6[2](v6, self->_currentNoiseLevel);
+  callbackCopy[2](callbackCopy, self->_currentNoiseLevel);
 
   if (dword_100015D30 <= 50 && (dword_100015D30 != -1 || _LogCategory_Initialize()))
   {
@@ -233,9 +233,9 @@
   return 1;
 }
 
-- (BOOL)unsubscribeFromSound:(id)a3
+- (BOOL)unsubscribeFromSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -256,9 +256,9 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 client];
+        client = [v10 client];
 
-        if (v11 == v4)
+        if (client == soundCopy)
         {
           if (dword_100015D30 <= 50 && (dword_100015D30 != -1 || _LogCategory_Initialize()))
           {
@@ -293,9 +293,9 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)unsubscribeFromNoiseLevel:(id)a3
+- (BOOL)unsubscribeFromNoiseLevel:(id)level
 {
-  v4 = a3;
+  levelCopy = level;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -316,9 +316,9 @@ LABEL_17:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 client];
+        client = [v10 client];
 
-        if (v11 == v4)
+        if (client == levelCopy)
         {
           if (dword_100015D30 <= 50 && (dword_100015D30 != -1 || _LogCategory_Initialize()))
           {

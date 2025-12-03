@@ -1,28 +1,28 @@
 @interface IMDatabaseHandle
-+ (id)questionMarkListForCollection:(id)a3;
-- (BOOL)_aq_bindArguments:(id)a3 inStatement:(sqlite3_stmt *)a4;
++ (id)questionMarkListForCollection:(id)collection;
+- (BOOL)_aq_bindArguments:(id)arguments inStatement:(sqlite3_stmt *)statement;
 - (BOOL)passesIntegrityCheck;
-- (BOOL)runStatement:(id)a3 arguments:(id)a4;
-- (IMDatabaseHandle)initWithPath:(id)a3;
-- (id)_aq_cursorForQuery:(id)a3 withArguments:(id)a4;
-- (id)_aq_errorInFunction:(const char *)a3 result:(int64_t)a4;
-- (id)_stringRowsForQuery:(id)a3;
-- (id)arrayForQuery:(id)a3 arguments:(id)a4 rawRows:(BOOL)a5;
-- (id)columnInfoForTable:(id)a3;
-- (id)stringColumnDataForQuery:(id)a3 withArguments:(id)a4;
+- (BOOL)runStatement:(id)statement arguments:(id)arguments;
+- (IMDatabaseHandle)initWithPath:(id)path;
+- (id)_aq_cursorForQuery:(id)query withArguments:(id)arguments;
+- (id)_aq_errorInFunction:(const char *)function result:(int64_t)result;
+- (id)_stringRowsForQuery:(id)query;
+- (id)arrayForQuery:(id)query arguments:(id)arguments rawRows:(BOOL)rows;
+- (id)columnInfoForTable:(id)table;
+- (id)stringColumnDataForQuery:(id)query withArguments:(id)arguments;
 - (id)version;
 - (void)dealloc;
 @end
 
 @implementation IMDatabaseHandle
 
-- (IMDatabaseHandle)initWithPath:(id)a3
+- (IMDatabaseHandle)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = IMDatabaseHandle;
   v5 = [(IMDatabaseHandle *)&v12 init];
-  if (v5 && !sqlite3_open_v2([v4 fileSystemRepresentation], &v5->_databaseHandle, 6, 0))
+  if (v5 && !sqlite3_open_v2([pathCopy fileSystemRepresentation], &v5->_databaseHandle, 6, 0))
   {
     v7 = dispatch_queue_create("com.apple.itunesmobile.imdatabasehandle", 0);
     accessQueue = v5->_accessQueue;
@@ -49,8 +49,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_statementCache allValues];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allValues = [(NSMutableDictionary *)self->_statementCache allValues];
+  v4 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -62,7 +62,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v9 + 1) + 8 * v7) close];
@@ -70,7 +70,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -82,10 +82,10 @@
   [(IMDatabaseHandle *)&v8 dealloc];
 }
 
-- (id)columnInfoForTable:(id)a3
+- (id)columnInfoForTable:(id)table
 {
-  v4 = [NSString stringWithFormat:@"pragma table_info(%@)", a3];
-  v5 = [(IMDatabaseHandle *)self _stringRowsForQuery:v4];
+  table = [NSString stringWithFormat:@"pragma table_info(%@)", table];
+  v5 = [(IMDatabaseHandle *)self _stringRowsForQuery:table];
 
   return v5;
 }
@@ -98,10 +98,10 @@
   return v3;
 }
 
-- (BOOL)runStatement:(id)a3 arguments:(id)a4
+- (BOOL)runStatement:(id)statement arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  statementCopy = statement;
+  argumentsCopy = arguments;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -117,10 +117,10 @@
   block[1] = 3221225472;
   block[2] = sub_1198B4;
   block[3] = &unk_2CD610;
-  v9 = v6;
+  v9 = statementCopy;
   v15 = v9;
-  v16 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = argumentsCopy;
   v17 = v10;
   v18 = &v26;
   v19 = &v20;
@@ -139,10 +139,10 @@
   return v12;
 }
 
-- (id)arrayForQuery:(id)a3 arguments:(id)a4 rawRows:(BOOL)a5
+- (id)arrayForQuery:(id)query arguments:(id)arguments rawRows:(BOOL)rows
 {
-  v8 = a3;
-  v9 = a4;
+  queryCopy = query;
+  argumentsCopy = arguments;
   v10 = objc_opt_new();
   v32[0] = 0;
   v32[1] = v32;
@@ -160,11 +160,11 @@
   block[2] = sub_119CD4;
   block[3] = &unk_2CD638;
   block[4] = self;
-  v12 = v8;
+  v12 = queryCopy;
   v20 = v12;
-  v13 = v9;
+  v13 = argumentsCopy;
   v21 = v13;
-  v25 = a5;
+  rowsCopy = rows;
   v14 = v10;
   v22 = v14;
   v23 = v32;
@@ -185,10 +185,10 @@
   return v17;
 }
 
-- (id)stringColumnDataForQuery:(id)a3 withArguments:(id)a4
+- (id)stringColumnDataForQuery:(id)query withArguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  argumentsCopy = arguments;
   v44 = 0;
   v45 = &v44;
   v46 = 0x2020000000;
@@ -218,13 +218,13 @@
   v16 = 3221225472;
   v17 = sub_11A1AC;
   v18 = &unk_2CD660;
-  v9 = v6;
+  v9 = queryCopy;
   v19 = v9;
   v22 = &v44;
   v23 = v27;
-  v10 = v7;
+  v10 = argumentsCopy;
   v20 = v10;
-  v21 = self;
+  selfCopy = self;
   v24 = &v40;
   v25 = &v28;
   v26 = &v34;
@@ -257,9 +257,9 @@
   return v13;
 }
 
-+ (id)questionMarkListForCollection:(id)a3
++ (id)questionMarkListForCollection:(id)collection
 {
-  v3 = [a3 count];
+  v3 = [collection count];
   if (v3)
   {
     v4 = v3;
@@ -298,30 +298,30 @@
 - (BOOL)passesIntegrityCheck
 {
   v2 = [(IMDatabaseHandle *)self arrayForQuery:@"pragma quick_check(1)" arguments:0 rawRows:1];
-  v3 = [v2 firstObject];
-  v4 = [v3 firstObject];
-  v5 = [v4 isEqualToString:@"ok"];
+  firstObject = [v2 firstObject];
+  v3FirstObject = [firstObject firstObject];
+  v5 = [v3FirstObject isEqualToString:@"ok"];
 
   return v5;
 }
 
-- (id)_aq_cursorForQuery:(id)a3 withArguments:(id)a4
+- (id)_aq_cursorForQuery:(id)query withArguments:(id)arguments
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  argumentsCopy = arguments;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v8 = [(NSMutableDictionary *)self->_statementCache objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_statementCache objectForKey:queryCopy];
   if (v8)
   {
     v9 = v8;
     [(IMDatabaseCursor *)v8 reset];
-    [(IMDatabaseHandle *)self _aq_bindArguments:v7 inStatement:[(IMDatabaseCursor *)v9 statement]];
+    [(IMDatabaseHandle *)self _aq_bindArguments:argumentsCopy inStatement:[(IMDatabaseCursor *)v9 statement]];
   }
 
   else
   {
     v14 = 0;
-    pzTail = [v6 UTF8String];
+    pzTail = [queryCopy UTF8String];
     v10 = sqlite3_prepare_v2([(IMDatabaseHandle *)self _databaseHandle], pzTail, -1, &v14, &pzTail);
     if (v10)
     {
@@ -329,32 +329,32 @@
       objc_exception_throw(v13);
     }
 
-    [(IMDatabaseHandle *)self _aq_bindArguments:v7 inStatement:v14];
+    [(IMDatabaseHandle *)self _aq_bindArguments:argumentsCopy inStatement:v14];
     v11 = [IMDatabaseCursor alloc];
     v9 = [(IMDatabaseCursor *)v11 initWithStatement:v14];
-    [(NSMutableDictionary *)self->_statementCache setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_statementCache setObject:v9 forKey:queryCopy];
   }
 
   return v9;
 }
 
-- (id)_aq_errorInFunction:(const char *)a3 result:(int64_t)a4
+- (id)_aq_errorInFunction:(const char *)function result:(int64_t)result
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  v7 = [NSString stringWithFormat:@"%s: Could not run statement %s\n", a3, sqlite3_errmsg(self->_databaseHandle)];
+  v7 = [NSString stringWithFormat:@"%s: Could not run statement %s\n", function, sqlite3_errmsg(self->_databaseHandle)];
   fputs([v7 cStringUsingEncoding:1], __stdoutp);
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   v10 = [NSString stringWithFormat:@"%@StatementException", v9];
-  v11 = [NSString stringWithFormat:@"%s result:%ld", sqlite3_errmsg(self->_databaseHandle), a4];
-  v12 = [NSException exceptionWithName:v10 reason:v11 userInfo:0];
+  result = [NSString stringWithFormat:@"%s result:%ld", sqlite3_errmsg(self->_databaseHandle), result];
+  v12 = [NSException exceptionWithName:v10 reason:result userInfo:0];
 
   return v12;
 }
 
-- (id)_stringRowsForQuery:(id)a3
+- (id)_stringRowsForQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = +[NSMutableArray array];
   v24[0] = 0;
   v24[1] = v24;
@@ -373,7 +373,7 @@
   block[3] = &unk_2CD688;
   v16 = v24;
   block[4] = self;
-  v7 = v4;
+  v7 = queryCopy;
   v14 = v7;
   v8 = v5;
   v15 = v8;
@@ -394,19 +394,19 @@
   return v11;
 }
 
-- (BOOL)_aq_bindArguments:(id)a3 inStatement:(sqlite3_stmt *)a4
+- (BOOL)_aq_bindArguments:(id)arguments inStatement:(sqlite3_stmt *)statement
 {
-  v6 = a3;
+  argumentsCopy = arguments;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v7 = [v6 objectEnumerator];
-  v8 = 0;
+  objectEnumerator = [argumentsCopy objectEnumerator];
+  nextObject = 0;
   v9 = 1;
   do
   {
-    v10 = v8;
-    v8 = [v7 nextObject];
+    v10 = nextObject;
+    nextObject = [objectEnumerator nextObject];
 
-    if (!v8)
+    if (!nextObject)
     {
       break;
     }
@@ -414,7 +414,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = sqlite3_bind_text(a4, v9, [v8 cStringUsingEncoding:4], -1, 0);
+      v11 = sqlite3_bind_text(statement, v9, [nextObject cStringUsingEncoding:4], -1, 0);
     }
 
     else
@@ -422,8 +422,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v8 timeIntervalSinceReferenceDate];
-        v11 = sqlite3_bind_double(a4, v9, v12);
+        [nextObject timeIntervalSinceReferenceDate];
+        v11 = sqlite3_bind_double(statement, v9, v12);
       }
 
       else
@@ -431,25 +431,25 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v8;
-          v15 = [v14 objCType];
-          if (*v15 == 66 && !v15[1])
+          v14 = nextObject;
+          objCType = [v14 objCType];
+          if (*objCType == 66 && !objCType[1])
           {
-            v22 = sqlite3_bind_int(a4, v9, [v14 BOOLValue]);
+            v22 = sqlite3_bind_int(statement, v9, [v14 BOOLValue]);
           }
 
           else
           {
-            v16 = [v14 objCType];
-            if (*v16 == 105 && !v16[1] || (v17 = [v14 objCType], *v17 == 113) && !v17[1])
+            objCType2 = [v14 objCType];
+            if (*objCType2 == 105 && !objCType2[1] || (v17 = [v14 objCType], *v17 == 113) && !v17[1])
             {
-              v22 = sqlite3_bind_int64(a4, v9, [v14 longLongValue]);
+              v22 = sqlite3_bind_int64(statement, v9, [v14 longLongValue]);
             }
 
             else
             {
-              v18 = [v14 objCType];
-              if (*v18 == 102 && !v18[1])
+              objCType3 = [v14 objCType];
+              if (*objCType3 == 102 && !objCType3[1])
               {
                 [v14 floatValue];
                 v24 = v23;
@@ -457,8 +457,8 @@
 
               else
               {
-                v19 = [v14 objCType];
-                if (*v19 != 100 || v19[1])
+                objCType4 = [v14 objCType];
+                if (*objCType4 != 100 || objCType4[1])
                 {
                   v13 = 0;
 LABEL_33:
@@ -469,7 +469,7 @@ LABEL_33:
                 [v14 doubleValue];
               }
 
-              v22 = sqlite3_bind_double(a4, v9, v24);
+              v22 = sqlite3_bind_double(statement, v9, v24);
             }
           }
 
@@ -480,13 +480,13 @@ LABEL_33:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = sqlite3_bind_blob(a4, v9, [v8 bytes], objc_msgSend(v8, "length"), 0);
+          v11 = sqlite3_bind_blob(statement, v9, [nextObject bytes], objc_msgSend(nextObject, "length"), 0);
         }
 
         else
         {
           v20 = +[NSNull null];
-          v21 = [v8 isEqual:v20];
+          v21 = [nextObject isEqual:v20];
 
           if (!v21)
           {
@@ -494,7 +494,7 @@ LABEL_33:
             goto LABEL_8;
           }
 
-          v11 = sqlite3_bind_null(a4, v9);
+          v11 = sqlite3_bind_null(statement, v9);
         }
       }
     }
@@ -506,7 +506,7 @@ LABEL_8:
 
   while (!v13);
 
-  return v8 == 0;
+  return nextObject == 0;
 }
 
 @end

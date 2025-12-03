@@ -1,8 +1,8 @@
 @interface BYDaemonConnectionManager
 + (id)sharedInstance;
-- (BOOL)_connection:(id)a3 hasEntitlement:(id)a4;
-- (BOOL)_handleIncomingAutomatedDeviceEnrollmentConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_connection:(id)_connection hasEntitlement:(id)entitlement;
+- (BOOL)_handleIncomingAutomatedDeviceEnrollmentConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BYDaemonConnectionManager)init;
 - (void)_monitorLocalNotifications;
 - (void)_monitorXPCEvents;
@@ -114,11 +114,11 @@
   if ((+[BYManagedAppleIDBootstrap isMultiUser]& 1) != 0)
   {
     v2 = +[BYManagedAppleIDBootstrap sharedManager];
-    v3 = [v2 isLoginUser];
+    isLoginUser = [v2 isLoginUser];
 
     v4 = _BYLoggingFacility();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-    if (v3)
+    if (isLoginUser)
     {
       if (v5)
       {
@@ -211,13 +211,13 @@ LABEL_7:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 processIdentifier];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  [connectionCopy processIdentifier];
   v8 = BYProcessNameForPID();
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@[%u]", v8, [v7 processIdentifier]);
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@[%u]", v8, [connectionCopy processIdentifier]);
 
   v10 = _BYLoggingFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -227,82 +227,82 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "New connection from: %@", buf, 0xCu);
   }
 
-  if ([(BYDaemonConnectionManager *)self _connection:v7 hasEntitlement:@"com.apple.purplebuddy.budd.access"])
+  if ([(BYDaemonConnectionManager *)self _connection:connectionCopy hasEntitlement:@"com.apple.purplebuddy.budd.access"])
   {
-    if (self->_generalListener == v6)
+    if (self->_generalListener == listenerCopy)
     {
-      v12 = [[BYDaemonGeneralClientConnection alloc] initWithConnection:v7 flowSkipController:self->_flowSkipController];
+      v12 = [[BYDaemonGeneralClientConnection alloc] initWithConnection:connectionCopy flowSkipController:self->_flowSkipController];
       [(BYDaemonClientConnection *)v12 setContext:self->_context];
       goto LABEL_16;
     }
 
-    if (self->_cloudSyncListener == v6)
+    if (self->_cloudSyncListener == listenerCopy)
     {
-      v12 = [[BYDaemonCloudSyncClientConnection alloc] initWithConnection:v7];
+      v12 = [[BYDaemonCloudSyncClientConnection alloc] initWithConnection:connectionCopy];
       v15 = BYBuddyDaemonCloudSyncClient;
     }
 
     else
     {
-      if (self->_migrationSourceListener != v6)
+      if (self->_migrationSourceListener != listenerCopy)
       {
-        if (self->_proximitySourceListener == v6)
+        if (self->_proximitySourceListener == listenerCopy)
         {
-          v12 = [[BYDaemonProximitySourceClientConnection alloc] initWithConnection:v7 migrationController:self->_migrationSourceController];
-          v16 = +[BYBuddyDaemonProximitySourceClient proximitySourceClientInterface];
+          v12 = [[BYDaemonProximitySourceClientConnection alloc] initWithConnection:connectionCopy migrationController:self->_migrationSourceController];
+          clientInterface = +[BYBuddyDaemonProximitySourceClient proximitySourceClientInterface];
         }
 
         else
         {
-          if (self->_proximityTargetListener != v6)
+          if (self->_proximityTargetListener != listenerCopy)
           {
-            if (self->_proximityAutomatedDeviceEnrollmentTargetListener == v6)
+            if (self->_proximityAutomatedDeviceEnrollmentTargetListener == listenerCopy)
             {
-              v14 = [(BYDaemonConnectionManager *)self _handleIncomingAutomatedDeviceEnrollmentConnection:v7];
+              v14 = [(BYDaemonConnectionManager *)self _handleIncomingAutomatedDeviceEnrollmentConnection:connectionCopy];
               goto LABEL_24;
             }
 
-            if (self->_settingsManagerListener != v6)
+            if (self->_settingsManagerListener != listenerCopy)
             {
               v11 = 0;
               v12 = 0;
 LABEL_21:
-              [v7 setExportedObject:v12];
-              v17 = [objc_opt_class() daemonProtocolInterface];
-              [v7 setExportedInterface:v17];
+              [connectionCopy setExportedObject:v12];
+              daemonProtocolInterface = [objc_opt_class() daemonProtocolInterface];
+              [connectionCopy setExportedInterface:daemonProtocolInterface];
 
               if (v11)
               {
-                [v7 setRemoteObjectInterface:v11];
+                [connectionCopy setRemoteObjectInterface:v11];
               }
 
-              [(BYDaemonClientConnection *)v12 setConnection:v7];
-              [v7 resume];
+              [(BYDaemonClientConnection *)v12 setConnection:connectionCopy];
+              [connectionCopy resume];
 
               v14 = 1;
               goto LABEL_24;
             }
 
-            v12 = [(BYDaemonClientConnection *)[BYDaemonSettingsManagerClientConnection alloc] initWithConnection:v7];
+            v12 = [(BYDaemonClientConnection *)[BYDaemonSettingsManagerClientConnection alloc] initWithConnection:connectionCopy];
 LABEL_16:
             v11 = 0;
             goto LABEL_21;
           }
 
-          v12 = [[BYDaemonProximityTargetClientConnection alloc] initWithConnection:v7];
-          v16 = +[BYBuddyDaemonProximityTargetClient proximityTargetClientInterface];
+          v12 = [[BYDaemonProximityTargetClientConnection alloc] initWithConnection:connectionCopy];
+          clientInterface = +[BYBuddyDaemonProximityTargetClient proximityTargetClientInterface];
         }
 
 LABEL_20:
-        v11 = v16;
+        v11 = clientInterface;
         goto LABEL_21;
       }
 
-      v12 = [[BYDaemonMigrationSourceClientConnection alloc] initWithConnection:v7 migrationController:self->_migrationSourceController];
+      v12 = [[BYDaemonMigrationSourceClientConnection alloc] initWithConnection:connectionCopy migrationController:self->_migrationSourceController];
       v15 = BYDaemonMigrationSourceClientConnection;
     }
 
-    v16 = [(__objc2_class *)v15 clientInterface];
+    clientInterface = [(__objc2_class *)v15 clientInterface];
     goto LABEL_20;
   }
 
@@ -318,47 +318,47 @@ LABEL_24:
   return v14;
 }
 
-- (BOOL)_connection:(id)a3 hasEntitlement:(id)a4
+- (BOOL)_connection:(id)_connection hasEntitlement:(id)entitlement
 {
-  v4 = [a3 valueForEntitlement:a4];
+  v4 = [_connection valueForEntitlement:entitlement];
   v5 = (objc_opt_respondsToSelector() & 1) != 0 && ([v4 BOOLValue] & 1) != 0;
 
   return v5;
 }
 
-- (BOOL)_handleIncomingAutomatedDeviceEnrollmentConnection:(id)a3
+- (BOOL)_handleIncomingAutomatedDeviceEnrollmentConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(BYDaemonConnectionManager *)self currentProximityAutomatedDeviceEnrollmentConnection];
-  if (!v5 || (v6 = v5, [(BYDaemonConnectionManager *)self currentProximityAutomatedDeviceEnrollmentConnection], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == v4))
+  connectionCopy = connection;
+  currentProximityAutomatedDeviceEnrollmentConnection = [(BYDaemonConnectionManager *)self currentProximityAutomatedDeviceEnrollmentConnection];
+  if (!currentProximityAutomatedDeviceEnrollmentConnection || (v6 = currentProximityAutomatedDeviceEnrollmentConnection, [(BYDaemonConnectionManager *)self currentProximityAutomatedDeviceEnrollmentConnection], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == connectionCopy))
   {
     v8 = objc_alloc_init(DMTSharingBackedRemoteSetupBroadcastingProvider);
-    v10 = [[BYDaemonProximityAutomatedDeviceEnrollmentTargetClientConnection alloc] initWithConnection:v4 broadcastingProvider:v8];
-    [v4 setExportedObject:v10];
-    v11 = [objc_opt_class() daemonProtocolInterface];
-    [v4 setExportedInterface:v11];
+    v10 = [[BYDaemonProximityAutomatedDeviceEnrollmentTargetClientConnection alloc] initWithConnection:connectionCopy broadcastingProvider:v8];
+    [connectionCopy setExportedObject:v10];
+    daemonProtocolInterface = [objc_opt_class() daemonProtocolInterface];
+    [connectionCopy setExportedInterface:daemonProtocolInterface];
 
     v12 = +[BYBuddyDaemonProximityAutomatedDeviceEnrollmentTargetClient clientInterface];
-    [v4 setRemoteObjectInterface:v12];
+    [connectionCopy setRemoteObjectInterface:v12];
 
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, connectionCopy);
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000109EC;
     v20[3] = &unk_100020890;
     objc_copyWeak(&v21, &from);
     objc_copyWeak(&v22, &location);
-    [v4 setInvalidationHandler:v20];
+    [connectionCopy setInvalidationHandler:v20];
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_100010AE4;
     v17 = &unk_100020890;
     objc_copyWeak(&v18, &from);
     objc_copyWeak(&v19, &location);
-    [v4 setInterruptionHandler:&v14];
-    [(BYDaemonConnectionManager *)self setCurrentProximityAutomatedDeviceEnrollmentConnection:v4, v14, v15, v16, v17];
-    [v4 resume];
+    [connectionCopy setInterruptionHandler:&v14];
+    [(BYDaemonConnectionManager *)self setCurrentProximityAutomatedDeviceEnrollmentConnection:connectionCopy, v14, v15, v16, v17];
+    [connectionCopy resume];
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v22);

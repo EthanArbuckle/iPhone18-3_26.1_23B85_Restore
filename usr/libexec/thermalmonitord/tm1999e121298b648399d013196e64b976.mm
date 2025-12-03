@@ -1,11 +1,11 @@
 @interface tm1999e121298b648399d013196e64b976
-- (void)updateAllThermalLoad:(BOOL)a3;
+- (void)updateAllThermalLoad:(BOOL)load;
 - (void)updateCoreAnalyticsInfo;
 @end
 
 @implementation tm1999e121298b648399d013196e64b976
 
-- (void)updateAllThermalLoad:(BOOL)a3
+- (void)updateAllThermalLoad:(BOOL)load
 {
   v4 = qword_1000AB824;
   v5 = qword_1000AB834;

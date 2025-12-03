@@ -1,8 +1,8 @@
 @interface CKBusinessMacToolbarViewController
 - (BOOL)isChatBot;
 - (CGRect)_detailsPopoverFrame;
-- (CKBusinessMacToolbarViewController)initWithConversation:(id)a3 showingInStandAloneWindow:(BOOL)a4;
-- (void)_handleAddressBookPartialChange:(id)a3;
+- (CKBusinessMacToolbarViewController)initWithConversation:(id)conversation showingInStandAloneWindow:(BOOL)window;
+- (void)_handleAddressBookPartialChange:(id)change;
 - (void)_updateBannerImageData;
 - (void)_updateBrandColors;
 - (void)_updateFallbackTitle;
@@ -14,17 +14,17 @@
 
 @implementation CKBusinessMacToolbarViewController
 
-- (CKBusinessMacToolbarViewController)initWithConversation:(id)a3 showingInStandAloneWindow:(BOOL)a4
+- (CKBusinessMacToolbarViewController)initWithConversation:(id)conversation showingInStandAloneWindow:(BOOL)window
 {
-  v7 = a3;
+  conversationCopy = conversation;
   v11.receiver = self;
   v11.super_class = CKBusinessMacToolbarViewController;
   v8 = [(CKBusinessMacToolbarViewController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_handle, a3);
-    v9->_showingInStandAloneWindow = a4;
+    objc_storeStrong(&v8->_handle, conversation);
+    v9->_showingInStandAloneWindow = window;
   }
 
   return v9;
@@ -32,8 +32,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKBusinessMacToolbarViewController;
@@ -46,15 +46,15 @@
   v4 = [(CKBusinessMacToolbarView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(CKBusinessMacToolbarViewController *)self setToolbarView:v4];
 
-  v5 = [(CKBusinessMacToolbarViewController *)self showingInStandAloneWindow];
-  v6 = [(CKBusinessMacToolbarViewController *)self toolbarView];
-  [v6 setShowingInStandAloneWindow:v5];
+  showingInStandAloneWindow = [(CKBusinessMacToolbarViewController *)self showingInStandAloneWindow];
+  toolbarView = [(CKBusinessMacToolbarViewController *)self toolbarView];
+  [toolbarView setShowingInStandAloneWindow:showingInStandAloneWindow];
 
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 useMacToolbar];
+  useMacToolbar = [v7 useMacToolbar];
   v9 = +[CKUIBehavior sharedBehaviors];
   v10 = v9;
-  if (v8)
+  if (useMacToolbar)
   {
     [v9 macAppKitToolbarHeight];
   }
@@ -65,29 +65,29 @@
   }
 
   v12 = v11;
-  v13 = [(CKBusinessMacToolbarViewController *)self toolbarView];
-  [v13 setPreferredHeight:v12];
+  toolbarView2 = [(CKBusinessMacToolbarViewController *)self toolbarView];
+  [toolbarView2 setPreferredHeight:v12];
 
-  v14 = [(CKBusinessMacToolbarViewController *)self toolbarView];
-  [(CKBusinessMacToolbarViewController *)self setView:v14];
+  toolbarView3 = [(CKBusinessMacToolbarViewController *)self toolbarView];
+  [(CKBusinessMacToolbarViewController *)self setView:toolbarView3];
 
   v15 = objc_alloc(MEMORY[0x1E69DD250]);
   [(CKBusinessMacToolbarViewController *)self _detailsPopoverFrame];
   v16 = [v15 initWithFrame:?];
   [(CKBusinessMacToolbarViewController *)self setDetailsPopoverPresentationSourceView:v16];
 
-  v17 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
-  [v17 setBackgroundColor:0];
+  detailsPopoverPresentationSourceView = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
+  [detailsPopoverPresentationSourceView setBackgroundColor:0];
 
-  v18 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
-  [v18 setOpaque:0];
+  detailsPopoverPresentationSourceView2 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
+  [detailsPopoverPresentationSourceView2 setOpaque:0];
 
-  v19 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
-  [v19 setUserInteractionEnabled:0];
+  detailsPopoverPresentationSourceView3 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
+  [detailsPopoverPresentationSourceView3 setUserInteractionEnabled:0];
 
-  v20 = [(CKBusinessMacToolbarViewController *)self view];
-  v21 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
-  [v20 addSubview:v21];
+  view = [(CKBusinessMacToolbarViewController *)self view];
+  detailsPopoverPresentationSourceView4 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
+  [view addSubview:detailsPopoverPresentationSourceView4];
 
   [(CKBusinessMacToolbarViewController *)self _updateBannerImageData];
   [(CKBusinessMacToolbarViewController *)self _updateFallbackTitle];
@@ -100,8 +100,8 @@
   v4.receiver = self;
   v4.super_class = CKBusinessMacToolbarViewController;
   [(CKBusinessMacToolbarViewController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleAddressBookPartialChange_ name:*MEMORY[0x1E69A6838] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleAddressBookPartialChange_ name:*MEMORY[0x1E69A6838] object:0];
 }
 
 - (void)viewWillLayoutSubviews
@@ -114,8 +114,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
-  [v11 frame];
+  detailsPopoverPresentationSourceView = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
+  [detailsPopoverPresentationSourceView frame];
   v21.origin.x = v12;
   v21.origin.y = v13;
   v21.size.width = v14;
@@ -128,12 +128,12 @@
 
   if (!v16)
   {
-    v17 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
-    [v17 setFrame:{v4, v6, v8, v10}];
+    detailsPopoverPresentationSourceView2 = [(CKBusinessMacToolbarViewController *)self detailsPopoverPresentationSourceView];
+    [detailsPopoverPresentationSourceView2 setFrame:{v4, v6, v8, v10}];
   }
 
-  v18 = [(CKBusinessMacToolbarViewController *)self toolbarView];
-  [v18 setDetailsPopoverFrame:{v4, v6, v8, v10}];
+  toolbarView = [(CKBusinessMacToolbarViewController *)self toolbarView];
+  [toolbarView setDetailsPopoverFrame:{v4, v6, v8, v10}];
 }
 
 - (CGRect)_detailsPopoverFrame
@@ -143,16 +143,16 @@
   v5 = v4;
   v7 = v6;
 
-  v8 = [(CKBusinessMacToolbarViewController *)self view];
-  [v8 frame];
+  view = [(CKBusinessMacToolbarViewController *)self view];
+  [view frame];
   v10 = v9;
 
   v11 = +[CKUIBehavior sharedBehaviors];
   [v11 macAppKitToolbarHeight];
   v13 = v12;
 
-  v14 = [(CKBusinessMacToolbarViewController *)self view];
-  LODWORD(v11) = [v14 _shouldReverseLayoutDirection];
+  view2 = [(CKBusinessMacToolbarViewController *)self view];
+  LODWORD(v11) = [view2 _shouldReverseLayoutDirection];
 
   v15 = +[CKUIBehavior sharedBehaviors];
   [v15 macNSToolbarItemInterItemSpacing];
@@ -178,105 +178,105 @@
 {
   if (![(CKBusinessMacToolbarViewController *)self isChatBot])
   {
-    v3 = [(CKBusinessMacToolbarViewController *)self handle];
-    v4 = [v3 brandWideLogoImageData];
-    v5 = [v4 length];
-    v6 = [(CKBusinessMacToolbarViewController *)self handle];
-    v7 = v6;
+    handle = [(CKBusinessMacToolbarViewController *)self handle];
+    brandWideLogoImageData = [handle brandWideLogoImageData];
+    v5 = [brandWideLogoImageData length];
+    handle2 = [(CKBusinessMacToolbarViewController *)self handle];
+    v7 = handle2;
     if (v5)
     {
-      [v6 brandWideLogoImageData];
+      [handle2 brandWideLogoImageData];
     }
 
     else
     {
-      [v6 brandSquareLogoImageData];
+      [handle2 brandSquareLogoImageData];
     }
     v9 = ;
 
-    v8 = [(CKBusinessMacToolbarViewController *)self toolbarView];
-    [v8 setBannerImageData:v9];
+    toolbarView = [(CKBusinessMacToolbarViewController *)self toolbarView];
+    [toolbarView setBannerImageData:v9];
   }
 }
 
 - (void)_updateFallbackTitle
 {
-  v3 = [(CKBusinessMacToolbarViewController *)self isChatBot];
-  v4 = [(CKBusinessMacToolbarViewController *)self handle];
-  v5 = v4;
-  if (v3)
+  isChatBot = [(CKBusinessMacToolbarViewController *)self isChatBot];
+  handle = [(CKBusinessMacToolbarViewController *)self handle];
+  v5 = handle;
+  if (isChatBot)
   {
-    v6 = [v4 brand];
-    v7 = [v6 name];
-    v8 = [v7 length];
-    v9 = [(CKBusinessMacToolbarViewController *)self handle];
-    v10 = v9;
+    brand = [handle brand];
+    name = [brand name];
+    v8 = [name length];
+    handle2 = [(CKBusinessMacToolbarViewController *)self handle];
+    v10 = handle2;
     if (v8)
     {
-      v11 = [v9 brand];
-      v14 = [v11 name];
+      brand2 = [handle2 brand];
+      name2 = [brand2 name];
     }
 
     else
     {
-      v11 = [v9 name];
-      if ([v11 length])
+      brand2 = [handle2 name];
+      if ([brand2 length])
       {
-        v12 = [(CKBusinessMacToolbarViewController *)self handle];
-        [v12 name];
+        handle3 = [(CKBusinessMacToolbarViewController *)self handle];
+        [handle3 name];
       }
 
       else
       {
-        v12 = IMSharedUtilitiesFrameworkBundle();
-        [v12 localizedStringForKey:@"BUSINESS_NOTIFICATION_TITLE" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
+        handle3 = IMSharedUtilitiesFrameworkBundle();
+        [handle3 localizedStringForKey:@"BUSINESS_NOTIFICATION_TITLE" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
       }
-      v14 = ;
+      name2 = ;
     }
   }
 
   else
   {
-    v6 = [v4 name];
-    if ([v6 length])
+    brand = [handle name];
+    if ([brand length])
     {
-      v7 = [(CKBusinessMacToolbarViewController *)self handle];
-      [v7 name];
+      name = [(CKBusinessMacToolbarViewController *)self handle];
+      [name name];
     }
 
     else
     {
-      v7 = IMSharedUtilitiesFrameworkBundle();
-      [v7 localizedStringForKey:@"BUSINESS_NOTIFICATION_TITLE" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
+      name = IMSharedUtilitiesFrameworkBundle();
+      [name localizedStringForKey:@"BUSINESS_NOTIFICATION_TITLE" value:&stru_1F04268F8 table:@"IMSharedUtilities"];
     }
-    v14 = ;
+    name2 = ;
   }
 
-  v13 = [(CKBusinessMacToolbarViewController *)self toolbarView];
-  [v13 setFallbackTitle:v14];
+  toolbarView = [(CKBusinessMacToolbarViewController *)self toolbarView];
+  [toolbarView setFallbackTitle:name2];
 }
 
 - (void)_updateBrandColors
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 theme];
-  v5 = [(CKBusinessMacToolbarViewController *)self handle];
-  v6 = [v4 primaryBrandColorForBusinessHandle:v5];
-  v7 = [(CKBusinessMacToolbarViewController *)self toolbarView];
-  [v7 setBackgroundColor:v6];
+  theme = [v3 theme];
+  handle = [(CKBusinessMacToolbarViewController *)self handle];
+  v6 = [theme primaryBrandColorForBusinessHandle:handle];
+  toolbarView = [(CKBusinessMacToolbarViewController *)self toolbarView];
+  [toolbarView setBackgroundColor:v6];
 
-  v12 = [(CKBusinessMacToolbarViewController *)self toolbarView];
+  toolbarView2 = [(CKBusinessMacToolbarViewController *)self toolbarView];
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 theme];
-  v10 = [(CKBusinessMacToolbarViewController *)self handle];
-  v11 = [v9 secondaryBrandColorForBusinessHandle:v10];
-  [v12 setFallbackTitleColor:v11];
+  theme2 = [v8 theme];
+  handle2 = [(CKBusinessMacToolbarViewController *)self handle];
+  v11 = [theme2 secondaryBrandColorForBusinessHandle:handle2];
+  [toolbarView2 setFallbackTitleColor:v11];
 }
 
-- (void)_handleAddressBookPartialChange:(id)a3
+- (void)_handleAddressBookPartialChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A6858]];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A6858]];
 
   if ([v5 isEqualToString:*MEMORY[0x1E69A6850]])
   {
@@ -291,10 +291,10 @@
 
 - (BOOL)isChatBot
 {
-  v2 = [(CKBusinessMacToolbarViewController *)self handle];
-  v3 = [v2 isMapKitBusiness];
+  handle = [(CKBusinessMacToolbarViewController *)self handle];
+  isMapKitBusiness = [handle isMapKitBusiness];
 
-  return v3 ^ 1;
+  return isMapKitBusiness ^ 1;
 }
 
 @end

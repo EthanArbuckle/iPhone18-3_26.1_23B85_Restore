@@ -1,20 +1,20 @@
 @interface NTKAnalogSmokeFaceView
-+ (id)_nameForSmokeColor:(unint64_t)a3;
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
++ (id)_nameForSmokeColor:(unint64_t)color;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
 - (BOOL)_wantsStatusBarIconShadow;
 - (id)_complicationsCompanionForegroundColor;
-- (id)_swatchImageForColorOption:(id)a3 size:(CGSize)a4;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (id)_swatchImageForSmokeColor:(unint64_t)a3 andDialShape:(unint64_t)a4;
-- (id)imageForEditOption:(id)a3;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_swatchImageForColorOption:(id)option size:(CGSize)size;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (id)_swatchImageForSmokeColor:(unint64_t)color andDialShape:(unint64_t)shape;
+- (id)imageForEditOption:(id)option;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyVideoPlayerTransform;
-- (void)_configureTimeView:(id)a3;
+- (void)_configureTimeView:(id)view;
 - (void)_customizeVideoPlayerOnSetup;
 - (void)_handleEitherScreenWake;
 - (void)_updateDialSize;
 - (void)reloadDataSources;
-- (void)setCurrentDialShape:(unint64_t)a3;
+- (void)setCurrentDialShape:(unint64_t)shape;
 - (void)setupDataSources;
 @end
 
@@ -28,52 +28,52 @@
   return v3;
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v6.receiver = self;
   v6.super_class = NTKAnalogSmokeFaceView;
-  v3 = a3;
-  [(NTKAnalogSmokeFaceView *)&v6 _configureTimeView:v3];
+  viewCopy = view;
+  [(NTKAnalogSmokeFaceView *)&v6 _configureTimeView:viewCopy];
   v4 = [UIColor blackColor:v6.receiver];
-  [v3 setInlayColor:v4];
+  [viewCopy setInlayColor:v4];
 
-  v5 = [v3 secondHandView];
+  secondHandView = [viewCopy secondHandView];
 
   if (qword_CB50 != -1)
   {
     sub_3200();
   }
 
-  [v5 setColor:qword_CB48];
+  [secondHandView setColor:qword_CB48];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  optionCopy = option;
   v10.receiver = self;
   v10.super_class = NTKAnalogSmokeFaceView;
-  [(NTKAnalogSmokeFaceView *)&v10 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  if (a4 == 15)
+  [(NTKAnalogSmokeFaceView *)&v10 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  if (mode == 15)
   {
-    -[NTKAnalogSmokeFaceView setCurrentDialShape:](self, "setCurrentDialShape:", [v8 dialShape]);
-    v9 = [(NTKAnalogSmokeFaceView *)self delegate];
-    [v9 faceViewDidChangeWantsStatusBarIconShadow];
+    -[NTKAnalogSmokeFaceView setCurrentDialShape:](self, "setCurrentDialShape:", [optionCopy dialShape]);
+    delegate = [(NTKAnalogSmokeFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
   }
 
-  else if (a4 == 10)
+  else if (mode == 10)
   {
-    -[NTKAnalogSmokeFaceView setCurrentSmokeColor:](self, "setCurrentSmokeColor:", [v8 color]);
+    -[NTKAnalogSmokeFaceView setCurrentSmokeColor:](self, "setCurrentSmokeColor:", [optionCopy color]);
   }
 }
 
-- (void)setCurrentDialShape:(unint64_t)a3
+- (void)setCurrentDialShape:(unint64_t)shape
 {
-  if (self->_currentDialShape != a3)
+  if (self->_currentDialShape != shape)
   {
     self->_shouldApplyTransform = 1;
   }
 
-  self->_currentDialShape = a3;
+  self->_currentDialShape = shape;
   [(NTKAnalogSmokeFaceView *)self _applyVideoPlayerTransform];
   [(NTKAnalogSmokeFaceView *)self _updateDialSize];
 
@@ -92,8 +92,8 @@
 - (void)_customizeVideoPlayerOnSetup
 {
   [(NTKAnalogSmokeFaceView *)self setupDataSources];
-  v3 = [(NTKAnalogSmokeFaceView *)self videoPlayerView];
-  [v3 setPausedViewEnabled:0];
+  videoPlayerView = [(NTKAnalogSmokeFaceView *)self videoPlayerView];
+  [videoPlayerView setPausedViewEnabled:0];
 
   [(NTKAnalogSmokeFaceView *)self reloadDataSources];
 
@@ -132,17 +132,17 @@
   return self;
 }
 
-- (id)imageForEditOption:(id)a3
+- (id)imageForEditOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 color];
+    color = [optionCopy color];
     dataSources = self->_dataSources;
     v7 = [NSNumber numberWithUnsignedInteger:self->_currentDialShape];
     v8 = [(NSDictionary *)dataSources objectForKeyedSubscript:v7];
-    currentSmokeColor = v5;
+    currentSmokeColor = color;
 LABEL_5:
     v12 = [NSNumber numberWithUnsignedInteger:currentSmokeColor];
     v13 = [v8 objectForKeyedSubscript:v12];
@@ -153,9 +153,9 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v4 dialShape];
+    dialShape = [optionCopy dialShape];
     v11 = self->_dataSources;
-    v7 = [NSNumber numberWithUnsignedInteger:v10];
+    v7 = [NSNumber numberWithUnsignedInteger:dialShape];
     v8 = [(NSDictionary *)v11 objectForKeyedSubscript:v7];
     currentSmokeColor = self->_currentSmokeColor;
     goto LABEL_5;
@@ -163,9 +163,9 @@ LABEL_5:
 
   v13 = 0;
 LABEL_7:
-  v14 = [v13 posterImage];
+  posterImage = [v13 posterImage];
 
-  return v14;
+  return posterImage;
 }
 
 - (void)_applyVideoPlayerTransform
@@ -199,8 +199,8 @@ LABEL_7:
 
   else
   {
-    v5 = [(NTKAnalogSmokeFaceView *)self device];
-    [NTKAnalogUtilities dialSizeForDevice:v5];
+    device = [(NTKAnalogSmokeFaceView *)self device];
+    [NTKAnalogUtilities dialSizeForDevice:device];
     width = v6;
     height = v7;
   }
@@ -210,18 +210,18 @@ LABEL_7:
 
 - (void)setupDataSources
 {
-  v2 = [(NTKAnalogSmokeFaceView *)self device];
+  device = [(NTKAnalogSmokeFaceView *)self device];
   v69[0] = &off_8A78;
   v3 = sub_2238();
-  v4 = [NTKVideoPlayerListing listingForDevice:v2 withFilename:@"Smoke_Fullscreen_Spearmint_007" andColor:v3];
+  v4 = [NTKVideoPlayerListing listingForDevice:device withFilename:@"Smoke_Fullscreen_Spearmint_007" andColor:v3];
   v70[0] = v4;
   v69[1] = &off_8A90;
   v5 = sub_22C0();
-  v6 = [NTKVideoPlayerListing listingForDevice:v2 withFilename:@"Smoke_Fullscreen_Citrus_007" andColor:v5];
+  v6 = [NTKVideoPlayerListing listingForDevice:device withFilename:@"Smoke_Fullscreen_Citrus_007" andColor:v5];
   v70[1] = v6;
   v69[2] = &off_8AA8;
   v7 = sub_227C();
-  v8 = [NTKVideoPlayerListing listingForDevice:v2 withFilename:@"Smoke_Fullscreen_Neutral_007" andColor:v7];
+  v8 = [NTKVideoPlayerListing listingForDevice:device withFilename:@"Smoke_Fullscreen_Neutral_007" andColor:v7];
   v70[2] = v8;
   v9 = [NSDictionary dictionaryWithObjects:v70 forKeys:v69 count:3];
 
@@ -231,14 +231,14 @@ LABEL_7:
   v50 = [v9 objectForKeyedSubscript:&off_8A78];
   v66 = v50;
   v46 = [NSArray arrayWithObjects:&v66 count:1];
-  v44 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v2 withPosterImage:v48 andListings:v46];
+  v44 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:device withPosterImage:v48 andListings:v46];
   v68[0] = v44;
   v67[1] = &off_8A90;
   v40 = NTKImageNamedFromAssetsBundle();
   v42 = [v9 objectForKeyedSubscript:&off_8A90];
   v65 = v42;
   v11 = [NSArray arrayWithObjects:&v65 count:1];
-  v12 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v2 withPosterImage:v40 andListings:v11];
+  v12 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:device withPosterImage:v40 andListings:v11];
   v68[1] = v12;
   v67[2] = &off_8AA8;
   v13 = NTKImageNamedFromAssetsBundle();
@@ -246,26 +246,26 @@ LABEL_7:
   v14 = [v9 objectForKeyedSubscript:&off_8AA8];
   v64 = v14;
   v15 = [NSArray arrayWithObjects:&v64 count:1];
-  v16 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v2 withPosterImage:v13 andListings:v15];
+  v16 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:device withPosterImage:v13 andListings:v15];
   v68[2] = v16;
   v67[3] = &off_8AC0;
   v17 = NTKImageNamedFromAssetsBundle();
-  v18 = [v10 allValues];
-  v19 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v2 withPosterImage:v17 order:1 andListings:v18];
+  allValues = [v10 allValues];
+  v19 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:device withPosterImage:v17 order:1 andListings:allValues];
   v68[3] = v19;
   v52 = [NSDictionary dictionaryWithObjects:v68 forKeys:v67 count:4];
 
   v62[0] = &off_8A78;
   v20 = sub_2238();
-  v21 = [NTKVideoPlayerListing listingForDevice:v2 withFilename:@"Smoke_Circular_Spearmint_007" andColor:v20];
+  v21 = [NTKVideoPlayerListing listingForDevice:device withFilename:@"Smoke_Circular_Spearmint_007" andColor:v20];
   v63[0] = v21;
   v62[1] = &off_8A90;
   v22 = sub_22C0();
-  v23 = [NTKVideoPlayerListing listingForDevice:v2 withFilename:@"Smoke_Circular_Citrus_007" andColor:v22];
+  v23 = [NTKVideoPlayerListing listingForDevice:device withFilename:@"Smoke_Circular_Citrus_007" andColor:v22];
   v63[1] = v23;
   v62[2] = &off_8AA8;
   v24 = sub_227C();
-  v25 = [NTKVideoPlayerListing listingForDevice:v2 withFilename:@"Smoke_Circular_Neutral_007" andColor:v24];
+  v25 = [NTKVideoPlayerListing listingForDevice:device withFilename:@"Smoke_Circular_Neutral_007" andColor:v24];
   v63[2] = v25;
   v26 = [NSDictionary dictionaryWithObjects:v63 forKeys:v62 count:3];
 
@@ -274,14 +274,14 @@ LABEL_7:
   v51 = [v26 objectForKeyedSubscript:&off_8A78];
   v59 = v51;
   v47 = [NSArray arrayWithObjects:&v59 count:1];
-  v45 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v2 withPosterImage:v49 andListings:v47];
+  v45 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:device withPosterImage:v49 andListings:v47];
   v61[0] = v45;
   v60[1] = &off_8A90;
   v39 = NTKImageNamedFromAssetsBundle();
   v43 = [v26 objectForKeyedSubscript:&off_8A90];
   v58 = v43;
   v38 = [NSArray arrayWithObjects:&v58 count:1];
-  v27 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v2 withPosterImage:v39 andListings:v38];
+  v27 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:device withPosterImage:v39 andListings:v38];
   v61[1] = v27;
   v60[2] = &off_8AA8;
   v28 = NTKImageNamedFromAssetsBundle();
@@ -289,12 +289,12 @@ LABEL_7:
   v29 = [v26 objectForKeyedSubscript:&off_8AA8];
   v57 = v29;
   v30 = [NSArray arrayWithObjects:&v57 count:1];
-  v31 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v2 withPosterImage:v28 andListings:v30];
+  v31 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:device withPosterImage:v28 andListings:v30];
   v61[2] = v31;
   v60[3] = &off_8AC0;
   v32 = NTKImageNamedFromAssetsBundle();
-  v33 = [v26 allValues];
-  v34 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:v2 withPosterImage:v32 order:1 andListings:v33];
+  allValues2 = [v26 allValues];
+  v34 = [NTKVideoPlayerArrayDataSource dataSourceForDevice:device withPosterImage:v32 order:1 andListings:allValues2];
   v61[3] = v34;
   v35 = [NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:4];
 
@@ -317,9 +317,9 @@ LABEL_7:
   [(NTKAnalogSmokeFaceView *)self _setVideoPlayerDataSource:v6];
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_8C60;
   }
@@ -330,22 +330,22 @@ LABEL_7:
   }
 }
 
-+ (id)_nameForSmokeColor:(unint64_t)a3
++ (id)_nameForSmokeColor:(unint64_t)color
 {
-  if (a3 > 3)
+  if (color > 3)
   {
     return @"BlueGreen";
   }
 
   else
   {
-    return *(&off_8300 + a3);
+    return *(&off_8300 + color);
   }
 }
 
-- (id)_swatchImageForColorOption:(id)a3 size:(CGSize)a4
+- (id)_swatchImageForColorOption:(id)option size:(CGSize)size
 {
-  v4 = +[NTKAnalogSmokeFaceView _nameForSmokeColor:](NTKAnalogSmokeFaceView, "_nameForSmokeColor:", [a3 color]);
+  v4 = +[NTKAnalogSmokeFaceView _nameForSmokeColor:](NTKAnalogSmokeFaceView, "_nameForSmokeColor:", [option color]);
   v5 = [NSString stringWithFormat:@"Swatch-Smoke-Color-%@", v4];
 
   v6 = [NTKVaporFaceBundle imageWithName:v5];
@@ -353,39 +353,39 @@ LABEL_7:
   return v6;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  if (a4 == 15)
+  optionCopy = option;
+  if (mode == 15)
   {
-    v9 = [a5 objectForKeyedSubscript:&off_8AD8];
-    v10 = v8;
-    v11 = [v9 color];
-    v12 = [v10 dialShape];
+    v9 = [options objectForKeyedSubscript:&off_8AD8];
+    v10 = optionCopy;
+    color = [v9 color];
+    dialShape = [v10 dialShape];
 
-    v13 = [(NTKAnalogSmokeFaceView *)self _swatchImageForSmokeColor:v11 andDialShape:v12];
+    v13 = [(NTKAnalogSmokeFaceView *)self _swatchImageForSmokeColor:color andDialShape:dialShape];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = NTKAnalogSmokeFaceView;
-    v13 = [(NTKAnalogSmokeFaceView *)&v15 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:a5];
+    v13 = [(NTKAnalogSmokeFaceView *)&v15 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:options];
   }
 
   return v13;
 }
 
-- (id)_swatchImageForSmokeColor:(unint64_t)a3 andDialShape:(unint64_t)a4
+- (id)_swatchImageForSmokeColor:(unint64_t)color andDialShape:(unint64_t)shape
 {
-  v5 = [NTKAnalogSmokeFaceView _nameForSmokeColor:a3];
+  v5 = [NTKAnalogSmokeFaceView _nameForSmokeColor:color];
   v6 = @"Circular";
-  if (a4)
+  if (shape)
   {
     v6 = 0;
   }
 
-  if (a4 == 1)
+  if (shape == 1)
   {
     v6 = @"Fullscreen";
   }

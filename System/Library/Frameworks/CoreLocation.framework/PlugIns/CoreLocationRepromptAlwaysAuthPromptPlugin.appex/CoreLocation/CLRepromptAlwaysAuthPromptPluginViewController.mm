@@ -1,6 +1,6 @@
 @interface CLRepromptAlwaysAuthPromptPluginViewController
 - (id)allowedClassesForUnarchiving;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
 - (void)_addLocationsToMap;
 - (void)_centerAndZoomToFitRegion;
 - (void)_defineMapExtremities;
@@ -17,30 +17,30 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "#reprompt configureMapView<Start>", buf, 2u);
   }
 
-  v3 = [(CLAuthBaseViewController *)self locationDictionary];
-  v4 = [v3 valueForKey:@"Locations"];
+  locationDictionary = [(CLAuthBaseViewController *)self locationDictionary];
+  v4 = [locationDictionary valueForKey:@"Locations"];
   v5 = v4 == 0;
 
   if (!v5)
   {
-    v6 = [(CLAuthBaseViewController *)self locationDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"Locations"];
+    locationDictionary2 = [(CLAuthBaseViewController *)self locationDictionary];
+    v7 = [locationDictionary2 objectForKeyedSubscript:@"Locations"];
     [(CLRepromptAlwaysAuthPromptPluginViewController *)self setLocations:v7];
   }
 
-  v8 = [(CLAuthBaseViewController *)self locationDictionary];
-  v9 = [v8 valueForKey:@"Launches"];
+  locationDictionary3 = [(CLAuthBaseViewController *)self locationDictionary];
+  v9 = [locationDictionary3 valueForKey:@"Launches"];
   v10 = v9 == 0;
 
   if (!v10)
   {
-    v11 = [(CLAuthBaseViewController *)self locationDictionary];
-    v12 = [v11 objectForKeyedSubscript:@"Launches"];
+    locationDictionary4 = [(CLAuthBaseViewController *)self locationDictionary];
+    v12 = [locationDictionary4 objectForKeyedSubscript:@"Launches"];
     [(CLRepromptAlwaysAuthPromptPluginViewController *)self setLaunchLocations:v12];
   }
 
-  v13 = [(CLAuthBaseViewController *)self appName];
-  if (v13)
+  appName = [(CLAuthBaseViewController *)self appName];
+  if (appName)
   {
     if ([(NSArray *)self->_locations count])
     {
@@ -60,11 +60,11 @@
     v21.super_class = CLRepromptAlwaysAuthPromptPluginViewController;
     [(CLAuthBaseViewController *)&v21 configureMapView];
     v15 = [[MKPointOfInterestFilter alloc] initIncludingCategories:&__NSArray0__struct];
-    v16 = [(CLAuthBaseViewController *)self mapView];
-    [v16 setPointOfInterestFilter:v15];
+    mapView = [(CLAuthBaseViewController *)self mapView];
+    [mapView setPointOfInterestFilter:v15];
 
-    v17 = [(CLAuthBaseViewController *)self mapView];
-    [v17 setMapType:0];
+    mapView2 = [(CLAuthBaseViewController *)self mapView];
+    [mapView2 setMapType:0];
 
     [(CLRepromptAlwaysAuthPromptPluginViewController *)self _defineMapExtremities];
     [(CLRepromptAlwaysAuthPromptPluginViewController *)self _addLocationsToMap];
@@ -73,15 +73,15 @@
 LABEL_12:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
-    v18 = [(CLAuthBaseViewController *)self appName];
-    v19 = [(CLAuthBaseViewController *)self bundleId];
-    v20 = [(CLAuthBaseViewController *)self authMask];
+    appName2 = [(CLAuthBaseViewController *)self appName];
+    bundleId = [(CLAuthBaseViewController *)self bundleId];
+    authMask = [(CLAuthBaseViewController *)self authMask];
     *buf = 138412802;
-    v23 = v18;
+    v23 = appName2;
     v24 = 2112;
-    v25 = v19;
+    v25 = bundleId;
     v26 = 2048;
-    v27 = v20;
+    v27 = authMask;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "#reprompt configureMapView<End> Client: %@ BID: %@ AuthMask %lu", buf, 0x20u);
   }
 }
@@ -90,10 +90,10 @@ LABEL_12:
 {
   v6.receiver = self;
   v6.super_class = CLRepromptAlwaysAuthPromptPluginViewController;
-  v2 = [(CLAuthBaseViewController *)&v6 allowedClassesForUnarchiving];
+  allowedClassesForUnarchiving = [(CLAuthBaseViewController *)&v6 allowedClassesForUnarchiving];
   v7 = objc_opt_class();
   v3 = [NSArray arrayWithObjects:&v7 count:1];
-  v4 = [v2 setByAddingObjectsFromArray:v3];
+  v4 = [allowedClassesForUnarchiving setByAddingObjectsFromArray:v3];
 
   return v4;
 }
@@ -311,8 +311,8 @@ LABEL_12:
     operator delete(__p);
   }
 
-  v44 = [(CLAuthBaseViewController *)self mapView];
-  [v44 setCenterCoordinate:1 animated:{v41, v43}];
+  mapView = [(CLAuthBaseViewController *)self mapView];
+  [mapView setCenterCoordinate:1 animated:{v41, v43}];
 
   x = MKMapRectNull.origin.x;
   y = MKMapRectNull.origin.y;
@@ -364,14 +364,14 @@ LABEL_12:
   v63 = v62;
   [(CLRepromptAlwaysAuthPromptPluginViewController *)self latDelta];
   v65 = v64;
-  v66 = [(CLAuthBaseViewController *)self mapView];
-  v67 = [(CLAuthBaseViewController *)self mapView];
+  mapView2 = [(CLAuthBaseViewController *)self mapView];
+  mapView3 = [(CLAuthBaseViewController *)self mapView];
   v68 = fmax(v63, 0.072);
   v69 = fmax(v65, 0.072);
   v70 = v69 * 1.15;
   v71 = v68 * 1.15;
-  [v67 regionThatFits:{v41, v43, v70, v71}];
-  [v66 setRegion:1 animated:?];
+  [mapView3 regionThatFits:{v41, v43, v70, v71}];
+  [mapView2 setRegion:1 animated:?];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -444,13 +444,13 @@ LABEL_12:
         }
 
         v15 = *(*(&v37 + 1) + 8 * v14);
-        v16 = [(CLAuthBaseViewController *)self mapView];
+        mapView = [(CLAuthBaseViewController *)self mapView];
         [v15 latitude];
         v18 = v17;
         [v15 longitude];
         v20 = CLLocationCoordinate2DMake(v18, v19);
         v21 = [MKCircle circleWithCenterCoordinate:v20.latitude radius:v20.longitude, v9];
-        [v16 addOverlay:v21];
+        [mapView addOverlay:v21];
 
         v14 = v14 + 1;
       }
@@ -482,13 +482,13 @@ LABEL_12:
         }
 
         v26 = *(*(&v33 + 1) + 8 * v25);
-        v27 = [(CLAuthBaseViewController *)self mapView];
+        mapView2 = [(CLAuthBaseViewController *)self mapView];
         [v26 latitude];
         v29 = v28;
         [v26 longitude];
         v31 = CLLocationCoordinate2DMake(v29, v30);
         v32 = [MKCircle circleWithCenterCoordinate:v31.latitude radius:v31.longitude, v9];
-        [v27 addOverlay:v32];
+        [mapView2 addOverlay:v32];
 
         v25 = v25 + 1;
       }
@@ -507,20 +507,20 @@ LABEL_12:
   }
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a4;
+  overlayCopy = overlay;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[MKCircleRenderer alloc] initWithCircle:v5];
-    v7 = [(CLRepromptAlwaysAuthPromptPluginViewController *)self view];
-    v8 = [v7 tintColor];
-    [v6 setStrokeColor:v8];
+    v6 = [[MKCircleRenderer alloc] initWithCircle:overlayCopy];
+    view = [(CLRepromptAlwaysAuthPromptPluginViewController *)self view];
+    tintColor = [view tintColor];
+    [v6 setStrokeColor:tintColor];
 
-    v9 = [(CLRepromptAlwaysAuthPromptPluginViewController *)self view];
-    v10 = [v9 tintColor];
-    [v6 setFillColor:v10];
+    view2 = [(CLRepromptAlwaysAuthPromptPluginViewController *)self view];
+    tintColor2 = [view2 tintColor];
+    [v6 setFillColor:tintColor2];
   }
 
   else

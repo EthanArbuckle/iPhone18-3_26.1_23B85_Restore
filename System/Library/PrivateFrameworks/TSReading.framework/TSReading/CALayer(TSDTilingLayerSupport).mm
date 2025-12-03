@@ -9,18 +9,18 @@
 
 - (uint64_t)setNeedsLayoutForTilingLayers
 {
-  v3 = [a1 sublayers];
+  sublayers = [self sublayers];
 
-  return [v3 makeObjectsPerformSelector:a2];
+  return [sublayers makeObjectsPerformSelector:a2];
 }
 
 - (uint64_t)tilingSafeSetSublayers:()TSDTilingLayerSupport
 {
-  result = [a3 isEqualToArray:{objc_msgSend(a1, "sublayers")}];
+  result = [a3 isEqualToArray:{objc_msgSend(self, "sublayers")}];
   if ((result & 1) == 0)
   {
 
-    return [a1 setSublayers:a3];
+    return [self setSublayers:a3];
   }
 
   return result;
@@ -28,9 +28,9 @@
 
 - (uint64_t)setNeedsDisplayForDirtyTiles:()TSDTilingLayerSupport
 {
-  v4 = [a1 superlayer];
+  superlayer = [self superlayer];
 
-  return [v4 setNeedsDisplayForDirtyTiles:a3];
+  return [superlayer setNeedsDisplayForDirtyTiles:a3];
 }
 
 - (uint64_t)setTileContents:()TSDTilingLayerSupport
@@ -39,7 +39,7 @@
   isKindOfClass = objc_opt_isKindOfClass();
   if (!a3 || (isKindOfClass & 1) != 0)
   {
-    [objc_msgSend(objc_msgSend(a1 "sublayers")];
+    [objc_msgSend(objc_msgSend(self "sublayers")];
     if (a3)
     {
       v7 = [MEMORY[0x277CBEA60] arrayWithObject:a3];
@@ -50,18 +50,18 @@
       v7 = 0;
     }
 
-    [a1 setSublayers:v7];
-    [a1 setContents:0];
-    [a3 setEdgeAntialiasingMask:{objc_msgSend(a1, "edgeAntialiasingMask")}];
-    v8 = [a1 superlayer];
+    [self setSublayers:v7];
+    [self setContents:0];
+    [a3 setEdgeAntialiasingMask:{objc_msgSend(self, "edgeAntialiasingMask")}];
+    superlayer = [self superlayer];
 
-    return [a3 setDelegate:v8];
+    return [a3 setDelegate:superlayer];
   }
 
   else
   {
 
-    return [a1 setContents:a3];
+    return [self setContents:a3];
   }
 }
 

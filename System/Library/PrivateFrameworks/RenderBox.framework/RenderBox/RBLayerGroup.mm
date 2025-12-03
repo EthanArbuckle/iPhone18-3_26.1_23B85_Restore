@@ -2,33 +2,33 @@
 - (RBLayerGroup)init;
 - (id).cxx_construct;
 - (uint64_t)beginInstance;
-- (void)addHandler:(int)a3 forInstance:;
-- (void)endInstance:(os_unfair_lock_s *)a1;
+- (void)addHandler:(int)handler forInstance:;
+- (void)endInstance:(os_unfair_lock_s *)instance;
 @end
 
 @implementation RBLayerGroup
 
 - (uint64_t)beginInstance
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x1E6979518] valueForKey:*(a1 + 8)];
+  v2 = [MEMORY[0x1E6979518] valueForKey:*(self + 8)];
   if (v2)
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = atomic_fetch_add_explicit((a1 + 16), 1u, memory_order_relaxed) + 1;
-    [MEMORY[0x1E6979518] setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", v3), *(a1 + 8)}];
+    unsignedIntValue = atomic_fetch_add_explicit((self + 16), 1u, memory_order_relaxed) + 1;
+    [MEMORY[0x1E6979518] setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", unsignedIntValue), *(self + 8)}];
   }
 
-  os_unfair_lock_lock((a1 + 20));
-  v4 = (a1 + 24);
+  os_unfair_lock_lock((self + 20));
+  v4 = (self + 24);
   do
   {
     v4 = *v4;
@@ -38,18 +38,18 @@
     }
   }
 
-  while (*(v4 + 2) != v3);
+  while (*(v4 + 2) != unsignedIntValue);
   ++*(v4 + 3);
-  os_unfair_lock_unlock((a1 + 20));
-  return v3;
+  os_unfair_lock_unlock((self + 20));
+  return unsignedIntValue;
 }
 
-- (void)addHandler:(int)a3 forInstance:
+- (void)addHandler:(int)handler forInstance:
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock(a1 + 5);
-    v6 = a1 + 6;
+    os_unfair_lock_lock(self + 5);
+    v6 = self + 6;
     while (1)
     {
       v6 = *&v6->_os_unfair_lock_opaque;
@@ -58,7 +58,7 @@
         break;
       }
 
-      if (v6[2]._os_unfair_lock_opaque == a3)
+      if (v6[2]._os_unfair_lock_opaque == handler)
       {
         v7 = [a2 copy];
         v8 = *&v6[14]._os_unfair_lock_opaque;
@@ -82,7 +82,7 @@
       }
     }
 
-    os_unfair_lock_unlock(a1 + 5);
+    os_unfair_lock_unlock(self + 5);
   }
 }
 
@@ -176,12 +176,12 @@ LABEL_8:
   return self;
 }
 
-- (void)endInstance:(os_unfair_lock_s *)a1
+- (void)endInstance:(os_unfair_lock_s *)instance
 {
-  if (a1)
+  if (instance)
   {
-    os_unfair_lock_lock(a1 + 5);
-    v4 = a1 + 6;
+    os_unfair_lock_lock(instance + 5);
+    v4 = instance + 6;
     while (1)
     {
       v5 = v4;
@@ -198,7 +198,7 @@ LABEL_8:
         if (!v6)
         {
           *&v5->_os_unfair_lock_opaque = *&v4->_os_unfair_lock_opaque;
-          os_unfair_lock_unlock(a1 + 5);
+          os_unfair_lock_unlock(instance + 5);
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __28__RBLayerGroup_endInstance___block_invoke;
@@ -212,7 +212,7 @@ LABEL_8:
       }
     }
 
-    os_unfair_lock_unlock(a1 + 5);
+    os_unfair_lock_unlock(instance + 5);
   }
 }
 

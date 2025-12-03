@@ -1,20 +1,20 @@
 @interface DDSAssetDownloadAnalytic
-- (DDSAssetDownloadAnalytic)initWithAsset:(id)a3;
+- (DDSAssetDownloadAnalytic)initWithAsset:(id)asset;
 @end
 
 @implementation DDSAssetDownloadAnalytic
 
-- (DDSAssetDownloadAnalytic)initWithAsset:(id)a3
+- (DDSAssetDownloadAnalytic)initWithAsset:(id)asset
 {
-  v5 = a3;
-  v6 = [v5 uniqueIdentifier];
+  assetCopy = asset;
+  uniqueIdentifier = [assetCopy uniqueIdentifier];
   v9.receiver = self;
   v9.super_class = DDSAssetDownloadAnalytic;
-  v7 = [(DDSTimedAnalytic *)&v9 initWithIdentifier:v6];
+  v7 = [(DDSTimedAnalytic *)&v9 initWithIdentifier:uniqueIdentifier];
 
   if (v7)
   {
-    objc_storeStrong(&v7->_asset, a3);
+    objc_storeStrong(&v7->_asset, asset);
   }
 
   return v7;

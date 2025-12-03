@@ -1,13 +1,13 @@
 @interface _PFPodcastsPlaybackSettingsHelper
-+ (id)settingsFor:(id)a3 defaultsProvider:(id)a4;
-+ (void)saveSettings:(id)a3 podcastUUID:(id)a4 defaultsProvider:(id)a5;
++ (id)settingsFor:(id)for defaultsProvider:(id)provider;
++ (void)saveSettings:(id)settings podcastUUID:(id)d defaultsProvider:(id)provider;
 @end
 
 @implementation _PFPodcastsPlaybackSettingsHelper
 
-+ (id)settingsFor:(id)a3 defaultsProvider:(id)a4
++ (id)settingsFor:(id)for defaultsProvider:(id)provider
 {
-  if (a3)
+  if (for)
   {
     v5 = sub_1D917820C();
     v7 = v6;
@@ -22,7 +22,7 @@
   ObjCClassMetadata = swift_getObjCClassMetadata();
   swift_getObjectType();
   swift_unknownObjectRetain();
-  sub_1D90B4FFC(v5, v7, a4, ObjCClassMetadata);
+  sub_1D90B4FFC(v5, v7, provider, ObjCClassMetadata);
   swift_unknownObjectRelease();
 
   v9 = sub_1D917802C();
@@ -30,13 +30,13 @@
   return v9;
 }
 
-+ (void)saveSettings:(id)a3 podcastUUID:(id)a4 defaultsProvider:(id)a5
++ (void)saveSettings:(id)settings podcastUUID:(id)d defaultsProvider:(id)provider
 {
   v7 = sub_1D917805C();
-  if (a4)
+  if (d)
   {
     v8 = sub_1D917820C();
-    a4 = v9;
+    d = v9;
   }
 
   else
@@ -46,7 +46,7 @@
 
   swift_getObjCClassMetadata();
   swift_unknownObjectRetain();
-  static PodcastsPlaybackSettingsHelper.saveSettings(_:podcastUUID:defaultsProvider:)(v7, v8, a4, a5);
+  static PodcastsPlaybackSettingsHelper.saveSettings(_:podcastUUID:defaultsProvider:)(v7, v8, d, provider);
   swift_unknownObjectRelease();
 }
 

@@ -1,29 +1,29 @@
 @interface CRLMoviePosterImageGenerator
-- (CGImage)copyAssetCoverArtMetadataWithError:(id *)a3;
-- (CGImage)p_applyPreferredTransform:(CGAffineTransform *)a3 toImage:(CGImage *)a4;
-- (CGImage)p_copyCGImageUsingAssetImageGeneratorForTime:(id *)a3 error:(id *)a4;
-- (CGImage)p_copyCGImageUsingAssetReaderForTime:(id *)a3;
+- (CGImage)copyAssetCoverArtMetadataWithError:(id *)error;
+- (CGImage)p_applyPreferredTransform:(CGAffineTransform *)transform toImage:(CGImage *)image;
+- (CGImage)p_copyCGImageUsingAssetImageGeneratorForTime:(id *)time error:(id *)error;
+- (CGImage)p_copyCGImageUsingAssetReaderForTime:(id *)time;
 - (CGSize)maximumSize;
 - (CGSize)p_scaledSizeForRenderSize:(CGSize)result;
-- (CRLMoviePosterImageGenerator)initWithAsset:(id)a3;
-- (id)p_coverArtDataWith:(id)a3;
+- (CRLMoviePosterImageGenerator)initWithAsset:(id)asset;
+- (id)p_coverArtDataWith:(id)with;
 - (void)dealloc;
-- (void)generateCGImageAsynchronouslyForTime:(id *)a3 completionHandler:(id)a4;
+- (void)generateCGImageAsynchronouslyForTime:(id *)time completionHandler:(id)handler;
 @end
 
 @implementation CRLMoviePosterImageGenerator
 
-- (CRLMoviePosterImageGenerator)initWithAsset:(id)a3
+- (CRLMoviePosterImageGenerator)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v17.receiver = self;
   v17.super_class = CRLMoviePosterImageGenerator;
   v6 = [(CRLMoviePosterImageGenerator *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
-    v8 = [[AVAssetImageGenerator alloc] initWithAsset:v5];
+    objc_storeStrong(&v6->_asset, asset);
+    v8 = [[AVAssetImageGenerator alloc] initWithAsset:assetCopy];
     assetImageGenerator = v7->_assetImageGenerator;
     v7->_assetImageGenerator = v8;
 
@@ -88,7 +88,7 @@
   return result;
 }
 
-- (CGImage)p_copyCGImageUsingAssetReaderForTime:(id *)a3
+- (CGImage)p_copyCGImageUsingAssetReaderForTime:(id *)time
 {
   v5 = objc_autoreleasePoolPush();
   v6 = [AVAssetReader alloc];
@@ -98,8 +98,8 @@
   v9 = v30;
   if (v8)
   {
-    *&start.start.value = *&a3->var0;
-    start.start.epoch = a3->var3;
+    *&start.start.value = *&time->var0;
+    start.start.epoch = time->var3;
     duration = kCMTimePositiveInfinity;
     CMTimeRangeMake(&v29, &start.start, &duration);
     start = v29;
@@ -126,12 +126,12 @@
       v17 = [[AVAssetReaderTrackOutput alloc] initWithTrack:v11 outputSettings:v16];
       [v8 addOutput:v17];
       [v8 startReading];
-      v18 = [v17 copyNextSampleBuffer];
-      if (v18)
+      copyNextSampleBuffer = [v17 copyNextSampleBuffer];
+      if (copyNextSampleBuffer)
       {
-        v19 = v18;
+        v19 = copyNextSampleBuffer;
         v20 = atomic_load(&self->_isCancelled);
-        if (!v20 && CMSampleBufferGetImageBuffer(v18))
+        if (!v20 && CMSampleBufferGetImageBuffer(copyNextSampleBuffer))
         {
           atomic_load(&self->_isCancelled);
         }
@@ -166,8 +166,8 @@
 
         v23 = [NSString stringWithUTF8String:"[CRLMoviePosterImageGenerator p_copyCGImageUsingAssetReaderForTime:]"];
         v24 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLMoviePosterImageGenerator.m"];
-        v25 = [v8 error];
-        [CRLAssertionHandler handleFailureInFunction:v23 file:v24 lineNumber:111 isFatal:0 description:"Failed to copy buffer when generating poster frame using AVAssetReader (error: %@). Falling back to AVAssetImageGenerator.", v25];
+        error = [v8 error];
+        [CRLAssertionHandler handleFailureInFunction:v23 file:v24 lineNumber:111 isFatal:0 description:"Failed to copy buffer when generating poster frame using AVAssetReader (error: %@). Falling back to AVAssetImageGenerator.", error];
       }
 
       [v8 cancelReading];
@@ -178,26 +178,26 @@
   return 0;
 }
 
-- (CGImage)p_applyPreferredTransform:(CGAffineTransform *)a3 toImage:(CGImage *)a4
+- (CGImage)p_applyPreferredTransform:(CGAffineTransform *)transform toImage:(CGImage *)image
 {
-  CGImageGetWidth(a4);
-  CGImageGetHeight(a4);
+  CGImageGetWidth(image);
+  CGImageGetHeight(image);
   v6 = sub_10011ECB4();
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = *&a3->c;
-  *&v25.a = *&a3->a;
+  v14 = *&transform->c;
+  *&v25.a = *&transform->a;
   *&v25.c = v14;
-  *&v25.tx = *&a3->tx;
+  *&v25.tx = *&transform->tx;
   *&v14 = v9;
   v26 = CGRectApplyAffineTransform(*&v6, &v25);
   width = v26.size.width;
   height = v26.size.height;
-  BitsPerComponent = CGImageGetBitsPerComponent(a4);
-  ColorSpace = CGImageGetColorSpace(a4);
-  BitmapInfo = CGImageGetBitmapInfo(a4);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
+  ColorSpace = CGImageGetColorSpace(image);
+  BitmapInfo = CGImageGetBitmapInfo(image);
   v20 = CGBitmapContextCreate(0, width, height, BitsPerComponent, (width * BitsPerComponent), ColorSpace, BitmapInfo);
   if (!v20)
   {
@@ -207,22 +207,22 @@
   v21 = v20;
   CGContextScaleCTM(v20, -1.0, -1.0);
   CGContextTranslateCTM(v21, -width, -height);
-  v22 = *&a3->c;
-  *&v25.a = *&a3->a;
+  v22 = *&transform->c;
+  *&v25.a = *&transform->a;
   *&v25.c = v22;
-  *&v25.tx = *&a3->tx;
+  *&v25.tx = *&transform->tx;
   CGContextConcatCTM(v21, &v25);
   v27.origin.x = v7;
   v27.origin.y = v9;
   v27.size.width = v11;
   v27.size.height = v13;
-  CGContextDrawImage(v21, v27, a4);
+  CGContextDrawImage(v21, v27, image);
   Image = CGBitmapContextCreateImage(v21);
   CGContextRelease(v21);
   return Image;
 }
 
-- (CGImage)p_copyCGImageUsingAssetImageGeneratorForTime:(id *)a3 error:(id *)a4
+- (CGImage)p_copyCGImageUsingAssetImageGeneratorForTime:(id *)time error:(id *)error
 {
   assetImageGenerator = self->_assetImageGenerator;
   if (!assetImageGenerator)
@@ -258,42 +258,42 @@
 
   [(AVAssetImageGenerator *)assetImageGenerator setMaximumSize:self->_maximumSize.width, self->_maximumSize.height];
   v11 = self->_assetImageGenerator;
-  v13 = *&a3->var0;
-  var3 = a3->var3;
-  return [(AVAssetImageGenerator *)v11 copyCGImageAtTime:&v13 actualTime:0 error:a4];
+  v13 = *&time->var0;
+  var3 = time->var3;
+  return [(AVAssetImageGenerator *)v11 copyCGImageAtTime:&v13 actualTime:0 error:error];
 }
 
-- (id)p_coverArtDataWith:(id)a3
+- (id)p_coverArtDataWith:(id)with
 {
-  v3 = a3;
-  v4 = [AVMetadataItem metadataItemsFromArray:v3 filteredByIdentifier:AVMetadataCommonIdentifierArtwork];
-  v5 = [v4 firstObject];
+  withCopy = with;
+  v4 = [AVMetadataItem metadataItemsFromArray:withCopy filteredByIdentifier:AVMetadataCommonIdentifierArtwork];
+  firstObject = [v4 firstObject];
 
-  if (!v5)
+  if (!firstObject)
   {
-    v6 = [AVMetadataItem metadataItemsFromArray:v3 filteredByIdentifier:@"caaf/aart"];
-    v5 = [v6 firstObject];
+    v6 = [AVMetadataItem metadataItemsFromArray:withCopy filteredByIdentifier:@"caaf/aart"];
+    firstObject = [v6 firstObject];
   }
 
-  v7 = [v5 dataValue];
+  dataValue = [firstObject dataValue];
 
-  return v7;
+  return dataValue;
 }
 
-- (CGImage)copyAssetCoverArtMetadataWithError:(id *)a3
+- (CGImage)copyAssetCoverArtMetadataWithError:(id *)error
 {
-  v5 = [(AVAsset *)self->_asset commonMetadata];
-  v6 = [(CRLMoviePosterImageGenerator *)self p_coverArtDataWith:v5];
+  commonMetadata = [(AVAsset *)self->_asset commonMetadata];
+  v6 = [(CRLMoviePosterImageGenerator *)self p_coverArtDataWith:commonMetadata];
   if (v6 && ([CRLImage imageWithData:v6], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v9 = CGImageRetain([v7 CGImage]);
   }
 
-  else if (a3)
+  else if (error)
   {
     [NSError errorWithDomain:AVFoundationErrorDomain code:-11832 userInfo:0];
-    *a3 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -304,10 +304,10 @@
   return v9;
 }
 
-- (void)generateCGImageAsynchronouslyForTime:(id *)a3 completionHandler:(id)a4
+- (void)generateCGImageAsynchronouslyForTime:(id *)time completionHandler:(id)handler
 {
-  v6 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -343,7 +343,7 @@
     v12 = 0;
     v11 = [(CRLMoviePosterImageGenerator *)self copyAssetCoverArtMetadataWithError:&v12];
     v9 = v12;
-    v6[2](v6, v11, v11 == 0, v9);
+    handlerCopy[2](handlerCopy, v11, v11 == 0, v9);
 LABEL_14:
 
     goto LABEL_15;
@@ -355,9 +355,9 @@ LABEL_14:
   block[2] = sub_10010FA80;
   block[3] = &unk_10183D380;
   block[4] = self;
-  v15 = *&a3->var0;
-  var3 = a3->var3;
-  v14 = v6;
+  v15 = *&time->var0;
+  var3 = time->var3;
+  v14 = handlerCopy;
   dispatch_async(v7, block);
 
 LABEL_15:

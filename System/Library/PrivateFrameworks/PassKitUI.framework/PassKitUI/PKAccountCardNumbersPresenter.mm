@@ -1,35 +1,35 @@
 @interface PKAccountCardNumbersPresenter
-+ (void)authAndDecryptWithVirtualCard:(id)a3 completion:(id)a4;
++ (void)authAndDecryptWithVirtualCard:(id)card completion:(id)completion;
 - (BOOL)_supportsManualEntry;
-- (PKAccountCardNumbersPresenter)initWithVirtualCard:(id)a3 physicalCard:(id)a4 account:(id)a5 peerPaymentAccount:(id)a6 pass:(id)a7 context:(int64_t)a8;
-- (void)_prepareAuthForVirtualCard:(id)a3 completion:(id)a4;
-- (void)presentCardNumbersWithCompletion:(id)a3;
+- (PKAccountCardNumbersPresenter)initWithVirtualCard:(id)card physicalCard:(id)physicalCard account:(id)account peerPaymentAccount:(id)paymentAccount pass:(id)pass context:(int64_t)context;
+- (void)_prepareAuthForVirtualCard:(id)card completion:(id)completion;
+- (void)presentCardNumbersWithCompletion:(id)completion;
 @end
 
 @implementation PKAccountCardNumbersPresenter
 
-- (PKAccountCardNumbersPresenter)initWithVirtualCard:(id)a3 physicalCard:(id)a4 account:(id)a5 peerPaymentAccount:(id)a6 pass:(id)a7 context:(int64_t)a8
+- (PKAccountCardNumbersPresenter)initWithVirtualCard:(id)card physicalCard:(id)physicalCard account:(id)account peerPaymentAccount:(id)paymentAccount pass:(id)pass context:(int64_t)context
 {
-  v24 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  cardCopy = card;
+  physicalCardCopy = physicalCard;
+  accountCopy = account;
+  paymentAccountCopy = paymentAccount;
+  passCopy = pass;
   v25.receiver = self;
   v25.super_class = PKAccountCardNumbersPresenter;
   v18 = [(PKAccountCardNumbersPresenter *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_virtualCard, a3);
-    objc_storeStrong(&v19->_physicalCard, a4);
-    objc_storeStrong(&v19->_account, a5);
-    objc_storeStrong(&v19->_peerPaymentAccount, a6);
-    objc_storeStrong(&v19->_pass, a7);
-    v19->_context = a8;
-    v20 = [MEMORY[0x1E69B8400] sharedInstance];
+    objc_storeStrong(&v18->_virtualCard, card);
+    objc_storeStrong(&v19->_physicalCard, physicalCard);
+    objc_storeStrong(&v19->_account, account);
+    objc_storeStrong(&v19->_peerPaymentAccount, paymentAccount);
+    objc_storeStrong(&v19->_pass, pass);
+    v19->_context = context;
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v19->_accountService;
-    v19->_accountService = v20;
+    v19->_accountService = mEMORY[0x1E69B8400];
 
     v19->_isLoadingVirtualCard = 0;
   }
@@ -37,10 +37,10 @@
   return v19;
 }
 
-- (void)presentCardNumbersWithCompletion:(id)a3
+- (void)presentCardNumbersWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     peerPaymentAccount = self->_peerPaymentAccount;
     if (peerPaymentAccount)
@@ -53,7 +53,7 @@
       v6 = 0;
     }
 
-    v7 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
     if (PKVirtualCardEnabledWithWebService() && ([(PKAccount *)self->_account supportsShowVirtualCard]& 1) == 0 && [(PKPaymentPass *)self->_pass hasActiveVirtualCard])
     {
 
@@ -67,7 +67,7 @@
         v29[3] = &unk_1E8019BD0;
         objc_copyWeak(&v31, location);
         v29[4] = self;
-        v30 = v4;
+        v30 = completionCopy;
         [PKCardNumbersAuthentication authenticationContextLocationBased:1 featureIdentifier:1 completion:v29];
 
         v8 = &v31;
@@ -92,7 +92,7 @@ LABEL_20:
       objc_copyWeak(&v27, location);
       v25[4] = self;
       v28 = v6;
-      v26 = v4;
+      v26 = completionCopy;
       [PKCardNumbersAuthentication authenticationContextLocationBased:1 featureIdentifier:1 completion:v25];
 
       v8 = &v27;
@@ -116,14 +116,14 @@ LABEL_20:
 
           objc_initWeak(location, self);
           accountService = self->_accountService;
-          v14 = [(PKAccount *)self->_account accountIdentifier];
+          accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __66__PKAccountCardNumbersPresenter_presentCardNumbersWithCompletion___block_invoke_25;
           v19[3] = &unk_1E8019C70;
           objc_copyWeak(&v21, location);
-          v20 = v4;
-          [(PKAccountService *)accountService createVirtualCard:1 forAccountIdentifier:v14 completion:v19];
+          v20 = completionCopy;
+          [(PKAccountService *)accountService createVirtualCard:1 forAccountIdentifier:accountIdentifier completion:v19];
 
           v8 = &v21;
           goto LABEL_20;
@@ -134,7 +134,7 @@ LABEL_20:
           if (PKUIOnlyDemoModeEnabled())
           {
             self->_isLoadingVirtualCard = 0;
-            [(PKAccountCardNumbersPresenter *)self _prepareAuthForVirtualCard:self->_virtualCard completion:v4];
+            [(PKAccountCardNumbersPresenter *)self _prepareAuthForVirtualCard:self->_virtualCard completion:completionCopy];
             goto LABEL_24;
           }
 
@@ -147,21 +147,21 @@ LABEL_20:
 
           objc_initWeak(location, self);
           v16 = self->_accountService;
-          v17 = [(PKVirtualCard *)self->_virtualCard identifier];
-          v18 = [(PKAccount *)self->_account accountIdentifier];
+          identifier = [(PKVirtualCard *)self->_virtualCard identifier];
+          accountIdentifier2 = [(PKAccount *)self->_account accountIdentifier];
           v22[0] = MEMORY[0x1E69E9820];
           v22[1] = 3221225472;
           v22[2] = __66__PKAccountCardNumbersPresenter_presentCardNumbersWithCompletion___block_invoke_21;
           v22[3] = &unk_1E8019C70;
           objc_copyWeak(&v24, location);
-          v23 = v4;
-          [(PKAccountService *)v16 performVirtualCardAction:1 forVirtualCardIdentifier:v17 forAccountIdentifier:v18 completion:v22];
+          v23 = completionCopy;
+          [(PKAccountService *)v16 performVirtualCardAction:1 forVirtualCardIdentifier:identifier forAccountIdentifier:accountIdentifier2 completion:v22];
 
           v8 = &v24;
           goto LABEL_20;
         }
 
-        [(PKAccountCardNumbersPresenter *)self _prepareAuthForVirtualCard:self->_virtualCard completion:v4];
+        [(PKAccountCardNumbersPresenter *)self _prepareAuthForVirtualCard:self->_virtualCard completion:completionCopy];
         self->_isLoadingVirtualCard = 0;
       }
     }
@@ -176,7 +176,7 @@ LABEL_20:
       }
 
       v11 = [[PKAccountCardNumbersViewController alloc] initWithPass:self->_pass accountService:self->_accountService account:self->_account physicalCard:self->_physicalCard context:self->_context];
-      (*(v4 + 2))(v4, v11);
+      (*(completionCopy + 2))(completionCopy, v11);
     }
   }
 
@@ -424,10 +424,10 @@ void __66__PKAccountCardNumbersPresenter_presentCardNumbersWithCompletion___bloc
 LABEL_8:
 }
 
-- (void)_prepareAuthForVirtualCard:(id)a3 completion:(id)a4
+- (void)_prepareAuthForVirtualCard:(id)card completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  cardCopy = card;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -442,9 +442,9 @@ LABEL_8:
   v12[2] = __71__PKAccountCardNumbersPresenter__prepareAuthForVirtualCard_completion___block_invoke;
   v12[3] = &unk_1E8019C98;
   objc_copyWeak(&v15, buf);
-  v10 = v6;
+  v10 = cardCopy;
   v13 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v14 = v11;
   [v9 authAndDecryptWithVirtualCard:v10 completion:v12];
 
@@ -513,18 +513,18 @@ void __71__PKAccountCardNumbersPresenter__prepareAuthForVirtualCard_completion__
   (*(*(a1 + 72) + 16))();
 }
 
-+ (void)authAndDecryptWithVirtualCard:(id)a3 completion:(id)a4
++ (void)authAndDecryptWithVirtualCard:(id)card completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  cardCopy = card;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __74__PKAccountCardNumbersPresenter_authAndDecryptWithVirtualCard_completion___block_invoke;
     v7[3] = &unk_1E8019CE8;
-    v8 = v5;
-    v9 = v6;
+    v8 = cardCopy;
+    v9 = completionCopy;
     [PKCardNumbersAuthentication authenticationContextLocationBased:1 featureIdentifier:2 completion:v7];
   }
 }
@@ -611,13 +611,13 @@ void __74__PKAccountCardNumbersPresenter_authAndDecryptWithVirtualCard_completio
 
 - (BOOL)_supportsManualEntry
 {
-  v3 = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
-  v4 = [v3 paymentType];
+  devicePrimaryPaymentApplication = [(PKPaymentPass *)self->_pass devicePrimaryPaymentApplication];
+  paymentType = [devicePrimaryPaymentApplication paymentType];
 
   v5 = PKFPANAutoFillEnabled();
   if (v5)
   {
-    LOBYTE(v5) = !self->_account && !self->_peerPaymentAccount && (v4 - 1) < 2;
+    LOBYTE(v5) = !self->_account && !self->_peerPaymentAccount && (paymentType - 1) < 2;
   }
 
   return v5;

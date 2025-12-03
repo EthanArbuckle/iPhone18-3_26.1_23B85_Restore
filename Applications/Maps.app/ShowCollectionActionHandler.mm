@@ -1,21 +1,21 @@
 @interface ShowCollectionActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ShowCollectionActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v9 = a3;
-  v5 = a4;
+  actionCopy = action;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v9 collectionStorage];
-    v7 = [CollectionHandler collectionWithStorage:v6];
+    collectionStorage = [actionCopy collectionStorage];
+    v7 = [CollectionHandler collectionWithStorage:collectionStorage];
 
-    v8 = [v5 appCoordinator];
-    [v8 openCollection:v7];
+    appCoordinator = [contextCopy appCoordinator];
+    [appCoordinator openCollection:v7];
   }
 }
 

@@ -1,22 +1,22 @@
 @interface TSPMutableCryptoInfoInternal
-- (TSPMutableCryptoInfoInternal)initWithCryptoKey:(id)a3 preferredBlockSize:(unint64_t)a4 blockInfos:(id)a5 decodedLength:(unint64_t)a6;
-- (void)addBlockInfo:(id)a3;
-- (void)incrementDecodedLengthBy:(unint64_t)a3;
+- (TSPMutableCryptoInfoInternal)initWithCryptoKey:(id)key preferredBlockSize:(unint64_t)size blockInfos:(id)infos decodedLength:(unint64_t)length;
+- (void)addBlockInfo:(id)info;
+- (void)incrementDecodedLengthBy:(unint64_t)by;
 - (void)reset;
 @end
 
 @implementation TSPMutableCryptoInfoInternal
 
-- (TSPMutableCryptoInfoInternal)initWithCryptoKey:(id)a3 preferredBlockSize:(unint64_t)a4 blockInfos:(id)a5 decodedLength:(unint64_t)a6
+- (TSPMutableCryptoInfoInternal)initWithCryptoKey:(id)key preferredBlockSize:(unint64_t)size blockInfos:(id)infos decodedLength:(unint64_t)length
 {
-  v10 = a3;
-  v11 = a5;
+  keyCopy = key;
+  infosCopy = infos;
   v15.receiver = self;
   v15.super_class = TSPMutableCryptoInfoInternal;
-  v12 = [(TSPCryptoInfoInternal *)&v15 initWithCryptoKey:v10 preferredBlockSize:a4 blockInfos:0 decodedLength:a6];
+  v12 = [(TSPCryptoInfoInternal *)&v15 initWithCryptoKey:keyCopy preferredBlockSize:size blockInfos:0 decodedLength:length];
   if (v12)
   {
-    v13 = [v11 mutableCopy];
+    v13 = [infosCopy mutableCopy];
     [(TSPCryptoInfoInternal *)v12 setBlockInfos:v13];
   }
 
@@ -30,9 +30,9 @@
   [(TSPCryptoInfoInternal *)self setDecodedLength:0];
 }
 
-- (void)addBlockInfo:(id)a3
+- (void)addBlockInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(TSPCryptoInfoInternal *)self preferredBlockSize]== -1)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
@@ -55,20 +55,20 @@
 
   else
   {
-    v5 = [(TSPCryptoInfoInternal *)self blockInfos];
-    if (!v5)
+    blockInfos = [(TSPCryptoInfoInternal *)self blockInfos];
+    if (!blockInfos)
     {
-      v5 = objc_alloc_init(NSMutableArray);
-      [(TSPCryptoInfoInternal *)self setBlockInfos:v5];
+      blockInfos = objc_alloc_init(NSMutableArray);
+      [(TSPCryptoInfoInternal *)self setBlockInfos:blockInfos];
     }
 
-    [v5 addObject:v4];
+    [blockInfos addObject:infoCopy];
   }
 }
 
-- (void)incrementDecodedLengthBy:(unint64_t)a3
+- (void)incrementDecodedLengthBy:(unint64_t)by
 {
-  v4 = [(TSPCryptoInfoInternal *)self decodedLength]+ a3;
+  v4 = [(TSPCryptoInfoInternal *)self decodedLength]+ by;
 
   [(TSPCryptoInfoInternal *)self setDecodedLength:v4];
 }

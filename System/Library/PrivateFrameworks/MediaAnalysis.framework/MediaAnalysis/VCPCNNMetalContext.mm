@@ -1,6 +1,6 @@
 @interface VCPCNNMetalContext
 + (id)sharedCommandQueue;
-- (id)initNewContext:(BOOL)a3;
+- (id)initNewContext:(BOOL)context;
 - (int)execute;
 @end
 
@@ -22,29 +22,29 @@ id __40__VCPCNNMetalContext_sharedCommandQueue__block_invoke()
   return v1;
 }
 
-- (id)initNewContext:(BOOL)a3
+- (id)initNewContext:(BOOL)context
 {
-  v3 = a3;
+  contextCopy = context;
   v20.receiver = self;
   v20.super_class = VCPCNNMetalContext;
   v4 = [(VCPCNNMetalContext *)&v20 init];
   if (v4 && SocType() != 246)
   {
-    if (v3)
+    if (contextCopy)
     {
-      v5 = [objc_opt_class() sharedCommandQueue];
+      sharedCommandQueue = [objc_opt_class() sharedCommandQueue];
       commandQueue = v4->_commandQueue;
-      v4->_commandQueue = v5;
+      v4->_commandQueue = sharedCommandQueue;
 
-      v7 = [(MTLCommandQueue *)v4->_commandQueue device];
+      device = [(MTLCommandQueue *)v4->_commandQueue device];
       device = v4->_device;
-      v4->_device = v7;
+      v4->_device = device;
 
       v9 = v4->_commandQueue;
       objc_sync_enter(v9);
-      v10 = [(MTLCommandQueue *)v4->_commandQueue commandBuffer];
+      commandBuffer = [(MTLCommandQueue *)v4->_commandQueue commandBuffer];
       commandBuffer = v4->_commandBuffer;
-      v4->_commandBuffer = v10;
+      v4->_commandBuffer = commandBuffer;
 
       objc_sync_exit(v9);
     }
@@ -55,13 +55,13 @@ id __40__VCPCNNMetalContext_sharedCommandQueue__block_invoke()
       v13 = v4->_device;
       v4->_device = v12;
 
-      v14 = [(MTLDevice *)v4->_device newCommandQueue];
+      newCommandQueue = [(MTLDevice *)v4->_device newCommandQueue];
       v15 = v4->_commandQueue;
-      v4->_commandQueue = v14;
+      v4->_commandQueue = newCommandQueue;
 
-      v16 = [(MTLCommandQueue *)v4->_commandQueue commandBuffer];
+      commandBuffer2 = [(MTLCommandQueue *)v4->_commandQueue commandBuffer];
       v9 = v4->_commandBuffer;
-      v4->_commandBuffer = v16;
+      v4->_commandBuffer = commandBuffer2;
     }
 
     if (v4->_commandBuffer)
@@ -99,9 +99,9 @@ id __40__VCPCNNMetalContext_sharedCommandQueue__block_invoke()
   [(MTLCommandBuffer *)self->_commandBuffer waitUntilCompleted];
   v3 = self->_commandQueue;
   objc_sync_enter(v3);
-  v4 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
   commandBuffer = self->_commandBuffer;
-  self->_commandBuffer = v4;
+  self->_commandBuffer = commandBuffer;
 
   if (self->_commandBuffer)
   {

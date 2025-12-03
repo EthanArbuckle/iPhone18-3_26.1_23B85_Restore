@@ -1,162 +1,162 @@
 @interface THDocumentRoot
-+ (void)p_populateParagraphStyle:(id)a3;
++ (void)p_populateParagraphStyle:(id)style;
 - (BOOL)isPortraitOnlyBook;
 - (BOOL)loadEquationFontsIfNeeded;
-- (CGImage)thumbnailImageForAbsolutePageIndex:(unint64_t)a3;
+- (CGImage)thumbnailImageForAbsolutePageIndex:(unint64_t)index;
 - (EQKitEnvironment)equationEnvironment;
 - (NSDictionary)bookMetadata;
 - (NSString)docVersion;
 - (NSString)storeItemID;
 - (NSString)yearFromReleaseDate;
 - (NSURL)modelURL;
-- (THDocumentRoot)initWithContext:(id)a3;
-- (_NSRange)storageRangeForAnnotation:(id)a3;
+- (THDocumentRoot)initWithContext:(id)context;
+- (_NSRange)storageRangeForAnnotation:(id)annotation;
 - (id)activityItemProvider;
-- (id)activityItemProviderWithAnnotation:(id)a3;
-- (id)activityItemProviderWithAnnotations:(id)a3;
-- (id)anchorForCFIString:(id)a3 coarsenIfNeeded:(BOOL)a4;
-- (id)anchorForNthInstance:(unint64_t)a3 ofSearchString:(id)a4 afterCFIString:(id)a5 coarsenIfNeeded:(BOOL)a6;
-- (id)annotationsUpdatedForSharing:(id)a3;
-- (id)contentNodeForCfi:(id)a3 error:(id *)a4;
-- (id)firstLessonOfChapter:(id)a3;
+- (id)activityItemProviderWithAnnotation:(id)annotation;
+- (id)activityItemProviderWithAnnotations:(id)annotations;
+- (id)anchorForCFIString:(id)string coarsenIfNeeded:(BOOL)needed;
+- (id)anchorForNthInstance:(unint64_t)instance ofSearchString:(id)string afterCFIString:(id)iString coarsenIfNeeded:(BOOL)needed;
+- (id)annotationsUpdatedForSharing:(id)sharing;
+- (id)contentNodeForCfi:(id)cfi error:(id *)error;
+- (id)firstLessonOfChapter:(id)chapter;
 - (id)kpfDocumentBaseResourcePath;
-- (id)linkForNavigationUnitIndex:(unint64_t)a3;
-- (id)modelStorageAnchorForAnnotation:(id)a3;
-- (id)modelStorageAnchorForCfi:(id)a3 error:(id *)a4;
+- (id)linkForNavigationUnitIndex:(unint64_t)index;
+- (id)modelStorageAnchorForAnnotation:(id)annotation;
+- (id)modelStorageAnchorForCfi:(id)cfi error:(id *)error;
 - (id)newTemporaryReviewDataMOC;
 - (id)newTemporateReviewResponseMOC;
 - (id)p_activityItemPropertySource;
-- (id)p_fetchResponseForQuestionID:(id)a3 moc:(id)a4;
-- (id)p_fetchReviewWidgetDataForWidgetID:(id)a3 moc:(id)a4;
-- (id)p_responseEntityWithMOC:(id)a3;
-- (id)p_reviewEntityWithMOC:(id)a3;
-- (id)pageNumberStringForAnnotation:(id)a3;
-- (id)pageNumberStringForLocation:(id)a3;
-- (id)responseForQuestionID:(id)a3 temporaryMOC:(id)a4;
-- (id)reviewWidgetDataForWidgetID:(id)a3 temporaryMOC:(id)a4;
-- (id)sectionNumberStringForLocation:(id)a3;
-- (id)sectionTitleStringForAnnotation:(id)a3;
-- (id)sectionTitleStringForLocation:(id)a3;
-- (id)storageForAnnotation:(id)a3;
-- (id)storageForCFI:(id)a3;
-- (id)storageWithHighlightTextForAnnotation:(id)a3;
+- (id)p_fetchResponseForQuestionID:(id)d moc:(id)moc;
+- (id)p_fetchReviewWidgetDataForWidgetID:(id)d moc:(id)moc;
+- (id)p_responseEntityWithMOC:(id)c;
+- (id)p_reviewEntityWithMOC:(id)c;
+- (id)pageNumberStringForAnnotation:(id)annotation;
+- (id)pageNumberStringForLocation:(id)location;
+- (id)responseForQuestionID:(id)d temporaryMOC:(id)c;
+- (id)reviewWidgetDataForWidgetID:(id)d temporaryMOC:(id)c;
+- (id)sectionNumberStringForLocation:(id)location;
+- (id)sectionTitleStringForAnnotation:(id)annotation;
+- (id)sectionTitleStringForLocation:(id)location;
+- (id)storageForAnnotation:(id)annotation;
+- (id)storageForCFI:(id)i;
+- (id)storageWithHighlightTextForAnnotation:(id)annotation;
 - (id)viewController;
-- (unint64_t)absolutePageIndexForAnnotation:(id)a3;
-- (unint64_t)absolutePageIndexForCFI:(id)a3;
-- (unint64_t)absolutePageIndexForLocation:(id)a3;
-- (unint64_t)absolutePageIndexForStorageAnchor:(id)a3;
+- (unint64_t)absolutePageIndexForAnnotation:(id)annotation;
+- (unint64_t)absolutePageIndexForCFI:(id)i;
+- (unint64_t)absolutePageIndexForLocation:(id)location;
+- (unint64_t)absolutePageIndexForStorageAnchor:(id)anchor;
 - (void)commitUserDataChanges;
 - (void)dealloc;
 - (void)documentDidLoad;
-- (void)mutateResponse:(id)a3 block:(id)a4;
-- (void)mutateReviewWidgetData:(id)a3 block:(id)a4;
-- (void)p_setupAnnotationControllerForBook:(id)a3;
-- (void)removeResponse:(id)a3;
-- (void)removeResponseForQuestionID:(id)a3;
-- (void)removeReviewWidgetData:(id)a3;
-- (void)removeReviewWidgetDataForWidgetID:(id)a3;
-- (void)setAnnotationSearchIndex:(id)a3;
-- (void)setApplePubDocId:(id)a3;
-- (void)setGlossary:(id)a3;
-- (void)setProperties:(id)a3;
-- (void)setRootNode:(id)a3;
-- (void)setSearchIndex:(id)a3;
-- (void)setSearchModel:(id)a3;
-- (void)setTocModel:(id)a3;
-- (void)setZipPackage:(id)a3;
+- (void)mutateResponse:(id)response block:(id)block;
+- (void)mutateReviewWidgetData:(id)data block:(id)block;
+- (void)p_setupAnnotationControllerForBook:(id)book;
+- (void)removeResponse:(id)response;
+- (void)removeResponseForQuestionID:(id)d;
+- (void)removeReviewWidgetData:(id)data;
+- (void)removeReviewWidgetDataForWidgetID:(id)d;
+- (void)setAnnotationSearchIndex:(id)index;
+- (void)setApplePubDocId:(id)id;
+- (void)setGlossary:(id)glossary;
+- (void)setProperties:(id)properties;
+- (void)setRootNode:(id)node;
+- (void)setSearchIndex:(id)index;
+- (void)setSearchModel:(id)model;
+- (void)setTocModel:(id)model;
+- (void)setZipPackage:(id)package;
 - (void)teardown;
 - (void)willClose;
 @end
 
 @implementation THDocumentRoot
 
-- (void)setRootNode:(id)a3
+- (void)setRootNode:(id)node
 {
   [(THDocumentRoot *)self willModify];
-  v5 = a3;
+  nodeCopy = node;
 
-  self->mRootNode = a3;
+  self->mRootNode = node;
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
   [(THDocumentRoot *)self willModify];
-  v5 = a3;
+  propertiesCopy = properties;
 
-  self->mProperties = a3;
+  self->mProperties = properties;
 }
 
-- (void)setApplePubDocId:(id)a3
+- (void)setApplePubDocId:(id)id
 {
   [(THDocumentRoot *)self willModify];
-  v5 = [a3 copy];
+  v5 = [id copy];
 
   self->mApplePubDocId = v5;
 }
 
-- (void)setTocModel:(id)a3
+- (void)setTocModel:(id)model
 {
   [(THDocumentRoot *)self willModify];
-  v5 = a3;
+  modelCopy = model;
 
-  self->mTOCModel = a3;
+  self->mTOCModel = model;
 }
 
-- (void)setSearchModel:(id)a3
+- (void)setSearchModel:(id)model
 {
   [(THDocumentRoot *)self willModify];
-  v5 = a3;
+  modelCopy = model;
 
-  self->mSearchModel = a3;
+  self->mSearchModel = model;
 }
 
-- (void)setZipPackage:(id)a3
+- (void)setZipPackage:(id)package
 {
   [(THDocumentRoot *)self willModify];
-  v5 = a3;
+  packageCopy = package;
 
-  self->mZipPackage = a3;
+  self->mZipPackage = package;
 }
 
-- (void)setGlossary:(id)a3
+- (void)setGlossary:(id)glossary
 {
   [(THDocumentRoot *)self willModify];
-  v5 = a3;
+  glossaryCopy = glossary;
 
-  self->mGlossary = a3;
+  self->mGlossary = glossary;
 }
 
-- (void)setSearchIndex:(id)a3
+- (void)setSearchIndex:(id)index
 {
   [(THDocumentRoot *)self willModify];
-  v5 = a3;
+  indexCopy = index;
 
-  self->mSearchIndex = a3;
+  self->mSearchIndex = index;
 }
 
-- (void)setAnnotationSearchIndex:(id)a3
+- (void)setAnnotationSearchIndex:(id)index
 {
   [(THDocumentRoot *)self willModify];
-  v5 = a3;
+  indexCopy = index;
 
-  self->mAnnotationSearchIndex = a3;
+  self->mAnnotationSearchIndex = index;
 }
 
-+ (void)p_populateParagraphStyle:(id)a3
++ (void)p_populateParagraphStyle:(id)style
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_20170;
   v3[3] = &unk_45B500;
-  v3[4] = a3;
+  v3[4] = style;
   [+[TSWPParagraphStyle properties](TSWPParagraphStyle "properties")];
 }
 
-- (THDocumentRoot)initWithContext:(id)a3
+- (THDocumentRoot)initWithContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = THDocumentRoot;
-  v3 = [(THDocumentRoot *)&v8 initWithContext:a3];
+  v3 = [(THDocumentRoot *)&v8 initWithContext:context];
   if (v3)
   {
     v3->mStylesheet = [[TSSStylesheet alloc] initWithContext:-[THDocumentRoot context](v3 canCullStyles:{"context"), 0}];
@@ -254,10 +254,10 @@
   self->mClosing = 1;
   [(THAnnotationStorageController *)[(THDocumentRoot *)self annotationController] teardown];
   [(THDocumentRoot *)self setAnnotationController:0];
-  v3 = [(THDocumentRoot *)self searchController];
-  if (![(THSearchController *)v3 indexLoaded])
+  searchController = [(THDocumentRoot *)self searchController];
+  if (![(THSearchController *)searchController indexLoaded])
   {
-    [(THSearchController *)v3 cancelLoadIndex];
+    [(THSearchController *)searchController cancelLoadIndex];
   }
 
   [(NSOperationQueue *)self->mContentLoadOperationQueue cancelAllOperations];
@@ -270,25 +270,25 @@
   [(THDocumentRoot *)&v4 willClose];
 }
 
-- (unint64_t)absolutePageIndexForStorageAnchor:(id)a3
+- (unint64_t)absolutePageIndexForStorageAnchor:(id)anchor
 {
-  if (!a3)
+  if (!anchor)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [a3 contentNode];
+  contentNode = [anchor contentNode];
   if ([(THDocumentRoot *)self reflowablePaginationController])
   {
-    v6 = [(THReflowablePaginationController *)[(THDocumentRoot *)self reflowablePaginationController] paginationResultForContentNode:v5];
+    v6 = [(THReflowablePaginationController *)[(THDocumentRoot *)self reflowablePaginationController] paginationResultForContentNode:contentNode];
     v7 = 0x7FFFFFFFFFFFFFFFLL;
     if (v6)
     {
       v8 = v6;
       if ([v6 firstPageIndex] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v9 = [v8 relativePageIndexForStorageAnchor:a3];
-        v10 = [v8 firstPageIndex];
+        v9 = [v8 relativePageIndexForStorageAnchor:anchor];
+        firstPageIndex = [v8 firstPageIndex];
         if (v9 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v11 = 0;
@@ -299,7 +299,7 @@
           v11 = v9;
         }
 
-        return v11 + v10;
+        return v11 + firstPageIndex;
       }
     }
 
@@ -308,26 +308,26 @@
 
   v12 = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)self context]];
   objc_opt_class();
-  [v5 infoForNodeUniqueID:objc_msgSend(a3 forPresentationType:{"storageUID"), v12}];
-  v13 = [v5 relativePageIndexForCharacterIndex:objc_msgSend(a3 forInfo:{"range"), TSUDynamicCast()}];
+  [contentNode infoForNodeUniqueID:objc_msgSend(anchor forPresentationType:{"storageUID"), v12}];
+  v13 = [contentNode relativePageIndexForCharacterIndex:objc_msgSend(anchor forInfo:{"range"), TSUDynamicCast()}];
   v7 = 0x7FFFFFFFFFFFFFFFLL;
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return v7;
   }
 
-  return [v5 absolutePageIndexForRelativePageIndex:v13 forPresentationType:v12];
+  return [contentNode absolutePageIndexForRelativePageIndex:v13 forPresentationType:v12];
 }
 
-- (unint64_t)absolutePageIndexForLocation:(id)a3
+- (unint64_t)absolutePageIndexForLocation:(id)location
 {
-  v5 = [a3 pageIndex];
+  pageIndex = [location pageIndex];
   if (![(THBookDescription *)[(THDocumentRoot *)self bookDescription] isEpub])
   {
-    return v5;
+    return pageIndex;
   }
 
-  v6 = +[THModelStorageAnchor storageAnchorWithContentNode:pageLocation:](THModelStorageAnchor, "storageAnchorWithContentNode:pageLocation:", -[THDocumentNavigationModel contentNodeForGUID:](-[THDocumentRoot navigationModel](self, "navigationModel"), "contentNodeForGUID:", [a3 contentNodeGUID]), a3);
+  v6 = +[THModelStorageAnchor storageAnchorWithContentNode:pageLocation:](THModelStorageAnchor, "storageAnchorWithContentNode:pageLocation:", -[THDocumentNavigationModel contentNodeForGUID:](-[THDocumentRoot navigationModel](self, "navigationModel"), "contentNodeForGUID:", [location contentNodeGUID]), location);
 
   return [(THDocumentRoot *)self absolutePageIndexForStorageAnchor:v6];
 }
@@ -339,60 +339,60 @@
   return [(NSURL *)v2 path];
 }
 
-- (id)pageNumberStringForLocation:(id)a3
+- (id)pageNumberStringForLocation:(id)location
 {
-  v4 = [(THDocumentRoot *)self absolutePageIndexForLocation:a3];
+  v4 = [(THDocumentRoot *)self absolutePageIndexForLocation:location];
   v5 = [THPresentationType paginatedPresentationTypeInContext:[(THModelNode *)[(THDocumentRoot *)self rootNode] context]];
-  v6 = [(THDocumentRoot *)self navigationModel];
+  navigationModel = [(THDocumentRoot *)self navigationModel];
 
-  return [(THDocumentNavigationModel *)v6 pageNumberStringForAbsolutePageIndex:v4 forPresentationType:v5];
+  return [(THDocumentNavigationModel *)navigationModel pageNumberStringForAbsolutePageIndex:v4 forPresentationType:v5];
 }
 
-- (id)sectionTitleStringForLocation:(id)a3
+- (id)sectionTitleStringForLocation:(id)location
 {
-  v5 = [a3 pageIndex];
+  pageIndex = [location pageIndex];
   if ([(THBookDescription *)[(THDocumentRoot *)self bookDescription] isEpub])
   {
-    v5 = -[THDocumentRoot absolutePageIndexForStorageAnchor:](self, "absolutePageIndexForStorageAnchor:", +[THModelStorageAnchor storageAnchorWithContentNode:pageLocation:](THModelStorageAnchor, "storageAnchorWithContentNode:pageLocation:", -[THDocumentNavigationModel contentNodeForGUID:](-[THDocumentRoot navigationModel](self, "navigationModel"), "contentNodeForGUID:", [a3 contentNodeGUID]), a3));
+    pageIndex = -[THDocumentRoot absolutePageIndexForStorageAnchor:](self, "absolutePageIndexForStorageAnchor:", +[THModelStorageAnchor storageAnchorWithContentNode:pageLocation:](THModelStorageAnchor, "storageAnchorWithContentNode:pageLocation:", -[THDocumentNavigationModel contentNodeForGUID:](-[THDocumentRoot navigationModel](self, "navigationModel"), "contentNodeForGUID:", [location contentNodeGUID]), location));
   }
 
   v6 = [THPresentationType paginatedPresentationTypeInContext:[(THModelNode *)[(THDocumentRoot *)self rootNode] context]];
-  v7 = [(THDocumentRoot *)self navigationModel];
+  navigationModel = [(THDocumentRoot *)self navigationModel];
 
-  return [(THDocumentNavigationModel *)v7 minorSnippetForAbsolutePageIndex:v5 withDocumentRoot:self forPresentationType:v6];
+  return [(THDocumentNavigationModel *)navigationModel minorSnippetForAbsolutePageIndex:pageIndex withDocumentRoot:self forPresentationType:v6];
 }
 
-- (id)sectionNumberStringForLocation:(id)a3
+- (id)sectionNumberStringForLocation:(id)location
 {
-  result = -[THDocumentNavigationModel navigationUnitContainingContentNode:](-[THDocumentRoot navigationModel](self, "navigationModel"), "navigationUnitContainingContentNode:", -[THDocumentNavigationModel contentNodeForGUID:](-[THDocumentRoot navigationModel](self, "navigationModel"), "contentNodeForGUID:", [a3 contentNodeGUID]));
+  result = -[THDocumentNavigationModel navigationUnitContainingContentNode:](-[THDocumentRoot navigationModel](self, "navigationModel"), "navigationUnitContainingContentNode:", -[THDocumentNavigationModel contentNodeForGUID:](-[THDocumentRoot navigationModel](self, "navigationModel"), "contentNodeForGUID:", [location contentNodeGUID]));
   if (result)
   {
     v5 = result;
-    v6 = [(THDocumentRoot *)self navigationModel];
+    navigationModel = [(THDocumentRoot *)self navigationModel];
 
-    return [(THDocumentNavigationModel *)v6 sectionIdentifierForNavigationUnit:v5];
+    return [(THDocumentNavigationModel *)navigationModel sectionIdentifierForNavigationUnit:v5];
   }
 
   return result;
 }
 
-- (CGImage)thumbnailImageForAbsolutePageIndex:(unint64_t)a3
+- (CGImage)thumbnailImageForAbsolutePageIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     return 0;
   }
 
   v5 = [THPresentationType paginatedPresentationTypeInContext:[(THModelNode *)[(THDocumentRoot *)self rootNode] context]];
-  v6 = [(THDocumentNavigationModel *)[(THDocumentRoot *)self navigationModel] navigationUnitContainingContentNode:[(THModelNode *)[(THDocumentRoot *)self rootNode] contentNodeForRelativePageIndex:a3 forPresentationType:v5]];
+  v6 = [(THDocumentNavigationModel *)[(THDocumentRoot *)self navigationModel] navigationUnitContainingContentNode:[(THModelNode *)[(THDocumentRoot *)self rootNode] contentNodeForRelativePageIndex:index forPresentationType:v5]];
   if (!v6)
   {
     return 0;
   }
 
   v7 = v6;
-  v8 = [v6 relativePageIndexForAbsolutePageIndex:a3 forPresentationType:v5];
+  v8 = [v6 relativePageIndexForAbsolutePageIndex:index forPresentationType:v5];
   v9 = [(NSArray *)[(THDocumentNavigationModel *)[(THDocumentRoot *)self navigationModel] navigationUnits] indexOfObject:v7];
   if (v9 >= [(NSArray *)[(THDocumentNavigationModel *)[(THDocumentRoot *)self navigationModel] navigationUnits] count])
   {
@@ -406,31 +406,31 @@
 
 - (NSString)docVersion
 {
-  v2 = [(THDocumentRoot *)self bookDescription];
-  if (![(THBookDescription *)v2 authoredVersion]|| ![(THBookDescription *)v2 timestamp])
+  bookDescription = [(THDocumentRoot *)self bookDescription];
+  if (![(THBookDescription *)bookDescription authoredVersion]|| ![(THBookDescription *)bookDescription timestamp])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([(THBookDescription *)v2 timestamp]&& [(NSString *)[(THBookDescription *)v2 timestamp] length])
+  if ([(THBookDescription *)bookDescription timestamp]&& [(NSString *)[(THBookDescription *)bookDescription timestamp] length])
   {
-    if ([(THBookDescription *)v2 authoredVersion]&& [(NSString *)[(THBookDescription *)v2 authoredVersion] length])
+    if ([(THBookDescription *)bookDescription authoredVersion]&& [(NSString *)[(THBookDescription *)bookDescription authoredVersion] length])
     {
-      return [(NSString *)[(THBookDescription *)v2 authoredVersion] stringByAppendingFormat:@"@%@", [(THBookDescription *)v2 timestamp]];
+      return [(NSString *)[(THBookDescription *)bookDescription authoredVersion] stringByAppendingFormat:@"@%@", [(THBookDescription *)bookDescription timestamp]];
     }
 
     else
     {
-      v4 = [(THBookDescription *)v2 timestamp];
+      timestamp = [(THBookDescription *)bookDescription timestamp];
 
-      return [@"@" stringByAppendingString:v4];
+      return [@"@" stringByAppendingString:timestamp];
     }
   }
 
-  else if ([(THBookDescription *)v2 authoredVersion]&& [(NSString *)[(THBookDescription *)v2 authoredVersion] length])
+  else if ([(THBookDescription *)bookDescription authoredVersion]&& [(NSString *)[(THBookDescription *)bookDescription authoredVersion] length])
   {
 
-    return [(THBookDescription *)v2 authoredVersion];
+    return [(THBookDescription *)bookDescription authoredVersion];
   }
 
   else
@@ -441,43 +441,43 @@
 
 - (NSURL)modelURL
 {
-  v3 = [(THDocumentRoot *)self bookDescription];
-  if (![(THBookDescription *)v3 isbn]|| ![(THBookDescription *)v3 uniquifier]|| ![(THBookDescription *)v3 authoredVersion]|| ![(THBookDescription *)v3 timestamp])
+  bookDescription = [(THDocumentRoot *)self bookDescription];
+  if (![(THBookDescription *)bookDescription isbn]|| ![(THBookDescription *)bookDescription uniquifier]|| ![(THBookDescription *)bookDescription authoredVersion]|| ![(THBookDescription *)bookDescription timestamp])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if ([(THBookDescription *)v3 isbn])
+  if ([(THBookDescription *)bookDescription isbn])
   {
-    v4 = [(THBookDescription *)v3 isbn];
+    isbn = [(THBookDescription *)bookDescription isbn];
   }
 
   else
   {
-    v4 = @"0";
+    isbn = @"0";
   }
 
-  if ([(THBookDescription *)v3 uniquifier])
+  if ([(THBookDescription *)bookDescription uniquifier])
   {
-    v5 = [(THBookDescription *)v3 uniquifier];
+    uniquifier = [(THBookDescription *)bookDescription uniquifier];
   }
 
   else
   {
-    v5 = @"0";
+    uniquifier = @"0";
   }
 
-  v6 = [NSString stringWithFormat:@"apub:///%@/%@/%@", v4, v5, [(THDocumentRoot *)self docVersion]];
+  v6 = [NSString stringWithFormat:@"apub:///%@/%@/%@", isbn, uniquifier, [(THDocumentRoot *)self docVersion]];
 
   return [NSURL URLWithString:v6];
 }
 
 - (BOOL)isPortraitOnlyBook
 {
-  v2 = [(THDocumentProperties *)[(THDocumentRoot *)self properties] chapterBrowserPagePresentationType];
-  [(THPresentationType *)v2 pageSize];
+  chapterBrowserPagePresentationType = [(THDocumentProperties *)[(THDocumentRoot *)self properties] chapterBrowserPagePresentationType];
+  [(THPresentationType *)chapterBrowserPagePresentationType pageSize];
   v4 = v3;
-  [(THPresentationType *)v2 pageSize];
+  [(THPresentationType *)chapterBrowserPagePresentationType pageSize];
   return v4 > v5;
 }
 
@@ -539,9 +539,9 @@
     return 1;
   }
 
-  v3 = [(THDocumentRoot *)self equationEnvironment];
+  equationEnvironment = [(THDocumentRoot *)self equationEnvironment];
 
-  return [(EQKitEnvironment *)v3 fontsLoaded];
+  return [(EQKitEnvironment *)equationEnvironment fontsLoaded];
 }
 
 - (EQKitEnvironment)equationEnvironment
@@ -575,13 +575,13 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = THDocumentRoot;
   [(THDocumentRoot *)&v8 documentDidLoad];
-  v3 = [(THAsset *)[(THBookDescription *)[(THDocumentRoot *)self bookDescription] asset] assetID];
+  assetID = [(THAsset *)[(THBookDescription *)[(THDocumentRoot *)self bookDescription] asset] assetID];
   if (self->mBookUserDefaults)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  self->mBookUserDefaults = [[THBookUserDefaults alloc] initWithBookID:v3];
+  self->mBookUserDefaults = [[THBookUserDefaults alloc] initWithBookID:assetID];
   if (self->mNavigationModel)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -617,9 +617,9 @@ LABEL_8:
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THUserDataManager *)self->mUserDataManager newManagedObjectContext];
-  self->mMOC = v5;
-  if (!v5)
+  newManagedObjectContext = [(THUserDataManager *)self->mUserDataManager newManagedObjectContext];
+  self->mMOC = newManagedObjectContext;
+  if (!newManagedObjectContext)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -632,21 +632,21 @@ LABEL_8:
   [(THDocumentRoot *)self p_setupAnnotationControllerForBook:[(THDocumentRoot *)self bookDescription]];
   [(THAnnotationStorageController *)[(THDocumentRoot *)self annotationController] rescueDanglingAnnotationsWithDocumentRoot:self];
   [PFDURLProtocol registerHost:[(THBookDescription *)[(THDocumentRoot *)self bookDescription] annotationID] bookRootURL:[(THBookDescription *)[(THDocumentRoot *)self bookDescription] bookBundleUrl] withDRMContext:[(THBookDescription *)[(THDocumentRoot *)self bookDescription] drmContext]];
-  v6 = [(THBookDescription *)[(THDocumentRoot *)self bookDescription] drmContext];
+  drmContext = [(THBookDescription *)[(THDocumentRoot *)self bookDescription] drmContext];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_21B30;
   v7[3] = &unk_45B568;
   v7[4] = [(THBookDescription *)[(THDocumentRoot *)self bookDescription] bookBundleUrl];
-  v7[5] = v6;
+  v7[5] = drmContext;
   [THWWebRep enumerateSubdomainsOfHost:[(THBookDescription *)[(THDocumentRoot *)self bookDescription] annotationID] usingBlock:v7];
-  [+[BEDocumentExternalLoadApprovalCache sharedInstance](BEDocumentExternalLoadApprovalCache removeCachedDisapprovalForBookID:"removeCachedDisapprovalForBookID:", v3];
+  [+[BEDocumentExternalLoadApprovalCache sharedInstance](BEDocumentExternalLoadApprovalCache removeCachedDisapprovalForBookID:"removeCachedDisapprovalForBookID:", assetID];
 }
 
-- (id)firstLessonOfChapter:(id)a3
+- (id)firstLessonOfChapter:(id)chapter
 {
   objc_opt_class();
-  [a3 nodeAtIndex:0];
+  [chapter nodeAtIndex:0];
   v4 = TSUDynamicCast();
   if (!v4)
   {
@@ -656,39 +656,39 @@ LABEL_8:
   return v4;
 }
 
-- (id)linkForNavigationUnitIndex:(unint64_t)a3
+- (id)linkForNavigationUnitIndex:(unint64_t)index
 {
-  v4 = [(THDocumentRoot *)self navigationModel];
+  navigationModel = [(THDocumentRoot *)self navigationModel];
 
-  return [(THDocumentNavigationModel *)v4 linkForNavigationUnitIndex:a3];
+  return [(THDocumentNavigationModel *)navigationModel linkForNavigationUnitIndex:index];
 }
 
-- (void)p_setupAnnotationControllerForBook:(id)a3
+- (void)p_setupAnnotationControllerForBook:(id)book
 {
-  v5 = [objc_msgSend(a3 "asset")];
-  v6 = [objc_msgSend(a3 "asset")];
+  v5 = [objc_msgSend(book "asset")];
+  v6 = [objc_msgSend(book "asset")];
   if (![(THDocumentRoot *)self properties])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v7 = [(THDocumentProperties *)[(THDocumentRoot *)self properties] bookVersion];
-  v8 = +[THAnnotationSerializationManager annotationSerializationManagerWithAssetID:assetURL:bookVersionString:pathToAssetContextDirectory:isManagedBook:](THAnnotationSerializationManager, "annotationSerializationManagerWithAssetID:assetURL:bookVersionString:pathToAssetContextDirectory:isManagedBook:", v5, v6, -[THBookVersion versionString](v7, "versionString"), [a3 contextDirectoryPath], objc_msgSend(objc_msgSend(a3, "asset"), "isManagedBook"));
+  bookVersion = [(THDocumentProperties *)[(THDocumentRoot *)self properties] bookVersion];
+  v8 = +[THAnnotationSerializationManager annotationSerializationManagerWithAssetID:assetURL:bookVersionString:pathToAssetContextDirectory:isManagedBook:](THAnnotationSerializationManager, "annotationSerializationManagerWithAssetID:assetURL:bookVersionString:pathToAssetContextDirectory:isManagedBook:", v5, v6, -[THBookVersion versionString](bookVersion, "versionString"), [book contextDirectoryPath], objc_msgSend(objc_msgSend(book, "asset"), "isManagedBook"));
   if (![(THDocumentRoot *)self suppliedAnnotationProvider])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v9 = [(THDocumentRoot *)self suppliedAnnotationProvider];
-  v10 = [[THAnnotationController alloc] initWithAnnotationProvider:v9 documentNavigationModel:[(THDocumentRoot *)self navigationModel]];
-  if ((-[THAnnotationSerializationManager isAssetOfflineWithAssetID:](v8, "isAssetOfflineWithAssetID:", v5) & 1) != 0 || (-[THAnnotationSerializationManager takeBookOfflineIfManagedWithAnnotationProvider:assetID:](v8, "takeBookOfflineIfManagedWithAnnotationProvider:assetID:", v9, v5) & 1) != 0 || -[THAnnotationSerializationManager wentOfflineAfterHandleAnnotationProvider:willEncounterAnnotationAssetVersion:assetAssetVersion:assetID:assetURL:copyIfGoingOffline:](v8, "wentOfflineAfterHandleAnnotationProvider:willEncounterAnnotationAssetVersion:assetAssetVersion:assetID:assetURL:copyIfGoingOffline:", v9, -[THAnnotationController maxAnnotationAssetVersion](v10, "maxAnnotationAssetVersion"), v7, v5, [objc_msgSend(a3 "asset")], 0))
+  suppliedAnnotationProvider = [(THDocumentRoot *)self suppliedAnnotationProvider];
+  v10 = [[THAnnotationController alloc] initWithAnnotationProvider:suppliedAnnotationProvider documentNavigationModel:[(THDocumentRoot *)self navigationModel]];
+  if ((-[THAnnotationSerializationManager isAssetOfflineWithAssetID:](v8, "isAssetOfflineWithAssetID:", v5) & 1) != 0 || (-[THAnnotationSerializationManager takeBookOfflineIfManagedWithAnnotationProvider:assetID:](v8, "takeBookOfflineIfManagedWithAnnotationProvider:assetID:", suppliedAnnotationProvider, v5) & 1) != 0 || -[THAnnotationSerializationManager wentOfflineAfterHandleAnnotationProvider:willEncounterAnnotationAssetVersion:assetAssetVersion:assetID:assetURL:copyIfGoingOffline:](v8, "wentOfflineAfterHandleAnnotationProvider:willEncounterAnnotationAssetVersion:assetAssetVersion:assetID:assetURL:copyIfGoingOffline:", suppliedAnnotationProvider, -[THAnnotationController maxAnnotationAssetVersion](v10, "maxAnnotationAssetVersion"), bookVersion, v5, [objc_msgSend(book "asset")], 0))
   {
     v11 = [[THAnnotationController alloc] initWithAnnotationProvider:[(THAnnotationSerializationManager *)v8 annotationProviderForOfflineDBWithAssetID:v5] documentNavigationModel:[(THDocumentRoot *)self navigationModel]];
     v12 = &dword_0 + 1;
     [(THAnnotationController *)v11 setAnnotationsReadEnabled:1];
     if (![(THDocumentProperties *)[(THDocumentRoot *)self properties] isPreview])
     {
-      v12 = [objc_msgSend(a3 "asset")];
+      v12 = [objc_msgSend(book "asset")];
     }
 
     [(THAnnotationController *)v11 setAnnotationsWriteEnabled:v12];
@@ -701,44 +701,44 @@ LABEL_8:
   }
 
   [(THDocumentRoot *)self setAnnotationController:v11];
-  v13 = [(THBookVersion *)v7 versionString];
+  versionString = [(THBookVersion *)bookVersion versionString];
 
-  [(THAnnotationSerializationManager *)v8 removeOfflineDBFilesWithAssetID:v5 exceptBookVersionString:v13];
+  [(THAnnotationSerializationManager *)v8 removeOfflineDBFilesWithAssetID:v5 exceptBookVersionString:versionString];
 }
 
-- (void)mutateReviewWidgetData:(id)a3 block:(id)a4
+- (void)mutateReviewWidgetData:(id)data block:(id)block
 {
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, a2);
+    (*(block + 2))(block, a2);
   }
 
-  [a3 setModificationDate:{+[NSDate date](NSDate, "date")}];
+  [data setModificationDate:{+[NSDate date](NSDate, "date")}];
 
   [(THDocumentRoot *)self commitUserDataChanges];
 }
 
-- (void)removeReviewWidgetData:(id)a3
+- (void)removeReviewWidgetData:(id)data
 {
-  [(NSManagedObjectContext *)[(THDocumentRoot *)self moc] deleteObject:a3];
+  [(NSManagedObjectContext *)[(THDocumentRoot *)self moc] deleteObject:data];
 
   [(THDocumentRoot *)self commitUserDataChanges];
 }
 
-- (void)removeReviewWidgetDataForWidgetID:(id)a3
+- (void)removeReviewWidgetDataForWidgetID:(id)d
 {
-  v4 = [(THDocumentRoot *)self p_fetchReviewWidgetDataForWidgetID:a3 moc:[(THDocumentRoot *)self moc]];
+  v4 = [(THDocumentRoot *)self p_fetchReviewWidgetDataForWidgetID:d moc:[(THDocumentRoot *)self moc]];
 
   [(THDocumentRoot *)self removeReviewWidgetData:v4];
 }
 
-- (id)p_reviewEntityWithMOC:(id)a3
+- (id)p_reviewEntityWithMOC:(id)c
 {
-  if (a3)
+  if (c)
   {
     v5 = kTSWReviewWidgetDataEntityName;
 
-    return [NSEntityDescription entityForName:v5 inManagedObjectContext:a3];
+    return [NSEntityDescription entityForName:v5 inManagedObjectContext:c];
   }
 
   else
@@ -748,9 +748,9 @@ LABEL_8:
   }
 }
 
-- (id)reviewWidgetDataForWidgetID:(id)a3 temporaryMOC:(id)a4
+- (id)reviewWidgetDataForWidgetID:(id)d temporaryMOC:(id)c
 {
-  if (a4)
+  if (c)
   {
 
     return [THDocumentRoot p_fetchReviewWidgetDataForWidgetID:"p_fetchReviewWidgetDataForWidgetID:moc:" moc:?];
@@ -758,7 +758,7 @@ LABEL_8:
 
   else
   {
-    v7 = [(THDocumentRoot *)self p_fetchReviewWidgetDataForWidgetID:a3 moc:[(THDocumentRoot *)self moc]];
+    v7 = [(THDocumentRoot *)self p_fetchReviewWidgetDataForWidgetID:d moc:[(THDocumentRoot *)self moc]];
     if (!v7)
     {
       v8 = [(THDocumentRoot *)self moc];
@@ -766,7 +766,7 @@ LABEL_8:
       if (v8 && v9)
       {
         v7 = [[TSWReviewWidgetData alloc] initWithEntity:v9 insertIntoManagedObjectContext:v8];
-        [(TSWReviewWidgetData *)v7 setUniqueID:a3];
+        [(TSWReviewWidgetData *)v7 setUniqueID:d];
         v10 = +[NSDate date];
         [(TSWReviewWidgetData *)v7 setCreationDate:v10];
         [(TSWReviewWidgetData *)v7 setModificationDate:v10];
@@ -786,17 +786,17 @@ LABEL_8:
 
 - (id)newTemporaryReviewDataMOC
 {
-  v2 = [(THDocumentRoot *)self userDataManager];
+  userDataManager = [(THDocumentRoot *)self userDataManager];
 
-  return [(THUserDataManager *)v2 newManagedObjectContext];
+  return [(THUserDataManager *)userDataManager newManagedObjectContext];
 }
 
-- (id)p_fetchReviewWidgetDataForWidgetID:(id)a3 moc:(id)a4
+- (id)p_fetchReviewWidgetDataForWidgetID:(id)d moc:(id)moc
 {
-  if (!a4)
+  if (!moc)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if (a3)
+    if (d)
     {
       return 0;
     }
@@ -806,16 +806,16 @@ LABEL_10:
     return 0;
   }
 
-  if (!a3)
+  if (!d)
   {
     goto LABEL_10;
   }
 
   v7 = objc_alloc_init(NSFetchRequest);
-  [v7 setEntity:{-[THDocumentRoot p_reviewEntityWithMOC:](self, "p_reviewEntityWithMOC:", a4)}];
-  [v7 setPredicate:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"uniqueID LIKE %@", a3)}];
+  [v7 setEntity:{-[THDocumentRoot p_reviewEntityWithMOC:](self, "p_reviewEntityWithMOC:", moc)}];
+  [v7 setPredicate:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"uniqueID LIKE %@", d)}];
   v13 = 0;
-  v8 = [a4 executeFetchRequest:v7 error:&v13];
+  v8 = [moc executeFetchRequest:v7 error:&v13];
   if (!v8)
   {
     v9 = +[TSUAssertionHandler currentHandler];
@@ -840,29 +840,29 @@ LABEL_10:
   return result;
 }
 
-- (void)mutateResponse:(id)a3 block:(id)a4
+- (void)mutateResponse:(id)response block:(id)block
 {
-  if (a4)
+  if (block)
   {
-    (*(a4 + 2))(a4, a2);
+    (*(block + 2))(block, a2);
   }
 
-  [a3 setModificationDate:{+[NSDate date](NSDate, "date")}];
-  [(THDocumentRoot *)self mutateReviewWidgetData:[(THDocumentRoot *)self p_reviewWidgetDataForResponse:a3] block:0];
+  [response setModificationDate:{+[NSDate date](NSDate, "date")}];
+  [(THDocumentRoot *)self mutateReviewWidgetData:[(THDocumentRoot *)self p_reviewWidgetDataForResponse:response] block:0];
 
   [(THDocumentRoot *)self commitUserDataChanges];
 }
 
-- (void)removeResponse:(id)a3
+- (void)removeResponse:(id)response
 {
-  [(NSManagedObjectContext *)[(THDocumentRoot *)self moc] deleteObject:a3];
+  [(NSManagedObjectContext *)[(THDocumentRoot *)self moc] deleteObject:response];
 
   [(THDocumentRoot *)self commitUserDataChanges];
 }
 
-- (void)removeResponseForQuestionID:(id)a3
+- (void)removeResponseForQuestionID:(id)d
 {
-  v4 = [(THDocumentRoot *)self p_fetchResponseForQuestionID:a3 moc:[(THDocumentRoot *)self moc]];
+  v4 = [(THDocumentRoot *)self p_fetchResponseForQuestionID:d moc:[(THDocumentRoot *)self moc]];
   if (v4)
   {
 
@@ -870,13 +870,13 @@ LABEL_10:
   }
 }
 
-- (id)p_responseEntityWithMOC:(id)a3
+- (id)p_responseEntityWithMOC:(id)c
 {
-  if (a3)
+  if (c)
   {
     v5 = kTSWReviewResponseEntityName;
 
-    return [NSEntityDescription entityForName:v5 inManagedObjectContext:a3];
+    return [NSEntityDescription entityForName:v5 inManagedObjectContext:c];
   }
 
   else
@@ -886,13 +886,13 @@ LABEL_10:
   }
 }
 
-- (id)p_fetchResponseForQuestionID:(id)a3 moc:(id)a4
+- (id)p_fetchResponseForQuestionID:(id)d moc:(id)moc
 {
   v7 = objc_alloc_init(NSFetchRequest);
-  [v7 setEntity:{-[THDocumentRoot p_responseEntityWithMOC:](self, "p_responseEntityWithMOC:", a4)}];
-  [v7 setPredicate:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"uniqueID LIKE %@", a3)}];
+  [v7 setEntity:{-[THDocumentRoot p_responseEntityWithMOC:](self, "p_responseEntityWithMOC:", moc)}];
+  [v7 setPredicate:{+[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"uniqueID LIKE %@", d)}];
   v13 = 0;
-  v8 = [a4 executeFetchRequest:v7 error:&v13];
+  v8 = [moc executeFetchRequest:v7 error:&v13];
   if (!v8)
   {
     v9 = +[TSUAssertionHandler currentHandler];
@@ -917,9 +917,9 @@ LABEL_10:
   return result;
 }
 
-- (id)responseForQuestionID:(id)a3 temporaryMOC:(id)a4
+- (id)responseForQuestionID:(id)d temporaryMOC:(id)c
 {
-  if (a4)
+  if (c)
   {
 
     return [THDocumentRoot p_fetchResponseForQuestionID:"p_fetchResponseForQuestionID:moc:" moc:?];
@@ -927,7 +927,7 @@ LABEL_10:
 
   else
   {
-    v7 = [(THDocumentRoot *)self p_fetchResponseForQuestionID:a3 moc:[(THDocumentRoot *)self moc]];
+    v7 = [(THDocumentRoot *)self p_fetchResponseForQuestionID:d moc:[(THDocumentRoot *)self moc]];
     if (!v7)
     {
       v8 = [(THDocumentRoot *)self moc];
@@ -935,7 +935,7 @@ LABEL_10:
       if (v8 && v9)
       {
         v7 = [[TSWReviewResponse alloc] initWithEntity:v9 insertIntoManagedObjectContext:v8];
-        [(TSWReviewResponse *)v7 setUniqueID:a3];
+        [(TSWReviewResponse *)v7 setUniqueID:d];
         v10 = +[NSDate date];
         [(TSWReviewResponse *)v7 setCreationDate:v10];
         [(TSWReviewResponse *)v7 setModificationDate:v10];
@@ -955,9 +955,9 @@ LABEL_10:
 
 - (id)newTemporateReviewResponseMOC
 {
-  v2 = [(THDocumentRoot *)self userDataManager];
+  userDataManager = [(THDocumentRoot *)self userDataManager];
 
-  return [(THUserDataManager *)v2 newManagedObjectContext];
+  return [(THUserDataManager *)userDataManager newManagedObjectContext];
 }
 
 - (void)commitUserDataChanges
@@ -993,20 +993,20 @@ LABEL_10:
   }
 }
 
-- (id)modelStorageAnchorForAnnotation:(id)a3
+- (id)modelStorageAnchorForAnnotation:(id)annotation
 {
-  v4 = [a3 annotationLocation];
+  annotationLocation = [annotation annotationLocation];
 
-  return [(THDocumentRoot *)self modelStorageAnchorForCfi:v4 error:0];
+  return [(THDocumentRoot *)self modelStorageAnchorForCfi:annotationLocation error:0];
 }
 
-- (unint64_t)absolutePageIndexForAnnotation:(id)a3
+- (unint64_t)absolutePageIndexForAnnotation:(id)annotation
 {
   v5 = TSUProtocolCast();
   if ([(THDocumentRoot *)self reflowablePaginationController])
   {
     v14 = 0;
-    v6 = -[THDocumentRoot modelStorageAnchorForCfi:error:](self, "modelStorageAnchorForCfi:error:", [a3 annotationLocation], &v14);
+    v6 = -[THDocumentRoot modelStorageAnchorForCfi:error:](self, "modelStorageAnchorForCfi:error:", [annotation annotationLocation], &v14);
     if (!v6)
     {
       v7 = +[TSUAssertionHandler currentHandler];
@@ -1020,10 +1020,10 @@ LABEL_10:
 
   else
   {
-    v11 = [v5 annotationAbsolutePhysicalPageIndex];
+    annotationAbsolutePhysicalPageIndex = [v5 annotationAbsolutePhysicalPageIndex];
     if (v5)
     {
-      v12 = v11 == 0x7FFFFFFFFFFFFFFFLL;
+      v12 = annotationAbsolutePhysicalPageIndex == 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -1033,11 +1033,11 @@ LABEL_10:
 
     if (v12)
     {
-      if ([a3 annotationLocation])
+      if ([annotation annotationLocation])
       {
-        v13 = [a3 annotationLocation];
+        annotationLocation = [annotation annotationLocation];
 
-        return [(THDocumentRoot *)self absolutePageIndexForCFI:v13];
+        return [(THDocumentRoot *)self absolutePageIndexForCFI:annotationLocation];
       }
 
       else
@@ -1054,9 +1054,9 @@ LABEL_10:
   }
 }
 
-- (id)pageNumberStringForAnnotation:(id)a3
+- (id)pageNumberStringForAnnotation:(id)annotation
 {
-  v4 = [(THDocumentRoot *)self absolutePageIndexForAnnotation:a3];
+  v4 = [(THDocumentRoot *)self absolutePageIndexForAnnotation:annotation];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = THBundle();
@@ -1068,57 +1068,57 @@ LABEL_10:
   {
     v7 = v4;
     v8 = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)self context]];
-    v9 = [(THDocumentRoot *)self navigationModel];
+    navigationModel = [(THDocumentRoot *)self navigationModel];
 
-    return [(THDocumentNavigationModel *)v9 pageNumberStringForAbsolutePageIndex:v7 forPresentationType:v8];
+    return [(THDocumentNavigationModel *)navigationModel pageNumberStringForAbsolutePageIndex:v7 forPresentationType:v8];
   }
 }
 
-- (id)sectionTitleStringForAnnotation:(id)a3
+- (id)sectionTitleStringForAnnotation:(id)annotation
 {
-  v3 = [objc_msgSend(-[THDocumentRoot modelStorageAnchorForAnnotation:](self modelStorageAnchorForAnnotation:{a3), "contentNode"), "title"}];
+  v3 = [objc_msgSend(-[THDocumentRoot modelStorageAnchorForAnnotation:](self modelStorageAnchorForAnnotation:{annotation), "contentNode"), "title"}];
   v4 = +[NSCharacterSet whitespaceCharacterSet];
 
   return [v3 stringByTrimmingCharactersInSet:v4];
 }
 
-- (id)storageForAnnotation:(id)a3
+- (id)storageForAnnotation:(id)annotation
 {
-  result = [a3 annotationLocation];
+  result = [annotation annotationLocation];
   if (result)
   {
-    v6 = [a3 annotationLocation];
+    annotationLocation = [annotation annotationLocation];
 
-    return [(THDocumentRoot *)self storageForCFI:v6];
+    return [(THDocumentRoot *)self storageForCFI:annotationLocation];
   }
 
   return result;
 }
 
-- (_NSRange)storageRangeForAnnotation:(id)a3
+- (_NSRange)storageRangeForAnnotation:(id)annotation
 {
   v3 = TSUProtocolCast();
   if (v3)
   {
 
-    v4 = [v3 annotationStorageRange];
+    annotationStorageRange = [v3 annotationStorageRange];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    annotationStorageRange = 0x7FFFFFFFFFFFFFFFLL;
     v5 = 0;
   }
 
   result.length = v5;
-  result.location = v4;
+  result.location = annotationStorageRange;
   return result;
 }
 
-- (id)storageWithHighlightTextForAnnotation:(id)a3
+- (id)storageWithHighlightTextForAnnotation:(id)annotation
 {
   v5 = [(THDocumentRoot *)self storageForAnnotation:?];
-  v6 = [(THDocumentRoot *)self storageRangeForAnnotation:a3];
+  v6 = [(THDocumentRoot *)self storageRangeForAnnotation:annotation];
   v8 = v7;
   v9 = &v6[v7];
   if (&v6[v7] > [v5 length])
@@ -1133,15 +1133,15 @@ LABEL_10:
 
   v13 = [v5 length];
   v14 = [THWPStorage alloc];
-  v15 = [(THDocumentRoot *)self context];
+  context = [(THDocumentRoot *)self context];
   if (!v5 || v9 > v13 || v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v16 = -[THWPStorage initTemporaryWithContext:string:](v14, "initTemporaryWithContext:string:", v15, [a3 annotationSelectedText]);
+    v16 = -[THWPStorage initTemporaryWithContext:string:](v14, "initTemporaryWithContext:string:", context, [annotation annotationSelectedText]);
   }
 
   else
   {
-    v16 = [(THWPStorage *)v14 initTemporaryWithContext:v15 storage:v5 range:v6, v8];
+    v16 = [(THWPStorage *)v14 initTemporaryWithContext:context storage:v5 range:v6, v8];
   }
 
   v17 = v16;
@@ -1149,14 +1149,14 @@ LABEL_10:
   return v17;
 }
 
-- (id)annotationsUpdatedForSharing:(id)a3
+- (id)annotationsUpdatedForSharing:(id)sharing
 {
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [sharing countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1168,7 +1168,7 @@ LABEL_10:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(sharing);
         }
 
         v10 = TSUCheckedProtocolCast();
@@ -1190,7 +1190,7 @@ LABEL_10:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [sharing countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -1206,16 +1206,16 @@ LABEL_10:
   return v3;
 }
 
-- (id)activityItemProviderWithAnnotation:(id)a3
+- (id)activityItemProviderWithAnnotation:(id)annotation
 {
-  v4 = [[AEAssetActivityItemProvider alloc] initWithAnnotation:a3 propertySource:{-[THDocumentRoot p_activityItemPropertySource](self, "p_activityItemPropertySource")}];
+  v4 = [[AEAssetActivityItemProvider alloc] initWithAnnotation:annotation propertySource:{-[THDocumentRoot p_activityItemPropertySource](self, "p_activityItemPropertySource")}];
   [v4 setCitationsAllowed:{-[THBookDescription allowCopy](-[THDocumentRoot bookDescription](self, "bookDescription"), "allowCopy")}];
   return v4;
 }
 
-- (id)activityItemProviderWithAnnotations:(id)a3
+- (id)activityItemProviderWithAnnotations:(id)annotations
 {
-  v4 = [[AEAssetActivityItemProvider alloc] initWithAnnotations:a3 propertySource:{-[THDocumentRoot p_activityItemPropertySource](self, "p_activityItemPropertySource")}];
+  v4 = [[AEAssetActivityItemProvider alloc] initWithAnnotations:annotations propertySource:{-[THDocumentRoot p_activityItemPropertySource](self, "p_activityItemPropertySource")}];
   [v4 setCitationsAllowed:{-[THBookDescription allowCopy](-[THDocumentRoot bookDescription](self, "bookDescription"), "allowCopy")}];
   return v4;
 }
@@ -1230,22 +1230,22 @@ LABEL_10:
   return [v3 copy];
 }
 
-- (id)modelStorageAnchorForCfi:(id)a3 error:(id *)a4
+- (id)modelStorageAnchorForCfi:(id)cfi error:(id *)error
 {
   if (![(THBookDescription *)[(THDocumentRoot *)self bookDescription] isEpub]|| (result = [(THDocumentRoot *)self reflowablePaginationController]) != 0)
   {
 
-    return [(THDocumentRoot *)self modelStorageAnchorForCfi:a3 shallow:0 error:a4];
+    return [(THDocumentRoot *)self modelStorageAnchorForCfi:cfi shallow:0 error:error];
   }
 
   return result;
 }
 
-- (id)contentNodeForCfi:(id)a3 error:(id *)a4
+- (id)contentNodeForCfi:(id)cfi error:(id *)error
 {
   if (![(THBookDescription *)[(THDocumentRoot *)self bookDescription] isEpub]|| (result = [(THDocumentRoot *)self reflowablePaginationController]) != 0)
   {
-    v8 = [(THDocumentRoot *)self modelStorageAnchorForCfi:a3 shallow:1 error:a4];
+    v8 = [(THDocumentRoot *)self modelStorageAnchorForCfi:cfi shallow:1 error:error];
 
     return [v8 contentNode];
   }
@@ -1253,31 +1253,31 @@ LABEL_10:
   return result;
 }
 
-- (id)anchorForCFIString:(id)a3 coarsenIfNeeded:(BOOL)a4
+- (id)anchorForCFIString:(id)string coarsenIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   if ([(THBookDescription *)[(THDocumentRoot *)self bookDescription] isEpub])
   {
-    v7 = [(THDocumentRoot *)self reflowablePaginationController];
+    reflowablePaginationController = [(THDocumentRoot *)self reflowablePaginationController];
     result = 0;
-    if (!a3 || !v7)
+    if (!string || !reflowablePaginationController)
     {
       return result;
     }
   }
 
-  else if (!a3)
+  else if (!string)
   {
     return 0;
   }
 
-  result = [(THDocumentRoot *)self modelStorageAnchorForCfi:a3 error:0];
-  if (!result && v4)
+  result = [(THDocumentRoot *)self modelStorageAnchorForCfi:string error:0];
+  if (!result && neededCopy)
   {
-    v9 = [THSimpleCFI pathStringFromFragment:a3];
+    cfiString = [THSimpleCFI pathStringFromFragment:string];
     while (1)
     {
-      result = [(__CFString *)v9 length];
+      result = [(__CFString *)cfiString length];
       if (!result)
       {
         break;
@@ -1286,8 +1286,8 @@ LABEL_10:
       v10 = [[THSimpleCFI simpleCFIWithString:?]];
       if (v10)
       {
-        v9 = [v10 cfiString];
-        result = [(THDocumentRoot *)self modelStorageAnchorForCfi:[THSimpleCFI error:"fragmentFromPathString:" fragmentFromPathString:v9], 0];
+        cfiString = [v10 cfiString];
+        result = [(THDocumentRoot *)self modelStorageAnchorForCfi:[THSimpleCFI error:"fragmentFromPathString:" fragmentFromPathString:cfiString], 0];
         if (result)
         {
           return result;
@@ -1296,7 +1296,7 @@ LABEL_10:
 
       else
       {
-        v9 = &stru_471858;
+        cfiString = &stru_471858;
       }
     }
   }
@@ -1304,11 +1304,11 @@ LABEL_10:
   return result;
 }
 
-- (id)anchorForNthInstance:(unint64_t)a3 ofSearchString:(id)a4 afterCFIString:(id)a5 coarsenIfNeeded:(BOOL)a6
+- (id)anchorForNthInstance:(unint64_t)instance ofSearchString:(id)string afterCFIString:(id)iString coarsenIfNeeded:(BOOL)needed
 {
-  v6 = a6;
+  neededCopy = needed;
   objc_opt_class();
-  [(THDocumentRoot *)self anchorForCFIString:a5 coarsenIfNeeded:v6];
+  [(THDocumentRoot *)self anchorForCFIString:iString coarsenIfNeeded:neededCopy];
   v11 = TSUDynamicCast();
   if (!v11)
   {
@@ -1319,9 +1319,9 @@ LABEL_10:
   if ([v11 contentNode])
   {
     [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)self context]];
-    v13 = [v12 contentNode];
+    contentNode = [v12 contentNode];
 
-    return [v13 storageAnchorAfterAnchor:v12 forNthInstance:a3 ofSearchString:a4 presentationType:?];
+    return [contentNode storageAnchorAfterAnchor:v12 forNthInstance:instance ofSearchString:string presentationType:?];
   }
 
   if (![v12 glossaryEntry])
@@ -1330,12 +1330,12 @@ LABEL_10:
     return 0;
   }
 
-  v14 = [v12 glossaryEntry];
+  glossaryEntry = [v12 glossaryEntry];
 
-  return [v14 storageAnchorAfterAnchor:v12 forNthInstance:a3 ofSearchString:a4];
+  return [glossaryEntry storageAnchorAfterAnchor:v12 forNthInstance:instance ofSearchString:string];
 }
 
-- (unint64_t)absolutePageIndexForCFI:(id)a3
+- (unint64_t)absolutePageIndexForCFI:(id)i
 {
   if ([(THBookDescription *)[(THDocumentRoot *)self bookDescription] isEpub]&& ![(THDocumentRoot *)self reflowablePaginationController])
   {
@@ -1343,31 +1343,31 @@ LABEL_10:
   }
 
   v10 = 0;
-  v5 = [(THDocumentRoot *)self modelStorageAnchorForCfi:a3 error:&v10];
+  v5 = [(THDocumentRoot *)self modelStorageAnchorForCfi:i error:&v10];
   if (!v5)
   {
     v6 = +[TSUAssertionHandler currentHandler];
     v7 = [NSString stringWithUTF8String:"[THDocumentRoot(CFI) absolutePageIndexForCFI:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/THDocumentRoot_CFI.m"];
-    [v6 handleFailureInFunction:v7 file:v8 lineNumber:113 description:{@"failed to lookup anchor for CFI %@ with error: %@", a3, objc_msgSend(v10, "localizedDescription")}];
+    [v6 handleFailureInFunction:v7 file:v8 lineNumber:113 description:{@"failed to lookup anchor for CFI %@ with error: %@", i, objc_msgSend(v10, "localizedDescription")}];
   }
 
   return [(THDocumentRoot *)self absolutePageIndexForStorageAnchor:v5];
 }
 
-- (id)storageForCFI:(id)a3
+- (id)storageForCFI:(id)i
 {
   if (![(THBookDescription *)[(THDocumentRoot *)self bookDescription] isEpub]|| (result = [(THDocumentRoot *)self reflowablePaginationController]) != 0)
   {
     v13 = 0;
-    v6 = [(THDocumentRoot *)self modelStorageAnchorForCfi:a3 error:&v13];
+    v6 = [(THDocumentRoot *)self modelStorageAnchorForCfi:i error:&v13];
     if (v6)
     {
       v7 = v6;
       v8 = [THPresentationType paginatedPresentationTypeInContext:[(THDocumentRoot *)self context]];
-      v9 = [v7 contentNode];
+      contentNode = [v7 contentNode];
       objc_opt_class();
-      [v9 infoForNodeUniqueID:objc_msgSend(v7 forPresentationType:{"storageUID"), v8}];
+      [contentNode infoForNodeUniqueID:objc_msgSend(v7 forPresentationType:{"storageUID"), v8}];
       return TSUDynamicCast();
     }
 

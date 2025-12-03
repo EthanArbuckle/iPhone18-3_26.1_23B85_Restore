@@ -1,10 +1,10 @@
 @interface TTRPinnedListBackgroundView
-- (_TtC15RemindersUICore27TTRPinnedListBackgroundView)initWithCoder:(id)a3;
+- (_TtC15RemindersUICore27TTRPinnedListBackgroundView)initWithCoder:(id)coder;
 @end
 
 @implementation TTRPinnedListBackgroundView
 
-- (_TtC15RemindersUICore27TTRPinnedListBackgroundView)initWithCoder:(id)a3
+- (_TtC15RemindersUICore27TTRPinnedListBackgroundView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore27TTRPinnedListBackgroundView_fillViewCornerRadius) = 0x4030000000000000;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore27TTRPinnedListBackgroundView_selectionBorderWidth) = 0x4010000000000000;

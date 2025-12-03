@@ -1,19 +1,19 @@
 @interface ContactsButtonSlotView
 - (CGRect)frame;
 - (_TtC10ContactsUI22ContactsButtonSlotView)init;
-- (_TtC10ContactsUI22ContactsButtonSlotView)initWithCoder:(id)a3;
-- (_TtC10ContactsUI22ContactsButtonSlotView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (_TtC10ContactsUI22ContactsButtonSlotView)initWithCoder:(id)coder;
+- (_TtC10ContactsUI22ContactsButtonSlotView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ContactsButtonSlotView
 
-- (_TtC10ContactsUI22ContactsButtonSlotView)initWithFrame:(CGRect)a3
+- (_TtC10ContactsUI22ContactsButtonSlotView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC10ContactsUI22ContactsButtonSlotView_internalSlotView;
   *(&self->super.super.super.isa + v8) = [objc_allocWithZone(MEMORY[0x1E69DD730]) init];
   v9 = OBJC_IVAR____TtC10ContactsUI22ContactsButtonSlotView_logger;
@@ -50,7 +50,7 @@
   return [(ContactsButtonSlotView *)&v8 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC10ContactsUI22ContactsButtonSlotView)initWithCoder:(id)a3
+- (_TtC10ContactsUI22ContactsButtonSlotView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10ContactsUI22ContactsButtonSlotView_internalSlotView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DD730]) init];
@@ -81,12 +81,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ContactsButtonSlotView(0);
   v7 = v8.receiver;

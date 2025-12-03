@@ -1,32 +1,32 @@
 @interface VCPVideoFacePoseFilter
-- (int)eulerAnglesToRotation:(float)a3[3] R:(float)a4[3][3];
-- (int)filteringPose:(id *)a3;
-- (int)kalmanFiltering:(float)a3[3] T:(float)a4[3];
-- (int)rotationToEulerAngles:(float)a3[3][3] angles:(float)a4[3];
+- (int)eulerAnglesToRotation:(float)rotation[3] R:(float)r[3][3];
+- (int)filteringPose:(id *)pose;
+- (int)kalmanFiltering:(float)filtering[3] T:(float)t[3];
+- (int)rotationToEulerAngles:(float)angles[3][3] angles:(float)a4[3];
 @end
 
 @implementation VCPVideoFacePoseFilter
 
-- (int)rotationToEulerAngles:(float)a3[3][3] angles:(float)a4[3]
+- (int)rotationToEulerAngles:(float)angles[3][3] angles:(float)a4[3]
 {
   a4[2] = 0.0;
   *a4 = 0;
-  v6 = asinf((*a3)[6]);
+  v6 = asinf((*angles)[6]);
   a4[1] = -v6;
   v7 = cosf(v6);
   if (v7 == 0.0)
   {
     a4[2] = 0.0;
-    v9 = (*a3)[1];
-    if ((*a3)[6] >= 0.0)
+    v9 = (*angles)[1];
+    if ((*angles)[6] >= 0.0)
     {
       v9 = -v9;
-      v10 = -(*a3)[5];
+      v10 = -(*angles)[5];
     }
 
     else
     {
-      v10 = (*a3)[5];
+      v10 = (*angles)[5];
     }
 
     *a4 = atan2f(v9, v10);
@@ -35,14 +35,14 @@
   else
   {
     v8 = v7;
-    *a4 = atan2f((*a3)[7] / v7, (*a3)[8] / v7);
-    a4[2] = atan2f((*a3)[3] / v8, (*a3)[0] / v8);
+    *a4 = atan2f((*angles)[7] / v7, (*angles)[8] / v7);
+    a4[2] = atan2f((*angles)[3] / v8, (*angles)[0] / v8);
   }
 
   return 0;
 }
 
-- (int)eulerAnglesToRotation:(float)a3[3] R:(float)a4[3][3]
+- (int)eulerAnglesToRotation:(float)rotation[3] R:(float)r[3][3]
 {
   v25 = *MEMORY[0x1E69E9840];
   v22[1] = 16;
@@ -81,18 +81,18 @@
   *(v8 + 28) = 0x3F80000000000000;
   *v8 = 1065353216;
   *(v8 + 4) = 1065353216;
-  *(v6 + 4) = cosf(*a3);
-  *(v6 + 7) = -sinf(*a3);
-  *(v6 + 5) = sinf(*a3);
-  *(v6 + 8) = cosf(*a3);
-  *v7 = cosf(a3[1]);
-  *(v7 + 6) = sinf(a3[1]);
-  *(v7 + 2) = -sinf(a3[1]);
-  *(v7 + 8) = cosf(a3[1]);
-  *v8 = cosf(a3[2]);
-  *(v8 + 3) = -sinf(a3[2]);
-  *(v8 + 1) = sinf(a3[2]);
-  *(v8 + 4) = cosf(a3[2]);
+  *(v6 + 4) = cosf(*rotation);
+  *(v6 + 7) = -sinf(*rotation);
+  *(v6 + 5) = sinf(*rotation);
+  *(v6 + 8) = cosf(*rotation);
+  *v7 = cosf(rotation[1]);
+  *(v7 + 6) = sinf(rotation[1]);
+  *(v7 + 2) = -sinf(rotation[1]);
+  *(v7 + 8) = cosf(rotation[1]);
+  *v8 = cosf(rotation[2]);
+  *(v8 + 3) = -sinf(rotation[2]);
+  *(v8 + 1) = sinf(rotation[2]);
+  *(v8 + 4) = cosf(rotation[2]);
   v15[0] = v19;
   v15[1] = v21;
   v16[1] = 16;
@@ -113,12 +113,12 @@
     v12 = 0;
     for (i = 0; i != 3; ++i)
     {
-      (*a4)[i] = v11[v9 + v12];
+      (*r)[i] = v11[v9 + v12];
       v12 += v10;
     }
 
     ++v9;
-    ++a4;
+    ++r;
   }
 
   while (v9 != 3);
@@ -129,13 +129,13 @@
   return 0;
 }
 
-- (int)kalmanFiltering:(float)a3[3] T:(float)a4[3]
+- (int)kalmanFiltering:(float)filtering[3] T:(float)t[3]
 {
   v111 = *MEMORY[0x1E69E9840];
-  v86 = *a4;
-  v87 = *(a4 + 2);
-  v88 = *a3;
-  v89 = *(a3 + 2);
+  v86 = *t;
+  v87 = *(t + 2);
+  v88 = *filtering;
+  v89 = *(filtering + 2);
   v84[1] = 144;
   memptr = 0;
   malloc_type_posix_memalign(&memptr, 0x20uLL, 0x240uLL, 0xE1AC2527uLL);
@@ -186,12 +186,12 @@
   *(v9 + 53) = 1065353216;
   if (!self->_previousStateIsValid)
   {
-    self->_previousState.m_data[0] = *a4;
-    self->_previousState.m_data[1] = a4[1];
-    self->_previousState.m_data[2] = a4[2];
-    self->_previousState.m_data[6] = *a3;
-    self->_previousState.m_data[7] = a3[1];
-    self->_previousState.m_data[8] = a3[2];
+    self->_previousState.m_data[0] = *t;
+    self->_previousState.m_data[1] = t[1];
+    self->_previousState.m_data[2] = t[2];
+    self->_previousState.m_data[6] = *filtering;
+    self->_previousState.m_data[7] = filtering[1];
+    self->_previousState.m_data[8] = filtering[2];
     bzero(&self->_previousCovar, 0x240uLL);
   }
 
@@ -449,8 +449,8 @@
     free(v96);
     for (k = 0; k != 3; ++k)
     {
-      a4[k] = *&v44[k * 4];
-      a3[k] = *&v44[k * 4 + 24];
+      t[k] = *&v44[k * 4];
+      filtering[k] = *&v44[k * 4 + 24];
     }
 
     for (m = 0; m != 12; ++m)
@@ -489,11 +489,11 @@
   return v67;
 }
 
-- (int)filteringPose:(id *)a3
+- (int)filteringPose:(id *)pose
 {
   v5 = 0;
   v20 = *MEMORY[0x1E69E9840];
-  v6 = *(a3 + 3);
+  v6 = *(pose + 3);
   v7 = v19;
   do
   {
@@ -502,7 +502,7 @@
     v9 = *(&v16 & 0xFFFFFFFFFFFFFFF3 | (4 * (v5 & 3)));
     do
     {
-      *&v7[4 * v8] = *(a3 + 4 * v8 + (v5 & 3));
+      *&v7[4 * v8] = *(pose + 4 * v8 + (v5 & 3));
       ++v8;
     }
 
@@ -522,16 +522,16 @@
       if (!result)
       {
         v11 = 0;
-        *(a3 + 2) = 0u;
-        *(a3 + 3) = 0u;
-        *a3 = 0u;
-        *(a3 + 1) = 0u;
+        *(pose + 2) = 0u;
+        *(pose + 3) = 0u;
+        *pose = 0u;
+        *(pose + 1) = 0u;
         v12 = v19;
         do
         {
           v13 = 0;
           v14 = v18[v11];
-          v15 = a3 + 4 * (v11 & 3);
+          v15 = pose + 4 * (v11 & 3);
           do
           {
             *&v15[16 * v13] = *&v12[4 * v13];

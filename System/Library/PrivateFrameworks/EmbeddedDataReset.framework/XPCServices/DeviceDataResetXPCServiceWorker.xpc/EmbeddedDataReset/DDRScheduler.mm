@@ -22,8 +22,8 @@
 
 - (id)scheduledTasks
 {
-  v2 = [(DDRScheduler *)self resetTasks];
-  v3 = [v2 copy];
+  resetTasks = [(DDRScheduler *)self resetTasks];
+  v3 = [resetTasks copy];
 
   return v3;
 }

@@ -1,12 +1,12 @@
 @interface SecOfferedEPSK
-- (SecOfferedEPSK)initWithExternalIdentity:(id)a3 :(id)a4;
+- (SecOfferedEPSK)initWithExternalIdentity:(id)identity :(id)a4;
 @end
 
 @implementation SecOfferedEPSK
 
-- (SecOfferedEPSK)initWithExternalIdentity:(id)a3 :(id)a4
+- (SecOfferedEPSK)initWithExternalIdentity:(id)identity :(id)a4
 {
-  v6 = a3;
+  identityCopy = identity;
   v7 = a4;
   v11.receiver = self;
   v11.super_class = SecOfferedEPSK;
@@ -14,7 +14,7 @@
   v9 = v8;
   if (v8)
   {
-    [(SecOfferedEPSK *)v8 setExternal_identity:v6];
+    [(SecOfferedEPSK *)v8 setExternal_identity:identityCopy];
     [(SecOfferedEPSK *)v9 setContext:v7];
   }
 

@@ -7,16 +7,16 @@
 
 - (BOOL)_SUICKPInteractiveCardSectionViewController_shouldHandlePunchout
 {
-  v1 = [a1 userReportRequest];
-  v2 = v1 != 0;
+  userReportRequest = [self userReportRequest];
+  v2 = userReportRequest != 0;
 
   return v2;
 }
 
 - (BOOL)_SUICKPInteractiveCardSectionViewController_shouldRenderButtonOverlay
 {
-  v1 = [a1 userReportRequest];
-  v2 = v1 == 0;
+  userReportRequest = [self userReportRequest];
+  v2 = userReportRequest == 0;
 
   return v2;
 }

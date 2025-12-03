@@ -1,18 +1,18 @@
 @interface VOTTextSearchManager
 + (void)initialize;
 - (VOTTextSearchManager)init;
-- (void)_handleArrowKey:(id)a3;
-- (void)_handleDelete:(id)a3;
-- (void)_handleLetter:(id)a3;
-- (void)_handleRightLeftMovement:(id)a3;
-- (void)_handleUpDownMovement:(id)a3;
+- (void)_handleArrowKey:(id)key;
+- (void)_handleDelete:(id)delete;
+- (void)_handleLetter:(id)letter;
+- (void)_handleRightLeftMovement:(id)movement;
+- (void)_handleUpDownMovement:(id)movement;
 - (void)_syncSearchBufferHistory;
 - (void)_updateBrailleWithBuffer;
 - (void)beginNewTextSearchSession;
 - (void)endTextSearchSession;
-- (void)handleReplaceRange:(_NSRange)a3 withString:(id)a4 cursor:(int64_t)a5;
-- (void)handleTextSearchEvent:(id)a3;
-- (void)setCurrentSearchValue:(id)a3;
+- (void)handleReplaceRange:(_NSRange)range withString:(id)string cursor:(int64_t)cursor;
+- (void)handleTextSearchEvent:(id)event;
+- (void)setCurrentSearchValue:(id)value;
 @end
 
 @implementation VOTTextSearchManager
@@ -87,27 +87,27 @@
   [(VOTTextSearchManager *)self performSelector:"_syncSearchBufferHistory" withObject:0 afterDelay:0.5];
 }
 
-- (void)setCurrentSearchValue:(id)a3
+- (void)setCurrentSearchValue:(id)value
 {
-  [(NSMutableString *)self->_buffer setString:a3];
+  [(NSMutableString *)self->_buffer setString:value];
 
   [(VOTTextSearchManager *)self _updateBrailleWithBuffer];
 }
 
-- (void)_handleRightLeftMovement:(id)a3
+- (void)_handleRightLeftMovement:(id)movement
 {
-  v4 = a3;
+  movementCopy = movement;
   bufferIndex = self->_bufferIndex;
-  v21 = v4;
-  v6 = [v4 keyInfo];
-  v7 = [v6 keyCode];
+  v21 = movementCopy;
+  keyInfo = [movementCopy keyInfo];
+  keyCode = [keyInfo keyCode];
 
-  if (v7 == 80)
+  if (keyCode == 80)
   {
-    v13 = [v21 keyInfo];
-    v14 = [v13 isCommandKeyPressed];
+    keyInfo2 = [v21 keyInfo];
+    isCommandKeyPressed = [keyInfo2 isCommandKeyPressed];
 
-    if (v14)
+    if (isCommandKeyPressed)
     {
       if (self->_bufferIndex)
       {
@@ -126,12 +126,12 @@
     }
   }
 
-  else if (v7 == 79)
+  else if (keyCode == 79)
   {
-    v8 = [v21 keyInfo];
-    v9 = [v8 isCommandKeyPressed];
+    keyInfo3 = [v21 keyInfo];
+    isCommandKeyPressed2 = [keyInfo3 isCommandKeyPressed];
 
-    if (v9)
+    if (isCommandKeyPressed2)
     {
       v10 = self->_bufferIndex;
       v11 = [(NSMutableString *)self->_buffer length];
@@ -187,12 +187,12 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)_handleUpDownMovement:(id)a3
+- (void)_handleUpDownMovement:(id)movement
 {
-  v4 = [a3 keyInfo];
-  v5 = [v4 keyCode];
+  keyInfo = [movement keyInfo];
+  keyCode = [keyInfo keyCode];
   historyIndex = self->_historyIndex;
-  if (v5 == 82)
+  if (keyCode == 82)
   {
     v7 = historyIndex + 1;
   }
@@ -225,35 +225,35 @@ LABEL_22:
 LABEL_9:
 }
 
-- (void)_handleArrowKey:(id)a3
+- (void)_handleArrowKey:(id)key
 {
-  v6 = a3;
-  v4 = [v6 keyInfo];
-  v5 = [v4 keyCode];
+  keyCopy = key;
+  keyInfo = [keyCopy keyInfo];
+  keyCode = [keyInfo keyCode];
 
-  if (v5 - 81 < 2)
+  if (keyCode - 81 < 2)
   {
-    [(VOTTextSearchManager *)self _handleUpDownMovement:v6];
+    [(VOTTextSearchManager *)self _handleUpDownMovement:keyCopy];
   }
 
-  else if (v5 - 79 <= 1)
+  else if (keyCode - 79 <= 1)
   {
-    [(VOTTextSearchManager *)self _handleRightLeftMovement:v6];
+    [(VOTTextSearchManager *)self _handleRightLeftMovement:keyCopy];
   }
 }
 
-- (void)_handleDelete:(id)a3
+- (void)_handleDelete:(id)delete
 {
-  v21 = a3;
-  v4 = [v21 keyInfo];
-  v5 = [v4 keyCode];
+  deleteCopy = delete;
+  keyInfo = [deleteCopy keyInfo];
+  keyCode = [keyInfo keyCode];
 
-  if (v5 != 42)
+  if (keyCode != 42)
   {
-    v10 = [v21 keyInfo];
-    v11 = [v10 keyCode];
+    keyInfo2 = [deleteCopy keyInfo];
+    keyCode2 = [keyInfo2 keyCode];
 
-    if (v11 == 76)
+    if (keyCode2 == 76)
     {
       bufferIndex = self->_bufferIndex;
       if (bufferIndex == [(NSMutableString *)self->_buffer length])
@@ -271,12 +271,12 @@ LABEL_9:
       v9 = 0;
     }
 
-    v7 = v21;
+    v7 = deleteCopy;
     goto LABEL_10;
   }
 
   v6 = self->_bufferIndex;
-  v7 = v21;
+  v7 = deleteCopy;
   if (!v6)
   {
 LABEL_6:
@@ -289,10 +289,10 @@ LABEL_6:
   v8 = v6 - 1;
   v9 = 1;
 LABEL_10:
-  v15 = [v7 keyInfo];
-  v16 = [v15 isCommandKeyPressed];
+  keyInfo3 = [v7 keyInfo];
+  isCommandKeyPressed = [keyInfo3 isCommandKeyPressed];
 
-  if (v16)
+  if (isCommandKeyPressed)
   {
     v9 = [(NSMutableString *)self->_buffer length]- v8;
   }
@@ -304,60 +304,60 @@ LABEL_10:
   v17 = [v14 addString:v13];
   if ([VOTSharedWorkspace typingPitchChangeEnabled])
   {
-    v18 = [v14 lastAction];
+    lastAction = [v14 lastAction];
     LODWORD(v19) = 0.75;
     v20 = [NSNumber numberWithFloat:v19];
-    [v18 setObject:v20 forVariant:32];
+    [lastAction setObject:v20 forVariant:32];
   }
 
   [v14 send];
 LABEL_15:
 }
 
-- (void)_handleLetter:(id)a3
+- (void)_handleLetter:(id)letter
 {
-  v4 = [a3 keyInfo];
-  v26 = [v4 characters];
+  keyInfo = [letter keyInfo];
+  characters = [keyInfo characters];
 
-  if ([v26 length])
+  if ([characters length])
   {
     bufferIndex = self->_bufferIndex;
     v6 = [(NSMutableString *)self->_buffer length];
     buffer = self->_buffer;
     if (bufferIndex == v6)
     {
-      [(NSMutableString *)buffer appendString:v26];
+      [(NSMutableString *)buffer appendString:characters];
       v8 = [(NSMutableString *)self->_buffer length];
     }
 
     else
     {
-      [(NSMutableString *)buffer insertString:v26 atIndex:self->_bufferIndex];
+      [(NSMutableString *)buffer insertString:characters atIndex:self->_bufferIndex];
       v8 = (self->_bufferIndex + 1);
     }
 
     self->_bufferIndex = v8;
     v9 = +[AXSettings sharedInstance];
-    v10 = [v9 voiceOverHardwareTypingFeedback];
+    voiceOverHardwareTypingFeedback = [v9 voiceOverHardwareTypingFeedback];
 
     v11 = [objc_allocWithZone(VOTOutputRequest) init];
     v12 = v11;
-    if ((v10 & 0xFFFFFFFFFFFFFFFDLL) == 0)
+    if ((voiceOverHardwareTypingFeedback & 0xFFFFFFFFFFFFFFFDLL) == 0)
     {
-      v13 = [v11 addString:v26];
+      v13 = [v11 addString:characters];
       if ([VOTSharedWorkspace typingPitchChangeEnabled])
       {
-        v14 = [v12 lastAction];
+        lastAction = [v12 lastAction];
         LODWORD(v15) = 1.5;
         v16 = [NSNumber numberWithFloat:v15];
-        [v14 setObject:v16 forVariant:32];
+        [lastAction setObject:v16 forVariant:32];
       }
     }
 
-    if (v10 - 1 <= 1)
+    if (voiceOverHardwareTypingFeedback - 1 <= 1)
     {
       v17 = +[NSCharacterSet wordBreakCharacterSet];
-      if ([v17 characterIsMember:{objc_msgSend(v26, "characterAtIndex:", 0)}] && -[NSMutableString length](self->_buffer, "length") >= 2)
+      if ([v17 characterIsMember:{objc_msgSend(characters, "characterAtIndex:", 0)}] && -[NSMutableString length](self->_buffer, "length") >= 2)
       {
         v18 = [(NSMutableString *)self->_buffer rangeOfCharacterFromSet:v17 options:4 range:0, [(NSMutableString *)self->_buffer length]- 1];
         if (v18 == 0x7FFFFFFFFFFFFFFFLL)
@@ -388,65 +388,65 @@ LABEL_15:
   }
 }
 
-- (void)handleTextSearchEvent:(id)a3
+- (void)handleTextSearchEvent:(id)event
 {
-  v9 = a3;
-  v4 = [v9 keyInfo];
-  v5 = [v4 keyDown];
+  eventCopy = event;
+  keyInfo = [eventCopy keyInfo];
+  keyDown = [keyInfo keyDown];
 
-  v6 = v9;
-  if (v5)
+  v6 = eventCopy;
+  if (keyDown)
   {
-    v7 = [v9 keyInfo];
-    v8 = [v7 keyCode];
+    keyInfo2 = [eventCopy keyInfo];
+    keyCode = [keyInfo2 keyCode];
 
-    if (v8 - 79 >= 4)
+    if (keyCode - 79 >= 4)
     {
-      if (v8 == 42 || v8 == 76)
+      if (keyCode == 42 || keyCode == 76)
       {
-        [(VOTTextSearchManager *)self _handleDelete:v9];
+        [(VOTTextSearchManager *)self _handleDelete:eventCopy];
       }
 
       else
       {
-        [(VOTTextSearchManager *)self _handleLetter:v9];
+        [(VOTTextSearchManager *)self _handleLetter:eventCopy];
       }
     }
 
     else
     {
-      [(VOTTextSearchManager *)self _handleArrowKey:v9];
+      [(VOTTextSearchManager *)self _handleArrowKey:eventCopy];
     }
 
     [(VOTTextSearchManager *)self _updateBrailleWithBuffer];
-    v6 = v9;
+    v6 = eventCopy;
   }
 }
 
-- (void)handleReplaceRange:(_NSRange)a3 withString:(id)a4 cursor:(int64_t)a5
+- (void)handleReplaceRange:(_NSRange)range withString:(id)string cursor:(int64_t)cursor
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   if (&length[location] > [(NSMutableString *)self->_buffer length])
   {
     length = [(NSMutableString *)self->_buffer length]- location;
   }
 
-  [(NSMutableString *)self->_buffer replaceCharactersInRange:location withString:length, v9];
-  if (a5 < 0 || [(NSMutableString *)self->_buffer length]<= a5)
+  [(NSMutableString *)self->_buffer replaceCharactersInRange:location withString:length, stringCopy];
+  if (cursor < 0 || [(NSMutableString *)self->_buffer length]<= cursor)
   {
-    a5 = [(NSMutableString *)self->_buffer length];
+    cursor = [(NSMutableString *)self->_buffer length];
   }
 
-  self->_bufferIndex = a5;
+  self->_bufferIndex = cursor;
 }
 
 - (void)_updateBrailleWithBuffer
 {
-  v3 = [(VOTTextSearchManager *)self brailleManager];
+  brailleManager = [(VOTTextSearchManager *)self brailleManager];
 
-  if (v3)
+  if (brailleManager)
   {
     v4 = [[NSMutableAttributedString alloc] initWithString:self->_buffer];
     v5 = [NSAttributedString alloc];
@@ -458,9 +458,9 @@ LABEL_15:
 
     [v4 addAttribute:kSCROEditableTextAttribute value:&__kCFBooleanTrue range:{0, objc_msgSend(v4, "length")}];
     [v4 addAttribute:kSCROCursorAttribute value:&__kCFBooleanTrue range:{self->_bufferIndex, 1}];
-    v8 = [(VOTTextSearchManager *)self brailleManager];
-    v9 = [VOTSharedWorkspace selectedLanguage];
-    [v8 setBrailleString:v4 type:1 timeout:v9 langCode:self->_bufferIndex brailleLineRange:1 isBrailleLineRangeKnown:{1, 1.0}];
+    brailleManager2 = [(VOTTextSearchManager *)self brailleManager];
+    selectedLanguage = [VOTSharedWorkspace selectedLanguage];
+    [brailleManager2 setBrailleString:v4 type:1 timeout:selectedLanguage langCode:self->_bufferIndex brailleLineRange:1 isBrailleLineRangeKnown:{1, 1.0}];
   }
 }
 

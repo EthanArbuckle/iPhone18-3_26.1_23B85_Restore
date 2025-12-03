@@ -1,5 +1,5 @@
 @interface HMDUserDataZoneControllerShareLogEvent
-- (HMDUserDataZoneControllerShareLogEvent)initWithResult:(unint64_t)a3 didAccept:(BOOL)a4;
+- (HMDUserDataZoneControllerShareLogEvent)initWithResult:(unint64_t)result didAccept:(BOOL)accept;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -21,15 +21,15 @@
   return v5;
 }
 
-- (HMDUserDataZoneControllerShareLogEvent)initWithResult:(unint64_t)a3 didAccept:(BOOL)a4
+- (HMDUserDataZoneControllerShareLogEvent)initWithResult:(unint64_t)result didAccept:(BOOL)accept
 {
   v7.receiver = self;
   v7.super_class = HMDUserDataZoneControllerShareLogEvent;
   result = [(HMMLogEvent *)&v7 init];
   if (result)
   {
-    result->_result = a3;
-    result->_didAccept = a4;
+    result->_result = result;
+    result->_didAccept = accept;
   }
 
   return result;

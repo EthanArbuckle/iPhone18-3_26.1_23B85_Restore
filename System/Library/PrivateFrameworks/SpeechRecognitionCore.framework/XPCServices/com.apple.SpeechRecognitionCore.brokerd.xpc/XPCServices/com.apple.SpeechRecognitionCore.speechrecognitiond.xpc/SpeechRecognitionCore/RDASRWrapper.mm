@@ -1,8 +1,8 @@
 @interface RDASRWrapper
 - (RDASRWrapper)init;
 - (void)dealloc;
-- (void)mapDelegate:(RDASRWDelegate *)a3;
-- (void)setRecognitionBuffer:(void *)a3;
+- (void)mapDelegate:(RDASRWDelegate *)delegate;
+- (void)setRecognitionBuffer:(void *)buffer;
 @end
 
 @implementation RDASRWrapper
@@ -28,21 +28,21 @@
   return v2;
 }
 
-- (void)mapDelegate:(RDASRWDelegate *)a3
+- (void)mapDelegate:(RDASRWDelegate *)delegate
 {
-  var0 = a3->var0;
+  var0 = delegate->var0;
   *[(RDASRWrapper *)self recognitionDelegate]= var0;
-  var6 = a3->var6;
+  var6 = delegate->var6;
   *([(RDASRWrapper *)self recognitionDelegate]+ 6) = var6;
-  var3 = a3->var3;
+  var3 = delegate->var3;
   *([(RDASRWrapper *)self recognitionDelegate]+ 3) = var3;
-  var2 = a3->var2;
+  var2 = delegate->var2;
   *([(RDASRWrapper *)self recognitionDelegate]+ 2) = var2;
-  var5 = a3->var5;
+  var5 = delegate->var5;
   *([(RDASRWrapper *)self recognitionDelegate]+ 5) = var5;
-  var4 = a3->var4;
+  var4 = delegate->var4;
   *([(RDASRWrapper *)self recognitionDelegate]+ 4) = var4;
-  var1 = a3->var1;
+  var1 = delegate->var1;
   *([(RDASRWrapper *)self recognitionDelegate]+ 1) = var1;
 }
 
@@ -74,11 +74,11 @@
   [(RDASRWrapper *)&v6 dealloc];
 }
 
-- (void)setRecognitionBuffer:(void *)a3
+- (void)setRecognitionBuffer:(void *)buffer
 {
-  if (a3)
+  if (buffer)
   {
-    CFRetain(a3);
+    CFRetain(buffer);
   }
 
   recognitionBuffer = self->_recognitionBuffer;
@@ -87,7 +87,7 @@
     CFRelease(recognitionBuffer);
   }
 
-  self->_recognitionBuffer = a3;
+  self->_recognitionBuffer = buffer;
 }
 
 @end

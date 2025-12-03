@@ -38,8 +38,8 @@
   v15 = [v7 sectionWithRows:v14 title:@"Crash UI"];
 
   v16 = MEMORY[0x277D43218];
-  v17 = [MEMORY[0x277D431A8] restoreDefaultSettingsButton];
-  v24 = v17;
+  restoreDefaultSettingsButton = [MEMORY[0x277D431A8] restoreDefaultSettingsButton];
+  v24 = restoreDefaultSettingsButton;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
   v19 = [v16 sectionWithRows:v18];
   v25[0] = v19;

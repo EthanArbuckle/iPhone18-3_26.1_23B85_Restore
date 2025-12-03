@@ -4,10 +4,10 @@
 - (HFUserNotificationPresentationHandling)presentationHandler;
 - (id)notificationSettings;
 - (void)_applicationWillEnterForeground;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification;
 @end
 
 @implementation HFUserNotificationCenter
@@ -38,51 +38,51 @@ void __42__HFUserNotificationCenter_sharedInstance__block_invoke_2()
   v2 = [(HFUserNotificationCenter *)&v13 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(HFUserNotificationCenter *)v2 setObservers:v3];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(HFUserNotificationCenter *)v2 setObservers:weakObjectsHashTable];
 
     v4 = +[HFExecutionEnvironment sharedInstance];
-    v5 = [v4 hostProcess];
+    hostProcess = [v4 hostProcess];
 
-    if (v5)
+    if (hostProcess)
     {
       v6 = objc_alloc(MEMORY[0x277CE2028]);
-      v7 = HFHomeAppBundleID();
-      v8 = [v6 initWithBundleIdentifier:v7];
+      currentNotificationCenter = HFHomeAppBundleID();
+      v8 = [v6 initWithBundleIdentifier:currentNotificationCenter];
       [(HFUserNotificationCenter *)v2 setUserNotificationCenter:v8];
     }
 
     else
     {
-      v7 = [MEMORY[0x277CE2028] currentNotificationCenter];
-      [(HFUserNotificationCenter *)v2 setUserNotificationCenter:v7];
+      currentNotificationCenter = [MEMORY[0x277CE2028] currentNotificationCenter];
+      [(HFUserNotificationCenter *)v2 setUserNotificationCenter:currentNotificationCenter];
     }
 
-    v9 = [(HFUserNotificationCenter *)v2 userNotificationCenter];
-    [v9 setDelegate:v2];
+    userNotificationCenter = [(HFUserNotificationCenter *)v2 userNotificationCenter];
+    [userNotificationCenter setDelegate:v2];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel__applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidEnterBackground name:*MEMORY[0x277D76660] object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v2 selector:sel__applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__applicationWillEnterForeground name:*MEMORY[0x277D76758] object:0];
   }
 
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFUserNotificationCenter *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFUserNotificationCenter *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(HFUserNotificationCenter *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFUserNotificationCenter *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)_applicationWillEnterForeground
@@ -92,8 +92,8 @@ void __42__HFUserNotificationCenter_sharedInstance__block_invoke_2()
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(HFUserNotificationCenter *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  observers = [(HFUserNotificationCenter *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -105,7 +105,7 @@ void __42__HFUserNotificationCenter_sharedInstance__block_invoke_2()
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -118,7 +118,7 @@ void __42__HFUserNotificationCenter_sharedInstance__block_invoke_2()
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [observers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -129,25 +129,25 @@ void __42__HFUserNotificationCenter_sharedInstance__block_invoke_2()
 
 - (id)notificationSettings
 {
-  v3 = [(HFUserNotificationCenter *)self notificationSettingsFuture];
+  notificationSettingsFuture = [(HFUserNotificationCenter *)self notificationSettingsFuture];
 
-  if (!v3)
+  if (!notificationSettingsFuture)
   {
     v4 = objc_alloc_init(MEMORY[0x277D2C900]);
     [(HFUserNotificationCenter *)self setNotificationSettingsFuture:v4];
 
-    v5 = [(HFUserNotificationCenter *)self userNotificationCenter];
+    userNotificationCenter = [(HFUserNotificationCenter *)self userNotificationCenter];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __48__HFUserNotificationCenter_notificationSettings__block_invoke;
     v8[3] = &unk_277DFB650;
     v8[4] = self;
-    [v5 getNotificationSettingsWithCompletionHandler:v8];
+    [userNotificationCenter getNotificationSettingsWithCompletionHandler:v8];
   }
 
-  v6 = [(HFUserNotificationCenter *)self notificationSettingsFuture];
+  notificationSettingsFuture2 = [(HFUserNotificationCenter *)self notificationSettingsFuture];
 
-  return v6;
+  return notificationSettingsFuture2;
 }
 
 void __48__HFUserNotificationCenter_notificationSettings__block_invoke(uint64_t a1, void *a2)
@@ -174,18 +174,18 @@ void __48__HFUserNotificationCenter_notificationSettings__block_invoke(uint64_t 
   }
 }
 
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  notificationCopy = notification;
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__HFUserNotificationCenter_userNotificationCenter_openSettingsForNotification___block_invoke;
   v8[3] = &unk_277DF3370;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  [v6 performBlock:v8];
+  v9 = notificationCopy;
+  selfCopy = self;
+  v7 = notificationCopy;
+  [mainThreadScheduler performBlock:v8];
 }
 
 void __79__HFUserNotificationCenter_userNotificationCenter_openSettingsForNotification___block_invoke(uint64_t a1)
@@ -212,22 +212,22 @@ void __79__HFUserNotificationCenter_userNotificationCenter_openSettingsForNotifi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277D2C938] mainThreadScheduler];
+  responseCopy = response;
+  handlerCopy = handler;
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __104__HFUserNotificationCenter_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   v13[3] = &unk_277DFB6A0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
+  v14 = responseCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
   v17 = a2;
-  v11 = v9;
-  v12 = v8;
-  [v10 performBlock:v13];
+  v11 = handlerCopy;
+  v12 = responseCopy;
+  [mainThreadScheduler performBlock:v13];
 }
 
 void __104__HFUserNotificationCenter_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke(uint64_t a1)

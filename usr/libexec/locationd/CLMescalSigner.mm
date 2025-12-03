@@ -1,16 +1,16 @@
 @interface CLMescalSigner
 - (id)_mescalSignerNSURLSession;
-- (id)initInSilo:(id)a3;
-- (void)_churnMescalExchangeData:(id)a3 withCompletion:(id)a4;
+- (id)initInSilo:(id)silo;
+- (void)_churnMescalExchangeData:(id)data withCompletion:(id)completion;
 - (void)_doSigningWhenReady;
-- (void)_initializeMescalWithCompletion:(id)a3;
+- (void)_initializeMescalWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)signData:(id)a3 withCompletion:(id)a4;
+- (void)signData:(id)data withCompletion:(id)completion;
 @end
 
 @implementation CLMescalSigner
 
-- (id)initInSilo:(id)a3
+- (id)initInSilo:(id)silo
 {
   v10.receiver = self;
   v10.super_class = CLMescalSigner;
@@ -55,7 +55,7 @@
 
     else
     {
-      v5->_silo = a3;
+      v5->_silo = silo;
       v5->_worklist = objc_alloc_init(NSMutableArray);
       v5->_replaceAfter = CFAbsoluteTimeGetCurrent() + 3600.0;
     }
@@ -88,18 +88,18 @@
   [(CLMescalSigner *)&v4 dealloc];
 }
 
-- (void)signData:(id)a3 withCompletion:(id)a4
+- (void)signData:(id)data withCompletion:(id)completion
 {
-  if (!a3)
+  if (!data)
   {
-    sub_1018B3384(self, a2, 0, a4);
+    sub_1018B3384(self, a2, 0, completion);
   }
 
   worklist = self->_worklist;
-  v9[0] = a3;
+  v9[0] = data;
   v8[0] = @"dataIn";
   v8[1] = @"hdlr";
-  v9[1] = [a4 copy];
+  v9[1] = [completion copy];
   v6 = [(NSMutableArray *)worklist addObject:[NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2]];
   if (self->_keyExchangeComplete)
   {
@@ -227,19 +227,19 @@
 - (id)_mescalSignerNSURLSession
 {
   v3 = +[NSURLSessionConfiguration defaultSessionConfiguration];
-  v4 = [(CLSilo *)self->_silo operationQueue];
+  operationQueue = [(CLSilo *)self->_silo operationQueue];
 
-  return [NSURLSession sessionWithConfiguration:v3 delegate:self delegateQueue:v4];
+  return [NSURLSession sessionWithConfiguration:v3 delegate:self delegateQueue:operationQueue];
 }
 
-- (void)_initializeMescalWithCompletion:(id)a3
+- (void)_initializeMescalWithCompletion:(id)completion
 {
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v17 = sub_100524D3C;
   v18 = &unk_10245C2F0;
-  v19 = self;
-  v20 = a3;
+  selfCopy = self;
+  completionCopy = completion;
   sub_100357B7C(&self->_session, &self->_hardwareInfo);
   if (v4)
   {
@@ -338,7 +338,7 @@ LABEL_20:
   v17(v16, 0);
 }
 
-- (void)_churnMescalExchangeData:(id)a3 withCompletion:(id)a4
+- (void)_churnMescalExchangeData:(id)data withCompletion:(id)completion
 {
   session = self->_session;
   if (!session)
@@ -346,7 +346,7 @@ LABEL_20:
     sub_1018B3B44();
   }
 
-  if (!a3)
+  if (!data)
   {
     sub_1018B39E0();
   }
@@ -354,7 +354,7 @@ LABEL_20:
   v21 = 0;
   v20 = 0;
   v19 = -1;
-  sub_10035D964(200, &self->_hardwareInfo, session, [a3 bytes], objc_msgSend(a3, "length"), &v21, &v20, &v19);
+  sub_10035D964(200, &self->_hardwareInfo, session, [data bytes], objc_msgSend(data, "length"), &v21, &v20, &v19);
   v8 = v7;
   v9 = [NSData dataWithBytes:v21 length:v20];
   sub_1003462B0(v21);
@@ -398,7 +398,7 @@ LABEL_20:
 LABEL_11:
     _os_signpost_emit_with_name_impl(dword_100000000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, v12, v13, buf, 0x1Cu);
 LABEL_12:
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
     return;
   }
 
@@ -411,15 +411,15 @@ LABEL_12:
     [(NSMutableURLRequest *)v15 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"content-type"];
     [(NSMutableURLRequest *)v15 setHTTPMethod:@"POST"];
     [(NSMutableURLRequest *)v15 setHTTPBody:v14];
-    v16 = [(CLMescalSigner *)self _mescalSignerNSURLSession];
+    _mescalSignerNSURLSession = [(CLMescalSigner *)self _mescalSignerNSURLSession];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10052583C;
     v18[3] = &unk_10245C318;
     v18[4] = self;
-    v18[5] = a4;
-    [objc_msgSend(v16 dataTaskWithRequest:v15 completionHandler:{v18), "resume"}];
-    [v16 finishTasksAndInvalidate];
+    v18[5] = completion;
+    [objc_msgSend(_mescalSignerNSURLSession dataTaskWithRequest:v15 completionHandler:{v18), "resume"}];
+    [_mescalSignerNSURLSession finishTasksAndInvalidate];
   }
 
   else
@@ -464,7 +464,7 @@ LABEL_12:
       goto LABEL_11;
     }
 
-    (*(a4 + 2))(a4, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 

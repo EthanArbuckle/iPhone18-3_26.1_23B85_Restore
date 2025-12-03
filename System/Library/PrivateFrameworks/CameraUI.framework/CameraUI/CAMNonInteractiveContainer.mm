@@ -1,14 +1,14 @@
 @interface CAMNonInteractiveContainer
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation CAMNonInteractiveContainer
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CAMNonInteractiveContainer;
-  v5 = [(CAMNonInteractiveContainer *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CAMNonInteractiveContainer *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 

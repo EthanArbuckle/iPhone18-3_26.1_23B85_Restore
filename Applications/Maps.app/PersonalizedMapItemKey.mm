@@ -1,53 +1,53 @@
 @interface PersonalizedMapItemKey
-- (BOOL)isEqual:(id)a3;
-- (PersonalizedMapItemKey)initWithGeoMapItem:(id)a3;
-- (PersonalizedMapItemKey)initWithGeoMapItem:(id)a3 disambiguationRadiusMeters:(float)a4;
-- (PersonalizedMapItemKey)initWithMapItem:(id)a3;
-- (PersonalizedMapItemKey)initWithMapItem:(id)a3 disambiguationRadiusMeters:(float)a4;
+- (BOOL)isEqual:(id)equal;
+- (PersonalizedMapItemKey)initWithGeoMapItem:(id)item;
+- (PersonalizedMapItemKey)initWithGeoMapItem:(id)item disambiguationRadiusMeters:(float)meters;
+- (PersonalizedMapItemKey)initWithMapItem:(id)item;
+- (PersonalizedMapItemKey)initWithMapItem:(id)item disambiguationRadiusMeters:(float)meters;
 @end
 
 @implementation PersonalizedMapItemKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v21) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v5;
-        v7 = [(PersonalizedMapItemKey *)self geoMapItem];
-        v8 = [v7 _clientAttributes];
-        v9 = [v8 mapsSyncAttributes];
-        v10 = [v9 mapsSyncIdentifier];
+        geoMapItem5 = v5;
+        geoMapItem = [(PersonalizedMapItemKey *)self geoMapItem];
+        _clientAttributes = [geoMapItem _clientAttributes];
+        mapsSyncAttributes = [_clientAttributes mapsSyncAttributes];
+        mapsSyncIdentifier = [mapsSyncAttributes mapsSyncIdentifier];
 
-        v11 = [(PersonalizedMapItemKey *)self geoMapItem];
-        v12 = v11;
-        if (v10)
+        geoMapItem2 = [(PersonalizedMapItemKey *)self geoMapItem];
+        v12 = geoMapItem2;
+        if (mapsSyncIdentifier)
         {
-          v13 = [v11 _clientAttributes];
-          v29 = [v13 mapsSyncAttributes];
-          v14 = [v29 mapsSyncIdentifier];
-          v15 = [(PersonalizedMapItemKey *)v6 geoMapItem];
-          v16 = [v15 _clientAttributes];
-          v17 = [v16 mapsSyncAttributes];
-          [v17 mapsSyncIdentifier];
-          v18 = v6;
+          _clientAttributes2 = [geoMapItem2 _clientAttributes];
+          mapsSyncAttributes2 = [_clientAttributes2 mapsSyncAttributes];
+          mapsSyncIdentifier2 = [mapsSyncAttributes2 mapsSyncIdentifier];
+          geoMapItem3 = [(PersonalizedMapItemKey *)geoMapItem5 geoMapItem];
+          _clientAttributes3 = [geoMapItem3 _clientAttributes];
+          mapsSyncAttributes3 = [_clientAttributes3 mapsSyncAttributes];
+          [mapsSyncAttributes3 mapsSyncIdentifier];
+          v18 = geoMapItem5;
           v20 = v19 = v12;
-          LOBYTE(v21) = [v14 isEqualToString:v20];
+          LOBYTE(v21) = [mapsSyncIdentifier2 isEqualToString:v20];
 
           v12 = v19;
-          v6 = v18;
-          v22 = v13;
+          geoMapItem5 = v18;
+          v22 = _clientAttributes2;
 
 LABEL_24:
 LABEL_25:
@@ -55,38 +55,38 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v26 = [(PersonalizedMapItemKey *)v6 geoMapItem];
-        v22 = v26;
+        geoMapItem4 = [(PersonalizedMapItemKey *)geoMapItem5 geoMapItem];
+        v22 = geoMapItem4;
         LOBYTE(v21) = 0;
-        if (!v12 || !v26)
+        if (!v12 || !geoMapItem4)
         {
           goto LABEL_24;
         }
 
-        if ([(PersonalizedMapItemKey *)self hasDisambiguationRadiusMeters]&& [(PersonalizedMapItemKey *)v6 hasDisambiguationRadiusMeters])
+        if ([(PersonalizedMapItemKey *)self hasDisambiguationRadiusMeters]&& [(PersonalizedMapItemKey *)geoMapItem5 hasDisambiguationRadiusMeters])
         {
           [(PersonalizedMapItemKey *)self disambiguationRadiusMeters];
-          [(PersonalizedMapItemKey *)v6 disambiguationRadiusMeters];
+          [(PersonalizedMapItemKey *)geoMapItem5 disambiguationRadiusMeters];
         }
 
         else
         {
           if ([(PersonalizedMapItemKey *)self hasDisambiguationRadiusMeters])
           {
-            v27 = self;
+            selfCopy = self;
           }
 
           else
           {
-            if (![(PersonalizedMapItemKey *)v6 hasDisambiguationRadiusMeters])
+            if (![(PersonalizedMapItemKey *)geoMapItem5 hasDisambiguationRadiusMeters])
             {
               goto LABEL_23;
             }
 
-            v27 = v6;
+            selfCopy = geoMapItem5;
           }
 
-          [(PersonalizedMapItemKey *)v27 disambiguationRadiusMeters];
+          [(PersonalizedMapItemKey *)selfCopy disambiguationRadiusMeters];
         }
 
 LABEL_23:
@@ -96,10 +96,10 @@ LABEL_23:
 
       if ([(PersonalizedMapItemKey *)v5 conformsToProtocol:&OBJC_PROTOCOL___PersonalizedItemKeyWithGEOMapItem])
       {
-        v6 = [(PersonalizedMapItemKey *)v5 geoMapItem];
-        if (v6 && ([(PersonalizedMapItemKey *)self geoMapItem], v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
+        geoMapItem5 = [(PersonalizedMapItemKey *)v5 geoMapItem];
+        if (geoMapItem5 && ([(PersonalizedMapItemKey *)self geoMapItem], v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
         {
-          v24 = [(PersonalizedMapItemKey *)self geoMapItem];
+          geoMapItem6 = [(PersonalizedMapItemKey *)self geoMapItem];
           IsEqualToMapItemForPurposeWithinDistance = GEOMapItemIsEqualToMapItemForPurposeWithinDistance();
 
           v21 = IsEqualToMapItemForPurposeWithinDistance << 31 >> 31;
@@ -122,45 +122,45 @@ LABEL_26:
   return v21 & 1;
 }
 
-- (PersonalizedMapItemKey)initWithMapItem:(id)a3 disambiguationRadiusMeters:(float)a4
+- (PersonalizedMapItemKey)initWithMapItem:(id)item disambiguationRadiusMeters:(float)meters
 {
-  v6 = [a3 _geoMapItem];
-  *&v7 = a4;
-  v8 = [(PersonalizedMapItemKey *)self initWithGeoMapItem:v6 disambiguationRadiusMeters:v7];
+  _geoMapItem = [item _geoMapItem];
+  *&v7 = meters;
+  v8 = [(PersonalizedMapItemKey *)self initWithGeoMapItem:_geoMapItem disambiguationRadiusMeters:v7];
 
   return v8;
 }
 
-- (PersonalizedMapItemKey)initWithMapItem:(id)a3
+- (PersonalizedMapItemKey)initWithMapItem:(id)item
 {
-  v4 = [a3 _geoMapItem];
-  v5 = [(PersonalizedMapItemKey *)self initWithGeoMapItem:v4];
+  _geoMapItem = [item _geoMapItem];
+  v5 = [(PersonalizedMapItemKey *)self initWithGeoMapItem:_geoMapItem];
 
   return v5;
 }
 
-- (PersonalizedMapItemKey)initWithGeoMapItem:(id)a3 disambiguationRadiusMeters:(float)a4
+- (PersonalizedMapItemKey)initWithGeoMapItem:(id)item disambiguationRadiusMeters:(float)meters
 {
-  result = [(PersonalizedMapItemKey *)self initWithGeoMapItem:a3];
+  result = [(PersonalizedMapItemKey *)self initWithGeoMapItem:item];
   if (result)
   {
     result->_hasDisambiguationRadiusMeters = 1;
-    result->_disambiguationRadiusMeters = a4;
+    result->_disambiguationRadiusMeters = meters;
   }
 
   return result;
 }
 
-- (PersonalizedMapItemKey)initWithGeoMapItem:(id)a3
+- (PersonalizedMapItemKey)initWithGeoMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PersonalizedMapItemKey;
   v6 = [(PersonalizedMapItemKey *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_geoMapItem, a3);
+    objc_storeStrong(&v6->_geoMapItem, item);
     v7->_hash = GEOMapItemHashForPurpose();
   }
 

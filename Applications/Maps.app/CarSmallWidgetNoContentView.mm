@@ -1,6 +1,6 @@
 @interface CarSmallWidgetNoContentView
-- (CarSmallWidgetNoContentView)initWithCoder:(id)a3;
-- (CarSmallWidgetNoContentView)initWithFrame:(CGRect)a3;
+- (CarSmallWidgetNoContentView)initWithCoder:(id)coder;
+- (CarSmallWidgetNoContentView)initWithFrame:(CGRect)frame;
 - (void)_commonInit;
 @end
 
@@ -34,11 +34,11 @@
   [(UILabel *)self->_noContentLabel setText:v8];
 }
 
-- (CarSmallWidgetNoContentView)initWithFrame:(CGRect)a3
+- (CarSmallWidgetNoContentView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CarSmallWidgetNoContentView;
-  v3 = [(CarSmallWidgetNoContentView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarSmallWidgetNoContentView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -48,11 +48,11 @@
   return v4;
 }
 
-- (CarSmallWidgetNoContentView)initWithCoder:(id)a3
+- (CarSmallWidgetNoContentView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CarSmallWidgetNoContentView;
-  v3 = [(CarSmallWidgetNoContentView *)&v6 initWithCoder:a3];
+  v3 = [(CarSmallWidgetNoContentView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

@@ -1,6 +1,6 @@
 @interface ConceptFeedItemValueView
 - (void)didMoveToSuperview;
-- (void)traitCollectionDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4;
+- (void)traitCollectionDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection;
 @end
 
 @implementation ConceptFeedItemValueView
@@ -14,12 +14,12 @@
   sub_1D1195E64();
 }
 
-- (void)traitCollectionDidChangeWithTraitEnvironment:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChangeWithTraitEnvironment:(id)environment previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_1D1196480(a4);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1D1196480(collection);
   swift_unknownObjectRelease();
 }
 

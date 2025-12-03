@@ -1,35 +1,35 @@
 @interface PKMediaName
-+ (id)pkMediaNameWithString:(id)a3;
++ (id)pkMediaNameWithString:(id)string;
 - (BOOL)isRoll;
 - (NSString)unitStr;
-- (PKMediaName)initWithString:(id)a3;
+- (PKMediaName)initWithString:(id)string;
 - (double)height;
 - (double)width;
 - (void)dealloc;
-- (void)parseMediaName:(id)a3;
+- (void)parseMediaName:(id)name;
 @end
 
 @implementation PKMediaName
 
-+ (id)pkMediaNameWithString:(id)a3
++ (id)pkMediaNameWithString:(id)string
 {
-  v3 = a3;
-  v4 = [[PKMediaName alloc] initWithString:v3];
+  stringCopy = string;
+  v4 = [[PKMediaName alloc] initWithString:stringCopy];
 
   return v4;
 }
 
-- (PKMediaName)initWithString:(id)a3
+- (PKMediaName)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v8.receiver = self;
   v8.super_class = PKMediaName;
   v5 = [(PKMediaName *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKMediaName *)v5 setMediaName:v4];
-    [(PKMediaName *)v6 parseMediaName:v4];
+    [(PKMediaName *)v5 setMediaName:stringCopy];
+    [(PKMediaName *)v6 parseMediaName:stringCopy];
   }
 
   return v6;
@@ -46,10 +46,10 @@
   [(PKMediaName *)&v3 dealloc];
 }
 
-- (void)parseMediaName:(id)a3
+- (void)parseMediaName:(id)name
 {
-  v17 = a3;
-  v4 = strdup([v17 UTF8String]);
+  nameCopy = name;
+  v4 = strdup([nameCopy UTF8String]);
   v5 = strchr(v4, 95);
   if (!v5)
   {
@@ -124,21 +124,21 @@ LABEL_17:
   }
 
 LABEL_23:
-  NSLog(&cfstr_SFailedOn.isa, "[PKMediaName parseMediaName:]", v17);
+  NSLog(&cfstr_SFailedOn.isa, "[PKMediaName parseMediaName:]", nameCopy);
 LABEL_24:
   free(v4);
 }
 
 - (NSString)unitStr
 {
-  v2 = [(PKMediaName *)self units];
+  units = [(PKMediaName *)self units];
   v3 = &stru_28719ACE8;
-  if (v2 == 2)
+  if (units == 2)
   {
     v3 = @"mm";
   }
 
-  if (v2 == 1)
+  if (units == 1)
   {
     return @"in";
   }
@@ -151,8 +151,8 @@ LABEL_24:
 
 - (BOOL)isRoll
 {
-  v2 = [(PKMediaName *)self mediaClass];
-  v3 = [v2 isEqualToString:@"roll"];
+  mediaClass = [(PKMediaName *)self mediaClass];
+  v3 = [mediaClass isEqualToString:@"roll"];
 
   return v3;
 }

@@ -1,23 +1,23 @@
 @interface PRUISPosterChannelModelCoordinator
-- (BOOL)accessModel:(id)a3 reason:(id)a4 error:(id *)a5;
-- (BOOL)mutateModel:(id)a3 reason:(id)a4 error:(id *)a5;
+- (BOOL)accessModel:(id)model reason:(id)reason error:(id *)error;
+- (BOOL)mutateModel:(id)model reason:(id)reason error:(id *)error;
 - (PRUISPosterChannelModelCoordinator)init;
-- (PRUISPosterChannelModelCoordinator)initWithChannelConfiguration:(id)a3 extensionProvider:(id)a4;
-- (id)channelPersistenceURLForChannelIdentifier:(id)a3;
-- (id)fileSystemEndpointForChannelIdentifier:(id)a3;
-- (id)updateGalleryForChannel:(id)a3 fetchOptions:(id)a4;
+- (PRUISPosterChannelModelCoordinator)initWithChannelConfiguration:(id)configuration extensionProvider:(id)provider;
+- (id)channelPersistenceURLForChannelIdentifier:(id)identifier;
+- (id)fileSystemEndpointForChannelIdentifier:(id)identifier;
+- (id)updateGalleryForChannel:(id)channel fetchOptions:(id)options;
 - (void)dealloc;
 @end
 
 @implementation PRUISPosterChannelModelCoordinator
 
-- (PRUISPosterChannelModelCoordinator)initWithChannelConfiguration:(id)a3 extensionProvider:(id)a4
+- (PRUISPosterChannelModelCoordinator)initWithChannelConfiguration:(id)configuration extensionProvider:(id)provider
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v62 = a4;
-  v66 = v7;
-  if (!v7)
+  configurationCopy = configuration;
+  providerCopy = provider;
+  v66 = configurationCopy;
+  if (!configurationCopy)
   {
     [PRUISPosterChannelModelCoordinator initWithChannelConfiguration:a2 extensionProvider:?];
   }
@@ -36,13 +36,13 @@
     goto LABEL_29;
   }
 
-  objc_storeStrong(&v8->_extensionProvider, a4);
-  v10 = [v7 URL];
-  v11 = [v10 URLByStandardizingPath];
-  v12 = [v11 URLByResolvingSymlinksInPath];
+  objc_storeStrong(&v8->_extensionProvider, provider);
+  v10 = [configurationCopy URL];
+  uRLByStandardizingPath = [v10 URLByStandardizingPath];
+  uRLByResolvingSymlinksInPath = [uRLByStandardizingPath URLByResolvingSymlinksInPath];
   v13 = *(v9 + 48);
   v63 = (v9 + 48);
-  *(v9 + 48) = v12;
+  *(v9 + 48) = uRLByResolvingSymlinksInPath;
 
   v65 = [*(v9 + 48) URLByAppendingPathComponent:@"Contents" isDirectory:1];
   v14 = [v65 URLByAppendingPathComponent:@"channelDB.sqlite" isDirectory:0];
@@ -60,17 +60,17 @@
   v20 = *(v9 + 96);
   *(v9 + 96) = v19;
 
-  v21 = [v7 role];
+  role = [configurationCopy role];
   v22 = *(v9 + 56);
-  *(v9 + 56) = v21;
+  *(v9 + 56) = role;
 
   if (objc_opt_respondsToSelector())
   {
-    v23 = [v7 fileManager];
-    v24 = v23;
-    if (v23)
+    fileManager = [configurationCopy fileManager];
+    v24 = fileManager;
+    if (fileManager)
     {
-      v25 = v23;
+      v25 = fileManager;
     }
 
     else
@@ -102,9 +102,9 @@
     [(PRUISPosterChannelModelCoordinator *)v63 initWithChannelConfiguration:a2 extensionProvider:v9, v59];
   }
 
-  v31 = [v30 pf_hexadecimalEncodedString];
+  pf_hexadecimalEncodedString = [v30 pf_hexadecimalEncodedString];
   v32 = *(v9 + 32);
-  *(v9 + 32) = v31;
+  *(v9 + 32) = pf_hexadecimalEncodedString;
 
   v33 = __allModelCoordinators;
   objc_sync_enter(v33);
@@ -163,12 +163,12 @@
   {
     v44 = MEMORY[0x1E696AEC0];
     v45 = *(v9 + 56);
-    v46 = [*(v9 + 48) lastPathComponent];
-    v47 = v46;
+    lastPathComponent = [*(v9 + 48) lastPathComponent];
+    v47 = lastPathComponent;
     v48 = &stru_1F4ACA8E0;
-    if (v46)
+    if (lastPathComponent)
     {
-      v48 = v46;
+      v48 = lastPathComponent;
     }
 
     v49 = [v44 stringWithFormat:@"<PRUISPosterChannelControlling:%@:%@>", v45, v48];
@@ -241,49 +241,49 @@ void __85__PRUISPosterChannelModelCoordinator_initWithChannelConfiguration_exten
   [(PRUISPosterChannelModelCoordinator *)&v3 dealloc];
 }
 
-- (id)fileSystemEndpointForChannelIdentifier:(id)a3
+- (id)fileSystemEndpointForChannelIdentifier:(id)identifier
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [PRUISPosterChannelModelCoordinator fileSystemEndpointForChannelIdentifier:a2];
   }
 
-  v6 = v5;
+  v6 = identifierCopy;
   channelPersistenceURLEndpoint = self->_channelPersistenceURLEndpoint;
   v8 = objc_alloc(MEMORY[0x1E69C5118]);
-  v9 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
   v10 = PFFileProtectionNoneAttributes();
   v15 = *MEMORY[0x1E695DB80];
   v16[0] = MEMORY[0x1E695E118];
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v12 = [v8 initWithRelativePathComponents:v9 attributes:v10 resourceValues:v11];
+  v12 = [v8 initWithRelativePathComponents:uUIDString attributes:v10 resourceValues:v11];
   v13 = [(PFFileSystemEndpoint *)channelPersistenceURLEndpoint endPointByAppendingEndpoint:v12];
 
   return v13;
 }
 
-- (id)channelPersistenceURLForChannelIdentifier:(id)a3
+- (id)channelPersistenceURLForChannelIdentifier:(id)identifier
 {
   schemaManager = self->_schemaManager;
-  v4 = [(PRUISPosterChannelModelCoordinator *)self fileSystemEndpointForChannelIdentifier:a3];
+  v4 = [(PRUISPosterChannelModelCoordinator *)self fileSystemEndpointForChannelIdentifier:identifier];
   v5 = [(PFFileSystemSchemaManager *)schemaManager resolveEndpoint:v4];
 
   return v5;
 }
 
-- (BOOL)accessModel:(id)a3 reason:(id)a4 error:(id *)a5
+- (BOOL)accessModel:(id)model reason:(id)reason error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  modelCopy = model;
+  reasonCopy = reason;
+  if (!modelCopy)
   {
     v12 = 0;
     goto LABEL_12;
   }
 
-  v10 = [(PRUISPosterChannelModelCoordinator *)self acquireInUseAssertionWithReason:v9];
+  v10 = [(PRUISPosterChannelModelCoordinator *)self acquireInUseAssertionWithReason:reasonCopy];
   [(PFOSUnfairLock *)self->_modelLock lock];
   if (self->_modelLock_modelMutator)
   {
@@ -312,7 +312,7 @@ void __85__PRUISPosterChannelModelCoordinator_initWithChannelConfiguration_exten
     }
   }
 
-  v8[2](v8);
+  modelCopy[2](modelCopy);
   v15 = v11;
 
   v12 = 1;
@@ -322,11 +322,11 @@ LABEL_7:
   [v10 invalidate];
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v16 = v11;
       v12 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -339,17 +339,17 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)mutateModel:(id)a3 reason:(id)a4 error:(id *)a5
+- (BOOL)mutateModel:(id)model reason:(id)reason error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  modelCopy = model;
+  reasonCopy = reason;
+  if (!modelCopy)
   {
     v12 = 0;
     goto LABEL_12;
   }
 
-  v10 = [(PRUISPosterChannelModelCoordinator *)self acquireInUseAssertionWithReason:v9];
+  v10 = [(PRUISPosterChannelModelCoordinator *)self acquireInUseAssertionWithReason:reasonCopy];
   [(PFOSUnfairLock *)self->_modelLock lock];
   if (self->_modelLock_modelMutator)
   {
@@ -378,7 +378,7 @@ LABEL_12:
     }
   }
 
-  v8[2](v8);
+  modelCopy[2](modelCopy);
   v15 = v11;
 
   v12 = 1;
@@ -388,11 +388,11 @@ LABEL_7:
   [v10 invalidate];
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v16 = v11;
       v12 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -405,10 +405,10 @@ LABEL_12:
   return v12;
 }
 
-- (id)updateGalleryForChannel:(id)a3 fetchOptions:(id)a4
+- (id)updateGalleryForChannel:(id)channel fetchOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  channelCopy = channel;
+  optionsCopy = options;
   v9 = NSStringFromSelector(a2);
   v10 = [(PRUISPosterChannelModelCoordinator *)self acquireInUseAssertionWithReason:v9];
 
@@ -423,9 +423,9 @@ LABEL_12:
   v28[2] = __75__PRUISPosterChannelModelCoordinator_updateGalleryForChannel_fetchOptions___block_invoke;
   v28[3] = &unk_1E83A8178;
   v31 = &v32;
-  v11 = v7;
+  v11 = channelCopy;
   v29 = v11;
-  v12 = v8;
+  v12 = optionsCopy;
   v30 = v12;
   v27 = 0;
   [(PRUISPosterChannelModelCoordinator *)self mutateModel:v28 reason:&stru_1F4ACA8E0 error:&v27];

@@ -1,19 +1,19 @@
 @interface _CNLazyArrayOperatorFilter
-- (_CNLazyArrayOperatorFilter)initWithInput:(id)a3 test:(id)a4;
+- (_CNLazyArrayOperatorFilter)initWithInput:(id)input test:(id)test;
 - (id)nextObject;
 @end
 
 @implementation _CNLazyArrayOperatorFilter
 
-- (_CNLazyArrayOperatorFilter)initWithInput:(id)a3 test:(id)a4
+- (_CNLazyArrayOperatorFilter)initWithInput:(id)input test:(id)test
 {
-  v6 = a4;
+  testCopy = test;
   v12.receiver = self;
   v12.super_class = _CNLazyArrayOperatorFilter;
-  v7 = [(_CNLazyArrayOperator *)&v12 initWithInput:a3];
+  v7 = [(_CNLazyArrayOperator *)&v12 initWithInput:input];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [testCopy copy];
     test = v7->_test;
     v7->_test = v8;
 
@@ -25,10 +25,10 @@
 
 - (id)nextObject
 {
-  v3 = [(_CNLazyArrayOperator *)self input];
-  v4 = [v3 nextObject];
+  input = [(_CNLazyArrayOperator *)self input];
+  nextObject = [input nextObject];
 
-  if (v4)
+  if (nextObject)
   {
     do
     {
@@ -37,16 +37,16 @@
         break;
       }
 
-      v5 = [(_CNLazyArrayOperator *)self input];
-      v6 = [v5 nextObject];
+      input2 = [(_CNLazyArrayOperator *)self input];
+      nextObject2 = [input2 nextObject];
 
-      v4 = v6;
+      nextObject = nextObject2;
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
-  return v4;
+  return nextObject;
 }
 
 @end

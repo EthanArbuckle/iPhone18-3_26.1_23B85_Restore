@@ -1,21 +1,21 @@
 @interface UNCNotificationServiceExtensionManager
-- (id)_extensionForAppBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)extensionForBundleIdentifier:(id)a3 error:(id *)a4;
+- (id)_extensionForAppBundleIdentifier:(id)identifier error:(id *)error;
+- (id)extensionForBundleIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation UNCNotificationServiceExtensionManager
 
-- (id)extensionForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)extensionForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
-  v7 = [(UNCNotificationServiceExtensionManager *)self _extensionForAppBundleIdentifier:v6 error:&v20];
+  v7 = [(UNCNotificationServiceExtensionManager *)self _extensionForAppBundleIdentifier:identifierCopy error:&v20];
   v8 = v20;
   v9 = v8;
   if (v7)
   {
     v10 = [[UNCNotificationServiceExtension alloc] _initWithExtension:v7 serviceTime:30.0 graceTime:1.0];
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -31,17 +31,17 @@
   v11 = *MEMORY[0x1E6983398];
   if (os_log_type_enabled(*MEMORY[0x1E6983398], OS_LOG_TYPE_ERROR))
   {
-    [(UNCNotificationServiceExtensionManager *)v6 extensionForBundleIdentifier:v11 error:v12, v13, v14, v15, v16, v17];
+    [(UNCNotificationServiceExtensionManager *)identifierCopy extensionForBundleIdentifier:v11 error:v12, v13, v14, v15, v16, v17];
   }
 
   v10 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_9:
     if (v9)
     {
       v18 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -50,16 +50,16 @@ LABEL_11:
   return v10;
 }
 
-- (id)_extensionForAppBundleIdentifier:(id)a3 error:(id *)a4
+- (id)_extensionForAppBundleIdentifier:(id)identifier error:(id *)error
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v5 allowPlaceholder:0 error:0];
+  identifierCopy = identifier;
+  v6 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:0];
   v7 = v6;
   if (v6)
   {
-    v35 = a4;
-    v36 = v5;
+    errorCopy = error;
+    v36 = identifierCopy;
     [v6 applicationExtensionRecords];
     v37 = 0u;
     v38 = 0u;
@@ -80,9 +80,9 @@ LABEL_4:
         }
 
         v13 = *(*(&v37 + 1) + 8 * v12);
-        v14 = [v13 extensionPointRecord];
-        v15 = [v14 name];
-        v16 = [v15 isEqualToString:@"com.apple.usernotifications.service"];
+        extensionPointRecord = [v13 extensionPointRecord];
+        name = [extensionPointRecord name];
+        v16 = [name isEqualToString:@"com.apple.usernotifications.service"];
 
         if (v16)
         {
@@ -101,16 +101,16 @@ LABEL_4:
         }
       }
 
-      v17 = [v13 bundleIdentifier];
+      bundleIdentifier = [v13 bundleIdentifier];
 
-      if (!v17)
+      if (!bundleIdentifier)
       {
         goto LABEL_13;
       }
 
-      v18 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:v17 error:v35];
+      v18 = [MEMORY[0x1E696ABD0] extensionWithIdentifier:bundleIdentifier error:errorCopy];
 
-      v5 = v36;
+      identifierCopy = v36;
     }
 
     else
@@ -119,7 +119,7 @@ LABEL_10:
 
 LABEL_13:
       v19 = *MEMORY[0x1E6983398];
-      v5 = v36;
+      identifierCopy = v36;
       if (os_log_type_enabled(*MEMORY[0x1E6983398], OS_LOG_TYPE_ERROR))
       {
         [(UNCNotificationServiceExtensionManager *)v36 _extensionForAppBundleIdentifier:v19 error:v20, v21, v22, v23, v24, v25];
@@ -134,7 +134,7 @@ LABEL_13:
     v26 = *MEMORY[0x1E6983398];
     if (os_log_type_enabled(*MEMORY[0x1E6983398], OS_LOG_TYPE_ERROR))
     {
-      [(UNCNotificationServiceExtensionManager *)v5 _extensionForAppBundleIdentifier:v26 error:v27, v28, v29, v30, v31, v32];
+      [(UNCNotificationServiceExtensionManager *)identifierCopy _extensionForAppBundleIdentifier:v26 error:v27, v28, v29, v30, v31, v32];
     }
 
     v18 = 0;

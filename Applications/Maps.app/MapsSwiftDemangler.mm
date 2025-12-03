@@ -1,13 +1,13 @@
 @interface MapsSwiftDemangler
-+ (id)demangledStringForClass:(Class)a3;
++ (id)demangledStringForClass:(Class)class;
 @end
 
 @implementation MapsSwiftDemangler
 
-+ (id)demangledStringForClass:(Class)a3
++ (id)demangledStringForClass:(Class)class
 {
-  v3 = NSStringFromClass(a3);
-  v4 = [v3 UTF8String];
+  v3 = NSStringFromClass(class);
+  uTF8String = [v3 UTF8String];
   if (qword_10195D830 != -1)
   {
     dispatch_once(&qword_10195D830, &stru_10162A088);
@@ -24,8 +24,8 @@
     v6 = v5;
   }
 
-  while (v4[v5++]);
-  v8 = off_10195D838(v4, v6, 0, 0, 0);
+  while (uTF8String[v5++]);
+  v8 = off_10195D838(uTF8String, v6, 0, 0, 0);
   if (v8)
   {
     v9 = [[NSString alloc] initWithCString:v8 encoding:4];

@@ -1,12 +1,12 @@
 @interface HDQuantitySampleEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (BOOL)validateEntityWithProfile:(id)a3 error:(id *)a4 validationErrorHandler:(id)a5;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (BOOL)validateEntityWithProfile:(id)profile error:(id *)error validationErrorHandler:(id)handler;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)joinClausesForProperty:(id)a3;
-+ (id)orderingTermForSortDescriptor:(id)a3;
-+ (int64_t)compareForReplacmentWithObject:(id)a3 existingObject:(id)a4;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)joinClausesForProperty:(id)property;
++ (id)orderingTermForSortDescriptor:(id)descriptor;
++ (int64_t)compareForReplacmentWithObject:(id)object existingObject:(id)existingObject;
 @end
 
 @implementation HDQuantitySampleEntity
@@ -25,21 +25,21 @@
   return v4;
 }
 
-+ (id)orderingTermForSortDescriptor:(id)a3
++ (id)orderingTermForSortDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 key];
-  v6 = [v4 ascending];
+  descriptorCopy = descriptor;
+  v5 = [descriptorCopy key];
+  ascending = [descriptorCopy ascending];
   if ([v5 isEqualToString:*MEMORY[0x277CCC900]])
   {
-    v7 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"quantity" entityClass:objc_opt_class() ascending:v6];
+    v7 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"quantity" entityClass:objc_opt_class() ascending:ascending];
   }
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___HDQuantitySampleEntity;
-    v7 = objc_msgSendSuper2(&v10, sel_orderingTermForSortDescriptor_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_orderingTermForSortDescriptor_, descriptorCopy);
   }
 
   v8 = v7;
@@ -47,25 +47,25 @@
   return v8;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a3;
+  databaseCopy = database;
+  dCopy = d;
+  objectCopy = object;
   v15 = objc_opt_class();
   if (([v15 isEqual:objc_opt_class()] & 1) == 0)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"HDQuantitySampleEntity.m" lineNumber:89 description:{@"Subclasses must override %s", "+[HDQuantitySampleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySampleEntity.m" lineNumber:89 description:{@"Subclasses must override %s", "+[HDQuantitySampleEntity insertDataObject:withProvenance:inDatabase:persistentID:error:]"}];
   }
 
-  v16 = [v14 quantity];
-  v17 = [v16 _unit];
-  v18 = [v14 quantityType];
+  quantity = [objectCopy quantity];
+  _unit = [quantity _unit];
+  quantityType = [objectCopy quantityType];
 
-  v19 = [v18 canonicalUnit];
+  canonicalUnit = [quantityType canonicalUnit];
 
-  v20 = [v17 isEqual:v19];
+  v20 = [_unit isEqual:canonicalUnit];
   if (v20)
   {
     v21 = 0;
@@ -74,15 +74,15 @@ LABEL_6:
     v29[1] = 3221225472;
     v29[2] = __88__HDQuantitySampleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
     v29[3] = &unk_27862FCE0;
-    v23 = v13;
+    v23 = dCopy;
     v30 = v23;
-    v31 = v16;
-    v32 = v19;
+    v31 = quantity;
+    v32 = canonicalUnit;
     v35 = v20;
-    v33 = v17;
+    v33 = _unit;
     v34 = v21;
     v24 = v21;
-    if ([v12 executeSQL:@"INSERT INTO quantity_samples (data_id error:quantity bindingHandler:original_quantity enumerationHandler:{original_unit) VALUES (?, ?, ?, ?)", a7, v29, 0}])
+    if ([databaseCopy executeSQL:@"INSERT INTO quantity_samples (data_id error:quantity bindingHandler:original_quantity enumerationHandler:{original_unit) VALUES (?, ?, ?, ?)", error, v29, 0}])
     {
       v25 = v23;
     }
@@ -97,8 +97,8 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  v22 = [v17 unitString];
-  v21 = [HDUnitStringEntity storeUnitString:v22 database:v12 error:a7];
+  unitString = [_unit unitString];
+  v21 = [HDUnitStringEntity storeUnitString:unitString database:databaseCopy error:error];
 
   if (v21)
   {
@@ -133,10 +133,10 @@ uint64_t __88__HDQuantitySampleEntity_insertDataObject_withProvenance_inDatabase
   }
 }
 
-+ (id)joinClausesForProperty:(id)a3
++ (id)joinClausesForProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"unit_strings.unit_string"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"unit_strings.unit_string"])
   {
     v5 = MEMORY[0x277CBEB98];
     v6 = MEMORY[0x277D10B50];
@@ -147,67 +147,67 @@ uint64_t __88__HDQuantitySampleEntity_insertDataObject_withProvenance_inDatabase
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &OBJC_METACLASS___HDQuantitySampleEntity;
-    v9 = objc_msgSendSuper2(&v11, sel_joinClausesForProperty_, v4);
+    v9 = objc_msgSendSuper2(&v11, sel_joinClausesForProperty_, propertyCopy);
   }
 
   return v9;
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addQuantitySamples:a3];
+    [collection addQuantitySamples:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDQuantitySampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDQuantitySampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (int64_t)compareForReplacmentWithObject:(id)a3 existingObject:(id)a4
++ (int64_t)compareForReplacmentWithObject:(id)object existingObject:(id)existingObject
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  existingObjectCopy = existingObject;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"HDQuantitySampleEntity.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"[replacementObject isKindOfClass:[HKQuantitySample class]]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDQuantitySampleEntity.m" lineNumber:167 description:{@"Invalid parameter not satisfying: %@", @"[replacementObject isKindOfClass:[HKQuantitySample class]]"}];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"HDQuantitySampleEntity.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"[existingObject isKindOfClass:[HKQuantitySample class]]"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDQuantitySampleEntity.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"[existingObject isKindOfClass:[HKQuantitySample class]]"}];
   }
 
-  v9 = [v7 _compareFreezeStateWithSample:v8];
+  v9 = [objectCopy _compareFreezeStateWithSample:existingObjectCopy];
 
   return v9;
 }
 
-+ (BOOL)validateEntityWithProfile:(id)a3 error:(id *)a4 validationErrorHandler:(id)a5
++ (BOOL)validateEntityWithProfile:(id)profile error:(id *)error validationErrorHandler:(id)handler
 {
   v8 = MEMORY[0x277CCD720];
-  v9 = a5;
-  v10 = a3;
+  handlerCopy = handler;
+  profileCopy = profile;
   v11 = [v8 _allTypesOfClass:objc_opt_class()];
-  LOBYTE(a4) = [a1 validateEntitiesOfTypes:v11 profile:v10 error:a4 validationErrorHandler:v9];
+  LOBYTE(error) = [self validateEntitiesOfTypes:v11 profile:profileCopy error:error validationErrorHandler:handlerCopy];
 
-  return a4;
+  return error;
 }
 
 @end

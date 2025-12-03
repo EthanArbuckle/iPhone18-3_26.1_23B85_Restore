@@ -1,41 +1,41 @@
 @interface DCMapsLink
-+ ($4DDE7BAD8B52DEF6C4C48F8A4C97F2FC)coordinateRegionForMapSize:(SEL)a3 centeredAtLocation:(CGSize)a4 atZoomLevel:(CLLocationCoordinate2D)a5;
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateSpanForMapSize:(CGSize)a3 centeredAtLocation:(CLLocationCoordinate2D)a4 atZoomLevel:(int64_t)a5;
-+ (BOOL)isMapsURL:(id)a3;
-+ (DCMapsLink)mapsLinkWithURL:(id)a3;
-+ (double)latitudeToPixelSpaceY:(double)a3;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (void)createMapsLinkWithPlacemark:(id)a3 location:(id)a4 streetAddress:(id)a5 shiftingLocationIfNecessary:(BOOL)a6 completionHandler:(id)a7;
-+ (void)processLocation:(id)a3 shiftingIfNecessary:(BOOL)a4 completionHandler:(id)a5;
-- ($1655AFAB7F657C4F8B0504A4BF66C03D)coordinateRegionForMapSize:(SEL)a3 centeredAtLocation:(CGSize)a4;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateSpanForMapSize:(CGSize)a3 centeredAtLocation:(CLLocationCoordinate2D)a4;
++ ($4DDE7BAD8B52DEF6C4C48F8A4C97F2FC)coordinateRegionForMapSize:(SEL)size centeredAtLocation:(CGSize)location atZoomLevel:(CLLocationCoordinate2D)level;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateSpanForMapSize:(CGSize)size centeredAtLocation:(CLLocationCoordinate2D)location atZoomLevel:(int64_t)level;
++ (BOOL)isMapsURL:(id)l;
++ (DCMapsLink)mapsLinkWithURL:(id)l;
++ (double)latitudeToPixelSpaceY:(double)y;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (void)createMapsLinkWithPlacemark:(id)placemark location:(id)location streetAddress:(id)address shiftingLocationIfNecessary:(BOOL)necessary completionHandler:(id)handler;
++ (void)processLocation:(id)location shiftingIfNecessary:(BOOL)necessary completionHandler:(id)handler;
+- ($1655AFAB7F657C4F8B0504A4BF66C03D)coordinateRegionForMapSize:(SEL)size centeredAtLocation:(CGSize)location;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateSpanForMapSize:(CGSize)size centeredAtLocation:(CLLocationCoordinate2D)location;
 - (BOOL)canGetDirections;
 - (CLLocationCoordinate2D)centerCoordinate;
 - (CLLocationCoordinate2D)centerLocationCoordinate;
-- (CLLocationCoordinate2D)locationCoordinateFromString:(id)a3;
+- (CLLocationCoordinate2D)locationCoordinateFromString:(id)string;
 - (CLLocationCoordinate2D)searchLocationCoordinate;
 - (CLLocationCoordinate2D)streetViewLocationCoordinate;
 - (NSString)description;
 - (NSString)mkDirectionsMode;
 - (NSString)wfName;
 - (id)region;
-- (id)regionCenteredAtLocation:(CLLocationCoordinate2D)a3;
+- (id)regionCenteredAtLocation:(CLLocationCoordinate2D)location;
 - (id)wfSerializedRepresentation;
 - (unint64_t)directionsTransportType;
 - (unint64_t)mkMapType;
-- (void)geocodeAddressString:(id)a3 inRegionIfAvailable:(id)a4 completionHandler:(id)a5;
-- (void)geocodeDirectionsEndpointsWithCompletionHandler:(id)a3;
-- (void)getAppleMapsDirectionsURL:(id)a3;
-- (void)getDirectionsToPlacemark:(id)a3 fromPlacemark:(id)a4 withCompletionHandler:(id)a5;
-- (void)getDirectionsWithCompletionHandler:(id)a3;
+- (void)geocodeAddressString:(id)string inRegionIfAvailable:(id)available completionHandler:(id)handler;
+- (void)geocodeDirectionsEndpointsWithCompletionHandler:(id)handler;
+- (void)getAppleMapsDirectionsURL:(id)l;
+- (void)getDirectionsToPlacemark:(id)placemark fromPlacemark:(id)fromPlacemark withCompletionHandler:(id)handler;
+- (void)getDirectionsWithCompletionHandler:(id)handler;
 @end
 
 @implementation DCMapsLink
 
-- (void)geocodeDirectionsEndpointsWithCompletionHandler:(id)a3
+- (void)geocodeDirectionsEndpointsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DCMapsLink *)self region];
+  handlerCopy = handler;
+  region = [(DCMapsLink *)self region];
   v6 = dispatch_group_create();
   v32[0] = 0;
   v32[1] = v32;
@@ -55,13 +55,13 @@
   v28[3] = __Block_byref_object_copy__4233;
   v28[4] = __Block_byref_object_dispose__4234;
   v29 = 0;
-  v7 = [(DCMapsLink *)self startAddress];
-  v8 = [v7 length];
+  startAddress = [(DCMapsLink *)self startAddress];
+  v8 = [startAddress length];
 
   if (v8)
   {
     dispatch_group_enter(v6);
-    v9 = [(DCMapsLink *)self startAddress];
+    startAddress2 = [(DCMapsLink *)self startAddress];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandler___block_invoke;
@@ -69,16 +69,16 @@
     v26 = v32;
     v27 = v28;
     v25 = v6;
-    [(DCMapsLink *)self geocodeAddressString:v9 inRegionIfAvailable:v5 completionHandler:v24];
+    [(DCMapsLink *)self geocodeAddressString:startAddress2 inRegionIfAvailable:region completionHandler:v24];
   }
 
-  v10 = [(DCMapsLink *)self destinationAddress];
-  v11 = [v10 length];
+  destinationAddress = [(DCMapsLink *)self destinationAddress];
+  v11 = [destinationAddress length];
 
   if (v11)
   {
     dispatch_group_enter(v6);
-    v12 = [(DCMapsLink *)self destinationAddress];
+    destinationAddress2 = [(DCMapsLink *)self destinationAddress];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandler___block_invoke_2;
@@ -86,7 +86,7 @@
     v22 = v30;
     v23 = v28;
     v21 = v6;
-    [(DCMapsLink *)self geocodeAddressString:v12 inRegionIfAvailable:v5 completionHandler:v20];
+    [(DCMapsLink *)self geocodeAddressString:destinationAddress2 inRegionIfAvailable:region completionHandler:v20];
   }
 
   v13 = dispatch_get_global_queue(0, 0);
@@ -94,11 +94,11 @@
   v15[1] = 3221225472;
   v15[2] = __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandler___block_invoke_3;
   v15[3] = &unk_278345788;
-  v16 = v4;
+  v16 = handlerCopy;
   v17 = v32;
   v18 = v30;
   v19 = v28;
-  v14 = v4;
+  v14 = handlerCopy;
   dispatch_group_notify(v6, v13, v15);
 
   _Block_object_dispose(v28, 8);
@@ -139,11 +139,11 @@ void __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandl
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)geocodeAddressString:(id)a3 inRegionIfAvailable:(id)a4 completionHandler:(id)a5
+- (void)geocodeAddressString:(id)string inRegionIfAvailable:(id)available completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  stringCopy = string;
+  availableCopy = available;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -163,7 +163,7 @@ void __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandl
   v11 = v10;
   _Block_object_dispose(&v14, 8);
   v12 = objc_opt_new();
-  [v12 geocodeAddressString:v7 inRegion:v8 completionHandler:v9];
+  [v12 geocodeAddressString:stringCopy inRegion:availableCopy completionHandler:handlerCopy];
 }
 
 - (id)region
@@ -173,10 +173,10 @@ void __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandl
   return [(DCMapsLink *)self regionCenteredAtLocation:?];
 }
 
-- (id)regionCenteredAtLocation:(CLLocationCoordinate2D)a3
+- (id)regionCenteredAtLocation:(CLLocationCoordinate2D)location
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = location.longitude;
+  latitude = location.latitude;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -238,9 +238,9 @@ void __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandl
 
   else
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL WFCLLocationCoordinate2DIsValid(CLLocationCoordinate2D)"];
-    [v20 handleFailureInFunction:v21 file:@"DCMapsLink+CLGeocoding.m" lineNumber:18 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v21 file:@"DCMapsLink+CLGeocoding.m" lineNumber:18 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -252,55 +252,55 @@ void __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandl
 {
   v28[1] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(DCMapsLink *)self searchQuery];
+  searchQuery = [(DCMapsLink *)self searchQuery];
 
-  if (v4)
+  if (searchQuery)
   {
-    v5 = [(DCMapsLink *)self searchQuery];
-    [v3 setObject:v5 forKey:@"searchQuery"];
+    searchQuery2 = [(DCMapsLink *)self searchQuery];
+    [v3 setObject:searchQuery2 forKey:@"searchQuery"];
   }
 
-  v6 = [(DCMapsLink *)self searchNearQuery];
+  searchNearQuery = [(DCMapsLink *)self searchNearQuery];
 
-  if (v6)
+  if (searchNearQuery)
   {
-    v7 = [(DCMapsLink *)self searchNearQuery];
-    [v3 setObject:v7 forKey:@"searchNearQuery"];
+    searchNearQuery2 = [(DCMapsLink *)self searchNearQuery];
+    [v3 setObject:searchNearQuery2 forKey:@"searchNearQuery"];
   }
 
-  v8 = [(DCMapsLink *)self searchLocation];
+  searchLocation = [(DCMapsLink *)self searchLocation];
 
-  if (v8)
+  if (searchLocation)
   {
-    v9 = [(DCMapsLink *)self searchLocation];
-    [v3 setObject:v9 forKey:@"searchLocation"];
+    searchLocation2 = [(DCMapsLink *)self searchLocation];
+    [v3 setObject:searchLocation2 forKey:@"searchLocation"];
   }
 
-  v10 = [(DCMapsLink *)self startAddress];
+  startAddress = [(DCMapsLink *)self startAddress];
 
-  if (v10)
+  if (startAddress)
   {
-    v11 = [(DCMapsLink *)self startAddress];
-    [v3 setObject:v11 forKey:@"startAddress"];
+    startAddress2 = [(DCMapsLink *)self startAddress];
+    [v3 setObject:startAddress2 forKey:@"startAddress"];
   }
 
-  v12 = [(DCMapsLink *)self destinationAddress];
+  destinationAddress = [(DCMapsLink *)self destinationAddress];
 
-  if (v12)
+  if (destinationAddress)
   {
-    v13 = [(DCMapsLink *)self destinationAddress];
-    [v3 setObject:v13 forKey:@"destinationAddress"];
+    destinationAddress2 = [(DCMapsLink *)self destinationAddress];
+    [v3 setObject:destinationAddress2 forKey:@"destinationAddress"];
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[DCMapsLink directionsMode](self, "directionsMode")}];
   [v3 setObject:v14 forKey:@"directionsMode"];
 
-  v15 = [(DCMapsLink *)self centerLocation];
+  centerLocation = [(DCMapsLink *)self centerLocation];
 
-  if (v15)
+  if (centerLocation)
   {
-    v16 = [(DCMapsLink *)self centerLocation];
-    [v3 setObject:v16 forKey:@"centerLocation"];
+    centerLocation2 = [(DCMapsLink *)self centerLocation];
+    [v3 setObject:centerLocation2 forKey:@"centerLocation"];
   }
 
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:{-[DCMapsLink zoomLevel](self, "zoomLevel")}];
@@ -321,12 +321,12 @@ void __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandl
   v22 = [MEMORY[0x277CCABB0] numberWithBool:{-[DCMapsLink showsBicycling](self, "showsBicycling")}];
   [v3 setObject:v22 forKey:@"showsBicycling"];
 
-  v23 = [(DCMapsLink *)self streetViewLocation];
+  streetViewLocation = [(DCMapsLink *)self streetViewLocation];
 
-  if (v23)
+  if (streetViewLocation)
   {
-    v24 = [(DCMapsLink *)self streetViewLocation];
-    [v3 setObject:v24 forKey:@"streetViewLocation"];
+    streetViewLocation2 = [(DCMapsLink *)self streetViewLocation];
+    [v3 setObject:streetViewLocation2 forKey:@"streetViewLocation"];
   }
 
   v27 = @"link.contentkit.dcmapslink";
@@ -336,10 +336,10 @@ void __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandl
   return v25;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.dcmapslink"];
+  representationCopy = representation;
+  v4 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.dcmapslink"];
 
   v5 = objc_opt_new();
   v6 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"searchQuery"];
@@ -392,33 +392,33 @@ void __75__DCMapsLink_CLGeocoding__geocodeDirectionsEndpointsWithCompletionHandl
   v3 = WFLocalizedString(@"Unknown Maps Link");
   if ([(DCMapsLink *)self directionsMode])
   {
-    v4 = [(DCMapsLink *)self startAddress];
-    if (v4)
+    startAddress = [(DCMapsLink *)self startAddress];
+    if (startAddress)
     {
-      v5 = v4;
-      v6 = [(DCMapsLink *)self destinationAddress];
+      v5 = startAddress;
+      destinationAddress = [(DCMapsLink *)self destinationAddress];
 
-      if (v6)
+      if (destinationAddress)
       {
         v7 = MEMORY[0x277CCACA8];
         v8 = WFLocalizedString(@"Directions from %@ to %@");
-        v9 = [(DCMapsLink *)self startAddress];
-        v10 = [(DCMapsLink *)self destinationAddress];
-        v11 = [v7 localizedStringWithFormat:v8, v9, v10];
+        startAddress2 = [(DCMapsLink *)self startAddress];
+        destinationAddress2 = [(DCMapsLink *)self destinationAddress];
+        v11 = [v7 localizedStringWithFormat:v8, startAddress2, destinationAddress2];
 
         goto LABEL_14;
       }
     }
 
-    v12 = [(DCMapsLink *)self startAddress];
-    if (!v12)
+    startAddress3 = [(DCMapsLink *)self startAddress];
+    if (!startAddress3)
     {
-      v13 = [(DCMapsLink *)self destinationAddress];
+      destinationAddress3 = [(DCMapsLink *)self destinationAddress];
 LABEL_10:
-      v14 = v13;
-      if (v13)
+      v14 = destinationAddress3;
+      if (destinationAddress3)
       {
-        v15 = v13;
+        v15 = destinationAddress3;
       }
 
       else
@@ -435,24 +435,24 @@ LABEL_10:
 
   else
   {
-    v12 = [(DCMapsLink *)self searchQuery];
-    if (!v12)
+    startAddress3 = [(DCMapsLink *)self searchQuery];
+    if (!startAddress3)
     {
-      v13 = [(DCMapsLink *)self searchNearQuery];
+      destinationAddress3 = [(DCMapsLink *)self searchNearQuery];
       goto LABEL_10;
     }
   }
 
-  v8 = v12;
+  v8 = startAddress3;
   v11 = v8;
 LABEL_14:
 
   return v11;
 }
 
-- (void)getAppleMapsDirectionsURL:(id)a3
+- (void)getAppleMapsDirectionsURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_opt_new();
   if ([(DCMapsLink *)self mapType])
   {
@@ -478,9 +478,9 @@ LABEL_14:
     _Block_object_dispose(&v35, 8);
     if (!v7)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsMapTypeKey(void)"];
-      [v25 handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:31 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:31 description:{@"%s", dlerror()}];
       goto LABEL_28;
     }
 
@@ -510,16 +510,16 @@ LABEL_14:
     _Block_object_dispose(&v35, 8);
     if (!v9)
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsShowsTrafficKey(void)"];
-      [v25 handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:32 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:32 description:{@"%s", dlerror()}];
       goto LABEL_28;
     }
 
     [v5 setObject:MEMORY[0x277CBEC38] forKey:*v9];
   }
 
-  v11 = [(DCMapsLink *)self mkDirectionsMode];
+  mkDirectionsMode = [(DCMapsLink *)self mkDirectionsMode];
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -541,7 +541,7 @@ LABEL_14:
   _Block_object_dispose(&v35, 8);
   if (v12)
   {
-    [v5 setObject:v11 forKey:*v12];
+    [v5 setObject:mkDirectionsMode forKey:*v12];
 
     [(DCMapsLink *)self centerCoordinate];
     v15 = v14;
@@ -573,9 +573,9 @@ LABEL_22:
         v27[2] = __54__DCMapsLink_MKDirections__getAppleMapsDirectionsURL___block_invoke;
         v27[3] = &unk_278346928;
         v28 = v5;
-        v29 = v4;
+        v29 = lCopy;
         v23 = v5;
-        v24 = v4;
+        v24 = lCopy;
         [(DCMapsLink *)self geocodeDirectionsEndpointsWithCompletionHandler:v27];
 
         return;
@@ -609,24 +609,24 @@ LABEL_22:
         goto LABEL_22;
       }
 
-      v25 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsMapCenterKey(void)"];
-      [v25 handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:34 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:34 description:{@"%s", dlerror()}];
     }
 
     else
     {
-      v25 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"BOOL WFCLLocationCoordinate2DIsValid(CLLocationCoordinate2D)"];
-      [v25 handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:40 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:40 description:{@"%s", dlerror()}];
     }
   }
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsDirectionsModeKey(void)"];
-    [v25 handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:33 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v26 file:@"DCMapsLink+MKDirections.m" lineNumber:33 description:{@"%s", dlerror()}];
   }
 
 LABEL_28:
@@ -674,10 +674,10 @@ void __54__DCMapsLink_MKDirections__getAppleMapsDirectionsURL___block_invoke(uin
 
 - (NSString)mkDirectionsMode
 {
-  v2 = [(DCMapsLink *)self directionsMode];
-  if (v2 <= 2)
+  directionsMode = [(DCMapsLink *)self directionsMode];
+  if (directionsMode <= 2)
   {
-    if (v2 == 1)
+    if (directionsMode == 1)
     {
       v17 = 0;
       v18 = &v17;
@@ -699,16 +699,16 @@ void __54__DCMapsLink_MKDirections__getAppleMapsDirectionsURL___block_invoke(uin
       _Block_object_dispose(&v17, 8);
       if (!v3)
       {
-        v5 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsDirectionsModeDriving(void)"];
-        [v5 handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:27 description:{@"%s", dlerror(), v13, v14, v15, v16}];
+        [currentHandler handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:27 description:{@"%s", dlerror(), v13, v14, v15, v16}];
         goto LABEL_29;
       }
 
       goto LABEL_25;
     }
 
-    if (v2 == 2)
+    if (directionsMode == 2)
     {
       v17 = 0;
       v18 = &v17;
@@ -730,9 +730,9 @@ void __54__DCMapsLink_MKDirections__getAppleMapsDirectionsURL___block_invoke(uin
       _Block_object_dispose(&v17, 8);
       if (!v3)
       {
-        v5 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsDirectionsModeCycling(void)"];
-        [v5 handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:28 description:{@"%s", dlerror(), v13, v14, v15, v16}];
+        [currentHandler handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:28 description:{@"%s", dlerror(), v13, v14, v15, v16}];
 LABEL_29:
 
         __break(1u);
@@ -763,16 +763,16 @@ LABEL_14:
     _Block_object_dispose(&v17, 8);
     if (!v3)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsDirectionsModeDefault(void)"];
-      [v5 handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:29 description:{@"%s", dlerror(), v13, v14, v15, v16}];
+      [currentHandler handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:29 description:{@"%s", dlerror(), v13, v14, v15, v16}];
       goto LABEL_29;
     }
 
     goto LABEL_25;
   }
 
-  if (v2 == 4)
+  if (directionsMode == 4)
   {
     v17 = 0;
     v18 = &v17;
@@ -794,16 +794,16 @@ LABEL_14:
     _Block_object_dispose(&v17, 8);
     if (!v3)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsDirectionsModeTransit(void)"];
-      [v5 handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:26 description:{@"%s", dlerror(), v13, v14, v15, v16}];
+      [currentHandler handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:26 description:{@"%s", dlerror(), v13, v14, v15, v16}];
       goto LABEL_29;
     }
 
     goto LABEL_25;
   }
 
-  if (v2 != 3)
+  if (directionsMode != 3)
   {
     goto LABEL_14;
   }
@@ -828,9 +828,9 @@ LABEL_14:
   _Block_object_dispose(&v17, 8);
   if (!v3)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *getMKLaunchOptionsDirectionsModeWalking(void)"];
-    [v5 handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:25 description:{@"%s", dlerror(), v13, v14, v15, v16}];
+    [currentHandler handleFailureInFunction:v6 file:@"DCMapsLink+MKDirections.m" lineNumber:25 description:{@"%s", dlerror(), v13, v14, v15, v16}];
     goto LABEL_29;
   }
 
@@ -842,28 +842,28 @@ LABEL_25:
 
 - (unint64_t)directionsTransportType
 {
-  v2 = [(DCMapsLink *)self directionsMode];
-  if (v2 - 1 > 3)
+  directionsMode = [(DCMapsLink *)self directionsMode];
+  if (directionsMode - 1 > 3)
   {
     return 0xFFFFFFFLL;
   }
 
   else
   {
-    return qword_21E356A28[v2 - 1];
+    return qword_21E356A28[directionsMode - 1];
   }
 }
 
-- (void)getDirectionsWithCompletionHandler:(id)a3
+- (void)getDirectionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__DCMapsLink_MKDirections__getDirectionsWithCompletionHandler___block_invoke;
   v6[3] = &unk_278346928;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(DCMapsLink *)self geocodeDirectionsEndpointsWithCompletionHandler:v6];
 }
 
@@ -880,14 +880,14 @@ uint64_t __63__DCMapsLink_MKDirections__getDirectionsWithCompletionHandler___blo
   }
 }
 
-- (void)getDirectionsToPlacemark:(id)a3 fromPlacemark:(id)a4 withCompletionHandler:(id)a5
+- (void)getDirectionsToPlacemark:(id)placemark fromPlacemark:(id)fromPlacemark withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  placemarkCopy = placemark;
+  fromPlacemarkCopy = fromPlacemark;
+  handlerCopy = handler;
+  if (fromPlacemarkCopy)
   {
-    v11 = [objc_alloc(getMKPlacemarkClass()) initWithPlacemark:v9];
+    v11 = [objc_alloc(getMKPlacemarkClass()) initWithPlacemark:fromPlacemarkCopy];
   }
 
   else
@@ -895,7 +895,7 @@ uint64_t __63__DCMapsLink_MKDirections__getDirectionsWithCompletionHandler___blo
     v11 = 0;
   }
 
-  v12 = [objc_alloc(getMKPlacemarkClass()) initWithPlacemark:v8];
+  v12 = [objc_alloc(getMKPlacemarkClass()) initWithPlacemark:placemarkCopy];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2050000000;
@@ -918,16 +918,16 @@ uint64_t __63__DCMapsLink_MKDirections__getDirectionsWithCompletionHandler___blo
   MKMapItemClass_9076 = getMKMapItemClass_9076();
   if (v11)
   {
-    v17 = [[MKMapItemClass_9076 alloc] initWithPlacemark:v11];
+    mapItemForCurrentLocation = [[MKMapItemClass_9076 alloc] initWithPlacemark:v11];
   }
 
   else
   {
-    v17 = [(objc_class *)MKMapItemClass_9076 mapItemForCurrentLocation];
+    mapItemForCurrentLocation = [(objc_class *)MKMapItemClass_9076 mapItemForCurrentLocation];
   }
 
-  v18 = v17;
-  [v15 setSource:v17];
+  v18 = mapItemForCurrentLocation;
+  [v15 setSource:mapItemForCurrentLocation];
 
   v19 = [objc_alloc(getMKMapItemClass_9076()) initWithPlacemark:v12];
   [v15 setDestination:v19];
@@ -952,16 +952,16 @@ uint64_t __63__DCMapsLink_MKDirections__getDirectionsWithCompletionHandler___blo
   v21 = v20;
   _Block_object_dispose(&v28, 8);
   v22 = [[v20 alloc] initWithRequest:v15];
-  v10[2](v10, v22, 0);
+  handlerCopy[2](handlerCopy, v22, 0);
 }
 
 - (BOOL)canGetDirections
 {
-  v3 = [(DCMapsLink *)self startAddress];
-  if ([v3 length])
+  startAddress = [(DCMapsLink *)self startAddress];
+  if ([startAddress length])
   {
-    v4 = [(DCMapsLink *)self destinationAddress];
-    v5 = [v4 length] != 0;
+    destinationAddress = [(DCMapsLink *)self destinationAddress];
+    v5 = [destinationAddress length] != 0;
   }
 
   else
@@ -972,41 +972,41 @@ uint64_t __63__DCMapsLink_MKDirections__getDirectionsWithCompletionHandler___blo
   return v5;
 }
 
-+ (void)createMapsLinkWithPlacemark:(id)a3 location:(id)a4 streetAddress:(id)a5 shiftingLocationIfNecessary:(BOOL)a6 completionHandler:(id)a7
++ (void)createMapsLinkWithPlacemark:(id)placemark location:(id)location streetAddress:(id)address shiftingLocationIfNecessary:(BOOL)necessary completionHandler:(id)handler
 {
-  v8 = a6;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  if (!v15 && !v13 && !v14)
+  necessaryCopy = necessary;
+  placemarkCopy = placemark;
+  locationCopy = location;
+  addressCopy = address;
+  handlerCopy = handler;
+  if (!addressCopy && !placemarkCopy && !locationCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"DCMapsLink+WFLocationCoercions.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"placemark || location || streetAddress"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DCMapsLink+WFLocationCoercions.m" lineNumber:32 description:{@"Invalid parameter not satisfying: %@", @"placemark || location || streetAddress"}];
 
     goto LABEL_5;
   }
 
-  if (!v14)
+  if (!locationCopy)
   {
 LABEL_5:
-    v14 = [v13 location];
+    locationCopy = [placemarkCopy location];
   }
 
-  if (v13 && !v15)
+  if (placemarkCopy && !addressCopy)
   {
-    v15 = [WFStreetAddress streetAddressWithPlacemark:v13 label:0];
+    addressCopy = [WFStreetAddress streetAddressWithPlacemark:placemarkCopy label:0];
   }
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location_streetAddress_shiftingLocationIfNecessary_completionHandler___block_invoke;
   v20[3] = &unk_278347788;
-  v21 = v15;
-  v22 = v16;
-  v17 = v16;
-  v18 = v15;
-  [a1 processLocation:v14 shiftingIfNecessary:v8 completionHandler:v20];
+  v21 = addressCopy;
+  v22 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = addressCopy;
+  [self processLocation:locationCopy shiftingIfNecessary:necessaryCopy completionHandler:v20];
 }
 
 void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location_streetAddress_shiftingLocationIfNecessary_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1038,13 +1038,13 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)processLocation:(id)a3 shiftingIfNecessary:(BOOL)a4 completionHandler:(id)a5
++ (void)processLocation:(id)location shiftingIfNecessary:(BOOL)necessary completionHandler:(id)handler
 {
-  v6 = a4;
-  v13 = a3;
-  v7 = a5;
+  necessaryCopy = necessary;
+  locationCopy = location;
+  handlerCopy = handler;
   MKLocationShifterClass = get_MKLocationShifterClass();
-  if (v6 && (v9 = MKLocationShifterClass) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v9 instancesRespondToSelector:sel_shiftLocation_withCompletionHandler_callbackQueue_] && (objc_msgSend(v9, "isLocationShiftRequiredForLocation:", v13) & 1) != 0)
+  if (necessaryCopy && (v9 = MKLocationShifterClass) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v9 instancesRespondToSelector:sel_shiftLocation_withCompletionHandler_callbackQueue_] && (objc_msgSend(v9, "isLocationShiftRequiredForLocation:", locationCopy) & 1) != 0)
   {
     get_MKLocationShifterClass();
     v10 = objc_opt_new();
@@ -1059,28 +1059,28 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
       v11 = dispatch_get_global_queue(0, 0);
     }
 
-    [v10 shiftLocation:v13 withCompletionHandler:v7 callbackQueue:v11];
+    [v10 shiftLocation:locationCopy withCompletionHandler:handlerCopy callbackQueue:v11];
   }
 
   else
   {
-    v7[2](v7, v13);
+    handlerCopy[2](handlerCopy, locationCopy);
   }
 }
 
 - (NSString)description
 {
-  v3 = [(DCMapsLink *)self startAddress];
+  startAddress = [(DCMapsLink *)self startAddress];
 
   v4 = MEMORY[0x277CCACA8];
-  if (v3)
+  if (startAddress)
   {
     v11.receiver = self;
     v11.super_class = DCMapsLink;
     v5 = [(DCMapsLink *)&v11 description];
-    v6 = [(DCMapsLink *)self startAddress];
-    v7 = [(DCMapsLink *)self destinationAddress];
-    v8 = [v4 stringWithFormat:@"%@: Directions from %@ to %@", v5, v6, v7];
+    startAddress2 = [(DCMapsLink *)self startAddress];
+    destinationAddress = [(DCMapsLink *)self destinationAddress];
+    v8 = [v4 stringWithFormat:@"%@: Directions from %@ to %@", v5, startAddress2, destinationAddress];
   }
 
   else
@@ -1088,25 +1088,25 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
     v10.receiver = self;
     v10.super_class = DCMapsLink;
     v5 = [(DCMapsLink *)&v10 description];
-    v6 = [(DCMapsLink *)self searchQuery];
-    v8 = [v4 stringWithFormat:@"%@: %@", v5, v6];
+    startAddress2 = [(DCMapsLink *)self searchQuery];
+    v8 = [v4 stringWithFormat:@"%@: %@", v5, startAddress2];
   }
 
   return v8;
 }
 
-+ (BOOL)isMapsURL:(id)a3
++ (BOOL)isMapsURL:(id)l
 {
-  v3 = a3;
-  v4 = [DCNewGoogleMapsLink isMapsURL:v3]|| [DCStandardMapsLink isMapsURL:v3];
+  lCopy = l;
+  v4 = [DCNewGoogleMapsLink isMapsURL:lCopy]|| [DCStandardMapsLink isMapsURL:lCopy];
 
   return v4;
 }
 
-+ (DCMapsLink)mapsLinkWithURL:(id)a3
++ (DCMapsLink)mapsLinkWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [DCNewGoogleMapsLink mapsLinkWithURL:v3];
+  lCopy = l;
+  v4 = [DCNewGoogleMapsLink mapsLinkWithURL:lCopy];
   v5 = v4;
   if (v4)
   {
@@ -1115,7 +1115,7 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
 
   else
   {
-    v6 = [DCStandardMapsLink mapsLinkWithURL:v3];
+    v6 = [DCStandardMapsLink mapsLinkWithURL:lCopy];
   }
 
   v7 = v6;
@@ -1123,26 +1123,26 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
   return v7;
 }
 
-- ($1655AFAB7F657C4F8B0504A4BF66C03D)coordinateRegionForMapSize:(SEL)a3 centeredAtLocation:(CGSize)a4
+- ($1655AFAB7F657C4F8B0504A4BF66C03D)coordinateRegionForMapSize:(SEL)size centeredAtLocation:(CGSize)location
 {
   longitude = a5.longitude;
   latitude = a5.latitude;
-  [(DCMapsLink *)self coordinateSpanForMapSize:a4.width centeredAtLocation:a4.height];
+  [(DCMapsLink *)self coordinateSpanForMapSize:location.width centeredAtLocation:location.height];
 
   WFMKCoordinateRegionMake(latitude, longitude, v7, v8);
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateSpanForMapSize:(CGSize)a3 centeredAtLocation:(CLLocationCoordinate2D)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateSpanForMapSize:(CGSize)size centeredAtLocation:(CLLocationCoordinate2D)location
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  height = a3.height;
-  width = a3.width;
+  longitude = location.longitude;
+  latitude = location.latitude;
+  height = size.height;
+  width = size.width;
   v9 = objc_opt_class();
-  v10 = [(DCMapsLink *)self zoomLevel];
+  zoomLevel = [(DCMapsLink *)self zoomLevel];
 
-  [v9 coordinateSpanForMapSize:v10 centeredAtLocation:width atZoomLevel:{height, latitude, longitude}];
+  [v9 coordinateSpanForMapSize:zoomLevel centeredAtLocation:width atZoomLevel:{height, latitude, longitude}];
   result.var1 = v12;
   result.var0 = v11;
   return result;
@@ -1150,15 +1150,15 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
 
 - (unint64_t)mkMapType
 {
-  v2 = [(DCMapsLink *)self mapType];
-  if (v2 == 2)
+  mapType = [(DCMapsLink *)self mapType];
+  if (mapType == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v2 == 3);
+    return 2 * (mapType == 3);
   }
 }
 
@@ -1198,8 +1198,8 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
 
 - (CLLocationCoordinate2D)streetViewLocationCoordinate
 {
-  v3 = [(DCMapsLink *)self streetViewLocation];
-  [(DCMapsLink *)self locationCoordinateFromString:v3];
+  streetViewLocation = [(DCMapsLink *)self streetViewLocation];
+  [(DCMapsLink *)self locationCoordinateFromString:streetViewLocation];
   v5 = v4;
   v7 = v6;
 
@@ -1212,8 +1212,8 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
 
 - (CLLocationCoordinate2D)centerLocationCoordinate
 {
-  v3 = [(DCMapsLink *)self centerLocation];
-  [(DCMapsLink *)self locationCoordinateFromString:v3];
+  centerLocation = [(DCMapsLink *)self centerLocation];
+  [(DCMapsLink *)self locationCoordinateFromString:centerLocation];
   v5 = v4;
   v7 = v6;
 
@@ -1226,8 +1226,8 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
 
 - (CLLocationCoordinate2D)searchLocationCoordinate
 {
-  v3 = [(DCMapsLink *)self searchLocation];
-  [(DCMapsLink *)self locationCoordinateFromString:v3];
+  searchLocation = [(DCMapsLink *)self searchLocation];
+  [(DCMapsLink *)self locationCoordinateFromString:searchLocation];
   v5 = v4;
   v7 = v6;
 
@@ -1238,10 +1238,10 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
   return result;
 }
 
-- (CLLocationCoordinate2D)locationCoordinateFromString:(id)a3
+- (CLLocationCoordinate2D)locationCoordinateFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:{@", "}];
+  stringCopy = string;
+  v4 = [stringCopy componentsSeparatedByString:{@", "}];
   if ([v4 count] == 2)
   {
     v5 = [v4 objectAtIndex:0];
@@ -1266,9 +1266,9 @@ void __132__DCMapsLink_WFLocationCoercions__createMapsLinkWithPlacemark_location
     _Block_object_dispose(&v22, 8);
     if (!v11)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"CLLocationCoordinate2D WFCLLocationCoordinate2DMake(CLLocationDegrees, CLLocationDegrees)"}];
-      [v20 handleFailureInFunction:v21 file:@"DCMapsLink+MKGeometry.m" lineNumber:16 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v21 file:@"DCMapsLink+MKGeometry.m" lineNumber:16 description:{@"%s", dlerror()}];
 
       __break(1u);
       goto LABEL_9;
@@ -1293,37 +1293,37 @@ LABEL_9:
   return result;
 }
 
-+ ($4DDE7BAD8B52DEF6C4C48F8A4C97F2FC)coordinateRegionForMapSize:(SEL)a3 centeredAtLocation:(CGSize)a4 atZoomLevel:(CLLocationCoordinate2D)a5
++ ($4DDE7BAD8B52DEF6C4C48F8A4C97F2FC)coordinateRegionForMapSize:(SEL)size centeredAtLocation:(CGSize)location atZoomLevel:(CLLocationCoordinate2D)level
 {
-  longitude = a5.longitude;
-  latitude = a5.latitude;
-  [a2 coordinateSpanForMapSize:a6 centeredAtLocation:a4.width atZoomLevel:a4.height];
+  longitude = level.longitude;
+  latitude = level.latitude;
+  [a2 coordinateSpanForMapSize:a6 centeredAtLocation:location.width atZoomLevel:location.height];
 
   WFMKCoordinateRegionMake(latitude, longitude, v8, v9);
   return result;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateSpanForMapSize:(CGSize)a3 centeredAtLocation:(CLLocationCoordinate2D)a4 atZoomLevel:(int64_t)a5
++ ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateSpanForMapSize:(CGSize)size centeredAtLocation:(CLLocationCoordinate2D)location atZoomLevel:(int64_t)level
 {
-  latitude = a4.latitude;
-  height = a3.height;
-  width = a3.width;
-  [a1 longitudeToPixelSpaceX:a4.longitude];
+  latitude = location.latitude;
+  height = size.height;
+  width = size.width;
+  [self longitudeToPixelSpaceX:location.longitude];
   v11 = v10;
-  [a1 latitudeToPixelSpaceY:latitude];
+  [self latitudeToPixelSpaceY:latitude];
   v13 = v12;
-  v14 = exp2((23 - a5));
+  v14 = exp2((23 - level));
   v15 = width * v14;
   v16 = height * v14;
   v17 = v11 - v15 * 0.5;
   v18 = v13 - v16 * 0.5;
-  [a1 pixelSpaceXToLongitude:v17];
+  [self pixelSpaceXToLongitude:v17];
   v20 = v19;
-  [a1 pixelSpaceXToLongitude:(v15 + v17)];
+  [self pixelSpaceXToLongitude:(v15 + v17)];
   v22 = v21;
-  [a1 pixelSpaceYToLatitude:v18];
+  [self pixelSpaceYToLatitude:v18];
   v24 = v23;
-  [a1 pixelSpaceYToLatitude:(v16 + v18)];
+  [self pixelSpaceYToLatitude:(v16 + v18)];
   v26 = v25;
   v33 = 0;
   v34 = &v33;
@@ -1346,9 +1346,9 @@ LABEL_9:
 
   else
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"MKCoordinateSpan WFMKCoordinateSpanMake(CLLocationDegrees, CLLocationDegrees)"}];
-    [v31 handleFailureInFunction:v32 file:@"DCMapsLink+MKGeometry.m" lineNumber:21 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v32 file:@"DCMapsLink+MKGeometry.m" lineNumber:21 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -1358,9 +1358,9 @@ LABEL_9:
   return result;
 }
 
-+ (double)latitudeToPixelSpaceY:(double)a3
++ (double)latitudeToPixelSpaceY:(double)y
 {
-  v3 = a3 * 3.14159265 / 180.0;
+  v3 = y * 3.14159265 / 180.0;
   v4 = sinf(v3);
   return round(logf((v4 + 1.0) / (1.0 - v4)) * -85445659.4 * 0.5 + 268435456.0);
 }

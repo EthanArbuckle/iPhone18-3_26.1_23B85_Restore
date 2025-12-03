@@ -12,8 +12,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v1 = [a1 viewControllers];
-  v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  viewControllers = [self viewControllers];
+  v2 = [viewControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v2)
   {
     v3 = *v9;
@@ -23,7 +23,7 @@
       {
         if (*v9 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(viewControllers);
         }
 
         v5 = *(*(&v8 + 1) + 8 * i);
@@ -35,7 +35,7 @@
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v2 = [viewControllers countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v2)
       {
         continue;
@@ -54,16 +54,16 @@ LABEL_11:
 
 - (void)popToSigninControllerAnimated:()CNFRegSignInController
 {
-  v5 = [a1 signInControllerInHierarchy];
-  v7 = v5;
-  if (v5)
+  signInControllerInHierarchy = [self signInControllerInHierarchy];
+  v7 = signInControllerInHierarchy;
+  if (signInControllerInHierarchy)
   {
-    v6 = [a1 popToViewController:v5 animated:a3];
+    v6 = [self popToViewController:signInControllerInHierarchy animated:a3];
   }
 
   else
   {
-    [a1 popRecursivelyToRootController];
+    [self popRecursivelyToRootController];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface LPMetadataProviderSpecialization
-+ (BOOL)generateSpecializedMetadataForCompleteMetadata:(id)a3 withContext:(id)a4 completionHandler:(id)a5;
-+ (id)specializedMetadataProviderForMetadata:(id)a3 withContext:(id)a4;
-+ (id)specializedMetadataProviderForResourceWithContext:(id)a3;
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3;
-- (LPMetadataProviderSpecialization)initWithContext:(id)a3;
++ (BOOL)generateSpecializedMetadataForCompleteMetadata:(id)metadata withContext:(id)context completionHandler:(id)handler;
++ (id)specializedMetadataProviderForMetadata:(id)metadata withContext:(id)context;
++ (id)specializedMetadataProviderForResourceWithContext:(id)context;
++ (id)specializedMetadataProviderForURLWithContext:(id)context;
+- (LPMetadataProviderSpecialization)initWithContext:(id)context;
 - (LPMetadataProviderSpecializationDelegate)delegate;
-- (id)createMetadataWithSpecialization:(id)a3;
+- (id)createMetadataWithSpecialization:(id)specialization;
 @end
 
 @implementation LPMetadataProviderSpecialization
 
-+ (id)specializedMetadataProviderForURLWithContext:(id)a3
++ (id)specializedMetadataProviderForURLWithContext:(id)context
 {
   v17[7] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v17[0] = objc_opt_class();
   v17[1] = objc_opt_class();
   v17[2] = objc_opt_class();
@@ -40,10 +40,10 @@ LABEL_3:
       }
 
       v8 = *(*(&v12 + 1) + 8 * v7);
-      v9 = [v3 allowedSpecializations];
-      if (([v8 specialization] & v9) != 0)
+      allowedSpecializations = [contextCopy allowedSpecializations];
+      if (([v8 specialization] & allowedSpecializations) != 0)
       {
-        v10 = [v8 specializedMetadataProviderForURLWithContext:v3];
+        v10 = [v8 specializedMetadataProviderForURLWithContext:contextCopy];
         if (v10)
         {
           break;
@@ -72,10 +72,10 @@ LABEL_10:
   return v10;
 }
 
-+ (id)specializedMetadataProviderForResourceWithContext:(id)a3
++ (id)specializedMetadataProviderForResourceWithContext:(id)context
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v17[0] = objc_opt_class();
   v17[1] = objc_opt_class();
   [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
@@ -97,10 +97,10 @@ LABEL_3:
       }
 
       v8 = *(*(&v12 + 1) + 8 * v7);
-      v9 = [v3 allowedSpecializations];
-      if (([v8 specialization] & v9) != 0)
+      allowedSpecializations = [contextCopy allowedSpecializations];
+      if (([v8 specialization] & allowedSpecializations) != 0)
       {
-        v10 = [v8 specializedMetadataProviderForResourceWithContext:v3];
+        v10 = [v8 specializedMetadataProviderForResourceWithContext:contextCopy];
         if (v10)
         {
           break;
@@ -129,11 +129,11 @@ LABEL_10:
   return v10;
 }
 
-+ (id)specializedMetadataProviderForMetadata:(id)a3 withContext:(id)a4
++ (id)specializedMetadataProviderForMetadata:(id)metadata withContext:(id)context
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  contextCopy = context;
   v20[0] = objc_opt_class();
   [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
   v17 = 0u;
@@ -154,10 +154,10 @@ LABEL_3:
       }
 
       v11 = *(*(&v15 + 1) + 8 * v10);
-      v12 = [v6 allowedSpecializations];
-      if (([v11 specialization] & v12) != 0)
+      allowedSpecializations = [contextCopy allowedSpecializations];
+      if (([v11 specialization] & allowedSpecializations) != 0)
       {
-        v13 = [v11 specializedMetadataProviderForMetadata:v5 withContext:v6];
+        v13 = [v11 specializedMetadataProviderForMetadata:metadataCopy withContext:contextCopy];
         if (v13)
         {
           break;
@@ -186,12 +186,12 @@ LABEL_10:
   return v13;
 }
 
-+ (BOOL)generateSpecializedMetadataForCompleteMetadata:(id)a3 withContext:(id)a4 completionHandler:(id)a5
++ (BOOL)generateSpecializedMetadataForCompleteMetadata:(id)metadata withContext:(id)context completionHandler:(id)handler
 {
   v22[5] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  metadataCopy = metadata;
+  contextCopy = context;
+  handlerCopy = handler;
   v22[0] = objc_opt_class();
   v22[1] = objc_opt_class();
   v22[2] = objc_opt_class();
@@ -216,8 +216,8 @@ LABEL_10:
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        v15 = [v8 allowedSpecializations];
-        if ([v14 specialization] & v15) != 0 && (objc_msgSend(v14, "generateSpecializedMetadataForCompleteMetadata:withContext:completionHandler:", v7, v8, v9))
+        allowedSpecializations = [contextCopy allowedSpecializations];
+        if ([v14 specialization] & allowedSpecializations) != 0 && (objc_msgSend(v14, "generateSpecializedMetadataForCompleteMetadata:withContext:completionHandler:", metadataCopy, contextCopy, handlerCopy))
         {
           LOBYTE(v11) = 1;
           goto LABEL_12;
@@ -239,19 +239,19 @@ LABEL_12:
   return v11;
 }
 
-- (id)createMetadataWithSpecialization:(id)a3
+- (id)createMetadataWithSpecialization:(id)specialization
 {
-  v4 = a3;
+  specializationCopy = specialization;
   v5 = objc_alloc_init(LPLinkMetadata);
-  v6 = [(LPMetadataProviderSpecialization *)self context];
-  v7 = [v6 postRedirectURL];
-  [(LPLinkMetadata *)v5 setURL:v7];
+  context = [(LPMetadataProviderSpecialization *)self context];
+  postRedirectURL = [context postRedirectURL];
+  [(LPLinkMetadata *)v5 setURL:postRedirectURL];
 
-  v8 = [(LPMetadataProviderSpecialization *)self context];
-  v9 = [v8 originalURL];
-  [(LPLinkMetadata *)v5 setOriginalURL:v9];
+  context2 = [(LPMetadataProviderSpecialization *)self context];
+  originalURL = [context2 originalURL];
+  [(LPLinkMetadata *)v5 setOriginalURL:originalURL];
 
-  [(LPLinkMetadata *)v5 setSpecialization:v4];
+  [(LPLinkMetadata *)v5 setSpecialization:specializationCopy];
 
   return v5;
 }
@@ -263,16 +263,16 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (LPMetadataProviderSpecialization)initWithContext:(id)a3
+- (LPMetadataProviderSpecialization)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = LPMetadataProviderSpecialization;
   v6 = [(LPMetadataProviderSpecialization *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = v7;
   }
 

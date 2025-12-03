@@ -1,36 +1,36 @@
 @interface VUIMPMediaItemDownloadController
 - (VUIMPMediaItemDownloadController)init;
-- (VUIMPMediaItemDownloadController)initWithMediaItem:(id)a3 state:(id)a4 serialProcessingDispatchQueue:(id)a5;
+- (VUIMPMediaItemDownloadController)initWithMediaItem:(id)item state:(id)state serialProcessingDispatchQueue:(id)queue;
 - (VUIMPMediaItemDownloadControllerState)state;
-- (void)_enqueueAsyncProcessingQueueBlock:(id)a3;
-- (void)_enqueueAsyncStrongSelfProcessingQueueBlock:(id)a3;
-- (void)_enqueueObserverQueueBlock:(id)a3;
-- (void)_notifyObservers:(id)a3 stateDidChange:(id)a4;
-- (void)_onProcessingQueue_setState:(id)a3;
-- (void)_setState:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_enqueueAsyncProcessingQueueBlock:(id)block;
+- (void)_enqueueAsyncStrongSelfProcessingQueueBlock:(id)block;
+- (void)_enqueueObserverQueueBlock:(id)block;
+- (void)_notifyObservers:(id)observers stateDidChange:(id)change;
+- (void)_onProcessingQueue_setState:(id)state;
+- (void)_setState:(id)state;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation VUIMPMediaItemDownloadController
 
-- (VUIMPMediaItemDownloadController)initWithMediaItem:(id)a3 state:(id)a4 serialProcessingDispatchQueue:(id)a5
+- (VUIMPMediaItemDownloadController)initWithMediaItem:(id)item state:(id)state serialProcessingDispatchQueue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  stateCopy = state;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = VUIMPMediaItemDownloadController;
   v12 = [(VUIMPMediaItemDownloadController *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mediaItem, a3);
-    v14 = [v10 copy];
+    objc_storeStrong(&v12->_mediaItem, item);
+    v14 = [stateCopy copy];
     state = v13->_state;
     v13->_state = v14;
 
-    objc_storeStrong(&v13->_serialProcessingDispatchQueue, a5);
+    objc_storeStrong(&v13->_serialProcessingDispatchQueue, queue);
     v16 = dispatch_get_global_queue(21, 0);
     observerDispatchQueue = v13->_observerDispatchQueue;
     v13->_observerDispatchQueue = v16;
@@ -55,10 +55,10 @@
 
 - (VUIMPMediaItemDownloadControllerState)state
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(VUIMPMediaItemDownloadControllerState *)v2->_state copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(VUIMPMediaItemDownloadControllerState *)selfCopy->_state copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -90,10 +90,10 @@ void __50__VUIMPMediaItemDownloadController_resumeDownload__block_invoke(uint64_
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"observer"}];
   }
@@ -102,8 +102,8 @@ void __50__VUIMPMediaItemDownloadController_resumeDownload__block_invoke(uint64_
   v6[1] = 3221225472;
   v6[2] = __48__VUIMPMediaItemDownloadController_addObserver___block_invoke;
   v6[3] = &unk_1E8733C90;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(VUIMPMediaItemDownloadController *)self _enqueueAsyncStrongSelfProcessingQueueBlock:v6];
 }
 
@@ -113,10 +113,10 @@ void __48__VUIMPMediaItemDownloadController_addObserver___block_invoke(uint64_t 
   [v3 addObject:*(a1 + 32)];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (!v4)
+  observerCopy = observer;
+  if (!observerCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"observer"}];
   }
@@ -125,8 +125,8 @@ void __48__VUIMPMediaItemDownloadController_addObserver___block_invoke(uint64_t 
   v6[1] = 3221225472;
   v6[2] = __51__VUIMPMediaItemDownloadController_removeObserver___block_invoke;
   v6[3] = &unk_1E8733C90;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   [(VUIMPMediaItemDownloadController *)self _enqueueAsyncStrongSelfProcessingQueueBlock:v6];
 }
 
@@ -136,28 +136,28 @@ void __51__VUIMPMediaItemDownloadController_removeObserver___block_invoke(uint64
   [v3 removeObject:*(a1 + 32)];
 }
 
-- (void)_setState:(id)a3
+- (void)_setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__VUIMPMediaItemDownloadController__setState___block_invoke;
   v6[3] = &unk_1E8733C90;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   [(VUIMPMediaItemDownloadController *)self _enqueueAsyncStrongSelfProcessingQueueBlock:v6];
 }
 
-- (void)_enqueueAsyncStrongSelfProcessingQueueBlock:(id)a3
+- (void)_enqueueAsyncStrongSelfProcessingQueueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80__VUIMPMediaItemDownloadController__enqueueAsyncStrongSelfProcessingQueueBlock___block_invoke;
   v6[3] = &unk_1E872E828;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   [(VUIMPMediaItemDownloadController *)self _enqueueAsyncProcessingQueueBlock:v6];
 
@@ -176,48 +176,48 @@ void __80__VUIMPMediaItemDownloadController__enqueueAsyncStrongSelfProcessingQue
   }
 }
 
-- (void)_enqueueAsyncProcessingQueueBlock:(id)a3
+- (void)_enqueueAsyncProcessingQueueBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(VUIMPMediaItemDownloadController *)self serialProcessingDispatchQueue];
+  blockCopy = block;
+  serialProcessingDispatchQueue = [(VUIMPMediaItemDownloadController *)self serialProcessingDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__VUIMPMediaItemDownloadController__enqueueAsyncProcessingQueueBlock___block_invoke;
   block[3] = &unk_1E872D7E0;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(serialProcessingDispatchQueue, block);
 }
 
-- (void)_enqueueObserverQueueBlock:(id)a3
+- (void)_enqueueObserverQueueBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(VUIMPMediaItemDownloadController *)self observerDispatchQueue];
+  blockCopy = block;
+  observerDispatchQueue = [(VUIMPMediaItemDownloadController *)self observerDispatchQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__VUIMPMediaItemDownloadController__enqueueObserverQueueBlock___block_invoke;
   block[3] = &unk_1E872D7E0;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(observerDispatchQueue, block);
 }
 
-- (void)_onProcessingQueue_setState:(id)a3
+- (void)_onProcessingQueue_setState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(VUIMPMediaItemDownloadControllerState *)v5->_state isEqual:v4])
+  stateCopy = state;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(VUIMPMediaItemDownloadControllerState *)selfCopy->_state isEqual:stateCopy])
   {
-    v6 = [v4 copy];
-    state = v5->_state;
-    v5->_state = v6;
+    v6 = [stateCopy copy];
+    state = selfCopy->_state;
+    selfCopy->_state = v6;
 
-    v8 = [v4 copy];
-    v9 = [(VUIMPMediaItemDownloadController *)v5 observers];
-    v10 = [v9 copy];
+    v8 = [stateCopy copy];
+    observers = [(VUIMPMediaItemDownloadController *)selfCopy observers];
+    v10 = [observers copy];
 
-    objc_initWeak(&location, v5);
+    objc_initWeak(&location, selfCopy);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __64__VUIMPMediaItemDownloadController__onProcessingQueue_setState___block_invoke;
@@ -227,13 +227,13 @@ void __80__VUIMPMediaItemDownloadController__enqueueAsyncStrongSelfProcessingQue
     v14 = v11;
     v12 = v8;
     v15 = v12;
-    [(VUIMPMediaItemDownloadController *)v5 _enqueueObserverQueueBlock:v13];
+    [(VUIMPMediaItemDownloadController *)selfCopy _enqueueObserverQueueBlock:v13];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __64__VUIMPMediaItemDownloadController__onProcessingQueue_setState___block_invoke(uint64_t a1)
@@ -247,16 +247,16 @@ void __64__VUIMPMediaItemDownloadController__onProcessingQueue_setState___block_
   }
 }
 
-- (void)_notifyObservers:(id)a3 stateDidChange:(id)a4
+- (void)_notifyObservers:(id)observers stateDidChange:(id)change
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observersCopy = observers;
+  changeCopy = change;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [observersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -268,20 +268,20 @@ void __64__VUIMPMediaItemDownloadController__onProcessingQueue_setState___block_
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(observersCopy);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 mediaItemDownloadController:self stateDidChange:v7];
+          [v12 mediaItemDownloadController:self stateDidChange:changeCopy];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [observersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);

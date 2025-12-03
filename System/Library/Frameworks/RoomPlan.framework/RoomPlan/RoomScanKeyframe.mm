@@ -1,15 +1,15 @@
 @interface RoomScanKeyframe
 - (_TtC8RoomPlan16RoomScanKeyframe)init;
 - (__n128)cameraPose;
-- (id)copyWithZone:(void *)a3;
-- (uint64_t)setCameraPose:(__n128)a3;
+- (id)copyWithZone:(void *)zone;
+- (uint64_t)setCameraPose:(__n128)pose;
 @end
 
 @implementation RoomScanKeyframe
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_23A99C238(v6);
 
   __swift_project_boxed_opaque_existential_1(v6, v6[3]);
@@ -20,18 +20,18 @@
 
 - (__n128)cameraPose
 {
-  result = *(a1 + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose);
-  v2 = *(a1 + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose + 16);
-  v3 = *(a1 + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose + 32);
-  v4 = *(a1 + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose + 48);
+  result = *(self + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose);
+  v2 = *(self + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose + 16);
+  v3 = *(self + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose + 32);
+  v4 = *(self + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose + 48);
   return result;
 }
 
-- (uint64_t)setCameraPose:(__n128)a3
+- (uint64_t)setCameraPose:(__n128)pose
 {
   v5 = (result + OBJC_IVAR____TtC8RoomPlan16RoomScanKeyframe_cameraPose);
   *v5 = a2;
-  v5[1] = a3;
+  v5[1] = pose;
   v5[2] = a4;
   v5[3] = a5;
   return result;

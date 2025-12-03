@@ -1,17 +1,17 @@
 @interface WFContentPredicate
 + (id)falsePredicate;
-+ (id)predicateWithBlock:(id)a3;
++ (id)predicateWithBlock:(id)block;
 + (id)truePredicate;
-- (WFContentPredicate)initWithBlock:(id)a3;
-- (void)evaluateWithObject:(id)a3 propertySubstitutor:(id)a4 completionHandler:(id)a5;
+- (WFContentPredicate)initWithBlock:(id)block;
+- (void)evaluateWithObject:(id)object propertySubstitutor:(id)substitutor completionHandler:(id)handler;
 @end
 
 @implementation WFContentPredicate
 
-+ (id)predicateWithBlock:(id)a3
++ (id)predicateWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithBlock:blockCopy];
 
   return v5;
 }
@@ -23,17 +23,17 @@
   return v2;
 }
 
-- (void)evaluateWithObject:(id)a3 propertySubstitutor:(id)a4 completionHandler:(id)a5
+- (void)evaluateWithObject:(id)object propertySubstitutor:(id)substitutor completionHandler:(id)handler
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  objectCopy = object;
+  substitutorCopy = substitutor;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     block = self->_block;
     if (block)
     {
-      v11 = block[2](block, v12);
+      v11 = block[2](block, objectCopy);
     }
 
     else
@@ -41,19 +41,19 @@
       v11 = 0;
     }
 
-    v9[2](v9, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 }
 
-- (WFContentPredicate)initWithBlock:(id)a3
+- (WFContentPredicate)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = WFContentPredicate;
   v5 = [(WFContentPredicate *)&v10 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     block = v5->_block;
     v5->_block = v6;
 

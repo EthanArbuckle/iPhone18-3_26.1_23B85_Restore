@@ -1,17 +1,17 @@
 @interface WFRemindersSmartListParameterState
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (id)legacySerializedRepresentation;
 @end
 
 @implementation WFRemindersSmartListParameterState
 
-+ (id)valueFromSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
++ (id)valueFromSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  representationCopy = representation;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  v11 = representationCopy;
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v24 = @"identifier";
@@ -48,9 +48,9 @@
     v14 = 0;
   }
 
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = &OBJC_METACLASS___WFRemindersSmartListParameterState;
-  v15 = objc_msgSendSuper2(&v19, sel_valueFromSerializedRepresentation_variableProvider_parameter_, v11, v9, v10);
+  v15 = objc_msgSendSuper2(&v19, sel_valueFromSerializedRepresentation_variableProvider_parameter_, v11, providerCopy, parameterCopy);
 
   v16 = *MEMORY[0x1E69E9840];
 
@@ -59,48 +59,48 @@
 
 - (id)legacySerializedRepresentation
 {
-  v2 = [(WFVariableSubstitutableParameterState *)self value];
-  if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  value = [(WFVariableSubstitutableParameterState *)self value];
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 value];
-    if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    v2Value = [value value];
+    if (v2Value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v4 = [v3 value];
-      if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      v3Value = [v2Value value];
+      if (v3Value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v5 = [v4 identifier];
-        v6 = [v5 instanceIdentifier];
+        identifier = [v3Value identifier];
+        instanceIdentifier = [identifier instanceIdentifier];
 
-        if (v6)
+        if (instanceIdentifier)
         {
-          v7 = [v6 componentsSeparatedByString:@"."];
-          v8 = [v7 lastObject];
+          v7 = [instanceIdentifier componentsSeparatedByString:@"."];
+          lastObject = [v7 lastObject];
         }
 
         else
         {
-          v8 = 0;
+          lastObject = 0;
         }
       }
 
       else
       {
-        v8 = 0;
+        lastObject = 0;
       }
     }
 
     else
     {
-      v8 = 0;
+      lastObject = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    lastObject = 0;
   }
 
-  return v8;
+  return lastObject;
 }
 
 @end

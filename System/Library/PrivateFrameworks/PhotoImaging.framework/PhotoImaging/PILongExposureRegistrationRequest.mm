@@ -1,16 +1,16 @@
 @interface PILongExposureRegistrationRequest
 - ($721907E0E1CDE8B6CD3FA271A8B25860)cleanAperture;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
-- (void)setCleanAperture:(id *)a3;
+- (void)setCleanAperture:(id *)aperture;
 @end
 
 @implementation PILongExposureRegistrationRequest
 
-- (void)setCleanAperture:(id *)a3
+- (void)setCleanAperture:(id *)aperture
 {
-  var1 = a3->var1;
-  self->_cleanAperture.origin = a3->var0;
+  var1 = aperture->var1;
+  self->_cleanAperture.origin = aperture->var0;
   self->_cleanAperture.size = var1;
 }
 
@@ -29,11 +29,11 @@
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PILongExposureRegistrationRequest;
-  v4 = [(NURenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v7 copyWithZone:zone];
   objc_storeStrong(v4 + 20, self->_recipe);
   size = self->_cleanAperture.size;
   *(v4 + 168) = self->_cleanAperture.origin;

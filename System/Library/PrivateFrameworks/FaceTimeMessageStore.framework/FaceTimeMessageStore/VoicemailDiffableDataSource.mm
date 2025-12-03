@@ -1,10 +1,10 @@
 @interface VoicemailDiffableDataSource
-- (void)voicemailsChangedHandlerWithNotification:(id)a3;
+- (void)voicemailsChangedHandlerWithNotification:(id)notification;
 @end
 
 @implementation VoicemailDiffableDataSource
 
-- (void)voicemailsChangedHandlerWithNotification:(id)a3
+- (void)voicemailsChangedHandlerWithNotification:(id)notification
 {
   v3 = sub_1BC8F6D24();
   v4 = *(v3 - 8);

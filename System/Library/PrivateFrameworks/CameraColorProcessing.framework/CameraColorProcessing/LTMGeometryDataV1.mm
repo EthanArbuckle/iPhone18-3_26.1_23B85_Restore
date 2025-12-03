@@ -3,14 +3,14 @@
 - (CGRect)cropRect;
 - (CGRect)sourceRect;
 - (CGSize)inputTextureSize;
-- (LTMGeometryDataV1)initWithInputTextureWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCropRect:(CGRect)a3 sourceRect:(CGRect)a4;
+- (LTMGeometryDataV1)initWithInputTextureWidth:(unint64_t)width height:(unint64_t)height;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCropRect:(CGRect)rect sourceRect:(CGRect)sourceRect;
 @end
 
 @implementation LTMGeometryDataV1
 
-- (LTMGeometryDataV1)initWithInputTextureWidth:(unint64_t)a3 height:(unint64_t)a4
+- (LTMGeometryDataV1)initWithInputTextureWidth:(unint64_t)width height:(unint64_t)height
 {
   v10.receiver = self;
   v10.super_class = LTMGeometryDataV1;
@@ -24,20 +24,20 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  if (a3 < 0x1E0 || a4 <= 0x13F)
+  if (width < 0x1E0 || height <= 0x13F)
   {
     [LTMGeometryDataV1 initWithInputTextureWidth:height:];
     goto LABEL_8;
   }
 
-  *(v6 + 12) = a3;
-  *(v6 + 13) = a4;
+  *(v6 + 12) = width;
+  *(v6 + 13) = height;
   *(v6 + 1) = 0;
   *(v6 + 2) = 0;
-  *(v6 + 3) = a3;
-  *(v6 + 4) = a4;
-  *(v6 + 5) = ((a3 - 480) >> 1);
-  *(v6 + 6) = ((a4 - 320) >> 1);
+  *(v6 + 3) = width;
+  *(v6 + 4) = height;
+  *(v6 + 5) = ((width - 480) >> 1);
+  *(v6 + 6) = ((height - 320) >> 1);
   *(v6 + 56) = xmmword_1C9335BB0;
   *(v6 + 10) = 0;
   *(v6 + 11) = 0;
@@ -48,7 +48,7 @@ LABEL_5:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[LTMGeometryDataV1 alloc] initWithInputTextureWidth:self->_inputTextureSize.width height:self->_inputTextureSize.height];
   [(LTMGeometryDataV1 *)v4 setCropRect:self->_cropRect.origin.x sourceRect:self->_cropRect.origin.y, self->_cropRect.size.width, self->_cropRect.size.height, self->_sourceRect.origin.x, self->_sourceRect.origin.y, self->_sourceRect.size.width, self->_sourceRect.size.height];
@@ -59,13 +59,13 @@ LABEL_5:
   return v4;
 }
 
-- (void)setCropRect:(CGRect)a3 sourceRect:(CGRect)a4
+- (void)setCropRect:(CGRect)rect sourceRect:(CGRect)sourceRect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v46 = CGRectIntegral(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v46 = CGRectIntegral(sourceRect);
   v9 = v46.origin.x;
   v34 = v46.origin.y;
   rect2 = v46.origin.x;

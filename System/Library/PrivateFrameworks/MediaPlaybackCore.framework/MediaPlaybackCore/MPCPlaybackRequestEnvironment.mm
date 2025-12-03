@@ -1,74 +1,74 @@
 @interface MPCPlaybackRequestEnvironment
 + (MPCPlaybackRequestEnvironment)activeAccountRequestEnvironment;
-+ (MPCPlaybackRequestEnvironment)requestEnvironmentWithUserIdentity:(id)a3;
-+ (id)musicRequestWithUserIdentity:(id)a3;
-+ (id)payloadValueFromJSONValue:(id)a3;
++ (MPCPlaybackRequestEnvironment)requestEnvironmentWithUserIdentity:(id)identity;
++ (id)musicRequestWithUserIdentity:(id)identity;
++ (id)payloadValueFromJSONValue:(id)value;
 - (MPCPlaybackRequestEnvironment)init;
-- (MPCPlaybackRequestEnvironment)initWithCoder:(id)a3;
-- (MPCPlaybackRequestEnvironment)initWithUserIdentity:(id)a3;
-- (MPCPlaybackRequestEnvironment)initWithUserIdentity:(id)a3 clientInfo:(id)a4;
+- (MPCPlaybackRequestEnvironment)initWithCoder:(id)coder;
+- (MPCPlaybackRequestEnvironment)initWithUserIdentity:(id)identity;
+- (MPCPlaybackRequestEnvironment)initWithUserIdentity:(id)identity clientInfo:(id)info;
 - (NSString)description;
-- (id)_copyWithPlaybackRequestEnvironmentClass:(Class)a3;
+- (id)_copyWithPlaybackRequestEnvironmentClass:(Class)class;
 - (id)_createMusicKitRequestContext;
-- (id)_createStoreRequestContextWithTag:(id)a3;
+- (id)_createStoreRequestContextWithTag:(id)tag;
 - (id)mpc_jsonValue;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)rectifiedPlaybackRequestEnvironmentWithReasons:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)rectifiedPlaybackRequestEnvironmentWithReasons:(id *)reasons;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPCPlaybackRequestEnvironment
 
 - (id)mpc_jsonValue
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = +[MPCPlaybackAccountManager sharedManager];
-  v5 = [(MPCPlaybackRequestEnvironment *)self userIdentity];
-  v6 = [v4 accountForUserIdentity:v5];
-  v7 = [v6 hashedDSID];
-  [v3 setObject:v7 forKeyedSubscript:@"user"];
+  userIdentity = [(MPCPlaybackRequestEnvironment *)self userIdentity];
+  v6 = [v4 accountForUserIdentity:userIdentity];
+  hashedDSID = [v6 hashedDSID];
+  [dictionary setObject:hashedDSID forKeyedSubscript:@"user"];
 
-  v8 = [(MPCPlaybackRequestEnvironment *)self clientIdentifier];
-  [v3 setObject:v8 forKeyedSubscript:@"clientID"];
+  clientIdentifier = [(MPCPlaybackRequestEnvironment *)self clientIdentifier];
+  [dictionary setObject:clientIdentifier forKeyedSubscript:@"clientID"];
 
-  v9 = [(MPCPlaybackRequestEnvironment *)self clientVersion];
-  [v3 setObject:v9 forKeyedSubscript:@"clientVersion"];
+  clientVersion = [(MPCPlaybackRequestEnvironment *)self clientVersion];
+  [dictionary setObject:clientVersion forKeyedSubscript:@"clientVersion"];
 
-  v10 = [(MPCPlaybackRequestEnvironment *)self requestingBundleIdentifier];
-  [v3 setObject:v10 forKeyedSubscript:@"requestingID"];
+  requestingBundleIdentifier = [(MPCPlaybackRequestEnvironment *)self requestingBundleIdentifier];
+  [dictionary setObject:requestingBundleIdentifier forKeyedSubscript:@"requestingID"];
 
-  v11 = [(MPCPlaybackRequestEnvironment *)self requestingBundleVersion];
-  [v3 setObject:v11 forKeyedSubscript:@"requestingVersion"];
+  requestingBundleVersion = [(MPCPlaybackRequestEnvironment *)self requestingBundleVersion];
+  [dictionary setObject:requestingBundleVersion forKeyedSubscript:@"requestingVersion"];
 
-  v12 = [(MPCPlaybackRequestEnvironment *)self delegationProperties];
-  v13 = [v12 mpc_jsonValue];
-  [v3 setObject:v13 forKeyedSubscript:@"delegation"];
+  delegationProperties = [(MPCPlaybackRequestEnvironment *)self delegationProperties];
+  mpc_jsonValue = [delegationProperties mpc_jsonValue];
+  [dictionary setObject:mpc_jsonValue forKeyedSubscript:@"delegation"];
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)payloadValueFromJSONValue:(id)a3
++ (id)payloadValueFromJSONValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"user"];
+  valueCopy = value;
+  v4 = [valueCopy objectForKeyedSubscript:@"user"];
   v5 = +[MPCPlaybackAccountManager sharedManager];
   v6 = [v5 accountForHashedDSID:v4];
-  v7 = [v6 userIdentity];
+  userIdentity = [v6 userIdentity];
 
-  v8 = [(MPCPlaybackRequestEnvironment *)[MPCMutablePlaybackRequestEnvironment alloc] initWithUserIdentity:v7];
-  v9 = [v3 objectForKeyedSubscript:@"clientID"];
+  v8 = [(MPCPlaybackRequestEnvironment *)[MPCMutablePlaybackRequestEnvironment alloc] initWithUserIdentity:userIdentity];
+  v9 = [valueCopy objectForKeyedSubscript:@"clientID"];
   [(MPCMutablePlaybackRequestEnvironment *)v8 setClientIdentifier:v9];
 
-  v10 = [v3 objectForKeyedSubscript:@"clientVersion"];
+  v10 = [valueCopy objectForKeyedSubscript:@"clientVersion"];
   [(MPCMutablePlaybackRequestEnvironment *)v8 setClientVersion:v10];
 
-  v11 = [v3 objectForKeyedSubscript:@"requestingID"];
+  v11 = [valueCopy objectForKeyedSubscript:@"requestingID"];
   [(MPCMutablePlaybackRequestEnvironment *)v8 setRequestingBundleIdentifier:v11];
 
-  v12 = [v3 objectForKeyedSubscript:@"requestingVersion"];
+  v12 = [valueCopy objectForKeyedSubscript:@"requestingVersion"];
   [(MPCMutablePlaybackRequestEnvironment *)v8 setRequestingBundleVersion:v12];
 
-  v13 = [v3 objectForKeyedSubscript:@"delegation"];
+  v13 = [valueCopy objectForKeyedSubscript:@"delegation"];
 
   v14 = [(MPCPlaybackDelegationProperties *)MPCMutablePlaybackDelegationProperties payloadValueFromJSONValue:v13];
   [(MPCMutablePlaybackRequestEnvironment *)v8 setDelegationProperties:v14];
@@ -76,9 +76,9 @@
   return v8;
 }
 
-- (id)_copyWithPlaybackRequestEnvironmentClass:(Class)a3
+- (id)_copyWithPlaybackRequestEnvironmentClass:(Class)class
 {
-  v4 = objc_alloc_init(a3);
+  v4 = objc_alloc_init(class);
   if (v4)
   {
     v5 = [(NSString *)self->_clientIdentifier copy];
@@ -109,7 +109,7 @@
   return v4;
 }
 
-- (id)rectifiedPlaybackRequestEnvironmentWithReasons:(id *)a3
+- (id)rectifiedPlaybackRequestEnvironmentWithReasons:(id *)reasons
 {
   v53 = *MEMORY[0x1E69E9840];
   v5 = +[MPCPlaybackAccountManager sharedManager];
@@ -118,18 +118,18 @@
   v8 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v5 accounts];
+    accounts = [v5 accounts];
     *buf = 138412290;
-    v50 = v9;
+    v50 = accounts;
     _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, "rectifiedPlaybackRequestEnvironmentWithReasons - Account Manager accounts: %@", buf, 0xCu);
   }
 
-  v10 = [v7 delegationProperties];
+  delegationProperties = [v7 delegationProperties];
 
-  if (v10)
+  if (delegationProperties)
   {
-    v11 = [v7 delegationProperties];
-    quot = [v11 storeAccountID];
+    delegationProperties2 = [v7 delegationProperties];
+    quot = [delegationProperties2 storeAccountID];
     if (quot)
     {
       v13 = quot;
@@ -180,8 +180,8 @@ LABEL_19:
       }
 
       [v7 setDelegationProperties:0];
-      v21 = [v20 userIdentity];
-      [v7 setUserIdentity:v21];
+      userIdentity = [v20 userIdentity];
+      [v7 setUserIdentity:userIdentity];
 
       v22 = @"[promoting delegated account]";
     }
@@ -197,15 +197,15 @@ LABEL_19:
   }
 
 LABEL_20:
-  v23 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v24 = [v7 userIdentity];
-  v25 = [v23 DSIDForUserIdentity:v24 outError:0];
-  v26 = [v25 longLongValue];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  userIdentity2 = [v7 userIdentity];
+  v25 = [defaultIdentityStore DSIDForUserIdentity:userIdentity2 outError:0];
+  longLongValue = [v25 longLongValue];
 
-  if (v26)
+  if (longLongValue)
   {
     v27 = &v53 + 1;
-    v28 = v26;
+    v28 = longLongValue;
     do
     {
       v29 = lldiv(v28, 10);
@@ -226,7 +226,7 @@ LABEL_20:
     }
 
     while (v29.quot);
-    if (v26 < 0)
+    if (longLongValue < 0)
     {
       *(v27 - 2) = 45;
       v31 = (v27 - 2);
@@ -255,20 +255,20 @@ LABEL_20:
   {
     if ([v33 isDelegated])
     {
-      v35 = [(MPCPlaybackDelegationProperties *)[MPCMutablePlaybackDelegationProperties alloc] initWithStoreAccountID:v26 deviceGUID:@"unknown-guid"];
+      v35 = [(MPCPlaybackDelegationProperties *)[MPCMutablePlaybackDelegationProperties alloc] initWithStoreAccountID:longLongValue deviceGUID:@"unknown-guid"];
       [v7 setDelegationProperties:v35];
 
-      v36 = [v5 anyDelegationHostingAccount];
-      v37 = [v36 userIdentity];
-      if (v37)
+      anyDelegationHostingAccount = [v5 anyDelegationHostingAccount];
+      userIdentity3 = [anyDelegationHostingAccount userIdentity];
+      if (userIdentity3)
       {
-        [v7 setUserIdentity:v37];
+        [v7 setUserIdentity:userIdentity3];
       }
 
       else
       {
-        v44 = [MEMORY[0x1E69E4680] defaultMediaIdentity];
-        [v7 setUserIdentity:v44];
+        defaultMediaIdentity = [MEMORY[0x1E69E4680] defaultMediaIdentity];
+        [v7 setUserIdentity:defaultMediaIdentity];
       }
 
       [v6 addObject:@"[base account is delegated]"];
@@ -277,13 +277,13 @@ LABEL_20:
 
   else
   {
-    v38 = [MEMORY[0x1E69E4680] defaultMediaIdentity];
-    [v7 setUserIdentity:v38];
+    defaultMediaIdentity2 = [MEMORY[0x1E69E4680] defaultMediaIdentity];
+    [v7 setUserIdentity:defaultMediaIdentity2];
 
-    v39 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-    v40 = [v7 userIdentity];
+    defaultIdentityStore2 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    userIdentity4 = [v7 userIdentity];
     v48 = 0;
-    v41 = [v39 DSIDForUserIdentity:v40 outError:&v48];
+    v41 = [defaultIdentityStore2 DSIDForUserIdentity:userIdentity4 outError:&v48];
     v42 = v48;
 
     v43 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
@@ -299,10 +299,10 @@ LABEL_20:
 
   if ([v6 count])
   {
-    if (a3)
+    if (reasons)
     {
       v45 = v6;
-      *a3 = v6;
+      *reasons = v6;
     }
 
     v46 = [v7 copy];
@@ -331,7 +331,7 @@ LABEL_20:
   v13[2] = __62__MPCPlaybackRequestEnvironment__createMusicKitRequestContext__block_invoke;
   v13[3] = &unk_1E8235C08;
   v14 = v5;
-  v15 = self;
+  selfCopy = self;
   v16 = v7;
   v9 = v7;
   v10 = v5;
@@ -352,9 +352,9 @@ void __62__MPCPlaybackRequestEnvironment__createMusicKitRequestContext__block_in
   [v5 setStoreDialogResponseHandler:a1[6]];
 }
 
-- (id)_createStoreRequestContextWithTag:(id)a3
+- (id)_createStoreRequestContextWithTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v5 = objc_alloc_init(MEMORY[0x1E69E44E0]);
   [v5 setClientIdentifier:self->_clientIdentifier];
   [v5 setClientVersion:self->_clientVersion];
@@ -371,8 +371,8 @@ void __62__MPCPlaybackRequestEnvironment__createMusicKitRequestContext__block_in
   v14[4] = self;
   v15 = v5;
   v16 = v7;
-  v17 = v4;
-  v9 = v4;
+  v17 = tagCopy;
+  v9 = tagCopy;
   v10 = v7;
   v11 = v5;
   v12 = [v8 initWithBlock:v14];
@@ -403,60 +403,60 @@ void __67__MPCPlaybackRequestEnvironment__createStoreRequestContextWithTag___blo
   [v9 mpc_setTag:a1[7]];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(MPCPlaybackRequestEnvironment *)self _copyWithPlaybackRequestEnvironmentClass:v4];
 }
 
-+ (id)musicRequestWithUserIdentity:(id)a3
++ (id)musicRequestWithUserIdentity:(id)identity
 {
-  v3 = a3;
+  identityCopy = identity;
   v4 = [MPCPlaybackRequestEnvironment alloc];
   v5 = [objc_alloc(MEMORY[0x1E69E43B0]) initWithSystemApplicationType:0];
-  v6 = [(MPCPlaybackRequestEnvironment *)v4 initWithUserIdentity:v3 clientInfo:v5];
+  v6 = [(MPCPlaybackRequestEnvironment *)v4 initWithUserIdentity:identityCopy clientInfo:v5];
 
   return v6;
 }
 
-+ (MPCPlaybackRequestEnvironment)requestEnvironmentWithUserIdentity:(id)a3
++ (MPCPlaybackRequestEnvironment)requestEnvironmentWithUserIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = [[MPCPlaybackRequestEnvironment alloc] initWithUserIdentity:v3];
+  identityCopy = identity;
+  v4 = [[MPCPlaybackRequestEnvironment alloc] initWithUserIdentity:identityCopy];
 
   return v4;
 }
 
 + (MPCPlaybackRequestEnvironment)activeAccountRequestEnvironment
 {
-  v3 = [MEMORY[0x1E69E4680] activeAccount];
-  v4 = [a1 requestEnvironmentWithUserIdentity:v3];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v4 = [self requestEnvironmentWithUserIdentity:activeAccount];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientIdentifier = self->_clientIdentifier;
-  v5 = a3;
-  [v5 encodeObject:clientIdentifier forKey:@"clientIdentifier"];
-  [v5 encodeObject:self->_clientVersion forKey:@"clientVersion"];
-  [v5 encodeObject:self->_delegationProperties forKey:@"delegationProperties"];
-  [v5 encodeObject:self->_requestingBundleIdentifier forKey:@"requestingBundleIdentifier"];
-  [v5 encodeObject:self->_requestingBundleVersion forKey:@"requestingBundleVersion"];
-  [v5 encodeObject:self->_userIdentity forKey:@"userIdentity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clientIdentifier forKey:@"clientIdentifier"];
+  [coderCopy encodeObject:self->_clientVersion forKey:@"clientVersion"];
+  [coderCopy encodeObject:self->_delegationProperties forKey:@"delegationProperties"];
+  [coderCopy encodeObject:self->_requestingBundleIdentifier forKey:@"requestingBundleIdentifier"];
+  [coderCopy encodeObject:self->_requestingBundleVersion forKey:@"requestingBundleVersion"];
+  [coderCopy encodeObject:self->_userIdentity forKey:@"userIdentity"];
 }
 
-- (MPCPlaybackRequestEnvironment)initWithCoder:(id)a3
+- (MPCPlaybackRequestEnvironment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MPCPlaybackRequestEnvironment;
   v5 = [(MPCPlaybackRequestEnvironment *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientIdentifier"];
     v7 = v6;
     if (v6)
     {
@@ -470,7 +470,7 @@ void __67__MPCPlaybackRequestEnvironment__createStoreRequestContextWithTag___blo
 
     objc_storeStrong(&v5->_clientIdentifier, v8);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientVersion"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientVersion"];
     v10 = v9;
     if (v9)
     {
@@ -484,27 +484,27 @@ void __67__MPCPlaybackRequestEnvironment__createStoreRequestContextWithTag___blo
 
     objc_storeStrong(&v5->_clientVersion, v11);
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delegationProperties"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delegationProperties"];
     delegationProperties = v5->_delegationProperties;
     v5->_delegationProperties = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestingBundleIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestingBundleIdentifier"];
     requestingBundleIdentifier = v5->_requestingBundleIdentifier;
     v5->_requestingBundleIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestingBundleVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestingBundleVersion"];
     requestingBundleVersion = v5->_requestingBundleVersion;
     v5->_requestingBundleVersion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userIdentity"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userIdentity"];
     userIdentity = v5->_userIdentity;
     v5->_userIdentity = v18;
 
     if (!v5->_userIdentity)
     {
-      v20 = [MEMORY[0x1E69E4680] activeAccount];
+      activeAccount = [MEMORY[0x1E69E4680] activeAccount];
       v21 = v5->_userIdentity;
-      v5->_userIdentity = v20;
+      v5->_userIdentity = activeAccount;
     }
   }
 
@@ -513,22 +513,22 @@ void __67__MPCPlaybackRequestEnvironment__createStoreRequestContextWithTag___blo
 
 - (NSString)description
 {
-  v3 = [(MPCPlaybackRequestEnvironment *)self delegationProperties];
-  v4 = v3;
+  delegationProperties = [(MPCPlaybackRequestEnvironment *)self delegationProperties];
+  v4 = delegationProperties;
   v5 = MEMORY[0x1E696AEC0];
-  if (v3)
+  if (delegationProperties)
   {
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v3, "storeAccountID")}];
+    userIdentity2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(delegationProperties, "storeAccountID")}];
     v7 = ICCreateLoggableValueForDSID();
-    v8 = [v4 deviceName];
-    v9 = [(MPCPlaybackRequestEnvironment *)self userIdentity];
-    v10 = [v5 stringWithFormat:@"<MPCPlaybackRequestEnvironment: %p [DelegateAccount: <%@> %@] underlyingUserIdentity=%@ clientIdentifier=%@/%@>", self, v7, v8, v9, self->_clientIdentifier, self->_clientVersion];
+    deviceName = [v4 deviceName];
+    userIdentity = [(MPCPlaybackRequestEnvironment *)self userIdentity];
+    v10 = [v5 stringWithFormat:@"<MPCPlaybackRequestEnvironment: %p [DelegateAccount: <%@> %@] underlyingUserIdentity=%@ clientIdentifier=%@/%@>", self, v7, deviceName, userIdentity, self->_clientIdentifier, self->_clientVersion];
   }
 
   else
   {
-    v6 = [(MPCPlaybackRequestEnvironment *)self userIdentity];
-    v10 = [v5 stringWithFormat:@"<MPCPlaybackRequestEnvironment: %p identity=%@ clientIdentifier=%@/%@>", self, v6, self->_clientIdentifier, self->_clientVersion];
+    userIdentity2 = [(MPCPlaybackRequestEnvironment *)self userIdentity];
+    v10 = [v5 stringWithFormat:@"<MPCPlaybackRequestEnvironment: %p identity=%@ clientIdentifier=%@/%@>", self, userIdentity2, self->_clientIdentifier, self->_clientVersion];
   }
 
   return v10;
@@ -536,26 +536,26 @@ void __67__MPCPlaybackRequestEnvironment__createStoreRequestContextWithTag___blo
 
 - (MPCPlaybackRequestEnvironment)init
 {
-  v3 = [MEMORY[0x1E69E4680] activeAccount];
-  v4 = [(MPCPlaybackRequestEnvironment *)self initWithUserIdentity:v3];
+  activeAccount = [MEMORY[0x1E69E4680] activeAccount];
+  v4 = [(MPCPlaybackRequestEnvironment *)self initWithUserIdentity:activeAccount];
 
   return v4;
 }
 
-- (MPCPlaybackRequestEnvironment)initWithUserIdentity:(id)a3 clientInfo:(id)a4
+- (MPCPlaybackRequestEnvironment)initWithUserIdentity:(id)identity clientInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  infoCopy = info;
   v19.receiver = self;
   v19.super_class = MPCPlaybackRequestEnvironment;
   v9 = [(MPCPlaybackRequestEnvironment *)&v19 init];
   if (v9)
   {
-    v10 = [v8 clientIdentifier];
-    v11 = v10;
-    if (v10)
+    clientIdentifier = [infoCopy clientIdentifier];
+    v11 = clientIdentifier;
+    if (clientIdentifier)
     {
-      v12 = v10;
+      v12 = clientIdentifier;
     }
 
     else
@@ -565,11 +565,11 @@ void __67__MPCPlaybackRequestEnvironment__createStoreRequestContextWithTag___blo
 
     objc_storeStrong(&v9->_clientIdentifier, v12);
 
-    v13 = [v8 clientVersion];
-    v14 = v13;
-    if (v13)
+    clientVersion = [infoCopy clientVersion];
+    v14 = clientVersion;
+    if (clientVersion)
     {
-      v15 = v13;
+      v15 = clientVersion;
     }
 
     else
@@ -579,7 +579,7 @@ void __67__MPCPlaybackRequestEnvironment__createStoreRequestContextWithTag___blo
 
     objc_storeStrong(&v9->_clientVersion, v15);
 
-    objc_storeStrong(&v9->_userIdentity, a3);
+    objc_storeStrong(&v9->_userIdentity, identity);
     if ([(NSString *)v9->_clientIdentifier isEqualToString:@"AirMusic"])
     {
       clientIdentifier = v9->_clientIdentifier;
@@ -593,12 +593,12 @@ void __67__MPCPlaybackRequestEnvironment__createStoreRequestContextWithTag___blo
   return v9;
 }
 
-- (MPCPlaybackRequestEnvironment)initWithUserIdentity:(id)a3
+- (MPCPlaybackRequestEnvironment)initWithUserIdentity:(id)identity
 {
   v4 = MEMORY[0x1E69E43B0];
-  v5 = a3;
-  v6 = [v4 defaultInfo];
-  v7 = [(MPCPlaybackRequestEnvironment *)self initWithUserIdentity:v5 clientInfo:v6];
+  identityCopy = identity;
+  defaultInfo = [v4 defaultInfo];
+  v7 = [(MPCPlaybackRequestEnvironment *)self initWithUserIdentity:identityCopy clientInfo:defaultInfo];
 
   return v7;
 }

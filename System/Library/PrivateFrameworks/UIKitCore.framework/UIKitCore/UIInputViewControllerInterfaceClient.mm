@@ -1,37 +1,37 @@
 @interface UIInputViewControllerInterfaceClient
 - (id)responseDelegate;
-- (void)_handleInputViewControllerState:(id)a3;
+- (void)_handleInputViewControllerState:(id)state;
 - (void)dealloc;
-- (void)setForwardingInterface:(id)a3;
+- (void)setForwardingInterface:(id)interface;
 @end
 
 @implementation UIInputViewControllerInterfaceClient
 
 - (id)responseDelegate
 {
-  v2 = [(UIInputViewControllerInterfaceClient *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxy];
+  _auxiliaryConnection = [(UIInputViewControllerInterfaceClient *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)_handleInputViewControllerState:(id)a3
+- (void)_handleInputViewControllerState:(id)state
 {
-  v4 = a3;
-  v5 = [(UIInputViewControllerInterfaceClient *)self forwardingInterface];
-  [v5 _handleInputViewControllerState:v4];
+  stateCopy = state;
+  forwardingInterface = [(UIInputViewControllerInterfaceClient *)self forwardingInterface];
+  [forwardingInterface _handleInputViewControllerState:stateCopy];
 }
 
-- (void)setForwardingInterface:(id)a3
+- (void)setForwardingInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   [(_UIIVCInterface *)self->_forwardingInterface setResponseDelegate:0];
   forwardingInterface = self->_forwardingInterface;
-  self->_forwardingInterface = v4;
-  v6 = v4;
+  self->_forwardingInterface = interfaceCopy;
+  v6 = interfaceCopy;
 
-  v7 = [(UIInputViewControllerInterfaceClient *)self responseDelegate];
-  [(_UIIVCInterface *)self->_forwardingInterface setResponseDelegate:v7];
+  responseDelegate = [(UIInputViewControllerInterfaceClient *)self responseDelegate];
+  [(_UIIVCInterface *)self->_forwardingInterface setResponseDelegate:responseDelegate];
 }
 
 - (void)dealloc

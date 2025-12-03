@@ -1,18 +1,18 @@
 @interface EKCalendarEditItem
-- (BOOL)configureWithCalendar:(id)a3 store:(id)a4;
+- (BOOL)configureWithCalendar:(id)calendar store:(id)store;
 - (EKCalendarEditItemDelegate)delegate;
-- (void)setCalendar:(id)a3 store:(id)a4;
+- (void)setCalendar:(id)calendar store:(id)store;
 @end
 
 @implementation EKCalendarEditItem
 
-- (void)setCalendar:(id)a3 store:(id)a4
+- (void)setCalendar:(id)calendar store:(id)store
 {
-  v9 = a3;
-  v7 = a4;
-  if (self->_calendar != v9)
+  calendarCopy = calendar;
+  storeCopy = store;
+  if (self->_calendar != calendarCopy)
   {
-    objc_storeStrong(&self->_calendar, a3);
+    objc_storeStrong(&self->_calendar, calendar);
     if (!self->_calendar)
     {
       [(EKCalendarEditItem *)self reset];
@@ -20,22 +20,22 @@
   }
 
   store = self->_store;
-  self->_store = v7;
+  self->_store = storeCopy;
 }
 
-- (BOOL)configureWithCalendar:(id)a3 store:(id)a4
+- (BOOL)configureWithCalendar:(id)calendar store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  calendarCopy = calendar;
+  storeCopy = store;
   calendar = self->_calendar;
-  self->_calendar = v6;
-  v9 = v6;
+  self->_calendar = calendarCopy;
+  v9 = calendarCopy;
 
   store = self->_store;
-  self->_store = v7;
+  self->_store = storeCopy;
 
-  LOBYTE(v7) = [(EKCalendarEditItem *)self configureWithCalendar:v9];
-  return v7;
+  LOBYTE(storeCopy) = [(EKCalendarEditItem *)self configureWithCalendar:v9];
+  return storeCopy;
 }
 
 - (EKCalendarEditItemDelegate)delegate

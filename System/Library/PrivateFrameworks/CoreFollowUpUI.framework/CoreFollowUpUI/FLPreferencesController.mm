@@ -1,25 +1,25 @@
 @interface FLPreferencesController
-+ (BOOL)shouldPreflightNetworkAccessForGroup:(id)a3 item:(id)a4;
++ (BOOL)shouldPreflightNetworkAccessForGroup:(id)group item:(id)item;
 - (FLPreferencesController)init;
-- (FLPreferencesController)initWithViewModel:(id)a3;
+- (FLPreferencesController)initWithViewModel:(id)model;
 - (PSListController)listViewController;
-- (id)_deferredLoadSpecifierWithName:(id)a3;
-- (id)_specifierForGroup:(id)a3;
-- (id)_specifierGroupString:(unint64_t)a3;
-- (id)_specifiersForItem:(id)a3 group:(id)a4;
-- (id)_topLevelSpecifiersForGroup:(unint64_t)a3;
-- (id)_urlBasedSpecifierWithName:(id)a3;
+- (id)_deferredLoadSpecifierWithName:(id)name;
+- (id)_specifierForGroup:(id)group;
+- (id)_specifierGroupString:(unint64_t)string;
+- (id)_specifiersForItem:(id)item group:(id)group;
+- (id)_topLevelSpecifiersForGroup:(unint64_t)group;
+- (id)_urlBasedSpecifierWithName:(id)name;
 - (id)spyglassSpecifiers;
-- (void)_presentSpecifier:(id)a3 fromEventSource:(unint64_t)a4;
-- (void)_refreshItemsAndPresentDetailForSpecifier:(id)a3;
-- (void)_updateSpecifier:(id)a3 withCommonPropertiesForGroup:(id)a4;
-- (void)_zeroActionFailure:(id)a3;
-- (void)loadSpecifier:(id)a3;
-- (void)performPreferencesActionForGroup:(id)a3 item:(id)a4 action:(id)a5 completion:(id)a6;
-- (void)preflightNetworkConnectivityForHandler:(id)a3 withCompletionHandler:(id)a4;
-- (void)setItemChangeObserver:(id)a3;
-- (void)startPresentingForHandler:(id)a3 withRemoteController:(id)a4 customPresentationStyle:(BOOL)a5;
-- (void)stopSpinnerForSpecifier:(id)a3;
+- (void)_presentSpecifier:(id)specifier fromEventSource:(unint64_t)source;
+- (void)_refreshItemsAndPresentDetailForSpecifier:(id)specifier;
+- (void)_updateSpecifier:(id)specifier withCommonPropertiesForGroup:(id)group;
+- (void)_zeroActionFailure:(id)failure;
+- (void)loadSpecifier:(id)specifier;
+- (void)performPreferencesActionForGroup:(id)group item:(id)item action:(id)action completion:(id)completion;
+- (void)preflightNetworkConnectivityForHandler:(id)handler withCompletionHandler:(id)completionHandler;
+- (void)setItemChangeObserver:(id)observer;
+- (void)startPresentingForHandler:(id)handler withRemoteController:(id)controller customPresentationStyle:(BOOL)style;
+- (void)stopSpinnerForSpecifier:(id)specifier;
 @end
 
 @implementation FLPreferencesController
@@ -33,19 +33,19 @@
   return v5;
 }
 
-- (FLPreferencesController)initWithViewModel:(id)a3
+- (FLPreferencesController)initWithViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = FLPreferencesController;
   v6 = [(FLPreferencesController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_topViewModel, a3);
+    objc_storeStrong(&v6->_topViewModel, model);
     v8 = objc_alloc(MEMORY[0x277CED1E8]);
-    v9 = [MEMORY[0x277CB8F48] defaultStore];
-    v10 = [v8 initWithAccountStore:v9];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v10 = [v8 initWithAccountStore:defaultStore];
     serviceOwnersManager = v7->_serviceOwnersManager;
     v7->_serviceOwnersManager = v10;
 
@@ -57,15 +57,15 @@
   return v7;
 }
 
-- (id)_specifierGroupString:(unint64_t)a3
+- (id)_specifierGroupString:(unint64_t)string
 {
   v3 = @"all";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"general";
   }
 
-  if (a3)
+  if (string)
   {
     return v3;
   }
@@ -76,7 +76,7 @@
   }
 }
 
-- (id)_topLevelSpecifiersForGroup:(unint64_t)a3
+- (id)_topLevelSpecifiersForGroup:(unint64_t)group
 {
   v85 = *MEMORY[0x277D85DE8];
   v4 = _FLSignpostCreate();
@@ -89,13 +89,13 @@
   v6 = _FLLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(FLPreferencesController *)self _specifierGroupString:a3];
+    v7 = [(FLPreferencesController *)self _specifierGroupString:group];
     *buf = 138412290;
     v84 = v7;
     _os_log_impl(&dword_245383000, v6, OS_LOG_TYPE_DEFAULT, "Building top level specifiers for %@ specifiers", buf, 0xCu);
   }
 
-  v66 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (self->_groups)
   {
     goto LABEL_22;
@@ -107,25 +107,25 @@
   secondaryAccountIDs = self->_secondaryAccountIDs;
   self->_secondaryAccountIDs = 0;
 
-  if (a3 != 2)
+  if (group != 2)
   {
     v10 = [(AIDAServiceOwnersManager *)self->_serviceOwnersManager accountForService:*MEMORY[0x277CED1A0]];
-    v11 = [v10 identifier];
+    identifier = [v10 identifier];
     v12 = self->_primaryAccountID;
-    self->_primaryAccountID = v11;
+    self->_primaryAccountID = identifier;
 
     if (!self->_primaryAccountID)
     {
       v13 = [(AIDAServiceOwnersManager *)self->_serviceOwnersManager accountForService:*MEMORY[0x277CED1C0]];
-      v14 = [v13 identifier];
+      identifier2 = [v13 identifier];
       v15 = self->_primaryAccountID;
-      self->_primaryAccountID = v14;
+      self->_primaryAccountID = identifier2;
     }
 
-    v16 = [MEMORY[0x277CB8F48] defaultStore];
-    v17 = [v16 dmc_visibleRemoteManagementAccounts];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    dmc_visibleRemoteManagementAccounts = [defaultStore dmc_visibleRemoteManagementAccounts];
 
-    if ([v17 count] >= 2)
+    if ([dmc_visibleRemoteManagementAccounts count] >= 2)
     {
       v18 = _FLLogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -134,7 +134,7 @@
       }
     }
 
-    v26 = [v17 valueForKey:@"identifier"];
+    v26 = [dmc_visibleRemoteManagementAccounts valueForKey:@"identifier"];
     v27 = self->_secondaryAccountIDs;
     self->_secondaryAccountIDs = v26;
   }
@@ -142,7 +142,7 @@
   topViewModel = self->_topViewModel;
   if (objc_opt_respondsToSelector())
   {
-    v29 = [(FLViewModel *)self->_topViewModel groupsForPrimaryAccount:self->_primaryAccountID secondaryAccounts:self->_secondaryAccountIDs];
+    groups = [(FLViewModel *)self->_topViewModel groupsForPrimaryAccount:self->_primaryAccountID secondaryAccounts:self->_secondaryAccountIDs];
   }
 
   else
@@ -158,11 +158,11 @@
       goto LABEL_21;
     }
 
-    v29 = [(FLViewModel *)self->_topViewModel groups];
+    groups = [(FLViewModel *)self->_topViewModel groups];
   }
 
   p_super = &self->_groups->super;
-  self->_groups = v29;
+  self->_groups = groups;
 LABEL_21:
 
 LABEL_22:
@@ -173,7 +173,7 @@ LABEL_22:
   v79 = 0u;
   obj = self->_groups;
   v31 = [(NSArray *)obj countByEnumeratingWithState:&v78 objects:v82 count:16];
-  v32 = a3;
+  groupCopy3 = group;
   if (!v31)
   {
     goto LABEL_56;
@@ -188,7 +188,7 @@ LABEL_22:
   v64 = *MEMORY[0x277CFE458];
   v63 = *MEMORY[0x277D3FF88];
   v62 = *MEMORY[0x277CFE460];
-  v72 = self;
+  selfCopy = self;
   while (2)
   {
     for (i = 0; i != v33; ++i)
@@ -199,17 +199,17 @@ LABEL_22:
       }
 
       v35 = *(*(&v78 + 1) + 8 * i);
-      v36 = [v35 items];
-      if ([v36 count])
+      items = [v35 items];
+      if ([items count])
       {
-        v37 = [v35 identifier];
-        v38 = [v37 isEqualToString:v71];
+        identifier3 = [v35 identifier];
+        v38 = [identifier3 isEqualToString:v71];
 
-        v39 = [v35 identifier];
-        v40 = [v39 isEqualToString:v70];
+        identifier4 = [v35 identifier];
+        v40 = [identifier4 isEqualToString:v70];
 
-        v41 = [v35 identifier];
-        v42 = [v41 isEqualToString:v69];
+        identifier5 = [v35 identifier];
+        v42 = [identifier5 isEqualToString:v69];
 
         v43 = self->_topViewModel;
         objc_opt_class();
@@ -222,23 +222,23 @@ LABEL_22:
 
         if (v38)
         {
-          v44 = [v35 accountID];
-          v45 = [v44 isEqualToString:v72->_primaryAccountID];
+          accountID = [v35 accountID];
+          v45 = [accountID isEqualToString:selfCopy->_primaryAccountID];
 
           if (!v42)
           {
 LABEL_31:
             v46 = 0;
 LABEL_35:
-            if (!((v32 != 0) | v45 & 1 | v40 & 1) && !v46)
+            if (!((groupCopy3 != 0) | v45 & 1 | v40 & 1) && !v46)
             {
 
               goto LABEL_56;
             }
 
-            if (v32 == 1 && ((v45 | v46 | v40) & 1) != 0)
+            if (groupCopy3 == 1 && ((v45 | v46 | v40) & 1) != 0)
             {
-              self = v72;
+              self = selfCopy;
               goto LABEL_52;
             }
 
@@ -249,40 +249,40 @@ LABEL_35:
               v48 = v40 | v38 | v42;
             }
 
-            self = v72;
+            self = selfCopy;
             if (v48)
             {
               goto LABEL_48;
             }
 
             v49 = MEMORY[0x277D3FAD8];
-            v50 = [v35 identifier];
-            v51 = [@"FollowUps" stringByAppendingFormat:@": %@", v50];
-            v52 = [v35 groupTitle];
-            v53 = [v49 groupSpecifierWithID:v51 name:v52];
+            identifier6 = [v35 identifier];
+            v51 = [@"FollowUps" stringByAppendingFormat:@": %@", identifier6];
+            groupTitle = [v35 groupTitle];
+            v53 = [v49 groupSpecifierWithID:v51 name:groupTitle];
 
-            v54 = [v35 identifier];
-            LODWORD(v50) = [v54 isEqualToString:v64];
+            identifier7 = [v35 identifier];
+            LODWORD(identifier6) = [identifier7 isEqualToString:v64];
 
-            if (v50)
+            if (identifier6)
             {
-              v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v62, @"Items above require approval..."];
+              footerText = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%@", v62, @"Items above require approval..."];
             }
 
             else
             {
-              v55 = [v35 footerText];
-              if (!v55)
+              footerText = [v35 footerText];
+              if (!footerText)
               {
 LABEL_47:
-                v32 = a3;
+                groupCopy3 = group;
 
-                [v66 addObject:v53];
+                [array addObject:v53];
 LABEL_48:
                 if ([v35 shouldCoalesceItems])
                 {
-                  v56 = [(FLPreferencesController *)v72 _specifierForGroup:v35];
-                  [v66 addObject:v56];
+                  v56 = [(FLPreferencesController *)selfCopy _specifierForGroup:v35];
+                  [array addObject:v56];
                 }
 
                 else
@@ -291,10 +291,10 @@ LABEL_48:
                   v74[1] = 3221225472;
                   v74[2] = __55__FLPreferencesController__topLevelSpecifiersForGroup___block_invoke;
                   v74[3] = &unk_278E35C10;
-                  v75 = v66;
-                  v76 = v72;
+                  v75 = array;
+                  v76 = selfCopy;
                   v77 = v35;
-                  [v36 enumerateObjectsUsingBlock:v74];
+                  [items enumerateObjectsUsingBlock:v74];
                   v56 = v75;
                 }
 
@@ -302,7 +302,7 @@ LABEL_48:
               }
             }
 
-            [v53 setProperty:v55 forKey:v63];
+            [v53 setProperty:footerText forKey:v63];
             goto LABEL_47;
           }
         }
@@ -316,10 +316,10 @@ LABEL_48:
           }
         }
 
-        v47 = [v35 accountID];
-        v46 = [v47 isEqualToString:v72->_primaryAccountID];
+        accountID2 = [v35 accountID];
+        v46 = [accountID2 isEqualToString:selfCopy->_primaryAccountID];
 
-        v32 = a3;
+        groupCopy3 = group;
         goto LABEL_35;
       }
 
@@ -346,7 +346,7 @@ LABEL_56:
 
   v59 = *MEMORY[0x277D85DE8];
 
-  return v66;
+  return array;
 }
 
 void __55__FLPreferencesController__topLevelSpecifiersForGroup___block_invoke(uint64_t a1, uint64_t a2)
@@ -356,71 +356,71 @@ void __55__FLPreferencesController__topLevelSpecifiersForGroup___block_invoke(ui
   [v2 addObjectsFromArray:v3];
 }
 
-- (id)_specifiersForItem:(id)a3 group:(id)a4
+- (id)_specifiersForItem:(id)item group:(id)group
 {
   v50[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x277CFE450]];
+  itemCopy = item;
+  groupCopy = group;
+  identifier = [groupCopy identifier];
+  v9 = [identifier isEqualToString:*MEMORY[0x277CFE450]];
 
   if (v9)
   {
-    v10 = [FLPreferencesFollowUpItemListSpeficierFactory detailSpecifiersForFollowUpItem:v6 target:self selector:sel__handleActionForSpecifier_];
+    v10 = [FLPreferencesFollowUpItemListSpeficierFactory detailSpecifiersForFollowUpItem:itemCopy target:self selector:sel__handleActionForSpecifier_];
   }
 
   else
   {
-    v11 = [v6 displayStyle];
-    v12 = [v6 extensionIdentifier];
-    v13 = [v6 title];
-    if (v12 || (v11 & 2) != 0)
+    displayStyle = [itemCopy displayStyle];
+    extensionIdentifier = [itemCopy extensionIdentifier];
+    title = [itemCopy title];
+    if (extensionIdentifier || (displayStyle & 2) != 0)
     {
-      v14 = [(FLPreferencesController *)self _deferredLoadSpecifierWithName:v13];
+      v14 = [(FLPreferencesController *)self _deferredLoadSpecifierWithName:title];
     }
 
     else
     {
-      v14 = [(FLPreferencesController *)self _urlBasedSpecifierWithName:v13];
+      v14 = [(FLPreferencesController *)self _urlBasedSpecifierWithName:title];
     }
 
     v15 = v14;
 
     v16 = *MEMORY[0x277CFE400];
-    v17 = [v6 uniqueIdentifier];
-    v18 = [v16 stringByAppendingString:v17];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    v18 = [v16 stringByAppendingString:uniqueIdentifier];
     [v15 setIdentifier:v18];
 
-    if (([v6 displayStyle] & 0x10) == 0)
+    if (([itemCopy displayStyle] & 0x10) == 0)
     {
       [v15 setProperty:&unk_2858517E8 forKey:*MEMORY[0x277D3FDB0]];
     }
 
-    v50[0] = v6;
+    v50[0] = itemCopy;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
     [v15 setProperty:v19 forKey:*MEMORY[0x277CFE3E0]];
 
-    v20 = [v6 representingBundlePath];
-    if (v20)
+    representingBundlePath = [itemCopy representingBundlePath];
+    if (representingBundlePath)
     {
-      v21 = v20;
-      v22 = [v6 bundleIconName];
+      v21 = representingBundlePath;
+      bundleIconName = [itemCopy bundleIconName];
 
-      if (v22)
+      if (bundleIconName)
       {
-        v23 = [v6 bundleIconName];
-        [v15 setProperty:v23 forKey:*MEMORY[0x277D3FDC0]];
+        bundleIconName2 = [itemCopy bundleIconName];
+        [v15 setProperty:bundleIconName2 forKey:*MEMORY[0x277D3FDC0]];
 
         v24 = MEMORY[0x277CCA8D8];
-        v25 = [v6 representingBundlePath];
-        v26 = [v24 bundleWithPath:v25];
+        representingBundlePath2 = [itemCopy representingBundlePath];
+        v26 = [v24 bundleWithPath:representingBundlePath2];
 
         v27 = _FLLogSystem();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [v6 bundleIconName];
+          bundleIconName3 = [itemCopy bundleIconName];
           *buf = 138412546;
-          v47 = v28;
+          v47 = bundleIconName3;
           v48 = 2112;
           v49 = v26;
           _os_log_impl(&dword_245383000, v27, OS_LOG_TYPE_DEFAULT, "Creating CFU with bundle icon: %@ <%@>", buf, 0x16u);
@@ -433,42 +433,42 @@ void __55__FLPreferencesController__topLevelSpecifiersForGroup___block_invoke(ui
     v29 = _FLLogSystem();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "displayStyle")}];
+      v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(itemCopy, "displayStyle")}];
       *buf = 138412290;
       v47 = v30;
       _os_log_impl(&dword_245383000, v29, OS_LOG_TYPE_DEFAULT, "Creating CFU with display style: %@", buf, 0xCu);
     }
 
-    if ((v11 & 2) != 0 || ([MEMORY[0x277CFE4F0] currentEnvironment], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "followUpZeroActionsForTheWorld"), v31, v32))
+    if ((displayStyle & 2) != 0 || ([MEMORY[0x277CFE4F0] currentEnvironment], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "followUpZeroActionsForTheWorld"), v31, v32))
     {
-      [v15 setProperty:v6 forKey:*MEMORY[0x277CFE418]];
-      v33 = [v6 actions];
-      v34 = [v33 firstObject];
-      [v15 setProperty:v34 forKey:*MEMORY[0x277CFE410]];
+      [v15 setProperty:itemCopy forKey:*MEMORY[0x277CFE418]];
+      actions = [itemCopy actions];
+      firstObject = [actions firstObject];
+      [v15 setProperty:firstObject forKey:*MEMORY[0x277CFE410]];
     }
 
-    v35 = [v6 extensionIdentifier];
+    extensionIdentifier2 = [itemCopy extensionIdentifier];
 
-    if (!v35)
+    if (!extensionIdentifier2)
     {
       v36 = objc_alloc(MEMORY[0x277CFE528]);
-      v45 = v6;
+      v45 = itemCopy;
       v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
       v38 = [v36 initWithItems:v37];
 
       [v15 setProperty:v38 forKey:*MEMORY[0x277CFE428]];
     }
 
-    [(FLPreferencesController *)self _updateSpecifier:v15 withCommonPropertiesForGroup:v7];
+    [(FLPreferencesController *)self _updateSpecifier:v15 withCommonPropertiesForGroup:groupCopy];
     if (v15)
     {
-      v39 = [v15 identifier];
+      identifier2 = [v15 identifier];
 
-      if (v39)
+      if (identifier2)
       {
         generatedSpecifiersByIdentifier = self->_generatedSpecifiersByIdentifier;
-        v41 = [v15 identifier];
-        [(NSMutableDictionary *)generatedSpecifiersByIdentifier setObject:v15 forKeyedSubscript:v41];
+        identifier3 = [v15 identifier];
+        [(NSMutableDictionary *)generatedSpecifiersByIdentifier setObject:v15 forKeyedSubscript:identifier3];
       }
     }
 
@@ -481,52 +481,52 @@ void __55__FLPreferencesController__topLevelSpecifiersForGroup___block_invoke(ui
   return v10;
 }
 
-- (id)_specifierForGroup:(id)a3
+- (id)_specifierForGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v5 = [v4 items];
+  items = [groupCopy items];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __46__FLPreferencesController__specifierForGroup___block_invoke;
   v18[3] = &unk_278E35C38;
   v18[4] = &v19;
-  [v5 enumerateObjectsUsingBlock:v18];
+  [items enumerateObjectsUsingBlock:v18];
 
   if (*(v20 + 24) == 1)
   {
-    v6 = [v4 rowTitle];
-    v7 = [(FLPreferencesController *)self _deferredLoadSpecifierWithName:v6];
+    rowTitle = [groupCopy rowTitle];
+    v7 = [(FLPreferencesController *)self _deferredLoadSpecifierWithName:rowTitle];
   }
 
   else
   {
-    v8 = [v4 rowTitle];
-    v7 = [(FLPreferencesController *)self _urlBasedSpecifierWithName:v8];
+    rowTitle2 = [groupCopy rowTitle];
+    v7 = [(FLPreferencesController *)self _urlBasedSpecifierWithName:rowTitle2];
 
     v9 = objc_alloc(MEMORY[0x277CFE528]);
-    v10 = [v4 items];
-    v6 = [v9 initWithItems:v10];
+    items2 = [groupCopy items];
+    rowTitle = [v9 initWithItems:items2];
 
-    [v7 setProperty:v6 forKey:*MEMORY[0x277CFE428]];
+    [v7 setProperty:rowTitle forKey:*MEMORY[0x277CFE428]];
   }
 
-  v11 = [v4 identifier];
-  v12 = [*MEMORY[0x277CFE400] stringByAppendingString:v11];
+  identifier = [groupCopy identifier];
+  v12 = [*MEMORY[0x277CFE400] stringByAppendingString:identifier];
   [v7 setIdentifier:v12];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v4 items];
-  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
+  items3 = [groupCopy items];
+  v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(items3, "count")}];
   [v7 setProperty:v15 forKey:*MEMORY[0x277D3FDB0]];
 
-  v16 = [v4 items];
-  [v7 setProperty:v16 forKey:*MEMORY[0x277CFE3E0]];
+  items4 = [groupCopy items];
+  [v7 setProperty:items4 forKey:*MEMORY[0x277CFE3E0]];
 
-  [(FLPreferencesController *)self _updateSpecifier:v7 withCommonPropertiesForGroup:v4];
+  [(FLPreferencesController *)self _updateSpecifier:v7 withCommonPropertiesForGroup:groupCopy];
   _Block_object_dispose(&v19, 8);
 
   return v7;
@@ -543,52 +543,52 @@ void __46__FLPreferencesController__specifierForGroup___block_invoke(uint64_t a1
   }
 }
 
-- (id)_deferredLoadSpecifierWithName:(id)a3
+- (id)_deferredLoadSpecifierWithName:(id)name
 {
-  v3 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:a3 target:self set:0 get:0 detail:0 cell:2 edit:0];
+  v3 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:2 edit:0];
   [v3 setControllerLoadAction:sel_loadSpecifier_];
 
   return v3;
 }
 
-- (id)_urlBasedSpecifierWithName:(id)a3
+- (id)_urlBasedSpecifierWithName:(id)name
 {
   v3 = MEMORY[0x277D3FAD8];
-  v4 = a3;
-  v5 = [v3 preferenceSpecifierNamed:v4 target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  nameCopy = name;
+  v5 = [v3 preferenceSpecifierNamed:nameCopy target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
   return v5;
 }
 
-- (void)_updateSpecifier:(id)a3 withCommonPropertiesForGroup:(id)a4
+- (void)_updateSpecifier:(id)specifier withCommonPropertiesForGroup:(id)group
 {
-  v15 = a3;
-  v5 = a4;
+  specifierCopy = specifier;
+  groupCopy = group;
   v6 = objc_opt_class();
-  v7 = [v5 identifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CFE438]];
+  identifier = [groupCopy identifier];
+  v8 = [identifier isEqualToString:*MEMORY[0x277CFE438]];
 
   if (v8)
   {
-    v9 = [v15 propertyForKey:*MEMORY[0x277CFE3E0]];
+    v9 = [specifierCopy propertyForKey:*MEMORY[0x277CFE3E0]];
     if ([v9 count] == 1)
     {
-      v10 = [v9 firstObject];
-      v11 = [v10 informativeFooterText];
+      firstObject = [v9 firstObject];
+      informativeFooterText = [firstObject informativeFooterText];
 
-      if (v11)
+      if (informativeFooterText)
       {
-        v11 = [v10 informativeFooterText];
+        informativeFooterText = [firstObject informativeFooterText];
       }
 
-      if ([v10 displayExpirationDate])
+      if ([firstObject displayExpirationDate])
       {
-        v12 = [v10 formattedExpirationDate];
+        formattedExpirationDate = [firstObject formattedExpirationDate];
 
-        v11 = v12;
+        informativeFooterText = formattedExpirationDate;
       }
 
-      if (!v11)
+      if (!informativeFooterText)
       {
         goto LABEL_11;
       }
@@ -596,8 +596,8 @@ void __46__FLPreferencesController__specifierForGroup___block_invoke(uint64_t a1
 
     else
     {
-      v11 = [v5 subtitleText];
-      if (!v11)
+      informativeFooterText = [groupCopy subtitleText];
+      if (!informativeFooterText)
       {
 LABEL_11:
 
@@ -606,23 +606,23 @@ LABEL_11:
     }
 
     v6 = objc_opt_class();
-    [v15 setProperty:v11 forKey:*MEMORY[0x277D40160]];
+    [specifierCopy setProperty:informativeFooterText forKey:*MEMORY[0x277D40160]];
     goto LABEL_11;
   }
 
 LABEL_12:
-  v13 = v15;
+  v13 = specifierCopy;
   if (v6)
   {
-    [v15 setProperty:v6 forKey:*MEMORY[0x277D3FE58]];
-    v13 = v15;
+    [specifierCopy setProperty:v6 forKey:*MEMORY[0x277D3FE58]];
+    v13 = specifierCopy;
   }
 
   [v13 setProperty:&unk_285851800 forKey:*MEMORY[0x277D3FD68]];
-  v14 = [v5 rowTitle];
-  [v15 setProperty:v14 forKey:*MEMORY[0x277D40170]];
+  rowTitle = [groupCopy rowTitle];
+  [specifierCopy setProperty:rowTitle forKey:*MEMORY[0x277D40170]];
 
-  [v15 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
+  [specifierCopy setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
 }
 
 - (id)spyglassSpecifiers
@@ -635,7 +635,7 @@ LABEL_12:
   }
 
   v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSSet count](self->_spyglassAllowList, "count")}];
-  v6 = [(FLViewModel *)self->_topViewModel allPendingItems];
+  allPendingItems = [(FLViewModel *)self->_topViewModel allPendingItems];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __45__FLPreferencesController_spyglassSpecifiers__block_invoke;
@@ -643,21 +643,21 @@ LABEL_12:
   v19[4] = self;
   v7 = v5;
   v20 = v7;
-  [v6 enumerateObjectsUsingBlock:v19];
-  v8 = [v7 allKeys];
-  if ([v8 containsObject:@"verifyPrimaryEmail"])
+  [allPendingItems enumerateObjectsUsingBlock:v19];
+  allKeys = [v7 allKeys];
+  if ([allKeys containsObject:@"verifyPrimaryEmail"])
   {
     v9 = @"verifyPrimaryEmail";
     goto LABEL_9;
   }
 
-  if ([v8 containsObject:@"com.apple.AAFollowUpIdentifier.StartUsing"])
+  if ([allKeys containsObject:@"com.apple.AAFollowUpIdentifier.StartUsing"])
   {
     v9 = @"com.apple.AAFollowUpIdentifier.StartUsing";
     goto LABEL_9;
   }
 
-  if ([v8 containsObject:@"com.apple.AAFollowUpIdentifier.VerifyTerms"])
+  if ([allKeys containsObject:@"com.apple.AAFollowUpIdentifier.VerifyTerms"])
   {
     v9 = @"com.apple.AAFollowUpIdentifier.VerifyTerms";
 LABEL_9:
@@ -670,14 +670,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v8 count])
+  if (![allKeys count])
   {
     v10 = 0;
     goto LABEL_18;
   }
 
-  v17 = [v8 firstObject];
-  v10 = [v7 valueForKey:v17];
+  firstObject = [allKeys firstObject];
+  v10 = [v7 valueForKey:firstObject];
 
   if (!v10)
   {
@@ -691,12 +691,12 @@ LABEL_10:
     spyglassController = self->_spyglassController;
     self->_spyglassController = v11;
 
-    v13 = [(FLPreferencesController *)self listViewController];
-    [(FLPreferencesFollowUpItemListViewController *)self->_spyglassController setPresentationContext:v13];
+    listViewController = [(FLPreferencesController *)self listViewController];
+    [(FLPreferencesFollowUpItemListViewController *)self->_spyglassController setPresentationContext:listViewController];
   }
 
-  v14 = [v10 actions];
-  v15 = [v14 count];
+  actions = [v10 actions];
+  v15 = [actions count];
 
   if (v15)
   {
@@ -727,10 +727,10 @@ void __45__FLPreferencesController_spyglassSpecifiers__block_invoke(uint64_t a1,
   }
 }
 
-- (void)loadSpecifier:(id)a3
+- (void)loadSpecifier:(id)specifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   activityIndicatorActive = self->_activityIndicatorActive;
   v6 = _FLLogSystem();
   v7 = v6;
@@ -747,34 +747,34 @@ void __45__FLPreferencesController_spyglassSpecifiers__block_invoke(uint64_t a1,
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v4;
+      v25 = specifierCopy;
       _os_log_impl(&dword_245383000, v7, OS_LOG_TYPE_DEFAULT, "Loading specifier: %@", buf, 0xCu);
     }
 
-    [(FLPreferencesController *)self startSpinnerForSpecifier:v4];
-    v7 = [v4 propertyForKey:*MEMORY[0x277CFE3E0]];
-    v15 = [v7 firstObject];
-    v16 = [v15 groupIdentifier];
-    v17 = [v16 isEqualToString:*MEMORY[0x277CFE430]];
+    [(FLPreferencesController *)self startSpinnerForSpecifier:specifierCopy];
+    v7 = [specifierCopy propertyForKey:*MEMORY[0x277CFE3E0]];
+    firstObject = [v7 firstObject];
+    groupIdentifier = [firstObject groupIdentifier];
+    v17 = [groupIdentifier isEqualToString:*MEMORY[0x277CFE430]];
 
     if (v17)
     {
       v18 = [FLNetworkStatePrompter alloc];
-      v19 = [(FLPreferencesController *)self listViewController];
-      v20 = [(FLNetworkStatePrompter *)v18 initWithPresenter:v19];
+      listViewController = [(FLPreferencesController *)self listViewController];
+      v20 = [(FLNetworkStatePrompter *)v18 initWithPresenter:listViewController];
 
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __41__FLPreferencesController_loadSpecifier___block_invoke;
       v22[3] = &unk_278E35C88;
       v22[4] = self;
-      v23 = v4;
+      v23 = specifierCopy;
       [(FLNetworkStatePrompter *)v20 preflightNetworkStateWithCompletionHandler:v22];
     }
 
     else
     {
-      [(FLPreferencesController *)self _refreshItemsAndPresentDetailForSpecifier:v4];
+      [(FLPreferencesController *)self _refreshItemsAndPresentDetailForSpecifier:specifierCopy];
     }
   }
 
@@ -796,27 +796,27 @@ uint64_t __41__FLPreferencesController_loadSpecifier___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_refreshItemsAndPresentDetailForSpecifier:(id)a3
+- (void)_refreshItemsAndPresentDetailForSpecifier:(id)specifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = specifierCopy;
     _os_log_impl(&dword_245383000, v5, OS_LOG_TYPE_DEFAULT, "Starting to refresh items for specifier: %@", buf, 0xCu);
   }
 
-  v6 = [v4 propertyForKey:*MEMORY[0x277CFE3E0]];
+  v6 = [specifierCopy propertyForKey:*MEMORY[0x277CFE3E0]];
   topViewModel = self->_topViewModel;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__FLPreferencesController__refreshItemsAndPresentDetailForSpecifier___block_invoke;
   v10[3] = &unk_278E35CB0;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = specifierCopy;
+  v8 = specifierCopy;
   [(FLViewModel *)topViewModel refreshItems:v6 withCompletionHandler:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -873,25 +873,25 @@ void __69__FLPreferencesController__refreshItemsAndPresentDetailForSpecifier___b
   }
 }
 
-- (void)_presentSpecifier:(id)a3 fromEventSource:(unint64_t)a4
+- (void)_presentSpecifier:(id)specifier fromEventSource:(unint64_t)source
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  specifierCopy = specifier;
   v7 = _FLLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = specifierCopy;
     *&buf[12] = 2048;
-    *&buf[14] = a4;
+    *&buf[14] = source;
     _os_log_impl(&dword_245383000, v7, OS_LOG_TYPE_DEFAULT, "Presenting specifier: %@ with eventSource: %lu", buf, 0x16u);
   }
 
-  v8 = [v6 propertyForKey:*MEMORY[0x277CFE418]];
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277CFE418]];
   if (v8)
   {
-    v9 = [MEMORY[0x277CFE530] sharedTelemetryController];
-    [v9 captureItemView:v8];
+    mEMORY[0x277CFE530] = [MEMORY[0x277CFE530] sharedTelemetryController];
+    [mEMORY[0x277CFE530] captureItemView:v8];
 
     *buf = 0;
     *&buf[8] = buf;
@@ -908,32 +908,32 @@ void __69__FLPreferencesController__refreshItemsAndPresentDetailForSpecifier___b
     v18[4] = self;
     v19 = v8;
     v20 = buf;
-    [v10 actionTapped:v6 eventSource:a4 withCompletionHandler:v18];
+    [v10 actionTapped:specifierCopy eventSource:source withCompletionHandler:v18];
 
     _Block_object_dispose(buf, 8);
   }
 
   else
   {
-    v11 = [v6 propertyForKey:*MEMORY[0x277CFE3E0]];
+    v11 = [specifierCopy propertyForKey:*MEMORY[0x277CFE3E0]];
     [v11 enumerateObjectsUsingBlock:&__block_literal_global_0];
-    v12 = [(FLPreferencesController *)self listViewController];
+    listViewController = [(FLPreferencesController *)self listViewController];
     v13 = objc_alloc_init(FLPreferencesFollowUpItemListViewController);
-    [(FLPreferencesFollowUpItemListViewController *)v13 setSpecifier:v6];
-    [(FLPreferencesFollowUpItemListViewController *)v13 setParentController:v12];
-    v14 = [v12 splitViewController];
+    [(FLPreferencesFollowUpItemListViewController *)v13 setSpecifier:specifierCopy];
+    [(FLPreferencesFollowUpItemListViewController *)v13 setParentController:listViewController];
+    splitViewController = [listViewController splitViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v16 = [v12 splitViewController];
-      [v16 showInitialViewController:v13];
+      splitViewController2 = [listViewController splitViewController];
+      [splitViewController2 showInitialViewController:v13];
     }
 
     else
     {
-      [v12 showController:v13];
+      [listViewController showController:v13];
     }
   }
 
@@ -960,20 +960,20 @@ void __61__FLPreferencesController__presentSpecifier_fromEventSource___block_inv
   [v4 captureItemView:v3];
 }
 
-- (void)_zeroActionFailure:(id)a3
+- (void)_zeroActionFailure:(id)failure
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CFE4F0] currentEnvironment];
-  v6 = [v5 isInternal];
+  failureCopy = failure;
+  currentEnvironment = [MEMORY[0x277CFE4F0] currentEnvironment];
+  isInternal = [currentEnvironment isInternal];
 
-  if (v6)
+  if (isInternal)
   {
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __46__FLPreferencesController__zeroActionFailure___block_invoke;
     v17 = &unk_278E35A60;
-    v18 = v4;
+    v18 = failureCopy;
     v7 = [FLAlertControllerAction actionWithTitle:@"Tap-To-Radar" style:1 handler:&v14];
     v19[0] = v7;
     v8 = [FLAlertControllerAction actionWithTitle:@"Dismiss" style:0 handler:0, v14, v15, v16, v17];
@@ -982,8 +982,8 @@ void __61__FLPreferencesController__presentSpecifier_fromEventSource___block_inv
 
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Follow Up Error [INTERNAL]"];
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Did you notice an error? If so, file a radar."];
-    v12 = [(FLPreferencesController *)self listViewController];
-    [FLAlertControllerHelper presentAlertWithTitle:v10 message:v11 actions:v9 presentingController:v12];
+    listViewController = [(FLPreferencesController *)self listViewController];
+    [FLAlertControllerHelper presentAlertWithTitle:v10 message:v11 actions:v9 presentingController:listViewController];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -998,50 +998,50 @@ void __46__FLPreferencesController__zeroActionFailure___block_invoke(uint64_t a1
   [v1 tapToRadarWithTitle:v3 initialMessage:0];
 }
 
-- (void)startPresentingForHandler:(id)a3 withRemoteController:(id)a4 customPresentationStyle:(BOOL)a5
+- (void)startPresentingForHandler:(id)handler withRemoteController:(id)controller customPresentationStyle:(BOOL)style
 {
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  controllerCopy = controller;
   v8 = _FLLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v7;
+    v12 = controllerCopy;
     _os_log_impl(&dword_245383000, v8, OS_LOG_TYPE_DEFAULT, "Start presenting identifier: %@", &v11, 0xCu);
   }
 
-  if (!a5)
+  if (!style)
   {
-    [v7 setModalPresentationStyle:5];
+    [controllerCopy setModalPresentationStyle:5];
   }
 
-  v9 = [(FLPreferencesController *)self listViewController];
-  [v9 presentViewController:v7 animated:1 completion:0];
+  listViewController = [(FLPreferencesController *)self listViewController];
+  [listViewController presentViewController:controllerCopy animated:1 completion:0];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preflightNetworkConnectivityForHandler:(id)a3 withCompletionHandler:(id)a4
+- (void)preflightNetworkConnectivityForHandler:(id)handler withCompletionHandler:(id)completionHandler
 {
-  v5 = a4;
+  completionHandlerCopy = completionHandler;
   v6 = [FLNetworkStatePrompter alloc];
-  v7 = [(FLPreferencesController *)self listViewController];
-  v8 = [(FLNetworkStatePrompter *)v6 initWithPresenter:v7];
+  listViewController = [(FLPreferencesController *)self listViewController];
+  v8 = [(FLNetworkStatePrompter *)v6 initWithPresenter:listViewController];
 
-  [(FLNetworkStatePrompter *)v8 preflightNetworkStateWithCompletionHandler:v5];
+  [(FLNetworkStatePrompter *)v8 preflightNetworkStateWithCompletionHandler:completionHandlerCopy];
 }
 
-- (void)setItemChangeObserver:(id)a3
+- (void)setItemChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   topViewModel = self->_topViewModel;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__FLPreferencesController_setItemChangeObserver___block_invoke;
   v7[3] = &unk_278E359E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(FLViewModel *)topViewModel setItemChangeHandler:v7];
 }
 
@@ -1056,52 +1056,52 @@ uint64_t __49__FLPreferencesController_setItemChangeObserver___block_invoke(uint
   return v4();
 }
 
-- (void)stopSpinnerForSpecifier:(id)a3
+- (void)stopSpinnerForSpecifier:(id)specifier
 {
   self->_activityIndicatorActive = 0;
-  v4 = a3;
-  [v4 fl_stopSpinner];
-  v7 = [(FLPreferencesController *)self listViewController];
-  v5 = [v7 table];
-  v6 = [v7 indexPathForSpecifier:v4];
+  specifierCopy = specifier;
+  [specifierCopy fl_stopSpinner];
+  listViewController = [(FLPreferencesController *)self listViewController];
+  table = [listViewController table];
+  v6 = [listViewController indexPathForSpecifier:specifierCopy];
 
-  [v5 deselectRowAtIndexPath:v6 animated:0];
+  [table deselectRowAtIndexPath:v6 animated:0];
 }
 
-- (void)performPreferencesActionForGroup:(id)a3 item:(id)a4 action:(id)a5 completion:(id)a6
+- (void)performPreferencesActionForGroup:(id)group item:(id)item action:(id)action completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v41 = a6;
-  v12 = v11 != 0;
-  if (!v11)
+  groupCopy = group;
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
+  v12 = actionCopy != 0;
+  if (!actionCopy)
   {
-    [v9 shouldCoalesceItems];
+    [groupCopy shouldCoalesceItems];
   }
 
-  v13 = [v9 identifier];
+  identifier = [groupCopy identifier];
   v14 = *MEMORY[0x277CFE450];
-  v15 = [v13 isEqualToString:*MEMORY[0x277CFE450]];
+  v15 = [identifier isEqualToString:*MEMORY[0x277CFE450]];
 
-  if (v10)
+  if (itemCopy)
   {
-    v16 = [v10 displayStyle];
-    v17 = [v10 uniqueIdentifier];
-    v18 = [v17 isEqualToString:@"com.apple.ThreatNotificationUI.FollowUpItem.general"];
+    displayStyle = [itemCopy displayStyle];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
+    v18 = [uniqueIdentifier isEqualToString:@"com.apple.ThreatNotificationUI.FollowUpItem.general"];
 
-    if (v11)
+    if (actionCopy)
     {
-      v19 = (v16 >> 1) & 1;
+      v19 = (displayStyle >> 1) & 1;
 LABEL_8:
-      v42 = v11;
+      firstObject = actionCopy;
       goto LABEL_9;
     }
 
-    if ((v16 & 2) != 0)
+    if ((displayStyle & 2) != 0)
     {
-      v37 = [v10 actions];
-      v42 = [v37 firstObject];
+      actions = [itemCopy actions];
+      firstObject = [actions firstObject];
 
       LODWORD(v19) = 1;
     }
@@ -1109,28 +1109,28 @@ LABEL_8:
     else
     {
       LODWORD(v19) = 0;
-      v42 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
     LODWORD(v19) = 0;
-    if (v11)
+    if (actionCopy)
     {
       v18 = 0;
       goto LABEL_8;
     }
 
-    v42 = 0;
+    firstObject = 0;
     v18 = 0;
   }
 
 LABEL_9:
-  if ([v9 shouldCoalesceItems])
+  if ([groupCopy shouldCoalesceItems])
   {
-    v20 = [v9 items];
-    v21 = [v20 na_any:&__block_literal_global_95];
+    items = [groupCopy items];
+    v21 = [items na_any:&__block_literal_global_95];
 
     if (v21)
     {
@@ -1141,10 +1141,10 @@ LABEL_9:
 
   else
   {
-    v22 = [v9 identifier];
-    v23 = [v22 isEqualToString:v14];
+    identifier2 = [groupCopy identifier];
+    v23 = [identifier2 isEqualToString:v14];
 
-    if (v23 & 1) != 0 || ([v10 extensionIdentifier], v24 = objc_claimAutoreleasedReturnValue(), v25 = (v24 != 0) | v19, v24, v12 = v19, (v25))
+    if (v23 & 1) != 0 || ([itemCopy extensionIdentifier], v24 = objc_claimAutoreleasedReturnValue(), v25 = (v24 != 0) | v19, v24, v12 = v19, (v25))
     {
 LABEL_14:
       objc_initWeak(location, self->_topViewModel);
@@ -1153,9 +1153,9 @@ LABEL_14:
       v56[1] = 3221225472;
       v56[2] = __83__FLPreferencesController_performPreferencesActionForGroup_item_action_completion___block_invoke_2;
       v56[3] = &unk_278E35D68;
-      v27 = v10;
+      v27 = itemCopy;
       v57 = v27;
-      v28 = v9;
+      v28 = groupCopy;
       v58 = v28;
       v60 = v15;
       v61 = v18;
@@ -1167,7 +1167,7 @@ LABEL_14:
       v54[3] = __Block_byref_object_copy__1;
       v54[4] = __Block_byref_object_dispose__1;
       v55 = 0;
-      v30 = v41;
+      v30 = completionCopy;
       if ((v12 | v18))
       {
         v46[0] = MEMORY[0x277D85DD0];
@@ -1176,8 +1176,8 @@ LABEL_14:
         v46[3] = &unk_278E35E58;
         v49 = v54;
         v47 = v27;
-        v31 = v42;
-        v48 = v42;
+        v31 = firstObject;
+        v48 = firstObject;
         v32 = [v29 flatMap:v46];
         v33 = &v47;
         v34 = v48;
@@ -1192,9 +1192,9 @@ LABEL_14:
         v51[0] = v28;
         v51[1] = self;
         v52 = v27;
-        v53 = v41;
+        v53 = completionCopy;
         [v29 flatMap:v50];
-        v32 = v31 = v42;
+        v32 = v31 = firstObject;
         v33 = v51;
 
         v34 = v52;
@@ -1204,7 +1204,7 @@ LABEL_14:
       v44[1] = 3221225472;
       v44[2] = __83__FLPreferencesController_performPreferencesActionForGroup_item_action_completion___block_invoke_8;
       v44[3] = &unk_278E35E80;
-      v45 = v41;
+      v45 = completionCopy;
       v36 = [v32 addCompletionBlock:v44];
 
       _Block_object_dispose(v54, 8);
@@ -1215,24 +1215,24 @@ LABEL_14:
     }
   }
 
-  v30 = v41;
-  if ([v9 shouldCoalesceItems])
+  v30 = completionCopy;
+  if ([groupCopy shouldCoalesceItems])
   {
-    v35 = [(FLPreferencesController *)self _specifierForGroup:v9];
+    lastObject = [(FLPreferencesController *)self _specifierForGroup:groupCopy];
   }
 
   else
   {
-    v38 = [(FLPreferencesController *)self _specifiersForItem:v10 group:v9];
-    v35 = [v38 lastObject];
+    v38 = [(FLPreferencesController *)self _specifiersForItem:itemCopy group:groupCopy];
+    lastObject = [v38 lastObject];
   }
 
   v39 = objc_alloc_init(FLPreferencesFollowUpItemListViewController);
-  [(FLPreferencesFollowUpItemListViewController *)v39 setSpecifier:v35];
+  [(FLPreferencesFollowUpItemListViewController *)v39 setSpecifier:lastObject];
   v40 = [[FLPreferencesTapActionResult alloc] initWithViewControllerToPresent:v39 presentationStyle:0];
-  (*(v41 + 2))(v41, v40);
+  (*(completionCopy + 2))(completionCopy, v40);
 
-  v31 = v42;
+  v31 = firstObject;
 LABEL_24:
 }
 
@@ -1465,18 +1465,18 @@ void __83__FLPreferencesController_performPreferencesActionForGroup_item_action_
   }
 }
 
-+ (BOOL)shouldPreflightNetworkAccessForGroup:(id)a3 item:(id)a4
++ (BOOL)shouldPreflightNetworkAccessForGroup:(id)group item:(id)item
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 identifier];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CFE430]];
+  groupCopy = group;
+  itemCopy = item;
+  identifier = [groupCopy identifier];
+  v8 = [identifier isEqualToString:*MEMORY[0x277CFE430]];
 
   if (v8)
   {
-    if (v6)
+    if (itemCopy)
     {
-      v9 = ([v6 displayStyle] >> 1) & 1;
+      v9 = ([itemCopy displayStyle] >> 1) & 1;
     }
 
     else
@@ -1484,16 +1484,16 @@ void __83__FLPreferencesController_performPreferencesActionForGroup_item_action_
       LOBYTE(v9) = 0;
     }
 
-    if ([v5 shouldCoalesceItems])
+    if ([groupCopy shouldCoalesceItems])
     {
-      v11 = [v5 items];
-      v10 = [v11 na_any:&__block_literal_global_106];
+      items = [groupCopy items];
+      v10 = [items na_any:&__block_literal_global_106];
     }
 
     else
     {
-      v11 = [v6 extensionIdentifier];
-      v10 = (v11 != 0) | v9;
+      items = [itemCopy extensionIdentifier];
+      v10 = (items != 0) | v9;
     }
   }
 

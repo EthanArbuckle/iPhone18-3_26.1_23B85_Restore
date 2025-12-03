@@ -1,31 +1,31 @@
 @interface CHTurkishOVSConfusableCharactersStep
-- (CHTurkishOVSConfusableCharactersStep)initWithOVSStringChecker:(id)a3 staticLexicon:(_LXLexicon *)a4 customLexicon:(_LXLexicon *)a5;
-- (id)process:(id)a3 options:(id)a4;
+- (CHTurkishOVSConfusableCharactersStep)initWithOVSStringChecker:(id)checker staticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHTurkishOVSConfusableCharactersStep
 
-- (CHTurkishOVSConfusableCharactersStep)initWithOVSStringChecker:(id)a3 staticLexicon:(_LXLexicon *)a4 customLexicon:(_LXLexicon *)a5
+- (CHTurkishOVSConfusableCharactersStep)initWithOVSStringChecker:(id)checker staticLexicon:(_LXLexicon *)lexicon customLexicon:(_LXLexicon *)customLexicon
 {
-  v9 = a3;
+  checkerCopy = checker;
   v13.receiver = self;
   v13.super_class = CHTurkishOVSConfusableCharactersStep;
   v10 = [(CHTurkishOVSConfusableCharactersStep *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_ovsStringChecker, a3);
-    v11->_staticLexicon = a4;
-    v11->_customLexicon = a5;
+    objc_storeStrong(&v10->_ovsStringChecker, checker);
+    v11->_staticLexicon = lexicon;
+    v11->_customLexicon = customLexicon;
   }
 
   return v11;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v5 = a3;
-  v123 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -38,15 +38,15 @@
     _os_log_impl(&dword_18366B000, v6, OS_LOG_TYPE_DEBUG, "CHTurkishOVSConfusableCharactersStep is running", buf, 2u);
   }
 
-  v12 = objc_msgSend_drawing(v5, v7, v8, v9, v10, v11);
+  v12 = objc_msgSend_drawing(processCopy, v7, v8, v9, v10, v11);
 
   if (v12)
   {
-    v126 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15, v16, v17, v123);
+    v126 = objc_msgSend_array(MEMORY[0x1E695DF70], v13, v14, v15, v16, v17, optionsCopy);
     v125 = objc_msgSend_array(MEMORY[0x1E695DF70], v18, v19, v20, v21, v22);
     for (i = 0; ; ++i)
     {
-      v29 = objc_msgSend_result(v5, v23, v24, v25, v26, v27);
+      v29 = objc_msgSend_result(processCopy, v23, v24, v25, v26, v27);
       v35 = objc_msgSend_transcriptionPaths(v29, v30, v31, v32, v33, v34);
       v41 = objc_msgSend_count(v35, v36, v37, v38, v39, v40);
 
@@ -55,13 +55,13 @@
         break;
       }
 
-      v47 = objc_msgSend_result(v5, v42, v43, v44, v45, v46);
+      v47 = objc_msgSend_result(processCopy, v42, v43, v44, v45, v46);
       v53 = objc_msgSend_transcriptionPaths(v47, v48, v49, v50, v51, v52);
       v58 = objc_msgSend_objectAtIndexedSubscript_(v53, v54, i, v55, v56, v57);
 
       v64 = objc_msgSend_array(MEMORY[0x1E695DF70], v59, v60, v61, v62, v63);
-      v70 = objc_msgSend_result(v5, v65, v66, v67, v68, v69);
-      v76 = objc_msgSend_result(v5, v71, v72, v73, v74, v75);
+      v70 = objc_msgSend_result(processCopy, v65, v66, v67, v68, v69);
+      v76 = objc_msgSend_result(processCopy, v71, v72, v73, v74, v75);
       v82 = objc_msgSend_tokenColumns(v76, v77, v78, v79, v80, v81);
       v88 = objc_msgSend_count(v82, v83, v84, v85, v86, v87);
       v127[0] = MEMORY[0x1E69E9820];
@@ -69,7 +69,7 @@
       v127[2] = sub_1839B49BC;
       v127[3] = &unk_1E6DE0AD8;
       v127[4] = self;
-      v89 = v5;
+      v89 = processCopy;
       v128 = v89;
       v90 = v64;
       v129 = v90;
@@ -82,15 +82,15 @@
       objc_msgSend_addObject_(v125, v113, v112, v114, v115, v116);
     }
 
-    v117 = objc_msgSend_result(v5, v42, v43, v44, v45, v46);
+    v117 = objc_msgSend_result(processCopy, v42, v43, v44, v45, v46);
     v121 = objc_msgSend_modifiedResultWithBestPathTokens_pathProbabilities_(v117, v118, v126, v125, v119, v120);
-    if (v5)
+    if (processCopy)
     {
-      objc_storeStrong(v5 + 3, v121);
+      objc_storeStrong(processCopy + 3, v121);
     }
   }
 
-  return v5;
+  return processCopy;
 }
 
 @end

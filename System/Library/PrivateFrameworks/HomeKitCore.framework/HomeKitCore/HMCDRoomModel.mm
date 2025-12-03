@@ -1,14 +1,14 @@
 @interface HMCDRoomModel
-- (HMCDRoomModel)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (HMCDRoomModel)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation HMCDRoomModel
 
-- (HMCDRoomModel)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (HMCDRoomModel)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for HMCDRoomModel();
-  return [(HMCDRoomModel *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(HMCDRoomModel *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

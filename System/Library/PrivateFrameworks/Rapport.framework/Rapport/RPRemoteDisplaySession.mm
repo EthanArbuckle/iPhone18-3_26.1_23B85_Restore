@@ -1,28 +1,28 @@
 @interface RPRemoteDisplaySession
 - (RPRemoteDisplaySession)init;
-- (RPRemoteDisplaySession)initWithCoder:(id)a3;
+- (RPRemoteDisplaySession)initWithCoder:(id)coder;
 - (id)description;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_sendEventID:(id)a3 event:(id)a4 destinationID:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)_sendRequestID:(id)a3 request:(id)a4 destinationID:(id)a5 options:(id)a6 responseHandler:(id)a7;
-- (void)activateWithCompletion:(id)a3;
-- (void)deregisterEventID:(id)a3;
-- (void)deregisterRequestID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_sendEventID:(id)d event:(id)event destinationID:(id)iD options:(id)options completion:(id)completion;
+- (void)_sendRequestID:(id)d request:(id)request destinationID:(id)iD options:(id)options responseHandler:(id)handler;
+- (void)activateWithCompletion:(id)completion;
+- (void)deregisterEventID:(id)d;
+- (void)deregisterRequestID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)registerEventID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)remoteDisplayAuthCompleted:(id)a3;
-- (void)remoteDisplayReceivedEventID:(id)a3 event:(id)a4 options:(id)a5;
-- (void)remoteDisplayReceivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6;
-- (void)remoteDisplaySessionError:(id)a3;
-- (void)remoteDisplayUpdateDataLinkType:(id)a3;
-- (void)sendEventID:(id)a3 event:(id)a4 destinationID:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)sendRequestID:(id)a3 request:(id)a4 destinationID:(id)a5 options:(id)a6 responseHandler:(id)a7;
-- (void)tryPassword:(id)a3;
+- (void)registerEventID:(id)d options:(id)options handler:(id)handler;
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler;
+- (void)remoteDisplayAuthCompleted:(id)completed;
+- (void)remoteDisplayReceivedEventID:(id)d event:(id)event options:(id)options;
+- (void)remoteDisplayReceivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler;
+- (void)remoteDisplaySessionError:(id)error;
+- (void)remoteDisplayUpdateDataLinkType:(id)type;
+- (void)sendEventID:(id)d event:(id)event destinationID:(id)iD options:(id)options completion:(id)completion;
+- (void)sendRequestID:(id)d request:(id)request destinationID:(id)iD options:(id)options responseHandler:(id)handler;
+- (void)tryPassword:(id)password;
 @end
 
 @implementation RPRemoteDisplaySession
@@ -42,9 +42,9 @@
   return v3;
 }
 
-- (RPRemoteDisplaySession)initWithCoder:(id)a3
+- (RPRemoteDisplaySession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = RPRemoteDisplaySession;
   v5 = [(RPRemoteDisplaySession *)&v12 init];
@@ -52,7 +52,7 @@
   if (v5)
   {
     objc_storeStrong(&v5->_dispatchQueue, MEMORY[0x1E69E96A0]);
-    v7 = v4;
+    v7 = coderCopy;
     if ([v7 containsValueForKey:@"cFl"])
     {
       v6->_controlFlags = [v7 decodeInt64ForKey:@"cFl"];
@@ -86,50 +86,50 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   controlFlags = self->_controlFlags;
-  v11 = v4;
+  v11 = coderCopy;
   if (controlFlags)
   {
-    [v4 encodeInt64:controlFlags forKey:@"cFl"];
-    v4 = v11;
+    [coderCopy encodeInt64:controlFlags forKey:@"cFl"];
+    coderCopy = v11;
   }
 
   destinationDevice = self->_destinationDevice;
   if (destinationDevice)
   {
     [v11 encodeObject:destinationDevice forKey:@"dd"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   internalAuthFlags = self->_internalAuthFlags;
   if (internalAuthFlags)
   {
     [v11 encodeInt64:internalAuthFlags forKey:@"iaf"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   pairingInfo = self->_pairingInfo;
   if (pairingInfo)
   {
     [v11 encodeObject:pairingInfo forKey:@"pairI"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   passwordType = self->_passwordType;
   if (passwordType)
   {
     [v11 encodeInteger:passwordType forKey:@"pwTy"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v11 encodeObject:serviceType forKey:@"srvTy"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 
@@ -162,36 +162,36 @@
   return v4;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__RPRemoteDisplaySession_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E7C92E20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  reactivateCopy = reactivate;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_server)
   {
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     goto LABEL_21;
   }
 
-  if (v4)
+  if (reactivateCopy)
   {
     if (gLogCategory_RPRemoteDisplaySession > 30 || gLogCategory_RPRemoteDisplaySession == -1 && !_LogCategory_Initialize())
     {
@@ -233,7 +233,7 @@ LABEL_12:
   v14[2] = __61__RPRemoteDisplaySession__activateWithCompletion_reactivate___block_invoke;
   v14[3] = &unk_1E7C93500;
   v14[4] = self;
-  v16 = v4;
+  v16 = reactivateCopy;
   v9 = v7;
   v15 = v9;
   v10 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v14];
@@ -241,7 +241,7 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = __61__RPRemoteDisplaySession__activateWithCompletion_reactivate___block_invoke_2;
   v11[3] = &unk_1E7C92F88;
-  v13 = v4;
+  v13 = reactivateCopy;
   v12 = v9;
   [v10 remoteDisplayActivateSession:self completion:v11];
 
@@ -519,17 +519,17 @@ uint64_t __36__RPRemoteDisplaySession_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)tryPassword:(id)a3
+- (void)tryPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__RPRemoteDisplaySession_tryPassword___block_invoke;
   v7[3] = &unk_1E7C92D80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passwordCopy;
+  v6 = passwordCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -539,15 +539,15 @@ void __38__RPRemoteDisplaySession_tryPassword___block_invoke(uint64_t a1)
   [v2 remoteDisplayTryPassword:*(a1 + 40)];
 }
 
-- (void)remoteDisplayAuthCompleted:(id)a3
+- (void)remoteDisplayAuthCompleted:(id)completed
 {
-  v6 = a3;
+  completedCopy = completed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v4 = _Block_copy(self->_authCompletionHandler);
   v5 = v4;
   if (v4)
   {
-    (*(v4 + 2))(v4, v6);
+    (*(v4 + 2))(v4, completedCopy);
   }
 
   else if (gLogCategory_RPRemoteDisplaySession <= 90 && (gLogCategory_RPRemoteDisplaySession != -1 || _LogCategory_Initialize()))
@@ -556,23 +556,23 @@ void __38__RPRemoteDisplaySession_tryPassword___block_invoke(uint64_t a1)
   }
 }
 
-- (void)registerEventID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerEventID:(id)d options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__RPRemoteDisplaySession_registerEventID_options_handler___block_invoke;
   v15[3] = &unk_1E7C935C8;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = optionsCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = dCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -601,17 +601,17 @@ void __58__RPRemoteDisplaySession_registerEventID_options_handler___block_invoke
   [v2 setObject:v6 forKeyedSubscript:a1[4]];
 }
 
-- (void)deregisterEventID:(id)a3
+- (void)deregisterEventID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__RPRemoteDisplaySession_deregisterEventID___block_invoke;
   v7[3] = &unk_1E7C92D80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -628,16 +628,16 @@ uint64_t __44__RPRemoteDisplaySession_deregisterEventID___block_invoke(uint64_t 
   return [v3 setObject:0 forKeyedSubscript:v2];
 }
 
-- (void)sendEventID:(id)a3 event:(id)a4 destinationID:(id)a5 options:(id)a6 completion:(id)a7
+- (void)sendEventID:(id)d event:(id)event destinationID:(id)iD options:(id)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  eventCopy = event;
+  iDCopy = iD;
+  optionsCopy = options;
+  completionCopy = completion;
   if (gLogCategory_RPRemoteDisplaySession <= 30 && (gLogCategory_RPRemoteDisplaySession != -1 || _LogCategory_Initialize()))
   {
-    [RPRemoteDisplaySession sendEventID:v13 event:? destinationID:? options:? completion:?];
+    [RPRemoteDisplaySession sendEventID:eventCopy event:? destinationID:? options:? completion:?];
   }
 
   dispatchQueue = self->_dispatchQueue;
@@ -646,26 +646,26 @@ uint64_t __44__RPRemoteDisplaySession_deregisterEventID___block_invoke(uint64_t 
   v23[2] = __77__RPRemoteDisplaySession_sendEventID_event_destinationID_options_completion___block_invoke;
   v23[3] = &unk_1E7C94D90;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = dCopy;
+  v25 = eventCopy;
+  v26 = iDCopy;
+  v27 = optionsCopy;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = optionsCopy;
+  v20 = iDCopy;
+  v21 = eventCopy;
+  v22 = dCopy;
   dispatch_async(dispatchQueue, v23);
 }
 
-- (void)_sendEventID:(id)a3 event:(id)a4 destinationID:(id)a5 options:(id)a6 completion:(id)a7
+- (void)_sendEventID:(id)d event:(id)event destinationID:(id)iD options:(id)options completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([a5 isEqual:@"rapport:rdid:DirectPeer"])
+  dCopy = d;
+  eventCopy = event;
+  optionsCopy = options;
+  completionCopy = completion;
+  if ([iD isEqual:@"rapport:rdid:DirectPeer"])
   {
     [(RPRemoteDisplaySession *)self _ensureXPCStarted];
     xpcCnx = self->_xpcCnx;
@@ -674,9 +674,9 @@ uint64_t __44__RPRemoteDisplaySession_deregisterEventID___block_invoke(uint64_t 
     v24[2] = __78__RPRemoteDisplaySession__sendEventID_event_destinationID_options_completion___block_invoke;
     v24[3] = &unk_1E7C937A8;
     v24[4] = self;
-    v17 = v12;
+    v17 = dCopy;
     v25 = v17;
-    v18 = v15;
+    v18 = completionCopy;
     v26 = v18;
     v19 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v24];
     v21[0] = MEMORY[0x1E69E9820];
@@ -685,13 +685,13 @@ uint64_t __44__RPRemoteDisplaySession_deregisterEventID___block_invoke(uint64_t 
     v21[3] = &unk_1E7C93470;
     v22 = v17;
     v23 = v18;
-    [v19 remoteDisplaySendEventID:v22 event:v13 options:v14 completion:v21];
+    [v19 remoteDisplaySendEventID:v22 event:eventCopy options:optionsCopy completion:v21];
   }
 
-  else if (v15)
+  else if (completionCopy)
   {
     v20 = RPErrorF();
-    (*(v15 + 2))(v15, v20);
+    (*(completionCopy + 2))(completionCopy, v20);
   }
 }
 
@@ -751,13 +751,13 @@ void __78__RPRemoteDisplaySession__sendEventID_event_destinationID_options_compl
   }
 }
 
-- (void)remoteDisplayReceivedEventID:(id)a3 event:(id)a4 options:(id)a5
+- (void)remoteDisplayReceivedEventID:(id)d event:(id)event options:(id)options
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NSMutableDictionary *)self->_eventRegistrations objectForKeyedSubscript:v8];
+  dCopy = d;
+  eventCopy = event;
+  optionsCopy = options;
+  v11 = [(NSMutableDictionary *)self->_eventRegistrations objectForKeyedSubscript:dCopy];
   if (v11)
   {
     v12 = v11;
@@ -772,61 +772,61 @@ void __78__RPRemoteDisplaySession__sendEventID_event_destinationID_options_compl
     }
 
     v12 = v16;
-    if (v10)
+    if (optionsCopy)
     {
-      v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v10];
-      [v17 setObject:v8 forKeyedSubscript:@"eventID"];
+      v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:optionsCopy];
+      [v17 setObject:dCopy forKeyedSubscript:@"eventID"];
 
-      v10 = v17;
+      optionsCopy = v17;
     }
 
     else
     {
       v18 = @"eventID";
-      v19[0] = v8;
-      v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
+      v19[0] = dCopy;
+      optionsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     }
   }
 
-  v13 = [v12 handler];
-  v14 = v13;
-  if (v13)
+  handler = [v12 handler];
+  v14 = handler;
+  if (handler)
   {
-    (*(v13 + 16))(v13, v9, v10);
+    (*(handler + 16))(handler, eventCopy, optionsCopy);
   }
 
 LABEL_6:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteDisplaySessionError:(id)a3
+- (void)remoteDisplaySessionError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   v4 = _Block_copy(self->_errorHandler);
   v5 = v4;
   if (v4)
   {
-    (*(v4 + 2))(v4, v6);
+    (*(v4 + 2))(v4, errorCopy);
   }
 }
 
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__RPRemoteDisplaySession_registerRequestID_options_handler___block_invoke;
   v15[3] = &unk_1E7C935C8;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dCopy;
+  v17 = optionsCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = dCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -855,17 +855,17 @@ void __60__RPRemoteDisplaySession_registerRequestID_options_handler___block_invo
   [v2 setObject:v6 forKeyedSubscript:a1[4]];
 }
 
-- (void)deregisterRequestID:(id)a3
+- (void)deregisterRequestID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__RPRemoteDisplaySession_deregisterRequestID___block_invoke;
   v7[3] = &unk_1E7C92D80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -882,16 +882,16 @@ uint64_t __46__RPRemoteDisplaySession_deregisterRequestID___block_invoke(uint64_
   return [v3 setObject:0 forKeyedSubscript:v2];
 }
 
-- (void)sendRequestID:(id)a3 request:(id)a4 destinationID:(id)a5 options:(id)a6 responseHandler:(id)a7
+- (void)sendRequestID:(id)d request:(id)request destinationID:(id)iD options:(id)options responseHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  requestCopy = request;
+  iDCopy = iD;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (gLogCategory_RPRemoteDisplaySession <= 30 && (gLogCategory_RPRemoteDisplaySession != -1 || _LogCategory_Initialize()))
   {
-    [RPRemoteDisplaySession sendRequestID:v13 request:? destinationID:? options:? responseHandler:?];
+    [RPRemoteDisplaySession sendRequestID:requestCopy request:? destinationID:? options:? responseHandler:?];
   }
 
   dispatchQueue = self->_dispatchQueue;
@@ -900,26 +900,26 @@ uint64_t __46__RPRemoteDisplaySession_deregisterRequestID___block_invoke(uint64_
   v23[2] = __86__RPRemoteDisplaySession_sendRequestID_request_destinationID_options_responseHandler___block_invoke;
   v23[3] = &unk_1E7C94D90;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = dCopy;
+  v25 = requestCopy;
+  v26 = iDCopy;
+  v27 = optionsCopy;
+  v28 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = optionsCopy;
+  v20 = iDCopy;
+  v21 = requestCopy;
+  v22 = dCopy;
   dispatch_async(dispatchQueue, v23);
 }
 
-- (void)_sendRequestID:(id)a3 request:(id)a4 destinationID:(id)a5 options:(id)a6 responseHandler:(id)a7
+- (void)_sendRequestID:(id)d request:(id)request destinationID:(id)iD options:(id)options responseHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([a5 isEqual:@"rapport:rdid:DirectPeer"])
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([iD isEqual:@"rapport:rdid:DirectPeer"])
   {
     [(RPRemoteDisplaySession *)self _ensureXPCStarted];
     xpcCnx = self->_xpcCnx;
@@ -928,9 +928,9 @@ uint64_t __46__RPRemoteDisplaySession_deregisterRequestID___block_invoke(uint64_
     v24[2] = __87__RPRemoteDisplaySession__sendRequestID_request_destinationID_options_responseHandler___block_invoke;
     v24[3] = &unk_1E7C937A8;
     v24[4] = self;
-    v17 = v12;
+    v17 = dCopy;
     v25 = v17;
-    v18 = v15;
+    v18 = handlerCopy;
     v26 = v18;
     v19 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v24];
     v21[0] = MEMORY[0x1E69E9820];
@@ -939,13 +939,13 @@ uint64_t __46__RPRemoteDisplaySession_deregisterRequestID___block_invoke(uint64_
     v21[3] = &unk_1E7C94DB8;
     v22 = v17;
     v23 = v18;
-    [v19 remoteDisplaySendRequestID:v22 request:v13 options:v14 responseHandler:v21];
+    [v19 remoteDisplaySendRequestID:v22 request:requestCopy options:optionsCopy responseHandler:v21];
   }
 
-  else if (v15)
+  else if (handlerCopy)
   {
     v20 = RPErrorF();
-    (*(v15 + 2))(v15, 0, 0, v20);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v20);
   }
 }
 
@@ -985,14 +985,14 @@ void __87__RPRemoteDisplaySession__sendRequestID_request_destinationID_options_r
   (*(*(a1 + 40) + 16))(*(a1 + 40), v10);
 }
 
-- (void)remoteDisplayReceivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)remoteDisplayReceivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(NSMutableDictionary *)self->_requestRegistrations objectForKeyedSubscript:v10];
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v14 = [(NSMutableDictionary *)self->_requestRegistrations objectForKeyedSubscript:dCopy];
   if (v14)
   {
     v15 = v14;
@@ -1004,45 +1004,45 @@ void __87__RPRemoteDisplaySession__sendRequestID_request_destinationID_options_r
     if (!v19)
     {
       v15 = RPErrorF();
-      (*(v13 + 2))(v13, 0, 0, v15);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v15);
       goto LABEL_6;
     }
 
     v15 = v19;
-    if (v12)
+    if (optionsCopy)
     {
-      v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v12];
-      [v20 setObject:v10 forKeyedSubscript:@"requestID"];
+      v20 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:optionsCopy];
+      [v20 setObject:dCopy forKeyedSubscript:@"requestID"];
 
-      v12 = v20;
+      optionsCopy = v20;
     }
 
     else
     {
       v21 = @"requestID";
-      v22[0] = v10;
-      v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
+      v22[0] = dCopy;
+      optionsCopy = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     }
   }
 
-  v16 = [v15 handler];
-  v17 = v16;
-  if (v16)
+  handler = [v15 handler];
+  v17 = handler;
+  if (handler)
   {
-    (*(v16 + 16))(v16, v11, v12, v13);
+    (*(handler + 16))(handler, requestCopy, optionsCopy, handlerCopy);
   }
 
 LABEL_6:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)remoteDisplayUpdateDataLinkType:(id)a3
+- (void)remoteDisplayUpdateDataLinkType:(id)type
 {
-  v4 = [a3 intValue];
+  intValue = [type intValue];
   linkType = self->_linkType;
   if (linkType)
   {
-    v6 = linkType == v4;
+    v6 = linkType == intValue;
   }
 
   else
@@ -1058,13 +1058,13 @@ LABEL_6:
     v8[2] = __58__RPRemoteDisplaySession_remoteDisplayUpdateDataLinkType___block_invoke;
     v8[3] = &unk_1E7C934D8;
     v8[4] = self;
-    v9 = v4;
+    v9 = intValue;
     dispatch_async(dispatchQueue, v8);
   }
 
   else
   {
-    [(RPRemoteDisplaySession *)&self->_linkType remoteDisplayUpdateDataLinkType:v4];
+    [(RPRemoteDisplaySession *)&self->_linkType remoteDisplayUpdateDataLinkType:intValue];
   }
 }
 

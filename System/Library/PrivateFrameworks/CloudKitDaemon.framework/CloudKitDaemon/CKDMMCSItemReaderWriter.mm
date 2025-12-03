@@ -1,22 +1,22 @@
 @interface CKDMMCSItemReaderWriter
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)readBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)writeBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesWritten:(unint64_t *)a6 error:(id *)a7;
-- (CKDMMCSItemReaderWriter)initWithMMCSItem:(id)a3 MMCSRequest:(id)a4 downloadChunkContext:(id)a5;
-- (id)getFileMetadataWithError:(id *)a3;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)readBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error;
+- (BOOL)writeBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesWritten:(unint64_t *)written error:(id *)error;
+- (CKDMMCSItemReaderWriter)initWithMMCSItem:(id)item MMCSRequest:(id)request downloadChunkContext:(id)context;
+- (id)getFileMetadataWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CKDMMCSItemReaderWriter
 
-- (CKDMMCSItemReaderWriter)initWithMMCSItem:(id)a3 MMCSRequest:(id)a4 downloadChunkContext:(id)a5
+- (CKDMMCSItemReaderWriter)initWithMMCSItem:(id)item MMCSRequest:(id)request downloadChunkContext:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v14 = a5;
-  if (!v10)
+  itemCopy = item;
+  requestCopy = request;
+  contextCopy = context;
+  if (!itemCopy)
   {
     v20 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v12, v13);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v20, v21, a2, self, @"CKDMMCSItemReaderWriter.m", 32, @"Expected non-nil MMCS item");
@@ -28,9 +28,9 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_MMCSItem, a3);
-    objc_storeStrong(&v16->_MMCSRequest, a4);
-    objc_storeStrong(&v16->_downloadChunkContext, a5);
+    objc_storeStrong(&v15->_MMCSItem, item);
+    objc_storeStrong(&v16->_MMCSRequest, request);
+    objc_storeStrong(&v16->_downloadChunkContext, context);
     if (*MEMORY[0x277CBC880] != -1)
     {
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -61,7 +61,7 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_22506F000, v3, OS_LOG_TYPE_DEBUG, "dealloc, reader:%p", buf, 0xCu);
   }
 
@@ -71,10 +71,10 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_MMCSRequest(self, a2, a3);
+  v6 = objc_msgSend_MMCSRequest(self, a2, error);
   v11 = objc_msgSend_MMCSItem(self, v7, v8);
   if (!v11)
   {
@@ -98,11 +98,11 @@
     v19 = v18;
     if ((v17 & 1) == 0)
     {
-      if (a3)
+      if (error)
       {
         v20 = v18;
         v21 = 0;
-        *a3 = v19;
+        *error = v19;
       }
 
       else
@@ -154,9 +154,9 @@
     v50 = 0;
     v30 = objc_msgSend_getFileMetadataWithError_(self, v29, &v50);
     v31 = v50;
-    if (a3)
+    if (error)
     {
-      v32 = *a3;
+      v32 = *error;
     }
 
     else
@@ -168,11 +168,11 @@
     v21 = 1;
   }
 
-  else if (a3)
+  else if (error)
   {
     v33 = v19;
     v31 = 0;
-    *a3 = v19;
+    *error = v19;
     v32 = v19;
   }
 
@@ -189,10 +189,10 @@ LABEL_22:
   return v21;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_MMCSItem(self, a2, a3);
+  v4 = objc_msgSend_MMCSItem(self, a2, error);
   v7 = objc_msgSend_fileHandle(self, v5, v6);
   if (v7)
   {
@@ -219,10 +219,10 @@ LABEL_22:
   return 1;
 }
 
-- (id)getFileMetadataWithError:(id *)a3
+- (id)getFileMetadataWithError:(id *)error
 {
   v89 = *MEMORY[0x277D85DE8];
-  v6 = objc_msgSend_MMCSRequest(self, a2, a3);
+  v6 = objc_msgSend_MMCSRequest(self, a2, error);
   v9 = objc_msgSend_operation(v6, v7, v8);
   v14 = objc_msgSend_MMCSItem(self, v10, v11);
   if (!v14)
@@ -301,13 +301,13 @@ LABEL_22:
       v84 = v21;
       _os_log_error_impl(&dword_22506F000, v62, OS_LOG_TYPE_ERROR, "Failed to stat itemID:%llu, handle:%p, operationID:%{public}@: %@", buf, 0x2Au);
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_20;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
 LABEL_20:
 
@@ -315,7 +315,7 @@ LABEL_20:
     }
 
     v36 = v21;
-    *a3 = v21;
+    *error = v21;
     goto LABEL_20;
   }
 
@@ -336,18 +336,18 @@ LABEL_20:
     *buf = 138543362;
     v78 = v21;
     _os_log_error_impl(&dword_22506F000, v33, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
-    if (a3)
+    if (error)
     {
       goto LABEL_14;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_14:
     v34 = v21;
     v20 = 0;
-    *a3 = v21;
+    *error = v21;
     goto LABEL_21;
   }
 
@@ -359,10 +359,10 @@ LABEL_21:
   return v20;
 }
 
-- (BOOL)readBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesRead:(unint64_t *)a6 error:(id *)a7
+- (BOOL)readBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesRead:(unint64_t *)read error:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v13 = objc_msgSend_MMCSRequest(self, a2, a3);
+  v13 = objc_msgSend_MMCSRequest(self, a2, offset);
   v16 = objc_msgSend_MMCSItem(self, v14, v15);
   v21 = objc_msgSend_operation(v13, v17, v18);
   if (!v16)
@@ -380,7 +380,7 @@ LABEL_21:
 
   objc_msgSend_setIsReaderReadFrom_(v16, v22, 1);
   v27 = objc_msgSend_fileDescriptor(v24, v25, v26);
-  v28 = pread(v27, a4, a5, a3);
+  v28 = pread(v27, bytes, length, offset);
   v29 = v28;
   if (v28 < 0)
   {
@@ -408,34 +408,34 @@ LABEL_21:
       v57 = 2114;
       v58 = v46;
       v59 = 2048;
-      v60 = a3;
+      offsetCopy = offset;
       v61 = 2048;
-      v62 = a5;
+      lengthCopy = length;
       v63 = 2112;
       v64 = v36;
       _os_log_error_impl(&dword_22506F000, loga, OS_LOG_TYPE_ERROR, "Failed to pread for itemID:%llu, handle:%p, operationID:%{public}@, offset:0x%llx, length:%llu: %@", buf, 0x3Eu);
     }
 
-    if (a7)
+    if (error)
     {
       v38 = v36;
-      *a7 = v36;
+      *error = v36;
     }
   }
 
-  else if (a6)
+  else if (read)
   {
-    *a6 = v28;
+    *read = v28;
   }
 
   v39 = *MEMORY[0x277D85DE8];
   return v29 >= 0;
 }
 
-- (BOOL)writeBytesAtOffset:(unint64_t)a3 bytes:(char *)a4 length:(unint64_t)a5 bytesWritten:(unint64_t *)a6 error:(id *)a7
+- (BOOL)writeBytesAtOffset:(unint64_t)offset bytes:(char *)bytes length:(unint64_t)length bytesWritten:(unint64_t *)written error:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v14 = objc_msgSend_MMCSRequest(self, a2, a3);
+  v14 = objc_msgSend_MMCSRequest(self, a2, offset);
   v19 = objc_msgSend_MMCSItem(self, v15, v16);
   if (!v19)
   {
@@ -452,11 +452,11 @@ LABEL_21:
 
   v23 = objc_msgSend_operation(v14, v20, v21);
   v26 = objc_msgSend_fileDescriptor(v22, v24, v25);
-  v27 = pwrite(v26, a4, a5, a3);
+  v27 = pwrite(v26, bytes, length, offset);
   v28 = v27;
   if (v27 < 0)
   {
-    v51 = a7;
+    errorCopy = error;
     v29 = __error();
     v30 = *v29;
     v31 = MEMORY[0x277CBC560];
@@ -468,7 +468,7 @@ LABEL_21:
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
     }
 
-    v36 = v51;
+    v36 = errorCopy;
     v37 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
     {
@@ -482,21 +482,21 @@ LABEL_21:
       v57 = 2114;
       v58 = v46;
       v59 = 2048;
-      v60 = a3;
+      offsetCopy = offset;
       v61 = 2048;
-      v62 = a5;
+      lengthCopy = length;
       v63 = 2112;
       v64 = v35;
       _os_log_error_impl(&dword_22506F000, log, OS_LOG_TYPE_ERROR, "Failed to pwrite for itemID:%llu, handle:%p, operationID:%{public}@, offset:0x%llx, length:%llu: %@", buf, 0x3Eu);
 
-      v36 = v51;
-      if (!v51)
+      v36 = errorCopy;
+      if (!errorCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!v51)
+    else if (!errorCopy)
     {
 LABEL_13:
 
@@ -508,9 +508,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a6)
+  if (written)
   {
-    *a6 = v27;
+    *written = v27;
   }
 
 LABEL_14:

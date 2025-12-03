@@ -1,38 +1,38 @@
 @interface CDMFeatureStoreUtils
-+ (BOOL)checkFeatureStoreEnabledForExternalBuilds:(id)a3;
-+ (BOOL)insertJsonStringToFeatureStore:(id)a3 interactionId:(id)a4 streamId:(id)a5;
-+ (BOOL)insertLVCRequestToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertLVCResponseToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertMDRequestToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertMDResponseToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertMRRequestToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertMRResponseToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertNLv4ParserRequestToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertNLv4ParserResponseToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertPSCRequestToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertPSCResponseToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertPreprocessingWrapperToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertRequestToFeatureStoreAsJson:(id)a3;
-+ (BOOL)insertResponseToFeatureStoreAsJson:(id)a3;
-+ (BOOL)insertSNLCRequestToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertSNLCResponseToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertSpanMatchResponseToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertTokenizerResponseToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertUaaPParserRequestToFeatureStore:(id)a3 interactionId:(id)a4;
-+ (BOOL)insertUaaPParserResponseToFeatureStore:(id)a3 interactionId:(id)a4;
++ (BOOL)checkFeatureStoreEnabledForExternalBuilds:(id)builds;
++ (BOOL)insertJsonStringToFeatureStore:(id)store interactionId:(id)id streamId:(id)streamId;
++ (BOOL)insertLVCRequestToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertLVCResponseToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertMDRequestToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertMDResponseToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertMRRequestToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertMRResponseToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertNLv4ParserRequestToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertNLv4ParserResponseToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertPSCRequestToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertPSCResponseToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertPreprocessingWrapperToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertRequestToFeatureStoreAsJson:(id)json;
++ (BOOL)insertResponseToFeatureStoreAsJson:(id)json;
++ (BOOL)insertSNLCRequestToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertSNLCResponseToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertSpanMatchResponseToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertTokenizerResponseToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertUaaPParserRequestToFeatureStore:(id)store interactionId:(id)id;
++ (BOOL)insertUaaPParserResponseToFeatureStore:(id)store interactionId:(id)id;
 + (BOOL)platformSupportedAndEnabled;
 + (id)allowedFSMessagesOnExternalBuilds;
-+ (id)cacheStreamInstance:(id)a3;
++ (id)cacheStreamInstance:(id)instance;
 + (id)streamCache;
 @end
 
 @implementation CDMFeatureStoreUtils
 
-+ (BOOL)insertPreprocessingWrapperToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertPreprocessingWrapperToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  idCopy = id;
   v9 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -41,7 +41,7 @@
     _os_log_debug_impl(&dword_1DC287000, v9, OS_LOG_TYPE_DEBUG, "%s CDMFeatureStoreUtils insertPreprocessingWrapperToFeatureStore", &v15, 0xCu);
   }
 
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v10 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -72,20 +72,20 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [_TtC13CDMFoundation20CDMProtobufConverter serializePreprocessingWrapperWithWrapper:v7 formatType:@"json"];
-  v11 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v10 interactionId:v8 streamId:@"PreprocessingWrapper"];
+  v10 = [_TtC13CDMFoundation20CDMProtobufConverter serializePreprocessingWrapperWithWrapper:storeCopy formatType:@"json"];
+  v11 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v10 interactionId:idCopy streamId:@"PreprocessingWrapper"];
 LABEL_11:
 
   v13 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-+ (BOOL)insertUaaPParserResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertUaaPParserResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -101,7 +101,7 @@ LABEL_11:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"NLv4Response"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"NLv4Response"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -119,20 +119,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeUaaPParserResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"NLv4Response"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeUaaPParserResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"NLv4Response"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertUaaPParserRequestToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertUaaPParserRequestToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -148,7 +148,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"NLv4Request"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"NLv4Request"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -166,20 +166,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeUaaPParserRequestWithRequest:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"NLv4Request"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeUaaPParserRequestWithRequest:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"NLv4Request"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertNLv4ParserResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertNLv4ParserResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -195,7 +195,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"NLv4Response"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"NLv4Response"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -213,20 +213,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeNlv4ParserResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"NLv4Response"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeNlv4ParserResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"NLv4Response"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertNLv4ParserRequestToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertNLv4ParserRequestToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -242,7 +242,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"NLv4Request"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"NLv4Request"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -260,20 +260,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeNlv4ParserRequestWithRequest:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"NLv4Request"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeNlv4ParserRequestWithRequest:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"NLv4Request"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertMRResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertMRResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -289,7 +289,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"MRResponse"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"MRResponse"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -307,20 +307,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMRResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"MRResponse"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMRResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"MRResponse"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertMRRequestToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertMRRequestToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -336,7 +336,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"MRRequest"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"MRRequest"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -354,20 +354,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMRRequestWithRequest:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"MRRequest"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMRRequestWithRequest:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"MRRequest"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertMDResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertMDResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -383,7 +383,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"MDResponse"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"MDResponse"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -401,20 +401,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMDResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"MDResponse"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMDResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"MDResponse"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertMDRequestToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertMDRequestToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -430,7 +430,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"MDRequest"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"MDRequest"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -448,20 +448,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMDRequestWithRequest:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"MDRequest"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeMDRequestWithRequest:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"MDRequest"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertLVCResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertLVCResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -477,7 +477,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"LVCResponse"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"LVCResponse"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -495,20 +495,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"LVCResponse"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"LVCResponse"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertLVCRequestToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertLVCRequestToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -524,7 +524,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"LVCRequest"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"LVCRequest"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -542,20 +542,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"LVCRequest"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"LVCRequest"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertPSCResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertPSCResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -571,7 +571,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"PSCResponse"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"PSCResponse"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -589,20 +589,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"PSCResponse"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"PSCResponse"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertPSCRequestToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertPSCRequestToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -618,7 +618,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"PSCRequest"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"PSCRequest"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -636,20 +636,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"PSCRequest"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"PSCRequest"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertSNLCResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertSNLCResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -665,7 +665,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"SNLCITFMResponse"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"SNLCITFMResponse"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -683,20 +683,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"SNLCITFMResponse"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"SNLCITFMResponse"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertSNLCRequestToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertSNLCRequestToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -712,7 +712,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"SNLCITFMRequest"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"SNLCITFMRequest"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -730,20 +730,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"SNLCITFMRequest"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeITFMParserRequestWithRequest:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"SNLCITFMRequest"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertSpanMatchResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertSpanMatchResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -759,7 +759,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"SpanMatchResponse"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"SpanMatchResponse"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -777,20 +777,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeSpanMatchResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"SpanMatchResponse"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeSpanMatchResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"SpanMatchResponse"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertTokenizerResponseToFeatureStore:(id)a3 interactionId:(id)a4
++ (BOOL)insertTokenizerResponseToFeatureStore:(id)store interactionId:(id)id
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -806,7 +806,7 @@ LABEL_9:
     goto LABEL_8;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"TokenizerResponse"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"TokenizerResponse"] & 1) == 0)
   {
     v11 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -824,21 +824,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeTokenizerResponseWithResponse:v7 formatType:@"json"];
-  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:v8 streamId:@"TokenizerResponse"];
+  v9 = [_TtC13CDMFoundation20CDMProtobufConverter serializeTokenizerResponseWithResponse:storeCopy formatType:@"json"];
+  v10 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v9 interactionId:idCopy streamId:@"TokenizerResponse"];
 
 LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (BOOL)insertJsonStringToFeatureStore:(id)a3 interactionId:(id)a4 streamId:(id)a5
++ (BOOL)insertJsonStringToFeatureStore:(id)store interactionId:(id)id streamId:(id)streamId
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  storeCopy = store;
+  idCopy = id;
+  streamIdCopy = streamId;
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v13 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -854,7 +854,7 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:v11] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:streamIdCopy] & 1) == 0)
   {
     v13 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -862,14 +862,14 @@ LABEL_9:
       *buf = 136315394;
       v26 = "+[CDMFeatureStoreUtils insertJsonStringToFeatureStore:interactionId:streamId:]";
       v27 = 2112;
-      v28 = v11;
+      v28 = streamIdCopy;
       _os_log_debug_impl(&dword_1DC287000, v13, OS_LOG_TYPE_DEBUG, "%s FeatureStoreEnabledForExternalBuilds is not enabled OR streamId=%@ not allowed to be logged", buf, 0x16u);
     }
 
     goto LABEL_21;
   }
 
-  if (!v10)
+  if (!idCopy)
   {
     v13 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -877,7 +877,7 @@ LABEL_9:
       *buf = 136315394;
       v26 = "+[CDMFeatureStoreUtils insertJsonStringToFeatureStore:interactionId:streamId:]";
       v27 = 2112;
-      v28 = v11;
+      v28 = streamIdCopy;
       v19 = "%s [WARN]: A nil interaction ID was passed in for streamId=%@. Skip saving to FeatureStore";
       v20 = v13;
       v21 = 22;
@@ -892,16 +892,16 @@ LABEL_21:
 
   v12 = CDMOSLoggerForCategory(0);
   v13 = v12;
-  if (!v9)
+  if (!storeCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 136315650;
       v26 = "+[CDMFeatureStoreUtils insertJsonStringToFeatureStore:interactionId:streamId:]";
       v27 = 2112;
-      v28 = v10;
+      v28 = idCopy;
       v29 = 2112;
-      v30 = v11;
+      v30 = streamIdCopy;
       v19 = "%s [WARN]: The passed in Feature is nil with interactionId=%@ for streamId=%@. Skip saving to FeatureStore";
       v20 = v13;
       v21 = 32;
@@ -916,14 +916,14 @@ LABEL_21:
     *buf = 136315650;
     v26 = "+[CDMFeatureStoreUtils insertJsonStringToFeatureStore:interactionId:streamId:]";
     v27 = 2112;
-    v28 = v10;
+    v28 = idCopy;
     v29 = 2112;
-    v30 = v11;
+    v30 = streamIdCopy;
     _os_log_debug_impl(&dword_1DC287000, v13, OS_LOG_TYPE_DEBUG, "%s interactionId=%@, streamId=%@", buf, 0x20u);
   }
 
-  v13 = [CDMFeatureStoreUtils cacheStreamInstance:v11];
-  v14 = [objc_alloc(MEMORY[0x1E699C0D0]) initWithJsonStr:v9 interactionId:v10 dataVersion:1];
+  v13 = [CDMFeatureStoreUtils cacheStreamInstance:streamIdCopy];
+  v14 = [objc_alloc(MEMORY[0x1E699C0D0]) initWithJsonStr:storeCopy interactionId:idCopy dataVersion:1];
   v24 = 0;
   v15 = [v13 insert:v14 error:&v24];
   v16 = v24;
@@ -935,7 +935,7 @@ LABEL_21:
       *buf = 136315650;
       v26 = "+[CDMFeatureStoreUtils insertJsonStringToFeatureStore:interactionId:streamId:]";
       v27 = 2112;
-      v28 = v11;
+      v28 = streamIdCopy;
       v29 = 2112;
       v30 = v16;
       _os_log_impl(&dword_1DC287000, v17, OS_LOG_TYPE_INFO, "%s [WARN]: Error while inserting into FeatureStore for streamId=%@: %@", buf, 0x20u);
@@ -947,10 +947,10 @@ LABEL_22:
   return v15;
 }
 
-+ (BOOL)insertResponseToFeatureStoreAsJson:(id)a3
++ (BOOL)insertResponseToFeatureStoreAsJson:(id)json
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  jsonCopy = json;
   v6 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -959,7 +959,7 @@ LABEL_22:
     _os_log_debug_impl(&dword_1DC287000, v6, OS_LOG_TYPE_DEBUG, "%s CDMFeatureStoreUtils insertResponseToFeatureStoreAsJson", &v15, 0xCu);
   }
 
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v9 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -975,7 +975,7 @@ LABEL_22:
     goto LABEL_12;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"SiriNluResponseAsJson"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"SiriNluResponseAsJson"] & 1) == 0)
   {
     v9 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -992,26 +992,26 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (v5 && ([v5 requestId], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (jsonCopy && ([jsonCopy requestId], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [v5 requestId];
-    v9 = [v8 idA];
+    requestId = [jsonCopy requestId];
+    v9 = [requestId idA];
   }
 
   else
   {
-    v8 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    requestId = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(requestId, OS_LOG_TYPE_INFO))
     {
       v15 = 136315138;
       v16 = "+[CDMFeatureStoreUtils insertResponseToFeatureStoreAsJson:]";
-      _os_log_impl(&dword_1DC287000, v8, OS_LOG_TYPE_INFO, "%s [WARN]: The response or requestId within the response is nil. Cannot extract interactionId!", &v15, 0xCu);
+      _os_log_impl(&dword_1DC287000, requestId, OS_LOG_TYPE_INFO, "%s [WARN]: The response or requestId within the response is nil. Cannot extract interactionId!", &v15, 0xCu);
     }
 
     v9 = 0;
   }
 
-  v12 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalNluResponseWithResponse:v5 formatType:@"json"];
+  v12 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalNluResponseWithResponse:jsonCopy formatType:@"json"];
   v11 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v12 interactionId:v9 streamId:@"SiriNluResponseAsJson"];
 
 LABEL_17:
@@ -1019,10 +1019,10 @@ LABEL_17:
   return v11;
 }
 
-+ (BOOL)insertRequestToFeatureStoreAsJson:(id)a3
++ (BOOL)insertRequestToFeatureStoreAsJson:(id)json
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  jsonCopy = json;
   v6 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1031,7 +1031,7 @@ LABEL_17:
     _os_log_debug_impl(&dword_1DC287000, v6, OS_LOG_TYPE_DEBUG, "%s CDMFeatureStoreUtils insertRequestToFeatureStoreAsJson", &v15, 0xCu);
   }
 
-  if (([a1 platformSupportedAndEnabled] & 1) == 0)
+  if (([self platformSupportedAndEnabled] & 1) == 0)
   {
     v9 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1047,7 +1047,7 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  if (([a1 checkFeatureStoreEnabledForExternalBuilds:@"SiriNluRequestAsJson"] & 1) == 0)
+  if (([self checkFeatureStoreEnabledForExternalBuilds:@"SiriNluRequestAsJson"] & 1) == 0)
   {
     v9 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -1064,26 +1064,26 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (v5 && ([v5 requestId], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if (jsonCopy && ([jsonCopy requestId], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [v5 requestId];
-    v9 = [v8 idA];
+    requestId = [jsonCopy requestId];
+    v9 = [requestId idA];
   }
 
   else
   {
-    v8 = CDMOSLoggerForCategory(0);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    requestId = CDMOSLoggerForCategory(0);
+    if (os_log_type_enabled(requestId, OS_LOG_TYPE_INFO))
     {
       v15 = 136315138;
       v16 = "+[CDMFeatureStoreUtils insertRequestToFeatureStoreAsJson:]";
-      _os_log_impl(&dword_1DC287000, v8, OS_LOG_TYPE_INFO, "%s [WARN]: The request or requestId within the request is nil. Cannot extract interactionId!", &v15, 0xCu);
+      _os_log_impl(&dword_1DC287000, requestId, OS_LOG_TYPE_INFO, "%s [WARN]: The request or requestId within the request is nil. Cannot extract interactionId!", &v15, 0xCu);
     }
 
     v9 = 0;
   }
 
-  v12 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalNluRequestWithRequest:v5 formatType:@"json"];
+  v12 = [_TtC13CDMFoundation20CDMProtobufConverter serializeExternalNluRequestWithRequest:jsonCopy formatType:@"json"];
   v11 = [CDMFeatureStoreUtils insertJsonStringToFeatureStore:v12 interactionId:v9 streamId:@"SiriNluRequestAsJson"];
 
 LABEL_17:
@@ -1091,10 +1091,10 @@ LABEL_17:
   return v11;
 }
 
-+ (BOOL)checkFeatureStoreEnabledForExternalBuilds:(id)a3
++ (BOOL)checkFeatureStoreEnabledForExternalBuilds:(id)builds
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buildsCopy = builds;
   if (+[CDMPlatformUtils isInternalInstall])
   {
     v5 = 1;
@@ -1102,8 +1102,8 @@ LABEL_17:
 
   else if (+[CDMFeatureFlags isFeatureStoreEnabledForExternalBuilds])
   {
-    v6 = [a1 allowedFSMessagesOnExternalBuilds];
-    v5 = [v6 containsObject:v4];
+    allowedFSMessagesOnExternalBuilds = [self allowedFSMessagesOnExternalBuilds];
+    v5 = [allowedFSMessagesOnExternalBuilds containsObject:buildsCopy];
   }
 
   else
@@ -1184,31 +1184,31 @@ uint64_t __57__CDMFeatureStoreUtils_allowedFSMessagesOnExternalBuilds__block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)cacheStreamInstance:(id)a3
++ (id)cacheStreamInstance:(id)instance
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  instanceCopy = instance;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v6 = +[CDMFeatureStoreUtils streamCache];
-  v7 = [v6 objectForKey:v4];
+  v7 = [v6 objectForKey:instanceCopy];
   if (!v7)
   {
-    v7 = [MEMORY[0x1E699C0D8] getWithStreamId:v4];
+    v7 = [MEMORY[0x1E699C0D8] getWithStreamId:instanceCopy];
     v8 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 136315394;
       v12 = "+[CDMFeatureStoreUtils cacheStreamInstance:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = instanceCopy;
       _os_log_impl(&dword_1DC287000, v8, OS_LOG_TYPE_INFO, "%s Inserting stream for %@ into FeatureStore stream cache.", &v11, 0x16u);
     }
 
-    [v6 setValue:v7 forKey:v4];
+    [v6 setValue:v7 forKey:instanceCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v9 = *MEMORY[0x1E69E9840];
 
   return v7;

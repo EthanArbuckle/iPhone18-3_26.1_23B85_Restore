@@ -1,6 +1,6 @@
 @interface PACoalescingIntervalState
-- (PACoalescingIntervalState)initWithInterval:(id)a3 intervalExpirationTime:(double)a4 expiryQueue:(id)a5 clock:(id)a6 onExpiration:(id)a7 expiry:(double)a8;
-- (PACoalescingIntervalState)initWithInterval:(id)a3 matcher:(id)a4 tracker:(id)a5 expiry:(double)a6;
+- (PACoalescingIntervalState)initWithInterval:(id)interval intervalExpirationTime:(double)time expiryQueue:(id)queue clock:(id)clock onExpiration:(id)expiration expiry:(double)expiry;
+- (PACoalescingIntervalState)initWithInterval:(id)interval matcher:(id)matcher tracker:(id)tracker expiry:(double)expiry;
 - (double)idleTime;
 - (double)timestampAdjustment;
 - (id)description;
@@ -13,8 +13,8 @@
 
 - (void)touch
 {
-  v3 = [(PACoalescingIntervalState *)self clock];
-  self->_startTimes.absolute = v3[2]();
+  clock = [(PACoalescingIntervalState *)self clock];
+  self->_startTimes.absolute = clock[2]();
   self->_startTimes.continuous = v4;
 
   self->_lastCoalescedTime = self->_startTimes.absolute;
@@ -31,8 +31,8 @@
 
 - (double)timestampAdjustment
 {
-  v3 = [(PACoalescingIntervalState *)self clock];
-  v3[2]();
+  clock = [(PACoalescingIntervalState *)self clock];
+  clock[2]();
   v5 = v4;
 
   return ((v5 + self->_startTimes.absolute - (self->_startTimes.continuous + self->_lastCoalescedTime)) / 0x3E8) / -1000000.0;
@@ -65,26 +65,26 @@
   [(PACoalescingIntervalState *)&v3 dealloc];
 }
 
-- (PACoalescingIntervalState)initWithInterval:(id)a3 matcher:(id)a4 tracker:(id)a5 expiry:(double)a6
+- (PACoalescingIntervalState)initWithInterval:(id)interval matcher:(id)matcher tracker:(id)tracker expiry:(double)expiry
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  objc_initWeak(&location, v12);
+  intervalCopy = interval;
+  matcherCopy = matcher;
+  trackerCopy = tracker;
+  objc_initWeak(&location, trackerCopy);
   objc_initWeak(&from, self);
-  [v12 intervalEndTime];
+  [trackerCopy intervalEndTime];
   v14 = v13;
-  v15 = [v12 logger];
-  v16 = [v15 queue];
+  logger = [trackerCopy logger];
+  queue = [logger queue];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __69__PACoalescingIntervalState_initWithInterval_matcher_tracker_expiry___block_invoke_2;
   v20[3] = &unk_1E86AC1E0;
   objc_copyWeak(&v22, &from);
   objc_copyWeak(&v23, &location);
-  v17 = v11;
+  v17 = matcherCopy;
   v21 = v17;
-  v18 = [(PACoalescingIntervalState *)self initWithInterval:v10 intervalExpirationTime:v16 expiryQueue:&__block_literal_global_5 clock:v20 onExpiration:v14 expiry:a6];
+  v18 = [(PACoalescingIntervalState *)self initWithInterval:intervalCopy intervalExpirationTime:queue expiryQueue:&__block_literal_global_5 clock:v20 onExpiration:v14 expiry:expiry];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&v22);
@@ -109,25 +109,25 @@ void __69__PACoalescingIntervalState_initWithInterval_matcher_tracker_expiry___b
   [v2 expireIntervalWithMatcher:*(a1 + 32) state:WeakRetained];
 }
 
-- (PACoalescingIntervalState)initWithInterval:(id)a3 intervalExpirationTime:(double)a4 expiryQueue:(id)a5 clock:(id)a6 onExpiration:(id)a7 expiry:(double)a8
+- (PACoalescingIntervalState)initWithInterval:(id)interval intervalExpirationTime:(double)time expiryQueue:(id)queue clock:(id)clock onExpiration:(id)expiration expiry:(double)expiry
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  intervalCopy = interval;
+  queueCopy = queue;
+  clockCopy = clock;
+  expirationCopy = expiration;
   v39.receiver = self;
   v39.super_class = PACoalescingIntervalState;
   v19 = [(PACoalescingIntervalState *)&v39 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_interval, a3);
-    v21 = v17[2](v17);
+    objc_storeStrong(&v19->_interval, interval);
+    v21 = clockCopy[2](clockCopy);
     v20->_startTimes.absolute = v21;
     v20->_startTimes.continuous = v22;
     v20->_lastCoalescedTime = v21;
-    v20->_intervalEndTime = a4;
-    v23 = _Block_copy(v17);
+    v20->_intervalEndTime = time;
+    v23 = _Block_copy(clockCopy);
     clock = v20->_clock;
     v20->_clock = v23;
 
@@ -139,22 +139,22 @@ void __69__PACoalescingIntervalState_initWithInterval_matcher_tracker_expiry___b
     v36[4] = __Block_byref_object_dispose__2;
     v37 = os_transaction_create();
     signal(15, 1);
-    v25 = dispatch_source_create(MEMORY[0x1E69E9700], 0xFuLL, 0, v16);
+    v25 = dispatch_source_create(MEMORY[0x1E69E9700], 0xFuLL, 0, queueCopy);
     sigTermSource = v20->_sigTermSource;
     v20->_sigTermSource = v25;
 
-    v27 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v16);
+    v27 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, queueCopy);
     endTimer = v20->_endTimer;
     v20->_endTimer = v27;
 
-    if (a8 == -1.0)
+    if (expiry == -1.0)
     {
       v29 = -1;
     }
 
     else
     {
-      v29 = dispatch_time(0, (a8 * 1000000000.0));
+      v29 = dispatch_time(0, (expiry * 1000000000.0));
     }
 
     dispatch_source_set_timer(v20->_endTimer, v29, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -163,7 +163,7 @@ void __69__PACoalescingIntervalState_initWithInterval_matcher_tracker_expiry___b
     v32[2] = __107__PACoalescingIntervalState_initWithInterval_intervalExpirationTime_expiryQueue_clock_onExpiration_expiry___block_invoke;
     v32[3] = &unk_1E86AC208;
     objc_copyWeak(&v35, &location);
-    v33 = v18;
+    v33 = expirationCopy;
     v34 = v36;
     v30 = _Block_copy(v32);
     dispatch_source_set_event_handler(v20->_endTimer, v30);
@@ -205,8 +205,8 @@ void __107__PACoalescingIntervalState_initWithInterval_intervalExpirationTime_ex
 
 - (double)idleTime
 {
-  v3 = [(PACoalescingIntervalState *)self clock];
-  v4 = (v3[2]() - self->_lastCoalescedTime) / 0x3E8;
+  clock = [(PACoalescingIntervalState *)self clock];
+  v4 = (clock[2]() - self->_lastCoalescedTime) / 0x3E8;
 
   return v4 / 1000000.0;
 }

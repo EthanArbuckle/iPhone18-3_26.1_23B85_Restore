@@ -7,36 +7,36 @@
 
 - (id)VisionCore_stringPrependedWithPaddingCharacter:()VisionCore toMinimumLength:
 {
-  v7 = [a1 length];
+  v7 = [self length];
   if (a4 <= v7)
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v8 = _repeatedCharacterString(a3, a4 - v7);
-    v9 = [v8 stringByAppendingString:a1];
+    selfCopy = [v8 stringByAppendingString:self];
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)VisionCore_stringAppendedWithPaddingCharacter:()VisionCore toMinimumLength:
 {
-  v7 = [a1 length];
+  v7 = [self length];
   if (a4 <= v7)
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v8 = _repeatedCharacterString(a3, a4 - v7);
-    v9 = [a1 stringByAppendingString:v8];
+    selfCopy = [self stringByAppendingString:v8];
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

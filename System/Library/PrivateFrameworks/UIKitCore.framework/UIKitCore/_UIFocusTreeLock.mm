@@ -1,10 +1,10 @@
 @interface _UIFocusTreeLock
-- (BOOL)isEnvironmentLocked:(id)a3;
-- (BOOL)unlockEnvironmentTree:(id)a3;
+- (BOOL)isEnvironmentLocked:(id)locked;
+- (BOOL)unlockEnvironmentTree:(id)tree;
 - (_UIFocusTreeLock)init;
 - (id)description;
 - (void)_validateLockedEnvironments;
-- (void)lockEnvironmentTree:(id)a3;
+- (void)lockEnvironmentTree:(id)tree;
 @end
 
 @implementation _UIFocusTreeLock
@@ -42,16 +42,16 @@
   return v2;
 }
 
-- (void)lockEnvironmentTree:(id)a3
+- (void)lockEnvironmentTree:(id)tree
 {
-  v5 = a3;
-  if (!v5)
+  treeCopy = tree;
+  if (!treeCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIFocusTreeLock.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusTreeLock.m" lineNumber:141 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
-  v6 = [(NSMapTable *)self->_lockedEnvironments objectForKey:v5];
+  v6 = [(NSMapTable *)self->_lockedEnvironments objectForKey:treeCopy];
   if (v6)
   {
     v7 = v6;
@@ -67,24 +67,24 @@
     v10[2] = __40___UIFocusTreeLock_lockEnvironmentTree___block_invoke;
     v10[3] = &unk_1E7100270;
     objc_copyWeak(&v11, &location);
-    v7 = [(_UIFocusTreeLockItem *)v8 initWithEnvironment:v5 finalUnlockHandler:v10];
-    [(NSMapTable *)self->_lockedEnvironments setObject:v7 forKey:v5];
+    v7 = [(_UIFocusTreeLockItem *)v8 initWithEnvironment:treeCopy finalUnlockHandler:v10];
+    [(NSMapTable *)self->_lockedEnvironments setObject:v7 forKey:treeCopy];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 }
 
-- (BOOL)unlockEnvironmentTree:(id)a3
+- (BOOL)unlockEnvironmentTree:(id)tree
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  treeCopy = tree;
+  if (!treeCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIFocusTreeLock.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusTreeLock.m" lineNumber:160 description:{@"Invalid parameter not satisfying: %@", @"environment"}];
   }
 
-  v6 = [(NSMapTable *)self->_lockedEnvironments objectForKey:v5];
+  v6 = [(NSMapTable *)self->_lockedEnvironments objectForKey:treeCopy];
   v7 = v6;
   if (!v6)
   {
@@ -96,8 +96,8 @@
         goto LABEL_13;
       }
 
-      v17 = v5;
-      if (v5)
+      v17 = treeCopy;
+      if (treeCopy)
       {
         v18 = MEMORY[0x1E696AEC0];
         v19 = objc_opt_class();
@@ -122,12 +122,12 @@
       {
 LABEL_13:
 
-        v8 = 1;
+        unlock = 1;
         goto LABEL_5;
       }
 
-      v12 = v5;
-      if (v5)
+      v12 = treeCopy;
+      if (treeCopy)
       {
         v13 = MEMORY[0x1E696AEC0];
         v14 = objc_opt_class();
@@ -148,22 +148,22 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v8 = [v6 unlock];
+  unlock = [v6 unlock];
 LABEL_5:
 
-  return v8;
+  return unlock;
 }
 
-- (BOOL)isEnvironmentLocked:(id)a3
+- (BOOL)isEnvironmentLocked:(id)locked
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lockedCopy = locked;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(NSMapTable *)self->_lockedEnvironments objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  objectEnumerator = [(NSMapTable *)self->_lockedEnvironments objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -175,12 +175,12 @@ LABEL_5:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v18 + 1) + 8 * v9);
-        v11 = [v10 environment];
-        if (!v11)
+        environment = [v10 environment];
+        if (!environment)
         {
           if (os_variant_has_internal_diagnostics())
           {
@@ -205,7 +205,7 @@ LABEL_5:
           }
         }
 
-        HaveCommonHierarchy = _UIFocusEnvironmentsHaveCommonHierarchy(v4, v11);
+        HaveCommonHierarchy = _UIFocusEnvironmentsHaveCommonHierarchy(lockedCopy, environment);
 
         if (HaveCommonHierarchy)
         {
@@ -217,7 +217,7 @@ LABEL_5:
       }
 
       while (v7 != v9);
-      v13 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v13 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v24 count:16];
       v7 = v13;
     }
 
@@ -239,8 +239,8 @@ LABEL_19:
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(NSMapTable *)self->_lockedEnvironments objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    objectEnumerator = [(NSMapTable *)self->_lockedEnvironments objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = v4;
@@ -252,14 +252,14 @@ LABEL_19:
         {
           if (*v9 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v8 + 1) + 8 * v7++) validate];
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v5);
@@ -271,9 +271,9 @@ LABEL_19:
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_lockedEnvironments withName:@"lockedEnvironments"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

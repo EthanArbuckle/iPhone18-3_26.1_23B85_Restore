@@ -1,14 +1,14 @@
 @interface NMSMediaSyncServiceKeepLocalRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEnableState:(id)a3;
+- (int)StringAsEnableState:(id)state;
 - (int)enableState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMSMediaSyncServiceKeepLocalRequest
@@ -26,30 +26,30 @@
   }
 }
 
-- (int)StringAsEnableState:(id)a3
+- (int)StringAsEnableState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Enabled"])
+  else if ([stateCopy isEqualToString:@"Enabled"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Disabled"])
+  else if ([stateCopy isEqualToString:@"Disabled"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Automatic"])
+  else if ([stateCopy isEqualToString:@"Automatic"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Cancelled"])
+  else if ([stateCopy isEqualToString:@"Cancelled"])
   {
     v4 = 4;
   }
@@ -68,20 +68,20 @@
   v8.receiver = self;
   v8.super_class = NMSMediaSyncServiceKeepLocalRequest;
   v4 = [(NMSMediaSyncServiceKeepLocalRequest *)&v8 description];
-  v5 = [(NMSMediaSyncServiceKeepLocalRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NMSMediaSyncServiceKeepLocalRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   modelObject = self->_modelObject;
   if (modelObject)
   {
-    v5 = [(NMSMediaSyncServiceModelObject *)modelObject dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"modelObject"];
+    dictionaryRepresentation = [(NMSMediaSyncServiceModelObject *)modelObject dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"modelObject"];
   }
 
   if (*&self->_has)
@@ -97,70 +97,70 @@
       v7 = off_27993EC28[enableState];
     }
 
-    [v3 setObject:v7 forKey:@"enableState"];
+    [dictionary setObject:v7 forKey:@"enableState"];
   }
 
   options = self->_options;
   if (options)
   {
-    v9 = [(NMSMediaSyncServiceKeepLocalOptions *)options dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"options"];
+    dictionaryRepresentation2 = [(NMSMediaSyncServiceKeepLocalOptions *)options dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"options"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_modelObject)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     enableState = self->_enableState;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_options)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_modelObject)
   {
-    [v4 setModelObject:?];
-    v4 = v5;
+    [toCopy setModelObject:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_enableState;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 2) = self->_enableState;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_options)
   {
     [v5 setOptions:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NMSMediaSyncServiceModelObject *)self->_modelObject copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NMSMediaSyncServiceModelObject *)self->_modelObject copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -170,23 +170,23 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(NMSMediaSyncServiceKeepLocalOptions *)self->_options copyWithZone:a3];
+  v8 = [(NMSMediaSyncServiceKeepLocalOptions *)self->_options copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   modelObject = self->_modelObject;
-  if (modelObject | *(v4 + 2))
+  if (modelObject | *(equalCopy + 2))
   {
     if (![(NMSMediaSyncServiceModelObject *)modelObject isEqual:?])
     {
@@ -194,16 +194,16 @@
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_enableState != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_enableState != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -211,7 +211,7 @@ LABEL_11:
   }
 
   options = self->_options;
-  if (options | *(v4 + 3))
+  if (options | *(equalCopy + 3))
   {
     v8 = [(NMSMediaSyncServiceKeepLocalOptions *)options isEqual:?];
   }
@@ -242,12 +242,12 @@ LABEL_12:
   return v4 ^ v3 ^ [(NMSMediaSyncServiceKeepLocalOptions *)self->_options hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   modelObject = self->_modelObject;
-  v6 = *(v4 + 2);
-  v9 = v4;
+  v6 = *(fromCopy + 2);
+  v9 = fromCopy;
   if (modelObject)
   {
     if (!v6)
@@ -268,16 +268,16 @@ LABEL_12:
     [(NMSMediaSyncServiceKeepLocalRequest *)self setModelObject:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_enableState = *(v4 + 2);
+    self->_enableState = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
   options = self->_options;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (options)
   {
     if (!v8)
@@ -298,10 +298,10 @@ LABEL_7:
     options = [(NMSMediaSyncServiceKeepLocalRequest *)self setOptions:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
 
-  MEMORY[0x2821F96F8](options, v4);
+  MEMORY[0x2821F96F8](options, fromCopy);
 }
 
 @end

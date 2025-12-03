@@ -1,66 +1,66 @@
 @interface DSError
-+ (id)errorWithCode:(int64_t)a3 appName:(id)a4 serviceName:(id)a5 underlyingErrors:(id)a6;
-+ (id)errorWithCode:(int64_t)a3 sourceName:(id)a4 underlyingErrors:(id)a5;
++ (id)errorWithCode:(int64_t)code appName:(id)name serviceName:(id)serviceName underlyingErrors:(id)errors;
++ (id)errorWithCode:(int64_t)code sourceName:(id)name underlyingErrors:(id)errors;
 @end
 
 @implementation DSError
 
-+ (id)errorWithCode:(int64_t)a3 sourceName:(id)a4 underlyingErrors:(id)a5
++ (id)errorWithCode:(int64_t)code sourceName:(id)name underlyingErrors:(id)errors
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = descriptionForError(a3);
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
+  nameCopy = name;
+  errorsCopy = errors;
+  v9 = descriptionForError(code);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
   if (v9)
   {
-    [v10 setObject:v9 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
-  if ([v8 count])
+  if ([errorsCopy count])
   {
-    [v11 setObject:v8 forKeyedSubscript:*MEMORY[0x277CCA578]];
+    [v11 setObject:errorsCopy forKeyedSubscript:*MEMORY[0x277CCA578]];
   }
 
-  if (v7)
+  if (nameCopy)
   {
-    [v11 setObject:v7 forKeyedSubscript:@"DSErrorKeySourceName"];
+    [v11 setObject:nameCopy forKeyedSubscript:@"DSErrorKeySourceName"];
   }
 
-  v12 = [MEMORY[0x277CCA9B8] errorWithDomain:DSErrorDomain code:a3 userInfo:v11];
+  v12 = [MEMORY[0x277CCA9B8] errorWithDomain:DSErrorDomain code:code userInfo:v11];
 
   return v12;
 }
 
-+ (id)errorWithCode:(int64_t)a3 appName:(id)a4 serviceName:(id)a5 underlyingErrors:(id)a6
++ (id)errorWithCode:(int64_t)code appName:(id)name serviceName:(id)serviceName underlyingErrors:(id)errors
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = descriptionForError(a3);
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v14 = v13;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
+  errorsCopy = errors;
+  v12 = descriptionForError(code);
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v14 = dictionary;
   if (v12)
   {
-    [v13 setObject:v12 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [dictionary setObject:v12 forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
-  if ([v11 count])
+  if ([errorsCopy count])
   {
-    [v14 setObject:v11 forKeyedSubscript:*MEMORY[0x277CCA578]];
+    [v14 setObject:errorsCopy forKeyedSubscript:*MEMORY[0x277CCA578]];
   }
 
-  if (v9)
+  if (nameCopy)
   {
-    [v14 setObject:v9 forKeyedSubscript:@"DSErrorKeyAppName"];
+    [v14 setObject:nameCopy forKeyedSubscript:@"DSErrorKeyAppName"];
   }
 
-  if (v10)
+  if (serviceNameCopy)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"DSErrorKeyServiceName"];
+    [v14 setObject:serviceNameCopy forKeyedSubscript:@"DSErrorKeyServiceName"];
   }
 
-  v15 = [MEMORY[0x277CCA9B8] errorWithDomain:DSErrorDomain code:a3 userInfo:v14];
+  v15 = [MEMORY[0x277CCA9B8] errorWithDomain:DSErrorDomain code:code userInfo:v14];
 
   return v15;
 }

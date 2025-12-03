@@ -1,22 +1,22 @@
 @interface MKVibrantLabel
 - (CGSize)intrinsicContentSize;
-- (MKVibrantLabel)initWithStyle:(int64_t)a3;
+- (MKVibrantLabel)initWithStyle:(int64_t)style;
 @end
 
 @implementation MKVibrantLabel
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(UILabel *)self->_label text];
-  if (v3)
+  text = [(UILabel *)self->_label text];
+  if (text)
   {
   }
 
   else
   {
-    v4 = [(UILabel *)self->_label attributedText];
+    attributedText = [(UILabel *)self->_label attributedText];
 
-    if (!v4)
+    if (!attributedText)
     {
       v5 = *MEMORY[0x1E695F060];
       v6 = *(MEMORY[0x1E695F060] + 8);
@@ -31,7 +31,7 @@ LABEL_6:
   return result;
 }
 
-- (MKVibrantLabel)initWithStyle:(int64_t)a3
+- (MKVibrantLabel)initWithStyle:(int64_t)style
 {
   v28[4] = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -40,10 +40,10 @@ LABEL_6:
   v5 = v4;
   if (v4)
   {
-    [(MKVibrantView *)v4 setStyle:a3];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    v7 = [(MKVibrantLabel *)v5 contentView];
-    [v7 setBackgroundColor:v6];
+    [(MKVibrantView *)v4 setStyle:style];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    contentView = [(MKVibrantLabel *)v5 contentView];
+    [contentView setBackgroundColor:clearColor];
 
     v8 = objc_alloc(MEMORY[0x1E69DCC10]);
     [(MKVibrantLabel *)v5 bounds];
@@ -52,25 +52,25 @@ LABEL_6:
     v5->_label = v9;
 
     [(UILabel *)v5->_label setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(MKVibrantLabel *)v5 contentView];
-    [v11 addSubview:v5->_label];
+    contentView2 = [(MKVibrantLabel *)v5 contentView];
+    [contentView2 addSubview:v5->_label];
 
     v22 = MEMORY[0x1E696ACD8];
-    v26 = [(UILabel *)v5->_label topAnchor];
-    v25 = [(MKVibrantLabel *)v5 topAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    topAnchor = [(UILabel *)v5->_label topAnchor];
+    topAnchor2 = [(MKVibrantLabel *)v5 topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[0] = v24;
-    v23 = [(UILabel *)v5->_label leadingAnchor];
-    v12 = [(MKVibrantLabel *)v5 leadingAnchor];
-    v13 = [v23 constraintEqualToAnchor:v12];
+    leadingAnchor = [(UILabel *)v5->_label leadingAnchor];
+    leadingAnchor2 = [(MKVibrantLabel *)v5 leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[1] = v13;
-    v14 = [(UILabel *)v5->_label bottomAnchor];
-    v15 = [(MKVibrantLabel *)v5 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    bottomAnchor = [(UILabel *)v5->_label bottomAnchor];
+    bottomAnchor2 = [(MKVibrantLabel *)v5 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[2] = v16;
-    v17 = [(UILabel *)v5->_label trailingAnchor];
-    v18 = [(MKVibrantLabel *)v5 trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    trailingAnchor = [(UILabel *)v5->_label trailingAnchor];
+    trailingAnchor2 = [(MKVibrantLabel *)v5 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v28[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
     [v22 activateConstraints:v20];

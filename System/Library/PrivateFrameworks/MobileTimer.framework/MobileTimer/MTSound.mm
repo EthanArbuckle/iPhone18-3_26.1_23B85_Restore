@@ -1,30 +1,30 @@
 @interface MTSound
 + (id)_loadDefaultAlarmSound;
 + (id)_loadDefaultTimerSound;
-+ (id)defaultSoundForCategory:(unint64_t)a3;
-+ (id)descriptionForCategory:(unint64_t)a3;
-+ (id)songSoundWithIdentifier:(id)a3 vibrationIdentifier:(id)a4 volume:(id)a5;
-+ (id)toneSoundWithIdentifier:(id)a3 vibrationIdentifer:(id)a4 volume:(id)a5;
-+ (int64_t)_alertTypeForCategory:(unint64_t)a3;
-+ (void)_saveDefaultAlarmSound:(id)a3;
-+ (void)_saveDefaultTimerSound:(id)a3;
-+ (void)setDefaultSound:(id)a3 forCategory:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSound:(id)a3;
++ (id)defaultSoundForCategory:(unint64_t)category;
++ (id)descriptionForCategory:(unint64_t)category;
++ (id)songSoundWithIdentifier:(id)identifier vibrationIdentifier:(id)vibrationIdentifier volume:(id)volume;
++ (id)toneSoundWithIdentifier:(id)identifier vibrationIdentifer:(id)identifer volume:(id)volume;
++ (int64_t)_alertTypeForCategory:(unint64_t)category;
++ (void)_saveDefaultAlarmSound:(id)sound;
++ (void)_saveDefaultTimerSound:(id)sound;
++ (void)setDefaultSound:(id)sound forCategory:(unint64_t)category;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSound:(id)sound;
 - (BOOL)isSilent;
-- (MTSound)initWithCoder:(id)a3;
-- (MTSound)initWithMTCDSound:(id)a3;
-- (MTSound)initWithMediaItemIdentifier:(id)a3 vibrationIdentifier:(id)a4 volume:(id)a5;
-- (MTSound)initWithSound:(id)a3 usingVolume:(id)a4;
-- (MTSound)initWithToneIdentifier:(id)a3 vibrationIdentifer:(id)a4 volume:(id)a5;
+- (MTSound)initWithCoder:(id)coder;
+- (MTSound)initWithMTCDSound:(id)sound;
+- (MTSound)initWithMediaItemIdentifier:(id)identifier vibrationIdentifier:(id)vibrationIdentifier volume:(id)volume;
+- (MTSound)initWithSound:(id)sound usingVolume:(id)volume;
+- (MTSound)initWithToneIdentifier:(id)identifier vibrationIdentifer:(id)identifer volume:(id)volume;
 - (NSString)description;
-- (id)previewWithCompletionHandler:(id)a3;
-- (id)soundByUpdatingVibrationIdentifier:(id)a3;
-- (id)soundByUpdatingVolume:(id)a3;
-- (id)unSoundForCategory:(unint64_t)a3;
+- (id)previewWithCompletionHandler:(id)handler;
+- (id)soundByUpdatingVibrationIdentifier:(id)identifier;
+- (id)soundByUpdatingVolume:(id)volume;
+- (id)unSoundForCategory:(unint64_t)category;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)updatePreview:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updatePreview:(id)preview;
 @end
 
 @implementation MTSound
@@ -33,24 +33,24 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTSound *)self toneIdentifier];
-  v6 = [(MTSound *)self mediaItemIdentifier];
-  v7 = [(MTSound *)self vibrationIdentifier];
-  v8 = [(MTSound *)self soundVolume];
-  v9 = [v3 stringWithFormat:@"<%@:%p toneID: %@, mediaItemID: %@, vibeID: %@, volume: %@", v4, self, v5, v6, v7, v8];
+  toneIdentifier = [(MTSound *)self toneIdentifier];
+  mediaItemIdentifier = [(MTSound *)self mediaItemIdentifier];
+  vibrationIdentifier = [(MTSound *)self vibrationIdentifier];
+  soundVolume = [(MTSound *)self soundVolume];
+  v9 = [v3 stringWithFormat:@"<%@:%p toneID: %@, mediaItemID: %@, vibeID: %@, volume: %@", v4, self, toneIdentifier, mediaItemIdentifier, vibrationIdentifier, soundVolume];
 
   return v9;
 }
 
-+ (int64_t)_alertTypeForCategory:(unint64_t)a3
++ (int64_t)_alertTypeForCategory:(unint64_t)category
 {
   v3 = 13;
-  if (a3 == 1)
+  if (category == 1)
   {
     v3 = 14;
   }
 
-  if (a3 == 4)
+  if (category == 4)
   {
     return 17;
   }
@@ -61,28 +61,28 @@
   }
 }
 
-- (id)unSoundForCategory:(unint64_t)a3
+- (id)unSoundForCategory:(unint64_t)category
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = MTLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [objc_opt_class() descriptionForCategory:a3];
+    v6 = [objc_opt_class() descriptionForCategory:category];
     v21 = 138543618;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
     v24 = v6;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "[Sound] Converting %{public}@ to UNNotificationSound for category %{public}@", &v21, 0x16u);
   }
 
-  v7 = [MEMORY[0x1E6983238] soundWithAlertType:{objc_msgSend(objc_opt_class(), "_alertTypeForCategory:", a3)}];
+  v7 = [MEMORY[0x1E6983238] soundWithAlertType:{objc_msgSend(objc_opt_class(), "_alertTypeForCategory:", category)}];
   v8 = v7;
-  if (a3 == 4)
+  if (category == 4)
   {
     [v7 setShouldRepeat:0];
   }
 
-  else if (a3 == 2)
+  else if (category == 2)
   {
     [v7 setShouldRepeat:0];
     [v8 setAlertTopic:*MEMORY[0x1E69DA908]];
@@ -96,39 +96,39 @@
     v10 = [v9 integerForKey:@"MTAlertSoundDuration" defaultValue:15];
 
     [v8 setMaximumDuration:(60 * v10)];
-    v11 = [(MTSound *)self soundVolume];
-    [v8 setAudioVolume:v11];
+    soundVolume = [(MTSound *)self soundVolume];
+    [v8 setAudioVolume:soundVolume];
 
-    if (a3 == 3)
+    if (category == 3)
     {
       [v8 setAlertTopic:*MEMORY[0x1E69DA910]];
     }
 
-    v12 = [(MTSound *)self vibrationIdentifier];
-    [v8 setVibrationIdentifier:v12];
+    vibrationIdentifier = [(MTSound *)self vibrationIdentifier];
+    [v8 setVibrationIdentifier:vibrationIdentifier];
 
-    v13 = [(MTSound *)self soundType];
-    if (v13 == 3)
+    soundType = [(MTSound *)self soundType];
+    if (soundType == 3)
     {
-      v15 = [(MTSound *)self mediaItemIdentifier];
-      v16 = [v15 integerValue];
+      mediaItemIdentifier = [(MTSound *)self mediaItemIdentifier];
+      integerValue = [mediaItemIdentifier integerValue];
 
-      [v8 setToneMediaLibraryItemIdentifier:v16];
+      [v8 setToneMediaLibraryItemIdentifier:integerValue];
     }
 
-    else if (v13 == 2)
+    else if (soundType == 2)
     {
-      v14 = [(MTSound *)self toneIdentifier];
-      [v8 setToneIdentifier:v14];
+      toneIdentifier = [(MTSound *)self toneIdentifier];
+      [v8 setToneIdentifier:toneIdentifier];
     }
   }
 
   v17 = MTLogForCategory(0);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v8 mt_Description];
+    mt_Description = [v8 mt_Description];
     v21 = 138412290;
-    v22 = v18;
+    selfCopy = mt_Description;
     _os_log_impl(&dword_1B1F9F000, v17, OS_LOG_TYPE_DEFAULT, "[Sound] Made %@", &v21, 0xCu);
   }
 
@@ -137,17 +137,17 @@
   return v8;
 }
 
-+ (id)defaultSoundForCategory:(unint64_t)a3
++ (id)defaultSoundForCategory:(unint64_t)category
 {
-  if (a3 <= 1)
+  if (category <= 1)
   {
-    if (!a3)
+    if (!category)
     {
       v4 = +[MTSound _loadDefaultAlarmSound];
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (category == 1)
     {
       v4 = +[MTSound _loadDefaultTimerSound];
       goto LABEL_13;
@@ -156,7 +156,7 @@
 
   else
   {
-    switch(a3)
+    switch(category)
     {
       case 2uLL:
         goto LABEL_5;
@@ -172,38 +172,38 @@ LABEL_10:
     }
   }
 
-  NSLog(&cfstr_UnexpectedMtso.isa, a2, a3);
+  NSLog(&cfstr_UnexpectedMtso.isa, a2, category);
   v4 = 0;
 LABEL_13:
 
   return v4;
 }
 
-+ (void)setDefaultSound:(id)a3 forCategory:(unint64_t)a4
++ (void)setDefaultSound:(id)sound forCategory:(unint64_t)category
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  soundCopy = sound;
+  v6 = soundCopy;
+  if (soundCopy)
   {
-    if (a4 - 2 < 3)
+    if (category - 2 < 3)
     {
       goto LABEL_10;
     }
 
-    v7 = v5;
-    if (a4 == 1)
+    v7 = soundCopy;
+    if (category == 1)
     {
-      v5 = [MTSound _saveDefaultTimerSound:v5];
+      soundCopy = [MTSound _saveDefaultTimerSound:soundCopy];
     }
 
-    else if (a4)
+    else if (category)
     {
-      NSLog(&cfstr_UnexpectedMtso.isa, v5, a4);
+      NSLog(&cfstr_UnexpectedMtso.isa, soundCopy, category);
     }
 
     else
     {
-      v5 = [MTSound _saveDefaultAlarmSound:v5];
+      soundCopy = [MTSound _saveDefaultAlarmSound:soundCopy];
     }
   }
 
@@ -216,45 +216,45 @@ LABEL_13:
   v6 = v7;
 LABEL_10:
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](soundCopy, v6);
 }
 
-+ (id)descriptionForCategory:(unint64_t)a3
++ (id)descriptionForCategory:(unint64_t)category
 {
-  if (a3 < 5)
+  if (category < 5)
   {
-    return off_1E7B0E420[a3];
+    return off_1E7B0E420[category];
   }
 
-  NSLog(&cfstr_UnexpectedMtso.isa, a2, a3);
+  NSLog(&cfstr_UnexpectedMtso.isa, a2, category);
   return 0;
 }
 
-+ (id)toneSoundWithIdentifier:(id)a3 vibrationIdentifer:(id)a4 volume:(id)a5
++ (id)toneSoundWithIdentifier:(id)identifier vibrationIdentifer:(id)identifer volume:(id)volume
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MTSound alloc] initWithToneIdentifier:v9 vibrationIdentifer:v8 volume:v7];
+  volumeCopy = volume;
+  identiferCopy = identifer;
+  identifierCopy = identifier;
+  v10 = [[MTSound alloc] initWithToneIdentifier:identifierCopy vibrationIdentifer:identiferCopy volume:volumeCopy];
 
   return v10;
 }
 
-+ (id)songSoundWithIdentifier:(id)a3 vibrationIdentifier:(id)a4 volume:(id)a5
++ (id)songSoundWithIdentifier:(id)identifier vibrationIdentifier:(id)vibrationIdentifier volume:(id)volume
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MTSound alloc] initWithMediaItemIdentifier:v9 vibrationIdentifier:v8 volume:v7];
+  volumeCopy = volume;
+  vibrationIdentifierCopy = vibrationIdentifier;
+  identifierCopy = identifier;
+  v10 = [[MTSound alloc] initWithMediaItemIdentifier:identifierCopy vibrationIdentifier:vibrationIdentifierCopy volume:volumeCopy];
 
   return v10;
 }
 
-- (MTSound)initWithToneIdentifier:(id)a3 vibrationIdentifer:(id)a4 volume:(id)a5
+- (MTSound)initWithToneIdentifier:(id)identifier vibrationIdentifer:(id)identifer volume:(id)volume
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  identiferCopy = identifer;
+  volumeCopy = volume;
   v20.receiver = self;
   v20.super_class = MTSound;
   v11 = [(MTSound *)&v20 init];
@@ -262,15 +262,15 @@ LABEL_10:
   if (v11)
   {
     v11->_soundType = 2;
-    v13 = [v8 copy];
+    v13 = [identifierCopy copy];
     toneIdentifier = v12->_toneIdentifier;
     v12->_toneIdentifier = v13;
 
-    v15 = [v9 copy];
+    v15 = [identiferCopy copy];
     vibrationIdentifier = v12->_vibrationIdentifier;
     v12->_vibrationIdentifier = v15;
 
-    v17 = [v10 copy];
+    v17 = [volumeCopy copy];
     soundVolume = v12->_soundVolume;
     v12->_soundVolume = v17;
   }
@@ -278,11 +278,11 @@ LABEL_10:
   return v12;
 }
 
-- (MTSound)initWithMediaItemIdentifier:(id)a3 vibrationIdentifier:(id)a4 volume:(id)a5
+- (MTSound)initWithMediaItemIdentifier:(id)identifier vibrationIdentifier:(id)vibrationIdentifier volume:(id)volume
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  vibrationIdentifierCopy = vibrationIdentifier;
+  volumeCopy = volume;
   v20.receiver = self;
   v20.super_class = MTSound;
   v11 = [(MTSound *)&v20 init];
@@ -290,15 +290,15 @@ LABEL_10:
   if (v11)
   {
     v11->_soundType = 3;
-    v13 = [v8 copy];
+    v13 = [identifierCopy copy];
     mediaItemIdentifier = v12->_mediaItemIdentifier;
     v12->_mediaItemIdentifier = v13;
 
-    v15 = [v9 copy];
+    v15 = [vibrationIdentifierCopy copy];
     vibrationIdentifier = v12->_vibrationIdentifier;
     v12->_vibrationIdentifier = v15;
 
-    v17 = [v10 copy];
+    v17 = [volumeCopy copy];
     soundVolume = v12->_soundVolume;
     v12->_soundVolume = v17;
   }
@@ -306,73 +306,73 @@ LABEL_10:
   return v12;
 }
 
-- (MTSound)initWithSound:(id)a3 usingVolume:(id)a4
+- (MTSound)initWithSound:(id)sound usingVolume:(id)volume
 {
-  v6 = a3;
-  v7 = a4;
+  soundCopy = sound;
+  volumeCopy = volume;
   v19.receiver = self;
   v19.super_class = MTSound;
   v8 = [(MTSound *)&v19 init];
   if (v8)
   {
-    v8->_soundType = [v6 soundType];
-    v9 = [v6 mediaItemIdentifier];
-    v10 = [v9 copy];
+    v8->_soundType = [soundCopy soundType];
+    mediaItemIdentifier = [soundCopy mediaItemIdentifier];
+    v10 = [mediaItemIdentifier copy];
     mediaItemIdentifier = v8->_mediaItemIdentifier;
     v8->_mediaItemIdentifier = v10;
 
-    v12 = [v6 vibrationIdentifier];
-    v13 = [v12 copy];
+    vibrationIdentifier = [soundCopy vibrationIdentifier];
+    v13 = [vibrationIdentifier copy];
     vibrationIdentifier = v8->_vibrationIdentifier;
     v8->_vibrationIdentifier = v13;
 
-    v15 = [v6 toneIdentifier];
-    v16 = [v15 copy];
+    toneIdentifier = [soundCopy toneIdentifier];
+    v16 = [toneIdentifier copy];
     toneIdentifier = v8->_toneIdentifier;
     v8->_toneIdentifier = v16;
 
-    objc_storeStrong(&v8->_soundVolume, a4);
+    objc_storeStrong(&v8->_soundVolume, volume);
   }
 
   return v8;
 }
 
-- (id)soundByUpdatingVibrationIdentifier:(id)a3
+- (id)soundByUpdatingVibrationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(MTSound *)self soundType]== 3)
   {
-    v5 = [(MTSound *)self mediaItemIdentifier];
-    v6 = [(MTSound *)self soundVolume];
-    [MTSound songSoundWithIdentifier:v5 vibrationIdentifier:v4 volume:v6];
+    mediaItemIdentifier = [(MTSound *)self mediaItemIdentifier];
+    soundVolume = [(MTSound *)self soundVolume];
+    [MTSound songSoundWithIdentifier:mediaItemIdentifier vibrationIdentifier:identifierCopy volume:soundVolume];
   }
 
   else
   {
-    v5 = [(MTSound *)self toneIdentifier];
-    v6 = [(MTSound *)self soundVolume];
-    [MTSound toneSoundWithIdentifier:v5 vibrationIdentifer:v4 volume:v6];
+    mediaItemIdentifier = [(MTSound *)self toneIdentifier];
+    soundVolume = [(MTSound *)self soundVolume];
+    [MTSound toneSoundWithIdentifier:mediaItemIdentifier vibrationIdentifer:identifierCopy volume:soundVolume];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)soundByUpdatingVolume:(id)a3
+- (id)soundByUpdatingVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   if ([(MTSound *)self soundType]== 3)
   {
-    v5 = [(MTSound *)self mediaItemIdentifier];
-    v6 = [(MTSound *)self vibrationIdentifier];
-    [MTSound songSoundWithIdentifier:v5 vibrationIdentifier:v6 volume:v4];
+    mediaItemIdentifier = [(MTSound *)self mediaItemIdentifier];
+    vibrationIdentifier = [(MTSound *)self vibrationIdentifier];
+    [MTSound songSoundWithIdentifier:mediaItemIdentifier vibrationIdentifier:vibrationIdentifier volume:volumeCopy];
   }
 
   else
   {
-    v5 = [(MTSound *)self toneIdentifier];
-    v6 = [(MTSound *)self vibrationIdentifier];
-    [MTSound toneSoundWithIdentifier:v5 vibrationIdentifer:v6 volume:v4];
+    mediaItemIdentifier = [(MTSound *)self toneIdentifier];
+    vibrationIdentifier = [(MTSound *)self vibrationIdentifier];
+    [MTSound toneSoundWithIdentifier:mediaItemIdentifier vibrationIdentifer:vibrationIdentifier volume:volumeCopy];
   }
   v7 = ;
 
@@ -399,13 +399,13 @@ LABEL_10:
 
   v6 = v5;
 
-  v7 = [v6 unsignedIntegerValue];
-  if (v7 >= 4)
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  if (unsignedIntegerValue >= 4)
   {
-    NSLog(&cfstr_SoundTypeInteg.isa, v7);
+    NSLog(&cfstr_SoundTypeInteg.isa, unsignedIntegerValue);
   }
 
-  else if (v7 == 3)
+  else if (unsignedIntegerValue == 3)
   {
     v8 = +[MTUserDefaults sharedUserDefaults];
     v9 = [v8 objectForKey:@"MTDefaultAlarmMediaItemID"];
@@ -472,8 +472,8 @@ LABEL_23:
 
 LABEL_24:
 
-    v19 = [MEMORY[0x1E69DA8F0] sharedToneManager];
-    v13 = [v19 defaultToneIdentifierForAlertType:13];
+    mEMORY[0x1E69DA8F0] = [MEMORY[0x1E69DA8F0] sharedToneManager];
+    v13 = [mEMORY[0x1E69DA8F0] defaultToneIdentifierForAlertType:13];
     v10 = 0;
     v14 = 1;
     goto LABEL_25;
@@ -482,14 +482,14 @@ LABEL_24:
   v10 = 0;
   v14 = 1;
 LABEL_17:
-  v19 = MTLogForCategory(0);
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  mEMORY[0x1E69DA8F0] = MTLogForCategory(0);
+  if (os_log_type_enabled(mEMORY[0x1E69DA8F0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v35 = v13;
     v36 = 2112;
     v37 = v10;
-    _os_log_impl(&dword_1B1F9F000, v19, OS_LOG_TYPE_DEFAULT, "[Sound] Alarm sound from stored defaults (toneID: %@, mediaItemID: %@)", buf, 0x16u);
+    _os_log_impl(&dword_1B1F9F000, mEMORY[0x1E69DA8F0], OS_LOG_TYPE_DEFAULT, "[Sound] Alarm sound from stored defaults (toneID: %@, mediaItemID: %@)", buf, 0x16u);
   }
 
 LABEL_25:
@@ -511,15 +511,15 @@ LABEL_25:
 
   v26 = v25;
 
-  v27 = MTLogForCategory(0);
-  v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
+  mEMORY[0x1E69DA8F8] = MTLogForCategory(0);
+  v28 = os_log_type_enabled(mEMORY[0x1E69DA8F8], OS_LOG_TYPE_DEFAULT);
   if (v26)
   {
     if (v28)
     {
       *buf = 138412290;
       v35 = v26;
-      _os_log_impl(&dword_1B1F9F000, v27, OS_LOG_TYPE_DEFAULT, "[Sound] Alarm vibration from stored defaults (vibrationID: %@)", buf, 0xCu);
+      _os_log_impl(&dword_1B1F9F000, mEMORY[0x1E69DA8F8], OS_LOG_TYPE_DEFAULT, "[Sound] Alarm vibration from stored defaults (vibrationID: %@)", buf, 0xCu);
     }
 
     v29 = v24;
@@ -530,11 +530,11 @@ LABEL_25:
     if (v28)
     {
       *buf = 0;
-      _os_log_impl(&dword_1B1F9F000, v27, OS_LOG_TYPE_DEFAULT, "[Sound] No vibration ID is specified in defaults. Use the ToneLibrary default", buf, 2u);
+      _os_log_impl(&dword_1B1F9F000, mEMORY[0x1E69DA8F8], OS_LOG_TYPE_DEFAULT, "[Sound] No vibration ID is specified in defaults. Use the ToneLibrary default", buf, 2u);
     }
 
-    v27 = [MEMORY[0x1E69DA8F8] sharedVibrationManager];
-    v29 = [v27 defaultVibrationIdentifierForAlertType:13];
+    mEMORY[0x1E69DA8F8] = [MEMORY[0x1E69DA8F8] sharedVibrationManager];
+    v29 = [mEMORY[0x1E69DA8F8] defaultVibrationIdentifierForAlertType:13];
   }
 
   if (v14)
@@ -583,8 +583,8 @@ LABEL_25:
   v7 = v4;
   if (!v6)
   {
-    v8 = [MEMORY[0x1E69DA8F0] sharedToneManager];
-    v7 = [v8 defaultToneIdentifierForAlertType:14];
+    mEMORY[0x1E69DA8F0] = [MEMORY[0x1E69DA8F0] sharedToneManager];
+    v7 = [mEMORY[0x1E69DA8F0] defaultToneIdentifierForAlertType:14];
   }
 
   v9 = [MTSound toneSoundWithIdentifier:v7 vibrationIdentifer:0 volume:0];
@@ -601,67 +601,67 @@ LABEL_25:
   return v9;
 }
 
-+ (void)_saveDefaultAlarmSound:(id)a3
++ (void)_saveDefaultAlarmSound:(id)sound
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 toneIdentifier];
-  v5 = [v3 mediaItemIdentifier];
+  soundCopy = sound;
+  toneIdentifier = [soundCopy toneIdentifier];
+  mediaItemIdentifier = [soundCopy mediaItemIdentifier];
   v6 = +[MTUserDefaults sharedUserDefaults];
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "soundType")}];
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(soundCopy, "soundType")}];
   [v6 setObject:v7 forKey:@"MTDefaultAlarmSoundType"];
 
   v8 = +[MTUserDefaults sharedUserDefaults];
-  [v8 setObject:v4 forKey:@"MTDefaultAlarmToneID"];
+  [v8 setObject:toneIdentifier forKey:@"MTDefaultAlarmToneID"];
 
   v9 = +[MTUserDefaults sharedUserDefaults];
-  [v9 setObject:v5 forKey:@"MTDefaultAlarmMediaItemID"];
+  [v9 setObject:mediaItemIdentifier forKey:@"MTDefaultAlarmMediaItemID"];
 
   v10 = +[MTUserDefaults sharedUserDefaults];
-  v11 = [v3 vibrationIdentifier];
-  [v10 setObject:v11 forKey:@"MTDefaultAlarmVibrationID"];
+  vibrationIdentifier = [soundCopy vibrationIdentifier];
+  [v10 setObject:vibrationIdentifier forKey:@"MTDefaultAlarmVibrationID"];
 
   v12 = MTLogForCategory(0);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "soundType")}];
-    v14 = [v3 vibrationIdentifier];
+    v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(soundCopy, "soundType")}];
+    vibrationIdentifier2 = [soundCopy vibrationIdentifier];
     v16 = 138413058;
     v17 = v13;
     v18 = 2112;
-    v19 = v4;
+    v19 = toneIdentifier;
     v20 = 2112;
-    v21 = v5;
+    v21 = mediaItemIdentifier;
     v22 = 2112;
-    v23 = v14;
+    v23 = vibrationIdentifier2;
     _os_log_impl(&dword_1B1F9F000, v12, OS_LOG_TYPE_DEFAULT, "[Sound] Storing Alarm Defaults (soundTypeKey: %@, toneIDKey: %@, mediaItemIDKey: %@, vibrationIDKey: %@)", &v16, 0x2Au);
   }
 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_saveDefaultTimerSound:(id)a3
++ (void)_saveDefaultTimerSound:(id)sound
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 toneIdentifier];
-  v5 = [v3 soundType];
+  soundCopy = sound;
+  toneIdentifier = [soundCopy toneIdentifier];
+  soundType = [soundCopy soundType];
 
-  if (v5 != 2)
+  if (soundType != 2)
   {
     NSLog(&cfstr_TimersOnlySupp.isa);
 
-    v4 = 0;
+    toneIdentifier = 0;
   }
 
   v6 = +[MTUserDefaults sharedUserDefaults];
-  [v6 setObject:v4 forKey:@"MTDefaultTimerToneID"];
+  [v6 setObject:toneIdentifier forKey:@"MTDefaultTimerToneID"];
 
   v7 = MTLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = toneIdentifier;
     _os_log_impl(&dword_1B1F9F000, v7, OS_LOG_TYPE_DEFAULT, "[Sound] Storing Timer Defaults (toneIDKey: %@)", &v9, 0xCu);
   }
 
@@ -670,21 +670,21 @@ LABEL_25:
 
 - (unint64_t)hash
 {
-  v3 = [(MTSound *)self toneIdentifier];
-  v4 = [v3 hash];
-  v5 = [(MTSound *)self mediaItemIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(MTSound *)self vibrationIdentifier];
-  v8 = [v7 hash];
+  toneIdentifier = [(MTSound *)self toneIdentifier];
+  v4 = [toneIdentifier hash];
+  mediaItemIdentifier = [(MTSound *)self mediaItemIdentifier];
+  v6 = [mediaItemIdentifier hash] ^ v4;
+  vibrationIdentifier = [(MTSound *)self vibrationIdentifier];
+  v8 = [vibrationIdentifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -710,39 +710,39 @@ LABEL_25:
   return v8;
 }
 
-- (BOOL)isEqualToSound:(id)a3
+- (BOOL)isEqualToSound:(id)sound
 {
-  v6 = a3;
-  v7 = [(MTSound *)self soundType];
-  if (v7 == [v6 soundType])
+  soundCopy = sound;
+  soundType = [(MTSound *)self soundType];
+  if (soundType == [soundCopy soundType])
   {
-    v8 = [(MTSound *)self toneIdentifier];
-    v9 = [v6 toneIdentifier];
-    if (v8 != v9)
+    toneIdentifier = [(MTSound *)self toneIdentifier];
+    toneIdentifier2 = [soundCopy toneIdentifier];
+    if (toneIdentifier != toneIdentifier2)
     {
-      v10 = [(MTSound *)self toneIdentifier];
-      v3 = [v6 toneIdentifier];
-      v35 = v10;
-      if (![v10 isEqual:v3])
+      toneIdentifier3 = [(MTSound *)self toneIdentifier];
+      toneIdentifier4 = [soundCopy toneIdentifier];
+      v35 = toneIdentifier3;
+      if (![toneIdentifier3 isEqual:toneIdentifier4])
       {
         v11 = 0;
         goto LABEL_23;
       }
     }
 
-    v12 = [(MTSound *)self mediaItemIdentifier];
-    v13 = [v6 mediaItemIdentifier];
-    if (v12 != v13)
+    mediaItemIdentifier = [(MTSound *)self mediaItemIdentifier];
+    mediaItemIdentifier2 = [soundCopy mediaItemIdentifier];
+    if (mediaItemIdentifier != mediaItemIdentifier2)
     {
-      v14 = [(MTSound *)self mediaItemIdentifier];
-      v4 = [v6 mediaItemIdentifier];
-      if (![v14 isEqual:v4])
+      mediaItemIdentifier3 = [(MTSound *)self mediaItemIdentifier];
+      mediaItemIdentifier4 = [soundCopy mediaItemIdentifier];
+      if (![mediaItemIdentifier3 isEqual:mediaItemIdentifier4])
       {
         v11 = 0;
 LABEL_21:
 
 LABEL_22:
-        if (v8 == v9)
+        if (toneIdentifier == toneIdentifier2)
         {
 LABEL_24:
 
@@ -754,38 +754,38 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v33 = v14;
+      v33 = mediaItemIdentifier3;
     }
 
-    v15 = [(MTSound *)self vibrationIdentifier];
-    v16 = [v6 vibrationIdentifier];
-    v34 = v15;
-    if (v15 == v16)
+    vibrationIdentifier = [(MTSound *)self vibrationIdentifier];
+    vibrationIdentifier2 = [soundCopy vibrationIdentifier];
+    v34 = vibrationIdentifier;
+    if (vibrationIdentifier == vibrationIdentifier2)
     {
-      v31 = v4;
-      v32 = v13;
+      v31 = mediaItemIdentifier4;
+      v32 = mediaItemIdentifier2;
     }
 
     else
     {
-      v17 = [(MTSound *)self vibrationIdentifier];
-      v29 = [v6 vibrationIdentifier];
-      v30 = v17;
-      if (![v17 isEqual:?])
+      vibrationIdentifier3 = [(MTSound *)self vibrationIdentifier];
+      vibrationIdentifier4 = [soundCopy vibrationIdentifier];
+      v30 = vibrationIdentifier3;
+      if (![vibrationIdentifier3 isEqual:?])
       {
         v11 = 0;
         v26 = v34;
         goto LABEL_19;
       }
 
-      v31 = v4;
-      v32 = v13;
+      v31 = mediaItemIdentifier4;
+      v32 = mediaItemIdentifier2;
     }
 
-    v18 = [(MTSound *)self soundVolume];
-    v19 = [v6 soundVolume];
-    v20 = v19;
-    if (v18 == v19)
+    soundVolume = [(MTSound *)self soundVolume];
+    soundVolume2 = [soundCopy soundVolume];
+    v20 = soundVolume2;
+    if (soundVolume == soundVolume2)
     {
 
       v11 = 1;
@@ -793,29 +793,29 @@ LABEL_23:
 
     else
     {
-      v21 = [(MTSound *)self soundVolume];
-      [v6 soundVolume];
-      v28 = v9;
-      v22 = v8;
-      v23 = v12;
-      v25 = v24 = v3;
-      v11 = [v21 isEqual:v25];
+      soundVolume3 = [(MTSound *)self soundVolume];
+      [soundCopy soundVolume];
+      v28 = toneIdentifier2;
+      v22 = toneIdentifier;
+      v23 = mediaItemIdentifier;
+      v25 = v24 = toneIdentifier4;
+      v11 = [soundVolume3 isEqual:v25];
 
-      v3 = v24;
-      v12 = v23;
-      v8 = v22;
-      v9 = v28;
+      toneIdentifier4 = v24;
+      mediaItemIdentifier = v23;
+      toneIdentifier = v22;
+      toneIdentifier2 = v28;
     }
 
     v26 = v34;
-    v4 = v31;
-    v13 = v32;
-    if (v34 == v16)
+    mediaItemIdentifier4 = v31;
+    mediaItemIdentifier2 = v32;
+    if (v34 == vibrationIdentifier2)
     {
 LABEL_20:
 
-      v14 = v33;
-      if (v12 == v13)
+      mediaItemIdentifier3 = v33;
+      if (mediaItemIdentifier == mediaItemIdentifier2)
       {
         goto LABEL_22;
       }
@@ -841,36 +841,36 @@ LABEL_25:
     return 0;
   }
 
-  v3 = [(MTSound *)self toneIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69DA928]];
+  toneIdentifier = [(MTSound *)self toneIdentifier];
+  v4 = [toneIdentifier isEqualToString:*MEMORY[0x1E69DA928]];
 
   return v4;
 }
 
-- (MTSound)initWithCoder:(id)a3
+- (MTSound)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = MTSound;
   v5 = [(MTSound *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundType"];
     v5->_soundType = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundToneID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundToneID"];
     toneIdentifier = v5->_toneIdentifier;
     v5->_toneIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundMediaItemID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundMediaItemID"];
     mediaItemIdentifier = v5->_mediaItemIdentifier;
     v5->_mediaItemIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundVibrationID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundVibrationID"];
     vibrationIdentifier = v5->_vibrationIdentifier;
     v5->_vibrationIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundVolume"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTSoundVolume"];
     soundVolume = v5->_soundVolume;
     v5->_soundVolume = v13;
   }
@@ -878,39 +878,39 @@ LABEL_25:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[MTSound soundType](self, "soundType")}];
-  [v5 encodeObject:v6 forKey:@"MTSoundType"];
+  [coderCopy encodeObject:v6 forKey:@"MTSoundType"];
 
-  v7 = [(MTSound *)self toneIdentifier];
-  [v5 encodeObject:v7 forKey:@"MTSoundToneID"];
+  toneIdentifier = [(MTSound *)self toneIdentifier];
+  [coderCopy encodeObject:toneIdentifier forKey:@"MTSoundToneID"];
 
-  v8 = [(MTSound *)self mediaItemIdentifier];
-  [v5 encodeObject:v8 forKey:@"MTSoundMediaItemID"];
+  mediaItemIdentifier = [(MTSound *)self mediaItemIdentifier];
+  [coderCopy encodeObject:mediaItemIdentifier forKey:@"MTSoundMediaItemID"];
 
-  v9 = [(MTSound *)self vibrationIdentifier];
-  [v5 encodeObject:v9 forKey:@"MTSoundVibrationID"];
+  vibrationIdentifier = [(MTSound *)self vibrationIdentifier];
+  [coderCopy encodeObject:vibrationIdentifier forKey:@"MTSoundVibrationID"];
 
-  v10 = [(MTSound *)self soundVolume];
-  [v5 encodeObject:v10 forKey:@"MTSoundVolume"];
+  soundVolume = [(MTSound *)self soundVolume];
+  [coderCopy encodeObject:soundVolume forKey:@"MTSoundVolume"];
 }
 
-- (id)previewWithCompletionHandler:(id)a3
+- (id)previewWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [objc_alloc(MEMORY[0x1E69DA8E8]) initWithType:13];
   [v5 setTopic:*MEMORY[0x1E69DA910]];
-  v6 = [(MTSound *)self toneIdentifier];
-  [v5 setToneIdentifier:v6];
+  toneIdentifier = [(MTSound *)self toneIdentifier];
+  [v5 setToneIdentifier:toneIdentifier];
 
-  v7 = [(MTSound *)self vibrationIdentifier];
-  [v5 setVibrationIdentifier:v7];
+  vibrationIdentifier = [(MTSound *)self vibrationIdentifier];
+  [v5 setVibrationIdentifier:vibrationIdentifier];
 
-  v8 = [(MTSound *)self soundVolume];
-  [v8 floatValue];
+  soundVolume = [(MTSound *)self soundVolume];
+  [soundVolume floatValue];
   [v5 setAudioVolume:?];
 
   [v5 setShouldRepeat:0];
@@ -920,8 +920,8 @@ LABEL_25:
   v12[1] = 3221225472;
   v12[2] = __40__MTSound_previewWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7B0E400;
-  v13 = v4;
-  v10 = v4;
+  v13 = handlerCopy;
+  v10 = handlerCopy;
   [v9 playWithCompletionHandler:v12];
 
   return v9;
@@ -953,64 +953,64 @@ uint64_t __40__MTSound_previewWithCompletionHandler___block_invoke_2(void *a1)
   return result;
 }
 
-- (void)updatePreview:(id)a3
+- (void)updatePreview:(id)preview
 {
-  if (a3)
+  if (preview)
   {
-    v4 = a3;
-    v5 = [(MTSound *)self soundVolume];
-    [v5 floatValue];
-    [v4 _updateAudioVolumeDynamicallyToValue:?];
+    previewCopy = preview;
+    soundVolume = [(MTSound *)self soundVolume];
+    [soundVolume floatValue];
+    [previewCopy _updateAudioVolumeDynamicallyToValue:?];
   }
 }
 
-- (MTSound)initWithMTCDSound:(id)a3
+- (MTSound)initWithMTCDSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v20.receiver = self;
   v20.super_class = MTSound;
   v5 = [(MTSound *)&v20 init];
   v6 = v5;
-  if (v4 && v5)
+  if (soundCopy && v5)
   {
-    v7 = [v4 toneIdentifier];
+    toneIdentifier = [soundCopy toneIdentifier];
     toneIdentifier = v6->_toneIdentifier;
-    v6->_toneIdentifier = v7;
+    v6->_toneIdentifier = toneIdentifier;
 
-    v9 = [v4 mediaItemIdentifier];
-    if (v9)
+    mediaItemIdentifier = [soundCopy mediaItemIdentifier];
+    if (mediaItemIdentifier)
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "mediaItemIdentifier")}];
+      mediaItemIdentifier = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(soundCopy, "mediaItemIdentifier")}];
     }
 
     mediaItemIdentifier = v6->_mediaItemIdentifier;
-    v6->_mediaItemIdentifier = v9;
+    v6->_mediaItemIdentifier = mediaItemIdentifier;
 
-    v11 = [v4 vibrationIdentifier];
-    v12 = [v11 length];
-    if (v12)
+    vibrationIdentifier = [soundCopy vibrationIdentifier];
+    vibrationIdentifier2 = [vibrationIdentifier length];
+    if (vibrationIdentifier2)
     {
-      v12 = [v4 vibrationIdentifier];
+      vibrationIdentifier2 = [soundCopy vibrationIdentifier];
     }
 
     vibrationIdentifier = v6->_vibrationIdentifier;
-    v6->_vibrationIdentifier = v12;
+    v6->_vibrationIdentifier = vibrationIdentifier2;
 
-    [v4 volumeLevel];
+    [soundCopy volumeLevel];
     if (v14 != 0.0)
     {
-      [v4 volumeLevel];
+      [soundCopy volumeLevel];
       if (v15 >= 0.0)
       {
         v16 = MEMORY[0x1E696AD98];
-        [v4 volumeLevel];
+        [soundCopy volumeLevel];
         v17 = [v16 numberWithDouble:?];
         soundVolume = v6->_soundVolume;
         v6->_soundVolume = v17;
       }
     }
 
-    v6->_soundType = [v4 soundType];
+    v6->_soundType = [soundCopy soundType];
   }
 
   return v6;

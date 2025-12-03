@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_PopulatePersonCloudDetectionType
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_PopulatePersonCloudDetectionType
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v101 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -38,7 +38,7 @@
   v48[1] = 3221225472;
   v48[2] = __103__PLModelMigrationAction_PopulatePersonCloudDetectionType_performActionWithManagedObjectContext_error___block_invoke;
   v48[3] = &unk_1E7575B30;
-  v14 = v6;
+  v14 = contextCopy;
   v49 = v14;
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -70,8 +70,8 @@
       goto LABEL_16;
     }
 
-    v20 = [(PLModelMigrationActionCore *)self logger];
-    v21 = v20 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v21 = logger == 0;
 
     if (!v21)
     {
@@ -108,9 +108,9 @@
       memset(buf, 0, sizeof(buf));
       v22 = PLMigrationGetLog();
       os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-      v23 = [v51[5] totalUnitCount];
+      totalUnitCount = [v51[5] totalUnitCount];
       v66 = 134217984;
-      v67 = v23;
+      v67 = totalUnitCount;
       LODWORD(v44) = 12;
       v24 = _os_log_send_and_compose_impl();
 
@@ -123,9 +123,9 @@
     v35 = PLMigrationGetLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v51[5] totalUnitCount];
+      totalUnitCount2 = [v51[5] totalUnitCount];
       *buf = 134217984;
-      *&buf[4] = v36;
+      *&buf[4] = totalUnitCount2;
       _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEFAULT, "Populated cloudDetectionType for %lld persons", buf, 0xCu);
     }
 
@@ -143,8 +143,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v28 = [(PLModelMigrationActionCore *)self logger];
-  v29 = v28 == 0;
+  logger2 = [(PLModelMigrationActionCore *)self logger];
+  v29 = logger2 == 0;
 
   if (v29)
   {
@@ -220,10 +220,10 @@ LABEL_16:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v40 = v63[3];
   v41 = v57[5];
-  if (v40 != 1 && a4)
+  if (v40 != 1 && error)
   {
     v41 = v41;
-    *a4 = v41;
+    *error = v41;
   }
 
   v42 = v63[3];

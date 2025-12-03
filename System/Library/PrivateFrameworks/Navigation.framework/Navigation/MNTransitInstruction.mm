@@ -1,52 +1,52 @@
 @interface MNTransitInstruction
-+ (id)instructionForUncertainArrivalToStationStep:(id)a3 context:(int64_t)a4;
-- (MNTransitInstruction)initWithContext:(int64_t)a3;
-- (id)formattedInstructionForType:(int64_t)a3;
++ (id)instructionForUncertainArrivalToStationStep:(id)step context:(int64_t)context;
+- (MNTransitInstruction)initWithContext:(int64_t)context;
+- (id)formattedInstructionForType:(int64_t)type;
 - (id)instructionSet;
-- (id)instructionSetsForInstructionType:(int64_t)a3;
-- (id)instructionStringForType:(int64_t)a3;
+- (id)instructionSetsForInstructionType:(int64_t)type;
+- (id)instructionStringForType:(int64_t)type;
 - (id)overridenInstructionsMapping;
 - (void)_fillInInstructions;
 @end
 
 @implementation MNTransitInstruction
 
-- (id)instructionStringForType:(int64_t)a3
+- (id)instructionStringForType:(int64_t)type
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_16;
       }
 
-      v8 = [(MNTransitInstruction *)self minorInstructionStrings];
+      minorInstructionStrings = [(MNTransitInstruction *)self minorInstructionStrings];
     }
 
     else
     {
-      v8 = [(MNTransitInstruction *)self majorInstructionStrings];
+      minorInstructionStrings = [(MNTransitInstruction *)self majorInstructionStrings];
     }
 
 LABEL_15:
-    v9 = v8;
+    v9 = minorInstructionStrings;
     goto LABEL_21;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 2:
-      v8 = [(MNTransitInstruction *)self tertiaryInstructionStrings];
+      minorInstructionStrings = [(MNTransitInstruction *)self tertiaryInstructionStrings];
       goto LABEL_15;
     case 3:
-      v4 = [(MNTransitInstruction *)self primaryTimeInstructionString];
-      if (v4)
+      primaryTimeInstructionString = [(MNTransitInstruction *)self primaryTimeInstructionString];
+      if (primaryTimeInstructionString)
       {
-        v5 = [(MNTransitInstruction *)self primaryTimeInstructionString];
-        v20[0] = v5;
+        primaryTimeInstructionString2 = [(MNTransitInstruction *)self primaryTimeInstructionString];
+        v20[0] = primaryTimeInstructionString2;
         v6 = MEMORY[0x1E695DEC8];
         v7 = v20;
         goto LABEL_13;
@@ -56,11 +56,11 @@ LABEL_19:
       v9 = 0;
       goto LABEL_20;
     case 4:
-      v4 = [(MNTransitInstruction *)self secondaryTimeInstructionString];
-      if (v4)
+      primaryTimeInstructionString = [(MNTransitInstruction *)self secondaryTimeInstructionString];
+      if (primaryTimeInstructionString)
       {
-        v5 = [(MNTransitInstruction *)self secondaryTimeInstructionString];
-        v19 = v5;
+        primaryTimeInstructionString2 = [(MNTransitInstruction *)self secondaryTimeInstructionString];
+        v19 = primaryTimeInstructionString2;
         v6 = MEMORY[0x1E695DEC8];
         v7 = &v19;
 LABEL_13:
@@ -93,42 +93,42 @@ LABEL_21:
   return v9;
 }
 
-- (id)formattedInstructionForType:(int64_t)a3
+- (id)formattedInstructionForType:(int64_t)type
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_16;
       }
 
-      v8 = [(MNTransitInstruction *)self minorFormattedInstruction];
+      minorFormattedInstruction = [(MNTransitInstruction *)self minorFormattedInstruction];
     }
 
     else
     {
-      v8 = [(MNTransitInstruction *)self majorFormattedInstruction];
+      minorFormattedInstruction = [(MNTransitInstruction *)self majorFormattedInstruction];
     }
 
 LABEL_15:
-    v9 = v8;
+    v9 = minorFormattedInstruction;
     goto LABEL_21;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 2:
-      v8 = [(MNTransitInstruction *)self tertiaryFormattedInstruction];
+      minorFormattedInstruction = [(MNTransitInstruction *)self tertiaryFormattedInstruction];
       goto LABEL_15;
     case 3:
-      v4 = [(MNTransitInstruction *)self primaryTimeInstruction];
-      if (v4)
+      primaryTimeInstruction = [(MNTransitInstruction *)self primaryTimeInstruction];
+      if (primaryTimeInstruction)
       {
-        v5 = [(MNTransitInstruction *)self primaryTimeInstruction];
-        v20[0] = v5;
+        primaryTimeInstruction2 = [(MNTransitInstruction *)self primaryTimeInstruction];
+        v20[0] = primaryTimeInstruction2;
         v6 = MEMORY[0x1E695DEC8];
         v7 = v20;
         goto LABEL_13;
@@ -138,11 +138,11 @@ LABEL_19:
       v9 = 0;
       goto LABEL_20;
     case 4:
-      v4 = [(MNTransitInstruction *)self secondaryTimeinstruction];
-      if (v4)
+      primaryTimeInstruction = [(MNTransitInstruction *)self secondaryTimeinstruction];
+      if (primaryTimeInstruction)
       {
-        v5 = [(MNTransitInstruction *)self secondaryTimeinstruction];
-        v19 = v5;
+        primaryTimeInstruction2 = [(MNTransitInstruction *)self secondaryTimeinstruction];
+        v19 = primaryTimeInstruction2;
         v6 = MEMORY[0x1E695DEC8];
         v7 = &v19;
 LABEL_13:
@@ -175,28 +175,28 @@ LABEL_21:
   return v9;
 }
 
-- (id)instructionSetsForInstructionType:(int64_t)a3
+- (id)instructionSetsForInstructionType:(int64_t)type
 {
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(MNTransitInstruction *)self overridenInstructionsMapping];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [v8 instructions];
+  array = [MEMORY[0x1E695DF70] array];
+  overridenInstructionsMapping = [(MNTransitInstruction *)self overridenInstructionsMapping];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v8 = [overridenInstructionsMapping objectForKeyedSubscript:v7];
+  instructions = [v8 instructions];
 
-  if (v9)
+  if (instructions)
   {
-    [v5 addObject:v9];
+    [array addObject:instructions];
   }
 
-  v10 = [(MNTransitInstruction *)self instructionSet];
+  instructionSet = [(MNTransitInstruction *)self instructionSet];
 
-  if (v10)
+  if (instructionSet)
   {
-    v11 = [(MNTransitInstruction *)self instructionSet];
-    [v5 addObject:v11];
+    instructionSet2 = [(MNTransitInstruction *)self instructionSet];
+    [array addObject:instructionSet2];
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
 
   return v12;
 }
@@ -241,8 +241,8 @@ LABEL_21:
 
 - (void)_fillInInstructions
 {
-  v3 = [(MNTransitInstruction *)self context];
-  if (v3 == 1)
+  context = [(MNTransitInstruction *)self context];
+  if (context == 1)
   {
     v18 = [(MNTransitInstruction *)self instructionSetsForInstructionType:0];
     v73[0] = MEMORY[0x1E69E9820];
@@ -280,7 +280,7 @@ LABEL_21:
     goto LABEL_5;
   }
 
-  if (v3 == 2)
+  if (context == 2)
   {
     v4 = [(MNTransitInstruction *)self instructionSetsForInstructionType:0];
     v79[0] = MEMORY[0x1E69E9820];
@@ -332,69 +332,69 @@ LABEL_5:
     [(MNTransitInstruction *)self setTertiaryInstructionStrings:v30];
   }
 
-  v31 = [(MNTransitInstruction *)self instructionSet];
-  v32 = [v31 departureBarFormattedString];
-  [(MNTransitInstruction *)self setDepartureBarInstruction:v32];
+  instructionSet = [(MNTransitInstruction *)self instructionSet];
+  departureBarFormattedString = [instructionSet departureBarFormattedString];
+  [(MNTransitInstruction *)self setDepartureBarInstruction:departureBarFormattedString];
 
-  v33 = [(MNTransitInstruction *)self instructionSet];
-  -[MNTransitInstruction setDepartureBarStyle:](self, "setDepartureBarStyle:", [v33 departureBarFormatStyle]);
+  instructionSet2 = [(MNTransitInstruction *)self instructionSet];
+  -[MNTransitInstruction setDepartureBarStyle:](self, "setDepartureBarStyle:", [instructionSet2 departureBarFormatStyle]);
 
   v34 = objc_alloc(MEMORY[0x1E69A1CA8]);
-  v35 = [(MNTransitInstruction *)self instructionSet];
-  v36 = [v35 departureBar];
-  v37 = [v34 initWithGeoFormattedString:v36];
+  instructionSet3 = [(MNTransitInstruction *)self instructionSet];
+  departureBar = [instructionSet3 departureBar];
+  v37 = [v34 initWithGeoFormattedString:departureBar];
   [(MNTransitInstruction *)self setDepartureBarInstructionString:v37];
 
-  v38 = [(MNTransitInstruction *)self instructionSet];
-  -[MNTransitInstruction setDepartureBarFormatStyle:](self, "setDepartureBarFormatStyle:", [v38 departureBarStyle]);
+  instructionSet4 = [(MNTransitInstruction *)self instructionSet];
+  -[MNTransitInstruction setDepartureBarFormatStyle:](self, "setDepartureBarFormatStyle:", [instructionSet4 departureBarStyle]);
 
-  v39 = [(MNTransitInstruction *)self instructionSet];
-  v40 = [v39 countStopsFormattedString];
-  [(MNTransitInstruction *)self setCountStopsFormattedString:v40];
+  instructionSet5 = [(MNTransitInstruction *)self instructionSet];
+  countStopsFormattedString = [instructionSet5 countStopsFormattedString];
+  [(MNTransitInstruction *)self setCountStopsFormattedString:countStopsFormattedString];
 
-  v41 = [(MNTransitInstruction *)self instructionSet];
-  v42 = [v41 expandableListFormattedString];
-  [(MNTransitInstruction *)self setExpandableListFormattedString:v42];
+  instructionSet6 = [(MNTransitInstruction *)self instructionSet];
+  expandableListFormattedString = [instructionSet6 expandableListFormattedString];
+  [(MNTransitInstruction *)self setExpandableListFormattedString:expandableListFormattedString];
 
   v43 = objc_alloc(MEMORY[0x1E69A1CA8]);
-  v44 = [(MNTransitInstruction *)self instructionSet];
-  v45 = [v44 countStopsText];
-  v46 = [v43 initWithGeoFormattedString:v45];
+  instructionSet7 = [(MNTransitInstruction *)self instructionSet];
+  countStopsText = [instructionSet7 countStopsText];
+  v46 = [v43 initWithGeoFormattedString:countStopsText];
   [(MNTransitInstruction *)self setCountStopsString:v46];
 
   v47 = objc_alloc(MEMORY[0x1E69A1CA8]);
-  v48 = [(MNTransitInstruction *)self instructionSet];
-  v49 = [v48 transitListInstruction];
-  v50 = [v49 expandableListFormatted];
-  v51 = [v47 initWithGeoFormattedString:v50];
+  instructionSet8 = [(MNTransitInstruction *)self instructionSet];
+  transitListInstruction = [instructionSet8 transitListInstruction];
+  expandableListFormatted = [transitListInstruction expandableListFormatted];
+  v51 = [v47 initWithGeoFormattedString:expandableListFormatted];
   [(MNTransitInstruction *)self setExpandableListString:v51];
 
-  v52 = [(MNTransitInstruction *)self instructionSet];
-  v53 = [v52 primaryTimeFormattedString];
-  [(MNTransitInstruction *)self setPrimaryTimeInstruction:v53];
+  instructionSet9 = [(MNTransitInstruction *)self instructionSet];
+  primaryTimeFormattedString = [instructionSet9 primaryTimeFormattedString];
+  [(MNTransitInstruction *)self setPrimaryTimeInstruction:primaryTimeFormattedString];
 
-  v54 = [(MNTransitInstruction *)self instructionSet];
-  v55 = [v54 secondaryTimeFormattedString];
-  [(MNTransitInstruction *)self setSecondaryTimeinstruction:v55];
+  instructionSet10 = [(MNTransitInstruction *)self instructionSet];
+  secondaryTimeFormattedString = [instructionSet10 secondaryTimeFormattedString];
+  [(MNTransitInstruction *)self setSecondaryTimeinstruction:secondaryTimeFormattedString];
 
   v56 = objc_alloc(MEMORY[0x1E69A1CA8]);
-  v57 = [(MNTransitInstruction *)self instructionSet];
-  v58 = [v57 transitListInstruction];
-  v59 = [v58 timeInstructions];
-  v60 = [v59 primaryText];
-  v61 = [v56 initWithGeoFormattedString:v60];
+  instructionSet11 = [(MNTransitInstruction *)self instructionSet];
+  transitListInstruction2 = [instructionSet11 transitListInstruction];
+  timeInstructions = [transitListInstruction2 timeInstructions];
+  primaryText = [timeInstructions primaryText];
+  v61 = [v56 initWithGeoFormattedString:primaryText];
   [(MNTransitInstruction *)self setPrimaryTimeInstructionString:v61];
 
   v62 = objc_alloc(MEMORY[0x1E69A1CA8]);
-  v63 = [(MNTransitInstruction *)self instructionSet];
-  v64 = [v63 transitListInstruction];
-  v65 = [v64 timeInstructions];
-  v66 = [v65 secondaryText];
-  v67 = [v62 initWithGeoFormattedString:v66];
+  instructionSet12 = [(MNTransitInstruction *)self instructionSet];
+  transitListInstruction3 = [instructionSet12 transitListInstruction];
+  timeInstructions2 = [transitListInstruction3 timeInstructions];
+  secondaryText = [timeInstructions2 secondaryText];
+  v67 = [v62 initWithGeoFormattedString:secondaryText];
   [(MNTransitInstruction *)self setSecondaryTimeInstructionString:v67];
 
-  v68 = [(MNTransitInstruction *)self instructionSet];
-  -[MNTransitInstruction setHideTimeInstructionsWhenCollapsed:](self, "setHideTimeInstructionsWhenCollapsed:", [v68 hideTimeInstructionsIfCollapsed]);
+  instructionSet13 = [(MNTransitInstruction *)self instructionSet];
+  -[MNTransitInstruction setHideTimeInstructionsWhenCollapsed:](self, "setHideTimeInstructionsWhenCollapsed:", [instructionSet13 hideTimeInstructionsIfCollapsed]);
 }
 
 id __43__MNTransitInstruction__fillInInstructions__block_invoke_5(uint64_t a1, void *a2)
@@ -591,7 +591,7 @@ void *__43__MNTransitInstruction__fillInInstructions__block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (MNTransitInstruction)initWithContext:(int64_t)a3
+- (MNTransitInstruction)initWithContext:(int64_t)context
 {
   v8.receiver = self;
   v8.super_class = MNTransitInstruction;
@@ -599,22 +599,22 @@ void *__43__MNTransitInstruction__fillInInstructions__block_invoke(uint64_t a1, 
   v5 = v4;
   if (v4)
   {
-    v4->_context = a3;
+    v4->_context = context;
     v6 = v4;
   }
 
   return v5;
 }
 
-+ (id)instructionForUncertainArrivalToStationStep:(id)a3 context:(int64_t)a4
++ (id)instructionForUncertainArrivalToStationStep:(id)step context:(int64_t)context
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  stepCopy = step;
+  v6 = stepCopy;
+  if (context)
   {
-    v7 = [v5 originStop];
-    v8 = [v6 composedRoute];
-    v9 = [v8 getStationForStop:v7];
+    originStop = [stepCopy originStop];
+    composedRoute = [v6 composedRoute];
+    v9 = [composedRoute getStationForStop:originStop];
 
     if (v9)
     {
@@ -623,14 +623,14 @@ void *__43__MNTransitInstruction__fillInInstructions__block_invoke(uint64_t a1, 
 
     else
     {
-      v10 = v7;
+      v10 = originStop;
     }
 
-    v12 = [v10 bestName];
-    if (v12)
+    bestName = [v10 bestName];
+    if (bestName)
     {
       v13 = _MNLocalizedStringFromThisBundle(@"Transit_Instructions_UncertainArrivalWithStationName");
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v13, v12];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:v13, bestName];
     }
 
     else

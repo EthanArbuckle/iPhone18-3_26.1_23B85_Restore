@@ -1,28 +1,28 @@
 @interface _MKPolygonGeoRegion
-- (BOOL)_loadWithJSONObject:(id)a3 error:(id *)a4;
-- (_MKPolygonGeoRegion)initWithJSONObject:(id)a3 error:(id *)a4;
+- (BOOL)_loadWithJSONObject:(id)object error:(id *)error;
+- (_MKPolygonGeoRegion)initWithJSONObject:(id)object error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation _MKPolygonGeoRegion
 
-- (BOOL)_loadWithJSONObject:(id)a3 error:(id *)a4
+- (BOOL)_loadWithJSONObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectAtIndex:0];
+    v7 = [objectCopy objectAtIndex:0];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [v6 objectAtIndex:0];
+      v9 = [objectCopy objectAtIndex:0];
       v10 = [v9 count];
       if (v10 < 4 || self->_vertexCount >= 0x15)
       {
-        if (!a4)
+        if (!error)
         {
 LABEL_24:
           v24 = 0;
@@ -33,7 +33,7 @@ LABEL_25:
 
         v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid number of coordinates for Polygon LinearRing: %lu. Expected between %lu and %lu.", v10, 4, 20];
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObject:v14 forKey:@"ParseError"];
-        *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v15];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v15];
       }
 
       else
@@ -62,11 +62,11 @@ LABEL_25:
           v15 = v14;
           if ([v15 count] != 2)
           {
-            if (a4)
+            if (error)
             {
               v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"A coordinate array didn't contain exactly 2 elements."];
               v32 = [MEMORY[0x1E695DF20] dictionaryWithObject:v31 forKey:@"ParseError"];
-              *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v32];
+              *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v32];
             }
 
             v14 = v15;
@@ -78,7 +78,7 @@ LABEL_25:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
-            if (a4)
+            if (error)
             {
               v28 = MEMORY[0x1E696AEC0];
               v29 = @"A coordinate didn't contain exactly 2 points.";
@@ -100,7 +100,7 @@ LABEL_38:
           longitude = v37.longitude;
           if (!CLLocationCoordinate2DIsValid(v37))
           {
-            if (a4)
+            if (error)
             {
               v28 = MEMORY[0x1E696AEC0];
               v35 = v15;
@@ -108,7 +108,7 @@ LABEL_38:
 LABEL_37:
               v33 = [v28 stringWithFormat:v29, v35];
               v34 = [MEMORY[0x1E695DF20] dictionaryWithObject:v33 forKey:@"ParseError"];
-              *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v34];
+              *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v34];
             }
 
             goto LABEL_38;
@@ -128,14 +128,14 @@ LABEL_37:
           }
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_23;
         }
 
         v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Expected coordinates to element to be an array."];
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObject:v15 forKey:@"ParseError"];
-        *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v30];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v30];
       }
 
 LABEL_22:
@@ -144,7 +144,7 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    if (a4)
+    if (error)
     {
       v25 = MEMORY[0x1E696AEC0];
       v26 = @"Expected LinearRing to contain an array of coordinates.";
@@ -152,14 +152,14 @@ LABEL_23:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v25 = MEMORY[0x1E696AEC0];
     v26 = @"Expected polygon to contain a LinearRing array, with the first element representing the exterior ring and the other elements ignored.";
 LABEL_18:
     v9 = [v25 stringWithFormat:v26];
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObject:v9 forKey:@"ParseError"];
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v14];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"Maps" code:0 userInfo:v14];
     goto LABEL_23;
   }
 
@@ -177,14 +177,14 @@ LABEL_26:
   [(_MKPolygonGeoRegion *)&v3 dealloc];
 }
 
-- (_MKPolygonGeoRegion)initWithJSONObject:(id)a3 error:(id *)a4
+- (_MKPolygonGeoRegion)initWithJSONObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = _MKPolygonGeoRegion;
   v7 = [(_MKPolygonGeoRegion *)&v11 init];
   v8 = v7;
-  if (v7 && ![(_MKPolygonGeoRegion *)v7 _loadWithJSONObject:v6 error:a4])
+  if (v7 && ![(_MKPolygonGeoRegion *)v7 _loadWithJSONObject:objectCopy error:error])
   {
     v9 = 0;
   }

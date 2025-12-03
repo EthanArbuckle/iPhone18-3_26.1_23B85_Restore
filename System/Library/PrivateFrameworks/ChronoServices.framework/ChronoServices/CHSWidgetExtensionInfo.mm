@@ -1,9 +1,9 @@
 @interface CHSWidgetExtensionInfo
-- (CHSWidgetExtensionInfo)initWithBSXPCCoder:(id)a3;
+- (CHSWidgetExtensionInfo)initWithBSXPCCoder:(id)coder;
 - (id)_init;
-- (id)_initWithInfo:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (id)_initWithInfo:(id)info;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation CHSWidgetExtensionInfo
@@ -15,206 +15,206 @@
   return [(CHSWidgetExtensionInfo *)&v3 init];
 }
 
-- (id)_initWithInfo:(id)a3
+- (id)_initWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CHSWidgetExtensionInfo *)self _init];
-  if (v5)
+  infoCopy = info;
+  _init = [(CHSWidgetExtensionInfo *)self _init];
+  if (_init)
   {
-    v6 = [v4[1] copy];
-    v7 = *(v5 + 1);
-    *(v5 + 1) = v6;
+    v6 = [infoCopy[1] copy];
+    v7 = *(_init + 1);
+    *(_init + 1) = v6;
 
-    v8 = [v4[2] copy];
-    v9 = *(v5 + 2);
-    *(v5 + 2) = v8;
+    v8 = [infoCopy[2] copy];
+    v9 = *(_init + 2);
+    *(_init + 2) = v8;
 
-    v10 = [v4[3] copy];
-    v11 = *(v5 + 3);
-    *(v5 + 3) = v10;
+    v10 = [infoCopy[3] copy];
+    v11 = *(_init + 3);
+    *(_init + 3) = v10;
 
-    v12 = [v4[4] copy];
-    v13 = *(v5 + 4);
-    *(v5 + 4) = v12;
+    v12 = [infoCopy[4] copy];
+    v13 = *(_init + 4);
+    *(_init + 4) = v12;
 
-    objc_storeStrong(v5 + 5, v4[5]);
-    v14 = [v4[6] copy];
-    v15 = *(v5 + 6);
-    *(v5 + 6) = v14;
+    objc_storeStrong(_init + 5, infoCopy[5]);
+    v14 = [infoCopy[6] copy];
+    v15 = *(_init + 6);
+    *(_init + 6) = v14;
 
-    v16 = [v4[7] copy];
-    v17 = *(v5 + 7);
-    *(v5 + 7) = v16;
+    v16 = [infoCopy[7] copy];
+    v17 = *(_init + 7);
+    *(_init + 7) = v16;
 
-    v18 = [v4[8] copy];
-    v19 = *(v5 + 8);
-    *(v5 + 8) = v18;
+    v18 = [infoCopy[8] copy];
+    v19 = *(_init + 8);
+    *(_init + 8) = v18;
 
-    v20 = [v4[9] copy];
-    v21 = *(v5 + 9);
-    *(v5 + 9) = v20;
+    v20 = [infoCopy[9] copy];
+    v21 = *(_init + 9);
+    *(_init + 9) = v20;
 
-    *(v5 + 81) = *(v4 + 81);
-    *(v5 + 82) = *(v4 + 82);
-    v22 = [v4[11] copy];
-    v23 = *(v5 + 11);
-    *(v5 + 11) = v22;
+    *(_init + 81) = *(infoCopy + 81);
+    *(_init + 82) = *(infoCopy + 82);
+    v22 = [infoCopy[11] copy];
+    v23 = *(_init + 11);
+    *(_init + 11) = v22;
 
-    *(v5 + 96) = *(v4 + 96);
-    objc_storeStrong(v5 + 14, v4[14]);
-    v24 = [v4[15] copy];
-    v25 = *(v5 + 15);
-    *(v5 + 15) = v24;
+    *(_init + 96) = *(infoCopy + 96);
+    objc_storeStrong(_init + 14, infoCopy[14]);
+    v24 = [infoCopy[15] copy];
+    v25 = *(_init + 15);
+    *(_init + 15) = v24;
 
-    v26 = [v4[16] copy];
-    v27 = *(v5 + 16);
-    *(v5 + 16) = v26;
+    v26 = [infoCopy[16] copy];
+    v27 = *(_init + 16);
+    *(_init + 16) = v26;
 
-    v28 = [v4[17] copy];
-    v29 = *(v5 + 17);
-    *(v5 + 17) = v28;
+    v28 = [infoCopy[17] copy];
+    v29 = *(_init + 17);
+    *(_init + 17) = v28;
 
-    v30 = [v4[19] copy];
-    v31 = *(v5 + 19);
-    *(v5 + 19) = v30;
+    v30 = [infoCopy[19] copy];
+    v31 = *(_init + 19);
+    *(_init + 19) = v30;
 
-    v32 = [v4[20] copy];
-    v33 = *(v5 + 20);
-    *(v5 + 20) = v32;
+    v32 = [infoCopy[20] copy];
+    v33 = *(_init + 20);
+    *(_init + 20) = v32;
 
-    v34 = [v4[21] copy];
-    v35 = *(v5 + 21);
-    *(v5 + 21) = v34;
+    v34 = [infoCopy[21] copy];
+    v35 = *(_init + 21);
+    *(_init + 21) = v34;
 
-    v36 = [v4[22] copy];
-    v37 = *(v5 + 22);
-    *(v5 + 22) = v36;
+    v36 = [infoCopy[22] copy];
+    v37 = *(_init + 22);
+    *(_init + 22) = v36;
 
-    v38 = [v4[23] copy];
-    v39 = *(v5 + 23);
-    *(v5 + 23) = v38;
+    v38 = [infoCopy[23] copy];
+    v39 = *(_init + 23);
+    *(_init + 23) = v38;
 
-    v40 = [v4[24] copy];
-    v41 = *(v5 + 24);
-    *(v5 + 24) = v40;
+    v40 = [infoCopy[24] copy];
+    v41 = *(_init + 24);
+    *(_init + 24) = v40;
 
-    v42 = [v4[25] copy];
-    v43 = *(v5 + 25);
-    *(v5 + 25) = v42;
+    v42 = [infoCopy[25] copy];
+    v43 = *(_init + 25);
+    *(_init + 25) = v42;
 
-    v44 = [v4[13] copy];
-    v45 = *(v5 + 13);
-    *(v5 + 13) = v44;
+    v44 = [infoCopy[13] copy];
+    v45 = *(_init + 13);
+    *(_init + 13) = v44;
 
-    *(v5 + 80) = *(v4 + 80);
+    *(_init + 80) = *(infoCopy + 80);
   }
 
-  return v5;
+  return _init;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHSMutableWidgetExtensionInfo alloc];
 
   return [(CHSWidgetExtensionInfo *)v4 _initWithInfo:self];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_bundleIdentifier forKey:@"bi"];
-  [v6 encodeObject:self->_containerBundleIdentifier forKey:@"cbi"];
-  [v6 encodeObject:self->_effectiveContainerBundleIdentifier forKey:@"ecbi"];
-  [v6 encodeObject:self->_version forKey:@"v"];
-  [v6 encodeObject:self->_lastModifiedDate forKey:@"lmd"];
-  [v6 encodeObject:self->_bundleURL forKey:@"bu"];
-  [v6 encodeObject:self->_containerURL forKey:@"cu"];
-  [v6 encodeObject:self->_systemDataContainerURL forKey:@"sdcu"];
-  [v6 encodeObject:self->_dataProtectionLevel forKey:@"dpl"];
-  [v6 encodeBool:self->_isDevelopmentExtension forKey:@"ide"];
-  [v6 encodeBool:self->_wantsLocation forKey:@"wl"];
-  [v6 encodeObject:self->_availableLocalizations forKey:@"al"];
-  [v6 encodeBool:self->_allowsMixedLocalizations forKey:@"aml"];
-  [v6 encodeObject:self->_entitlements forKey:@"ent"];
-  [v6 encodeObject:self->_sdkVersion forKey:@"sdkVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bi"];
+  [coderCopy encodeObject:self->_containerBundleIdentifier forKey:@"cbi"];
+  [coderCopy encodeObject:self->_effectiveContainerBundleIdentifier forKey:@"ecbi"];
+  [coderCopy encodeObject:self->_version forKey:@"v"];
+  [coderCopy encodeObject:self->_lastModifiedDate forKey:@"lmd"];
+  [coderCopy encodeObject:self->_bundleURL forKey:@"bu"];
+  [coderCopy encodeObject:self->_containerURL forKey:@"cu"];
+  [coderCopy encodeObject:self->_systemDataContainerURL forKey:@"sdcu"];
+  [coderCopy encodeObject:self->_dataProtectionLevel forKey:@"dpl"];
+  [coderCopy encodeBool:self->_isDevelopmentExtension forKey:@"ide"];
+  [coderCopy encodeBool:self->_wantsLocation forKey:@"wl"];
+  [coderCopy encodeObject:self->_availableLocalizations forKey:@"al"];
+  [coderCopy encodeBool:self->_allowsMixedLocalizations forKey:@"aml"];
+  [coderCopy encodeObject:self->_entitlements forKey:@"ent"];
+  [coderCopy encodeObject:self->_sdkVersion forKey:@"sdkVersion"];
   v4 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v4 encodeObject:self->_descriptors forKey:@"desc"];
   [v4 finishEncoding];
-  v5 = [v4 encodedData];
-  [v6 encodeObject:v5 forKey:@"desc"];
+  encodedData = [v4 encodedData];
+  [coderCopy encodeObject:encodedData forKey:@"desc"];
 
-  [v6 encodeObject:self->_widgetConfigurations forKey:@"widgetConfigurations"];
-  [v6 encodeObject:self->_controlConfigurations forKey:@"controlConfigurations"];
-  [v6 encodeObject:self->_snapshotURLs forKey:@"snu"];
-  [v6 encodeObject:self->_placeholderURLs forKey:@"plu"];
-  [v6 encodeObject:self->_timelineURLs forKey:@"tlu"];
-  [v6 encodeObject:self->_liveControlURLs forKey:@"liveControlURLs"];
-  [v6 encodeObject:self->_livePlaceholderControlURLs forKey:@"livePlaceholderControlURLs"];
-  [v6 encodeObject:self->_previewControlURLs forKey:@"previewControlURLs"];
-  [v6 encodeObject:self->_nominatedContainerBundleIdentifiers forKey:@"ncbi"];
-  [v6 encodeBool:self->_disablesImplicitDiscovery forKey:@"disablesImplicitDiscovery"];
+  [coderCopy encodeObject:self->_widgetConfigurations forKey:@"widgetConfigurations"];
+  [coderCopy encodeObject:self->_controlConfigurations forKey:@"controlConfigurations"];
+  [coderCopy encodeObject:self->_snapshotURLs forKey:@"snu"];
+  [coderCopy encodeObject:self->_placeholderURLs forKey:@"plu"];
+  [coderCopy encodeObject:self->_timelineURLs forKey:@"tlu"];
+  [coderCopy encodeObject:self->_liveControlURLs forKey:@"liveControlURLs"];
+  [coderCopy encodeObject:self->_livePlaceholderControlURLs forKey:@"livePlaceholderControlURLs"];
+  [coderCopy encodeObject:self->_previewControlURLs forKey:@"previewControlURLs"];
+  [coderCopy encodeObject:self->_nominatedContainerBundleIdentifiers forKey:@"ncbi"];
+  [coderCopy encodeBool:self->_disablesImplicitDiscovery forKey:@"disablesImplicitDiscovery"];
 }
 
-- (CHSWidgetExtensionInfo)initWithBSXPCCoder:(id)a3
+- (CHSWidgetExtensionInfo)initWithBSXPCCoder:(id)coder
 {
   v73 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CHSWidgetExtensionInfo *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(CHSWidgetExtensionInfo *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeStringForKey:@"bi"];
-    bundleIdentifier = v5->_bundleIdentifier;
-    v5->_bundleIdentifier = v6;
+    v6 = [coderCopy decodeStringForKey:@"bi"];
+    bundleIdentifier = _init->_bundleIdentifier;
+    _init->_bundleIdentifier = v6;
 
-    v8 = [v4 decodeStringForKey:@"cbi"];
-    containerBundleIdentifier = v5->_containerBundleIdentifier;
-    v5->_containerBundleIdentifier = v8;
+    v8 = [coderCopy decodeStringForKey:@"cbi"];
+    containerBundleIdentifier = _init->_containerBundleIdentifier;
+    _init->_containerBundleIdentifier = v8;
 
-    v10 = [v4 decodeStringForKey:@"ecbi"];
-    effectiveContainerBundleIdentifier = v5->_effectiveContainerBundleIdentifier;
-    v5->_effectiveContainerBundleIdentifier = v10;
+    v10 = [coderCopy decodeStringForKey:@"ecbi"];
+    effectiveContainerBundleIdentifier = _init->_effectiveContainerBundleIdentifier;
+    _init->_effectiveContainerBundleIdentifier = v10;
 
-    v12 = [v4 decodeStringForKey:@"v"];
-    version = v5->_version;
-    v5->_version = v12;
+    v12 = [coderCopy decodeStringForKey:@"v"];
+    version = _init->_version;
+    _init->_version = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lmd"];
-    lastModifiedDate = v5->_lastModifiedDate;
-    v5->_lastModifiedDate = v14;
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lmd"];
+    lastModifiedDate = _init->_lastModifiedDate;
+    _init->_lastModifiedDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bu"];
-    bundleURL = v5->_bundleURL;
-    v5->_bundleURL = v16;
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bu"];
+    bundleURL = _init->_bundleURL;
+    _init->_bundleURL = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cu"];
-    containerURL = v5->_containerURL;
-    v5->_containerURL = v18;
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cu"];
+    containerURL = _init->_containerURL;
+    _init->_containerURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sdcu"];
-    systemDataContainerURL = v5->_systemDataContainerURL;
-    v5->_systemDataContainerURL = v20;
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sdcu"];
+    systemDataContainerURL = _init->_systemDataContainerURL;
+    _init->_systemDataContainerURL = v20;
 
-    v22 = [v4 decodeStringForKey:@"dpl"];
-    dataProtectionLevel = v5->_dataProtectionLevel;
-    v5->_dataProtectionLevel = v22;
+    v22 = [coderCopy decodeStringForKey:@"dpl"];
+    dataProtectionLevel = _init->_dataProtectionLevel;
+    _init->_dataProtectionLevel = v22;
 
-    v5->_isDevelopmentExtension = [v4 decodeBoolForKey:@"ide"];
-    v5->_wantsLocation = [v4 decodeBoolForKey:@"wl"];
+    _init->_isDevelopmentExtension = [coderCopy decodeBoolForKey:@"ide"];
+    _init->_wantsLocation = [coderCopy decodeBoolForKey:@"wl"];
     v24 = objc_opt_class();
-    v25 = [v4 decodeCollectionOfClass:v24 containingClass:objc_opt_class() forKey:@"al"];
-    availableLocalizations = v5->_availableLocalizations;
-    v5->_availableLocalizations = v25;
+    v25 = [coderCopy decodeCollectionOfClass:v24 containingClass:objc_opt_class() forKey:@"al"];
+    availableLocalizations = _init->_availableLocalizations;
+    _init->_availableLocalizations = v25;
 
-    v27 = [v4 decodeStringForKey:@"sdkVersion"];
-    sdkVersion = v5->_sdkVersion;
-    v5->_sdkVersion = v27;
+    v27 = [coderCopy decodeStringForKey:@"sdkVersion"];
+    sdkVersion = _init->_sdkVersion;
+    _init->_sdkVersion = v27;
 
-    v5->_allowsMixedLocalizations = [v4 decodeBoolForKey:@"aml"];
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ent"];
-    entitlements = v5->_entitlements;
-    v5->_entitlements = v29;
+    _init->_allowsMixedLocalizations = [coderCopy decodeBoolForKey:@"aml"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ent"];
+    entitlements = _init->_entitlements;
+    _init->_entitlements = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
     v70 = 0;
     v32 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v31 error:&v70];
     v33 = v70;
@@ -223,8 +223,8 @@
     v36 = objc_opt_class();
     v37 = [v34 setWithObjects:{v35, v36, objc_opt_class(), 0}];
     v38 = [v32 decodeObjectOfClasses:v37 forKey:@"desc"];
-    descriptors = v5->_descriptors;
-    v5->_descriptors = v38;
+    descriptors = _init->_descriptors;
+    _init->_descriptors = v38;
 
     if (v33)
     {
@@ -238,55 +238,55 @@
     }
 
     v41 = objc_opt_class();
-    v42 = [v4 decodeCollectionOfClass:v41 containingClass:objc_opt_class() forKey:@"widgetConfigurations"];
-    widgetConfigurations = v5->_widgetConfigurations;
-    v5->_widgetConfigurations = v42;
+    v42 = [coderCopy decodeCollectionOfClass:v41 containingClass:objc_opt_class() forKey:@"widgetConfigurations"];
+    widgetConfigurations = _init->_widgetConfigurations;
+    _init->_widgetConfigurations = v42;
 
     v44 = objc_opt_class();
-    v45 = [v4 decodeCollectionOfClass:v44 containingClass:objc_opt_class() forKey:@"controlConfigurations"];
-    controlConfigurations = v5->_controlConfigurations;
-    v5->_controlConfigurations = v45;
+    v45 = [coderCopy decodeCollectionOfClass:v44 containingClass:objc_opt_class() forKey:@"controlConfigurations"];
+    controlConfigurations = _init->_controlConfigurations;
+    _init->_controlConfigurations = v45;
 
     v47 = objc_opt_class();
-    v48 = [v4 decodeCollectionOfClass:v47 containingClass:objc_opt_class() forKey:@"snu"];
-    snapshotURLs = v5->_snapshotURLs;
-    v5->_snapshotURLs = v48;
+    v48 = [coderCopy decodeCollectionOfClass:v47 containingClass:objc_opt_class() forKey:@"snu"];
+    snapshotURLs = _init->_snapshotURLs;
+    _init->_snapshotURLs = v48;
 
     v50 = objc_opt_class();
-    v51 = [v4 decodeCollectionOfClass:v50 containingClass:objc_opt_class() forKey:@"plu"];
-    placeholderURLs = v5->_placeholderURLs;
-    v5->_placeholderURLs = v51;
+    v51 = [coderCopy decodeCollectionOfClass:v50 containingClass:objc_opt_class() forKey:@"plu"];
+    placeholderURLs = _init->_placeholderURLs;
+    _init->_placeholderURLs = v51;
 
     v53 = objc_opt_class();
-    v54 = [v4 decodeCollectionOfClass:v53 containingClass:objc_opt_class() forKey:@"tlu"];
-    timelineURLs = v5->_timelineURLs;
-    v5->_timelineURLs = v54;
+    v54 = [coderCopy decodeCollectionOfClass:v53 containingClass:objc_opt_class() forKey:@"tlu"];
+    timelineURLs = _init->_timelineURLs;
+    _init->_timelineURLs = v54;
 
     v56 = objc_opt_class();
-    v57 = [v4 decodeCollectionOfClass:v56 containingClass:objc_opt_class() forKey:@"liveControlURLs"];
-    liveControlURLs = v5->_liveControlURLs;
-    v5->_liveControlURLs = v57;
+    v57 = [coderCopy decodeCollectionOfClass:v56 containingClass:objc_opt_class() forKey:@"liveControlURLs"];
+    liveControlURLs = _init->_liveControlURLs;
+    _init->_liveControlURLs = v57;
 
     v59 = objc_opt_class();
-    v60 = [v4 decodeCollectionOfClass:v59 containingClass:objc_opt_class() forKey:@"livePlaceholderControlURLs"];
-    livePlaceholderControlURLs = v5->_livePlaceholderControlURLs;
-    v5->_livePlaceholderControlURLs = v60;
+    v60 = [coderCopy decodeCollectionOfClass:v59 containingClass:objc_opt_class() forKey:@"livePlaceholderControlURLs"];
+    livePlaceholderControlURLs = _init->_livePlaceholderControlURLs;
+    _init->_livePlaceholderControlURLs = v60;
 
     v62 = objc_opt_class();
-    v63 = [v4 decodeCollectionOfClass:v62 containingClass:objc_opt_class() forKey:@"previewControlURLs"];
-    previewControlURLs = v5->_previewControlURLs;
-    v5->_previewControlURLs = v63;
+    v63 = [coderCopy decodeCollectionOfClass:v62 containingClass:objc_opt_class() forKey:@"previewControlURLs"];
+    previewControlURLs = _init->_previewControlURLs;
+    _init->_previewControlURLs = v63;
 
     v65 = objc_opt_class();
-    v66 = [v4 decodeCollectionOfClass:v65 containingClass:objc_opt_class() forKey:@"ncbi"];
-    nominatedContainerBundleIdentifiers = v5->_nominatedContainerBundleIdentifiers;
-    v5->_nominatedContainerBundleIdentifiers = v66;
+    v66 = [coderCopy decodeCollectionOfClass:v65 containingClass:objc_opt_class() forKey:@"ncbi"];
+    nominatedContainerBundleIdentifiers = _init->_nominatedContainerBundleIdentifiers;
+    _init->_nominatedContainerBundleIdentifiers = v66;
 
-    v5->_disablesImplicitDiscovery = [v4 decodeBoolForKey:@"disablesImplicitDiscovery"];
+    _init->_disablesImplicitDiscovery = [coderCopy decodeBoolForKey:@"disablesImplicitDiscovery"];
   }
 
   v68 = *MEMORY[0x1E69E9840];
-  return v5;
+  return _init;
 }
 
 @end

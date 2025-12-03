@@ -2,9 +2,9 @@
 - (PNRPhoneNumberResolver)init;
 - (id)_notAPhoneNumberError;
 - (id)_notFullyQualifiedError;
-- (id)resolvePhoneNumber:(id)a3 countryCode:(id)a4 error:(id *)a5;
-- (void)resolveFullyQualifiedPhoneNumber:(id)a3 inCountry:(id)a4 logId:(id)a5 resultBlock:(id)a6;
-- (void)resolvePhoneNumbers:(id)a3 queue:(id)a4 handler:(id)a5;
+- (id)resolvePhoneNumber:(id)number countryCode:(id)code error:(id *)error;
+- (void)resolveFullyQualifiedPhoneNumber:(id)number inCountry:(id)country logId:(id)id resultBlock:(id)block;
+- (void)resolvePhoneNumbers:(id)numbers queue:(id)queue handler:(id)handler;
 @end
 
 @implementation PNRPhoneNumberResolver
@@ -67,12 +67,12 @@ uint64_t __30__PNRPhoneNumberResolver_init__block_invoke()
   return v5;
 }
 
-- (void)resolvePhoneNumbers:(id)a3 queue:(id)a4 handler:(id)a5
+- (void)resolvePhoneNumbers:(id)numbers queue:(id)queue handler:(id)handler
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  queue = a4;
-  v31 = a5;
+  numbersCopy = numbers;
+  queue = queue;
+  handlerCopy = handler;
   v36 = objc_alloc_init(PNRPhoneNumberResolutionResultSet);
   v37 = +[PNRUtils _currentCountry];
   group = dispatch_group_create();
@@ -80,7 +80,7 @@ uint64_t __30__PNRPhoneNumberResolver_init__block_invoke()
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v8;
+  obj = numbersCopy;
   v9 = [obj countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v9)
   {
@@ -121,8 +121,8 @@ uint64_t __30__PNRPhoneNumberResolver_init__block_invoke()
         v20 = [PNRUtils _stringByStrippingFormattingAndNotVisiblyAllowable:v14];
         if (![PNRUtils _isValidPhoneNumber:v20])
         {
-          v23 = [(PNRPhoneNumberResolver *)self _notAPhoneNumberError];
-          [(PNRPhoneNumberResolutionResultSet *)v36 setError:v23 forPhoneNumber:v14];
+          _notAPhoneNumberError = [(PNRPhoneNumberResolver *)self _notAPhoneNumberError];
+          [(PNRPhoneNumberResolutionResultSet *)v36 setError:_notAPhoneNumberError forPhoneNumber:v14];
           v24 = _log;
           if (!os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
           {
@@ -154,14 +154,14 @@ uint64_t __30__PNRPhoneNumberResolver_init__block_invoke()
           v45 = v36;
           v46 = v14;
           v47 = group;
-          v23 = v21;
+          _notAPhoneNumberError = v21;
           dispatch_async(resolveQueue, block);
 
           goto LABEL_18;
         }
 
-        v23 = [(PNRPhoneNumberResolver *)self _notFullyQualifiedError];
-        [(PNRPhoneNumberResolutionResultSet *)v36 setError:v23 forPhoneNumber:v14];
+        _notAPhoneNumberError = [(PNRPhoneNumberResolver *)self _notFullyQualifiedError];
+        [(PNRPhoneNumberResolutionResultSet *)v36 setError:_notAPhoneNumberError forPhoneNumber:v14];
         v27 = _log;
         if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
         {
@@ -189,9 +189,9 @@ LABEL_18:
   v38[2] = __60__PNRPhoneNumberResolver_resolvePhoneNumbers_queue_handler___block_invoke_71;
   v38[3] = &unk_279A24118;
   v39 = v36;
-  v40 = v31;
+  v40 = handlerCopy;
   v28 = v36;
-  v29 = v31;
+  v29 = handlerCopy;
   dispatch_group_notify(group, queue, v38);
 
   v30 = *MEMORY[0x277D85DE8];
@@ -286,11 +286,11 @@ LABEL_8:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)resolvePhoneNumber:(id)a3 countryCode:(id)a4 error:(id *)a5
+- (id)resolvePhoneNumber:(id)number countryCode:(id)code error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  numberCopy = number;
+  codeCopy = code;
   v10 = objc_alloc_init(MEMORY[0x277CCAD78]);
   v11 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_INFO))
@@ -298,16 +298,16 @@ LABEL_8:
     *buf = 138543619;
     *&buf[4] = v10;
     *&buf[12] = 2113;
-    *&buf[14] = v8;
+    *&buf[14] = numberCopy;
     _os_log_impl(&dword_25E515000, v11, OS_LOG_TYPE_INFO, "[%{public}@] resolving %{private}@ synchronously", buf, 0x16u);
   }
 
-  v12 = [PNRUtils _stringByStrippingFormattingAndNotVisiblyAllowable:v8];
+  v12 = [PNRUtils _stringByStrippingFormattingAndNotVisiblyAllowable:numberCopy];
   if (![PNRUtils _isValidPhoneNumber:v12])
   {
-    v15 = [(PNRPhoneNumberResolver *)self _notAPhoneNumberError];
-    v13 = v15;
-    if (a5)
+    _notAPhoneNumberError = [(PNRPhoneNumberResolver *)self _notAPhoneNumberError];
+    v13 = _notAPhoneNumberError;
+    if (error)
     {
       goto LABEL_11;
     }
@@ -317,14 +317,14 @@ LABEL_8:
 
   if (([v12 hasPrefix:@"+"] & 1) == 0)
   {
-    v15 = [(PNRPhoneNumberResolver *)self _notFullyQualifiedError];
-    v13 = v15;
-    if (a5)
+    _notAPhoneNumberError = [(PNRPhoneNumberResolver *)self _notFullyQualifiedError];
+    v13 = _notAPhoneNumberError;
+    if (error)
     {
 LABEL_11:
-      v16 = v15;
+      v16 = _notAPhoneNumberError;
       v14 = 0;
-      *a5 = v13;
+      *error = v13;
       goto LABEL_13;
     }
 
@@ -352,10 +352,10 @@ LABEL_12:
   v19[3] = &unk_279A24140;
   v19[4] = buf;
   v19[5] = &v20;
-  [(PNRPhoneNumberResolver *)self resolveFullyQualifiedPhoneNumber:v13 inCountry:v9 logId:v10 resultBlock:v19];
-  if (a5)
+  [(PNRPhoneNumberResolver *)self resolveFullyQualifiedPhoneNumber:v13 inCountry:codeCopy logId:v10 resultBlock:v19];
+  if (error)
   {
-    *a5 = v21[5];
+    *error = v21[5];
   }
 
   v14 = *(*&buf[8] + 40);
@@ -383,13 +383,13 @@ void __63__PNRPhoneNumberResolver_resolvePhoneNumber_countryCode_error___block_i
   *(v10 + 40) = v7;
 }
 
-- (void)resolveFullyQualifiedPhoneNumber:(id)a3 inCountry:(id)a4 logId:(id)a5 resultBlock:(id)a6
+- (void)resolveFullyQualifiedPhoneNumber:(id)number inCountry:(id)country logId:(id)id resultBlock:(id)block
 {
   v64[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  numberCopy = number;
+  countryCopy = country;
+  idCopy = id;
+  blockCopy = block;
   v14 = +[PNRResourceManager sharedManager];
   v57 = 0;
   v58 = &v57;
@@ -421,15 +421,15 @@ void __63__PNRPhoneNumberResolver_resolvePhoneNumber_countryCode_error___block_i
   v25 = 3221225472;
   v26 = __87__PNRPhoneNumberResolver_resolveFullyQualifiedPhoneNumber_inCountry_logId_resultBlock___block_invoke;
   v27 = &unk_279A241E0;
-  v15 = v12;
+  v15 = idCopy;
   v28 = v15;
   v32 = &v47;
   v33 = &v41;
-  v16 = v10;
+  v16 = numberCopy;
   v29 = v16;
   v17 = v14;
   v30 = v17;
-  v18 = v11;
+  v18 = countryCopy;
   v31 = v18;
   v34 = &v53;
   v35 = &v37;
@@ -458,8 +458,8 @@ void __63__PNRPhoneNumberResolver_resolvePhoneNumber_countryCode_error___block_i
     }
   }
 
-  [(PNRPhoneNumberResolver *)self _recordUsageAnalyticForCountryCode:v48[5] success:*(v38 + 24), v13, v24, v25, v26, v27];
-  v13[2](v13, v58[5], v54[3], v19);
+  [(PNRPhoneNumberResolver *)self _recordUsageAnalyticForCountryCode:v48[5] success:*(v38 + 24), blockCopy, v24, v25, v26, v27];
+  blockCopy[2](blockCopy, v58[5], v54[3], v19);
 
   _Block_object_dispose(&v37, 8);
   _Block_object_dispose(&v41, 8);

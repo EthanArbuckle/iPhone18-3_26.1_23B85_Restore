@@ -1,7 +1,7 @@
 @interface XRXMLSimpleStringElementParser
 - (NSString)stringValue;
 - (id)collapsedStringValue;
-- (void)_handleCharacters:(id)a3;
+- (void)_handleCharacters:(id)characters;
 - (void)_handleCompletion;
 @end
 
@@ -57,18 +57,18 @@
   return v31;
 }
 
-- (void)_handleCharacters:(id)a3
+- (void)_handleCharacters:(id)characters
 {
   accumulator = self->accumulator;
   if (accumulator)
   {
 
-    objc_msgSend_appendString_(accumulator, a2, a3, v3, v4);
+    objc_msgSend_appendString_(accumulator, a2, characters, v3, v4);
   }
 
   else
   {
-    v7 = objc_msgSend_mutableCopy(a3, a2, a3, v3, v4);
+    v7 = objc_msgSend_mutableCopy(characters, a2, characters, v3, v4);
     v8 = self->accumulator;
     self->accumulator = v7;
 

@@ -1,6 +1,6 @@
 @interface COSMigrationManager
-- (BOOL)isDeviceMigrating:(id)a3;
-- (BOOL)isDeviceWaitingToMigrate:(id)a3;
+- (BOOL)isDeviceMigrating:(id)migrating;
+- (BOOL)isDeviceWaitingToMigrate:(id)migrate;
 - (COSMigrationManager)init;
 - (COSMigrationProgressDelegate)delegate;
 - (NSArray)migratableDevices;
@@ -8,10 +8,10 @@
 - (id)_getMigratingDevice;
 - (id)_syncingDevice;
 - (void)_configureCurrentState;
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5;
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value;
 - (void)startMigration;
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4;
-- (void)tinkerMigrationStarted:(id)a3;
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update;
+- (void)tinkerMigrationStarted:(id)started;
 - (void)updateMigrationState;
 @end
 
@@ -46,19 +46,19 @@
 - (NSArray)migratableDevices
 {
   v2 = +[NRMigrator sharedMigrator];
-  v3 = [v2 migratableDevices];
+  migratableDevices = [v2 migratableDevices];
 
   v4 = +[NRMigrator sharedMigrator];
-  v5 = [v4 migratableDevicesRequiringConsent];
+  migratableDevicesRequiringConsent = [v4 migratableDevicesRequiringConsent];
 
-  if (v3)
+  if (migratableDevices)
   {
-    v6 = [v3 arrayByAddingObjectsFromArray:v5];
+    v6 = [migratableDevices arrayByAddingObjectsFromArray:migratableDevicesRequiringConsent];
   }
 
   else
   {
-    v6 = v5;
+    v6 = migratableDevicesRequiringConsent;
   }
 
   v7 = v6;
@@ -68,9 +68,9 @@
 
 - (void)_configureCurrentState
 {
-  v3 = [(COSMigrationManager *)self _getMigratingDevice];
+  _getMigratingDevice = [(COSMigrationManager *)self _getMigratingDevice];
   migratingDevice = self->_migratingDevice;
-  self->_migratingDevice = v3;
+  self->_migratingDevice = _getMigratingDevice;
 
   if (self->_migratingDevice)
   {
@@ -78,28 +78,28 @@
     goto LABEL_14;
   }
 
-  v5 = [(COSMigrationManager *)self _deviceWatingToSync];
-  if (v5)
+  _deviceWatingToSync = [(COSMigrationManager *)self _deviceWatingToSync];
+  if (_deviceWatingToSync)
   {
     v6 = pbb_setupflow_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v5 pairingID];
+      pairingID = [_deviceWatingToSync pairingID];
       *buf = 138412290;
-      v21 = v7;
+      v21 = pairingID;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Device: %@ waiting to sync", buf, 0xCu);
     }
 
     if (self->_progressObserver)
     {
-      v8 = [(COSMigrationManager *)self currentSession];
-      [v8 sessionProgress];
+      currentSession = [(COSMigrationManager *)self currentSession];
+      [currentSession sessionProgress];
       v10 = v9 < 1.0;
 
       if (v10)
       {
 LABEL_12:
-        objc_storeStrong(&self->_migratingDevice, v5);
+        objc_storeStrong(&self->_migratingDevice, _deviceWatingToSync);
         goto LABEL_13;
       }
 
@@ -139,11 +139,11 @@ LABEL_14:
     objc_destroyWeak(buf);
   }
 
-  v15 = [(COSMigrationManager *)self delegate];
-  v16 = [(COSMigrationManager *)self currentState];
-  v17 = [(COSMigrationManager *)self currentSession];
-  [v17 sessionProgress];
-  [v15 migrationProgressUpdate:v16 percentageComplete:self->_migratingDevice migratingDevice:?];
+  delegate = [(COSMigrationManager *)self delegate];
+  currentState = [(COSMigrationManager *)self currentState];
+  currentSession2 = [(COSMigrationManager *)self currentSession];
+  [currentSession2 sessionProgress];
+  [delegate migrationProgressUpdate:currentState percentageComplete:self->_migratingDevice migratingDevice:?];
 }
 
 - (id)_deviceWatingToSync
@@ -172,15 +172,15 @@ LABEL_14:
 
         v8 = *(*(&v20 + 1) + 8 * i);
         v9 = [v8 valueForProperty:v5];
-        v10 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
 
-        v11 = [v8 pairingID];
-        v12 = [v19 migrationCountForPairingID:v11];
+        pairingID = [v8 pairingID];
+        v12 = [v19 migrationCountForPairingID:pairingID];
 
         v13 = [v8 valueForProperty:v6];
-        v14 = [v13 integerValue];
+        integerValue = [v13 integerValue];
 
-        if (v12 != v14 && v10 != 0)
+        if (v12 != integerValue && bOOLValue != 0)
         {
           v16 = v8;
           goto LABEL_14;
@@ -201,8 +201,8 @@ LABEL_14:
 
 - (id)_syncingDevice
 {
-  v2 = [(COSMigrationManager *)self currentSession];
-  v3 = [v2 pairingIdentifier];
+  currentSession = [(COSMigrationManager *)self currentSession];
+  pairingIdentifier = [currentSession pairingIdentifier];
 
   v14 = 0u;
   v15 = 0u;
@@ -223,8 +223,8 @@ LABEL_14:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 pairingID];
-        v10 = [v9 isEqual:v3];
+        pairingID = [v8 pairingID];
+        v10 = [pairingID isEqual:pairingIdentifier];
 
         if (v10)
         {
@@ -277,18 +277,18 @@ LABEL_11:
         v10 = *(*(&v21 + 1) + 8 * i);
         v11 = [v10 valueForProperty:{v7, v19}];
         v12 = [v10 valueForProperty:v8];
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
 
-        if ([v11 integerValue] == 4 && v13 != 0)
+        if ([v11 integerValue] == 4 && bOOLValue != 0)
         {
           v15 = v10;
 
           v16 = pbb_setupflow_log();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v15 pairingID];
+            pairingID = [v15 pairingID];
             *buf = v19;
-            v26 = v17;
+            v26 = pairingID;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Found migrating device - %@", buf, 0xCu);
           }
 
@@ -310,24 +310,24 @@ LABEL_11:
   return v5;
 }
 
-- (void)tinkerMigrationStarted:(id)a3
+- (void)tinkerMigrationStarted:(id)started
 {
   self->_currentState = 1;
-  objc_storeStrong(&self->_migratingDevice, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_migratingDevice, started);
+  startedCopy = started;
   self->_discoveredWatch = 1;
   v7 = _NRDevicePropertyStatusCode;
   v6 = [NSArray arrayWithObjects:&v7 count:1];
-  [v5 addPropertyObserver:self forPropertyChanges:v6];
+  [startedCopy addPropertyObserver:self forPropertyChanges:v6];
 }
 
 - (void)startMigration
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 activeWatchAssertion];
+  activeWatchAssertion = [v3 activeWatchAssertion];
 
-  v24 = v4;
-  if (v4)
+  v24 = activeWatchAssertion;
+  if (activeWatchAssertion)
   {
     v5 = pbb_setupflow_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -347,8 +347,8 @@ LABEL_11:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [(COSMigrationManager *)self migratableDevices];
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v38 count:16];
+  migratableDevices = [(COSMigrationManager *)self migratableDevices];
+  v8 = [migratableDevices countByEnumeratingWithState:&v31 objects:v38 count:16];
   if (v8)
   {
     v9 = v8;
@@ -360,7 +360,7 @@ LABEL_11:
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(migratableDevices);
         }
 
         v13 = *(*(&v31 + 1) + 8 * i);
@@ -369,7 +369,7 @@ LABEL_11:
         [v13 addPropertyObserver:self forPropertyChanges:v14];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v31 objects:v38 count:16];
+      v9 = [migratableDevices countByEnumeratingWithState:&v31 objects:v38 count:16];
     }
 
     while (v9);
@@ -383,8 +383,8 @@ LABEL_11:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v17 = [(COSMigrationManager *)self migratableDevices];
-  v18 = [v17 countByEnumeratingWithState:&v27 objects:v36 count:16];
+  migratableDevices2 = [(COSMigrationManager *)self migratableDevices];
+  v18 = [migratableDevices2 countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v18)
   {
     v19 = v18;
@@ -395,7 +395,7 @@ LABEL_11:
       {
         if (*v28 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(migratableDevices2);
         }
 
         v22 = *(*(&v27 + 1) + 8 * j);
@@ -408,7 +408,7 @@ LABEL_11:
         [v23 setMigrationConsented:0 forDevice:v22 withBlock:v26];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v27 objects:v36 count:16];
+      v19 = [migratableDevices2 countByEnumeratingWithState:&v27 objects:v36 count:16];
     }
 
     while (v19);
@@ -423,24 +423,24 @@ LABEL_11:
   [WeakRetained migrationProgressUpdate:currentState percentageComplete:self->_migratingDevice migratingDevice:?];
 }
 
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update
 {
-  v11 = a4;
-  v5 = [v11 updatedSession];
-  if ([v5 syncSessionType] == 2)
+  updateCopy = update;
+  updatedSession = [updateCopy updatedSession];
+  if ([updatedSession syncSessionType] == 2)
   {
-    v6 = [v11 updatedSession];
-    v7 = [v6 syncSessionState];
+    updatedSession2 = [updateCopy updatedSession];
+    syncSessionState = [updatedSession2 syncSessionState];
 
-    if (v7 == 1)
+    if (syncSessionState == 1)
     {
-      v8 = [v11 updatedSession];
+      updatedSession3 = [updateCopy updatedSession];
       currentSession = self->_currentSession;
-      self->_currentSession = v8;
+      self->_currentSession = updatedSession3;
 
       [(COSMigrationManager *)self setCurrentState:2];
-      v10 = [(COSMigrationManager *)self _syncingDevice];
-      [(COSMigrationManager *)self setMigratingDevice:v10];
+      _syncingDevice = [(COSMigrationManager *)self _syncingDevice];
+      [(COSMigrationManager *)self setMigratingDevice:_syncingDevice];
 
       [(COSMigrationManager *)self updateMigrationState];
     }
@@ -451,60 +451,60 @@ LABEL_11:
   }
 }
 
-- (BOOL)isDeviceWaitingToMigrate:(id)a3
+- (BOOL)isDeviceWaitingToMigrate:(id)migrate
 {
-  v3 = [a3 valueForProperty:NRDevicePropertyIsArchived];
-  v4 = [v3 BOOLValue];
+  v3 = [migrate valueForProperty:NRDevicePropertyIsArchived];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)isDeviceMigrating:(id)a3
+- (BOOL)isDeviceMigrating:(id)migrating
 {
-  v4 = a3;
-  v5 = [(COSMigrationManager *)self _getMigratingDevice];
-  v6 = [v5 pairingID];
-  v7 = [v4 pairingID];
+  migratingCopy = migrating;
+  _getMigratingDevice = [(COSMigrationManager *)self _getMigratingDevice];
+  pairingID = [_getMigratingDevice pairingID];
+  pairingID2 = [migratingCopy pairingID];
 
   if (self->_currentState == 2)
   {
-    v8 = [(PSYSyncSession *)self->_currentSession pairingIdentifier];
+    pairingIdentifier = [(PSYSyncSession *)self->_currentSession pairingIdentifier];
 
-    v6 = v8;
+    pairingID = pairingIdentifier;
   }
 
-  v9 = [v7 isEqual:v6];
+  v9 = [pairingID2 isEqual:pairingID];
 
   return v9;
 }
 
-- (void)device:(id)a3 propertyDidChange:(id)a4 fromValue:(id)a5
+- (void)device:(id)device propertyDidChange:(id)change fromValue:(id)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  changeCopy = change;
+  valueCopy = value;
   v11 = pbb_bridge_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 pairingID];
+    pairingID = [deviceCopy pairingID];
     *buf = 134218754;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
-    v31 = v12;
+    v31 = pairingID;
     v32 = 2112;
-    v33 = v9;
+    v33 = changeCopy;
     v34 = 2112;
-    v35 = v10;
+    v35 = valueCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "propertyDidChange: self: (%p); device: (%@); property: (%@); fromValue: (%@)", buf, 0x2Au);
   }
 
   v13 = _NRDevicePropertyStatusCode;
-  if ([v9 isEqualToString:_NRDevicePropertyStatusCode] && self->_discoveredWatch)
+  if ([changeCopy isEqualToString:_NRDevicePropertyStatusCode] && self->_discoveredWatch)
   {
     objc_initWeak(buf, self);
-    v14 = [v8 valueForProperty:v13];
-    v15 = [v8 valueForProperty:NRDevicePropertyIsArchived];
-    v16 = [v8 valueForProperty:NRDevicePropertyIsActive];
+    v14 = [deviceCopy valueForProperty:v13];
+    v15 = [deviceCopy valueForProperty:NRDevicePropertyIsArchived];
+    v16 = [deviceCopy valueForProperty:NRDevicePropertyIsActive];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1001063A0;
@@ -512,9 +512,9 @@ LABEL_11:
     objc_copyWeak(&v27, buf);
     v22 = v15;
     v23 = v14;
-    v24 = v10;
+    v24 = valueCopy;
     v25 = v16;
-    v26 = self;
+    selfCopy2 = self;
     v17 = v16;
     v18 = v14;
     v19 = v15;

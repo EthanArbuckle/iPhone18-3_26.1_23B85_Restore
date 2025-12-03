@@ -1,35 +1,35 @@
 @interface BNBannerTransitionAnimator
-+ (void)animateInteractive:(BOOL)a3 animations:(id)a4 completion:(id)a5;
-- (double)transitionDuration:(id)a3;
-- (id)initForPresenting:(BOOL)a3;
-- (void)actionsForTransition:(id)a3;
++ (void)animateInteractive:(BOOL)interactive animations:(id)animations completion:(id)completion;
+- (double)transitionDuration:(id)duration;
+- (id)initForPresenting:(BOOL)presenting;
+- (void)actionsForTransition:(id)transition;
 @end
 
 @implementation BNBannerTransitionAnimator
 
-- (id)initForPresenting:(BOOL)a3
+- (id)initForPresenting:(BOOL)presenting
 {
   v5.receiver = self;
   v5.super_class = BNBannerTransitionAnimator;
   result = [(BNBannerAnimator *)&v5 init];
   if (result)
   {
-    *(result + 24) = a3;
+    *(result + 24) = presenting;
   }
 
   return result;
 }
 
-+ (void)animateInteractive:(BOOL)a3 animations:(id)a4 completion:(id)a5
++ (void)animateInteractive:(BOOL)interactive animations:(id)animations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  interactiveCopy = interactive;
+  animationsCopy = animations;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (animationsCopy)
   {
     v10 = MEMORY[0x1E69DD250];
-    if (v6)
+    if (interactiveCopy)
     {
       v11 = 0.85;
     }
@@ -39,7 +39,7 @@
       v11 = 1.0;
     }
 
-    if (v6)
+    if (interactiveCopy)
     {
       v12 = 0.08;
     }
@@ -53,20 +53,20 @@
     v13[1] = 3221225472;
     v13[2] = __71__BNBannerTransitionAnimator_animateInteractive_animations_completion___block_invoke;
     v13[3] = &unk_1E81E4EB8;
-    v14 = v7;
-    [v10 _animateUsingSpringWithDampingRatio:v6 response:v13 tracking:v9 dampingRatioSmoothing:v11 responseSmoothing:v12 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.998];
+    v14 = animationsCopy;
+    [v10 _animateUsingSpringWithDampingRatio:interactiveCopy response:v13 tracking:v9 dampingRatioSmoothing:v11 responseSmoothing:v12 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.998];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
-- (void)actionsForTransition:(id)a3
+- (void)actionsForTransition:(id)transition
 {
-  v4 = a3;
-  v5 = v4;
+  transitionCopy = transition;
+  v5 = transitionCopy;
   if (self->_presenting)
   {
     v6 = MEMORY[0x1E69DE778];
@@ -77,8 +77,8 @@
     v6 = MEMORY[0x1E69DE768];
   }
 
-  v7 = [v4 viewControllerForKey:*v6];
-  v8 = [v7 view];
+  v7 = [transitionCopy viewControllerForKey:*v6];
+  view = [v7 view];
   if (self->_presenting)
   {
     [v5 initialFrameForViewController:v7];
@@ -91,7 +91,7 @@
     v18[1] = 3221225472;
     v18[2] = __51__BNBannerTransitionAnimator_actionsForTransition___block_invoke;
     v18[3] = &unk_1E81E4EE0;
-    v19 = v8;
+    v19 = view;
     v20 = v10;
     v21 = v12;
     v22 = v14;
@@ -100,7 +100,7 @@
   }
 
   [v5 finalFrameForViewController:v7];
-  [v8 setFrame:?];
+  [view setFrame:?];
 }
 
 uint64_t __51__BNBannerTransitionAnimator_actionsForTransition___block_invoke(uint64_t a1)
@@ -111,7 +111,7 @@ uint64_t __51__BNBannerTransitionAnimator_actionsForTransition___block_invoke(ui
   return [v2 layoutIfNeeded];
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   if (self->_presenting)
   {
@@ -124,14 +124,14 @@ uint64_t __51__BNBannerTransitionAnimator_actionsForTransition___block_invoke(ui
   }
 
   v4 = *v3;
-  v5 = a3;
-  v6 = [v5 viewControllerForKey:v4];
-  [v5 initialFrameForViewController:v6];
+  durationCopy = duration;
+  v6 = [durationCopy viewControllerForKey:v4];
+  [durationCopy initialFrameForViewController:v6];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v5 finalFrameForViewController:v6];
+  [durationCopy finalFrameForViewController:v6];
   v16 = v15;
   v18 = v17;
   v20 = v19;

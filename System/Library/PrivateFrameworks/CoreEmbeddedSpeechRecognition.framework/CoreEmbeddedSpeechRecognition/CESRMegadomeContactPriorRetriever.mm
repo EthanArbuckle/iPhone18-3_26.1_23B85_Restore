@@ -1,15 +1,15 @@
 @interface CESRMegadomeContactPriorRetriever
 - (CESRMegadomeContactPriorRetriever)init;
-- (id)_fetchTopNContactPriors:(int64_t)a3 error:(id *)a4;
-- (id)allPriorInfoWithThreshold:(unsigned int)a3;
-- (id)priorInfoForItemIds:(id)a3;
+- (id)_fetchTopNContactPriors:(int64_t)priors error:(id *)error;
+- (id)allPriorInfoWithThreshold:(unsigned int)threshold;
+- (id)priorInfoForItemIds:(id)ids;
 @end
 
 @implementation CESRMegadomeContactPriorRetriever
 
-- (id)_fetchTopNContactPriors:(int64_t)a3 error:(id *)a4
+- (id)_fetchTopNContactPriors:(int64_t)priors error:(id *)error
 {
-  v4 = [(GDPersonRankingService *)self->_ranker rankedPersonsWithMaxCount:a3 error:a4];
+  v4 = [(GDPersonRankingService *)self->_ranker rankedPersonsWithMaxCount:priors error:error];
   v5 = v4;
   if (v4)
   {
@@ -24,12 +24,12 @@
   return v6;
 }
 
-- (id)allPriorInfoWithThreshold:(unsigned int)a3
+- (id)allPriorInfoWithThreshold:(unsigned int)threshold
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:a3];
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:threshold];
   v20 = 0;
-  v6 = [(CESRMegadomeContactPriorRetriever *)self _fetchTopNContactPriors:a3 error:&v20];
+  v6 = [(CESRMegadomeContactPriorRetriever *)self _fetchTopNContactPriors:threshold error:&v20];
   v7 = v20;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -37,7 +37,7 @@
   v17[3] = &unk_27857FBE8;
   v8 = v5;
   v18 = v8;
-  v19 = a3;
+  thresholdCopy = threshold;
   [v6 enumerateObjectsUsingBlock:v17];
   v9 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_INFO))
@@ -52,7 +52,7 @@
     v25 = 1024;
     v26 = v12;
     v27 = 1024;
-    v28 = a3;
+    thresholdCopy2 = threshold;
     _os_log_impl(&dword_225EEB000, v10, OS_LOG_TYPE_INFO, "%s Fetched %u persons from Megadome Ranker, populated %u contact priors with threshold: %u", buf, 0x1Eu);
   }
 
@@ -107,13 +107,13 @@ void __63__CESRMegadomeContactPriorRetriever_allPriorInfoWithThreshold___block_i
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)priorInfoForItemIds:(id)a3
+- (id)priorInfoForItemIds:(id)ids
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  idsCopy = ids;
+  if ([idsCopy count])
   {
-    v5 = [MEMORY[0x277CBEB58] setWithArray:v4];
+    v5 = [MEMORY[0x277CBEB58] setWithArray:idsCopy];
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v35 = 0;
     v7 = [(CESRMegadomeContactPriorRetriever *)self _fetchTopNContactPriors:0x7FFFFFFFFFFFFFFFLL error:&v35];
@@ -168,7 +168,7 @@ void __63__CESRMegadomeContactPriorRetriever_allPriorInfoWithThreshold___block_i
       v19 = v18;
       v20 = [v7 count];
       v21 = [v9 count];
-      v22 = [v4 count];
+      v22 = [idsCopy count];
       *buf = 136315906;
       v37 = "[CESRMegadomeContactPriorRetriever priorInfoForItemIds:]";
       v38 = 1024;

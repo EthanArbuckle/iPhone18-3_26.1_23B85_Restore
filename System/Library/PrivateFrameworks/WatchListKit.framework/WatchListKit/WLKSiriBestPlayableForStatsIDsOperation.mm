@@ -1,17 +1,17 @@
 @interface WLKSiriBestPlayableForStatsIDsOperation
-- (WLKSiriBestPlayableForStatsIDsOperation)initWithStatsIDs:(id)a3 caller:(id)a4;
+- (WLKSiriBestPlayableForStatsIDsOperation)initWithStatsIDs:(id)ds caller:(id)caller;
 - (void)processResponse;
 @end
 
 @implementation WLKSiriBestPlayableForStatsIDsOperation
 
-- (WLKSiriBestPlayableForStatsIDsOperation)initWithStatsIDs:(id)a3 caller:(id)a4
+- (WLKSiriBestPlayableForStatsIDsOperation)initWithStatsIDs:(id)ds caller:(id)caller
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  callerCopy = caller;
   v7 = MEMORY[0x277CBE660];
-  if (!v5)
+  if (!dsCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The statsIDs parameter must not be nil."];
   }
@@ -22,7 +22,7 @@
     [MEMORY[0x277CBEAD8] raise:*v7 format:@"The statsIDs parameter must be an array."];
   }
 
-  if (![v5 count])
+  if (![dsCopy count])
   {
     [MEMORY[0x277CBEAD8] raise:*v7 format:@"The statsIDs parameter must not be an empty array."];
   }
@@ -31,7 +31,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v5;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v9)
   {
@@ -77,7 +77,7 @@
   v20 = [v19 componentsJoinedByString:{@", "}];
   v35 = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-  v22 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"siri/bestPlayableForStatsIds" queryParameters:v21 httpMethod:0 caller:v6];
+  v22 = [WLKURLRequestProperties requestPropertiesWithEndpoint:@"siri/bestPlayableForStatsIds" queryParameters:v21 httpMethod:0 caller:callerCopy];
 
   v29.receiver = self;
   v29.super_class = WLKSiriBestPlayableForStatsIDsOperation;
@@ -97,8 +97,8 @@
 {
   v6 = objc_alloc_init(WLKDictionaryResponseProcessor);
   [(WLKDictionaryResponseProcessor *)v6 setObjectClass:objc_opt_class()];
-  v3 = [(WLKNetworkRequestOperation *)self data];
-  v4 = [(WLKDictionaryResponseProcessor *)v6 processResponseData:v3 error:0];
+  data = [(WLKNetworkRequestOperation *)self data];
+  v4 = [(WLKDictionaryResponseProcessor *)v6 processResponseData:data error:0];
   response = self->_response;
   self->_response = v4;
 }

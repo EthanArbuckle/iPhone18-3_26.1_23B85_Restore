@@ -1,78 +1,78 @@
 @interface NUNewsFeedTitleViewStyler
-- (NUNewsFeedTitleViewStyler)initWithTextAlignment:(int64_t)a3;
+- (NUNewsFeedTitleViewStyler)initWithTextAlignment:(int64_t)alignment;
 - (id)messageLargeFont;
 - (id)messageSmallFont;
-- (id)styleTextAsMessage:(id)a3 boundingSize:(CGSize)a4;
-- (id)styleTextAsTitle:(id)a3 boundingSize:(CGSize)a4;
-- (id)styleTitleText:(id)a3 styleType:(unint64_t)a4 boundingSize:(CGSize)a5;
+- (id)styleTextAsMessage:(id)message boundingSize:(CGSize)size;
+- (id)styleTextAsTitle:(id)title boundingSize:(CGSize)size;
+- (id)styleTitleText:(id)text styleType:(unint64_t)type boundingSize:(CGSize)size;
 - (id)titleExtraLargeFont;
-- (id)titleParagraphStyleWithWrapping:(BOOL)a3;
+- (id)titleParagraphStyleWithWrapping:(BOOL)wrapping;
 @end
 
 @implementation NUNewsFeedTitleViewStyler
 
-- (NUNewsFeedTitleViewStyler)initWithTextAlignment:(int64_t)a3
+- (NUNewsFeedTitleViewStyler)initWithTextAlignment:(int64_t)alignment
 {
   v8.receiver = self;
   v8.super_class = NUNewsFeedTitleViewStyler;
   v4 = [(NUNewsFeedTitleViewStyler *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277D75348] nu_defaultTitleTextColor];
+    nu_defaultTitleTextColor = [MEMORY[0x277D75348] nu_defaultTitleTextColor];
     textColor = v4->_textColor;
-    v4->_textColor = v5;
+    v4->_textColor = nu_defaultTitleTextColor;
 
-    v4->_textAlignment = a3;
+    v4->_textAlignment = alignment;
   }
 
   return v4;
 }
 
-- (id)styleTitleText:(id)a3 styleType:(unint64_t)a4 boundingSize:(CGSize)a5
+- (id)styleTitleText:(id)text styleType:(unint64_t)type boundingSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  if (a4)
+  height = size.height;
+  width = size.width;
+  textCopy = text;
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v10 = [(NUNewsFeedTitleViewStyler *)self styleTextAsMessage:v9 boundingSize:width, height];
+      height = [(NUNewsFeedTitleViewStyler *)self styleTextAsMessage:textCopy boundingSize:width, height];
     }
 
     else
     {
-      if (a4 != 2)
+      if (type != 2)
       {
         goto LABEL_8;
       }
 
-      v10 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v9];
+      height = [objc_alloc(MEMORY[0x277CCA898]) initWithString:textCopy];
     }
   }
 
   else
   {
-    v10 = [(NUNewsFeedTitleViewStyler *)self styleTextAsTitle:v9 boundingSize:width, height];
+    height = [(NUNewsFeedTitleViewStyler *)self styleTextAsTitle:textCopy boundingSize:width, height];
   }
 
-  self = v10;
+  self = height;
 LABEL_8:
 
   return self;
 }
 
-- (id)styleTextAsMessage:(id)a3 boundingSize:(CGSize)a4
+- (id)styleTextAsMessage:(id)message boundingSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  messageCopy = message;
   v21 = *MEMORY[0x277D740A8];
   v7 = v21;
-  v8 = [(NUNewsFeedTitleViewStyler *)self messageLargeFont];
-  v22[0] = v8;
+  messageLargeFont = [(NUNewsFeedTitleViewStyler *)self messageLargeFont];
+  v22[0] = messageLargeFont;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  [v6 sizeWithAttributes:v9];
+  [messageCopy sizeWithAttributes:v9];
   v11 = v10;
 
   v19[0] = v7;
@@ -88,37 +88,37 @@ LABEL_8:
   v12 = ;
   v20[0] = v12;
   v19[1] = *MEMORY[0x277D74118];
-  v13 = [(NUNewsFeedTitleViewStyler *)self titleParagraphStyleWithWrapping:v11 > width];
-  v20[1] = v13;
+  width = [(NUNewsFeedTitleViewStyler *)self titleParagraphStyleWithWrapping:v11 > width];
+  v20[1] = width;
   v19[2] = *MEMORY[0x277D740C0];
-  v14 = [(NUNewsFeedTitleViewStyler *)self textColor];
-  v20[2] = v14;
+  textColor = [(NUNewsFeedTitleViewStyler *)self textColor];
+  v20[2] = textColor;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
-  v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v6 attributes:v15];
+  v16 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:messageCopy attributes:v15];
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)styleTextAsTitle:(id)a3 boundingSize:(CGSize)a4
+- (id)styleTextAsTitle:(id)title boundingSize:(CGSize)size
 {
   v14[4] = *MEMORY[0x277D85DE8];
   v13[0] = *MEMORY[0x277D740A8];
-  v5 = a3;
-  v6 = [(NUNewsFeedTitleViewStyler *)self titleExtraLargeFont];
-  v14[0] = v6;
+  titleCopy = title;
+  titleExtraLargeFont = [(NUNewsFeedTitleViewStyler *)self titleExtraLargeFont];
+  v14[0] = titleExtraLargeFont;
   v13[1] = *MEMORY[0x277D74118];
   v7 = [(NUNewsFeedTitleViewStyler *)self titleParagraphStyleWithWrapping:0];
   v14[1] = v7;
   v13[2] = *MEMORY[0x277D740C0];
-  v8 = [(NUNewsFeedTitleViewStyler *)self textColor];
+  textColor = [(NUNewsFeedTitleViewStyler *)self textColor];
   v13[3] = *MEMORY[0x277D740D0];
-  v14[2] = v8;
+  v14[2] = textColor;
   v14[3] = &unk_286E12E58;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:4];
 
-  v10 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v5 attributes:v9];
+  v10 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:titleCopy attributes:v9];
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
@@ -183,15 +183,15 @@ uint64_t __48__NUNewsFeedTitleViewStyler_titleExtraLargeFont__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)titleParagraphStyleWithWrapping:(BOOL)a3
+- (id)titleParagraphStyleWithWrapping:(BOOL)wrapping
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D74240] defaultParagraphStyle];
-  v6 = [v5 mutableCopy];
+  wrappingCopy = wrapping;
+  defaultParagraphStyle = [MEMORY[0x277D74240] defaultParagraphStyle];
+  v6 = [defaultParagraphStyle mutableCopy];
 
   [v6 setLineBreakMode:4];
   [v6 setAlignment:{-[NUNewsFeedTitleViewStyler textAlignment](self, "textAlignment")}];
-  if (v3)
+  if (wrappingCopy)
   {
     [v6 setMinimumLineHeight:20.0];
     [v6 setMaximumLineHeight:20.0];

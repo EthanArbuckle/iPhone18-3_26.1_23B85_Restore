@@ -1,12 +1,12 @@
 @interface EDHyperlink
 + (id)hyperlink;
 - (id)description;
-- (void)setDescriptionText:(id)a3;
-- (void)setDosPath:(id)a3;
-- (void)setPath:(id)a3;
-- (void)setReference:(id)a3;
-- (void)setTextMark:(id)a3;
-- (void)setToolTip:(id)a3;
+- (void)setDescriptionText:(id)text;
+- (void)setDosPath:(id)path;
+- (void)setPath:(id)path;
+- (void)setReference:(id)reference;
+- (void)setTextMark:(id)mark;
+- (void)setToolTip:(id)tip;
 @end
 
 @implementation EDHyperlink
@@ -18,81 +18,81 @@
   return v2;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   mPath = self->mPath;
   p_mPath = &self->mPath;
-  if (mPath != v5)
+  if (mPath != pathCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mPath, a3);
-    v5 = v8;
+    v8 = pathCopy;
+    objc_storeStrong(p_mPath, path);
+    pathCopy = v8;
   }
 }
 
-- (void)setDosPath:(id)a3
+- (void)setDosPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   mDosPath = self->mDosPath;
   p_mDosPath = &self->mDosPath;
-  if (mDosPath != v5)
+  if (mDosPath != pathCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDosPath, a3);
-    v5 = v8;
+    v8 = pathCopy;
+    objc_storeStrong(p_mDosPath, path);
+    pathCopy = v8;
   }
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   mDescriptionText = self->mDescriptionText;
   p_mDescriptionText = &self->mDescriptionText;
-  if (mDescriptionText != v5)
+  if (mDescriptionText != textCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mDescriptionText, a3);
-    v5 = v8;
+    v8 = textCopy;
+    objc_storeStrong(p_mDescriptionText, text);
+    textCopy = v8;
   }
 }
 
-- (void)setTextMark:(id)a3
+- (void)setTextMark:(id)mark
 {
-  v5 = a3;
+  markCopy = mark;
   mTextMark = self->mTextMark;
   p_mTextMark = &self->mTextMark;
-  if (mTextMark != v5)
+  if (mTextMark != markCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mTextMark, a3);
-    v5 = v8;
+    v8 = markCopy;
+    objc_storeStrong(p_mTextMark, mark);
+    markCopy = v8;
   }
 }
 
-- (void)setToolTip:(id)a3
+- (void)setToolTip:(id)tip
 {
-  v5 = a3;
+  tipCopy = tip;
   mToolTip = self->mToolTip;
   p_mToolTip = &self->mToolTip;
-  if (mToolTip != v5)
+  if (mToolTip != tipCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mToolTip, a3);
-    v5 = v8;
+    v8 = tipCopy;
+    objc_storeStrong(p_mToolTip, tip);
+    tipCopy = v8;
   }
 }
 
-- (void)setReference:(id)a3
+- (void)setReference:(id)reference
 {
-  v5 = a3;
+  referenceCopy = reference;
   mReference = self->mReference;
   p_mReference = &self->mReference;
-  if (mReference != v5)
+  if (mReference != referenceCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mReference, a3);
-    v5 = v8;
+    v8 = referenceCopy;
+    objc_storeStrong(p_mReference, reference);
+    referenceCopy = v8;
   }
 }
 

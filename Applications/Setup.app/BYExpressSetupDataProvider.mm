@@ -1,24 +1,24 @@
 @interface BYExpressSetupDataProvider
-+ (BOOL)_shouldAddFeatureDeviceAndAppAnalyticsForDataSource:(id)a3;
-+ (BOOL)_shouldAllowEnablingSiriWithVoiceTriggerEnabledSetting:(id)a3 hasNeededTrainingData:(BOOL)a4;
-+ (id)featuresArrayForDataSource:(id)a3 eligibleForChlorine:(BOOL)a4;
-+ (id)stringForDataSourceType:(unint64_t)a3;
++ (BOOL)_shouldAddFeatureDeviceAndAppAnalyticsForDataSource:(id)source;
++ (BOOL)_shouldAllowEnablingSiriWithVoiceTriggerEnabledSetting:(id)setting hasNeededTrainingData:(BOOL)data;
++ (id)featuresArrayForDataSource:(id)source eligibleForChlorine:(BOOL)chlorine;
++ (id)stringForDataSourceType:(unint64_t)type;
 - (BOOL)_countrySupportsFastDeviceAnalyticsOptIn;
 - (BOOL)_eligibleForChlorine;
 - (BOOL)_fetchSiriVoiceProfileAvailability;
 - (BOOL)_fetchSiriWantsToRun;
-- (BOOL)_hasiCloudSiriTrainingDataForLanguage:(id)a3 withMetadata:(id)a4;
-- (BOOL)_isControllerSkippedForFeature:(unint64_t)a3;
-- (BOOL)_isExcludedByApplicableDispositionsOfFlowItemClass:(Class)a3;
-- (BOOL)_isRestrictedForFeature:(unint64_t)a3;
+- (BOOL)_hasiCloudSiriTrainingDataForLanguage:(id)language withMetadata:(id)metadata;
+- (BOOL)_isControllerSkippedForFeature:(unint64_t)feature;
+- (BOOL)_isExcludedByApplicableDispositionsOfFlowItemClass:(Class)class;
+- (BOOL)_isRestrictedForFeature:(unint64_t)feature;
 - (BOOL)_isStolenDeviceProtectionRestricted;
 - (BOOL)_siriWantsToRun;
-- (BYExpressSetupDataProvider)initWithChronicle:(id)a3 displayZoomExecutor:(id)a4 capabilities:(id)a5 settingsManager:(id)a6 buddyPreferences:(id)a7 buddyPreferencesExcludedFromBackup:(id)a8 managedConfiguration:(id)a9 deviceProvider:(id)a10 expressSettingsCache:(id)a11 iPadMultitaskingManager:(id)a12 flowItemDispositionProvider:(id)a13;
+- (BYExpressSetupDataProvider)initWithChronicle:(id)chronicle displayZoomExecutor:(id)executor capabilities:(id)capabilities settingsManager:(id)manager buddyPreferences:(id)preferences buddyPreferencesExcludedFromBackup:(id)backup managedConfiguration:(id)configuration deviceProvider:(id)self0 expressSettingsCache:(id)self1 iPadMultitaskingManager:(id)self2 flowItemDispositionProvider:(id)self3;
 - (NSString)description;
 - (PKPaymentSetupAssistantProvisioningContext)walletProvisioningContext;
 - (id)_countryCode;
-- (id)_descriptionForDataSource:(id)a3;
-- (id)_stringForFeature:(unint64_t)a3;
+- (id)_descriptionForDataSource:(id)source;
+- (id)_stringForFeature:(unint64_t)feature;
 - (id)actionButtonData;
 - (id)appAnalyticsOptIn;
 - (id)dataSource;
@@ -38,47 +38,47 @@
 - (id)sourceDeviceClass;
 - (id)stolenDeviceProtectionEnabled;
 - (id)stolenDeviceProtectionStrictModeEnabled;
-- (id)stringForDataSourceFeatures:(id)a3;
+- (id)stringForDataSourceFeatures:(id)features;
 - (id)walletMetadata;
 - (id)watchMigrationData;
 - (int64_t)userInterfaceStyleModeValue;
 - (unint64_t)dataSourceType;
-- (void)_applyDataSourceSetting:(BOOL)a3 forFeature:(unint64_t)a4;
-- (void)_verifyAppliedSettings:(BOOL)a3;
-- (void)applyDataSourceSetting:(BOOL)a3 forFeature:(unint64_t)a4;
+- (void)_applyDataSourceSetting:(BOOL)setting forFeature:(unint64_t)feature;
+- (void)_verifyAppliedSettings:(BOOL)settings;
+- (void)applyDataSourceSetting:(BOOL)setting forFeature:(unint64_t)feature;
 - (void)applyExpressSettings;
-- (void)prepare:(id)a3;
+- (void)prepare:(id)prepare;
 - (void)revertExpressSettings;
 @end
 
 @implementation BYExpressSetupDataProvider
 
-- (BYExpressSetupDataProvider)initWithChronicle:(id)a3 displayZoomExecutor:(id)a4 capabilities:(id)a5 settingsManager:(id)a6 buddyPreferences:(id)a7 buddyPreferencesExcludedFromBackup:(id)a8 managedConfiguration:(id)a9 deviceProvider:(id)a10 expressSettingsCache:(id)a11 iPadMultitaskingManager:(id)a12 flowItemDispositionProvider:(id)a13
+- (BYExpressSetupDataProvider)initWithChronicle:(id)chronicle displayZoomExecutor:(id)executor capabilities:(id)capabilities settingsManager:(id)manager buddyPreferences:(id)preferences buddyPreferencesExcludedFromBackup:(id)backup managedConfiguration:(id)configuration deviceProvider:(id)self0 expressSettingsCache:(id)self1 iPadMultitaskingManager:(id)self2 flowItemDispositionProvider:(id)self3
 {
   v37[0] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, chronicle);
   obj = 0;
-  objc_storeStrong(&obj, a4);
+  objc_storeStrong(&obj, executor);
   v34 = 0;
-  objc_storeStrong(&v34, a5);
+  objc_storeStrong(&v34, capabilities);
   v33 = 0;
-  objc_storeStrong(&v33, a6);
+  objc_storeStrong(&v33, manager);
   v32 = 0;
-  objc_storeStrong(&v32, a7);
+  objc_storeStrong(&v32, preferences);
   v31 = 0;
-  objc_storeStrong(&v31, a8);
+  objc_storeStrong(&v31, backup);
   v30 = 0;
-  objc_storeStrong(&v30, a9);
+  objc_storeStrong(&v30, configuration);
   v29 = 0;
-  objc_storeStrong(&v29, a10);
+  objc_storeStrong(&v29, provider);
   v28 = 0;
-  objc_storeStrong(&v28, a11);
+  objc_storeStrong(&v28, cache);
   v27 = 0;
-  objc_storeStrong(&v27, a12);
+  objc_storeStrong(&v27, multitaskingManager);
   v26 = 0;
-  objc_storeStrong(&v26, a13);
+  objc_storeStrong(&v26, dispositionProvider);
   v18 = v37[0];
   v37[0] = 0;
   v25.receiver = v18;
@@ -127,33 +127,33 @@
 
 - (BOOL)_eligibleForChlorine
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!self->_didCacheEligibleForChlorine)
   {
-    v3 = [(BYExpressSetupDataProvider *)self capabilities];
-    self->_cachedEligibleForChlorine = [(BYCapabilities *)v3 eligibleForChlorine]& 1;
+    capabilities = [(BYExpressSetupDataProvider *)self capabilities];
+    self->_cachedEligibleForChlorine = [(BYCapabilities *)capabilities eligibleForChlorine]& 1;
 
     self->_didCacheEligibleForChlorine = 1;
   }
 
   cachedEligibleForChlorine = self->_cachedEligibleForChlorine;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return cachedEligibleForChlorine;
 }
 
 - (NSString)description
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = objc_alloc_init(NSMutableString);
-  [location[0] appendFormat:@"<%@: %p>\n", objc_opt_class(), v8];
-  v2 = [(BYExpressSetupDataProvider *)v8 _descriptionForDataSource:v8];
+  [location[0] appendFormat:@"<%@: %p>\n", objc_opt_class(), selfCopy];
+  v2 = [(BYExpressSetupDataProvider *)selfCopy _descriptionForDataSource:selfCopy];
   [location[0] appendFormat:@"Resolved: %@\n", v2];
 
-  v3 = [(BYExpressSetupDataProvider *)v8 dataSource];
-  v4 = [(BYExpressSetupDataProvider *)v8 _descriptionForDataSource:v3];
+  dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+  v4 = [(BYExpressSetupDataProvider *)selfCopy _descriptionForDataSource:dataSource];
   [location[0] appendFormat:@"Data source: %@\n", v4];
 
   v5 = location[0];
@@ -163,55 +163,55 @@
 
 - (id)dataSource
 {
-  v2 = [(BYExpressSetupDataProvider *)self backupDataSource];
-  v3 = [(BYExpressSetupBackupSource *)v2 dataAvailable];
+  backupDataSource = [(BYExpressSetupDataProvider *)self backupDataSource];
+  dataAvailable = [(BYExpressSetupBackupSource *)backupDataSource dataAvailable];
 
-  if (v3)
+  if (dataAvailable)
   {
-    v12 = [(BYExpressSetupDataProvider *)self backupDataSource];
+    backupDataSource2 = [(BYExpressSetupDataProvider *)self backupDataSource];
   }
 
   else
   {
-    v4 = [(BYExpressSetupDataProvider *)self proximitySetupDataSource];
-    v5 = [(BYExpressSetupProximityDataSource *)v4 dataAvailable];
+    proximitySetupDataSource = [(BYExpressSetupDataProvider *)self proximitySetupDataSource];
+    dataAvailable2 = [(BYExpressSetupProximityDataSource *)proximitySetupDataSource dataAvailable];
 
-    if (v5)
+    if (dataAvailable2)
     {
-      v12 = [(BYExpressSetupDataProvider *)self proximitySetupDataSource];
+      backupDataSource2 = [(BYExpressSetupDataProvider *)self proximitySetupDataSource];
     }
 
     else
     {
-      v6 = [(BYExpressSetupDataProvider *)self cloudDataSource];
-      v7 = [(BYExpressSetupCloudSource *)v6 dataAvailable];
+      cloudDataSource = [(BYExpressSetupDataProvider *)self cloudDataSource];
+      dataAvailable3 = [(BYExpressSetupCloudSource *)cloudDataSource dataAvailable];
 
-      if (v7)
+      if (dataAvailable3)
       {
-        v12 = [(BYExpressSetupDataProvider *)self cloudDataSource];
+        backupDataSource2 = [(BYExpressSetupDataProvider *)self cloudDataSource];
       }
 
       else
       {
-        v8 = [(BYExpressSetupDataProvider *)self defaultSource];
+        defaultSource = [(BYExpressSetupDataProvider *)self defaultSource];
 
-        if (!v8)
+        if (!defaultSource)
         {
           v9 = objc_alloc_init(BYExpressSetupDefaultSource);
           [(BYExpressSetupDataProvider *)self setDefaultSource:v9];
         }
 
-        v12 = [(BYExpressSetupDataProvider *)self defaultSource];
+        backupDataSource2 = [(BYExpressSetupDataProvider *)self defaultSource];
       }
     }
   }
 
-  return v12;
+  return backupDataSource2;
 }
 
 - (unint64_t)dataSourceType
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(BYExpressSetupDataProvider *)self dataSource];
   if (!location[0])
@@ -219,29 +219,29 @@
     goto LABEL_10;
   }
 
-  v2 = [(BYExpressSetupDataProvider *)v8 cloudDataSource];
+  cloudDataSource = [(BYExpressSetupDataProvider *)selfCopy cloudDataSource];
 
-  if (location[0] != v2)
+  if (location[0] != cloudDataSource)
   {
-    v3 = [(BYExpressSetupDataProvider *)v8 proximitySetupDataSource];
+    proximitySetupDataSource = [(BYExpressSetupDataProvider *)selfCopy proximitySetupDataSource];
 
-    if (location[0] == v3)
+    if (location[0] == proximitySetupDataSource)
     {
       v9 = 3;
       goto LABEL_11;
     }
 
-    v4 = [(BYExpressSetupDataProvider *)v8 backupDataSource];
+    backupDataSource = [(BYExpressSetupDataProvider *)selfCopy backupDataSource];
 
-    if (location[0] == v4)
+    if (location[0] == backupDataSource)
     {
       v9 = 2;
       goto LABEL_11;
     }
 
-    v5 = [(BYExpressSetupDataProvider *)v8 defaultSource];
+    defaultSource = [(BYExpressSetupDataProvider *)selfCopy defaultSource];
 
-    if (location[0] == v5)
+    if (location[0] == defaultSource)
     {
       v9 = 1;
       goto LABEL_11;
@@ -261,45 +261,45 @@ LABEL_11:
 - (id)pairedWatches
 {
   v2 = +[NRMigrator sharedMigrator];
-  v3 = [(BYExpressSetupDataProvider *)self watchMigrationData];
-  v4 = [v2 devicesFromMigrationConsentRequestData:v3];
+  watchMigrationData = [(BYExpressSetupDataProvider *)self watchMigrationData];
+  v4 = [v2 devicesFromMigrationConsentRequestData:watchMigrationData];
 
   return v4;
 }
 
 - (id)expressSetupFeatures
 {
-  v6 = self;
+  selfCopy = self;
   obj[1] = a2;
   if (!self->_listedFeatures)
   {
-    v2 = [objc_opt_class() featuresArrayForDataSource:v6 eligibleForChlorine:{-[BYExpressSetupDataProvider _eligibleForChlorine](v6, "_eligibleForChlorine")}];
+    v2 = [objc_opt_class() featuresArrayForDataSource:selfCopy eligibleForChlorine:{-[BYExpressSetupDataProvider _eligibleForChlorine](selfCopy, "_eligibleForChlorine")}];
     obj[0] = [v2 mutableCopy];
 
-    if (![(BYExpressSetupDataProvider *)v6 willRestoreOrMigrate])
+    if (![(BYExpressSetupDataProvider *)selfCopy willRestoreOrMigrate])
     {
       [obj[0] removeObject:&off_10033D3E8];
     }
 
-    if (![(BYExpressSetupDataProvider *)v6 willRestoreOrReallyMigrate])
+    if (![(BYExpressSetupDataProvider *)selfCopy willRestoreOrReallyMigrate])
     {
       [obj[0] removeObject:&off_10033D400];
     }
 
-    objc_storeStrong(&v6->_listedFeatures, obj[0]);
+    objc_storeStrong(&selfCopy->_listedFeatures, obj[0]);
     objc_storeStrong(obj, 0);
   }
 
-  listedFeatures = v6->_listedFeatures;
+  listedFeatures = selfCopy->_listedFeatures;
 
   return listedFeatures;
 }
 
-+ (id)stringForDataSourceType:(unint64_t)a3
++ (id)stringForDataSourceType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    switch(a3)
+    switch(type)
     {
       case 1uLL:
         v4 = @"Default";
@@ -324,35 +324,35 @@ LABEL_11:
   return v4;
 }
 
-+ (id)featuresArrayForDataSource:(id)a3 eligibleForChlorine:(BOOL)a4
++ (id)featuresArrayForDataSource:(id)source eligibleForChlorine:(BOOL)chlorine
 {
-  v36 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, source);
+  chlorineCopy = chlorine;
   v33 = objc_alloc_init(NSMutableArray);
-  v5 = [location[0] siriOptIn];
+  siriOptIn = [location[0] siriOptIn];
 
-  if (v5)
+  if (siriOptIn)
   {
     [v33 addObject:&off_10033D418];
-    v6 = [location[0] siriDataSharingOptIn];
+    siriDataSharingOptIn = [location[0] siriDataSharingOptIn];
 
-    if (v6)
+    if (siriDataSharingOptIn)
     {
       [v33 addObject:&off_10033D430];
     }
   }
 
-  v7 = [location[0] locationServicesOptIn];
+  locationServicesOptIn = [location[0] locationServicesOptIn];
   v31 = 0;
   v8 = 1;
-  if (!v7)
+  if (!locationServicesOptIn)
   {
-    v32 = [location[0] locationServicesSettings];
+    locationServicesSettings = [location[0] locationServicesSettings];
     v31 = 1;
-    v8 = v32 != 0;
+    v8 = locationServicesSettings != 0;
   }
 
   if (v31)
@@ -364,9 +364,9 @@ LABEL_11:
     [v33 addObject:&off_10033D448];
   }
 
-  if (v34)
+  if (chlorineCopy)
   {
-    if ([v36 _shouldAddFeatureDeviceAndAppAnalyticsForDataSource:location[0]])
+    if ([selfCopy _shouldAddFeatureDeviceAndAppAnalyticsForDataSource:location[0]])
     {
       [v33 addObject:&off_10033D460];
     }
@@ -374,43 +374,43 @@ LABEL_11:
 
   else
   {
-    v9 = [location[0] deviceAnalyticsOptIn];
+    deviceAnalyticsOptIn = [location[0] deviceAnalyticsOptIn];
 
-    if (v9)
+    if (deviceAnalyticsOptIn)
     {
       [v33 addObject:&off_10033D478];
     }
 
-    v10 = [location[0] appAnalyticsOptIn];
+    appAnalyticsOptIn = [location[0] appAnalyticsOptIn];
 
-    if (v10)
+    if (appAnalyticsOptIn)
     {
       [v33 addObject:&off_10033D490];
     }
   }
 
-  v11 = [location[0] screenTimeEnabled];
+  screenTimeEnabled = [location[0] screenTimeEnabled];
 
-  if (v11)
+  if (screenTimeEnabled)
   {
     [v33 addObject:&off_10033D4A8];
   }
 
-  v12 = [location[0] softwareUpdateAutoDownloadEnabled];
+  softwareUpdateAutoDownloadEnabled = [location[0] softwareUpdateAutoDownloadEnabled];
   v29 = 0;
-  v13 = 0;
-  if ([v12 BOOLValue])
+  bOOLValue = 0;
+  if ([softwareUpdateAutoDownloadEnabled BOOLValue])
   {
-    v30 = [location[0] softwareUpdateAutoUpdateEnabled];
+    softwareUpdateAutoUpdateEnabled = [location[0] softwareUpdateAutoUpdateEnabled];
     v29 = 1;
-    v13 = [v30 BOOLValue];
+    bOOLValue = [softwareUpdateAutoUpdateEnabled BOOLValue];
   }
 
   if (v29)
   {
   }
 
-  if (v13)
+  if (bOOLValue)
   {
     [v33 addObject:&off_10033D4C0];
   }
@@ -420,13 +420,13 @@ LABEL_11:
     [v33 addObject:&off_10033D4D8];
   }
 
-  v14 = [location[0] watchMigrationData];
+  watchMigrationData = [location[0] watchMigrationData];
 
-  if (v14)
+  if (watchMigrationData)
   {
     v15 = +[NRMigrator sharedMigrator];
-    v16 = [location[0] watchMigrationData];
-    v28 = [v15 devicesFromMigrationConsentRequestData:v16];
+    watchMigrationData2 = [location[0] watchMigrationData];
+    v28 = [v15 devicesFromMigrationConsentRequestData:watchMigrationData2];
 
     if ([v28 count])
     {
@@ -436,44 +436,44 @@ LABEL_11:
     objc_storeStrong(&v28, 0);
   }
 
-  v17 = [location[0] walletProvisioningContext];
-  v18 = [v17 setupAssistantCredentials];
-  v19 = [v18 count];
+  walletProvisioningContext = [location[0] walletProvisioningContext];
+  setupAssistantCredentials = [walletProvisioningContext setupAssistantCredentials];
+  v19 = [setupAssistantCredentials count];
 
   if (v19)
   {
     [v33 addObject:&off_10033D4F0];
   }
 
-  v20 = [location[0] actionButtonData];
+  actionButtonData = [location[0] actionButtonData];
 
-  if (v20)
+  if (actionButtonData)
   {
     [v33 addObject:&off_10033D508];
   }
 
-  v21 = [location[0] stolenDeviceProtectionEnabled];
+  stolenDeviceProtectionEnabled = [location[0] stolenDeviceProtectionEnabled];
   v26 = 0;
-  v22 = 0;
-  if (v21)
+  bOOLValue2 = 0;
+  if (stolenDeviceProtectionEnabled)
   {
-    v27 = [location[0] stolenDeviceProtectionEnabled];
+    stolenDeviceProtectionEnabled2 = [location[0] stolenDeviceProtectionEnabled];
     v26 = 1;
-    v22 = [v27 BOOLValue];
+    bOOLValue2 = [stolenDeviceProtectionEnabled2 BOOLValue];
   }
 
   if (v26)
   {
   }
 
-  if (v22)
+  if (bOOLValue2)
   {
     [v33 addObject:&off_10033D400];
   }
 
-  v23 = [location[0] iPadMultitaskingMode];
+  iPadMultitaskingMode = [location[0] iPadMultitaskingMode];
 
-  if (v23)
+  if (iPadMultitaskingMode)
   {
     [v33 addObject:&off_10033D520];
   }
@@ -485,13 +485,13 @@ LABEL_11:
   return v24;
 }
 
-- (id)stringForDataSourceFeatures:(id)a3
+- (id)stringForDataSourceFeatures:(id)features
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = [objc_opt_class() featuresArrayForDataSource:location[0] eligibleForChlorine:{-[BYExpressSetupDataProvider _eligibleForChlorine](v17, "_eligibleForChlorine")}];
+  objc_storeStrong(location, features);
+  v15 = [objc_opt_class() featuresArrayForDataSource:location[0] eligibleForChlorine:{-[BYExpressSetupDataProvider _eligibleForChlorine](selfCopy, "_eligibleForChlorine")}];
   v14 = objc_alloc_init(NSMutableArray);
   memset(__b, 0, sizeof(__b));
   v3 = v15;
@@ -509,9 +509,9 @@ LABEL_11:
         }
 
         v13 = *(__b[1] + 8 * i);
-        v7 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
         v8 = v14;
-        v9 = [(BYExpressSetupDataProvider *)v17 _stringForFeature:v7, v7];
+        v9 = [(BYExpressSetupDataProvider *)selfCopy _stringForFeature:unsignedIntegerValue, unsignedIntegerValue];
         [v8 addObject:v9];
       }
 
@@ -532,21 +532,21 @@ LABEL_11:
 - (id)sourceDeviceClass
 {
   v2 = [(BYExpressSetupDataProvider *)self dataSource:a2];
-  v3 = [v2 sourceDeviceClass];
+  sourceDeviceClass = [v2 sourceDeviceClass];
 
-  return v3;
+  return sourceDeviceClass;
 }
 
 - (id)locationServicesOptIn
 {
-  v10 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:1])
   {
-    v11 = 0;
+    locationServicesOptIn = 0;
   }
 
-  else if ([(BYExpressSetupDataProvider *)v10 _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
+  else if ([(BYExpressSetupDataProvider *)selfCopy _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
   {
     oslog[0] = _BYLoggingFacility();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -559,16 +559,16 @@ LABEL_11:
     }
 
     objc_storeStrong(oslog, 0);
-    v11 = 0;
+    locationServicesOptIn = 0;
   }
 
   else
   {
-    v4 = [(BYExpressSetupDataProvider *)v10 dataSource];
-    v11 = [v4 locationServicesOptIn];
+    dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+    locationServicesOptIn = [dataSource locationServicesOptIn];
   }
 
-  v5 = v11;
+  v5 = locationServicesOptIn;
 
   return v5;
 }
@@ -577,33 +577,33 @@ LABEL_11:
 {
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:1])
   {
-    v5 = 0;
+    locationServicesSettings = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)self dataSource];
-    v5 = [v2 locationServicesSettings];
+    dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+    locationServicesSettings = [dataSource locationServicesSettings];
   }
 
-  return v5;
+  return locationServicesSettings;
 }
 
 - (id)appAnalyticsOptIn
 {
-  v11 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:3])
   {
-    v12 = 0;
+    appAnalyticsOptIn = 0;
   }
 
-  else if ([(BYExpressSetupDataProvider *)v11 _isRestrictedForFeature:3])
+  else if ([(BYExpressSetupDataProvider *)selfCopy _isRestrictedForFeature:3])
   {
-    v12 = 0;
+    appAnalyticsOptIn = 0;
   }
 
-  else if ([(BYExpressSetupDataProvider *)v11 _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
+  else if ([(BYExpressSetupDataProvider *)selfCopy _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
   {
     oslog[0] = _BYLoggingFacility();
     v9 = OS_LOG_TYPE_DEFAULT;
@@ -616,49 +616,49 @@ LABEL_11:
     }
 
     objc_storeStrong(oslog, 0);
-    v12 = 0;
+    appAnalyticsOptIn = 0;
   }
 
   else
   {
-    location = [(BYExpressSetupDataProvider *)v11 deviceAnalyticsOptIn];
+    location = [(BYExpressSetupDataProvider *)selfCopy deviceAnalyticsOptIn];
     if (location)
     {
       if ([location BOOLValue])
       {
-        v4 = [(BYExpressSetupDataProvider *)v11 dataSource];
-        v12 = [v4 appAnalyticsOptIn];
+        dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+        appAnalyticsOptIn = [dataSource appAnalyticsOptIn];
       }
 
       else
       {
-        v12 = &__kCFBooleanFalse;
+        appAnalyticsOptIn = &__kCFBooleanFalse;
       }
     }
 
     else
     {
-      v12 = 0;
+      appAnalyticsOptIn = 0;
     }
 
     objc_storeStrong(&location, 0);
   }
 
-  v5 = v12;
+  v5 = appAnalyticsOptIn;
 
   return v5;
 }
 
 - (id)deviceAnalyticsOptIn
 {
-  v12 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:2])
   {
-    v13 = 0;
+    deviceAnalyticsOptIn = 0;
   }
 
-  else if ([(BYExpressSetupDataProvider *)v12 _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
+  else if ([(BYExpressSetupDataProvider *)selfCopy _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
   {
     oslog[0] = _BYLoggingFacility();
     v10 = OS_LOG_TYPE_DEFAULT;
@@ -671,44 +671,44 @@ LABEL_11:
     }
 
     objc_storeStrong(oslog, 0);
-    v13 = 0;
+    deviceAnalyticsOptIn = 0;
   }
 
   else
   {
-    v8 = [(BYExpressSetupDataProvider *)v12 _countrySupportsFastDeviceAnalyticsOptIn];
-    v7 = [(BYExpressSetupDataProvider *)v12 _isRestrictedForFeature:2];
-    if (v8 & 1) == 0 || (v7)
+    _countrySupportsFastDeviceAnalyticsOptIn = [(BYExpressSetupDataProvider *)selfCopy _countrySupportsFastDeviceAnalyticsOptIn];
+    v7 = [(BYExpressSetupDataProvider *)selfCopy _isRestrictedForFeature:2];
+    if (_countrySupportsFastDeviceAnalyticsOptIn & 1) == 0 || (v7)
     {
-      v13 = 0;
+      deviceAnalyticsOptIn = 0;
     }
 
     else
     {
-      v4 = [(BYExpressSetupDataProvider *)v12 dataSource];
-      v13 = [v4 deviceAnalyticsOptIn];
+      dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+      deviceAnalyticsOptIn = [dataSource deviceAnalyticsOptIn];
     }
   }
 
-  v5 = v13;
+  v5 = deviceAnalyticsOptIn;
 
   return v5;
 }
 
 - (id)siriOptIn
 {
-  v49 = self;
+  selfCopy = self;
   location[1] = a2;
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:5])
   {
-    v50 = 0;
+    siriOptIn3 = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)v49 dataSource];
-    v3 = [v2 siriOptIn];
-    v4 = v3 == 0;
+    dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+    siriOptIn = [dataSource siriOptIn];
+    v4 = siriOptIn == 0;
 
     if (v4)
     {
@@ -723,23 +723,23 @@ LABEL_11:
       }
 
       objc_storeStrong(location, 0);
-      v50 = 0;
+      siriOptIn3 = 0;
     }
 
     else
     {
-      v45 = [(BYExpressSetupDataProvider *)v49 _isRestrictedForFeature:5];
-      v7 = [(BYExpressSetupDataProvider *)v49 capabilities];
-      v8 = 0;
-      if (([(BYCapabilities *)v7 canShowSiriScreen]& 1) != 0)
+      v45 = [(BYExpressSetupDataProvider *)selfCopy _isRestrictedForFeature:5];
+      capabilities = [(BYExpressSetupDataProvider *)selfCopy capabilities];
+      _siriWantsToRun = 0;
+      if (([(BYCapabilities *)capabilities canShowSiriScreen]& 1) != 0)
       {
-        v8 = [(BYExpressSetupDataProvider *)v49 _siriWantsToRun];
+        _siriWantsToRun = [(BYExpressSetupDataProvider *)selfCopy _siriWantsToRun];
       }
 
-      v44 = v8 & 1;
-      v9 = [(BYExpressSetupDataProvider *)v49 dataSource];
-      v10 = [v9 siriOptIn];
-      v11 = [v10 BOOLValue] ^ 1;
+      v44 = _siriWantsToRun & 1;
+      dataSource2 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+      siriOptIn2 = [dataSource2 siriOptIn];
+      v11 = [siriOptIn2 BOOLValue] ^ 1;
 
       if (v11)
       {
@@ -754,13 +754,13 @@ LABEL_11:
         objc_storeStrong(&oslog, 0);
         if ((v45 & 1) != 0 || (v44 & 1) == 0)
         {
-          v50 = 0;
+          siriOptIn3 = 0;
         }
 
         else
         {
-          v12 = [(BYExpressSetupDataProvider *)v49 dataSource];
-          v50 = [v12 siriOptIn];
+          dataSource3 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+          siriOptIn3 = [dataSource3 siriOptIn];
         }
       }
 
@@ -771,87 +771,87 @@ LABEL_11:
         v39 = 0x20000000;
         v40 = 32;
         v41 = 0;
-        v13 = [(BYExpressSetupDataProvider *)v49 siriStateCacheQueue];
+        siriStateCacheQueue = [(BYExpressSetupDataProvider *)selfCopy siriStateCacheQueue];
         block = _NSConcreteStackBlock;
         v32 = -1073741824;
         v33 = 0;
         v34 = sub_10019CA70;
         v35 = &unk_10032C290;
         v36[1] = &v37;
-        v36[0] = v49;
-        dispatch_sync(v13, &block);
+        v36[0] = selfCopy;
+        dispatch_sync(siriStateCacheQueue, &block);
 
-        v14 = [sub_10019CAB8() sharedPreferences];
-        v15 = [v14 allSiriLanguageCodesForSystemLanguageCode:0 isGoodFit:0];
+        sharedPreferences = [sub_10019CAB8() sharedPreferences];
+        v15 = [sharedPreferences allSiriLanguageCodesForSystemLanguageCode:0 isGoodFit:0];
         v30 = [v15 count];
 
-        v29 = [(BYExpressSetupDataProvider *)v49 _supportsAlwaysOnHeySiri];
+        _supportsAlwaysOnHeySiri = [(BYExpressSetupDataProvider *)selfCopy _supportsAlwaysOnHeySiri];
         v16 = 1;
-        if (v29)
+        if (_supportsAlwaysOnHeySiri)
         {
           v16 = *(v38 + 24);
         }
 
         v28 = v16 & 1;
-        v17 = [sub_10019CAB8() sharedPreferences];
-        v27 = [v17 languageCode];
+        sharedPreferences2 = [sub_10019CAB8() sharedPreferences];
+        languageCode = [sharedPreferences2 languageCode];
 
         v18 = 0;
         if (v30 > 1)
         {
           v18 = 0;
-          if (!v27)
+          if (!languageCode)
           {
             v18 = *(v38 + 24) ^ 1;
           }
         }
 
         v26 = v18 & 1;
-        v19 = [(BYExpressSetupDataProvider *)v49 dataSource];
-        v25 = [v19 siriVoiceTriggerEnabled];
+        dataSource4 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+        siriVoiceTriggerEnabled = [dataSource4 siriVoiceTriggerEnabled];
 
-        v24 = [BYExpressSetupDataProvider _shouldAllowEnablingSiriWithVoiceTriggerEnabledSetting:v25 hasNeededTrainingData:v28 & 1];
+        v24 = [BYExpressSetupDataProvider _shouldAllowEnablingSiriWithVoiceTriggerEnabledSetting:siriVoiceTriggerEnabled hasNeededTrainingData:v28 & 1];
         v23 = _BYLoggingFacility();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          sub_10019CBCC(v51, v44 & 1, v26 & 1, v45 & 1, v29 & 1, v38[3] & 1, v25, v24 & 1);
+          sub_10019CBCC(v51, v44 & 1, v26 & 1, v45 & 1, _supportsAlwaysOnHeySiri & 1, v38[3] & 1, siriVoiceTriggerEnabled, v24 & 1);
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Express Data Provider: Siri conditions: wantsToRun = %d, needsLanguageDisambiguation = %d, restricted = %d, supportsAOP = %d, hasVoiceProfileIniCloud = %d, voiceTriggerEnabledSetting = %@, shouldAllowEnablingSiriWithVoiceTriggerDetails = %d", v51, 0x30u);
         }
 
         objc_storeStrong(&v23, 0);
         if ((v45 & 1) != 0 || (v44 & 1) == 0 || (v26 & 1) != 0 || (v24 & 1) == 0)
         {
-          v50 = 0;
+          siriOptIn3 = 0;
         }
 
         else
         {
-          v20 = [(BYExpressSetupDataProvider *)v49 dataSource];
-          v50 = [v20 siriOptIn];
+          dataSource5 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+          siriOptIn3 = [dataSource5 siriOptIn];
         }
 
-        objc_storeStrong(&v25, 0);
-        objc_storeStrong(&v27, 0);
+        objc_storeStrong(&siriVoiceTriggerEnabled, 0);
+        objc_storeStrong(&languageCode, 0);
         objc_storeStrong(v36, 0);
         _Block_object_dispose(&v37, 8);
       }
     }
   }
 
-  v21 = v50;
+  v21 = siriOptIn3;
 
   return v21;
 }
 
-+ (BOOL)_shouldAllowEnablingSiriWithVoiceTriggerEnabledSetting:(id)a3 hasNeededTrainingData:(BOOL)a4
++ (BOOL)_shouldAllowEnablingSiriWithVoiceTriggerEnabledSetting:(id)setting hasNeededTrainingData:(BOOL)data
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, setting);
   if (location[0])
   {
-    v7 = ([location[0] BOOLValue] & 1) == 0 || a4;
+    v7 = ([location[0] BOOLValue] & 1) == 0 || data;
   }
 
   else
@@ -867,60 +867,60 @@ LABEL_11:
 {
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:5])
   {
-    v5 = 0;
+    siriVoiceProfileAvailabilityMetadata = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)self dataSource];
-    v5 = [v2 siriVoiceProfileAvailabilityMetadata];
+    dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+    siriVoiceProfileAvailabilityMetadata = [dataSource siriVoiceProfileAvailabilityMetadata];
   }
 
-  return v5;
+  return siriVoiceProfileAvailabilityMetadata;
 }
 
 - (id)siriDataSharingOptIn
 {
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:5])
   {
-    v5 = 0;
+    siriDataSharingOptIn = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)self dataSource];
-    v5 = [v2 siriDataSharingOptIn];
+    dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+    siriDataSharingOptIn = [dataSource siriDataSharingOptIn];
   }
 
-  return v5;
+  return siriDataSharingOptIn;
 }
 
 - (id)siriVoiceTriggerEnabled
 {
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:5])
   {
-    v5 = 0;
+    siriVoiceTriggerEnabled = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)self dataSource];
-    v5 = [v2 siriVoiceTriggerEnabled];
+    dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+    siriVoiceTriggerEnabled = [dataSource siriVoiceTriggerEnabled];
   }
 
-  return v5;
+  return siriVoiceTriggerEnabled;
 }
 
 - (id)screenTimeEnabled
 {
-  v10 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:7])
   {
-    v11 = 0;
+    screenTimeEnabled = 0;
   }
 
-  else if ([(BYExpressSetupDataProvider *)v10 _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
+  else if ([(BYExpressSetupDataProvider *)selfCopy _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
   {
     oslog[0] = _BYLoggingFacility();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -933,30 +933,30 @@ LABEL_11:
     }
 
     objc_storeStrong(oslog, 0);
-    v11 = 0;
+    screenTimeEnabled = 0;
   }
 
   else
   {
-    v4 = [(BYExpressSetupDataProvider *)v10 dataSource];
-    v11 = [v4 screenTimeEnabled];
+    dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+    screenTimeEnabled = [dataSource screenTimeEnabled];
   }
 
-  v5 = v11;
+  v5 = screenTimeEnabled;
 
   return v5;
 }
 
 - (id)softwareUpdateAutoUpdateEnabled
 {
-  v10 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:8])
   {
-    v11 = 0;
+    softwareUpdateAutoUpdateEnabled = 0;
   }
 
-  else if ([(BYExpressSetupDataProvider *)v10 _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
+  else if ([(BYExpressSetupDataProvider *)selfCopy _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
   {
     oslog[0] = _BYLoggingFacility();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -969,30 +969,30 @@ LABEL_11:
     }
 
     objc_storeStrong(oslog, 0);
-    v11 = 0;
+    softwareUpdateAutoUpdateEnabled = 0;
   }
 
   else
   {
-    v4 = [(BYExpressSetupDataProvider *)v10 dataSource];
-    v11 = [v4 softwareUpdateAutoUpdateEnabled];
+    dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+    softwareUpdateAutoUpdateEnabled = [dataSource softwareUpdateAutoUpdateEnabled];
   }
 
-  v5 = v11;
+  v5 = softwareUpdateAutoUpdateEnabled;
 
   return v5;
 }
 
 - (id)softwareUpdateAutoDownloadEnabled
 {
-  v10 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:8])
   {
-    v11 = 0;
+    softwareUpdateAutoDownloadEnabled = 0;
   }
 
-  else if ([(BYExpressSetupDataProvider *)v10 _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
+  else if ([(BYExpressSetupDataProvider *)selfCopy _isExcludedByApplicableDispositionsOfFlowItemClass:objc_opt_class()])
   {
     oslog[0] = _BYLoggingFacility();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -1005,16 +1005,16 @@ LABEL_11:
     }
 
     objc_storeStrong(oslog, 0);
-    v11 = 0;
+    softwareUpdateAutoDownloadEnabled = 0;
   }
 
   else
   {
-    v4 = [(BYExpressSetupDataProvider *)v10 dataSource];
-    v11 = [v4 softwareUpdateAutoDownloadEnabled];
+    dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+    softwareUpdateAutoDownloadEnabled = [dataSource softwareUpdateAutoDownloadEnabled];
   }
 
-  v5 = v11;
+  v5 = softwareUpdateAutoDownloadEnabled;
 
   return v5;
 }
@@ -1026,37 +1026,37 @@ LABEL_11:
     return 0;
   }
 
-  v2 = [(BYExpressSetupDataProvider *)self dataSource];
-  v5 = [v2 userInterfaceStyleModeValue];
+  dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+  userInterfaceStyleModeValue = [dataSource userInterfaceStyleModeValue];
 
-  return v5;
+  return userInterfaceStyleModeValue;
 }
 
 - (id)watchMigrationData
 {
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:10])
   {
-    v7 = 0;
+    watchMigrationData = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)self capabilities];
-    v3 = [(BYCapabilities *)v2 supportsAppleWatch]^ 1;
+    capabilities = [(BYExpressSetupDataProvider *)self capabilities];
+    v3 = [(BYCapabilities *)capabilities supportsAppleWatch]^ 1;
 
     if (v3)
     {
-      v7 = 0;
+      watchMigrationData = 0;
     }
 
     else
     {
-      v4 = [(BYExpressSetupDataProvider *)self dataSource];
-      v7 = [v4 watchMigrationData];
+      dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+      watchMigrationData = [dataSource watchMigrationData];
     }
   }
 
-  return v7;
+  return watchMigrationData;
 }
 
 - (PKPaymentSetupAssistantProvisioningContext)walletProvisioningContext
@@ -1077,102 +1077,102 @@ LABEL_11:
 - (id)walletMetadata
 {
   v2 = [(BYExpressSetupDataProvider *)self dataSource:a2];
-  v3 = [v2 walletMetadata];
+  walletMetadata = [v2 walletMetadata];
 
-  return v3;
+  return walletMetadata;
 }
 
 - (id)actionButtonData
 {
   if ([(BYExpressSetupDataProvider *)self _isControllerSkippedForFeature:12])
   {
-    v7 = 0;
+    actionButtonData = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)self deviceProvider];
-    v3 = [(BYDeviceProvider *)v2 hasActionButton]^ 1;
+    deviceProvider = [(BYExpressSetupDataProvider *)self deviceProvider];
+    v3 = [(BYDeviceProvider *)deviceProvider hasActionButton]^ 1;
 
     if (v3)
     {
-      v7 = 0;
+      actionButtonData = 0;
     }
 
     else
     {
-      v4 = [(BYExpressSetupDataProvider *)self dataSource];
-      v7 = [v4 actionButtonData];
+      dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+      actionButtonData = [dataSource actionButtonData];
     }
   }
 
-  return v7;
+  return actionButtonData;
 }
 
 - (id)stolenDeviceProtectionEnabled
 {
   if ([(BYExpressSetupDataProvider *)self _isRestrictedForFeature:13])
   {
-    v5 = 0;
+    stolenDeviceProtectionEnabled = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)self dataSource];
-    v5 = [v2 stolenDeviceProtectionEnabled];
+    dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+    stolenDeviceProtectionEnabled = [dataSource stolenDeviceProtectionEnabled];
   }
 
-  return v5;
+  return stolenDeviceProtectionEnabled;
 }
 
 - (id)stolenDeviceProtectionStrictModeEnabled
 {
-  v2 = [(BYExpressSetupDataProvider *)self stolenDeviceProtectionEnabled];
-  v3 = [v2 BOOLValue];
+  stolenDeviceProtectionEnabled = [(BYExpressSetupDataProvider *)self stolenDeviceProtectionEnabled];
+  bOOLValue = [stolenDeviceProtectionEnabled BOOLValue];
 
-  if (v3)
+  if (bOOLValue)
   {
-    v4 = [(BYExpressSetupDataProvider *)self dataSource];
-    v7 = [v4 stolenDeviceProtectionStrictModeEnabled];
+    dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+    stolenDeviceProtectionStrictModeEnabled = [dataSource stolenDeviceProtectionStrictModeEnabled];
   }
 
   else
   {
-    v7 = 0;
+    stolenDeviceProtectionStrictModeEnabled = 0;
   }
 
-  return v7;
+  return stolenDeviceProtectionStrictModeEnabled;
 }
 
 - (id)iPadMultitaskingMode
 {
   if ([(BYExpressSetupDataProvider *)self _isRestrictedForFeature:14])
   {
-    v5 = 0;
+    iPadMultitaskingMode = 0;
   }
 
   else
   {
-    v2 = [(BYExpressSetupDataProvider *)self dataSource];
-    v5 = [v2 iPadMultitaskingMode];
+    dataSource = [(BYExpressSetupDataProvider *)self dataSource];
+    iPadMultitaskingMode = [dataSource iPadMultitaskingMode];
   }
 
-  return v5;
+  return iPadMultitaskingMode;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, prepare);
   v3 = dispatch_get_global_queue(25, 0);
   block = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10019D728;
   v8 = &unk_10032AFD0;
-  v9 = v12;
+  v9 = selfCopy;
   v10 = location[0];
   dispatch_async(v3, &block);
 
@@ -1183,15 +1183,15 @@ LABEL_11:
 
 - (BOOL)_fetchSiriVoiceProfileAvailability
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
   v2 = &_dispatch_main_q;
   dispatch_assert_queue_not_V2(v2);
 
-  if ([(BYExpressSetupDataProvider *)v18 _supportsAlwaysOnHeySiri])
+  if ([(BYExpressSetupDataProvider *)selfCopy _supportsAlwaysOnHeySiri])
   {
-    v3 = [sub_10019CAB8() sharedPreferences];
-    v17[0] = [v3 languageCode];
+    sharedPreferences = [sub_10019CAB8() sharedPreferences];
+    v17[0] = [sharedPreferences languageCode];
 
     if (!v17[0])
     {
@@ -1205,8 +1205,8 @@ LABEL_11:
 
       objc_storeStrong(&oslog, 0);
       v4 = +[NSLocale currentLocale];
-      v5 = [(NSLocale *)v4 localeIdentifier];
-      v6 = [NSLocale canonicalLanguageIdentifierFromString:v5];
+      localeIdentifier = [(NSLocale *)v4 localeIdentifier];
+      v6 = [NSLocale canonicalLanguageIdentifierFromString:localeIdentifier];
       v7 = v17[0];
       v17[0] = v6;
 
@@ -1221,13 +1221,13 @@ LABEL_11:
       objc_storeStrong(&v14, 0);
     }
 
-    location = [(BYExpressSetupDataProvider *)v18 siriVoiceProfileAvailabilityMetadata];
-    v11 = [(BYExpressSetupDataProvider *)v18 _hasiCloudSiriTrainingDataForLanguage:v17[0] withMetadata:location];
+    location = [(BYExpressSetupDataProvider *)selfCopy siriVoiceProfileAvailabilityMetadata];
+    v11 = [(BYExpressSetupDataProvider *)selfCopy _hasiCloudSiriTrainingDataForLanguage:v17[0] withMetadata:location];
     v10 = _BYLoggingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(BYExpressSetupDataProvider *)v18 hasVoiceProfileIniCloud];
-      sub_100097718(v20, v8 & 1, v17[0]);
+      hasVoiceProfileIniCloud = [(BYExpressSetupDataProvider *)selfCopy hasVoiceProfileIniCloud];
+      sub_100097718(v20, hasVoiceProfileIniCloud & 1, v17[0]);
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Has stored voice profile = %d, language = %@", v20, 0x12u);
     }
 
@@ -1255,7 +1255,7 @@ LABEL_11:
 
 - (void)applyExpressSettings
 {
-  v14 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v12 = OS_LOG_TYPE_DEFAULT;
@@ -1269,8 +1269,8 @@ LABEL_11:
 
   objc_storeStrong(oslog, 0);
   memset(__b, 0, sizeof(__b));
-  v4 = [(BYExpressSetupDataProvider *)v14 expressSetupFeatures];
-  v5 = [v4 countByEnumeratingWithState:__b objects:v15 count:16];
+  expressSetupFeatures = [(BYExpressSetupDataProvider *)selfCopy expressSetupFeatures];
+  v5 = [expressSetupFeatures countByEnumeratingWithState:__b objects:v15 count:16];
   if (v5)
   {
     v6 = *__b[2];
@@ -1280,15 +1280,15 @@ LABEL_11:
       {
         if (*__b[2] != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(expressSetupFeatures);
         }
 
         v10 = *(__b[1] + 8 * i);
-        v8 = [v10 unsignedIntegerValue];
-        [(BYExpressSetupDataProvider *)v14 applyDataSourceSetting:1 forFeature:v8, v8];
+        unsignedIntegerValue = [v10 unsignedIntegerValue];
+        [(BYExpressSetupDataProvider *)selfCopy applyDataSourceSetting:1 forFeature:unsignedIntegerValue, unsignedIntegerValue];
       }
 
-      v5 = [v4 countByEnumeratingWithState:__b objects:v15 count:16];
+      v5 = [expressSetupFeatures countByEnumeratingWithState:__b objects:v15 count:16];
     }
 
     while (v5);
@@ -1297,7 +1297,7 @@ LABEL_11:
 
 - (void)revertExpressSettings
 {
-  v14 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if ([(NSMutableArray *)self->_appliedFeatures count])
   {
@@ -1313,7 +1313,7 @@ LABEL_11:
 
     objc_storeStrong(oslog, 0);
     memset(__b, 0, sizeof(__b));
-    v4 = v14->_appliedFeatures;
+    v4 = selfCopy->_appliedFeatures;
     v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:__b objects:v15 count:16];
     if (v5)
     {
@@ -1328,8 +1328,8 @@ LABEL_11:
           }
 
           v10 = *(__b[1] + 8 * i);
-          v8 = [v10 unsignedIntegerValue];
-          [(BYExpressSetupDataProvider *)v14 _applyDataSourceSetting:0 forFeature:v8, v8];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
+          [(BYExpressSetupDataProvider *)selfCopy _applyDataSourceSetting:0 forFeature:unsignedIntegerValue, unsignedIntegerValue];
         }
 
         v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:__b objects:v15 count:16];
@@ -1338,13 +1338,13 @@ LABEL_11:
       while (v5);
     }
 
-    [(NSMutableArray *)v14->_appliedFeatures removeAllObjects];
+    [(NSMutableArray *)selfCopy->_appliedFeatures removeAllObjects];
   }
 }
 
-- (id)_stringForFeature:(unint64_t)a3
+- (id)_stringForFeature:(unint64_t)feature
 {
-  switch(a3)
+  switch(feature)
   {
     case 1uLL:
       v4 = @"Location Services";
@@ -1396,17 +1396,17 @@ LABEL_11:
   return v4;
 }
 
-- (void)applyDataSourceSetting:(BOOL)a3 forFeature:(unint64_t)a4
+- (void)applyDataSourceSetting:(BOOL)setting forFeature:(unint64_t)feature
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = a4;
+  settingCopy = setting;
+  featureCopy = feature;
   oslog = _BYLoggingFacility();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    location = [(BYExpressSetupDataProvider *)v12 _stringForFeature:v9];
+    location = [(BYExpressSetupDataProvider *)selfCopy _stringForFeature:featureCopy];
     sub_100071CBC(buf, location);
     _os_log_impl(&_mh_execute_header, oslog, v7, "Applying value from data source for %{public}@...", buf, 0xCu);
 
@@ -1414,65 +1414,65 @@ LABEL_11:
   }
 
   objc_storeStrong(&oslog, 0);
-  [(BYExpressSetupDataProvider *)v12 _applyDataSourceSetting:v10 forFeature:v9];
-  if (v10)
+  [(BYExpressSetupDataProvider *)selfCopy _applyDataSourceSetting:settingCopy forFeature:featureCopy];
+  if (settingCopy)
   {
-    appliedFeatures = v12->_appliedFeatures;
-    v5 = [NSNumber numberWithUnsignedInteger:v9];
+    appliedFeatures = selfCopy->_appliedFeatures;
+    v5 = [NSNumber numberWithUnsignedInteger:featureCopy];
     [(NSMutableArray *)appliedFeatures addObject:v5];
   }
 }
 
-- (id)_descriptionForDataSource:(id)a3
+- (id)_descriptionForDataSource:(id)source
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   v23 = objc_alloc_init(NSMutableString);
   [v23 appendFormat:@"<%@: %p {\n", objc_opt_class(), location[0]];
-  v3 = [location[0] locationServicesOptIn];
-  v4 = [location[0] locationServicesSettings];
-  [v23 appendFormat:@"\tLocation Services: (opt-in: %@, data: %@)\n", v3, v4];
+  locationServicesOptIn = [location[0] locationServicesOptIn];
+  locationServicesSettings = [location[0] locationServicesSettings];
+  [v23 appendFormat:@"\tLocation Services: (opt-in: %@, data: %@)\n", locationServicesOptIn, locationServicesSettings];
 
-  v5 = [location[0] deviceAnalyticsOptIn];
-  [v23 appendFormat:@"\tDevice Analytics: %@\n", v5];
+  deviceAnalyticsOptIn = [location[0] deviceAnalyticsOptIn];
+  [v23 appendFormat:@"\tDevice Analytics: %@\n", deviceAnalyticsOptIn];
 
-  v6 = [location[0] appAnalyticsOptIn];
-  [v23 appendFormat:@"\tApp Analytics: %@\n", v6];
+  appAnalyticsOptIn = [location[0] appAnalyticsOptIn];
+  [v23 appendFormat:@"\tApp Analytics: %@\n", appAnalyticsOptIn];
 
-  v7 = [location[0] siriOptIn];
-  v8 = [location[0] siriVoiceProfileAvailabilityMetadata];
-  v9 = [location[0] siriDataSharingOptIn];
-  v10 = [location[0] siriVoiceTriggerEnabled];
-  [v23 appendFormat:@"\tSiri: (opt-in: %@, metadata: %@, data sharing: %@, voice trigger enabled: %@)\n", v7, v8, v9, v10];
+  siriOptIn = [location[0] siriOptIn];
+  siriVoiceProfileAvailabilityMetadata = [location[0] siriVoiceProfileAvailabilityMetadata];
+  siriDataSharingOptIn = [location[0] siriDataSharingOptIn];
+  siriVoiceTriggerEnabled = [location[0] siriVoiceTriggerEnabled];
+  [v23 appendFormat:@"\tSiri: (opt-in: %@, metadata: %@, data sharing: %@, voice trigger enabled: %@)\n", siriOptIn, siriVoiceProfileAvailabilityMetadata, siriDataSharingOptIn, siriVoiceTriggerEnabled];
 
-  v11 = [location[0] screenTimeEnabled];
-  [v23 appendFormat:@"\tScreen Time: %@\n", v11];
+  screenTimeEnabled = [location[0] screenTimeEnabled];
+  [v23 appendFormat:@"\tScreen Time: %@\n", screenTimeEnabled];
 
-  v12 = [location[0] softwareUpdateAutoUpdateEnabled];
-  v13 = [location[0] softwareUpdateAutoDownloadEnabled];
-  [v23 appendFormat:@"\tAuto Update: (update: %@, download: %@)\n", v12, v13];
+  softwareUpdateAutoUpdateEnabled = [location[0] softwareUpdateAutoUpdateEnabled];
+  softwareUpdateAutoDownloadEnabled = [location[0] softwareUpdateAutoDownloadEnabled];
+  [v23 appendFormat:@"\tAuto Update: (update: %@, download: %@)\n", softwareUpdateAutoUpdateEnabled, softwareUpdateAutoDownloadEnabled];
 
-  v14 = [location[0] stolenDeviceProtectionEnabled];
-  [v23 appendFormat:@"\tStolen Device Protection: %@\n", v14];
+  stolenDeviceProtectionEnabled = [location[0] stolenDeviceProtectionEnabled];
+  [v23 appendFormat:@"\tStolen Device Protection: %@\n", stolenDeviceProtectionEnabled];
 
-  v15 = [location[0] stolenDeviceProtectionStrictModeEnabled];
-  [v23 appendFormat:@"\tStolen Device Protection Strict Mode: %@\n", v15];
+  stolenDeviceProtectionStrictModeEnabled = [location[0] stolenDeviceProtectionStrictModeEnabled];
+  [v23 appendFormat:@"\tStolen Device Protection Strict Mode: %@\n", stolenDeviceProtectionStrictModeEnabled];
 
   [v23 appendFormat:@"\tAppearance: %ld\n", objc_msgSend(location[0], "userInterfaceStyleModeValue")];
-  v16 = [location[0] watchMigrationData];
-  [v23 appendFormat:@"\tWatch: %@\n", v16];
+  watchMigrationData = [location[0] watchMigrationData];
+  [v23 appendFormat:@"\tWatch: %@\n", watchMigrationData];
 
-  v17 = [location[0] walletProvisioningContext];
-  v18 = [v17 setupAssistantCredentials];
-  [v23 appendFormat:@"\tApple Wallet: %lu credentials\n", objc_msgSend(v18, "count")];
+  walletProvisioningContext = [location[0] walletProvisioningContext];
+  setupAssistantCredentials = [walletProvisioningContext setupAssistantCredentials];
+  [v23 appendFormat:@"\tApple Wallet: %lu credentials\n", objc_msgSend(setupAssistantCredentials, "count")];
 
-  v19 = [location[0] actionButtonData];
-  [v23 appendFormat:@"\tAction Button: %@\n", v19];
+  actionButtonData = [location[0] actionButtonData];
+  [v23 appendFormat:@"\tAction Button: %@\n", actionButtonData];
 
-  v20 = [location[0] iPadMultitaskingMode];
-  [v23 appendFormat:@"\tMultiTasking: %@\n", v20];
+  iPadMultitaskingMode = [location[0] iPadMultitaskingMode];
+  [v23 appendFormat:@"\tMultiTasking: %@\n", iPadMultitaskingMode];
 
   [v23 appendString:@"}>"];
   v21 = v23;
@@ -1481,31 +1481,31 @@ LABEL_11:
   return v21;
 }
 
-- (void)_applyDataSourceSetting:(BOOL)a3 forFeature:(unint64_t)a4
+- (void)_applyDataSourceSetting:(BOOL)setting forFeature:(unint64_t)feature
 {
-  v122 = self;
+  selfCopy = self;
   v121 = a2;
-  v120 = a3;
-  location[1] = a4;
-  switch(a4)
+  settingCopy = setting;
+  location[1] = feature;
+  switch(feature)
   {
     case 1uLL:
-      v4 = [(BYExpressSetupDataProvider *)v122 dataSource];
-      v5 = [v4 locationServicesSettings];
+      dataSource = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+      locationServicesSettings = [dataSource locationServicesSettings];
 
-      if (v5)
+      if (locationServicesSettings)
       {
         location[0] = 0;
-        if (v120)
+        if (settingCopy)
         {
-          v6 = [(BYExpressSetupDataProvider *)v122 dataSource];
-          v7 = [v6 locationServicesSettings];
+          dataSource2 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+          locationServicesSettings2 = [dataSource2 locationServicesSettings];
           v8 = location[0];
-          location[0] = v7;
+          location[0] = locationServicesSettings2;
         }
 
-        v9 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        [BuddyLocationServicesController setSettingsFromArchivedPreferences:location[0] settingsManager:v9];
+        settingsManager = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        [BuddyLocationServicesController setSettingsFromArchivedPreferences:location[0] settingsManager:settingsManager];
 
         objc_storeStrong(location, 0);
       }
@@ -1514,14 +1514,14 @@ LABEL_11:
       {
         v116 = 0;
         v114 = 0;
-        v10 = 0;
-        if (v120)
+        bOOLValue = 0;
+        if (settingCopy)
         {
-          v117 = [(BYExpressSetupDataProvider *)v122 dataSource];
+          dataSource3 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
           v116 = 1;
-          v115 = [v117 locationServicesOptIn];
+          locationServicesOptIn = [dataSource3 locationServicesOptIn];
           v114 = 1;
-          v10 = [v115 BOOLValue];
+          bOOLValue = [locationServicesOptIn BOOLValue];
         }
 
         if (v114)
@@ -1532,93 +1532,93 @@ LABEL_11:
         {
         }
 
-        v118 = v10 & 1;
-        v11 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        [BuddyLocationServicesController setSettingEnabled:v10 & 1 presented:v120 settingsManager:v11];
+        v118 = bOOLValue & 1;
+        settingsManager2 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        [BuddyLocationServicesController setSettingEnabled:bOOLValue & 1 presented:settingCopy settingsManager:settingsManager2];
       }
 
       break;
     case 2uLL:
-      if (v120)
+      if (settingCopy)
       {
-        v12 = [(BYExpressSetupDataProvider *)v122 dataSource];
-        v13 = [v12 deviceAnalyticsOptIn];
-        v14 = [v13 BOOLValue];
-        v15 = [(BYExpressSetupDataProvider *)v122 chronicle];
-        v16 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v17 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyDiagnosticsController setDeviceAnalyticsSubmissionEnabled:v14 & 1 presented:1 chronicle:v15 settingsManager:v16 buddyPreferences:v17];
+        dataSource4 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+        deviceAnalyticsOptIn = [dataSource4 deviceAnalyticsOptIn];
+        bOOLValue2 = [deviceAnalyticsOptIn BOOLValue];
+        chronicle = [(BYExpressSetupDataProvider *)selfCopy chronicle];
+        settingsManager3 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferences = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyDiagnosticsController setDeviceAnalyticsSubmissionEnabled:bOOLValue2 & 1 presented:1 chronicle:chronicle settingsManager:settingsManager3 buddyPreferences:buddyPreferences];
       }
 
       else
       {
-        v18 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v19 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyDiagnosticsController clearDeviceAnalyticsSettingWithSettingsManager:v18 buddyPreferences:v19];
+        settingsManager4 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferences2 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyDiagnosticsController clearDeviceAnalyticsSettingWithSettingsManager:settingsManager4 buddyPreferences:buddyPreferences2];
       }
 
       break;
     case 3uLL:
-      if (v120)
+      if (settingCopy)
       {
-        v20 = [(BYExpressSetupDataProvider *)v122 dataSource];
-        v21 = [v20 appAnalyticsOptIn];
-        v22 = [v21 BOOLValue];
-        v23 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v24 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyAppActivityController setAppActivityEnabled:v22 & 1 presented:1 settingsManager:v23 buddyPreferences:v24];
+        dataSource5 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+        appAnalyticsOptIn = [dataSource5 appAnalyticsOptIn];
+        bOOLValue3 = [appAnalyticsOptIn BOOLValue];
+        settingsManager5 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferences3 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyAppActivityController setAppActivityEnabled:bOOLValue3 & 1 presented:1 settingsManager:settingsManager5 buddyPreferences:buddyPreferences3];
       }
 
       else
       {
-        v25 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v26 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyAppActivityController clearAppActivitySettingWithSettingsManager:v25 buddyPreferences:v26];
+        settingsManager6 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferences4 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyAppActivityController clearAppActivitySettingWithSettingsManager:settingsManager6 buddyPreferences:buddyPreferences4];
       }
 
       break;
     case 4uLL:
-      if (v120)
+      if (settingCopy)
       {
-        v27 = [(BYExpressSetupDataProvider *)v122 dataSource];
-        v28 = [v27 deviceAnalyticsOptIn];
-        v29 = [v28 BOOLValue];
+        dataSource6 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+        deviceAnalyticsOptIn2 = [dataSource6 deviceAnalyticsOptIn];
+        bOOLValue4 = [deviceAnalyticsOptIn2 BOOLValue];
 
-        v113 = v29 & 1;
-        v30 = v29 & 1;
-        v31 = [(BYExpressSetupDataProvider *)v122 chronicle];
-        v32 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v33 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyDiagnosticsController setDeviceAnalyticsSubmissionEnabled:v30 & 1 presented:1 chronicle:v31 settingsManager:v32 buddyPreferences:v33];
+        v113 = bOOLValue4 & 1;
+        v30 = bOOLValue4 & 1;
+        chronicle2 = [(BYExpressSetupDataProvider *)selfCopy chronicle];
+        settingsManager7 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferences5 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyDiagnosticsController setDeviceAnalyticsSubmissionEnabled:v30 & 1 presented:1 chronicle:chronicle2 settingsManager:settingsManager7 buddyPreferences:buddyPreferences5];
 
-        v34 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v35 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyAppActivityController setAppActivityEnabled:v113 & 1 presented:1 settingsManager:v34 buddyPreferences:v35];
+        settingsManager8 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferences6 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyAppActivityController setAppActivityEnabled:v113 & 1 presented:1 settingsManager:settingsManager8 buddyPreferences:buddyPreferences6];
       }
 
       else
       {
-        v36 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v37 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyDiagnosticsController clearDeviceAnalyticsSettingWithSettingsManager:v36 buddyPreferences:v37];
+        settingsManager9 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferences7 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyDiagnosticsController clearDeviceAnalyticsSettingWithSettingsManager:settingsManager9 buddyPreferences:buddyPreferences7];
 
-        v34 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v35 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyAppActivityController clearAppActivitySettingWithSettingsManager:v34 buddyPreferences:v35];
+        settingsManager8 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferences6 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyAppActivityController clearAppActivitySettingWithSettingsManager:settingsManager8 buddyPreferences:buddyPreferences6];
       }
 
       break;
     case 5uLL:
       v110 = 0;
       v108 = 0;
-      v38 = 0;
-      if (v120)
+      bOOLValue5 = 0;
+      if (settingCopy)
       {
-        v111 = [(BYExpressSetupDataProvider *)v122 dataSource];
+        dataSource7 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
         v110 = 1;
-        v109 = [v111 siriOptIn];
+        siriOptIn = [dataSource7 siriOptIn];
         v108 = 1;
-        v38 = [v109 BOOLValue];
+        bOOLValue5 = [siriOptIn BOOLValue];
       }
 
       if (v108)
@@ -1629,7 +1629,7 @@ LABEL_11:
       {
       }
 
-      v112 = v38 & 1;
+      v112 = bOOLValue5 & 1;
       oslog = _BYLoggingFacility();
       v106 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -1640,19 +1640,19 @@ LABEL_11:
 
       objc_storeStrong(&oslog, 0);
       v39 = v112;
-      v40 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-      [AssistantOptInController setAssistantEnabled:v39 & 1 settingsManager:v40];
+      settingsManager10 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+      [AssistantOptInController setAssistantEnabled:v39 & 1 settingsManager:settingsManager10];
 
       v103 = 0;
       v101 = 0;
-      v41 = 0;
+      bOOLValue6 = 0;
       if (v112)
       {
-        v104 = [(BYExpressSetupDataProvider *)v122 dataSource];
+        dataSource8 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
         v103 = 1;
-        v102 = [v104 siriVoiceTriggerEnabled];
+        siriVoiceTriggerEnabled = [dataSource8 siriVoiceTriggerEnabled];
         v101 = 1;
-        v41 = [v102 BOOLValue];
+        bOOLValue6 = [siriVoiceTriggerEnabled BOOLValue];
       }
 
       if (v101)
@@ -1663,7 +1663,7 @@ LABEL_11:
       {
       }
 
-      v105 = v41 & 1;
+      v105 = bOOLValue6 & 1;
       v100 = _BYLoggingFacility();
       v99 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
@@ -1675,36 +1675,36 @@ LABEL_11:
       objc_storeStrong(&v100, 0);
       if (v105)
       {
-        v42 = [sub_10019CAB8() sharedPreferences];
-        v98 = [v42 languageCode];
+        sharedPreferences = [sub_10019CAB8() sharedPreferences];
+        languageCode = [sharedPreferences languageCode];
 
         v97 = _BYLoggingFacility();
         v96 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v97, OS_LOG_TYPE_DEFAULT))
         {
-          sub_10006AE18(v124, v98);
+          sub_10006AE18(v124, languageCode);
           _os_log_impl(&_mh_execute_header, v97, v96, "Will enable Voice Trigger upon sync for language: %@", v124, 0xCu);
         }
 
         objc_storeStrong(&v97, 0);
-        v43 = [sub_10019FB28() sharedInstance];
-        [v43 enableVoiceTriggerUponVoiceProfileSyncForLanguage:v98];
+        sharedInstance = [sub_10019FB28() sharedInstance];
+        [sharedInstance enableVoiceTriggerUponVoiceProfileSyncForLanguage:languageCode];
 
-        objc_storeStrong(&v98, 0);
+        objc_storeStrong(&languageCode, 0);
       }
 
-      v44 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-      [(BFFSettingsManager *)v44 setAssistantVoiceTriggerEnabled:v105 & 1];
+      settingsManager11 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+      [(BFFSettingsManager *)settingsManager11 setAssistantVoiceTriggerEnabled:v105 & 1];
 
-      v45 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-      v46 = [NSNumber numberWithBool:v120];
-      [(BYPreferencesController *)v45 setObject:v46 forKey:BYBuddyAssistantPresentedKey];
+      buddyPreferences8 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+      v46 = [NSNumber numberWithBool:settingCopy];
+      [(BYPreferencesController *)buddyPreferences8 setObject:v46 forKey:BYBuddyAssistantPresentedKey];
 
-      if ([(BYExpressSetupDataProvider *)v122 _supportsAlwaysOnHeySiri])
+      if ([(BYExpressSetupDataProvider *)selfCopy _supportsAlwaysOnHeySiri])
       {
-        v47 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        v48 = [NSNumber numberWithBool:v120];
-        [(BYPreferencesController *)v47 setObject:v48 forKey:BYBuddyAssistantPHSOfferedKey];
+        buddyPreferences9 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        v48 = [NSNumber numberWithBool:settingCopy];
+        [(BYPreferencesController *)buddyPreferences9 setObject:v48 forKey:BYBuddyAssistantPHSOfferedKey];
       }
 
       break;
@@ -1714,13 +1714,13 @@ LABEL_11:
       v92 = 0;
       v90 = 0;
       v49 = 0;
-      if (v120)
+      if (settingCopy)
       {
-        v93 = [(BYExpressSetupDataProvider *)v122 dataSource];
+        dataSource9 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
         v92 = 1;
-        v91 = [v93 siriDataSharingOptIn];
+        siriDataSharingOptIn = [dataSource9 siriDataSharingOptIn];
         v90 = 1;
-        v49 = v91 != 0;
+        v49 = siriDataSharingOptIn != 0;
       }
 
       if (v90)
@@ -1733,11 +1733,11 @@ LABEL_11:
 
       if (v49)
       {
-        v50 = [(BYExpressSetupDataProvider *)v122 dataSource];
-        v51 = [v50 siriDataSharingOptIn];
-        v52 = [v51 BOOLValue];
+        dataSource10 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+        siriDataSharingOptIn2 = [dataSource10 siriDataSharingOptIn];
+        bOOLValue7 = [siriDataSharingOptIn2 BOOLValue];
 
-        if (v52)
+        if (bOOLValue7)
         {
           v94 = 1;
         }
@@ -1757,7 +1757,7 @@ LABEL_11:
       }
 
       objc_storeStrong(&v89, 0);
-      v53 = [BYExpressSetupDataProvider stringForDataSourceType:[(BYExpressSetupDataProvider *)v122 dataSourceType]];
+      v53 = [BYExpressSetupDataProvider stringForDataSourceType:[(BYExpressSetupDataProvider *)selfCopy dataSourceType]];
       v87 = [NSString stringWithFormat:@"express setup (%@)", v53];
 
       [v95 setSiriDataSharingOptInStatus:v94 propagateToHomeAccessories:0 source:1 reason:v87 completion:&stru_10032E1E8];
@@ -1765,159 +1765,159 @@ LABEL_11:
       objc_storeStrong(&v95, 0);
       break;
     case 7uLL:
-      if (v120)
+      if (settingCopy)
       {
-        v54 = [(BYExpressSetupDataProvider *)v122 dataSource];
-        v55 = [(BYPreferencesController *)v54 screenTimeEnabled];
-        v56 = [v55 BOOLValue];
-        v57 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyScreenTimeController setScreenTimeEnabled:v56 & 1 presented:1 buddyPreferences:v57];
+        dataSource11 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+        screenTimeEnabled = [(BYPreferencesController *)dataSource11 screenTimeEnabled];
+        bOOLValue8 = [screenTimeEnabled BOOLValue];
+        buddyPreferences10 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyScreenTimeController setScreenTimeEnabled:bOOLValue8 & 1 presented:1 buddyPreferences:buddyPreferences10];
       }
 
       else
       {
-        v54 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyScreenTimeController clearScreenTimeSetting:v54];
+        dataSource11 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyScreenTimeController clearScreenTimeSetting:dataSource11];
       }
 
       goto LABEL_61;
     case 8uLL:
-      if (v120)
+      if (settingCopy)
       {
-        v54 = [(BYExpressSetupDataProvider *)v122 dataSource];
-        v58 = [(BYPreferencesController *)v54 softwareUpdateAutoUpdateEnabled];
-        v59 = [v58 BOOLValue];
-        v60 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyAutoUpdateController setAutoDownloadWithUpdateEnabled:v59 & 1 presented:1 buddyPreferences:v60];
+        dataSource11 = [(BYExpressSetupDataProvider *)selfCopy dataSource];
+        softwareUpdateAutoUpdateEnabled = [(BYPreferencesController *)dataSource11 softwareUpdateAutoUpdateEnabled];
+        bOOLValue9 = [softwareUpdateAutoUpdateEnabled BOOLValue];
+        buddyPreferences11 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyAutoUpdateController setAutoDownloadWithUpdateEnabled:bOOLValue9 & 1 presented:1 buddyPreferences:buddyPreferences11];
       }
 
       else
       {
-        v54 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyAutoUpdateController clearAutoDownloadWithUpdateSetting:v54];
+        dataSource11 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyAutoUpdateController clearAutoDownloadWithUpdateSetting:dataSource11];
       }
 
 LABEL_61:
 
       break;
     case 9uLL:
-      if (v120)
+      if (settingCopy)
       {
-        v61 = [(BYExpressSetupDataProvider *)v122 userInterfaceStyleModeValue];
-        v62 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyUserInterfaceStyleSelector setUserInterfaceStyleModeValue:v61 presented:1 buddyPreferences:v62];
+        userInterfaceStyleModeValue = [(BYExpressSetupDataProvider *)selfCopy userInterfaceStyleModeValue];
+        buddyPreferences12 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyUserInterfaceStyleSelector setUserInterfaceStyleModeValue:userInterfaceStyleModeValue presented:1 buddyPreferences:buddyPreferences12];
       }
 
       else
       {
-        v63 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-        [BuddyUserInterfaceStyleSelector clearUserInterfaceStyleMode:v63];
+        buddyPreferences13 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+        [BuddyUserInterfaceStyleSelector clearUserInterfaceStyleMode:buddyPreferences13];
       }
 
       break;
     case 0xAuLL:
-      if (v120)
+      if (settingCopy)
       {
-        v64 = [(BYExpressSetupDataProvider *)v122 pairedWatches];
-        v86 = [NRMigrator migrationDataPreRestoreForConsentedDevices:v64];
+        pairedWatches = [(BYExpressSetupDataProvider *)selfCopy pairedWatches];
+        v86 = [NRMigrator migrationDataPreRestoreForConsentedDevices:pairedWatches];
 
-        v65 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v66 = [(BYExpressSetupDataProvider *)v122 buddyPreferencesExcludedFromBackup];
-        [BuddyWatchMigrationController setWatchDataForMigration:v86 presented:1 settingsManager:v65 buddyPreferencesExcludedFromBackup:v66];
+        settingsManager12 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferencesExcludedFromBackup = [(BYExpressSetupDataProvider *)selfCopy buddyPreferencesExcludedFromBackup];
+        [BuddyWatchMigrationController setWatchDataForMigration:v86 presented:1 settingsManager:settingsManager12 buddyPreferencesExcludedFromBackup:buddyPreferencesExcludedFromBackup];
 
         objc_storeStrong(&v86, 0);
       }
 
       else
       {
-        v67 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v68 = [(BYExpressSetupDataProvider *)v122 buddyPreferencesExcludedFromBackup];
-        [BuddyWatchMigrationController clearWatchDataForMigrationWithSettingsManager:v67 buddyPreferencesExcludedFromBackup:v68];
+        settingsManager13 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        buddyPreferencesExcludedFromBackup2 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferencesExcludedFromBackup];
+        [BuddyWatchMigrationController clearWatchDataForMigrationWithSettingsManager:settingsManager13 buddyPreferencesExcludedFromBackup:buddyPreferencesExcludedFromBackup2];
       }
 
       break;
     case 0xBuLL:
-      if (v120)
+      if (settingCopy)
       {
-        v69 = [(BYExpressSetupDataProvider *)v122 walletProvisioningContext];
-        v70 = [(BYExpressSetupDataProvider *)v122 miscState];
-        [(BuddyMiscState *)v70 setWalletProvisioningContext:v69];
+        walletProvisioningContext = [(BYExpressSetupDataProvider *)selfCopy walletProvisioningContext];
+        miscState = [(BYExpressSetupDataProvider *)selfCopy miscState];
+        [(BuddyMiscState *)miscState setWalletProvisioningContext:walletProvisioningContext];
       }
 
       else
       {
-        v69 = [(BYExpressSetupDataProvider *)v122 miscState];
-        [(PKPaymentSetupAssistantProvisioningContext *)v69 setWalletProvisioningContext:0];
+        walletProvisioningContext = [(BYExpressSetupDataProvider *)selfCopy miscState];
+        [(PKPaymentSetupAssistantProvisioningContext *)walletProvisioningContext setWalletProvisioningContext:0];
       }
 
       goto LABEL_74;
     case 0xCuLL:
-      if (v120)
+      if (settingCopy)
       {
-        v71 = [(BYExpressSetupDataProvider *)v122 actionButtonData];
-        [BYActionButtonStore setCurrentData:v71];
+        actionButtonData = [(BYExpressSetupDataProvider *)selfCopy actionButtonData];
+        [BYActionButtonStore setCurrentData:actionButtonData];
 
-        v72 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        v73 = [(BYExpressSetupDataProvider *)v122 actionButtonData];
-        [(BFFSettingsManager *)v72 stashActionButtonData:v73];
+        settingsManager14 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        actionButtonData2 = [(BYExpressSetupDataProvider *)selfCopy actionButtonData];
+        [(BFFSettingsManager *)settingsManager14 stashActionButtonData:actionButtonData2];
       }
 
       else
       {
         [BYActionButtonStore setCurrentData:0];
-        v72 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-        [(BFFSettingsManager *)v72 stashActionButtonData:0];
+        settingsManager14 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+        [(BFFSettingsManager *)settingsManager14 stashActionButtonData:0];
       }
 
-      v74 = [(BYExpressSetupDataProvider *)v122 buddyPreferences];
-      v75 = [NSNumber numberWithBool:v120];
-      [(BYPreferencesController *)v74 setObject:v75 forKey:@"ButtonConfigurationPresented"];
+      buddyPreferences14 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferences];
+      v75 = [NSNumber numberWithBool:settingCopy];
+      [(BYPreferencesController *)buddyPreferences14 setObject:v75 forKey:@"ButtonConfigurationPresented"];
 
       break;
     case 0xDuLL:
-      v76 = [(BYExpressSetupDataProvider *)v122 buddyPreferencesExcludedFromBackup];
-      v77 = [NSNumber numberWithBool:v120];
-      [(BYPreferencesController *)v76 setObject:v77 forKey:@"StolenDeviceProtectionPresented"];
+      buddyPreferencesExcludedFromBackup3 = [(BYExpressSetupDataProvider *)selfCopy buddyPreferencesExcludedFromBackup];
+      v77 = [NSNumber numberWithBool:settingCopy];
+      [(BYPreferencesController *)buddyPreferencesExcludedFromBackup3 setObject:v77 forKey:@"StolenDeviceProtectionPresented"];
 
-      v69 = [(BYExpressSetupDataProvider *)v122 expressSettingsCache];
-      if (v120)
+      walletProvisioningContext = [(BYExpressSetupDataProvider *)selfCopy expressSettingsCache];
+      if (settingCopy)
       {
-        [(PKPaymentSetupAssistantProvisioningContext *)v69 setApplyHandlerFor:13];
+        [(PKPaymentSetupAssistantProvisioningContext *)walletProvisioningContext setApplyHandlerFor:13];
       }
 
       else
       {
-        [(PKPaymentSetupAssistantProvisioningContext *)v69 removeApplyHandlerFor:13];
+        [(PKPaymentSetupAssistantProvisioningContext *)walletProvisioningContext removeApplyHandlerFor:13];
       }
 
 LABEL_74:
 
       break;
     case 0xEuLL:
-      v78 = [(BYExpressSetupDataProvider *)v122 iPadMultitaskingMode];
+      iPadMultitaskingMode = [(BYExpressSetupDataProvider *)selfCopy iPadMultitaskingMode];
 
-      if (v78)
+      if (iPadMultitaskingMode)
       {
-        v79 = [(BYExpressSetupDataProvider *)v122 iPadMultitaskingManager];
-        [(BuddyMultitaskingSelectionManagerType *)v79 updatePanePresented:v120];
+        iPadMultitaskingManager = [(BYExpressSetupDataProvider *)selfCopy iPadMultitaskingManager];
+        [(BuddyMultitaskingSelectionManagerType *)iPadMultitaskingManager updatePanePresented:settingCopy];
 
-        if (v120)
+        if (settingCopy)
         {
-          v80 = [(BYExpressSetupDataProvider *)v122 iPadMultitaskingMode];
-          v81 = [v80 unsignedIntValue];
-          v82 = [(BYExpressSetupDataProvider *)v122 iPadMultitaskingManager];
-          [(BuddyMultitaskingSelectionManagerType *)v82 setCurrentMode:v81];
+          iPadMultitaskingMode2 = [(BYExpressSetupDataProvider *)selfCopy iPadMultitaskingMode];
+          unsignedIntValue = [iPadMultitaskingMode2 unsignedIntValue];
+          iPadMultitaskingManager2 = [(BYExpressSetupDataProvider *)selfCopy iPadMultitaskingManager];
+          [(BuddyMultitaskingSelectionManagerType *)iPadMultitaskingManager2 setCurrentMode:unsignedIntValue];
 
-          v83 = [(BYExpressSetupDataProvider *)v122 iPadMultitaskingManager];
-          v84 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-          [(BuddyMultitaskingSelectionManagerType *)v83 stashSettingUsing:v84];
+          iPadMultitaskingManager3 = [(BYExpressSetupDataProvider *)selfCopy iPadMultitaskingManager];
+          settingsManager15 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+          [(BuddyMultitaskingSelectionManagerType *)iPadMultitaskingManager3 stashSettingUsing:settingsManager15];
         }
 
         else
         {
-          v83 = [(BYExpressSetupDataProvider *)v122 iPadMultitaskingManager];
-          v84 = [(BYExpressSetupDataProvider *)v122 settingsManager];
-          [(BuddyMultitaskingSelectionManagerType *)v83 resetSettingsUsing:v84];
+          iPadMultitaskingManager3 = [(BYExpressSetupDataProvider *)selfCopy iPadMultitaskingManager];
+          settingsManager15 = [(BYExpressSetupDataProvider *)selfCopy settingsManager];
+          [(BuddyMultitaskingSelectionManagerType *)iPadMultitaskingManager3 resetSettingsUsing:settingsManager15];
         }
       }
 
@@ -1926,23 +1926,23 @@ LABEL_74:
       break;
   }
 
-  if (v120)
+  if (settingCopy)
   {
-    v85 = [(BYExpressSetupDataProvider *)v122 expressSettingsCache];
-    [(BYExpressSettingsSetupCache *)v85 setExpressDataSource:v122];
+    expressSettingsCache = [(BYExpressSetupDataProvider *)selfCopy expressSettingsCache];
+    [(BYExpressSettingsSetupCache *)expressSettingsCache setExpressDataSource:selfCopy];
   }
 
   else
   {
-    v85 = [(BYExpressSetupDataProvider *)v122 expressSettingsCache];
-    [(BYExpressSettingsSetupCache *)v85 setExpressDataSource:0];
+    expressSettingsCache = [(BYExpressSetupDataProvider *)selfCopy expressSettingsCache];
+    [(BYExpressSettingsSetupCache *)expressSettingsCache setExpressDataSource:0];
   }
 }
 
-- (BOOL)_isControllerSkippedForFeature:(unint64_t)a3
+- (BOOL)_isControllerSkippedForFeature:(unint64_t)feature
 {
   v7 = 0;
-  switch(a3)
+  switch(feature)
   {
     case 1uLL:
     case 2uLL:
@@ -1974,87 +1974,87 @@ LABEL_4:
   return v5 & 1;
 }
 
-- (BOOL)_isRestrictedForFeature:(unint64_t)a3
+- (BOOL)_isRestrictedForFeature:(unint64_t)feature
 {
-  switch(a3)
+  switch(feature)
   {
     case 1uLL:
       goto LABEL_20;
     case 2uLL:
-      v3 = [(BYExpressSetupDataProvider *)self capabilities];
-      v15 = [(BYCapabilities *)v3 isDeviceAnalyticsRestricted]& 1;
+      capabilities = [(BYExpressSetupDataProvider *)self capabilities];
+      _isStolenDeviceProtectionRestricted = [(BYCapabilities *)capabilities isDeviceAnalyticsRestricted]& 1;
 
-      return v15 & 1;
+      return _isStolenDeviceProtectionRestricted & 1;
     case 3uLL:
-      v4 = [(BYExpressSetupDataProvider *)self capabilities];
-      v15 = [(BYCapabilities *)v4 isAppAnalyticsRestricted]& 1;
+      capabilities2 = [(BYExpressSetupDataProvider *)self capabilities];
+      _isStolenDeviceProtectionRestricted = [(BYCapabilities *)capabilities2 isAppAnalyticsRestricted]& 1;
 
-      return v15 & 1;
+      return _isStolenDeviceProtectionRestricted & 1;
   }
 
-  if (a3 != 4)
+  if (feature != 4)
   {
-    if (a3 - 5 < 2)
+    if (feature - 5 < 2)
     {
-      v8 = [(BYExpressSetupDataProvider *)self capabilities];
-      v15 = [(BYCapabilities *)v8 isSiriRestricted]& 1;
+      capabilities3 = [(BYExpressSetupDataProvider *)self capabilities];
+      _isStolenDeviceProtectionRestricted = [(BYCapabilities *)capabilities3 isSiriRestricted]& 1;
 
-      return v15 & 1;
+      return _isStolenDeviceProtectionRestricted & 1;
     }
 
-    if (a3 == 7)
+    if (feature == 7)
     {
-      v9 = [(BYExpressSetupDataProvider *)self capabilities];
-      v15 = [(BYCapabilities *)v9 isScreenTimeRestricted]& 1;
+      capabilities4 = [(BYExpressSetupDataProvider *)self capabilities];
+      _isStolenDeviceProtectionRestricted = [(BYCapabilities *)capabilities4 isScreenTimeRestricted]& 1;
 
-      return v15 & 1;
+      return _isStolenDeviceProtectionRestricted & 1;
     }
 
-    if (a3 - 8 >= 5)
+    if (feature - 8 >= 5)
     {
-      if (a3 == 13)
+      if (feature == 13)
       {
-        v15 = [(BYExpressSetupDataProvider *)self _isStolenDeviceProtectionRestricted];
+        _isStolenDeviceProtectionRestricted = [(BYExpressSetupDataProvider *)self _isStolenDeviceProtectionRestricted];
       }
 
-      else if (a3 == 14)
+      else if (feature == 14)
       {
-        v10 = [(BYExpressSetupDataProvider *)self iPadMultitaskingManager];
-        v15 = ([(BuddyMultitaskingSelectionManagerType *)v10 isFeatureApplicableToSetup]^ 1) & 1;
+        iPadMultitaskingManager = [(BYExpressSetupDataProvider *)self iPadMultitaskingManager];
+        _isStolenDeviceProtectionRestricted = ([(BuddyMultitaskingSelectionManagerType *)iPadMultitaskingManager isFeatureApplicableToSetup]^ 1) & 1;
       }
 
-      return v15 & 1;
+      return _isStolenDeviceProtectionRestricted & 1;
     }
 
 LABEL_20:
-    v15 = 0;
-    return v15 & 1;
+    _isStolenDeviceProtectionRestricted = 0;
+    return _isStolenDeviceProtectionRestricted & 1;
   }
 
-  v5 = [(BYExpressSetupDataProvider *)self capabilities];
-  v6 = [(BYCapabilities *)v5 isDeviceAnalyticsRestricted];
+  capabilities5 = [(BYExpressSetupDataProvider *)self capabilities];
+  isDeviceAnalyticsRestricted = [(BYCapabilities *)capabilities5 isDeviceAnalyticsRestricted];
   v12 = 0;
-  v7 = 1;
-  if ((v6 & 1) == 0)
+  isAppAnalyticsRestricted = 1;
+  if ((isDeviceAnalyticsRestricted & 1) == 0)
   {
-    v13 = [(BYExpressSetupDataProvider *)self capabilities];
+    capabilities6 = [(BYExpressSetupDataProvider *)self capabilities];
     v12 = 1;
-    v7 = [(BYCapabilities *)v13 isAppAnalyticsRestricted];
+    isAppAnalyticsRestricted = [(BYCapabilities *)capabilities6 isAppAnalyticsRestricted];
   }
 
-  v15 = v7 & 1;
+  _isStolenDeviceProtectionRestricted = isAppAnalyticsRestricted & 1;
   if (v12)
   {
   }
 
-  return v15 & 1;
+  return _isStolenDeviceProtectionRestricted & 1;
 }
 
-- (BOOL)_isExcludedByApplicableDispositionsOfFlowItemClass:(Class)a3
+- (BOOL)_isExcludedByApplicableDispositionsOfFlowItemClass:(Class)class
 {
-  v3 = [(BYExpressSetupDataProvider *)self flowItemDispositionProvider];
-  v4 = [(BYFlowItemDispositionProvider *)v3 dispositions];
-  v5 = v4 & [(objc_class *)a3 applicableDispositions];
+  flowItemDispositionProvider = [(BYExpressSetupDataProvider *)self flowItemDispositionProvider];
+  dispositions = [(BYFlowItemDispositionProvider *)flowItemDispositionProvider dispositions];
+  v5 = dispositions & [(objc_class *)class applicableDispositions];
 
   return v5 == 0;
 }
@@ -2074,52 +2074,52 @@ LABEL_20:
 - (id)_countryCode
 {
   v2 = [NSLocale currentLocale:a2];
-  v3 = [(NSLocale *)v2 countryCode];
+  countryCode = [(NSLocale *)v2 countryCode];
 
-  return v3;
+  return countryCode;
 }
 
 - (BOOL)_siriWantsToRun
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v10 = 0;
   v11 = &v10;
   v12 = 0x20000000;
   v13 = 32;
   v14 = 0;
-  v2 = [(BYExpressSetupDataProvider *)self siriStateCacheQueue];
+  siriStateCacheQueue = [(BYExpressSetupDataProvider *)self siriStateCacheQueue];
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001A0648;
   v8 = &unk_10032C290;
   v9[1] = &v10;
-  v9[0] = v16;
-  dispatch_sync(v2, &v4);
+  v9[0] = selfCopy;
+  dispatch_sync(siriStateCacheQueue, &v4);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(siriStateCacheQueue) = *(v11 + 24);
   objc_storeStrong(v9, 0);
   _Block_object_dispose(&v10, 8);
-  return v2 & 1;
+  return siriStateCacheQueue & 1;
 }
 
-- (BOOL)_hasiCloudSiriTrainingDataForLanguage:(id)a3 withMetadata:(id)a4
+- (BOOL)_hasiCloudSiriTrainingDataForLanguage:(id)language withMetadata:(id)metadata
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, language);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v5 = [sub_10019FB28() sharedInstance];
-  v6 = [v5 hasVoiceProfileIniCloudForLanguageCode:location[0] withBackupMetaBlob:v10];
+  objc_storeStrong(&v10, metadata);
+  sharedInstance = [sub_10019FB28() sharedInstance];
+  v6 = [sharedInstance hasVoiceProfileIniCloudForLanguageCode:location[0] withBackupMetaBlob:v10];
 
   v9 = v6 & 1;
   if ((v6 & 1) == 0)
   {
-    v7 = [sub_10019FB28() sharedInstance];
-    v9 = [v7 hasVoiceProfileIniCloudForLanguageCode:location[0]] & 1;
+    sharedInstance2 = [sub_10019FB28() sharedInstance];
+    v9 = [sharedInstance2 hasVoiceProfileIniCloudForLanguageCode:location[0]] & 1;
   }
 
   objc_storeStrong(&v10, 0);
@@ -2129,20 +2129,20 @@ LABEL_20:
 
 - (BOOL)_isStolenDeviceProtectionRestricted
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v2 = [(BYExpressSetupDataProvider *)self capabilities];
-  v3 = [(BYCapabilities *)v2 isPearlEnrolled];
+  capabilities = [(BYExpressSetupDataProvider *)self capabilities];
+  isPearlEnrolled = [(BYCapabilities *)capabilities isPearlEnrolled];
   v14 = 0;
-  v4 = 1;
-  if ((v3 & 1) == 0)
+  isTouchIDEnrolled = 1;
+  if ((isPearlEnrolled & 1) == 0)
   {
-    v15 = [(BYExpressSetupDataProvider *)v17 capabilities];
+    capabilities2 = [(BYExpressSetupDataProvider *)selfCopy capabilities];
     v14 = 1;
-    v4 = [v15 isTouchIDEnrolled];
+    isTouchIDEnrolled = [capabilities2 isTouchIDEnrolled];
   }
 
-  v5 = v4 ^ 1;
+  v5 = isTouchIDEnrolled ^ 1;
   if (v14)
   {
   }
@@ -2188,9 +2188,9 @@ LABEL_20:
   return v18;
 }
 
-- (void)_verifyAppliedSettings:(BOOL)a3
+- (void)_verifyAppliedSettings:(BOOL)settings
 {
-  if (a3)
+  if (settings)
   {
     if (![(NSMutableArray *)self->_appliedFeatures count])
     {
@@ -2206,29 +2206,29 @@ LABEL_20:
   }
 }
 
-+ (BOOL)_shouldAddFeatureDeviceAndAppAnalyticsForDataSource:(id)a3
++ (BOOL)_shouldAddFeatureDeviceAndAppAnalyticsForDataSource:(id)source
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] deviceAnalyticsOptIn];
+  objc_storeStrong(location, source);
+  deviceAnalyticsOptIn = [location[0] deviceAnalyticsOptIn];
   v10 = 0;
   v8 = 0;
   v6 = 0;
   v4 = 0;
-  if (v3)
+  if (deviceAnalyticsOptIn)
   {
-    v11 = [location[0] appAnalyticsOptIn];
+    appAnalyticsOptIn = [location[0] appAnalyticsOptIn];
     v10 = 1;
     v4 = 0;
-    if (v11)
+    if (appAnalyticsOptIn)
     {
-      v9 = [location[0] deviceAnalyticsOptIn];
+      deviceAnalyticsOptIn2 = [location[0] deviceAnalyticsOptIn];
       v8 = 1;
-      v7 = [location[0] appAnalyticsOptIn];
+      appAnalyticsOptIn2 = [location[0] appAnalyticsOptIn];
       v6 = 1;
-      v4 = [v9 isEqualToNumber:?];
+      v4 = [deviceAnalyticsOptIn2 isEqualToNumber:?];
     }
   }
 

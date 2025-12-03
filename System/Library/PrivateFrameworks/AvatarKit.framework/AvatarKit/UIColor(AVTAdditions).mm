@@ -6,9 +6,9 @@
 
 - (__n64)avt_colorToColor4
 {
-  v1 = [a1 CGColor];
-  NumberOfComponents = CGColorGetNumberOfComponents(v1);
-  Components = CGColorGetComponents(v1);
+  cGColor = [self CGColor];
+  NumberOfComponents = CGColorGetNumberOfComponents(cGColor);
+  Components = CGColorGetComponents(cGColor);
   *v4.i32 = Components->f64[0];
   switch(NumberOfComponents)
   {

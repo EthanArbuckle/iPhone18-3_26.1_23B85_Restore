@@ -1,28 +1,28 @@
 @interface CARAnnounceNotificationsMuteOptionsPanel
-- (CARAnnounceNotificationsMuteOptionsPanel)initWithPanelController:(id)a3;
+- (CARAnnounceNotificationsMuteOptionsPanel)initWithPanelController:(id)controller;
 - (CRSSiriPreferences)siriPreferences;
-- (id)_modeForSiriPreferences:(id)a3;
+- (id)_modeForSiriPreferences:(id)preferences;
 - (id)cellSpecifier;
 - (id)specifierSections;
-- (int64_t)_userNotificationSettingForAnnounceType:(int64_t)a3;
+- (int64_t)_userNotificationSettingForAnnounceType:(int64_t)type;
 - (void)_updateCurrentMode;
-- (void)_updateSettingsForMode:(id)a3;
-- (void)preferences:(id)a3 carPlayAnnounceEnablementTypeChanged:(int64_t)a4;
+- (void)_updateSettingsForMode:(id)mode;
+- (void)preferences:(id)preferences carPlayAnnounceEnablementTypeChanged:(int64_t)changed;
 @end
 
 @implementation CARAnnounceNotificationsMuteOptionsPanel
 
-- (CARAnnounceNotificationsMuteOptionsPanel)initWithPanelController:(id)a3
+- (CARAnnounceNotificationsMuteOptionsPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = CARAnnounceNotificationsMuteOptionsPanel;
-  v5 = [(CARSettingsPanel *)&v28 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v28 initWithPanelController:controllerCopy];
   if (v5)
   {
     objc_initWeak(&location, v5);
-    v6 = [(CARSettingsPanel *)v5 panelController];
-    [v6 addSiriPreferencesObserver:v5];
+    panelController = [(CARSettingsPanel *)v5 panelController];
+    [panelController addSiriPreferencesObserver:v5];
 
     v7 = +[CARMuteOptionsMode allModes];
     modes = v5->_modes;
@@ -49,13 +49,13 @@
         break;
       }
 
-      v16 = [(CARSettingsGroupCellSpecifier *)v5->_groupSpecifier groupSpecifiers];
-      v17 = [v16 objectAtIndexedSubscript:i];
+      groupSpecifiers = [(CARSettingsGroupCellSpecifier *)v5->_groupSpecifier groupSpecifiers];
+      v17 = [groupSpecifiers objectAtIndexedSubscript:i];
 
-      v18 = [(CARAnnounceNotificationsMuteOptionsPanel *)v5 modes];
-      v19 = [v18 objectAtIndexedSubscript:i];
-      v20 = [v19 accessibilityIdentifier];
-      [v17 setAccessibilityIdentifier:v20];
+      modes = [(CARAnnounceNotificationsMuteOptionsPanel *)v5 modes];
+      v19 = [modes objectAtIndexedSubscript:i];
+      accessibilityIdentifier = [v19 accessibilityIdentifier];
+      [v17 setAccessibilityIdentifier:accessibilityIdentifier];
     }
 
     [(CARAnnounceNotificationsMuteOptionsPanel *)v5 _updateCurrentMode];
@@ -96,16 +96,16 @@
 
 - (id)specifierSections
 {
-  v3 = [(CARAnnounceNotificationsMuteOptionsPanel *)self modes];
-  v4 = [(CARAnnounceNotificationsMuteOptionsPanel *)self groupSpecifier];
-  v5 = [v3 objectAtIndexedSubscript:{objc_msgSend(v4, "selectedIndex")}];
+  modes = [(CARAnnounceNotificationsMuteOptionsPanel *)self modes];
+  groupSpecifier = [(CARAnnounceNotificationsMuteOptionsPanel *)self groupSpecifier];
+  v5 = [modes objectAtIndexedSubscript:{objc_msgSend(groupSpecifier, "selectedIndex")}];
 
   v6 = [CARSettingsCellSpecifierSection alloc];
   v7 = sub_10001C80C(@"CARPLAY_START_HEADER");
-  v8 = [v5 footer];
-  v9 = [(CARAnnounceNotificationsMuteOptionsPanel *)self groupSpecifier];
-  v10 = [v9 groupSpecifiers];
-  v11 = [(CARSettingsCellSpecifierSection *)v6 initWithTitle:v7 footer:v8 specifiers:v10];
+  footer = [v5 footer];
+  groupSpecifier2 = [(CARAnnounceNotificationsMuteOptionsPanel *)self groupSpecifier];
+  groupSpecifiers = [groupSpecifier2 groupSpecifiers];
+  v11 = [(CARSettingsCellSpecifierSection *)v6 initWithTitle:v7 footer:footer specifiers:groupSpecifiers];
   v14 = v11;
   v12 = [NSArray arrayWithObjects:&v14 count:1];
 
@@ -114,13 +114,13 @@
 
 - (CRSSiriPreferences)siriPreferences
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 siriPreferences];
+  panelController = [(CARSettingsPanel *)self panelController];
+  siriPreferences = [panelController siriPreferences];
 
-  return v3;
+  return siriPreferences;
 }
 
-- (void)preferences:(id)a3 carPlayAnnounceEnablementTypeChanged:(int64_t)a4
+- (void)preferences:(id)preferences carPlayAnnounceEnablementTypeChanged:(int64_t)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -132,55 +132,55 @@
 
 - (void)_updateCurrentMode
 {
-  v3 = [(CARAnnounceNotificationsMuteOptionsPanel *)self siriPreferences];
-  v7 = [(CARAnnounceNotificationsMuteOptionsPanel *)self _modeForSiriPreferences:v3];
+  siriPreferences = [(CARAnnounceNotificationsMuteOptionsPanel *)self siriPreferences];
+  v7 = [(CARAnnounceNotificationsMuteOptionsPanel *)self _modeForSiriPreferences:siriPreferences];
 
   if (v7)
   {
-    v4 = [(CARAnnounceNotificationsMuteOptionsPanel *)self modes];
-    v5 = [v4 indexOfObject:v7];
-    v6 = [(CARAnnounceNotificationsMuteOptionsPanel *)self groupSpecifier];
-    [v6 setSelectedIndex:v5];
+    modes = [(CARAnnounceNotificationsMuteOptionsPanel *)self modes];
+    v5 = [modes indexOfObject:v7];
+    groupSpecifier = [(CARAnnounceNotificationsMuteOptionsPanel *)self groupSpecifier];
+    [groupSpecifier setSelectedIndex:v5];
   }
 }
 
-- (void)_updateSettingsForMode:(id)a3
+- (void)_updateSettingsForMode:(id)mode
 {
-  v4 = a3;
-  if (v4)
+  modeCopy = mode;
+  if (modeCopy)
   {
-    v12 = v4;
-    v5 = [v4 announceType];
-    v6 = [(CARAnnounceNotificationsMuteOptionsPanel *)self siriPreferences];
-    v7 = [v6 carPlayAnnounceEnablementType];
+    v12 = modeCopy;
+    announceType = [modeCopy announceType];
+    siriPreferences = [(CARAnnounceNotificationsMuteOptionsPanel *)self siriPreferences];
+    carPlayAnnounceEnablementType = [siriPreferences carPlayAnnounceEnablementType];
 
-    v4 = v12;
-    if (v7 != v5)
+    modeCopy = v12;
+    if (carPlayAnnounceEnablementType != announceType)
     {
-      v8 = [(CARAnnounceNotificationsMuteOptionsPanel *)self siriPreferences];
-      [v8 setCarPlayAnnounceEnablementType:v5];
+      siriPreferences2 = [(CARAnnounceNotificationsMuteOptionsPanel *)self siriPreferences];
+      [siriPreferences2 setCarPlayAnnounceEnablementType:announceType];
 
       v9 = +[UNNotificationSettingsCenter currentNotificationSettingsCenter];
-      v10 = [v9 notificationSystemSettings];
-      v11 = [v10 mutableCopy];
+      notificationSystemSettings = [v9 notificationSystemSettings];
+      v11 = [notificationSystemSettings mutableCopy];
 
-      [v11 setAnnouncementCarPlaySetting:{-[CARAnnounceNotificationsMuteOptionsPanel _userNotificationSettingForAnnounceType:](self, "_userNotificationSettingForAnnounceType:", v5)}];
+      [v11 setAnnouncementCarPlaySetting:{-[CARAnnounceNotificationsMuteOptionsPanel _userNotificationSettingForAnnounceType:](self, "_userNotificationSettingForAnnounceType:", announceType)}];
       [v9 setNotificationSystemSettings:v11];
 
-      v4 = v12;
+      modeCopy = v12;
     }
   }
 }
 
-- (id)_modeForSiriPreferences:(id)a3
+- (id)_modeForSiriPreferences:(id)preferences
 {
-  v4 = [a3 carPlayAnnounceEnablementType];
+  carPlayAnnounceEnablementType = [preferences carPlayAnnounceEnablementType];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CARAnnounceNotificationsMuteOptionsPanel *)self modes];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  modes = [(CARAnnounceNotificationsMuteOptionsPanel *)self modes];
+  v6 = [modes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -191,18 +191,18 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(modes);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 announceType] == v4)
+        if ([v10 announceType] == carPlayAnnounceEnablementType)
         {
           v11 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [modes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -218,16 +218,16 @@ LABEL_11:
   return v11;
 }
 
-- (int64_t)_userNotificationSettingForAnnounceType:(int64_t)a3
+- (int64_t)_userNotificationSettingForAnnounceType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1000A1C18[a3];
+    return qword_1000A1C18[type];
   }
 }
 

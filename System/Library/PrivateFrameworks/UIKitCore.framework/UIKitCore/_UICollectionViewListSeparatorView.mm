@@ -1,8 +1,8 @@
 @interface _UICollectionViewListSeparatorView
-- (_UICollectionViewListSeparatorView)initWithFrame:(CGRect)a3;
-- (void)_setUpEffectViewWithEffect:(id)a3;
+- (_UICollectionViewListSeparatorView)initWithFrame:(CGRect)frame;
+- (void)_setUpEffectViewWithEffect:(id)effect;
 - (void)_tearDownEffectView;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation _UICollectionViewListSeparatorView
@@ -14,33 +14,33 @@
   self->_effectView = 0;
 }
 
-- (_UICollectionViewListSeparatorView)initWithFrame:(CGRect)a3
+- (_UICollectionViewListSeparatorView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UICollectionViewListSeparatorView;
-  v3 = [(UICollectionReusableView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 layer];
-    [v5 setAllowsEdgeAntialiasing:1];
+    layer = [(UIView *)v3 layer];
+    [layer setAllowsEdgeAntialiasing:1];
   }
 
   return v4;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v16.receiver = self;
   v16.super_class = _UICollectionViewListSeparatorView;
-  v4 = a3;
-  [(UICollectionReusableView *)&v16 applyLayoutAttributes:v4];
-  v5 = [(UICollectionViewLayoutAttributes *)v4 _existingListAttributes];
+  attributesCopy = attributes;
+  [(UICollectionReusableView *)&v16 applyLayoutAttributes:attributesCopy];
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)attributesCopy _existingListAttributes];
 
-  if (v5)
+  if (_existingListAttributes)
   {
-    v6 = *(v5 + 48);
-    v7 = *(v5 + 56);
+    v6 = *(_existingListAttributes + 48);
+    v7 = *(_existingListAttributes + 56);
   }
 
   else
@@ -63,9 +63,9 @@
 
   if (!v10)
   {
-    if (v5)
+    if (_existingListAttributes)
     {
-      v11 = *(v5 + 16) - 1;
+      v11 = *(_existingListAttributes + 16) - 1;
     }
 
     else
@@ -75,7 +75,7 @@
 
     v15 = 0u;
     v12 = +[_UIListMetrics sharedMetrics];
-    v13 = [(UIView *)self traitCollection];
+    traitCollection = [(UIView *)self traitCollection];
     if (v12)
     {
       if (v11 < 4)
@@ -88,7 +88,7 @@
         v14 = 0;
       }
 
-      [v12 metricsForSeparatorWithListStyle:v14 traitCollection:v13];
+      [v12 metricsForSeparatorWithListStyle:v14 traitCollection:traitCollection];
     }
 
     else
@@ -112,19 +112,19 @@ LABEL_21:
   [(UIView *)self setBackgroundColor:v6];
 }
 
-- (void)_setUpEffectViewWithEffect:(id)a3
+- (void)_setUpEffectViewWithEffect:(id)effect
 {
-  v5 = a3;
-  if (!v5)
+  effectCopy = effect;
+  if (!effectCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UICollectionViewListSeparatorView.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"effect != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewListSeparatorView.m" lineNumber:61 description:{@"Invalid parameter not satisfying: %@", @"effect != nil"}];
   }
 
   effectView = self->_effectView;
   if (effectView)
   {
-    v7 = [(UIVisualEffectView *)effectView effect];
+    effect = [(UIVisualEffectView *)effectView effect];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -147,12 +147,12 @@ LABEL_21:
   v12 = self->_effectView;
   if (!v12)
   {
-    v19 = [[UIVisualEffectView alloc] initWithEffect:v5];
+    v19 = [[UIVisualEffectView alloc] initWithEffect:effectCopy];
     v20 = self->_effectView;
     self->_effectView = v19;
 
-    v21 = [(UIView *)self->_effectView layer];
-    [v21 setAllowsEdgeAntialiasing:1];
+    layer = [(UIView *)self->_effectView layer];
+    [layer setAllowsEdgeAntialiasing:1];
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
@@ -170,21 +170,21 @@ LABEL_21:
     goto LABEL_11;
   }
 
-  [(UIVisualEffectView *)v12 setEffect:v5];
+  [(UIVisualEffectView *)v12 setEffect:effectCopy];
   if (v11)
   {
 LABEL_11:
-    v13 = [(UIVisualEffectView *)self->_effectView contentView];
-    v14 = [v13 tintColor];
-    v15 = [(UIVisualEffectView *)self->_effectView contentView];
-    [v15 setBackgroundColor:v14];
+    contentView = [(UIVisualEffectView *)self->_effectView contentView];
+    tintColor = [contentView tintColor];
+    contentView2 = [(UIVisualEffectView *)self->_effectView contentView];
+    [contentView2 setBackgroundColor:tintColor];
 
-    v16 = [(UIVisualEffectView *)self->_effectView contentView];
-    v17 = [v16 layer];
-    [v17 setAllowsEdgeAntialiasing:1];
+    contentView3 = [(UIVisualEffectView *)self->_effectView contentView];
+    layer2 = [contentView3 layer];
+    [layer2 setAllowsEdgeAntialiasing:1];
 
-    v18 = [(UIVisualEffectView *)self->_effectView contentView];
-    [v18 setClipsToBounds:0];
+    contentView4 = [(UIVisualEffectView *)self->_effectView contentView];
+    [contentView4 setClipsToBounds:0];
   }
 
 LABEL_12:

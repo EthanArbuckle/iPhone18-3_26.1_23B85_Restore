@@ -1,6 +1,6 @@
 @interface PESCAPReviewPayload
-+ (id)legacyPayloadWithReason:(int64_t)a3;
-- (PESCAPReviewPayload)initWithActionType:(int64_t)a3 reason:(int64_t)a4 score:(double)a5 adjustmentsDescription:(id)a6;
++ (id)legacyPayloadWithReason:(int64_t)reason;
+- (PESCAPReviewPayload)initWithActionType:(int64_t)type reason:(int64_t)reason score:(double)score adjustmentsDescription:(id)description;
 - (id)debugDescription;
 @end
 
@@ -11,9 +11,9 @@
   if ([(PESCAPReviewPayload *)self actionType]== 1)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(PESCAPReviewPayload *)self actionType];
+    actionType = [(PESCAPReviewPayload *)self actionType];
     v5 = @"Smart C&P";
-    if (!v4)
+    if (!actionType)
     {
       v5 = @"Legacy C&P";
     }
@@ -22,15 +22,15 @@
     goto LABEL_10;
   }
 
-  v7 = [(PESCAPReviewPayload *)self reason];
-  if ((v7 - 1) > 6)
+  reason = [(PESCAPReviewPayload *)self reason];
+  if ((reason - 1) > 6)
   {
     v8 = @"Unknown";
   }
 
   else
   {
-    v8 = off_279A308C0[v7 - 1];
+    v8 = off_279A308C0[reason - 1];
   }
 
   v6 = v8;
@@ -50,27 +50,27 @@ LABEL_12:
   return v11;
 }
 
-- (PESCAPReviewPayload)initWithActionType:(int64_t)a3 reason:(int64_t)a4 score:(double)a5 adjustmentsDescription:(id)a6
+- (PESCAPReviewPayload)initWithActionType:(int64_t)type reason:(int64_t)reason score:(double)score adjustmentsDescription:(id)description
 {
-  v11 = a6;
+  descriptionCopy = description;
   v15.receiver = self;
   v15.super_class = PESCAPReviewPayload;
   v12 = [(PESCAPReviewPayload *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_actionType = a3;
-    v12->_reason = a4;
-    v12->_score = a5;
-    objc_storeStrong(&v12->_adjustmentsDescription, a6);
+    v12->_actionType = type;
+    v12->_reason = reason;
+    v12->_score = score;
+    objc_storeStrong(&v12->_adjustmentsDescription, description);
   }
 
   return v13;
 }
 
-+ (id)legacyPayloadWithReason:(int64_t)a3
++ (id)legacyPayloadWithReason:(int64_t)reason
 {
-  v3 = [[a1 alloc] initWithActionType:0 reason:a3 score:0 adjustmentsDescription:-1.0];
+  v3 = [[self alloc] initWithActionType:0 reason:reason score:0 adjustmentsDescription:-1.0];
 
   return v3;
 }

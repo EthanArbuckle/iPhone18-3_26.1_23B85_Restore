@@ -1,15 +1,15 @@
 @interface PKDServer
 - (PKDServer)init;
-- (PKDServer)initWithConnection:(id)a3 queue:(id)a4 database:(id)a5 externalProviders:(id)a6;
-- (id)holdOnPlugIn:(id)a3;
-- (id)initForService:(const char *)a3 database:(id)a4 externalProviders:(id)a5;
-- (void)addHold:(id)a3 silent:(BOOL)a4;
-- (void)removedPlugIns:(id)a3;
+- (PKDServer)initWithConnection:(id)connection queue:(id)queue database:(id)database externalProviders:(id)providers;
+- (id)holdOnPlugIn:(id)in;
+- (id)initForService:(const char *)service database:(id)database externalProviders:(id)providers;
+- (void)addHold:(id)hold silent:(BOOL)silent;
+- (void)removedPlugIns:(id)ins;
 - (void)run;
 - (void)stop;
-- (void)terminatePlugIns:(id)a3 synchronously:(BOOL)a4 reply:(id)a5;
-- (void)unholdClient:(id)a3;
-- (void)unholdToken:(id)a3 silent:(BOOL)a4;
+- (void)terminatePlugIns:(id)ins synchronously:(BOOL)synchronously reply:(id)reply;
+- (void)unholdClient:(id)client;
+- (void)unholdToken:(id)token silent:(BOOL)silent;
 @end
 
 @implementation PKDServer
@@ -28,34 +28,34 @@
   return v2;
 }
 
-- (id)initForService:(const char *)a3 database:(id)a4 externalProviders:(id)a5
+- (id)initForService:(const char *)service database:(id)database externalProviders:(id)providers
 {
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v10 = a5;
-  v11 = a4;
+  providersCopy = providers;
+  databaseCopy = database;
   v12 = dispatch_queue_create("xpc", v9);
 
-  mach_service = xpc_connection_create_mach_service(a3, v12, 1uLL);
-  v14 = [(PKDServer *)self initWithConnection:mach_service queue:v12 database:v11 externalProviders:v10];
+  mach_service = xpc_connection_create_mach_service(service, v12, 1uLL);
+  v14 = [(PKDServer *)self initWithConnection:mach_service queue:v12 database:databaseCopy externalProviders:providersCopy];
 
   return v14;
 }
 
-- (PKDServer)initWithConnection:(id)a3 queue:(id)a4 database:(id)a5 externalProviders:(id)a6
+- (PKDServer)initWithConnection:(id)connection queue:(id)queue database:(id)database externalProviders:(id)providers
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  queueCopy = queue;
+  databaseCopy = database;
+  providersCopy = providers;
   v34.receiver = self;
   v34.super_class = PKDServer;
-  v14 = [(PKDatabase *)&v34 initWithDatabase:v12 externalProviders:v13];
+  v14 = [(PKDatabase *)&v34 initWithDatabase:databaseCopy externalProviders:providersCopy];
   v15 = v14;
   if (v14)
   {
-    [(PKDServer *)v14 setXpcQueue:v11];
+    [(PKDServer *)v14 setXpcQueue:queueCopy];
     [(PKDServer *)v15 setHoldLock:0];
-    [(PKDServer *)v15 setService:v10];
+    [(PKDServer *)v15 setService:connectionCopy];
     v16 = +[NSMutableArray array];
     [(PKDServer *)v15 setHolds:v16];
 
@@ -75,7 +75,7 @@
     [(PKDServer *)v18 setSigSource:v20];
 
     objc_initWeak(&location, v18);
-    v21 = [(PKDServer *)v18 sigSource];
+    sigSource = [(PKDServer *)v18 sigSource];
     v25 = _NSConcreteStackBlock;
     v26 = 3221225472;
     v27 = __65__PKDServer_initWithConnection_queue_database_externalProviders___block_invoke_11;
@@ -83,7 +83,7 @@
     objc_copyWeak(&v30, &location);
     v22 = v18;
     v29 = v22;
-    dispatch_source_set_event_handler(v21, &v25);
+    dispatch_source_set_event_handler(sigSource, &v25);
 
     v23 = [(PKDServer *)v22 sigSource:v25];
     dispatch_activate(v23);
@@ -156,22 +156,22 @@ void __65__PKDServer_initWithConnection_queue_database_externalProviders___block
 {
   [(PKDServer *)self _startSandbox];
   objc_opt_class();
-  v3 = [(PKDServer *)self service];
-  xpc_connection_resume(v3);
+  service = [(PKDServer *)self service];
+  xpc_connection_resume(service);
 
-  v5 = [(PKDatabase *)self external];
-  v4 = [v5 sys];
+  external = [(PKDatabase *)self external];
+  v4 = [external sys];
   [v4 CFRunLoopRun];
 }
 
-- (void)removedPlugIns:(id)a3
+- (void)removedPlugIns:(id)ins
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __28__PKDServer_removedPlugIns___block_invoke;
   v5[3] = &unk_28BD0;
-  v6 = a3;
-  v4 = v6;
+  insCopy = ins;
+  v4 = insCopy;
   [(PKDServer *)self terminatePlugIns:v4 synchronously:0 reply:v5];
 }
 
@@ -184,11 +184,11 @@ void __28__PKDServer_removedPlugIns___block_invoke(uint64_t a1)
   }
 }
 
-- (void)terminatePlugIns:(id)a3 synchronously:(BOOL)a4 reply:(id)a5
+- (void)terminatePlugIns:(id)ins synchronously:(BOOL)synchronously reply:(id)reply
 {
-  v28 = a4;
-  v6 = a3;
-  v26 = a5;
+  synchronouslyCopy = synchronously;
+  insCopy = ins;
+  replyCopy = reply;
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v32 = dispatch_queue_create("killer", v7);
 
@@ -196,12 +196,12 @@ void __28__PKDServer_removedPlugIns___block_invoke(uint64_t a1)
   queue = dispatch_queue_create("killer-waiter", v8);
 
   v9 = dispatch_group_create();
-  v25 = [v6 count];
+  v25 = [insCopy count];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v6;
+  obj = insCopy;
   v10 = [obj countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v10)
   {
@@ -227,31 +227,31 @@ void __28__PKDServer_removedPlugIns___block_invoke(uint64_t a1)
         }
 
         v18 = *(*(&v40 + 1) + 8 * v11);
-        v19 = [v18 launchdIdentifier];
-        v20 = [v18 launchdVersion];
+        launchdIdentifier = [v18 launchdIdentifier];
+        launchdVersion = [v18 launchdVersion];
         v21 = pklog_handle_for_category();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v45 = v19;
+          v45 = launchdIdentifier;
           v46 = 2114;
-          v47 = v20;
+          v47 = launchdVersion;
           _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "%@: requesting termination from launchd, version [%{public}@]", buf, 0x16u);
         }
 
         dispatch_group_enter(v9);
-        v13 = [(PKDatabase *)self external];
-        v14 = [v13 launch];
-        v15 = [v19 UTF8String];
-        v16 = [v20 UTF8String];
+        external = [(PKDatabase *)self external];
+        launch = [external launch];
+        uTF8String = [launchdIdentifier UTF8String];
+        uTF8String2 = [launchdVersion UTF8String];
         v37[0] = _NSConcreteStackBlock;
         v37[1] = 3221225472;
         v37[2] = __50__PKDServer_terminatePlugIns_synchronously_reply___block_invoke;
         v37[3] = &unk_28BF8;
-        v38 = v19;
+        v38 = launchdIdentifier;
         v39 = v9;
-        v17 = v19;
-        [v14 remove_external_service:v15 version:v16 targetq:v32 callback:v37];
+        v17 = launchdIdentifier;
+        [launch remove_external_service:uTF8String version:uTF8String2 targetq:v32 callback:v37];
 
         ++v11;
       }
@@ -267,13 +267,13 @@ void __28__PKDServer_removedPlugIns___block_invoke(uint64_t a1)
   v33[1] = 3221225472;
   v33[2] = __50__PKDServer_terminatePlugIns_synchronously_reply___block_invoke_17;
   v33[3] = &unk_28C20;
-  v35 = v26;
+  v35 = replyCopy;
   v36 = v25;
   v34 = v9;
-  v22 = v26;
+  v22 = replyCopy;
   v23 = v9;
   v24 = objc_retainBlock(v33);
-  if (v28)
+  if (synchronouslyCopy)
   {
     dispatch_sync(queue, v24);
   }
@@ -339,23 +339,23 @@ uint64_t __50__PKDServer_terminatePlugIns_synchronously_reply___block_invoke_17(
   return (*(*(a1 + 40) + 16))();
 }
 
-- (id)holdOnPlugIn:(id)a3
+- (id)holdOnPlugIn:(id)in
 {
-  v4 = a3;
+  inCopy = in;
   v5 = 88;
   os_unfair_lock_lock(&self->_holdLock);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(PKDServer *)self holds];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  holds = [(PKDServer *)self holds];
+  v7 = [holds countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = *v23;
     v9 = PKSDKInfoKey;
     v20 = 88;
-    v21 = self;
+    selfCopy = self;
     while (2)
     {
       v10 = 0;
@@ -373,19 +373,19 @@ uint64_t __50__PKDServer_terminatePlugIns_synchronously_reply___block_invoke_17(
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(holds);
         }
 
         v12 = *(*(&v22 + 1) + 8 * v10);
-        v13 = [v12 extensionPointName];
-        v14 = [v4 pluginKey:v9];
-        v15 = [v13 isEqualToString:v14];
+        extensionPointName = [v12 extensionPointName];
+        v14 = [inCopy pluginKey:v9];
+        v15 = [extensionPointName isEqualToString:v14];
 
-        if (v15 & 1) != 0 || ([v12 blocked], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "containsObject:", v4), v16, (v17))
+        if (v15 & 1) != 0 || ([v12 blocked], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "containsObject:", inCopy), v16, (v17))
         {
           v18 = v12;
           v5 = v20;
-          self = v21;
+          self = selfCopy;
           goto LABEL_15;
         }
 
@@ -393,10 +393,10 @@ uint64_t __50__PKDServer_terminatePlugIns_synchronously_reply___block_invoke_17(
       }
 
       while (v11 != v10);
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [holds countByEnumeratingWithState:&v22 objects:v26 count:16];
       v18 = 0;
       v5 = v20;
-      self = v21;
+      self = selfCopy;
       if (v7)
       {
         continue;
@@ -418,31 +418,31 @@ LABEL_15:
   return v18;
 }
 
-- (void)addHold:(id)a3 silent:(BOOL)a4
+- (void)addHold:(id)hold silent:(BOOL)silent
 {
-  v6 = a3;
+  holdCopy = hold;
   os_unfair_lock_lock(&self->_holdLock);
-  v7 = [(PKDServer *)self holds];
-  [v7 addObject:v6];
+  holds = [(PKDServer *)self holds];
+  [holds addObject:holdCopy];
 
   os_unfair_lock_unlock(&self->_holdLock);
-  if (!a4)
+  if (!silent)
   {
 
     PKAnnotationNotificationPost();
   }
 }
 
-- (void)unholdToken:(id)a3 silent:(BOOL)a4
+- (void)unholdToken:(id)token silent:(BOOL)silent
 {
-  v5 = a3;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_holdLock);
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(PKDServer *)self holds];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  holds = [(PKDServer *)self holds];
+  v7 = [holds countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
     v8 = *v20;
@@ -463,29 +463,29 @@ LABEL_15:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(holds);
         }
 
         v11 = *(*(&v19 + 1) + 8 * v9);
-        v12 = [v11 uuid];
-        v13 = [v12 isEqual:v5];
+        uuid = [v11 uuid];
+        v13 = [uuid isEqual:tokenCopy];
 
         if (v13)
         {
           v14 = pklog_handle_for_category();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [v11 uuid];
-            v16 = [v15 UUIDString];
+            uuid2 = [v11 uuid];
+            uUIDString = [uuid2 UUIDString];
             *buf = 138543362;
-            v24 = v16;
+            v24 = uUIDString;
             _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "releasing plugin hold %{public}@ at client's request", buf, 0xCu);
           }
 
-          v17 = [(PKDServer *)self holds];
-          [v17 removeObject:v11];
+          holds2 = [(PKDServer *)self holds];
+          [holds2 removeObject:v11];
 
-          if (!a4)
+          if (!silent)
           {
             PKAnnotationNotificationPost();
           }
@@ -497,7 +497,7 @@ LABEL_15:
       }
 
       while (v10 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v7 = [holds countByEnumeratingWithState:&v19 objects:v25 count:16];
       if (v7)
       {
         continue;
@@ -512,23 +512,23 @@ LABEL_16:
   os_unfair_lock_unlock(&self->_holdLock);
 }
 
-- (void)unholdClient:(id)a3
+- (void)unholdClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_holdLock);
-  v5 = [(PKDServer *)self holds];
+  holds = [(PKDServer *)self holds];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __26__PKDServer_unholdClient___block_invoke;
   v9[3] = &unk_28C48;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 indexesOfObjectsPassingTest:v9];
+  v10 = clientCopy;
+  v6 = clientCopy;
+  v7 = [holds indexesOfObjectsPassingTest:v9];
 
   if ([v7 count])
   {
-    v8 = [(PKDServer *)self holds];
-    [v8 removeObjectsAtIndexes:v7];
+    holds2 = [(PKDServer *)self holds];
+    [holds2 removeObjectsAtIndexes:v7];
 
     PKAnnotationNotificationPost();
   }
@@ -563,17 +563,17 @@ BOOL __26__PKDServer_unholdClient___block_invoke(uint64_t a1, void *a2)
 
 - (void)stop
 {
-  v3 = [(PKDServer *)self service];
-  xpc_connection_cancel(v3);
+  service = [(PKDServer *)self service];
+  xpc_connection_cancel(service);
 
   os_unfair_lock_lock(&self->_holdLock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v14 = self;
-  v4 = [(PKDServer *)self holds];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  selfCopy = self;
+  holds = [(PKDServer *)self holds];
+  v5 = [holds countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -594,17 +594,17 @@ BOOL __26__PKDServer_unholdClient___block_invoke(uint64_t a1, void *a2)
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(holds);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v7);
         v10 = pklog_handle_for_category();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v9 uuid];
-          v12 = [v11 UUIDString];
+          uuid = [v9 uuid];
+          uUIDString = [uuid UUIDString];
           *buf = 138543362;
-          v20 = v12;
+          v20 = uUIDString;
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "releasing plugin hold %{public}@ because server is stopping", buf, 0xCu);
         }
 
@@ -612,17 +612,17 @@ BOOL __26__PKDServer_unholdClient___block_invoke(uint64_t a1, void *a2)
       }
 
       while (v8 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v5 = [holds countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v5);
   }
 
-  v13 = [(PKDServer *)v14 holds];
-  [v13 removeAllObjects];
+  holds2 = [(PKDServer *)selfCopy holds];
+  [holds2 removeAllObjects];
 
   PKAnnotationNotificationPost();
-  os_unfair_lock_unlock(&v14->_holdLock);
+  os_unfair_lock_unlock(&selfCopy->_holdLock);
 }
 
 void __28__PKDServer_removedPlugIns___block_invoke_cold_1(uint64_t a1, NSObject *a2)

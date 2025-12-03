@@ -1,14 +1,14 @@
 @interface KNBuildCrumble
 + (id)defaultAttributes;
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8;
-- (CGRect)frameOfEffectWithContext:(id)a3;
-- (KNBuildCrumble)initWithAnimationContext:(id)a3;
-- (id)p_texturedRectFromImagePath:(id)a3 metalContext:(id)a4;
-- (void)animationWillBeginWithContext:(id)a3;
-- (void)metalPrepareAnimationWithContext:(id)a3;
-- (void)metalRenderFrameWithContext:(id)a3;
-- (void)metalTeardownAnimationsWithContext:(id)a3;
-- (void)p_setupMVPMatricesWithContext:(id)a3 device:(id)a4;
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version;
+- (CGRect)frameOfEffectWithContext:(id)context;
+- (KNBuildCrumble)initWithAnimationContext:(id)context;
+- (id)p_texturedRectFromImagePath:(id)path metalContext:(id)context;
+- (void)animationWillBeginWithContext:(id)context;
+- (void)metalPrepareAnimationWithContext:(id)context;
+- (void)metalRenderFrameWithContext:(id)context;
+- (void)metalTeardownAnimationsWithContext:(id)context;
+- (void)p_setupMVPMatricesWithContext:(id)context device:(id)device;
 @end
 
 @implementation KNBuildCrumble
@@ -22,24 +22,24 @@
   return v2;
 }
 
-+ (void)downgradeAttributes:(id *)a3 animationName:(id *)a4 warning:(id *)a5 type:(int)a6 isToClassic:(BOOL)a7 version:(unint64_t)a8
++ (void)downgradeAttributes:(id *)attributes animationName:(id *)name warning:(id *)warning type:(int)type isToClassic:(BOOL)classic version:(unint64_t)version
 {
-  if (a7)
+  if (classic)
   {
-    v8 = *&a6;
-    *a4 = @"apple:dissolve";
+    v8 = *&type;
+    *name = @"apple:dissolve";
     v13 = KNBundle();
     v11 = [v13 localizedStringForKey:@"%@ builds were exported as Dissolve." value:&stru_471858 table:@"Keynote"];
-    v12 = [a1 localizedMenuString:v8];
-    *a5 = [NSString stringWithFormat:v11, v12];
+    v12 = [self localizedMenuString:v8];
+    *warning = [NSString stringWithFormat:v11, v12];
   }
 }
 
-- (KNBuildCrumble)initWithAnimationContext:(id)a3
+- (KNBuildCrumble)initWithAnimationContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = KNBuildCrumble;
-  v3 = [(KNAnimationEffect *)&v9 initWithAnimationContext:a3];
+  v3 = [(KNAnimationEffect *)&v9 initWithAnimationContext:context];
   if (v3)
   {
     v4 = KNBundle();
@@ -53,10 +53,10 @@
   return v3;
 }
 
-- (CGRect)frameOfEffectWithContext:(id)a3
+- (CGRect)frameOfEffectWithContext:(id)context
 {
-  v4 = [a3 textures];
-  v5 = [v4 objectAtIndexedSubscript:0];
+  textures = [context textures];
+  v5 = [textures objectAtIndexedSubscript:0];
   [v5 contentRect];
   v7 = v6;
   v9 = v8;
@@ -108,14 +108,14 @@
   return result;
 }
 
-- (void)p_setupMVPMatricesWithContext:(id)a3 device:(id)a4
+- (void)p_setupMVPMatricesWithContext:(id)context device:(id)device
 {
-  v5 = [a3 textures];
-  v6 = [v5 firstObject];
+  textures = [context textures];
+  firstObject = [textures firstObject];
 
-  [v6 frameOnCanvas];
+  [firstObject frameOnCanvas];
   v8 = v7 - CGRectGetMinX(self->_animationRect);
-  [v6 frameOnCanvas];
+  [firstObject frameOnCanvas];
   v10 = v9 - CGRectGetMaxY(self->_animationRect);
   height = self->_animationRect.size.height;
   [(KNAnimationContext *)self->super.mAnimationContext fieldOfViewInRadians];
@@ -162,136 +162,136 @@
   *&self->_metalSmokeTexture = v23;
 }
 
-- (void)animationWillBeginWithContext:(id)a3
+- (void)animationWillBeginWithContext:(id)context
 {
-  v4 = a3;
-  [(KNBuildCrumble *)self frameOfEffectWithContext:v4];
-  [(KNBuildCrumble *)self metalPrepareAnimationWithContext:v4];
+  contextCopy = context;
+  [(KNBuildCrumble *)self frameOfEffectWithContext:contextCopy];
+  [(KNBuildCrumble *)self metalPrepareAnimationWithContext:contextCopy];
 }
 
-- (id)p_texturedRectFromImagePath:(id)a3 metalContext:(id)a4
+- (id)p_texturedRectFromImagePath:(id)path metalContext:(id)context
 {
-  v5 = a4;
-  v6 = [TSUImage imageWithContentsOfFile:a3];
-  v7 = [v6 CGImage];
+  contextCopy = context;
+  v6 = [TSUImage imageWithContentsOfFile:path];
+  cGImage = [v6 CGImage];
 
-  v8 = [[TSDTexturedRectangle alloc] initWithCGImage:v7];
-  v9 = [v5 device];
+  v8 = [[TSDTexturedRectangle alloc] initWithCGImage:cGImage];
+  device = [contextCopy device];
 
-  [v8 setupMetalTextureForDevice:v9];
+  [v8 setupMetalTextureForDevice:device];
 
   return v8;
 }
 
-- (void)metalPrepareAnimationWithContext:(id)a3
+- (void)metalPrepareAnimationWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 textures];
-  v131 = [v4 animatedBuild];
-  v6 = [v4 metalContext];
-  v130 = [v6 device];
-  if ([v5 count] != &dword_0 + 1)
+  contextCopy = context;
+  textures = [contextCopy textures];
+  animatedBuild = [contextCopy animatedBuild];
+  metalContext = [contextCopy metalContext];
+  device = [metalContext device];
+  if ([textures count] != &dword_0 + 1)
   {
     v7 = +[TSUAssertionHandler currentHandler];
     v8 = [NSString stringWithUTF8String:"[KNBuildCrumble metalPrepareAnimationWithContext:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Alder/bliss/Classes/Widgets/Keynote/Animations/Builds/KNBuildCrumble.m"];
-    [v7 handleFailureInFunction:v8 file:v9 lineNumber:368 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(v5, "count")}];
+    [v7 handleFailureInFunction:v8 file:v9 lineNumber:368 description:{@"Effect expects one texture. Passed (%lu) textures.", objc_msgSend(textures, "count")}];
   }
 
-  v129 = v5;
-  v132 = [v5 lastObject];
+  v129 = textures;
+  lastObject = [textures lastObject];
   v10 = KNBundle();
   v11 = [v10 pathForResource:@"KNBuildAnvil-Smoke" ofType:@"png"];
 
   v127 = v11;
-  v12 = [(KNBuildCrumble *)self p_texturedRectFromImagePath:v11 metalContext:v6];
+  v12 = [(KNBuildCrumble *)self p_texturedRectFromImagePath:v11 metalContext:metalContext];
   metalSmokeTexture = self->_metalSmokeTexture;
   self->_metalSmokeTexture = v12;
 
-  [(KNBuildCrumble *)self frameOfEffectWithContext:v4];
-  [(KNBuildCrumble *)self p_setupMVPMatricesWithContext:v4 device:v130];
+  [(KNBuildCrumble *)self frameOfEffectWithContext:contextCopy];
+  [(KNBuildCrumble *)self p_setupMVPMatricesWithContext:contextCopy device:device];
   __asm { FMOV            V1.2D, #0.5 }
 
   self->_shadowFboSize = vrndaq_f64(vmulq_f64(self->_animationRect.size, _Q1));
   v19 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  [v19 setPixelFormat:objc_msgSend(v6, "pixelFormat")];
-  v20 = [[TSDMetalRenderTarget alloc] initWithSize:v6 metalContext:{self->_shadowFboSize.width, self->_shadowFboSize.height}];
+  [v19 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
+  v20 = [[TSDMetalRenderTarget alloc] initWithSize:metalContext metalContext:{self->_shadowFboSize.width, self->_shadowFboSize.height}];
   shadowRenderTarget = self->_shadowRenderTarget;
   self->_shadowRenderTarget = v20;
 
   v22 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  [v22 setPixelFormat:objc_msgSend(v6, "pixelFormat")];
+  [v22 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
   [v22 setBlendingEnabled:1];
   [v22 setSourceRGBBlendFactor:1];
   [v22 setSourceAlphaBlendFactor:1];
   [v22 setDestinationRGBBlendFactor:5];
   [v22 setDestinationAlphaBlendFactor:5];
-  v23 = [[TSDMetalRenderTarget alloc] initWithSize:v6 metalContext:{self->_shadowFboSize.width, self->_shadowFboSize.height}];
+  v23 = [[TSDMetalRenderTarget alloc] initWithSize:metalContext metalContext:{self->_shadowFboSize.width, self->_shadowFboSize.height}];
   blurRenderTarget = self->_blurRenderTarget;
   self->_blurRenderTarget = v23;
 
   v25 = objc_alloc_init(MTLRenderPipelineColorAttachmentDescriptor);
-  v128 = v6;
-  [v25 setPixelFormat:objc_msgSend(v6, "pixelFormat")];
+  v128 = metalContext;
+  [v25 setPixelFormat:objc_msgSend(metalContext, "pixelFormat")];
   [v25 setBlendingEnabled:1];
   [v25 setSourceRGBBlendFactor:1];
   [v25 setSourceAlphaBlendFactor:1];
   [v25 setDestinationRGBBlendFactor:5];
   [v25 setDestinationAlphaBlendFactor:5];
   v126 = v19;
-  v26 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildCrumbleVertexShader" fragmentShader:@"buildCrumbleFragmentShader" device:v130 library:@"KeynoteMetalLibrary" colorAttachment:v19];
+  v26 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildCrumbleVertexShader" fragmentShader:@"buildCrumbleFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v19];
   metalShadowShatterSystemShader = self->_metalShadowShatterSystemShader;
   self->_metalShadowShatterSystemShader = v26;
 
-  v28 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildCrumbleVertexShader" fragmentShader:@"buildCrumbleFragmentShader" device:v130 library:@"KeynoteMetalLibrary" colorAttachment:v25];
+  v28 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildCrumbleVertexShader" fragmentShader:@"buildCrumbleFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v25];
   metalShatterSystemShader = self->_metalShatterSystemShader;
   self->_metalShatterSystemShader = v28;
 
-  v30 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildCrumbleSmokeVertexShader" fragmentShader:@"buildCrumbleSmokeFragmentShader" device:v130 library:@"KeynoteMetalLibrary" colorAttachment:v25];
+  v30 = [[TSDMetalShader alloc] initCustomShaderWithVertexShader:@"buildCrumbleSmokeVertexShader" fragmentShader:@"buildCrumbleSmokeFragmentShader" device:device library:@"KeynoteMetalLibrary" colorAttachment:v25];
   metalSmokeSystemShader = self->_metalSmokeSystemShader;
   self->_metalSmokeSystemShader = v30;
 
-  v32 = [[TSDMetalShader alloc] initDefaultGaussianBlurShaderWithDevice:v130 colorAttachment:v22 halfSizedRadius:0];
+  v32 = [[TSDMetalShader alloc] initDefaultGaussianBlurShaderWithDevice:device colorAttachment:v22 halfSizedRadius:0];
   metalBlurShader = self->_metalBlurShader;
   self->_metalBlurShader = v32;
 
   TSDRectWithSize();
-  v34 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:textureFlipped:device:" textureRect:1 textureFlipped:v130 device:?];
+  v34 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:textureFlipped:device:" textureRect:1 textureFlipped:device device:?];
   metalBlurDataBuffer = self->_metalBlurDataBuffer;
   self->_metalBlurDataBuffer = v34;
 
-  [v132 frame];
+  [lastObject frame];
   v37 = v36;
   v39 = v38;
   [(KNAnimationContext *)self->super.mAnimationContext slideRect];
   v41 = v40;
   v43 = v42;
-  [v4 duration];
+  [contextCopy duration];
   v120 = v44;
-  v45 = [v4 direction];
-  if ([v131 isBuildIn])
+  direction = [contextCopy direction];
+  if ([animatedBuild isBuildIn])
   {
 LABEL_4:
-    v46 = v4;
+    v46 = contextCopy;
   }
 
-  else if (v45 > 110)
+  else if (direction > 110)
   {
-    v46 = v4;
+    v46 = contextCopy;
     v47 = 114;
     v48 = 122;
     v49 = 121;
-    if (v45 != &stru_68.segname[2])
+    if (direction != &stru_68.segname[2])
     {
-      v49 = v45;
+      v49 = direction;
     }
 
-    if (v45 != &stru_68.segname[1])
+    if (direction != &stru_68.segname[1])
     {
       v48 = v49;
     }
 
-    if (v45 != &stru_68.sectname[11])
+    if (direction != &stru_68.sectname[11])
     {
       v47 = v48;
     }
@@ -299,48 +299,48 @@ LABEL_4:
     v50 = 112;
     v51 = 111;
     v52 = 115;
-    if (v45 != &stru_68.sectname[10])
+    if (direction != &stru_68.sectname[10])
     {
-      v52 = v45;
+      v52 = direction;
     }
 
-    if (v45 != &stru_68.sectname[8])
+    if (direction != &stru_68.sectname[8])
     {
       v51 = v52;
     }
 
-    if (v45 != &stru_68.sectname[7])
+    if (direction != &stru_68.sectname[7])
     {
       v50 = v51;
     }
 
-    if (v45 <= 114)
+    if (direction <= 114)
     {
-      v45 = v50;
+      direction = v50;
     }
 
     else
     {
-      v45 = v47;
+      direction = v47;
     }
   }
 
   else
   {
-    v46 = v4;
-    switch(v45)
+    v46 = contextCopy;
+    switch(direction)
     {
       case 0xBuLL:
-        v45 = &dword_C;
+        direction = &dword_C;
         break;
       case 0xCuLL:
-        v45 = (&dword_8 + 3);
+        direction = (&dword_8 + 3);
         break;
       case 0xDuLL:
-        v45 = (&dword_C + 2);
+        direction = (&dword_C + 2);
         break;
       case 0xEuLL:
-        v45 = (&dword_C + 1);
+        direction = (&dword_C + 1);
         break;
       case 0xFuLL:
       case 0x10uLL:
@@ -364,34 +364,34 @@ LABEL_4:
       case 0x28uLL:
         break;
       case 0x15uLL:
-        v45 = &dword_18;
+        direction = &dword_18;
         break;
       case 0x16uLL:
-        v45 = (&dword_14 + 3);
+        direction = (&dword_14 + 3);
         break;
       case 0x17uLL:
-        v45 = (&dword_14 + 2);
+        direction = (&dword_14 + 2);
         break;
       case 0x18uLL:
-        v45 = (&dword_14 + 1);
+        direction = (&dword_14 + 1);
         break;
       case 0x1FuLL:
-        v45 = &stru_20;
+        direction = &stru_20;
         break;
       case 0x20uLL:
-        v45 = (&dword_1C + 3);
+        direction = (&dword_1C + 3);
         break;
       case 0x29uLL:
-        v45 = (&stru_20 + 10);
+        direction = (&stru_20 + 10);
         break;
       case 0x2AuLL:
-        v45 = (&stru_20 + 9);
+        direction = (&stru_20 + 9);
         break;
       case 0x2BuLL:
-        v45 = (&stru_20 + 12);
+        direction = (&stru_20 + 12);
         break;
       case 0x2CuLL:
-        v45 = (&stru_20 + 11);
+        direction = (&stru_20 + 11);
         break;
       default:
         goto LABEL_4;
@@ -419,32 +419,32 @@ LABEL_4:
   TSDMultiplySizeScalar();
   v117 = v59;
   v118 = v58;
-  [v132 size];
+  [lastObject size];
   v61 = v60;
   v63 = v62;
   v64 = self->_metalShatterSystemShader;
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Crumble Cells Split"];
   v66 = v65;
-  v67 = [v46 randomGenerator];
-  v68 = [KNBuildCrumbleSystem newParticleSystemWithNumberOfParticles:v56 objectSize:v45 slideSize:v64 duration:v67 direction:v128 shader:v61 percentOfCellsToSplit:v63 randomGenerator:v41 metalContext:v43, v120, v66];
+  randomGenerator = [v46 randomGenerator];
+  v68 = [KNBuildCrumbleSystem newParticleSystemWithNumberOfParticles:v56 objectSize:direction slideSize:v64 duration:randomGenerator direction:v128 shader:v61 percentOfCellsToSplit:v63 randomGenerator:v41 metalContext:v43, v120, v66];
   shatterSystem = self->_shatterSystem;
   self->_shatterSystem = v68;
 
-  v70 = [(KNBuildCrumbleSystem *)self->_shatterSystem triangleCount];
-  [v132 size];
+  triangleCount = [(KNBuildCrumbleSystem *)self->_shatterSystem triangleCount];
+  [lastObject size];
   v72 = v71;
   v74 = v73;
-  v75 = [v46 randomGenerator];
+  randomGenerator2 = [v46 randomGenerator];
   height = CGSizeZero.height;
-  v77 = [KNBuildShadowSystem newParticleSystemWithParticleSize:v45 particleSystemSize:v75 objectSize:self->_metalShadowShatterSystemShader slideSize:v128 duration:CGSizeZero.width direction:height randomGenerator:v70 shader:1.0 metalContext:v72, v74, v41, v43, *&v120];
+  v77 = [KNBuildShadowSystem newParticleSystemWithParticleSize:direction particleSystemSize:randomGenerator2 objectSize:self->_metalShadowShatterSystemShader slideSize:v128 duration:CGSizeZero.width direction:height randomGenerator:triangleCount shader:1.0 metalContext:v72, v74, v41, v43, *&v120];
   shadowShatterSystem = self->_shadowShatterSystem;
   self->_shadowShatterSystem = v77;
 
-  [v132 size];
+  [lastObject size];
   v80 = v79;
   v82 = v81;
-  v83 = [v46 randomGenerator];
-  v84 = [KNBuildSmokeSystem newParticleSystemWithParticleSize:v45 particleSystemSize:v83 objectSize:self->_metalSmokeSystemShader slideSize:v128 duration:v118 direction:v117 randomGenerator:v119 shader:1.0 metalContext:v80, v82, v41, v43, *&v120];
+  randomGenerator3 = [v46 randomGenerator];
+  v84 = [KNBuildSmokeSystem newParticleSystemWithParticleSize:direction particleSystemSize:randomGenerator3 objectSize:self->_metalSmokeSystemShader slideSize:v128 duration:v118 direction:v117 randomGenerator:v119 shader:1.0 metalContext:v80, v82, v41, v43, *&v120];
   smokeSystem = self->_smokeSystem;
   self->_smokeSystem = v84;
 
@@ -453,7 +453,7 @@ LABEL_4:
   [(KNBuildCrumbleSystem *)self->_shatterSystem setRotationMax:v86 * 0.0174532925];
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"LifeSpan Randomness"];
   [(KNBuildCrumbleSystem *)self->_shatterSystem setLifeSpanRandomness:?];
-  if (v45 == &stru_20.maxprot + 3)
+  if (direction == &stru_20.maxprot + 3)
   {
     v87 = @"LifeSpan Delay For Random";
   }
@@ -553,12 +553,12 @@ LABEL_4:
 
   self[1].super.super.isa = vcvt_f32_f64(vdivq_f64(_Q1, self->_animationRect.size));
   LOBYTE(self[1].super.mAnimationContext) = 0;
-  v108 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:v130 colorAttachment:v25];
+  v108 = [[TSDMetalShader alloc] initDefaultTextureShaderWithDevice:device colorAttachment:v25];
   metalFboShader = self->_metalFboShader;
   self->_metalFboShader = v108;
 
   TSDRectWithSize();
-  v110 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:v130 device:?];
+  v110 = [TSDGPUDataBuffer newDataBufferWithVertexRect:"newDataBufferWithVertexRect:textureRect:device:" textureRect:device device:?];
   metalFboDataBuffer = self->_metalFboDataBuffer;
   self->_metalFboDataBuffer = v110;
 
@@ -600,29 +600,29 @@ LABEL_4:
   *&self->_anon_300[48] = v116;
 }
 
-- (void)metalRenderFrameWithContext:(id)a3
+- (void)metalRenderFrameWithContext:(id)context
 {
-  v4 = a3;
-  [v4 percent];
+  contextCopy = context;
+  [contextCopy percent];
   v6 = v5;
-  v7 = [v4 textures];
-  v8 = [v7 lastObject];
+  textures = [contextCopy textures];
+  lastObject = [textures lastObject];
 
-  [v8 singleTextureOpacity];
+  [lastObject singleTextureOpacity];
   v10 = v9;
   [(KNAnimParameterGroup *)self->_parameterGroup valueForConstant:@"Smoke Opacity"];
   v12 = v11;
-  v13 = [v4 metalContext];
-  v14 = [v8 metalTextureWithContext:v13];
+  metalContext = [contextCopy metalContext];
+  v14 = [lastObject metalTextureWithContext:metalContext];
 
   if (v14)
   {
-    v15 = [v4 metalContext];
-    v16 = [v15 commandQueue];
-    v17 = [v16 commandBuffer];
+    metalContext2 = [contextCopy metalContext];
+    commandQueue = [metalContext2 commandQueue];
+    commandBuffer = [commandQueue commandBuffer];
 
-    v18 = [(TSDMetalRenderTarget *)self->_shadowRenderTarget passDescriptor];
-    v19 = [v17 renderCommandEncoderWithDescriptor:v18];
+    passDescriptor = [(TSDMetalRenderTarget *)self->_shadowRenderTarget passDescriptor];
+    v19 = [commandBuffer renderCommandEncoderWithDescriptor:passDescriptor];
 
     v30 = 0;
     v31 = 0;
@@ -637,46 +637,46 @@ LABEL_4:
     [(TSDMetalShader *)self->_metalShadowShatterSystemShader setPipelineStateWithEncoder:v19 vertexBytes:&self->_crumbleShadowUniforms fragmentBytes:&self->_crumbleShadowUniforms];
     [(KNBuildShadowSystem *)self->_shadowShatterSystem drawMetalWithEncoder:v19];
     [v19 endEncoding];
-    v22 = [(TSDMetalRenderTarget *)self->_blurRenderTarget passDescriptor];
-    v23 = [v17 renderCommandEncoderWithDescriptor:v22];
+    passDescriptor2 = [(TSDMetalRenderTarget *)self->_blurRenderTarget passDescriptor];
+    v23 = [commandBuffer renderCommandEncoderWithDescriptor:passDescriptor2];
 
     v30 = 0;
     v31 = 0;
     shadowFboSize = self->_shadowFboSize;
     v33 = xmmword_34B040;
     [v23 setViewport:&v30];
-    v24 = [(TSDMetalRenderTarget *)self->_shadowRenderTarget texture];
-    [v23 setFragmentTexture:v24 atIndex:0];
+    texture = [(TSDMetalRenderTarget *)self->_shadowRenderTarget texture];
+    [v23 setFragmentTexture:texture atIndex:0];
 
     [(TSDMetalShader *)self->_metalBlurShader setPipelineStateWithEncoder:v23 vertexBytes:self->_anon_340 fragmentBytes:&self[1]];
     [(TSDMTLDataBuffer *)self->_metalBlurDataBuffer drawWithEncoder:v23 atIndex:[(TSDMetalShader *)self->_metalBlurShader bufferIndex]];
     [v23 endEncoding];
-    [v17 commit];
-    v25 = [v4 metalContext];
-    v26 = [v25 renderEncoder];
+    [commandBuffer commit];
+    metalContext3 = [contextCopy metalContext];
+    renderEncoder = [metalContext3 renderEncoder];
 
-    v27 = [(TSDMetalRenderTarget *)self->_blurRenderTarget texture];
-    [v26 setFragmentTexture:v27 atIndex:0];
+    texture2 = [(TSDMetalRenderTarget *)self->_blurRenderTarget texture];
+    [renderEncoder setFragmentTexture:texture2 atIndex:0];
 
-    [(TSDMetalShader *)self->_metalFboShader setPipelineStateWithEncoder:v26 vertexBytes:self->_anon_300];
-    [(TSDMTLDataBuffer *)self->_metalFboDataBuffer drawWithEncoder:v26 atIndex:[(TSDMetalShader *)self->_metalFboShader bufferIndex]];
+    [(TSDMetalShader *)self->_metalFboShader setPipelineStateWithEncoder:renderEncoder vertexBytes:self->_anon_300];
+    [(TSDMTLDataBuffer *)self->_metalFboDataBuffer drawWithEncoder:renderEncoder atIndex:[(TSDMetalShader *)self->_metalFboShader bufferIndex]];
     *&self->_anon_68[24] = v20;
     *&self->_anon_68[28] = v21;
-    [(TSDMetalShader *)self->_metalShatterSystemShader setPipelineStateWithEncoder:v26 vertexBytes:&self->_crumbleUniforms fragmentBytes:&self->_crumbleUniforms];
-    [v26 setFragmentTexture:v14 atIndex:0];
-    [(KNBuildCrumbleSystem *)self->_shatterSystem drawMetalWithEncoder:v26];
+    [(TSDMetalShader *)self->_metalShatterSystemShader setPipelineStateWithEncoder:renderEncoder vertexBytes:&self->_crumbleUniforms fragmentBytes:&self->_crumbleUniforms];
+    [renderEncoder setFragmentTexture:v14 atIndex:0];
+    [(KNBuildCrumbleSystem *)self->_shatterSystem drawMetalWithEncoder:renderEncoder];
     v28 = v12;
     *&self->_anon_130[56] = v20;
     *&self->_anon_130[60] = v28;
-    [(TSDMetalShader *)self->_metalSmokeSystemShader setPipelineStateWithEncoder:v26 vertexBytes:?];
-    v29 = [(TSDTexturedRectangle *)self->_metalSmokeTexture metalTexture];
-    [v26 setFragmentTexture:v29 atIndex:0];
+    [(TSDMetalShader *)self->_metalSmokeSystemShader setPipelineStateWithEncoder:renderEncoder vertexBytes:?];
+    metalTexture = [(TSDTexturedRectangle *)self->_metalSmokeTexture metalTexture];
+    [renderEncoder setFragmentTexture:metalTexture atIndex:0];
 
-    [(KNBuildSmokeSystem *)self->_smokeSystem drawMetalWithEncoder:v26];
+    [(KNBuildSmokeSystem *)self->_smokeSystem drawMetalWithEncoder:renderEncoder];
   }
 }
 
-- (void)metalTeardownAnimationsWithContext:(id)a3
+- (void)metalTeardownAnimationsWithContext:(id)context
 {
   metalShatterSystemShader = self->_metalShatterSystemShader;
   self->_metalShatterSystemShader = 0;

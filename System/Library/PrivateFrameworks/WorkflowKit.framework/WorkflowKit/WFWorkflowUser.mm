@@ -3,40 +3,40 @@
 - (NSString)displayName;
 - (NSString)twitterDisplayName;
 - (NSString)websiteDisplayName;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation WFWorkflowUser
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(MTLModel *)[WFMutableWorkflowUser allocWithZone:?]];
-  v5 = [(MTLModel *)self dictionaryValue];
-  [(WFMutableWorkflowUser *)v4 setValuesForKeysWithDictionary:v5];
+  dictionaryValue = [(MTLModel *)self dictionaryValue];
+  [(WFMutableWorkflowUser *)v4 setValuesForKeysWithDictionary:dictionaryValue];
 
   return v4;
 }
 
 - (NSString)displayName
 {
-  v3 = [(WFWorkflowUser *)self websiteDisplayName];
-  v4 = [(WFWorkflowUser *)self fullName];
-  v5 = [(WFWorkflowUser *)self twitterDisplayName];
-  v6 = [(WFWorkflowUser *)self mainIdentity];
-  v7 = v5;
-  if (!v6)
+  websiteDisplayName = [(WFWorkflowUser *)self websiteDisplayName];
+  fullName = [(WFWorkflowUser *)self fullName];
+  twitterDisplayName = [(WFWorkflowUser *)self twitterDisplayName];
+  mainIdentity = [(WFWorkflowUser *)self mainIdentity];
+  v7 = twitterDisplayName;
+  if (!mainIdentity)
   {
     goto LABEL_6;
   }
 
-  if (v6 == 2)
+  if (mainIdentity == 2)
   {
-    v7 = v4;
+    v7 = fullName;
     goto LABEL_6;
   }
 
-  v7 = v3;
-  if (v6 == 1)
+  v7 = websiteDisplayName;
+  if (mainIdentity == 1)
   {
 LABEL_6:
     v8 = v7;
@@ -45,23 +45,23 @@ LABEL_6:
 
   v8 = 0;
 LABEL_7:
-  if (![v8 length] && objc_msgSend(v4, "length"))
+  if (![v8 length] && objc_msgSend(fullName, "length"))
   {
-    v9 = v4;
+    v9 = fullName;
 
     v8 = v9;
   }
 
-  if (![v8 length] && objc_msgSend(v5, "length"))
+  if (![v8 length] && objc_msgSend(twitterDisplayName, "length"))
   {
-    v10 = v5;
+    v10 = twitterDisplayName;
 
     v8 = v10;
   }
 
-  if (![v8 length] && objc_msgSend(v3, "length"))
+  if (![v8 length] && objc_msgSend(websiteDisplayName, "length"))
   {
-    v11 = v3;
+    v11 = websiteDisplayName;
 
     v8 = v11;
   }
@@ -83,10 +83,10 @@ LABEL_7:
 
 - (NSString)twitterDisplayName
 {
-  v2 = [(WFWorkflowUser *)self twitter];
-  if ([v2 length])
+  twitter = [(WFWorkflowUser *)self twitter];
+  if ([twitter length])
   {
-    v3 = [@"@" stringByAppendingString:v2];
+    v3 = [@"@" stringByAppendingString:twitter];
   }
 
   else
@@ -99,8 +99,8 @@ LABEL_7:
 
 - (NSString)websiteDisplayName
 {
-  v2 = [(WFWorkflowUser *)self websiteURL];
-  v3 = [v2 wf_displayStringWithCharacterLimit:0x7FFFFFFFFFFFFFFFLL];
+  websiteURL = [(WFWorkflowUser *)self websiteURL];
+  v3 = [websiteURL wf_displayStringWithCharacterLimit:0x7FFFFFFFFFFFFFFFLL];
 
   return v3;
 }

@@ -1,9 +1,9 @@
 @interface HomeSearchResultsFilterItem
-- (BOOL)isEqual:(id)a3;
-- (HomeSearchResultsFilterItem)initWithSuggestions:(id)a3 currentSuggestion:(id)a4 delegate:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HomeSearchResultsFilterItem)initWithSuggestions:(id)suggestions currentSuggestion:(id)suggestion delegate:(id)delegate;
 - (HomeSearchResultsFilterItemDelegate)delegate;
 - (SmallDropDownOutlineCellModel)cellModel;
-- (void)smallDropDownOutlineCell:(id)a3 didSelectItemAtIndex:(int64_t)a4;
+- (void)smallDropDownOutlineCell:(id)cell didSelectItemAtIndex:(int64_t)index;
 @end
 
 @implementation HomeSearchResultsFilterItem
@@ -15,16 +15,16 @@
   return WeakRetained;
 }
 
-- (void)smallDropDownOutlineCell:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)smallDropDownOutlineCell:(id)cell didSelectItemAtIndex:(int64_t)index
 {
-  v6 = [(NSArray *)self->_suggestions objectAtIndexedSubscript:a4];
+  v6 = [(NSArray *)self->_suggestions objectAtIndexedSubscript:index];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained searchResultsFilterItem:self didSelectSuggestion:v6];
 }
 
 - (SmallDropDownOutlineCellModel)cellModel
 {
-  v3 = [(GEORelatedSearchSuggestion *)self->_currentSuggestion displayString];
+  displayString = [(GEORelatedSearchSuggestion *)self->_currentSuggestion displayString];
   v4 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
@@ -45,8 +45,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) displayString];
-        [v4 addObject:v10];
+        displayString2 = [*(*(&v13 + 1) + 8 * i) displayString];
+        [v4 addObject:displayString2];
       }
 
       v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -55,15 +55,15 @@
     while (v7);
   }
 
-  v11 = [[SmallDropDownOutlineCellModel alloc] initWithButtonTitle:v3 dropDownTitles:v4 selectedIndex:[(NSArray *)self->_suggestions indexOfObject:self->_currentSuggestion] delegate:self backgroundModel:0];
+  v11 = [[SmallDropDownOutlineCellModel alloc] initWithButtonTitle:displayString dropDownTitles:v4 selectedIndex:[(NSArray *)self->_suggestions indexOfObject:self->_currentSuggestion] delegate:self backgroundModel:0];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -73,25 +73,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HomeSearchResultsFilterItem *)v5 suggestions];
-      v7 = v6;
-      if (v6 == self->_suggestions || [(NSArray *)v6 isEqual:?])
+      v5 = equalCopy;
+      suggestions = [(HomeSearchResultsFilterItem *)v5 suggestions];
+      v7 = suggestions;
+      if (suggestions == self->_suggestions || [(NSArray *)suggestions isEqual:?])
       {
-        v8 = [(HomeSearchResultsFilterItem *)v5 currentSuggestion];
-        v9 = v8;
-        if (v8 == self->_currentSuggestion || [(GEORelatedSearchSuggestion *)v8 isEqual:?])
+        currentSuggestion = [(HomeSearchResultsFilterItem *)v5 currentSuggestion];
+        v9 = currentSuggestion;
+        if (currentSuggestion == self->_currentSuggestion || [(GEORelatedSearchSuggestion *)currentSuggestion isEqual:?])
         {
-          v10 = [(HomeSearchResultsFilterItem *)v5 delegate];
+          delegate = [(HomeSearchResultsFilterItem *)v5 delegate];
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          if (v10 == WeakRetained)
+          if (delegate == WeakRetained)
           {
             v12 = 1;
           }
 
           else
           {
-            v12 = [v10 isEqual:WeakRetained];
+            v12 = [delegate isEqual:WeakRetained];
           }
         }
 
@@ -116,22 +116,22 @@
   return v12;
 }
 
-- (HomeSearchResultsFilterItem)initWithSuggestions:(id)a3 currentSuggestion:(id)a4 delegate:(id)a5
+- (HomeSearchResultsFilterItem)initWithSuggestions:(id)suggestions currentSuggestion:(id)suggestion delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  suggestionsCopy = suggestions;
+  suggestionCopy = suggestion;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = HomeSearchResultsFilterItem;
   v11 = [(HomeSearchResultsFilterItem *)&v15 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [suggestionsCopy copy];
     suggestions = v11->_suggestions;
     v11->_suggestions = v12;
 
-    objc_storeStrong(&v11->_currentSuggestion, a4);
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeStrong(&v11->_currentSuggestion, suggestion);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
   }
 
   return v11;

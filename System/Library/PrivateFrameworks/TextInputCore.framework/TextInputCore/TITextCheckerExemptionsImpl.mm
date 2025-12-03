@@ -1,6 +1,6 @@
 @interface TITextCheckerExemptionsImpl
 + (id)sharedTextCheckerExemptionsImpl;
-- (BOOL)stringIsExemptFromChecker:(id)a3;
+- (BOOL)stringIsExemptFromChecker:(id)checker;
 - (void)addObserverAssertion;
 - (void)dealloc;
 - (void)removeObserverAssertion;
@@ -352,16 +352,16 @@ void __51__TITextCheckerExemptionsImpl_addObserverAssertion__block_invoke_49(uin
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)stringIsExemptFromChecker:(id)a3
+- (BOOL)stringIsExemptFromChecker:(id)checker
 {
-  v4 = [a3 lowercaseString];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(TITextCheckerExemptionsImpl *)v5 addressBookTokens];
-  v7 = [(TITextCheckerExemptionsImpl *)v5 userDictionaryTokens];
-  objc_sync_exit(v5);
+  lowercaseString = [checker lowercaseString];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  addressBookTokens = [(TITextCheckerExemptionsImpl *)selfCopy addressBookTokens];
+  userDictionaryTokens = [(TITextCheckerExemptionsImpl *)selfCopy userDictionaryTokens];
+  objc_sync_exit(selfCopy);
 
-  if ([v6 containsObject:v4] & 1) != 0 || (objc_msgSend(v7, "containsObject:", v4))
+  if ([addressBookTokens containsObject:lowercaseString] & 1) != 0 || (objc_msgSend(userDictionaryTokens, "containsObject:", lowercaseString))
   {
     v8 = 1;
   }
@@ -369,7 +369,7 @@ void __51__TITextCheckerExemptionsImpl_addObserverAssertion__block_invoke_49(uin
   else
   {
     v9 = +[TITransientLexiconManager sharedInstance];
-    v8 = [v9 searchForWordCaseInsensitive:v4];
+    v8 = [v9 searchForWordCaseInsensitive:lowercaseString];
   }
 
   return v8;

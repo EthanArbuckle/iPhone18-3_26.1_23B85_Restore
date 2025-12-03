@@ -22,7 +22,7 @@
   var0 = self->_subIterators.var0;
   if (begin == var0)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(fullyPopulated) = 1;
   }
 
   else
@@ -30,8 +30,8 @@
     v4 = begin + 1;
     do
     {
-      v5 = [(__cap_ *)*(v4 - 1) fullyPopulated];
-      if (v5)
+      fullyPopulated = [(__cap_ *)*(v4 - 1) fullyPopulated];
+      if (fullyPopulated)
       {
         v6 = v4 == var0;
       }
@@ -47,7 +47,7 @@
     while (!v6);
   }
 
-  return v5;
+  return fullyPopulated;
 }
 
 - (id)first
@@ -58,7 +58,7 @@
   if (begin == var0)
   {
 LABEL_4:
-    v6 = 0;
+    first = 0;
   }
 
   else
@@ -66,8 +66,8 @@ LABEL_4:
     while (1)
     {
       v5 = *begin;
-      v6 = [(__end_ *)v5 first];
-      if (v6)
+      first = [(__end_ *)v5 first];
+      if (first)
       {
         break;
       }
@@ -81,7 +81,7 @@ LABEL_4:
     }
   }
 
-  return v6;
+  return first;
 }
 
 - (id)next

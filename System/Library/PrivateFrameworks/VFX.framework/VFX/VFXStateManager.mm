@@ -1,18 +1,18 @@
 @interface VFXStateManager
-+ (void)beginTransition:(id)a3;
-+ (void)commitTransition:(id)a3;
++ (void)beginTransition:(id)transition;
++ (void)commitTransition:(id)transition;
 - (VFXStateManager)init;
-- (VFXStateManager)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stateWithName:(id)a3;
-- (id)transitionFrom:(id)a3 to:(id)a4;
-- (void)addReverseItem:(id)a3;
-- (void)addState:(id)a3;
-- (void)copyTo:(id)a3 withContext:(id)a4;
+- (VFXStateManager)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stateWithName:(id)name;
+- (id)transitionFrom:(id)from to:(id)to;
+- (void)addReverseItem:(id)item;
+- (void)addState:(id)state;
+- (void)copyTo:(id)to withContext:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4;
-- (void)setActiveState:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block;
+- (void)setActiveState:(id)state;
 @end
 
 @implementation VFXStateManager
@@ -39,14 +39,14 @@
   [(VFXStateManager *)&v3 dealloc];
 }
 
-- (void)copyTo:(id)a3 withContext:(id)a4
+- (void)copyTo:(id)to withContext:(id)context
 {
   v46 = *MEMORY[0x1E69E9840];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v7 = objc_msgSend_states(self, a2, a3, a4);
+  v7 = objc_msgSend_states(self, a2, to, context);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v40, v45, 16);
   if (v9)
   {
@@ -62,19 +62,19 @@
         }
 
         v16 = *(*(&v40 + 1) + 8 * i);
-        v17 = sub_1AF2BED30(v16, a4);
+        v17 = sub_1AF2BED30(v16, context);
         v20 = v17;
         if (self->_activeState == v16)
         {
-          v21 = *(a3 + 2);
+          v21 = *(to + 2);
           if (v21 != v17)
           {
 
-            *(a3 + 2) = v20;
+            *(to + 2) = v20;
           }
         }
 
-        objc_msgSend_addState_(a3, v18, v20, v19);
+        objc_msgSend_addState_(to, v18, v20, v19);
       }
 
       v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v22, &v40, v45, 16);
@@ -103,7 +103,7 @@
         }
 
         v32 = objc_msgSend_copy(*(*(&v36 + 1) + 8 * j), v26, v27, v28);
-        objc_msgSend_addStateTransition_(a3, v33, v32, v34);
+        objc_msgSend_addStateTransition_(to, v33, v32, v34);
       }
 
       v29 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v26, &v36, v44, 16);
@@ -115,18 +115,18 @@
   reverseActiveState = self->_reverseActiveState;
   if (reverseActiveState)
   {
-    *(a3 + 3) = sub_1AF2BED30(reverseActiveState, a4);
+    *(to + 3) = sub_1AF2BED30(reverseActiveState, context);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_msgSend_copyTo_withContext_(self, v5, v4, 0);
   return v4;
 }
 
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
@@ -148,7 +148,7 @@
           objc_enumerationMutation(states);
         }
 
-        (*(a4 + 2))(a4, *(*(&v14 + 1) + 8 * i), 0, 0);
+        (*(block + 2))(block, *(*(&v14 + 1) + 8 * i), 0, 0);
       }
 
       v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(states, v11, &v14, v18, 16);
@@ -165,19 +165,19 @@
     v13[2] = sub_1AF32F644;
     v13[3] = &unk_1E7A7C0C8;
     v13[4] = self;
-    (*(a4 + 2))(a4, reverseActiveState, 1, v13);
+    (*(block + 2))(block, reverseActiveState, 1, v13);
   }
 }
 
-- (void)addState:(id)a3
+- (void)addState:(id)state
 {
-  objc_msgSend_setStateManager_(a3, a2, self, v3);
+  objc_msgSend_setStateManager_(state, a2, self, v3);
   states = self->_states;
 
-  objc_msgSend_addObject_(states, v6, a3, v7);
+  objc_msgSend_addObject_(states, v6, state, v7);
 }
 
-- (id)stateWithName:(id)a3
+- (id)stateWithName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
@@ -204,7 +204,7 @@ LABEL_3:
 
     v12 = *(*(&v17 + 1) + 8 * v11);
     v13 = objc_msgSend_name(v12, v6, v7, v8);
-    if (objc_msgSend_isEqualToString_(v13, v14, a3, v15))
+    if (objc_msgSend_isEqualToString_(v13, v14, name, v15))
     {
       return v12;
     }
@@ -222,14 +222,14 @@ LABEL_3:
   }
 }
 
-- (id)transitionFrom:(id)a3 to:(id)a4
+- (id)transitionFrom:(id)from to:(id)to
 {
   if (!self->_transitionsEnabled)
   {
     return 0;
   }
 
-  v7 = objc_msgSend_count(self->_transitions, a2, a3, a4);
+  v7 = objc_msgSend_count(self->_transitions, a2, from, to);
   if (v7 < 1)
   {
     return 0;
@@ -241,9 +241,9 @@ LABEL_3:
   do
   {
     v13 = objc_msgSend_objectAtIndex_(self->_transitions, v8, v12 - 2, v9);
-    if (!objc_msgSend_from(v13, v14, v15, v16) || (v18 = objc_msgSend_from(v13, v8, v17, v9), v22 = objc_msgSend_name(v18, v19, v20, v21), v26 = objc_msgSend_name(a3, v23, v24, v25), objc_msgSend_isEqualToString_(v22, v27, v26, v28)))
+    if (!objc_msgSend_from(v13, v14, v15, v16) || (v18 = objc_msgSend_from(v13, v8, v17, v9), v22 = objc_msgSend_name(v18, v19, v20, v21), v26 = objc_msgSend_name(from, v23, v24, v25), objc_msgSend_isEqualToString_(v22, v27, v26, v28)))
     {
-      if (!objc_msgSend_to(v13, v8, v17, v9) || (v30 = objc_msgSend_to(v13, v8, v29, v9), v34 = objc_msgSend_name(v30, v31, v32, v33), v38 = objc_msgSend_name(a4, v35, v36, v37), objc_msgSend_isEqualToString_(v34, v39, v38, v40)))
+      if (!objc_msgSend_to(v13, v8, v17, v9) || (v30 = objc_msgSend_to(v13, v8, v29, v9), v34 = objc_msgSend_name(v30, v31, v32, v33), v38 = objc_msgSend_name(to, v35, v36, v37), objc_msgSend_isEqualToString_(v34, v39, v38, v40)))
       {
         v44 = objc_msgSend_to(v13, v8, v29, v9) ? 2 : 1;
         v45 = objc_msgSend_from(v13, v41, v42, v43) ? v44 + 1 : v44;
@@ -267,57 +267,57 @@ LABEL_3:
   return v13;
 }
 
-+ (void)beginTransition:(id)a3
++ (void)beginTransition:(id)transition
 {
-  if (a3)
+  if (transition)
   {
-    objc_msgSend_begin(VFXTransaction, a2, a3, v3);
-    objc_msgSend_duration(a3, v5, v6, v7);
+    objc_msgSend_begin(VFXTransaction, a2, transition, v3);
+    objc_msgSend_duration(transition, v5, v6, v7);
     objc_msgSend_setAnimationDuration_(VFXTransaction, v8, v9, v10);
-    v14 = objc_msgSend_timingFunction(a3, v11, v12, v13);
+    v14 = objc_msgSend_timingFunction(transition, v11, v12, v13);
     objc_msgSend_setTimingFunction_(VFXTransaction, v15, v14, v16);
-    objc_msgSend_beginTime(a3, v17, v18, v19);
+    objc_msgSend_beginTime(transition, v17, v18, v19);
 
     objc_msgSend_setBeginTime_(VFXTransaction, v20, v21, v22);
   }
 }
 
-+ (void)commitTransition:(id)a3
++ (void)commitTransition:(id)transition
 {
-  if (a3)
+  if (transition)
   {
-    objc_msgSend_commit(VFXTransaction, a2, a3, v3);
+    objc_msgSend_commit(VFXTransaction, a2, transition, v3);
   }
 }
 
-- (void)addReverseItem:(id)a3
+- (void)addReverseItem:(id)item
 {
-  if (!objc_msgSend_itemMatching_(self->_reverseActiveState, a2, a3, v3))
+  if (!objc_msgSend_itemMatching_(self->_reverseActiveState, a2, item, v3))
   {
     reverseActiveState = self->_reverseActiveState;
 
-    objc_msgSend_addStateItem_(reverseActiveState, v6, a3, v7);
+    objc_msgSend_addStateItem_(reverseActiveState, v6, item, v7);
   }
 }
 
-- (void)setActiveState:(id)a3
+- (void)setActiveState:(id)state
 {
-  if (self->_activeState != a3)
+  if (self->_activeState != state)
   {
     v24 = self->_reverseActiveState;
     reverseActiveState = self->_reverseActiveState;
     if (reverseActiveState)
     {
-      v8 = objc_msgSend_transitionFrom_to_(self, v6, reverseActiveState, a3);
+      v8 = objc_msgSend_transitionFrom_to_(self, v6, reverseActiveState, state);
       objc_msgSend_beginTransition_(VFXStateManager, v9, v8, v10);
-      objc_msgSend_applyFrom_reverse_transition_(self->_reverseActiveState, v11, a3, 1, v8);
+      objc_msgSend_applyFrom_reverse_transition_(self->_reverseActiveState, v11, state, 1, v8);
       objc_msgSend_commitTransition_(VFXStateManager, v12, v8, v13);
 
       self->_reverseActiveState = 0;
     }
 
-    self->_activeState = a3;
-    self->_reverseActiveState = objc_msgSend_makeReverseStates(a3, v14, v15, v16);
+    self->_activeState = state;
+    self->_reverseActiveState = objc_msgSend_makeReverseStates(state, v14, v15, v16);
     v18 = objc_msgSend_transitionFrom_to_(self, v17, v24, self->_activeState);
     objc_msgSend_beginTransition_(VFXStateManager, v19, v18, v20);
     objc_msgSend_applyFrom_reverse_transition_(self->_activeState, v21, v24, 0, v18);
@@ -325,7 +325,7 @@ LABEL_3:
   }
 }
 
-- (VFXStateManager)initWithCoder:(id)a3
+- (VFXStateManager)initWithCoder:(id)coder
 {
   v33 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
@@ -334,10 +334,10 @@ LABEL_3:
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v6, v5, @"states");
+    v7 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v6, v5, @"states");
     v4->_states = objc_msgSend_mutableCopy(v7, v8, v9, v10);
     v11 = objc_opt_class();
-    v13 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v12, v11, @"transitions");
+    v13 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v12, v11, @"transitions");
     v17 = objc_msgSend_mutableCopy(v13, v14, v15, v16);
     v4->_transitions = v17;
     if (!v17)
@@ -379,12 +379,12 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_states, @"states");
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_states, @"states");
   transitions = self->_transitions;
 
-  objc_msgSend_encodeObject_forKey_(a3, v5, transitions, @"transitions");
+  objc_msgSend_encodeObject_forKey_(coder, v5, transitions, @"transitions");
 }
 
 @end

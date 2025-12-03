@@ -5,12 +5,12 @@
 - (id)_tintColorToUse;
 - (void)_syncFillColor;
 - (void)_syncStrokeColor;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)setFillColor:(id)a3;
-- (void)setIgnoresTintColorAlpha:(BOOL)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setPath:(id)a3;
-- (void)setStrokeColor:(id)a3;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)setFillColor:(id)color;
+- (void)setIgnoresTintColorAlpha:(BOOL)alpha;
+- (void)setLineWidth:(double)width;
+- (void)setPath:(id)path;
+- (void)setStrokeColor:(id)color;
 - (void)tintColorDidChange;
 @end
 
@@ -30,94 +30,94 @@
   return v2;
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [(BKShapeView *)self fillColor:a3];
-  v6 = [v5 CGColor];
-  v7 = [(BKShapeView *)self layer];
-  [v7 setFillColor:v6];
+  v5 = [(BKShapeView *)self fillColor:change];
+  cGColor = [v5 CGColor];
+  layer = [(BKShapeView *)self layer];
+  [layer setFillColor:cGColor];
 
-  v11 = [(BKShapeView *)self strokeColor];
-  v8 = v11;
-  v9 = [v11 CGColor];
-  v10 = [(BKShapeView *)self layer];
-  [v10 setStrokeColor:v9];
+  strokeColor = [(BKShapeView *)self strokeColor];
+  v8 = strokeColor;
+  cGColor2 = [strokeColor CGColor];
+  layer2 = [(BKShapeView *)self layer];
+  [layer2 setStrokeColor:cGColor2];
 }
 
 - (UIBezierPath)path
 {
-  v2 = [(BKShapeView *)self layer];
-  v3 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [v2 path]);
+  layer = [(BKShapeView *)self layer];
+  v3 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [layer path]);
 
   return v3;
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v5 = a3;
-  v6 = [a3 CGPath];
-  v7 = [(BKShapeView *)self layer];
-  [v7 setPath:v6];
+  pathCopy = path;
+  cGPath = [path CGPath];
+  layer = [(BKShapeView *)self layer];
+  [layer setPath:cGPath];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
-  if (self->_fillColor != v5)
+  colorCopy = color;
+  if (self->_fillColor != colorCopy)
   {
-    v9 = v5;
-    v5 = [(UIColor *)v5 isEqual:?];
-    if ((v5 & 1) == 0)
+    v9 = colorCopy;
+    colorCopy = [(UIColor *)colorCopy isEqual:?];
+    if ((colorCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_fillColor, a3);
+      objc_storeStrong(&self->_fillColor, color);
       v6 = v9;
-      v7 = [v9 CGColor];
-      v8 = [(BKShapeView *)self layer];
-      [v8 setFillColor:v7];
+      cGColor = [v9 CGColor];
+      layer = [(BKShapeView *)self layer];
+      [layer setFillColor:cGColor];
     }
   }
 
-  _objc_release_x1(v5);
+  _objc_release_x1(colorCopy);
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
-  if (self->_strokeColor != v5)
+  colorCopy = color;
+  if (self->_strokeColor != colorCopy)
   {
-    v9 = v5;
-    v5 = [(UIColor *)v5 isEqual:?];
-    if ((v5 & 1) == 0)
+    v9 = colorCopy;
+    colorCopy = [(UIColor *)colorCopy isEqual:?];
+    if ((colorCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_strokeColor, a3);
+      objc_storeStrong(&self->_strokeColor, color);
       v6 = v9;
-      v7 = [v9 CGColor];
-      v8 = [(BKShapeView *)self layer];
-      [v8 setStrokeColor:v7];
+      cGColor = [v9 CGColor];
+      layer = [(BKShapeView *)self layer];
+      [layer setStrokeColor:cGColor];
     }
   }
 
-  _objc_release_x1(v5);
+  _objc_release_x1(colorCopy);
 }
 
 - (double)lineWidth
 {
-  v2 = [(BKShapeView *)self layer];
-  [v2 lineWidth];
+  layer = [(BKShapeView *)self layer];
+  [layer lineWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
-  v4 = [(BKShapeView *)self layer];
-  [v4 setLineWidth:a3];
+  layer = [(BKShapeView *)self layer];
+  [layer setLineWidth:width];
 }
 
-- (void)setIgnoresTintColorAlpha:(BOOL)a3
+- (void)setIgnoresTintColorAlpha:(BOOL)alpha
 {
-  self->_ignoresTintColorAlpha = a3;
+  self->_ignoresTintColorAlpha = alpha;
   [(BKShapeView *)self _syncFillColor];
 
   [(BKShapeView *)self _syncStrokeColor];
@@ -132,12 +132,12 @@
 
 - (id)_tintColorToUse
 {
-  v3 = [(BKShapeView *)self ignoresTintColorAlpha];
-  v4 = [(BKShapeView *)self tintColor];
-  v5 = v4;
-  if (v3)
+  ignoresTintColorAlpha = [(BKShapeView *)self ignoresTintColorAlpha];
+  tintColor = [(BKShapeView *)self tintColor];
+  v5 = tintColor;
+  if (ignoresTintColorAlpha)
   {
-    v6 = [v4 colorWithAlphaComponent:1.0];
+    v6 = [tintColor colorWithAlphaComponent:1.0];
 
     v5 = v6;
   }
@@ -149,8 +149,8 @@
 {
   if ([(BKShapeView *)self strokeColorUsesTintColor])
   {
-    v3 = [(BKShapeView *)self _tintColorToUse];
-    [(BKShapeView *)self setStrokeColor:v3];
+    _tintColorToUse = [(BKShapeView *)self _tintColorToUse];
+    [(BKShapeView *)self setStrokeColor:_tintColorToUse];
   }
 }
 
@@ -158,8 +158,8 @@
 {
   if ([(BKShapeView *)self fillColorUsesTintColor])
   {
-    v3 = [(BKShapeView *)self _tintColorToUse];
-    [(BKShapeView *)self setFillColor:v3];
+    _tintColorToUse = [(BKShapeView *)self _tintColorToUse];
+    [(BKShapeView *)self setFillColor:_tintColorToUse];
   }
 }
 

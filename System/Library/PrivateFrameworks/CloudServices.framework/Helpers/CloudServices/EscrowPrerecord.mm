@@ -1,15 +1,15 @@
 @interface EscrowPrerecord
-+ (id)createPrerecordFromCandidate:(id)a3 storedCertificate:(id)a4 request:(id)a5 error:(id *)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)createPrerecordFromCandidate:(id)candidate storedCertificate:(id)certificate request:(id)request error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPassphraseType:(id)a3;
+- (int)StringAsPassphraseType:(id)type;
 - (int)passphraseType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EscrowPrerecord
@@ -27,25 +27,25 @@
   }
 }
 
-- (int)StringAsPassphraseType:(id)a3
+- (int)StringAsPassphraseType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"FourDigitNumeric"])
+  else if ([typeCopy isEqualToString:@"FourDigitNumeric"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SixDigitNumeric"])
+  else if ([typeCopy isEqualToString:@"SixDigitNumeric"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Complex"])
+  else if ([typeCopy isEqualToString:@"Complex"])
   {
     v4 = 3;
   }
@@ -63,8 +63,8 @@
   v7.receiver = self;
   v7.super_class = EscrowPrerecord;
   v3 = [(EscrowPrerecord *)&v7 description];
-  v4 = [(EscrowPrerecord *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(EscrowPrerecord *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -158,220 +158,220 @@
   passcodeGeneration = self->_passcodeGeneration;
   if (passcodeGeneration)
   {
-    v19 = [(EscrowPrerecordPasscodeGeneration *)passcodeGeneration dictionaryRepresentation];
-    [v4 setObject:v19 forKey:@"passcodeGeneration"];
+    dictionaryRepresentation = [(EscrowPrerecordPasscodeGeneration *)passcodeGeneration dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"passcodeGeneration"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_iCloudEnvironment)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_escrowBaseURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_dsid)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_escrowBlob)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sosPeerID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sosBackupKeybagPassword)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sosBackupKeybagDigest)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_timestamp)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bottleID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_escrowedSPKI)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     passphraseType = self->_passphraseType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_duplicateEscrowBlob)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_passcodeGeneration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_iCloudEnvironment)
   {
-    [v4 setICloudEnvironment:?];
-    v4 = v5;
+    [toCopy setICloudEnvironment:?];
+    toCopy = v5;
   }
 
   if (self->_escrowBaseURL)
   {
     [v5 setEscrowBaseURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dsid)
   {
     [v5 setDsid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowBlob)
   {
     [v5 setEscrowBlob:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sosPeerID)
   {
     [v5 setSosPeerID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sosBackupKeybagPassword)
   {
     [v5 setSosBackupKeybagPassword:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_sosBackupKeybagDigest)
   {
     [v5 setSosBackupKeybagDigest:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_timestamp)
   {
     [v5 setTimestamp:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_bottleID)
   {
     [v5 setBottleID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_escrowedSPKI)
   {
     [v5 setEscrowedSPKI:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 18) = self->_passphraseType;
-    *(v4 + 112) |= 1u;
+    *(toCopy + 18) = self->_passphraseType;
+    *(toCopy + 112) |= 1u;
   }
 
   if (self->_duplicateEscrowBlob)
   {
     [v5 setDuplicateEscrowBlob:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_passcodeGeneration)
   {
     [v5 setPasscodeGeneration:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_iCloudEnvironment copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_iCloudEnvironment copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NSString *)self->_escrowBaseURL copyWithZone:a3];
+  v8 = [(NSString *)self->_escrowBaseURL copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_dsid copyWithZone:a3];
+  v10 = [(NSString *)self->_dsid copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSData *)self->_escrowBlob copyWithZone:a3];
+  v12 = [(NSData *)self->_escrowBlob copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSString *)self->_sosPeerID copyWithZone:a3];
+  v14 = [(NSString *)self->_sosPeerID copyWithZone:zone];
   v15 = v5[12];
   v5[12] = v14;
 
-  v16 = [(NSData *)self->_sosBackupKeybagPassword copyWithZone:a3];
+  v16 = [(NSData *)self->_sosBackupKeybagPassword copyWithZone:zone];
   v17 = v5[11];
   v5[11] = v16;
 
-  v18 = [(NSData *)self->_sosBackupKeybagDigest copyWithZone:a3];
+  v18 = [(NSData *)self->_sosBackupKeybagDigest copyWithZone:zone];
   v19 = v5[10];
   v5[10] = v18;
 
-  v20 = [(NSString *)self->_timestamp copyWithZone:a3];
+  v20 = [(NSString *)self->_timestamp copyWithZone:zone];
   v21 = v5[13];
   v5[13] = v20;
 
-  v22 = [(NSString *)self->_bottleID copyWithZone:a3];
+  v22 = [(NSString *)self->_bottleID copyWithZone:zone];
   v23 = v5[1];
   v5[1] = v22;
 
-  v24 = [(NSData *)self->_escrowedSPKI copyWithZone:a3];
+  v24 = [(NSData *)self->_escrowedSPKI copyWithZone:zone];
   v25 = v5[6];
   v5[6] = v24;
 
@@ -381,27 +381,27 @@
     *(v5 + 112) |= 1u;
   }
 
-  v26 = [(NSData *)self->_duplicateEscrowBlob copyWithZone:a3];
+  v26 = [(NSData *)self->_duplicateEscrowBlob copyWithZone:zone];
   v27 = v5[3];
   v5[3] = v26;
 
-  v28 = [(EscrowPrerecordPasscodeGeneration *)self->_passcodeGeneration copyWithZone:a3];
+  v28 = [(EscrowPrerecordPasscodeGeneration *)self->_passcodeGeneration copyWithZone:zone];
   v29 = v5[8];
   v5[8] = v28;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   iCloudEnvironment = self->_iCloudEnvironment;
-  if (iCloudEnvironment | *(v4 + 7))
+  if (iCloudEnvironment | *(equalCopy + 7))
   {
     if (![(NSString *)iCloudEnvironment isEqual:?])
     {
@@ -410,7 +410,7 @@
   }
 
   escrowBaseURL = self->_escrowBaseURL;
-  if (escrowBaseURL | *(v4 + 4))
+  if (escrowBaseURL | *(equalCopy + 4))
   {
     if (![(NSString *)escrowBaseURL isEqual:?])
     {
@@ -419,7 +419,7 @@
   }
 
   dsid = self->_dsid;
-  if (dsid | *(v4 + 2))
+  if (dsid | *(equalCopy + 2))
   {
     if (![(NSString *)dsid isEqual:?])
     {
@@ -428,7 +428,7 @@
   }
 
   escrowBlob = self->_escrowBlob;
-  if (escrowBlob | *(v4 + 5))
+  if (escrowBlob | *(equalCopy + 5))
   {
     if (![(NSData *)escrowBlob isEqual:?])
     {
@@ -437,7 +437,7 @@
   }
 
   sosPeerID = self->_sosPeerID;
-  if (sosPeerID | *(v4 + 12))
+  if (sosPeerID | *(equalCopy + 12))
   {
     if (![(NSString *)sosPeerID isEqual:?])
     {
@@ -446,7 +446,7 @@
   }
 
   sosBackupKeybagPassword = self->_sosBackupKeybagPassword;
-  if (sosBackupKeybagPassword | *(v4 + 11))
+  if (sosBackupKeybagPassword | *(equalCopy + 11))
   {
     if (![(NSData *)sosBackupKeybagPassword isEqual:?])
     {
@@ -455,7 +455,7 @@
   }
 
   sosBackupKeybagDigest = self->_sosBackupKeybagDigest;
-  if (sosBackupKeybagDigest | *(v4 + 10))
+  if (sosBackupKeybagDigest | *(equalCopy + 10))
   {
     if (![(NSData *)sosBackupKeybagDigest isEqual:?])
     {
@@ -464,7 +464,7 @@
   }
 
   timestamp = self->_timestamp;
-  if (timestamp | *(v4 + 13))
+  if (timestamp | *(equalCopy + 13))
   {
     if (![(NSString *)timestamp isEqual:?])
     {
@@ -473,7 +473,7 @@
   }
 
   bottleID = self->_bottleID;
-  if (bottleID | *(v4 + 1))
+  if (bottleID | *(equalCopy + 1))
   {
     if (![(NSString *)bottleID isEqual:?])
     {
@@ -482,7 +482,7 @@
   }
 
   escrowedSPKI = self->_escrowedSPKI;
-  if (escrowedSPKI | *(v4 + 6))
+  if (escrowedSPKI | *(equalCopy + 6))
   {
     if (![(NSData *)escrowedSPKI isEqual:?])
     {
@@ -490,16 +490,16 @@
     }
   }
 
-  v15 = *(v4 + 112);
+  v15 = *(equalCopy + 112);
   if (*&self->_has)
   {
-    if ((*(v4 + 112) & 1) == 0 || self->_passphraseType != *(v4 + 18))
+    if ((*(equalCopy + 112) & 1) == 0 || self->_passphraseType != *(equalCopy + 18))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 112))
+  else if (*(equalCopy + 112))
   {
 LABEL_31:
     v18 = 0;
@@ -507,13 +507,13 @@ LABEL_31:
   }
 
   duplicateEscrowBlob = self->_duplicateEscrowBlob;
-  if (duplicateEscrowBlob | *(v4 + 3) && ![(NSData *)duplicateEscrowBlob isEqual:?])
+  if (duplicateEscrowBlob | *(equalCopy + 3) && ![(NSData *)duplicateEscrowBlob isEqual:?])
   {
     goto LABEL_31;
   }
 
   passcodeGeneration = self->_passcodeGeneration;
-  if (passcodeGeneration | *(v4 + 8))
+  if (passcodeGeneration | *(equalCopy + 8))
   {
     v18 = [(EscrowPrerecordPasscodeGeneration *)passcodeGeneration isEqual:?];
   }
@@ -555,84 +555,84 @@ LABEL_32:
   return v14 ^ v15 ^ [(EscrowPrerecordPasscodeGeneration *)self->_passcodeGeneration hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(EscrowPrerecord *)self setICloudEnvironment:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(EscrowPrerecord *)self setEscrowBaseURL:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(EscrowPrerecord *)self setDsid:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(EscrowPrerecord *)self setEscrowBlob:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(EscrowPrerecord *)self setSosPeerID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(EscrowPrerecord *)self setSosBackupKeybagPassword:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(EscrowPrerecord *)self setSosBackupKeybagDigest:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(EscrowPrerecord *)self setTimestamp:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(EscrowPrerecord *)self setBottleID:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(EscrowPrerecord *)self setEscrowedSPKI:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[28])
+  if (fromCopy[28])
   {
-    self->_passphraseType = v4[18];
+    self->_passphraseType = fromCopy[18];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(EscrowPrerecord *)self setDuplicateEscrowBlob:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   passcodeGeneration = self->_passcodeGeneration;
-  v6 = *(v4 + 8);
+  v6 = *(fromCopy + 8);
   if (passcodeGeneration)
   {
     if (v6)
@@ -649,33 +649,33 @@ LABEL_32:
   _objc_release_x1();
 }
 
-+ (id)createPrerecordFromCandidate:(id)a3 storedCertificate:(id)a4 request:(id)a5 error:(id *)a6
++ (id)createPrerecordFromCandidate:(id)candidate storedCertificate:(id)certificate request:(id)request error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 recordContents];
-  [v11 setEscrowRecord:v12];
+  candidateCopy = candidate;
+  certificateCopy = certificate;
+  requestCopy = request;
+  recordContents = [candidateCopy recordContents];
+  [requestCopy setEscrowRecord:recordContents];
 
-  v13 = [v9 sosPeerID];
-  [v11 setRecordID:v13];
+  sosPeerID = [candidateCopy sosPeerID];
+  [requestCopy setRecordID:sosPeerID];
 
-  v14 = [[EscrowEnrollmentRequest alloc] initWithRequest:v11];
-  v15 = [(EscrowGenericRequest *)v14 recoveryPassphrase];
-  v16 = [v15 length];
+  v14 = [[EscrowEnrollmentRequest alloc] initWithRequest:requestCopy];
+  recoveryPassphrase = [(EscrowGenericRequest *)v14 recoveryPassphrase];
+  v16 = [recoveryPassphrase length];
 
   if (v16)
   {
-    v17 = [v10 escrowCertificate];
-    v18 = [EscrowService createEscrowBlobWithCertificate:v17 escrowRequest:v14 error:a6];
+    escrowCertificate = [certificateCopy escrowCertificate];
+    v18 = [EscrowService createEscrowBlobWithCertificate:escrowCertificate escrowRequest:v14 error:error];
 
-    if ([v11 requiresDoubleEnrollment])
+    if ([requestCopy requiresDoubleEnrollment])
     {
-      v19 = [v10 duplicateEscrowCertificate];
+      duplicateEscrowCertificate = [certificateCopy duplicateEscrowCertificate];
 
       v20 = CloudServicesLog();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-      if (v19)
+      if (duplicateEscrowCertificate)
       {
         if (v21)
         {
@@ -684,9 +684,9 @@ LABEL_32:
         }
 
         [(EscrowGenericRequest *)v14 setDuplicate:1];
-        v22 = [v10 duplicateEscrowCertificate];
+        duplicateEscrowCertificate2 = [certificateCopy duplicateEscrowCertificate];
         v41 = 0;
-        v23 = [EscrowService createEscrowBlobWithCertificate:v22 escrowRequest:v14 error:&v41];
+        v23 = [EscrowService createEscrowBlobWithCertificate:duplicateEscrowCertificate2 escrowRequest:v14 error:&v41];
         v20 = v41;
 
         v24 = +[CloudServicesAnalytics logger];
@@ -730,7 +730,7 @@ LABEL_24:
         v35 = CloudServicesLog();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
-          sub_10004E580(a6, v35);
+          sub_10004E580(error, v35);
         }
 
         v27 = 0;
@@ -740,38 +740,38 @@ LABEL_36:
       }
     }
 
-    v28 = [v11 metadata];
-    v29 = [v28 objectForKeyedSubscript:kSecureBackupUsesNumericPassphraseKey];
-    v30 = [v29 BOOLValue];
+    metadata = [requestCopy metadata];
+    v29 = [metadata objectForKeyedSubscript:kSecureBackupUsesNumericPassphraseKey];
+    bOOLValue = [v29 BOOLValue];
 
-    if (v30)
+    if (bOOLValue)
     {
-      v31 = [v11 metadata];
-      v32 = [v31 objectForKeyedSubscript:kSecureBackupNumericPassphraseLengthKey];
-      v33 = [v32 unsignedIntegerValue];
+      metadata2 = [requestCopy metadata];
+      v32 = [metadata2 objectForKeyedSubscript:kSecureBackupNumericPassphraseLengthKey];
+      unsignedIntegerValue = [v32 unsignedIntegerValue];
 
-      if (v33 == 4)
+      if (unsignedIntegerValue == 4)
       {
         v34 = 1;
         goto LABEL_32;
       }
 
-      if (v33 == 6)
+      if (unsignedIntegerValue == 6)
       {
         v34 = 2;
 LABEL_32:
         v37 = CloudServicesLog();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [v11 metadata];
+          metadata3 = [requestCopy metadata];
           *buf = 67109378;
           LODWORD(v43[0]) = v34;
           WORD2(v43[0]) = 2112;
-          *(v43 + 6) = v38;
+          *(v43 + 6) = metadata3;
           _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "createPrerecordFromCandidate: Successfully made an escrow blob: type: %d metadata: %@", buf, 0x12u);
         }
 
-        v39 = [[EscrowPrerecord alloc] initWithCandidate:v9 certificate:v10 escrowBlob:v18 passphraseType:v34];
+        v39 = [[EscrowPrerecord alloc] initWithCandidate:candidateCopy certificate:certificateCopy escrowBlob:v18 passphraseType:v34];
         v27 = v39;
         if (v23)
         {
@@ -799,10 +799,10 @@ LABEL_32:
     sub_10004E60C(v26);
   }
 
-  if (a6)
+  if (error)
   {
     [CloudServicesError errorWithCode:22 error:0 format:@"Missing required parameters"];
-    *a6 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else

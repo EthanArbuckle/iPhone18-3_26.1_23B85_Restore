@@ -1,27 +1,27 @@
 @interface TIEventDescriptorRegistry
-+ (TIEventDescriptorRegistry)registryWithConfig:(id)a3;
-+ (TIEventDescriptorRegistry)registryWithDescriptors:(id)a3 andSpecs:(id)a4;
++ (TIEventDescriptorRegistry)registryWithConfig:(id)config;
++ (TIEventDescriptorRegistry)registryWithDescriptors:(id)descriptors andSpecs:(id)specs;
 + (id)registry;
 - (NSDictionary)eventDescriptors;
 - (NSDictionary)eventSpecs;
-- (TIEventDescriptorRegistry)initWithConfig:(id)a3;
-- (TIEventDescriptorRegistry)initWithDescriptors:(id)a3 andSpecs:(id)a4;
+- (TIEventDescriptorRegistry)initWithConfig:(id)config;
+- (TIEventDescriptorRegistry)initWithDescriptors:(id)descriptors andSpecs:(id)specs;
 - (id)allEventDescriptors;
-- (id)contextFromError:(id)a3;
-- (id)eventDescriptorWithName:(id)a3;
-- (id)eventSpecWithName:(id)a3;
-- (id)valueFromError:(id)a3 forKey:(id)a4;
+- (id)contextFromError:(id)error;
+- (id)eventDescriptorWithName:(id)name;
+- (id)eventSpecWithName:(id)name;
+- (id)valueFromError:(id)error forKey:(id)key;
 - (void)_loadEventDescriptors;
 - (void)loadEventDescriptorsIfNecessary;
 @end
 
 @implementation TIEventDescriptorRegistry
 
-- (id)valueFromError:(id)a3 forKey:(id)a4
+- (id)valueFromError:(id)error forKey:(id)key
 {
-  v5 = a4;
-  v6 = [a3 userInfo];
-  v7 = [v6 objectForKey:v5];
+  keyCopy = key;
+  userInfo = [error userInfo];
+  v7 = [userInfo objectForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -44,11 +44,11 @@ LABEL_7:
   return v8;
 }
 
-- (id)contextFromError:(id)a3
+- (id)contextFromError:(id)error
 {
-  v4 = a3;
-  v5 = [(TIEventDescriptorRegistry *)self valueFromError:v4 forKey:@"event"];
-  v6 = [(TIEventDescriptorRegistry *)self valueFromError:v4 forKey:@"field"];
+  errorCopy = error;
+  v5 = [(TIEventDescriptorRegistry *)self valueFromError:errorCopy forKey:@"event"];
+  v6 = [(TIEventDescriptorRegistry *)self valueFromError:errorCopy forKey:@"field"];
 
   if (v5)
   {
@@ -75,9 +75,9 @@ LABEL_7:
 - (void)_loadEventDescriptors
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(TIEventDescriptorRegistry *)self config];
+  config = [(TIEventDescriptorRegistry *)self config];
 
-  if (!v3)
+  if (!config)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 URLForResource:@"EventDescriptors" withExtension:@"plist"];
@@ -93,9 +93,9 @@ LABEL_7:
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:v5];
     [(TIEventDescriptorRegistry *)self setConfig:v8];
 
-    v9 = [(TIEventDescriptorRegistry *)self config];
+    config2 = [(TIEventDescriptorRegistry *)self config];
 
-    if (!v9)
+    if (!config2)
     {
       v10 = IXADefaultLogFacility();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -108,9 +108,9 @@ LABEL_7:
     }
   }
 
-  v11 = [(TIEventDescriptorRegistry *)self config];
+  config3 = [(TIEventDescriptorRegistry *)self config];
 
-  if (v11)
+  if (config3)
   {
     v12 = IXADefaultLogFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -125,8 +125,8 @@ LABEL_7:
     v15 = objc_opt_new();
     eventDescriptors = self->_eventDescriptors;
     eventSpecs = self->_eventSpecs;
-    v18 = [(TIEventDescriptorRegistry *)self config];
-    [v14 parseEventDescriptors:eventDescriptors andEventSpecs:eventSpecs fromConfig:v18 errors:v15];
+    config4 = [(TIEventDescriptorRegistry *)self config];
+    [v14 parseEventDescriptors:eventDescriptors andEventSpecs:eventSpecs fromConfig:config4 errors:v15];
 
     if ([v15 count])
     {
@@ -201,36 +201,36 @@ void __50__TIEventDescriptorRegistry__loadEventDescriptors__block_invoke(uint64_
   return eventDescriptors;
 }
 
-- (id)eventSpecWithName:(id)a3
+- (id)eventSpecWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(TIEventDescriptorRegistry *)self eventSpecs];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  eventSpecs = [(TIEventDescriptorRegistry *)self eventSpecs];
+  v6 = [eventSpecs objectForKey:nameCopy];
 
   return v6;
 }
 
-- (id)eventDescriptorWithName:(id)a3
+- (id)eventDescriptorWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(TIEventDescriptorRegistry *)self eventDescriptors];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  eventDescriptors = [(TIEventDescriptorRegistry *)self eventDescriptors];
+  v6 = [eventDescriptors objectForKey:nameCopy];
 
   return v6;
 }
 
 - (id)allEventDescriptors
 {
-  v2 = [(TIEventDescriptorRegistry *)self eventDescriptors];
-  v3 = [v2 allValues];
+  eventDescriptors = [(TIEventDescriptorRegistry *)self eventDescriptors];
+  allValues = [eventDescriptors allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (TIEventDescriptorRegistry)initWithDescriptors:(id)a3 andSpecs:(id)a4
+- (TIEventDescriptorRegistry)initWithDescriptors:(id)descriptors andSpecs:(id)specs
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorsCopy = descriptors;
+  specsCopy = specs;
   v8 = [(TIEventDescriptorRegistry *)self initWithConfig:MEMORY[0x277CBEC10]];
   v9 = v8;
   if (v8)
@@ -241,8 +241,8 @@ void __50__TIEventDescriptorRegistry__loadEventDescriptors__block_invoke(uint64_
     v14[3] = &unk_2787319A0;
     v10 = v8;
     v15 = v10;
-    v16 = v7;
-    [v6 enumerateObjectsUsingBlock:v14];
+    v16 = specsCopy;
+    [descriptorsCopy enumerateObjectsUsingBlock:v14];
     v10->_loaded = 1;
     v11 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v10->_lock;
@@ -267,16 +267,16 @@ void __58__TIEventDescriptorRegistry_initWithDescriptors_andSpecs___block_invoke
   [v9 setObject:v11 forKey:v10];
 }
 
-- (TIEventDescriptorRegistry)initWithConfig:(id)a3
+- (TIEventDescriptorRegistry)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v15.receiver = self;
   v15.super_class = TIEventDescriptorRegistry;
   v6 = [(TIEventDescriptorRegistry *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v8 = objc_opt_new();
     eventDescriptors = v7->_eventDescriptors;
     v7->_eventDescriptors = v8;
@@ -294,19 +294,19 @@ void __58__TIEventDescriptorRegistry_initWithDescriptors_andSpecs___block_invoke
   return v7;
 }
 
-+ (TIEventDescriptorRegistry)registryWithDescriptors:(id)a3 andSpecs:(id)a4
++ (TIEventDescriptorRegistry)registryWithDescriptors:(id)descriptors andSpecs:(id)specs
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TIEventDescriptorRegistry alloc] initWithDescriptors:v6 andSpecs:v5];
+  specsCopy = specs;
+  descriptorsCopy = descriptors;
+  v7 = [[TIEventDescriptorRegistry alloc] initWithDescriptors:descriptorsCopy andSpecs:specsCopy];
 
   return v7;
 }
 
-+ (TIEventDescriptorRegistry)registryWithConfig:(id)a3
++ (TIEventDescriptorRegistry)registryWithConfig:(id)config
 {
-  v3 = a3;
-  v4 = [[TIEventDescriptorRegistry alloc] initWithConfig:v3];
+  configCopy = config;
+  v4 = [[TIEventDescriptorRegistry alloc] initWithConfig:configCopy];
 
   return v4;
 }

@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (NSUnitDispersion == a1)
+  if (NSUnitDispersion == self)
   {
     objc_opt_class();
   }

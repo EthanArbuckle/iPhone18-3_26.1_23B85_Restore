@@ -1,16 +1,16 @@
 @interface NPKProtoStandalonePass
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPassType:(id)a3;
+- (int)StringAsPassType:(id)type;
 - (int)passType;
 - (unint64_t)hash;
-- (void)addUserInfos:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRemotePass:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserInfos:(id)infos;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRemotePass:(BOOL)pass;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePass
@@ -28,20 +28,20 @@
   }
 }
 
-- (int)StringAsPassType:(id)a3
+- (int)StringAsPassType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Barcode"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Barcode"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"Payment"])
+  else if ([typeCopy isEqualToString:@"Payment"])
   {
     v4 = 110;
   }
 
-  else if ([v3 isEqualToString:@"Any"])
+  else if ([typeCopy isEqualToString:@"Any"])
   {
     v4 = 0;
   }
@@ -54,27 +54,27 @@
   return v4;
 }
 
-- (void)addUserInfos:(id)a3
+- (void)addUserInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   userInfos = self->_userInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!userInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_userInfos;
     self->_userInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     userInfos = self->_userInfos;
   }
 
-  [(NSMutableArray *)userInfos addObject:v4];
+  [(NSMutableArray *)userInfos addObject:infosCopy];
 }
 
-- (void)setHasRemotePass:(BOOL)a3
+- (void)setHasRemotePass:(BOOL)pass
 {
-  if (a3)
+  if (pass)
   {
     v3 = 2;
   }
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePass;
   v4 = [(NPKProtoStandalonePass *)&v8 description];
-  v5 = [(NPKProtoStandalonePass *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePass *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -102,7 +102,7 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     passType = self->_passType;
@@ -129,43 +129,43 @@
       v5 = @"Any";
     }
 
-    [v3 setObject:v5 forKey:@"passType"];
+    [dictionary setObject:v5 forKey:@"passType"];
   }
 
   serialNumber = self->_serialNumber;
   if (serialNumber)
   {
-    [v3 setObject:serialNumber forKey:@"serialNumber"];
+    [dictionary setObject:serialNumber forKey:@"serialNumber"];
   }
 
   passTypeIdentifier = self->_passTypeIdentifier;
   if (passTypeIdentifier)
   {
-    [v3 setObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
+    [dictionary setObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
   }
 
   imageData = self->_imageData;
   if (imageData)
   {
-    [v3 setObject:imageData forKey:@"imageData"];
+    [dictionary setObject:imageData forKey:@"imageData"];
   }
 
   localizedName = self->_localizedName;
   if (localizedName)
   {
-    [v3 setObject:localizedName forKey:@"localizedName"];
+    [dictionary setObject:localizedName forKey:@"localizedName"];
   }
 
   localizedDescription = self->_localizedDescription;
   if (localizedDescription)
   {
-    [v3 setObject:localizedDescription forKey:@"localizedDescription"];
+    [dictionary setObject:localizedDescription forKey:@"localizedDescription"];
   }
 
   organizationName = self->_organizationName;
   if (organizationName)
   {
-    [v3 setObject:organizationName forKey:@"organizationName"];
+    [dictionary setObject:organizationName forKey:@"organizationName"];
   }
 
   if ([(NSMutableArray *)self->_userInfos count])
@@ -190,8 +190,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -200,30 +200,30 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"userInfos"];
+    [dictionary setObject:v12 forKey:@"userInfos"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithBool:self->_remotePass];
-    [v3 setObject:v19 forKey:@"remotePass"];
+    [dictionary setObject:v19 forKey:@"remotePass"];
   }
 
   deviceName = self->_deviceName;
   if (deviceName)
   {
-    [v3 setObject:deviceName forKey:@"deviceName"];
+    [dictionary setObject:deviceName forKey:@"deviceName"];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     passType = self->_passType;
@@ -306,19 +306,19 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[12] = self->_passType;
-    *(v4 + 84) |= 1u;
+    toCopy[12] = self->_passType;
+    *(toCopy + 84) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_imageData)
   {
-    [v4 setImageData:?];
+    [toCopy setImageData:?];
   }
 
   if (self->_serialNumber)
@@ -349,10 +349,10 @@
   if ([(NPKProtoStandalonePass *)self userInfosCount])
   {
     [v10 clearUserInfos];
-    v5 = [(NPKProtoStandalonePass *)self userInfosCount];
-    if (v5)
+    userInfosCount = [(NPKProtoStandalonePass *)self userInfosCount];
+    if (userInfosCount)
     {
-      v6 = v5;
+      v6 = userInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NPKProtoStandalonePass *)self userInfosAtIndex:i];
@@ -375,10 +375,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -386,27 +386,27 @@
     *(v5 + 84) |= 1u;
   }
 
-  v7 = [(NSData *)self->_imageData copyWithZone:a3];
+  v7 = [(NSData *)self->_imageData copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
-  v9 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v9 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v10 = *(v6 + 64);
   *(v6 + 64) = v9;
 
-  v11 = [(NSString *)self->_passTypeIdentifier copyWithZone:a3];
+  v11 = [(NSString *)self->_passTypeIdentifier copyWithZone:zone];
   v12 = *(v6 + 56);
   *(v6 + 56) = v11;
 
-  v13 = [(NSString *)self->_localizedName copyWithZone:a3];
+  v13 = [(NSString *)self->_localizedName copyWithZone:zone];
   v14 = *(v6 + 32);
   *(v6 + 32) = v13;
 
-  v15 = [(NSString *)self->_localizedDescription copyWithZone:a3];
+  v15 = [(NSString *)self->_localizedDescription copyWithZone:zone];
   v16 = *(v6 + 24);
   *(v6 + 24) = v15;
 
-  v17 = [(NSString *)self->_organizationName copyWithZone:a3];
+  v17 = [(NSString *)self->_organizationName copyWithZone:zone];
   v18 = *(v6 + 40);
   *(v6 + 40) = v17;
 
@@ -430,7 +430,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v29 + 1) + 8 * v23) copyWithZone:{a3, v29}];
+        v24 = [*(*(&v29 + 1) + 8 * v23) copyWithZone:{zone, v29}];
         [v6 addUserInfos:v24];
 
         ++v23;
@@ -449,7 +449,7 @@
     *(v6 + 84) |= 2u;
   }
 
-  v25 = [(NSString *)self->_deviceName copyWithZone:a3, v29];
+  v25 = [(NSString *)self->_deviceName copyWithZone:zone, v29];
   v26 = *(v6 + 8);
   *(v6 + 8) = v25;
 
@@ -457,36 +457,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
-  v5 = *(v4 + 84);
+  v5 = *(equalCopy + 84);
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_passType != *(v4 + 12))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_passType != *(equalCopy + 12))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 84))
+  else if (*(equalCopy + 84))
   {
     goto LABEL_26;
   }
 
   imageData = self->_imageData;
-  if (imageData | *(v4 + 2) && ![(NSData *)imageData isEqual:?])
+  if (imageData | *(equalCopy + 2) && ![(NSData *)imageData isEqual:?])
   {
     goto LABEL_26;
   }
 
   serialNumber = self->_serialNumber;
-  if (serialNumber | *(v4 + 8))
+  if (serialNumber | *(equalCopy + 8))
   {
     if (![(NSString *)serialNumber isEqual:?])
     {
@@ -495,7 +495,7 @@
   }
 
   passTypeIdentifier = self->_passTypeIdentifier;
-  if (passTypeIdentifier | *(v4 + 7))
+  if (passTypeIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)passTypeIdentifier isEqual:?])
     {
@@ -504,7 +504,7 @@
   }
 
   localizedName = self->_localizedName;
-  if (localizedName | *(v4 + 4))
+  if (localizedName | *(equalCopy + 4))
   {
     if (![(NSString *)localizedName isEqual:?])
     {
@@ -513,7 +513,7 @@
   }
 
   localizedDescription = self->_localizedDescription;
-  if (localizedDescription | *(v4 + 3))
+  if (localizedDescription | *(equalCopy + 3))
   {
     if (![(NSString *)localizedDescription isEqual:?])
     {
@@ -522,7 +522,7 @@
   }
 
   organizationName = self->_organizationName;
-  if (organizationName | *(v4 + 5))
+  if (organizationName | *(equalCopy + 5))
   {
     if (![(NSString *)organizationName isEqual:?])
     {
@@ -531,7 +531,7 @@
   }
 
   userInfos = self->_userInfos;
-  if (userInfos | *(v4 + 9))
+  if (userInfos | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)userInfos isEqual:?])
     {
@@ -539,10 +539,10 @@
     }
   }
 
-  v13 = *(v4 + 84);
+  v13 = *(equalCopy + 84);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 84) & 2) == 0)
+    if ((*(equalCopy + 84) & 2) == 0)
     {
       goto LABEL_23;
     }
@@ -552,28 +552,28 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((*(v4 + 84) & 2) == 0)
+  if ((*(equalCopy + 84) & 2) == 0)
   {
     goto LABEL_26;
   }
 
-  v17 = *(v4 + 80);
+  v17 = *(equalCopy + 80);
   if (self->_remotePass)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_26;
   }
 
 LABEL_23:
   deviceName = self->_deviceName;
-  if (deviceName | *(v4 + 1))
+  if (deviceName | *(equalCopy + 1))
   {
     v15 = [(NSString *)deviceName isEqual:?];
   }
@@ -620,18 +620,18 @@ LABEL_27:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSString *)self->_deviceName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[21])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[21])
   {
-    self->_passType = v4[12];
+    self->_passType = fromCopy[12];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoStandalonePass *)self setImageData:?];
   }

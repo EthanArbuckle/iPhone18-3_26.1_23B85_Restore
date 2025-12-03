@@ -32,15 +32,15 @@
     self->_subject = v6;
 
     v8 = [[GDEntityIdentifier alloc] initWithString:self->_subject];
-    v9 = [(GDEntityIdentifier *)v8 stringValue];
+    stringValue = [(GDEntityIdentifier *)v8 stringValue];
     v10 = self->_subject;
-    self->_subject = v9;
+    self->_subject = stringValue;
 
     subject = self->_subject;
     if (!subject)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %@", @"_subject"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:214 description:{@"Invalid parameter not satisfying: %@", @"_subject"}];
 
       subject = self->_subject;
     }
@@ -61,8 +61,8 @@
     predicate = self->_predicate;
     if (!predicate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"_predicate"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"_predicate"}];
 
       predicate = self->_predicate;
     }
@@ -83,8 +83,8 @@
     relationshipPredicate = self->_relationshipPredicate;
     if (!relationshipPredicate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:241 description:{@"Invalid parameter not satisfying: %@", @"_relationshipPredicate"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:241 description:{@"Invalid parameter not satisfying: %@", @"_relationshipPredicate"}];
 
       relationshipPredicate = self->_relationshipPredicate;
     }
@@ -105,8 +105,8 @@
     object = self->_object;
     if (!object)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"_object"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:250 description:{@"Invalid parameter not satisfying: %@", @"_object"}];
 
       object = self->_object;
     }
@@ -127,8 +127,8 @@
     relationshipId = self->_relationshipId;
     if (!relationshipId)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"_relationshipId"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:232 description:{@"Invalid parameter not satisfying: %@", @"_relationshipId"}];
 
       relationshipId = self->_relationshipId;
     }
@@ -149,8 +149,8 @@
     timestamp = self->_timestamp;
     if (!timestamp)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"_timestamp != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:286 description:{@"Invalid parameter not satisfying: %@", @"_timestamp != nil"}];
 
       timestamp = self->_timestamp;
     }
@@ -172,8 +172,8 @@
     sourceDuplicates = self->_sourceDuplicates;
     if (!sourceDuplicates)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"_sourceDuplicates"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"_sourceDuplicates"}];
 
       sourceDuplicates = self->_sourceDuplicates;
     }
@@ -194,8 +194,8 @@
     confidence = self->_confidence;
     if (!confidence)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"_confidence != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:268 description:{@"Invalid parameter not satisfying: %@", @"_confidence != nil"}];
 
       confidence = self->_confidence;
     }
@@ -217,8 +217,8 @@
     sources = self->_sources;
     if (!sources)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"_sources"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GDSQLTripleRowIterator.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"_sources"}];
 
       sources = self->_sources;
     }

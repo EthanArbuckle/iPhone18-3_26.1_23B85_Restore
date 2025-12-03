@@ -10,15 +10,15 @@
   v10.receiver = self;
   v10.super_class = PGGraphChange;
   v4 = [(PGGraphChange *)&v10 description];
-  v5 = [(PGGraphChange *)self type];
-  if (v5 > 0xC)
+  type = [(PGGraphChange *)self type];
+  if (type > 0xC)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_278885670[v5];
+    v6 = off_278885670[type];
   }
 
   v7 = v6;

@@ -1,56 +1,56 @@
 @interface HUInstructionsTableViewController
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUInstructionsTableViewController)initWithInstructionsItem:(id)a3 contentViewController:(id)a4;
-- (HUInstructionsTableViewController)initWithItemManager:(id)a3;
-- (HUInstructionsTableViewController)initWithItemManager:(id)a3 instructionsItem:(id)a4 contentViewController:(id)a5;
-- (HUInstructionsTableViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUInstructionsTableViewController)initWithInstructionsItem:(id)item contentViewController:(id)controller;
+- (HUInstructionsTableViewController)initWithItemManager:(id)manager;
+- (HUInstructionsTableViewController)initWithItemManager:(id)manager instructionsItem:(id)item contentViewController:(id)controller;
+- (HUInstructionsTableViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
 - (id)childViewControllersToPreload;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUInstructionsTableViewController
 
-- (HUInstructionsTableViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUInstructionsTableViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithInstructionsItem_contentViewController_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUInstructionsTableViewController.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HUInstructionsTableViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUInstructionsTableViewController.m" lineNumber:42 description:{@"%s is unavailable; use %@ instead", "-[HUInstructionsTableViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (HUInstructionsTableViewController)initWithItemManager:(id)a3 instructionsItem:(id)a4 contentViewController:(id)a5
+- (HUInstructionsTableViewController)initWithItemManager:(id)manager instructionsItem:(id)item contentViewController:(id)controller
 {
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = HUInstructionsTableViewController;
-  v11 = [(HUItemTableViewController *)&v14 initWithItemManager:a3 tableViewStyle:1];
+  v11 = [(HUItemTableViewController *)&v14 initWithItemManager:manager tableViewStyle:1];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_instructionsItem, a4);
-    objc_storeStrong(&v12->_contentViewController, a5);
+    objc_storeStrong(&v11->_instructionsItem, item);
+    objc_storeStrong(&v12->_contentViewController, controller);
   }
 
   return v12;
 }
 
-- (HUInstructionsTableViewController)initWithInstructionsItem:(id)a3 contentViewController:(id)a4
+- (HUInstructionsTableViewController)initWithInstructionsItem:(id)item contentViewController:(id)controller
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  itemCopy = item;
   v7 = MEMORY[0x277D14B08];
-  v8 = a4;
+  controllerCopy = controller;
   v9 = [v7 alloc];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __84__HUInstructionsTableViewController_initWithInstructionsItem_contentViewController___block_invoke;
   v20 = &unk_277DBA3D0;
-  v21 = v6;
-  v10 = v6;
+  v21 = itemCopy;
+  v10 = itemCopy;
   v11 = [v9 initWithDelegate:self itemProvidersCreator:&v17];
   v12 = MEMORY[0x277D14CE8];
   v22[0] = objc_opt_class();
@@ -59,7 +59,7 @@
   v14 = [v12 comparatorWithSortedClasses:v13 secondaryComparator:0];
   [v11 setItemComparator:v14];
 
-  v15 = [(HUInstructionsTableViewController *)self initWithItemManager:v11 instructionsItem:v10 contentViewController:v8];
+  v15 = [(HUInstructionsTableViewController *)self initWithItemManager:v11 instructionsItem:v10 contentViewController:controllerCopy];
   return v15;
 }
 
@@ -78,11 +78,11 @@ id __84__HUInstructionsTableViewController_initWithInstructionsItem_contentViewC
   return v6;
 }
 
-- (HUInstructionsTableViewController)initWithItemManager:(id)a3
+- (HUInstructionsTableViewController)initWithItemManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = HUInstructionsTableViewController;
-  return [(HUItemTableViewController *)&v4 initWithItemManager:a3 tableViewStyle:1];
+  return [(HUItemTableViewController *)&v4 initWithItemManager:manager tableViewStyle:1];
 }
 
 - (void)viewDidLoad
@@ -90,13 +90,13 @@ id __84__HUInstructionsTableViewController_initWithInstructionsItem_contentViewC
   v4.receiver = self;
   v4.super_class = HUInstructionsTableViewController;
   [(HUItemTableViewController *)&v4 viewDidLoad];
-  v3 = [(HUInstructionsTableViewController *)self tableView];
-  [v3 setSeparatorStyle:0];
+  tableView = [(HUInstructionsTableViewController *)self tableView];
+  [tableView setSeparatorStyle:0];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   objc_opt_isKindOfClass();
 
@@ -105,46 +105,46 @@ id __84__HUInstructionsTableViewController_initWithInstructionsItem_contentViewC
   return v5;
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = MEMORY[0x277D75348];
-    v14 = v10;
-    v15 = [v13 clearColor];
-    [v14 setBackgroundColor:v15];
+    v14 = cellCopy;
+    clearColor = [v13 clearColor];
+    [v14 setBackgroundColor:clearColor];
 
-    v16 = [MEMORY[0x277D75348] clearColor];
-    v17 = [v14 contentView];
-    [v17 setBackgroundColor:v16];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    contentView = [v14 contentView];
+    [contentView setBackgroundColor:clearColor2];
 
-    v18 = [(HUInstructionsTableViewController *)self contentViewController];
-    [v14 setViewController:v18];
+    contentViewController = [(HUInstructionsTableViewController *)self contentViewController];
+    [v14 setViewController:contentViewController];
   }
 
   v19.receiver = self;
   v19.super_class = HUInstructionsTableViewController;
-  [(HUItemTableViewController *)&v19 updateCell:v10 forItem:v11 indexPath:v12 animated:v6];
+  [(HUItemTableViewController *)&v19 updateCell:cellCopy forItem:itemCopy indexPath:pathCopy animated:animatedCopy];
 }
 
-- (BOOL)shouldHideFooterBelowSection:(int64_t)a3
+- (BOOL)shouldHideFooterBelowSection:(int64_t)section
 {
-  v4 = [(HUItemTableViewController *)self itemManager];
-  LOBYTE(a3) = [v4 numberOfSections] - 1 > a3;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  LOBYTE(section) = [itemManager numberOfSections] - 1 > section;
 
-  return a3;
+  return section;
 }
 
 - (id)childViewControllersToPreload
 {
   v2 = MEMORY[0x277CBEA60];
-  v3 = [(HUInstructionsTableViewController *)self contentViewController];
-  v4 = [v2 na_arrayWithSafeObject:v3];
+  contentViewController = [(HUInstructionsTableViewController *)self contentViewController];
+  v4 = [v2 na_arrayWithSafeObject:contentViewController];
 
   return v4;
 }

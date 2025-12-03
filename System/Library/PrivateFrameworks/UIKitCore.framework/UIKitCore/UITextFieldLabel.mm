@@ -1,8 +1,8 @@
 @interface UITextFieldLabel
 + (id)_defaultAttributes;
 + (id)defaultFont;
-- (void)_defaultDrawTextInRect:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)_defaultDrawTextInRect:(CGRect)rect;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation UITextFieldLabel
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __38__UITextFieldLabel__defaultAttributes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_1317 != -1)
   {
     dispatch_once(&_MergedGlobals_1317, block);
@@ -40,27 +40,27 @@ void __38__UITextFieldLabel__defaultAttributes__block_invoke(uint64_t a1)
   qword_1ED4A2140 = v1;
 }
 
-- (void)_defaultDrawTextInRect:(CGRect)a3
+- (void)_defaultDrawTextInRect:(CGRect)rect
 {
   v3.receiver = self;
   v3.super_class = UITextFieldLabel;
-  [(UILabel *)&v3 drawTextInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UILabel *)&v3 drawTextInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
-  v8 = v7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  superview = selfCopy;
   while (1)
   {
-    v9 = v8;
-    v8 = [v8 superview];
+    v9 = superview;
+    superview = [superview superview];
 
-    if (!v8)
+    if (!superview)
     {
       break;
     }
@@ -68,14 +68,14 @@ void __38__UITextFieldLabel__defaultAttributes__block_invoke(uint64_t a1)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 _drawTextInRect:v7 forLabel:{x, y, width, height}];
+      [superview _drawTextInRect:selfCopy forLabel:{x, y, width, height}];
       goto LABEL_7;
     }
   }
 
-  if ([(UITextFieldLabel *)v7 shouldRenderWithoutTextField])
+  if ([(UITextFieldLabel *)selfCopy shouldRenderWithoutTextField])
   {
-    v10.receiver = v7;
+    v10.receiver = selfCopy;
     v10.super_class = UITextFieldLabel;
     [(UILabel *)&v10 drawTextInRect:x, y, width, height];
   }

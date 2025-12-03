@@ -1,34 +1,34 @@
 @interface LNXPCListenerEndpointConnection
-- (BOOL)refreshWithOptions:(id)a3;
-- (void)acquireAssertionsForConnectionOperation:(id)a3;
-- (void)connectWithOptions:(id)a3;
+- (BOOL)refreshWithOptions:(id)options;
+- (void)acquireAssertionsForConnectionOperation:(id)operation;
+- (void)connectWithOptions:(id)options;
 @end
 
 @implementation LNXPCListenerEndpointConnection
 
-- (void)acquireAssertionsForConnectionOperation:(id)a3
+- (void)acquireAssertionsForConnectionOperation:(id)operation
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(LNConnection *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(LNConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(LNConnection *)self logPrefix];
+    logPrefix = [(LNConnection *)self logPrefix];
     v8 = 138543362;
-    v9 = v6;
+    v9 = logPrefix;
     _os_log_impl(&dword_19763D000, v5, OS_LOG_TYPE_INFO, "%{public}@ Assertion is not required for XPC listener endpoint connection", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)refreshWithOptions:(id)a3
+- (BOOL)refreshWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = LNXPCListenerEndpointConnection;
-  v4 = [(LNConnection *)&v6 refreshWithOptions:a3];
+  v4 = [(LNConnection *)&v6 refreshWithOptions:options];
   if (v4)
   {
     [(LNConnection *)self setConnected];
@@ -37,28 +37,28 @@
   return v4;
 }
 
-- (void)connectWithOptions:(id)a3
+- (void)connectWithOptions:(id)options
 {
   location[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = LNXPCListenerEndpointConnection;
-  [(LNConnection *)&v17 connectWithOptions:v4];
+  [(LNConnection *)&v17 connectWithOptions:optionsCopy];
   [(LNConnection *)self auditToken];
   if ([LNEntitlementsValidator validateEntitlement:@"com.apple.private.appintents.xpc-host" auditToken:location validator:&__block_literal_global_14785])
   {
     v5 = objc_alloc(MEMORY[0x1E696B0B8]);
-    v6 = [(LNXPCListenerEndpointConnection *)self listenerEndpoint];
-    v7 = [v5 initWithListenerEndpoint:v6];
+    listenerEndpoint = [(LNXPCListenerEndpointConnection *)self listenerEndpoint];
+    v7 = [v5 initWithListenerEndpoint:listenerEndpoint];
     [(LNConnection *)self setXPCConnection:v7];
 
-    v8 = [(LNConnection *)self xpcConnection];
-    v9 = [(LNConnection *)self bundleIdentifier];
+    xpcConnection = [(LNConnection *)self xpcConnection];
+    bundleIdentifier = [(LNConnection *)self bundleIdentifier];
     v10 = LNConnectionHostXPCInterface();
-    [v8 ln_configureWithBundleIdentifier:v9 interface:v10];
+    [xpcConnection ln_configureWithBundleIdentifier:bundleIdentifier interface:v10];
 
-    v11 = [(LNConnection *)self xpcConnection];
-    [v11 resume];
+    xpcConnection2 = [(LNConnection *)self xpcConnection];
+    [xpcConnection2 resume];
 
     objc_initWeak(location, self);
     v15[0] = MEMORY[0x1E69E9820];

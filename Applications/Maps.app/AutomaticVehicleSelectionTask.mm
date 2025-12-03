@@ -1,42 +1,42 @@
 @interface AutomaticVehicleSelectionTask
-- (AutomaticVehicleSelectionTask)initWithPlatformController:(id)a3;
-- (BOOL)_isAccessoryCarPlayConnected:(id)a3;
-- (id)_vehicleForIdentifier:(id)a3;
-- (void)_handleAccessoryConnect:(id)a3;
-- (void)_handleAccessoryDisconnect:(id)a3;
-- (void)_selectVehicleAndForceRerouteIfNeeded:(id)a3;
-- (void)_updateGarage:(id)a3;
+- (AutomaticVehicleSelectionTask)initWithPlatformController:(id)controller;
+- (BOOL)_isAccessoryCarPlayConnected:(id)connected;
+- (id)_vehicleForIdentifier:(id)identifier;
+- (void)_handleAccessoryConnect:(id)connect;
+- (void)_handleAccessoryDisconnect:(id)disconnect;
+- (void)_selectVehicleAndForceRerouteIfNeeded:(id)needed;
+- (void)_updateGarage:(id)garage;
 - (void)_updateVehicleSelectionIfNeeded;
-- (void)platformController:(id)a3 willChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
+- (void)platformController:(id)controller willChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
 @end
 
 @implementation AutomaticVehicleSelectionTask
 
-- (BOOL)_isAccessoryCarPlayConnected:(id)a3
+- (BOOL)_isAccessoryCarPlayConnected:(id)connected
 {
-  v3 = a3;
-  if ([v3 supportsCarPlay] & 1) != 0 || (objc_msgSend(v3, "supportsWirelessCarPlay"))
+  connectedCopy = connected;
+  if ([connectedCopy supportsCarPlay] & 1) != 0 || (objc_msgSend(connectedCopy, "supportsWirelessCarPlay"))
   {
-    v4 = 1;
+    supportsUSBCarPlay = 1;
   }
 
   else
   {
-    v4 = [v3 supportsUSBCarPlay];
+    supportsUSBCarPlay = [connectedCopy supportsUSBCarPlay];
   }
 
-  return v4;
+  return supportsUSBCarPlay;
 }
 
-- (id)_vehicleForIdentifier:(id)a3
+- (id)_vehicleForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VGVirtualGarage *)self->_garage vehicles];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  vehicles = [(VGVirtualGarage *)self->_garage vehicles];
+  v6 = [vehicles countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -46,12 +46,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(vehicles);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 iapIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        iapIdentifier = [v9 iapIdentifier];
+        v11 = [iapIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -60,7 +60,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [vehicles countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -75,14 +75,14 @@ LABEL_11:
   return v6;
 }
 
-- (void)_handleAccessoryDisconnect:(id)a3
+- (void)_handleAccessoryDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100022C48();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "AutomaticVehicleSelectionTask: _handleAccessoryDisconnect: %@", buf, 0xCu);
   }
 
@@ -97,14 +97,14 @@ LABEL_11:
   objc_destroyWeak(buf);
 }
 
-- (void)_handleAccessoryConnect:(id)a3
+- (void)_handleAccessoryConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = sub_100022C48();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = v4;
+    v9 = connectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "AutomaticVehicleSelectionTask: _handleAccessoryConnect: %@", buf, 0xCu);
   }
 
@@ -119,22 +119,22 @@ LABEL_11:
   objc_destroyWeak(buf);
 }
 
-- (void)platformController:(id)a3 willChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller willChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   self->_isNavigating = isKindOfClass & 1;
 }
 
-- (void)_selectVehicleAndForceRerouteIfNeeded:(id)a3
+- (void)_selectVehicleAndForceRerouteIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = sub_100022C48();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 displayName];
+    displayName = [neededCopy displayName];
     if (self->_isNavigating)
     {
       v7 = @"YES";
@@ -147,14 +147,14 @@ LABEL_11:
 
     v8 = v7;
     v11 = 138412546;
-    v12 = v6;
+    v12 = displayName;
     v13 = 2112;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "AutomaticVehicleSelectionTask: will select vehicle: %@ and forceReroute: %@", &v11, 0x16u);
   }
 
   v9 = +[VGVirtualGarageService sharedService];
-  [v9 virtualGarageSelectVehicle:v4];
+  [v9 virtualGarageSelectVehicle:neededCopy];
 
   if (self->_isNavigating)
   {
@@ -184,9 +184,9 @@ LABEL_15:
     v31 = 0u;
     v32 = 0u;
     v3 = +[EAAccessoryManager sharedAccessoryManager];
-    v4 = [v3 connectedAccessories];
+    connectedAccessories = [v3 connectedAccessories];
 
-    v5 = [v4 countByEnumeratingWithState:&v31 objects:v41 count:16];
+    v5 = [connectedAccessories countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v5)
     {
       v6 = v5;
@@ -198,19 +198,19 @@ LABEL_15:
         {
           if (*v32 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(connectedAccessories);
           }
 
           v10 = *(*(&v31 + 1) + 8 * i);
           if ([(AutomaticVehicleSelectionTask *)self _isAccessoryCarPlayConnected:v10])
           {
-            v11 = [v10 serialNumber];
+            serialNumber = [v10 serialNumber];
 
-            v7 = v11;
+            v7 = serialNumber;
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v31 objects:v41 count:16];
+        v6 = [connectedAccessories countByEnumeratingWithState:&v31 objects:v41 count:16];
       }
 
       while (v6);
@@ -242,17 +242,17 @@ LABEL_15:
     {
 LABEL_25:
       v14 = [(AutomaticVehicleSelectionTask *)self _vehicleForIdentifier:v7];
-      v15 = [v14 identifier];
-      if (v15)
+      identifier = [v14 identifier];
+      if (identifier)
       {
       }
 
       else
       {
-        v16 = [(VGVirtualGarage *)self->_garage selectedVehicle];
-        v17 = [v16 identifier];
+        selectedVehicle = [(VGVirtualGarage *)self->_garage selectedVehicle];
+        identifier2 = [selectedVehicle identifier];
 
-        if (!v17)
+        if (!identifier2)
         {
           v22 = sub_100022C48();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -271,21 +271,21 @@ LABEL_47:
         }
       }
 
-      v18 = [v14 identifier];
-      v19 = [(VGVirtualGarage *)self->_garage selectedVehicle];
-      v20 = [v19 identifier];
-      v21 = [v18 isEqualToString:v20];
+      identifier3 = [v14 identifier];
+      selectedVehicle2 = [(VGVirtualGarage *)self->_garage selectedVehicle];
+      identifier4 = [selectedVehicle2 identifier];
+      v21 = [identifier3 isEqualToString:identifier4];
 
       if (v21)
       {
         v22 = sub_100022C48();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v14 displayName];
+          displayName = [v14 displayName];
           *buf = 138412546;
           v36 = v7;
           v37 = 2112;
-          v38 = v23;
+          v38 = displayName;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "AutomaticVehicleSelectionTask: user connected to a head unit (%@) and its underlying vehicle (%@) is already selected. Ignoring this call.", buf, 0x16u);
         }
 
@@ -300,18 +300,18 @@ LABEL_47:
         {
           if (v25)
           {
-            v26 = [v14 identifier];
-            v27 = [v14 displayName];
+            identifier5 = [v14 identifier];
+            displayName2 = [v14 displayName];
             *buf = 138412802;
             v36 = v7;
             v37 = 2112;
-            v38 = v26;
+            v38 = identifier5;
             v39 = 2112;
-            v40 = v27;
+            v40 = displayName2;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "AutomaticVehicleSelectionTask: user connected to CarPlay HU (%@) that is paired or disambiguated to vehicle: <%@, %@>. We'll select it automatically.", buf, 0x20u);
           }
 
-          v28 = self;
+          selfCopy2 = self;
           v29 = v14;
         }
 
@@ -324,11 +324,11 @@ LABEL_47:
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "AutomaticVehicleSelectionTask: user connected to CarPlay (identifier: %@) but there is no associated vehicle for this head unit. It is either a new vehicle that was not yet disambiguated or a nonEV -> we'll deselect the currently selected vehicle", buf, 0xCu);
           }
 
-          v28 = self;
+          selfCopy2 = self;
           v29 = 0;
         }
 
-        [(AutomaticVehicleSelectionTask *)v28 _selectVehicleAndForceRerouteIfNeeded:v29];
+        [(AutomaticVehicleSelectionTask *)selfCopy2 _selectVehicleAndForceRerouteIfNeeded:v29];
         goto LABEL_47;
       }
 
@@ -356,33 +356,33 @@ LABEL_47:
 LABEL_48:
 }
 
-- (void)_updateGarage:(id)a3
+- (void)_updateGarage:(id)garage
 {
-  v4 = a3;
+  garageCopy = garage;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1008CA114;
   block[3] = &unk_101661340;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = garageCopy;
+  v5 = garageCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (AutomaticVehicleSelectionTask)initWithPlatformController:(id)a3
+- (AutomaticVehicleSelectionTask)initWithPlatformController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = AutomaticVehicleSelectionTask;
   v5 = [(AutomaticVehicleSelectionTask *)&v19 init];
   if (v5)
   {
-    [v4 registerObserver:v5];
-    v6 = [v4 currentSession];
+    [controllerCopy registerObserver:v5];
+    currentSession = [controllerCopy currentSession];
     objc_opt_class();
     v5->_isNavigating = objc_opt_isKindOfClass() & 1;
 

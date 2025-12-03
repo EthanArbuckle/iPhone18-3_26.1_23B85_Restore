@@ -1,30 +1,30 @@
 @interface MBSCacheStmt
 - (BOOL)step;
-- (MBSCacheStmt)initWithCache:(id)a3 SQL:(id)a4 stmt:(sqlite3_stmt *)a5;
-- (double)doubleColumn:(int)a3;
-- (id)blobColumn:(int)a3;
-- (id)textColumn:(int)a3;
+- (MBSCacheStmt)initWithCache:(id)cache SQL:(id)l stmt:(sqlite3_stmt *)stmt;
+- (double)doubleColumn:(int)column;
+- (id)blobColumn:(int)column;
+- (id)textColumn:(int)column;
 - (int)columnCount;
-- (int)intColumn:(int)a3;
-- (int)typeOfColumn:(int)a3;
-- (int64_t)int64Column:(int)a3;
+- (int)intColumn:(int)column;
+- (int)typeOfColumn:(int)column;
+- (int64_t)int64Column:(int)column;
 - (void)dealloc;
 - (void)reset;
-- (void)verifyEqualToStmt:(id)a3 exceptColumnNumbers:(id)a4;
+- (void)verifyEqualToStmt:(id)stmt exceptColumnNumbers:(id)numbers;
 @end
 
 @implementation MBSCacheStmt
 
-- (MBSCacheStmt)initWithCache:(id)a3 SQL:(id)a4 stmt:(sqlite3_stmt *)a5
+- (MBSCacheStmt)initWithCache:(id)cache SQL:(id)l stmt:(sqlite3_stmt *)stmt
 {
   v9.receiver = self;
   v9.super_class = MBSCacheStmt;
   result = [(MBSCacheStmt *)&v9 init];
   if (result)
   {
-    result->_cache = a3;
-    result->_SQL = a4;
-    result->_stmt = a5;
+    result->_cache = cache;
+    result->_SQL = l;
+    result->_stmt = stmt;
     result->_reset = 1;
   }
 
@@ -101,7 +101,7 @@
   return sqlite3_column_count(stmt);
 }
 
-- (int)typeOfColumn:(int)a3
+- (int)typeOfColumn:(int)column
 {
   if (self->_reset)
   {
@@ -110,10 +110,10 @@
 
   stmt = self->_stmt;
 
-  return sqlite3_column_type(stmt, a3);
+  return sqlite3_column_type(stmt, column);
 }
 
-- (int)intColumn:(int)a3
+- (int)intColumn:(int)column
 {
   if (self->_reset)
   {
@@ -122,10 +122,10 @@
 
   stmt = self->_stmt;
 
-  return sqlite3_column_int(stmt, a3);
+  return sqlite3_column_int(stmt, column);
 }
 
-- (int64_t)int64Column:(int)a3
+- (int64_t)int64Column:(int)column
 {
   if (self->_reset)
   {
@@ -134,10 +134,10 @@
 
   stmt = self->_stmt;
 
-  return sqlite3_column_int64(stmt, a3);
+  return sqlite3_column_int64(stmt, column);
 }
 
-- (double)doubleColumn:(int)a3
+- (double)doubleColumn:(int)column
 {
   if (self->_reset)
   {
@@ -146,21 +146,21 @@
 
   stmt = self->_stmt;
 
-  return sqlite3_column_double(stmt, a3);
+  return sqlite3_column_double(stmt, column);
 }
 
-- (id)blobColumn:(int)a3
+- (id)blobColumn:(int)column
 {
   if (self->_reset)
   {
     sub_10009B8D8();
   }
 
-  result = sqlite3_column_blob(self->_stmt, a3);
+  result = sqlite3_column_blob(self->_stmt, column);
   if (result)
   {
     v6 = result;
-    v7 = sqlite3_column_bytes(self->_stmt, a3);
+    v7 = sqlite3_column_bytes(self->_stmt, column);
 
     return [NSData dataWithBytes:v6 length:v7];
   }
@@ -168,14 +168,14 @@
   return result;
 }
 
-- (id)textColumn:(int)a3
+- (id)textColumn:(int)column
 {
   if (self->_reset)
   {
     sub_10009B92C();
   }
 
-  result = sqlite3_column_text(self->_stmt, a3);
+  result = sqlite3_column_text(self->_stmt, column);
   if (result)
   {
 
@@ -185,14 +185,14 @@
   return result;
 }
 
-- (void)verifyEqualToStmt:(id)a3 exceptColumnNumbers:(id)a4
+- (void)verifyEqualToStmt:(id)stmt exceptColumnNumbers:(id)numbers
 {
   do
   {
     v6 = objc_autoreleasePoolPush();
     if (![(MBSCacheStmt *)self step])
     {
-      if (![a3 step])
+      if (![stmt step])
       {
 LABEL_20:
         v17 = 0;
@@ -207,7 +207,7 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if (![a3 step])
+    if (![stmt step])
     {
       v14 = +[NSAssertionHandler currentHandler];
       v15 = 215;
@@ -215,21 +215,21 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    v7 = [(MBSCacheStmt *)self columnCount];
-    if (v7 != [a3 columnCount])
+    columnCount = [(MBSCacheStmt *)self columnCount];
+    if (columnCount != [stmt columnCount])
     {
-      -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"MBSCacheStmt.m", 199, @"Column count doesn't match (%d != %d)", -[MBSCacheStmt columnCount](self, "columnCount"), [a3 columnCount]);
+      -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:](+[NSAssertionHandler currentHandler](NSAssertionHandler, "currentHandler"), "handleFailureInMethod:object:file:lineNumber:description:", a2, self, @"MBSCacheStmt.m", 199, @"Column count doesn't match (%d != %d)", -[MBSCacheStmt columnCount](self, "columnCount"), [stmt columnCount]);
     }
 
-    v8 = [(MBSCacheStmt *)self columnCount];
-    if (v8 >= 1)
+    columnCount2 = [(MBSCacheStmt *)self columnCount];
+    if (columnCount2 >= 1)
     {
       v9 = 0;
       do
       {
-        if (([a4 containsObject:{+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v9)}] & 1) == 0)
+        if (([numbers containsObject:{+[NSNumber numberWithInt:](NSNumber, "numberWithInt:", v9)}] & 1) == 0)
         {
-          v10 = [a3 valueOfColumn:v9];
+          v10 = [stmt valueOfColumn:v9];
           v11 = [(MBSCacheStmt *)self valueOfColumn:v9];
           if (v10 | v11)
           {
@@ -266,7 +266,7 @@ LABEL_19:
         v9 = (v9 + 1);
       }
 
-      while (v8 != v9);
+      while (columnCount2 != v9);
     }
 
     v17 = 1;
@@ -276,7 +276,7 @@ LABEL_22:
 
   while ((v17 & 1) != 0);
   [(MBSCacheStmt *)self reset];
-  [a3 reset];
+  [stmt reset];
 }
 
 @end

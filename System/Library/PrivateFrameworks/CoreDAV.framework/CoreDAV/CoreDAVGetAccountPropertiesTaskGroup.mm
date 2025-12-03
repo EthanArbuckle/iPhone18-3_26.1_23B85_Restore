@@ -1,25 +1,25 @@
 @interface CoreDAVGetAccountPropertiesTaskGroup
-- (CoreDAVGetAccountPropertiesTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4;
+- (CoreDAVGetAccountPropertiesTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager;
 - (NSString)description;
 - (id)_copyAccountPropertiesPropFindElements;
-- (void)_setPropertiesFromParsedResponses:(id)a3;
-- (void)_taskCompleted:(id)a3 withError:(id)a4;
+- (void)_setPropertiesFromParsedResponses:(id)responses;
+- (void)_taskCompleted:(id)completed withError:(id)error;
 - (void)coaxServerForPrincipalHeaders;
-- (void)processPrincipalHeaders:(id)a3;
-- (void)propFindTask:(id)a3 parsedResponses:(id)a4 error:(id)a5;
-- (void)searchPropertySetTask:(id)a3 completetWithPropertySearchSet:(id)a4 error:(id)a5;
+- (void)processPrincipalHeaders:(id)headers;
+- (void)propFindTask:(id)task parsedResponses:(id)responses error:(id)error;
+- (void)searchPropertySetTask:(id)task completetWithPropertySearchSet:(id)set error:(id)error;
 - (void)startTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
-- (void)taskGroupWillCancelWithError:(id)a3;
+- (void)task:(id)task didFinishWithError:(id)error;
+- (void)taskGroupWillCancelWithError:(id)error;
 @end
 
 @implementation CoreDAVGetAccountPropertiesTaskGroup
 
-- (CoreDAVGetAccountPropertiesTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4
+- (CoreDAVGetAccountPropertiesTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager
 {
   v8.receiver = self;
   v8.super_class = CoreDAVGetAccountPropertiesTaskGroup;
-  v4 = [(CoreDAVTaskGroup *)&v8 initWithAccountInfoProvider:a3 taskManager:a4];
+  v4 = [(CoreDAVTaskGroup *)&v8 initWithAccountInfoProvider:provider taskManager:manager];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -44,20 +44,20 @@
   return v3;
 }
 
-- (void)taskGroupWillCancelWithError:(id)a3
+- (void)taskGroupWillCancelWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CoreDAVErrorDomain" code:6 userInfo:0];
+    errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"CoreDAVErrorDomain" code:6 userInfo:0];
   }
 
-  v5 = self;
-  v6 = [(CoreDAVTaskGroup *)v5 delegate];
-  [v6 getAccountPropertiesTask:v5 completedWithError:v4];
-  v7.receiver = v5;
+  selfCopy = self;
+  delegate = [(CoreDAVTaskGroup *)selfCopy delegate];
+  [delegate getAccountPropertiesTask:selfCopy completedWithError:errorCopy];
+  v7.receiver = selfCopy;
   v7.super_class = CoreDAVGetAccountPropertiesTaskGroup;
-  [(CoreDAVTaskGroup *)&v7 taskGroupWillCancelWithError:v4];
+  [(CoreDAVTaskGroup *)&v7 taskGroupWillCancelWithError:errorCopy];
 }
 
 - (id)_copyAccountPropertiesPropFindElements
@@ -74,11 +74,11 @@
 
 - (void)startTaskGroup
 {
-  v9 = [(CoreDAVGetAccountPropertiesTaskGroup *)self _copyAccountPropertiesPropFindElements];
+  _copyAccountPropertiesPropFindElements = [(CoreDAVGetAccountPropertiesTaskGroup *)self _copyAccountPropertiesPropFindElements];
   v3 = [CoreDAVPropFindTask alloc];
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
-  v5 = [WeakRetained principalURL];
-  v6 = [(CoreDAVPropFindTask *)v3 initWithPropertiesToFind:v9 atURL:v5 withDepth:2];
+  principalURL = [WeakRetained principalURL];
+  v6 = [(CoreDAVPropFindTask *)v3 initWithPropertiesToFind:_copyAccountPropertiesPropFindElements atURL:principalURL withDepth:2];
 
   [(NSMutableSet *)self->super._outstandingTasks addObject:v6];
   [(CoreDAVTask *)v6 setDelegate:self];
@@ -90,19 +90,19 @@
   [v8 submitQueuedCoreDAVTask:v6];
 }
 
-- (void)_setPropertiesFromParsedResponses:(id)a3
+- (void)_setPropertiesFromParsedResponses:(id)responses
 {
   v51 = *MEMORY[0x277D85DE8];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = a3;
+  obj = responses;
   v38 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v38)
   {
     v36 = *v46;
-    v37 = self;
+    selfCopy = self;
     do
     {
       v4 = 0;
@@ -114,31 +114,31 @@
         }
 
         v40 = v4;
-        v5 = [*(*(&v45 + 1) + 8 * v4) successfulPropertiesToValues];
-        v6 = [v5 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"principal-URL"];
-        v7 = [v6 href];
-        v8 = [v7 payloadAsFullURL];
+        successfulPropertiesToValues = [*(*(&v45 + 1) + 8 * v4) successfulPropertiesToValues];
+        v6 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"principal-URL"];
+        href = [v6 href];
+        payloadAsFullURL = [href payloadAsFullURL];
         principalURL = self->_principalURL;
-        self->_principalURL = v8;
+        self->_principalURL = payloadAsFullURL;
 
-        v10 = [v5 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"displayname"];
-        v11 = [v10 payloadAsString];
+        v10 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"displayname"];
+        payloadAsString = [v10 payloadAsString];
         displayName = self->_displayName;
-        self->_displayName = v11;
+        self->_displayName = payloadAsString;
 
-        v13 = [v5 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"resource-id"];
-        v14 = [v13 href];
-        v15 = [v14 payloadAsFullURL];
+        v13 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"resource-id"];
+        href2 = [v13 href];
+        payloadAsFullURL2 = [href2 payloadAsFullURL];
         resourceID = self->_resourceID;
-        self->_resourceID = v15;
+        self->_resourceID = payloadAsFullURL2;
 
-        v17 = [v5 CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"email-address-set"];
+        v17 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"http://calendarserver.org/ns/" andName:@"email-address-set"];
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v18 = [v17 emailAddresses];
-        v19 = [v18 countByEnumeratingWithState:&v41 objects:v49 count:16];
+        emailAddresses = [v17 emailAddresses];
+        v19 = [emailAddresses countByEnumeratingWithState:&v41 objects:v49 count:16];
         if (v19)
         {
           v20 = v19;
@@ -150,22 +150,22 @@
             {
               if (*v42 != v22)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(emailAddresses);
               }
 
               v24 = *(*(&v41 + 1) + 8 * i);
               if (!v21)
               {
                 v25 = objc_alloc(MEMORY[0x277CBEB58]);
-                v26 = [v17 emailAddresses];
-                v21 = [v25 initWithCapacity:{objc_msgSend(v26, "count")}];
+                emailAddresses2 = [v17 emailAddresses];
+                v21 = [v25 initWithCapacity:{objc_msgSend(emailAddresses2, "count")}];
               }
 
-              v27 = [v24 payloadAsString];
-              [v21 addObject:v27];
+              payloadAsString2 = [v24 payloadAsString];
+              [v21 addObject:payloadAsString2];
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v41 objects:v49 count:16];
+            v20 = [emailAddresses countByEnumeratingWithState:&v41 objects:v49 count:16];
           }
 
           while (v20);
@@ -176,9 +176,9 @@
           v21 = 0;
         }
 
-        self = v37;
-        objc_storeStrong(&v37->_emailAddresses, v21);
-        v28 = [v5 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"principal-collection-set"];
+        self = selfCopy;
+        objc_storeStrong(&selfCopy->_emailAddresses, v21);
+        v28 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"principal-collection-set"];
         v29 = v28;
         if (v28 && ([v28 hrefs], v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v39, "count")))
         {
@@ -193,7 +193,7 @@
           v31 = 0;
         }
 
-        objc_storeStrong(&v37->_collections, v31);
+        objc_storeStrong(&selfCopy->_collections, v31);
         if (v30)
         {
         }
@@ -202,8 +202,8 @@
         {
         }
 
-        v32 = [v5 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"supported-report-set"];
-        v37->_isExpandPropertyReportSupported = [v32 supportsReportWithNameSpace:@"DAV:" andName:@"expand-property"];
+        v32 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"supported-report-set"];
+        selfCopy->_isExpandPropertyReportSupported = [v32 supportsReportWithNameSpace:@"DAV:" andName:@"expand-property"];
 
         v4 = v40 + 1;
       }
@@ -218,9 +218,9 @@
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_taskCompleted:(id)a3 withError:(id)a4
+- (void)_taskCompleted:(id)completed withError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (![(NSMutableSet *)self->super._outstandingTasks count])
   {
     v6[0] = MEMORY[0x277D85DD0];
@@ -228,7 +228,7 @@
     v6[2] = __65__CoreDAVGetAccountPropertiesTaskGroup__taskCompleted_withError___block_invoke;
     v6[3] = &unk_278E30F90;
     v6[4] = self;
-    v7 = v5;
+    v7 = errorCopy;
     [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v7 delegateCallbackBlock:v6];
   }
 }
@@ -239,12 +239,12 @@ void __65__CoreDAVGetAccountPropertiesTaskGroup__taskCompleted_withError___block
   [v2 getAccountPropertiesTask:*(a1 + 32) completedWithError:*(a1 + 40)];
 }
 
-- (void)propFindTask:(id)a3 parsedResponses:(id)a4 error:(id)a5
+- (void)propFindTask:(id)task parsedResponses:(id)responses error:(id)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  responsesCopy = responses;
+  errorCopy = error;
   v11 = +[CoreDAVLogging sharedLogging];
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
   v13 = [v11 logHandleForAccountInfoProvider:WeakRetained];
@@ -252,54 +252,54 @@ void __65__CoreDAVGetAccountPropertiesTaskGroup__taskCompleted_withError___block
   if (v13 && os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v48 = v9;
+    v48 = responsesCopy;
     _os_log_impl(&dword_2452FB000, v13, OS_LOG_TYPE_INFO, "Responses are: %@", buf, 0xCu);
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    v46 = v9;
-    [(CoreDAVGetAccountPropertiesTaskGroup *)self _setPropertiesFromParsedResponses:v9];
-    v16 = [(CoreDAVGetAccountPropertiesTaskGroup *)self homeSet];
-    v17 = [v16 anyObject];
+    v46 = responsesCopy;
+    [(CoreDAVGetAccountPropertiesTaskGroup *)self _setPropertiesFromParsedResponses:responsesCopy];
+    homeSet = [(CoreDAVGetAccountPropertiesTaskGroup *)self homeSet];
+    anyObject = [homeSet anyObject];
 
-    v18 = [v8 url];
-    v19 = [v18 CDVServerURL];
+    v18 = [taskCopy url];
+    cDVServerURL = [v18 CDVServerURL];
 
-    v20 = [v17 CDVServerURL];
-    if (([(CoreDAVHeadTask *)v19 isEqual:v20]& 1) != 0 || [(CoreDAVGetAccountPropertiesTaskGroup *)self shouldIgnoreHomeSetOnDifferentHost])
+    cDVServerURL2 = [anyObject CDVServerURL];
+    if (([(CoreDAVHeadTask *)cDVServerURL isEqual:cDVServerURL2]& 1) != 0 || [(CoreDAVGetAccountPropertiesTaskGroup *)self shouldIgnoreHomeSetOnDifferentHost])
     {
       goto LABEL_33;
     }
 
-    v21 = [v20 scheme];
-    v22 = [(CoreDAVHeadTask *)v19 scheme];
-    if ([v21 isEqualToString:v22])
+    scheme = [cDVServerURL2 scheme];
+    scheme2 = [(CoreDAVHeadTask *)cDVServerURL scheme];
+    if ([scheme isEqualToString:scheme2])
     {
     }
 
     else
     {
-      v28 = [v20 scheme];
-      LODWORD(v45) = [v28 isEqualToString:@"https"];
+      scheme3 = [cDVServerURL2 scheme];
+      LODWORD(host4) = [scheme3 isEqualToString:@"https"];
 
-      if (!v45)
+      if (!host4)
       {
-        v39 = +[CoreDAVLogging sharedLogging];
+        accountInfoProvider2 = +[CoreDAVLogging sharedLogging];
         v40 = objc_loadWeakRetained(&self->super._accountInfoProvider);
-        v41 = [v39 logHandleForAccountInfoProvider:v40];
+        v41 = [accountInfoProvider2 logHandleForAccountInfoProvider:v40];
 
         if (v41 && os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v48 = v20;
+          v48 = cDVServerURL2;
           _os_log_impl(&dword_2452FB000, v41, OS_LOG_TYPE_DEFAULT, "Ignoring host change to: %@ because it sends it to an insecure URL.", buf, 0xCu);
         }
 
 LABEL_32:
 LABEL_33:
-        v42 = [v8 responseHeaders];
-        if (-[CoreDAVGetAccountPropertiesTaskGroup forceOptionsRequest](self, "forceOptionsRequest") || ([v42 CDVObjectForKeyCaseInsensitive:@"DAV"], v43 = objc_claimAutoreleasedReturnValue(), v43, !v43))
+        responseHeaders = [taskCopy responseHeaders];
+        if (-[CoreDAVGetAccountPropertiesTaskGroup forceOptionsRequest](self, "forceOptionsRequest") || ([responseHeaders CDVObjectForKeyCaseInsensitive:@"DAV"], v43 = objc_claimAutoreleasedReturnValue(), v43, !v43))
         {
           if ([(CoreDAVGetAccountPropertiesTaskGroup *)self forceOptionsRequest]|| [(CoreDAVGetAccountPropertiesTaskGroup *)self fetchPrincipalSearchProperties])
           {
@@ -309,17 +309,17 @@ LABEL_33:
 
         else
         {
-          [(CoreDAVGetAccountPropertiesTaskGroup *)self processPrincipalHeaders:v42];
+          [(CoreDAVGetAccountPropertiesTaskGroup *)self processPrincipalHeaders:responseHeaders];
         }
 
-        v9 = v46;
+        responsesCopy = v46;
         goto LABEL_40;
       }
     }
 
-    v29 = [v20 host];
-    v30 = [(CoreDAVHeadTask *)v19 host];
-    v31 = [v29 isEqualToString:v30];
+    host = [cDVServerURL2 host];
+    host2 = [(CoreDAVHeadTask *)cDVServerURL host];
+    v31 = [host isEqualToString:host2];
 
     if (v31)
     {
@@ -335,17 +335,17 @@ LABEL_33:
       v35 = v34;
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [(CoreDAVHeadTask *)v19 host];
-        v45 = [v20 host];
+        host3 = [(CoreDAVHeadTask *)cDVServerURL host];
+        host4 = [cDVServerURL2 host];
         *buf = 138412546;
-        v48 = v36;
+        v48 = host3;
         v49 = 2112;
-        v50 = v45;
+        v50 = host4;
         _os_log_impl(&dword_2452FB000, v35, OS_LOG_TYPE_DEFAULT, "HomeSet is in another castle.  Was %@, is now %@", buf, 0x16u);
       }
     }
 
-    v37 = [v8 accountInfoProvider];
+    accountInfoProvider = [taskCopy accountInfoProvider];
     v38 = objc_opt_respondsToSelector();
 
     if ((v38 & 1) == 0)
@@ -353,15 +353,15 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    v39 = [v8 accountInfoProvider];
-    [v39 noteHomeSetOnDifferentHost:v20];
+    accountInfoProvider2 = [taskCopy accountInfoProvider];
+    [accountInfoProvider2 noteHomeSetOnDifferentHost:cDVServerURL2];
     goto LABEL_32;
   }
 
-  v14 = [v10 domain];
-  if ([v14 isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"CoreDAVHTTPStatusErrorDomain"])
   {
-    v15 = [v10 code] == 405;
+    v15 = [errorCopy code] == 405;
   }
 
   else
@@ -369,56 +369,56 @@ LABEL_33:
     v15 = 0;
   }
 
-  v23 = [v8 lastRedirectURL];
-  v17 = v23;
-  if (v15 && v23)
+  lastRedirectURL = [taskCopy lastRedirectURL];
+  anyObject = lastRedirectURL;
+  if (v15 && lastRedirectURL)
   {
-    if (([(NSMutableSet *)self->_redirectHistory containsObject:v23]& 1) != 0)
+    if (([(NSMutableSet *)self->_redirectHistory containsObject:lastRedirectURL]& 1) != 0)
     {
-      v19 = +[CoreDAVLogging sharedLogging];
+      cDVServerURL = +[CoreDAVLogging sharedLogging];
       v24 = objc_loadWeakRetained(&self->super._accountInfoProvider);
-      v25 = [(CoreDAVHeadTask *)v19 logHandleForAccountInfoProvider:v24];
+      v25 = [(CoreDAVHeadTask *)cDVServerURL logHandleForAccountInfoProvider:v24];
 
       if (v25 && os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v48 = v17;
+        v48 = anyObject;
         _os_log_impl(&dword_2452FB000, v25, OS_LOG_TYPE_DEFAULT, "Received a cyclical redirect from a PROPFIND and HEAD:%@", buf, 0xCu);
       }
     }
 
     else
     {
-      v19 = [(CoreDAVTask *)[CoreDAVHeadTask alloc] initWithURL:v17];
-      [(NSMutableSet *)self->super._outstandingTasks addObject:v19];
-      [(CoreDAVTask *)v19 setDelegate:self];
+      cDVServerURL = [(CoreDAVTask *)[CoreDAVHeadTask alloc] initWithURL:anyObject];
+      [(NSMutableSet *)self->super._outstandingTasks addObject:cDVServerURL];
+      [(CoreDAVTask *)cDVServerURL setDelegate:self];
       v26 = objc_loadWeakRetained(&self->super._accountInfoProvider);
-      [(CoreDAVTask *)v19 setAccountInfoProvider:v26];
+      [(CoreDAVTask *)cDVServerURL setAccountInfoProvider:v26];
 
-      [(CoreDAVTask *)v19 setTimeoutInterval:self->super._timeoutInterval];
+      [(CoreDAVTask *)cDVServerURL setTimeoutInterval:self->super._timeoutInterval];
       v27 = objc_loadWeakRetained(&self->super._taskManager);
-      [v27 submitQueuedCoreDAVTask:v19];
+      [v27 submitQueuedCoreDAVTask:cDVServerURL];
 
-      [(NSMutableSet *)self->_redirectHistory addObject:v17];
+      [(NSMutableSet *)self->_redirectHistory addObject:anyObject];
     }
 
 LABEL_40:
   }
 
-  [(NSMutableSet *)self->super._outstandingTasks removeObject:v8];
-  [(CoreDAVGetAccountPropertiesTaskGroup *)self _taskCompleted:v8 withError:v10];
+  [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+  [(CoreDAVGetAccountPropertiesTaskGroup *)self _taskCompleted:taskCopy withError:errorCopy];
 
   v44 = *MEMORY[0x277D85DE8];
 }
 
 - (void)coaxServerForPrincipalHeaders
 {
-  v3 = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
   v4 = [CoreDAVOptionsTask alloc];
-  v5 = [v3 principalURL];
-  v6 = [(CoreDAVTask *)v4 initWithURL:v5];
+  principalURL = [accountInfoProvider principalURL];
+  v6 = [(CoreDAVTask *)v4 initWithURL:principalURL];
 
-  [(CoreDAVTask *)v6 setAccountInfoProvider:v3];
+  [(CoreDAVTask *)v6 setAccountInfoProvider:accountInfoProvider];
   [(CoreDAVTaskGroup *)self timeoutInterval];
   [(CoreDAVTask *)v6 setTimeoutInterval:?];
   objc_initWeak(&location, v6);
@@ -456,19 +456,19 @@ void __69__CoreDAVGetAccountPropertiesTaskGroup_coaxServerForPrincipalHeaders__b
   }
 }
 
-- (void)processPrincipalHeaders:(id)a3
+- (void)processPrincipalHeaders:(id)headers
 {
   if ([(CoreDAVGetAccountPropertiesTaskGroup *)self fetchPrincipalSearchProperties])
   {
-    v4 = [(CoreDAVGetAccountPropertiesTaskGroup *)self collections];
-    v5 = [v4 count];
+    collections = [(CoreDAVGetAccountPropertiesTaskGroup *)self collections];
+    v5 = [collections count];
 
     if (v5)
     {
       v6 = [CoreDAVPrincipalSearchPropertySetTask alloc];
-      v7 = [(CoreDAVGetAccountPropertiesTaskGroup *)self collections];
-      v8 = [v7 anyObject];
-      v11 = [(CoreDAVPrincipalSearchPropertySetTask *)v6 initWithURL:v8];
+      collections2 = [(CoreDAVGetAccountPropertiesTaskGroup *)self collections];
+      anyObject = [collections2 anyObject];
+      v11 = [(CoreDAVPrincipalSearchPropertySetTask *)v6 initWithURL:anyObject];
 
       WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
       [(CoreDAVTask *)v11 setAccountInfoProvider:WeakRetained];
@@ -482,12 +482,12 @@ void __69__CoreDAVGetAccountPropertiesTaskGroup_coaxServerForPrincipalHeaders__b
   }
 }
 
-- (void)searchPropertySetTask:(id)a3 completetWithPropertySearchSet:(id)a4 error:(id)a5
+- (void)searchPropertySetTask:(id)task completetWithPropertySearchSet:(id)set error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  setCopy = set;
+  errorCopy = error;
+  taskCopy = task;
   v12 = +[CoreDAVLogging sharedLogging];
   WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
   v14 = [v12 logHandleForAccountInfoProvider:WeakRetained];
@@ -495,12 +495,12 @@ void __69__CoreDAVGetAccountPropertiesTaskGroup_coaxServerForPrincipalHeaders__b
   if (v14 && os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v19 = 138412290;
-    v20 = v9;
+    v20 = setCopy;
     _os_log_impl(&dword_2452FB000, v14, OS_LOG_TYPE_INFO, "PrincipalSearchProperties are: %@", &v19, 0xCu);
   }
 
-  objc_storeStrong(&self->_principalSearchProperties, a4);
-  if (v10)
+  objc_storeStrong(&self->_principalSearchProperties, set);
+  if (errorCopy)
   {
     v15 = +[CoreDAVLogging sharedLogging];
     v16 = objc_loadWeakRetained(&self->super._accountInfoProvider);
@@ -513,23 +513,23 @@ void __69__CoreDAVGetAccountPropertiesTaskGroup_coaxServerForPrincipalHeaders__b
     }
   }
 
-  [(NSMutableSet *)self->super._outstandingTasks removeObject:v11];
-  [(CoreDAVGetAccountPropertiesTaskGroup *)self _taskCompleted:v11 withError:0];
+  [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+  [(CoreDAVGetAccountPropertiesTaskGroup *)self _taskCompleted:taskCopy withError:0];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v13 = a3;
-  v6 = a4;
+  taskCopy = task;
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(CoreDAVGetAccountPropertiesTaskGroup *)self _copyAccountPropertiesPropFindElements];
+    _copyAccountPropertiesPropFindElements = [(CoreDAVGetAccountPropertiesTaskGroup *)self _copyAccountPropertiesPropFindElements];
     v8 = [CoreDAVPropFindTask alloc];
-    v9 = [v13 lastRedirectURL];
-    v10 = [(CoreDAVPropFindTask *)v8 initWithPropertiesToFind:v7 atURL:v9 withDepth:2];
+    lastRedirectURL = [taskCopy lastRedirectURL];
+    v10 = [(CoreDAVPropFindTask *)v8 initWithPropertiesToFind:_copyAccountPropertiesPropFindElements atURL:lastRedirectURL withDepth:2];
 
     WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
     [(CoreDAVTask *)v10 setAccountInfoProvider:WeakRetained];
@@ -540,8 +540,8 @@ void __69__CoreDAVGetAccountPropertiesTaskGroup_coaxServerForPrincipalHeaders__b
     v12 = objc_loadWeakRetained(&self->super._taskManager);
     [v12 submitQueuedCoreDAVTask:v10];
 
-    [(NSMutableSet *)self->super._outstandingTasks removeObject:v13];
-    [(CoreDAVGetAccountPropertiesTaskGroup *)self _taskCompleted:v13 withError:v6];
+    [(NSMutableSet *)self->super._outstandingTasks removeObject:taskCopy];
+    [(CoreDAVGetAccountPropertiesTaskGroup *)self _taskCompleted:taskCopy withError:errorCopy];
   }
 }
 

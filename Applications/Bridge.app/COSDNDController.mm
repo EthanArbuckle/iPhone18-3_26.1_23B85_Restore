@@ -1,11 +1,11 @@
 @interface COSDNDController
 - (COSDNDController)init;
-- (id)doNotDisturbMirrorState:(id)a3;
-- (id)doNotDisturbWorkoutState:(id)a3;
+- (id)doNotDisturbMirrorState:(id)state;
+- (id)doNotDisturbWorkoutState:(id)state;
 - (id)specifiers;
 - (void)dealloc;
-- (void)setDoNotDisturbMirrorState:(id)a3 specifier:(id)a4;
-- (void)setWorkoutDoNotDisturbState:(id)a3 specifier:(id)a4;
+- (void)setDoNotDisturbMirrorState:(id)state specifier:(id)specifier;
+- (void)setWorkoutDoNotDisturbState:(id)state specifier:(id)specifier;
 @end
 
 @implementation COSDNDController
@@ -60,11 +60,11 @@
   }
 
   v5 = [(COSDNDController *)self loadSpecifiersFromPlistName:@"DoNotDisturb" target:self];
-  v6 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
-  v7 = [UIApp activeWatch];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  activeWatch = [UIApp activeWatch];
   v8 = [[NSUUID alloc] initWithUUIDString:@"E2FB408E-3F1C-4F55-89DE-A25CDF6D4C39"];
-  v49 = v7;
-  v9 = [v7 supportsCapability:v8];
+  v49 = activeWatch;
+  v9 = [activeWatch supportsCapability:v8];
 
   v10 = [v5 specifierForID:@"DND_WORKOUT_ID"];
   if (v9)
@@ -101,14 +101,14 @@
   v46 = [v14 localizedStringForKey:v16 value:&stru_10026E598 table:@"DoNotDisturb"];
 
   v17 = +[PBBGatewayManager sharedManager];
-  v18 = [v17 doNotDisturbPrivilegedSenderType];
+  doNotDisturbPrivilegedSenderType = [v17 doNotDisturbPrivilegedSenderType];
 
   v19 = [NSBundle bundleForClass:objc_opt_class()];
   v20 = [v19 localizedStringForKey:@"NO_ONE" value:&stru_10026E598 table:@"DoNotDisturb"];
 
-  if (v18 > 3)
+  if (doNotDisturbPrivilegedSenderType > 3)
   {
-    if (v18 == 4)
+    if (doNotDisturbPrivilegedSenderType == 4)
     {
       v21 = [NSBundle bundleForClass:objc_opt_class()];
       v22 = v21;
@@ -116,12 +116,12 @@
       goto LABEL_17;
     }
 
-    if (v18 == 5)
+    if (doNotDisturbPrivilegedSenderType == 5)
     {
       v22 = +[PBBGatewayManager sharedManager];
-      v24 = [v22 allowedGroupName];
+      allowedGroupName = [v22 allowedGroupName];
 LABEL_18:
-      v25 = v24;
+      v25 = allowedGroupName;
 
       v20 = v25;
     }
@@ -129,7 +129,7 @@ LABEL_18:
 
   else
   {
-    if (v18 == 1)
+    if (doNotDisturbPrivilegedSenderType == 1)
     {
       v21 = [NSBundle bundleForClass:objc_opt_class()];
       v22 = v21;
@@ -137,21 +137,21 @@ LABEL_18:
       goto LABEL_17;
     }
 
-    if (v18 == 3)
+    if (doNotDisturbPrivilegedSenderType == 3)
     {
       v21 = [NSBundle bundleForClass:objc_opt_class()];
       v22 = v21;
       v23 = @"FAVORITES";
 LABEL_17:
-      v24 = [v21 localizedStringForKey:v23 value:&stru_10026E598 table:@"DoNotDisturb"];
+      allowedGroupName = [v21 localizedStringForKey:v23 value:&stru_10026E598 table:@"DoNotDisturb"];
       goto LABEL_18;
     }
   }
 
   v26 = +[PBBGatewayManager sharedManager];
-  v27 = [v26 isScheduled];
+  isScheduled = [v26 isScheduled];
 
-  if (v27)
+  if (isScheduled)
   {
     timeFormatter = self->_timeFormatter;
     if (timeFormatter)
@@ -170,13 +170,13 @@ LABEL_17:
     v30 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     v31 = self->_timeFormatter;
     v32 = +[PBBGatewayManager sharedManager];
-    v33 = [v32 dndFromComponents];
-    StringWithDate = CFDateFormatterCreateStringWithDate(0, v31, [v30 dateFromComponents:v33]);
+    dndFromComponents = [v32 dndFromComponents];
+    StringWithDate = CFDateFormatterCreateStringWithDate(0, v31, [v30 dateFromComponents:dndFromComponents]);
 
     v35 = self->_timeFormatter;
     v36 = +[PBBGatewayManager sharedManager];
-    v37 = [v36 dndToComponents];
-    v38 = CFDateFormatterCreateStringWithDate(0, v35, [v30 dateFromComponents:v37]);
+    dndToComponents = [v36 dndToComponents];
+    v38 = CFDateFormatterCreateStringWithDate(0, v35, [v30 dateFromComponents:dndToComponents]);
 
     v39 = [NSBundle bundleForClass:objc_opt_class()];
     v40 = [v39 localizedStringForKey:@"FOOTER_SCHEDULE" value:&stru_10026E598 table:@"DoNotDisturb"];
@@ -204,14 +204,14 @@ LABEL_27:
   return v4;
 }
 
-- (void)setDoNotDisturbMirrorState:(id)a3 specifier:(id)a4
+- (void)setDoNotDisturbMirrorState:(id)state specifier:(id)specifier
 {
   domainAccessor = self->_domainAccessor;
-  v14 = a4;
-  v7 = [a3 BOOLValue];
+  specifierCopy = specifier;
+  bOOLValue = [state BOOLValue];
   v8 = BPSMirrorDNDKey;
-  [(NPSDomainAccessor *)domainAccessor setBool:v7 forKey:BPSMirrorDNDKey];
-  v9 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  [(NPSDomainAccessor *)domainAccessor setBool:bOOLValue forKey:BPSMirrorDNDKey];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   npsManager = self->_npsManager;
   v11 = BPSDNDDomainKey;
   v12 = [NSSet setWithObject:v8];
@@ -219,12 +219,12 @@ LABEL_27:
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, BPSMirrorDNDStateChangedNotification, 0, 0, 0);
-  [(COSDNDController *)self reloadSpecifier:v14 animated:1];
+  [(COSDNDController *)self reloadSpecifier:specifierCopy animated:1];
 }
 
-- (id)doNotDisturbMirrorState:(id)a3
+- (id)doNotDisturbMirrorState:(id)state
 {
-  v4 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   v8 = 0;
   v5 = [(NPSDomainAccessor *)self->_domainAccessor BOOLForKey:BPSMirrorDNDKey keyExistsAndHasValidFormat:&v8];
   v6 = [NSNumber numberWithBool:v5 & 1u | ((v8 & 1) == 0)];
@@ -232,13 +232,13 @@ LABEL_27:
   return v6;
 }
 
-- (void)setWorkoutDoNotDisturbState:(id)a3 specifier:(id)a4
+- (void)setWorkoutDoNotDisturbState:(id)state specifier:(id)specifier
 {
   domainAccessor = self->_domainAccessor;
-  v6 = [a3 BOOLValue];
+  bOOLValue = [state BOOLValue];
   v7 = BPSWorkoutDNDKey;
-  [(NPSDomainAccessor *)domainAccessor setBool:v6 forKey:BPSWorkoutDNDKey];
-  v8 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  [(NPSDomainAccessor *)domainAccessor setBool:bOOLValue forKey:BPSWorkoutDNDKey];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   npsManager = self->_npsManager;
   v10 = BPSDNDDomainKey;
   v11 = [NSSet setWithObject:v7];
@@ -250,9 +250,9 @@ LABEL_27:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v13, 0, 0, 0);
 }
 
-- (id)doNotDisturbWorkoutState:(id)a3
+- (id)doNotDisturbWorkoutState:(id)state
 {
-  v4 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
   v8 = 0;
   v5 = [(NPSDomainAccessor *)self->_domainAccessor BOOLForKey:BPSWorkoutDNDKey keyExistsAndHasValidFormat:&v8];
   v6 = [NSNumber numberWithBool:v8 & v5 & 1];

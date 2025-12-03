@@ -1,16 +1,16 @@
 @interface IMSharedMessageRichLinkSummary
-+ (id)linkMetadataForPluginPayload:(id)a3;
-+ (id)previewSummaryWithPluginPayload:(id)a3;
++ (id)linkMetadataForPluginPayload:(id)payload;
++ (id)previewSummaryWithPluginPayload:(id)payload;
 @end
 
 @implementation IMSharedMessageRichLinkSummary
 
-+ (id)previewSummaryWithPluginPayload:(id)a3
++ (id)previewSummaryWithPluginPayload:(id)payload
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___IMSharedMessageRichLinkSummary;
   v4 = objc_msgSendSuper2(&v7, sel_previewSummaryWithPluginPayload_);
-  if ([a3 data])
+  if ([payload data])
   {
     v4 = [objc_msgSend(objc_msgSend(objc_opt_class() "dataSourceClass")];
     if (!v4)
@@ -26,9 +26,9 @@
   return v4;
 }
 
-+ (id)linkMetadataForPluginPayload:(id)a3
++ (id)linkMetadataForPluginPayload:(id)payload
 {
-  if (![a3 data])
+  if (![payload data])
   {
     return 0;
   }

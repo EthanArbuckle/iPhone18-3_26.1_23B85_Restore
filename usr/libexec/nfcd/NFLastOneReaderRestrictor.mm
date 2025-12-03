@@ -1,8 +1,8 @@
 @interface NFLastOneReaderRestrictor
 - (BOOL)_wasActiveTooLong;
-- (NFLastOneReaderRestrictor)initWithThermalMonitor:(id)a3 delegate:(id)a4;
-- (double)_getLastConnectionTime:(id)a3;
-- (double)_getLastDisconnectionTime:(id)a3;
+- (NFLastOneReaderRestrictor)initWithThermalMonitor:(id)monitor delegate:(id)delegate;
+- (double)_getLastConnectionTime:(id)time;
+- (double)_getLastDisconnectionTime:(id)time;
 - (double)getCooloffTime;
 - (double)maxReaderTime;
 - (id)description;
@@ -10,11 +10,11 @@
 
 @implementation NFLastOneReaderRestrictor
 
-- (NFLastOneReaderRestrictor)initWithThermalMonitor:(id)a3 delegate:(id)a4
+- (NFLastOneReaderRestrictor)initWithThermalMonitor:(id)monitor delegate:(id)delegate
 {
   v19.receiver = self;
   v19.super_class = NFLastOneReaderRestrictor;
-  v5 = [(NFReaderRestrictor *)&v19 initWithThermalMonitor:a3 delegate:a4];
+  v5 = [(NFReaderRestrictor *)&v19 initWithThermalMonitor:monitor delegate:delegate];
   if (v5)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -69,9 +69,9 @@
 
 - (double)maxReaderTime
 {
-  v2 = [(NFLastOneReaderRestrictor *)self _wasActiveTooLong];
+  _wasActiveTooLong = [(NFLastOneReaderRestrictor *)self _wasActiveTooLong];
   result = 20.0;
-  if (v2)
+  if (_wasActiveTooLong)
   {
     return 7.0;
   }
@@ -83,20 +83,20 @@
 {
   v24.receiver = self;
   v24.super_class = NFLastOneReaderRestrictor;
-  v4 = [(NFReaderRestrictor *)&v24 currentTestTime];
-  if (v4)
+  currentTestTime = [(NFReaderRestrictor *)&v24 currentTestTime];
+  if (currentTestTime)
   {
     v23.receiver = self;
     v23.super_class = NFLastOneReaderRestrictor;
-    v5 = [(NFReaderRestrictor *)&v23 currentTestTime];
+    currentTestTime2 = [(NFReaderRestrictor *)&v23 currentTestTime];
   }
 
   else
   {
-    v5 = [NSDate dateWithTimeIntervalSinceNow:0.0];
+    currentTestTime2 = [NSDate dateWithTimeIntervalSinceNow:0.0];
   }
 
-  v6 = v5;
+  v6 = currentTestTime2;
 
   [(NFLastOneReaderRestrictor *)self _getLastConnectionTime:v6];
   v8 = v7;
@@ -177,20 +177,20 @@
 {
   v26.receiver = self;
   v26.super_class = NFLastOneReaderRestrictor;
-  v4 = [(NFReaderRestrictor *)&v26 currentTestTime];
-  if (v4)
+  currentTestTime = [(NFReaderRestrictor *)&v26 currentTestTime];
+  if (currentTestTime)
   {
     v25.receiver = self;
     v25.super_class = NFLastOneReaderRestrictor;
-    v5 = [(NFReaderRestrictor *)&v25 currentTestTime];
+    currentTestTime2 = [(NFReaderRestrictor *)&v25 currentTestTime];
   }
 
   else
   {
-    v5 = [NSDate dateWithTimeIntervalSinceNow:0.0];
+    currentTestTime2 = [NSDate dateWithTimeIntervalSinceNow:0.0];
   }
 
-  v6 = v5;
+  v6 = currentTestTime2;
 
   [(NFLastOneReaderRestrictor *)self _getLastConnectionTime:v6];
   v8 = v7;
@@ -264,16 +264,16 @@
   return v11;
 }
 
-- (double)_getLastDisconnectionTime:(id)a3
+- (double)_getLastDisconnectionTime:(id)time
 {
-  v5 = a3;
-  v6 = [(NFReaderRestrictor *)self readerOperations];
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  timeCopy = time;
+  readerOperations = [(NFReaderRestrictor *)self readerOperations];
+  reverseObjectEnumerator = [readerOperations reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  if ([v8 count])
+  if ([allObjects count])
   {
-    v9 = [v8 objectAtIndex:0];
+    v9 = [allObjects objectAtIndex:0];
     v10 = v9;
     if (v9)
     {
@@ -301,16 +301,16 @@
       }
 
       v15 = v14;
-      [v5 timeIntervalSinceDate:v15];
+      [timeCopy timeIntervalSinceDate:v15];
       v17 = v16;
 
 LABEL_29:
       goto LABEL_30;
     }
 
-    if ([v8 count] >= 2)
+    if ([allObjects count] >= 2)
     {
-      v18 = [v8 objectAtIndex:1];
+      v18 = [allObjects objectAtIndex:1];
       v19 = v18;
       if (v18)
       {
@@ -410,16 +410,16 @@ LABEL_30:
   return v17;
 }
 
-- (double)_getLastConnectionTime:(id)a3
+- (double)_getLastConnectionTime:(id)time
 {
-  v5 = a3;
-  v6 = [(NFReaderRestrictor *)self readerOperations];
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  timeCopy = time;
+  readerOperations = [(NFReaderRestrictor *)self readerOperations];
+  reverseObjectEnumerator = [readerOperations reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  if ([v8 count])
+  if ([allObjects count])
   {
-    v9 = [v8 objectAtIndex:0];
+    v9 = [allObjects objectAtIndex:0];
     v10 = v9;
     if (v9)
     {
@@ -447,16 +447,16 @@ LABEL_30:
       }
 
       v15 = v14;
-      [v5 timeIntervalSinceDate:v15];
+      [timeCopy timeIntervalSinceDate:v15];
       v17 = v16;
 
 LABEL_29:
       goto LABEL_30;
     }
 
-    if ([v8 count] >= 2)
+    if ([allObjects count] >= 2)
     {
-      v18 = [v8 objectAtIndex:1];
+      v18 = [allObjects objectAtIndex:1];
       v19 = v18;
       if (v18)
       {
@@ -580,8 +580,8 @@ LABEL_30:
   }
 
   [v4 appendFormat:v5];
-  v6 = [(NFReaderRestrictor *)self readerOperations];
-  [v4 appendFormat:@"\t Operations = %@", v6];
+  readerOperations = [(NFReaderRestrictor *)self readerOperations];
+  [v4 appendFormat:@"\t Operations = %@", readerOperations];
 
   return v4;
 }

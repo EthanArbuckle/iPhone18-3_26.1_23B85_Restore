@@ -1,17 +1,17 @@
 @interface CKTextEffectCoordinator
 - (BOOL)isPaused;
-- (_TtC7ChatKit23CKTextEffectCoordinator)initWithLogIdentifier:(id)a3;
+- (_TtC7ChatKit23CKTextEffectCoordinator)initWithLogIdentifier:(id)identifier;
 - (void)reset;
-- (void)resetAndContinueFromState:(id)a3;
+- (void)resetAndContinueFromState:(id)state;
 - (void)resetBackoffState;
-- (void)setIsPaused:(BOOL)a3;
-- (void)setPaused:(BOOL)a3 includingAnimators:(BOOL)a4;
-- (void)updateWithReason:(id)a3;
+- (void)setIsPaused:(BOOL)paused;
+- (void)setPaused:(BOOL)paused includingAnimators:(BOOL)animators;
+- (void)updateWithReason:(id)reason;
 @end
 
 @implementation CKTextEffectCoordinator
 
-- (_TtC7ChatKit23CKTextEffectCoordinator)initWithLogIdentifier:(id)a3
+- (_TtC7ChatKit23CKTextEffectCoordinator)initWithLogIdentifier:(id)identifier
 {
   v4 = sub_190D56760();
   v5 = *(v4 - 8);
@@ -37,44 +37,44 @@
   return *(self + v3);
 }
 
-- (void)setIsPaused:(BOOL)a3
+- (void)setIsPaused:(BOOL)paused
 {
   v5 = OBJC_IVAR____TtC7ChatKit23CKTextEffectCoordinator_isPaused;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = paused;
 }
 
-- (void)setPaused:(BOOL)a3 includingAnimators:(BOOL)a4
+- (void)setPaused:(BOOL)paused includingAnimators:(BOOL)animators
 {
-  v4 = a4;
-  v6 = self;
-  sub_190B10F2C(a3, v4);
+  animatorsCopy = animators;
+  selfCopy = self;
+  sub_190B10F2C(paused, animatorsCopy);
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B11A2C();
 }
 
-- (void)resetAndContinueFromState:(id)a3
+- (void)resetAndContinueFromState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_190B11C4C(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_190B11C4C(stateCopy);
 }
 
 - (void)resetBackoffState
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B11F4C();
 }
 
-- (void)updateWithReason:(id)a3
+- (void)updateWithReason:(id)reason
 {
   v4 = sub_190D56F10();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_190B12150(v4, v6);
 }
 

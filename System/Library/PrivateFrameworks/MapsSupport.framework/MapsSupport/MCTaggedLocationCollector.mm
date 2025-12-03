@@ -1,14 +1,14 @@
 @interface MCTaggedLocationCollector
 + (id)sharedCollector;
-- (BOOL)uploadRequest:(id)a3;
+- (BOOL)uploadRequest:(id)request;
 - (MCTaggedLocationCollector)init;
 - (id)collectorUploadSession;
 - (id)geocorrectiondUploadDir;
 - (id)getLastRunTime;
-- (id)startTimeFromUploadFileName:(id)a3;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)collectIfReady:(id)a3;
-- (void)storeLastRunTime:(id)a3;
+- (id)startTimeFromUploadFileName:(id)name;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)collectIfReady:(id)ready;
+- (void)storeLastRunTime:(id)time;
 @end
 
 @implementation MCTaggedLocationCollector
@@ -33,9 +33,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(MCTaggedLocationCollector *)v2 getLastRunTime];
+    getLastRunTime = [(MCTaggedLocationCollector *)v2 getLastRunTime];
     lastRunTime = v3->_lastRunTime;
-    v3->_lastRunTime = v4;
+    v3->_lastRunTime = getLastRunTime;
 
     v6 = geo_dispatch_queue_create_with_qos();
     workQueue = v3->_workQueue;
@@ -54,17 +54,17 @@
   return v3;
 }
 
-- (void)collectIfReady:(id)a3
+- (void)collectIfReady:(id)ready
 {
-  v4 = a3;
+  readyCopy = ready;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009F20;
   v7[3] = &unk_10001D7F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = readyCopy;
+  v6 = readyCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -75,13 +75,13 @@
   return [NSDate dateWithTimeIntervalSinceReferenceDate:?];
 }
 
-- (void)storeLastRunTime:(id)a3
+- (void)storeLastRunTime:(id)time
 {
-  v4 = a3;
-  [(NSDate *)v4 timeIntervalSinceReferenceDate];
+  timeCopy = time;
+  [(NSDate *)timeCopy timeIntervalSinceReferenceDate];
   GEOConfigSetDouble();
   lastRunTime = self->_lastRunTime;
-  self->_lastRunTime = v4;
+  self->_lastRunTime = timeCopy;
 }
 
 - (id)collectorUploadSession
@@ -97,9 +97,9 @@
   return v4;
 }
 
-- (id)startTimeFromUploadFileName:(id)a3
+- (id)startTimeFromUploadFileName:(id)name
 {
-  v3 = [a3 componentsSeparatedByString:@"_"];
+  v3 = [name componentsSeparatedByString:@"_"];
   if ([v3 count] == 2 && (objc_msgSend(v3, "objectAtIndexedSubscript:", 0), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", @"taggedLocUpload"), v4, v5))
   {
     v6 = objc_alloc_init(NSNumberFormatter);
@@ -171,18 +171,18 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)uploadRequest:(id)a3
+- (BOOL)uploadRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = GEOGetURL();
   if (v5)
   {
-    v6 = [(MCTaggedLocationCollector *)self buildUploadFileName];
-    v7 = [(MCTaggedLocationCollector *)self geocorrectiondUploadDir];
-    if (v7)
+    buildUploadFileName = [(MCTaggedLocationCollector *)self buildUploadFileName];
+    geocorrectiondUploadDir = [(MCTaggedLocationCollector *)self geocorrectiondUploadDir];
+    if (geocorrectiondUploadDir)
     {
-      v8 = [(MCTaggedLocationCollector *)self geocorrectiondUploadDir];
-      v9 = [v8 stringByAppendingPathComponent:v6];
+      geocorrectiondUploadDir2 = [(MCTaggedLocationCollector *)self geocorrectiondUploadDir];
+      v9 = [geocorrectiondUploadDir2 stringByAppendingPathComponent:buildUploadFileName];
 
       v21[1] = 0;
       v10 = GEOCreateBodyDataForProtocolBufferRequest();
@@ -197,11 +197,11 @@ LABEL_8:
         {
           v15 = [NSMutableURLRequest requestWithURL:v5];
           [v15 setHTTPMethod:@"POST"];
-          v20 = [(MCTaggedLocationCollector *)self collectorUploadSession];
+          collectorUploadSession = [(MCTaggedLocationCollector *)self collectorUploadSession];
           v16 = [NSURL fileURLWithPath:v9];
-          v17 = [v20 uploadTaskWithRequest:v15 fromFile:v16];
+          v17 = [collectorUploadSession uploadTaskWithRequest:v15 fromFile:v16];
 
-          [v17 setTaskDescription:v6];
+          [v17 setTaskDescription:buildUploadFileName];
           GEOConfigGetDouble();
           [v17 set_timeoutIntervalForResource:?];
           [v17 resume];
@@ -258,20 +258,20 @@ LABEL_8:
   return v18;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a5;
-  v8 = [a4 taskDescription];
+  errorCopy = error;
+  taskDescription = [task taskDescription];
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000AF5C;
   block[3] = &unk_10001D848;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = taskDescription;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = taskDescription;
   dispatch_async(workQueue, block);
 }
 

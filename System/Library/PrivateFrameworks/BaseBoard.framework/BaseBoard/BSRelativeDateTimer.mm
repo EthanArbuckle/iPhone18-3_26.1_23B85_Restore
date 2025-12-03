@@ -3,34 +3,34 @@
 - (BSRelativeDateTimer)init;
 - (BSRelativeDateTimerDelegate)delegate;
 - (double)nextFireInterval;
-- (id)_computeDifferenceCurrentAndNextFireInfoForDate:(uint64_t *)a3 newTimerResolution:(uint64_t *)a4 currentResolution:(uint64_t *)a5 currentValue:(uint64_t *)a6 comparedToNow:;
+- (id)_computeDifferenceCurrentAndNextFireInfoForDate:(uint64_t *)date newTimerResolution:(uint64_t *)resolution currentResolution:(uint64_t *)currentResolution currentValue:(uint64_t *)value comparedToNow:;
 - (id)date;
-- (id)nextFireAfterDate:(id)a3;
+- (id)nextFireAfterDate:(id)date;
 - (void)_fireAndUpdateTimerIfNecessary;
-- (void)_fireForLocaleEvent:(id)a3;
+- (void)_fireForLocaleEvent:(id)event;
 - (void)_invalidateTimer;
 - (void)dealloc;
 - (void)fireAndSchedule;
-- (void)powerMonitorSystemDidWakeFromSleep:(id)a3;
-- (void)setDate:(id)a3;
+- (void)powerMonitorSystemDidWakeFromSleep:(id)sleep;
+- (void)setDate:(id)date;
 @end
 
 @implementation BSRelativeDateTimer
 
 - (void)_invalidateTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 16);
+    v2 = *(self + 16);
     if (v2)
     {
       v3 = v2;
       objc_opt_self();
       [qword_1ED44FE78 removeObject:v3];
 
-      [*(a1 + 16) invalidate];
-      v4 = *(a1 + 16);
-      *(a1 + 16) = 0;
+      [*(self + 16) invalidate];
+      v4 = *(self + 16);
+      *(self + 16) = 0;
     }
   }
 }
@@ -48,14 +48,14 @@
     v2->_gregorian = v4;
 
     v6 = v2->_gregorian;
-    v7 = [MEMORY[0x1E695DF58] currentLocale];
-    [(NSCalendar *)v6 setLocale:v7];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [(NSCalendar *)v6 setLocale:currentLocale];
 
     v8 = +[BSPowerMonitor sharedInstance];
     [v8 addObserver:v2];
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__fireForLocaleEvent_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__fireForLocaleEvent_ name:*MEMORY[0x1E695D8F0] object:0];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _BSHandleSignificantTimeChange_0, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -68,8 +68,8 @@
 {
   v30 = 0;
   v31 = 0;
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [(BSRelativeDateTimer *)self _computeDifferenceCurrentAndNextFireInfoForDate:v3 newTimerResolution:&v31 currentResolution:&self->_currResolution currentValue:&self->_currValue comparedToNow:&v30];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [(BSRelativeDateTimer *)self _computeDifferenceCurrentAndNextFireInfoForDate:date newTimerResolution:&v31 currentResolution:&self->_currResolution currentValue:&self->_currValue comparedToNow:&v30];
 
   [(NSTimer *)self->_timer timeInterval];
   if (v5 != 1.0 || self->_currResolution)
@@ -82,37 +82,37 @@
     v10 = 1.0;
     if (v7 && v6)
     {
-      v11 = [v8 hour];
-      if (v11 >= 0)
+      hour = [v8 hour];
+      if (hour >= 0)
       {
-        v12 = v11;
+        v12 = hour;
       }
 
       else
       {
-        v12 = -v11;
+        v12 = -hour;
       }
 
-      v13 = [v9 minute];
-      if (v13 >= 0)
+      minute = [v9 minute];
+      if (minute >= 0)
       {
-        v14 = v13;
-      }
-
-      else
-      {
-        v14 = -v13;
-      }
-
-      v15 = [v9 second];
-      if (v15 >= 0)
-      {
-        v16 = v15;
+        v14 = minute;
       }
 
       else
       {
-        v16 = -v15;
+        v14 = -minute;
+      }
+
+      second = [v9 second];
+      if (second >= 0)
+      {
+        v16 = second;
+      }
+
+      else
+      {
+        v16 = -second;
       }
 
       switch(v7)
@@ -248,8 +248,8 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"SignificantTimeChangeNotification", 0);
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5 = +[BSPowerMonitor sharedInstance];
   [v5 removeObserver:self];
@@ -261,11 +261,11 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
   [(BSRelativeDateTimer *)&v6 dealloc];
 }
 
-- (void)_fireForLocaleEvent:(id)a3
+- (void)_fireForLocaleEvent:(id)event
 {
   gregorian = self->_gregorian;
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  [(NSCalendar *)gregorian setLocale:v5];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [(NSCalendar *)gregorian setLocale:currentLocale];
 
   if (self->_date)
   {
@@ -274,12 +274,12 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   date = self->_date;
-  v13 = v4;
-  if (date != v4)
+  v13 = dateCopy;
+  if (date != dateCopy)
   {
     self->_date = 0;
 
@@ -324,11 +324,11 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
   return result;
 }
 
-- (id)_computeDifferenceCurrentAndNextFireInfoForDate:(uint64_t *)a3 newTimerResolution:(uint64_t *)a4 currentResolution:(uint64_t *)a5 currentValue:(uint64_t *)a6 comparedToNow:
+- (id)_computeDifferenceCurrentAndNextFireInfoForDate:(uint64_t *)date newTimerResolution:(uint64_t *)resolution currentResolution:(uint64_t *)currentResolution currentValue:(uint64_t *)value comparedToNow:
 {
   v11 = a2;
   v52 = v11;
-  if (!a1)
+  if (!self)
   {
     v17 = 0;
     goto LABEL_39;
@@ -339,18 +339,18 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
   v14.f64[0] = NAN;
   v14.f64[1] = NAN;
   v15 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{*v12.i64 - *vbslq_s8(vnegq_f64(v14), v13, v12).i64}];
-  v51 = [*(a1 + 24) compare:v15];
+  v51 = [*(self + 24) compare:v15];
   v16 = v15;
-  v17 = [*(a1 + 8) components:240 fromDate:v16 toDate:*(a1 + 24) options:0];
+  v17 = [*(self + 8) components:240 fromDate:v16 toDate:*(self + 24) options:0];
 
   v18 = [v17 day];
-  v19 = [v17 hour];
-  v20 = [v17 minute];
-  v21 = [v17 second];
+  hour = [v17 hour];
+  minute = [v17 minute];
+  second = [v17 second];
   if (v18)
   {
     v22 = 2;
-    if (v19 <= 0 && v20 <= 0 && v21 <= 0)
+    if (hour <= 0 && minute <= 0 && second <= 0)
     {
       v25 = v18;
     }
@@ -360,7 +360,7 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v25 = v18 + 1;
     }
 
-    if (v18 == 1 && v19 == 0 && v20 == 0 && v21 == 0)
+    if (v18 == 1 && hour == 0 && minute == 0 && second == 0)
     {
       v25 = 1;
     }
@@ -391,18 +391,18 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v31 = v18;
     }
 
-    if (!a3)
+    if (!date)
     {
       goto LABEL_32;
     }
   }
 
-  else if (v19)
+  else if (hour)
   {
     v30 = 2;
     v33 = 2;
     v34 = 2;
-    if (v19 == 23)
+    if (hour == 23)
     {
       v35 = 3;
     }
@@ -413,12 +413,12 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
     }
 
     v36 = 1;
-    if (v19 != 23)
+    if (hour != 23)
     {
-      v36 = v19 + 1;
+      v36 = hour + 1;
     }
 
-    v37 = v20 <= 0 && v21 < 1;
+    v37 = minute <= 0 && second < 1;
     if (v37)
     {
       v34 = 2;
@@ -431,7 +431,7 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
 
     if (v37)
     {
-      v38 = v19;
+      v38 = hour;
     }
 
     else
@@ -439,7 +439,7 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v38 = v36;
     }
 
-    v40 = v19 == 1 && v20 == 0 && v21 == 0;
+    v40 = hour == 1 && minute == 0 && second == 0;
     if (v40)
     {
       v34 = 1;
@@ -460,7 +460,7 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v41 = v38;
     }
 
-    if (v19 >= 1)
+    if (hour >= 1)
     {
       v29 = v34;
     }
@@ -470,7 +470,7 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v29 = 2;
     }
 
-    if (v19 >= 1)
+    if (hour >= 1)
     {
       v31 = v41;
     }
@@ -478,10 +478,10 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
     else
     {
       v30 = 2;
-      v31 = v19;
+      v31 = hour;
     }
 
-    if (!a3)
+    if (!date)
     {
       goto LABEL_32;
     }
@@ -493,7 +493,7 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
     v43 = 1;
     v44 = 1;
     v45 = 1;
-    if (v20 == 59)
+    if (minute == 59)
     {
       v46 = 2;
     }
@@ -503,17 +503,17 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v46 = 1;
     }
 
-    if (v20 == 59)
+    if (minute == 59)
     {
       v47 = 1;
     }
 
     else
     {
-      v47 = v20 + 1;
+      v47 = minute + 1;
     }
 
-    if (v21 >= 1)
+    if (second >= 1)
     {
       v44 = v46;
       v48 = v47;
@@ -522,10 +522,10 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
     else
     {
       v45 = 1;
-      v48 = v20;
+      v48 = minute;
     }
 
-    if (v20 == 1 && v21 == 0)
+    if (minute == 1 && second == 0)
     {
       v45 = 0;
       v44 = 1;
@@ -536,7 +536,7 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v43 = v48;
     }
 
-    if (v20 >= 1)
+    if (minute >= 1)
     {
       v42 = v44;
       v50 = v43;
@@ -545,10 +545,10 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
     else
     {
       v45 = 1;
-      v50 = v20;
+      v50 = minute;
     }
 
-    if (v20)
+    if (minute)
     {
       v29 = v45;
     }
@@ -558,7 +558,7 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v29 = 0;
     }
 
-    if (v20)
+    if (minute)
     {
       v30 = v42;
     }
@@ -568,37 +568,37 @@ uint64_t __45__BSRelativeDateTimer_addTimerToMainRunLoop___block_invoke()
       v30 = 0;
     }
 
-    if (v20)
+    if (minute)
     {
       v31 = v50;
     }
 
     else
     {
-      v31 = v21;
+      v31 = second;
     }
 
-    if (!a3)
+    if (!date)
     {
       goto LABEL_32;
     }
   }
 
-  *a3 = v29;
+  *date = v29;
 LABEL_32:
-  if (a4)
+  if (resolution)
   {
-    *a4 = v30;
+    *resolution = v30;
   }
 
-  if (a5)
+  if (currentResolution)
   {
-    *a5 = v31;
+    *currentResolution = v31;
   }
 
-  if (a6)
+  if (value)
   {
-    *a6 = v51;
+    *value = v51;
   }
 
 LABEL_39:
@@ -606,13 +606,13 @@ LABEL_39:
   return v17;
 }
 
-- (id)nextFireAfterDate:(id)a3
+- (id)nextFireAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
+  dateCopy = date;
+  v5 = dateCopy;
   if (self)
   {
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     *v7.i64 = *v6.i64 - trunc(*v6.i64);
     v8.f64[0] = NAN;
     v8.f64[1] = NAN;
@@ -675,7 +675,7 @@ LABEL_39:
   }
 }
 
-- (void)powerMonitorSystemDidWakeFromSleep:(id)a3
+- (void)powerMonitorSystemDidWakeFromSleep:(id)sleep
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x1E69E9820];

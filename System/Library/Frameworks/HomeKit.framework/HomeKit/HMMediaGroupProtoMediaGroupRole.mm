@@ -1,28 +1,28 @@
 @interface HMMediaGroupProtoMediaGroupRole
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRole:(id)a3;
+- (int)StringAsRole:(id)role;
 - (int)role;
 - (unint64_t)hash;
 - (void)clearOneofValuesForRole;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setMediaSystem:(id)a3;
-- (void)setSurroundSystem:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setMediaSystem:(id)system;
+- (void)setSurroundSystem:(id)system;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMMediaGroupProtoMediaGroupRole
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[8])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[8])
   {
-    self->_role = v4[4];
+    self->_role = fromCopy[4];
     *&self->_has |= 1u;
   }
 
@@ -85,24 +85,24 @@ LABEL_9:
   return v4 ^ [(HMMediaGroupProtoSurroundSystemRoles *)self->_surroundSystem hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_role != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_role != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -110,13 +110,13 @@ LABEL_11:
   }
 
   mediaSystem = self->_mediaSystem;
-  if (mediaSystem | *(v4 + 1) && ![(HMMediaGroupProtoMediaSystemRoles *)mediaSystem isEqual:?])
+  if (mediaSystem | *(equalCopy + 1) && ![(HMMediaGroupProtoMediaSystemRoles *)mediaSystem isEqual:?])
   {
     goto LABEL_11;
   }
 
   surroundSystem = self->_surroundSystem;
-  if (surroundSystem | *(v4 + 3))
+  if (surroundSystem | *(equalCopy + 3))
   {
     v8 = [(HMMediaGroupProtoSurroundSystemRoles *)surroundSystem isEqual:?];
   }
@@ -131,9 +131,9 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -141,72 +141,72 @@ LABEL_12:
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(HMMediaGroupProtoMediaSystemRoles *)self->_mediaSystem copyWithZone:a3];
+  v7 = [(HMMediaGroupProtoMediaSystemRoles *)self->_mediaSystem copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
-  v9 = [(HMMediaGroupProtoSurroundSystemRoles *)self->_surroundSystem copyWithZone:a3];
+  v9 = [(HMMediaGroupProtoSurroundSystemRoles *)self->_surroundSystem copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_role;
-    *(v4 + 32) |= 1u;
+    toCopy[4] = self->_role;
+    *(toCopy + 32) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_mediaSystem)
   {
-    [v4 setMediaSystem:?];
-    v4 = v5;
+    [toCopy setMediaSystem:?];
+    toCopy = v5;
   }
 
   if (self->_surroundSystem)
   {
     [v5 setSurroundSystem:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_mediaSystem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_surroundSystem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   mediaSystem = self->_mediaSystem;
   if (mediaSystem)
   {
-    v5 = [(HMMediaGroupProtoMediaSystemRoles *)mediaSystem dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"mediaSystem"];
+    dictionaryRepresentation = [(HMMediaGroupProtoMediaSystemRoles *)mediaSystem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"mediaSystem"];
   }
 
   surroundSystem = self->_surroundSystem;
   if (surroundSystem)
   {
-    v7 = [(HMMediaGroupProtoSurroundSystemRoles *)surroundSystem dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"surroundSystem"];
+    dictionaryRepresentation2 = [(HMMediaGroupProtoSurroundSystemRoles *)surroundSystem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"surroundSystem"];
   }
 
   if (*&self->_has)
@@ -222,10 +222,10 @@ LABEL_12:
       v9 = off_1E7546988[role];
     }
 
-    [v3 setObject:v9 forKey:@"role"];
+    [dictionary setObject:v9 forKey:@"role"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -234,8 +234,8 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = HMMediaGroupProtoMediaGroupRole;
   v4 = [(HMMediaGroupProtoMediaGroupRole *)&v8 description];
-  v5 = [(HMMediaGroupProtoMediaGroupRole *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMMediaGroupProtoMediaGroupRole *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -251,20 +251,20 @@ LABEL_12:
   self->_surroundSystem = 0;
 }
 
-- (int)StringAsRole:(id)a3
+- (int)StringAsRole:(id)role
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  roleCopy = role;
+  if ([roleCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"mediaSystem"])
+  else if ([roleCopy isEqualToString:@"mediaSystem"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"surroundSystem"])
+  else if ([roleCopy isEqualToString:@"surroundSystem"])
   {
     v4 = 2;
   }
@@ -290,24 +290,24 @@ LABEL_12:
   }
 }
 
-- (void)setSurroundSystem:(id)a3
+- (void)setSurroundSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   [(HMMediaGroupProtoMediaGroupRole *)self clearOneofValuesForRole];
   *&self->_has |= 1u;
   self->_role = 2;
   surroundSystem = self->_surroundSystem;
-  self->_surroundSystem = v4;
+  self->_surroundSystem = systemCopy;
 }
 
-- (void)setMediaSystem:(id)a3
+- (void)setMediaSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   [(HMMediaGroupProtoMediaGroupRole *)self clearOneofValuesForRole];
   *&self->_has |= 1u;
   self->_role = 1;
   mediaSystem = self->_mediaSystem;
-  self->_mediaSystem = v4;
+  self->_mediaSystem = systemCopy;
 }
 
 @end

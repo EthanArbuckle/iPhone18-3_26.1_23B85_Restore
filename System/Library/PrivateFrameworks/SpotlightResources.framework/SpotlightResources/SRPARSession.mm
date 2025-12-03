@@ -1,5 +1,5 @@
 @interface SRPARSession
-+ (id)spotlightResourcesPARSessionForClient:(id)a3 flags:(unsigned int)a4;
++ (id)spotlightResourcesPARSessionForClient:(id)client flags:(unsigned int)flags;
 + (id)spotlightResourcesPARSessionMail;
 + (id)spotlightResourcesPARSessionSpotlight;
 @end
@@ -12,8 +12,8 @@
   if (!sSpotlightPARSession)
   {
     v3 = [MEMORY[0x1E696AAE8] bundleWithPath:@"/System/Library/PrivateFrameworks/Search.framework"];
-    v4 = [v3 infoDictionary];
-    v5 = [v4 objectForKeyedSubscript:@"CFBundleVersion"];
+    infoDictionary = [v3 infoDictionary];
+    v5 = [infoDictionary objectForKeyedSubscript:@"CFBundleVersion"];
 
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Spotlight/%@", v5];
     v7 = [objc_alloc(MEMORY[0x1E6998678]) initWithId:@"com.apple.spotlight" userAgent:v6 factory:0];
@@ -43,10 +43,10 @@
   return v2;
 }
 
-+ (id)spotlightResourcesPARSessionForClient:(id)a3 flags:(unsigned int)a4
++ (id)spotlightResourcesPARSessionForClient:(id)client flags:(unsigned int)flags
 {
-  v5 = [a3 isEqualToString:@"Mail"];
-  if (a4 == 4 || v5)
+  v5 = [client isEqualToString:@"Mail"];
+  if (flags == 4 || v5)
   {
     v6 = +[SRPARSession spotlightResourcesPARSessionMail];
   }

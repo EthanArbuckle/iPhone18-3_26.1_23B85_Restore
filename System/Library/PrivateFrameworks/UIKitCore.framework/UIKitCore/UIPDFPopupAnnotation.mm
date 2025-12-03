@@ -2,16 +2,16 @@
 - (CGRect)adjustedBounds;
 - (CGRect)bounds;
 - (UIPDFPopupAnnotation)init;
-- (UIPDFPopupAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)a3;
+- (UIPDFPopupAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary;
 @end
 
 @implementation UIPDFPopupAnnotation
 
-- (UIPDFPopupAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)a3
+- (UIPDFPopupAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary
 {
   v5.receiver = self;
   v5.super_class = UIPDFPopupAnnotation;
-  result = [(UIPDFAnnotation *)&v5 initWithAnnotationDictionary:a3];
+  result = [(UIPDFAnnotation *)&v5 initWithAnnotationDictionary:dictionary];
   if (result)
   {
     v4 = *(MEMORY[0x1E695F050] + 16);

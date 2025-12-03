@@ -1,10 +1,10 @@
 @interface CXCallDirectoryNSExtensionManager
-- (id)installedExtensionsWithError:(id *)a3;
+- (id)installedExtensionsWithError:(id *)error;
 @end
 
 @implementation CXCallDirectoryNSExtensionManager
 
-- (id)installedExtensionsWithError:(id *)a3
+- (id)installedExtensionsWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -28,9 +28,9 @@
   v9 = v5;
   [(CXCallDirectoryNSExtensionManager *)self extensionsWithCompletionHandler:v8];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v6 = v19[5];

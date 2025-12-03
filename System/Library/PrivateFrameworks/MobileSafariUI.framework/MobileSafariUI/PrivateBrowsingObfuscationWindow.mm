@@ -1,13 +1,13 @@
 @interface PrivateBrowsingObfuscationWindow
-+ (id)showPrivateBrowsingObfuscationWindowForApplicationWindow:(id)a3;
++ (id)showPrivateBrowsingObfuscationWindowForApplicationWindow:(id)window;
 @end
 
 @implementation PrivateBrowsingObfuscationWindow
 
-+ (id)showPrivateBrowsingObfuscationWindowForApplicationWindow:(id)a3
++ (id)showPrivateBrowsingObfuscationWindowForApplicationWindow:(id)window
 {
   v3 = MEMORY[0x277D75AC8];
-  v4 = a3;
+  windowCopy = window;
   if (_SFDeviceIsPad())
   {
     v5 = @"LaunchPrivateBrowsing-iPad";
@@ -19,12 +19,12 @@
   }
 
   v6 = [v3 storyboardWithName:v5 bundle:0];
-  v7 = [v6 instantiateInitialViewController];
+  instantiateInitialViewController = [v6 instantiateInitialViewController];
   v8 = [PrivateBrowsingObfuscationWindow alloc];
-  v9 = [v4 windowScene];
+  windowScene = [windowCopy windowScene];
 
-  v10 = [(PrivateBrowsingObfuscationWindow *)v8 initWithWindowScene:v9];
-  [(PrivateBrowsingObfuscationWindow *)v10 setRootViewController:v7];
+  v10 = [(PrivateBrowsingObfuscationWindow *)v8 initWithWindowScene:windowScene];
+  [(PrivateBrowsingObfuscationWindow *)v10 setRootViewController:instantiateInitialViewController];
   [(PrivateBrowsingObfuscationWindow *)v10 setWindowLevel:*MEMORY[0x277D76F20] + -1.0];
   [(PrivateBrowsingObfuscationWindow *)v10 makeKeyAndVisible];
 

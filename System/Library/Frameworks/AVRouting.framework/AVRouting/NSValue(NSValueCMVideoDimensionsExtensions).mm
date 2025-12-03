@@ -7,7 +7,7 @@
 - (uint64_t)CMVideoDimensionsValue
 {
   v2 = 0;
-  [a1 getValue:&v2];
+  [self getValue:&v2];
   return v2;
 }
 

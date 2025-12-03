@@ -1,26 +1,26 @@
 @interface REMLEntropyMetric
-- (REMLEntropyMetric)initWithName:(id)a3 featureName:(id)a4;
-- (double)getDoubleFromFeatureValue:(id)a3;
+- (REMLEntropyMetric)initWithName:(id)name featureName:(id)featureName;
+- (double)getDoubleFromFeatureValue:(id)value;
 - (id)meanNormalizedEntropy;
 - (void)reset;
-- (void)updateMetricsFromFeatures:(id)a3 prediction:(id)a4 truth:(id)a5;
+- (void)updateMetricsFromFeatures:(id)features prediction:(id)prediction truth:(id)truth;
 @end
 
 @implementation REMLEntropyMetric
 
-- (REMLEntropyMetric)initWithName:(id)a3 featureName:(id)a4
+- (REMLEntropyMetric)initWithName:(id)name featureName:(id)featureName
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  featureNameCopy = featureName;
   v17.receiver = self;
   v17.super_class = REMLEntropyMetric;
   v9 = [(REMLEntropyMetric *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metricName, a3);
-    objc_storeStrong(&v10->_predictionFeatureName, a4);
-    objc_storeStrong(&v10->_truthFeatureName, a4);
+    objc_storeStrong(&v9->_metricName, name);
+    objc_storeStrong(&v10->_predictionFeatureName, featureName);
+    objc_storeStrong(&v10->_truthFeatureName, featureName);
     v10->_arrayFeatureIndex = 0;
     v10->_calibrationCurveNumBuckets = 10;
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:10];
@@ -68,15 +68,15 @@
   return [MEMORY[0x277CCABB0] numberWithDouble:v3];
 }
 
-- (double)getDoubleFromFeatureValue:(id)a3
+- (double)getDoubleFromFeatureValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
+  valueCopy = value;
+  v5 = valueCopy;
   v6 = 0.0;
-  if (v4)
+  if (valueCopy)
   {
-    v7 = [v4 type];
-    switch(v7)
+    type = [valueCopy type];
+    switch(type)
     {
       case 1:
         if ([v5 int64Value])
@@ -95,8 +95,8 @@
         v6 = v11;
         break;
       case 5:
-        v8 = [v5 multiArrayValue];
-        v9 = [v8 objectAtIndexedSubscript:self->_arrayFeatureIndex];
+        multiArrayValue = [v5 multiArrayValue];
+        v9 = [multiArrayValue objectAtIndexedSubscript:self->_arrayFeatureIndex];
         [v9 doubleValue];
         v6 = v10;
 
@@ -107,13 +107,13 @@
   return v6;
 }
 
-- (void)updateMetricsFromFeatures:(id)a3 prediction:(id)a4 truth:(id)a5
+- (void)updateMetricsFromFeatures:(id)features prediction:(id)prediction truth:(id)truth
 {
-  v23 = a4;
-  v7 = a5;
+  predictionCopy = prediction;
+  truthCopy = truth;
   ++self->_numExamples;
-  v8 = [v23 featureValueForName:self->_predictionFeatureName];
-  v9 = [v7 featureValueForName:self->_truthFeatureName];
+  v8 = [predictionCopy featureValueForName:self->_predictionFeatureName];
+  v9 = [truthCopy featureValueForName:self->_truthFeatureName];
   [(REMLEntropyMetric *)self getDoubleFromFeatureValue:v8];
   __x = v10;
   [(REMLEntropyMetric *)self getDoubleFromFeatureValue:v9];

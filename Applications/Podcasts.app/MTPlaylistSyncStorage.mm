@@ -3,9 +3,9 @@
 - (NSString)playlistSyncVersion;
 - (NSString)podcastsDomainVersion;
 - (id)importContext;
-- (void)setPlaylistSyncDirtyFlag:(BOOL)a3;
-- (void)setPlaylistSyncVersion:(id)a3;
-- (void)setPodcastsDomainVersion:(id)a3;
+- (void)setPlaylistSyncDirtyFlag:(BOOL)flag;
+- (void)setPlaylistSyncVersion:(id)version;
+- (void)setPodcastsDomainVersion:(id)version;
 @end
 
 @implementation MTPlaylistSyncStorage
@@ -13,54 +13,54 @@
 - (NSString)playlistSyncVersion
 {
   v2 = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncController];
-  v3 = [v2 playlistSyncVersion];
+  playlistSyncVersion = [v2 playlistSyncVersion];
 
-  return v3;
+  return playlistSyncVersion;
 }
 
-- (void)setPlaylistSyncVersion:(id)a3
+- (void)setPlaylistSyncVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncController];
-  [v4 setPlaylistSyncVersion:v3];
+  [v4 setPlaylistSyncVersion:versionCopy];
 }
 
 - (NSString)podcastsDomainVersion
 {
   v2 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v3 = [v2 podcastsDomainVersion];
+  podcastsDomainVersion = [v2 podcastsDomainVersion];
 
-  return v3;
+  return podcastsDomainVersion;
 }
 
-- (void)setPodcastsDomainVersion:(id)a3
+- (void)setPodcastsDomainVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v4 setPodcastsDomainVersion:v3];
+  [v4 setPodcastsDomainVersion:versionCopy];
 }
 
 - (BOOL)playlistSyncDirtyFlag
 {
   v2 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  v3 = [v2 isPlaylistSyncDirty];
+  isPlaylistSyncDirty = [v2 isPlaylistSyncDirty];
 
-  return v3;
+  return isPlaylistSyncDirty;
 }
 
-- (void)setPlaylistSyncDirtyFlag:(BOOL)a3
+- (void)setPlaylistSyncDirtyFlag:(BOOL)flag
 {
-  v3 = a3;
+  flagCopy = flag;
   v4 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
-  [v4 setIsPlaylistSyncDirty:v3];
+  [v4 setIsPlaylistSyncDirty:flagCopy];
 }
 
 - (id)importContext
 {
   v2 = +[MTDB sharedInstance];
-  v3 = [v2 importContext];
+  importContext = [v2 importContext];
 
-  return v3;
+  return importContext;
 }
 
 @end

@@ -1,67 +1,67 @@
 @interface SFStartPageBackgroundImageModel
-- (BOOL)isEqual:(id)a3;
-- (SFStartPageBackgroundImageModel)initWithIndex:(int64_t)a3 inDataSource:(id)a4 selected:(BOOL)a5;
-- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)a3;
-- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)a3 fileName:(id)a4 selected:(BOOL)a5;
-- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)a3 symbolName:(id)a4 profileIdentifier:(id)a5 selected:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (SFStartPageBackgroundImageModel)initWithIndex:(int64_t)index inDataSource:(id)source selected:(BOOL)selected;
+- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)provider;
+- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)provider fileName:(id)name selected:(BOOL)selected;
+- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)provider symbolName:(id)name profileIdentifier:(id)identifier selected:(BOOL)selected;
 - (id)description;
 - (unint64_t)hash;
-- (void)getThumbnailImageWithCompletionHandler:(id)a3;
+- (void)getThumbnailImageWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFStartPageBackgroundImageModel
 
-- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)a3
+- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = SFStartPageBackgroundImageModel;
   v6 = [(SFStartPageBackgroundImageModel *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_itemProvider, a3);
-    v7->_selected = v5 != 0;
+    objc_storeStrong(&v6->_itemProvider, provider);
+    v7->_selected = providerCopy != 0;
     v8 = v7;
   }
 
   return v7;
 }
 
-- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)a3 symbolName:(id)a4 profileIdentifier:(id)a5 selected:(BOOL)a6
+- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)provider symbolName:(id)name profileIdentifier:(id)identifier selected:(BOOL)selected
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  providerCopy = provider;
+  nameCopy = name;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = SFStartPageBackgroundImageModel;
   v14 = [(SFStartPageBackgroundImageModel *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_itemProvider, a3);
-    v15->_selected = a6;
-    objc_storeStrong(&v15->_symbolName, a4);
-    objc_storeStrong(&v15->_profileIdentifier, a5);
+    objc_storeStrong(&v14->_itemProvider, provider);
+    v15->_selected = selected;
+    objc_storeStrong(&v15->_symbolName, name);
+    objc_storeStrong(&v15->_profileIdentifier, identifier);
     v16 = v15;
   }
 
   return v15;
 }
 
-- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)a3 fileName:(id)a4 selected:(BOOL)a5
+- (SFStartPageBackgroundImageModel)initWithItemProvider:(id)provider fileName:(id)name selected:(BOOL)selected
 {
-  v9 = a3;
-  v10 = a4;
+  providerCopy = provider;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SFStartPageBackgroundImageModel;
   v11 = [(SFStartPageBackgroundImageModel *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_itemProvider, a3);
-    v12->_selected = a5;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_itemProvider, provider);
+    v12->_selected = selected;
+    v13 = [nameCopy copy];
     mobileAssetFileName = v12->_mobileAssetFileName;
     v12->_mobileAssetFileName = v13;
 
@@ -71,18 +71,18 @@
   return v12;
 }
 
-- (SFStartPageBackgroundImageModel)initWithIndex:(int64_t)a3 inDataSource:(id)a4 selected:(BOOL)a5
+- (SFStartPageBackgroundImageModel)initWithIndex:(int64_t)index inDataSource:(id)source selected:(BOOL)selected
 {
-  v9 = a4;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = SFStartPageBackgroundImageModel;
   v10 = [(SFStartPageBackgroundImageModel *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_dataSource, a4);
-    v11->_index = a3;
-    v11->_selected = a5;
+    objc_storeStrong(&v10->_dataSource, source);
+    v11->_index = index;
+    v11->_selected = selected;
     v12 = v11;
   }
 
@@ -134,9 +134,9 @@
   return v4;
 }
 
-- (void)getThumbnailImageWithCompletionHandler:(id)a3
+- (void)getThumbnailImageWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_itemProvider;
   v6 = v5;
   if (v5)
@@ -146,7 +146,7 @@
     v13[2] = __74__SFStartPageBackgroundImageModel_getThumbnailImageWithCompletionHandler___block_invoke;
     v13[3] = &unk_1E721D2D0;
     v14 = v5;
-    v15 = v4;
+    v15 = handlerCopy;
     [(NSItemProvider *)v14 loadPreviewImageWithOptions:0 completionHandler:v13];
 
     v7 = v14;
@@ -158,7 +158,7 @@
     if (!dataSource)
     {
       v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus"];
-      (*(v4 + 2))(v4, v10, 1);
+      (*(handlerCopy + 2))(handlerCopy, v10, 1);
 
       goto LABEL_6;
     }
@@ -168,7 +168,7 @@
     v11[1] = 3221225472;
     v11[2] = __74__SFStartPageBackgroundImageModel_getThumbnailImageWithCompletionHandler___block_invoke_5;
     v11[3] = &unk_1E721D2F8;
-    v12 = v4;
+    v12 = handlerCopy;
     [(WBSStartPageBackgroundImagesDataSource *)dataSource imageThumbnailWithItemIndex:index completion:v11];
     v7 = v12;
   }
@@ -236,13 +236,13 @@ void __74__SFStartPageBackgroundImageModel_getThumbnailImageWithCompletionHandle
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_dataSource == *(v5 + 1) && self->_index == *(v5 + 2) && self->_itemProvider == *(v5 + 3) && self->_selected == v5[32] && WBSIsEqual() && WBSIsEqual())
     {

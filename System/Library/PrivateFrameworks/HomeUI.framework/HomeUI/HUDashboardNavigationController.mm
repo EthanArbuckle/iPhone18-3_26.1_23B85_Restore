@@ -1,35 +1,35 @@
 @interface HUDashboardNavigationController
-- (BOOL)_shouldDisableAnimationForViewController:(id)a3;
-- (BOOL)navigationBar:(id)a3 shouldPushItem:(id)a4;
+- (BOOL)_shouldDisableAnimationForViewController:(id)controller;
+- (BOOL)navigationBar:(id)bar shouldPushItem:(id)item;
 - (BOOL)popToBottomNavigationControllerWithCustomAnimation;
 - (BOOL)supportsEditing;
 - (HUDashboardFilterBarController)filterBarController;
-- (HUDashboardNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
+- (HUDashboardNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
 - (HUDashboardNavigator)dashboardNavigator;
 - (NSString)editActionTitle;
 - (NSString)editActionTitleLocalizationKey;
 - (id)_editActionDelegate;
-- (id)_loadWallpaperForViewController:(uint64_t)a1;
+- (id)_loadWallpaperForViewController:(uint64_t)controller;
 - (id)childViewControllerForStatusBarStyle;
 - (id)splitViewController;
 - (int64_t)preferredStatusBarStyle;
-- (void)dashboardFilterBarController:(id)a3 didUpdatePreferredHeight:(double)a4;
-- (void)dashboardFilterBarControllerDidLayoutSubviews:(id)a3;
+- (void)dashboardFilterBarController:(id)controller didUpdatePreferredHeight:(double)height;
+- (void)dashboardFilterBarControllerDidLayoutSubviews:(id)subviews;
 - (void)endEditing;
-- (void)navigationBar:(id)a3 didChangeBackgroundVisibility:(BOOL)a4;
-- (void)navigationBar:(id)a3 didPushItem:(id)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)sendContextMenuMetricsWithTitleLocalizationKey:(id)a3;
+- (void)navigationBar:(id)bar didChangeBackgroundVisibility:(BOOL)visibility;
+- (void)navigationBar:(id)bar didPushItem:(id)item;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)sendContextMenuMetricsWithTitleLocalizationKey:(id)key;
 - (void)startEditing;
 @end
 
 @implementation HUDashboardNavigationController
 
-- (HUDashboardNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (HUDashboardNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7.receiver = self;
   v7.super_class = HUDashboardNavigationController;
-  v4 = [(HUDashboardNavigationController *)&v7 initWithNavigationBarClass:a3 toolbarClass:a4];
+  v4 = [(HUDashboardNavigationController *)&v7 initWithNavigationBarClass:class toolbarClass:toolbarClass];
   if (v4)
   {
     v5 = +[HUDashboardPresentationManager sharedManager];
@@ -55,35 +55,35 @@
   return filterBarController;
 }
 
-- (BOOL)navigationBar:(id)a3 shouldPushItem:(id)a4
+- (BOOL)navigationBar:(id)bar shouldPushItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   v6 = +[HUDashboardPresentationManager sharedManager];
-  [v6 navigationController:self willPushItem:v5];
+  [v6 navigationController:self willPushItem:itemCopy];
 
   return 1;
 }
 
-- (void)navigationBar:(id)a3 didPushItem:(id)a4
+- (void)navigationBar:(id)bar didPushItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   v6 = +[HUDashboardPresentationManager sharedManager];
-  [v6 navigationController:self didPushItem:v5];
+  [v6 navigationController:self didPushItem:itemCopy];
 }
 
-- (void)dashboardFilterBarController:(id)a3 didUpdatePreferredHeight:(double)a4
+- (void)dashboardFilterBarController:(id)controller didUpdatePreferredHeight:(double)height
 {
   v6 = +[HUDashboardPresentationManager sharedManager];
-  [v6 navigationController:self didUpdatePreferredPaletteHeight:a4];
+  [v6 navigationController:self didUpdatePreferredPaletteHeight:height];
 }
 
-- (void)dashboardFilterBarControllerDidLayoutSubviews:(id)a3
+- (void)dashboardFilterBarControllerDidLayoutSubviews:(id)subviews
 {
   objc_opt_class();
-  v4 = [(HUDashboardNavigationController *)self topViewController];
+  topViewController = [(HUDashboardNavigationController *)self topViewController];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = topViewController;
   }
 
   else
@@ -98,28 +98,28 @@
 
 - (id)childViewControllerForStatusBarStyle
 {
-  v3 = [(HUDashboardNavigationController *)self navigationBar];
+  navigationBar = [(HUDashboardNavigationController *)self navigationBar];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = 0;
+    topViewController = 0;
   }
 
   else
   {
-    v4 = [(HUDashboardNavigationController *)self topViewController];
+    topViewController = [(HUDashboardNavigationController *)self topViewController];
   }
 
-  return v4;
+  return topViewController;
 }
 
 - (int64_t)preferredStatusBarStyle
 {
   objc_opt_class();
-  v3 = [(HUDashboardNavigationController *)self navigationBar];
+  navigationBar = [(HUDashboardNavigationController *)self navigationBar];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = navigationBar;
   }
 
   else
@@ -129,40 +129,40 @@
 
   v5 = v4;
 
-  v6 = [v5 isBackgroundVisible];
-  return v6 ^ 1u;
+  isBackgroundVisible = [v5 isBackgroundVisible];
+  return isBackgroundVisible ^ 1u;
 }
 
-- (void)navigationBar:(id)a3 didChangeBackgroundVisibility:(BOOL)a4
+- (void)navigationBar:(id)bar didChangeBackgroundVisibility:(BOOL)visibility
 {
-  v5 = [objc_alloc(MEMORY[0x277D75A80]) initWithDefaultParameters];
-  [v5 setSkipFencing:1];
-  [(HUDashboardNavigationController *)self _setNeedsStatusBarAppearanceUpdateWithAnimationParameters:v5];
+  initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75A80]) initWithDefaultParameters];
+  [initWithDefaultParameters setSkipFencing:1];
+  [(HUDashboardNavigationController *)self _setNeedsStatusBarAppearanceUpdateWithAnimationParameters:initWithDefaultParameters];
 }
 
 - (HUDashboardNavigator)dashboardNavigator
 {
-  v3 = [(HUDashboardNavigationController *)self tabBarController];
+  tabBarController = [(HUDashboardNavigationController *)self tabBarController];
 
-  if (v3)
+  if (tabBarController)
   {
-    v4 = [(HUDashboardNavigationController *)self tabBarController];
+    tabBarController2 = [(HUDashboardNavigationController *)self tabBarController];
   }
 
   else
   {
-    v5 = [(HUDashboardNavigationController *)self splitViewController];
+    splitViewController = [(HUDashboardNavigationController *)self splitViewController];
 
-    if (!v5)
+    if (!splitViewController)
     {
       goto LABEL_10;
     }
 
-    v4 = [(HUDashboardNavigationController *)self splitViewController];
+    tabBarController2 = [(HUDashboardNavigationController *)self splitViewController];
   }
 
-  v6 = v4;
-  if ([v4 conformsToProtocol:&unk_282556F78])
+  v6 = tabBarController2;
+  if ([tabBarController2 conformsToProtocol:&unk_282556F78])
   {
     v7 = v6;
   }
@@ -176,24 +176,24 @@
 
   if (v8)
   {
-    v9 = [v8 dashboardNavigator];
+    dashboardNavigator = [v8 dashboardNavigator];
 
     goto LABEL_11;
   }
 
 LABEL_10:
-  v9 = 0;
+  dashboardNavigator = 0;
 LABEL_11:
 
-  return v9;
+  return dashboardNavigator;
 }
 
 - (id)_editActionDelegate
 {
-  v2 = [(HUDashboardNavigationController *)self topViewController];
-  if ([v2 conformsToProtocol:&unk_282557098])
+  topViewController = [(HUDashboardNavigationController *)self topViewController];
+  if ([topViewController conformsToProtocol:&unk_282557098])
   {
-    v3 = v2;
+    v3 = topViewController;
   }
 
   else
@@ -208,54 +208,54 @@ LABEL_11:
 
 - (NSString)editActionTitle
 {
-  v2 = [(HUDashboardNavigationController *)self _editActionDelegate];
-  v3 = [v2 editActionTitle];
+  _editActionDelegate = [(HUDashboardNavigationController *)self _editActionDelegate];
+  editActionTitle = [_editActionDelegate editActionTitle];
 
-  return v3;
+  return editActionTitle;
 }
 
 - (NSString)editActionTitleLocalizationKey
 {
-  v2 = [(HUDashboardNavigationController *)self _editActionDelegate];
-  v3 = [v2 editActionTitleLocalizationKey];
+  _editActionDelegate = [(HUDashboardNavigationController *)self _editActionDelegate];
+  editActionTitleLocalizationKey = [_editActionDelegate editActionTitleLocalizationKey];
 
-  return v3;
+  return editActionTitleLocalizationKey;
 }
 
 - (BOOL)supportsEditing
 {
-  v2 = [(HUDashboardNavigationController *)self _editActionDelegate];
-  v3 = [v2 supportsEditing];
+  _editActionDelegate = [(HUDashboardNavigationController *)self _editActionDelegate];
+  supportsEditing = [_editActionDelegate supportsEditing];
 
-  return v3;
+  return supportsEditing;
 }
 
 - (void)startEditing
 {
-  v3 = [(HUDashboardNavigationController *)self _editActionDelegate];
-  [v3 startEditing];
+  _editActionDelegate = [(HUDashboardNavigationController *)self _editActionDelegate];
+  [_editActionDelegate startEditing];
 
-  v4 = [(HUDashboardNavigationController *)self filterBarController];
-  [v4 setEditing:1 animated:1];
+  filterBarController = [(HUDashboardNavigationController *)self filterBarController];
+  [filterBarController setEditing:1 animated:1];
 }
 
 - (void)endEditing
 {
-  v3 = [(HUDashboardNavigationController *)self _editActionDelegate];
-  [v3 endEditing];
+  _editActionDelegate = [(HUDashboardNavigationController *)self _editActionDelegate];
+  [_editActionDelegate endEditing];
 
-  v4 = [(HUDashboardNavigationController *)self filterBarController];
-  [v4 setEditing:0 animated:1];
+  filterBarController = [(HUDashboardNavigationController *)self filterBarController];
+  [filterBarController setEditing:0 animated:1];
 }
 
-- (void)sendContextMenuMetricsWithTitleLocalizationKey:(id)a3
+- (void)sendContextMenuMetricsWithTitleLocalizationKey:(id)key
 {
-  v9 = a3;
+  keyCopy = key;
   objc_opt_class();
-  v4 = [(HUDashboardNavigationController *)self topViewController];
+  topViewController = [(HUDashboardNavigationController *)self topViewController];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = topViewController;
   }
 
   else
@@ -278,23 +278,23 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [v8 sendContextMenuMetricsWithTitleLocalizationKey:v9];
+    [v8 sendContextMenuMetricsWithTitleLocalizationKey:keyCopy];
   }
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(HUDashboardNavigationController *)self _shouldDisableAnimationForViewController:v6]&& v4)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if ([(HUDashboardNavigationController *)self _shouldDisableAnimationForViewController:controllerCopy]&& animatedCopy)
   {
-    v7 = [(HUDashboardNavigationController *)self _loadWallpaperForViewController:v6];
+    v7 = [(HUDashboardNavigationController *)self _loadWallpaperForViewController:controllerCopy];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __63__HUDashboardNavigationController_pushViewController_animated___block_invoke;
     v10[3] = &unk_277DC1B58;
     v10[4] = self;
-    v11 = v6;
+    v11 = controllerCopy;
     v12 = 1;
     v8 = [v7 addCompletionBlock:v10];
   }
@@ -303,14 +303,14 @@ LABEL_11:
   {
     v9.receiver = self;
     v9.super_class = HUDashboardNavigationController;
-    [(HUDashboardNavigationController *)&v9 pushViewController:v6 animated:v4];
+    [(HUDashboardNavigationController *)&v9 pushViewController:controllerCopy animated:animatedCopy];
   }
 }
 
-- (id)_loadWallpaperForViewController:(uint64_t)a1
+- (id)_loadWallpaperForViewController:(uint64_t)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
     objc_opt_class();
     v4 = v3;
@@ -326,21 +326,21 @@ LABEL_11:
 
     v6 = v5;
 
-    v7 = [v6 itemManager];
-    v8 = [v7 context];
+    itemManager = [v6 itemManager];
+    context = [itemManager context];
 
-    v9 = [MEMORY[0x277D14D18] sharedInstance];
-    v10 = [v8 room];
-    v11 = v10;
-    if (!v10)
+    mEMORY[0x277D14D18] = [MEMORY[0x277D14D18] sharedInstance];
+    room = [context room];
+    home = room;
+    if (!room)
     {
-      v11 = [v8 home];
+      home = [context home];
     }
 
-    v12 = [v9 wallpaperForHomeKitObject:v11];
+    v12 = [mEMORY[0x277D14D18] wallpaperForHomeKitObject:home];
     v13 = [v12 flatMap:&__block_literal_global_217];
 
-    if (!v10)
+    if (!room)
     {
     }
   }
@@ -558,13 +558,13 @@ void __63__HUDashboardNavigationController_pushViewController_animated___block_i
 
 - (BOOL)popToBottomNavigationControllerWithCustomAnimation
 {
-  v3 = [(HUDashboardNavigationController *)self topViewController];
-  v4 = [(HUDashboardNavigationController *)self _shouldDisableAnimationForViewController:v3];
+  topViewController = [(HUDashboardNavigationController *)self topViewController];
+  v4 = [(HUDashboardNavigationController *)self _shouldDisableAnimationForViewController:topViewController];
 
   if (v4)
   {
-    v5 = [(HUDashboardNavigationController *)self bottomViewController];
-    v6 = [(HUDashboardNavigationController *)self _loadWallpaperForViewController:v5];
+    bottomViewController = [(HUDashboardNavigationController *)self bottomViewController];
+    v6 = [(HUDashboardNavigationController *)self _loadWallpaperForViewController:bottomViewController];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __85__HUDashboardNavigationController_popToBottomNavigationControllerWithCustomAnimation__block_invoke;
@@ -983,10 +983,10 @@ uint64_t __93__HUDashboardNavigationController__customAnimationForPoppingBackToH
 - (id)splitViewController
 {
   objc_opt_class();
-  v3 = [(HUDashboardNavigationController *)self parentViewController];
+  parentViewController = [(HUDashboardNavigationController *)self parentViewController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = parentViewController;
   }
 
   else
@@ -1004,11 +1004,11 @@ uint64_t __93__HUDashboardNavigationController__customAnimationForPoppingBackToH
   else
   {
     objc_opt_class();
-    v7 = [(HUDashboardNavigationController *)self parentViewController];
-    v8 = [v7 parentViewController];
+    parentViewController2 = [(HUDashboardNavigationController *)self parentViewController];
+    v7ParentViewController = [parentViewController2 parentViewController];
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = v7ParentViewController;
     }
 
     else
@@ -1016,17 +1016,17 @@ uint64_t __93__HUDashboardNavigationController__customAnimationForPoppingBackToH
       v9 = 0;
     }
 
-    v3 = v9;
+    parentViewController = v9;
   }
 
-  return v3;
+  return parentViewController;
 }
 
-- (BOOL)_shouldDisableAnimationForViewController:(id)a3
+- (BOOL)_shouldDisableAnimationForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  v4 = v3;
+  v4 = controllerCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -1039,28 +1039,28 @@ uint64_t __93__HUDashboardNavigationController__customAnimationForPoppingBackToH
 
   v6 = v5;
 
-  v7 = [v6 itemManager];
-  v8 = [v7 context];
-  v9 = [v8 room];
-  if (v9)
+  itemManager = [v6 itemManager];
+  context = [itemManager context];
+  room = [context room];
+  if (room)
   {
     v10 = 0;
   }
 
   else
   {
-    v11 = [v6 itemManager];
-    v12 = [v11 context];
-    v13 = [v12 overrideDashboardTitle];
-    v10 = v13 == 0;
+    itemManager2 = [v6 itemManager];
+    context2 = [itemManager2 context];
+    overrideDashboardTitle = [context2 overrideDashboardTitle];
+    v10 = overrideDashboardTitle == 0;
   }
 
-  v14 = [v6 isOverlay];
-  v15 = [v6 itemManager];
-  v16 = [v15 context];
-  v17 = [v16 backgroundStyle];
+  isOverlay = [v6 isOverlay];
+  itemManager3 = [v6 itemManager];
+  context3 = [itemManager3 context];
+  backgroundStyle = [context3 backgroundStyle];
 
-  v18 = (v17 != 1) & ~v14;
+  v18 = (backgroundStyle != 1) & ~isOverlay;
   if (v10)
   {
     v18 = 0;

@@ -1,15 +1,15 @@
 @interface CanonicalFooterViewCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (void)vui_prepareForReuse;
 @end
 
 @implementation CanonicalFooterViewCell
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v6 = self;
-  sub_1E3FF6DB8(a4, width);
+  width = subviews.width;
+  selfCopy = self;
+  sub_1E3FF6DB8(only, width);
   v8 = v7;
   v10 = v9;
 
@@ -22,7 +22,7 @@
 
 - (void)vui_prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3FF7910();
 }
 

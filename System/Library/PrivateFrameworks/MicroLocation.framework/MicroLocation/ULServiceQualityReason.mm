@@ -1,15 +1,15 @@
 @interface ULServiceQualityReason
-- (BOOL)isEqual:(id)a3;
-- (ULServiceQualityReason)initWithCoder:(id)a3;
-- (ULServiceQualityReason)initWithQualityReasonEnum:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULServiceQualityReason)initWithCoder:(id)coder;
+- (ULServiceQualityReason)initWithQualityReasonEnum:(unint64_t)enum;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULServiceQualityReason
 
-- (ULServiceQualityReason)initWithQualityReasonEnum:(unint64_t)a3
+- (ULServiceQualityReason)initWithQualityReasonEnum:(unint64_t)enum
 {
   v7.receiver = self;
   v7.super_class = ULServiceQualityReason;
@@ -17,13 +17,13 @@
   v5 = v4;
   if (v4)
   {
-    [(ULServiceQualityReason *)v4 setQualityReasonEnum:a3];
+    [(ULServiceQualityReason *)v4 setQualityReasonEnum:enum];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   qualityReasonEnum = self->_qualityReasonEnum;
@@ -31,30 +31,30 @@
   return [v4 initWithQualityReasonEnum:qualityReasonEnum];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   qualityReasonEnum = self->_qualityReasonEnum;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithUnsignedInteger:qualityReasonEnum];
-  [v5 encodeObject:v6 forKey:@"qualityReasonEnum"];
+  [coderCopy encodeObject:v6 forKey:@"qualityReasonEnum"];
 }
 
-- (ULServiceQualityReason)initWithCoder:(id)a3
+- (ULServiceQualityReason)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = ULServiceQualityReason;
   v5 = [(ULServiceQualityReason *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"qualityReasonEnum"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"qualityReasonEnum"];
     v7 = v6;
     if (v6)
     {
-      v8 = [(ULServiceQualityReason *)v6 unsignedIntegerValue];
+      unsignedIntegerValue = [(ULServiceQualityReason *)v6 unsignedIntegerValue];
 
-      v5->_qualityReasonEnum = v8;
+      v5->_qualityReasonEnum = unsignedIntegerValue;
       v7 = v5;
     }
   }
@@ -82,17 +82,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULServiceQualityReason *)self qualityReasonEnum];
-    v7 = [v5 qualityReasonEnum];
+    v5 = equalCopy;
+    qualityReasonEnum = [(ULServiceQualityReason *)self qualityReasonEnum];
+    qualityReasonEnum2 = [v5 qualityReasonEnum];
 
-    v8 = v6 == v7;
+    v8 = qualityReasonEnum == qualityReasonEnum2;
   }
 
   else

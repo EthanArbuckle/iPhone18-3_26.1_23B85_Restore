@@ -1,28 +1,28 @@
 @interface COElectionInfo
-- (BOOL)hasGreaterGenerationThan:(id)a3;
-- (BOOL)hasSameGenerationAndLeader:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (COElectionInfo)initWithCommand:(id)a3;
-- (COElectionInfo)initWithGeneration:(unint64_t)a3 ballot:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)hasGreaterGenerationThan:(id)than;
+- (BOOL)hasSameGenerationAndLeader:(id)leader;
+- (BOOL)isEqual:(id)equal;
+- (COElectionInfo)initWithCommand:(id)command;
+- (COElectionInfo)initWithGeneration:(unint64_t)generation ballot:(id)ballot;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)leader;
 - (unint64_t)hash;
-- (void)setBallot:(id)a3;
+- (void)setBallot:(id)ballot;
 @end
 
 @implementation COElectionInfo
 
-- (COElectionInfo)initWithGeneration:(unint64_t)a3 ballot:(id)a4
+- (COElectionInfo)initWithGeneration:(unint64_t)generation ballot:(id)ballot
 {
-  v6 = a4;
+  ballotCopy = ballot;
   v12.receiver = self;
   v12.super_class = COElectionInfo;
   v7 = [(COElectionInfo *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_generation = a3;
-    v9 = [v6 copy];
+    v7->_generation = generation;
+    v9 = [ballotCopy copy];
     ballot = v8->_ballot;
     v8->_ballot = v9;
   }
@@ -30,29 +30,29 @@
   return v8;
 }
 
-- (COElectionInfo)initWithCommand:(id)a3
+- (COElectionInfo)initWithCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v9.receiver = self;
   v9.super_class = COElectionInfo;
   v5 = [(COElectionInfo *)&v9 init];
   if (v5)
   {
-    v5->_generation = [v4 generation];
-    v6 = [v4 ballot];
+    v5->_generation = [commandCopy generation];
+    ballot = [commandCopy ballot];
     ballot = v5->_ballot;
-    v5->_ballot = v6;
+    v5->_ballot = ballot;
   }
 
   return v5;
 }
 
-- (void)setBallot:(id)a3
+- (void)setBallot:(id)ballot
 {
-  v7 = a3;
+  ballotCopy = ballot;
   if ([MEMORY[0x277CFD0B8] isSlimBallotsEnabled])
   {
-    v4 = [v7 mutableCopy];
+    v4 = [ballotCopy mutableCopy];
     [(COBallot *)v4 clearInsignificantCandidates];
     ballot = self->_ballot;
     self->_ballot = v4;
@@ -60,7 +60,7 @@
 
   else
   {
-    v6 = v7;
+    v6 = ballotCopy;
     ballot = self->_ballot;
     self->_ballot = v6;
   }
@@ -68,45 +68,45 @@
 
 - (id)leader
 {
-  v2 = [(COElectionInfo *)self ballot];
-  v3 = [v2 candidates];
-  v4 = [v3 firstObject];
+  ballot = [(COElectionInfo *)self ballot];
+  candidates = [ballot candidates];
+  firstObject = [candidates firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (BOOL)hasGreaterGenerationThan:(id)a3
+- (BOOL)hasGreaterGenerationThan:(id)than
 {
-  v4 = a3;
-  v5 = [(COElectionInfo *)self generation];
-  v6 = [v4 generation];
+  thanCopy = than;
+  generation = [(COElectionInfo *)self generation];
+  generation2 = [thanCopy generation];
 
-  return v5 > v6;
+  return generation > generation2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [COElectionInfo alloc];
-  v5 = [(COElectionInfo *)self generation];
-  v6 = [(COElectionInfo *)self ballot];
-  v7 = [(COElectionInfo *)v4 initWithGeneration:v5 ballot:v6];
+  generation = [(COElectionInfo *)self generation];
+  ballot = [(COElectionInfo *)self ballot];
+  v7 = [(COElectionInfo *)v4 initWithGeneration:generation ballot:ballot];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(COElectionInfo *)self generation];
-  v4 = [(COElectionInfo *)self ballot];
-  v5 = [v4 hash];
+  generation = [(COElectionInfo *)self generation];
+  ballot = [(COElectionInfo *)self ballot];
+  v5 = [ballot hash];
 
-  return v5 ^ v3;
+  return v5 ^ generation;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -114,11 +114,11 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(COElectionInfo *)self generation], v5 == [(COElectionInfo *)v4 generation]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(COElectionInfo *)self generation], v5 == [(COElectionInfo *)equalCopy generation]))
     {
-      v6 = [(COElectionInfo *)self ballot];
-      v7 = [(COElectionInfo *)v4 ballot];
-      v8 = [v6 isEqualToBallot:v7];
+      ballot = [(COElectionInfo *)self ballot];
+      ballot2 = [(COElectionInfo *)equalCopy ballot];
+      v8 = [ballot isEqualToBallot:ballot2];
     }
 
     else
@@ -130,15 +130,15 @@
   return v8;
 }
 
-- (BOOL)hasSameGenerationAndLeader:(id)a3
+- (BOOL)hasSameGenerationAndLeader:(id)leader
 {
-  v4 = a3;
-  v5 = [(COElectionInfo *)self generation];
-  if (v5 == [v4 generation])
+  leaderCopy = leader;
+  generation = [(COElectionInfo *)self generation];
+  if (generation == [leaderCopy generation])
   {
-    v6 = [(COElectionInfo *)self leader];
-    v7 = [v4 leader];
-    v8 = [v6 isEqual:v7];
+    leader = [(COElectionInfo *)self leader];
+    leader2 = [leaderCopy leader];
+    v8 = [leader isEqual:leader2];
   }
 
   else

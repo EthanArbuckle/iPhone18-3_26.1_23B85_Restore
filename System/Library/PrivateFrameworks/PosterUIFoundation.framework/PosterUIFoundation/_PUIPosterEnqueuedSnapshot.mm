@@ -1,66 +1,66 @@
 @interface _PUIPosterEnqueuedSnapshot
-- (_PUIPosterEnqueuedSnapshot)initWithRequest:(id)a3 destinationProvider:(id)a4 completion:(id)a5;
-- (void)applyToSceneSettings:(id)a3;
+- (_PUIPosterEnqueuedSnapshot)initWithRequest:(id)request destinationProvider:(id)provider completion:(id)completion;
+- (void)applyToSceneSettings:(id)settings;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _PUIPosterEnqueuedSnapshot
 
-- (_PUIPosterEnqueuedSnapshot)initWithRequest:(id)a3 destinationProvider:(id)a4 completion:(id)a5
+- (_PUIPosterEnqueuedSnapshot)initWithRequest:(id)request destinationProvider:(id)provider completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  providerCopy = provider;
+  completionCopy = completion;
   v40.receiver = self;
   v40.super_class = _PUIPosterEnqueuedSnapshot;
   v12 = [(_PUIPosterEnqueuedSnapshot *)&v40 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_request, a3);
-    objc_storeStrong(&v13->_destinationProvider, a4);
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v9, "priority")}];
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v13->_destinationProvider, provider);
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(requestCopy, "priority")}];
     priority = v13->_priority;
     v13->_priority = v14;
 
-    v13->_retryCount = [v9 retryCount];
-    v16 = [v9 date];
+    v13->_retryCount = [requestCopy retryCount];
+    date = [requestCopy date];
     date = v13->_date;
-    v13->_date = v16;
+    v13->_date = date;
 
-    v18 = [v9 path];
+    path = [requestCopy path];
     path = v13->_path;
-    v13->_path = v18;
+    v13->_path = path;
 
-    v20 = [v9 path];
-    v21 = [v20 extendContentsReadAccessToAuditToken:0 error:0];
+    path2 = [requestCopy path];
+    v21 = [path2 extendContentsReadAccessToAuditToken:0 error:0];
     extendedPath = v13->_extendedPath;
     v13->_extendedPath = v21;
 
-    v23 = [v9 path];
-    v24 = [v23 extendValidityForReason:@"SNAPSHOTTIN!!!!"];
+    path3 = [requestCopy path];
+    v24 = [path3 extendValidityForReason:@"SNAPSHOTTIN!!!!"];
     pathValidityToken = v13->_pathValidityToken;
     v13->_pathValidityToken = v24;
 
-    v26 = [v11 copy];
+    v26 = [completionCopy copy];
     completion = v13->_completion;
     v13->_completion = v26;
 
     v38 = MEMORY[0x1E696AEC0];
-    v39 = [v9 uniqueIdentifier];
-    v28 = [v39 UUIDString];
-    v29 = [v28 substringToIndex:8];
-    v30 = [(PFPosterPath *)v13->_path serverIdentity];
-    v31 = [v30 posterUUID];
-    v32 = [v31 UUIDString];
-    [v32 substringToIndex:8];
-    v34 = v33 = v11;
+    uniqueIdentifier = [requestCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    v29 = [uUIDString substringToIndex:8];
+    serverIdentity = [(PFPosterPath *)v13->_path serverIdentity];
+    posterUUID = [serverIdentity posterUUID];
+    uUIDString2 = [posterUUID UUIDString];
+    [uUIDString2 substringToIndex:8];
+    v34 = v33 = completionCopy;
     v35 = [v38 stringWithFormat:@"%@:%@", v29, v34];
     logIdentifier = v13->_logIdentifier;
     v13->_logIdentifier = v35;
 
-    v11 = v33;
+    completionCopy = v33;
   }
 
   return v13;
@@ -99,15 +99,15 @@
   self->_destinationProvider = 0;
 }
 
-- (void)applyToSceneSettings:(id)a3
+- (void)applyToSceneSettings:(id)settings
 {
   if (self->_request)
   {
-    v4 = a3;
-    [v4 pui_setSnapshot:1];
-    [v4 pui_setPosterContents:self->_extendedPath];
-    v5 = [(PUIPosterSnapshotRequest *)self->_request sceneSettingsApplicator];
-    v5[2](v5, v4);
+    settingsCopy = settings;
+    [settingsCopy pui_setSnapshot:1];
+    [settingsCopy pui_setPosterContents:self->_extendedPath];
+    sceneSettingsApplicator = [(PUIPosterSnapshotRequest *)self->_request sceneSettingsApplicator];
+    sceneSettingsApplicator[2](sceneSettingsApplicator, settingsCopy);
   }
 }
 

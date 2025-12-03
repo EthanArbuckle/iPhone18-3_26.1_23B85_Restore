@@ -1,13 +1,13 @@
 @interface FigSemanticStyleFilteringV1
 - (CGRect)destinationRectangleInOutputMaskPixelBuffer;
 - (CGRect)inputImageCropRectangle;
-- (FigSemanticStyleFilteringV1)initWithCommandQueue:(id)a3;
-- (id)_textureFromPixelBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4;
-- (int)_applyFeathering:(id)a3 toOutputMaskTexture:(id)a4 commandBuffer:(id)a5;
+- (FigSemanticStyleFilteringV1)initWithCommandQueue:(id)queue;
+- (id)_textureFromPixelBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage;
+- (int)_applyFeathering:(id)feathering toOutputMaskTexture:(id)texture commandBuffer:(id)buffer;
 - (int)_compileShaders;
-- (int)_copyAndCenterMask:(id)a3 toOutputMaskTexture:(id)a4 destinationRectangle:(CGRect)a5 commandBuffer:(id)a6;
+- (int)_copyAndCenterMask:(id)mask toOutputMaskTexture:(id)texture destinationRectangle:(CGRect)rectangle commandBuffer:(id)buffer;
 - (int)finishProcessing;
-- (int)prepareToProcess:(unsigned int)a3;
+- (int)prepareToProcess:(unsigned int)process;
 - (int)prewarm;
 - (int)process;
 - (int)purgeResources;
@@ -64,7 +64,7 @@
   [(FigSemanticStyleFilteringV1 *)&v3 dealloc];
 }
 
-- (int)prepareToProcess:(unsigned int)a3
+- (int)prepareToProcess:(unsigned int)process
 {
   [(FigLKTIIRFilter *)self->_lktiirFilter setMaskInterpolationEnabled:self->_maskInterpolationEnabled];
   if ([(FigLKTIIRFilter *)self->_lktiirFilter allocateResourcesForMaskSize:COERCE_DOUBLE(0xC000000100)])
@@ -77,8 +77,8 @@
 
   v4 = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:70 width:256 height:192 mipmapped:0];
   [v4 setUsage:7];
-  v5 = [(FigMetalContext *)self->_metalContext device];
-  v6 = [v5 newTextureWithDescriptor:v4];
+  device = [(FigMetalContext *)self->_metalContext device];
+  v6 = [device newTextureWithDescriptor:v4];
   resizedInputImageToMaskSize = self->_resizedInputImageToMaskSize;
   self->_resizedInputImageToMaskSize = v6;
 
@@ -89,8 +89,8 @@
   }
 
   [v4 setPixelFormat:25];
-  v8 = [(FigMetalContext *)self->_metalContext device];
-  v9 = [v8 newTextureWithDescriptor:v4];
+  device2 = [(FigMetalContext *)self->_metalContext device];
+  v9 = [device2 newTextureWithDescriptor:v4];
   nonFeatheredMask = self->_nonFeatheredMask;
   self->_nonFeatheredMask = v9;
 
@@ -100,8 +100,8 @@
     goto LABEL_22;
   }
 
-  v11 = [(FigMetalContext *)self->_metalContext device];
-  v12 = [v11 newTextureWithDescriptor:v4];
+  device3 = [(FigMetalContext *)self->_metalContext device];
+  v12 = [device3 newTextureWithDescriptor:v4];
   featheredMask = self->_featheredMask;
   self->_featheredMask = v12;
 
@@ -111,8 +111,8 @@
     goto LABEL_22;
   }
 
-  v14 = [(FigMetalContext *)self->_metalContext device];
-  v15 = [v14 newTextureWithDescriptor:v4];
+  device4 = [(FigMetalContext *)self->_metalContext device];
+  v15 = [device4 newTextureWithDescriptor:v4];
   blurredMask = self->_blurredMask;
   self->_blurredMask = v15;
 
@@ -122,8 +122,8 @@
     goto LABEL_22;
   }
 
-  v17 = [(FigMetalContext *)self->_metalContext device];
-  v18 = [v17 newTextureWithDescriptor:v4];
+  device5 = [(FigMetalContext *)self->_metalContext device];
+  v18 = [device5 newTextureWithDescriptor:v4];
   smoothedMask = self->_smoothedMask;
   self->_smoothedMask = v18;
 
@@ -138,17 +138,17 @@
     FigGetCFPreferenceDoubleWithDefault();
     v21 = v20;
     v22 = [MPSImageGaussianBlur alloc];
-    v23 = [(FigMetalContext *)self->_metalContext device];
+    device6 = [(FigMetalContext *)self->_metalContext device];
     *&v24 = v21;
-    v25 = [v22 initWithDevice:v23 sigma:v24];
+    v25 = [v22 initWithDevice:device6 sigma:v24];
     mpsBlur = self->_mpsBlur;
     self->_mpsBlur = v25;
 
     if (self->_mpsBlur)
     {
       v27 = [MPSImageMultiply alloc];
-      v28 = [(FigMetalContext *)self->_metalContext device];
-      v29 = [v27 initWithDevice:v28];
+      device7 = [(FigMetalContext *)self->_metalContext device];
+      v29 = [v27 initWithDevice:device7];
       mpsImageMultiply = self->_mpsImageMultiply;
       self->_mpsImageMultiply = v29;
 
@@ -174,8 +174,8 @@ LABEL_10:
   v35 = kCVMetalTextureCacheMaximumTextureAgeKey;
   v36 = &off_18978;
   v31 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-  v32 = [(FigMetalContext *)self->_metalContext device];
-  v33 = CVMetalTextureCacheCreate(kCFAllocatorDefault, v31, v32, 0, &self->_textureCache);
+  device8 = [(FigMetalContext *)self->_metalContext device];
+  v33 = CVMetalTextureCacheCreate(kCFAllocatorDefault, v31, device8, 0, &self->_textureCache);
 
   if (!v33)
   {
@@ -269,9 +269,9 @@ LABEL_12:
     sub_EF40(&v30);
 LABEL_33:
     v15 = 0;
-    v7 = 0;
+    commandBuffer = 0;
     v5 = 0;
-    v9 = 0;
+    displacementFWD = 0;
     v4 = 0;
 LABEL_50:
     v24 = v30;
@@ -302,10 +302,10 @@ LABEL_50:
   {
     sub_ED3C(&v30);
     v15 = 0;
-    v7 = 0;
+    commandBuffer = 0;
     v5 = 0;
 LABEL_49:
-    v9 = 0;
+    displacementFWD = 0;
     goto LABEL_50;
   }
 
@@ -314,14 +314,14 @@ LABEL_49:
   {
     sub_EC90(&v30);
     v15 = 0;
-    v7 = 0;
+    commandBuffer = 0;
     goto LABEL_49;
   }
 
-  v6 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v7 = [v6 commandBuffer];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (!v7)
+  if (!commandBuffer)
   {
     sub_EBE4(&v30);
 LABEL_48:
@@ -332,9 +332,9 @@ LABEL_48:
   v8 = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:self->_opticalFlowDisplacementPixelBuffer pixelFormat:65 usage:1 plane:0];
   [(FigLKTIIRFilter *)self->_lktiirFilter setDisplacementFWD:v8];
 
-  v9 = [(FigLKTIIRFilter *)self->_lktiirFilter displacementFWD];
+  displacementFWD = [(FigLKTIIRFilter *)self->_lktiirFilter displacementFWD];
 
-  if (!v9)
+  if (!displacementFWD)
   {
     sub_EB38(&v30);
     goto LABEL_41;
@@ -343,27 +343,27 @@ LABEL_48:
   inputMaskPixelBuffer = self->_inputMaskPixelBuffer;
   if (inputMaskPixelBuffer)
   {
-    v9 = [(FigSemanticStyleFilteringV1 *)self _textureFromPixelBuffer:inputMaskPixelBuffer usage:1];
-    if (v9)
+    displacementFWD = [(FigSemanticStyleFilteringV1 *)self _textureFromPixelBuffer:inputMaskPixelBuffer usage:1];
+    if (displacementFWD)
     {
       if (!self->_maskInterpolationEnabled)
       {
 LABEL_14:
-        v9 = v9;
-        v14 = v7;
-        v15 = v9;
+        displacementFWD = displacementFWD;
+        v14 = commandBuffer;
+        v15 = displacementFWD;
         goto LABEL_19;
       }
 
       lktiirFilter = self->_lktiirFilter;
       frameIndex = self->_frameIndex;
-      v29 = v7;
-      v13 = [(FigLKTIIRFilter *)lktiirFilter cacheInputMask:v9 inputImage:v4 frameIndex:frameIndex commandBuffer:&v29];
+      v29 = commandBuffer;
+      v13 = [(FigLKTIIRFilter *)lktiirFilter cacheInputMask:displacementFWD inputImage:v4 frameIndex:frameIndex commandBuffer:&v29];
       v14 = v29;
 
       if (!v13)
       {
-        v7 = v14;
+        commandBuffer = v14;
         goto LABEL_14;
       }
 
@@ -371,7 +371,7 @@ LABEL_14:
       v15 = 0;
 LABEL_45:
       v24 = v30;
-      v7 = v14;
+      commandBuffer = v14;
       goto LABEL_28;
     }
 
@@ -389,7 +389,7 @@ LABEL_47:
   }
 
   v16 = self->_lktiirFilter;
-  v28 = v7;
+  v28 = commandBuffer;
   v17 = [(FigLKTIIRFilter *)v16 updateWarpedKeyFrameToCurrentFrame:&v28 frameIndex:self->_frameIndex];
   v14 = v28;
 
@@ -397,24 +397,24 @@ LABEL_47:
   {
     sub_E7CC();
     v15 = 0;
-    v9 = 0;
+    displacementFWD = 0;
     goto LABEL_45;
   }
 
-  v18 = [(FigLKTIIRFilter *)self->_lktiirFilter warpedKeyFrameToCurrentFrameMask];
-  if (!v18)
+  warpedKeyFrameToCurrentFrameMask = [(FigLKTIIRFilter *)self->_lktiirFilter warpedKeyFrameToCurrentFrameMask];
+  if (!warpedKeyFrameToCurrentFrameMask)
   {
-    v7 = v14;
+    commandBuffer = v14;
     goto LABEL_47;
   }
 
-  v15 = v18;
-  v9 = 0;
+  v15 = warpedKeyFrameToCurrentFrameMask;
+  displacementFWD = 0;
 LABEL_19:
   v19 = self->_lktiirFilter;
   v27 = v14;
   v20 = [(FigLKTIIRFilter *)v19 computeLKTIIRFilter:&v27 inputSegmentationMask:v15 filteredSegmentationMask:self->_nonFeatheredMask];
-  v7 = v27;
+  commandBuffer = v27;
 
   if (v20)
   {
@@ -424,7 +424,7 @@ LABEL_19:
 
   if (self->_applyFeathering)
   {
-    if ([(FigSemanticStyleFilteringV1 *)self _applyFeathering:self->_nonFeatheredMask toOutputMaskTexture:self->_featheredMask commandBuffer:v7])
+    if ([(FigSemanticStyleFilteringV1 *)self _applyFeathering:self->_nonFeatheredMask toOutputMaskTexture:self->_featheredMask commandBuffer:commandBuffer])
     {
       sub_E92C();
       goto LABEL_50;
@@ -445,7 +445,7 @@ LABEL_19:
     v23 = 64;
   }
 
-  if ([(FigSemanticStyleFilteringV1 *)self _copyAndCenterMask:*(&self->super.isa + v23) toOutputMaskTexture:v5 destinationRectangle:v7 commandBuffer:self->_destinationRectangleInOutputMaskPixelBuffer.origin.x, self->_destinationRectangleInOutputMaskPixelBuffer.origin.y, self->_destinationRectangleInOutputMaskPixelBuffer.size.width, self->_destinationRectangleInOutputMaskPixelBuffer.size.height])
+  if ([(FigSemanticStyleFilteringV1 *)self _copyAndCenterMask:*(&self->super.isa + v23) toOutputMaskTexture:v5 destinationRectangle:commandBuffer commandBuffer:self->_destinationRectangleInOutputMaskPixelBuffer.origin.x, self->_destinationRectangleInOutputMaskPixelBuffer.origin.y, self->_destinationRectangleInOutputMaskPixelBuffer.size.width, self->_destinationRectangleInOutputMaskPixelBuffer.size.height])
   {
     sub_E9DC();
     goto LABEL_50;
@@ -455,88 +455,88 @@ LABEL_19:
   [(FigLKTIIRFilter *)self->_lktiirFilter nextFrame];
   v24 = 0;
 LABEL_28:
-  [v7 commit];
-  [v7 waitUntilScheduled];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
   previousCommandBuffer = self->_previousCommandBuffer;
-  self->_previousCommandBuffer = v7;
+  self->_previousCommandBuffer = commandBuffer;
 
   return v24;
 }
 
-- (int)_applyFeathering:(id)a3 toOutputMaskTexture:(id)a4 commandBuffer:(id)a5
+- (int)_applyFeathering:(id)feathering toOutputMaskTexture:(id)texture commandBuffer:(id)buffer
 {
   v9 = self->_pipelineStates[1];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 computeCommandEncoder];
-  [v13 setComputePipelineState:v9];
-  [v13 setTexture:v12 atIndex:0];
+  bufferCopy = buffer;
+  textureCopy = texture;
+  featheringCopy = feathering;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:v9];
+  [computeCommandEncoder setTexture:featheringCopy atIndex:0];
 
-  [v13 setTexture:self->_smoothedMask atIndex:1];
-  [v13 setBytes:&self->_smoothstepLeftEdge length:4 atIndex:0];
-  [v13 setBytes:&self->_smoothstepRightEdge length:4 atIndex:1];
-  v14 = [(MTLComputePipelineState *)v9 threadExecutionWidth];
-  v15 = [(MTLComputePipelineState *)v9 maxTotalThreadsPerThreadgroup]/ v14;
-  v16 = [(MTLTexture *)self->_smoothedMask width];
-  v17 = [(MTLTexture *)self->_smoothedMask height];
-  v20[0] = v16;
-  v20[1] = v17;
+  [computeCommandEncoder setTexture:self->_smoothedMask atIndex:1];
+  [computeCommandEncoder setBytes:&self->_smoothstepLeftEdge length:4 atIndex:0];
+  [computeCommandEncoder setBytes:&self->_smoothstepRightEdge length:4 atIndex:1];
+  threadExecutionWidth = [(MTLComputePipelineState *)v9 threadExecutionWidth];
+  v15 = [(MTLComputePipelineState *)v9 maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+  width = [(MTLTexture *)self->_smoothedMask width];
+  height = [(MTLTexture *)self->_smoothedMask height];
+  v20[0] = width;
+  v20[1] = height;
   v20[2] = 1;
-  v19[0] = v14;
+  v19[0] = threadExecutionWidth;
   v19[1] = v15;
   v19[2] = 1;
-  [v13 dispatchThreads:v20 threadsPerThreadgroup:v19];
-  [v13 endEncoding];
-  [(MPSImageGaussianBlur *)self->_mpsBlur encodeToCommandBuffer:v10 sourceTexture:self->_smoothedMask destinationTexture:self->_blurredMask];
-  [(MPSImageMultiply *)self->_mpsImageMultiply encodeToCommandBuffer:v10 primaryTexture:self->_smoothedMask secondaryTexture:self->_blurredMask destinationTexture:v11];
+  [computeCommandEncoder dispatchThreads:v20 threadsPerThreadgroup:v19];
+  [computeCommandEncoder endEncoding];
+  [(MPSImageGaussianBlur *)self->_mpsBlur encodeToCommandBuffer:bufferCopy sourceTexture:self->_smoothedMask destinationTexture:self->_blurredMask];
+  [(MPSImageMultiply *)self->_mpsImageMultiply encodeToCommandBuffer:bufferCopy primaryTexture:self->_smoothedMask secondaryTexture:self->_blurredMask destinationTexture:textureCopy];
 
   return 0;
 }
 
-- (int)_copyAndCenterMask:(id)a3 toOutputMaskTexture:(id)a4 destinationRectangle:(CGRect)a5 commandBuffer:(id)a6
+- (int)_copyAndCenterMask:(id)mask toOutputMaskTexture:(id)texture destinationRectangle:(CGRect)rectangle commandBuffer:(id)buffer
 {
-  width = a5.size.width;
-  x = a5.origin.x;
+  width = rectangle.size.width;
+  x = rectangle.origin.x;
   v11 = self->_pipelineStates[0];
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v26 = llround(x * ([v13 width] - 1));
-  v25 = llround(width * ([v13 width] - 1));
-  v15 = width * ([v13 width] - 1);
-  v16 = v15 / ([v14 width] - 1);
+  bufferCopy = buffer;
+  textureCopy = texture;
+  maskCopy = mask;
+  v26 = llround(x * ([textureCopy width] - 1));
+  v25 = llround(width * ([textureCopy width] - 1));
+  v15 = width * ([textureCopy width] - 1);
+  v16 = v15 / ([maskCopy width] - 1);
   v24 = v16;
-  v17 = [v12 computeCommandEncoder];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v17 setComputePipelineState:v11];
-  [v17 setTexture:v14 atIndex:0];
+  [computeCommandEncoder setComputePipelineState:v11];
+  [computeCommandEncoder setTexture:maskCopy atIndex:0];
 
-  [v17 setTexture:v13 atIndex:1];
-  [v17 setBytes:&v26 length:4 atIndex:0];
-  [v17 setBytes:&v25 length:4 atIndex:1];
-  [v17 setBytes:&v24 length:4 atIndex:2];
-  v18 = [(MTLComputePipelineState *)v11 threadExecutionWidth];
-  v19 = [(MTLComputePipelineState *)v11 maxTotalThreadsPerThreadgroup];
+  [computeCommandEncoder setTexture:textureCopy atIndex:1];
+  [computeCommandEncoder setBytes:&v26 length:4 atIndex:0];
+  [computeCommandEncoder setBytes:&v25 length:4 atIndex:1];
+  [computeCommandEncoder setBytes:&v24 length:4 atIndex:2];
+  threadExecutionWidth = [(MTLComputePipelineState *)v11 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)v11 maxTotalThreadsPerThreadgroup];
 
-  v20 = [v13 width];
-  LODWORD(v11) = [v13 height];
+  width = [textureCopy width];
+  LODWORD(v11) = [textureCopy height];
 
-  v23[0] = v20;
+  v23[0] = width;
   v23[1] = v11;
   v23[2] = 1;
-  v22[0] = v18;
-  v22[1] = v19 / v18;
+  v22[0] = threadExecutionWidth;
+  v22[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v22[2] = 1;
-  [v17 dispatchThreads:v23 threadsPerThreadgroup:v22];
-  [v17 endEncoding];
+  [computeCommandEncoder dispatchThreads:v23 threadsPerThreadgroup:v22];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (id)_textureFromPixelBuffer:(__CVBuffer *)a3 usage:(unint64_t)a4
+- (id)_textureFromPixelBuffer:(__CVBuffer *)buffer usage:(unint64_t)usage
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v8 = 0;
   v9 = MTLPixelFormatDepth32Float_Stencil8|MTLPixelFormatGBGR422;
   if (PixelFormatType > 875704437)
@@ -603,15 +603,15 @@ LABEL_15:
 LABEL_16:
   v9 = MTLPixelFormatRGBA8Unorm;
 LABEL_17:
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a3, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a3, 0);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
   v19 = kCVMetalTextureUsage;
-  v13 = [NSNumber numberWithUnsignedInteger:a4];
+  v13 = [NSNumber numberWithUnsignedInteger:usage];
   v20 = v13;
   v14 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
 
   image = 0;
-  v15 = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self->_textureCache, a3, v14, v9, WidthOfPlane, HeightOfPlane, 0, &image);
+  v15 = CVMetalTextureCacheCreateTextureFromImage(kCFAllocatorDefault, self->_textureCache, buffer, v14, v9, WidthOfPlane, HeightOfPlane, 0, &image);
   v8 = 0;
   if (v15)
   {
@@ -660,9 +660,9 @@ LABEL_22:
   return result;
 }
 
-- (FigSemanticStyleFilteringV1)initWithCommandQueue:(id)a3
+- (FigSemanticStyleFilteringV1)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = FigSemanticStyleFilteringV1;
   v5 = [(FigSemanticStyleFilteringV1 *)&v15 init];
@@ -670,7 +670,7 @@ LABEL_22:
   {
     v6 = [FigMetalContext alloc];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
-    v8 = [v6 initWithbundle:v7 andOptionalCommandQueue:v4];
+    v8 = [v6 initWithbundle:v7 andOptionalCommandQueue:queueCopy];
     metalContext = v5->_metalContext;
     v5->_metalContext = v8;
 

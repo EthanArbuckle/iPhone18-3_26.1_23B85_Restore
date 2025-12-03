@@ -1,30 +1,30 @@
 @interface AXPIFingerLayer
 - (AXPIFingerAppearanceDelegate)appearanceDelegate;
-- (AXPIFingerLayer)initWithAppearanceDelegate:(id)a3;
+- (AXPIFingerLayer)initWithAppearanceDelegate:(id)delegate;
 - (CGRect)outerFrame;
 @end
 
 @implementation AXPIFingerLayer
 
-- (AXPIFingerLayer)initWithAppearanceDelegate:(id)a3
+- (AXPIFingerLayer)initWithAppearanceDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = AXPIFingerLayer;
   v5 = [(AXPIFingerLayer *)&v21 init];
   v6 = v5;
   if (v5)
   {
-    [(AXPIFingerLayer *)v5 setAppearanceDelegate:v4];
-    v7 = [(AXPIFingerLayer *)v6 appearanceDelegate];
-    [v7 fingerInnerRadius];
+    [(AXPIFingerLayer *)v5 setAppearanceDelegate:delegateCopy];
+    appearanceDelegate = [(AXPIFingerLayer *)v6 appearanceDelegate];
+    [appearanceDelegate fingerInnerRadius];
     v9 = v8;
-    v10 = [(AXPIFingerLayer *)v6 appearanceDelegate];
-    [v10 strokeWidth];
+    appearanceDelegate2 = [(AXPIFingerLayer *)v6 appearanceDelegate];
+    [appearanceDelegate2 strokeWidth];
     v12 = v11 + v9 * 2.0;
 
-    v13 = [(AXPIFingerLayer *)v6 appearanceDelegate];
-    [v13 fingerWidth];
+    appearanceDelegate3 = [(AXPIFingerLayer *)v6 appearanceDelegate];
+    [appearanceDelegate3 fingerWidth];
     v15 = (v14 - v12) * 0.5;
 
     v6->_outerFrame.origin.x = v15;
@@ -34,9 +34,9 @@
     v6->_shape = 0;
     if (!+[AXPIFingerUtilities laserEnabled](AXPIFingerUtilities, "laserEnabled") || (-[AXPIFingerLayer appearanceDelegate](v6, "appearanceDelegate"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 useSystemFilters], v16, (v17 & 1) == 0))
     {
-      v18 = [(AXPIFingerLayer *)v6 appearanceDelegate];
-      v19 = [v18 deselectedFillColor];
-      -[AXPIFingerLayer setFillColor:](v6, "setFillColor:", [v19 CGColor]);
+      appearanceDelegate4 = [(AXPIFingerLayer *)v6 appearanceDelegate];
+      deselectedFillColor = [appearanceDelegate4 deselectedFillColor];
+      -[AXPIFingerLayer setFillColor:](v6, "setFillColor:", [deselectedFillColor CGColor]);
     }
   }
 

@@ -1,7 +1,7 @@
 @interface CalCalendarLocalAccountInfo
 + (id)sharedInstance;
-- (BOOL)addressIsAccountOwner:(id)a3;
-- (BOOL)addressURLIsAccountOwner:(id)a3;
+- (BOOL)addressIsAccountOwner:(id)owner;
+- (BOOL)addressURLIsAccountOwner:(id)owner;
 @end
 
 @implementation CalCalendarLocalAccountInfo
@@ -27,19 +27,19 @@ uint64_t __45__CalCalendarLocalAccountInfo_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)addressIsAccountOwner:(id)a3
+- (BOOL)addressIsAccountOwner:(id)owner
 {
-  v3 = [a3 stringRemovingMailto];
-  v4 = [MEMORY[0x1E6992F50] defaultProvider];
-  v5 = [v4 matchesOneOfMyEmails:v3];
+  stringRemovingMailto = [owner stringRemovingMailto];
+  defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
+  v5 = [defaultProvider matchesOneOfMyEmails:stringRemovingMailto];
 
   return v5;
 }
 
-- (BOOL)addressURLIsAccountOwner:(id)a3
+- (BOOL)addressURLIsAccountOwner:(id)owner
 {
-  v4 = [a3 absoluteString];
-  LOBYTE(self) = [(CalCalendarLocalAccountInfo *)self addressIsAccountOwner:v4];
+  absoluteString = [owner absoluteString];
+  LOBYTE(self) = [(CalCalendarLocalAccountInfo *)self addressIsAccountOwner:absoluteString];
 
   return self;
 }

@@ -1,13 +1,13 @@
 @interface UIVisualEffect
-+ (id)_effectCopyingFromCaptureGroup:(id)a3;
-+ (id)effectCombiningEffects:(id)a3;
-+ (id)effectCompositingColor:(id)a3 withMode:(int64_t)a4 alpha:(double)a5;
-+ (id)effectCompositingImage:(id)a3 withMode:(int64_t)a4 alpha:(double)a5;
++ (id)_effectCopyingFromCaptureGroup:(id)group;
++ (id)effectCombiningEffects:(id)effects;
++ (id)effectCompositingColor:(id)color withMode:(int64_t)mode alpha:(double)alpha;
++ (id)effectCompositingImage:(id)image withMode:(int64_t)mode alpha:(double)alpha;
 + (id)emptyEffect;
 - (id)_allEffects;
-- (id)effectConfigForQuality:(int64_t)a3;
+- (id)effectConfigForQuality:(int64_t)quality;
 - (int64_t)_expectedUsage;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
 @end
 
 @implementation UIVisualEffect
@@ -51,84 +51,84 @@ void __29__UIVisualEffect_emptyEffect__block_invoke()
   return 0;
 }
 
-+ (id)effectCombiningEffects:(id)a3
++ (id)effectCombiningEffects:(id)effects
 {
-  v4 = a3;
-  v5 = [v4 count];
+  effectsCopy = effects;
+  v5 = [effectsCopy count];
   if (v5 == 1)
   {
-    v6 = [v4 firstObject];
+    firstObject = [effectsCopy firstObject];
   }
 
   else if (v5)
   {
-    v6 = [[_UICompoundEffect alloc] initWithEffects:v4];
+    firstObject = [[_UICompoundEffect alloc] initWithEffects:effectsCopy];
   }
 
   else
   {
-    v6 = [a1 emptyEffect];
+    firstObject = [self emptyEffect];
   }
 
-  v7 = v6;
+  v7 = firstObject;
 
   return v7;
 }
 
-+ (id)effectCompositingImage:(id)a3 withMode:(int64_t)a4 alpha:(double)a5
++ (id)effectCompositingImage:(id)image withMode:(int64_t)mode alpha:(double)alpha
 {
-  v8 = a3;
-  v9 = _UIVisualEffectNewOverlay(a4, a5);
+  imageCopy = image;
+  v9 = _UIVisualEffectNewOverlay(mode, alpha);
   v10 = v9;
   if (v9)
   {
-    [v9 setImage:v8];
-    v11 = v10;
+    [v9 setImage:imageCopy];
+    emptyEffect = v10;
   }
 
   else
   {
-    v11 = [a1 emptyEffect];
+    emptyEffect = [self emptyEffect];
   }
 
-  v12 = v11;
+  v12 = emptyEffect;
 
   return v12;
 }
 
-+ (id)effectCompositingColor:(id)a3 withMode:(int64_t)a4 alpha:(double)a5
++ (id)effectCompositingColor:(id)color withMode:(int64_t)mode alpha:(double)alpha
 {
-  v8 = a3;
-  v9 = _UIVisualEffectNewOverlay(a4, a5);
+  colorCopy = color;
+  v9 = _UIVisualEffectNewOverlay(mode, alpha);
   v10 = v9;
   if (v9)
   {
-    [v9 setColor:v8];
-    v11 = v10;
+    [v9 setColor:colorCopy];
+    emptyEffect = v10;
   }
 
   else
   {
-    v11 = [a1 emptyEffect];
+    emptyEffect = [self emptyEffect];
   }
 
-  v12 = v11;
+  v12 = emptyEffect;
 
   return v12;
 }
 
-+ (id)_effectCopyingFromCaptureGroup:(id)a3
++ (id)_effectCopyingFromCaptureGroup:(id)group
 {
-  v3 = [_UICopyEffect copyEffectWithCaptureGroup:a3];
+  v3 = [_UICopyEffect copyEffectWithCaptureGroup:group];
 
   return v3;
 }
 
-- (id)effectConfigForQuality:(int64_t)a3
+- (id)effectConfigForQuality:(int64_t)quality
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"UIVisualEffect.m" lineNumber:361 description:{@"UIVisualEffect subclass must override %@", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIVisualEffect.m" lineNumber:361 description:{@"UIVisualEffect subclass must override %@", v6}];
 
   return 0;
 }
@@ -142,23 +142,23 @@ void __29__UIVisualEffect_emptyEffect__block_invoke()
   return v2;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
-  v11 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  environmentCopy = environment;
   if ([(UIVisualEffect *)self _selectorOverridden:sel_effectSettings])
   {
     v8 = +[_UILegacyEffectConverter sharedConverter];
-    v9 = [(UIVisualEffect *)self effectSettings];
-    [v8 applyBackdropSettings:v9 toEffectDescriptor:v11 environment:v7];
+    effectSettings = [(UIVisualEffect *)self effectSettings];
+    [v8 applyBackdropSettings:effectSettings toEffectDescriptor:descriptorCopy environment:environmentCopy];
   }
 
   else if ([(UIVisualEffect *)self _selectorOverridden:sel_effectConfigForQuality_])
   {
     v8 = +[_UILegacyEffectConverter sharedConverter];
-    v9 = +[UIDevice currentDevice];
-    v10 = -[UIVisualEffect effectConfigForQuality:](self, "effectConfigForQuality:", [v9 _graphicsQuality]);
-    [v8 applyVibrancyConfig:v10 toEffectDescriptor:v11];
+    effectSettings = +[UIDevice currentDevice];
+    v10 = -[UIVisualEffect effectConfigForQuality:](self, "effectConfigForQuality:", [effectSettings _graphicsQuality]);
+    [v8 applyVibrancyConfig:v10 toEffectDescriptor:descriptorCopy];
   }
 
   else
@@ -169,8 +169,8 @@ void __29__UIVisualEffect_emptyEffect__block_invoke()
     }
 
     v8 = +[_UILegacyEffectConverter sharedConverter];
-    v9 = [(UIVisualEffect *)self effectConfig];
-    [v8 applyVibrancyConfig:v9 toEffectDescriptor:v11];
+    effectSettings = [(UIVisualEffect *)self effectConfig];
+    [v8 applyVibrancyConfig:effectSettings toEffectDescriptor:descriptorCopy];
   }
 
 LABEL_8:

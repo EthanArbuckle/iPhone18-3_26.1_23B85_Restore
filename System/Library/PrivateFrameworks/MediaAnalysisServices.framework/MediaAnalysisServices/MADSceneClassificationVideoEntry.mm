@@ -1,32 +1,32 @@
 @interface MADSceneClassificationVideoEntry
-+ (id)entryWithTimeRange:(id *)a3 confidence:(double)a4 boundingBox:(CGRect)a5;
++ (id)entryWithTimeRange:(id *)range confidence:(double)confidence boundingBox:(CGRect)box;
 - ($1C75447F214D9465CD650DD956230C7F)timeRange;
 - (CGRect)boundingBox;
-- (MADSceneClassificationVideoEntry)initWithCoder:(id)a3;
-- (MADSceneClassificationVideoEntry)initWithTimeRange:(id *)a3 confidence:(double)a4 boundingBox:(CGRect)a5;
+- (MADSceneClassificationVideoEntry)initWithCoder:(id)coder;
+- (MADSceneClassificationVideoEntry)initWithTimeRange:(id *)range confidence:(double)confidence boundingBox:(CGRect)box;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADSceneClassificationVideoEntry
 
-- (MADSceneClassificationVideoEntry)initWithTimeRange:(id *)a3 confidence:(double)a4 boundingBox:(CGRect)a5
+- (MADSceneClassificationVideoEntry)initWithTimeRange:(id *)range confidence:(double)confidence boundingBox:(CGRect)box
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v14.receiver = self;
   v14.super_class = MADSceneClassificationVideoEntry;
   result = [(MADSceneClassificationVideoEntry *)&v14 init];
   if (result)
   {
-    v12 = *&a3->var0.var0;
-    v13 = *&a3->var1.var1;
-    *&result->_timeRange.start.epoch = *&a3->var0.var3;
+    v12 = *&range->var0.var0;
+    v13 = *&range->var1.var1;
+    *&result->_timeRange.start.epoch = *&range->var0.var3;
     *&result->_timeRange.duration.timescale = v13;
     *&result->_timeRange.start.value = v12;
-    result->_confidence = a4;
+    result->_confidence = confidence;
     result->_boundingBox.origin.x = x;
     result->_boundingBox.origin.y = y;
     result->_boundingBox.size.width = width;
@@ -36,45 +36,45 @@
   return result;
 }
 
-+ (id)entryWithTimeRange:(id *)a3 confidence:(double)a4 boundingBox:(CGRect)a5
++ (id)entryWithTimeRange:(id *)range confidence:(double)confidence boundingBox:(CGRect)box
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = [a1 alloc];
-  v12 = *&a3->var0.var3;
-  v15[0] = *&a3->var0.var0;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  v11 = [self alloc];
+  v12 = *&range->var0.var3;
+  v15[0] = *&range->var0.var0;
   v15[1] = v12;
-  v15[2] = *&a3->var1.var1;
-  v13 = [v11 initWithTimeRange:v15 confidence:a4 boundingBox:{x, y, width, height}];
+  v15[2] = *&range->var1.var1;
+  v13 = [v11 initWithTimeRange:v15 confidence:confidence boundingBox:{x, y, width, height}];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = *&self->_timeRange.start.epoch;
   v6[0] = *&self->_timeRange.start.value;
   v6[1] = v5;
   v6[2] = *&self->_timeRange.duration.timescale;
-  [v4 encodeCMTimeRange:v6 forKey:@"TimeRange"];
-  [v4 encodeDouble:@"Confidence" forKey:self->_confidence];
-  [v4 encodeRect:@"BoundingBox" forKey:{self->_boundingBox.origin.x, self->_boundingBox.origin.y, self->_boundingBox.size.width, self->_boundingBox.size.height}];
+  [coderCopy encodeCMTimeRange:v6 forKey:@"TimeRange"];
+  [coderCopy encodeDouble:@"Confidence" forKey:self->_confidence];
+  [coderCopy encodeRect:@"BoundingBox" forKey:{self->_boundingBox.origin.x, self->_boundingBox.origin.y, self->_boundingBox.size.width, self->_boundingBox.size.height}];
 }
 
-- (MADSceneClassificationVideoEntry)initWithCoder:(id)a3
+- (MADSceneClassificationVideoEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MADSceneClassificationVideoEntry;
   v5 = [(MADSceneClassificationVideoEntry *)&v15 init];
   if (v5)
   {
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCMTimeRangeForKey:@"TimeRange"];
+      [coderCopy decodeCMTimeRangeForKey:@"TimeRange"];
     }
 
     else
@@ -87,9 +87,9 @@
     *&v5->_timeRange.start.value = v12;
     *&v5->_timeRange.start.epoch = v13;
     *&v5->_timeRange.duration.timescale = v14;
-    [v4 decodeDoubleForKey:{@"Confidence", v12, v13, v14}];
+    [coderCopy decodeDoubleForKey:{@"Confidence", v12, v13, v14}];
     v5->_confidence = v6;
-    [v4 decodeRectForKey:@"BoundingBox"];
+    [coderCopy decodeRectForKey:@"BoundingBox"];
     v5->_boundingBox.origin.x = v7;
     v5->_boundingBox.origin.y = v8;
     v5->_boundingBox.size.width = v9;
@@ -101,10 +101,10 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
   *&time.start.value = *&self->_timeRange.start.value;
   time.start.epoch = self->_timeRange.start.epoch;
@@ -114,19 +114,19 @@
   *&time.start.epoch = v7;
   *&time.duration.timescale = *&self->_timeRange.duration.timescale;
   CMTimeRangeGetEnd(&v13, &time);
-  [v3 appendFormat:@"%@: %-.4fs-%-.4fs, ", @"TimeRange", *&Seconds, CMTimeGetSeconds(&v13)];
+  [string appendFormat:@"%@: %-.4fs-%-.4fs, ", @"TimeRange", *&Seconds, CMTimeGetSeconds(&v13)];
   [(MADSceneClassificationVideoEntry *)self boundingBox];
   if (v8 != 0.0)
   {
     [(MADSceneClassificationVideoEntry *)self boundingBox];
     v9 = NSStringFromRect(v15);
-    [v3 appendFormat:@"%@: %@, ", @"BoundingBox", v9];
+    [string appendFormat:@"%@: %@, ", @"BoundingBox", v9];
   }
 
   [(MADSceneClassificationVideoEntry *)self confidence];
-  [v3 appendFormat:@"%@: %.2f>", @"Confidence", v10];
+  [string appendFormat:@"%@: %.2f>", @"Confidence", v10];
 
-  return v3;
+  return string;
 }
 
 - ($1C75447F214D9465CD650DD956230C7F)timeRange
